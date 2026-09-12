@@ -273,6 +273,15 @@ h2 .n{font-family:var(--mono);color:var(--faint);font-weight:500;letter-spacing:
   color:var(--accent);font-weight:600}
 /* "Clear" wipes the query; it sat in the same row looking like "+ Move" */
 .btn.quiet{border-style:dashed;color:var(--muted)}
+/* a fold header: full width, reads as a heading, behaves as a button */
+.btn.fold{width:100%;justify-content:flex-start;display:flex;align-items:center;
+  gap:8px;font-family:var(--cond);text-transform:uppercase;letter-spacing:.08em;
+  font-size:12px;color:var(--muted);background:none;border:0;border-top:1px solid var(--line);
+  border-radius:0;padding:12px 2px;margin-top:16px}
+.btn.fold:hover{color:var(--text)}
+.btn.fold .n{font-family:var(--mono);color:var(--faint);letter-spacing:0;
+  margin-left:auto}
+.foldcaret{font-size:10px;display:inline-block;width:10px}
 .btnrow{display:flex;gap:8px;flex-wrap:wrap}
 
 /* ---------- panels ------------------------------------------------------- */
@@ -661,10 +670,21 @@ details.rolls[open] summary::before{content:"2 "}
       </div>
       <!-- Closed trades are the only real evidence of what the market pays.
            The player's own pricing rule came from remembering five of them. -->
+      <!-- Collapsed. There are 21 closed trades already and the list only
+           grows; left open it buried the HOME box under a wall of history
+           you rarely need open (player, 2026-09-12). The summary line is the
+           part worth seeing every time, so it stays outside the fold. -->
       <div id="gtsHistWrap" hidden>
-        <h2>Trades that closed <span class="n" id="nGtsHist"></span></h2>
+        <button class="btn sm fold" id="gtsHistToggle" aria-expanded="false"
+                aria-controls="gtsHistBody">
+          <span class="foldcaret" aria-hidden="true">&#9656;</span>
+          <span>Trades that closed</span>
+          <span class="n" id="nGtsHist"></span>
+        </button>
         <p class="sub" id="gtsHistSub"></p>
-        <div class="list" id="listGtsHist"></div>
+        <div id="gtsHistBody" hidden>
+          <div class="list" id="listGtsHist"></div>
+        </div>
       </div>
 
       <h2>In HOME <span class="n" id="nHome"></span></h2>
@@ -2933,14 +2953,39 @@ function drawGtsHistory(){
   wrap.hidden = !h.length;
   if (!h.length) return;
   $("nGtsHist").textContent = h.length;
+  var tog = $("gtsHistToggle"), bod = $("gtsHistBody");
+  if (!tog._wired) {
+    tog._wired = 1;
+    tog.onclick = function(){
+      var open = bod.hidden;
+      bod.hidden = !open;
+      tog.setAttribute("aria-expanded", open ? "true" : "false");
+      tog.querySelector(".foldcaret").innerHTML = open ? "&#9662;" : "&#9656;";
+      try { localStorage.setItem("champ-gtshist", open ? "1" : ""); } catch (e) {}
+    };
+    /* a fold that forgets is a fold you reopen every visit */
+    try {
+      if (localStorage.getItem("champ-gtshist")) tog.onclick();
+    } catch (e) {}
+  }
   /* the number that turns this into pricing data rather than a diary: what
      the chips actually fetched, against what their rows said they were worth */
   var paid = h.filter(function(r){ return r.gaveValue && r.gotBst; });
   var over = paid.filter(function(r){ return r.gotBst > r.gaveBst + 20; });
-  $("gtsHistSub").textContent = paid.length
-    ? "What the market actually paid. " + over.length + " of " + paid.length +
-      " fetched more than the chip's base row — which is where the rule that a " +
-      "chip is worth its Mega's BST came from."
+  /* Collapsed, this line IS the feature - so it carries the finding rather
+     than a description. Measured over every closed trade: how often a chip
+     reached the ceiling its Mega line sets. 21 trades say that ceiling is
+     reachable, not automatic - Beedrill hits it every time and twice beat it,
+     while Chesnaught and Starmie traded at base parity instead. */
+  var ceil = h.filter(function(r){ return r.gaveValue && r.gotBst; });
+  var hit = ceil.filter(function(r){ return r.gotBst >= r.gaveValue - 10; });
+  var mega = ceil.filter(function(r){ return r.gaveValue > r.gaveBst; });
+  $("gtsHistSub").textContent = ceil.length
+    ? "What the market actually paid, over " + ceil.length + " priced trades. " +
+      hit.length + " reached the ceiling their Mega line sets" +
+      (mega.length ? ", " + (mega.length - hit.length) + " settled at base parity instead"
+                   : "") +
+      " — so that ceiling is reachable, not automatic."
     : "What the market actually paid.";
   host.innerHTML = "";
   h.forEach(function(r){
@@ -2964,6 +3009,9 @@ function drawGtsHistory(){
     }
     /* the row that will eventually price a shiny: what a shiny chip actually
        fetched, against what the same species is worth plain */
+    if (r.backfilled) {
+      meta.appendChild(el("span", "tag", "recovered"));
+    }
     if (r.gaveShiny) {
       var prem = (r.gotBst != null && r.gaveValue != null)
         ? r.gotBst - r.gaveValue : null;
