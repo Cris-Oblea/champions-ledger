@@ -3018,7 +3018,13 @@ function drawGtsHistory(){
       meta.appendChild(el("span", "tag mega", "shiny chip" +
         (prem != null ? " · " + (prem > 0 ? "+" : "") + prem + " over plain" : "")));
     }
-    if (r.days != null) meta.appendChild(el("span", null, r.days + "d to close"));
+    var took = r.tookMs != null ? elapsedText(r.tookMs)
+             : (r.days != null ? r.days + " days" : null);
+    if (took) {
+      var fast = r.tookMs != null && r.tookMs < 6 * 3600000;
+      meta.appendChild(el("span", "tag " + (fast ? "ok" : ""),
+        took + " to close"));
+    }
     m.appendChild(meta);
     row.appendChild(m);
     host.appendChild(row);
@@ -3221,9 +3227,10 @@ function gtsRow(i, o){
   var age = offerAge(o);
   if (age != null) {
     var ar = el("div", "rmeta");
+    var waited = elapsedText(Date.now() - offerStart(o));
     ar.appendChild(el("span",
       "tag " + (age >= 14 ? "bad" : age >= 7 ? "warn" : ""),
-      age === 0 ? "posted today" : age + " day" + (age === 1 ? "" : "s") + " waiting"));
+      (waited || (age + " days")) + " waiting"));
     if (age >= 7) {
       ar.appendChild(el("span", null, age >= 14
         ? "two weeks unclaimed — the ask is too high for this chip"
@@ -3374,10 +3381,29 @@ function gtsSuggest(chipName, limit, shiny){
 /* How long an offer has been sitting. `deposited` was stored and never read;
    an offer nobody has taken in nine days is telling you the price is wrong. */
 function offerAge(o){
+  var t = offerStart(o);
+  if (t == null) return null;
+  return Math.max(0, Math.round((Date.now() - t) / 86400000));
+}
+function offerStart(o){
+  if (o.depositedAt) {
+    var p = Date.parse(o.depositedAt);
+    if (!isNaN(p)) return p;
+  }
   if (!o.deposited) return null;
   var t = Date.parse(o.deposited + "T00:00:00");
-  if (isNaN(t)) return null;
-  return Math.max(0, Math.round((Date.now() - t) / 86400000));
+  return isNaN(t) ? null : t;
+}
+/* Hours matter here in a way they do not elsewhere. Indeedee is BST 475 and
+   cleared in hours; Beedrill is worth 495 by the Mega rule and sat for days.
+   Time-to-close measures what the other side WANTS, which is the axis BST
+   cannot see - so it is reported at whatever resolution it actually has. */
+function elapsedText(ms){
+  if (ms == null || ms < 0) return null;
+  var h = ms / 3600000;
+  if (h < 1) return Math.max(1, Math.round(ms / 60000)) + " min";
+  if (h < 36) return (h < 10 ? h.toFixed(1) : Math.round(h)) + "h";
+  return Math.round(h / 24) + " days";
 }
 
 function gtsHistory(){ return ((S.meta.gts && S.meta.gts.history) || []).slice(); }
@@ -3706,7 +3732,14 @@ function gtsPickWanted(onPick, chipName, chipShiny){
 }
 
 function gtsSheet(i, o){
-  o = o || {offered:"", requested:"", deposited:new Date().toISOString().slice(0,10),
+  /* `deposited` is a date the player can edit, so it stays. `depositedAt` is
+     the machine stamp: BST does not explain why Indeedee went in hours while
+     a Beedrill sat for days (player, 2026-09-12), and a date alone cannot
+     measure that - two trades on the same day look identical. */
+  var now = new Date();
+  o = o || {offered:"", requested:"",
+            deposited:now.toISOString().slice(0,10),
+            depositedAt:now.toISOString(),
             status:"PENDING", note:""};
   var d = JSON.parse(JSON.stringify(o));
   openSheet(i == null ? "Log a GTS offer" : "GTS offer", function(body){
@@ -3794,8 +3827,13 @@ function gtsSheet(i, o){
       var hist = gtsHistory();
       hist.unshift({gave:d.offered, got:d.requested,
                     deposited:d.deposited || null,
+                    depositedAt:d.depositedAt || null,
                     closed:new Date().toISOString().slice(0, 10),
+                    closedAt:new Date().toISOString(),
                     days:offerAge(d),
+                    /* the number that ranks demand better than BST does */
+                    tookMs:(d.depositedAt
+                            ? (Date.now() - Date.parse(d.depositedAt)) : null),
                     gaveShiny:wasShiny,
                     gaveBst:vOff && vOff.base, gaveValue:vOff && vOff.value,
                     gotBst:vGot && vGot.base,
@@ -3824,6 +3862,8 @@ function gtsSheet(i, o){
          target moved rather than silently comparing against nothing */
       var rdNow = gtsDiff(d.requested);
       if (rdNow && rdNow.rank != null) d.rankAtDeposit = rdNow.rank;
+      /* an offer edited before logging keeps the moment it is actually posted */
+      if (!d.depositedAt) d.depositedAt = new Date().toISOString();
       var cl2 = gtsClash(d, null);
       if (cl2) { toast("That copy is already in the GTS, waiting for " +
                        (cl2.requested || "something")); return; }

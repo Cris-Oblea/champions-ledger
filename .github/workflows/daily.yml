@@ -92,7 +92,11 @@ jobs:
         run: |
           git config user.name  "champions-ledger bot"
           git config user.email "noreply@github.com"
-          git add -A data/db data/meta tracker/data.js tracker/index.html tracker/engine.bundle.js || true
+          # index.html is NOT committed: it is generated from the template on
+          # every run, here and locally, so versioning it made a merge
+          # conflict inevitable on any day both happened. It is deployed
+          # straight from tracker/dist and never read back out of git.
+          git add -A data/db data/meta tracker/data.js tracker/engine.bundle.js || true
           if git diff --cached --quiet; then
             echo "nothing changed"
             exit 0

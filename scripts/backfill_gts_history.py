@@ -79,14 +79,14 @@ def main():
     existing = (cur[0].get("h") if cur else None) or []
     seen = {(e.get("gave"), e.get("got")) for e in existing}
 
-    # SHININESS OF A PAST CHIP IS NOT RECOVERABLE, and guessing it would be
-    # worse than leaving it blank. The arriving Pokemon's note records the
-    # species that was given, never which copy - and "every Chesnaught still
-    # in the box is shiny" says nothing about the two that left. Since the
-    # whole point of tracking shininess is to measure what the premium is
-    # worth, a fabricated flag would poison exactly that number. Backfilled
-    # rows therefore carry null, meaning "not known", and only trades the app
-    # recorded itself count towards the shiny measurement.
+    # SHININESS: settled by the player, 2026-09-12 - "confirmo que el pidgeot
+    # shiny es el unico shiny que he intercambiado, todos los demas no lo
+    # eran". So Pidgeot -> Tyranitar is the one shiny trade on record and
+    # every other row is definitively NOT shiny. That is an observation, not
+    # an inference, and it outranks anything derivable from the box: the note
+    # records the species given, never which copy, so "every Chesnaught still
+    # in the box is shiny" says nothing about the two that left.
+    SHINY_TRADES = {("Pidgeot", "Tyranitar")}
 
     added = []
     for r in rows:
@@ -96,11 +96,29 @@ def main():
         gave, dep = m.group(1).strip(), m.group(2).strip()
         got = r["name"]
         if (gave, got) in seen:
+            # a row already present is updated in place when this script now
+            # knows something it did not before - the shiny confirmation, and
+            # the close timestamp - rather than skipped and left stale
+            for e in existing:
+                if (e.get("gave"), e.get("got")) == (gave, got):
+                    e["gaveShiny"] = (gave, got) in SHINY_TRADES
+                    if not e.get("closedAt"):
+                        e["closedAt"] = r["updated_at"]
             continue
         b, mg = bst(gave), mega_bst(gave)
         added.append({"gave": gave, "got": got, "deposited": dep,
-                      "closed": r["updated_at"][:10], "days": None,
-                      "gaveShiny": None,
+                      "closed": r["updated_at"][:10],
+                      # the box row's own timestamp IS the moment the trade was
+                      # closed in the app, to the second - so time-to-close is
+                      # recoverable for the deposit DAY at least. The deposit
+                      # note only carries a date, so the elapsed figure is
+                      # marked approximate rather than presented as measured.
+                      "closedAt": r["updated_at"],
+                      "closedAtApprox": False,
+                      "depositedAt": None,
+                      "tookMs": None,
+                      "days": None,
+                      "gaveShiny": (gave, got) in SHINY_TRADES,
                       "gaveBst": b, "gaveValue": mg or b, "gotBst": bst(got),
                       "rankAtDeposit": None,
                       "backfilled": "recovered from the box note"})
