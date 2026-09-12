@@ -39,7 +39,10 @@ concurrency:
 jobs:
   refresh:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    # a cold run - no cache at all - measured 34 minutes, almost all of it
+    # fetching Serebii's dex and attackdex pages. 45 left too little headroom
+    # for a slow day upstream.
+    timeout-minutes: 70
     permissions:
       contents: write          # to commit the refreshed data back
 
@@ -57,8 +60,15 @@ jobs:
       # the fetchers' own cache. Keyed by run number so each day writes a new
       # entry and restore-keys picks up yesterday's - Actions caches are
       # immutable once written, so a fixed key would freeze on day one.
+      # restore and save are SEPARATE actions on purpose. actions/cache saves
+      # in a post step that is skipped when the job fails - so the first run
+      # failed, saved nothing, and the next one would have paid the same 34
+      # minutes of cold fetching again. With an explicit save under
+      # `if: always()`, a run that fetched everything still leaves the cache
+      # warm for the next one even if it died later.
       - name: restore the source cache
-        uses: actions/cache@v4
+        id: cache
+        uses: actions/cache/restore@v4
         with:
           path: data/raw
           key: sources-${{ github.run_number }}
@@ -85,10 +95,28 @@ jobs:
           git add -A data/db data/meta tracker/data.js tracker/index.html tracker/engine.bundle.js || true
           if git diff --cached --quiet; then
             echo "nothing changed"
-          else
-            git commit -m "daily refresh $(date -u +%Y-%m-%d)"
-            git push
+            exit 0
           fi
+          git commit -m "daily refresh $(date -u +%Y-%m-%d)"
+          # This job runs for half an hour; the repo can easily move while it
+          # does - it did on the very first run, when a fix was pushed mid-run
+          # and the commit was rejected as non-fast-forward. Rebase onto
+          # whatever landed meanwhile and retry rather than failing the run
+          # over a race that is entirely expected.
+          for attempt in 1 2 3; do
+            if git push; then exit 0; fi
+            echo "push rejected, rebasing onto origin/main (attempt $attempt)"
+            git pull --rebase --autostash origin main || exit 1
+          done
+          echo "could not push after three attempts"
+          exit 1
+
+      - name: save the source cache
+        if: always() && steps.cache.outputs.cache-hit != 'true'
+        uses: actions/cache/save@v4
+        with:
+          path: data/raw
+          key: sources-${{ github.run_number }}
 
       - name: keep the log
         if: always()
