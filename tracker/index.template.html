@@ -2908,6 +2908,12 @@ function drawGts(){
   if (!offers.length) {
     list.appendChild(el("div", "empty",
       "No offers sitting in the GTS — " + GTS_SLOTS + " slots free"));
+    /* The history is NOT part of the open-offer list and must not share its
+       early return: with nothing deposited this function used to bail before
+       drawing it, so the closed trades vanished at exactly the moment you
+       would go looking for them - which is what happened the first time every
+       offer cleared at once (player, 2026-09-12). */
+    drawGtsHistory();
     return;
   }
   /* a collision already in the data is worse than one being made now - it
@@ -3152,10 +3158,11 @@ function gtsRow(i, o){
       "tag " + (diff <= 20 ? "ok" : diff > 60 ? "bad" : "warn"),
       diff <= 0 ? "within its price"
         : "+" + diff + " over" + (diff <= 20 ? ", a fair stretch" : "")));
-    var how = cv.viaMega || cv.shiny
+    var how = (cv.viaMega || cv.shiny || cv.demandBonus)
       ? " (" + cv.base + " base"
         + (cv.viaMega ? ", " + cv.value + " via its Mega" : "")
-        + (cv.shiny ? ", +" + cv.shinyBonus + " est. for shiny" : "") + ")"
+        + (cv.shiny ? ", +" + cv.shinyBonus + " est. shiny" : "")
+        + (cv.demandBonus ? ", +" + cv.demandBonus + " est. demand" : "") + ")"
       : "";
     verdict.appendChild(el("span", null,
       "chip is worth ~" + cv.reach + how + ", asking " + target));
@@ -3287,15 +3294,41 @@ var GTS_SLOTS = 3;
    changes hands the real figure can replace this one, exactly the way the
    Mega rule was arrived at. */
 var SHINY_REACH = 60;    // ESTIMATE: about one BST tier. Not measured.
+
+/* A WANTED CHIP REACHES HIGHER, and the ladder is where "wanted" is measured
+   (player, 2026-09-12): "indeedee voló, no duró nada en gts, y con los
+   shinies también pasa lo mismo". Indeedee is BST 475 with no Mega - by the
+   stat table alone it is an unremarkable chip - but it sits at ladder #28 and
+   cleared the same day, twice.
+
+   So demand belongs in the price, not just in what you ask for. The other
+   side takes a trade because they want the thing you are offering, and BST
+   does not know that: Squawkabilly is 417 and unranked, Indeedee is 475 and
+   top-30, and those are not 58 points apart in practice.
+
+   Estimated, like the shiny premium, and for the same reason - his closed
+   trades price the Mega rule exactly but nothing has yet measured this. The
+   history records both, so it becomes measurable. */
+function demandReach(name){
+  var d = gtsDiff(name);
+  if (!d || d.rank == null) return 0;
+  if (d.demand >= 5) return 90;      // top of the ladder: people come to you
+  if (d.demand >= 4) return 60;
+  if (d.demand >= 3) return 35;
+  if (d.demand >= 2) return 15;
+  return 0;
+}
 function chipValue(name, shiny){
   var p = byName[name];
   if (!p) return null;
   var base = bst(p);
   var best = base;
   megasFor(name).forEach(function(m){ best = Math.max(best, bst(m)); });
+  var dem = demandReach(name);
   return {base:base, value:best, viaMega:best > base,
           shiny:!!shiny,
-          reach:best + (shiny ? SHINY_REACH : 0),
+          demandBonus:dem,
+          reach:best + (shiny ? SHINY_REACH : 0) + dem,
           shinyBonus:shiny ? SHINY_REACH : 0};
 }
 /* the shiny flag lives on the box row, not on the species */
@@ -3407,6 +3440,48 @@ function elapsedText(ms){
 }
 
 function gtsHistory(){ return ((S.meta.gts && S.meta.gts.history) || []).slice(); }
+
+/* THE KEEP-ONE RULE (player, 2026-09-10): "yo siempre quiero quedarme con 1
+   especie en home para siempre". Only two things may be offered - a duplicate
+   past the first copy, or a species Champions does not allow at all. Offering
+   a singleton of a legal species loses it for good.
+
+   This exists because the app let it happen: Indeedee went out on 2026-09-12
+   as the last copy of a species sitting at ladder #28, and nothing said a
+   word. The trade turned out well - Rillaboom, #2 - but that was the draw,
+   not the ledger doing its job.
+
+   Counts the BOX, not the offers: depositing does not remove the Pokemon, so
+   the copy is still there until the trade actually closes. */
+function lastCopyOf(rec){
+  if (!rec) return false;
+  if (!byName[rec.name]) return false;          // not in the dex: free to trade
+  var n = 0;
+  boxRows("home").concat(boxRows("champions")).forEach(function(r){
+    if (r.name === rec.name) n++;
+  });
+  return n <= 1;
+}
+/* THE RULE IS PER FORM, NOT PER SPECIES, AND HE PICKS WHICH FORM (player,
+   2026-09-12): "tenía indeedee macho y uno hembra, me quedo con la hembra me
+   sirve más". So the last Indeedee going out was NOT the mistake it looked
+   like - the Female was the keeper and the Male was spare by his own reading.
+
+   That means the warning must not be a flat "this is your last one". It has
+   to say what else of the same species is still in the box and let him judge,
+   because only he knows which form he wants to keep. Returns the sibling
+   forms, so the message can name them. */
+function otherFormsOf(rec){
+  var p = byName[rec.name];
+  if (!p || !p.species) return [];
+  var out = {};
+  boxRows("home").concat(boxRows("champions")).forEach(function(r){
+    if (r.name === rec.name) return;
+    var q = byName[r.name];
+    if (q && q.species === p.species) out[r.name] = 1;
+  });
+  return Object.keys(out);
+}
 
 function gtsOffers(){ return ((S.meta.gts && S.meta.gts.open_offers) || []).slice(); }
 function gtsFree(){ return Math.max(0, GTS_SLOTS - gtsOffers().length); }
@@ -3557,6 +3632,12 @@ function gtsPickMine(onPick, exceptIdx){
         if (held) {
           h.appendChild(el("span", "tag bad", "already in the GTS"));
         }
+        var last = !held && lastCopyOf(r);
+        var kin = last ? otherFormsOf(r) : [];
+        if (last) {
+          h.appendChild(el("span", "tag " + (kin.length ? "" : "warn"),
+            kin.length ? "only one of this form" : "your only one"));
+        }
         if (seen[r.name] > 1) {
           h.appendChild(el("span", "tag", "copy " + nth[r._id] + " of " +
             seen[r.name]));
@@ -3571,6 +3652,15 @@ function gtsPickMine(onPick, exceptIdx){
         if (p) meta.appendChild(el("span", "mono", "BST " + bst(p)));
         if (r.note) meta.appendChild(el("span", null, String(r.note).slice(0, 40)));
         m.appendChild(meta);
+        if (last) {
+          m.appendChild(el("div", "st", kin.length
+            ? "The only " + r.name + " you have, but you still hold " +
+              kin.join(", ") + ". Which form to keep is your call — the Male "
+              + "Indeedee went this way and the Female was the keeper."
+            : "The only " + r.name + " you have, and no other form of it. " +
+              "Trading it loses the species — your rule is to keep one of " +
+              "everything Champions allows."));
+        }
         if (held) {
           m.appendChild(el("div", "st", "Deposited" +
             (held.deposited ? " " + held.deposited : "") + ", waiting for " +
@@ -3622,6 +3712,17 @@ function gtsPickWanted(onPick, chipName, chipShiny){
           (v.viaMega ? " — its base row says " + v.base +
                        ", but a chip fetches its Mega's BST, which is what " +
                        "your own closed trades paid." : ".")));
+        if (v.demandBonus) {
+          var cd = gtsDiff(chipName);
+          body.appendChild(note("", "<strong>People want this one.</strong> " +
+            chipName + " is ladder #" + cd.rank +
+            (cd.usage != null ? " at " + cd.usage.toFixed(1) + "%" : "") +
+            ", so it clears fast and can ask above its stat line — your " +
+            "Indeedee went the same day, twice, on a 475 body with no Mega. " +
+            "About +" + v.demandBonus + " of the " + v.reach +
+            " below is that, and it is an <em>estimate</em> until enough " +
+            "trades close to measure it."));
+        }
         if (chipShiny) {
           body.appendChild(note("", "<strong>It is shiny, so it reaches " +
             "higher.</strong> Targets up to about " + v.reach + " are in range. " +
@@ -3856,6 +3957,20 @@ function gtsSheet(i, o){
       if (!d.offered || !d.requested) { toast("Both names are needed"); return; }
       if (!gtsFree()) {
         toast("All " + GTS_SLOTS + " GTS slots are taken — withdraw one first");
+        return;
+      }
+      /* Confirm, not block: it is his box and he may well have a reason - the
+         one time this happened he gave a #28 and got a #2. But it has to be a
+         decision taken, not something noticed afterwards. */
+      /* only the hard case stops you: no other form of the species anywhere.
+         When a sibling form is in the box the picker has already said so, and
+         choosing between forms is his call, not the app's. */
+      var lastRec = d.offeredId ? S.box[d.offeredId] : null;
+      if (lastCopyOf(lastRec) && !otherFormsOf(lastRec).length &&
+          !confirm("This is your only " + d.offered + ", and it is in "
+                   + "the Champions dex. Trading it means losing the "
+                   + "species for good - your own rule is to keep one "
+                   + "of everything Champions allows. Go ahead?")) {
         return;
       }
       /* stamp what the ladder said TODAY, so a later reading can tell you the
