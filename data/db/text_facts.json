@@ -188,9 +188,9 @@
    "pokebase": "In addition to protecting the user from attacks, this move also poisons any attacker that makes direct contact."
   },
   "Barb Barrage": {
-   "text": "Has a 50% chance of poisoning the target. This move’s power is doubled if the target is poisoned or badly poisoned.",
+   "text": "Has a 50% chance of poisoning the target. This move's power is doubled if the target is poisoned or badly poisoned.",
    "source": "serebii",
-   "serebii": "Has a 50% chance of poisoning the target. This move’s power is doubled if the target is poisoned or badly poisoned.",
+   "serebii": "Has a 50% chance of poisoning the target. This move's power is doubled if the target is poisoned or badly poisoned.",
    "pokebase": "The user launches countless toxic barbs to inflict damage. This may also poison the target. This move’s power is doubled if the target is already poisoned."
   },
   "Baton Pass": {
@@ -506,9 +506,9 @@
    "pokebase": "A retaliatory attack that counters any physical move, inflicting double the damage taken."
   },
   "Court Change": {
-   "text": "Swaps the statuses affecting the user’s side of the field with the statuses affecting the opponent’s side of the field.",
+   "text": "Swaps the statuses affecting the user's side of the field with the statuses affecting the opponent's side of the field.",
    "source": "serebii",
-   "serebii": "Swaps the statuses affecting the user’s side of the field with the statuses affecting the opponent’s side of the field.",
+   "serebii": "Swaps the statuses affecting the user's side of the field with the statuses affecting the opponent's side of the field.",
    "pokebase": "Swaps the statuses affecting the user’s side of the field with the statuses affecting the opponent’s side of the field."
   },
   "Covet": {
@@ -722,9 +722,9 @@
    "pokebase": "The user crashes into the target while rotating its body like a drill. This move has a heightened chance of landing a critical hit."
   },
   "Drum Beating": {
-   "text": "Lowers the target’s Speed stat by 1 stage.",
+   "text": "Lowers the target's Speed stat by 1 stage.",
    "source": "serebii",
-   "serebii": "Lowers the target’s Speed stat by 1 stage.",
+   "serebii": "Lowers the target's Speed stat by 1 stage.",
    "pokebase": "Lowers the target’s Speed stat by 1 stage."
   },
   "Dual Wingbeat": {
@@ -1598,9 +1598,9 @@
    "pokebase": "The user levitates using electrically generated magnetism for five turns."
   },
   "Make It Rain": {
-   "text": "Lowers the user’s Sp. Atk stat by 2 stages.",
+   "text": "Lowers the user's Sp. Atk stat by 2 stages.",
    "source": "serebii",
-   "serebii": "Lowers the user’s Sp. Atk stat by 2 stages.",
+   "serebii": "Lowers the user's Sp. Atk stat by 2 stages.",
    "pokebase": "The user attacks by throwing out a mass of coins. This also lowers the user's Sp. Atk stat 2 stages. Money is earned after the battle."
   },
   "Matcha Gotcha": {
@@ -1778,9 +1778,9 @@
    "pokebase": "Letting out a noble roar, the user intimidates the target and lowers the target's Attack and Sp. Atk stats."
   },
   "No Retreat": {
-   "text": "Boosts the user’s Attack, Defense, Sp. Atk, Sp. Def, and Speed stats by 1 stage. The user gains the Can’t Escape status. This move can only be used once per time the user enters battle— otherwise it will fail.",
+   "text": "Boosts the user's Attack, Defense, Sp. Atk, Sp. Def, and Speed stats by 1 stage. The user gains the Can't Escape status. This move can only be used once per time the user enters battle— otherwise it will fail.",
    "source": "serebii",
-   "serebii": "Boosts the user’s Attack, Defense, Sp. Atk, Sp. Def, and Speed stats by 1 stage. The user gains the Can’t Escape status. This move can only be used once per time the user enters battle— otherwise it will fail.",
+   "serebii": "Boosts the user's Attack, Defense, Sp. Atk, Sp. Def, and Speed stats by 1 stage. The user gains the Can't Escape status. This move can only be used once per time the user enters battle— otherwise it will fail.",
    "pokebase": "This move boosts all the user's stats but prevents the user from switching out or fleeing."
   },
   "Nuzzle": {
@@ -1789,16 +1789,10 @@
    "serebii": "Paralyzes the target.",
    "pokebase": "The user attacks by nuzzling its electrified cheeks against the target. This also leaves the target with paralysis."
   },
-  "Octazooka": {
-   "text": "Has a 50% chance of lowering the target’s accuracy by 1 stage.",
-   "source": "serebii",
-   "serebii": "Has a 50% chance of lowering the target’s accuracy by 1 stage.",
-   "pokebase": "Has a 50% chance of lowering the target’s accuracy by 1 stage."
-  },
   "Octolock": {
-   "text": "Gives the target the Octolocked and Can’t Escape statuses.",
+   "text": "Gives the target the Octolocked and Can't Escape statuses.",
    "source": "serebii",
-   "serebii": "Gives the target the Octolocked and Can’t Escape statuses.",
+   "serebii": "Gives the target the Octolocked and Can't Escape statuses.",
    "pokebase": "Gives the target the Octolocked and Can’t Escape statuses."
   },
   "Outrage": {
@@ -1806,6 +1800,12 @@
    "source": "pokebase",
    "serebii": "The user gains the Rampaging status.",
    "pokebase": "The user rampages and attacks for two to three turns. The user then becomes confused."
+  },
+  "Overdrive": {
+   "text": "The user attacks opposing Pokémon by twanging a guitar or bass guitar, causing a huge echo and strong vibration.",
+   "source": "pokebase",
+   "serebii": "",
+   "pokebase": "The user attacks opposing Pokémon by twanging a guitar or bass guitar, causing a huge echo and strong vibration."
   },
   "Overheat": {
    "text": "Lowers the user's Sp. Atk stat by 2 stages.",
@@ -1921,17 +1921,17 @@
    "serebii": "Lowers the target's Speed stat by 1 stage.",
    "pokebase": "The user attacks by pouncing on the target. This also lowers the target's Speed stat."
   },
+  "Pound": {
+   "text": "The target is physically pounded with a long tail, a foreleg, or the like.",
+   "source": "pokebase",
+   "serebii": "",
+   "pokebase": "The target is physically pounded with a long tail, a foreleg, or the like."
+  },
   "Power Gem": {
    "text": "The user attacks with a ray of light that sparkles as if it were made of gemstones.",
    "source": "pokebase",
    "serebii": "",
    "pokebase": "The user attacks with a ray of light that sparkles as if it were made of gemstones."
-  },
-  "Power Shift": {
-   "text": "The user gains the Atk/Def Swapped status.",
-   "source": "serebii",
-   "serebii": "The user gains the Atk/Def Swapped status.",
-   "pokebase": "The user swaps its Attack and Defense stats."
   },
   "Power Split": {
    "text": "The user adds its Attack stat to the target's Attack stat then splits the total in half for them to share. It does the same with each of their Sp. Atk stats.",
@@ -2048,9 +2048,9 @@
    "pokebase": "The user lightly performs a beautiful, mystic dance. This boosts the user's Sp. Atk, Sp. Def, and Speed stats."
   },
   "Rage Fist": {
-   "text": "This move’s power is increased by 50 each time the user takes damage from a move, up to a maximum power of 350. If the user switches out of battle, the move’s power returns to its usual value.",
+   "text": "This move's power is increased by 50 each time the user takes damage from a move, up to a maximum power of 350. If the user switches out of battle, the move's power returns to its usual value.",
    "source": "serebii",
-   "serebii": "This move’s power is increased by 50 each time the user takes damage from a move, up to a maximum power of 350. If the user switches out of battle, the move’s power returns to its usual value.",
+   "serebii": "This move's power is increased by 50 each time the user takes damage from a move, up to a maximum power of 350. If the user switches out of battle, the move's power returns to its usual value.",
    "pokebase": "The user converts its rage into energy to attack. The more times the user has been hit by attacks, the greater the move's power."
   },
   "Rage Powder": {
@@ -2324,9 +2324,9 @@
    "pokebase": "The user makes its skin as hard as an iron shield, sharply boosting its Defense stat."
   },
   "Shift Gear": {
-   "text": "Boosts the user’s Attack stat by 1 stage and Speed stat by 2 stages.",
+   "text": "Boosts the user's Attack stat by 1 stage and Speed stat by 2 stages.",
    "source": "serebii",
-   "serebii": "Boosts the user’s Attack stat by 1 stage and Speed stat by 2 stages.",
+   "serebii": "Boosts the user's Attack stat by 1 stage and Speed stat by 2 stages.",
    "pokebase": "Boosts the user’s Attack stat by 1 stage and Speed stat by 2 stages."
   },
   "Simple Beam": {
@@ -2443,12 +2443,6 @@
    "serebii": "Changes the target's type to Water.",
    "pokebase": "The user shoots a torrent of water that changes the target's type to Water."
   },
-  "Soft-Boiled": {
-   "text": "Restores 1/2 of the user's max HP.",
-   "source": "serebii",
-   "serebii": "Restores 1/2 of the user's max HP.",
-   "pokebase": "The user restores its own HP by up to half its max HP."
-  },
   "Solar Beam": {
    "text": "The user gains the Charging status on the turn this move is used then attacks on the following turn. In harsh sunlight the user does not gain the Charging status and can attack immediately. This move's power is halved in any other weather condition.",
    "source": "serebii",
@@ -2492,9 +2486,9 @@
    "pokebase": "In addition to protecting the user from attacks, this move also damages any attacker that makes direct contact."
   },
   "Spirit Break": {
-   "text": "Lowers the target’s Sp. Atk stat by 1 stage.",
+   "text": "Lowers the target's Sp. Atk stat by 1 stage.",
    "source": "serebii",
-   "serebii": "Lowers the target’s Sp. Atk stat by 1 stage.",
+   "serebii": "Lowers the target's Sp. Atk stat by 1 stage.",
    "pokebase": "The user attacks the target with so much force that it could break the target's spirit. This also lowers the target's Sp. Atk stat."
   },
   "Spirit Shackle": {
@@ -2514,12 +2508,6 @@
    "source": "serebii",
    "serebii": "The higher the user's Stockpiling level the greater this move's power (ranging between 100 and 300). This move fails unless the user has the Stockpiling status.",
    "pokebase": "The power stored using the move Stockpile is released at once in an attack. The more power is stored, the greater the move's power."
-  },
-  "Spore": {
-   "text": "Puts the target to sleep.",
-   "source": "serebii",
-   "serebii": "Puts the target to sleep.",
-   "pokebase": "Puts the target to sleep. Grass-type Pokémon are unaffected."
   },
   "Stealth Rock": {
    "text": "Gives the opponent's side the Stealth Rock status.",

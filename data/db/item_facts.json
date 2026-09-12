@@ -2,8 +2,8 @@
  "_comment": "Merged by scripts/build_item_facts.py. PRICE: Serebii first, pokebase's `unlock` filling the ones Serebii prints as '??? VP'. TEXT: pokebase first, because its description is the mechanics and Serebii's is flavour. `source` and `text_source` say which answered.",
  "prices": {
   "Air Balloon": {
-   "vp": 2000,
-   "source": "pokebase",
+   "vp": 1000,
+   "source": "serebii",
    "unlock": "shop-2000-vp",
    "note": "",
    "text": "Causes the holder to float off the ground, making it immune to Ground-type moves, as well as the Spikes, Toxic Spikes, and Sticky Web statuses. Disappears for the duration of the battle if the holder takes damage from a move.",
@@ -20,8 +20,8 @@
    "serebii_text": "An item to be held by a Pokémon. This root boosts the amount of HP the holder restores to itself when it uses HP-stealing moves."
   },
   "Binding Band": {
-   "vp": 2000,
-   "source": "pokebase",
+   "vp": 700,
+   "source": "serebii",
    "unlock": "shop-2000-vp",
    "note": "",
    "text": "Increases the damage dealt to targets that have the Bound status. Targets will take damage equal to 1/6 of their max HP instead of 1/8 of their max HP.",
@@ -92,8 +92,8 @@
    "serebii_text": "An item to be held by a Pokémon. This hard, sharp fang boosts the power of the holder's Dragon-type moves."
   },
   "Eject Button": {
-   "vp": 2000,
-   "source": "pokebase",
+   "vp": 700,
+   "source": "serebii",
    "unlock": "shop-2000-vp",
    "note": "",
    "text": "Switches the holder out of battle when the holder takes damage from a move. Disappears for the duration of the battle after a single use.",
@@ -101,8 +101,8 @@
    "serebii_text": "An item to be held by a Pokémon. If the holder is damaged by an attack, it will be switched out of battle to be replaced by another Pokémon on your team."
   },
   "Electric Seed": {
-   "vp": 2000,
-   "source": "pokebase",
+   "vp": 700,
+   "source": "serebii",
    "unlock": "shop-2000-vp",
    "note": "",
    "text": "Boosts the holder's Defense stat by 1 stage on Electric Terrain. Disappears for the duration of the battle after a single use.",
@@ -146,8 +146,8 @@
    "serebii_text": "An item to be held by a Pokémon. If the holder has full HP and it is hit with a move that should knock it out, it will endure with 1 HP—but only once."
   },
   "Grassy Seed": {
-   "vp": 2000,
-   "source": "pokebase",
+   "vp": 700,
+   "source": "serebii",
    "unlock": "shop-2000-vp",
    "note": "",
    "text": "Boosts the holder's Defense stat by 1 stage on Grassy Terrain. Disappears for the duration of the battle after a single use.",
@@ -200,8 +200,8 @@
    "serebii_text": "An item to be held by a Pokémon. It may cause the target to flinch whenever the holder successfully inflicts damage on them with an attack."
   },
   "Leek": {
-   "vp": 2000,
-   "source": "pokebase",
+   "vp": 700,
+   "source": "serebii",
    "unlock": "shop-2000-vp",
    "note": "",
    "text": "When held by a Farfetch'd or Sirfetch'd, gives the holder a 2-stage Critical-Hit Ratio Boost.",
@@ -290,8 +290,8 @@
    "serebii_text": "An item to be held by a Pokémon. It's a seed imbued with life force that boosts the power of the holder's Grass-type moves."
   },
   "Misty Seed": {
-   "vp": 2000,
-   "source": "pokebase",
+   "vp": 700,
+   "source": "serebii",
    "unlock": "shop-2000-vp",
    "note": "",
    "text": "Boosts the holder's Sp. Def stat by 1 stage on Misty Terrain. Disappears for the duration of the battle after a single use.",
@@ -326,8 +326,8 @@
    "serebii_text": "An item to be held by a Pokémon. It's a heat-repelling piece of ice that boosts the power of the holder's Ice- type moves."
   },
   "Normal Gem": {
-   "vp": 2000,
-   "source": "pokebase",
+   "vp": 1000,
+   "source": "serebii",
    "unlock": "shop-2000-vp",
    "note": "",
    "text": "Boosts the power of the holder's Normal-type moves by 30%. Disappears for the duration of the battle after a single use.",
@@ -344,8 +344,8 @@
    "serebii_text": "An item to be held by a Pokémon. This small poisonous barb boosts the power of the holder's Poison-type moves."
   },
   "Psychic Seed": {
-   "vp": 2000,
-   "source": "pokebase",
+   "vp": 700,
+   "source": "serebii",
    "unlock": "shop-2000-vp",
    "note": "",
    "text": "Boosts the holder's Sp. Def stat by 1 stage on Psychic Terrain. Disappears for the duration of the battle after a single use.",
@@ -362,8 +362,8 @@
    "serebii_text": "An item to be held by a Pokémon. This light, sharp claw lets the holder occasionally unleash a move faster than it usually would."
   },
   "Red Card": {
-   "vp": 2000,
-   "source": "pokebase",
+   "vp": 1000,
+   "source": "serebii",
    "unlock": "shop-2000-vp",
    "note": "",
    "text": "When the holder takes damage from a move, the attacker is forced to switch out of battle. Disappears for the duration of the battle after a single use.",
@@ -371,8 +371,8 @@
    "serebii_text": "An item to be held by a Pokémon. If the holder is damaged by an attack, the mysterious power of this card can remove the attacker from the battle."
   },
   "Rocky Helmet": {
-   "vp": 2000,
-   "source": "pokebase",
+   "vp": 1000,
+   "source": "serebii",
    "unlock": "shop-2000-vp",
    "note": "",
    "text": "When the holder is hit by a contact move, the attacker takes damage equal to 1/6 of its max HP.",
@@ -461,8 +461,8 @@
    "serebii_text": "An item to be held by a Pokémon. It's a sinister, eerie tag that boosts the power of the holder's Ghost-type moves."
   },
   "Terrain Extender": {
-   "vp": 2000,
-   "source": "pokebase",
+   "vp": 700,
+   "source": "serebii",
    "unlock": "shop-2000-vp",
    "note": "",
    "text": "When the holder creates terrain with its moves or Ability, the duration is extended by 3 turns. (Total duration: 8 turns)",

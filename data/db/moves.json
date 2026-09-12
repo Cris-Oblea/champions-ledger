@@ -2423,7 +2423,7 @@
   "power": 60,
   "accuracy": 100,
   "pp": 12,
-  "effect": "Has a 50% chance of poisoning the target. This move’s power is doubled if the target is poisoned or badly poisoned.",
+  "effect": "Has a 50% chance of poisoning the target. This move's power is doubled if the target is poisoned or badly poisoned.",
   "in_depth": "",
   "effect_rate": 50.0,
   "crit_rate": "4.17%",
@@ -7595,7 +7595,7 @@
   "power": 0,
   "accuracy": 100,
   "pp": 12,
-  "effect": "Swaps the statuses affecting the user’s side of the field with the statuses affecting the opponent’s side of the field.",
+  "effect": "Swaps the statuses affecting the user's side of the field with the statuses affecting the opponent's side of the field.",
   "in_depth": "",
   "effect_rate": null,
   "crit_rate": "None",
@@ -9708,7 +9708,7 @@
   "category": "Physical",
   "power": 120,
   "accuracy": null,
-  "pp": null,
+  "pp": 8,
   "effect": "The user loses the Electric type. This move fails unless it is used by an Electric type.",
   "in_depth": "",
   "effect_rate": 4.17,
@@ -9720,7 +9720,7 @@
   "flags": {
    "contact": true,
    "sound": false,
-   "punch": false,
+   "punch": true,
    "biting": false,
    "snatchable": false,
    "slicing": false,
@@ -10829,7 +10829,7 @@
   "power": 80,
   "accuracy": 100,
   "pp": 12,
-  "effect": "Lowers the target’s Speed stat by 1 stage.",
+  "effect": "Lowers the target's Speed stat by 1 stage.",
   "in_depth": "",
   "effect_rate": 4.17,
   "crit_rate": "4.17%",
@@ -10882,7 +10882,7 @@
    "punch": false,
    "biting": false,
    "snatchable": false,
-   "slicing": false,
+   "slicing": true,
    "bullet": false,
    "wind": false,
    "powder": false,
@@ -24774,7 +24774,7 @@
   "power": 120,
   "accuracy": 95,
   "pp": 8,
-  "effect": "Lowers the user’s Sp. Atk stat by 2 stages.",
+  "effect": "Lowers the user's Sp. Atk stat by 2 stages.",
   "in_depth": "",
   "effect_rate": 4.17,
   "crit_rate": "4.17%",
@@ -26245,7 +26245,7 @@
   "name": "Meteor Assault",
   "type": "Fighting",
   "category": "Physical",
-  "power": 150,
+  "power": 170,
   "accuracy": 100,
   "pp": 8,
   "effect": "The user gains the Recharging status on the turn after this move is used.",
@@ -28325,7 +28325,7 @@
   "power": 0,
   "accuracy": 101,
   "pp": 8,
-  "effect": "Boosts the user’s Attack, Defense, Sp. Atk, Sp. Def, and Speed stats by 1 stage. The user gains the Can’t Escape status. This move can only be used once per time the user enters battle— otherwise it will fail.",
+  "effect": "Boosts the user's Attack, Defense, Sp. Atk, Sp. Def, and Speed stats by 1 stage. The user gains the Can't Escape status. This move can only be used once per time the user enters battle— otherwise it will fail.",
   "in_depth": "",
   "effect_rate": null,
   "crit_rate": "None",
@@ -28559,7 +28559,7 @@
   "power": 65,
   "accuracy": 85,
   "pp": 12,
-  "effect": "Has a 50% chance of lowering the target’s accuracy by 1 stage.",
+  "effect": "Has a 50% chance of lowering the target's accuracy by 1 stage.",
   "in_depth": "",
   "effect_rate": 50.0,
   "crit_rate": "4.17%",
@@ -28586,7 +28586,7 @@
   },
   "learners": [],
   "learner_count": 0,
-  "useable": true
+  "useable": false
  },
  {
   "slug": "octolock",
@@ -28596,7 +28596,7 @@
   "power": 0,
   "accuracy": 100,
   "pp": 16,
-  "effect": "Gives the target the Octolocked and Can’t Escape statuses.",
+  "effect": "Gives the target the Octolocked and Can't Escape statuses.",
   "in_depth": "",
   "effect_rate": null,
   "crit_rate": "None",
@@ -28904,9 +28904,12 @@
    "protect_blocks": true,
    "mirror_move": true
   },
-  "learners": [],
-  "learner_count": 0,
-  "useable": false
+  "learners": [
+   "Toxtricity",
+   "Toxtricity-L"
+  ],
+  "learner_count": 2,
+  "useable": true
  },
  {
   "slug": "overheat",
@@ -30425,7 +30428,7 @@
   },
   "learners": [],
   "learner_count": 0,
-  "useable": false
+  "useable": true
  },
  {
   "slug": "powder",
@@ -30628,7 +30631,7 @@
   },
   "learners": [],
   "learner_count": 0,
-  "useable": true
+  "useable": false
  },
  {
   "slug": "powersplit",
@@ -32519,7 +32522,7 @@
   "power": 50,
   "accuracy": 100,
   "pp": 12,
-  "effect": "This move’s power is increased by 50 each time the user takes damage from a move, up to a maximum power of 350. If the user switches out of battle, the move’s power returns to its usual value.",
+  "effect": "This move's power is increased by 50 each time the user takes damage from a move, up to a maximum power of 350. If the user switches out of battle, the move's power returns to its usual value.",
   "in_depth": "This move increases in power by 50BP for every time the user has been hit by an attack from any opponent including allies. This caps at maxing with a base power of 350.",
   "effect_rate": 4.17,
   "crit_rate": "4.17%",
@@ -33950,7 +33953,7 @@
   "category": "Status",
   "power": 0,
   "accuracy": null,
-  "pp": null,
+  "pp": 1,
   "effect": "Revives a Pokémon in the user's party that has fainted and restores 1/2 of that Pokémon's max HP.",
   "in_depth": "",
   "effect_rate": null,
@@ -37340,7 +37343,7 @@
   "power": 0,
   "accuracy": 101,
   "pp": 12,
-  "effect": "Boosts the user’s Attack stat by 1 stage and Speed stat by 2 stages.",
+  "effect": "Boosts the user's Attack stat by 1 stage and Speed stat by 2 stages.",
   "in_depth": "",
   "effect_rate": null,
   "crit_rate": "None",
@@ -39604,7 +39607,7 @@
   },
   "learners": [],
   "learner_count": 0,
-  "useable": true
+  "useable": false
  },
  {
   "slug": "solarbeam",
@@ -40336,7 +40339,7 @@
   "power": 75,
   "accuracy": 100,
   "pp": 16,
-  "effect": "Lowers the target’s Sp. Atk stat by 1 stage.",
+  "effect": "Lowers the target's Sp. Atk stat by 1 stage.",
   "in_depth": "",
   "effect_rate": 4.17,
   "crit_rate": "4.17%",
@@ -40696,7 +40699,7 @@
   },
   "learners": [],
   "learner_count": 0,
-  "useable": true
+  "useable": false
  },
  {
   "slug": "spotlight",

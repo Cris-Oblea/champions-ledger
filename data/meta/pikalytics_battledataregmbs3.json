@@ -4,7 +4,7 @@
  "format": "battledataregmbs3",
  "data_date": "2026-05",
  "caveat": "Pikalytics lags the live season; cross-check ladder usage against data/meta/usage_pokemon.json (pokebase).",
- "fetched": "2026-09-11",
+ "fetched": "2026-09-12",
  "format_notes": [
   "Pokemon Champions VGC 2026 Reg M-B S3 Ranked Battle Data is currently led by Garchomp. The top of the usage chart also includes Garchomp, Sinistcha, Basculegion, Whimsicott, and Kingambit.",
   "The most common two-Pokemon core is Charizard-Mega-Y, and Garchomp, appearing on 2155 teams (16.3% of the sampled field).",
@@ -114,8 +114,8 @@
  "pokemon": [
   {
    "name": "Venusaur",
-   "win_rate": "49.886%",
-   "record": "5039-5062-25",
+   "win_rate": "51.412%",
+   "record": "2544-2404-11",
    "usage": "N/A",
    "moves": [
     {
@@ -472,8 +472,8 @@
   },
   {
    "name": "Charizard",
-   "win_rate": "49.5%",
-   "record": "9490-9682-40",
+   "win_rate": "50.221%",
+   "record": "4993-4949-18",
    "usage": "N/A",
    "moves": [
     {
@@ -593,8 +593,8 @@
   },
   {
    "name": "Blastoise",
-   "win_rate": "47.819%",
-   "record": "1836-2004-12",
+   "win_rate": "50.145%",
+   "record": "1379-1371-1",
    "usage": "N/A",
    "moves": [
     {
@@ -710,8 +710,8 @@
   },
   {
    "name": "Beedrill",
-   "win_rate": "41.538%",
-   "record": "54-76",
+   "win_rate": "28%",
+   "record": "7-18",
    "usage": "N/A",
    "moves": [
     {
@@ -787,8 +787,8 @@
   },
   {
    "name": "Pidgeot",
-   "win_rate": "47.984%",
-   "record": "119-129",
+   "win_rate": "45.714%",
+   "record": "16-19",
    "usage": "N/A",
    "moves": [
     {
@@ -876,8 +876,8 @@
   },
   {
    "name": "Arbok",
-   "win_rate": "57.143%",
-   "record": "8-6",
+   "win_rate": "45.455%",
+   "record": "10-12",
    "usage": "N/A",
    "moves": [
     {
@@ -965,8 +965,8 @@
   },
   {
    "name": "Pikachu",
-   "win_rate": "42.105%",
-   "record": "24-33",
+   "win_rate": "42.308%",
+   "record": "44-60",
    "usage": "N/A",
    "moves": [
     {
@@ -1089,8 +1089,8 @@
   },
   {
    "name": "Raichu",
-   "win_rate": "48.411%",
-   "record": "3527-3759-14",
+   "win_rate": "50.134%",
+   "record": "3167-3150-3",
    "usage": "N/A",
    "moves": [
     {
@@ -1226,8 +1226,8 @@
   },
   {
    "name": "Raichu-Alola",
-   "win_rate": "51.724%",
-   "record": "15-14",
+   "win_rate": "32.558%",
+   "record": "14-29",
    "usage": "N/A",
    "moves": [
     {
@@ -1319,8 +1319,8 @@
   },
   {
    "name": "Clefable",
-   "win_rate": "43.301%",
-   "record": "222-291-2",
+   "win_rate": "47.772%",
+   "record": "343-375",
    "usage": "N/A",
    "moves": [
     {
@@ -1501,8 +1501,8 @@
   },
   {
    "name": "Ninetales",
-   "win_rate": "37.22%",
-   "record": "116-196-1",
+   "win_rate": "37.222%",
+   "record": "67-113",
    "usage": "N/A",
    "moves": [
     {
@@ -1657,8 +1657,8 @@
   },
   {
    "name": "Ninetales-Alola",
-   "win_rate": "48.087%",
-   "record": "2033-2195-6",
+   "win_rate": "47.104%",
+   "record": "1070-1202-7",
    "usage": "N/A",
    "moves": [
     {
@@ -1983,8 +1983,8 @@
   },
   {
    "name": "Vileplume",
-   "win_rate": "44.46%",
-   "record": "309-386",
+   "win_rate": "41.447%",
+   "record": "126-178",
    "usage": "N/A",
    "moves": [
     {
@@ -2265,8 +2265,8 @@
   },
   {
    "name": "Arcanine",
-   "win_rate": "45.352%",
-   "record": "161-194",
+   "win_rate": "45.143%",
+   "record": "79-96",
    "usage": "N/A",
    "moves": [
     {
@@ -2421,8 +2421,8 @@
   },
   {
    "name": "Arcanine-Hisui",
-   "win_rate": "56.221%",
-   "record": "1562-1216-3",
+   "win_rate": "53.332%",
+   "record": "1839-1609-3",
    "usage": "N/A",
    "moves": [
     {
@@ -2775,8 +2775,8 @@
   },
   {
    "name": "Alakazam",
-   "win_rate": "36.129%",
-   "record": "56-99",
+   "win_rate": "28.846%",
+   "record": "45-111",
    "usage": "N/A",
    "moves": [
     {
@@ -2880,8 +2880,8 @@
   },
   {
    "name": "Machamp",
-   "win_rate": "40%",
-   "record": "36-54",
+   "win_rate": "42.609%",
+   "record": "49-66",
    "usage": "N/A",
    "moves": [
     {
@@ -2997,8 +2997,8 @@
   },
   {
    "name": "Victreebel",
-   "win_rate": "36.697%",
-   "record": "40-69",
+   "win_rate": "37.374%",
+   "record": "37-62",
    "usage": "N/A",
    "moves": [
     {
@@ -3066,8 +3066,8 @@
   },
   {
    "name": "Slowbro",
-   "win_rate": "36.872%",
-   "record": "66-113",
+   "win_rate": "42%",
+   "record": "42-58",
    "usage": "N/A",
    "moves": [
     {
@@ -3198,8 +3198,8 @@
   },
   {
    "name": "Slowbro-Galar",
-   "win_rate": "35.714%",
-   "record": "10-18",
+   "win_rate": "40%",
+   "record": "6-9",
    "usage": "N/A",
    "moves": [
     {
@@ -3326,8 +3326,8 @@
   },
   {
    "name": "Gengar",
-   "win_rate": "47.91%",
-   "record": "1886-2051-11",
+   "win_rate": "46.387%",
+   "record": "1041-1204-11",
    "usage": "N/A",
    "moves": [
     {
@@ -3443,8 +3443,8 @@
   },
   {
    "name": "Kangaskhan",
-   "win_rate": "45.973%",
-   "record": "740-870-4",
+   "win_rate": "44.743%",
+   "record": "364-450-4",
    "usage": "N/A",
    "moves": [
     {
@@ -3601,8 +3601,8 @@
   },
   {
    "name": "Starmie",
-   "win_rate": "47.714%",
-   "record": "323-354-1",
+   "win_rate": "36.792%",
+   "record": "58-100-1",
    "usage": "N/A",
    "moves": [
     {
@@ -3748,8 +3748,8 @@
   },
   {
    "name": "Pinsir",
-   "win_rate": "51.685%",
-   "record": "46-43",
+   "win_rate": "24%",
+   "record": "6-19",
    "usage": "N/A",
    "moves": [
     {
@@ -3886,8 +3886,8 @@
   },
   {
    "name": "Tauros-Paldea Aqua",
-   "win_rate": "33.333%",
-   "record": "24-48",
+   "win_rate": "54.386%",
+   "record": "31-26",
    "usage": "N/A",
    "moves": [
     {
@@ -4015,8 +4015,8 @@
   },
   {
    "name": "Tauros-Paldea Blaze",
-   "win_rate": "38.636%",
-   "record": "8-13-1",
+   "win_rate": "50%",
+   "record": "3-3",
    "usage": "N/A",
    "moves": [
     {
@@ -4132,8 +4132,8 @@
   },
   {
    "name": "Gyarados",
-   "win_rate": "43.888%",
-   "record": "298-381",
+   "win_rate": "49.534%",
+   "record": "265-270-2",
    "usage": "N/A",
    "moves": [
     {
@@ -4265,8 +4265,8 @@
   },
   {
    "name": "Ditto",
-   "win_rate": "32.685%",
-   "record": "84-173",
+   "win_rate": "39.349%",
+   "record": "66-102-1",
    "usage": "N/A",
    "moves": [
     {
@@ -4342,8 +4342,8 @@
   },
   {
    "name": "Vaporeon",
-   "win_rate": "40.196%",
-   "record": "61-91-1",
+   "win_rate": "30.172%",
+   "record": "17-40-1",
    "usage": "N/A",
    "moves": [
     {
@@ -4427,8 +4427,8 @@
   },
   {
    "name": "Jolteon",
-   "win_rate": "39.676%",
-   "record": "98-149",
+   "win_rate": "45%",
+   "record": "31-38-1",
    "usage": "N/A",
    "moves": [
     {
@@ -4544,8 +4544,8 @@
   },
   {
    "name": "Flareon",
-   "win_rate": "N/A",
-   "record": "N/A",
+   "win_rate": "28.571%",
+   "record": "2-5",
    "usage": "N/A",
    "moves": [
     {
@@ -4613,8 +4613,8 @@
   },
   {
    "name": "Aerodactyl",
-   "win_rate": "46.63%",
-   "record": "3473-3976-13",
+   "win_rate": "47.941%",
+   "record": "2000-2172-4",
    "usage": "N/A",
    "moves": [
     {
@@ -4799,8 +4799,8 @@
   },
   {
    "name": "Snorlax",
-   "win_rate": "40.87%",
-   "record": "192-278-1",
+   "win_rate": "47.849%",
+   "record": "177-193-2",
    "usage": "N/A",
    "moves": [
     {
@@ -4916,8 +4916,8 @@
   },
   {
    "name": "Dragonite",
-   "win_rate": "49.962%",
-   "record": "1973-1976-5",
+   "win_rate": "47.867%",
+   "record": "1770-1928-6",
    "usage": "N/A",
    "moves": [
     {
@@ -5274,8 +5274,8 @@
   },
   {
    "name": "Meganium",
-   "win_rate": "40.526%",
-   "record": "231-339",
+   "win_rate": "41.799%",
+   "record": "158-220",
    "usage": "N/A",
    "moves": [
     {
@@ -5367,8 +5367,8 @@
   },
   {
    "name": "Typhlosion",
-   "win_rate": "32.323%",
-   "record": "32-67",
+   "win_rate": "41.304%",
+   "record": "38-54",
    "usage": "N/A",
    "moves": [
     {
@@ -5484,8 +5484,8 @@
   },
   {
    "name": "Typhlosion-Hisui",
-   "win_rate": "40.336%",
-   "record": "96-142",
+   "win_rate": "35%",
+   "record": "63-117",
    "usage": "N/A",
    "moves": [
     {
@@ -5628,8 +5628,8 @@
   },
   {
    "name": "Feraligatr",
-   "win_rate": "41.158%",
-   "record": "128-183",
+   "win_rate": "37.5%",
+   "record": "93-155",
    "usage": "N/A",
    "moves": [
     {
@@ -5733,8 +5733,8 @@
   },
   {
    "name": "Ariados",
-   "win_rate": "49.73%",
-   "record": "92-93",
+   "win_rate": "50%",
+   "record": "14-14",
    "usage": "N/A",
    "moves": [
     {
@@ -5818,8 +5818,8 @@
   },
   {
    "name": "Ampharos",
-   "win_rate": "40.426%",
-   "record": "133-196",
+   "win_rate": "38.462%",
+   "record": "55-88",
    "usage": "N/A",
    "moves": [
     {
@@ -5911,8 +5911,8 @@
   },
   {
    "name": "Azumarill",
-   "win_rate": "37.77%",
-   "record": "105-173",
+   "win_rate": "49.605%",
+   "record": "250-254-2",
    "usage": "N/A",
    "moves": [
     {
@@ -6036,8 +6036,8 @@
   },
   {
    "name": "Politoed",
-   "win_rate": "48.474%",
-   "record": "1314-1397-9",
+   "win_rate": "44.858%",
+   "record": "709-872-4",
    "usage": "N/A",
    "moves": [
     {
@@ -6306,8 +6306,8 @@
   },
   {
    "name": "Espeon",
-   "win_rate": "43.182%",
-   "record": "19-25",
+   "win_rate": "33.824%",
+   "record": "11-22-1",
    "usage": "N/A",
    "moves": [
     {
@@ -6446,8 +6446,8 @@
   },
   {
    "name": "Umbreon",
-   "win_rate": "37.383%",
-   "record": "80-134",
+   "win_rate": "34.177%",
+   "record": "26-51-2",
    "usage": "N/A",
    "moves": [
     {
@@ -6551,8 +6551,8 @@
   },
   {
    "name": "Slowking",
-   "win_rate": "41.176%",
-   "record": "21-30",
+   "win_rate": "38.462%",
+   "record": "10-16",
    "usage": "N/A",
    "moves": [
     {
@@ -6652,8 +6652,8 @@
   },
   {
    "name": "Slowking-Galar",
-   "win_rate": "32.979%",
-   "record": "31-63",
+   "win_rate": "41.111%",
+   "record": "37-53",
    "usage": "N/A",
    "moves": [
     {
@@ -6803,8 +6803,8 @@
   },
   {
    "name": "Steelix",
-   "win_rate": "39.721%",
-   "record": "114-173",
+   "win_rate": "34.643%",
+   "record": "47-90-3",
    "usage": "N/A",
    "moves": [
     {
@@ -6912,8 +6912,8 @@
   },
   {
    "name": "Qwilfish",
-   "win_rate": "56.667%",
-   "record": "17-13",
+   "win_rate": "41.667%",
+   "record": "10-14",
    "usage": "N/A",
    "moves": [
     {
@@ -6981,8 +6981,8 @@
   },
   {
    "name": "Scizor",
-   "win_rate": "44.219%",
-   "record": "553-698-3",
+   "win_rate": "40.528%",
+   "record": "353-518",
    "usage": "N/A",
    "moves": [
     {
@@ -7110,8 +7110,8 @@
   },
   {
    "name": "Heracross",
-   "win_rate": "46.099%",
-   "record": "65-76",
+   "win_rate": "44.248%",
+   "record": "50-63",
    "usage": "N/A",
    "moves": [
     {
@@ -7203,8 +7203,8 @@
   },
   {
    "name": "Skarmory",
-   "win_rate": "47.04%",
-   "record": "151-170",
+   "win_rate": "38.608%",
+   "record": "61-97",
    "usage": "N/A",
    "moves": [
     {
@@ -7304,8 +7304,8 @@
   },
   {
    "name": "Houndoom",
-   "win_rate": "44.238%",
-   "record": "119-150",
+   "win_rate": "39.031%",
+   "record": "76-119-1",
    "usage": "N/A",
    "moves": [
     {
@@ -7393,8 +7393,8 @@
   },
   {
    "name": "Tyranitar",
-   "win_rate": "48.652%",
-   "record": "4014-4237-19",
+   "win_rate": "47.194%",
+   "record": "1924-2153-4",
    "usage": "N/A",
    "moves": [
     {
@@ -7597,8 +7597,8 @@
   },
   {
    "name": "Sceptile",
-   "win_rate": "39.254%",
-   "record": "310-480-1",
+   "win_rate": "37.288%",
+   "record": "110-185",
    "usage": "N/A",
    "moves": [
     {
@@ -7741,8 +7741,8 @@
   },
   {
    "name": "Blaziken",
-   "win_rate": "47.972%",
-   "record": "1180-1280-5",
+   "win_rate": "46.511%",
+   "record": "526-605-1",
    "usage": "N/A",
    "moves": [
     {
@@ -7878,8 +7878,8 @@
   },
   {
    "name": "Swampert",
-   "win_rate": "48.841%",
-   "record": "2901-3039-13",
+   "win_rate": "49.877%",
+   "record": "1825-1834-7",
    "usage": "N/A",
    "moves": [
     {
@@ -8034,8 +8034,8 @@
   },
   {
    "name": "Pelipper",
-   "win_rate": "48.555%",
-   "record": "4662-4940-16",
+   "win_rate": "50.159%",
+   "record": "2683-2666-10",
    "usage": "N/A",
    "moves": [
     {
@@ -8392,8 +8392,8 @@
   },
   {
    "name": "Gardevoir",
-   "win_rate": "48.837%",
-   "record": "859-900-4",
+   "win_rate": "45.552%",
+   "record": "614-734-1",
    "usage": "N/A",
    "moves": [
     {
@@ -8517,8 +8517,8 @@
   },
   {
    "name": "Sableye",
-   "win_rate": "42.491%",
-   "record": "1093-1480-4",
+   "win_rate": "40.847%",
+   "record": "566-821-6",
    "usage": "N/A",
    "moves": [
     {
@@ -8721,8 +8721,8 @@
   },
   {
    "name": "Mawile",
-   "win_rate": "45.389%",
-   "record": "1310-1577-8",
+   "win_rate": "45.108%",
+   "record": "690-840-3",
    "usage": "N/A",
    "moves": [
     {
@@ -8826,8 +8826,8 @@
   },
   {
    "name": "Aggron",
-   "win_rate": "41.018%",
-   "record": "137-197",
+   "win_rate": "34.358%",
+   "record": "61-117-1",
    "usage": "N/A",
    "moves": [
     {
@@ -8931,8 +8931,8 @@
   },
   {
    "name": "Medicham",
-   "win_rate": "50.858%",
-   "record": "118-114-1",
+   "win_rate": "39.286%",
+   "record": "55-85",
    "usage": "N/A",
    "moves": [
     {
@@ -9040,8 +9040,8 @@
   },
   {
    "name": "Manectric",
-   "win_rate": "46.333%",
-   "record": "69-80-1",
+   "win_rate": "47.009%",
+   "record": "55-62",
    "usage": "N/A",
    "moves": [
     {
@@ -9191,8 +9191,8 @@
   },
   {
    "name": "Sharpedo",
-   "win_rate": "50.602%",
-   "record": "42-41",
+   "win_rate": "38.028%",
+   "record": "27-44",
    "usage": "N/A",
    "moves": [
     {
@@ -9292,8 +9292,8 @@
   },
   {
    "name": "Camerupt",
-   "win_rate": "42.241%",
-   "record": "464-635-3",
+   "win_rate": "46.734%",
+   "record": "371-423-2",
    "usage": "N/A",
    "moves": [
     {
@@ -9405,8 +9405,8 @@
   },
   {
    "name": "Torkoal",
-   "win_rate": "44.602%",
-   "record": "1493-1855-5",
+   "win_rate": "45.635%",
+   "record": "1237-1474-4",
    "usage": "N/A",
    "moves": [
     {
@@ -9741,8 +9741,8 @@
   },
   {
    "name": "Altaria",
-   "win_rate": "45.251%",
-   "record": "252-305-1",
+   "win_rate": "44.038%",
+   "record": "114-145-1",
    "usage": "N/A",
    "moves": [
     {
@@ -9850,8 +9850,8 @@
   },
   {
    "name": "Milotic",
-   "win_rate": "49.427%",
-   "record": "3528-3610-14",
+   "win_rate": "46.934%",
+   "record": "1538-1739-1",
    "usage": "N/A",
    "moves": [
     {
@@ -10212,8 +10212,8 @@
   },
   {
    "name": "Castform",
-   "win_rate": "25%",
-   "record": "9-27",
+   "win_rate": "56.41%",
+   "record": "22-17",
    "usage": "N/A",
    "moves": [
     {
@@ -10281,8 +10281,8 @@
   },
   {
    "name": "Banette",
-   "win_rate": "23.256%",
-   "record": "10-33",
+   "win_rate": "51.163%",
+   "record": "21-20-2",
    "usage": "N/A",
    "moves": [
     {
@@ -10374,8 +10374,8 @@
   },
   {
    "name": "Chimecho",
-   "win_rate": "42.857%",
-   "record": "45-60",
+   "win_rate": "43.333%",
+   "record": "26-34",
    "usage": "N/A",
    "moves": [
     {
@@ -10463,8 +10463,8 @@
   },
   {
    "name": "Absol",
-   "win_rate": "34.722%",
-   "record": "25-47",
+   "win_rate": "39.701%",
+   "record": "119-181-1",
    "usage": "N/A",
    "moves": [
     {
@@ -10540,8 +10540,8 @@
   },
   {
    "name": "Glalie",
-   "win_rate": "42.857%",
-   "record": "27-36",
+   "win_rate": "50.725%",
+   "record": "35-34",
    "usage": "N/A",
    "moves": [
     {
@@ -10667,8 +10667,8 @@
   },
   {
    "name": "Metagross",
-   "win_rate": "45.423%",
-   "record": "1827-2196-8",
+   "win_rate": "41.269%",
+   "record": "587-836-3",
    "usage": "N/A",
    "moves": [
     {
@@ -10804,8 +10804,8 @@
   },
   {
    "name": "Torterra",
-   "win_rate": "44.86%",
-   "record": "48-59",
+   "win_rate": "47.727%",
+   "record": "21-23",
    "usage": "N/A",
    "moves": [
     {
@@ -10917,8 +10917,8 @@
   },
   {
    "name": "Infernape",
-   "win_rate": "50.433%",
-   "record": "116-114-1",
+   "win_rate": "33.333%",
+   "record": "13-26",
    "usage": "N/A",
    "moves": [
     {
@@ -11026,8 +11026,8 @@
   },
   {
    "name": "Empoleon",
-   "win_rate": "43.609%",
-   "record": "116-150",
+   "win_rate": "40.816%",
+   "record": "40-58",
    "usage": "N/A",
    "moves": [
     {
@@ -11174,8 +11174,8 @@
   },
   {
    "name": "Staraptor",
-   "win_rate": "49.369%",
-   "record": "6437-6602-26",
+   "win_rate": "49.361%",
+   "record": "3589-3682-7",
    "usage": "N/A",
    "moves": [
     {
@@ -11299,8 +11299,8 @@
   },
   {
    "name": "Luxray",
-   "win_rate": "31.818%",
-   "record": "7-15",
+   "win_rate": "53.846%",
+   "record": "7-6",
    "usage": "N/A",
    "moves": [
     {
@@ -11416,8 +11416,8 @@
   },
   {
    "name": "Roserade",
-   "win_rate": "33.333%",
-   "record": "20-40",
+   "win_rate": "59.259%",
+   "record": "16-11",
    "usage": "N/A",
    "moves": [
     {
@@ -11508,8 +11508,8 @@
   },
   {
    "name": "Rampardos",
-   "win_rate": "41.398%",
-   "record": "38-54-1",
+   "win_rate": "33.333%",
+   "record": "10-20",
    "usage": "N/A",
    "moves": [
     {
@@ -11609,8 +11609,8 @@
   },
   {
    "name": "Bastiodon",
-   "win_rate": "18.75%",
-   "record": "3-13",
+   "win_rate": "46.667%",
+   "record": "7-8",
    "usage": "N/A",
    "moves": [
     {
@@ -11702,8 +11702,8 @@
   },
   {
    "name": "Lopunny",
-   "win_rate": "45.616%",
-   "record": "165-197-3",
+   "win_rate": "45.283%",
+   "record": "120-145",
    "usage": "N/A",
    "moves": [
     {
@@ -11811,8 +11811,8 @@
   },
   {
    "name": "Spiritomb",
-   "win_rate": "46.233%",
-   "record": "67-78-1",
+   "win_rate": "39.241%",
+   "record": "61-95-2",
    "usage": "N/A",
    "moves": [
     {
@@ -11924,8 +11924,8 @@
   },
   {
    "name": "Garchomp",
-   "win_rate": "48.05%",
-   "record": "10833-11714-41",
+   "win_rate": "47.985%",
+   "record": "6334-6867-23",
    "usage": "N/A",
    "moves": [
     {
@@ -12282,8 +12282,8 @@
   },
   {
    "name": "Lucario",
-   "win_rate": "38.791%",
-   "record": "154-243",
+   "win_rate": "41.295%",
+   "record": "287-408",
    "usage": "N/A",
    "moves": [
     {
@@ -12407,8 +12407,8 @@
   },
   {
    "name": "Hippowdon",
-   "win_rate": "46.667%",
-   "record": "91-104",
+   "win_rate": "37.85%",
+   "record": "40-66-1",
    "usage": "N/A",
    "moves": [
     {
@@ -12512,8 +12512,8 @@
   },
   {
    "name": "Toxicroak",
-   "win_rate": "45.038%",
-   "record": "59-72",
+   "win_rate": "38.961%",
+   "record": "30-47",
    "usage": "N/A",
    "moves": [
     {
@@ -12652,8 +12652,8 @@
   },
   {
    "name": "Abomasnow",
-   "win_rate": "44.231%",
-   "record": "126-159-1",
+   "win_rate": "39.264%",
+   "record": "63-98-2",
    "usage": "N/A",
    "moves": [
     {
@@ -12745,8 +12745,8 @@
   },
   {
    "name": "Weavile",
-   "win_rate": "43.412%",
-   "record": "183-239-3",
+   "win_rate": "45.417%",
+   "record": "163-196-1",
    "usage": "N/A",
    "moves": [
     {
@@ -12874,8 +12874,8 @@
   },
   {
    "name": "Rhyperior",
-   "win_rate": "39.597%",
-   "record": "59-90",
+   "win_rate": "42.529%",
+   "record": "37-50",
    "usage": "N/A",
    "moves": [
     {
@@ -13045,8 +13045,8 @@
   },
   {
    "name": "Glaceon",
-   "win_rate": "31.884%",
-   "record": "22-47",
+   "win_rate": "39.216%",
+   "record": "40-62",
    "usage": "N/A",
    "moves": [
     {
@@ -13150,8 +13150,8 @@
   },
   {
    "name": "Gliscor",
-   "win_rate": "39.744%",
-   "record": "108-164-1",
+   "win_rate": "44.853%",
+   "record": "60-74-2",
    "usage": "N/A",
    "moves": [
     {
@@ -13279,8 +13279,8 @@
   },
   {
    "name": "Mamoswine",
-   "win_rate": "44.799%",
-   "record": "477-588-2",
+   "win_rate": "41.197%",
+   "record": "175-250-1",
    "usage": "N/A",
    "moves": [
     {
@@ -13457,8 +13457,8 @@
   },
   {
    "name": "Gallade",
-   "win_rate": "45.232%",
-   "record": "368-446-4",
+   "win_rate": "48.057%",
+   "record": "283-306-3",
    "usage": "N/A",
    "moves": [
     {
@@ -13617,8 +13617,8 @@
   },
   {
    "name": "Froslass",
-   "win_rate": "50.834%",
-   "record": "2100-2031-5",
+   "win_rate": "49.522%",
+   "record": "1967-2005-4",
    "usage": "N/A",
    "moves": [
     {
@@ -13782,8 +13782,8 @@
   },
   {
    "name": "Rotom-Frost",
-   "win_rate": "26.923%",
-   "record": "14-38",
+   "win_rate": "29.412%",
+   "record": "10-24",
    "usage": "N/A",
    "moves": [
     {
@@ -13887,8 +13887,8 @@
   },
   {
    "name": "Rotom-Heat",
-   "win_rate": "42.564%",
-   "record": "249-336",
+   "win_rate": "40.214%",
+   "record": "131-195-1",
    "usage": "N/A",
    "moves": [
     {
@@ -14043,8 +14043,8 @@
   },
   {
    "name": "Rotom-Mow",
-   "win_rate": "52.089%",
-   "record": "187-172",
+   "win_rate": "40%",
+   "record": "38-57",
    "usage": "N/A",
    "moves": [
     {
@@ -14183,8 +14183,8 @@
   },
   {
    "name": "Rotom-Wash",
-   "win_rate": "43.768%",
-   "record": "1036-1332-7",
+   "win_rate": "41.25%",
+   "record": "477-680-3",
    "usage": "N/A",
    "moves": [
     {
@@ -14361,8 +14361,8 @@
   },
   {
    "name": "Serperior",
-   "win_rate": "47.241%",
-   "record": "137-153",
+   "win_rate": "33.028%",
+   "record": "36-73",
    "usage": "N/A",
    "moves": [
     {
@@ -14577,8 +14577,8 @@
   },
   {
    "name": "Samurott-Hisui",
-   "win_rate": "48.425%",
-   "record": "123-131",
+   "win_rate": "44.516%",
+   "record": "207-258",
    "usage": "N/A",
    "moves": [
     {
@@ -14725,8 +14725,8 @@
   },
   {
    "name": "Watchog",
-   "win_rate": "63.636%",
-   "record": "7-4",
+   "win_rate": "58.824%",
+   "record": "10-7",
    "usage": "N/A",
    "moves": [
     {
@@ -14794,8 +14794,8 @@
   },
   {
    "name": "Liepard",
-   "win_rate": "43.75%",
-   "record": "133-171",
+   "win_rate": "43.023%",
+   "record": "37-49",
    "usage": "N/A",
    "moves": [
     {
@@ -14993,8 +14993,8 @@
   },
   {
    "name": "Musharna",
-   "win_rate": "53.086%",
-   "record": "43-38",
+   "win_rate": "46.618%",
+   "record": "96-110-1",
    "usage": "N/A",
    "moves": [
     {
@@ -15125,8 +15125,8 @@
   },
   {
    "name": "Excadrill",
-   "win_rate": "50.551%",
-   "record": "2791-2730-11",
+   "win_rate": "50.577%",
+   "record": "1227-1199-1",
    "usage": "N/A",
    "moves": [
     {
@@ -15487,8 +15487,8 @@
   },
   {
    "name": "Audino",
-   "win_rate": "42.945%",
-   "record": "69-92-2",
+   "win_rate": "46.569%",
+   "record": "47-54-1",
    "usage": "N/A",
    "moves": [
     {
@@ -15596,8 +15596,8 @@
   },
   {
    "name": "Conkeldurr",
-   "win_rate": "49.74%",
-   "record": "95-96-1",
+   "win_rate": "31.373%",
+   "record": "16-35",
    "usage": "N/A",
    "moves": [
     {
@@ -15721,8 +15721,8 @@
   },
   {
    "name": "Scolipede",
-   "win_rate": "39.91%",
-   "record": "89-134",
+   "win_rate": "43.5%",
+   "record": "87-113",
    "usage": "N/A",
    "moves": [
     {
@@ -15838,8 +15838,8 @@
   },
   {
    "name": "Whimsicott",
-   "win_rate": "48.598%",
-   "record": "7736-8183-27",
+   "win_rate": "48.487%",
+   "record": "4385-4659-8",
    "usage": "N/A",
    "moves": [
     {
@@ -16200,8 +16200,8 @@
   },
   {
    "name": "Krookodile",
-   "win_rate": "51.525%",
-   "record": "152-143",
+   "win_rate": "42.361%",
+   "record": "30-41-1",
    "usage": "N/A",
    "moves": [
     {
@@ -16374,8 +16374,8 @@
   },
   {
    "name": "Scrafty",
-   "win_rate": "44.125%",
-   "record": "559-708-1",
+   "win_rate": "49.436%",
+   "record": "481-492-2",
    "usage": "N/A",
    "moves": [
     {
@@ -16556,8 +16556,8 @@
   },
   {
    "name": "Cofagrigus",
-   "win_rate": "39.37%",
-   "record": "50-77",
+   "win_rate": "46.358%",
+   "record": "70-81",
    "usage": "N/A",
    "moves": [
     {
@@ -16691,8 +16691,8 @@
   },
   {
    "name": "Zoroark",
-   "win_rate": "34.615%",
-   "record": "9-17",
+   "win_rate": "37.5%",
+   "record": "9-15",
    "usage": "N/A",
    "moves": [
     {
@@ -16780,8 +16780,8 @@
   },
   {
    "name": "Zoroark-Hisui",
-   "win_rate": "42.248%",
-   "record": "272-372-1",
+   "win_rate": "44.076%",
+   "record": "186-236",
    "usage": "N/A",
    "moves": [
     {
@@ -16901,8 +16901,8 @@
   },
   {
    "name": "Reuniclus",
-   "win_rate": "40.458%",
-   "record": "53-78",
+   "win_rate": "43.137%",
+   "record": "22-29",
    "usage": "N/A",
    "moves": [
     {
@@ -17006,8 +17006,8 @@
   },
   {
    "name": "Vanilluxe",
-   "win_rate": "45.32%",
-   "record": "289-349-3",
+   "win_rate": "51.648%",
+   "record": "188-176",
    "usage": "N/A",
    "moves": [
     {
@@ -17180,8 +17180,8 @@
   },
   {
    "name": "Emolga",
-   "win_rate": "40%",
-   "record": "10-15",
+   "win_rate": "36.364%",
+   "record": "4-7",
    "usage": "N/A",
    "moves": [
     {
@@ -17265,8 +17265,8 @@
   },
   {
    "name": "Eelektross",
-   "win_rate": "35.27%",
-   "record": "170-312",
+   "win_rate": "36.574%",
+   "record": "79-137",
    "usage": "N/A",
    "moves": [
     {
@@ -17366,8 +17366,8 @@
   },
   {
    "name": "Chandelure",
-   "win_rate": "48.784%",
-   "record": "481-505-1",
+   "win_rate": "39.928%",
+   "record": "111-167",
    "usage": "N/A",
    "moves": [
     {
@@ -17544,8 +17544,8 @@
   },
   {
    "name": "Beartic",
-   "win_rate": "40.909%",
-   "record": "9-13",
+   "win_rate": "36.842%",
+   "record": "7-12",
    "usage": "N/A",
    "moves": [
     {
@@ -17613,8 +17613,8 @@
   },
   {
    "name": "Stunfisk",
-   "win_rate": "33.333%",
-   "record": "8-16",
+   "win_rate": "34.375%",
+   "record": "11-21",
    "usage": "N/A",
    "moves": [
     {
@@ -17708,8 +17708,8 @@
   },
   {
    "name": "Golurk",
-   "win_rate": "43.899%",
-   "record": "147-188-1",
+   "win_rate": "43.323%",
+   "record": "146-191",
    "usage": "N/A",
    "moves": [
     {
@@ -17840,8 +17840,8 @@
   },
   {
    "name": "Hydreigon",
-   "win_rate": "48.479%",
-   "record": "1400-1488-4",
+   "win_rate": "46.904%",
+   "record": "499-565-2",
    "usage": "N/A",
    "moves": [
     {
@@ -18084,8 +18084,8 @@
   },
   {
    "name": "Volcarona",
-   "win_rate": "50.752%",
-   "record": "270-262",
+   "win_rate": "46.352%",
+   "record": "260-301-1",
    "usage": "N/A",
    "moves": [
     {
@@ -18266,8 +18266,8 @@
   },
   {
    "name": "Chesnaught",
-   "win_rate": "43.731%",
-   "record": "143-184",
+   "win_rate": "43.31%",
+   "record": "61-80-1",
    "usage": "N/A",
    "moves": [
     {
@@ -18359,8 +18359,8 @@
   },
   {
    "name": "Delphox",
-   "win_rate": "50.293%",
-   "record": "3432-3392-9",
+   "win_rate": "49.688%",
+   "record": "2386-2416-3",
    "usage": "N/A",
    "moves": [
     {
@@ -18468,8 +18468,8 @@
   },
   {
    "name": "Greninja",
-   "win_rate": "38.827%",
-   "record": "314-495-1",
+   "win_rate": "37.156%",
+   "record": "121-205-1",
    "usage": "N/A",
    "moves": [
     {
@@ -18589,8 +18589,8 @@
   },
   {
    "name": "Diggersby",
-   "win_rate": "48.521%",
-   "record": "82-87",
+   "win_rate": "44.578%",
+   "record": "37-46",
    "usage": "N/A",
    "moves": [
     {
@@ -18658,8 +18658,8 @@
   },
   {
    "name": "Talonflame",
-   "win_rate": "48.36%",
-   "record": "1440-1538-9",
+   "win_rate": "44.189%",
+   "record": "745-942-8",
    "usage": "N/A",
    "moves": [
     {
@@ -18971,8 +18971,8 @@
   },
   {
    "name": "Vivillon",
-   "win_rate": "49.531%",
-   "record": "1211-1234-6",
+   "win_rate": "48.096%",
+   "record": "643-694-2",
    "usage": "N/A",
    "moves": [
     {
@@ -19287,8 +19287,8 @@
   },
   {
    "name": "Pyroar",
-   "win_rate": "43.265%",
-   "record": "317-416-2",
+   "win_rate": "44.276%",
+   "record": "131-165-1",
    "usage": "N/A",
    "moves": [
     {
@@ -19392,8 +19392,8 @@
   },
   {
    "name": "Floette",
-   "win_rate": "54.845%",
-   "record": "4868-4007-11",
+   "win_rate": "53.714%",
+   "record": "4262-3672-9",
    "usage": "N/A",
    "moves": [
     {
@@ -19505,8 +19505,8 @@
   },
   {
    "name": "Floette-Eternal",
-   "win_rate": "54.845%",
-   "record": "4868-4007-11",
+   "win_rate": "53.714%",
+   "record": "4262-3672-9",
    "usage": "N/A",
    "moves": [
     {
@@ -19618,8 +19618,8 @@
   },
   {
    "name": "Mega Floette",
-   "win_rate": "54.845%",
-   "record": "4868-4007-11",
+   "win_rate": "53.714%",
+   "record": "4262-3672-9",
    "usage": "N/A",
    "moves": [
     {
@@ -19791,8 +19791,8 @@
   },
   {
    "name": "Pangoro",
-   "win_rate": "38.415%",
-   "record": "31-50-1",
+   "win_rate": "28.571%",
+   "record": "4-10",
    "usage": "N/A",
    "moves": [
     {
@@ -19886,8 +19886,8 @@
   },
   {
    "name": "Meowstic",
-   "win_rate": "43.828%",
-   "record": "209-268-1",
+   "win_rate": "45.747%",
+   "record": "176-209-3",
    "usage": "N/A",
    "moves": [
     {
@@ -20064,8 +20064,8 @@
   },
   {
    "name": "Aegislash",
-   "win_rate": "48.223%",
-   "record": "298-320-1",
+   "win_rate": "43.734%",
+   "record": "166-214-3",
    "usage": "N/A",
    "moves": [
     {
@@ -20286,8 +20286,8 @@
   },
   {
    "name": "Aromatisse",
-   "win_rate": "52.212%",
-   "record": "59-54",
+   "win_rate": "46.753%",
+   "record": "36-41",
    "usage": "N/A",
    "moves": [
     {
@@ -20405,8 +20405,8 @@
   },
   {
    "name": "Malamar",
-   "win_rate": "42.937%",
-   "record": "230-306-2",
+   "win_rate": "39.518%",
+   "record": "138-212-3",
    "usage": "N/A",
    "moves": [
     {
@@ -20526,8 +20526,8 @@
   },
   {
    "name": "Barbaracle",
-   "win_rate": "39.13%",
-   "record": "63-98",
+   "win_rate": "53.704%",
+   "record": "29-25",
    "usage": "N/A",
    "moves": [
     {
@@ -20619,8 +20619,8 @@
   },
   {
    "name": "Dragalge",
-   "win_rate": "42.188%",
-   "record": "135-185",
+   "win_rate": "44.152%",
+   "record": "74-94-3",
    "usage": "N/A",
    "moves": [
     {
@@ -20748,8 +20748,8 @@
   },
   {
    "name": "Clawitzer",
-   "win_rate": "41.915%",
-   "record": "98-136-1",
+   "win_rate": "36.792%",
+   "record": "39-67",
    "usage": "N/A",
    "moves": [
     {
@@ -20849,8 +20849,8 @@
   },
   {
    "name": "Heliolisk",
-   "win_rate": "39.306%",
-   "record": "136-210",
+   "win_rate": "43.488%",
+   "record": "93-121-1",
    "usage": "N/A",
    "moves": [
     {
@@ -20974,8 +20974,8 @@
   },
   {
    "name": "Tyrantrum",
-   "win_rate": "30.864%",
-   "record": "25-56",
+   "win_rate": "35.417%",
+   "record": "17-31",
    "usage": "N/A",
    "moves": [
     {
@@ -21087,8 +21087,8 @@
   },
   {
    "name": "Aurorus",
-   "win_rate": "39.326%",
-   "record": "70-108",
+   "win_rate": "25.455%",
+   "record": "14-41",
    "usage": "N/A",
    "moves": [
     {
@@ -21204,8 +21204,8 @@
   },
   {
    "name": "Sylveon",
-   "win_rate": "47.711%",
-   "record": "5408-5928-25",
+   "win_rate": "49.535%",
+   "record": "4048-4124-8",
    "usage": "N/A",
    "moves": [
     {
@@ -21562,8 +21562,8 @@
   },
   {
    "name": "Hawlucha",
-   "win_rate": "40%",
-   "record": "168-252",
+   "win_rate": "53.333%",
+   "record": "112-98",
    "usage": "N/A",
    "moves": [
     {
@@ -21709,8 +21709,8 @@
   },
   {
    "name": "Goodra",
-   "win_rate": "33.803%",
-   "record": "24-47",
+   "win_rate": "26.829%",
+   "record": "11-30",
    "usage": "N/A",
    "moves": [
     {
@@ -21841,8 +21841,8 @@
   },
   {
    "name": "Goodra-Hisui",
-   "win_rate": "48.606%",
-   "record": "139-147-1",
+   "win_rate": "27.027%",
+   "record": "20-54",
    "usage": "N/A",
    "moves": [
     {
@@ -21962,8 +21962,8 @@
   },
   {
    "name": "Klefki",
-   "win_rate": "46.672%",
-   "record": "301-344-1",
+   "win_rate": "42.822%",
+   "record": "86-115-1",
    "usage": "N/A",
    "moves": [
     {
@@ -22197,8 +22197,8 @@
   },
   {
    "name": "Avalugg",
-   "win_rate": "46.667%",
-   "record": "7-8",
+   "win_rate": "35%",
+   "record": "7-13",
    "usage": "N/A",
    "moves": [
     {
@@ -22266,8 +22266,8 @@
   },
   {
    "name": "Avalugg-Hisui",
-   "win_rate": "35.714%",
-   "record": "15-27",
+   "win_rate": "33.333%",
+   "record": "6-12",
    "usage": "N/A",
    "moves": [
     {
@@ -22359,8 +22359,8 @@
   },
   {
    "name": "Noivern",
-   "win_rate": "44.262%",
-   "record": "135-170",
+   "win_rate": "30.952%",
+   "record": "13-29",
    "usage": "N/A",
    "moves": [
     {
@@ -22478,8 +22478,8 @@
   },
   {
    "name": "Decidueye-Hisui",
-   "win_rate": "38.819%",
-   "record": "92-145",
+   "win_rate": "41.964%",
+   "record": "47-65",
    "usage": "N/A",
    "moves": [
     {
@@ -22591,8 +22591,8 @@
   },
   {
    "name": "Incineroar",
-   "win_rate": "48.189%",
-   "record": "9348-10052-38",
+   "win_rate": "49.389%",
+   "record": "6980-7153-28",
    "usage": "N/A",
    "moves": [
     {
@@ -22949,8 +22949,8 @@
   },
   {
    "name": "Primarina",
-   "win_rate": "45.408%",
-   "record": "528-635-2",
+   "win_rate": "49.46%",
+   "record": "733-749",
    "usage": "N/A",
    "moves": [
     {
@@ -23131,8 +23131,8 @@
   },
   {
    "name": "Toucannon",
-   "win_rate": "37.079%",
-   "record": "33-56",
+   "win_rate": "47.826%",
+   "record": "11-12",
    "usage": "N/A",
    "moves": [
     {
@@ -23212,8 +23212,8 @@
   },
   {
    "name": "Crabominable",
-   "win_rate": "37.037%",
-   "record": "80-136",
+   "win_rate": "41.509%",
+   "record": "88-124",
    "usage": "N/A",
    "moves": [
     {
@@ -23317,8 +23317,8 @@
   },
   {
    "name": "Lycanroc",
-   "win_rate": "36.585%",
-   "record": "30-52",
+   "win_rate": "41.538%",
+   "record": "54-76",
    "usage": "N/A",
    "moves": [
     {
@@ -23647,8 +23647,8 @@
   },
   {
    "name": "Lycanroc-Dusk",
-   "win_rate": "54.206%",
-   "record": "1151-972-5",
+   "win_rate": "52.427%",
+   "record": "1112-1009-1",
    "usage": "N/A",
    "moves": [
     {
@@ -23756,8 +23756,8 @@
   },
   {
    "name": "Lycanroc-Midnight",
-   "win_rate": "29.167%",
-   "record": "7-17",
+   "win_rate": "43.478%",
+   "record": "10-13",
    "usage": "N/A",
    "moves": [
     {
@@ -23829,8 +23829,8 @@
   },
   {
    "name": "Toxapex",
-   "win_rate": "48.541%",
-   "record": "1725-1829-9",
+   "win_rate": "49.836%",
+   "record": "755-760-6",
    "usage": "N/A",
    "moves": [
     {
@@ -24101,8 +24101,8 @@
   },
   {
    "name": "Mudsdale",
-   "win_rate": "48.387%",
-   "record": "120-128",
+   "win_rate": "46.305%",
+   "record": "94-109",
    "usage": "N/A",
    "moves": [
     {
@@ -24214,8 +24214,8 @@
   },
   {
    "name": "Araquanid",
-   "win_rate": "49.318%",
-   "record": "253-260",
+   "win_rate": "43.488%",
+   "record": "197-256",
    "usage": "N/A",
    "moves": [
     {
@@ -24372,8 +24372,8 @@
   },
   {
    "name": "Salazzle",
-   "win_rate": "51.366%",
-   "record": "94-89",
+   "win_rate": "48.913%",
+   "record": "112-117-1",
    "usage": "N/A",
    "moves": [
     {
@@ -24504,8 +24504,8 @@
   },
   {
    "name": "Tsareena",
-   "win_rate": "46.568%",
-   "record": "724-831-4",
+   "win_rate": "48.143%",
+   "record": "543-585-3",
    "usage": "N/A",
    "moves": [
     {
@@ -24752,8 +24752,8 @@
   },
   {
    "name": "Oranguru",
-   "win_rate": "46.355%",
-   "record": "203-235-1",
+   "win_rate": "43.583%",
+   "record": "81-105-1",
    "usage": "N/A",
    "moves": [
     {
@@ -24952,8 +24952,8 @@
   },
   {
    "name": "Mimikyu",
-   "win_rate": "40.888%",
-   "record": "175-253",
+   "win_rate": "44.012%",
+   "record": "282-359-2",
    "usage": "N/A",
    "moves": [
     {
@@ -25104,8 +25104,8 @@
   },
   {
    "name": "Drampa",
-   "win_rate": "45.912%",
-   "record": "292-344",
+   "win_rate": "49.532%",
+   "record": "211-215-1",
    "usage": "N/A",
    "moves": [
     {
@@ -25237,8 +25237,8 @@
   },
   {
    "name": "Kommo-o",
-   "win_rate": "52.275%",
-   "record": "1330-1214-6",
+   "win_rate": "47.081%",
+   "record": "556-625-1",
    "usage": "N/A",
    "moves": [
     {
@@ -25597,8 +25597,8 @@
   },
   {
    "name": "Corviknight",
-   "win_rate": "46.433%",
-   "record": "819-945-2",
+   "win_rate": "49.364%",
+   "record": "464-476-3",
    "usage": "N/A",
    "moves": [
     {
@@ -25825,8 +25825,8 @@
   },
   {
    "name": "Appletun",
-   "win_rate": "28.947%",
-   "record": "11-27",
+   "win_rate": "30.38%",
+   "record": "24-55",
    "usage": "N/A",
    "moves": [
     {
@@ -26038,8 +26038,8 @@
   },
   {
    "name": "Hatterene",
-   "win_rate": "41.226%",
-   "record": "195-278",
+   "win_rate": "44.087%",
+   "record": "342-434-2",
    "usage": "N/A",
    "moves": [
     {
@@ -26198,8 +26198,8 @@
   },
   {
    "name": "Grimmsnarl",
-   "win_rate": "48.277%",
-   "record": "3773-4043-21",
+   "win_rate": "48.153%",
+   "record": "1573-1694-9",
    "usage": "N/A",
    "moves": [
     {
@@ -26651,8 +26651,8 @@
   },
   {
    "name": "Runerigus",
-   "win_rate": "36.842%",
-   "record": "28-48",
+   "win_rate": "37.5%",
+   "record": "42-70",
    "usage": "N/A",
    "moves": [
     {
@@ -26756,8 +26756,8 @@
   },
   {
    "name": "Alcremie",
-   "win_rate": "38.636%",
-   "record": "51-81",
+   "win_rate": "44.262%",
+   "record": "54-68",
    "usage": "N/A",
    "moves": [
     {
@@ -26865,8 +26865,8 @@
   },
   {
    "name": "Falinks",
-   "win_rate": "40.805%",
-   "record": "35-51-1",
+   "win_rate": "26.531%",
+   "record": "13-36",
    "usage": "N/A",
    "moves": [
     {
@@ -27064,8 +27064,8 @@
   },
   {
    "name": "Morpeko",
-   "win_rate": "36%",
-   "record": "27-48",
+   "win_rate": "46.154%",
+   "record": "30-35",
    "usage": "N/A",
    "moves": [
     {
@@ -27153,8 +27153,8 @@
   },
   {
    "name": "Dragapult",
-   "win_rate": "38.275%",
-   "record": "197-318-1",
+   "win_rate": "36.029%",
+   "record": "97-173-2",
    "usage": "N/A",
    "moves": [
     {
@@ -27317,8 +27317,8 @@
   },
   {
    "name": "Wyrdeer",
-   "win_rate": "41.83%",
-   "record": "64-89",
+   "win_rate": "27.027%",
+   "record": "20-54",
    "usage": "N/A",
    "moves": [
     {
@@ -27457,8 +27457,8 @@
   },
   {
    "name": "Kleavor",
-   "win_rate": "39.055%",
-   "record": "247-386-2",
+   "win_rate": "38.289%",
+   "record": "187-302-2",
    "usage": "N/A",
    "moves": [
     {
@@ -27578,8 +27578,8 @@
   },
   {
    "name": "Basculegion",
-   "win_rate": "50.82%",
-   "record": "9582-9272-45",
+   "win_rate": "51.101%",
+   "record": "6863-6567-17",
    "usage": "N/A",
    "moves": [
     {
@@ -27940,8 +27940,8 @@
   },
   {
    "name": "Basculegion-Female",
-   "win_rate": "44.286%",
-   "record": "31-39",
+   "win_rate": "34.043%",
+   "record": "16-31",
    "usage": "N/A",
    "moves": [
     {
@@ -28084,8 +28084,8 @@
   },
   {
    "name": "Sneasler",
-   "win_rate": "48.324%",
-   "record": "6823-7297-19",
+   "win_rate": "49.545%",
+   "record": "7675-7816-11",
    "usage": "N/A",
    "moves": [
     {
@@ -28446,8 +28446,8 @@
   },
   {
    "name": "Overqwil",
-   "win_rate": "34.915%",
-   "record": "103-192",
+   "win_rate": "40.066%",
+   "record": "60-90-1",
    "usage": "N/A",
    "moves": [
     {
@@ -28587,8 +28587,8 @@
   },
   {
    "name": "Meowscarada",
-   "win_rate": "44.303%",
-   "record": "521-655",
+   "win_rate": "39.858%",
+   "record": "168-254-2",
    "usage": "N/A",
    "moves": [
     {
@@ -28724,8 +28724,8 @@
   },
   {
    "name": "Skeledirge",
-   "win_rate": "43.856%",
-   "record": "103-132-1",
+   "win_rate": "45.402%",
+   "record": "39-47-1",
    "usage": "N/A",
    "moves": [
     {
@@ -28864,8 +28864,8 @@
   },
   {
    "name": "Quaquaval",
-   "win_rate": "46.875%",
-   "record": "60-68",
+   "win_rate": "33.028%",
+   "record": "36-73",
    "usage": "N/A",
    "moves": [
     {
@@ -28999,8 +28999,8 @@
   },
   {
    "name": "Maushold",
-   "win_rate": "47.279%",
-   "record": "1646-1836-10",
+   "win_rate": "47.185%",
+   "record": "1172-1312-3",
    "usage": "N/A",
    "moves": [
     {
@@ -29359,8 +29359,8 @@
   },
   {
    "name": "Garganacl",
-   "win_rate": "35.507%",
-   "record": "49-89",
+   "win_rate": "14.286%",
+   "record": "4-24",
    "usage": "N/A",
    "moves": [
     {
@@ -29456,8 +29456,8 @@
   },
   {
    "name": "Armarouge",
-   "win_rate": "41.845%",
-   "record": "156-217-1",
+   "win_rate": "43.648%",
+   "record": "213-275",
    "usage": "N/A",
    "moves": [
     {
@@ -29616,8 +29616,8 @@
   },
   {
    "name": "Ceruledge",
-   "win_rate": "46.426%",
-   "record": "1135-1310-3",
+   "win_rate": "46.48%",
+   "record": "454-523-3",
    "usage": "N/A",
    "moves": [
     {
@@ -29908,8 +29908,8 @@
   },
   {
    "name": "Bellibolt",
-   "win_rate": "39.628%",
-   "record": "128-195",
+   "win_rate": "39.831%",
+   "record": "47-71",
    "usage": "N/A",
    "moves": [
     {
@@ -30063,8 +30063,8 @@
   },
   {
    "name": "Scovillain",
-   "win_rate": "52.732%",
-   "record": "1289-1155-8",
+   "win_rate": "52.226%",
+   "record": "1277-1168-3",
    "usage": "N/A",
    "moves": [
     {
@@ -30180,8 +30180,8 @@
   },
   {
    "name": "Espathra",
-   "win_rate": "39.706%",
-   "record": "81-123",
+   "win_rate": "47.656%",
+   "record": "122-134",
    "usage": "N/A",
    "moves": [
     {
@@ -30297,8 +30297,8 @@
   },
   {
    "name": "Tinkaton",
-   "win_rate": "39.939%",
-   "record": "264-397",
+   "win_rate": "48.534%",
+   "record": "165-175-1",
    "usage": "N/A",
    "moves": [
     {
@@ -30434,8 +30434,8 @@
   },
   {
    "name": "Palafin",
-   "win_rate": "37.676%",
-   "record": "107-177",
+   "win_rate": "44.771%",
+   "record": "137-169",
    "usage": "N/A",
    "moves": [
     {
@@ -30574,8 +30574,8 @@
   },
   {
    "name": "Orthworm",
-   "win_rate": "44.138%",
-   "record": "64-81",
+   "win_rate": "39.024%",
+   "record": "64-100",
    "usage": "N/A",
    "moves": [
     {
@@ -30679,8 +30679,8 @@
   },
   {
    "name": "Glimmora",
-   "win_rate": "51.133%",
-   "record": "2253-2153-9",
+   "win_rate": "49.17%",
+   "record": "1065-1101-2",
    "usage": "N/A",
    "moves": [
     {
@@ -31037,8 +31037,8 @@
   },
   {
    "name": "Houndstone",
-   "win_rate": "50.682%",
-   "record": "223-217",
+   "win_rate": "48.803%",
+   "record": "183-192-1",
    "usage": "N/A",
    "moves": [
     {
@@ -31197,8 +31197,8 @@
   },
   {
    "name": "Annihilape",
-   "win_rate": "49.752%",
-   "record": "1403-1417-4",
+   "win_rate": "43.446%",
+   "record": "527-686",
    "usage": "N/A",
    "moves": [
     {
@@ -31515,8 +31515,8 @@
   },
   {
    "name": "Farigiraf",
-   "win_rate": "47.26%",
-   "record": "6272-7001-30",
+   "win_rate": "48.148%",
+   "record": "4700-5062-13",
    "usage": "N/A",
    "moves": [
     {
@@ -31877,8 +31877,8 @@
   },
   {
    "name": "Kingambit",
-   "win_rate": "51.397%",
-   "record": "13129-12414-39",
+   "win_rate": "50.649%",
+   "record": "10248-9985-17",
    "usage": "N/A",
    "moves": [
     {
@@ -32265,8 +32265,8 @@
   },
   {
    "name": "Gholdengo",
-   "win_rate": "48.365%",
-   "record": "3543-3783-15",
+   "win_rate": "48.714%",
+   "record": "1646-1733-3",
    "usage": "N/A",
    "moves": [
     {
@@ -32619,8 +32619,8 @@
   },
   {
    "name": "Sinistcha",
-   "win_rate": "48.584%",
-   "record": "8116-8590-29",
+   "win_rate": "48.293%",
+   "record": "4848-5191-9",
    "usage": "N/A",
    "moves": [
     {
@@ -32977,8 +32977,8 @@
   },
   {
    "name": "Archaludon",
-   "win_rate": "48.812%",
-   "record": "5145-5396-27",
+   "win_rate": "50%",
+   "record": "2579-2579-9",
    "usage": "N/A",
    "moves": [
     {
@@ -33339,8 +33339,8 @@
   },
   {
    "name": "Hydrapple",
-   "win_rate": "40.909%",
-   "record": "63-91",
+   "win_rate": "36.111%",
+   "record": "13-23",
    "usage": "N/A",
    "moves": [
     {

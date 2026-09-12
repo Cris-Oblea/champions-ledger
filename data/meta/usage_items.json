@@ -1,189 +1,189 @@
 {
  "source": "pokebase.app/pokemon-champions",
  "game": "Pokemon Champions",
- "fetched": "2026-09-11",
- "count": 108,
+ "fetched": "2026-09-12",
+ "count": 140,
  "rows": [
   {
    "rank": 1,
    "slug": "sitrus-berry",
    "name": "Sitrus Berry",
-   "usage_percent": 60.8,
+   "usage_percent": 61.3,
    "description": ""
   },
   {
    "rank": 2,
    "slug": "focus-sash",
    "name": "Focus Sash",
-   "usage_percent": 58.8,
+   "usage_percent": 59.3,
    "description": ""
   },
   {
    "rank": 3,
    "slug": "life-orb",
    "name": "Life Orb",
-   "usage_percent": 57.5,
+   "usage_percent": 55.1,
    "description": ""
   },
   {
    "rank": 4,
    "slug": "salamencite",
    "name": "Salamencite",
-   "usage_percent": 35.6,
+   "usage_percent": 34.5,
    "description": ""
   },
   {
    "rank": 5,
-   "slug": "miracle-seed",
-   "name": "Miracle Seed",
-   "usage_percent": 27.2,
+   "slug": "leftovers",
+   "name": "Leftovers",
+   "usage_percent": 28.0,
    "description": ""
   },
   {
    "rank": 6,
-   "slug": "leftovers",
-   "name": "Leftovers",
-   "usage_percent": 25.2,
+   "slug": "grassy-seed",
+   "name": "Grassy Seed",
+   "usage_percent": 26.5,
    "description": ""
   },
   {
    "rank": 7,
-   "slug": "choice-scarf",
-   "name": "Choice Scarf",
-   "usage_percent": 24.7,
+   "slug": "miracle-seed",
+   "name": "Miracle Seed",
+   "usage_percent": 26.2,
    "description": ""
   },
   {
    "rank": 8,
-   "slug": "floettite",
-   "name": "Floettite",
-   "usage_percent": 24.7,
+   "slug": "choice-scarf",
+   "name": "Choice Scarf",
+   "usage_percent": 25.8,
    "description": ""
   },
   {
    "rank": 9,
-   "slug": "grassy-seed",
-   "name": "Grassy Seed",
-   "usage_percent": 24.7,
+   "slug": "floettite",
+   "name": "Floettite",
+   "usage_percent": 20.7,
    "description": ""
   },
   {
    "rank": 10,
    "slug": "psychic-seed",
    "name": "Psychic Seed",
-   "usage_percent": 18.5,
+   "usage_percent": 19.7,
    "description": ""
   },
   {
    "rank": 11,
-   "slug": "chople-berry",
-   "name": "Chople Berry",
-   "usage_percent": 17.8,
+   "slug": "golisopite",
+   "name": "Golisopite",
+   "usage_percent": 16.4,
    "description": ""
   },
   {
    "rank": 12,
-   "slug": "golisopite",
-   "name": "Golisopite",
-   "usage_percent": 15.2,
+   "slug": "chople-berry",
+   "name": "Chople Berry",
+   "usage_percent": 15.9,
    "description": ""
   },
   {
    "rank": 13,
-   "slug": "white-herb",
-   "name": "White Herb",
-   "usage_percent": 14.3,
+   "slug": "colbur-berry",
+   "name": "Colbur Berry",
+   "usage_percent": 13.0,
    "description": ""
   },
   {
    "rank": 14,
-   "slug": "colbur-berry",
-   "name": "Colbur Berry",
-   "usage_percent": 13.1,
+   "slug": "white-herb",
+   "name": "White Herb",
+   "usage_percent": 12.1,
    "description": ""
   },
   {
    "rank": 15,
-   "slug": "charizardite-y",
-   "name": "Charizardite Y",
-   "usage_percent": 10.7,
+   "slug": "fairy-feather",
+   "name": "Fairy Feather",
+   "usage_percent": 9.6,
    "description": ""
   },
   {
    "rank": 16,
-   "slug": "occa-berry",
-   "name": "Occa Berry",
-   "usage_percent": 10.3,
+   "slug": "rocky-helmet",
+   "name": "Rocky Helmet",
+   "usage_percent": 9.2,
    "description": ""
   },
   {
    "rank": 17,
-   "slug": "charcoal",
-   "name": "Charcoal",
-   "usage_percent": 9.4,
+   "slug": "gardevoirite",
+   "name": "Gardevoirite",
+   "usage_percent": 8.9,
    "description": ""
   },
   {
    "rank": 18,
-   "slug": "fairy-feather",
-   "name": "Fairy Feather",
-   "usage_percent": 9.3,
+   "slug": "charcoal",
+   "name": "Charcoal",
+   "usage_percent": 8.7,
    "description": ""
   },
   {
    "rank": 19,
-   "slug": "rocky-helmet",
-   "name": "Rocky Helmet",
-   "usage_percent": 8.3,
+   "slug": "charizardite-y",
+   "name": "Charizardite Y",
+   "usage_percent": 8.6,
    "description": ""
   },
   {
    "rank": 20,
-   "slug": "black-glasses",
-   "name": "Black Glasses",
-   "usage_percent": 8.2,
+   "slug": "occa-berry",
+   "name": "Occa Berry",
+   "usage_percent": 8.4,
    "description": ""
   },
   {
    "rank": 21,
-   "slug": "gardevoirite",
-   "name": "Gardevoirite",
-   "usage_percent": 8.0,
+   "slug": "light-clay",
+   "name": "Light Clay",
+   "usage_percent": 7.0,
    "description": ""
   },
   {
    "rank": 22,
-   "slug": "baxcalibrite",
-   "name": "Baxcalibrite",
-   "usage_percent": 7.8,
+   "slug": "black-glasses",
+   "name": "Black Glasses",
+   "usage_percent": 6.9,
    "description": ""
   },
   {
    "rank": 23,
-   "slug": "tyranitarite",
-   "name": "Tyranitarite",
-   "usage_percent": 7.1,
-   "description": ""
-  },
-  {
-   "rank": 24,
    "slug": "lucarionite-z",
    "name": "Lucarionite Z",
    "usage_percent": 6.9,
    "description": ""
   },
   {
-   "rank": 25,
-   "slug": "light-clay",
-   "name": "Light Clay",
+   "rank": 24,
+   "slug": "tyranitarite",
+   "name": "Tyranitarite",
    "usage_percent": 6.5,
    "description": ""
   },
   {
+   "rank": 25,
+   "slug": "baxcalibrite",
+   "name": "Baxcalibrite",
+   "usage_percent": 6.1,
+   "description": ""
+  },
+  {
    "rank": 26,
-   "slug": "delphoxite",
-   "name": "Delphoxite",
-   "usage_percent": 5.3,
+   "slug": "raichunite",
+   "name": "Raichunite Y",
+   "usage_percent": 5.0,
    "description": ""
   },
   {
@@ -195,23 +195,23 @@
   },
   {
    "rank": 28,
-   "slug": "raichunite",
-   "name": "Raichunite Y",
-   "usage_percent": 4.7,
+   "slug": "mystic-water",
+   "name": "Mystic Water",
+   "usage_percent": 4.2,
    "description": ""
   },
   {
    "rank": 29,
    "slug": "aerodactylite",
    "name": "Aerodactylite",
-   "usage_percent": 4.2,
+   "usage_percent": 3.7,
    "description": ""
   },
   {
    "rank": 30,
-   "slug": "dragoninite",
-   "name": "Dragoninite",
-   "usage_percent": 3.3,
+   "slug": "delphoxite",
+   "name": "Delphoxite",
+   "usage_percent": 3.6,
    "description": ""
   },
   {
@@ -223,541 +223,765 @@
   },
   {
    "rank": 32,
-   "slug": "mystic-water",
-   "name": "Mystic Water",
-   "usage_percent": 2.9,
+   "slug": "dragoninite",
+   "name": "Dragoninite",
+   "usage_percent": 3.2,
    "description": ""
   },
   {
    "rank": 33,
-   "slug": "absolite-z",
-   "name": "Absolite Z",
-   "usage_percent": 2.5,
+   "slug": "garchompite-z",
+   "name": "Garchompite Z",
+   "usage_percent": 3.2,
    "description": ""
   },
   {
    "rank": 34,
    "slug": "cameruptite",
    "name": "Cameruptite",
-   "usage_percent": 2.5,
+   "usage_percent": 3.1,
    "description": ""
   },
   {
    "rank": 35,
-   "slug": "garchompite-z",
-   "name": "Garchompite Z",
-   "usage_percent": 2.5,
+   "slug": "absolite-z",
+   "name": "Absolite Z",
+   "usage_percent": 3.0,
    "description": ""
   },
   {
    "rank": 36,
-   "slug": "mawilite",
-   "name": "Mawilite",
-   "usage_percent": 2.4,
+   "slug": "metagrossite",
+   "name": "Metagrossite",
+   "usage_percent": 2.5,
    "description": ""
   },
   {
    "rank": 37,
    "slug": "staraptite",
    "name": "Staraptite",
-   "usage_percent": 2.4,
+   "usage_percent": 2.5,
    "description": ""
   },
   {
    "rank": 38,
-   "slug": "mental-herb",
-   "name": "Mental Herb",
-   "usage_percent": 2.0,
+   "slug": "mawilite",
+   "name": "Mawilite",
+   "usage_percent": 2.4,
    "description": ""
   },
   {
    "rank": 39,
-   "slug": "metagrossite",
-   "name": "Metagrossite",
-   "usage_percent": 2.0,
+   "slug": "blastoisinite",
+   "name": "Blastoisinite",
+   "usage_percent": 2.3,
    "description": ""
   },
   {
    "rank": 40,
-   "slug": "blastoisinite",
-   "name": "Blastoisinite",
-   "usage_percent": 1.8,
+   "slug": "sharp-beak",
+   "name": "Sharp Beak",
+   "usage_percent": 2.0,
    "description": ""
   },
   {
    "rank": 41,
-   "slug": "sharp-beak",
-   "name": "Sharp Beak",
-   "usage_percent": 1.8,
+   "slug": "wide-lens",
+   "name": "Wide Lens",
+   "usage_percent": 1.9,
    "description": ""
   },
   {
    "rank": 42,
-   "slug": "coba-berry",
-   "name": "Coba Berry",
-   "usage_percent": 1.6,
+   "slug": "mental-herb",
+   "name": "Mental Herb",
+   "usage_percent": 1.8,
    "description": ""
   },
   {
    "rank": 43,
-   "slug": "kasib-berry",
-   "name": "Kasib Berry",
-   "usage_percent": 1.6,
+   "slug": "scovillainite",
+   "name": "Scovillainite",
+   "usage_percent": 1.7,
    "description": ""
   },
   {
    "rank": 44,
-   "slug": "roseli-berry",
-   "name": "Roseli Berry",
+   "slug": "gengarite",
+   "name": "Gengarite",
    "usage_percent": 1.6,
    "description": ""
   },
   {
    "rank": 45,
-   "slug": "scovillainite",
-   "name": "Scovillainite",
+   "slug": "glimmoranite",
+   "name": "Glimmoranite",
    "usage_percent": 1.6,
    "description": ""
   },
   {
    "rank": 46,
-   "slug": "wide-lens",
-   "name": "Wide Lens",
-   "usage_percent": 1.6,
+   "slug": "coba-berry",
+   "name": "Coba Berry",
+   "usage_percent": 1.4,
    "description": ""
   },
   {
    "rank": 47,
-   "slug": "glimmoranite",
-   "name": "Glimmoranite",
-   "usage_percent": 1.5,
+   "slug": "eject-button",
+   "name": "Eject Button",
+   "usage_percent": 1.4,
    "description": ""
   },
   {
    "rank": 48,
    "slug": "passho-berry",
    "name": "Passho Berry",
-   "usage_percent": 1.5,
+   "usage_percent": 1.4,
    "description": ""
   },
   {
    "rank": 49,
-   "slug": "blazikenite",
-   "name": "Blazikenite",
+   "slug": "expert-belt",
+   "name": "Expert Belt",
    "usage_percent": 1.3,
    "description": ""
   },
   {
    "rank": 50,
+   "slug": "kasib-berry",
+   "name": "Kasib Berry",
+   "usage_percent": 1.3,
+   "description": ""
+  },
+  {
+   "rank": 51,
+   "slug": "never-melt-ice",
+   "name": "Never-Melt Ice",
+   "usage_percent": 1.2,
+   "description": ""
+  },
+  {
+   "rank": 52,
+   "slug": "quick-claw",
+   "name": "Quick Claw",
+   "usage_percent": 1.2,
+   "description": ""
+  },
+  {
+   "rank": 53,
    "slug": "alakazite",
    "name": "Alakazite",
    "usage_percent": 1.1,
    "description": ""
   },
   {
-   "rank": 51,
-   "slug": "eject-button",
-   "name": "Eject Button",
-   "usage_percent": 1.1,
-   "description": ""
-  },
-  {
-   "rank": 52,
-   "slug": "expert-belt",
-   "name": "Expert Belt",
-   "usage_percent": 1.1,
-   "description": ""
-  },
-  {
-   "rank": 53,
-   "slug": "gengarite",
-   "name": "Gengarite",
-   "usage_percent": 1.1,
-   "description": ""
-  },
-  {
    "rank": 54,
-   "slug": "never-melt-ice",
-   "name": "Never-Melt Ice",
+   "slug": "crabominite",
+   "name": "Crabominite",
    "usage_percent": 1.1,
    "description": ""
   },
   {
    "rank": 55,
-   "slug": "charizardite-x",
-   "name": "Charizardite X",
-   "usage_percent": 0.9,
+   "slug": "roseli-berry",
+   "name": "Roseli Berry",
+   "usage_percent": 1.1,
    "description": ""
   },
   {
    "rank": 56,
-   "slug": "golurkite",
-   "name": "Golurkite",
-   "usage_percent": 0.7,
+   "slug": "blazikenite",
+   "name": "Blazikenite",
+   "usage_percent": 1.0,
    "description": ""
   },
   {
    "rank": 57,
-   "slug": "haban-berry",
-   "name": "Haban Berry",
-   "usage_percent": 0.7,
+   "slug": "damp-rock",
+   "name": "Damp Rock",
+   "usage_percent": 0.9,
    "description": ""
   },
   {
    "rank": 58,
-   "slug": "kebia-berry",
-   "name": "Kebia Berry",
-   "usage_percent": 0.7,
+   "slug": "scizorite",
+   "name": "Scizorite",
+   "usage_percent": 0.9,
    "description": ""
   },
   {
    "rank": 59,
-   "slug": "metal-coat",
-   "name": "Metal Coat",
-   "usage_percent": 0.7,
+   "slug": "bright-powder",
+   "name": "Bright Powder",
+   "usage_percent": 0.8,
    "description": ""
   },
   {
    "rank": 60,
-   "slug": "normal-gem",
-   "name": "Normal Gem",
+   "slug": "chandelurite",
+   "name": "Chandelurite",
    "usage_percent": 0.7,
    "description": ""
   },
   {
    "rank": 61,
-   "slug": "rindo-berry",
-   "name": "Rindo Berry",
+   "slug": "terrain-extender",
+   "name": "Terrain Extender",
    "usage_percent": 0.7,
    "description": ""
   },
   {
    "rank": 62,
-   "slug": "scizorite",
-   "name": "Scizorite",
+   "slug": "twisted-spoon",
+   "name": "Twisted Spoon",
    "usage_percent": 0.7,
    "description": ""
   },
   {
    "rank": 63,
-   "slug": "crabominite",
-   "name": "Crabominite",
-   "usage_percent": 0.5,
+   "slug": "drampanite",
+   "name": "Drampanite",
+   "usage_percent": 0.6,
    "description": ""
   },
   {
    "rank": 64,
-   "slug": "damp-rock",
-   "name": "Damp Rock",
-   "usage_percent": 0.5,
+   "slug": "eelektrossite",
+   "name": "Eelektrossite",
+   "usage_percent": 0.6,
    "description": ""
   },
   {
    "rank": 65,
-   "slug": "drampanite",
-   "name": "Drampanite",
-   "usage_percent": 0.5,
+   "slug": "golurkite",
+   "name": "Golurkite",
+   "usage_percent": 0.6,
    "description": ""
   },
   {
    "rank": 66,
+   "slug": "leek",
+   "name": "Leek",
+   "usage_percent": 0.6,
+   "description": ""
+  },
+  {
+   "rank": 67,
+   "slug": "lum-berry",
+   "name": "Lum Berry",
+   "usage_percent": 0.6,
+   "description": ""
+  },
+  {
+   "rank": 68,
+   "slug": "silk-scarf",
+   "name": "Silk Scarf",
+   "usage_percent": 0.6,
+   "description": ""
+  },
+  {
+   "rank": 69,
+   "slug": "air-balloon",
+   "name": "Air Balloon",
+   "usage_percent": 0.5,
+   "description": ""
+  },
+  {
+   "rank": 70,
+   "slug": "charizardite-x",
+   "name": "Charizardite X",
+   "usage_percent": 0.5,
+   "description": ""
+  },
+  {
+   "rank": 71,
    "slug": "feraligite",
    "name": "Feraligite",
    "usage_percent": 0.5,
    "description": ""
   },
   {
-   "rank": 67,
-   "slug": "iron-ball",
-   "name": "Iron Ball",
+   "rank": 72,
+   "slug": "greninjite",
+   "name": "Greninjite",
    "usage_percent": 0.5,
    "description": ""
   },
   {
-   "rank": 68,
-   "slug": "muscle-band",
-   "name": "Muscle Band",
+   "rank": 73,
+   "slug": "haban-berry",
+   "name": "Haban Berry",
    "usage_percent": 0.5,
    "description": ""
   },
   {
-   "rank": 69,
-   "slug": "quick-claw",
-   "name": "Quick Claw",
+   "rank": 74,
+   "slug": "normal-gem",
+   "name": "Normal Gem",
    "usage_percent": 0.5,
    "description": ""
   },
   {
-   "rank": 70,
+   "rank": 75,
    "slug": "raichunite-x",
    "name": "Raichunite X",
    "usage_percent": 0.5,
    "description": ""
   },
   {
-   "rank": 71,
+   "rank": 76,
+   "slug": "rindo-berry",
+   "name": "Rindo Berry",
+   "usage_percent": 0.5,
+   "description": ""
+  },
+  {
+   "rank": 77,
+   "slug": "scope-lens",
+   "name": "Scope Lens",
+   "usage_percent": 0.5,
+   "description": ""
+  },
+  {
+   "rank": 78,
+   "slug": "soft-sand",
+   "name": "Soft Sand",
+   "usage_percent": 0.5,
+   "description": ""
+  },
+  {
+   "rank": 79,
    "slug": "spell-tag",
    "name": "Spell Tag",
    "usage_percent": 0.5,
    "description": ""
   },
   {
-   "rank": 72,
-   "slug": "terrain-extender",
-   "name": "Terrain Extender",
-   "usage_percent": 0.5,
-   "description": ""
-  },
-  {
-   "rank": 73,
-   "slug": "twisted-spoon",
-   "name": "Twisted Spoon",
-   "usage_percent": 0.5,
-   "description": ""
-  },
-  {
-   "rank": 74,
+   "rank": 80,
    "slug": "venusaurite",
    "name": "Venusaurite",
    "usage_percent": 0.5,
    "description": ""
   },
   {
-   "rank": 75,
-   "slug": "yache-berry",
-   "name": "Yache Berry",
-   "usage_percent": 0.5,
+   "rank": 81,
+   "slug": "aggronite",
+   "name": "Aggronite",
+   "usage_percent": 0.4,
    "description": ""
   },
   {
-   "rank": 76,
+   "rank": 82,
    "slug": "babiri-berry",
    "name": "Babiri Berry",
    "usage_percent": 0.4,
    "description": ""
   },
   {
-   "rank": 77,
+   "rank": 83,
    "slug": "electric-seed",
    "name": "Electric Seed",
    "usage_percent": 0.4,
    "description": ""
   },
   {
-   "rank": 78,
-   "slug": "garchompite",
-   "name": "Garchompite",
-   "usage_percent": 0.4,
-   "description": ""
-  },
-  {
-   "rank": 79,
-   "slug": "hard-stone",
-   "name": "Hard Stone",
-   "usage_percent": 0.4,
-   "description": ""
-  },
-  {
-   "rank": 80,
-   "slug": "lum-berry",
-   "name": "Lum Berry",
-   "usage_percent": 0.4,
-   "description": ""
-  },
-  {
-   "rank": 81,
-   "slug": "sceptilite",
-   "name": "Sceptilite",
-   "usage_percent": 0.4,
-   "description": ""
-  },
-  {
-   "rank": 82,
-   "slug": "scraftinite",
-   "name": "Scraftinite",
-   "usage_percent": 0.4,
-   "description": ""
-  },
-  {
-   "rank": 83,
-   "slug": "silk-scarf",
-   "name": "Silk Scarf",
-   "usage_percent": 0.4,
-   "description": ""
-  },
-  {
    "rank": 84,
+   "slug": "hawluchanite",
+   "name": "Hawluchanite",
+   "usage_percent": 0.4,
+   "description": ""
+  },
+  {
+   "rank": 85,
+   "slug": "iron-ball",
+   "name": "Iron Ball",
+   "usage_percent": 0.4,
+   "description": ""
+  },
+  {
+   "rank": 86,
+   "slug": "kebia-berry",
+   "name": "Kebia Berry",
+   "usage_percent": 0.4,
+   "description": ""
+  },
+  {
+   "rank": 87,
+   "slug": "kings-rock",
+   "name": "King’s Rock",
+   "usage_percent": 0.4,
+   "description": ""
+  },
+  {
+   "rank": 88,
+   "slug": "metal-coat",
+   "name": "Metal Coat",
+   "usage_percent": 0.4,
+   "description": ""
+  },
+  {
+   "rank": 89,
+   "slug": "muscle-band",
+   "name": "Muscle Band",
+   "usage_percent": 0.4,
+   "description": ""
+  },
+  {
+   "rank": 90,
+   "slug": "pyroarite",
+   "name": "Pyroarite",
+   "usage_percent": 0.4,
+   "description": ""
+  },
+  {
+   "rank": 91,
+   "slug": "shuca-berry",
+   "name": "Shuca Berry",
+   "usage_percent": 0.4,
+   "description": ""
+  },
+  {
+   "rank": 92,
    "slug": "slowbronite",
    "name": "Slowbronite",
    "usage_percent": 0.4,
    "description": ""
   },
   {
-   "rank": 85,
-   "slug": "soft-sand",
-   "name": "Soft Sand",
+   "rank": 93,
+   "slug": "yache-berry",
+   "name": "Yache Berry",
    "usage_percent": 0.4,
    "description": ""
   },
   {
-   "rank": 86,
-   "slug": "wise-glasses",
-   "name": "Wise Glasses",
-   "usage_percent": 0.4,
-   "description": ""
-  },
-  {
-   "rank": 87,
-   "slug": "zoom-lens",
-   "name": "Zoom Lens",
-   "usage_percent": 0.4,
-   "description": ""
-  },
-  {
-   "rank": 88,
+   "rank": 94,
    "slug": "abomasite",
    "name": "Abomasite",
-   "usage_percent": 0.2,
+   "usage_percent": 0.3,
    "description": ""
   },
   {
-   "rank": 89,
-   "slug": "aggronite",
-   "name": "Aggronite",
-   "usage_percent": 0.2,
+   "rank": 95,
+   "slug": "chesnaughtite",
+   "name": "Chesnaughtite",
+   "usage_percent": 0.3,
    "description": ""
   },
   {
-   "rank": 90,
-   "slug": "air-balloon",
-   "name": "Air Balloon",
-   "usage_percent": 0.2,
+   "rank": 96,
+   "slug": "garchompite",
+   "name": "Garchompite",
+   "usage_percent": 0.3,
    "description": ""
   },
   {
-   "rank": 91,
+   "rank": 97,
+   "slug": "kangaskhanite",
+   "name": "Kangaskhanite",
+   "usage_percent": 0.3,
+   "description": ""
+  },
+  {
+   "rank": 98,
+   "slug": "sceptilite",
+   "name": "Sceptilite",
+   "usage_percent": 0.3,
+   "description": ""
+  },
+  {
+   "rank": 99,
+   "slug": "scraftinite",
+   "name": "Scraftinite",
+   "usage_percent": 0.3,
+   "description": ""
+  },
+  {
+   "rank": 100,
+   "slug": "skarmorite",
+   "name": "Skarmorite",
+   "usage_percent": 0.3,
+   "description": ""
+  },
+  {
+   "rank": 101,
+   "slug": "starminite",
+   "name": "Starminite",
+   "usage_percent": 0.3,
+   "description": ""
+  },
+  {
+   "rank": 102,
+   "slug": "zoom-lens",
+   "name": "Zoom Lens",
+   "usage_percent": 0.3,
+   "description": ""
+  },
+  {
+   "rank": 103,
    "slug": "altarianite",
    "name": "Altarianite",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 92,
+   "rank": 104,
    "slug": "ampharosite",
    "name": "Ampharosite",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 93,
-   "slug": "bright-powder",
-   "name": "Bright Powder",
-   "usage_percent": 0.2,
-   "description": ""
-  },
-  {
-   "rank": 94,
-   "slug": "eelektrossite",
-   "name": "Eelektrossite",
-   "usage_percent": 0.2,
-   "description": ""
-  },
-  {
-   "rank": 95,
-   "slug": "focus-band",
-   "name": "Focus Band",
-   "usage_percent": 0.2,
-   "description": ""
-  },
-  {
-   "rank": 96,
+   "rank": 105,
    "slug": "glalitite",
    "name": "Glalitite",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 97,
-   "slug": "greninjite",
-   "name": "Greninjite",
+   "rank": 106,
+   "slug": "hard-stone",
+   "name": "Hard Stone",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 98,
-   "slug": "hawluchanite",
-   "name": "Hawluchanite",
+   "rank": 107,
+   "slug": "heat-rock",
+   "name": "Heat Rock",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 99,
-   "slug": "kangaskhanite",
-   "name": "Kangaskhanite",
+   "rank": 108,
+   "slug": "houndoominite",
+   "name": "Houndoominite",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 100,
+   "rank": 109,
    "slug": "lopunnite",
    "name": "Lopunnite",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 101,
+   "rank": 110,
+   "slug": "lucarionite",
+   "name": "Lucarionite",
+   "usage_percent": 0.2,
+   "description": ""
+  },
+  {
+   "rank": 111,
+   "slug": "malamarite",
+   "name": "Malamarite",
+   "usage_percent": 0.2,
+   "description": ""
+  },
+  {
+   "rank": 112,
+   "slug": "meganiumite",
+   "name": "Meganiumite",
+   "usage_percent": 0.2,
+   "description": ""
+  },
+  {
+   "rank": 113,
    "slug": "meowsticite",
    "name": "Meowsticite",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 102,
+   "rank": 114,
    "slug": "metronome",
    "name": "Metronome",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 103,
-   "slug": "pyroarite",
-   "name": "Pyroarite",
+   "rank": 115,
+   "slug": "payapa-berry",
+   "name": "Payapa Berry",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 104,
+   "rank": 116,
    "slug": "red-card",
    "name": "Red Card",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 105,
+   "rank": 117,
    "slug": "sablenite",
    "name": "Sablenite",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 106,
-   "slug": "scope-lens",
-   "name": "Scope Lens",
+   "rank": 118,
+   "slug": "wise-glasses",
+   "name": "Wise Glasses",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 107,
-   "slug": "skarmorite",
-   "name": "Skarmorite",
-   "usage_percent": 0.2,
+   "rank": 119,
+   "slug": "audinite",
+   "name": "Audinite",
+   "usage_percent": 0.1,
    "description": ""
   },
   {
-   "rank": 108,
+   "rank": 120,
+   "slug": "banettite",
+   "name": "Banettite",
+   "usage_percent": 0.1,
+   "description": ""
+  },
+  {
+   "rank": 121,
+   "slug": "barbaracite",
+   "name": "Barbaracite",
+   "usage_percent": 0.1,
+   "description": ""
+  },
+  {
+   "rank": 122,
+   "slug": "beedrillite",
+   "name": "Beedrillite",
+   "usage_percent": 0.1,
+   "description": ""
+  },
+  {
+   "rank": 123,
+   "slug": "big-root",
+   "name": "Big Root",
+   "usage_percent": 0.1,
+   "description": ""
+  },
+  {
+   "rank": 124,
+   "slug": "binding-band",
+   "name": "Binding Band",
+   "usage_percent": 0.1,
+   "description": ""
+  },
+  {
+   "rank": 125,
+   "slug": "charti-berry",
+   "name": "Charti Berry",
+   "usage_percent": 0.1,
+   "description": ""
+  },
+  {
+   "rank": 126,
+   "slug": "dragalgite",
+   "name": "Dragalgite",
+   "usage_percent": 0.1,
+   "description": ""
+  },
+  {
+   "rank": 127,
+   "slug": "excadrite",
+   "name": "Excadrite",
+   "usage_percent": 0.1,
+   "description": ""
+  },
+  {
+   "rank": 128,
+   "slug": "falinksite",
+   "name": "Falinksite",
+   "usage_percent": 0.1,
+   "description": ""
+  },
+  {
+   "rank": 129,
+   "slug": "focus-band",
+   "name": "Focus Band",
+   "usage_percent": 0.1,
+   "description": ""
+  },
+  {
+   "rank": 130,
+   "slug": "gyaradosite",
+   "name": "Gyaradosite",
+   "usage_percent": 0.1,
+   "description": ""
+  },
+  {
+   "rank": 131,
+   "slug": "heracronite",
+   "name": "Heracronite",
+   "usage_percent": 0.1,
+   "description": ""
+  },
+  {
+   "rank": 132,
+   "slug": "icy-rock",
+   "name": "Icy Rock",
+   "usage_percent": 0.1,
+   "description": ""
+  },
+  {
+   "rank": 133,
+   "slug": "magnet",
+   "name": "Magnet",
+   "usage_percent": 0.1,
+   "description": ""
+  },
+  {
+   "rank": 134,
+   "slug": "manectite",
+   "name": "Manectite",
+   "usage_percent": 0.1,
+   "description": ""
+  },
+  {
+   "rank": 135,
+   "slug": "misty-seed",
+   "name": "Misty Seed",
+   "usage_percent": 0.1,
+   "description": ""
+  },
+  {
+   "rank": 136,
+   "slug": "pidgeotite",
+   "name": "Pidgeotite",
+   "usage_percent": 0.1,
+   "description": ""
+  },
+  {
+   "rank": 137,
+   "slug": "scolipite",
+   "name": "Scolipite",
+   "usage_percent": 0.1,
+   "description": ""
+  },
+  {
+   "rank": 138,
+   "slug": "shell-bell",
+   "name": "Shell Bell",
+   "usage_percent": 0.1,
+   "description": ""
+  },
+  {
+   "rank": 139,
+   "slug": "smooth-rock",
+   "name": "Smooth Rock",
+   "usage_percent": 0.1,
+   "description": ""
+  },
+  {
+   "rank": 140,
    "slug": "steelixite",
    "name": "Steelixite",
-   "usage_percent": 0.2,
+   "usage_percent": 0.1,
    "description": ""
   }
  ]
