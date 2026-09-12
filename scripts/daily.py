@@ -203,13 +203,24 @@ def main():
         ver = [l.strip() for l in dout.splitlines() if "Version ID" in l]
         out.append("deploy exit %d  %s" % (d, ver[0] if ver else ""))
         deployed = d == 0
+        if not deployed:
+            # A failed deploy has to fail the JOB. Logging it and
+            # exiting 0 leaves an unattended run green while the
+            # phone quietly keeps yesterday's build - exactly what
+            # a bad CLOUDFLARE_API_TOKEN looks like, and nobody
+            # would ever notice.
+            out.append("FAILED: built fine, but was not published")
+            out += ["  " + x for x in dout.splitlines()[-8:] if x.strip()]
 
     out.append("took %ds" % int((datetime.datetime.now() - started).total_seconds()))
     json.dump({"last_run": started.isoformat(), "changed": changed,
                "deployed": deployed}, io.open(STATE, "w", encoding="utf-8"))
     log(out)
     print("\n".join(out))
-    return 0 if gate_ok else 1
+    # green means "the app on Cloudflare matches this data". A
+    # failed check, or a deploy attempted and not landed, is red.
+    wanted = bool(changed) and gate_ok and not (a.dry_run or a.skip_deploy)
+    return 0 if (gate_ok and (deployed or not wanted)) else 1
 
 
 if __name__ == "__main__":
