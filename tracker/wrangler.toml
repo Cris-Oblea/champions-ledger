@@ -1,0 +1,11 @@
+# Deploy target for the Champions Ledger.
+#
+# `dist` is the ONLY directory that may be served: tracker/ itself holds
+# supabase_seed.sql (the whole ledger in plaintext) and config.local.json.
+# scripts/build_tracker_page.py rebuilds dist/ from scratch and refuses to
+# finish if anything unexpected appears in it.
+name = "champions-ledger"
+compatibility_date = "2026-09-09"
+
+[assets]
+directory = "./dist"

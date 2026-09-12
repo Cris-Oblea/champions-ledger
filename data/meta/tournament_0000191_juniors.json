@@ -1,0 +1,9244 @@
+{
+ "source": "pokedata.ovh/standingsVGC",
+ "origin": "event JSON export",
+ "game": "Pokemon Champions",
+ "tournament_id": "0000191",
+ "division": "juniors",
+ "round": 13,
+ "round_label": "Final",
+ "swiss_rounds": 9,
+ "round_labels": {
+  "1": "1",
+  "2": "2",
+  "3": "3",
+  "4": "4",
+  "5": "5",
+  "6": "6",
+  "7": "7",
+  "8": "8",
+  "9": "9",
+  "10": "TopCut",
+  "11": "T8",
+  "12": "T4",
+  "13": "Final"
+ },
+ "complete": true,
+ "fetched": "2026-09-11 23:46",
+ "note": "Unofficial standings computed outside the tournament software.",
+ "count": 111,
+ "players": [
+  {
+   "rank": 1,
+   "player": "kazuki k.",
+   "country": "JP",
+   "record": "11-2-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "K.K",
+   "team": [
+    {
+     "pokemon": "Basculegion [Male]",
+     "ability": "Adaptability",
+     "item": "Sitrus Berry",
+     "nature": "Adamant",
+     "moves": [
+      "Last Respects",
+      "Wave Crash",
+      "Protect",
+      "Aqua Jet"
+     ]
+    },
+    {
+     "pokemon": "Sneasler",
+     "ability": "Unburden",
+     "item": "White Herb",
+     "nature": "Adamant",
+     "moves": [
+      "Gunk Shot",
+      "Fake Out",
+      "Protect",
+      "Close Combat"
+     ]
+    },
+    {
+     "pokemon": "Lycanroc [Dusk Form]",
+     "ability": "Tough Claws",
+     "item": "Focus Sash",
+     "nature": "Adamant",
+     "moves": [
+      "Rock Slide",
+      "Accelerock",
+      "Protect",
+      "Close Combat"
+     ]
+    },
+    {
+     "pokemon": "Froslass",
+     "ability": "Cursed Body",
+     "item": "Froslassite",
+     "nature": "Timid",
+     "moves": [
+      "Protect",
+      "Blizzard",
+      "Shadow Ball",
+      "Aurora Veil"
+     ]
+    },
+    {
+     "pokemon": "Kingambit",
+     "ability": "Defiant",
+     "item": "Life Orb",
+     "nature": "Adamant",
+     "moves": [
+      "Kowtow Cleave",
+      "Protect",
+      "Swords Dance",
+      "Sucker Punch"
+     ]
+    },
+    {
+     "pokemon": "Scovillain",
+     "ability": "Chlorophyll",
+     "item": "Scovillainite",
+     "nature": "Bold",
+     "moves": [
+      "Giga Drain",
+      "Protect",
+      "Rage Powder",
+      "Overheat"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 2,
+   "player": "KAZUTAKA H.",
+   "country": "JP",
+   "record": "10-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "かず",
+   "team": [
+    {
+     "pokemon": "Grimmsnarl",
+     "ability": "Prankster",
+     "item": "Light Clay",
+     "nature": "Sassy",
+     "moves": [
+      "Light Screen",
+      "Spirit Break",
+      "Parting Shot",
+      "Reflect"
+     ]
+    },
+    {
+     "pokemon": "Charizard",
+     "ability": "Blaze",
+     "item": "Charizardite Y",
+     "nature": "Timid",
+     "moves": [
+      "Heat Wave",
+      "Hurricane",
+      "Weather Ball",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Swampert",
+     "ability": "Torrent",
+     "item": "Swampertite",
+     "nature": "Adamant",
+     "moves": [
+      "Wave Crash",
+      "Earthquake",
+      "Ice Punch",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Archaludon",
+     "ability": "Stamina",
+     "item": "Leftovers",
+     "nature": "Calm",
+     "moves": [
+      "Dragon Pulse",
+      "Electro Shot",
+      "Flash Cannon",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Venusaur",
+     "ability": "Chlorophyll",
+     "item": "Focus Sash",
+     "nature": "Modest",
+     "moves": [
+      "Sleep Powder",
+      "Leaf Storm",
+      "Sludge Bomb",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Pelipper",
+     "ability": "Drizzle",
+     "item": "Sitrus Berry",
+     "nature": "Modest",
+     "moves": [
+      "Weather Ball",
+      "Hurricane",
+      "Tailwind",
+      "Wide Guard"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 3,
+   "player": "Francisco L.",
+   "country": "BR",
+   "record": "10-2-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Megacisco",
+   "team": [
+    {
+     "pokemon": "Froslass",
+     "ability": "Cursed Body",
+     "item": "Froslassite",
+     "nature": "Timid",
+     "moves": [
+      "Blizzard",
+      "Shadow Ball",
+      "Aurora Veil",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Sneasler",
+     "ability": "Unburden",
+     "item": "White Herb",
+     "nature": "Adamant",
+     "moves": [
+      "Dire Claw",
+      "Close Combat",
+      "Fake Out",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Lycanroc [Dusk Form]",
+     "ability": "Tough Claws",
+     "item": "Focus Sash",
+     "nature": "Adamant",
+     "moves": [
+      "Rock Slide",
+      "Accelerock",
+      "Protect",
+      "Close Combat"
+     ]
+    },
+    {
+     "pokemon": "Kingambit",
+     "ability": "Defiant",
+     "item": "Black Glasses",
+     "nature": "Adamant",
+     "moves": [
+      "Kowtow Cleave",
+      "Sucker Punch",
+      "Swords Dance",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Basculegion [Male]",
+     "ability": "Adaptability",
+     "item": "Life Orb",
+     "nature": "Adamant",
+     "moves": [
+      "Last Respects",
+      "Aqua Jet",
+      "Protect",
+      "Wave Crash"
+     ]
+    },
+    {
+     "pokemon": "Scovillain",
+     "ability": "Moody",
+     "item": "Scovillainite",
+     "nature": "Bold",
+     "moves": [
+      "Giga Drain",
+      "Overheat",
+      "Rage Powder",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 4,
+   "player": "IZHAQ H.",
+   "country": "FR",
+   "record": "9-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Zakitsu",
+   "team": [
+    {
+     "pokemon": "Gengar",
+     "ability": "Cursed Body",
+     "item": "Gengarite",
+     "nature": "Modest",
+     "moves": [
+      "Shadow Ball",
+      "Sludge Bomb",
+      "Perish Song",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Incineroar",
+     "ability": "Intimidate",
+     "item": "Passho Berry",
+     "nature": "Relaxed",
+     "moves": [
+      "Fake Out",
+      "Throat Chop",
+      "Protect",
+      "Parting Shot"
+     ]
+    },
+    {
+     "pokemon": "Vivillon",
+     "ability": "Compound Eyes",
+     "item": "Focus Sash",
+     "nature": "Timid",
+     "moves": [
+      "Protect",
+      "Rage Powder",
+      "Hurricane",
+      "Sleep Powder"
+     ]
+    },
+    {
+     "pokemon": "Swampert",
+     "ability": "Torrent",
+     "item": "Swampertite",
+     "nature": "Adamant",
+     "moves": [
+      "Wave Crash",
+      "Protect",
+      "Earthquake",
+      "Ice Punch"
+     ]
+    },
+    {
+     "pokemon": "Politoed",
+     "ability": "Drizzle",
+     "item": "Sitrus Berry",
+     "nature": "Sassy",
+     "moves": [
+      "Perish Song",
+      "Protect",
+      "Weather Ball",
+      "Hypnosis"
+     ]
+    },
+    {
+     "pokemon": "Archaludon",
+     "ability": "Stamina",
+     "item": "Leftovers",
+     "nature": "Bold",
+     "moves": [
+      "Electro Shot",
+      "Dragon Pulse",
+      "Flash Cannon",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 5,
+   "player": "Sanghyeon L.",
+   "country": "KR",
+   "record": "9-2-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "GOAT",
+   "team": [
+    {
+     "pokemon": "Basculegion [Male]",
+     "ability": "Adaptability",
+     "item": "Choice Scarf",
+     "nature": "Jolly",
+     "moves": [
+      "Last Respects",
+      "Wave Crash",
+      "Aqua Jet",
+      "Flip Turn"
+     ]
+    },
+    {
+     "pokemon": "Staraptor",
+     "ability": "Intimidate",
+     "item": "Staraptite",
+     "nature": "Jolly",
+     "moves": [
+      "Brave Bird",
+      "Close Combat",
+      "Roost",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Glimmora",
+     "ability": "Toxic Debris",
+     "item": "Focus Sash",
+     "nature": "Modest",
+     "moves": [
+      "Power Gem",
+      "Sludge Bomb",
+      "Earth Power",
+      "Spiky Shield"
+     ]
+    },
+    {
+     "pokemon": "Whimsicott",
+     "ability": "Prankster",
+     "item": "Life Orb",
+     "nature": "Modest",
+     "moves": [
+      "Moonblast",
+      "Grass Knot",
+      "Tailwind",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Incineroar",
+     "ability": "Intimidate",
+     "item": "Sitrus Berry",
+     "nature": "Impish",
+     "moves": [
+      "Fake Out",
+      "Taunt",
+      "Parting Shot",
+      "Flare Blitz"
+     ]
+    },
+    {
+     "pokemon": "Charizard",
+     "ability": "Blaze",
+     "item": "Charizardite Y",
+     "nature": "Timid",
+     "moves": [
+      "Protect",
+      "Heat Wave",
+      "Weather Ball",
+      "Solar Beam"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 6,
+   "player": "Anthony B.",
+   "country": "BR",
+   "record": "8-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Tony",
+   "team": [
+    {
+     "pokemon": "Kingambit",
+     "ability": "Defiant",
+     "item": "Focus Sash",
+     "nature": "Adamant",
+     "moves": [
+      "Kowtow Cleave",
+      "Sucker Punch",
+      "Iron Head",
+      "Low Kick"
+     ]
+    },
+    {
+     "pokemon": "Aerodactyl",
+     "ability": "Unnerve",
+     "item": "Aerodactylite",
+     "nature": "Jolly",
+     "moves": [
+      "Rock Slide",
+      "Dual Wingbeat",
+      "Tailwind",
+      "Ice Fang"
+     ]
+    },
+    {
+     "pokemon": "Farigiraf",
+     "ability": "Armor Tail",
+     "item": "Sitrus Berry",
+     "nature": "Bold",
+     "moves": [
+      "Psychic",
+      "Thunderbolt",
+      "Sunny Day",
+      "Trick Room"
+     ]
+    },
+    {
+     "pokemon": "Garchomp",
+     "ability": "Rough Skin",
+     "item": "Life Orb",
+     "nature": "Jolly",
+     "moves": [
+      "Earthquake",
+      "Rock Slide",
+      "Dragon Claw",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Charizard",
+     "ability": "Blaze",
+     "item": "Charizardite Y",
+     "nature": "Modest",
+     "moves": [
+      "Heat Wave",
+      "Weather Ball",
+      "Solar Beam",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Sylveon",
+     "ability": "Pixilate",
+     "item": "Fairy Feather",
+     "nature": "Modest",
+     "moves": [
+      "Hyper Beam",
+      "Hyper Voice",
+      "Quick Attack",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 7,
+   "player": "Rinako T.",
+   "country": "JP",
+   "record": "8-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "りなこ",
+   "team": [
+    {
+     "pokemon": "Grimmsnarl",
+     "ability": "Prankster",
+     "item": "Roseli Berry",
+     "nature": "Impish",
+     "moves": [
+      "Fake Out",
+      "Fake Tears",
+      "Scary Face",
+      "Parting Shot"
+     ]
+    },
+    {
+     "pokemon": "Ninetales [Alolan Form]",
+     "ability": "Snow Warning",
+     "item": "Light Clay",
+     "nature": "Timid",
+     "moves": [
+      "Blizzard",
+      "Aurora Veil",
+      "Freeze-Dry",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Kingambit",
+     "ability": "Defiant",
+     "item": "Life Orb",
+     "nature": "Adamant",
+     "moves": [
+      "Kowtow Cleave",
+      "Sucker Punch",
+      "Iron Head",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Glimmora",
+     "ability": "Toxic Debris",
+     "item": "Focus Sash",
+     "nature": "Modest",
+     "moves": [
+      "Power Gem",
+      "Sludge Bomb",
+      "Earth Power",
+      "Spiky Shield"
+     ]
+    },
+    {
+     "pokemon": "Staraptor",
+     "ability": "Intimidate",
+     "item": "Staraptite",
+     "nature": "Jolly",
+     "moves": [
+      "Brave Bird",
+      "Close Combat",
+      "Roost",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Sinistcha [Unremarkable Form]",
+     "ability": "Hospitality",
+     "item": "Occa Berry",
+     "nature": "Bold",
+     "moves": [
+      "Matcha Gotcha",
+      "Rage Powder",
+      "Trick Room",
+      "Life Dew"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 8,
+   "player": "Oskar B.",
+   "country": "AU",
+   "record": "8-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Floette [Eternal Flower]",
+     "ability": "Flower Veil",
+     "item": "Floettite",
+     "nature": "Modest",
+     "moves": [
+      "Light of Ruin",
+      "Moonblast",
+      "Dazzling Gleam",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Whimsicott",
+     "ability": "Prankster",
+     "item": "Focus Sash",
+     "nature": "Timid",
+     "moves": [
+      "Tailwind",
+      "Protect",
+      "Moonblast",
+      "Encore"
+     ]
+    },
+    {
+     "pokemon": "Basculegion [Male]",
+     "ability": "Adaptability",
+     "item": "Life Orb",
+     "nature": "Adamant",
+     "moves": [
+      "Last Respects",
+      "Wave Crash",
+      "Aqua Jet",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Garchomp",
+     "ability": "Rough Skin",
+     "item": "Sitrus Berry",
+     "nature": "Adamant",
+     "moves": [
+      "Earthquake",
+      "Dragon Claw",
+      "Protect",
+      "Rock Slide"
+     ]
+    },
+    {
+     "pokemon": "Charizard",
+     "ability": "Solar Power",
+     "item": "Charizardite Y",
+     "nature": "Modest",
+     "moves": [
+      "Protect",
+      "Heat Wave",
+      "Solar Beam",
+      "Weather Ball"
+     ]
+    },
+    {
+     "pokemon": "Kingambit",
+     "ability": "Defiant",
+     "item": "Chople Berry",
+     "nature": "Adamant",
+     "moves": [
+      "Sucker Punch",
+      "Low Kick",
+      "Kowtow Cleave",
+      "Iron Head"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 9,
+   "player": "Ziyu G.",
+   "country": "UK",
+   "record": "7-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "andy",
+   "team": [
+    {
+     "pokemon": "Swampert",
+     "ability": "Damp",
+     "item": "Swampertite",
+     "nature": "Adamant",
+     "moves": [
+      "Earthquake",
+      "Wave Crash",
+      "Ice Punch",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Pelipper",
+     "ability": "Drizzle",
+     "item": "Sitrus Berry",
+     "nature": "Modest",
+     "moves": [
+      "Weather Ball",
+      "Hurricane",
+      "Wide Guard",
+      "Tailwind"
+     ]
+    },
+    {
+     "pokemon": "Grimmsnarl",
+     "ability": "Prankster",
+     "item": "Light Clay",
+     "nature": "Sassy",
+     "moves": [
+      "Spirit Break",
+      "Parting Shot",
+      "Reflect",
+      "Light Screen"
+     ]
+    },
+    {
+     "pokemon": "Charizard",
+     "ability": "Blaze",
+     "item": "Charizardite Y",
+     "nature": "Modest",
+     "moves": [
+      "Protect",
+      "Heat Wave",
+      "Weather Ball",
+      "Hurricane"
+     ]
+    },
+    {
+     "pokemon": "Archaludon",
+     "ability": "Stamina",
+     "item": "Leftovers",
+     "nature": "Modest",
+     "moves": [
+      "Protect",
+      "Dragon Pulse",
+      "Flash Cannon",
+      "Electro Shot"
+     ]
+    },
+    {
+     "pokemon": "Venusaur",
+     "ability": "Chlorophyll",
+     "item": "Focus Sash",
+     "nature": "Modest",
+     "moves": [
+      "Sleep Powder",
+      "Sludge Bomb",
+      "Leaf Storm",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 10,
+   "player": "Saki S.",
+   "country": "JP",
+   "record": "7-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "さささ124",
+   "team": [
+    {
+     "pokemon": "Gholdengo",
+     "ability": "Good as Gold",
+     "item": "Life Orb",
+     "nature": "Modest",
+     "moves": [
+      "Make It Rain",
+      "Protect",
+      "Shadow Ball",
+      "Thunderbolt"
+     ]
+    },
+    {
+     "pokemon": "Garchomp",
+     "ability": "Rough Skin",
+     "item": "Sitrus Berry",
+     "nature": "Adamant",
+     "moves": [
+      "Protect",
+      "Earthquake",
+      "Rock Slide",
+      "Dragon Claw"
+     ]
+    },
+    {
+     "pokemon": "Hydreigon",
+     "ability": "Levitate",
+     "item": "Choice Scarf",
+     "nature": "Modest",
+     "moves": [
+      "Dark Pulse",
+      "Dragon Pulse",
+      "Heat Wave",
+      "Snarl"
+     ]
+    },
+    {
+     "pokemon": "Whimsicott",
+     "ability": "Prankster",
+     "item": "Focus Sash",
+     "nature": "Timid",
+     "moves": [
+      "Charm",
+      "Tailwind",
+      "Moonblast",
+      "Encore"
+     ]
+    },
+    {
+     "pokemon": "Glimmora",
+     "ability": "Toxic Debris",
+     "item": "Glimmoranite",
+     "nature": "Modest",
+     "moves": [
+      "Power Gem",
+      "Spiky Shield",
+      "Sludge Bomb",
+      "Earth Power"
+     ]
+    },
+    {
+     "pokemon": "Staraptor",
+     "ability": "Intimidate",
+     "item": "Staraptite",
+     "nature": "Jolly",
+     "moves": [
+      "Protect",
+      "Roost",
+      "Close Combat",
+      "Brave Bird"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 11,
+   "player": "Kyosuke N.",
+   "country": "JP",
+   "record": "6-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "きょうすけ",
+   "team": [
+    {
+     "pokemon": "Toxapex",
+     "ability": "Regenerator",
+     "item": "Leftovers",
+     "nature": "Relaxed",
+     "moves": [
+      "Toxic",
+      "Infestation",
+      "Wide Guard",
+      "Baneful Bunker"
+     ]
+    },
+    {
+     "pokemon": "Incineroar",
+     "ability": "Intimidate",
+     "item": "Sitrus Berry",
+     "nature": "Adamant",
+     "moves": [
+      "Flare Blitz",
+      "Darkest Lariat",
+      "Parting Shot",
+      "Fake Out"
+     ]
+    },
+    {
+     "pokemon": "Charizard",
+     "ability": "Blaze",
+     "item": "Charizardite Y",
+     "nature": "Modest",
+     "moves": [
+      "Heat Wave",
+      "Weather Ball",
+      "Helping Hand",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Sylveon",
+     "ability": "Pixilate",
+     "item": "Fairy Feather",
+     "nature": "Quiet",
+     "moves": [
+      "Hyper Voice",
+      "Quick Attack",
+      "Yawn",
+      "Detect"
+     ]
+    },
+    {
+     "pokemon": "Garchomp",
+     "ability": "Rough Skin",
+     "item": "Choice Scarf",
+     "nature": "Jolly",
+     "moves": [
+      "Dragon Claw",
+      "Earthquake",
+      "Stomping Tantrum",
+      "Rock Slide"
+     ]
+    },
+    {
+     "pokemon": "Venusaur",
+     "ability": "Chlorophyll",
+     "item": "Life Orb",
+     "nature": "Modest",
+     "moves": [
+      "Leaf Storm",
+      "Sludge Bomb",
+      "Earth Power",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 12,
+   "player": "Sana K.",
+   "country": "JP",
+   "record": "6-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "サナ",
+   "team": [
+    {
+     "pokemon": "Scizor",
+     "ability": "Technician",
+     "item": "Scizorite",
+     "nature": "Adamant",
+     "moves": [
+      "Bullet Punch",
+      "Close Combat",
+      "Trailblaze",
+      "Swords Dance"
+     ]
+    },
+    {
+     "pokemon": "Sableye",
+     "ability": "Prankster",
+     "item": "Roseli Berry",
+     "nature": "Calm",
+     "moves": [
+      "Will-O-Wisp",
+      "Rain Dance",
+      "Encore",
+      "Disable"
+     ]
+    },
+    {
+     "pokemon": "Archaludon",
+     "ability": "Stamina",
+     "item": "Leftovers",
+     "nature": "Modest",
+     "moves": [
+      "Dragon Pulse",
+      "Flash Cannon",
+      "Electro Shot",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Dragonite",
+     "ability": "Inner Focus",
+     "item": "Dragoninite",
+     "nature": "Modest",
+     "moves": [
+      "Dragon Pulse",
+      "Hurricane",
+      "Thunder",
+      "Whirlwind"
+     ]
+    },
+    {
+     "pokemon": "Pelipper",
+     "ability": "Drizzle",
+     "item": "Focus Sash",
+     "nature": "Timid",
+     "moves": [
+      "Weather Ball",
+      "Hurricane",
+      "Tailwind",
+      "Wide Guard"
+     ]
+    },
+    {
+     "pokemon": "Garchomp",
+     "ability": "Rough Skin",
+     "item": "Choice Scarf",
+     "nature": "Adamant",
+     "moves": [
+      "Dragon Claw",
+      "Earthquake",
+      "Rock Slide",
+      "Brick Break"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 13,
+   "player": "Caleb S.",
+   "country": "UK",
+   "record": "6-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Bob",
+   "team": [
+    {
+     "pokemon": "Floette [Eternal Flower]",
+     "ability": "Flower Veil",
+     "item": "Floettite",
+     "nature": "Timid",
+     "moves": [
+      "Moonblast",
+      "Protect",
+      "Light of Ruin",
+      "Dazzling Gleam"
+     ]
+    },
+    {
+     "pokemon": "Basculegion [Male]",
+     "ability": "Adaptability",
+     "item": "Mystic Water",
+     "nature": "Adamant",
+     "moves": [
+      "Wave Crash",
+      "Aqua Jet",
+      "Protect",
+      "Last Respects"
+     ]
+    },
+    {
+     "pokemon": "Charizard",
+     "ability": "Blaze",
+     "item": "Charizardite Y",
+     "nature": "Modest",
+     "moves": [
+      "Heat Wave",
+      "Solar Beam",
+      "Protect",
+      "Weather Ball"
+     ]
+    },
+    {
+     "pokemon": "Kingambit",
+     "ability": "Defiant",
+     "item": "Black Glasses",
+     "nature": "Adamant",
+     "moves": [
+      "Kowtow Cleave",
+      "Sucker Punch",
+      "Low Kick",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Whimsicott",
+     "ability": "Prankster",
+     "item": "Focus Sash",
+     "nature": "Timid",
+     "moves": [
+      "Moonblast",
+      "Tailwind",
+      "Protect",
+      "Encore"
+     ]
+    },
+    {
+     "pokemon": "Garchomp",
+     "ability": "Rough Skin",
+     "item": "Life Orb",
+     "nature": "Jolly",
+     "moves": [
+      "Protect",
+      "Earthquake",
+      "Rock Slide",
+      "Dragon Claw"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 14,
+   "player": "Satsuki H.",
+   "country": "JP",
+   "record": "6-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "ネイネイ",
+   "team": [
+    {
+     "pokemon": "Sneasler",
+     "ability": "Poison Touch",
+     "item": "King’s Rock",
+     "nature": "Jolly",
+     "moves": [
+      "Dire Claw",
+      "Throat Chop",
+      "Close Combat",
+      "Fake Out"
+     ]
+    },
+    {
+     "pokemon": "Charizard",
+     "ability": "Blaze",
+     "item": "Charizardite Y",
+     "nature": "Timid",
+     "moves": [
+      "Heat Wave",
+      "Protect",
+      "Solar Beam",
+      "Ancient Power"
+     ]
+    },
+    {
+     "pokemon": "Basculegion [Male]",
+     "ability": "Adaptability",
+     "item": "Choice Scarf",
+     "nature": "Jolly",
+     "moves": [
+      "Last Respects",
+      "Head Smash",
+      "Wave Crash",
+      "Flip Turn"
+     ]
+    },
+    {
+     "pokemon": "Whimsicott",
+     "ability": "Prankster",
+     "item": "Focus Sash",
+     "nature": "Timid",
+     "moves": [
+      "Dazzling Gleam",
+      "Taunt",
+      "Tailwind",
+      "Encore"
+     ]
+    },
+    {
+     "pokemon": "Garchomp",
+     "ability": "Rough Skin",
+     "item": "Life Orb",
+     "nature": "Jolly",
+     "moves": [
+      "Earthquake",
+      "Dragon Claw",
+      "Protect",
+      "Rock Slide"
+     ]
+    },
+    {
+     "pokemon": "Staraptor",
+     "ability": "Intimidate",
+     "item": "Staraptite",
+     "nature": "Jolly",
+     "moves": [
+      "Dual Wingbeat",
+      "Close Combat",
+      "Roost",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 15,
+   "player": "Aoi M.",
+   "country": "JP",
+   "record": "6-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "あおさん！！",
+   "team": [
+    {
+     "pokemon": "Farigiraf",
+     "ability": "Armor Tail",
+     "item": "Sitrus Berry",
+     "nature": "Quiet",
+     "moves": [
+      "Psychic",
+      "Trick Room",
+      "Helping Hand",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Blastoise",
+     "ability": "Rain Dish",
+     "item": "Blastoisinite",
+     "nature": "Quiet",
+     "moves": [
+      "Water Spout",
+      "Dark Pulse",
+      "Aura Sphere",
+      "Fake Out"
+     ]
+    },
+    {
+     "pokemon": "Aerodactyl",
+     "ability": "Unnerve",
+     "item": "Aerodactylite",
+     "nature": "Adamant",
+     "moves": [
+      "Rock Slide",
+      "Dual Wingbeat",
+      "Tailwind",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Sylveon",
+     "ability": "Pixilate",
+     "item": "Fairy Feather",
+     "nature": "Modest",
+     "moves": [
+      "Hyper Voice",
+      "Hyper Beam",
+      "Quick Attack",
+      "Detect"
+     ]
+    },
+    {
+     "pokemon": "Vileplume",
+     "ability": "Chlorophyll",
+     "item": "Focus Sash",
+     "nature": "Timid",
+     "moves": [
+      "Solar Beam",
+      "Sleep Powder",
+      "After You",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Torkoal",
+     "ability": "Drought",
+     "item": "Charcoal",
+     "nature": "Quiet",
+     "moves": [
+      "Eruption",
+      "Heat Wave",
+      "Weather Ball",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 16,
+   "player": "Naoyoshi S.",
+   "country": "JP",
+   "record": "6-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "なおよし",
+   "team": [
+    {
+     "pokemon": "Charizard",
+     "ability": "Blaze",
+     "item": "Charizardite Y",
+     "nature": "Modest",
+     "moves": [
+      "Weather Ball",
+      "Heat Wave",
+      "Hurricane",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Venusaur",
+     "ability": "Chlorophyll",
+     "item": "Focus Sash",
+     "nature": "Modest",
+     "moves": [
+      "Leaf Storm",
+      "Sleep Powder",
+      "Sludge Bomb",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Archaludon",
+     "ability": "Stamina",
+     "item": "Leftovers",
+     "nature": "Calm",
+     "moves": [
+      "Dragon Pulse",
+      "Electro Shot",
+      "Flash Cannon",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Grimmsnarl",
+     "ability": "Prankster",
+     "item": "Light Clay",
+     "nature": "Careful",
+     "moves": [
+      "Spirit Break",
+      "Parting Shot",
+      "Reflect",
+      "Light Screen"
+     ]
+    },
+    {
+     "pokemon": "Swampert",
+     "ability": "Torrent",
+     "item": "Swampertite",
+     "nature": "Adamant",
+     "moves": [
+      "Wave Crash",
+      "Ice Punch",
+      "High Horsepower",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Pelipper",
+     "ability": "Drizzle",
+     "item": "Sitrus Berry",
+     "nature": "Bold",
+     "moves": [
+      "Hurricane",
+      "Weather Ball",
+      "Tailwind",
+      "Wide Guard"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 17,
+   "player": "James C.",
+   "country": "US",
+   "record": "6-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "James",
+   "team": [
+    {
+     "pokemon": "Froslass",
+     "ability": "Cursed Body",
+     "item": "Froslassite",
+     "nature": "Timid",
+     "moves": [
+      "Blizzard",
+      "Shadow Ball",
+      "Aurora Veil",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Scovillain",
+     "ability": "Moody",
+     "item": "Scovillainite",
+     "nature": "Bold",
+     "moves": [
+      "Rage Powder",
+      "Overheat",
+      "Giga Drain",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Lycanroc [Dusk Form]",
+     "ability": "Tough Claws",
+     "item": "Focus Sash",
+     "nature": "Adamant",
+     "moves": [
+      "Accelerock",
+      "Rock Slide",
+      "Close Combat",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Sneasler",
+     "ability": "Unburden",
+     "item": "White Herb",
+     "nature": "Adamant",
+     "moves": [
+      "Close Combat",
+      "Gunk Shot",
+      "Protect",
+      "Fake Out"
+     ]
+    },
+    {
+     "pokemon": "Basculegion [Male]",
+     "ability": "Adaptability",
+     "item": "Sitrus Berry",
+     "nature": "Adamant",
+     "moves": [
+      "Aqua Jet",
+      "Wave Crash",
+      "Last Respects",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Kingambit",
+     "ability": "Defiant",
+     "item": "Black Glasses",
+     "nature": "Adamant",
+     "moves": [
+      "Kowtow Cleave",
+      "Sucker Punch",
+      "Swords Dance",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 18,
+   "player": "KAZUMA I.",
+   "country": "JP",
+   "record": "6-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "シンイチ",
+   "team": [
+    {
+     "pokemon": "Incineroar",
+     "ability": "Intimidate",
+     "item": "Sitrus Berry",
+     "nature": "Impish",
+     "moves": [
+      "Fake Out",
+      "Flare Blitz",
+      "Helping Hand",
+      "Parting Shot"
+     ]
+    },
+    {
+     "pokemon": "Sneasler",
+     "ability": "Poison Touch",
+     "item": "Focus Sash",
+     "nature": "Jolly",
+     "moves": [
+      "Poison Jab",
+      "Close Combat",
+      "Fake Out",
+      "Quick Guard"
+     ]
+    },
+    {
+     "pokemon": "Kingambit",
+     "ability": "Defiant",
+     "item": "Life Orb",
+     "nature": "Adamant",
+     "moves": [
+      "Kowtow Cleave",
+      "Swords Dance",
+      "Sucker Punch",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Delphox",
+     "ability": "Blaze",
+     "item": "Delphoxite",
+     "nature": "Timid",
+     "moves": [
+      "Heat Wave",
+      "Psychic",
+      "Nasty Plot",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Blastoise",
+     "ability": "Torrent",
+     "item": "Blastoisinite",
+     "nature": "Modest",
+     "moves": [
+      "Water Spout",
+      "Dark Pulse",
+      "Shell Smash",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Sinistcha [Unremarkable Form]",
+     "ability": "Hospitality",
+     "item": "Colbur Berry",
+     "nature": "Bold",
+     "moves": [
+      "Matcha Gotcha",
+      "Rage Powder",
+      "Trick Room",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 19,
+   "player": "Damon Z.",
+   "country": "NZ",
+   "record": "6-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "NinjaDamon",
+   "team": [
+    {
+     "pokemon": "Sneasler",
+     "ability": "Poison Touch",
+     "item": "Focus Sash",
+     "nature": "Jolly",
+     "moves": [
+      "Close Combat",
+      "Poison Jab",
+      "Fake Out",
+      "Quick Guard"
+     ]
+    },
+    {
+     "pokemon": "Delphox",
+     "ability": "Blaze",
+     "item": "Delphoxite",
+     "nature": "Timid",
+     "moves": [
+      "Heat Wave",
+      "Psychic",
+      "Nasty Plot",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Incineroar",
+     "ability": "Intimidate",
+     "item": "Sitrus Berry",
+     "nature": "Careful",
+     "moves": [
+      "Fake Out",
+      "Throat Chop",
+      "Flare Blitz",
+      "Parting Shot"
+     ]
+    },
+    {
+     "pokemon": "Blastoise",
+     "ability": "Rain Dish",
+     "item": "Blastoisinite",
+     "nature": "Modest",
+     "moves": [
+      "Water Spout",
+      "Dark Pulse",
+      "Shell Smash",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Sinistcha [Unremarkable Form]",
+     "ability": "Hospitality",
+     "item": "Colbur Berry",
+     "nature": "Bold",
+     "moves": [
+      "Matcha Gotcha",
+      "Trick Room",
+      "Rage Powder",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Kingambit",
+     "ability": "Defiant",
+     "item": "Life Orb",
+     "nature": "Adamant",
+     "moves": [
+      "Kowtow Cleave",
+      "Sucker Punch",
+      "Swords Dance",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 20,
+   "player": "Zachary T.",
+   "country": "US",
+   "record": "6-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "zach",
+   "team": [
+    {
+     "pokemon": "Sinistcha [Unremarkable Form]",
+     "ability": "Hospitality",
+     "item": "Sitrus Berry",
+     "nature": "Bold",
+     "moves": [
+      "Matcha Gotcha",
+      "Trick Room",
+      "Rage Powder",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Garchomp",
+     "ability": "Rough Skin",
+     "item": "Roseli Berry",
+     "nature": "Impish",
+     "moves": [
+      "Stomping Tantrum",
+      "Earthquake",
+      "Dragon Claw",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Whimsicott",
+     "ability": "Prankster",
+     "item": "Focus Sash",
+     "nature": "Timid",
+     "moves": [
+      "Tailwind",
+      "Encore",
+      "Tickle",
+      "Moonblast"
+     ]
+    },
+    {
+     "pokemon": "Charizard",
+     "ability": "Blaze",
+     "item": "Charizardite X",
+     "nature": "Adamant",
+     "moves": [
+      "Flare Blitz",
+      "Crunch",
+      "Protect",
+      "Dragon Claw"
+     ]
+    },
+    {
+     "pokemon": "Basculegion [Male]",
+     "ability": "Adaptability",
+     "item": "Choice Scarf",
+     "nature": "Jolly",
+     "moves": [
+      "Wave Crash",
+      "Aqua Jet",
+      "Last Respects",
+      "Flip Turn"
+     ]
+    },
+    {
+     "pokemon": "Staraptor",
+     "ability": "Intimidate",
+     "item": "Staraptite",
+     "nature": "Jolly",
+     "moves": [
+      "Brave Bird",
+      "Close Combat",
+      "Protect",
+      "Roost"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 21,
+   "player": "Hideo U.",
+   "country": "JP",
+   "record": "6-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "ひでお",
+   "team": [
+    {
+     "pokemon": "Sinistcha [Unremarkable Form]",
+     "ability": "Hospitality",
+     "item": "Occa Berry",
+     "nature": "Calm",
+     "moves": [
+      "Matcha Gotcha",
+      "Rage Powder",
+      "Trick Room",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Charizard",
+     "ability": "Blaze",
+     "item": "Charizardite Y",
+     "nature": "Modest",
+     "moves": [
+      "Heat Wave",
+      "Weather Ball",
+      "Solar Beam",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Incineroar",
+     "ability": "Intimidate",
+     "item": "Sitrus Berry",
+     "nature": "Careful",
+     "moves": [
+      "Throat Chop",
+      "Flare Blitz",
+      "Fake Out",
+      "Parting Shot"
+     ]
+    },
+    {
+     "pokemon": "Garchomp",
+     "ability": "Rough Skin",
+     "item": "Choice Scarf",
+     "nature": "Jolly",
+     "moves": [
+      "Dragon Claw",
+      "Earthquake",
+      "Stomping Tantrum",
+      "Rock Tomb"
+     ]
+    },
+    {
+     "pokemon": "Floette [Eternal Flower]",
+     "ability": "Flower Veil",
+     "item": "Floettite",
+     "nature": "Modest",
+     "moves": [
+      "Dazzling Gleam",
+      "Moonblast",
+      "Calm Mind",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Aerodactyl",
+     "ability": "Unnerve",
+     "item": "Focus Sash",
+     "nature": "Jolly",
+     "moves": [
+      "Rock Slide",
+      "Dual Wingbeat",
+      "Tailwind",
+      "Wide Guard"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 22,
+   "player": "Avery V.",
+   "country": "US",
+   "record": "6-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "AVERY",
+   "team": [
+    {
+     "pokemon": "Sableye",
+     "ability": "Prankster",
+     "item": "Sablenite",
+     "nature": "Sassy",
+     "moves": [
+      "Quash",
+      "Rain Dance",
+      "Will-O-Wisp",
+      "Taunt"
+     ]
+    },
+    {
+     "pokemon": "Pelipper",
+     "ability": "Drizzle",
+     "item": "Sitrus Berry",
+     "nature": "Modest",
+     "moves": [
+      "Weather Ball",
+      "Protect",
+      "Tailwind",
+      "Hurricane"
+     ]
+    },
+    {
+     "pokemon": "Basculegion [Male]",
+     "ability": "Adaptability",
+     "item": "Choice Scarf",
+     "nature": "Jolly",
+     "moves": [
+      "Wave Crash",
+      "Last Respects",
+      "Aqua Jet",
+      "Flip Turn"
+     ]
+    },
+    {
+     "pokemon": "Archaludon",
+     "ability": "Stamina",
+     "item": "Leftovers",
+     "nature": "Modest",
+     "moves": [
+      "Electro Shot",
+      "Flash Cannon",
+      "Dragon Pulse",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Floette [Eternal Flower]",
+     "ability": "Flower Veil",
+     "item": "Floettite",
+     "nature": "Timid",
+     "moves": [
+      "Moonblast",
+      "Dazzling Gleam",
+      "Protect",
+      "Light of Ruin"
+     ]
+    },
+    {
+     "pokemon": "Sneasler",
+     "ability": "Unburden",
+     "item": "White Herb",
+     "nature": "Adamant",
+     "moves": [
+      "Dire Claw",
+      "Close Combat",
+      "Rock Slide",
+      "Fake Out"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 23,
+   "player": "Cameron C.",
+   "country": "US",
+   "record": "5-4-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "NoLimitCam",
+   "team": [
+    {
+     "pokemon": "Basculegion [Male]",
+     "ability": "Adaptability",
+     "item": "Mystic Water",
+     "nature": "Adamant",
+     "moves": [
+      "Last Respects",
+      "Wave Crash",
+      "Aqua Jet",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Garchomp",
+     "ability": "Rough Skin",
+     "item": "Life Orb",
+     "nature": "Jolly",
+     "moves": [
+      "Earthquake",
+      "Rock Slide",
+      "Dragon Claw",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Kingambit",
+     "ability": "Defiant",
+     "item": "Chople Berry",
+     "nature": "Adamant",
+     "moves": [
+      "Kowtow Cleave",
+      "Sucker Punch",
+      "Iron Head",
+      "Low Kick"
+     ]
+    },
+    {
+     "pokemon": "Floette [Eternal Flower]",
+     "ability": "Flower Veil",
+     "item": "Floettite",
+     "nature": "Modest",
+     "moves": [
+      "Light of Ruin",
+      "Moonblast",
+      "Dazzling Gleam",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Charizard",
+     "ability": "Blaze",
+     "item": "Charizardite Y",
+     "nature": "Modest",
+     "moves": [
+      "Heat Wave",
+      "Weather Ball",
+      "Solar Beam",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Whimsicott",
+     "ability": "Prankster",
+     "item": "Focus Sash",
+     "nature": "Timid",
+     "moves": [
+      "Tailwind",
+      "Moonblast",
+      "Encore",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 24,
+   "player": "Sebastian A.",
+   "country": "US",
+   "record": "5-4-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "sebastian",
+   "team": [
+    {
+     "pokemon": "Farigiraf",
+     "ability": "Armor Tail",
+     "item": "Sitrus Berry",
+     "nature": "Relaxed",
+     "moves": [
+      "Psychic",
+      "Thunderbolt",
+      "Trick Room",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Scovillain",
+     "ability": "Insomnia",
+     "item": "Scovillainite",
+     "nature": "Bold",
+     "moves": [
+      "Rage Powder",
+      "Overheat",
+      "Giga Drain",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Staraptor",
+     "ability": "Intimidate",
+     "item": "Staraptite",
+     "nature": "Jolly",
+     "moves": [
+      "Close Combat",
+      "Brave Bird",
+      "Tailwind",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Gholdengo",
+     "ability": "Good as Gold",
+     "item": "Focus Sash",
+     "nature": "Modest",
+     "moves": [
+      "Shadow Ball",
+      "Make It Rain",
+      "Power Gem",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Basculegion [Male]",
+     "ability": "Adaptability",
+     "item": "Choice Scarf",
+     "nature": "Jolly",
+     "moves": [
+      "Flip Turn",
+      "Wave Crash",
+      "Aqua Jet",
+      "Last Respects"
+     ]
+    },
+    {
+     "pokemon": "Tyranitar",
+     "ability": "Sand Stream",
+     "item": "Chople Berry",
+     "nature": "Adamant",
+     "moves": [
+      "Rock Slide",
+      "Knock Off",
+      "Low Kick",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 25,
+   "player": "Tomoka K.",
+   "country": "JP",
+   "record": "5-4-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "うどん",
+   "team": [
+    {
+     "pokemon": "Garchomp",
+     "ability": "Rough Skin",
+     "item": "Choice Scarf",
+     "nature": "Jolly",
+     "moves": [
+      "Earthquake",
+      "Stomping Tantrum",
+      "Rock Slide",
+      "Dragon Claw"
+     ]
+    },
+    {
+     "pokemon": "Toxapex",
+     "ability": "Regenerator",
+     "item": "Leftovers",
+     "nature": "Relaxed",
+     "moves": [
+      "Infestation",
+      "Toxic",
+      "Wide Guard",
+      "Baneful Bunker"
+     ]
+    },
+    {
+     "pokemon": "Sylveon",
+     "ability": "Pixilate",
+     "item": "Fairy Feather",
+     "nature": "Modest",
+     "moves": [
+      "Hyper Voice",
+      "Quick Attack",
+      "Yawn",
+      "Detect"
+     ]
+    },
+    {
+     "pokemon": "Venusaur",
+     "ability": "Chlorophyll",
+     "item": "Life Orb",
+     "nature": "Modest",
+     "moves": [
+      "Leaf Storm",
+      "Sludge Bomb",
+      "Earth Power",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Incineroar",
+     "ability": "Intimidate",
+     "item": "Sitrus Berry",
+     "nature": "Impish",
+     "moves": [
+      "Flare Blitz",
+      "Darkest Lariat",
+      "Fake Out",
+      "Parting Shot"
+     ]
+    },
+    {
+     "pokemon": "Charizard",
+     "ability": "Blaze",
+     "item": "Charizardite Y",
+     "nature": "Timid",
+     "moves": [
+      "Heat Wave",
+      "Weather Ball",
+      "Ancient Power",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 26,
+   "player": "Liam S.",
+   "country": "US",
+   "record": "5-4-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Liam",
+   "team": [
+    {
+     "pokemon": "Whimsicott",
+     "ability": "Prankster",
+     "item": "Occa Berry",
+     "nature": "Timid",
+     "moves": [
+      "Tailwind",
+      "Moonblast",
+      "Charm",
+      "Light Screen"
+     ]
+    },
+    {
+     "pokemon": "Staraptor",
+     "ability": "Intimidate",
+     "item": "Staraptite",
+     "nature": "Jolly",
+     "moves": [
+      "Close Combat",
+      "Brave Bird",
+      "Roost",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Kingambit",
+     "ability": "Defiant",
+     "item": "Life Orb",
+     "nature": "Adamant",
+     "moves": [
+      "Kowtow Cleave",
+      "Sucker Punch",
+      "Iron Head",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Delphox",
+     "ability": "Blaze",
+     "item": "Delphoxite",
+     "nature": "Timid",
+     "moves": [
+      "Heat Wave",
+      "Psyshock",
+      "Substitute",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Glimmora",
+     "ability": "Toxic Debris",
+     "item": "Focus Sash",
+     "nature": "Timid",
+     "moves": [
+      "Power Gem",
+      "Sludge Bomb",
+      "Spiky Shield",
+      "Earth Power"
+     ]
+    },
+    {
+     "pokemon": "Drampa",
+     "ability": "Cloud Nine",
+     "item": "Haban Berry",
+     "nature": "Modest",
+     "moves": [
+      "Dragon Pulse",
+      "Protect",
+      "Grass Knot",
+      "Earth Power"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 27,
+   "player": "Theo K.",
+   "country": "US",
+   "record": "4-3-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "JonnyPocket",
+   "team": [
+    {
+     "pokemon": "Delphox",
+     "ability": "Blaze",
+     "item": "Delphoxite",
+     "nature": "Timid",
+     "moves": [
+      "Heat Wave",
+      "Psychic",
+      "Substitute",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Staraptor",
+     "ability": "Intimidate",
+     "item": "Staraptite",
+     "nature": "Jolly",
+     "moves": [
+      "Brave Bird",
+      "Close Combat",
+      "Roost",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Glimmora",
+     "ability": "Toxic Debris",
+     "item": "Focus Sash",
+     "nature": "Timid",
+     "moves": [
+      "Sludge Bomb",
+      "Power Gem",
+      "Earth Power",
+      "Spiky Shield"
+     ]
+    },
+    {
+     "pokemon": "Garchomp",
+     "ability": "Rough Skin",
+     "item": "Life Orb",
+     "nature": "Jolly",
+     "moves": [
+      "Earthquake",
+      "Dragon Claw",
+      "Rock Slide",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Kingambit",
+     "ability": "Defiant",
+     "item": "Chople Berry",
+     "nature": "Adamant",
+     "moves": [
+      "Iron Head",
+      "Kowtow Cleave",
+      "Low Kick",
+      "Sucker Punch"
+     ]
+    },
+    {
+     "pokemon": "Whimsicott",
+     "ability": "Prankster",
+     "item": "Fairy Feather",
+     "nature": "Timid",
+     "moves": [
+      "Moonblast",
+      "Tailwind",
+      "Charm",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 28,
+   "player": "Haruto A.",
+   "country": "JP",
+   "record": "4-3-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "はる",
+   "team": [
+    {
+     "pokemon": "Blastoise",
+     "ability": "Rain Dish",
+     "item": "Blastoisinite",
+     "nature": "Modest",
+     "moves": [
+      "Dark Pulse",
+      "Water Spout",
+      "Shell Smash",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Sinistcha [Masterpiece Form]",
+     "ability": "Hospitality",
+     "item": "Kasib Berry",
+     "nature": "Bold",
+     "moves": [
+      "Matcha Gotcha",
+      "Trick Room",
+      "Rage Powder",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Sneasler",
+     "ability": "Poison Touch",
+     "item": "Life Orb",
+     "nature": "Jolly",
+     "moves": [
+      "Poison Jab",
+      "Close Combat",
+      "Fake Out",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Delphox",
+     "ability": "Blaze",
+     "item": "Delphoxite",
+     "nature": "Timid",
+     "moves": [
+      "Heat Wave",
+      "Psychic",
+      "Nasty Plot",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Kingambit",
+     "ability": "Defiant",
+     "item": "Focus Sash",
+     "nature": "Adamant",
+     "moves": [
+      "Kowtow Cleave",
+      "Sucker Punch",
+      "Swords Dance",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Incineroar",
+     "ability": "Intimidate",
+     "item": "Sitrus Berry",
+     "nature": "Impish",
+     "moves": [
+      "Fake Out",
+      "Flare Blitz",
+      "Parting Shot",
+      "Darkest Lariat"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 29,
+   "player": "YUZURU S.",
+   "country": "JP",
+   "record": "4-3-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "さとてるZ",
+   "team": [
+    {
+     "pokemon": "Ceruledge",
+     "ability": "Flash Fire",
+     "item": "Colbur Berry",
+     "nature": "Adamant",
+     "moves": [
+      "Bitter Blade",
+      "Shadow Sneak",
+      "Swords Dance",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Gyarados",
+     "ability": "Intimidate",
+     "item": "Gyaradosite",
+     "nature": "Adamant",
+     "moves": [
+      "Waterfall",
+      "Crunch",
+      "Dragon Dance",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Kommo-o",
+     "ability": "Soundproof",
+     "item": "Leftovers",
+     "nature": "Modest",
+     "moves": [
+      "Clanging Scales",
+      "Aura Sphere",
+      "Clangorous Soul",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Raichu",
+     "ability": "Lightning Rod",
+     "item": "Raichunite Y",
+     "nature": "Timid",
+     "moves": [
+      "Zap Cannon",
+      "Focus Blast",
+      "Fake Out",
+      "Feint"
+     ]
+    },
+    {
+     "pokemon": "Sinistcha [Masterpiece Form]",
+     "ability": "Hospitality",
+     "item": "Kasib Berry",
+     "nature": "Calm",
+     "moves": [
+      "Matcha Gotcha",
+      "Life Dew",
+      "Rage Powder",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Ninetales [Alolan Form]",
+     "ability": "Snow Warning",
+     "item": "Focus Sash",
+     "nature": "Timid",
+     "moves": [
+      "Blizzard",
+      "Freeze-Dry",
+      "Aurora Veil",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 30,
+   "player": "Haruto M.",
+   "country": "JP",
+   "record": "4-3-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "くろまめ",
+   "team": [
+    {
+     "pokemon": "Excadrill",
+     "ability": "Sand Rush",
+     "item": "Focus Sash",
+     "nature": "Adamant",
+     "moves": [
+      "Iron Head",
+      "High Horsepower",
+      "Rock Slide",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Milotic",
+     "ability": "Competitive",
+     "item": "Sitrus Berry",
+     "nature": "Modest",
+     "moves": [
+      "Scald",
+      "Ice Beam",
+      "Icy Wind",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Gholdengo",
+     "ability": "Good as Gold",
+     "item": "Life Orb",
+     "nature": "Modest",
+     "moves": [
+      "Make It Rain",
+      "Shadow Ball",
+      "Nasty Plot",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Sinistcha [Unremarkable Form]",
+     "ability": "Hospitality",
+     "item": "Colbur Berry",
+     "nature": "Bold",
+     "moves": [
+      "Matcha Gotcha",
+      "Rage Powder",
+      "Trick Room",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Tyranitar",
+     "ability": "Sand Stream",
+     "item": "Tyranitarite",
+     "nature": "Adamant",
+     "moves": [
+      "Rock Slide",
+      "Knock Off",
+      "Low Kick",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Staraptor",
+     "ability": "Intimidate",
+     "item": "Staraptite",
+     "nature": "Jolly",
+     "moves": [
+      "Close Combat",
+      "Brave Bird",
+      "Tailwind",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 31,
+   "player": "Riharu I.",
+   "country": "JP",
+   "record": "4-3-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "りはる",
+   "team": [
+    {
+     "pokemon": "Kingambit",
+     "ability": "Defiant",
+     "item": "Life Orb",
+     "nature": "Adamant",
+     "moves": [
+      "Kowtow Cleave",
+      "Sucker Punch",
+      "Swords Dance",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Sinistcha [Masterpiece Form]",
+     "ability": "Hospitality",
+     "item": "Sitrus Berry",
+     "nature": "Bold",
+     "moves": [
+      "Matcha Gotcha",
+      "Rage Powder",
+      "Trick Room",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Incineroar",
+     "ability": "Intimidate",
+     "item": "Chople Berry",
+     "nature": "Careful",
+     "moves": [
+      "Flare Blitz",
+      "Helping Hand",
+      "Fake Out",
+      "Parting Shot"
+     ]
+    },
+    {
+     "pokemon": "Blastoise",
+     "ability": "Rain Dish",
+     "item": "Blastoisinite",
+     "nature": "Modest",
+     "moves": [
+      "Water Spout",
+      "Dark Pulse",
+      "Shell Smash",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Sneasler",
+     "ability": "Poison Touch",
+     "item": "Focus Sash",
+     "nature": "Jolly",
+     "moves": [
+      "Close Combat",
+      "Dire Claw",
+      "Quick Guard",
+      "Fake Out"
+     ]
+    },
+    {
+     "pokemon": "Delphox",
+     "ability": "Blaze",
+     "item": "Delphoxite",
+     "nature": "Modest",
+     "moves": [
+      "Heat Wave",
+      "Psyshock",
+      "Nasty Plot",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 32,
+   "player": "Samuel M.",
+   "country": "UK",
+   "record": "4-3-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "Samuel",
+   "team": [
+    {
+     "pokemon": "Whimsicott",
+     "ability": "Prankster",
+     "item": "Focus Sash",
+     "nature": "Timid",
+     "moves": [
+      "Moonblast",
+      "Protect",
+      "Encore",
+      "Tailwind"
+     ]
+    },
+    {
+     "pokemon": "Charizard",
+     "ability": "Blaze",
+     "item": "Charizardite Y",
+     "nature": "Modest",
+     "moves": [
+      "Heat Wave",
+      "Solar Beam",
+      "Weather Ball",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Floette [Eternal Flower]",
+     "ability": "Flower Veil",
+     "item": "Floettite",
+     "nature": "Timid",
+     "moves": [
+      "Moonblast",
+      "Dazzling Gleam",
+      "Light of Ruin",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Kingambit",
+     "ability": "Defiant",
+     "item": "Black Glasses",
+     "nature": "Adamant",
+     "moves": [
+      "Iron Head",
+      "Kowtow Cleave",
+      "Sucker Punch",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Basculegion [Male]",
+     "ability": "Adaptability",
+     "item": "Mystic Water",
+     "nature": "Adamant",
+     "moves": [
+      "Protect",
+      "Aqua Jet",
+      "Last Respects",
+      "Wave Crash"
+     ]
+    },
+    {
+     "pokemon": "Garchomp",
+     "ability": "Rough Skin",
+     "item": "Life Orb",
+     "nature": "Jolly",
+     "moves": [
+      "Dragon Claw",
+      "Earthquake",
+      "Rock Slide",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 33,
+   "player": "Chandler K.",
+   "country": "US",
+   "record": "4-3-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "Chandler",
+   "team": [
+    {
+     "pokemon": "Archaludon",
+     "ability": "Stamina",
+     "item": "Leftovers",
+     "nature": "Modest",
+     "moves": [
+      "Dragon Pulse",
+      "Flash Cannon",
+      "Electro Shot",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Sneasler",
+     "ability": "Poison Touch",
+     "item": "Focus Sash",
+     "nature": "Jolly",
+     "moves": [
+      "Fake Out",
+      "Close Combat",
+      "Poison Jab",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Grimmsnarl",
+     "ability": "Prankster",
+     "item": "Light Clay",
+     "nature": "Careful",
+     "moves": [
+      "Spirit Break",
+      "Reflect",
+      "Light Screen",
+      "Parting Shot"
+     ]
+    },
+    {
+     "pokemon": "Swampert",
+     "ability": "Torrent",
+     "item": "Swampertite",
+     "nature": "Adamant",
+     "moves": [
+      "Earthquake",
+      "Ice Punch",
+      "Protect",
+      "Wave Crash"
+     ]
+    },
+    {
+     "pokemon": "Pelipper",
+     "ability": "Drizzle",
+     "item": "Sitrus Berry",
+     "nature": "Modest",
+     "moves": [
+      "Hurricane",
+      "Protect",
+      "Weather Ball",
+      "Tailwind"
+     ]
+    },
+    {
+     "pokemon": "Venusaur",
+     "ability": "Chlorophyll",
+     "item": "Venusaurite",
+     "nature": "Modest",
+     "moves": [
+      "Giga Drain",
+      "Sludge Bomb",
+      "Earth Power",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 34,
+   "player": "Zayn L.",
+   "country": "US",
+   "record": "4-3-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "Zayn",
+   "team": [
+    {
+     "pokemon": "Staraptor",
+     "ability": "Intimidate",
+     "item": "Staraptite",
+     "nature": "Jolly",
+     "moves": [
+      "Close Combat",
+      "Brave Bird",
+      "Roost",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Kingambit",
+     "ability": "Defiant",
+     "item": "Occa Berry",
+     "nature": "Adamant",
+     "moves": [
+      "Kowtow Cleave",
+      "Iron Head",
+      "Sucker Punch",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Basculegion [Male]",
+     "ability": "Adaptability",
+     "item": "Life Orb",
+     "nature": "Adamant",
+     "moves": [
+      "Wave Crash",
+      "Last Respects",
+      "Aqua Jet",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Charizard",
+     "ability": "Blaze",
+     "item": "Charizardite Y",
+     "nature": "Modest",
+     "moves": [
+      "Heat Wave",
+      "Solar Beam",
+      "Weather Ball",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Whimsicott",
+     "ability": "Prankster",
+     "item": "Focus Sash",
+     "nature": "Timid",
+     "moves": [
+      "Moonblast",
+      "Tailwind",
+      "Charm",
+      "Encore"
+     ]
+    },
+    {
+     "pokemon": "Sneasler",
+     "ability": "Unburden",
+     "item": "White Herb",
+     "nature": "Jolly",
+     "moves": [
+      "Close Combat",
+      "Dire Claw",
+      "Throat Chop",
+      "Fake Out"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 35,
+   "player": "AKISATO F.",
+   "country": "JP",
+   "record": "4-3-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "Akky",
+   "team": [
+    {
+     "pokemon": "Basculegion [Male]",
+     "ability": "Adaptability",
+     "item": "Choice Scarf",
+     "nature": "Jolly",
+     "moves": [
+      "Last Respects",
+      "Wave Crash",
+      "Flip Turn",
+      "Aqua Jet"
+     ]
+    },
+    {
+     "pokemon": "Sylveon",
+     "ability": "Pixilate",
+     "item": "Fairy Feather",
+     "nature": "Modest",
+     "moves": [
+      "Hyper Voice",
+      "Quick Attack",
+      "Hyper Beam",
+      "Detect"
+     ]
+    },
+    {
+     "pokemon": "Kingambit",
+     "ability": "Defiant",
+     "item": "Focus Sash",
+     "nature": "Adamant",
+     "moves": [
+      "Kowtow Cleave",
+      "Iron Head",
+      "Sucker Punch",
+      "Low Kick"
+     ]
+    },
+    {
+     "pokemon": "Charizard",
+     "ability": "Solar Power",
+     "item": "Charizardite Y",
+     "nature": "Modest",
+     "moves": [
+      "Heat Wave",
+      "Solar Beam",
+      "Ancient Power",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Aerodactyl",
+     "ability": "Unnerve",
+     "item": "Aerodactylite",
+     "nature": "Jolly",
+     "moves": [
+      "Rock Slide",
+      "Dual Wingbeat",
+      "Taunt",
+      "Tailwind"
+     ]
+    },
+    {
+     "pokemon": "Garchomp",
+     "ability": "Rough Skin",
+     "item": "Life Orb",
+     "nature": "Jolly",
+     "moves": [
+      "Dragon Claw",
+      "Earthquake",
+      "Stomping Tantrum",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 36,
+   "player": "Adrian H.",
+   "country": "AU",
+   "record": "4-3-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "AJ",
+   "team": [
+    {
+     "pokemon": "Grimmsnarl",
+     "ability": "Prankster",
+     "item": "Light Clay",
+     "nature": "Sassy",
+     "moves": [
+      "Spirit Break",
+      "Reflect",
+      "Light Screen",
+      "Parting Shot"
+     ]
+    },
+    {
+     "pokemon": "Swampert",
+     "ability": "Damp",
+     "item": "Swampertite",
+     "nature": "Adamant",
+     "moves": [
+      "Wave Crash",
+      "Earthquake",
+      "Ice Punch",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Venusaur",
+     "ability": "Chlorophyll",
+     "item": "Focus Sash",
+     "nature": "Modest",
+     "moves": [
+      "Sludge Bomb",
+      "Leaf Storm",
+      "Sleep Powder",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Charizard",
+     "ability": "Blaze",
+     "item": "Charizardite Y",
+     "nature": "Timid",
+     "moves": [
+      "Heat Wave",
+      "Weather Ball",
+      "Hurricane",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Archaludon",
+     "ability": "Stamina",
+     "item": "Leftovers",
+     "nature": "Calm",
+     "moves": [
+      "Dragon Pulse",
+      "Electro Shot",
+      "Flash Cannon",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Pelipper",
+     "ability": "Drizzle",
+     "item": "Sitrus Berry",
+     "nature": "Modest",
+     "moves": [
+      "Weather Ball",
+      "Hurricane",
+      "Tailwind",
+      "Wide Guard"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 37,
+   "player": "Brantley M.",
+   "country": "CA",
+   "record": "4-3-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "Brantley",
+   "team": [
+    {
+     "pokemon": "Pelipper",
+     "ability": "Drizzle",
+     "item": "Sitrus Berry",
+     "nature": "Modest",
+     "moves": [
+      "Wide Guard",
+      "Hurricane",
+      "Weather Ball",
+      "Tailwind"
+     ]
+    },
+    {
+     "pokemon": "Metagross",
+     "ability": "Clear Body",
+     "item": "Metagrossite",
+     "nature": "Jolly",
+     "moves": [
+      "Psychic Fangs",
+      "Protect",
+      "Iron Head",
+      "Body Press"
+     ]
+    },
+    {
+     "pokemon": "Archaludon",
+     "ability": "Stamina",
+     "item": "Leftovers",
+     "nature": "Modest",
+     "moves": [
+      "Protect",
+      "Flash Cannon",
+      "Dragon Pulse",
+      "Electro Shot"
+     ]
+    },
+    {
+     "pokemon": "Swampert",
+     "ability": "Damp",
+     "item": "Swampertite",
+     "nature": "Adamant",
+     "moves": [
+      "Protect",
+      "Ice Punch",
+      "Earthquake",
+      "Wave Crash"
+     ]
+    },
+    {
+     "pokemon": "Sinistcha [Unremarkable Form]",
+     "ability": "Hospitality",
+     "item": "Coba Berry",
+     "nature": "Relaxed",
+     "moves": [
+      "Matcha Gotcha",
+      "Trick Room",
+      "Protect",
+      "Rage Powder"
+     ]
+    },
+    {
+     "pokemon": "Grimmsnarl",
+     "ability": "Prankster",
+     "item": "Light Clay",
+     "nature": "Calm",
+     "moves": [
+      "Light Screen",
+      "Foul Play",
+      "Parting Shot",
+      "Reflect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 38,
+   "player": "Susana S.",
+   "country": "MX",
+   "record": "4-3-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "susy",
+   "team": [
+    {
+     "pokemon": "Kangaskhan",
+     "ability": "Scrappy",
+     "item": "Kangaskhanite",
+     "nature": "Brave",
+     "moves": [
+      "Fake Out",
+      "Low Kick",
+      "Sucker Punch",
+      "Double-Edge"
+     ]
+    },
+    {
+     "pokemon": "Sylveon",
+     "ability": "Pixilate",
+     "item": "Fairy Feather",
+     "nature": "Modest",
+     "moves": [
+      "Protect",
+      "Quick Attack",
+      "Hyper Voice",
+      "Hyper Beam"
+     ]
+    },
+    {
+     "pokemon": "Farigiraf",
+     "ability": "Armor Tail",
+     "item": "Sitrus Berry",
+     "nature": "Sassy",
+     "moves": [
+      "Trick Room",
+      "Helping Hand",
+      "Twin Beam",
+      "Thunderbolt"
+     ]
+    },
+    {
+     "pokemon": "Delphox",
+     "ability": "Blaze",
+     "item": "Delphoxite",
+     "nature": "Modest",
+     "moves": [
+      "Protect",
+      "Dazzling Gleam",
+      "Psychic",
+      "Heat Wave"
+     ]
+    },
+    {
+     "pokemon": "Glimmora",
+     "ability": "Toxic Debris",
+     "item": "Focus Sash",
+     "nature": "Modest",
+     "moves": [
+      "Spiky Shield",
+      "Power Gem",
+      "Earth Power",
+      "Sludge Bomb"
+     ]
+    },
+    {
+     "pokemon": "Whimsicott",
+     "ability": "Prankster",
+     "item": "Life Orb",
+     "nature": "Timid",
+     "moves": [
+      "Protect",
+      "Tailwind",
+      "Sunny Day",
+      "Moonblast"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 39,
+   "player": "KAZUKI N.",
+   "country": "JP",
+   "record": "4-3-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "カズマル",
+   "team": [
+    {
+     "pokemon": "Kingambit",
+     "ability": "Defiant",
+     "item": "Life Orb",
+     "nature": "Adamant",
+     "moves": [
+      "Kowtow Cleave",
+      "Sucker Punch",
+      "Swords Dance",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Delphox",
+     "ability": "Blaze",
+     "item": "Delphoxite",
+     "nature": "Timid",
+     "moves": [
+      "Heat Wave",
+      "Psychic",
+      "Nasty Plot",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Sneasler",
+     "ability": "Poison Touch",
+     "item": "Focus Sash",
+     "nature": "Jolly",
+     "moves": [
+      "Dire Claw",
+      "Quick Guard",
+      "Close Combat",
+      "Fake Out"
+     ]
+    },
+    {
+     "pokemon": "Blastoise",
+     "ability": "Torrent",
+     "item": "Blastoisinite",
+     "nature": "Modest",
+     "moves": [
+      "Water Spout",
+      "Dark Pulse",
+      "Shell Smash",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Incineroar",
+     "ability": "Intimidate",
+     "item": "Sitrus Berry",
+     "nature": "Impish",
+     "moves": [
+      "Flare Blitz",
+      "Helping Hand",
+      "Parting Shot",
+      "Fake Out"
+     ]
+    },
+    {
+     "pokemon": "Sinistcha [Unremarkable Form]",
+     "ability": "Hospitality",
+     "item": "Colbur Berry",
+     "nature": "Bold",
+     "moves": [
+      "Matcha Gotcha",
+      "Rage Powder",
+      "Trick Room",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 40,
+   "player": "Zoe F.",
+   "country": "US",
+   "record": "4-3-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "kitty!",
+   "team": [
+    {
+     "pokemon": "Froslass",
+     "ability": "Cursed Body",
+     "item": "Froslassite",
+     "nature": "Timid",
+     "moves": [
+      "Blizzard",
+      "Shadow Ball",
+      "Aurora Veil",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Basculegion [Male]",
+     "ability": "Adaptability",
+     "item": "Sitrus Berry",
+     "nature": "Adamant",
+     "moves": [
+      "Wave Crash",
+      "Last Respects",
+      "Aqua Jet",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Lycanroc [Dusk Form]",
+     "ability": "Tough Claws",
+     "item": "Focus Sash",
+     "nature": "Adamant",
+     "moves": [
+      "Rock Slide",
+      "Close Combat",
+      "Accelerock",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Sneasler",
+     "ability": "Unburden",
+     "item": "White Herb",
+     "nature": "Adamant",
+     "moves": [
+      "Gunk Shot",
+      "Close Combat",
+      "Fake Out",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Kingambit",
+     "ability": "Defiant",
+     "item": "Life Orb",
+     "nature": "Adamant",
+     "moves": [
+      "Kowtow Cleave",
+      "Sucker Punch",
+      "Swords Dance",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Scovillain",
+     "ability": "Moody",
+     "item": "Scovillainite",
+     "nature": "Bold",
+     "moves": [
+      "Overheat",
+      "Rage Powder",
+      "Giga Drain",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 41,
+   "player": "Sienna L.",
+   "country": "NZ",
+   "record": "4-3-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "Capynna",
+   "team": [
+    {
+     "pokemon": "Aerodactyl",
+     "ability": "Unnerve",
+     "item": "Aerodactylite",
+     "nature": "Jolly",
+     "moves": [
+      "Rock Slide",
+      "Ice Fang",
+      "Tailwind",
+      "Dual Wingbeat"
+     ]
+    },
+    {
+     "pokemon": "Farigiraf",
+     "ability": "Armor Tail",
+     "item": "Sitrus Berry",
+     "nature": "Quiet",
+     "moves": [
+      "Thunderbolt",
+      "Protect",
+      "Trick Room",
+      "Psychic"
+     ]
+    },
+    {
+     "pokemon": "Kingambit",
+     "ability": "Defiant",
+     "item": "Focus Sash",
+     "nature": "Adamant",
+     "moves": [
+      "Kowtow Cleave",
+      "Iron Head",
+      "Sucker Punch",
+      "Low Sweep"
+     ]
+    },
+    {
+     "pokemon": "Garchomp",
+     "ability": "Rough Skin",
+     "item": "Life Orb",
+     "nature": "Jolly",
+     "moves": [
+      "Earthquake",
+      "Protect",
+      "Stomping Tantrum",
+      "Dragon Claw"
+     ]
+    },
+    {
+     "pokemon": "Charizard",
+     "ability": "Blaze",
+     "item": "Charizardite Y",
+     "nature": "Modest",
+     "moves": [
+      "Heat Wave",
+      "Solar Beam",
+      "Protect",
+      "Weather Ball"
+     ]
+    },
+    {
+     "pokemon": "Sylveon",
+     "ability": "Pixilate",
+     "item": "Fairy Feather",
+     "nature": "Modest",
+     "moves": [
+      "Hyper Voice",
+      "Yawn",
+      "Quick Attack",
+      "Detect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 42,
+   "player": "Noah A.",
+   "country": "ES",
+   "record": "4-3-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "Noah67",
+   "team": [
+    {
+     "pokemon": "Basculegion [Male]",
+     "ability": "Adaptability",
+     "item": "Focus Sash",
+     "nature": "Adamant",
+     "moves": [
+      "Liquidation",
+      "Last Respects",
+      "Aqua Jet",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Farigiraf",
+     "ability": "Armor Tail",
+     "item": "Sitrus Berry",
+     "nature": "Modest",
+     "moves": [
+      "Psychic",
+      "Thunderbolt",
+      "Trick Room",
+      "Helping Hand"
+     ]
+    },
+    {
+     "pokemon": "Blastoise",
+     "ability": "Rain Dish",
+     "item": "Blastoisinite",
+     "nature": "Modest",
+     "moves": [
+      "Water Spout",
+      "Dark Pulse",
+      "Shell Smash",
+      "Fake Out"
+     ]
+    },
+    {
+     "pokemon": "Kangaskhan",
+     "ability": "Scrappy",
+     "item": "Kangaskhanite",
+     "nature": "Adamant",
+     "moves": [
+      "Fake Out",
+      "Double-Edge",
+      "Hammer Arm",
+      "Ice Punch"
+     ]
+    },
+    {
+     "pokemon": "Torkoal",
+     "ability": "Drought",
+     "item": "Charcoal",
+     "nature": "Quiet",
+     "moves": [
+      "Eruption",
+      "Heat Wave",
+      "Weather Ball",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Vivillon",
+     "ability": "Compound Eyes",
+     "item": "Choice Scarf",
+     "nature": "Timid",
+     "moves": [
+      "Sleep Powder",
+      "Rage Powder",
+      "Hurricane",
+      "Rain Dance"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 43,
+   "player": "SEIRA O.",
+   "country": "JP",
+   "record": "4-3-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "てて",
+   "team": [
+    {
+     "pokemon": "Kingambit",
+     "ability": "Defiant",
+     "item": "Chople Berry",
+     "nature": "Adamant",
+     "moves": [
+      "Iron Head",
+      "Kowtow Cleave",
+      "Sucker Punch",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Floette [Eternal Flower]",
+     "ability": "Flower Veil",
+     "item": "Floettite",
+     "nature": "Modest",
+     "moves": [
+      "Dazzling Gleam",
+      "Light of Ruin",
+      "Moonblast",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Delphox",
+     "ability": "Blaze",
+     "item": "Delphoxite",
+     "nature": "Timid",
+     "moves": [
+      "Psyshock",
+      "Heat Wave",
+      "Will-O-Wisp",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Whimsicott",
+     "ability": "Prankster",
+     "item": "Focus Sash",
+     "nature": "Timid",
+     "moves": [
+      "Moonblast",
+      "Encore",
+      "Tailwind",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Basculegion [Male]",
+     "ability": "Adaptability",
+     "item": "Mystic Water",
+     "nature": "Jolly",
+     "moves": [
+      "Wave Crash",
+      "Aqua Jet",
+      "Last Respects",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Garchomp",
+     "ability": "Rough Skin",
+     "item": "Life Orb",
+     "nature": "Jolly",
+     "moves": [
+      "Dragon Claw",
+      "Rock Slide",
+      "Stomping Tantrum",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 44,
+   "player": "Charlie B.",
+   "country": "US",
+   "record": "4-3-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "Budd",
+   "team": [
+    {
+     "pokemon": "Charizard",
+     "ability": "Blaze",
+     "item": "Charizardite Y",
+     "nature": "Modest",
+     "moves": [
+      "Protect",
+      "Heat Wave",
+      "Weather Ball",
+      "Solar Beam"
+     ]
+    },
+    {
+     "pokemon": "Garchomp",
+     "ability": "Rough Skin",
+     "item": "Life Orb",
+     "nature": "Jolly",
+     "moves": [
+      "Protect",
+      "Dragon Claw",
+      "Stomping Tantrum",
+      "Earthquake"
+     ]
+    },
+    {
+     "pokemon": "Kingambit",
+     "ability": "Defiant",
+     "item": "Focus Sash",
+     "nature": "Adamant",
+     "moves": [
+      "Kowtow Cleave",
+      "Iron Head",
+      "Sucker Punch",
+      "Low Kick"
+     ]
+    },
+    {
+     "pokemon": "Sylveon",
+     "ability": "Pixilate",
+     "item": "Fairy Feather",
+     "nature": "Modest",
+     "moves": [
+      "Detect",
+      "Hyper Voice",
+      "Hyper Beam",
+      "Quick Attack"
+     ]
+    },
+    {
+     "pokemon": "Farigiraf",
+     "ability": "Armor Tail",
+     "item": "Sitrus Berry",
+     "nature": "Bold",
+     "moves": [
+      "Twin Beam",
+      "Thunderbolt",
+      "Helping Hand",
+      "Trick Room"
+     ]
+    },
+    {
+     "pokemon": "Aerodactyl",
+     "ability": "Unnerve",
+     "item": "Aerodactylite",
+     "nature": "Jolly",
+     "moves": [
+      "Rock Slide",
+      "Tailwind",
+      "Ice Fang",
+      "Wide Guard"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 45,
+   "player": "SEOWOO L.",
+   "country": "KR",
+   "record": "4-3-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "복실이",
+   "team": [
+    {
+     "pokemon": "Garchomp",
+     "ability": "Rough Skin",
+     "item": "Life Orb",
+     "nature": "Jolly",
+     "moves": [
+      "Dragon Claw",
+      "Rock Slide",
+      "Protect",
+      "Earthquake"
+     ]
+    },
+    {
+     "pokemon": "Greninja",
+     "ability": "Protean",
+     "item": "Expert Belt",
+     "nature": "Timid",
+     "moves": [
+      "Protect",
+      "Water Shuriken",
+      "Ice Beam",
+      "Dark Pulse"
+     ]
+    },
+    {
+     "pokemon": "Raichu",
+     "ability": "Lightning Rod",
+     "item": "Raichunite Y",
+     "nature": "Timid",
+     "moves": [
+      "Zap Cannon",
+      "Focus Blast",
+      "Fake Out",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Staraptor",
+     "ability": "Intimidate",
+     "item": "Staraptite",
+     "nature": "Jolly",
+     "moves": [
+      "Roost",
+      "Brave Bird",
+      "Protect",
+      "Close Combat"
+     ]
+    },
+    {
+     "pokemon": "Whimsicott",
+     "ability": "Prankster",
+     "item": "Mental Herb",
+     "nature": "Timid",
+     "moves": [
+      "Trick Room",
+      "Tailwind",
+      "Encore",
+      "Moonblast"
+     ]
+    },
+    {
+     "pokemon": "Clefable",
+     "ability": "Unaware",
+     "item": "Sitrus Berry",
+     "nature": "Bold",
+     "moves": [
+      "Follow Me",
+      "Ice Beam",
+      "Dazzling Gleam",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 46,
+   "player": "Hyunwook C.",
+   "country": "KR",
+   "record": "4-3-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "모부기",
+   "team": [
+    {
+     "pokemon": "Floette [Eternal Flower]",
+     "ability": "Flower Veil",
+     "item": "Floettite",
+     "nature": "Careful",
+     "moves": [
+      "Dazzling Gleam",
+      "Draining Kiss",
+      "Calm Mind",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Kingambit",
+     "ability": "Supreme Overlord",
+     "item": "Chople Berry",
+     "nature": "Adamant",
+     "moves": [
+      "Kowtow Cleave",
+      "Iron Head",
+      "Guillotine",
+      "Sucker Punch"
+     ]
+    },
+    {
+     "pokemon": "Vanilluxe",
+     "ability": "Snow Warning",
+     "item": "Never-Melt Ice",
+     "nature": "Calm",
+     "moves": [
+      "Freeze-Dry",
+      "Ice Shard",
+      "Sheer Cold",
+      "Icy Wind"
+     ]
+    },
+    {
+     "pokemon": "Talonflame",
+     "ability": "Gale Wings",
+     "item": "Focus Sash",
+     "nature": "Jolly",
+     "moves": [
+      "Taunt",
+      "Tailwind",
+      "Quick Guard",
+      "Flare Blitz"
+     ]
+    },
+    {
+     "pokemon": "Charizard",
+     "ability": "Solar Power",
+     "item": "Charizardite Y",
+     "nature": "Careful",
+     "moves": [
+      "Heat Wave",
+      "Overheat",
+      "Protect",
+      "Solar Beam"
+     ]
+    },
+    {
+     "pokemon": "Garchomp",
+     "ability": "Rough Skin",
+     "item": "Life Orb",
+     "nature": "Jolly",
+     "moves": [
+      "Dragon Claw",
+      "Earthquake",
+      "Protect",
+      "Rock Slide"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 47,
+   "player": "YUTO O.",
+   "country": "JP",
+   "record": "4-3-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "ゆー",
+   "team": [
+    {
+     "pokemon": "Venusaur",
+     "ability": "Chlorophyll",
+     "item": "Focus Sash",
+     "nature": "Modest",
+     "moves": [
+      "Leaf Storm",
+      "Sludge Bomb",
+      "Sleep Powder",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Archaludon",
+     "ability": "Stamina",
+     "item": "Leftovers",
+     "nature": "Calm",
+     "moves": [
+      "Electro Shot",
+      "Dragon Pulse",
+      "Flash Cannon",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Grimmsnarl",
+     "ability": "Prankster",
+     "item": "Light Clay",
+     "nature": "Careful",
+     "moves": [
+      "Spirit Break",
+      "Reflect",
+      "Light Screen",
+      "Parting Shot"
+     ]
+    },
+    {
+     "pokemon": "Charizard",
+     "ability": "Blaze",
+     "item": "Charizardite Y",
+     "nature": "Modest",
+     "moves": [
+      "Heat Wave",
+      "Weather Ball",
+      "Hurricane",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Pelipper",
+     "ability": "Drizzle",
+     "item": "Sitrus Berry",
+     "nature": "Modest",
+     "moves": [
+      "Weather Ball",
+      "Hurricane",
+      "Tailwind",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Swampert",
+     "ability": "Torrent",
+     "item": "Swampertite",
+     "nature": "Adamant",
+     "moves": [
+      "Wave Crash",
+      "Earthquake",
+      "Ice Punch",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 48,
+   "player": "Oliver Isaac A.",
+   "country": "MX",
+   "record": "4-3-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "Oliisaac",
+   "team": [
+    {
+     "pokemon": "Swampert",
+     "ability": "Torrent",
+     "item": "Swampertite",
+     "nature": "Adamant",
+     "moves": [
+      "Earthquake",
+      "Wave Crash",
+      "Ice Punch",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Charizard",
+     "ability": "Blaze",
+     "item": "Charizardite Y",
+     "nature": "Modest",
+     "moves": [
+      "Heat Wave",
+      "Hurricane",
+      "Weather Ball",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Grimmsnarl",
+     "ability": "Prankster",
+     "item": "Light Clay",
+     "nature": "Sassy",
+     "moves": [
+      "Spirit Break",
+      "Light Screen",
+      "Reflect",
+      "Parting Shot"
+     ]
+    },
+    {
+     "pokemon": "Venusaur",
+     "ability": "Chlorophyll",
+     "item": "Focus Sash",
+     "nature": "Modest",
+     "moves": [
+      "Sleep Powder",
+      "Leaf Storm",
+      "Sludge Bomb",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Pelipper",
+     "ability": "Drizzle",
+     "item": "Sitrus Berry",
+     "nature": "Calm",
+     "moves": [
+      "Tailwind",
+      "Hurricane",
+      "Weather Ball",
+      "Wide Guard"
+     ]
+    },
+    {
+     "pokemon": "Archaludon",
+     "ability": "Stamina",
+     "item": "Leftovers",
+     "nature": "Calm",
+     "moves": [
+      "Electro Shot",
+      "Flash Cannon",
+      "Dragon Pulse",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 49,
+   "player": "Shuntaro O.",
+   "country": "JP",
+   "record": "4-3-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "しゅんたろう",
+   "team": [
+    {
+     "pokemon": "Sinistcha [Unremarkable Form]",
+     "ability": "Hospitality",
+     "item": "Kasib Berry",
+     "nature": "Bold",
+     "moves": [
+      "Matcha Gotcha",
+      "Shadow Ball",
+      "Rage Powder",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Maushold [Family of Four]",
+     "ability": "Friend Guard",
+     "item": "Chople Berry",
+     "nature": "Impish",
+     "moves": [
+      "Follow Me",
+      "Feint",
+      "Super Fang",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Blastoise",
+     "ability": "Rain Dish",
+     "item": "Blastoisinite",
+     "nature": "Modest",
+     "moves": [
+      "Water Spout",
+      "Dark Pulse",
+      "Shell Smash",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Sneasler",
+     "ability": "Poison Touch",
+     "item": "Focus Sash",
+     "nature": "Jolly",
+     "moves": [
+      "Close Combat",
+      "Dire Claw",
+      "Fake Out",
+      "Coaching"
+     ]
+    },
+    {
+     "pokemon": "Politoed",
+     "ability": "Drizzle",
+     "item": "Sitrus Berry",
+     "nature": "Relaxed",
+     "moves": [
+      "Weather Ball",
+      "Helping Hand",
+      "Perish Song",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Scolipede",
+     "ability": "Speed Boost",
+     "item": "Scolipite",
+     "nature": "Adamant",
+     "moves": [
+      "Rock Slide",
+      "Leech Life",
+      "Swords Dance",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 50,
+   "player": "RUI O.",
+   "country": "JP",
+   "record": "4-3-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "るいRUI",
+   "team": [
+    {
+     "pokemon": "Raichu",
+     "ability": "Lightning Rod",
+     "item": "Raichunite Y",
+     "nature": "Timid",
+     "moves": [
+      "Zap Cannon",
+      "Focus Blast",
+      "Grass Knot",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Basculegion [Male]",
+     "ability": "Adaptability",
+     "item": "Life Orb",
+     "nature": "Adamant",
+     "moves": [
+      "Last Respects",
+      "Protect",
+      "Aqua Jet",
+      "Wave Crash"
+     ]
+    },
+    {
+     "pokemon": "Staraptor",
+     "ability": "Intimidate",
+     "item": "Staraptite",
+     "nature": "Jolly",
+     "moves": [
+      "Close Combat",
+      "Brave Bird",
+      "Protect",
+      "Roost"
+     ]
+    },
+    {
+     "pokemon": "Whimsicott",
+     "ability": "Prankster",
+     "item": "Focus Sash",
+     "nature": "Timid",
+     "moves": [
+      "Moonblast",
+      "Encore",
+      "Tailwind",
+      "Charm"
+     ]
+    },
+    {
+     "pokemon": "Garchomp",
+     "ability": "Rough Skin",
+     "item": "Yache Berry",
+     "nature": "Jolly",
+     "moves": [
+      "Protect",
+      "Dragon Claw",
+      "Stomping Tantrum",
+      "Rock Slide"
+     ]
+    },
+    {
+     "pokemon": "Incineroar",
+     "ability": "Intimidate",
+     "item": "Sitrus Berry",
+     "nature": "Careful",
+     "moves": [
+      "Fake Out",
+      "Darkest Lariat",
+      "Flare Blitz",
+      "Taunt"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 51,
+   "player": "Noah C.",
+   "country": "US",
+   "record": "4-3-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "NoahAChr2015",
+   "team": [
+    {
+     "pokemon": "Lycanroc [Dusk Form]",
+     "ability": "Tough Claws",
+     "item": "Life Orb",
+     "nature": "Jolly",
+     "moves": [
+      "Rock Slide",
+      "Accelerock",
+      "Protect",
+      "Iron Head"
+     ]
+    },
+    {
+     "pokemon": "Whimsicott",
+     "ability": "Prankster",
+     "item": "Focus Sash",
+     "nature": "Hasty",
+     "moves": [
+      "Endeavor",
+      "Tailwind",
+      "Charm",
+      "Moonblast"
+     ]
+    },
+    {
+     "pokemon": "Sneasler",
+     "ability": "Unburden",
+     "item": "White Herb",
+     "nature": "Jolly",
+     "moves": [
+      "Dire Claw",
+      "Protect",
+      "Fake Out",
+      "Close Combat"
+     ]
+    },
+    {
+     "pokemon": "Delphox",
+     "ability": "Blaze",
+     "item": "Delphoxite",
+     "nature": "Timid",
+     "moves": [
+      "Heat Wave",
+      "Nasty Plot",
+      "Psychic",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Staraptor",
+     "ability": "Intimidate",
+     "item": "Staraptite",
+     "nature": "Jolly",
+     "moves": [
+      "Rain Dance",
+      "Protect",
+      "Brave Bird",
+      "Close Combat"
+     ]
+    },
+    {
+     "pokemon": "Basculegion [Male]",
+     "ability": "Adaptability",
+     "item": "Choice Scarf",
+     "nature": "Jolly",
+     "moves": [
+      "Last Respects",
+      "Wave Crash",
+      "Flip Turn",
+      "Aqua Jet"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 52,
+   "player": "우영 정.",
+   "country": "KR",
+   "record": "4-3-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "트레이너",
+   "team": [
+    {
+     "pokemon": "Sinistcha [Unremarkable Form]",
+     "ability": "Hospitality",
+     "item": "Focus Sash",
+     "nature": "Bold",
+     "moves": [
+      "Protect",
+      "Matcha Gotcha",
+      "Rage Powder",
+      "Trick Room"
+     ]
+    },
+    {
+     "pokemon": "Grimmsnarl",
+     "ability": "Prankster",
+     "item": "Light Clay",
+     "nature": "Careful",
+     "moves": [
+      "Foul Play",
+      "Light Screen",
+      "Reflect",
+      "Parting Shot"
+     ]
+    },
+    {
+     "pokemon": "Pelipper",
+     "ability": "Drizzle",
+     "item": "Sitrus Berry",
+     "nature": "Modest",
+     "moves": [
+      "Hurricane",
+      "Tailwind",
+      "Weather Ball",
+      "Wide Guard"
+     ]
+    },
+    {
+     "pokemon": "Archaludon",
+     "ability": "Stamina",
+     "item": "Leftovers",
+     "nature": "Modest",
+     "moves": [
+      "Electro Shot",
+      "Dragon Pulse",
+      "Flash Cannon",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Metagross",
+     "ability": "Clear Body",
+     "item": "Metagrossite",
+     "nature": "Jolly",
+     "moves": [
+      "Psychic Fangs",
+      "Body Press",
+      "Iron Head",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Swampert",
+     "ability": "Damp",
+     "item": "Swampertite",
+     "nature": "Adamant",
+     "moves": [
+      "Wave Crash",
+      "High Horsepower",
+      "Rock Slide",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 53,
+   "player": "Oliver R.",
+   "country": "AU",
+   "record": "4-3-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "Tuski",
+   "team": [
+    {
+     "pokemon": "Swampert",
+     "ability": "Torrent",
+     "item": "Swampertite",
+     "nature": "Jolly",
+     "moves": [
+      "Protect",
+      "Wave Crash",
+      "Earthquake",
+      "Ice Punch"
+     ]
+    },
+    {
+     "pokemon": "Sinistcha [Unremarkable Form]",
+     "ability": "Hospitality",
+     "item": "Coba Berry",
+     "nature": "Relaxed",
+     "moves": [
+      "Protect",
+      "Matcha Gotcha",
+      "Rage Powder",
+      "Trick Room"
+     ]
+    },
+    {
+     "pokemon": "Venusaur",
+     "ability": "Chlorophyll",
+     "item": "Venusaurite",
+     "nature": "Modest",
+     "moves": [
+      "Roar",
+      "Giga Drain",
+      "Protect",
+      "Sludge Bomb"
+     ]
+    },
+    {
+     "pokemon": "Grimmsnarl",
+     "ability": "Prankster",
+     "item": "Light Clay",
+     "nature": "Calm",
+     "moves": [
+      "Foul Play",
+      "Parting Shot",
+      "Light Screen",
+      "Reflect"
+     ]
+    },
+    {
+     "pokemon": "Archaludon",
+     "ability": "Stamina",
+     "item": "Leftovers",
+     "nature": "Modest",
+     "moves": [
+      "Protect",
+      "Electro Shot",
+      "Dragon Pulse",
+      "Flash Cannon"
+     ]
+    },
+    {
+     "pokemon": "Pelipper",
+     "ability": "Drizzle",
+     "item": "Sitrus Berry",
+     "nature": "Timid",
+     "moves": [
+      "Wide Guard",
+      "Tailwind",
+      "Hurricane",
+      "Weather Ball"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 54,
+   "player": "Yuta M.",
+   "country": "JP",
+   "record": "3-4-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "ヤシのき",
+   "team": [
+    {
+     "pokemon": "Basculegion [Male]",
+     "ability": "Adaptability",
+     "item": "Life Orb",
+     "nature": "Adamant",
+     "moves": [
+      "Protect",
+      "Wave Crash",
+      "Aqua Jet",
+      "Last Respects"
+     ]
+    },
+    {
+     "pokemon": "Floette [Eternal Flower]",
+     "ability": "Flower Veil",
+     "item": "Floettite",
+     "nature": "Timid",
+     "moves": [
+      "Protect",
+      "Moonblast",
+      "Dazzling Gleam",
+      "Light of Ruin"
+     ]
+    },
+    {
+     "pokemon": "Garchomp",
+     "ability": "Rough Skin",
+     "item": "Sitrus Berry",
+     "nature": "Adamant",
+     "moves": [
+      "Protect",
+      "Dragon Claw",
+      "Stomping Tantrum",
+      "Rock Slide"
+     ]
+    },
+    {
+     "pokemon": "Charizard",
+     "ability": "Blaze",
+     "item": "Charizardite Y",
+     "nature": "Modest",
+     "moves": [
+      "Protect",
+      "Heat Wave",
+      "Weather Ball",
+      "Solar Beam"
+     ]
+    },
+    {
+     "pokemon": "Whimsicott",
+     "ability": "Prankster",
+     "item": "Focus Sash",
+     "nature": "Timid",
+     "moves": [
+      "Protect",
+      "Moonblast",
+      "Tailwind",
+      "Encore"
+     ]
+    },
+    {
+     "pokemon": "Kingambit",
+     "ability": "Defiant",
+     "item": "Chople Berry",
+     "nature": "Adamant",
+     "moves": [
+      "Kowtow Cleave",
+      "Sucker Punch",
+      "Iron Head",
+      "Low Kick"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 55,
+   "player": "Khristian S.",
+   "country": "US",
+   "record": "3-3-0",
+   "dropped": true,
+   "dropped_round": 6,
+   "trainer_name": "Khristian",
+   "team": [
+    {
+     "pokemon": "Sneasler",
+     "ability": "Poison Touch",
+     "item": "Focus Sash",
+     "nature": "Jolly",
+     "moves": [
+      "Close Combat",
+      "Dire Claw",
+      "Quick Guard",
+      "Fake Out"
+     ]
+    },
+    {
+     "pokemon": "Kingambit",
+     "ability": "Defiant",
+     "item": "Black Glasses",
+     "nature": "Adamant",
+     "moves": [
+      "Kowtow Cleave",
+      "Sucker Punch",
+      "Swords Dance",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Blastoise",
+     "ability": "Torrent",
+     "item": "Blastoisinite",
+     "nature": "Modest",
+     "moves": [
+      "Water Spout",
+      "Dark Pulse",
+      "Shell Smash",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Delphox",
+     "ability": "Blaze",
+     "item": "Delphoxite",
+     "nature": "Bashful",
+     "moves": [
+      "Psychic",
+      "Heat Wave",
+      "Nasty Plot",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Sinistcha [Masterpiece Form]",
+     "ability": "Hospitality",
+     "item": "Occa Berry",
+     "nature": "Bold",
+     "moves": [
+      "Matcha Gotcha",
+      "Rage Powder",
+      "Trick Room",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Incineroar",
+     "ability": "Intimidate",
+     "item": "Sitrus Berry",
+     "nature": "Careful",
+     "moves": [
+      "Flare Blitz",
+      "Throat Chop",
+      "Parting Shot",
+      "Fake Out"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 56,
+   "player": "Moojin P.",
+   "country": "KR",
+   "record": "3-4-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "메가그로스",
+   "team": [
+    {
+     "pokemon": "Whimsicott",
+     "ability": "Prankster",
+     "item": "Focus Sash",
+     "nature": "Timid",
+     "moves": [
+      "Tailwind",
+      "Protect",
+      "Encore",
+      "Moonblast"
+     ]
+    },
+    {
+     "pokemon": "Kingambit",
+     "ability": "Defiant",
+     "item": "Black Glasses",
+     "nature": "Adamant",
+     "moves": [
+      "Kowtow Cleave",
+      "Sucker Punch",
+      "Iron Head",
+      "Low Kick"
+     ]
+    },
+    {
+     "pokemon": "Staraptor",
+     "ability": "Intimidate",
+     "item": "Staraptite",
+     "nature": "Jolly",
+     "moves": [
+      "Close Combat",
+      "Brave Bird",
+      "Roost",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Gholdengo",
+     "ability": "Good as Gold",
+     "item": "Choice Scarf",
+     "nature": "Modest",
+     "moves": [
+      "Make It Rain",
+      "Shadow Ball",
+      "Power Gem",
+      "Focus Blast"
+     ]
+    },
+    {
+     "pokemon": "Garchomp",
+     "ability": "Rough Skin",
+     "item": "Life Orb",
+     "nature": "Jolly",
+     "moves": [
+      "Crunch",
+      "Stomping Tantrum",
+      "Protect",
+      "Dragon Claw"
+     ]
+    },
+    {
+     "pokemon": "Charizard",
+     "ability": "Blaze",
+     "item": "Charizardite Y",
+     "nature": "Timid",
+     "moves": [
+      "Heat Wave",
+      "Weather Ball",
+      "Solar Beam",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 57,
+   "player": "Vince B.",
+   "country": "US",
+   "record": "3-4-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "SP_vince",
+   "team": [
+    {
+     "pokemon": "Gholdengo",
+     "ability": "Good as Gold",
+     "item": "Metal Coat",
+     "nature": "Modest",
+     "moves": [
+      "Make It Rain",
+      "Nasty Plot",
+      "Shadow Ball",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Whimsicott",
+     "ability": "Prankster",
+     "item": "Focus Sash",
+     "nature": "Timid",
+     "moves": [
+      "Moonblast",
+      "Encore",
+      "Tailwind",
+      "Uproar"
+     ]
+    },
+    {
+     "pokemon": "Incineroar",
+     "ability": "Intimidate",
+     "item": "Sitrus Berry",
+     "nature": "Careful",
+     "moves": [
+      "Flare Blitz",
+      "Fake Out",
+      "Throat Chop",
+      "Parting Shot"
+     ]
+    },
+    {
+     "pokemon": "Charizard",
+     "ability": "Blaze",
+     "item": "Charizardite Y",
+     "nature": "Modest",
+     "moves": [
+      "Heat Wave",
+      "Weather Ball",
+      "Solar Beam",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Garchomp",
+     "ability": "Rough Skin",
+     "item": "Life Orb",
+     "nature": "Jolly",
+     "moves": [
+      "Earthquake",
+      "Dragon Claw",
+      "Rock Slide",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Kangaskhan",
+     "ability": "Scrappy",
+     "item": "Kangaskhanite",
+     "nature": "Adamant",
+     "moves": [
+      "Fake Out",
+      "Ice Punch",
+      "Low Kick",
+      "Double-Edge"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 58,
+   "player": "Benjamin Uriel C.",
+   "country": "AR",
+   "record": "3-4-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "Benja",
+   "team": [
+    {
+     "pokemon": "Torkoal",
+     "ability": "Drought",
+     "item": "Charcoal",
+     "nature": "Quiet",
+     "moves": [
+      "Eruption",
+      "Heat Wave",
+      "Weather Ball",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Sylveon",
+     "ability": "Pixilate",
+     "item": "Fairy Feather",
+     "nature": "Quiet",
+     "moves": [
+      "Hyper Voice",
+      "Hyper Beam",
+      "Quick Attack",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Kangaskhan",
+     "ability": "Scrappy",
+     "item": "Kangaskhanite",
+     "nature": "Brave",
+     "moves": [
+      "Fake Out",
+      "Hammer Arm",
+      "Ice Punch",
+      "Double-Edge"
+     ]
+    },
+    {
+     "pokemon": "Farigiraf",
+     "ability": "Armor Tail",
+     "item": "Sitrus Berry",
+     "nature": "Bold",
+     "moves": [
+      "Psychic",
+      "Thunderbolt",
+      "Helping Hand",
+      "Trick Room"
+     ]
+    },
+    {
+     "pokemon": "Vivillon",
+     "ability": "Compound Eyes",
+     "item": "Focus Sash",
+     "nature": "Timid",
+     "moves": [
+      "Sleep Powder",
+      "Rage Powder",
+      "Hurricane",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Kingambit",
+     "ability": "Defiant",
+     "item": "Life Orb",
+     "nature": "Adamant",
+     "moves": [
+      "Sucker Punch",
+      "Swords Dance",
+      "Kowtow Cleave",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 59,
+   "player": "Magnus K.",
+   "country": "DK",
+   "record": "3-4-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "Magnus",
+   "team": [
+    {
+     "pokemon": "Charizard",
+     "ability": "Blaze",
+     "item": "Charizardite Y",
+     "nature": "Modest",
+     "moves": [
+      "Protect",
+      "Heat Wave",
+      "Weather Ball",
+      "Solar Beam"
+     ]
+    },
+    {
+     "pokemon": "Garchomp",
+     "ability": "Rough Skin",
+     "item": "Life Orb",
+     "nature": "Jolly",
+     "moves": [
+      "Protect",
+      "Earthquake",
+      "Dragon Claw",
+      "Rock Slide"
+     ]
+    },
+    {
+     "pokemon": "Basculegion [Male]",
+     "ability": "Adaptability",
+     "item": "Mystic Water",
+     "nature": "Adamant",
+     "moves": [
+      "Protect",
+      "Wave Crash",
+      "Last Respects",
+      "Aqua Jet"
+     ]
+    },
+    {
+     "pokemon": "Floette [Eternal Flower]",
+     "ability": "Flower Veil",
+     "item": "Floettite",
+     "nature": "Modest",
+     "moves": [
+      "Protect",
+      "Moonblast",
+      "Dazzling Gleam",
+      "Light of Ruin"
+     ]
+    },
+    {
+     "pokemon": "Kingambit",
+     "ability": "Defiant",
+     "item": "Occa Berry",
+     "nature": "Adamant",
+     "moves": [
+      "Kowtow Cleave",
+      "Sucker Punch",
+      "Low Kick",
+      "Iron Head"
+     ]
+    },
+    {
+     "pokemon": "Whimsicott",
+     "ability": "Prankster",
+     "item": "Focus Sash",
+     "nature": "Timid",
+     "moves": [
+      "Protect",
+      "Tailwind",
+      "Moonblast",
+      "Encore"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 60,
+   "player": "Miranda B.",
+   "country": "US",
+   "record": "3-4-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "Miranda",
+   "team": [
+    {
+     "pokemon": "Milotic",
+     "ability": "Competitive",
+     "item": "Sitrus Berry",
+     "nature": "Modest",
+     "moves": [
+      "Scald",
+      "Ice Beam",
+      "Icy Wind",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Excadrill",
+     "ability": "Sand Rush",
+     "item": "Focus Sash",
+     "nature": "Adamant",
+     "moves": [
+      "High Horsepower",
+      "Iron Head",
+      "Rock Slide",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Staraptor",
+     "ability": "Intimidate",
+     "item": "Staraptite",
+     "nature": "Jolly",
+     "moves": [
+      "Brave Bird",
+      "Close Combat",
+      "Tailwind",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Tyranitar",
+     "ability": "Sand Stream",
+     "item": "Tyranitarite",
+     "nature": "Jolly",
+     "moves": [
+      "Rock Slide",
+      "Knock Off",
+      "Low Kick",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Gholdengo",
+     "ability": "Good as Gold",
+     "item": "Life Orb",
+     "nature": "Modest",
+     "moves": [
+      "Make It Rain",
+      "Shadow Ball",
+      "Nasty Plot",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Sinistcha [Masterpiece Form]",
+     "ability": "Hospitality",
+     "item": "Colbur Berry",
+     "nature": "Calm",
+     "moves": [
+      "Matcha Gotcha",
+      "Rage Powder",
+      "Trick Room",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 61,
+   "player": "Ian L.",
+   "country": "CL",
+   "record": "3-4-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "pokeian",
+   "team": [
+    {
+     "pokemon": "Sylveon",
+     "ability": "Pixilate",
+     "item": "Fairy Feather",
+     "nature": "Timid",
+     "moves": [
+      "Quick Attack",
+      "Hyper Voice",
+      "Hyper Beam",
+      "Detect"
+     ]
+    },
+    {
+     "pokemon": "Charizard",
+     "ability": "Blaze",
+     "item": "Charizardite Y",
+     "nature": "Timid",
+     "moves": [
+      "Heat Wave",
+      "Weather Ball",
+      "Solar Beam",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Basculegion [Male]",
+     "ability": "Adaptability",
+     "item": "Mystic Water",
+     "nature": "Jolly",
+     "moves": [
+      "Last Respects",
+      "Wave Crash",
+      "Protect",
+      "Aqua Jet"
+     ]
+    },
+    {
+     "pokemon": "Garchomp",
+     "ability": "Rough Skin",
+     "item": "Life Orb",
+     "nature": "Jolly",
+     "moves": [
+      "Protect",
+      "Rock Slide",
+      "Earthquake",
+      "Dragon Claw"
+     ]
+    },
+    {
+     "pokemon": "Kingambit",
+     "ability": "Defiant",
+     "item": "Chople Berry",
+     "nature": "Adamant",
+     "moves": [
+      "Kowtow Cleave",
+      "Sucker Punch",
+      "Iron Head",
+      "Low Kick"
+     ]
+    },
+    {
+     "pokemon": "Whimsicott",
+     "ability": "Prankster",
+     "item": "Focus Sash",
+     "nature": "Timid",
+     "moves": [
+      "Moonblast",
+      "Encore",
+      "Tailwind",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 62,
+   "player": "Mao H.",
+   "country": "JP",
+   "record": "3-4-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "かしわもち",
+   "team": [
+    {
+     "pokemon": "Swampert",
+     "ability": "Damp",
+     "item": "Swampertite",
+     "nature": "Adamant",
+     "moves": [
+      "Wave Crash",
+      "Ice Punch",
+      "High Horsepower",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Venusaur",
+     "ability": "Chlorophyll",
+     "item": "Venusaurite",
+     "nature": "Modest",
+     "moves": [
+      "Giga Drain",
+      "Sludge Bomb",
+      "Earth Power",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Pelipper",
+     "ability": "Drizzle",
+     "item": "Sitrus Berry",
+     "nature": "Modest",
+     "moves": [
+      "Weather Ball",
+      "Hurricane",
+      "Tailwind",
+      "Wide Guard"
+     ]
+    },
+    {
+     "pokemon": "Grimmsnarl",
+     "ability": "Prankster",
+     "item": "Light Clay",
+     "nature": "Careful",
+     "moves": [
+      "Spirit Break",
+      "Parting Shot",
+      "Light Screen",
+      "Reflect"
+     ]
+    },
+    {
+     "pokemon": "Basculegion [Male]",
+     "ability": "Swift Swim",
+     "item": "Life Orb",
+     "nature": "Adamant",
+     "moves": [
+      "Last Respects",
+      "Wave Crash",
+      "Aqua Jet",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Archaludon",
+     "ability": "Stamina",
+     "item": "Leftovers",
+     "nature": "Modest",
+     "moves": [
+      "Electro Shot",
+      "Flash Cannon",
+      "Dragon Pulse",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 63,
+   "player": "Masaharu N.",
+   "country": "JP",
+   "record": "3-4-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "ロボコ",
+   "team": [
+    {
+     "pokemon": "Charizard",
+     "ability": "Blaze",
+     "item": "Charizardite Y",
+     "nature": "Timid",
+     "moves": [
+      "Heat Wave",
+      "Weather Ball",
+      "Ancient Power",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Sneasler",
+     "ability": "Poison Touch",
+     "item": "Life Orb",
+     "nature": "Jolly",
+     "moves": [
+      "Close Combat",
+      "Poison Jab",
+      "Rock Slide",
+      "Fake Out"
+     ]
+    },
+    {
+     "pokemon": "Whimsicott",
+     "ability": "Prankster",
+     "item": "Focus Sash",
+     "nature": "Timid",
+     "moves": [
+      "Moonblast",
+      "Tailwind",
+      "Encore",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Basculegion [Male]",
+     "ability": "Adaptability",
+     "item": "Mystic Water",
+     "nature": "Adamant",
+     "moves": [
+      "Last Respects",
+      "Wave Crash",
+      "Aqua Jet",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Kingambit",
+     "ability": "Defiant",
+     "item": "Chople Berry",
+     "nature": "Adamant",
+     "moves": [
+      "Kowtow Cleave",
+      "Sucker Punch",
+      "Iron Head",
+      "Low Kick"
+     ]
+    },
+    {
+     "pokemon": "Froslass",
+     "ability": "Cursed Body",
+     "item": "Froslassite",
+     "nature": "Timid",
+     "moves": [
+      "Blizzard",
+      "Shadow Ball",
+      "Taunt",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 64,
+   "player": "RITSU A.",
+   "country": "JP",
+   "record": "3-4-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "リツ",
+   "team": [
+    {
+     "pokemon": "Raichu",
+     "ability": "Lightning Rod",
+     "item": "Raichunite Y",
+     "nature": "Timid",
+     "moves": [
+      "Zap Cannon",
+      "Focus Blast",
+      "Fake Out",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Kingambit",
+     "ability": "Defiant",
+     "item": "Chople Berry",
+     "nature": "Adamant",
+     "moves": [
+      "Kowtow Cleave",
+      "Iron Head",
+      "Sucker Punch",
+      "Low Kick"
+     ]
+    },
+    {
+     "pokemon": "Excadrill",
+     "ability": "Sand Rush",
+     "item": "Focus Sash",
+     "nature": "Adamant",
+     "moves": [
+      "High Horsepower",
+      "Iron Head",
+      "Rock Slide",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Basculegion [Male]",
+     "ability": "Adaptability",
+     "item": "Choice Scarf",
+     "nature": "Jolly",
+     "moves": [
+      "Last Respects",
+      "Wave Crash",
+      "Aqua Jet",
+      "Flip Turn"
+     ]
+    },
+    {
+     "pokemon": "Tyranitar",
+     "ability": "Sand Stream",
+     "item": "Tyranitarite",
+     "nature": "Adamant",
+     "moves": [
+      "Rock Slide",
+      "Knock Off",
+      "Ice Punch",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Primarina",
+     "ability": "Liquid Voice",
+     "item": "Life Orb",
+     "nature": "Modest",
+     "moves": [
+      "Hyper Voice",
+      "Moonblast",
+      "Energy Ball",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 65,
+   "player": "Ryder B.",
+   "country": "US",
+   "record": "3-4-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "Willy",
+   "team": [
+    {
+     "pokemon": "Kingambit",
+     "ability": "Defiant",
+     "item": "Chople Berry",
+     "nature": "Adamant",
+     "moves": [
+      "Sucker Punch",
+      "Kowtow Cleave",
+      "Low Kick",
+      "Iron Head"
+     ]
+    },
+    {
+     "pokemon": "Garchomp",
+     "ability": "Rough Skin",
+     "item": "Life Orb",
+     "nature": "Jolly",
+     "moves": [
+      "Protect",
+      "Dragon Claw",
+      "Earthquake",
+      "Rock Slide"
+     ]
+    },
+    {
+     "pokemon": "Charizard",
+     "ability": "Blaze",
+     "item": "Charizardite Y",
+     "nature": "Timid",
+     "moves": [
+      "Heat Wave",
+      "Solar Beam",
+      "Weather Ball",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Whimsicott",
+     "ability": "Prankster",
+     "item": "Focus Sash",
+     "nature": "Timid",
+     "moves": [
+      "Tailwind",
+      "Protect",
+      "Moonblast",
+      "Encore"
+     ]
+    },
+    {
+     "pokemon": "Floette [Eternal Flower]",
+     "ability": "Flower Veil",
+     "item": "Floettite",
+     "nature": "Timid",
+     "moves": [
+      "Light of Ruin",
+      "Dazzling Gleam",
+      "Moonblast",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Basculegion [Male]",
+     "ability": "Adaptability",
+     "item": "Mystic Water",
+     "nature": "Adamant",
+     "moves": [
+      "Aqua Jet",
+      "Last Respects",
+      "Wave Crash",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 66,
+   "player": "Ba Ron J.",
+   "country": "KR",
+   "record": "3-4-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "바론",
+   "team": [
+    {
+     "pokemon": "Whimsicott",
+     "ability": "Prankster",
+     "item": "Focus Sash",
+     "nature": "Timid",
+     "moves": [
+      "Moonblast",
+      "Tailwind",
+      "Encore",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Aerodactyl",
+     "ability": "Unnerve",
+     "item": "Aerodactylite",
+     "nature": "Jolly",
+     "moves": [
+      "Rock Slide",
+      "Dual Wingbeat",
+      "Tailwind",
+      "Wide Guard"
+     ]
+    },
+    {
+     "pokemon": "Toxapex",
+     "ability": "Regenerator",
+     "item": "Leftovers",
+     "nature": "Bold",
+     "moves": [
+      "Toxic",
+      "Recover",
+      "Baneful Bunker",
+      "Infestation"
+     ]
+    },
+    {
+     "pokemon": "Annihilape",
+     "ability": "Defiant",
+     "item": "Sitrus Berry",
+     "nature": "Adamant",
+     "moves": [
+      "Rage Fist",
+      "Close Combat",
+      "Taunt",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Charizard",
+     "ability": "Blaze",
+     "item": "Charizardite Y",
+     "nature": "Modest",
+     "moves": [
+      "Weather Ball",
+      "Heat Wave",
+      "Solar Beam",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Garchomp",
+     "ability": "Rough Skin",
+     "item": "Life Orb",
+     "nature": "Jolly",
+     "moves": [
+      "Dragon Claw",
+      "Stomping Tantrum",
+      "Rock Slide",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 67,
+   "player": "Èric A.",
+   "country": "ES",
+   "record": "3-4-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "ERIC",
+   "team": [
+    {
+     "pokemon": "Blastoise",
+     "ability": "Rain Dish",
+     "item": "Blastoisinite",
+     "nature": "Modest",
+     "moves": [
+      "Water Spout",
+      "Dark Pulse",
+      "Shell Smash",
+      "Fake Out"
+     ]
+    },
+    {
+     "pokemon": "Basculegion [Male]",
+     "ability": "Adaptability",
+     "item": "Focus Sash",
+     "nature": "Adamant",
+     "moves": [
+      "Liquidation",
+      "Last Respects",
+      "Aqua Jet",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Kangaskhan",
+     "ability": "Scrappy",
+     "item": "Kangaskhanite",
+     "nature": "Adamant",
+     "moves": [
+      "Fake Out",
+      "Double-Edge",
+      "Hammer Arm",
+      "Ice Punch"
+     ]
+    },
+    {
+     "pokemon": "Farigiraf",
+     "ability": "Armor Tail",
+     "item": "Sitrus Berry",
+     "nature": "Modest",
+     "moves": [
+      "Psychic",
+      "Thunderbolt",
+      "Trick Room",
+      "Helping Hand"
+     ]
+    },
+    {
+     "pokemon": "Torkoal",
+     "ability": "Drought",
+     "item": "Charcoal",
+     "nature": "Quiet",
+     "moves": [
+      "Eruption",
+      "Heat Wave",
+      "Weather Ball",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Vivillon",
+     "ability": "Compound Eyes",
+     "item": "Choice Scarf",
+     "nature": "Timid",
+     "moves": [
+      "Sleep Powder",
+      "Rage Powder",
+      "Hurricane",
+      "Rain Dance"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 68,
+   "player": "LORENZO C.",
+   "country": "BR",
+   "record": "3-4-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "lorenzopoke",
+   "team": [
+    {
+     "pokemon": "Farigiraf",
+     "ability": "Armor Tail",
+     "item": "Sitrus Berry",
+     "nature": "Relaxed",
+     "moves": [
+      "Helping Hand",
+      "Trick Room",
+      "Twin Beam",
+      "Thunderbolt"
+     ]
+    },
+    {
+     "pokemon": "Sylveon",
+     "ability": "Pixilate",
+     "item": "Fairy Feather",
+     "nature": "Quiet",
+     "moves": [
+      "Hyper Voice",
+      "Quick Attack",
+      "Hyper Beam",
+      "Detect"
+     ]
+    },
+    {
+     "pokemon": "Staraptor",
+     "ability": "Intimidate",
+     "item": "Choice Scarf",
+     "nature": "Jolly",
+     "moves": [
+      "Brave Bird",
+      "Close Combat",
+      "U-turn",
+      "Final Gambit"
+     ]
+    },
+    {
+     "pokemon": "Torkoal",
+     "ability": "Drought",
+     "item": "Charcoal",
+     "nature": "Quiet",
+     "moves": [
+      "Eruption",
+      "Weather Ball",
+      "Heat Wave",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Kangaskhan",
+     "ability": "Scrappy",
+     "item": "Kangaskhanite",
+     "nature": "Adamant",
+     "moves": [
+      "Hammer Arm",
+      "Fake Out",
+      "Double-Edge",
+      "Rock Tomb"
+     ]
+    },
+    {
+     "pokemon": "Ampharos",
+     "ability": "Static",
+     "item": "Ampharosite",
+     "nature": "Quiet",
+     "moves": [
+      "Thunderbolt",
+      "Dragon Pulse",
+      "Power Gem",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 69,
+   "player": "Gerardo F.",
+   "country": "CL",
+   "record": "3-4-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "ElTatito",
+   "team": [
+    {
+     "pokemon": "Torkoal",
+     "ability": "Drought",
+     "item": "Charcoal",
+     "nature": "Quiet",
+     "moves": [
+      "Eruption",
+      "Heat Wave",
+      "Clear Smog",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Milotic",
+     "ability": "Competitive",
+     "item": "Leftovers",
+     "nature": "Calm",
+     "moves": [
+      "Life Dew",
+      "Scald",
+      "Ice Beam",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Oranguru",
+     "ability": "Inner Focus",
+     "item": "Colbur Berry",
+     "nature": "Sassy",
+     "moves": [
+      "Instruct",
+      "Trick Room",
+      "Encore",
+      "Psychic"
+     ]
+    },
+    {
+     "pokemon": "Floette [Eternal Flower]",
+     "ability": "Flower Veil",
+     "item": "Floettite",
+     "nature": "Modest",
+     "moves": [
+      "Moonblast",
+      "Dazzling Gleam",
+      "Light of Ruin",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Garchomp",
+     "ability": "Rough Skin",
+     "item": "Life Orb",
+     "nature": "Jolly",
+     "moves": [
+      "Stomping Tantrum",
+      "Rock Slide",
+      "Dragon Claw",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Staraptor",
+     "ability": "Intimidate",
+     "item": "Staraptite",
+     "nature": "Jolly",
+     "moves": [
+      "Close Combat",
+      "Protect",
+      "Brave Bird",
+      "Roost"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 70,
+   "player": "Bianca Maria C.",
+   "country": "IT",
+   "record": "3-4-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "BIANCA",
+   "team": [
+    {
+     "pokemon": "Farigiraf",
+     "ability": "Armor Tail",
+     "item": "Sitrus Berry",
+     "nature": "Bold",
+     "moves": [
+      "Twin Beam",
+      "Thunderbolt",
+      "Protect",
+      "Trick Room"
+     ]
+    },
+    {
+     "pokemon": "Sylveon",
+     "ability": "Pixilate",
+     "item": "Fairy Feather",
+     "nature": "Modest",
+     "moves": [
+      "Hyper Voice",
+      "Hyper Beam",
+      "Quick Attack",
+      "Detect"
+     ]
+    },
+    {
+     "pokemon": "Aerodactyl",
+     "ability": "Unnerve",
+     "item": "Aerodactylite",
+     "nature": "Jolly",
+     "moves": [
+      "Rock Slide",
+      "Ice Fang",
+      "Dual Wingbeat",
+      "Tailwind"
+     ]
+    },
+    {
+     "pokemon": "Charizard",
+     "ability": "Blaze",
+     "item": "Charizardite Y",
+     "nature": "Modest",
+     "moves": [
+      "Heat Wave",
+      "Weather Ball",
+      "Solar Beam",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Kingambit",
+     "ability": "Defiant",
+     "item": "Focus Sash",
+     "nature": "Adamant",
+     "moves": [
+      "Kowtow Cleave",
+      "Iron Head",
+      "Sucker Punch",
+      "Low Kick"
+     ]
+    },
+    {
+     "pokemon": "Garchomp",
+     "ability": "Rough Skin",
+     "item": "Life Orb",
+     "nature": "Jolly",
+     "moves": [
+      "Dragon Claw",
+      "Earthquake",
+      "Protect",
+      "Stomping Tantrum"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 71,
+   "player": "Francesca C.",
+   "country": "AU",
+   "record": "3-4-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "Francesca",
+   "team": [
+    {
+     "pokemon": "Floette [Eternal Flower]",
+     "ability": "Flower Veil",
+     "item": "Floettite",
+     "nature": "Timid",
+     "moves": [
+      "Moonblast",
+      "Dazzling Gleam",
+      "Light of Ruin",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Whimsicott",
+     "ability": "Prankster",
+     "item": "Focus Sash",
+     "nature": "Timid",
+     "moves": [
+      "Protect",
+      "Tailwind",
+      "Encore",
+      "Moonblast"
+     ]
+    },
+    {
+     "pokemon": "Basculegion [Male]",
+     "ability": "Adaptability",
+     "item": "Life Orb",
+     "nature": "Adamant",
+     "moves": [
+      "Wave Crash",
+      "Last Respects",
+      "Aqua Jet",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Kingambit",
+     "ability": "Defiant",
+     "item": "Chople Berry",
+     "nature": "Adamant",
+     "moves": [
+      "Sucker Punch",
+      "Kowtow Cleave",
+      "Iron Head",
+      "Low Kick"
+     ]
+    },
+    {
+     "pokemon": "Charizard",
+     "ability": "Blaze",
+     "item": "Charizardite Y",
+     "nature": "Modest",
+     "moves": [
+      "Heat Wave",
+      "Weather Ball",
+      "Solar Beam",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Garchomp",
+     "ability": "Rough Skin",
+     "item": "Sitrus Berry",
+     "nature": "Adamant",
+     "moves": [
+      "Dragon Claw",
+      "Earthquake",
+      "Rock Slide",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 72,
+   "player": "Zachary B.",
+   "country": "UK",
+   "record": "3-4-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "ZachSmash",
+   "team": [
+    {
+     "pokemon": "Garchomp",
+     "ability": "Rough Skin",
+     "item": "Life Orb",
+     "nature": "Jolly",
+     "moves": [
+      "Stomping Tantrum",
+      "Dragon Claw",
+      "Rock Slide",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Raichu",
+     "ability": "Lightning Rod",
+     "item": "Raichunite Y",
+     "nature": "Timid",
+     "moves": [
+      "Zap Cannon",
+      "Focus Blast",
+      "Fake Out",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Gyarados",
+     "ability": "Intimidate",
+     "item": "Gyaradosite",
+     "nature": "Adamant",
+     "moves": [
+      "Waterfall",
+      "Crunch",
+      "Dragon Dance",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Whimsicott",
+     "ability": "Prankster",
+     "item": "Focus Sash",
+     "nature": "Timid",
+     "moves": [
+      "Moonblast",
+      "Tailwind",
+      "Encore",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Sylveon",
+     "ability": "Pixilate",
+     "item": "Fairy Feather",
+     "nature": "Modest",
+     "moves": [
+      "Hyper Voice",
+      "Moonblast",
+      "Calm Mind",
+      "Detect"
+     ]
+    },
+    {
+     "pokemon": "Kingambit",
+     "ability": "Defiant",
+     "item": "Black Glasses",
+     "nature": "Adamant",
+     "moves": [
+      "Kowtow Cleave",
+      "Sucker Punch",
+      "Low Kick",
+      "Iron Head"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 73,
+   "player": "Luke W.",
+   "country": "US",
+   "record": "3-4-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "Luke",
+   "team": [
+    {
+     "pokemon": "Charizard",
+     "ability": "Blaze",
+     "item": "Charizardite Y",
+     "nature": "Modest",
+     "moves": [
+      "Weather Ball",
+      "Heat Wave",
+      "Solar Beam",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Floette [Eternal Flower]",
+     "ability": "Flower Veil",
+     "item": "Floettite",
+     "nature": "Timid",
+     "moves": [
+      "Moonblast",
+      "Dazzling Gleam",
+      "Light of Ruin",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Basculegion [Male]",
+     "ability": "Adaptability",
+     "item": "Mystic Water",
+     "nature": "Adamant",
+     "moves": [
+      "Wave Crash",
+      "Last Respects",
+      "Aqua Jet",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Whimsicott",
+     "ability": "Prankster",
+     "item": "Focus Sash",
+     "nature": "Timid",
+     "moves": [
+      "Moonblast",
+      "Tailwind",
+      "Encore",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Kingambit",
+     "ability": "Defiant",
+     "item": "Chople Berry",
+     "nature": "Adamant",
+     "moves": [
+      "Kowtow Cleave",
+      "Low Kick",
+      "Sucker Punch",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Garchomp",
+     "ability": "Rough Skin",
+     "item": "Life Orb",
+     "nature": "Jolly",
+     "moves": [
+      "Dragon Claw",
+      "Rock Slide",
+      "Earthquake",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 74,
+   "player": "Yanqing G.",
+   "country": "CA",
+   "record": "3-4-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "Sean",
+   "team": [
+    {
+     "pokemon": "Garchomp",
+     "ability": "Rough Skin",
+     "item": "Life Orb",
+     "nature": "Jolly",
+     "moves": [
+      "Protect",
+      "Earthquake",
+      "Rock Slide",
+      "Dragon Claw"
+     ]
+    },
+    {
+     "pokemon": "Glimmora",
+     "ability": "Toxic Debris",
+     "item": "Focus Sash",
+     "nature": "Modest",
+     "moves": [
+      "Spiky Shield",
+      "Power Gem",
+      "Sludge Bomb",
+      "Earth Power"
+     ]
+    },
+    {
+     "pokemon": "Delphox",
+     "ability": "Blaze",
+     "item": "Delphoxite",
+     "nature": "Modest",
+     "moves": [
+      "Protect",
+      "Psychic",
+      "Heat Wave",
+      "Substitute"
+     ]
+    },
+    {
+     "pokemon": "Staraptor",
+     "ability": "Intimidate",
+     "item": "Staraptite",
+     "nature": "Jolly",
+     "moves": [
+      "Protect",
+      "Brave Bird",
+      "Close Combat",
+      "Roost"
+     ]
+    },
+    {
+     "pokemon": "Kingambit",
+     "ability": "Defiant",
+     "item": "Chople Berry",
+     "nature": "Adamant",
+     "moves": [
+      "Sucker Punch",
+      "Kowtow Cleave",
+      "Iron Head",
+      "Low Kick"
+     ]
+    },
+    {
+     "pokemon": "Whimsicott",
+     "ability": "Prankster",
+     "item": "Occa Berry",
+     "nature": "Timid",
+     "moves": [
+      "Protect",
+      "Moonblast",
+      "Tailwind",
+      "Charm"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 75,
+   "player": "Rise F.",
+   "country": "JP",
+   "record": "3-4-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "テテ",
+   "team": [
+    {
+     "pokemon": "Sinistcha [Unremarkable Form]",
+     "ability": "Hospitality",
+     "item": "Colbur Berry",
+     "nature": "Bold",
+     "moves": [
+      "Matcha Gotcha",
+      "Rage Powder",
+      "Life Dew",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Kingambit",
+     "ability": "Defiant",
+     "item": "Life Orb",
+     "nature": "Adamant",
+     "moves": [
+      "Kowtow Cleave",
+      "Sucker Punch",
+      "Swords Dance",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Blastoise",
+     "ability": "Rain Dish",
+     "item": "Blastoisinite",
+     "nature": "Modest",
+     "moves": [
+      "Water Spout",
+      "Dark Pulse",
+      "Shell Smash",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Sneasler",
+     "ability": "Poison Touch",
+     "item": "Focus Sash",
+     "nature": "Jolly",
+     "moves": [
+      "Dire Claw",
+      "Close Combat",
+      "Quick Guard",
+      "Fake Out"
+     ]
+    },
+    {
+     "pokemon": "Aerodactyl",
+     "ability": "Unnerve",
+     "item": "Aerodactylite",
+     "nature": "Jolly",
+     "moves": [
+      "Rock Slide",
+      "Dual Wingbeat",
+      "Tailwind",
+      "Taunt"
+     ]
+    },
+    {
+     "pokemon": "Incineroar",
+     "ability": "Intimidate",
+     "item": "Sitrus Berry",
+     "nature": "Careful",
+     "moves": [
+      "Flare Blitz",
+      "Helping Hand",
+      "Parting Shot",
+      "Fake Out"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 76,
+   "player": "Martin Q.",
+   "country": "CL",
+   "record": "3-4-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "Tinmar",
+   "team": [
+    {
+     "pokemon": "Ninetales",
+     "ability": "Drought",
+     "item": "Choice Scarf",
+     "nature": "Modest",
+     "moves": [
+      "Heat Wave",
+      "Overheat",
+      "Solar Beam",
+      "Fake Tears"
+     ]
+    },
+    {
+     "pokemon": "Basculegion [Male]",
+     "ability": "Adaptability",
+     "item": "Life Orb",
+     "nature": "Adamant",
+     "moves": [
+      "Wave Crash",
+      "Aqua Jet",
+      "Last Respects",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Whimsicott",
+     "ability": "Prankster",
+     "item": "Focus Sash",
+     "nature": "Timid",
+     "moves": [
+      "Moonblast",
+      "Tailwind",
+      "Sunny Day",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Farigiraf",
+     "ability": "Armor Tail",
+     "item": "Sitrus Berry",
+     "nature": "Bold",
+     "moves": [
+      "Twin Beam",
+      "Thunderbolt",
+      "Trick Room",
+      "Helping Hand"
+     ]
+    },
+    {
+     "pokemon": "Pyroar",
+     "ability": "Unnerve",
+     "item": "Pyroarite",
+     "nature": "Timid",
+     "moves": [
+      "Heat Wave",
+      "Overheat",
+      "Solar Beam",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Dragonite",
+     "ability": "Inner Focus",
+     "item": "Expert Belt",
+     "nature": "Jolly",
+     "moves": [
+      "Dragon Claw",
+      "Low Kick",
+      "Extreme Speed",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 77,
+   "player": "Lucrecia Samara V.",
+   "country": "MX",
+   "record": "3-4-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "Lucrecia",
+   "team": [
+    {
+     "pokemon": "Basculegion [Male]",
+     "ability": "Adaptability",
+     "item": "Life Orb",
+     "nature": "Adamant",
+     "moves": [
+      "Wave Crash",
+      "Last Respects",
+      "Aqua Jet",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Torkoal",
+     "ability": "Drought",
+     "item": "Charcoal",
+     "nature": "Quiet",
+     "moves": [
+      "Eruption",
+      "Earth Power",
+      "Heat Wave",
+      "Weather Ball"
+     ]
+    },
+    {
+     "pokemon": "Floette [Eternal Flower]",
+     "ability": "Flower Veil",
+     "item": "Floettite",
+     "nature": "Modest",
+     "moves": [
+      "Moonblast",
+      "Dazzling Gleam",
+      "Light of Ruin",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Farigiraf",
+     "ability": "Armor Tail",
+     "item": "Sitrus Berry",
+     "nature": "Bold",
+     "moves": [
+      "Psychic",
+      "Thunderbolt",
+      "Trick Room",
+      "Imprison"
+     ]
+    },
+    {
+     "pokemon": "Whimsicott",
+     "ability": "Prankster",
+     "item": "Focus Sash",
+     "nature": "Timid",
+     "moves": [
+      "Moonblast",
+      "Tailwind",
+      "Helping Hand",
+      "Fake Tears"
+     ]
+    },
+    {
+     "pokemon": "Staraptor",
+     "ability": "Intimidate",
+     "item": "Choice Scarf",
+     "nature": "Jolly",
+     "moves": [
+      "Final Gambit",
+      "Brave Bird",
+      "Close Combat",
+      "U-turn"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 78,
+   "player": "Assia H.",
+   "country": "FR",
+   "record": "3-4-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "Poussassia",
+   "team": [
+    {
+     "pokemon": "Kingambit",
+     "ability": "Defiant",
+     "item": "Focus Sash",
+     "nature": "Adamant",
+     "moves": [
+      "Kowtow Cleave",
+      "Sucker Punch",
+      "Iron Head",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Charizard",
+     "ability": "Blaze",
+     "item": "Charizardite Y",
+     "nature": "Modest",
+     "moves": [
+      "Protect",
+      "Heat Wave",
+      "Solar Beam",
+      "Weather Ball"
+     ]
+    },
+    {
+     "pokemon": "Garchomp",
+     "ability": "Rough Skin",
+     "item": "Life Orb",
+     "nature": "Jolly",
+     "moves": [
+      "Earthquake",
+      "Stomping Tantrum",
+      "Dragon Claw",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Aerodactyl",
+     "ability": "Unnerve",
+     "item": "Aerodactylite",
+     "nature": "Jolly",
+     "moves": [
+      "Rock Slide",
+      "Ice Fang",
+      "Tailwind",
+      "Wide Guard"
+     ]
+    },
+    {
+     "pokemon": "Incineroar",
+     "ability": "Intimidate",
+     "item": "Sitrus Berry",
+     "nature": "Impish",
+     "moves": [
+      "Darkest Lariat",
+      "Flare Blitz",
+      "Fake Out",
+      "Parting Shot"
+     ]
+    },
+    {
+     "pokemon": "Sylveon",
+     "ability": "Pixilate",
+     "item": "Fairy Feather",
+     "nature": "Modest",
+     "moves": [
+      "Detect",
+      "Hyper Voice",
+      "Hyper Beam",
+      "Quick Attack"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 79,
+   "player": "Hassel Andrée S.",
+   "country": "PE",
+   "record": "3-4-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "Hassel Hack",
+   "team": [
+    {
+     "pokemon": "Sneasler",
+     "ability": "Unburden",
+     "item": "Focus Sash",
+     "nature": "Jolly",
+     "moves": [
+      "Dire Claw",
+      "Close Combat",
+      "Feint",
+      "Fake Out"
+     ]
+    },
+    {
+     "pokemon": "Garchomp",
+     "ability": "Rough Skin",
+     "item": "Roseli Berry",
+     "nature": "Jolly",
+     "moves": [
+      "Earthquake",
+      "Dragon Claw",
+      "Rock Slide",
+      "Poison Jab"
+     ]
+    },
+    {
+     "pokemon": "Kingambit",
+     "ability": "Defiant",
+     "item": "Chople Berry",
+     "nature": "Adamant",
+     "moves": [
+      "Kowtow Cleave",
+      "Iron Head",
+      "Sucker Punch",
+      "Low Kick"
+     ]
+    },
+    {
+     "pokemon": "Basculegion [Male]",
+     "ability": "Adaptability",
+     "item": "Mystic Water",
+     "nature": "Adamant",
+     "moves": [
+      "Last Respects",
+      "Aqua Jet",
+      "Wave Crash",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Dragonite",
+     "ability": "Multiscale",
+     "item": "Dragoninite",
+     "nature": "Modest",
+     "moves": [
+      "Dragon Pulse",
+      "Heat Wave",
+      "Tailwind",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Froslass",
+     "ability": "Cursed Body",
+     "item": "Froslassite",
+     "nature": "Modest",
+     "moves": [
+      "Blizzard",
+      "Aurora Veil",
+      "Shadow Ball",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 80,
+   "player": "WOOJIN C.",
+   "country": "KR",
+   "record": "3-4-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "최우진",
+   "team": [
+    {
+     "pokemon": "Incineroar",
+     "ability": "Intimidate",
+     "item": "Passho Berry",
+     "nature": "Relaxed",
+     "moves": [
+      "Fake Out",
+      "Flare Blitz",
+      "Protect",
+      "Parting Shot"
+     ]
+    },
+    {
+     "pokemon": "Kingambit",
+     "ability": "Defiant",
+     "item": "Chople Berry",
+     "nature": "Adamant",
+     "moves": [
+      "Kowtow Cleave",
+      "Sucker Punch",
+      "Low Kick",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Garchomp",
+     "ability": "Rough Skin",
+     "item": "Sitrus Berry",
+     "nature": "Adamant",
+     "moves": [
+      "Protect",
+      "Stomping Tantrum",
+      "Rock Tomb",
+      "Dragon Claw"
+     ]
+    },
+    {
+     "pokemon": "Gengar",
+     "ability": "Cursed Body",
+     "item": "Gengarite",
+     "nature": "Calm",
+     "moves": [
+      "Shadow Ball",
+      "Sludge Bomb",
+      "Perish Song",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Dragonite",
+     "ability": "Multiscale",
+     "item": "Dragon Fang",
+     "nature": "Adamant",
+     "moves": [
+      "Dragon Claw",
+      "Low Kick",
+      "Extreme Speed",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Ninetales [Alolan Form]",
+     "ability": "Snow Warning",
+     "item": "Focus Sash",
+     "nature": "Timid",
+     "moves": [
+      "Blizzard",
+      "Freeze-Dry",
+      "Encore",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 81,
+   "player": "Amelia R.",
+   "country": "US",
+   "record": "3-4-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "HeartuBeatue",
+   "team": [
+    {
+     "pokemon": "Gholdengo",
+     "ability": "Good as Gold",
+     "item": "Life Orb",
+     "nature": "Modest",
+     "moves": [
+      "Make It Rain",
+      "Protect",
+      "Nasty Plot",
+      "Shadow Ball"
+     ]
+    },
+    {
+     "pokemon": "Tyranitar",
+     "ability": "Sand Stream",
+     "item": "Tyranitarite",
+     "nature": "Jolly",
+     "moves": [
+      "Knock Off",
+      "High Horsepower",
+      "Rock Slide",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Floette [Eternal Flower]",
+     "ability": "Flower Veil",
+     "item": "Floettite",
+     "nature": "Timid",
+     "moves": [
+      "Moonblast",
+      "Dazzling Gleam",
+      "Light of Ruin",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Sinistcha [Unremarkable Form]",
+     "ability": "Hospitality",
+     "item": "Colbur Berry",
+     "nature": "Bold",
+     "moves": [
+      "Matcha Gotcha",
+      "Trick Room",
+      "Rage Powder",
+      "Life Dew"
+     ]
+    },
+    {
+     "pokemon": "Rotom [Wash Rotom]",
+     "ability": "Levitate",
+     "item": "Choice Scarf",
+     "nature": "Timid",
+     "moves": [
+      "Hydro Pump",
+      "Volt Switch",
+      "Electroweb",
+      "Trick"
+     ]
+    },
+    {
+     "pokemon": "Excadrill",
+     "ability": "Sand Rush",
+     "item": "Focus Sash",
+     "nature": "Adamant",
+     "moves": [
+      "Earthquake",
+      "Rock Slide",
+      "Protect",
+      "Iron Head"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 82,
+   "player": "Leonardo S.",
+   "country": "MX",
+   "record": "3-4-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "Leo",
+   "team": [
+    {
+     "pokemon": "Farigiraf",
+     "ability": "Armor Tail",
+     "item": "Sitrus Berry",
+     "nature": "Sassy",
+     "moves": [
+      "Trick Room",
+      "Helping Hand",
+      "Twin Beam",
+      "Thunderbolt"
+     ]
+    },
+    {
+     "pokemon": "Garchomp",
+     "ability": "Rough Skin",
+     "item": "Life Orb",
+     "nature": "Jolly",
+     "moves": [
+      "Protect",
+      "Rock Slide",
+      "Dragon Claw",
+      "Earthquake"
+     ]
+    },
+    {
+     "pokemon": "Charizard",
+     "ability": "Blaze",
+     "item": "Charizardite Y",
+     "nature": "Modest",
+     "moves": [
+      "Protect",
+      "Weather Ball",
+      "Heat Wave",
+      "Solar Beam"
+     ]
+    },
+    {
+     "pokemon": "Kingambit",
+     "ability": "Defiant",
+     "item": "Chople Berry",
+     "nature": "Adamant",
+     "moves": [
+      "Sucker Punch",
+      "Low Kick",
+      "Iron Head",
+      "Kowtow Cleave"
+     ]
+    },
+    {
+     "pokemon": "Aerodactyl",
+     "ability": "Unnerve",
+     "item": "Aerodactylite",
+     "nature": "Jolly",
+     "moves": [
+      "Ice Fang",
+      "Tailwind",
+      "Rock Slide",
+      "Dual Wingbeat"
+     ]
+    },
+    {
+     "pokemon": "Sylveon",
+     "ability": "Pixilate",
+     "item": "Fairy Feather",
+     "nature": "Modest",
+     "moves": [
+      "Protect",
+      "Quick Attack",
+      "Hyper Voice",
+      "Hyper Beam"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 83,
+   "player": "Vinicius B.",
+   "country": "BR",
+   "record": "2-4-0",
+   "dropped": true,
+   "dropped_round": 6,
+   "trainer_name": "Vinex",
+   "team": [
+    {
+     "pokemon": "Mawile",
+     "ability": "Hyper Cutter",
+     "item": "Mawilite",
+     "nature": "Adamant",
+     "moves": [
+      "Protect",
+      "Play Rough",
+      "Rock Slide",
+      "Sucker Punch"
+     ]
+    },
+    {
+     "pokemon": "Dragonite",
+     "ability": "Inner Focus",
+     "item": "Life Orb",
+     "nature": "Adamant",
+     "moves": [
+      "Dragon Claw",
+      "Stomping Tantrum",
+      "Protect",
+      "Extreme Speed"
+     ]
+    },
+    {
+     "pokemon": "Camerupt",
+     "ability": "Solid Rock",
+     "item": "Cameruptite",
+     "nature": "Quiet",
+     "moves": [
+      "Heat Wave",
+      "Earth Power",
+      "Ancient Power",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Farigiraf",
+     "ability": "Armor Tail",
+     "item": "Sitrus Berry",
+     "nature": "Bold",
+     "moves": [
+      "Psychic",
+      "Helping Hand",
+      "Trick Room",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Incineroar",
+     "ability": "Intimidate",
+     "item": "Charcoal",
+     "nature": "Impish",
+     "moves": [
+      "Flare Blitz",
+      "Darkest Lariat",
+      "Fake Out",
+      "Parting Shot"
+     ]
+    },
+    {
+     "pokemon": "Primarina",
+     "ability": "Liquid Voice",
+     "item": "Mystic Water",
+     "nature": "Quiet",
+     "moves": [
+      "Moonblast",
+      "Protect",
+      "Calm Mind",
+      "Hyper Voice"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 84,
+   "player": "Luke K.",
+   "country": "AU",
+   "record": "2-5-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "Ben",
+   "team": [
+    {
+     "pokemon": "Venusaur",
+     "ability": "Chlorophyll",
+     "item": "Focus Sash",
+     "nature": "Modest",
+     "moves": [
+      "Sludge Bomb",
+      "Earth Power",
+      "Sleep Powder",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Pelipper",
+     "ability": "Drizzle",
+     "item": "Sitrus Berry",
+     "nature": "Modest",
+     "moves": [
+      "Hurricane",
+      "Tailwind",
+      "Weather Ball",
+      "Wide Guard"
+     ]
+    },
+    {
+     "pokemon": "Charizard",
+     "ability": "Solar Power",
+     "item": "Charizardite Y",
+     "nature": "Modest",
+     "moves": [
+      "Solar Beam",
+      "Weather Ball",
+      "Heat Wave",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Basculegion [Male]",
+     "ability": "Adaptability",
+     "item": "Choice Scarf",
+     "nature": "Jolly",
+     "moves": [
+      "Wave Crash",
+      "Aqua Jet",
+      "Last Respects",
+      "Flip Turn"
+     ]
+    },
+    {
+     "pokemon": "Grimmsnarl",
+     "ability": "Prankster",
+     "item": "Light Clay",
+     "nature": "Sassy",
+     "moves": [
+      "Spirit Break",
+      "Light Screen",
+      "Reflect",
+      "Parting Shot"
+     ]
+    },
+    {
+     "pokemon": "Archaludon",
+     "ability": "Stamina",
+     "item": "Leftovers",
+     "nature": "Calm",
+     "moves": [
+      "Protect",
+      "Dragon Pulse",
+      "Electro Shot",
+      "Flash Cannon"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 85,
+   "player": "Claire F.",
+   "country": "US",
+   "record": "2-2-0",
+   "dropped": true,
+   "dropped_round": 4,
+   "trainer_name": "Czyboi",
+   "team": [
+    {
+     "pokemon": "Lycanroc [Dusk Form]",
+     "ability": "Tough Claws",
+     "item": "Focus Sash",
+     "nature": "Adamant",
+     "moves": [
+      "Accelerock",
+      "Close Combat",
+      "Protect",
+      "Rock Slide"
+     ]
+    },
+    {
+     "pokemon": "Basculegion [Male]",
+     "ability": "Adaptability",
+     "item": "Sitrus Berry",
+     "nature": "Adamant",
+     "moves": [
+      "Last Respects",
+      "Wave Crash",
+      "Protect",
+      "Aqua Jet"
+     ]
+    },
+    {
+     "pokemon": "Scovillain",
+     "ability": "Moody",
+     "item": "Scovillainite",
+     "nature": "Bold",
+     "moves": [
+      "Protect",
+      "Overheat",
+      "Rage Powder",
+      "Giga Drain"
+     ]
+    },
+    {
+     "pokemon": "Sneasler",
+     "ability": "Unburden",
+     "item": "White Herb",
+     "nature": "Adamant",
+     "moves": [
+      "Protect",
+      "Gunk Shot",
+      "Close Combat",
+      "Fake Out"
+     ]
+    },
+    {
+     "pokemon": "Froslass",
+     "ability": "Cursed Body",
+     "item": "Froslassite",
+     "nature": "Modest",
+     "moves": [
+      "Blizzard",
+      "Shadow Ball",
+      "Aurora Veil",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Kingambit",
+     "ability": "Defiant",
+     "item": "Life Orb",
+     "nature": "Adamant",
+     "moves": [
+      "Sucker Punch",
+      "Swords Dance",
+      "Kowtow Cleave",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 86,
+   "player": "ZAYNAB H.",
+   "country": "FR",
+   "record": "2-5-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "Zazouko",
+   "team": [
+    {
+     "pokemon": "Sylveon",
+     "ability": "Pixilate",
+     "item": "Fairy Feather",
+     "nature": "Modest",
+     "moves": [
+      "Detect",
+      "Hyper Voice",
+      "Hyper Beam",
+      "Quick Attack"
+     ]
+    },
+    {
+     "pokemon": "Charizard",
+     "ability": "Blaze",
+     "item": "Charizardite Y",
+     "nature": "Modest",
+     "moves": [
+      "Protect",
+      "Heat Wave",
+      "Solar Beam",
+      "Weather Ball"
+     ]
+    },
+    {
+     "pokemon": "Garchomp",
+     "ability": "Rough Skin",
+     "item": "Life Orb",
+     "nature": "Jolly",
+     "moves": [
+      "Earthquake",
+      "Dragon Claw",
+      "Stomping Tantrum",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Aerodactyl",
+     "ability": "Unnerve",
+     "item": "Aerodactylite",
+     "nature": "Jolly",
+     "moves": [
+      "Rock Slide",
+      "Ice Fang",
+      "Tailwind",
+      "Wide Guard"
+     ]
+    },
+    {
+     "pokemon": "Incineroar",
+     "ability": "Intimidate",
+     "item": "Sitrus Berry",
+     "nature": "Impish",
+     "moves": [
+      "Darkest Lariat",
+      "Flare Blitz",
+      "Fake Out",
+      "Parting Shot"
+     ]
+    },
+    {
+     "pokemon": "Kingambit",
+     "ability": "Defiant",
+     "item": "Focus Sash",
+     "nature": "Adamant",
+     "moves": [
+      "Kowtow Cleave",
+      "Sucker Punch",
+      "Iron Head",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 87,
+   "player": "koki k.",
+   "country": "JP",
+   "record": "2-5-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "いむまよ",
+   "team": [
+    {
+     "pokemon": "Basculegion [Male]",
+     "ability": "Adaptability",
+     "item": "Choice Scarf",
+     "nature": "Jolly",
+     "moves": [
+      "Last Respects",
+      "Wave Crash",
+      "Aqua Jet",
+      "Ice Fang"
+     ]
+    },
+    {
+     "pokemon": "Sylveon",
+     "ability": "Pixilate",
+     "item": "Fairy Feather",
+     "nature": "Modest",
+     "moves": [
+      "Hyper Voice",
+      "Hyper Beam",
+      "Quick Attack",
+      "Detect"
+     ]
+    },
+    {
+     "pokemon": "Charizard",
+     "ability": "Blaze",
+     "item": "Charizardite Y",
+     "nature": "Modest",
+     "moves": [
+      "Protect",
+      "Heat Wave",
+      "Solar Beam",
+      "Weather Ball"
+     ]
+    },
+    {
+     "pokemon": "Sneasler",
+     "ability": "Unburden",
+     "item": "Focus Sash",
+     "nature": "Jolly",
+     "moves": [
+      "Fake Out",
+      "Close Combat",
+      "Dire Claw",
+      "Taunt"
+     ]
+    },
+    {
+     "pokemon": "Kingambit",
+     "ability": "Defiant",
+     "item": "Black Glasses",
+     "nature": "Adamant",
+     "moves": [
+      "Protect",
+      "Kowtow Cleave",
+      "Iron Head",
+      "Sucker Punch"
+     ]
+    },
+    {
+     "pokemon": "Garchomp",
+     "ability": "Rough Skin",
+     "item": "Roseli Berry",
+     "nature": "Jolly",
+     "moves": [
+      "Protect",
+      "Earthquake",
+      "Rock Slide",
+      "Dragon Claw"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 88,
+   "player": "Joji K.",
+   "country": "JP",
+   "record": "2-5-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "きのこ",
+   "team": [
+    {
+     "pokemon": "Sneasler",
+     "ability": "Unburden",
+     "item": "White Herb",
+     "nature": "Adamant",
+     "moves": [
+      "Close Combat",
+      "Fake Out",
+      "Dire Claw",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Blastoise",
+     "ability": "Rain Dish",
+     "item": "Blastoisinite",
+     "nature": "Modest",
+     "moves": [
+      "Water Spout",
+      "Dark Pulse",
+      "Shell Smash",
+      "Fake Out"
+     ]
+    },
+    {
+     "pokemon": "Glalie",
+     "ability": "Moody",
+     "item": "Glalitite",
+     "nature": "Adamant",
+     "moves": [
+      "Explosion",
+      "Freeze-Dry",
+      "Icy Wind",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Basculegion [Male]",
+     "ability": "Adaptability",
+     "item": "Focus Sash",
+     "nature": "Jolly",
+     "moves": [
+      "Last Respects",
+      "Aqua Jet",
+      "Protect",
+      "Wave Crash"
+     ]
+    },
+    {
+     "pokemon": "Vivillon",
+     "ability": "Compound Eyes",
+     "item": "Choice Scarf",
+     "nature": "Timid",
+     "moves": [
+      "Sleep Powder",
+      "Hurricane",
+      "Pollen Puff",
+      "Rage Powder"
+     ]
+    },
+    {
+     "pokemon": "Whimsicott",
+     "ability": "Prankster",
+     "item": "Mental Herb",
+     "nature": "Timid",
+     "moves": [
+      "Tailwind",
+      "Moonblast",
+      "Encore",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 89,
+   "player": "Matias G.",
+   "country": "PE",
+   "record": "2-5-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "Santi",
+   "team": [
+    {
+     "pokemon": "Dragonite",
+     "ability": "Multiscale",
+     "item": "Dragoninite",
+     "nature": "Modest",
+     "moves": [
+      "Dragon Pulse",
+      "Heat Wave",
+      "Tailwind",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Garchomp",
+     "ability": "Rough Skin",
+     "item": "Roseli Berry",
+     "nature": "Jolly",
+     "moves": [
+      "Earthquake",
+      "Dragon Claw",
+      "Rock Slide",
+      "Poison Jab"
+     ]
+    },
+    {
+     "pokemon": "Kingambit",
+     "ability": "Defiant",
+     "item": "Chople Berry",
+     "nature": "Adamant",
+     "moves": [
+      "Kowtow Cleave",
+      "Sucker Punch",
+      "Iron Head",
+      "Low Kick"
+     ]
+    },
+    {
+     "pokemon": "Sneasler",
+     "ability": "Unburden",
+     "item": "Focus Sash",
+     "nature": "Jolly",
+     "moves": [
+      "Fake Out",
+      "Close Combat",
+      "Dire Claw",
+      "Feint"
+     ]
+    },
+    {
+     "pokemon": "Basculegion [Male]",
+     "ability": "Adaptability",
+     "item": "Mystic Water",
+     "nature": "Adamant",
+     "moves": [
+      "Wave Crash",
+      "Aqua Jet",
+      "Last Respects",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Froslass",
+     "ability": "Cursed Body",
+     "item": "Froslassite",
+     "nature": "Modest",
+     "moves": [
+      "Blizzard",
+      "Shadow Ball",
+      "Aurora Veil",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 90,
+   "player": "Alessandro C.",
+   "country": "IT",
+   "record": "2-5-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "alessandro",
+   "team": [
+    {
+     "pokemon": "Basculegion [Male]",
+     "ability": "Adaptability",
+     "item": "Focus Sash",
+     "nature": "Adamant",
+     "moves": [
+      "Liquidation",
+      "Last Respects",
+      "Aqua Jet",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Farigiraf",
+     "ability": "Armor Tail",
+     "item": "Sitrus Berry",
+     "nature": "Quiet",
+     "moves": [
+      "Psychic",
+      "Thunderbolt",
+      "Trick Room",
+      "Helping Hand"
+     ]
+    },
+    {
+     "pokemon": "Blastoise",
+     "ability": "Rain Dish",
+     "item": "Blastoisinite",
+     "nature": "Modest",
+     "moves": [
+      "Water Spout",
+      "Dark Pulse",
+      "Shell Smash",
+      "Fake Out"
+     ]
+    },
+    {
+     "pokemon": "Kangaskhan",
+     "ability": "Scrappy",
+     "item": "Kangaskhanite",
+     "nature": "Adamant",
+     "moves": [
+      "Fake Out",
+      "Double-Edge",
+      "Low Kick",
+      "Ice Punch"
+     ]
+    },
+    {
+     "pokemon": "Torkoal",
+     "ability": "Drought",
+     "item": "Charcoal",
+     "nature": "Quiet",
+     "moves": [
+      "Eruption",
+      "Heat Wave",
+      "Weather Ball",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Vivillon",
+     "ability": "Compound Eyes",
+     "item": "Choice Scarf",
+     "nature": "Timid",
+     "moves": [
+      "Sleep Powder",
+      "Rage Powder",
+      "Hurricane",
+      "Rain Dance"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 91,
+   "player": "Diego C.",
+   "country": "PE",
+   "record": "2-5-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "DiegoGamer56",
+   "team": [
+    {
+     "pokemon": "Whimsicott",
+     "ability": "Prankster",
+     "item": "Focus Sash",
+     "nature": "Timid",
+     "moves": [
+      "Moonblast",
+      "Tailwind",
+      "Fake Tears",
+      "Tickle"
+     ]
+    },
+    {
+     "pokemon": "Basculegion [Male]",
+     "ability": "Adaptability",
+     "item": "Mystic Water",
+     "nature": "Adamant",
+     "moves": [
+      "Last Respects",
+      "Protect",
+      "Wave Crash",
+      "Aqua Jet"
+     ]
+    },
+    {
+     "pokemon": "Gholdengo",
+     "ability": "Good as Gold",
+     "item": "Life Orb",
+     "nature": "Modest",
+     "moves": [
+      "Make It Rain",
+      "Shadow Ball",
+      "Power Gem",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Typhlosion [Hisuian Form]",
+     "ability": "Blaze",
+     "item": "Choice Scarf",
+     "nature": "Modest",
+     "moves": [
+      "Shadow Ball",
+      "Eruption",
+      "Overheat",
+      "Heat Wave"
+     ]
+    },
+    {
+     "pokemon": "Garchomp",
+     "ability": "Rough Skin",
+     "item": "Roseli Berry",
+     "nature": "Jolly",
+     "moves": [
+      "Stomping Tantrum",
+      "Rock Tomb",
+      "Dragon Claw",
+      "Poison Jab"
+     ]
+    },
+    {
+     "pokemon": "Staraptor",
+     "ability": "Intimidate",
+     "item": "Staraptite",
+     "nature": "Jolly",
+     "moves": [
+      "Brave Bird",
+      "Roost",
+      "Close Combat",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 92,
+   "player": "Elijah S.",
+   "country": "AU",
+   "record": "2-5-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "eejay",
+   "team": [
+    {
+     "pokemon": "Kingambit",
+     "ability": "Defiant",
+     "item": "Focus Sash",
+     "nature": "Adamant",
+     "moves": [
+      "Kowtow Cleave",
+      "Sucker Punch",
+      "Iron Head",
+      "Low Kick"
+     ]
+    },
+    {
+     "pokemon": "Sylveon",
+     "ability": "Pixilate",
+     "item": "Fairy Feather",
+     "nature": "Modest",
+     "moves": [
+      "Yawn",
+      "Quick Attack",
+      "Hyper Voice",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Farigiraf",
+     "ability": "Armor Tail",
+     "item": "Sitrus Berry",
+     "nature": "Relaxed",
+     "moves": [
+      "Trick Room",
+      "Thunderbolt",
+      "Psychic",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Aerodactyl",
+     "ability": "Unnerve",
+     "item": "Aerodactylite",
+     "nature": "Jolly",
+     "moves": [
+      "Rock Slide",
+      "Ice Fang",
+      "Tailwind",
+      "Dual Wingbeat"
+     ]
+    },
+    {
+     "pokemon": "Charizard",
+     "ability": "Blaze",
+     "item": "Charizardite Y",
+     "nature": "Modest",
+     "moves": [
+      "Heat Wave",
+      "Solar Beam",
+      "Weather Ball",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Garchomp",
+     "ability": "Rough Skin",
+     "item": "Life Orb",
+     "nature": "Jolly",
+     "moves": [
+      "Dragon Claw",
+      "Earthquake",
+      "Stomping Tantrum",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 93,
+   "player": "Franco M.",
+   "country": "CL",
+   "record": "2-5-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "Franco1",
+   "team": [
+    {
+     "pokemon": "Charizard",
+     "ability": "Solar Power",
+     "item": "Charizardite Y",
+     "nature": "Modest",
+     "moves": [
+      "Protect",
+      "Heat Wave",
+      "Weather Ball",
+      "Solar Beam"
+     ]
+    },
+    {
+     "pokemon": "Kingambit",
+     "ability": "Defiant",
+     "item": "Chople Berry",
+     "nature": "Adamant",
+     "moves": [
+      "Kowtow Cleave",
+      "Sucker Punch",
+      "Iron Head",
+      "Low Kick"
+     ]
+    },
+    {
+     "pokemon": "Floette [Eternal Flower]",
+     "ability": "Flower Veil",
+     "item": "Floettite",
+     "nature": "Modest",
+     "moves": [
+      "Light of Ruin",
+      "Dazzling Gleam",
+      "Moonblast",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Garchomp",
+     "ability": "Rough Skin",
+     "item": "Sitrus Berry",
+     "nature": "Jolly",
+     "moves": [
+      "Rock Slide",
+      "Earthquake",
+      "Dragon Claw",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Basculegion [Male]",
+     "ability": "Adaptability",
+     "item": "Life Orb",
+     "nature": "Adamant",
+     "moves": [
+      "Wave Crash",
+      "Protect",
+      "Aqua Jet",
+      "Last Respects"
+     ]
+    },
+    {
+     "pokemon": "Whimsicott",
+     "ability": "Prankster",
+     "item": "Focus Sash",
+     "nature": "Timid",
+     "moves": [
+      "Moonblast",
+      "Encore",
+      "Protect",
+      "Tailwind"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 94,
+   "player": "Zoe R.",
+   "country": "US",
+   "record": "2-5-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "Charamizard",
+   "team": [
+    {
+     "pokemon": "Glimmora",
+     "ability": "Toxic Debris",
+     "item": "Focus Sash",
+     "nature": "Modest",
+     "moves": [
+      "Power Gem",
+      "Sludge Bomb",
+      "Spiky Shield",
+      "Earth Power"
+     ]
+    },
+    {
+     "pokemon": "Kingambit",
+     "ability": "Defiant",
+     "item": "Black Glasses",
+     "nature": "Adamant",
+     "moves": [
+      "Kowtow Cleave",
+      "Protect",
+      "Sucker Punch",
+      "Low Kick"
+     ]
+    },
+    {
+     "pokemon": "Basculegion [Male]",
+     "ability": "Adaptability",
+     "item": "Sitrus Berry",
+     "nature": "Adamant",
+     "moves": [
+      "Last Respects",
+      "Aqua Jet",
+      "Wave Crash",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Garchomp",
+     "ability": "Rough Skin",
+     "item": "Life Orb",
+     "nature": "Jolly",
+     "moves": [
+      "Protect",
+      "Dragon Claw",
+      "Stomping Tantrum",
+      "Rock Slide"
+     ]
+    },
+    {
+     "pokemon": "Whimsicott",
+     "ability": "Prankster",
+     "item": "Fairy Feather",
+     "nature": "Timid",
+     "moves": [
+      "Moonblast",
+      "Tailwind",
+      "Encore",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Charizard",
+     "ability": "Blaze",
+     "item": "Charizardite Y",
+     "nature": "Calm",
+     "moves": [
+      "Heat Wave",
+      "Solar Beam",
+      "Weather Ball",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 95,
+   "player": "Luciana Sofia V.",
+   "country": "MX",
+   "record": "2-5-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "Luciana",
+   "team": [
+    {
+     "pokemon": "Aerodactyl",
+     "ability": "Unnerve",
+     "item": "Focus Sash",
+     "nature": "Jolly",
+     "moves": [
+      "Rock Slide",
+      "Dual Wingbeat",
+      "Wide Guard",
+      "Tailwind"
+     ]
+    },
+    {
+     "pokemon": "Charizard",
+     "ability": "Solar Power",
+     "item": "Charizardite Y",
+     "nature": "Modest",
+     "moves": [
+      "Heat Wave",
+      "Weather Ball",
+      "Solar Beam",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Sylveon",
+     "ability": "Pixilate",
+     "item": "Fairy Feather",
+     "nature": "Modest",
+     "moves": [
+      "Hyper Voice",
+      "Hyper Beam",
+      "Quick Attack",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Farigiraf",
+     "ability": "Armor Tail",
+     "item": "Sitrus Berry",
+     "nature": "Bold",
+     "moves": [
+      "Psychic",
+      "Thunderbolt",
+      "Trick Room",
+      "Imprison"
+     ]
+    },
+    {
+     "pokemon": "Venusaur",
+     "ability": "Chlorophyll",
+     "item": "Life Orb",
+     "nature": "Modest",
+     "moves": [
+      "Leaf Storm",
+      "Sludge Bomb",
+      "Earth Power",
+      "Sleep Powder"
+     ]
+    },
+    {
+     "pokemon": "Basculegion [Male]",
+     "ability": "Adaptability",
+     "item": "Choice Scarf",
+     "nature": "Jolly",
+     "moves": [
+      "Wave Crash",
+      "Last Respects",
+      "Aqua Jet",
+      "Flip Turn"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 96,
+   "player": "Amelia P.",
+   "country": "AU",
+   "record": "2-5-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "Milly",
+   "team": [
+    {
+     "pokemon": "Garchomp",
+     "ability": "Rough Skin",
+     "item": "Life Orb",
+     "nature": "Jolly",
+     "moves": [
+      "Dragon Claw",
+      "Rock Slide",
+      "Earthquake",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Venusaur",
+     "ability": "Chlorophyll",
+     "item": "Wide Lens",
+     "nature": "Modest",
+     "moves": [
+      "Sleep Powder",
+      "Leaf Storm",
+      "Sludge Bomb",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Charizard",
+     "ability": "Blaze",
+     "item": "Charizardite Y",
+     "nature": "Modest",
+     "moves": [
+      "Heat Wave",
+      "Ancient Power",
+      "Weather Ball",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Incineroar",
+     "ability": "Intimidate",
+     "item": "Sitrus Berry",
+     "nature": "Impish",
+     "moves": [
+      "Fake Out",
+      "Flare Blitz",
+      "Darkest Lariat",
+      "Parting Shot"
+     ]
+    },
+    {
+     "pokemon": "Sylveon",
+     "ability": "Pixilate",
+     "item": "Fairy Feather",
+     "nature": "Modest",
+     "moves": [
+      "Hyper Voice",
+      "Hyper Beam",
+      "Quick Attack",
+      "Detect"
+     ]
+    },
+    {
+     "pokemon": "Aerodactyl",
+     "ability": "Unnerve",
+     "item": "Focus Sash",
+     "nature": "Jolly",
+     "moves": [
+      "Rock Slide",
+      "Dual Wingbeat",
+      "Tailwind",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 97,
+   "player": "Rei I.",
+   "country": "JP",
+   "record": "2-5-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "れれすけ",
+   "team": [
+    {
+     "pokemon": "Sinistcha [Unremarkable Form]",
+     "ability": "Hospitality",
+     "item": "Kasib Berry",
+     "nature": "Bold",
+     "moves": [
+      "Matcha Gotcha",
+      "Rage Powder",
+      "Life Dew",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Floette [Eternal Flower]",
+     "ability": "Flower Veil",
+     "item": "Floettite",
+     "nature": "Modest",
+     "moves": [
+      "Moonblast",
+      "Dazzling Gleam",
+      "Calm Mind",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Incineroar",
+     "ability": "Intimidate",
+     "item": "Sitrus Berry",
+     "nature": "Careful",
+     "moves": [
+      "Flare Blitz",
+      "Darkest Lariat",
+      "Parting Shot",
+      "Fake Out"
+     ]
+    },
+    {
+     "pokemon": "Samurott [Hisuian Form]",
+     "ability": "Sharpness",
+     "item": "Choice Scarf",
+     "nature": "Jolly",
+     "moves": [
+      "Razor Shell",
+      "Night Slash",
+      "Sacred Sword",
+      "Flip Turn"
+     ]
+    },
+    {
+     "pokemon": "Sneasler",
+     "ability": "Poison Touch",
+     "item": "Focus Sash",
+     "nature": "Jolly",
+     "moves": [
+      "Poison Jab",
+      "Close Combat",
+      "Fake Out",
+      "Rock Slide"
+     ]
+    },
+    {
+     "pokemon": "Delphox",
+     "ability": "Blaze",
+     "item": "Delphoxite",
+     "nature": "Timid",
+     "moves": [
+      "Heat Wave",
+      "Psychic",
+      "Nasty Plot",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 98,
+   "player": "Kennedy N.",
+   "country": "US",
+   "record": "2-5-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "Kennedy",
+   "team": [
+    {
+     "pokemon": "Garchomp",
+     "ability": "Rough Skin",
+     "item": "Life Orb",
+     "nature": "Jolly",
+     "moves": [
+      "Protect",
+      "Dragon Claw",
+      "Rock Slide",
+      "Earthquake"
+     ]
+    },
+    {
+     "pokemon": "Charizard",
+     "ability": "Blaze",
+     "item": "Charizardite Y",
+     "nature": "Modest",
+     "moves": [
+      "Heat Wave",
+      "Solar Beam",
+      "Weather Ball",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Basculegion [Male]",
+     "ability": "Adaptability",
+     "item": "Mystic Water",
+     "nature": "Adamant",
+     "moves": [
+      "Wave Crash",
+      "Last Respects",
+      "Aqua Jet",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Floette [Eternal Flower]",
+     "ability": "Flower Veil",
+     "item": "Floettite",
+     "nature": "Timid",
+     "moves": [
+      "Protect",
+      "Light of Ruin",
+      "Moonblast",
+      "Dazzling Gleam"
+     ]
+    },
+    {
+     "pokemon": "Kingambit",
+     "ability": "Defiant",
+     "item": "Chople Berry",
+     "nature": "Adamant",
+     "moves": [
+      "Sucker Punch",
+      "Kowtow Cleave",
+      "Low Kick",
+      "Iron Head"
+     ]
+    },
+    {
+     "pokemon": "Whimsicott",
+     "ability": "Prankster",
+     "item": "Focus Sash",
+     "nature": "Timid",
+     "moves": [
+      "Tailwind",
+      "Protect",
+      "Moonblast",
+      "Encore"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 99,
+   "player": "Caterina Sofia B.",
+   "country": "IT",
+   "record": "2-5-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "Cate ^_*",
+   "team": [
+    {
+     "pokemon": "Venusaur",
+     "ability": "Chlorophyll",
+     "item": "Venusaurite",
+     "nature": "Modest",
+     "moves": [
+      "Protect",
+      "Weather Ball",
+      "Earth Power",
+      "Giga Drain"
+     ]
+    },
+    {
+     "pokemon": "Torkoal",
+     "ability": "Drought",
+     "item": "Leftovers",
+     "nature": "Quiet",
+     "moves": [
+      "Solar Beam",
+      "Protect",
+      "Eruption",
+      "Heat Wave"
+     ]
+    },
+    {
+     "pokemon": "Vivillon",
+     "ability": "Compound Eyes",
+     "item": "Occa Berry",
+     "nature": "Timid",
+     "moves": [
+      "Hurricane",
+      "Sleep Powder",
+      "Rage Powder",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Farigiraf",
+     "ability": "Armor Tail",
+     "item": "Sitrus Berry",
+     "nature": "Quiet",
+     "moves": [
+      "Trick Room",
+      "Psychic",
+      "Thunderbolt",
+      "Helping Hand"
+     ]
+    },
+    {
+     "pokemon": "Basculegion [Male]",
+     "ability": "Adaptability",
+     "item": "Focus Sash",
+     "nature": "Jolly",
+     "moves": [
+      "Last Respects",
+      "Aqua Jet",
+      "Wave Crash",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Kangaskhan",
+     "ability": "Scrappy",
+     "item": "Kangaskhanite",
+     "nature": "Brave",
+     "moves": [
+      "Double-Edge",
+      "Fake Out",
+      "Drain Punch",
+      "Ice Punch"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 100,
+   "player": "Makoto H.",
+   "country": "JP",
+   "record": "1-2-0",
+   "dropped": true,
+   "dropped_round": 3,
+   "trainer_name": "みよ",
+   "team": [
+    {
+     "pokemon": "Garchomp",
+     "ability": "Rough Skin",
+     "item": "Haban Berry",
+     "nature": "Jolly",
+     "moves": [
+      "Earthquake",
+      "Rock Slide",
+      "Dragon Tail",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Kingambit",
+     "ability": "Defiant",
+     "item": "Chople Berry",
+     "nature": "Adamant",
+     "moves": [
+      "Kowtow Cleave",
+      "Sucker Punch",
+      "Iron Head",
+      "Low Kick"
+     ]
+    },
+    {
+     "pokemon": "Floette [Eternal Flower]",
+     "ability": "Flower Veil",
+     "item": "Floettite",
+     "nature": "Timid",
+     "moves": [
+      "Protect",
+      "Moonblast",
+      "Light of Ruin",
+      "Dazzling Gleam"
+     ]
+    },
+    {
+     "pokemon": "Aerodactyl",
+     "ability": "Unnerve",
+     "item": "Focus Sash",
+     "nature": "Jolly",
+     "moves": [
+      "Rock Slide",
+      "Dual Wingbeat",
+      "Tailwind",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Sneasler",
+     "ability": "Unburden",
+     "item": "White Herb",
+     "nature": "Jolly",
+     "moves": [
+      "Close Combat",
+      "Dire Claw",
+      "Fake Out",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Basculegion [Male]",
+     "ability": "Adaptability",
+     "item": "Choice Scarf",
+     "nature": "Jolly",
+     "moves": [
+      "Wave Crash",
+      "Last Respects",
+      "Aqua Jet",
+      "Flip Turn"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 101,
+   "player": "Lia M.",
+   "country": "BR",
+   "record": "1-4-0",
+   "dropped": true,
+   "dropped_round": 5,
+   "trainer_name": "Lia M",
+   "team": [
+    {
+     "pokemon": "Maushold [Family of Four]",
+     "ability": "Technician",
+     "item": "Wide Lens",
+     "nature": "Jolly",
+     "moves": [
+      "Population Bomb",
+      "Follow Me",
+      "Feint",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Gardevoir",
+     "ability": "Trace",
+     "item": "Gardevoirite",
+     "nature": "Modest",
+     "moves": [
+      "Hyper Voice",
+      "Psychic",
+      "Thunderbolt",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Kingambit",
+     "ability": "Defiant",
+     "item": "Expert Belt",
+     "nature": "Jolly",
+     "moves": [
+      "Kowtow Cleave",
+      "Sucker Punch",
+      "Low Kick",
+      "Iron Head"
+     ]
+    },
+    {
+     "pokemon": "Talonflame",
+     "ability": "Gale Wings",
+     "item": "Sharp Beak",
+     "nature": "Jolly",
+     "moves": [
+      "Dual Wingbeat",
+      "Taunt",
+      "Tailwind",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Basculegion [Male]",
+     "ability": "Adaptability",
+     "item": "Choice Scarf",
+     "nature": "Jolly",
+     "moves": [
+      "Wave Crash",
+      "Last Respects",
+      "Aqua Jet",
+      "Flip Turn"
+     ]
+    },
+    {
+     "pokemon": "Kommo-o",
+     "ability": "Soundproof",
+     "item": "Life Orb",
+     "nature": "Modest",
+     "moves": [
+      "Clanging Scales",
+      "Aura Sphere",
+      "Draco Meteor",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 102,
+   "player": "Asher G.",
+   "country": "US",
+   "record": "1-3-0",
+   "dropped": true,
+   "dropped_round": 4,
+   "trainer_name": "Pippin25",
+   "team": [
+    {
+     "pokemon": "Scovillain",
+     "ability": "Moody",
+     "item": "Scovillainite",
+     "nature": "Bold",
+     "moves": [
+      "Giga Drain",
+      "Overheat",
+      "Rage Powder",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Sneasler",
+     "ability": "Unburden",
+     "item": "White Herb",
+     "nature": "Jolly",
+     "moves": [
+      "Gunk Shot",
+      "Protect",
+      "Close Combat",
+      "Fake Out"
+     ]
+    },
+    {
+     "pokemon": "Lycanroc [Dusk Form]",
+     "ability": "Tough Claws",
+     "item": "Focus Sash",
+     "nature": "Adamant",
+     "moves": [
+      "Rock Slide",
+      "Protect",
+      "Accelerock",
+      "Close Combat"
+     ]
+    },
+    {
+     "pokemon": "Froslass",
+     "ability": "Cursed Body",
+     "item": "Froslassite",
+     "nature": "Timid",
+     "moves": [
+      "Blizzard",
+      "Shadow Ball",
+      "Thunderbolt",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Kingambit",
+     "ability": "Defiant",
+     "item": "Life Orb",
+     "nature": "Adamant",
+     "moves": [
+      "Swords Dance",
+      "Protect",
+      "Kowtow Cleave",
+      "Sucker Punch"
+     ]
+    },
+    {
+     "pokemon": "Basculegion [Male]",
+     "ability": "Adaptability",
+     "item": "Mystic Water",
+     "nature": "Adamant",
+     "moves": [
+      "Protect",
+      "Wave Crash",
+      "Last Respects",
+      "Aqua Jet"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 103,
+   "player": "Enzo L.",
+   "country": "BR",
+   "record": "1-6-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "E-ninja",
+   "team": [
+    {
+     "pokemon": "Hydreigon",
+     "ability": "Levitate",
+     "item": "Choice Scarf",
+     "nature": "Modest",
+     "moves": [
+      "Draco Meteor",
+      "Dark Pulse",
+      "Earth Power",
+      "Snarl"
+     ]
+    },
+    {
+     "pokemon": "Sylveon",
+     "ability": "Pixilate",
+     "item": "Fairy Feather",
+     "nature": "Modest",
+     "moves": [
+      "Hyper Voice",
+      "Moonblast",
+      "Calm Mind",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Incineroar",
+     "ability": "Intimidate",
+     "item": "Shuca Berry",
+     "nature": "Careful",
+     "moves": [
+      "Flare Blitz",
+      "Darkest Lariat",
+      "Parting Shot",
+      "Fake Out"
+     ]
+    },
+    {
+     "pokemon": "Metagross",
+     "ability": "Clear Body",
+     "item": "Metagrossite",
+     "nature": "Adamant",
+     "moves": [
+      "Hard Press",
+      "Body Press",
+      "Psychic Fangs",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Raichu",
+     "ability": "Lightning Rod",
+     "item": "Raichunite Y",
+     "nature": "Timid",
+     "moves": [
+      "Zap Cannon",
+      "Focus Blast",
+      "Fake Out",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Sinistcha [Unremarkable Form]",
+     "ability": "Hospitality",
+     "item": "Sitrus Berry",
+     "nature": "Bold",
+     "moves": [
+      "Matcha Gotcha",
+      "Rage Powder",
+      "Trick Room",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 104,
+   "player": "Gabriel F.",
+   "country": "CL",
+   "record": "1-6-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "gabito",
+   "team": [
+    {
+     "pokemon": "Whimsicott",
+     "ability": "Prankster",
+     "item": "Focus Sash",
+     "nature": "Timid",
+     "moves": [
+      "Moonblast",
+      "Tailwind",
+      "Energy Ball",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Aerodactyl",
+     "ability": "Unnerve",
+     "item": "Aerodactylite",
+     "nature": "Jolly",
+     "moves": [
+      "Rock Slide",
+      "Dual Wingbeat",
+      "Tailwind",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Venusaur",
+     "ability": "Chlorophyll",
+     "item": "Sitrus Berry",
+     "nature": "Modest",
+     "moves": [
+      "Giga Drain",
+      "Sleep Powder",
+      "Sludge Bomb",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Incineroar",
+     "ability": "Intimidate",
+     "item": "Leftovers",
+     "nature": "Adamant",
+     "moves": [
+      "Flare Blitz",
+      "Fake Out",
+      "Parting Shot",
+      "Darkest Lariat"
+     ]
+    },
+    {
+     "pokemon": "Garchomp",
+     "ability": "Rough Skin",
+     "item": "Life Orb",
+     "nature": "Jolly",
+     "moves": [
+      "Earthquake",
+      "Rock Slide",
+      "Dragon Claw",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Charizard",
+     "ability": "Solar Power",
+     "item": "Charizardite Y",
+     "nature": "Timid",
+     "moves": [
+      "Heat Wave",
+      "Solar Beam",
+      "Weather Ball",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 105,
+   "player": "Oakley B.",
+   "country": "UK",
+   "record": "1-6-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "OAKLEY!!!!!!",
+   "team": [
+    {
+     "pokemon": "Garchomp",
+     "ability": "Rough Skin",
+     "item": "Life Orb",
+     "nature": "Jolly",
+     "moves": [
+      "Protect",
+      "Dragon Claw",
+      "Rock Slide",
+      "Earthquake"
+     ]
+    },
+    {
+     "pokemon": "Sylveon",
+     "ability": "Pixilate",
+     "item": "Fairy Feather",
+     "nature": "Modest",
+     "moves": [
+      "Hyper Voice",
+      "Hyper Beam",
+      "Detect",
+      "Calm Mind"
+     ]
+    },
+    {
+     "pokemon": "Aerodactyl",
+     "ability": "Unnerve",
+     "item": "Aerodactylite",
+     "nature": "Adamant",
+     "moves": [
+      "Tailwind",
+      "Rock Slide",
+      "Ice Fang",
+      "Wide Guard"
+     ]
+    },
+    {
+     "pokemon": "Farigiraf",
+     "ability": "Armor Tail",
+     "item": "Sitrus Berry",
+     "nature": "Bold",
+     "moves": [
+      "Twin Beam",
+      "Trick Room",
+      "Helping Hand",
+      "Roar"
+     ]
+    },
+    {
+     "pokemon": "Charizard",
+     "ability": "Solar Power",
+     "item": "Charizardite Y",
+     "nature": "Modest",
+     "moves": [
+      "Protect",
+      "Heat Wave",
+      "Solar Beam",
+      "Weather Ball"
+     ]
+    },
+    {
+     "pokemon": "Kingambit",
+     "ability": "Defiant",
+     "item": "Focus Sash",
+     "nature": "Adamant",
+     "moves": [
+      "Kowtow Cleave",
+      "Sucker Punch",
+      "Iron Head",
+      "Brick Break"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 106,
+   "player": "Gabriel C.",
+   "country": "BR",
+   "record": "1-6-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "gabi c",
+   "team": [
+    {
+     "pokemon": "Sinistcha [Masterpiece Form]",
+     "ability": "Hospitality",
+     "item": "Colbur Berry",
+     "nature": "Bold",
+     "moves": [
+      "Matcha Gotcha",
+      "Trick Room",
+      "Protect",
+      "Rage Powder"
+     ]
+    },
+    {
+     "pokemon": "Sneasler",
+     "ability": "Unburden",
+     "item": "Focus Sash",
+     "nature": "Jolly",
+     "moves": [
+      "Fake Out",
+      "Dire Claw",
+      "Close Combat",
+      "Quick Guard"
+     ]
+    },
+    {
+     "pokemon": "Delphox",
+     "ability": "Blaze",
+     "item": "Delphoxite",
+     "nature": "Timid",
+     "moves": [
+      "Nasty Plot",
+      "Heat Wave",
+      "Psychic",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Kingambit",
+     "ability": "Defiant",
+     "item": "Life Orb",
+     "nature": "Adamant",
+     "moves": [
+      "Sucker Punch",
+      "Kowtow Cleave",
+      "Swords Dance",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Incineroar",
+     "ability": "Intimidate",
+     "item": "Sitrus Berry",
+     "nature": "Impish",
+     "moves": [
+      "Flare Blitz",
+      "Parting Shot",
+      "Throat Chop",
+      "Fake Out"
+     ]
+    },
+    {
+     "pokemon": "Blastoise",
+     "ability": "Torrent",
+     "item": "Blastoisinite",
+     "nature": "Modest",
+     "moves": [
+      "Water Spout",
+      "Dark Pulse",
+      "Shell Smash",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 107,
+   "player": "Martin R.",
+   "country": "CL",
+   "record": "1-5-0",
+   "dropped": true,
+   "dropped_round": 6,
+   "trainer_name": "Martín",
+   "team": [
+    {
+     "pokemon": "Pelipper",
+     "ability": "Drizzle",
+     "item": "Sitrus Berry",
+     "nature": "Modest",
+     "moves": [
+      "Weather Ball",
+      "Hurricane",
+      "Tailwind",
+      "Wide Guard"
+     ]
+    },
+    {
+     "pokemon": "Maushold [Family of Four]",
+     "ability": "Technician",
+     "item": "Wide Lens",
+     "nature": "Jolly",
+     "moves": [
+      "Charm",
+      "Population Bomb",
+      "Follow Me",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Grimmsnarl",
+     "ability": "Prankster",
+     "item": "Light Clay",
+     "nature": "Careful",
+     "moves": [
+      "Spirit Break",
+      "Reflect",
+      "Light Screen",
+      "Parting Shot"
+     ]
+    },
+    {
+     "pokemon": "Staraptor",
+     "ability": "Intimidate",
+     "item": "Staraptite",
+     "nature": "Jolly",
+     "moves": [
+      "Brave Bird",
+      "Tailwind",
+      "Close Combat",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Archaludon",
+     "ability": "Stamina",
+     "item": "Leftovers",
+     "nature": "Modest",
+     "moves": [
+      "Dragon Pulse",
+      "Flash Cannon",
+      "Electro Shot",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Swampert",
+     "ability": "Torrent",
+     "item": "Swampertite",
+     "nature": "Adamant",
+     "moves": [
+      "Wave Crash",
+      "Stomping Tantrum",
+      "Ice Punch",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 108,
+   "player": "LORIS A.",
+   "country": "IT",
+   "record": "1-6-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "loris",
+   "team": [
+    {
+     "pokemon": "Floette [Eternal Flower]",
+     "ability": "Flower Veil",
+     "item": "Floettite",
+     "nature": "Modest",
+     "moves": [
+      "Dazzling Gleam",
+      "Calm Mind",
+      "Moonblast",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Sneasler",
+     "ability": "Poison Touch",
+     "item": "Focus Sash",
+     "nature": "Jolly",
+     "moves": [
+      "Dire Claw",
+      "Close Combat",
+      "Fake Out",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Sinistcha [Unremarkable Form]",
+     "ability": "Hospitality",
+     "item": "Kasib Berry",
+     "nature": "Bold",
+     "moves": [
+      "Rage Powder",
+      "Matcha Gotcha",
+      "Trick Room",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Delphox",
+     "ability": "Blaze",
+     "item": "Delphoxite",
+     "nature": "Timid",
+     "moves": [
+      "Heat Wave",
+      "Nasty Plot",
+      "Psyshock",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Incineroar",
+     "ability": "Intimidate",
+     "item": "Sitrus Berry",
+     "nature": "Careful",
+     "moves": [
+      "Flare Blitz",
+      "Throat Chop",
+      "Parting Shot",
+      "Fake Out"
+     ]
+    },
+    {
+     "pokemon": "Kingambit",
+     "ability": "Defiant",
+     "item": "Black Glasses",
+     "nature": "Careful",
+     "moves": [
+      "Kowtow Cleave",
+      "Sucker Punch",
+      "Swords Dance",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 109,
+   "player": "Patryk S.",
+   "country": "PL",
+   "record": "0-1-0",
+   "dropped": true,
+   "dropped_round": 1,
+   "trainer_name": "Szczur VGC",
+   "team": [
+    {
+     "pokemon": "Toxapex",
+     "ability": "Regenerator",
+     "item": "Leftovers",
+     "nature": "Bold",
+     "moves": [
+      "Infestation",
+      "Toxic",
+      "Baneful Bunker",
+      "Wide Guard"
+     ]
+    },
+    {
+     "pokemon": "Hydreigon",
+     "ability": "Levitate",
+     "item": "Choice Scarf",
+     "nature": "Modest",
+     "moves": [
+      "Heat Wave",
+      "Dark Pulse",
+      "Draco Meteor",
+      "Snarl"
+     ]
+    },
+    {
+     "pokemon": "Grimmsnarl",
+     "ability": "Prankster",
+     "item": "Roseli Berry",
+     "nature": "Sassy",
+     "moves": [
+      "Fake Out",
+      "Foul Play",
+      "Reflect",
+      "Parting Shot"
+     ]
+    },
+    {
+     "pokemon": "Metagross",
+     "ability": "Clear Body",
+     "item": "Metagrossite",
+     "nature": "Adamant",
+     "moves": [
+      "Iron Head",
+      "Psychic Fangs",
+      "Bullet Punch",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Charizard",
+     "ability": "Blaze",
+     "item": "Charizardite Y",
+     "nature": "Modest",
+     "moves": [
+      "Weather Ball",
+      "Heat Wave",
+      "Solar Beam",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Garchomp",
+     "ability": "Rough Skin",
+     "item": "Sitrus Berry",
+     "nature": "Jolly",
+     "moves": [
+      "Dragon Claw",
+      "Earthquake",
+      "Rock Slide",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 110,
+   "player": "Takeru F.",
+   "country": "JP",
+   "record": "0-4-0",
+   "dropped": true,
+   "dropped_round": 4,
+   "trainer_name": "hope",
+   "team": [
+    {
+     "pokemon": "Garchomp",
+     "ability": "Rough Skin",
+     "item": "Life Orb",
+     "nature": "Jolly",
+     "moves": [
+      "Dragon Claw",
+      "Earthquake",
+      "Rock Slide",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Basculegion [Male]",
+     "ability": "Adaptability",
+     "item": "Choice Scarf",
+     "nature": "Jolly",
+     "moves": [
+      "Wave Crash",
+      "Last Respects",
+      "Flip Turn",
+      "Aqua Jet"
+     ]
+    },
+    {
+     "pokemon": "Kingambit",
+     "ability": "Defiant",
+     "item": "Chople Berry",
+     "nature": "Adamant",
+     "moves": [
+      "Kowtow Cleave",
+      "Sucker Punch",
+      "Iron Head",
+      "Low Kick"
+     ]
+    },
+    {
+     "pokemon": "Whimsicott",
+     "ability": "Prankster",
+     "item": "Focus Sash",
+     "nature": "Timid",
+     "moves": [
+      "Moonblast",
+      "Tailwind",
+      "Encore",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Charizard",
+     "ability": "Blaze",
+     "item": "Charizardite Y",
+     "nature": "Timid",
+     "moves": [
+      "Heat Wave",
+      "Weather Ball",
+      "Solar Beam",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Floette [Eternal Flower]",
+     "ability": "Flower Veil",
+     "item": "Floettite",
+     "nature": "Modest",
+     "moves": [
+      "Dazzling Gleam",
+      "Moonblast",
+      "Light of Ruin",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 111,
+   "player": "Anne F.",
+   "country": "DE",
+   "record": "0-4-0",
+   "dropped": true,
+   "dropped_round": 4,
+   "trainer_name": "Lila",
+   "team": [
+    {
+     "pokemon": "Sneasler",
+     "ability": "Unburden",
+     "item": "Focus Sash",
+     "nature": "Adamant",
+     "moves": [
+      "Close Combat",
+      "Dire Claw",
+      "Rock Slide",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Gengar",
+     "ability": "Cursed Body",
+     "item": "Gengarite",
+     "nature": "Modest",
+     "moves": [
+      "Sludge Bomb",
+      "Shadow Ball",
+      "Substitute",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Dragonite",
+     "ability": "Inner Focus",
+     "item": "Life Orb",
+     "nature": "Adamant",
+     "moves": [
+      "Dragon Claw",
+      "Superpower",
+      "Extreme Speed",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Incineroar",
+     "ability": "Intimidate",
+     "item": "Sitrus Berry",
+     "nature": "Impish",
+     "moves": [
+      "Flare Blitz",
+      "Throat Chop",
+      "Parting Shot",
+      "Fake Out"
+     ]
+    },
+    {
+     "pokemon": "Swampert",
+     "ability": "Torrent",
+     "item": "Leftovers",
+     "nature": "Relaxed",
+     "moves": [
+      "High Horsepower",
+      "Flip Turn",
+      "Yawn",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Ninetales [Alolan Form]",
+     "ability": "Snow Warning",
+     "item": "Choice Scarf",
+     "nature": "Timid",
+     "moves": [
+      "Blizzard",
+      "Freeze-Dry",
+      "Icy Wind",
+      "Encore"
+     ]
+    }
+   ]
+  }
+ ]
+}

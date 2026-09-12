@@ -1,0 +1,2276 @@
+{
+ "source": "pokedata.ovh/standingsVGC",
+ "origin": "event JSON export",
+ "game": "Pokemon Champions",
+ "tournament_id": "0000019",
+ "division": "masters",
+ "round": 8,
+ "round_label": "8",
+ "swiss_rounds": 8,
+ "round_labels": {
+  "1": "1",
+  "2": "2",
+  "3": "3",
+  "4": "4",
+  "5": "5",
+  "6": "6",
+  "7": "7",
+  "8": "8"
+ },
+ "complete": false,
+ "fetched": "2026-09-11 23:59",
+ "note": "Unofficial standings computed outside the tournament software.",
+ "count": 225,
+ "players": [
+  {
+   "rank": 1,
+   "player": "Jack Clarke",
+   "country": "GB",
+   "record": "6-1-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "Jack",
+   "team": []
+  },
+  {
+   "rank": 2,
+   "player": "David Koutesh",
+   "country": "CZ",
+   "record": "6-1-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "Hamstermania",
+   "team": []
+  },
+  {
+   "rank": 3,
+   "player": "Tsubasa Kitaoka",
+   "country": "JP",
+   "record": "6-0-0",
+   "dropped": true,
+   "dropped_round": 6,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 4,
+   "player": "Joonas Hakalahti",
+   "country": "FI",
+   "record": "6-1-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "Daffel",
+   "team": []
+  },
+  {
+   "rank": 5,
+   "player": "Leonardo Bonanomi",
+   "country": "IT",
+   "record": "6-2-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Leo",
+   "team": []
+  },
+  {
+   "rank": 6,
+   "player": "Raghav Malaviya",
+   "country": "US",
+   "record": "6-0-0",
+   "dropped": true,
+   "dropped_round": 6,
+   "trainer_name": "mudhiman",
+   "team": []
+  },
+  {
+   "rank": 7,
+   "player": "Shohei Kimura",
+   "country": "JP",
+   "record": "6-1-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 8,
+   "player": "Luca Ceribelli",
+   "country": "IT",
+   "record": "6-1-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "ceree",
+   "team": []
+  },
+  {
+   "rank": 9,
+   "player": "Yosuke Takayanagi",
+   "country": "JP",
+   "record": "6-1-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 10,
+   "player": "Ben Grissmer",
+   "country": "US",
+   "record": "6-2-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "chef",
+   "team": []
+  },
+  {
+   "rank": 11,
+   "player": "Yusuke Shibano",
+   "country": "JP",
+   "record": "6-2-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 12,
+   "player": "Yuya Tada",
+   "country": "JP",
+   "record": "6-2-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "てんか",
+   "team": []
+  },
+  {
+   "rank": 13,
+   "player": "Tatsuki Wakita",
+   "country": "JP",
+   "record": "6-2-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 14,
+   "player": "Kohei Inomoto",
+   "country": "JP",
+   "record": "6-1-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 15,
+   "player": "Chuppa Cross",
+   "country": "US",
+   "record": "6-0-0",
+   "dropped": true,
+   "dropped_round": 6,
+   "trainer_name": "Chuppa*Cross",
+   "team": []
+  },
+  {
+   "rank": 16,
+   "player": "Kazuki Kobayashi",
+   "country": "JP",
+   "record": "6-2-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 17,
+   "player": "Daniele Spuntarelli",
+   "country": "IT",
+   "record": "6-2-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Zenzero",
+   "team": []
+  },
+  {
+   "rank": 18,
+   "player": "Alex Soto",
+   "country": "ES",
+   "record": "6-1-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Nana",
+   "team": []
+  },
+  {
+   "rank": 19,
+   "player": "Adrien Hurley",
+   "country": "US",
+   "record": "6-2-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Adrien Hurley",
+   "team": []
+  },
+  {
+   "rank": 20,
+   "player": "Shoma Honami",
+   "country": "JP",
+   "record": "6-2-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 21,
+   "player": "Calvin Foster",
+   "country": "GB",
+   "record": "6-2-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "calvonix",
+   "team": []
+  },
+  {
+   "rank": 22,
+   "player": "Kotaro Nakagome",
+   "country": "JP",
+   "record": "6-2-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 23,
+   "player": "Taro Okada",
+   "country": "JP",
+   "record": "6-0-0",
+   "dropped": true,
+   "dropped_round": 6,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 24,
+   "player": "Mattie Morgan",
+   "country": "IE",
+   "record": "6-1-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "Mattie",
+   "team": []
+  },
+  {
+   "rank": 25,
+   "player": "Nathan Ortiz",
+   "country": "US",
+   "record": "6-2-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Kortex",
+   "team": []
+  },
+  {
+   "rank": 26,
+   "player": "Eisuke Nakayama",
+   "country": "JP",
+   "record": "6-1-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 27,
+   "player": "Francesco Luigi Pardini",
+   "country": "IT",
+   "record": "6-2-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "NayJay",
+   "team": []
+  },
+  {
+   "rank": 28,
+   "player": "Shinichi Matsuda",
+   "country": "JP",
+   "record": "6-2-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 29,
+   "player": "Joji Kaieda",
+   "country": "JP",
+   "record": "6-2-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 30,
+   "player": "Federico Isola",
+   "country": "IT",
+   "record": "6-2-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Alca",
+   "team": []
+  },
+  {
+   "rank": 31,
+   "player": "Kiwamu Endo",
+   "country": "JP",
+   "record": "6-2-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 32,
+   "player": "Naoyuki Matsuhashi",
+   "country": "JP",
+   "record": "6-2-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 33,
+   "player": "Ginjiro Shiraki",
+   "country": "JP",
+   "record": "5-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 34,
+   "player": "Will Tansley",
+   "country": "GB",
+   "record": "5-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Will",
+   "team": []
+  },
+  {
+   "rank": 35,
+   "player": "Collin Heier",
+   "country": "US",
+   "record": "5-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "BattleRoom",
+   "team": []
+  },
+  {
+   "rank": 36,
+   "player": "Yuki Shimizu",
+   "country": "JP",
+   "record": "5-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 37,
+   "player": "Aditya Subramanian",
+   "country": "US",
+   "record": "5-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Adi",
+   "team": []
+  },
+  {
+   "rank": 38,
+   "player": "Hugo Nascimento Vilela dos Santos",
+   "country": "BR",
+   "record": "5-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Hugo",
+   "team": []
+  },
+  {
+   "rank": 39,
+   "player": "Alberto Lara",
+   "country": "US",
+   "record": "5-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Alberto",
+   "team": []
+  },
+  {
+   "rank": 40,
+   "player": "Hirofumi Kimura",
+   "country": "JP",
+   "record": "5-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 41,
+   "player": "Iker Rodrigo",
+   "country": "ES",
+   "record": "5-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Reki",
+   "team": []
+  },
+  {
+   "rank": 42,
+   "player": "Javier Señorena",
+   "country": "ES",
+   "record": "5-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Proman",
+   "team": []
+  },
+  {
+   "rank": 43,
+   "player": "Florian Henry",
+   "country": "FR",
+   "record": "5-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Shiyo",
+   "team": []
+  },
+  {
+   "rank": 44,
+   "player": "Visishtah Vasudevan",
+   "country": "US",
+   "record": "5-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Vishy",
+   "team": []
+  },
+  {
+   "rank": 45,
+   "player": "Dylan Salvanera",
+   "country": "US",
+   "record": "5-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Ancile",
+   "team": []
+  },
+  {
+   "rank": 46,
+   "player": "Jasdil Deo",
+   "country": "MY",
+   "record": "5-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "void",
+   "team": []
+  },
+  {
+   "rank": 47,
+   "player": "Kento Sato",
+   "country": "JP",
+   "record": "5-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 48,
+   "player": "Bingjie Wang",
+   "country": "CN",
+   "record": "5-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Bingjie",
+   "team": []
+  },
+  {
+   "rank": 49,
+   "player": "Alexander Becker",
+   "country": "DE",
+   "record": "5-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "iSiege",
+   "team": []
+  },
+  {
+   "rank": 50,
+   "player": "David Partington",
+   "country": "GB",
+   "record": "5-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Legolas",
+   "team": []
+  },
+  {
+   "rank": 51,
+   "player": "Daniel Hernandez Espinosa",
+   "country": "ES",
+   "record": "5-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "DaniHotaku",
+   "team": []
+  },
+  {
+   "rank": 52,
+   "player": "JONGYOON BAIK",
+   "country": "KR",
+   "record": "5-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 53,
+   "player": "Shun Kato",
+   "country": "JP",
+   "record": "5-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 54,
+   "player": "Giovanni Manuel Tonelli",
+   "country": "IT",
+   "record": "5-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Giompy",
+   "team": []
+  },
+  {
+   "rank": 55,
+   "player": "Francesco Deiana",
+   "country": "IT",
+   "record": "5-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Francis",
+   "team": []
+  },
+  {
+   "rank": 56,
+   "player": "Giacomo Pauselli",
+   "country": "IT",
+   "record": "5-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Larchete",
+   "team": []
+  },
+  {
+   "rank": 57,
+   "player": "Harry Louth",
+   "country": "GB",
+   "record": "5-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Harry",
+   "team": []
+  },
+  {
+   "rank": 58,
+   "player": "Ma Chun Yeung",
+   "country": "HK",
+   "record": "5-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 59,
+   "player": "Eliott Legroux",
+   "country": "FR",
+   "record": "5-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Ethox",
+   "team": []
+  },
+  {
+   "rank": 60,
+   "player": "Yuki Obata",
+   "country": "JP",
+   "record": "5-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 61,
+   "player": "Víctor Medina",
+   "country": "ES",
+   "record": "5-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Torviv",
+   "team": []
+  },
+  {
+   "rank": 62,
+   "player": "Leonard Craft III",
+   "country": "US",
+   "record": "5-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "DaWoblefet",
+   "team": []
+  },
+  {
+   "rank": 63,
+   "player": "Alessandro Caliri",
+   "country": "IT",
+   "record": "5-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "AlexVGC",
+   "team": []
+  },
+  {
+   "rank": 64,
+   "player": "Oriol Plaza",
+   "country": "ES",
+   "record": "5-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Oriol Plaza",
+   "team": []
+  },
+  {
+   "rank": 65,
+   "player": "Kosta Daidimos",
+   "country": "GB",
+   "record": "5-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Koala-T",
+   "team": []
+  },
+  {
+   "rank": 66,
+   "player": "Milko Mattavelli",
+   "country": "IT",
+   "record": "5-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Milko",
+   "team": []
+  },
+  {
+   "rank": 67,
+   "player": "Stefan Mott",
+   "country": "US",
+   "record": "5-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Pengy",
+   "team": []
+  },
+  {
+   "rank": 68,
+   "player": "Simon Konsti",
+   "country": "AU",
+   "record": "5-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Simon",
+   "team": []
+  },
+  {
+   "rank": 69,
+   "player": "Zach Carlson",
+   "country": "US",
+   "record": "5-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "zach",
+   "team": []
+  },
+  {
+   "rank": 70,
+   "player": "Stephen Mea",
+   "country": "US",
+   "record": "4-4-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "kim",
+   "team": []
+  },
+  {
+   "rank": 71,
+   "player": "Giulio Tarlao",
+   "country": "IT",
+   "record": "4-4-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Giulio",
+   "team": []
+  },
+  {
+   "rank": 72,
+   "player": "Panyawut Noijan",
+   "country": "TH",
+   "record": "4-3-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 73,
+   "player": "Junya Yamamoto",
+   "country": "JP",
+   "record": "4-3-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 74,
+   "player": "Jonathan Marston",
+   "country": "GB",
+   "record": "4-4-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Tv",
+   "team": []
+  },
+  {
+   "rank": 75,
+   "player": "Maurice Uteg",
+   "country": "DE",
+   "record": "4-4-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Camikasa",
+   "team": []
+  },
+  {
+   "rank": 76,
+   "player": "Gioele Giusti",
+   "country": "IT",
+   "record": "4-4-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Giostix",
+   "team": []
+  },
+  {
+   "rank": 77,
+   "player": "Mao Harada",
+   "country": "JP",
+   "record": "4-3-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 78,
+   "player": "Yuma Hotta",
+   "country": "JP",
+   "record": "4-4-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 79,
+   "player": "Matt Tidd",
+   "country": "CA",
+   "record": "4-4-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Tidd",
+   "team": []
+  },
+  {
+   "rank": 80,
+   "player": "Rayan GUEZI",
+   "country": "FR",
+   "record": "4-4-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Rayan",
+   "team": []
+  },
+  {
+   "rank": 81,
+   "player": "Raül Álvarez López",
+   "country": "ES",
+   "record": "4-4-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "FV",
+   "team": []
+  },
+  {
+   "rank": 82,
+   "player": "Makoto Kusikawa",
+   "country": "JP",
+   "record": "4-3-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 83,
+   "player": "Shai Giuseppe Rabà",
+   "country": "IT",
+   "record": "4-4-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Shabarai",
+   "team": []
+  },
+  {
+   "rank": 84,
+   "player": "Giuseppe Musicco",
+   "country": "IT",
+   "record": "4-3-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "Peppe",
+   "team": []
+  },
+  {
+   "rank": 85,
+   "player": "Choi Yin Fung",
+   "country": "HK",
+   "record": "4-4-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 86,
+   "player": "Satoshi Iwataki",
+   "country": "JP",
+   "record": "4-4-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 87,
+   "player": "Santino Tarquinio",
+   "country": "US",
+   "record": "4-3-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "Santino",
+   "team": []
+  },
+  {
+   "rank": 88,
+   "player": "Francisco Coroado",
+   "country": "PT",
+   "record": "4-4-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "FCoroado",
+   "team": []
+  },
+  {
+   "rank": 89,
+   "player": "Kento Asami",
+   "country": "JP",
+   "record": "4-4-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 90,
+   "player": "Zhe Zhang",
+   "country": "CN",
+   "record": "4-4-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "无极汰娜",
+   "team": []
+  },
+  {
+   "rank": 91,
+   "player": "Fiona Szymkiewicz",
+   "country": "CA",
+   "record": "4-4-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Yoshi&Lugia",
+   "team": []
+  },
+  {
+   "rank": 92,
+   "player": "Jonas Wiegel",
+   "country": "DE",
+   "record": "4-4-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "wiegelinho",
+   "team": []
+  },
+  {
+   "rank": 93,
+   "player": "Selahattin Sturm",
+   "country": "DE",
+   "record": "4-4-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Sela",
+   "team": []
+  },
+  {
+   "rank": 94,
+   "player": "Ezequiel Cordero",
+   "country": "US",
+   "record": "4-4-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "ZekromZeke",
+   "team": []
+  },
+  {
+   "rank": 95,
+   "player": "Calvin Nisson",
+   "country": "US",
+   "record": "4-4-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Gazoney",
+   "team": []
+  },
+  {
+   "rank": 96,
+   "player": "Francesco Baffa",
+   "country": "IT",
+   "record": "4-4-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Fakrysiel",
+   "team": []
+  },
+  {
+   "rank": 97,
+   "player": "Akira Kimura",
+   "country": "JP",
+   "record": "4-4-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 98,
+   "player": "Devyn Powers",
+   "country": "US",
+   "record": "4-4-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Devyn",
+   "team": []
+  },
+  {
+   "rank": 99,
+   "player": "Carmen McEwan",
+   "country": "NL",
+   "record": "4-4-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "carmen",
+   "team": []
+  },
+  {
+   "rank": 100,
+   "player": "Keita Yamauchi",
+   "country": "JP",
+   "record": "4-4-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 101,
+   "player": "Giuseppe Cangemi",
+   "country": "IT",
+   "record": "4-4-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Knuckles",
+   "team": []
+  },
+  {
+   "rank": 102,
+   "player": "Abdul Barrie",
+   "country": "US",
+   "record": "4-4-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Bigslim",
+   "team": []
+  },
+  {
+   "rank": 103,
+   "player": "Kazuki Sumiya",
+   "country": "JP",
+   "record": "4-4-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 104,
+   "player": "Gustavo Braz",
+   "country": "BR",
+   "record": "4-4-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Pai Braz",
+   "team": []
+  },
+  {
+   "rank": 105,
+   "player": "Senén Lara Moreno",
+   "country": "ES",
+   "record": "4-4-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Senén",
+   "team": []
+  },
+  {
+   "rank": 106,
+   "player": "Callum Lea",
+   "country": "GB",
+   "record": "4-4-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Callum",
+   "team": []
+  },
+  {
+   "rank": 107,
+   "player": "Roberto Porretti",
+   "country": "IT",
+   "record": "4-4-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Raider",
+   "team": []
+  },
+  {
+   "rank": 108,
+   "player": "Raul Gioielli",
+   "country": "BR",
+   "record": "4-4-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "RaulGioielli",
+   "team": []
+  },
+  {
+   "rank": 109,
+   "player": "Kyle Livinghouse",
+   "country": "US",
+   "record": "3-3-0",
+   "dropped": true,
+   "dropped_round": 6,
+   "trainer_name": "Animus",
+   "team": []
+  },
+  {
+   "rank": 110,
+   "player": "Francesco Pio Pero",
+   "country": "IT",
+   "record": "3-3-0",
+   "dropped": true,
+   "dropped_round": 6,
+   "trainer_name": "CICCIOTT",
+   "team": []
+  },
+  {
+   "rank": 111,
+   "player": "Harrold Khoo",
+   "country": "SG",
+   "record": "3-3-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "SkyFlyHigh",
+   "team": []
+  },
+  {
+   "rank": 112,
+   "player": "Takehiro Nakata",
+   "country": "JP",
+   "record": "3-4-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 113,
+   "player": "Justin Burns",
+   "country": "US",
+   "record": "3-3-0",
+   "dropped": true,
+   "dropped_round": 6,
+   "trainer_name": "Justin",
+   "team": []
+  },
+  {
+   "rank": 114,
+   "player": "Aleksandra Ćwikiel",
+   "country": "PL",
+   "record": "3-3-0",
+   "dropped": true,
+   "dropped_round": 6,
+   "trainer_name": "Anabel",
+   "team": []
+  },
+  {
+   "rank": 115,
+   "player": "Alexandre Lissardy",
+   "country": "FR",
+   "record": "3-3-0",
+   "dropped": true,
+   "dropped_round": 6,
+   "trainer_name": "RdmH3",
+   "team": []
+  },
+  {
+   "rank": 116,
+   "player": "Nicole Saeed",
+   "country": "SE",
+   "record": "3-5-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Tamtam",
+   "team": []
+  },
+  {
+   "rank": 117,
+   "player": "Andrea Pagano",
+   "country": "IT",
+   "record": "3-3-0",
+   "dropped": true,
+   "dropped_round": 6,
+   "trainer_name": "Paghy",
+   "team": []
+  },
+  {
+   "rank": 118,
+   "player": "Kevin Swastek",
+   "country": "US",
+   "record": "3-5-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "kswas",
+   "team": []
+  },
+  {
+   "rank": 119,
+   "player": "Yu Kanome",
+   "country": "JP",
+   "record": "3-4-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 120,
+   "player": "Matías Díaz",
+   "country": "CL",
+   "record": "3-4-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "21 Cook M",
+   "team": []
+  },
+  {
+   "rank": 121,
+   "player": "Filip Idczak",
+   "country": "PL",
+   "record": "3-3-0",
+   "dropped": true,
+   "dropped_round": 6,
+   "trainer_name": "Idczaq",
+   "team": []
+  },
+  {
+   "rank": 122,
+   "player": "Sohaib Mufti",
+   "country": "US",
+   "record": "3-4-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "Soh",
+   "team": []
+  },
+  {
+   "rank": 123,
+   "player": "Damian Blakey",
+   "country": "GB",
+   "record": "3-4-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "XerneusVGC",
+   "team": []
+  },
+  {
+   "rank": 124,
+   "player": "Narawitch Naenna",
+   "country": "TH",
+   "record": "3-3-0",
+   "dropped": true,
+   "dropped_round": 6,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 125,
+   "player": "Andrea Olea",
+   "country": "CH",
+   "record": "3-4-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "BanFox",
+   "team": []
+  },
+  {
+   "rank": 126,
+   "player": "Federico Barone",
+   "country": "IT",
+   "record": "3-5-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Carmine",
+   "team": []
+  },
+  {
+   "rank": 127,
+   "player": "Kai Yazawa",
+   "country": "JP",
+   "record": "3-5-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 128,
+   "player": "Aaron Traylor",
+   "country": "US",
+   "record": "3-3-0",
+   "dropped": true,
+   "dropped_round": 6,
+   "trainer_name": "UNREALITY",
+   "team": []
+  },
+  {
+   "rank": 129,
+   "player": "Ben Markham",
+   "country": "GB",
+   "record": "3-5-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Benster",
+   "team": []
+  },
+  {
+   "rank": 130,
+   "player": "Hiroshi Onishi",
+   "country": "JP",
+   "record": "3-4-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 131,
+   "player": "David Barker",
+   "country": "SE",
+   "record": "3-5-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Muphry",
+   "team": []
+  },
+  {
+   "rank": 132,
+   "player": "Andrei Muntean",
+   "country": "GB",
+   "record": "3-5-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Andrei",
+   "team": []
+  },
+  {
+   "rank": 133,
+   "player": "SIE MENG-RU",
+   "country": "TW",
+   "record": "3-5-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 134,
+   "player": "Felipe Mendez",
+   "country": "CL",
+   "record": "3-5-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "TG TR Kid",
+   "team": []
+  },
+  {
+   "rank": 135,
+   "player": "Giovanni Favara",
+   "country": "IT",
+   "record": "3-5-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Dzhupito",
+   "team": []
+  },
+  {
+   "rank": 136,
+   "player": "Aniello Pio La Pietra",
+   "country": "IT",
+   "record": "3-3-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "Rodja",
+   "team": []
+  },
+  {
+   "rank": 137,
+   "player": "Sidi Ismael Haidala González",
+   "country": "ES",
+   "record": "3-5-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "MrSidi",
+   "team": []
+  },
+  {
+   "rank": 138,
+   "player": "Lorenzo Semeraro",
+   "country": "IT",
+   "record": "3-3-0",
+   "dropped": true,
+   "dropped_round": 6,
+   "trainer_name": "LORENZO",
+   "team": []
+  },
+  {
+   "rank": 139,
+   "player": "Devin Bales",
+   "country": "US",
+   "record": "3-5-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Dev",
+   "team": []
+  },
+  {
+   "rank": 140,
+   "player": "Taka Maenishi",
+   "country": "JP",
+   "record": "3-5-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 141,
+   "player": "Luca Marcato",
+   "country": "IT",
+   "record": "3-3-0",
+   "dropped": true,
+   "dropped_round": 6,
+   "trainer_name": "Inkling",
+   "team": []
+  },
+  {
+   "rank": 142,
+   "player": "Giovanni Aranibar",
+   "country": "BO",
+   "record": "3-4-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "Libiak",
+   "team": []
+  },
+  {
+   "rank": 143,
+   "player": "Yuki Sato",
+   "country": "JP",
+   "record": "3-5-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 144,
+   "player": "Miguel Pedraza Caballero",
+   "country": "ES",
+   "record": "3-5-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Miguel",
+   "team": []
+  },
+  {
+   "rank": 145,
+   "player": "Luke Milligan",
+   "country": "AU",
+   "record": "3-5-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Pidgey",
+   "team": []
+  },
+  {
+   "rank": 146,
+   "player": "Jean-Marc Hebert",
+   "country": "CA",
+   "record": "3-5-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Jean Cena",
+   "team": []
+  },
+  {
+   "rank": 147,
+   "player": "Jacopo Gardin",
+   "country": "IT",
+   "record": "2-3-0",
+   "dropped": true,
+   "dropped_round": 6,
+   "trainer_name": "Jack",
+   "team": []
+  },
+  {
+   "rank": 148,
+   "player": "Aniello Iuliano",
+   "country": "IT",
+   "record": "2-3-0",
+   "dropped": true,
+   "dropped_round": 5,
+   "trainer_name": "Maria",
+   "team": []
+  },
+  {
+   "rank": 149,
+   "player": "Manuel Barea Hidalgo",
+   "country": "ES",
+   "record": "2-4-0",
+   "dropped": true,
+   "dropped_round": 6,
+   "trainer_name": "LeunamTG",
+   "team": []
+  },
+  {
+   "rank": 150,
+   "player": "Daiki Sudo",
+   "country": "JP",
+   "record": "2-3-0",
+   "dropped": true,
+   "dropped_round": 5,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 151,
+   "player": "Wolfe Glick",
+   "country": "US",
+   "record": "2-4-0",
+   "dropped": true,
+   "dropped_round": 6,
+   "trainer_name": "Wolfey",
+   "team": []
+  },
+  {
+   "rank": 152,
+   "player": "Satoshi Abe",
+   "country": "JP",
+   "record": "2-3-0",
+   "dropped": true,
+   "dropped_round": 5,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 153,
+   "player": "Fevzi Ozkan",
+   "country": "DE",
+   "record": "2-4-0",
+   "dropped": true,
+   "dropped_round": 6,
+   "trainer_name": "Itachi",
+   "team": []
+  },
+  {
+   "rank": 154,
+   "player": "Mak Kwan Ho",
+   "country": "HK",
+   "record": "2-4-0",
+   "dropped": true,
+   "dropped_round": 6,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 155,
+   "player": "ALEX UNDERHILL",
+   "country": "US",
+   "record": "2-3-0",
+   "dropped": true,
+   "dropped_round": 5,
+   "trainer_name": "Lexicon",
+   "team": []
+  },
+  {
+   "rank": 156,
+   "player": "Richard Hodge",
+   "country": "GB",
+   "record": "2-3-0",
+   "dropped": true,
+   "dropped_round": 5,
+   "trainer_name": "Richie",
+   "team": []
+  },
+  {
+   "rank": 157,
+   "player": "Bartosz Ekiert",
+   "country": "PL",
+   "record": "2-4-0",
+   "dropped": true,
+   "dropped_round": 6,
+   "trainer_name": "Miku",
+   "team": []
+  },
+  {
+   "rank": 158,
+   "player": "NG Shiu Chung",
+   "country": "HK",
+   "record": "2-4-0",
+   "dropped": true,
+   "dropped_round": 6,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 159,
+   "player": "Yusei Takeuchi",
+   "country": "JP",
+   "record": "2-4-0",
+   "dropped": true,
+   "dropped_round": 6,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 160,
+   "player": "Armand Lefebvre",
+   "country": "FR",
+   "record": "2-3-0",
+   "dropped": true,
+   "dropped_round": 5,
+   "trainer_name": "Armand",
+   "team": []
+  },
+  {
+   "rank": 161,
+   "player": "Jeremy Parson",
+   "country": "US",
+   "record": "2-3-0",
+   "dropped": true,
+   "dropped_round": 5,
+   "trainer_name": "Zanzibar",
+   "team": []
+  },
+  {
+   "rank": 162,
+   "player": "Genki Shibuya",
+   "country": "JP",
+   "record": "2-5-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 163,
+   "player": "Francisco Alca Chacon",
+   "country": "PE",
+   "record": "2-4-0",
+   "dropped": true,
+   "dropped_round": 6,
+   "trainer_name": "Falcon",
+   "team": []
+  },
+  {
+   "rank": 164,
+   "player": "César Reyes",
+   "country": "MX",
+   "record": "2-6-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "STATS☆Césars",
+   "team": []
+  },
+  {
+   "rank": 165,
+   "player": "Jonathan Quiñones",
+   "country": "US",
+   "record": "2-5-0",
+   "dropped": true,
+   "dropped_round": 7,
+   "trainer_name": "Pocha",
+   "team": []
+  },
+  {
+   "rank": 166,
+   "player": "Satoshi Anzai",
+   "country": "JP",
+   "record": "2-4-0",
+   "dropped": true,
+   "dropped_round": 6,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 167,
+   "player": "Alejandro Ramos oliva",
+   "country": "ES",
+   "record": "2-6-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "AlexGaMeS",
+   "team": []
+  },
+  {
+   "rank": 168,
+   "player": "Sam Plassgård",
+   "country": "NO",
+   "record": "2-6-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "SAM",
+   "team": []
+  },
+  {
+   "rank": 169,
+   "player": "Akatoki Sakamoto",
+   "country": "JP",
+   "record": "2-6-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 170,
+   "player": "Michael Arand",
+   "country": "US",
+   "record": "2-4-0",
+   "dropped": true,
+   "dropped_round": 6,
+   "trainer_name": "Alex",
+   "team": []
+  },
+  {
+   "rank": 171,
+   "player": "Steven Stewart",
+   "country": "US",
+   "record": "2-6-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Steven",
+   "team": []
+  },
+  {
+   "rank": 172,
+   "player": "Kevin Salvetto",
+   "country": "IT",
+   "record": "2-3-0",
+   "dropped": true,
+   "dropped_round": 6,
+   "trainer_name": "Lil Bo Peep",
+   "team": []
+  },
+  {
+   "rank": 173,
+   "player": "Terence Kenneth Dray",
+   "country": "TH",
+   "record": "2-6-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 174,
+   "player": "Chalkey Horenstein",
+   "country": "US",
+   "record": "2-6-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Chalkey",
+   "team": []
+  },
+  {
+   "rank": 175,
+   "player": "Kossay Amrane",
+   "country": "DZ",
+   "record": "1-3-0",
+   "dropped": true,
+   "dropped_round": 4,
+   "trainer_name": "gasaan",
+   "team": []
+  },
+  {
+   "rank": 176,
+   "player": "Zarif Ayman Zain Al Rashid",
+   "country": "MY",
+   "record": "1-3-0",
+   "dropped": true,
+   "dropped_round": 4,
+   "trainer_name": "Hikari",
+   "team": []
+  },
+  {
+   "rank": 177,
+   "player": "Antonio Jesús Sánchez Cerván",
+   "country": "ES",
+   "record": "1-4-0",
+   "dropped": true,
+   "dropped_round": 5,
+   "trainer_name": "Rahxen",
+   "team": []
+  },
+  {
+   "rank": 178,
+   "player": "David Rodriguez",
+   "country": "CR",
+   "record": "1-4-0",
+   "dropped": true,
+   "dropped_round": 5,
+   "trainer_name": "davidness",
+   "team": []
+  },
+  {
+   "rank": 179,
+   "player": "Emilio Forbes",
+   "country": "US",
+   "record": "1-3-0",
+   "dropped": true,
+   "dropped_round": 5,
+   "trainer_name": "Emily",
+   "team": []
+  },
+  {
+   "rank": 180,
+   "player": "Lauri Halonen",
+   "country": "FI",
+   "record": "1-3-0",
+   "dropped": true,
+   "dropped_round": 4,
+   "trainer_name": "Latsu",
+   "team": []
+  },
+  {
+   "rank": 181,
+   "player": "Yoko Taguma",
+   "country": "SG",
+   "record": "1-3-0",
+   "dropped": true,
+   "dropped_round": 4,
+   "trainer_name": "yoko",
+   "team": []
+  },
+  {
+   "rank": 182,
+   "player": "Esteban Hernandez Beita",
+   "country": "CR",
+   "record": "1-3-0",
+   "dropped": true,
+   "dropped_round": 5,
+   "trainer_name": "Tapusito",
+   "team": []
+  },
+  {
+   "rank": 183,
+   "player": "Kimo Nishimura",
+   "country": "US",
+   "record": "1-3-0",
+   "dropped": true,
+   "dropped_round": 4,
+   "trainer_name": "JoJo",
+   "team": []
+  },
+  {
+   "rank": 184,
+   "player": "Max Simon",
+   "country": "US",
+   "record": "1-5-0",
+   "dropped": true,
+   "dropped_round": 6,
+   "trainer_name": "Coraline",
+   "team": []
+  },
+  {
+   "rank": 185,
+   "player": "Fabian Henning",
+   "country": "DE",
+   "record": "1-3-0",
+   "dropped": true,
+   "dropped_round": 4,
+   "trainer_name": "Mr.PBF",
+   "team": []
+  },
+  {
+   "rank": 186,
+   "player": "Claudio Giandomenico",
+   "country": "IT",
+   "record": "1-4-0",
+   "dropped": true,
+   "dropped_round": 5,
+   "trainer_name": "Claudio",
+   "team": []
+  },
+  {
+   "rank": 187,
+   "player": "Teemu Mankinen",
+   "country": "FI",
+   "record": "1-3-0",
+   "dropped": true,
+   "dropped_round": 4,
+   "trainer_name": "Derith96",
+   "team": []
+  },
+  {
+   "rank": 188,
+   "player": "Benjamin Wood",
+   "country": "GB",
+   "record": "1-4-0",
+   "dropped": true,
+   "dropped_round": 5,
+   "trainer_name": "Ben",
+   "team": []
+  },
+  {
+   "rank": 189,
+   "player": "Kenji Miura",
+   "country": "JP",
+   "record": "1-4-0",
+   "dropped": true,
+   "dropped_round": 5,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 190,
+   "player": "Maciej Fornalski",
+   "country": "PL",
+   "record": "1-4-0",
+   "dropped": true,
+   "dropped_round": 5,
+   "trainer_name": "Maciek",
+   "team": []
+  },
+  {
+   "rank": 191,
+   "player": "daniel navarro",
+   "country": "ES",
+   "record": "1-4-0",
+   "dropped": true,
+   "dropped_round": 5,
+   "trainer_name": "daniabp",
+   "team": []
+  },
+  {
+   "rank": 192,
+   "player": "Naoki Minagawa",
+   "country": "JP",
+   "record": "1-4-0",
+   "dropped": true,
+   "dropped_round": 5,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 193,
+   "player": "Barry Anderson",
+   "country": "GB",
+   "record": "1-7-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "BARRY",
+   "team": []
+  },
+  {
+   "rank": 194,
+   "player": "Guilherme Martins",
+   "country": "PT",
+   "record": "1-3-0",
+   "dropped": true,
+   "dropped_round": 4,
+   "trainer_name": "Guilhões",
+   "team": []
+  },
+  {
+   "rank": 195,
+   "player": "Neo Ouchi",
+   "country": "JP",
+   "record": "0-1-0",
+   "dropped": true,
+   "dropped_round": 1,
+   "trainer_name": null,
+   "team": []
+  },
+  {
+   "rank": 196,
+   "player": "Juan Benitez Lopez",
+   "country": "ES",
+   "record": "0-1-0",
+   "dropped": true,
+   "dropped_round": 1,
+   "trainer_name": null,
+   "team": []
+  },
+  {
+   "rank": 197,
+   "player": "Hirotaka Otsuka",
+   "country": "JP",
+   "record": "0-1-0",
+   "dropped": true,
+   "dropped_round": 1,
+   "trainer_name": null,
+   "team": []
+  },
+  {
+   "rank": 198,
+   "player": "Slyvester Berou Babanto",
+   "country": "PH",
+   "record": "0-1-0",
+   "dropped": true,
+   "dropped_round": 1,
+   "trainer_name": null,
+   "team": []
+  },
+  {
+   "rank": 199,
+   "player": "Matthias Loong",
+   "country": "SG",
+   "record": "0-1-0",
+   "dropped": true,
+   "dropped_round": 1,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 200,
+   "player": "Ng Yeong Jiang",
+   "country": "MY",
+   "record": "0-1-0",
+   "dropped": true,
+   "dropped_round": 1,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 201,
+   "player": "Yuki Yamada",
+   "country": "JP",
+   "record": "0-1-0",
+   "dropped": true,
+   "dropped_round": 1,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 202,
+   "player": "Hiroyuki Iida",
+   "country": "JP",
+   "record": "0-1-0",
+   "dropped": true,
+   "dropped_round": 1,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 203,
+   "player": "James Alexis Credo",
+   "country": "PH",
+   "record": "0-1-0",
+   "dropped": true,
+   "dropped_round": 1,
+   "trainer_name": null,
+   "team": []
+  },
+  {
+   "rank": 204,
+   "player": "Yong Wai Hou",
+   "country": "MY",
+   "record": "0-1-0",
+   "dropped": true,
+   "dropped_round": 1,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 205,
+   "player": "Fabian Braun",
+   "country": "DE",
+   "record": "0-1-0",
+   "dropped": true,
+   "dropped_round": 1,
+   "trainer_name": "Baked",
+   "team": []
+  },
+  {
+   "rank": 206,
+   "player": "Shawn Tang",
+   "country": "SG",
+   "record": "0-1-0",
+   "dropped": true,
+   "dropped_round": 1,
+   "trainer_name": "Marnie",
+   "team": []
+  },
+  {
+   "rank": 207,
+   "player": "Juan Pablo Cambon",
+   "country": "AR",
+   "record": "0-1-0",
+   "dropped": true,
+   "dropped_round": 1,
+   "trainer_name": null,
+   "team": []
+  },
+  {
+   "rank": 208,
+   "player": "Daanvir Singh Narula",
+   "country": "SG",
+   "record": "0-1-0",
+   "dropped": true,
+   "dropped_round": 1,
+   "trainer_name": null,
+   "team": []
+  },
+  {
+   "rank": 209,
+   "player": "Rintaro Arai",
+   "country": "JP",
+   "record": "0-1-0",
+   "dropped": true,
+   "dropped_round": 1,
+   "trainer_name": null,
+   "team": []
+  },
+  {
+   "rank": 210,
+   "player": "Teo Wei Yi Martin",
+   "country": "SG",
+   "record": "0-1-0",
+   "dropped": true,
+   "dropped_round": 1,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 211,
+   "player": "Martin Teo",
+   "country": "SG",
+   "record": "0-3-0",
+   "dropped": true,
+   "dropped_round": 3,
+   "trainer_name": "Natsume",
+   "team": []
+  },
+  {
+   "rank": 212,
+   "player": "Lewis Tan",
+   "country": "AU",
+   "record": "0-3-0",
+   "dropped": true,
+   "dropped_round": 3,
+   "trainer_name": "Multi boy",
+   "team": []
+  },
+  {
+   "rank": 213,
+   "player": "TSAI HAU-YU",
+   "country": "TW",
+   "record": "0-3-0",
+   "dropped": true,
+   "dropped_round": 3,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 214,
+   "player": "Niels de Jonge",
+   "country": "NL",
+   "record": "0-4-0",
+   "dropped": true,
+   "dropped_round": 4,
+   "trainer_name": "NjitsVGC",
+   "team": []
+  },
+  {
+   "rank": 215,
+   "player": "Patrick Donegan",
+   "country": "US",
+   "record": "0-3-0",
+   "dropped": true,
+   "dropped_round": 3,
+   "trainer_name": "Pd0nZ",
+   "team": []
+  },
+  {
+   "rank": 216,
+   "player": "Jamie Boyt",
+   "country": "GB",
+   "record": "0-3-0",
+   "dropped": true,
+   "dropped_round": 3,
+   "trainer_name": "Boyt",
+   "team": []
+  },
+  {
+   "rank": 217,
+   "player": "Alessio Fuscà",
+   "country": "IT",
+   "record": "0-4-0",
+   "dropped": true,
+   "dropped_round": 4,
+   "trainer_name": "NikyuAlex",
+   "team": []
+  },
+  {
+   "rank": 218,
+   "player": "Justin Frys",
+   "country": "US",
+   "record": "0-4-0",
+   "dropped": true,
+   "dropped_round": 4,
+   "trainer_name": "RexChaosVGC",
+   "team": []
+  },
+  {
+   "rank": 219,
+   "player": "Alister Sandover",
+   "country": "AU",
+   "record": "0-4-0",
+   "dropped": true,
+   "dropped_round": 4,
+   "trainer_name": "ちえみ",
+   "team": []
+  },
+  {
+   "rank": 220,
+   "player": "Mikael Viljanen",
+   "country": "FI",
+   "record": "0-4-0",
+   "dropped": true,
+   "dropped_round": 4,
+   "trainer_name": "maikkeli",
+   "team": []
+  },
+  {
+   "rank": 221,
+   "player": "Brian Soh Yong Hua",
+   "country": "SG",
+   "record": "0-4-0",
+   "dropped": true,
+   "dropped_round": 4,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 222,
+   "player": "Andres Escobosa",
+   "country": "NL",
+   "record": "0-3-0",
+   "dropped": true,
+   "dropped_round": 3,
+   "trainer_name": "000aj",
+   "team": []
+  },
+  {
+   "rank": 223,
+   "player": "Charly Pastrana",
+   "country": "MX",
+   "record": "0-4-0",
+   "dropped": true,
+   "dropped_round": 4,
+   "trainer_name": "Charlypastrana",
+   "team": []
+  },
+  {
+   "rank": 224,
+   "player": "Richard Raphael Perez",
+   "country": "PH",
+   "record": "0-0-0",
+   "dropped": true,
+   "dropped_round": 1,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 225,
+   "player": "Khairul Fahmi Bin Zulkifli",
+   "country": "MY",
+   "record": "0-0-0",
+   "dropped": true,
+   "dropped_round": 1,
+   "trainer_name": "None",
+   "team": []
+  }
+ ]
+}

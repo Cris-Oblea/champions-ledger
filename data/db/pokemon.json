@@ -1,0 +1,8468 @@
+[
+ {
+  "slug": "venusaur",
+  "name": "Mega Venusaur",
+  "dex": 3,
+  "types": [
+   "Grass",
+   "Poison"
+  ],
+  "abilities": [
+   "Thick Fat"
+  ],
+  "base_stats": {
+   "hp": 80,
+   "atk": 100,
+   "def": 123,
+   "spa": 122,
+   "spd": 120,
+   "spe": 80,
+   "total": 625
+  },
+  "is_mega": true,
+  "species": "Venusaur",
+  "form": "Mega"
+ },
+ {
+  "slug": null,
+  "name": "Venusaur",
+  "species": "Venusaur",
+  "form": null,
+  "dex": 3,
+  "types": [
+   "Grass",
+   "Poison"
+  ],
+  "abilities": [
+   "Overgrow",
+   "Chlorophyll"
+  ],
+  "base_stats": {
+   "hp": 80,
+   "atk": 82,
+   "def": 83,
+   "spa": 100,
+   "spd": 100,
+   "spe": 80,
+   "total": 525
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Charizard",
+  "species": "Charizard",
+  "form": null,
+  "dex": 6,
+  "types": [
+   "Fire",
+   "Flying"
+  ],
+  "abilities": [
+   "Blaze",
+   "Solar Power"
+  ],
+  "base_stats": {
+   "hp": 78,
+   "atk": 84,
+   "def": 78,
+   "spa": 109,
+   "spd": 85,
+   "spe": 100,
+   "total": 534
+  },
+  "is_mega": false
+ },
+ {
+  "slug": "charizard",
+  "name": "Mega Charizard X",
+  "dex": 6,
+  "types": [
+   "Fire",
+   "Dragon"
+  ],
+  "abilities": [
+   "Tough Claws"
+  ],
+  "base_stats": {
+   "hp": 78,
+   "atk": 130,
+   "def": 111,
+   "spa": 130,
+   "spd": 85,
+   "spe": 100,
+   "total": 634
+  },
+  "is_mega": true,
+  "species": "Charizard",
+  "form": "Mega X"
+ },
+ {
+  "slug": "charizard",
+  "name": "Mega Charizard Y",
+  "dex": 6,
+  "types": [
+   "Fire",
+   "Flying"
+  ],
+  "abilities": [
+   "Drought"
+  ],
+  "base_stats": {
+   "hp": 78,
+   "atk": 104,
+   "def": 78,
+   "spa": 159,
+   "spd": 115,
+   "spe": 100,
+   "total": 634
+  },
+  "is_mega": true,
+  "species": "Charizard",
+  "form": "Mega Y"
+ },
+ {
+  "slug": null,
+  "name": "Blastoise",
+  "species": "Blastoise",
+  "form": null,
+  "dex": 9,
+  "types": [
+   "Water"
+  ],
+  "abilities": [
+   "Torrent",
+   "Rain Dish"
+  ],
+  "base_stats": {
+   "hp": 79,
+   "atk": 83,
+   "def": 100,
+   "spa": 85,
+   "spd": 105,
+   "spe": 78,
+   "total": 530
+  },
+  "is_mega": false
+ },
+ {
+  "slug": "blastoise",
+  "name": "Mega Blastoise",
+  "dex": 9,
+  "types": [
+   "Water"
+  ],
+  "abilities": [
+   "Mega Launcher"
+  ],
+  "base_stats": {
+   "hp": 79,
+   "atk": 103,
+   "def": 120,
+   "spa": 135,
+   "spd": 115,
+   "spe": 78,
+   "total": 630
+  },
+  "is_mega": true,
+  "species": "Blastoise",
+  "form": "Mega"
+ },
+ {
+  "slug": null,
+  "name": "Beedrill",
+  "species": "Beedrill",
+  "form": null,
+  "dex": 15,
+  "types": [
+   "Bug",
+   "Poison"
+  ],
+  "abilities": [
+   "Swarm",
+   "Sniper"
+  ],
+  "base_stats": {
+   "hp": 65,
+   "atk": 90,
+   "def": 40,
+   "spa": 45,
+   "spd": 80,
+   "spe": 75,
+   "total": 395
+  },
+  "is_mega": false
+ },
+ {
+  "slug": "beedrill",
+  "name": "Mega Beedrill",
+  "dex": 15,
+  "types": [
+   "Bug",
+   "Poison"
+  ],
+  "abilities": [
+   "Adaptability"
+  ],
+  "base_stats": {
+   "hp": 65,
+   "atk": 150,
+   "def": 40,
+   "spa": 15,
+   "spd": 80,
+   "spe": 145,
+   "total": 495
+  },
+  "is_mega": true,
+  "species": "Beedrill",
+  "form": "Mega"
+ },
+ {
+  "slug": "pidgeot",
+  "name": "Mega Pidgeot",
+  "dex": 18,
+  "types": [
+   "Normal",
+   "Flying"
+  ],
+  "abilities": [
+   "No Guard"
+  ],
+  "base_stats": {
+   "hp": 83,
+   "atk": 80,
+   "def": 80,
+   "spa": 135,
+   "spd": 80,
+   "spe": 121,
+   "total": 579
+  },
+  "is_mega": true,
+  "species": "Pidgeot",
+  "form": "Mega"
+ },
+ {
+  "slug": null,
+  "name": "Pidgeot",
+  "species": "Pidgeot",
+  "form": null,
+  "dex": 18,
+  "types": [
+   "Normal",
+   "Flying"
+  ],
+  "abilities": [
+   "Keen Eye",
+   "Tangled Feet",
+   "Big Pecks"
+  ],
+  "base_stats": {
+   "hp": 83,
+   "atk": 80,
+   "def": 75,
+   "spa": 70,
+   "spd": 70,
+   "spe": 101,
+   "total": 479
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Arbok",
+  "species": "Arbok",
+  "form": null,
+  "dex": 24,
+  "types": [
+   "Poison"
+  ],
+  "abilities": [
+   "Intimidate",
+   "Shed Skin",
+   "Unnerve"
+  ],
+  "base_stats": {
+   "hp": 60,
+   "atk": 95,
+   "def": 69,
+   "spa": 65,
+   "spd": 79,
+   "spe": 80,
+   "total": 448
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Pikachu",
+  "species": "Pikachu",
+  "form": null,
+  "dex": 25,
+  "types": [
+   "Electric"
+  ],
+  "abilities": [
+   "Static",
+   "Lightning Rod"
+  ],
+  "base_stats": {
+   "hp": 35,
+   "atk": 55,
+   "def": 40,
+   "spa": 50,
+   "spd": 50,
+   "spe": 90,
+   "total": 320
+  },
+  "is_mega": false
+ },
+ {
+  "slug": "raichu",
+  "name": "Mega Raichu X",
+  "dex": 26,
+  "types": [
+   "Electric"
+  ],
+  "abilities": [
+   "Electric Surge"
+  ],
+  "base_stats": {
+   "hp": 60,
+   "atk": 135,
+   "def": 95,
+   "spa": 90,
+   "spd": 95,
+   "spe": 110,
+   "total": 585
+  },
+  "is_mega": true,
+  "species": "Raichu",
+  "form": "Mega X"
+ },
+ {
+  "slug": "raichu",
+  "name": "Mega Raichu Y",
+  "dex": 26,
+  "types": [
+   "Electric"
+  ],
+  "abilities": [
+   "No Guard"
+  ],
+  "base_stats": {
+   "hp": 60,
+   "atk": 100,
+   "def": 55,
+   "spa": 160,
+   "spd": 80,
+   "spe": 130,
+   "total": 585
+  },
+  "is_mega": true,
+  "species": "Raichu",
+  "form": "Mega Y"
+ },
+ {
+  "slug": null,
+  "name": "Raichu",
+  "species": "Raichu",
+  "form": null,
+  "dex": 26,
+  "types": [
+   "Electric"
+  ],
+  "abilities": [
+   "Static",
+   "Lightning Rod"
+  ],
+  "base_stats": {
+   "hp": 60,
+   "atk": 90,
+   "def": 55,
+   "spa": 90,
+   "spd": 80,
+   "spe": 110,
+   "total": 485
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Raichu-Alola",
+  "species": "Raichu",
+  "form": "Alola",
+  "dex": 26,
+  "types": [
+   "Electric",
+   "Psychic"
+  ],
+  "abilities": [
+   "Surge Surfer"
+  ],
+  "base_stats": {
+   "hp": 60,
+   "atk": 85,
+   "def": 50,
+   "spa": 95,
+   "spd": 85,
+   "spe": 110,
+   "total": 485
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Clefable",
+  "species": "Clefable",
+  "form": null,
+  "dex": 36,
+  "types": [
+   "Fairy"
+  ],
+  "abilities": [
+   "Cute Charm",
+   "Magic Guard",
+   "Unaware"
+  ],
+  "base_stats": {
+   "hp": 95,
+   "atk": 70,
+   "def": 73,
+   "spa": 95,
+   "spd": 90,
+   "spe": 60,
+   "total": 483
+  },
+  "is_mega": false
+ },
+ {
+  "slug": "clefable",
+  "name": "Mega Clefable",
+  "dex": 36,
+  "types": [
+   "Fairy",
+   "Flying"
+  ],
+  "abilities": [
+   "Magic Bounce"
+  ],
+  "base_stats": {
+   "hp": 95,
+   "atk": 80,
+   "def": 93,
+   "spa": 135,
+   "spd": 110,
+   "spe": 70,
+   "total": 583
+  },
+  "is_mega": true,
+  "species": "Clefable",
+  "form": "Mega"
+ },
+ {
+  "slug": null,
+  "name": "Ninetales",
+  "species": "Ninetales",
+  "form": null,
+  "dex": 38,
+  "types": [
+   "Fire"
+  ],
+  "abilities": [
+   "Flash Fire",
+   "Drought"
+  ],
+  "base_stats": {
+   "hp": 73,
+   "atk": 76,
+   "def": 75,
+   "spa": 81,
+   "spd": 100,
+   "spe": 100,
+   "total": 505
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Ninetales-Alola",
+  "species": "Ninetales",
+  "form": "Alola",
+  "dex": 38,
+  "types": [
+   "Ice",
+   "Fairy"
+  ],
+  "abilities": [
+   "Snow Cloak",
+   "Snow Warning"
+  ],
+  "base_stats": {
+   "hp": 73,
+   "atk": 67,
+   "def": 75,
+   "spa": 81,
+   "spd": 100,
+   "spe": 109,
+   "total": 505
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Wigglytuff",
+  "species": "Wigglytuff",
+  "form": null,
+  "dex": 40,
+  "types": [
+   "Normal",
+   "Fairy"
+  ],
+  "abilities": [
+   "Cute Charm",
+   "Competitive",
+   "Frisk"
+  ],
+  "base_stats": {
+   "hp": 140,
+   "atk": 70,
+   "def": 45,
+   "spa": 85,
+   "spd": 50,
+   "spe": 45,
+   "total": 435
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Vileplume",
+  "species": "Vileplume",
+  "form": null,
+  "dex": 45,
+  "types": [
+   "Grass",
+   "Poison"
+  ],
+  "abilities": [
+   "Chlorophyll",
+   "Effect Spore"
+  ],
+  "base_stats": {
+   "hp": 75,
+   "atk": 80,
+   "def": 85,
+   "spa": 110,
+   "spd": 90,
+   "spe": 50,
+   "total": 490
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Persian",
+  "species": "Persian",
+  "form": null,
+  "dex": 53,
+  "types": [
+   "Normal"
+  ],
+  "abilities": [
+   "Limber",
+   "Technician",
+   "Unnerve"
+  ],
+  "base_stats": {
+   "hp": 65,
+   "atk": 70,
+   "def": 60,
+   "spa": 65,
+   "spd": 65,
+   "spe": 115,
+   "total": 440
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Persian-Alola",
+  "species": "Persian",
+  "form": "Alola",
+  "dex": 53,
+  "types": [
+   "Dark"
+  ],
+  "abilities": [
+   "Fur Coat",
+   "Technician",
+   "Rattled"
+  ],
+  "base_stats": {
+   "hp": 65,
+   "atk": 60,
+   "def": 60,
+   "spa": 75,
+   "spd": 65,
+   "spe": 115,
+   "total": 440
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Arcanine",
+  "species": "Arcanine",
+  "form": null,
+  "dex": 59,
+  "types": [
+   "Fire"
+  ],
+  "abilities": [
+   "Intimidate",
+   "Flash Fire",
+   "Justified"
+  ],
+  "base_stats": {
+   "hp": 90,
+   "atk": 110,
+   "def": 80,
+   "spa": 100,
+   "spd": 80,
+   "spe": 95,
+   "total": 555
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Arcanine-Hisui",
+  "species": "Arcanine",
+  "form": "Hisui",
+  "dex": 59,
+  "types": [
+   "Fire",
+   "Rock"
+  ],
+  "abilities": [
+   "Intimidate",
+   "Flash Fire",
+   "Rock Head"
+  ],
+  "base_stats": {
+   "hp": 95,
+   "atk": 115,
+   "def": 80,
+   "spa": 95,
+   "spd": 80,
+   "spe": 90,
+   "total": 555
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Alakazam",
+  "species": "Alakazam",
+  "form": null,
+  "dex": 65,
+  "types": [
+   "Psychic"
+  ],
+  "abilities": [
+   "Synchronize",
+   "Inner Focus",
+   "Magic Guard"
+  ],
+  "base_stats": {
+   "hp": 55,
+   "atk": 50,
+   "def": 45,
+   "spa": 135,
+   "spd": 95,
+   "spe": 120,
+   "total": 500
+  },
+  "is_mega": false
+ },
+ {
+  "slug": "alakazam",
+  "name": "Mega Alakazam",
+  "dex": 65,
+  "types": [
+   "Psychic"
+  ],
+  "abilities": [
+   "Trace"
+  ],
+  "base_stats": {
+   "hp": 55,
+   "atk": 50,
+   "def": 65,
+   "spa": 175,
+   "spd": 105,
+   "spe": 150,
+   "total": 600
+  },
+  "is_mega": true,
+  "species": "Alakazam",
+  "form": "Mega"
+ },
+ {
+  "slug": null,
+  "name": "Machamp",
+  "species": "Machamp",
+  "form": null,
+  "dex": 68,
+  "types": [
+   "Fighting"
+  ],
+  "abilities": [
+   "Guts",
+   "No Guard",
+   "Steadfast"
+  ],
+  "base_stats": {
+   "hp": 90,
+   "atk": 130,
+   "def": 80,
+   "spa": 65,
+   "spd": 85,
+   "spe": 55,
+   "total": 505
+  },
+  "is_mega": false
+ },
+ {
+  "slug": "victreebel",
+  "name": "Mega Victreebel",
+  "dex": 71,
+  "types": [
+   "Grass",
+   "Poison"
+  ],
+  "abilities": [
+   "Innards Out"
+  ],
+  "base_stats": {
+   "hp": 80,
+   "atk": 125,
+   "def": 85,
+   "spa": 135,
+   "spd": 95,
+   "spe": 70,
+   "total": 590
+  },
+  "is_mega": true,
+  "species": "Victreebel",
+  "form": "Mega"
+ },
+ {
+  "slug": null,
+  "name": "Victreebel",
+  "species": "Victreebel",
+  "form": null,
+  "dex": 71,
+  "types": [
+   "Grass",
+   "Poison"
+  ],
+  "abilities": [
+   "Chlorophyll",
+   "Gluttony"
+  ],
+  "base_stats": {
+   "hp": 80,
+   "atk": 105,
+   "def": 65,
+   "spa": 100,
+   "spd": 70,
+   "spe": 70,
+   "total": 490
+  },
+  "is_mega": false
+ },
+ {
+  "slug": "slowbro",
+  "name": "Mega Slowbro",
+  "dex": 80,
+  "types": [
+   "Water",
+   "Psychic"
+  ],
+  "abilities": [
+   "Shell Armor"
+  ],
+  "base_stats": {
+   "hp": 95,
+   "atk": 75,
+   "def": 180,
+   "spa": 130,
+   "spd": 80,
+   "spe": 30,
+   "total": 590
+  },
+  "is_mega": true,
+  "species": "Slowbro",
+  "form": "Mega"
+ },
+ {
+  "slug": null,
+  "name": "Slowbro",
+  "species": "Slowbro",
+  "form": null,
+  "dex": 80,
+  "types": [
+   "Water",
+   "Psychic"
+  ],
+  "abilities": [
+   "Oblivious",
+   "Own Tempo",
+   "Regenerator"
+  ],
+  "base_stats": {
+   "hp": 95,
+   "atk": 75,
+   "def": 110,
+   "spa": 100,
+   "spd": 80,
+   "spe": 30,
+   "total": 490
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Slowbro-Galar",
+  "species": "Slowbro",
+  "form": "Galar",
+  "dex": 80,
+  "types": [
+   "Poison",
+   "Psychic"
+  ],
+  "abilities": [
+   "Quick Draw",
+   "Own Tempo",
+   "Regenerator"
+  ],
+  "base_stats": {
+   "hp": 95,
+   "atk": 100,
+   "def": 95,
+   "spa": 100,
+   "spd": 70,
+   "spe": 30,
+   "total": 490
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Farfetch'd",
+  "species": "Farfetch'd",
+  "form": null,
+  "dex": 83,
+  "types": [
+   "Normal",
+   "Flying"
+  ],
+  "abilities": [
+   "Keen Eye",
+   "Inner Focus",
+   "Defiant"
+  ],
+  "base_stats": {
+   "hp": 52,
+   "atk": 90,
+   "def": 55,
+   "spa": 58,
+   "spd": 62,
+   "spe": 60,
+   "total": 377
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Gengar",
+  "species": "Gengar",
+  "form": null,
+  "dex": 94,
+  "types": [
+   "Ghost",
+   "Poison"
+  ],
+  "abilities": [
+   "Cursed Body"
+  ],
+  "base_stats": {
+   "hp": 60,
+   "atk": 65,
+   "def": 60,
+   "spa": 130,
+   "spd": 75,
+   "spe": 110,
+   "total": 500
+  },
+  "is_mega": false
+ },
+ {
+  "slug": "gengar",
+  "name": "Mega Gengar",
+  "dex": 94,
+  "types": [
+   "Ghost",
+   "Poison"
+  ],
+  "abilities": [
+   "Shadow Tag"
+  ],
+  "base_stats": {
+   "hp": 60,
+   "atk": 65,
+   "def": 80,
+   "spa": 170,
+   "spd": 95,
+   "spe": 130,
+   "total": 600
+  },
+  "is_mega": true,
+  "species": "Gengar",
+  "form": "Mega"
+ },
+ {
+  "slug": null,
+  "name": "Kangaskhan",
+  "species": "Kangaskhan",
+  "form": null,
+  "dex": 115,
+  "types": [
+   "Normal"
+  ],
+  "abilities": [
+   "Early Bird",
+   "Scrappy",
+   "Inner Focus"
+  ],
+  "base_stats": {
+   "hp": 105,
+   "atk": 95,
+   "def": 80,
+   "spa": 40,
+   "spd": 80,
+   "spe": 90,
+   "total": 490
+  },
+  "is_mega": false
+ },
+ {
+  "slug": "kangaskhan",
+  "name": "Mega Kangaskhan",
+  "dex": 115,
+  "types": [
+   "Normal"
+  ],
+  "abilities": [
+   "Parental Bond"
+  ],
+  "base_stats": {
+   "hp": 105,
+   "atk": 125,
+   "def": 100,
+   "spa": 60,
+   "spd": 100,
+   "spe": 100,
+   "total": 590
+  },
+  "is_mega": true,
+  "species": "Kangaskhan",
+  "form": "Mega"
+ },
+ {
+  "slug": "starmie",
+  "name": "Mega Starmie",
+  "dex": 121,
+  "types": [
+   "Water",
+   "Psychic"
+  ],
+  "abilities": [
+   "Huge Power"
+  ],
+  "base_stats": {
+   "hp": 60,
+   "atk": 100,
+   "def": 105,
+   "spa": 130,
+   "spd": 105,
+   "spe": 120,
+   "total": 620
+  },
+  "is_mega": true,
+  "species": "Starmie",
+  "form": "Mega"
+ },
+ {
+  "slug": null,
+  "name": "Starmie",
+  "species": "Starmie",
+  "form": null,
+  "dex": 121,
+  "types": [
+   "Water",
+   "Psychic"
+  ],
+  "abilities": [
+   "Illuminate",
+   "Natural Cure",
+   "Analytic"
+  ],
+  "base_stats": {
+   "hp": 60,
+   "atk": 75,
+   "def": 85,
+   "spa": 100,
+   "spd": 85,
+   "spe": 115,
+   "total": 520
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Mr. Mime",
+  "species": "Mr. Mime",
+  "form": null,
+  "dex": 122,
+  "types": [
+   "Psychic",
+   "Fairy"
+  ],
+  "abilities": [
+   "Soundproof",
+   "Filter",
+   "Technician"
+  ],
+  "base_stats": {
+   "hp": 40,
+   "atk": 45,
+   "def": 65,
+   "spa": 100,
+   "spd": 120,
+   "spe": 90,
+   "total": 460
+  },
+  "is_mega": false
+ },
+ {
+  "slug": "pinsir",
+  "name": "Mega Pinsir",
+  "dex": 127,
+  "types": [
+   "Bug",
+   "Flying"
+  ],
+  "abilities": [
+   "Aerilate"
+  ],
+  "base_stats": {
+   "hp": 65,
+   "atk": 155,
+   "def": 120,
+   "spa": 65,
+   "spd": 90,
+   "spe": 105,
+   "total": 600
+  },
+  "is_mega": true,
+  "species": "Pinsir",
+  "form": "Mega"
+ },
+ {
+  "slug": null,
+  "name": "Pinsir",
+  "species": "Pinsir",
+  "form": null,
+  "dex": 127,
+  "types": [
+   "Bug"
+  ],
+  "abilities": [
+   "Hyper Cutter",
+   "Mold Breaker",
+   "Moxie"
+  ],
+  "base_stats": {
+   "hp": 65,
+   "atk": 125,
+   "def": 100,
+   "spa": 55,
+   "spd": 70,
+   "spe": 85,
+   "total": 500
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Tauros",
+  "species": "Tauros",
+  "form": null,
+  "dex": 128,
+  "types": [
+   "Normal"
+  ],
+  "abilities": [
+   "Intimidate",
+   "Anger Point",
+   "Sheer Force"
+  ],
+  "base_stats": {
+   "hp": 75,
+   "atk": 100,
+   "def": 95,
+   "spa": 40,
+   "spd": 70,
+   "spe": 110,
+   "total": 490
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Tauros-Paldea Aqua",
+  "species": "Tauros",
+  "form": "Paldea Aqua",
+  "dex": 128,
+  "types": [
+   "Fighting",
+   "Water"
+  ],
+  "abilities": [
+   "Intimidate",
+   "Anger Point",
+   "Cud Chew"
+  ],
+  "base_stats": {
+   "hp": 75,
+   "atk": 110,
+   "def": 105,
+   "spa": 30,
+   "spd": 70,
+   "spe": 100,
+   "total": 490
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Tauros-Paldea Blaze",
+  "species": "Tauros",
+  "form": "Paldea Blaze",
+  "dex": 128,
+  "types": [
+   "Fighting",
+   "Fire"
+  ],
+  "abilities": [
+   "Intimidate",
+   "Anger Point",
+   "Cud Chew"
+  ],
+  "base_stats": {
+   "hp": 75,
+   "atk": 110,
+   "def": 105,
+   "spa": 30,
+   "spd": 70,
+   "spe": 100,
+   "total": 490
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Tauros-Paldea Combat",
+  "species": "Tauros",
+  "form": "Paldea Combat",
+  "dex": 128,
+  "types": [
+   "Fighting"
+  ],
+  "abilities": [
+   "Intimidate",
+   "Anger Point",
+   "Cud Chew"
+  ],
+  "base_stats": {
+   "hp": 75,
+   "atk": 110,
+   "def": 105,
+   "spa": 30,
+   "spd": 70,
+   "spe": 100,
+   "total": 490
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Gyarados",
+  "species": "Gyarados",
+  "form": null,
+  "dex": 130,
+  "types": [
+   "Water",
+   "Flying"
+  ],
+  "abilities": [
+   "Intimidate",
+   "Moxie"
+  ],
+  "base_stats": {
+   "hp": 95,
+   "atk": 125,
+   "def": 79,
+   "spa": 60,
+   "spd": 100,
+   "spe": 81,
+   "total": 540
+  },
+  "is_mega": false
+ },
+ {
+  "slug": "gyarados",
+  "name": "Mega Gyarados",
+  "dex": 130,
+  "types": [
+   "Water",
+   "Dark"
+  ],
+  "abilities": [
+   "Mold Breaker"
+  ],
+  "base_stats": {
+   "hp": 95,
+   "atk": 155,
+   "def": 109,
+   "spa": 70,
+   "spd": 130,
+   "spe": 81,
+   "total": 640
+  },
+  "is_mega": true,
+  "species": "Gyarados",
+  "form": "Mega"
+ },
+ {
+  "slug": null,
+  "name": "Ditto",
+  "species": "Ditto",
+  "form": null,
+  "dex": 132,
+  "types": [
+   "Normal"
+  ],
+  "abilities": [
+   "Limber",
+   "Imposter"
+  ],
+  "base_stats": {
+   "hp": 48,
+   "atk": 48,
+   "def": 48,
+   "spa": 48,
+   "spd": 48,
+   "spe": 48,
+   "total": 288
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Vaporeon",
+  "species": "Vaporeon",
+  "form": null,
+  "dex": 134,
+  "types": [
+   "Water"
+  ],
+  "abilities": [
+   "Water Absorb",
+   "Hydration"
+  ],
+  "base_stats": {
+   "hp": 130,
+   "atk": 65,
+   "def": 60,
+   "spa": 110,
+   "spd": 95,
+   "spe": 65,
+   "total": 525
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Jolteon",
+  "species": "Jolteon",
+  "form": null,
+  "dex": 135,
+  "types": [
+   "Electric"
+  ],
+  "abilities": [
+   "Volt Absorb",
+   "Quick Feet"
+  ],
+  "base_stats": {
+   "hp": 65,
+   "atk": 65,
+   "def": 60,
+   "spa": 110,
+   "spd": 95,
+   "spe": 130,
+   "total": 525
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Flareon",
+  "species": "Flareon",
+  "form": null,
+  "dex": 136,
+  "types": [
+   "Fire"
+  ],
+  "abilities": [
+   "Flash Fire",
+   "Guts"
+  ],
+  "base_stats": {
+   "hp": 65,
+   "atk": 130,
+   "def": 60,
+   "spa": 95,
+   "spd": 110,
+   "spe": 65,
+   "total": 525
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Aerodactyl",
+  "species": "Aerodactyl",
+  "form": null,
+  "dex": 142,
+  "types": [
+   "Rock",
+   "Flying"
+  ],
+  "abilities": [
+   "Rock Head",
+   "Pressure",
+   "Unnerve"
+  ],
+  "base_stats": {
+   "hp": 80,
+   "atk": 105,
+   "def": 65,
+   "spa": 60,
+   "spd": 75,
+   "spe": 130,
+   "total": 515
+  },
+  "is_mega": false
+ },
+ {
+  "slug": "aerodactyl",
+  "name": "Mega Aerodactyl",
+  "dex": 142,
+  "types": [
+   "Rock",
+   "Flying"
+  ],
+  "abilities": [
+   "Tough Claws"
+  ],
+  "base_stats": {
+   "hp": 80,
+   "atk": 135,
+   "def": 85,
+   "spa": 70,
+   "spd": 95,
+   "spe": 150,
+   "total": 615
+  },
+  "is_mega": true,
+  "species": "Aerodactyl",
+  "form": "Mega"
+ },
+ {
+  "slug": null,
+  "name": "Snorlax",
+  "species": "Snorlax",
+  "form": null,
+  "dex": 143,
+  "types": [
+   "Normal"
+  ],
+  "abilities": [
+   "Immunity",
+   "Thick Fat",
+   "Gluttony"
+  ],
+  "base_stats": {
+   "hp": 160,
+   "atk": 110,
+   "def": 65,
+   "spa": 65,
+   "spd": 110,
+   "spe": 30,
+   "total": 540
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Dragonite",
+  "species": "Dragonite",
+  "form": null,
+  "dex": 149,
+  "types": [
+   "Dragon",
+   "Flying"
+  ],
+  "abilities": [
+   "Inner Focus",
+   "Multiscale"
+  ],
+  "base_stats": {
+   "hp": 91,
+   "atk": 134,
+   "def": 95,
+   "spa": 100,
+   "spd": 100,
+   "spe": 80,
+   "total": 600
+  },
+  "is_mega": false
+ },
+ {
+  "slug": "dragonite",
+  "name": "Mega Dragonite",
+  "dex": 149,
+  "types": [
+   "Dragon",
+   "Flying"
+  ],
+  "abilities": [
+   "Multiscale"
+  ],
+  "base_stats": {
+   "hp": 91,
+   "atk": 124,
+   "def": 115,
+   "spa": 145,
+   "spd": 125,
+   "spe": 100,
+   "total": 700
+  },
+  "is_mega": true,
+  "species": "Dragonite",
+  "form": "Mega"
+ },
+ {
+  "slug": "meganium",
+  "name": "Mega Meganium",
+  "dex": 154,
+  "types": [
+   "Grass",
+   "Fairy"
+  ],
+  "abilities": [
+   "Mega Sol"
+  ],
+  "base_stats": {
+   "hp": 80,
+   "atk": 92,
+   "def": 115,
+   "spa": 143,
+   "spd": 115,
+   "spe": 80,
+   "total": 625
+  },
+  "is_mega": true,
+  "species": "Meganium",
+  "form": "Mega"
+ },
+ {
+  "slug": null,
+  "name": "Meganium",
+  "species": "Meganium",
+  "form": null,
+  "dex": 154,
+  "types": [
+   "Grass"
+  ],
+  "abilities": [
+   "Overgrow",
+   "Leaf Guard"
+  ],
+  "base_stats": {
+   "hp": 80,
+   "atk": 82,
+   "def": 100,
+   "spa": 83,
+   "spd": 100,
+   "spe": 80,
+   "total": 525
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Typhlosion",
+  "species": "Typhlosion",
+  "form": null,
+  "dex": 157,
+  "types": [
+   "Fire"
+  ],
+  "abilities": [
+   "Blaze",
+   "Flash Fire"
+  ],
+  "base_stats": {
+   "hp": 78,
+   "atk": 84,
+   "def": 78,
+   "spa": 109,
+   "spd": 85,
+   "spe": 100,
+   "total": 534
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Typhlosion-Hisui",
+  "species": "Typhlosion",
+  "form": "Hisui",
+  "dex": 157,
+  "types": [
+   "Fire",
+   "Ghost"
+  ],
+  "abilities": [
+   "Blaze",
+   "Frisk"
+  ],
+  "base_stats": {
+   "hp": 73,
+   "atk": 84,
+   "def": 78,
+   "spa": 119,
+   "spd": 85,
+   "spe": 95,
+   "total": 534
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Feraligatr",
+  "species": "Feraligatr",
+  "form": null,
+  "dex": 160,
+  "types": [
+   "Water"
+  ],
+  "abilities": [
+   "Torrent",
+   "Sheer Force"
+  ],
+  "base_stats": {
+   "hp": 85,
+   "atk": 105,
+   "def": 100,
+   "spa": 79,
+   "spd": 83,
+   "spe": 78,
+   "total": 530
+  },
+  "is_mega": false
+ },
+ {
+  "slug": "feraligatr",
+  "name": "Mega Feraligatr",
+  "dex": 160,
+  "types": [
+   "Water",
+   "Dragon"
+  ],
+  "abilities": [
+   "Dragonize"
+  ],
+  "base_stats": {
+   "hp": 85,
+   "atk": 160,
+   "def": 125,
+   "spa": 89,
+   "spd": 93,
+   "spe": 78,
+   "total": 630
+  },
+  "is_mega": true,
+  "species": "Feraligatr",
+  "form": "Mega"
+ },
+ {
+  "slug": null,
+  "name": "Ariados",
+  "species": "Ariados",
+  "form": null,
+  "dex": 168,
+  "types": [
+   "Bug",
+   "Poison"
+  ],
+  "abilities": [
+   "Swarm",
+   "Insomnia",
+   "Sniper"
+  ],
+  "base_stats": {
+   "hp": 70,
+   "atk": 90,
+   "def": 70,
+   "spa": 60,
+   "spd": 70,
+   "spe": 40,
+   "total": 400
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Ampharos",
+  "species": "Ampharos",
+  "form": null,
+  "dex": 181,
+  "types": [
+   "Electric"
+  ],
+  "abilities": [
+   "Static",
+   "Plus"
+  ],
+  "base_stats": {
+   "hp": 90,
+   "atk": 75,
+   "def": 85,
+   "spa": 115,
+   "spd": 90,
+   "spe": 55,
+   "total": 510
+  },
+  "is_mega": false
+ },
+ {
+  "slug": "ampharos",
+  "name": "Mega Ampharos",
+  "dex": 181,
+  "types": [
+   "Electric",
+   "Dragon"
+  ],
+  "abilities": [
+   "Mold Breaker"
+  ],
+  "base_stats": {
+   "hp": 90,
+   "atk": 95,
+   "def": 105,
+   "spa": 165,
+   "spd": 110,
+   "spe": 45,
+   "total": 610
+  },
+  "is_mega": true,
+  "species": "Ampharos",
+  "form": "Mega"
+ },
+ {
+  "slug": null,
+  "name": "Azumarill",
+  "species": "Azumarill",
+  "form": null,
+  "dex": 184,
+  "types": [
+   "Water",
+   "Fairy"
+  ],
+  "abilities": [
+   "Thick Fat",
+   "Huge Power",
+   "Sap Sipper"
+  ],
+  "base_stats": {
+   "hp": 100,
+   "atk": 50,
+   "def": 80,
+   "spa": 60,
+   "spd": 80,
+   "spe": 50,
+   "total": 420
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Politoed",
+  "species": "Politoed",
+  "form": null,
+  "dex": 186,
+  "types": [
+   "Water"
+  ],
+  "abilities": [
+   "Water Absorb",
+   "Damp",
+   "Drizzle"
+  ],
+  "base_stats": {
+   "hp": 90,
+   "atk": 75,
+   "def": 75,
+   "spa": 90,
+   "spd": 100,
+   "spe": 70,
+   "total": 500
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Espeon",
+  "species": "Espeon",
+  "form": null,
+  "dex": 196,
+  "types": [
+   "Psychic"
+  ],
+  "abilities": [
+   "Synchronize",
+   "Magic Bounce"
+  ],
+  "base_stats": {
+   "hp": 65,
+   "atk": 65,
+   "def": 60,
+   "spa": 130,
+   "spd": 95,
+   "spe": 110,
+   "total": 525
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Umbreon",
+  "species": "Umbreon",
+  "form": null,
+  "dex": 197,
+  "types": [
+   "Dark"
+  ],
+  "abilities": [
+   "Synchronize",
+   "Inner Focus"
+  ],
+  "base_stats": {
+   "hp": 95,
+   "atk": 65,
+   "def": 110,
+   "spa": 60,
+   "spd": 130,
+   "spe": 65,
+   "total": 525
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Slowking",
+  "species": "Slowking",
+  "form": null,
+  "dex": 199,
+  "types": [
+   "Water",
+   "Psychic"
+  ],
+  "abilities": [
+   "Oblivious",
+   "Own Tempo",
+   "Regenerator"
+  ],
+  "base_stats": {
+   "hp": 95,
+   "atk": 75,
+   "def": 80,
+   "spa": 100,
+   "spd": 110,
+   "spe": 30,
+   "total": 490
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Slowking-Galar",
+  "species": "Slowking",
+  "form": "Galar",
+  "dex": 199,
+  "types": [
+   "Poison",
+   "Psychic"
+  ],
+  "abilities": [
+   "Curious Medicine",
+   "Own Tempo",
+   "Regenerator"
+  ],
+  "base_stats": {
+   "hp": 95,
+   "atk": 65,
+   "def": 80,
+   "spa": 110,
+   "spd": 110,
+   "spe": 30,
+   "total": 490
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Forretress",
+  "species": "Forretress",
+  "form": null,
+  "dex": 205,
+  "types": [
+   "Bug",
+   "Steel"
+  ],
+  "abilities": [
+   "Sturdy",
+   "Overcoat"
+  ],
+  "base_stats": {
+   "hp": 75,
+   "atk": 90,
+   "def": 140,
+   "spa": 60,
+   "spd": 60,
+   "spe": 40,
+   "total": 465
+  },
+  "is_mega": false
+ },
+ {
+  "slug": "steelix",
+  "name": "Mega Steelix",
+  "dex": 208,
+  "types": [
+   "Steel",
+   "Ground"
+  ],
+  "abilities": [
+   "Sand Force"
+  ],
+  "base_stats": {
+   "hp": 75,
+   "atk": 125,
+   "def": 230,
+   "spa": 55,
+   "spd": 95,
+   "spe": 30,
+   "total": 610
+  },
+  "is_mega": true,
+  "species": "Steelix",
+  "form": "Mega"
+ },
+ {
+  "slug": null,
+  "name": "Steelix",
+  "species": "Steelix",
+  "form": null,
+  "dex": 208,
+  "types": [
+   "Steel",
+   "Ground"
+  ],
+  "abilities": [
+   "Rock Head",
+   "Sturdy",
+   "Sheer Force"
+  ],
+  "base_stats": {
+   "hp": 75,
+   "atk": 85,
+   "def": 200,
+   "spa": 55,
+   "spd": 65,
+   "spe": 30,
+   "total": 510
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Qwilfish",
+  "species": "Qwilfish",
+  "form": null,
+  "dex": 211,
+  "types": [
+   "Water",
+   "Poison"
+  ],
+  "abilities": [
+   "Poison Point",
+   "Swift Swim",
+   "Intimidate"
+  ],
+  "base_stats": {
+   "hp": 65,
+   "atk": 95,
+   "def": 85,
+   "spa": 55,
+   "spd": 55,
+   "spe": 85,
+   "total": 440
+  },
+  "is_mega": false
+ },
+ {
+  "slug": "scizor",
+  "name": "Mega Scizor",
+  "dex": 212,
+  "types": [
+   "Bug",
+   "Steel"
+  ],
+  "abilities": [
+   "Technician"
+  ],
+  "base_stats": {
+   "hp": 70,
+   "atk": 150,
+   "def": 140,
+   "spa": 65,
+   "spd": 100,
+   "spe": 75,
+   "total": 600
+  },
+  "is_mega": true,
+  "species": "Scizor",
+  "form": "Mega"
+ },
+ {
+  "slug": null,
+  "name": "Scizor",
+  "species": "Scizor",
+  "form": null,
+  "dex": 212,
+  "types": [
+   "Bug",
+   "Steel"
+  ],
+  "abilities": [
+   "Swarm",
+   "Technician",
+   "Light Metal"
+  ],
+  "base_stats": {
+   "hp": 70,
+   "atk": 130,
+   "def": 100,
+   "spa": 55,
+   "spd": 80,
+   "spe": 65,
+   "total": 500
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Heracross",
+  "species": "Heracross",
+  "form": null,
+  "dex": 214,
+  "types": [
+   "Bug",
+   "Fighting"
+  ],
+  "abilities": [
+   "Swarm",
+   "Guts",
+   "Moxie"
+  ],
+  "base_stats": {
+   "hp": 80,
+   "atk": 125,
+   "def": 75,
+   "spa": 40,
+   "spd": 95,
+   "spe": 85,
+   "total": 500
+  },
+  "is_mega": false
+ },
+ {
+  "slug": "heracross",
+  "name": "Mega Heracross",
+  "dex": 214,
+  "types": [
+   "Bug",
+   "Fighting"
+  ],
+  "abilities": [
+   "Skill Link"
+  ],
+  "base_stats": {
+   "hp": 80,
+   "atk": 185,
+   "def": 115,
+   "spa": 40,
+   "spd": 105,
+   "spe": 75,
+   "total": 600
+  },
+  "is_mega": true,
+  "species": "Heracross",
+  "form": "Mega"
+ },
+ {
+  "slug": "skarmory",
+  "name": "Mega Skarmory",
+  "dex": 227,
+  "types": [
+   "Steel",
+   "Flying"
+  ],
+  "abilities": [
+   "Stalwart"
+  ],
+  "base_stats": {
+   "hp": 65,
+   "atk": 140,
+   "def": 110,
+   "spa": 40,
+   "spd": 100,
+   "spe": 110,
+   "total": 565
+  },
+  "is_mega": true,
+  "species": "Skarmory",
+  "form": "Mega"
+ },
+ {
+  "slug": null,
+  "name": "Skarmory",
+  "species": "Skarmory",
+  "form": null,
+  "dex": 227,
+  "types": [
+   "Steel",
+   "Flying"
+  ],
+  "abilities": [
+   "Keen Eye",
+   "Sturdy",
+   "Weak Armor"
+  ],
+  "base_stats": {
+   "hp": 65,
+   "atk": 80,
+   "def": 140,
+   "spa": 40,
+   "spd": 70,
+   "spe": 70,
+   "total": 465
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Houndoom",
+  "species": "Houndoom",
+  "form": null,
+  "dex": 229,
+  "types": [
+   "Dark",
+   "Fire"
+  ],
+  "abilities": [
+   "Early Bird",
+   "Flash Fire",
+   "Unnerve"
+  ],
+  "base_stats": {
+   "hp": 75,
+   "atk": 90,
+   "def": 50,
+   "spa": 110,
+   "spd": 80,
+   "spe": 95,
+   "total": 500
+  },
+  "is_mega": false
+ },
+ {
+  "slug": "houndoom",
+  "name": "Mega Houndoom",
+  "dex": 229,
+  "types": [
+   "Dark",
+   "Fire"
+  ],
+  "abilities": [
+   "Solar Power"
+  ],
+  "base_stats": {
+   "hp": 75,
+   "atk": 90,
+   "def": 90,
+   "spa": 140,
+   "spd": 90,
+   "spe": 115,
+   "total": 600
+  },
+  "is_mega": true,
+  "species": "Houndoom",
+  "form": "Mega"
+ },
+ {
+  "slug": "tyranitar",
+  "name": "Mega Tyranitar",
+  "dex": 248,
+  "types": [
+   "Rock",
+   "Dark"
+  ],
+  "abilities": [
+   "Sand Stream"
+  ],
+  "base_stats": {
+   "hp": 100,
+   "atk": 164,
+   "def": 150,
+   "spa": 95,
+   "spd": 120,
+   "spe": 71,
+   "total": 700
+  },
+  "is_mega": true,
+  "species": "Tyranitar",
+  "form": "Mega"
+ },
+ {
+  "slug": null,
+  "name": "Tyranitar",
+  "species": "Tyranitar",
+  "form": null,
+  "dex": 248,
+  "types": [
+   "Rock",
+   "Dark"
+  ],
+  "abilities": [
+   "Sand Stream",
+   "Unnerve"
+  ],
+  "base_stats": {
+   "hp": 100,
+   "atk": 134,
+   "def": 110,
+   "spa": 95,
+   "spd": 100,
+   "spe": 61,
+   "total": 600
+  },
+  "is_mega": false
+ },
+ {
+  "slug": "sceptile",
+  "name": "Mega Sceptile",
+  "dex": 254,
+  "types": [
+   "Grass",
+   "Dragon"
+  ],
+  "abilities": [
+   "Lightning Rod"
+  ],
+  "base_stats": {
+   "hp": 70,
+   "atk": 110,
+   "def": 75,
+   "spa": 145,
+   "spd": 85,
+   "spe": 145,
+   "total": 630
+  },
+  "is_mega": true,
+  "species": "Sceptile",
+  "form": "Mega"
+ },
+ {
+  "slug": null,
+  "name": "Sceptile",
+  "species": "Sceptile",
+  "form": null,
+  "dex": 254,
+  "types": [
+   "Grass"
+  ],
+  "abilities": [
+   "Overgrow",
+   "Unburden"
+  ],
+  "base_stats": {
+   "hp": 70,
+   "atk": 85,
+   "def": 65,
+   "spa": 105,
+   "spd": 85,
+   "spe": 120,
+   "total": 530
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Blaziken",
+  "species": "Blaziken",
+  "form": null,
+  "dex": 257,
+  "types": [
+   "Fire",
+   "Fighting"
+  ],
+  "abilities": [
+   "Blaze",
+   "Speed Boost"
+  ],
+  "base_stats": {
+   "hp": 80,
+   "atk": 120,
+   "def": 70,
+   "spa": 110,
+   "spd": 70,
+   "spe": 80,
+   "total": 530
+  },
+  "is_mega": false
+ },
+ {
+  "slug": "blaziken",
+  "name": "Mega Blaziken",
+  "dex": 257,
+  "types": [
+   "Fire",
+   "Fighting"
+  ],
+  "abilities": [
+   "Speed Boost"
+  ],
+  "base_stats": {
+   "hp": 80,
+   "atk": 160,
+   "def": 80,
+   "spa": 130,
+   "spd": 80,
+   "spe": 100,
+   "total": 630
+  },
+  "is_mega": true,
+  "species": "Blaziken",
+  "form": "Mega"
+ },
+ {
+  "slug": "swampert",
+  "name": "Mega Swampert",
+  "dex": 260,
+  "types": [
+   "Water",
+   "Ground"
+  ],
+  "abilities": [
+   "Swift Swim"
+  ],
+  "base_stats": {
+   "hp": 100,
+   "atk": 150,
+   "def": 110,
+   "spa": 95,
+   "spd": 110,
+   "spe": 70,
+   "total": 635
+  },
+  "is_mega": true,
+  "species": "Swampert",
+  "form": "Mega"
+ },
+ {
+  "slug": null,
+  "name": "Swampert",
+  "species": "Swampert",
+  "form": null,
+  "dex": 260,
+  "types": [
+   "Water",
+   "Ground"
+  ],
+  "abilities": [
+   "Torrent",
+   "Damp"
+  ],
+  "base_stats": {
+   "hp": 100,
+   "atk": 110,
+   "def": 90,
+   "spa": 85,
+   "spd": 90,
+   "spe": 60,
+   "total": 535
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Pelipper",
+  "species": "Pelipper",
+  "form": null,
+  "dex": 279,
+  "types": [
+   "Water",
+   "Flying"
+  ],
+  "abilities": [
+   "Keen Eye",
+   "Drizzle",
+   "Rain Dish"
+  ],
+  "base_stats": {
+   "hp": 60,
+   "atk": 50,
+   "def": 100,
+   "spa": 95,
+   "spd": 70,
+   "spe": 65,
+   "total": 440
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Gardevoir",
+  "species": "Gardevoir",
+  "form": null,
+  "dex": 282,
+  "types": [
+   "Psychic",
+   "Fairy"
+  ],
+  "abilities": [
+   "Synchronize",
+   "Trace",
+   "Telepathy"
+  ],
+  "base_stats": {
+   "hp": 68,
+   "atk": 65,
+   "def": 65,
+   "spa": 125,
+   "spd": 115,
+   "spe": 80,
+   "total": 518
+  },
+  "is_mega": false
+ },
+ {
+  "slug": "gardevoir",
+  "name": "Mega Gardevoir",
+  "dex": 282,
+  "types": [
+   "Psychic",
+   "Fairy"
+  ],
+  "abilities": [
+   "Pixilate"
+  ],
+  "base_stats": {
+   "hp": 68,
+   "atk": 85,
+   "def": 65,
+   "spa": 165,
+   "spd": 135,
+   "spe": 100,
+   "total": 618
+  },
+  "is_mega": true,
+  "species": "Gardevoir",
+  "form": "Mega"
+ },
+ {
+  "slug": "sableye",
+  "name": "Mega Sableye",
+  "dex": 302,
+  "types": [
+   "Dark",
+   "Ghost"
+  ],
+  "abilities": [
+   "Magic Bounce"
+  ],
+  "base_stats": {
+   "hp": 50,
+   "atk": 85,
+   "def": 125,
+   "spa": 85,
+   "spd": 115,
+   "spe": 20,
+   "total": 480
+  },
+  "is_mega": true,
+  "species": "Sableye",
+  "form": "Mega"
+ },
+ {
+  "slug": null,
+  "name": "Sableye",
+  "species": "Sableye",
+  "form": null,
+  "dex": 302,
+  "types": [
+   "Dark",
+   "Ghost"
+  ],
+  "abilities": [
+   "Keen Eye",
+   "Stall",
+   "Prankster"
+  ],
+  "base_stats": {
+   "hp": 50,
+   "atk": 75,
+   "def": 75,
+   "spa": 65,
+   "spd": 65,
+   "spe": 50,
+   "total": 380
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Mawile",
+  "species": "Mawile",
+  "form": null,
+  "dex": 303,
+  "types": [
+   "Steel",
+   "Fairy"
+  ],
+  "abilities": [
+   "Hyper Cutter",
+   "Intimidate",
+   "Sheer Force"
+  ],
+  "base_stats": {
+   "hp": 50,
+   "atk": 85,
+   "def": 85,
+   "spa": 55,
+   "spd": 55,
+   "spe": 50,
+   "total": 380
+  },
+  "is_mega": false
+ },
+ {
+  "slug": "mawile",
+  "name": "Mega Mawile",
+  "dex": 303,
+  "types": [
+   "Steel",
+   "Fairy"
+  ],
+  "abilities": [
+   "Huge Power"
+  ],
+  "base_stats": {
+   "hp": 50,
+   "atk": 105,
+   "def": 125,
+   "spa": 55,
+   "spd": 95,
+   "spe": 50,
+   "total": 480
+  },
+  "is_mega": true,
+  "species": "Mawile",
+  "form": "Mega"
+ },
+ {
+  "slug": null,
+  "name": "Aggron",
+  "species": "Aggron",
+  "form": null,
+  "dex": 306,
+  "types": [
+   "Steel",
+   "Rock"
+  ],
+  "abilities": [
+   "Sturdy",
+   "Rock Head",
+   "Heavy Metal"
+  ],
+  "base_stats": {
+   "hp": 70,
+   "atk": 110,
+   "def": 180,
+   "spa": 60,
+   "spd": 60,
+   "spe": 50,
+   "total": 530
+  },
+  "is_mega": false
+ },
+ {
+  "slug": "aggron",
+  "name": "Mega Aggron",
+  "dex": 306,
+  "types": [
+   "Steel"
+  ],
+  "abilities": [
+   "Filter"
+  ],
+  "base_stats": {
+   "hp": 70,
+   "atk": 140,
+   "def": 230,
+   "spa": 60,
+   "spd": 80,
+   "spe": 50,
+   "total": 630
+  },
+  "is_mega": true,
+  "species": "Aggron",
+  "form": "Mega"
+ },
+ {
+  "slug": null,
+  "name": "Medicham",
+  "species": "Medicham",
+  "form": null,
+  "dex": 308,
+  "types": [
+   "Fighting",
+   "Psychic"
+  ],
+  "abilities": [
+   "Pure Power",
+   "Telepathy"
+  ],
+  "base_stats": {
+   "hp": 60,
+   "atk": 60,
+   "def": 75,
+   "spa": 60,
+   "spd": 75,
+   "spe": 80,
+   "total": 410
+  },
+  "is_mega": false
+ },
+ {
+  "slug": "medicham",
+  "name": "Mega Medicham",
+  "dex": 308,
+  "types": [
+   "Fighting",
+   "Psychic"
+  ],
+  "abilities": [
+   "Pure Power"
+  ],
+  "base_stats": {
+   "hp": 60,
+   "atk": 100,
+   "def": 85,
+   "spa": 80,
+   "spd": 85,
+   "spe": 100,
+   "total": 510
+  },
+  "is_mega": true,
+  "species": "Medicham",
+  "form": "Mega"
+ },
+ {
+  "slug": null,
+  "name": "Manectric",
+  "species": "Manectric",
+  "form": null,
+  "dex": 310,
+  "types": [
+   "Electric"
+  ],
+  "abilities": [
+   "Static",
+   "Lightning Rod",
+   "Minus"
+  ],
+  "base_stats": {
+   "hp": 70,
+   "atk": 75,
+   "def": 60,
+   "spa": 105,
+   "spd": 60,
+   "spe": 105,
+   "total": 475
+  },
+  "is_mega": false
+ },
+ {
+  "slug": "manectric",
+  "name": "Mega Manectric",
+  "dex": 310,
+  "types": [
+   "Electric"
+  ],
+  "abilities": [
+   "Intimidate"
+  ],
+  "base_stats": {
+   "hp": 70,
+   "atk": 75,
+   "def": 80,
+   "spa": 135,
+   "spd": 80,
+   "spe": 135,
+   "total": 575
+  },
+  "is_mega": true,
+  "species": "Manectric",
+  "form": "Mega"
+ },
+ {
+  "slug": null,
+  "name": "Swalot",
+  "species": "Swalot",
+  "form": null,
+  "dex": 317,
+  "types": [
+   "Poison"
+  ],
+  "abilities": [
+   "Liquid Ooze",
+   "Sticky Hold",
+   "Gluttony"
+  ],
+  "base_stats": {
+   "hp": 100,
+   "atk": 73,
+   "def": 83,
+   "spa": 73,
+   "spd": 83,
+   "spe": 55,
+   "total": 467
+  },
+  "is_mega": false
+ },
+ {
+  "slug": "sharpedo",
+  "name": "Mega Sharpedo",
+  "dex": 319,
+  "types": [
+   "Water",
+   "Dark"
+  ],
+  "abilities": [
+   "Strong Jaw"
+  ],
+  "base_stats": {
+   "hp": 70,
+   "atk": 140,
+   "def": 70,
+   "spa": 110,
+   "spd": 65,
+   "spe": 105,
+   "total": 560
+  },
+  "is_mega": true,
+  "species": "Sharpedo",
+  "form": "Mega"
+ },
+ {
+  "slug": null,
+  "name": "Sharpedo",
+  "species": "Sharpedo",
+  "form": null,
+  "dex": 319,
+  "types": [
+   "Water",
+   "Dark"
+  ],
+  "abilities": [
+   "Rough Skin",
+   "Speed Boost"
+  ],
+  "base_stats": {
+   "hp": 70,
+   "atk": 120,
+   "def": 40,
+   "spa": 95,
+   "spd": 40,
+   "spe": 95,
+   "total": 460
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Camerupt",
+  "species": "Camerupt",
+  "form": null,
+  "dex": 323,
+  "types": [
+   "Fire",
+   "Ground"
+  ],
+  "abilities": [
+   "Magma Armor",
+   "Solid Rock",
+   "Anger Point"
+  ],
+  "base_stats": {
+   "hp": 70,
+   "atk": 100,
+   "def": 70,
+   "spa": 105,
+   "spd": 75,
+   "spe": 40,
+   "total": 460
+  },
+  "is_mega": false
+ },
+ {
+  "slug": "camerupt",
+  "name": "Mega Camerupt",
+  "dex": 323,
+  "types": [
+   "Fire",
+   "Ground"
+  ],
+  "abilities": [
+   "Sheer Force"
+  ],
+  "base_stats": {
+   "hp": 70,
+   "atk": 120,
+   "def": 100,
+   "spa": 145,
+   "spd": 105,
+   "spe": 20,
+   "total": 560
+  },
+  "is_mega": true,
+  "species": "Camerupt",
+  "form": "Mega"
+ },
+ {
+  "slug": null,
+  "name": "Torkoal",
+  "species": "Torkoal",
+  "form": null,
+  "dex": 324,
+  "types": [
+   "Fire"
+  ],
+  "abilities": [
+   "White Smoke",
+   "Drought",
+   "Shell Armor"
+  ],
+  "base_stats": {
+   "hp": 70,
+   "atk": 85,
+   "def": 140,
+   "spa": 85,
+   "spd": 70,
+   "spe": 20,
+   "total": 470
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Altaria",
+  "species": "Altaria",
+  "form": null,
+  "dex": 334,
+  "types": [
+   "Dragon",
+   "Flying"
+  ],
+  "abilities": [
+   "Natural Cure",
+   "Cloud Nine"
+  ],
+  "base_stats": {
+   "hp": 75,
+   "atk": 70,
+   "def": 90,
+   "spa": 70,
+   "spd": 105,
+   "spe": 80,
+   "total": 490
+  },
+  "is_mega": false
+ },
+ {
+  "slug": "altaria",
+  "name": "Mega Altaria",
+  "dex": 334,
+  "types": [
+   "Dragon",
+   "Fairy"
+  ],
+  "abilities": [
+   "Pixilate"
+  ],
+  "base_stats": {
+   "hp": 75,
+   "atk": 110,
+   "def": 110,
+   "spa": 110,
+   "spd": 105,
+   "spe": 80,
+   "total": 590
+  },
+  "is_mega": true,
+  "species": "Altaria",
+  "form": "Mega"
+ },
+ {
+  "slug": null,
+  "name": "Milotic",
+  "species": "Milotic",
+  "form": null,
+  "dex": 350,
+  "types": [
+   "Water"
+  ],
+  "abilities": [
+   "Marvel Scale",
+   "Competitive",
+   "Cute Charm"
+  ],
+  "base_stats": {
+   "hp": 95,
+   "atk": 60,
+   "def": 79,
+   "spa": 100,
+   "spd": 125,
+   "spe": 81,
+   "total": 540
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Castform",
+  "species": "Castform",
+  "form": null,
+  "dex": 351,
+  "types": [
+   "Normal"
+  ],
+  "abilities": [
+   "Forecast"
+  ],
+  "base_stats": {
+   "hp": 70,
+   "atk": 70,
+   "def": 70,
+   "spa": 70,
+   "spd": 70,
+   "spe": 70,
+   "total": 420
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Banette",
+  "species": "Banette",
+  "form": null,
+  "dex": 354,
+  "types": [
+   "Ghost"
+  ],
+  "abilities": [
+   "Insomnia",
+   "Frisk",
+   "Cursed Body"
+  ],
+  "base_stats": {
+   "hp": 64,
+   "atk": 115,
+   "def": 65,
+   "spa": 83,
+   "spd": 63,
+   "spe": 65,
+   "total": 455
+  },
+  "is_mega": false
+ },
+ {
+  "slug": "banette",
+  "name": "Mega Banette",
+  "dex": 354,
+  "types": [
+   "Ghost"
+  ],
+  "abilities": [
+   "Prankster"
+  ],
+  "base_stats": {
+   "hp": 64,
+   "atk": 165,
+   "def": 75,
+   "spa": 93,
+   "spd": 83,
+   "spe": 75,
+   "total": 555
+  },
+  "is_mega": true,
+  "species": "Banette",
+  "form": "Mega"
+ },
+ {
+  "slug": null,
+  "name": "Chimecho",
+  "species": "Chimecho",
+  "form": null,
+  "dex": 358,
+  "types": [
+   "Psychic"
+  ],
+  "abilities": [
+   "Levitate"
+  ],
+  "base_stats": {
+   "hp": 75,
+   "atk": 50,
+   "def": 80,
+   "spa": 95,
+   "spd": 90,
+   "spe": 65,
+   "total": 455
+  },
+  "is_mega": false
+ },
+ {
+  "slug": "chimecho",
+  "name": "Mega Chimecho",
+  "dex": 358,
+  "types": [
+   "Psychic",
+   "Steel"
+  ],
+  "abilities": [
+   "Levitate"
+  ],
+  "base_stats": {
+   "hp": 75,
+   "atk": 50,
+   "def": 110,
+   "spa": 135,
+   "spd": 120,
+   "spe": 65,
+   "total": 555
+  },
+  "is_mega": true,
+  "species": "Chimecho",
+  "form": "Mega"
+ },
+ {
+  "slug": null,
+  "name": "Absol",
+  "species": "Absol",
+  "form": null,
+  "dex": 359,
+  "types": [
+   "Dark"
+  ],
+  "abilities": [
+   "Pressure",
+   "Super Luck",
+   "Justified"
+  ],
+  "base_stats": {
+   "hp": 65,
+   "atk": 130,
+   "def": 60,
+   "spa": 75,
+   "spd": 60,
+   "spe": 75,
+   "total": 465
+  },
+  "is_mega": false
+ },
+ {
+  "slug": "absol",
+  "name": "Mega Absol",
+  "dex": 359,
+  "types": [
+   "Dark"
+  ],
+  "abilities": [
+   "Magic Bounce"
+  ],
+  "base_stats": {
+   "hp": 65,
+   "atk": 150,
+   "def": 60,
+   "spa": 115,
+   "spd": 60,
+   "spe": 115,
+   "total": 565
+  },
+  "is_mega": true,
+  "species": "Absol",
+  "form": "Mega"
+ },
+ {
+  "slug": "absol",
+  "name": "Mega Absol Z",
+  "dex": 359,
+  "types": [
+   "Dark",
+   "Ghost"
+  ],
+  "abilities": [
+   "Sharpness"
+  ],
+  "base_stats": {
+   "hp": 65,
+   "atk": 154,
+   "def": 60,
+   "spa": 75,
+   "spd": 60,
+   "spe": 151,
+   "total": 565
+  },
+  "is_mega": true,
+  "species": "Absol",
+  "form": "Mega Z"
+ },
+ {
+  "slug": null,
+  "name": "Glalie",
+  "species": "Glalie",
+  "form": null,
+  "dex": 362,
+  "types": [
+   "Ice"
+  ],
+  "abilities": [
+   "Inner Focus",
+   "Ice Body",
+   "Moody"
+  ],
+  "base_stats": {
+   "hp": 80,
+   "atk": 80,
+   "def": 80,
+   "spa": 80,
+   "spd": 80,
+   "spe": 80,
+   "total": 480
+  },
+  "is_mega": false
+ },
+ {
+  "slug": "glalie",
+  "name": "Mega Glalie",
+  "dex": 362,
+  "types": [
+   "Ice"
+  ],
+  "abilities": [
+   "Refrigerate"
+  ],
+  "base_stats": {
+   "hp": 80,
+   "atk": 120,
+   "def": 80,
+   "spa": 120,
+   "spd": 80,
+   "spe": 100,
+   "total": 580
+  },
+  "is_mega": true,
+  "species": "Glalie",
+  "form": "Mega"
+ },
+ {
+  "slug": "salamence",
+  "name": "Mega Salamence",
+  "dex": 373,
+  "types": [
+   "Dragon",
+   "Flying"
+  ],
+  "abilities": [
+   "Aerilate"
+  ],
+  "base_stats": {
+   "hp": 95,
+   "atk": 145,
+   "def": 130,
+   "spa": 120,
+   "spd": 90,
+   "spe": 120,
+   "total": 700
+  },
+  "is_mega": true,
+  "species": "Salamence",
+  "form": "Mega"
+ },
+ {
+  "slug": null,
+  "name": "Salamence",
+  "species": "Salamence",
+  "form": null,
+  "dex": 373,
+  "types": [
+   "Dragon",
+   "Flying"
+  ],
+  "abilities": [
+   "Intimidate",
+   "Moxie"
+  ],
+  "base_stats": {
+   "hp": 95,
+   "atk": 135,
+   "def": 80,
+   "spa": 110,
+   "spd": 80,
+   "spe": 100,
+   "total": 600
+  },
+  "is_mega": false
+ },
+ {
+  "slug": "metagross",
+  "name": "Mega Metagross",
+  "dex": 376,
+  "types": [
+   "Steel",
+   "Psychic"
+  ],
+  "abilities": [
+   "Tough Claws"
+  ],
+  "base_stats": {
+   "hp": 80,
+   "atk": 145,
+   "def": 150,
+   "spa": 105,
+   "spd": 110,
+   "spe": 110,
+   "total": 700
+  },
+  "is_mega": true,
+  "species": "Metagross",
+  "form": "Mega"
+ },
+ {
+  "slug": null,
+  "name": "Metagross",
+  "species": "Metagross",
+  "form": null,
+  "dex": 376,
+  "types": [
+   "Steel",
+   "Psychic"
+  ],
+  "abilities": [
+   "Clear Body",
+   "Light Metal"
+  ],
+  "base_stats": {
+   "hp": 80,
+   "atk": 135,
+   "def": 130,
+   "spa": 95,
+   "spd": 90,
+   "spe": 70,
+   "total": 600
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Torterra",
+  "species": "Torterra",
+  "form": null,
+  "dex": 389,
+  "types": [
+   "Grass",
+   "Ground"
+  ],
+  "abilities": [
+   "Overgrow",
+   "Shell Armor"
+  ],
+  "base_stats": {
+   "hp": 95,
+   "atk": 109,
+   "def": 105,
+   "spa": 75,
+   "spd": 85,
+   "spe": 56,
+   "total": 525
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Infernape",
+  "species": "Infernape",
+  "form": null,
+  "dex": 392,
+  "types": [
+   "Fire",
+   "Fighting"
+  ],
+  "abilities": [
+   "Blaze",
+   "Iron Fist"
+  ],
+  "base_stats": {
+   "hp": 76,
+   "atk": 104,
+   "def": 71,
+   "spa": 104,
+   "spd": 71,
+   "spe": 108,
+   "total": 534
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Empoleon",
+  "species": "Empoleon",
+  "form": null,
+  "dex": 395,
+  "types": [
+   "Water",
+   "Steel"
+  ],
+  "abilities": [
+   "Torrent",
+   "Competitive"
+  ],
+  "base_stats": {
+   "hp": 84,
+   "atk": 86,
+   "def": 88,
+   "spa": 111,
+   "spd": 101,
+   "spe": 60,
+   "total": 530
+  },
+  "is_mega": false
+ },
+ {
+  "slug": "staraptor",
+  "name": "Mega Staraptor",
+  "dex": 398,
+  "types": [
+   "Fighting",
+   "Flying"
+  ],
+  "abilities": [
+   "Contrary"
+  ],
+  "base_stats": {
+   "hp": 85,
+   "atk": 140,
+   "def": 100,
+   "spa": 60,
+   "spd": 90,
+   "spe": 110,
+   "total": 585
+  },
+  "is_mega": true,
+  "species": "Staraptor",
+  "form": "Mega"
+ },
+ {
+  "slug": null,
+  "name": "Staraptor",
+  "species": "Staraptor",
+  "form": null,
+  "dex": 398,
+  "types": [
+   "Normal",
+   "Flying"
+  ],
+  "abilities": [
+   "Intimidate",
+   "Reckless"
+  ],
+  "base_stats": {
+   "hp": 85,
+   "atk": 120,
+   "def": 70,
+   "spa": 50,
+   "spd": 60,
+   "spe": 100,
+   "total": 485
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Luxray",
+  "species": "Luxray",
+  "form": null,
+  "dex": 405,
+  "types": [
+   "Electric"
+  ],
+  "abilities": [
+   "Rivalry",
+   "Intimidate",
+   "Guts"
+  ],
+  "base_stats": {
+   "hp": 80,
+   "atk": 120,
+   "def": 79,
+   "spa": 95,
+   "spd": 79,
+   "spe": 70,
+   "total": 523
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Roserade",
+  "species": "Roserade",
+  "form": null,
+  "dex": 407,
+  "types": [
+   "Grass",
+   "Poison"
+  ],
+  "abilities": [
+   "Natural Cure",
+   "Poison Point",
+   "Technician"
+  ],
+  "base_stats": {
+   "hp": 60,
+   "atk": 70,
+   "def": 65,
+   "spa": 125,
+   "spd": 105,
+   "spe": 90,
+   "total": 515
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Rampardos",
+  "species": "Rampardos",
+  "form": null,
+  "dex": 409,
+  "types": [
+   "Rock"
+  ],
+  "abilities": [
+   "Mold Breaker",
+   "Sheer Force"
+  ],
+  "base_stats": {
+   "hp": 97,
+   "atk": 165,
+   "def": 60,
+   "spa": 65,
+   "spd": 50,
+   "spe": 58,
+   "total": 495
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Bastiodon",
+  "species": "Bastiodon",
+  "form": null,
+  "dex": 411,
+  "types": [
+   "Rock",
+   "Steel"
+  ],
+  "abilities": [
+   "Sturdy",
+   "Soundproof"
+  ],
+  "base_stats": {
+   "hp": 60,
+   "atk": 52,
+   "def": 168,
+   "spa": 47,
+   "spd": 138,
+   "spe": 30,
+   "total": 495
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Lopunny",
+  "species": "Lopunny",
+  "form": null,
+  "dex": 428,
+  "types": [
+   "Normal"
+  ],
+  "abilities": [
+   "Cute Charm",
+   "Klutz",
+   "Limber"
+  ],
+  "base_stats": {
+   "hp": 65,
+   "atk": 76,
+   "def": 84,
+   "spa": 54,
+   "spd": 96,
+   "spe": 105,
+   "total": 480
+  },
+  "is_mega": false
+ },
+ {
+  "slug": "lopunny",
+  "name": "Mega Lopunny",
+  "dex": 428,
+  "types": [
+   "Normal",
+   "Fighting"
+  ],
+  "abilities": [
+   "Scrappy"
+  ],
+  "base_stats": {
+   "hp": 65,
+   "atk": 136,
+   "def": 94,
+   "spa": 54,
+   "spd": 96,
+   "spe": 135,
+   "total": 580
+  },
+  "is_mega": true,
+  "species": "Lopunny",
+  "form": "Mega"
+ },
+ {
+  "slug": null,
+  "name": "Spiritomb",
+  "species": "Spiritomb",
+  "form": null,
+  "dex": 442,
+  "types": [
+   "Ghost",
+   "Dark"
+  ],
+  "abilities": [
+   "Pressure",
+   "Infiltrator"
+  ],
+  "base_stats": {
+   "hp": 50,
+   "atk": 92,
+   "def": 108,
+   "spa": 92,
+   "spd": 108,
+   "spe": 35,
+   "total": 485
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Garchomp",
+  "species": "Garchomp",
+  "form": null,
+  "dex": 445,
+  "types": [
+   "Dragon",
+   "Ground"
+  ],
+  "abilities": [
+   "Sand Veil",
+   "Rough Skin"
+  ],
+  "base_stats": {
+   "hp": 108,
+   "atk": 130,
+   "def": 95,
+   "spa": 80,
+   "spd": 85,
+   "spe": 102,
+   "total": 600
+  },
+  "is_mega": false
+ },
+ {
+  "slug": "garchomp",
+  "name": "Mega Garchomp",
+  "dex": 445,
+  "types": [
+   "Dragon",
+   "Ground"
+  ],
+  "abilities": [
+   "Sand Force"
+  ],
+  "base_stats": {
+   "hp": 108,
+   "atk": 170,
+   "def": 115,
+   "spa": 120,
+   "spd": 95,
+   "spe": 92,
+   "total": 700
+  },
+  "is_mega": true,
+  "species": "Garchomp",
+  "form": "Mega"
+ },
+ {
+  "slug": "garchomp",
+  "name": "Mega Garchomp Z",
+  "dex": 445,
+  "types": [
+   "Dragon"
+  ],
+  "abilities": [
+   "Levitate"
+  ],
+  "base_stats": {
+   "hp": 108,
+   "atk": 130,
+   "def": 85,
+   "spa": 141,
+   "spd": 85,
+   "spe": 151,
+   "total": 700
+  },
+  "is_mega": true,
+  "species": "Garchomp",
+  "form": "Mega Z"
+ },
+ {
+  "slug": null,
+  "name": "Lucario",
+  "species": "Lucario",
+  "form": null,
+  "dex": 448,
+  "types": [
+   "Fighting",
+   "Steel"
+  ],
+  "abilities": [
+   "Steadfast",
+   "Inner Focus",
+   "Justified"
+  ],
+  "base_stats": {
+   "hp": 70,
+   "atk": 110,
+   "def": 70,
+   "spa": 115,
+   "spd": 70,
+   "spe": 90,
+   "total": 525
+  },
+  "is_mega": false
+ },
+ {
+  "slug": "lucario",
+  "name": "Mega Lucario",
+  "dex": 448,
+  "types": [
+   "Fighting",
+   "Steel"
+  ],
+  "abilities": [
+   "Adaptability"
+  ],
+  "base_stats": {
+   "hp": 70,
+   "atk": 145,
+   "def": 88,
+   "spa": 140,
+   "spd": 70,
+   "spe": 112,
+   "total": 625
+  },
+  "is_mega": true,
+  "species": "Lucario",
+  "form": "Mega"
+ },
+ {
+  "slug": "lucario",
+  "name": "Mega Lucario Z",
+  "dex": 448,
+  "types": [
+   "Fighting",
+   "Steel"
+  ],
+  "abilities": [
+   "Aura Guard"
+  ],
+  "base_stats": {
+   "hp": 70,
+   "atk": 100,
+   "def": 70,
+   "spa": 164,
+   "spd": 70,
+   "spe": 151,
+   "total": 625
+  },
+  "is_mega": true,
+  "species": "Lucario",
+  "form": "Mega Z"
+ },
+ {
+  "slug": null,
+  "name": "Hippowdon",
+  "species": "Hippowdon",
+  "form": null,
+  "dex": 450,
+  "types": [
+   "Ground"
+  ],
+  "abilities": [
+   "Sand Stream",
+   "Sand Force"
+  ],
+  "base_stats": {
+   "hp": 108,
+   "atk": 112,
+   "def": 118,
+   "spa": 68,
+   "spd": 72,
+   "spe": 47,
+   "total": 525
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Toxicroak",
+  "species": "Toxicroak",
+  "form": null,
+  "dex": 454,
+  "types": [
+   "Poison",
+   "Fighting"
+  ],
+  "abilities": [
+   "Anticipation",
+   "Dry Skin",
+   "Poison Touch"
+  ],
+  "base_stats": {
+   "hp": 83,
+   "atk": 106,
+   "def": 65,
+   "spa": 86,
+   "spd": 65,
+   "spe": 85,
+   "total": 490
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Abomasnow",
+  "species": "Abomasnow",
+  "form": null,
+  "dex": 460,
+  "types": [
+   "Grass",
+   "Ice"
+  ],
+  "abilities": [
+   "Snow Warning",
+   "Soundproof"
+  ],
+  "base_stats": {
+   "hp": 90,
+   "atk": 92,
+   "def": 75,
+   "spa": 92,
+   "spd": 85,
+   "spe": 60,
+   "total": 494
+  },
+  "is_mega": false
+ },
+ {
+  "slug": "abomasnow",
+  "name": "Mega Abomasnow",
+  "dex": 460,
+  "types": [
+   "Grass",
+   "Ice"
+  ],
+  "abilities": [
+   "Snow Warning"
+  ],
+  "base_stats": {
+   "hp": 90,
+   "atk": 132,
+   "def": 105,
+   "spa": 132,
+   "spd": 105,
+   "spe": 30,
+   "total": 594
+  },
+  "is_mega": true,
+  "species": "Abomasnow",
+  "form": "Mega"
+ },
+ {
+  "slug": null,
+  "name": "Weavile",
+  "species": "Weavile",
+  "form": null,
+  "dex": 461,
+  "types": [
+   "Dark",
+   "Ice"
+  ],
+  "abilities": [
+   "Pressure",
+   "Pickpocket"
+  ],
+  "base_stats": {
+   "hp": 70,
+   "atk": 120,
+   "def": 65,
+   "spa": 45,
+   "spd": 85,
+   "spe": 125,
+   "total": 510
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Rhyperior",
+  "species": "Rhyperior",
+  "form": null,
+  "dex": 464,
+  "types": [
+   "Ground",
+   "Rock"
+  ],
+  "abilities": [
+   "Lightning Rod",
+   "Solid Rock",
+   "Reckless"
+  ],
+  "base_stats": {
+   "hp": 115,
+   "atk": 140,
+   "def": 130,
+   "spa": 55,
+   "spd": 55,
+   "spe": 40,
+   "total": 535
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Leafeon",
+  "species": "Leafeon",
+  "form": null,
+  "dex": 470,
+  "types": [
+   "Grass"
+  ],
+  "abilities": [
+   "Leaf Guard",
+   "Chlorophyll"
+  ],
+  "base_stats": {
+   "hp": 65,
+   "atk": 110,
+   "def": 130,
+   "spa": 60,
+   "spd": 65,
+   "spe": 95,
+   "total": 525
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Glaceon",
+  "species": "Glaceon",
+  "form": null,
+  "dex": 471,
+  "types": [
+   "Ice"
+  ],
+  "abilities": [
+   "Snow Cloak",
+   "Ice Body"
+  ],
+  "base_stats": {
+   "hp": 65,
+   "atk": 60,
+   "def": 110,
+   "spa": 130,
+   "spd": 95,
+   "spe": 65,
+   "total": 525
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Gliscor",
+  "species": "Gliscor",
+  "form": null,
+  "dex": 472,
+  "types": [
+   "Ground",
+   "Flying"
+  ],
+  "abilities": [
+   "Hyper Cutter",
+   "Sand Veil",
+   "Poison Heal"
+  ],
+  "base_stats": {
+   "hp": 75,
+   "atk": 95,
+   "def": 125,
+   "spa": 45,
+   "spd": 75,
+   "spe": 95,
+   "total": 510
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Mamoswine",
+  "species": "Mamoswine",
+  "form": null,
+  "dex": 473,
+  "types": [
+   "Ice",
+   "Ground"
+  ],
+  "abilities": [
+   "Oblivious",
+   "Snow Cloak",
+   "Thick Fat"
+  ],
+  "base_stats": {
+   "hp": 110,
+   "atk": 130,
+   "def": 80,
+   "spa": 70,
+   "spd": 60,
+   "spe": 80,
+   "total": 530
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Gallade",
+  "species": "Gallade",
+  "form": null,
+  "dex": 475,
+  "types": [
+   "Psychic",
+   "Fighting"
+  ],
+  "abilities": [
+   "Steadfast",
+   "Sharpness",
+   "Justified"
+  ],
+  "base_stats": {
+   "hp": 68,
+   "atk": 125,
+   "def": 65,
+   "spa": 65,
+   "spd": 115,
+   "spe": 80,
+   "total": 518
+  },
+  "is_mega": false
+ },
+ {
+  "slug": "gallade",
+  "name": "Mega Gallade",
+  "dex": 475,
+  "types": [
+   "Psychic",
+   "Fighting"
+  ],
+  "abilities": [
+   "Inner Focus"
+  ],
+  "base_stats": {
+   "hp": 68,
+   "atk": 165,
+   "def": 95,
+   "spa": 65,
+   "spd": 115,
+   "spe": 110,
+   "total": 618
+  },
+  "is_mega": true,
+  "species": "Gallade",
+  "form": "Mega"
+ },
+ {
+  "slug": null,
+  "name": "Froslass",
+  "species": "Froslass",
+  "form": null,
+  "dex": 478,
+  "types": [
+   "Ice",
+   "Ghost"
+  ],
+  "abilities": [
+   "Snow Cloak",
+   "Cursed Body"
+  ],
+  "base_stats": {
+   "hp": 70,
+   "atk": 80,
+   "def": 70,
+   "spa": 80,
+   "spd": 70,
+   "spe": 110,
+   "total": 480
+  },
+  "is_mega": false
+ },
+ {
+  "slug": "froslass",
+  "name": "Mega Froslass",
+  "dex": 478,
+  "types": [
+   "Ice",
+   "Ghost"
+  ],
+  "abilities": [
+   "Snow Warning"
+  ],
+  "base_stats": {
+   "hp": 70,
+   "atk": 80,
+   "def": 70,
+   "spa": 140,
+   "spd": 100,
+   "spe": 120,
+   "total": 580
+  },
+  "is_mega": true,
+  "species": "Froslass",
+  "form": "Mega"
+ },
+ {
+  "slug": null,
+  "name": "Rotom",
+  "species": "Rotom",
+  "form": null,
+  "dex": 479,
+  "types": [
+   "Electric",
+   "Ghost"
+  ],
+  "abilities": [
+   "Levitate"
+  ],
+  "base_stats": {
+   "hp": 50,
+   "atk": 50,
+   "def": 77,
+   "spa": 95,
+   "spd": 77,
+   "spe": 91,
+   "total": 440
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Rotom-Fan",
+  "species": "Rotom",
+  "form": "Fan",
+  "dex": 479,
+  "types": [
+   "Electric",
+   "Flying"
+  ],
+  "abilities": [
+   "Levitate"
+  ],
+  "base_stats": {
+   "hp": 50,
+   "atk": 65,
+   "def": 107,
+   "spa": 105,
+   "spd": 107,
+   "spe": 86,
+   "total": 520
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Rotom-Frost",
+  "species": "Rotom",
+  "form": "Frost",
+  "dex": 479,
+  "types": [
+   "Electric",
+   "Ice"
+  ],
+  "abilities": [
+   "Levitate"
+  ],
+  "base_stats": {
+   "hp": 50,
+   "atk": 65,
+   "def": 107,
+   "spa": 105,
+   "spd": 107,
+   "spe": 86,
+   "total": 520
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Rotom-Heat",
+  "species": "Rotom",
+  "form": "Heat",
+  "dex": 479,
+  "types": [
+   "Electric",
+   "Fire"
+  ],
+  "abilities": [
+   "Levitate"
+  ],
+  "base_stats": {
+   "hp": 50,
+   "atk": 65,
+   "def": 107,
+   "spa": 105,
+   "spd": 107,
+   "spe": 86,
+   "total": 520
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Rotom-Mow",
+  "species": "Rotom",
+  "form": "Mow",
+  "dex": 479,
+  "types": [
+   "Electric",
+   "Grass"
+  ],
+  "abilities": [
+   "Levitate"
+  ],
+  "base_stats": {
+   "hp": 50,
+   "atk": 65,
+   "def": 107,
+   "spa": 105,
+   "spd": 107,
+   "spe": 86,
+   "total": 520
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Rotom-Wash",
+  "species": "Rotom",
+  "form": "Wash",
+  "dex": 479,
+  "types": [
+   "Electric",
+   "Water"
+  ],
+  "abilities": [
+   "Levitate"
+  ],
+  "base_stats": {
+   "hp": 50,
+   "atk": 65,
+   "def": 107,
+   "spa": 105,
+   "spd": 107,
+   "spe": 86,
+   "total": 520
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Serperior",
+  "species": "Serperior",
+  "form": null,
+  "dex": 497,
+  "types": [
+   "Grass"
+  ],
+  "abilities": [
+   "Overgrow",
+   "Contrary"
+  ],
+  "base_stats": {
+   "hp": 75,
+   "atk": 75,
+   "def": 95,
+   "spa": 75,
+   "spd": 95,
+   "spe": 113,
+   "total": 528
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Emboar",
+  "species": "Emboar",
+  "form": null,
+  "dex": 500,
+  "types": [
+   "Fire",
+   "Fighting"
+  ],
+  "abilities": [
+   "Blaze",
+   "Reckless"
+  ],
+  "base_stats": {
+   "hp": 110,
+   "atk": 123,
+   "def": 65,
+   "spa": 100,
+   "spd": 65,
+   "spe": 65,
+   "total": 528
+  },
+  "is_mega": false
+ },
+ {
+  "slug": "emboar",
+  "name": "Mega Emboar",
+  "dex": 500,
+  "types": [
+   "Fire",
+   "Fighting"
+  ],
+  "abilities": [
+   "Mold Breaker"
+  ],
+  "base_stats": {
+   "hp": 110,
+   "atk": 148,
+   "def": 75,
+   "spa": 110,
+   "spd": 110,
+   "spe": 75,
+   "total": 628
+  },
+  "is_mega": true,
+  "species": "Emboar",
+  "form": "Mega"
+ },
+ {
+  "slug": null,
+  "name": "Samurott",
+  "species": "Samurott",
+  "form": null,
+  "dex": 503,
+  "types": [
+   "Water"
+  ],
+  "abilities": [
+   "Torrent",
+   "Shell Armor"
+  ],
+  "base_stats": {
+   "hp": 95,
+   "atk": 100,
+   "def": 85,
+   "spa": 108,
+   "spd": 70,
+   "spe": 70,
+   "total": 528
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Samurott-Hisui",
+  "species": "Samurott",
+  "form": "Hisui",
+  "dex": 503,
+  "types": [
+   "Water",
+   "Dark"
+  ],
+  "abilities": [
+   "Torrent",
+   "Sharpness"
+  ],
+  "base_stats": {
+   "hp": 90,
+   "atk": 108,
+   "def": 80,
+   "spa": 100,
+   "spd": 65,
+   "spe": 85,
+   "total": 528
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Watchog",
+  "species": "Watchog",
+  "form": null,
+  "dex": 505,
+  "types": [
+   "Normal"
+  ],
+  "abilities": [
+   "Illuminate",
+   "Keen Eye",
+   "Analytic"
+  ],
+  "base_stats": {
+   "hp": 60,
+   "atk": 85,
+   "def": 69,
+   "spa": 60,
+   "spd": 69,
+   "spe": 77,
+   "total": 420
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Liepard",
+  "species": "Liepard",
+  "form": null,
+  "dex": 510,
+  "types": [
+   "Dark"
+  ],
+  "abilities": [
+   "Limber",
+   "Unburden",
+   "Prankster"
+  ],
+  "base_stats": {
+   "hp": 64,
+   "atk": 88,
+   "def": 50,
+   "spa": 88,
+   "spd": 50,
+   "spe": 106,
+   "total": 446
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Simisage",
+  "species": "Simisage",
+  "form": null,
+  "dex": 512,
+  "types": [
+   "Grass"
+  ],
+  "abilities": [
+   "Gluttony",
+   "Overgrow"
+  ],
+  "base_stats": {
+   "hp": 75,
+   "atk": 98,
+   "def": 63,
+   "spa": 98,
+   "spd": 63,
+   "spe": 101,
+   "total": 498
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Simisear",
+  "species": "Simisear",
+  "form": null,
+  "dex": 514,
+  "types": [
+   "Fire"
+  ],
+  "abilities": [
+   "Gluttony",
+   "Blaze"
+  ],
+  "base_stats": {
+   "hp": 75,
+   "atk": 98,
+   "def": 63,
+   "spa": 98,
+   "spd": 63,
+   "spe": 101,
+   "total": 498
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Simipour",
+  "species": "Simipour",
+  "form": null,
+  "dex": 516,
+  "types": [
+   "Water"
+  ],
+  "abilities": [
+   "Gluttony",
+   "Torrent"
+  ],
+  "base_stats": {
+   "hp": 75,
+   "atk": 98,
+   "def": 63,
+   "spa": 98,
+   "spd": 63,
+   "spe": 101,
+   "total": 498
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Musharna",
+  "species": "Musharna",
+  "form": null,
+  "dex": 518,
+  "types": [
+   "Psychic"
+  ],
+  "abilities": [
+   "Forewarn",
+   "Synchronize",
+   "Telepathy"
+  ],
+  "base_stats": {
+   "hp": 116,
+   "atk": 55,
+   "def": 85,
+   "spa": 107,
+   "spd": 95,
+   "spe": 29,
+   "total": 487
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Excadrill",
+  "species": "Excadrill",
+  "form": null,
+  "dex": 530,
+  "types": [
+   "Ground",
+   "Steel"
+  ],
+  "abilities": [
+   "Sand Rush",
+   "Sand Force",
+   "Mold Breaker"
+  ],
+  "base_stats": {
+   "hp": 110,
+   "atk": 135,
+   "def": 60,
+   "spa": 50,
+   "spd": 65,
+   "spe": 88,
+   "total": 508
+  },
+  "is_mega": false
+ },
+ {
+  "slug": "excadrill",
+  "name": "Mega Excadrill",
+  "dex": 530,
+  "types": [
+   "Ground",
+   "Steel"
+  ],
+  "abilities": [
+   "Piercing Drill"
+  ],
+  "base_stats": {
+   "hp": 110,
+   "atk": 165,
+   "def": 100,
+   "spa": 65,
+   "spd": 65,
+   "spe": 103,
+   "total": 608
+  },
+  "is_mega": true,
+  "species": "Excadrill",
+  "form": "Mega"
+ },
+ {
+  "slug": null,
+  "name": "Audino",
+  "species": "Audino",
+  "form": null,
+  "dex": 531,
+  "types": [
+   "Normal"
+  ],
+  "abilities": [
+   "Healer",
+   "Regenerator",
+   "Klutz"
+  ],
+  "base_stats": {
+   "hp": 103,
+   "atk": 60,
+   "def": 86,
+   "spa": 60,
+   "spd": 86,
+   "spe": 50,
+   "total": 445
+  },
+  "is_mega": false
+ },
+ {
+  "slug": "audino",
+  "name": "Mega Audino",
+  "dex": 531,
+  "types": [
+   "Normal",
+   "Fairy"
+  ],
+  "abilities": [
+   "Healer"
+  ],
+  "base_stats": {
+   "hp": 103,
+   "atk": 60,
+   "def": 126,
+   "spa": 80,
+   "spd": 126,
+   "spe": 50,
+   "total": 545
+  },
+  "is_mega": true,
+  "species": "Audino",
+  "form": "Mega"
+ },
+ {
+  "slug": null,
+  "name": "Conkeldurr",
+  "species": "Conkeldurr",
+  "form": null,
+  "dex": 534,
+  "types": [
+   "Fighting"
+  ],
+  "abilities": [
+   "Guts",
+   "Sheer Force",
+   "Iron Fist"
+  ],
+  "base_stats": {
+   "hp": 105,
+   "atk": 140,
+   "def": 95,
+   "spa": 55,
+   "spd": 65,
+   "spe": 45,
+   "total": 505
+  },
+  "is_mega": false
+ },
+ {
+  "slug": "scolipede",
+  "name": "Mega Scolipede",
+  "dex": 545,
+  "types": [
+   "Bug",
+   "Poison"
+  ],
+  "abilities": [
+   "Shell Armor"
+  ],
+  "base_stats": {
+   "hp": 60,
+   "atk": 140,
+   "def": 149,
+   "spa": 75,
+   "spd": 99,
+   "spe": 62,
+   "total": 585
+  },
+  "is_mega": true,
+  "species": "Scolipede",
+  "form": "Mega"
+ },
+ {
+  "slug": null,
+  "name": "Scolipede",
+  "species": "Scolipede",
+  "form": null,
+  "dex": 545,
+  "types": [
+   "Bug",
+   "Poison"
+  ],
+  "abilities": [
+   "Poison Point",
+   "Swarm",
+   "Speed Boost"
+  ],
+  "base_stats": {
+   "hp": 60,
+   "atk": 100,
+   "def": 89,
+   "spa": 55,
+   "spd": 69,
+   "spe": 112,
+   "total": 485
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Whimsicott",
+  "species": "Whimsicott",
+  "form": null,
+  "dex": 547,
+  "types": [
+   "Grass",
+   "Fairy"
+  ],
+  "abilities": [
+   "Prankster",
+   "Infiltrator",
+   "Chlorophyll"
+  ],
+  "base_stats": {
+   "hp": 60,
+   "atk": 67,
+   "def": 85,
+   "spa": 77,
+   "spd": 75,
+   "spe": 116,
+   "total": 480
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Krookodile",
+  "species": "Krookodile",
+  "form": null,
+  "dex": 553,
+  "types": [
+   "Ground",
+   "Dark"
+  ],
+  "abilities": [
+   "Intimidate",
+   "Moxie",
+   "Anger Point"
+  ],
+  "base_stats": {
+   "hp": 95,
+   "atk": 117,
+   "def": 80,
+   "spa": 65,
+   "spd": 70,
+   "spe": 92,
+   "total": 519
+  },
+  "is_mega": false
+ },
+ {
+  "slug": "scrafty",
+  "name": "Mega Scrafty",
+  "dex": 560,
+  "types": [
+   "Dark",
+   "Fighting"
+  ],
+  "abilities": [
+   "Intimidate"
+  ],
+  "base_stats": {
+   "hp": 65,
+   "atk": 130,
+   "def": 135,
+   "spa": 55,
+   "spd": 135,
+   "spe": 68,
+   "total": 588
+  },
+  "is_mega": true,
+  "species": "Scrafty",
+  "form": "Mega"
+ },
+ {
+  "slug": null,
+  "name": "Scrafty",
+  "species": "Scrafty",
+  "form": null,
+  "dex": 560,
+  "types": [
+   "Dark",
+   "Fighting"
+  ],
+  "abilities": [
+   "Shed Skin",
+   "Moxie",
+   "Intimidate"
+  ],
+  "base_stats": {
+   "hp": 65,
+   "atk": 90,
+   "def": 115,
+   "spa": 45,
+   "spd": 115,
+   "spe": 58,
+   "total": 488
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Cofagrigus",
+  "species": "Cofagrigus",
+  "form": null,
+  "dex": 563,
+  "types": [
+   "Ghost"
+  ],
+  "abilities": [
+   "Mummy"
+  ],
+  "base_stats": {
+   "hp": 58,
+   "atk": 50,
+   "def": 145,
+   "spa": 95,
+   "spd": 105,
+   "spe": 30,
+   "total": 483
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Garbodor",
+  "species": "Garbodor",
+  "form": null,
+  "dex": 569,
+  "types": [
+   "Poison"
+  ],
+  "abilities": [
+   "Stench",
+   "Weak Armor",
+   "Aftermath"
+  ],
+  "base_stats": {
+   "hp": 80,
+   "atk": 95,
+   "def": 82,
+   "spa": 60,
+   "spd": 82,
+   "spe": 75,
+   "total": 474
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Zoroark",
+  "species": "Zoroark",
+  "form": null,
+  "dex": 571,
+  "types": [
+   "Dark"
+  ],
+  "abilities": [
+   "Illusion"
+  ],
+  "base_stats": {
+   "hp": 60,
+   "atk": 105,
+   "def": 60,
+   "spa": 120,
+   "spd": 60,
+   "spe": 105,
+   "total": 510
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Zoroark-Hisui",
+  "species": "Zoroark",
+  "form": "Hisui",
+  "dex": 571,
+  "types": [
+   "Normal",
+   "Ghost"
+  ],
+  "abilities": [
+   "Illusion"
+  ],
+  "base_stats": {
+   "hp": 55,
+   "atk": 100,
+   "def": 60,
+   "spa": 125,
+   "spd": 60,
+   "spe": 110,
+   "total": 510
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Reuniclus",
+  "species": "Reuniclus",
+  "form": null,
+  "dex": 579,
+  "types": [
+   "Psychic"
+  ],
+  "abilities": [
+   "Overcoat",
+   "Magic Guard",
+   "Regenerator"
+  ],
+  "base_stats": {
+   "hp": 110,
+   "atk": 65,
+   "def": 75,
+   "spa": 125,
+   "spd": 85,
+   "spe": 30,
+   "total": 490
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Vanilluxe",
+  "species": "Vanilluxe",
+  "form": null,
+  "dex": 584,
+  "types": [
+   "Ice"
+  ],
+  "abilities": [
+   "Ice Body",
+   "Snow Warning",
+   "Weak Armor"
+  ],
+  "base_stats": {
+   "hp": 71,
+   "atk": 95,
+   "def": 85,
+   "spa": 110,
+   "spd": 95,
+   "spe": 79,
+   "total": 535
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Emolga",
+  "species": "Emolga",
+  "form": null,
+  "dex": 587,
+  "types": [
+   "Electric",
+   "Flying"
+  ],
+  "abilities": [
+   "Static",
+   "Motor Drive"
+  ],
+  "base_stats": {
+   "hp": 55,
+   "atk": 75,
+   "def": 60,
+   "spa": 75,
+   "spd": 60,
+   "spe": 103,
+   "total": 428
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Eelektross",
+  "species": "Eelektross",
+  "form": null,
+  "dex": 604,
+  "types": [
+   "Electric"
+  ],
+  "abilities": [
+   "Levitate"
+  ],
+  "base_stats": {
+   "hp": 85,
+   "atk": 115,
+   "def": 80,
+   "spa": 105,
+   "spd": 80,
+   "spe": 50,
+   "total": 515
+  },
+  "is_mega": false
+ },
+ {
+  "slug": "eelektross",
+  "name": "Mega Eelektross",
+  "dex": 604,
+  "types": [
+   "Electric"
+  ],
+  "abilities": [
+   "Eelevate"
+  ],
+  "base_stats": {
+   "hp": 85,
+   "atk": 145,
+   "def": 80,
+   "spa": 135,
+   "spd": 90,
+   "spe": 80,
+   "total": 615
+  },
+  "is_mega": true,
+  "species": "Eelektross",
+  "form": "Mega"
+ },
+ {
+  "slug": null,
+  "name": "Chandelure",
+  "species": "Chandelure",
+  "form": null,
+  "dex": 609,
+  "types": [
+   "Ghost",
+   "Fire"
+  ],
+  "abilities": [
+   "Flash Fire",
+   "Flame Body",
+   "Infiltrator"
+  ],
+  "base_stats": {
+   "hp": 60,
+   "atk": 55,
+   "def": 90,
+   "spa": 145,
+   "spd": 90,
+   "spe": 80,
+   "total": 520
+  },
+  "is_mega": false
+ },
+ {
+  "slug": "chandelure",
+  "name": "Mega Chandelure",
+  "dex": 609,
+  "types": [
+   "Ghost",
+   "Fire"
+  ],
+  "abilities": [
+   "Infiltrator"
+  ],
+  "base_stats": {
+   "hp": 60,
+   "atk": 75,
+   "def": 110,
+   "spa": 175,
+   "spd": 110,
+   "spe": 90,
+   "total": 620
+  },
+  "is_mega": true,
+  "species": "Chandelure",
+  "form": "Mega"
+ },
+ {
+  "slug": null,
+  "name": "Beartic",
+  "species": "Beartic",
+  "form": null,
+  "dex": 614,
+  "types": [
+   "Ice"
+  ],
+  "abilities": [
+   "Snow Cloak",
+   "Slush Rush",
+   "Swift Swim"
+  ],
+  "base_stats": {
+   "hp": 95,
+   "atk": 130,
+   "def": 80,
+   "spa": 70,
+   "spd": 80,
+   "spe": 50,
+   "total": 505
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Stunfisk",
+  "species": "Stunfisk",
+  "form": null,
+  "dex": 618,
+  "types": [
+   "Ground",
+   "Electric"
+  ],
+  "abilities": [
+   "Static",
+   "Limber",
+   "Sand Veil"
+  ],
+  "base_stats": {
+   "hp": 109,
+   "atk": 66,
+   "def": 84,
+   "spa": 81,
+   "spd": 99,
+   "spe": 32,
+   "total": 471
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Stunfisk-Galar",
+  "species": "Stunfisk",
+  "form": "Galar",
+  "dex": 618,
+  "types": [
+   "Ground",
+   "Steel"
+  ],
+  "abilities": [
+   "Mimicry"
+  ],
+  "base_stats": {
+   "hp": 109,
+   "atk": 81,
+   "def": 99,
+   "spa": 66,
+   "spd": 84,
+   "spe": 32,
+   "total": 471
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Golurk",
+  "species": "Golurk",
+  "form": null,
+  "dex": 623,
+  "types": [
+   "Ground",
+   "Ghost"
+  ],
+  "abilities": [
+   "Iron Fist",
+   "Klutz",
+   "No Guard"
+  ],
+  "base_stats": {
+   "hp": 89,
+   "atk": 124,
+   "def": 80,
+   "spa": 55,
+   "spd": 80,
+   "spe": 55,
+   "total": 483
+  },
+  "is_mega": false
+ },
+ {
+  "slug": "golurk",
+  "name": "Mega Golurk",
+  "dex": 623,
+  "types": [
+   "Ground",
+   "Ghost"
+  ],
+  "abilities": [
+   "Unseen Fist"
+  ],
+  "base_stats": {
+   "hp": 89,
+   "atk": 159,
+   "def": 105,
+   "spa": 70,
+   "spd": 105,
+   "spe": 55,
+   "total": 583
+  },
+  "is_mega": true,
+  "species": "Golurk",
+  "form": "Mega"
+ },
+ {
+  "slug": null,
+  "name": "Hydreigon",
+  "species": "Hydreigon",
+  "form": null,
+  "dex": 635,
+  "types": [
+   "Dark",
+   "Dragon"
+  ],
+  "abilities": [
+   "Levitate"
+  ],
+  "base_stats": {
+   "hp": 92,
+   "atk": 105,
+   "def": 90,
+   "spa": 125,
+   "spd": 90,
+   "spe": 98,
+   "total": 600
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Volcarona",
+  "species": "Volcarona",
+  "form": null,
+  "dex": 637,
+  "types": [
+   "Bug",
+   "Fire"
+  ],
+  "abilities": [
+   "Flame Body",
+   "Swarm"
+  ],
+  "base_stats": {
+   "hp": 85,
+   "atk": 60,
+   "def": 65,
+   "spa": 135,
+   "spd": 105,
+   "spe": 100,
+   "total": 550
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Chesnaught",
+  "species": "Chesnaught",
+  "form": null,
+  "dex": 652,
+  "types": [
+   "Grass",
+   "Fighting"
+  ],
+  "abilities": [
+   "Overgrow",
+   "Bulletproof"
+  ],
+  "base_stats": {
+   "hp": 88,
+   "atk": 107,
+   "def": 122,
+   "spa": 74,
+   "spd": 75,
+   "spe": 64,
+   "total": 530
+  },
+  "is_mega": false
+ },
+ {
+  "slug": "chesnaught",
+  "name": "Mega Chesnaught",
+  "dex": 652,
+  "types": [
+   "Grass",
+   "Fighting"
+  ],
+  "abilities": [
+   "Bulletproof"
+  ],
+  "base_stats": {
+   "hp": 88,
+   "atk": 137,
+   "def": 172,
+   "spa": 74,
+   "spd": 115,
+   "spe": 44,
+   "total": 630
+  },
+  "is_mega": true,
+  "species": "Chesnaught",
+  "form": "Mega"
+ },
+ {
+  "slug": null,
+  "name": "Delphox",
+  "species": "Delphox",
+  "form": null,
+  "dex": 655,
+  "types": [
+   "Fire",
+   "Psychic"
+  ],
+  "abilities": [
+   "Blaze",
+   "Magician"
+  ],
+  "base_stats": {
+   "hp": 75,
+   "atk": 69,
+   "def": 72,
+   "spa": 114,
+   "spd": 100,
+   "spe": 104,
+   "total": 534
+  },
+  "is_mega": false
+ },
+ {
+  "slug": "delphox",
+  "name": "Mega Delphox",
+  "dex": 655,
+  "types": [
+   "Fire",
+   "Psychic"
+  ],
+  "abilities": [
+   "Levitate"
+  ],
+  "base_stats": {
+   "hp": 75,
+   "atk": 69,
+   "def": 72,
+   "spa": 159,
+   "spd": 125,
+   "spe": 134,
+   "total": 634
+  },
+  "is_mega": true,
+  "species": "Delphox",
+  "form": "Mega"
+ },
+ {
+  "slug": null,
+  "name": "Greninja",
+  "species": "Greninja",
+  "form": null,
+  "dex": 658,
+  "types": [
+   "Water",
+   "Dark"
+  ],
+  "abilities": [
+   "Torrent",
+   "Protean"
+  ],
+  "base_stats": {
+   "hp": 72,
+   "atk": 95,
+   "def": 67,
+   "spa": 103,
+   "spd": 71,
+   "spe": 122,
+   "total": 530
+  },
+  "is_mega": false
+ },
+ {
+  "slug": "greninja",
+  "name": "Mega Greninja",
+  "dex": 658,
+  "types": [
+   "Water",
+   "Dark"
+  ],
+  "abilities": [
+   "Protean"
+  ],
+  "base_stats": {
+   "hp": 72,
+   "atk": 125,
+   "def": 77,
+   "spa": 133,
+   "spd": 81,
+   "spe": 142,
+   "total": 630
+  },
+  "is_mega": true,
+  "species": "Greninja",
+  "form": "Mega"
+ },
+ {
+  "slug": null,
+  "name": "Diggersby",
+  "species": "Diggersby",
+  "form": null,
+  "dex": 660,
+  "types": [
+   "Normal",
+   "Ground"
+  ],
+  "abilities": [
+   "Pickup",
+   "Cheek Pouch",
+   "Huge Power"
+  ],
+  "base_stats": {
+   "hp": 85,
+   "atk": 56,
+   "def": 77,
+   "spa": 50,
+   "spd": 77,
+   "spe": 78,
+   "total": 423
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Talonflame",
+  "species": "Talonflame",
+  "form": null,
+  "dex": 663,
+  "types": [
+   "Fire",
+   "Flying"
+  ],
+  "abilities": [
+   "Flame Body",
+   "Gale Wings"
+  ],
+  "base_stats": {
+   "hp": 78,
+   "atk": 81,
+   "def": 71,
+   "spa": 74,
+   "spd": 69,
+   "spe": 126,
+   "total": 499
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Vivillon",
+  "species": "Vivillon",
+  "form": null,
+  "dex": 666,
+  "types": [
+   "Bug",
+   "Flying"
+  ],
+  "abilities": [
+   "Shield Dust",
+   "Compoundeyes",
+   "Friend Guard"
+  ],
+  "base_stats": {
+   "hp": 80,
+   "atk": 52,
+   "def": 50,
+   "spa": 90,
+   "spd": 50,
+   "spe": 89,
+   "total": 411
+  },
+  "is_mega": false
+ },
+ {
+  "slug": "pyroar",
+  "name": "Mega Pyroar",
+  "dex": 668,
+  "types": [
+   "Fire",
+   "Normal"
+  ],
+  "abilities": [
+   "Fire Mane"
+  ],
+  "base_stats": {
+   "hp": 86,
+   "atk": 88,
+   "def": 92,
+   "spa": 129,
+   "spd": 86,
+   "spe": 126,
+   "total": 607
+  },
+  "is_mega": true,
+  "species": "Pyroar",
+  "form": "Mega"
+ },
+ {
+  "slug": null,
+  "name": "Pyroar",
+  "species": "Pyroar",
+  "form": null,
+  "dex": 668,
+  "types": [
+   "Fire",
+   "Normal"
+  ],
+  "abilities": [
+   "Rivalry",
+   "Unnerve",
+   "Moxie"
+  ],
+  "base_stats": {
+   "hp": 86,
+   "atk": 68,
+   "def": 72,
+   "spa": 109,
+   "spd": 66,
+   "spe": 106,
+   "total": 507
+  },
+  "is_mega": false
+ },
+ {
+  "slug": "floette",
+  "name": "Floette",
+  "dex": 670,
+  "types": [
+   "Fairy"
+  ],
+  "abilities": [
+   "Flower Veil",
+   "Symbiosis"
+  ],
+  "base_stats": {
+   "hp": 74,
+   "atk": 65,
+   "def": 67,
+   "spa": 125,
+   "spd": 128,
+   "spe": 92,
+   "total": 551
+  },
+  "is_mega": false,
+  "species": "Floette",
+  "form": null
+ },
+ {
+  "slug": null,
+  "name": "Floette-Eternal",
+  "species": "Floette",
+  "form": "Eternal",
+  "dex": 670,
+  "types": [
+   "Fairy"
+  ],
+  "abilities": [
+   "Flower Veil",
+   "Symbiosis"
+  ],
+  "base_stats": {
+   "hp": 74,
+   "atk": 65,
+   "def": 67,
+   "spa": 125,
+   "spd": 128,
+   "spe": 92,
+   "total": 551
+  },
+  "is_mega": false
+ },
+ {
+  "slug": "floette",
+  "name": "Mega Floette",
+  "dex": 670,
+  "types": [
+   "Fairy"
+  ],
+  "abilities": [
+   "Fairy Aura"
+  ],
+  "base_stats": {
+   "hp": 74,
+   "atk": 85,
+   "def": 87,
+   "spa": 155,
+   "spd": 148,
+   "spe": 102,
+   "total": 651
+  },
+  "is_mega": true,
+  "species": "Floette",
+  "form": "Mega"
+ },
+ {
+  "slug": null,
+  "name": "Florges",
+  "species": "Florges",
+  "form": null,
+  "dex": 671,
+  "types": [
+   "Fairy"
+  ],
+  "abilities": [
+   "Flower Veil",
+   "Symbiosis"
+  ],
+  "base_stats": {
+   "hp": 78,
+   "atk": 65,
+   "def": 68,
+   "spa": 112,
+   "spd": 154,
+   "spe": 75,
+   "total": 552
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Gogoat",
+  "species": "Gogoat",
+  "form": null,
+  "dex": 673,
+  "types": [
+   "Grass"
+  ],
+  "abilities": [
+   "Sap Sipper",
+   "Grass Pelt"
+  ],
+  "base_stats": {
+   "hp": 123,
+   "atk": 100,
+   "def": 62,
+   "spa": 97,
+   "spd": 81,
+   "spe": 68,
+   "total": 531
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Pangoro",
+  "species": "Pangoro",
+  "form": null,
+  "dex": 675,
+  "types": [
+   "Fighting",
+   "Dark"
+  ],
+  "abilities": [
+   "Iron Fist",
+   "Mold Breaker",
+   "Scrappy"
+  ],
+  "base_stats": {
+   "hp": 95,
+   "atk": 124,
+   "def": 78,
+   "spa": 69,
+   "spd": 71,
+   "spe": 58,
+   "total": 495
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Furfrou",
+  "species": "Furfrou",
+  "form": null,
+  "dex": 676,
+  "types": [
+   "Normal"
+  ],
+  "abilities": [
+   "Fur Coat"
+  ],
+  "base_stats": {
+   "hp": 75,
+   "atk": 80,
+   "def": 60,
+   "spa": 65,
+   "spd": 90,
+   "spe": 102,
+   "total": 472
+  },
+  "is_mega": false
+ },
+ {
+  "slug": "meowstic",
+  "name": "Mega Meowstic",
+  "dex": 678,
+  "types": [
+   "Psychic"
+  ],
+  "abilities": [
+   "Trace"
+  ],
+  "base_stats": {
+   "hp": 74,
+   "atk": 48,
+   "def": 76,
+   "spa": 143,
+   "spd": 101,
+   "spe": 124,
+   "total": 566
+  },
+  "is_mega": true,
+  "species": "Meowstic",
+  "form": "Mega"
+ },
+ {
+  "slug": null,
+  "name": "Meowstic",
+  "species": "Meowstic",
+  "form": null,
+  "dex": 678,
+  "types": [
+   "Psychic"
+  ],
+  "abilities": [
+   "Keen Eye",
+   "Infiltrator",
+   "Prankster"
+  ],
+  "base_stats": {
+   "hp": 74,
+   "atk": 48,
+   "def": 76,
+   "spa": 83,
+   "spd": 81,
+   "spe": 104,
+   "total": 466
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Meowstic-Female",
+  "species": "Meowstic",
+  "form": "Female",
+  "dex": 678,
+  "types": [
+   "Psychic"
+  ],
+  "abilities": [
+   "Keen Eye",
+   "Infiltrator",
+   "Competitive"
+  ],
+  "base_stats": {
+   "hp": 74,
+   "atk": 48,
+   "def": 76,
+   "spa": 83,
+   "spd": 81,
+   "spe": 104,
+   "total": 466
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Aegislash",
+  "species": "Aegislash",
+  "form": null,
+  "dex": 681,
+  "types": [
+   "Steel",
+   "Ghost"
+  ],
+  "abilities": [
+   "Stance Change"
+  ],
+  "base_stats": {
+   "hp": 60,
+   "atk": 50,
+   "def": 140,
+   "spa": 50,
+   "spd": 140,
+   "spe": 60,
+   "total": 500
+  },
+  "is_mega": false,
+  "battle_forms": {
+   "Blade": {
+    "hp": 60,
+    "atk": 140,
+    "def": 50,
+    "spa": 140,
+    "spd": 50,
+    "spe": 60,
+    "total": 500
+   }
+  }
+ },
+ {
+  "slug": null,
+  "name": "Aromatisse",
+  "species": "Aromatisse",
+  "form": null,
+  "dex": 683,
+  "types": [
+   "Fairy"
+  ],
+  "abilities": [
+   "Healer",
+   "Aroma Veil"
+  ],
+  "base_stats": {
+   "hp": 101,
+   "atk": 72,
+   "def": 72,
+   "spa": 99,
+   "spd": 89,
+   "spe": 29,
+   "total": 462
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Slurpuff",
+  "species": "Slurpuff",
+  "form": null,
+  "dex": 685,
+  "types": [
+   "Fairy"
+  ],
+  "abilities": [
+   "Sweet Veil",
+   "Unburden"
+  ],
+  "base_stats": {
+   "hp": 82,
+   "atk": 80,
+   "def": 86,
+   "spa": 85,
+   "spd": 75,
+   "spe": 72,
+   "total": 480
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Malamar",
+  "species": "Malamar",
+  "form": null,
+  "dex": 687,
+  "types": [
+   "Dark",
+   "Psychic"
+  ],
+  "abilities": [
+   "Contrary",
+   "Suction Cups",
+   "Infiltrator"
+  ],
+  "base_stats": {
+   "hp": 86,
+   "atk": 92,
+   "def": 88,
+   "spa": 68,
+   "spd": 75,
+   "spe": 73,
+   "total": 482
+  },
+  "is_mega": false
+ },
+ {
+  "slug": "malamar",
+  "name": "Mega Malamar",
+  "dex": 687,
+  "types": [
+   "Dark",
+   "Psychic"
+  ],
+  "abilities": [
+   "Contrary"
+  ],
+  "base_stats": {
+   "hp": 86,
+   "atk": 102,
+   "def": 88,
+   "spa": 98,
+   "spd": 120,
+   "spe": 88,
+   "total": 582
+  },
+  "is_mega": true,
+  "species": "Malamar",
+  "form": "Mega"
+ },
+ {
+  "slug": null,
+  "name": "Barbaracle",
+  "species": "Barbaracle",
+  "form": null,
+  "dex": 689,
+  "types": [
+   "Rock",
+   "Water"
+  ],
+  "abilities": [
+   "Tough Claws",
+   "Sniper",
+   "Pickpocket"
+  ],
+  "base_stats": {
+   "hp": 72,
+   "atk": 105,
+   "def": 115,
+   "spa": 54,
+   "spd": 86,
+   "spe": 68,
+   "total": 500
+  },
+  "is_mega": false
+ },
+ {
+  "slug": "barbaracle",
+  "name": "Mega Barbaracle",
+  "dex": 689,
+  "types": [
+   "Rock",
+   "Fighting"
+  ],
+  "abilities": [
+   "Tough Claws"
+  ],
+  "base_stats": {
+   "hp": 72,
+   "atk": 140,
+   "def": 130,
+   "spa": 64,
+   "spd": 106,
+   "spe": 88,
+   "total": 600
+  },
+  "is_mega": true,
+  "species": "Barbaracle",
+  "form": "Mega"
+ },
+ {
+  "slug": null,
+  "name": "Dragalge",
+  "species": "Dragalge",
+  "form": null,
+  "dex": 691,
+  "types": [
+   "Poison",
+   "Dragon"
+  ],
+  "abilities": [
+   "Poison Point",
+   "Poison Touch",
+   "Adaptability"
+  ],
+  "base_stats": {
+   "hp": 65,
+   "atk": 75,
+   "def": 90,
+   "spa": 97,
+   "spd": 123,
+   "spe": 44,
+   "total": 494
+  },
+  "is_mega": false
+ },
+ {
+  "slug": "dragalge",
+  "name": "Mega Dragalge",
+  "dex": 691,
+  "types": [
+   "Poison",
+   "Dragon"
+  ],
+  "abilities": [
+   "Regenerator"
+  ],
+  "base_stats": {
+   "hp": 65,
+   "atk": 85,
+   "def": 105,
+   "spa": 132,
+   "spd": 163,
+   "spe": 44,
+   "total": 594
+  },
+  "is_mega": true,
+  "species": "Dragalge",
+  "form": "Mega"
+ },
+ {
+  "slug": null,
+  "name": "Clawitzer",
+  "species": "Clawitzer",
+  "form": null,
+  "dex": 693,
+  "types": [
+   "Water"
+  ],
+  "abilities": [
+   "Mega Launcher"
+  ],
+  "base_stats": {
+   "hp": 71,
+   "atk": 73,
+   "def": 88,
+   "spa": 120,
+   "spd": 89,
+   "spe": 59,
+   "total": 500
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Heliolisk",
+  "species": "Heliolisk",
+  "form": null,
+  "dex": 695,
+  "types": [
+   "Electric",
+   "Normal"
+  ],
+  "abilities": [
+   "Dry Skin",
+   "Sand Veil",
+   "Solar Power"
+  ],
+  "base_stats": {
+   "hp": 62,
+   "atk": 55,
+   "def": 52,
+   "spa": 109,
+   "spd": 94,
+   "spe": 109,
+   "total": 481
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Tyrantrum",
+  "species": "Tyrantrum",
+  "form": null,
+  "dex": 697,
+  "types": [
+   "Rock",
+   "Dragon"
+  ],
+  "abilities": [
+   "Strong Jaw",
+   "Rock Head"
+  ],
+  "base_stats": {
+   "hp": 82,
+   "atk": 121,
+   "def": 119,
+   "spa": 69,
+   "spd": 59,
+   "spe": 71,
+   "total": 521
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Aurorus",
+  "species": "Aurorus",
+  "form": null,
+  "dex": 699,
+  "types": [
+   "Rock",
+   "Ice"
+  ],
+  "abilities": [
+   "Refrigerate",
+   "Snow Warning"
+  ],
+  "base_stats": {
+   "hp": 123,
+   "atk": 77,
+   "def": 72,
+   "spa": 99,
+   "spd": 92,
+   "spe": 58,
+   "total": 521
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Sylveon",
+  "species": "Sylveon",
+  "form": null,
+  "dex": 700,
+  "types": [
+   "Fairy"
+  ],
+  "abilities": [
+   "Cute Charm",
+   "Pixilate"
+  ],
+  "base_stats": {
+   "hp": 95,
+   "atk": 65,
+   "def": 65,
+   "spa": 110,
+   "spd": 130,
+   "spe": 60,
+   "total": 525
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Hawlucha",
+  "species": "Hawlucha",
+  "form": null,
+  "dex": 701,
+  "types": [
+   "Fighting",
+   "Flying"
+  ],
+  "abilities": [
+   "Limber",
+   "Unburden",
+   "Mold Breaker"
+  ],
+  "base_stats": {
+   "hp": 78,
+   "atk": 92,
+   "def": 75,
+   "spa": 74,
+   "spd": 63,
+   "spe": 118,
+   "total": 500
+  },
+  "is_mega": false
+ },
+ {
+  "slug": "hawlucha",
+  "name": "Mega Hawlucha",
+  "dex": 701,
+  "types": [
+   "Fighting",
+   "Flying"
+  ],
+  "abilities": [
+   "No Guard"
+  ],
+  "base_stats": {
+   "hp": 78,
+   "atk": 137,
+   "def": 100,
+   "spa": 74,
+   "spd": 93,
+   "spe": 118,
+   "total": 600
+  },
+  "is_mega": true,
+  "species": "Hawlucha",
+  "form": "Mega"
+ },
+ {
+  "slug": null,
+  "name": "Dedenne",
+  "species": "Dedenne",
+  "form": null,
+  "dex": 702,
+  "types": [
+   "Electric",
+   "Fairy"
+  ],
+  "abilities": [
+   "Cheek Pouch",
+   "Pickup",
+   "Plus"
+  ],
+  "base_stats": {
+   "hp": 67,
+   "atk": 58,
+   "def": 57,
+   "spa": 81,
+   "spd": 67,
+   "spe": 101,
+   "total": 431
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Goodra",
+  "species": "Goodra",
+  "form": null,
+  "dex": 706,
+  "types": [
+   "Dragon"
+  ],
+  "abilities": [
+   "Sap Sipper",
+   "Hydration",
+   "Gooey"
+  ],
+  "base_stats": {
+   "hp": 90,
+   "atk": 100,
+   "def": 70,
+   "spa": 110,
+   "spd": 150,
+   "spe": 80,
+   "total": 600
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Goodra-Hisui",
+  "species": "Goodra",
+  "form": "Hisui",
+  "dex": 706,
+  "types": [
+   "Steel",
+   "Dragon"
+  ],
+  "abilities": [
+   "Sap Sipper",
+   "Shell Armor",
+   "Gooey"
+  ],
+  "base_stats": {
+   "hp": 80,
+   "atk": 100,
+   "def": 100,
+   "spa": 110,
+   "spd": 150,
+   "spe": 60,
+   "total": 600
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Klefki",
+  "species": "Klefki",
+  "form": null,
+  "dex": 707,
+  "types": [
+   "Steel",
+   "Fairy"
+  ],
+  "abilities": [
+   "Prankster",
+   "Magician"
+  ],
+  "base_stats": {
+   "hp": 57,
+   "atk": 80,
+   "def": 91,
+   "spa": 80,
+   "spd": 87,
+   "spe": 75,
+   "total": 470
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Trevenant",
+  "species": "Trevenant",
+  "form": null,
+  "dex": 709,
+  "types": [
+   "Ghost",
+   "Grass"
+  ],
+  "abilities": [
+   "Natural Cure",
+   "Frisk",
+   "Harvest"
+  ],
+  "base_stats": {
+   "hp": 85,
+   "atk": 110,
+   "def": 76,
+   "spa": 65,
+   "spd": 82,
+   "spe": 56,
+   "total": 474
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Gourgeist",
+  "species": "Gourgeist",
+  "form": null,
+  "dex": 711,
+  "types": [
+   "Ghost",
+   "Grass"
+  ],
+  "abilities": [
+   "Pickup",
+   "Frisk",
+   "Insomnia"
+  ],
+  "base_stats": {
+   "hp": 65,
+   "atk": 90,
+   "def": 122,
+   "spa": 58,
+   "spd": 75,
+   "spe": 84,
+   "total": 494
+  },
+  "is_mega": false,
+  "battle_forms": {
+   "Small": {
+    "hp": 55,
+    "atk": 85,
+    "def": 122,
+    "spa": 58,
+    "spd": 75,
+    "spe": 99,
+    "total": 494
+   },
+   "Large": {
+    "hp": 75,
+    "atk": 95,
+    "def": 122,
+    "spa": 58,
+    "spd": 75,
+    "spe": 69,
+    "total": 494
+   },
+   "Jumbo": {
+    "hp": 85,
+    "atk": 100,
+    "def": 122,
+    "spa": 58,
+    "spd": 75,
+    "spe": 54,
+    "total": 494
+   }
+  }
+ },
+ {
+  "slug": null,
+  "name": "Avalugg",
+  "species": "Avalugg",
+  "form": null,
+  "dex": 713,
+  "types": [
+   "Ice"
+  ],
+  "abilities": [
+   "Own Tempo",
+   "Ice Body",
+   "Sturdy"
+  ],
+  "base_stats": {
+   "hp": 95,
+   "atk": 117,
+   "def": 184,
+   "spa": 44,
+   "spd": 46,
+   "spe": 28,
+   "total": 514
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Avalugg-Hisui",
+  "species": "Avalugg",
+  "form": "Hisui",
+  "dex": 713,
+  "types": [
+   "Ice",
+   "Rock"
+  ],
+  "abilities": [
+   "Strong Jaw",
+   "Ice Body",
+   "Sturdy"
+  ],
+  "base_stats": {
+   "hp": 95,
+   "atk": 127,
+   "def": 184,
+   "spa": 34,
+   "spd": 36,
+   "spe": 38,
+   "total": 514
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Noivern",
+  "species": "Noivern",
+  "form": null,
+  "dex": 715,
+  "types": [
+   "Flying",
+   "Dragon"
+  ],
+  "abilities": [
+   "Frisk",
+   "Infiltrator",
+   "Telepathy"
+  ],
+  "base_stats": {
+   "hp": 85,
+   "atk": 70,
+   "def": 80,
+   "spa": 97,
+   "spd": 80,
+   "spe": 123,
+   "total": 535
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Decidueye",
+  "species": "Decidueye",
+  "form": null,
+  "dex": 724,
+  "types": [
+   "Grass",
+   "Ghost"
+  ],
+  "abilities": [
+   "Overgrow",
+   "Long Reach"
+  ],
+  "base_stats": {
+   "hp": 78,
+   "atk": 107,
+   "def": 75,
+   "spa": 100,
+   "spd": 100,
+   "spe": 70,
+   "total": 530
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Decidueye-Hisui",
+  "species": "Decidueye",
+  "form": "Hisui",
+  "dex": 724,
+  "types": [
+   "Grass",
+   "Fighting"
+  ],
+  "abilities": [
+   "Overgrow",
+   "Scrappy"
+  ],
+  "base_stats": {
+   "hp": 88,
+   "atk": 112,
+   "def": 80,
+   "spa": 95,
+   "spd": 95,
+   "spe": 60,
+   "total": 530
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Incineroar",
+  "species": "Incineroar",
+  "form": null,
+  "dex": 727,
+  "types": [
+   "Fire",
+   "Dark"
+  ],
+  "abilities": [
+   "Blaze",
+   "Intimidate"
+  ],
+  "base_stats": {
+   "hp": 95,
+   "atk": 115,
+   "def": 90,
+   "spa": 80,
+   "spd": 90,
+   "spe": 60,
+   "total": 530
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Primarina",
+  "species": "Primarina",
+  "form": null,
+  "dex": 730,
+  "types": [
+   "Water",
+   "Fairy"
+  ],
+  "abilities": [
+   "Torrent",
+   "Liquid Voice"
+  ],
+  "base_stats": {
+   "hp": 80,
+   "atk": 74,
+   "def": 74,
+   "spa": 126,
+   "spd": 116,
+   "spe": 60,
+   "total": 530
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Toucannon",
+  "species": "Toucannon",
+  "form": null,
+  "dex": 733,
+  "types": [
+   "Normal",
+   "Flying"
+  ],
+  "abilities": [
+   "Keen Eye",
+   "Skill Link",
+   "Sheer Force"
+  ],
+  "base_stats": {
+   "hp": 80,
+   "atk": 120,
+   "def": 75,
+   "spa": 75,
+   "spd": 75,
+   "spe": 60,
+   "total": 485
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Crabominable",
+  "species": "Crabominable",
+  "form": null,
+  "dex": 740,
+  "types": [
+   "Fighting",
+   "Ice"
+  ],
+  "abilities": [
+   "Hyper Cutter",
+   "Iron Fist",
+   "Anger Point"
+  ],
+  "base_stats": {
+   "hp": 97,
+   "atk": 132,
+   "def": 77,
+   "spa": 62,
+   "spd": 67,
+   "spe": 43,
+   "total": 478
+  },
+  "is_mega": false
+ },
+ {
+  "slug": "crabominable",
+  "name": "Mega Crabominable",
+  "dex": 740,
+  "types": [
+   "Fighting",
+   "Ice"
+  ],
+  "abilities": [
+   "Iron Fist"
+  ],
+  "base_stats": {
+   "hp": 97,
+   "atk": 157,
+   "def": 122,
+   "spa": 62,
+   "spd": 107,
+   "spe": 33,
+   "total": 578
+  },
+  "is_mega": true,
+  "species": "Crabominable",
+  "form": "Mega"
+ },
+ {
+  "slug": null,
+  "name": "Lycanroc",
+  "species": "Lycanroc",
+  "form": null,
+  "dex": 745,
+  "types": [
+   "Rock"
+  ],
+  "abilities": [
+   "Keen Eye",
+   "Sand Rush",
+   "Steadfast"
+  ],
+  "base_stats": {
+   "hp": 75,
+   "atk": 115,
+   "def": 65,
+   "spa": 55,
+   "spd": 65,
+   "spe": 112,
+   "total": 487
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Lycanroc-Dusk",
+  "species": "Lycanroc",
+  "form": "Dusk",
+  "dex": 745,
+  "types": [
+   "Rock"
+  ],
+  "abilities": [
+   "Tough Claws"
+  ],
+  "base_stats": {
+   "hp": 75,
+   "atk": 117,
+   "def": 65,
+   "spa": 55,
+   "spd": 65,
+   "spe": 110,
+   "total": 487
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Lycanroc-Midnight",
+  "species": "Lycanroc",
+  "form": "Midnight",
+  "dex": 745,
+  "types": [
+   "Rock"
+  ],
+  "abilities": [
+   "Keen Eye",
+   "Vital Spirit"
+  ],
+  "base_stats": {
+   "hp": 85,
+   "atk": 115,
+   "def": 75,
+   "spa": 55,
+   "spd": 75,
+   "spe": 82,
+   "total": 487
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Toxapex",
+  "species": "Toxapex",
+  "form": null,
+  "dex": 748,
+  "types": [
+   "Poison",
+   "Water"
+  ],
+  "abilities": [
+   "Merciless",
+   "Limber",
+   "Regenerator"
+  ],
+  "base_stats": {
+   "hp": 50,
+   "atk": 63,
+   "def": 152,
+   "spa": 53,
+   "spd": 142,
+   "spe": 35,
+   "total": 495
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Mudsdale",
+  "species": "Mudsdale",
+  "form": null,
+  "dex": 750,
+  "types": [
+   "Ground"
+  ],
+  "abilities": [
+   "Own Tempo",
+   "Stamina",
+   "Inner Focus"
+  ],
+  "base_stats": {
+   "hp": 100,
+   "atk": 125,
+   "def": 100,
+   "spa": 55,
+   "spd": 85,
+   "spe": 35,
+   "total": 500
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Araquanid",
+  "species": "Araquanid",
+  "form": null,
+  "dex": 752,
+  "types": [
+   "Water",
+   "Bug"
+  ],
+  "abilities": [
+   "Water Bubble",
+   "Water Absorb"
+  ],
+  "base_stats": {
+   "hp": 68,
+   "atk": 70,
+   "def": 92,
+   "spa": 50,
+   "spd": 132,
+   "spe": 42,
+   "total": 454
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Salazzle",
+  "species": "Salazzle",
+  "form": null,
+  "dex": 758,
+  "types": [
+   "Poison",
+   "Fire"
+  ],
+  "abilities": [
+   "Corrosion",
+   "Oblivious"
+  ],
+  "base_stats": {
+   "hp": 68,
+   "atk": 64,
+   "def": 60,
+   "spa": 111,
+   "spd": 60,
+   "spe": 117,
+   "total": 480
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Tsareena",
+  "species": "Tsareena",
+  "form": null,
+  "dex": 763,
+  "types": [
+   "Grass"
+  ],
+  "abilities": [
+   "Leaf Guard",
+   "Queenly Majesty",
+   "Sweet Veil"
+  ],
+  "base_stats": {
+   "hp": 72,
+   "atk": 120,
+   "def": 98,
+   "spa": 50,
+   "spd": 98,
+   "spe": 72,
+   "total": 510
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Oranguru",
+  "species": "Oranguru",
+  "form": null,
+  "dex": 765,
+  "types": [
+   "Normal",
+   "Psychic"
+  ],
+  "abilities": [
+   "Inner Focus",
+   "Telepathy",
+   "Symbiosis"
+  ],
+  "base_stats": {
+   "hp": 90,
+   "atk": 60,
+   "def": 80,
+   "spa": 90,
+   "spd": 110,
+   "spe": 60,
+   "total": 490
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Passimian",
+  "species": "Passimian",
+  "form": null,
+  "dex": 766,
+  "types": [
+   "Fighting"
+  ],
+  "abilities": [
+   "Receiver",
+   "Defiant"
+  ],
+  "base_stats": {
+   "hp": 100,
+   "atk": 120,
+   "def": 90,
+   "spa": 40,
+   "spd": 60,
+   "spe": 80,
+   "total": 490
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Golisopod",
+  "species": "Golisopod",
+  "form": null,
+  "dex": 768,
+  "types": [
+   "Bug",
+   "Water"
+  ],
+  "abilities": [
+   "Emergency Exit"
+  ],
+  "base_stats": {
+   "hp": 75,
+   "atk": 125,
+   "def": 140,
+   "spa": 60,
+   "spd": 90,
+   "spe": 40,
+   "total": 530
+  },
+  "is_mega": false
+ },
+ {
+  "slug": "golisopod",
+  "name": "Mega Golisopod",
+  "dex": 768,
+  "types": [
+   "Bug",
+   "Steel"
+  ],
+  "abilities": [
+   "Tough Claws"
+  ],
+  "base_stats": {
+   "hp": 75,
+   "atk": 150,
+   "def": 175,
+   "spa": 70,
+   "spd": 120,
+   "spe": 40,
+   "total": 630
+  },
+  "is_mega": true,
+  "species": "Golisopod",
+  "form": "Mega"
+ },
+ {
+  "slug": null,
+  "name": "Mimikyu",
+  "species": "Mimikyu",
+  "form": null,
+  "dex": 778,
+  "types": [
+   "Ghost",
+   "Fairy"
+  ],
+  "abilities": [
+   "Disguise"
+  ],
+  "base_stats": {
+   "hp": 55,
+   "atk": 90,
+   "def": 80,
+   "spa": 50,
+   "spd": 105,
+   "spe": 96,
+   "total": 476
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Drampa",
+  "species": "Drampa",
+  "form": null,
+  "dex": 780,
+  "types": [
+   "Normal",
+   "Dragon"
+  ],
+  "abilities": [
+   "Berserk",
+   "Sap Sipper",
+   "Cloud Nine"
+  ],
+  "base_stats": {
+   "hp": 78,
+   "atk": 60,
+   "def": 85,
+   "spa": 135,
+   "spd": 91,
+   "spe": 36,
+   "total": 485
+  },
+  "is_mega": false
+ },
+ {
+  "slug": "drampa",
+  "name": "Mega Drampa",
+  "dex": 780,
+  "types": [
+   "Normal",
+   "Dragon"
+  ],
+  "abilities": [
+   "Berserk"
+  ],
+  "base_stats": {
+   "hp": 78,
+   "atk": 85,
+   "def": 110,
+   "spa": 160,
+   "spd": 116,
+   "spe": 36,
+   "total": 585
+  },
+  "is_mega": true,
+  "species": "Drampa",
+  "form": "Mega"
+ },
+ {
+  "slug": null,
+  "name": "Kommo-o",
+  "species": "Kommo-o",
+  "form": null,
+  "dex": 784,
+  "types": [
+   "Dragon",
+   "Fighting"
+  ],
+  "abilities": [
+   "Bulletproof",
+   "Soundproof",
+   "Overcoat"
+  ],
+  "base_stats": {
+   "hp": 75,
+   "atk": 110,
+   "def": 125,
+   "spa": 100,
+   "spd": 105,
+   "spe": 85,
+   "total": 600
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Rillaboom",
+  "species": "Rillaboom",
+  "form": null,
+  "dex": 812,
+  "types": [
+   "Grass"
+  ],
+  "abilities": [
+   "Overgrow",
+   "Grassy Surge"
+  ],
+  "base_stats": {
+   "hp": 100,
+   "atk": 125,
+   "def": 90,
+   "spa": 60,
+   "spd": 70,
+   "spe": 85,
+   "total": 530
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Cinderace",
+  "species": "Cinderace",
+  "form": null,
+  "dex": 815,
+  "types": [
+   "Fire"
+  ],
+  "abilities": [
+   "Blaze",
+   "Libero"
+  ],
+  "base_stats": {
+   "hp": 80,
+   "atk": 116,
+   "def": 75,
+   "spa": 65,
+   "spd": 75,
+   "spe": 119,
+   "total": 530
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Inteleon",
+  "species": "Inteleon",
+  "form": null,
+  "dex": 818,
+  "types": [
+   "Water"
+  ],
+  "abilities": [
+   "Torrent",
+   "Sniper"
+  ],
+  "base_stats": {
+   "hp": 70,
+   "atk": 85,
+   "def": 65,
+   "spa": 125,
+   "spd": 65,
+   "spe": 120,
+   "total": 530
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Corviknight",
+  "species": "Corviknight",
+  "form": null,
+  "dex": 823,
+  "types": [
+   "Flying",
+   "Steel"
+  ],
+  "abilities": [
+   "Pressure",
+   "Unnerve",
+   "Mirror Armor"
+  ],
+  "base_stats": {
+   "hp": 98,
+   "atk": 87,
+   "def": 105,
+   "spa": 53,
+   "spd": 85,
+   "spe": 67,
+   "total": 495
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Thievul",
+  "species": "Thievul",
+  "form": null,
+  "dex": 828,
+  "types": [
+   "Dark"
+  ],
+  "abilities": [
+   "Run Away",
+   "Unburden",
+   "Stakeout"
+  ],
+  "base_stats": {
+   "hp": 70,
+   "atk": 58,
+   "def": 58,
+   "spa": 87,
+   "spd": 92,
+   "spe": 90,
+   "total": 455
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Flapple",
+  "species": "Flapple",
+  "form": null,
+  "dex": 841,
+  "types": [
+   "Grass",
+   "Dragon"
+  ],
+  "abilities": [
+   "Ripen",
+   "Gluttony",
+   "Hustle"
+  ],
+  "base_stats": {
+   "hp": 70,
+   "atk": 110,
+   "def": 80,
+   "spa": 95,
+   "spd": 60,
+   "spe": 70,
+   "total": 485
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Appletun",
+  "species": "Appletun",
+  "form": null,
+  "dex": 842,
+  "types": [
+   "Grass",
+   "Dragon"
+  ],
+  "abilities": [
+   "Ripen",
+   "Gluttony",
+   "Thick Fat"
+  ],
+  "base_stats": {
+   "hp": 110,
+   "atk": 85,
+   "def": 80,
+   "spa": 100,
+   "spd": 80,
+   "spe": 30,
+   "total": 485
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Sandaconda",
+  "species": "Sandaconda",
+  "form": null,
+  "dex": 844,
+  "types": [
+   "Ground"
+  ],
+  "abilities": [
+   "Sand Spit",
+   "Shed Skin",
+   "Sand Veil"
+  ],
+  "base_stats": {
+   "hp": 72,
+   "atk": 107,
+   "def": 125,
+   "spa": 65,
+   "spd": 70,
+   "spe": 71,
+   "total": 510
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Toxtricity",
+  "species": "Toxtricity",
+  "form": null,
+  "dex": 849,
+  "types": [
+   "Electric",
+   "Poison"
+  ],
+  "abilities": [
+   "Punk Rock",
+   "Plus",
+   "Technician"
+  ],
+  "base_stats": {
+   "hp": 75,
+   "atk": 98,
+   "def": 70,
+   "spa": 114,
+   "spd": 70,
+   "spe": 75,
+   "total": 502
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Toxtricity-L",
+  "species": "Toxtricity",
+  "form": "L",
+  "dex": 849,
+  "types": [
+   "Electric",
+   "Poison"
+  ],
+  "abilities": [
+   "Punk Rock",
+   "Minus",
+   "Technician"
+  ],
+  "base_stats": {
+   "hp": 75,
+   "atk": 98,
+   "def": 70,
+   "spa": 114,
+   "spd": 70,
+   "spe": 75,
+   "total": 502
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Grapploct",
+  "species": "Grapploct",
+  "form": null,
+  "dex": 853,
+  "types": [
+   "Fighting"
+  ],
+  "abilities": [
+   "Limber",
+   "Technician"
+  ],
+  "base_stats": {
+   "hp": 80,
+   "atk": 118,
+   "def": 90,
+   "spa": 70,
+   "spd": 80,
+   "spe": 42,
+   "total": 480
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Polteageist",
+  "species": "Polteageist",
+  "form": null,
+  "dex": 855,
+  "types": [
+   "Ghost"
+  ],
+  "abilities": [
+   "Weak Armor",
+   "Cursed Body"
+  ],
+  "base_stats": {
+   "hp": 60,
+   "atk": 65,
+   "def": 65,
+   "spa": 134,
+   "spd": 114,
+   "spe": 70,
+   "total": 508
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Hatterene",
+  "species": "Hatterene",
+  "form": null,
+  "dex": 858,
+  "types": [
+   "Psychic",
+   "Fairy"
+  ],
+  "abilities": [
+   "Healer",
+   "Anticipation",
+   "Magic Bounce"
+  ],
+  "base_stats": {
+   "hp": 57,
+   "atk": 90,
+   "def": 95,
+   "spa": 136,
+   "spd": 103,
+   "spe": 29,
+   "total": 510
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Grimmsnarl",
+  "species": "Grimmsnarl",
+  "form": null,
+  "dex": 861,
+  "types": [
+   "Dark",
+   "Fairy"
+  ],
+  "abilities": [
+   "Prankster",
+   "Frisk",
+   "Pickpocket"
+  ],
+  "base_stats": {
+   "hp": 95,
+   "atk": 120,
+   "def": 65,
+   "spa": 95,
+   "spd": 75,
+   "spe": 60,
+   "total": 510
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Perrserker",
+  "species": "Perrserker",
+  "form": null,
+  "dex": 863,
+  "types": [
+   "Steel"
+  ],
+  "abilities": [
+   "Battle Armor",
+   "Tough Claws",
+   "Steely Spirit"
+  ],
+  "base_stats": {
+   "hp": 70,
+   "atk": 110,
+   "def": 100,
+   "spa": 50,
+   "spd": 60,
+   "spe": 50,
+   "total": 440
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Sirfetch'd",
+  "species": "Sirfetch'd",
+  "form": null,
+  "dex": 865,
+  "types": [
+   "Fighting"
+  ],
+  "abilities": [
+   "Steadfast",
+   "Scrappy"
+  ],
+  "base_stats": {
+   "hp": 62,
+   "atk": 135,
+   "def": 95,
+   "spa": 68,
+   "spd": 82,
+   "spe": 65,
+   "total": 507
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Mr. Rime",
+  "species": "Mr. Rime",
+  "form": null,
+  "dex": 866,
+  "types": [
+   "Ice",
+   "Psychic"
+  ],
+  "abilities": [
+   "Tangled Feet",
+   "Screen Cleaner",
+   "Ice Body"
+  ],
+  "base_stats": {
+   "hp": 80,
+   "atk": 85,
+   "def": 75,
+   "spa": 110,
+   "spd": 100,
+   "spe": 70,
+   "total": 520
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Runerigus",
+  "species": "Runerigus",
+  "form": null,
+  "dex": 867,
+  "types": [
+   "Ground",
+   "Ghost"
+  ],
+  "abilities": [
+   "Wandering Spirit"
+  ],
+  "base_stats": {
+   "hp": 58,
+   "atk": 95,
+   "def": 145,
+   "spa": 50,
+   "spd": 105,
+   "spe": 30,
+   "total": 483
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Alcremie",
+  "species": "Alcremie",
+  "form": null,
+  "dex": 869,
+  "types": [
+   "Fairy"
+  ],
+  "abilities": [
+   "Sweet Veil",
+   "Aroma Veil"
+  ],
+  "base_stats": {
+   "hp": 65,
+   "atk": 60,
+   "def": 75,
+   "spa": 110,
+   "spd": 121,
+   "spe": 64,
+   "total": 495
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Falinks",
+  "species": "Falinks",
+  "form": null,
+  "dex": 870,
+  "types": [
+   "Fighting"
+  ],
+  "abilities": [
+   "Battle Armor",
+   "Defiant"
+  ],
+  "base_stats": {
+   "hp": 65,
+   "atk": 100,
+   "def": 100,
+   "spa": 70,
+   "spd": 60,
+   "spe": 75,
+   "total": 470
+  },
+  "is_mega": false
+ },
+ {
+  "slug": "falinks",
+  "name": "Mega Falinks",
+  "dex": 870,
+  "types": [
+   "Fighting"
+  ],
+  "abilities": [
+   "Defiant"
+  ],
+  "base_stats": {
+   "hp": 65,
+   "atk": 135,
+   "def": 135,
+   "spa": 70,
+   "spd": 65,
+   "spe": 100,
+   "total": 570
+  },
+  "is_mega": true,
+  "species": "Falinks",
+  "form": "Mega"
+ },
+ {
+  "slug": null,
+  "name": "Pincurchin",
+  "species": "Pincurchin",
+  "form": null,
+  "dex": 871,
+  "types": [
+   "Electric"
+  ],
+  "abilities": [
+   "Lightning Rod",
+   "Electric Surge"
+  ],
+  "base_stats": {
+   "hp": 48,
+   "atk": 101,
+   "def": 95,
+   "spa": 91,
+   "spd": 85,
+   "spe": 15,
+   "total": 435
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Indeedee",
+  "species": "Indeedee",
+  "form": null,
+  "dex": 876,
+  "types": [
+   "Psychic",
+   "Normal"
+  ],
+  "abilities": [
+   "Inner Focus",
+   "Synchronize",
+   "Psychic Surge"
+  ],
+  "base_stats": {
+   "hp": 60,
+   "atk": 65,
+   "def": 55,
+   "spa": 105,
+   "spd": 95,
+   "spe": 95,
+   "total": 475
+  },
+  "is_mega": false
+ },
+ {
+  "slug": "indeedee",
+  "name": "Indeedee-Female",
+  "dex": 876,
+  "types": [
+   "Psychic",
+   "Normal"
+  ],
+  "abilities": [
+   "Inner Focus",
+   "Synchronize",
+   "Psychic Surge",
+   "Own Tempo"
+  ],
+  "base_stats": {
+   "hp": 70,
+   "atk": 55,
+   "def": 65,
+   "spa": 95,
+   "spd": 105,
+   "spe": 85,
+   "total": 475
+  },
+  "is_mega": false,
+  "species": "Indeedee-Female",
+  "form": null
+ },
+ {
+  "slug": null,
+  "name": "Morpeko",
+  "species": "Morpeko",
+  "form": null,
+  "dex": 877,
+  "types": [
+   "Electric",
+   "Dark"
+  ],
+  "abilities": [
+   "Hunger Switch"
+  ],
+  "base_stats": {
+   "hp": 58,
+   "atk": 95,
+   "def": 58,
+   "spa": 70,
+   "spd": 58,
+   "spe": 97,
+   "total": 436
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Dragapult",
+  "species": "Dragapult",
+  "form": null,
+  "dex": 887,
+  "types": [
+   "Dragon",
+   "Ghost"
+  ],
+  "abilities": [
+   "Clear Body",
+   "Infiltrator",
+   "Cursed Body"
+  ],
+  "base_stats": {
+   "hp": 88,
+   "atk": 120,
+   "def": 75,
+   "spa": 100,
+   "spd": 75,
+   "spe": 142,
+   "total": 600
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Wyrdeer",
+  "species": "Wyrdeer",
+  "form": null,
+  "dex": 899,
+  "types": [
+   "Normal",
+   "Psychic"
+  ],
+  "abilities": [
+   "Intimidate",
+   "Frisk",
+   "Sap Sipper"
+  ],
+  "base_stats": {
+   "hp": 103,
+   "atk": 105,
+   "def": 72,
+   "spa": 105,
+   "spd": 75,
+   "spe": 65,
+   "total": 525
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Kleavor",
+  "species": "Kleavor",
+  "form": null,
+  "dex": 900,
+  "types": [
+   "Bug",
+   "Rock"
+  ],
+  "abilities": [
+   "Swarm",
+   "Sheer Force",
+   "Sharpness"
+  ],
+  "base_stats": {
+   "hp": 70,
+   "atk": 135,
+   "def": 95,
+   "spa": 45,
+   "spd": 70,
+   "spe": 85,
+   "total": 500
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Basculegion",
+  "species": "Basculegion",
+  "form": null,
+  "dex": 902,
+  "types": [
+   "Water",
+   "Ghost"
+  ],
+  "abilities": [
+   "Swift Swim",
+   "Adaptability",
+   "Mold Breaker"
+  ],
+  "base_stats": {
+   "hp": 120,
+   "atk": 112,
+   "def": 65,
+   "spa": 80,
+   "spd": 75,
+   "spe": 78,
+   "total": 530
+  },
+  "is_mega": false
+ },
+ {
+  "slug": "basculegion",
+  "name": "Basculegion-Female",
+  "dex": 902,
+  "types": [
+   "Water",
+   "Ghost"
+  ],
+  "abilities": [
+   "Swift Swim",
+   "Adaptability",
+   "Mold Breaker"
+  ],
+  "base_stats": {
+   "hp": 120,
+   "atk": 92,
+   "def": 65,
+   "spa": 100,
+   "spd": 75,
+   "spe": 78,
+   "total": 530
+  },
+  "is_mega": false,
+  "species": "Basculegion-Female",
+  "form": null
+ },
+ {
+  "slug": null,
+  "name": "Sneasler",
+  "species": "Sneasler",
+  "form": null,
+  "dex": 903,
+  "types": [
+   "Fighting",
+   "Poison"
+  ],
+  "abilities": [
+   "Pressure",
+   "Unburden",
+   "Poison Touch"
+  ],
+  "base_stats": {
+   "hp": 80,
+   "atk": 130,
+   "def": 60,
+   "spa": 40,
+   "spd": 80,
+   "spe": 120,
+   "total": 510
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Overqwil",
+  "species": "Overqwil",
+  "form": null,
+  "dex": 904,
+  "types": [
+   "Dark",
+   "Poison"
+  ],
+  "abilities": [
+   "Poison Point",
+   "Swift Swim",
+   "Intimidate"
+  ],
+  "base_stats": {
+   "hp": 85,
+   "atk": 115,
+   "def": 95,
+   "spa": 65,
+   "spd": 65,
+   "spe": 85,
+   "total": 510
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Meowscarada",
+  "species": "Meowscarada",
+  "form": null,
+  "dex": 908,
+  "types": [
+   "Grass",
+   "Dark"
+  ],
+  "abilities": [
+   "Overgrow",
+   "Protean"
+  ],
+  "base_stats": {
+   "hp": 76,
+   "atk": 110,
+   "def": 70,
+   "spa": 81,
+   "spd": 70,
+   "spe": 123,
+   "total": 530
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Skeledirge",
+  "species": "Skeledirge",
+  "form": null,
+  "dex": 911,
+  "types": [
+   "Fire",
+   "Ghost"
+  ],
+  "abilities": [
+   "Blaze",
+   "Unaware"
+  ],
+  "base_stats": {
+   "hp": 104,
+   "atk": 75,
+   "def": 100,
+   "spa": 110,
+   "spd": 75,
+   "spe": 66,
+   "total": 530
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Quaquaval",
+  "species": "Quaquaval",
+  "form": null,
+  "dex": 914,
+  "types": [
+   "Water",
+   "Fighting"
+  ],
+  "abilities": [
+   "Torrent",
+   "Moxie"
+  ],
+  "base_stats": {
+   "hp": 85,
+   "atk": 120,
+   "def": 80,
+   "spa": 85,
+   "spd": 75,
+   "spe": 85,
+   "total": 530
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Pawmot",
+  "species": "Pawmot",
+  "form": null,
+  "dex": 923,
+  "types": [
+   "Electric",
+   "Fighting"
+  ],
+  "abilities": [
+   "Volt Absorb",
+   "Natural Cure",
+   "Iron Fist"
+  ],
+  "base_stats": {
+   "hp": 70,
+   "atk": 115,
+   "def": 70,
+   "spa": 70,
+   "spd": 60,
+   "spe": 105,
+   "total": 490
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Maushold",
+  "species": "Maushold",
+  "form": null,
+  "dex": 925,
+  "types": [
+   "Normal"
+  ],
+  "abilities": [
+   "Friend Guard",
+   "Cheek Pouch",
+   "Technician"
+  ],
+  "base_stats": {
+   "hp": 74,
+   "atk": 75,
+   "def": 70,
+   "spa": 65,
+   "spd": 75,
+   "spe": 111,
+   "total": 470
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Arboliva",
+  "species": "Arboliva",
+  "form": null,
+  "dex": 930,
+  "types": [
+   "Grass",
+   "Normal"
+  ],
+  "abilities": [
+   "Seed Sower",
+   "Harvest"
+  ],
+  "base_stats": {
+   "hp": 78,
+   "atk": 69,
+   "def": 90,
+   "spa": 125,
+   "spd": 109,
+   "spe": 39,
+   "total": 510
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Squawkabilly",
+  "species": "Squawkabilly",
+  "form": null,
+  "dex": 931,
+  "types": [
+   "Normal",
+   "Flying"
+  ],
+  "abilities": [
+   "Intimidate",
+   "Hustle",
+   "Guts"
+  ],
+  "base_stats": {
+   "hp": 82,
+   "atk": 96,
+   "def": 51,
+   "spa": 45,
+   "spd": 51,
+   "spe": 92,
+   "total": 417
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Garganacl",
+  "species": "Garganacl",
+  "form": null,
+  "dex": 934,
+  "types": [
+   "Rock"
+  ],
+  "abilities": [
+   "Purifying Salt",
+   "Sturdy",
+   "Clear Body"
+  ],
+  "base_stats": {
+   "hp": 100,
+   "atk": 100,
+   "def": 130,
+   "spa": 45,
+   "spd": 90,
+   "spe": 35,
+   "total": 500
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Armarouge",
+  "species": "Armarouge",
+  "form": null,
+  "dex": 936,
+  "types": [
+   "Fire",
+   "Psychic"
+  ],
+  "abilities": [
+   "Flash Fire",
+   "Weak Armor"
+  ],
+  "base_stats": {
+   "hp": 85,
+   "atk": 60,
+   "def": 100,
+   "spa": 125,
+   "spd": 80,
+   "spe": 75,
+   "total": 525
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Ceruledge",
+  "species": "Ceruledge",
+  "form": null,
+  "dex": 937,
+  "types": [
+   "Fire",
+   "Ghost"
+  ],
+  "abilities": [
+   "Flash Fire",
+   "Weak Armor"
+  ],
+  "base_stats": {
+   "hp": 75,
+   "atk": 125,
+   "def": 80,
+   "spa": 60,
+   "spd": 100,
+   "spe": 85,
+   "total": 525
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Bellibolt",
+  "species": "Bellibolt",
+  "form": null,
+  "dex": 939,
+  "types": [
+   "Electric"
+  ],
+  "abilities": [
+   "Electromorphosis",
+   "Static",
+   "Damp"
+  ],
+  "base_stats": {
+   "hp": 109,
+   "atk": 64,
+   "def": 91,
+   "spa": 103,
+   "spd": 83,
+   "spe": 45,
+   "total": 495
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Mabosstiff",
+  "species": "Mabosstiff",
+  "form": null,
+  "dex": 943,
+  "types": [
+   "Dark"
+  ],
+  "abilities": [
+   "Intimidate",
+   "Guard Dog",
+   "Stakeout"
+  ],
+  "base_stats": {
+   "hp": 80,
+   "atk": 120,
+   "def": 90,
+   "spa": 60,
+   "spd": 70,
+   "spe": 85,
+   "total": 505
+  },
+  "is_mega": false
+ },
+ {
+  "slug": "scovillain",
+  "name": "Mega Scovillain",
+  "dex": 952,
+  "types": [
+   "Grass",
+   "Fire"
+  ],
+  "abilities": [
+   "Spicy Spray"
+  ],
+  "base_stats": {
+   "hp": 65,
+   "atk": 138,
+   "def": 85,
+   "spa": 138,
+   "spd": 85,
+   "spe": 75,
+   "total": 586
+  },
+  "is_mega": true,
+  "species": "Scovillain",
+  "form": "Mega"
+ },
+ {
+  "slug": null,
+  "name": "Scovillain",
+  "species": "Scovillain",
+  "form": null,
+  "dex": 952,
+  "types": [
+   "Grass",
+   "Fire"
+  ],
+  "abilities": [
+   "Chlorophyll",
+   "Insomnia",
+   "Moody"
+  ],
+  "base_stats": {
+   "hp": 65,
+   "atk": 108,
+   "def": 65,
+   "spa": 108,
+   "spd": 65,
+   "spe": 75,
+   "total": 486
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Espathra",
+  "species": "Espathra",
+  "form": null,
+  "dex": 956,
+  "types": [
+   "Psychic"
+  ],
+  "abilities": [
+   "Opportunist",
+   "Frisk",
+   "Speed Boost"
+  ],
+  "base_stats": {
+   "hp": 95,
+   "atk": 60,
+   "def": 60,
+   "spa": 101,
+   "spd": 60,
+   "spe": 105,
+   "total": 481
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Tinkaton",
+  "species": "Tinkaton",
+  "form": null,
+  "dex": 959,
+  "types": [
+   "Fairy",
+   "Steel"
+  ],
+  "abilities": [
+   "Mold Breaker",
+   "Own Tempo",
+   "Pickpocket"
+  ],
+  "base_stats": {
+   "hp": 85,
+   "atk": 75,
+   "def": 77,
+   "spa": 70,
+   "spd": 105,
+   "spe": 94,
+   "total": 506
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Palafin",
+  "species": "Palafin",
+  "form": null,
+  "dex": 964,
+  "types": [
+   "Water"
+  ],
+  "abilities": [
+   "Zero to Hero"
+  ],
+  "base_stats": {
+   "hp": 100,
+   "atk": 70,
+   "def": 72,
+   "spa": 53,
+   "spd": 62,
+   "spe": 100,
+   "total": 457
+  },
+  "is_mega": false,
+  "battle_forms": {
+   "Hero": {
+    "hp": 100,
+    "atk": 160,
+    "def": 97,
+    "spa": 106,
+    "spd": 87,
+    "spe": 100,
+    "total": 650
+   }
+  }
+ },
+ {
+  "slug": null,
+  "name": "Orthworm",
+  "species": "Orthworm",
+  "form": null,
+  "dex": 968,
+  "types": [
+   "Steel"
+  ],
+  "abilities": [
+   "Earth Eater",
+   "Sand Veil"
+  ],
+  "base_stats": {
+   "hp": 70,
+   "atk": 85,
+   "def": 145,
+   "spa": 60,
+   "spd": 55,
+   "spe": 65,
+   "total": 480
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Glimmora",
+  "species": "Glimmora",
+  "form": null,
+  "dex": 970,
+  "types": [
+   "Rock",
+   "Poison"
+  ],
+  "abilities": [
+   "Toxic Debris",
+   "Corrosion"
+  ],
+  "base_stats": {
+   "hp": 83,
+   "atk": 55,
+   "def": 90,
+   "spa": 130,
+   "spd": 81,
+   "spe": 86,
+   "total": 525
+  },
+  "is_mega": false
+ },
+ {
+  "slug": "glimmora",
+  "name": "Mega Glimmora",
+  "dex": 970,
+  "types": [
+   "Rock",
+   "Poison"
+  ],
+  "abilities": [
+   "Adaptability"
+  ],
+  "base_stats": {
+   "hp": 83,
+   "atk": 90,
+   "def": 105,
+   "spa": 150,
+   "spd": 96,
+   "spe": 101,
+   "total": 625
+  },
+  "is_mega": true,
+  "species": "Glimmora",
+  "form": "Mega"
+ },
+ {
+  "slug": null,
+  "name": "Houndstone",
+  "species": "Houndstone",
+  "form": null,
+  "dex": 972,
+  "types": [
+   "Ghost"
+  ],
+  "abilities": [
+   "Sand Rush",
+   "Fluffy"
+  ],
+  "base_stats": {
+   "hp": 72,
+   "atk": 101,
+   "def": 100,
+   "spa": 50,
+   "spd": 97,
+   "spe": 68,
+   "total": 488
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Annihilape",
+  "species": "Annihilape",
+  "form": null,
+  "dex": 979,
+  "types": [
+   "Fighting",
+   "Ghost"
+  ],
+  "abilities": [
+   "Vital Spirit",
+   "Inner Focus",
+   "Defiant"
+  ],
+  "base_stats": {
+   "hp": 110,
+   "atk": 115,
+   "def": 80,
+   "spa": 50,
+   "spd": 90,
+   "spe": 90,
+   "total": 535
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Farigiraf",
+  "species": "Farigiraf",
+  "form": null,
+  "dex": 981,
+  "types": [
+   "Normal",
+   "Psychic"
+  ],
+  "abilities": [
+   "Cud Chew",
+   "Armor Tail",
+   "Sap Sipper"
+  ],
+  "base_stats": {
+   "hp": 120,
+   "atk": 90,
+   "def": 70,
+   "spa": 110,
+   "spd": 70,
+   "spe": 60,
+   "total": 520
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Kingambit",
+  "species": "Kingambit",
+  "form": null,
+  "dex": 983,
+  "types": [
+   "Dark",
+   "Steel"
+  ],
+  "abilities": [
+   "Defiant",
+   "Supreme Overlord",
+   "Pressure"
+  ],
+  "base_stats": {
+   "hp": 100,
+   "atk": 135,
+   "def": 120,
+   "spa": 60,
+   "spd": 85,
+   "spe": 50,
+   "total": 550
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Baxcalibur",
+  "species": "Baxcalibur",
+  "form": null,
+  "dex": 998,
+  "types": [
+   "Dragon",
+   "Ice"
+  ],
+  "abilities": [
+   "Thermal Exchange",
+   "Ice Body"
+  ],
+  "base_stats": {
+   "hp": 115,
+   "atk": 145,
+   "def": 92,
+   "spa": 75,
+   "spd": 86,
+   "spe": 87,
+   "total": 600
+  },
+  "is_mega": false
+ },
+ {
+  "slug": "baxcalibur",
+  "name": "Mega Baxcalibur",
+  "dex": 998,
+  "types": [
+   "Dragon",
+   "Ice"
+  ],
+  "abilities": [
+   "Thermal Exchange"
+  ],
+  "base_stats": {
+   "hp": 115,
+   "atk": 175,
+   "def": 117,
+   "spa": 105,
+   "spd": 101,
+   "spe": 87,
+   "total": 700
+  },
+  "is_mega": true,
+  "species": "Baxcalibur",
+  "form": "Mega"
+ },
+ {
+  "slug": null,
+  "name": "Gholdengo",
+  "species": "Gholdengo",
+  "form": null,
+  "dex": 1000,
+  "types": [
+   "Steel",
+   "Ghost"
+  ],
+  "abilities": [
+   "Good as Gold"
+  ],
+  "base_stats": {
+   "hp": 87,
+   "atk": 60,
+   "def": 95,
+   "spa": 133,
+   "spd": 91,
+   "spe": 84,
+   "total": 550
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Sinistcha",
+  "species": "Sinistcha",
+  "form": null,
+  "dex": 1013,
+  "types": [
+   "Grass",
+   "Ghost"
+  ],
+  "abilities": [
+   "Hospitality",
+   "Heatproof"
+  ],
+  "base_stats": {
+   "hp": 71,
+   "atk": 60,
+   "def": 106,
+   "spa": 121,
+   "spd": 80,
+   "spe": 70,
+   "total": 508
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Archaludon",
+  "species": "Archaludon",
+  "form": null,
+  "dex": 1018,
+  "types": [
+   "Steel",
+   "Dragon"
+  ],
+  "abilities": [
+   "Stamina",
+   "Sturdy",
+   "Stalwart"
+  ],
+  "base_stats": {
+   "hp": 90,
+   "atk": 105,
+   "def": 130,
+   "spa": 125,
+   "spd": 65,
+   "spe": 85,
+   "total": 600
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Hydrapple",
+  "species": "Hydrapple",
+  "form": null,
+  "dex": 1019,
+  "types": [
+   "Grass",
+   "Dragon"
+  ],
+  "abilities": [
+   "Supersweet Syrup",
+   "Regenerator",
+   "Sticky Hold"
+  ],
+  "base_stats": {
+   "hp": 106,
+   "atk": 80,
+   "def": 110,
+   "spa": 120,
+   "spd": 80,
+   "spe": 44,
+   "total": 540
+  },
+  "is_mega": false
+ }
+]

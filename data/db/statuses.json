@@ -1,0 +1,206 @@
+{
+ "_comment": "Status conditions with their numbers. `source` per value: serebii = Champions' own rebalance page, measured = run through Smogon's Champions engine, main_series = the other games' value, kept only where no Champions source states one and never shown as confirmed.",
+ "statuses": {
+  "Paralysis": {
+   "short": "loses the turn sometimes, and moves at half Speed",
+   "speed": {
+    "value": 0.5,
+    "source": "serebii"
+   },
+   "skip_turn": {
+    "value": 0.125,
+    "source": "serebii",
+    "was": 0.25,
+    "note": "halved from the main series"
+   },
+   "moves": [
+    "Body Slam",
+    "Bounce",
+    "Dire Claw",
+    "Discharge",
+    "Glare",
+    "Nuzzle",
+    "Stun Spore",
+    "Thunder",
+    "Thunder Fang",
+    "Thunder Punch",
+    "Thunder Wave",
+    "Thunderbolt",
+    "Tri Attack",
+    "Volt Tackle",
+    "Zap Cannon"
+   ],
+   "rebalanced_in_champions": true,
+   "serebii_prior": "25% chance of being unable to move Speed reduced to 50% of maximum",
+   "serebii_new": "12.5% chance of being unable to move Speed reduced to 50% of maximum",
+   "champions_confirmed": true
+  },
+  "Freeze": {
+   "short": "cannot move until it thaws",
+   "thaw": {
+    "value": 0.25,
+    "source": "serebii",
+    "was": 0.2,
+    "note": "rolled only on a turn it tries to move"
+   },
+   "moves": [
+    "Blizzard",
+    "Freeze-Dry",
+    "Ice Beam",
+    "Ice Fang",
+    "Ice Punch",
+    "Tri Attack"
+   ],
+   "rebalanced_in_champions": true,
+   "serebii_prior": "Pokémon is unable to use moves (except for moves that thaw) 20% chance to thaw each turn",
+   "serebii_new": "Pokémon is unable to use moves (except for moves that thaw) 25% chance to thaw each turn it attempts to use a move. Pokémon will thaw on third turn after becoming frozen",
+   "champions_confirmed": true
+  },
+  "Sleep": {
+   "short": "cannot move; wakes on a fixed schedule now",
+   "wake_turn2": {
+    "value": 0.333,
+    "source": "serebii"
+   },
+   "wake_turn3": {
+    "value": 1.0,
+    "source": "serebii",
+    "note": "replaces the main series' 2-4 turn roll"
+   },
+   "moves": [
+    "Dire Claw",
+    "Hypnosis",
+    "Sing",
+    "Sleep Powder",
+    "Spore",
+    "Yawn"
+   ],
+   "rebalanced_in_champions": true,
+   "serebii_prior": "Lasts 2-4 turns and unable to move while asleep",
+   "serebii_new": "Unable to move while Asleep. 33.3% chance of waking on Turn 2 of Sleep. 100% on Turn 3",
+   "champions_confirmed": true
+  },
+  "Burn": {
+   "short": "physical attacks halved, and chip damage every turn",
+   "physical": {
+    "value": 0.5,
+    "source": "measured"
+   },
+   "chip": {
+    "value": 0.0625,
+    "source": "main_series"
+   },
+   "moves": [
+    "Blaze Kick",
+    "Burning Jealousy",
+    "Fire Blast",
+    "Fire Fang",
+    "Fire Lash",
+    "Fire Punch",
+    "Flamethrower",
+    "Flare Blitz",
+    "Heat Wave",
+    "Infernal Parade",
+    "Inferno",
+    "Lava Plume",
+    "Matcha Gotcha",
+    "Pyro Ball",
+    "Scald",
+    "Scorching Sands",
+    "Tri Attack",
+    "Will-O-Wisp"
+   ],
+   "rebalanced_in_champions": false,
+   "champions_confirmed": false
+  },
+  "Poison": {
+   "short": "chip damage every turn",
+   "chip": {
+    "value": 0.125,
+    "source": "main_series"
+   },
+   "moves": [
+    "Barb Barrage",
+    "Cross Poison",
+    "Dire Claw",
+    "Gunk Shot",
+    "Mortal Spin",
+    "Poison Jab",
+    "Poison Powder",
+    "Shell Side Arm",
+    "Sludge Bomb",
+    "Sludge Wave",
+    "Toxic Thread"
+   ],
+   "rebalanced_in_champions": false,
+   "champions_confirmed": false
+  },
+  "Badly Poisoned": {
+   "short": "chip damage that grows every turn",
+   "chip": {
+    "value": 0.0625,
+    "source": "main_series",
+    "note": "1/16 the first turn, then 2/16, 3/16..."
+   },
+   "moves": [
+    "Poison Fang",
+    "Toxic"
+   ],
+   "rebalanced_in_champions": false,
+   "champions_confirmed": false
+  },
+  "Confusion": {
+   "short": "may hit itself instead of acting",
+   "self_hit": {
+    "value": 0.333,
+    "source": "main_series",
+    "note": "40 BP typeless attack on itself"
+   },
+   "moves": [
+    "Alluring Voice",
+    "Axe Kick",
+    "Confuse Ray",
+    "Dynamic Punch",
+    "Flatter",
+    "Hurricane",
+    "Swagger",
+    "Sweet Kiss",
+    "Teeter Dance",
+    "Water Pulse"
+   ],
+   "rebalanced_in_champions": false,
+   "champions_confirmed": false
+  },
+  "Flinch": {
+   "short": "loses the turn, but only if the flincher moved first",
+   "skip_turn": {
+    "value": 1.0,
+    "source": "main_series"
+   },
+   "moves": [
+    "Air Slash",
+    "Bite",
+    "Dark Pulse",
+    "Dragon Rush",
+    "Extrasensory",
+    "Fake Out",
+    "Fire Fang",
+    "Ice Fang",
+    "Icicle Crash",
+    "Iron Head",
+    "Mountain Gale",
+    "Rock Slide",
+    "Sky Attack",
+    "Snore",
+    "Thunder Fang",
+    "Triple Arrows",
+    "Upper Hand",
+    "Waterfall",
+    "Zen Headbutt",
+    "Zing Zap"
+   ],
+   "rebalanced_in_champions": false,
+   "champions_confirmed": false
+  }
+ }
+}

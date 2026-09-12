@@ -1,0 +1,7212 @@
+{
+ "source": "pokedata.ovh/standingsVGC",
+ "origin": "event JSON export",
+ "game": "Pokemon Champions",
+ "tournament_id": "0000089",
+ "division": "seniors",
+ "round": 6,
+ "round_label": "6",
+ "swiss_rounds": 7,
+ "round_labels": {
+  "1": "1",
+  "2": "2",
+  "3": "3",
+  "4": "4",
+  "5": "5",
+  "6": "6"
+ },
+ "complete": false,
+ "fetched": "2026-09-11 23:58",
+ "note": "Unofficial standings computed outside the tournament software.",
+ "count": 91,
+ "players": [
+  {
+   "rank": 1,
+   "player": "Kosei S.",
+   "country": "JP",
+   "record": "4-0-0",
+   "dropped": true,
+   "dropped_round": 4,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Glastrier",
+     "ability": "Chilling Neigh",
+     "item": "Mago Berry",
+     "nature": null,
+     "moves": [
+      "Icicle Crash",
+      "Stomping Tantrum",
+      "Heavy Slam",
+      "Swords Dance"
+     ]
+    },
+    {
+     "pokemon": "Flutter Mane",
+     "ability": "Protosynthesis",
+     "item": "Booster Energy",
+     "nature": null,
+     "moves": [
+      "Dazzling Gleam",
+      "Shadow Ball",
+      "Moonblast",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Urshifu [Single Strike Style]",
+     "ability": "Unseen Fist",
+     "item": "Black Glasses",
+     "nature": null,
+     "moves": [
+      "Wicked Blow",
+      "Sucker Punch",
+      "Close Combat",
+      "Detect"
+     ]
+    },
+    {
+     "pokemon": "Goodra [Hisuian Form]",
+     "ability": "Sap Sipper",
+     "item": "Choice Band",
+     "nature": null,
+     "moves": [
+      "Iron Head",
+      "Outrage",
+      "Tera Blast",
+      "Earthquake"
+     ]
+    },
+    {
+     "pokemon": "Cresselia",
+     "ability": "Levitate",
+     "item": "Rocky Helmet",
+     "nature": null,
+     "moves": [
+      "Lunar Blessing",
+      "Moonblast",
+      "Ally Switch",
+      "Trick Room"
+     ]
+    },
+    {
+     "pokemon": "Thundurus [Incarnate Forme]",
+     "ability": "Prankster",
+     "item": "Wide Lens",
+     "nature": null,
+     "moves": [
+      "Wildbolt Storm",
+      "Thunder Wave",
+      "Rain Dance",
+      "Leer"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 2,
+   "player": "Yuto T.",
+   "country": "JP",
+   "record": "4-1-0",
+   "dropped": true,
+   "dropped_round": 5,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Indeedee [Female]",
+     "ability": "Psychic Surge",
+     "item": "Rocky Helmet",
+     "nature": null,
+     "moves": [
+      "Helping Hand",
+      "Follow Me",
+      "Imprison",
+      "Trick Room"
+     ]
+    },
+    {
+     "pokemon": "Heatran",
+     "ability": "Flash Fire",
+     "item": "Leftovers",
+     "nature": null,
+     "moves": [
+      "Protect",
+      "Heat Wave",
+      "Flash Cannon",
+      "Earth Power"
+     ]
+    },
+    {
+     "pokemon": "Iron Bundle",
+     "ability": "Quark Drive",
+     "item": "Booster Energy",
+     "nature": null,
+     "moves": [
+      "Protect",
+      "Hydro Pump",
+      "Freeze-Dry",
+      "Icy Wind"
+     ]
+    },
+    {
+     "pokemon": "Armarouge",
+     "ability": "Flash Fire",
+     "item": "Life Orb",
+     "nature": null,
+     "moves": [
+      "Protect",
+      "Expanding Force",
+      "Heat Wave",
+      "Trick Room"
+     ]
+    },
+    {
+     "pokemon": "Flutter Mane",
+     "ability": "Protosynthesis",
+     "item": "Choice Specs",
+     "nature": null,
+     "moves": [
+      "Moonblast",
+      "Dazzling Gleam",
+      "Shadow Ball",
+      "Thunderbolt"
+     ]
+    },
+    {
+     "pokemon": "Regidrago",
+     "ability": "Dragon's Maw",
+     "item": "Dragon Fang",
+     "nature": null,
+     "moves": [
+      "Protect",
+      "Dragon Energy",
+      "Dragon Pulse",
+      "Earth Power"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 3,
+   "player": "Yujiro A.",
+   "country": "JP",
+   "record": "4-0-0",
+   "dropped": true,
+   "dropped_round": 4,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Amoonguss",
+     "ability": "Regenerator",
+     "item": "Rocky Helmet",
+     "nature": null,
+     "moves": [
+      "Spore",
+      "Pollen Puff",
+      "Rage Powder",
+      "Clear Smog"
+     ]
+    },
+    {
+     "pokemon": "Flutter Mane",
+     "ability": "Protosynthesis",
+     "item": "Choice Specs",
+     "nature": null,
+     "moves": [
+      "Moonblast",
+      "Dazzling Gleam",
+      "Shadow Ball",
+      "Thunderbolt"
+     ]
+    },
+    {
+     "pokemon": "Ursaluna",
+     "ability": "Guts",
+     "item": "Flame Orb",
+     "nature": null,
+     "moves": [
+      "Facade",
+      "Earthquake",
+      "Swords Dance",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Iron Bundle",
+     "ability": "Quark Drive",
+     "item": "Booster Energy",
+     "nature": null,
+     "moves": [
+      "Hydro Pump",
+      "Freeze-Dry",
+      "Icy Wind",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Cresselia",
+     "ability": "Levitate",
+     "item": "Sitrus Berry",
+     "nature": null,
+     "moves": [
+      "Moonblast",
+      "Ally Switch",
+      "Lunar Blessing",
+      "Trick Room"
+     ]
+    },
+    {
+     "pokemon": "Iron Hands",
+     "ability": "Quark Drive",
+     "item": "Assault Vest",
+     "nature": null,
+     "moves": [
+      "Drain Punch",
+      "Wild Charge",
+      "Ice Punch",
+      "Fake Out"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 4,
+   "player": "Ryo K.",
+   "country": "JP",
+   "record": "4-1-0",
+   "dropped": true,
+   "dropped_round": 5,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Cresselia",
+     "ability": "Levitate",
+     "item": "Safety Goggles",
+     "nature": null,
+     "moves": [
+      "Ally Switch",
+      "Moonblast",
+      "Lunar Blessing",
+      "Trick Room"
+     ]
+    },
+    {
+     "pokemon": "Amoonguss",
+     "ability": "Regenerator",
+     "item": "Rocky Helmet",
+     "nature": null,
+     "moves": [
+      "Rage Powder",
+      "Spore",
+      "Protect",
+      "Pollen Puff"
+     ]
+    },
+    {
+     "pokemon": "Iron Hands",
+     "ability": "Quark Drive",
+     "item": "Assault Vest",
+     "nature": null,
+     "moves": [
+      "Drain Punch",
+      "Wild Charge",
+      "Volt Switch",
+      "Fake Out"
+     ]
+    },
+    {
+     "pokemon": "Flutter Mane",
+     "ability": "Protosynthesis",
+     "item": "Choice Specs",
+     "nature": null,
+     "moves": [
+      "Dazzling Gleam",
+      "Shadow Ball",
+      "Moonblast",
+      "Tera Blast"
+     ]
+    },
+    {
+     "pokemon": "Ursaluna",
+     "ability": "Guts",
+     "item": "Flame Orb",
+     "nature": null,
+     "moves": [
+      "Earthquake",
+      "Facade",
+      "Protect",
+      "Swords Dance"
+     ]
+    },
+    {
+     "pokemon": "Arcanine [Hisuian Form]",
+     "ability": "Intimidate",
+     "item": "Life Orb",
+     "nature": null,
+     "moves": [
+      "Flare Blitz",
+      "Rock Slide",
+      "Protect",
+      "Extreme Speed"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 5,
+   "player": "Shunsuke S.",
+   "country": "JP",
+   "record": "4-0-0",
+   "dropped": true,
+   "dropped_round": 4,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Zapdos [Galarian Form]",
+     "ability": "Defiant",
+     "item": "Choice Scarf",
+     "nature": null,
+     "moves": [
+      "Low Sweep",
+      "Brave Bird",
+      "Tera Blast",
+      "U-turn"
+     ]
+    },
+    {
+     "pokemon": "Moltres [Galarian Form]",
+     "ability": "Berserk",
+     "item": "Sitrus Berry",
+     "nature": null,
+     "moves": [
+      "Fiery Wrath",
+      "Nasty Plot",
+      "Air Slash",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Flutter Mane",
+     "ability": "Protosynthesis",
+     "item": "Booster Energy",
+     "nature": null,
+     "moves": [
+      "Moonblast",
+      "Shadow Ball",
+      "Protect",
+      "Substitute"
+     ]
+    },
+    {
+     "pokemon": "Amoonguss",
+     "ability": "Regenerator",
+     "item": "Rocky Helmet",
+     "nature": null,
+     "moves": [
+      "Rage Powder",
+      "Spore",
+      "Pollen Puff",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Landorus [Therian Forme]",
+     "ability": "Intimidate",
+     "item": "Safety Goggles",
+     "nature": null,
+     "moves": [
+      "Stomping Tantrum",
+      "Rock Tomb",
+      "U-turn",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Iron Hands",
+     "ability": "Quark Drive",
+     "item": "Assault Vest",
+     "nature": null,
+     "moves": [
+      "Fake Out",
+      "Drain Punch",
+      "Wild Charge",
+      "Heavy Slam"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 6,
+   "player": "Kosaku M.",
+   "country": "JP",
+   "record": "4-1-0",
+   "dropped": true,
+   "dropped_round": 5,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Chi-Yu",
+     "ability": "Beads of Ruin",
+     "item": "Choice Specs",
+     "nature": null,
+     "moves": [
+      "Heat Wave",
+      "Dark Pulse",
+      "Overheat",
+      "Snarl"
+     ]
+    },
+    {
+     "pokemon": "Rillaboom",
+     "ability": "Grassy Surge",
+     "item": "Assault Vest",
+     "nature": null,
+     "moves": [
+      "Wood Hammer",
+      "Knock Off",
+      "U-turn",
+      "Fake Out"
+     ]
+    },
+    {
+     "pokemon": "Dondozo",
+     "ability": "Oblivious",
+     "item": "Leftovers",
+     "nature": null,
+     "moves": [
+      "Wave Crash",
+      "Heavy Slam",
+      "Yawn",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Indeedee [Female]",
+     "ability": "Psychic Surge",
+     "item": "Rocky Helmet",
+     "nature": null,
+     "moves": [
+      "Trick Room",
+      "Psychic",
+      "Helping Hand",
+      "Follow Me"
+     ]
+    },
+    {
+     "pokemon": "Urshifu [Single Strike Style]",
+     "ability": "Unseen Fist",
+     "item": "Choice Band",
+     "nature": null,
+     "moves": [
+      "Wicked Blow",
+      "Close Combat",
+      "Sucker Punch",
+      "Poison Jab"
+     ]
+    },
+    {
+     "pokemon": "Tornadus [Incarnate Forme]",
+     "ability": "Prankster",
+     "item": "Sitrus Berry",
+     "nature": null,
+     "moves": [
+      "Tailwind",
+      "Sunny Day",
+      "Bleakwind Storm",
+      "Icy Wind"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 7,
+   "player": "KYOSUKE S.",
+   "country": "JP",
+   "record": "4-1-0",
+   "dropped": true,
+   "dropped_round": 5,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Regidrago",
+     "ability": "Dragon's Maw",
+     "item": "Draco Plate",
+     "nature": null,
+     "moves": [
+      "Dragon Energy",
+      "Draco Meteor",
+      "Earth Power",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Tornadus [Incarnate Forme]",
+     "ability": "Prankster",
+     "item": "Covert Cloak",
+     "nature": null,
+     "moves": [
+      "Bleakwind Storm",
+      "Scary Face",
+      "Tailwind",
+      "Rain Dance"
+     ]
+    },
+    {
+     "pokemon": "Flutter Mane",
+     "ability": "Protosynthesis",
+     "item": "Booster Energy",
+     "nature": null,
+     "moves": [
+      "Moonblast",
+      "Shadow Ball",
+      "Icy Wind",
+      "Charm"
+     ]
+    },
+    {
+     "pokemon": "Gholdengo",
+     "ability": "Good as Gold",
+     "item": "Choice Specs",
+     "nature": null,
+     "moves": [
+      "Make It Rain",
+      "Shadow Ball",
+      "Thunderbolt",
+      "Trick"
+     ]
+    },
+    {
+     "pokemon": "Rillaboom",
+     "ability": "Grassy Surge",
+     "item": "Assault Vest",
+     "nature": null,
+     "moves": [
+      "Wood Hammer",
+      "U-turn",
+      "Stomping Tantrum",
+      "Fake Out"
+     ]
+    },
+    {
+     "pokemon": "Urshifu [Rapid Strike Style]",
+     "ability": "Unseen Fist",
+     "item": "Focus Sash",
+     "nature": null,
+     "moves": [
+      "Surging Strikes",
+      "Aqua Jet",
+      "Close Combat",
+      "Detect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 8,
+   "player": "Charlie L.",
+   "country": "US",
+   "record": "4-1-0",
+   "dropped": true,
+   "dropped_round": 5,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Flutter Mane",
+     "ability": "Protosynthesis",
+     "item": "Booster Energy",
+     "nature": null,
+     "moves": [
+      "Moonblast",
+      "Dazzling Gleam",
+      "Shadow Ball",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Heatran",
+     "ability": "Flash Fire",
+     "item": "Leftovers",
+     "nature": null,
+     "moves": [
+      "Protect",
+      "Tera Blast",
+      "Heat Wave",
+      "Substitute"
+     ]
+    },
+    {
+     "pokemon": "Chien-Pao",
+     "ability": "Sword of Ruin",
+     "item": "Focus Sash",
+     "nature": null,
+     "moves": [
+      "Ice Spinner",
+      "Protect",
+      "Sucker Punch",
+      "Sacred Sword"
+     ]
+    },
+    {
+     "pokemon": "Urshifu [Rapid Strike Style]",
+     "ability": "Unseen Fist",
+     "item": "Mystic Water",
+     "nature": null,
+     "moves": [
+      "Surging Strikes",
+      "Aqua Jet",
+      "Close Combat",
+      "Detect"
+     ]
+    },
+    {
+     "pokemon": "Dragonite",
+     "ability": "Inner Focus",
+     "item": "Choice Band",
+     "nature": null,
+     "moves": [
+      "Outrage",
+      "Extreme Speed",
+      "Iron Head",
+      "Stomping Tantrum"
+     ]
+    },
+    {
+     "pokemon": "Tornadus [Incarnate Forme]",
+     "ability": "Prankster",
+     "item": "Covert Cloak",
+     "nature": null,
+     "moves": [
+      "Bleakwind Storm",
+      "Rain Dance",
+      "Tailwind",
+      "Taunt"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 9,
+   "player": "Kazuma K.",
+   "country": "JP",
+   "record": "4-1-0",
+   "dropped": true,
+   "dropped_round": 5,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Urshifu [Rapid Strike Style]",
+     "ability": "Unseen Fist",
+     "item": "Mystic Water",
+     "nature": null,
+     "moves": [
+      "Surging Strikes",
+      "Aqua Jet",
+      "Close Combat",
+      "Detect"
+     ]
+    },
+    {
+     "pokemon": "Tornadus [Incarnate Forme]",
+     "ability": "Prankster",
+     "item": "Sitrus Berry",
+     "nature": null,
+     "moves": [
+      "Bleakwind Storm",
+      "Tailwind",
+      "Scary Face",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Gholdengo",
+     "ability": "Good as Gold",
+     "item": "Choice Specs",
+     "nature": null,
+     "moves": [
+      "Make It Rain",
+      "Thunderbolt",
+      "Focus Blast",
+      "Shadow Ball"
+     ]
+    },
+    {
+     "pokemon": "Landorus [Therian Forme]",
+     "ability": "Intimidate",
+     "item": "Choice Scarf",
+     "nature": null,
+     "moves": [
+      "Rock Slide",
+      "Earthquake",
+      "Stomping Tantrum",
+      "U-turn"
+     ]
+    },
+    {
+     "pokemon": "Iron Bundle",
+     "ability": "Quark Drive",
+     "item": "Booster Energy",
+     "nature": null,
+     "moves": [
+      "Icy Wind",
+      "Freeze-Dry",
+      "Hydro Pump",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Rillaboom",
+     "ability": "Grassy Surge",
+     "item": "Assault Vest",
+     "nature": null,
+     "moves": [
+      "Fake Out",
+      "Wood Hammer",
+      "U-turn",
+      "Stomping Tantrum"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 10,
+   "player": "Yuta T.",
+   "country": "JP",
+   "record": "4-1-0",
+   "dropped": true,
+   "dropped_round": 5,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Rillaboom",
+     "ability": "Grassy Surge",
+     "item": "Assault Vest",
+     "nature": null,
+     "moves": [
+      "Wood Hammer",
+      "U-turn",
+      "Stomping Tantrum",
+      "Fake Out"
+     ]
+    },
+    {
+     "pokemon": "Dragonite",
+     "ability": "Inner Focus",
+     "item": "Choice Band",
+     "nature": null,
+     "moves": [
+      "Extreme Speed",
+      "Outrage",
+      "Stomping Tantrum",
+      "Aerial Ace"
+     ]
+    },
+    {
+     "pokemon": "Heatran",
+     "ability": "Flash Fire",
+     "item": "Sitrus Berry",
+     "nature": null,
+     "moves": [
+      "Heat Wave",
+      "Flash Cannon",
+      "Earth Power",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Iron Bundle",
+     "ability": "Quark Drive",
+     "item": "Booster Energy",
+     "nature": null,
+     "moves": [
+      "Freeze-Dry",
+      "Hydro Pump",
+      "Protect",
+      "Icy Wind"
+     ]
+    },
+    {
+     "pokemon": "Chien-Pao",
+     "ability": "Sword of Ruin",
+     "item": "Focus Sash",
+     "nature": null,
+     "moves": [
+      "Icicle Crash",
+      "Protect",
+      "Sucker Punch",
+      "Sacred Sword"
+     ]
+    },
+    {
+     "pokemon": "Urshifu [Single Strike Style]",
+     "ability": "Unseen Fist",
+     "item": "Dread Plate",
+     "nature": null,
+     "moves": [
+      "Wicked Blow",
+      "Sucker Punch",
+      "Close Combat",
+      "Detect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 11,
+   "player": "Tomoharu K.",
+   "country": "JP",
+   "record": "4-2-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Gholdengo",
+     "ability": "Good as Gold",
+     "item": "Choice Specs",
+     "nature": null,
+     "moves": [
+      "Make It Rain",
+      "Shadow Ball",
+      "Thunderbolt",
+      "Trick"
+     ]
+    },
+    {
+     "pokemon": "Urshifu [Rapid Strike Style]",
+     "ability": "Unseen Fist",
+     "item": "Choice Scarf",
+     "nature": null,
+     "moves": [
+      "Surging Strikes",
+      "Close Combat",
+      "Aqua Jet",
+      "U-turn"
+     ]
+    },
+    {
+     "pokemon": "Chien-Pao",
+     "ability": "Sword of Ruin",
+     "item": "Focus Sash",
+     "nature": null,
+     "moves": [
+      "Icicle Crash",
+      "Sucker Punch",
+      "Sacred Sword",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Tornadus [Incarnate Forme]",
+     "ability": "Prankster",
+     "item": "Covert Cloak",
+     "nature": null,
+     "moves": [
+      "Bleakwind Storm",
+      "Tailwind",
+      "Taunt",
+      "Rain Dance"
+     ]
+    },
+    {
+     "pokemon": "Rillaboom",
+     "ability": "Grassy Surge",
+     "item": "Assault Vest",
+     "nature": null,
+     "moves": [
+      "Wood Hammer",
+      "Stomping Tantrum",
+      "U-turn",
+      "Fake Out"
+     ]
+    },
+    {
+     "pokemon": "Dragonite",
+     "ability": "Multiscale",
+     "item": "Choice Band",
+     "nature": null,
+     "moves": [
+      "Extreme Speed",
+      "Outrage",
+      "Stomping Tantrum",
+      "Aqua Jet"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 12,
+   "player": "悠太 岡.",
+   "country": "JP",
+   "record": "4-0-0",
+   "dropped": true,
+   "dropped_round": 4,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Mimikyu",
+     "ability": "Disguise",
+     "item": "Rocky Helmet",
+     "nature": null,
+     "moves": [
+      "Play Rough",
+      "Shadow Sneak",
+      "Taunt",
+      "Trick Room"
+     ]
+    },
+    {
+     "pokemon": "Tornadus [Incarnate Forme]",
+     "ability": "Prankster",
+     "item": "Focus Sash",
+     "nature": null,
+     "moves": [
+      "Bleakwind Storm",
+      "Icy Wind",
+      "Tailwind",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Urshifu [Rapid Strike Style]",
+     "ability": "Unseen Fist",
+     "item": "Choice Scarf",
+     "nature": null,
+     "moves": [
+      "Surging Strikes",
+      "Close Combat",
+      "Aqua Jet",
+      "U-turn"
+     ]
+    },
+    {
+     "pokemon": "Gholdengo",
+     "ability": "Good as Gold",
+     "item": "Choice Specs",
+     "nature": null,
+     "moves": [
+      "Make It Rain",
+      "Shadow Ball",
+      "Focus Blast",
+      "Trick"
+     ]
+    },
+    {
+     "pokemon": "Regidrago",
+     "ability": "Dragon's Maw",
+     "item": "Dragon Fang",
+     "nature": null,
+     "moves": [
+      "Dragon Energy",
+      "Earth Power",
+      "Dragon Pulse",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Rillaboom",
+     "ability": "Grassy Surge",
+     "item": "Assault Vest",
+     "nature": null,
+     "moves": [
+      "Wood Hammer",
+      "Fake Out",
+      "U-turn",
+      "Stomping Tantrum"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 13,
+   "player": "Cristiano R.",
+   "country": "IT",
+   "record": "4-1-0",
+   "dropped": true,
+   "dropped_round": 5,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Urshifu [Rapid Strike Style]",
+     "ability": "Unseen Fist",
+     "item": "Mystic Water",
+     "nature": null,
+     "moves": [
+      "Surging Strikes",
+      "Aqua Jet",
+      "Close Combat",
+      "Detect"
+     ]
+    },
+    {
+     "pokemon": "Landorus [Therian Forme]",
+     "ability": "Intimidate",
+     "item": "Choice Band",
+     "nature": null,
+     "moves": [
+      "Rock Slide",
+      "Stomping Tantrum",
+      "U-turn",
+      "Earthquake"
+     ]
+    },
+    {
+     "pokemon": "Chien-Pao",
+     "ability": "Sword of Ruin",
+     "item": "Focus Sash",
+     "nature": null,
+     "moves": [
+      "Icicle Crash",
+      "Sucker Punch",
+      "Protect",
+      "Sacred Sword"
+     ]
+    },
+    {
+     "pokemon": "Rillaboom",
+     "ability": "Grassy Surge",
+     "item": "Assault Vest",
+     "nature": null,
+     "moves": [
+      "Wood Hammer",
+      "U-turn",
+      "Stomping Tantrum",
+      "Fake Out"
+     ]
+    },
+    {
+     "pokemon": "Flutter Mane",
+     "ability": "Protosynthesis",
+     "item": "Choice Specs",
+     "nature": null,
+     "moves": [
+      "Dazzling Gleam",
+      "Shadow Ball",
+      "Moonblast",
+      "Thunderbolt"
+     ]
+    },
+    {
+     "pokemon": "Tornadus [Incarnate Forme]",
+     "ability": "Prankster",
+     "item": "Mental Herb",
+     "nature": null,
+     "moves": [
+      "Bleakwind Storm",
+      "Rain Dance",
+      "Taunt",
+      "Tailwind"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 14,
+   "player": "Souma M.",
+   "country": "JP",
+   "record": "4-1-0",
+   "dropped": true,
+   "dropped_round": 5,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Kleavor",
+     "ability": "Sharpness",
+     "item": "Rocky Helmet",
+     "nature": null,
+     "moves": [
+      "Protect",
+      "X-Scissor",
+      "Stone Axe",
+      "Feint"
+     ]
+    },
+    {
+     "pokemon": "Tornadus [Incarnate Forme]",
+     "ability": "Prankster",
+     "item": "Covert Cloak",
+     "nature": null,
+     "moves": [
+      "Bleakwind Storm",
+      "Tailwind",
+      "Sunny Day",
+      "Taunt"
+     ]
+    },
+    {
+     "pokemon": "Heatran",
+     "ability": "Flash Fire",
+     "item": "Leftovers",
+     "nature": null,
+     "moves": [
+      "Protect",
+      "Heat Wave",
+      "Flash Cannon",
+      "Earth Power"
+     ]
+    },
+    {
+     "pokemon": "Rillaboom",
+     "ability": "Grassy Surge",
+     "item": "Assault Vest",
+     "nature": null,
+     "moves": [
+      "Wood Hammer",
+      "Stomping Tantrum",
+      "U-turn",
+      "Fake Out"
+     ]
+    },
+    {
+     "pokemon": "Flutter Mane",
+     "ability": "Protosynthesis",
+     "item": "Choice Specs",
+     "nature": null,
+     "moves": [
+      "Shadow Ball",
+      "Moonblast",
+      "Dazzling Gleam",
+      "Thunderbolt"
+     ]
+    },
+    {
+     "pokemon": "Urshifu [Single Strike Style]",
+     "ability": "Unseen Fist",
+     "item": "Focus Sash",
+     "nature": null,
+     "moves": [
+      "Detect",
+      "Close Combat",
+      "Wicked Blow",
+      "Sucker Punch"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 15,
+   "player": "Braden C.",
+   "country": "CA",
+   "record": "4-1-0",
+   "dropped": true,
+   "dropped_round": 5,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Chien-Pao",
+     "ability": "Sword of Ruin",
+     "item": "Focus Sash",
+     "nature": null,
+     "moves": [
+      "Ice Spinner",
+      "Sacred Sword",
+      "Sucker Punch",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Flutter Mane",
+     "ability": "Protosynthesis",
+     "item": "Booster Energy",
+     "nature": null,
+     "moves": [
+      "Dazzling Gleam",
+      "Shadow Ball",
+      "Icy Wind",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Tatsugiri [Curly Form]",
+     "ability": "Commander",
+     "item": "Choice Scarf",
+     "nature": null,
+     "moves": [
+      "Draco Meteor",
+      "Icy Wind",
+      "Muddy Water",
+      "Dragon Pulse"
+     ]
+    },
+    {
+     "pokemon": "Dragonite",
+     "ability": "Inner Focus",
+     "item": "Choice Band",
+     "nature": null,
+     "moves": [
+      "Extreme Speed",
+      "Stomping Tantrum",
+      "Outrage",
+      "Aqua Jet"
+     ]
+    },
+    {
+     "pokemon": "Chi-Yu",
+     "ability": "Beads of Ruin",
+     "item": "Choice Specs",
+     "nature": null,
+     "moves": [
+      "Heat Wave",
+      "Dark Pulse",
+      "Overheat",
+      "Snarl"
+     ]
+    },
+    {
+     "pokemon": "Dondozo",
+     "ability": "Unaware",
+     "item": "Leftovers",
+     "nature": null,
+     "moves": [
+      "Order Up",
+      "Earthquake",
+      "Wave Crash",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 16,
+   "player": "Kotaro H.",
+   "country": "JP",
+   "record": "4-1-0",
+   "dropped": true,
+   "dropped_round": 5,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Urshifu [Rapid Strike Style]",
+     "ability": "Unseen Fist",
+     "item": "Mystic Water",
+     "nature": null,
+     "moves": [
+      "Surging Strikes",
+      "Detect",
+      "Aqua Jet",
+      "Taunt"
+     ]
+    },
+    {
+     "pokemon": "Landorus [Therian Forme]",
+     "ability": "Intimidate",
+     "item": "Choice Scarf",
+     "nature": null,
+     "moves": [
+      "Rock Slide",
+      "Tera Blast",
+      "Stomping Tantrum",
+      "U-turn"
+     ]
+    },
+    {
+     "pokemon": "Flutter Mane",
+     "ability": "Protosynthesis",
+     "item": "Choice Specs",
+     "nature": null,
+     "moves": [
+      "Dazzling Gleam",
+      "Shadow Ball",
+      "Moonblast",
+      "Thunderbolt"
+     ]
+    },
+    {
+     "pokemon": "Chien-Pao",
+     "ability": "Sword of Ruin",
+     "item": "Focus Sash",
+     "nature": null,
+     "moves": [
+      "Icicle Crash",
+      "Crunch",
+      "Sucker Punch",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Iron Hands",
+     "ability": "Quark Drive",
+     "item": "Assault Vest",
+     "nature": null,
+     "moves": [
+      "Wild Charge",
+      "Volt Switch",
+      "Drain Punch",
+      "Fake Out"
+     ]
+    },
+    {
+     "pokemon": "Amoonguss",
+     "ability": "Regenerator",
+     "item": "Rocky Helmet",
+     "nature": null,
+     "moves": [
+      "Spore",
+      "Rage Powder",
+      "Pollen Puff",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 17,
+   "player": "Aidan P.",
+   "country": "US",
+   "record": "4-2-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Thundurus [Incarnate Forme]",
+     "ability": "Prankster",
+     "item": "Covert Cloak",
+     "nature": null,
+     "moves": [
+      "Thunder Wave",
+      "Eerie Impulse",
+      "Leer",
+      "Wildbolt Storm"
+     ]
+    },
+    {
+     "pokemon": "Talonflame",
+     "ability": "Gale Wings",
+     "item": "Sharp Beak",
+     "nature": null,
+     "moves": [
+      "Tailwind",
+      "Taunt",
+      "Flare Blitz",
+      "Brave Bird"
+     ]
+    },
+    {
+     "pokemon": "Chien-Pao",
+     "ability": "Sword of Ruin",
+     "item": "Focus Sash",
+     "nature": null,
+     "moves": [
+      "Protect",
+      "Ice Spinner",
+      "Sucker Punch",
+      "Haze"
+     ]
+    },
+    {
+     "pokemon": "Urshifu [Rapid Strike Style]",
+     "ability": "Unseen Fist",
+     "item": "Mystic Water",
+     "nature": null,
+     "moves": [
+      "Detect",
+      "Surging Strikes",
+      "Close Combat",
+      "Aqua Jet"
+     ]
+    },
+    {
+     "pokemon": "Scizor",
+     "ability": "Technician",
+     "item": "Life Orb",
+     "nature": null,
+     "moves": [
+      "Protect",
+      "Bullet Punch",
+      "X-Scissor",
+      "Close Combat"
+     ]
+    },
+    {
+     "pokemon": "Dragonite",
+     "ability": "Multiscale",
+     "item": "Choice Band",
+     "nature": null,
+     "moves": [
+      "Extreme Speed",
+      "Outrage",
+      "Stomping Tantrum",
+      "Aqua Jet"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 18,
+   "player": "Ichinosuke H.",
+   "country": "JP",
+   "record": "4-0-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Cresselia",
+     "ability": "Levitate",
+     "item": "Mental Herb",
+     "nature": null,
+     "moves": [
+      "Moonblast",
+      "Trick Room",
+      "Helping Hand",
+      "Ally Switch"
+     ]
+    },
+    {
+     "pokemon": "Flutter Mane",
+     "ability": "Protosynthesis",
+     "item": "Focus Sash",
+     "nature": null,
+     "moves": [
+      "Moonblast",
+      "Shadow Ball",
+      "Protect",
+      "Trick Room"
+     ]
+    },
+    {
+     "pokemon": "Chi-Yu",
+     "ability": "Beads of Ruin",
+     "item": "Life Orb",
+     "nature": null,
+     "moves": [
+      "Heat Wave",
+      "Dark Pulse",
+      "Protect",
+      "Overheat"
+     ]
+    },
+    {
+     "pokemon": "Iron Hands",
+     "ability": "Quark Drive",
+     "item": "Assault Vest",
+     "nature": null,
+     "moves": [
+      "Fake Out",
+      "Drain Punch",
+      "Heavy Slam",
+      "Wild Charge"
+     ]
+    },
+    {
+     "pokemon": "Ursaluna",
+     "ability": "Guts",
+     "item": "Flame Orb",
+     "nature": null,
+     "moves": [
+      "Facade",
+      "Swords Dance",
+      "Earthquake",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Amoonguss",
+     "ability": "Regenerator",
+     "item": "Rocky Helmet",
+     "nature": null,
+     "moves": [
+      "Protect",
+      "Pollen Puff",
+      "Spore",
+      "Rage Powder"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 19,
+   "player": "明都 松.",
+   "country": "JP",
+   "record": "3-2-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Iron Hands",
+     "ability": "Quark Drive",
+     "item": "Sitrus Berry",
+     "nature": null,
+     "moves": [
+      "Thunder Punch",
+      "Drain Punch",
+      "Swords Dance",
+      "Detect"
+     ]
+    },
+    {
+     "pokemon": "Amoonguss",
+     "ability": "Regenerator",
+     "item": "Rocky Helmet",
+     "nature": null,
+     "moves": [
+      "Spore",
+      "Rage Powder",
+      "Clear Smog",
+      "Pollen Puff"
+     ]
+    },
+    {
+     "pokemon": "Volcarona",
+     "ability": "Flame Body",
+     "item": "Leftovers",
+     "nature": null,
+     "moves": [
+      "Heat Wave",
+      "Giga Drain",
+      "Quiver Dance",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Grimmsnarl",
+     "ability": "Prankster",
+     "item": "Light Clay",
+     "nature": null,
+     "moves": [
+      "Reflect",
+      "Light Screen",
+      "Parting Shot",
+      "Spirit Break"
+     ]
+    },
+    {
+     "pokemon": "Landorus [Therian Forme]",
+     "ability": "Intimidate",
+     "item": "Choice Band",
+     "nature": null,
+     "moves": [
+      "Earthquake",
+      "Stomping Tantrum",
+      "Rock Slide",
+      "U-turn"
+     ]
+    },
+    {
+     "pokemon": "Cresselia",
+     "ability": "Levitate",
+     "item": "Safety Goggles",
+     "nature": null,
+     "moves": [
+      "Psychic",
+      "Moonblast",
+      "Calm Mind",
+      "Lunar Blessing"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 20,
+   "player": "Sebastian G.",
+   "country": "US",
+   "record": "3-2-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Flutter Mane",
+     "ability": "Protosynthesis",
+     "item": "Booster Energy",
+     "nature": null,
+     "moves": [
+      "Moonblast",
+      "Shadow Ball",
+      "Icy Wind",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Cresselia",
+     "ability": "Levitate",
+     "item": "Mental Herb",
+     "nature": null,
+     "moves": [
+      "Trick Room",
+      "Lunar Blessing",
+      "Ice Beam",
+      "Helping Hand"
+     ]
+    },
+    {
+     "pokemon": "Iron Hands",
+     "ability": "Quark Drive",
+     "item": "Assault Vest",
+     "nature": null,
+     "moves": [
+      "Fake Out",
+      "Drain Punch",
+      "Wild Charge",
+      "Heavy Slam"
+     ]
+    },
+    {
+     "pokemon": "Ursaluna",
+     "ability": "Guts",
+     "item": "Flame Orb",
+     "nature": null,
+     "moves": [
+      "Facade",
+      "Earthquake",
+      "Swords Dance",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Dragonite",
+     "ability": "Inner Focus",
+     "item": "Choice Band",
+     "nature": null,
+     "moves": [
+      "Tera Blast",
+      "Extreme Speed",
+      "Stomping Tantrum",
+      "Outrage"
+     ]
+    },
+    {
+     "pokemon": "Amoonguss",
+     "ability": "Regenerator",
+     "item": "Rocky Helmet",
+     "nature": null,
+     "moves": [
+      "Clear Smog",
+      "Pollen Puff",
+      "Rage Powder",
+      "Spore"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 21,
+   "player": "Aoi S.",
+   "country": "JP",
+   "record": "3-2-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Clodsire",
+     "ability": "Water Absorb",
+     "item": "Leftovers",
+     "nature": null,
+     "moves": [
+      "Poison Jab",
+      "Yawn",
+      "Helping Hand",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Ursaluna",
+     "ability": "Guts",
+     "item": "Flame Orb",
+     "nature": null,
+     "moves": [
+      "Facade",
+      "Earthquake",
+      "Headlong Rush",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Cresselia",
+     "ability": "Levitate",
+     "item": "Covert Cloak",
+     "nature": null,
+     "moves": [
+      "Moonblast",
+      "Lunar Blessing",
+      "Light Screen",
+      "Trick Room"
+     ]
+    },
+    {
+     "pokemon": "Flutter Mane",
+     "ability": "Protosynthesis",
+     "item": "Choice Specs",
+     "nature": null,
+     "moves": [
+      "Moonblast",
+      "Shadow Ball",
+      "Dazzling Gleam",
+      "Thunderbolt"
+     ]
+    },
+    {
+     "pokemon": "Iron Hands",
+     "ability": "Quark Drive",
+     "item": "Booster Energy",
+     "nature": null,
+     "moves": [
+      "Drain Punch",
+      "Thunder Punch",
+      "Ice Punch",
+      "Swords Dance"
+     ]
+    },
+    {
+     "pokemon": "Urshifu [Single Strike Style]",
+     "ability": "Unseen Fist",
+     "item": "Focus Sash",
+     "nature": null,
+     "moves": [
+      "Wicked Blow",
+      "Close Combat",
+      "Sucker Punch",
+      "Detect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 22,
+   "player": "明斗 吉.",
+   "country": "JP",
+   "record": "3-2-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Chien-Pao",
+     "ability": "Sword of Ruin",
+     "item": "Focus Sash",
+     "nature": null,
+     "moves": [
+      "Ice Spinner",
+      "Sucker Punch",
+      "Haze",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Dragonite",
+     "ability": "Multiscale",
+     "item": "Choice Band",
+     "nature": null,
+     "moves": [
+      "Extreme Speed",
+      "Outrage",
+      "Stomping Tantrum",
+      "Iron Head"
+     ]
+    },
+    {
+     "pokemon": "Urshifu [Rapid Strike Style]",
+     "ability": "Unseen Fist",
+     "item": "Mystic Water",
+     "nature": null,
+     "moves": [
+      "Surging Strikes",
+      "Close Combat",
+      "Aqua Jet",
+      "Detect"
+     ]
+    },
+    {
+     "pokemon": "Tornadus [Incarnate Forme]",
+     "ability": "Prankster",
+     "item": "Mental Herb",
+     "nature": null,
+     "moves": [
+      "Bleakwind Storm",
+      "Rain Dance",
+      "Taunt",
+      "Tailwind"
+     ]
+    },
+    {
+     "pokemon": "Heatran",
+     "ability": "Flash Fire",
+     "item": "Leftovers",
+     "nature": null,
+     "moves": [
+      "Heat Wave",
+      "Earth Power",
+      "Flash Cannon",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Flutter Mane",
+     "ability": "Protosynthesis",
+     "item": "Booster Energy",
+     "nature": null,
+     "moves": [
+      "Dazzling Gleam",
+      "Shadow Ball",
+      "Moonblast",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 23,
+   "player": "Keisuke N.",
+   "country": "JP",
+   "record": "3-2-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Rillaboom",
+     "ability": "Grassy Surge",
+     "item": "Assault Vest",
+     "nature": null,
+     "moves": [
+      "Wood Hammer",
+      "Stomping Tantrum",
+      "U-turn",
+      "Fake Out"
+     ]
+    },
+    {
+     "pokemon": "Tornadus [Therian Forme]",
+     "ability": "Prankster",
+     "item": "Covert Cloak",
+     "nature": null,
+     "moves": [
+      "Tailwind",
+      "Icy Wind",
+      "Bleakwind Storm",
+      "Taunt"
+     ]
+    },
+    {
+     "pokemon": "Dragapult",
+     "ability": "Clear Body",
+     "item": "Life Orb",
+     "nature": null,
+     "moves": [
+      "Dragon Darts",
+      "Tera Blast",
+      "Substitute",
+      "Will-O-Wisp"
+     ]
+    },
+    {
+     "pokemon": "Regidrago",
+     "ability": "Dragon's Maw",
+     "item": "Dragon Fang",
+     "nature": null,
+     "moves": [
+      "Draco Meteor",
+      "Dragon Energy",
+      "Earth Power",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Gholdengo",
+     "ability": "Good as Gold",
+     "item": "Choice Specs",
+     "nature": null,
+     "moves": [
+      "Make It Rain",
+      "Shadow Ball",
+      "Thunderbolt",
+      "Trick"
+     ]
+    },
+    {
+     "pokemon": "Urshifu [Rapid Strike Style]",
+     "ability": "Unseen Fist",
+     "item": "Choice Scarf",
+     "nature": null,
+     "moves": [
+      "Surging Strikes",
+      "Aqua Jet",
+      "Close Combat",
+      "U-turn"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 24,
+   "player": "葉月 桑.",
+   "country": "JP",
+   "record": "3-2-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Gholdengo",
+     "ability": "Good as Gold",
+     "item": "Choice Specs",
+     "nature": null,
+     "moves": [
+      "Make It Rain",
+      "Shadow Ball",
+      "Thunderbolt",
+      "Trick"
+     ]
+    },
+    {
+     "pokemon": "Tornadus [Incarnate Forme]",
+     "ability": "Prankster",
+     "item": "Focus Sash",
+     "nature": null,
+     "moves": [
+      "Bleakwind Storm",
+      "Icy Wind",
+      "Tailwind",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Urshifu [Rapid Strike Style]",
+     "ability": "Unseen Fist",
+     "item": "Choice Scarf",
+     "nature": null,
+     "moves": [
+      "Surging Strikes",
+      "Aqua Jet",
+      "Close Combat",
+      "U-turn"
+     ]
+    },
+    {
+     "pokemon": "Mimikyu",
+     "ability": "Disguise",
+     "item": "Rocky Helmet",
+     "nature": null,
+     "moves": [
+      "Play Rough",
+      "Shadow Sneak",
+      "Taunt",
+      "Trick Room"
+     ]
+    },
+    {
+     "pokemon": "Regidrago",
+     "ability": "Dragon's Maw",
+     "item": "Dragon Fang",
+     "nature": null,
+     "moves": [
+      "Dragon Energy",
+      "Dragon Pulse",
+      "Earth Power",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Rillaboom",
+     "ability": "Grassy Surge",
+     "item": "Assault Vest",
+     "nature": null,
+     "moves": [
+      "Wood Hammer",
+      "U-turn",
+      "Stomping Tantrum",
+      "Fake Out"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 25,
+   "player": "Paige F.",
+   "country": "US",
+   "record": "3-2-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Amoonguss",
+     "ability": "Regenerator",
+     "item": "Rocky Helmet",
+     "nature": null,
+     "moves": [
+      "Pollen Puff",
+      "Rage Powder",
+      "Spore",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Iron Hands",
+     "ability": "Quark Drive",
+     "item": "Assault Vest",
+     "nature": null,
+     "moves": [
+      "Drain Punch",
+      "Wild Charge",
+      "Fake Out",
+      "Heavy Slam"
+     ]
+    },
+    {
+     "pokemon": "Zoroark [Hisuian Form]",
+     "ability": "Illusion",
+     "item": "Choice Scarf",
+     "nature": null,
+     "moves": [
+      "Shadow Ball",
+      "Hyper Voice",
+      "Fake Tears",
+      "Trick"
+     ]
+    },
+    {
+     "pokemon": "Dragonite",
+     "ability": "Inner Focus",
+     "item": "Choice Band",
+     "nature": null,
+     "moves": [
+      "Extreme Speed",
+      "Stomping Tantrum",
+      "Outrage",
+      "Aqua Jet"
+     ]
+    },
+    {
+     "pokemon": "Chien-Pao",
+     "ability": "Sword of Ruin",
+     "item": "Focus Sash",
+     "nature": null,
+     "moves": [
+      "Icicle Crash",
+      "Sucker Punch",
+      "Sacred Sword",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Flutter Mane",
+     "ability": "Protosynthesis",
+     "item": "Choice Specs",
+     "nature": null,
+     "moves": [
+      "Shadow Ball",
+      "Dazzling Gleam",
+      "Moonblast",
+      "Hex"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 26,
+   "player": "Tokio N.",
+   "country": "JP",
+   "record": "3-2-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Landorus [Therian Forme]",
+     "ability": "Intimidate",
+     "item": "Rocky Helmet",
+     "nature": null,
+     "moves": [
+      "Stomping Tantrum",
+      "Rock Slide",
+      "U-turn",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Heatran",
+     "ability": "Flash Fire",
+     "item": "Leftovers",
+     "nature": null,
+     "moves": [
+      "Heat Wave",
+      "Flash Cannon",
+      "Taunt",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Urshifu [Rapid Strike Style]",
+     "ability": "Unseen Fist",
+     "item": "Choice Scarf",
+     "nature": null,
+     "moves": [
+      "Surging Strikes",
+      "Close Combat",
+      "Aqua Jet",
+      "U-turn"
+     ]
+    },
+    {
+     "pokemon": "Rillaboom",
+     "ability": "Grassy Surge",
+     "item": "Assault Vest",
+     "nature": null,
+     "moves": [
+      "Wood Hammer",
+      "Stomping Tantrum",
+      "U-turn",
+      "Fake Out"
+     ]
+    },
+    {
+     "pokemon": "Dragonite",
+     "ability": "Multiscale",
+     "item": "Choice Band",
+     "nature": null,
+     "moves": [
+      "Extreme Speed",
+      "Outrage",
+      "Stomping Tantrum",
+      "Aqua Jet"
+     ]
+    },
+    {
+     "pokemon": "Chien-Pao",
+     "ability": "Sword of Ruin",
+     "item": "Focus Sash",
+     "nature": null,
+     "moves": [
+      "Icicle Crash",
+      "Sucker Punch",
+      "Sacred Sword",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 27,
+   "player": "Valentijn V.",
+   "country": "NL",
+   "record": "3-2-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Landorus [Therian Forme]",
+     "ability": "Intimidate",
+     "item": "Sitrus Berry",
+     "nature": null,
+     "moves": [
+      "Protect",
+      "Stomping Tantrum",
+      "Tera Blast",
+      "U-turn"
+     ]
+    },
+    {
+     "pokemon": "Urshifu [Single Strike Style]",
+     "ability": "Unseen Fist",
+     "item": "Black Glasses",
+     "nature": null,
+     "moves": [
+      "Wicked Blow",
+      "Detect",
+      "Close Combat",
+      "Sucker Punch"
+     ]
+    },
+    {
+     "pokemon": "Amoonguss",
+     "ability": "Regenerator",
+     "item": "Rocky Helmet",
+     "nature": null,
+     "moves": [
+      "Rage Powder",
+      "Pollen Puff",
+      "Spore",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Heatran",
+     "ability": "Flash Fire",
+     "item": "Assault Vest",
+     "nature": null,
+     "moves": [
+      "Heat Wave",
+      "Flash Cannon",
+      "Earth Power",
+      "Tera Blast"
+     ]
+    },
+    {
+     "pokemon": "Iron Bundle",
+     "ability": "Quark Drive",
+     "item": "Booster Energy",
+     "nature": null,
+     "moves": [
+      "Protect",
+      "Icy Wind",
+      "Encore",
+      "Freeze-Dry"
+     ]
+    },
+    {
+     "pokemon": "Farigiraf",
+     "ability": "Armor Tail",
+     "item": "Safety Goggles",
+     "nature": null,
+     "moves": [
+      "Psychic",
+      "Dazzling Gleam",
+      "Imprison",
+      "Trick Room"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 28,
+   "player": "諒誠 高.",
+   "country": "JP",
+   "record": "3-2-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Heatran",
+     "ability": "Flash Fire",
+     "item": "Sitrus Berry",
+     "nature": null,
+     "moves": [
+      "Heat Wave",
+      "Earth Power",
+      "Tera Blast",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Cresselia",
+     "ability": "Levitate",
+     "item": "Rocky Helmet",
+     "nature": null,
+     "moves": [
+      "Ally Switch",
+      "Moonblast",
+      "Lunar Blessing",
+      "Trick Room"
+     ]
+    },
+    {
+     "pokemon": "Flutter Mane",
+     "ability": "Protosynthesis",
+     "item": "Choice Specs",
+     "nature": null,
+     "moves": [
+      "Moonblast",
+      "Thunderbolt",
+      "Dazzling Gleam",
+      "Shadow Ball"
+     ]
+    },
+    {
+     "pokemon": "Urshifu [Rapid Strike Style]",
+     "ability": "Unseen Fist",
+     "item": "Focus Sash",
+     "nature": null,
+     "moves": [
+      "Surging Strikes",
+      "Close Combat",
+      "Aqua Jet",
+      "Detect"
+     ]
+    },
+    {
+     "pokemon": "Ursaluna",
+     "ability": "Guts",
+     "item": "Flame Orb",
+     "nature": null,
+     "moves": [
+      "Facade",
+      "Earthquake",
+      "Swords Dance",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Iron Hands",
+     "ability": "Quark Drive",
+     "item": "Assault Vest",
+     "nature": null,
+     "moves": [
+      "Fake Out",
+      "Heavy Slam",
+      "Drain Punch",
+      "Wild Charge"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 29,
+   "player": "Keigo I.",
+   "country": "JP",
+   "record": "3-2-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Urshifu [Single Strike Style]",
+     "ability": "Unseen Fist",
+     "item": "Covert Cloak",
+     "nature": null,
+     "moves": [
+      "Wicked Blow",
+      "Close Combat",
+      "Sucker Punch",
+      "Detect"
+     ]
+    },
+    {
+     "pokemon": "Heatran",
+     "ability": "Flash Fire",
+     "item": "Life Orb",
+     "nature": null,
+     "moves": [
+      "Heat Wave",
+      "Earth Power",
+      "Tera Blast",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Iron Hands",
+     "ability": "Quark Drive",
+     "item": "Assault Vest",
+     "nature": null,
+     "moves": [
+      "Wild Charge",
+      "Drain Punch",
+      "Ice Punch",
+      "Fake Out"
+     ]
+    },
+    {
+     "pokemon": "Dondozo",
+     "ability": "Unaware",
+     "item": "Clear Amulet",
+     "nature": null,
+     "moves": [
+      "Wave Crash",
+      "Earthquake",
+      "Tera Blast",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Tornadus [Incarnate Forme]",
+     "ability": "Prankster",
+     "item": "Mental Herb",
+     "nature": null,
+     "moves": [
+      "Bleakwind Storm",
+      "Tailwind",
+      "Taunt",
+      "Scary Face"
+     ]
+    },
+    {
+     "pokemon": "Tatsugiri [Curly Form]",
+     "ability": "Commander",
+     "item": "Choice Scarf",
+     "nature": null,
+     "moves": [
+      "Hydro Pump",
+      "Muddy Water",
+      "Draco Meteor",
+      "Icy Wind"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 30,
+   "player": "Masahito N.",
+   "country": "JP",
+   "record": "3-2-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Grimmsnarl",
+     "ability": "Prankster",
+     "item": "Light Clay",
+     "nature": null,
+     "moves": [
+      "Spirit Break",
+      "Reflect",
+      "Light Screen",
+      "Taunt"
+     ]
+    },
+    {
+     "pokemon": "Volcarona",
+     "ability": "Flame Body",
+     "item": "Leftovers",
+     "nature": null,
+     "moves": [
+      "Heat Wave",
+      "Tera Blast",
+      "Quiver Dance",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Urshifu [Single Strike Style]",
+     "ability": "Unseen Fist",
+     "item": "Black Glasses",
+     "nature": null,
+     "moves": [
+      "Wicked Blow",
+      "Close Combat",
+      "Sucker Punch",
+      "Detect"
+     ]
+    },
+    {
+     "pokemon": "Ting-Lu",
+     "ability": "Vessel of Ruin",
+     "item": "Assault Vest",
+     "nature": null,
+     "moves": [
+      "Earthquake",
+      "Tera Blast",
+      "Heavy Slam",
+      "Ruination"
+     ]
+    },
+    {
+     "pokemon": "Cresselia",
+     "ability": "Levitate",
+     "item": "Rocky Helmet",
+     "nature": null,
+     "moves": [
+      "Moonblast",
+      "Trick Room",
+      "Ally Switch",
+      "Lunar Blessing"
+     ]
+    },
+    {
+     "pokemon": "Azumarill",
+     "ability": "Huge Power",
+     "item": "Life Orb",
+     "nature": null,
+     "moves": [
+      "Play Rough",
+      "Liquidation",
+      "Aqua Jet",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 31,
+   "player": "Yuma T.",
+   "country": "JP",
+   "record": "3-2-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Regieleki",
+     "ability": "Transistor",
+     "item": "Magnet",
+     "nature": null,
+     "moves": [
+      "Thunderbolt",
+      "Electroweb",
+      "Tera Blast",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Indeedee [Female]",
+     "ability": "Psychic Surge",
+     "item": "Rocky Helmet",
+     "nature": null,
+     "moves": [
+      "Psychic",
+      "Trick Room",
+      "Follow Me",
+      "Helping Hand"
+     ]
+    },
+    {
+     "pokemon": "Chi-Yu",
+     "ability": "Beads of Ruin",
+     "item": "Choice Specs",
+     "nature": null,
+     "moves": [
+      "Heat Wave",
+      "Dark Pulse",
+      "Overheat",
+      "Snarl"
+     ]
+    },
+    {
+     "pokemon": "Urshifu [Rapid Strike Style]",
+     "ability": "Unseen Fist",
+     "item": "Choice Scarf",
+     "nature": null,
+     "moves": [
+      "Surging Strikes",
+      "Aqua Jet",
+      "Close Combat",
+      "U-turn"
+     ]
+    },
+    {
+     "pokemon": "Landorus [Incarnate Forme]",
+     "ability": "Sheer Force",
+     "item": "Life Orb",
+     "nature": null,
+     "moves": [
+      "Earth Power",
+      "Sludge Bomb",
+      "Grass Knot",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Sneasler",
+     "ability": "Unburden",
+     "item": "Psychic Seed",
+     "nature": null,
+     "moves": [
+      "Dire Claw",
+      "Close Combat",
+      "Rock Slide",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 32,
+   "player": "Maxwell R.",
+   "country": "US",
+   "record": "3-2-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Urshifu [Rapid Strike Style]",
+     "ability": "Unseen Fist",
+     "item": "Choice Scarf",
+     "nature": null,
+     "moves": [
+      "Surging Strikes",
+      "Close Combat",
+      "Ice Spinner",
+      "Aqua Jet"
+     ]
+    },
+    {
+     "pokemon": "Farigiraf",
+     "ability": "Armor Tail",
+     "item": "Sitrus Berry",
+     "nature": null,
+     "moves": [
+      "Imprison",
+      "Trick Room",
+      "Ally Switch",
+      "Psychic"
+     ]
+    },
+    {
+     "pokemon": "Landorus [Therian Forme]",
+     "ability": "Intimidate",
+     "item": "Assault Vest",
+     "nature": null,
+     "moves": [
+      "Stomping Tantrum",
+      "U-turn",
+      "Rock Slide",
+      "Tera Blast"
+     ]
+    },
+    {
+     "pokemon": "Chien-Pao",
+     "ability": "Sword of Ruin",
+     "item": "Focus Sash",
+     "nature": null,
+     "moves": [
+      "Ice Spinner",
+      "Sucker Punch",
+      "Sacred Sword",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Dragonite",
+     "ability": "Multiscale",
+     "item": "Choice Band",
+     "nature": null,
+     "moves": [
+      "Extreme Speed",
+      "Outrage",
+      "Iron Head",
+      "Aerial Ace"
+     ]
+    },
+    {
+     "pokemon": "Flutter Mane",
+     "ability": "Protosynthesis",
+     "item": "Booster Energy",
+     "nature": null,
+     "moves": [
+      "Moonblast",
+      "Shadow Ball",
+      "Dazzling Gleam",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 33,
+   "player": "Kasuga Y.",
+   "country": "JP",
+   "record": "3-2-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Landorus [Therian Forme]",
+     "ability": "Intimidate",
+     "item": "Choice Scarf",
+     "nature": null,
+     "moves": [
+      "Earthquake",
+      "Stomping Tantrum",
+      "Rock Slide",
+      "U-turn"
+     ]
+    },
+    {
+     "pokemon": "Zapdos",
+     "ability": "Static",
+     "item": "Covert Cloak",
+     "nature": null,
+     "moves": [
+      "Thunderbolt",
+      "Hurricane",
+      "Tailwind",
+      "Roost"
+     ]
+    },
+    {
+     "pokemon": "Flutter Mane",
+     "ability": "Protosynthesis",
+     "item": "Wiki Berry",
+     "nature": null,
+     "moves": [
+      "Moonblast",
+      "Shadow Ball",
+      "Dazzling Gleam",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Rillaboom",
+     "ability": "Grassy Surge",
+     "item": "Assault Vest",
+     "nature": null,
+     "moves": [
+      "Wood Hammer",
+      "Fake Out",
+      "Knock Off",
+      "U-turn"
+     ]
+    },
+    {
+     "pokemon": "Heatran",
+     "ability": "Flash Fire",
+     "item": "Life Orb",
+     "nature": null,
+     "moves": [
+      "Heat Wave",
+      "Terrain Pulse",
+      "Flash Cannon",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Kingambit",
+     "ability": "Defiant",
+     "item": "Black Glasses",
+     "nature": null,
+     "moves": [
+      "Tera Blast",
+      "Kowtow Cleave",
+      "Sucker Punch",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 34,
+   "player": "Yuki H.",
+   "country": "JP",
+   "record": "3-2-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Arcanine [Hisuian Form]",
+     "ability": "Intimidate",
+     "item": "Choice Band",
+     "nature": null,
+     "moves": [
+      "Flare Blitz",
+      "Rock Slide",
+      "Head Smash",
+      "Extreme Speed"
+     ]
+    },
+    {
+     "pokemon": "Chien-Pao",
+     "ability": "Sword of Ruin",
+     "item": "Focus Sash",
+     "nature": null,
+     "moves": [
+      "Icicle Crash",
+      "Sacred Sword",
+      "Sucker Punch",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Flutter Mane",
+     "ability": "Protosynthesis",
+     "item": "Pixie Plate",
+     "nature": null,
+     "moves": [
+      "Dazzling Gleam",
+      "Moonblast",
+      "Shadow Ball",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Tornadus [Incarnate Forme]",
+     "ability": "Prankster",
+     "item": "Sitrus Berry",
+     "nature": null,
+     "moves": [
+      "Bleakwind Storm",
+      "Rain Dance",
+      "Tailwind",
+      "Taunt"
+     ]
+    },
+    {
+     "pokemon": "Rillaboom",
+     "ability": "Grassy Surge",
+     "item": "Aguav Berry",
+     "nature": null,
+     "moves": [
+      "Wood Hammer",
+      "U-turn",
+      "Fake Out",
+      "Taunt"
+     ]
+    },
+    {
+     "pokemon": "Urshifu [Rapid Strike Style]",
+     "ability": "Unseen Fist",
+     "item": "Mystic Water",
+     "nature": null,
+     "moves": [
+      "Surging Strikes",
+      "Close Combat",
+      "Aqua Jet",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 35,
+   "player": "JESONG K.",
+   "country": "KR",
+   "record": "3-2-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Chien-Pao",
+     "ability": "Sword of Ruin",
+     "item": "Focus Sash",
+     "nature": null,
+     "moves": [
+      "Ice Spinner",
+      "Sucker Punch",
+      "Sacred Sword",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Flutter Mane",
+     "ability": "Protosynthesis",
+     "item": "Booster Energy",
+     "nature": null,
+     "moves": [
+      "Moonblast",
+      "Dazzling Gleam",
+      "Shadow Ball",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Heatran",
+     "ability": "Flash Fire",
+     "item": "Assault Vest",
+     "nature": null,
+     "moves": [
+      "Heat Wave",
+      "Flash Cannon",
+      "Earth Power",
+      "Tera Blast"
+     ]
+    },
+    {
+     "pokemon": "Farigiraf",
+     "ability": "Armor Tail",
+     "item": "Rocky Helmet",
+     "nature": null,
+     "moves": [
+      "Psychic",
+      "Hyper Voice",
+      "Trick Room",
+      "Imprison"
+     ]
+    },
+    {
+     "pokemon": "Dragapult",
+     "ability": "Clear Body",
+     "item": "Choice Band",
+     "nature": null,
+     "moves": [
+      "Dragon Darts",
+      "Phantom Force",
+      "Tera Blast",
+      "U-turn"
+     ]
+    },
+    {
+     "pokemon": "Rillaboom",
+     "ability": "Grassy Surge",
+     "item": "Sitrus Berry",
+     "nature": null,
+     "moves": [
+      "Fake Out",
+      "Wood Hammer",
+      "Stomping Tantrum",
+      "U-turn"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 36,
+   "player": "草介 木.",
+   "country": "JP",
+   "record": "3-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Regieleki",
+     "ability": "Transistor",
+     "item": "Assault Vest",
+     "nature": null,
+     "moves": [
+      "Wild Charge",
+      "Volt Switch",
+      "Electroweb",
+      "Extreme Speed"
+     ]
+    },
+    {
+     "pokemon": "Landorus [Therian Forme]",
+     "ability": "Intimidate",
+     "item": "Choice Band",
+     "nature": null,
+     "moves": [
+      "Earthquake",
+      "Rock Slide",
+      "Stomping Tantrum",
+      "U-turn"
+     ]
+    },
+    {
+     "pokemon": "Tatsugiri [Stretchy Form]",
+     "ability": "Commander",
+     "item": "Choice Scarf",
+     "nature": null,
+     "moves": [
+      "Muddy Water",
+      "Dragon Pulse",
+      "Icy Wind",
+      "Celebrate"
+     ]
+    },
+    {
+     "pokemon": "Dondozo",
+     "ability": "Unaware",
+     "item": "Clear Amulet",
+     "nature": null,
+     "moves": [
+      "Wave Crash",
+      "Earthquake",
+      "Tera Blast",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Flutter Mane",
+     "ability": "Protosynthesis",
+     "item": "Focus Sash",
+     "nature": null,
+     "moves": [
+      "Shadow Ball",
+      "Moonblast",
+      "Icy Wind",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Tornadus [Incarnate Forme]",
+     "ability": "Prankster",
+     "item": "Covert Cloak",
+     "nature": null,
+     "moves": [
+      "Bleakwind Storm",
+      "Tailwind",
+      "Taunt",
+      "Rain Dance"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 37,
+   "player": "YUTA N.",
+   "country": "JP",
+   "record": "3-2-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Rillaboom",
+     "ability": "Grassy Surge",
+     "item": "Rocky Helmet",
+     "nature": null,
+     "moves": [
+      "Fake Out",
+      "Wood Hammer",
+      "Knock Off",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Chien-Pao",
+     "ability": "Sword of Ruin",
+     "item": "Focus Sash",
+     "nature": null,
+     "moves": [
+      "Icicle Crash",
+      "Sucker Punch",
+      "Sacred Sword",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Flutter Mane",
+     "ability": "Protosynthesis",
+     "item": "Pixie Plate",
+     "nature": null,
+     "moves": [
+      "Dazzling Gleam",
+      "Shadow Ball",
+      "Moonblast",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Dragonite",
+     "ability": "Multiscale",
+     "item": "Choice Band",
+     "nature": null,
+     "moves": [
+      "Extreme Speed",
+      "Outrage",
+      "Earthquake",
+      "Ice Spinner"
+     ]
+    },
+    {
+     "pokemon": "Tornadus [Incarnate Forme]",
+     "ability": "Prankster",
+     "item": "Covert Cloak",
+     "nature": null,
+     "moves": [
+      "Tailwind",
+      "Taunt",
+      "Sunny Day",
+      "Bleakwind Storm"
+     ]
+    },
+    {
+     "pokemon": "Chi-Yu",
+     "ability": "Beads of Ruin",
+     "item": "Life Orb",
+     "nature": null,
+     "moves": [
+      "Heat Wave",
+      "Snarl",
+      "Dark Pulse",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 38,
+   "player": "Tara M.",
+   "country": "US",
+   "record": "3-2-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Flutter Mane",
+     "ability": "Protosynthesis",
+     "item": "Booster Energy",
+     "nature": null,
+     "moves": [
+      "Moonblast",
+      "Dazzling Gleam",
+      "Shadow Ball",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Urshifu [Rapid Strike Style]",
+     "ability": "Unseen Fist",
+     "item": "Mystic Water",
+     "nature": null,
+     "moves": [
+      "Surging Strikes",
+      "Close Combat",
+      "Aqua Jet",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Sneasler",
+     "ability": "Poison Touch",
+     "item": "Focus Sash",
+     "nature": null,
+     "moves": [
+      "Dire Claw",
+      "Protect",
+      "Close Combat",
+      "Fake Out"
+     ]
+    },
+    {
+     "pokemon": "Tornadus [Incarnate Forme]",
+     "ability": "Prankster",
+     "item": "Mental Herb",
+     "nature": null,
+     "moves": [
+      "Bleakwind Storm",
+      "Tailwind",
+      "Taunt",
+      "Scary Face"
+     ]
+    },
+    {
+     "pokemon": "Arcanine",
+     "ability": "Intimidate",
+     "item": "Safety Goggles",
+     "nature": null,
+     "moves": [
+      "Flare Blitz",
+      "Snarl",
+      "Will-O-Wisp",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Rillaboom",
+     "ability": "Grassy Surge",
+     "item": "Assault Vest",
+     "nature": null,
+     "moves": [
+      "Wood Hammer",
+      "Knock Off",
+      "U-turn",
+      "Fake Out"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 39,
+   "player": "Rohan S.",
+   "country": "US",
+   "record": "3-2-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Tornadus [Incarnate Forme]",
+     "ability": "Prankster",
+     "item": "Covert Cloak",
+     "nature": null,
+     "moves": [
+      "Tailwind",
+      "Rain Dance",
+      "Bleakwind Storm",
+      "Taunt"
+     ]
+    },
+    {
+     "pokemon": "Flutter Mane",
+     "ability": "Protosynthesis",
+     "item": "Booster Energy",
+     "nature": null,
+     "moves": [
+      "Moonblast",
+      "Dazzling Gleam",
+      "Shadow Ball",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Urshifu [Rapid Strike Style]",
+     "ability": "Unseen Fist",
+     "item": "Mystic Water",
+     "nature": null,
+     "moves": [
+      "Surging Strikes",
+      "Aqua Jet",
+      "Close Combat",
+      "Detect"
+     ]
+    },
+    {
+     "pokemon": "Rillaboom",
+     "ability": "Grassy Surge",
+     "item": "Assault Vest",
+     "nature": null,
+     "moves": [
+      "Wood Hammer",
+      "Fake Out",
+      "Stomping Tantrum",
+      "U-turn"
+     ]
+    },
+    {
+     "pokemon": "Heatran",
+     "ability": "Flash Fire",
+     "item": "Leftovers",
+     "nature": null,
+     "moves": [
+      "Heat Wave",
+      "Tera Blast",
+      "Substitute",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Chien-Pao",
+     "ability": "Sword of Ruin",
+     "item": "Focus Sash",
+     "nature": null,
+     "moves": [
+      "Icicle Crash",
+      "Sucker Punch",
+      "Sacred Sword",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 40,
+   "player": "智之 宇.",
+   "country": "JP",
+   "record": "3-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Chien-Pao",
+     "ability": "Sword of Ruin",
+     "item": "Focus Sash",
+     "nature": null,
+     "moves": [
+      "Icicle Crash",
+      "Sacred Sword",
+      "Sucker Punch",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Rillaboom",
+     "ability": "Grassy Surge",
+     "item": "Aguav Berry",
+     "nature": null,
+     "moves": [
+      "Wood Hammer",
+      "U-turn",
+      "Taunt",
+      "Fake Out"
+     ]
+    },
+    {
+     "pokemon": "Dragonite",
+     "ability": "Inner Focus",
+     "item": "Choice Band",
+     "nature": null,
+     "moves": [
+      "Extreme Speed",
+      "Stomping Tantrum",
+      "Aqua Jet",
+      "Outrage"
+     ]
+    },
+    {
+     "pokemon": "Flutter Mane",
+     "ability": "Protosynthesis",
+     "item": "Booster Energy",
+     "nature": null,
+     "moves": [
+      "Dazzling Gleam",
+      "Shadow Ball",
+      "Substitute",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Heatran",
+     "ability": "Flash Fire",
+     "item": "Sitrus Berry",
+     "nature": null,
+     "moves": [
+      "Heat Wave",
+      "Earth Power",
+      "Tera Blast",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Urshifu [Single Strike Style]",
+     "ability": "Unseen Fist",
+     "item": "Assault Vest",
+     "nature": null,
+     "moves": [
+      "Wicked Blow",
+      "Close Combat",
+      "Sucker Punch",
+      "Poison Jab"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 41,
+   "player": "TOMOYA Z.",
+   "country": "JP",
+   "record": "3-2-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Urshifu [Rapid Strike Style]",
+     "ability": "Unseen Fist",
+     "item": "Mystic Water",
+     "nature": null,
+     "moves": [
+      "Surging Strikes",
+      "Aqua Jet",
+      "Close Combat",
+      "Detect"
+     ]
+    },
+    {
+     "pokemon": "Arcanine [Hisuian Form]",
+     "ability": "Intimidate",
+     "item": "Choice Band",
+     "nature": null,
+     "moves": [
+      "Extreme Speed",
+      "Flare Blitz",
+      "Rock Slide",
+      "Head Smash"
+     ]
+    },
+    {
+     "pokemon": "Rillaboom",
+     "ability": "Grassy Surge",
+     "item": "Assault Vest",
+     "nature": null,
+     "moves": [
+      "Fake Out",
+      "Wood Hammer",
+      "Stomping Tantrum",
+      "U-turn"
+     ]
+    },
+    {
+     "pokemon": "Tornadus [Incarnate Forme]",
+     "ability": "Prankster",
+     "item": "Sitrus Berry",
+     "nature": null,
+     "moves": [
+      "Tailwind",
+      "Icy Wind",
+      "Bleakwind Storm",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Chien-Pao",
+     "ability": "Sword of Ruin",
+     "item": "Focus Sash",
+     "nature": null,
+     "moves": [
+      "Icicle Crash",
+      "Sacred Sword",
+      "Sucker Punch",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Flutter Mane",
+     "ability": "Protosynthesis",
+     "item": "Pixie Plate",
+     "nature": null,
+     "moves": [
+      "Moonblast",
+      "Dazzling Gleam",
+      "Shadow Ball",
+      "Taunt"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 42,
+   "player": "Yutaro A.",
+   "country": "JP",
+   "record": "3-2-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Sylveon",
+     "ability": "Pixilate",
+     "item": "Assault Vest",
+     "nature": null,
+     "moves": [
+      "Hyper Drill",
+      "Tera Blast",
+      "Psychic",
+      "Quick Attack"
+     ]
+    },
+    {
+     "pokemon": "Tatsugiri [Curly Form]",
+     "ability": "Commander",
+     "item": "Choice Scarf",
+     "nature": null,
+     "moves": [
+      "Draco Meteor",
+      "Hydro Pump",
+      "Dragon Pulse",
+      "Icy Wind"
+     ]
+    },
+    {
+     "pokemon": "Heatran",
+     "ability": "Flash Fire",
+     "item": "Life Orb",
+     "nature": null,
+     "moves": [
+      "Heat Wave",
+      "Earth Power",
+      "Tera Blast",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Dragonite",
+     "ability": "Inner Focus",
+     "item": "Choice Band",
+     "nature": null,
+     "moves": [
+      "Outrage",
+      "Wing Attack",
+      "Ice Spinner",
+      "Extreme Speed"
+     ]
+    },
+    {
+     "pokemon": "Tornadus [Incarnate Forme]",
+     "ability": "Prankster",
+     "item": "Covert Cloak",
+     "nature": null,
+     "moves": [
+      "Bleakwind Storm",
+      "Sunny Day",
+      "Tailwind",
+      "Taunt"
+     ]
+    },
+    {
+     "pokemon": "Dondozo",
+     "ability": "Oblivious",
+     "item": "Figy Berry",
+     "nature": null,
+     "moves": [
+      "Wave Crash",
+      "Earthquake",
+      "Rock Slide",
+      "Tera Blast"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 43,
+   "player": "壱郎 佐.",
+   "country": "JP",
+   "record": "3-2-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Cresselia",
+     "ability": "Levitate",
+     "item": "Mental Herb",
+     "nature": null,
+     "moves": [
+      "Lunar Blessing",
+      "Trick Room",
+      "Moonblast",
+      "Ice Beam"
+     ]
+    },
+    {
+     "pokemon": "Amoonguss",
+     "ability": "Regenerator",
+     "item": "Rocky Helmet",
+     "nature": null,
+     "moves": [
+      "Rage Powder",
+      "Spore",
+      "Pollen Puff",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Landorus [Therian Forme]",
+     "ability": "Intimidate",
+     "item": "Assault Vest",
+     "nature": null,
+     "moves": [
+      "Earthquake",
+      "Tera Blast",
+      "Rock Slide",
+      "U-turn"
+     ]
+    },
+    {
+     "pokemon": "Ursaluna",
+     "ability": "Guts",
+     "item": "Flame Orb",
+     "nature": null,
+     "moves": [
+      "Facade",
+      "Headlong Rush",
+      "Tera Blast",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Iron Bundle",
+     "ability": "Quark Drive",
+     "item": "Booster Energy",
+     "nature": null,
+     "moves": [
+      "Freeze-Dry",
+      "Hydro Pump",
+      "Icy Wind",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Heatran",
+     "ability": "Flash Fire",
+     "item": "Leftovers",
+     "nature": null,
+     "moves": [
+      "Heat Wave",
+      "Earth Power",
+      "Tera Blast",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 44,
+   "player": "サトウ ト.",
+   "country": "JP",
+   "record": "3-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Chi-Yu",
+     "ability": "Beads of Ruin",
+     "item": "Choice Specs",
+     "nature": null,
+     "moves": [
+      "Heat Wave",
+      "Dark Pulse",
+      "Overheat",
+      "Snarl"
+     ]
+    },
+    {
+     "pokemon": "Iron Valiant",
+     "ability": "Quark Drive",
+     "item": "Booster Energy",
+     "nature": null,
+     "moves": [
+      "Spirit Break",
+      "Close Combat",
+      "Shadow Sneak",
+      "Quick Guard"
+     ]
+    },
+    {
+     "pokemon": "Urshifu [Single Strike Style]",
+     "ability": "Unseen Fist",
+     "item": "Focus Sash",
+     "nature": null,
+     "moves": [
+      "Wicked Blow",
+      "Close Combat",
+      "Sucker Punch",
+      "Detect"
+     ]
+    },
+    {
+     "pokemon": "Azumarill",
+     "ability": "Huge Power",
+     "item": "Assault Vest",
+     "nature": null,
+     "moves": [
+      "Liquidation",
+      "Play Rough",
+      "Aqua Jet",
+      "Ice Spinner"
+     ]
+    },
+    {
+     "pokemon": "Flutter Mane",
+     "ability": "Protosynthesis",
+     "item": "Life Orb",
+     "nature": null,
+     "moves": [
+      "Moonblast",
+      "Shadow Ball",
+      "Dazzling Gleam",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Tornadus [Incarnate Forme]",
+     "ability": "Prankster",
+     "item": "Covert Cloak",
+     "nature": null,
+     "moves": [
+      "Bleakwind Storm",
+      "Sunny Day",
+      "Tailwind",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 45,
+   "player": "あつや す.",
+   "country": "JP",
+   "record": "3-2-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Moltres [Galarian Form]",
+     "ability": "Berserk",
+     "item": "Sitrus Berry",
+     "nature": null,
+     "moves": [
+      "Fiery Wrath",
+      "Air Slash",
+      "Protect",
+      "Nasty Plot"
+     ]
+    },
+    {
+     "pokemon": "Thundurus [Incarnate Forme]",
+     "ability": "Prankster",
+     "item": "Covert Cloak",
+     "nature": null,
+     "moves": [
+      "Wildbolt Storm",
+      "Scary Face",
+      "Rain Dance",
+      "Eerie Impulse"
+     ]
+    },
+    {
+     "pokemon": "Flutter Mane",
+     "ability": "Protosynthesis",
+     "item": "Focus Sash",
+     "nature": null,
+     "moves": [
+      "Moonblast",
+      "Shadow Ball",
+      "Dazzling Gleam",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Rillaboom",
+     "ability": "Grassy Surge",
+     "item": "Aguav Berry",
+     "nature": null,
+     "moves": [
+      "Wood Hammer",
+      "Taunt",
+      "U-turn",
+      "Fake Out"
+     ]
+    },
+    {
+     "pokemon": "Goodra [Hisuian Form]",
+     "ability": "Shell Armor",
+     "item": "Rocky Helmet",
+     "nature": null,
+     "moves": [
+      "Heavy Slam",
+      "Body Press",
+      "Shelter",
+      "Life Dew"
+     ]
+    },
+    {
+     "pokemon": "Grimmsnarl",
+     "ability": "Prankster",
+     "item": "Light Clay",
+     "nature": null,
+     "moves": [
+      "Spirit Break",
+      "Reflect",
+      "Light Screen",
+      "Parting Shot"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 46,
+   "player": "Jarrod C.",
+   "country": "AU",
+   "record": "3-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Gholdengo",
+     "ability": "Good as Gold",
+     "item": "Choice Specs",
+     "nature": null,
+     "moves": [
+      "Make It Rain",
+      "Thunderbolt",
+      "Trick",
+      "Shadow Ball"
+     ]
+    },
+    {
+     "pokemon": "Amoonguss",
+     "ability": "Effect Spore",
+     "item": "Mental Herb",
+     "nature": null,
+     "moves": [
+      "Spore",
+      "Rage Powder",
+      "Protect",
+      "Pollen Puff"
+     ]
+    },
+    {
+     "pokemon": "Chien-Pao",
+     "ability": "Sword of Ruin",
+     "item": "Focus Sash",
+     "nature": null,
+     "moves": [
+      "Protect",
+      "Ice Spinner",
+      "Sucker Punch",
+      "Sacred Sword"
+     ]
+    },
+    {
+     "pokemon": "Tornadus [Incarnate Forme]",
+     "ability": "Prankster",
+     "item": "Covert Cloak",
+     "nature": null,
+     "moves": [
+      "Tailwind",
+      "Bleakwind Storm",
+      "Protect",
+      "Rain Dance"
+     ]
+    },
+    {
+     "pokemon": "Urshifu [Rapid Strike Style]",
+     "ability": "Unseen Fist",
+     "item": "Mystic Water",
+     "nature": null,
+     "moves": [
+      "Surging Strikes",
+      "Detect",
+      "Close Combat",
+      "Aqua Jet"
+     ]
+    },
+    {
+     "pokemon": "Flutter Mane",
+     "ability": "Protosynthesis",
+     "item": "Booster Energy",
+     "nature": null,
+     "moves": [
+      "Dazzling Gleam",
+      "Moonblast",
+      "Protect",
+      "Shadow Ball"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 47,
+   "player": "jeong heon k.",
+   "country": "KR",
+   "record": "3-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Flutter Mane",
+     "ability": "Protosynthesis",
+     "item": "Booster Energy",
+     "nature": null,
+     "moves": [
+      "Moonblast",
+      "Protect",
+      "Shadow Ball",
+      "Dazzling Gleam"
+     ]
+    },
+    {
+     "pokemon": "Chi-Yu",
+     "ability": "Beads of Ruin",
+     "item": "Focus Sash",
+     "nature": null,
+     "moves": [
+      "Heat Wave",
+      "Dark Pulse",
+      "Overheat",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Iron Hands",
+     "ability": "Quark Drive",
+     "item": "Assault Vest",
+     "nature": null,
+     "moves": [
+      "Fake Out",
+      "Heavy Slam",
+      "Drain Punch",
+      "Wild Charge"
+     ]
+    },
+    {
+     "pokemon": "Urshifu [Rapid Strike Style]",
+     "ability": "Unseen Fist",
+     "item": "Choice Scarf",
+     "nature": null,
+     "moves": [
+      "Surging Strikes",
+      "Close Combat",
+      "U-turn",
+      "Zen Headbutt"
+     ]
+    },
+    {
+     "pokemon": "Cresselia",
+     "ability": "Levitate",
+     "item": "Sitrus Berry",
+     "nature": null,
+     "moves": [
+      "Moonblast",
+      "Helping Hand",
+      "Lunar Blessing",
+      "Trick Room"
+     ]
+    },
+    {
+     "pokemon": "Ursaluna",
+     "ability": "Guts",
+     "item": "Flame Orb",
+     "nature": null,
+     "moves": [
+      "Facade",
+      "Earthquake",
+      "Swords Dance",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 48,
+   "player": "晃成 藤.",
+   "country": "JP",
+   "record": "3-2-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Flutter Mane",
+     "ability": "Protosynthesis",
+     "item": "Choice Specs",
+     "nature": null,
+     "moves": [
+      "Moonblast",
+      "Shadow Ball",
+      "Dazzling Gleam",
+      "Thunderbolt"
+     ]
+    },
+    {
+     "pokemon": "Cresselia",
+     "ability": "Levitate",
+     "item": "Rocky Helmet",
+     "nature": null,
+     "moves": [
+      "Moonblast",
+      "Trick Room",
+      "Lunar Blessing",
+      "Ally Switch"
+     ]
+    },
+    {
+     "pokemon": "Urshifu [Rapid Strike Style]",
+     "ability": "Unseen Fist",
+     "item": "Focus Sash",
+     "nature": null,
+     "moves": [
+      "Surging Strikes",
+      "Aqua Jet",
+      "Close Combat",
+      "Detect"
+     ]
+    },
+    {
+     "pokemon": "Iron Hands",
+     "ability": "Quark Drive",
+     "item": "Assault Vest",
+     "nature": null,
+     "moves": [
+      "Wild Charge",
+      "Drain Punch",
+      "Ice Punch",
+      "Fake Out"
+     ]
+    },
+    {
+     "pokemon": "Heatran",
+     "ability": "Flash Fire",
+     "item": "Sitrus Berry",
+     "nature": null,
+     "moves": [
+      "Heat Wave",
+      "Earth Power",
+      "Tera Blast",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Ursaluna",
+     "ability": "Guts",
+     "item": "Flame Orb",
+     "nature": null,
+     "moves": [
+      "Facade",
+      "Rock Slide",
+      "Earthquake",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 49,
+   "player": "Akira H.",
+   "country": "JP",
+   "record": "3-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Heatran",
+     "ability": "Flash Fire",
+     "item": "Sitrus Berry",
+     "nature": null,
+     "moves": [
+      "Heat Wave",
+      "Earth Power",
+      "Tera Blast",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Cresselia",
+     "ability": "Levitate",
+     "item": "Mental Herb",
+     "nature": null,
+     "moves": [
+      "Trick Room",
+      "Lunar Blessing",
+      "Moonblast",
+      "Ally Switch"
+     ]
+    },
+    {
+     "pokemon": "Iron Hands",
+     "ability": "Quark Drive",
+     "item": "Assault Vest",
+     "nature": null,
+     "moves": [
+      "Drain Punch",
+      "Thunder Punch",
+      "Heavy Slam",
+      "Fake Out"
+     ]
+    },
+    {
+     "pokemon": "Flutter Mane",
+     "ability": "Protosynthesis",
+     "item": "Choice Specs",
+     "nature": null,
+     "moves": [
+      "Dazzling Gleam",
+      "Moonblast",
+      "Shadow Ball",
+      "Power Gem"
+     ]
+    },
+    {
+     "pokemon": "Ursaluna",
+     "ability": "Guts",
+     "item": "Flame Orb",
+     "nature": null,
+     "moves": [
+      "Facade",
+      "Headlong Rush",
+      "Earthquake",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Urshifu [Rapid Strike Style]",
+     "ability": "Unseen Fist",
+     "item": "Mystic Water",
+     "nature": null,
+     "moves": [
+      "Surging Strikes",
+      "Close Combat",
+      "Aqua Jet",
+      "Detect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 50,
+   "player": "Ji Hoo M.",
+   "country": "KR",
+   "record": "2-4-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": null,
+   "team": []
+  },
+  {
+   "rank": 51,
+   "player": "Setsuna M.",
+   "country": "JP",
+   "record": "2-4-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Tornadus [Incarnate Forme]",
+     "ability": "Prankster",
+     "item": "Covert Cloak",
+     "nature": null,
+     "moves": [
+      "Bleakwind Storm",
+      "Rain Dance",
+      "Tailwind",
+      "Scary Face"
+     ]
+    },
+    {
+     "pokemon": "Urshifu [Rapid Strike Style]",
+     "ability": "Unseen Fist",
+     "item": "Mystic Water",
+     "nature": null,
+     "moves": [
+      "Surging Strikes",
+      "Close Combat",
+      "Aqua Jet",
+      "Detect"
+     ]
+    },
+    {
+     "pokemon": "Rillaboom",
+     "ability": "Grassy Surge",
+     "item": "Assault Vest",
+     "nature": null,
+     "moves": [
+      "Wood Hammer",
+      "U-turn",
+      "Stomping Tantrum",
+      "Fake Out"
+     ]
+    },
+    {
+     "pokemon": "Ursaluna",
+     "ability": "Guts",
+     "item": "Flame Orb",
+     "nature": null,
+     "moves": [
+      "Facade",
+      "Earthquake",
+      "Rock Slide",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Oranguru",
+     "ability": "Telepathy",
+     "item": "Mental Herb",
+     "nature": null,
+     "moves": [
+      "Foul Play",
+      "Psychic Terrain",
+      "Trick Room",
+      "Instruct"
+     ]
+    },
+    {
+     "pokemon": "Gholdengo",
+     "ability": "Good as Gold",
+     "item": "Sitrus Berry",
+     "nature": null,
+     "moves": [
+      "Make It Rain",
+      "Thunderbolt",
+      "Nasty Plot",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 52,
+   "player": "Rihito M.",
+   "country": "JP",
+   "record": "2-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Rillaboom",
+     "ability": "Grassy Surge",
+     "item": "Assault Vest",
+     "nature": null,
+     "moves": [
+      "Wood Hammer",
+      "Stomping Tantrum",
+      "Fake Out",
+      "U-turn"
+     ]
+    },
+    {
+     "pokemon": "Tornadus [Incarnate Forme]",
+     "ability": "Prankster",
+     "item": "Covert Cloak",
+     "nature": null,
+     "moves": [
+      "Bleakwind Storm",
+      "Tailwind",
+      "Protect",
+      "Taunt"
+     ]
+    },
+    {
+     "pokemon": "Dragonite",
+     "ability": "Multiscale",
+     "item": "Choice Band",
+     "nature": null,
+     "moves": [
+      "Outrage",
+      "Aerial Ace",
+      "Extreme Speed",
+      "Stomping Tantrum"
+     ]
+    },
+    {
+     "pokemon": "Flutter Mane",
+     "ability": "Protosynthesis",
+     "item": "Choice Specs",
+     "nature": null,
+     "moves": [
+      "Moonblast",
+      "Shadow Ball",
+      "Thunderbolt",
+      "Dazzling Gleam"
+     ]
+    },
+    {
+     "pokemon": "Urshifu [Rapid Strike Style]",
+     "ability": "Unseen Fist",
+     "item": "Mystic Water",
+     "nature": null,
+     "moves": [
+      "Surging Strikes",
+      "Close Combat",
+      "Detect",
+      "Aqua Jet"
+     ]
+    },
+    {
+     "pokemon": "Chien-Pao",
+     "ability": "Sword of Ruin",
+     "item": "Focus Sash",
+     "nature": null,
+     "moves": [
+      "Icicle Crash",
+      "Sacred Sword",
+      "Protect",
+      "Sucker Punch"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 53,
+   "player": "KOTARO I.",
+   "country": "JP",
+   "record": "2-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Cresselia",
+     "ability": "Levitate",
+     "item": "Rocky Helmet",
+     "nature": null,
+     "moves": [
+      "Moonblast",
+      "Ally Switch",
+      "Lunar Blessing",
+      "Trick Room"
+     ]
+    },
+    {
+     "pokemon": "Flutter Mane",
+     "ability": "Protosynthesis",
+     "item": "Booster Energy",
+     "nature": null,
+     "moves": [
+      "Dazzling Gleam",
+      "Shadow Ball",
+      "Thunderbolt",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Iron Hands",
+     "ability": "Quark Drive",
+     "item": "Clear Amulet",
+     "nature": null,
+     "moves": [
+      "Thunder Punch",
+      "Drain Punch",
+      "Fake Out",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Ursaluna",
+     "ability": "Guts",
+     "item": "Flame Orb",
+     "nature": null,
+     "moves": [
+      "Facade",
+      "Earthquake",
+      "Swords Dance",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Heatran",
+     "ability": "Flash Fire",
+     "item": "Sitrus Berry",
+     "nature": null,
+     "moves": [
+      "Heat Wave",
+      "Earth Power",
+      "Flash Cannon",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Chien-Pao",
+     "ability": "Sword of Ruin",
+     "item": "Focus Sash",
+     "nature": null,
+     "moves": [
+      "Ice Spinner",
+      "Sucker Punch",
+      "Sacred Sword",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 54,
+   "player": "Riley C.",
+   "country": "AU",
+   "record": "2-4-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Landorus [Therian Forme]",
+     "ability": "Intimidate",
+     "item": "Life Orb",
+     "nature": null,
+     "moves": [
+      "Rock Slide",
+      "Earthquake",
+      "Tera Blast",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Heatran",
+     "ability": "Flash Fire",
+     "item": "Leftovers",
+     "nature": null,
+     "moves": [
+      "Heat Wave",
+      "Flash Cannon",
+      "Protect",
+      "Tera Blast"
+     ]
+    },
+    {
+     "pokemon": "Flutter Mane",
+     "ability": "Protosynthesis",
+     "item": "Choice Specs",
+     "nature": null,
+     "moves": [
+      "Moonblast",
+      "Shadow Ball",
+      "Tera Blast",
+      "Dazzling Gleam"
+     ]
+    },
+    {
+     "pokemon": "Urshifu [Rapid Strike Style]",
+     "ability": "Unseen Fist",
+     "item": "Mystic Water",
+     "nature": null,
+     "moves": [
+      "Surging Strikes",
+      "Close Combat",
+      "Aqua Jet",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Rillaboom",
+     "ability": "Grassy Surge",
+     "item": "Assault Vest",
+     "nature": null,
+     "moves": [
+      "Fake Out",
+      "Wood Hammer",
+      "Knock Off",
+      "U-turn"
+     ]
+    },
+    {
+     "pokemon": "Tornadus [Incarnate Forme]",
+     "ability": "Prankster",
+     "item": "Covert Cloak",
+     "nature": null,
+     "moves": [
+      "Tailwind",
+      "Bleakwind Storm",
+      "Rain Dance",
+      "Taunt"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 55,
+   "player": "Keita N.",
+   "country": "JP",
+   "record": "2-3-0",
+   "dropped": true,
+   "dropped_round": 5,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Heatran",
+     "ability": "Flash Fire",
+     "item": "Leftovers",
+     "nature": null,
+     "moves": [
+      "Heat Wave",
+      "Earth Power",
+      "Tera Blast",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Cresselia",
+     "ability": "Levitate",
+     "item": "Mental Herb",
+     "nature": null,
+     "moves": [
+      "Moonblast",
+      "Ally Switch",
+      "Lunar Blessing",
+      "Trick Room"
+     ]
+    },
+    {
+     "pokemon": "Flutter Mane",
+     "ability": "Protosynthesis",
+     "item": "Booster Energy",
+     "nature": null,
+     "moves": [
+      "Dazzling Gleam",
+      "Shadow Ball",
+      "Mystical Fire",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Ursaluna",
+     "ability": "Guts",
+     "item": "Flame Orb",
+     "nature": null,
+     "moves": [
+      "Facade",
+      "Earthquake",
+      "Swords Dance",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Urshifu [Rapid Strike Style]",
+     "ability": "Unseen Fist",
+     "item": "Focus Sash",
+     "nature": null,
+     "moves": [
+      "Surging Strikes",
+      "Close Combat",
+      "Aqua Jet",
+      "Detect"
+     ]
+    },
+    {
+     "pokemon": "Salamence",
+     "ability": "Intimidate",
+     "item": "Sky Plate",
+     "nature": null,
+     "moves": [
+      "Outrage",
+      "Dual Wingbeat",
+      "Dragon Dance",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 56,
+   "player": "GeonWoo K.",
+   "country": "KR",
+   "record": "2-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Ursaluna",
+     "ability": "Guts",
+     "item": "Weakness Policy",
+     "nature": null,
+     "moves": [
+      "Facade",
+      "Earthquake",
+      "Rock Slide",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Urshifu [Single Strike Style]",
+     "ability": "Unseen Fist",
+     "item": "Choice Band",
+     "nature": null,
+     "moves": [
+      "Wicked Blow",
+      "Close Combat",
+      "Ice Punch",
+      "Sucker Punch"
+     ]
+    },
+    {
+     "pokemon": "Tornadus [Incarnate Forme]",
+     "ability": "Prankster",
+     "item": "Mental Herb",
+     "nature": null,
+     "moves": [
+      "Bleakwind Storm",
+      "Tailwind",
+      "Taunt",
+      "Icy Wind"
+     ]
+    },
+    {
+     "pokemon": "Flutter Mane",
+     "ability": "Protosynthesis",
+     "item": "Choice Specs",
+     "nature": null,
+     "moves": [
+      "Moonblast",
+      "Shadow Ball",
+      "Dazzling Gleam",
+      "Thunderbolt"
+     ]
+    },
+    {
+     "pokemon": "Cresselia",
+     "ability": "Levitate",
+     "item": "Covert Cloak",
+     "nature": null,
+     "moves": [
+      "Moonblast",
+      "Helping Hand",
+      "Trick Room",
+      "Ally Switch"
+     ]
+    },
+    {
+     "pokemon": "Iron Bundle",
+     "ability": "Quark Drive",
+     "item": "Flame Orb",
+     "nature": null,
+     "moves": [
+      "Hydro Pump",
+      "Freeze-Dry",
+      "Endure",
+      "Fling"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 57,
+   "player": "Archie M.",
+   "country": "UK",
+   "record": "2-4-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Flutter Mane",
+     "ability": "Protosynthesis",
+     "item": "Booster Energy",
+     "nature": null,
+     "moves": [
+      "Protect",
+      "Shadow Ball",
+      "Moonblast",
+      "Icy Wind"
+     ]
+    },
+    {
+     "pokemon": "Rillaboom",
+     "ability": "Grassy Surge",
+     "item": "Assault Vest",
+     "nature": null,
+     "moves": [
+      "Wood Hammer",
+      "Stomping Tantrum",
+      "U-turn",
+      "Fake Out"
+     ]
+    },
+    {
+     "pokemon": "Tatsugiri [Curly Form]",
+     "ability": "Commander",
+     "item": "Choice Scarf",
+     "nature": null,
+     "moves": [
+      "Muddy Water",
+      "Draco Meteor",
+      "Icy Wind",
+      "Sleep Talk"
+     ]
+    },
+    {
+     "pokemon": "Heatran",
+     "ability": "Flash Fire",
+     "item": "Shuca Berry",
+     "nature": null,
+     "moves": [
+      "Protect",
+      "Flamethrower",
+      "Earth Power",
+      "Tera Blast"
+     ]
+    },
+    {
+     "pokemon": "Dondozo",
+     "ability": "Unaware",
+     "item": "Leftovers",
+     "nature": null,
+     "moves": [
+      "Protect",
+      "Wave Crash",
+      "Order Up",
+      "Tera Blast"
+     ]
+    },
+    {
+     "pokemon": "Urshifu [Single Strike Style]",
+     "ability": "Unseen Fist",
+     "item": "Choice Band",
+     "nature": null,
+     "moves": [
+      "Wicked Blow",
+      "Sucker Punch",
+      "Close Combat",
+      "U-turn"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 58,
+   "player": "テツヨシ ス.",
+   "country": "JP",
+   "record": "2-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Gholdengo",
+     "ability": "Good as Gold",
+     "item": "Choice Specs",
+     "nature": null,
+     "moves": [
+      "Make It Rain",
+      "Shadow Ball",
+      "Trick",
+      "Tera Blast"
+     ]
+    },
+    {
+     "pokemon": "Grimmsnarl",
+     "ability": "Prankster",
+     "item": "Light Clay",
+     "nature": null,
+     "moves": [
+      "Spirit Break",
+      "Fake Out",
+      "Reflect",
+      "Light Screen"
+     ]
+    },
+    {
+     "pokemon": "Cresselia",
+     "ability": "Levitate",
+     "item": "Mental Herb",
+     "nature": null,
+     "moves": [
+      "Lunar Blessing",
+      "Moonblast",
+      "Trick Room",
+      "Helping Hand"
+     ]
+    },
+    {
+     "pokemon": "Rillaboom",
+     "ability": "Grassy Surge",
+     "item": "Assault Vest",
+     "nature": null,
+     "moves": [
+      "Wood Hammer",
+      "Knock Off",
+      "U-turn",
+      "Fake Out"
+     ]
+    },
+    {
+     "pokemon": "Goodra [Hisuian Form]",
+     "ability": "Shell Armor",
+     "item": "Rocky Helmet",
+     "nature": null,
+     "moves": [
+      "Heavy Slam",
+      "Body Press",
+      "Shelter",
+      "Life Dew"
+     ]
+    },
+    {
+     "pokemon": "Landorus [Therian Forme]",
+     "ability": "Intimidate",
+     "item": "Sitrus Berry",
+     "nature": null,
+     "moves": [
+      "Earthquake",
+      "Rock Slide",
+      "U-turn",
+      "Stomping Tantrum"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 59,
+   "player": "Yeon Woo L.",
+   "country": "KR",
+   "record": "2-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": null,
+   "team": []
+  },
+  {
+   "rank": 60,
+   "player": "Naomi C.",
+   "country": "AU",
+   "record": "2-4-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Urshifu [Single Strike Style]",
+     "ability": "Unseen Fist",
+     "item": "Choice Band",
+     "nature": null,
+     "moves": [
+      "Wicked Blow",
+      "Sucker Punch",
+      "Close Combat",
+      "Poison Jab"
+     ]
+    },
+    {
+     "pokemon": "Gholdengo",
+     "ability": "Good as Gold",
+     "item": "Choice Specs",
+     "nature": null,
+     "moves": [
+      "Make It Rain",
+      "Shadow Ball",
+      "Thunderbolt",
+      "Trick"
+     ]
+    },
+    {
+     "pokemon": "Landorus [Therian Forme]",
+     "ability": "Intimidate",
+     "item": "Assault Vest",
+     "nature": null,
+     "moves": [
+      "Earthquake",
+      "Stomping Tantrum",
+      "Rock Slide",
+      "U-turn"
+     ]
+    },
+    {
+     "pokemon": "Tornadus [Incarnate Forme]",
+     "ability": "Prankster",
+     "item": "Mental Herb",
+     "nature": null,
+     "moves": [
+      "Tailwind",
+      "Bleakwind Storm",
+      "Taunt",
+      "Sunny Day"
+     ]
+    },
+    {
+     "pokemon": "Chi-Yu",
+     "ability": "Beads of Ruin",
+     "item": "Life Orb",
+     "nature": null,
+     "moves": [
+      "Overheat",
+      "Heat Wave",
+      "Dark Pulse",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Flutter Mane",
+     "ability": "Protosynthesis",
+     "item": "Booster Energy",
+     "nature": null,
+     "moves": [
+      "Dazzling Gleam",
+      "Shadow Ball",
+      "Icy Wind",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 61,
+   "player": "正悟 小.",
+   "country": "JP",
+   "record": "2-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Flutter Mane",
+     "ability": "Protosynthesis",
+     "item": "Booster Energy",
+     "nature": null,
+     "moves": [
+      "Dazzling Gleam",
+      "Moonblast",
+      "Shadow Ball",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Dondozo",
+     "ability": "Unaware",
+     "item": "Leftovers",
+     "nature": null,
+     "moves": [
+      "Tera Blast",
+      "Wave Crash",
+      "Fissure",
+      "Yawn"
+     ]
+    },
+    {
+     "pokemon": "Rillaboom",
+     "ability": "Grassy Surge",
+     "item": "Rocky Helmet",
+     "nature": null,
+     "moves": [
+      "Wood Hammer",
+      "Low Kick",
+      "Fake Out",
+      "Leech Seed"
+     ]
+    },
+    {
+     "pokemon": "Iron Hands",
+     "ability": "Quark Drive",
+     "item": "Assault Vest",
+     "nature": null,
+     "moves": [
+      "Fake Out",
+      "Heavy Slam",
+      "Drain Punch",
+      "Wild Charge"
+     ]
+    },
+    {
+     "pokemon": "Chien-Pao",
+     "ability": "Sword of Ruin",
+     "item": "Focus Sash",
+     "nature": null,
+     "moves": [
+      "Protect",
+      "Sucker Punch",
+      "Ice Spinner",
+      "Sacred Sword"
+     ]
+    },
+    {
+     "pokemon": "Landorus [Therian Forme]",
+     "ability": "Intimidate",
+     "item": "Choice Scarf",
+     "nature": null,
+     "moves": [
+      "Rock Slide",
+      "Earthquake",
+      "U-turn",
+      "Stomping Tantrum"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 62,
+   "player": "Naoki O.",
+   "country": "JP",
+   "record": "2-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Flutter Mane",
+     "ability": "Protosynthesis",
+     "item": "Choice Specs",
+     "nature": null,
+     "moves": [
+      "Shadow Ball",
+      "Dazzling Gleam",
+      "Energy Ball",
+      "Moonblast"
+     ]
+    },
+    {
+     "pokemon": "Amoonguss",
+     "ability": "Regenerator",
+     "item": "Rocky Helmet",
+     "nature": null,
+     "moves": [
+      "Pollen Puff",
+      "Spore",
+      "Rage Powder",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Urshifu [Rapid Strike Style]",
+     "ability": "Unseen Fist",
+     "item": "Choice Scarf",
+     "nature": null,
+     "moves": [
+      "Surging Strikes",
+      "Aqua Jet",
+      "Close Combat",
+      "U-turn"
+     ]
+    },
+    {
+     "pokemon": "Tornadus [Incarnate Forme]",
+     "ability": "Prankster",
+     "item": "Covert Cloak",
+     "nature": null,
+     "moves": [
+      "Bleakwind Storm",
+      "Rain Dance",
+      "Tailwind",
+      "Taunt"
+     ]
+    },
+    {
+     "pokemon": "Landorus [Therian Forme]",
+     "ability": "Intimidate",
+     "item": "Assault Vest",
+     "nature": null,
+     "moves": [
+      "Earthquake",
+      "Rock Slide",
+      "U-turn",
+      "Stomping Tantrum"
+     ]
+    },
+    {
+     "pokemon": "Chien-Pao",
+     "ability": "Sword of Ruin",
+     "item": "Focus Sash",
+     "nature": null,
+     "moves": [
+      "Icicle Crash",
+      "Sucker Punch",
+      "Sacred Sword",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 63,
+   "player": "Hui Seo C.",
+   "country": "KR",
+   "record": "2-4-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": null,
+   "team": []
+  },
+  {
+   "rank": 64,
+   "player": "Kanau H.",
+   "country": "JP",
+   "record": "2-4-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Zapdos",
+     "ability": "Static",
+     "item": "Rocky Helmet",
+     "nature": null,
+     "moves": [
+      "Thunderbolt",
+      "Hurricane",
+      "Roost",
+      "Tailwind"
+     ]
+    },
+    {
+     "pokemon": "Maushold [Family of Four]",
+     "ability": "Friend Guard",
+     "item": "Focus Sash",
+     "nature": null,
+     "moves": [
+      "Super Fang",
+      "Follow Me",
+      "Taunt",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Grimmsnarl",
+     "ability": "Prankster",
+     "item": "Light Clay",
+     "nature": null,
+     "moves": [
+      "Spirit Break",
+      "Light Screen",
+      "Reflect",
+      "Parting Shot"
+     ]
+    },
+    {
+     "pokemon": "Urshifu [Single Strike Style]",
+     "ability": "Unseen Fist",
+     "item": "Assault Vest",
+     "nature": null,
+     "moves": [
+      "Wicked Blow",
+      "Drain Punch",
+      "Sucker Punch",
+      "Poison Jab"
+     ]
+    },
+    {
+     "pokemon": "Gholdengo",
+     "ability": "Good as Gold",
+     "item": "Choice Scarf",
+     "nature": null,
+     "moves": [
+      "Make It Rain",
+      "Shadow Ball",
+      "Thunderbolt",
+      "Trick"
+     ]
+    },
+    {
+     "pokemon": "Ting-Lu",
+     "ability": "Vessel of Ruin",
+     "item": "Leftovers",
+     "nature": null,
+     "moves": [
+      "Sand Tomb",
+      "Ruination",
+      "Heavy Slam",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 65,
+   "player": "Ryder J.",
+   "country": "US",
+   "record": "2-4-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Flutter Mane",
+     "ability": "Protosynthesis",
+     "item": "Choice Specs",
+     "nature": null,
+     "moves": [
+      "Dazzling Gleam",
+      "Shadow Ball",
+      "Moonblast",
+      "Hex"
+     ]
+    },
+    {
+     "pokemon": "Thundurus [Incarnate Forme]",
+     "ability": "Prankster",
+     "item": "Rocky Helmet",
+     "nature": null,
+     "moves": [
+      "Eerie Impulse",
+      "Wildbolt Storm",
+      "Thunder Wave",
+      "Taunt"
+     ]
+    },
+    {
+     "pokemon": "Rillaboom",
+     "ability": "Grassy Surge",
+     "item": "Assault Vest",
+     "nature": null,
+     "moves": [
+      "Wood Hammer",
+      "U-turn",
+      "Fake Out",
+      "Knock Off"
+     ]
+    },
+    {
+     "pokemon": "Landorus [Therian Forme]",
+     "ability": "Intimidate",
+     "item": "Lum Berry",
+     "nature": null,
+     "moves": [
+      "Rock Slide",
+      "Stomping Tantrum",
+      "Tera Blast",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Urshifu [Rapid Strike Style]",
+     "ability": "Unseen Fist",
+     "item": "Mystic Water",
+     "nature": null,
+     "moves": [
+      "Aqua Jet",
+      "Surging Strikes",
+      "Close Combat",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Chi-Yu",
+     "ability": "Beads of Ruin",
+     "item": "Safety Goggles",
+     "nature": null,
+     "moves": [
+      "Nasty Plot",
+      "Heat Wave",
+      "Dark Pulse",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 66,
+   "player": "Gustav B.",
+   "country": "SE",
+   "record": "2-4-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Urshifu [Rapid Strike Style]",
+     "ability": "Unseen Fist",
+     "item": "Choice Scarf",
+     "nature": null,
+     "moves": [
+      "Surging Strikes",
+      "Aqua Jet",
+      "Close Combat",
+      "Rock Slide"
+     ]
+    },
+    {
+     "pokemon": "Heatran",
+     "ability": "Flash Fire",
+     "item": "Leftovers",
+     "nature": null,
+     "moves": [
+      "Heat Wave",
+      "Tera Blast",
+      "Earth Power",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Chien-Pao",
+     "ability": "Sword of Ruin",
+     "item": "Focus Sash",
+     "nature": null,
+     "moves": [
+      "Ice Spinner",
+      "Sucker Punch",
+      "Crunch",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Landorus [Therian Forme]",
+     "ability": "Intimidate",
+     "item": "Assault Vest",
+     "nature": null,
+     "moves": [
+      "Stomping Tantrum",
+      "Rock Slide",
+      "Brick Break",
+      "U-turn"
+     ]
+    },
+    {
+     "pokemon": "Flutter Mane",
+     "ability": "Protosynthesis",
+     "item": "Booster Energy",
+     "nature": null,
+     "moves": [
+      "Moonblast",
+      "Dazzling Gleam",
+      "Shadow Ball",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Dragonite",
+     "ability": "Inner Focus",
+     "item": "Choice Band",
+     "nature": null,
+     "moves": [
+      "Outrage",
+      "Extreme Speed",
+      "Stomping Tantrum",
+      "Iron Head"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 67,
+   "player": "Alex B.",
+   "country": "US",
+   "record": "2-4-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Landorus [Therian Forme]",
+     "ability": "Intimidate",
+     "item": "Choice Scarf",
+     "nature": null,
+     "moves": [
+      "Stomping Tantrum",
+      "Rock Slide",
+      "Tera Blast",
+      "U-turn"
+     ]
+    },
+    {
+     "pokemon": "Flutter Mane",
+     "ability": "Protosynthesis",
+     "item": "Booster Energy",
+     "nature": null,
+     "moves": [
+      "Moonblast",
+      "Shadow Ball",
+      "Dazzling Gleam",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Iron Hands",
+     "ability": "Quark Drive",
+     "item": "Assault Vest",
+     "nature": null,
+     "moves": [
+      "Drain Punch",
+      "Wild Charge",
+      "Heavy Slam",
+      "Fake Out"
+     ]
+    },
+    {
+     "pokemon": "Chi-Yu",
+     "ability": "Beads of Ruin",
+     "item": "Sitrus Berry",
+     "nature": null,
+     "moves": [
+      "Overheat",
+      "Snarl",
+      "Will-O-Wisp",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Amoonguss",
+     "ability": "Regenerator",
+     "item": "Rocky Helmet",
+     "nature": null,
+     "moves": [
+      "Pollen Puff",
+      "Spore",
+      "Rage Powder",
+      "Leaf Storm"
+     ]
+    },
+    {
+     "pokemon": "Cresselia",
+     "ability": "Levitate",
+     "item": "Safety Goggles",
+     "nature": null,
+     "moves": [
+      "Trick Room",
+      "Lunar Blessing",
+      "Psychic",
+      "Icy Wind"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 68,
+   "player": "Hideo N.",
+   "country": "JP",
+   "record": "2-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Flutter Mane",
+     "ability": "Protosynthesis",
+     "item": "Booster Energy",
+     "nature": null,
+     "moves": [
+      "Dazzling Gleam",
+      "Shadow Ball",
+      "Icy Wind",
+      "Moonblast"
+     ]
+    },
+    {
+     "pokemon": "Cresselia",
+     "ability": "Levitate",
+     "item": "Figy Berry",
+     "nature": null,
+     "moves": [
+      "Moonblast",
+      "Lunar Blessing",
+      "Trick Room",
+      "Ally Switch"
+     ]
+    },
+    {
+     "pokemon": "Urshifu [Rapid Strike Style]",
+     "ability": "Unseen Fist",
+     "item": "Focus Sash",
+     "nature": null,
+     "moves": [
+      "Surging Strikes",
+      "Aqua Jet",
+      "Close Combat",
+      "Detect"
+     ]
+    },
+    {
+     "pokemon": "Rillaboom",
+     "ability": "Grassy Surge",
+     "item": "Assault Vest",
+     "nature": null,
+     "moves": [
+      "Knock Off",
+      "Drum Beating",
+      "Wood Hammer",
+      "Fake Out"
+     ]
+    },
+    {
+     "pokemon": "Ursaluna",
+     "ability": "Guts",
+     "item": "Flame Orb",
+     "nature": null,
+     "moves": [
+      "Facade",
+      "Earthquake",
+      "Bulk Up",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Talonflame",
+     "ability": "Gale Wings",
+     "item": "Covert Cloak",
+     "nature": null,
+     "moves": [
+      "Brave Bird",
+      "Flare Blitz",
+      "Will-O-Wisp",
+      "Tailwind"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 69,
+   "player": "Hatsuki F.",
+   "country": "JP",
+   "record": "2-4-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Maushold [Family of Three]",
+     "ability": "Friend Guard",
+     "item": "Rocky Helmet",
+     "nature": null,
+     "moves": [
+      "Super Fang",
+      "Feint",
+      "Follow Me",
+      "Charm"
+     ]
+    },
+    {
+     "pokemon": "Dragonite",
+     "ability": "Multiscale",
+     "item": "Choice Band",
+     "nature": null,
+     "moves": [
+      "Extreme Speed",
+      "Giga Impact",
+      "Outrage",
+      "Ice Spinner"
+     ]
+    },
+    {
+     "pokemon": "Chien-Pao",
+     "ability": "Sword of Ruin",
+     "item": "Choice Scarf",
+     "nature": null,
+     "moves": [
+      "Icicle Crash",
+      "Sheer Cold",
+      "Icy Wind",
+      "Haze"
+     ]
+    },
+    {
+     "pokemon": "Urshifu [Single Strike Style]",
+     "ability": "Unseen Fist",
+     "item": "Life Orb",
+     "nature": null,
+     "moves": [
+      "Wicked Blow",
+      "Sucker Punch",
+      "Close Combat",
+      "Swords Dance"
+     ]
+    },
+    {
+     "pokemon": "Thundurus [Therian Forme]",
+     "ability": "Volt Absorb",
+     "item": "Assault Vest",
+     "nature": null,
+     "moves": [
+      "Wildbolt Storm",
+      "Volt Switch",
+      "Grass Knot",
+      "Tera Blast"
+     ]
+    },
+    {
+     "pokemon": "Gholdengo",
+     "ability": "Good as Gold",
+     "item": "Choice Specs",
+     "nature": null,
+     "moves": [
+      "Make It Rain",
+      "Shadow Ball",
+      "Power Gem",
+      "Trick"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 70,
+   "player": "律 渡.",
+   "country": "JP",
+   "record": "2-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Tornadus [Incarnate Forme]",
+     "ability": "Prankster",
+     "item": "Mental Herb",
+     "nature": null,
+     "moves": [
+      "Bleakwind Storm",
+      "Tailwind",
+      "Taunt",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Dondozo",
+     "ability": "Oblivious",
+     "item": "Leftovers",
+     "nature": null,
+     "moves": [
+      "Wave Crash",
+      "Order Up",
+      "Substitute",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Glimmora",
+     "ability": "Toxic Debris",
+     "item": "Assault Vest",
+     "nature": null,
+     "moves": [
+      "Energy Ball",
+      "Power Gem",
+      "Earth Power",
+      "Mortal Spin"
+     ]
+    },
+    {
+     "pokemon": "Urshifu [Single Strike Style]",
+     "ability": "Unseen Fist",
+     "item": "Black Glasses",
+     "nature": null,
+     "moves": [
+      "Wicked Blow",
+      "Close Combat",
+      "Detect",
+      "Sucker Punch"
+     ]
+    },
+    {
+     "pokemon": "Tatsugiri [Curly Form]",
+     "ability": "Commander",
+     "item": "Choice Scarf",
+     "nature": null,
+     "moves": [
+      "Muddy Water",
+      "Dragon Pulse",
+      "Icy Wind",
+      "Sleep Talk"
+     ]
+    },
+    {
+     "pokemon": "Flutter Mane",
+     "ability": "Protosynthesis",
+     "item": "Focus Sash",
+     "nature": null,
+     "moves": [
+      "Moonblast",
+      "Dazzling Gleam",
+      "Shadow Ball",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 71,
+   "player": "友杜 熊.",
+   "country": "JP",
+   "record": "2-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Heatran",
+     "ability": "Flash Fire",
+     "item": "Leftovers",
+     "nature": null,
+     "moves": [
+      "Heat Wave",
+      "Flash Cannon",
+      "Earth Power",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Garchomp",
+     "ability": "Rough Skin",
+     "item": "Clear Amulet",
+     "nature": null,
+     "moves": [
+      "Dragon Claw",
+      "Earthquake",
+      "Rock Slide",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Tornadus [Incarnate Forme]",
+     "ability": "Prankster",
+     "item": "Covert Cloak",
+     "nature": null,
+     "moves": [
+      "Bleakwind Storm",
+      "Taunt",
+      "Sunny Day",
+      "Tailwind"
+     ]
+    },
+    {
+     "pokemon": "Urshifu [Rapid Strike Style]",
+     "ability": "Unseen Fist",
+     "item": "Mystic Water",
+     "nature": null,
+     "moves": [
+      "Surging Strikes",
+      "Close Combat",
+      "Aqua Jet",
+      "Detect"
+     ]
+    },
+    {
+     "pokemon": "Flutter Mane",
+     "ability": "Protosynthesis",
+     "item": "Choice Specs",
+     "nature": null,
+     "moves": [
+      "Dazzling Gleam",
+      "Shadow Ball",
+      "Moonblast",
+      "Thunderbolt"
+     ]
+    },
+    {
+     "pokemon": "Toxapex",
+     "ability": "Regenerator",
+     "item": "Sitrus Berry",
+     "nature": null,
+     "moves": [
+      "Wide Guard",
+      "Chilling Water",
+      "Haze",
+      "Scary Face"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 72,
+   "player": "Miles M.",
+   "country": "US",
+   "record": "2-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Chi-Yu",
+     "ability": "Beads of Ruin",
+     "item": "Life Orb",
+     "nature": null,
+     "moves": [
+      "Overheat",
+      "Dark Pulse",
+      "Protect",
+      "Heat Wave"
+     ]
+    },
+    {
+     "pokemon": "Gholdengo",
+     "ability": "Good as Gold",
+     "item": "Choice Specs",
+     "nature": null,
+     "moves": [
+      "Make It Rain",
+      "Shadow Ball",
+      "Thunderbolt",
+      "Trick"
+     ]
+    },
+    {
+     "pokemon": "Landorus [Therian Forme]",
+     "ability": "Intimidate",
+     "item": "Assault Vest",
+     "nature": null,
+     "moves": [
+      "Earthquake",
+      "Stomping Tantrum",
+      "Rock Slide",
+      "U-turn"
+     ]
+    },
+    {
+     "pokemon": "Urshifu [Single Strike Style]",
+     "ability": "Unseen Fist",
+     "item": "Expert Belt",
+     "nature": null,
+     "moves": [
+      "Wicked Blow",
+      "Sucker Punch",
+      "Close Combat",
+      "Poison Jab"
+     ]
+    },
+    {
+     "pokemon": "Tornadus [Incarnate Forme]",
+     "ability": "Prankster",
+     "item": "Mental Herb",
+     "nature": null,
+     "moves": [
+      "Tailwind",
+      "Bleakwind Storm",
+      "Taunt",
+      "Sunny Day"
+     ]
+    },
+    {
+     "pokemon": "Flutter Mane",
+     "ability": "Protosynthesis",
+     "item": "Focus Sash",
+     "nature": null,
+     "moves": [
+      "Dazzling Gleam",
+      "Shadow Ball",
+      "Icy Wind",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 73,
+   "player": "Tae Yeon K.",
+   "country": "KR",
+   "record": "2-4-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": null,
+   "team": []
+  },
+  {
+   "rank": 74,
+   "player": "Kairi W.",
+   "country": "JP",
+   "record": "2-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Torkoal",
+     "ability": "Drought",
+     "item": "Eject Pack",
+     "nature": null,
+     "moves": [
+      "Overheat",
+      "Lava Plume",
+      "Clear Smog",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Dachsbun",
+     "ability": "Well-Baked Body",
+     "item": "Sitrus Berry",
+     "nature": null,
+     "moves": [
+      "Play Rough",
+      "Body Press",
+      "Charm",
+      "Helping Hand"
+     ]
+    },
+    {
+     "pokemon": "Urshifu [Single Strike Style]",
+     "ability": "Unseen Fist",
+     "item": "Life Orb",
+     "nature": null,
+     "moves": [
+      "Wicked Blow",
+      "Sucker Punch",
+      "Iron Head",
+      "Detect"
+     ]
+    },
+    {
+     "pokemon": "Flutter Mane",
+     "ability": "Protosynthesis",
+     "item": "Choice Specs",
+     "nature": null,
+     "moves": [
+      "Dazzling Gleam",
+      "Shadow Ball",
+      "Mystical Fire",
+      "Thunderbolt"
+     ]
+    },
+    {
+     "pokemon": "Jumpluff",
+     "ability": "Chlorophyll",
+     "item": "Focus Sash",
+     "nature": null,
+     "moves": [
+      "Pollen Puff",
+      "Rage Powder",
+      "Tailwind",
+      "Strength Sap"
+     ]
+    },
+    {
+     "pokemon": "Chi-Yu",
+     "ability": "Beads of Ruin",
+     "item": "Flame Plate",
+     "nature": null,
+     "moves": [
+      "Flamethrower",
+      "Lava Plume",
+      "Dark Pulse",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 75,
+   "player": "颯太 松.",
+   "country": "JP",
+   "record": "1-2-0",
+   "dropped": true,
+   "dropped_round": 3,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Regidrago",
+     "ability": "Dragon's Maw",
+     "item": "Dragon Fang",
+     "nature": null,
+     "moves": [
+      "Dragon Energy",
+      "Dragon Pulse",
+      "Earth Power",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Urshifu [Rapid Strike Style]",
+     "ability": "Unseen Fist",
+     "item": "Choice Scarf",
+     "nature": null,
+     "moves": [
+      "Surging Strikes",
+      "Aqua Jet",
+      "Close Combat",
+      "U-turn"
+     ]
+    },
+    {
+     "pokemon": "Heatran",
+     "ability": "Flash Fire",
+     "item": "Leftovers",
+     "nature": null,
+     "moves": [
+      "Heat Wave",
+      "Tera Blast",
+      "Will-O-Wisp",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Gholdengo",
+     "ability": "Good as Gold",
+     "item": "Choice Specs",
+     "nature": null,
+     "moves": [
+      "Make It Rain",
+      "Shadow Ball",
+      "Thunderbolt",
+      "Trick"
+     ]
+    },
+    {
+     "pokemon": "Rillaboom",
+     "ability": "Grassy Surge",
+     "item": "Assault Vest",
+     "nature": null,
+     "moves": [
+      "Wood Hammer",
+      "Drum Beating",
+      "U-turn",
+      "Fake Out"
+     ]
+    },
+    {
+     "pokemon": "Tornadus [Incarnate Forme]",
+     "ability": "Prankster",
+     "item": "Focus Sash",
+     "nature": null,
+     "moves": [
+      "Bleakwind Storm",
+      "Icy Wind",
+      "Tailwind",
+      "Taunt"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 76,
+   "player": "髙田 将.",
+   "country": "JP",
+   "record": "1-3-0",
+   "dropped": true,
+   "dropped_round": 4,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Urshifu [Rapid Strike Style]",
+     "ability": "Unseen Fist",
+     "item": "Focus Sash",
+     "nature": null,
+     "moves": [
+      "Surging Strikes",
+      "Close Combat",
+      "Aqua Jet",
+      "Detect"
+     ]
+    },
+    {
+     "pokemon": "Rillaboom",
+     "ability": "Grassy Surge",
+     "item": "Sitrus Berry",
+     "nature": null,
+     "moves": [
+      "Wood Hammer",
+      "Knock Off",
+      "U-turn",
+      "Fake Out"
+     ]
+    },
+    {
+     "pokemon": "Chien-Pao",
+     "ability": "Sword of Ruin",
+     "item": "Life Orb",
+     "nature": null,
+     "moves": [
+      "Ice Shard",
+      "Crunch",
+      "Sacred Sword",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Flutter Mane",
+     "ability": "Protosynthesis",
+     "item": "Booster Energy",
+     "nature": null,
+     "moves": [
+      "Dazzling Gleam",
+      "Shadow Ball",
+      "Thunderbolt",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Heatran",
+     "ability": "Flash Fire",
+     "item": "Assault Vest",
+     "nature": null,
+     "moves": [
+      "Heat Wave",
+      "Flash Cannon",
+      "Earth Power",
+      "Tera Blast"
+     ]
+    },
+    {
+     "pokemon": "Tornadus [Incarnate Forme]",
+     "ability": "Prankster",
+     "item": "Covert Cloak",
+     "nature": null,
+     "moves": [
+      "Bleakwind Storm",
+      "Taunt",
+      "Rain Dance",
+      "Tailwind"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 77,
+   "player": "Kenshin E.",
+   "country": "JP",
+   "record": "1-5-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Landorus [Therian Forme]",
+     "ability": "Intimidate",
+     "item": "Choice Scarf",
+     "nature": null,
+     "moves": [
+      "Rock Slide",
+      "Stomping Tantrum",
+      "U-turn",
+      "Tera Blast"
+     ]
+    },
+    {
+     "pokemon": "Heatran",
+     "ability": "Flash Fire",
+     "item": "Leftovers",
+     "nature": null,
+     "moves": [
+      "Earth Power",
+      "Heat Wave",
+      "Protect",
+      "Flash Cannon"
+     ]
+    },
+    {
+     "pokemon": "Cresselia",
+     "ability": "Levitate",
+     "item": "Safety Goggles",
+     "nature": null,
+     "moves": [
+      "Moonblast",
+      "Trick Room",
+      "Lunar Blessing",
+      "Helping Hand"
+     ]
+    },
+    {
+     "pokemon": "Gholdengo",
+     "ability": "Good as Gold",
+     "item": "Choice Specs",
+     "nature": null,
+     "moves": [
+      "Make It Rain",
+      "Shadow Ball",
+      "Trick",
+      "Thunderbolt"
+     ]
+    },
+    {
+     "pokemon": "Rillaboom",
+     "ability": "Grassy Surge",
+     "item": "Assault Vest",
+     "nature": null,
+     "moves": [
+      "Wood Hammer",
+      "Knock Off",
+      "Fake Out",
+      "U-turn"
+     ]
+    },
+    {
+     "pokemon": "Flutter Mane",
+     "ability": "Protosynthesis",
+     "item": "Booster Energy",
+     "nature": null,
+     "moves": [
+      "Dazzling Gleam",
+      "Shadow Ball",
+      "Protect",
+      "Moonblast"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 78,
+   "player": "Taj P.",
+   "country": "AU",
+   "record": "1-5-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Ursaluna",
+     "ability": "Guts",
+     "item": "Flame Orb",
+     "nature": null,
+     "moves": [
+      "Facade",
+      "Swords Dance",
+      "Protect",
+      "High Horsepower"
+     ]
+    },
+    {
+     "pokemon": "Cresselia",
+     "ability": "Levitate",
+     "item": "Safety Goggles",
+     "nature": null,
+     "moves": [
+      "Trick Room",
+      "Lunar Blessing",
+      "Helping Hand",
+      "Moonblast"
+     ]
+    },
+    {
+     "pokemon": "Urshifu [Rapid Strike Style]",
+     "ability": "Unseen Fist",
+     "item": "Choice Scarf",
+     "nature": null,
+     "moves": [
+      "Surging Strikes",
+      "Close Combat",
+      "U-turn",
+      "Taunt"
+     ]
+    },
+    {
+     "pokemon": "Indeedee [Female]",
+     "ability": "Psychic Surge",
+     "item": "Rocky Helmet",
+     "nature": null,
+     "moves": [
+      "Psychic",
+      "Helping Hand",
+      "Trick Room",
+      "Follow Me"
+     ]
+    },
+    {
+     "pokemon": "Arcanine",
+     "ability": "Intimidate",
+     "item": "Assault Vest",
+     "nature": null,
+     "moves": [
+      "Flare Blitz",
+      "Close Combat",
+      "Wild Charge",
+      "Extreme Speed"
+     ]
+    },
+    {
+     "pokemon": "Armarouge",
+     "ability": "Flash Fire",
+     "item": "Life Orb",
+     "nature": null,
+     "moves": [
+      "Expanding Force",
+      "Armor Cannon",
+      "Heat Wave",
+      "Trick Room"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 79,
+   "player": "清水 翔.",
+   "country": "JP",
+   "record": "1-4-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Chien-Pao",
+     "ability": "Sword of Ruin",
+     "item": "Focus Sash",
+     "nature": null,
+     "moves": [
+      "Ice Spinner",
+      "Sucker Punch",
+      "Sacred Sword",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Chi-Yu",
+     "ability": "Beads of Ruin",
+     "item": "Choice Specs",
+     "nature": null,
+     "moves": [
+      "Heat Wave",
+      "Dark Pulse",
+      "Overheat",
+      "Snarl"
+     ]
+    },
+    {
+     "pokemon": "Maushold [Family of Four]",
+     "ability": "Friend Guard",
+     "item": "Safety Goggles",
+     "nature": null,
+     "moves": [
+      "Beat Up",
+      "Helping Hand",
+      "Follow Me",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Flutter Mane",
+     "ability": "Protosynthesis",
+     "item": "Booster Energy",
+     "nature": null,
+     "moves": [
+      "Dazzling Gleam",
+      "Moonblast",
+      "Shadow Ball",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Tornadus [Incarnate Forme]",
+     "ability": "Prankster",
+     "item": "Mental Herb",
+     "nature": null,
+     "moves": [
+      "Bleakwind Storm",
+      "Taunt",
+      "Sunny Day",
+      "Tailwind"
+     ]
+    },
+    {
+     "pokemon": "Lucario",
+     "ability": "Justified",
+     "item": "Weakness Policy",
+     "nature": null,
+     "moves": [
+      "Drain Punch",
+      "Ice Punch",
+      "Earthquake",
+      "Extreme Speed"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 80,
+   "player": "健心 鈴.",
+   "country": "JP",
+   "record": "1-5-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Tornadus [Incarnate Forme]",
+     "ability": "Prankster",
+     "item": "Sitrus Berry",
+     "nature": null,
+     "moves": [
+      "Bleakwind Storm",
+      "Icy Wind",
+      "Tailwind",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Rillaboom",
+     "ability": "Grassy Surge",
+     "item": "Assault Vest",
+     "nature": null,
+     "moves": [
+      "Wood Hammer",
+      "U-turn",
+      "Stomping Tantrum",
+      "Fake Out"
+     ]
+    },
+    {
+     "pokemon": "Urshifu [Rapid Strike Style]",
+     "ability": "Unseen Fist",
+     "item": "Mystic Water",
+     "nature": null,
+     "moves": [
+      "Surging Strikes",
+      "Close Combat",
+      "Aqua Jet",
+      "Detect"
+     ]
+    },
+    {
+     "pokemon": "Chien-Pao",
+     "ability": "Sword of Ruin",
+     "item": "Focus Sash",
+     "nature": null,
+     "moves": [
+      "Icicle Crash",
+      "Sacred Sword",
+      "Sucker Punch",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Arcanine [Hisuian Form]",
+     "ability": "Intimidate",
+     "item": "Choice Band",
+     "nature": null,
+     "moves": [
+      "Rock Slide",
+      "Extreme Speed",
+      "Flare Blitz",
+      "Head Smash"
+     ]
+    },
+    {
+     "pokemon": "Flutter Mane",
+     "ability": "Protosynthesis",
+     "item": "Pixie Plate",
+     "nature": null,
+     "moves": [
+      "Dazzling Gleam",
+      "Moonblast",
+      "Shadow Ball",
+      "Taunt"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 81,
+   "player": "心優 前.",
+   "country": "JP",
+   "record": "1-4-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Regidrago",
+     "ability": "Dragon's Maw",
+     "item": "Dragon Fang",
+     "nature": null,
+     "moves": [
+      "Dragon Energy",
+      "Dragon Pulse",
+      "Earth Power",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Urshifu [Rapid Strike Style]",
+     "ability": "Unseen Fist",
+     "item": "Choice Scarf",
+     "nature": null,
+     "moves": [
+      "Close Combat",
+      "Surging Strikes",
+      "U-turn",
+      "Aqua Jet"
+     ]
+    },
+    {
+     "pokemon": "Basculegion [Male]",
+     "ability": "Swift Swim",
+     "item": "Life Orb",
+     "nature": null,
+     "moves": [
+      "Last Respects",
+      "Wave Crash",
+      "Aqua Jet",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Tornadus [Incarnate Forme]",
+     "ability": "Prankster",
+     "item": "Focus Sash",
+     "nature": null,
+     "moves": [
+      "Bleakwind Storm",
+      "Icy Wind",
+      "Tailwind",
+      "Rain Dance"
+     ]
+    },
+    {
+     "pokemon": "Gholdengo",
+     "ability": "Good as Gold",
+     "item": "Choice Specs",
+     "nature": null,
+     "moves": [
+      "Make It Rain",
+      "Shadow Ball",
+      "Thunderbolt",
+      "Trick"
+     ]
+    },
+    {
+     "pokemon": "Indeedee [Female]",
+     "ability": "Psychic Surge",
+     "item": "Rocky Helmet",
+     "nature": null,
+     "moves": [
+      "Psychic",
+      "Follow Me",
+      "Imprison",
+      "Trick Room"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 82,
+   "player": "Han Jun L.",
+   "country": "KR",
+   "record": "1-5-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": null,
+   "team": []
+  },
+  {
+   "rank": 83,
+   "player": "秀仁 髙.",
+   "country": null,
+   "record": "1-0-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Heatran",
+     "ability": "Flash Fire",
+     "item": "Leftovers",
+     "nature": null,
+     "moves": [
+      "Heat Wave",
+      "Tera Blast",
+      "Earth Power",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Flutter Mane",
+     "ability": "Protosynthesis",
+     "item": "Booster Energy",
+     "nature": null,
+     "moves": [
+      "Dazzling Gleam",
+      "Shadow Ball",
+      "Trick Room",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Urshifu [Single Strike Style]",
+     "ability": "Unseen Fist",
+     "item": "Focus Sash",
+     "nature": null,
+     "moves": [
+      "Wicked Blow",
+      "Close Combat",
+      "Sucker Punch",
+      "Detect"
+     ]
+    },
+    {
+     "pokemon": "Rillaboom",
+     "ability": "Grassy Surge",
+     "item": "Assault Vest",
+     "nature": null,
+     "moves": [
+      "Wood Hammer",
+      "Stomping Tantrum",
+      "U-turn",
+      "Fake Out"
+     ]
+    },
+    {
+     "pokemon": "Landorus [Therian Forme]",
+     "ability": "Intimidate",
+     "item": "Choice Scarf",
+     "nature": null,
+     "moves": [
+      "Stomping Tantrum",
+      "Tera Blast",
+      "U-turn",
+      "Rock Slide"
+     ]
+    },
+    {
+     "pokemon": "Gastrodon",
+     "ability": "Storm Drain",
+     "item": "Life Orb",
+     "nature": null,
+     "moves": [
+      "Earth Power",
+      "Ice Beam",
+      "Yawn",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 84,
+   "player": "秀仁 髙.",
+   "country": null,
+   "record": "1-0-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Heatran",
+     "ability": "Flash Fire",
+     "item": "Leftovers",
+     "nature": null,
+     "moves": [
+      "Heat Wave",
+      "Tera Blast",
+      "Earth Power",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Flutter Mane",
+     "ability": "Protosynthesis",
+     "item": "Booster Energy",
+     "nature": null,
+     "moves": [
+      "Dazzling Gleam",
+      "Shadow Ball",
+      "Trick Room",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Urshifu [Single Strike Style]",
+     "ability": "Unseen Fist",
+     "item": "Focus Sash",
+     "nature": null,
+     "moves": [
+      "Wicked Blow",
+      "Close Combat",
+      "Sucker Punch",
+      "Detect"
+     ]
+    },
+    {
+     "pokemon": "Rillaboom",
+     "ability": "Grassy Surge",
+     "item": "Assault Vest",
+     "nature": null,
+     "moves": [
+      "Wood Hammer",
+      "Stomping Tantrum",
+      "U-turn",
+      "Fake Out"
+     ]
+    },
+    {
+     "pokemon": "Landorus [Therian Forme]",
+     "ability": "Intimidate",
+     "item": "Choice Scarf",
+     "nature": null,
+     "moves": [
+      "Stomping Tantrum",
+      "Tera Blast",
+      "U-turn",
+      "Rock Slide"
+     ]
+    },
+    {
+     "pokemon": "Gastrodon",
+     "ability": "Storm Drain",
+     "item": "Life Orb",
+     "nature": null,
+     "moves": [
+      "Earth Power",
+      "Ice Beam",
+      "Yawn",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 85,
+   "player": "秀仁 髙.",
+   "country": null,
+   "record": "1-0-0",
+   "dropped": true,
+   "dropped_round": 1,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Heatran",
+     "ability": "Flash Fire",
+     "item": "Leftovers",
+     "nature": null,
+     "moves": [
+      "Heat Wave",
+      "Tera Blast",
+      "Earth Power",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Flutter Mane",
+     "ability": "Protosynthesis",
+     "item": "Booster Energy",
+     "nature": null,
+     "moves": [
+      "Dazzling Gleam",
+      "Shadow Ball",
+      "Trick Room",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Urshifu [Single Strike Style]",
+     "ability": "Unseen Fist",
+     "item": "Focus Sash",
+     "nature": null,
+     "moves": [
+      "Wicked Blow",
+      "Close Combat",
+      "Sucker Punch",
+      "Detect"
+     ]
+    },
+    {
+     "pokemon": "Rillaboom",
+     "ability": "Grassy Surge",
+     "item": "Assault Vest",
+     "nature": null,
+     "moves": [
+      "Wood Hammer",
+      "Stomping Tantrum",
+      "U-turn",
+      "Fake Out"
+     ]
+    },
+    {
+     "pokemon": "Landorus [Therian Forme]",
+     "ability": "Intimidate",
+     "item": "Choice Scarf",
+     "nature": null,
+     "moves": [
+      "Stomping Tantrum",
+      "Tera Blast",
+      "U-turn",
+      "Rock Slide"
+     ]
+    },
+    {
+     "pokemon": "Gastrodon",
+     "ability": "Storm Drain",
+     "item": "Life Orb",
+     "nature": null,
+     "moves": [
+      "Earth Power",
+      "Ice Beam",
+      "Yawn",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 86,
+   "player": "秀仁 髙.",
+   "country": null,
+   "record": "0-1-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Heatran",
+     "ability": "Flash Fire",
+     "item": "Leftovers",
+     "nature": null,
+     "moves": [
+      "Heat Wave",
+      "Tera Blast",
+      "Earth Power",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Flutter Mane",
+     "ability": "Protosynthesis",
+     "item": "Booster Energy",
+     "nature": null,
+     "moves": [
+      "Dazzling Gleam",
+      "Shadow Ball",
+      "Trick Room",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Urshifu [Single Strike Style]",
+     "ability": "Unseen Fist",
+     "item": "Focus Sash",
+     "nature": null,
+     "moves": [
+      "Wicked Blow",
+      "Close Combat",
+      "Sucker Punch",
+      "Detect"
+     ]
+    },
+    {
+     "pokemon": "Rillaboom",
+     "ability": "Grassy Surge",
+     "item": "Assault Vest",
+     "nature": null,
+     "moves": [
+      "Wood Hammer",
+      "Stomping Tantrum",
+      "U-turn",
+      "Fake Out"
+     ]
+    },
+    {
+     "pokemon": "Landorus [Therian Forme]",
+     "ability": "Intimidate",
+     "item": "Choice Scarf",
+     "nature": null,
+     "moves": [
+      "Stomping Tantrum",
+      "Tera Blast",
+      "U-turn",
+      "Rock Slide"
+     ]
+    },
+    {
+     "pokemon": "Gastrodon",
+     "ability": "Storm Drain",
+     "item": "Life Orb",
+     "nature": null,
+     "moves": [
+      "Earth Power",
+      "Ice Beam",
+      "Yawn",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 87,
+   "player": "秀仁 髙.",
+   "country": null,
+   "record": "0-1-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Heatran",
+     "ability": "Flash Fire",
+     "item": "Leftovers",
+     "nature": null,
+     "moves": [
+      "Heat Wave",
+      "Tera Blast",
+      "Earth Power",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Flutter Mane",
+     "ability": "Protosynthesis",
+     "item": "Booster Energy",
+     "nature": null,
+     "moves": [
+      "Dazzling Gleam",
+      "Shadow Ball",
+      "Trick Room",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Urshifu [Single Strike Style]",
+     "ability": "Unseen Fist",
+     "item": "Focus Sash",
+     "nature": null,
+     "moves": [
+      "Wicked Blow",
+      "Close Combat",
+      "Sucker Punch",
+      "Detect"
+     ]
+    },
+    {
+     "pokemon": "Rillaboom",
+     "ability": "Grassy Surge",
+     "item": "Assault Vest",
+     "nature": null,
+     "moves": [
+      "Wood Hammer",
+      "Stomping Tantrum",
+      "U-turn",
+      "Fake Out"
+     ]
+    },
+    {
+     "pokemon": "Landorus [Therian Forme]",
+     "ability": "Intimidate",
+     "item": "Choice Scarf",
+     "nature": null,
+     "moves": [
+      "Stomping Tantrum",
+      "Tera Blast",
+      "U-turn",
+      "Rock Slide"
+     ]
+    },
+    {
+     "pokemon": "Gastrodon",
+     "ability": "Storm Drain",
+     "item": "Life Orb",
+     "nature": null,
+     "moves": [
+      "Earth Power",
+      "Ice Beam",
+      "Yawn",
+      "Protect"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 88,
+   "player": "Emmett B.",
+   "country": "US",
+   "record": "0-3-0",
+   "dropped": true,
+   "dropped_round": 3,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Tatsugiri [Curly Form]",
+     "ability": "Commander",
+     "item": "Life Orb",
+     "nature": null,
+     "moves": [
+      "Draco Meteor",
+      "Muddy Water",
+      "Icy Wind",
+      "Sleep Talk"
+     ]
+    },
+    {
+     "pokemon": "Azelf",
+     "ability": "Levitate",
+     "item": "Choice Scarf",
+     "nature": null,
+     "moves": [
+      "Explosion",
+      "U-turn",
+      "Play Rough",
+      "Trick"
+     ]
+    },
+    {
+     "pokemon": "Zoroark [Hisuian Form]",
+     "ability": "Illusion",
+     "item": "Focus Sash",
+     "nature": null,
+     "moves": [
+      "Hyper Voice",
+      "Shadow Ball",
+      "Flamethrower",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Dondozo",
+     "ability": "Unaware",
+     "item": "Leftovers",
+     "nature": null,
+     "moves": [
+      "Wave Crash",
+      "Earthquake",
+      "Tera Blast",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Glimmora",
+     "ability": "Corrosion",
+     "item": "Assault Vest",
+     "nature": null,
+     "moves": [
+      "Power Gem",
+      "Mortal Spin",
+      "Earth Power",
+      "Venoshock"
+     ]
+    },
+    {
+     "pokemon": "Flutter Mane",
+     "ability": "Protosynthesis",
+     "item": "Choice Specs",
+     "nature": null,
+     "moves": [
+      "Shadow Ball",
+      "Dazzling Gleam",
+      "Thunderbolt",
+      "Moonblast"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 89,
+   "player": "Pippin M.",
+   "country": "US",
+   "record": "0-4-0",
+   "dropped": true,
+   "dropped_round": 4,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Murkrow",
+     "ability": "Prankster",
+     "item": "Eviolite",
+     "nature": null,
+     "moves": [
+      "Tailwind",
+      "Protect",
+      "Heat Wave",
+      "Haze"
+     ]
+    },
+    {
+     "pokemon": "Braviary [Hisuian Form]",
+     "ability": "Keen Eye",
+     "item": "Quick Claw",
+     "nature": null,
+     "moves": [
+      "Dazzling Gleam",
+      "Protect",
+      "Psyshock",
+      "Tera Blast"
+     ]
+    },
+    {
+     "pokemon": "Overqwil",
+     "ability": "Poison Point",
+     "item": "Black Sludge",
+     "nature": null,
+     "moves": [
+      "Barb Barrage",
+      "Gunk Shot",
+      "Protect",
+      "Waterfall"
+     ]
+    },
+    {
+     "pokemon": "Ting-Lu",
+     "ability": "Vessel of Ruin",
+     "item": "Sitrus Berry",
+     "nature": null,
+     "moves": [
+      "Stomping Tantrum",
+      "Body Press",
+      "Zen Headbutt",
+      "Rock Slide"
+     ]
+    },
+    {
+     "pokemon": "Zapdos [Galarian Form]",
+     "ability": "Defiant",
+     "item": "Muscle Band",
+     "nature": null,
+     "moves": [
+      "Thunderous Kick",
+      "Protect",
+      "Drill Peck",
+      "Stomping Tantrum"
+     ]
+    },
+    {
+     "pokemon": "Rotom [Frost Rotom]",
+     "ability": "Levitate",
+     "item": "Blunder Policy",
+     "nature": null,
+     "moves": [
+      "Blizzard",
+      "Volt Switch",
+      "Protect",
+      "Shadow Ball"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 90,
+   "player": "Emily E.",
+   "country": "US",
+   "record": "0-5-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Grimmsnarl",
+     "ability": "Prankster",
+     "item": "Light Clay",
+     "nature": null,
+     "moves": [
+      "Parting Shot",
+      "Light Screen",
+      "Reflect",
+      "Spirit Break"
+     ]
+    },
+    {
+     "pokemon": "Urshifu [Rapid Strike Style]",
+     "ability": "Unseen Fist",
+     "item": "Sitrus Berry",
+     "nature": null,
+     "moves": [
+      "Surging Strikes",
+      "Aqua Jet",
+      "Swords Dance",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Flutter Mane",
+     "ability": "Protosynthesis",
+     "item": "Choice Specs",
+     "nature": null,
+     "moves": [
+      "Moonblast",
+      "Dazzling Gleam",
+      "Shadow Ball",
+      "Thunderbolt"
+     ]
+    },
+    {
+     "pokemon": "Landorus [Therian Forme]",
+     "ability": "Intimidate",
+     "item": "Assault Vest",
+     "nature": null,
+     "moves": [
+      "Stomping Tantrum",
+      "Rock Slide",
+      "Tera Blast",
+      "U-turn"
+     ]
+    },
+    {
+     "pokemon": "Gholdengo",
+     "ability": "Good as Gold",
+     "item": "Leftovers",
+     "nature": null,
+     "moves": [
+      "Make It Rain",
+      "Shadow Ball",
+      "Nasty Plot",
+      "Protect"
+     ]
+    },
+    {
+     "pokemon": "Amoonguss",
+     "ability": "Regenerator",
+     "item": "Rocky Helmet",
+     "nature": null,
+     "moves": [
+      "Spore",
+      "Rage Powder",
+      "Pollen Puff",
+      "Clear Smog"
+     ]
+    }
+   ]
+  },
+  {
+   "rank": 91,
+   "player": "Jocelyn C.",
+   "country": "US",
+   "record": "0-5-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": null,
+   "team": [
+    {
+     "pokemon": "Amoonguss",
+     "ability": "Effect Spore",
+     "item": "Rocky Helmet",
+     "nature": null,
+     "moves": [
+      "Rage Powder",
+      "Giga Drain",
+      "Spore",
+      "Tera Blast"
+     ]
+    },
+    {
+     "pokemon": "Indeedee [Female]",
+     "ability": "Psychic Surge",
+     "item": "Focus Sash",
+     "nature": null,
+     "moves": [
+      "Protect",
+      "Hyper Voice",
+      "Follow Me",
+      "Trick Room"
+     ]
+    },
+    {
+     "pokemon": "Ursaluna",
+     "ability": "Guts",
+     "item": "Flame Orb",
+     "nature": null,
+     "moves": [
+      "Headlong Rush",
+      "Protect",
+      "Facade",
+      "Earthquake"
+     ]
+    },
+    {
+     "pokemon": "Armarouge",
+     "ability": "Flash Fire",
+     "item": "Life Orb",
+     "nature": null,
+     "moves": [
+      "Expanding Force",
+      "Armor Cannon",
+      "Energy Ball",
+      "Trick Room"
+     ]
+    },
+    {
+     "pokemon": "Enamorus [Therian Forme]",
+     "ability": "Overcoat",
+     "item": "Room Service",
+     "nature": null,
+     "moves": [
+      "Earth Power",
+      "Protect",
+      "Tera Blast",
+      "Springtide Storm"
+     ]
+    },
+    {
+     "pokemon": "Gastrodon",
+     "ability": "Storm Drain",
+     "item": "Leftovers",
+     "nature": null,
+     "moves": [
+      "Ice Beam",
+      "Earth Power",
+      "Muddy Water",
+      "Earthquake"
+     ]
+    }
+   ]
+  }
+ ]
+}

@@ -1,0 +1,79 @@
+{
+ "_comment": "Multipliers MEASURED against Smogon's Champions engine by scripts/measure_modifiers.py - never recited. Re-run it after fetch_smogon_calc.py reports upstream moved.",
+ "atk_ability": {
+  "Adaptability": 1.339,
+  "Sheer Force": 1.304,
+  "Tough Claws": 1.306,
+  "Technician": 1.357,
+  "Huge Power": 1.977,
+  "Guts": 1.477,
+  "Sharpness": 1.474,
+  "Iron Fist": 1.197,
+  "Strong Jaw": 1.479,
+  "Reckless": 1.194,
+  "Hustle": 1.477,
+  "Supreme Overlord": 1.193,
+  "Punk Rock": 1.289,
+  "Mega Launcher": 1.492,
+  "Water Bubble": 1.983
+ },
+ "def_ability": {
+  "Multiscale": 0.495,
+  "Filter": 0.75,
+  "Solid Rock": 0.75,
+  "Thick Fat": 0.51,
+  "Heatproof": 0.51,
+  "Fluffy": 0.5,
+  "Purifying Salt": 0.505,
+  "Levitate": 0.0,
+  "Flash Fire": 0.0,
+  "Water Absorb": 0.0,
+  "Bulletproof": 0.0,
+  "Soundproof": 0.0
+ },
+ "atk_item": {
+  "Life Orb": 1.301,
+  "Expert Belt": 1.199,
+  "Muscle Band": 1.091,
+  "Wise Glasses": 1.094,
+  "Black Glasses": 1.203,
+  "Mystic Water": 1.2,
+  "Metal Coat": 1.19,
+  "Fairy Feather": 1.192
+ },
+ "def_item": {
+  "Chople Berry": 0.5,
+  "Colbur Berry": 0.5
+ },
+ "weather": {
+  "Sun|Fire": 1.5,
+  "Sun|Water": 0.496,
+  "Rain|Water": 1.496,
+  "Rain|Fire": 0.5
+ },
+ "weather_def": {
+  "Sand|Rock|S": 0.667,
+  "Snow|Ice|P": 0.667
+ },
+ "terrain": {
+  "Electric|Electric": 1.294,
+  "Grassy|Grass": 1.3,
+  "Grassy|Earthquake": 0.511,
+  "Psychic|Psychic": 1.287,
+  "Misty|Dragon": 0.517
+ },
+ "field": {
+  "Helping Hand": 1.477,
+  "Friend Guard": 0.75,
+  "Charge|Electric": 0,
+  "Wonder Room": 1.33,
+  "Magic Room": 0.769,
+  "Protected": 0.0,
+  "Dark Aura|Dark": 1.331,
+  "Fairy Aura|Fairy": 1.313,
+  "Gravity|Ground vs Flying": 0
+ },
+ "status": {
+  "Burn|physical": 0.5
+ }
+}

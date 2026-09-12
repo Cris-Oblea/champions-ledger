@@ -1,0 +1,569 @@
+{
+ "source": "pokedata.ovh/standingsVGC",
+ "origin": "event JSON export",
+ "game": "Pokemon Champions",
+ "tournament_id": "0000018",
+ "division": "seniors",
+ "round": 11,
+ "round_label": "11",
+ "swiss_rounds": 6,
+ "round_labels": {
+  "1": "1",
+  "2": "2",
+  "3": "3",
+  "4": "4",
+  "5": "5",
+  "6": "6",
+  "7": "T8",
+  "8": "T4",
+  "9": "Final",
+  "10": "10",
+  "11": "11"
+ },
+ "complete": false,
+ "fetched": "2026-09-11 23:58",
+ "note": "Unofficial standings computed outside the tournament software.",
+ "count": 54,
+ "players": [
+  {
+   "rank": 1,
+   "player": "Yasuharu S.",
+   "country": "JP",
+   "record": "10-1-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 2,
+   "player": "Nicholas K.",
+   "country": "AU",
+   "record": "10-1-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Nick",
+   "team": []
+  },
+  {
+   "rank": 3,
+   "player": "Kylan V.",
+   "country": "CA",
+   "record": "8-2-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Kylan",
+   "team": []
+  },
+  {
+   "rank": 4,
+   "player": "Yuma S.",
+   "country": "JP",
+   "record": "8-2-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 5,
+   "player": "Aurélien S.",
+   "country": "FR",
+   "record": "7-2-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Sakura",
+   "team": []
+  },
+  {
+   "rank": 6,
+   "player": "Hayato H.",
+   "country": "JP",
+   "record": "6-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 7,
+   "player": "Thomas D.",
+   "country": "IE",
+   "record": "6-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Tom",
+   "team": []
+  },
+  {
+   "rank": 8,
+   "player": "Ryosei I.",
+   "country": "JP",
+   "record": "6-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 9,
+   "player": "Taizo H.",
+   "country": "JP",
+   "record": "6-2-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 10,
+   "player": "Angelica S.",
+   "country": "IT",
+   "record": "5-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "❤ShinyBubi❤",
+   "team": []
+  },
+  {
+   "rank": 11,
+   "player": "Sam W.",
+   "country": "JE",
+   "record": "5-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Squirly",
+   "team": []
+  },
+  {
+   "rank": 12,
+   "player": "Yuta N.",
+   "country": "JP",
+   "record": "5-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 13,
+   "player": "Teddy F.",
+   "country": "GB",
+   "record": "5-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Mimikyu",
+   "team": []
+  },
+  {
+   "rank": 14,
+   "player": "Simão F.",
+   "country": "PT",
+   "record": "5-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Simão Faria",
+   "team": []
+  },
+  {
+   "rank": 15,
+   "player": "Kosuke I.",
+   "country": "JP",
+   "record": "5-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 16,
+   "player": "Christopher H.",
+   "country": "US",
+   "record": "5-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Chris",
+   "team": []
+  },
+  {
+   "rank": 17,
+   "player": "Benjamin B.",
+   "country": "US",
+   "record": "4-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "pikapunk25",
+   "team": []
+  },
+  {
+   "rank": 18,
+   "player": "Riki S.",
+   "country": "JP",
+   "record": "4-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 19,
+   "player": "Tomoharu K.",
+   "country": "JP",
+   "record": "4-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 20,
+   "player": "Sebastiano V.",
+   "country": "IT",
+   "record": "3-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Stephan",
+   "team": []
+  },
+  {
+   "rank": 21,
+   "player": "Felipe R.",
+   "country": "CL",
+   "record": "3-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "felipevgc",
+   "team": []
+  },
+  {
+   "rank": 22,
+   "player": "Alessandro M.",
+   "country": "IT",
+   "record": "3-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "QuelloScarso",
+   "team": []
+  },
+  {
+   "rank": 23,
+   "player": "Francesco R.",
+   "country": "IT",
+   "record": "3-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Olymak",
+   "team": []
+  },
+  {
+   "rank": 24,
+   "player": "Yuta O.",
+   "country": "JP",
+   "record": "3-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 25,
+   "player": "Justin M.",
+   "country": "CA",
+   "record": "3-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Justin",
+   "team": []
+  },
+  {
+   "rank": 26,
+   "player": "Kosei S.",
+   "country": "JP",
+   "record": "3-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 27,
+   "player": "Bilel L.",
+   "country": "FR",
+   "record": "3-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "PikaBilou",
+   "team": []
+  },
+  {
+   "rank": 28,
+   "player": "Ignacio R.",
+   "country": "ES",
+   "record": "3-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Er Yayo jr",
+   "team": []
+  },
+  {
+   "rank": 29,
+   "player": "Pi W.",
+   "country": "TW",
+   "record": "3-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "空條Q太郎",
+   "team": []
+  },
+  {
+   "rank": 30,
+   "player": "John N.",
+   "country": "US",
+   "record": "3-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Joel",
+   "team": []
+  },
+  {
+   "rank": 31,
+   "player": "Candela C.",
+   "country": "ES",
+   "record": "3-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Beta",
+   "team": []
+  },
+  {
+   "rank": 32,
+   "player": "Samuel R.",
+   "country": "ES",
+   "record": "3-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "$amers16",
+   "team": []
+  },
+  {
+   "rank": 33,
+   "player": "Ridge R.",
+   "country": "US",
+   "record": "3-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Ridge",
+   "team": []
+  },
+  {
+   "rank": 34,
+   "player": "Aaron L.",
+   "country": "GB",
+   "record": "3-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Aaron",
+   "team": []
+  },
+  {
+   "rank": 35,
+   "player": "Emily E.",
+   "country": "US",
+   "record": "2-4-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "EmilyVGC",
+   "team": []
+  },
+  {
+   "rank": 36,
+   "player": "Gonzalo T.",
+   "country": "PY",
+   "record": "2-4-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Gonzadtb",
+   "team": []
+  },
+  {
+   "rank": 37,
+   "player": "Kian C.",
+   "country": "US",
+   "record": "2-4-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Kian",
+   "team": []
+  },
+  {
+   "rank": 38,
+   "player": "Meg W.",
+   "country": "US",
+   "record": "2-4-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Meg",
+   "team": []
+  },
+  {
+   "rank": 39,
+   "player": "Riley C.",
+   "country": "AU",
+   "record": "2-4-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Pii",
+   "team": []
+  },
+  {
+   "rank": 40,
+   "player": "Yu Ying C.",
+   "country": "TW",
+   "record": "2-4-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "我很666",
+   "team": []
+  },
+  {
+   "rank": 41,
+   "player": "Riccardo Z.",
+   "country": "IT",
+   "record": "2-4-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "riki",
+   "team": []
+  },
+  {
+   "rank": 42,
+   "player": "Alex M.",
+   "country": "IT",
+   "record": "2-4-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Alex Minniti",
+   "team": []
+  },
+  {
+   "rank": 43,
+   "player": "James G.",
+   "country": "AU",
+   "record": "2-4-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Tomura",
+   "team": []
+  },
+  {
+   "rank": 44,
+   "player": "Peyton F.",
+   "country": "US",
+   "record": "2-4-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Azauqyar :)",
+   "team": []
+  },
+  {
+   "rank": 45,
+   "player": "Ryder J.",
+   "country": "US",
+   "record": "2-4-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Ryder",
+   "team": []
+  },
+  {
+   "rank": 46,
+   "player": "Ethan K.",
+   "country": "GB",
+   "record": "2-4-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "LIQUID EKL",
+   "team": []
+  },
+  {
+   "rank": 47,
+   "player": "Connor Louie Y.",
+   "country": "SG",
+   "record": "2-4-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Poklio",
+   "team": []
+  },
+  {
+   "rank": 48,
+   "player": "Luca V.",
+   "country": "IT",
+   "record": "2-4-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Luke",
+   "team": []
+  },
+  {
+   "rank": 49,
+   "player": "Sarah H.",
+   "country": "DE",
+   "record": "1-5-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Sarah",
+   "team": []
+  },
+  {
+   "rank": 50,
+   "player": "Mason A.",
+   "country": "US",
+   "record": "1-3-0",
+   "dropped": true,
+   "dropped_round": 4,
+   "trainer_name": "mason",
+   "team": []
+  },
+  {
+   "rank": 51,
+   "player": "Aglaja H.",
+   "country": "DE",
+   "record": "1-5-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Aglaja",
+   "team": []
+  },
+  {
+   "rank": 52,
+   "player": "Jocelyn C.",
+   "country": "US",
+   "record": "1-5-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "BittyXD",
+   "team": []
+  },
+  {
+   "rank": 53,
+   "player": "Jaden D.",
+   "country": "GB",
+   "record": "0-5-0",
+   "dropped": true,
+   "dropped_round": 5,
+   "trainer_name": "Liquid",
+   "team": []
+  },
+  {
+   "rank": 54,
+   "player": "Stella M.",
+   "country": "IT",
+   "record": "0-5-0",
+   "dropped": true,
+   "dropped_round": 5,
+   "trainer_name": "Stella",
+   "team": []
+  }
+ ]
+}

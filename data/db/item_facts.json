@@ -1,0 +1,1796 @@
+{
+ "_comment": "Merged by scripts/build_item_facts.py. PRICE: Serebii first, pokebase's `unlock` filling the ones Serebii prints as '??? VP'. TEXT: pokebase first, because its description is the mechanics and Serebii's is flavour. `source` and `text_source` say which answered.",
+ "prices": {
+  "Air Balloon": {
+   "vp": 2000,
+   "source": "pokebase",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "Causes the holder to float off the ground, making it immune to Ground-type moves, as well as the Spikes, Toxic Spikes, and Sticky Web statuses. Disappears for the duration of the battle if the holder takes damage from a move.",
+   "text_source": "pokebase",
+   "serebii_text": "An item to be held by a Pokémon. This balloon makes the holder float in the air. If the holder is hit with an attack, the balloon will burst."
+  },
+  "Big Root": {
+   "vp": 700,
+   "source": "serebii",
+   "unlock": "shop-700-vp",
+   "note": "",
+   "text": "Boosts HP restored by draining moves and other HP-restoring effects by 30%.",
+   "text_source": "pokebase",
+   "serebii_text": "An item to be held by a Pokémon. This root boosts the amount of HP the holder restores to itself when it uses HP-stealing moves."
+  },
+  "Binding Band": {
+   "vp": 2000,
+   "source": "pokebase",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "Increases the damage dealt to targets that have the Bound status. Targets will take damage equal to 1/6 of their max HP instead of 1/8 of their max HP.",
+   "text_source": "pokebase",
+   "serebii_text": "An item to be held by a Pokémon. This band boosts the power of binding moves used by the holder."
+  },
+  "Black Belt": {
+   "vp": 700,
+   "source": "serebii",
+   "unlock": "shop-700-vp",
+   "note": "",
+   "text": "Boosts the power of the holder's Fighting-type moves by 20%.",
+   "text_source": "pokebase",
+   "serebii_text": "An item to be held by a Pokémon. This belt helps with focus and boosts the power of the holder's Fighting-type moves."
+  },
+  "Black Glasses": {
+   "vp": 700,
+   "source": "serebii",
+   "unlock": "shop-700-vp",
+   "note": "",
+   "text": "Boosts the power of the holder's Dark-type moves by 20%.",
+   "text_source": "pokebase",
+   "serebii_text": "An item to be held by a Pokémon. It's a pair of shady- looking glasses that boost the power of the holder's Dark-type moves."
+  },
+  "Bright Powder": {
+   "vp": null,
+   "source": null,
+   "unlock": "beginning",
+   "note": "you start with it",
+   "text": "Lowers the accuracy of moves targeting the holder by 10%.",
+   "text_source": "pokebase",
+   "serebii_text": "An item to be held by a Pokémon. This glittery powder casts a tricky glare that lowers the accuracy of opposing Pokémon's moves."
+  },
+  "Charcoal": {
+   "vp": 700,
+   "source": "serebii",
+   "unlock": "shop-700-vp",
+   "note": "",
+   "text": "Boosts the power of the holder's Fire-type moves by 20%.",
+   "text_source": "pokebase",
+   "serebii_text": "An item to be held by a Pokémon. It's a combustible fuel that boosts the power of the holder's Fire-type moves."
+  },
+  "Choice Scarf": {
+   "vp": null,
+   "source": null,
+   "unlock": "beginning",
+   "note": "you start with it",
+   "text": "Boosts the holder's Speed by 50%, but it can only use the first move it selects until it switches out.",
+   "text_source": "pokebase",
+   "serebii_text": "An item to be held by a Pokémon. This curious scarf boosts the holder's Speed stat but only allows the use of a single move."
+  },
+  "Damp Rock": {
+   "vp": 700,
+   "source": "serebii",
+   "unlock": "shop-700-vp",
+   "note": "",
+   "text": "Rain summoned by the holder lasts 3 extra turns (8 turns total).",
+   "text_source": "pokebase",
+   "serebii_text": "An item to be held by a Pokémon. When the holder changes the weather to rain, the rain will persist for longer than usual."
+  },
+  "Dragon Fang": {
+   "vp": 700,
+   "source": "serebii",
+   "unlock": "shop-700-vp",
+   "note": "",
+   "text": "Boosts the power of the holder's Dragon-type moves by 20%.",
+   "text_source": "pokebase",
+   "serebii_text": "An item to be held by a Pokémon. This hard, sharp fang boosts the power of the holder's Dragon-type moves."
+  },
+  "Eject Button": {
+   "vp": 2000,
+   "source": "pokebase",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "Switches the holder out of battle when the holder takes damage from a move. Disappears for the duration of the battle after a single use.",
+   "text_source": "pokebase",
+   "serebii_text": "An item to be held by a Pokémon. If the holder is damaged by an attack, it will be switched out of battle to be replaced by another Pokémon on your team."
+  },
+  "Electric Seed": {
+   "vp": 2000,
+   "source": "pokebase",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "Boosts the holder's Defense stat by 1 stage on Electric Terrain. Disappears for the duration of the battle after a single use.",
+   "text_source": "pokebase",
+   "serebii_text": "An item to be held by a Pokémon. If the terrain becomes Electric Terrain, the holder will use this seed to boost its own Defense stat."
+  },
+  "Expert Belt": {
+   "vp": 1000,
+   "source": "serebii",
+   "unlock": "shop-1000-vp",
+   "note": "",
+   "text": "Boosts the power of the holder's supereffective moves by 20%.",
+   "text_source": "pokebase",
+   "serebii_text": "An item to be held by a Pokémon. It's a well-worn belt that slightly boosts the power of the holder's supereffective moves."
+  },
+  "Fairy Feather": {
+   "vp": 700,
+   "source": "serebii",
+   "unlock": "shop-700-vp",
+   "note": "",
+   "text": "Boosts the power of the holder's Fairy-type moves by 20%.",
+   "text_source": "pokebase",
+   "serebii_text": "An item to be held by a Pokémon. This feather, which gleams faintly when hit by light, boosts the power of the holder's Fairy-type moves."
+  },
+  "Focus Band": {
+   "vp": null,
+   "source": null,
+   "unlock": "beginning",
+   "note": "you start with it",
+   "text": "If the holder would be knocked out by a move, it has a 10% chance to survive with 1 HP.",
+   "text_source": "pokebase",
+   "serebii_text": "An item to be held by a Pokémon. When the holder is hit with a move that should knock it out, it may be able to endure with 1 HP."
+  },
+  "Focus Sash": {
+   "vp": null,
+   "source": null,
+   "unlock": "beginning",
+   "note": "you start with it",
+   "text": "If the holder has full HP, it survives an otherwise fatal hit with 1 HP. Consumed after use.",
+   "text_source": "pokebase",
+   "serebii_text": "An item to be held by a Pokémon. If the holder has full HP and it is hit with a move that should knock it out, it will endure with 1 HP—but only once."
+  },
+  "Grassy Seed": {
+   "vp": 2000,
+   "source": "pokebase",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "Boosts the holder's Defense stat by 1 stage on Grassy Terrain. Disappears for the duration of the battle after a single use.",
+   "text_source": "pokebase",
+   "serebii_text": "An item to be held by a Pokémon. If the terrain becomes Grassy Terrain, the holder will use this seed to boost its own Defense stat."
+  },
+  "Hard Stone": {
+   "vp": 700,
+   "source": "serebii",
+   "unlock": "shop-700-vp",
+   "note": "",
+   "text": "Boosts the power of the holder's Rock-type moves by 20%.",
+   "text_source": "pokebase",
+   "serebii_text": "An item to be held by a Pokémon. It's a durable stone that boosts the power of the holder's Rock-type moves."
+  },
+  "Heat Rock": {
+   "vp": 700,
+   "source": "serebii",
+   "unlock": "shop-700-vp",
+   "note": "",
+   "text": "Harsh sunlight summoned by the holder lasts 3 extra turns (8 turns total).",
+   "text_source": "pokebase",
+   "serebii_text": "An item to be held by a Pokémon. When the holder changes the weather to harsh sunlight, the sunlight will persist for longer than usual."
+  },
+  "Icy Rock": {
+   "vp": 700,
+   "source": "serebii",
+   "unlock": "shop-700-vp",
+   "note": "",
+   "text": "Snow summoned by the holder lasts 3 extra turns (8 turns total).",
+   "text_source": "pokebase",
+   "serebii_text": "An item to be held by a Pokémon. When the holder changes the weather to snow, the snow will persist for longer than usual."
+  },
+  "Iron Ball": {
+   "vp": 1000,
+   "source": "serebii",
+   "unlock": "shop-1000-vp",
+   "note": "",
+   "text": "Halves the holder's Speed. If airborne, it becomes grounded, allowing Ground-type moves and entry hazards to affect it.",
+   "text_source": "pokebase",
+   "serebii_text": "An item to be held by a Pokémon. It lowers the holder's Speed stat and makes the holder vulnerable to Ground- type moves even if it is a Flying type or is levitating."
+  },
+  "King's Rock": {
+   "vp": null,
+   "source": null,
+   "unlock": null,
+   "note": "Beginning",
+   "text": "An item to be held by a Pokémon. It may cause the target to flinch whenever the holder successfully inflicts damage on them with an attack.",
+   "text_source": "serebii",
+   "serebii_text": "An item to be held by a Pokémon. It may cause the target to flinch whenever the holder successfully inflicts damage on them with an attack."
+  },
+  "Leek": {
+   "vp": 2000,
+   "source": "pokebase",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "When held by a Farfetch'd or Sirfetch'd, gives the holder a 2-stage Critical-Hit Ratio Boost.",
+   "text_source": "pokebase",
+   "serebii_text": "An item to be held by Farfetch'd or Sirfetch'd. This very long and stiff stalk of leek boosts the critical-hit ratio of their moves."
+  },
+  "Leftovers": {
+   "vp": null,
+   "source": null,
+   "unlock": "beginning",
+   "note": "you start with it",
+   "text": "Restores 1/16 of the holder's max HP at the end of every turn.",
+   "text_source": "pokebase",
+   "serebii_text": "An item to be held by a Pokémon. It slowly but steadily restores the holder's HP."
+  },
+  "Life Orb": {
+   "vp": 1000,
+   "source": "serebii",
+   "unlock": "shop-1000-vp",
+   "note": "",
+   "text": "Boosts the power of the holder's moves by 30%, but the holder loses 10% of its max HP after using a damaging move.",
+   "text_source": "pokebase",
+   "serebii_text": "An item to be held by a Pokémon. It boosts the power of the holder's moves, but the holder also loses a small amount of HP upon landing an attack."
+  },
+  "Light Ball": {
+   "vp": 1000,
+   "source": "serebii",
+   "unlock": "shop-1000-vp",
+   "note": "",
+   "text": "Doubles the holder's Attack and Sp. Atk. if held by Pikachu.",
+   "text_source": "pokebase",
+   "serebii_text": "An item to be held by Pikachu. It's a mysterious orb that boosts Pikachu's Attack and Sp. Atk stats."
+  },
+  "Light Clay": {
+   "vp": 1000,
+   "source": "serebii",
+   "unlock": "shop-1000-vp",
+   "note": "",
+   "text": "Extends the duration of Light Screen, Reflect, and Aurora Veil by 3 turns (8 turns total).",
+   "text_source": "pokebase",
+   "serebii_text": "An item to be held by a Pokémon. When the holder uses protective moves like Light Screen or Reflect, their effects will last longer than usual."
+  },
+  "Magnet": {
+   "vp": 700,
+   "source": "serebii",
+   "unlock": "shop-700-vp",
+   "note": "",
+   "text": "Boosts the power of the holder's Electric-type moves by 20%.",
+   "text_source": "pokebase",
+   "serebii_text": "An item to be held by a Pokémon. It's a powerful magnet that boosts the power of the holder's Electric-type moves."
+  },
+  "Mental Herb": {
+   "vp": 1000,
+   "source": "serebii",
+   "unlock": "shop-1000-vp",
+   "note": "",
+   "text": "Cures the holder of Infatuation, Taunt, Torment, Disable, Heal Block, and Encore. Consumed after use.",
+   "text_source": "pokebase",
+   "serebii_text": "An item to be held by a Pokémon. The holder will be able to shake off move-binding effects to move freely— but only once."
+  },
+  "Metal Coat": {
+   "vp": 700,
+   "source": "serebii",
+   "unlock": "shop-700-vp",
+   "note": "",
+   "text": "Boosts the power of the holder's Steel-type moves by 20%.",
+   "text_source": "pokebase",
+   "serebii_text": "An item to be held by a Pokémon. It's a special metallic coating that boosts the power of the holder's Steel-type moves."
+  },
+  "Metronome": {
+   "vp": 700,
+   "source": "serebii",
+   "unlock": "shop-700-vp",
+   "note": "",
+   "text": "Boosts the power of consecutive uses of the same move by 20% each time, up to 100%. The boost resets if a different move is used.",
+   "text_source": "pokebase",
+   "serebii_text": "An item to be held by a Pokémon. It boosts the power of a move that's used repeatedly. Once the chain is broken, the move's power returns to normal."
+  },
+  "Miracle Seed": {
+   "vp": 700,
+   "source": "serebii",
+   "unlock": "shop-700-vp",
+   "note": "",
+   "text": "Boosts the power of the holder's Grass-type moves by 20%.",
+   "text_source": "pokebase",
+   "serebii_text": "An item to be held by a Pokémon. It's a seed imbued with life force that boosts the power of the holder's Grass-type moves."
+  },
+  "Misty Seed": {
+   "vp": 2000,
+   "source": "pokebase",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "Boosts the holder's Sp. Def stat by 1 stage on Misty Terrain. Disappears for the duration of the battle after a single use.",
+   "text_source": "pokebase",
+   "serebii_text": "An item to be held by a Pokémon. If the terrain becomes Misty Terrain, the holder will use this seed to boost its own Sp. Def stat."
+  },
+  "Muscle Band": {
+   "vp": 700,
+   "source": "serebii",
+   "unlock": "shop-700-vp",
+   "note": "",
+   "text": "Boosts the power of the holder's physical moves by 10%.",
+   "text_source": "pokebase",
+   "serebii_text": "An item to be held by a Pokémon. This headband exudes strength, slightly boosting the power of the holder's physical moves."
+  },
+  "Mystic Water": {
+   "vp": 700,
+   "source": "serebii",
+   "unlock": "shop-700-vp",
+   "note": "",
+   "text": "Boosts the power of the holder's Water-type moves by 20%.",
+   "text_source": "pokebase",
+   "serebii_text": "An item to be held by a Pokémon. This teardrop-shaped gem boosts the power of the holder's Water-type moves."
+  },
+  "Never-Melt Ice": {
+   "vp": 700,
+   "source": "serebii",
+   "unlock": "shop-700-vp",
+   "note": "",
+   "text": "Boosts the power of the holder's Ice-type moves by 20%.",
+   "text_source": "pokebase",
+   "serebii_text": "An item to be held by a Pokémon. It's a heat-repelling piece of ice that boosts the power of the holder's Ice- type moves."
+  },
+  "Normal Gem": {
+   "vp": 2000,
+   "source": "pokebase",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "Boosts the power of the holder's Normal-type moves by 30%. Disappears for the duration of the battle after a single use.",
+   "text_source": "pokebase",
+   "serebii_text": "An item to be held by a Pokémon. This gem is imbued with the essence of normalcy and will boost the power of a Normal-type move—but only once."
+  },
+  "Poison Barb": {
+   "vp": 700,
+   "source": "serebii",
+   "unlock": "shop-700-vp",
+   "note": "",
+   "text": "Boosts the power of the holder's Poison-type moves by 20%.",
+   "text_source": "pokebase",
+   "serebii_text": "An item to be held by a Pokémon. This small poisonous barb boosts the power of the holder's Poison-type moves."
+  },
+  "Psychic Seed": {
+   "vp": 2000,
+   "source": "pokebase",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "Boosts the holder's Sp. Def stat by 1 stage on Psychic Terrain. Disappears for the duration of the battle after a single use.",
+   "text_source": "pokebase",
+   "serebii_text": "An item to be held by a Pokémon. If the terrain becomes Psychic Terrain, the holder will use this seed to boost its own Sp. Def stat."
+  },
+  "Quick Claw": {
+   "vp": null,
+   "source": null,
+   "unlock": "beginning",
+   "note": "you start with it",
+   "text": "Gives the holder's moves a 20% chance to go first against moves with the same priority.",
+   "text_source": "pokebase",
+   "serebii_text": "An item to be held by a Pokémon. This light, sharp claw lets the holder occasionally unleash a move faster than it usually would."
+  },
+  "Red Card": {
+   "vp": 2000,
+   "source": "pokebase",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "When the holder takes damage from a move, the attacker is forced to switch out of battle. Disappears for the duration of the battle after a single use.",
+   "text_source": "pokebase",
+   "serebii_text": "An item to be held by a Pokémon. If the holder is damaged by an attack, the mysterious power of this card can remove the attacker from the battle."
+  },
+  "Rocky Helmet": {
+   "vp": 2000,
+   "source": "pokebase",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "When the holder is hit by a contact move, the attacker takes damage equal to 1/6 of its max HP.",
+   "text_source": "pokebase",
+   "serebii_text": "An item to be held by a Pokémon. This helmet damages any attacker that makes direct contact with the holder."
+  },
+  "Scope Lens": {
+   "vp": 1000,
+   "source": "serebii",
+   "unlock": "shop-1000-vp",
+   "note": "",
+   "text": "Raises the holder's critical-hit ratio by 1 stage.",
+   "text_source": "pokebase",
+   "serebii_text": "An item to be held by a Pokémon. It's a lens for scoping out weak points. It boosts the holder's critical-hit ratio."
+  },
+  "Sharp Beak": {
+   "vp": 700,
+   "source": "serebii",
+   "unlock": "shop-700-vp",
+   "note": "",
+   "text": "Boosts the power of the holder's Flying-type moves by 20%.",
+   "text_source": "pokebase",
+   "serebii_text": "An item to be held by a Pokémon. It's a long, sharp beak that boosts the power of the holder's Flying-type moves."
+  },
+  "Shed Shell": {
+   "vp": 700,
+   "source": "serebii",
+   "unlock": "shop-700-vp",
+   "note": "",
+   "text": "Allows the holder to switch out even if prevented by a move or Ability.",
+   "text_source": "pokebase",
+   "serebii_text": "An item to be held by a Pokémon. Hard and sturdy, this discarded carapace enables the holder to switch out of battle without fail."
+  },
+  "Shell Bell": {
+   "vp": 700,
+   "source": "serebii",
+   "unlock": "shop-700-vp",
+   "note": "",
+   "text": "Restores HP equal to 1/8 of the damage dealt by the holder's damaging moves.",
+   "text_source": "pokebase",
+   "serebii_text": "An item to be held by a Pokémon. The holder restores a little HP to itself every time it inflicts damage with an attack."
+  },
+  "Silk Scarf": {
+   "vp": 700,
+   "source": "serebii",
+   "unlock": "shop-700-vp",
+   "note": "",
+   "text": "Boosts the power of the holder's Normal-type moves by 20%.",
+   "text_source": "pokebase",
+   "serebii_text": "An item to be held by a Pokémon. It's a sumptuous scarf that boosts the power of the holder's Normal-type moves."
+  },
+  "Silver Powder": {
+   "vp": 700,
+   "source": "serebii",
+   "unlock": "shop-700-vp",
+   "note": "",
+   "text": "Boosts the power of the holder's Bug-type moves by 20%.",
+   "text_source": "pokebase",
+   "serebii_text": "An item to be held by a Pokémon. It's a shiny silver powder that boosts the power of the holder's Bug-type moves."
+  },
+  "Smooth Rock": {
+   "vp": 700,
+   "source": "serebii",
+   "unlock": "shop-700-vp",
+   "note": "",
+   "text": "Sandstorm summoned by the holder lasts 3 extra turns (8 turns total).",
+   "text_source": "pokebase",
+   "serebii_text": "An item to be held by a Pokémon. When the holder changes the weather to a sandstorm, the storm will persist for longer than usual."
+  },
+  "Soft Sand": {
+   "vp": 700,
+   "source": "serebii",
+   "unlock": "shop-700-vp",
+   "note": "",
+   "text": "Boosts the power of the holder's Ground-type moves by 20%.",
+   "text_source": "pokebase",
+   "serebii_text": "An item to be held by a Pokémon. This loose, silky sand boosts the power of the holder's Ground-type moves."
+  },
+  "Spell Tag": {
+   "vp": 700,
+   "source": "serebii",
+   "unlock": "shop-700-vp",
+   "note": "",
+   "text": "Boosts the power of the holder's Ghost-type moves by 20%.",
+   "text_source": "pokebase",
+   "serebii_text": "An item to be held by a Pokémon. It's a sinister, eerie tag that boosts the power of the holder's Ghost-type moves."
+  },
+  "Terrain Extender": {
+   "vp": 2000,
+   "source": "pokebase",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "When the holder creates terrain with its moves or Ability, the duration is extended by 3 turns. (Total duration: 8 turns)",
+   "text_source": "pokebase",
+   "serebii_text": "An item to be held by a Pokémon. It extends the duration of terrain caused by the holder's move or Ability."
+  },
+  "Twisted Spoon": {
+   "vp": 700,
+   "source": "serebii",
+   "unlock": "shop-700-vp",
+   "note": "",
+   "text": "Boosts the power of the holder's Psychic-type moves by 20%.",
+   "text_source": "pokebase",
+   "serebii_text": "An item to be held by a Pokémon. This spoon is imbued with telekinetic energy and boosts the power of the holder's Psychic-type moves."
+  },
+  "White Herb": {
+   "vp": null,
+   "source": null,
+   "unlock": "beginning",
+   "note": "you start with it",
+   "text": "Restores the holder's lowered stats to normal. Consumed after use.",
+   "text_source": "pokebase",
+   "serebii_text": "An item to be held by a Pokémon. It will restore any lowered stat in battle—but only once."
+  },
+  "Wide Lens": {
+   "vp": 700,
+   "source": "serebii",
+   "unlock": "shop-700-vp",
+   "note": "",
+   "text": "Boosts the accuracy of the holder's moves by 10%.",
+   "text_source": "pokebase",
+   "serebii_text": "An item to be held by a Pokémon. It's a magnifying lens that slightly boosts the accuracy of the holder's moves."
+  },
+  "Wise Glasses": {
+   "vp": 700,
+   "source": "serebii",
+   "unlock": "shop-700-vp",
+   "note": "",
+   "text": "Boosts the power of the holder's special moves by 10%.",
+   "text_source": "pokebase",
+   "serebii_text": "An item to be held by a Pokémon. This thick pair of glasses slightly boosts the power of the holder's special moves."
+  },
+  "Zoom Lens": {
+   "vp": 700,
+   "source": "serebii",
+   "unlock": "shop-700-vp",
+   "note": "",
+   "text": "Boosts the accuracy of the holder's moves by 20% when it moves after the target.",
+   "text_source": "pokebase",
+   "serebii_text": "An item to be held by a Pokémon. When the holder acts after its target, its move will be more accurate than usual."
+  },
+  "Abomasite": {
+   "vp": 2000,
+   "source": "pokebase",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "One of a variety of mysterious Mega Stones. An Abomasnow holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. An Abomasnow holding this stone will be able to Mega Evolve during battle."
+  },
+  "Absolite": {
+   "vp": 2000,
+   "source": "serebii",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "One of a variety of mysterious Mega Stones. An Absol holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. An Absol holding this stone will be able to Mega Evolve during battle."
+  },
+  "Absolite Z": {
+   "vp": 2000,
+   "source": "serebii",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "A held item that allows Absol to Mega Evolve into Mega Absol Z.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. An Absol holding this stone will be able to Mega Evolve during battle."
+  },
+  "Aerodactylite": {
+   "vp": 2000,
+   "source": "serebii",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "One of a variety of mysterious Mega Stones. An Aerodactyl holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. An Aerodactyl holding this stone will be able to Mega Evolve during battle."
+  },
+  "Aggronite": {
+   "vp": 2000,
+   "source": "pokebase",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "One of a variety of mysterious Mega Stones. An Aggron holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. An Aggron holding this stone will be able to Mega Evolve during battle."
+  },
+  "Alakazite": {
+   "vp": 2000,
+   "source": "serebii",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "One of a variety of mysterious Mega Stones. An Alakazam holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. An Alakazam holding this stone will be able to Mega Evolve during battle."
+  },
+  "Altarianite": {
+   "vp": 2000,
+   "source": "serebii",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "One of a variety of mysterious Mega Stones. An Altaria holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. An Altaria holding this stone will be able to Mega Evolve during battle."
+  },
+  "Ampharosite": {
+   "vp": 2000,
+   "source": "serebii",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "One of a variety of mysterious Mega Stones. An Ampharos holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. An Ampharos holding this stone will be able to Mega Evolve during battle."
+  },
+  "Audinite": {
+   "vp": 2000,
+   "source": "serebii",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "One of a variety of mysterious Mega Stones. An Audino holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. An Audino holding this stone will be able to Mega Evolve during battle."
+  },
+  "Banettite": {
+   "vp": 2000,
+   "source": "serebii",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "One of a variety of mysterious Mega Stones. A Banette holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. A Banette holding this stone will be able to Mega Evolve during battle."
+  },
+  "Barbaracite": {
+   "vp": 2000,
+   "source": "serebii",
+   "unlock": "deposit-legends-za",
+   "note": "",
+   "text": "One of a variety of mysterious Mega Stones. A Barbaracle holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. A Barbaracle holding this stone will be able to Mega Evolve during battle."
+  },
+  "Baxcalibrite": {
+   "vp": 2000,
+   "source": "serebii",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "A held item that allows Baxcalibur to Mega Evolve.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. A Baxcalibur holding this stone will be able to Mega Evolve during battle."
+  },
+  "Beedrillite": {
+   "vp": 2000,
+   "source": "pokebase",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "One of a variety of mysterious Mega Stones. A Beedrill holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. A Beedrill holding this stone will be able to Mega Evolve during battle."
+  },
+  "Blastoisinite": {
+   "vp": 2000,
+   "source": "serebii",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "One of a variety of mysterious Mega Stones. A Blastoise holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. A Blastoise holding this stone will be able to Mega Evolve during battle."
+  },
+  "Blazikenite": {
+   "vp": 2000,
+   "source": "serebii",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "One of a variety of mysterious Mega Stones. A Blaziken holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. A Blaziken holding this stone will be able to Mega Evolve during battle."
+  },
+  "Cameruptite": {
+   "vp": 2000,
+   "source": "serebii",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "One of a variety of mysterious Mega Stones. A Camerupt holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. A Camerupt holding this stone will be able to Mega Evolve during battle."
+  },
+  "Chandelurite": {
+   "vp": 2000,
+   "source": "serebii",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "One of a variety of mysterious Mega Stones. A Chandelure holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. A Chandelure holding this stone will be able to Mega Evolve during battle."
+  },
+  "Charizardite X": {
+   "vp": 2000,
+   "source": "serebii",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "One of a variety of mysterious Mega Stones. A Charizard holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. A Charizard holding this stone will be able to Mega Evolve during battle."
+  },
+  "Charizardite Y": {
+   "vp": 2000,
+   "source": "serebii",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "One of a variety of mysterious Mega Stones. A Charizard holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. A Charizard holding this stone will be able to Mega Evolve during battle."
+  },
+  "Chesnaughtite": {
+   "vp": 2000,
+   "source": "serebii",
+   "unlock": "deposit-legends-za",
+   "note": "",
+   "text": "One of a variety of mysterious Mega Stones. A Chesnaught holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. A Chesnaught holding this stone will be able to Mega Evolve during battle."
+  },
+  "Chimechite": {
+   "vp": 2000,
+   "source": "serebii",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "One of a variety of mysterious Mega Stones. A Chimecho holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. A Chimecho holding this stone will be able to Mega Evolve during battle."
+  },
+  "Clefablite": {
+   "vp": 2000,
+   "source": "serebii",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "One of a variety of mysterious Mega Stones. A Clefable holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. A Clefable holding this stone will be able to Mega Evolve during battle."
+  },
+  "Crabominite": {
+   "vp": 2000,
+   "source": "serebii",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "One of a variety of mysterious Mega Stones. A Crabominable holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. A Crabominable holding this stone will be able to Mega Evolve during battle."
+  },
+  "Delphoxite": {
+   "vp": 2000,
+   "source": "serebii",
+   "unlock": "deposit-legends-za",
+   "note": "",
+   "text": "One of a variety of mysterious Mega Stones. A Delphox holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. A Delphox holding this stone will be able to Mega Evolve during battle."
+  },
+  "Dragalgite": {
+   "vp": 2000,
+   "source": "serebii",
+   "unlock": "deposit-legends-za",
+   "note": "",
+   "text": "One of a variety of mysterious Mega Stones. A Dragalge holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. A Dragalge holding this stone will be able to Mega Evolve during battle."
+  },
+  "Dragoninite": {
+   "vp": 2000,
+   "source": "serebii",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "One of a variety of mysterious Mega Stones. A Dragonite holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. A Dragonite holding this stone will be able to Mega Evolve during battle."
+  },
+  "Drampanite": {
+   "vp": 2000,
+   "source": "serebii",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "One of a variety of mysterious Mega Stones. A Drampa holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. A Drampa holding this stone will be able to Mega Evolve during battle."
+  },
+  "Eelektrossite": {
+   "vp": 2000,
+   "source": "serebii",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "One of a variety of mysterious Mega Stones. An Eelektross holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. An Eelektross holding this stone will be able to Mega Evolve during battle."
+  },
+  "Emboarite": {
+   "vp": 2000,
+   "source": "serebii",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "One of a variety of mysterious Mega Stones. An Emboar holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. An Emboar holding this stone will be able to Mega Evolve during battle."
+  },
+  "Excadrite": {
+   "vp": 2000,
+   "source": "serebii",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "One of a variety of mysterious Mega Stones. An Excadrill holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. An Excadrill holding this stone will be able to Mega Evolve during battle."
+  },
+  "Falinksite": {
+   "vp": 2000,
+   "source": "serebii",
+   "unlock": "deposit-legends-za",
+   "note": "",
+   "text": "One of a variety of mysterious Mega Stones. A Falinks holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. A Falinks holding this stone will be able to Mega Evolve during battle."
+  },
+  "Feraligite": {
+   "vp": 2000,
+   "source": "serebii",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "One of a variety of mysterious Mega Stones. A Feraligatr holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. A Feraligatr holding this stone will be able to Mega Evolve during battle."
+  },
+  "Floettite": {
+   "vp": null,
+   "source": null,
+   "unlock": "deposit-legends-za",
+   "note": "deposit from Legends: Z-A",
+   "text": "One of a variety of mysterious Mega Stones. A special Floette holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. A special Floette holding this stone will be able to Mega Evolve during battle."
+  },
+  "Froslassite": {
+   "vp": 2000,
+   "source": "serebii",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "One of a variety of mysterious Mega Stones. A Froslass holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. A Froslass holding this stone will be able to Mega Evolve during battle."
+  },
+  "Galladite": {
+   "vp": 2000,
+   "source": "serebii",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "One of a variety of mysterious Mega Stones. A Gallade holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. A Gallade holding this stone will be able to Mega Evolve during battle."
+  },
+  "Garchompite": {
+   "vp": 2000,
+   "source": "pokebase",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "One of a variety of mysterious Mega Stones. A Garchomp holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. A Garchomp holding this stone will be able to Mega Evolve during battle."
+  },
+  "Garchompite Z": {
+   "vp": 2000,
+   "source": "serebii",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "A held item that allows Garchomp to Mega Evolve into Mega Garchomp Z.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. A Garchomp holding this stone will be able to Mega Evolve during battle."
+  },
+  "Gardevoirite": {
+   "vp": 2000,
+   "source": "serebii",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "One of a variety of mysterious Mega Stones. A Gardevoir holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. A Gardevoir holding this stone will be able to Mega Evolve during battle."
+  },
+  "Gengarite": {
+   "vp": 2000,
+   "source": "serebii",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "One of a variety of mysterious Mega Stones. A Gengar holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. A Gengar holding this stone will be able to Mega Evolve during battle."
+  },
+  "Glalitite": {
+   "vp": 2000,
+   "source": "serebii",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "One of a variety of mysterious Mega Stones. A Glalie holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. A Glalie holding this stone will be able to Mega Evolve during battle."
+  },
+  "Glimmoranite": {
+   "vp": 2000,
+   "source": "serebii",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "One of a variety of mysterious Mega Stones. A Glimmora holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. A Glimmora holding this stone will be able to Mega Evolve during battle."
+  },
+  "Golisopite": {
+   "vp": 2000,
+   "source": "serebii",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "A held item that allows Golisopod to Mega Evolve.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. A Golisopod holding this stone will be able to Mega Evolve during battle."
+  },
+  "Golurkite": {
+   "vp": 2000,
+   "source": "serebii",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "One of a variety of mysterious Mega Stones. A Golurk holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. A Golurk holding this stone will be able to Mega Evolve during battle."
+  },
+  "Greninjite": {
+   "vp": 2000,
+   "source": "serebii",
+   "unlock": "deposit-legends-za",
+   "note": "",
+   "text": "One of a variety of mysterious Mega Stones. A Greninja holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. A Greninja holding this stone will be able to Mega Evolve during battle."
+  },
+  "Gyaradosite": {
+   "vp": 2000,
+   "source": "pokebase",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "One of a variety of mysterious Mega Stones. A Gyarados holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. A Gyarados holding this stone will be able to Mega Evolve during battle."
+  },
+  "Hawluchanite": {
+   "vp": 2000,
+   "source": "serebii",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "One of a variety of mysterious Mega Stones. A Hawlucha holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. A Hawlucha holding this stone will be able to Mega Evolve during battle."
+  },
+  "Heracronite": {
+   "vp": 2000,
+   "source": "pokebase",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "One of a variety of mysterious Mega Stones. A Heracross holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. A Heracross holding this stone will be able to Mega Evolve during battle."
+  },
+  "Houndoominite": {
+   "vp": 2000,
+   "source": "serebii",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "One of a variety of mysterious Mega Stones. A Houndoom holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. A Houndoom holding this stone will be able to Mega Evolve during battle."
+  },
+  "Kangaskhanite": {
+   "vp": 2000,
+   "source": "serebii",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "One of a variety of mysterious Mega Stones. A Kangaskhan holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. A Kangaskhan holding this stone will be able to Mega Evolve during battle."
+  },
+  "Lopunnite": {
+   "vp": 2000,
+   "source": "serebii",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "One of a variety of mysterious Mega Stones. A Lopunny holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. A Lopunny holding this stone will be able to Mega Evolve during battle."
+  },
+  "Lucarionite": {
+   "vp": 2000,
+   "source": "serebii",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "One of a variety of mysterious Mega Stones. A Lucario holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. A Lucario holding this stone will be able to Mega Evolve during battle."
+  },
+  "Lucarionite Z": {
+   "vp": 2000,
+   "source": "serebii",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "A held item that allows Lucario to Mega Evolve into Mega Lucario Z.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. A Lucario holding this stone will be able to Mega Evolve during battle."
+  },
+  "Malamarite": {
+   "vp": 2000,
+   "source": "serebii",
+   "unlock": "deposit-legends-za",
+   "note": "",
+   "text": "One of a variety of mysterious Mega Stones. A Malamar holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. A Malamar holding this stone will be able to Mega Evolve during battle."
+  },
+  "Manectite": {
+   "vp": 2000,
+   "source": "pokebase",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "One of a variety of mysterious Mega Stones. A Manectric holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. A Manectric holding this stone will be able to Mega Evolve during battle."
+  },
+  "Mawilite": {
+   "vp": 2000,
+   "source": "serebii",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "One of a variety of mysterious Mega Stones. A Mawile holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. A Mawile holding this stone will be able to Mega Evolve during battle."
+  },
+  "Medichamite": {
+   "vp": 2000,
+   "source": "serebii",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "One of a variety of mysterious Mega Stones. A Medicham holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. A Medicham holding this stone will be able to Mega Evolve during battle."
+  },
+  "Meganiumite": {
+   "vp": 2000,
+   "source": "serebii",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "One of a variety of mysterious Mega Stones. A Meganium holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. A Meganium holding this stone will be able to Mega Evolve during battle."
+  },
+  "Meowsticite": {
+   "vp": 2000,
+   "source": "serebii",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "One of a variety of mysterious Mega Stones. A Meowstic holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. A Meowstic holding this stone will be able to Mega Evolve during battle."
+  },
+  "Metagrossite": {
+   "vp": 2000,
+   "source": "serebii",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "One of a variety of mysterious Mega Stones. A Metagross holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. A Metagross holding this stone will be able to Mega Evolve during battle."
+  },
+  "Pidgeotite": {
+   "vp": 2000,
+   "source": "serebii",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "One of a variety of mysterious Mega Stones. A Pidgeot holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. A Pidgeot holding this stone will be able to Mega Evolve during battle."
+  },
+  "Pinsirite": {
+   "vp": 2000,
+   "source": "serebii",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "One of a variety of mysterious Mega Stones. A Pinsir holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. A Pinsir holding this stone will be able to Mega Evolve during battle."
+  },
+  "Pyroarite": {
+   "vp": 2000,
+   "source": "serebii",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "One of a variety of mysterious Mega Stones. A Pyroar holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. A Pyroar holding this stone will be able to Mega Evolve during battle."
+  },
+  "Raichunite X": {
+   "vp": null,
+   "source": null,
+   "unlock": "beginning",
+   "note": "you start with it",
+   "text": "One of a variety of mysterious Mega Stones. A Raichu holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. A Raichu holding this stone will be able to Mega Evolve during battle."
+  },
+  "Raichunite Y": {
+   "vp": null,
+   "source": null,
+   "unlock": "beginning",
+   "note": "you start with it",
+   "text": "One of a variety of mysterious Mega Stones. A Raichu holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. A Raichu holding this stone will be able to Mega Evolve during battle."
+  },
+  "Sablenite": {
+   "vp": 2000,
+   "source": "serebii",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "One of a variety of mysterious Mega Stones. A Sableye holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. A Sableye holding this stone will be able to Mega Evolve during battle."
+  },
+  "Salamencite": {
+   "vp": 2000,
+   "source": "serebii",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "A held item that allows Salamence to Mega Evolve.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. A Salamence holding this stone will be able to Mega Evolve during battle."
+  },
+  "Sceptilite": {
+   "vp": 2000,
+   "source": "serebii",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "One of a variety of mysterious Mega Stones. A Sceptile holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. A Sceptile holding this stone will be able to Mega Evolve during battle."
+  },
+  "Scizorite": {
+   "vp": 2000,
+   "source": "serebii",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "One of a variety of mysterious Mega Stones. A Scizor holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. A Scizor holding this stone will be able to Mega Evolve during battle."
+  },
+  "Scolipite": {
+   "vp": 2000,
+   "source": "serebii",
+   "unlock": "deposit-legends-za",
+   "note": "",
+   "text": "One of a variety of mysterious Mega Stones. A Scolipede holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. A Scolipede holding this stone will be able to Mega Evolve during battle."
+  },
+  "Scovillainite": {
+   "vp": 2000,
+   "source": "serebii",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "One of a variety of mysterious Mega Stones. A Scovillain holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. A Scovillain holding this stone will be able to Mega Evolve during battle."
+  },
+  "Scraftinite": {
+   "vp": 2000,
+   "source": "serebii",
+   "unlock": "deposit-legends-za",
+   "note": "",
+   "text": "One of a variety of mysterious Mega Stones. A Scrafty holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. A Scrafty holding this stone will be able to Mega Evolve during battle."
+  },
+  "Sharpedonite": {
+   "vp": 2000,
+   "source": "serebii",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "One of a variety of mysterious Mega Stones. A Sharpedo holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. A Sharpedo holding this stone will be able to Mega Evolve during battle."
+  },
+  "Skarmorite": {
+   "vp": 2000,
+   "source": "serebii",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "One of a variety of mysterious Mega Stones. A Skarmory holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. A Skarmory holding this stone will be able to Mega Evolve during battle."
+  },
+  "Slowbronite": {
+   "vp": 2000,
+   "source": "serebii",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "One of a variety of mysterious Mega Stones. A Slowbro holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. A Slowbro holding this stone will be able to Mega Evolve during battle. It won't work for a Galarian Slowbro, however."
+  },
+  "Staraptite": {
+   "vp": 2000,
+   "source": "serebii",
+   "unlock": "deposit-legends-za",
+   "note": "",
+   "text": "One of a variety of mysterious Mega Stones. A Staraptor holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. A Staraptor holding this stone will be able to Mega Evolve during battle."
+  },
+  "Starminite": {
+   "vp": 2000,
+   "source": "serebii",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "One of a variety of mysterious Mega Stones. A Starmie holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. A Starmie holding this stone will be able to Mega Evolve during battle."
+  },
+  "Steelixite": {
+   "vp": 2000,
+   "source": "pokebase",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "One of a variety of mysterious Mega Stones. A Steelix holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. A Steelix holding this stone will be able to Mega Evolve during battle."
+  },
+  "Swampertite": {
+   "vp": 2000,
+   "source": "serebii",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "One of a variety of mysterious Mega Stones. A Swampert holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. A Swampert holding this stone will be able to Mega Evolve during battle."
+  },
+  "Tyranitarite": {
+   "vp": 2000,
+   "source": "serebii",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "One of a variety of mysterious Mega Stones. A Tyranitar holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. A Tyranitar holding this stone will be able to Mega Evolve during battle."
+  },
+  "Venusaurite": {
+   "vp": 2000,
+   "source": "serebii",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "One of a variety of mysterious Mega Stones. A Venusaur holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. A Venusaur holding this stone will be able to Mega Evolve during battle."
+  },
+  "Victreebelite": {
+   "vp": 2000,
+   "source": "serebii",
+   "unlock": "shop-2000-vp",
+   "note": "",
+   "text": "One of a variety of mysterious Mega Stones. A Victreebel holding this stone will be able to Mega Evolve during battle.",
+   "text_source": "pokebase",
+   "serebii_text": "One of a variety of mysterious Mega Stones. A Victreebel holding this stone will be able to Mega Evolve during battle."
+  },
+  "Aspear Berry": {
+   "vp": 400,
+   "source": "serebii",
+   "unlock": "shop-400-vp",
+   "note": "",
+   "text": "Cures the holder of freeze. Consumed after use.",
+   "text_source": "pokebase",
+   "serebii_text": "If a Pokémon holds one of these Berries, it will be able to thaw itself after being frozen."
+  },
+  "Babiri Berry": {
+   "vp": 400,
+   "source": "serebii",
+   "unlock": "shop-400-vp",
+   "note": "",
+   "text": "Halves damage from the first supereffective Steel-type attack. Consumed after use.",
+   "text_source": "pokebase",
+   "serebii_text": "If a Pokémon holding this Berry is hit with a supereffective Steel-type move, the power of that move will be weakened."
+  },
+  "Charti Berry": {
+   "vp": 400,
+   "source": "serebii",
+   "unlock": "shop-400-vp",
+   "note": "",
+   "text": "Halves damage from the first supereffective Rock-type attack. Consumed after use.",
+   "text_source": "pokebase",
+   "serebii_text": "If a Pokémon holding this Berry is hit with a supereffective Rock-type move, the power of that move will be weakened."
+  },
+  "Cheri Berry": {
+   "vp": 400,
+   "source": "serebii",
+   "unlock": "shop-400-vp",
+   "note": "",
+   "text": "Cures the holder of paralysis. Consumed after use.",
+   "text_source": "pokebase",
+   "serebii_text": "If a Pokémon holds one of these Berries, it will be able to free itself from paralysis."
+  },
+  "Chesto Berry": {
+   "vp": 400,
+   "source": "serebii",
+   "unlock": "shop-400-vp",
+   "note": "",
+   "text": "Cures the holder of sleep. Consumed after use.",
+   "text_source": "pokebase",
+   "serebii_text": "If a Pokémon holds one of these Berries, it will be able to shake off its drowsiness."
+  },
+  "Chilan Berry": {
+   "vp": 400,
+   "source": "serebii",
+   "unlock": "shop-400-vp",
+   "note": "",
+   "text": "Halves damage from the first Normal-type attack. Consumed after use.",
+   "text_source": "pokebase",
+   "serebii_text": "If a Pokémon holding this Berry is hit with a Normal-type move, the power of that move will be weakened."
+  },
+  "Chople Berry": {
+   "vp": 400,
+   "source": "serebii",
+   "unlock": "shop-400-vp",
+   "note": "",
+   "text": "Halves damage from the first supereffective Fighting-type attack. Consumed after use.",
+   "text_source": "pokebase",
+   "serebii_text": "If a Pokémon holding this Berry is hit with a supereffective Fighting-type move, the power of that move will be weakened."
+  },
+  "Coba Berry": {
+   "vp": 400,
+   "source": "serebii",
+   "unlock": "shop-400-vp",
+   "note": "",
+   "text": "Halves damage from the first supereffective Flying-type attack. Consumed after use.",
+   "text_source": "pokebase",
+   "serebii_text": "If a Pokémon holding this Berry is hit with a supereffective Flying-type move, the power of that move will be weakened."
+  },
+  "Colbur Berry": {
+   "vp": 400,
+   "source": "serebii",
+   "unlock": "shop-400-vp",
+   "note": "",
+   "text": "Halves damage from the first supereffective Dark-type move. Consumed after use.",
+   "text_source": "pokebase",
+   "serebii_text": "If a Pokémon holding this Berry is hit with a supereffective Dark-type move, the power of that move will be weakened."
+  },
+  "Haban Berry": {
+   "vp": 400,
+   "source": "serebii",
+   "unlock": "shop-400-vp",
+   "note": "",
+   "text": "Halves damage from the first supereffective Dragon-type attack. Consumed after use.",
+   "text_source": "pokebase",
+   "serebii_text": "If a Pokémon holding this Berry is hit with a supereffective Dragon-type move, the power of that move will be weakened."
+  },
+  "Kasib Berry": {
+   "vp": 400,
+   "source": "serebii",
+   "unlock": "shop-400-vp",
+   "note": "",
+   "text": "Halves damage from the first supereffective Ghost-type attack. Consumed after use.",
+   "text_source": "pokebase",
+   "serebii_text": "If a Pokémon holding this Berry is hit with a supereffective Ghost-type move, the power of that move will be weakened."
+  },
+  "Kebia Berry": {
+   "vp": 400,
+   "source": "serebii",
+   "unlock": "shop-400-vp",
+   "note": "",
+   "text": "Halves damage from the first supereffective Poison-type attack. Consumed after use.",
+   "text_source": "pokebase",
+   "serebii_text": "If a Pokémon holding this Berry is hit with a supereffective Poison-type move, the power of that move will be weakened."
+  },
+  "Leppa Berry": {
+   "vp": 400,
+   "source": "serebii",
+   "unlock": "shop-400-vp",
+   "note": "",
+   "text": "Restores 10 PP to a move when its PP reaches 0. Consumed after use.",
+   "text_source": "pokebase",
+   "serebii_text": "If a Pokémon holds one of these Berries, it will be able to restore 10 PP to a move."
+  },
+  "Lum Berry": {
+   "vp": null,
+   "source": null,
+   "unlock": "beginning",
+   "note": "you start with it",
+   "text": "Cures the holder of any status condition or confusion. Consumed after use.",
+   "text_source": "pokebase",
+   "serebii_text": "If a Pokémon holds one of these Berries, it will be able to cure itself of any status condition it may have."
+  },
+  "Occa Berry": {
+   "vp": 400,
+   "source": "serebii",
+   "unlock": "shop-400-vp",
+   "note": "",
+   "text": "Halves damage from the first supereffective Fire-type attack. Consumed after use.",
+   "text_source": "pokebase",
+   "serebii_text": "If a Pokémon holding this Berry is hit with a supereffective Fire-type move, the power of that move will be weakened."
+  },
+  "Oran Berry": {
+   "vp": 400,
+   "source": "serebii",
+   "unlock": "shop-400-vp",
+   "note": "",
+   "text": "Restores 10 HP when the holder's HP drops to 1/2 or less. Consumed after use.",
+   "text_source": "pokebase",
+   "serebii_text": "If a Pokémon holds one of these Berries, it will be able to restore 10 HP to itself."
+  },
+  "Passho Berry": {
+   "vp": 400,
+   "source": "serebii",
+   "unlock": "shop-400-vp",
+   "note": "",
+   "text": "Halves damage from the first supereffective Water-type attack. Consumed after use.",
+   "text_source": "pokebase",
+   "serebii_text": "If a Pokémon holding this Berry is hit with a supereffective Water-type move, the power of that move will be weakened."
+  },
+  "Payapa Berry": {
+   "vp": 400,
+   "source": "serebii",
+   "unlock": "shop-400-vp",
+   "note": "",
+   "text": "Halves damage from the first supereffective Psychic-type attack. Consumed after use.",
+   "text_source": "pokebase",
+   "serebii_text": "If a Pokémon holding this Berry is hit with a supereffective Psychic-type move, the power of that move will be weakened."
+  },
+  "Pecha Berry": {
+   "vp": 400,
+   "source": "serebii",
+   "unlock": "shop-400-vp",
+   "note": "",
+   "text": "Cures the holder of poison. Consumed after use.",
+   "text_source": "pokebase",
+   "serebii_text": "If a Pokémon holds one of these Berries, it will be able to lift the effects of being poisoned from itself."
+  },
+  "Persim Berry": {
+   "vp": 400,
+   "source": "serebii",
+   "unlock": "shop-400-vp",
+   "note": "",
+   "text": "Cures the holder of confusion. Consumed after use.",
+   "text_source": "pokebase",
+   "serebii_text": "If a Pokémon holds one of these Berries, it will be able to cure itself of confusion."
+  },
+  "Rawst Berry": {
+   "vp": 400,
+   "source": "serebii",
+   "unlock": "shop-400-vp",
+   "note": "",
+   "text": "Cures the holder of burns. Consumed after use.",
+   "text_source": "pokebase",
+   "serebii_text": "If a Pokémon holds one of these Berries, it will be able to cure itself of a burn."
+  },
+  "Rindo Berry": {
+   "vp": 400,
+   "source": "serebii",
+   "unlock": "shop-400-vp",
+   "note": "",
+   "text": "Halves damage from the first supereffective Grass-type attack. Consumed after use.",
+   "text_source": "pokebase",
+   "serebii_text": "If a Pokémon holding this Berry is hit with a supereffective Grass-type move, the power of that move will be weakened."
+  },
+  "Roseli Berry": {
+   "vp": 400,
+   "source": "serebii",
+   "unlock": "shop-400-vp",
+   "note": "",
+   "text": "Halves damage from the first supereffective Fairy-type move. Consumed after use.",
+   "text_source": "pokebase",
+   "serebii_text": "If a Pokémon holding this Berry is hit with a supereffective Fairy-type move, the power of that move will be weakened."
+  },
+  "Shuca Berry": {
+   "vp": 400,
+   "source": "serebii",
+   "unlock": "shop-400-vp",
+   "note": "",
+   "text": "Halves damage from the first supereffective Ground-type attack. Consumed after use.",
+   "text_source": "pokebase",
+   "serebii_text": "If a Pokémon holding this Berry is hit with a supereffective Ground-type move, the power of that move will be weakened."
+  },
+  "Sitrus Berry": {
+   "vp": null,
+   "source": null,
+   "unlock": "beginning",
+   "note": "you start with it",
+   "text": "Restores 1/4 of the holder's max HP when its HP falls to 1/2 or less. Consumed after use.",
+   "text_source": "pokebase",
+   "serebii_text": "If a Pokémon holds one of these Berries, it will be able to restore a small amount of HP to itself."
+  },
+  "Tanga Berry": {
+   "vp": 400,
+   "source": "serebii",
+   "unlock": "shop-400-vp",
+   "note": "",
+   "text": "Halves damage from the first supereffective Bug-type attack. Consumed after use.",
+   "text_source": "pokebase",
+   "serebii_text": "If a Pokémon holding this Berry is hit with a supereffective Bug-type move, the power of that move will be weakened."
+  },
+  "Wacan Berry": {
+   "vp": 400,
+   "source": "serebii",
+   "unlock": "shop-400-vp",
+   "note": "",
+   "text": "Halves damage from the first supereffective Electric-type attack. Consumed after use.",
+   "text_source": "pokebase",
+   "serebii_text": "If a Pokémon holding this Berry is hit with a supereffective Electric-type move, the power of that move will be weakened."
+  },
+  "Yache Berry": {
+   "vp": 400,
+   "source": "serebii",
+   "unlock": "shop-400-vp",
+   "note": "",
+   "text": "Halves damage from the first supereffective Ice-type attack. Consumed after use.",
+   "text_source": "pokebase",
+   "serebii_text": "If a Pokémon holding this Berry is hit with a supereffective Ice-type move, the power of that move will be weakened."
+  },
+  "Bug-Type Affinity Ticket": {
+   "vp": null,
+   "source": null,
+   "unlock": null,
+   "note": "Achievements",
+   "text": "A ticket that makes you more likely to meet Bug-type Pokémon in the next lineup.",
+   "text_source": "serebii",
+   "serebii_text": "A ticket that makes you more likely to meet Bug-type Pokémon in the next lineup."
+  },
+  "Dark-Type Affinity Ticket": {
+   "vp": null,
+   "source": null,
+   "unlock": null,
+   "note": "Achievements",
+   "text": "A ticket that makes you more likely to meet Dark-type Pokémon in the next lineup.",
+   "text_source": "serebii",
+   "serebii_text": "A ticket that makes you more likely to meet Dark-type Pokémon in the next lineup."
+  },
+  "Dive Ball Guaranteed Ticket": {
+   "vp": null,
+   "source": null,
+   "unlock": null,
+   "note": "",
+   "text": "A ticket that will let you meet a lineup of Pokémon that are inside Dive Balls.",
+   "text_source": "serebii",
+   "serebii_text": "A ticket that will let you meet a lineup of Pokémon that are inside Dive Balls."
+  },
+  "Dragon-Type Affinity Ticket": {
+   "vp": null,
+   "source": null,
+   "unlock": null,
+   "note": "Achievements",
+   "text": "A ticket that makes you more likely to meet Dragon-type Pokémon in the next lineup.",
+   "text_source": "serebii",
+   "serebii_text": "A ticket that makes you more likely to meet Dragon-type Pokémon in the next lineup."
+  },
+  "Dusk Ball Guaranteed Ticket": {
+   "vp": null,
+   "source": null,
+   "unlock": null,
+   "note": "",
+   "text": "A ticket that will let you meet a lineup of Pokémon that are inside Dusk Balls.",
+   "text_source": "serebii",
+   "serebii_text": "A ticket that will let you meet a lineup of Pokémon that are inside Dusk Balls."
+  },
+  "Electric-Type Affinity Ticket": {
+   "vp": null,
+   "source": null,
+   "unlock": null,
+   "note": "Achievements",
+   "text": "A ticket that makes you more likely to meet Electric-type Pokémon in the next lineup.",
+   "text_source": "serebii",
+   "serebii_text": "A ticket that makes you more likely to meet Electric-type Pokémon in the next lineup."
+  },
+  "Fairy-Type Affinity Ticket": {
+   "vp": null,
+   "source": null,
+   "unlock": null,
+   "note": "Achievements",
+   "text": "A ticket that makes you more likely to meet Fairy-type Pokémon in the next lineup.",
+   "text_source": "serebii",
+   "serebii_text": "A ticket that makes you more likely to meet Fairy-type Pokémon in the next lineup."
+  },
+  "Fighting-Type Affinity Ticket": {
+   "vp": null,
+   "source": null,
+   "unlock": null,
+   "note": "Achievements",
+   "text": "A ticket that makes you more likely to meet Fighting-type Pokémon in the next lineup.",
+   "text_source": "serebii",
+   "serebii_text": "A ticket that makes you more likely to meet Fighting-type Pokémon in the next lineup."
+  },
+  "Fire-Type Affinity Ticket": {
+   "vp": null,
+   "source": null,
+   "unlock": null,
+   "note": "Achievements",
+   "text": "A ticket that makes you more likely to meet Fire-type Pokémon in the next lineup.",
+   "text_source": "serebii",
+   "serebii_text": "A ticket that makes you more likely to meet Fire-type Pokémon in the next lineup."
+  },
+  "Flying-Type Affinity Ticket": {
+   "vp": null,
+   "source": null,
+   "unlock": null,
+   "note": "Achievements",
+   "text": "A ticket that makes you more likely to meet Flying-type Pokémon in the next lineup.",
+   "text_source": "serebii",
+   "serebii_text": "A ticket that makes you more likely to meet Flying-type Pokémon in the next lineup."
+  },
+  "Ghost-Type Affinity Ticket": {
+   "vp": null,
+   "source": null,
+   "unlock": null,
+   "note": "Achievements",
+   "text": "A ticket that makes you more likely to meet Ghost-type Pokémon in the next lineup.",
+   "text_source": "serebii",
+   "serebii_text": "A ticket that makes you more likely to meet Ghost-type Pokémon in the next lineup."
+  },
+  "Grass-Type Affinity Ticket": {
+   "vp": null,
+   "source": null,
+   "unlock": null,
+   "note": "Achievements",
+   "text": "A ticket that makes you more likely to meet Grass-type Pokémon in the next lineup.",
+   "text_source": "serebii",
+   "serebii_text": "A ticket that makes you more likely to meet Grass-type Pokémon in the next lineup."
+  },
+  "Ground-Type Affinity Ticket": {
+   "vp": null,
+   "source": null,
+   "unlock": null,
+   "note": "Achievements",
+   "text": "A ticket that makes you more likely to meet Ground-type Pokémon in the next lineup.",
+   "text_source": "serebii",
+   "serebii_text": "A ticket that makes you more likely to meet Ground-type Pokémon in the next lineup."
+  },
+  "Heal Ball Guaranteed Ticket": {
+   "vp": null,
+   "source": null,
+   "unlock": null,
+   "note": "",
+   "text": "A ticket that will let you meet a lineup of Pokémon that are inside Heal Balls.",
+   "text_source": "serebii",
+   "serebii_text": "A ticket that will let you meet a lineup of Pokémon that are inside Heal Balls."
+  },
+  "Ice-Type Affinity Ticket": {
+   "vp": null,
+   "source": null,
+   "unlock": null,
+   "note": "Achievements",
+   "text": "A ticket that makes you more likely to meet Ice-type Pokémon in the next lineup.",
+   "text_source": "serebii",
+   "serebii_text": "A ticket that makes you more likely to meet Ice-type Pokémon in the next lineup."
+  },
+  "Luxury Ball Guaranteed Ticket": {
+   "vp": null,
+   "source": null,
+   "unlock": null,
+   "note": "",
+   "text": "A ticket that will let you meet a lineup of Pokémon that are inside Luxury Balls.",
+   "text_source": "serebii",
+   "serebii_text": "A ticket that will let you meet a lineup of Pokémon that are inside Luxury Balls."
+  },
+  "Nest Ball Guaranteed Ticket": {
+   "vp": null,
+   "source": null,
+   "unlock": null,
+   "note": "",
+   "text": "A ticket that will let you meet a lineup of Pokémon that are inside Nest Balls.",
+   "text_source": "serebii",
+   "serebii_text": "A ticket that will let you meet a lineup of Pokémon that are inside Nest Balls."
+  },
+  "Net Ball Guaranteed Ticket": {
+   "vp": null,
+   "source": null,
+   "unlock": null,
+   "note": "",
+   "text": "A ticket that will let you meet a lineup of Pokémon that are inside Net Balls.",
+   "text_source": "serebii",
+   "serebii_text": "A ticket that will let you meet a lineup of Pokémon that are inside Net Balls."
+  },
+  "Normal-Type Affinity Ticket": {
+   "vp": null,
+   "source": null,
+   "unlock": null,
+   "note": "Achievements",
+   "text": "A ticket that makes you more likely to meet Normal-type Pokémon in the next lineup.",
+   "text_source": "serebii",
+   "serebii_text": "A ticket that makes you more likely to meet Normal-type Pokémon in the next lineup."
+  },
+  "Poison-Type Affinity Ticket": {
+   "vp": null,
+   "source": null,
+   "unlock": null,
+   "note": "Achievements",
+   "text": "A ticket that makes you more likely to meet Poison-type Pokémon in the next lineup.",
+   "text_source": "serebii",
+   "serebii_text": "A ticket that makes you more likely to meet Poison-type Pokémon in the next lineup."
+  },
+  "Poke Ball Guaranteed Ticket": {
+   "vp": null,
+   "source": null,
+   "unlock": null,
+   "note": "",
+   "text": "A ticket that will let you meet a lineup of Pokémon that are inside regular Poké Balls.",
+   "text_source": "serebii",
+   "serebii_text": "A ticket that will let you meet a lineup of Pokémon that are inside regular Poké Balls."
+  },
+  "Premier Ball Guaranteed Ticket": {
+   "vp": null,
+   "source": null,
+   "unlock": null,
+   "note": "",
+   "text": "A ticket that will let you meet a lineup of Pokémon that are inside Premier Balls.",
+   "text_source": "serebii",
+   "serebii_text": "A ticket that will let you meet a lineup of Pokémon that are inside Premier Balls."
+  },
+  "Psychic-Type Affinity Ticket": {
+   "vp": null,
+   "source": null,
+   "unlock": null,
+   "note": "Achievements",
+   "text": "A ticket that makes you more likely to meet Psychic-type Pokémon in the next lineup.",
+   "text_source": "serebii",
+   "serebii_text": "A ticket that makes you more likely to meet Psychic-type Pokémon in the next lineup."
+  },
+  "Quick Ball Guaranteed Ticket": {
+   "vp": null,
+   "source": null,
+   "unlock": null,
+   "note": "",
+   "text": "A ticket that will let you meet a lineup of Pokémon that are inside Quick Balls.",
+   "text_source": "serebii",
+   "serebii_text": "A ticket that will let you meet a lineup of Pokémon that are inside Quick Balls."
+  },
+  "Quick Coupon": {
+   "vp": null,
+   "source": null,
+   "unlock": null,
+   "note": "Missions Battle Pass Achievements",
+   "text": "A ticket that can be used to reduce the wait time in Recruit Ranch",
+   "text_source": "serebii",
+   "serebii_text": "A ticket that can be used to reduce the wait time in Recruit Ranch"
+  },
+  "Rare Poke Ball Guaranteed Ticket": {
+   "vp": null,
+   "source": null,
+   "unlock": null,
+   "note": "",
+   "text": "A ticket that will let you meet a lineup of Pokémon that are inside rare Poké Balls.",
+   "text_source": "serebii",
+   "serebii_text": "A ticket that will let you meet a lineup of Pokémon that are inside rare Poké Balls."
+  },
+  "Repeat Ball Guaranteed Ticket": {
+   "vp": null,
+   "source": null,
+   "unlock": null,
+   "note": "",
+   "text": "A ticket that will let you meet a lineup of Pokémon that are inside Repeat Balls.",
+   "text_source": "serebii",
+   "serebii_text": "A ticket that will let you meet a lineup of Pokémon that are inside Repeat Balls."
+  },
+  "Rock-Type Affinity Ticket": {
+   "vp": null,
+   "source": null,
+   "unlock": null,
+   "note": "Achievements",
+   "text": "A ticket that makes you more likely to meet Rock-type Pokémon in the next lineup.",
+   "text_source": "serebii",
+   "serebii_text": "A ticket that makes you more likely to meet Rock-type Pokémon in the next lineup."
+  },
+  "Steel-Type Affinity Ticket": {
+   "vp": null,
+   "source": null,
+   "unlock": null,
+   "note": "Achievements",
+   "text": "A ticket that makes you more likely to meet Steel-type Pokémon in the next lineup.",
+   "text_source": "serebii",
+   "serebii_text": "A ticket that makes you more likely to meet Steel-type Pokémon in the next lineup."
+  },
+  "Teammate Ticket": {
+   "vp": null,
+   "source": null,
+   "unlock": null,
+   "note": "Missions Battle Pass Achievements",
+   "text": "A ticket that can be used to recruit a Pokémon at Recruit Ranch",
+   "text_source": "serebii",
+   "serebii_text": "A ticket that can be used to recruit a Pokémon at Recruit Ranch"
+  },
+  "Timer Ball Guaranteed Ticket": {
+   "vp": null,
+   "source": null,
+   "unlock": null,
+   "note": "",
+   "text": "A ticket that will let you meet a lineup of Pokémon that are inside Timer Balls.",
+   "text_source": "serebii",
+   "serebii_text": "A ticket that will let you meet a lineup of Pokémon that are inside Timer Balls."
+  },
+  "Training Ticket": {
+   "vp": null,
+   "source": null,
+   "unlock": null,
+   "note": "Missions Battle Pass Achievements",
+   "text": "A ticket that can be used to train a Pokémon without using Victory Points",
+   "text_source": "serebii",
+   "serebii_text": "A ticket that can be used to train a Pokémon without using Victory Points"
+  },
+  "Water-Type Affinity Ticket": {
+   "vp": null,
+   "source": null,
+   "unlock": null,
+   "note": "Achievements",
+   "text": "A ticket that makes you more likely to meet Water-type Pokémon in the next lineup.",
+   "text_source": "serebii",
+   "serebii_text": "A ticket that makes you more likely to meet Water-type Pokémon in the next lineup."
+  }
+ }
+}

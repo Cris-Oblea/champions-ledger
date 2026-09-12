@@ -1,0 +1,5684 @@
+{
+ "_what": "Every VGC World Championship pokedata publishes. A Worlds is played once under one regulation and then frozen, so these are HISTORY - what the field played that August - never current usage.",
+ "_divisions": "Masters, Seniors and Juniors are three separate metagames off the same roster. Never pool them.",
+ "_counted": "Per TEAM, not per appearance: the Species Clause means a team holds a species at most once.",
+ "source": "https://www.pokedata.ovh/standingsVGC/",
+ "events": [
+  {
+   "tid": "0000191",
+   "label": "2026 PokÃ©mon VGC World Championship - August 28-30, 2026",
+   "year": 2026,
+   "labelled_day1": false,
+   "divisions": {
+    "masters": {
+     "teams": 394,
+     "players": 395,
+     "teamlists": true,
+     "note": null,
+     "round_label": "Final",
+     "complete": true,
+     "top": [
+      {
+       "name": "Kingambit",
+       "teams": 208,
+       "pct": 52.8
+      },
+      {
+       "name": "Charizard",
+       "teams": 178,
+       "pct": 45.2
+      },
+      {
+       "name": "Incineroar",
+       "teams": 163,
+       "pct": 41.4
+      },
+      {
+       "name": "Garchomp",
+       "teams": 156,
+       "pct": 39.6
+      },
+      {
+       "name": "Basculegion",
+       "teams": 134,
+       "pct": 34.0
+      },
+      {
+       "name": "Floette",
+       "teams": 108,
+       "pct": 27.4
+      },
+      {
+       "name": "Sneasler",
+       "teams": 104,
+       "pct": 26.4
+      },
+      {
+       "name": "Venusaur",
+       "teams": 101,
+       "pct": 25.6
+      },
+      {
+       "name": "Sylveon",
+       "teams": 98,
+       "pct": 24.9
+      },
+      {
+       "name": "Whimsicott",
+       "teams": 95,
+       "pct": 24.1
+      },
+      {
+       "name": "Sinistcha",
+       "teams": 89,
+       "pct": 22.6
+      },
+      {
+       "name": "Farigiraf",
+       "teams": 80,
+       "pct": 20.3
+      },
+      {
+       "name": "Staraptor",
+       "teams": 67,
+       "pct": 17.0
+      },
+      {
+       "name": "Swampert",
+       "teams": 49,
+       "pct": 12.4
+      },
+      {
+       "name": "Delphox",
+       "teams": 47,
+       "pct": 11.9
+      },
+      {
+       "name": "Archaludon",
+       "teams": 43,
+       "pct": 10.9
+      },
+      {
+       "name": "Raichu",
+       "teams": 40,
+       "pct": 10.2
+      },
+      {
+       "name": "Aerodactyl",
+       "teams": 39,
+       "pct": 9.9
+      },
+      {
+       "name": "Pelipper",
+       "teams": 36,
+       "pct": 9.1
+      },
+      {
+       "name": "Grimmsnarl",
+       "teams": 34,
+       "pct": 8.6
+      },
+      {
+       "name": "Toxapex",
+       "teams": 32,
+       "pct": 8.1
+      },
+      {
+       "name": "Arcanine",
+       "teams": 31,
+       "pct": 7.9
+      },
+      {
+       "name": "Tyranitar",
+       "teams": 30,
+       "pct": 7.6
+      },
+      {
+       "name": "Blastoise",
+       "teams": 27,
+       "pct": 6.9
+      },
+      {
+       "name": "Dragonite",
+       "teams": 24,
+       "pct": 6.1
+      },
+      {
+       "name": "Scovillain",
+       "teams": 24,
+       "pct": 6.1
+      },
+      {
+       "name": "Gholdengo",
+       "teams": 23,
+       "pct": 5.8
+      },
+      {
+       "name": "Gengar",
+       "teams": 23,
+       "pct": 5.8
+      },
+      {
+       "name": "Froslass",
+       "teams": 20,
+       "pct": 5.1
+      },
+      {
+       "name": "Excadrill",
+       "teams": 18,
+       "pct": 4.6
+      },
+      {
+       "name": "Milotic",
+       "teams": 18,
+       "pct": 4.6
+      },
+      {
+       "name": "Maushold",
+       "teams": 18,
+       "pct": 4.6
+      },
+      {
+       "name": "Ninetales",
+       "teams": 17,
+       "pct": 4.3
+      },
+      {
+       "name": "Lycanroc",
+       "teams": 15,
+       "pct": 3.8
+      },
+      {
+       "name": "Torkoal",
+       "teams": 11,
+       "pct": 2.8
+      },
+      {
+       "name": "Kommo-o",
+       "teams": 11,
+       "pct": 2.8
+      },
+      {
+       "name": "Glimmora",
+       "teams": 9,
+       "pct": 2.3
+      },
+      {
+       "name": "Politoed",
+       "teams": 9,
+       "pct": 2.3
+      },
+      {
+       "name": "Primarina",
+       "teams": 8,
+       "pct": 2.0
+      },
+      {
+       "name": "Aegislash",
+       "teams": 8,
+       "pct": 2.0
+      }
+     ]
+    },
+    "seniors": {
+     "teams": 137,
+     "players": 139,
+     "teamlists": true,
+     "note": null,
+     "round_label": "Final",
+     "complete": true,
+     "top": [
+      {
+       "name": "Kingambit",
+       "teams": 73,
+       "pct": 53.3
+      },
+      {
+       "name": "Garchomp",
+       "teams": 67,
+       "pct": 48.9
+      },
+      {
+       "name": "Charizard",
+       "teams": 66,
+       "pct": 48.2
+      },
+      {
+       "name": "Basculegion",
+       "teams": 51,
+       "pct": 37.2
+      },
+      {
+       "name": "Whimsicott",
+       "teams": 45,
+       "pct": 32.8
+      },
+      {
+       "name": "Incineroar",
+       "teams": 41,
+       "pct": 29.9
+      },
+      {
+       "name": "Floette",
+       "teams": 33,
+       "pct": 24.1
+      },
+      {
+       "name": "Sneasler",
+       "teams": 32,
+       "pct": 23.4
+      },
+      {
+       "name": "Farigiraf",
+       "teams": 27,
+       "pct": 19.7
+      },
+      {
+       "name": "Venusaur",
+       "teams": 26,
+       "pct": 19.0
+      },
+      {
+       "name": "Sylveon",
+       "teams": 25,
+       "pct": 18.2
+      },
+      {
+       "name": "Staraptor",
+       "teams": 24,
+       "pct": 17.5
+      },
+      {
+       "name": "Aerodactyl",
+       "teams": 20,
+       "pct": 14.6
+      },
+      {
+       "name": "Sinistcha",
+       "teams": 18,
+       "pct": 13.1
+      },
+      {
+       "name": "Archaludon",
+       "teams": 16,
+       "pct": 11.7
+      },
+      {
+       "name": "Delphox",
+       "teams": 16,
+       "pct": 11.7
+      },
+      {
+       "name": "Swampert",
+       "teams": 14,
+       "pct": 10.2
+      },
+      {
+       "name": "Froslass",
+       "teams": 14,
+       "pct": 10.2
+      },
+      {
+       "name": "Raichu",
+       "teams": 13,
+       "pct": 9.5
+      },
+      {
+       "name": "Pelipper",
+       "teams": 12,
+       "pct": 8.8
+      },
+      {
+       "name": "Gholdengo",
+       "teams": 12,
+       "pct": 8.8
+      },
+      {
+       "name": "Dragonite",
+       "teams": 11,
+       "pct": 8.0
+      },
+      {
+       "name": "Grimmsnarl",
+       "teams": 10,
+       "pct": 7.3
+      },
+      {
+       "name": "Glimmora",
+       "teams": 10,
+       "pct": 7.3
+      },
+      {
+       "name": "Scovillain",
+       "teams": 9,
+       "pct": 6.6
+      },
+      {
+       "name": "Tyranitar",
+       "teams": 9,
+       "pct": 6.6
+      },
+      {
+       "name": "Excadrill",
+       "teams": 9,
+       "pct": 6.6
+      },
+      {
+       "name": "Toxapex",
+       "teams": 9,
+       "pct": 6.6
+      },
+      {
+       "name": "Blastoise",
+       "teams": 8,
+       "pct": 5.8
+      },
+      {
+       "name": "Lycanroc",
+       "teams": 7,
+       "pct": 5.1
+      },
+      {
+       "name": "Torkoal",
+       "teams": 7,
+       "pct": 5.1
+      },
+      {
+       "name": "Milotic",
+       "teams": 7,
+       "pct": 5.1
+      },
+      {
+       "name": "Arcanine",
+       "teams": 7,
+       "pct": 5.1
+      },
+      {
+       "name": "Kommo-o",
+       "teams": 7,
+       "pct": 5.1
+      },
+      {
+       "name": "Politoed",
+       "teams": 6,
+       "pct": 4.4
+      },
+      {
+       "name": "Gengar",
+       "teams": 6,
+       "pct": 4.4
+      },
+      {
+       "name": "Talonflame",
+       "teams": 6,
+       "pct": 4.4
+      },
+      {
+       "name": "Maushold",
+       "teams": 6,
+       "pct": 4.4
+      },
+      {
+       "name": "Vivillon",
+       "teams": 5,
+       "pct": 3.6
+      },
+      {
+       "name": "Kangaskhan",
+       "teams": 3,
+       "pct": 2.2
+      }
+     ]
+    },
+    "juniors": {
+     "teams": 111,
+     "players": 111,
+     "teamlists": true,
+     "note": null,
+     "round_label": "Final",
+     "complete": true,
+     "top": [
+      {
+       "name": "Kingambit",
+       "teams": 57,
+       "pct": 51.4
+      },
+      {
+       "name": "Garchomp",
+       "teams": 51,
+       "pct": 45.9
+      },
+      {
+       "name": "Basculegion",
+       "teams": 48,
+       "pct": 43.2
+      },
+      {
+       "name": "Charizard",
+       "teams": 48,
+       "pct": 43.2
+      },
+      {
+       "name": "Whimsicott",
+       "teams": 37,
+       "pct": 33.3
+      },
+      {
+       "name": "Sneasler",
+       "teams": 29,
+       "pct": 26.1
+      },
+      {
+       "name": "Incineroar",
+       "teams": 25,
+       "pct": 22.5
+      },
+      {
+       "name": "Sylveon",
+       "teams": 22,
+       "pct": 19.8
+      },
+      {
+       "name": "Sinistcha",
+       "teams": 22,
+       "pct": 19.8
+      },
+      {
+       "name": "Floette",
+       "teams": 22,
+       "pct": 19.8
+      },
+      {
+       "name": "Staraptor",
+       "teams": 21,
+       "pct": 18.9
+      },
+      {
+       "name": "Farigiraf",
+       "teams": 20,
+       "pct": 18.0
+      },
+      {
+       "name": "Aerodactyl",
+       "teams": 18,
+       "pct": 16.2
+      },
+      {
+       "name": "Archaludon",
+       "teams": 16,
+       "pct": 14.4
+      },
+      {
+       "name": "Venusaur",
+       "teams": 16,
+       "pct": 14.4
+      },
+      {
+       "name": "Grimmsnarl",
+       "teams": 15,
+       "pct": 13.5
+      },
+      {
+       "name": "Pelipper",
+       "teams": 15,
+       "pct": 13.5
+      },
+      {
+       "name": "Delphox",
+       "teams": 15,
+       "pct": 13.5
+      },
+      {
+       "name": "Swampert",
+       "teams": 14,
+       "pct": 12.6
+      },
+      {
+       "name": "Blastoise",
+       "teams": 14,
+       "pct": 12.6
+      },
+      {
+       "name": "Froslass",
+       "teams": 9,
+       "pct": 8.1
+      },
+      {
+       "name": "Torkoal",
+       "teams": 9,
+       "pct": 8.1
+      },
+      {
+       "name": "Glimmora",
+       "teams": 8,
+       "pct": 7.2
+      },
+      {
+       "name": "Gholdengo",
+       "teams": 8,
+       "pct": 7.2
+      },
+      {
+       "name": "Kangaskhan",
+       "teams": 8,
+       "pct": 7.2
+      },
+      {
+       "name": "Scovillain",
+       "teams": 7,
+       "pct": 6.3
+      },
+      {
+       "name": "Lycanroc",
+       "teams": 7,
+       "pct": 6.3
+      },
+      {
+       "name": "Vivillon",
+       "teams": 7,
+       "pct": 6.3
+      },
+      {
+       "name": "Dragonite",
+       "teams": 7,
+       "pct": 6.3
+      },
+      {
+       "name": "Raichu",
+       "teams": 6,
+       "pct": 5.4
+      },
+      {
+       "name": "Ninetales",
+       "teams": 5,
+       "pct": 4.5
+      },
+      {
+       "name": "Tyranitar",
+       "teams": 5,
+       "pct": 4.5
+      },
+      {
+       "name": "Toxapex",
+       "teams": 4,
+       "pct": 3.6
+      },
+      {
+       "name": "Excadrill",
+       "teams": 4,
+       "pct": 3.6
+      },
+      {
+       "name": "Metagross",
+       "teams": 4,
+       "pct": 3.6
+      },
+      {
+       "name": "Gengar",
+       "teams": 3,
+       "pct": 2.7
+      },
+      {
+       "name": "Hydreigon",
+       "teams": 3,
+       "pct": 2.7
+      },
+      {
+       "name": "Milotic",
+       "teams": 3,
+       "pct": 2.7
+      },
+      {
+       "name": "Maushold",
+       "teams": 3,
+       "pct": 2.7
+      },
+      {
+       "name": "Politoed",
+       "teams": 2,
+       "pct": 1.8
+      }
+     ]
+    }
+   }
+  },
+  {
+   "tid": "0000150",
+   "label": "PokÃ©mon VGC World Championship 2025 - August 15-17, 2025",
+   "year": 2025,
+   "labelled_day1": false,
+   "divisions": {
+    "masters": {
+     "teams": 370,
+     "players": 371,
+     "teamlists": true,
+     "note": null,
+     "round_label": "Final",
+     "complete": true,
+     "top": [
+      {
+       "name": "Calyrex",
+       "teams": 274,
+       "pct": 74.1
+      },
+      {
+       "name": "Incineroar",
+       "teams": 209,
+       "pct": 56.5
+      },
+      {
+       "name": "Miraidon",
+       "teams": 176,
+       "pct": 47.6
+      },
+      {
+       "name": "Urshifu",
+       "teams": 124,
+       "pct": 33.5
+      },
+      {
+       "name": "Zamazenta",
+       "teams": 123,
+       "pct": 33.2
+      },
+      {
+       "name": "Rillaboom",
+       "teams": 99,
+       "pct": 26.8
+      },
+      {
+       "name": "Raging Bolt",
+       "teams": 94,
+       "pct": 25.4
+      },
+      {
+       "name": "Ogerpon",
+       "teams": 87,
+       "pct": 23.5
+      },
+      {
+       "name": "Amoonguss",
+       "teams": 78,
+       "pct": 21.1
+      },
+      {
+       "name": "Smeargle",
+       "teams": 67,
+       "pct": 18.1
+      },
+      {
+       "name": "Chien-Pao",
+       "teams": 66,
+       "pct": 17.8
+      },
+      {
+       "name": "Whimsicott",
+       "teams": 63,
+       "pct": 17.0
+      },
+      {
+       "name": "Volcarona",
+       "teams": 55,
+       "pct": 14.9
+      },
+      {
+       "name": "Flutter Mane",
+       "teams": 50,
+       "pct": 13.5
+      },
+      {
+       "name": "Landorus",
+       "teams": 50,
+       "pct": 13.5
+      },
+      {
+       "name": "Koraidon",
+       "teams": 44,
+       "pct": 11.9
+      },
+      {
+       "name": "Lunala",
+       "teams": 43,
+       "pct": 11.6
+      },
+      {
+       "name": "Ursaluna",
+       "teams": 43,
+       "pct": 11.6
+      },
+      {
+       "name": "Farigiraf",
+       "teams": 43,
+       "pct": 11.6
+      },
+      {
+       "name": "Clefairy",
+       "teams": 39,
+       "pct": 10.5
+      },
+      {
+       "name": "Tornadus",
+       "teams": 36,
+       "pct": 9.7
+      },
+      {
+       "name": "Iron Hands",
+       "teams": 33,
+       "pct": 8.9
+      },
+      {
+       "name": "Chi-Yu",
+       "teams": 32,
+       "pct": 8.6
+      },
+      {
+       "name": "Grimmsnarl",
+       "teams": 30,
+       "pct": 8.1
+      },
+      {
+       "name": "Kyogre",
+       "teams": 28,
+       "pct": 7.6
+      },
+      {
+       "name": "Groudon",
+       "teams": 26,
+       "pct": 7.0
+      },
+      {
+       "name": "Dragonite",
+       "teams": 18,
+       "pct": 4.9
+      },
+      {
+       "name": "Ditto",
+       "teams": 15,
+       "pct": 4.1
+      },
+      {
+       "name": "Terapagos",
+       "teams": 15,
+       "pct": 4.1
+      },
+      {
+       "name": "Roaring Moon",
+       "teams": 12,
+       "pct": 3.2
+      },
+      {
+       "name": "Indeedee",
+       "teams": 12,
+       "pct": 3.2
+      },
+      {
+       "name": "Iron Treads",
+       "teams": 11,
+       "pct": 3.0
+      },
+      {
+       "name": "Zacian",
+       "teams": 9,
+       "pct": 2.4
+      },
+      {
+       "name": "Brute Bonnet",
+       "teams": 8,
+       "pct": 2.2
+      },
+      {
+       "name": "Iron Bundle",
+       "teams": 8,
+       "pct": 2.2
+      },
+      {
+       "name": "Weezing",
+       "teams": 8,
+       "pct": 2.2
+      },
+      {
+       "name": "Jumpluff",
+       "teams": 7,
+       "pct": 1.9
+      },
+      {
+       "name": "Ting-Lu",
+       "teams": 7,
+       "pct": 1.9
+      },
+      {
+       "name": "Annihilape",
+       "teams": 7,
+       "pct": 1.9
+      },
+      {
+       "name": "Sinistcha",
+       "teams": 6,
+       "pct": 1.6
+      }
+     ]
+    },
+    "seniors": {
+     "teams": 126,
+     "players": 126,
+     "teamlists": true,
+     "note": null,
+     "round_label": "Final",
+     "complete": true,
+     "top": [
+      {
+       "name": "Calyrex",
+       "teams": 80,
+       "pct": 63.5
+      },
+      {
+       "name": "Incineroar",
+       "teams": 59,
+       "pct": 46.8
+      },
+      {
+       "name": "Miraidon",
+       "teams": 54,
+       "pct": 42.9
+      },
+      {
+       "name": "Zamazenta",
+       "teams": 50,
+       "pct": 39.7
+      },
+      {
+       "name": "Urshifu",
+       "teams": 45,
+       "pct": 35.7
+      },
+      {
+       "name": "Raging Bolt",
+       "teams": 33,
+       "pct": 26.2
+      },
+      {
+       "name": "Ogerpon",
+       "teams": 32,
+       "pct": 25.4
+      },
+      {
+       "name": "Rillaboom",
+       "teams": 31,
+       "pct": 24.6
+      },
+      {
+       "name": "Chien-Pao",
+       "teams": 29,
+       "pct": 23.0
+      },
+      {
+       "name": "Amoonguss",
+       "teams": 25,
+       "pct": 19.8
+      },
+      {
+       "name": "Whimsicott",
+       "teams": 24,
+       "pct": 19.0
+      },
+      {
+       "name": "Ursaluna",
+       "teams": 22,
+       "pct": 17.5
+      },
+      {
+       "name": "Chi-Yu",
+       "teams": 21,
+       "pct": 16.7
+      },
+      {
+       "name": "Lunala",
+       "teams": 18,
+       "pct": 14.3
+      },
+      {
+       "name": "Farigiraf",
+       "teams": 17,
+       "pct": 13.5
+      },
+      {
+       "name": "Iron Hands",
+       "teams": 17,
+       "pct": 13.5
+      },
+      {
+       "name": "Landorus",
+       "teams": 15,
+       "pct": 11.9
+      },
+      {
+       "name": "Smeargle",
+       "teams": 15,
+       "pct": 11.9
+      },
+      {
+       "name": "Volcarona",
+       "teams": 15,
+       "pct": 11.9
+      },
+      {
+       "name": "Koraidon",
+       "teams": 14,
+       "pct": 11.1
+      },
+      {
+       "name": "Flutter Mane",
+       "teams": 13,
+       "pct": 10.3
+      },
+      {
+       "name": "Kyogre",
+       "teams": 13,
+       "pct": 10.3
+      },
+      {
+       "name": "Tornadus",
+       "teams": 12,
+       "pct": 9.5
+      },
+      {
+       "name": "Grimmsnarl",
+       "teams": 12,
+       "pct": 9.5
+      },
+      {
+       "name": "Zacian",
+       "teams": 8,
+       "pct": 6.3
+      },
+      {
+       "name": "Groudon",
+       "teams": 7,
+       "pct": 5.6
+      },
+      {
+       "name": "Roaring Moon",
+       "teams": 7,
+       "pct": 5.6
+      },
+      {
+       "name": "Iron Bundle",
+       "teams": 5,
+       "pct": 4.0
+      },
+      {
+       "name": "Terapagos",
+       "teams": 5,
+       "pct": 4.0
+      },
+      {
+       "name": "Clefairy",
+       "teams": 5,
+       "pct": 4.0
+      },
+      {
+       "name": "Walking Wake",
+       "teams": 4,
+       "pct": 3.2
+      },
+      {
+       "name": "Iron Treads",
+       "teams": 4,
+       "pct": 3.2
+      },
+      {
+       "name": "Indeedee",
+       "teams": 4,
+       "pct": 3.2
+      },
+      {
+       "name": "Sneasler",
+       "teams": 3,
+       "pct": 2.4
+      },
+      {
+       "name": "Tatsugiri",
+       "teams": 3,
+       "pct": 2.4
+      },
+      {
+       "name": "Dondozo",
+       "teams": 3,
+       "pct": 2.4
+      },
+      {
+       "name": "Weezing",
+       "teams": 3,
+       "pct": 2.4
+      },
+      {
+       "name": "Iron Jugulis",
+       "teams": 3,
+       "pct": 2.4
+      },
+      {
+       "name": "Ting-Lu",
+       "teams": 2,
+       "pct": 1.6
+      },
+      {
+       "name": "Brute Bonnet",
+       "teams": 2,
+       "pct": 1.6
+      }
+     ]
+    },
+    "juniors": {
+     "teams": 111,
+     "players": 111,
+     "teamlists": true,
+     "note": null,
+     "round_label": "Final",
+     "complete": true,
+     "top": [
+      {
+       "name": "Calyrex",
+       "teams": 71,
+       "pct": 64.0
+      },
+      {
+       "name": "Miraidon",
+       "teams": 49,
+       "pct": 44.1
+      },
+      {
+       "name": "Incineroar",
+       "teams": 46,
+       "pct": 41.4
+      },
+      {
+       "name": "Urshifu",
+       "teams": 39,
+       "pct": 35.1
+      },
+      {
+       "name": "Zamazenta",
+       "teams": 25,
+       "pct": 22.5
+      },
+      {
+       "name": "Rillaboom",
+       "teams": 24,
+       "pct": 21.6
+      },
+      {
+       "name": "Koraidon",
+       "teams": 24,
+       "pct": 21.6
+      },
+      {
+       "name": "Iron Hands",
+       "teams": 23,
+       "pct": 20.7
+      },
+      {
+       "name": "Chi-Yu",
+       "teams": 22,
+       "pct": 19.8
+      },
+      {
+       "name": "Whimsicott",
+       "teams": 20,
+       "pct": 18.0
+      },
+      {
+       "name": "Lunala",
+       "teams": 20,
+       "pct": 18.0
+      },
+      {
+       "name": "Tornadus",
+       "teams": 20,
+       "pct": 18.0
+      },
+      {
+       "name": "Ursaluna",
+       "teams": 19,
+       "pct": 17.1
+      },
+      {
+       "name": "Smeargle",
+       "teams": 18,
+       "pct": 16.2
+      },
+      {
+       "name": "Ogerpon",
+       "teams": 18,
+       "pct": 16.2
+      },
+      {
+       "name": "Farigiraf",
+       "teams": 18,
+       "pct": 16.2
+      },
+      {
+       "name": "Raging Bolt",
+       "teams": 15,
+       "pct": 13.5
+      },
+      {
+       "name": "Flutter Mane",
+       "teams": 15,
+       "pct": 13.5
+      },
+      {
+       "name": "Chien-Pao",
+       "teams": 14,
+       "pct": 12.6
+      },
+      {
+       "name": "Volcarona",
+       "teams": 13,
+       "pct": 11.7
+      },
+      {
+       "name": "Amoonguss",
+       "teams": 13,
+       "pct": 11.7
+      },
+      {
+       "name": "Kyogre",
+       "teams": 11,
+       "pct": 9.9
+      },
+      {
+       "name": "Grimmsnarl",
+       "teams": 11,
+       "pct": 9.9
+      },
+      {
+       "name": "Landorus",
+       "teams": 9,
+       "pct": 8.1
+      },
+      {
+       "name": "Indeedee",
+       "teams": 9,
+       "pct": 8.1
+      },
+      {
+       "name": "Tatsugiri",
+       "teams": 9,
+       "pct": 8.1
+      },
+      {
+       "name": "Weezing",
+       "teams": 9,
+       "pct": 8.1
+      },
+      {
+       "name": "Dondozo",
+       "teams": 9,
+       "pct": 8.1
+      },
+      {
+       "name": "Terapagos",
+       "teams": 8,
+       "pct": 7.2
+      },
+      {
+       "name": "Zacian",
+       "teams": 7,
+       "pct": 6.3
+      },
+      {
+       "name": "Clefairy",
+       "teams": 4,
+       "pct": 3.6
+      },
+      {
+       "name": "Iron Treads",
+       "teams": 4,
+       "pct": 3.6
+      },
+      {
+       "name": "Sinistcha",
+       "teams": 3,
+       "pct": 2.7
+      },
+      {
+       "name": "Torkoal",
+       "teams": 3,
+       "pct": 2.7
+      },
+      {
+       "name": "Ting-Lu",
+       "teams": 3,
+       "pct": 2.7
+      },
+      {
+       "name": "Brute Bonnet",
+       "teams": 3,
+       "pct": 2.7
+      },
+      {
+       "name": "Walking Wake",
+       "teams": 2,
+       "pct": 1.8
+      },
+      {
+       "name": "Scraggy",
+       "teams": 2,
+       "pct": 1.8
+      },
+      {
+       "name": "Iron Valiant",
+       "teams": 2,
+       "pct": 1.8
+      },
+      {
+       "name": "Dragonite",
+       "teams": 2,
+       "pct": 1.8
+      }
+     ]
+    }
+   }
+  },
+  {
+   "tid": "0000114",
+   "label": "2024 PokÃ©mon VGC World Championship - August 16-18, 2024",
+   "year": 2024,
+   "labelled_day1": false,
+   "divisions": {
+    "masters": {
+     "teams": 694,
+     "players": 694,
+     "teamlists": true,
+     "note": null,
+     "round_label": "Final",
+     "complete": true,
+     "top": [
+      {
+       "name": "Urshifu",
+       "teams": 467,
+       "pct": 67.3
+      },
+      {
+       "name": "Calyrex",
+       "teams": 310,
+       "pct": 44.7
+      },
+      {
+       "name": "Rillaboom",
+       "teams": 303,
+       "pct": 43.7
+      },
+      {
+       "name": "Raging Bolt",
+       "teams": 242,
+       "pct": 34.9
+      },
+      {
+       "name": "Ogerpon",
+       "teams": 240,
+       "pct": 34.6
+      },
+      {
+       "name": "Incineroar",
+       "teams": 218,
+       "pct": 31.4
+      },
+      {
+       "name": "Farigiraf",
+       "teams": 210,
+       "pct": 30.3
+      },
+      {
+       "name": "Iron Hands",
+       "teams": 181,
+       "pct": 26.1
+      },
+      {
+       "name": "Miraidon",
+       "teams": 126,
+       "pct": 18.2
+      },
+      {
+       "name": "Chi-Yu",
+       "teams": 117,
+       "pct": 16.9
+      },
+      {
+       "name": "Flutter Mane",
+       "teams": 116,
+       "pct": 16.7
+      },
+      {
+       "name": "Whimsicott",
+       "teams": 109,
+       "pct": 15.7
+      },
+      {
+       "name": "Amoonguss",
+       "teams": 109,
+       "pct": 15.7
+      },
+      {
+       "name": "Tornadus",
+       "teams": 106,
+       "pct": 15.3
+      },
+      {
+       "name": "Indeedee",
+       "teams": 82,
+       "pct": 11.8
+      },
+      {
+       "name": "Grimmsnarl",
+       "teams": 81,
+       "pct": 11.7
+      },
+      {
+       "name": "Ursaluna",
+       "teams": 78,
+       "pct": 11.2
+      },
+      {
+       "name": "Chien-Pao",
+       "teams": 77,
+       "pct": 11.1
+      },
+      {
+       "name": "Clefairy",
+       "teams": 71,
+       "pct": 10.2
+      },
+      {
+       "name": "Zamazenta",
+       "teams": 63,
+       "pct": 9.1
+      },
+      {
+       "name": "Terapagos",
+       "teams": 63,
+       "pct": 9.1
+      },
+      {
+       "name": "Landorus",
+       "teams": 55,
+       "pct": 7.9
+      },
+      {
+       "name": "Kyogre",
+       "teams": 53,
+       "pct": 7.6
+      },
+      {
+       "name": "Smeargle",
+       "teams": 44,
+       "pct": 6.3
+      },
+      {
+       "name": "Pelipper",
+       "teams": 43,
+       "pct": 6.2
+      },
+      {
+       "name": "Koraidon",
+       "teams": 36,
+       "pct": 5.2
+      },
+      {
+       "name": "Dondozo",
+       "teams": 33,
+       "pct": 4.8
+      },
+      {
+       "name": "Tatsugiri",
+       "teams": 31,
+       "pct": 4.5
+      },
+      {
+       "name": "Entei",
+       "teams": 29,
+       "pct": 4.2
+      },
+      {
+       "name": "Weezing",
+       "teams": 27,
+       "pct": 3.9
+      },
+      {
+       "name": "Volcarona",
+       "teams": 26,
+       "pct": 3.7
+      },
+      {
+       "name": "Ditto",
+       "teams": 24,
+       "pct": 3.5
+      },
+      {
+       "name": "Annihilape",
+       "teams": 23,
+       "pct": 3.3
+      },
+      {
+       "name": "Gholdengo",
+       "teams": 22,
+       "pct": 3.2
+      },
+      {
+       "name": "Torkoal",
+       "teams": 19,
+       "pct": 2.7
+      },
+      {
+       "name": "Lunala",
+       "teams": 18,
+       "pct": 2.6
+      },
+      {
+       "name": "Mienshao",
+       "teams": 14,
+       "pct": 2.0
+      },
+      {
+       "name": "Tsareena",
+       "teams": 13,
+       "pct": 1.9
+      },
+      {
+       "name": "Regidrago",
+       "teams": 11,
+       "pct": 1.6
+      },
+      {
+       "name": "Scream Tail",
+       "teams": 11,
+       "pct": 1.6
+      }
+     ]
+    },
+    "seniors": {
+     "teams": 130,
+     "players": 130,
+     "teamlists": true,
+     "note": null,
+     "round_label": "Final",
+     "complete": true,
+     "top": [
+      {
+       "name": "Urshifu",
+       "teams": 97,
+       "pct": 74.6
+      },
+      {
+       "name": "Rillaboom",
+       "teams": 61,
+       "pct": 46.9
+      },
+      {
+       "name": "Calyrex",
+       "teams": 56,
+       "pct": 43.1
+      },
+      {
+       "name": "Incineroar",
+       "teams": 50,
+       "pct": 38.5
+      },
+      {
+       "name": "Raging Bolt",
+       "teams": 43,
+       "pct": 33.1
+      },
+      {
+       "name": "Ogerpon",
+       "teams": 43,
+       "pct": 33.1
+      },
+      {
+       "name": "Farigiraf",
+       "teams": 35,
+       "pct": 26.9
+      },
+      {
+       "name": "Iron Hands",
+       "teams": 35,
+       "pct": 26.9
+      },
+      {
+       "name": "Miraidon",
+       "teams": 25,
+       "pct": 19.2
+      },
+      {
+       "name": "Amoonguss",
+       "teams": 24,
+       "pct": 18.5
+      },
+      {
+       "name": "Whimsicott",
+       "teams": 23,
+       "pct": 17.7
+      },
+      {
+       "name": "Flutter Mane",
+       "teams": 21,
+       "pct": 16.2
+      },
+      {
+       "name": "Tornadus",
+       "teams": 20,
+       "pct": 15.4
+      },
+      {
+       "name": "Chi-Yu",
+       "teams": 19,
+       "pct": 14.6
+      },
+      {
+       "name": "Pelipper",
+       "teams": 18,
+       "pct": 13.8
+      },
+      {
+       "name": "Terapagos",
+       "teams": 17,
+       "pct": 13.1
+      },
+      {
+       "name": "Chien-Pao",
+       "teams": 15,
+       "pct": 11.5
+      },
+      {
+       "name": "Grimmsnarl",
+       "teams": 13,
+       "pct": 10.0
+      },
+      {
+       "name": "Indeedee",
+       "teams": 13,
+       "pct": 10.0
+      },
+      {
+       "name": "Ursaluna",
+       "teams": 12,
+       "pct": 9.2
+      },
+      {
+       "name": "Clefairy",
+       "teams": 11,
+       "pct": 8.5
+      },
+      {
+       "name": "Landorus",
+       "teams": 10,
+       "pct": 7.7
+      },
+      {
+       "name": "Zamazenta",
+       "teams": 10,
+       "pct": 7.7
+      },
+      {
+       "name": "Kyogre",
+       "teams": 8,
+       "pct": 6.2
+      },
+      {
+       "name": "Volcarona",
+       "teams": 8,
+       "pct": 6.2
+      },
+      {
+       "name": "Smeargle",
+       "teams": 7,
+       "pct": 5.4
+      },
+      {
+       "name": "Koraidon",
+       "teams": 6,
+       "pct": 4.6
+      },
+      {
+       "name": "Tatsugiri",
+       "teams": 5,
+       "pct": 3.8
+      },
+      {
+       "name": "Dondozo",
+       "teams": 5,
+       "pct": 3.8
+      },
+      {
+       "name": "Dragonite",
+       "teams": 3,
+       "pct": 2.3
+      },
+      {
+       "name": "Zacian",
+       "teams": 3,
+       "pct": 2.3
+      },
+      {
+       "name": "Kingambit",
+       "teams": 3,
+       "pct": 2.3
+      },
+      {
+       "name": "Weezing",
+       "teams": 3,
+       "pct": 2.3
+      },
+      {
+       "name": "Comfey",
+       "teams": 3,
+       "pct": 2.3
+      },
+      {
+       "name": "Annihilape",
+       "teams": 3,
+       "pct": 2.3
+      },
+      {
+       "name": "Gholdengo",
+       "teams": 2,
+       "pct": 1.5
+      },
+      {
+       "name": "Ditto",
+       "teams": 2,
+       "pct": 1.5
+      },
+      {
+       "name": "Eternatus",
+       "teams": 2,
+       "pct": 1.5
+      },
+      {
+       "name": "Scream Tail",
+       "teams": 2,
+       "pct": 1.5
+      },
+      {
+       "name": "Thundurus",
+       "teams": 2,
+       "pct": 1.5
+      }
+     ]
+    },
+    "juniors": {
+     "teams": 118,
+     "players": 118,
+     "teamlists": true,
+     "note": null,
+     "round_label": "Final",
+     "complete": true,
+     "top": [
+      {
+       "name": "Urshifu",
+       "teams": 70,
+       "pct": 59.3
+      },
+      {
+       "name": "Calyrex",
+       "teams": 50,
+       "pct": 42.4
+      },
+      {
+       "name": "Farigiraf",
+       "teams": 36,
+       "pct": 30.5
+      },
+      {
+       "name": "Rillaboom",
+       "teams": 36,
+       "pct": 30.5
+      },
+      {
+       "name": "Iron Hands",
+       "teams": 35,
+       "pct": 29.7
+      },
+      {
+       "name": "Incineroar",
+       "teams": 30,
+       "pct": 25.4
+      },
+      {
+       "name": "Ogerpon",
+       "teams": 30,
+       "pct": 25.4
+      },
+      {
+       "name": "Miraidon",
+       "teams": 29,
+       "pct": 24.6
+      },
+      {
+       "name": "Whimsicott",
+       "teams": 28,
+       "pct": 23.7
+      },
+      {
+       "name": "Chi-Yu",
+       "teams": 25,
+       "pct": 21.2
+      },
+      {
+       "name": "Raging Bolt",
+       "teams": 23,
+       "pct": 19.5
+      },
+      {
+       "name": "Tornadus",
+       "teams": 22,
+       "pct": 18.6
+      },
+      {
+       "name": "Indeedee",
+       "teams": 22,
+       "pct": 18.6
+      },
+      {
+       "name": "Ursaluna",
+       "teams": 21,
+       "pct": 17.8
+      },
+      {
+       "name": "Flutter Mane",
+       "teams": 21,
+       "pct": 17.8
+      },
+      {
+       "name": "Amoonguss",
+       "teams": 17,
+       "pct": 14.4
+      },
+      {
+       "name": "Pelipper",
+       "teams": 16,
+       "pct": 13.6
+      },
+      {
+       "name": "Grimmsnarl",
+       "teams": 15,
+       "pct": 12.7
+      },
+      {
+       "name": "Smeargle",
+       "teams": 14,
+       "pct": 11.9
+      },
+      {
+       "name": "Terapagos",
+       "teams": 13,
+       "pct": 11.0
+      },
+      {
+       "name": "Chien-Pao",
+       "teams": 11,
+       "pct": 9.3
+      },
+      {
+       "name": "Landorus",
+       "teams": 11,
+       "pct": 9.3
+      },
+      {
+       "name": "Annihilape",
+       "teams": 9,
+       "pct": 7.6
+      },
+      {
+       "name": "Tatsugiri",
+       "teams": 8,
+       "pct": 6.8
+      },
+      {
+       "name": "Dondozo",
+       "teams": 8,
+       "pct": 6.8
+      },
+      {
+       "name": "Kyogre",
+       "teams": 6,
+       "pct": 5.1
+      },
+      {
+       "name": "Torkoal",
+       "teams": 6,
+       "pct": 5.1
+      },
+      {
+       "name": "Regidrago",
+       "teams": 6,
+       "pct": 5.1
+      },
+      {
+       "name": "Clefairy",
+       "teams": 6,
+       "pct": 5.1
+      },
+      {
+       "name": "Koraidon",
+       "teams": 5,
+       "pct": 4.2
+      },
+      {
+       "name": "Zamazenta",
+       "teams": 4,
+       "pct": 3.4
+      },
+      {
+       "name": "Volcarona",
+       "teams": 4,
+       "pct": 3.4
+      },
+      {
+       "name": "Dragonite",
+       "teams": 4,
+       "pct": 3.4
+      },
+      {
+       "name": "Electabuzz",
+       "teams": 4,
+       "pct": 3.4
+      },
+      {
+       "name": "Ditto",
+       "teams": 4,
+       "pct": 3.4
+      },
+      {
+       "name": "Zacian",
+       "teams": 3,
+       "pct": 2.5
+      },
+      {
+       "name": "Gholdengo",
+       "teams": 3,
+       "pct": 2.5
+      },
+      {
+       "name": "Lunala",
+       "teams": 3,
+       "pct": 2.5
+      },
+      {
+       "name": "Comfey",
+       "teams": 3,
+       "pct": 2.5
+      },
+      {
+       "name": "Iron Valiant",
+       "teams": 2,
+       "pct": 1.7
+      }
+     ]
+    }
+   }
+  },
+  {
+   "tid": "0000083",
+   "label": "2023 PokÃ©mon VGC World Championships - August 11â€“13, 2023",
+   "year": 2023,
+   "labelled_day1": false,
+   "divisions": {
+    "masters": {
+     "teams": 0,
+     "players": 183,
+     "teamlists": false,
+     "note": "standings only - pokedata publishes no teamlists for this event, so it says who placed, never what they ran",
+     "round_label": "12",
+     "complete": false,
+     "top": []
+    },
+    "seniors": {
+     "teams": 73,
+     "players": 74,
+     "teamlists": true,
+     "note": null,
+     "round_label": "12",
+     "complete": false,
+     "top": [
+      {
+       "name": "Flutter Mane",
+       "teams": 53,
+       "pct": 72.6
+      },
+      {
+       "name": "Urshifu",
+       "teams": 51,
+       "pct": 69.9
+      },
+      {
+       "name": "Rillaboom",
+       "teams": 33,
+       "pct": 45.2
+      },
+      {
+       "name": "Tornadus",
+       "teams": 31,
+       "pct": 42.5
+      },
+      {
+       "name": "Chien-Pao",
+       "teams": 27,
+       "pct": 37.0
+      },
+      {
+       "name": "Heatran",
+       "teams": 25,
+       "pct": 34.2
+      },
+      {
+       "name": "Iron Hands",
+       "teams": 24,
+       "pct": 32.9
+      },
+      {
+       "name": "Landorus",
+       "teams": 22,
+       "pct": 30.1
+      },
+      {
+       "name": "Amoonguss",
+       "teams": 18,
+       "pct": 24.7
+      },
+      {
+       "name": "Cresselia",
+       "teams": 17,
+       "pct": 23.3
+      },
+      {
+       "name": "Ursaluna",
+       "teams": 15,
+       "pct": 20.5
+      },
+      {
+       "name": "Dragonite",
+       "teams": 14,
+       "pct": 19.2
+      },
+      {
+       "name": "Gholdengo",
+       "teams": 13,
+       "pct": 17.8
+      },
+      {
+       "name": "Chi-Yu",
+       "teams": 10,
+       "pct": 13.7
+      },
+      {
+       "name": "Regidrago",
+       "teams": 8,
+       "pct": 11.0
+      },
+      {
+       "name": "Iron Bundle",
+       "teams": 8,
+       "pct": 11.0
+      },
+      {
+       "name": "Arcanine",
+       "teams": 7,
+       "pct": 9.6
+      },
+      {
+       "name": "Zapdos",
+       "teams": 4,
+       "pct": 5.5
+      },
+      {
+       "name": "Mimikyu",
+       "teams": 4,
+       "pct": 5.5
+      },
+      {
+       "name": "Thundurus",
+       "teams": 4,
+       "pct": 5.5
+      },
+      {
+       "name": "Farigiraf",
+       "teams": 4,
+       "pct": 5.5
+      },
+      {
+       "name": "Dondozo",
+       "teams": 4,
+       "pct": 5.5
+      },
+      {
+       "name": "Gastrodon",
+       "teams": 3,
+       "pct": 4.1
+      },
+      {
+       "name": "Moltres",
+       "teams": 3,
+       "pct": 4.1
+      },
+      {
+       "name": "Tatsugiri",
+       "teams": 3,
+       "pct": 4.1
+      },
+      {
+       "name": "Grimmsnarl",
+       "teams": 3,
+       "pct": 4.1
+      },
+      {
+       "name": "Indeedee",
+       "teams": 2,
+       "pct": 2.7
+      },
+      {
+       "name": "Pelipper",
+       "teams": 2,
+       "pct": 2.7
+      },
+      {
+       "name": "Basculegion",
+       "teams": 2,
+       "pct": 2.7
+      },
+      {
+       "name": "Goodra",
+       "teams": 2,
+       "pct": 2.7
+      },
+      {
+       "name": "Roaring Moon",
+       "teams": 2,
+       "pct": 2.7
+      },
+      {
+       "name": "Spectrier",
+       "teams": 2,
+       "pct": 2.7
+      },
+      {
+       "name": "Sylveon",
+       "teams": 1,
+       "pct": 1.4
+      },
+      {
+       "name": "Talonflame",
+       "teams": 1,
+       "pct": 1.4
+      },
+      {
+       "name": "Scizor",
+       "teams": 1,
+       "pct": 1.4
+      },
+      {
+       "name": "Azumarill",
+       "teams": 1,
+       "pct": 1.4
+      },
+      {
+       "name": "Articuno",
+       "teams": 1,
+       "pct": 1.4
+      },
+      {
+       "name": "Abomasnow",
+       "teams": 1,
+       "pct": 1.4
+      },
+      {
+       "name": "Ting-Lu",
+       "teams": 1,
+       "pct": 1.4
+      },
+      {
+       "name": "Kleavor",
+       "teams": 1,
+       "pct": 1.4
+      }
+     ]
+    },
+    "juniors": {
+     "teams": 90,
+     "players": 92,
+     "teamlists": true,
+     "note": null,
+     "round_label": "12",
+     "complete": false,
+     "top": [
+      {
+       "name": "Flutter Mane",
+       "teams": 70,
+       "pct": 77.8
+      },
+      {
+       "name": "Urshifu",
+       "teams": 56,
+       "pct": 62.2
+      },
+      {
+       "name": "Tornadus",
+       "teams": 53,
+       "pct": 58.9
+      },
+      {
+       "name": "Chien-Pao",
+       "teams": 31,
+       "pct": 34.4
+      },
+      {
+       "name": "Iron Hands",
+       "teams": 28,
+       "pct": 31.1
+      },
+      {
+       "name": "Heatran",
+       "teams": 26,
+       "pct": 28.9
+      },
+      {
+       "name": "Amoonguss",
+       "teams": 24,
+       "pct": 26.7
+      },
+      {
+       "name": "Rillaboom",
+       "teams": 22,
+       "pct": 24.4
+      },
+      {
+       "name": "Dragonite",
+       "teams": 22,
+       "pct": 24.4
+      },
+      {
+       "name": "Cresselia",
+       "teams": 17,
+       "pct": 18.9
+      },
+      {
+       "name": "Chi-Yu",
+       "teams": 14,
+       "pct": 15.6
+      },
+      {
+       "name": "Ursaluna",
+       "teams": 13,
+       "pct": 14.4
+      },
+      {
+       "name": "Dondozo",
+       "teams": 12,
+       "pct": 13.3
+      },
+      {
+       "name": "Gholdengo",
+       "teams": 12,
+       "pct": 13.3
+      },
+      {
+       "name": "Tatsugiri",
+       "teams": 11,
+       "pct": 12.2
+      },
+      {
+       "name": "Landorus",
+       "teams": 11,
+       "pct": 12.2
+      },
+      {
+       "name": "Indeedee",
+       "teams": 7,
+       "pct": 7.8
+      },
+      {
+       "name": "Glimmora",
+       "teams": 6,
+       "pct": 6.7
+      },
+      {
+       "name": "Iron Bundle",
+       "teams": 6,
+       "pct": 6.7
+      },
+      {
+       "name": "Pelipper",
+       "teams": 6,
+       "pct": 6.7
+      },
+      {
+       "name": "Basculegion",
+       "teams": 6,
+       "pct": 6.7
+      },
+      {
+       "name": "Armarouge",
+       "teams": 6,
+       "pct": 6.7
+      },
+      {
+       "name": "Arcanine",
+       "teams": 5,
+       "pct": 5.6
+      },
+      {
+       "name": "Regidrago",
+       "teams": 5,
+       "pct": 5.6
+      },
+      {
+       "name": "Gastrodon",
+       "teams": 4,
+       "pct": 4.4
+      },
+      {
+       "name": "Scream Tail",
+       "teams": 4,
+       "pct": 4.4
+      },
+      {
+       "name": "Regieleki",
+       "teams": 4,
+       "pct": 4.4
+      },
+      {
+       "name": "Lilligant",
+       "teams": 4,
+       "pct": 4.4
+      },
+      {
+       "name": "Torkoal",
+       "teams": 4,
+       "pct": 4.4
+      },
+      {
+       "name": "Roaring Moon",
+       "teams": 3,
+       "pct": 3.3
+      },
+      {
+       "name": "Mimikyu",
+       "teams": 3,
+       "pct": 3.3
+      },
+      {
+       "name": "Ditto",
+       "teams": 3,
+       "pct": 3.3
+      },
+      {
+       "name": "Farigiraf",
+       "teams": 3,
+       "pct": 3.3
+      },
+      {
+       "name": "Thundurus",
+       "teams": 3,
+       "pct": 3.3
+      },
+      {
+       "name": "Palafin",
+       "teams": 3,
+       "pct": 3.3
+      },
+      {
+       "name": "Scizor",
+       "teams": 2,
+       "pct": 2.2
+      },
+      {
+       "name": "Volcarona",
+       "teams": 2,
+       "pct": 2.2
+      },
+      {
+       "name": "Grimmsnarl",
+       "teams": 2,
+       "pct": 2.2
+      },
+      {
+       "name": "Annihilape",
+       "teams": 2,
+       "pct": 2.2
+      },
+      {
+       "name": "Great Tusk",
+       "teams": 2,
+       "pct": 2.2
+      }
+     ]
+    }
+   }
+  },
+  {
+   "tid": "0000089",
+   "label": "2023 PokÃ©mon VGC World Championships - August 11â€“13, 2023",
+   "year": 2023,
+   "labelled_day1": false,
+   "divisions": {
+    "masters": {
+     "teams": 287,
+     "players": 287,
+     "teamlists": true,
+     "note": null,
+     "round_label": "7",
+     "complete": false,
+     "top": [
+      {
+       "name": "Flutter Mane",
+       "teams": 205,
+       "pct": 71.4
+      },
+      {
+       "name": "Urshifu",
+       "teams": 164,
+       "pct": 57.1
+      },
+      {
+       "name": "Iron Hands",
+       "teams": 118,
+       "pct": 41.1
+      },
+      {
+       "name": "Tornadus",
+       "teams": 110,
+       "pct": 38.3
+      },
+      {
+       "name": "Landorus",
+       "teams": 90,
+       "pct": 31.4
+      },
+      {
+       "name": "Amoonguss",
+       "teams": 88,
+       "pct": 30.7
+      },
+      {
+       "name": "Chien-Pao",
+       "teams": 86,
+       "pct": 30.0
+      },
+      {
+       "name": "Rillaboom",
+       "teams": 80,
+       "pct": 27.9
+      },
+      {
+       "name": "Heatran",
+       "teams": 80,
+       "pct": 27.9
+      },
+      {
+       "name": "Gholdengo",
+       "teams": 69,
+       "pct": 24.0
+      },
+      {
+       "name": "Chi-Yu",
+       "teams": 68,
+       "pct": 23.7
+      },
+      {
+       "name": "Ursaluna",
+       "teams": 55,
+       "pct": 19.2
+      },
+      {
+       "name": "Cresselia",
+       "teams": 54,
+       "pct": 18.8
+      },
+      {
+       "name": "Arcanine",
+       "teams": 32,
+       "pct": 11.1
+      },
+      {
+       "name": "Farigiraf",
+       "teams": 29,
+       "pct": 10.1
+      },
+      {
+       "name": "Dragonite",
+       "teams": 28,
+       "pct": 9.8
+      },
+      {
+       "name": "Gyarados",
+       "teams": 22,
+       "pct": 7.7
+      },
+      {
+       "name": "Dondozo",
+       "teams": 21,
+       "pct": 7.3
+      },
+      {
+       "name": "Gastrodon",
+       "teams": 19,
+       "pct": 6.6
+      },
+      {
+       "name": "Grimmsnarl",
+       "teams": 18,
+       "pct": 6.3
+      },
+      {
+       "name": "Tatsugiri",
+       "teams": 17,
+       "pct": 5.9
+      },
+      {
+       "name": "Indeedee",
+       "teams": 16,
+       "pct": 5.6
+      },
+      {
+       "name": "Pelipper",
+       "teams": 13,
+       "pct": 4.5
+      },
+      {
+       "name": "Iron Bundle",
+       "teams": 13,
+       "pct": 4.5
+      },
+      {
+       "name": "Torkoal",
+       "teams": 13,
+       "pct": 4.5
+      },
+      {
+       "name": "Basculegion",
+       "teams": 12,
+       "pct": 4.2
+      },
+      {
+       "name": "Armarouge",
+       "teams": 11,
+       "pct": 3.8
+      },
+      {
+       "name": "Thundurus",
+       "teams": 10,
+       "pct": 3.5
+      },
+      {
+       "name": "Maushold",
+       "teams": 10,
+       "pct": 3.5
+      },
+      {
+       "name": "Zapdos",
+       "teams": 9,
+       "pct": 3.1
+      },
+      {
+       "name": "Baxcalibur",
+       "teams": 9,
+       "pct": 3.1
+      },
+      {
+       "name": "Volcarona",
+       "teams": 9,
+       "pct": 3.1
+      },
+      {
+       "name": "Regidrago",
+       "teams": 9,
+       "pct": 3.1
+      },
+      {
+       "name": "Moltres",
+       "teams": 8,
+       "pct": 2.8
+      },
+      {
+       "name": "Kingambit",
+       "teams": 7,
+       "pct": 2.4
+      },
+      {
+       "name": "Garchomp",
+       "teams": 7,
+       "pct": 2.4
+      },
+      {
+       "name": "Ting-Lu",
+       "teams": 7,
+       "pct": 2.4
+      },
+      {
+       "name": "Glimmora",
+       "teams": 6,
+       "pct": 2.1
+      },
+      {
+       "name": "Mimikyu",
+       "teams": 6,
+       "pct": 2.1
+      },
+      {
+       "name": "Annihilape",
+       "teams": 6,
+       "pct": 2.1
+      }
+     ]
+    },
+    "seniors": {
+     "teams": 86,
+     "players": 91,
+     "teamlists": true,
+     "note": null,
+     "round_label": "6",
+     "complete": false,
+     "top": [
+      {
+       "name": "Flutter Mane",
+       "teams": 61,
+       "pct": 70.9
+      },
+      {
+       "name": "Urshifu",
+       "teams": 61,
+       "pct": 70.9
+      },
+      {
+       "name": "Rillaboom",
+       "teams": 37,
+       "pct": 43.0
+      },
+      {
+       "name": "Tornadus",
+       "teams": 35,
+       "pct": 40.7
+      },
+      {
+       "name": "Heatran",
+       "teams": 31,
+       "pct": 36.0
+      },
+      {
+       "name": "Landorus",
+       "teams": 28,
+       "pct": 32.6
+      },
+      {
+       "name": "Chien-Pao",
+       "teams": 27,
+       "pct": 31.4
+      },
+      {
+       "name": "Cresselia",
+       "teams": 21,
+       "pct": 24.4
+      },
+      {
+       "name": "Iron Hands",
+       "teams": 17,
+       "pct": 19.8
+      },
+      {
+       "name": "Ursaluna",
+       "teams": 17,
+       "pct": 19.8
+      },
+      {
+       "name": "Gholdengo",
+       "teams": 17,
+       "pct": 19.8
+      },
+      {
+       "name": "Dragonite",
+       "teams": 16,
+       "pct": 18.6
+      },
+      {
+       "name": "Amoonguss",
+       "teams": 15,
+       "pct": 17.4
+      },
+      {
+       "name": "Chi-Yu",
+       "teams": 13,
+       "pct": 15.1
+      },
+      {
+       "name": "Dondozo",
+       "teams": 9,
+       "pct": 10.5
+      },
+      {
+       "name": "Iron Bundle",
+       "teams": 7,
+       "pct": 8.1
+      },
+      {
+       "name": "Regidrago",
+       "teams": 7,
+       "pct": 8.1
+      },
+      {
+       "name": "Tatsugiri",
+       "teams": 7,
+       "pct": 8.1
+      },
+      {
+       "name": "Indeedee",
+       "teams": 6,
+       "pct": 7.0
+      },
+      {
+       "name": "Arcanine",
+       "teams": 6,
+       "pct": 7.0
+      },
+      {
+       "name": "Grimmsnarl",
+       "teams": 6,
+       "pct": 7.0
+      },
+      {
+       "name": "Gastrodon",
+       "teams": 6,
+       "pct": 7.0
+      },
+      {
+       "name": "Thundurus",
+       "teams": 5,
+       "pct": 5.8
+      },
+      {
+       "name": "Zapdos",
+       "teams": 4,
+       "pct": 4.7
+      },
+      {
+       "name": "Goodra",
+       "teams": 3,
+       "pct": 3.5
+      },
+      {
+       "name": "Armarouge",
+       "teams": 3,
+       "pct": 3.5
+      },
+      {
+       "name": "Farigiraf",
+       "teams": 3,
+       "pct": 3.5
+      },
+      {
+       "name": "Ting-Lu",
+       "teams": 3,
+       "pct": 3.5
+      },
+      {
+       "name": "Maushold",
+       "teams": 3,
+       "pct": 3.5
+      },
+      {
+       "name": "Moltres",
+       "teams": 2,
+       "pct": 2.3
+      },
+      {
+       "name": "Mimikyu",
+       "teams": 2,
+       "pct": 2.3
+      },
+      {
+       "name": "Talonflame",
+       "teams": 2,
+       "pct": 2.3
+      },
+      {
+       "name": "Volcarona",
+       "teams": 2,
+       "pct": 2.3
+      },
+      {
+       "name": "Dragapult",
+       "teams": 2,
+       "pct": 2.3
+      },
+      {
+       "name": "Zoroark",
+       "teams": 2,
+       "pct": 2.3
+      },
+      {
+       "name": "Azumarill",
+       "teams": 2,
+       "pct": 2.3
+      },
+      {
+       "name": "Sneasler",
+       "teams": 2,
+       "pct": 2.3
+      },
+      {
+       "name": "Regieleki",
+       "teams": 2,
+       "pct": 2.3
+      },
+      {
+       "name": "Glimmora",
+       "teams": 2,
+       "pct": 2.3
+      },
+      {
+       "name": "Glastrier",
+       "teams": 1,
+       "pct": 1.2
+      }
+     ]
+    },
+    "juniors": {
+     "teams": 86,
+     "players": 90,
+     "teamlists": true,
+     "note": null,
+     "round_label": "6",
+     "complete": false,
+     "top": [
+      {
+       "name": "Flutter Mane",
+       "teams": 60,
+       "pct": 69.8
+      },
+      {
+       "name": "Urshifu",
+       "teams": 52,
+       "pct": 60.5
+      },
+      {
+       "name": "Tornadus",
+       "teams": 42,
+       "pct": 48.8
+      },
+      {
+       "name": "Chien-Pao",
+       "teams": 31,
+       "pct": 36.0
+      },
+      {
+       "name": "Heatran",
+       "teams": 26,
+       "pct": 30.2
+      },
+      {
+       "name": "Rillaboom",
+       "teams": 25,
+       "pct": 29.1
+      },
+      {
+       "name": "Iron Hands",
+       "teams": 24,
+       "pct": 27.9
+      },
+      {
+       "name": "Gholdengo",
+       "teams": 22,
+       "pct": 25.6
+      },
+      {
+       "name": "Cresselia",
+       "teams": 22,
+       "pct": 25.6
+      },
+      {
+       "name": "Ursaluna",
+       "teams": 18,
+       "pct": 20.9
+      },
+      {
+       "name": "Landorus",
+       "teams": 18,
+       "pct": 20.9
+      },
+      {
+       "name": "Dragonite",
+       "teams": 17,
+       "pct": 19.8
+      },
+      {
+       "name": "Amoonguss",
+       "teams": 15,
+       "pct": 17.4
+      },
+      {
+       "name": "Chi-Yu",
+       "teams": 13,
+       "pct": 15.1
+      },
+      {
+       "name": "Iron Bundle",
+       "teams": 9,
+       "pct": 10.5
+      },
+      {
+       "name": "Arcanine",
+       "teams": 7,
+       "pct": 8.1
+      },
+      {
+       "name": "Torkoal",
+       "teams": 7,
+       "pct": 8.1
+      },
+      {
+       "name": "Dondozo",
+       "teams": 6,
+       "pct": 7.0
+      },
+      {
+       "name": "Regidrago",
+       "teams": 6,
+       "pct": 7.0
+      },
+      {
+       "name": "Tatsugiri",
+       "teams": 5,
+       "pct": 5.8
+      },
+      {
+       "name": "Lilligant",
+       "teams": 5,
+       "pct": 5.8
+      },
+      {
+       "name": "Scream Tail",
+       "teams": 4,
+       "pct": 4.7
+      },
+      {
+       "name": "Glimmora",
+       "teams": 4,
+       "pct": 4.7
+      },
+      {
+       "name": "Gastrodon",
+       "teams": 4,
+       "pct": 4.7
+      },
+      {
+       "name": "Farigiraf",
+       "teams": 4,
+       "pct": 4.7
+      },
+      {
+       "name": "Thundurus",
+       "teams": 4,
+       "pct": 4.7
+      },
+      {
+       "name": "Great Tusk",
+       "teams": 3,
+       "pct": 3.5
+      },
+      {
+       "name": "Grimmsnarl",
+       "teams": 3,
+       "pct": 3.5
+      },
+      {
+       "name": "Baxcalibur",
+       "teams": 3,
+       "pct": 3.5
+      },
+      {
+       "name": "Ting-Lu",
+       "teams": 3,
+       "pct": 3.5
+      },
+      {
+       "name": "Murkrow",
+       "teams": 3,
+       "pct": 3.5
+      },
+      {
+       "name": "Indeedee",
+       "teams": 3,
+       "pct": 3.5
+      },
+      {
+       "name": "Meowscarada",
+       "teams": 3,
+       "pct": 3.5
+      },
+      {
+       "name": "Talonflame",
+       "teams": 2,
+       "pct": 2.3
+      },
+      {
+       "name": "Dragapult",
+       "teams": 2,
+       "pct": 2.3
+      },
+      {
+       "name": "Palafin",
+       "teams": 2,
+       "pct": 2.3
+      },
+      {
+       "name": "Pelipper",
+       "teams": 2,
+       "pct": 2.3
+      },
+      {
+       "name": "Mimikyu",
+       "teams": 2,
+       "pct": 2.3
+      },
+      {
+       "name": "Annihilape",
+       "teams": 2,
+       "pct": 2.3
+      },
+      {
+       "name": "Regieleki",
+       "teams": 2,
+       "pct": 2.3
+      }
+     ]
+    }
+   }
+  },
+  {
+   "tid": "0000018",
+   "label": "2022 PokÃ©mon VGC World Championships - August 18â€“21, 2022",
+   "year": 2022,
+   "labelled_day1": false,
+   "divisions": {
+    "masters": {
+     "teams": 0,
+     "players": 114,
+     "teamlists": false,
+     "note": "standings only - pokedata publishes no teamlists for this event, so it says who placed, never what they ran",
+     "round_label": "12",
+     "complete": false,
+     "top": []
+    },
+    "seniors": {
+     "teams": 0,
+     "players": 54,
+     "teamlists": false,
+     "note": "standings only - pokedata publishes no teamlists for this event, so it says who placed, never what they ran",
+     "round_label": "11",
+     "complete": false,
+     "top": []
+    },
+    "juniors": {
+     "teams": 0,
+     "players": 49,
+     "teamlists": false,
+     "note": "standings only - pokedata publishes no teamlists for this event, so it says who placed, never what they ran",
+     "round_label": "10",
+     "complete": false,
+     "top": []
+    }
+   }
+  },
+  {
+   "tid": "0000019",
+   "label": "Day 1 2022 PokÃ©mon VGC World Championships - August 18â€“21, 2022",
+   "year": 2022,
+   "labelled_day1": true,
+   "divisions": {
+    "masters": {
+     "teams": 0,
+     "players": 225,
+     "teamlists": false,
+     "note": "standings only - pokedata publishes no teamlists for this event, so it says who placed, never what they ran",
+     "round_label": "8",
+     "complete": false,
+     "top": []
+    },
+    "seniors": {
+     "teams": 0,
+     "players": 24,
+     "teamlists": false,
+     "note": "standings only - pokedata publishes no teamlists for this event, so it says who placed, never what they ran",
+     "round_label": "5",
+     "complete": false,
+     "top": []
+    },
+    "juniors": {
+     "teams": 0,
+     "players": 12,
+     "teamlists": false,
+     "note": "standings only - pokedata publishes no teamlists for this event, so it says who placed, never what they ran",
+     "round_label": "4",
+     "complete": false,
+     "top": []
+    }
+   }
+  }
+ ],
+ "years": [
+  {
+   "year": 2026,
+   "divisions": {
+    "masters": {
+     "teams": 394,
+     "players": 395,
+     "teamlists": true,
+     "note": null,
+     "round_label": "Final",
+     "complete": true,
+     "top": [
+      {
+       "name": "Kingambit",
+       "teams": 208,
+       "pct": 52.8
+      },
+      {
+       "name": "Charizard",
+       "teams": 178,
+       "pct": 45.2
+      },
+      {
+       "name": "Incineroar",
+       "teams": 163,
+       "pct": 41.4
+      },
+      {
+       "name": "Garchomp",
+       "teams": 156,
+       "pct": 39.6
+      },
+      {
+       "name": "Basculegion",
+       "teams": 134,
+       "pct": 34.0
+      },
+      {
+       "name": "Floette",
+       "teams": 108,
+       "pct": 27.4
+      },
+      {
+       "name": "Sneasler",
+       "teams": 104,
+       "pct": 26.4
+      },
+      {
+       "name": "Venusaur",
+       "teams": 101,
+       "pct": 25.6
+      },
+      {
+       "name": "Sylveon",
+       "teams": 98,
+       "pct": 24.9
+      },
+      {
+       "name": "Whimsicott",
+       "teams": 95,
+       "pct": 24.1
+      },
+      {
+       "name": "Sinistcha",
+       "teams": 89,
+       "pct": 22.6
+      },
+      {
+       "name": "Farigiraf",
+       "teams": 80,
+       "pct": 20.3
+      },
+      {
+       "name": "Staraptor",
+       "teams": 67,
+       "pct": 17.0
+      },
+      {
+       "name": "Swampert",
+       "teams": 49,
+       "pct": 12.4
+      },
+      {
+       "name": "Delphox",
+       "teams": 47,
+       "pct": 11.9
+      },
+      {
+       "name": "Archaludon",
+       "teams": 43,
+       "pct": 10.9
+      },
+      {
+       "name": "Raichu",
+       "teams": 40,
+       "pct": 10.2
+      },
+      {
+       "name": "Aerodactyl",
+       "teams": 39,
+       "pct": 9.9
+      },
+      {
+       "name": "Pelipper",
+       "teams": 36,
+       "pct": 9.1
+      },
+      {
+       "name": "Grimmsnarl",
+       "teams": 34,
+       "pct": 8.6
+      },
+      {
+       "name": "Toxapex",
+       "teams": 32,
+       "pct": 8.1
+      },
+      {
+       "name": "Arcanine",
+       "teams": 31,
+       "pct": 7.9
+      },
+      {
+       "name": "Tyranitar",
+       "teams": 30,
+       "pct": 7.6
+      },
+      {
+       "name": "Blastoise",
+       "teams": 27,
+       "pct": 6.9
+      },
+      {
+       "name": "Dragonite",
+       "teams": 24,
+       "pct": 6.1
+      },
+      {
+       "name": "Scovillain",
+       "teams": 24,
+       "pct": 6.1
+      },
+      {
+       "name": "Gholdengo",
+       "teams": 23,
+       "pct": 5.8
+      },
+      {
+       "name": "Gengar",
+       "teams": 23,
+       "pct": 5.8
+      },
+      {
+       "name": "Froslass",
+       "teams": 20,
+       "pct": 5.1
+      },
+      {
+       "name": "Excadrill",
+       "teams": 18,
+       "pct": 4.6
+      },
+      {
+       "name": "Milotic",
+       "teams": 18,
+       "pct": 4.6
+      },
+      {
+       "name": "Maushold",
+       "teams": 18,
+       "pct": 4.6
+      },
+      {
+       "name": "Ninetales",
+       "teams": 17,
+       "pct": 4.3
+      },
+      {
+       "name": "Lycanroc",
+       "teams": 15,
+       "pct": 3.8
+      },
+      {
+       "name": "Torkoal",
+       "teams": 11,
+       "pct": 2.8
+      },
+      {
+       "name": "Kommo-o",
+       "teams": 11,
+       "pct": 2.8
+      },
+      {
+       "name": "Glimmora",
+       "teams": 9,
+       "pct": 2.3
+      },
+      {
+       "name": "Politoed",
+       "teams": 9,
+       "pct": 2.3
+      },
+      {
+       "name": "Primarina",
+       "teams": 8,
+       "pct": 2.0
+      },
+      {
+       "name": "Aegislash",
+       "teams": 8,
+       "pct": 2.0
+      }
+     ]
+    },
+    "seniors": {
+     "teams": 137,
+     "players": 139,
+     "teamlists": true,
+     "note": null,
+     "round_label": "Final",
+     "complete": true,
+     "top": [
+      {
+       "name": "Kingambit",
+       "teams": 73,
+       "pct": 53.3
+      },
+      {
+       "name": "Garchomp",
+       "teams": 67,
+       "pct": 48.9
+      },
+      {
+       "name": "Charizard",
+       "teams": 66,
+       "pct": 48.2
+      },
+      {
+       "name": "Basculegion",
+       "teams": 51,
+       "pct": 37.2
+      },
+      {
+       "name": "Whimsicott",
+       "teams": 45,
+       "pct": 32.8
+      },
+      {
+       "name": "Incineroar",
+       "teams": 41,
+       "pct": 29.9
+      },
+      {
+       "name": "Floette",
+       "teams": 33,
+       "pct": 24.1
+      },
+      {
+       "name": "Sneasler",
+       "teams": 32,
+       "pct": 23.4
+      },
+      {
+       "name": "Farigiraf",
+       "teams": 27,
+       "pct": 19.7
+      },
+      {
+       "name": "Venusaur",
+       "teams": 26,
+       "pct": 19.0
+      },
+      {
+       "name": "Sylveon",
+       "teams": 25,
+       "pct": 18.2
+      },
+      {
+       "name": "Staraptor",
+       "teams": 24,
+       "pct": 17.5
+      },
+      {
+       "name": "Aerodactyl",
+       "teams": 20,
+       "pct": 14.6
+      },
+      {
+       "name": "Sinistcha",
+       "teams": 18,
+       "pct": 13.1
+      },
+      {
+       "name": "Archaludon",
+       "teams": 16,
+       "pct": 11.7
+      },
+      {
+       "name": "Delphox",
+       "teams": 16,
+       "pct": 11.7
+      },
+      {
+       "name": "Swampert",
+       "teams": 14,
+       "pct": 10.2
+      },
+      {
+       "name": "Froslass",
+       "teams": 14,
+       "pct": 10.2
+      },
+      {
+       "name": "Raichu",
+       "teams": 13,
+       "pct": 9.5
+      },
+      {
+       "name": "Pelipper",
+       "teams": 12,
+       "pct": 8.8
+      },
+      {
+       "name": "Gholdengo",
+       "teams": 12,
+       "pct": 8.8
+      },
+      {
+       "name": "Dragonite",
+       "teams": 11,
+       "pct": 8.0
+      },
+      {
+       "name": "Grimmsnarl",
+       "teams": 10,
+       "pct": 7.3
+      },
+      {
+       "name": "Glimmora",
+       "teams": 10,
+       "pct": 7.3
+      },
+      {
+       "name": "Scovillain",
+       "teams": 9,
+       "pct": 6.6
+      },
+      {
+       "name": "Tyranitar",
+       "teams": 9,
+       "pct": 6.6
+      },
+      {
+       "name": "Excadrill",
+       "teams": 9,
+       "pct": 6.6
+      },
+      {
+       "name": "Toxapex",
+       "teams": 9,
+       "pct": 6.6
+      },
+      {
+       "name": "Blastoise",
+       "teams": 8,
+       "pct": 5.8
+      },
+      {
+       "name": "Lycanroc",
+       "teams": 7,
+       "pct": 5.1
+      },
+      {
+       "name": "Torkoal",
+       "teams": 7,
+       "pct": 5.1
+      },
+      {
+       "name": "Milotic",
+       "teams": 7,
+       "pct": 5.1
+      },
+      {
+       "name": "Arcanine",
+       "teams": 7,
+       "pct": 5.1
+      },
+      {
+       "name": "Kommo-o",
+       "teams": 7,
+       "pct": 5.1
+      },
+      {
+       "name": "Politoed",
+       "teams": 6,
+       "pct": 4.4
+      },
+      {
+       "name": "Gengar",
+       "teams": 6,
+       "pct": 4.4
+      },
+      {
+       "name": "Talonflame",
+       "teams": 6,
+       "pct": 4.4
+      },
+      {
+       "name": "Maushold",
+       "teams": 6,
+       "pct": 4.4
+      },
+      {
+       "name": "Vivillon",
+       "teams": 5,
+       "pct": 3.6
+      },
+      {
+       "name": "Kangaskhan",
+       "teams": 3,
+       "pct": 2.2
+      }
+     ]
+    },
+    "juniors": {
+     "teams": 111,
+     "players": 111,
+     "teamlists": true,
+     "note": null,
+     "round_label": "Final",
+     "complete": true,
+     "top": [
+      {
+       "name": "Kingambit",
+       "teams": 57,
+       "pct": 51.4
+      },
+      {
+       "name": "Garchomp",
+       "teams": 51,
+       "pct": 45.9
+      },
+      {
+       "name": "Basculegion",
+       "teams": 48,
+       "pct": 43.2
+      },
+      {
+       "name": "Charizard",
+       "teams": 48,
+       "pct": 43.2
+      },
+      {
+       "name": "Whimsicott",
+       "teams": 37,
+       "pct": 33.3
+      },
+      {
+       "name": "Sneasler",
+       "teams": 29,
+       "pct": 26.1
+      },
+      {
+       "name": "Incineroar",
+       "teams": 25,
+       "pct": 22.5
+      },
+      {
+       "name": "Sylveon",
+       "teams": 22,
+       "pct": 19.8
+      },
+      {
+       "name": "Sinistcha",
+       "teams": 22,
+       "pct": 19.8
+      },
+      {
+       "name": "Floette",
+       "teams": 22,
+       "pct": 19.8
+      },
+      {
+       "name": "Staraptor",
+       "teams": 21,
+       "pct": 18.9
+      },
+      {
+       "name": "Farigiraf",
+       "teams": 20,
+       "pct": 18.0
+      },
+      {
+       "name": "Aerodactyl",
+       "teams": 18,
+       "pct": 16.2
+      },
+      {
+       "name": "Archaludon",
+       "teams": 16,
+       "pct": 14.4
+      },
+      {
+       "name": "Venusaur",
+       "teams": 16,
+       "pct": 14.4
+      },
+      {
+       "name": "Grimmsnarl",
+       "teams": 15,
+       "pct": 13.5
+      },
+      {
+       "name": "Pelipper",
+       "teams": 15,
+       "pct": 13.5
+      },
+      {
+       "name": "Delphox",
+       "teams": 15,
+       "pct": 13.5
+      },
+      {
+       "name": "Swampert",
+       "teams": 14,
+       "pct": 12.6
+      },
+      {
+       "name": "Blastoise",
+       "teams": 14,
+       "pct": 12.6
+      },
+      {
+       "name": "Froslass",
+       "teams": 9,
+       "pct": 8.1
+      },
+      {
+       "name": "Torkoal",
+       "teams": 9,
+       "pct": 8.1
+      },
+      {
+       "name": "Glimmora",
+       "teams": 8,
+       "pct": 7.2
+      },
+      {
+       "name": "Gholdengo",
+       "teams": 8,
+       "pct": 7.2
+      },
+      {
+       "name": "Kangaskhan",
+       "teams": 8,
+       "pct": 7.2
+      },
+      {
+       "name": "Scovillain",
+       "teams": 7,
+       "pct": 6.3
+      },
+      {
+       "name": "Lycanroc",
+       "teams": 7,
+       "pct": 6.3
+      },
+      {
+       "name": "Vivillon",
+       "teams": 7,
+       "pct": 6.3
+      },
+      {
+       "name": "Dragonite",
+       "teams": 7,
+       "pct": 6.3
+      },
+      {
+       "name": "Raichu",
+       "teams": 6,
+       "pct": 5.4
+      },
+      {
+       "name": "Ninetales",
+       "teams": 5,
+       "pct": 4.5
+      },
+      {
+       "name": "Tyranitar",
+       "teams": 5,
+       "pct": 4.5
+      },
+      {
+       "name": "Toxapex",
+       "teams": 4,
+       "pct": 3.6
+      },
+      {
+       "name": "Excadrill",
+       "teams": 4,
+       "pct": 3.6
+      },
+      {
+       "name": "Metagross",
+       "teams": 4,
+       "pct": 3.6
+      },
+      {
+       "name": "Gengar",
+       "teams": 3,
+       "pct": 2.7
+      },
+      {
+       "name": "Hydreigon",
+       "teams": 3,
+       "pct": 2.7
+      },
+      {
+       "name": "Milotic",
+       "teams": 3,
+       "pct": 2.7
+      },
+      {
+       "name": "Maushold",
+       "teams": 3,
+       "pct": 2.7
+      },
+      {
+       "name": "Politoed",
+       "teams": 2,
+       "pct": 1.8
+      }
+     ]
+    }
+   },
+   "from": {
+    "masters": "0000191",
+    "seniors": "0000191",
+    "juniors": "0000191"
+   },
+   "events": [
+    "0000191"
+   ]
+  },
+  {
+   "year": 2025,
+   "divisions": {
+    "masters": {
+     "teams": 370,
+     "players": 371,
+     "teamlists": true,
+     "note": null,
+     "round_label": "Final",
+     "complete": true,
+     "top": [
+      {
+       "name": "Calyrex",
+       "teams": 274,
+       "pct": 74.1
+      },
+      {
+       "name": "Incineroar",
+       "teams": 209,
+       "pct": 56.5
+      },
+      {
+       "name": "Miraidon",
+       "teams": 176,
+       "pct": 47.6
+      },
+      {
+       "name": "Urshifu",
+       "teams": 124,
+       "pct": 33.5
+      },
+      {
+       "name": "Zamazenta",
+       "teams": 123,
+       "pct": 33.2
+      },
+      {
+       "name": "Rillaboom",
+       "teams": 99,
+       "pct": 26.8
+      },
+      {
+       "name": "Raging Bolt",
+       "teams": 94,
+       "pct": 25.4
+      },
+      {
+       "name": "Ogerpon",
+       "teams": 87,
+       "pct": 23.5
+      },
+      {
+       "name": "Amoonguss",
+       "teams": 78,
+       "pct": 21.1
+      },
+      {
+       "name": "Smeargle",
+       "teams": 67,
+       "pct": 18.1
+      },
+      {
+       "name": "Chien-Pao",
+       "teams": 66,
+       "pct": 17.8
+      },
+      {
+       "name": "Whimsicott",
+       "teams": 63,
+       "pct": 17.0
+      },
+      {
+       "name": "Volcarona",
+       "teams": 55,
+       "pct": 14.9
+      },
+      {
+       "name": "Flutter Mane",
+       "teams": 50,
+       "pct": 13.5
+      },
+      {
+       "name": "Landorus",
+       "teams": 50,
+       "pct": 13.5
+      },
+      {
+       "name": "Koraidon",
+       "teams": 44,
+       "pct": 11.9
+      },
+      {
+       "name": "Lunala",
+       "teams": 43,
+       "pct": 11.6
+      },
+      {
+       "name": "Ursaluna",
+       "teams": 43,
+       "pct": 11.6
+      },
+      {
+       "name": "Farigiraf",
+       "teams": 43,
+       "pct": 11.6
+      },
+      {
+       "name": "Clefairy",
+       "teams": 39,
+       "pct": 10.5
+      },
+      {
+       "name": "Tornadus",
+       "teams": 36,
+       "pct": 9.7
+      },
+      {
+       "name": "Iron Hands",
+       "teams": 33,
+       "pct": 8.9
+      },
+      {
+       "name": "Chi-Yu",
+       "teams": 32,
+       "pct": 8.6
+      },
+      {
+       "name": "Grimmsnarl",
+       "teams": 30,
+       "pct": 8.1
+      },
+      {
+       "name": "Kyogre",
+       "teams": 28,
+       "pct": 7.6
+      },
+      {
+       "name": "Groudon",
+       "teams": 26,
+       "pct": 7.0
+      },
+      {
+       "name": "Dragonite",
+       "teams": 18,
+       "pct": 4.9
+      },
+      {
+       "name": "Ditto",
+       "teams": 15,
+       "pct": 4.1
+      },
+      {
+       "name": "Terapagos",
+       "teams": 15,
+       "pct": 4.1
+      },
+      {
+       "name": "Roaring Moon",
+       "teams": 12,
+       "pct": 3.2
+      },
+      {
+       "name": "Indeedee",
+       "teams": 12,
+       "pct": 3.2
+      },
+      {
+       "name": "Iron Treads",
+       "teams": 11,
+       "pct": 3.0
+      },
+      {
+       "name": "Zacian",
+       "teams": 9,
+       "pct": 2.4
+      },
+      {
+       "name": "Brute Bonnet",
+       "teams": 8,
+       "pct": 2.2
+      },
+      {
+       "name": "Iron Bundle",
+       "teams": 8,
+       "pct": 2.2
+      },
+      {
+       "name": "Weezing",
+       "teams": 8,
+       "pct": 2.2
+      },
+      {
+       "name": "Jumpluff",
+       "teams": 7,
+       "pct": 1.9
+      },
+      {
+       "name": "Ting-Lu",
+       "teams": 7,
+       "pct": 1.9
+      },
+      {
+       "name": "Annihilape",
+       "teams": 7,
+       "pct": 1.9
+      },
+      {
+       "name": "Sinistcha",
+       "teams": 6,
+       "pct": 1.6
+      }
+     ]
+    },
+    "seniors": {
+     "teams": 126,
+     "players": 126,
+     "teamlists": true,
+     "note": null,
+     "round_label": "Final",
+     "complete": true,
+     "top": [
+      {
+       "name": "Calyrex",
+       "teams": 80,
+       "pct": 63.5
+      },
+      {
+       "name": "Incineroar",
+       "teams": 59,
+       "pct": 46.8
+      },
+      {
+       "name": "Miraidon",
+       "teams": 54,
+       "pct": 42.9
+      },
+      {
+       "name": "Zamazenta",
+       "teams": 50,
+       "pct": 39.7
+      },
+      {
+       "name": "Urshifu",
+       "teams": 45,
+       "pct": 35.7
+      },
+      {
+       "name": "Raging Bolt",
+       "teams": 33,
+       "pct": 26.2
+      },
+      {
+       "name": "Ogerpon",
+       "teams": 32,
+       "pct": 25.4
+      },
+      {
+       "name": "Rillaboom",
+       "teams": 31,
+       "pct": 24.6
+      },
+      {
+       "name": "Chien-Pao",
+       "teams": 29,
+       "pct": 23.0
+      },
+      {
+       "name": "Amoonguss",
+       "teams": 25,
+       "pct": 19.8
+      },
+      {
+       "name": "Whimsicott",
+       "teams": 24,
+       "pct": 19.0
+      },
+      {
+       "name": "Ursaluna",
+       "teams": 22,
+       "pct": 17.5
+      },
+      {
+       "name": "Chi-Yu",
+       "teams": 21,
+       "pct": 16.7
+      },
+      {
+       "name": "Lunala",
+       "teams": 18,
+       "pct": 14.3
+      },
+      {
+       "name": "Farigiraf",
+       "teams": 17,
+       "pct": 13.5
+      },
+      {
+       "name": "Iron Hands",
+       "teams": 17,
+       "pct": 13.5
+      },
+      {
+       "name": "Landorus",
+       "teams": 15,
+       "pct": 11.9
+      },
+      {
+       "name": "Smeargle",
+       "teams": 15,
+       "pct": 11.9
+      },
+      {
+       "name": "Volcarona",
+       "teams": 15,
+       "pct": 11.9
+      },
+      {
+       "name": "Koraidon",
+       "teams": 14,
+       "pct": 11.1
+      },
+      {
+       "name": "Flutter Mane",
+       "teams": 13,
+       "pct": 10.3
+      },
+      {
+       "name": "Kyogre",
+       "teams": 13,
+       "pct": 10.3
+      },
+      {
+       "name": "Tornadus",
+       "teams": 12,
+       "pct": 9.5
+      },
+      {
+       "name": "Grimmsnarl",
+       "teams": 12,
+       "pct": 9.5
+      },
+      {
+       "name": "Zacian",
+       "teams": 8,
+       "pct": 6.3
+      },
+      {
+       "name": "Groudon",
+       "teams": 7,
+       "pct": 5.6
+      },
+      {
+       "name": "Roaring Moon",
+       "teams": 7,
+       "pct": 5.6
+      },
+      {
+       "name": "Iron Bundle",
+       "teams": 5,
+       "pct": 4.0
+      },
+      {
+       "name": "Terapagos",
+       "teams": 5,
+       "pct": 4.0
+      },
+      {
+       "name": "Clefairy",
+       "teams": 5,
+       "pct": 4.0
+      },
+      {
+       "name": "Walking Wake",
+       "teams": 4,
+       "pct": 3.2
+      },
+      {
+       "name": "Iron Treads",
+       "teams": 4,
+       "pct": 3.2
+      },
+      {
+       "name": "Indeedee",
+       "teams": 4,
+       "pct": 3.2
+      },
+      {
+       "name": "Sneasler",
+       "teams": 3,
+       "pct": 2.4
+      },
+      {
+       "name": "Tatsugiri",
+       "teams": 3,
+       "pct": 2.4
+      },
+      {
+       "name": "Dondozo",
+       "teams": 3,
+       "pct": 2.4
+      },
+      {
+       "name": "Weezing",
+       "teams": 3,
+       "pct": 2.4
+      },
+      {
+       "name": "Iron Jugulis",
+       "teams": 3,
+       "pct": 2.4
+      },
+      {
+       "name": "Ting-Lu",
+       "teams": 2,
+       "pct": 1.6
+      },
+      {
+       "name": "Brute Bonnet",
+       "teams": 2,
+       "pct": 1.6
+      }
+     ]
+    },
+    "juniors": {
+     "teams": 111,
+     "players": 111,
+     "teamlists": true,
+     "note": null,
+     "round_label": "Final",
+     "complete": true,
+     "top": [
+      {
+       "name": "Calyrex",
+       "teams": 71,
+       "pct": 64.0
+      },
+      {
+       "name": "Miraidon",
+       "teams": 49,
+       "pct": 44.1
+      },
+      {
+       "name": "Incineroar",
+       "teams": 46,
+       "pct": 41.4
+      },
+      {
+       "name": "Urshifu",
+       "teams": 39,
+       "pct": 35.1
+      },
+      {
+       "name": "Zamazenta",
+       "teams": 25,
+       "pct": 22.5
+      },
+      {
+       "name": "Rillaboom",
+       "teams": 24,
+       "pct": 21.6
+      },
+      {
+       "name": "Koraidon",
+       "teams": 24,
+       "pct": 21.6
+      },
+      {
+       "name": "Iron Hands",
+       "teams": 23,
+       "pct": 20.7
+      },
+      {
+       "name": "Chi-Yu",
+       "teams": 22,
+       "pct": 19.8
+      },
+      {
+       "name": "Whimsicott",
+       "teams": 20,
+       "pct": 18.0
+      },
+      {
+       "name": "Lunala",
+       "teams": 20,
+       "pct": 18.0
+      },
+      {
+       "name": "Tornadus",
+       "teams": 20,
+       "pct": 18.0
+      },
+      {
+       "name": "Ursaluna",
+       "teams": 19,
+       "pct": 17.1
+      },
+      {
+       "name": "Smeargle",
+       "teams": 18,
+       "pct": 16.2
+      },
+      {
+       "name": "Ogerpon",
+       "teams": 18,
+       "pct": 16.2
+      },
+      {
+       "name": "Farigiraf",
+       "teams": 18,
+       "pct": 16.2
+      },
+      {
+       "name": "Raging Bolt",
+       "teams": 15,
+       "pct": 13.5
+      },
+      {
+       "name": "Flutter Mane",
+       "teams": 15,
+       "pct": 13.5
+      },
+      {
+       "name": "Chien-Pao",
+       "teams": 14,
+       "pct": 12.6
+      },
+      {
+       "name": "Volcarona",
+       "teams": 13,
+       "pct": 11.7
+      },
+      {
+       "name": "Amoonguss",
+       "teams": 13,
+       "pct": 11.7
+      },
+      {
+       "name": "Kyogre",
+       "teams": 11,
+       "pct": 9.9
+      },
+      {
+       "name": "Grimmsnarl",
+       "teams": 11,
+       "pct": 9.9
+      },
+      {
+       "name": "Landorus",
+       "teams": 9,
+       "pct": 8.1
+      },
+      {
+       "name": "Indeedee",
+       "teams": 9,
+       "pct": 8.1
+      },
+      {
+       "name": "Tatsugiri",
+       "teams": 9,
+       "pct": 8.1
+      },
+      {
+       "name": "Weezing",
+       "teams": 9,
+       "pct": 8.1
+      },
+      {
+       "name": "Dondozo",
+       "teams": 9,
+       "pct": 8.1
+      },
+      {
+       "name": "Terapagos",
+       "teams": 8,
+       "pct": 7.2
+      },
+      {
+       "name": "Zacian",
+       "teams": 7,
+       "pct": 6.3
+      },
+      {
+       "name": "Clefairy",
+       "teams": 4,
+       "pct": 3.6
+      },
+      {
+       "name": "Iron Treads",
+       "teams": 4,
+       "pct": 3.6
+      },
+      {
+       "name": "Sinistcha",
+       "teams": 3,
+       "pct": 2.7
+      },
+      {
+       "name": "Torkoal",
+       "teams": 3,
+       "pct": 2.7
+      },
+      {
+       "name": "Ting-Lu",
+       "teams": 3,
+       "pct": 2.7
+      },
+      {
+       "name": "Brute Bonnet",
+       "teams": 3,
+       "pct": 2.7
+      },
+      {
+       "name": "Walking Wake",
+       "teams": 2,
+       "pct": 1.8
+      },
+      {
+       "name": "Scraggy",
+       "teams": 2,
+       "pct": 1.8
+      },
+      {
+       "name": "Iron Valiant",
+       "teams": 2,
+       "pct": 1.8
+      },
+      {
+       "name": "Dragonite",
+       "teams": 2,
+       "pct": 1.8
+      }
+     ]
+    }
+   },
+   "from": {
+    "masters": "0000150",
+    "seniors": "0000150",
+    "juniors": "0000150"
+   },
+   "events": [
+    "0000150"
+   ]
+  },
+  {
+   "year": 2024,
+   "divisions": {
+    "masters": {
+     "teams": 694,
+     "players": 694,
+     "teamlists": true,
+     "note": null,
+     "round_label": "Final",
+     "complete": true,
+     "top": [
+      {
+       "name": "Urshifu",
+       "teams": 467,
+       "pct": 67.3
+      },
+      {
+       "name": "Calyrex",
+       "teams": 310,
+       "pct": 44.7
+      },
+      {
+       "name": "Rillaboom",
+       "teams": 303,
+       "pct": 43.7
+      },
+      {
+       "name": "Raging Bolt",
+       "teams": 242,
+       "pct": 34.9
+      },
+      {
+       "name": "Ogerpon",
+       "teams": 240,
+       "pct": 34.6
+      },
+      {
+       "name": "Incineroar",
+       "teams": 218,
+       "pct": 31.4
+      },
+      {
+       "name": "Farigiraf",
+       "teams": 210,
+       "pct": 30.3
+      },
+      {
+       "name": "Iron Hands",
+       "teams": 181,
+       "pct": 26.1
+      },
+      {
+       "name": "Miraidon",
+       "teams": 126,
+       "pct": 18.2
+      },
+      {
+       "name": "Chi-Yu",
+       "teams": 117,
+       "pct": 16.9
+      },
+      {
+       "name": "Flutter Mane",
+       "teams": 116,
+       "pct": 16.7
+      },
+      {
+       "name": "Whimsicott",
+       "teams": 109,
+       "pct": 15.7
+      },
+      {
+       "name": "Amoonguss",
+       "teams": 109,
+       "pct": 15.7
+      },
+      {
+       "name": "Tornadus",
+       "teams": 106,
+       "pct": 15.3
+      },
+      {
+       "name": "Indeedee",
+       "teams": 82,
+       "pct": 11.8
+      },
+      {
+       "name": "Grimmsnarl",
+       "teams": 81,
+       "pct": 11.7
+      },
+      {
+       "name": "Ursaluna",
+       "teams": 78,
+       "pct": 11.2
+      },
+      {
+       "name": "Chien-Pao",
+       "teams": 77,
+       "pct": 11.1
+      },
+      {
+       "name": "Clefairy",
+       "teams": 71,
+       "pct": 10.2
+      },
+      {
+       "name": "Zamazenta",
+       "teams": 63,
+       "pct": 9.1
+      },
+      {
+       "name": "Terapagos",
+       "teams": 63,
+       "pct": 9.1
+      },
+      {
+       "name": "Landorus",
+       "teams": 55,
+       "pct": 7.9
+      },
+      {
+       "name": "Kyogre",
+       "teams": 53,
+       "pct": 7.6
+      },
+      {
+       "name": "Smeargle",
+       "teams": 44,
+       "pct": 6.3
+      },
+      {
+       "name": "Pelipper",
+       "teams": 43,
+       "pct": 6.2
+      },
+      {
+       "name": "Koraidon",
+       "teams": 36,
+       "pct": 5.2
+      },
+      {
+       "name": "Dondozo",
+       "teams": 33,
+       "pct": 4.8
+      },
+      {
+       "name": "Tatsugiri",
+       "teams": 31,
+       "pct": 4.5
+      },
+      {
+       "name": "Entei",
+       "teams": 29,
+       "pct": 4.2
+      },
+      {
+       "name": "Weezing",
+       "teams": 27,
+       "pct": 3.9
+      },
+      {
+       "name": "Volcarona",
+       "teams": 26,
+       "pct": 3.7
+      },
+      {
+       "name": "Ditto",
+       "teams": 24,
+       "pct": 3.5
+      },
+      {
+       "name": "Annihilape",
+       "teams": 23,
+       "pct": 3.3
+      },
+      {
+       "name": "Gholdengo",
+       "teams": 22,
+       "pct": 3.2
+      },
+      {
+       "name": "Torkoal",
+       "teams": 19,
+       "pct": 2.7
+      },
+      {
+       "name": "Lunala",
+       "teams": 18,
+       "pct": 2.6
+      },
+      {
+       "name": "Mienshao",
+       "teams": 14,
+       "pct": 2.0
+      },
+      {
+       "name": "Tsareena",
+       "teams": 13,
+       "pct": 1.9
+      },
+      {
+       "name": "Regidrago",
+       "teams": 11,
+       "pct": 1.6
+      },
+      {
+       "name": "Scream Tail",
+       "teams": 11,
+       "pct": 1.6
+      }
+     ]
+    },
+    "seniors": {
+     "teams": 130,
+     "players": 130,
+     "teamlists": true,
+     "note": null,
+     "round_label": "Final",
+     "complete": true,
+     "top": [
+      {
+       "name": "Urshifu",
+       "teams": 97,
+       "pct": 74.6
+      },
+      {
+       "name": "Rillaboom",
+       "teams": 61,
+       "pct": 46.9
+      },
+      {
+       "name": "Calyrex",
+       "teams": 56,
+       "pct": 43.1
+      },
+      {
+       "name": "Incineroar",
+       "teams": 50,
+       "pct": 38.5
+      },
+      {
+       "name": "Raging Bolt",
+       "teams": 43,
+       "pct": 33.1
+      },
+      {
+       "name": "Ogerpon",
+       "teams": 43,
+       "pct": 33.1
+      },
+      {
+       "name": "Farigiraf",
+       "teams": 35,
+       "pct": 26.9
+      },
+      {
+       "name": "Iron Hands",
+       "teams": 35,
+       "pct": 26.9
+      },
+      {
+       "name": "Miraidon",
+       "teams": 25,
+       "pct": 19.2
+      },
+      {
+       "name": "Amoonguss",
+       "teams": 24,
+       "pct": 18.5
+      },
+      {
+       "name": "Whimsicott",
+       "teams": 23,
+       "pct": 17.7
+      },
+      {
+       "name": "Flutter Mane",
+       "teams": 21,
+       "pct": 16.2
+      },
+      {
+       "name": "Tornadus",
+       "teams": 20,
+       "pct": 15.4
+      },
+      {
+       "name": "Chi-Yu",
+       "teams": 19,
+       "pct": 14.6
+      },
+      {
+       "name": "Pelipper",
+       "teams": 18,
+       "pct": 13.8
+      },
+      {
+       "name": "Terapagos",
+       "teams": 17,
+       "pct": 13.1
+      },
+      {
+       "name": "Chien-Pao",
+       "teams": 15,
+       "pct": 11.5
+      },
+      {
+       "name": "Grimmsnarl",
+       "teams": 13,
+       "pct": 10.0
+      },
+      {
+       "name": "Indeedee",
+       "teams": 13,
+       "pct": 10.0
+      },
+      {
+       "name": "Ursaluna",
+       "teams": 12,
+       "pct": 9.2
+      },
+      {
+       "name": "Clefairy",
+       "teams": 11,
+       "pct": 8.5
+      },
+      {
+       "name": "Landorus",
+       "teams": 10,
+       "pct": 7.7
+      },
+      {
+       "name": "Zamazenta",
+       "teams": 10,
+       "pct": 7.7
+      },
+      {
+       "name": "Kyogre",
+       "teams": 8,
+       "pct": 6.2
+      },
+      {
+       "name": "Volcarona",
+       "teams": 8,
+       "pct": 6.2
+      },
+      {
+       "name": "Smeargle",
+       "teams": 7,
+       "pct": 5.4
+      },
+      {
+       "name": "Koraidon",
+       "teams": 6,
+       "pct": 4.6
+      },
+      {
+       "name": "Tatsugiri",
+       "teams": 5,
+       "pct": 3.8
+      },
+      {
+       "name": "Dondozo",
+       "teams": 5,
+       "pct": 3.8
+      },
+      {
+       "name": "Dragonite",
+       "teams": 3,
+       "pct": 2.3
+      },
+      {
+       "name": "Zacian",
+       "teams": 3,
+       "pct": 2.3
+      },
+      {
+       "name": "Kingambit",
+       "teams": 3,
+       "pct": 2.3
+      },
+      {
+       "name": "Weezing",
+       "teams": 3,
+       "pct": 2.3
+      },
+      {
+       "name": "Comfey",
+       "teams": 3,
+       "pct": 2.3
+      },
+      {
+       "name": "Annihilape",
+       "teams": 3,
+       "pct": 2.3
+      },
+      {
+       "name": "Gholdengo",
+       "teams": 2,
+       "pct": 1.5
+      },
+      {
+       "name": "Ditto",
+       "teams": 2,
+       "pct": 1.5
+      },
+      {
+       "name": "Eternatus",
+       "teams": 2,
+       "pct": 1.5
+      },
+      {
+       "name": "Scream Tail",
+       "teams": 2,
+       "pct": 1.5
+      },
+      {
+       "name": "Thundurus",
+       "teams": 2,
+       "pct": 1.5
+      }
+     ]
+    },
+    "juniors": {
+     "teams": 118,
+     "players": 118,
+     "teamlists": true,
+     "note": null,
+     "round_label": "Final",
+     "complete": true,
+     "top": [
+      {
+       "name": "Urshifu",
+       "teams": 70,
+       "pct": 59.3
+      },
+      {
+       "name": "Calyrex",
+       "teams": 50,
+       "pct": 42.4
+      },
+      {
+       "name": "Farigiraf",
+       "teams": 36,
+       "pct": 30.5
+      },
+      {
+       "name": "Rillaboom",
+       "teams": 36,
+       "pct": 30.5
+      },
+      {
+       "name": "Iron Hands",
+       "teams": 35,
+       "pct": 29.7
+      },
+      {
+       "name": "Incineroar",
+       "teams": 30,
+       "pct": 25.4
+      },
+      {
+       "name": "Ogerpon",
+       "teams": 30,
+       "pct": 25.4
+      },
+      {
+       "name": "Miraidon",
+       "teams": 29,
+       "pct": 24.6
+      },
+      {
+       "name": "Whimsicott",
+       "teams": 28,
+       "pct": 23.7
+      },
+      {
+       "name": "Chi-Yu",
+       "teams": 25,
+       "pct": 21.2
+      },
+      {
+       "name": "Raging Bolt",
+       "teams": 23,
+       "pct": 19.5
+      },
+      {
+       "name": "Tornadus",
+       "teams": 22,
+       "pct": 18.6
+      },
+      {
+       "name": "Indeedee",
+       "teams": 22,
+       "pct": 18.6
+      },
+      {
+       "name": "Ursaluna",
+       "teams": 21,
+       "pct": 17.8
+      },
+      {
+       "name": "Flutter Mane",
+       "teams": 21,
+       "pct": 17.8
+      },
+      {
+       "name": "Amoonguss",
+       "teams": 17,
+       "pct": 14.4
+      },
+      {
+       "name": "Pelipper",
+       "teams": 16,
+       "pct": 13.6
+      },
+      {
+       "name": "Grimmsnarl",
+       "teams": 15,
+       "pct": 12.7
+      },
+      {
+       "name": "Smeargle",
+       "teams": 14,
+       "pct": 11.9
+      },
+      {
+       "name": "Terapagos",
+       "teams": 13,
+       "pct": 11.0
+      },
+      {
+       "name": "Chien-Pao",
+       "teams": 11,
+       "pct": 9.3
+      },
+      {
+       "name": "Landorus",
+       "teams": 11,
+       "pct": 9.3
+      },
+      {
+       "name": "Annihilape",
+       "teams": 9,
+       "pct": 7.6
+      },
+      {
+       "name": "Tatsugiri",
+       "teams": 8,
+       "pct": 6.8
+      },
+      {
+       "name": "Dondozo",
+       "teams": 8,
+       "pct": 6.8
+      },
+      {
+       "name": "Kyogre",
+       "teams": 6,
+       "pct": 5.1
+      },
+      {
+       "name": "Torkoal",
+       "teams": 6,
+       "pct": 5.1
+      },
+      {
+       "name": "Regidrago",
+       "teams": 6,
+       "pct": 5.1
+      },
+      {
+       "name": "Clefairy",
+       "teams": 6,
+       "pct": 5.1
+      },
+      {
+       "name": "Koraidon",
+       "teams": 5,
+       "pct": 4.2
+      },
+      {
+       "name": "Zamazenta",
+       "teams": 4,
+       "pct": 3.4
+      },
+      {
+       "name": "Volcarona",
+       "teams": 4,
+       "pct": 3.4
+      },
+      {
+       "name": "Dragonite",
+       "teams": 4,
+       "pct": 3.4
+      },
+      {
+       "name": "Electabuzz",
+       "teams": 4,
+       "pct": 3.4
+      },
+      {
+       "name": "Ditto",
+       "teams": 4,
+       "pct": 3.4
+      },
+      {
+       "name": "Zacian",
+       "teams": 3,
+       "pct": 2.5
+      },
+      {
+       "name": "Gholdengo",
+       "teams": 3,
+       "pct": 2.5
+      },
+      {
+       "name": "Lunala",
+       "teams": 3,
+       "pct": 2.5
+      },
+      {
+       "name": "Comfey",
+       "teams": 3,
+       "pct": 2.5
+      },
+      {
+       "name": "Iron Valiant",
+       "teams": 2,
+       "pct": 1.7
+      }
+     ]
+    }
+   },
+   "from": {
+    "masters": "0000114",
+    "seniors": "0000114",
+    "juniors": "0000114"
+   },
+   "events": [
+    "0000114"
+   ]
+  },
+  {
+   "year": 2023,
+   "divisions": {
+    "masters": {
+     "teams": 287,
+     "players": 287,
+     "teamlists": true,
+     "note": null,
+     "round_label": "7",
+     "complete": false,
+     "top": [
+      {
+       "name": "Flutter Mane",
+       "teams": 205,
+       "pct": 71.4
+      },
+      {
+       "name": "Urshifu",
+       "teams": 164,
+       "pct": 57.1
+      },
+      {
+       "name": "Iron Hands",
+       "teams": 118,
+       "pct": 41.1
+      },
+      {
+       "name": "Tornadus",
+       "teams": 110,
+       "pct": 38.3
+      },
+      {
+       "name": "Landorus",
+       "teams": 90,
+       "pct": 31.4
+      },
+      {
+       "name": "Amoonguss",
+       "teams": 88,
+       "pct": 30.7
+      },
+      {
+       "name": "Chien-Pao",
+       "teams": 86,
+       "pct": 30.0
+      },
+      {
+       "name": "Rillaboom",
+       "teams": 80,
+       "pct": 27.9
+      },
+      {
+       "name": "Heatran",
+       "teams": 80,
+       "pct": 27.9
+      },
+      {
+       "name": "Gholdengo",
+       "teams": 69,
+       "pct": 24.0
+      },
+      {
+       "name": "Chi-Yu",
+       "teams": 68,
+       "pct": 23.7
+      },
+      {
+       "name": "Ursaluna",
+       "teams": 55,
+       "pct": 19.2
+      },
+      {
+       "name": "Cresselia",
+       "teams": 54,
+       "pct": 18.8
+      },
+      {
+       "name": "Arcanine",
+       "teams": 32,
+       "pct": 11.1
+      },
+      {
+       "name": "Farigiraf",
+       "teams": 29,
+       "pct": 10.1
+      },
+      {
+       "name": "Dragonite",
+       "teams": 28,
+       "pct": 9.8
+      },
+      {
+       "name": "Gyarados",
+       "teams": 22,
+       "pct": 7.7
+      },
+      {
+       "name": "Dondozo",
+       "teams": 21,
+       "pct": 7.3
+      },
+      {
+       "name": "Gastrodon",
+       "teams": 19,
+       "pct": 6.6
+      },
+      {
+       "name": "Grimmsnarl",
+       "teams": 18,
+       "pct": 6.3
+      },
+      {
+       "name": "Tatsugiri",
+       "teams": 17,
+       "pct": 5.9
+      },
+      {
+       "name": "Indeedee",
+       "teams": 16,
+       "pct": 5.6
+      },
+      {
+       "name": "Pelipper",
+       "teams": 13,
+       "pct": 4.5
+      },
+      {
+       "name": "Iron Bundle",
+       "teams": 13,
+       "pct": 4.5
+      },
+      {
+       "name": "Torkoal",
+       "teams": 13,
+       "pct": 4.5
+      },
+      {
+       "name": "Basculegion",
+       "teams": 12,
+       "pct": 4.2
+      },
+      {
+       "name": "Armarouge",
+       "teams": 11,
+       "pct": 3.8
+      },
+      {
+       "name": "Thundurus",
+       "teams": 10,
+       "pct": 3.5
+      },
+      {
+       "name": "Maushold",
+       "teams": 10,
+       "pct": 3.5
+      },
+      {
+       "name": "Zapdos",
+       "teams": 9,
+       "pct": 3.1
+      },
+      {
+       "name": "Baxcalibur",
+       "teams": 9,
+       "pct": 3.1
+      },
+      {
+       "name": "Volcarona",
+       "teams": 9,
+       "pct": 3.1
+      },
+      {
+       "name": "Regidrago",
+       "teams": 9,
+       "pct": 3.1
+      },
+      {
+       "name": "Moltres",
+       "teams": 8,
+       "pct": 2.8
+      },
+      {
+       "name": "Kingambit",
+       "teams": 7,
+       "pct": 2.4
+      },
+      {
+       "name": "Garchomp",
+       "teams": 7,
+       "pct": 2.4
+      },
+      {
+       "name": "Ting-Lu",
+       "teams": 7,
+       "pct": 2.4
+      },
+      {
+       "name": "Glimmora",
+       "teams": 6,
+       "pct": 2.1
+      },
+      {
+       "name": "Mimikyu",
+       "teams": 6,
+       "pct": 2.1
+      },
+      {
+       "name": "Annihilape",
+       "teams": 6,
+       "pct": 2.1
+      }
+     ]
+    },
+    "seniors": {
+     "teams": 86,
+     "players": 91,
+     "teamlists": true,
+     "note": null,
+     "round_label": "6",
+     "complete": false,
+     "top": [
+      {
+       "name": "Flutter Mane",
+       "teams": 61,
+       "pct": 70.9
+      },
+      {
+       "name": "Urshifu",
+       "teams": 61,
+       "pct": 70.9
+      },
+      {
+       "name": "Rillaboom",
+       "teams": 37,
+       "pct": 43.0
+      },
+      {
+       "name": "Tornadus",
+       "teams": 35,
+       "pct": 40.7
+      },
+      {
+       "name": "Heatran",
+       "teams": 31,
+       "pct": 36.0
+      },
+      {
+       "name": "Landorus",
+       "teams": 28,
+       "pct": 32.6
+      },
+      {
+       "name": "Chien-Pao",
+       "teams": 27,
+       "pct": 31.4
+      },
+      {
+       "name": "Cresselia",
+       "teams": 21,
+       "pct": 24.4
+      },
+      {
+       "name": "Iron Hands",
+       "teams": 17,
+       "pct": 19.8
+      },
+      {
+       "name": "Ursaluna",
+       "teams": 17,
+       "pct": 19.8
+      },
+      {
+       "name": "Gholdengo",
+       "teams": 17,
+       "pct": 19.8
+      },
+      {
+       "name": "Dragonite",
+       "teams": 16,
+       "pct": 18.6
+      },
+      {
+       "name": "Amoonguss",
+       "teams": 15,
+       "pct": 17.4
+      },
+      {
+       "name": "Chi-Yu",
+       "teams": 13,
+       "pct": 15.1
+      },
+      {
+       "name": "Dondozo",
+       "teams": 9,
+       "pct": 10.5
+      },
+      {
+       "name": "Iron Bundle",
+       "teams": 7,
+       "pct": 8.1
+      },
+      {
+       "name": "Regidrago",
+       "teams": 7,
+       "pct": 8.1
+      },
+      {
+       "name": "Tatsugiri",
+       "teams": 7,
+       "pct": 8.1
+      },
+      {
+       "name": "Indeedee",
+       "teams": 6,
+       "pct": 7.0
+      },
+      {
+       "name": "Arcanine",
+       "teams": 6,
+       "pct": 7.0
+      },
+      {
+       "name": "Grimmsnarl",
+       "teams": 6,
+       "pct": 7.0
+      },
+      {
+       "name": "Gastrodon",
+       "teams": 6,
+       "pct": 7.0
+      },
+      {
+       "name": "Thundurus",
+       "teams": 5,
+       "pct": 5.8
+      },
+      {
+       "name": "Zapdos",
+       "teams": 4,
+       "pct": 4.7
+      },
+      {
+       "name": "Goodra",
+       "teams": 3,
+       "pct": 3.5
+      },
+      {
+       "name": "Armarouge",
+       "teams": 3,
+       "pct": 3.5
+      },
+      {
+       "name": "Farigiraf",
+       "teams": 3,
+       "pct": 3.5
+      },
+      {
+       "name": "Ting-Lu",
+       "teams": 3,
+       "pct": 3.5
+      },
+      {
+       "name": "Maushold",
+       "teams": 3,
+       "pct": 3.5
+      },
+      {
+       "name": "Moltres",
+       "teams": 2,
+       "pct": 2.3
+      },
+      {
+       "name": "Mimikyu",
+       "teams": 2,
+       "pct": 2.3
+      },
+      {
+       "name": "Talonflame",
+       "teams": 2,
+       "pct": 2.3
+      },
+      {
+       "name": "Volcarona",
+       "teams": 2,
+       "pct": 2.3
+      },
+      {
+       "name": "Dragapult",
+       "teams": 2,
+       "pct": 2.3
+      },
+      {
+       "name": "Zoroark",
+       "teams": 2,
+       "pct": 2.3
+      },
+      {
+       "name": "Azumarill",
+       "teams": 2,
+       "pct": 2.3
+      },
+      {
+       "name": "Sneasler",
+       "teams": 2,
+       "pct": 2.3
+      },
+      {
+       "name": "Regieleki",
+       "teams": 2,
+       "pct": 2.3
+      },
+      {
+       "name": "Glimmora",
+       "teams": 2,
+       "pct": 2.3
+      },
+      {
+       "name": "Glastrier",
+       "teams": 1,
+       "pct": 1.2
+      }
+     ]
+    },
+    "juniors": {
+     "teams": 90,
+     "players": 92,
+     "teamlists": true,
+     "note": null,
+     "round_label": "12",
+     "complete": false,
+     "top": [
+      {
+       "name": "Flutter Mane",
+       "teams": 70,
+       "pct": 77.8
+      },
+      {
+       "name": "Urshifu",
+       "teams": 56,
+       "pct": 62.2
+      },
+      {
+       "name": "Tornadus",
+       "teams": 53,
+       "pct": 58.9
+      },
+      {
+       "name": "Chien-Pao",
+       "teams": 31,
+       "pct": 34.4
+      },
+      {
+       "name": "Iron Hands",
+       "teams": 28,
+       "pct": 31.1
+      },
+      {
+       "name": "Heatran",
+       "teams": 26,
+       "pct": 28.9
+      },
+      {
+       "name": "Amoonguss",
+       "teams": 24,
+       "pct": 26.7
+      },
+      {
+       "name": "Rillaboom",
+       "teams": 22,
+       "pct": 24.4
+      },
+      {
+       "name": "Dragonite",
+       "teams": 22,
+       "pct": 24.4
+      },
+      {
+       "name": "Cresselia",
+       "teams": 17,
+       "pct": 18.9
+      },
+      {
+       "name": "Chi-Yu",
+       "teams": 14,
+       "pct": 15.6
+      },
+      {
+       "name": "Ursaluna",
+       "teams": 13,
+       "pct": 14.4
+      },
+      {
+       "name": "Dondozo",
+       "teams": 12,
+       "pct": 13.3
+      },
+      {
+       "name": "Gholdengo",
+       "teams": 12,
+       "pct": 13.3
+      },
+      {
+       "name": "Tatsugiri",
+       "teams": 11,
+       "pct": 12.2
+      },
+      {
+       "name": "Landorus",
+       "teams": 11,
+       "pct": 12.2
+      },
+      {
+       "name": "Indeedee",
+       "teams": 7,
+       "pct": 7.8
+      },
+      {
+       "name": "Glimmora",
+       "teams": 6,
+       "pct": 6.7
+      },
+      {
+       "name": "Iron Bundle",
+       "teams": 6,
+       "pct": 6.7
+      },
+      {
+       "name": "Pelipper",
+       "teams": 6,
+       "pct": 6.7
+      },
+      {
+       "name": "Basculegion",
+       "teams": 6,
+       "pct": 6.7
+      },
+      {
+       "name": "Armarouge",
+       "teams": 6,
+       "pct": 6.7
+      },
+      {
+       "name": "Arcanine",
+       "teams": 5,
+       "pct": 5.6
+      },
+      {
+       "name": "Regidrago",
+       "teams": 5,
+       "pct": 5.6
+      },
+      {
+       "name": "Gastrodon",
+       "teams": 4,
+       "pct": 4.4
+      },
+      {
+       "name": "Scream Tail",
+       "teams": 4,
+       "pct": 4.4
+      },
+      {
+       "name": "Regieleki",
+       "teams": 4,
+       "pct": 4.4
+      },
+      {
+       "name": "Lilligant",
+       "teams": 4,
+       "pct": 4.4
+      },
+      {
+       "name": "Torkoal",
+       "teams": 4,
+       "pct": 4.4
+      },
+      {
+       "name": "Roaring Moon",
+       "teams": 3,
+       "pct": 3.3
+      },
+      {
+       "name": "Mimikyu",
+       "teams": 3,
+       "pct": 3.3
+      },
+      {
+       "name": "Ditto",
+       "teams": 3,
+       "pct": 3.3
+      },
+      {
+       "name": "Farigiraf",
+       "teams": 3,
+       "pct": 3.3
+      },
+      {
+       "name": "Thundurus",
+       "teams": 3,
+       "pct": 3.3
+      },
+      {
+       "name": "Palafin",
+       "teams": 3,
+       "pct": 3.3
+      },
+      {
+       "name": "Scizor",
+       "teams": 2,
+       "pct": 2.2
+      },
+      {
+       "name": "Volcarona",
+       "teams": 2,
+       "pct": 2.2
+      },
+      {
+       "name": "Grimmsnarl",
+       "teams": 2,
+       "pct": 2.2
+      },
+      {
+       "name": "Annihilape",
+       "teams": 2,
+       "pct": 2.2
+      },
+      {
+       "name": "Great Tusk",
+       "teams": 2,
+       "pct": 2.2
+      }
+     ]
+    }
+   },
+   "from": {
+    "masters": "0000089",
+    "seniors": "0000089",
+    "juniors": "0000083"
+   },
+   "events": [
+    "0000083",
+    "0000089"
+   ]
+  },
+  {
+   "year": 2022,
+   "divisions": {
+    "masters": {
+     "teams": 0,
+     "players": 114,
+     "teamlists": false,
+     "note": "standings only - pokedata publishes no teamlists for this event, so it says who placed, never what they ran",
+     "round_label": "12",
+     "complete": false,
+     "top": []
+    },
+    "seniors": {
+     "teams": 0,
+     "players": 54,
+     "teamlists": false,
+     "note": "standings only - pokedata publishes no teamlists for this event, so it says who placed, never what they ran",
+     "round_label": "11",
+     "complete": false,
+     "top": []
+    },
+    "juniors": {
+     "teams": 0,
+     "players": 49,
+     "teamlists": false,
+     "note": "standings only - pokedata publishes no teamlists for this event, so it says who placed, never what they ran",
+     "round_label": "10",
+     "complete": false,
+     "top": []
+    }
+   },
+   "from": {
+    "masters": "0000018",
+    "seniors": "0000018",
+    "juniors": "0000018"
+   },
+   "events": [
+    "0000018",
+    "0000019"
+   ]
+  }
+ ],
+ "_years_note": "One entry per year, merged across that year's events. 2023 is the case that forces this: its Masters teamlists are on the Day 1 event (tid 0000089) and its Seniors and Juniors on the Day 2 one (tid 0000083), so either alone loses a division. `from` records which event each division was taken from. 2022 has no teamlists on any day or division - standings only, upstream."
+}

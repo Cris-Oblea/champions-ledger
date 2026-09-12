@@ -1,0 +1,2533 @@
+{
+ "source": "pokebase.app/pokemon-champions",
+ "game": "Pokemon Champions",
+ "fetched": "2026-09-11",
+ "count": 89,
+ "rows": [
+  {
+   "base_speed": 151,
+   "speeds": {
+    "max": 223,
+    "neuMax": 203,
+    "neu0": 171,
+    "neg0": 153,
+    "maxScarf": 334,
+    "neuMaxScarf": 304
+   },
+   "pokemon": [
+    {
+     "name": "Mega Absol Z",
+     "slug": "absol-mega-z"
+    },
+    {
+     "name": "Mega Garchomp Z",
+     "slug": "garchomp-mega-z"
+    },
+    {
+     "name": "Mega Lucario Z",
+     "slug": "lucario-mega-z"
+    }
+   ]
+  },
+  {
+   "base_speed": 150,
+   "speeds": {
+    "max": 222,
+    "neuMax": 202,
+    "neu0": 170,
+    "neg0": 153,
+    "maxScarf": 333,
+    "neuMaxScarf": 303
+   },
+   "pokemon": [
+    {
+     "name": "Mega Aerodactyl",
+     "slug": "aerodactyl-mega"
+    },
+    {
+     "name": "Mega Alakazam",
+     "slug": "alakazam-mega"
+    }
+   ]
+  },
+  {
+   "base_speed": 145,
+   "speeds": {
+    "max": 216,
+    "neuMax": 197,
+    "neu0": 165,
+    "neg0": 148,
+    "maxScarf": 324,
+    "neuMaxScarf": 295
+   },
+   "pokemon": [
+    {
+     "name": "Mega Beedrill",
+     "slug": "beedrill-mega"
+    },
+    {
+     "name": "Mega Sceptile",
+     "slug": "sceptile-mega"
+    }
+   ]
+  },
+  {
+   "base_speed": 142,
+   "speeds": {
+    "max": 213,
+    "neuMax": 194,
+    "neu0": 162,
+    "neg0": 145,
+    "maxScarf": 319,
+    "neuMaxScarf": 291
+   },
+   "pokemon": [
+    {
+     "name": "Dragapult",
+     "slug": "dragapult"
+    },
+    {
+     "name": "Mega Greninja",
+     "slug": "greninja-mega"
+    }
+   ]
+  },
+  {
+   "base_speed": 135,
+   "speeds": {
+    "max": 205,
+    "neuMax": 187,
+    "neu0": 155,
+    "neg0": 139,
+    "maxScarf": 307,
+    "neuMaxScarf": 280
+   },
+   "pokemon": [
+    {
+     "name": "Mega Lopunny",
+     "slug": "lopunny-mega"
+    },
+    {
+     "name": "Mega Manectric",
+     "slug": "manectric-mega"
+    }
+   ]
+  },
+  {
+   "base_speed": 134,
+   "speeds": {
+    "max": 204,
+    "neuMax": 186,
+    "neu0": 154,
+    "neg0": 138,
+    "maxScarf": 306,
+    "neuMaxScarf": 279
+   },
+   "pokemon": [
+    {
+     "name": "Mega Delphox",
+     "slug": "delphox-mega"
+    }
+   ]
+  },
+  {
+   "base_speed": 130,
+   "speeds": {
+    "max": 200,
+    "neuMax": 182,
+    "neu0": 150,
+    "neg0": 135,
+    "maxScarf": 300,
+    "neuMaxScarf": 273
+   },
+   "pokemon": [
+    {
+     "name": "Aerodactyl",
+     "slug": "aerodactyl"
+    },
+    {
+     "name": "Jolteon",
+     "slug": "jolteon"
+    },
+    {
+     "name": "Mega Gengar",
+     "slug": "gengar-mega"
+    },
+    {
+     "name": "Mega Raichu Y",
+     "slug": "raichu-mega-y"
+    }
+   ]
+  },
+  {
+   "base_speed": 126,
+   "speeds": {
+    "max": 195,
+    "neuMax": 178,
+    "neu0": 146,
+    "neg0": 131,
+    "maxScarf": 292,
+    "neuMaxScarf": 267
+   },
+   "pokemon": [
+    {
+     "name": "Mega Pyroar",
+     "slug": "pyroar-mega"
+    },
+    {
+     "name": "Talonflame",
+     "slug": "talonflame"
+    }
+   ]
+  },
+  {
+   "base_speed": 125,
+   "speeds": {
+    "max": 194,
+    "neuMax": 177,
+    "neu0": 145,
+    "neg0": 130,
+    "maxScarf": 291,
+    "neuMaxScarf": 265
+   },
+   "pokemon": [
+    {
+     "name": "Weavile",
+     "slug": "weavile"
+    }
+   ]
+  },
+  {
+   "base_speed": 124,
+   "speeds": {
+    "max": 193,
+    "neuMax": 176,
+    "neu0": 144,
+    "neg0": 129,
+    "maxScarf": 289,
+    "neuMaxScarf": 264
+   },
+   "pokemon": [
+    {
+     "name": "Mega Meowstic",
+     "slug": "meowstic-mega"
+    }
+   ]
+  },
+  {
+   "base_speed": 123,
+   "speeds": {
+    "max": 192,
+    "neuMax": 175,
+    "neu0": 143,
+    "neg0": 128,
+    "maxScarf": 288,
+    "neuMaxScarf": 262
+   },
+   "pokemon": [
+    {
+     "name": "Meowscarada",
+     "slug": "meowscarada"
+    },
+    {
+     "name": "Noivern",
+     "slug": "noivern"
+    }
+   ]
+  },
+  {
+   "base_speed": 122,
+   "speeds": {
+    "max": 191,
+    "neuMax": 174,
+    "neu0": 142,
+    "neg0": 127,
+    "maxScarf": 286,
+    "neuMaxScarf": 261
+   },
+   "pokemon": [
+    {
+     "name": "Greninja",
+     "slug": "greninja"
+    }
+   ]
+  },
+  {
+   "base_speed": 121,
+   "speeds": {
+    "max": 190,
+    "neuMax": 173,
+    "neu0": 141,
+    "neg0": 126,
+    "maxScarf": 285,
+    "neuMaxScarf": 259
+   },
+   "pokemon": [
+    {
+     "name": "Mega Pidgeot",
+     "slug": "pidgeot-mega"
+    }
+   ]
+  },
+  {
+   "base_speed": 120,
+   "speeds": {
+    "max": 189,
+    "neuMax": 172,
+    "neu0": 140,
+    "neg0": 126,
+    "maxScarf": 283,
+    "neuMaxScarf": 258
+   },
+   "pokemon": [
+    {
+     "name": "Alakazam",
+     "slug": "alakazam"
+    },
+    {
+     "name": "Inteleon",
+     "slug": "inteleon"
+    },
+    {
+     "name": "Mega Froslass",
+     "slug": "froslass-mega"
+    },
+    {
+     "name": "Mega Salamence",
+     "slug": "salamence-mega"
+    },
+    {
+     "name": "Mega Starmie",
+     "slug": "starmie-mega"
+    },
+    {
+     "name": "Sceptile",
+     "slug": "sceptile"
+    },
+    {
+     "name": "Sneasler",
+     "slug": "sneasler"
+    }
+   ]
+  },
+  {
+   "base_speed": 119,
+   "speeds": {
+    "max": 188,
+    "neuMax": 171,
+    "neu0": 139,
+    "neg0": 125,
+    "maxScarf": 282,
+    "neuMaxScarf": 256
+   },
+   "pokemon": [
+    {
+     "name": "Cinderace",
+     "slug": "cinderace"
+    }
+   ]
+  },
+  {
+   "base_speed": 118,
+   "speeds": {
+    "max": 187,
+    "neuMax": 170,
+    "neu0": 138,
+    "neg0": 124,
+    "maxScarf": 280,
+    "neuMaxScarf": 255
+   },
+   "pokemon": [
+    {
+     "name": "Hawlucha",
+     "slug": "hawlucha"
+    },
+    {
+     "name": "Mega Hawlucha",
+     "slug": "hawlucha-mega"
+    }
+   ]
+  },
+  {
+   "base_speed": 117,
+   "speeds": {
+    "max": 185,
+    "neuMax": 169,
+    "neu0": 137,
+    "neg0": 123,
+    "maxScarf": 277,
+    "neuMaxScarf": 253
+   },
+   "pokemon": [
+    {
+     "name": "Salazzle",
+     "slug": "salazzle"
+    }
+   ]
+  },
+  {
+   "base_speed": 116,
+   "speeds": {
+    "max": 184,
+    "neuMax": 168,
+    "neu0": 136,
+    "neg0": 122,
+    "maxScarf": 276,
+    "neuMaxScarf": 252
+   },
+   "pokemon": [
+    {
+     "name": "Whimsicott",
+     "slug": "whimsicott"
+    }
+   ]
+  },
+  {
+   "base_speed": 115,
+   "speeds": {
+    "max": 183,
+    "neuMax": 167,
+    "neu0": 135,
+    "neg0": 121,
+    "maxScarf": 274,
+    "neuMaxScarf": 250
+   },
+   "pokemon": [
+    {
+     "name": "Alolan Persian",
+     "slug": "persian-alola"
+    },
+    {
+     "name": "Mega Absol",
+     "slug": "absol-mega"
+    },
+    {
+     "name": "Mega Houndoom",
+     "slug": "houndoom-mega"
+    },
+    {
+     "name": "Persian",
+     "slug": "persian"
+    },
+    {
+     "name": "Starmie",
+     "slug": "starmie"
+    }
+   ]
+  },
+  {
+   "base_speed": 113,
+   "speeds": {
+    "max": 181,
+    "neuMax": 165,
+    "neu0": 133,
+    "neg0": 119,
+    "maxScarf": 271,
+    "neuMaxScarf": 247
+   },
+   "pokemon": [
+    {
+     "name": "Serperior",
+     "slug": "serperior"
+    }
+   ]
+  },
+  {
+   "base_speed": 112,
+   "speeds": {
+    "max": 180,
+    "neuMax": 164,
+    "neu0": 132,
+    "neg0": 118,
+    "maxScarf": 270,
+    "neuMaxScarf": 246
+   },
+   "pokemon": [
+    {
+     "name": "Lycanroc",
+     "slug": "lycanroc"
+    },
+    {
+     "name": "Lycanroc (Midday)",
+     "slug": "lycanroc-midday"
+    },
+    {
+     "name": "Mega Lucario",
+     "slug": "lucario-mega"
+    },
+    {
+     "name": "Scolipede",
+     "slug": "scolipede"
+    }
+   ]
+  },
+  {
+   "base_speed": 111,
+   "speeds": {
+    "max": 179,
+    "neuMax": 163,
+    "neu0": 131,
+    "neg0": 117,
+    "maxScarf": 268,
+    "neuMaxScarf": 244
+   },
+   "pokemon": [
+    {
+     "name": "Maushold",
+     "slug": "maushold"
+    }
+   ]
+  },
+  {
+   "base_speed": 110,
+   "speeds": {
+    "max": 178,
+    "neuMax": 162,
+    "neu0": 130,
+    "neg0": 117,
+    "maxScarf": 267,
+    "neuMaxScarf": 243
+   },
+   "pokemon": [
+    {
+     "name": "Alolan Raichu",
+     "slug": "raichu-alola"
+    },
+    {
+     "name": "Espeon",
+     "slug": "espeon"
+    },
+    {
+     "name": "Froslass",
+     "slug": "froslass"
+    },
+    {
+     "name": "Gengar",
+     "slug": "gengar"
+    },
+    {
+     "name": "Hisuian Zoroark",
+     "slug": "zoroark-hisui"
+    },
+    {
+     "name": "Lycanroc (Dusk)",
+     "slug": "lycanroc-dusk"
+    },
+    {
+     "name": "Mega Gallade",
+     "slug": "gallade-mega"
+    },
+    {
+     "name": "Mega Metagross",
+     "slug": "metagross-mega"
+    },
+    {
+     "name": "Mega Raichu X",
+     "slug": "raichu-mega-x"
+    },
+    {
+     "name": "Mega Skarmory",
+     "slug": "skarmory-mega"
+    },
+    {
+     "name": "Mega Staraptor",
+     "slug": "staraptor-mega"
+    },
+    {
+     "name": "Raichu",
+     "slug": "raichu"
+    },
+    {
+     "name": "Tauros",
+     "slug": "tauros"
+    }
+   ]
+  },
+  {
+   "base_speed": 109,
+   "speeds": {
+    "max": 177,
+    "neuMax": 161,
+    "neu0": 129,
+    "neg0": 116,
+    "maxScarf": 265,
+    "neuMaxScarf": 241
+   },
+   "pokemon": [
+    {
+     "name": "Alolan Ninetales",
+     "slug": "ninetales-alola"
+    },
+    {
+     "name": "Heliolisk",
+     "slug": "heliolisk"
+    }
+   ]
+  },
+  {
+   "base_speed": 108,
+   "speeds": {
+    "max": 176,
+    "neuMax": 160,
+    "neu0": 128,
+    "neg0": 115,
+    "maxScarf": 264,
+    "neuMaxScarf": 240
+   },
+   "pokemon": [
+    {
+     "name": "Infernape",
+     "slug": "infernape"
+    }
+   ]
+  },
+  {
+   "base_speed": 106,
+   "speeds": {
+    "max": 173,
+    "neuMax": 158,
+    "neu0": 126,
+    "neg0": 113,
+    "maxScarf": 259,
+    "neuMaxScarf": 237
+   },
+   "pokemon": [
+    {
+     "name": "Liepard",
+     "slug": "liepard"
+    },
+    {
+     "name": "Pyroar",
+     "slug": "pyroar"
+    }
+   ]
+  },
+  {
+   "base_speed": 105,
+   "speeds": {
+    "max": 172,
+    "neuMax": 157,
+    "neu0": 125,
+    "neg0": 112,
+    "maxScarf": 258,
+    "neuMaxScarf": 235
+   },
+   "pokemon": [
+    {
+     "name": "Espathra",
+     "slug": "espathra"
+    },
+    {
+     "name": "Lopunny",
+     "slug": "lopunny"
+    },
+    {
+     "name": "Manectric",
+     "slug": "manectric"
+    },
+    {
+     "name": "Mega Pinsir",
+     "slug": "pinsir-mega"
+    },
+    {
+     "name": "Mega Sharpedo",
+     "slug": "sharpedo-mega"
+    },
+    {
+     "name": "Pawmot",
+     "slug": "pawmot"
+    },
+    {
+     "name": "Zoroark",
+     "slug": "zoroark"
+    }
+   ]
+  },
+  {
+   "base_speed": 104,
+   "speeds": {
+    "max": 171,
+    "neuMax": 156,
+    "neu0": 124,
+    "neg0": 111,
+    "maxScarf": 256,
+    "neuMaxScarf": 234
+   },
+   "pokemon": [
+    {
+     "name": "Delphox",
+     "slug": "delphox"
+    },
+    {
+     "name": "Meowstic",
+     "slug": "meowstic"
+    },
+    {
+     "name": "Meowstic (Female)",
+     "slug": "meowstic-female"
+    }
+   ]
+  },
+  {
+   "base_speed": 103,
+   "speeds": {
+    "max": 170,
+    "neuMax": 155,
+    "neu0": 123,
+    "neg0": 110,
+    "maxScarf": 255,
+    "neuMaxScarf": 232
+   },
+   "pokemon": [
+    {
+     "name": "Emolga",
+     "slug": "emolga"
+    },
+    {
+     "name": "Mega Excadrill",
+     "slug": "excadrill-mega"
+    }
+   ]
+  },
+  {
+   "base_speed": 102,
+   "speeds": {
+    "max": 169,
+    "neuMax": 154,
+    "neu0": 122,
+    "neg0": 109,
+    "maxScarf": 253,
+    "neuMaxScarf": 231
+   },
+   "pokemon": [
+    {
+     "name": "Furfrou",
+     "slug": "furfrou"
+    },
+    {
+     "name": "Garchomp",
+     "slug": "garchomp"
+    },
+    {
+     "name": "Mega Floette",
+     "slug": "floette-mega"
+    }
+   ]
+  },
+  {
+   "base_speed": 101,
+   "speeds": {
+    "max": 168,
+    "neuMax": 153,
+    "neu0": 121,
+    "neg0": 108,
+    "maxScarf": 252,
+    "neuMaxScarf": 229
+   },
+   "pokemon": [
+    {
+     "name": "Dedenne",
+     "slug": "dedenne"
+    },
+    {
+     "name": "Mega Glimmora",
+     "slug": "glimmora-mega"
+    },
+    {
+     "name": "Pidgeot",
+     "slug": "pidgeot"
+    },
+    {
+     "name": "Simipour",
+     "slug": "simipour"
+    },
+    {
+     "name": "Simisage",
+     "slug": "simisage"
+    },
+    {
+     "name": "Simisear",
+     "slug": "simisear"
+    }
+   ]
+  },
+  {
+   "base_speed": 100,
+   "speeds": {
+    "max": 167,
+    "neuMax": 152,
+    "neu0": 120,
+    "neg0": 108,
+    "maxScarf": 250,
+    "neuMaxScarf": 228
+   },
+   "pokemon": [
+    {
+     "name": "Charizard",
+     "slug": "charizard"
+    },
+    {
+     "name": "Mega Blaziken",
+     "slug": "blaziken-mega"
+    },
+    {
+     "name": "Mega Charizard X",
+     "slug": "charizard-mega-x"
+    },
+    {
+     "name": "Mega Charizard Y",
+     "slug": "charizard-mega-y"
+    },
+    {
+     "name": "Mega Dragonite",
+     "slug": "dragonite-mega"
+    },
+    {
+     "name": "Mega Falinks",
+     "slug": "falinks-mega"
+    },
+    {
+     "name": "Mega Gardevoir",
+     "slug": "gardevoir-mega"
+    },
+    {
+     "name": "Mega Glalie",
+     "slug": "glalie-mega"
+    },
+    {
+     "name": "Mega Kangaskhan",
+     "slug": "kangaskhan-mega"
+    },
+    {
+     "name": "Mega Medicham",
+     "slug": "medicham-mega"
+    },
+    {
+     "name": "Ninetales",
+     "slug": "ninetales"
+    },
+    {
+     "name": "Palafin",
+     "slug": "palafin"
+    },
+    {
+     "name": "Paldean Tauros - Combat Breed",
+     "slug": "tauros-paldea"
+    },
+    {
+     "name": "Salamence",
+     "slug": "salamence"
+    },
+    {
+     "name": "Staraptor",
+     "slug": "staraptor"
+    },
+    {
+     "name": "Tauros - Paldea Aqua Breed",
+     "slug": "tauros-paldea-aqua-breed"
+    },
+    {
+     "name": "Tauros - Paldea Blaze Breed",
+     "slug": "tauros-paldea-blaze-breed"
+    },
+    {
+     "name": "Typhlosion",
+     "slug": "typhlosion"
+    },
+    {
+     "name": "Volcarona",
+     "slug": "volcarona"
+    }
+   ]
+  },
+  {
+   "base_speed": 98,
+   "speeds": {
+    "max": 165,
+    "neuMax": 150,
+    "neu0": 118,
+    "neg0": 106,
+    "maxScarf": 247,
+    "neuMaxScarf": 225
+   },
+   "pokemon": [
+    {
+     "name": "Hydreigon",
+     "slug": "hydreigon"
+    }
+   ]
+  },
+  {
+   "base_speed": 97,
+   "speeds": {
+    "max": 163,
+    "neuMax": 149,
+    "neu0": 117,
+    "neg0": 105,
+    "maxScarf": 244,
+    "neuMaxScarf": 223
+   },
+   "pokemon": [
+    {
+     "name": "Morpeko",
+     "slug": "morpeko"
+    }
+   ]
+  },
+  {
+   "base_speed": 96,
+   "speeds": {
+    "max": 162,
+    "neuMax": 148,
+    "neu0": 116,
+    "neg0": 104,
+    "maxScarf": 243,
+    "neuMaxScarf": 222
+   },
+   "pokemon": [
+    {
+     "name": "Mimikyu",
+     "slug": "mimikyu"
+    }
+   ]
+  },
+  {
+   "base_speed": 95,
+   "speeds": {
+    "max": 161,
+    "neuMax": 147,
+    "neu0": 115,
+    "neg0": 103,
+    "maxScarf": 241,
+    "neuMaxScarf": 220
+   },
+   "pokemon": [
+    {
+     "name": "Arcanine",
+     "slug": "arcanine"
+    },
+    {
+     "name": "Gliscor",
+     "slug": "gliscor"
+    },
+    {
+     "name": "Hisuian Typhlosion",
+     "slug": "typhlosion-hisui"
+    },
+    {
+     "name": "Houndoom",
+     "slug": "houndoom"
+    },
+    {
+     "name": "Indeedee (Male)",
+     "slug": "indeedee-male"
+    },
+    {
+     "name": "Leafeon",
+     "slug": "leafeon"
+    },
+    {
+     "name": "Sharpedo",
+     "slug": "sharpedo"
+    }
+   ]
+  },
+  {
+   "base_speed": 94,
+   "speeds": {
+    "max": 160,
+    "neuMax": 146,
+    "neu0": 114,
+    "neg0": 102,
+    "maxScarf": 240,
+    "neuMaxScarf": 219
+   },
+   "pokemon": [
+    {
+     "name": "Tinkaton",
+     "slug": "tinkaton"
+    }
+   ]
+  },
+  {
+   "base_speed": 92,
+   "speeds": {
+    "max": 158,
+    "neuMax": 144,
+    "neu0": 112,
+    "neg0": 100,
+    "maxScarf": 237,
+    "neuMaxScarf": 216
+   },
+   "pokemon": [
+    {
+     "name": "Krookodile",
+     "slug": "krookodile"
+    },
+    {
+     "name": "Mega Garchomp",
+     "slug": "garchomp-mega"
+    },
+    {
+     "name": "Squawkabilly",
+     "slug": "squawkabilly"
+    }
+   ]
+  },
+  {
+   "base_speed": 91,
+   "speeds": {
+    "max": 157,
+    "neuMax": 143,
+    "neu0": 111,
+    "neg0": 99,
+    "maxScarf": 235,
+    "neuMaxScarf": 214
+   },
+   "pokemon": [
+    {
+     "name": "Rotom",
+     "slug": "rotom"
+    }
+   ]
+  },
+  {
+   "base_speed": 90,
+   "speeds": {
+    "max": 156,
+    "neuMax": 142,
+    "neu0": 110,
+    "neg0": 99,
+    "maxScarf": 234,
+    "neuMaxScarf": 213
+   },
+   "pokemon": [
+    {
+     "name": "Annihilape",
+     "slug": "annihilape"
+    },
+    {
+     "name": "Hisuian Arcanine",
+     "slug": "arcanine-hisui"
+    },
+    {
+     "name": "Kangaskhan",
+     "slug": "kangaskhan"
+    },
+    {
+     "name": "Lucario",
+     "slug": "lucario"
+    },
+    {
+     "name": "Mega Chandelure",
+     "slug": "chandelure-mega"
+    },
+    {
+     "name": "Mr. Mime",
+     "slug": "mr-mime"
+    },
+    {
+     "name": "Pikachu",
+     "slug": "pikachu"
+    },
+    {
+     "name": "Roserade",
+     "slug": "roserade"
+    },
+    {
+     "name": "Thievul",
+     "slug": "thievul"
+    }
+   ]
+  },
+  {
+   "base_speed": 89,
+   "speeds": {
+    "max": 155,
+    "neuMax": 141,
+    "neu0": 109,
+    "neg0": 98,
+    "maxScarf": 232,
+    "neuMaxScarf": 211
+   },
+   "pokemon": [
+    {
+     "name": "Vivillon",
+     "slug": "vivillon"
+    }
+   ]
+  },
+  {
+   "base_speed": 88,
+   "speeds": {
+    "max": 154,
+    "neuMax": 140,
+    "neu0": 108,
+    "neg0": 97,
+    "maxScarf": 231,
+    "neuMaxScarf": 210
+   },
+   "pokemon": [
+    {
+     "name": "Excadrill",
+     "slug": "excadrill"
+    },
+    {
+     "name": "Mega Barbaracle",
+     "slug": "barbaracle-mega"
+    },
+    {
+     "name": "Mega Malamar",
+     "slug": "malamar-mega"
+    }
+   ]
+  },
+  {
+   "base_speed": 87,
+   "speeds": {
+    "max": 152,
+    "neuMax": 139,
+    "neu0": 107,
+    "neg0": 96,
+    "maxScarf": 228,
+    "neuMaxScarf": 208
+   },
+   "pokemon": [
+    {
+     "name": "Baxcalibur",
+     "slug": "baxcalibur"
+    },
+    {
+     "name": "Mega Baxcalibur",
+     "slug": "baxcalibur-mega"
+    }
+   ]
+  },
+  {
+   "base_speed": 86,
+   "speeds": {
+    "max": 151,
+    "neuMax": 138,
+    "neu0": 106,
+    "neg0": 95,
+    "maxScarf": 226,
+    "neuMaxScarf": 207
+   },
+   "pokemon": [
+    {
+     "name": "Fan Rotom",
+     "slug": "rotom-fan"
+    },
+    {
+     "name": "Frost Rotom",
+     "slug": "rotom-frost"
+    },
+    {
+     "name": "Glimmora",
+     "slug": "glimmora"
+    },
+    {
+     "name": "Heat Rotom",
+     "slug": "rotom-heat"
+    },
+    {
+     "name": "Mow Rotom",
+     "slug": "rotom-mow"
+    },
+    {
+     "name": "Wash Rotom",
+     "slug": "rotom-wash"
+    }
+   ]
+  },
+  {
+   "base_speed": 85,
+   "speeds": {
+    "max": 150,
+    "neuMax": 137,
+    "neu0": 105,
+    "neg0": 94,
+    "maxScarf": 225,
+    "neuMaxScarf": 205
+   },
+   "pokemon": [
+    {
+     "name": "Archaludon",
+     "slug": "archaludon"
+    },
+    {
+     "name": "Ceruledge",
+     "slug": "ceruledge"
+    },
+    {
+     "name": "Heracross",
+     "slug": "heracross"
+    },
+    {
+     "name": "Hisuian Samurott",
+     "slug": "samurott-hisui"
+    },
+    {
+     "name": "Indeedee (Female)",
+     "slug": "indeedee-female"
+    },
+    {
+     "name": "Kleavor",
+     "slug": "kleavor"
+    },
+    {
+     "name": "Kommo-o",
+     "slug": "kommo-o"
+    },
+    {
+     "name": "Mabosstiff",
+     "slug": "mabosstiff"
+    },
+    {
+     "name": "Overqwil",
+     "slug": "overqwil"
+    },
+    {
+     "name": "Pinsir",
+     "slug": "pinsir"
+    },
+    {
+     "name": "Quaquaval",
+     "slug": "quaquaval"
+    },
+    {
+     "name": "Qwilfish",
+     "slug": "qwilfish"
+    },
+    {
+     "name": "Rillaboom",
+     "slug": "rillaboom"
+    },
+    {
+     "name": "Toxicroak",
+     "slug": "toxicroak"
+    }
+   ]
+  },
+  {
+   "base_speed": 84,
+   "speeds": {
+    "max": 149,
+    "neuMax": 136,
+    "neu0": 104,
+    "neg0": 93,
+    "maxScarf": 223,
+    "neuMaxScarf": 204
+   },
+   "pokemon": [
+    {
+     "name": "Gholdengo",
+     "slug": "gholdengo"
+    },
+    {
+     "name": "Gourgeist",
+     "slug": "gourgeist"
+    }
+   ]
+  },
+  {
+   "base_speed": 82,
+   "speeds": {
+    "max": 147,
+    "neuMax": 134,
+    "neu0": 102,
+    "neg0": 91,
+    "maxScarf": 220,
+    "neuMaxScarf": 201
+   },
+   "pokemon": [
+    {
+     "name": "Lycanroc (Midnight)",
+     "slug": "lycanroc-midnight"
+    }
+   ]
+  },
+  {
+   "base_speed": 81,
+   "speeds": {
+    "max": 146,
+    "neuMax": 133,
+    "neu0": 101,
+    "neg0": 90,
+    "maxScarf": 219,
+    "neuMaxScarf": 199
+   },
+   "pokemon": [
+    {
+     "name": "Gyarados",
+     "slug": "gyarados"
+    },
+    {
+     "name": "Mega Gyarados",
+     "slug": "gyarados-mega"
+    },
+    {
+     "name": "Milotic",
+     "slug": "milotic"
+    }
+   ]
+  },
+  {
+   "base_speed": 80,
+   "speeds": {
+    "max": 145,
+    "neuMax": 132,
+    "neu0": 100,
+    "neg0": 90,
+    "maxScarf": 217,
+    "neuMaxScarf": 198
+   },
+   "pokemon": [
+    {
+     "name": "Altaria",
+     "slug": "altaria"
+    },
+    {
+     "name": "Arbok",
+     "slug": "arbok"
+    },
+    {
+     "name": "Blaziken",
+     "slug": "blaziken"
+    },
+    {
+     "name": "Chandelure",
+     "slug": "chandelure"
+    },
+    {
+     "name": "Dragonite",
+     "slug": "dragonite"
+    },
+    {
+     "name": "Gallade",
+     "slug": "gallade"
+    },
+    {
+     "name": "Gardevoir",
+     "slug": "gardevoir"
+    },
+    {
+     "name": "Glalie",
+     "slug": "glalie"
+    },
+    {
+     "name": "Goodra",
+     "slug": "goodra"
+    },
+    {
+     "name": "Mamoswine",
+     "slug": "mamoswine"
+    },
+    {
+     "name": "Medicham",
+     "slug": "medicham"
+    },
+    {
+     "name": "Mega Altaria",
+     "slug": "altaria-mega"
+    },
+    {
+     "name": "Mega Eelektross",
+     "slug": "eelektross-mega"
+    },
+    {
+     "name": "Mega Meganium",
+     "slug": "meganium-mega"
+    },
+    {
+     "name": "Mega Venusaur",
+     "slug": "venusaur-mega"
+    },
+    {
+     "name": "Meganium",
+     "slug": "meganium"
+    },
+    {
+     "name": "Passimian",
+     "slug": "passimian"
+    },
+    {
+     "name": "Venusaur",
+     "slug": "venusaur"
+    }
+   ]
+  },
+  {
+   "base_speed": 79,
+   "speeds": {
+    "max": 144,
+    "neuMax": 131,
+    "neu0": 99,
+    "neg0": 89,
+    "maxScarf": 216,
+    "neuMaxScarf": 196
+   },
+   "pokemon": [
+    {
+     "name": "Vanilluxe",
+     "slug": "vanilluxe"
+    }
+   ]
+  },
+  {
+   "base_speed": 78,
+   "speeds": {
+    "max": 143,
+    "neuMax": 130,
+    "neu0": 98,
+    "neg0": 88,
+    "maxScarf": 214,
+    "neuMaxScarf": 195
+   },
+   "pokemon": [
+    {
+     "name": "Basculegion",
+     "slug": "basculegion"
+    },
+    {
+     "name": "Basculegion (Female)",
+     "slug": "basculegion-female"
+    },
+    {
+     "name": "Blastoise",
+     "slug": "blastoise"
+    },
+    {
+     "name": "Diggersby",
+     "slug": "diggersby"
+    },
+    {
+     "name": "Feraligatr",
+     "slug": "feraligatr"
+    },
+    {
+     "name": "Mega Blastoise",
+     "slug": "blastoise-mega"
+    },
+    {
+     "name": "Mega Feraligatr",
+     "slug": "feraligatr-mega"
+    }
+   ]
+  },
+  {
+   "base_speed": 77,
+   "speeds": {
+    "max": 141,
+    "neuMax": 129,
+    "neu0": 97,
+    "neg0": 87,
+    "maxScarf": 211,
+    "neuMaxScarf": 193
+   },
+   "pokemon": [
+    {
+     "name": "Watchog",
+     "slug": "watchog"
+    }
+   ]
+  },
+  {
+   "base_speed": 75,
+   "speeds": {
+    "max": 139,
+    "neuMax": 127,
+    "neu0": 95,
+    "neg0": 85,
+    "maxScarf": 208,
+    "neuMaxScarf": 190
+   },
+   "pokemon": [
+    {
+     "name": "Absol",
+     "slug": "absol"
+    },
+    {
+     "name": "Armarouge",
+     "slug": "armarouge"
+    },
+    {
+     "name": "Beedrill",
+     "slug": "beedrill"
+    },
+    {
+     "name": "Falinks",
+     "slug": "falinks"
+    },
+    {
+     "name": "Florges",
+     "slug": "florges"
+    },
+    {
+     "name": "Garbodor",
+     "slug": "garbodor"
+    },
+    {
+     "name": "Klefki",
+     "slug": "klefki"
+    },
+    {
+     "name": "Mega Banette",
+     "slug": "banette-mega"
+    },
+    {
+     "name": "Mega Emboar",
+     "slug": "emboar-mega"
+    },
+    {
+     "name": "Mega Heracross",
+     "slug": "heracross-mega"
+    },
+    {
+     "name": "Mega Scizor",
+     "slug": "scizor-mega"
+    },
+    {
+     "name": "Mega Scovillain",
+     "slug": "scovillain-mega"
+    },
+    {
+     "name": "Scovillain",
+     "slug": "scovillain"
+    },
+    {
+     "name": "Toxtricity (Amped)",
+     "slug": "toxtricity-amped"
+    },
+    {
+     "name": "Toxtricity (Low Key)",
+     "slug": "toxtricity-low-key"
+    }
+   ]
+  },
+  {
+   "base_speed": 73,
+   "speeds": {
+    "max": 137,
+    "neuMax": 125,
+    "neu0": 93,
+    "neg0": 83,
+    "maxScarf": 205,
+    "neuMaxScarf": 187
+   },
+   "pokemon": [
+    {
+     "name": "Malamar",
+     "slug": "malamar"
+    }
+   ]
+  },
+  {
+   "base_speed": 72,
+   "speeds": {
+    "max": 136,
+    "neuMax": 124,
+    "neu0": 92,
+    "neg0": 82,
+    "maxScarf": 204,
+    "neuMaxScarf": 186
+   },
+   "pokemon": [
+    {
+     "name": "Slurpuff",
+     "slug": "slurpuff"
+    },
+    {
+     "name": "Tsareena",
+     "slug": "tsareena"
+    }
+   ]
+  },
+  {
+   "base_speed": 71,
+   "speeds": {
+    "max": 135,
+    "neuMax": 123,
+    "neu0": 91,
+    "neg0": 81,
+    "maxScarf": 202,
+    "neuMaxScarf": 184
+   },
+   "pokemon": [
+    {
+     "name": "Mega Tyranitar",
+     "slug": "tyranitar-mega"
+    },
+    {
+     "name": "Sandaconda",
+     "slug": "sandaconda"
+    },
+    {
+     "name": "Tyrantrum",
+     "slug": "tyrantrum"
+    }
+   ]
+  },
+  {
+   "base_speed": 70,
+   "speeds": {
+    "max": 134,
+    "neuMax": 122,
+    "neu0": 90,
+    "neg0": 81,
+    "maxScarf": 201,
+    "neuMaxScarf": 183
+   },
+   "pokemon": [
+    {
+     "name": "Castform",
+     "slug": "castform"
+    },
+    {
+     "name": "Decidueye",
+     "slug": "decidueye"
+    },
+    {
+     "name": "Flapple",
+     "slug": "flapple"
+    },
+    {
+     "name": "Luxray",
+     "slug": "luxray"
+    },
+    {
+     "name": "Mega Clefable",
+     "slug": "clefable-mega"
+    },
+    {
+     "name": "Mega Swampert",
+     "slug": "swampert-mega"
+    },
+    {
+     "name": "Mega Victreebel",
+     "slug": "victreebel-mega"
+    },
+    {
+     "name": "Metagross",
+     "slug": "metagross"
+    },
+    {
+     "name": "Mr. Rime",
+     "slug": "mr-rime"
+    },
+    {
+     "name": "Politoed",
+     "slug": "politoed"
+    },
+    {
+     "name": "Polteageist",
+     "slug": "polteageist"
+    },
+    {
+     "name": "Samurott",
+     "slug": "samurott"
+    },
+    {
+     "name": "Sinistcha",
+     "slug": "sinistcha"
+    },
+    {
+     "name": "Skarmory",
+     "slug": "skarmory"
+    },
+    {
+     "name": "Victreebel",
+     "slug": "victreebel"
+    }
+   ]
+  },
+  {
+   "base_speed": 68,
+   "speeds": {
+    "max": 132,
+    "neuMax": 120,
+    "neu0": 88,
+    "neg0": 79,
+    "maxScarf": 198,
+    "neuMaxScarf": 180
+   },
+   "pokemon": [
+    {
+     "name": "Barbaracle",
+     "slug": "barbaracle"
+    },
+    {
+     "name": "Gogoat",
+     "slug": "gogoat"
+    },
+    {
+     "name": "Houndstone",
+     "slug": "houndstone"
+    },
+    {
+     "name": "Mega Scrafty",
+     "slug": "scrafty-mega"
+    }
+   ]
+  },
+  {
+   "base_speed": 67,
+   "speeds": {
+    "max": 130,
+    "neuMax": 119,
+    "neu0": 87,
+    "neg0": 78,
+    "maxScarf": 195,
+    "neuMaxScarf": 178
+   },
+   "pokemon": [
+    {
+     "name": "Corviknight",
+     "slug": "corviknight"
+    }
+   ]
+  },
+  {
+   "base_speed": 66,
+   "speeds": {
+    "max": 129,
+    "neuMax": 118,
+    "neu0": 86,
+    "neg0": 77,
+    "maxScarf": 193,
+    "neuMaxScarf": 177
+   },
+   "pokemon": [
+    {
+     "name": "Skeledirge",
+     "slug": "skeledirge"
+    }
+   ]
+  },
+  {
+   "base_speed": 65,
+   "speeds": {
+    "max": 128,
+    "neuMax": 117,
+    "neu0": 85,
+    "neg0": 76,
+    "maxScarf": 192,
+    "neuMaxScarf": 175
+   },
+   "pokemon": [
+    {
+     "name": "Banette",
+     "slug": "banette"
+    },
+    {
+     "name": "Chimecho",
+     "slug": "chimecho"
+    },
+    {
+     "name": "Emboar",
+     "slug": "emboar"
+    },
+    {
+     "name": "Flareon",
+     "slug": "flareon"
+    },
+    {
+     "name": "Glaceon",
+     "slug": "glaceon"
+    },
+    {
+     "name": "Mega Chimecho",
+     "slug": "chimecho-mega"
+    },
+    {
+     "name": "Orthworm",
+     "slug": "orthworm"
+    },
+    {
+     "name": "Pelipper",
+     "slug": "pelipper"
+    },
+    {
+     "name": "Scizor",
+     "slug": "scizor"
+    },
+    {
+     "name": "Sirfetch’d",
+     "slug": "sirfetchd"
+    },
+    {
+     "name": "Umbreon",
+     "slug": "umbreon"
+    },
+    {
+     "name": "Vaporeon",
+     "slug": "vaporeon"
+    },
+    {
+     "name": "Wyrdeer",
+     "slug": "wyrdeer"
+    }
+   ]
+  },
+  {
+   "base_speed": 64,
+   "speeds": {
+    "max": 127,
+    "neuMax": 116,
+    "neu0": 84,
+    "neg0": 75,
+    "maxScarf": 190,
+    "neuMaxScarf": 174
+   },
+   "pokemon": [
+    {
+     "name": "Alcremie",
+     "slug": "alcremie"
+    },
+    {
+     "name": "Chesnaught",
+     "slug": "chesnaught"
+    }
+   ]
+  },
+  {
+   "base_speed": 62,
+   "speeds": {
+    "max": 125,
+    "neuMax": 114,
+    "neu0": 82,
+    "neg0": 73,
+    "maxScarf": 187,
+    "neuMaxScarf": 171
+   },
+   "pokemon": [
+    {
+     "name": "Mega Scolipede",
+     "slug": "scolipede-mega"
+    }
+   ]
+  },
+  {
+   "base_speed": 61,
+   "speeds": {
+    "max": 124,
+    "neuMax": 113,
+    "neu0": 81,
+    "neg0": 72,
+    "maxScarf": 186,
+    "neuMaxScarf": 169
+   },
+   "pokemon": [
+    {
+     "name": "Tyranitar",
+     "slug": "tyranitar"
+    }
+   ]
+  },
+  {
+   "base_speed": 60,
+   "speeds": {
+    "max": 123,
+    "neuMax": 112,
+    "neu0": 80,
+    "neg0": 72,
+    "maxScarf": 184,
+    "neuMaxScarf": 168
+   },
+   "pokemon": [
+    {
+     "name": "Abomasnow",
+     "slug": "abomasnow"
+    },
+    {
+     "name": "Aegislash",
+     "slug": "aegislash"
+    },
+    {
+     "name": "Aegislash (Blade)",
+     "slug": "aegislash-blade"
+    },
+    {
+     "name": "Aegislash (Shield)",
+     "slug": "aegislash-shield"
+    },
+    {
+     "name": "Clefable",
+     "slug": "clefable"
+    },
+    {
+     "name": "Empoleon",
+     "slug": "empoleon"
+    },
+    {
+     "name": "Farfetch’d",
+     "slug": "farfetchd"
+    },
+    {
+     "name": "Farigiraf",
+     "slug": "farigiraf"
+    },
+    {
+     "name": "Grimmsnarl",
+     "slug": "grimmsnarl"
+    },
+    {
+     "name": "Hisuian Decidueye",
+     "slug": "decidueye-hisui"
+    },
+    {
+     "name": "Hisuian Goodra",
+     "slug": "goodra-hisui"
+    },
+    {
+     "name": "Incineroar",
+     "slug": "incineroar"
+    },
+    {
+     "name": "Oranguru",
+     "slug": "oranguru"
+    },
+    {
+     "name": "Primarina",
+     "slug": "primarina"
+    },
+    {
+     "name": "Swampert",
+     "slug": "swampert"
+    },
+    {
+     "name": "Sylveon",
+     "slug": "sylveon"
+    },
+    {
+     "name": "Toucannon",
+     "slug": "toucannon"
+    }
+   ]
+  },
+  {
+   "base_speed": 59,
+   "speeds": {
+    "max": 122,
+    "neuMax": 111,
+    "neu0": 79,
+    "neg0": 71,
+    "maxScarf": 183,
+    "neuMaxScarf": 166
+   },
+   "pokemon": [
+    {
+     "name": "Clawitzer",
+     "slug": "clawitzer"
+    }
+   ]
+  },
+  {
+   "base_speed": 58,
+   "speeds": {
+    "max": 121,
+    "neuMax": 110,
+    "neu0": 78,
+    "neg0": 70,
+    "maxScarf": 181,
+    "neuMaxScarf": 165
+   },
+   "pokemon": [
+    {
+     "name": "Aurorus",
+     "slug": "aurorus"
+    },
+    {
+     "name": "Pangoro",
+     "slug": "pangoro"
+    },
+    {
+     "name": "Rampardos",
+     "slug": "rampardos"
+    },
+    {
+     "name": "Scrafty",
+     "slug": "scrafty"
+    }
+   ]
+  },
+  {
+   "base_speed": 56,
+   "speeds": {
+    "max": 118,
+    "neuMax": 108,
+    "neu0": 76,
+    "neg0": 68,
+    "maxScarf": 177,
+    "neuMaxScarf": 162
+   },
+   "pokemon": [
+    {
+     "name": "Torterra",
+     "slug": "torterra"
+    },
+    {
+     "name": "Trevenant",
+     "slug": "trevenant"
+    }
+   ]
+  },
+  {
+   "base_speed": 55,
+   "speeds": {
+    "max": 117,
+    "neuMax": 107,
+    "neu0": 75,
+    "neg0": 67,
+    "maxScarf": 175,
+    "neuMaxScarf": 160
+   },
+   "pokemon": [
+    {
+     "name": "Ampharos",
+     "slug": "ampharos"
+    },
+    {
+     "name": "Golurk",
+     "slug": "golurk"
+    },
+    {
+     "name": "Machamp",
+     "slug": "machamp"
+    },
+    {
+     "name": "Mega Golurk",
+     "slug": "golurk-mega"
+    },
+    {
+     "name": "Swalot",
+     "slug": "swalot"
+    }
+   ]
+  },
+  {
+   "base_speed": 52,
+   "speeds": {
+    "max": 114,
+    "neuMax": 104,
+    "neu0": 72,
+    "neg0": 64,
+    "maxScarf": 171,
+    "neuMaxScarf": 156
+   },
+   "pokemon": [
+    {
+     "name": "Floette",
+     "slug": "floette"
+    }
+   ]
+  },
+  {
+   "base_speed": 50,
+   "speeds": {
+    "max": 112,
+    "neuMax": 102,
+    "neu0": 70,
+    "neg0": 63,
+    "maxScarf": 168,
+    "neuMaxScarf": 153
+   },
+   "pokemon": [
+    {
+     "name": "Aggron",
+     "slug": "aggron"
+    },
+    {
+     "name": "Audino",
+     "slug": "audino"
+    },
+    {
+     "name": "Azumarill",
+     "slug": "azumarill"
+    },
+    {
+     "name": "Beartic",
+     "slug": "beartic"
+    },
+    {
+     "name": "Eelektross",
+     "slug": "eelektross"
+    },
+    {
+     "name": "Kingambit",
+     "slug": "kingambit"
+    },
+    {
+     "name": "Mawile",
+     "slug": "mawile"
+    },
+    {
+     "name": "Mega Aggron",
+     "slug": "aggron-mega"
+    },
+    {
+     "name": "Mega Audino",
+     "slug": "audino-mega"
+    },
+    {
+     "name": "Mega Mawile",
+     "slug": "mawile-mega"
+    },
+    {
+     "name": "Perrserker",
+     "slug": "perrserker"
+    },
+    {
+     "name": "Sableye",
+     "slug": "sableye"
+    },
+    {
+     "name": "Vileplume",
+     "slug": "vileplume"
+    }
+   ]
+  },
+  {
+   "base_speed": 48,
+   "speeds": {
+    "max": 110,
+    "neuMax": 100,
+    "neu0": 68,
+    "neg0": 61,
+    "maxScarf": 165,
+    "neuMaxScarf": 150
+   },
+   "pokemon": [
+    {
+     "name": "Ditto",
+     "slug": "ditto"
+    }
+   ]
+  },
+  {
+   "base_speed": 47,
+   "speeds": {
+    "max": 108,
+    "neuMax": 99,
+    "neu0": 67,
+    "neg0": 60,
+    "maxScarf": 162,
+    "neuMaxScarf": 148
+   },
+   "pokemon": [
+    {
+     "name": "Hippowdon",
+     "slug": "hippowdon"
+    }
+   ]
+  },
+  {
+   "base_speed": 45,
+   "speeds": {
+    "max": 106,
+    "neuMax": 97,
+    "neu0": 65,
+    "neg0": 58,
+    "maxScarf": 159,
+    "neuMaxScarf": 145
+   },
+   "pokemon": [
+    {
+     "name": "Bellibolt",
+     "slug": "bellibolt"
+    },
+    {
+     "name": "Conkeldurr",
+     "slug": "conkeldurr"
+    },
+    {
+     "name": "Mega Ampharos",
+     "slug": "ampharos-mega"
+    },
+    {
+     "name": "Wigglytuff",
+     "slug": "wigglytuff"
+    }
+   ]
+  },
+  {
+   "base_speed": 44,
+   "speeds": {
+    "max": 105,
+    "neuMax": 96,
+    "neu0": 64,
+    "neg0": 57,
+    "maxScarf": 157,
+    "neuMaxScarf": 144
+   },
+   "pokemon": [
+    {
+     "name": "Dragalge",
+     "slug": "dragalge"
+    },
+    {
+     "name": "Hydrapple",
+     "slug": "hydrapple"
+    },
+    {
+     "name": "Mega Chesnaught",
+     "slug": "chesnaught-mega"
+    },
+    {
+     "name": "Mega Dragalge",
+     "slug": "dragalge-mega"
+    }
+   ]
+  },
+  {
+   "base_speed": 43,
+   "speeds": {
+    "max": 104,
+    "neuMax": 95,
+    "neu0": 63,
+    "neg0": 56,
+    "maxScarf": 156,
+    "neuMaxScarf": 142
+   },
+   "pokemon": [
+    {
+     "name": "Crabominable",
+     "slug": "crabominable"
+    }
+   ]
+  },
+  {
+   "base_speed": 42,
+   "speeds": {
+    "max": 103,
+    "neuMax": 94,
+    "neu0": 62,
+    "neg0": 55,
+    "maxScarf": 154,
+    "neuMaxScarf": 141
+   },
+   "pokemon": [
+    {
+     "name": "Araquanid",
+     "slug": "araquanid"
+    },
+    {
+     "name": "Grapploct",
+     "slug": "grapploct"
+    }
+   ]
+  },
+  {
+   "base_speed": 40,
+   "speeds": {
+    "max": 101,
+    "neuMax": 92,
+    "neu0": 60,
+    "neg0": 54,
+    "maxScarf": 151,
+    "neuMaxScarf": 138
+   },
+   "pokemon": [
+    {
+     "name": "Ariados",
+     "slug": "ariados"
+    },
+    {
+     "name": "Camerupt",
+     "slug": "camerupt"
+    },
+    {
+     "name": "Forretress",
+     "slug": "forretress"
+    },
+    {
+     "name": "Golisopod",
+     "slug": "golisopod"
+    },
+    {
+     "name": "Mega Golisopod",
+     "slug": "golisopod-mega"
+    },
+    {
+     "name": "Rhyperior",
+     "slug": "rhyperior"
+    }
+   ]
+  },
+  {
+   "base_speed": 39,
+   "speeds": {
+    "max": 100,
+    "neuMax": 91,
+    "neu0": 59,
+    "neg0": 53,
+    "maxScarf": 150,
+    "neuMaxScarf": 136
+   },
+   "pokemon": [
+    {
+     "name": "Arboliva",
+     "slug": "arboliva"
+    }
+   ]
+  },
+  {
+   "base_speed": 38,
+   "speeds": {
+    "max": 99,
+    "neuMax": 90,
+    "neu0": 58,
+    "neg0": 52,
+    "maxScarf": 148,
+    "neuMaxScarf": 135
+   },
+   "pokemon": [
+    {
+     "name": "Hisuian Avalugg",
+     "slug": "avalugg-hisui"
+    }
+   ]
+  },
+  {
+   "base_speed": 36,
+   "speeds": {
+    "max": 96,
+    "neuMax": 88,
+    "neu0": 56,
+    "neg0": 50,
+    "maxScarf": 144,
+    "neuMaxScarf": 132
+   },
+   "pokemon": [
+    {
+     "name": "Drampa",
+     "slug": "drampa"
+    },
+    {
+     "name": "Mega Drampa",
+     "slug": "drampa-mega"
+    }
+   ]
+  },
+  {
+   "base_speed": 35,
+   "speeds": {
+    "max": 95,
+    "neuMax": 87,
+    "neu0": 55,
+    "neg0": 49,
+    "maxScarf": 142,
+    "neuMaxScarf": 130
+   },
+   "pokemon": [
+    {
+     "name": "Garganacl",
+     "slug": "garganacl"
+    },
+    {
+     "name": "Mudsdale",
+     "slug": "mudsdale"
+    },
+    {
+     "name": "Spiritomb",
+     "slug": "spiritomb"
+    },
+    {
+     "name": "Toxapex",
+     "slug": "toxapex"
+    }
+   ]
+  },
+  {
+   "base_speed": 33,
+   "speeds": {
+    "max": 93,
+    "neuMax": 85,
+    "neu0": 53,
+    "neg0": 47,
+    "maxScarf": 139,
+    "neuMaxScarf": 127
+   },
+   "pokemon": [
+    {
+     "name": "Mega Crabominable",
+     "slug": "crabominable-mega"
+    }
+   ]
+  },
+  {
+   "base_speed": 32,
+   "speeds": {
+    "max": 92,
+    "neuMax": 84,
+    "neu0": 52,
+    "neg0": 46,
+    "maxScarf": 138,
+    "neuMaxScarf": 126
+   },
+   "pokemon": [
+    {
+     "name": "Galarian Stunfisk",
+     "slug": "stunfisk-galar"
+    },
+    {
+     "name": "Stunfisk",
+     "slug": "stunfisk"
+    }
+   ]
+  },
+  {
+   "base_speed": 30,
+   "speeds": {
+    "max": 90,
+    "neuMax": 82,
+    "neu0": 50,
+    "neg0": 45,
+    "maxScarf": 135,
+    "neuMaxScarf": 123
+   },
+   "pokemon": [
+    {
+     "name": "Appletun",
+     "slug": "appletun"
+    },
+    {
+     "name": "Bastiodon",
+     "slug": "bastiodon"
+    },
+    {
+     "name": "Cofagrigus",
+     "slug": "cofagrigus"
+    },
+    {
+     "name": "Galarian Slowbro",
+     "slug": "slowbro-galar"
+    },
+    {
+     "name": "Galarian Slowking",
+     "slug": "slowking-galar"
+    },
+    {
+     "name": "Mega Abomasnow",
+     "slug": "abomasnow-mega"
+    },
+    {
+     "name": "Mega Slowbro",
+     "slug": "slowbro-mega"
+    },
+    {
+     "name": "Mega Steelix",
+     "slug": "steelix-mega"
+    },
+    {
+     "name": "Reuniclus",
+     "slug": "reuniclus"
+    },
+    {
+     "name": "Runerigus",
+     "slug": "runerigus"
+    },
+    {
+     "name": "Slowbro",
+     "slug": "slowbro"
+    },
+    {
+     "name": "Slowking",
+     "slug": "slowking"
+    },
+    {
+     "name": "Snorlax",
+     "slug": "snorlax"
+    },
+    {
+     "name": "Steelix",
+     "slug": "steelix"
+    }
+   ]
+  },
+  {
+   "base_speed": 29,
+   "speeds": {
+    "max": 89,
+    "neuMax": 81,
+    "neu0": 49,
+    "neg0": 44,
+    "maxScarf": 133,
+    "neuMaxScarf": 121
+   },
+   "pokemon": [
+    {
+     "name": "Aromatisse",
+     "slug": "aromatisse"
+    },
+    {
+     "name": "Hatterene",
+     "slug": "hatterene"
+    },
+    {
+     "name": "Musharna",
+     "slug": "musharna"
+    }
+   ]
+  },
+  {
+   "base_speed": 28,
+   "speeds": {
+    "max": 88,
+    "neuMax": 80,
+    "neu0": 48,
+    "neg0": 43,
+    "maxScarf": 132,
+    "neuMaxScarf": 120
+   },
+   "pokemon": [
+    {
+     "name": "Avalugg",
+     "slug": "avalugg"
+    }
+   ]
+  },
+  {
+   "base_speed": 20,
+   "speeds": {
+    "max": 79,
+    "neuMax": 72,
+    "neu0": 40,
+    "neg0": 36,
+    "maxScarf": 118,
+    "neuMaxScarf": 108
+   },
+   "pokemon": [
+    {
+     "name": "Mega Camerupt",
+     "slug": "camerupt-mega"
+    },
+    {
+     "name": "Mega Sableye",
+     "slug": "sableye-mega"
+    },
+    {
+     "name": "Torkoal",
+     "slug": "torkoal"
+    }
+   ]
+  },
+  {
+   "base_speed": 15,
+   "speeds": {
+    "max": 73,
+    "neuMax": 67,
+    "neu0": 35,
+    "neg0": 31,
+    "maxScarf": 109,
+    "neuMaxScarf": 100
+   },
+   "pokemon": [
+    {
+     "name": "Pincurchin",
+     "slug": "pincurchin"
+    }
+   ]
+  }
+ ]
+}

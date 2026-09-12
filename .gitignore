@@ -1,0 +1,16 @@
+# The raw source cache: 195 MB of fetched HTML and JSON, all of it
+# regenerable from the fetchers. In CI it is restored from the Actions cache
+# instead, which gives the same skip-if-present behaviour without putting a
+# fifth of a gigabyte of other people's HTML into git history.
+data/raw/
+
+# Per-machine, and one of them can hold a key
+tracker/config.local.json
+tracker/.wrangler/
+tracker/dist/
+tracker/champions-ledger.zip
+
+__pycache__/
+*.pyc
+node_modules/
+.DS_Store

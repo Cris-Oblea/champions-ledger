@@ -1,0 +1,163 @@
+[
+ {
+  "label": "plano",
+  "atk": "Garchomp",
+  "move": "Earthquake",
+  "def": "Kingambit",
+  "want": "150-176",
+  "singleTarget": true,
+  "gameType": "Singles"
+ },
+ {
+  "atkItem": "Life Orb",
+  "label": "Life Orb",
+  "atk": "Garchomp",
+  "move": "Earthquake",
+  "def": "Kingambit",
+  "want": "195-229",
+  "singleTarget": true,
+  "gameType": "Singles"
+ },
+ {
+  "atkAbility": "Tough Claws",
+  "label": "Tough Claws",
+  "atk": "Garchomp",
+  "move": "Dragon Claw",
+  "def": "Dragonite",
+  "want": "186-222",
+  "singleTarget": true,
+  "gameType": "Singles"
+ },
+ {
+  "defAbility": "Filter",
+  "label": "Filter",
+  "atk": "Garchomp",
+  "move": "Earthquake",
+  "def": "Kingambit",
+  "want": "112-132",
+  "singleTarget": true,
+  "gameType": "Singles"
+ },
+ {
+  "defAbility": "Thick Fat",
+  "label": "Thick Fat",
+  "atk": "Incineroar",
+  "move": "Flare Blitz",
+  "def": "Kingambit",
+  "want": "84-98",
+  "singleTarget": true,
+  "gameType": "Singles"
+ },
+ {
+  "weather": "Rain",
+  "atkAbility": "Adaptability",
+  "label": "Rain+Adaptability",
+  "atk": "Basculegion",
+  "move": "Wave Crash",
+  "def": "Garchomp",
+  "want": "194-230",
+  "singleTarget": true,
+  "gameType": "Singles"
+ },
+ {
+  "label": "Fairy Aura",
+  "atk": "Mega Floette",
+  "move": "Moonblast",
+  "def": "Garchomp",
+  "want": "282-332",
+  "singleTarget": true,
+  "gameType": "Singles",
+  "atkAbility": "Fairy Aura"
+ },
+ {
+  "helpingHand": true,
+  "atkItem": "Life Orb",
+  "label": "Helping Hand + Life Orb",
+  "atk": "Garchomp",
+  "move": "Earthquake",
+  "def": "Kingambit",
+  "want": "283-338",
+  "singleTarget": true,
+  "gameType": "Singles"
+ },
+ {
+  "terrain": "Grassy",
+  "label": "Grassy + Earthquake",
+  "atk": "Garchomp",
+  "move": "Earthquake",
+  "def": "Kingambit",
+  "want": "74-90",
+  "singleTarget": true,
+  "gameType": "Singles"
+ },
+ {
+  "gravity": true,
+  "label": "Gravity vs Flying",
+  "atk": "Garchomp",
+  "move": "Earthquake",
+  "def": "Pelipper",
+  "want": "85-102",
+  "singleTarget": true,
+  "gameType": "Singles"
+ },
+ {
+  "atkStatus": "brn",
+  "label": "Quemado",
+  "atk": "Garchomp",
+  "move": "Earthquake",
+  "def": "Kingambit",
+  "want": "75-88",
+  "singleTarget": true,
+  "gameType": "Singles"
+ },
+ {
+  "wonderRoom": true,
+  "label": "Wonder Room",
+  "atk": "Garchomp",
+  "move": "Earthquake",
+  "def": "Kingambit",
+  "want": "198-234",
+  "singleTarget": true,
+  "gameType": "Singles"
+ },
+ {
+  "screen": "Reflect",
+  "spread": true,
+  "label": "Reflect vs fisico",
+  "atk": "Garchomp",
+  "move": "Earthquake",
+  "def": "Kingambit",
+  "want": "73-88",
+  "singleTarget": false,
+  "gameType": "Doubles"
+ },
+ {
+  "weather": "Sun",
+  "label": "Sol + Rain Dance-tipo",
+  "atk": "Incineroar",
+  "move": "Flare Blitz",
+  "def": "Kingambit",
+  "want": "242-288",
+  "singleTarget": true,
+  "gameType": "Singles"
+ },
+ {
+  "label": "multi-golpe",
+  "atk": "Aggron",
+  "move": "Rock Blast",
+  "def": "Incineroar",
+  "want": "132-162",
+  "singleTarget": true,
+  "gameType": "Singles"
+ },
+ {
+  "defItem": "Colbur Berry",
+  "label": "Colbur",
+  "atk": "Kingambit",
+  "move": "Kowtow Cleave",
+  "def": "Farigiraf",
+  "want": "100-118",
+  "singleTarget": true,
+  "gameType": "Singles"
+ }
+]

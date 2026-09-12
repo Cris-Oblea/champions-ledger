@@ -1,0 +1,327 @@
+{
+ "Adamant": {
+  "lowers": "spa",
+  "multipliers": {
+   "atk": 1.1,
+   "def": 1,
+   "hp": 1,
+   "spa": 0.9,
+   "spd": 1,
+   "spe": 1
+  },
+  "raises": "atk",
+  "summary": "+Atk, -SpA"
+ },
+ "Bashful": {
+  "lowers": null,
+  "multipliers": {
+   "atk": 1,
+   "def": 1,
+   "hp": 1,
+   "spa": 1,
+   "spd": 1,
+   "spe": 1
+  },
+  "raises": null,
+  "summary": "neutral - no stat change"
+ },
+ "Bold": {
+  "lowers": "atk",
+  "multipliers": {
+   "atk": 0.9,
+   "def": 1.1,
+   "hp": 1,
+   "spa": 1,
+   "spd": 1,
+   "spe": 1
+  },
+  "raises": "def",
+  "summary": "+Def, -Atk"
+ },
+ "Brave": {
+  "lowers": "spe",
+  "multipliers": {
+   "atk": 1.1,
+   "def": 1,
+   "hp": 1,
+   "spa": 1,
+   "spd": 1,
+   "spe": 0.9
+  },
+  "raises": "atk",
+  "summary": "+Atk, -Spe"
+ },
+ "Calm": {
+  "lowers": "atk",
+  "multipliers": {
+   "atk": 0.9,
+   "def": 1,
+   "hp": 1,
+   "spa": 1,
+   "spd": 1.1,
+   "spe": 1
+  },
+  "raises": "spd",
+  "summary": "+SpD, -Atk"
+ },
+ "Careful": {
+  "lowers": "spa",
+  "multipliers": {
+   "atk": 1,
+   "def": 1,
+   "hp": 1,
+   "spa": 0.9,
+   "spd": 1.1,
+   "spe": 1
+  },
+  "raises": "spd",
+  "summary": "+SpD, -SpA"
+ },
+ "Docile": {
+  "lowers": null,
+  "multipliers": {
+   "atk": 1,
+   "def": 1,
+   "hp": 1,
+   "spa": 1,
+   "spd": 1,
+   "spe": 1
+  },
+  "raises": null,
+  "summary": "neutral - no stat change"
+ },
+ "Gentle": {
+  "lowers": "def",
+  "multipliers": {
+   "atk": 1,
+   "def": 0.9,
+   "hp": 1,
+   "spa": 1,
+   "spd": 1.1,
+   "spe": 1
+  },
+  "raises": "spd",
+  "summary": "+SpD, -Def"
+ },
+ "Hardy": {
+  "lowers": null,
+  "multipliers": {
+   "atk": 1,
+   "def": 1,
+   "hp": 1,
+   "spa": 1,
+   "spd": 1,
+   "spe": 1
+  },
+  "raises": null,
+  "summary": "neutral - no stat change"
+ },
+ "Hasty": {
+  "lowers": "def",
+  "multipliers": {
+   "atk": 1,
+   "def": 0.9,
+   "hp": 1,
+   "spa": 1,
+   "spd": 1,
+   "spe": 1.1
+  },
+  "raises": "spe",
+  "summary": "+Spe, -Def"
+ },
+ "Impish": {
+  "lowers": "spa",
+  "multipliers": {
+   "atk": 1,
+   "def": 1.1,
+   "hp": 1,
+   "spa": 0.9,
+   "spd": 1,
+   "spe": 1
+  },
+  "raises": "def",
+  "summary": "+Def, -SpA"
+ },
+ "Jolly": {
+  "lowers": "spa",
+  "multipliers": {
+   "atk": 1,
+   "def": 1,
+   "hp": 1,
+   "spa": 0.9,
+   "spd": 1,
+   "spe": 1.1
+  },
+  "raises": "spe",
+  "summary": "+Spe, -SpA"
+ },
+ "Lax": {
+  "lowers": "spd",
+  "multipliers": {
+   "atk": 1,
+   "def": 1.1,
+   "hp": 1,
+   "spa": 1,
+   "spd": 0.9,
+   "spe": 1
+  },
+  "raises": "def",
+  "summary": "+Def, -SpD"
+ },
+ "Lonely": {
+  "lowers": "def",
+  "multipliers": {
+   "atk": 1.1,
+   "def": 0.9,
+   "hp": 1,
+   "spa": 1,
+   "spd": 1,
+   "spe": 1
+  },
+  "raises": "atk",
+  "summary": "+Atk, -Def"
+ },
+ "Mild": {
+  "lowers": "def",
+  "multipliers": {
+   "atk": 1,
+   "def": 0.9,
+   "hp": 1,
+   "spa": 1.1,
+   "spd": 1,
+   "spe": 1
+  },
+  "raises": "spa",
+  "summary": "+SpA, -Def"
+ },
+ "Modest": {
+  "lowers": "atk",
+  "multipliers": {
+   "atk": 0.9,
+   "def": 1,
+   "hp": 1,
+   "spa": 1.1,
+   "spd": 1,
+   "spe": 1
+  },
+  "raises": "spa",
+  "summary": "+SpA, -Atk"
+ },
+ "Naive": {
+  "lowers": "spd",
+  "multipliers": {
+   "atk": 1,
+   "def": 1,
+   "hp": 1,
+   "spa": 1,
+   "spd": 0.9,
+   "spe": 1.1
+  },
+  "raises": "spe",
+  "summary": "+Spe, -SpD"
+ },
+ "Naughty": {
+  "lowers": "spd",
+  "multipliers": {
+   "atk": 1.1,
+   "def": 1,
+   "hp": 1,
+   "spa": 1,
+   "spd": 0.9,
+   "spe": 1
+  },
+  "raises": "atk",
+  "summary": "+Atk, -SpD"
+ },
+ "Quiet": {
+  "lowers": "spe",
+  "multipliers": {
+   "atk": 1,
+   "def": 1,
+   "hp": 1,
+   "spa": 1.1,
+   "spd": 1,
+   "spe": 0.9
+  },
+  "raises": "spa",
+  "summary": "+SpA, -Spe"
+ },
+ "Quirky": {
+  "lowers": null,
+  "multipliers": {
+   "atk": 1,
+   "def": 1,
+   "hp": 1,
+   "spa": 1,
+   "spd": 1,
+   "spe": 1
+  },
+  "raises": null,
+  "summary": "neutral - no stat change"
+ },
+ "Rash": {
+  "lowers": "spd",
+  "multipliers": {
+   "atk": 1,
+   "def": 1,
+   "hp": 1,
+   "spa": 1.1,
+   "spd": 0.9,
+   "spe": 1
+  },
+  "raises": "spa",
+  "summary": "+SpA, -SpD"
+ },
+ "Relaxed": {
+  "lowers": "spe",
+  "multipliers": {
+   "atk": 1,
+   "def": 1.1,
+   "hp": 1,
+   "spa": 1,
+   "spd": 1,
+   "spe": 0.9
+  },
+  "raises": "def",
+  "summary": "+Def, -Spe"
+ },
+ "Sassy": {
+  "lowers": "spe",
+  "multipliers": {
+   "atk": 1,
+   "def": 1,
+   "hp": 1,
+   "spa": 1,
+   "spd": 1.1,
+   "spe": 0.9
+  },
+  "raises": "spd",
+  "summary": "+SpD, -Spe"
+ },
+ "Serious": {
+  "lowers": null,
+  "multipliers": {
+   "atk": 1,
+   "def": 1,
+   "hp": 1,
+   "spa": 1,
+   "spd": 1,
+   "spe": 1
+  },
+  "raises": null,
+  "summary": "neutral - no stat change"
+ },
+ "Timid": {
+  "lowers": "atk",
+  "multipliers": {
+   "atk": 0.9,
+   "def": 1,
+   "hp": 1,
+   "spa": 1,
+   "spd": 1,
+   "spe": 1.1
+  },
+  "raises": "spe",
+  "summary": "+Spe, -Atk"
+ }
+}

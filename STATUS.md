@@ -1,0 +1,603 @@
+# Status — 2026-09-09
+
+Where the project stands, and what comes next.
+
+---
+
+## How the whole thing works
+
+Five sources are scraped into local JSON, then joined by one query tool.
+
+```
+  Serebii ─────────┐
+  pokebase.app ────┤
+  pokedata.ovh ────┼──► data/raw/  (cached HTML+JSON, 164 MB, 2300 files)
+  Pikalytics ──────┤          │
+  Smogon ──────────┤          ▼
+  Smogon calc ─────┘   (the executable one: engine + 406 sets)
+                       build_db.py / fetch_*.py
+                              │
+                    data/db/    (rules: what exists, what it does)
+                    data/meta/  (metagame: what people actually run)
+                              │
+                              ▼
+                        scripts/query.py  ◄── inventory/*.json (what YOU own)
+```
+
+Nothing is answered from general Pokemon knowledge. Champions rebalances moves,
+so console-game numbers are wrong here; every figure comes from a
+Champions-specific source. `CLAUDE.md` holds the rules, gotchas and playstyle
+notes — read it first.
+
+### The scripts
+
+| Script | Does |
+|---|---|
+| `fetch_serebii.py` | Dex, movedex, rules pages (the ground truth) |
+| `build_db.py` | Turns that HTML into `data/db/*.json` |
+| `fetch_pokebase.py` | Ladder usage + speed tiers |
+| `fetch_pikalytics.py` | Win rates, top SP spreads, 2-/3-Pokemon cores |
+| `fetch_smogon.py` | Written VGC analyses (VGC formats only) |
+| `fetch_smogon_calc.py` | Smogon's Champions damage engine (`--check` for drift) |
+| `smogon_engine.js` | Runs that engine locally; `damage.py --engine smogon` |
+| `fetch_tournament.py` | Worlds standings + full teamlists |
+| `query.py` | Every lookup — the only thing you normally run |
+| `build_typechart.py` | Type chart + natures, cross-checked against Serebii |
+| `audit_forms.py` | Checks no form/gender/Mega went missing |
+| `test_norm.py` | Checks names match across the five sources |
+
+### Everyday commands
+
+```bash
+python scripts/query.py brief <pokemon>     # dossier: all sources at once
+python scripts/query.py build [pokemon]     # your builds, rule-checked
+python scripts/query.py megas               # what you can actually field
+python scripts/query.py owned               # your box vs the meta
+python scripts/query.py usage --top 30
+python scripts/query.py worlds --usage --top 64
+python scripts/query.py worlds --usage --division all   # Masters/Seniors/Juniors
+python scripts/query.py moves --flag sound
+python scripts/query.py moves --effect "protects itself" --learners
+python scripts/query.py counter-priority
+python scripts/query.py speed --min 100
+```
+
+---
+
+## What is loaded
+
+**Regulation M-C is live (2026-09-09) and loaded.** Rules data is current;
+usage data is still M-B, because the M-C ladder has not run yet. Full write-up in
+`analysis/regulation_m_c.md`.
+
+| Data | Count | M-C change |
+|---|---|---|
+| Pokemon forms (**81 Mega**) | **340** | +32 (23 species, 3 forms, 6 Megas) |
+| Moves (**514 useable** in Champions) | 901 | +15 useable |
+| Abilities | **215** | +15 |
+| Items | **199** | +18 (6 stones, 12 held) |
+| Learnsets | **256** | +25 |
+| Ladder usage — Pokemon / moves / abilities / items | 321 / 501 / 192 / 139 |
+| Speed tiers | 84 |
+| Smogon Pokemon (**53 with written VGC analysis**) | 323 |
+| Pikalytics — tournaments / ladder | 243 / 231 |
+| **Worlds 2026 Masters** — final, players / teamlists | **395 / 394** |
+| **Worlds 2026 Seniors** — final, players / teamlists | **139 / 137** |
+| **Worlds 2026 Juniors** — final, players / teamlists | **111 / 111** |
+
+Health after the M-C refresh: `audit_forms.py` clean (no collisions, nothing
+missing), `test_norm.py` all pass (**44** name groups collapse, **21** pairs stay
+distinct), `damage.py --selftest` all benchmarks pass (20/20 vs Smogon's engine).
+Cross-validated against pokebase: all **340** of our forms match a pokebase
+entry, and every Pokemon pokebase tags Champions-legal is in our dex — zero
+unmatched either way.
+
+---
+
+## Regulation M-C — what landed (2026-09-09)
+
+The three sources did **not** update together, and that shaped the whole job:
+
+| Source | State on launch day |
+|---|---|
+| **Serebii** | Fully updated — every new species, Mega, item, ability and move came from here |
+| **pokebase** | **Dex** updated (carries an explicit `regulationSets: M-C` tag); **usage** still empty |
+| **Smogon calc** | Partial — has the three Z Megas, **not** the four new species |
+| **Smogon dump-basics** | Not updated (still 323 / 500 / 151 / 201) |
+| **Pikalytics** | Not updated (still stamped 2026-05) |
+
+Highlights, all verified locally rather than taken from the announcement:
+
+- **23 new species, 6 new Megas.** Three Megas are **second** Megas on species
+  that already had one — the new **Z** suffix: Mega Garchomp Z (pure Dragon,
+  Levitate), Mega Absol Z (Dark/Ghost, Sharpness), Mega Lucario Z (Aura Guard,
+  a brand-new ability). All three sit at exactly **Speed 151**.
+- **No move was rebalanced.** But **Slash was added to 29 already-legal
+  Pokemon** (7 of them in the player's box), and **Archaludon lost Metal Burst
+  and Mirror Coat** — the only removal in the regulation, and it hits a Pokemon
+  the player owns.
+- **Terrain grew a support cast.** It was not new (Mega Raichu X had Electric
+  Surge, the four terrain moves were useable), but M-C adds Grassy Surge,
+  Psychic Surge, a second Electric Surge and Seed Sower, plus the four Seeds and
+  Terrain Extender — six items that did not exist before.
+- **The move watchlist fired.** Snipe Shot got its first learner (Inteleon) and
+  went useable, exactly the mechanism `analysis/smogon_calc.md` predicted.
+  Eleven stubs remain.
+
+### Four bugs this refresh exposed and fixed
+
+They are listed because each one silently produced wrong output, and three
+predate M-C:
+
+1. **`build_db.py` did not understand the `Z` Mega suffix.** Mega Garchomp Z
+   parsed as its own species ("Garchomp Z") instead of a second Mega of
+   Garchomp, so `query.py owned` never offered it on a Pokemon the player owns.
+   The regex knew `X` and `Y` only.
+2. **`stone_for()` matched stones by name prefix**, so "Dragon Fang" answered
+   for Dragonite and "Sharp Beak" for Sharpedo. Now filtered on `is_mega_stone`;
+   the mapping is a verified **1:1 over 81 Megas and 81 stones**.
+3. **Stone ownership was reported per species, not per Mega.** With two Megas on
+   one species that is wrong: the player owns Garchompite but not Garchompite Z.
+   The box view now prints each Mega line with its own stone status.
+4. **Ability text swallowed the next section header** ("Female Abilities:",
+   "Hisuian Form Abilities:") — 4 abilities affected, 3 of them pre-existing.
+
+Plus one join fix: Serebii spells Toxtricity's Low Key form `Toxtricity-L` while
+pokebase spells it out, and `norm()` could not bridge that without collapsing
+Low Key into Amped. Handled with an `_ALIASES` entry and locked into
+`test_norm.py`.
+
+## What the toolchain gained on 2026-09-04
+
+**`scripts/damage.py` — a real damage calculator.** The formula was not in any of
+the five sources; it came out of the JS bundle behind pokebase.app's own
+`damage-calc`, which ships `@smogon/calc` driven with Champions data.
+
+```
+stat        = floor((base + clamp(SP,0,32) + (75 if HP else 20)) * nature)
+base damage = floor(floor(floor(2*L/5+2) * power * A / D) / 50) + 2     at LEVEL 50
+```
+
+`python scripts/damage.py --selftest` validates it against three survival
+benchmarks Smogon states in prose — **two of which it hits by a single HP**. Run
+it after any change. It also knows the doubles **x0.75 spread modifier**, Sheer
+Force / Sharpness / Life Orb (each at the right stage), Body Press attacking off
+Defense, Foul Play off the target's Attack, and defensive boosts that only apply
+to the stat they raise.
+
+**`data/db/weights.json` — 1446 species weights.** Heavy Slam, Heat Crash, Low
+Kick and Grass Knot are stored at power 1 in `moves.json` because their real
+power is derived from weight; without this they calculated as nothing.
+
+**`query.py move <name>`** prints Serebii's text *and* Smogon's side by side.
+It exists because reading one rules source produced two wrong answers in a row:
+Serebii names a status without defining it ("Sealing Off"), and only
+`smogon_basics.json` gives the mechanic and durations. **`query.py moves
+--owned`** adds a column naming the box Pokemon that learn each move.
+
+**`fetch_tournament.py` uses the event JSON export**, one request per division
+instead of 400, with final placings and complete natures.
+
+---
+
+## The sixth source: Smogon's own Champions engine
+
+Smogon publishes a Champions-specific damage calculator, and Champions is wired
+into it as its own generation (gen 0) with a dedicated mechanics file, roster,
+move table and 406 sets. It is the only **executable** source we have, and it
+independently confirms both formulas this project rests on, character for
+character.
+
+It is vendored under `data/raw/smogon_calc/` and runs locally under Node with no
+install. Full write-up in `analysis/smogon_calc.md`.
+
+```bash
+python scripts/damage.py --selftest              # 3 benchmarks + 16 vs the engine
+python scripts/damage.py <a> <move> <d> --engine smogon
+python scripts/fetch_smogon_calc.py --check      # has upstream moved?
+```
+
+**What it changed here.** A 909-case diff between the two engines found seven
+real errors in `damage.py`, all now fixed — parity went from 872/909 (96.0%) to
+**895/909 (98.5%)**, and every one of the 14 remaining differences prints a
+`CONDITIONAL:` warning naming why. Only four moves ever diverge, and each needs
+a fact nobody supplied: Acrobatics and Poltergeist (who holds an item), Steel
+Roller (terrain) and Payback (turn order). The errors that mattered:
+
+- **Multi-hit moves counted as one hit.** Mega Aerodactyl's Dual Wingbeat read
+  62-74 and "no OHKO"; it is really 160-192 and a 31% OHKO. Hit counts are now
+  parsed out of Serebii's own effect text, so a future move is picked up free.
+- **Aegislash attacked with 50 Attack instead of 140.** Stance Change flips it
+  to Blade Forme the moment it attacks. Added as `battle_forms` on the base row
+  (so no join breaks), alongside Palafin-Hero and the three Gourgeist sizes.
+- **Psyshock hit the wrong defence** — it is Special but attacks Defense.
+- **Four spread moves were not detected as spread** and came out a third high,
+  because Serebii spells the target field four ways and gets Misty Explosion
+  wrong outright.
+- **Foul Play assumed a max-Attack Adamant target**, which is wrong about
+  exactly the bulky targets it is aimed at.
+- **Raging Bull was calculated as Normal.** Its type comes from the Tauros form
+  using it, so on Kingambit it is 120-144, not 20-24 — a factor of six. Aura
+  Wheel is the same shape.
+- Always-crit moves missed their x1.5; screens were not modelled at all;
+  Meteor Beam's charging +1 Sp. Atk was not applied.
+
+**What it deliberately does NOT do:** implement abilities. The engine models 46
+attacker-side and 65 defender-side; copying those into Python would drift the
+moment Smogon updates. `damage.py` names any ability in play instead and points
+at `--engine smogon`. Biggest one in the box: Basculegion's **Adaptability**
+makes Wave Crash on Kingambit 108-128, not 81-96.
+
+---
+
+## Traps this project has already fallen into
+
+Recorded so they are not repeated. Every one produced a wrong answer that had to
+be retracted.
+
+- **A round number is not a swiss round.** Worlds sat at "R15" because it was
+  the Final. Read `round_label` and `complete`.
+- **`effect_rate` is not a secondary-effect flag.** It reads 4.17 (the crit
+  rate) for moves whose secondary is *guaranteed*, so filtering on it silently
+  drops Lunge, Skitter Smack and Rock Tomb — and wrongly includes Stone Edge,
+  whose crit-ratio boost Sheer Force does **not** count. Use the rules, not the
+  field.
+- **Type volume must be counted after conversions.** Pixilate, Refrigerate and
+  the like retype Normal moves, and Weather Ball becomes the team's weather. Raw
+  counting says Normal is the most-thrown type (1379); corrected, Fairy leads at
+  1070 and Normal's real *damage* share is about 105 slots — the rest is Fake
+  Out and dead Weather Balls.
+- **A defender holding a Mega Stone is the MEGA when you calculate.** 291 of 292
+  Worlds Charizard hold Charizardite Y; calculating against base Charizard
+  overstates the damage.
+- **An immunity is 0, not 1.** The minimum-1 floor only applies to a move that
+  connects.
+- **Never assert a matchup without running the calculator.** Type multipliers
+  alone said Explosion would not clean the top shell; the real numbers said it
+  OHKOes every neutral target through full bulk investment. Both halves of that
+  mattered.
+
+---
+
+## Worlds, all three divisions
+
+Masters, Seniors and Juniors run the same roster and the same regulation, so the
+kids' divisions are a second, independent read on the format — 250 more teams
+that nobody copied from the Masters stream. They are **not** pooled into one
+percentage: `--division all` prints them side by side.
+
+**Round numbers are not swiss rounds.** The top cut keeps counting up from the
+last swiss round — Masters ran 11 swiss and then 12=TopCut, 13=T8, 14=T4,
+15=Final — so "round 15" is the trophy match, not an unfinished swiss. The data
+files now carry `round_label` and `complete`; read those, never the bare number.
+
+```bash
+python scripts/query.py worlds --usage --division all
+python scripts/query.py worlds --usage --division seniors --limit 40
+python scripts/query.py worlds --division juniors --top 8
+```
+
+What the split says (share of teams in each division):
+
+| Pokemon | Masters | Seniors | Juniors |
+|---|---|---|---|
+| Kingambit | 52.7% | 52.5% | 51.4% |
+| Charizard | 45.1% | 47.5% | 43.2% |
+| Garchomp | 39.5% | 48.2% | 45.9% |
+| Basculegion [Male] | 33.9% | 36.7% | 43.2% |
+| **Incineroar** | **41.3%** | **29.5%** | **22.5%** |
+| Whimsicott | 24.1% | 32.4% | 33.3% |
+
+The shell is the same everywhere — Kingambit, Charizard, Garchomp, Basculegion
+lead all three. What moves is the support slot: Masters answers the format with
+**Incineroar** (41%, nearly double the Juniors figure), the kids answer it with
+**Whimsicott** speed control. Venusaur, Sinistcha and Hisuian Arcanine are also
+Masters-skewed; Aerodactyl, Froslass, Glimmora and Torkoal skew young.
+
+Winners: **Masters** Takuma Yamazaki [JP] 13-2-0 (Floette, Basculegion,
+Kingambit, Dragonite, Garchomp, Sneasler) — **Seniors** Vikram T. [UK] 12-2-0 —
+**Juniors** kazuki k. [JP] 11-2-0.
+
+Every Champions rule the database rests on holds in all three divisions, which is
+worth more than the Masters check alone:
+
+- **Item Clause**: 0 repeats in 636 teams with a full item list.
+- **Two Mega Stones is the norm, not one**: 292/395 Masters, 114/137 Seniors and
+  94/111 Juniors carry two — three Masters teams carry three.
+
+---
+
+## Champions rules established so far
+
+- **VGC = doubles**, bring 6 / pick 4.
+- **Stat Points: 66 total, max 32 per stat.** Replaces EVs.
+- **Item Clause**: no two Pokemon on a team share an item. Verified across all
+  three Worlds divisions — 0 of 636 teams repeat one (388 Masters, 137 Seniors,
+  111 Juniors). So items are decided at team level, not per build.
+- **One Mega Evolution per battle**, though a team may carry several stones
+  (292 of 395 Worlds teams carried two). The second stone is matchup choice.
+- **Contrary inverts every stat change, from moves and abilities alike**
+  (confirmed in game 2026-08-29). Mega Staraptor therefore *gains* +1 Attack
+  from an opposing Intimidate, and its own Close Combat is +1 Def / +1 SpD.
+  Defiant and Competitive are a different mechanic, not the inverse of Contrary:
+  one stat drop gives +2 Attack or +2 Sp. Atk. Any restriction on them comes
+  from the scraped ability text, not from the player.
+- **Intimidate re-triggers on Mega Evolution**, so Mega Scrafty applies it
+  twice: −2 Attack on both opponents from one slot.
+- **Light Clay extends Aurora Veil**, not just Light Screen and Reflect.
+- **Training costs (observed in-game, Serebii is stale)**: SP change 5 VP,
+  move 250 VP, nature 500 VP, ability 500 VP.
+
+---
+
+## Player state
+
+Master Ball Tier Rank 3. The box, the stones, the items and the VP balance live
+in `inventory/inventory.json` and are printed by `python scripts/query.py owned`
+— they are deliberately not copied here, because the two would drift (this
+paragraph did: it still claimed 48/50 and 34 permanent slots).
+
+Reached Master Rank 3 with an off-meta Trick Room team built on Mega
+Eelektross. Prefers **special main attackers** — Intimidate is on 57.5% of
+Worlds teams and only touches Attack.
+
+### Builds recorded (20) — registration complete
+
+Every Pokemon the player has actually trained is now in `inventory/builds.json`.
+Print them with `python scripts/query.py build [pokemon]`, which rule-checks each
+spread as it goes. Do not restate them here — the two copies would drift.
+
+19 species, 20 builds (Incineroar ×2, same set, one tuned to Defense and one to
+Sp. Def): Aerodactyl, Basculegion, Ceruledge, Eelektross, Farigiraf, Froslass,
+Garchomp, Gholdengo, Incineroar, Jolteon, Kingambit, Maushold, Ninetales-Alola,
+Rotom-Wash, Samurott-Hisui, Sceptile, Scrafty, Staraptor, Sylveon.
+
+Items are deliberately absent: the player decides them once the six of a team are
+fixed. Mega Stones live in each build's `mega` field.
+
+**Untrained permanents (14)** — raw material, nothing planned for them yet. The
+percentage is how much the OPPOSITION runs them on the ladder, which is the
+reason to know they are sitting in the box: Sneasler 22.6%, Archaludon 14.9%,
+Raichu 10.5%, Tyranitar 7.6%, Dragonite 5.1%, Vivillon 2.3%, Meowscarada 1.3%,
+Chandelure 1.0%, Aggron 0.4%, Empoleon 0.3%, Arcanine 0.3%, Quaquaval 0.2%,
+Pikachu 0.1%, Machamp 0.1%.
+
+---
+
+## Next session
+
+1. **Assemble teams from the 20 builds.** Items get argued at that point and
+   only then — six slots, no repeats. Megas are not a constraint to minimise:
+   a team may carry two stones and choose in-game which one evolves.
+2. **Build outward from the interactions the box already has**, not from
+   tournament lists:
+   - **The Charm install.** Ten owned Pokemon learn Charm, and on Contrary
+     Mega Staraptor it is +2 Attack instead of -2. Maushold is the best carrier:
+     Charm, Friend Guard (-25% damage to the ally) and Follow Me in one slot.
+   - **Mega Staraptor as an Intimidate trap.** Contrary turns every opposing
+     Intimidate into +1 Attack, and 57.5% of Worlds teams carry one.
+   - **Mega Scrafty's double Intimidate**, -2 Attack on both opponents from one
+     slot, and Swords Dance out-scaling anything Intimidate does back.
+   - **Spread moves that hit the ally**: Earthquake (Garchomp) and Discharge
+     (Rotom-Wash, Jolteon) target All Adjacent Pokemon. Garchomp is immune to
+     Electric and Mega Sceptile's Lightning Rod converts it into +1 Sp. Atk, so
+     the pairing is a choice, not an accident.
+3. Decide whether any of the 14 untrained permanents earns the VP.
+
+### Open questions
+
+- Farigiraf **Modest → Quiet** costs 500 VP. Under Trick Room, Quiet would
+  outspeed neutral base-60s (Sylveon 25%, Incineroar 41% of Worlds teams).
+
+### Worth refreshing
+
+**Come back to the metagame sources in a few days.** M-C's rules are loaded, but
+three sources had not caught up on launch day and each one is worth a re-pull
+once the ladder has run:
+
+```bash
+python scripts/fetch_smogon_calc.py --check   # has it added the 4 new species?
+python scripts/fetch_pokebase.py --force      # first real M-C usage + speed tiers
+python scripts/fetch_smogon.py --force        # dump-basics still 323/500/151/201
+python scripts/fetch_pikalytics.py --force    # still stamped 2026-05
+```
+
+Until then: **`--engine smogon` fails on Baxcalibur, Salamence, Golisopod and
+Rillaboom** ("Smogon's Champions roster has no ..."), because its roster only
+gained the three Z Megas. Our own `damage.py` handles them from our database, so
+use the local engine for the new species and say which one produced the number.
+
+**Worlds 2026 is over and all three divisions are captured through the Final.**
+Nothing is left to pull for that event; the commands below are for the next one.
+
+```bash
+python scripts/fetch_tournament.py                     # Masters
+python scripts/fetch_tournament.py --division seniors
+python scripts/fetch_tournament.py --division juniors
+```
+
+Only **3 players of 645** have no teamlist published at all (1 Masters,
+2 Seniors). Everything else is complete, nature included.
+
+## The sources, cross-checked on the numbers (2026-09-10)
+
+`python scripts/audit_sources.py` puts every quantitative field of every move
+and item beside each source that states it. **1473 numbers agree; four do not,
+and two cells Serebii leaves empty another source fills:**
+
+| Move | Field | Serebii | other |
+|---|---|---|---|
+| Slash | BP | 80 | **70** (pokebase) |
+| Snipe Shot | BP | 85 | **80** (pokebase) |
+| Night Slash | PP | 20 | **16** (pokebase) |
+| Meteor Assault | BP | 150 | **170** (Smogon calc) |
+| Double Shock | PP / accuracy | *empty* | **8 / 100** (pokebase) |
+
+These are for the player to settle in game - his observation outranks every
+scraped source - and Slash matters most, because M-C handed it to 29 already
+legal Pokemon, seven of them in his box.
+
+**Bulbapedia and WikiDex are deliberately not in that audit.** They are
+main-series canon and Champions rebalances: Body Slam is 16 PP here, Aerial Ace
+60 BP at 101 accuracy. Taking a number off either would import a value from a
+different game. CLAUDE.md already allows them for a MECHANIC, after checking
+Champions did not change it - which is exactly how the status table below is
+built.
+
+**Statuses were the missing fourth text area** - moves, abilities, items and
+then nothing about the conditions that decide turns. Serebii has a Champions
+page for it and it is a REBALANCE table, listing only what changed:
+
+- **Paralysis: 12.5% to lose the turn, not 25%** - halved. Speed still 50%.
+- **Freeze: 25% thaw, and only on a turn it tries to move** (was 20%).
+- **Sleep: 33.3% to wake on turn 2, 100% on turn 3** - the 2-4 turn roll is gone.
+
+`data/db/statuses.json` carries those with `source: serebii`, burn's x0.5 on
+physical attacks with `source: measured` (it comes from the engine, not from
+memory), and the five that no Champions source states - burn chip, poison,
+toxic, confusion, flinch - as `champions_confirmed: false` with the
+main-series number, waiting to be checked in game.
+
+### The status column, and what it unblocked
+
+`data/db/statuses.json` now also carries **which move inflicts which status** -
+the column this project went without twice. It is derived from both
+descriptions at once, which is what makes it possible; the traps are all real
+and all handled:
+
+- **Electric Terrain PREVENTS sleep** and would land in the sleep list on any
+  naive match; **Snore, Rest and Sleep Talk REQUIRE it**.
+- **Venoshock** says "poisonous liquid" (flavour) and "doubled if the target is
+  poisoned" (a condition, not a cause).
+- **Ice Shard** "flash-freezes chunks of ice" - the status word has to sit
+  beside the TARGET, not beside the user's flavour.
+
+88 moves classify: 20 flinch, 18 burn, 15 paralyse, 11 poison, 10 confuse,
+6 sleep, 6 freeze, 2 badly poison. Two things that were blocked on it are now
+done:
+
+- **The ability table went 129 -> 142 rules.** Insomnia, Vital Spirit, Sweet
+  Veil, Limber, Immunity, Magma Armor, Own Tempo, Leaf Guard, Flower Veil,
+  Synchronize and Corrosion all have real move lists; the deliberate-exclusion
+  bucket dropped from 21 to 10.
+- **The status berries link.** Cheri Berry points at the 15 moves that
+  paralyse, Lum Berry at all 81 that status anything. Item links: 75 of 85, and
+  the 10 left are about HP, PP or switching - nothing to do with a move.
+
+**Smogon's calculator has not moved upstream** (`fetch_smogon_calc.py --check`:
+23 files unchanged since 2026-09-09), so its roster still lacks the four M-C
+species and `--engine smogon` still fails on Baxcalibur, Salamence, Golisopod
+and Rillaboom.
+
+### One class of bug, hunted across the project (2026-09-10)
+
+Three landed in a day and none was visible by reading the screen. They are one
+fault: **a lookup that silently returns the wrong thing instead of failing.**
+
+- `STAT_LABEL` was declared **twice** in the page; the second declaration, an
+  array, won at runtime, so every caller asking by name got `undefined` - six
+  unlabelled numbers on a Pokemon's sheet, and blank captions on the SP rows.
+- `learnset()` resolved the **species before the form**: 25 regional forms were
+  handed their base form's movepool (Samurott-Hisui lost Ceaseless Edge and
+  Sucker Punch, Rotom-Wash lost Hydro Pump) and four forms resolved to nothing.
+- `megasFor()` had the same fault one table over, offering **Raichu-Alola** the
+  two Mega Raichu and **Slowbro-Galar** the Mega Slowbro. Smogon's roster states
+  which form each Mega belongs to, and it is not always the base one: Mega
+  Floette belongs to Floette-**Eternal**.
+
+Two sweeps now hunt the shape rather than the symptom, and both are in
+`refresh.py`:
+
+```bash
+node tests/consistencytest.js     # the page: 24 checks
+python scripts/audit_lookups.py   # the scripts: 33 checks
+```
+
+They check the code for the smells (no name declared twice, no focus guard
+outside the one form view) and then every table for holes - every form resolves
+a movepool, a type colour, ability text and bucket, a stone, a dex number, an
+engine name; every derived index points at something that exists.
+
+**The Python sweep found two more on the day it was written:**
+
+- `species_norm` stripped the Mega suffixes `x` and `y` but **not `z`**, so
+  M-C's three Z Megas matched no base species and `query.py pokemon "Mega
+  Garchomp Z"` listed no moves at all. Locked into `test_norm.py`.
+- Two **phantom ability rules** ("Thermal Exchange 2", "Purifying Salt 2") left
+  behind in `RULES`. The audit already printed a warning about rules for
+  abilities that do not exist - it just printed it, and it was missed in a
+  scroll. `--audit` exits non-zero now.
+
+## Where we stopped, 2026-09-10/11
+
+**Deployed and verified live**, version `2fa6b395` at
+champions-ledger.cristobal-ruiz-perez-a.workers.dev - the served page is byte
+for byte the local build. Everything below is in `refresh.py`, so a regulation
+drop re-runs all of it.
+
+### What the app gained
+
+- **Ability badges finished**: 129 -> **140 rules**, the audit's "mentions
+  moves, no rule" bucket at 0, and the rest listed with reasons.
+- **Spread moves labelled**, and the 16 that hit your own ally flagged
+  separately - in the build sheet, the move picker and the calculator.
+- **Filters that stack** in every move list (build editor, search, a Pokemon's
+  own movepool): sort by BP x acc / A-Z / PP / Type, chips for category,
+  traits (AND) and type, with a count line.
+- **Abilities bucketed ten ways** in the search, the two move-related buckets
+  being the rule table itself.
+- **"In my box" split in two**: In Champions / In HOME.
+- **Types ask two questions**: ALL of these (a dual type, max two) or ANY of
+  them (a group), switchable from the filter bar.
+- **Every move and ability now carries text**, picked per entry between
+  Serebii and pokebase by which one states more - and the search reads it, so
+  "critical" finds the 21 crit-boosters and "burn" the ones that burn.
+- **Items tab**: all 118 in the game's own four groups, with effect text, VP
+  price and owned state, plus **what each item serves** (Heat Rock -> Sunny Day
+  AND Drought) and a **Statuses** pane carrying Champions' own rebalance.
+- **A build belongs to a Pokemon**: it follows its box row, is kept-but-inactive
+  when parked in HOME, and dies with a release. No more orphans.
+
+### Bugs found and fixed (all by the player, then swept for)
+
+`STAT_LABEL` declared twice; `learnset()` and `megasFor()` resolving the
+species before the form; the Z Megas with no movepool in Python; two phantom
+ability rules; `Indeedee-F` vs `Indeedee-Female` and Squawkabilly's plumages
+listed as separate Pokemon. Two permanent sweeps now hunt the shape:
+`node tests/consistencytest.js` and `python scripts/audit_lookups.py`.
+
+### The ledger, as of 2026-09-11
+
+Box **48/50**, **8000 VP**, 31 permanents (every one Champions origin) and 17
+rentals. HOME holds **84 / 78 species**. GTS: Chesnaught -> Gholdengo and
+Pidgeot -> Crabominable pending, **one slot free**.
+
+**Next, in the order that costs least** (answered 2026-09-11, on request):
+
+1. **Release rentals first** - they cannot be trained and expire anyway. The
+   Toxapex rental is redundant now that HOME has one; Garganacl 0.1%,
+   Machamp 0.1%, Hatterene 0.7%, Dragapult 0.7%, Chandelure 0.9% and
+   Meganium 0.9% are the least-played of the rest.
+2. **Then the eight replacements already half-done** - Eelektross, Farigiraf,
+   Froslass, Glalie, Jolteon, Ninetales-Alola, Scrafty, Staraptor all have a
+   HOME copy. Order matters: **import, re-enter the build while the old one is
+   still on screen, then release the stuck twin** - releasing deletes the
+   build. ~2300 VP each, so three fit in 8000. Eelektross first.
+3. **Do not release Tyranitar 600 or Archaludon 600.** With Melmetal blocked
+   there is no 600-tier chip in HOME, so neither can be traded back.
+   Vivillon 411 is the only cheap permanent to let go.
+
+**The icon was invisible, not missing** (player, 2026-09-11). It was being
+served fine - the design was a dark frame on the app's near-black ground, so
+86% of its pixels sat within a few points of black, average luminance 38/255:
+a black square on a phone home screen. Rewritten full-bleed in the teal accent
+with the mark in dark ink (luminance now **147/255**), kept inside the
+**maskable safe zone** - the old frame sat exactly on the line Android crops -
+and the manifest declares `any` and `maskable` separately instead of both on
+one file. Added `apple-touch-icon.png` at 180x180 with no alpha, which is what
+iOS asks for. Deployed as `388a099a`.
+
+**Still open:** a service worker for instant repeat opens, the same filter/cap
+treatment for the Champions Box list that the HOME list got, and the four
+numbers the sources disagree on (Slash, Snipe Shot, Night Slash, Meteor
+Assault) which only the game can settle.

@@ -1,0 +1,2087 @@
+{
+ "source": "pokebase.app/pokemon-champions",
+ "game": "Pokemon Champions",
+ "fetched": "2026-09-11",
+ "count": 297,
+ "rows": [
+  {
+   "rank": 1,
+   "slug": "protect",
+   "name": "Protect",
+   "usage_percent": 15.7,
+   "description": "Protects the user from most targeted moves for the turn. Each consecutive use has a 1/3 chance of succeeding."
+  },
+  {
+   "rank": 2,
+   "slug": "fake-out",
+   "name": "Fake Out",
+   "usage_percent": 5.4,
+   "description": "This attack hits first and makes the target flinch. It works only on the first turn each time the user enters battle."
+  },
+  {
+   "rank": 3,
+   "slug": "close-combat",
+   "name": "Close Combat",
+   "usage_percent": 2.9,
+   "description": "Lowers the user’s Defense and Sp. Def by 1 stage after dealing damage."
+  },
+  {
+   "rank": 4,
+   "slug": "tailwind",
+   "name": "Tailwind",
+   "usage_percent": 2.3,
+   "description": "The user whips up a turbulent whirlwind that doubles the Speed stats of itself and its allies for four turns."
+  },
+  {
+   "rank": 5,
+   "slug": "hyper-voice",
+   "name": "Hyper Voice",
+   "usage_percent": 2.2,
+   "description": "The user attacks by letting loose a horribly loud, resounding cry."
+  },
+  {
+   "rank": 6,
+   "slug": "trick-room",
+   "name": "Trick Room",
+   "usage_percent": 2.2,
+   "description": "The user creates a bizarre area in which slower Pokémon get to move first for five turns."
+  },
+  {
+   "rank": 7,
+   "slug": "flare-blitz",
+   "name": "Flare Blitz",
+   "usage_percent": 2.0,
+   "description": "Has a 10% chance to burn the target. Thaws the user if frozen. The user takes recoil damage equal to 1/3 of the damage dealt."
+  },
+  {
+   "rank": 8,
+   "slug": "grassy-glide",
+   "name": "Grassy Glide",
+   "usage_percent": 2.0,
+   "description": "Gliding on the ground, the user attacks the target. This move always goes first on Grassy Terrain."
+  },
+  {
+   "rank": 9,
+   "slug": "rock-slide",
+   "name": "Rock Slide",
+   "usage_percent": 2.0,
+   "description": "Hurls large boulders at the targets. Has a 30% chance to make them flinch."
+  },
+  {
+   "rank": 10,
+   "slug": "iron-head",
+   "name": "Iron Head",
+   "usage_percent": 1.9,
+   "description": "The user slams the target with its steel-hard head. Has a 20% chance of making the target flinch."
+  },
+  {
+   "rank": 11,
+   "slug": "wood-hammer",
+   "name": "Wood Hammer",
+   "usage_percent": 1.9,
+   "description": "The user slams its rugged body into the target to attack. This also damages the user quite a lot."
+  },
+  {
+   "rank": 12,
+   "slug": "dire-claw",
+   "name": "Dire Claw",
+   "usage_percent": 1.7,
+   "description": "The user lashes out at the target with ruinous claws. Has a 30% chance of leaving the target poisoned paralyzed or asleep."
+  },
+  {
+   "rank": 13,
+   "slug": "sucker-punch",
+   "name": "Sucker Punch",
+   "usage_percent": 1.7,
+   "description": "This move enables the user to attack first. This move fails if the target is not readying an attack."
+  },
+  {
+   "rank": 14,
+   "slug": "parting-shot",
+   "name": "Parting Shot",
+   "usage_percent": 1.6,
+   "description": "Lowers the target’s Attack and Sp. Atk by 1 stage, then switches the user out."
+  },
+  {
+   "rank": 15,
+   "slug": "kowtow-cleave",
+   "name": "Kowtow Cleave",
+   "usage_percent": 1.5,
+   "description": "The user slashes at the target after kowtowing to make the target let down its guard. This attack never misses."
+  },
+  {
+   "rank": 16,
+   "slug": "moonblast",
+   "name": "Moonblast",
+   "usage_percent": 1.5,
+   "description": "Borrowing the power of the moon, the user attacks the target. Has a 10% chance of lowering the target&#x27;s Sp. Atk stat by 1 stage."
+  },
+  {
+   "rank": 17,
+   "slug": "u-turn",
+   "name": "U-turn",
+   "usage_percent": 1.5,
+   "description": "After making its attack, the user rushes back to switch places with a party Pokémon in waiting."
+  },
+  {
+   "rank": 18,
+   "slug": "dazzling-gleam",
+   "name": "Dazzling Gleam",
+   "usage_percent": 1.4,
+   "description": "The user damages opposing Pokémon by emitting a powerful flash."
+  },
+  {
+   "rank": 19,
+   "slug": "aqua-jet",
+   "name": "Aqua Jet",
+   "usage_percent": 1.3,
+   "description": "The user lunges at the target to inflict damage, moving at blinding speed. This move always goes first."
+  },
+  {
+   "rank": 20,
+   "slug": "heat-wave",
+   "name": "Heat Wave",
+   "usage_percent": 1.3,
+   "description": "Has a 10% chance to burn targets."
+  },
+  {
+   "rank": 21,
+   "slug": "helping-hand",
+   "name": "Helping Hand",
+   "usage_percent": 1.3,
+   "description": "The user assists an ally by boosting the power of that ally&#x27;s attack."
+  },
+  {
+   "rank": 22,
+   "slug": "wave-crash",
+   "name": "Wave Crash",
+   "usage_percent": 1.3,
+   "description": "The user takes recoil equal to 1/3 of the damage dealt."
+  },
+  {
+   "rank": 23,
+   "slug": "last-respects",
+   "name": "Last Respects",
+   "usage_percent": 1.2,
+   "description": "Power increases by 50 for each fainted Pokémon in the user’s party."
+  },
+  {
+   "rank": 24,
+   "slug": "weather-ball",
+   "name": "Weather Ball",
+   "usage_percent": 1.2,
+   "description": "Changes type based on the weather. In harsh sunlight it becomes Fire, rain Water, snow Ice, and sandstorm Rock. Power doubles while weather is active."
+  },
+  {
+   "rank": 25,
+   "slug": "draco-meteor",
+   "name": "Draco Meteor",
+   "usage_percent": 1.1,
+   "description": "Comets are summoned down from the sky onto the target. The recoil from this move harshly lowers the user’s Sp. Atk stat."
+  },
+  {
+   "rank": 26,
+   "slug": "expanding-force",
+   "name": "Expanding Force",
+   "usage_percent": 1.1,
+   "description": "The user attacks the target with its psychic power. When the ground is Psychic Terrain, this move&#x27;s power is boosted and it damages all opposing Pokémon."
+  },
+  {
+   "rank": 27,
+   "slug": "psychic",
+   "name": "Psychic",
+   "usage_percent": 1.1,
+   "description": "The target is hit with a strong telekinetic force to inflict damage. This may also lower the target’s Sp. Def stat."
+  },
+  {
+   "rank": 28,
+   "slug": "swords-dance",
+   "name": "Swords Dance",
+   "usage_percent": 1.1,
+   "description": "A frenetic dance to uplift the fighting spirit. This sharply boosts the user&#x27;s Attack stat."
+  },
+  {
+   "rank": 29,
+   "slug": "calm-mind",
+   "name": "Calm Mind",
+   "usage_percent": 1.0,
+   "description": "The user quietly focuses its mind and calms its spirit to boost its Sp. Atk and Sp. Def stats."
+  },
+  {
+   "rank": 30,
+   "slug": "high-horsepower",
+   "name": "High Horsepower",
+   "usage_percent": 1.0,
+   "description": "The user fiercely attacks the target using its entire body."
+  },
+  {
+   "rank": 31,
+   "slug": "low-kick",
+   "name": "Low Kick",
+   "usage_percent": 1.0,
+   "description": "A powerful low kick that makes the target fall over. The heavier the target, the greater the move&#x27;s power."
+  },
+  {
+   "rank": 32,
+   "slug": "throat-chop",
+   "name": "Throat Chop",
+   "usage_percent": 1.0,
+   "description": "The user attacks the target&#x27;s throat, and the resultant suffering prevents the target from using sound-based moves for two turns."
+  },
+  {
+   "rank": 33,
+   "slug": "shadow-ball",
+   "name": "Shadow Ball",
+   "usage_percent": 0.9,
+   "description": "Has a 20% chance to lower the target’s Sp. Def by 1 stage."
+  },
+  {
+   "rank": 34,
+   "slug": "dragon-claw",
+   "name": "Dragon Claw",
+   "usage_percent": 0.8,
+   "description": "The user slashes the target with huge, sharp claws to inflict damage."
+  },
+  {
+   "rank": 35,
+   "slug": "follow-me",
+   "name": "Follow Me",
+   "usage_percent": 0.8,
+   "description": "The user draws attention to itself, making all opposing Pokémon take aim only at the user."
+  },
+  {
+   "rank": 36,
+   "slug": "double-edge",
+   "name": "Double-Edge",
+   "usage_percent": 0.7,
+   "description": "A reckless life-risking tackle in which the user rushes the target. This also damages the user quite a lot."
+  },
+  {
+   "rank": 37,
+   "slug": "wide-guard",
+   "name": "Wide Guard",
+   "usage_percent": 0.7,
+   "description": "The user and its allies are protected from wide-ranging attacks for one turn."
+  },
+  {
+   "rank": 38,
+   "slug": "darkest-lariat",
+   "name": "Darkest Lariat",
+   "usage_percent": 0.6,
+   "description": "The user swings both arms and hits the target. The target&#x27;s stat changes don&#x27;t affect the damage inflicted by this move."
+  },
+  {
+   "rank": 39,
+   "slug": "dragon-pulse",
+   "name": "Dragon Pulse",
+   "usage_percent": 0.6,
+   "description": "The target is attacked with a shock wave generated by the user&#x27;s gaping mouth."
+  },
+  {
+   "rank": 40,
+   "slug": "earthquake",
+   "name": "Earthquake",
+   "usage_percent": 0.6,
+   "description": "Deals double damage to underground targets and half damage during Grassy Terrain."
+  },
+  {
+   "rank": 41,
+   "slug": "flash-cannon",
+   "name": "Flash Cannon",
+   "usage_percent": 0.6,
+   "description": "The user gathers all its light energy and releases it at once. This may also lower the target&#x27;s Sp. Def stat."
+  },
+  {
+   "rank": 42,
+   "slug": "hurricane",
+   "name": "Hurricane",
+   "usage_percent": 0.6,
+   "description": "Has a 30% chance of confusing the target. In rain, this move never misses. In harsh sunlight, this move&#x27;s accuracy is 50%. This move can hit a target that has the Sky-High status."
+  },
+  {
+   "rank": 43,
+   "slug": "nasty-plot",
+   "name": "Nasty Plot",
+   "usage_percent": 0.6,
+   "description": "The user stimulates its brain by thinking bad thoughts. This sharply boosts the user&#x27;s Sp. Atk stat."
+  },
+  {
+   "rank": 44,
+   "slug": "blizzard",
+   "name": "Blizzard",
+   "usage_percent": 0.5,
+   "description": "A howling blizzard is summoned to strike opposing Pokémon. This may also leave the opposing Pokémon frozen."
+  },
+  {
+   "rank": 45,
+   "slug": "detect",
+   "name": "Detect",
+   "usage_percent": 0.5,
+   "description": "This move enables the user to protect itself from all attacks. Its chance of failing rises if it is used in succession."
+  },
+  {
+   "rank": 46,
+   "slug": "earth-power",
+   "name": "Earth Power",
+   "usage_percent": 0.5,
+   "description": "The user makes the ground under the target erupt with power. This may also lower the target&#x27;s Sp. Def stat."
+  },
+  {
+   "rank": 47,
+   "slug": "knock-off",
+   "name": "Knock Off",
+   "usage_percent": 0.5,
+   "description": "The user slaps down the target&#x27;s held item, making it unusable for that battle. This move does more damage if the target has a held item."
+  },
+  {
+   "rank": 48,
+   "slug": "leech-life",
+   "name": "Leech Life",
+   "usage_percent": 0.5,
+   "description": "The user drains the target&#x27;s blood. The user&#x27;s HP is restored by up to half the damage taken by the target."
+  },
+  {
+   "rank": 49,
+   "slug": "rage-powder",
+   "name": "Rage Powder",
+   "usage_percent": 0.5,
+   "description": "The user redirects opponents&#x27; moves toward itself. This effect works only on single-target moves. Grass-type Pokémon are unaffected."
+  },
+  {
+   "rank": 50,
+   "slug": "thunderbolt",
+   "name": "Thunderbolt",
+   "usage_percent": 0.5,
+   "description": "The user attacks the target with a strong electric blast. This may also leave the target with paralysis."
+  },
+  {
+   "rank": 51,
+   "slug": "aura-sphere",
+   "name": "Aura Sphere",
+   "usage_percent": 0.4,
+   "description": "The user lets loose a pulse of aura power from deep within its body at the target. This attack never misses."
+  },
+  {
+   "rank": 52,
+   "slug": "encore",
+   "name": "Encore",
+   "usage_percent": 0.4,
+   "description": "The target must use its last successfully used move for the next 3 turns. Encore fails if the target has no valid last move or if its last move cannot be encored (such as Encore, Mimic, Mirror Move, Sketch, Struggle, or Transform). It also fails if the move has no remaining PP."
+  },
+  {
+   "rank": 53,
+   "slug": "eruption",
+   "name": "Eruption",
+   "usage_percent": 0.4,
+   "description": "The user attacks opposing Pokémon with explosive fury. The lower the user&#x27;s HP, the lower the move&#x27;s power."
+  },
+  {
+   "rank": 54,
+   "slug": "flip-turn",
+   "name": "Flip Turn",
+   "usage_percent": 0.4,
+   "description": "After making its attack, the user rushes back to switch places with a party Pokémon in waiting."
+  },
+  {
+   "rank": 55,
+   "slug": "make-it-rain",
+   "name": "Make It Rain",
+   "usage_percent": 0.4,
+   "description": "The user attacks by throwing out a mass of coins. This also lowers the user&#x27;s Sp. Atk stat 2 stages. Money is earned after the battle."
+  },
+  {
+   "rank": 56,
+   "slug": "matcha-gotcha",
+   "name": "Matcha Gotcha",
+   "usage_percent": 0.4,
+   "description": "Restores HP equal to 1/2 of the damage dealt and has a 20% chance to burn targets."
+  },
+  {
+   "rank": 57,
+   "slug": "sludge-bomb",
+   "name": "Sludge Bomb",
+   "usage_percent": 0.4,
+   "description": "The user hurls unsanitary sludge at the target to inflict damage. This may also poison the target."
+  },
+  {
+   "rank": 58,
+   "slug": "stomping-tantrum",
+   "name": "Stomping Tantrum",
+   "usage_percent": 0.4,
+   "description": "Driven by frustration, the user attacks the target. This move&#x27;s power is doubled if the user&#x27;s previous move failed."
+  },
+  {
+   "rank": 59,
+   "slug": "ancient-power",
+   "name": "Ancient Power",
+   "usage_percent": 0.3,
+   "description": "The user attacks with a prehistoric power. This may also boost all the user&#x27;s stats at once."
+  },
+  {
+   "rank": 60,
+   "slug": "aurora-veil",
+   "name": "Aurora Veil",
+   "usage_percent": 0.3,
+   "description": "This move reduces damage from physical and special moves for five turns. This can be used only when it is snowing."
+  },
+  {
+   "rank": 61,
+   "slug": "coaching",
+   "name": "Coaching",
+   "usage_percent": 0.3,
+   "description": "The user properly coaches its ally Pokémon, boosting their Attack and Defense stats."
+  },
+  {
+   "rank": 62,
+   "slug": "dragon-dance",
+   "name": "Dragon Dance",
+   "usage_percent": 0.3,
+   "description": "The user vigorously performs a mystic, powerful dance that boosts its Attack and Speed stats."
+  },
+  {
+   "rank": 63,
+   "slug": "draining-kiss",
+   "name": "Draining Kiss",
+   "usage_percent": 0.3,
+   "description": "The user steals the target&#x27;s HP with a kiss. The user&#x27;s HP is restored by over half the damage taken by the target."
+  },
+  {
+   "rank": 64,
+   "slug": "dual-wingbeat",
+   "name": "Dual Wingbeat",
+   "usage_percent": 0.3,
+   "description": "The user slams the target with its wings to inflict damage. The target is hit twice in a row."
+  },
+  {
+   "rank": 65,
+   "slug": "electro-shot",
+   "name": "Electro Shot",
+   "usage_percent": 0.3,
+   "description": "The user gathers electricity on the first turn, boosting its Sp. Atk stat, then fires a high-voltage shot on the next turn. The shot will be fired immediately in rain."
+  },
+  {
+   "rank": 66,
+   "slug": "extreme-speed",
+   "name": "Extreme Speed",
+   "usage_percent": 0.3,
+   "description": "The user charges the target at blinding speed. This move always goes first."
+  },
+  {
+   "rank": 67,
+   "slug": "first-impression",
+   "name": "First Impression",
+   "usage_percent": 0.3,
+   "description": "Although this move has great power, it works only on the first turn each time the user enters battle."
+  },
+  {
+   "rank": 68,
+   "slug": "flamethrower",
+   "name": "Flamethrower",
+   "usage_percent": 0.3,
+   "description": "The target is scorched with an intense blast of fire. This may also leave the target with a burn."
+  },
+  {
+   "rank": 69,
+   "slug": "glaive-rush",
+   "name": "Glaive Rush",
+   "usage_percent": 0.3,
+   "description": "The user gains the Wide Open status until the next time it takes an action."
+  },
+  {
+   "rank": 70,
+   "slug": "head-smash",
+   "name": "Head Smash",
+   "usage_percent": 0.3,
+   "description": "The user attacks the target with a hazardous full-power headbutt. This also damages the user terribly."
+  },
+  {
+   "rank": 71,
+   "slug": "hyper-beam",
+   "name": "Hyper Beam",
+   "usage_percent": 0.3,
+   "description": "The target is attacked with a powerful beam. The user can&#x27;t move on the next turn."
+  },
+  {
+   "rank": 72,
+   "slug": "ice-punch",
+   "name": "Ice Punch",
+   "usage_percent": 0.3,
+   "description": "The target is attacked with an icy punch. This may also leave the target frozen."
+  },
+  {
+   "rank": 73,
+   "slug": "ice-shard",
+   "name": "Ice Shard",
+   "usage_percent": 0.3,
+   "description": "The user flash-freezes chunks of ice and hurls them at the target. This move always goes first."
+  },
+  {
+   "rank": 74,
+   "slug": "light-screen",
+   "name": "Light Screen",
+   "usage_percent": 0.3,
+   "description": "Halves damage from special moves for the user’s side for 5 turns."
+  },
+  {
+   "rank": 75,
+   "slug": "light-of-ruin",
+   "name": "Light of Ruin",
+   "usage_percent": 0.3,
+   "description": "Drawing power from the Eternal Flower, the user fires a powerful beam of light. This also damages the user quite a lot."
+  },
+  {
+   "rank": 76,
+   "slug": "liquidation",
+   "name": "Liquidation",
+   "usage_percent": 0.3,
+   "description": "The user slams into the target using a full-force blast of water. This may also lower the target&#x27;s Defense stat."
+  },
+  {
+   "rank": 77,
+   "slug": "power-gem",
+   "name": "Power Gem",
+   "usage_percent": 0.3,
+   "description": "The user attacks with a ray of light that sparkles as if it were made of gemstones."
+  },
+  {
+   "rank": 78,
+   "slug": "quick-attack",
+   "name": "Quick Attack",
+   "usage_percent": 0.3,
+   "description": "The user lunges at the target to inflict damage, moving at blinding speed. This move always goes first."
+  },
+  {
+   "rank": 79,
+   "slug": "solar-beam",
+   "name": "Solar Beam",
+   "usage_percent": 0.3,
+   "description": "Charges before attacking, unless harsh sunlight is active. During rain, it requires an extra charge turn and its power is halved. Power is also halved during snow and sandstorm."
+  },
+  {
+   "rank": 80,
+   "slug": "terrain-pulse",
+   "name": "Terrain Pulse",
+   "usage_percent": 0.3,
+   "description": "The user utilizes the energy of the terrain to attack. This move’s type and power change depending on the terrain at the time the move is used."
+  },
+  {
+   "rank": 81,
+   "slug": "acrobatics",
+   "name": "Acrobatics",
+   "usage_percent": 0.2,
+   "description": "The user nimbly strikes the target. This attack does massive damage if the user isn&#x27;t holding an item."
+  },
+  {
+   "rank": 82,
+   "slug": "brave-bird",
+   "name": "Brave Bird",
+   "usage_percent": 0.2,
+   "description": "The user tucks in its wings and charges at a low altitude. This also damages the user quite a lot."
+  },
+  {
+   "rank": 83,
+   "slug": "dark-pulse",
+   "name": "Dark Pulse",
+   "usage_percent": 0.2,
+   "description": "The user releases a horrible aura imbued with ill intent. This may also make the target flinch."
+  },
+  {
+   "rank": 84,
+   "slug": "feint",
+   "name": "Feint",
+   "usage_percent": 0.2,
+   "description": "This attack can hit a target using a move such as Protect or Detect. This also lifts the effects of those moves."
+  },
+  {
+   "rank": 85,
+   "slug": "focus-blast",
+   "name": "Focus Blast",
+   "usage_percent": 0.2,
+   "description": "The user heightens its mental focus and unleashes its power. This may also lower the target&#x27;s Sp. Def stat."
+  },
+  {
+   "rank": 86,
+   "slug": "gunk-shot",
+   "name": "Gunk Shot",
+   "usage_percent": 0.2,
+   "description": "The user shoots filthy garbage at the target to attack. This may also poison the target."
+  },
+  {
+   "rank": 87,
+   "slug": "ice-beam",
+   "name": "Ice Beam",
+   "usage_percent": 0.2,
+   "description": "The target is struck with an icy-cold beam of energy. This may also leave the target frozen."
+  },
+  {
+   "rank": 88,
+   "slug": "icicle-crash",
+   "name": "Icicle Crash",
+   "usage_percent": 0.2,
+   "description": "The user attacks by crashing large icicles onto the target. This may also make the target flinch."
+  },
+  {
+   "rank": 89,
+   "slug": "icy-wind",
+   "name": "Icy Wind",
+   "usage_percent": 0.2,
+   "description": "The user attacks with a gust of chilled air. This also lowers opposing Pokémon&#x27;s Speed stats."
+  },
+  {
+   "rank": 90,
+   "slug": "imprison",
+   "name": "Imprison",
+   "usage_percent": 0.2,
+   "description": "If opposing Pokémon know any move also known by the user, they are prevented from using it."
+  },
+  {
+   "rank": 91,
+   "slug": "leaf-storm",
+   "name": "Leaf Storm",
+   "usage_percent": 0.2,
+   "description": "The user whips up a storm of leaves around the target. The recoil from this move harshly lowers the user&#x27;s Sp. Atk stat."
+  },
+  {
+   "rank": 92,
+   "slug": "life-dew",
+   "name": "Life Dew",
+   "usage_percent": 0.2,
+   "description": "The user scatters mysterious water around and restores the HP of itself and its ally Pokémon currently in the battle."
+  },
+  {
+   "rank": 93,
+   "slug": "muddy-water",
+   "name": "Muddy Water",
+   "usage_percent": 0.2,
+   "description": "The user attacks by shooting muddy water at opposing Pokémon. This may also lower their accuracy."
+  },
+  {
+   "rank": 94,
+   "slug": "overheat",
+   "name": "Overheat",
+   "usage_percent": 0.2,
+   "description": "The user attacks the target with all its might. The recoil from this move harshly lowers the user&#x27;s Sp. Atk stat."
+  },
+  {
+   "rank": 95,
+   "slug": "poison-jab",
+   "name": "Poison Jab",
+   "usage_percent": 0.2,
+   "description": "The target is stabbed with a tentacle, an arm, or the like steeped in poison. This may also poison the target."
+  },
+  {
+   "rank": 96,
+   "slug": "reflect",
+   "name": "Reflect",
+   "usage_percent": 0.2,
+   "description": "A wondrous wall of light is put up to reduce damage from physical moves for five turns."
+  },
+  {
+   "rank": 97,
+   "slug": "scald",
+   "name": "Scald",
+   "usage_percent": 0.2,
+   "description": "The user attacks by shooting boiling hot water at the target. This may also leave the target with a burn."
+  },
+  {
+   "rank": 98,
+   "slug": "sleep-powder",
+   "name": "Sleep Powder",
+   "usage_percent": 0.2,
+   "description": "Puts the target to sleep. Grass-type Pokémon are unaffected."
+  },
+  {
+   "rank": 99,
+   "slug": "taunt",
+   "name": "Taunt",
+   "usage_percent": 0.2,
+   "description": "The target is taunted into a rage that allows it to use only attack moves for three turns."
+  },
+  {
+   "rank": 100,
+   "slug": "trick",
+   "name": "Trick",
+   "usage_percent": 0.2,
+   "description": "The user catches the target off guard and swaps the target&#x27;s held item with its own."
+  },
+  {
+   "rank": 101,
+   "slug": "will-o-wisp",
+   "name": "Will-O-Wisp",
+   "usage_percent": 0.2,
+   "description": "The user shoots a sinister flame at the target to inflict a burn."
+  },
+  {
+   "rank": 102,
+   "slug": "zap-cannon",
+   "name": "Zap Cannon",
+   "usage_percent": 0.2,
+   "description": "The user attacks by firing an electric blast like a cannon. This also leaves the target with paralysis."
+  },
+  {
+   "rank": 103,
+   "slug": "accelerock",
+   "name": "Accelerock",
+   "usage_percent": 0.1,
+   "description": "The user smashes into the target at high speed. This move always goes first."
+  },
+  {
+   "rank": 104,
+   "slug": "after-you",
+   "name": "After You",
+   "usage_percent": 0.1,
+   "description": "The user helps the target and makes it use its move right after the user."
+  },
+  {
+   "rank": 105,
+   "slug": "armor-cannon",
+   "name": "Armor Cannon",
+   "usage_percent": 0.1,
+   "description": "The user shoots its own armor out as blazing projectiles. This also lowers the user’s Defense and Sp. Def stats."
+  },
+  {
+   "rank": 106,
+   "slug": "baneful-bunker",
+   "name": "Baneful Bunker",
+   "usage_percent": 0.1,
+   "description": "In addition to protecting the user from attacks, this move also poisons any attacker that makes direct contact."
+  },
+  {
+   "rank": 107,
+   "slug": "bitter-blade",
+   "name": "Bitter Blade",
+   "usage_percent": 0.1,
+   "description": "The user focuses its bitter feelings toward the world of the living into a slashing attack. The user&#x27;s HP is restored by up to half the damage taken by the target."
+  },
+  {
+   "rank": 108,
+   "slug": "body-press",
+   "name": "Body Press",
+   "usage_percent": 0.1,
+   "description": "The user attacks by slamming its body into the target. The higher the user&#x27;s Defense stat, the greater the damage this move deals."
+  },
+  {
+   "rank": 109,
+   "slug": "bulk-up",
+   "name": "Bulk Up",
+   "usage_percent": 0.1,
+   "description": "The user tenses its muscles to bulk up its body, boosting its Attack and Defense stats."
+  },
+  {
+   "rank": 110,
+   "slug": "bullet-punch",
+   "name": "Bullet Punch",
+   "usage_percent": 0.1,
+   "description": "The user strikes the target with tough punches as fast as bullets. This move always goes first."
+  },
+  {
+   "rank": 111,
+   "slug": "coil",
+   "name": "Coil",
+   "usage_percent": 0.1,
+   "description": "The user coils up and concentrates. This boosts its Attack and Defense stats as well as its accuracy."
+  },
+  {
+   "rank": 112,
+   "slug": "double-shock",
+   "name": "Double Shock",
+   "usage_percent": 0.1,
+   "description": "The user discharges all the electricity from its body to perform a high-damage attack. After using this move, the user will no longer be Electric type."
+  },
+  {
+   "rank": 113,
+   "slug": "drain-punch",
+   "name": "Drain Punch",
+   "usage_percent": 0.1,
+   "description": "The user attacks with an energy-draining punch. The user&#x27;s HP is restored by up to half the damage taken by the target."
+  },
+  {
+   "rank": 114,
+   "slug": "energy-ball",
+   "name": "Energy Ball",
+   "usage_percent": 0.1,
+   "description": "The user draws power from nature and fires it at the target. This may also lower the target&#x27;s Sp. Def stat."
+  },
+  {
+   "rank": 115,
+   "slug": "foul-play",
+   "name": "Foul Play",
+   "usage_percent": 0.1,
+   "description": "The user turns the target&#x27;s strength against it. The higher the target&#x27;s Attack stat, the greater the damage this move inflicts."
+  },
+  {
+   "rank": 116,
+   "slug": "freeze-dry",
+   "name": "Freeze-Dry",
+   "usage_percent": 0.1,
+   "description": "The user rapidly cools the target. This may also leave the target frozen. This move is super effective on Water types."
+  },
+  {
+   "rank": 117,
+   "slug": "giga-drain",
+   "name": "Giga Drain",
+   "usage_percent": 0.1,
+   "description": "A nutrient-draining attack. The user&#x27;s HP is restored by up to half the damage taken by the target."
+  },
+  {
+   "rank": 118,
+   "slug": "hydro-pump",
+   "name": "Hydro Pump",
+   "usage_percent": 0.1,
+   "description": "The target is blasted by a huge volume of water launched under great pressure."
+  },
+  {
+   "rank": 119,
+   "slug": "hypnosis",
+   "name": "Hypnosis",
+   "usage_percent": 0.1,
+   "description": "The user employs hypnotic suggestion to make the target fall asleep."
+  },
+  {
+   "rank": 120,
+   "slug": "ice-fang",
+   "name": "Ice Fang",
+   "usage_percent": 0.1,
+   "description": "The user bites with cold-infused fangs. This may also make the target flinch or leave it frozen."
+  },
+  {
+   "rank": 121,
+   "slug": "infestation",
+   "name": "Infestation",
+   "usage_percent": 0.1,
+   "description": "The target is infested and attacked for four to five turns. The target can&#x27;t flee during this time."
+  },
+  {
+   "rank": 122,
+   "slug": "mystical-fire",
+   "name": "Mystical Fire",
+   "usage_percent": 0.1,
+   "description": "The user attacks by breathing a special, hot fire. This also lowers the target&#x27;s Sp. Atk stat."
+  },
+  {
+   "rank": 123,
+   "slug": "night-slash",
+   "name": "Night Slash",
+   "usage_percent": 0.1,
+   "description": "The user slashes the target the instant an opportunity arises. This move has a heightened chance of landing a critical hit."
+  },
+  {
+   "rank": 124,
+   "slug": "perish-song",
+   "name": "Perish Song",
+   "usage_percent": 0.1,
+   "description": "Any Pokémon that hears this song faints in three turns, unless it switches out of battle."
+  },
+  {
+   "rank": 125,
+   "slug": "play-rough",
+   "name": "Play Rough",
+   "usage_percent": 0.1,
+   "description": "The user attacks by playing rough with the target. This may also lower the target&#x27;s Attack stat."
+  },
+  {
+   "rank": 126,
+   "slug": "poltergeist",
+   "name": "Poltergeist",
+   "usage_percent": 0.1,
+   "description": "The user attacks by controlling the target&#x27;s item. This move fails if the target isn&#x27;t holding an item."
+  },
+  {
+   "rank": 127,
+   "slug": "psychic-fangs",
+   "name": "Psychic Fangs",
+   "usage_percent": 0.1,
+   "description": "The user attacks by biting the target with its psychic capabilities. This move can also break barriers, such as Light Screen and Reflect."
+  },
+  {
+   "rank": 128,
+   "slug": "psycho-cut",
+   "name": "Psycho Cut",
+   "usage_percent": 0.1,
+   "description": "The user tears at the target with blades formed by psychic power. This move has a heightened chance of landing a critical hit."
+  },
+  {
+   "rank": 129,
+   "slug": "psyshock",
+   "name": "Psyshock",
+   "usage_percent": 0.1,
+   "description": "The user materializes an odd psychic wave to attack the target. This move deals physical damage."
+  },
+  {
+   "rank": 130,
+   "slug": "quick-guard",
+   "name": "Quick Guard",
+   "usage_percent": 0.1,
+   "description": "The user protects itself and its allies from priority moves."
+  },
+  {
+   "rank": 131,
+   "slug": "quiver-dance",
+   "name": "Quiver Dance",
+   "usage_percent": 0.1,
+   "description": "The user lightly performs a beautiful, mystic dance. This boosts the user&#x27;s Sp. Atk, Sp. Def, and Speed stats."
+  },
+  {
+   "rank": 132,
+   "slug": "rain-dance",
+   "name": "Rain Dance",
+   "usage_percent": 0.1,
+   "description": "Summons rain for 5 turns, boosting Water-type moves by 50% and reducing Fire-type moves by 50%."
+  },
+  {
+   "rank": 133,
+   "slug": "recover",
+   "name": "Recover",
+   "usage_percent": 0.1,
+   "description": "The user regenerates its cells, restoring its own HP by up to half its max HP."
+  },
+  {
+   "rank": 134,
+   "slug": "revival-blessing",
+   "name": "Revival Blessing",
+   "usage_percent": 0.1,
+   "description": "The user bestows a loving blessing, reviving a party Pokémon that has fainted and restoring half that Pokémon&#x27;s max HP."
+  },
+  {
+   "rank": 135,
+   "slug": "rock-tomb",
+   "name": "Rock Tomb",
+   "usage_percent": 0.1,
+   "description": "The user hurls boulders at the target to inflict damage. This also lowers the target&#x27;s Speed stat by cutting off its movement."
+  },
+  {
+   "rank": 136,
+   "slug": "roost",
+   "name": "Roost",
+   "usage_percent": 0.1,
+   "description": "The user lands and rests its body. This move restores the user&#x27;s HP by up to half its max HP."
+  },
+  {
+   "rank": 137,
+   "slug": "sacred-sword",
+   "name": "Sacred Sword",
+   "usage_percent": 0.1,
+   "description": "The user attacks by slicing with a sword. The target&#x27;s stat changes don&#x27;t affect the damage inflicted by this move."
+  },
+  {
+   "rank": 138,
+   "slug": "shadow-claw",
+   "name": "Shadow Claw",
+   "usage_percent": 0.1,
+   "description": "The user attacks by slashing the target with a sharp claw made from shadows. This move has a heightened chance of landing a critical hit."
+  },
+  {
+   "rank": 139,
+   "slug": "shadow-sneak",
+   "name": "Shadow Sneak",
+   "usage_percent": 0.1,
+   "description": "The user extends its shadow and attacks the target from behind. This move always goes first."
+  },
+  {
+   "rank": 140,
+   "slug": "shell-smash",
+   "name": "Shell Smash",
+   "usage_percent": 0.1,
+   "description": "The user breaks its shell, which lowers its Defense and Sp. Def stats but sharply boosts its Attack, Sp. Atk, and Speed stats."
+  },
+  {
+   "rank": 141,
+   "slug": "snarl",
+   "name": "Snarl",
+   "usage_percent": 0.1,
+   "description": "The user yells as if it&#x27;s ranting about something, which lowers the Sp. Atk stats of opposing Pokémon."
+  },
+  {
+   "rank": 142,
+   "slug": "spiky-shield",
+   "name": "Spiky Shield",
+   "usage_percent": 0.1,
+   "description": "In addition to protecting the user from attacks, this move also damages any attacker that makes direct contact."
+  },
+  {
+   "rank": 143,
+   "slug": "spirit-break",
+   "name": "Spirit Break",
+   "usage_percent": 0.1,
+   "description": "The user attacks the target with so much force that it could break the target&#x27;s spirit. This also lowers the target&#x27;s Sp. Atk stat."
+  },
+  {
+   "rank": 144,
+   "slug": "superpower",
+   "name": "Superpower",
+   "usage_percent": 0.1,
+   "description": "The user attacks the target with great power. This also lowers the user&#x27;s Attack and Defense stats."
+  },
+  {
+   "rank": 145,
+   "slug": "toxic",
+   "name": "Toxic",
+   "usage_percent": 0.1,
+   "description": "A move that leaves the target badly poisoned. Its poison damage worsens every turn."
+  },
+  {
+   "rank": 146,
+   "slug": "triple-axel",
+   "name": "Triple Axel",
+   "usage_percent": 0.1,
+   "description": "A consecutive three-kick attack that becomes more powerful with each successful hit."
+  },
+  {
+   "rank": 147,
+   "slug": "twin-beam",
+   "name": "Twin Beam",
+   "usage_percent": 0.1,
+   "description": "The user shoots mystical beams from its eyes to inflict damage. The target is hit twice in a row."
+  },
+  {
+   "rank": 148,
+   "slug": "volt-switch",
+   "name": "Volt Switch",
+   "usage_percent": 0.1,
+   "description": "After making its attack, the user rushes back to switch places with a party Pokémon in waiting."
+  },
+  {
+   "rank": 149,
+   "slug": "water-spout",
+   "name": "Water Spout",
+   "usage_percent": 0.1,
+   "description": "The user spouts water to damage opposing Pokémon. The lower the user&#x27;s HP, the lower the move&#x27;s power."
+  },
+  {
+   "rank": 150,
+   "slug": "x-scissor",
+   "name": "X-Scissor",
+   "usage_percent": 0.1,
+   "description": "The user slashes at the target by crossing its scythes, claws, or the like as if they were a pair of scissors."
+  },
+  {
+   "rank": 151,
+   "slug": "yawn",
+   "name": "Yawn",
+   "usage_percent": 0.1,
+   "description": "The user lets loose a huge yawn that lulls the target into falling asleep on the next turn."
+  },
+  {
+   "rank": 152,
+   "slug": "aerial-ace",
+   "name": "Aerial Ace",
+   "usage_percent": 0.0,
+   "description": "The user confounds the target with speed, then slashes. This attack never misses."
+  },
+  {
+   "rank": 153,
+   "slug": "agility",
+   "name": "Agility",
+   "usage_percent": 0.0,
+   "description": "The user relaxes and lightens its body to move faster. This sharply boosts its Speed stat."
+  },
+  {
+   "rank": 154,
+   "slug": "air-slash",
+   "name": "Air Slash",
+   "usage_percent": 0.0,
+   "description": "The user attacks with a blade of air that slices even the sky. This may also make the target flinch."
+  },
+  {
+   "rank": 155,
+   "slug": "alluring-voice",
+   "name": "Alluring Voice",
+   "usage_percent": 0.0,
+   "description": "The user attacks the target using its angelic voice. This also confuses the target if its stats have been boosted during the turn."
+  },
+  {
+   "rank": 156,
+   "slug": "ally-switch",
+   "name": "Ally Switch",
+   "usage_percent": 0.0,
+   "description": "The user teleports using a strange power and switches places with one of its allies. This move&#x27;s chance of failing rises if it is used in succession."
+  },
+  {
+   "rank": 157,
+   "slug": "aqua-tail",
+   "name": "Aqua Tail",
+   "usage_percent": 0.0,
+   "description": "The user attacks by swinging its tail as if it were a vicious wave in a raging storm."
+  },
+  {
+   "rank": 158,
+   "slug": "assurance",
+   "name": "Assurance",
+   "usage_percent": 0.0,
+   "description": "This move&#x27;s power is doubled if the target has already taken some damage in the same turn."
+  },
+  {
+   "rank": 159,
+   "slug": "aura-wheel",
+   "name": "Aura Wheel",
+   "usage_percent": 0.0,
+   "description": "Morpeko attacks and boosts its Speed stat with the energy stored in its cheeks. This move&#x27;s type changes depending on the user&#x27;s form."
+  },
+  {
+   "rank": 160,
+   "slug": "barb-barrage",
+   "name": "Barb Barrage",
+   "usage_percent": 0.0,
+   "description": "The user launches countless toxic barbs to inflict damage. This may also poison the target. This move’s power is doubled if the target is already poisoned."
+  },
+  {
+   "rank": 161,
+   "slug": "baton-pass",
+   "name": "Baton Pass",
+   "usage_percent": 0.0,
+   "description": "The user switches places with a party Pokémon in waiting and passes along any stat changes."
+  },
+  {
+   "rank": 162,
+   "slug": "beat-up",
+   "name": "Beat Up",
+   "usage_percent": 0.0,
+   "description": "The user gets all party Pokémon to attack the target. The more party Pokémon, the greater the number of attacks."
+  },
+  {
+   "rank": 163,
+   "slug": "belch",
+   "name": "Belch",
+   "usage_percent": 0.0,
+   "description": "The user lets out a damaging belch at the target. The user must eat a held Berry to use this move."
+  },
+  {
+   "rank": 164,
+   "slug": "belly-drum",
+   "name": "Belly Drum",
+   "usage_percent": 0.0,
+   "description": "The user maximizes its Attack stat but loses HP equal to half its max HP."
+  },
+  {
+   "rank": 165,
+   "slug": "body-slam",
+   "name": "Body Slam",
+   "usage_percent": 0.0,
+   "description": "The user attacks by dropping onto the target with its full body weight. This may also leave the target with paralysis."
+  },
+  {
+   "rank": 166,
+   "slug": "boomburst",
+   "name": "Boomburst",
+   "usage_percent": 0.0,
+   "description": "The user attacks everything around it with the destructive power of a terrible explosive sound."
+  },
+  {
+   "rank": 167,
+   "slug": "breaking-swipe",
+   "name": "Breaking Swipe",
+   "usage_percent": 0.0,
+   "description": "The user swings its tough tail wildly and attacks opposing Pokémon. This also lowers their Attack stats."
+  },
+  {
+   "rank": 168,
+   "slug": "brick-break",
+   "name": "Brick Break",
+   "usage_percent": 0.0,
+   "description": "The user attacks with a swift chop. This move can also break barriers, such as Light Screen and Reflect."
+  },
+  {
+   "rank": 169,
+   "slug": "bug-bite",
+   "name": "Bug Bite",
+   "usage_percent": 0.0,
+   "description": "The user attacks by biting the target. If the target is holding a Berry, the user eats it and gains its effect."
+  },
+  {
+   "rank": 170,
+   "slug": "bug-buzz",
+   "name": "Bug Buzz",
+   "usage_percent": 0.0,
+   "description": "The user vibrates to generate a damaging sound wave. This may also lower the target&#x27;s Sp. Def stat."
+  },
+  {
+   "rank": 171,
+   "slug": "burn-up",
+   "name": "Burn Up",
+   "usage_percent": 0.0,
+   "description": "To inflict massive damage, the user burns itself out. After using this move, the user will no longer be Fire type."
+  },
+  {
+   "rank": 172,
+   "slug": "charm",
+   "name": "Charm",
+   "usage_percent": 0.0,
+   "description": "The user gazes at the target rather charmingly, making it less wary. This harshly lowers the target&#x27;s Attack stat."
+  },
+  {
+   "rank": 173,
+   "slug": "circle-throw",
+   "name": "Circle Throw",
+   "usage_percent": 0.0,
+   "description": "The target is thrown, and a different Pokémon is dragged out. In the wild, this ends a battle against a single Pokémon."
+  },
+  {
+   "rank": 174,
+   "slug": "clanging-scales",
+   "name": "Clanging Scales",
+   "usage_percent": 0.0,
+   "description": "The user rubs the scales on its entire body and makes a huge noise to attack opposing Pokémon. The user&#x27;s Defense stat is lowered after the attack."
+  },
+  {
+   "rank": 175,
+   "slug": "clangorous-soul",
+   "name": "Clangorous Soul",
+   "usage_percent": 0.0,
+   "description": "The user boosts all its stats by using some of its own HP."
+  },
+  {
+   "rank": 176,
+   "slug": "cosmic-power",
+   "name": "Cosmic Power",
+   "usage_percent": 0.0,
+   "description": "The user absorbs a mystical power from space to boost its Defense and Sp. Def stats."
+  },
+  {
+   "rank": 177,
+   "slug": "cross-chop",
+   "name": "Cross Chop",
+   "usage_percent": 0.0,
+   "description": "The user delivers a double chop with its forearms crossed. This move has a heightened chance of landing a critical hit."
+  },
+  {
+   "rank": 178,
+   "slug": "crunch",
+   "name": "Crunch",
+   "usage_percent": 0.0,
+   "description": "The user crunches up the target with sharp fangs. This may also lower the target&#x27;s Defense stat."
+  },
+  {
+   "rank": 179,
+   "slug": "decorate",
+   "name": "Decorate",
+   "usage_percent": 0.0,
+   "description": "The user sharply boosts the target&#x27;s Attack and Sp. Atk stats by decorating the target."
+  },
+  {
+   "rank": 180,
+   "slug": "destiny-bond",
+   "name": "Destiny Bond",
+   "usage_percent": 0.0,
+   "description": "If the user is knocked out after using this move, the Pokémon that knocked it out will also faint. This move&#x27;s chance of failing rises if it is used in succession."
+  },
+  {
+   "rank": 181,
+   "slug": "disable",
+   "name": "Disable",
+   "usage_percent": 0.0,
+   "description": "For four turns, the target will be unable to use whichever move it last used."
+  },
+  {
+   "rank": 182,
+   "slug": "discharge",
+   "name": "Discharge",
+   "usage_percent": 0.0,
+   "description": "The user strikes everything around it by letting loose a flare of electricity. This may also leave those hit by the attack with paralysis."
+  },
+  {
+   "rank": 183,
+   "slug": "dragon-darts",
+   "name": "Dragon Darts",
+   "usage_percent": 0.0,
+   "description": "The user attacks twice using Dreepy. If there are two opposing Pokémon, this move hits each of them once."
+  },
+  {
+   "rank": 184,
+   "slug": "dragon-rush",
+   "name": "Dragon Rush",
+   "usage_percent": 0.0,
+   "description": "The user tackles the target while exhibiting overwhelming menace. This may also make the target flinch."
+  },
+  {
+   "rank": 185,
+   "slug": "drill-run",
+   "name": "Drill Run",
+   "usage_percent": 0.0,
+   "description": "The user crashes into the target while rotating its body like a drill. This move has a heightened chance of landing a critical hit."
+  },
+  {
+   "rank": 186,
+   "slug": "drum-beating",
+   "name": "Drum Beating",
+   "usage_percent": 0.0,
+   "description": "Lowers the target’s Speed stat by 1 stage."
+  },
+  {
+   "rank": 187,
+   "slug": "dynamic-punch",
+   "name": "Dynamic Punch",
+   "usage_percent": 0.0,
+   "description": "The user attacks by punching the target with full concentrated power. This also confuses the target."
+  },
+  {
+   "rank": 188,
+   "slug": "electroweb",
+   "name": "Electroweb",
+   "usage_percent": 0.0,
+   "description": "The user captures opposing Pokémon in an electric net to inflict damage. This also lowers their Speed stats."
+  },
+  {
+   "rank": 189,
+   "slug": "endeavor",
+   "name": "Endeavor",
+   "usage_percent": 0.0,
+   "description": "The user inflicts damage by cutting down the target&#x27;s HP to roughly equal the user&#x27;s HP."
+  },
+  {
+   "rank": 190,
+   "slug": "entrainment",
+   "name": "Entrainment",
+   "usage_percent": 0.0,
+   "description": "The user dances with an odd rhythm that compels the target to mimic it, making the target&#x27;s Ability the same as the user&#x27;s."
+  },
+  {
+   "rank": 191,
+   "slug": "extrasensory",
+   "name": "Extrasensory",
+   "usage_percent": 0.0,
+   "description": "The user attacks with an odd, unseeable power. This may also make the target flinch."
+  },
+  {
+   "rank": 192,
+   "slug": "facade",
+   "name": "Facade",
+   "usage_percent": 0.0,
+   "description": "This move&#x27;s power is doubled if the user is poisoned, burned, or paralyzed."
+  },
+  {
+   "rank": 193,
+   "slug": "fake-tears",
+   "name": "Fake Tears",
+   "usage_percent": 0.0,
+   "description": "The user feigns crying to fluster the target. This harshly lowers the target&#x27;s Sp. Def stat."
+  },
+  {
+   "rank": 194,
+   "slug": "fiery-dance",
+   "name": "Fiery Dance",
+   "usage_percent": 0.0,
+   "description": "Cloaked in flames, the user attacks the target by dancing and flapping its wings. This may also boost the user&#x27;s Sp. Atk stat."
+  },
+  {
+   "rank": 195,
+   "slug": "final-gambit",
+   "name": "Final Gambit",
+   "usage_percent": 0.0,
+   "description": "The user risks everything to attack the target. The user faints but inflicts damage equal to its own HP."
+  },
+  {
+   "rank": 196,
+   "slug": "fire-blast",
+   "name": "Fire Blast",
+   "usage_percent": 0.0,
+   "description": "The target is attacked with an intense blast of all-consuming fire. This may also leave the target with a burn."
+  },
+  {
+   "rank": 197,
+   "slug": "fire-fang",
+   "name": "Fire Fang",
+   "usage_percent": 0.0,
+   "description": "The user bites with flame-cloaked fangs. This may also make the target flinch or leave it with a burn."
+  },
+  {
+   "rank": 198,
+   "slug": "fissure",
+   "name": "Fissure",
+   "usage_percent": 0.0,
+   "description": "The user opens up a fissure in the ground and drops the target in. The target faints instantly if this attack hits."
+  },
+  {
+   "rank": 199,
+   "slug": "flame-charge",
+   "name": "Flame Charge",
+   "usage_percent": 0.0,
+   "description": "Cloaking itself in flame, the user attacks the target. Then, building up momentum, the user boosts its Speed stat."
+  },
+  {
+   "rank": 200,
+   "slug": "flower-trick",
+   "name": "Flower Trick",
+   "usage_percent": 0.0,
+   "description": "The user throws a rigged bouquet of flowers at the target. This attack never misses and always lands a critical hit."
+  },
+  {
+   "rank": 201,
+   "slug": "focus-energy",
+   "name": "Focus Energy",
+   "usage_percent": 0.0,
+   "description": "The user takes a deep breath and focuses so that its future attacks have a heightened chance of landing critical hits."
+  },
+  {
+   "rank": 202,
+   "slug": "gigaton-hammer",
+   "name": "Gigaton Hammer",
+   "usage_percent": 0.0,
+   "description": "The user swings its whole body around to attack with its huge hammer. This move can&#x27;t be used twice in a row."
+  },
+  {
+   "rank": 203,
+   "slug": "grass-knot",
+   "name": "Grass Knot",
+   "usage_percent": 0.0,
+   "description": "The user snares the target with grass and trips it. The heavier the target, the greater the move&#x27;s power."
+  },
+  {
+   "rank": 204,
+   "slug": "gravity",
+   "name": "Gravity",
+   "usage_percent": 0.0,
+   "description": "Enables Flying types or Pokémon with the Levitate Ability to be hit by Ground-type moves for five turns. Moves that involve flying can&#x27;t be used."
+  },
+  {
+   "rank": 205,
+   "slug": "hammer-arm",
+   "name": "Hammer Arm",
+   "usage_percent": 0.0,
+   "description": "The user swings its strong, heavy fist at the target to inflict damage. This also lowers the user&#x27;s Speed stat."
+  },
+  {
+   "rank": 206,
+   "slug": "hard-press",
+   "name": "Hard Press",
+   "usage_percent": 0.0,
+   "description": "The target is crushed with an arm, a claw, or the like to inflict damage. The more HP the target has left, the greater the move&#x27;s power."
+  },
+  {
+   "rank": 207,
+   "slug": "haze",
+   "name": "Haze",
+   "usage_percent": 0.0,
+   "description": "The user creates a haze that eliminates every stat change among all the Pokémon engaged in battle."
+  },
+  {
+   "rank": 208,
+   "slug": "headlong-rush",
+   "name": "Headlong Rush",
+   "usage_percent": 0.0,
+   "description": "The user smashes into the target in a full-body tackle. This also lowers the user’s Defense and Sp. Def stats."
+  },
+  {
+   "rank": 209,
+   "slug": "heal-pulse",
+   "name": "Heal Pulse",
+   "usage_percent": 0.0,
+   "description": "The user emits a healing pulse that restores the target&#x27;s HP by up to half its max HP."
+  },
+  {
+   "rank": 210,
+   "slug": "healing-wish",
+   "name": "Healing Wish",
+   "usage_percent": 0.0,
+   "description": "The user faints. In return, the Pokémon taking its place will have its HP restored and status conditions cured."
+  },
+  {
+   "rank": 211,
+   "slug": "heavy-slam",
+   "name": "Heavy Slam",
+   "usage_percent": 0.0,
+   "description": "The user slams into the target with its heavy body. The more the user outweighs the target, the greater the move&#x27;s power."
+  },
+  {
+   "rank": 212,
+   "slug": "hex",
+   "name": "Hex",
+   "usage_percent": 0.0,
+   "description": "This relentless attack does massive damage to a target affected by status conditions."
+  },
+  {
+   "rank": 213,
+   "slug": "high-jump-kick",
+   "name": "High Jump Kick",
+   "usage_percent": 0.0,
+   "description": "The target is attacked with a knee kick from a jump. If this move misses, the user takes damage instead."
+  },
+  {
+   "rank": 214,
+   "slug": "howl",
+   "name": "Howl",
+   "usage_percent": 0.0,
+   "description": "The user howls loudly to rouse itself and its allies. This boosts their Attack stats."
+  },
+  {
+   "rank": 215,
+   "slug": "hydro-cannon",
+   "name": "Hydro Cannon",
+   "usage_percent": 0.0,
+   "description": "The target is hit with a watery blast. The user can&#x27;t move on the next turn."
+  },
+  {
+   "rank": 216,
+   "slug": "ice-hammer",
+   "name": "Ice Hammer",
+   "usage_percent": 0.0,
+   "description": "The user swings its strong, heavy fist at the target to inflict damage. This also lowers the user&#x27;s Speed stat."
+  },
+  {
+   "rank": 217,
+   "slug": "ice-spinner",
+   "name": "Ice Spinner",
+   "usage_percent": 0.0,
+   "description": "The user covers its feet in thin ice and twirls around, slamming into the target. This move&#x27;s spinning motion also destroys the terrain."
+  },
+  {
+   "rank": 218,
+   "slug": "icicle-spear",
+   "name": "Icicle Spear",
+   "usage_percent": 0.0,
+   "description": "The user attacks by launching sharp icicles at the target. This move hits two to five times in a row."
+  },
+  {
+   "rank": 219,
+   "slug": "instruct",
+   "name": "Instruct",
+   "usage_percent": 0.0,
+   "description": "The user instructs the target to reuse the move last used by the target."
+  },
+  {
+   "rank": 220,
+   "slug": "iron-defense",
+   "name": "Iron Defense",
+   "usage_percent": 0.0,
+   "description": "The user hardens its body&#x27;s surface like iron, sharply boosting its Defense stat."
+  },
+  {
+   "rank": 221,
+   "slug": "jet-punch",
+   "name": "Jet Punch",
+   "usage_percent": 0.0,
+   "description": "The user summons a torrent around its fist and punches at blinding speed. This move always goes first."
+  },
+  {
+   "rank": 222,
+   "slug": "kings-shield",
+   "name": "King’s Shield",
+   "usage_percent": 0.0,
+   "description": "The user takes a defensive stance while it protects itself from damage. It also lowers the Attack stat of any attacker that makes direct contact."
+  },
+  {
+   "rank": 223,
+   "slug": "lash-out",
+   "name": "Lash Out",
+   "usage_percent": 0.0,
+   "description": "The user lashes out to vent its frustration toward the target. This move&#x27;s power is doubled if the user&#x27;s stats were lowered during this turn."
+  },
+  {
+   "rank": 224,
+   "slug": "last-resort",
+   "name": "Last Resort",
+   "usage_percent": 0.0,
+   "description": "This move can be used only after the user has used all the other moves it knows in the battle."
+  },
+  {
+   "rank": 225,
+   "slug": "lava-plume",
+   "name": "Lava Plume",
+   "usage_percent": 0.0,
+   "description": "The user torches everything around it in an inferno of scarlet flames. This may also leave those it hits with a burn."
+  },
+  {
+   "rank": 226,
+   "slug": "leaf-blade",
+   "name": "Leaf Blade",
+   "usage_percent": 0.0,
+   "description": "The user handles a sharp leaf like a sword and cuts the target to inflict damage. This move has a heightened chance of landing a critical hit."
+  },
+  {
+   "rank": 227,
+   "slug": "leech-seed",
+   "name": "Leech Seed",
+   "usage_percent": 0.0,
+   "description": "A seed is planted on the target. It steals some HP from the target every turn."
+  },
+  {
+   "rank": 228,
+   "slug": "low-sweep",
+   "name": "Low Sweep",
+   "usage_percent": 0.0,
+   "description": "The user makes a swift attack on the target&#x27;s legs, which lowers the target&#x27;s Speed stat."
+  },
+  {
+   "rank": 229,
+   "slug": "lumina-crash",
+   "name": "Lumina Crash",
+   "usage_percent": 0.0,
+   "description": "The user attacks by unleashing a peculiar light that even affects the mind. This also harshly lowers the target&#x27;s Sp. Def stat."
+  },
+  {
+   "rank": 230,
+   "slug": "lunge",
+   "name": "Lunge",
+   "usage_percent": 0.0,
+   "description": "The user makes a lunge at the target, attacking with full force. This also lowers the target&#x27;s Attack stat."
+  },
+  {
+   "rank": 231,
+   "slug": "magic-powder",
+   "name": "Magic Powder",
+   "usage_percent": 0.0,
+   "description": "Changes the target&#x27;s type to Psychic. Grass-type Pokémon are unaffected."
+  },
+  {
+   "rank": 232,
+   "slug": "meteor-assault",
+   "name": "Meteor Assault",
+   "usage_percent": 0.0,
+   "description": "The user gains the Recharging status on the turn after this move is used."
+  },
+  {
+   "rank": 233,
+   "slug": "meteor-mash",
+   "name": "Meteor Mash",
+   "usage_percent": 0.0,
+   "description": "The target is hit with a hard punch fired like a meteor. This may also boost the user’s Attack stat."
+  },
+  {
+   "rank": 234,
+   "slug": "minimize",
+   "name": "Minimize",
+   "usage_percent": 0.0,
+   "description": "The user compresses its body to make itself look smaller, which sharply boosts its evasiveness."
+  },
+  {
+   "rank": 235,
+   "slug": "misty-terrain",
+   "name": "Misty Terrain",
+   "usage_percent": 0.0,
+   "description": "This protects Pokémon on the ground from status conditions and halves damage from Dragon-type moves for five turns."
+  },
+  {
+   "rank": 236,
+   "slug": "nuzzle",
+   "name": "Nuzzle",
+   "usage_percent": 0.0,
+   "description": "The user attacks by nuzzling its electrified cheeks against the target. This also leaves the target with paralysis."
+  },
+  {
+   "rank": 237,
+   "slug": "octolock",
+   "name": "Octolock",
+   "usage_percent": 0.0,
+   "description": "Gives the target the Octolocked and Can’t Escape statuses."
+  },
+  {
+   "rank": 238,
+   "slug": "outrage",
+   "name": "Outrage",
+   "usage_percent": 0.0,
+   "description": "The user rampages and attacks for two to three turns. The user then becomes confused."
+  },
+  {
+   "rank": 239,
+   "slug": "overdrive",
+   "name": "Overdrive",
+   "usage_percent": 0.0,
+   "description": "The user attacks opposing Pokémon by twanging a guitar or bass guitar, causing a huge echo and strong vibration."
+  },
+  {
+   "rank": 240,
+   "slug": "parabolic-charge",
+   "name": "Parabolic Charge",
+   "usage_percent": 0.0,
+   "description": "The user attacks everything around it. The user&#x27;s HP is restored by half the damage taken by those hit."
+  },
+  {
+   "rank": 241,
+   "slug": "phantom-force",
+   "name": "Phantom Force",
+   "usage_percent": 0.0,
+   "description": "The user vanishes somewhere, then strikes the target on the next turn. This move hits even if the target protects itself."
+  },
+  {
+   "rank": 242,
+   "slug": "population-bomb",
+   "name": "Population Bomb",
+   "usage_percent": 0.0,
+   "description": "The user’s fellows gather in droves to perform a combo attack that hits the target one to ten times in a row."
+  },
+  {
+   "rank": 243,
+   "slug": "power-trip",
+   "name": "Power Trip",
+   "usage_percent": 0.0,
+   "description": "The user boasts its strength and attacks the target. The more the user&#x27;s stats are boosted, the greater the move&#x27;s power."
+  },
+  {
+   "rank": 244,
+   "slug": "power-whip",
+   "name": "Power Whip",
+   "usage_percent": 0.0,
+   "description": "The user violently whirls its vines, tentacles, or the like to lash the target."
+  },
+  {
+   "rank": 245,
+   "slug": "psych-up",
+   "name": "Psych Up",
+   "usage_percent": 0.0,
+   "description": "The user hypnotizes itself into copying any stat change made by the target."
+  },
+  {
+   "rank": 246,
+   "slug": "psychic-noise",
+   "name": "Psychic Noise",
+   "usage_percent": 0.0,
+   "description": "The user attacks the target with unpleasant sound waves. For two turns, the target is prevented from recovering HP through moves, Abilities, or held items."
+  },
+  {
+   "rank": 247,
+   "slug": "pyro-ball",
+   "name": "Pyro Ball",
+   "usage_percent": 0.0,
+   "description": "Has a 10% chance of burning the target. Cures the user of being frozen."
+  },
+  {
+   "rank": 248,
+   "slug": "quash",
+   "name": "Quash",
+   "usage_percent": 0.0,
+   "description": "The user suppresses the target and makes its move go last."
+  },
+  {
+   "rank": 249,
+   "slug": "rage",
+   "name": "Rage",
+   "usage_percent": 0.0,
+   "description": "This move can’t be used. It’s recommended that this move is forgotten. Once forgotten, this move can’t be remembered."
+  },
+  {
+   "rank": 250,
+   "slug": "rage-fist",
+   "name": "Rage Fist",
+   "usage_percent": 0.0,
+   "description": "The user converts its rage into energy to attack. The more times the user has been hit by attacks, the greater the move&#x27;s power."
+  },
+  {
+   "rank": 251,
+   "slug": "raging-bull",
+   "name": "Raging Bull",
+   "usage_percent": 0.0,
+   "description": "The user performs a tackle like a raging bull. This move&#x27;s type depends on the user&#x27;s form. It can also break barriers, such as Light Screen and Reflect."
+  },
+  {
+   "rank": 252,
+   "slug": "rapid-spin",
+   "name": "Rapid Spin",
+   "usage_percent": 0.0,
+   "description": "The user performs a spin attack that can also eliminate the effects of such moves as Bind, Wrap, and Leech Seed. This also boosts the user&#x27;s Speed stat."
+  },
+  {
+   "rank": 253,
+   "slug": "recycle",
+   "name": "Recycle",
+   "usage_percent": 0.0,
+   "description": "The user recycles a held item that has been used in battle so it can be used again."
+  },
+  {
+   "rank": 254,
+   "slug": "rising-voltage",
+   "name": "Rising Voltage",
+   "usage_percent": 0.0,
+   "description": "The user attacks with electricity rising from the ground. This move&#x27;s power is doubled if the target is on Electric Terrain."
+  },
+  {
+   "rank": 255,
+   "slug": "roar",
+   "name": "Roar",
+   "usage_percent": 0.0,
+   "description": "The target is scared off, and a different Pokémon is dragged out. In the wild, this ends a battle against a single Pokémon."
+  },
+  {
+   "rank": 256,
+   "slug": "rock-wrecker",
+   "name": "Rock Wrecker",
+   "usage_percent": 0.0,
+   "description": "The user launches a huge boulder at the target to attack. The user can&#x27;t move on the next turn."
+  },
+  {
+   "rank": 257,
+   "slug": "scale-shot",
+   "name": "Scale Shot",
+   "usage_percent": 0.0,
+   "description": "The user attacks by shooting scales two to five times in a row. This move boosts the user&#x27;s Speed stat but lowers its Defense stat."
+  },
+  {
+   "rank": 258,
+   "slug": "scorching-sands",
+   "name": "Scorching Sands",
+   "usage_percent": 0.0,
+   "description": "The user throws scorching sand at the target to attack. This may also leave the target with a burn."
+  },
+  {
+   "rank": 259,
+   "slug": "shed-tail",
+   "name": "Shed Tail",
+   "usage_percent": 0.0,
+   "description": "The user creates a substitute for itself using its own HP before switching places with a party Pokémon in waiting."
+  },
+  {
+   "rank": 260,
+   "slug": "simple-beam",
+   "name": "Simple Beam",
+   "usage_percent": 0.0,
+   "description": "The user emits a mysterious psychic wave that changes the target&#x27;s Ability to Simple."
+  },
+  {
+   "rank": 261,
+   "slug": "sing",
+   "name": "Sing",
+   "usage_percent": 0.0,
+   "description": "A soothing lullaby is sung in a beautiful voice that puts the target to sleep."
+  },
+  {
+   "rank": 262,
+   "slug": "skill-swap",
+   "name": "Skill Swap",
+   "usage_percent": 0.0,
+   "description": "The user employs its psychic power to exchange Abilities with the target."
+  },
+  {
+   "rank": 263,
+   "slug": "slack-off",
+   "name": "Slack Off",
+   "usage_percent": 0.0,
+   "description": "The user slacks off, restoring its own HP by up to half its max HP."
+  },
+  {
+   "rank": 264,
+   "slug": "sludge-wave",
+   "name": "Sludge Wave",
+   "usage_percent": 0.0,
+   "description": "The user strikes everything around it by swamping the area with a giant sludge wave. This may also poison those it hits."
+  },
+  {
+   "rank": 265,
+   "slug": "smack-down",
+   "name": "Smack Down",
+   "usage_percent": 0.0,
+   "description": "The user throws a stone or similar projectile to attack the target. If the target is in the air, it will be knocked down to the ground."
+  },
+  {
+   "rank": 266,
+   "slug": "snipe-shot",
+   "name": "Snipe Shot",
+   "usage_percent": 0.0,
+   "description": "This move ignores the effects of Abilities and moves that draw in moves. It has a 1-stage Critical-Hit Ratio Boost."
+  },
+  {
+   "rank": 267,
+   "slug": "soak",
+   "name": "Soak",
+   "usage_percent": 0.0,
+   "description": "The user shoots a torrent of water that changes the target&#x27;s type to Water."
+  },
+  {
+   "rank": 268,
+   "slug": "speed-swap",
+   "name": "Speed Swap",
+   "usage_percent": 0.0,
+   "description": "The user exchanges Speed stats with the target."
+  },
+  {
+   "rank": 269,
+   "slug": "spikes",
+   "name": "Spikes",
+   "usage_percent": 0.0,
+   "description": "The user lays a trap of spikes at the feet of the opposing team. The spikes will damage opposing Pokémon that switch into battle."
+  },
+  {
+   "rank": 270,
+   "slug": "steel-beam",
+   "name": "Steel Beam",
+   "usage_percent": 0.0,
+   "description": "The user fires a beam of steel that it collected from its entire body. This also damages the user."
+  },
+  {
+   "rank": 271,
+   "slug": "steel-roller",
+   "name": "Steel Roller",
+   "usage_percent": 0.0,
+   "description": "The user attacks while destroying the terrain. This move fails if the ground hasn&#x27;t turned into a terrain."
+  },
+  {
+   "rank": 272,
+   "slug": "stockpile",
+   "name": "Stockpile",
+   "usage_percent": 0.0,
+   "description": "The user stores power and boosts its Defense and Sp. Def stats. This move can be used up to three times."
+  },
+  {
+   "rank": 273,
+   "slug": "stone-axe",
+   "name": "Stone Axe",
+   "usage_percent": 0.0,
+   "description": "The user swings its stone axes at the target. Stone splinters left behind by this attack float around the target."
+  },
+  {
+   "rank": 274,
+   "slug": "stone-edge",
+   "name": "Stone Edge",
+   "usage_percent": 0.0,
+   "description": "The user stabs the target with sharpened stones. This move has a heightened chance of landing a critical hit."
+  },
+  {
+   "rank": 275,
+   "slug": "storm-throw",
+   "name": "Storm Throw",
+   "usage_percent": 0.0,
+   "description": "The user strikes the target with a fierce blow. This attack always results in a critical hit."
+  },
+  {
+   "rank": 276,
+   "slug": "strength-sap",
+   "name": "Strength Sap",
+   "usage_percent": 0.0,
+   "description": "The user restores its own HP by the same amount as the target&#x27;s Attack stat. It then lowers the target&#x27;s Attack stat."
+  },
+  {
+   "rank": 277,
+   "slug": "struggle-bug",
+   "name": "Struggle Bug",
+   "usage_percent": 0.0,
+   "description": "The user attacks by struggling against opposing Pokémon. This also lowers their Sp. Atk stats."
+  },
+  {
+   "rank": 278,
+   "slug": "substitute",
+   "name": "Substitute",
+   "usage_percent": 0.0,
+   "description": "The user loses 1/4 of its max HP to create a substitute. The substitute will be hit by moves instead of the user, and it will vanish when it takes damage equal to 1/4 of the user&#x27;s max HP. Sound-based moves will hit the user through the substitute."
+  },
+  {
+   "rank": 279,
+   "slug": "sunny-day",
+   "name": "Sunny Day",
+   "usage_percent": 0.0,
+   "description": "Summons harsh sunlight for 5 turns, boosting Fire-type moves by 50% and reducing Water-type moves by 50%."
+  },
+  {
+   "rank": 280,
+   "slug": "super-fang",
+   "name": "Super Fang",
+   "usage_percent": 0.0,
+   "description": "The user chomps hard on the target with its sharp front fangs. This cuts the target&#x27;s HP in half."
+  },
+  {
+   "rank": 281,
+   "slug": "surf",
+   "name": "Surf",
+   "usage_percent": 0.0,
+   "description": "The user attacks everything around it by swamping its surroundings with a giant wave."
+  },
+  {
+   "rank": 282,
+   "slug": "temper-flare",
+   "name": "Temper Flare",
+   "usage_percent": 0.0,
+   "description": "Spurred by desperation, the user attacks the target. This move&#x27;s power is doubled if the user&#x27;s previous move failed."
+  },
+  {
+   "rank": 283,
+   "slug": "thunder",
+   "name": "Thunder",
+   "usage_percent": 0.0,
+   "description": "Has a 30% chance of paralyzing the target. In rain, this move never misses. In harsh sunlight, this move&#x27;s accuracy is 50%. This move can hit a target that has the Sky-High status."
+  },
+  {
+   "rank": 284,
+   "slug": "thunder-punch",
+   "name": "Thunder Punch",
+   "usage_percent": 0.0,
+   "description": "The target is attacked with an electrified punch. This may also leave the target with paralysis."
+  },
+  {
+   "rank": 285,
+   "slug": "thunder-wave",
+   "name": "Thunder Wave",
+   "usage_percent": 0.0,
+   "description": "Paralyzes the target. Ground-type Pokémon are unaffected."
+  },
+  {
+   "rank": 286,
+   "slug": "tickle",
+   "name": "Tickle",
+   "usage_percent": 0.0,
+   "description": "The user tickles the target into laughing, lowering its Attack and Defense stats."
+  },
+  {
+   "rank": 287,
+   "slug": "toxic-spikes",
+   "name": "Toxic Spikes",
+   "usage_percent": 0.0,
+   "description": "The user lays a trap of poison spikes at the feet of the opposing team. The spikes will poison opposing Pokémon that switch into battle."
+  },
+  {
+   "rank": 288,
+   "slug": "trailblaze",
+   "name": "Trailblaze",
+   "usage_percent": 0.0,
+   "description": "The user attacks suddenly as if leaping out from tall grass. The user&#x27;s nimble footwork boosts its Speed stat."
+  },
+  {
+   "rank": 289,
+   "slug": "triple-arrows",
+   "name": "Triple Arrows",
+   "usage_percent": 0.0,
+   "description": "The user kicks, then fires three arrows. This move has a heightened chance of landing a critical hit and may also lower the target’s Defense stat or make it flinch."
+  },
+  {
+   "rank": 290,
+   "slug": "trop-kick",
+   "name": "Trop Kick",
+   "usage_percent": 0.0,
+   "description": "The user lands an intense kick of tropical origins on the target. This also lowers the target&#x27;s Attack stat."
+  },
+  {
+   "rank": 291,
+   "slug": "upper-hand",
+   "name": "Upper Hand",
+   "usage_percent": 0.0,
+   "description": "Makes the target flinch. This move fails if the target isn&#x27;t about to use a priority attack."
+  },
+  {
+   "rank": 292,
+   "slug": "vacuum-wave",
+   "name": "Vacuum Wave",
+   "usage_percent": 0.0,
+   "description": "The user whirls its fists to send a wave of pure vacuum at the target. This move always goes first."
+  },
+  {
+   "rank": 293,
+   "slug": "volt-tackle",
+   "name": "Volt Tackle",
+   "usage_percent": 0.0,
+   "description": "The user electrifies itself and charges the target. This also damages the user quite a lot. This attack may leave the target with paralysis."
+  },
+  {
+   "rank": 294,
+   "slug": "waterfall",
+   "name": "Waterfall",
+   "usage_percent": 0.0,
+   "description": "The user charges at the target and may make it flinch."
+  },
+  {
+   "rank": 295,
+   "slug": "wild-charge",
+   "name": "Wild Charge",
+   "usage_percent": 0.0,
+   "description": "The user shrouds itself in electricity and smashes into its target. This also damages the user a little."
+  },
+  {
+   "rank": 296,
+   "slug": "worry-seed",
+   "name": "Worry Seed",
+   "usage_percent": 0.0,
+   "description": "A seed that causes worry is planted on the target. It prevents sleep by making the target&#x27;s Ability Insomnia."
+  },
+  {
+   "rank": 297,
+   "slug": "zen-headbutt",
+   "name": "Zen Headbutt",
+   "usage_percent": 0.0,
+   "description": "The user focuses its willpower to its head and attacks the target. This may also make the target flinch."
+  }
+ ]
+}

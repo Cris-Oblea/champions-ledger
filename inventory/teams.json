@@ -1,0 +1,549 @@
+{
+  "_comment": "Teams under construction. A team is 6 Pokemon; 4 are chosen at preview. A TEAM DOES NOT OWN ITS POKEMON: builds live in builds.json and are reusable across any number of teams - a trained Pokemon is trained, full stop. This file holds only the TEAM-LEVEL decisions: which six, why each one is here, and the items, which the Item Clause makes answerable only once the six are fixed. Never copy a moveset in here for a Pokemon that has a build - reference it and read builds.json. A 'proposed_moves' field is allowed ONLY for a Pokemon that is not yet owned or trained, and is marked as a proposal, not a build. Several Mega Stones on one team are fine - only one Pokemon may Mega Evolve per battle, and that is a per-game choice. Each team carries a 'status' saying whether it is committed or a worked example; read it before assuming the player plays a team listed here.",
+  "teams": [
+    {
+      "name": "Lightning Rod install",
+      "status": "REFERENCE / EXERCISE, not a committed team. Built 2026-08-29 as a worked example while the player was testing the teambuilding workflow. Everything in it is verified and it is legal and playable, but the player has NOT said they will run it - do not treat it as their current team or assume the items are locked in.",
+      "started": "2026-08-29",
+      "idea": "Jolteon is 200 Speed and Mega Sceptile 197, so Jolteon always moves first. Its Discharge hits All Adjacent Pokemon, which Mega Sceptile's Lightning Rod converts into +1 Sp. Atk with no damage taken, while still chipping both opponents for 80 BP with a 30% paralysis chance each. Sceptile snowballs Sp. Atk every turn for free. The player's opening: turn 1 Sceptile Protect + Jolteon Light Screen (Sceptile is 172 un-mega'd, still slower than Jolteon), then Mega Evolve and attack from turn 2 while Jolteon starts the Discharge chain.",
+      "slots": [
+        {
+          "pokemon": "Jolteon",
+          "job": "Engine. Light Screen, then Discharge every turn. Electroweb for speed control.",
+          "item": "Focus Sash",
+          "item_reason": "PLAYER'S DECISION: survive one hit so that at least TWO Discharges happen, which is +2 Sp. Atk on Sceptile. Outranks Light Clay, which would extend Light Screen from 5 turns but does nothing if Jolteon dies first."
+        },
+        {
+          "pokemon": "Sceptile",
+          "job": "Win condition. Mega Evolves turn 2, then attacks with a Sp. Atk stack that grows every turn.",
+          "item": "Sceptilite",
+          "item_reason": "Mega Stone. The build does not function without it: the Dragon type that makes Dragon Pulse a STAB, 40 Sp. Atk, 25 Speed and Lightning Rod itself all come from the stone."
+        },
+        {
+          "pokemon": "Gholdengo",
+          "job": "The cover. Resists ALL SIX of Mega Sceptile's weaknesses - Ice, Poison, Flying, Bug, Dragon, Fairy - and it is the only one of the player's 20 builds that does. Good as Gold blanks the status moves that punish a two-turn setup. Nasty Plot behind the same Light Screen is a second win condition if Sceptile falls.",
+          "item": "Metal Coat",
+          "note": "Takes Discharge at x1, so it is not a partner for the Discharge turns - it is the other pairing, or the follow-up after Sceptile.",
+          "item_reason": "The field runs Life Orb 78%, but Smogon ties Life Orb to the FAST spreads and this Gholdengo is the bulky one - 32 HP / 8 Def / 23 SpA / 3 SpD. Life Orb's recoil fights the exact job it has here, which is surviving the Ice and Fairy attacks that Mega Sceptile cannot. Metal Coat takes Make It Rain from 120 to 144 and costs no HP; Smogon notes it OHKOes Mega Aerodactyl. Life Orb stays available if the player would rather have burst than staying power."
+        },
+        {
+          "pokemon": "Maushold",
+          "job": "Protects the setup. Friend Guard cuts 25% off ALL damage the ally takes, which covers the physical side that Light Screen does not. Follow Me pulls single-target attacks off Sceptile, and it does NOT interfere with Discharge because Follow Me only affects single-target moves. Feint breaks a stalling Protect.",
+          "item": "Chople Berry",
+          "item_reason": "The field's own top pick at 44%, and the 39% alternative is Focus Sash, which Jolteon has. Exactly right on type: Maushold is pure Normal and takes Fighting at x2, and it has to live long enough to use Follow Me more than once."
+        },
+        {
+          "pokemon": "Rotom-Wash",
+          "job": "The Ground answer and a SECOND Discharge engine. Levitate makes it immune to Ground, which is the team's shared hole, without costing a slot to a Pokemon that does nothing else. Its own Discharge feeds Mega Sceptile's Lightning Rod exactly like Jolteon's, so the install survives Jolteon going down. Volt Switch pivots out of a bad matchup instead of losing the turn, and Hydro Pump answers the Ground, Rock and Fire types that come in on the Electric attacks.",
+          "item": "Sitrus Berry",
+          "note": "With Levitate its ONLY weakness is Grass x2 - and Mega Sceptile resists Grass at x0.25, so the two cover each other. Fully special, so Intimidate does nothing to it.",
+          "item_reason": "100% of the Worlds Rotom-Wash. It wins the Sitrus over Farigiraf because it is the one that stays on the field taking hits - Levitate leaves it with a single weakness, so recovery compounds - while Farigiraf has a better second option."
+        },
+        {
+          "pokemon": "Farigiraf",
+          "job": "The two structural answers this team needs, in one slot. TRICK ROOM as a switch (confirmed, see trick_room_rule): the team is 200 / 197 / 131 / 200 and an opposing Trick Room inverts all of it, so Farigiraf turns it back off. ARMOR TAIL blanks Prankster, which answers Whimsicott's Encore - at 23.5% of the ladder, the single worst thing that can land on a two-turn setup. Twin Beam hits twice, so it also breaks Focus Sash.",
+          "item": "Colbur Berry",
+          "note": "Speed 80, the slowest on the team by a distance, so it also functions if a Trick Room does stay up. Takes Discharge at x1: not a Discharge-turn partner.",
+          "item_reason": "Only 6% of the field, which runs Sitrus 92% - but Sitrus is on Rotom-Wash, and Colbur answers this team's real hole rather than a generic one. DARK hits Gholdengo x2 and Farigiraf x2, Kingambit is on 52.7% of Worlds teams, and Kowtow Cleave never misses. Colbur halves that hit on the member that has to survive to switch off an opposing Trick Room."
+        }
+      ],
+      "shared_holes": {
+        "Ground": "Jolteon x2, Gholdengo x2. Rotom-Wash and Sceptile are both safe (Levitate; x0.5), so a lead pair can always be built that does not fold to Earthquake, and Jolteon's Focus Sash absorbs one anyway.",
+        "Dark": "Gholdengo x2, Farigiraf x2. The real one: Kingambit is on 52.7% of Worlds teams and Kowtow Cleave never misses, so Protect is the only hard answer. Maushold's Follow Me and Friend Guard are the mitigation.",
+        "Bug": "Mega Sceptile x2, Farigiraf x2. Ignorable - no Bug move reaches 1% of ladder usage.",
+        "Ice": "Mega Sceptile x4 and nothing else now. Gholdengo and Rotom-Wash both resist it. Against a snow team, bench Sceptile."
+      },
+      "structural_risk": "The team is very fast - 200 / 197 / 131 / 200 - so an opposing Trick Room inverts all of it. The hedge the player owns is Farigiraf, already built with Trick Room, or the slower Kingambit and Scrafty which function better inside someone else's Trick Room.",
+      "open_questions": [],
+      "trick_room_rule": "CONFIRMED 2026-08-29. Using Trick Room while Trick Room is active CANCELS it immediately - it is a switch, not a refresh. Three-way agreement: (1) the player's own understanding; (2) champsdex.com, a Champions-specific guide updated 2026-06-14: 'Using Trick Room while your opponent's room is active cancels it immediately'; (3) Bulbapedia for the main series: 'using Trick Room while it is already in effect will end it immediately'. Neither Serebii nor Smogon documents it - Serebii's effect text and in-depth field say only that it gives the field the status for 5 turns, its status-conditions page omits Trick Room entirely, and Smogon says only 'Goes last. For 5 turns, turn order is reversed.' Supporting evidence that Champions did not rebalance the mechanic: priority -7 and 5 turns are identical to the main series. The PP difference (8 here, 5 base in the main series) is NOT a rebalance - Champions rescales PP globally, see the PP note in CLAUDE.md. So Farigiraf's slot is sound: it is a real off switch for an opposing Trick Room.",
+      "replaced_aerodactyl": "Aerodactyl was cut on the player's call, 2026-08-29: they read it as a Tailwind support, and this team's speed plan is Light Screen plus Electroweb, not Tailwind. Rotom-Wash does the job Aerodactyl was actually there for and does it better: same Ground immunity (Levitate rather than the Flying type), but Aerodactyl was x2 to Ice while Rotom-Wash is x0.5, so the Ice hole drops from two members to one - Mega Sceptile alone. It is also a special attacker, which matches the player's standing preference, and it is a second Lightning Rod feeder. It saves the 2000 VP that Aerodactylite would have cost, so the whole team is now 0 VP. What is lost: Unnerve's Berry shutoff, and Mega Aerodactyl as an alternative win condition in the games where Sceptile is benched.",
+      "item_resolution": "Item Clause satisfied: six different items, all owned. The one real collision was Sitrus Berry, wanted by Rotom-Wash (100% of the field) and Farigiraf (92%). Rotom-Wash keeps it and Farigiraf takes Colbur, which is the better team-level answer anyway. NOTE: Light Clay is owned and would extend Jolteon's Light Screen from 5 turns, but Jolteon holds Focus Sash by the player's explicit decision - survive first, so that a second Discharge happens at all. Light Clay therefore goes unused by this team; nothing else on it sets a screen."
+    },
+    {
+      "name": "Mega Sol rain",
+      "status": "SIX SLOTS FILLED but NOT settled - the player is not convinced. Built over a long session 2026-08-30. See open_direction: the player is questioning whether Mega Meganium belongs on a weather team at all. Do not treat this as a committed team.",
+      "started": "2026-08-30",
+      "idea": "Mega Meganium's Mega Sol is the only weather-proof ability in the format: it uses its moves as if in harsh sunlight without SETTING sun, so nobody can overwrite it. That lets it live inside the team's own rain, which no other sun option can. Pelipper's Drizzle then does two jobs at once - it turns Archaludon's Electro Shot into an instant 130 BP attack that also gives +1 Sp. Atk per use, and it halves incoming Fire, which is the format's second most common attacking type (10.2%) and the thing Meganium and Gholdengo both fear.",
+      "player_rules": [
+        "No Intimidate anywhere: 7 of the top 8 run Kingambit with Defiant, so leading Intimidate hands it +2 Attack. This is why Incineroar was cut.",
+        "Only one support slot. Bring 6 / pick 4 means a second support narrows the options for the four that actually fight.",
+        "Special attackers lead; physical is acceptable on secondary slots only."
+      ],
+      "slots": [
+        {
+          "pokemon": "Pelipper",
+          "job": "The support slot. Drizzle sets the rain the whole team runs on, plus Tailwind for speed control and Wide Guard against spread moves.",
+          "item": "Focus Sash",
+          "item_reason": "PLAYER'S DECISION 2026-08-30, over Damp Rock. Surviving one hit guarantees the rain and the Tailwind actually land; 8 turns of rain is worth nothing if Pelipper dies before setting it.",
+          "notes": "Hurricane never misses in rain. Smogon flags Wide Guard as the pick over Protect because it blanks Rock Slide from Mega Aerodactyl and Dazzling Gleam from Mega Floette.",
+          "cost": "rental - 1 permanence ticket",
+          "proposed_moves": [
+            "Tailwind",
+            "Wide Guard",
+            "Hurricane",
+            "Protect"
+          ],
+          "_proposal": "NOT a build - this Pokemon is not owned or trained yet."
+        },
+        {
+          "pokemon": "Archaludon",
+          "job": "The wall and the main engine. Electro Shot is instant in rain AND raises its own Sp. Atk by 1 stage every use.",
+          "item": "Leftovers",
+          "item_reason": "100% of Worlds Archaludon run Leftovers; it is the item the set is designed around.",
+          "notes": "10.9% of Worlds teams, Electro Shot on 100% of them, Pelipper as partner on 84%. Weak to Ground x2 - this is half the reason slot 6 must dodge Earthquake.",
+          "cost": "permanent, needs a build",
+          "proposed_moves": [
+            "Electro Shot",
+            "Flash Cannon",
+            "Dragon Pulse",
+            "Protect"
+          ],
+          "_proposal": "NOT a build - this Pokemon is not owned or trained yet."
+        },
+        {
+          "pokemon": "Meganium",
+          "job": "The Mega. A wall that attacks: Weather Ball is a permanent 100 BP Fire move and Synthesis always heals 2/3, both because Mega Sol treats the weather as sun no matter what is actually up.",
+          "mega": "Mega Meganium",
+          "item": "Meganiumite",
+          "item_reason": "The stone is what creates the form and the ability; without it this is a 525 BST Grass type with nothing.",
+          "notes": "PLAYER'S SET, and deliberately runs NO Grass attack: Grass is resisted by the six most used Pokemon in the format (Kingambit, Charizard, Incineroar, Sneasler, Venusaur, Whimsicott), so Solar Beam would only hit Basculegion and the rain teams. Dazzling Gleam is the only Fairy attack it learns. Earth Power was considered and rejected - it is the only way to touch Incineroar (41.4%) and Sneasler (26.4%), but it costs Synthesis, which is half of what Mega Sol pays for.",
+          "cost": "rental - 1 permanence ticket, plus 2000 VP for the stone",
+          "proposed_moves": [
+            "Weather Ball",
+            "Dazzling Gleam",
+            "Synthesis",
+            "Protect"
+          ],
+          "_proposal": "NOT a build - this Pokemon is not owned or trained yet."
+        },
+        {
+          "pokemon": "Gholdengo",
+          "job": "The Sneasler answer. The ONLY Pokemon in the box that takes zero from both of Sneasler's STABs - Fighting x0 from Ghost, Poison x0 from Steel - and it kills back with Psychic at x4.",
+          "item": "Life Orb",
+          "item_reason": "78% of Worlds Gholdengo. The set has no boosting move now that Nasty Plot is out, so the damage has to come from the item.",
+          "notes": "Psychic replaces Nasty Plot, 250 VP. Open question: Power Gem would hit Charizard at x4 (45% of the field) but fitting both it and Psychic costs Make It Rain, its 120 BP spread STAB. Weak to Ground x2 - the other half of the reason slot 6 must dodge Earthquake.",
+          "cost": "permanent, built - 250 VP for the move swap",
+          "build": "see builds.json"
+        },
+        {
+          "pokemon": "Quaquaval",
+          "job": "The sweeper, and it covers three holes in one slot: rain-boosted Water STAB, Fighting x4 into Kingambit (53% of the field), and the team's only Ice.",
+          "item": "Mystic Water",
+          "item_reason": "Provisional. Boosts the rain-boosted Aqua Step it clicks most; revisit once slot 6 is settled.",
+          "notes": "PLAYER'S PICK. Aqua Step gives +1 Speed per use and Moxie gives +1 Attack per KO, so it snowballs from base 85 Speed. Triple Axel over Ice Spinner is the player's call: 20+40+60 = 120 total vs 80, and being multi-hit it breaks Focus Sash, the format's most contested item at 339 Worlds teams. Also learns Rain Dance, so it can re-set the rain if Pelipper is gone. Physical, so Intimidate hurts it - but Aqua Step and Moxie out-scale Intimidate.",
+          "cost": "permanent, needs a build",
+          "proposed_moves": [
+            "Aqua Step",
+            "Close Combat",
+            "Triple Axel",
+            "Protect"
+          ],
+          "_proposal": "NOT a build - this Pokemon is not owned or trained yet."
+        },
+        {
+          "pokemon": "Sinistcha",
+          "job": "The glue. Rage Powder pulls Sneasler's Close Combat and Dire Claw off Archaludon and Meganium, Hospitality heals the partner 25% on entry, and Life Dew tops the whole side up.",
+          "item": "Colbur Berry",
+          "item_reason": "Smogon: Colbur lets Sinistcha take a Kowtow Cleave from half HP instead of needing to be at full, so it can safely Rage Powder in FRONT of Kingambit and nullify Sucker Punch. Kingambit is on 53% of the field and 7 of the top 8, so that is the single most valuable thing this slot can do.",
+          "nature": "Bold",
+          "stat_points": {
+            "hp": 32,
+            "atk": 0,
+            "def": 14,
+            "spa": 0,
+            "spd": 20,
+            "spe": 0
+          },
+          "notes": "PLAYER'S PICK 2026-08-30, chosen for the ability rather than the stats. Smogon names Sinistcha by name as the ideal partner for BOTH fixed pieces: for Archaludon 'maximum support through Life Dew and Hospitality recovery, Rage Powder redirection', and for Gholdengo 'can heal up Gholdengo with Hospitality and redirect many attacks'. Three specific fits with this team: (1) Meganium is Poison x4 and Sinistcha redirects Sneasler's Dire Claw and Gunk Shot away from it; (2) Quaquaval snowballs with Aqua Step and Moxie, and Smogon notes boosting Pokemon 'make excellent use of Sinistcha's redirection and Hospitality'; (3) Sinistcha's own worst check is Mega Charizard Y's sun-boosted Heat Wave, which ignores Rage Powder and OHKOes it - and Pelipper's rain is exactly what neuters it. Smogon: 'Pelipper and Politoed effectively neuter Sinistcha's biggest check in Mega Charizard Y.' PROTECT, NOT TRICK ROOM: Smogon says to drop Trick Room when the team already has speed control, and Pelipper's Tailwind is it. Defensively it also answers the Ground question indirectly - Grass/Ghost is Ground x0.5 and immune to Fighting and Normal.",
+          "cost": "rental - 1 permanence ticket, then a build",
+          "build": "see builds.json"
+        }
+      ],
+      "shared_holes": {
+        "Ground": "Archaludon x2 and Gholdengo x2. The open problem, and slot 6 exists to answer it.",
+        "Fire": "Meganium x2 and Gholdengo x2, but the team's own rain halves it. The real risk is losing the weather war to Charizard-Y's Drought, on 45% of the field.",
+        "Electric": "Pelipper x4 and Quaquaval x2, but the format barely uses it - 2 attacking Electric moves in the whole top 8, 1.5% of the field.",
+        "Rock": "No Rock attack on the team, so Charizard-Y (45%) is hit at x2 instead of x4. Gholdengo's Power Gem is the fix if it is ever needed."
+      },
+      "open_questions": [
+        "VP: three full builds (Archaludon, Quaquaval, Sinistcha) plus the Meganiumite and Gholdengo's move swap comes to roughly 9,250 VP against a balance of 8,000. Something has to wait.",
+        "Gholdengo: Power Gem would hit Charizard-Y at x4, but only by dropping Make It Rain.",
+        "Quaquaval's ability: Moxie for the snowball, or Torrent for the rain payoff?",
+        "Pelipper's item: player chose Focus Sash; Smogon argues Sitrus Berry, which dodges the 2HKO from Mega Floette's Dazzling Gleam and Basculegion's Wave Crash in rain.",
+        "Which Sinistcha form the rental is - Unremarkable or Masterpiece."
+      ],
+      "weather_control": {
+        "why_it_matters": "65.7% of Worlds teams carry a weather setter that is not rain, so two thirds of the field can switch this team's engine off. Sun alone is 48%.",
+        "who_sets_it": {
+          "Mega Charizard Y": "Drought, 45.2% of teams. Heat Wave 100%, Weather Ball 98%, Ancient Power 55%, Solar Beam 31%. Modest on 114 of 178, so many are not max Speed.",
+          "Tyranitar": "Sand Stream, 7.6%",
+          "Mega Froslass": "Snow Warning, 5.1%",
+          "Ninetales-Alola": "Snow Warning, 4.3%",
+          "Torkoal": "Drought, 2.8%",
+          "Politoed": "Drizzle, 2.3% - this one is fine, it sets OUR weather"
+        },
+        "the_key_finding": "ROCK hits four of the five setters: Charizard-Y x4, Froslass x2, Ninetales-Alola x2, Torkoal x2. The fifth, Tyranitar, is Fighting x4 - which Quaquaval's Close Combat already covers.",
+        "no_way_to_opt_out": "Champions has no Utility Umbrella, and Cloud Nine exists only on Altaria and Drampa, neither of which the player owns. The weather war has to be won, not dodged.",
+        "who_actually_suffers": "Only Archaludon and Pelipper. Archaludon is the real casualty - without rain, Electro Shot stops being instant and becomes a two-turn move, which is useless in doubles. Mega Meganium does not care at all: Mega Sol gives it sun regardless.",
+        "aerodactyl_option": "Speed 130 -> max+ 200, beats Charizard-Y's 167 with no Tailwind needed. Resists Fire x0.5. Rock Slide is x4 AND All Adjacent Foes. Learns Rain Dance and Tailwind, so it doubles as a weather reset and a backup speed setter. Already built at 66/66 with Rock Slide / Protect / Tailwind / Dual Wingbeat - only Rain Dance over Dual Wingbeat would be worth 250 VP. Would come in for Gholdengo, whose Sneasler job is already covered twice over by Sinistcha's Rage Powder and Pelipper's Hurricane."
+      },
+      "rejected_and_why": {
+        "Lycanroc with Accelerock": "The right idea - priority +1 Rock hits Charizard-Y x4 regardless of Speed - but the player does not own Lycanroc, and Accelerock is learnable ONLY by Lycanroc and Lycanroc-Dusk in the whole format. Encounter-only.",
+        "Power Gem on Gholdengo": "Withdrawn. Charizard-Y at max+ 167 outspeeds Gholdengo's 149 and hits it with a sun-boosted Heat Wave at x2, so Power Gem only ever fires under Tailwind or as a revenge kill.",
+        "Meteor Beam on Archaludon": "120 BP special Rock at x4 looks ideal, but Power Herb does not exist in Champions, so it always charges. Useless in doubles.",
+        "Maushold": "Second support. With bring 6 / pick 4 a second support narrows the four that actually fight.",
+        "Rotom-Wash": "Recommended on a wrong claim - it takes Electric at x1, not x0.5, because Water cancels the Electric resistance.",
+        "Incineroar": "Intimidate feeds Kingambit's Defiant, and 7 of the top 8 run Kingambit."
+      },
+      "open_direction": "PLAYER, 2026-08-30, not yet resolved: 'maybe Mega Meganium should not fight over weather at all and should just concentrate on surviving, with different partners.' This is the real fork. Mega Sol makes Meganium weather-independent, so pairing it with a rain core drags it into a war it does not need to fight - while Archaludon is the opposite, it LIVES on the rain. The two pull apart. Either build the rain team and accept Meganium is a passenger that happens to be immune to the downside, or build around Meganium as a weather-proof bulky attacker and drop the rain engine, which means Archaludon loses most of its appeal."
+    },
+    {
+      "name": "Mega Meganium Trick Room",
+      "status": "STALE - THE PLAYER DID NOT RECOGNISE THIS TEAM ON 2026-09-08 ('no se a que te refieres con eso'). Six slots were agreed 2026-08-30 but no set was ever started and nothing was bought; it has since been superseded by the Mega Chesnaught Trick Room team. Do NOT cite it as a current commitment or treat any Pokemon as reserved by it. Kept only as a record of the reasoning. Note it was built on Meganium, which is a rental and needs Meganiumite (2000 VP, not owned).",
+      "idea": "Trick Room instead of weather. Mega Sol already makes Meganium weather-proof, so a weather core dragged it into a war it had no stake in - and 65.7% of the field can set a weather that is not rain. Trick Room cannot be overwritten by Drought, Sand Stream or Snow Warning, and it suits Meganium's actual shape: 115/115 defences, Synthesis at 2/3, Weather Ball at a permanent 100 BP Fire. It rewards bulky and slow, which is what Meganium is; Tailwind rewards fast and frail, which it is not.",
+      "player_rules_learned_this_session": [
+        "ONE support slot only. With bring 6 / pick 4, two supports leave only two attackers - 'llevar 2 soportes a 2v2 es horrible'. Farigiraf is the support; do not propose a second Trick Room setter or a second redirector.",
+        "Kingambit is the EXCEPTION to the Intimidate rule - Defiant turns an opposing Intimidate into +2 Attack, so it is never 'exposed' to Intimidate. Do not count it among physical attackers that Intimidate punishes.",
+        "With Kingambit and Tyranitar on the same team a Ghost type is close to mandatory: both are Dark-types with a Fighting x4 weakness, and Ghost is immune to Fighting.",
+        "Do not recommend a Pokemon whose value came from its Mega when the Mega slot is taken - base Eelektross is a weak Pokemon and its Giga Drain / Flamethrower coverage is already done better by Meganium.",
+        "Every slot needs a job. 'It is slow so it fits Trick Room' is not a reason - Hatterene was rejected on exactly that."
+      ],
+      "slots": [
+        {
+          "pokemon": "Meganium",
+          "mega": "Mega Meganium",
+          "spe": 80,
+          "job": "Mega A and the special main attacker. Weather Ball is a permanent 100 BP Fire move and Synthesis always heals 2/3, both from Mega Sol regardless of the weather on the field.",
+          "notes": "Runs NO Grass attack on purpose: Grass is resisted by the six most used Pokemon in the format. Dazzling Gleam is the only Fairy attack it learns. Does not learn Growth, which under Mega Sol would have been +2/+2 every turn.",
+          "cost": "rental - 1 ticket, plus 2000 VP for Meganiumite",
+          "proposed_moves": [
+            "Weather Ball",
+            "Dazzling Gleam",
+            "Synthesis",
+            "Protect"
+          ],
+          "_proposal": "NOT a build - this Pokemon is not owned or trained yet."
+        },
+        {
+          "pokemon": "Farigiraf",
+          "spe": 60,
+          "item": "Colbur Berry",
+          "job": "The ONLY support. Sets Trick Room; Armor Tail denies all priority to the whole side, which is how Trick Room teams normally die - Fake Out cutting the setup turn, Sucker Punch picking off the sweeper.",
+          "item_reason": "Smogon: 'Kingambit is the most threatening Pokemon to Farigiraf, as it can easily KO non-Colbur Berry variants with Kowtow Cleave.' Kingambit is on 53% of the field.",
+          "notes": "On 80 of 394 Worlds teams (20.3%), the format's most used Trick Room setter. Its Psychic STAB is x4 on Sneasler, which answers Meganium's Poison x4. Smogon: 'should ideally be paired with slow teammates like Kingambit and Sylveon' - and Kingambit is on 61.2% of Farigiraf teams.",
+          "cost": "permanent, already built",
+          "build": "see builds.json"
+        },
+        {
+          "pokemon": "Kingambit",
+          "spe": 50,
+          "job": "Attacker. Immune to Poison as a Steel-type, which covers Meganium's x4. Defiant means an opposing Intimidate feeds it +2 Attack.",
+          "notes": "61.2% of Worlds Farigiraf teams run it - the single most common partner.",
+          "cost": "permanent, already built"
+        },
+        {
+          "pokemon": "Tyranitar",
+          "spe": 61,
+          "mega": "Mega Tyranitar (2000 VP, not owned)",
+          "job": "Attacker and Mega B. Rock hits Mega Charizard Y at x4, and Sand Stream removes the opponent's sun - pure upside on a team that runs no weather of its own.",
+          "notes": "Smogon: 'Mega Tyranitar bolsters a team against opposing weather strategies while boasting good matchups against common Fire-types.' Base form already has Sand Stream, so the stone buys stats, not the weather.",
+          "cost": "permanent, needs a build; Tyranitarite is 2000 VP"
+        },
+        {
+          "pokemon": "Basculegion",
+          "spe": 78,
+          "job": "The mandatory Ghost. Immune to Fighting, which is the x4 shared by Kingambit and Tyranitar.",
+          "notes": "The only Ghost in the box with NO weakness among the team's six shared holes: Fighting x0, Ground x1, Fire x0.5, Steel x0.5, Bug x0.5, Poison x0.5. Gholdengo covers Poison but adds Ground x2 and Fire x2; Ceruledge and Chandelure add Ground x2. Adaptability plus Last Respects scales as teammates faint, which fits a team that trades.",
+          "cost": "permanent, already built"
+        },
+        {
+          "pokemon": "Dragonite",
+          "spe": 80,
+          "job": "Attacker. The only slow Ground-IMMUNE Pokemon in the box, closing the last shared hole - Ground is x2 on both Kingambit and Tyranitar.",
+          "notes": "Fighting x0.5, Fire x0.5, Bug x0.5, Ground x0 - covers four of the five holes, the best of anything owned. Multiscale halves damage at full HP. Reaches x2 or better on 11 of the 12 most used Pokemon in the format.",
+          "cost": "permanent, needs a build"
+        }
+      ],
+      "remaining_risk": "ICE. Dragonite is x4 and Meganium x2. The top 8 runs only 3 Ice attacks so it rarely comes up, but Mega Froslass and Ninetales-Alola are bad matchups.",
+      "rejected_this_session": {
+        "Sylveon": "Redundant - Mega Meganium already covers the Fairy side.",
+        "Sinistcha": "Would have been a second support. Trick Room is Farigiraf's job.",
+        "Hatterene": "No job beyond being slow.",
+        "Eelektross": "Its value was the Mega, and the Mega slot belongs to Meganium.",
+        "Chandelure": "Frail at bulk 255, and its Fire duplicates Weather Ball.",
+        "Gholdengo": "Best Ghost on paper for Poison immunity, but adds Ground x2 and Fire x2 to holes that already exist."
+      },
+      "next_session": [
+        "Natures and SP spreads for all six.",
+        "Items - Farigiraf's Colbur Berry is settled, the other five are open and must obey the Item Clause.",
+        "Order of purchase: 5 free Training Tickets arrive 2026-08-31 and should go on 500 VP trainings only (nature, ability), never on moves at 250 or SP at 5."
+      ],
+      "do_not_bind_pokemon_to_this": "Correction, 2026-09-08. I wrote that releasing Dragonite left this team 'short that Pokemon'. That was wrong twice over and contradicted this file's own opening rule: A TEAM DOES NOT OWN ITS POKEMON. A build lives in builds.json and is reusable across any number of teams, and this team was not live in the first place."
+    },
+    {
+      "name": "Trick Room around Farigiraf",
+      "status": "IN PROGRESS as of 2026-08-31. Four slots settled, two open. The player likes Mega Camerupt ('se ve entretenido de probar') but is NOT sold on Mega Mawile. Do not treat either Mega as final.",
+      "started": "2026-08-31",
+      "idea": "Farigiraf leads: Armor Tail blanks Fake Out for the whole side, Imprison denies Protect (99.5% of teams) AND Trick Room, and it sets Trick Room itself. The Megas are the slow sweepers that exploit it. Replaces the abandoned Mega Glalie Explosion team.",
+      "settled": [
+        {
+          "pokemon": "Farigiraf",
+          "role": "lead, Armor Tail, Imprison, Trick Room setter",
+          "item": "Sitrus Berry",
+          "item_reason": "92% of Worlds Farigiraf run it; burst healing lets it survive the double-target it eats while setting up.",
+          "status": "player-tested: 'impecable', 'bien molesta'"
+        },
+        {
+          "pokemon": "Camerupt",
+          "role": "Mega, Trick Room special sweeper at Speed 20 - the slowest thing available",
+          "item": "Cameruptite",
+          "item_reason": "Sheer Force lives ONLY on the Mega; base Camerupt has Magma Armor / Solid Rock / Anger Point. The stone is the build.",
+          "note": "Ancient Power is mandatory, not optional: Fire is resisted by Charizard and Ground does ZERO to it (Flying). Rock at x4 is Camerupt's only access. NOT YET OWNED - reachable via Pokemon GO -> HOME (free, permanent) plus 2000 VP for the stone.",
+          "proposed_moves": "Earth Power / Heat Wave / Ancient Power / Protect",
+          "_proposal": "NOT a build - this Pokemon is not owned or trained yet."
+        },
+        {
+          "pokemon": "Mawile",
+          "role": "Mega, Trick Room physical sweeper at Speed 50, Huge Power doubles Attack to 344",
+          "item": "Mawilite",
+          "note": "Smogon's own set. Play Rough OHKOes Garchomp (141-169%), Sucker Punch OHKOes Basculegion. PLAYER IS NOT CONVINCED - 2026-08-31. Costs 2500 VP permanence + 2000 VP stone.",
+          "proposed_moves": "Play Rough / Iron Head / Sucker Punch / Protect",
+          "_proposal": "NOT a build - this Pokemon is not owned or trained yet."
+        },
+        {
+          "pokemon": "Kingambit",
+          "role": "the Basculegion answer and a Speed 50 Trick Room body",
+          "note": "Chosen against the player's own dislike of how common it is, because it is the only box Pokemon that WINS the exchange: switches in on Wave Crash at 41-49%, then Kowtow Cleave OHKOes at 119-140%. Gholdengo and Sinistcha both die to Last Respects (Ghost x2) instead."
+        }
+      ],
+      "open_slots": "Two. Ice coverage for Garchomp is the clearest need - Empoleon (Speed 60, Ice Beam 108-128% on Garchomp, Competitive turns the field's 52.7% Intimidate into +2 Sp. Atk) is the slow option; Froslass and Alolan Ninetales kill it harder but are too fast for Trick Room.",
+      "structural_problems": [
+        "GROUND hits 4-5 of the six and NOBODY resists it. Camerupt, Mawile and Kingambit are all x2. No slow box Pokemon fixes it: the only Ground-immune slow options are Eelektross and Dragonite, and BOTH are built as Megas, so their sets are wasted in base form.",
+        "WATER x4 on Camerupt, with no ability answer available - the box has no Water Absorb, Dry Skin or Water Bubble. Basculegion carries 514 of the field's 703 Water attacking slots.",
+        "FIGHTING x4 on Kingambit; adding Tyranitar would stack a second x4.",
+        "Trick Room cannot be extended - no item, move or ability does it, verified. 5 turns, and the turn you set it is spent because it has -7 priority. That makes a SECOND setter a renewal tool, not redundancy."
+      ],
+      "rejected": [
+        "Sinistcha as the redirector: Basculegion's Last Respects is Ghost x2 into it and OHKOes at 100 BP (one fainted ally). Rage Powder actively invites the attack that kills it. 100% of Worlds Basculegion carry Last Respects.",
+        "Pelipper: Drizzle halves Camerupt's own Fire. Heat Wave on Kingambit drops from 102-122% to 51-61%.",
+        "Aerodactyl: Speed 130 moves LAST under Trick Room. Named as a counter in four Smogon analyses, but the wrong speed tier for this team.",
+        "Tyranitar: sand costs almost nothing here (only Farigiraf takes chip) and clears the 49.3% sun, but Rock/Dark is Fighting x4 like Kingambit."
+      ],
+      "item_clause_note": "Only Sitrus Berry, Cameruptite and Mawilite are fixed so far. The rest are open."
+    },
+    {
+      "name": "Mega Chesnaught Trick Room",
+      "status": "FIVE SLOTS CLOSED AND BUILT, SIXTH STILL OPEN. Session closed 2026-09-06 at the player's request. The five are Farigiraf, Mega Chesnaught, Gholdengo, Primarina and Mega Camerupt; every build is written and verified in builds.json. Slot 6 is UNRESOLVED and Kingambit and Tyranitar are VETOED - see slot_6_STILL_OPEN_2026_09_06. Pick this up there; do not re-derive the five.",
+      "started": "2026-09-01",
+      "idea": "Every slot works under Trick Room, not a TR core with fast backup - the player's ruling 2026-09-01: 'me gustaria que todo el equipo funcionara bajo trick room'. Chesnaught is the slow Mega the older Farigiraf TR team never had.",
+      "player_rules": [
+        "EVERY slot must function under Trick Room. Speed is filtered FIRST.",
+        "One support slot only - Farigiraf is it.",
+        "A Pokemon whose set is built around its Mega is ineligible in base form; those builds are frozen.",
+        "Quiet over Modest on any special attacker with no physical move: identical Sp. Atk, and the Speed drop is free under TR."
+      ],
+      "settled": [
+        {
+          "pokemon": "Farigiraf",
+          "spe_final": 80,
+          "role": "the ONLY support - Armor Tail, Trick Room setter",
+          "note": "Armor Tail denies priority to the whole side, which is how TR teams normally die. Player-tested: 'impecable', 'bien molesta'."
+        },
+        {
+          "pokemon": "Chesnaught",
+          "mega": "Mega Chesnaught",
+          "spe_final": 57,
+          "role": "the TR sweeper - Body Press wall-breaker, immune to Intimidate",
+          "note": "Curse drops it to 38 Speed, which is a BONUS under TR. NOW IN HOME x2, fully evolved (2026-09-04), so it is one transfer from permanent and trainable. Chesnaughtite NOT owned, 2000 VP."
+        },
+        {
+          "pokemon": "Gholdengo",
+          "spe_final": 93,
+          "role": "special attacker, Good as Gold blanks status"
+        }
+      ],
+      "defensive_check_2026_09_05": "With the real three-slot core, FIRE is the ONE hole and it hits both Mega Chesnaught and Gholdengo at x2 - nothing else in the 18 types is unresisted. Ghost is x0 on Farigiraf, Fighting x0 on Gholdengo. An earlier note claiming Ghost was uncovered was wrong. ALWAYS check abilities before reading a weakness off the type chart: Rotom-Wash is x0 to Ground via Levitate and Snorlax is x0.5 to Fire via Thick Fat, neither of which the chart shows.",
+      "the_real_hole": "STALE - RESOLVED, corrected 2026-09-08. This entry was written when the team had FOUR builds and said the hole was Garchomp, which nothing hit super-effectively. PRIMARINA JOINED THE FINAL SIX AFTER THAT, and it carries ICE BEAM: verified with scripts/damage.py at the team's own spread (Quiet, 24 SpA), Ice Beam does 244-288 into Garchomp's 183 HP - 133.3%-157.4%, a GUARANTEED OHKO through Ice x4 on Dragon/Ground. The Garchomp problem is answered by a Pokemon already on the team. Do not cite this hole again without re-measuring against the final six. ORIGINAL TEXT, kept for the record: 'OFFENSIVE, and it is GARCHOMP. The four builds throw Electric, Fighting, Ghost, Psychic, Rock, Steel and Water. Against the top 20 of the Worlds Masters field, four Pokemon take nothing super-effective: Garchomp (39.6%), the Farigiraf mirror (20.3%), Swampert (12.4%) and Raichu (10.2%).' The Farigiraf, Swampert and Raichu half was not re-checked and may still hold. NOTE FOR M-C: Mega Garchomp Z is pure Dragon, so Ice is x2 on it, not x4 - Ice Beam will not OHKO that form.",
+      "candidate_under_discussion": {
+        "pokemon": "Empoleon",
+        "for": "Ice Beam does 114.9-137.4% to Garchomp - a GUARANTEED OHKO (32 SpA / Quiet vs 12 HP / 4 Def, verified with scripts/damage.py). Speed 60 becomes 72 at 0 SP with Quiet, slotting it second in the TR order behind Mega Chesnaught's 57. SpA 111, special attacker, and Competitive turns the field's Intimidate (41.3% Incineroar in Masters) into +2 Sp. Atk. Already PERMANENT, so 0 VP for the Pokemon - training only, and 5 tickets are incoming.",
+        "against": "PLAYER'S OBJECTION 2026-09-05: it stacks the Ground weakness. Gholdengo is already x2; Empoleon makes it two of five, and Earthquake is a SPREAD move, so Garchomp hits both at once - 64.9-77.3% on Gholdengo and 70.2-82.7% on Empoleon, a simultaneous 2HKO. Note the first count of this was wrong: the model said three of five, forgetting Rotom-Wash's Levitate. Two of five is the real figure.",
+        "status": "UNRESOLVED. The player has not accepted or rejected it."
+      },
+      "alternatives_measured": "All verified against Garchomp with scripts/damage.py, and all Ground-neutral or better so they do not stack the weakness: Tyranitar Ice Beam OHKOes (104.6-123.1%) but Sand Stream chips the team's own side and it is x2 to Ground itself; Machamp Ice Punch is a 38% roll; Snorlax Ice Beam 82.1-98.5% and Toxapex Ice Beam 73.8-88.2% do NOT KO despite being slower. Ground-safe options not yet measured against Garchomp: Sylveon (Spe 60, permanent, SpA 110, Fairy is x2 on Garchomp, Pixilate), Hatterene (Spe 29 but RENTAL so untrainable), Sableye and Snorlax from HOME.",
+      "open_slots": "One after the Empoleon question is settled, two if it is rejected. Filter low Speed FIRST, then ask what it adds OFFENSIVELY - the defence is already complete.",
+      "blocking": "Chesnaughtite, 2000 VP, not owned. And a free box slot for Chesnaught itself - the box is at 48/50.",
+      "fallback": {
+        "pokemon": "Rotom-Wash",
+        "note": "NOT a settled slot - held in reserve if nothing better fills the gap. Levitate is its ONLY ability, so it is a guaranteed Ground immunity, and it resists Fire; those two jobs are what keeps it on the shortlist. If another Pokemon covers Fire, Rotom-Wash is free to drop."
+      },
+      "recommendation_2026_09_05": {
+        "pokemon": "Snorlax",
+        "source": "HOME - permanent and trainable at 0 VP, needs a free box slot (48/50)",
+        "why": "It closes the ONLY defensive hole and it is the slowest thing available. Speed 30. Thick Fat halves Fire, which is the one type the core cannot answer, and halves Ice too. Normal makes it Ghost x0. Its single weakness is Fighting - and Gholdengo is IMMUNE to Fighting, so the pair covers each other. Verified: core of three + Snorlax resists or is immune to all 18 attacking types with no Rotom-Wash needed, which frees the fallback slot entirely.",
+        "caveat": "Offensively it does not solve Garchomp on its own - Ice Beam is 82.1-98.5%, a 2HKO not a KO, off only 65 SpA. Ice Punch off its 110 Attack is the better line and was not measured. Garchomp is still the open offensive question.",
+        "status": "PROPOSED, not accepted - the session closed here.",
+        "measured_2026_09_05": {
+          "_note": "All Brave 32 Atk / 32 HP / 32 Def Snorlax unless stated, verified with scripts/damage.py.",
+          "vs_garchomp": "Ice Punch is the right Ice move - Snorlax is Atk 110 / SpA 65, so the physical side wins. Against the two spreads the field actually runs: Choice Scarf 2 HP / 0 Def (51 of 156 Worlds Garchomp) 180-212, a 75% OHKO; Smogon's bulky 19 HP / 0 Def Jolly 180-212, only a 25% OHKO. Ice Beam is worse on both (44% and no OHKO). SO ICE PUNCH DOES NOT CLEANLY SOLVE GARCHOMP - it is a roll.",
+          "but_it_wins_the_trade": "Under Trick Room Snorlax moves first, and Garchomp's Earthquake does only 21.7-26.2% through 267 HP and Thick Fat. Garchomp needs 4-5 turns, Snorlax needs 2. The Garchomp problem is answered in practice even without a clean KO.",
+          "punishes_what_it_walls": "The player's point, and it holds: Heavy Slam OHKOes Alolan Ninetales 178.6-211.9% (Snorlax weighs 460kg vs 20kg, so max BP, and Steel is x4 on Ice/Fairy); Rock Slide 2HKOes Mega Charizard Y 78.6-94.8%; Superpower 2HKOes Incineroar 70.5-83.2%; Crunch 2HKOes Mega Froslass 64.2-76.4% and Delphox 61.2-72.9%.",
+          "what_it_takes": "Mega Charizard Y Heat Wave in sun 15.7-19.1%; Incineroar Flare Blitz 16.1-19.5%; Delphox Heat Wave 9.0-10.5%; Alolan Ninetales Blizzard 7.9-9.4%; Mega Froslass Blizzard 11.6-13.9%; Garchomp Earthquake 21.7-26.2%. Nothing in its job description takes it past half in two turns.",
+          "the_cost": "The coverage it wants is FOUR attacks - Ice Punch, Heavy Slam, Rock Slide or Superpower, Crunch - which breaks the player's usual 3 attacks + Protect shape. Which two coverages to drop is an open decision, not something to settle for them.",
+          "moveset_note": "Ice Punch (75 BP) is Snorlax's ONLY physical Ice move. Heavy Slam and Heat Crash are weight-derived and enormous off 460kg - stored at power 1 in moves.json, damage.py resolves them."
+        }
+      },
+      "roster_sweep_2026_09_05": {
+        "_what": "Every one of the 209 Champions species was filtered on the four things this team actually needs, instead of shortlisting by hand. Filter: base Spe <= 70 (works under Trick Room), Fire <= x0.5 with abilities counted (the team's ONE defensive hole), Ground <= x1 (the player's own objection to Empoleon - Gholdengo is already x2 and Earthquake is a spread move), and a real Ice/Fairy/Dragon damaging move (the Garchomp answer).",
+        "_result": "FOURTEEN species in the whole game pass all four, and thirteen of them are Water-types. The profile this team wants is a bulky Water. Only TWO are reachable: Snorlax (HOME, 0 VP, trainable) and Pelipper (rental, untrainable). Everything else is unowned.",
+        "passes_all_four": {
+          "reachable": {
+            "Snorlax": "HOME, 0 VP, trainable on arrival. Spe 30, Thick Fat -> Fire x0.5, Ground x1, Ice Beam/Ice Punch. The only species in the game that passes the whole filter AND can be built.",
+            "Pelipper": "RENTAL, so untrainable - locked to its default set. Spe 65, Ground x0 (Flying), Fire x0.5, Ice Beam, and Drizzle would fight the team's own plan anyway."
+          },
+          "not_owned_GO_targets": {
+            "Primarina": "THE BEST OF THEM. Water/Fairy, Spe 60, SpA 126, SpD 116. Two independent Garchomp answers - Ice Beam is a GUARANTEED OHKO (244-288, 125-148%) and Moonblast an 88% roll. DRAGON x0, so Garchomp's Dragon Claw does literally 0. Takes Mega Charizard Y Heat Wave 15.0-17.6%, Incineroar Flare Blitz 27.3-32.6%, Sneasler Close Combat 29.9-35.3%, Kingambit Kowtow Cleave 21.9-25.7%. Liquid Voice turns Hyper Voice into a spread Water move that does NOT hit the ally. 1.9% ladder. TRAP: Popplio and Brionne must be evolved all the way inside GO before transferring, same as Chesnaught and Delphox.",
+            "Vaporeon": "Water, Spe 65, SpA 110, HP 130, Water Absorb. Ice Beam. Easiest species in GO to obtain (Eevee).",
+            "Slowbro / Slowking": "Water/Psychic, Spe 30 - the slowest passers. SpA 100/110, Regenerator, and both learn Trick Room themselves.",
+            "Swampert": "Water/Ground, Spe 60, Ice Beam, only weakness Grass x4. 11.4% of the ladder.",
+            "Azumarill": "Water/Fairy, Spe 50, Thick Fat gives Fire x0.25 - the best Fire resistance in the game on this filter. Huge Power.",
+            "others": "Clawitzer (Mega Launcher), Politoed, Samurott, Drampa (Spe 36, SpA 135), Appletun, Araquanid."
+          }
+        },
+        "reachable_now_compared": {
+          "_note": "All verified with scripts/damage.py 2026-09-05. Garchomp is quoted against BOTH spreads the field actually runs: Smogon's bulky 19 HP / 0 Def Jolly, and the 2 HP / 0 Def Adamant Scarf set that is 51 of 156 Worlds Garchomp.",
+          "Snorlax (HOME, 0 VP)": "Fire hole: CLOSED - Heat Wave 15.7-19.1%. Ground x1. Garchomp: Ice Punch is only a 25% OHKO on the bulky spread, but under TR it moves first and Earthquake does 21.7-26.2% back, so it wins the trade in 2 turns to Garchomp's 4-5. Its only weakness is Fighting, which Gholdengo is immune to.",
+          "Tyranitar (PERM, untrained)": "Fire hole: CLOSED - Heat Wave 14.5-17.4%, Flare Blitz 18.8-22.2%. Garchomp: Ice Beam is a GUARANTEED OHKO on both spreads (103-123% / 112-134%). Also covers three of the four walls at once - Crunch on the Farigiraf mirror, Rock Slide OHKOes Mega Charizard Y at ZERO Attack investment (116-138%), High Horsepower on Mega Raichu X. THE EARLIER SAND OBJECTION IS FIXABLE: Unnerve is its second legal ability, 500 VP or one free training ticket, and it also blocks the field's Sitrus Berries. THE REAL COST is the body: Ground x2 (the same stack the player rejected on Empoleon) and Fighting x4 - Sneasler Close Combat 162-193% and Mega Staraptor Close Combat 174-205% are both guaranteed OHKOs, and that is 43% of the field.",
+          "Empoleon (PERM, untrained)": "Garchomp: guaranteed OHKO on both spreads (115-137% / 125-149%). Fire hole: NOT closed, x1. Ground x2 - the player's standing objection.",
+          "Machamp (PERM, untrained)": "The only Ground-safe permanent with a near-KO: Ice Punch is 88% on the bulky Garchomp and guaranteed on the Scarf one, and No Guard makes Dynamic Punch a 100%-accurate 316-376 on Kingambit. But Fire is NOT closed (Heat Wave 35.0-41.6%), Fighting duplicates Chesnaught, and it folds to the field's Fairies and Flyers - Mega Floette Moonblast 62% OHKO, Mega Staraptor Brave Bird guaranteed.",
+          "Garganacl (RENTAL, 2026-09-05)": "Closes Fire (Rock x0.5) and Purifying Salt is TOTAL status immunity - the only carrier in the format, which blanks Will-O-Wisp on the physical Mega Chesnaught and Venusaur's Sleep Powder (22.3%). But it does NOT answer Garchomp (Ice Punch 81-97%, no KO), it is Ground x2, and Salt Cure is REBALANCED DOWN in Champions - 1/16 a turn, 1/8 on Steel and Water, not the 1/8 and 1/4 of the console games. Untrainable until a ticket or 2500 VP is spent."
+        },
+        "the_structural_point": "THREE slots are open, so Fire and Garchomp do NOT have to be solved by the same Pokemon. And bring 6 / pick 4 means a Ground stack only bites when both stacked Pokemon are actually brought - it is a preview decision, not a permanent flaw.",
+        "classic_TR_support_is_absent": "Checked against the dex 2026-09-05: Amoonguss, Indeedee, Porygon2, Dusclops, Bronzong, Hariyama, Ursaluna and Gothitelle are NOT in Champions. The standard VGC Trick Room toolbox does not exist here, which is why Farigiraf is doing the whole support job alone.",
+        "CORRECTION_after_reading_the_builds": {
+          "_why": "The sweep above filtered on typing and speed but had NOT been checked against the three settled builds in full. Reading them changes the ranking.",
+          "Tyranitar is OUT": "Mega Chesnaught's own build says it, in its `threats` field: 'Never switch Aggron, Kingambit or Tyranitar into a Staraptor: all three are x4 to Fighting and Contrary makes Close Combat the move Staraptor wants to click anyway.' Verified: Mega Staraptor Close Combat 173.9-204.8% and Sneasler Close Combat 162.3-193.2%, both guaranteed OHKOs on 32 HP / 16 Def. Empoleon fails the same test (109.9-129.8% / 104.7-123.6%). Machamp fails the other half - Brave Bird from either Staraptor is a guaranteed OHKO on it.",
+          "the_Fire_hole_is_more_precise_than_stated": "Chesnaught's spread ALREADY pays for Mega Charizard Y Heat Wave in sun (OHKO -> 2HKO, 78-92%), and Bulletproof turns off Weather Ball entirely. The Fire problem is GHOLDENGO alone: its own spread_note says Heat Wave in sun OHKOes it through even 32 HP / 32 SpD (102-121%) and Incineroar Flare Blitz needs Def 16 just to leave OHKO range - 'those two matchups are unwinnable with SP and must be answered by the team'. That single sentence is why Rotom-Wash was parked as the fallback.",
+          "the_bigger_structural_hole_is_FLYING": "Chesnaught's build names it: Grass/Fighting is x4 and no spread survives it. 42.8% of Worlds teams (276/645) carry one of the three Flying attacks that exist. The build's answer is to SWITCH to Gholdengo (Flying x0.5), so it is covered - but it costs a switch every time, and an open slot that resists Flying would pay for itself.",
+          "GARGANACL_IS_THE_SURPRISE": "The rental that arrived 2026-09-05 is the ONLY reachable candidate that survives every threat the builds name. On 32 HP / 16 Def: Mega Staraptor Brave Bird 18.8-22.7%, Close Combat 76.3-90.8% (NO OHKO), Sneasler Close Combat 72.5-85.0% (NO OHKO), Mega Charizard Y Heat Wave 15.9-18.8%, Pelipper Hurricane 17.4-20.8%. Rock resists Flying AND Fire at once, which is exactly the pair of holes the builds describe. And it has a real offensive job: Rock Slide OHKOes Mega Charizard Y at 126.1-152.7% and Stone Edge at 225.5-269.1% - the same Charizard whose Heat Wave the Gholdengo build calls unwinnable. Purifying Salt is total status immunity on top. ITS LIMITS: it does not answer Garchomp (Ice Punch 82.1-98.5%, no KO), it is Ground x2, Salt Cure is rebalanced down in Champions (1/16, 1/8 on Steel/Water) and its direct hit is only 40 BP, and it is a RENTAL so it is untrainable until a permanence ticket or 2500 VP is spent.",
+          "revised_shortlist": "1) GARGANACL for the defensive slot - it is the only reachable body that survives the Staraptor/Sneasler/Charizard trio the builds flag, and it deletes Charizard. Needs one of the 5 permanence tickets to become trainable. 2) SNORLAX still works and is 0 VP, but Close Combat is a 50% roll (Sneasler) and 75% (Mega Staraptor) on it, and its Garchomp answer is only a 25% roll. 3) PRIMARINA from GO remains the single best answer to everything at once - it survives all six named threats (worst case Mega Staraptor Brave Bird 63.1-75.4%) AND guarantees the Garchomp OHKO. 4) Garchomp still has no clean reachable answer that is also Staraptor-safe; that is the remaining open question.",
+          "trick_room_order": "SP Spe 0 with a -Spe nature: Snorlax 45, Garganacl 49, Mega Chesnaught 57 (38 after Curse), Primarina/Empoleon/Tyranitar 72, Farigiraf 80 (Modest, so no -Spe drop), Gholdengo 93. All candidates slot in ahead of Farigiraf, which is what TR wants."
+        }
+      },
+      "unconstrained_design_2026_09_06": {
+        "_premise": "PLAYER'S REFRAME 2026-09-06: this team is to be built PERFECTLY - not limited to what is owned, but across the totality of Pokemon and items - so that acquisitions can be PRIORITISED. Ownership is now an ordering criterion, not a filter.",
+        "core_of_four": "Farigiraf + Mega Chesnaught + Gholdengo + PRIMARINA. Adding Primarina takes the offensive walls from four to three - Garchomp is SOLVED (Ice Beam 125-148%, guaranteed OHKO) - and Water/Fairy is Dragon x0, so Garchomp's Dragon Claw does literally 0.",
+        "slot_5_MEGA_CAMERUPT": {
+          "why": "Spe 20, the slowest Mega in the game. SpA 145, Sheer Force, special attacker. Verified on Smogon's engine: Earth Power is a GUARANTEED OHKO on Kingambit (52.8% of the field), Mega Raichu Y, Incineroar and Gholdengo; Heat Wave OHKOes Sinistcha and 2HKOes the Farigiraf mirror. Already in home_box, so 0 VP for the Pokemon. 100% of the 6 Worlds Masters teams that ran Camerupt also ran Farigiraf.",
+          "cost": "Cameruptite 2000 VP, not owned.",
+          "risk": "Water x4. Basculegion Wave Crash 185-219% and Mega Swampert Wave Crash 231-271%, both guaranteed OHKOs. That is exactly the matchup where Chesnaught is brought instead."
+        },
+        "the_two_Megas_ANTI_CORRELATE_and_it_is_verified": {
+          "_player_point": "Raised by the player 2026-09-06: only one Pokemon may Mega Evolve per battle, so Chesnaught and Camerupt are swapped per matchup rather than fielded together. Correct, and it is the four-slot-shell-plus-two-Megas structure CLAUDE.md describes.",
+          "measured": "Across the top 20 of the Worlds Masters field, 15 of 20 clearly favour one of the two. CAMERUPT is the pick in 12 (Mega Charizard Y 45.2%, Incineroar 41.4%, Mega Floette 27.4%, Sneasler 26.4%, Sylveon 24.9%, Whimsicott 24.1%, Venusaur 22.3%, Farigiraf 20.3%, Mega Staraptor 16.5%, Mega Delphox 11.7%, Grimmsnarl 8.6%, Mega Aerodactyl 8.4%). CHESNAUGHT is the pick in only 3 - but they are big: Garchomp 38.3%, Basculegion 34.0%, Mega Swampert 10.7%. Both are fine into Kingambit, Sinistcha, Archaludon and Mega Raichu.",
+          "consequence": "CAMERUPT IS THE DEFAULT MEGA AND CHESNAUGHT IS THE SPECIALIST, not two equal halves. Say it plainly.",
+          "caveat": "That count is the pure DEFENSIVE read - what each Mega's typing takes. It undersells Bulletproof, which is worth a slot on its own: 92% of Worlds teams carry a bullet move, and it turns off Weather Ball, a 100 BP super-effective attack on 47.4% of teams. Chesnaught's real case is Bulletproof plus Body Press, not its type chart.",
+          "neither_works": "Pelipper (9.1%) is Water/Flying - x4 on both Megas. Farigiraf's Thunderbolt is the team's answer there.",
+          "base_form_note": "If both are ever brought, the one that does NOT evolve still plays. Chesnaught degrades gracefully - Bulletproof does not change on Mega Evolution and Body Press only loses 50 points of Defense. Camerupt degrades badly - it loses Sheer Force and 40 Sp. Atk. So if both are on the team of 4, Camerupt is the one that should evolve."
+        },
+        "defense_is_complete_at_five": "With Farigiraf / Mega Chesnaught / Gholdengo / Primarina / Mega Camerupt, ALL 18 attacking types are resisted or nullified by at least one member. Only two offensive walls remain in the top 30: the Farigiraf mirror (20.3%, weak only to Dark and Bug) and Mega Swampert (10.7%, weak only to Grass x4).",
+        "slot_6_options": {
+          "Dragalge (RECOMMENDED)": "ALREADY OWNED as a rental - one permanence ticket makes it trainable, and the player has 5. It is the ONLY Pokemon in the whole roster under Spe 70 that resists four of the five types that bench Gholdengo and Primarina: Fire x0.5, Electric x0.5, Grass x0.25, Poison x0.5 (only Ground x2 fails). Base Spe 44, SpA 97, and ADAPTABILITY doubles STAB instead of x1.5 - verified on Smogon's engine: Draco Meteor is a guaranteed OHKO on Garchomp, Sludge Bomb a guaranteed OHKO on Whimsicott and a guaranteed 2HKO on Mega Floette and Sylveon. Mega Dragalge (SpA 132, Regenerator) exists but would be a THIRD stone at 2000 VP - the base form's Adaptability is the point, and it keeps the Mega count at two.",
+          "Torterra (alternative)": "The offensive patch instead of the defensive one. Grass/Ground, Spe 56, Atk 109. Wood Hammer OHKOes Mega Swampert 192-227% and Crunch answers the Farigiraf mirror - the only reachable Pokemon that addresses BOTH remaining walls. Physical, which balances a team that is otherwise three special attackers. COST: Ice x4, plus Fire x2, Flying x2 and Bug x2 on a team that already carries Chesnaught's Flying x4. Not owned, and Turtwig and Grotle are NOT in the Champions dex, so it must be evolved fully inside GO.",
+          "rejected": "Snorlax was the right answer while the team was built only from what is owned, but with Primarina and Camerupt in, its jobs (Fire resistance, bulk) are already done and its Seed Bomb is only a 19% roll on Mega Swampert. Tyranitar, Empoleon and Machamp stay out for the reasons in CORRECTION_after_reading_the_builds."
+        },
+        "acquisition_priority": [
+          "1. CHESNAUGHT - HOME to Champions, 0 VP. Already x2 in home_box, fully evolved. Needs a box slot (49/50).",
+          "2. PRIMARINA - catch Popplio in Pokemon GO and EVOLVE IT ALL THE WAY TO PRIMARINA INSIDE GO before transferring. Verified 2026-09-06: Popplio and Brionne are NOT in the Champions dex, the same trap as Chesnaught and Delphox. Then HOME to Champions, 0 VP, permanent and trainable. Primarina has NO Mega, so no stone is needed.",
+          "3. CAMERUPT - HOME to Champions, 0 VP. Already in home_box and already fully evolved.",
+          "4. CHESNAUGHTITE - 2000 VP.",
+          "5. CAMERUPTITE - 2000 VP.",
+          "6. DRAGALGE - one permanence ticket (free) or 2500 VP. Do NOT buy Dragalgite; the base form's Adaptability is what is wanted.",
+          "_vp: stones are 4000 VP of the 8000 balance. Training each new build is roughly 1000 VP of moves plus 500 nature plus 500 ability plus about 330 of SP; the 5 training tickets should go on the 500 VP trainings only.",
+          "_box: three transfers need three box slots and only one is free. That is the first real constraint, and it is the player's call - do not volunteer what to release."
+        ],
+        "trick_room_order": "SP Spe 0 with a -Spe nature: Mega Camerupt 36, Dragalge 57, Mega Chesnaught 57 (38 after Curse), Primarina 72, Farigiraf 80 (Modest, no drop), Gholdengo 93. Everything moves before Farigiraf, which is what Trick Room wants.",
+        "open": "Items are deliberately NOT decided here - the player's rule is that they are argued once the six are fixed. Two of the six slots are already spoken for by Chesnaughtite and Cameruptite, leaving four.",
+        "camerupt_is_verified_at_home_here": "Checked against all three Worlds divisions 2026-09-06: EIGHT Camerupt exist in the whole event and 8 of 8 run FARIGIRAF - 6/6 Masters, 1/1 Seniors, 1/1 Juniors. All eight are 100% Mega, 100% Quiet, 100% Cameruptite, and 7 of 8 share the identical moveset PROTECT / EARTH POWER / HEAT WAVE / ANCIENT POWER (the eighth swaps Heat Wave for Eruption). So a Farigiraf Trick Room team is not merely A home for Mega Camerupt, it is the ONLY home anyone has found. ANCIENT POWER on 8/8 is the detail to keep: Fire/Ground cannot touch Flying, and Rock is x4 on Mega Charizard Y and x2 on Aerodactyl, Staraptor and Pelipper. Sheer Force strips its 10% omniboost and adds 30% power instead. The field's shell is Camerupt + Farigiraf + Kingambit (4/6) + Sylveon/Kangaskhan (3/6 each); none ran Chesnaught. NOTE the teamlists say ability 'Solid Rock' - that is the BASE ability, correct per CLAUDE.md, and it becomes Sheer Force on Mega Evolution. THIS TEAM IS ARGUABLY A BETTER HOME THAN THE WORLDS ONES: Camerupt's one fatal weakness is Water x4 (Basculegion Wave Crash 185-219%, Mega Swampert 231-271%), and this team carries Primarina and Chesnaught, both Water x0.5. Most of the six Worlds teams carried no Water answer at all.",
+        "heracross_measured_and_it_does_NOT_fit_this_team": "Player asked 2026-09-06 whether Mega Heracross belongs here. Measured, and the answer is no - but not for the usual reason. OFFENSIVELY IT IS THE BEST ANSWER ON THE BOARD: with Skill Link (5 hits, accuracy rolled once), Pin Missile OHKOes the Farigiraf mirror at 115.9-139.1% and Bullet Seed OHKOes Mega Swampert at 121.9-147.6% - it solves BOTH remaining walls single-handed, and Close Combat does 263-310% to Kingambit. Mega Heracross is Atk 185 / Def 115 / SpD 105, Spe 75. AND IT IS FREE: Heracronite is already owned and Heracross is in home_box x2, so it costs 0 VP where Cameruptite costs 2000. THE DISQUALIFIER IS THE ROTATION TEST THE PLAYER THEMSELVES APPLIED: Bug/Fighting is Flying x4, exactly like Chesnaught's Grass/Fighting. Mega Staraptor Brave Bird 186-220%, Mega Charizard Y Hurricane 199-237%, Mega Aerodactyl Dual Wingbeat 120-146% - all guaranteed OHKOs on both. Chesnaught and Heracross are bad in the SAME games, so as a second Mega it buys no matchup flexibility; Camerupt does (12 of the top 20 favour it where Chesnaught folds). Heracross is a REPLACEMENT candidate for Chesnaught, not a complement, and it belongs on a team where something else answers Flying. Worlds: 0 of 645 teams across all three divisions ran it; ladder 0.1%."
+      },
+      "final_six_2026_09_06": {
+        "_method": "The player asked to close the team at five and derive the sixth from their data. Every build was re-measured against the job it claims to do, not assumed.",
+        "the_six": [
+          "Farigiraf - Armor Tail, Modest, 12 HP / 24 Def / 27 SpA / 3 SpD - PSYCHIC / IMPRISON / TRICK ROOM / PROTECT. THE ONLY SUPPORT. (Set corrected by the player 2026-09-06.)",
+          "Mega Chesnaught - Bulletproof, Sassy, 32 HP / 2 Def / 32 SpD - Curse / Body Press / Rock Slide / Spiky Shield. Mega #1.",
+          "Gholdengo - Good as Gold, Quiet, 32 HP / 8 Def / 23 SpA / 3 SpD - Make It Rain / Shadow Ball / Nasty Plot / Protect.",
+          "Primarina - Liquid Voice, Quiet, 32 HP / 10 Def / 24 SpA - Ice Beam / Hyper Voice / Energy Ball / Protect. NEW.",
+          "Mega Camerupt - Sheer Force, Quiet, 32 HP / 20 Def / 14 SpA - Earth Power / Heat Wave / Ancient Power / Protect. Mega #2. NEW.",
+          "Kingambit - Defiant, Adamant, 32 HP / 32 Atk / 2 Def - Kowtow Cleave / Sucker Punch / Iron Head / Protect. SLOT 6, already built."
+        ],
+        "verification_of_the_three_existing_builds": {
+          "Farigiraf": "RE-VERIFIED 2026-09-06 on the CORRECT set. Psychic is a guaranteed OHKO on Sneasler (201.2-239.5%) and a 31% roll OHKO on Mega Staraptor (88.4-105.8%). The earlier entry, which credited Thunderbolt with OHKOing Pelipper, was measuring a moveset this Pokemon does not have - see FARIGIRAF_CORRECTED_BY_PLAYER_2026_09_06.",
+          "Gholdengo": "PASSES. Make It Rain OHKOes Whimsicott outright (134.7-159.2%) and, at +2 after Nasty Plot, guarantees Mega Floette and Sylveon. Shadow Ball guarantees Sinistcha (106.3-126.6%) and rolls Basculegion (6%) and Mega Froslass (38%). Spread and moves unchanged.",
+          "Mega Chesnaught": "PASSES, with one number corrected. Body Press is a guaranteed OHKO on Kingambit (128.3-154.0%) and Tyranitar (141.2-166.8%). BUT the build's claim that Rock Slide is a 'roll OHKO on Mega Charizard Y at 89-105%' was measured against an UNINVESTED Charizard. Against an invested one (12 HP / 4 Def) it is 80.0-94.5%, no OHKO; at 19 HP / 0 Def, 79.1-93.0%. WITH CURSE UP IT IS A GUARANTEED OHKO. The job still gets done, because Curse is the set's own opening move - but the Charizard KO is a turn-2 event, not a turn-1 one. No change to the build; the note is what needed fixing."
+        },
+        "why_slot_6_is_KINGAMBIT": {
+          "what_the_five_leave": "With the eleven attacking types the five now throw (Fighting, Rock, Steel, Ghost, Psychic, Electric, Ice, Water, Grass, Ground, Fire) exactly ONE Pokemon in the top 25 of the Worlds Masters field takes nothing super-effective: the FARIGIRAF MIRROR at 20.3%, which is weak only to Dark and Bug. Primarina's Energy Ball removed Mega Swampert from that list, and Camerupt's Earth Power removed Mega Raichu.",
+          "the_other_hole_is_defensive": "Scanning the top 15 against the five, there is NO member that resists both types of Kingambit (52.8%), Mega Charizard Y (45.2%), Garchomp (38.3%), Basculegion (34.0%), Sinistcha (22.6%) or Mega Delphox (11.7%). The team answers all of them offensively but has no free switch-in to any.",
+          "the_search": "Filtered the whole roster for Spe <= 70, no Intimidate, a safe switch (resists BOTH types) into at least one of those four, plus a real Dark or Bug move. KINGAMBIT TOPS IT: it resists 5 of the 8 attacking types involved and is the only safe switch into the format's #1 Pokemon, the Kingambit mirror.",
+          "and_it_closes_the_last_wall": "Kowtow Cleave is a GUARANTEED OHKO on the Farigiraf mirror (101.4-119.8%) and it NEVER MISSES - accuracy 101 in the Champions movedex. Iron Head guarantees Mega Floette (104.3-124.2%). It takes the Kingambit mirror's own Kowtow Cleave at 15.5-18.4%, Basculegion Wave Crash at 37.7-44.9% and Garchomp Earthquake at 52.2-61.8%.",
+          "it_is_already_built": "Defiant, Adamant, 32 HP / 32 Atk / 2 Def, Kowtow Cleave / Sucker Punch / Iron Head / Protect. Its own rationale already reads '0 Speed SP on base 50 leaves it at 70, which is where it wants to be if Trick Room is ever up' - it was built Trick-Room-compatible before this team existed. Permanent, trained, 0 VP.",
+          "and_it_is_the_sanctioned_Intimidate_exception": "The player's standing rule is to avoid carrying Intimidate, but Kingambit is the named exception: Defiant turns an opposing Intimidate into +2 Attack, so it is never exposed to it.",
+          "its_cost": "Fighting x4 and Fire x2, which stacks with Mega Chesnaught. Mega Staraptor Close Combat 179.7-210.6% and Sneasler Close Combat 168.1-199.0% are guaranteed OHKOs on it. That is survivable ONLY because it is a rotation slot - bring 6 / pick 4 means it simply is not brought into a Staraptor team, which is the same game Camerupt is brought for.",
+          "runner_up": "Skarmory (HOME, 0 VP) - Steel/Flying, the only safe switch into Garchomp on the list, with X-Scissor for the Farigiraf mirror. Weaker offensively (Atk 80) and Fire x2. Worth revisiting only if the Fighting x4 stack proves fatal in practice."
+        },
+        "rules_check": "Verified programmatically 2026-09-06: ZERO moves across all six target 'All Adjacent Pokemon', so there is no friendly fire anywhere. All six spreads total exactly 66 with no stat over 32 and Speed SP 0 on every one. No Choice item is proposed. One support only (Farigiraf).",
+        "trick_room_order": "Mega Camerupt 36 -> Mega Chesnaught 57 (38 after Curse) -> Kingambit 70 -> Primarina 72 -> Farigiraf 80 (72 if switched to Quiet) -> Gholdengo 93. Every member moves before Farigiraf, which is what Trick Room wants.",
+        "items_still_open": "Two of the six item slots are spoken for by Chesnaughtite and Cameruptite. Four remain, for Farigiraf, Gholdengo, Primarina and Kingambit, and the Item Clause means no repeats. NOT decided here - the player's rule is that items are argued once the six are fixed, which is now true, so this is the next piece of work.",
+        "FARIGIRAF_CORRECTED_BY_PLAYER_2026_09_06": {
+          "_what": "builds.json had Twin Beam / Thunderbolt / Protect / Trick Room. The player corrected it: the Pokemon as actually trained is PSYCHIC / IMPRISON / TRICK ROOM / PROTECT, finished on the Mega Glalie team and left that way. builds.json is fixed. NOTE the moveset-shape memory already recorded this set as accepted; the JSON was the stale copy, so trust the player over the file when they conflict.",
+          "what_gets_BETTER": "Psychic beats Twin Beam on the two targets that matter. Sneasler (26.4% of teams): 201.2-239.5% vs Twin Beam's 186.8-220.4%, guaranteed OHKO either way but with far more margin. Mega Staraptor (16.5%): Psychic is x2 and rolls a 31% OHKO (88.4-105.8%) where Twin Beam had no shot at all - and Mega Staraptor is the single scariest thing on the board for Mega Chesnaught and Kingambit, both Fighting x4.",
+          "IMPRISON_is_bigger_than_first_credited": "Smogon's mechanic: 'No foe can use any move known by the user' - FOES only, so this team's own five Protects keep working. With Psychic / Imprison / Trick Room / Protect on Farigiraf, an active Imprison denies the opposing side PROTECT, TRICK ROOM and PSYCHIC simultaneously. Protect is on 69.7% of all Worlds slots, so this turns off the format's most common move for one side only - which is worth more to slow attackers than to anyone else, because Mega Camerupt's and Mega Chesnaught's whole plan is landing one enormous hit per turn. And sealing TRICK ROOM answers the exact failure mode of a fully-committed TR team: the opponent cannot flip the room back off. This is why the player rated it 'impecable' and 'bien molesta'. Cost: Imprison and Trick Room are two separate turns.",
+          "what_gets_WORSE_and_it_is_REAL": "THE TEAM HAS NO CLEAN ANSWER TO PELIPPER OR TO RAIN, and my earlier claim that 'Thunderbolt is load-bearing as the Pelipper answer' was wrong because there is no Thunderbolt. Measured against Pelipper (9.1% of Masters teams, Water/Flying, x4 on BOTH Megas): the best the six manage is Mega Camerupt Ancient Power at 65.3-77.6%, a 2HKO. Chesnaught Rock Slide 36.7-43.5%, Primarina Ice Beam 46.3-54.4%, Gholdengo Make It Rain 34.7-41.5%, Kingambit Iron Head 25.9-30.6%.",
+          "the_rain_matchup_quantified": "Pelipper's Drizzle is the team's worst game and it is now measured. Mega Camerupt's Heat Wave LOSES BOTH ITS KOs under rain: Whimsicott 140.1-167.3% -> 69.4-83.0%, Sinistcha 125.3-148.1% -> 62.0-73.4%. Meanwhile Basculegion Wave Crash in rain is a guaranteed OHKO on Mega Camerupt and a guaranteed 2HKO on Gholdengo, and Pelipper Hurricane is a guaranteed OHKO on Mega Chesnaught. So rain turns off half of Camerupt's set and kills both Megas. THIS IS THE TEAM'S KNOWN WEAKNESS - it is not solved, and it should drive either an item choice or a future sixth-slot revisit.",
+          "second_loss": "Twin Beam hit twice, which broke Focus Sash - the most common item on the ladder at 76.9%. Nothing on the six is multi-hit now. Mitigated but not fixed by Trick Room itself: two attackers moving first in the same turn means the Sash survivor at 1 HP gets finished by the second one.",
+          "not_a_request_to_change_it": "The set is agreed and frozen. This entry records the consequences, not a proposal."
+        },
+        "Farigiraf_nature_question": "STILL OPEN, and unaffected by the moveset correction. Trick Room is priority -7 (verified in data/db/moves.json), so Farigiraf's Speed is irrelevant on the turn it sets the room. Psychic is Special and Imprison/Trick Room/Protect are status, so there is still no physical move - Quiet remains free. Modest 80 -> Quiet 72 moves it ahead of the field's neutral base-60s under TR (Incineroar 41.4%, Sylveon 24.9%). 500 VP or one free training ticket.",
+        "FARIGIRAF_SPREAD_ALSO_CORRECTED_2026_09_06": "Smogon publishes THREE spreads for Farigiraf and this file had recorded the wrong one. The player runs the PHYSICALLY DEFENSIVE spread - 30 HP / 24 Def / 12 SpD, Bold or Relaxed - whose stated benchmark is surviving BLACK GLASSES Kingambit's Kowtow Cleave ('gafas'). VERIFIED on Smogon's engine: 83.6-99.6%, survives by a hair. The offensive spread the file used to record (12 HP / 24 Def / 27 SpA / 3 SpD, Modest) takes 99.5-118.8% from the same hit and dies on most rolls. THE NATURE RECOMMENDATION WAS ALSO WRONG: Quiet belongs to the offensive spread. For this one the Trick Room nature is RELAXED (+Def, -Spe) - Smogon pairs them explicitly, 'a Relaxed, Quiet, or Sassy nature over a Bold, Modest, or Calm nature, respectively'. Consequence at 0 SpA: Psychic still guarantees the Sneasler OHKO (153.3-182.0%) but no longer threatens Mega Staraptor (67.4-81.4%) or Venusaur (64.7-76.6%). This Farigiraf is pure support.",
+        "SLOT_6_REOPENED_2026_09_06": {
+          "_why": "The player does not enjoy using Kingambit and asked whether the pick was about Defiant. IT WAS NOT - Kingambit was chosen because Kowtow Cleave OHKOes the Farigiraf mirror (101.4-119.8%) and never misses, and because it is the only safe switch into the format's #1 Pokemon. The ability was a footnote.",
+          "the_ability_census": "Slow carriers of either ability barely exist. DEFIANT: Kingambit (Spe 50) and then only Fighting-types that are all too fast or duplicate Chesnaught - Annihilape 90, Passimian 80, Falinks 75, Mega Falinks 100. COMPETITIVE: Empoleon (Spe 60, OWNED), Milotic (81, rental), Meowstic-Female (104, rental). So under Spe 70 there are exactly TWO: Kingambit and Empoleon.",
+          "SNORLAX_is_the_recommendation": "HOME, 0 VP, no third Mega stone. It answers the hole the Farigiraf correction just opened. THUNDER PUNCH is a guaranteed OHKO on Pelipper (111.6-133.3%) with no drawback at all - Supercell Slam hits harder (149.7-176.9%) but costs 50% max HP on a 5% miss, and Wild Charge (133.3-157.8%) carries 1/4 recoil, so the weakest of the three is the right one. Heavy Slam OHKOes Alolan Ninetales (202.5-240.0%). Defensively at 32 HP / 32 Def with THICK FAT it is the only candidate that survives EITHER of Mega Staraptor's moves: Close Combat 83.1-98.9% and Brave Bird 41.6-49.4%. (Kingambit dies to Close Combat at 146.9-173.9%; Empoleon is an 88% OHKO roll.) Sneasler Close Combat 79.4-94.4%. Charizard Y Heat Wave is 10.1-12.4%, which closes the Fire hole Chesnaught and Gholdengo share. Kingambit Kowtow Cleave 28.5-34.1%, Basculegion Wave Crash 36.0-42.7%, Pelipper Hurricane 21.3-25.1%. ITS COST: Crunch only 2HKOes the Farigiraf mirror (55.1-65.7%), so the last offensive wall stays a 2HKO instead of becoming an OHKO. Camerupt's Heat Wave already 2HKOs that mirror, so nothing is lost that the team did not already have.",
+          "EMPOLEON_the_Competitive_option": "OWNED, Spe 60, SpA 111. Ice Beam is a guaranteed OHKO on Garchomp (108.7-129.2%) and Water/Steel resists Water, which makes it the best pure RAIN BODY of the three: in rain it takes Basculegion Wave Crash as a guaranteed 3HKO and Pelipper Hurricane as a 5HKO. BUT it does not KO Pelipper itself (Ice Beam 42.2-49.7%), has no answer to the Farigiraf mirror (Throat Chop 47.3-56.0% and it is physical off the wrong stat), and it is Ground x2, which would make THREE of the six weak to Earthquake alongside Gholdengo and Camerupt - the player's own standing objection.",
+          "verdict": "Snorlax on the numbers; Empoleon if the player wants the Competitive ability and the harder rain wall; Kingambit only if the Farigiraf-mirror OHKO is judged worth more than the Pelipper answer. NOT DECIDED - the player's call.",
+          "CORRECTION_the_Fighting_axis_2026_09_06": "CAUGHT BY THE PLAYER. An earlier line here said Close Combat 'deletes Chesnaught and Kingambit'. THAT IS WRONG ABOUT CHESNAUGHT: Grass/Fighting takes Fighting at x1, and Mega Chesnaught's Def 172 turns that into only 29.7-35.9% from Mega Staraptor's Close Combat. What deletes Chesnaught is BRAVE BIRD - Flying x4, 119.0-143.6% - exactly as its own build's threats field already said. THE TWO ARE OPPOSITE, not alike: Chesnaught is Fighting x1 / FLYING x4, Kingambit is FIGHTING x4 / Flying x0.5. Mega Staraptor beats both, but with a different move each time, and it picks the move after seeing which one is out. THE CONSEQUENCE FOR THIS DECISION, AND IT FAVOURS KINGAMBIT: Kingambit RESISTS Flying at x0.5 and takes Brave Bird for 18.4-21.7%, so it is a real Brave Bird switch-in for Chesnaught's x4 hole - the only other one on the team is Gholdengo. That merit was understated. Snorlax is Flying x1 (41.6-49.4%), Empoleon x0.5 (24.1-28.8%)."
+        },
+        "slot_6_STILL_OPEN_2026_09_06": {
+          "_state": "UNRESOLVED. The player closed the session with this pending. Do not present it as settled.",
+          "VETOED_and_why": "KINGAMBIT AND TYRANITAR ARE OUT, the player's call 2026-09-06 and the data backs it. Both are FIGHTING x4. Measured across the Worlds Masters field: 213 of 394 teams (54.1%) carry at least one Fighting attack, and CLOSE COMBAT alone appears on 212 sets (120 BP / 100 acc), plus Focus Blast 42, Superpower 15, Aura Sphere 13. Mega Staraptor Close Combat is 146.9-173.9% on Kingambit - a guaranteed OHKO. The player's exact words: 'kingambit y tiranitar aguantan brave bird pero staraptor sabe usar close combat, varios lo saben usar, son malas opciones.' Correct on both halves.",
+          "THE_ASSET_THIS_PROTECTS": "The five as they stand are 0 of 5 weak to FIGHTING. Gholdengo is IMMUNE, Primarina resists x0.5, and Farigiraf, Mega Chesnaught and Mega Camerupt are all x1. Against 54.1% of the field that is a structural asset, and slot 6 should not be the thing that throws it away. This is the single most important filter for the sixth slot.",
+          "full_defensive_table_of_the_five": {
+            "_source": "Computed from data/db/typechart.json 2026-09-06. None of these five has an ability that changes a type multiplier (Armor Tail, Bulletproof, Good as Gold, Liquid Voice, Sheer Force are all non-multiplier), so the chart is the whole story here - unlike Rotom-Wash and Levitate.",
+            "Farigiraf (Normal/Psychic)": "WEAK x2: Bug, Dark. RESISTS: Psychic x0.5. IMMUNE: Ghost. Everything else x1.",
+            "Mega Chesnaught (Grass/Fighting)": "WEAK x4: Flying. WEAK x2: Fairy, Fire, Ice, Poison, Psychic. RESISTS: Dark, Electric, Grass, Ground, Rock, Water (all x0.5). NEUTRAL to Fighting - it does NOT resist it. Six weaknesses, the most fragile profile on the team.",
+            "Gholdengo (Steel/Ghost)": "WEAK x2: Dark, Fire, Ghost, Ground. RESISTS: Bug x0.25, plus Dragon/Fairy/Flying/Grass/Ice/Psychic/Rock/Steel x0.5. IMMUNE: Fighting, Normal, Poison. The best defensive profile of the five.",
+            "Primarina (Water/Fairy)": "WEAK x2: Electric, Grass, Poison. RESISTS: Bug, Dark, Fighting, Fire, Ice, Water (all x0.5). IMMUNE: Dragon.",
+            "Mega Camerupt (Fire/Ground)": "WEAK x4: Water. WEAK x2: Ground. RESISTS: Bug, Fairy, Fire, Poison, Steel (all x0.5). IMMUNE: Electric.",
+            "team_level": "No attacking type is super-effective on 3 or more of the five. The worst are Dark, Fire, Ground and Poison at 2 of 5 each. FIGHTING, DRAGON, NORMAL, ROCK and STEEL hit 0 of 5."
+          },
+          "the_two_jobs_slot_6_could_do": {
+            "1_PELIPPER_and_rain": "The structural one. Pelipper is 9.1% of Masters teams, Water/Flying, and it is x4 on BOTH Megas. Rain also halves Mega Camerupt's Heat Wave, costing it the Whimsicott KO (140-167% -> 69-83%) and the Sinistcha KO (125-148% -> 62-73%). The best any of the five manages back is Camerupt's Ancient Power at 65.3-77.6%, a 2HKO. An ELECTRIC move is x4 on Pelipper and settles it outright.",
+            "2_the_FARIGIRAF_MIRROR": "20.3% of teams, and the only Pokemon in the top 25 that takes nothing super-effective from the team's eleven attacking types - weak only to Dark and Bug. Lower priority: Camerupt's Heat Wave already 2HKOs it, and it is a support Pokemon, not a win condition."
+          },
+          "FIGHTING_SAFE_candidates_measured": {
+            "_filter": "Spe <= 70, Fighting <= x1, no Intimidate, and does at least one of the two jobs. Damage vs the player's own 30 HP / 24 Def Farigiraf spread where the mirror is the target.",
+            "Mega Mawile": "HOME, Mawilite 2000 VP (a THIRD stone). Steel/Fairy, Spe 50, Fighting x1, Flying x0.5. HUGE POWER doubles its Attack: Thunder Punch OHKOes Pelipper 164.8-193.9%, Iron Head OHKOes Mega Floette 175.2-206.2%, Play Rough OHKOes Garchomp 150.8-178.5% and rolls the Farigiraf mirror 89.9-105.8%. Downside: Fire x2 (a third Fire weakness alongside Chesnaught and Gholdengo), and base Mawile without Huge Power is Atk 85, so it is nearly dead weight if it is not the one that evolves.",
+            "Mega Golurk": "Not owned, third stone. Ground/Ghost, Spe 55, Atk 159, FIGHTING x0. Thunder Punch OHKOes Pelipper 111.5-133.3%. UNSEEN FIST ignores Protect, which is worth a lot to a team whose plan is one huge hit per turn - though Farigiraf's Imprison already denies the opponent Protect.",
+            "Metagross": "RENTAL, needs a permanence ticket. Steel/Psychic, Spe 70, Atk 135, Fighting x1, Flying x0.5. Thunder Punch on Pelipper is 97.0-116.4%, only a roll. Fire x2, Ground x2, Dark x2, Ghost x2.",
+            "Grimmsnarl": "Not owned. Dark/Fairy, Spe 60, Fighting x1. Thunder Punch on Pelipper 92.1-109.1% (roll), Throat Chop on the mirror 67.6-80.0% (no KO). Does neither job cleanly.",
+            "Mega Sableye": "HOME, Sablenite 2000 VP. Dark/Ghost, Spe 20, FIGHTING x0, Magic Bounce. Foul Play on the mirror is only 46.2-56.0% - Foul Play scales off the TARGET's Attack and the mirror is a special attacker with none. And at 85/85 offences it is a second support, which the one-support rule forbids.",
+            "Eelektross": "PERMANENT and would be near-perfect on type - Electric, Spe 50, Fighting x1, Flying x0.5, Levitate for a Ground immunity the team wants - BUT its build carries a `mega` field (Mega Eelektross), so it is FROZEN. Out under the player's own rule."
+          },
+          "Snorlax_the_open_question": "Still the strongest on raw output - Thunder Punch OHKOes Pelipper 111.6-133.3% with no drawback, Thick Fat makes Charizard Y's Heat Wave 10.1-12.4%, and at 32 HP / 32 Def it survives BOTH of Mega Staraptor's moves (Close Combat 83.1-98.9%, Brave Bird 41.6-49.4%) and Sneasler's Close Combat (79.4-94.4%). HOME, 0 VP, no stone. BUT it is Normal, so FIGHTING x2 - it does introduce the weakness the team currently does not have, just at x2 behind 160 base HP rather than Kingambit's x4. Whether that is acceptable is exactly what the player has not ruled on, and it should be ASKED, not assumed.",
+          "how_to_resume": "Do not re-open the five. Start from THE_ASSET_THIS_PROTECTS, decide with the player whether a Fighting x2 body is acceptable (that settles Snorlax immediately either way), and if it is not, the choice is between Mega Mawile and Mega Golurk, both of which cost a third Mega Stone at 2000 VP. Then items: two of the six slots are already Chesnaughtite and Cameruptite, four remain, and the Item Clause forbids repeats."
+        }
+      }
+    }
+  ]
+}

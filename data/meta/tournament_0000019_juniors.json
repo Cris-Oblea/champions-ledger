@@ -1,0 +1,142 @@
+{
+ "source": "pokedata.ovh/standingsVGC",
+ "origin": "event JSON export",
+ "game": "Pokemon Champions",
+ "tournament_id": "0000019",
+ "division": "juniors",
+ "round": 4,
+ "round_label": "4",
+ "swiss_rounds": 4,
+ "round_labels": {
+  "1": "1",
+  "2": "2",
+  "3": "3",
+  "4": "4"
+ },
+ "complete": false,
+ "fetched": "2026-09-11 23:59",
+ "note": "Unofficial standings computed outside the tournament software.",
+ "count": 12,
+ "players": [
+  {
+   "rank": 1,
+   "player": "Hatsuki F.",
+   "country": "JP",
+   "record": "2-2-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 2,
+   "player": "Cody Taylor Y.",
+   "country": "SG",
+   "record": "2-0-0",
+   "dropped": true,
+   "dropped_round": 2,
+   "trainer_name": "cody",
+   "team": []
+  },
+  {
+   "rank": 3,
+   "player": "Cooper Bailey Y.",
+   "country": "SG",
+   "record": "2-0-0",
+   "dropped": true,
+   "dropped_round": 2,
+   "trainer_name": "Cooper",
+   "team": []
+  },
+  {
+   "rank": 4,
+   "player": "Kevin H.",
+   "country": "US",
+   "record": "2-2-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Kevin",
+   "team": []
+  },
+  {
+   "rank": 5,
+   "player": "Koki K.",
+   "country": "JP",
+   "record": "2-1-0",
+   "dropped": true,
+   "dropped_round": 3,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 6,
+   "player": "Haruya S.",
+   "country": "JP",
+   "record": "2-1-0",
+   "dropped": true,
+   "dropped_round": 3,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 7,
+   "player": "Wataru K.",
+   "country": "JP",
+   "record": "2-1-0",
+   "dropped": true,
+   "dropped_round": 3,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 8,
+   "player": "Eiru M.",
+   "country": "JP",
+   "record": "2-2-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 9,
+   "player": "Minato K.",
+   "country": "JP",
+   "record": "2-0-0",
+   "dropped": true,
+   "dropped_round": 2,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 10,
+   "player": "nathaniel t.",
+   "country": "NL",
+   "record": "1-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "Tommy",
+   "team": []
+  },
+  {
+   "rank": 11,
+   "player": "Yuna U.",
+   "country": "JP",
+   "record": "1-3-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "None",
+   "team": []
+  },
+  {
+   "rank": 12,
+   "player": "Simone L.",
+   "country": "SG",
+   "record": "0-4-0",
+   "dropped": false,
+   "dropped_round": null,
+   "trainer_name": "PinkiePie",
+   "team": []
+  }
+ ]
+}

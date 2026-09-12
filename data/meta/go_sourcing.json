@@ -1,0 +1,19 @@
+{
+  "_what": "The SUPPLY side of a GTS trade: how hard a species is for THIS player to obtain in Pokemon GO, which is his only route into HOME (no Switch). Nothing here is Champions data - it is source-game availability, which no Champions source publishes. Researched from Pokemon GO references 2026-09-11 and seeded conservatively.",
+  "_why_it_matters": "A GTS offer fails for one of two reasons: the other side wants to keep it (DEMAND, measured from ladder usage), or nobody has a spare (SUPPLY, this file). Gholdengo is rank 23 not because of its BST but because every trainer who wants one faces the same 999-coin grind.",
+  "_no_switch": "The player has no Nintendo Switch, so every Scarlet/Violet-linked shortcut is closed to him. That is why the Gimmighoul Coin Bag route does not count here.",
+  "_scale": "1 easy (catch or cheap evolve) - 2 some grind - 3 real grind or limited spawn - 4 heavy grind, raid-locked or event-locked - 5 effectively closed",
+  "_default": "Anything not listed is treated as 2 (unknown, assume some grind) and is shown as an estimate, never as a measured fact.",
+  "_editable": "The player plays live. If he says a species is easier or harder than this, HIS number wins - update the entry and record it in _observed.",
+  "species": {
+    "Gholdengo": {"cost": 5, "how": "Evolves from Roaming Gimmighoul at 999 Gimmighoul Coins. A catch yields 3-6 coins, so roughly 200-330 Gimmighoul catches. The Coin Bag shortcut needs a Postcard sent to Scarlet/Violet on a Switch - closed to this player.", "source": "pokemongohub.net, pokemongo.fandom.com"},
+    "Sneasler": {"cost": 3, "how": "Hisuian Sneasel (raid-sourced) + 100 candy, evolved during in-game daytime after 7 km as Buddy.", "source": "pokemongo.fandom.com, pokemongohub.net"},
+    "Basculegion": {"cost": 2, "how": "White-Striped Basculin + 50 candy. The male/female split follows the Basculin's gender.", "source": "pokemongo.fandom.com"},
+    "Basculegion-Female": {"cost": 2, "how": "As Basculegion, but the Basculin must be female.", "source": "pokemongo.fandom.com"},
+    "Glimmora": {"cost": 2, "how": "Glimmet + 50 candy. Evolution only - Glimmora has no wild spawn. The family debuted in the Into the Depths event, January 2026, and is in standard rotation since.", "source": "pokemongo.fandom.com, pokemongohub.net"},
+    "Abomasnow": {"cost": 1, "how": "Snover is a common wild spawn; standard candy evolve.", "source": "seeded, common Gen 4 line"},
+    "Steelix": {"cost": 2, "how": "Onix + 50 candy + Metal Coat. The Metal Coat is the only friction.", "source": "seeded, common Gen 2 trade-item line"},
+    "Gyarados": {"cost": 3, "how": "Magikarp + 400 candy. No item, no raid - purely a long candy grind.", "source": "seeded, well-known 400-candy line"}
+  },
+  "_observed": []
+}

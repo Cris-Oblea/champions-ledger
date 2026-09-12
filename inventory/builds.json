@@ -1,0 +1,765 @@
+{
+  "_comment": "The player's own trained builds. Champions gives 66 Stat Points total, max 32 in one stat. ITEMS ARE DELIBERATELY NOT RECORDED HERE - the player's rule, 2026-08-29: an item is chosen only once the six Pokemon of a team are fixed, never per build. With ~30 trained Pokemon and the Item Clause forbidding duplicates, arguing items build-by-build is wasted work. Mega Stones are the one exception and live in the 'mega' field, because the stone is what creates the form. Validate with: python scripts/query.py build A BUILD BELONGS TO THE POKEMON, NOT TO A TEAM. Anything trained here can be reused in any team; teams.json references these rather than repeating them. A 'status' field may mention where it was tested, but that is history, not ownership.",
+  "_sp_rules": {
+    "total_budget": 66,
+    "max_per_stat": 32,
+    "note": "Confirmed across all 84 Smogon VGC spreads and every pokebase team spread: they sum to exactly 66.",
+    "training_cost_vp": {
+      "per_sp_change": 5,
+      "per_move": 250,
+      "nature": 500,
+      "ability": 500,
+      "_note": "Observed in-game 2026-08-29. Serebii still lists launch prices (2/100/200/400) and is wrong."
+    },
+    "sp_to_stat_ratio": "1 SP = 1 point of the final stat. Verified across all 84 pokebase speed tiers: every one has maxNeutral - 0Neutral == 32, the SP cap. So an uninvested stat plus the SP spent is the final number.",
+    "stat_formula": "Final stat = floor((base + 20 + SP) * nature), where nature is 1.1 / 1.0 / 0.9. Verified against all 84 pokebase speed tiers: 0-neutral is always base+20, max-neutral always base+52 (the 32 SP cap), max-positive always floor(max-neutral * 1.1) and 0-negative always floor(0-neutral * 0.9). WATCH OUT: pokebase's 'max neutral' column is NOT what a Timid or Jolly build reaches - that is the 'max+' column."
+  },
+  "builds": [
+    {
+      "pokemon": "Eelektross",
+      "mega": "Mega Eelektross",
+      "ability": "Levitate",
+      "mega_ability": "Eelevate",
+      "nature": "Quiet",
+      "stat_points": {
+        "hp": 32,
+        "atk": 0,
+        "def": 2,
+        "spa": 32,
+        "spd": 0,
+        "spe": 0
+      },
+      "moves": [
+        "Thunderbolt",
+        "Giga Drain",
+        "Flamethrower",
+        "Protect"
+      ],
+      "role": "Trick Room special attacker",
+      "rationale": "Turns a bad Speed stat into an asset under Trick Room. Quiet raises Sp. Atk and lowers Speed; 0 SP in Speed keeps it as slow as possible. Eelevate gives Ground immunity and raises its highest stat on a KO. Off-meta on purpose: 0 of 395 Worlds teams ran Eelektross, so nobody prepares for it.",
+      "status": "climbed to Master Rank 3 with this",
+      "mega_note": "The stone pays for damage and costs the Trick Room premise. Gained: SpA 105 -> 135, Atk 115 -> 145, BST 515 -> 615, and Eelevate, which keeps everything Levitate did (immune to Ground, Spikes, Toxic Spikes and Sticky Web) and adds +1 to the highest stat on a KO - so nothing is given up on the ability side, unusually. Given up: slowness. Speed 50 -> 80. Under Trick Room the slower Pokemon moves first, so the Mega acts 30 points LATER in the turn order than the base form, against a build whose whole spread is tuned to be as slow as possible. Un-mega'd it keeps 105 SpA and the better Trick Room speed. Mega Evolve when the extra 30 SpA matters more than moving first, not by default."
+    },
+    {
+      "pokemon": "Farigiraf",
+      "ability": "Armor Tail",
+      "nature": "Bold",
+      "stat_points": {
+        "hp": 30,
+        "atk": 0,
+        "def": 24,
+        "spa": 0,
+        "spd": 12,
+        "spe": 0
+      },
+      "moves": [
+        "Psychic",
+        "Imprison",
+        "Trick Room",
+        "Protect"
+      ],
+      "role": "Armor Tail support / Trick Room setter",
+      "rationale": "Brought for Armor Tail, not for Trick Room: it blanks Prankster-boosted status (Whimsicott's Encore and Tailwind, on ~24% of Worlds teams) and Fake Out, making the opening turns safe. Twin Beam hits twice, so it breaks Focus Sash - Smogon lists it as the way to OHKO Sash Glimmora and Sneasler.",
+      "follows": "Smogon VGC26 Regulation M-A, Trick Room Support, offensive spread",
+      "_moveset_corrected": "CORRECTED BY THE PLAYER 2026-09-06: the recorded set (Twin Beam / Thunderbolt / Protect / Trick Room) was stale. The Pokemon as actually trained is PSYCHIC / IMPRISON / TRICK ROOM / PROTECT - it was finished on the Mega Glalie team and left that way. This is the set the player described as 'impecable' and 'bien molesta'.",
+      "imprison_note": "IMPRISON is the reason this set is shaped the way it is. Smogon's mechanic text: 'No foe can use any move known by the user' - it hits FOES only, so allies keep their own copies. With Psychic / Imprison / Trick Room / Protect on the user, an active Imprison denies the opposing side PROTECT, TRICK ROOM and PSYCHIC at once. Protect is the one that matters most: 69.7% of all Worlds slots carry it, so Imprison turns off the single most common move in the format for the opponent while this team keeps its own five Protects. Trick Room being sealed is the second half - the opponent cannot flip the room off, which is the exact failure mode a fully-committed TR team has. Cost: it is one turn, and Farigiraf can only set one of Imprison or Trick Room per turn.",
+      "_spread_corrected": "CORRECTED BY THE PLAYER 2026-09-06. The file had Smogon's OFFENSIVE spread (12 HP / 24 Def / 27 SpA / 3 SpD, Modest). The player runs Smogon's PHYSICALLY DEFENSIVE spread, 30 HP / 24 Def / 12 SpD - the one whose stated benchmark is surviving BLACK GLASSES Kingambit's Kowtow Cleave. VERIFIED with Smogon's own engine: 83.6-99.6%, it survives by a hair. The offensive spread this file used to record takes 99.5-118.8% from the same hit and DIES on most rolls, so the player's choice is right and the record was wrong. Nature is Bold (+Def, -Atk) or RELAXED (+Def, -Spe) - see nature_note.",
+      "nature_note": "Smogon pairs a -Speed nature with each spread: 'A Relaxed, Quiet, or Sassy nature can be used over a Bold, Modest, or Calm nature, respectively, if you want Farigiraf to outspeed neutral-natured base 60s like Sylveon and Incineroar under Trick Room.' For THIS spread the Trick Room nature is RELAXED, not Quiet - Quiet belongs to the offensive spread. Relaxed keeps the identical Defense and drops Speed 80 -> 72, which under Trick Room moves Farigiraf ahead of Incineroar (41.4% of teams) and Sylveon (24.9%). Trick Room is priority -7, so Speed never matters on the turn the room goes up. Cost 500 VP or one free training ticket.",
+      "damage_note": "At 0 Sp. Atk investment Psychic is still a GUARANTEED OHKO on Sneasler (153.3-182.0%), which is the job Smogon gives it. It no longer threatens Mega Staraptor (67.4-81.4%) or Venusaur (64.7-76.6%) - those were numbers from the offensive spread and do not apply here. This Farigiraf is pure support."
+    },
+    {
+      "pokemon": "Samurott-Hisui",
+      "ability": "Sharpness",
+      "nature": "Adamant",
+      "stat_points": {
+        "hp": 2,
+        "atk": 32,
+        "def": 0,
+        "spa": 0,
+        "spd": 0,
+        "spe": 32
+      },
+      "moves": [
+        "Ceaseless Edge",
+        "Sacred Sword",
+        "Razor Shell",
+        "Sucker Punch"
+      ],
+      "role": "Physical Sharpness attacker / Spikes setter",
+      "rationale": "Sharpness raises Slicing moves by 50%, and three of the four qualify: Razor Shell 75 -> 112.5 and Ceaseless Edge 65 -> 97.5 both with STAB, Sacred Sword 90 -> 135 unresisted coverage that ignores the target's stat changes. Sucker Punch is not Slicing, so it stays at 70 STAB, but it is the only priority on the set. Ceaseless Edge sets Spikes on hit, so pressure accumulates even on a resisted hit. Max Speed neutral reaches 137, the top of speed tier 85; Adamant keeps Attack maxed instead of trading into 150.",
+      "meta_note": "Worlds: 5 of 395 teams, Sharpness 100%, Sacred Sword 100%, Razor Shell 80%. Pikalytics championtournaments: 48.4% win rate (123-131); Sacred Sword 77.9%, Ceaseless Edge 61.0%, Sucker Punch 59.7%. The player's four moves are all in the common pool; the usual Worlds pick is Jolly 60% over Adamant 20%, and Flip Turn 80% / Night Slash 100% instead of Ceaseless Edge + Sucker Punch.",
+      "playstyle_note": "Physical main attacker, so it is exposed to Intimidate (Incineroar is on ~41% of Worlds teams). The player trained it this way; flagged only because their standing preference is special main attackers."
+    },
+    {
+      "pokemon": "Ceruledge",
+      "ability": "Flash Fire",
+      "nature": "Adamant",
+      "stat_points": {
+        "hp": 32,
+        "atk": 23,
+        "def": 3,
+        "spa": 0,
+        "spd": 8,
+        "spe": 0
+      },
+      "moves": [
+        "Bitter Blade",
+        "Shadow Sneak",
+        "Bulk Up",
+        "Protect"
+      ],
+      "role": "Setup sweeper (Bulk Up + recovery)",
+      "rationale": "Bulk Up raises Attack and Defense together, and Bitter Blade heals 1/2 of the damage it deals, so every boosted turn pays for the chip taken while setting up. Shadow Sneak is priority for Focus Sash users and low-HP targets that would otherwise move first (Sneasler, Kingambit). Flash Fire is not filler: it walls Mega Charizard Y outright and, under its sun, feeds an even stronger Bitter Blade.",
+      "follows": "Smogon VGC26 Regulation M-A and M-B, Setup Sweeper - moves, ability, nature and the exact SP spread all match the published set. Smogon on this spread: it survives Stomping Tantrum from Jolly Garchomp and +2 Kowtow Cleave from Black Glasses Kingambit while at +1 Def from Bulk Up, gives the best odds of surviving Mega Gengar's Shadow Ball, and the Attack SPs OHKO no-bulk Basculegion-M with +2 Shadow Sneak and nearly always OHKO Kingambit with +1 Bitter Blade.",
+      "meta_note": "Worlds: 3 of 395 teams, and all three ran exactly these four moves with Flash Fire and Colbur Berry 100%. Pikalytics championtournaments: 46.4% win rate over 2448 games; Bitter Blade 99.6%, Shadow Sneak 94.7%, Protect 92.4%, Bulk Up 82.2%. This is the standard set, not a variant.",
+      "threats": "Resisted by Incineroar, Hydreigon and Mega Tyranitar, which answer back with Throat Chop / Dark Pulse / Knock Off. Garchomp shrugs off both attacks and threatens Earthquake and Stomping Tantrum. Basculegion-M OHKOes with Last Respects or Wave Crash even through a Bulk Up. Rock-types (Hisuian Arcanine, Mega Aerodactyl, Mega Tyranitar) resist Bitter Blade and click Rock Slide."
+    },
+    {
+      "pokemon": "Ninetales-Alola",
+      "ability": "Snow Warning",
+      "nature": "Timid",
+      "stat_points": {
+        "hp": 2,
+        "atk": 0,
+        "def": 0,
+        "spa": 32,
+        "spd": 0,
+        "spe": 32
+      },
+      "moves": [
+        "Blizzard",
+        "Charm",
+        "Aurora Veil",
+        "Protect"
+      ],
+      "role": "Snow setter / Aurora Veil + Contrary-ally install",
+      "rationale": "Snow Warning is the engine for the whole set: it makes Blizzard never miss (110 BP, 70 accuracy otherwise, and it is a spread move in doubles) and it is the precondition for Aurora Veil, which cannot be used outside snow. Timid with 32 Speed SP reaches 177, ahead of everything in the box except Aerodactyl and Jolteon. Charm replaces Smogon's Encore: -2 Attack is two Intimidates in one move with 20 PP, and on a Contrary ally it is +2 Attack instead.",
+      "deviation_from_smogon": "Smogon's Offensive Support set is Blizzard / Aurora Veil / Encore / Protect with this exact spread, nature and ability. The player runs Charm over Encore. Charm does not appear in the Worlds move splits or in Pikalytics' top eight, so it is an off-meta call. Trade: Encore punishes Fake Out and setup (Kingambit's Swords Dance, Mega Aerodactyl's Tailwind) by locking the move; Charm does nothing against a special attacker or a status move, but it holds a physical threat down for far longer than one turn and stacks with Aurora Veil's physical reduction. RESOLVED: the player's actual use was offensive, not defensive - Charm is the setup button for a Contrary ally. Against a foe it still functions as a double Intimidate, but that is the secondary mode.",
+      "meta_note": "Worlds: 17 of 395 teams (4.3%), Snow Warning 100%, Timid 82%. Ladder 5.7%. Pikalytics championtournaments 48.1% win rate over 4234 games; Blizzard 96.0%, Protect 81.8%, Aurora Veil 34.7%. The tournament build leans Freeze-Dry + Encore + Icy Wind on a Choice Scarf; the player's is the Veil build instead.",
+      "threats": "Fire-types (Incineroar's Flare Blitz, Mega Charizard Y's Heat Wave) and Rock-types (Mega Aerodactyl, Mega Tyranitar, Lycanroc-D with Rock Slide). Any rival weather setter turns off the snow, which costs both Blizzard's accuracy and Aurora Veil at once. Kingambit and Archaludon OHKO through the Veil with Iron Head and Flash Cannon. Sneasler and Mega Gengar outspeed it.",
+      "team_note": "ANTI-SYNERGY with the player's own Farigiraf: Trick Room turns this 177 Speed into a liability, and Smogon lists Trick Room Farigiraf as a check to Alolan Ninetales by name. These two belong to different teams, or Trick Room stays unclicked in the games Ninetales is brought.",
+      "charm_combo": "CONFIRMED BY THE PLAYER: Charm was aimed at their OWN Mega Staraptor, not at a foe. Mega Staraptor's only ability is Contrary, whose text reads 'moves that lower the stats raise the stat', and Charm is unambiguously a move, so Charm's -2 Attack becomes +2 Attack on the ally. Charm's target field is 'Selected Target', so it can legally pick the partner in doubles. Ninetales at 177 Speed moves first and installs the turn: Aurora Veil up, partner at +2. 20 PP means it can be repeated. Note this does not depend on the open question of whether Contrary inverts Intimidate, since that is an ability rather than a move.",
+      "build_constraint": "Three of the four moves are status, so a Choice item can never go on this build - it would lock Ninetales into Charm, Aurora Veil or Protect. Worth remembering because the Worlds Alolan Ninetales runs Choice Scarf 65%, but that is the Freeze-Dry / Icy Wind / Encore build, not this one."
+    },
+    {
+      "pokemon": "Froslass",
+      "mega": "Mega Froslass",
+      "ability": "Cursed Body",
+      "mega_ability": "Snow Warning",
+      "nature": "Timid",
+      "stat_points": {
+        "hp": 2,
+        "atk": 0,
+        "def": 0,
+        "spa": 32,
+        "spd": 0,
+        "spe": 32
+      },
+      "moves": [
+        "Blizzard",
+        "Shadow Ball",
+        "Nasty Plot",
+        "Protect"
+      ],
+      "role": "Mega special sweeper under its own snow",
+      "rationale": "Mega Evolution is what makes the set work: SpA 80 -> 140, Spe 110 -> 120, and Snow Warning arrives, which makes Blizzard never miss. Blizzard hits All Adjacent Foes, so a Nasty Plot turn (+2 SpA) turns it into a spread nuke off 140 base with no accuracy risk. Ghost typing means Fake Out cannot stop the setup turn. Snow also raises the Defense of Ice-types, so the setup turn is protected from both sides.",
+      "deviation_from_smogon": "Smogon and the field run this as an Aurora Veil Setter: Blizzard / Shadow Ball / Aurora Veil / Protect. The player runs Nasty Plot over Aurora Veil - 5% of Worlds Froslass, against 55% on Aurora Veil. That converts it from a support Mega into a standalone special sweeper, which fits the player's preference for special main attackers. It is defensible here because the team's Aurora Veil already lives on Ninetales-Alola.",
+      "mega_timing": "Smogon's timing note, worth keeping: Froslass does NOT have to Mega Evolve on turn 1. Held in base form it keeps Cursed Body (30% to disable a move that hits it), which punishes Rock Slide from Aerodactyl, and it can Mega Evolve later to overwrite a slower weather setter's weather (Mega Charizard Y, Pelipper, Mega Tyranitar) at the moment the snow is actually needed.",
+      "meta_note": "Worlds: 20 of 395 teams (5.1%), Froslassite 100%, Cursed Body 100%, Timid 70%. Blizzard 100%, Protect 100%, Shadow Ball 95%, Aurora Veil 55%, Nasty Plot 5%. Ladder 5.8%. Speed tier 110 -> 162 at max neutral before Mega; Mega Froslass is base 120.",
+      "threats": "Anything that removes the snow: Mega Charizard Y's Drought, Mega Tyranitar's sand. Hisuian Arcanine OHKOes through snow's Defense boost with Head Smash or Flare Blitz. Kingambit and Incineroar wall both STAB moves and hit back; Kingambit's Sucker Punch picks it off once chipped. Archaludon eats Blizzard and answers with Flash Cannon. Aerodactyl outspeeds and clicks Rock Slide.",
+      "mega_note": "Mega-dependent: Snow Warning, the 140 Sp. Atk and the never-missing Blizzard all arrive with the stone. Un-mega'd it keeps Cursed Body and 80 Sp. Atk, which is a different Pokemon. Bring the stone if this one is meant to attack."
+    },
+    {
+      "pokemon": "Gholdengo",
+      "ability": "Good as Gold",
+      "nature": "Quiet",
+      "stat_points": {
+        "hp": 32,
+        "atk": 0,
+        "def": 8,
+        "spa": 23,
+        "spd": 3,
+        "spe": 0
+      },
+      "moves": [
+        "Make It Rain",
+        "Protect",
+        "Shadow Ball",
+        "Nasty Plot"
+      ],
+      "role": "Bulky setup sweeper behind a status immunity",
+      "rationale": "Steel/Ghost with Good as Gold - full immunity to other Pokemon's status moves - is what buys the Nasty Plot turn: no Encore, no Taunt, no Thunder Wave, no Will-O-Wisp, no Parting Shot can touch it. Same job Armor Tail does for Farigiraf, but self-only and not limited to Prankster. Make It Rain is 120 BP and hits All Adjacent Foes; Shadow Ball is the single-target answer to Basculegion-M.",
+      "moveset_note": "Re-studied against the real threat list 2026-09-01 and KEPT UNCHANGED. The two attacks are both team-critical and neither is replaceable. MAKE IT RAIN answers the Fairy core - Whimsicott 38.9%, Sylveon 33.3%, Mega Floette 27.8% of Worlds Masters teams - and Fairy is Mega Chesnaught's x2. SHADOW BALL answers the Ghosts: Basculegion 95-112% and Sinistcha 98-116%, both roll OHKOs, and Ghost is the type nothing on this team resists. NASTY PLOT is what turns Sylveon and Mega Floette from 2HKOs into OHKOs. MAKE IT RAIN OVER FLASH CANNON, decided on numbers: Flash Cannon costs no Sp. Atk and has 12 PP to Make It Rain's 8, but at +2 Make It Rain GUARANTEES three KOs that Flash Cannon only rolls - Garchomp (102-121% vs 92-108%), Farigiraf (105-125% vs 94-111%) and Sinistcha (109-129% vs 98-116%) - and it is a spread move, hitting both foes. The -2 Sp. Atk afterwards is the price, and it is why this is a burst and not a spam button: fire it at +2, then Shadow Ball at +0 still rolls a KO on Basculegion and Sinistcha. REJECTED: Focus Blast OHKOes Kingambit (162-191%) but 70 accuracy and Mega Chesnaught's Body Press already OHKOes it at 144-171% guaranteed. Power Gem OHKOes Mega Charizard Y (115-136%) but Rotom-Wash and Chesnaught's Rock Slide both cover it. Psychic OHKOes Sneasler (170-201%) but Gholdengo is already immune to Sneasler's entire moveset. Steel Beam costs 50% max HP and is on 0 of 395 Masters teams. Surf hits the ally. Recover is a real option for a Trick Room sweeper but there is no slot: all four are load-bearing.",
+      "deviation_from_smogon": "Moves, ability and role match the standard set exactly (Worlds: Make It Rain 100%, Shadow Ball 100%, Protect 100%, Nasty Plot 65%). The spread differs. Smogon's bulky spread is 32 HP / 8 Def / 7 SpA / 3 SpD / 16 Spe with Timid; the player keeps the identical defensive shell (32 HP / 8 Def / 3 SpD) but moves the 16 Speed and the spare SP into 23 SpA and runs Modest. So Smogon's defensive benchmarks still hold - almost always survives Earthquake from Jolly Life Orb Garchomp, withstands Dark Pulse from Mega Blastoise - but the Speed benchmark does NOT: this Gholdengo sits at 104 Speed and does not outspeed Adamant Basculegion-M. It is the slower, harder-hitting reading of the same shell.",
+      "meta_note": "Worlds: 23 of 395 teams (5.8%), Good as Gold 100%, Modest 74%, Life Orb 78%. Ladder 9.8%, the highest of any Pokemon recorded here so far. Pikalytics championtournaments 48.4% win rate over 7341 games. NOTE: Staraptor appears as a partner on 100% of the 23 Worlds teams that ran Gholdengo - the player already owns that pairing.",
+      "spread_note": "Quiet 32 HP / 8 Def / 23 SpA / 3 SpD, RE-VERIFIED 2026-09-01 against the KO-count rule and kept unchanged. HP 32 + Def 8 is the EXACT minimum that survives Kingambit Kowtow Cleave (84-99%; at 32 HP / 0 Def it is 88-105%, a roll KO). Kingambit is on 88.9% of the top-18 Worlds teams, so this one threshold justifies the 40 points. SpA 23 rather than 32 costs almost nothing: across 12 meta targets the only KO category that changes is Shadow Ball on Sinistcha (roll 98-116% -> guaranteed 104-122%), and AFTER Nasty Plot not a single category differs between 23 and 32 - every threshold is already crossed at 23. More defence is not worth buying: nothing reaches a real survival threshold. Incineroar Flare Blitz needs Def 16 just to leave guaranteed-OHKO range (97-116%, still dies on most rolls) and that does not fit alongside HP 32 and SpA 23; Mega Charizard Y Heat Wave in sun OHKOes through even 32 HP / 32 SpD (102-121%). Those two matchups are unwinnable with SP and must be answered by the team - Rotom-Wash covers both. NATURE CHANGED Modest -> Quiet 2026-09-01 for the Trick Room team. Quiet raises Sp. Atk by the same x1.1, so every damage number above is UNCHANGED (SpA 193); it lowers Speed instead of the unused Attack, 104 -> 93. That fixes the flaw this build already recorded: at 104 it did not outspeed Adamant Basculegion-M (98), and under Trick Room 93 moves BEFORE it. Costs 500 VP; no SP change."
+    },
+    {
+      "pokemon": "Aerodactyl",
+      "ability": "Unnerve",
+      "nature": "Jolly",
+      "stat_points": {
+        "hp": 2,
+        "atk": 32,
+        "def": 0,
+        "spa": 0,
+        "spd": 0,
+        "spe": 32
+      },
+      "moves": [
+        "Rock Slide",
+        "Protect",
+        "Tailwind",
+        "Dual Wingbeat"
+      ],
+      "role": "Fast Tailwind setter / spread flincher",
+      "rationale": "Base 130 Speed with Jolly and 32 SP is 200 - floor((130+20+32)*1.1) - the fastest thing in the player's box, tied with Jolteon. Tailwind therefore lands before almost anything can stop it, and Rock Slide's 30% flinch is applied first. Rock Slide targets All Adjacent Foes. Unnerve is the quiet part: while Aerodactyl is on the field NO opposing Pokemon can eat its held Berry, which switches off Kingambit's Chople and Occa Berries, Ceruledge's Colbur, and Sitrus Berry generally - the single most contested item in the format at 309 Worlds teams.",
+      "follows": "Smogon VGC26 Regulation M-A, Focus Sash Offensive Support - moves, ability, nature and the exact SP spread all match. It is also, move for move, the highest-placing Aerodactyl at Worlds: #11 Naoto Mizobuchi [JP], 7-1, Focus Sash / Unnerve / Jolly / Rock Slide / Dual Wingbeat / Tailwind / Protect.",
+      "meta_note": "Worlds: 39 of 395 teams (9.9%), Unnerve 100%, Jolly 92%. Ladder 12.8%. IMPORTANT: 85% of those ran Aerodactylite, which the player does NOT own (2000 VP in the shop). The other 15% ran Focus Sash, and on the tournament ladder Pikalytics has Focus Sash at 88.6%. So the non-Mega build is a real, supported build, not a fallback - but every Smogon and Worlds reference to Mega Aerodactyl outspeeding, or to Tough Claws, does not apply to this one.",
+      "mega_note": "This build does not want the Mega, and the stone is not owned anyway (2000 VP). Mega Aerodactyl trades Unnerve for Tough Claws, and Unnerve is the entire point of this set: while it is on the field no opponent can eat a held Berry, which switches off Kingambit's Chople and Occa, Ceruledge's Colbur and every Sitrus Berry in the format. Tough Claws would boost only Dual Wingbeat here, because Rock Slide is not a contact move. The Mega does add Speed 130 -> 150 and Attack 105 -> 135, so it is a real attacker - just a different Pokemon from this one. If the stone is ever bought, build it as a second Aerodactyl rather than converting this one.",
+      "status": "BOX COPY RELEASED 2026-09-08. The Champions-origin Aerodactyl that carried this build is gone - the player is replacing Encounter Pokemon with HOME-origin ones (see _origin_rule in inventory.json). THE BUILD ITSELF IS NOT DEAD AND MUST NOT BE CHANGED: it is now the BLUEPRINT for the Aerodactyl sitting in home_box, which comes in permanent and trainable at 0 VP but UNTRAINED - training does not transfer between two different Pokemon. Reapplying it costs about 1830 VP: 4 moves at 250 = 1000, 66 SP at 5 = 330, nature Jolly 500. The ability Unnerve is a default for Aerodactyl, so it is free. Paid once, it never has to be paid again, because a HOME-origin Pokemon keeps its training through the round trip to HOME and back. It is on NO committed team, so nothing else is blocked by this."
+    },
+    {
+      "pokemon": "Kingambit",
+      "ability": "Defiant",
+      "nature": "Adamant",
+      "stat_points": {
+        "hp": 32,
+        "atk": 32,
+        "def": 2,
+        "spa": 0,
+        "spd": 0,
+        "spe": 0
+      },
+      "moves": [
+        "Kowtow Cleave",
+        "Sucker Punch",
+        "Iron Head",
+        "Protect"
+      ],
+      "role": "Bulky attacker / Intimidate punisher",
+      "rationale": "Kowtow Cleave NEVER MISSES (accuracy 101 in the Champions movedex), so the main STAB has no variance at all. Sucker Punch is priority +1 for anything faster that has committed to attacking. Defiant makes an Intimidate lead a mistake: +2 Attack the moment the opponent lowers a stat, and it is live from entry rather than on Mega Evolution. 0 Speed SP on base 50 leaves it at 70, which is where it wants to be if Trick Room is ever up.",
+      "follows": "Smogon VGC26 Regulation M-A and M-B, Bulky Attacker - exact match on moves, ability, nature and the SP spread 32 HP / 32 Atk / 2 Def. Smogon lists the third slot as Iron Head / Low Kick; the player took Iron Head.",
+      "ability_note": "DEFIANT'S CHAMPIONS TEXT MATTERS FOR THIS BOX: 'Attack is raised by two stages when the Pokemon has its stats lowered. Doesn't work on self inflicted stat drops or drops from ALLIES.' So Charm from the player's own Ninetales-Alola will NOT trigger Defiant - the Charm install works on Mega Staraptor's Contrary and on nothing else in the box.",
+      "meta_note": "THE most used Pokemon in the format: 208 of 395 Worlds teams (52.7%) and 34.4% of the ladder, Defiant 100%, Adamant 88%. Pikalytics 51.4% win rate over 25582 games - one of the few above 50%. The Worlds winner (YUYA WAKASUGI [JP], 8-0-0) ran Kingambit with Chople Berry and Low Kick in place of Protect. Core: Basculegion + Kingambit on 1619 tournament teams (12.3%), and the player owns both."
+    },
+    {
+      "pokemon": "Basculegion",
+      "form_note": "Male form - the DB key 'Basculegion' is the male (120/112/65/80/75/78). Basculegion-Female is a separate form with the special split.",
+      "ability": "Adaptability",
+      "nature": "Brave",
+      "stat_points": {
+        "hp": 16,
+        "atk": 24,
+        "def": 8,
+        "spa": 0,
+        "spd": 18,
+        "spe": 0
+      },
+      "moves": [
+        "Last Respects",
+        "Aqua Jet",
+        "Wave Crash",
+        "Protect"
+      ],
+      "role": "Trick Room priority finisher - Adaptability Aqua Jet, unconditional",
+      "rationale": "Adaptability turns STAB from x1.5 into x2, and both STABs are the point. Last Respects starts at 50 BP and gains 50 for every fainted ally, so it scales from filler to a 200 BP nuke as the game goes; at x2 STAB that is the highest ceiling in the box. Wave Crash is 120 BP for 1/3 recoil, and Aqua Jet is the +1 priority finisher. Protect over Flip Turn keeps it on the field, which is what Last Respects wants.",
+      "follows": "The Worlds winner's set, exactly: YUYA WAKASUGI [JP], 8-0-0, #1 - Basculegion [Male] @ Life Orb, Adaptability, Adamant, Wave Crash / Last Respects / Aqua Jet / Protect. Smogon's published set is different (Choice Scarf Revenge Killer with Flip Turn over Protect, 2 HP / 32 Atk / 32 Spe).",
+      "spread_note": "Brave 16 HP / 24 Atk / 8 Def / 18 SpD, converted to Trick Room 2026-09-02. NATURE: Brave, not Adamant. Both raise Attack by the same x1.1 - Atk 171 either way - so Brave is a free 30 points of Speed dropped (118 -> 88) by lowering the unused Sp. Atk slot's counterpart instead. Same trick as Quiet over Modest on Gholdengo and Rotom-Wash. SPEED 0 always on this team. THE 20 POINTS FREED FROM SPEED went to Def and SpD and bought three category flips: Def 6 -> 8 is the exact threshold for Kingambit's Sucker Punch (85-100%, dies on the max roll -> 82-98%, survives) and Kingambit is on 52.7% of Worlds Masters teams; SpD 0 -> 18 flips Mega Froslass Shadow Ball (88-103% -> 72-86%) and Archaludon Electro Shot (95-112% -> 81-95%). NOT BOUGHT: Mega Gengar's Shadow Ball needs a full 20 SpD (82-98%) and that only fits by dropping Def below the Sucker Punch threshold - Gengar is 5.8% of teams against Kingambit's 52.7%, so the trade is clear. ATK KEPT AT 24 rather than 32: the 8 extra points only flip Wave Crash on Incineroar from a 95-113% roll KO to a guaranteed one and Last Respects on Sinistcha to a roll, which is not worth surrendering the Froslass and Archaludon benchmarks.",
+      "meta_note": "Worlds: 134 of 395 teams (33.9%), Adaptability 100%, Adamant 70%. Ladder 28.0%. Pikalytics 50.8% win rate over 18899 games. Core: Basculegion + Kingambit, 1619 teams (12.3%) - the second most common core recorded, and Kingambit is its top partner at 79%.",
+      "build_constraint": "Wave Crash already costs 1/3 of the damage dealt as recoil, so any HP-draining item stacks a second source of self-damage onto a build whose Last Respects wants it to stay on the field.",
+      "moveset_note": "Unchanged - this is exactly Smogon's [Bulky Attacker] set and it needs no adaptation for Trick Room, because priority works identically inside and outside it. AQUA JET is why this Pokemon is on the team: Adaptability doubles STAB instead of the usual x1.5, so 40 BP becomes 80 EFFECTIVE with NO condition attached - the best unconditional priority the player owns, and the team had none at all. Smogon also notes it 'allows Basculegion-M to potentially evade Kingambit's Sucker Punch'. WAVE CRASH is the main STAB and OHKOes Sneasler. LAST RESPECTS scales +50 BP per fallen ally and is the late-game sweep button - but note it does ZERO to Normal-types, so an opposing Farigiraf is immune. PROTECT is the standard slot. Smogon's other two sets are rejected on the player's own rules: the [Revenge Killer] needs a Choice Scarf (vetoed - no move-locking items) and the [Focus Sash Attacker] swaps to Liquidation, which loses the Sneasler OHKO.",
+      "threats": "Immune to Fighting (Sneasler Close Combat does 0%) and to Normal. Weak to Electric, Grass, Ghost and Dark. Smogon: 'Priority attackers pose the biggest threat to Basculegion-M. Kingambit is at the forefront' - the Def 8 threshold above is built for exactly that. Mega Gengar still OHKOes it with Shadow Ball on a high roll; that matchup is played around, not built for. NOTE Smogon designs this Pokemon as an ANTI-Trick Room revenge killer ('Wave Crash lets it threaten Trick Room setters such as Farigiraf, as Basculegion-M's bulk usually isn't enough to outlast Trick Room'), so this build deliberately departs from its intended role - what carries over is the priority, which is field-effect agnostic.",
+      "status": "built - retune needed: nature Adamant -> Brave 500 VP, and 40 SP changes (Def 6->8, SpD 0->18, Spe 20->0) at 5 VP = 200 VP. Total 700 VP."
+    },
+    {
+      "pokemon": "Garchomp",
+      "ability": "Rough Skin",
+      "nature": "Jolly",
+      "stat_points": {
+        "hp": 2,
+        "atk": 32,
+        "def": 0,
+        "spa": 0,
+        "spd": 0,
+        "spe": 32
+      },
+      "moves": [
+        "Earthquake",
+        "Dragon Claw",
+        "Rock Slide",
+        "Protect"
+      ],
+      "role": "Fast physical attacker with double spread coverage",
+      "rationale": "Two spread moves on one Pokemon: Earthquake at 100 BP and Rock Slide at 75 BP with a 30% flinch. Jolly with 32 Speed SP reaches 169 off base 102. Dragon Claw is the reliable single-target STAB. Rough Skin punishes every contact move aimed at it, which matters against the Fake Out and Close Combat users that would otherwise pressure it for free.",
+      "build_constraint": "EARTHQUAKE TARGETS 'All Adjacent Pokemon', NOT 'All Adjacent Foes' - it hits the ally too. Of the player's trained Pokemon only Staraptor and Aerodactyl (Flying) are immune; Ninetales-Alola, Froslass, Gholdengo, Kingambit, Incineroar, Basculegion, Ceruledge, Samurott-Hisui and Farigiraf all take it. Rock Slide is 'All Adjacent Foes' and is safe. This constrains which four Garchomp can be brought alongside far more than any item choice does.",
+      "meta_note": "Worlds: 156 of 395 teams (39.5%), Rough Skin 100%, Jolly 52% / Adamant 41%. Ladder 35.2%. The four moves are the four most used on it: Dragon Claw 94%, Rock Slide 84%, Earthquake 83%, Protect 67%. The only common fifth is Stomping Tantrum (63% at Worlds), which the highest-placing Garchomp - #2 Takuma Yamazaki [JP], 7-1 - ran over Protect. Core: Garchomp + Kingambit, 1975 tournament teams (14.9%), the most common core recorded, and the player owns both.",
+      "mega_note": "The player owns Garchompite but this build does not use it, which matches the field: only 3% of Worlds Garchomp Mega Evolved. Mega Garchomp trades Rough Skin for Sand Force, and there is no sand on this team. Keeping Garchomp un-mega'd also leaves the one Mega slot free for Eelektross, Froslass or Staraptor."
+    },
+    {
+      "pokemon": "Incineroar",
+      "copy": "1 of 2 - tuned for all-round bulk (20 Def / 12 SpD). Copy 2 is the Sp. Def variant.",
+      "ability": "Intimidate",
+      "nature": "Careful",
+      "stat_points": {
+        "hp": 32,
+        "atk": 0,
+        "def": 20,
+        "spa": 0,
+        "spd": 12,
+        "spe": 2
+      },
+      "moves": [
+        "Throat Chop",
+        "Parting Shot",
+        "Flare Blitz",
+        "Fake Out"
+      ],
+      "role": "Support pivot - Intimidate, Fake Out, Parting Shot",
+      "rationale": "The format's standard support shell, and the reason Intimidate is on so many teams. Fake Out is +3 priority and buys a free turn on entry; Parting Shot lowers the target's Attack AND Sp. Atk by one stage and then switches out, so Incineroar leaves the field having weakened the opponent twice over on top of Intimidate. Careful with 32 HP / 20 Def / 12 SpD is bulk in both directions with zero Attack investment, which is consistent: this build is not here to deal damage.",
+      "build_constraint": "Parting Shot lowers stats, so it feeds an opposing Defiant Kingambit (+2 Attack) exactly the way Intimidate does. Against the 52.7% of Worlds teams carrying Kingambit, both of this build's signature effects are a liability, not an asset.",
+      "playstyle_note": "Physical attacking moves, but this is not a main attacker - it is the support pivot, which the player's special-attacker rule explicitly permits.",
+      "meta_note": "Worlds: 163 of 395 teams (41.3%), Intimidate 100%, Careful 31% (second to Impish 38%). Ladder 32.2%. This build is move for move the #4 finisher's: Justin Tang [US], 7-1 - Incineroar, Intimidate, Careful, Parting Shot / Flare Blitz / Throat Chop / Fake Out. Throat Chop is the majority pick over Darkest Lariat at Worlds (38% to 31%)."
+    },
+    {
+      "pokemon": "Staraptor",
+      "mega": "Mega Staraptor",
+      "ability": "Intimidate",
+      "mega_ability": "Contrary",
+      "nature": "Adamant",
+      "stat_points": {
+        "hp": 32,
+        "atk": 0,
+        "def": 0,
+        "spa": 0,
+        "spd": 9,
+        "spe": 25
+      },
+      "moves": [
+        "Protect",
+        "Close Combat",
+        "Brave Bird",
+        "Roost"
+      ],
+      "role": "Contrary Mega - the receiving half of the Charm install",
+      "rationale": "Mega Evolution changes both the typing (Normal/Flying to Fighting/Flying) and the ability (Intimidate to Contrary), and Close Combat becomes STAB in the process. Two 120 BP STABs, and Close Combat also builds +1 Def / +1 SpD every time it is used. Roost restores 1/2 max HP, which turns that accumulating bulk into real staying power against Brave Bird's 1/3 recoil. 0 Attack SP is deliberate: the Attack comes from Ninetales' Charm, not from the spread.",
+      "charm_combo": "CONFIRMED BY THE PLAYER as their actual line: Ninetales-Alola uses Charm on this Pokemon. Contrary inverts Charm's -2 Attack into +2 Attack. Charm's target is 'Selected Target', so it can legally pick an ally in doubles, and Ninetales at 177 Speed installs it before Staraptor moves. Charm has 20 PP, so it repeats. This is unambiguous because Charm is a move, which is what Contrary's text names.",
+      "mega_timing": "Intimidate is the BASE ability and Contrary only arrives on Mega Evolution, so the order of play matters. Leading un-mega'd applies Intimidate to both opponents on entry; Mega Evolving instead turns every incoming Intimidate into +1 Attack. Against the 57.5% of Worlds teams carrying an Intimidate user - Incineroar alone is on 41% - Mega Evolving early makes this Pokemon a trap: the opponent's standard opening play feeds it. This REPLACES the older project note that said Mega Staraptor 'eats an Intimidate on turn 1 as a lead'; that was written before the rule was confirmed.",
+      "meta_note": "Mega Staraptor is on 13.1% of the ladder. Staraptor appears alongside Gholdengo on 100% of the 23 Worlds teams that ran Gholdengo, and the player owns that pair.",
+      "contrary_confirmed": "FULLY ANSWERED BY THE PLAYER IN GAME, 2026-08-29. Contrary in Champions inverts ANY stat change from ANY source - the player's words: 'son movimientos y habilidades, cualquier cosa que afecte a sus estadisticas'. Three consequences for this build: (1) Close Combat's self-inflicted -1 Def / -1 SpD becomes +1 / +1, so the main STAB is also the defensive setup; (2) an ally's Charm becomes +2 Attack; (3) AN OPPOSING INTIMIDATE RAISES ITS ATTACK BY ONE STAGE. The Champions text reads 'moves used on the Pokemon', which had left (3) open in the project notes - it is settled now, and abilities count. Contrary is the exact opposite of Champions' Defiant, whose text excludes self-inflicted and ally-inflicted drops.",
+      "mega_note": "Both forms are useful, which is the point: un-mega'd it applies Intimidate to both opponents on entry, and Mega Evolved it flips every incoming Intimidate into +1 Attack and gains Contrary, Fighting STAB on Close Combat and the Charm install. The choice is made per game, not per team."
+    },
+    {
+      "pokemon": "Sceptile",
+      "mega": "Mega Sceptile",
+      "ability": "Overgrow",
+      "mega_ability": "Lightning Rod",
+      "nature": "Modest",
+      "stat_points": {
+        "hp": 2,
+        "atk": 0,
+        "def": 0,
+        "spa": 32,
+        "spd": 0,
+        "spe": 32
+      },
+      "moves": [
+        "Energy Ball",
+        "Dragon Pulse",
+        "Earth Power",
+        "Protect"
+      ],
+      "role": "Fastest special attacker in the box",
+      "rationale": "Mega Evolution adds the Dragon type, which turns Dragon Pulse into a second STAB, and takes SpA to 145 and Speed to 145. Modest is neutral for Speed, so 32 SP puts it at 197 - third fastest in the box behind Aerodactyl and Jolteon at 200, and ahead of everything else. Earth Power covers the Steel, Fire and Poison types that wall Grass and Dragon. Lightning Rod is the defensive half: Electric moves are drawn to it, deal no damage, and hand it +1 Sp. Atk, so it both absorbs the Electric attacks aimed at a partner and gets paid for it.",
+      "playstyle_note": "A pure special main attacker with no physical move at all - fully immune to Intimidate, which is on 57.5% of Worlds teams. This is the player's stated preference in its cleanest form.",
+      "meta_note": "OFF-META: 0 of 395 Worlds teams, 1.4% of the ladder, and Smogon has no written analysis. The only real data is Pikalytics championtournaments over 129 games - 47.3% win rate, a sample too small to read much into. Its move splits there are Earth Power 70.8%, Dragon Pulse 62.5%, Leaf Storm 58.3%, Energy Ball 37.5%. The one common choice the player did not take is Leaf Storm over Energy Ball; Leaf Storm is the bigger hit but drops the user's Sp. Atk by two stages.",
+      "mega_timing": "Overgrow, the base ability, only does anything below 1/3 HP and this build is not meant to be there. Lightning Rod is the whole point, so unlike Staraptor there is no reason to delay Mega Evolution - except to keep the Mega slot open for another Pokemon that game.",
+      "mega_note": "Mega-dependent: the Dragon type that makes Dragon Pulse a STAB, 40 Sp. Atk, 25 Speed and Lightning Rod all come from the stone. Overgrow only fires below 1/3 HP, so the base form has little to offer this build."
+    },
+    {
+      "pokemon": "Scrafty",
+      "mega": "Mega Scrafty",
+      "ability": "Intimidate",
+      "mega_ability": "Intimidate",
+      "nature": "Brave",
+      "stat_points": {
+        "hp": 32,
+        "atk": 32,
+        "def": 0,
+        "spa": 0,
+        "spd": 2,
+        "spe": 0
+      },
+      "moves": [
+        "Swords Dance",
+        "Drain Punch",
+        "Iron Head",
+        "Crunch"
+      ],
+      "role": "Double-Intimidate bulky setup sweeper",
+      "rationale": "Mega Scrafty is 65/130/135/55/135/68 - both defenses at 135 - and it keeps Intimidate rather than trading it away. Swords Dance then out-scales what Intimidate does to it: +2 Attack against an opponent's -1. Drain Punch heals 1/2 of the damage dealt, so the setup turns pay for themselves. Crunch and Iron Head are the STAB and the Fairy answer. Brave lowers Speed, and with 0 Speed SP this sits near the bottom of the field on purpose.",
+      "intimidate_twice": "CONFIRMED BY THE PLAYER IN GAME, 2026-08-29, and the Champions ability text backs it word for word: Intimidate reads 'Upon entering battle OR RECEIVING THE ABILITY, the opponent's Attack lowers one stage. In a Double Battle, both opponents' Attack are lowered.' Mega Evolution grants the ability, so Scrafty Intimidates on entry and AGAIN on Mega Evolving - a total of -2 Attack on both opposing Pokemon from one slot. This only works because Intimidate is Scrafty's base ability AND Mega Scrafty's ability; a Pokemon whose Mega swaps to a different ability gets one trigger.",
+      "playstyle_note": "A physical main attacker, which is the tradeoff the player normally declines. It is the least exposed one in the box though: it applies Intimidate twice itself, Swords Dance gains +2 against a single -1, and 135/135 defenses mean it survives long enough to set up more than once.",
+      "meta_note": "OFF-META: 0 of 395 Worlds teams and 2.5% of the ladder, with no Smogon analysis. Pikalytics championtournaments has it at a 52.5% win rate (177-160) - higher than Kingambit's 51.4% - but over only 337 games, so treat it as a hint rather than a result. Its move splits there describe a completely different Pokemon: Fake Out 100%, Knock Off 98.5%, Close Combat 58.2%. Swords Dance does not appear at all. This build is the player's own, like the Mega Eelektross that reached Master Rank 3.",
+      "mega_note": "Works either way. Un-mega'd: Intimidate once, 115/115 defenses, 90 Attack. Mega Evolved: Intimidate a SECOND time on evolving, 135/135 defenses and 130 Attack. So Mega Evolving here is worth a full extra -1 Attack on both opponents on top of the stats. One cost the stat line hides: Speed 58 -> 68. This set runs Brave with 0 Speed SP on purpose, so under a Trick Room the Mega acts later than the base form would. It still sits near the bottom of the field either way."
+    },
+    {
+      "pokemon": "Rotom-Wash",
+      "ability": "Levitate",
+      "nature": "Quiet",
+      "stat_points": {
+        "hp": 32,
+        "atk": 0,
+        "def": 0,
+        "spa": 16,
+        "spd": 18,
+        "spe": 0
+      },
+      "moves": [
+        "Hydro Pump",
+        "Thunderbolt",
+        "Will-O-Wisp",
+        "Protect"
+      ],
+      "role": "Special attacker with a Ground immunity - the Basculegion and Incineroar answer",
+      "rationale": "107/107 defenses on both sides with Levitate, which blocks damaging Ground moves outright and ignores Spikes - relevant because the player's own Samurott-Hisui sets them with Ceaseless Edge. Hydro Pump is the 110 BP single-target hit and Discharge the 80 BP spread with a 30% paralysis chance. Volt Switch attacks and then pivots out, which turns a bad matchup into a free switch rather than a lost turn. Fully special: nothing here is touched by Intimidate.",
+      "build_constraint": "DISCHARGE TARGETS 'All Adjacent Pokemon' - it hits the ally too, the same trap as Garchomp's Earthquake. Two partners in the box are actually rewarded by it: Garchomp is Ground and immune to Electric outright, and Mega Sceptile's Lightning Rod takes no damage AND gains +1 Sp. Atk from it. Everything else in the box takes the hit, and Basculegion is Water so it takes it doubled.",
+      "meta_note": "Worlds: 3 of 395 teams (0.8%), Levitate 100%, Modest 100% - and all three ran Thunderbolt / Hydro Pump / Protect / Will-O-Wisp, so the player's Discharge + Shadow Ball + Volt Switch line is its own. Ladder 3.9%. Pikalytics championtournaments 43.8% over 2375 games, the lowest win rate of anything recorded here; there Volt Switch is 50.1% but Discharge only 12.8%. The common thread in both sources is Will-O-Wisp, which this build does not run.",
+      "moveset_note": "Studied against the real threat list 2026-09-01. THUNDERBOLT is the team's Basculegion answer (95-112% roll OHKO) and also rolls Mega Charizard Y (86-102%) and Mega Aerodactyl (98-117%). Discharge was cut: it is 'All Adjacent Pokemon' and damages the ally - fine on the Mega Sceptile team where Lightning Rod absorbs it, dead here. HYDRO PUMP stays despite 80 accuracy - it is the ONLY Water attack Rotom-Wash learns, it is the team's only Incineroar answer (96-114% roll OHKO) and it OHKOes Mega Aerodactyl (120-143%). Note it is halved under Charizard's Drought, so Thunderbolt is the reliable line into sun. WILL-O-WISP over Shadow Ball, the biggest finding of the study: Shadow Ball scored no KO anywhere (Basculegion 56-67%, Sinistcha 58-70%) and both targets are already covered - Thunderbolt kills Basculegion, Gholdengo's own Shadow Ball kills Sinistcha. Will-O-Wisp instead flipped SEVEN of seven physical matchups tested: Kingambit Kowtow Cleave on Gholdengo 2HKO -> 3HKO, Basculegion Last Respects on Gholdengo 1HKO -> 2HKO, Wave Crash 2HKO -> 3HKO, Sneasler Close Combat 2HKO -> 3HKO, Garchomp Earthquake 2HKO -> 3HKO, Mega Aerodactyl Dual Wingbeat on Chesnaught 2HKO -> 4HKO. Kingambit alone is 88.9% of the top-18 Worlds teams. LIMITS: 85 accuracy, and Fire-types CANNOT be burned, so it does nothing to Incineroar (41.3%) or Charizard (38.9%) - those two are Hydro Pump's and Thunderbolt's job. REJECTED: Thunder Wave and Electroweb both lower the target's Speed, which under Trick Room makes the opponent move EARLIER - they are anti-synergy with this team, and Electroweb is on 0 of 395 Masters teams. Hyper Voice does ZERO to Basculegion and Sinistcha (Normal vs Ghost). Thunder outdamages Thunderbolt and OHKOes Basculegion (115-136%) but 70 accuracy without rain is not worth the whiff.",
+      "spread_note": "Quiet 32 HP / 18 SpD / 16 SpA, corrected 2026-09-01 (player caught the error: Solar Beam is a SPECIAL move, so the stat that answers it is Special Defense - an earlier version of this spread put the points in Defense and did not survive it). PRINCIPLE: the spread is aimed at Trick Room - Speed 0 always, so it is fast under TR - but the leftover points buy survival for when TR is down or Farigiraf has died, because outside TR this sits at 95 Speed and eats the hit first. NATURE: Quiet, not Modest. Both raise Sp. Atk x1.1 so damage is identical; Quiet drops Speed instead of the unused Attack. THE 16 POINTS MOVED FROM SPA TO SPD buy the one category flip that matters: Mega Charizard Y Solar Beam 1HKO (96-113%) -> 2HKO (84-99%). Solar Beam is the ONLY attack in the format that OHKOes this Rotom-Wash, it is on 58/395 Masters teams, and 18 SpD is the exact minimum (HP 20/SpD 30, 24/26 and 28/22 all reach the same 84-99%, so 32 HP is taken because raw HP also helps against physical attacks). It also improves Mega Floette Light of Ruin 82-98% -> 71-85% and Sinistcha Matcha Gotcha 78-93% -> 69-82%. COST: Thunderbolt stops being a roll KO on Mega Charizard Y (86-102% -> 76-92%), affordable because Chesnaught's Rock Slide already rolls it (89-105%) and Hydro Pump OHKOes it out of sun. The 2 points that used to sit in Def were buying nothing - dropping them changes no category (Kowtow Cleave 48-58% -> 50-59%, Last Respects 66-80% -> 69-81%, both still 2HKO). SPA 16 is the exact floor for the three KOs that are this Pokemon's job: Thunderbolt roll-KO on Basculegion (86-102%), Hydro Pump roll-KO on Incineroar (87-104%), Hydro Pump OHKO on Mega Aerodactyl (108-129%). REJECTED Smogon's Bold 31/12/1/20/2: it reaches the same Solar Beam benchmark but 1 SpA collapses the offence to zero KOs, deleting this Pokemon's job here.",
+      "threats": "Survives everything relevant at 0 HP investment, which is why the spread is fully offensive: Mega Charizard Y Heat Wave in sun 42-50%, Basculegion Wave Crash 49-58%, Kingambit Kowtow Cleave 61-73%, Sneasler Close Combat 76-91%, Sylveon Hyper Voice 28-34%. Levitate makes it immune to Ground, which is Gholdengo's x2 - that is half the reason it is on this team.",
+      "status": "OPTION, NOT COMMITTED (player, 2026-09-01). The build below is finished and costed, but the player has parked it: 'no sé si rotom-w cumple mis expectativas, quizas dejarlo como opción por el momento.' The reason is sound and verified - the Solar Beam benchmark this spread is built around only holds at FULL HP. Rotom-Wash switches into Heat Wave for 31-36%, and Solar Beam then does 84-99%; even the two best rolls together are 115%, so it dies. And against MODEST Mega Charizard Y (64% of them at Worlds, vs 34% Timid) Solar Beam is 93-110% at full HP - no legal spread survives it. If it is brought back, the retune is: nature Timid -> Quiet 500 VP, three moves at 250 VP each = 750 VP, 96 SP changes at 5 VP = 480 VP. Total 1730 VP. WHAT THE SLOT MUST STILL DELIVER if something else takes it: the team's only Fire resist, a Ground immunity or resist for Gholdengo's x2, and an answer to Basculegion and Incineroar."
+    },
+    {
+      "pokemon": "Maushold",
+      "ability": "Friend Guard",
+      "nature": "Calm",
+      "stat_points": {
+        "hp": 32,
+        "atk": 0,
+        "def": 17,
+        "spa": 0,
+        "spd": 17,
+        "spe": 0
+      },
+      "moves": [
+        "Protect",
+        "Super Fang",
+        "Follow Me",
+        "Feint"
+      ],
+      "role": "Dedicated redirector - the enabler slot",
+      "rationale": "Pure support, and every piece serves one Pokemon: the partner. Friend Guard cuts 25% off all damage the ally takes in doubles. Follow Me is +2 priority and pulls single-target attacks onto Maushold instead. Feint is +2 priority, breaks through Protect and REMOVES it, which is how a stalled setup turn gets forced open. Super Fang deals half the target's remaining HP, so it ignores Attack entirely - Calm's Attack penalty costs this build nothing. 32 HP with 17/17 split makes it survive long enough to redirect more than once.",
+      "synergy_note": "This is the enabler for every setup build in the box: Friend Guard plus Follow Me means Mega Scrafty's Swords Dance, Ceruledge's Bulk Up, Gholdengo's Nasty Plot and Mega Froslass's Nasty Plot all get a protected turn. It also learns Charm, so it is a second installer for Mega Staraptor's Contrary - 28% of Worlds Maushold carry Charm, and the #47 finisher ran exactly Follow Me / Protect / Super Fang / Charm.",
+      "meta_note": "Worlds: 18 of 395 teams (4.6%), Friend Guard 89%. Follow Me 100%, Protect 94%, Super Fang 61%, Feint 39% - all four of the player's moves are the mainline picks. The nature is the outlier: Jolly 39% and Timid 33% lead, Calm is 11%, because most Maushold invest in Speed to redirect before the threat moves. This build instead buys bulk and accepts moving later, which Follow Me's +2 priority partly covers anyway. Ladder 5.6%."
+    },
+    {
+      "pokemon": "Incineroar",
+      "copy": "2 of 2 - a Twitch drop. Same moves, nature and ability as copy 1; only the SP spread differs.",
+      "ability": "Intimidate",
+      "nature": "Careful",
+      "stat_points": {
+        "hp": 32,
+        "atk": 0,
+        "def": 0,
+        "spa": 0,
+        "spd": 32,
+        "spe": 2
+      },
+      "moves": [
+        "Throat Chop",
+        "Parting Shot",
+        "Flare Blitz",
+        "Fake Out"
+      ],
+      "role": "Support pivot, special-defensive variant",
+      "rationale": "Identical set to copy 1, retuned to one side. Copy 1 splits 20 Def / 12 SpD for all-round bulk; this one dumps the maximum 32 into Sp. Def and nothing into Def, on top of Careful which already raises Sp. Def. It is the answer to special attackers specifically, while Intimidate already handles the physical side - so the two copies are not redundant, they are the two halves of the same shell. Keeping both costs nothing extra since retuning SP would be 5 VP per point changed.",
+      "build_constraint": "Same as copy 1: Parting Shot lowers stats, so against an opposing Defiant Kingambit both this build's signature effects hand it +2 Attack."
+    },
+    {
+      "pokemon": "Jolteon",
+      "ability": "Quick Feet",
+      "nature": "Timid",
+      "stat_points": {
+        "hp": 2,
+        "atk": 0,
+        "def": 0,
+        "spa": 32,
+        "spd": 0,
+        "spe": 32
+      },
+      "moves": [
+        "Discharge",
+        "Light Screen",
+        "Protect",
+        "Electroweb"
+      ],
+      "role": "Fastest slot in the box - Discharge engine, screens and speed control",
+      "rationale": "200 Speed, tied with Aerodactyl for the fastest thing the player owns, and it spends that first turn on control rather than damage. Electroweb is a spread Electric hit that lowers both opponents' Speed by a stage - speed control that does not expire the way Tailwind does. Light Screen halves special damage for 5 turns. Discharge is the 80 BP spread with a 30% paralysis chance. Fully special, so Intimidate does nothing to it.",
+      "ability_note": "Quick Feet raises Speed by 50% while statused AND ignores paralysis's Speed drop, so an opposing Thunder Wave or Will-O-Wisp makes Jolteon faster instead of slower: 300 Speed from a status the opponent chose to apply. The alternative, Volt Absorb, would heal it from Electric attacks instead - a different Pokemon, not a better one.",
+      "build_constraint": "THIS BUILD MUST SURVIVE ONE HIT. The player's reasoning, 2026-08-29: Jolteon needs to live an extra turn so it can fire at least TWO Discharges, because each one is +1 Sp. Atk on a Lightning Rod ally. They have chosen Focus Sash for exactly that, and it outranks the Light Clay option that would extend Light Screen - survival first, screen duration second. With 65/60/95 defenses the Sash is what makes the second Discharge happen at all.",
+      "item_interaction": "Light Screen lasts 5 turns and Light Clay extends it - a rule the player confirmed in game. Noted as a build fact, not an item choice.",
+      "meta_note": "Opposition intelligence, not a verdict: 0 of 395 Worlds teams and 0.3% of the ladder, so nobody is preparing for this. The tournament ladder's Jolteon is an attacker (Thunderbolt 44%, Volt Switch 47%, Life Orb 44%) at a 39.7% win rate over 247 games; the support build the player has is a different plan and that sample says nothing about it."
+    },
+    {
+      "pokemon": "Sylveon",
+      "ability": "Pixilate",
+      "nature": "Modest",
+      "stat_points": {
+        "hp": 25,
+        "atk": 0,
+        "def": 24,
+        "spa": 12,
+        "spd": 0,
+        "spe": 5
+      },
+      "moves": [
+        "Hyper Beam",
+        "Hyper Voice",
+        "Quick Attack",
+        "Detect"
+      ],
+      "role": "Bulky spread special attacker",
+      "rationale": "Pixilate turns every Normal move Fairy AND adds 20% power, so three of the four slots are boosted Fairy STAB: Hyper Voice 90 -> 108 as a spread move hitting both opponents, Hyper Beam 150 -> 180 single target, Quick Attack 40 -> 48 at +1 priority. Hyper Voice is the workhorse; Hyper Beam is the finisher, with the cost that the turn after is spent recharging. 95/65/130 base bulk plus 25 HP / 24 Def answers the physical side that its natural bulk does not.",
+      "build_constraint": "QUICK ATTACK IS PHYSICAL and runs off 65 base Attack with a Modest nature lowering it further, so even Pixilate-boosted it is a finisher for something already nearly dead, never a damage slot. Detect is Fighting-type but functions as Protect; it shares the same consecutive-use failure chance.",
+      "meta_note": "Opposition intelligence: Sylveon is on 98 of 395 Worlds teams (24.8%) and 17.0% of the ladder, Pixilate 100%, Modest 76%. So roughly one opposing team in four brings this, and the spread it throws is the same Hyper Voice the player's own build uses - worth knowing which of the player's Pokemon eat a Fairy spread move. Hyper Voice 100%, Quick Attack 96%, Detect 84%, Hyper Beam 52% - the player's four moves are the four most common, with Yawn (49%) the notable one not taken."
+    },
+    {
+      "pokemon": "Glalie",
+      "mega": "Mega Glalie",
+      "ability": "Inner Focus",
+      "mega_ability": "Refrigerate",
+      "nature": "Adamant",
+      "stat_points": {
+        "hp": 2,
+        "atk": 32,
+        "def": 0,
+        "spa": 0,
+        "spd": 0,
+        "spe": 32
+      },
+      "moves": [
+        "Explosion",
+        "Body Slam",
+        "Taunt",
+        "Protect"
+      ],
+      "role": "Explosion nuke (RETIRED - see status)",
+      "rationale": "Refrigerate turns Explosion into a 300 BP Ice move; with STAB that is 450 effective, the strongest Explosion in the game by 49%. Inner Focus over Moody because Intimidate is on 52.7% of Worlds teams and one drop removes two of the three neutral OHKOs.",
+      "status": "Built and TESTED, then rejected as a game plan 2026-08-31 ('es un chiste') - too predictable. The BUILD itself is still valid and Glalie is still trained; it is the Explosion strategy that failed, not the spread. Do not re-propose the two-turn Explosion plan.",
+      "mega_note": "The stone IS the build - no Refrigerate, no plan - and it also means Glalie can never hold Focus Sash."
+    },
+    {
+      "pokemon": "Dragonite",
+      "mega": "Mega Dragonite",
+      "ability": "Inner Focus",
+      "mega_ability": "Multiscale",
+      "nature": "Mild",
+      "stat_points": {
+        "hp": 2,
+        "atk": 0,
+        "def": 0,
+        "spa": 32,
+        "spd": 0,
+        "spe": 32
+      },
+      "moves": [
+        "Dragon Pulse",
+        "Heat Wave",
+        "Extreme Speed",
+        "Protect"
+      ],
+      "role": "Special Mega attacker carrying its own priority",
+      "rationale": "The 2026 world champion's set (Takuma Yamazaki, 13-2-0): a special Mega and Extreme Speed at +2 priority in one slot. Inner Focus on the base form instead of the champion's Multiscale, because switches resolve BEFORE Mega Evolution - so Inner Focus still blanks a switch-in Intimidate on the turn you evolve.",
+      "status": "BOX COPY RELEASED 2026-09-08. The Champions-origin Dragonite that carried this build is gone - the player is replacing Encounter Pokemon with HOME-origin ones (see _origin_rule in inventory.json). THE BUILD IS NOT DEAD AND MUST NOT BE CHANGED. It is the blueprint for the Dragonite in home_box, which arrives permanent and trainable at 0 VP but UNTRAINED, because training does not transfer between two different Pokemon. Reapplying it is about 1830 VP: 4 moves 1000 + 66 SP 330 + nature Mild 500. Inner Focus is a Dragonite default, so the ability is free. Paid once and never again - a HOME-origin Pokemon keeps its training through the round trip. THIS BUILD IS NOT TIED TO ANY TEAM (player, 2026-09-08): 'mega dragonite podria estar en cualquier team'. It is a straight copy of the VGC 2026 Worlds Masters champion's set, so it is reusable everywhere and re-derivable from the source at any time - there is no bespoke design work at risk here, only the VP. Do not describe any team as blocked by it. Earlier status, still true of the set itself: 'performs - player confirmed 2026-08-31'. OPEN QUESTION: DRAGONITITE IS NOT IN mega_stones, so the Mega half needs 2000 VP - ask the player, since the set was confirmed as performing.",
+      "mega_note": "Modest is 88% of Worlds Mega Dragonite. Extreme Speed only 25%; most take Tailwind. The champion chose Extreme Speed."
+    },
+    {
+      "pokemon": "Sneasler",
+      "ability": "Poison Touch",
+      "nature": "Jolly",
+      "stat_points": {
+        "hp": 2,
+        "atk": 32,
+        "def": 0,
+        "spa": 0,
+        "spd": 0,
+        "spe": 32
+      },
+      "moves": [
+        "Dire Claw",
+        "Close Combat",
+        "Fake Out",
+        "Protect"
+      ],
+      "role": "Fake Out lead and the Fighting answer",
+      "rationale": "Close Combat clears Kingambit (288-340) and Incineroar (152-180) at ZERO Attack SP once anything has chipped them, so the investment is free for other stats. Fake Out is the +3 priority tier. Fighting/Poison resists Dark x0.5, so Kingambit's Sucker Punch does not punish it. Reusable in any team that wants a fast Fake Out lead.",
+      "status": "built"
+    },
+    {
+      "pokemon": "Aggron",
+      "ability": "Rock Head",
+      "nature": "Brave",
+      "stat_points": {
+        "hp": 2,
+        "atk": 32,
+        "def": 32,
+        "spa": 0,
+        "spd": 0,
+        "spe": 0
+      },
+      "moves": [
+        "Head Smash",
+        "Heavy Slam",
+        "Body Press",
+        "Protect"
+      ],
+      "role": "Trick Room physical breaker",
+      "rationale": "Rock Head makes Head Smash 150 BP with no recoil: 291-343% on Mega Charizard Y, 110-131% on Incineroar. Heavy Slam is weight-derived and Aggron weighs 360 kg, so it hits 120 BP on the light Fairies and kills Floette and Sylveon THROUGH Calm Mind, because it is physical. Body Press attacks off Defense, so Intimidate does nothing to it. The 32 Def SP raise Body Press ~15% and the bulk with the same points.",
+      "status": "built",
+      "mega_note": "MUST stay in base form: Rock Head exists only there. Mega Aggron trades it for Filter and loses the Rock type, which is what Head Smash runs on."
+    },
+    {
+      "pokemon": "Sinistcha",
+      "ability": "Hospitality",
+      "nature": "Relaxed",
+      "stat_points": {
+        "hp": 32,
+        "atk": 0,
+        "def": 14,
+        "spa": 0,
+        "spd": 20,
+        "spe": 0
+      },
+      "moves": [
+        "Matcha Gotcha",
+        "Rage Powder",
+        "Life Dew",
+        "Trick Room"
+      ],
+      "role": "Redirector and second Trick Room setter",
+      "rationale": "Smogon's own set minus Protect. Rage Powder pulls single-target attacks off the partner - 1050 of the field's Ground and Fighting attacks are single-target and redirectable, though the 296 Earthquakes are not. Ghost typing is immune to Fake Out, and Hospitality heals 25% of the partner's HP on entry.",
+      "status": "built"
+    },
+    {
+      "pokemon": "Chesnaught",
+      "ability": "Bulletproof",
+      "nature": "Sassy",
+      "stat_points": {
+        "hp": 32,
+        "atk": 0,
+        "def": 2,
+        "spa": 0,
+        "spd": 32,
+        "spe": 0
+      },
+      "moves": [
+        "Curse",
+        "Body Press",
+        "Rock Slide",
+        "Spiky Shield"
+      ],
+      "role": "Trick Room Body Press wall-breaker, immune to Intimidate",
+      "mega": "Mega Chesnaught",
+      "mega_ability": "Bulletproof",
+      "rationale": "Body Press attacks off Defense, so Intimidate does NOTHING to it - this is the only physical attacker that answers the player's special-attacker constraint instead of breaking it. Mega Chesnaught has Def 172, the highest of the 11 Fighting-types in the format that learn Body Press (next is Mega Falinks at 135), and Body Press is STAB. Curse over Bulk Up and Iron Defense: same +1 Atk / +1 Def, the 1/2 HP cost applies only to Ghost-types so Chesnaught pays nothing, and the -1 Speed is a BONUS under Trick Room (57 -> 38, still above Mega Camerupt's 36 so they do not fight for the order). Iron Defense gives more Body Press (+2 Def = x2) but nothing for the Ghost hole; Curse feeds both halves of the set. Spiky Shield IS the Protect slot.",
+      "spread_note": "Sassy 32 HP / 32 SpD / 2 Def, chosen by the player's KO-count rule: SP only count if they change a 1HKO into a 2HKO. Verified with scripts/damage.py against every super-effective special attack that survives Bulletproof. Pays for: Mega Charizard Y Heat Wave IN SUN (OHKO 127-151% -> 2HKO 78-92%) - Charizard is on 45% of Masters teams and this single matchup justifies the whole spread; Scovillain Overheat (OHKO -> 74-87%); Floette Moonblast (roll -> 60-71%); Floette Light of Ruin partially (OHKO -> 86-103%). Buys NOTHING against Pelipper Hurricane (OHKO either way), Whimsicott Moonblast, Farigiraf Psychic or Froslass Blizzard (all already 2HKO at 0 SpD). Relaxed with the same points was tested and rejected: it keeps 87% of Body Press instead of 79% and more physical bulk, but turns the Charizard matchup back into a roll (88-103%). The cost of Sassy is 21% of Body Press, which loses the roll-KOs on Garchomp, Staraptor-base and Farigiraf; Curse pays them back.",
+      "moveset_note": "Rock Slide over Knock Off (player, 2026-09-01). Knock Off's Dark damage was redundant: Body Press already OHKOes Kingambit (144-171%, and Knock Off did 12-14% there), and Gholdengo's Shadow Ball OHKOes every Ghost Knock Off was covering - Basculegion 95-112%, Mega Froslass 101-120%, Sinistcha 119-141%. Rock Slide buys what the team did not have: a roll OHKO on Mega Charizard Y (89-105% at 0 Atk SP, x4), which is the team's only weakness with zero resists, and it answers FLYING, this Pokemon's own x4 structural hole. It is 'All Adjacent Foes', so it never touches the ally - unlike Earthquake and Bulldoze, the only other physical spread moves Chesnaught learns, which would hit Gholdengo (Ground x2, 37-44% of friendly fire). Bulldoze is additionally dead: 0 of 395 Worlds teams run it, and its -1 Speed works against Trick Room. WHAT IS GIVEN UP: this removes the team's only item removal (Focus Sash 339 Worlds teams, Sitrus 309, Life Orb 273), and Farigiraf coverage drops from Knock Off's 66-78% to Body Press's 50-59%. Shadow Claw was disqualified earlier: Ghost does ZERO to Farigiraf and gains nothing over Dark. Payback is dead - it doubles only when moving AFTER the target, and under Trick Room this Pokemon moves FIRST. Fling is dead - its power comes from the held item and the item is locked to Chesnaughtite.",
+      "build_constraint": "Curse and Body Press both scale off Defense, and the spread deliberately does NOT invest there - the Def SP went to special bulk. Body Press runs off the base 172, not off investment. Do not 'fix' this by moving points back into Def: the KO-count test above says they buy more in SpD.",
+      "threats": "FLYING IS THE STRUCTURAL HOLE - Grass/Fighting is x4 and no spread survives it. Every Flying attack in the format OHKOes or near-OHKOes: Mega Charizard Y Hurricane 162-193%, Mega Staraptor Brave Bird 131-156%, Staraptor Brave Bird 119-142%, Pelipper Hurricane 113-135%, Vivillon Hurricane 111-131%, Mega Aerodactyl Dual Wingbeat 90-111%, Talonflame Brave Bird 92-111%. 42.8% of Worlds teams (276/645) carry one of the only three Flying attacks that exist: Hurricane 121 sets, Brave Bird 101, Dual Wingbeat 97. Hurricane is 70 accuracy so it whiffs 30% of the time; Brave Bird is 100, which makes Staraptor (113 sets, the most common carrier) the real danger. THE ANSWER IS TO SWITCH, NOT TO INVEST - and the switch is Gholdengo, which is x0 to Close Combat and x0.5 to Brave Bird. Never switch Aggron, Kingambit or Tyranitar into a Staraptor: all three are x4 to Fighting and Contrary makes Close Combat the move Staraptor wants to click anyway.",
+      "mega_note": "Bulletproof does NOT change on Mega Evolution - one of the few Megas that pays no ability cost for the stone. What the stone adds is raw: Def 122 -> 172, SpD 75 -> 115, Atk 107 -> 137, Spe 64 -> 44 (slower, which is better under Trick Room). Without the stone the set still functions but Body Press loses 50 points of Defense, roughly a third of its damage. Bulletproof is worth a slot on its own in this format: 92% of Worlds teams in all three divisions carry at least one bullet move (Masters 92.4%, Seniors 93.5%, Juniors 91.9%), 23% of all Pokemon are affected. It blanks Raichu (59 sets lose Zap Cannon AND Focus Blast, leaving Fake Out + Protect), Gengar (28 sets lose both STABs), Venusaur (Sludge Bomb was its only super-effective move), Gholdengo and Sinistcha. Biggest single win: Weather Ball, 349 of its 385 sets are on sun or snow teams where it is a 100 BP super-effective attack - 47.4% of all Worlds teams - and Chesnaught turns it off completely.",
+      "status": "PLANNED - not owned. Chesnaught is being evolved in Pokemon GO to be sent through HOME, which arrives permanent and trainable. Chespin and Quilladin are NOT in the Champions dex, so it must be fully evolved in GO before sending. Chesnaughtite is NOT owned: 2000 VP, and should not be bought until the Pokemon actually arrives. Move change costs 250 VP once it arrives."
+    },
+    {
+      "pokemon": "Primarina",
+      "ability": "Liquid Voice",
+      "nature": "Quiet",
+      "stat_points": {
+        "hp": 32,
+        "atk": 0,
+        "def": 10,
+        "spa": 24,
+        "spd": 0,
+        "spe": 0
+      },
+      "moves": [
+        "Ice Beam",
+        "Hyper Voice",
+        "Energy Ball",
+        "Protect"
+      ],
+      "role": "Trick Room special attacker - the team's Garchomp answer and its only Grass coverage",
+      "status": "PLANNED - not owned. Must be caught as Popplio in Pokemon GO and evolved ALL THE WAY to Primarina inside GO before transferring, because Popplio and Brionne are NOT in the Champions dex (verified 2026-09-06). Arrives from HOME permanent and trainable at 0 VP. Primarina has NO Mega, so no stone is needed.",
+      "rationale": "LIQUID VOICE over Torrent: it turns Hyper Voice into a WATER move, so the set gets a 90 BP spread STAB that hits both foes and never touches the ally, instead of a conditional boost that only works below 1/3 HP. Hyper Voice at 100 accuracy also beats Hydro Pump (110 BP / 80 acc) on the player's BP x accuracy rule once the spread hits two targets.",
+      "moveset_note": "ICE BEAM is the reason this Pokemon is on the team: 125.1-147.7% on Garchomp, a guaranteed OHKO, and 121.3-143.8% on Dragonite. ENERGY BALL was chosen over Moonblast on measured KOs, not on STAB: Energy Ball is a GUARANTEED OHKO on Mega Swampert (107.0-126.2%), which was one of only two Pokemon in the top 30 that the rest of the team could not hit super-effectively. Moonblast produces no KO anywhere in the top 20 - Sneasler 61-72%, Mega Charizard X 58-69%, Kingambit 51-61%, Mega Swampert 42-50% - and every target it wants is already answered: Farigiraf's Twin Beam OHKOes Sneasler at 187-220%, Gholdengo is immune to Sneasler's entire moveset, and Camerupt's Ancient Power covers the Charizard line. So the Fairy STAB is deliberately not run. Psychic and Shadow Ball were also measured and rejected - Psychic only adds a Sneasler OHKO that two teammates already have.",
+      "spread_note": "Quiet 32 HP / 10 Def / 24 SpA, derived by the player's KO-count rule. THE SP A FLOOR IS SET BY SWAMPERT, NOT GARCHOMP: Ice Beam is a guaranteed OHKO on Garchomp all the way down to SpA 0 (103.0-122.8%), so the Garchomp job costs nothing. Energy Ball on Mega Swampert is the binding constraint - guaranteed at SpA 24 (102.7-121.9%), only a 94% roll at 20. HP 32 is where every defensive flip lives: Mega Raichu Y Thunderbolt goes from a GUARANTEED OHKO (101.9-121.3%) to a 6% roll, Sneasler Dire Claw from a guaranteed OHKO (113.5-135.5%) to 69%, and Mega Staraptor Brave Bird from a 31% OHKO to none. The last 10 points go to DEFENSE rather than Sp. Def because they take Dire Claw from a 69% roll down to 6% - Sneasler is on 26.4% of Worlds teams - whereas 10 SpD only removes the residual 6% Thunderbolt roll from Mega Raichu Y at 10.2%.",
+      "team_note": "Water/Fairy is DRAGON x0, so Garchomp's Dragon Claw does literally 0 to it. It also resists Fire x0.5, which is what lets it switch into the Charizard and Incineroar half of the field that Chesnaught and Gholdengo cannot."
+    },
+    {
+      "pokemon": "Camerupt",
+      "mega": "Mega Camerupt",
+      "mega_ability": "Sheer Force",
+      "ability": "Solid Rock",
+      "nature": "Quiet",
+      "stat_points": {
+        "hp": 32,
+        "atk": 0,
+        "def": 20,
+        "spa": 14,
+        "spd": 0,
+        "spe": 0
+      },
+      "moves": [
+        "Earth Power",
+        "Heat Wave",
+        "Ancient Power",
+        "Protect"
+      ],
+      "role": "Trick Room nuke and the team's second Mega - the matchup alternative to Mega Chesnaught",
+      "status": "PLANNED - already in home_box, so the Pokemon itself is 0 VP and one transfer away. CAMERUPTITE IS NOT OWNED: 2000 VP.",
+      "rationale": "Spe 20 on the Mega, the slowest Mega in the game, so it moves first under Trick Room against essentially anything. Sheer Force boosts every move on this set by 30% (Earth Power, Heat Wave and Ancient Power all carry a secondary that Sheer Force trades away) and the set is the field's own: all EIGHT Camerupt across the three Worlds divisions ran Cameruptite, Quiet, and Protect / Earth Power / Heat Wave / Ancient Power, and all eight ran Farigiraf alongside.",
+      "moveset_note": "ANCIENT POWER is not optional and it is why the field runs it on 8 of 8: Fire/Ground cannot touch Flying at all, and Rock is x4 on Mega Charizard Y (45.2% of teams) and x2 on Aerodactyl, Staraptor and Pelipper. EARTH POWER is a guaranteed OHKO on Kingambit (134.8-158.3%), Mega Raichu Y (179.6-212.2%), Incineroar (125.3-148.4%), Gholdengo (128.7-152.9%), Archaludon (163.8-194.4%) and Empoleon at only SpA 14. HEAT WAVE is the spread and it is 'All Adjacent Foes', so it never touches the ally: guaranteed OHKO on Whimsicott (140.1-167.3%), Sinistcha and Venusaur (100.6-118.6%). Eruption was rejected despite 150 BP because its power scales with current HP and this Pokemon has 70 base HP behind a Water x4 weakness; Overheat was rejected because Sheer Force does not boost it and -2 Sp. Atk fights a slow attacker that wants to keep firing.",
+      "spread_note": "Quiet 32 HP / 20 Def / 14 SpA. The SpA FLOOR IS 14, and it is set by exactly one benchmark: Ancient Power on Mega Charizard Y is a guaranteed OHKO at 14 (101.8-121.2%) and only a roll at 12 (99.4-118.8%). Nothing else changes category anywhere between SpA 14 and SpA 32 - Kingambit, Incineroar, Gholdengo, Archaludon, Empoleon, Whimsicott, Venusaur, Sinistcha and Mega Raichu are all already guaranteed OHKOs at 14 - so the other 18 points would buy literally nothing. HP 32 flips Garchomp's Earthquake from a 25% OHKO to none (72.3-85.9%). The last 20 points go to Defense for the SINGLE-TARGET Earthquake case, which is the one that actually kills it: once the ally is gone the x0.75 spread modifier stops applying and Earthquake reads 96.0-115.3% at Def 0, a 75% OHKO - Def 20 takes that to 84.7-99.4%, no OHKO at all.",
+      "mega_note": "The stone changes the ability, and that is most of the point: Solid Rock (base, -25% from super-effective hits) becomes SHEER FORCE. It also moves Spe 40 -> 20, SpA 105 -> 145 and Def 70 -> 100. WITHOUT the stone this set loses roughly a third of its damage and the Speed drop that makes it the first mover under Trick Room, so unlike Chesnaught it degrades badly in base form. If both stone-holders are ever brought to the same game, CAMERUPT should be the one that evolves.",
+      "build_constraint": "Water x4 is unfixable with SP - Basculegion Wave Crash is 185.3-219.2% and Mega Swampert Wave Crash 230.5-271.2%, both guaranteed OHKOs through 32 HP / 16 Def. Do not spend points trying. Those are exactly the matchups where Mega Chesnaught is brought instead."
+    },
+    {
+      "pokemon": "Gallade",
+      "ability": "Steadfast",
+      "nature": "Adamant",
+      "stat_points": {
+        "hp": 16,
+        "atk": 32,
+        "def": 8,
+        "spa": 0,
+        "spd": 10,
+        "spe": 0
+      },
+      "moves": [
+        "Imprison",
+        "Protect",
+        "Wide Guard",
+        "Close Combat"
+      ],
+      "role": "Imprison lock - seals Protect, Wide Guard and Close Combat out of the opposing side",
+      "rationale": "THE PLAYER'S IDEA, 2026-09-08, and the core claim is verified: GALLADE IS THE ONLY POKEMON IN CHAMPIONS THAT LEARNS IMPRISON + PROTECT + WIDE GUARD - 1 of 308 forms. Imprison's real mechanic comes from smogon_basics, not Serebii ('no foe can use any move known by the user'), so carrying those moves denies them to both opponents. THE MOVES MUST ACTUALLY BE IN THE SET for the seal to apply, which is why three slots are forced. COVERAGE, measured over the 394 Worlds Masters teams with a full moveset: 288 of them (73.1%) have NO protective move other than Protect and/or Wide Guard, so Gallade shuts their protection off completely. Every single team carries something - 0 have none. What leaks is DETECT (86 teams, 21.8%), which Gallade cannot learn, plus Baneful Bunker 8.1% and Spiky Shield 2.0%. CLOSE COMBAT IS THE FOURTH SLOT AND IT DOES DOUBLE DUTY: STAB off Atk 125, and it seals the most used Fighting move in the format - 212 slots, 53.8% of teams, against Low Kick's 33% and Focus Blast's 10.7%. Sealing it matters because Mega Glalie is Ice, Fighting x2.",
+      "sp_reasoning": "66/66. FINAL, after the player corrected the whole approach on 2026-09-08. Two earlier spreads were wrong for the same underlying reason: they measured Gallade in a state it only occupies for two turns. THE GAME PLAN DEFINES THE SPREAD (player): turn 1 Gallade installs IMPRISON and takes hits; turn 2 Gallade PROTECTS while Glalie Explodes, so it takes nothing; from turn 3 it chooses between CLOSE COMBAT and WIDE GUARD. THEREFORE THE ONLY DEFENSIVE REQUIREMENT IS: NOTHING MAY OHKO A FRESH GALLADE ON TURN 1. Two-turn and three-turn survival numbers are irrelevant, because turn 2 is Protect. WHY A DEFENSIVE INVESTMENT IS A TRAP HERE. Close Combat drops the user's own Def AND SpD by one stage each, every time. Measured on the previous 32-Def spread: after ONE Close Combat, Kingambit's Kowtow Cleave goes 3HKO -> 2HKO, Garchomp's Earthquake 3HKO -> 2HKO, Sneasler's Dire Claw 3HKO -> 2HKO, Brave Bird 2HKO -> 44% OHKO and Flare Blitz 2HKO -> 28% OHKO. After two it is OHKOed by nearly everything. The 32 Def bought numbers that stop being true the moment Gallade starts doing its job. THE MINIMUM WAS MEASURED, NOT GUESSED. With Coba Berry, 32 SP of bulk is enough that NOTHING in the threat panel can OHKO a fresh Gallade - Brave Bird, Dual Wingbeat, Flare Blitz, Last Respects at 50 and 100 BP, Kowtow Cleave, Flower Trick, Moonblast, Shadow Ball, Hurricane. That frees 34 points, and the per-stat cap of 32 sends them to Attack. HP 16 OVER SPD 18, and this is the quiet one: CLOSE COMBAT DROPS DEF AND SPD BUT NEVER HP. HP is the only defensive stat that survives the self-debuff. Both 16/8/10 and 8/8/18 clear turn 1, but after one Close Combat the HP version holds Kingambit's Kowtow Cleave to a 46% OHKO against the SpD version's 75%. ATK 32 WITH ADAMANT, which is what the freed points buy. Against the previous Impish build it gains six lines, four of them real category changes: FLOETTE 3HKO -> 2HKO (27.4% of teams), SNEASLER 3HKO -> 2HKO (26.4%), STARAPTOR 2HKO -> 46% OHKO (17.0%), ARCHALUDON 90% -> GUARANTEED OHKO (10.9%), AERODACTYL 46% -> 97% OHKO (9.9%), GRIMMSNARL 2HKO -> 47% OHKO (8.6%). Kingambit, Incineroar, Tyranitar, Excadrill and Arcanine-Hisui stay OHKOs and Garchomp stays a 2HKO. SPA 0 AND SPE 0. SpA is dead weight on an Atk 125 / SpA 65 Pokemon with no special move, which is what makes Adamant free. Speed is 0 because Steadfast is luck, not a plan - see ability_reasoning. REJECTED SPREADS, all measured: neutral 8/16/16/18/8 (a neutral nature is never right when one stat is dead weight); Impish 8/16/32/10 (the 32 Def evaporates after one Close Combat); Impish 8/32/8/18 (survives turn 1 identically but loses all six offensive lines above).",
+      "ability_reasoning": "STEADFAST, and it is treated as a LUCKY BONUS, NOT A PLAN (player, 2026-09-08): 'es una habilidad de suerte, por lo que speed no es tan importante'. That is why Speed is 0. An earlier version of this build spent 8-24 SP chasing the post-proc speed tier; that was weighting a coin flip as if it were a guarantee. UNBOOSTED, Gallade at 0 SP is Speed 100 and beats only 3.0% of the field, so the points are worth far more in Def and Atk. When the proc does happen it is pure upside - 100 -> 150 takes it past 58.3% of the field by usage, including Kingambit, Incineroar, Sinistcha and Basculegion. It is still the right ability of the three. SHARPNESS is dead - CLOSE COMBAT IS NOT A SLICING MOVE (flags: Contact, Metronome, Mirror, Protect). JUSTIFIED works mechanically, with no super-effective clause, so Kingambit's Dark moves would trigger it at 52.8% of teams - but the player's read holds: an opponent holding Flying, Ghost or Fairy will not attack a Psychic/Fighting target with neutral Dark. Fake Out on 59.2% of Worlds Masters teams is the most likely trigger.",
+      "build_constraint": "THIS BUILD RUNS COBA BERRY - SETTLED BY THE PLAYER 2026-09-08 ('lo puedo comprar'), so it is not a blocker, only a purchase to make. It is recorded here rather than as an item preference because the survival math does not hold without it - a fact about the build, the carve-out CLAUDE.md allows. It is not yet in inventory.items, and the shop price of a berry is NOT recorded anywhere - do not invent one. NOTE FOR THE TEAM SHEET: under the Item Clause this reserves Coba Berry for Gallade, so no other Pokemon on the same six can hold it. STARAPTOR'S BRAVE BIRD OHKOes Gallade at 32 HP / 32 DEF WITH NO BERRY (114-135%); Coba is the only thing in the game that answers it, and it takes it to a 2HKO. KASIB BERRY WAS MEASURED AND REJECTED even though Ghost is the more common threat type (46.2% of teams carry a lethal Ghost attack against 39.6% for Flying). Two reasons: Kasib leaves Brave Bird a guaranteed OHKO on all eight spreads tested, and Last Respects is at its WEAKEST exactly when this plan runs - it is 50 BP until something faints, and the Imprison line resolves on turns 1-2. Coba already gives a 2HKO at 50 BP. Kasib buys safety in a late game this plan never reaches. UNFIXABLE RESIDUAL: Floette's Light of Ruin is a guaranteed OHKO through either berry, on 27.3% of Worlds teams. No spread survives it. SECOND CONSTRAINT, and it is the one that shapes the whole spread: CLOSE COMBAT DROPS GALLADE'S OWN DEF AND SPD BY ONE STAGE EACH, every use. So defensive SP is worth full value for exactly two turns and decays from there, while Attack SP never decays. THIS IS WHY THE BUILD IS NOT DEFENSIVE: buy the minimum bulk that survives turn 1, then put everything else into damage. COBA BERRY IS PART OF THAT MINIMUM - without it Brave Bird OHKOes and no amount of SP fixes it, so the berry is what makes the cheap defensive block possible in the first place. Wide Guard and Protect are the moves to fall back on, and both are high-priority so they still work once Gallade is slow and frail.",
+      "mega_note": "DELIBERATELY NOT A MEGA. Imprison, Protect and Wide Guard are all base-form moves, so GALLADITE (2000 VP) IS NOT NEEDED and the team's Mega slot stays free for Glalie, whose Glalitite is already owned. Mega Gallade would trade Steadfast for Inner Focus and gain Atk 125->165, Spe 80->110 - Inner Focus would actually PREVENT the flinch rather than reward it, which is the opposite of this build's plan. If a Mega Gallade is ever wanted, build it as a second Gallade.",
+      "status": "OWNED AND BUILDABLE as of 2026-09-08 - the Heracross-for-Gallade GTS trade COMPLETED. Gallade is HOME-origin, so it comes in permanent and trainable at 0 VP and can be parked back in HOME later without losing the training. It still needs a box slot; the box is at 47/50, so there are three. NOTHING IS TRAINED YET. Cost to build it: 4 moves at 250 = 1000 VP, 66 SP at 5 = 330 VP, nature 0 (neutral is correct, do not pay), ability 500 VP ONLY IF it does not ship with Steadfast - CHECK THE DEFAULT ABILITY FIRST, since Steadfast is listed first of the three and may well be what it arrives with. Full working in analysis/gallade_imprison_glalie.md. PARTNER NOTE: the player has ruled out Farigiraf on this team - a Trick Room setter does not belong with Mega Glalie, which is built Adamant 32 Atk / 32 Spe and wants to be fast. So Armor Tail is NOT available to block the Fake Out that breaks turn 1; Steadfast is the answer instead.",
+      "turn_1_survival": "MEASURED HONESTLY, and the answer is NOT a guarantee - the player asked directly and was told so before spending any VP. AGAINST ONE ATTACK, on this spread with Coba, Gallade survives 12 of the 13 threats measured: Staraptor Brave Bird 79-93%, Incineroar Flare Blitz 76-91%, Gholdengo Shadow Ball 73-87%, Floette Moonblast 84-99%, Meowscarada Flower Trick 65-77%, Whimsicott Moonblast 62-73%, Kingambit Kowtow Cleave 61-72%, Sneasler Dire Claw 55-66%, Garchomp Earthquake 53-62%, Aerodactyl Dual Wingbeat 49-58%, Basculegion Last Respects 32-38%, Sylveon Hyper Voice 18-21%. THE ONE EXCEPTION IS FLOETTE'S LIGHT OF RUIN at 122-145%, a guaranteed OHKO, on 27.4% of Worlds teams. It was tested against Coba, Kasib and up to 32 HP / 32 Def and kills through all of them. That hole is structural, not a spread problem. AGAINST TWO ATTACKS IN ONE TURN this spread survives only 10 of 78 pairs. A full search was run over every nature and every HP/Def/SpD allocation: THE BEST POSSIBLE IS COBA + IMPISH + 32 HP / 32 DEF / 2 SPD, which survives 42 of 78 - and THE PLAYER REJECTED IT 2026-09-09, keeping Adamant. The reasoning is sound and is recorded so it is not re-opened: those 42 pairs are almost all physical+physical, because 32 Def with Impish leaves SpD at 2, so every pair containing a special attacker still kills - and the special half of the field is huge (Floette 27.4%, Sylveon 24.9%, Whimsicott 24.1%). No pair containing Light of Ruin survives in ANY of the configurations tested. So max bulk buys protection against the half of the meta that was hitting softer anyway, and pays for it with seven offensive lines - everything except Kingambit and Incineroar, which fall to type effectiveness regardless. THE REAL ANSWER IS POSITIONING, NOT SP. Do not lead Gallade into a full field on turn 1 if it can be helped; bring it when one threat remains, which turns 78 pairs into 13 single attacks, 12 of which it survives. Never tell the player this build is safe on turn 1 - it is not, and no build is."
+    }
+  ],
+  "_item_clause": {
+    "rule": "No two Pokemon on the same team may hold the same item.",
+    "evidence": "0 of the 394 Worlds teams with a full item list repeat an item.",
+    "implication": "Smogon recommends items per Pokemon in isolation and gives Sitrus Berry to many of them; a team can field exactly one. Resolve item conflicts at team level, after the six are chosen.",
+    "most_contested": {
+      "Focus Sash": 339,
+      "Sitrus Berry": 309,
+      "Life Orb": 273
+    }
+  },
+  "_mega_policy": "PLAYER'S RULE, 2026-08-29: do not treat multiple Mega Stones as a conflict to resolve. A team of 6 may carry several stones - 292 of 395 Worlds teams carried two - and only the choice of which one actually Mega Evolves is made in-game, per battle. Carrying two is matchup flexibility at team preview, not waste. Never narrow the box down to one Mega, and never rank Megas against each other outside the context of a specific team and a specific opponent. Per build, record only the mechanical fact of what the stone adds and how much of the build survives without it: that is the 'mega_note' field."
+}
