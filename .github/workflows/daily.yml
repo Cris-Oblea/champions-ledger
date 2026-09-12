@@ -1,0 +1,100 @@
+# The daily refresh, off the notebook.
+#
+# The same pipeline scripts/daily.py runs locally, on GitHub's machines, so
+# the app keeps up with the ladder whether or not any PC is switched on.
+#
+# Three things make this work rather than just "run refresh.py":
+#
+#  * data/raw is NOT in git - it is 195 MB of fetched HTML. It is restored
+#    from the Actions cache instead, which reproduces the skip-if-cached
+#    behaviour the fetchers expect. A cache miss is harmless: everything is
+#    simply re-downloaded.
+#  * The correctness gate lives in daily.py, not here. If the damage selftest
+#    or the name-matching test fails, it refuses to deploy and the job fails
+#    loudly. A stale app beats a wrong one.
+#  * Mondays run --deep, which forces Smogon's 324 written analyses and
+#    Pikalytics. Both skip anything already cached, so without it they would
+#    freeze for good.
+#
+# A REGULATION still needs a human: `refresh.py --regulation` clears the
+# Serebii page caches, and getting that wrong leaves new species with no
+# movepool. Run it by hand, then let this take over again.
+
+name: daily refresh
+
+on:
+  schedule:
+    - cron: "30 8 * * *"      # 08:30 UTC ~= 05:30 in Chile (UTC-3)
+  workflow_dispatch:
+    inputs:
+      deep:
+        description: "Force Smogon analyses and Pikalytics too"
+        type: boolean
+        default: false
+
+concurrency:
+  group: daily-refresh
+  cancel-in-progress: false
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    permissions:
+      contents: write          # to commit the refreshed data back
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      # the fetchers' own cache. Keyed by run number so each day writes a new
+      # entry and restore-keys picks up yesterday's - Actions caches are
+      # immutable once written, so a fixed key would freeze on day one.
+      - name: restore the source cache
+        uses: actions/cache@v4
+        with:
+          path: data/raw
+          key: sources-${{ github.run_number }}
+          restore-keys: sources-
+
+      - name: install what the scripts import
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: refresh, verify, deploy
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_PUBLISHABLE_KEY: ${{ secrets.SUPABASE_PUBLISHABLE_KEY }}
+        run: |
+          python scripts/daily.py ${{ (github.event_name == 'workflow_dispatch' && inputs.deep) && '--deep' || '' }}
+
+      - name: commit whatever moved
+        run: |
+          git config user.name  "champions-ledger bot"
+          git config user.email "noreply@github.com"
+          git add -A data/db data/meta tracker/data.js tracker/index.html tracker/engine.bundle.js || true
+          if git diff --cached --quiet; then
+            echo "nothing changed"
+          else
+            git commit -m "daily refresh $(date -u +%Y-%m-%d)"
+            git push
+          fi
+
+      - name: keep the log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: daily-log
+          path: data/raw/daily_logs/
+          retention-days: 30
+          if-no-files-found: ignore
