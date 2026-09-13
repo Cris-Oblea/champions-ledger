@@ -148,7 +148,7 @@ Garchompite Z, Golisopite, Lucarionite Z, Salamencite.
 | **Leek** | Farfetch'd / Sirfetch'd only — crit-rate boost |
 
 Under the **Item Clause** these are team-level decisions, not build fields — the
-usual rule applies, and they belong in `inventory/teams.json`.
+usual rule applies, and an item belongs on a team SLOT in the app.
 
 ## 15 newly useable moves
 

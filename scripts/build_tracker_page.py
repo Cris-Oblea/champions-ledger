@@ -158,11 +158,11 @@ def build_dist(html):
     """tracker/dist/ is the ONLY directory that may be deployed.
 
     tracker/ holds config.local.json, the template, and - whenever
-    build_supabase_migration.py has been run - supabase_seed.sql, which is
-    every Pokemon and every build in plaintext. That file is no longer
-    versioned, but it reappears the moment anyone regenerates it, so this
-    reasoning stands: serving the folder would put the whole ledger on a public
-    URL and undo the Row Level Security it took to keep it private. The deploy
+    anyone has left a supabase_seed.sql there - every Pokemon and every build
+    in plaintext. Nothing generates one any more, but the reasoning stands and
+    applies equally to a backup snapshot dropped in the wrong place: serving
+    the folder would put the whole ledger on a public URL and undo the Row
+    Level Security it took to keep it private. The deploy
     target is built from scratch here and contains nothing that was not put in
     deliberately.
     """

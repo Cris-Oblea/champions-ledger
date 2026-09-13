@@ -3,7 +3,7 @@
 
    The app could say what one Pokemon was running and nothing could say what he
    was BRINGING, which is the question the game asks. Five teams existed as
-   prose in inventory/teams.json and the app had never seen one.
+   prose in analysis/team_plans.json and the app had never seen one.
 
    Three things decided the shape, and each is asserted here:
 

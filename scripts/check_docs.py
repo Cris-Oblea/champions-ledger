@@ -46,7 +46,11 @@ DOCS = ["CLAUDE.md", "README.md", "STATUS.md", "tracker/README.md",
 ACKNOWLEDGED = re.compile(
     r"REVERSED|SUPERSEDED|no longer|used to|until 20\d\d|~~|OLD RULE|"
     r"not any ?more|changed on|replaced by|superseded|"
-    r"that rule (died|is gone)|do not act on", re.I)
+    r"that rule (died|is gone)|do not act on|"
+    # a sentence that says the thing is gone is acknowledging it, and the
+    # first version of the "no ledger in the repo" rule fired on CLAUDE.md
+    # stating exactly that
+    r"deleted|are gone|is gone|no copy|stopped holding", re.I)
 
 # How many lines either side of a match count as "near".
 WINDOW = 4
@@ -103,6 +107,14 @@ DECISIONS = [
     ("the-refresh-runs-in-the-cloud",
      r"(scheduled task|Task Scheduler|cron on (the|this) (laptop|machine|pc))",
      "the nightly refresh runs in GitHub Actions, never locally",
+     DOCS),
+
+    # The repo held inventory/inventory.json and inventory/builds.json until
+    # 2026-09-13. They drifted in BOTH directions - the box stale in the repo,
+    # ten builds stale in the app - and query.py answered from the stale half.
+    ("the-repo-holds-no-ledger",
+     r"inventory/(inventory|builds|teams)\.json|sync_tracker",
+     "the ledger lives only in Supabase; scripts/ledger.py reads it",
      DOCS),
 
     # A snapshot is the whole ledger in plaintext and this repo is public.
