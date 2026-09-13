@@ -49,6 +49,83 @@ WATCH = [
     ("bundle",  "tracker/engine.bundle.js",           "the engine the app runs"),
 ]
 
+# The browser tests, run against the BUILT page. Nothing gated on these until
+# 2026-09-13, which is how four of them drifted for weeks: they test what the
+# phone actually loads, and no Python check can see a template regression.
+BROWSER_TESTS = [
+    ("pagetest.js",       "the page's engine matches Node's"),
+    ("sweeptest.js",      "every form calculates, attacking and defending"),
+    ("abilitytest.js",    "which ability badges which move"),
+    ("consistencytest.js", "every table resolves what the page asks it"),
+    ("learnsettest.js",   "every form finds its movepool"),
+    ("spreadtest.js",     "spread moves, the ally, and priority"),
+    ("itemstest.js",      "every item, priced and attributed"),
+    ("profiletest.js",    "Profile, and what changes mid-battle"),
+    ("gtsorigintest.js",  "only what can leave the game is offered"),
+    ("gtstest.js",        "a trade removes what you gave away"),
+    ("buildlinktest.js",  "a build follows its Pokemon"),
+    ("pickertest.js",     "the move picker's filters stack"),
+    ("findtest.js",       "the search view"),
+    ("sptest.js",         "the SP slider"),
+    ("burntest.js",       "burn halves physical only"),
+]
+
+# How much a table is allowed to shrink before the refresh is treated as
+# damage rather than news. Nothing here ever shrinks in normal operation: a
+# regulation adds species and moves, and the Worlds archive only grows. A few
+# percent of slack absorbs the real exceptions - a move losing its last learner
+# and going un-useable, a species dropping off the ladder - while a parser that
+# stopped matching, or a source that answered with an error page, lands far
+# outside it. Checked against what is COMMITTED, which is by definition the
+# last state that passed all of this.
+SHRINK = [
+    ("data/db/pokemon.json",      "forms",     0.98),
+    ("data/db/moves.json",        "moves",     0.98),
+    ("data/db/items.json",        "items",     0.95),
+    ("data/db/abilities.json",    "abilities", 0.98),
+    ("data/db/learnsets.json",    "learnsets", 0.98),
+    ("data/meta/usage_pokemon.json", "ladder rows", 0.80),
+]
+
+
+def _count(blob):
+    if isinstance(blob, list):
+        return len(blob)
+    if isinstance(blob, dict):
+        for k in ("rows", "numbers", "weights", "prices"):
+            if isinstance(blob.get(k), (list, dict)):
+                return len(blob[k])
+        return len([k for k in blob if not k.startswith("_")])
+    return 0
+
+
+def shrink_check():
+    """Report any table that came back smaller than the committed one."""
+    bad = []
+    for rel, label, floor in SHRINK:
+        path = os.path.join(ROOT, rel)
+        if not os.path.exists(path):
+            bad.append("BLOCKED: %s is missing entirely" % rel)
+            continue
+        try:
+            now = _count(json.load(io.open(path, encoding="utf-8")))
+        except Exception as e:
+            bad.append("BLOCKED: %s will not parse (%s)" % (rel, e))
+            continue
+        r, prev = sh(["git", "show", "HEAD:" + rel])
+        if r != 0 or not prev.strip():
+            continue                      # not committed yet: nothing to compare
+        try:
+            was = _count(json.loads(prev))
+        except Exception:
+            continue
+        if not was:
+            continue
+        if now < was * floor:
+            bad.append("BLOCKED: %s fell from %d to %d %s (floor %d%%)"
+                       % (rel, was, now, label, int(floor * 100)))
+    return bad
+
 
 def digest(rel):
     p = os.path.join(ROOT, rel)
@@ -177,16 +254,51 @@ def main():
         out.append("  top now: " + ", ".join(
             "%s %s%%" % (n, p) for n, p in (after_ladder["top"] or [])))
 
-    # Correctness gate. A stale app beats a wrong one, so a failing selftest
-    # stops the deploy rather than shipping numbers nobody checked.
+    # Correctness gate. A stale app beats a wrong one, so a failing check stops
+    # the deploy rather than shipping numbers nobody looked at - and because
+    # daily.py returns non-zero, the workflow's commit step is skipped too, so
+    # a bad refresh cannot reach main either.
     gate_ok = True
-    for argv, what in ((["scripts/damage.py", "--selftest"], "damage selftest"),
-                       (["scripts/test_norm.py"], "name matching")):
+
+    # ---- does this refresh LOSE anything? -------------------------------
+    # The formula tests pass on a dex of ten Pokemon; they check arithmetic and
+    # name matching, not volume. So a source that answers with half a page - or
+    # a parser that stops matching after an upstream redesign - sails straight
+    # through them and quietly deletes most of the database. Everything already
+    # committed is known good, so the honest test is "did the rebuild come back
+    # with less than we already had". A regulation only ever ADDS.
+    for line in shrink_check():
+        gate_ok = False
+        out.append(line)
+    if gate_ok:
+        out.append("ok: nothing shrank against the committed data")
+
+    checks = [(["scripts/damage.py", "--selftest"], "damage selftest"),
+              (["scripts/test_norm.py"], "name matching"),
+              (["scripts/audit_lookups.py"], "every lookup resolves"),
+              (["scripts/audit_forms.py"], "no form went missing")]
+    for argv, what in checks:
         g, gout = sh([PY] + argv)
         if g != 0:
             gate_ok = False
             out.append("BLOCKED: %s failed" % what)
             out += ["  " + l for l in gout.splitlines()[-6:]]
+        else:
+            out.append("ok: %s" % what)
+
+    # ---- and the page itself -------------------------------------------
+    # These run against tracker/dist/index.html, so they catch what the Python
+    # checks cannot: a template edit that breaks the sheet, a blob field the
+    # page reads under another name, a startup error that empties every list.
+    # Four of them had drifted unnoticed for weeks precisely because nothing
+    # ran them (2026-09-12).
+    for t, what in BROWSER_TESTS:
+        g, gout = sh(["node", os.path.join("tests", t)])
+        if g != 0:
+            gate_ok = False
+            out.append("BLOCKED: %s failed" % what)
+            out += ["  " + l for l in gout.splitlines()
+                    if l.strip().startswith("FAIL")][:6]
         else:
             out.append("ok: %s" % what)
 

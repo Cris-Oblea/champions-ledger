@@ -232,6 +232,14 @@ the box.
   power alone - worth confirming in game before it is quoted as final.
 - **Light Clay extends Aurora Veil**, not only Light Screen and Reflect, despite
   the item text naming only those two.
+- **Item prices come from Serebii, and where pokebase disagrees Serebii wins**
+  (player, 2026-09-13: "los precios son los que dice serebii"). Serebii's item
+  page IS the shop listing, priced row by row; pokebase buckets what it is
+  unsure of into `shop-2000-vp`, which is why all **12** disagreements run the
+  same way - Serebii 700 or 1000 against pokebase's flat 2000 (Air Balloon,
+  Binding Band, Eject Button, the four Seeds, Leek, Normal Gem, Red Card,
+  Rocky Helmet, Terrain Extender). pokebase is still the fallback for the eight
+  Mega Stones Serebii prints as "??? VP". Settled, not open: do not re-raise it.
 - **Weather Ball is NEVER Normal in practice (player, 2026-09-01).** The `type`
   field in `data/db/moves.json` says Normal and the BP says 50; both are the
   no-weather case, which does not happen. Nobody runs Weather Ball outside a sun,

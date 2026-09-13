@@ -4,7 +4,7 @@
   "Air Balloon": {
    "vp": 1000,
    "source": "serebii",
-   "unlock": "shop-2000-vp",
+   "unlock": "shop-1000-vp",
    "note": "",
    "text": "Causes the holder to float off the ground, making it immune to Ground-type moves, as well as the Spikes, Toxic Spikes, and Sticky Web statuses. Disappears for the duration of the battle if the holder takes damage from a move.",
    "text_source": "pokebase",
@@ -22,7 +22,7 @@
   "Binding Band": {
    "vp": 700,
    "source": "serebii",
-   "unlock": "shop-2000-vp",
+   "unlock": "shop-700-vp",
    "note": "",
    "text": "Increases the damage dealt to targets that have the Bound status. Targets will take damage equal to 1/6 of their max HP instead of 1/8 of their max HP.",
    "text_source": "pokebase",
@@ -94,7 +94,7 @@
   "Eject Button": {
    "vp": 700,
    "source": "serebii",
-   "unlock": "shop-2000-vp",
+   "unlock": "shop-700-vp",
    "note": "",
    "text": "Switches the holder out of battle when the holder takes damage from a move. Disappears for the duration of the battle after a single use.",
    "text_source": "pokebase",
@@ -103,7 +103,7 @@
   "Electric Seed": {
    "vp": 700,
    "source": "serebii",
-   "unlock": "shop-2000-vp",
+   "unlock": "shop-700-vp",
    "note": "",
    "text": "Boosts the holder's Defense stat by 1 stage on Electric Terrain. Disappears for the duration of the battle after a single use.",
    "text_source": "pokebase",
@@ -148,7 +148,7 @@
   "Grassy Seed": {
    "vp": 700,
    "source": "serebii",
-   "unlock": "shop-2000-vp",
+   "unlock": "shop-700-vp",
    "note": "",
    "text": "Boosts the holder's Defense stat by 1 stage on Grassy Terrain. Disappears for the duration of the battle after a single use.",
    "text_source": "pokebase",
@@ -202,7 +202,7 @@
   "Leek": {
    "vp": 700,
    "source": "serebii",
-   "unlock": "shop-2000-vp",
+   "unlock": "shop-700-vp",
    "note": "",
    "text": "When held by a Farfetch'd or Sirfetch'd, gives the holder a 2-stage Critical-Hit Ratio Boost.",
    "text_source": "pokebase",
@@ -292,7 +292,7 @@
   "Misty Seed": {
    "vp": 700,
    "source": "serebii",
-   "unlock": "shop-2000-vp",
+   "unlock": "shop-700-vp",
    "note": "",
    "text": "Boosts the holder's Sp. Def stat by 1 stage on Misty Terrain. Disappears for the duration of the battle after a single use.",
    "text_source": "pokebase",
@@ -328,7 +328,7 @@
   "Normal Gem": {
    "vp": 1000,
    "source": "serebii",
-   "unlock": "shop-2000-vp",
+   "unlock": "shop-1000-vp",
    "note": "",
    "text": "Boosts the power of the holder's Normal-type moves by 30%. Disappears for the duration of the battle after a single use.",
    "text_source": "pokebase",
@@ -346,7 +346,7 @@
   "Psychic Seed": {
    "vp": 700,
    "source": "serebii",
-   "unlock": "shop-2000-vp",
+   "unlock": "shop-700-vp",
    "note": "",
    "text": "Boosts the holder's Sp. Def stat by 1 stage on Psychic Terrain. Disappears for the duration of the battle after a single use.",
    "text_source": "pokebase",
@@ -364,7 +364,7 @@
   "Red Card": {
    "vp": 1000,
    "source": "serebii",
-   "unlock": "shop-2000-vp",
+   "unlock": "shop-1000-vp",
    "note": "",
    "text": "When the holder takes damage from a move, the attacker is forced to switch out of battle. Disappears for the duration of the battle after a single use.",
    "text_source": "pokebase",
@@ -373,7 +373,7 @@
   "Rocky Helmet": {
    "vp": 1000,
    "source": "serebii",
-   "unlock": "shop-2000-vp",
+   "unlock": "shop-1000-vp",
    "note": "",
    "text": "When the holder is hit by a contact move, the attacker takes damage equal to 1/6 of its max HP.",
    "text_source": "pokebase",
@@ -463,7 +463,7 @@
   "Terrain Extender": {
    "vp": 700,
    "source": "serebii",
-   "unlock": "shop-2000-vp",
+   "unlock": "shop-700-vp",
    "note": "",
    "text": "When the holder creates terrain with its moves or Ability, the duration is extended by 3 turns. (Total duration: 8 turns)",
    "text_source": "pokebase",

@@ -103,6 +103,15 @@ def main():
                 agree += 1
             else:
                 clash.append((name, serebii, pbvp))
+                # SETTLED by the player, 2026-09-13: "los precios son los que
+                # dice serebii". Serebii's item page IS the shop listing, item
+                # by item; pokebase buckets everything it is unsure of into
+                # shop-2000-vp, which is why all twelve disagreements run the
+                # same way. Keeping pokebase's bucket alongside Serebii's price
+                # left the record contradicting itself - Rocky Helmet read
+                # "vp 1000, unlock shop-2000-vp" - so the bucket is rewritten
+                # to match the price that won.
+                unlock = "shop-%d-vp" % serebii
         vp = serebii or pbvp
         src = ("serebii" if serebii else "pokebase" if pbvp else None)
         if not serebii and pbvp:
@@ -131,9 +140,16 @@ def main():
           % (sum(1 for r in rows.values() if r["text_source"] == "pokebase"),
              sum(1 for r in rows.values() if r["text_source"] == "serebii")))
     if clash:
-        print("\n  !! THE TWO SOURCES DISAGREE - check before trusting either:")
+        # SETTLED by the player, 2026-09-13: "los precios son los que dice
+        # serebii". Serebii's page IS the shop listing, priced item by item;
+        # pokebase buckets what it is unsure of into shop-2000-vp, which is why
+        # all of these run the same way. Printed as a resolved decision, not as
+        # an open question - a question that keeps asking itself gets answered
+        # again every time someone reads it.
+        print("\n  %d priced by Serebii where pokebase disagrees "
+              "(Serebii wins - the player's ruling, 2026-09-13):" % len(clash))
         for n, s, p in clash:
-            print("     %-22s serebii %s vs pokebase %s" % (n, s, p))
+            print("     %-22s %s VP, not pokebase's %s" % (n, s, p))
     if filled:
         print("\n  filled in (Serebii prints these as '??? VP'):")
         for n, v in sorted(filled)[:40]:

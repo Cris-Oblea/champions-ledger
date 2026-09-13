@@ -156,9 +156,20 @@ def alternate_form_watch(dex):
         print("  PROBLEM %s" % b)
     if not bad:
         print("  in-battle forms: each carries exactly what it changes")
+    return problems + len(bad)
 
 
 def main():
+    """Returns the number of REAL problems, so daily.py can gate on it.
+
+    "Real" is deliberately narrow. Section 3 (forms the master list does not
+    spell out) is expected - that is where every regional form lives - and the
+    watchlist is a list of things that are correctly absent. What counts is a
+    name collision, a master-list row the dex cannot resolve, a meta source
+    naming something with usage that we do not have, and a page that splits a
+    form the dex has not split. Those four are how a form goes missing.
+    """
+    problems = 0
     verbose = "--verbose" in sys.argv
     dex = json.load(open(os.path.join(DB, "pokemon.json"), encoding="utf-8"))
     master = master_list()
@@ -175,6 +186,7 @@ def main():
 
     print("\n--- 1. Name collisions inside the dex ---")
     if collisions:
+        problems += len(collisions)
         for k, v in collisions.items():
             print("  %-28s <- %s" % (k, v))
     else:
@@ -197,6 +209,7 @@ def main():
         elif verbose:
             print("  matched by type: %s (list) == %s (dex)" % (r["name"], hit["name"]))
     if missing:
+        problems += len(missing)
         for r in missing:
             print("  MISSING  #%04d %-22s sprite=%-10s types=%s"
                   % (r["dex"], r["name"], r["sprite"], "/".join(r["types"])))
@@ -243,9 +256,24 @@ def main():
 
     print("\n--- 6. Names used by the meta sources that do not resolve ---")
     # pokebase publishes its whole Pokedex, including species that are not legal
-    # in Champions; those sit at 0.00% usage. Only a non-zero one is a real gap.
-    zero_usage = {r["name"] for r in (meta("usage_pokemon") or {}).get("rows", [])
-                  if not r.get("usage_percent")}
+    # in Champions. Those used to sit at exactly 0.00%, so any non-zero figure
+    # meant a real gap - but on 2026-09-13 the table deepened from 199 rows to
+    # 278 and grew a long tail: 63 rows under 0.2%, and the bottom of it is
+    # ordinary Champions Pokemon - Rampardos, Dragalge, Mega Meowstic, Salazzle
+    # - all reading 0.1%. At that depth the figure says nothing about legality,
+    # so "non-zero" turned into a daily false alarm: Hitmontop, at 0.1%, which
+    # Serebii's 326-row list does not contain.
+    #
+    # Serebii is ground truth for what is LEGAL, pokebase for what is PLAYED,
+    # so the line sits above the measured tail. Below it the name is reported
+    # and watched with its number; above it the format has moved without us and
+    # the daily job should stop. The watchlist idea is unchanged - only where
+    # the threshold sits, and now it is set from the distribution rather than
+    # from "any figure at all".
+    TAIL = 0.5
+    usage_of = {r["name"]: (r.get("usage_percent") or 0)
+                for r in (meta("usage_pokemon") or {}).get("rows", [])}
+    zero_usage = {n for n, v in usage_of.items() if v < TAIL}
     unresolved = defaultdict(set)
     src = {
         "pokebase usage": [r["name"] for r in
@@ -273,12 +301,13 @@ def main():
     for label, names in unresolved.items():
         real[label] = sorted(n for n in names if n not in zero_usage)
         noise[label] = sorted(n for n in names if n in zero_usage)
-    problems = False
+    unresolved = False
     for label in sorted(real):
         if real[label]:
-            problems = True
+            problems += len(real[label])
+            unresolved = True
             print("  PROBLEM %-24s %s" % (label, ", ".join(real[label])))
-    if not problems:
+    if not unresolved:
         print("  none with any usage: every name that matters maps onto a dex form")
 
     # These sit at 0.00% because pokebase publishes its whole Pokedex while
@@ -286,15 +315,30 @@ def main():
     # starts scoring usage and moves into the PROBLEM list above - that is the
     # signal to re-run fetch_serebii.py + build_db.py so the dex picks it up.
     watch = sorted({n for names in noise.values() for n in names})
+    # the ones that DO have a figure, just below the tail threshold: worth
+    # naming with their number, because a climb is the actual early warning
+    seen_low = sorted({n for n in watch if usage_of.get(n, 0) > 0},
+                      key=lambda n: -usage_of.get(n, 0))
+    if seen_low:
+        print("\n  Below the %.1f%% tail, so watched rather than blocking:" % TAIL)
+        for n in seen_low[:10]:
+            print("    %-22s %.1f%% on the ladder, and not in Serebii's list"
+                  % (n, usage_of[n]))
     if watch:
-        print("\n  Watchlist - not Champions-legal today, 0.00%% usage (%d):" % len(watch))
+        print("\n  Watchlist - not in Serebii's list, under the %.1f%% tail (%d):"
+              % (TAIL, len(watch)))
         for i in range(0, len(watch), 6):
             print("    " + ", ".join(watch[i:i + 6]))
         print("  If any of these starts showing usage, a new regulation added it:")
         print("    python scripts/fetch_serebii.py list && python scripts/build_db.py")
 
-    alternate_form_watch(dex)
+    problems += alternate_form_watch(dex)
+
+    print("\n%s" % ("no problems" if not problems else
+                    "%d PROBLEM%s - see above"
+                    % (problems, "" if problems == 1 else "S")))
+    return problems
 
 
 if __name__ == "__main__":
-    main()
+    sys.exit(1 if main() else 0)

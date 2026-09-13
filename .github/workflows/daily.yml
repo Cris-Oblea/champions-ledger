@@ -78,6 +78,9 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          # jsdom, for the browser tests in daily.py's gate. Without it they
+          # cannot run at all, which is how four of them drifted unnoticed.
+          npm install --no-audit --no-fund
 
       - name: refresh, verify, deploy
         env:
