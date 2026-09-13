@@ -1,0 +1,81 @@
+# Every push to main, gated and published from here.
+#
+# WHY THIS EXISTS. The nightly job has to pass a shrink guard, four audits and
+# fifteen browser tests before it may deploy. A person at a keyboard passed
+# none of them: `npx wrangler deploy` publishes whatever is in tracker/dist,
+# and that is the path taken far more often than the 05:30 one. The automation
+# had become safer than the human (player, 2026-09-13: "si tú eres el agujero
+# de seguridad ... ¿no hay una forma de que cada cambio siga los pasos de esa
+# automatización?"). `daily.py --no-refresh` gives a hand deploy the same gate,
+# but that is a habit, and a habit is not a guarantee.
+#
+# So the deploy moves here. Push, and this gates and publishes - or refuses to,
+# loudly, and the phone keeps the build that worked.
+#
+# IT DOES NOT FETCH ANYTHING. tracker/data.js and data/db are committed, so the
+# page is rebuilt from what is in the repo. That makes this run in about two
+# minutes instead of the nightly job's thirty, and it means a template change
+# is tested against exactly the data that is live.
+
+name: gate and publish
+
+on:
+  push:
+    branches: [main]
+    # Docs and analysis change nothing the app loads. Skipping them keeps a
+    # README edit from costing a deploy - and from queueing behind one.
+    paths-ignore:
+      - "**/*.md"
+      - "analysis/**"
+      - "inventory/**"
+  workflow_dispatch:
+
+# Shares the nightly job's group so the two can never deploy over each other.
+# cancel-in-progress stays false: a half-finished deploy is worse than a wait.
+concurrency:
+  group: champions-deploy
+  cancel-in-progress: false
+
+jobs:
+  gate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # shrink_check() compares the rebuilt tables against HEAD, so it
+          # needs the commit to exist locally. A depth-1 checkout is enough
+          # for that, but the audits read the previous state too.
+          fetch-depth: 2
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: install what the scripts import
+        run: |
+          python -m pip install --upgrade pip
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          npm install --no-audit --no-fund
+
+      - name: gate, then publish
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_PUBLISHABLE_KEY: ${{ secrets.SUPABASE_PUBLISHABLE_KEY }}
+        # --no-refresh: gate what the repo already holds, then deploy it.
+        # Exactly the command a person would run by hand, run by the machine
+        # so that nobody has to remember it.
+        run: python scripts/daily.py --no-refresh
+
+      - name: what the run decided
+        if: always()
+        run: |
+          echo "--- the log this run wrote ---"
+          tail -n 40 data/raw/daily_logs/*.log 2>/dev/null || echo "(no log)"

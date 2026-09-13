@@ -253,7 +253,25 @@ def main():
     # often. `python scripts/daily.py --no-refresh` gates what is already built
     # and then publishes it - same checks, same refusal to deploy.
     if a.no_refresh:
-        out.append("mode: no refresh - gating what is already built")
+        out.append("mode: no refresh - rebuild from the repo, then gate")
+        # REBUILD, do not trust what is lying around. The browser tests read
+        # tracker/dist/index.html, which is generated and never committed: on a
+        # fresh checkout there is none, and on a laptop there is whatever the
+        # last build left. Gating a page that is not the page about to be
+        # published is the exact failure this whole gate exists to prevent, and
+        # it passed locally only because a build happened to be minutes old.
+        # None of this touches the network - data/db and data.js are committed.
+        for argv, what in (([PY, "scripts/build_tracker_data.py"], "data.js"),
+                           ([PY, "scripts/build_engine_bundle.py"], "engine bundle"),
+                           ([PY, "scripts/build_tracker_page.py"], "the page")):
+            rc, bout = sh(argv)
+            if rc != 0:
+                out.append("BLOCKED: could not rebuild %s" % what)
+                out += ["  " + l for l in bout.splitlines()[-6:]]
+                log(out)
+                print("\n".join(out))
+                return 1
+        out.append("rebuilt from the committed data")
     else:
         deep = a.deep or datetime.date.today().weekday() == 0
         argv = [PY, "scripts/refresh.py"] + (["--deep"] if deep else [])
@@ -352,6 +370,9 @@ def main():
             out += ["  " + x for x in dout.splitlines()[-8:] if x.strip()]
 
     out.append("took %ds" % int((datetime.datetime.now() - started).total_seconds()))
+    # data/raw is not in git, so on a fresh CI checkout it does not exist yet
+    # and this was the first line to touch it
+    os.makedirs(os.path.dirname(STATE), exist_ok=True)
     json.dump({"last_run": started.isoformat(), "changed": changed,
                "deployed": deployed}, io.open(STATE, "w", encoding="utf-8"))
     log(out)
