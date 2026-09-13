@@ -345,7 +345,7 @@ worth more than the Masters check alone:
 
 ## Player state
 
-Master Ball Tier Rank 3. The box, the stones, the items and the VP balance live
+Master Ball Tier Rank 3. The box, the stones and the items live
 in the ledger (they used to be in `inventory/inventory.json`, deleted
 2026-09-13) and are printed by `python scripts/query.py owned`
 — they are deliberately not copied here, because the two would drift (this
@@ -586,7 +586,7 @@ listed as separate Pokemon. Two permanent sweeps now hunt the shape:
 
 ### The ledger, as of 2026-09-11
 
-Box **48/50**, **8000 VP**, 31 permanents (every one Champions origin) and 17
+Box **48/50** (stale - the ledger answers this now), 31 permanents and 17
 rentals. HOME holds **84 / 78 species**. GTS: Chesnaught -> Gholdengo and
 Pidgeot -> Crabominable pending, **one slot free**.
 
@@ -703,10 +703,13 @@ python scripts/backup_ledger.py --list      # and what each snapshot held
   existed only in the repo were dropped on the player's word - he had deleted
   them in the app when the Pokemon left Champions. The five team write-ups were
   NOT data and moved to `analysis/team_plans.json`.
-- **VP and the ticket counts have no editor.** They sit in the ledger's
-  `meta/trainer`, but Profile was cut back to box capacity alone on 2026-09-12,
-  so `vp_balance` is frozen at whatever it was that day. Quote it as of then,
-  or put the field back.
+- ~~VP and the ticket counts have no editor~~ **SETTLED 2026-09-13: VP is not
+  tracked at all.** Profile keeps one editable field, box capacity, and
+  nothing reads a balance any more. The COSTS stay - they are rules, and what a
+  build costs is still part of every recommendation. `meta/trainer` in the
+  database still carries the frozen `vp_balance`, `rank`, `regulation` and the
+  ticket counts; stripping them needs a write the permission layer blocks, so
+  do not read that row as current.
 - Still open from before: a service worker for instant repeat opens, the same
   filter/cap treatment for the Champions Box list that HOME got, and the four
   numbers only the game can settle (Slash, Snipe Shot, Night Slash, Meteor

@@ -892,8 +892,6 @@ def cmd_megas(a):
     econ = (inv.get("economy", {}) or {}).get("costs", {}) or {}
     stone_vp = econ.get("mega_stone_shop", 2000)
     keep_vp = econ.get("keep_rental_pokemon", 2500)
-    vp = (inv.get("economy", {}) or {}).get("vp_balance")
-    tickets = rentinfo.get("permanence_tickets", 0)
     owner = stone_owner_map()
     ui = usage_index()
     wcounts, wtotal = worlds_mega_counts()
@@ -950,9 +948,11 @@ def cmd_megas(a):
     print("Role folds the ability in, so Mega Mawile reads as the physical")
     print("attacker it is (Huge Power doubles Attack) and not as its SpA 55.")
     print("A rental CAN Mega Evolve, but cannot be TRAINED - the ticket or")
-    print("%d VP is what buys it a build." % keep_vp)
-    print("You have: %s VP, %s permanence ticket(s).\n"
-          % (vp if vp is not None else "?", tickets))
+    # What a rental COSTS is a rule and stays. What he HAS is not tracked any
+    # more (2026-09-13): Profile keeps one editable field, box capacity, and a
+    # number nobody can edit goes stale and then gets quoted - vp_balance had
+    # sat at 8000 since 2026-09-12. Ask him if it ever matters.
+    print("%d VP is what buys it a build.\n" % keep_vp)
 
     hdr = ["Role", "Mega", "Types", "Offense", "Speed", "Bulk",
            "Gains ability", "Loses", "Worlds", "Built", "Cost to build"]
