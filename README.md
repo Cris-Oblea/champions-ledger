@@ -34,7 +34,7 @@ request returns nothing.
 |---|---|
 | **Champs / HOME** | What is in each box, what came from where, and what can still leave the game |
 | **Builds** | Every set written, and the **Teams** made of them — six slots, the item each holds, and the clauses checked |
-| **Damage** | Real damage rolls, running Smogon's Champions engine in the page |
+| **Damage Calc.** | Real damage rolls, running Smogon's Champions engine in the page |
 | **Find** | "Who learns Imprison *and* Wide Guard *and* Protect" — filters that stack |
 | **Items** | Every item, what it does, what it costs, and which move or ability it serves |
 | **GTS** | Open trades, what a chip is worth, and what it can realistically fetch |
@@ -107,15 +107,16 @@ error. Anything quoted here says which one it came from.
        deploys, and opens a pull request with whatever moved.
 ```
 
-**The gate** is nineteen checks, and nothing reaches the phone without passing
+**The gate** is twenty-two checks, and nothing reaches the phone without passing
 all of them:
 
 - a **shrink guard** — if a rebuild comes back with fewer forms, moves or
   learnsets than the last good one, a source broke and the run stops
-- **four Python audits** — the damage formula against Smogon's engine, name
-  matching across all five sources, every derived index resolving, and every
-  form still accounted for
-- **fifteen browser tests** — run against the built page, because no Python
+- **six Python audits** — the damage formula against Smogon's engine, name
+  matching across all five sources, every derived index resolving, every form
+  still accounted for, the README's own numbers, and that no SQL migration is
+  still waiting to be applied
+- **sixteen browser tests** — run against the built page, because no Python
   check can see a template regression
 
 `main` is protected: pull requests only, gate must be green, and that is
@@ -123,6 +124,7 @@ enforced for admins too. A local `pre-push` hook runs the same checks before a
 push leaves the machine.
 
 ```bash
+python scripts/migrate.py                 # apply any pending SQL migration
 python scripts/daily.py --install-hooks   # once per clone
 python scripts/daily.py --no-refresh      # gate what is built, then publish
 python scripts/refresh.py                 # the full source refresh

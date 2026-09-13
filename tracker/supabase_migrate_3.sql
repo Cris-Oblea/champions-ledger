@@ -12,6 +12,11 @@
 -- HOME is trainable, its slot is elastic, and it got there from HOME.
 -- Rejecting it at the database means no client can reintroduce it.
 
+-- Dropped first so this file can be re-run: Postgres has no
+-- ADD CONSTRAINT IF NOT EXISTS, and scripts/migrate.py needs every migration
+-- to be safe to apply twice - it records what has run, and the only way to
+-- give it a truthful starting point was to re-apply the four that predate it.
+alter table box drop constraint if exists box_home_is_permanent;
 alter table box
   add constraint box_home_is_permanent
   check (location <> 'home' or (status = 'permanent' and origin = 'home'));

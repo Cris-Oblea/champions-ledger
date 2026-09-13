@@ -354,7 +354,12 @@ def main():
               # The README is the front door of a public repo, and every number
               # in it had drifted by the time anyone looked. The counts are
               # generated now, so this only has to check they were regenerated.
-              (["scripts/build_readme.py", "--check"], "the README is current")]
+              (["scripts/build_readme.py", "--check"], "the README is current"),
+              # Schema and client drifting apart is a runtime failure, not a
+              # build one: the app asks for a column the database has never
+              # heard of. Migrations were pasted by hand and nothing recorded
+              # it, so this is the first thing that can tell.
+              (["scripts/migrate.py", "--check"], "the schema is migrated")]
     for argv, what in checks:
         g, gout = sh([PY] + argv)
         if g != 0:
