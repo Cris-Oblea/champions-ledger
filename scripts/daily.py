@@ -260,10 +260,25 @@ def main():
         # last build left. Gating a page that is not the page about to be
         # published is the exact failure this whole gate exists to prevent, and
         # it passed locally only because a build happened to be minutes old.
-        # None of this touches the network - data/db and data.js are committed.
-        for argv, what in (([PY, "scripts/build_tracker_data.py"], "data.js"),
-                           ([PY, "scripts/build_engine_bundle.py"], "engine bundle"),
-                           ([PY, "scripts/build_tracker_page.py"], "the page")):
+        # None of this touches the network. What it CAN rebuild depends on
+        # where it runs, and the difference is stated rather than hidden:
+        # data.js and the engine bundle are built from data/raw/smogon_calc,
+        # which is the 195 MB source cache and deliberately not in git. On a
+        # laptop it is there, so they are rebuilt and a stale data/db is caught.
+        # On a fresh CI checkout it is not - but both artifacts are COMMITTED,
+        # and committed is by definition what the nightly job already gated.
+        # The page is rebuilt either way, because the page is what gets
+        # published and must never be a leftover.
+        vendored = os.path.exists(os.path.join(
+            ROOT, "data", "raw", "smogon_calc", "raw_species.json"))
+        steps = [([PY, "scripts/build_tracker_page.py"], "the page")]
+        if vendored:
+            steps = [([PY, "scripts/build_tracker_data.py"], "data.js"),
+                     ([PY, "scripts/build_engine_bundle.py"], "engine bundle")] + steps
+        else:
+            out.append("no source cache here: using the committed data.js and "
+                       "engine bundle, rebuilding the page from them")
+        for argv, what in steps:
             rc, bout = sh(argv)
             if rc != 0:
                 out.append("BLOCKED: could not rebuild %s" % what)
@@ -271,7 +286,8 @@ def main():
                 log(out)
                 print("\n".join(out))
                 return 1
-        out.append("rebuilt from the committed data")
+        out.append("rebuilt %s" % ("data.js, the bundle and the page"
+                                   if vendored else "the page"))
     else:
         deep = a.deep or datetime.date.today().weekday() == 0
         argv = [PY, "scripts/refresh.py"] + (["--deep"] if deep else [])
