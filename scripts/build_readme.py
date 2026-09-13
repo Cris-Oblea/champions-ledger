@@ -116,17 +116,20 @@ def word(n):
 
 
 def gate():
-    """What the gate actually runs, counted from daily.py.
+    """What the gate actually runs, counted from daily.py itself.
 
     This paragraph said "sixteen browser tests" in one place and "fifteen" in
     another on the same day, because adding a test means editing prose nobody
     remembers is prose. daily.py is the only thing that decides what runs, so
-    it is the only thing allowed to say how many.
+    its own lists are imported rather than parsed - a regex over the file would
+    be a second, quieter way to be wrong.
     """
-    src = io.open(os.path.join(ROOT, "scripts", "daily.py"),
-                  encoding="utf-8").read()
-    browser = len(re.findall(r'^\s*\("[a-z_]+\.js",', src, re.M))
-    py = len(re.findall(r'^\s*\("[a-z_]+\.py",', src, re.M)) or 6
+    sys.path.insert(0, os.path.join(ROOT, "scripts"))
+    import daily
+    py, node, browser = (len(daily.GATE_CHECKS), len(daily.SOURCE_CHECKS),
+                         len(daily.BROWSER_TESTS))
+    parts = len([f for f in os.listdir(os.path.join(ROOT, "tracker", "src"))
+                 if f.endswith(".js")])
     return (
         "**The gate** is %s checks, and nothing reaches the phone without\n"
         "passing all of them:\n\n"
@@ -137,9 +140,12 @@ def gate():
         "engine, name\n  matching across all five sources, every derived index "
         "resolving, every form\n  still accounted for, the README's own "
         "numbers, and that no SQL migration is\n  still waiting to be applied\n"
+        "- **%s source check** — the app is assembled from %s files, so a "
+        "name\n  two of them both declare is read for once, not clicked\n"
         "- **%s browser tests** — run against the built page, because no "
         "Python\n  check can see a template regression"
-        % (word(1 + py + browser), word(py), word(browser)))
+        % (word(1 + py + node + browser), word(py), word(node),
+           word(parts), word(browser)))
 
 
 def tests_line():

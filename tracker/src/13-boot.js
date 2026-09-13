@@ -1,0 +1,234 @@
+/* 13-boot.js - renderAll(), go(), and everything that runs on load.
+   Part of the app; assembled into one script by scripts/build_tracker_page.py. */
+/* ==================================================================== render */
+function renderAll(){
+  var perm = boxRows("champions", "permanent");
+  var rent = boxRows("champions", "rental");
+  var home = boxRows("home");
+  var oHome = originRows("home"), oChamp = originRows("champions"),
+      oUnk = originRows("unknown");
+  /* Origin is settled at registration now - every route in decides it, so
+     there is no "not recorded" section any more. But an old row could still
+     carry one, and a row with nowhere to appear is a row you have silently
+     lost, so it gets called out instead. */
+  var cap = capacity(), used = perm.length + rent.length;
+
+  var bc = $("boxCount");
+  bc.textContent = "box " + used + "/" + cap;
+  bc.className = "counter" + (used >= cap ? " full" : used >= cap - 3 ? " tight" : "");
+
+  fill($("listHomeOrigin"), sortRows(oHome), "Nothing routed in from HOME yet");
+  fill($("listChampOrigin"), sortRows(oChamp.concat(oUnk)),
+       "Nothing marked as Encounter-bought");
+  fill($("listRent"), sortRows(rent), "No rentals");
+  var hq = ($("homeFilter") && $("homeFilter").value || "").trim().toLowerCase();
+  var homeShown = sortRows(home).filter(function(r){ return rowMatches(r, hq); });
+  /* NOT `cap` - that is the box capacity, ten lines up, and reusing the name
+     here made the full-box check read 48 >= 12. `var` is function-scoped, so
+     the second declaration simply overwrote the first. */
+  var homeCap = HOME_ALL ? homeShown.length : 12;
+  fill($("listHome"), homeShown.slice(0, homeCap),
+       hq ? "Nothing in HOME matches that" : "HOME is empty");
+  var more = $("homeMore");
+  more.innerHTML = "";
+  if (homeShown.length > homeCap) {
+    more.appendChild(fbtn("Show the other " + (homeShown.length - homeCap), "sm",
+      function(){ HOME_ALL = true; renderAll(); }));
+  } else if (HOME_ALL && homeShown.length > 12) {
+    more.appendChild(fbtn("Show fewer", "sm",
+      function(){ HOME_ALL = false; renderAll(); }));
+  }
+  $("nHomeOrigin").textContent = oHome.length;
+  $("nChampOrigin").textContent = oChamp.length + oUnk.length;
+  $("nRent").textContent = rent.length;
+  $("nHome").textContent = home.length;
+
+  var warn = $("boxWarn");
+  warn.innerHTML = "";
+  /* the number that actually matters for box management: slots you can free
+     without destroying anything */
+  warn.appendChild(note(oHome.length ? "" : "warn",
+    "<strong>" + oHome.length + " of " + used + " slots are elastic.</strong> " +
+    "The other " + (used - oHome.length) + " can only be freed by releasing " +
+    "the Pokemon. Replacing them with your own GO catches through HOME is the " +
+    "standing plan."));
+  if (used >= cap) {
+    warn.appendChild(note("bad", "<strong>The box is full at " + used + "/" + cap +
+      ".</strong> Nothing new fits until something leaves."));
+  } else if (used >= cap - 3) {
+    warn.appendChild(note("warn", "<strong>" + (cap - used) + " slot" +
+      (cap - used === 1 ? "" : "s") + " left.</strong>"));
+  }
+  if (oUnk.length) {
+    var w = note("warn", "<strong>" + oUnk.length + " without a recorded " +
+      "origin.</strong> They are being counted as Champions origin, which is " +
+      "the cautious read. Tap one to say where it really came from: " +
+      oUnk.map(function(r){ return r.name; }).join(", "));
+    warn.appendChild(w);
+  }
+  var dupes = {};
+  perm.concat(rent).forEach(function(r){
+    var sp = (byName[r.name] || {}).species || r.name;
+    (dupes[sp] = dupes[sp] || []).push(r.name);
+  });
+  var rep = Object.keys(dupes).filter(function(k){ return dupes[k].length > 1; });
+  if (rep.length) {
+    warn.appendChild(note("warn", "<strong>Species Clause.</strong> " +
+      rep.join(", ") + " appear" + (rep.length === 1 ? "s" : "") +
+      " more than once, so those copies can never share a team — " +
+      "they are trade material, not spares."));
+  }
+
+  drawDupeHome();
+  drawBuilds();
+  drawStones();
+  drawStatuses();
+  drawItems();
+  drawTrainer();
+  drawGts();
+  drawTeams();
+  drawDiag();
+  /* asked once per load, not on every redraw - it is a network round trip */
+  if (DIAG_LATEST === "checking…") checkLatest();
+}
+function note(kind, html){
+  var n = el("div", "note " + kind);
+  n.style.marginBottom = "10px";
+  n.innerHTML = html;
+  return n;
+}
+function fill(node, rows, emptyMsg){
+  node.innerHTML = "";
+  if (!rows.length) { node.appendChild(el("div", "empty", emptyMsg)); return; }
+  rows.forEach(function(r){ node.appendChild(pokeRow(r)); });
+}
+function drawBuilds(){
+  var q = ($("buildSearch").value || "").trim().toLowerCase();
+  var node = $("listBuilds");
+  node.innerHTML = "";
+  var ids = Object.keys(S.builds).sort(function(a, b){
+    return String(S.builds[a].pokemon).localeCompare(String(S.builds[b].pokemon));
+  }).filter(function(id){
+    var b = S.builds[id];
+    return !q || (b.pokemon + " " + (b.role || "") + " " +
+                  (b.moves || []).join(" ")).toLowerCase().indexOf(q) >= 0;
+  });
+  if (!ids.length) {
+    node.appendChild(el("div", "empty",
+      Object.keys(S.builds).length ? "Nothing matches" : "No builds yet"));
+    return;
+  }
+  ids.forEach(function(id){ node.appendChild(buildRow(id, S.builds[id])); });
+}
+
+/* ======================================================================= go */
+buildTabs();
+findInit();
+go("box");
+document.querySelectorAll("[data-add]").forEach(function(b){
+  b.onclick = function(){ addSheet(b.dataset.add); };
+});
+Array.prototype.forEach.call($("calcMode").children, function(b){
+  b.onclick = function(){
+    CALC.gameType = b.dataset.mode;
+    Array.prototype.forEach.call($("calcMode").children, function(x){
+      x.setAttribute("aria-pressed", x === b ? "true" : "false");
+    });
+    calcDraw();
+  };
+});
+/* one order for every box list, so HOME and the Champions Box can be read
+   against the phone's own screen without re-sorting in your head */
+document.querySelectorAll(".sortseg").forEach(function(seg){
+  Array.prototype.forEach.call(seg.children, function(b){
+    b.onclick = function(){
+      SORT = b.dataset.sort;
+      document.querySelectorAll(".sortseg").forEach(function(g){
+        Array.prototype.forEach.call(g.children, function(x){
+          x.setAttribute("aria-pressed", x.dataset.sort === SORT ? "true" : "false");
+        });
+      });
+      try { localStorage.setItem("champ-sort", SORT); } catch (e) {}
+      renderAll();
+    };
+  });
+});
+try {
+  var savedSort = localStorage.getItem("champ-sort");
+  if (savedSort === "order") savedSort = "dex";   // the option that went away
+  if (savedSort) {
+    SORT = savedSort;
+    document.querySelectorAll(".sortseg").forEach(function(g){
+      Array.prototype.forEach.call(g.children, function(x){
+        x.setAttribute("aria-pressed", x.dataset.sort === SORT ? "true" : "false");
+      });
+    });
+  }
+} catch (e) {}
+$("buildAdd").onclick = function(){ buildSheet(null, {}); };
+$("buildEditBack").onclick = function(){ leaveEditor(); };
+$("teamEditBack").onclick  = function(){ leaveEditor("teams"); };
+$("buildSearch").oninput = drawBuilds;
+$("stoneSearch").oninput = drawStones;
+$("itemSearch").oninput = drawItems;
+$("homeFilter").oninput = function(){ HOME_ALL = false; renderAll(); };
+/* three panes, one switcher - written once so a fourth cannot forget one */
+function gearPane(which){
+  var panes = {stones:"gearStonePane", items:"gearItemPane"};
+  var btns = {stones:"gearStones", items:"gearItems"};
+  Object.keys(panes).forEach(function(k){
+    $(panes[k]).hidden = k !== which;
+    $(btns[k]).setAttribute("aria-pressed", k === which ? "true" : "false");
+  });
+}
+$("gearStones").onclick = function(){ gearPane("stones"); };
+$("gearItems").onclick  = function(){ gearPane("items"); };
+
+/* Builds and Teams share one tab, by the same switcher. An eighth tab wrapped
+   the phone's bar onto two rows, which cost more than the tab was worth
+   (player, 2026-09-13) - and they belong together anyway, since a team IS six
+   builds. */
+function buildsPane(which){
+  var panes = {builds:"buildsPane", teams:"teamsPane"};
+  var btns = {builds:"bldPaneBuilds", teams:"bldPaneTeams"};
+  Object.keys(panes).forEach(function(k){
+    $(panes[k]).hidden = k !== which;
+    $(btns[k]).setAttribute("aria-pressed", k === which ? "true" : "false");
+  });
+  /* the "New build" button in the header belongs to the Builds pane only */
+  var add = $("buildAdd");
+  if (add) add.hidden = which !== "builds";
+}
+$("bldPaneBuilds").onclick = function(){ buildsPane("builds"); };
+$("bldPaneTeams").onclick  = function(){ buildsPane("teams"); };
+$("railBtn").onclick = function(){
+  var sh = document.querySelector(".shell");
+  sh.classList.toggle("narrow");
+  try { localStorage.setItem("champ-rail", sh.classList.contains("narrow") ? "1" : ""); } catch (e) {}
+};
+try { if (localStorage.getItem("champ-rail")) document.querySelector(".shell").classList.add("narrow"); } catch (e) {}
+$("themeBtn").onclick = function(){
+  var r = document.documentElement;
+  var now = r.getAttribute("data-theme");
+  if (!now) {
+    now = mq("(prefers-color-scheme: dark)") ? "dark" : "light";
+  }
+  r.setAttribute("data-theme", now === "dark" ? "light" : "dark");
+  try { localStorage.setItem("champ-theme", r.getAttribute("data-theme")); } catch (e) {}
+};
+try {
+  var saved = localStorage.getItem("champ-theme");
+  if (saved) document.documentElement.setAttribute("data-theme", saved);
+} catch (e) {}
+
+window.calcDamage=calcDamage; window.koCount=koCount; window.byName=byName;
+window.MOVE_BY=MOVE_BY; window.AB_SET=AB_SET; window.abilityTag=abilityTag; window.abilityHit=abilityHit;
+window.buildLink=buildLink;   /* tests/buildlinktest.js */
+window.FIND=FIND; window.findRun=findRun;
+renderAll();
+connect();
+initScan();
+if (window.claude && window.claude.use) {
+  window.claude.use("downloads").then(function(d){ if (d) window.__dl = d; },
+                                      function(){});
+}

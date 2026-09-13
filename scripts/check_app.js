@@ -19,11 +19,16 @@
 const fs = require("fs");
 const path = require("path");
 
+/* The app is thirteen files under tracker/src/ that the build concatenates
+   into one script, so the thing to check is that CONCATENATION - a name that
+   two parts each declare is invisible in either file on its own, and is the
+   mistake the split makes easiest. Read them in the same order the build does,
+   and the markup beside them, which is where the element ids live. */
 const ROOT = path.dirname(__dirname);
-const TPL = path.join(ROOT, "tracker", "index.template.html");
-const src = fs.readFileSync(TPL, "utf8");
-const blocks = [...src.matchAll(/<script>([\s\S]*?)<\/script>/g)].map(m => m[1]);
-const app = blocks[blocks.length - 1];
+const SRC = path.join(ROOT, "tracker", "src");
+const src = fs.readFileSync(path.join(SRC, "markup.html"), "utf8");
+const app = fs.readdirSync(SRC).filter(f => f.endsWith(".js")).sort()
+  .map(f => fs.readFileSync(path.join(SRC, f), "utf8")).join("");
 
 let problems = 0;
 function fail(msg) { problems++; console.log("  " + msg); }
