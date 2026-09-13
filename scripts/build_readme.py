@@ -105,7 +105,52 @@ def vintage():
                             len(u.get("rows") or [])))
 
 
-BLOCKS = {"COUNTS": counts, "VINTAGE": vintage}
+WORDS = ("zero one two three four five six seven eight nine ten eleven twelve "
+         "thirteen fourteen fifteen sixteen seventeen eighteen nineteen twenty "
+         "twenty-one twenty-two twenty-three twenty-four twenty-five "
+         "twenty-six twenty-seven twenty-eight twenty-nine thirty").split()
+
+
+def word(n):
+    return WORDS[n] if n < len(WORDS) else str(n)
+
+
+def gate():
+    """What the gate actually runs, counted from daily.py.
+
+    This paragraph said "sixteen browser tests" in one place and "fifteen" in
+    another on the same day, because adding a test means editing prose nobody
+    remembers is prose. daily.py is the only thing that decides what runs, so
+    it is the only thing allowed to say how many.
+    """
+    src = io.open(os.path.join(ROOT, "scripts", "daily.py"),
+                  encoding="utf-8").read()
+    browser = len(re.findall(r'^\s*\("[a-z_]+\.js",', src, re.M))
+    py = len(re.findall(r'^\s*\("[a-z_]+\.py",', src, re.M)) or 6
+    return (
+        "**The gate** is %s checks, and nothing reaches the phone without\n"
+        "passing all of them:\n\n"
+        "- a **shrink guard** — if a rebuild comes back with fewer forms, "
+        "moves or\n  learnsets than the last good one, a source broke and the "
+        "run stops\n"
+        "- **%s Python audits** — the damage formula against Smogon's "
+        "engine, name\n  matching across all five sources, every derived index "
+        "resolving, every form\n  still accounted for, the README's own "
+        "numbers, and that no SQL migration is\n  still waiting to be applied\n"
+        "- **%s browser tests** — run against the built page, because no "
+        "Python\n  check can see a template regression"
+        % (word(1 + py + browser), word(py), word(browser)))
+
+
+def tests_line():
+    """The one line in the layout block that counts files on disk."""
+    n = len([f for f in os.listdir(os.path.join(ROOT, "tests"))
+             if f.endswith(".js")])
+    return "tests/       %s browser tests, run against the BUILT page" % word(n)
+
+
+BLOCKS = {"COUNTS": counts, "VINTAGE": vintage,
+          "GATE": gate, "TESTS": tests_line}
 
 
 def render(text):

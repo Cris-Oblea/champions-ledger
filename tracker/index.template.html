@@ -1249,6 +1249,37 @@ function put(path, body){
     throw e;
   });
 }
+/* Create a record under the first id that is actually free.
+   `stem` is the readable base - "farigiraf" - and this tries farigiraf,
+   farigiraf-2, farigiraf-3... A clash is decided by the DATABASE, not by what
+   this device happens to have loaded, which is the only way two devices can
+   both be right. Readable ids are worth keeping: the build picker shows the id
+   to tell one Farigiraf set from another, and a UUID would say nothing.
+   Returns the id it used. */
+function putNew(coll, stem, body, cap){
+  if (!S.db) { toast("Not connected to the store"); return Promise.resolve(null); }
+  body.updated = new Date().toISOString().slice(0, 10);
+  var n = 1, tried = [];
+  function attempt(){
+    var id = n === 1 ? stem : stem + "-" + n;
+    tried.push(id);
+    return S.db.doc(coll + "/" + id).create(body).then(function(){ return id; },
+      function(e){
+        /* 23505 is Postgres' unique_violation: the id is taken, by this device
+           or another one. Anything else is a real failure and must surface. */
+        var taken = e && (e.code === "23505" ||
+                          /duplicate key|already exists/i.test(e.message || ""));
+        if (!taken) { toast("Could not save: " + (e && e.code || "error")); throw e; }
+        if (++n > (cap || 30)) {
+          toast("Could not find a free id after " + tried.length + " tries");
+          throw e;
+        }
+        return attempt();
+      });
+  }
+  return attempt();
+}
+
 function patch(path, body){
   if (!S.db) { toast("Not connected to the store"); return Promise.resolve(); }
   body.updated = new Date().toISOString().slice(0,10);
@@ -1349,6 +1380,12 @@ function supabaseStore(sb, uid){
         function(){ load("box"); })
     .on("postgres_changes", {event:"*", schema:"public", table:"builds"},
         function(){ load("builds"); })
+    /* teams was added after this channel was written and was left out of it,
+       so a team saved on the phone never reached the laptop until a reload -
+       and that stale view is exactly what makes two devices compute the same
+       new id. */
+    .on("postgres_changes", {event:"*", schema:"public", table:"teams"},
+        function(){ load("teams"); })
     .on("postgres_changes", {event:"*", schema:"public", table:"meta"},
         function(){ load("meta"); })
     .subscribe();
@@ -1367,6 +1404,21 @@ function supabaseStore(sb, uid){
           return Promise.resolve({id:id, exists:!!row,
             data:function(){ return row ? docFromRow(coll, row) : undefined; },
             metadata:{}});
+        },
+        /* INSERT, not upsert: the point is that it FAILS when the id is
+           taken. Creating a record computes its id from what this device can
+           see - farigiraf, farigiraf-2 - so two devices creating at the same
+           moment both pick the same one, and an upsert would let the second
+           silently replace the first. The primary key (user_id, id) already
+           knows better; this just stops asking it to look the other way. */
+        create: function(d){
+          var row = rowFromDoc(coll, id, uid, d);
+          return sb.from(coll).insert(row).then(function(r){
+            if (r.error) throw r.error;
+            if (!cache[coll]) cache[coll] = {};
+            cache[coll][id] = row;
+            emit(coll);
+          });
         },
         set: function(d){
           var row = rowFromDoc(coll, id, uid, d);
@@ -2638,13 +2690,10 @@ function buildSheet(id, b, keepOriginal){
          The id is derived from the species so it stays readable in the ledger
          - farigiraf, farigiraf-2, farigiraf-3 - the same shape the box already
          uses for duplicates. */
-      var key = id;
-      if (!key) {
-        var stem = String(draft.pokemon).toLowerCase()
-          .replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
-        key = stem;
-        for (var n = 2; S.builds[key]; n++) key = stem + "-" + n;
-      }
+      /* A NEW build asks the database for a free id instead of guessing from
+         what this device has loaded - see putNew(). An EDIT keeps its own. */
+      var stem = String(draft.pokemon).toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
       var doc = {pokemon:draft.pokemon, box_id:draft._boxId || null,
                  mega:draft.mega || null,
                  ability:draft.ability || null,
@@ -2654,7 +2703,8 @@ function buildSheet(id, b, keepOriginal){
                  moves:draft.moves.filter(Boolean),
                  role:draft.role || "", rationale:draft.rationale || "",
                  extra:(b && b.extra) || {}};
-      put("builds/" + key, doc).then(function(){
+      (id ? put("builds/" + id, doc).then(function(){ return id; })
+          : putNew("builds", stem, doc)).then(function(){
         leaveEditor(); toast("Build saved");
       });
     }),
@@ -3562,14 +3612,13 @@ function teamSheet(id, t){
   }, [
     fbtn("Save", "primary", function(){
       if (!draft.name) { toast("Give the team a name"); return; }
-      var key = id || String(draft.name).toLowerCase()
-        .replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 40);
-      if (!key) key = "team";
-      if (!id) { var n = 2, k0 = key;
-        while (S.teams[key]) { key = k0 + "-" + n; n++; } }
-      put("teams/" + key, {name:draft.name,
-        slots:draft.slots.filter(function(x){ return x && x.build_id; }),
-        notes:draft.notes || {}}).then(function(){
+      var stem = String(draft.name).toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 40) || "team";
+      var doc = {name:draft.name,
+                 slots:draft.slots.filter(function(x){ return x && x.build_id; }),
+                 notes:draft.notes || {}};
+      (id ? put("teams/" + id, doc).then(function(){ return id; })
+          : putNew("teams", stem, doc)).then(function(){
         leaveEditor("teams"); toast("Team saved");
       });
     }),
