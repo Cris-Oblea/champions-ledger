@@ -21,6 +21,7 @@ node itemstest.js          # every item, in the game's own four groups
 node learnsettest.js       # a regional form has its OWN movepool
 node consistencytest.js    # the same class of bug, hunted across every table
 node profiletest.js        # Profile: one editable field, the rest derived
+node teamtest.js           # teams: six slots, Item and Species Clause
 ```
 
 ## What each one is for
