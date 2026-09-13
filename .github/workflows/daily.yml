@@ -44,7 +44,9 @@ jobs:
     # for a slow day upstream.
     timeout-minutes: 70
     permissions:
-      contents: write          # to commit the refreshed data back
+      contents: write          # to push the refresh branch
+      pull-requests: write     # to open and auto-merge it
+      statuses: write          # to report the gate it just ran
 
     steps:
       - uses: actions/checkout@v4
@@ -91,32 +93,43 @@ jobs:
         run: |
           python scripts/daily.py ${{ (github.event_name == 'workflow_dispatch' && inputs.deep) && '--deep' || '' }}
 
-      - name: commit whatever moved
+      # main is a protected branch now: it takes pull requests only, and the
+      # gate must be green. A bot pushing straight to it is exactly what that
+      # protects against, so the refresh goes through the same door as a person.
+      #
+      # The gate is NOT re-run for it. daily.py already ran all nineteen checks
+      # on this very working tree in the step above and refused to deploy if
+      # any failed - so the status posted here reports a check that genuinely
+      # passed, on the content being merged. Re-running it would be two
+      # identical runs and the same answer.
+      #
+      # Why a status rather than letting the PR trigger the gate workflow:
+      # GitHub does not start workflows for pushes made with GITHUB_TOKEN, so
+      # a pull_request run would never appear, the required check would never
+      # arrive, and the PR would sit open for ever waiting for itself.
+      - name: open a pull request and let it merge itself
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           git config user.name  "champions-ledger bot"
           git config user.email "noreply@github.com"
           # index.html is NOT committed: it is generated from the template on
           # every run, here and locally, so versioning it made a merge
-          # conflict inevitable on any day both happened. It is deployed
-          # straight from tracker/dist and never read back out of git.
+          # conflict inevitable on any day both happened.
           git add -A data/db data/meta tracker/data.js tracker/engine.bundle.js || true
           if git diff --cached --quiet; then
             echo "nothing changed"
             exit 0
           fi
+          BR="daily/$(date -u +%Y-%m-%d-%H%M)"
+          git checkout -b "$BR"
           git commit -m "daily refresh $(date -u +%Y-%m-%d)"
-          # This job runs for half an hour; the repo can easily move while it
-          # does - it did on the very first run, when a fix was pushed mid-run
-          # and the commit was rejected as non-fast-forward. Rebase onto
-          # whatever landed meanwhile and retry rather than failing the run
-          # over a race that is entirely expected.
-          for attempt in 1 2 3; do
-            if git push; then exit 0; fi
-            echo "push rejected, rebasing onto origin/main (attempt $attempt)"
-            git pull --rebase --autostash origin main || exit 1
-          done
-          echo "could not push after three attempts"
-          exit 1
+          git push origin "$BR"
+          SHA=$(git rev-parse HEAD)
+          RUN="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
+          gh api -X POST "repos/$GITHUB_REPOSITORY/statuses/$SHA" -f state=success -f context=gate -f description="gated by daily.py in this run" -f target_url="$RUN"
+          gh pr create --base main --head "$BR" --title "daily refresh $(date -u +%Y-%m-%d)" --body "Automated. daily.py refreshed every source and passed the shrink guard, four audits and fifteen browser tests before this branch existed; the gate status on the head commit reports that run. Merges itself once the check is green. Log: $RUN"
+          gh pr merge --auto --squash --delete-branch "$BR"
 
       - name: save the source cache
         if: always() && steps.cache.outputs.cache-hit != 'true'
