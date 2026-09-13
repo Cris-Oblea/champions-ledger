@@ -923,10 +923,11 @@
    "Sylveon",
    "Primarina",
    "Alcremie",
+   "Indeedee-Female",
    "Skeledirge",
    "Arboliva"
   ],
-  "learner_count": 27,
+  "learner_count": 28,
   "useable": true
  },
  {
@@ -2610,6 +2611,7 @@
    "Hatterene",
    "Perrserker",
    "Mr. Rime",
+   "Indeedee-Female",
    "Morpeko",
    "Dragapult",
    "Kleavor",
@@ -2619,7 +2621,7 @@
    "Espathra",
    "Farigiraf"
   ],
-  "learner_count": 55,
+  "learner_count": 56,
   "useable": true
  },
  {
@@ -3952,6 +3954,7 @@
    "Falinks",
    "Pincurchin",
    "Indeedee",
+   "Indeedee-Female",
    "Dragapult",
    "Wyrdeer",
    "Skeledirge",
@@ -3966,7 +3969,7 @@
    "Archaludon",
    "Hydrapple"
   ],
-  "learner_count": 163,
+  "learner_count": 164,
   "useable": true
  },
  {
@@ -5584,6 +5587,7 @@
    "Runerigus",
    "Alcremie",
    "Indeedee",
+   "Indeedee-Female",
    "Wyrdeer",
    "Sneasler",
    "Armarouge",
@@ -5591,7 +5595,7 @@
    "Farigiraf",
    "Sinistcha"
   ],
-  "learner_count": 67,
+  "learner_count": 68,
   "useable": true
  },
  {
@@ -6017,6 +6021,7 @@
    "Perrserker",
    "Mr. Rime",
    "Alcremie",
+   "Indeedee-Female",
    "Meowscarada",
    "Pawmot",
    "Maushold",
@@ -6024,7 +6029,7 @@
    "Palafin",
    "Houndstone"
   ],
-  "learner_count": 70,
+  "learner_count": 71,
   "useable": true
  },
  {
@@ -8482,13 +8487,14 @@
    "Mr. Rime",
    "Alcremie",
    "Indeedee",
+   "Indeedee-Female",
    "Arboliva",
    "Espathra",
    "Glimmora",
    "Farigiraf",
    "Gholdengo"
   ],
-  "learner_count": 44,
+  "learner_count": 45,
   "useable": true
  },
  {
@@ -10595,10 +10601,11 @@
    "Grimmsnarl",
    "Alcremie",
    "Indeedee",
+   "Indeedee-Female",
    "Tinkaton",
    "Palafin"
   ],
-  "learner_count": 33,
+  "learner_count": 34,
   "useable": true
  },
  {
@@ -10682,10 +10689,11 @@
    "Mr. Rime",
    "Alcremie",
    "Indeedee",
+   "Indeedee-Female",
    "Palafin",
    "Annihilape"
   ],
-  "learner_count": 49,
+  "learner_count": 50,
   "useable": true
  },
  {
@@ -12286,6 +12294,7 @@
    "Falinks",
    "Pincurchin",
    "Indeedee",
+   "Indeedee-Female",
    "Morpeko",
    "Dragapult",
    "Wyrdeer",
@@ -12321,7 +12330,7 @@
    "Archaludon",
    "Hydrapple"
   ],
-  "learner_count": 255,
+  "learner_count": 256,
   "useable": true
  },
  {
@@ -12411,6 +12420,7 @@
    "Runerigus",
    "Alcremie",
    "Indeedee",
+   "Indeedee-Female",
    "Wyrdeer",
    "Meowscarada",
    "Arboliva",
@@ -12422,7 +12432,7 @@
    "Sinistcha",
    "Hydrapple"
   ],
-  "learner_count": 63,
+  "learner_count": 64,
   "useable": true
  },
  {
@@ -13088,6 +13098,7 @@
    "Falinks",
    "Pincurchin",
    "Indeedee",
+   "Indeedee-Female",
    "Morpeko",
    "Dragapult",
    "Wyrdeer",
@@ -13120,7 +13131,7 @@
    "Archaludon",
    "Hydrapple"
   ],
-  "learner_count": 252,
+  "learner_count": 253,
   "useable": true
  },
  {
@@ -13261,12 +13272,13 @@
    "Perrserker",
    "Mr. Rime",
    "Indeedee",
+   "Indeedee-Female",
    "Morpeko",
    "Sneasler",
    "Pawmot",
    "Tinkaton"
   ],
-  "learner_count": 32,
+  "learner_count": 33,
   "useable": true
  },
  {
@@ -15786,9 +15798,10 @@
   },
   "learners": [
    "Clefable",
+   "Indeedee-Female",
    "Maushold"
   ],
-  "learner_count": 2,
+  "learner_count": 3,
   "useable": true
  },
  {
@@ -16536,10 +16549,11 @@
    "Hatterene",
    "Mr. Rime",
    "Indeedee",
+   "Indeedee-Female",
    "Wyrdeer",
    "Farigiraf"
   ],
-  "learner_count": 27,
+  "learner_count": 28,
   "useable": true
  },
  {
@@ -17995,9 +18009,10 @@
    "Bastiodon",
    "Rhyperior",
    "Cofagrigus",
-   "Runerigus"
+   "Runerigus",
+   "Indeedee-Female"
   ],
-  "learner_count": 5,
+  "learner_count": 6,
   "useable": true
  },
  {
@@ -18048,9 +18063,10 @@
    "Hatterene",
    "Mr. Rime",
    "Runerigus",
+   "Indeedee-Female",
    "Farigiraf"
   ],
-  "learner_count": 15,
+  "learner_count": 16,
   "useable": true
  },
  {
@@ -18850,9 +18866,10 @@
    "Musharna",
    "Audino",
    "Hatterene",
-   "Indeedee"
+   "Indeedee",
+   "Indeedee-Female"
   ],
-  "learner_count": 9,
+  "learner_count": 10,
   "useable": true
  },
  {
@@ -18940,9 +18957,10 @@
    "Audino",
    "Aromatisse",
    "Clawitzer",
-   "Hatterene"
+   "Hatterene",
+   "Indeedee-Female"
   ],
-  "learner_count": 15,
+  "learner_count": 16,
   "useable": true
  },
  {
@@ -19396,6 +19414,7 @@
    "Alcremie",
    "Falinks",
    "Indeedee",
+   "Indeedee-Female",
    "Dragapult",
    "Wyrdeer",
    "Kleavor",
@@ -19420,7 +19439,7 @@
    "Farigiraf",
    "Baxcalibur"
   ],
-  "learner_count": 171,
+  "learner_count": 172,
   "useable": true
  },
  {
@@ -20736,6 +20755,7 @@
    "Toxtricity-L",
    "Perrserker",
    "Indeedee",
+   "Indeedee-Female",
    "Skeledirge",
    "Maushold",
    "Arboliva",
@@ -20746,7 +20766,7 @@
    "Palafin",
    "Farigiraf"
   ],
-  "learner_count": 70,
+  "learner_count": 71,
   "useable": true
  },
  {
@@ -21592,12 +21612,13 @@
    "Runerigus",
    "Alcremie",
    "Indeedee",
+   "Indeedee-Female",
    "Wyrdeer",
    "Skeledirge",
    "Farigiraf",
    "Sinistcha"
   ],
-  "learner_count": 44,
+  "learner_count": 45,
   "useable": true
  },
  {
@@ -23684,6 +23705,7 @@
    "Grimmsnarl",
    "Mr. Rime",
    "Alcremie",
+   "Indeedee-Female",
    "Dragapult",
    "Wyrdeer",
    "Kleavor",
@@ -23698,7 +23720,7 @@
    "Gholdengo",
    "Archaludon"
   ],
-  "learner_count": 95,
+  "learner_count": 96,
   "useable": true
  },
  {
@@ -27677,9 +27699,10 @@
    "Hatterene",
    "Alcremie",
    "Indeedee",
+   "Indeedee-Female",
    "Armarouge"
   ],
-  "learner_count": 15,
+  "learner_count": 16,
   "useable": true
  },
  {
@@ -29825,6 +29848,7 @@
    "Perrserker",
    "Alcremie",
    "Indeedee",
+   "Indeedee-Female",
    "Meowscarada",
    "Pawmot",
    "Maushold",
@@ -29832,7 +29856,7 @@
    "Tinkaton",
    "Houndstone"
   ],
-  "learner_count": 48,
+  "learner_count": 49,
   "useable": true
  },
  {
@@ -31233,6 +31257,7 @@
    "Falinks",
    "Pincurchin",
    "Indeedee",
+   "Indeedee-Female",
    "Morpeko",
    "Dragapult",
    "Wyrdeer",
@@ -31268,7 +31293,7 @@
    "Archaludon",
    "Hydrapple"
   ],
-  "learner_count": 255,
+  "learner_count": 256,
   "useable": true
  },
  {
@@ -31440,13 +31465,14 @@
    "Runerigus",
    "Alcremie",
    "Indeedee",
+   "Indeedee-Female",
    "Wyrdeer",
    "Armarouge",
    "Espathra",
    "Farigiraf",
    "Gholdengo"
   ],
-  "learner_count": 66,
+  "learner_count": 67,
   "useable": true
  },
  {
@@ -31634,11 +31660,12 @@
    "Hatterene",
    "Mr. Rime",
    "Indeedee",
+   "Indeedee-Female",
    "Armarouge",
    "Espathra",
    "Farigiraf"
   ],
-  "learner_count": 23,
+  "learner_count": 24,
   "useable": true
  },
  {
@@ -31851,6 +31878,7 @@
    "Alcremie",
    "Falinks",
    "Indeedee",
+   "Indeedee-Female",
    "Wyrdeer",
    "Meowscarada",
    "Quaquaval",
@@ -31862,7 +31890,7 @@
    "Farigiraf",
    "Sinistcha"
   ],
-  "learner_count": 60,
+  "learner_count": 61,
   "useable": true
  },
  {
@@ -31974,13 +32002,14 @@
    "Runerigus",
    "Alcremie",
    "Indeedee",
+   "Indeedee-Female",
    "Wyrdeer",
    "Armarouge",
    "Espathra",
    "Farigiraf",
    "Gholdengo"
   ],
-  "learner_count": 41,
+  "learner_count": 42,
   "useable": true
  },
  {
@@ -33271,6 +33300,7 @@
    "Hatterene",
    "Grimmsnarl",
    "Mr. Rime",
+   "Indeedee-Female",
    "Dragapult",
    "Wyrdeer",
    "Arboliva",
@@ -33286,7 +33316,7 @@
    "Archaludon",
    "Hydrapple"
   ],
-  "learner_count": 74,
+  "learner_count": 75,
   "useable": true
  },
  {
@@ -33659,6 +33689,7 @@
    "Falinks",
    "Pincurchin",
    "Indeedee",
+   "Indeedee-Female",
    "Morpeko",
    "Dragapult",
    "Wyrdeer",
@@ -33694,7 +33725,7 @@
    "Archaludon",
    "Hydrapple"
   ],
-  "learner_count": 255,
+  "learner_count": 256,
   "useable": true
  },
  {
@@ -35209,11 +35240,12 @@
    "Falinks",
    "Pincurchin",
    "Indeedee",
+   "Indeedee-Female",
    "Morpeko",
    "Dragapult",
    "Skeledirge"
   ],
-  "learner_count": 221,
+  "learner_count": 222,
   "useable": true
  },
  {
@@ -35416,9 +35448,10 @@
    "Mr. Rime",
    "Runerigus",
    "Alcremie",
+   "Indeedee-Female",
    "Arboliva"
   ],
-  "learner_count": 51,
+  "learner_count": 52,
   "useable": true
  },
  {
@@ -36740,6 +36773,7 @@
    "Mr. Rime",
    "Runerigus",
    "Indeedee",
+   "Indeedee-Female",
    "Dragapult",
    "Wyrdeer",
    "Basculegion",
@@ -36756,7 +36790,7 @@
    "Gholdengo",
    "Sinistcha"
   ],
-  "learner_count": 103,
+  "learner_count": 104,
   "useable": true
  },
  {
@@ -37639,9 +37673,10 @@
    "Azumarill",
    "Altaria",
    "Primarina",
+   "Indeedee-Female",
    "Skeledirge"
   ],
-  "learner_count": 6,
+  "learner_count": 7,
   "useable": true
  },
  {
@@ -37829,13 +37864,14 @@
    "Mr. Rime",
    "Runerigus",
    "Indeedee",
+   "Indeedee-Female",
    "Wyrdeer",
    "Meowscarada",
    "Espathra",
    "Tinkaton",
    "Farigiraf"
   ],
-  "learner_count": 45,
+  "learner_count": 46,
   "useable": true
  },
  {
@@ -38529,6 +38565,7 @@
    "Falinks",
    "Pincurchin",
    "Indeedee",
+   "Indeedee-Female",
    "Morpeko",
    "Dragapult",
    "Wyrdeer",
@@ -38564,7 +38601,7 @@
    "Archaludon",
    "Hydrapple"
   ],
-  "learner_count": 255,
+  "learner_count": 256,
   "useable": true
  },
  {
@@ -39448,10 +39485,11 @@
    "Falinks",
    "Pincurchin",
    "Indeedee",
+   "Indeedee-Female",
    "Morpeko",
    "Dragapult"
   ],
-  "learner_count": 220,
+  "learner_count": 221,
   "useable": true
  },
  {
@@ -41615,13 +41653,14 @@
    "Mr. Rime",
    "Alcremie",
    "Indeedee",
+   "Indeedee-Female",
    "Wyrdeer",
    "Armarouge",
    "Ceruledge",
    "Espathra",
    "Farigiraf"
   ],
-  "learner_count": 53,
+  "learner_count": 54,
   "useable": true
  },
  {
@@ -42290,6 +42329,7 @@
    "Falinks",
    "Pincurchin",
    "Indeedee",
+   "Indeedee-Female",
    "Morpeko",
    "Dragapult",
    "Wyrdeer",
@@ -42325,7 +42365,7 @@
    "Archaludon",
    "Hydrapple"
   ],
-  "learner_count": 255,
+  "learner_count": 256,
   "useable": true
  },
  {
@@ -44654,9 +44694,10 @@
    "Clawitzer",
    "Oranguru",
    "Indeedee",
+   "Indeedee-Female",
    "Arboliva"
   ],
-  "learner_count": 10,
+  "learner_count": 11,
   "useable": true
  },
  {
@@ -46512,6 +46553,7 @@
    "Mr. Rime",
    "Runerigus",
    "Indeedee",
+   "Indeedee-Female",
    "Wyrdeer",
    "Meowscarada",
    "Armarouge",
@@ -46520,7 +46562,7 @@
    "Farigiraf",
    "Gholdengo"
   ],
-  "learner_count": 56,
+  "learner_count": 57,
   "useable": true
  },
  {
@@ -46593,6 +46635,7 @@
    "Mr. Rime",
    "Runerigus",
    "Indeedee",
+   "Indeedee-Female",
    "Wyrdeer",
    "Meowscarada",
    "Armarouge",
@@ -46600,7 +46643,7 @@
    "Farigiraf",
    "Sinistcha"
   ],
-  "learner_count": 42,
+  "learner_count": 43,
   "useable": true
  },
  {
@@ -48825,10 +48868,11 @@
    "Slurpuff",
    "Sylveon",
    "Indeedee",
+   "Indeedee-Female",
    "Pawmot",
    "Farigiraf"
   ],
-  "learner_count": 25,
+  "learner_count": 26,
   "useable": true
  },
  {
@@ -49451,6 +49495,7 @@
    "Runerigus",
    "Falinks",
    "Indeedee",
+   "Indeedee-Female",
    "Wyrdeer",
    "Basculegion",
    "Skeledirge",
@@ -49463,7 +49508,7 @@
    "Kingambit",
    "Baxcalibur"
   ],
-  "learner_count": 85,
+  "learner_count": 86,
   "useable": true
  },
  {

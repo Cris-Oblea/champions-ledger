@@ -30,7 +30,9 @@ SAME = [
     ["Rotom-Wash", "Wash Rotom", "Rotom [Wash Form]"],
     ["Rotom-Heat", "Heat Rotom", "Rotom [Heat Form]"],
     ["Lycanroc-Dusk", "Lycanroc (Dusk)", "Lycanroc [Dusk Form]"],
-    ["Floette-Eternal", "Floette (Eternal)", "Floette [Eternal Flower]"],
+    # Only the Eternal Flower form is in Champions, so a bare "Floette" is it.
+    ["Floette-Eternal", "Floette (Eternal)", "Floette [Eternal Flower]",
+     "Floette"],
     ["Tauros-Paldea Aqua", "Tauros - Paldea Aqua Breed",
      "Paldean Tauros - Aqua Breed"],
     ["Basculegion", "Basculegion [Male]", "Basculegion (Male)"],
@@ -50,8 +52,28 @@ SAME = [
     ["Indeedee", "Indeedee (Male)", "Indeedee [Male]"],
     ["Indeedee-Female", "Indeedee (Female)", "Female Indeedee"],
     ["Persian-Alola", "Alolan Persian", "Persian [Alolan Form]"],
-    ["Squawkabilly", "Squawkabilly (Blue Plumage)",
-     "Squawkabilly [Green Plumage]"],
+    # The dex row IS the Green Plumage, so only Green collapses onto it. The
+    # other three plumages are separate Pokemon: Yellow and White carry Sheer
+    # Force where Green and Blue carry Guts, and the plumage is fixed when you
+    # catch the bird.
+    ["Squawkabilly", "Squawkabilly (Green Plumage)",
+     "Green Plumage Squawkabilly"],
+    ["Squawkabilly-Yellow", "Squawkabilly (Yellow Plumage)",
+     "Yellow Plumage Squawkabilly"],
+    ["Squawkabilly-White", "Squawkabilly (White Plumage)",
+     "Squawkabilly [White Plumage]"],
+    ["Squawkabilly-Blue", "Squawkabilly (Blue Plumage)",
+     "Blue Plumage Squawkabilly"],
+    # Gourgeist's dex row is the Medium Variety; the other three sizes differ
+    # by up to 45 points of Speed. Smogon writes the biggest "Gourgeist-Super".
+    ["Gourgeist", "Gourgeist (Medium Variety)", "Gourgeist [Average Size]"],
+    ["Gourgeist-Jumbo", "Gourgeist-Super", "Gourgeist (Jumbo Variety)"],
+    ["Gourgeist-Small", "Gourgeist (Small Variety)", "Small Gourgeist"],
+    # ... and a colour is still decoration everywhere else.
+    ["Florges", "Florges (White Flower)", "White Flower Florges"],
+    ["Floette-Eternal", "Floette (Eternal, Blue Flower)"],
+    # Castform's weather forms are one registration - it transforms in battle.
+    ["Castform", "Castform-Sunny", "Castform (Rainy Form)"],
     ["Mega Garchomp Z", "Garchomp-Mega-Z", "Mega Garchomp Z"],
     ["Mega Absol Z", "Absol-Mega-Z", "Mega Absol Z"],
     ["Mega Lucario Z", "Lucario-Mega-Z", "Mega Lucario Z"],
@@ -83,7 +105,6 @@ DIFFERENT = [
     ("Meowstic", "Meowstic-Female"),
     ("Rotom-Wash", "Rotom-Heat"),
     ("Tauros-Paldea Aqua", "Tauros-Paldea Blaze"),
-    ("Floette", "Floette-Eternal"),
     ("Floette-Eternal", "Mega Floette"),
     ("Toxtricity", "Toxtricity-L"),
     ("Mega Garchomp", "Mega Garchomp Z"),
@@ -92,6 +113,11 @@ DIFFERENT = [
     ("Garchomp", "Mega Garchomp Z"),
     ("Persian", "Persian-Alola"),
     ("Indeedee", "Indeedee-Female"),
+    ("Squawkabilly", "Squawkabilly-Yellow"),
+    ("Squawkabilly", "Squawkabilly-Blue"),
+    ("Squawkabilly-Yellow", "Squawkabilly-White"),
+    ("Gourgeist", "Gourgeist-Jumbo"),
+    ("Gourgeist-Small", "Gourgeist-Large"),
     ("Farfetch'd", "Sirfetch'd"),
     ("Slowbro", "Slowbro-Galar"),
     ("Lycanroc-Dusk", "Lycanroc-Midnight"),
@@ -142,7 +168,11 @@ def main():
                        # movepool at all in query.py.
                        ("Mega Garchomp Z", "garchomp"),
                        ("Mega Absol Z", "absol"),
-                       ("Mega Lucario Z", "lucario")]:
+                       ("Mega Lucario Z", "lucario"),
+                       # kept as identity by norm(), still a qualifier here:
+                       # both share the species movepool
+                       ("Squawkabilly-Yellow", "squawkabilly"),
+                       ("Gourgeist-Jumbo", "gourgeist")]:
         got = species_norm(name)
         if got != want:
             sp += 1
@@ -150,7 +180,7 @@ def main():
         elif verbose:
             print("  ok    %-22s -> %s" % (name, got))
     if not sp and not verbose:
-        print("  all 9 resolve to their base species")
+        print("  all 11 resolve to their base species")
 
     total = failed + bad + sp
     print("\n%s" % ("ALL PASS" if not total else "%d FAILURES" % total))

@@ -26,10 +26,49 @@ FORM_BY_SPECIES = {
     ("Rotom", "h"): "Heat", ("Rotom", "w"): "Wash", ("Rotom", "f"): "Frost",
     ("Rotom", "s"): "Fan", ("Rotom", "m"): "Mow",
     ("Lycanroc", "m"): "Midnight", ("Lycanroc", "d"): "Dusk",
-    ("Meowstic", "f"): "Female",
+    ("Meowstic", "f"): "Female", ("Indeedee", "f"): "Female",
     ("Floette", "e"): "Eternal",
     ("Tauros", "p"): "Paldea Combat", ("Tauros", "b"): "Paldea Blaze",
     ("Tauros", "a"): "Paldea Aqua",
+}
+
+# Forms that share the base form's sprite, so no attackdex row exists for them,
+# and that are nonetheless SEPARATE POKEMON: the form is fixed when you get the
+# creature and can never be changed. Serebii's own wording is the test - these
+# pages say "cannot be changed" / "doesn't change", while an in-battle stance
+# says "changes its form when...". The in-battle ones stay in `battle_forms`.
+#
+# Squawkabilly: four plumages, one spread and one movepool, and the third
+# ability splits them - "Intimidate - Hustle - Guts (Green & Blue) - Intimidate
+# - Hustle - Sheer Force (Yellow & White)". Sheer Force is the whole point: it
+# cannot be reached on a Green or Blue bird, and collapsing the four into one
+# row lost it from the database entirely. The base row is Green (sprite 931).
+#
+# Gourgeist: four sizes differing in HP, Attack and Speed, from 55/85/99 on the
+# Small to 85/100/54 on the Jumbo - a 45-point Speed spread across what used to
+# be one row. The base row is the Medium Variety. The spreads come off the
+# page's own "Stats - Small Variety" blocks, so only the naming is declared here.
+FIXED_FORMS = {
+    "Squawkabilly": {
+        "Blue": {"abilities": ["Intimidate", "Hustle", "Guts"]},
+        "Yellow": {"abilities": ["Intimidate", "Hustle", "Sheer Force"]},
+        "White": {"abilities": ["Intimidate", "Hustle", "Sheer Force"]},
+    },
+    "Gourgeist": {
+        "Small": {"stats_from": "Small"},
+        "Large": {"stats_from": "Large"},
+        "Jumbo": {"stats_from": "Jumbo"},
+    },
+}
+
+# Forms a Pokemon takes DURING a battle that change its typing rather than its
+# spread, so the "Stats - X" blocks the page carries for Aegislash and Palafin
+# do not exist for them. Castform is the only one in Champions: Forecast
+# "changes its form and type if Harsh Sunlight, Heavy Rain or Snow is in
+# effect" (Serebii), which pokebase spells out as "Water, Fire, or Ice" and
+# Smogon's engine pairs exactly. Its defensive profile and its STAB both move.
+TYPED_BATTLE_FORMS = {
+    "Castform": {"Sunny": ["Fire"], "Rainy": ["Water"], "Snowy": ["Ice"]},
 }
 
 
@@ -225,8 +264,11 @@ def parse_move(path, useable=None):
     li = s.find("That Learn")
     if li > 0:
         tail = s[li:]
+        # "#0", not "#0876": Serebii leaves the dex cell blank on Indeedee's
+        # female row. A four-digit-only pattern dropped it from all 45
+        # movepools it appears in, so the form ended up with no moves at all.
         for r in re.finditer(
-                r'class="fooinfo">#(\d{4})</td>.*?'
+                r'class="fooinfo">#(\d{1,4})</td>.*?'
                 r'<img src="(/pokedex-sv/icon/[^"]+)".*?'
                 r'<a href="/pokedex-champions/[^"]+">([^<]+)</a>', tail, re.S):
             nm = html.unescape(r.group(3)).strip()
@@ -359,6 +401,7 @@ def parse_pokemon(path, mega_names=None):
             st = dict(zip(["hp", "atk", "def", "spa", "spd", "spe"], map(int, nums)))
             st["total"] = int(mb.group(1))
             out.append({"slug": slug, "name": "%s-%s" % (base["name"], m.group(1)),
+                        "species": base["name"], "form": m.group(1),
                         "dex": base["dex"], "types": list(base["types"]),
                         "abilities": list(base["abilities"]), "base_stats": st,
                         "is_mega": False})
@@ -402,7 +445,7 @@ def forms_from_attackdex():
     one clean row per form: dex number, types, abilities and stats.
     """
     row = re.compile(
-        r'class="fooinfo">#(\d{4})</td>.*?'
+        r'class="fooinfo">#(\d{1,4})</td>.*?'
         r'<img src="(/pokedex-sv/icon/[^"]+)".*?'
         r'<a href="/pokedex-champions/[^"]+">([^<]+)</a>.*?'
         r"(/pokedex-bw/type/\w+\.gif.*?)"
@@ -430,9 +473,16 @@ def forms_from_attackdex():
                 continue
             stats = dict(zip(["hp", "atk", "def", "spa", "spd", "spe"], nums))
             stats["total"] = sum(nums)
+            # Indeedee's female row carries "#0" instead of "#0876". The
+            # sprite filename always has the real number, so read it from
+            # there rather than trusting the cell.
+            dex = int(m.group(1))
+            if not dex:
+                mdx = re.match(r"(\d+)", m.group(2).split("/")[-1])
+                dex = int(mdx.group(1)) if mdx else None
             found[key] = {
                 "slug": None, "name": key, "species": species, "form": form,
-                "dex": int(m.group(1)), "types": types, "abilities": abils,
+                "dex": dex, "types": types, "abilities": abils,
                 "base_stats": stats, "is_mega": False,
             }
     return found
@@ -540,7 +590,21 @@ def main():
             p["form"] = "Mega %s" % mx.group(2) if mx else "Mega"
             forms[p["name"]] = p
         elif p["name"] not in forms:
-            p["species"], p["form"] = p["name"], None
+            # A Pokedex block that repeats a form the attackdex already gave
+            # us under its full name is not a second Pokemon. Floette is the
+            # case: only the Eternal Flower form is in Champions, so its page
+            # block is headed plainly "Floette" and used to land as a species
+            # of its own - same types, same abilities, same 551 spread as
+            # Floette-Eternal, and no movepool, because no learner table ever
+            # says "Floette". Matched on the spread, which needs no name
+            # vocabulary.
+            twin = next((f for f in forms.values()
+                         if f["dex"] == p["dex"] and not f["is_mega"]
+                         and f.get("base_stats") == p["base_stats"]), None)
+            if twin:
+                continue
+            p.setdefault("species", p["name"])
+            p.setdefault("form", None)
             forms[p["name"]] = p
         elif p.get("battle_forms"):
             # The attackdex row wins on types and abilities, but only the
@@ -567,6 +631,41 @@ def main():
         else:
             del p["battle_forms"]
 
+    # Forms fixed at capture are their own Pokemon, so they get their own row.
+    # Gourgeist's sizes arrived above as `battle_forms` because the page writes
+    # them in the same block shape as Aegislash's stance - they are not a
+    # stance, the size is decided when you meet it and never changes.
+    for species, variants in FIXED_FORMS.items():
+        base = forms.get(species)
+        if not base:
+            continue
+        sizes = base.pop("battle_forms", {}) or {}
+        for label, spec in variants.items():
+            name = "%s-%s" % (species, label)
+            if name in forms:
+                continue
+            st = sizes.get(spec.get("stats_from")) or base["base_stats"]
+            forms[name] = {
+                "slug": base.get("slug"), "name": name, "species": species,
+                "form": label, "dex": base["dex"],
+                "types": list(base["types"]),
+                "abilities": list(spec.get("abilities") or base["abilities"]),
+                "base_stats": dict(st), "is_mega": False,
+            }
+
+    # Typing a Pokemon only has mid-battle. Stored beside the spread-changing
+    # stances rather than as rows, because it is one creature: pokebase's
+    # "Castform-Sunny" and a teamlist's "Castform" are the same registration.
+    for species, variants in TYPED_BATTLE_FORMS.items():
+        base = forms.get(species)
+        if not base:
+            continue
+        bf = base.get("battle_forms") or {}
+        for label, types in variants.items():
+            bf.setdefault(label, dict(base["base_stats"]))
+            bf[label] = dict(bf[label], types=list(types))
+        base["battle_forms"] = bf
+
     pokemon = sorted(forms.values(), key=lambda x: (x["dex"] or 0, x["name"]))
     json.dump(pokemon, open(os.path.join(DB, "pokemon.json"), "w", encoding="utf-8"),
               ensure_ascii=False, indent=1)
@@ -592,9 +691,24 @@ def main():
         for l in mv["learners"]:
             learn[l].append(mv["name"])
     learn = {k: sorted(v) for k, v in sorted(learn.items())}
+    # A form with no learner table of its own inherits the base form's, which
+    # is what the game does: Serebii lists no move for Basculegion-Female or
+    # for Squawkabilly's plumages, because they share the species' movepool.
+    # Without this they came out of the database with zero moves, which reads
+    # as "cannot attack" rather than "Serebii files it under the base name".
+    inherited = 0
+    for p in pokemon:
+        if p["is_mega"] or p["name"] in learn:
+            continue
+        src = learn.get(p.get("species") or "")
+        if src:
+            learn[p["name"]] = list(src)
+            inherited += 1
+    learn = {k: v for k, v in sorted(learn.items())}
     json.dump(learn, open(os.path.join(DB, "learnsets.json"), "w", encoding="utf-8"),
               ensure_ascii=False, indent=1)
-    print("  %d Pokemon with a movepool" % len(learn))
+    print("  %d Pokemon with a movepool (%d inherited from the base form)"
+          % (len(learn), inherited))
 
     print("Items...", flush=True)
     items = parse_items()

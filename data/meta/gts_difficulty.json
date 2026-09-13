@@ -1,7 +1,7 @@
 {
  "_what": "Derived by scripts/build_gts_difficulty.py. demand is measured from pokebase ladder usage; supply is declared in data/meta/go_sourcing.json and is an ESTIMATE.",
  "_scale": "1 easy (catch or cheap evolve) - 2 some grind - 3 real grind or limited spawn - 4 heavy grind, raid-locked or event-locked - 5 effectively closed",
- "count": 259,
+ "count": 264,
  "species": {
   "Venusaur": {
    "score": 3,
@@ -1675,7 +1675,7 @@
    "how": null,
    "seeded": false
   },
-  "Floette": {
+  "Floette-Eternal": {
    "score": 2,
    "demand": 2,
    "supply": 2,
@@ -1683,17 +1683,6 @@
    "rank": 68,
    "ladder_size": 199,
    "why_demand": "lightly played",
-   "how": null,
-   "seeded": false
-  },
-  "Floette-Eternal": {
-   "score": 5,
-   "demand": 5,
-   "supply": 2,
-   "usage": 22.3,
-   "rank": 8,
-   "ladder_size": 199,
-   "why_demand": "top of the ladder - the other side is running it, not trading it",
    "how": null,
    "seeded": false
   },
@@ -1951,6 +1940,39 @@
    "seeded": false
   },
   "Gourgeist": {
+   "score": 2,
+   "demand": null,
+   "supply": 2,
+   "usage": null,
+   "rank": null,
+   "ladder_size": 199,
+   "why_demand": "not on the M-B ladder - a Regulation M-C arrival, so there is no usage number for it yet",
+   "how": null,
+   "seeded": false
+  },
+  "Gourgeist-Jumbo": {
+   "score": 2,
+   "demand": null,
+   "supply": 2,
+   "usage": null,
+   "rank": null,
+   "ladder_size": 199,
+   "why_demand": "not on the M-B ladder - a Regulation M-C arrival, so there is no usage number for it yet",
+   "how": null,
+   "seeded": false
+  },
+  "Gourgeist-Large": {
+   "score": 2,
+   "demand": null,
+   "supply": 2,
+   "usage": null,
+   "rank": null,
+   "ladder_size": 199,
+   "why_demand": "not on the M-B ladder - a Regulation M-C arrival, so there is no usage number for it yet",
+   "how": null,
+   "seeded": false
+  },
+  "Gourgeist-Small": {
    "score": 2,
    "demand": null,
    "supply": 2,
@@ -2622,6 +2644,39 @@
    "seeded": false
   },
   "Squawkabilly": {
+   "score": 2,
+   "demand": null,
+   "supply": 2,
+   "usage": null,
+   "rank": null,
+   "ladder_size": 199,
+   "why_demand": "not on the M-B ladder - a Regulation M-C arrival, so there is no usage number for it yet",
+   "how": null,
+   "seeded": false
+  },
+  "Squawkabilly-Blue": {
+   "score": 2,
+   "demand": null,
+   "supply": 2,
+   "usage": null,
+   "rank": null,
+   "ladder_size": 199,
+   "why_demand": "not on the M-B ladder - a Regulation M-C arrival, so there is no usage number for it yet",
+   "how": null,
+   "seeded": false
+  },
+  "Squawkabilly-White": {
+   "score": 2,
+   "demand": null,
+   "supply": 2,
+   "usage": null,
+   "rank": null,
+   "ladder_size": 199,
+   "why_demand": "not on the M-B ladder - a Regulation M-C arrival, so there is no usage number for it yet",
+   "how": null,
+   "seeded": false
+  },
+  "Squawkabilly-Yellow": {
    "score": 2,
    "demand": null,
    "supply": 2,

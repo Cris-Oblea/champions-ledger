@@ -618,6 +618,49 @@ What the file cannot record:
 - **Gender forms have no header block.** Basculegion-Female exists only as an
   `<h2>Stats - Female</h2>` table and is a real form (120/92/65/100/75/78 vs the
   male's physical split). Its movepool is inherited from the base species.
+- **A form can share the base form's SPRITE and still be a different Pokemon**
+  (player, 2026-09-12). The attackdex learner tables only emit a row when the
+  sprite differs, so anything that looks identical was silently collapsed. Two
+  families were, and both mattered:
+  **Squawkabilly** has four plumages, fixed when you catch it, one spread and
+  one movepool, and the third ability splits them — Green and Blue get **Guts**,
+  Yellow and White get **Sheer Force**. Collapsing them did not just lose three
+  rows, it **lost Sheer Force from the database entirely**: no Champions Pokemon
+  carried it at all under that name.
+  **Gourgeist** has four sizes, also fixed at capture, differing by 30 HP,
+  15 Attack and **45 Speed** (Small 55/85/99 → Jumbo 85/100/54). They were
+  stored as `battle_forms`, i.e. as an in-battle stance, which they are not.
+  Both are declared in `build_db.FIXED_FORMS`, and `audit_forms.py` section 7
+  now fires on any Serebii page that splits abilities or stats per form while
+  the dex holds one row. That check catches both of these on the old data.
+- **`norm()` treats a colour or a size as decoration — except where it is not.**
+  A colour is nothing on a Florges and a different Pokemon on a Squawkabilly; a
+  size is nothing anywhere else and 45 Speed on a Gourgeist. `_SIGNIFICANT` in
+  `query.py` takes those tokens back for those two species only, so every other
+  cosmetic set keeps collapsing. The base row's own word is deliberately NOT
+  listed: our `Squawkabilly` row IS the Green Plumage and `Gourgeist` IS the
+  Medium Variety, so "Green"/"Medium" must keep collapsing onto them.
+- **Five forms are flipped by an ABILITY during the battle, and what they move
+  differs** — they are one registration each, never a dex row:
+  Stance Change flips **Aegislash** on stats (140 Atk / 140 Def), Zero to Hero
+  flips **Palafin** on stats (Atk 70 → 160), Forecast retypes **Castform**
+  (Fire in sun, Water in rain, Ice in snow). The other two move nothing on the
+  Pokemon itself: Hunger Switch only retypes **Morpeko**'s Aura Wheel
+  (Electric → Dark) and Disguise only eats one hit and 1/8 max HP on
+  **Mimikyu**. The first three carry a `battle_forms` entry with the spread or
+  the typing; the last two correctly carry none. Do not file any of the five as
+  cosmetic — the transformation is real every time.
+- **Serebii writes `#0`, not `#0876`, on Indeedee's female row.** A dex-number
+  pattern of `\d{4}` dropped that row from the form table AND from all 45
+  movepools it appears in, so Indeedee-Female came out with the male's merged
+  ability list and **zero moves**. It is a real form: Own Tempo instead of Inner
+  Focus, 70/55/65/95/105/85, and its own movepool — it is the only Champions
+  Pokemon that learns **Follow Me** besides Clefable and Maushold.
+- **Plain Floette is not in Champions — only the Eternal Flower form is.** The
+  master list has 670-e and nothing else, no learner table ever says "Floette",
+  and the Pokedex page's single block carries the Eternal 551 spread. A bare
+  "Floette" from any usage source therefore means that form, and `_ALIASES`
+  maps it there. The phantom second row this used to create had no movepool.
 - **A usage row whose item is not the Mega Stone is the BASE form, and says
   nothing about the Mega.** Pikalytics files Megas as their own entries
   (`Aerodactyl Mega`, `Staraptor Mega`, `Mawile Mega`...), so a plain

@@ -72,11 +72,11 @@ usage data is still M-B, because the M-C ladder has not run yet. Full write-up i
 
 | Data | Count | M-C change |
 |---|---|---|
-| Pokemon forms (**81 Mega**) | **340** | +32 (23 species, 3 forms, 6 Megas) |
+| Pokemon forms (**81 Mega**) | **345** | +32 (23 species, 3 forms, 6 Megas) |
 | Moves (**514 useable** in Champions) | 901 | +15 useable |
 | Abilities | **215** | +15 |
 | Items | **199** | +18 (6 stones, 12 held) |
-| Learnsets | **256** | +25 |
+| Learnsets | **264** | +25 |
 | Ladder usage — Pokemon / moves / abilities / items | 321 / 501 / 192 / 139 |
 | Speed tiers | 84 |
 | Smogon Pokemon (**53 with written VGC analysis**) | 323 |
@@ -86,9 +86,9 @@ usage data is still M-B, because the M-C ladder has not run yet. Full write-up i
 | **Worlds 2026 Juniors** — final, players / teamlists | **111 / 111** |
 
 Health after the M-C refresh: `audit_forms.py` clean (no collisions, nothing
-missing), `test_norm.py` all pass (**44** name groups collapse, **21** pairs stay
+missing), `test_norm.py` all pass (**53** name groups collapse, **25** pairs stay
 distinct), `damage.py --selftest` all benchmarks pass (20/20 vs Smogon's engine).
-Cross-validated against pokebase: all **340** of our forms match a pokebase
+Cross-validated against pokebase: all **345** of our forms match a pokebase
 entry, and every Pokemon pokebase tags Champions-legal is in our dex — zero
 unmatched either way.
 
@@ -256,6 +256,14 @@ be retracted.
   alone said Explosion would not clean the top shell; the real numbers said it
   OHKOes every neutral target through full bulk investment. Both halves of that
   mattered.
+- **A form with the same sprite is still a different Pokemon** (caught by the
+  player, 2026-09-12). Form rows come from the attackdex tables, which only
+  emit one when the sprite differs — so Squawkabilly's four plumages and
+  Gourgeist's four sizes collapsed into one row each. That is how **Sheer Force
+  ended up with no carrier in the whole database**: it is the third ability of
+  the Yellow and White birds only. Never read "one row" as "one Pokemon"
+  without checking the page's Alternate Forms table; `audit_forms.py` section 7
+  does it now.
 
 ---
 

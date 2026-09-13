@@ -116,6 +116,9 @@ _FORM_SYNONYMS = {
     # marked "not in the Champions dex". The male needs no entry: "male" and
     # "m" are already base markers, because the male IS the dex row.
     "f": "female",
+    # Serebii's biggest Gourgeist is the Jumbo Variety; Smogon's engine and
+    # pokebase both call it "Gourgeist-Super".
+    "super": "jumbo",
 }
 # Words that carry no identity. Cosmetic and in-battle forms collapse onto the
 # base: Sinistcha's Masterpiece/Unremarkable and Maushold's Family of Three/Four
@@ -139,9 +142,11 @@ _NOISE = {
     "large", "average", "east", "west", "sea", "spring", "summer", "autumn",
     "winter", "sunny", "rainy", "snowy", "sunshine", "overcast", "gulping",
     "gorging", "sword", "shield-", "ten", "fifty", "hundred", "percent",
-    "mode", "two", "segmented",
-    # cosmetic colour variants (Squawkabilly plumage, Flabebe/Florges flowers,
-    # Alcremie creams) - none of these words occurs in a species name
+    "mode", "two", "segmented", "medium", "variety", "plumages",
+    # cosmetic colour variants (Floette/Florges flowers, Alcremie creams,
+    # Minior's cores) - none of these words occurs in a species name.
+    # NOT cosmetic on Squawkabilly, where the plumage decides the third
+    # ability; _SIGNIFICANT below takes those four back for that species only.
     "blue", "green", "yellow", "white", "orange", "purple", "pink",
 }
 # "Male" marks the base form for the gender-split species here (Basculegion and
@@ -161,8 +166,28 @@ _BASE_MARKERS = {"male", "m", "standard", "midday", "kanto", "kantonian",
 # Toxtricity (M-C): Serebii suffixes the Low Key form "-L", every other source
 # spells it out. "low"/"key" cannot go in _NOISE - that would collapse Low Key
 # into Amped, which is a different form with a different ability.
+# Floette: only the Eternal Flower form is in Champions - the master list has
+# no other, no learner table ever says plain "Floette", the Pokedex page's one
+# block carries the Eternal 551 spread and Smogon's roster agrees - so a bare
+# "Floette" from any usage source means that form and must land on its row.
 _ALIASES = {"eternal floette mega": "floette mega",
-            "key low toxtricity": "l toxtricity"}
+            "key low toxtricity": "l toxtricity",
+            "floette": "eternal floette"}
+
+# Words that are cosmetic on most species but IDENTITY on these ones, so _NOISE
+# must not eat them here. A colour is decoration on a Florges and a different
+# Pokemon on a Squawkabilly, where Yellow and White carry Sheer Force and Green
+# and Blue carry Guts; a size word is decoration nowhere else and 45 points of
+# Speed on a Gourgeist. Scoped per species rather than removed from _NOISE,
+# because the same words still have to collapse on Floette, Florges, Alcremie
+# and every cosmetic set a later regulation brings in.
+# The base row's own form word is NOT listed: our dex row "Squawkabilly" IS the
+# Green Plumage and "Gourgeist" IS the Medium Variety, so those two words have
+# to keep collapsing or the base form would answer to two different keys.
+_SIGNIFICANT = {
+    "squawkabilly": {"blue", "yellow", "white"},
+    "gourgeist": {"small", "large", "jumbo"},
+}
 
 
 def norm(name):
@@ -173,10 +198,15 @@ def norm(name):
     s = s.replace("&#10", " ")
     s = re.sub(r"[\[\]()]", " ", s)
     s = re.sub(r"[^a-z0-9]+", " ", s)
+    raw = [_FORM_SYNONYMS.get(t, t) for t in s.split()]
+    keep = set()
+    for t in raw:
+        if t in _SIGNIFICANT:
+            keep = _SIGNIFICANT[t]
+            break
     tokens = []
-    for t in s.split():
-        t = _FORM_SYNONYMS.get(t, t)
-        if t in _NOISE or t in _BASE_MARKERS:
+    for t in raw:
+        if (t in _NOISE or t in _BASE_MARKERS) and t not in keep:
             continue
         if t not in tokens:
             tokens.append(t)
@@ -207,7 +237,11 @@ def species_norm(name):
     # - so `query.py pokemon "Mega Garchomp Z"` listed none of its moves.
     forms = {"mega", "alola", "hisui", "galar", "paldea", "x", "y", "z", "wash",
              "heat", "frost", "fan", "mow", "dusk", "midnight", "eternal",
-             "female", "aqua", "blaze", "combat"}
+             "female", "aqua", "blaze", "combat",
+             # kept by _SIGNIFICANT in norm() because they name a real form,
+             # but still only a qualifier on the species: a Yellow Plumage
+             # Squawkabilly and a Jumbo Gourgeist have the species' movepool.
+             "blue", "yellow", "white", "small", "large", "jumbo"}
     return " ".join(t for t in norm(name).split() if t not in forms)
 
 

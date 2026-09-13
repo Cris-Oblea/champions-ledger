@@ -444,11 +444,10 @@
   "name": "Flower Veil",
   "effect": "Ally Grass-type Pokémon are protected from status conditions and the lowering of their stats.",
   "pokemon": [
-   "Floette",
    "Floette-Eternal",
    "Florges"
   ],
-  "count": 3
+  "count": 2
  },
  {
   "name": "Fluffy",
@@ -490,6 +489,9 @@
    "Banette",
    "Espathra",
    "Gourgeist",
+   "Gourgeist-Jumbo",
+   "Gourgeist-Large",
+   "Gourgeist-Small",
    "Grimmsnarl",
    "Noivern",
    "Trevenant",
@@ -497,7 +499,7 @@
    "Wigglytuff",
    "Wyrdeer"
   ],
-  "count": 9
+  "count": 12
  },
  {
   "name": "Fur Coat",
@@ -581,9 +583,10 @@
    "Heracross",
    "Luxray",
    "Machamp",
-   "Squawkabilly"
+   "Squawkabilly",
+   "Squawkabilly-Blue"
   ],
-  "count": 6
+  "count": 7
  },
  {
   "name": "Harvest",
@@ -653,9 +656,12 @@
   "effect": "Damage from physical attacks is increased by 50%, but average accuracy is only 80%.",
   "pokemon": [
    "Flapple",
-   "Squawkabilly"
+   "Squawkabilly",
+   "Squawkabilly-Blue",
+   "Squawkabilly-White",
+   "Squawkabilly-Yellow"
   ],
-  "count": 2
+  "count": 5
  },
  {
   "name": "Hydration",
@@ -759,7 +765,6 @@
    "Farfetch'd",
    "Glalie",
    "Indeedee",
-   "Indeedee-Female",
    "Kangaskhan",
    "Lucario",
    "Mega Gallade",
@@ -767,7 +772,7 @@
    "Oranguru",
    "Umbreon"
   ],
-  "count": 13
+  "count": 12
  },
  {
   "name": "Insomnia",
@@ -776,9 +781,12 @@
    "Ariados",
    "Banette",
    "Gourgeist",
+   "Gourgeist-Jumbo",
+   "Gourgeist-Large",
+   "Gourgeist-Small",
    "Scovillain"
   ],
-  "count": 4
+  "count": 7
  },
  {
   "name": "Intimidate",
@@ -800,6 +808,9 @@
    "Salamence",
    "Scrafty",
    "Squawkabilly",
+   "Squawkabilly-Blue",
+   "Squawkabilly-White",
+   "Squawkabilly-Yellow",
    "Staraptor",
    "Tauros",
    "Tauros-Paldea Aqua",
@@ -807,7 +818,7 @@
    "Tauros-Paldea Combat",
    "Wyrdeer"
   ],
-  "count": 22
+  "count": 25
  },
  {
   "name": "Iron Fist",
@@ -1235,9 +1246,12 @@
   "pokemon": [
    "Dedenne",
    "Diggersby",
-   "Gourgeist"
+   "Gourgeist",
+   "Gourgeist-Jumbo",
+   "Gourgeist-Large",
+   "Gourgeist-Small"
   ],
-  "count": 3
+  "count": 6
  },
  {
   "name": "Piercing Drill",
@@ -1634,11 +1648,13 @@
    "Mawile",
    "Mega Camerupt",
    "Rampardos",
+   "Squawkabilly-White",
+   "Squawkabilly-Yellow",
    "Steelix",
    "Tauros",
    "Toucannon"
   ],
-  "count": 9
+  "count": 11
  },
  {
   "name": "Shell Armor",
@@ -1965,12 +1981,11 @@
   "name": "Symbiosis",
   "effect": "Passes the Pokémon's hold item to its adjacent ally when that ally consumes its hold item",
   "pokemon": [
-   "Floette",
    "Floette-Eternal",
    "Florges",
    "Oranguru"
   ],
-  "count": 4
+  "count": 3
  },
  {
   "name": "Synchronize",

@@ -2908,7 +2908,45 @@
    "spe": 70,
    "total": 420
   },
-  "is_mega": false
+  "is_mega": false,
+  "battle_forms": {
+   "Sunny": {
+    "hp": 70,
+    "atk": 70,
+    "def": 70,
+    "spa": 70,
+    "spd": 70,
+    "spe": 70,
+    "total": 420,
+    "types": [
+     "Fire"
+    ]
+   },
+   "Rainy": {
+    "hp": 70,
+    "atk": 70,
+    "def": 70,
+    "spa": 70,
+    "spd": 70,
+    "spe": 70,
+    "total": 420,
+    "types": [
+     "Water"
+    ]
+   },
+   "Snowy": {
+    "hp": 70,
+    "atk": 70,
+    "def": 70,
+    "spa": 70,
+    "spd": 70,
+    "spe": 70,
+    "total": 420,
+    "types": [
+     "Ice"
+    ]
+   }
+  }
  },
  {
   "slug": null,
@@ -5420,30 +5458,6 @@
   "is_mega": false
  },
  {
-  "slug": "floette",
-  "name": "Floette",
-  "dex": 670,
-  "types": [
-   "Fairy"
-  ],
-  "abilities": [
-   "Flower Veil",
-   "Symbiosis"
-  ],
-  "base_stats": {
-   "hp": 74,
-   "atk": 65,
-   "def": 67,
-   "spa": 125,
-   "spd": 128,
-   "spe": 92,
-   "total": 551
-  },
-  "is_mega": false,
-  "species": "Floette",
-  "form": null
- },
- {
   "slug": null,
   "name": "Floette-Eternal",
   "species": "Floette",
@@ -6218,36 +6232,85 @@
    "spe": 84,
    "total": 494
   },
-  "is_mega": false,
-  "battle_forms": {
-   "Small": {
-    "hp": 55,
-    "atk": 85,
-    "def": 122,
-    "spa": 58,
-    "spd": 75,
-    "spe": 99,
-    "total": 494
-   },
-   "Large": {
-    "hp": 75,
-    "atk": 95,
-    "def": 122,
-    "spa": 58,
-    "spd": 75,
-    "spe": 69,
-    "total": 494
-   },
-   "Jumbo": {
-    "hp": 85,
-    "atk": 100,
-    "def": 122,
-    "spa": 58,
-    "spd": 75,
-    "spe": 54,
-    "total": 494
-   }
-  }
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Gourgeist-Jumbo",
+  "species": "Gourgeist",
+  "form": "Jumbo",
+  "dex": 711,
+  "types": [
+   "Ghost",
+   "Grass"
+  ],
+  "abilities": [
+   "Pickup",
+   "Frisk",
+   "Insomnia"
+  ],
+  "base_stats": {
+   "hp": 85,
+   "atk": 100,
+   "def": 122,
+   "spa": 58,
+   "spd": 75,
+   "spe": 54,
+   "total": 494
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Gourgeist-Large",
+  "species": "Gourgeist",
+  "form": "Large",
+  "dex": 711,
+  "types": [
+   "Ghost",
+   "Grass"
+  ],
+  "abilities": [
+   "Pickup",
+   "Frisk",
+   "Insomnia"
+  ],
+  "base_stats": {
+   "hp": 75,
+   "atk": 95,
+   "def": 122,
+   "spa": 58,
+   "spd": 75,
+   "spe": 69,
+   "total": 494
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Gourgeist-Small",
+  "species": "Gourgeist",
+  "form": "Small",
+  "dex": 711,
+  "types": [
+   "Ghost",
+   "Grass"
+  ],
+  "abilities": [
+   "Pickup",
+   "Frisk",
+   "Insomnia"
+  ],
+  "base_stats": {
+   "hp": 55,
+   "atk": 85,
+   "def": 122,
+   "spa": 58,
+   "spd": 75,
+   "spe": 99,
+   "total": 494
+  },
+  "is_mega": false
  },
  {
   "slug": null,
@@ -7471,18 +7534,19 @@
   "is_mega": false
  },
  {
-  "slug": "indeedee",
+  "slug": null,
   "name": "Indeedee-Female",
+  "species": "Indeedee",
+  "form": "Female",
   "dex": 876,
   "types": [
    "Psychic",
    "Normal"
   ],
   "abilities": [
-   "Inner Focus",
+   "Own Tempo",
    "Synchronize",
-   "Psychic Surge",
-   "Own Tempo"
+   "Psychic Surge"
   ],
   "base_stats": {
    "hp": 70,
@@ -7493,9 +7557,7 @@
    "spe": 85,
    "total": 475
   },
-  "is_mega": false,
-  "species": "Indeedee-Female",
-  "form": null
+  "is_mega": false
  },
  {
   "slug": null,
@@ -7628,6 +7690,8 @@
  {
   "slug": "basculegion",
   "name": "Basculegion-Female",
+  "species": "Basculegion",
+  "form": "Female",
   "dex": 902,
   "types": [
    "Water",
@@ -7647,9 +7711,7 @@
    "spe": 78,
    "total": 530
   },
-  "is_mega": false,
-  "species": "Basculegion-Female",
-  "form": null
+  "is_mega": false
  },
  {
   "slug": null,
@@ -7868,6 +7930,84 @@
    "Intimidate",
    "Hustle",
    "Guts"
+  ],
+  "base_stats": {
+   "hp": 82,
+   "atk": 96,
+   "def": 51,
+   "spa": 45,
+   "spd": 51,
+   "spe": 92,
+   "total": 417
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Squawkabilly-Blue",
+  "species": "Squawkabilly",
+  "form": "Blue",
+  "dex": 931,
+  "types": [
+   "Normal",
+   "Flying"
+  ],
+  "abilities": [
+   "Intimidate",
+   "Hustle",
+   "Guts"
+  ],
+  "base_stats": {
+   "hp": 82,
+   "atk": 96,
+   "def": 51,
+   "spa": 45,
+   "spd": 51,
+   "spe": 92,
+   "total": 417
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Squawkabilly-White",
+  "species": "Squawkabilly",
+  "form": "White",
+  "dex": 931,
+  "types": [
+   "Normal",
+   "Flying"
+  ],
+  "abilities": [
+   "Intimidate",
+   "Hustle",
+   "Sheer Force"
+  ],
+  "base_stats": {
+   "hp": 82,
+   "atk": 96,
+   "def": 51,
+   "spa": 45,
+   "spd": 51,
+   "spe": 92,
+   "total": 417
+  },
+  "is_mega": false
+ },
+ {
+  "slug": null,
+  "name": "Squawkabilly-Yellow",
+  "species": "Squawkabilly",
+  "form": "Yellow",
+  "dex": 931,
+  "types": [
+   "Normal",
+   "Flying"
+  ],
+  "abilities": [
+   "Intimidate",
+   "Hustle",
+   "Sheer Force"
   ],
   "base_stats": {
    "hp": 82,
