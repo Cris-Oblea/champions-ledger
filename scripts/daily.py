@@ -349,7 +349,11 @@ def main():
     checks = [(["scripts/damage.py", "--selftest"], "damage selftest"),
               (["scripts/test_norm.py"], "name matching"),
               (["scripts/audit_lookups.py"], "every lookup resolves"),
-              (["scripts/audit_forms.py"], "no form went missing")]
+              (["scripts/audit_forms.py"], "no form went missing"),
+              # The README is the front door of a public repo, and every number
+              # in it had drifted by the time anyone looked. The counts are
+              # generated now, so this only has to check they were regenerated.
+              (["scripts/build_readme.py", "--check"], "the README is current")]
     for argv, what in checks:
         g, gout = sh([PY] + argv)
         if g != 0:

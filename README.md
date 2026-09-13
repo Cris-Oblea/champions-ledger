@@ -1,173 +1,193 @@
-# Pokemon Champions — Cross-Source Battle Database
+# Champions Ledger
 
-A local, offline-queryable database for **Pokemon Champions only**.
+A personal tool for **Pokemon Champions**, and nothing else. Two halves that
+share one database:
 
-Champions is its own game with its own rules: a restricted roster, a reduced item
-pool, rebalanced moves (different base power, PP and secondary effects than the
-console games), a Stat Point system instead of EVs, and paid training. Data from
-Scarlet/Violet or any other entry is **not** mixed in anywhere — every number
-here was pulled from a Champions-specific source.
+- **A phone app** — the box, the builds, the Mega Stones, a damage calculator
+  that runs Smogon's own engine, and a searchable dex of every legal form.
+- **A cross-source database** — Champions data pulled from five sources,
+  joined, cross-checked, and queryable from the command line.
 
-Format is **VGC**: doubles, bring 6 / pick 4.
-
----
-
-## Quick start
-
-```bash
-python scripts/query.py brief Ceruledge             # full dossier, all sources
-python scripts/query.py moves --flag sound          # every sound move
-python scripts/query.py moves --priority +          # every priority move
-python scripts/query.py counter-priority            # what shuts priority down
-python scripts/query.py moves --flag bullet --learners
-python scripts/query.py pokemon Garchomp            # card + Smogon analysis
-python scripts/query.py ability Bulletproof         # effect + who carries it
-python scripts/query.py item "Focus Sash"
-python scripts/query.py usage --top 30              # ladder usage
-python scripts/query.py usage --owned               # ...limited to your box
-python scripts/query.py speed --min 100             # speed tiers
-python scripts/query.py worlds --usage              # Worlds 2026 Masters aggregate
-python scripts/query.py worlds --usage --division all   # Masters vs Seniors vs Juniors
-python scripts/query.py worlds --top 8              # top teams, full sets
-python scripts/query.py owned                       # your box vs the meta
-```
-
-Run `python scripts/query.py <command> -h` for all filters.
+Champions is its own game. A restricted roster, a reduced item pool, rebalanced
+moves, **Stat Points instead of EVs**, and training that costs money. Numbers
+from Scarlet/Violet are wrong here often enough to matter, so nothing from
+another entry is mixed in anywhere. Format is **VGC**: doubles, bring 6 / pick 4.
 
 ---
 
-## What is in here
+## What the data describes right now
 
+<!-- VINTAGE:START -->
+Regulation **M-C**. Ladder usage fetched 2026-09-13, from 278 Pokemon.
+Tournament data is Worlds 2026, played under M-B - that is history, not stale.
+<!-- VINTAGE:END -->
+
+---
+
+## The app
+
+Built from this repo and deployed to Cloudflare. It is single-user and behind a
+login; the data lives in Supabase under Row Level Security, so an anonymous
+request returns nothing.
+
+| Tab | What it answers |
+|---|---|
+| **Champs / HOME** | What is in each box, what came from where, and what can still leave the game |
+| **Builds** | The set each Pokemon is carrying: nature, ability, 66 Stat Points, moves |
+| **Damage** | Real damage rolls, running Smogon's Champions engine in the page |
+| **Find** | "Who learns Imprison *and* Wide Guard *and* Protect" — filters that stack |
+| **Items** | Every item, what it does, what it costs, and which move or ability it serves |
+| **GTS** | Open trades, what a chip is worth, and what it can realistically fetch |
+| **Profile** | Box capacity, and everything else derived so it cannot go stale |
+
+---
+
+## What is in the database
+
+<!-- COUNTS:START -->
 | File | Rows | What it holds |
 |---|---|---|
-| `data/db/pokemon.json` | 308 | Every legal form: types, base stats, abilities, Megas |
-| `data/db/moves.json` | 901 | Champions move data + 15 flags + who learns it |
-| `data/db/abilities.json` | 200 | Champions ability text + carriers |
-| `data/db/items.json` | 181 | Items and Mega Stones with VP prices |
-| `data/db/learnsets.json` | 231 | Reverse index: Pokemon → movepool |
-| `data/db/smogon_basics.json` | — | Smogon's own move/item/ability/flag tables |
-| `data/meta/usage_pokemon.json` | 321 | Ladder usage % per Pokemon |
-| `data/meta/usage_moves.json` | 501 | Ladder usage % per move |
-| `data/meta/usage_abilities.json` | 192 | Ladder usage % per ability |
-| `data/meta/usage_items.json` | 139 | Ladder usage % per item |
-| `data/meta/speed_tiers.json` | 84 | Base speed → real speed at each investment |
-| `data/meta/smogon_analyses.json` | 323 | Written VGC analyses (53 Pokemon covered) |
-| `data/meta/tournament_*.json` | 645 | Final standings + full teamlists, all three Worlds divisions |
-| `data/meta/pikalytics_*.json` | 243 | Win rates, top SP spreads, 2-/3-Pokemon cores |
-| `data/meta/teams.json` | 33 | Community teams (secondary; Worlds data is better) |
-| `inventory/inventory.json` | — | Your box, stones, items and VP costs |
+| `data/db/pokemon.json` | 345 | Every playable form: types, base stats, abilities, and the 81 Megas |
+| `data/db/moves.json` | 901 (512 useable) | Champions move data, 15 flags, and who learns it |
+| `data/db/abilities.json` | 215 | Champions ability text and every carrier |
+| `data/db/items.json` | 199 | Items and Mega Stones with their VP price |
+| `data/db/learnsets.json` | 264 | Reverse index: Pokemon to movepool |
+| `data/db/ability_moves.json` | 140 | Which ability changes which move, derived from the move text |
+| `data/db/typechart.json` | 18 | The type chart, cross-checked on 3402 matchups |
+| `data/meta/usage_pokemon.json` | 278 | Ladder usage per Pokemon |
+| `data/meta/usage_moves.json` | 362 | Ladder usage per move |
+| `data/meta/speed_tiers.json` | 89 | Base Speed to real Speed at every investment |
+| `data/meta/smogon_analyses.json` | 323 | Smogon's written VGC analyses |
+<!-- COUNTS:END -->
 
-The 15 move flags are the reason cross-queries work:
-`contact, sound, punch, biting, snatchable, slicing, bullet, wind, powder,
-metronome, gravity, defrosts, magic_coat, protect_blocks, mirror_move`.
+That table is **generated** by `scripts/build_readme.py` and checked on every
+build. See [Keeping this file honest](#keeping-this-file-honest).
 
 ---
 
-## Sources, and what each one is good for
-
-| Source | Role |
-|---|---|
-| **Serebii** (`/pokemonchampions/`, `/pokedex-champions/`, `/attackdex-champions/`) | Ground truth for rules: what exists, what it does, exact Champions numbers |
-| **pokebase.app** | Live ladder usage, per-Pokemon move/item/ability/nature/teammate splits, speed tiers |
-| **pokedata.ovh** | Official tournament standings with complete teamlists (ability, item, nature, all 4 moves) |
-| **Pikalytics** (`/ai/pokedex/...`) | Win rates, top SP spreads, and 2-/3-Pokemon cores — the cores exist nowhere else. Lags the live season |
-| **Smogon** (`/dex/champions/`) | The only source with *reasoning* — why these stat points, why this move, what else works. Covers 53 Pokemon |
-
-### pokebase vs Pikalytics
-
-Both break down usage per Pokemon; they are not redundant.
-
-- **pokebase** is current (Regulation M-B, live ladder) and is the better default
-  for "what is being played right now". It gives ability / nature / item /
-  teammate percentages and the speed-tier chart.
-- **Pikalytics** adds three things pokebase does not: **win rate** per Pokemon,
-  the **most common SP spread** with its share of builds, and **team cores**
-  (which pairs and trios appear together, with counts). Its Champions datasets
-  are stamped `2026-05` and the ladder format code still says season 3, so its
-  raw usage numbers trail pokebase — use it for spreads, win rates and cores,
-  not for "what is popular today".
-
-### On Smogon-style written analysis
-
-Smogon is the only site publishing per-Pokemon prose for Champions (why a
-spread, what else the slot can run, checks and partners), and it covers 53 of
-308 forms (25 in Regulation M-B, 28 more only in M-A). Everything else checked — Victory Road, ChampTeams, MetaVGC,
-Stratagem, VGC Team Report, Pokemon Zone — publishes team lists, tier lists or
-general teambuilding guides, not per-Pokemon analysis.
-
-For anything Smogon has not covered, `query.py brief <pokemon>` assembles the
-same raw material an analysis is written from: real Worlds sets with their item
-/ ability / nature / move distributions, the partners it is actually played
-next to, its speed tier and its neighbours there.
-
----
-
-## Champions rules worth remembering
-
-**Current regulation:** M-B (17 Jun 2026 – 9 Sep 2026). Season M-5 (5 Aug – 9 Sep 2026).
-Regulation M-A ran 8 Apr – 17 Jun 2026.
-
-**Ranks:** Poke Ball → Great Ball → Ultra Ball → Master Ball → Champion.
-Each tier runs Rank 4 up to Rank 1. Master ranks 3–1 and Champion Tier open a
-week after a season starts. 300 VP per win.
-
-**Training costs (VP):**
-
-| Change | Cost |
-|---|---|
-| SP change | 5 |
-| Move | 250 |
-| Nature | 500 |
-| Ability | 500 |
-
-Observed in-game 2026-08-29. Serebii's training page still lists the launch
-prices (2 / 100 / 200 / 400) and is out of date — use `inventory.json`.
-
-A Training Ticket makes one training free. IVs cannot be changed.
-
-**Other costs:** Mega Stone 2000 VP · keep a rental Pokemon 2500 VP ·
-most held items 700–1000 VP.
-
-**Stat Points (replaces EVs):** **66 points total, max 32 in one stat.**
-Verified against every Smogon and pokebase spread. 5 VP per SP change.
-
-**Item Clause:** no two Pokemon on a team may hold the same item (0 of 388
-Worlds teams repeat one). Items are therefore a team-level decision, settled
-once all six slots exist — not a fixed part of an individual build.
-
-**Mega Evolution:** a team of 6 can hold more than one Mega Stone (most Worlds
-teams held two), but **only one Pokemon may Mega Evolve per battle**. The second
-stone is matchup flexibility at team preview, not a second active Mega.
-
-**Abilities are timed:** an ability that only arrives on Mega Evolution (Contrary
-on Mega Staraptor) is absent on turn 1, when Intimidate has already fired. An
-ability present from entry (Defiant on Kingambit) punishes it immediately.
-
-**Not in the game:** no Legendary or Mythical Pokemon.
-
----
-
-## Updating
+## Asking it things
 
 ```bash
-python scripts/fetch_serebii.py all      # rules, dex, movedex (cached)
-python scripts/build_db.py               # rebuild data/db/*
-python scripts/fetch_pokebase.py         # usage + speed tiers
-python scripts/fetch_pikalytics.py       # win rates, SP spreads, team cores
-python scripts/fetch_smogon.py           # VGC analyses
-python scripts/fetch_tournament.py       # latest Worlds Masters round + teamlists
-python scripts/fetch_tournament.py --division seniors
-python scripts/fetch_tournament.py --division juniors
-python scripts/audit_forms.py            # check every form/gender/Mega is covered
-python scripts/test_norm.py              # name matching across the five sources
+python scripts/query.py brief Ceruledge        # a dossier, every source at once
+python scripts/query.py pokemon Garchomp       # the card, plus Smogon's write-up
+python scripts/query.py moves --flag sound     # every sound move
+python scripts/query.py counter-priority       # what shuts priority down
+python scripts/query.py resist ice fairy --owned   # who covers a shared hole
+python scripts/query.py usage --top 30         # the ladder
+python scripts/query.py worlds --usage --division all   # Masters / Seniors / Juniors
+python scripts/query.py owned                  # your box against the meta
+
+python scripts/damage.py "Mega Glalie" Explosion Kingambit --atk-sp 32
+python scripts/damage.py --selftest            # the formula, against Smogon's engine
 ```
 
-Everything caches raw HTML/JSON under `data/raw/`, so re-runs only fetch what is
-new. For a different event:
+Every command takes `-h`.
+
+---
+
+## The five sources, and what each is for
+
+| Source | Good for | Not for |
+|---|---|---|
+| **Serebii** | Rules and mechanics. What exists, what it does, exact Champions numbers | Anything about what people play |
+| **pokedata.ovh** | Official tournament teamlists — what actually wins, all three age divisions | Current usage: a finished event keeps the format it was played in |
+| **pokebase.app** | Live ladder usage and per-Pokemon splits | Rules text |
+| **Pikalytics** | Win rates, top SP spreads, and 2-/3-Pokemon cores | What is popular — its data lags |
+| **Smogon's calculator** | Damage arithmetic and ability behaviour. The only *executable* source | Per-Pokemon data: it inherits from Scarlet/Violet and the leaks show |
+
+Ladder usage and tournament usage disagree, and that is signal rather than
+error. Anything quoted here says which one it came from.
+
+---
+
+## How it stays current, without anyone remembering
+
+```
+05:30  GitHub Actions refreshes every source, rebuilds, runs the gate,
+       deploys, and opens a pull request with whatever moved.
+```
+
+**The gate** is nineteen checks, and nothing reaches the phone without passing
+all of them:
+
+- a **shrink guard** — if a rebuild comes back with fewer forms, moves or
+  learnsets than the last good one, a source broke and the run stops
+- **four Python audits** — the damage formula against Smogon's engine, name
+  matching across all five sources, every derived index resolving, and every
+  form still accounted for
+- **fifteen browser tests** — run against the built page, because no Python
+  check can see a template regression
+
+`main` is protected: pull requests only, gate must be green, and that is
+enforced for admins too. A local `pre-push` hook runs the same checks before a
+push leaves the machine.
 
 ```bash
-python scripts/fetch_tournament.py --tid 0000191 --division masters
+python scripts/daily.py --install-hooks   # once per clone
+python scripts/daily.py --no-refresh      # gate what is built, then publish
+python scripts/refresh.py                 # the full source refresh
+python scripts/refresh.py --regulation    # ...when a new regulation drops
 ```
 
-Edit `inventory/inventory.json` by hand as your box changes, then re-run
-`python scripts/query.py owned`.
+---
+
+## Champions rules worth knowing
+
+- **Stat Points replace EVs**: 66 total, at most 32 in one stat. Verified
+  against every published spread.
+- **Training costs VP**: 5 per Stat Point, 250 a move, 500 a nature, 500 an
+  ability. A Mega Stone is 2000; keeping a rental is 2500.
+- **Item Clause** — no two Pokemon on a team may hold the same item. Measured:
+  0 of 636 Worlds teams repeat one. So an item is a **team-level** decision,
+  not part of an individual build.
+- **Species Clause** — no two Pokemon on a team may be the same species, and
+  not even the same *form*. Measured across 642 Worlds teams.
+- **Mega Evolution** — a team may carry several stones, and most Worlds teams
+  did, but **only one Pokemon may Mega Evolve per battle**. The second stone is
+  matchup flexibility at team preview.
+- **A Mega can change stats, typing and ability**, in any combination, so a
+  species is judged on its Mega line rather than its base row.
+- **No Terastallization**, and no Legendaries or Mythicals.
+
+---
+
+## Layout
+
+```
+scripts/     fetchers, the database build, the query CLI, the damage calculator
+data/db/     the built database - the thing everything else reads
+data/meta/   usage, tournaments, speed tiers, written analyses
+tracker/     the app: one HTML template plus a generated data blob
+tests/       fifteen browser tests, run against the BUILT page
+analysis/    write-ups: the Smogon engine, regulation M-C, the roadmap
+inventory/   the box, the builds and the teams, as files
+CLAUDE.md    the rules this project works by, including everything learned the hard way
+```
+
+---
+
+## Keeping this file honest
+
+Every number above is **generated** from the data and verified on every build:
+`scripts/build_readme.py --check` runs inside the gate, so a README that has
+drifted blocks the deploy exactly like a failing test.
+
+This exists because by 2026-09-13 the README claimed 308 forms against a real
+345, named a regulation two versions old, and told the reader to hand-edit a
+file the app had replaced. None of that was wrong when it was written. **A
+number typed into prose is a promise to come back and retype it**, and the only
+promises this repo keeps are the ones a machine checks.
+
+So: when a change lands, the counts follow on their own. The prose is hand-
+written, and anything that changes what the app *is* belongs here in the same
+pull request that changes it.
+
+---
+
+## A note on the data
+
+Every figure is derived from public community sources — Serebii, pokebase,
+Pikalytics, Smogon and pokedata.ovh — and is here to make one player's own
+box searchable. Pokemon and all respective names are trademarks of Nintendo,
+Creatures Inc. and GAME FREAK Inc. This is a fan project with no affiliation to
+any of them, and nothing here is sold or advertised.

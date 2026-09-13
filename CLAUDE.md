@@ -768,6 +768,24 @@ singles vocabulary across every cached analysis settles it:
 
 The `VGC*` filter in `fetch_smogon.py` is correct. Keep singles out.
 
+## The README is the front door, and it is checked
+
+**Every change that alters what the app IS goes into `README.md` in the same
+commit (player, 2026-09-13).** The repo is public now, so that file is what
+anyone sees first - and by the time it was read it claimed 308 forms against a
+real 345, named a regulation two versions old, and told the reader to hand-edit
+a file the app had replaced.
+
+The counts are therefore **generated**, never typed: `scripts/build_readme.py`
+writes them between `<!-- COUNTS:START -->` markers, `--check` is one of the
+gate's checks in `daily.py`, and `refresh.py` regenerates them every night. A
+drifted README blocks the deploy exactly like a failing test.
+
+The PROSE is still yours to write. What belongs there is what the project IS -
+the app's tabs, the sources, how it stays current, the rules of the format -
+not a changelog. When a feature lands, describe it there in the same pull
+request.
+
 ## Refresh
 
 ```bash
