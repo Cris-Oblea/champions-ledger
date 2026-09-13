@@ -643,6 +643,41 @@ and nothing reaches the phone without passing all of them.
   `supabase_migrate_*.sql` had been pasted into the SQL editor by hand with
   nothing recording it. All four are applied.
 
+### The automation, proved by running it (2026-09-13)
+
+None of this came out of reading the workflows. All of it came out of firing
+them, and four of the five faults below were invisible in a green run.
+
+- **The off-site backup is on.** Nightly at 07:00 UTC - 04:00 in Chile, an hour
+  and a half ahead of the refresh - into a separate PRIVATE repo, because a
+  snapshot is the whole ledger in plaintext. **Nothing in the chain expires**: a
+  deploy key to push, a connection string to read (`--db-url`), since Supabase
+  no longer issues a non-expiring access token. A missing secret now FAILS the
+  job; the old warning-and-skip turned a revoked secret into a green tick.
+- **The restore's dry run was lying.** It called all 161 rows changed when
+  nothing had, because the nightly job and the laptop read the database through
+  different doors and the two spell a timestamp differently. The dry run is what
+  makes a restore safe to run, so `canonical()` fixes the comparison and
+  `--selftest` guards it in the gate. Verified by dry-running the snapshot the
+  cloud pushed, downloaded back from the private repo.
+- **The nightly could not open its pull request**, and never had been able to:
+  "GitHub Actions is not permitted to create or approve pull requests" is a
+  repository setting, now on and named at the step that needs it. Two refreshes
+  were stranded on orphan `daily/*` branches while the runs in between passed,
+  because a run where no source moved exits before that step. It also did not
+  commit the README, whose counts are generated from `data/db`, so a refresh that
+  moved one blocked the next person's push for a drift they had not caused.
+- **Every action is on its Node 24 major** - checkout v7, setup-python v7,
+  setup-node v7, cache v6, upload-artifact v7, setup-cli v3. `upload-artifact@v5`
+  would have cleared the warning while still running Node 20. v3 of setup-cli
+  installs from npm, which removes a rate-limited GitHub API lookup that had
+  already failed a run.
+- **Two ordering traps.** `GITHUB_ENV` does not reach the step that writes it, so
+  the backup cloned its store with no key, silently started a fresh history and
+  could never see the previous snapshot; and `gh pr merge --auto` is REFUSED when
+  the pull request is already mergeable, which is a race against GitHub's own
+  status propagation that one run won and the next lost.
+
 ### The app
 
 - **A build is its own thing** (player, 2026-09-13). Own id, nullable
