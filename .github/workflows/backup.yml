@@ -88,9 +88,15 @@ jobs:
         with:
           python-version: "3.12"
 
+      # Pinned, not `latest`. Resolving "latest" is an unauthenticated call to
+      # the GitHub API from a shared runner IP, and it is rate limited: five
+      # runs in an evening was enough to fail with "rate limit exceeded" before
+      # the job reached the database. A nightly backup should not have a lookup
+      # in front of it that can be throttled by strangers, and pinning also
+      # means the tool reading the ledger cannot change under us overnight.
       - uses: supabase/setup-cli@v1
         with:
-          version: latest
+          version: 2.117.0
 
       - name: fetch the private store
         env:
