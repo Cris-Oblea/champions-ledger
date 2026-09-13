@@ -191,7 +191,8 @@ There is no support, no roadmap you can file against, and it assumes a box,
 a ledger and a Cloudflare account that are not yours. Read it, borrow from it,
 but do not expect it to run for you out of the box.
 
-**Licence.** The CODE is MIT — see [LICENSE](LICENSE). The contents of `data/`
+**Licence.** The CODE is MIT — see [LICENSE](LICENSE), and [NOTICE](NOTICE)
+for what it does not reach. The contents of `data/`
 are not covered and cannot be: they are derived from public community sources
 (Serebii, pokebase.app, Pikalytics, Smogon, pokedata.ovh) and describe a game
 owned by someone else. They are here to make one player's own box searchable,
