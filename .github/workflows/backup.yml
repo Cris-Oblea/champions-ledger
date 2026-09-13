@@ -17,23 +17,36 @@
 # to every day of the last fortnight plus one per month. Git history keeps
 # what the folder drops, so nothing is actually lost by that.
 #
-# WHY A DEPLOY KEY AND NOT A TOKEN. A fine-grained PAT expires - a year at most
-# - and this job runs unattended, so the failure mode is the backup stopping
-# months before anyone looks. A deploy key does not expire, and it is scoped to
-# exactly one repository by construction: this key can write to the backup repo
-# and can reach nothing else in the account, which a PAT is only trusted to do.
+# NOTHING HERE EXPIRES, AND THAT IS THE POINT. An unattended 04:00 job fails by
+# stopping quietly, months before anyone looks, so every credential it holds was
+# chosen for not having an expiry date:
 #
-# SETUP - two of the four secrets are credentials, so only the player can make
-# them (Settings > Secrets and variables > Actions):
+#   * a DEPLOY KEY, not a fine-grained PAT, to push. A PAT lasts a year at most.
+#     A deploy key never expires and reaches exactly one repository by
+#     construction - this one can write to the backup repo and nothing else in
+#     the account.
+#   * a CONNECTION STRING, not a Supabase personal access token, to read. The
+#     laptop reads the ledger through the Management API with the access token
+#     the CLI keeps in its keyring, but Supabase no longer issues one that never
+#     expires. `supabase db query --db-url` skips the API and connects straight
+#     to Postgres, so CI needs no token. It is also the narrower credential: an
+#     access token can read every project on the account and hand out their API
+#     keys, while the connection string reaches one database.
 #
-#   SUPABASE_ACCESS_TOKEN  - supabase.com/dashboard/account/tokens
-#   SUPABASE_DB_PASSWORD   - Project settings > Database (reset it there if it
-#                            is not to hand; the CLI keeps the laptop's copy in
-#                            the OS keyring, where it cannot be read out)
-#   BACKUP_REPO            - owner/name of the private repo        [set]
-#   BACKUP_SSH_KEY         - the deploy key's private half         [set]
+# SECRETS
 #
-# Until all four exist the job skips with a warning instead of failing every
+#   SUPABASE_DB_PASSWORD   - Project settings > Database. The URL is composed
+#                            from it below, so a password reset is one secret to
+#                            update and nothing else.
+#   SUPABASE_PROJECT_REF   - Project settings > General
+#   BACKUP_REPO            - owner/name of the private repo
+#   BACKUP_SSH_KEY         - the deploy key's private half
+#
+#   CHAMPIONS_DB_URL       - optional, and wins outright when set. The escape
+#                            hatch for the day Supabase moves the pooler
+#                            hostname: fixable from the phone, no pull request.
+#
+# Until the four exist the job skips with a warning instead of failing every
 # night: a workflow that is always red is a workflow everybody stops reading.
 name: back the ledger up
 
@@ -53,16 +66,17 @@ jobs:
       - name: is it set up?
         id: cfg
         env:
-          TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
           PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+          OVERRIDE: ${{ secrets.CHAMPIONS_DB_URL }}
+          REF: ${{ secrets.SUPABASE_PROJECT_REF }}
           REPO: ${{ secrets.BACKUP_REPO }}
           KEY: ${{ secrets.BACKUP_SSH_KEY }}
         run: |
           missing=""
-          [ -z "$TOKEN" ]    && missing="$missing SUPABASE_ACCESS_TOKEN"
-          [ -z "$PASSWORD" ] && missing="$missing SUPABASE_DB_PASSWORD"
-          [ -z "$REPO" ]     && missing="$missing BACKUP_REPO"
-          [ -z "$KEY" ]      && missing="$missing BACKUP_SSH_KEY"
+          [ -z "$PASSWORD" ] && [ -z "$OVERRIDE" ] && missing="$missing SUPABASE_DB_PASSWORD"
+          [ -z "$REF" ]  && [ -z "$OVERRIDE" ] && missing="$missing SUPABASE_PROJECT_REF"
+          [ -z "$REPO" ] && missing="$missing BACKUP_REPO"
+          [ -z "$KEY" ]  && missing="$missing BACKUP_SSH_KEY"
           if [ -n "$missing" ]; then
             echo "::warning::No off-site backup yet - missing secret(s):$missing."\
                  "See the top of .github/workflows/backup.yml. The ledger is"\
@@ -105,10 +119,24 @@ jobs:
       - name: take the snapshot
         if: steps.cfg.outputs.ready == 'yes'
         env:
-          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
-          SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+          OVERRIDE: ${{ secrets.CHAMPIONS_DB_URL }}
+          PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+          REF: ${{ secrets.SUPABASE_PROJECT_REF }}
+          # Read off the laptop's own `supabase/.temp/pooler-url`, i.e. the host
+          # the CLI itself resolved for this project. A repository variable
+          # overrides it without touching this file.
+          POOLER: ${{ vars.SUPABASE_POOLER_HOST || 'aws-0-sa-east-1.pooler.supabase.com:5432' }}
         run: |
-          supabase link --project-ref "${{ secrets.SUPABASE_PROJECT_REF }}"
+          if [ -n "$OVERRIDE" ]; then
+            URL="$OVERRIDE"
+          else
+            # --db-url wants the password percent-encoded, so encode it rather
+            # than hoping it has no punctuation in it.
+            ENC=$(python -c 'import os, urllib.parse as u; print(u.quote(os.environ["PASSWORD"], safe=""))')
+            URL="postgresql://postgres.$REF:$ENC@$POOLER/postgres"
+          fi
+          echo "::add-mask::$URL"
+          export CHAMPIONS_DB_URL="$URL"
           python scripts/backup_ledger.py --dir "$RUNNER_TEMP/store/snapshots"
           python scripts/backup_ledger.py --dir "$RUNNER_TEMP/store/snapshots" --verify
 
@@ -127,4 +155,4 @@ jobs:
           fi
           git commit -q -m "ledger snapshot $(date -u +%Y-%m-%d)"
           git push -q origin HEAD:main
-          echo "pushed $(ls snapshots | wc -l) snapshot file(s) in the store"
+          echo "pushed - $(ls snapshots | wc -l) snapshot file(s) in the store"

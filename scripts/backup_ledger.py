@@ -56,15 +56,40 @@ KEYS = {"box": ("user_id", "id"), "builds": ("user_id", "id"),
 CHUNK = 25
 
 
+# The laptop and the nightly job reach the same database through different
+# doors, and the difference is one flag.
+#
+# `--linked` goes through the Management API with the personal access token the
+# CLI keeps in the OS keyring. That is right for the laptop and wrong for CI:
+# Supabase no longer issues a non-expiring access token, and a credential that
+# expires under an unattended 04:00 job fails by stopping quietly, which is the
+# one failure mode a backup must not have. So CI connects straight to Postgres
+# with a connection string in CHAMPIONS_DB_URL and needs no token at all.
+#
+# It is also the narrower of the two credentials. An access token can read
+# every project on the account, create and delete them, and hand out their API
+# keys; the connection string can read and write one database.
+#
+# Its password must be percent-encoded - that is the CLI's requirement, not
+# ours - and the string is a secret, so it is never printed, not even in the
+# error paths below.
+DB_URL = os.environ.get("CHAMPIONS_DB_URL")
+
+
 def sql(text, timeout=300):
-    """Run one statement through the linked Supabase CLI. -> (ok, output)."""
+    """Run one statement through the Supabase CLI. -> (ok, output)."""
+    door = ["--db-url", DB_URL] if DB_URL else ["--linked"]
     try:
-        r = subprocess.run(["supabase", "db", "query", text, "--linked"],
+        r = subprocess.run(["supabase", "db", "query", text] + door
+                           + ["-o", "json"],
                            cwd=ROOT, capture_output=True, text=True,
                            encoding="utf-8", errors="replace", timeout=timeout)
     except (OSError, subprocess.TimeoutExpired) as e:
         return False, "could not run the Supabase CLI: %s" % e
-    return r.returncode == 0, (r.stdout or "") + (r.stderr or "")
+    out = (r.stdout or "") + (r.stderr or "")
+    if DB_URL:
+        out = out.replace(DB_URL, "<CHAMPIONS_DB_URL>")
+    return r.returncode == 0, out
 
 
 def rows(table):
@@ -78,10 +103,21 @@ def rows(table):
     ok, out = sql("select * from public.%s" % table)
     if not ok:
         return None
-    try:
-        return json.loads(out[out.index("{"):out.rindex("}") + 1])["rows"]
-    except (ValueError, KeyError):
-        return None
+    # Through the Management API the answer arrives in that envelope; over a
+    # direct connection the array can arrive on its own. Take whichever came,
+    # rather than assuming the door.
+    for opener, closer in (("{", "}"), ("[", "]")):
+        if opener not in out:
+            continue
+        try:
+            blob = json.loads(out[out.index(opener):out.rindex(closer) + 1])
+        except ValueError:
+            continue
+        if isinstance(blob, dict) and isinstance(blob.get("rows"), list):
+            return blob["rows"]
+        if isinstance(blob, list):
+            return blob
+    return None
 
 
 def digest(tables):
