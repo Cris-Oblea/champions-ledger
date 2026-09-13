@@ -49,15 +49,20 @@ jobs:
       statuses: write          # to report the gate it just ran
 
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@v7
         with:
           node-version: "22"
+          # From v5 this action caches the package manager by itself when
+          # package.json names one. Ours does not, and the gate's `npm install`
+          # writes the lockfile it would key on, so say no rather than leave it
+          # to what a future major decides the default should be.
+          package-manager-cache: false
 
       # the fetchers' own cache. Keyed by run number so each day writes a new
       # entry and restore-keys picks up yesterday's - Actions caches are
@@ -70,7 +75,7 @@ jobs:
       # warm for the next one even if it died later.
       - name: restore the source cache
         id: cache
-        uses: actions/cache/restore@v4
+        uses: actions/cache/restore@v6
         with:
           path: data/raw
           key: sources-${{ github.run_number }}
@@ -133,14 +138,14 @@ jobs:
 
       - name: save the source cache
         if: always() && steps.cache.outputs.cache-hit != 'true'
-        uses: actions/cache/save@v4
+        uses: actions/cache/save@v6
         with:
           path: data/raw
           key: sources-${{ github.run_number }}
 
       - name: keep the log
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: daily-log
           path: data/raw/daily_logs/
