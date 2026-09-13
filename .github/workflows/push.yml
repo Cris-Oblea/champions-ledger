@@ -55,7 +55,22 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "22"
+
+      # The SAME cache the nightly job writes. Most of the gate reads it: the
+      # damage selftest checks parity against the vendored Smogon engine, and
+      # two audits read Serebii's cached pages. Without it the gate runs at a
+      # fraction of its strength, so it is restored rather than worked around.
+      # Restore only - a push run fetches nothing and has nothing new to save.
+      # restore-keys picks up the most recent daily entry, and the nightly job
+      # writes one every morning, so a miss means the checks fail loudly rather
+      # than a weaker gate passing quietly.
+      - name: restore the source cache
+        uses: actions/cache/restore@v4
+        with:
+          path: data/raw
+          key: sources-${{ github.run_number }}
+          restore-keys: sources-
 
       - name: install what the scripts import
         run: |

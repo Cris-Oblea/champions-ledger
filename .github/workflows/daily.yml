@@ -55,7 +55,7 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: "20"
+          node-version: "22"
 
       # the fetchers' own cache. Keyed by run number so each day writes a new
       # entry and restore-keys picks up yesterday's - Actions caches are
