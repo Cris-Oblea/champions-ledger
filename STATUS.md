@@ -570,6 +570,9 @@ drop re-runs all of it.
   AND Drought) and a **Statuses** pane carrying Champions' own rebalance.
 - **A build belongs to a Pokemon**: it follows its box row, is kept-but-inactive
   when parked in HOME, and dies with a release. No more orphans.
+  **REVERSED two days later, 2026-09-13 - see the last section of this file.**
+  A build owns its own id now and `box_id` may be null. Do not act on the
+  sentence above.
 
 ### Bugs found and fixed (all by the player, then swept for)
 
@@ -614,3 +617,86 @@ iOS asks for. Deployed as `388a099a`.
 treatment for the Champions Box list that the HOME list got, and the four
 numbers the sources disagree on (Slash, Snipe Shot, Night Slash, Meteor
 Assault) which only the game can settle.
+
+---
+
+## Where we stopped, 2026-09-12/13
+
+Everything below is on `main` and deployed. The app is at **25 gate checks**,
+and nothing reaches the phone without passing all of them.
+
+### The repo became a project
+
+- **Public**, renamed `Cris-Oblea/champions-ledger` - "pokemon-champions" read
+  as if it were about the game, and the app is a manager for builds, teams and
+  boxes. MIT `LICENSE` plus a `NOTICE` carving out the scraped data.
+- **`main` is protected**: pull requests only, the gate must be green, and it
+  is enforced for admins too - verified by a rejected push, not assumed.
+  `.github/workflows/push.yml` gates every PR; the nightly job opens its own PR
+  and auto-merges it. `scripts/hooks/pre-push` runs the same gate locally.
+- **The README is generated and checked.** Counts, vintage, the gate paragraph
+  and the test count all live between markers; `build_readme.py --check` is in
+  the gate, so a drifted README blocks the deploy.
+- **`scripts/migrate.py`** and a `schema_migrations` table. The four
+  `supabase_migrate_*.sql` had been pasted into the SQL editor by hand with
+  nothing recording it. All four are applied.
+
+### The app
+
+- **A build is its own thing** (player, 2026-09-13). Own id, nullable
+  `box_id`, four states - active / parked / orphan / **unbound, which is an
+  idea and not a fault**. Several builds per species, and a build for a Pokemon
+  he does not own yet. A release now UNBINDS instead of deleting.
+- **Teams**: six slots, each pointing at a build, **the item on the slot** (the
+  Item Clause makes an item a team decision). Species and Item Clause checked
+  rather than remembered, speed order and shared weaknesses derived, and a
+  four-of-six team is legal to save - it says what he has, where it is, and
+  what is still to get. Teams lives **inside the Builds tab**: an eighth tab
+  wrapped the phone's nav onto two rows.
+- **The editors are views, not pop-ups.** Back out of the item picker and the
+  team editor is still there with its draft. This was the single worst thing
+  about the builder.
+- **Trainer became Profile** - one editable field (box capacity), everything
+  else derived - and Damage became **Damage Calc**, since it is not tied to any
+  one game.
+- **Ability tags are scoped.** Guts was badging every move on Conkeldurr; it
+  raises the Attack STAT and touches no move, so it badges nothing now. Rules
+  that cover a whole category say so once instead of tagging 40 rows, and all
+  of a Pokemon's abilities are consulted, not just the first.
+- **Priority shows its number**, negative ones included.
+- **Creating a record can no longer overwrite one.** It inserts and lets
+  Postgres' 23505 say which id is taken (`putNew`). UUIDs were considered and
+  rejected: the primary key is already `(user_id, id)`, so slugs never collide
+  between accounts, and the readable id is what the build picker shows.
+- **The page is thirteen files.** `tracker/src/`, concatenated by the build
+  into a 23-line shell. **Edit the part, never `index.template.html`.**
+  `node scripts/check_app.js` reads them back as one program, inside the gate.
+
+### Forms, finished
+
+345 forms, 0 mismatches against Smogon's engine. Squawkabilly's four plumages
+and Gourgeist's four sizes are real rows (`FIXED_FORMS`) - collapsing the
+plumages had lost **Sheer Force from the database entirely**. Indeedee-Female
+came back from a `#0` dex number, and plain Floette is the Eternal form.
+`audit_forms.py` section 7 fires on any Serebii page that splits abilities or
+stats while our dex holds one row.
+
+### The ledger, as of 2026-09-13
+
+**38** in the Champions box, **101** in HOME, **18** builds, **0** teams.
+
+### Open
+
+- **`inventory/*.json` and the ledger disagree, and the ledger is NOT simply
+  right here.** The box and HOME are: the repo still says 47 and 39. The
+  BUILDS are the other way round - the repo holds **10 builds the app has
+  never seen** (Basculegion, Eelektross, Farigiraf, Froslass, Garchomp,
+  Glalie, Jolteon, Ninetales-Alola, Scrafty, Staraptor), several of them live
+  plans. `sync_tracker.py import` replaces the build list wholesale, so
+  running it today would delete all ten. **Do not sync builds until that is
+  settled** - either they get entered in the app, or the importer learns to
+  merge.
+- Still open from before: a service worker for instant repeat opens, the same
+  filter/cap treatment for the Champions Box list that HOME got, and the four
+  numbers only the game can settle (Slash, Snipe Shot, Night Slash, Meteor
+  Assault).
