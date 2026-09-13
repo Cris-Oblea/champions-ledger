@@ -8,11 +8,14 @@
     python scripts/daily.py --uninstall
 
 PUBLISH A HAND EDIT WITH --no-refresh, never with a bare `wrangler deploy`.
-The nightly job has to pass a shrink guard, four audits and fifteen browser
-tests; a hand deploy passed none of them, which left the automation safer than
-the person - on the path taken far more often.
+Everything below has to pass a shrink guard, the Python audits, the source
+check and every browser test; a hand deploy passed none of them, which left the
+automation safer than the person - on the path taken far more often. The count
+is deliberately not written here: GATE_CHECKS, SOURCE_CHECKS and BROWSER_TESTS
+are the only things that decide it, and the README's sentence is generated from
+exactly those three lists.
 
-Why this exists rather than a bare `refresh.py` in Task Scheduler:
+Why this exists rather than a bare `refresh.py` on a timer:
 
   * It says WHAT CHANGED. A refresh that prints 200 lines and exits 0 tells you
     nothing; this diffs the files that carry meaning - the ladder, the Smogon
@@ -77,6 +80,11 @@ GATE_CHECKS = [
     # token expires, the folder moves, and nothing looks wrong until the day it
     # is needed. This is the alarm.
     (["scripts/backup_ledger.py", "--check"], "the ledger has a recent backup"),
+    # The README's numbers are generated so they cannot drift; its PROSE can,
+    # and so can every other document. STATUS.md - the file a new session reads
+    # first - stated a rule that had been reversed two days earlier, and
+    # nothing noticed. This is what notices (player, 2026-09-13).
+    (["scripts/check_docs.py"], "no document contradicts a settled decision"),
 ]
 
 # Read the app's SOURCE, which is the one thing the browser tests cannot: they
