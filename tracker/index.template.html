@@ -704,9 +704,28 @@ details.rolls[open] summary::before{content:"2 "}
         <span class="spacer"></span>
         <button class="btn primary fab" id="buildAdd"><span class="fabplus" aria-hidden="true">+</span>New build</button>
       </div>
-      <div class="search field"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-        <input type="text" id="buildSearch" placeholder="Filter builds"></div>
-      <div class="list" id="listBuilds"></div>
+      <!-- Teams lives in here rather than in its own tab: an eighth tab broke
+           the phone's bar onto two rows and cost more visibility than the tab
+           was worth (player, 2026-09-13). They belong together anyway - a team
+           IS six builds, and this is the same pane pattern Items already uses. -->
+      <div class="btnrow" style="margin-bottom:12px">
+        <button class="btn sm" id="bldPaneBuilds" aria-pressed="true">Builds</button>
+        <button class="btn sm" id="bldPaneTeams" aria-pressed="false">Teams</button>
+      </div>
+      <div id="buildsPane">
+        <div class="search field"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <input type="text" id="buildSearch" placeholder="Filter builds"></div>
+        <div class="list" id="listBuilds"></div>
+      </div>
+      <div id="teamsPane" hidden>
+        <p class="sub">Six slots, and the item lives on the slot — the Item
+          Clause means the six of them field exactly one Sitrus Berry, so an
+          item is a team decision, never part of a build.</p>
+        <div class="btnrow" style="margin-bottom:10px">
+          <button class="btn primary" id="teamAdd">New team</button>
+        </div>
+        <div class="list" id="listTeams"></div>
+      </div>
     </section>
 
     <!-- =========================================================== GEAR -->
@@ -779,18 +798,6 @@ details.rolls[open] summary::before{content:"2 "}
         rebalanced three of them; every value says where it came from, so a
         figure nobody measured here never looks like one that was.</p>
       <div id="statusList" class="list"></div>
-    </section>
-
-    <!-- ========================================================== TEAMS -->
-    <section class="view" id="v-teams" role="tabpanel" hidden>
-      <div class="viewhead"><div><h1>Teams</h1>
-        <p class="lede">Six slots, and the item lives on the slot — the Item
-          Clause means the six of them field exactly one Sitrus Berry, so an
-          item is a team decision, never part of a build.</p></div></div>
-      <div class="btnrow" style="margin-bottom:10px">
-        <button class="btn primary" id="teamAdd">New team</button>
-      </div>
-      <div class="list" id="listTeams"></div>
     </section>
 
     <!-- =========================================================== FIND -->
@@ -1519,7 +1526,6 @@ var TABS = [
   ["calc", "Damage", "M7 4h10v16H7zM10 8h4M10 12h4M10 16h4"],
   ["find", "Find", "M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14M20 20l-4-4"],
   ["gear", "Items", "M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8M4 12h2m12 0h2m-8-8v2m0 12v2M6.5 6.5 8 8m8 8 1.5 1.5m0-11L16 8M8 16l-1.5 1.5"],
-  ["teams", "Teams", "M4 19V9l8-5 8 5v10M9 19v-6h6v6"],
   ["trainer", "Profile", "M12 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8M5 21v-1a7 7 0 0 1 14 0v1"]
 ];
 /* The toast sits above the tab bar, whose height changes with the breakpoint
@@ -7093,6 +7099,24 @@ function gearPane(which){
 }
 $("gearStones").onclick = function(){ gearPane("stones"); };
 $("gearItems").onclick  = function(){ gearPane("items"); };
+
+/* Builds and Teams share one tab, by the same switcher. An eighth tab wrapped
+   the phone's bar onto two rows, which cost more than the tab was worth
+   (player, 2026-09-13) - and they belong together anyway, since a team IS six
+   builds. */
+function buildsPane(which){
+  var panes = {builds:"buildsPane", teams:"teamsPane"};
+  var btns = {builds:"bldPaneBuilds", teams:"bldPaneTeams"};
+  Object.keys(panes).forEach(function(k){
+    $(panes[k]).hidden = k !== which;
+    $(btns[k]).setAttribute("aria-pressed", k === which ? "true" : "false");
+  });
+  /* the "New build" button in the header belongs to the Builds pane only */
+  var add = $("buildAdd");
+  if (add) add.hidden = which !== "builds";
+}
+$("bldPaneBuilds").onclick = function(){ buildsPane("builds"); };
+$("bldPaneTeams").onclick  = function(){ buildsPane("teams"); };
 $("railBtn").onclick = function(){
   var sh = document.querySelector(".shell");
   sh.classList.toggle("narrow");

@@ -108,7 +108,17 @@ setTimeout(() => {
      w.teamTypes(r)[0].weak >= w.teamTypes(r)[5].weak, true);
 
   console.log("\n  la lista");
-  w.go("teams");
+  /* Teams shares the Builds tab: an eighth tab wrapped the phone's bar onto
+     two rows and cost more visibility than the tab was worth (2026-09-13). */
+  w.go("builds");
+  w.buildsPane("teams");
+  ok("la pestana Teams ya no existe",
+     [...d.querySelectorAll("#tabs button, #tabs a")]
+       .some(b => b.textContent.trim() === "Teams"), false);
+  ok("y el panel de equipos se ve",
+     d.getElementById("teamsPane").hidden, false);
+  ok("mientras el de builds se esconde",
+     d.getElementById("buildsPane").hidden, true);
   const row = d.querySelector("#listTeams .row");
   ok("el equipo aparece", !!row, true);
   ok("con cuantos huecos lleva", /5\/6/.test(row.textContent), true);

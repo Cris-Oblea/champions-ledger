@@ -33,11 +33,10 @@ request returns nothing.
 | Tab | What it answers |
 |---|---|
 | **Champs / HOME** | What is in each box, what came from where, and what can still leave the game |
-| **Builds** | The set each Pokemon is carrying: nature, ability, 66 Stat Points, moves |
+| **Builds** | Every set written, and the **Teams** made of them — six slots, the item each holds, and the clauses checked |
 | **Damage** | Real damage rolls, running Smogon's Champions engine in the page |
 | **Find** | "Who learns Imprison *and* Wide Guard *and* Protect" — filters that stack |
 | **Items** | Every item, what it does, what it costs, and which move or ability it serves |
-| **Teams** | Six slots, the item each one holds, and the clauses checked rather than remembered |
 | **GTS** | Open trades, what a chip is worth, and what it can realistically fetch |
 | **Profile** | Box capacity, and everything else derived so it cannot go stale |
 
