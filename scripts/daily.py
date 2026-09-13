@@ -80,6 +80,12 @@ GATE_CHECKS = [
     # token expires, the folder moves, and nothing looks wrong until the day it
     # is needed. This is the alarm.
     (["scripts/backup_ledger.py", "--check"], "the ledger has a recent backup"),
+    # And the alarm is only half of it: a snapshot is worth what its restore is
+    # worth, and the dry run is what makes a restore safe to run at all. It was
+    # reading every row as changed when nothing had, because the nightly job
+    # and the laptop read the database through different doors and the two
+    # spell a timestamp differently. Needs no database, so it runs anywhere.
+    (["scripts/backup_ledger.py", "--selftest"], "a restore can still tell what changed"),
     # The README's numbers are generated so they cannot drift; its PROSE can,
     # and so can every other document. STATUS.md - the file a new session reads
     # first - stated a rule that had been reversed two days earlier, and
