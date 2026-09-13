@@ -211,6 +211,9 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--install", action="store_true")
+    ap.add_argument("--install-hooks", action="store_true",
+                    help="point core.hooksPath at scripts/hooks, so the "
+                         "pre-push gate runs on this clone too")
     ap.add_argument("--uninstall", action="store_true")
     ap.add_argument("--skip-deploy", action="store_true")
     ap.add_argument("--no-refresh", action="store_true",
@@ -219,6 +222,15 @@ def main():
     ap.add_argument("--deep", action="store_true",
                     help="force the slow-moving sources today, whatever day it is")
     a = ap.parse_args()
+
+    if a.install_hooks:
+        # The hook lives in scripts/hooks rather than .git/hooks so that it is
+        # versioned, reviewable, and arrives with a fresh clone. core.hooksPath
+        # is per-clone config, which is the one step that cannot be committed.
+        rc, o = sh(["git", "config", "core.hooksPath", "scripts/hooks"])
+        print(o.strip() or ("hooks installed: scripts/hooks"
+                            if rc == 0 else "could not set core.hooksPath"))
+        return rc
 
     if a.install:
         return install_task()

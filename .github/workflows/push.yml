@@ -28,6 +28,12 @@ on:
       - "**/*.md"
       - "analysis/**"
       - "inventory/**"
+  # A PR is gated but never published: the deploy belongs to main, after the
+  # merge. Wired up now so that the day branch protection becomes available -
+  # it needs GitHub Pro on a private repo, checked 2026-09-13 - there is
+  # already a required check for it to require.
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 
 # Shares the nightly job's group so the two can never deploy over each other.
@@ -87,7 +93,12 @@ jobs:
         # --no-refresh: gate what the repo already holds, then deploy it.
         # Exactly the command a person would run by hand, run by the machine
         # so that nobody has to remember it.
-        run: python scripts/daily.py --no-refresh
+        run: |
+          if [ "${{ github.event_name }}" = "pull_request" ]; then
+            python scripts/daily.py --no-refresh --skip-deploy
+          else
+            python scripts/daily.py --no-refresh
+          fi
 
       - name: what the run decided
         if: always()

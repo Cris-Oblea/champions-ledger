@@ -1,0 +1,37 @@
+#!/bin/sh
+# Refuse to push what the gate would refuse to publish.
+#
+# GitHub can enforce this properly - a required status check on main - but only
+# on GitHub Pro for a private repo (checked 2026-09-13: both branch protection
+# and rulesets answer "Upgrade to GitHub Pro or make this repository public").
+# Making it public is not an option: tracker/supabase_seed.sql holds the whole
+# ledger in plaintext.
+#
+# So this is the client-side half, and for a one-person repo it covers the real
+# risk, which is an accident rather than anyone bypassing it on purpose. CI
+# still runs the same checks after the push and still refuses to deploy a bad
+# build, so a slip is caught within about ninety seconds either way. This just
+# stops it reaching main at all.
+#
+# Installed by `python scripts/daily.py --install-hooks`, which points
+# core.hooksPath here so the hook is versioned and shared rather than living
+# unversioned in .git/hooks.
+#
+# In a real emergency: git push --no-verify. Deliberately the only way out.
+
+# A branch delete pushes the zero sha and has nothing to check.
+while read -r _local_ref local_sha _remote_ref _remote_sha; do
+  case "$local_sha" in
+    0000000000000000000000000000000000000000) exit 0 ;;
+  esac
+done
+
+echo "pre-push: running the gate (about 100s) - git push --no-verify to skip"
+if python scripts/daily.py --no-refresh --dry-run; then
+  echo "pre-push: gate green, pushing"
+  exit 0
+fi
+echo ""
+echo "pre-push: BLOCKED. The gate failed, so this would not deploy anyway."
+echo "          Fix it, or push with --no-verify if you know why."
+exit 1
