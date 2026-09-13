@@ -346,7 +346,8 @@ worth more than the Masters check alone:
 ## Player state
 
 Master Ball Tier Rank 3. The box, the stones, the items and the VP balance live
-in `inventory/inventory.json` and are printed by `python scripts/query.py owned`
+in the ledger (they used to be in `inventory/inventory.json`, deleted
+2026-09-13) and are printed by `python scripts/query.py owned`
 — they are deliberately not copied here, because the two would drift (this
 paragraph did: it still claimed 48/50 and 34 permanent slots).
 
@@ -356,7 +357,8 @@ Worlds teams and only touches Attack.
 
 ### Builds recorded (20) — registration complete
 
-Every Pokemon the player has actually trained is now in `inventory/builds.json`.
+Every Pokemon the player has actually trained is in the ledger's `builds`
+table. (This said `inventory/builds.json`, which no longer exists.)
 Print them with `python scripts/query.py build [pokemon]`, which rule-checks each
 spread as it goes. Do not restate them here — the two copies would drift.
 
@@ -694,15 +696,17 @@ python scripts/backup_ledger.py --list      # and what each snapshot held
 
 ### Open
 
-- **`inventory/*.json` and the ledger disagree, and the ledger is NOT simply
-  right here.** The box and HOME are: the repo still says 47 and 39. The
-  BUILDS are the other way round - the repo holds **10 builds the app has
-  never seen** (Basculegion, Eelektross, Farigiraf, Froslass, Garchomp,
-  Glalie, Jolteon, Ninetales-Alola, Scrafty, Staraptor), several of them live
-  plans. `sync_tracker.py import` replaces the build list wholesale, so
-  running it today would delete all ten. **Do not sync builds until that is
-  settled** - either they get entered in the app, or the importer learns to
-  merge.
+- ~~`inventory/*.json` and the ledger disagree~~ **SETTLED 2026-09-13: the repo
+  no longer holds any copy of the ledger.** `inventory/` and
+  `sync_tracker.py` are deleted; `scripts/ledger.py` reads the database, and
+  `query.py owned` stopped printing a two-day-old box. The ten builds that
+  existed only in the repo were dropped on the player's word - he had deleted
+  them in the app when the Pokemon left Champions. The five team write-ups were
+  NOT data and moved to `analysis/team_plans.json`.
+- **VP and the ticket counts have no editor.** They sit in the ledger's
+  `meta/trainer`, but Profile was cut back to box capacity alone on 2026-09-12,
+  so `vp_balance` is frozen at whatever it was that day. Quote it as of then,
+  or put the field back.
 - Still open from before: a service worker for instant repeat opens, the same
   filter/cap treatment for the Champions Box list that HOME got, and the four
   numbers only the game can settle (Slash, Snipe Shot, Night Slash, Meteor

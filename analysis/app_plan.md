@@ -41,7 +41,7 @@ faster.
 ## Phase 1 — the team builder, which is the missing half of the app
 
 **What exists.** `builds` holds one set per box row: nature, ability, SP,
-moves. `inventory/teams.json` holds five rich team write-ups - `slots`,
+moves. `analysis/team_plans.json` holds five rich team write-ups - `slots`,
 `shared_holes`, `item_resolution`, `open_questions` - as hand-written prose,
 **in the repo only**. The app has never seen them.
 
@@ -73,7 +73,7 @@ the right home for items, and why this is not a cosmetic feature.
   already in the blob), its speed order, which members are rentals and
   therefore cannot be trained, and which builds are unfinished.
 
-**Migration:** `inventory/teams.json` is the seed. Import the five, keep the
+**Migration:** `analysis/team_plans.json` is the seed. Import the five, keep the
 prose in a `notes` field rather than discarding it - the reasoning in those
 files is the most valuable thing in the repo and none of it is derivable.
 

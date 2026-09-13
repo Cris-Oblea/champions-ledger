@@ -9,7 +9,7 @@ Sources joined per query:
     data/meta/usage_*    pokebase   what the ladder actually runs
     data/meta/tournament_*  pokedata   what placed at official events
     data/meta/smogon_analyses  Smogon  why a set is built that way
-    inventory/inventory.json    what YOU own
+    the Supabase ledger         what YOU own (scripts/ledger.py)
 
 Examples:
     python scripts/query.py moves --flag sound
@@ -29,6 +29,9 @@ Examples:
 import os, re, sys, json, argparse
 from collections import Counter, defaultdict
 
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import ledger                                  # noqa: E402
+
 # Windows consoles default to cp1252, which cannot encode the Korean and
 # Japanese player names in the Worlds standings. Replace them instead of
 # dying halfway through a dossier.
@@ -41,7 +44,7 @@ for _s in (sys.stdout, sys.stderr):
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DB = os.path.join(ROOT, "data", "db")
 META = os.path.join(ROOT, "data", "meta")
-INV = os.path.join(ROOT, "inventory", "inventory.json")
+
 
 
 # --------------------------------------------------------------------------
@@ -328,7 +331,7 @@ def pct(v):
 
 
 def owned_sets():
-    inv = load(INV, {}) or {}
+    inv = ledger.inv()
     perm = {norm(x) for x in inv.get("permanent_pokemon", [])}
     temp = {norm(x) for x in (inv.get("rental_pokemon", {}) or {}).get("list", [])}
     stones = set(inv.get("mega_stones", []))
@@ -481,8 +484,8 @@ def cmd_moves(a):
     if getattr(a, "owned", False):
         # owned_sets() returns norm() keys, which are lowercased and token
         # sorted ("alola ninetales"), so the display name is read straight from
-        # inventory.json instead - the player has to recognise these at a glance.
-        inv = load(INV, {}) or {}
+        # the ledger instead - he has to recognise these at a glance.
+        inv = ledger.inv()
         for x in inv.get("permanent_pokemon", []):
             box[norm(x)] = "*" + x
         for x in (inv.get("rental_pokemon", {}) or {}).get("list", []):
@@ -881,7 +884,7 @@ def mega_profile(m):
 
 
 def cmd_megas(a):
-    inv = load(INV, {}) or {}
+    inv = ledger.inv()
     perm = inv.get("permanent_pokemon", [])
     rentinfo = inv.get("rental_pokemon", {}) or {}
     rent = rentinfo.get("list", [])
@@ -894,9 +897,7 @@ def cmd_megas(a):
     owner = stone_owner_map()
     ui = usage_index()
     wcounts, wtotal = worlds_mega_counts()
-    _bpath = os.path.join(ROOT, "inventory", "builds.json")
-    builds = {norm(str(b.get("pokemon")))
-              for b in (load(_bpath, {}) or {}).get("builds", [])}
+    builds = {norm(str(b.get("pokemon"))) for b in ledger.builds()}
     bases = {norm(p["name"]): p for p in db("pokemon") if not p["is_mega"]}
 
     rows = []
@@ -967,8 +968,7 @@ SP_MAX = 32
 
 def cmd_build(a):
     """Show the player's own builds and check them against the rules."""
-    data = load(os.path.join(ROOT, "inventory", "builds.json"), {}) or {}
-    builds = data.get("builds", [])
+    builds = ledger.builds()
     if a.name:
         builds = [b for b in builds if norm(a.name) in norm(b["pokemon"])]
     if not builds:
@@ -1091,7 +1091,7 @@ ABILITY_DEFENCE = {
 def build_abilities():
     """Pokemon name -> the ability the player actually runs, from builds.json."""
     out = {}
-    for b in (load(os.path.join(ROOT, "inventory", "builds.json"), {}) or {}).get("builds", []):
+    for b in ledger.builds():
         out[norm(b["pokemon"])] = b.get("ability")
         if b.get("mega") and b.get("mega_ability"):
             out[norm(b["mega"])] = b["mega_ability"]
@@ -1177,8 +1177,7 @@ def cmd_resist(a):
     chart = typechart()
     perm, temp, _, _ = owned_sets()
     ui = usage_index()
-    builds = {b["pokemon"] for b in
-              (load(os.path.join(ROOT, "inventory", "builds.json"), {}) or {}).get("builds", [])}
+    builds = {b["pokemon"] for b in ledger.builds()}
     ba = build_abilities()
 
     rows = []
@@ -1283,8 +1282,7 @@ def cmd_core(a):
     print("\n  SHARED HOLES (2+ members at 2x or worse): %s" % ", ".join(holes))
 
     perm, temp, _, _ = owned_sets()
-    builds = {b["pokemon"] for b in
-              (load(os.path.join(ROOT, "inventory", "builds.json"), {}) or {}).get("builds", [])}
+    builds = {b["pokemon"] for b in ledger.builds()}
     ui = usage_index()
     have = {m["name"] for m in members}
 
@@ -1578,7 +1576,7 @@ def mega_line(name, mons, stones):
 
 def cmd_owned(a):
     perm, temp, stones, items = owned_sets()
-    inv = load(INV, {}) or {}
+    inv = ledger.inv()
     ui = usage_index()
     mons = db("pokemon")
     byname = {norm(p["name"]): p for p in mons if not p["is_mega"]}
@@ -1588,10 +1586,10 @@ def cmd_owned(a):
     tr = inv.get("trainer", {}) or {}
     slots = len(perm_list) + len(rent_list)
     cap = tr.get("box_capacity")
-    stated = tr.get("box_used")
-    print("BOX %s/%s%s" % (slots, cap or "?",
-                           "" if stated in (None, slots)
-                           else "   (inventory says box_used=%s - out of sync)" % stated))
+    # box_used is counted from the rows now, so it cannot disagree with the
+    # lists. It used to be a hand-typed number in inventory.json and this line
+    # carried a warning for exactly that.
+    print("BOX %s/%s" % (slots, cap or "?"))
     print("Mega Evolution can change stats, TYPING and ABILITY - the Mega ability")
     print("replaces the base one. Compare Mega against Mega, on all three.")
 

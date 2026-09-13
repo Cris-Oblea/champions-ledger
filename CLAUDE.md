@@ -43,8 +43,8 @@ builds combine. Smogon recommends per Pokemon, in isolation — it hands Sitrus
 Berry to a dozen different Pokemon — but a team of 6 can field exactly one
 Sitrus Berry. So **an item is a team-level decision, not part of a build**.
 
-**Player's rule (2026-08-29): do not record items in `inventory/builds.json` at
-all, not even as a ranked list.** Items are argued once, when the six Pokemon of
+**Player's rule (2026-08-29): do not record items in a BUILD at all, not even
+as a ranked list.** Items are argued once, when the six Pokemon of
 a team are fixed. With ~30 trained Pokemon, weighing an item pool per build is
 work that gets thrown away, and the Item Clause means most of those preferences
 cannot coexist anyway. The one exception is a **Mega Stone**, which lives in the
@@ -53,9 +53,11 @@ interacts with a build's own mechanics — a Choice item on a set that is three
 quarters status moves, an HP-draining item on a recoil attacker — record that as
 a `build_constraint`, which is a fact about the build, not an item preference.
 
-**Items live in `inventory/teams.json`**, one entry per team, alongside the
-reason each Pokemon got the item it got. That file is also where a team's
-shared type holes and open questions are kept.
+**An item lives on a TEAM SLOT**, in the app, with the one-line reason it got
+that item. The picker greys out anything another slot holds, so the Item Clause
+is enforced where the choice is made. Five older teams' reasoning - why each
+Pokemon is there, the shared type holes, what was measured and rejected - is
+kept as a write-up in `analysis/team_plans.json`; it is planning, not state.
 
 The most contested items are Focus Sash (339 Worlds teams), Sitrus Berry (309)
 and Life Orb (273).
@@ -598,9 +600,10 @@ discussing speed control with them.
 
 ## Player context
 
-**Rank, box occupancy, what they own and every VP cost live in
-`inventory/inventory.json`.** Read it; do not restate those numbers here, or
-the two copies drift apart. `python scripts/query.py owned` prints the box and
+**Box occupancy, what they own and the VP balance live in the LEDGER, and
+`scripts/ledger.py` reads it.** Do not restate those numbers here, or the two
+copies drift apart - which is exactly what happened to the file that used to
+hold them. `python scripts/query.py owned` prints the box and
 warns when `box_used` no longer matches the lists.
 
 What the file cannot record:
@@ -899,19 +902,29 @@ running and will fail without it — `db query` does not. And fetching the
 project's API keys is a credential action the permission layer blocks; there is
 no need for it, because `db query` already reads everything.
 
-The **Everything JSON** export from the app's Trainer tab is still the right
-input for a full sync, because `sync_tracker.py` takes that shape:
+**THERE IS NO COPY IN THE REPO ANY MORE, and nothing to sync** (player,
+2026-09-13: "ya nada deberia guardar datos en el repo, la DB es la que manda en
+ese sentido"). `inventory/` and `sync_tracker.py` are deleted. They had drifted
+in both directions at once - the box said 47 against a real 38, HOME 39 against
+101, while `builds.json` held ten sets the app had never seen - and
+`query.py owned` was printing the stale number.
+
+`scripts/ledger.py` is what reads it now, and `query.py` goes through it:
 
 ```bash
-python scripts/sync_tracker.py import --json FILE      # app export -> repo
-python scripts/sync_tracker.py import --json FILE --dry-run
-python scripts/sync_tracker.py export --out DIR        # repo -> docs
+python scripts/ledger.py              # box, HOME, stones, items, VP, builds
+python scripts/ledger.py --refresh    # ignore the 15-minute cache
 ```
 
-The import is **field-surgical**: it replaces only the lists the app owns and
-leaves every `_comment`, `_changelog`, `mega_note`, `build_constraint` and
-one-off key untouched. If the ledger and `inventory/*.json` disagree, **the
-ledger is right** — it is where he actually records things.
+It answers from a short-lived cache, then the live database, then the newest
+backup snapshot - and it says which. With none of the three it returns empty
+structures rather than raising, because twelve scripts import `query.py` and
+four of them run inside the gate, where there is no database at all.
+
+**One consequence to know about: VP and the ticket counts are in the ledger's
+`meta/trainer` but the app stopped offering a field for them on 2026-09-12**,
+when Profile was cut back to box capacity alone. So `vp_balance` is whatever it
+was then and nothing can change it - say so rather than quoting it as current.
 
 **Origin is recorded at registration now (player, 2026-09-10), so "unknown" is
 no longer a state the box can be in.** Every route in settles it, and there are

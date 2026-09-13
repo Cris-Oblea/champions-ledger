@@ -49,17 +49,15 @@ python scripts/refresh.py                 # normal
 python scripts/refresh.py --regulation    # a new regulation dropped
 python scripts/refresh.py --tracker-only  # just rebuild the page
 
-# the ledger and the repo drifted apart
-python scripts/sync_tracker.py export --out DIR       # repo -> docs
-python scripts/sync_tracker.py import --json FILE     # the app's export -> repo
-python scripts/sync_tracker.py import --json FILE --dry-run
+# what the ledger holds (the repo keeps no copy of it)
+python scripts/ledger.py                              # box, HOME, stones, VP
+python scripts/backup_ledger.py                       # snapshot it
+python scripts/backup_ledger.py --restore FILE        # dry run
 ```
 
-`--json` takes the file the **Everything JSON** button in the Trainer tab hands
-you, already in the shape `sync_tracker.py` wants. RLS means nothing *anonymous*
-can read the data — the publishable key in the page gets zero rows — but the
-Supabase CLI here is logged into the owner's account and linked to the project,
-so a read does not need the export at all:
+RLS means nothing *anonymous* can read the data — the publishable key in the
+page gets zero rows — but the Supabase CLI here is logged into the owner's
+account and linked to the project, so reading it needs no export:
 
 ```bash
 supabase db query "select * from box order by ord" --linked -o json
@@ -75,10 +73,11 @@ and learnsets. The reference blob is 157 KB of derived data — 340 forms, 514
 useable moves, 256 learnsets, 81 stones, 118 items, 215 abilities — so nothing
 in the page is typed by hand and nothing goes stale on its own.
 
-`sync_tracker.py` does the JSON surgery: it replaces only the lists the app
-owns and leaves every `_comment`, `_changelog`, `mega_note` and one-off key
-untouched. The round-trip is lossless — verified by exporting and re-importing
-the whole inventory and diffing: only `trainer.last_updated` changes.
+**The repo holds no copy of the ledger** as of 2026-09-13. It used to, under
+`inventory/`, and the two had drifted in opposite directions - the box stale in
+the repo, ten builds stale in the app. `scripts/ledger.py` reads the database
+instead, and `scripts/backup_ledger.py` is what keeps a copy, outside the
+working tree.
 
 ## What the page checks so you don't have to ask
 
@@ -420,7 +419,7 @@ meta/gts      {open_offers:[{offered, requested, deposited, status, note}]}
   and NOT versioned: it is a frozen copy of the whole ledger, so it drifts from
   Supabase the moment anything changes. Regenerate it if a fresh project needs
   seeding
-- `scripts/sync_tracker.py` — the two-way bridge
+- `scripts/ledger.py` — reads the ledger; `scripts/backup_ledger.py` — snapshots and restores it
 - `scripts/refresh.py` — the whole source chain, ending at the tracker
 
 Both SQL files were run end to end against a throwaway PostgreSQL 18 before
