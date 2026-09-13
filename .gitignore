@@ -24,7 +24,11 @@ tracker/champions-ledger.zip
 tracker/supabase_seed.sql
 # Supabase CLI scratch state: per-machine, rewritten by every CLI version, and
 # it carries the project and organisation ids for no benefit. Nothing reads it
-# but the CLI itself.
+# but the CLI itself. BOTH copies: the rule was written for tracker/ only and
+# the CLI actually writes at the repo root, so the root one had been committed
+# to a public repo all along - organisation id, pooler host, Postgres version.
+# No password and no key, but nothing there is ours to publish either.
+supabase/.temp/
 tracker/supabase/.temp/
 
 __pycache__/
