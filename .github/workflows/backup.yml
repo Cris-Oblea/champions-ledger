@@ -64,7 +64,7 @@ jobs:
   snapshot:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
 
       - name: are the secrets there?
         env:
@@ -84,17 +84,18 @@ jobs:
             exit 1
           fi
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
 
-      # Pinned, not `latest`. Resolving "latest" is an unauthenticated call to
-      # the GitHub API from a shared runner IP, and it is rate limited: five
-      # runs in an evening was enough to fail with "rate limit exceeded" before
-      # the job reached the database. A nightly backup should not have a lookup
-      # in front of it that can be throttled by strangers, and pinning also
-      # means the tool reading the ledger cannot change under us overnight.
-      - uses: supabase/setup-cli@v1
+      # v3 installs the CLI from npm rather than from GitHub releases, which
+      # removes the lookup that failed here on the first run from main: with
+      # `version: latest`, v1 resolved the release through an unauthenticated
+      # GitHub API call from a shared runner IP, and five test runs in one
+      # evening was enough to hit "rate limit exceeded" before the job reached
+      # the database. The pin stays for its other reason - the tool that reads
+      # the ledger should not change overnight without anyone choosing it.
+      - uses: supabase/setup-cli@v3
         with:
           version: 2.117.0
 
