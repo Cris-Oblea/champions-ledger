@@ -3,8 +3,14 @@
 
     python scripts/daily.py              # the real thing
     python scripts/daily.py --dry-run    # refresh and report, never deploy
+    python scripts/daily.py --no-refresh # gate what is built, then deploy
     python scripts/daily.py --install    # register the Windows scheduled task
     python scripts/daily.py --uninstall
+
+PUBLISH A HAND EDIT WITH --no-refresh, never with a bare `wrangler deploy`.
+The nightly job has to pass a shrink guard, four audits and fifteen browser
+tests; a hand deploy passed none of them, which left the automation safer than
+the person - on the path taken far more often.
 
 Why this exists rather than a bare `refresh.py` in Task Scheduler:
 
@@ -171,7 +177,16 @@ def log(lines):
 
 
 def sh(argv, cwd=ROOT):
-    r = subprocess.run(argv, cwd=cwd, capture_output=True, text=True)
+    # npx is npx.cmd on Windows and subprocess will not find it without the
+    # extension. It never mattered while the only caller was the Linux runner;
+    # it does now that --no-refresh makes this the hand-publish path too, and
+    # the failure was a bare WinError 2 with no hint of which command.
+    if os.name == "nt" and argv and argv[0] in ("npx", "npm", "node"):
+        argv = [argv[0] + ".cmd" if argv[0] != "node" else argv[0]] + argv[1:]
+    try:
+        r = subprocess.run(argv, cwd=cwd, capture_output=True, text=True)
+    except OSError as e:
+        return 127, "could not run %s: %s" % (" ".join(argv), e)
     return r.returncode, (r.stdout or "") + (r.stderr or "")
 
 
@@ -198,6 +213,9 @@ def main():
     ap.add_argument("--install", action="store_true")
     ap.add_argument("--uninstall", action="store_true")
     ap.add_argument("--skip-deploy", action="store_true")
+    ap.add_argument("--no-refresh", action="store_true",
+                    help="skip the fetchers: gate what is already built, then "
+                         "deploy. The safe way to publish a hand edit.")
     ap.add_argument("--deep", action="store_true",
                     help="force the slow-moving sources today, whatever day it is")
     a = ap.parse_args()
@@ -228,14 +246,23 @@ def main():
     # A regulation still needs `refresh.py --regulation` by hand: it clears the
     # Serebii page caches, and getting that wrong leaves new species with no
     # movepool. Deliberately not automatic - see analysis/regulation_m_c.md.
-    deep = a.deep or datetime.date.today().weekday() == 0
-    argv = [PY, "scripts/refresh.py"] + (["--deep"] if deep else [])
-    out.append("mode: " + ("deep (Smogon analyses + Pikalytics forced)"
-                           if deep else "daily (ladder + engine)"))
-    rc, refresh_out = sh(argv)
-    tail = [l for l in refresh_out.splitlines() if l.strip()][-4:]
-    out.append("refresh.py exit %d" % rc)
-    out += ["  " + l for l in tail]
+    # --no-refresh exists because the AUTOMATION had become safer than the
+    # human. Every hand deploy went straight out with `npx wrangler deploy`,
+    # past the shrink guard, the audits and all fifteen browser tests that the
+    # nightly job has to pass. That is backwards, and it is the path taken most
+    # often. `python scripts/daily.py --no-refresh` gates what is already built
+    # and then publishes it - same checks, same refusal to deploy.
+    if a.no_refresh:
+        out.append("mode: no refresh - gating what is already built")
+    else:
+        deep = a.deep or datetime.date.today().weekday() == 0
+        argv = [PY, "scripts/refresh.py"] + (["--deep"] if deep else [])
+        out.append("mode: " + ("deep (Smogon analyses + Pikalytics forced)"
+                               if deep else "daily (ladder + engine)"))
+        rc, refresh_out = sh(argv)
+        tail = [l for l in refresh_out.splitlines() if l.strip()][-4:]
+        out.append("refresh.py exit %d" % rc)
+        out += ["  " + l for l in tail]
 
     after = snapshot()
     after_ladder = ladder_summary()
@@ -307,7 +334,7 @@ def main():
         out.append("deploy skipped (flag)")
     elif not gate_ok:
         out.append("deploy skipped: a check failed")
-    elif not changed:
+    elif not changed and not a.no_refresh:
         out.append("deploy skipped: identical build")
     else:
         d, dout = sh(["npx", "wrangler", "deploy"],
@@ -331,7 +358,7 @@ def main():
     print("\n".join(out))
     # green means "the app on Cloudflare matches this data". A
     # failed check, or a deploy attempted and not landed, is red.
-    wanted = bool(changed) and gate_ok and not (a.dry_run or a.skip_deploy)
+    wanted = (bool(changed) or a.no_refresh) and gate_ok         and not (a.dry_run or a.skip_deploy)
     return 0 if (gate_ok and (deployed or not wanted)) else 1
 
 
