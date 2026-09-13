@@ -768,6 +768,40 @@ singles vocabulary across every cached analysis settles it:
 
 The `VGC*` filter in `fetch_smogon.py` is correct. Keep singles out.
 
+## A build is its own thing now (player, 2026-09-13)
+
+**This REVERSES the rule of 2026-09-10** ("a build is not a plan for a species,
+it is the set THIS Pokemon is carrying, so it lives and dies with the box row
+of the same id"). Recorded as a deliberate change, not as if the old rule never
+existed - it is still why `buildLink()` distinguishes an orphan.
+
+What he wants instead:
+
+- **Several builds for one species.** Three different Farigiraf, and which one
+  is run is decided in game, or per team. So the build id is its own key
+  (`farigiraf`, `farigiraf-2`, ...) and the link lives in a nullable `box_id`.
+- **A build for a Pokemon he does not own.** "Que esa idea no se perdiese en el
+  tiempo por no poder guardarla." The app saves it and says it cannot be
+  trained or brought until one arrives. The species picker therefore offers the
+  whole dex, not just the box.
+
+Four states, and only two are faults:
+
+| `box_id` | state | meaning |
+|---|---|---|
+| a row in the Champions box | `active` | the set it is actually running |
+| a row parked in HOME | `parked` | kept, inactive - nothing trains in HOME |
+| a row that no longer exists | `orphan` | worth flagging |
+| null | `unbound` | an idea. Not a fault |
+
+**Releasing a Pokemon now UNBINDS its builds instead of deleting them.** The old
+reason - the ledger filling with sets for Pokemon that no longer exist - died
+with the model: an idea is a first-class state now.
+
+**Never fall back from a missing `box_id` to the build id.** An idea build for
+Farigiraf gets the id `farigiraf`, and a fallback would silently marry it to a
+box row of the same name.
+
 ## The README is the front door, and it is checked
 
 **Every change that alters what the app IS goes into `README.md` in the same
