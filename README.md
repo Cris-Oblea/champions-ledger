@@ -108,12 +108,12 @@ error. Anything quoted here says which one it came from.
 ```
 
 <!-- GATE:START -->
-**The gate** is twenty-seven checks, and nothing reaches the phone without
+**The gate** is twenty-eight checks, and nothing reaches the phone without
 passing all of them:
 
 - a **shrink guard** — if a rebuild comes back with fewer forms, moves or
   learnsets than the last good one, a source broke and the run stops
-- **eight Python audits** — the damage formula against Smogon's engine, name
+- **nine Python audits** — the damage formula against Smogon's engine, name
   matching across all five sources, every derived index resolving, every form
   still accounted for, the README's own numbers, and that no SQL migration is
   still waiting to be applied
@@ -139,11 +139,17 @@ python scripts/backup_ledger.py --restore FILE  # dry run: what would change
 
 It runs on its own in two places: **every local gate run** takes one before it
 does anything else, and a nightly GitHub Action pushes one to a **separate
-private repo**. Restore is a dry run unless given `--confirm`, and both halves
-of it - putting a deleted row back, and removing one the snapshot does not have
-- are tested end to end rather than assumed. A gate check fails if the newest
-snapshot is more than three days old, because a backup system that has quietly
-stopped looks exactly like one that is working.
+private repo**. Nothing in that chain expires - it pushes with a deploy key
+instead of a token, and reads the database with a connection string instead of
+an access token - because a job that runs unattended at four in the morning
+fails by stopping quietly, months before anyone looks.
+
+Restore is a dry run unless given `--confirm`, and both halves of it - putting
+a deleted row back, and removing one the snapshot does not have - are tested
+end to end rather than assumed. Two gate checks watch it: one fails if the
+newest snapshot is more than three days old, and one fails if the dry run can
+no longer tell a changed row from an unchanged one, because a backup system
+that has quietly stopped looks exactly like one that is working.
 
 `main` is protected: pull requests only, gate must be green, and that is
 enforced for admins too. A local `pre-push` hook runs the same checks before a

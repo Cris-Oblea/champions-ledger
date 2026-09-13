@@ -34,7 +34,7 @@ otherwise: it prints what it would add, change and remove, per table, and only
 --confirm applies it. --verify re-reads the newest snapshot and says both
 whether the FILE is intact and whether the DATABASE has moved since.
 """
-import argparse, datetime, hashlib, io, json, os, subprocess, sys
+import argparse, datetime, hashlib, io, json, os, re, subprocess, sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DEFAULT_DIR = os.environ.get(
@@ -56,15 +56,40 @@ KEYS = {"box": ("user_id", "id"), "builds": ("user_id", "id"),
 CHUNK = 25
 
 
+# The laptop and the nightly job reach the same database through different
+# doors, and the difference is one flag.
+#
+# `--linked` goes through the Management API with the personal access token the
+# CLI keeps in the OS keyring. That is right for the laptop and wrong for CI:
+# Supabase no longer issues a non-expiring access token, and a credential that
+# expires under an unattended 04:00 job fails by stopping quietly, which is the
+# one failure mode a backup must not have. So CI connects straight to Postgres
+# with a connection string in CHAMPIONS_DB_URL and needs no token at all.
+#
+# It is also the narrower of the two credentials. An access token can read
+# every project on the account, create and delete them, and hand out their API
+# keys; the connection string can read and write one database.
+#
+# Its password must be percent-encoded - that is the CLI's requirement, not
+# ours - and the string is a secret, so it is never printed, not even in the
+# error paths below.
+DB_URL = os.environ.get("CHAMPIONS_DB_URL")
+
+
 def sql(text, timeout=300):
-    """Run one statement through the linked Supabase CLI. -> (ok, output)."""
+    """Run one statement through the Supabase CLI. -> (ok, output)."""
+    door = ["--db-url", DB_URL] if DB_URL else ["--linked"]
     try:
-        r = subprocess.run(["supabase", "db", "query", text, "--linked"],
+        r = subprocess.run(["supabase", "db", "query", text] + door
+                           + ["-o", "json"],
                            cwd=ROOT, capture_output=True, text=True,
                            encoding="utf-8", errors="replace", timeout=timeout)
     except (OSError, subprocess.TimeoutExpired) as e:
         return False, "could not run the Supabase CLI: %s" % e
-    return r.returncode == 0, (r.stdout or "") + (r.stderr or "")
+    out = (r.stdout or "") + (r.stderr or "")
+    if DB_URL:
+        out = out.replace(DB_URL, "<CHAMPIONS_DB_URL>")
+    return r.returncode == 0, out
 
 
 def rows(table):
@@ -78,10 +103,21 @@ def rows(table):
     ok, out = sql("select * from public.%s" % table)
     if not ok:
         return None
-    try:
-        return json.loads(out[out.index("{"):out.rindex("}") + 1])["rows"]
-    except (ValueError, KeyError):
-        return None
+    # Through the Management API the answer arrives in that envelope; over a
+    # direct connection the array can arrive on its own. Take whichever came,
+    # rather than assuming the door.
+    for opener, closer in (("{", "}"), ("[", "]")):
+        if opener not in out:
+            continue
+        try:
+            blob = json.loads(out[out.index(opener):out.rindex(closer) + 1])
+        except ValueError:
+            continue
+        if isinstance(blob, dict) and isinstance(blob.get("rows"), list):
+            return blob["rows"]
+        if isinstance(blob, list):
+            return blob
+    return None
 
 
 def digest(tables):
@@ -187,15 +223,48 @@ def key_of(t, row):
     return tuple(row.get(k) for k in KEYS[t])
 
 
+# A timestamp is spelled differently depending on which door read it: a direct
+# Postgres connection returns 2026-09-12T02:14:12.178378Z, the Management API
+# returns 2026-09-12 02:14:12.178378+00. The same instant either way, so a
+# comparison that goes by the text calls every row with an updated_at changed -
+# which it did: a snapshot taken by the nightly job, dry-run against the live
+# database from the laptop, reported all 161 rows as differing when nothing had.
+#
+# The damage is not the wrong number, it is that --restore's dry run is the
+# safety mechanism of the restore. One that cannot tell "nothing changed" from
+# "everything changed" is no safer than no dry run at all.
+#
+# So the spelling is canonicalised for the COMPARISON only. The snapshot keeps
+# whatever the database actually returned, because a backup should record what
+# it read - and a restore then writes those bytes back, which Postgres parses
+# either way. Only top-level columns need it: values nested inside a jsonb
+# column are stored text and arrive identically through both doors.
+_TIMESTAMP = re.compile(r"^\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}:\d{2}"
+                        r"(?:\.\d+)?(?:Z|[+-]\d{2}(?::?\d{2})?)$")
+
+
+def canonical(row):
+    """One spelling per value, so two doors can be compared at all."""
+    out = {}
+    for k, v in row.items():
+        if isinstance(v, str) and _TIMESTAMP.match(v):
+            try:
+                v = datetime.datetime.fromisoformat(
+                    v.replace("Z", "+00:00")).isoformat()
+            except ValueError:
+                pass
+        out[k] = v
+    return json.dumps(out, sort_keys=True, default=str)
+
+
 def diff(table, want, live):
     """What would have to happen to make `live` equal `want`."""
     w = {key_of(table, r): r for r in want}
     l = {key_of(table, r): r for r in live}
     add = [w[k] for k in w if k not in l]
     gone = [l[k] for k in l if k not in w]
-    changed = [w[k] for k in w if k in l and
-               json.dumps(w[k], sort_keys=True, default=str)
-               != json.dumps(l[k], sort_keys=True, default=str)]
+    changed = [w[k] for k in w if k in l
+               and canonical(w[k]) != canonical(l[k])]
     return add, changed, gone
 
 
@@ -299,6 +368,42 @@ def verify(a):
     return 0
 
 
+def selftest():
+    """The cross-door comparison, which needs no database to check.
+
+    It earns a test because it is the only part of a backup nobody exercises
+    until the day it matters, and because it was wrong: every row came back
+    "changed" when nothing had, purely because the two doors spell a timestamp
+    differently. A dry run that cannot tell those apart is not a safety net.
+    """
+    api = {"user_id": "u", "id": "absol", "note": "keep",
+           "updated_at": "2026-09-10 06:26:58.66084+00"}
+    direct = dict(api, updated_at="2026-09-10T06:26:58.66084Z")
+    edited = dict(direct, note="released")
+    other = {"user_id": "u", "id": "farigiraf-2", "note": "an idea",
+             "updated_at": "2026-09-12T14:49:20.679314Z"}
+    # A date with no offset is not a timestamptz and must be left alone, or two
+    # rows differing only in a hand-typed date would compare as equal.
+    plain = dict(api, note="2026-09-10 06:26:58")
+    cases = [
+        ("the same row through both doors", [direct], [api], (0, 0, 0)),
+        ("an edit still shows through",     [edited], [api], (0, 1, 0)),
+        ("a row only the snapshot has",     [direct, other], [api], (1, 0, 0)),
+        ("a row only the database has",     [direct], [api, other], (0, 0, 1)),
+        ("a hand-typed date is not a stamp", [plain], [api], (0, 1, 0)),
+    ]
+    bad = 0
+    for name, want, live, expect in cases:
+        got = tuple(len(x) for x in diff("box", want, live))
+        ok = got == expect
+        bad += not ok
+        print("  %-4s %-34s +%d ~%d -%d" % ("ok" if ok else "FAIL", name, *got))
+        if not ok:
+            print("       expected +%d ~%d -%d" % expect)
+    print("%d case(s), %d failed" % (len(cases), bad))
+    return 1 if bad else 0
+
+
 def check(a):
     """Is the backup still happening? Part of the gate.
 
@@ -342,6 +447,8 @@ def main():
     ap.add_argument("--keep", type=int, default=20,
                     help="prune only once there are more than this many")
     ap.add_argument("--list", action="store_true")
+    ap.add_argument("--selftest", action="store_true",
+                    help="check the comparison, without a database")
     ap.add_argument("--verify", action="store_true")
     ap.add_argument("--check", action="store_true",
                     help="gate check: is there a recent, intact snapshot?")
@@ -369,6 +476,8 @@ def main():
                          for k, v in sorted((d.get("_counts") or {}).items()))))
         print("\n%d snapshot(s) in %s" % (len(files), a.dir))
         return 0
+    if a.selftest:
+        return selftest()
     if a.check:
         return check(a)
     if a.verify:

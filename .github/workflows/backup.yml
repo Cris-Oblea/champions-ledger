@@ -1,28 +1,56 @@
 # Off-site backup of the ledger.
 #
 # Supabase holds everything - the box, HOME, every build and team, the stones,
-# the items, VP - and the free plan takes no backups of its own. daily.py
-# already writes a snapshot on every local run, but that lives on one laptop;
-# this is the copy that survives the laptop.
+# the items - and the free plan takes no backups of its own. daily.py already
+# writes a snapshot on every local run, but that lives on one laptop; this is
+# the copy that survives the laptop.
 #
 # It does NOT push into this repository. This repo is public and a snapshot is
 # the whole ledger in plaintext - the same reason supabase_seed.sql was deleted.
-# It pushes to a SEPARATE PRIVATE repo, which costs nothing on a free account.
+# It pushes to a SEPARATE PRIVATE repo, which costs nothing on a free account,
+# and it clones that repo into RUNNER_TEMP rather than the workspace, so a
+# snapshot is never sitting inside the public checkout to begin with.
 #
-# ONE-TIME SETUP (five secrets, all created by the player, never by Claude -
-# Settings > Secrets and variables > Actions > New repository secret):
+# The snapshot is taken straight INTO the private repo's own folder, which is
+# what makes the script's two safeguards apply off-site as well: it writes no
+# new file when the ledger has not moved since the last snapshot, and it prunes
+# to every day of the last fortnight plus one per month. Git history keeps
+# what the folder drops, so nothing is actually lost by that.
 #
-#   1. Make a new PRIVATE repo, e.g. champions-ledger-backups. Empty is fine.
-#   2. SUPABASE_ACCESS_TOKEN  - supabase.com/dashboard/account/tokens
-#   3. SUPABASE_DB_PASSWORD   - the database password (Project settings >
-#                               Database). Reset it there if it is not to hand.
-#   4. SUPABASE_PROJECT_REF   - Project settings > General > Reference ID
-#   5. BACKUP_REPO            - owner/name of the private repo from step 1
-#   6. BACKUP_TOKEN           - a fine-grained PAT with Contents: read+write on
-#                               that private repo ONLY
+# NOTHING HERE EXPIRES, AND THAT IS THE POINT. An unattended 04:00 job fails by
+# stopping quietly, months before anyone looks, so every credential it holds was
+# chosen for not having an expiry date:
 #
-# Until those exist the job skips with a warning instead of failing every
-# night: a workflow that is always red is a workflow everybody stops reading.
+#   * a DEPLOY KEY, not a fine-grained PAT, to push. A PAT lasts a year at most.
+#     A deploy key never expires and reaches exactly one repository by
+#     construction - this one can write to the backup repo and nothing else in
+#     the account.
+#   * a CONNECTION STRING, not a Supabase personal access token, to read. The
+#     laptop reads the ledger through the Management API with the access token
+#     the CLI keeps in its keyring, but Supabase no longer issues one that never
+#     expires. `supabase db query --db-url` skips the API and connects straight
+#     to Postgres, so CI needs no token. It is also the narrower credential: an
+#     access token can read every project on the account and hand out their API
+#     keys, while the connection string reaches one database.
+#
+# SECRETS
+#
+#   SUPABASE_DB_PASSWORD   - Project settings > Database. The URL is composed
+#                            from it below, so a password reset is one secret to
+#                            update and nothing else.
+#   SUPABASE_PROJECT_REF   - Project settings > General
+#   BACKUP_REPO            - owner/name of the private repo
+#   BACKUP_SSH_KEY         - the deploy key's private half
+#
+#   CHAMPIONS_DB_URL       - optional, and wins outright when set. The escape
+#                            hatch for the day Supabase moves the pooler
+#                            hostname: fixable from the phone, no pull request.
+#
+# All four are set, so a missing one is now a FAILURE rather than a warning. It
+# was a warning while the backup was being built, because a workflow that is
+# always red is a workflow everybody stops reading - but once it is configured
+# the same skip turns "a secret was revoked" into a green tick, and a backup
+# that has quietly stopped looks exactly like one that is working.
 name: back the ledger up
 
 on:
@@ -38,56 +66,99 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: is it set up?
-        id: cfg
+      - name: are the secrets there?
         env:
-          TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+          OVERRIDE: ${{ secrets.CHAMPIONS_DB_URL }}
+          REF: ${{ secrets.SUPABASE_PROJECT_REF }}
           REPO: ${{ secrets.BACKUP_REPO }}
+          KEY: ${{ secrets.BACKUP_SSH_KEY }}
         run: |
-          if [ -z "$TOKEN" ] || [ -z "$REPO" ]; then
-            echo "::warning::No off-site backup yet. Add the secrets listed at"\
-                 "the top of .github/workflows/backup.yml - the ledger is only"\
-                 "backed up on the laptop until then."
-            echo "ready=no" >> "$GITHUB_OUTPUT"
-          else
-            echo "ready=yes" >> "$GITHUB_OUTPUT"
+          missing=""
+          [ -z "$PASSWORD" ] && [ -z "$OVERRIDE" ] && missing="$missing SUPABASE_DB_PASSWORD"
+          [ -z "$REF" ]  && [ -z "$OVERRIDE" ] && missing="$missing SUPABASE_PROJECT_REF"
+          [ -z "$REPO" ] && missing="$missing BACKUP_REPO"
+          [ -z "$KEY" ]  && missing="$missing BACKUP_SSH_KEY"
+          if [ -n "$missing" ]; then
+            echo "::error::The off-site backup cannot run - missing secret(s):$missing. See the top of .github/workflows/backup.yml. Until this is fixed the ledger is backed up on the laptop only."
+            exit 1
           fi
 
       - uses: actions/setup-python@v5
-        if: steps.cfg.outputs.ready == 'yes'
         with:
           python-version: "3.12"
 
       - uses: supabase/setup-cli@v1
-        if: steps.cfg.outputs.ready == 'yes'
         with:
           version: latest
 
-      - name: take the snapshot
-        if: steps.cfg.outputs.ready == 'yes'
+      - name: fetch the private store
         env:
-          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
-          SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
-        run: |
-          supabase link --project-ref "${{ secrets.SUPABASE_PROJECT_REF }}"
-          python scripts/backup_ledger.py --dir "$RUNNER_TEMP/snap"
-          python scripts/backup_ledger.py --dir "$RUNNER_TEMP/snap" --verify
-
-      - name: put it somewhere private
-        if: steps.cfg.outputs.ready == 'yes'
-        env:
-          TOKEN: ${{ secrets.BACKUP_TOKEN }}
+          KEY: ${{ secrets.BACKUP_SSH_KEY }}
           REPO: ${{ secrets.BACKUP_REPO }}
         run: |
-          git clone --depth 1 "https://x-access-token:$TOKEN@github.com/$REPO" store
-          mkdir -p store/snapshots
-          cp "$RUNNER_TEMP"/snap/*.json store/snapshots/ 2>/dev/null || true
-          cd store
+          mkdir -p ~/.ssh
+          printf '%s\n' "$KEY" > ~/.ssh/backup_key
+          chmod 600 ~/.ssh/backup_key
+          ssh-keyscan -t ed25519 github.com >> ~/.ssh/known_hosts 2>/dev/null
+          # Exported for THIS step and written to the env file for the later
+          # ones. GITHUB_ENV only reaches subsequent steps, so the clone below
+          # would otherwise run with no key at all.
+          export GIT_SSH_COMMAND="ssh -i ~/.ssh/backup_key -o IdentitiesOnly=yes"
+          echo "GIT_SSH_COMMAND=$GIT_SSH_COMMAND" >> "$GITHUB_ENV"
+          # An empty repo has no branch to clone, which is not an error on the
+          # very first night - init one instead and let the push create it. But
+          # ask why the clone is impossible rather than assuming that is why:
+          # a key that cannot authenticate looks identical from here, and
+          # starting a fresh history on top of a store that already has one
+          # fails later, at the push, as a non-fast-forward nobody can read.
+          git ls-remote --exit-code -h "git@github.com:$REPO" >/dev/null 2>&1
+          case $? in
+            0) git clone --depth 1 "git@github.com:$REPO" "$RUNNER_TEMP/store" ;;
+            2) echo "the store is empty - starting its history"
+               git init -q -b main "$RUNNER_TEMP/store"
+               git -C "$RUNNER_TEMP/store" remote add origin "git@github.com:$REPO" ;;
+            *) echo "::error::cannot reach $REPO with the deploy key - check"                    "BACKUP_SSH_KEY and that the key is still on the repo."
+               exit 1 ;;
+          esac
+          mkdir -p "$RUNNER_TEMP/store/snapshots"
+          echo "the store holds $(ls "$RUNNER_TEMP/store/snapshots" | wc -l) snapshot(s) so far"
+
+      - name: take the snapshot
+        env:
+          OVERRIDE: ${{ secrets.CHAMPIONS_DB_URL }}
+          PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+          REF: ${{ secrets.SUPABASE_PROJECT_REF }}
+          # Read off the laptop's own `supabase/.temp/pooler-url`, i.e. the host
+          # the CLI itself resolved for this project. A repository variable
+          # overrides it without touching this file.
+          POOLER: ${{ vars.SUPABASE_POOLER_HOST || 'aws-0-sa-east-1.pooler.supabase.com:5432' }}
+        run: |
+          if [ -n "$OVERRIDE" ]; then
+            URL="$OVERRIDE"
+          else
+            # --db-url wants the password percent-encoded, so encode it rather
+            # than hoping it has no punctuation in it.
+            ENC=$(python -c 'import os, urllib.parse as u; print(u.quote(os.environ["PASSWORD"], safe=""))')
+            URL="postgresql://postgres.$REF:$ENC@$POOLER/postgres"
+          fi
+          echo "::add-mask::$URL"
+          export CHAMPIONS_DB_URL="$URL"
+          python scripts/backup_ledger.py --dir "$RUNNER_TEMP/store/snapshots"
+          python scripts/backup_ledger.py --dir "$RUNNER_TEMP/store/snapshots" --verify
+
+      - name: commit it
+        run: |
+          cd "$RUNNER_TEMP/store"
           git config user.name  "champions-ledger backup"
           git config user.email "noreply@github.com"
-          git add snapshots
-          # Nothing to commit means the ledger did not move today, which is
-          # normal and is not a failure.
-          git diff --cached --quiet && echo "no change today" && exit 0
-          git commit -m "ledger snapshot $(date -u +%Y-%m-%d)"
-          git push
+          git add -A snapshots
+          # Nothing staged means the ledger did not move since the last
+          # snapshot, which is normal and is not a failure.
+          if git diff --cached --quiet; then
+            echo "the ledger has not moved - nothing to commit"
+            exit 0
+          fi
+          git commit -q -m "ledger snapshot $(date -u +%Y-%m-%d)"
+          git push -q origin HEAD:main
+          echo "pushed - $(ls snapshots | wc -l) snapshot file(s) in the store"
