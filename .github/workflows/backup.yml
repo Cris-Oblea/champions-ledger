@@ -46,8 +46,11 @@
 #                            hatch for the day Supabase moves the pooler
 #                            hostname: fixable from the phone, no pull request.
 #
-# Until the four exist the job skips with a warning instead of failing every
-# night: a workflow that is always red is a workflow everybody stops reading.
+# All four are set, so a missing one is now a FAILURE rather than a warning. It
+# was a warning while the backup was being built, because a workflow that is
+# always red is a workflow everybody stops reading - but once it is configured
+# the same skip turns "a secret was revoked" into a green tick, and a backup
+# that has quietly stopped looks exactly like one that is working.
 name: back the ledger up
 
 on:
@@ -63,8 +66,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: is it set up?
-        id: cfg
+      - name: are the secrets there?
         env:
           PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
           OVERRIDE: ${{ secrets.CHAMPIONS_DB_URL }}
@@ -78,26 +80,19 @@ jobs:
           [ -z "$REPO" ] && missing="$missing BACKUP_REPO"
           [ -z "$KEY" ]  && missing="$missing BACKUP_SSH_KEY"
           if [ -n "$missing" ]; then
-            echo "::warning::No off-site backup yet - missing secret(s):$missing."\
-                 "See the top of .github/workflows/backup.yml. The ledger is"\
-                 "only backed up on the laptop until then."
-            echo "ready=no" >> "$GITHUB_OUTPUT"
-          else
-            echo "ready=yes" >> "$GITHUB_OUTPUT"
+            echo "::error::The off-site backup cannot run - missing secret(s):$missing. See the top of .github/workflows/backup.yml. Until this is fixed the ledger is backed up on the laptop only."
+            exit 1
           fi
 
       - uses: actions/setup-python@v5
-        if: steps.cfg.outputs.ready == 'yes'
         with:
           python-version: "3.12"
 
       - uses: supabase/setup-cli@v1
-        if: steps.cfg.outputs.ready == 'yes'
         with:
           version: latest
 
       - name: fetch the private store
-        if: steps.cfg.outputs.ready == 'yes'
         env:
           KEY: ${{ secrets.BACKUP_SSH_KEY }}
           REPO: ${{ secrets.BACKUP_REPO }}
@@ -130,7 +125,6 @@ jobs:
           echo "the store holds $(ls "$RUNNER_TEMP/store/snapshots" | wc -l) snapshot(s) so far"
 
       - name: take the snapshot
-        if: steps.cfg.outputs.ready == 'yes'
         env:
           OVERRIDE: ${{ secrets.CHAMPIONS_DB_URL }}
           PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
@@ -154,7 +148,6 @@ jobs:
           python scripts/backup_ledger.py --dir "$RUNNER_TEMP/store/snapshots" --verify
 
       - name: commit it
-        if: steps.cfg.outputs.ready == 'yes'
         run: |
           cd "$RUNNER_TEMP/store"
           git config user.name  "champions-ledger backup"
