@@ -134,8 +134,22 @@ setTimeout(() => {
      (C.HOME_ONLY || []).indexOf("Indeedee-F") >= 0, false);
   ok("los colores de Squawkabilly tampoco",
      (C.HOME_ONLY || []).filter(n => n.indexOf("Squawkabilly-") === 0).length, 0);
-  ok("y el dex las reconoce como la misma entrada",
-     ((C.COSMETIC || {})["Squawkabilly"] || []).length, 3);
+  /* They used to be listed here as three cosmetic spellings of one entry. They
+     are not: the plumage is fixed when you catch the bird and it decides the
+     third ability - Green and Blue get Guts, Yellow and White Sheer Force, and
+     collapsing them had left Sheer Force with no carrier in the database at
+     all (player, 2026-09-12). Each is its own dex row now, so none of them may
+     be filed as a spelling of another. */
+  ok("las plumas NO son grafias cosmeticas",
+     ((C.COSMETIC || {})["Squawkabilly"] || []).length, 0);
+  ok("cada pluma es su propia fila del dex",
+     ["Squawkabilly", "Squawkabilly-Blue", "Squawkabilly-Yellow",
+      "Squawkabilly-White"].filter(n =>
+        C.DEX.some(r => r[0] === n)).length, 4);
+  ok("y los cuatro tamanos de Gourgeist tambien",
+     ["Gourgeist", "Gourgeist-Small", "Gourgeist-Large",
+      "Gourgeist-Jumbo"].filter(n =>
+        C.DEX.some(r => r[0] === n)).length, 4);
   ok("ninguna Mega se cuela como grafia cosmetica",
      list(Object.keys(C.COSMETIC || {}).filter(k =>
        (C.COSMETIC[k] || []).some(n => /-Mega/.test(n)))), "0");

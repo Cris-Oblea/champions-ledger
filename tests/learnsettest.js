@@ -79,15 +79,36 @@ setTimeout(() => {
      - Floette and Mega Floette (Champions' Floette is the Eternal Flower one,
      filed as "Floette-Eternal") and the two gender forms, whose pool is the
      base species'. */
-  console.log("\n  las 340 formas, sin excepcion");
+  console.log("\n  todas las formas, sin excepcion");
   let empty = C.DEX.map(r => r[0]).filter(n => !size(n));
   ok("ninguna forma se queda sin movepool", empty.join(", ") || "0", "0");
-  ok("Floette encuentra el suyo", has("Floette", "Moonblast"), true);
+  /* Champions' Floette is the Eternal Flower one and there is no other: the
+     master list has only 670-e, no learner table says plain "Floette", and the
+     Pokedex block carries the Eternal spread. The bare name still has to find
+     it, because every usage source writes it that way. */
+  ok("Floette-Eternal tiene el suyo", has("Floette-Eternal", "Moonblast"), true);
+  ok("y 'Floette' a secas cae en el (es el unico que existe)",
+     has("Floette", "Moonblast"), true);
   ok("Mega Floette tambien", size("Mega Floette") > 0, true);
-  ok("Indeedee-Female hereda el de Indeedee",
-     size("Indeedee-Female"), size("Indeedee"));
+  /* Indeedee-Female does NOT inherit: Serebii lists it in the learner tables
+     under a "#0" dex cell, which a \d{4} pattern dropped, so it used to come
+     out with the male's list or with nothing. It has its own pool, and the
+     difference is the point - Follow Me is on the female only. */
+  ok("Indeedee-Female tiene movepool propio, no el del macho",
+     size("Indeedee-Female") !== size("Indeedee") && size("Indeedee-Female") > 0,
+     true);
+  ok("...y es la que aprende Follow Me",
+     has("Indeedee-Female", "Follow Me"), true);
+  ok("...que el macho no aprende", has("Indeedee", "Follow Me"), false);
+  /* Basculegion-Female really does inherit: Serebii gives it no learner row at
+     all, only an "<h2>Stats - Female</h2>" block. */
   ok("Basculegion-Female hereda el de Basculegion",
      size("Basculegion-Female"), size("Basculegion"));
+  /* the forms split on 2026-09-12 share the species pool */
+  ok("Squawkabilly-White hereda el de Squawkabilly",
+     size("Squawkabilly-White"), size("Squawkabilly"));
+  ok("Gourgeist-Jumbo hereda el de Gourgeist",
+     size("Gourgeist-Jumbo"), size("Gourgeist"));
 
   /* every screen that offers moves goes through this one helper, so the fix
      reaches all of them - assert that nothing reads the table directly */

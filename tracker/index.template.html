@@ -5312,7 +5312,8 @@ function calcDraw(){
 var AB = C.AB_MOVES || {};
 var AB_SET = {};
 Object.keys(AB).forEach(function(name){
-  var e = AB[name], s = {all:!!e.all, side:e.side, x:e.x, why:e.why};
+  var e = AB[name], s = {all:!!e.all, side:e.side, x:e.x, why:e.why,
+                         scope:e.scope};
   s.m = {}; (e.m || []).forEach(function(i){ s.m[i] = 1; });
   if (e.up)   { s.up = {};   e.up.forEach(function(i){ s.up[i] = 1; }); }
   if (e.down) { s.down = {}; e.down.forEach(function(i){ s.down[i] = 1; }); }
@@ -5323,6 +5324,13 @@ Object.keys(AB).forEach(function(name){
 function abilityHit(ability, move, poke){
   var r = AB_SET[ability];
   if (!r || r.side !== "off") return null;      // defensive rules badge nothing
+  // An ability that covers a whole CATEGORY selects nothing, so a badge on
+  // every row is noise that buries the abilities that do select. Guts is the
+  // case the player named: it multiplies the Attack STAT while statused, so
+  // "the moves it affects" is just "every physical move" - which the row's own
+  // category already says. Those are stated once, on the ability itself; see
+  // abilityScope(). Measured in build_ability_moves.py, never listed by hand.
+  if (r.scope) return null;
   if (r.all) return r;
   if (!r.m[move.i]) return null;
   // Contrary is the one that needs the SIGN, because that is the whole ability:
@@ -5513,21 +5521,51 @@ function findDetail(p){
     });
     body.appendChild(sl);
 
+    /* resolved BEFORE the abilities, because each ability now reports how much
+       of THIS movepool it touches - `var` hoisting made the check pass with
+       `ls` still undefined and the line silently never rendered */
+    var ls = learnset(p.name);
+
     body.appendChild(el("h2", null, "Abilities"));
     (p.ab || []).forEach(function(a){
       var n = el("div", "note");
       n.style.marginBottom = "6px";
       n.innerHTML = "<strong>" + a + ".</strong> " + (C.ABIL[a] || "");
+      /* What it does to this Pokemon's moves, said HERE rather than as a badge
+         on every row. Two shapes, and the difference is the whole point:
+         an ability that covers a category (Guts, every physical move) names
+         the category, because badging all of them picks out nothing; one that
+         really selects says how many of THIS movepool it hits, so the badges
+         below have a number to be checked against. */
+      var r = AB_SET[a], sc = el("div", "st");
+      sc.style.marginTop = "2px";
+      if (r && r.side === "off" && r.scope) {
+        sc.textContent = "Affects " + r.scope + " it knows — " + r.why +
+                         ". No per-move tag: it picks out nothing.";
+        n.appendChild(sc);
+      } else if (r && r.side === "off" && ls) {
+        var k = ls.filter(function(mn){
+          var mv = MOVE_BY[mn];
+          return mv && abilityTag(a, mv, p);
+        }).length;
+        sc.textContent = k
+          ? "Tags " + k + " of the " + ls.length + " moves it learns."
+          : "Touches none of the moves it learns.";
+        n.appendChild(sc);
+      } else if (r && r.side === "def") {
+        sc.textContent = "Changes what lands on it, not its own moves — " +
+                         r.why + ".";
+        n.appendChild(sc);
+      }
       body.appendChild(n);
     });
 
-    var ls = learnset(p.name);
     if (ls && FIND.moves.length) {
       body.appendChild(el("h2", null, "The moves you asked for"));
       var l = el("div", "list");
       FIND.moves.forEach(function(n){
         var mv = MOVE_BY[n];
-        if (mv) l.appendChild(moveRowFor(mv, (p.ab || [])[0], p));
+        if (mv) l.appendChild(moveRowFor(mv, p.ab || [], p));
       });
       body.appendChild(l);
     }
@@ -5546,7 +5584,7 @@ function findDetail(p){
         var hits = ui.apply();
         pool.innerHTML = "";
         hits.slice(0, 60).forEach(function(m){
-          pool.appendChild(moveRowFor(m, (p.ab || [])[0], p));
+          pool.appendChild(moveRowFor(m, p.ab || [], p));
         });
         if (!hits.length)
           pool.appendChild(el("div", "empty", "Nothing matches"));
@@ -5721,32 +5759,50 @@ function moveFilters(body, pool, onChange, placeholder){
   return {apply:apply, input:inp};
 }
 
-/* one move row, badged with whatever the chosen ability does to it */
+/* one move row, badged with whatever ability of this Pokemon touches it.
+
+   `ability` takes a single name (the build editor, where one ability is
+   chosen) or the whole list (a dex sheet, where none is). It used to take
+   `p.ab[0]` even on the sheet, so Conkeldurr - Guts, Sheer Force, Iron Fist -
+   only ever answered for Guts, and the two that actually pick out moves were
+   invisible. Every ability that hits is badged now, by name, because the
+   question is "which moves, and with WHICH ability". They are alternatives,
+   never at once: a Pokemon has one ability per battle. */
 function moveRowFor(m, ability, poke){
+  var abils = ability == null ? []
+            : (typeof ability === "string" ? [ability] : ability.slice());
   var r = el("div", "row");
   var mm = el("div", "rmain");
   var h = el("div", "rname");
   h.appendChild(typeChip(m.type));
   h.appendChild(document.createTextNode(m.name));
   spreadTags(m, h); itemTags(m, h);
-  var tag = ability ? abilityTag(ability, m, poke) : null;
-  if (tag) h.appendChild(tag);
+  var hits = [];
+  abils.forEach(function(a){
+    var hit = abilityHit(a, m, poke);
+    if (!hit) return;
+    var tag = abilityTag(a, m, poke);          // keeps the Adaptability filter
+    if (!tag) return;
+    h.appendChild(tag);
+    hits.push({ability:a, hit:hit});
+  });
   mm.appendChild(h);
   var line = catName(m.cat) + "  ·  " + (m.bp ? m.bp + " BP" : "— BP") +
     "  ·  " + (m.acc == null ? "—" : m.acc) + " acc  ·  " +
     (m.pp == null ? "—" : m.pp) + " PP" + spreadNote(m);
-  var hit = ability ? abilityHit(ability, m, poke) : null;
-  if (hit && hit.x && m.bp) {
-    line += "  →  " + Math.round(m.bp * hit.x) + " BP with " + ability;
-  }
+  hits.forEach(function(x){
+    if (x.hit.x && m.bp)
+      line += "  →  " + Math.round(m.bp * x.hit.x) + " BP with " + x.ability;
+  });
   mm.appendChild(el("div", "st", line));
   if (m.text) mm.appendChild(el("div", "st", m.text));
-  if (hit) {
+  hits.forEach(function(x){
     var w = el("div", "st");
     w.style.color = "var(--accent)";
-    w.textContent = hit.why;
+    // name it when there is more than one, or the two reasons run together
+    w.textContent = (hits.length > 1 ? x.ability + ": " : "") + x.hit.why;
     mm.appendChild(w);
-  }
+  });
   r.appendChild(mm);
   return r;
 }

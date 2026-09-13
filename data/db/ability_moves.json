@@ -18304,7 +18304,8 @@
     "X-Scissor",
     "Zen Headbutt",
     "Zing Zap"
-   ]
+   ],
+   "scope": "every physical move"
   },
   "Analytic": {
    "side": "off",
@@ -18646,7 +18647,8 @@
     "Zap Cannon",
     "Zen Headbutt",
     "Zing Zap"
-   ]
+   ],
+   "scope": "every damaging move"
   },
   "Sniper": {
    "side": "off",
@@ -18988,7 +18990,8 @@
     "Zap Cannon",
     "Zen Headbutt",
     "Zing Zap"
-   ]
+   ],
+   "scope": "every damaging move"
   },
   "Parental Bond": {
    "side": "off",
@@ -19330,7 +19333,8 @@
     "Zap Cannon",
     "Zen Headbutt",
     "Zing Zap"
-   ]
+   ],
+   "scope": "every damaging move"
   },
   "Fire Mane": {
    "side": "off",
@@ -21349,7 +21353,8 @@
     "Zap Cannon",
     "Zen Headbutt",
     "Zing Zap"
-   ]
+   ],
+   "scope": "every damaging move"
   },
   "Supreme Overlord": {
    "side": "off",
@@ -21691,7 +21696,8 @@
     "Zap Cannon",
     "Zen Headbutt",
     "Zing Zap"
-   ]
+   ],
+   "scope": "every damaging move"
   },
   "Rivalry": {
    "side": "off",
@@ -22033,7 +22039,8 @@
     "Zap Cannon",
     "Zen Headbutt",
     "Zing Zap"
-   ]
+   ],
+   "scope": "every damaging move"
   },
   "Huge Power": {
    "side": "off",
@@ -22253,7 +22260,8 @@
     "X-Scissor",
     "Zen Headbutt",
     "Zing Zap"
-   ]
+   ],
+   "scope": "every physical move"
   },
   "Pure Power": {
    "side": "off",
@@ -22473,7 +22481,8 @@
     "X-Scissor",
     "Zen Headbutt",
     "Zing Zap"
-   ]
+   ],
+   "scope": "every physical move"
   },
   "Guts": {
    "side": "off",
@@ -22693,7 +22702,8 @@
     "X-Scissor",
     "Zen Headbutt",
     "Zing Zap"
-   ]
+   ],
+   "scope": "every physical move"
   },
   "Solar Power": {
    "side": "off",
@@ -22822,7 +22832,8 @@
     "Weather Ball",
     "Whirlpool",
     "Zap Cannon"
-   ]
+   ],
+   "scope": "every special move"
   },
   "Plus": {
    "side": "off",
@@ -22951,7 +22962,8 @@
     "Weather Ball",
     "Whirlpool",
     "Zap Cannon"
-   ]
+   ],
+   "scope": "every special move"
   },
   "Minus": {
    "side": "off",
@@ -23080,7 +23092,8 @@
     "Weather Ball",
     "Whirlpool",
     "Zap Cannon"
-   ]
+   ],
+   "scope": "every special move"
   },
   "No Guard": {
    "side": "off",
@@ -23662,7 +23675,8 @@
     "Zap Cannon",
     "Zen Headbutt",
     "Zing Zap"
-   ]
+   ],
+   "scope": "every damaging move"
   },
   "Merciless": {
    "side": "off",
@@ -24004,7 +24018,8 @@
     "Zap Cannon",
     "Zen Headbutt",
     "Zing Zap"
-   ]
+   ],
+   "scope": "every damaging move"
   },
   "Stench": {
    "side": "off",
@@ -24346,7 +24361,8 @@
     "Zap Cannon",
     "Zen Headbutt",
     "Zing Zap"
-   ]
+   ],
+   "scope": "every damaging move"
   },
   "Prankster": {
    "side": "off",
@@ -24530,7 +24546,8 @@
     "Wonder Room",
     "Worry Seed",
     "Yawn"
-   ]
+   ],
+   "scope": "every status move"
   },
   "Gale Wings": {
    "side": "off",
@@ -24560,31 +24577,36 @@
    "side": "off",
    "all": true,
    "x": null,
-   "why": "the user becomes this move's type before it goes off, once per switch-in - so everything gets STAB"
+   "why": "the user becomes this move's type before it goes off, once per switch-in - so everything gets STAB",
+   "scope": "every move"
   },
   "Libero": {
    "side": "off",
    "all": true,
    "x": null,
-   "why": "the user becomes this move's type before it goes off, once per switch-in - so everything gets STAB"
+   "why": "the user becomes this move's type before it goes off, once per switch-in - so everything gets STAB",
+   "scope": "every move"
   },
   "Mold Breaker": {
    "side": "off",
    "all": true,
    "x": null,
-   "why": "ignores the target's ability"
+   "why": "ignores the target's ability",
+   "scope": "every move"
   },
   "Stalwart": {
    "side": "off",
    "all": true,
    "x": null,
-   "why": "ignores opposing abilities and redirection - Lightning Rod and Follow Me do not pull it"
+   "why": "ignores opposing abilities and redirection - Lightning Rod and Follow Me do not pull it",
+   "scope": "every move"
   },
   "Infiltrator": {
    "side": "off",
    "all": true,
    "x": null,
-   "why": "goes through Substitute, Reflect, Light Screen and Safeguard"
+   "why": "goes through Substitute, Reflect, Light Screen and Safeguard",
+   "scope": "every move"
   },
   "Long Reach": {
    "side": "off",
@@ -25477,7 +25499,8 @@
     "Zap Cannon",
     "Zen Headbutt",
     "Zing Zap"
-   ]
+   ],
+   "scope": "every damaging move"
   },
   "Stance Change": {
    "side": "off",
@@ -25819,7 +25842,8 @@
     "Zap Cannon",
     "Zen Headbutt",
     "Zing Zap"
-   ]
+   ],
+   "scope": "every damaging move"
   },
   "Fur Coat": {
    "side": "def",

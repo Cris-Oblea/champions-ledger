@@ -639,16 +639,53 @@ def incoming(p):
     return foe(p) or p["hits_ally"]
 
 
+# An ability that covers a WHOLE CATEGORY selects nothing, so badging each of
+# its moves says nothing - it only buries the abilities that do select. Guts is
+# the clearest case and the player named it: it multiplies the Attack STAT
+# while statused, so "the moves it affects" is just "every physical move", which
+# the category column on the row already says. Mold Breaker is worse still, at
+# every move in the pool.
+#
+# These are not dropped - they are stated ONCE on the ability instead of N times
+# on the rows, and `scope` is the sentence to state. Which rules land here is
+# measured, never listed by hand: the hit set is compared against the canonical
+# category sets below, so a rule that stops covering a category starts badging
+# again on the next build with no edit here.
+def _scopes(props):
+    cat = lambda c: {n for n, p in props.items() if p["cat"] == c}
+    dmgset = {n for n, p in props.items() if dmg(p)}
+    return [("every move", set(props)),
+            ("every damaging move", dmgset),
+            ("every physical move", cat("Physical")),
+            ("every special move", cat("Special")),
+            ("every status move", cat("Status"))]
+
+
+# Adaptability measures as "every damaging move" and must still badge: its real
+# selection is STAB, which depends on the USER's type, so the app filters it per
+# Pokemon. The scope test cannot see that, so it is named here with the reason.
+SCOPE_EXEMPT = {"Adaptability"}
+
+
 def build(props):
     table, report = {}, {}
+    scopes = _scopes(props)
     for ab, (side, pred, mult, why) in RULES.items():
         if pred is None:
             table[ab] = {"side": side, "all": True, "x": mult, "why": why}
+            # a DEFENSIVE rule gets no scope sentence: it is about what comes
+            # in, so "every move" would read as a claim about its own movepool
+            if side == "off":
+                table[ab]["scope"] = "every move"
             report[ab] = None
             continue
         hits = sorted(n for n, p in props.items()
                       if pred(p) and (side != "def" or incoming(p)))
         entry = {"side": side, "x": mult, "why": why, "moves": hits}
+        if side == "off" and ab not in SCOPE_EXEMPT:
+            lab = next((l for l, s in scopes if set(hits) == s), None)
+            if lab:
+                entry["scope"] = lab
         if ab == "Contrary":
             entry["why_up"], entry["why_down"] = CONTRARY_UP, CONTRARY_DOWN
             entry["up"] = sorted(n for n, p in props.items() if p["self_up"])

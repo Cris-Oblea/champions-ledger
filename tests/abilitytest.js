@@ -62,7 +62,12 @@ setTimeout(() => {
   ok("Insomnia ya sabe que Spore la duerme",
      !!(AB["Insomnia"] && AB["Insomnia"].m &&
         Object.keys(AB["Insomnia"].m).length), true);
+  /* An offensive rule that selects nothing is broken - that is how Liquid
+     Voice badged nothing on Hyper Voice. A rule with a `scope` is the one
+     legitimate way to have no move list: it covers a whole category and is
+     stated once on the ability instead. */
   const empty = Object.keys(AB).filter(n => AB[n].side === "off" && !AB[n].all &&
+                                       !AB[n].scope &&
                                        Object.keys(AB[n].m).length === 0);
   ok("ninguna regla ofensiva vacia", empty.join(", ") || "0", "0");
 
@@ -85,21 +90,49 @@ setTimeout(() => {
      /boost/i.test(tag("Contrary", "Close Combat")), true);
 
   console.log("\n  el resto de las reglas nuevas");
-  ok("Prankster etiqueta Protect", has("Prankster", "Protect"), true);
-  ok("Prankster NO etiqueta Earthquake", has("Prankster", "Earthquake"), false);
   ok("Gale Wings etiqueta Tailwind", has("Gale Wings", "Tailwind"), true);
   ok("Rock Head etiqueta Double-Edge", has("Rock Head", "Double-Edge"), true);
   ok("Rock Head NO etiqueta Earthquake", has("Rock Head", "Earthquake"), false);
-  ok("Stance Change etiqueta Shadow Ball",
-     has("Stance Change", "Shadow Ball"), true);
   ok("No Guard etiqueta Focus Blast (70 acc)",
      has("No Guard", "Focus Blast"), true);
   ok("No Guard NO etiqueta Aerial Ace (101 acc)",
      has("No Guard", "Aerial Ace"), false);
-  ok("Huge Power etiqueta Play Rough", has("Huge Power", "Play Rough"), true);
-  ok("Huge Power NO etiqueta Moonblast (especial)",
-     has("Huge Power", "Moonblast"), false);
-  ok("Magician etiqueta un ataque", has("Magician", "Knock Off"), true);
+  /* An ability that covers a WHOLE CATEGORY must not badge a single row: the
+     badge lands on every move and picks out nothing, which is what hid Sheer
+     Force and Iron Fist behind Guts on Conkeldurr (player, 2026-09-12). Guts
+     is the clearest of them - it multiplies the Attack STAT while statused, so
+     "the moves it affects" is only "every physical move".
+
+     BOTH halves are asserted - that it stops badging, AND that it still says
+     what it covers - because "no badge" alone would also pass if the rule had
+     simply been deleted, and that loses the ability instead of relocating it. */
+  console.log("\n  cobertura total: se dice una vez, no por fila");
+  [["Guts", "every physical move", "Close Combat"],
+   ["Huge Power", "every physical move", "Play Rough"],
+   ["Hustle", "every physical move", "Body Slam"],
+   ["Prankster", "every status move", "Protect"],
+   ["Solar Power", "every special move", "Flamethrower"],
+   ["Mold Breaker", "every move", "Earthquake"],
+   ["Stance Change", "every damaging move", "Shadow Ball"],
+   ["Magician", "every damaging move", "Knock Off"]].forEach(function(c){
+    ok(c[0] + " declara su alcance", (AB[c[0]] || {}).scope, c[1]);
+    ok(c[0] + " NO etiqueta " + c[2], has(c[0], c[2]), false);
+  });
+
+  /* ...and the ones that really select still do, or the fix went too far */
+  console.log("\n  las que si seleccionan siguen etiquetando");
+  ok("Sheer Force etiqueta Body Slam", has("Sheer Force", "Body Slam"), true);
+  ok("Iron Fist etiqueta Drain Punch", has("Iron Fist", "Drain Punch"), true);
+  ok("Technician etiqueta Bullet Punch",
+     has("Technician", "Bullet Punch"), true);
+  /* exenta a proposito: su seleccion real es el STAB, que depende del tipo del
+     usuario, y eso lo filtra la pagina - la medicion de alcance no puede verlo */
+  ok("Adaptability etiqueta Surf en un Water",
+     has("Adaptability", "Surf", water), true);
+  ok("ninguna regla con scope conserva lista de movimientos",
+     Object.keys(AB).filter(function(n){
+       return AB[n].scope && AB[n].m && Object.keys(AB[n].m).length;
+     }).join(", ") || "0", "0");
 
   console.log("\n  las defensivas no etiquetan el movepool propio");
   ["Soundproof", "Fur Coat", "Rough Skin", "Levitate", "Inner Focus",

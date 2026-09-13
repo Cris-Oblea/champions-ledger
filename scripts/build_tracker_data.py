@@ -328,6 +328,16 @@ def main():
     for ab, rule in (am.get("abilities") or {}).items():
         e = {"side": rule.get("side"), "x": rule.get("x"),
              "why": rule.get("why")}
+        # `scope` means the rule covers a whole category and therefore picks
+        # out nothing - the app states it once on the ability instead of
+        # badging every row with it. The move list is then dead weight on the
+        # phone (Guts alone was shipping 213 indices the page never reads), so
+        # it is dropped here rather than in data/db/ability_moves.json, where
+        # "which moves does Guts cover" is still a fair question to ask.
+        if rule.get("scope"):
+            e["scope"] = rule["scope"]
+            AB_MOVES[ab] = e
+            continue
         if rule.get("all"):
             e["all"] = 1
         else:
@@ -380,6 +390,23 @@ def main():
         COSMETIC.setdefault(canon[k], []).append(n)
     for k in COSMETIC:
         COSMETIC[k] = sorted(set(COSMETIC[k]))
+
+    # Any spelling the rest of the project treats as the same Pokemon has to
+    # find that Pokemon's movepool here too, or the page answers "no moves" to
+    # a name every other source uses. norm() already knows them; only the page
+    # did not, because LEARN_ALIAS was built over dex rows alone and these are
+    # by definition not dex rows. "Floette" is the live case: Champions has
+    # only the Eternal Flower form, so the dex row is "Floette-Eternal" while
+    # pokebase, Pikalytics and every teamlist write the bare name.
+    for n in wt:
+        if n in LEARN or n in LEARN_ALIAS:
+            continue
+        hit = canon.get(Q.norm(n))
+        if not hit:
+            continue
+        tgt = hit if hit in LEARN else LEARN_ALIAS.get(hit)
+        if tgt:
+            LEARN_ALIAS[n] = tgt
 
     # Multipliers measured against Smogon's engine, plus the two named move
     # families the flag table cannot express.
