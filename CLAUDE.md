@@ -886,7 +886,15 @@ supabase db query "select id, pokemon, nature, moves from builds" --linked -o js
 ```
 
 So **never say the data is unreachable, and never ask him to restate what a
-query would answer.** Two caveats. `supabase db dump` needs Docker Desktop
+query would answer.**
+
+**A fresh clone has no link, so run `supabase link --project-ref <ref>` once.**
+The CLI keeps its link in `supabase/.temp/`, which is gitignored (it carries
+the organisation id and the pooler host, and this repo is public). Untracking
+it on 2026-09-13 removed it from the working tree on the next checkout and
+every `db query --linked` failed with "Cannot find project ref" until it was
+put back - the files themselves are harmless, they just must not be committed.
+ Two caveats. `supabase db dump` needs Docker Desktop
 running and will fail without it — `db query` does not. And fetching the
 project's API keys is a credential action the permission layer blocks; there is
 no need for it, because `db query` already reads everything.
