@@ -68,6 +68,7 @@ BROWSER_TESTS = [
     ("itemstest.js",      "every item, priced and attributed"),
     ("profiletest.js",    "Profile, and what changes mid-battle"),
     ("gtsorigintest.js",  "only what can leave the game is offered"),
+    ("teamtest.js",       "six slots, and the clauses checked"),
     ("gtstest.js",        "a trade removes what you gave away"),
     ("buildlinktest.js",  "a build follows its Pokemon"),
     ("pickertest.js",     "the move picker's filters stack"),
