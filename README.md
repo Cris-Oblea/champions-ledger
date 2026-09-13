@@ -55,7 +55,7 @@ request returns nothing.
 | `data/db/ability_moves.json` | 140 | Which ability changes which move, derived from the move text |
 | `data/db/typechart.json` | 18 | The type chart, cross-checked on 3402 matchups |
 | `data/meta/usage_pokemon.json` | 278 | Ladder usage per Pokemon |
-| `data/meta/usage_moves.json` | 362 | Ladder usage per move |
+| `data/meta/usage_moves.json` | 366 | Ladder usage per move |
 | `data/meta/speed_tiers.json` | 89 | Base Speed to real Speed at every investment |
 | `data/meta/smogon_analyses.json` | 358 | Smogon's written VGC analyses |
 <!-- COUNTS:END -->
