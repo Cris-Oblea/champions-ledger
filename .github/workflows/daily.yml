@@ -155,7 +155,14 @@ jobs:
           RUN="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
           gh api -X POST "repos/$GITHUB_REPOSITORY/statuses/$SHA" -f state=success -f context=gate -f description="gated by daily.py in this run" -f target_url="$RUN"
           gh pr create --base main --head "$BR" --title "daily refresh $(date -u +%Y-%m-%d)" --body "Automated. daily.py refreshed every source and passed the shrink guard, four audits and fifteen browser tests before this branch existed; the gate status on the head commit reports that run. Merges itself once the check is green. Log: $RUN"
-          gh pr merge --auto --squash --delete-branch "$BR"
+          # `gh pr merge --auto` is REFUSED when the pull request is already
+          # mergeable - "Pull request is in clean status" - and the gate status
+          # is posted two lines above it. So whether auto-merge is applicable at
+          # all is a race against GitHub's own status propagation: PR #23 won it
+          # and PR #25 lost it, fourteen minutes apart, with the refresh and the
+          # deploy already done in both. Merge it outright if it can be, and
+          # queue auto-merge only if it cannot.
+          gh pr merge --squash --delete-branch "$BR" || gh pr merge --auto --squash --delete-branch "$BR"
 
       - name: save the source cache
         if: always() && steps.cache.outputs.cache-hit != 'true'
