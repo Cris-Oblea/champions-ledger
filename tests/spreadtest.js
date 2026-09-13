@@ -44,11 +44,18 @@ MOVES.forEach(r => {
 });
 console.log("\n  barrido de los " + MOVES.length + " movimientos usables");
 ok("ninguno discrepa con el motor de Smogon", mismatch.join(", ") || "0", "0");
-/* Smogon lists 39; Overdrive is the one Champions does not have */
-ok("movimientos spread", nSpread, 38);
+/* 38 when this was written, with the comment "Smogon lists 39; Overdrive is
+   the one Champions does not have". It has it now: Regulation M-C brought
+   Toxtricity (2026-09-09), which learns it, so Overdrive went useable and the
+   count went to 39. The number is asserted with its cause beside it, so the
+   next move to arrive is a named change rather than a bare digit to bump. */
+ok("movimientos spread", nSpread, 39);
 ok("de esos, golpean al aliado", nAlly, 16);
 
 const row = n => MOVES.find(m => m[0] === n);
+ok("el 39o es Overdrive, que llego con M-C", !!row("Overdrive"), true);
+ok("...y es spread", row("Overdrive")[8], 1);
+
 ok("Burning Jealousy es spread (Serebii: no)", row("Burning Jealousy")[8], 1);
 ok("Corrosive Gas golpea al aliado (Serebii: no)", row("Corrosive Gas")[9], 1);
 ok("Misty Explosion golpea al aliado", row("Misty Explosion")[9], 1);
@@ -100,6 +107,23 @@ setTimeout(() => {
       .filter(s => /Earthquake|Rock Slide|Dragon Claw|Protect/.test(s.textContent));
     const by = n => slots.find(s => s.textContent.indexOf(n) === 0 ||
                                     s.textContent.indexOf(n) >= 0);
+    /* Priority has to show its NUMBER on the row. Filtering a movepool by
+       "priority" and getting back rows that do not say how much is no answer:
+       +1 and +3 are a different move in doubles. The Pokemon's own sheet
+       showed no priority at all - which is where the player was looking
+       (2026-09-12) - and the two renderers that did show it only handled +N,
+       so nothing ever said that Dragon Tail moves LAST. One priorityTag() now,
+       shared by all three. */
+    const tagsOf = m => [...w.moveRowFor(w.MOVE_BY[m], [], null)
+      .querySelectorAll(".tag")].map(t => t.textContent);
+    console.log("\n  la prioridad, con su numero");
+    ok("Fake Out dice +3", tagsOf("Fake Out").indexOf("priority +3") >= 0, true);
+    ok("Aqua Jet dice +1", tagsOf("Aqua Jet").indexOf("priority +1") >= 0, true);
+    ok("Dragon Tail dice -6 (va ultimo)",
+       tagsOf("Dragon Tail").indexOf("priority -6") >= 0, true);
+    ok("Earthquake no lleva etiqueta de prioridad",
+       tagsOf("Earthquake").some(t => /priority/.test(t)), false);
+
     console.log("\n  la hoja del build");
     const eq = by("Earthquake"), rs = by("Rock Slide"), dc = by("Dragon Claw");
     ok("Earthquake lleva spread", tags(eq).indexOf("spread") >= 0, true);

@@ -92,12 +92,21 @@ setTimeout(() => {
     const leftovers = all.find(r => r.textContent.indexOf("Leftovers") === 0);
     ok("Leftovers dice de donde sale",
        /start with it/.test(leftovers.querySelector(".rside").textContent), true);
-    /* Serebii prints "??? VP" for these; pokebase has the real number */
-    const helmet = all.find(r => r.textContent.indexOf("Rocky Helmet") === 0);
-    ok("Rocky Helmet ya tiene precio (via pokebase)",
-       /2000 VP/.test(helmet.querySelector(".rside").textContent), true);
-    ok("y dice de donde salio el numero",
-       /pokebase/.test(helmet.querySelector(".rside span").title || ""), true);
+    /* This used to assert "Rocky Helmet costs 2000 VP, filled in from pokebase
+       because Serebii prints ??? VP". Both halves stopped being true: Serebii's
+       shop table now prices it at 1000, and the only items still taking the
+       pokebase fallback are the eight Mega stones - which this list excludes on
+       purpose, and whose price the page does not carry anywhere.
+
+       So the check moved to what a page test can actually see, and it is the
+       stronger claim anyway: a VP number must never be anonymous. The two
+       sources disagree on twelve items (Serebii 700/1000 vs pokebase 2000) and
+       that is printed by build_item_facts.py for a human to settle - which is
+       exactly why every figure on screen has to say who said it. */
+    ok("todo precio dice su fuente",
+       all.filter(r => /\d+ VP/.test(r.querySelector(".rside").textContent))
+          .every(r => /serebii|pokebase/i
+            .test(r.querySelector(".rside span").title || "")), true);
     ok("ningun item se queda con 'price ?'",
        all.every(r => !/price \?/.test(r.querySelector(".rside").textContent)),
        true);
@@ -168,8 +177,14 @@ setTimeout(() => {
         /* the fourth thing that decides a turn, and the app said nothing
            about it until now. Champions halved full paralysis and the app
            was quietly implying the console games' 25%. */
+        /* The status table no longer sits behind a third tab on Items: it was
+           moved next to the field toggles on the damage view, which is where
+           it actually gets applied (page comment, 2026-09-11). It is drawn at
+           startup, so there is nothing to click - the stale click on a button
+           that no longer exists was crashing this file. */
         console.log("\n  los estados");
-        click(d.getElementById("gearStatus"));
+        ok("la tabla vive ahora en la vista de damage",
+           !!d.querySelector("#v-calc #statusList"), true);
         const st = [...d.querySelectorAll("#statusList .row")];
         ok("los ocho estados", st.length, 8);
         const par = st.find(r => r.textContent.indexOf("Paralysis") === 0);
