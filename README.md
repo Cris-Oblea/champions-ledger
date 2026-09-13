@@ -108,12 +108,12 @@ error. Anything quoted here says which one it came from.
 ```
 
 <!-- GATE:START -->
-**The gate** is twenty-five checks, and nothing reaches the phone without
+**The gate** is twenty-six checks, and nothing reaches the phone without
 passing all of them:
 
 - a **shrink guard** — if a rebuild comes back with fewer forms, moves or
   learnsets than the last good one, a source broke and the run stops
-- **six Python audits** — the damage formula against Smogon's engine, name
+- **seven Python audits** — the damage formula against Smogon's engine, name
   matching across all five sources, every derived index resolving, every form
   still accounted for, the README's own numbers, and that no SQL migration is
   still waiting to be applied
@@ -122,6 +122,28 @@ passing all of them:
 - **seventeen browser tests** — run against the built page, because no Python
   check can see a template regression
 <!-- GATE:END -->
+
+### The ledger is backed up
+
+Supabase holds the whole ledger and the free plan takes no backups of its own,
+so the repo does it. `scripts/backup_ledger.py` snapshots every table to a
+timestamped JSON **outside the working tree** - this repo is public and a
+snapshot is the ledger in plaintext.
+
+```bash
+python scripts/backup_ledger.py                 # take one
+python scripts/backup_ledger.py --list          # what exists
+python scripts/backup_ledger.py --verify        # file intact? DB moved since?
+python scripts/backup_ledger.py --restore FILE  # dry run: what would change
+```
+
+It runs on its own in two places: **every local gate run** takes one before it
+does anything else, and a nightly GitHub Action pushes one to a **separate
+private repo**. Restore is a dry run unless given `--confirm`, and both halves
+of it - putting a deleted row back, and removing one the snapshot does not have
+- are tested end to end rather than assumed. A gate check fails if the newest
+snapshot is more than three days old, because a backup system that has quietly
+stopped looks exactly like one that is working.
 
 `main` is protected: pull requests only, gate must be green, and that is
 enforced for admins too. A local `pre-push` hook runs the same checks before a

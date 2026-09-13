@@ -936,6 +936,19 @@ Smogon → the calculator → pokedata → the audits → `tracker/data.js` →
 (the trap documented above). After it runs, republish `tracker/index.html` to
 the same artifact URL or the phone keeps the old dex.
 
+**The ledger is backed up, and the backup is tested** (player, 2026-09-13:
+"no tenemos un sistema de backup cuando supabase sea atacado... supabase es la
+que guarda TODA la informacion"). `scripts/backup_ledger.py` snapshots every
+table to `~/ChampionsLedgerBackups` - **outside the repo, because the repo is
+public and a snapshot is the whole ledger in plaintext**, the same reason
+`supabase_seed.sql` was deleted. It runs automatically: `daily.py` takes one
+before the gate on every local run, and `.github/workflows/backup.yml` pushes a
+nightly one to a separate PRIVATE repo. `--restore FILE` is a dry run until
+`--confirm`, and both directions were tested against the live database on a
+throwaway row - it puts a deleted row back AND removes one the snapshot does
+not have. A gate check fails when the newest snapshot is over three days old.
+**Never write a snapshot into the repo, and never commit one.**
+
 **The app is thirteen source files, not one.** `tracker/src/` holds them -
 `01-data.js` through `13-boot.js`, plus `style.css` and `markup.html` - and
 `scripts/build_tracker_page.py` concatenates them, in the order the number

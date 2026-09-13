@@ -1,0 +1,93 @@
+# Off-site backup of the ledger.
+#
+# Supabase holds everything - the box, HOME, every build and team, the stones,
+# the items, VP - and the free plan takes no backups of its own. daily.py
+# already writes a snapshot on every local run, but that lives on one laptop;
+# this is the copy that survives the laptop.
+#
+# It does NOT push into this repository. This repo is public and a snapshot is
+# the whole ledger in plaintext - the same reason supabase_seed.sql was deleted.
+# It pushes to a SEPARATE PRIVATE repo, which costs nothing on a free account.
+#
+# ONE-TIME SETUP (five secrets, all created by the player, never by Claude -
+# Settings > Secrets and variables > Actions > New repository secret):
+#
+#   1. Make a new PRIVATE repo, e.g. champions-ledger-backups. Empty is fine.
+#   2. SUPABASE_ACCESS_TOKEN  - supabase.com/dashboard/account/tokens
+#   3. SUPABASE_DB_PASSWORD   - the database password (Project settings >
+#                               Database). Reset it there if it is not to hand.
+#   4. SUPABASE_PROJECT_REF   - Project settings > General > Reference ID
+#   5. BACKUP_REPO            - owner/name of the private repo from step 1
+#   6. BACKUP_TOKEN           - a fine-grained PAT with Contents: read+write on
+#                               that private repo ONLY
+#
+# Until those exist the job skips with a warning instead of failing every
+# night: a workflow that is always red is a workflow everybody stops reading.
+name: back the ledger up
+
+on:
+  schedule:
+    # 07:00 UTC ~= 04:00 in Chile, an hour and a half before the refresh, so a
+    # snapshot of the last good state exists before anything else runs.
+    - cron: "0 7 * * *"
+  workflow_dispatch:
+
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: is it set up?
+        id: cfg
+        env:
+          TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          REPO: ${{ secrets.BACKUP_REPO }}
+        run: |
+          if [ -z "$TOKEN" ] || [ -z "$REPO" ]; then
+            echo "::warning::No off-site backup yet. Add the secrets listed at"\
+                 "the top of .github/workflows/backup.yml - the ledger is only"\
+                 "backed up on the laptop until then."
+            echo "ready=no" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=yes" >> "$GITHUB_OUTPUT"
+          fi
+
+      - uses: actions/setup-python@v5
+        if: steps.cfg.outputs.ready == 'yes'
+        with:
+          python-version: "3.12"
+
+      - uses: supabase/setup-cli@v1
+        if: steps.cfg.outputs.ready == 'yes'
+        with:
+          version: latest
+
+      - name: take the snapshot
+        if: steps.cfg.outputs.ready == 'yes'
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_DB_PASSWORD: ${{ secrets.SUPABASE_DB_PASSWORD }}
+        run: |
+          supabase link --project-ref "${{ secrets.SUPABASE_PROJECT_REF }}"
+          python scripts/backup_ledger.py --dir "$RUNNER_TEMP/snap"
+          python scripts/backup_ledger.py --dir "$RUNNER_TEMP/snap" --verify
+
+      - name: put it somewhere private
+        if: steps.cfg.outputs.ready == 'yes'
+        env:
+          TOKEN: ${{ secrets.BACKUP_TOKEN }}
+          REPO: ${{ secrets.BACKUP_REPO }}
+        run: |
+          git clone --depth 1 "https://x-access-token:$TOKEN@github.com/$REPO" store
+          mkdir -p store/snapshots
+          cp "$RUNNER_TEMP"/snap/*.json store/snapshots/ 2>/dev/null || true
+          cd store
+          git config user.name  "champions-ledger backup"
+          git config user.email "noreply@github.com"
+          git add snapshots
+          # Nothing to commit means the ledger did not move today, which is
+          # normal and is not a failure.
+          git diff --cached --quiet && echo "no change today" && exit 0
+          git commit -m "ledger snapshot $(date -u +%Y-%m-%d)"
+          git push
