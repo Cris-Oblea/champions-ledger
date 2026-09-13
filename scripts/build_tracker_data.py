@@ -225,6 +225,36 @@ def main():
         else:
             print("  !! no movepool anywhere for %s" % n)
 
+    # --- what a Pokemon becomes mid-battle --------------------------------
+    # The dex row is the form it STARTS in, and for two of these that is the
+    # form it never attacks in: the sheet was printing Aegislash at 50 Attack
+    # when Stance Change flips it to 140 the moment it uses a damaging move,
+    # and Palafin at 70 when Zero to Hero makes it 160. Castform's three
+    # weather forms change the TYPE instead, which is its whole defensive
+    # profile and its STAB. The data has carried all of this in `battle_forms`
+    # for a while; nothing shipped it to the app, so the app has been showing
+    # the misleading half. Only what actually CHANGES is sent.
+    BFORMS = {}
+    for p in mons:
+        bf = p.get("battle_forms") or {}
+        if not bf:
+            continue
+        base, out = p["base_stats"], {}
+        for label, v in bf.items():
+            e = {}
+            if v.get("types") and v["types"] != p["types"]:
+                e["t"] = v["types"]
+            st = [v[k] for k in ("hp", "atk", "def", "spa", "spd", "spe")]
+            if st != [base[k] for k in ("hp", "atk", "def", "spa", "spd", "spe")]:
+                e["b"] = st
+            if e:
+                out[label] = e
+        if out:
+            # the ability that does it - each of these has exactly one, and
+            # naming it is the difference between a number and an explanation
+            BFORMS[p["name"]] = {"by": (p.get("abilities") or [None])[0],
+                                 "f": out}
+
     # --- dex -------------------------------------------------------------
     DEX = []
     for p in mons:
@@ -481,7 +511,7 @@ def main():
     USAGE_AT = ((Q.meta("usage_pokemon") or {}).get("fetched"))
 
     blob = {"DEX": DEX, "HOME_ONLY": HOME_ONLY, "MODS": MODS,
-            "DEXNO": DEXNO,
+            "DEXNO": DEXNO, "BFORMS": BFORMS,
             "REG": REG, "REG_STARTED": REG_STARTED, "USAGE_AT": USAGE_AT,
             "SMOGON_NAME": SMOGON_NAME, "AEGIS": AEGIS,
             "RECOIL": RECOIL, "PULSE": PULSE,

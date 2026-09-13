@@ -113,6 +113,34 @@ setTimeout(() => {
      /M-B/.test(data["Tournament data"]), true);
   ok("cuenta las formas del dex", /^\d{3} forms/.test(data["Dex"]), true);
 
+  /* The stat line is the form it STARTS in, and Aegislash never attacks in
+     that one: Stance Change gives it 140 Attack the moment it uses a damaging
+     move, while the sheet printed 50. The database has carried `battle_forms`
+     for a while and nothing shipped it to the app, so both sheets showed the
+     misleading half (found 2026-09-12). Asserted on BOTH, because the number
+     is equally wrong on each. */
+  console.log("\n  lo que cambia en combate");
+  const bnote = () => {
+    const b = d.getElementById("sheetBody");
+    const n = [...b.querySelectorAll(".note")]
+      .find(x => /In battle it changes/.test(x.textContent));
+    return n ? n.textContent.replace(/\s+/g, " ") : "";
+  };
+  w.findDetail(w.byName["Aegislash"]);
+  ok("Aegislash avisa de Blade Forme", /Blade/.test(bnote()), true);
+  ok("...y que el Ataque pasa de 50 a 140", /Atk 50 . 140/.test(bnote()), true);
+  ok("...nombrando la habilidad", /Stance Change/.test(bnote()), true);
+  w.findDetail(w.byName["Palafin"]);
+  ok("Palafin avisa de Hero Form", /Atk 70 . 160/.test(bnote()), true);
+  w.findDetail(w.byName["Castform"]);
+  ok("Castform avisa del cambio de TIPO",
+     /Fire/.test(bnote()) && /Water/.test(bnote()) && /Ice/.test(bnote()), true);
+  w.findDetail(w.byName["Garchomp"]);
+  ok("y un Pokemon que no cambia no lleva bloque", bnote(), "");
+  w.pokeSheet({name:"Aegislash", location:"champions", status:"permanent",
+               origin:"champions", _id:"x"});
+  ok("y la ficha de la caja lo dice igual", /Atk 50 . 140/.test(bnote()), true);
+
   console.log("\n  diagnostics");
   const diag = pairs("diagOut");
   ["Latest deployed", "Regulation", "Ladder usage fetched", "Blob integrity",

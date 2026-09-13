@@ -1639,6 +1639,39 @@ function pokeRow(rec){
   return row;
 }
 
+/* The stat line on a sheet is the form the Pokemon STARTS in, and for two of
+   these that is the form it never attacks in: Aegislash showed 50 Attack while
+   Stance Change gives it 140 the moment it uses a damaging move, and Palafin
+   showed 70 against Hero Form's 160. Castform changes TYPE instead, which is
+   its whole defensive profile and its STAB. `battle_forms` has carried all
+   three in the database for a while and nothing ever shipped it to the app, so
+   both sheets were showing the misleading half (found 2026-09-12).
+   Returns a node or null, and is used by BOTH sheets - the dex one and the
+   one for a Pokemon in your box - because the number is equally wrong on each. */
+function battleFormNote(p){
+  var bfm = p && (C.BFORMS || {})[p.name];
+  if (!bfm) return null;
+  var bx = el("div", "note");
+  bx.style.marginTop = "8px";
+  var lead = el("div");
+  lead.innerHTML = "<strong>In battle it changes.</strong> " +
+    (bfm.by ? bfm.by + ":" : "");
+  bx.appendChild(lead);
+  Object.keys(bfm.f).forEach(function(lab){
+    var e = bfm.f[lab], bits = [];
+    if (e.t) bits.push(e.t.join("/"));
+    if (e.b) {
+      /* only the stats that actually move, so the eye goes to them */
+      STAT_KEYS.forEach(function(k, i){
+        if (e.b[i] !== p.b[i])
+          bits.push(STAT_LABEL[k] + " " + p.b[i] + " → " + e.b[i]);
+      });
+    }
+    bx.appendChild(el("div", "st", lab + " — " + bits.join(", ")));
+  });
+  return bx;
+}
+
 function pokeSheet(rec){
   var p = byName[rec.name];
   var isHome = rec.location === "home";
@@ -1657,6 +1690,8 @@ function pokeSheet(rec){
         sl.appendChild(d);
       });
       body.appendChild(sl);
+      var bfn0 = battleFormNote(p);
+      if (bfn0) body.appendChild(bfn0);
 
       var ms = megasFor(rec.name);
       if (ms.length) {
@@ -5600,6 +5635,9 @@ function findDetail(p){
       sl.appendChild(d);
     });
     body.appendChild(sl);
+
+    var bfn = battleFormNote(p);
+    if (bfn) body.appendChild(bfn);
 
     /* resolved BEFORE the abilities, because each ability now reports how much
        of THIS movepool it touches - `var` hoisting made the check pass with
