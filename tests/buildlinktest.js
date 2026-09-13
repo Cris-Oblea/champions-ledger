@@ -1,15 +1,18 @@
-/* A build belongs to a POKEMON, not to a species (player, 2026-09-10).
+/* A build is its own thing, and box_id says which Pokemon is carrying it.
 
-   The ledger already had an orphan when this was written: the Camerupt build
-   was still there after its Camerupt was traded away on the GTS, because
-   releasing a box row never touched the build. The rule:
+   It used to BE the Pokemon - same id, one build per box row, and no build
+   without one (player, 2026-09-10). He replaced that on 2026-09-13: several
+   builds per species, and builds for Pokemon he does not own yet, so an idea
+   is not lost for want of a row to hang it on.
 
-     in the Champions box -> active
-     parked back in HOME  -> kept, but inactive (nothing trains in HOME)
-     released             -> the build goes with it
+     linked, in the Champions box -> active
+     linked, parked in HOME       -> kept, inactive (nothing trains in HOME)
+     linked to a row that is gone -> orphan, and still worth flagging
+     not linked at all            -> unbound: an idea, which is fine
 
-   The three box rows below are one of each state, plus a build whose row does
-   not exist at all. */
+   Released now UNBINDS rather than deletes. The fixtures below cover all four
+   states, including two builds on one Pokemon - the case the old model could
+   not represent. */
 const fs = require("fs");
 const { JSDOM, VirtualConsole } = require("jsdom");
 /* the repo, found from this file - NOT a hardcoded path. Every test in
@@ -36,12 +39,24 @@ const ROWS = [
   row("sylveon", "Sylveon", "champions", "home"),   // HOME origin, in the box
   row("camerupt-2", "Camerupt", "home", "home"),    // the relink candidate
 ];
-const build = (id, pokemon) => ({user_id:UID, id, pokemon, mega:null,
+/* box_id is the LINK now, and it is not the id. Until 2026-09-13 a build WAS
+   the box row it sat on - same id, one build per Pokemon, and no build without
+   one. The player replaced that with two rules: several builds for a species
+   (three different Farigiraf), and a build for a Pokemon he does not own yet,
+   so the idea survives until he does.
+   No fallback from a missing box_id to the id, deliberately: an idea build for
+   Farigiraf gets the id "farigiraf", and a fallback would silently marry it to
+   a box row of the same name. */
+const build = (id, pokemon, box_id) => ({user_id:UID, id, pokemon,
+  box_id: box_id === undefined ? id : box_id, mega:null,
   ability:null, mega_ability:null, nature:"Jolly",
   stat_points:{hp:2,atk:32,def:0,spa:0,spd:0,spe:32}, moves:["Protect"],
   role:"", rationale:"", extra:{}, updated_at:"2026-09-10"});
 const BUILDS = [build("garchomp","Garchomp"), build("dragonite","Dragonite"),
-                build("sylveon","Sylveon"), build("camerupt","Camerupt")];
+                build("sylveon","Sylveon"), build("camerupt","Camerupt"),
+                /* the two new shapes */
+                build("garchomp-2","Garchomp", "garchomp"),
+                build("kingambit-idea","Kingambit", null)];
 
 const body = fs.readFileSync(ROOT + "tracker/dist/index.html", "utf8")
   .replace(/<script src="https:\/\/cdn\.jsdelivr[^"]*"><\/script>/, "");
@@ -53,7 +68,7 @@ window.supabase={createClient:function(){return{
        onAuthStateChange:function(){},signInWithPassword:function(){},signOut:function(){}},
  from:function(t){return{
    select:function(){return Promise.resolve({data:t==="box"?window.__ROWS:(t==="builds"?window.__BUILDS:[]),error:null});},
-   upsert:function(r){ window.__WROTE.push(t+"/"+(r&&r.id)); return Promise.resolve({error:null});},
+   upsert:function(r){ window.__WROTE.push({table:t, row:r}); return Promise.resolve({error:null});},
    delete:function(){return {eq:function(c,v){ if(c==="id") window.__DELETED.push(t+"/"+v);
      return {eq:function(){ return Promise.resolve({error:null}); },
              then:function(f){ return Promise.resolve({error:null}).then(f); }};}};}
@@ -88,6 +103,12 @@ setTimeout(() => {
      tags(by("Dragonite")).indexOf("in HOME — inactive") >= 0, true);
   ok("Camerupt dice huerfana",
      tags(by("Camerupt")).indexOf("orphan — no Pokemon") >= 0, true);
+  /* unbound is not a fault, and the two cases read differently: a set waiting
+     for one of your copies, against a set for a species you do not have */
+  ok("Kingambit dice que es una idea sin Pokemon",
+     tags(by("Kingambit")).indexOf("an idea — you have none yet") >= 0, true);
+  ok("y la segunda Garchomp sigue activa (dos builds, un Pokemon)",
+     w.buildLink("garchomp-2").state, "active");
 
   /* releasing the Pokemon must take the build with it */
   w.go("box");
@@ -101,14 +122,26 @@ setTimeout(() => {
     click(rel);
     setTimeout(() => {
       console.log("\n  al liberar");
-      ok("avisa de que la build se va",
-         /build belongs to the Pokemon/.test(w.__ASKED || ""), true);
+      /* A release used to DELETE the builds, so the ledger would not fill with
+         sets for Pokemon that no longer exist. That reason died with the model
+         change: a build with no Pokemon is a first-class state now, and the
+         player's reason for unbinding builds at all was that an idea should
+         not be lost for want of a row to hang it on. So a release unbinds and
+         keeps them - and garchomp carries TWO, which is the case the old
+         one-build-per-row model could not produce. */
+      ok("avisa de que las builds se conservan",
+         /will be KEPT as ideas/.test(w.__ASKED || ""), true);
+      ok("...y dice cuantas", /2 builds/.test(w.__ASKED || ""), true);
       ok("borra la fila de la caja",
          w.__DELETED.indexOf("box/garchomp") >= 0, true);
-      ok("borra tambien la build",
-         w.__DELETED.indexOf("builds/garchomp") >= 0, true);
-      ok("no toca ninguna otra build",
-         w.__DELETED.filter(x => x.indexOf("builds/") === 0).length, 1);
+      ok("NO borra ninguna build",
+         w.__DELETED.filter(x => x.indexOf("builds/") === 0).length, 0);
+      const wroteBuilds = w.__WROTE.filter(x => x.table === "builds");
+      const unbound = wroteBuilds.filter(x => x.row.box_id === null)
+        .map(x => x.row.id).sort();
+      ok("desata las dos de ese Pokemon", unbound.join(","), "garchomp,garchomp-2");
+      ok("y no toca la de otro",
+         wroteBuilds.some(x => x.row.id === "dragonite"), false);
 
       console.log("\n  ERRORES JS: " + (errs.length ? errs.join(" | ") : "ninguno"));
       console.log(bad ? "\n  " + bad + " FALLOS\n" : "\n  todo bien\n");

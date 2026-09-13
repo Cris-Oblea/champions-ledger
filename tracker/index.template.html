@@ -1151,11 +1151,28 @@ var ORIGIN_LABEL = {home:"HOME origin", champions:"Champions origin",
    Anything else leaves an ORPHAN - a set for a Pokemon that no longer exists.
    There was one already (the Camerupt build, after its Camerupt was traded
    away), which is what prompted the rule. */
+/* UNBOUND is not orphaned. A build with no box_id is an idea - a set written
+   down for a Pokemon he does not have yet, so it survives until he does
+   (player, 2026-09-13). An ORPHAN is different and still worth flagging: the
+   build points at a row that no longer exists, which is what happens when the
+   Pokemon is released or traded. */
 function buildLink(id){
-  var row = S.box[id];
+  var b = S.builds[id];
+  var boxId = b && b.box_id;
+  if (!boxId) return {state:"unbound"};
+  var row = S.box[boxId];
   if (!row) return {state:"orphan"};
-  row._id = id;
+  row._id = boxId;
   return {row:row, state:row.location === "champions" ? "active" : "parked"};
+}
+/* Every build written for this species, so the team builder and the sheet can
+   offer the choice between them. A plain comparison is correct: both sides are
+   dex names written by the picker, never a spelling from an outside source -
+   norm() exists to join the five SOURCES, not our own rows. */
+function buildsFor(name){
+  return Object.keys(S.builds).filter(function(k){
+    return S.builds[k].pokemon === name;
+  });
 }
 function originRows(o){
   return boxRows("champions", "permanent").filter(function(r){
@@ -1213,7 +1230,8 @@ function docFromRow(coll, row){
     status:row.status, origin:row.origin, note:row.note || "",
     shiny:!!row.shiny, trained:!!row.trained,
     order:row.ord || 0, updated:(row.updated_at || "").slice(0, 10)};
-  return {pokemon:row.pokemon, mega:row.mega, ability:row.ability,
+  return {pokemon:row.pokemon, box_id:row.box_id || null,
+    mega:row.mega, ability:row.ability,
     mega_ability:row.mega_ability, nature:row.nature,
     stat_points:row.stat_points || {}, moves:row.moves || [],
     role:row.role || "", rationale:row.rationale || "",
@@ -1229,7 +1247,8 @@ function rowFromDoc(coll, id, uid, d){
     location:d.location || "champions", status:d.status || "permanent",
     origin:d.origin || "unknown", note:d.note || "",
     shiny:!!d.shiny, trained:!!d.trained, ord:d.order || 0};
-  return {user_id:uid, id:id, pokemon:d.pokemon, mega:d.mega || null,
+  return {user_id:uid, id:id, pokemon:d.pokemon,
+    box_id:d.box_id || null, mega:d.mega || null,
     ability:d.ability || null, mega_ability:d.mega_ability || null,
     nature:d.nature || null, stat_points:d.stat_points || {},
     moves:(d.moves || []).filter(Boolean), role:d.role || "",
@@ -1884,26 +1903,42 @@ function moveButtons(rec, isHome){
       saveNote().then(function(){ closeSheet(); toast("Saved"); });
     }));
   }
-  /* Releasing is the one move that ENDS a Pokemon, so its build ends too -
-     otherwise the ledger fills with sets for Pokemon that no longer exist.
-     Parking back to HOME is the non-destructive door, and the warning says so
-     when there is actually something to lose. */
+  /* Releasing ENDS a Pokemon, and its build used to be deleted with it, on the
+     reasoning that the ledger would otherwise fill with sets for Pokemon that
+     no longer exist. That reason is gone: a build with no Pokemon is a
+     first-class state now - an idea - and the player's whole reason for
+     unbinding builds was that an idea should not be lost for want of a row to
+     hang it on (2026-09-13). So a release UNBINDS rather than deletes, and the
+     set survives for the next copy. Parking back to HOME remains the door that
+     keeps the Pokemon itself. */
   out.push(fbtn("Release", "danger", function(){
-    var hasBuild = !!S.builds[rec._id];
+    /* There can be more than one now, and they are found by their LINK - the
+       box row's id is not a build id any more. */
+    var mine = Object.keys(S.builds).filter(function(k){
+      return S.builds[k].box_id === rec._id;
+    });
     var msg = "Remove " + rec.name + " from the ledger?";
-    if (hasBuild) {
-      msg += "\n\nIts build goes with it - a build belongs to the Pokemon, " +
-             "not to the species.";
-      msg += (originOf(rec) === "home" && !isHome)
-        ? "\n\nTo free the slot and KEEP the build, park it back to HOME instead."
-        : "\n\nThis one is Champions origin, so it cannot come back.";
+    if (mine.length) {
+      msg += "\n\n" + mine.length + " build" + (mine.length > 1 ? "s" : "") +
+             " will be KEPT as " + (mine.length > 1 ? "ideas" : "an idea") +
+             ", no longer installed on anything.";
     }
+    msg += (originOf(rec) === "home" && !isHome)
+      ? "\n\nTo free the slot and keep it playable, park it back to HOME instead."
+      : "\n\nThis one is Champions origin, so it cannot come back.";
     if (!confirm(msg)) return;
     drop(path).then(function(){
-      return hasBuild ? drop("builds/" + rec._id) : null;
+      return Promise.all(mine.map(function(k){
+        var doc = JSON.parse(JSON.stringify(S.builds[k]));
+        delete doc._boxId;
+        doc.box_id = null;
+        return put("builds/" + k, doc);
+      }));
     }).then(function(){
       closeSheet();
-      toast(rec.name + (hasBuild ? " and its build removed" : " removed"));
+      toast(rec.name + " removed" +
+            (mine.length ? "; its " + (mine.length > 1 ? "builds are" : "build is") +
+                           " kept as an idea" : ""));
     });
   }));
   return out;
@@ -2102,6 +2137,15 @@ function buildRow(id, b){
     nm.appendChild(el("span", "tag warn", "in HOME — inactive"));
   if (lk.state === "orphan")
     nm.appendChild(el("span", "tag bad", "orphan — no Pokemon"));
+  /* Unbound is not a fault, so it is not badged "bad": it is a set written for
+     a Pokemon that is not carrying it yet. The two cases read differently and
+     only one is a shopping-list item, so they are told apart. */
+  if (lk.state === "unbound") {
+    var own = boxRows("champions").concat(boxRows("home"))
+      .some(function(r){ return r.name === b.pokemon; });
+    nm.appendChild(el("span", "tag", own ? "an idea — not installed"
+                                         : "an idea — you have none yet"));
+  }
   m.appendChild(nm);
   var meta = el("div", "rmeta");
   if (p) p.types.forEach(function(t){ meta.appendChild(typeChip(t)); });
@@ -2116,6 +2160,9 @@ function buildRow(id, b){
 
 function buildSheet(id, b, keepOriginal){
   var draft = JSON.parse(JSON.stringify(b || {}));
+  /* the link is stored as box_id and edited as _boxId - seed one from the
+     other, or editing a build would silently unbind it on save */
+  draft._boxId = draft.box_id || null;
   draft.stat_points = draft.stat_points || {hp:0,atk:0,def:0,spa:0,spd:0,spe:0};
   draft.moves = draft.moves || [];
   var original = keepOriginal || JSON.parse(JSON.stringify(draft));
@@ -2126,32 +2173,74 @@ function buildSheet(id, b, keepOriginal){
 
   openSheet(draft.pokemon || "New build", function(body){
     /* --- species (new builds only) ----------------------------------- */
+    /* The species first, and it is ANY form in the dex - not only what is in
+       the box. A set for a Pokemon he has not got yet is an idea worth keeping
+       until he has it, rather than one lost for want of a row to hang it on
+       (player, 2026-09-13). Which copy it is installed on is a second, optional
+       question, answered below. */
     if (!id) {
       var f0 = el("div", "field");
       f0.appendChild(el("label", "f", "Pokemon"));
       var sel0 = el("select");
       sel0.appendChild(new Option("— pick —", ""));
-      /* the VALUE is the box row's id, not the species: the build is being
-         attached to one Pokemon, and two rows of a species must not collide */
-      boxRows("champions").forEach(function(r){
+      var ownedNow = {};
+      boxRows("champions").concat(boxRows("home")).forEach(function(r){
+        ownedNow[r.name] = (ownedNow[r.name] || 0) + 1;
+      });
+      FORMS.forEach(function(q){        /* already the non-Mega dex, sorted */
         sel0.appendChild(new Option(
-          r.name + (r.status === "rental" ? "  (rental — cannot be trained)" : "") +
-          (S.builds[r._id] ? "  (already has a build)" : ""), r._id));
+          q.name + (ownedNow[q.name] ? "" : "  (not in your boxes)"), q.name));
       });
       sel0.onchange = function(){
-        var r = S.box[sel0.value];
-        draft._boxId = sel0.value;
-        draft.pokemon = r ? r.name : "";
+        draft.pokemon = sel0.value;
+        draft._boxId = null;            // the copy is chosen separately
         redraw();
       };
-      sel0.value = draft._boxId || "";
+      sel0.value = draft.pokemon || "";
       f0.appendChild(sel0);
       body.appendChild(f0);
       if (!draft.pokemon) return;
     }
 
     p = byName[draft.pokemon];
-    var lk = id ? buildLink(id) : {state:"active"};
+
+    /* WHICH COPY, and "none yet" is a real answer. Every copy is offered, in
+       either box, whether or not it already carries a build - three Farigiraf
+       builds is the point, and choosing between them happens in game or per
+       team. */
+    var copies = boxRows("champions").concat(boxRows("home"))
+      .filter(function(r){ return r.name === draft.pokemon; });
+    var f1 = el("div", "field");
+    f1.appendChild(el("label", "f", "Installed on"));
+    var sel1 = el("select");
+    sel1.appendChild(new Option(
+      copies.length ? "— not installed (just an idea) —"
+                    : "— you do not have one yet —", ""));
+    copies.forEach(function(r, i){
+      var other = Object.keys(S.builds).filter(function(k){
+        return k !== id && S.builds[k].box_id === r._id; }).length;
+      sel1.appendChild(new Option(
+        r.name + " · " + (r.location === "home" ? "HOME" : "Champions box") +
+        (copies.length > 1 ? " · copy " + (i + 1) : "") +
+        (r.status === "rental" ? " · rental, cannot be trained" : "") +
+        (other ? " · already carries a build" : ""), r._id));
+    });
+    sel1.onchange = function(){ draft._boxId = sel1.value || null; };
+    sel1.value = draft._boxId || "";
+    f1.appendChild(sel1);
+    body.appendChild(f1);
+
+    var lk = id ? buildLink(id) : {state:draft._boxId ? "active" : "unbound"};
+    if (lk.state === "unbound") {
+      var ub = el("div", "note");
+      ub.innerHTML = copies.length
+        ? "<strong>Not installed on anything.</strong> Kept as a plan. Nothing " +
+          "here costs VP until you point it at one of your " + draft.pokemon + "."
+        : "<strong>You do not have a " + draft.pokemon + " yet.</strong> The " +
+          "set is saved anyway, so the idea keeps — it just cannot be trained " +
+          "or brought to a battle until one arrives.";
+      body.appendChild(ub);
+    }
     if (lk.state === "parked") {
       var pk = el("div", "note warn");
       pk.innerHTML = "<strong>Parked in HOME — this build is inactive.</strong> " +
@@ -2166,8 +2255,10 @@ function buildSheet(id, b, keepOriginal){
         "to is no longer in the ledger, so this set is not on anything. Point " +
         "it at another " + draft.pokemon + ", or delete it.";
       body.appendChild(or);
+      /* every copy, including one that already carries a build: more than one
+         set per Pokemon is allowed now */
       var cands = boxRows("champions").concat(boxRows("home")).filter(function(r){
-        return r.name === draft.pokemon && !S.builds[r._id];
+        return r.name === draft.pokemon;
       });
       if (cands.length) {
         var fr = el("div", "field");
@@ -2181,11 +2272,16 @@ function buildSheet(id, b, keepOriginal){
         fr.appendChild(selr);
         var go = el("button", "fbtn primary", "Link");
         go.onclick = function(){
-          var to = selr.value, doc = JSON.parse(JSON.stringify(b));
+          /* Re-point the LINK. This used to copy the build to a new id and
+             delete the old one, because the id WAS the box row - so relinking
+             meant rewriting the build's identity, and anything referring to it
+             broke. box_id is a field now; the build keeps its name. */
+          var doc = JSON.parse(JSON.stringify(b));
           delete doc._boxId;
-          put("builds/" + to, doc).then(function(){
-            return drop("builds/" + id);
-          }).then(function(){ closeSheet(); toast("Linked to " + draft.pokemon); });
+          doc.box_id = selr.value;
+          put("builds/" + id, doc).then(function(){
+            closeSheet(); toast("Linked to " + draft.pokemon);
+          });
         };
         fr.appendChild(go);
         body.appendChild(fr);
@@ -2442,14 +2538,24 @@ function buildSheet(id, b, keepOriginal){
   }, [
     fbtn("Save", "primary", function(){
       if (!draft.pokemon) { toast("Pick a Pokemon first"); return; }
-      /* the key IS the box row: one Pokemon, one build, and no build without
-         a Pokemon to carry it */
-      var key = id || draft._boxId;
-      if (!key) { toast("Pick which Pokemon this build is for"); return; }
-      if (!id && S.builds[key]) {
-        toast("That Pokemon already has a build"); return;
+      /* The key used to BE the box row - one Pokemon, one build, and no build
+         without a Pokemon to carry it. Both halves are gone (player,
+         2026-09-13): he wants three different Farigiraf and he wants to write
+         a set down for a Pokemon he has not got yet, so the idea survives
+         until he does. The id is its own thing now and the link lives in
+         box_id, which may be null.
+         The id is derived from the species so it stays readable in the ledger
+         - farigiraf, farigiraf-2, farigiraf-3 - the same shape the box already
+         uses for duplicates. */
+      var key = id;
+      if (!key) {
+        var stem = String(draft.pokemon).toLowerCase()
+          .replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+        key = stem;
+        for (var n = 2; S.builds[key]; n++) key = stem + "-" + n;
       }
-      var doc = {pokemon:draft.pokemon, mega:draft.mega || null,
+      var doc = {pokemon:draft.pokemon, box_id:draft._boxId || null,
+                 mega:draft.mega || null,
                  ability:draft.ability || null,
                  mega_ability:draft.mega_ability || null,
                  nature:draft.nature || null,
