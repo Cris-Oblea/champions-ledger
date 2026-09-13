@@ -184,10 +184,19 @@ pull request that changes it.
 
 ---
 
-## A note on the data
+## If you found this
 
-Every figure is derived from public community sources — Serebii, pokebase,
-Pikalytics, Smogon and pokedata.ovh — and is here to make one player's own
-box searchable. Pokemon and all respective names are trademarks of Nintendo,
-Creatures Inc. and GAME FREAK Inc. This is a fan project with no affiliation to
-any of them, and nothing here is sold or advertised.
+It is one person's tool, kept in the open rather than published as a product.
+There is no support, no roadmap you can file against, and it assumes a box,
+a ledger and a Cloudflare account that are not yours. Read it, borrow from it,
+but do not expect it to run for you out of the box.
+
+**Licence.** The CODE is MIT — see [LICENSE](LICENSE). The contents of `data/`
+are not covered and cannot be: they are derived from public community sources
+(Serebii, pokebase.app, Pikalytics, Smogon, pokedata.ovh) and describe a game
+owned by someone else. They are here to make one player's own box searchable,
+not to be redistributed as a dataset.
+
+Pokemon and all respective names are trademarks of Nintendo, Creatures Inc. and
+GAME FREAK Inc. This is an unaffiliated fan project; nothing in it is sold or
+advertised.
