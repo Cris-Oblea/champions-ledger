@@ -226,15 +226,16 @@ def cmd_import(a):
                 inv["items"][c] = sorted(names)
     if "trainer" in meta:
         t = meta["trainer"]
-        for k in ("rank", "regulation", "season", "box_capacity"):
-            if t.get(k) is not None:
-                inv["trainer"][k] = t[k]
-        if t.get("vp_balance") is not None:
-            inv["economy"]["vp_balance"] = t["vp_balance"]
-        if t.get("training_tickets") is not None:
-            inv["economy"]["training_tickets_incoming"] = t["training_tickets"]
-        if t.get("permanence_tickets") is not None:
-            inv["rental_pokemon"]["permanence_tickets"] = t["permanence_tickets"]
+        # box_capacity ONLY. The app stopped offering rank, regulation, season,
+        # vp_balance and the two ticket counts on 2026-09-12: nothing read them,
+        # they were hand-typed, and they had drifted. Their old values are still
+        # in the ledger's jsonb - meta writes merge - so they would keep
+        # arriving in this export forever, and importing them would copy a
+        # frozen number into the repo as if it were current. The stored
+        # `regulation` said "M-B" three days into M-C, which is exactly the
+        # value that must not be allowed to propagate.
+        if t.get("box_capacity") is not None:
+            inv["trainer"]["box_capacity"] = t["box_capacity"]
     if "gts" in meta:
         inv["home_box"]["gts_pending"]["open_offers"] = \
             meta["gts"].get("open_offers", [])

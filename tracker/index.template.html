@@ -590,7 +590,6 @@ details.rolls[open] summary::before{content:"2 "}
     <span class="brand"><b>Champions</b> Ledger</span>
     <span class="spacer"></span>
     <span class="counter" id="boxCount">box —</span>
-    <span class="counter" id="vpCount">— VP</span>
     <button class="iconbtn" id="railBtn" title="Collapse the menu" aria-label="Collapse the menu">
       <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M4 6h16M4 12h10M4 18h16"/></svg>
     </button>
@@ -814,29 +813,38 @@ details.rolls[open] summary::before{content:"2 "}
 
     <!-- ======================================================== TRAINER -->
     <section class="view" id="v-trainer" role="tabpanel" hidden>
-      <div class="viewhead"><div><h1>Trainer</h1>
-        <p class="lede">Rank, VP and what every change costs.</p></div></div>
+      <div class="viewhead"><div><h1>Profile</h1>
+        <p class="lede">One number only you can know. Everything else here is
+          derived, so it cannot go stale behind your back.</p></div></div>
+
+      <!-- Box capacity is the ONE field left. It earns its place because the
+           app really uses it - capacity() drives the box-full warning - and
+           because it changes only when Champions raises the limit.
+           Rank, VP, regulation, season and the two ticket counts were removed
+           on 2026-09-12: nothing read them, they were hand-typed, and they had
+           drifted (the stored regulation still said M-B three days into M-C).
+           Their values are NOT deleted - meta updates merge into the jsonb, so
+           the old keys stay in the ledger untouched. -->
       <div class="panel" style="margin-bottom:12px">
         <div class="grid2">
-          <div class="field"><label class="f" for="tRank">Rank</label>
-            <input type="text" id="tRank"></div>
-          <div class="field"><label class="f" for="tVp">VP balance</label>
-            <input type="number" id="tVp" step="50"></div>
-          <div class="field"><label class="f" for="tReg">Regulation</label>
-            <input type="text" id="tReg"></div>
-          <div class="field"><label class="f" for="tSeason">Season</label>
-            <input type="text" id="tSeason"></div>
           <div class="field"><label class="f" for="tCap">Box capacity</label>
             <input type="number" id="tCap"></div>
-          <div class="field"><label class="f" for="tTrain">Training tickets</label>
-            <input type="number" id="tTrain"></div>
-          <div class="field"><label class="f" for="tPerm">Permanence tickets</label>
-            <input type="number" id="tPerm"></div>
         </div>
+        <div class="note" id="capUse"><span class="dot"></span>&hellip;</div>
         <button class="btn primary" id="tSave">Save</button>
       </div>
 
+      <h2>What you hold</h2>
+      <div class="panel"><dl class="kv" id="profCounts"></dl></div>
+
+      <h2>What this data is</h2>
+      <p class="sub">Read off the data itself, never typed. If a number here
+        looks wrong, the refresh is what is wrong, not this page.</p>
+      <div class="panel"><dl class="kv" id="profData"></dl></div>
+
       <h2>What a change costs</h2>
+      <p class="sub">Observed in game. Reference only — the ledger does not
+        track your VP balance, because nothing can keep it honest.</p>
       <div class="panel"><dl class="kv" id="costs"></dl></div>
 
       <h2>Take it with you</h2>
@@ -1472,7 +1480,7 @@ var TABS = [
   ["calc", "Damage", "M7 4h10v16H7zM10 8h4M10 12h4M10 16h4"],
   ["find", "Find", "M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14M20 20l-4-4"],
   ["gear", "Items", "M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8M4 12h2m12 0h2m-8-8v2m0 12v2M6.5 6.5 8 8m8 8 1.5 1.5m0-11L16 8M8 16l-1.5 1.5"],
-  ["trainer", "Trainer", "M12 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8M5 21v-1a7 7 0 0 1 14 0v1"]
+  ["trainer", "Profile", "M12 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8M5 21v-1a7 7 0 0 1 14 0v1"]
 ];
 /* The toast sits above the tab bar, whose height changes with the breakpoint
    (47px icon-only at 320, 68px with labels at 412) and again in the desktop
@@ -1815,10 +1823,13 @@ function moveButtons(rec, isHome){
       if (!confirm("Buying " + rec.name + " makes it Champions origin — it can " +
                    "never be sent to HOME, and the slot only frees by releasing " +
                    "it. Go ahead?")) return;
-      var vp = (S.meta.trainer && S.meta.trainer.vp_balance) || 0;
-      saveNote({status:"permanent", origin:"champions"}).then(function(){
-        return patch("meta/trainer", {vp_balance: Math.max(0, vp - 2500)});
-      }).then(function(){ closeSheet(); toast("Champions origin. −2500 VP"); });
+      /* The 2500 VP is NOT deducted from a stored balance any more. The
+         ledger tracked one number that only ever went down - buying a rental -
+         while ranked wins, which are the other half, went unrecorded, so it
+         drifted from the first battle onwards. Nothing can keep it honest, so
+         the app does not pretend to (player, 2026-09-12). */
+      saveNote({status:"permanent", origin:"champions"})
+        .then(function(){ closeSheet(); toast("Champions origin. Costs 2500 VP"); });
     }));
   } else if (originOf(rec) === "home") {
     out.push(fbtn("Park back to HOME", "primary", function(){
@@ -2849,49 +2860,85 @@ function setItem(name, own){
   });
 }
 
-/* =================================================================== trainer */
+/* =================================================================== profile
+   One editable number and three derived panels. The editable one is box
+   capacity, because the app acts on it and only Champions can change it; every
+   other field that used to live here was hand-typed, unread, and wrong by the
+   time anyone looked (player, 2026-09-12). */
+function kv(host, rows){
+  host.innerHTML = "";
+  rows.forEach(function(r){
+    if (r == null) return;
+    host.appendChild(el("dt", null, r[0]));
+    var d = el("dd", null, String(r[1]));
+    if (r[2]) { d.style.color = "var(--" + r[2] + ")"; }
+    if (r[3]) d.title = r[3];
+    host.appendChild(d);
+  });
+}
+
 function drawTrainer(){
   var t = S.meta.trainer || {};
   if (document.activeElement && document.activeElement.closest &&
       document.activeElement.closest("#v-trainer")) return;
-  $("tRank").value = t.rank || "";
-  $("tVp").value = t.vp_balance != null ? t.vp_balance : "";
-  $("tReg").value = t.regulation || "";
-  $("tSeason").value = t.season || "";
   $("tCap").value = t.box_capacity != null ? t.box_capacity : 50;
-  $("tTrain").value = t.training_tickets != null ? t.training_tickets : 0;
-  $("tPerm").value = t.permanence_tickets != null ? t.permanence_tickets : 0;
+
+  /* the capacity number means nothing without the usage beside it */
+  var inChamp = boxRows("champions");
+  var cap = capacity(), used = inChamp.length, free = cap - used;
+  var cu = $("capUse");
+  cu.innerHTML = "";
+  cu.appendChild(el("span", "dot"));
+  cu.appendChild(document.createTextNode(
+    used + " of " + cap + " used · " + (free < 0 ? 0 : free) + " free"));
+  cu.style.color = free <= 0 ? "var(--bad)" : free <= 3 ? "var(--warn)" : "";
+
+  var rent = boxRows("champions", "rental").length;
+  var home = boxRows("home").length;
+  var stones = ownedStones().length;
+  kv($("profCounts"), [
+    ["In the Champions box", used + " (" + (used - rent) + " bought, " +
+                             rent + " rental" + (rent === 1 ? "" : "s") + ")"],
+    ["In HOME", home],
+    ["Builds written", Object.keys(S.builds).length],
+    ["Mega Stones owned", stones + " of " + (C.STONES || []).length]
+  ]);
+
+  /* Vintage, read off the blob rather than typed. The stored `regulation` key
+     said M-B three days into M-C, which is exactly the failure this replaces. */
+  kv($("profData"), [
+    ["Regulation", (C.REG || "unknown") +
+       (C.REG_STARTED ? " · since " + C.REG_STARTED : "")],
+    ["Dex", (C.DEX || []).length + " forms, " + (C.STONES || []).length +
+            " Mega Stones"],
+    ["Moves", (C.MOVES || []).length + " useable, " +
+              Object.keys(C.AB_MOVES || {}).length + " ability rules"],
+    ["Ladder usage", C.USAGE_AT
+       ? "fetched " + C.USAGE_AT + ", " + (C.REG || "?") + " ladder"
+       : "unknown"],
+    ["Tournament data", "Worlds 2026, played under M-B — history, not current",
+       null, "A finished event keeps the format it was played in"],
+    ["Page built", window.CHAMP_BUILD || "unknown"]
+  ]);
 
   var c = $("costs");
-  c.innerHTML = "";
-  var vp = Number(t.vp_balance) || 0;
-  [["A ranked win pays", COSTS.ranked_win, "+"],
-   ["Stat Point", COSTS.training_stat_point, "-"],
-   ["Move", COSTS.training_move, "-"],
-   ["Nature", COSTS.training_nature, "-"],
-   ["Ability", COSTS.training_ability, "-"],
-   ["Mega Stone", COSTS.mega_stone_shop, "-"],
-   ["Keep a rental", COSTS.keep_rental_pokemon, "-"]].forEach(function(r){
-    c.appendChild(el("dt", null, r[0]));
-    var d = el("dd", null, (r[2] === "+" ? "+" : "") + r[1] + " VP");
-    if (r[2] === "-" && r[1] > vp) { d.style.color = "var(--bad)"; d.title = "More than you have"; }
-    c.appendChild(d);
-  });
-  c.appendChild(el("dt", null, "Full four-move retune"));
-  c.appendChild(el("dd", null, (COSTS.training_move * 4) + " VP"));
-  c.appendChild(el("dt", null, "Ranked wins that pays for"));
-  c.appendChild(el("dd", null, Math.ceil(COSTS.training_move * 4 / COSTS.ranked_win) + ""));
+  /* No affordability colouring any more: it read the hand-typed VP balance,
+     and colouring against a stale number is worse than not colouring. */
+  kv(c, [["A ranked win pays", "+" + COSTS.ranked_win + " VP"],
+         ["Stat Point", COSTS.training_stat_point + " VP"],
+         ["Move", COSTS.training_move + " VP"],
+         ["Nature", COSTS.training_nature + " VP"],
+         ["Ability", COSTS.training_ability + " VP"],
+         ["Mega Stone", COSTS.mega_stone_shop + " VP"],
+         ["Keep a rental", COSTS.keep_rental_pokemon + " VP"],
+         ["Full four-move retune", (COSTS.training_move * 4) + " VP"],
+         ["Ranked wins that pays for",
+          Math.ceil(COSTS.training_move * 4 / COSTS.ranked_win)]]);
 }
 $("tSave").onclick = function(){
   patch("meta/trainer", {
-    rank:$("tRank").value.trim(),
-    vp_balance:Number($("tVp").value) || 0,
-    regulation:$("tReg").value.trim(),
-    season:$("tSeason").value.trim(),
-    box_capacity:Number($("tCap").value) || 50,
-    training_tickets:Number($("tTrain").value) || 0,
-    permanence_tickets:Number($("tPerm").value) || 0
-  }).then(function(){ toast("Trainer saved"); });
+    box_capacity:Number($("tCap").value) || 50
+  }).then(function(){ toast("Box capacity saved"); });
 };
 
 /* ======================================================================= gts */
@@ -6056,10 +6103,71 @@ function showBootError(){
     (BOOT_ERRORS.length === 1 ? "" : "s") + " - open Trainer > Diagnostics";
 }
 
+/* The newest write across the three tables. A save that failed silently shows
+   up here as a date that stopped moving. */
+function lastWrite(){
+  var best = "";
+  [S.box, S.builds, S.meta].forEach(function(t){
+    Object.keys(t || {}).forEach(function(k){
+      var v = t[k] && (t[k].updated_at || t[k].updated);
+      if (v && String(v) > best) best = String(v);
+    });
+  });
+  return best ? best.slice(0, 16).replace("T", " ") : "never";
+}
+
+/* Filled in by checking the deployed page's own build stamp. Starts as a
+   question rather than a claim, because until the fetch answers we do not
+   know - and a diagnostic that guesses is worse than one that says so. */
+var DIAG_LATEST = "checking…";
+function checkLatest(){
+  /* Guarded for the same reason matchMedia is: this runs inside the startup
+     redraw, and an optional capability that is missing must degrade, never
+     throw. An unguarded fetch() here reproduced the exact bug fixed hours
+     earlier - a ReferenceError that aborted the rest of the load. */
+  if (typeof fetch !== "function") { DIAG_LATEST = "cannot check here"; return; }
+  fetch(location.pathname + "?probe=" + Date.now(), {cache:"no-store"})
+    .then(function(r){ return r.ok ? r.text() : null; })
+    .then(function(t){
+      if (!t) { DIAG_LATEST = "could not check"; return; }
+      var m = t.match(/CHAMP_BUILD\s*=\s*['"]([^'"]+)['"]/);
+      var live = m ? m[1] : null;
+      var mine = window.CHAMP_BUILD || "";
+      DIAG_LATEST = !live ? "could not check"
+        : live === mine ? "yes, this is the current build"
+        : "NO - the server has " + live + ", reload to get it";
+    })
+    .catch(function(){ DIAG_LATEST = "could not check (offline?)"; })
+    .then(function(){ if ($("diagOut") && $("diagOut").children.length) drawDiag(); });
+}
+
 function diagLines(){
   var L = [];
   function add(k, v){ L.push([k, v]); }
   add("Page built", (window.CHAMP_BUILD || "unknown"));
+  /* Is the page in front of you the one that is deployed? A phone serving a
+     cached copy is the nastiest failure here, because nothing looks broken -
+     the numbers are just quietly out of date. Compare the build stamp baked
+     into this file against the one the server is handing out right now. */
+  add("Latest deployed", DIAG_LATEST);
+  /* What the reference data describes, so a wrong number can be traced to the
+     refresh rather than to the page. */
+  add("Regulation", (C && C.REG ? C.REG : "unknown") +
+      (C && C.REG_STARTED ? " since " + C.REG_STARTED : ""));
+  add("Ladder usage fetched", (C && C.USAGE_AT) || "unknown");
+  /* A truncated download looks like a working page with things missing, so the
+     counts are stated and anything at zero is called out. */
+  add("Blob integrity", [
+        [(C && C.DEX || []).length, "forms"],
+        [(C && C.MOVES || []).length, "moves"],
+        [Object.keys((C && C.AB_MOVES) || {}).length, "ability rules"],
+        [(C && C.STONES || []).length, "stones"],
+        [(C && C.ITEMS || []).length, "items"]
+      ].map(function(p){ return p[0] + " " + p[1]; }).join(", ") +
+      ([(C && C.DEX || []).length, (C && C.MOVES || []).length,
+        Object.keys((C && C.AB_MOVES) || {}).length].some(function(n){ return !n; })
+        ? "  MISSING" : ""));
+  add("Last ledger write", lastWrite());
   add("Browser", navigator.userAgent);
   add("Screen", window.innerWidth + " x " + window.innerHeight +
       " @" + (window.devicePixelRatio || 1) + "x");
@@ -6225,8 +6333,6 @@ function renderAll(){
   var bc = $("boxCount");
   bc.textContent = "box " + used + "/" + cap;
   bc.className = "counter" + (used >= cap ? " full" : used >= cap - 3 ? " tight" : "");
-  var vp = (S.meta.trainer && S.meta.trainer.vp_balance);
-  $("vpCount").textContent = (vp == null ? "—" : vp) + " VP";
 
   fill($("listHomeOrigin"), sortRows(oHome), "Nothing routed in from HOME yet");
   fill($("listChampOrigin"), sortRows(oChamp.concat(oUnk)),
@@ -6298,6 +6404,8 @@ function renderAll(){
   drawTrainer();
   drawGts();
   drawDiag();
+  /* asked once per load, not on every redraw - it is a network round trip */
+  if (DIAG_LATEST === "checking…") checkLatest();
 }
 function note(kind, html){
   var n = el("div", "note " + kind);

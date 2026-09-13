@@ -455,8 +455,34 @@ def main():
         print("  %d forms have no name in Smogon's roster: %s"
               % (len(missing), ", ".join(missing[:6])))
 
+    # What this data IS, so the app can state its own vintage instead of the
+    # player typing it. The stored `regulation` field said M-B three days into
+    # M-C, which is the whole reason it stopped being a field.
+    # pokebase ships the regulation list and marks the current one; asking it
+    # is better than hardcoding, because the next regulation moves this on its
+    # own. The ladder numbers are that regulation's, since fetch_pokebase.py
+    # requests no regulation and therefore gets the default - which is the one
+    # pokebase calls `defaultLatestRegulationSetSlug`.
+    REG, REG_STARTED = None, None
+    try:
+        raw = open(os.path.join(ROOT, "data", "raw", "pokebase", "pokemon.html"),
+                   encoding="utf-8", errors="replace").read()
+        cur = re.search(r'defaultLatestRegulationSetSlug\\?":\\?"([a-z\-]+)', raw)
+        if cur:
+            slug = cur.group(1)
+            REG = slug.upper()
+            st = re.search(r'\\?"value\\?":\\?"%s\\?",\\?"label\\?":\\?"[^"\\]+\\?",'
+                           r'\\?"id\\?":\\?"[^"\\]+\\?",\\?"startDate\\?":\\?"(\d{4}-\d\d-\d\d)'
+                           % re.escape(slug), raw)
+            if st:
+                REG_STARTED = st.group(1)
+    except Exception:
+        pass
+    USAGE_AT = ((Q.meta("usage_pokemon") or {}).get("fetched"))
+
     blob = {"DEX": DEX, "HOME_ONLY": HOME_ONLY, "MODS": MODS,
             "DEXNO": DEXNO,
+            "REG": REG, "REG_STARTED": REG_STARTED, "USAGE_AT": USAGE_AT,
             "SMOGON_NAME": SMOGON_NAME, "AEGIS": AEGIS,
             "RECOIL": RECOIL, "PULSE": PULSE,
             "MOVES": MOVES, "LEARN": LEARN, "STONES": STONES,

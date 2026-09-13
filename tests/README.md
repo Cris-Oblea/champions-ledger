@@ -19,6 +19,7 @@ node findtest.js           # the search view: move filters, ability buckets, two
 node itemstest.js          # every item, in the game's own four groups
 node learnsettest.js       # a regional form has its OWN movepool
 node consistencytest.js    # the same class of bug, hunted across every table
+node profiletest.js        # Profile: one editable field, the rest derived
 ```
 
 ## What each one is for

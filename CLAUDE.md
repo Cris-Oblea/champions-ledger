@@ -470,11 +470,22 @@ moves → which of them are actually used → do I own any". `--learners` and th
 Metagame figures cited below (usage percentages, Worlds team counts, how many
 Pokemon Smogon covers) are a **snapshot taken 2026-08-29, Regulation M-B /
 Season M-5, Worlds 2026 complete through the Final in all three divisions**.
-**Regulation M-C opened 2026-09-09 and the rules data is refreshed to it, but
-every usage number here is still M-B** — the M-C ladder had not run a day when
-this was written, so pokebase, Pikalytics and the Worlds files all describe the
-previous format. That is the right baseline for scouting today; just never call
-it current M-C usage.
+**The ladder is on M-C now, and the three usage sources are NOT in the same
+format as each other (player, 2026-09-12 — he corrected the opposite claim,
+which had been written on the day M-C opened and was true only then):**
+
+- **pokebase ladder usage is M-C and current.** The page ships
+  `defaultLatestRegulationSetSlug: "m-c"` and `fetch_pokebase.py` asks for no
+  regulation, so it gets that. Proved by the numbers themselves: species that
+  are ONLY legal in M-C carry real usage — Indeedee-F **17.1%** and in the top
+  ten, Sinistcha 9.1%, Archaludon 7.6%, Pawmot 3.1%. Under M-B they could not
+  have appeared at all. **A regulation does not run backwards: once it
+  advances, that is the format.**
+- **The Worlds teamlists are M-B, and that is correct, not stale.** They were
+  played under M-B. Say which format a tournament number came from; never
+  "update" it.
+- **Pikalytics still lags** — stamped `2026-05`, ladder code still season 3.
+  Use it for spreads, win rates and cores, not for what is popular.
 Unless a figure says otherwise it is the Masters field, which is the division
 the player enters. They are here to explain *why* a rule of thumb
 exists, not to be quoted back as current. Always re-read `data/meta/` for a live

@@ -66,9 +66,14 @@ python scripts/query.py speed --min 100
 
 ## What is loaded
 
-**Regulation M-C is live (2026-09-09) and loaded.** Rules data is current;
-usage data is still M-B, because the M-C ladder has not run yet. Full write-up in
-`analysis/regulation_m_c.md`.
+**Regulation M-C is live (2026-09-09) and loaded.** Rules data is current, and
+so is the **ladder usage: it is M-C**, fetched 2026-09-12 — pokebase defaults to
+the latest regulation and species that are only legal in M-C now carry real
+numbers (Indeedee-F 17.1% and top ten, Sinistcha 9.1%, Archaludon 7.6%). This
+page said "usage is still M-B" until the player corrected it on 2026-09-12; that
+was written on the day M-C opened and stopped being true the next. The **Worlds
+teamlists stay M-B** because that is when they were played, and **Pikalytics
+still lags** at `2026-05`. Full write-up in `analysis/regulation_m_c.md`.
 
 | Data | Count | M-C change |
 |---|---|---|
