@@ -3632,9 +3632,25 @@ function gtsPickMine(onPick, exceptIdx){
     if (k !== exceptIdx && o.offeredId) taken[o.offeredId] = o;
   });
   openSheet("Which one are you depositing?", function(body){
-    var home = boxRows("home"), champ = boxRows("champions");
+    /* A Champions-ORIGIN Pokemon can never leave the game, so it can never
+       reach a GTS box - offering one is not a bad idea, it is impossible
+       (player, 2026-09-12). The section note here already said so; the filter
+       did not, and listed all 40 rows of a box that is entirely Champions
+       origin. Rentals are Champions origin by definition, so originOf() drops
+       them with the rest, and so does a leftover "unknown" - which is counted
+       as Champions origin everywhere else, and is the safe way round: offering
+       something you cannot move is a dead end, hiding something you could move
+       is one question away. */
+    var home = boxRows("home");
+    var champAll = boxRows("champions");
+    var champ = champAll.filter(function(r){ return originOf(r) === "home"; });
+    var locked = champAll.length - champ.length;
     if (!home.length && !champ.length) {
-      body.appendChild(el("div", "empty", "Nothing in the box yet"));
+      body.appendChild(el("div", "empty", locked
+        ? "Nothing here can be deposited. All " + locked + " in the Champions " +
+          "box came out of an Encounter, and those can never leave the game — " +
+          "only a Pokemon that arrived from HOME can go back to it."
+        : "Nothing in the box yet"));
       return;
     }
     /* The box is under a hundred today and scrolling works. It will not stay
@@ -3736,11 +3752,19 @@ function gtsPickMine(onPick, exceptIdx){
       out.innerHTML = "";
       var n = section("In HOME", home, "A GTS deposit comes out of HOME.", q);
       n += section("In the Champions Box", champ,
-        "Champions-origin Pokemon can never leave the box, so these can only " +
-        "be deposited if they came in from HOME.", q);
+        "These came in from HOME, so they can go back to it — park one to " +
+        "HOME first, then deposit it. Its training comes back with it.", q);
       if (!n) {
         out.appendChild(el("div", "empty",
-          "Nothing in your box matches \\u201c" + inp.value.trim() + "\\u201d"));
+          "Nothing you can deposit matches “" + inp.value.trim() + "”"));
+      }
+      /* Said, not silently hidden: a row that vanishes with no explanation is
+         a row you think you have lost. */
+      if (locked) {
+        out.appendChild(el("p", "sub",
+          locked + " more in the Champions box " +
+          (locked === 1 ? "is" : "are") + " Encounter-bought or rented. Those " +
+          "can never leave the game, so they can never reach a GTS box."));
       }
     }
     inp.oninput = draw;

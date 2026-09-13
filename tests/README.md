@@ -9,6 +9,7 @@ npm install jsdom          # once
 node pagetest.js           # the page's engine vs the engine under Node
 node sweeptest.js          # all 340 dex forms, attacking and defending
 node gtstest.js            # a GTS trade removes what you gave away
+node gtsorigintest.js      # only what can leave the game may be deposited
 node burntest.js           # burn halves physical, leaves special alone
 node sptest.js             # the SP slider can be dragged, not just clicked
 node abilitytest.js        # which ability badges which move
