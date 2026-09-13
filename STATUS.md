@@ -681,9 +681,16 @@ came back from a `#0` dex number, and plain Floette is the Eternal form.
 `audit_forms.py` section 7 fires on any Serebii page that splits abilities or
 stats while our dex holds one row.
 
-### The ledger, as of 2026-09-13
+### The ledger
 
-**38** in the Champions box, **101** in HOME, **18** builds, **0** teams.
+**Do not write its numbers here.** Every count typed into prose is a promise to
+come back and retype it, and this file has three dead ones above it already.
+One query answers it, and the CLI on this machine is already linked:
+
+```bash
+supabase db query "select location, count(*) from box group by 1" --linked
+python scripts/backup_ledger.py --list      # and what each snapshot held
+```
 
 ### Open
 

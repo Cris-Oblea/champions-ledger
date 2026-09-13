@@ -108,12 +108,12 @@ error. Anything quoted here says which one it came from.
 ```
 
 <!-- GATE:START -->
-**The gate** is twenty-six checks, and nothing reaches the phone without
+**The gate** is twenty-seven checks, and nothing reaches the phone without
 passing all of them:
 
 - a **shrink guard** — if a rebuild comes back with fewer forms, moves or
   learnsets than the last good one, a source broke and the run stops
-- **seven Python audits** — the damage formula against Smogon's engine, name
+- **eight Python audits** — the damage formula against Smogon's engine, name
   matching across all five sources, every derived index resolving, every form
   still accounted for, the README's own numbers, and that no SQL migration is
   still waiting to be applied
