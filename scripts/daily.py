@@ -73,6 +73,10 @@ GATE_CHECKS = [
     # were pasted by hand and nothing recorded it, so this is the first thing
     # that can tell.
     (["scripts/migrate.py", "--check"], "the schema is migrated"),
+    # A backup system fails silently by definition: the job stops running, the
+    # token expires, the folder moves, and nothing looks wrong until the day it
+    # is needed. This is the alarm.
+    (["scripts/backup_ledger.py", "--check"], "the ledger has a recent backup"),
 ]
 
 # Read the app's SOURCE, which is the one thing the browser tests cannot: they
@@ -364,6 +368,19 @@ def main():
     # daily.py returns non-zero, the workflow's commit step is skipped too, so
     # a bad refresh cannot reach main either.
     gate_ok = True
+
+    # ---- back the ledger up BEFORE anything else --------------------------
+    # Supabase holds the whole ledger now and the free plan takes no backups of
+    # its own, so every run that can reach the database leaves a snapshot. It
+    # costs one query per table and it is the cheapest insurance in the repo.
+    # Deliberately ahead of the gate: a run that is about to fail is exactly
+    # when a snapshot of the last good state is worth having. Where there is no
+    # database - CI - it says so and moves on.
+    b, bout = sh([PY, "scripts/backup_ledger.py", "--skip-if-offline"])
+    out += [l for l in bout.splitlines() if l.strip()][:3]
+    if b != 0:
+        gate_ok = False
+        out.append("BLOCKED: the ledger could not be backed up")
 
     # ---- does this refresh LOSE anything? -------------------------------
     # The formula tests pass on a dex of ten Pokemon; they check arithmetic and
