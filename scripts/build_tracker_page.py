@@ -13,10 +13,49 @@ DATA = os.path.join(ROOT, "tracker", "data.js")
 CFG = os.path.join(ROOT, "tracker", "config.local.json")
 OUT = os.path.join(ROOT, "tracker", "index.html")
 DIST = os.path.join(ROOT, "tracker", "dist")
+SRC = os.path.join(ROOT, "tracker", "src")
 MARK = "/*__CHAMP_DATA__*/"
 CMARK = "/*__CHAMP_CONFIG__*/"
 EMARK = "/*__CHAMP_ENGINE__*/"
 ENGINE = os.path.join(ROOT, "tracker", "engine.bundle.js")
+SMARK = "/*__CHAMP_STYLE__*/"
+KMARK = "<!--__CHAMP_MARKUP__-->"
+AMARK = "/*__CHAMP_APP__*/"
+
+
+def assemble(tpl):
+    """Put tracker/src/ back together into the single page it has to be.
+
+    The app was one 7,269-line file, which is not a file anyone can hold in
+    their head: two views a thousand lines apart shared a helper and nothing
+    said so, and every edit meant scrolling past nine other screens to reach
+    the one being changed. It is one page at RUNTIME for a good reason - an
+    artifact serves exactly one file - but that is a delivery constraint, not
+    a way to write it.
+
+    So the pieces live under tracker/src/ and are concatenated here, in the
+    order their number prefixes give. That order is the file's original order
+    and it matters: function declarations hoist, but the statements at the end
+    of 13-boot.js wire up a DOM the markup above has to have produced first.
+
+    Nothing here transforms the source - it is concatenation and nothing else,
+    so a line in a part is that same line in the page and a stack trace still
+    points at real code.
+    """
+    for m in (SMARK, KMARK, AMARK):
+        if m not in tpl:
+            sys.exit("the shell lost its %s marker" % m)
+    css = open(os.path.join(SRC, "style.css"), encoding="utf-8").read()
+    markup = open(os.path.join(SRC, "markup.html"), encoding="utf-8").read()
+    parts = sorted(f for f in os.listdir(SRC) if f.endswith(".js"))
+    if not parts:
+        sys.exit("tracker/src/ has no .js parts - the app would build empty")
+    app = "".join(open(os.path.join(SRC, f), encoding="utf-8").read()
+                  for f in parts)
+    print("  app: %d parts, %d lines" % (len(parts), app.count(chr(10))))
+    tpl = tpl.replace(SMARK, css.rstrip(chr(10)))
+    tpl = tpl.replace(KMARK, markup.rstrip(chr(10)))
+    return tpl.replace(AMARK, app.rstrip(chr(10)))
 
 
 def config_js():
@@ -61,7 +100,7 @@ def config_js():
 def main():
     if not os.path.exists(DATA):
         sys.exit("tracker/data.js is missing - run scripts/build_tracker_data.py")
-    tpl = open(TPL, encoding="utf-8").read()
+    tpl = assemble(open(TPL, encoding="utf-8").read())
     for m in (MARK, CMARK, EMARK):
         if m not in tpl:
             sys.exit("the template lost its %s marker" % m)

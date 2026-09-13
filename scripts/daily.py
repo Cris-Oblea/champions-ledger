@@ -55,6 +55,36 @@ WATCH = [
     ("bundle",  "tracker/engine.bundle.js",           "the engine the app runs"),
 ]
 
+# The Python side of the gate. It lives up here rather than inside main()
+# because the README's "the gate is N checks" paragraph is generated from these
+# three lists - the sentence used to be prose, and said sixteen in one place
+# and fifteen in another on the same day.
+GATE_CHECKS = [
+    (["scripts/damage.py", "--selftest"], "damage selftest"),
+    (["scripts/test_norm.py"], "name matching"),
+    (["scripts/audit_lookups.py"], "every lookup resolves"),
+    (["scripts/audit_forms.py"], "no form went missing"),
+    # The README is the front door of a public repo, and every number in it
+    # had drifted by the time anyone looked. The counts are generated now, so
+    # this only has to check they were regenerated.
+    (["scripts/build_readme.py", "--check"], "the README is current"),
+    # Schema and client drifting apart is a runtime failure, not a build one:
+    # the app asks for a column the database has never heard of. Migrations
+    # were pasted by hand and nothing recorded it, so this is the first thing
+    # that can tell.
+    (["scripts/migrate.py", "--check"], "the schema is migrated"),
+]
+
+# Read the app's SOURCE, which is the one thing the browser tests cannot: they
+# exercise the paths they know about, and a `var` shadowing another in the same
+# scope is legal JavaScript that simply does the wrong thing on a path nobody
+# clicked. It shipped once - "48/12" on the box counter - and now that the app
+# is thirteen files instead of one, a name colliding across parts is exactly
+# the mistake the split makes easier.
+SOURCE_CHECKS = [
+    ("scripts/check_app.js", "the app's source reads as one program"),
+]
+
 # The browser tests, run against the BUILT page. Nothing gated on these until
 # 2026-09-13, which is how four of them drifted for weeks: they test what the
 # phone actually loads, and no Python check can see a template regression.
@@ -348,25 +378,21 @@ def main():
     if gate_ok:
         out.append("ok: nothing shrank against the committed data")
 
-    checks = [(["scripts/damage.py", "--selftest"], "damage selftest"),
-              (["scripts/test_norm.py"], "name matching"),
-              (["scripts/audit_lookups.py"], "every lookup resolves"),
-              (["scripts/audit_forms.py"], "no form went missing"),
-              # The README is the front door of a public repo, and every number
-              # in it had drifted by the time anyone looked. The counts are
-              # generated now, so this only has to check they were regenerated.
-              (["scripts/build_readme.py", "--check"], "the README is current"),
-              # Schema and client drifting apart is a runtime failure, not a
-              # build one: the app asks for a column the database has never
-              # heard of. Migrations were pasted by hand and nothing recorded
-              # it, so this is the first thing that can tell.
-              (["scripts/migrate.py", "--check"], "the schema is migrated")]
-    for argv, what in checks:
+    for argv, what in GATE_CHECKS:
         g, gout = sh([PY] + argv)
         if g != 0:
             gate_ok = False
             out.append("BLOCKED: %s failed" % what)
             out += ["  " + l for l in gout.splitlines()[-6:]]
+        else:
+            out.append("ok: %s" % what)
+
+    for script, what in SOURCE_CHECKS:
+        g, gout = sh(["node", script])
+        if g != 0:
+            gate_ok = False
+            out.append("BLOCKED: %s failed" % what)
+            out += ["  " + l for l in gout.splitlines() if l.strip()][-6:]
         else:
             out.append("ok: %s" % what)
 

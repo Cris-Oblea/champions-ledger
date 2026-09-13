@@ -1,0 +1,577 @@
+/* ---------- tokens: light is the base, both dark paths redefine only these */
+:root{
+  --ground:#EFF3F2; --surface:#FFFFFF; --sunk:#E5EBE9;
+  --line:#D2DCDA; --line-hard:#B2C0BD;
+  --text:#111819; --muted:#5A6A6B; --faint:#849695;
+  --accent:#0A8A7C; --accent-ink:#FFFFFF; --accent-soft:#D9EFEC;
+  --mega:#6743C6; --mega-soft:#E9E2FA;
+  --warn:#A9640F; --warn-soft:#F7EBD8;
+  --bad:#B5372E; --bad-soft:#FAE3E0;
+  --good:#2A7442;
+  --shadow:0 1px 2px rgba(16,32,32,.06), 0 8px 24px -12px rgba(16,32,32,.22);
+  --r:10px;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,Segoe UI,sans-serif;
+  --cond:"IBM Plex Sans Condensed","IBM Plex Sans",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ground:#0A1012; --surface:#121A1C; --sunk:#0E1618;
+    --line:#222F31; --line-hard:#35494B;
+    --text:#E3EBE9; --muted:#8DA09F; --faint:#6C7F7E;
+    --accent:#33C0AD; --accent-ink:#04211D; --accent-soft:#0D2E2A;
+    --mega:#A78BF2; --mega-soft:#20193A;
+    --warn:#E0A44C; --warn-soft:#31250F;
+    --bad:#E4756A; --bad-soft:#361714;
+    --good:#5CBE7C;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.7);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0A1012; --surface:#121A1C; --sunk:#0E1618;
+  --line:#222F31; --line-hard:#35494B;
+  --text:#E3EBE9; --muted:#8DA09F; --faint:#6C7F7E;
+  --accent:#33C0AD; --accent-ink:#04211D; --accent-soft:#0D2E2A;
+  --mega:#A78BF2; --mega-soft:#20193A;
+  --warn:#E0A44C; --warn-soft:#31250F;
+  --bad:#E4756A; --bad-soft:#361714;
+  --good:#5CBE7C;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.7);
+}
+
+*{box-sizing:border-box}
+/* ---------- reads as an installed app, not a page ------------------------
+   Measured on the deployed build 2026-09-11: the tap flash, the rubber-band
+   scroll and the 300ms double-tap delay are all browser defaults that a
+   native app does not have, and each one is one line to turn off. */
+html{-webkit-tap-highlight-color:transparent}
+body{background:var(--ground);color:var(--text);font-family:var(--sans);
+     font-size:15px;line-height:1.45;-webkit-text-size-adjust:100%;
+     /* no pull-to-refresh and no bounce past the ends of the shell */
+     overscroll-behavior-y:none;
+     /* tapping never waits to see whether a second tap is coming */
+     touch-action:manipulation}
+/* Chrome is chrome: a long press on a tab or a counter should not start a
+   text selection. Real content keeps selecting normally. */
+.topbar,nav.tabs,.tabs button,.seg,.btnrow,h2,.counter,.tog,.btn,.iconbtn{
+  -webkit-user-select:none;user-select:none}
+button,input,select,textarea{font:inherit;color:inherit}
+b,strong{font-weight:600}
+button{cursor:pointer}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+
+/* ---------- shell ------------------------------------------------------- */
+/* 100vh counts browser chrome that hides as you scroll, so the shell used to
+   jump. dvh is the live value; the vh line stays for anything that lacks it. */
+.shell{min-height:100vh;min-height:100dvh}
+/* viewport-fit=cover puts the page UNDER the curve and the status bar, so
+   every edge needs its inset back. Only the bottom one was being paid, which
+   on a curved Edge 60 left the topbar and the row text sitting on the bend. */
+.topbar{position:sticky;top:0;z-index:30;background:var(--surface);
+  border-bottom:1px solid var(--line);display:flex;align-items:center;gap:8px;
+  padding:9px calc(14px + env(safe-area-inset-right))
+          9px calc(14px + env(safe-area-inset-left));
+  padding-top:calc(9px + env(safe-area-inset-top));
+  min-width:0}
+.brand{font-family:var(--cond);font-weight:600;letter-spacing:.06em;
+  text-transform:uppercase;font-size:13px;color:var(--muted);white-space:nowrap}
+.brand b{color:var(--text);font-weight:600}
+.spacer{flex:1}
+.counter{font-family:var(--mono);font-size:12.5px;font-weight:500;
+  font-variant-numeric:tabular-nums;padding:3px 8px;border-radius:6px;
+  background:var(--sunk);border:1px solid var(--line);white-space:nowrap;
+  flex-shrink:0}
+.counter.tight{background:var(--warn-soft);border-color:var(--warn);color:var(--warn)}
+.counter.full{background:var(--bad-soft);border-color:var(--bad);color:var(--bad)}
+/* 32px was below every touch-target guideline and these sit at the very top
+   of a 6.7" screen, the hardest place on the phone to hit. The BOX stays 36
+   so the bar keeps its height; the tappable area is grown past it instead. */
+.iconbtn{background:none;border:1px solid var(--line);border-radius:9px;
+  width:36px;height:36px;display:grid;place-items:center;color:var(--muted);
+  position:relative;flex-shrink:0}
+.iconbtn::after{content:"";position:absolute;inset:-5px}
+.iconbtn:hover{border-color:var(--line-hard);color:var(--text)}
+.iconbtn:active{background:var(--sunk);color:var(--text)}
+
+/* ---------- the topbar at phone widths ----------------------------------
+   It wanted 448px and no phone is that wide, so the page scrolled sideways -
+   measured at 320/360/390/412 on the deployed build. The brand is the only
+   thing on it that carries no live information, so it is what gives way. */
+.brand{min-width:0;overflow:hidden;text-overflow:ellipsis}
+@media (max-width:560px){
+  .brand b{display:none}                 /* "Champions Ledger" -> "Ledger" */
+  .topbar{gap:6px;padding-left:calc(12px + env(safe-area-inset-left));
+          padding-right:calc(12px + env(safe-area-inset-right))}
+  .counter{font-size:12px;padding:3px 7px}
+}
+@media (max-width:400px){
+  .brand{display:none}                   /* the counters are what matter */
+}
+
+main{max-width:820px;margin:0 auto;
+  padding:14px calc(14px + env(safe-area-inset-right))
+          calc(84px + env(safe-area-inset-bottom))
+          calc(14px + env(safe-area-inset-left))}
+.view[hidden]{display:none}
+
+/* The collapse control only has something to collapse in the >=900px rail
+   layout. Below that the menu is a fixed bottom bar and the button did
+   nothing at all - "practicamente esta de adorno" (player, 2026-09-11). The
+   layout already adapts on its own, so the button simply should not be there.
+   Hidden, not removed: it is still the right control on a desktop. */
+#railBtn{display:none}
+@media (min-width:900px){ #railBtn{display:grid} }
+
+/* bottom tab bar (mobile) -> left rail (desktop) */
+nav.tabs{position:fixed;bottom:0;left:0;right:0;z-index:30;display:grid;
+  grid-template-columns:repeat(7,1fr);background:var(--surface);
+  border-top:1px solid var(--line);
+  padding-bottom:env(safe-area-inset-bottom);
+  padding-left:env(safe-area-inset-left);
+  padding-right:env(safe-area-inset-right)}
+nav.tabs button{background:none;border:0;padding:8px 1px 9px;display:grid;
+  gap:3px;justify-items:center;color:var(--muted);font-family:var(--cond);
+  font-size:10px;font-weight:600;letter-spacing:.02em;text-transform:uppercase;
+  border-top:2px solid transparent;margin-top:-1px;overflow:hidden}
+nav.tabs button svg{width:18px;height:18px;stroke:currentColor;fill:none;
+  stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
+/* a label that wraps makes its tab taller than the rest; keep them on one
+   line and let the ellipsis be the visible failure instead of a ragged bar */
+nav.tabs button span{white-space:nowrap;overflow:hidden;text-overflow:ellipsis;
+  max-width:100%}
+nav.tabs button[aria-selected="true"]{color:var(--accent);border-top-color:var(--accent)}
+nav.tabs button:active{background:var(--sunk)}
+/* Seven labels across a 320px phone is 45px each. Rather than let them clip
+   mid-word, the label shrinks with the screen and the icon carries it. */
+@media (max-width:380px){
+  nav.tabs button{font-size:9px;padding:7px 0 8px;letter-spacing:0}
+  nav.tabs button svg{width:20px;height:20px}
+}
+@media (max-width:330px){
+  nav.tabs button span{display:none}
+  nav.tabs button{padding:12px 0}
+  nav.tabs button svg{width:22px;height:22px}
+}
+
+@media (min-width:900px){
+  .shell{display:grid;grid-template-columns:196px 1fr;
+    grid-template-areas:"top top" "nav main"}
+  .shell.narrow{grid-template-columns:58px 1fr}
+  .shell.narrow nav.tabs button span{display:none}
+  .shell.narrow nav.tabs button{justify-content:center;padding:11px 0}
+  .topbar{grid-area:top}
+  nav.tabs{position:sticky;top:51px;grid-area:nav;display:block;
+    height:calc(100vh - 51px);height:calc(100dvh - 51px);
+    border-top:0;border-right:1px solid var(--line);padding:10px 8px}
+  nav.tabs button{width:100%;grid-auto-flow:column;justify-items:start;
+    justify-content:start;gap:10px;padding:9px 10px;border-top:0;
+    border-radius:8px;font-size:12px;margin:0 0 2px}
+  nav.tabs button[aria-selected="true"]{background:var(--accent-soft);color:var(--accent)}
+  main{grid-area:main;padding:20px 24px 60px}
+}
+
+/* ---------- type scale & headings --------------------------------------- */
+h1{font-size:21px;margin:0;font-weight:600;letter-spacing:-.01em}
+h2{font-family:var(--cond);text-transform:uppercase;letter-spacing:.08em;
+   font-size:12px;font-weight:600;color:var(--muted);margin:22px 0 8px}
+h2:first-of-type{margin-top:4px}
+h2 .n{font-family:var(--mono);color:var(--faint);font-weight:500;letter-spacing:0}
+.lede{color:var(--muted);font-size:13.5px;margin:2px 0 0;max-width:60ch}
+/* The action used to be a flex item after a spacer, so as soon as the lede
+   filled the line it wrapped onto a row of its own - a whole empty band above
+   the content on every phone (seen 2026-09-11). As a grid, the title block
+   takes column 1 and the action sits in column 2 beside the H1, where it
+   belongs, and the lede flows full width underneath it. */
+.viewhead{display:grid;grid-template-columns:minmax(0,1fr) auto;
+  align-items:start;gap:4px 12px;margin-bottom:14px}
+.viewhead>div{grid-column:1;grid-row:1;min-width:0}
+.viewhead>.spacer{display:none}
+.viewhead>.btn{grid-column:2;grid-row:1;align-self:start;white-space:nowrap}
+/* ---------- the primary action, where the thumb actually is -------------
+   "Add" alone never said what it added, and the top-right corner of a 6.7"
+   phone is the furthest point from a thumb holding it. Worse, these are long
+   scrolling lists: parked in the header, the button is gone the moment you
+   start reading, so adding meant scrolling back to the top.
+
+   Below the rail breakpoint it becomes a pill floating above the tab bar -
+   reachable, permanently visible, and still carrying its own label rather
+   than being a bare + the user has to guess at. On desktop, where the pointer
+   reaches everywhere and the header is conventional, it stays put. */
+@media (max-width:899px){
+  .viewhead>.btn.fab{
+    position:fixed;z-index:29;
+    right:calc(14px + env(safe-area-inset-right));
+    bottom:calc(var(--navh,68px) + env(safe-area-inset-bottom) + 14px);
+    border-radius:26px;padding:0 18px;min-height:48px;
+    display:inline-flex;align-items:center;gap:7px;
+    box-shadow:0 6px 18px -6px rgba(0,0,0,.55), 0 2px 6px rgba(0,0,0,.35);
+    font-weight:600}
+  .fabplus{font-size:19px;line-height:1;margin-top:-2px;font-weight:400}
+  /* it floats, so it must not also reserve a grid cell */
+  .viewhead{grid-template-columns:minmax(0,1fr)}
+  /* and the last row of a list must be able to clear it */
+  main{padding-bottom:calc(140px + env(safe-area-inset-bottom))}
+}
+@media (min-width:900px){
+  .fabplus{display:none}
+}
+
+/* ---------- list rows ---------------------------------------------------- */
+.list{display:flex;flex-direction:column;gap:6px}
+.row{display:flex;align-items:center;gap:10px;width:100%;text-align:left;
+  background:var(--surface);border:1px solid var(--line);border-left-width:3px;
+  border-left-color:var(--line-hard);border-radius:var(--r);
+  padding:9px 11px;min-height:52px}
+.row:hover{border-color:var(--line-hard)}
+/* the left stripe encodes ORIGIN, which is what decides whether a slot is
+   elastic - not whether the Pokemon is "permanent" */
+.row.perm{border-left-color:var(--accent)}          /* HOME origin: elastic */
+.row.locked{border-left-color:var(--muted)}         /* Champions origin: welded */
+.row.unknown{border-left-color:var(--line-hard);border-left-style:dotted}
+.row.rental{border-left-color:var(--warn);border-left-style:dashed}
+.row.home{border-left-color:var(--muted)}
+.row.illegal{border-left-color:var(--bad)}
+.rmain{flex:1;min-width:0}
+.rname{font-weight:600;font-size:14.5px;display:flex;align-items:center;
+  gap:6px;flex-wrap:wrap}
+.rmeta{color:var(--muted);font-size:12px;display:flex;align-items:center;
+  gap:6px;flex-wrap:wrap;margin-top:2px}
+.rmeta .mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+.rside{display:flex;align-items:center;gap:6px;flex-shrink:0}
+
+/* ---------- chips -------------------------------------------------------- */
+.t{font-family:var(--cond);font-size:10.5px;font-weight:600;letter-spacing:.06em;
+  text-transform:uppercase;padding:2px 6px;border-radius:4px;color:#fff;
+  white-space:nowrap}
+.tag{font-family:var(--cond);font-size:10.5px;font-weight:600;letter-spacing:.06em;
+  text-transform:uppercase;padding:2px 6px;border-radius:4px;white-space:nowrap;
+  border:1px solid var(--line);color:var(--muted);background:var(--sunk)}
+.tag.mega{background:var(--mega-soft);border-color:var(--mega);color:var(--mega)}
+.tag.warn{background:var(--warn-soft);border-color:var(--warn);color:var(--warn)}
+.tag.bad{background:var(--bad-soft);border-color:var(--bad);color:var(--bad)}
+.tag.ok{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+
+/* ---------- buttons ------------------------------------------------------ */
+.btn{background:var(--surface);border:1px solid var(--line-hard);border-radius:8px;
+  padding:8px 13px;font-size:13.5px;font-weight:500}
+.btn:hover{background:var(--sunk)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{filter:brightness(1.07)}
+.btn.danger{color:var(--bad);border-color:var(--bad)}
+.btn.sm{padding:5px 9px;font-size:12.5px}
+/* a .btn that is really a toggle has to look held-down, the same way .tog does */
+.btn[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent);
+  color:var(--accent);font-weight:600}
+/* "Clear" wipes the query; it sat in the same row looking like "+ Move" */
+.btn.quiet{border-style:dashed;color:var(--muted)}
+/* a fold header: full width, reads as a heading, behaves as a button */
+.btn.fold{width:100%;justify-content:flex-start;display:flex;align-items:center;
+  gap:8px;font-family:var(--cond);text-transform:uppercase;letter-spacing:.08em;
+  font-size:12px;color:var(--muted);background:none;border:0;border-top:1px solid var(--line);
+  border-radius:0;padding:12px 2px;margin-top:16px}
+.btn.fold:hover{color:var(--text)}
+.btn.fold .n{font-family:var(--mono);color:var(--faint);letter-spacing:0;
+  margin-left:auto}
+.foldcaret{font-size:10px;display:inline-block;width:10px}
+.btnrow{display:flex;gap:8px;flex-wrap:wrap}
+
+/* ---------- panels ------------------------------------------------------- */
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
+  padding:13px}
+.note{background:var(--sunk);border:1px solid var(--line);border-radius:var(--r);
+  padding:10px 12px;font-size:12.5px;color:var(--muted)}
+.note strong{color:var(--text);font-weight:600}
+.note.warn{background:var(--warn-soft);border-color:var(--warn);color:var(--warn)}
+.note.bad{background:var(--bad-soft);border-color:var(--bad);color:var(--bad)}
+.note.warn strong,.note.bad strong{color:inherit}
+.empty{color:var(--faint);font-size:13px;padding:14px;text-align:center;
+  border:1px dashed var(--line);border-radius:var(--r)}
+
+/* ---------- forms -------------------------------------------------------- */
+label.f{display:block;font-family:var(--cond);text-transform:uppercase;
+  letter-spacing:.07em;font-size:11px;font-weight:600;color:var(--muted);
+  margin-bottom:4px}
+input:not([type=range]):not([type=file]):not([type=checkbox]):not([type=radio]),
+select,textarea{width:100%;
+  background:var(--surface);border:1px solid var(--line-hard);border-radius:8px;
+  padding:9px 11px;font-size:14px;color:var(--text);min-height:42px}
+/* Safari zooms the whole page when a field under 16px takes focus, and never
+   zooms back out. Coarse pointer = a touch device, so it costs desktop
+   nothing. */
+@media (pointer:coarse){
+  input:not([type=range]):not([type=file]):not([type=checkbox]):not([type=radio]),
+  select,textarea{font-size:16px}
+}
+input::placeholder{color:var(--faint)}
+/* Chrome paints its own background over autofilled fields */
+input:-webkit-autofill,input:-webkit-autofill:focus{
+  -webkit-text-fill-color:var(--text);
+  -webkit-box-shadow:0 0 0 40px var(--surface) inset;
+  caret-color:var(--text)}
+textarea{resize:vertical;min-height:64px;line-height:1.45}
+.field{margin-bottom:12px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.search{position:relative}
+.search input{padding-left:32px}
+.search svg{position:absolute;left:9px;top:50%;transform:translateY(-50%);
+  width:16px;height:16px;stroke:var(--faint);fill:none;stroke-width:1.8}
+
+/* ---------- SP editor ---------------------------------------------------- */
+.sp{display:grid;grid-template-columns:34px 1fr 40px 52px;align-items:center;
+  gap:9px;padding:3px 0}
+.sp .k{font-family:var(--cond);font-size:11px;font-weight:600;
+  text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.sp .v{font-family:var(--mono);font-size:13px;font-variant-numeric:tabular-nums;
+  text-align:right}
+.sp .calc{font-family:var(--mono);font-size:12px;color:var(--faint);
+  text-align:right;font-variant-numeric:tabular-nums}
+.sp.over .v{color:var(--bad);font-weight:600}
+/* The build sheet's row carries three ways to set the same number - drag,
+   arrows, typing - so it needs two more columns than the calculator's. */
+.sp.spedit{grid-template-columns:34px 1fr 32px 46px 32px 52px;gap:7px}
+.sp .step{width:32px;height:32px;padding:0;border-radius:8px;
+  border:1px solid var(--line-hard);background:var(--surface);color:var(--text);
+  font-family:var(--mono);font-size:16px;line-height:1;
+  display:flex;align-items:center;justify-content:center}
+.sp .step:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+.sp .step:disabled{opacity:.3;cursor:default}
+.sp .spnum{text-align:center;padding:6px 2px;font-family:var(--mono);
+  font-size:13px;font-variant-numeric:tabular-nums}
+.sp.over .spnum{color:var(--bad);font-weight:600;border-color:var(--bad)}
+@media (max-width:380px){
+  .sp.spedit{grid-template-columns:30px 1fr 30px 42px 30px 44px;gap:5px}
+  .sp .step{width:30px;height:30px}
+}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:22px;
+  background:none}
+input[type=range]::-webkit-slider-runnable-track{height:4px;border-radius:2px;
+  background:var(--sunk);border:1px solid var(--line)}
+input[type=range]::-moz-range-track{height:4px;border-radius:2px;
+  background:var(--sunk);border:1px solid var(--line)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;
+  height:16px;border-radius:50%;background:var(--accent);margin-top:-7px;
+  border:2px solid var(--surface)}
+input[type=range]::-moz-range-thumb{width:14px;height:14px;border:2px solid var(--surface);
+  border-radius:50%;background:var(--accent)}
+.meter{height:6px;border-radius:3px;background:var(--sunk);overflow:hidden;
+  border:1px solid var(--line);margin:6px 0 3px}
+.meter i{display:block;height:100%;background:var(--accent);transition:width .12s}
+.meter.over i{background:var(--bad)}
+.budget{display:flex;justify-content:space-between;font-family:var(--mono);
+  font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+
+/* ---------- move slots --------------------------------------------------- */
+.slot{display:flex;align-items:center;gap:9px;background:var(--surface);
+  border:1px solid var(--line);border-radius:8px;padding:8px 10px;width:100%;
+  text-align:left;min-height:46px}
+.slot.blank{border-style:dashed;color:var(--faint)}
+.slot .nm{font-weight:500;font-size:14px}
+.slot .st{font-family:var(--mono);font-size:11.5px;color:var(--muted);
+  font-variant-numeric:tabular-nums;margin-top:1px}
+
+/* ---------- sheet / modal ------------------------------------------------ */
+.scrim{position:fixed;inset:0;background:rgba(8,16,16,.5);z-index:60;
+  display:flex;align-items:flex-end;justify-content:center;
+  -webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px)}
+.scrim[hidden]{display:none}
+/* 92vh counted browser chrome that is not there, which pushed the footer
+   buttons off the bottom of a phone. dvh is the live height. */
+.sheet{background:var(--ground);width:100%;max-width:620px;
+  max-height:92vh;max-height:92dvh;
+  border-radius:16px 16px 0 0;display:flex;flex-direction:column;
+  box-shadow:var(--shadow);
+  animation:sheetUp .22s cubic-bezier(.22,1,.36,1)}
+@keyframes sheetUp{from{transform:translateY(14px);opacity:.6}to{transform:none;opacity:1}}
+/* the grab bar: a bottom sheet with no handle reads as a stuck panel, and
+   this is also the hit area for tap-to-close at the top of the sheet */
+.sheet::before{content:"";position:absolute;top:6px;left:50%;
+  transform:translateX(-50%);width:36px;height:4px;border-radius:2px;
+  background:var(--line-hard);opacity:.9}
+.sheet{position:relative}
+.sheethead{display:flex;align-items:center;gap:10px;padding:18px 16px 10px;
+  border-bottom:1px solid var(--line);background:var(--surface);
+  border-radius:16px 16px 0 0}
+.sheethead h3{margin:0;font-size:17px;font-weight:600;flex:1;min-width:0}
+/* contain the scroll: dragging past the end of a sheet must not start
+   scrolling the page behind it, which is the classic "it is a web page"
+   giveaway. The side padding clears a curved screen. */
+.sheetbody{overflow-y:auto;overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;
+  padding:14px calc(16px + env(safe-area-inset-right)) 22px
+          calc(16px + env(safe-area-inset-left))}
+.sheetfoot{display:flex;flex-wrap:wrap;gap:8px;
+  padding:11px calc(16px + env(safe-area-inset-right))
+          calc(11px + env(safe-area-inset-bottom))
+          calc(16px + env(safe-area-inset-left));
+  border-top:1px solid var(--line);background:var(--surface)}
+/* 120px x 3 does not fit a 320px phone, so the buttons wrapped one per row.
+   They only need to be big enough to hit. */
+.sheetfoot .btn{flex:1 1 96px;min-width:96px;text-align:center;min-height:44px}
+@media (min-width:480px){ .sheetfoot .btn{flex:1 1 120px;min-width:120px} }
+/* With three buttons on a narrow screen the last one wrapped alone and
+   stretched to the full width, which handed the biggest target on the sheet
+   to whatever happened to be last in the array. Giving the PRIMARY its own
+   full row makes the break deterministic: the main action on top, the two
+   secondaries sharing the row below, and nothing gets emphasis by accident. */
+@media (max-width:420px){
+  .sheetfoot:has(.btn:nth-child(3)) .btn.primary{flex-basis:100%}
+}
+@media (min-width:700px){
+  .scrim{align-items:center}
+  .sheet{border-radius:14px;max-height:86vh;max-height:86dvh}
+  .sheet::before{display:none}
+  .sheethead{border-radius:14px 14px 0 0;padding-top:14px}
+}
+
+/* ---------- misc --------------------------------------------------------- */
+.kv{display:grid;grid-template-columns:auto 1fr;gap:5px 14px;font-size:13.5px}
+.kv dt{color:var(--muted)}
+.kv dd{margin:0;font-family:var(--mono);font-variant-numeric:tabular-nums;
+  text-align:right}
+.statline{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-top:8px}
+.statline div{text-align:center;background:var(--sunk);border-radius:6px;padding:4px 2px}
+.statline b{display:block;font-family:var(--mono);font-size:13px;font-weight:500;
+  font-variant-numeric:tabular-nums}
+.statline span{font-family:var(--cond);font-weight:600;font-size:9.5px;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--faint)}
+.toggles{display:flex;flex-wrap:wrap;gap:6px}
+.tog{border:1px solid var(--line);background:var(--surface);border-radius:7px;
+  padding:6px 9px;font-size:12.5px;display:flex;align-items:center;gap:6px}
+.tog[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent);
+  color:var(--accent);font-weight:500}
+.tog.mega[aria-pressed="true"]{background:var(--mega-soft);border-color:var(--mega);
+  color:var(--mega)}
+/* 78px was a guess at the tab bar's height. It is 47px at 320, 68px at 412,
+   plus whatever the gesture bar takes - so the toast either floated or sat on
+   the nav. --navh is measured from the real element instead. */
+.toast{position:fixed;left:50%;z-index:80;
+  bottom:calc(var(--navh,68px) + env(safe-area-inset-bottom) + 12px);
+  background:var(--text);color:var(--ground);padding:10px 16px;border-radius:10px;
+  font-size:13.5px;box-shadow:var(--shadow);
+  max-width:min(88vw, 420px);text-align:center;
+  transform:translateX(-50%);
+  animation:toastIn .18s ease-out}
+@keyframes toastIn{from{transform:translate(-50%,8px);opacity:0}
+                   to{transform:translateX(-50%);opacity:1}}
+.toast[hidden]{display:none}
+.booterr{position:fixed;left:0;right:0;top:0;z-index:95;background:var(--bad);
+  color:#fff;font-size:12.5px;padding:7px 12px;text-align:center}
+.booterr[hidden]{display:none}
+@media (min-width:900px){.toast{bottom:24px}}   /* rail layout: no bottom nav */
+.dot{width:7px;height:7px;border-radius:50%;background:var(--faint);flex:none}
+.dot.live{background:var(--good)}
+.dot.off{background:var(--bad)}
+.scroller{overflow-x:auto}
+.hr{height:1px;background:var(--line);margin:16px 0}
+
+/* ---------- sign-in gate ------------------------------------------------- */
+.gate{position:fixed;inset:0;z-index:90;background:var(--ground);
+  display:flex;align-items:center;justify-content:center;padding:22px}
+.gate[hidden]{display:none}
+.gatebox{background:var(--surface);border:1px solid var(--line);
+  border-radius:14px;padding:26px 24px;width:100%;max-width:380px;
+  box-shadow:var(--shadow)}
+.gatebox h1{font-size:19px;margin:0 0 4px}
+.gatebox .lede{margin-bottom:18px}
+.gatebox .btn{width:100%;text-align:center;margin-top:2px}
+.gatebox .note{margin-bottom:12px}
+.userchip{font-family:var(--mono);font-size:11.5px;color:var(--muted);
+  max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sub{font-size:12.5px;color:var(--muted);margin:0 0 8px}
+.gap6{height:6px}
+/* ---------- a GTS offer, as two sides rather than a sentence ------------- */
+.gtsrow{align-items:stretch}
+.gtspair{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;
+  gap:10px;margin-top:8px}
+.gtsside{min-width:0;background:var(--sunk);border:1px solid var(--line);
+  border-radius:8px;padding:8px 10px}
+.gtsside .rname{font-size:13.5px}
+.gtsside .rmeta{margin-top:3px}
+.gtslabel{font-family:var(--cond);text-transform:uppercase;letter-spacing:.07em;
+  font-size:9.5px;font-weight:600;color:var(--faint);margin-bottom:3px}
+.gtsarrow{font-family:var(--mono);font-size:17px;color:var(--muted);
+  text-align:center}
+/* a note can be a paragraph of reasoning; three lines is enough to recognise
+   it by, and the whole thing is there when the offer is opened */
+.gtsnote{font-size:12px;color:var(--muted);margin-top:6px;line-height:1.4;
+  display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;
+  overflow:hidden}
+@media (max-width:560px){
+  .gtspair{grid-template-columns:1fr}
+  .gtsarrow{transform:rotate(90deg);line-height:1}
+}
+
+.calcflags{display:grid;gap:6px;margin-top:8px}
+.calcflags .note{font-size:12px;padding:7px 10px}
+details.rolls{margin-top:8px}
+details.rolls summary{font-family:var(--cond);text-transform:uppercase;
+  letter-spacing:.07em;font-size:11px;font-weight:600;color:var(--muted);
+  cursor:pointer;list-style:none}
+details.rolls summary::-webkit-details-marker{display:none}
+details.rolls summary::before{content:"+ ";color:var(--faint)}
+details.rolls[open] summary::before{content:"2 "}
+
+/* ---------- the damage calculator ---------------------------------------- */
+.calcresult{position:sticky;top:51px;z-index:20;background:var(--ground);
+  padding:10px 0 12px;margin-bottom:4px;border-bottom:1px solid var(--line)}
+.calcgrid{display:grid;gap:14px;margin-top:14px}
+@media (min-width:820px){.calcgrid{grid-template-columns:1fr 1fr}
+  .calccol:nth-child(2){grid-column:1 / -1;order:3}}
+@media (min-width:1180px){.calcgrid{grid-template-columns:1fr 1fr 1fr}
+  .calccol:nth-child(2){grid-column:auto;order:0}}
+.calccol{min-width:0;background:var(--surface);border:1px solid var(--line);
+  border-radius:var(--r);padding:12px 13px}
+.calccol h2{margin-top:14px}
+.calccol h2:first-child{margin-top:0}
+
+/* the verdict, sized like the answer it is */
+.verdict{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.verdict .num{font-family:var(--mono);font-size:22px;font-weight:600;
+  font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.verdict .pct{font-family:var(--mono);font-size:13px;color:var(--muted);
+  font-variant-numeric:tabular-nums}
+.kotag{font-family:var(--cond);text-transform:uppercase;letter-spacing:.06em;
+  font-size:12px;font-weight:600;padding:3px 9px;border-radius:6px;
+  border:1px solid;white-space:nowrap}
+.kotag.k1{background:var(--bad-soft);border-color:var(--bad);color:var(--bad)}
+.kotag.k2{background:var(--warn-soft);border-color:var(--warn);color:var(--warn)}
+.kotag.k3{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+
+/* a segmented control reads as one choice; two loose pills read as two */
+.seg{display:inline-flex;border:1px solid var(--line-hard);border-radius:9px;
+  overflow:hidden;background:var(--surface)}
+.seg button{background:none;border:0;padding:7px 18px;font-family:var(--cond);
+  text-transform:uppercase;letter-spacing:.07em;font-size:12px;font-weight:600;
+  color:var(--muted)}
+.seg button + button{border-left:1px solid var(--line)}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+.sortseg{margin-bottom:10px}
+.sortseg button{padding:6px 13px;font-size:11px}
+
+/* ---------- touch targets ------------------------------------------------
+   Audited on the deployed build at 360px (2026-09-11). Every interactive
+   class came in under 40px tall: .btn 37, .btn.sm 30, .seg buttons 28-31,
+   and the 32 field toggles in the damage calc at 32. On a 6.7" phone those
+   are a miss waiting to happen, and the calc toggles are the ones you tap
+   most.
+
+   Applied on POINTER:COARSE only. A mouse is precise and desktop density is
+   worth keeping, so this buys the phone nothing at the desktop's expense.
+   Heights are grown for real rather than faked with an invisible halo -
+   these controls sit in rows next to each other, and overlapping halos steal
+   each other's taps. */
+@media (pointer:coarse){
+  .btn{min-height:44px;padding-top:9px;padding-bottom:9px}
+  .btn.sm{min-height:40px;padding-top:8px;padding-bottom:8px}
+  .seg button{min-height:42px;padding-top:0;padding-bottom:0}
+  .sortseg button{min-height:40px}
+  .tog{min-height:40px;padding-top:8px;padding-bottom:8px}
+  .row{min-height:56px}
+}
+
+/* the field was a wall of near-identical pills; the rules separate the groups */
+.fieldgroup{width:100%;font-family:var(--cond);text-transform:uppercase;
+  letter-spacing:.08em;font-size:10.5px;font-weight:600;color:var(--faint);
+  margin:12px 0 2px;padding-top:9px;border-top:1px solid var(--line)}
+.fieldgroup:first-child{margin-top:0;padding-top:0;border-top:0}

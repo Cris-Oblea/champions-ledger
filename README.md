@@ -108,7 +108,7 @@ error. Anything quoted here says which one it came from.
 ```
 
 <!-- GATE:START -->
-**The gate** is twenty-four checks, and nothing reaches the phone without
+**The gate** is twenty-five checks, and nothing reaches the phone without
 passing all of them:
 
 - a **shrink guard** — if a rebuild comes back with fewer forms, moves or
@@ -117,6 +117,8 @@ passing all of them:
   matching across all five sources, every derived index resolving, every form
   still accounted for, the README's own numbers, and that no SQL migration is
   still waiting to be applied
+- **one source check** — the app is assembled from thirteen files, so a name
+  two of them both declare is read for once, not clicked
 - **seventeen browser tests** — run against the built page, because no Python
   check can see a template regression
 <!-- GATE:END -->
@@ -161,7 +163,7 @@ python scripts/refresh.py --regulation    # ...when a new regulation drops
 scripts/     fetchers, the database build, the query CLI, the damage calculator
 data/db/     the built database - the thing everything else reads
 data/meta/   usage, tournaments, speed tiers, written analyses
-tracker/     the app: one HTML template plus a generated data blob
+tracker/     the app: a shell, its source parts under src/, and a generated data blob
 <!-- TESTS:START -->
 tests/       seventeen browser tests, run against the BUILT page
 <!-- TESTS:END -->

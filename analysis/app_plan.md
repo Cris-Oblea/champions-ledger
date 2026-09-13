@@ -88,13 +88,21 @@ Small, boring, and far cheaper now than later.
 - **Numbered SQL migrations that run themselves.** There are already three
   hand-pasted `supabase_migrate_*.sql` files. A fourth pasted by hand is how a
   schema and a client drift apart.
-- **One id scheme.** Box rows use slugs (`squawkabilly`, `squawkabilly-2`),
-  which collide the moment two people own one. UUIDs, with the slug kept as a
-  display name.
-- **Split the page.** `index.template.html` is ~6,400 lines and every view is
-  in it. It still works, but the two bugs that cost the most this month were a
-  name declared twice and a `var` read before its assignment - both symptoms of
-  one file holding everything.
+- ~~**One id scheme.** UUIDs, with the slug kept as a display name.~~
+  **Not done, and the reason this said otherwise was wrong.** The premise was
+  that slugs "collide the moment two people own one"; the primary key is
+  `(user_id, id)`, so they never collide between accounts. And the readable id
+  is load-bearing - the build picker shows it to tell `farigiraf` from
+  `farigiraf-2`. The real defect was narrower and is fixed: creation used
+  `upsert` with the next number this DEVICE could see free, so two devices
+  creating at once both picked it and the second overwrote the first. It
+  inserts now and lets Postgres' 23505 say what is taken (`putNew`).
+- ~~**Split the page.**~~ **Done 2026-09-13.** `tracker/src/`, thirteen parts
+  plus the stylesheet and the markup, concatenated by the build. Verified by
+  diffing the assembled source against the file it replaced: identical but for
+  the thirteen header comments. `scripts/check_app.js` now reads the parts back
+  as one program and runs inside the gate, because a name two parts both
+  declare is exactly what the split makes easy.
 
 ---
 

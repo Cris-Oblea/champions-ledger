@@ -1,0 +1,379 @@
+<div class="shell">
+  <header class="topbar">
+    <span class="brand"><b>Champions</b> Ledger</span>
+    <span class="spacer"></span>
+    <span class="counter" id="boxCount">box —</span>
+    <button class="iconbtn" id="railBtn" title="Collapse the menu" aria-label="Collapse the menu">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"><path d="M4 6h16M4 12h10M4 18h16"/></svg>
+    </button>
+    <button class="iconbtn" id="themeBtn" title="Light / dark" aria-label="Light or dark theme">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.7"><path d="M12 3v2m0 14v2m9-9h-2M5 12H3m14.5-6.5-1.4 1.4M7.9 16.1l-1.4 1.4m0-11.4 1.4 1.4m8.2 8.2 1.4 1.4"/><circle cx="12" cy="12" r="4"/></svg>
+    </button>
+  </header>
+
+  <nav class="tabs" id="tabs" role="tablist"></nav>
+
+  <main>
+    <!-- ============================================================ BOX -->
+    <section class="view" id="v-box" role="tabpanel">
+      <div class="viewhead">
+        <div><h1>Champions Box</h1>
+          <p class="lede">What you can actually field. A rental costs 0 VP but
+             cannot be trained &mdash; no move, nature, ability or SP change.</p></div>
+        <span class="spacer"></span>
+        <button class="btn primary fab" data-add="champions"><span class="fabplus" aria-hidden="true">+</span>Add Pokemon</button>
+      </div>
+      <div id="boxWarn"></div>
+
+      <section id="dupeBlock" hidden>
+        <h2>Already in HOME <span class="n" id="nDupeHome"></span></h2>
+        <p class="sub" id="dupeSub"></p>
+        <div id="dupeNote"></div>
+        <div class="list" id="listDupeHome"></div>
+      </section>
+
+      <div class="seg sortseg" role="group" aria-label="Sort order">
+        <button data-sort="dex" aria-pressed="true">Dex #</button>
+        <button data-sort="az" aria-pressed="false">A&ndash;Z</button>
+      </div>
+
+
+      <h2>HOME origin <span class="n" id="nHomeOrigin"></span></h2>
+      <p class="sub">The real permanents. Park one back to HOME to free the slot
+        and recall it later with its moves, nature, ability and SP intact — free,
+        as often as you like. Only these make the box elastic.</p>
+      <div class="list" id="listHomeOrigin"></div>
+
+      <h2>Champions origin <span class="n" id="nChampOrigin"></span></h2>
+      <p class="sub">Came out of an Encounter, whether bought for 2500 VP or
+        with a ticket. It can never be sent to HOME. The slot frees only by
+        releasing it, which destroys the Pokemon.</p>
+      <div class="list" id="listChampOrigin"></div>
+
+      <h2>Rental <span class="n" id="nRent"></span></h2>
+      <p class="sub">Timed, 0 VP, cannot be trained. Always Champions origin —
+        buying one does not make it a real permanent.</p>
+      <div class="list" id="listRent"></div>
+    </section>
+
+    <!-- =========================================================== HOME -->
+    <section class="view" id="v-home" role="tabpanel" hidden>
+      <div class="viewhead">
+        <div><h1>HOME Box</h1>
+          <p class="lede">Waiting outside Champions. Arrives permanent and
+             trainable, 0 VP &mdash; the only route that delivers a chosen species
+             on purpose.</p></div>
+        <span class="spacer"></span>
+        <button class="btn primary fab" data-add="home"><span class="fabplus" aria-hidden="true">+</span>Add to HOME</button>
+      </div>
+      <div class="seg sortseg" role="group" aria-label="Sort order">
+        <button data-sort="dex" aria-pressed="true">Dex #</button>
+        <button data-sort="az" aria-pressed="false">A&ndash;Z</button>
+      </div>
+      <!-- the offers are few and waiting on an answer; the box is long and
+           mostly static, so the thing you act on goes first -->
+      <h2>GTS offers open <span class="n" id="nGts"></span></h2>
+      <p class="sub">Three slots, and an open offer holds one until it is taken
+        or withdrawn. A deposit is not a trade: until someone accepts it, the
+        Pokemon is still yours &mdash; and parked, so it cannot be sent to Champions.</p>
+      <div class="list" id="listGts"></div>
+      <div class="btnrow" style="margin-top:8px;margin-bottom:6px">
+        <button class="btn sm" id="gtsAdd">Log an offer</button>
+      </div>
+      <!-- Closed trades are the only real evidence of what the market pays.
+           The player's own pricing rule came from remembering five of them. -->
+      <!-- Collapsed. There are 21 closed trades already and the list only
+           grows; left open it buried the HOME box under a wall of history
+           you rarely need open (player, 2026-09-12). The summary line is the
+           part worth seeing every time, so it stays outside the fold. -->
+      <div id="gtsHistWrap" hidden>
+        <button class="btn sm fold" id="gtsHistToggle" aria-expanded="false"
+                aria-controls="gtsHistBody">
+          <span class="foldcaret" aria-hidden="true">&#9656;</span>
+          <span>Trades that closed</span>
+          <span class="n" id="nGtsHist"></span>
+        </button>
+        <p class="sub" id="gtsHistSub"></p>
+        <div id="gtsHistBody" hidden>
+          <div class="list" id="listGtsHist"></div>
+        </div>
+      </div>
+
+      <h2>In HOME <span class="n" id="nHome"></span></h2>
+      <div class="search field">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input type="text" id="homeFilter" placeholder="Filter by name, type, number, shiny, trained">
+      </div>
+      <div class="list" id="listHome"></div>
+      <div class="btnrow" id="homeMore"></div>
+    </section>
+
+    <!-- ========================================================= BUILDS -->
+    <section class="view" id="v-builds" role="tabpanel" hidden>
+      <div class="viewhead">
+        <div><h1>Builds</h1>
+          <p class="lede">A set is its own thing: keep several for one species
+             and pick per team, or write one for a Pokemon you have not got yet
+             and it waits. 66 Stat Points, 32 max in one stat. No item here
+             &mdash; that is decided in <strong>Teams</strong>, next to this,
+             because the Item Clause makes it a team-wide choice.</p></div>
+        <span class="spacer"></span>
+        <button class="btn primary fab" id="buildAdd"><span class="fabplus" aria-hidden="true">+</span>New build</button>
+      </div>
+      <!-- Teams lives in here rather than in its own tab: an eighth tab broke
+           the phone's bar onto two rows and cost more visibility than the tab
+           was worth (player, 2026-09-13). They belong together anyway - a team
+           IS six builds, and this is the same pane pattern Items already uses. -->
+      <div class="btnrow" style="margin-bottom:12px">
+        <button class="btn sm" id="bldPaneBuilds" aria-pressed="true">Builds</button>
+        <button class="btn sm" id="bldPaneTeams" aria-pressed="false">Teams</button>
+      </div>
+      <div id="buildsPane">
+        <div class="search field"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <input type="text" id="buildSearch" placeholder="Filter builds"></div>
+        <div class="list" id="listBuilds"></div>
+      </div>
+      <div id="teamsPane" hidden>
+        <p class="sub">Six slots, and the item lives on the slot — the Item
+          Clause means the six of them field exactly one Sitrus Berry, so an
+          item is a team decision, never part of a build.</p>
+        <div class="btnrow" style="margin-bottom:10px">
+          <button class="btn primary" id="teamAdd">New team</button>
+        </div>
+        <div class="list" id="listTeams"></div>
+      </div>
+    </section>
+
+    <!-- ===================================================== EDITORS ====
+         A build and a team are edited as real VIEWS, not as pop-up sheets.
+         They used to be sheets, and sheets nest: opening the item picker from
+         inside a team put a sheet on a sheet, so pressing Back closed BOTH and
+         took every unsaved slot with it (player, 2026-09-13). A view cannot be
+         dismissed by accident - the pickers stay sheets, because they are
+         short-lived and closing one now returns to an editor that still holds
+         its draft. -->
+    <section class="view" id="v-buildedit" role="tabpanel" hidden>
+      <div class="viewhead">
+        <div><h1 id="buildEditTitle">Build</h1></div>
+        <span class="spacer"></span>
+        <button class="btn" id="buildEditBack">Back</button>
+      </div>
+      <div id="buildEditBody"></div>
+      <div class="btnrow" id="buildEditFoot" style="margin-top:14px"></div>
+    </section>
+
+    <section class="view" id="v-teamedit" role="tabpanel" hidden>
+      <div class="viewhead">
+        <div><h1 id="teamEditTitle">Team</h1></div>
+        <span class="spacer"></span>
+        <button class="btn" id="teamEditBack">Back</button>
+      </div>
+      <div id="teamEditBody"></div>
+      <div class="btnrow" id="teamEditFoot" style="margin-top:14px"></div>
+    </section>
+
+    <!-- =========================================================== GEAR -->
+    <section class="view" id="v-gear" role="tabpanel" hidden>
+      <div class="viewhead"><div><h1>Items</h1>
+        <p class="lede">Every item in the game, in the four groups Champions
+           uses. Tap one to record that you own it.</p></div></div>
+      <div class="btnrow" style="margin-bottom:12px">
+        <button class="btn sm" id="gearStones" aria-pressed="true">Mega Stones</button>
+        <button class="btn sm" id="gearItems" aria-pressed="false">Items</button>
+      </div>
+      <div id="gearStonePane">
+        <div class="search field"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <input type="text" id="stoneSearch" placeholder="Filter stones"></div>
+        <div class="note" id="stoneNote" style="margin-bottom:12px"></div>
+        <h2>Owned <span class="n" id="nStones"></span></h2>
+        <div class="list" id="listStonesOwned"></div>
+        <h2>Not owned <span class="n" id="nStonesNot"></span></h2>
+        <div class="list" id="listStonesNot"></div>
+      </div>
+      <div id="gearItemPane" hidden>
+        <div class="search field"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <input type="text" id="itemSearch" placeholder="Filter items"></div>
+        <div class="note" id="itemNote" style="margin-bottom:12px"></div>
+        <div id="itemCats"></div>
+      </div>
+    </section>
+
+
+    <!-- =========================================================== CALC -->
+    <section class="view" id="v-calc" role="tabpanel" hidden>
+      <!-- the answer stays put while you change what feeds it: this is the
+           whole reason the page exists, and it used to sit below the fold -->
+      <div class="calcresult" id="calcOut">
+        <div class="empty">Pick an attacker, a move and a defender.</div>
+      </div>
+
+      <div class="seg" id="calcMode" role="group" aria-label="Battle format">
+        <button data-mode="Doubles" aria-pressed="true">Doubles</button>
+        <button data-mode="Singles" aria-pressed="false">Singles</button>
+      </div>
+
+      <div class="calcgrid">
+        <section class="calccol">
+          <h2>Attacker</h2>
+          <div id="calcAtk"></div>
+          <h2>Move</h2>
+          <button class="slot blank" id="calcMove"><div class="rmain">
+            <div class="rname">Pick a move</div></div></button>
+        </section>
+
+        <section class="calccol">
+          <h2>The field</h2>
+          <div class="toggles" id="calcField"></div>
+        </section>
+
+        <section class="calccol">
+          <h2>Defender</h2>
+          <div id="calcDef"></div>
+        </section>
+      </div>
+
+      <!-- A status is not gear - you do not own one, you are afflicted by it,
+           and what it is worth knowing for is the multiplier it puts on a
+           damage roll. It used to sit behind a third tab on Items, which is
+           where the player found it wrong (2026-09-11). Here it is next to
+           the field toggles that actually apply it. -->
+      <h2 style="margin-top:22px">Status effects</h2>
+      <p class="sub">What each one does to the numbers above. Champions
+        rebalanced three of them; every value says where it came from, so a
+        figure nobody measured here never looks like one that was.</p>
+      <div id="statusList" class="list"></div>
+    </section>
+
+    <!-- =========================================================== FIND -->
+    <section class="view" id="v-find" role="tabpanel" hidden>
+      <div class="viewhead"><div><h1>Find</h1>
+        <p class="lede">Every filter has to be true at once. <em>Learns Imprison
+           and Wide Guard and Protect</em> is one query, not three.</p></div></div>
+      <div class="panel" style="margin-bottom:10px">
+        <div class="toggles" id="findChips"></div>
+      </div>
+      <div class="btnrow" style="margin-bottom:10px">
+        <button class="btn sm" id="findAddMove">+ Move</button>
+        <button class="btn sm" id="findAddType">+ Type</button>
+        <button class="btn sm" id="findAddAbility">+ Ability</button>
+        <button class="btn sm" id="findInChamp" aria-pressed="false">In Champions</button>
+        <button class="btn sm" id="findInHome" aria-pressed="false">In HOME</button>
+        <button class="btn sm quiet" id="findClear">Clear</button>
+      </div>
+      <div class="panel" style="margin-bottom:12px">
+        <div class="grid2">
+          <div class="field"><label class="f" for="findBst">BST at least</label>
+            <input type="number" id="findBst" placeholder="any"></div>
+          <div class="field"><label class="f" for="findSpeMin">Speed at least</label>
+            <input type="number" id="findSpeMin" placeholder="any"></div>
+          <div class="field"><label class="f" for="findSpeMax">Speed at most</label>
+            <input type="number" id="findSpeMax" placeholder="any"></div>
+        </div>
+        <p class="sub" style="margin:0">Speed at most is the Trick Room filter.</p>
+      </div>
+      <div id="findOut"></div>
+    </section>
+
+    <!-- ======================================================== TRAINER -->
+    <section class="view" id="v-trainer" role="tabpanel" hidden>
+      <div class="viewhead"><div><h1>Profile</h1>
+        <p class="lede">One number only you can know. Everything else here is
+          derived, so it cannot go stale behind your back.</p></div></div>
+
+      <!-- Box capacity is the ONE field left. It earns its place because the
+           app really uses it - capacity() drives the box-full warning - and
+           because it changes only when Champions raises the limit.
+           Rank, VP, regulation, season and the two ticket counts were removed
+           on 2026-09-12: nothing read them, they were hand-typed, and they had
+           drifted (the stored regulation still said M-B three days into M-C).
+           Their values are NOT deleted - meta updates merge into the jsonb, so
+           the old keys stay in the ledger untouched. -->
+      <div class="panel" style="margin-bottom:12px">
+        <div class="grid2">
+          <div class="field"><label class="f" for="tCap">Box capacity</label>
+            <input type="number" id="tCap"></div>
+        </div>
+        <div class="note" id="capUse"><span class="dot"></span>&hellip;</div>
+        <button class="btn primary" id="tSave">Save</button>
+      </div>
+
+      <h2>What you hold</h2>
+      <div class="panel"><dl class="kv" id="profCounts"></dl></div>
+
+      <h2>What this data is</h2>
+      <p class="sub">Read off the data itself, never typed. If a number here
+        looks wrong, the refresh is what is wrong, not this page.</p>
+      <div class="panel"><dl class="kv" id="profData"></dl></div>
+
+      <h2>What a change costs</h2>
+      <p class="sub">Observed in game. Reference only — the ledger does not
+        track your VP balance, because nothing can keep it honest.</p>
+      <div class="panel"><dl class="kv" id="costs"></dl></div>
+
+      <h2>Take it with you</h2>
+      <div class="panel">
+        <p class="sub">The ledger is yours in plain files, not locked in here.
+          CSV opens in Excel or Sheets; JSON is what the repo scripts read.</p>
+        <div class="btnrow">
+          <button class="btn" data-export="box-csv">Box CSV</button>
+          <button class="btn" data-export="builds-csv">Builds CSV</button>
+          <button class="btn" data-export="json">Everything JSON</button>
+        </div>
+      </div>
+
+      <div id="scanPane" hidden>
+        <h2>Read a box screenshot</h2>
+        <div class="panel">
+          <p class="sub">Champions, HOME and GO publish no API you can read from
+            outside, so this is the closest honest thing: photograph the box and
+            let Claude read the names off it. Check them before they are added.</p>
+          <div class="btnrow">
+            <label class="btn" for="scanFile">Choose screenshots</label>
+            <input type="file" id="scanFile" accept="image/*" multiple hidden>
+          </div>
+          <div id="scanOut" style="margin-top:10px"></div>
+        </div>
+      </div>
+
+      <h2>Store</h2>
+      <div class="note" id="dbNote"><span class="dot"></span> connecting&hellip;</div>
+
+      <h2>Diagnostics</h2>
+      <p class="sub">What this page can see, on this device. If something works
+        in one browser and not another, this is the difference.</p>
+      <div class="panel" id="diagOut"></div>
+    </section>
+  </main>
+</div>
+
+<div class="scrim" id="scrim" hidden><div class="sheet" role="dialog" aria-modal="true">
+  <div class="sheethead"><h3 id="sheetTitle"></h3>
+    <button class="iconbtn" id="sheetClose" aria-label="Close">
+      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 6l12 12M18 6 6 18"/></svg>
+    </button></div>
+  <div class="sheetbody" id="sheetBody"></div>
+  <div class="sheetfoot" id="sheetFoot"></div>
+</div></div>
+
+<div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+<div class="booterr" id="bootErr" hidden></div>
+
+<!-- Sign-in gate. Shown until there is a session; the page behind it holds no
+     data of its own, so a visitor without credentials gets nothing. -->
+<div class="gate" id="gate" hidden>
+  <form class="gatebox" id="gateForm">
+    <h1>Champions Ledger</h1>
+    <p class="lede" id="gateLede">Sign in to load your box.</p>
+    <div class="field">
+      <label class="f" for="gateEmail">Email</label>
+      <input type="email" id="gateEmail" autocomplete="username" required>
+    </div>
+    <div class="field">
+      <label class="f" for="gatePass">Password</label>
+      <input type="password" id="gatePass" autocomplete="current-password" required>
+    </div>
+    <div class="note bad" id="gateErr" hidden></div>
+    <button class="btn primary" id="gateBtn" type="submit">Sign in</button>
+    <p class="sub" id="gateFoot" style="margin-top:14px"></p>
+  </form>
+</div>
