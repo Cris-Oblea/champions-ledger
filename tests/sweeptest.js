@@ -1,9 +1,14 @@
 /* Every form in the dex, attacking and defending, through the page's engine.
    A sample would have missed the naming bug the player hit. */
 const fs = require("fs");
+/* the repo, found from this file - NOT a hardcoded path. Every test in
+   here carried an absolute Windows path, so none of them had ever run
+   anywhere but one laptop, and all fifteen died instantly the first time
+   CI tried (2026-09-13). */
+const ROOT = require("path").join(__dirname, "..") + "/";
 const { JSDOM, VirtualConsole } = require("jsdom");
 const body = fs.readFileSync(
-  "C:/Users/CRUIZ/Juegos/Pokemon Champions/tracker/dist/index.html", "utf8")
+  ROOT + "tracker/dist/index.html", "utf8")
   .replace(/<script src="https:\/\/cdn\.jsdelivr[^"]*"><\/script>/, "");
 const stub = `<script>window.supabase={createClient:function(){return{
   auth:{getSession:function(){return Promise.resolve({data:{session:null}});},

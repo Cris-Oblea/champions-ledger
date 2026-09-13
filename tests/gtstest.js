@@ -1,5 +1,10 @@
 /* A GTS trade must be an EXCHANGE: what you gave leaves, what you got arrives. */
 const fs = require("fs");
+/* the repo, found from this file - NOT a hardcoded path. Every test in
+   here carried an absolute Windows path, so none of them had ever run
+   anywhere but one laptop, and all fifteen died instantly the first time
+   CI tried (2026-09-13). */
+const ROOT = require("path").join(__dirname, "..") + "/";
 const { JSDOM, VirtualConsole } = require("jsdom");
 const UID = "u1";
 const ROWS = [
@@ -9,7 +14,7 @@ const ROWS = [
 const META = [{user_id:UID,id:"gts",data:{open_offers:[
   {offered:"Chesnaught",requested:"Golisopod",deposited:"2026-09-08",status:"PENDING",note:""}
 ]},updated_at:"2026-09-09"}];
-const body = fs.readFileSync("C:/Users/CRUIZ/Juegos/Pokemon Champions/tracker/dist/index.html","utf8")
+const body = fs.readFileSync(ROOT + "tracker/dist/index.html","utf8")
   .replace(/<script src="https:\/\/cdn\.jsdelivr[^"]*"><\/script>/,"");
 const stub = `<script>
 window.__ROWS=${JSON.stringify(ROWS)}; window.__META=${JSON.stringify(META)};

@@ -17,7 +17,11 @@
    of those 25 forms. */
 const fs = require("fs");
 const { JSDOM, VirtualConsole } = require("jsdom");
-const ROOT = "C:/Users/CRUIZ/Juegos/Pokemon Champions/";
+/* the repo, found from this file - NOT a hardcoded path. Every test in
+   here carried an absolute Windows path, so none of them had ever run
+   anywhere but one laptop, and all fifteen died instantly the first time
+   CI tried (2026-09-13). */
+const ROOT = require("path").join(__dirname, "..") + "/";
 
 let bad = 0;
 const ok = (label, got, want) => {

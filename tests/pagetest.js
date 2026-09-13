@@ -1,11 +1,16 @@
 /* The PAGE (with the engine bundled in) against the engine run under Node.
    They should be identical, because they are the same code. */
 const fs = require("fs");
+/* the repo, found from this file - NOT a hardcoded path. Every test in
+   here carried an absolute Windows path, so none of them had ever run
+   anywhere but one laptop, and all fifteen died instantly the first time
+   CI tried (2026-09-13). */
+const ROOT = require("path").join(__dirname, "..") + "/";
 const { JSDOM, VirtualConsole } = require("jsdom");
 const CASES = JSON.parse(fs.readFileSync(__dirname + "/enginecases.json", "utf8"));
 
 const body = fs.readFileSync(
-  "C:/Users/CRUIZ/Juegos/Pokemon Champions/tracker/dist/index.html", "utf8")
+  ROOT + "tracker/dist/index.html", "utf8")
   .replace(/<script src="https:\/\/cdn\.jsdelivr[^"]*"><\/script>/, "");
 const stub = `<script>window.supabase={createClient:function(){return{
   auth:{getSession:function(){return Promise.resolve({data:{session:null}});},

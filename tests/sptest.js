@@ -5,6 +5,11 @@
    events on the SAME node, checking it survives every one of them. It also
    covers the two new ways in, the arrows and the typed box. */
 const fs = require("fs");
+/* the repo, found from this file - NOT a hardcoded path. Every test in
+   here carried an absolute Windows path, so none of them had ever run
+   anywhere but one laptop, and all fifteen died instantly the first time
+   CI tried (2026-09-13). */
+const ROOT = require("path").join(__dirname, "..") + "/";
 const { JSDOM, VirtualConsole } = require("jsdom");
 const UID = "u1";
 const ROWS = [{user_id:UID,id:"primarina",name:"Primarina",location:"champions",
@@ -16,7 +21,7 @@ const BUILDS = [{user_id:UID,id:"primarina",pokemon:"Primarina",mega:null,
   ability:"Torrent",mega_ability:null,nature:"Modest",
   stat_points:{hp:4,atk:0,def:0,spa:32,spd:8,spe:22},
   moves:["Hyper Voice"],role:"",rationale:"",extra:{},updated_at:"2026-09-10"}];
-const body = fs.readFileSync("C:/Users/CRUIZ/Juegos/Pokemon Champions/tracker/dist/index.html","utf8")
+const body = fs.readFileSync(ROOT + "tracker/dist/index.html","utf8")
   .replace(/<script src="https:\/\/cdn\.jsdelivr[^"]*"><\/script>/,"");
 const stub = `<script>
 window.__ROWS=${JSON.stringify(ROWS)}; window.__BUILDS=${JSON.stringify(BUILDS)};

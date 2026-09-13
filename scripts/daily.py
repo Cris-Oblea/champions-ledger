@@ -358,8 +358,15 @@ def main():
         if g != 0:
             gate_ok = False
             out.append("BLOCKED: %s failed" % what)
-            out += ["  " + l for l in gout.splitlines()
-                    if l.strip().startswith("FAIL")][:6]
+            # A test that ASSERTS wrong prints FAIL lines; a test that CRASHES
+            # prints none, and reporting only the former made fifteen failures
+            # read as fifteen blank lines - the cause (a hardcoded Windows path
+            # in every test file) was invisible in the CI log. Fall back to the
+            # tail of whatever it did say.
+            detail = [l for l in gout.splitlines() if l.strip().startswith("FAIL")]
+            if not detail:
+                detail = [l for l in gout.splitlines() if l.strip()][-5:]
+            out += ["  " + l for l in detail[:6]]
         else:
             out.append("ok: %s" % what)
 
