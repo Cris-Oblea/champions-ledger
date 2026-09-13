@@ -396,9 +396,10 @@ box/{id}      {name, location: champions|home, status: permanent|rental,
                yet, which is NOT the same as champions.
 builds/{id}   {pokemon, mega, ability, mega_ability, nature, stat_points,
                moves, role, rationale, extra:{...}, updated}
-meta/trainer  {box_capacity}   - the others are frozen leftovers, do not read
-              {rank, regulation, season, vp_balance,
-               training_tickets, permanence_tickets}
+meta/trainer  {box_capacity}   - and nothing else. rank, regulation, season,
+               vp_balance and the two ticket counts were dropped from the row
+               on 2026-09-13: Profile had stopped offering a field for any of
+               them, so they sat frozen and readable as if current.
 meta/stones   {owned:[...]}
 meta/items    {categories:[...], owned:[[name,[categories]],...]}
 meta/gts      {open_offers:[{offered, requested, deposited, status, note}]}

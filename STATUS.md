@@ -706,10 +706,10 @@ python scripts/backup_ledger.py --list      # and what each snapshot held
 - ~~VP and the ticket counts have no editor~~ **SETTLED 2026-09-13: VP is not
   tracked at all.** Profile keeps one editable field, box capacity, and
   nothing reads a balance any more. The COSTS stay - they are rules, and what a
-  build costs is still part of every recommendation. `meta/trainer` in the
-  database still carries the frozen `vp_balance`, `rank`, `regulation` and the
-  ticket counts; stripping them needs a write the permission layer blocks, so
-  do not read that row as current.
+  build costs is still part of every recommendation. `meta/trainer` was
+  stripped to `box_capacity` alone in the database the same day, so the frozen
+  `vp_balance`, `rank`, `regulation` ("M-B", two versions old), `season` and
+  the ticket counts are gone rather than sitting there readable as current.
 - Still open from before: a service worker for instant repeat opens, the same
   filter/cap treatment for the Champions Box list that HOME got, and the four
   numbers only the game can settle (Slash, Snipe Shot, Night Slash, Meteor
