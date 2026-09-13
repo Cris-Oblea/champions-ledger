@@ -57,7 +57,7 @@ request returns nothing.
 | `data/meta/usage_pokemon.json` | 278 | Ladder usage per Pokemon |
 | `data/meta/usage_moves.json` | 362 | Ladder usage per move |
 | `data/meta/speed_tiers.json` | 89 | Base Speed to real Speed at every investment |
-| `data/meta/smogon_analyses.json` | 323 | Smogon's written VGC analyses |
+| `data/meta/smogon_analyses.json` | 358 | Smogon's written VGC analyses |
 <!-- COUNTS:END -->
 
 That table is **generated** by `scripts/build_readme.py` and checked on every

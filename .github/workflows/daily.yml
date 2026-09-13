@@ -112,6 +112,21 @@ jobs:
       # GitHub does not start workflows for pushes made with GITHUB_TOKEN, so
       # a pull_request run would never appear, the required check would never
       # arrive, and the PR would sit open for ever waiting for itself.
+      #
+      # REQUIRES A REPOSITORY SETTING that exists nowhere in this file:
+      # Settings > Actions > General > Workflow permissions > "Allow GitHub
+      # Actions to create and approve pull requests". Without it `gh pr create`
+      # fails with "GitHub Actions is not permitted to create or approve pull
+      # requests", and the failure is a confusing one to read: the refresh
+      # worked, the deploy went out, the branch was pushed - only the PR was
+      # refused, so the data sits on an orphan `daily/*` branch and main keeps
+      # yesterday's. Worse, a run where nothing changed exits earlier than this
+      # and passes, so the workflow looks healthy in between.
+      #
+      # Turning it on grants nothing here: main requires the `gate` status check
+      # and ZERO approving reviews, so an approval from Actions is worth
+      # nothing, and the check is enforced for admins too. It was off until
+      # 2026-09-13 and two nights' refreshes were stranded by it.
       - name: open a pull request and let it merge itself
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -121,7 +136,13 @@ jobs:
           # index.html is NOT committed: it is generated from the template on
           # every run, here and locally, so versioning it made a merge
           # conflict inevitable on any day both happened.
-          git add -A data/db data/meta tracker/data.js tracker/engine.bundle.js || true
+          # README.md belongs in this list because its counts are GENERATED
+          # from data/db - refresh.py rewrites them in this very run, and the
+          # gate above just checked them. Leaving it out meant every refresh
+          # that moved a count left main's README behind and the next person to
+          # push was blocked by "README is OUT OF DATE" for a drift they did not
+          # cause. Smogon publishing 35 more analyses was enough to do it.
+          git add -A data/db data/meta tracker/data.js tracker/engine.bundle.js README.md || true
           if git diff --cached --quiet; then
             echo "nothing changed"
             exit 0
