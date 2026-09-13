@@ -117,6 +117,14 @@ DECISIONS = [
      "the ledger lives only in Supabase; scripts/ledger.py reads it",
      DOCS),
 
+    # VP stopped being tracked on 2026-09-13. The costs are rules and stay;
+    # a BALANCE nobody can edit goes stale and then gets quoted as current,
+    # which vp_balance did for a day at 8000.
+    ("vp-balance-is-not-tracked",
+     r"you have \d+ VP|VP balance (is|of|:)|vp_balance (is|=) \d",
+     "VP costs are rules and stay; the balance is not tracked - ask him",
+     DOCS),
+
     # A snapshot is the whole ledger in plaintext and this repo is public.
     ("no-ledger-data-in-the-repo",
      r"commit (the )?(snapshot|seed|backup)|"

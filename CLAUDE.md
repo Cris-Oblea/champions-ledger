@@ -600,7 +600,7 @@ discussing speed control with them.
 
 ## Player context
 
-**Box occupancy, what they own and the VP balance live in the LEDGER, and
+**Box occupancy and what they own live in the LEDGER, and
 `scripts/ledger.py` reads it.** Do not restate those numbers here, or the two
 copies drift apart - which is exactly what happened to the file that used to
 hold them. `python scripts/query.py owned` prints the box and
@@ -873,8 +873,8 @@ was over. The tournament files carry `round_label` and `complete`, and
 
 **The box, HOME, the stones, the items, VP and the editable half of every build
 live in a web app the player opens on his phone.** He updates them there, as
-they happen, without asking. So **never ask him to restate the box, the VP
-balance or who is a rental**.
+they happen, without asking. So **never ask him to restate the box or who is a
+rental** - query it.
 
 The data is in **Supabase** (project `champions-ledger`, tables `box`, `builds`,
 `meta`), behind Row Level Security. An **anonymous** request with the
@@ -921,10 +921,17 @@ backup snapshot - and it says which. With none of the three it returns empty
 structures rather than raising, because twelve scripts import `query.py` and
 four of them run inside the gate, where there is no database at all.
 
-**One consequence to know about: VP and the ticket counts are in the ledger's
-`meta/trainer` but the app stopped offering a field for them on 2026-09-12**,
-when Profile was cut back to box capacity alone. So `vp_balance` is whatever it
-was then and nothing can change it - say so rather than quoting it as current.
+**VP IS NO LONGER TRACKED, AND THAT IS DELIBERATE** (player, 2026-09-13: "en
+la app ya hablamos sobre eso y no es necesario... solo dejamos la casilla box
+para modificarla"). Profile has one editable field, box capacity. A balance
+nobody can edit goes stale and then gets quoted as current - `vp_balance` sat
+at 8000 from 2026-09-12 - so nothing reads it any more.
+
+**The COSTS stay, because they are rules, not state**: SP 5, move 250, nature
+500, ability 500, a Mega Stone 2000, keeping a rental 2500. They live in
+`scripts/ledger.py`. So keep saying what a build COSTS - that is still part of
+every recommendation - and never state what he HAS. If a decision turns on the
+balance, ask him.
 
 **Origin is recorded at registration now (player, 2026-09-10), so "unknown" is
 no longer a state the box can be in.** Every route in settles it, and there are

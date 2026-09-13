@@ -396,7 +396,8 @@ box/{id}      {name, location: champions|home, status: permanent|rental,
                yet, which is NOT the same as champions.
 builds/{id}   {pokemon, mega, ability, mega_ability, nature, stat_points,
                moves, role, rationale, extra:{...}, updated}
-meta/trainer  {rank, regulation, season, box_capacity, vp_balance,
+meta/trainer  {box_capacity}   - the others are frozen leftovers, do not read
+              {rank, regulation, season, vp_balance,
                training_tickets, permanence_tickets}
 meta/stones   {owned:[...]}
 meta/items    {categories:[...], owned:[[name,[categories]],...]}

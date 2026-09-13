@@ -33,6 +33,14 @@ database was reachable.
 THE VP COSTS BELOW ARE NOT LEDGER DATA. They are rules of the game, observed in
 play, and they stay in the repo where rules live - the same reason the Item
 Clause is in CLAUDE.md and not in a table.
+
+A PRICE IS NOT A BALANCE, and the balance is no longer tracked at all (player,
+2026-09-13: "en la app ya hablamos sobre eso y no es necesario... solo dejamos
+la casilla box para modificarla"). Profile keeps one editable field, box
+capacity. A number nobody can edit is a number that goes stale and then gets
+quoted as current - vp_balance had sat at 8000 since 2026-09-12, and the
+permanence-ticket count with it. So the costs stay and the balance is gone: say
+what something COSTS, and ask him what he has if it ever decides anything.
 """
 import argparse, io, json, os, sys, time
 
@@ -155,8 +163,6 @@ def inv(refresh=False):
     return {
         "permanent_pokemon": _box(t, "champions", rental=False),
         "rental_pokemon": {"list": _box(t, "champions", rental=True),
-                           "permanence_tickets":
-                               trainer.get("permanence_tickets", 0),
                            "can_be_trained": False},
         "home_box": {"list": _box(t, "home")},
         "mega_stones": sorted(_meta(t, "stones").get("owned") or []),
@@ -166,8 +172,8 @@ def inv(refresh=False):
         # counting the rows makes both the number and the warning unnecessary.
         "trainer": {"box_capacity": trainer.get("box_capacity", 50),
                     "box_used": len(champ)},
-        "economy": {"costs": dict(COSTS),
-                    "vp_balance": trainer.get("vp_balance")},
+        # COSTS only, never a balance - see the note at the top of the file.
+        "economy": {"costs": dict(COSTS)},
     }
 
 
@@ -203,7 +209,6 @@ def main():
     print("stones %d, items %d, builds %d, teams %d"
           % (len(i["mega_stones"]), sum(len(v) for v in i["items"].values()),
              len(builds()), len(teams())))
-    print("VP %s" % i["economy"]["vp_balance"])
     return 0
 
 
