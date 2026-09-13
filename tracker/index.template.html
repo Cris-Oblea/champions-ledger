@@ -731,6 +731,34 @@ details.rolls[open] summary::before{content:"2 "}
       </div>
     </section>
 
+    <!-- ===================================================== EDITORS ====
+         A build and a team are edited as real VIEWS, not as pop-up sheets.
+         They used to be sheets, and sheets nest: opening the item picker from
+         inside a team put a sheet on a sheet, so pressing Back closed BOTH and
+         took every unsaved slot with it (player, 2026-09-13). A view cannot be
+         dismissed by accident - the pickers stay sheets, because they are
+         short-lived and closing one now returns to an editor that still holds
+         its draft. -->
+    <section class="view" id="v-buildedit" role="tabpanel" hidden>
+      <div class="viewhead">
+        <div><h1 id="buildEditTitle">Build</h1></div>
+        <span class="spacer"></span>
+        <button class="btn" id="buildEditBack">Back</button>
+      </div>
+      <div id="buildEditBody"></div>
+      <div class="btnrow" id="buildEditFoot" style="margin-top:14px"></div>
+    </section>
+
+    <section class="view" id="v-teamedit" role="tabpanel" hidden>
+      <div class="viewhead">
+        <div><h1 id="teamEditTitle">Team</h1></div>
+        <span class="spacer"></span>
+        <button class="btn" id="teamEditBack">Back</button>
+      </div>
+      <div id="teamEditBody"></div>
+      <div class="btnrow" id="teamEditFoot" style="margin-top:14px"></div>
+    </section>
+
     <!-- =========================================================== GEAR -->
     <section class="view" id="v-gear" role="tabpanel" hidden>
       <div class="viewhead"><div><h1>Items</h1>
@@ -1569,6 +1597,13 @@ function buildTabs(){
   });
   syncNavHeight();
 }
+/* Views that are NOT tabs: the two editors. They are reached from a list and
+   leave by their own Back button, so they never appear in the bar - but go()
+   still has to hide every other view, or the old one shows through. */
+var EXTRA_VIEWS = ["buildedit", "teamedit"];
+/* which tab stays lit while an editor is open - both belong to Builds */
+var EDITOR_HOME = {buildedit: "builds", teamedit: "builds"};
+
 function go(tab){
   S.tab = tab;
   if (tab === "calc") setTimeout(calcDraw, 0);
@@ -1576,10 +1611,36 @@ function go(tab){
   TABS.forEach(function(t){
     $("v-" + t[0]).hidden = t[0] !== tab;
   });
+  EXTRA_VIEWS.forEach(function(v){ $("v-" + v).hidden = v !== tab; });
+  var lit = EDITOR_HOME[tab] || tab;
   Array.prototype.forEach.call($("tabs").children, function(b){
-    b.setAttribute("aria-selected", b.dataset.tab === tab ? "true" : "false");
+    b.setAttribute("aria-selected", b.dataset.tab === lit ? "true" : "false");
   });
   window.scrollTo(0, 0);
+}
+
+/* The sheet API, rendered into a view instead. Same three arguments, so the
+   body-building code that used openSheet moves across untouched. */
+/* Leaving an editor returns to the list it came from, which is the Builds tab
+   with one pane or the other showing. */
+function leaveEditor(pane){
+  go("builds");
+  buildsPane(pane === "teams" ? "teams" : "builds");
+}
+
+function openEditor(view, title, build, foot){
+  var pre = view === "teamedit" ? "teamEdit" : "buildEdit";
+  $(pre + "Title").textContent = title;
+  var body = $(pre + "Body");
+  body.innerHTML = "";
+  Object.keys(body).forEach(function(k){
+    if (k.charAt(0) === "_") { try { delete body[k]; } catch (e) {} }
+  });
+  build(body);
+  var f = $(pre + "Foot");
+  f.innerHTML = "";
+  (foot || []).filter(Boolean).forEach(function(b){ f.appendChild(b); });
+  go(view);
 }
 
 /* ===================================================================== sheet */
@@ -2201,7 +2262,7 @@ function buildSheet(id, b, keepOriginal){
   var checkBox = el("div"), costBox = el("div");
   var p = null;
 
-  openSheet(draft.pokemon || "New build", function(body){
+  openEditor("buildedit", draft.pokemon || "New build", function(body){
     /* --- species (new builds only) ----------------------------------- */
     /* The species first, and it is ANY form in the dex - not only what is in
        the box. A set for a Pokemon he has not got yet is an idea worth keeping
@@ -2594,18 +2655,19 @@ function buildSheet(id, b, keepOriginal){
                  role:draft.role || "", rationale:draft.rationale || "",
                  extra:(b && b.extra) || {}};
       put("builds/" + key, doc).then(function(){
-        closeSheet(); toast("Build saved");
+        leaveEditor(); toast("Build saved");
       });
     }),
     fbtn(id ? "Delete" : "Cancel", id ? "danger" : "", function(){
-      if (!id) { closeSheet(); return; }
+      if (!id) { leaveEditor(); return; }
       if (!confirm("Delete the " + draft.pokemon + " build?")) return;
-      drop("builds/" + id).then(function(){ closeSheet(); toast("Deleted"); });
+      drop("builds/" + id).then(function(){ leaveEditor(); toast("Deleted"); });
     })
   ]);
 
   /* redraw rebuilds the sheet from the live draft, carrying the pre-edit
      snapshot forward so the VP cost is measured against the saved set */
+  /* in place, for the same reason the team editor does */
   function redraw(){ buildSheet(id, draft, original); }
 
   /* Both of these sit BELOW the sliders but depend on them, so they are built
@@ -3422,9 +3484,11 @@ function teamSheet(id, t){
   var draft = JSON.parse(JSON.stringify(t || {name:"", slots:[], notes:{}}));
   draft.slots = teamSlots(draft);
 
-  function redraw(){ closeSheet(); teamSheet(id, draft); }
+  /* Re-render in place. It used to close a sheet and open a new one, which is
+     why a Back from the item picker took the whole team with it. */
+  function redraw(){ teamSheet(id, draft); }
 
-  openSheet(draft.name || "New team", function(body){
+  openEditor("teamedit", draft.name || "New team", function(body){
     var fn = el("div", "field");
     fn.appendChild(el("label", "f", "Name"));
     var inp = el("input"); inp.type = "text"; inp.value = draft.name || "";
@@ -3506,14 +3570,14 @@ function teamSheet(id, t){
       put("teams/" + key, {name:draft.name,
         slots:draft.slots.filter(function(x){ return x && x.build_id; }),
         notes:draft.notes || {}}).then(function(){
-        closeSheet(); toast("Team saved");
+        leaveEditor("teams"); toast("Team saved");
       });
     }),
     fbtn(id ? "Delete" : "Cancel", id ? "danger" : "", function(){
-      if (!id) { closeSheet(); return; }
+      if (!id) { leaveEditor("teams"); return; }
       if (!confirm("Delete the team \"" + draft.name + "\"? The builds are " +
                    "not touched - only this arrangement of them.")) return;
-      drop("teams/" + id).then(function(){ closeSheet(); toast("Deleted"); });
+      drop("teams/" + id).then(function(){ leaveEditor("teams"); toast("Deleted"); });
     })
   ]);
 }
@@ -7087,6 +7151,8 @@ try {
   }
 } catch (e) {}
 $("buildAdd").onclick = function(){ buildSheet(null, {}); };
+$("buildEditBack").onclick = function(){ leaveEditor(); };
+$("teamEditBack").onclick  = function(){ leaveEditor("teams"); };
 $("buildSearch").oninput = drawBuilds;
 $("stoneSearch").oninput = drawStones;
 $("itemSearch").oninput = drawItems;
