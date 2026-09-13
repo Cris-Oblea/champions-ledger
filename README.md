@@ -107,8 +107,9 @@ error. Anything quoted here says which one it came from.
        deploys, and opens a pull request with whatever moved.
 ```
 
-**The gate** is twenty-two checks, and nothing reaches the phone without passing
-all of them:
+<!-- GATE:START -->
+**The gate** is twenty-four checks, and nothing reaches the phone without
+passing all of them:
 
 - a **shrink guard** — if a rebuild comes back with fewer forms, moves or
   learnsets than the last good one, a source broke and the run stops
@@ -116,8 +117,9 @@ all of them:
   matching across all five sources, every derived index resolving, every form
   still accounted for, the README's own numbers, and that no SQL migration is
   still waiting to be applied
-- **sixteen browser tests** — run against the built page, because no Python
+- **seventeen browser tests** — run against the built page, because no Python
   check can see a template regression
+<!-- GATE:END -->
 
 `main` is protected: pull requests only, gate must be green, and that is
 enforced for admins too. A local `pre-push` hook runs the same checks before a
@@ -160,7 +162,9 @@ scripts/     fetchers, the database build, the query CLI, the damage calculator
 data/db/     the built database - the thing everything else reads
 data/meta/   usage, tournaments, speed tiers, written analyses
 tracker/     the app: one HTML template plus a generated data blob
-tests/       fifteen browser tests, run against the BUILT page
+<!-- TESTS:START -->
+tests/       seventeen browser tests, run against the BUILT page
+<!-- TESTS:END -->
 analysis/    write-ups: the Smogon engine, regulation M-C, the roadmap
 inventory/   the box, the builds and the teams, as files
 CLAUDE.md    the rules this project works by, including everything learned the hard way
