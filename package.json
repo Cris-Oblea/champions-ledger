@@ -1,7 +1,7 @@
 {
-  "name": "pokemon-champions-ledger",
+  "name": "champions-ledger",
   "private": true,
-  "description": "Tooling for the Champions ledger. Exists so the browser tests can run in CI: they load tracker/dist/index.html under jsdom, and without a manifest the daily job had no way to install it - which is why nothing gated on them.",
+  "description": "Champions Ledger: a box, build and team manager for Pokemon Champions. This manifest exists so the browser tests can run in CI - they load tracker/dist/index.html under jsdom, and without it the daily job had no way to install jsdom, which is why nothing gated on them.",
   "scripts": {
     "test": "node tests/pagetest.js"
   },

@@ -1,7 +1,7 @@
 # Champions Ledger
 
-A personal tool for **Pokemon Champions**, and nothing else. Two halves that
-share one database:
+A **box, build and team manager** for Pokemon Champions - and nothing else.
+Two halves that share one database:
 
 - **A phone app** — the box, the builds, the Mega Stones, a damage calculator
   that runs Smogon's own engine, and a searchable dex of every legal form.
