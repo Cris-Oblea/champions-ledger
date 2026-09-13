@@ -106,15 +106,28 @@ jobs:
           printf '%s\n' "$KEY" > ~/.ssh/backup_key
           chmod 600 ~/.ssh/backup_key
           ssh-keyscan -t ed25519 github.com >> ~/.ssh/known_hosts 2>/dev/null
-          echo "GIT_SSH_COMMAND=ssh -i ~/.ssh/backup_key -o IdentitiesOnly=yes" >> "$GITHUB_ENV"
+          # Exported for THIS step and written to the env file for the later
+          # ones. GITHUB_ENV only reaches subsequent steps, so the clone below
+          # would otherwise run with no key at all.
+          export GIT_SSH_COMMAND="ssh -i ~/.ssh/backup_key -o IdentitiesOnly=yes"
+          echo "GIT_SSH_COMMAND=$GIT_SSH_COMMAND" >> "$GITHUB_ENV"
           # An empty repo has no branch to clone, which is not an error on the
-          # very first night - init one instead and let the push create it.
-          if ! git clone --depth 1 "git@github.com:$REPO" "$RUNNER_TEMP/store" 2>/dev/null; then
-            echo "the store is empty - starting its history"
-            git init -q -b main "$RUNNER_TEMP/store"
-            git -C "$RUNNER_TEMP/store" remote add origin "git@github.com:$REPO"
-          fi
+          # very first night - init one instead and let the push create it. But
+          # ask why the clone is impossible rather than assuming that is why:
+          # a key that cannot authenticate looks identical from here, and
+          # starting a fresh history on top of a store that already has one
+          # fails later, at the push, as a non-fast-forward nobody can read.
+          git ls-remote --exit-code -h "git@github.com:$REPO" >/dev/null 2>&1
+          case $? in
+            0) git clone --depth 1 "git@github.com:$REPO" "$RUNNER_TEMP/store" ;;
+            2) echo "the store is empty - starting its history"
+               git init -q -b main "$RUNNER_TEMP/store"
+               git -C "$RUNNER_TEMP/store" remote add origin "git@github.com:$REPO" ;;
+            *) echo "::error::cannot reach $REPO with the deploy key - check"                    "BACKUP_SSH_KEY and that the key is still on the repo."
+               exit 1 ;;
+          esac
           mkdir -p "$RUNNER_TEMP/store/snapshots"
+          echo "the store holds $(ls "$RUNNER_TEMP/store/snapshots" | wc -l) snapshot(s) so far"
 
       - name: take the snapshot
         if: steps.cfg.outputs.ready == 'yes'
