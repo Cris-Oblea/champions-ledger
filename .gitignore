@@ -22,6 +22,10 @@ tracker/champions-ledger.zip
 # it when a fresh project needs seeding; do not version the output. Same rule
 # the built page already follows.
 tracker/supabase_seed.sql
+# Supabase CLI scratch state: per-machine, rewritten by every CLI version, and
+# it carries the project and organisation ids for no benefit. Nothing reads it
+# but the CLI itself.
+tracker/supabase/.temp/
 
 __pycache__/
 *.pyc
