@@ -100,14 +100,29 @@ jobs:
           # cannot run at all, which is how four of them drifted unnoticed.
           npm install --no-audit --no-fund
 
-      - name: refresh, verify, deploy
+      # Refreshes and gates, and does NOT deploy. The deploy belongs to the push
+      # to main that the merge below now produces - push.yml's job, on the
+      # content that actually landed.
+      #
+      # It used to deploy from here because the merge triggered nothing: it was
+      # made with GITHUB_TOKEN, and GitHub starts no workflow for that. The App
+      # merges now, so main gets a real run, and deploying from both was the same
+      # page published twice a night.
+      #
+      # The consequence is the right one: if the gate on the pull request fails,
+      # the PR stays open and NOTHING is deployed. Data that did not pass no
+      # longer reaches the phone by a side door - which is exactly what deploying
+      # from here, before the PR existed, was doing.
+      #
+      # Hence no Cloudflare credentials in this step any more. The Supabase pair
+      # stays: it is baked into the page at build time, and the page is built
+      # here, for the gate to have something to check.
+      - name: refresh and verify
         env:
-          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_PUBLISHABLE_KEY: ${{ secrets.SUPABASE_PUBLISHABLE_KEY }}
         run: |
-          python scripts/daily.py ${{ (github.event_name == 'workflow_dispatch' && inputs.deep) && '--deep' || '' }}
+          python scripts/daily.py --skip-deploy ${{ (github.event_name == 'workflow_dispatch' && inputs.deep) && '--deep' || '' }}
 
       # main is a protected branch now: it takes pull requests only, and the
       # gate must be green. A bot pushing straight to it is exactly what that
@@ -131,8 +146,9 @@ jobs:
       # The App token above fixes the cause instead. push.yml runs on the PR and
       # reports `gate` itself, so the merge waits for it - and a nightly whose
       # gate fails now leaves its pull request OPEN rather than merging, which is
-      # what should happen to data that did not pass. The deploy is not at risk
-      # either way: daily.py gates before it deploys, in the step above.
+      # what should happen to data that did not pass - and since the deploy moved
+      # to the merge, an open pull request means the phone keeps yesterday's data
+      # rather than being handed data that failed.
       #
       # REQUIRES A REPOSITORY SETTING that exists nowhere in this file:
       # Settings > Actions > General > Workflow permissions > "Allow GitHub
@@ -190,7 +206,7 @@ jobs:
           AUTH="https://x-access-token:$GH_TOKEN@github.com/$GITHUB_REPOSITORY"
           git push "$AUTH" "HEAD:refs/heads/$BR"
           RUN="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
-          gh pr create --base main --head "$BR" --title "daily refresh $(date -u +%Y-%m-%d)" --body "Automated. daily.py refreshed every source, passed the whole gate on this tree before the branch existed, and deployed. Opened by the champions-ledger-bot app so the gate runs on the pull request too, and set to merge itself once it is green. Log: $RUN"
+          gh pr create --base main --head "$BR" --title "daily refresh $(date -u +%Y-%m-%d)" --body "Automated. daily.py refreshed every source and passed the whole gate on this tree before the branch existed. Opened by the champions-ledger-bot app so the gate runs on the pull request too, and set to merge itself once it is green - the merge is what deploys. Log: $RUN"
           # --auto FIRST, which is the other way round from before. Nothing has
           # reported `gate` on this PR yet - push.yml is only just starting on it
           # and takes about eighty seconds - so the PR is not mergeable and
