@@ -51,6 +51,16 @@ jobs:
 
     steps:
       - uses: actions/checkout@v7
+        with:
+          # Without this, checkout leaves GITHUB_TOKEN in the local git config
+          # as an `http.https://github.com/.extraheader`, and that Authorization
+          # header OVERRIDES the credentials in a push URL. So the push below
+          # went out as github-actions[bot] - which may now only read - and
+          # returned "Permission to Cris-Oblea/champions-ledger.git denied to
+          # github-actions[bot]", 403, with an App token sitting right there
+          # unused. Nothing in this job fetches over the network after the
+          # checkout, so persisting no credential costs nothing.
+          persist-credentials: false
 
       - uses: actions/setup-python@v7
         with:
