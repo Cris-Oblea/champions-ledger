@@ -2,7 +2,7 @@
  "source": "smogon.com/dex/champions",
  "game": "Pokemon Champions",
  "note": "VGC formats only (doubles, bring 6 pick 4). Singles dropped.",
- "fetched": "2026-09-13",
+ "fetched": "2026-09-14",
  "count": 358,
  "with_vgc_analysis": 56,
  "pokemon": [
@@ -2026,12 +2026,52 @@
         ]
        ],
        "explanation": "Dragonite is a strong anti-metagame pick with respectable offensive coverage into common threats and access to a strong priority move in Extreme Speed. Its well-rounded offensive and defensive profile gives it favorable matchups into metagame staples such as Mega Charizard Y and Kingambit, while its two viable abilities let it adapt to their common teammates, such as Incineroar and Garchomp.\nExtreme Speed: Extreme Speed is valuable not only to finish off weakened foes; with a Life Orb, it can threaten 2HKOs on opposing Fairy-types such as Mega Floette and Sylveon after an ally has used Fake Out. Extreme Speed's ability to meaningfully threaten these Fairy-types is important because they are immune to Dragon Claw and resist Low Kick.\nLow Kick versus Fire Punch: Low Kick provides Dragonite a reliable way to threaten metagame staples such as Kingambit, Mega Tyranitar, and Incineroar. Fire Punch, while not being able to OHKO Kingambit, allows Dragonite to hit a wider variety of threats, notably incuding Gholdengo, Whimsicott, and Alolan Ninetales.\nInner Focus versus Multiscale: Inner Focus grants Dragonite an immunity to common defensive tools like Intimidate and Fake Out, allowing Dragonite to power through teams that rely on Fake Out from Incineroar and Sneasler to protect an offensive sweeper like Mega Delphox and Mega Blastoise. A bulkier spread with Multiscale allows Dragonite to have a better matchup against faster Dragon-types like Garchomp while also providing a safety net against other threats such as boosted Kingambit.\nLife Orb versus Dragon Fang: Life Orb is the preferred item on Inner Focus sets as it significantly powers up all of Dragonite's moves, allowing Dragonite to 2HKO Incineroar with Low Kick even after Sitrus Berry recovery and pick up 2HKOs on most neutral targets with the combination of Dragon Claw and Extreme Speed. On Multiscale sets, Dragon Fang is used instead to secure the OHKO on most variants of Garchomp while not incurring the recoil from Life Orb that would break Multiscale.\nOther Options\nSuperpower: On Inner Focus sets, Superpower's increased power over Low Kick allows Dragonite to OHKO Incineroar while also putting bulkier Steel-types such as Chople Berry Kingambit and Archaludon in KO range of an ally's attack such as Moonblast from Whimsicott. However, the Defense drop does put Dragonite in range of some moves like 100 Base Power Last Respects from Basculegion.\nLum Berry: Multiscale sets running Fire Punch over Low Kick can run Lum Berry to better deal with Sleep Powder from Venusaur and Zap Cannon from Mega Raichu-Y, as well as burns from Sinistcha's Matcha Gotcha and Mega Scovillain's Spicy Spray. Dragonite can then pick them off before they can spread their status further. However, this does leave Dragonite unable to KO bulkier variants of Garchomp with the combination of Dragon Claw and Extreme Speed.\nTailwind: Tailwind can be used on a Multiscale set to provide speed control to the team while allowing Dragonite to outpace Choice Scarf Garchomp and Hydreigon without allied support. However, this does come at the expense of an important coverage move or Protect.\nSP Spreads\n2 HP / 32 Atk / 32 Spe with Adamant: This spread allows Dragonite to outrun Adamant non-Choice Scarf Basculegion and Mega Blastoise. Basculegion is immune to Extreme Speed and can threaten huge damage with Last Respects. Outspeeding Mega Blastoise allows Dragonite to weaken its Water Spout with Dragon Claw; even if Mega Blastoise has already used Shell Smash, Dragonite will attack first if it has Tailwind support.\n18 HP / 32 Atk / 16 Spe with Adamant: Since Dragonite has access to a strong priority attack in Extreme Speed, maximum Speed investment is not strictly necessary. This spread allows Dragonite to outpace even the fastest Kingambit while also outspeeding Choice Scarf Garchomp and Hydreigon under Tailwind. If running Multiscale, the added bulk allows Dragonite to survive Mega Floette's Moonblast and Mega Froslass's Blizzard, giving Dragonite a turn to retaliate.\nTeambuilding\nChecks and Weaknesses: Due to its typing and Speed tier, Dragonite can often struggle into faster Fairy and Ice-types like Mega Floette, Mega Froslass, and Alolan Ninetales; the latter two are also able to set up Aurora Veil to further dampen Dragonite's damage. However, Dragonite can hit bulkless variants of Mega Floette and Alolan Ninetales with Fire Punch to put them into range of Extreme Speed if holding Life Orb.\nWithout Multiscale, opposing Dragon-types like Hydreigon and Garchomp can easily outspeed and threaten a KO on Dragonite. Garchomp partnered with another faster attacker can break Dragonite even through Multiscale.\nAs Dragonite heavily utilizes Extreme Speed to finish off foes, Farigiraf can stop Dragonite from fulfilling its role as a cleaner due to Armor Tail.\nAs a physical attacker lacking spread moves, Dragonite can struggle to pick off its intended targets if they are protected by Rage Powder from partners like Sinistcha and Mega Scovillain. Due to Spicy Extract, Mega Scovillain completely throws off Dragonite's offensive presence; not only does the resultant burn severely weaken Dragonite's physical attacks, but it also breaks Multiscale, allowing its partner to set up and finish Dragonite off.\nGood Partners and Synergies: Poison-types like Mega Gengar and Sneasler can eliminate faster Fairy-types for Dragonite, while Dragonite complements them defensively with its immunity to Ground. Sneasler in particular can offer Fake Out pressure to allow Dragonite more easily deal with faster threats like Garchomp while also possibly using Coaching to boost Dragonite.\nSteel-types like Kingambit likewise help Dragonite pressure opposing Fairy-types and excel into opposing Mega Froslass and Alolan Ninetales, giving Dragonite more freedom to run Low Kick over Fire Punch. Due to its powerful Dark-type STAB moves and low Speed, Kingambit is also a great deterrent for opposing Farigiraf from switching into Dragonite to block Extreme Speed or setting up Trick Room. In return, Dragonite helps eliminate opposing Kingambit, Mega Charizard Y, and Sneasler.\nDragonite also greatly appreciates Tailwind, which allows it to outspeed other Dragon-types and also lowers its reliance on Extreme Speed to pick up KOs. Whimsicott is a natural partner, as it resists STAB moves from the likes of Garchomp and Hydreigon, allowing it to come in on attacks intended for Dragonite or, if Dragonite uses Protect, its partner Whimsicott also capitalizes on Fairy Aura from opposing Mega Floette and can assist in putting it in the range of Extreme Speed with Moonblast."
+      },
+      {
+       "name": "Bulky Attacker",
+       "pokemon": "Dragonite",
+       "abilities": [
+        "Multiscale"
+       ],
+       "items": [
+        "Dragoninite"
+       ],
+       "natures": [
+        "Modest"
+       ],
+       "stat_points": [
+        {
+         "hp": 2,
+         "atk": 0,
+         "def": 0,
+         "spa": 32,
+         "spd": 0,
+         "spe": 32
+        }
+       ],
+       "moveslots": [
+        [
+         "Dragon Pulse"
+        ],
+        [
+         "Heat Wave"
+        ],
+        [
+         "Extreme Speed",
+         "Thunderbolt"
+        ],
+        [
+         "Protect"
+        ]
+       ],
+       "explanation": "This set utilizes Mega Dragonite's high base Special Attack stat as well as its strong type coverage to go for positive trades against other Pokemon. Generally, Mega Dragonite does not look to OHKO opposing Pokemon but rather provide consistent damage. Notably, Mega Dragonite is great for dealing with threats such as Mega Charizard Y, Garchomp, Venusaur, and Sneasler.\nDragon Pulse: While Dragon Pulse OHKOes important attackers such as Garchomp, its main purpose is to provide consistent damage for Mega Dragonite's partners to finish off foes. Notably, Dragon Pulse 2HKOes Mega Charizard Y.\nHeat Wave: Heat Wave provides sizable damage against Steel-type Pokemon such as Kingambit, Excadrill, and Corviknight. Against Whimsicott Tailwind teams in particular, Heat Wave does substantial damage to Whimsicott and can even be further strengthened by Mega Charizard Y's Drought.\nExtreme Speed versus Thunderbolt: Because of Dragon Pulse's lack of damage multipliers, a defensively trained Garchomp or Sneasler will survive with low HP. Additionally, a Whimsicott equipped with Focus Sash will survive a Heat Wave. Dragonite utilizes Extreme Speed as consistent follow-up damage to knock out these low-HP targets. Timid Mega Dragonite often runs Thunderbolt because Dragon Pulse no longer 2HKOes Mega Charizard Y. However, Thunderbolt is also useful for dealing damage to Pelipper and Toxapex.\nModest versus Timid: Modest Mega Dragonite is important when running Extreme Speed so that Dragon Pulse 2HKOes Mega Charizard Y and OHKOes Garchomp. The Modest nature also guarantees that Heat Wave 2HKOes Swords Dance Kingambit. On the other hand, Timid Mega Dragonite is valuable for outspeeding Timid Mega Charizard Y, since most Mega Charizard Y sets do not invest 32 Stat Points into Speed. It also outspeeds Adamant Garchomp.\nOther Options\nTailwind: Pokemon such as Mega Delphox, Mega Floette, and Mega Staraptor naturally outspeed Mega Dragonite. For example, a Kingambit with Tailwind can use Iron Head against Mega Floette to OHKO it and protect Mega Dragonite from Fairy-type moves. Depending on the matchup, Tailwind can be more valuable than Extreme Speed.\nTeambuilding\nChecks and Weaknesses: Mega Dragonite struggles to deal damage to pure Fairy-type Pokemon such as Mega Floette and Sylveon. In particular, these two have high Special Defense stats and will not take much from Heat Wave while retaliating with strong spread damage in the form of Dazzling Gleam and Hyper Voice, respectively.\nMega Froslass and Alolan Ninetales are strong checks because they deal large damage to Mega Dragonite through Multiscale with Blizzard. After setting up an Aurora Veil, Mega Froslass only takes about 30-40% from Heat Wave. Alolan Ninetales can also pressure Dragonite from the back by switching into a Dragon Pulse.\nMega Aerodactyl is a strong check because it has a chance to flinch Mega Dragonite with Rock Slide and threatens an OHKO with Ice Fang after Multiscale is broken. Mega Dragonite often partners with Sneasler to knock out Fairy-types, and Mega Aerodactyl's Dual Wingbeat can OHKO Focus Sash sets as well as set Tailwind so that Sylveon attacks before Sneasler.\nRain teams generally run multiple answers to Mega Dragonite. Mega Swampert checks Mega Dragonite with Ice Punch, outspeeding it thanks to Swift Swim in the rain. Mega Dragonite's Dragon Pulse does not 2HKO Leftovers Calm Archaludon, while Archaludon threatens Mega Dragonite in return with an Electro Shot or Dragon Pulse.\nThough Mega Dragonite is a check to Garchomp with Multiscale, Garchomp can also be a check if Fake Out, Rock Slide, or other chip damage breaks Multiscale. Garchomp often runs a Jolly nature and Life Orb, outspeeding and knocking out a chipped Mega Dragonite with Dragon Claw.\nIncineroar is problematic for Mega Dragonite because Fake Out will not only prevent Mega Dragonite from attacking but also deal damage and break Multiscale. Additionally, Incineroar's Parting Shot will prevent Mega Dragonite from picking up an OHKO against Garchomp or common 2HKOs against Mega Charizard Y and Basculegion-M. Priority moves such as Sneasler's Feint and Sylveon's Quick Attack break Mega Dragonite's Multiscale and allow an opposing partner such as Mega Floette or Mega Aerodactyl, respectively, to knock out Mega Dragonite. A low-HP Sylveon can still provide value with a last Quick Attack before fainting.\nGood Partners and Synergies: Sneasler provides the perfect offensive coverage in tandem with Mega Dragonite. Its use of strong Poison-type moves such as Dire Claw can OHKO the Fairy-types that threaten Mega Dragonite. Sneasler's Close Combat is super effective against bulky Steel-type Pokemon such as Kingambit and Archaludon that Mega Dragonite may not trade positively with. It can also use Fake Out before Incineroar to neuter it as a threat while pressuring it with Close Combat.\nMega Charizard Y similarly provides strong offensive coverage against Steel- and Fairy-type Pokemon. Against Mega Floette with Calm Mind, Mega Dragonite often struggles to deal significant damage while taking a lot from Dazzling Gleam or Moonblast. In this matchup, it is advisable to bring a different Mega Evolution such as Mega Charizard Y to the battle.\nKingambit and Mega Floette: Kingambit can use Iron Head to check the Fairy-type Pokemon that Mega Dragonite struggles against as well as Ice-types such as Mega Froslass and Alolan Ninetales. Mega Floette can OHKO Dragon-types such as Garchomp that Mega Dragonite may struggle with. Mega Dragonite provides consistent damage against Fire-types such as Mega Charizard Y that Mega Floette and Kingambit struggle against.\nGarchomp pairs well with Mega Dragonite because of its Dragon- and Ground-type attacks. Earthquake and Stomping Tantrum check Rock-type Pokemon such as Mega Tyranitar, Lycanroc-D, and Glimmora. Dragon Claw checks opposing Garchomp and Mega Dragonite. Rock Slide threatens Mega Aerodactyl and Mega Froslass.\nBasculegion-M is a great partner for Mega Dragonite because both Pokemon synergize well with Sneasler and Kingambit. A Life Orb-boosted Wave Crash or Last Respects will knock out physically frail Fairy-type Pokemon such as Sylveon and Mega Floette. Combined with Tailwind, Basculegion-M checks Mega Froslass, Mega Aerodactyl, and Swift Swim Mega Swampert. After Hisuian Arcanine's Focus Sash is broken, Aqua Jet will OHKO it and protect Mega Dragonite from Head Smash.\nIf running Tailwind on Mega Dragonite, pair it with bulky attackers such as Kingambit, Basculegion-M, and Gholdengo. Notably, under Tailwind, Kingambit can outspeed opposing Mega Floette, and Basculegion-M and Gholdengo can outspeed Mega Aerodactyl. These Pokemon match the slower tempo of Mega Dragonite."
       }
      ],
      "credits": [
+      "pengu",
       "Carrotman",
-      "poketitanterra",
-      "pengu"
+      "RauSakura",
+      "poketitanterra"
      ]
     }
    ]
@@ -10079,6 +10119,55 @@
       "RauSakura",
       "gephicka"
      ]
+    },
+    {
+     "format": "VGC26 Regulation M-B",
+     "outdated": null,
+     "overview": "",
+     "comments": "",
+     "movesets": [
+      {
+       "name": "Snow Attacker",
+       "pokemon": "Froslass",
+       "abilities": [
+        "Cursed Body"
+       ],
+       "items": [
+        "Froslassite"
+       ],
+       "natures": [
+        "Timid"
+       ],
+       "stat_points": [
+        {
+         "hp": 30,
+         "atk": 0,
+         "def": 0,
+         "spa": 13,
+         "spd": 0,
+         "spe": 23
+        }
+       ],
+       "moveslots": [
+        [
+         "Blizzard"
+        ],
+        [
+         "Shadow Ball"
+        ],
+        [
+         "Aurora Veil"
+        ],
+        [
+         "Protect"
+        ]
+       ],
+       "explanation": "Mega Froslass is one of the main weather setters of the format, overriding Mega Charizard Y's and Pelipper's respective weathers with the snow while boasting good matchups against Pokemon like Mega Staraptor, Garchomp, and Sneasler.\nBlizzard: Blizzard is Mega Froslass's main source of damage, not only dealing spread damage but also giving you a possible win condition through freezes, though it is not to be relied upon. Mega Froslass should be careful when using Blizzard, as an opposing weather setter can switch in and make Blizzard inaccurate, making foes like Venusaur and Sinistcha feel more comfortable to take on Mega Froslass.\nAurora Veil: Aurora Veil allows Mega Froslass to survive attacks like Heat Wave from Mega Charizard Y under the snow. Similarly to Blizzard, however, Mega Froslass has to be careful when using it. If an opposing weather setter like Tyranitar swaps in, Mega Froslass can essentially lose its turn and be vulnerable to attacks, since it is unable to be set up when the snow isn't up.\nCursed Body: Cursed Body is used to possibly let Froslass disable attacks like Dire Claw from Sneasler and Blizzard from opposing Mega Froslass when swapping into them.\nMega Evolving Froslass: Froslass should avoid Mega Evolving early in matchups against weather setters other than opposing Mega Froslass. Preserving Mega Evolution until the opposing weather setter is KOed or significantly weakened is recommended to maximize Mega Froslass's advantage state in the snow.\nSP Spreads\n30 HP / 13 SpA / 23 Spe with Timid: The given SP spread allows Mega Froslass to survive Black Glasses-boosted Sucker Punch from Kingambit under the snow while having good odds at avoiding a 2HKO from Timid Mega Dragonite's Flamethrower with Aurora Veil. The Speed investment allows Mega Froslass to outspeed maximum Speed Mega Staraptor and Mega Metagross, while the rest is dumped into Special Attack.\n25 HP / 14 Def / 27 Spe with Timid: Taking a more defensive approach, this spread allows Mega Froslass to outspeed Modest Mega Gengar, and when the snow's up, it lets Mega Froslass avoid a 2HKO from Life Orb Jolly Garchomp's Earthquake, Stomping Tantrum, and Rock Slide (RC) and nearly always dodge a 2HKO from Lycanroc-D's Accelerock. It also lets Mega Froslass survive Heat Wave from Mega Delphox.\n8 HP / 28 SpA / 30 Spe with Modest: This spread leans into Mega Froslass's Special Attack, making it capable of OHKOing uninvested Basculegion-M with Shadow Ball and outspeeding maximum Speed Garchomp and Mega Floette, all while maximizing Mega Froslass's chances at surviving Modest Mega Floette's Light of Ruin with Aurora Veil and the HP investment.\nTeambuilding\nChecks and Weaknesses: Opposing weather setters like Mega Charizard Y, Torkoal, Pelipper, and Mega Tyranitar are annoying for Mega Froslass, as all of them can swap in and set up their respective weathers. Mega Charizard Y and Torkoal threaten to OHKO Mega Froslass with Heat Wave while also enabling partners like Venusaur to outspeed Mega Froslass and put it to sleep with Sleep Powder. Pelipper, despite its relatively low Special Defense, does well against Mega Froslass thanks to its ability to set up the rain while using Wide Guard to block Blizzard. Rain also boosts the power and Speed of Mega Swampert and enables Archaludon, and both of them threaten Mega Froslass under rain. Mega Tyranitar easily switches into either of Mega Froslass's attacks and threatens big damage with Rock Slide and Knock Off, while Excadrill, a common partner, also threatens Mega Froslass with Iron Head. Excadrill has the added benefit of outspeeding Mega Froslass when the sand is up thanks to Sand Rush, making it even tougher to face.\nFire-type Pokemon: Fire-type Pokemon like Incineroar and Hisuian Arcanine spell trouble for Mega Froslass, as the former can swap in consistently on Mega Froslass's attacks and weaken it with Parting Shot, and the latter can OHKO Mega Froslass with ease with Head Smash.\nSteel-type Pokemon: Steel-type Pokemon like Kingambit and Gholdengo are also troublesome; Kingambit can swap in on both of Mega Froslass's attacks, use Kowtow Cleave to OHKO it or Sucker Punch to threaten huge damage before it can move, and even punish a potential Special Defense drop from Shadow Ball with Defiant.\nGhost-type Pokemon: While it's vulnerable to Shadow Ball, Gholdengo OHKOes Mega Froslass with its own Shadow Ball or Make It Rain. Basculegion-M is another Ghost-type that, when equipped with the Life Orb and supported by Tailwind or Trick Room, can OHKO Mega Froslass with a 100-Base Power Last Respects despite the snow and even Aurora Veil. Mega Gengar can outspeed and threaten Mega Froslass with Shadow Ball.\nRock-type Pokemon: Mega Aerodactyl can use Wide Guard to block Blizzard and offensively threaten Mega Froslass with Rock Slide. Other Rock-type Pokemon like Lycanroc-D can also use Rock Slide to threaten it, and Lycanroc-D can use Accelerock to pick it off at lower health. Glimmora can target Mega Froslass's generally lower Special Defense to hit it hard with Power Gem.\nDark-type Pokemon: Dark-type Pokemon like the aforementioned Kingambit and Hydreigon are foes Froslass struggles against, as they hit it hard with their strong Dark-type STAB moves. Hydreigon also is able to lower Mega Froslass's Special Attack with Snarl, dealing a large sum of damage on top of that.\nSpecially Defensive Foes: Mega Floette and Sylveon can easily tank Mega Froslass's attacks thanks to their immense special bulk, OHKOing back with Light of Ruin and Hyper Beam or dealing significant chunks of damage with Moonblast and Hyper Voice. Toxapex is also a difficult foe, as it resists Blizzard and blocks Blizzard entirely with Wide Guard. If needed, it can put Mega Froslass on a timer with Toxic, which makes it much harder for Mega Froslass to stay on the field.\nGood Partners and Synergies: Sneasler provides coverage against the Steel-, Rock-, and Dark-types that scare Mega Froslass, hitting them with Close Combat. It also hits Mega Floette and Sylveon with Dire Claw and Gunk Shot. Mega Froslass can, in return, threaten big damage onto slower Ghost-types that annoy Sneasler like Basculegion-M while also helping out against Mega Staraptor. An ally Basculegion-M helps against Rock-type Pokemon as well as Fire-type Pokemon, having the capability to OHKO Mega Charizard Y under sun with Wave Crash. It also blasts through specially defensive Pokemon with Last Respects late-game.\nKingambit is strong against Ghost-type Pokemon, hitting them with Sucker Punch before they can move. Its typing also makes it strong against the likes of Mega Aerodactyl and Mega Tyranitar that forgo Low Kick, and it has Defiant to deter the entrance of Incineroar. Mega Froslass easily takes care of Fighting-types for Kingambit, and it can even set up Aurora Veil to give Kingambit an easier time setting up with Swords Dance.\nLycanroc-D is the answer to Fire-types for Mega Froslass; it obliterates Mega Charizard Y with Rock Slide and Accelerock. It also carries Close Combat to threaten the likes of Kingambit and Mega Tyranitar with an OHKO. However, it does struggle against Fighting-types, specifically Sneasler, which is a Pokemon that Mega Froslass handles amazingly.\nMega Scovillain is the most common Mega-Evolved partner for Mega Froslass, as it helps out in many tough matchups against Pokemon such as Mega Blastoise, Mega Metagross, Mega Mawile, and Mega Floette. Mega Scovillain can easily force Mega Metagross and Mega Mawile to get burned with the combination of Spicy Spray and Rage Powder while threatening them with Overheat. Additionally, Mega Floette's attacks are resisted by Mega Scovillain, and it doesn't appreciate the chip damage from Overheat. Meanwhile, Mega Froslass deals with matchups against Pokemon that Mega Scovillain may struggle against, including Mega Dragonite and Mega Staraptor."
+      }
+     ],
+     "credits": [
+      "RauSakura"
+     ]
     }
    ]
   },
@@ -11621,6 +11710,57 @@
      "credits": [
       "pengu",
       "RauSakura"
+     ]
+    },
+    {
+     "format": "VGC26 Regulation M-B",
+     "outdated": null,
+     "overview": "",
+     "comments": "",
+     "movesets": [
+      {
+       "name": "Sand Sweeper",
+       "pokemon": "Excadrill",
+       "abilities": [
+        "Sand Rush"
+       ],
+       "items": [
+        "Focus Sash"
+       ],
+       "natures": [
+        "Adamant"
+       ],
+       "stat_points": [
+        {
+         "hp": 2,
+         "atk": 32,
+         "def": 0,
+         "spa": 0,
+         "spd": 0,
+         "spe": 32
+        }
+       ],
+       "moveslots": [
+        [
+         "Iron Head"
+        ],
+        [
+         "Protect"
+        ],
+        [
+         "Rock Slide"
+        ],
+        [
+         "High Horsepower",
+         "Earthquake"
+        ]
+       ],
+       "explanation": "Excadrill is an extremely fast, versatile threat on sand teams, being only outsped by Unburden Sneasler and foes supported by Tailwind. Excadrill has a solid matchup against many threats in the metagame, like Sneasler, Incineroar, Kingambit, Mega Charizard Y, Gholdengo, and Mega Floette.\nRock Slide: Rock Slide OHKOes Mega Charizard Y, preventing it from freely switching in and changing the weather to sun. Due to Excadrill's high Speed in sand, it can land a game-changing flinch with Rock Slide, though it shouldn't be relied on as a major win condition due to its inconsistency.\nHigh Horsepower versus Earthquake: High Horsepower is usually preferred to avoid doing damage to partners like Mega Tyranitar. Earthquake can deal spread damage and can be situationally useful when partnered with teammates that avoid or don't mind the damage like Mega Staraptor and Sinistcha; other teammates can also avoid damage by using Protect. Earthquake also notably does not make contact, which enables Excadrill to not break its Focus Sash when attacking Garchomp or targeting Glimmora with Spiky Shield up.\nFocus Sash: By equipping it with Focus Sash, foes that would normally outspeed and OHKO Excadrill like Sneasler and Mega Blaziken may find themselves in a losing matchup in sand.\nTeambuilding\nChecks and Weaknesses: Excadrill is outsped by common threats like Garchomp outside of sand. Therefore, it's important to anticipate potential weather setters switching in, as Pokemon that Excadrill used to check may now check it instead. Pelipper particularly causes issues with its good physical bulk and type advantage, and it also sets up Mega Swampert's Swift Swim. Furthermore, it can also block Rock Slide with Wide Guard, leaving Excadrill with no good ways to damage it. Mega Froslass and Mega Charizard Y can also change the weather, but they generally dislike Excadrill's coverage.\nExcadrill tends to struggle with bulkier Grass- and Water-types like Sinistcha, Milotic, and Mega Blastoise. Milotic can both avoid being 2HKOed by High Horsepower and 2HKO Excadrill with Muddy Water. Mega Blastoise can avoid being 2HKOed with the help of Sinistcha, and it can 2HKO Excadrill back with Dark Pulse. Sinistcha can take multiple Iron Heads from Excadrill, threaten it with a burn with Matcha Gotcha, and redirect High Horsepower. Mega Scovillain can pose a major threat, as Spicy Spray can burn Excadrill. Combined with Rage Powder, Excadrill's offensive utility can be severely hampered when it's forced to attack Mega Scovillain. Intimidate users like Incineroar can also drastically reduce Excadrill's damage despite Excadrill's type advantage. Staraptor particularly can switch into Excadrill's Ground-type attacks, drop its Attack with Intimidate, and then hit it with Close Combat after Mega Evolving.\nGarchomp is a notable threat, since it can break Excadrill's Focus Sash due to Rough Skin and threaten it with an Earthquake. Focus Sash Mamoswine can also take out Excadrill with the combination of High Horsepower and Ice Shard.\nTrick Room users like Farigiraf and Sinistcha turn Excadrill's Speed boost from the sand into a detriment, which enables threats like Torkoal and Kingambit. Torkoal can throw out a devastating Eruption immediately, while Kingambit can attack first without relying on Sucker Punch.\nGood Partners and Synergies: Mega Tyranitar is a mandatory partner with Excadrill due to Sand Stream. Mega Tyranitar helps alleviate Excadrill's bad matchup against Sinistcha, while Excadrill can help against Sneasler, Steel-types like Kingambit and Archaludon, and Fairy-types like Sylveon and Mega Floette. Mega Staraptor can be partnered with Excadrill to deal with Grass-types like Sinistcha and act as a switch-in against Ground-types like Garchomp. Mega Staraptor can also help a lot against Kingambit by threatening with Close Combat, and it's able to boost off of Incineroar's Intimidate with Contrary. In return, Excadrill can handle Gholdengo, Mega Charizard Y, and Fairy-types like Mega Floette.\nCompetitive Milotic is a solid teammate for dealing with Incineroar, and it can do well against Water-types like Mega Blastoise. It can also OHKO Garchomp with Ice Beam. Sinistcha is a good teammate for Excadrill due to Hospitality potentially restoring Focus Sash; it also provides redirection through Rage Powder and threatens Mega Swampert with Matcha Gotcha. Furthermore, Sinistcha can reverse Trick Room. Gholdengo helps with several of Excadrill's checks, as it can withstand Mega Staraptor's Close Combat and Brave Bird, hit Pelipper hard with Shadow Ball, and provide consistent damage against Sinistcha."
+      }
+     ],
+     "credits": [
+      "pengu",
+      "poketitanterra"
      ]
     }
    ]
@@ -21955,6 +22095,55 @@
       "pengu",
       "RauSakura"
      ]
+    },
+    {
+     "format": "VGC26 Regulation M-B",
+     "outdated": null,
+     "overview": "",
+     "comments": "",
+     "movesets": [
+      {
+       "name": "Setup Sweeper",
+       "pokemon": "Blastoise",
+       "abilities": [
+        "Rain Dish"
+       ],
+       "items": [
+        "Blastoisinite"
+       ],
+       "natures": [
+        "Modest"
+       ],
+       "stat_points": [
+        {
+         "hp": 13,
+         "atk": 0,
+         "def": 0,
+         "spa": 28,
+         "spd": 0,
+         "spe": 25
+        }
+       ],
+       "moveslots": [
+        [
+         "Water Spout"
+        ],
+        [
+         "Dark Pulse"
+        ],
+        [
+         "Shell Smash"
+        ],
+        [
+         "Protect"
+        ]
+       ],
+       "explanation": "Mega Blastoise is able to utilize its relatively good bulk and solid defensive typing to set up in front of many of the tier's main threats like Basculegion-M and Mega Froslass and proceed to sweep with the powerful spread move Water Spout, ripping through Pokemon such as Incineroar and Garchomp with ease.\nWater Spout: Water Spout is one of Mega Blastoise's main offensive tools it becomes harmless if Mega Blastoise is weakened, however, so Mega Blastoise must be careful when using it. Strong priority moves like Sucker Punch from Kingambit can easily weaken Mega Blastoise, especially after it has used Shell Smash.\nDark Pulse: Dark Pulse hits Basculegion-M and Sinistcha hard while providing a move that can be used when Mega Blastoise is weakened or when the opponent poses the threat of Wide Guard from Pokemon like Toxapex and Pelipper.\nMega Evolving Blastoise: If not necessary to gain bulk the turn Mega Blastoise decides to set up, Blastoise can refrain from Mega Evolution to force the opponent to ponder whether or not another Mega Pokemon, such as Delphox, is hiding in the back. This should only be performed on teams that have two Mega Evolutions.\nSP Spreads\n13 HP / 28 SpA / 25 Spe with Modest: With the given spread, Mega Blastoise outspeeds Adamant Mega Swampert in the rain after using Shell Smash. Additionally, it allows Mega Blastoise to survive +2 Sucker Punch from Black Glasses Kingambit and almost always avoid a 2HKO from Modest Mega Froslass's Shadow Ball and Life Orb Jolly Garchomp's Stomping Tantrum and Earthquake. Additionally, after Shell Smash, the spread allows Mega Blastoise to survive Close Combat or Brave Bird from Mega Staraptor. The rest of the SPs are dumped into Special Attack for maximum damage, OHKOing Mega Floette without bulk investment with +2 Water Spout.\n5 HP / 30 SpA / 31 Spe with Timid: This SP spread is more offensively oriented, outspeeding Adamant Sand Rush Excadrill in the sand after using Shell Smash. It has just enough bulk investment to survive 150 Base Power Last Respects from Jolly Adaptability Basculegion-M and, when Mega Blastoise is at -1 Defense, Close Combat from Jolly Sneasler. The rest of the SPs are dumped into Special Attack to maximize Mega Blastoise's damage output.\n31 HP / 17 SpA / 4 SpD / 14 Spe with Timid: A Timid nature allows Mega Blastoise to run more bulk; this spread outspeeds Adamant Mega Swampert in the rain post-Shell Smash but has enough bulk to survive Hyper Beam from Fairy Feather Sylveon, +2 Psychic from Timid Mega Delphox, and avoid a 2HKO from Dragon Claw from Life Orb Jolly Garchomp. The Special Attack investment allows Mega Blastoise to OHKO Mega Delphox without bulk investment with Water Spout without the need to click Shell Smash.\nTeambuilding\nChecks and Weaknesses: Grass-type Pokemon like Venusaur and Whimsicott resist Water Spout, with the latter also resisting Dark Pulse. Venusaur is commonly seen on sun teams, which further weakens Water Spout, and it can dispatch Mega Blastoise itself with Leaf Storm or can disable it with Sleep Powder to allow an ally Mega Charizard Y to finish it off. Mega Venusaur can also easily dispatch of Mega Blastoise with Giga Drain, this time packing extra bulk to better tank Water Spout. Whimsicott can use Encore to lock Mega Blastoise into Shell Smash or a potentially weakened Water Spout and even packs Tailwind to allow partners like Mega Floette to outspeed and OHKO Mega Blastoise even after it has used Shell Smash.\nDragon-type Pokemon like Archaludon and Mega Dragonite resist Water Spout and can retaliate with Dragon Pulse or their Electric-type coverage in Electro Shot and Thunderbolt, respectively. Hydreigon in particular resists both Water Spout and Dark Pulse and can weaken Mega Blastoise with Snarl or deal heavy damage to it with Draco Meteor. Dragonite has access to Extreme Speed, weakening Water Spout before Mega Blastoise can move.\nOpposing speed control, whether it be Tailwind or Trick Room, allows Pokemon like Gholdengo and Mega Staraptor to become larger issues for Mega Blastoise, especially after Mega Blastoise has used Shell Smash. The aforementioned Whimsicott has Tailwind, as do Mega Aerodactyl and Pelipper, both of which carry Wide Guard to block Water Spout. Sinistcha can use Trick Room in the face of Water Spout, while Farigiraf, once under Trick Room, can use Thunderbolt to chunk Mega Blastoise.\nPriority moves like Sucker Punch from Kingambit and Extreme Speed from Hisuian Arcanine weaken Water Spout. Fake Out from Sneasler and Incineroar can force Mega Blastoise to use Protect, allowing partners like Venusaur to come in safely while putting a halt in Mega Blastoise's momentum.\nGood Partners and Synergies: Sneasler provides Fake Out support for Mega Blastoise, giving it an easier time when setting up while breaking Focus Sash on foes like Venusaur and Whimsicott. Sneasler also hits Kingambit hard with Close Combat while having Poison Jab or Dire Claw for Whimsicott and other Fairy-types like Mega Floette and Sylveon that can tank an unboosted Water Spout and deal lots of damage back to Mega Blastoise. Sneasler often carries Quick Guard when alongside Mega Blastoise, blocking all priority moves. Incineroar is another Fake Out user that has Flare Blitz to threaten Grass-type Pokemon, Intimidate to weaken physical attackers, and Parting Shot to get Mega Blastoise on the field safely. Incineroar can even run Helping Hand to boost the power of Water Spout, allowing a +2 Water Spout to OHKO Sylveon, for example.\nKingambit provides coverage into Sinistcha while forming a strong setup spam core with Mega Blastoise. It also deters Incineroar from coming in, meaning Fake Out becomes less of an issue. Kingambit appreciates Mega Blastoise's ability to remove Garchomp and Fire-types with ease. Sinistcha provides redirection support for Mega Blastoise, redirecting many of the priority attacks that usually threaten Mega Blastoise. It also has Trick Room, reversing opposing Trick Room and turning Mega Blastoise into a Trick Room attacker if it decides against using Shell Smash. Sinistcha's Hospitality and sometimes even Life Dew heal Mega Blastoise, allowing it to fire off more powerful Water Spouts.\nMega Delphox is the most common secondary Mega Evolution for Mega Blastoise, hitting all the Grass-type Pokemon that Mega Blastoise fears. Mega Delphox also does well into Mega Evolutions like Mega Floette, Mega Staraptor and Mega Raichu Y, resisting their attacks and threatening huge damage onto them with +2 Heat Wave and Psyshock. In return, Mega Blastoise provides coverage into other Mega Evolutions like Mega Tyranitar and Mega Swampert."
+      }
+     ],
+     "credits": [
+      "RauSakura"
+     ]
     }
    ]
   },
@@ -23822,6 +24011,67 @@
       "Carrotman",
       "RauSakura"
      ]
+    },
+    {
+     "format": "VGC26 Regulation M-B",
+     "outdated": null,
+     "overview": "",
+     "comments": "",
+     "movesets": [
+      {
+       "name": "Fast Attacker",
+       "pokemon": "Gengar",
+       "abilities": [
+        "Cursed Body"
+       ],
+       "items": [
+        "Gengarite"
+       ],
+       "natures": [
+        "Timid",
+        "Modest"
+       ],
+       "stat_points": [
+        {
+         "hp": 2,
+         "atk": 0,
+         "def": 0,
+         "spa": 32,
+         "spd": 0,
+         "spe": 32
+        },
+        {
+         "hp": 30,
+         "atk": 0,
+         "def": 7,
+         "spa": 3,
+         "spd": 19,
+         "spe": 7
+        }
+       ],
+       "moveslots": [
+        [
+         "Shadow Ball"
+        ],
+        [
+         "Sludge Bomb",
+         "Disable"
+        ],
+        [
+         "Substitute",
+         "Perish Song"
+        ],
+        [
+         "Protect"
+        ]
+       ],
+       "explanation": "Mega Gengar uses its high Speed and Special Attack to beat Pokemon like Sinistcha, Mega Floette, and Gholdengo. Its Shadow Tag ability limits the options of non Ghost-type foes and allows it to force KOs with Perish Song or eliminate them with Sludge Bomb and Shadow Ball.\nSludge Bomb vs Disable: Sludge Bomb is used on offensive sets to threaten Mega Floette and Sylveon and allows Mega Gengar to get more value against teams that aren't weak to Perish Song, though it can be used with Perish Song on a team that is weak to Fairy-types. Disable is typically used on Perish Song sets to stop threatening attacks like Kowtow Cleave from Kingambit or pivoting moves like Incineroar's Parting Shot from breaking free of Shadow Tag. It can still be used on an offensive set, typically appearing alongside a teammate with Encore like Maushold or Sableye to completely shut down a foe.\nSubstitute vs Perish Song: Substitute can bait out Sucker Punch from Kingambit, block Sleep Powder from Vivillon, and let Mega Gengar survive strong attacks and thus keep Shadow Tag active longer. Sometimes it even replaces Sludge Bomb to pass turns of Perish Song easier. Perish Song is typically built around as a mode for the team with multiple support partners.\nSP Spreads\n2 HP / 32 SpA / 32 Spe with Timid or Modest: This spread is intended for the offensive set. A Timid nature is used to outspeed Sneasler and Mega Froslass, while a Modest nature guarantees an OHKO on Sinistcha with Shadow Ball while improving the roll to OHKO bulky variants of Basculegion-M.\n30 HP / 7 Def / 3 SpA / 19 SpD / 7 Spe with Modest: This spread is intended for the Perish Song set. The defensive investment allows it to survive Earthquake from Mega Swampert and Stomping Tantrum from Life Orb Garchomp, both at -1 Attack, and Darkest Lariat from Incineroar. The Special Defense lets it survive Psychic from Farigiraf, Weather Ball from bulky variants of Mega Charizard Y, and Shadow Ball from Mega Froslass. The Speed investment lets it outspeed Adamant Garchomp and Modest Mega Charizard Y. The Modest nature lets it OHKO Basculegion-M without bulk investment with Shadow Ball, and the remaining SPs are dumped into Special Attack to improve the roll to OHKO its bulkier variants.\nTeambuilding\nGround-type Weakness: Though the matchup is playable using Perish Song with the help of Incineroar's Intimidate, Mega Swampert threatens an OHKO with Earthquake, High Horsepower, and rain-boosted Wave Crash. Earthquake in particular will hit Mega Gengar and Incineroar for massive damage or ignore Rage Powder from a teammate like Vivillon; Mega Swampert can also just use Wave Crash on Incineroar on the turn the latter wants to use Parting Shot. Garchomp is similarly threatening with Earthquake and Stomping Tantrum, and it pairs well with Mega Charizard Y, which can OHKO Mega Gengar with Weather Ball, making Incineroar have to choose its Fake Out target carefully. Excadrill partnered with Tyranitar outspeeds and threatens Mega Gengar with an OHKO using High Horsepower and Earthquake.\nDark-type Weakness: Kingambit threatens an OHKO with Kowtow Cleave and Sucker Punch, punishes Incineroar's Intimidate with Defiant to guarantee OHKOs on Mega Gengar's teammates like Sinistcha, and is immune to Sludge Bomb. Opposing Incineroar threatens heavy damage or an OHKO with Throat Chop and circumvents Shadow Tag with Parting Shot. Mega Tyranitar threatens heavy damage with Knock Off, shrugs off special attacks in sand, and has Rock Slide for Incineroar.\nPsychic-type Weakness: Farigiraf threatens heavy damage or an OHKO with Psychic, blocks Incineroar's Fake Out, and can even reverse the order that Pokemon faint to Perish Song with Trick Room to clinch an endgame. Mega Delphox outspeeds and threatens an OHKO with Psychic and Psyshock.\nGhost-type Weakness: Basculegion-M can usually beat Mega Gengar with Last Respects if it has Focus Sash or Choice Scarf. Though Ghost-types like Mega Froslass, Gholdengo, and Sableye can typically be handled by Shadow Ball, they can be nuisances to a Perish Song strategy simply by being able to switch. Sableye in particular threatens to use Encore to lock Mega Gengar into its status moves while taking Shadow Ball comfortably.\nGood Partners and Synergies: Vivillon uses Sleep Powder to make it easier for Mega Gengar to set up Perish Song, and Rage Powder redirects threatening attacks like Kingambit's Kowtow Cleave, Basculegion-M's Last Respects, and Garchomp's Stomping Tantrum. Politoed is another Perish Song user that can combine Mega Gengar's Disable with Encore and improve the Mega Charizard Y matchup with Drizzle. Sinistcha helps Mega Gengar survive turns of Perish Song with Hospitality, can nearly OHKO Mega Swampert with Matcha Gotcha, and redirects moves like Stomping Tantrum and Psychic from Garchomp and Farigiraf, respectively, safely with Rage Powder.\nIncineroar: Incineroar's Fake Out support is crucial for setting up and stalling turns of Perish Song, and Intimidate greatly improves the matchup against physical attackers like Mega Swampert, Garchomp, and Basculegion-M. Parting Shot can be used on the turn Mega Gengar switches out to bring it back in safely and preserve Shadow Tag while Perish Song counts down. Incineroar can be paired with Mega Gengar even without Perish Song, as it can switch in safely on Ghost- and Psychic-type attacks like Last Respects and Psychic from Basculegion-M and Mega Delphox, respectively, and threaten good damage with Throat Chop.\nPerish Trap Strategy: Mega Gengar's team can be built with the combination of Perish Song and Shadow Tag in mind by investing in Mega Gengar's bulk and pairing it with supportive partners like Incineroar and Sinistcha to have an easier time passing turns of Perish Song.\nGeneral Teammates: Sneasler has Close Combat to deal with Kingambit and Incineroar. Alolan Ninetales overwrites rain with Snow Warning to shut down Mega Swampert's Swift Swim and OHKOes it and Garchomp with Freeze Dry. Archaludon combines with Politoed on Perish Song teams to handle Mega Charizard Y with Electro Shot and help form an offensive core for the team.\nAlternative Mega Evolutions: Mega Swampert takes advantage of Politoed's Drizzle on Perish Song teams to beat Mega Charizard Y and Incineroar with Wave Crash, Garchomp with Ice Punch, and Excadrill and Tyranitar with any of its STAB attacks. Mega Gengar, in return, is better against Sinistcha and, if running Sludge Bomb, Alolan Ninetales."
+      }
+     ],
+     "credits": [
+      "pengu",
+      "poketitanterra"
+     ]
     }
    ]
   },
@@ -24864,6 +25114,68 @@
      "credits": [
       "pengu",
       "RauSakura"
+     ]
+    },
+    {
+     "format": "VGC26 Regulation M-B",
+     "outdated": null,
+     "overview": "",
+     "comments": "",
+     "movesets": [
+      {
+       "name": "Trick Room Support",
+       "pokemon": "Farigiraf",
+       "abilities": [
+        "Armor Tail"
+       ],
+       "items": [
+        "Sitrus Berry"
+       ],
+       "natures": [
+        "Bold",
+        "Calm"
+       ],
+       "stat_points": [
+        {
+         "hp": 25,
+         "atk": 0,
+         "def": 26,
+         "spa": 0,
+         "spd": 15,
+         "spe": 0
+        },
+        {
+         "hp": 29,
+         "atk": 0,
+         "def": 14,
+         "spa": 0,
+         "spd": 23,
+         "spe": 0
+        }
+       ],
+       "moveslots": [
+        [
+         "Protect",
+         "Helping Hand"
+        ],
+        [
+         "Psychic",
+         "Twin Beam"
+        ],
+        [
+         "Thunderbolt",
+         "Helping Hand"
+        ],
+        [
+         "Trick Room"
+        ]
+       ],
+       "explanation": "Farigiraf is the premier Trick Room setter in Regulation M-B thanks to amazing natural bulk, a strong defensive typing, and unique ability in Armor Tail that prevents opposing priority moves such as Fake Out, Sucker Punch, and Aqua Jet. Farigiraf can survive some of the strongest attacks in the format such as Mega Charizard Y's Weather Ball to safely set Trick Room for teammates, and it continues to provide support once Trick Room is active.\nArmor Tail: Armor Tail is Farigiraf's only worthwhile ability and a massive part of its appeal. It blocks many attempts to disrupt Farigiraf setting Trick Room, such as Fake Out from Incineroar and Sneasler and Whimsicott's Prankster-boosted Encore.\nSitrus Berry: The Sitrus Berry is Farigiraf's main item of choice. With it, Farigiraf's already impressive bulk is raised to monumental levels, allowing it to stay around longer and survive multiple attacks from opposing Pokemon. A notable example is that Farigiraf will nearly always survive two Close Combats from Jolly Sneasler.\nProtect vs Helping Hand: Protect is not a requirement, as Farigiraf survives many of the attacks thrown its way owing to its bulk, typing, and Sitrus Berry. Helping Hand is an alternative to lessen Farigiraf's passivity, allowing teammates such as Sylveon and Torkoal to deal as much damage as possible under the limited turns of Trick Room.\nPsychic vs Twin Beam: Psychic is Farigiraf's primary STAB option, hitting foes like Sneasler, Mega Staraptor, and Venusaur for respectable damage. Twin Beam can instead be used to OHKO Focus Sash Sneasler, though this lessens Farigiraf's already low damage output into other foes.\nThunderbolt vs Helping Hand: Thunderbolt is used to improve the matchup into rain teams by threatening an OHKO on Pelipper. This also improves Farigiraf's damage into Mega Charizard Y and Basculegion-M. Helping Hand can instead be used on teams that don't struggle against rain teams.\nOther Options\nColbur Berry: Farigiraf can hold the Colbur Berry instead of the Sitrus Berry, freeing up the latter to be used on other Pokémon instead. It also improves Farigiraf's survivability in front of Kingambit, Incineroar, and Tyranitar.\nRoar: Roar is a niche move sometimes used by Farigiraf. It denies opposing Pokemon from setting Trick Room, which can be useful for faster teams. It forces out foes with many stat boosts such as Calm Mind Mega Floette and Stamina Archaludon. Roar can also be used on an allied Sylveon to bypass the recharge turn on Hyper Beam.\nNasty Plot: Nasty Plot can be used alongside Thunderbolt and Psychic or Twin Beam. Farigiraf's typing and bulk give it many opportunities to use Nasty Plot, and the Special Attack boost allows it to output serious damage. This move makes Farigiraf significantly less passive but comes at the cost of running neither Protect nor Helping Hand.\nSP Spreads\n25 HP / 26 Def / 15 SpD Bold: This SP spread prioritizes physical bulk. It allows Farigiraf to nearly always survive Kowtow Cleave from Kingambit holding Black Glasses and Weather Ball from most variants of Modest Mega Charizard Y.\n29 HP / 14 Def / 23 SpD Calm: This SP spread prioritizes special bulk. With it, Farigiraf survives Light of Ruin from Modest Mega Floette most of the time. It also allows Farigiraf to almost always survive Kowtow Cleave from Kingambit without any damage boosting items and Wave Crash from Basculegion-M holding Mystic Water.\nSpeed-Reducing Natures: Relaxed and Sassy natures are options instead of Bold and Calm, respectively. They allow Farigiraf to move before other Pokémon with base 60 Speed under Trick Room, notably Incineroar, Sylveon, and opposing Farigiraf.\nTeambuilding\nChecks and Weaknesses: Dark-types like Kingambit, Incineroar, and Tyranitar are problematic foes for Farigiraf. Their Dark-type attacks are super effective against Farigiraf, and in return, they are immune to Farigiraf's Psychic-type STAB moves. In particular, Kingambit's attacks threaten massive damage on Farigiraf, with Life Orb variants having favorable odds to OHKO the physically defensive SP spread. Its Speed is even lower than Farigiraf's, meaning that variants with no Speed investment will move before Farigiraf under Trick Room. Due to Farigiraf's passivity, Swords Dance variants of Kingambit can use the presence of Farigiraf as an opportunity to set up. Incineroar can chip away at Farigiraf even without offensive investment. Mega Tyranitar will nearly always OHKO the physically defensive SP spread with Knock Off and sandstorm chip damage.\nAdditional Checks and Weaknesses: The format is home to many powerhouses such as Mega Floette, Mega Charizard Y, and Basculegion-M that can double target into Farigiraf lacking proper support and secure a KO despite its good bulk. Trick Room setters such as Sinistcha and opposing Farigiraf can deny Farigiraf's attempts to set Trick Room, resulting in Farigiraf having minimal impact on the battle.\nGood Partners and Synergies: Farigiraf's utility makes it a great partner for a number of Pokémon. Slower powerhouses appreciate Farigiraf's ability to effortlessly set Trick Room, allowing them to wreak havoc on opposing teams. Armor Tail also benefits fast and frail teammates that fear priority attacks that would severely weaken or KO them, and teammates holding the Choice Scarf do not need to worry about Fake Out stopping their momentum.\nPartner Kingambit: Kingambit in particular is an amazing partner for Farigiraf. With low Speed and high damage output, Kingambit takes advantage of Farigiraf's Trick Room support to a high degree. Variants running Low Kick can threaten opposing Kingambit and other Dark-types, which eases stress put on Farigiraf. In return, Farigiraf's Psychic-type STAB move of choice can deal with Fighting-types like Sneasler and Mega Staraptor that threaten Kingambit.\nPartner Sylveon: Sylveon benefits from Trick Room for the same reasons as Kingambit: low Speed and high damage output. Sylveon can throw out powerful spread Hyper Voices to threaten Dark-types while under Trick Room; these attacks can be further boosted by Helping Hand. Farigiraf additionally handles Poison-types like Sneasler and Venusaur with ease that would otherwise threaten Sylveon.\nPartner Torkoal: Torkoal relies on Trick Room support due to it being too slow otherwise. Farigiraf provides it with speed control while further boosting its powerful sun-boosted attacks with Helping Hand. In exchange, Torkoal threatens Steel-types that Farigiraf has a bad matchup into, such as Kingambit and Gholdengo.\nPartner Incineroar: Incineroar's Fake Out and Intimidate help Farigiraf with setting Trick Room. Fake Out denies foes from doubling into Farigiraf and securing a KO, while Intimidate cripples physical attackers, further improving Farigiraf's longevity. Despite having lower damage output than the previously mentioned partners, Incineroar's low Speed means it benefits from Trick Room. Incineroar's Flare Blitz can deal with Steel-types like Kingambit for Farigiraf, while Farigiraf deals with Fighting-types for Incineroar.\nPartner Tailwind Setters: Offensive Tailwind setters such as Mega Aerodactyl and Mega Staraptor function incredibly well with Farigiraf, providing the team with great flexibility and the option to choose between Tailwind or Trick Room as a form of speed control; they can both can even be used at different points in the same battle. Mega Aerodactyl appreciates Armor Tail to prevent chip damage from priority attacks, ensuring it always attacks first. Mega Staraptor threatens Dark-types for Farigiraf with its powerful Close Combats. Both Mega Pokemon dispatch Sinistcha with their Flying-type STAB attack of choice, preventing it from turning off Farigiraf's Trick Room.\nPartners with Medium Speed: Medium Speed partners like Basculegion-M, Mega Charizard Y, and slower variants of Mega Floette appreciate Trick Room, especially when opposing teams are running Tailwind. If Trick Room would allow these powerful Pokemon to move first, then Farigiraf is of benefit to them. Careful management of Trick Room is required, though, as while these Pokemon will move before faster foes under Trick Room, slower foes will cause issues."
+      }
+     ],
+     "credits": [
+      "RauSakura",
+      "poketitanterra"
      ]
     }
    ]
