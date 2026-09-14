@@ -149,9 +149,17 @@ def gate():
 
 
 def tests_line():
-    """The one line in the layout block that counts files on disk."""
+    """The one line in the layout block that counts files on disk.
+
+    A .js file in tests/ is not automatically a test: harness.js is the shared
+    loader the seventeen of them go through since the deployed page became a
+    shell plus four assets. Counting it said eighteen and failed the gate, which
+    is the check doing its job - the number is derived, so it can only be right
+    or loud.
+    """
+    helpers = {"harness.js"}
     n = len([f for f in os.listdir(os.path.join(ROOT, "tests"))
-             if f.endswith(".js")])
+             if f.endswith(".js") and f not in helpers])
     return "tests/       %s browser tests, run against the BUILT page" % word(n)
 
 
