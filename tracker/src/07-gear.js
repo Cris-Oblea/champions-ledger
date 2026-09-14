@@ -1,9 +1,9 @@
 /* 07-gear.js - Items, stones, statuses, and the Profile tab.
    Part of the app; linked into one script by scripts/build_tracker_page.py. */
 import { $, C, COSTS, bst, byName, el, toast, typeChip } from "./01-data.js";
-import { S, boxRows, capacity, hasStone, ownedNames, ownedStones }
-  from "./02-state.js";
-import { patch, put } from "./03-store.js";
+import { S, boxRows, capacity, hasStone, ownedItems, ownedNames,
+         ownedStones } from "./02-state.js";
+import { drop, patch, put } from "./03-store.js";
 /* One button on the Profile tab opens the team sheet. Called from a click
    handler, never while loading, so the cycle it forms with 08-teams - which
    reaches back here for nothing, but might - would cost nothing either. */
@@ -55,14 +55,17 @@ function drawStones(){
       "dead weight until it arrives: " + dead.join(", ") + "."
      : "Every stone you own has its species in the box.");
 }
+/* One row, one stone (migration 6). This used to rewrite the entire owned
+   list from this device's copy of it, so a stone marked on the other device
+   while this one was asleep was quietly dropped on the next toggle. Now
+   marking is an insert of that stone and unmarking a delete of it, and no
+   other stone is touched by either. */
 function toggleStone(stone){
-  var cur = ownedStones().slice();
-  var i = cur.indexOf(stone);
-  if (i >= 0) cur.splice(i, 1); else cur.push(stone);
-  cur.sort();
-  put("meta/stones", {owned:cur}).then(function(){
-    toast(i >= 0 ? stone + " removed" : stone + " owned");
-  });
+  var have = hasStone(stone);
+  (have ? drop("stones/" + stone) : put("stones/" + stone, {}))
+    .then(function(){
+      toast(have ? stone + " removed" : stone + " owned");
+    });
 }
 
 /* Items, the way the game groups them: Hold Items, Berries, Miscellaneous -
@@ -75,13 +78,7 @@ function toggleStone(stone){
    anything. You could see 118 item NAMES and never what any of them did. It
    reads like the stone list now - a row per item, what it does, what it
    costs, and whether you have it. */
-function ownedItems(){
-  var m = {};
-  ((S.meta.items || {}).owned || []).forEach(function(r){
-    m[Array.isArray(r) ? r[0] : r] = 1;
-  });
-  return m;
-}
+
 var ITEM_CATS = ["Hold Items", "Berries", "Miscellaneous"];
 
 function drawItems(){
@@ -243,23 +240,14 @@ function drawStatuses(){
     host.appendChild(el("div", "empty", "No status data"));
 }
 
+/* One row, one item - the same change as toggleStone, for the same reason.
+   The old [name, [category]] pairs were carried across by migration 6, so the
+   two shapes this used to read are one shape now. */
 function setItem(name, own){
-  var meta = S.meta.items || {};
-  var rows = (meta.owned || []).filter(function(r){
-    return (Array.isArray(r) ? r[0] : r) !== name;
-  });
-  /* stored as plain names now - the old [name, [category]] shape is still
-     read, because the categories are the game's and no longer typed in */
-  if (own) rows.push(name);
-  rows.sort(function(a, b){
-    return String(Array.isArray(a) ? a[0] : a)
-      .localeCompare(String(Array.isArray(b) ? b[0] : b));
-  });
-  var body = {owned:rows};
-  if (meta.categories) body.categories = meta.categories;
-  put("meta/items", body).then(function(){
-    toast(own ? name + " owned" : name + " removed");
-  });
+  (own ? put("items/" + name, {}) : drop("items/" + name))
+    .then(function(){
+      toast(own ? name + " owned" : name + " removed");
+    });
 }
 
 /* =================================================================== profile

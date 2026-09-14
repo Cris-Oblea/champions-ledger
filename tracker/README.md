@@ -400,9 +400,24 @@ meta/trainer  {box_capacity}   - and nothing else. rank, regulation, season,
                vp_balance and the two ticket counts were dropped from the row
                on 2026-09-13: Profile had stopped offering a field for any of
                them, so they sat frozen and readable as if current.
-meta/stones   {owned:[...]}
-meta/items    {categories:[...], owned:[[name,[categories]],...]}
-meta/gts      {open_offers:[{offered, requested, deposited, status, note}]}
+stones/{name} a row per stone owned. The id IS the name, "Charizardite Y".
+items/{name}  a row per item owned, same shape and same reason.
+
+               THESE WERE ONE DOCUMENT EACH until migration 6 (2026-09-14):
+               meta/stones {owned:[...]} and meta/items {owned:[...]}. Toggling
+               one rewrote the whole list from whatever copy that device last
+               loaded, so a phone that had been asleep while the laptop marked
+               something quietly dropped it on its next toggle - and nothing
+               anywhere said a write was lost. A row per owned thing makes the
+               two writes independent, and the primary key means owning
+               something twice is not a state the database can be in.
+               The old documents are still there, untouched, so rolling back
+               is dropping two tables.
+meta/gts      {open_offers:[{offered, requested, deposited, status, note}],
+               history:[...]}   - still a document, and next in line: the
+               history only appends, one call site truncates it to 60, and it
+               is at 34. A closed trade is the only real evidence of what the
+               market pays, so losing the oldest ones is not a small thing.
 ```
 
 ## Files

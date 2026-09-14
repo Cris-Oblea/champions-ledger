@@ -1,7 +1,8 @@
 /* 02-state.js - S: the ledger as this device sees it, and what a build is bound to.
    Part of the app; assembled into one script by scripts/build_tracker_page.py. */
 /* ===================================================================== state */
-var S = {box:{}, builds:{}, teams:{}, meta:{}, db:null, ready:false, tab:"box"};
+var S = {box:{}, builds:{}, teams:{}, stones:{}, items:{}, meta:{},
+         db:null, ready:false, tab:"box"};
 
 function boxRows(loc, st){
   return Object.keys(S.box).map(function(k){
@@ -71,8 +72,18 @@ function boxUsed(){
   return boxRows("champions").length;
 }
 function capacity(){ return (S.meta.trainer && S.meta.trainer.box_capacity) || 50; }
-function ownedStones(){ return (S.meta.stones && S.meta.stones.owned) || []; }
-function hasStone(n){ return ownedStones().indexOf(n) >= 0; }
+/* A ROW PER STONE, not a list inside one document (migration 6).
+   Owning a stone is the existence of its row, so marking one on the phone
+   and another on the laptop are two independent writes and neither can
+   erase the other. As a list they rewrote the whole document from
+   whatever copy that device last loaded, and a device that had been
+   asleep silently dropped what it never saw. */
+function ownedStones(){ return Object.keys(S.stones).sort(); }
+function hasStone(n){ return !!S.stones[n]; }
+/* Same shape, same reason. The categories the old document carried are
+   the game's own and come from the dex. */
+function ownedItems(){ return S.items; }
+function hasItem(n){ return !!S.items[n]; }
 function ownedNames(){
   var m = {}; boxRows("champions").forEach(function(v){ m[v.name] = v.status; });
   return m;
@@ -91,5 +102,5 @@ function ownedNames(){
 export {
   ORIGIN_LABEL, S,
   boxRows, buildLink, buildsFor, capacity, hasStone, originOf, originRows,
-  ownedNames, ownedStones,
+  hasItem, ownedItems, ownedNames, ownedStones,
 };

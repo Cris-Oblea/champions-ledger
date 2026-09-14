@@ -75,6 +75,22 @@ const TABS = ["box", "home", "builds", "calc", "find", "gear", "trainer"];
   ok("y nombra el build que moriria con el Pokemon",
      /Kingambit/.test(dnote ? dnote.innerHTML : ""), true);
 
+  /* stones and items are rows now (migration 6), and the Items tab is where
+     that is visible - a stone owned for a species that is not in the box is
+     the "dead weight until it arrives" line. */
+  console.log("\n  lo que se posee, fila por fila");
+  w.go("gear");
+  await tick(200);
+  ok("las piedras se cuentan desde su tabla",
+     /3 of \d+/.test(d.getElementById("stoneNote").textContent), true);
+  ok("y avisa de la que no tiene especie en la caja",
+     /dead weight until it arrives/.test(d.getElementById("stoneNote").textContent),
+     true);
+  ok("los items marcados vienen de la suya",
+     w.S && Object.keys(w.S.items).length, 4);
+  w.go("box");
+  await tick(150);
+
   /* the four build states: active, parked, orphan, unbound */
   console.log("\n  los cuatro estados de un build");
   const link = id => w.buildLink(id).state;

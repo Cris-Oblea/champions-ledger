@@ -75,6 +75,10 @@ function drop(path){
    rows invisible to another. The key in this page cannot read past it. */
 function docFromRow(coll, row){
   if (coll === "meta") return row.data || {};
+  /* A set table: the row's existence IS the fact, and there is nothing
+     else to carry. The date is kept because the app shows it. */
+  if (coll === "stones" || coll === "items")
+    return {updated:(row.updated_at || "").slice(0, 10)};
   if (coll === "box") return {name:row.name, location:row.location,
     status:row.status, origin:row.origin, note:row.note || "",
     shiny:!!row.shiny, trained:!!row.trained,
@@ -89,6 +93,7 @@ function docFromRow(coll, row){
     extra:row.extra || {}, updated:(row.updated_at || "").slice(0, 10)};
 }
 function rowFromDoc(coll, id, uid, d){
+  if (coll === "stones" || coll === "items") return {user_id:uid, id:id};
   if (coll === "meta") {
     var body = {}; Object.keys(d).forEach(function(k){
       if (k !== "updated") body[k] = d[k]; });
@@ -134,7 +139,10 @@ function supabaseStore(sb, uid){
     });
   }
 
-  var COLLS = ["box", "builds", "teams", "meta"];
+  /* stones and items are tables of their own since migration 6 - a row
+     per owned thing, so two devices toggling different ones cannot
+     overwrite each other. They load exactly like the rest. */
+  var COLLS = ["box", "builds", "teams", "stones", "items", "meta"];
   COLLS.forEach(function(coll){
     load(coll).catch(function(e){
       console.error("[ledger] load " + coll, e);
@@ -154,6 +162,10 @@ function supabaseStore(sb, uid){
        new id. */
     .on("postgres_changes", {event:"*", schema:"public", table:"teams"},
         function(){ load("teams"); })
+    .on("postgres_changes", {event:"*", schema:"public", table:"stones"},
+        function(){ load("stones"); })
+    .on("postgres_changes", {event:"*", schema:"public", table:"items"},
+        function(){ load("items"); })
     .on("postgres_changes", {event:"*", schema:"public", table:"meta"},
         function(){ load("meta"); })
     .subscribe();
@@ -270,7 +282,18 @@ function wire(db){
     var m = {}; snap.docs.forEach(function(doc){ m[doc.id] = doc.data(); });
     S.teams = m; renderAll();
   }, function(e){ dbState(false, e.code); });
-  ["trainer","stones","items","gts"].forEach(function(k){
+  /* The two set tables. Their ids ARE the names - "Charizardite Y",
+     "Focus Sash" - so the map is the answer to "do I own this". */
+  ["stones", "items"].forEach(function(coll){
+    db.collection(coll).onSnapshot(function(snap){
+      var m = {};
+      snap.docs.forEach(function(doc){ m[doc.id] = doc.data() || {}; });
+      S[coll] = m; renderAll();
+    }, function(e){ dbState(false, e.code); });
+  });
+  /* stones and items left this list with migration 6; what remains is the
+     ledger's genuinely single documents. */
+  ["trainer","gts"].forEach(function(k){
     db.doc("meta/" + k).onSnapshot(function(d){
       S.meta[k] = d.exists ? (d.data() || {}) : {};
       renderAll();

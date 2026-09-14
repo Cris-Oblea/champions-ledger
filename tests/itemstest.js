@@ -26,26 +26,29 @@ const ok = (label, got, want) => {
               got + (good ? "" : "   (esperado " + want + ")"));
 };
 
-/* the OLD shape on purpose - [name, [category]] - because that is what is in
-   the ledger right now and it must keep reading */
-const META = [{user_id:UID, id:"items",
-               data:{categories:["power_boost","berry"],
-                     owned:[["Life Orb",["power_boost"]],
-                            ["Sitrus Berry",["berry"]]]},
-               updated_at:"2026-09-10"},
-              {user_id:UID, id:"stones", data:{owned:["Garchompite"]},
-               updated_at:"2026-09-10"}];
+/* A ROW PER OWNED THING since migration 6, not a list inside one document.
+   The old [name, [category]] pairs were converted by that migration, so the
+   two shapes the app used to read are one shape here. */
+const META = [];
+const ITEMS = [{user_id:UID, id:"Life Orb", updated_at:"2026-09-10"},
+               {user_id:UID, id:"Sitrus Berry", updated_at:"2026-09-10"}];
+const STONES = [{user_id:UID, id:"Garchompite", updated_at:"2026-09-10"}];
 
 const body = require("./harness.js").page(ROOT);
 const stub = `<script>
-window.__META=${JSON.stringify(META)}; window.__WROTE=[];
+window.__META=${JSON.stringify(META)}; window.__ITEMS=${JSON.stringify(ITEMS)};
+window.__STONES=${JSON.stringify(STONES)}; window.__WROTE=[]; window.__DELETED=[];
 window.supabase={createClient:function(){return{
  auth:{getSession:function(){return Promise.resolve({data:{session:{user:{id:"u1",email:"t@t"}}}});},
        onAuthStateChange:function(){},signInWithPassword:function(){},signOut:function(){}},
  from:function(t){return{
-   select:function(){return Promise.resolve({data:t==="meta"?window.__META:[],error:null});},
-   upsert:function(r){ window.__WROTE.push(r); return Promise.resolve({error:null}); },
-   delete:function(){return {eq:function(){return Promise.resolve({error:null});}};}
+   select:function(){return Promise.resolve({data:
+     t==="meta"?window.__META:t==="items"?window.__ITEMS:
+     t==="stones"?window.__STONES:[],error:null});},
+   insert:function(r){ window.__WROTE.push({table:t,row:r}); return Promise.resolve({error:null}); },
+   upsert:function(r){ window.__WROTE.push({table:t,row:r}); return Promise.resolve({error:null}); },
+   delete:function(){return {eq:function(col,val){ window.__DELETED.push({table:t,id:val});
+     return Promise.resolve({error:null}); }};}
  };},
  channel:function(){var c={on:function(){return c;},subscribe:function(){return c;}};return c;}
 };}};
@@ -88,7 +91,7 @@ setTimeout(() => {
        all.every(r => (r.querySelector(".rside").textContent || "").trim()
          .length > 1), true);
     const lo = all.find(r => r.textContent.indexOf("Life Orb") === 0);
-    ok("Life Orb sale como owned (formato viejo)",
+    ok("Life Orb sale como owned",
        /owned/.test(lo.querySelector(".rside").textContent), true);
     /* Life Orb is a shop item with a price; Leftovers is not sold at all - you
        start with it - so its slot says that instead of a made-up VP. */
@@ -142,6 +145,7 @@ setTimeout(() => {
     setTimeout(() => {
       const wrote = w.__WROTE[w.__WROTE.length - 1];
       ok("se guarda", !!wrote, true);
+      ok("en la tabla items, no en meta", wrote.table, "items");
       /* the row stays focused after the tap, and an activeElement guard here
          used to swallow the redraw: the item only changed once you left the
          tab. Found by the player. */
@@ -150,17 +154,18 @@ setTimeout(() => {
          /owned/.test(again.querySelector(".rside").textContent), true);
       ok("el contador de la seccion tambien",
          /Hold Items \d+\//.test(heads()[0]), true);
-      ok("y queda dentro",
-         (wrote.data.owned || []).indexOf("Leftovers") >= 0, true);
-      ok("sin perder los que ya estaban",
-         (wrote.data.owned || []).some(x =>
-           (Array.isArray(x) ? x[0] : x) === "Life Orb"), true);
+      ok("la fila es el item mismo", wrote.row.id, "Leftovers");
+      /* THE POINT OF MIGRATION 6. Marking one item writes that item and
+         nothing else, so a device that never saw Life Orb cannot drop it.
+         Before, this wrote the whole owned list from its own copy of it and
+         "sin perder los que ya estaban" was a real risk to assert against. */
+      ok("y no toca ninguna otra fila",
+         JSON.stringify(wrote.row).indexOf("Life Orb") < 0, true);
       click(lo);
       setTimeout(() => {
-        const w2 = w.__WROTE[w.__WROTE.length - 1];
-        ok("desmarcar lo saca",
-           (w2.data.owned || []).every(x =>
-             (Array.isArray(x) ? x[0] : x) !== "Life Orb"), true);
+        const gone = w.__DELETED[w.__DELETED.length - 1];
+        ok("desmarcar borra su fila", gone && gone.id, "Life Orb");
+        ok("de la tabla items", gone && gone.table, "items");
 
         console.log("\n  buscar");
         const inp = d.getElementById("itemSearch");
