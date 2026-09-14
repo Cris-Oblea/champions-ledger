@@ -11,7 +11,7 @@ right answer anywhere nothing else can be served alongside it.
 assets. Same program, cached in four pieces that change at different rates, so a
 nightly dex refresh costs 347 KB instead of 1,314. See split_assets().
 """
-import hashlib, json, os, sys
+import hashlib, json, os, re, sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TPL = os.path.join(ROOT, "tracker", "index.template.html")
@@ -76,7 +76,56 @@ def assemble(tpl):
     print("  app: %d parts, %d lines" % (len(parts), app.count(chr(10))))
     tpl = tpl.replace(SMARK, css.rstrip(chr(10)))
     tpl = tpl.replace(KMARK, markup.rstrip(chr(10)))
-    return tpl.replace(AMARK, app.rstrip(chr(10)))
+    return tpl.replace(AMARK, scope(app))
+
+
+# THE APP'S PUBLIC SURFACE - the 25 names that leave the closure.
+#
+# Until now every top-level name in 6,403 lines was a global by accident:
+# thirteen parts concatenated into one script, so `byName` and `go` and `S` sat
+# on `window` beside anything else that happened to be there, and nothing
+# recorded which of them were meant to be reachable. `check_app.js` existed to
+# catch the collisions that arrangement invites.
+#
+# Wrapping the parts in one closure makes that deliberate. This list is the
+# surface, and it is derived from a real consumer rather than guessed: it is
+# exactly what the seventeen browser tests reach for through `window`. The
+# markup needs none of it - it has no inline handlers at all, only an
+# aria-controls attribute, checked.
+#
+# The parts still share scope WITH EACH OTHER. That is the next increment, when
+# each becomes a module that says what it exports; this one stops the page
+# leaking into the tab it is rendered in, and gives the later work a list of
+# what may not break.
+# CHAMP and SMOGON are NOT here: the tests read them, but the dex and the engine
+# put them on window themselves, from their own scripts. The app only consumes
+# them, so closing the app over its names never touched them.
+PUBLIC = [
+    "AB_SET", "CALC", "DEX", "MOVE_BY", "S", "TYPE_COLOR",
+    "abilityTag", "buildLink", "buildSheet", "buildsPane", "byName",
+    "closeSheet", "engineCalc", "findDetail", "go", "gtsPickMine", "learnset",
+    "megasFor", "moveRowFor", "pokeSheet", "teamReport", "teamSheet",
+    "teamTypes",
+]
+
+
+def scope(app):
+    """Close the app over its own names and publish only PUBLIC.
+
+    A name in the list that no part declares would be a ReferenceError the
+    moment the page loads - the whole app, not one feature - so it is checked
+    here instead. The build failing is the cheap version of that.
+    """
+    missing = [n for n in PUBLIC
+               if not re.search(r"\b(?:function|var|let|const)\s+%s\b" % n, app)]
+    if missing:
+        sys.exit("PUBLIC names that nothing declares: %s" % ", ".join(missing))
+    out = "(function () {" + chr(10) + app.rstrip(chr(10)) + chr(10)
+    out += chr(10) + "/* the declared surface - everything else is private now */"
+    out += chr(10) + "Object.assign(window, {" + chr(10)
+    out += "".join("  %s: %s," % (n, n) + chr(10) for n in PUBLIC)
+    out += "});" + chr(10) + "})();"
+    return out
 
 
 def config_js():
