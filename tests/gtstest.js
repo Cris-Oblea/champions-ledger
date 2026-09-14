@@ -11,18 +11,25 @@ const ROWS = [
   {user_id:UID,id:"chesnaught",name:"Chesnaught",location:"home",status:"permanent",origin:"home",note:"",ord:0,updated_at:"2026-09-09"},
   {user_id:UID,id:"sableye",name:"Sableye",location:"home",status:"permanent",origin:"home",note:"",ord:1,updated_at:"2026-09-09"}
 ];
-const META = [{user_id:UID,id:"gts",data:{open_offers:[
-  {offered:"Chesnaught",requested:"Golisopod",deposited:"2026-09-08",status:"PENDING",note:""}
-]},updated_at:"2026-09-09"}];
+const META = [];
+/* A row per trade since migration 7. The offer is open because `closed` is
+   null, and closing it is an UPDATE of this same row - not a delete from one
+   array and a differently-shaped push onto another. */
+const GTS = [{user_id:UID,id:"chesnaught",offered:"Chesnaught",
+  requested:"Golisopod",offered_id:"chesnaught",deposited:"2026-09-08",
+  deposited_at:"2026-09-08T10:00:00Z",closed:null,closed_at:null,note:"",
+  data:{},updated_at:"2026-09-09"}];
 const body = require("./harness.js").page(ROOT);
 const stub = `<script>
 window.__ROWS=${JSON.stringify(ROWS)}; window.__META=${JSON.stringify(META)};
+window.__GTS=${JSON.stringify(GTS)};
 window.__WRITES=[]; window.__DELETES=[];
 window.supabase={createClient:function(){return{
  auth:{getSession:function(){return Promise.resolve({data:{session:{user:{id:"u1",email:"t@t"}}}});},
        onAuthStateChange:function(){},signInWithPassword:function(){},signOut:function(){}},
  from:function(t){return{
-   select:function(){return Promise.resolve({data:t==="box"?window.__ROWS:(t==="meta"?window.__META:[]),error:null});},
+   select:function(){return Promise.resolve({data:t==="box"?window.__ROWS:
+     (t==="meta"?window.__META:(t==="gts"?window.__GTS:[])),error:null});},
    upsert:function(row){window.__WRITES.push([t,row]);return Promise.resolve({error:null});},
    delete:function(){return {eq:function(k,v){window.__DELETES.push([t,v]);return Promise.resolve({error:null});}};}
  };},
@@ -36,7 +43,7 @@ const dom = new JSDOM(body.replace("<head>","<head>"+stub),
 const w = dom.window, d = w.document;
 setTimeout(()=>{
   console.log("  en HOME antes:", Object.keys(w.S.box).join(", "));
-  console.log("  ofertas GTS  :", (w.S.meta.gts.open_offers||[]).length);
+  console.log("  ofertas GTS  :", Object.keys(w.S.gts).length);
   w.go("home");
   const row = d.querySelectorAll("#listGts .row")[0];
   row.dispatchEvent(new w.MouseEvent("click",{bubbles:true}));
@@ -52,8 +59,11 @@ setTimeout(()=>{
       w.__DELETES.forEach(x=>console.log("    ", x[0], x[1]));
       const added = w.__WRITES.some(x=>x[0]==="box" && x[1].name==="Golisopod");
       const removed = w.__DELETES.some(x=>x[0]==="box" && x[1]==="chesnaught");
-      const offerCleared = w.__WRITES.some(x=>x[0]==="meta" && x[1].id==="gts" &&
-        (x[1].data.open_offers||[]).length===0);
+      /* The trade CLOSES on its own row now: the same id comes back with a
+         `closed` date on it, so the offer leaves the open list by becoming
+         history rather than by being deleted from an array. */
+      const offerCleared = w.__WRITES.some(x=>x[0]==="gts" &&
+        x[1].id==="chesnaught" && !!x[1].closed);
       console.log("\n  Golisopod agregado :", added ? "SI" : "NO");
       console.log("  Chesnaught borrado :", removed ? "SI" : "NO  <-- EL BUG");
       console.log("  oferta cerrada     :", offerCleared ? "SI" : "NO");

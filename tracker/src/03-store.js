@@ -79,6 +79,17 @@ function docFromRow(coll, row){
      else to carry. The date is kept because the app shows it. */
   if (coll === "stones" || coll === "items")
     return {updated:(row.updated_at || "").slice(0, 10)};
+  /* One trade, one row, from the deposit to the close - `closed` is the only
+     thing that separates an open offer from a piece of history. The columns
+     are what the app reads by name; `data` is what the trade MEASURED, spread
+     back out so the reader does not have to know which is which. */
+  if (coll === "gts") return Object.assign({
+    offered:row.offered, requested:row.requested,
+    offeredId:row.offered_id || null,
+    deposited:row.deposited || null, depositedAt:row.deposited_at || null,
+    closed:row.closed || null, closedAt:row.closed_at || null,
+    note:row.note || "", status:row.closed ? "TRADED" : "PENDING"},
+    row.data || {});
   if (coll === "box") return {name:row.name, location:row.location,
     status:row.status, origin:row.origin, note:row.note || "",
     shiny:!!row.shiny, trained:!!row.trained,
@@ -94,6 +105,25 @@ function docFromRow(coll, row){
 }
 function rowFromDoc(coll, id, uid, d){
   if (coll === "stones" || coll === "items") return {user_id:uid, id:id};
+  if (coll === "gts") {
+    /* everything that is not a column is a measurement, and goes to
+       `data` - so a field added to a closed trade tomorrow needs no
+       migration, and no field is silently dropped on the way in. */
+    var COLS = {offered:1, requested:1, offeredId:1, deposited:1,
+                depositedAt:1, closed:1, closedAt:1, note:1,
+                status:1, updated:1};
+    var extra = {};
+    Object.keys(d).forEach(function(k){
+      if (!COLS[k] && d[k] !== undefined) extra[k] = d[k];
+    });
+    return {user_id:uid, id:id,
+            offered:d.offered || "", requested:d.requested || "",
+            offered_id:d.offeredId || null,
+            deposited:d.deposited || null,
+            deposited_at:d.depositedAt || null,
+            closed:d.closed || null, closed_at:d.closedAt || null,
+            note:d.note || "", data:extra};
+  }
   if (coll === "meta") {
     var body = {}; Object.keys(d).forEach(function(k){
       if (k !== "updated") body[k] = d[k]; });
@@ -142,7 +172,7 @@ function supabaseStore(sb, uid){
   /* stones and items are tables of their own since migration 6 - a row
      per owned thing, so two devices toggling different ones cannot
      overwrite each other. They load exactly like the rest. */
-  var COLLS = ["box", "builds", "teams", "stones", "items", "meta"];
+  var COLLS = ["box", "builds", "teams", "stones", "items", "gts", "meta"];
   COLLS.forEach(function(coll){
     load(coll).catch(function(e){
       console.error("[ledger] load " + coll, e);
@@ -166,6 +196,8 @@ function supabaseStore(sb, uid){
         function(){ load("stones"); })
     .on("postgres_changes", {event:"*", schema:"public", table:"items"},
         function(){ load("items"); })
+    .on("postgres_changes", {event:"*", schema:"public", table:"gts"},
+        function(){ load("gts"); })
     .on("postgres_changes", {event:"*", schema:"public", table:"meta"},
         function(){ load("meta"); })
     .subscribe();
@@ -284,16 +316,16 @@ function wire(db){
   }, function(e){ dbState(false, e.code); });
   /* The two set tables. Their ids ARE the names - "Charizardite Y",
      "Focus Sash" - so the map is the answer to "do I own this". */
-  ["stones", "items"].forEach(function(coll){
+  ["stones", "items", "gts"].forEach(function(coll){
     db.collection(coll).onSnapshot(function(snap){
       var m = {};
       snap.docs.forEach(function(doc){ m[doc.id] = doc.data() || {}; });
       S[coll] = m; renderAll();
     }, function(e){ dbState(false, e.code); });
   });
-  /* stones and items left this list with migration 6; what remains is the
-     ledger's genuinely single documents. */
-  ["trainer","gts"].forEach(function(k){
+  /* stones and items left this list with migration 6, the GTS with 7. What
+     remains is the one document that really is a document. */
+  ["trainer"].forEach(function(k){
     db.doc("meta/" + k).onSnapshot(function(d){
       S.meta[k] = d.exists ? (d.data() || {}) : {};
       renderAll();

@@ -19,9 +19,10 @@
  * for, ledgertest.js asserts the branch ran and says so - a fixture that has
  * quietly stopped covering anything is worse than none.
  *
- * The tables are the real ones: box, builds, teams, stones, items and meta.
- * stones and items became tables of their own in migration 6 - a row per owned
- * thing - and meta is down to the documents that really are one document.
+ * The tables are the real ones: box, builds, teams, stones, items, gts and
+ * meta. stones and items became tables of their own in migration 6 and the GTS
+ * in 7 - a row per owned thing, a row per trade - so meta is down to the one
+ * document that really is a document.
  */
 const fs = require("fs");
 const path = require("path");
@@ -128,28 +129,39 @@ function named(id) {
 
 const meta = [
   { user_id: UID, id: "trainer", data: { box_capacity: 50 } },
+];
+
+/* A ROW PER TRADE since migration 7, open and closed alike - `closed` is the
+   only thing that tells them apart. FULL on purpose: GTS_SLOTS is 3, and three
+   open offers is what makes the panel draw its "all slots are in use" warning,
+   the exact line that threw in production. The closed one carries the
+   measurements, because the History fold computes its summary over them and an
+   empty `data` would skip that too. */
+const gts = [
+  offer("garchomp", "Garchomp", "Incineroar", "2026-09-10"),
+  offer("sneasler", "Sneasler", "Whimsicott", "2026-09-11", { note: "shiny wanted" }),
+  offer("charizard", "Charizard", "Basculegion", "2026-09-12"),
   {
-    /* FULL. GTS_SLOTS is 3, and three open offers is what makes the panel draw
-       its "all slots are in use" warning - the exact line that threw. */
-    user_id: UID, id: "gts",
-    data: {
-      open_offers: [
-        { offered: "Garchomp", requested: "Incineroar", deposited: "2026-09-10",
-          status: "PENDING", note: "" },
-        { offered: "Sneasler", requested: "Whimsicott", deposited: "2026-09-11",
-          status: "PENDING", note: "shiny wanted" },
-        { offered: "Charizard", requested: "Basculegion", deposited: "2026-09-12",
-          status: "PENDING", note: "" },
-      ],
-      history: [
-        { offered: "Eelektross", requested: "Dragonite", deposited: "2026-08-30",
-          closed: "2026-09-01", status: "TRADED", note: "" },
-      ],
-    },
+    user_id: UID, id: "eelektross", offered: "Eelektross",
+    requested: "Dragonite", offered_id: null,
+    deposited: "2026-08-30", deposited_at: "2026-08-30T10:00:00Z",
+    closed: "2026-09-01", closed_at: "2026-09-01T12:00:00Z", note: "",
+    data: { gaveBst: 515, gaveValue: 615, gotBst: 600, gaveShiny: false,
+            days: 2, tookMs: 180000000, rankAtDeposit: 40 },
+    updated_at: DAY + "T00:00:00Z",
   },
 ];
 
-const ROWS = { box, builds, teams, stones, items, meta };
+function offer(id, offered, requested, deposited, extra) {
+  return Object.assign({
+    user_id: UID, id, offered, requested, offered_id: null,
+    deposited, deposited_at: deposited + "T09:00:00Z",
+    closed: null, closed_at: null, note: "", data: {},
+    updated_at: DAY + "T00:00:00Z",
+  }, extra || {});
+}
+
+const ROWS = { box, builds, teams, stones, items, gts, meta };
 
 /* The stub. It is the same shape supabase-js presents to 03-store.js and
    nothing more: a session, a select per table, and a channel that never

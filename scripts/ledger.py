@@ -74,7 +74,7 @@ def _from_db():
     except ImportError:
         return None
     out = {}
-    for t in ("box", "builds", "teams", "stones", "items", "meta"):
+    for t in ("box", "builds", "teams", "stones", "items", "gts", "meta"):
         r = backup_ledger.rows(t)
         if r is None:
             return None
