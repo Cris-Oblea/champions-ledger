@@ -15,10 +15,12 @@ tracker/data.js so the phone sees the same numbers as the CLI.
 --regulation is not a nicety.  fetch_serebii skips any page already cached and
 fetch_pokebase re-parses cached HTML unless forced, so a plain run picks up new
 Pokedex pages while silently keeping every stale attackdex page - and the
-attackdex is where forms and learnsets come from.  This flag clears those two
-caches first, which is the documented recipe in analysis/regulation_m_c.md.
+attackdex is where forms and learnsets come from.  This flag re-fetches every
+Serebii page ON TOP of the cache and reports which ones came back different,
+which is the patch note for that regulation.  It is not usually typed: the
+run asks the sources which regulation is live and turns it on by itself.
 """
-import argparse, os, shutil, subprocess, sys, time
+import argparse, os, subprocess, sys, time
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RAW = os.path.join(ROOT, "data", "raw")
@@ -43,7 +45,24 @@ def stages(reg, deep=False):
       --regulation - the destructive one: clears the Serebii page caches,
                    which is the only way new species get movepools.
     """
-    serebii = ["scripts/fetch_serebii.py", "all"]
+    # A REGULATION IS A PATCH, NOT A REBUILD. This used to DELETE the three
+    # Serebii caches and download all 1,148 pages into the hole. Two things
+    # were wrong with that: a failure halfway through left the database with no
+    # movepools and nothing to fall back on (proved by accident on 2026-09-14,
+    # testing the detector), and throwing the old bytes away threw away the
+    # only way to say WHAT the regulation changed.
+    #
+    # --force re-fetches every page ON TOP of the cache instead, compares each
+    # one with what was there, and prints the list that came back different.
+    # The request count is the same - Serebii sends no Last-Modified and no
+    # ETag, tested, so a conditional request gets the whole body anyway and
+    # there is no lighter way to ask - but nothing is destroyed and the run
+    # ends with a patch note.
+    #
+    # It is also cheaper than it looks: the attackdex is indexed by MOVE, not
+    # by species, so "Slash was added to 29 Pokemon" is one page that changed,
+    # not 29.
+    serebii = ["scripts/fetch_serebii.py", "all"] + (["--force"] if reg else [])
     # ALWAYS --force. fetch_pokebase skips any page already on disk over 5 KB,
     # so without it a daily run re-parses yesterday's HTML and the ladder never
     # moves. Caught 2026-09-11: the M-C ladder had been live for two days and a
@@ -124,15 +143,6 @@ def stages(reg, deep=False):
               ["scripts/build_tracker_page.py"]),
     ]
 
-def clear_regulation_caches():
-    """Serebii's cache is a trap on a new regulation - see the module docstring."""
-    for sub in ("pages", "pokedex", "attackdex"):
-        p = os.path.join(RAW, sub)
-        if os.path.isdir(p):
-            n = len(os.listdir(p))
-            shutil.rmtree(p)
-            print("  cleared data/raw/%s (%d files)" % (sub, n))
-    os.makedirs(os.path.join(RAW, "pages"), exist_ok=True)
 
 def run(st):
     print("\n=== %s" % st.label)
@@ -212,8 +222,8 @@ def main():
             print("NOTE: could not tell which regulation is live (%s)." % why)
 
     if a.regulation:
-        print("=== new regulation: clearing the Serebii page cache")
-        clear_regulation_caches()
+        print("=== new regulation: re-fetching every Serebii page in place",
+              flush=True)
 
     todo = [s for s in stages(a.regulation, a.deep) if s.key not in a.skip]
     failed, hard = [], False

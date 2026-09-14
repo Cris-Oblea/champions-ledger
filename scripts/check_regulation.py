@@ -59,15 +59,25 @@ def live_slug(html):
     sometimes backslash-escaped inside a JSON string - so the pattern allows
     either rather than assuming one.
     """
-    m = re.search(r'defaultLatestRegulationSetSlug\\?"\s*:\s*\\?"([a-z\-]+)',
+    m = re.search(r'defaultLatestRegulationSetSlug\\?"\s*:\s*\\?"([^"\\]{1,24})',
                   html)
-    return m.group(1) if m else None
+    return m.group(1).strip().lower() if m else None
 
 
 def serebii_regulations(html):
-    """Every regulation Serebii's Ranked Battle page names, lower-cased."""
-    return set(m.lower().replace(" ", "-")
-               for m in re.findall(r"Regulation ([A-Z]-[A-Z])", html))
+    """Every regulation Serebii's Ranked Battle page names, lower-cased.
+
+    DELIBERATELY NOT "M-x". Champions is on its M series today and nothing says
+    the next one is M-D rather than N-A, "Regulation 2" or something with no
+    hyphen at all - the letters are Game Freak's to choose, and an automation
+    that only recognises one shape stops working silently the day they change
+    it. This takes a short token of letters, digits and hyphens after the word,
+    and normalises it the way the pokebase slug is written.
+    """
+    return set(m.strip().lower().replace(" ", "-")
+               for m in re.findall(
+                   r"Regulation\s+([A-Za-z0-9]{1,8}(?:-[A-Za-z0-9]{1,8})?)",
+                   html))
 
 
 def recorded():
@@ -110,9 +120,17 @@ def look():
         known = serebii_regulations(get(SEREBII))
     except Exception as e:
         return "waiting", live, ours, ("serebii: %s" % e)
+    # FAIL TOWARDS ACTING. If Serebii names no regulation at all - the page
+    # changed shape, or they write it some way this does not recognise - that
+    # is not evidence the regulation is missing, and treating it as "wait"
+    # would disable the automation silently, which is the failure this whole
+    # mechanism exists to prevent. The cost of being wrong the other way is one
+    # unnecessary sweep.
+    if not known:
+        return "ready", live, ours, \
+               "Serebii names no regulation this recognises - acting anyway"
     return ("ready" if live in known else "waiting"), live, ours, \
-           ("Serebii lists " + ", ".join(sorted(known)) if known else
-            "Serebii names no regulation")
+           "Serebii lists " + ", ".join(sorted(known))
 
 
 def main():

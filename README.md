@@ -128,10 +128,11 @@ error. Anything quoted here says which one it came from.
        regulation is current as a value in its own page data; the refresh asks
        for it before fetching anything, compares it with
        data/db/regulation.json - what the database was BUILT for - and if they
-       differ it runs the regulation recipe instead of a plain refresh,
-       clearing the Serebii caches that would otherwise leave every new
-       species without a movepool. It asks Serebii too, and waits if Serebii
-       has not published the regulation yet. The pull request that night says
+       differ it runs the regulation recipe instead of a plain refresh:
+       every Serebii page is re-fetched ON TOP of the cache and the run ends
+       with the list of pages that came back different - the patch note for
+       that regulation. It asks Serebii too, and waits if Serebii has not
+       published it yet. The pull request that night says
        REGULATION in its title.
 ```
 
