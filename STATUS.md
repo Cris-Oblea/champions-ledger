@@ -117,9 +117,16 @@ for, beside the data it describes, committed by the same run.
 
 - both agree and match ours -> an ordinary refresh
 - a new one, and Serebii has published it -> the recipe runs by itself, and
-  the record is written only AFTER the rebuild passes
-- a new one, Serebii has not caught up -> it says so and waits, because
-  clearing the cache then would re-download hundreds of pages for the same data
+  the record is written only AFTER the rebuild passes. The recipe re-fetches
+  every page in place rather than deleting the cache first, so a failure
+  halfway leaves yesterday's pages standing and the run can say WHICH pages
+  changed. Serebii sends no Last-Modified and no ETag - tested - so there is
+  no lighter way to ask; what makes it cheap is that the attackdex is indexed
+  by MOVE, so "Slash added to 29 Pokemon" is one page, not 29.
+- a new one, Serebii has not caught up -> it says so and waits. If Serebii
+  names no regulation this recognises at all, it acts anyway: that is not
+  evidence of absence, and a silent no-op is the failure being prevented.
+  Nothing assumes the "M-x" shape - the next series may be N-A, or a number.
 
 The night it fires, the pull request is titled `REGULATION M-x - daily refresh`.
 The gate is what makes this safe to automate at all: a bad rebuild fails the

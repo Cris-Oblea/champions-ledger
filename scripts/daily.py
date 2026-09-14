@@ -140,17 +140,39 @@ BROWSER_TESTS = [
 # stopped matching, or a source that answered with an error page, lands far
 # outside it. Checked against what is COMMITTED, which is by definition the
 # last state that passed all of this.
+# (file, what it counts, floor, how to count)
+#
+# "rows" is how many entries the file has. "inside" is how many things are
+# inside those entries, and learnsets needs it: the file has one entry per
+# Pokemon, so counting rows says 264 whether every Pokemon knows thirty moves
+# or none. A regulation that quietly stripped movepools - exactly the kind of
+# change a patch is allowed to make - would not have moved that number by one.
+#
+# The floors are deliberately not 100%. Real removals happen: M-C took Metal
+# Burst and Mirror Coat off Archaludon, two entries out of some thirty
+# thousand, and a guard that blocked on that would be a guard nobody could
+# leave switched on. 2% of the whole is far more than any legitimate patch has
+# ever removed and far less than a broken fetch.
 SHRINK = [
-    ("data/db/pokemon.json",      "forms",     0.98),
-    ("data/db/moves.json",        "moves",     0.98),
-    ("data/db/items.json",        "items",     0.95),
-    ("data/db/abilities.json",    "abilities", 0.98),
-    ("data/db/learnsets.json",    "learnsets", 0.98),
-    ("data/meta/usage_pokemon.json", "ladder rows", 0.80),
+    ("data/db/pokemon.json",      "forms",     0.98, "rows"),
+    ("data/db/moves.json",        "moves",     0.98, "rows"),
+    ("data/db/items.json",        "items",     0.95, "rows"),
+    ("data/db/abilities.json",    "abilities", 0.98, "rows"),
+    ("data/db/learnsets.json",    "learnsets", 0.98, "rows"),
+    ("data/db/learnsets.json",    "moves across every learnset", 0.98, "inside"),
+    ("data/meta/usage_pokemon.json", "ladder rows", 0.80, "rows"),
 ]
 
 
-def _count(blob):
+def _count(blob, how="rows"):
+    if how == "inside":
+        rows = blob.get("learnsets", blob) if isinstance(blob, dict) else blob
+        if isinstance(rows, dict):
+            return sum(len(v) for v in rows.values()
+                       if isinstance(v, (list, dict)))
+        if isinstance(rows, list):
+            return sum(len(v) for v in rows if isinstance(v, (list, dict)))
+        return 0
     if isinstance(blob, list):
         return len(blob)
     if isinstance(blob, dict):
@@ -164,13 +186,13 @@ def _count(blob):
 def shrink_check():
     """Report any table that came back smaller than the committed one."""
     bad = []
-    for rel, label, floor in SHRINK:
+    for rel, label, floor, how in SHRINK:
         path = os.path.join(ROOT, rel)
         if not os.path.exists(path):
             bad.append("BLOCKED: %s is missing entirely" % rel)
             continue
         try:
-            now = _count(json.load(io.open(path, encoding="utf-8")))
+            now = _count(json.load(io.open(path, encoding="utf-8")), how)
         except Exception as e:
             bad.append("BLOCKED: %s will not parse (%s)" % (rel, e))
             continue
@@ -178,7 +200,7 @@ def shrink_check():
         if r != 0 or not prev.strip():
             continue                      # not committed yet: nothing to compare
         try:
-            was = _count(json.loads(prev))
+            was = _count(json.loads(prev), how)
         except Exception:
             continue
         if not was:
