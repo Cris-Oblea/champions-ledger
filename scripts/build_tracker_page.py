@@ -359,10 +359,16 @@ def build_dist(html):
     os.makedirs(DIST)
 
     page, assets = split_assets(standalone(html))
+    # newline="" on every one of these. Without it Python translates each
+    # line ending on Windows, so the file written at app.<hash>.js does not
+    # hash to <hash> - locally only, because CI is Linux. A name that is a
+    # promise about the bytes has to be kept on both.
     for name, text in sorted(assets.items()):
-        open(os.path.join(DIST, name), "w", encoding="utf-8").write(text)
+        open(os.path.join(DIST, name), "w", encoding="utf-8",
+             newline="").write(text)
         print("  asset %-30s %6.0f KB" % (name, len(text) / 1024))
-    open(os.path.join(DIST, "index.html"), "w", encoding="utf-8").write(page)
+    open(os.path.join(DIST, "index.html"), "w", encoding="utf-8",
+         newline="").write(page)
 
     manifest = {
         "name": "Champions Ledger",
