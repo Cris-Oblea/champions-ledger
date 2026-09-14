@@ -99,6 +99,32 @@ unmatched either way.
 
 ---
 
+## Regulations are detected now, not remembered (2026-09-14)
+
+`fetch_serebii.py` skips any page already cached and the attackdex is where
+LEARNSETS come from, so a plain nightly run on the day a regulation drops picks
+up the new Pokedex pages and silently keeps every stale attackdex one - the new
+species arrive with no movepool. The recipe that avoids it,
+`refresh.py --regulation`, existed; knowing to type it was a human's job, which
+made "the database is always current" true on every day except the one that
+mattered.
+
+`scripts/check_regulation.py` asks two sources instead. pokebase ships
+`defaultLatestRegulationSetSlug` as a value in its page data - the same field
+M-C was confirmed with - and Serebii's Ranked Battle page lists the regulations
+it knows about. `data/db/regulation.json` records what the database was built
+for, beside the data it describes, committed by the same run.
+
+- both agree and match ours -> an ordinary refresh
+- a new one, and Serebii has published it -> the recipe runs by itself, and
+  the record is written only AFTER the rebuild passes
+- a new one, Serebii has not caught up -> it says so and waits, because
+  clearing the cache then would re-download hundreds of pages for the same data
+
+The night it fires, the pull request is titled `REGULATION M-x - daily refresh`.
+The gate is what makes this safe to automate at all: a bad rebuild fails the
+shrink guard or the audits, the PR stays open, and nothing reaches the phone.
+
 ## Regulation M-C — what landed (2026-09-09)
 
 The three sources did **not** update together, and that shaped the whole job:

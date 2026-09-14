@@ -155,6 +155,8 @@ def main():
                     help="also re-download Smogon's analyses and Pikalytics, "
                          "which otherwise serve from cache for ever")
     ap.add_argument("--skip", nargs="*", default=[], metavar="STAGE")
+    ap.add_argument("--no-regulation-check", action="store_true",
+                    help="do not ask the sources which regulation is live")
     a = ap.parse_args()
 
     if a.tracker_only:
@@ -167,6 +169,47 @@ def main():
         ok = run(Stage("page", "rebuild tracker/index.html",
                        ["scripts/build_tracker_page.py"])) and ok
         sys.exit(0 if ok else 1)
+
+    # ASK WHETHER THE REGULATION MOVED, before anything is fetched.
+    #
+    # This is the one event that can quietly wreck the database, because
+    # fetch_serebii skips any page already cached and the attackdex is where
+    # learnsets come from - so a plain run picks up the new Pokedex pages and
+    # keeps every stale attackdex one, leaving the new species with no
+    # movepool. The recipe that avoids it is --regulation, and until now a
+    # person had to know to type it, which made "the database is always
+    # current" true on every day except the one that mattered.
+    #
+    # It is asked FIRST because the answer decides how the Serebii stage runs,
+    # and it costs two requests. It fails open: if the sources cannot be
+    # reached, the refresh goes ahead as an ordinary one.
+    record_after = False
+    if not a.regulation and not a.no_regulation_check:
+        sys.path.insert(0, os.path.join(ROOT, "scripts"))
+        try:
+            import check_regulation
+            status, live, ours, why = check_regulation.look()
+        except Exception as e:                       # never block a refresh
+            status, live, ours, why = "unknown", None, None, str(e)
+        if status == "ready":
+            print("=" * 60)
+            print("NEW REGULATION: %s is live, the database is built for %s."
+                  % (live.upper(), (ours or "nothing").upper()), flush=True)
+            print("%s - running the regulation recipe rather than a plain "
+                  "refresh." % why)
+            print("=" * 60)
+            a.regulation = True
+            record_after = True
+        elif status == "waiting":
+            # pokebase has flipped and Serebii has not published yet. Clearing
+            # its cache now would re-download several hundred pages to get the
+            # same data back, so this says so and refreshes normally; tomorrow
+            # it asks again.
+            print("NOTE: %s is live but Serebii has not published it yet (%s)."
+                  % ((live or "?").upper(), why), flush=True)
+            print("      refreshing normally; the recipe waits for Serebii.")
+        elif status == "unknown":
+            print("NOTE: could not tell which regulation is live (%s)." % why)
 
     if a.regulation:
         print("=== new regulation: clearing the Serebii page cache")
@@ -186,6 +229,16 @@ def main():
     print("%d/%d stages ok" % (len(todo) - len(failed), len(todo)))
     if failed:
         print("failed: %s" % ", ".join(failed))
+    # Only once the rebuild actually worked. Recording the new regulation on a
+    # run that failed would tell tomorrow's run there is nothing to do, which
+    # is the one way this could make things worse rather than better.
+    if record_after and not hard and not failed:
+        import check_regulation
+        got = check_regulation.look()
+        if got[1]:
+            check_regulation.record(got[1], got[3])
+            print("\nrecorded: the database is now built for %s"
+                  % got[1].upper())
     if not hard:
         print("\ntracker/data.js is current. Ask Claude to republish the tracker")
         print("so the phone picks up the new dex, moves and stones.")
