@@ -411,8 +411,12 @@ items/{name}  a row per item owned, same shape and same reason.
                anywhere said a write was lost. A row per owned thing makes the
                two writes independent, and the primary key means owning
                something twice is not a state the database can be in.
-               The old documents are still there, untouched, so rolling back
-               is dropping two tables.
+               The old documents were kept untouched through migrations 6
+               and 7 so that a rollback was dropping a table, and DELETED by
+               migration 8 once nothing read them - a frozen second copy of
+               the truth is what this repo has been bitten by before. They are
+               in every snapshot taken before that, which is what a backup is
+               for.
 gts/{id}      {offered, requested, offered_id, deposited, deposited_at,
                closed, closed_at, note, data:{gaveBst, gaveValue, gotBst,
                gaveShiny, days, tookMs, rankAtDeposit}}

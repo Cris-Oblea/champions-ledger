@@ -57,7 +57,13 @@ on:
   schedule:
     # 07:00 UTC ~= 04:00 in Chile, an hour and a half before the refresh, so a
     # snapshot of the last good state exists before anything else runs.
-    - cron: "0 7 * * *"
+    # Not on the hour: :00 is the most contended minute on the scheduler, and
+    # this job measured 6h30 late there. Two attempts, because a snapshot is a
+    # minute of work and writes NO new file when the ledger has not moved - so
+    # a second run on a day the first already covered costs nothing and needs
+    # no guard, unlike the refresh.
+    - cron: "23 6 * * *"      # 06:23 UTC ~= 03:23 in Chile
+    - cron: "23 12 * * *"
   workflow_dispatch:
 
 jobs:

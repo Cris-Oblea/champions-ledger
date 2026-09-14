@@ -22,9 +22,29 @@
 
 name: daily refresh
 
+# THREE ATTEMPTS, NOT ONE, AND NOT ON THE HALF HOUR.
+#
+# GitHub delays scheduled workflows on shared runners when the queue is busy,
+# and drops them outright when it is very busy. Measured here rather than
+# assumed - one cron at 08:30 UTC fired at 12:16, at 13:24 and at 15:10 on
+# three consecutive days, four to seven hours late every time. The backup job,
+# on 07:00, was 6h30 late the same week. Both were on the two busiest minutes
+# there are: everybody's cron says :00 or :30.
+#
+# So: an odd minute, and three chances instead of one. Whichever attempt
+# GitHub actually honours first does the run; the ones after it see that the
+# day's refresh already succeeded and stop in seconds. That is the guard in
+# "has today already run?" below, and it reads the workflow's own history, so
+# there is no state file to go stale.
+#
+# What this does NOT do is make the job punctual. Nothing here can - the only
+# way to be sure of the hour is to trigger from outside GitHub. This makes it
+# reliably ONCE A DAY, closer to the morning, which is what the job is for.
 on:
   schedule:
-    - cron: "30 8 * * *"      # 08:30 UTC ~= 05:30 in Chile (UTC-3)
+    - cron: "7 8 * * *"       # 08:07 UTC ~= 05:07 in Chile (UTC-3)
+    - cron: "7 11 * * *"      # and two fallbacks, in case the first is
+    - cron: "7 14 * * *"      # delayed past usefulness or dropped
   workflow_dispatch:
     inputs:
       deep:
@@ -125,7 +145,36 @@ jobs:
       # Hence no Cloudflare credentials in this step any more. The Supabase pair
       # stays: it is baked into the page at build time, and the page is built
       # here, for the gate to have something to check.
+      # Only the first attempt of the day does the work. It asks the workflow's
+      # own run history rather than keeping a file: a state file in a fresh
+      # checkout is either not there or not trustworthy, and this question -
+      # "did a run of this workflow already succeed today?" - is one the API
+      # answers exactly. The run doing the asking is `in_progress`, so it never
+      # matches itself.
+      #
+      # It fails OPEN: if the query errors, the refresh goes ahead. A missed
+      # refresh is worse than a duplicated one, and a duplicate costs nothing
+      # but ten minutes on a public runner.
+      - name: has today already run?
+        id: already
+        if: github.event_name == 'schedule'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          today=$(date -u +%Y-%m-%d)
+          done=$(gh run list --workflow "daily refresh" --limit 20 \
+                   --json createdAt,conclusion \
+                   --jq "[.[] | select(.conclusion==\"success\" and (.createdAt | startswith(\"$today\")))] | length" \
+                 2>/dev/null || echo 0)
+          if [ "${done:-0}" -gt 0 ]; then
+            echo "skip=yes" >> "$GITHUB_OUTPUT"
+            echo "A refresh already succeeded today ($done). Stopping here."
+          else
+            echo "skip=no" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: refresh and verify
+        if: steps.already.outputs.skip != 'yes' 
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_PUBLISHABLE_KEY: ${{ secrets.SUPABASE_PUBLISHABLE_KEY }}

@@ -1,0 +1,27 @@
+-- 8. Drop the three documents the tables replaced.
+--
+-- Migrations 6 and 7 deliberately LEFT the old meta documents in place, so
+-- that rolling either one back was dropping a table and nothing else. Nothing
+-- has read them since: the app reads the stones, the items and the GTS from
+-- their own tables, and so do ledger.py and the backup.
+--
+-- They are deleted now because a frozen copy of the truth is not free. This
+-- project has been bitten by exactly that shape before - the box count in
+-- STATUS.md that said 48/50 while the ledger said 39, the inventory/ files
+-- that drifted in both directions at once - and the rule that came out of it
+-- is that there is ONE place a fact lives. Left alone, meta/stones would have
+-- stayed at the eighteen stones owned on 2026-09-14 for ever, and the next
+-- person to read the database would have had to know which of the two to
+-- believe.
+--
+-- They are not lost. Every snapshot taken before this migration carries them -
+-- the off-site one of 2026-09-14 17:38 included - and `backup_ledger.py
+-- --restore` puts a table back. That is what a backup is for; keeping a second
+-- live copy "just in case" is a different thing, and a worse one.
+--
+-- meta keeps `trainer`, which really is one document: one editable field, the
+-- box capacity.
+--
+-- Safe to re-run: a second run finds nothing to delete.
+
+delete from public.meta where id in ('stones', 'items', 'gts');

@@ -109,11 +109,19 @@ error. Anything quoted here says which one it came from.
 ## How it stays current, without anyone remembering
 
 ```
-05:30  GitHub Actions refreshes every source, rebuilds, runs the gate, and
+05:07  GitHub Actions refreshes every source, rebuilds, runs the gate, and
        opens a pull request with whatever moved. The pull request is gated
        again on its own, merges itself when green - and the merge is what
        deploys. A refresh that fails the gate leaves the pull request open
        and deploys nothing.
+
+       05:07 is when it is ASKED, not when it runs. GitHub delays scheduled
+       workflows on shared runners when the queue is busy - measured here at
+       four to seven hours late, three days running - so the job asks three
+       times (05:07, 08:07, 11:07 local) and the first attempt GitHub honours
+       does the work. The others see the day's refresh already succeeded and
+       stop in seconds. Nothing on GitHub's side can make it punctual; this
+       makes it reliably once a day.
 ```
 
 <!-- GATE:START -->
