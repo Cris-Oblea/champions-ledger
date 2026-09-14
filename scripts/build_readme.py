@@ -157,12 +157,12 @@ def tests_line():
     """The one line in the layout block that counts files on disk.
 
     A .js file in tests/ is not automatically a test: harness.js is the shared
-    loader the seventeen of them go through since the deployed page became a
-    shell plus four assets. Counting it said eighteen and failed the gate, which
-    is the check doing its job - the number is derived, so it can only be right
-    or loud.
+    loader they all go through since the deployed page became a shell plus four
+    assets, and fixture.js is the ledger-with-rows the newest one boots on.
+    Counting harness.js said eighteen and failed the gate, which is the check
+    doing its job - the number is derived, so it can only be right or loud.
     """
-    helpers = {"harness.js"}
+    helpers = {"harness.js", "fixture.js"}
     n = len([f for f in os.listdir(os.path.join(ROOT, "tests"))
              if f.endswith(".js") and f not in helpers])
     return "tests/       %s browser tests, run against the BUILT page" % word(n)
