@@ -37,7 +37,7 @@ const META = [{user_id:UID, id:"items",
                updated_at:"2026-09-10"}];
 
 const body = fs.readFileSync(ROOT + "tracker/dist/index.html", "utf8")
-  .replace(/<script src="https:\/\/cdn\.jsdelivr[^"]*"><\/script>/, "");
+  .replace(/<script id="vendor-supabase">[\s\S]*?<\/script>/, "");
 const stub = `<script>
 window.__META=${JSON.stringify(META)}; window.__WROTE=[];
 window.supabase={createClient:function(){return{

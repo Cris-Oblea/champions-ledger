@@ -9,7 +9,7 @@ const ROOT = require("path").join(__dirname, "..") + "/";
 const { JSDOM, VirtualConsole } = require("jsdom");
 const body = fs.readFileSync(
   ROOT + "tracker/dist/index.html", "utf8")
-  .replace(/<script src="https:\/\/cdn\.jsdelivr[^"]*"><\/script>/, "");
+  .replace(/<script id="vendor-supabase">[\s\S]*?<\/script>/, "");
 const stub = `<script>window.supabase={createClient:function(){return{
   auth:{getSession:function(){return Promise.resolve({data:{session:null}});},
         onAuthStateChange:function(){},signInWithPassword:function(){},signOut:function(){}},

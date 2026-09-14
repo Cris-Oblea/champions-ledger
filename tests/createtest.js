@@ -43,7 +43,7 @@ const TEAMS = [{user_id:UID, id:"t1", name:"Otro", slots:[], notes:{},
   updated_at:"2026-09-13"}];
 
 const body = fs.readFileSync(ROOT + "tracker/dist/index.html", "utf8")
-  .replace(/<script src="https:\/\/cdn\.jsdelivr[^"]*"><\/script>/, "");
+  .replace(/<script id="vendor-supabase">[\s\S]*?<\/script>/, "");
 /* TAKEN is what the TABLE holds, which is not what the device has loaded:
    builds/farigiraf-2 and teams/prueba were written elsewhere. */
 const stub = `<script>

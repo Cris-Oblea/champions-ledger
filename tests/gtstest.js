@@ -15,7 +15,7 @@ const META = [{user_id:UID,id:"gts",data:{open_offers:[
   {offered:"Chesnaught",requested:"Golisopod",deposited:"2026-09-08",status:"PENDING",note:""}
 ]},updated_at:"2026-09-09"}];
 const body = fs.readFileSync(ROOT + "tracker/dist/index.html","utf8")
-  .replace(/<script src="https:\/\/cdn\.jsdelivr[^"]*"><\/script>/,"");
+  .replace(/<script id="vendor-supabase">[\s\S]*?<\/script>/, "");
 const stub = `<script>
 window.__ROWS=${JSON.stringify(ROWS)}; window.__META=${JSON.stringify(META)};
 window.__WRITES=[]; window.__DELETES=[];

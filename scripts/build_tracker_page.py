@@ -21,6 +21,16 @@ BUILT = {}
 CMARK = "/*__CHAMP_CONFIG__*/"
 EMARK = "/*__CHAMP_ENGINE__*/"
 ENGINE = os.path.join(ROOT, "tracker", "engine.bundle.js")
+# supabase-js used to be a <script src> pointing at jsDelivr. It is inlined from
+# node_modules now, which is the same 213 KB the browser downloaded either way -
+# what changes is who can alter it. A CDN file is a third party in the runtime of
+# a page that holds the whole ledger behind a login; SRI would have caught a
+# tampered copy but leaves the dependency, and leaves a hash to keep in sync with
+# a version by hand. From node_modules the lockfile pins the version, Dependabot
+# moves it, and the CSP loses its last third-party origin.
+SBMARK = "/*__CHAMP_SUPABASE__*/"
+SBJS = os.path.join(ROOT, "node_modules", "@supabase", "supabase-js",
+                    "dist", "umd", "supabase.js")
 SMARK = "/*__CHAMP_STYLE__*/"
 KMARK = "<!--__CHAMP_MARKUP__-->"
 AMARK = "/*__CHAMP_APP__*/"
@@ -132,7 +142,9 @@ def headers(supabase_url):
     """
     csp = [
         "default-src 'self'",
-        "script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net",
+        # no third-party origin at all: supabase-js is inlined from
+        # node_modules, so the only script on the page is the page
+        "script-src 'self' 'unsafe-inline'",
         "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
         "font-src https://fonts.gstatic.com",
         "img-src 'self' data: blob:",
@@ -163,11 +175,16 @@ def main():
     if not os.path.exists(DATA):
         sys.exit("tracker/data.js is missing - run scripts/build_tracker_data.py")
     tpl = assemble(open(TPL, encoding="utf-8").read())
-    for m in (MARK, CMARK, EMARK):
+    for m in (MARK, CMARK, EMARK, SBMARK):
         if m not in tpl:
             sys.exit("the template lost its %s marker" % m)
     data = open(DATA, encoding="utf-8").read()
     # a literal </script> inside either blob would end the tag early
+    if not os.path.exists(SBJS):
+        # Never fall back to the CDN: a page that silently reaches out again is
+        # the one thing this change exists to prevent.
+        sys.exit("supabase-js is not installed - run `npm ci`. Looked in %s"
+                 % SBJS)
     if not os.path.exists(ENGINE):
         sys.exit("tracker/engine.bundle.js is missing - run "
                  "scripts/build_engine_bundle.py")
@@ -178,6 +195,8 @@ def main():
     tpl = tpl.replace("/*__CHAMP_BUILD__*/",
                       "window.CHAMP_BUILD = %r;" % stamp)
     out = tpl.replace(EMARK, engine.replace("</", r"<\/"))
+    sbjs = open(SBJS, encoding="utf-8").read()
+    out = out.replace(SBMARK, sbjs.replace("</", r"<\/"))
     out = out.replace(CMARK, config_js().replace("</", r"<\/"))
     out = out.replace(MARK, data.replace("</", r"<\/"))
     open(OUT, "w", encoding="utf-8").write(out)
