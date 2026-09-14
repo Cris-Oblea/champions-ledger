@@ -672,6 +672,19 @@ them, and four of the five faults below were invisible in a green run.
   would have cleared the warning while still running Node 20. v3 of setup-cli
   installs from npm, which removes a rate-limited GitHub API lookup that had
   already failed a run.
+- **The nightly is now gated for real, by a GitHub App.** The red run after every
+  refresh was GitHub creating a workflow run for a PR opened with GITHUB_TOKEN and
+  then refusing to execute it - zero jobs, `failure`, same second. Two attempts to
+  fix it from inside push.yml were reverted: nothing there is ever evaluated,
+  because no job is ever created. An App installation token is not GITHUB_TOKEN,
+  so the run executes. `champions-ledger-bot` opens the pull request, push.yml
+  gates it, and it merges itself when green - **and stays open when it is not**,
+  which is what should happen to data that did not pass. The hand-posted `gate`
+  status is gone with it: two writers for one context meant a real failure could
+  be masked by a green this job wrote itself. Nothing in the chain expires; the
+  App's key has no expiry, the token is minted next to the step that uses it (one
+  hour, against a 70-minute job), and it holds Contents and Pull requests and
+  deliberately not Workflows: write.
 - **Two ordering traps.** `GITHUB_ENV` does not reach the step that writes it, so
   the backup cloned its store with no key, silently started a fresh history and
   could never see the previous snapshot; and `gh pr merge --auto` is REFUSED when
