@@ -504,12 +504,12 @@
        "pct": 16.2
       },
       {
-       "name": "Venusaur",
+       "name": "Archaludon",
        "teams": 16,
        "pct": 14.4
       },
       {
-       "name": "Archaludon",
+       "name": "Venusaur",
        "teams": 16,
        "pct": 14.4
       },
@@ -1535,12 +1535,12 @@
        "pct": 33.1
       },
       {
-       "name": "Farigiraf",
+       "name": "Iron Hands",
        "teams": 35,
        "pct": 26.9
       },
       {
-       "name": "Iron Hands",
+       "name": "Farigiraf",
        "teams": 35,
        "pct": 26.9
       },
@@ -2117,12 +2117,12 @@
        "pct": 1.4
       },
       {
-       "name": "Articuno",
+       "name": "Azumarill",
        "teams": 1,
        "pct": 1.4
       },
       {
-       "name": "Azumarill",
+       "name": "Articuno",
        "teams": 1,
        "pct": 1.4
       },
@@ -2580,12 +2580,12 @@
      "complete": false,
      "top": [
       {
-       "name": "Urshifu",
+       "name": "Flutter Mane",
        "teams": 61,
        "pct": 70.9
       },
       {
-       "name": "Flutter Mane",
+       "name": "Urshifu",
        "teams": 61,
        "pct": 70.9
       },
@@ -2760,12 +2760,12 @@
        "pct": 2.3
       },
       {
-       "name": "Regieleki",
+       "name": "Sneasler",
        "teams": 2,
        "pct": 2.3
       },
       {
-       "name": "Sneasler",
+       "name": "Regieleki",
        "teams": 2,
        "pct": 2.3
       },
@@ -3562,12 +3562,12 @@
        "pct": 16.2
       },
       {
-       "name": "Venusaur",
+       "name": "Archaludon",
        "teams": 16,
        "pct": 14.4
       },
       {
-       "name": "Archaludon",
+       "name": "Venusaur",
        "teams": 16,
        "pct": 14.4
       },
@@ -4603,12 +4603,12 @@
        "pct": 33.1
       },
       {
-       "name": "Farigiraf",
+       "name": "Iron Hands",
        "teams": 35,
        "pct": 26.9
       },
       {
-       "name": "Iron Hands",
+       "name": "Farigiraf",
        "teams": 35,
        "pct": 26.9
       },
@@ -5216,12 +5216,12 @@
      "complete": false,
      "top": [
       {
-       "name": "Urshifu",
+       "name": "Flutter Mane",
        "teams": 61,
        "pct": 70.9
       },
       {
-       "name": "Flutter Mane",
+       "name": "Urshifu",
        "teams": 61,
        "pct": 70.9
       },
@@ -5396,12 +5396,12 @@
        "pct": 2.3
       },
       {
-       "name": "Regieleki",
+       "name": "Sneasler",
        "teams": 2,
        "pct": 2.3
       },
       {
-       "name": "Sneasler",
+       "name": "Regieleki",
        "teams": 2,
        "pct": 2.3
       },
