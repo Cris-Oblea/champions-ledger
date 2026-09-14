@@ -2,7 +2,7 @@
    Part of the app; linked into one script by scripts/build_tracker_page.py. */
 import {
   $, C, DEX, MOVES, MOVE_BY, SORT, STAT_KEYS, STAT_LABEL, TYPE_COLOR, bst,
-  byName, catName, el, learnset, statLine, toast, typeChip,
+  byName, catName, effectLine, el, learnset, statLine, toast, typeChip,
 } from "./01-data.js";
 import { S, boxRows, originOf, ownedNames } from "./02-state.js";
 import { closeSheet, fbtn, openSheet } from "./04-nav.js";
@@ -192,6 +192,8 @@ function findDetail(p){
       var n = el("div", "note");
       n.style.marginBottom = "6px";
       n.innerHTML = "<strong>" + a + ".</strong> " + (C.ABIL[a] || "");
+      var anum = effectLine(a);
+      if (anum) n.appendChild(anum);
       /* What it does to this Pokemon's moves, said HERE rather than as a badge
          on every row. Two shapes, and the difference is the whole point:
          an ability that covers a category (Guts, every physical move) names

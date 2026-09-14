@@ -2,7 +2,8 @@
    Part of the app; linked into one script by scripts/build_tracker_page.py. */
 import {
   $, C, COSTS, FORMS, MOVE_BY, STAT_KEYS, STAT_LABEL, STONE_OF, byName,
-  catName, el, learnset, megasFor, natMult, statAt, toast, typeChip,
+  catName, effectLine, el, learnset, megasFor, natMult, statAt, toast,
+  typeChip,
 } from "./01-data.js";
 import { S, boxRows, buildLink, hasStone, ownedNames } from "./02-state.js";
 import { drop, put, putNew } from "./03-store.js";
@@ -265,6 +266,11 @@ function buildSheet(id, b, keepOriginal){
 
     if (draft.ability && C.ABIL[draft.ability]) {
       body.appendChild(el("p", "sub", C.ABIL[draft.ability]));
+      /* and what it does as a NUMBER - Guts reads x1.5 from the engine's own
+         modifier stage, which is the half of the sentence that decides a
+         calculation */
+      var abnum = effectLine(draft.ability);
+      if (abnum) body.appendChild(abnum);
     }
 
     /* --- stat points -------------------------------------------------- */
