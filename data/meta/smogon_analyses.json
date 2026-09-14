@@ -225,6 +225,58 @@
       "pengu",
       "RauSakura"
      ]
+    },
+    {
+     "format": "VGC26 Regulation M-B",
+     "outdated": null,
+     "overview": "",
+     "comments": "",
+     "movesets": [
+      {
+       "name": "Redirection Support",
+       "pokemon": "Sinistcha",
+       "abilities": [
+        "Hospitality"
+       ],
+       "items": [
+        "Colbur Berry",
+        "Sitrus Berry"
+       ],
+       "natures": [
+        "Bold"
+       ],
+       "stat_points": [
+        {
+         "hp": 32,
+         "atk": 0,
+         "def": 14,
+         "spa": 0,
+         "spd": 20,
+         "spe": 0
+        }
+       ],
+       "moveslots": [
+        [
+         "Rage Powder"
+        ],
+        [
+         "Trick Room"
+        ],
+        [
+         "Matcha Gotcha"
+        ],
+        [
+         "Protect",
+         "Life Dew"
+        ]
+       ],
+       "explanation": "Sinistcha is a multifaceted support Pokemon; aside from providing speed control with Trick Room, it's the most notable redirector in Regulation M-B thanks to its solid bulk, decent typing, and ability to automatically heal allies with Hospitality. Said bulk and typing allow it to comfortably redirect attacks like Sneasler's STAB moves and Fake Out, Garchomp's Dragon Claw, and Water-type moves like Basculegion-M's Wave Crash, making it an ideal ally to setup sweepers like Mega Delphox and Mega Blastoise.\nMatcha Gotcha: Although it's a bit unreliable, Matcha Gotcha extends Sinistcha's longevity, deals spread chip damage, and sometimes burns physical attackers, ensuring Sinistcha isn't too passive. Matcha Gotcha also lets Sinistcha handle Mega Swampert by itself.\nProtect vs. Life Dew: Foes like Kingambit and Mega Staraptor will often directly target Sinistcha with a super effective move to bypass Rage Powder; Protect allows it to punish such attacks. Sinistcha can use Life Dew over Protect to keep important allies as well as itself in tip-top shape, though it will become easy to overwhelm.\nColbur Berry vs. Sitrus Berry: Sinistcha is capable of healing itself with Matcha Gotcha, and it's often paired with another support Pokemon like Incineroar that appreciates Sitrus Berry's healing. Thus, Sinistcha can usually manage with a resistance Berry like Colbur Berry, which ensures survival against Kingambit's Kowtow Cleave. If its ally is holding another item, Sinistcha can use Sitrus Berry to more comfortably redirect attacks and take spread moves like Sylveon's Hyper Voice, which is unlikely to 2HKO it with the burst healing.\nKeeping Sinistcha in the Back: Sinistcha is often kept in reserve at the start of a match to let Hospitality heal the initial damage taken by its offensive teammates, giving them more leeway to set up or attack.\nOther Options\nShadow Ball: Shadow Ball allows Sinistcha to win the mirror matchup, 2HKOing opposing Sinistcha even with no investment, and it also can catch Mega Gengar and Gholdengo on the switch. Furthermore, Shadow Ball lets Sinistcha hit Grass-resistant foes like Sneasler and Mega Delphox.\nOcca Berry: Sinistcha can use other resistance Berries if your team requires a bigger safety net against a troublesome foe. Occa Berry lets Sinistcha withstand Fire-type attacks like Incineroar's Flare Blitz and Mega Charizard Y's and Mega Delphox's Heat Wave. Although Mega Charizard Y's Weather Ball can OHKO it even with Occa Berry, heavy Special Attack investment is required to do so, and most Charizard can't afford to make that investment.\nKasib Berry: Kasib Berry enables Sinistcha to take Adaptability Basculegion-M's 150-Base Power Last Respects, helping it prevent a late-game sweep by directly hitting it or setting up Trick Room. It can also let Shadow Ball Sinistcha pressure Mega Gengar and Gholdengo better by letting it take their own Shadow Ball.\nSP Spreads\n32 HP / 14 Def / 20 SpD with Bold: The physical bulk investment prevents Sinistcha from being OHKOed by Jolly Mega Aerodactyl's Dual Wingbeat, while the Special Defense investment lets it usually avoid the 2HKO from Timid Mega Floette's Dazzling Gleam and always withstand Timid Mega Froslass's Blizzard and Shadow Ball.\nTeambuilding\nChecks and Weaknesses: Spread attackers with super effective moves can heavily damage Sinistcha while bypassing Rage Powder's redirection. Fire-types with Heat Wave like Mega Charizard Y and Mega Delphox are the most common examples, and even Mega Charizard Y can outright OHKO Sinistcha. Ice-types like Mega Froslass and Alolan Ninetales are also notable, as they can set up Aurora Veil while threatening Sinistcha with a perfectly accurate Blizzard.\nDark-types like Kingambit and Incineroar can punish Sinistcha's Rage Powder with their STAB attacks, easily pressuring Sinistcha to use Protect or switch out. Additionally, Incineroar's STAB combination can render the Colbur and Occa Berries useless, especially in an open team sheet format, as it will always have a way to heavily damage Sinistcha.\nGhost-types like Gholdengo and Mega Gengar threaten Sinistcha with Shadow Ball and take little from Matcha Gotcha; these two Pokemon also don't care about Rage Powder because they can either safely set up and threaten with a boosted Make It Rain or Perish trap Sinistcha's teammate, respectively. Basculegion-M is capable of OHKOing Sinistcha with just a 100-Base Power Last Respects, though Kasib Berry variants can survive Last Respects and possibly burn it with Matcha Gotcha. Also, Choice Scarf Basculegion-M has its effectiveness dampened late-game if Trick Room is set up or it's locked into a Water-type move.\nGrass-types are unaffected by Rage Powder; this allows them to directly threaten Sinistcha's partners. Whimsicott is the most dangerous because Sinistcha won't be able to stop Encore, while Venusaur can freely put its allies to sleep with Sleep Powder and pressure it with Sludge Bomb, which can 2HKO it if it gets poisoned. These two do not enjoy Trick Room getting set up, however.\nFlying-types like Mega Aerodactyl and Mega Staraptor heavily damage or OHKO Sinistcha with their STAB moves. This makes it easy for them to get Tailwind set up because Sinistcha can't simply set up Trick Room, and Mega Staraptor can also start fortifying itself with Contrary Close Combat's boosts once Sinistcha is removed. Pelipper is generally the best answer to Sinistcha on rain teams because it threatens an OHKO with Hurricane; this is notable because Sinistcha is often a large obstacle for other mainstays like Mega Swampert to overcome.\nGood Partners and Synergies: Setup-oriented Mega Evolutions are the best Pokemon to pair with Sinistcha, as they greatly appreciate its redirection and healing support while outputting enough damage to compensate for its passiveness. Mega Delphox's typing and Speed allow it to deal with Ice- and Grass-types as well as Mega Charizard Y and Mega Staraptor once it has set up Nasty Plot. With Sinistcha's Rage Powder, it can also safely threaten Mega Gengar and Kingambit without having to deal with Shadow Ball and Sucker Punch, respectively. Mega Blastoise absolutely appreciates Hospitality, which restores Water Spout's power, and it's also flexible enough to work under Trick Room due to its mediocre Speed. Furthermore, Mega Blastoise can handle Fire- and Ghost-types with Water Spout and Dark Pulse.\nOther Pokemon like Incineroar and Sneasler pair well with Sinistcha to form a solid support frame for the aforementioned setup sweepers. Incineroar can handle Mega Delphox and Grass-types, as well as Kingambit if it's not affected by Intimidate, and its ability to pivot to Sinistcha with Parting Shot synergizes with Hospitality. Meanwhile, Sneasler's STAB combination lets it directly threaten Dark-types and Whimsicott. This can allow Sinistcha to not use Trick Room against Whimsicott, which won't have many safe opportunities to set up Tailwind against Sneasler.\nSinistcha is a common Pokemon on sand teams, though their shaky matchups against top metagame threats like Basculegion-M and Garchomp make sand a niche archetype in Regulation M-B. Hospitality complements Mega Tyranitar's excellent bulk, and Rage Powder allows Dragon Dance variants to set up more safely. In return, Mega Tyranitar easily handles Fire-, Ice-, and Ghost-types and blocks out Mega Charizard Y's sun and Mega Froslass's snow with its sand. Milotic is a common bulky Pokemon on sand teams that also appreciates Hospitality and likes Sinistcha's extra support against opposing Water-types, and it can set up Coil more easily with Sinistcha's redirection. Milotic can repay Sinistcha by handling Incineroar, a common roadblock for sand teams. Both Mega Tyranitar and Milotic also appreciate Sinistcha's Trick Room support so that they're more likely to move first."
+      }
+     ],
+     "credits": [
+      "pengu",
+      "gephicka"
+     ]
     }
    ]
   },
@@ -16598,6 +16650,64 @@
      "credits": [
       "pengu",
       "Carrotman"
+     ]
+    },
+    {
+     "format": "VGC26 Regulation M-B",
+     "outdated": null,
+     "overview": "",
+     "comments": "",
+     "movesets": [
+      {
+       "name": "Bulky Attacker",
+       "pokemon": "Sylveon",
+       "abilities": [
+        "Pixilate"
+       ],
+       "items": [
+        "Fairy Feather"
+       ],
+       "natures": [
+        "Modest"
+       ],
+       "stat_points": [
+        {
+         "hp": 9,
+         "atk": 0,
+         "def": 22,
+         "spa": 20,
+         "spd": 0,
+         "spe": 15
+        },
+        {
+         "hp": 9,
+         "atk": 0,
+         "def": 22,
+         "spa": 30,
+         "spd": 0,
+         "spe": 5
+        }
+       ],
+       "moveslots": [
+        [
+         "Hyper Voice"
+        ],
+        [
+         "Hyper Beam"
+        ],
+        [
+         "Quick Attack"
+        ],
+        [
+         "Detect"
+        ]
+       ],
+       "explanation": "Sylveon has cemented itself as a bulky offensive threat with significant flexibility. Its Speed tier allows it to succeed in Tailwind or Trick Room, and it outputs high Fairy-type damage with Pixliate-boosted Hyper Voice and Hyper Beam. These STAB moves let it threaten OHKOs on threats such as Garchomp, Mega Staraptor, and Tyranitar while still enabling it to deal neutral damage to a large portion of the metagame, such as Kingambit, Basculegion-M, Sneasler, and opposing Fairy-types such as Mega Floette and enemy Whimsicott.\nFairy Feather: Fairy Feather's damage boost is required to secure an OHKO on Life Orb Garchomp with Hyper Voice.\nHyper Voice: Hyper Voice is Sylveon's main source of damage, dealing high enough spread damage to secure 2HKOs on most variants of Basculegion-M, Sneasler, and bulky Garchomp.\nHyper Beam: Hyper Beam offers massive burst damage onto a single target, getting around potential Wide Guard users such as Aerodactyl, while securing an OHKO on bulky threats, most notably Kingambit and Archaludon. This comes with the significant drawback of leaving Sylveon vulnerable for a turn, making the use of Hyper Beam a serious commitment that should be considered carefully.\nQuick Attack: Quick Attack is used as a priority Fairy-type attack that can secure KOs on low-health targets like Sneasler and Lycanroc-D taken down to their Focus Sash or get around Sucker Punch from Kingambit.\n***Other Options\nYawn: Sylveon can forgo Quick Attack or Hyper Beam to run Yawn and put foes to sleep. This is especially effective at disrupting setup sweepers that otherwise would give Sylveon trouble, such as Bulk Up Ceruledge and Nasty Plot Mega Delphox. It does, however, come at the cost of either priority or burst damage.\nSP Spreads\n** 9 HP / 22 Def / 20 SpA / 15 Spe with Modest**: This spread lets Sylveon outspeed Sneasler under Tailwind while guaranteeing it can take a Dire Claw from Jolly Sneasler most of the time. The rest of the SPs are put into Special Attack to maximize damage.\n** 9 HP / 22 Def / 30 SpA / 5 Spe with Modest**: This spread has just enough Speed investment to let Sylveon outrun Garchomp under Tailwind while still allowing it to withstand Jolly Sneasler's Dire Claw. The Special Attack investment allows Sylveon to secure the 2KHO on most Basculegion-M with Hyper Voice.\nTeambuilding\nChecks and Weaknesses: Sylveon lacks coverage moves to deal with the plethora of Fairy-resistant Pokemon that permeate the metagame. Mega Charizard Y can trade extremely well with Sylveon, resisting Fairy and dealing massive damage back with Weather Ball. Gholdengo and Mega Delphox can set up Nasty Plot in front of Sylveon without much issue thanks to their decent special bulk compounded with their Fairy resistance and quickly run away with the game, along with Psyshock and Make It Rain threatening massive damage. Mega Metagross and Mega Glimmora can safely switch into a Hyper Voice thanks to their Fairy resistances and OHKO Sylveon without much trouble with Iron Head and Sludge Bomb.\nIncineroar is a problem for Sylveon, as it takes neutral hits from Sylveon very well. It can disrupt Sylveon with Fake Out, use Throat Chop to disable Hyper Voice, tank a hit for its teammates and then pivot out with Parting Shot, and finally 2HKO it most of the time with Flare Blitz.\nMega Gengar poses an immense threat to Sylveon; it's able to take a Hyper Voice well thanks to its Poison typing and then use Disable next turn to prevent Sylveon from dealing consistent damage. This lets Mega Gengar either go for Sludge Bomb for the 2HKO or easily trap Sylveon while Perish Song ticks down. Venusaur is also a problem, as it's able to outspeed Sylveon under the sun, disrupt it with Sleep Powder, and threaten a 2HKO with Sludge Bomb.\nWide Guard users such as Aerodactyl and Pelipper force Sylveon to commit to a Hyper Beam or use Quick Attack for mediocre damage at best. An especially troublesome foe is Toxapex, which can trap Sylveon with Infestation, block Hyper Voice with Wide Guard, and stomach multiple Hyper Beams. Despite taking significant damage from Sylveon's attacks, Sneasler, Iron Head Kingambit, and Mystic Water Basculegion-M can all threaten Sylveon with an OHKO.\nGood Partners and Synergies: Sylveon thrives when it's able to move first, so allies that can help establish speed control are greatly appreciated. Mega Aerodactyl sets Tailwind and lets Sylveon follow up before foes have a chance to act while also threatening Fire-types, most notably Mega Charizard Y, with Rock Slide. Similarly, Mega Staraptor offers Tailwind support but has Fighting-type coverage to hit Steel-types such as Excadrill and Kingambit that threaten Sylveon with Iron Head and Dual Wingbeat to take care of Focus Sash Venusaur and Sneasler.\nMega Raichu Y is an incredible partner for Sylveon. Zap Cannon's ability to spread paralysis while also dealing hefty damage provides Sylveon with the perfect follow-up opportunity. Additionally, Mega Raichu Y has crucial Fighting-type coverage with Focus Blast, and it also threatens the most common Wide Guard users in Aerodactyl, Pelipper, and Toxaxpex. Sylveon in turn can handle the Dragon-types of the format, such as Mega Dragonite and Garchomp.\nFarigiraf provides Trick Room to give Sylveon the ability to move before faster-paced teams while preventing Sylveon from getting disrupted or chipped down by priority moves with Armor Tail. Additionally, Farigiraf's Psychic-type damage threatens the Poison-types that may attempt to switch into Sylveon's Hyper Voice, and Twin Beam eliminates Sneasler through Focus Sash. Farigiraf also commonly runs Thunderbolt, which can help against the Wide Guard user Pelipper and threaten Mega Aerodactyl, Mega Charizard Y, and Basculegion-M. Farigiraf appreciates Sylveon's ability to switch into the Dark-types that threaten it, such as Mega Tyranitar, and KO them back with Hyper Voice.\nFire-types such as Mega Charizard Y and Hisuian Arcanine melt through Steel-types such as Kingambit and Gholdengo that would otherwise resist Sylveon's Fairy-type attacks, while Sylveon compliments them by threatening the Dragon-types that resist their attacks. Hisuian Arcanine also has Rock-type coverage to threaten the Fire-types that trade well against Sylveon, most notably Mega Charizard Y. Incineroar is another stellar partner, as Intimidate alleviates pressure from the incoming physical attacks that Sylveon can struggle to take while using Fake Out to give Sylveon opportunities to spread damage."
+      }
+     ],
+     "credits": [
+      "poketitanterra",
+      "pengu"
      ]
     }
    ]
