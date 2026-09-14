@@ -44,15 +44,6 @@ concurrency:
 
 jobs:
   gate:
-    # The nightly refresh's own pull request is NOT gated here. daily.py ran
-    # every check on that exact tree minutes earlier and posts the `gate` status
-    # itself, so this would be the same answer twice - and it never gets to give
-    # it: the PR merges about three seconds after it opens, the head ref
-    # disappears, and the run dies before its first step. Three red runs in one
-    # evening, not one of them a real failure, is how a red tick stops meaning
-    # anything. Skipped here, the required check is satisfied by the status the
-    # nightly posted on the same commit.
-    if: ${{ !startsWith(github.head_ref, 'daily/') }}
     runs-on: ubuntu-latest
     timeout-minutes: 20
 
