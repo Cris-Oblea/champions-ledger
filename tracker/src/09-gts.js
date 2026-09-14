@@ -503,27 +503,56 @@ function gtsSuggest(chipName, limit, shiny){
       if (st && hasStone(st)) dead[sp] = st;
     });
   });
-  var out = [];
+  /* TWO bands, not one window (player, 2026-09-13): he wants the Mega reach
+     kept AND recommendations around the base row, and a longer list of both.
+
+     One window was the bug. A Mega-capable chip prices at its Mega, so
+     [value - 70, reach + 20] moves UP bodily and cuts the base neighbourhood
+     out: Beedrill's base is 395 and its window started at 425, so the asks most
+     likely to be TAKEN - the ones near what the chip looks like on paper - were
+     the ones that could never be suggested.
+
+       reach band - at or above the chip's full price, which is the Mega's BST
+                    plus the estimated premiums. What it can aim at.
+       base  band - under it, down to 70 below the base row. Asking for less
+                    than you could is how an offer clears the same day.
+
+     The two are filled alternately below so a chip with a big Mega cannot bury
+     the safer half under thirty reach-band targets. */
+  var top = v.reach + 20;
+  var floor = Math.min(v.base, v.value) - 70;
+  var bands = {reach:[], base:[]};
   FORMS.forEach(function(p){
     if (owned[p.name] || owned[p.species]) return;
     var b = bst(p);
-    /* reach, not value: a shiny aims a tier higher than its own row */
-    if (b > v.reach + 20 || b < v.value - 70) return;
+    if (b > top || b < floor) return;
     var d = gtsDiff(p.name);
     /* demand 4+ is a Pokemon people are running; it will not be handed over.
        An unknown demand is NOT a low one, so it is allowed through but never
        ranked as if it were cheap. */
     if (d && d.demand != null && d.demand >= 4) return;
+    var band = b >= v.value - 25 ? "reach" : "base";
     var stone = dead[p.species];
-    out.push({name:p.name, bst:b, spe:p.b[5], stone:stone || null,
-              rank:d && d.rank, demand:d && d.demand,
+    /* Each band is ranked against its OWN anchor, or the base band would be
+       nothing but a list of near-misses sorted by how badly they miss. */
+    var anchor = band === "reach" ? v.reach : v.base;
+    bands[band].push({name:p.name, bst:b, spe:p.b[5], stone:stone || null,
+              rank:d && d.rank, demand:d && d.demand, band:band,
               stretch:b > v.value,
               score:(stone ? 100 : 0) +
                     (d && d.demand != null ? (5 - d.demand) * 6 : 8) +
-                    Math.max(0, 20 - Math.abs(v.reach - b) / 3)});
+                    Math.max(0, 20 - Math.abs(anchor - b) / 3)});
   });
-  out.sort(function(a, b){ return b.score - a.score || b.bst - a.bst; });
-  return out.slice(0, limit || 8);
+  function byScore(a, b){ return b.score - a.score || b.bst - a.bst; }
+  bands.reach.sort(byScore);
+  bands.base.sort(byScore);
+  var want = limit || 14;
+  var out = [];
+  while (out.length < want && (bands.reach.length || bands.base.length)) {
+    if (bands.reach.length) out.push(bands.reach.shift());
+    if (out.length < want && bands.base.length) out.push(bands.base.shift());
+  }
+  return out;
 }
 
 /* How long an offer has been sitting. `deposited` was stored and never read;
@@ -781,8 +810,32 @@ function gtsPickMine(onPick, exceptIdx){
         meta.appendChild(el("span", "mono", dexLabel(r.name)));
         if (p) p.types.forEach(function(t){ meta.appendChild(typeChip(t)); });
         if (p) meta.appendChild(el("span", "mono", "BST " + bst(p)));
+        /* The ladder belongs on THIS side of the trade too (player,
+           2026-09-13). It was only ever shown for the Pokemon being asked for,
+           which answers "can I get it" and says nothing about the half he
+           controls: how fast his own chip clears, and how high it can therefore
+           ask. Indeedee is the case that proved it - 475 with no Mega, ladder
+           #28, gone the same day, twice. */
+        var cd = p && gtsDiff(r.name);
+        var cv = p && chipValueOf(r);
+        if (cd) meta.appendChild(el("span", "tag" + (cd.demand >= 4 ? " ok" : ""),
+          "ladder " + ladderText(cd)));
+        else if (p) meta.appendChild(el("span", "tag warn", "no ladder row"));
+        if (cv && cv.reach > cv.base)
+          meta.appendChild(el("span", "mono", "asks up to ~" + cv.reach));
         if (r.note) meta.appendChild(el("span", null, String(r.note).slice(0, 40)));
         m.appendChild(meta);
+        /* Only when the price is above the base row, and it says WHICH part is
+           measured: the Mega half comes from his own closed trades, the other
+           two are estimates. */
+        if (cv && cv.reach > cv.base && !held) {
+          var why = "Base " + cv.base;
+          if (cv.viaMega) why += ", but a chip fetches its Mega's " + cv.value;
+          if (cv.demandBonus) why += " · +" + cv.demandBonus +
+            " because the ladder wants it (estimate)";
+          if (cv.shinyBonus) why += " · +" + cv.shinyBonus + " shiny (estimate)";
+          m.appendChild(el("div", "st", why + "."));
+        }
         if (last) {
           m.appendChild(el("div", "st", kin.length
             ? "The only " + r.name + " you have, but you still hold " +
@@ -843,7 +896,7 @@ function gtsPickWanted(onPick, chipName, chipShiny){
        stone you already own with nothing to hold it at the top. */
     if (chipName) {
       var v = chipValue(chipName, chipShiny);
-      var picks = gtsSuggest(chipName, 8, chipShiny);
+      var picks = gtsSuggest(chipName, 14, chipShiny);
       if (v) {
         body.appendChild(el("p", "sub",
           chipName + (chipShiny ? " (shiny)" : "") + " is worth about " +
@@ -872,9 +925,10 @@ function gtsPickWanted(onPick, chipName, chipShiny){
         }
       }
       if (picks.length) {
-        body.appendChild(el("h2", null, "Worth asking for"));
-        var sl = el("div", "list");
-        picks.forEach(function(c){
+        /* Two sections, because the two bands answer different questions:
+           what this chip can REACH, and what it can reach that someone will
+           actually take today. */
+        function pickRow(c){
           var b2 = el("button", "row" + (c.stone ? " perm" : ""));
           var m2 = el("div", "rmain");
           var h2 = el("div", "rname");
@@ -892,17 +946,46 @@ function gtsPickWanted(onPick, chipName, chipShiny){
               "You bought " + c.stone + " and have nothing to put it on — " +
               "2000 VP that starts working the moment this lands."));
           } else if (c.stretch) {
+            /* Say which premium put it in range, and that the premium is an
+               estimate - the Mega half is measured, these two are not. */
+            var lift = [];
+            if (v.shinyBonus) lift.push("it is shiny (+" + v.shinyBonus + ")");
+            if (v.demandBonus) lift.push("the ladder wants your chip (+" +
+              v.demandBonus + ")");
             m2.appendChild(el("div", "st",
               "Above the chip's own " + v.value +
-              (chipShiny ? " — within reach because it is shiny, which is the "
-                         + "estimated half of the price."
-                         : " — a stretch, but the kind that lands.")));
+              (lift.length ? " — in range because " + lift.join(" and ") +
+                             ", which is the estimated half of the price."
+                           : " — a stretch, but the kind that lands.")));
+          } else if (c.band === "base") {
+            m2.appendChild(el("div", "st",
+              "Under the " + v.value + " this chip could ask" +
+              (v.viaMega ? ", nearer its base row of " + v.base : "") +
+              " — asking for less than you could is what makes an offer clear " +
+              "the same day."));
           }
           b2.appendChild(m2);
           b2.onclick = function(){ onPick(c.name); };
-          sl.appendChild(b2);
-        });
-        body.appendChild(sl);
+          return b2;
+        }
+        function pickList(title, sub, rows){
+          if (!rows.length) return;
+          body.appendChild(el("h2", null, title));
+          if (sub) body.appendChild(el("p", "sub", sub));
+          var sl = el("div", "list");
+          rows.forEach(function(c){ sl.appendChild(pickRow(c)); });
+          body.appendChild(sl);
+        }
+        pickList("Worth asking for",
+          "At or above what the chip is worth — " + v.value +
+          (v.reach > v.value ? ", up to about " + v.reach + " with the estimated "
+                             + "premiums" : "") + ".",
+          picks.filter(function(c){ return c.band === "reach"; }));
+        pickList("Safer asks",
+          "Below its price" + (v.viaMega ? ", around the base row of " + v.base
+                                         : "") + ". Less than the chip could " +
+          "fetch, and far more likely to be taken.",
+          picks.filter(function(c){ return c.band === "base"; }));
         body.appendChild(el("h2", null, "Or anything else"));
       }
     }
