@@ -43,10 +43,11 @@ jobs:
     # fetching Serebii's dex and attackdex pages. 45 left too little headroom
     # for a slow day upstream.
     timeout-minutes: 70
+    # GITHUB_TOKEN's own permissions, which now cover only the deploy half of
+    # this job. The branch push and the pull request are done with a GitHub App
+    # token instead - see the step that mints it.
     permissions:
-      contents: write          # to push the refresh branch
-      pull-requests: write     # to open and auto-merge it
-      statuses: write          # to report the gate it just ran
+      contents: read
 
     steps:
       - uses: actions/checkout@v7
@@ -102,44 +103,57 @@ jobs:
       # gate must be green. A bot pushing straight to it is exactly what that
       # protects against, so the refresh goes through the same door as a person.
       #
-      # The gate is NOT re-run for it. daily.py already ran all nineteen checks
-      # on this very working tree in the step above and refused to deploy if
-      # any failed - so the status posted here reports a check that genuinely
-      # passed, on the content being merged. Re-running it would be two
-      # identical runs and the same answer.
+      # THE PULL REQUEST IS GATED FOR REAL, and this job no longer says so on its
+      # own behalf. The history is worth keeping, because the old arrangement
+      # looked reasonable and was not:
       #
-      # Why a status rather than letting the PR trigger the gate workflow, and
-      # this is MEASURED, not assumed - the old wording said the run "would
-      # never appear" and cost two pull requests chasing it:
+      # A PR opened with GITHUB_TOKEN does get a workflow run - GitHub creates it
+      # and then refuses to execute it, zero jobs, `failure`, created and updated
+      # in the same second. So the required `gate` check never arrived and the PR
+      # would have sat open for ever waiting for itself. The answer was to post
+      # the status by hand, from this job, reporting the gate daily.py had just
+      # run on this very tree.
       #
-      # The run DOES appear. GitHub creates it for the pull_request event, then
-      # refuses to execute it because the actor is github-actions[bot] - zero
-      # jobs, conclusion `failure`, created and updated in the same second. So
-      # the required check would never arrive and the PR would sit open for ever
-      # waiting for itself, which is why this status is posted by hand.
+      # Which worked, and hid a hazard: two writers for one context. If the real
+      # gate ever ran and FAILED, whichever reported last would win, and a green
+      # written here could mask it. A check nobody can fail is not a check.
       #
-      # The cost is one red ghost run per night on the Actions page, and NOTHING
-      # in push.yml can prevent it: a job-level `if` is never evaluated, because
-      # no job is ever created. Do not try again from that side. The run to read
-      # is this one.
+      # The App token above fixes the cause instead. push.yml runs on the PR and
+      # reports `gate` itself, so the merge waits for it - and a nightly whose
+      # gate fails now leaves its pull request OPEN rather than merging, which is
+      # what should happen to data that did not pass. The deploy is not at risk
+      # either way: daily.py gates before it deploys, in the step above.
       #
       # REQUIRES A REPOSITORY SETTING that exists nowhere in this file:
       # Settings > Actions > General > Workflow permissions > "Allow GitHub
-      # Actions to create and approve pull requests". Without it `gh pr create`
-      # fails with "GitHub Actions is not permitted to create or approve pull
-      # requests", and the failure is a confusing one to read: the refresh
-      # worked, the deploy went out, the branch was pushed - only the PR was
-      # refused, so the data sits on an orphan `daily/*` branch and main keeps
-      # yesterday's. Worse, a run where nothing changed exits earlier than this
-      # and passes, so the workflow looks healthy in between.
+      # Actions to create and approve pull requests". It was off until
+      # 2026-09-13 and stranded two nights' refreshes on orphan `daily/*`
+      # branches - the refresh ran, the deploy went out, the branch was pushed,
+      # and only `gh pr create` was refused. Runs where no source moved exit
+      # before this step and pass, so the workflow looked healthy in between.
+      # Minted HERE, not at the top of the job: an installation token lasts one
+      # hour, a cold refresh has measured 34 minutes and this job may run for 70.
+      # A token taken before the fetching would be the one thing in the chain
+      # that expires, on exactly the slow morning it is most needed.
       #
-      # Turning it on grants nothing here: main requires the `gate` status check
-      # and ZERO approving reviews, so an approval from Actions is worth
-      # nothing, and the check is enforced for admins too. It was off until
-      # 2026-09-13 and two nights' refreshes were stranded by it.
+      # The App's own private key has no expiry - the same rule the backup
+      # follows. A fine-grained PAT would have lasted a year at most, and a
+      # classic one with no expiry would have carried the whole account; the App
+      # reaches this repository, with Contents and Pull requests and deliberately
+      # NOT Workflows: write. The refresh commits data/db, data/meta, tracker/*
+      # and README.md, so without that permission it cannot touch
+      # .github/workflows at all, and the day something needs it to, the push
+      # fails loudly and that is the right place to decide.
+      - name: mint a token as the app
+        id: app
+        uses: actions/create-github-app-token@v3
+        with:
+          client-id: ${{ secrets.APP_CLIENT_ID }}
+          private-key: ${{ secrets.APP_PRIVATE_KEY }}
+
       - name: open a pull request and let it merge itself
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GH_TOKEN: ${{ steps.app.outputs.token }}
         run: |
           git config user.name  "champions-ledger bot"
           git config user.email "noreply@github.com"
@@ -160,24 +174,26 @@ jobs:
           BR="daily/$(date -u +%Y-%m-%d-%H%M)"
           git checkout -b "$BR"
           git commit -m "daily refresh $(date -u +%Y-%m-%d)"
-          git push origin "$BR"
-          SHA=$(git rev-parse HEAD)
+          # The checkout persisted GITHUB_TOKEN, which may now only read, so the
+          # writes below carry the App token in the URL instead. The action
+          # registers that token as a secret, so it is masked in the log.
+          AUTH="https://x-access-token:$GH_TOKEN@github.com/$GITHUB_REPOSITORY"
+          git push "$AUTH" "HEAD:refs/heads/$BR"
           RUN="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
-          gh api -X POST "repos/$GITHUB_REPOSITORY/statuses/$SHA" -f state=success -f context=gate -f description="gated by daily.py in this run" -f target_url="$RUN"
-          gh pr create --base main --head "$BR" --title "daily refresh $(date -u +%Y-%m-%d)" --body "Automated. daily.py refreshed every source and passed the shrink guard, four audits and fifteen browser tests before this branch existed; the gate status on the head commit reports that run. Merges itself once the check is green. Log: $RUN"
-          # `gh pr merge --auto` is REFUSED when the pull request is already
-          # mergeable - "Pull request is in clean status" - and the gate status
-          # is posted two lines above it. So whether auto-merge is applicable at
-          # all is a race against GitHub's own status propagation: PR #23 won it
-          # and PR #25 lost it, fourteen minutes apart, with the refresh and the
-          # deploy already done in both. Merge it outright if it can be, and
-          # queue auto-merge only if it cannot.
-          gh pr merge --squash --delete-branch "$BR" || gh pr merge --auto --squash --delete-branch "$BR"
+          gh pr create --base main --head "$BR" --title "daily refresh $(date -u +%Y-%m-%d)" --body "Automated. daily.py refreshed every source, passed the whole gate on this tree before the branch existed, and deployed. Opened by the champions-ledger-bot app so the gate runs on the pull request too, and set to merge itself once it is green. Log: $RUN"
+          # --auto FIRST, which is the other way round from before. Nothing has
+          # reported `gate` on this PR yet - push.yml is only just starting on it
+          # and takes about eighty seconds - so the PR is not mergeable and
+          # auto-merge is precisely what applies. The direct merge stays as the
+          # fallback for the day a check reports faster than this line runs,
+          # since --auto is refused outright on an already-mergeable PR.
+          gh pr merge --auto --squash --delete-branch "$BR" || gh pr merge --squash --delete-branch "$BR"
+          echo "queued to merge when the gate is green: $(gh pr view "$BR" --json url --jq .url)"
           # And sweep up any branch an EARLIER run stranded, which is what a
           # failed merge leaves behind - two of them sat there tonight. No loss:
           # this run refreshed from the same sources, so it holds everything the
           # stranded one held.
-          git ls-remote --heads origin "refs/heads/daily/*" | awk '{print $2}' | sed 's|refs/heads/||' | grep -vx "$BR" | while read -r old; do echo "removing the branch $old"; git push -q origin --delete "$old" || true; done
+          git ls-remote --heads "$AUTH" "refs/heads/daily/*" | awk '{print $2}' | sed 's|refs/heads/||' | grep -vx "$BR" | while read -r old; do echo "removing the branch $old"; git push -q "$AUTH" --delete "$old" || true; done
 
       - name: save the source cache
         if: always() && steps.cache.outputs.cache-hit != 'true'
