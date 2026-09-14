@@ -648,7 +648,7 @@ and nothing reaches the phone without passing all of them.
 None of this came out of reading the workflows. All of it came out of firing
 them, and four of the five faults below were invisible in a green run.
 
-- **The off-site backup is on.** Nightly at 07:00 UTC - 04:00 in Chile, an hour
+- **The off-site backup is on.** Nightly at 06:23 UTC - 03:23 in Chile, an hour
   and a half ahead of the refresh - into a separate PRIVATE repo, because a
   snapshot is the whole ledger in plaintext. **Nothing in the chain expires**: a
   deploy key to push, a connection string to read (`--db-url`), since Supabase
