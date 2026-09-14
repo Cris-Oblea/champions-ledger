@@ -58,8 +58,7 @@ const BUILDS = [build("garchomp","Garchomp"), build("dragonite","Dragonite"),
                 build("garchomp-2","Garchomp", "garchomp"),
                 build("kingambit-idea","Kingambit", null)];
 
-const body = fs.readFileSync(ROOT + "tracker/dist/index.html", "utf8")
-  .replace(/<script id="vendor-supabase">[\s\S]*?<\/script>/, "");
+const body = require("./harness.js").page(ROOT);
 const stub = `<script>
 window.__ROWS=${JSON.stringify(ROWS)}; window.__BUILDS=${JSON.stringify(BUILDS)};
 window.__DELETED=[]; window.__WROTE=[]; window.confirm=function(m){ window.__ASKED=m; return true; };

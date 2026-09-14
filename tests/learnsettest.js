@@ -28,8 +28,7 @@ const ok = (label, got, want) => {
               got + (good ? "" : "   (esperado " + want + ")"));
 };
 
-const body = fs.readFileSync(ROOT + "tracker/dist/index.html", "utf8")
-  .replace(/<script id="vendor-supabase">[\s\S]*?<\/script>/, "");
+const body = require("./harness.js").page(ROOT);
 const stub = `<script>window.supabase={createClient:function(){return{
  auth:{getSession:function(){return Promise.resolve({data:{session:null}});},
        onAuthStateChange:function(){},signInWithPassword:function(){},signOut:function(){}},
@@ -116,7 +115,7 @@ setTimeout(() => {
 
   /* every screen that offers moves goes through this one helper, so the fix
      reaches all of them - assert that nothing reads the table directly */
-  const src = fs.readFileSync(ROOT + "tracker/dist/index.html", "utf8");
+  const src = require("./harness.js").page(ROOT);
   const direct = (src.match(/C\.LEARN\[/g) || []).length;
   ok("solo learnset() lee la tabla (3 lecturas, todas suyas)", direct, 3);
 

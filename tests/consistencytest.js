@@ -33,8 +33,8 @@ const ok = (label, got, want) => {
 const list = (a, n) => a.length ? a.slice(0, n || 6).join(", ") +
   (a.length > (n || 6) ? " (+" + (a.length - (n || 6)) + ")" : "") : "0";
 
-const src = fs.readFileSync(ROOT + "tracker/dist/index.html", "utf8");
-const body = src.replace(/<script id="vendor-supabase">[\s\S]*?<\/script>/, "");
+const src = require("./harness.js").page(ROOT);
+const body = src;
 const stub = `<script>window.supabase={createClient:function(){return{
  auth:{getSession:function(){return Promise.resolve({data:{session:null}});},
        onAuthStateChange:function(){},signInWithPassword:function(){},signOut:function(){}},

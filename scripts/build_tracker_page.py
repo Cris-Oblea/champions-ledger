@@ -1,11 +1,17 @@
 #!/usr/bin/env python3
 """Inline tracker/data.js into tracker/index.template.html -> tracker/index.html.
 
-An artifact is a single page: nothing external is served alongside it, so the
-reference blob has to travel inside the file.  Keeping the two apart on disk is
-what lets a source refresh regenerate the data without touching the app code.
+Two shapes come out of this, and the difference is delivery, not code.
+
+`tracker/index.html` is the single page, everything inlined. That was the
+original constraint - an artifact serves exactly one file - and it is still the
+right answer anywhere nothing else can be served alongside it.
+
+`tracker/dist/` is what Cloudflare gets: a 51 KB shell pointing at four hashed
+assets. Same program, cached in four pieces that change at different rates, so a
+nightly dex refresh costs 347 KB instead of 1,314. See split_assets().
 """
-import json, os, sys
+import hashlib, json, os, sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TPL = os.path.join(ROOT, "tracker", "index.template.html")
@@ -42,8 +48,10 @@ def assemble(tpl):
     The app was one 7,269-line file, which is not a file anyone can hold in
     their head: two views a thousand lines apart shared a helper and nothing
     said so, and every edit meant scrolling past nine other screens to reach
-    the one being changed. It is one page at RUNTIME for a good reason - an
-    artifact serves exactly one file - but that is a delivery constraint, not
+    the one being changed. It was one page at RUNTIME because an artifact
+    serves exactly one file - the deployed build splits into four cached assets
+    now, and tracker/index.html keeps the inlined shape - but that is a
+    delivery question, not
     a way to write it.
 
     So the pieces live under tracker/src/ and are concatenated here, in the
@@ -115,7 +123,7 @@ def config_js():
         ensure_ascii=False) + ";"
 
 
-def headers(supabase_url):
+def headers(supabase_url, assets=()):
     """What the page may load, and above all where it may SEND.
 
     Derived from the page's measured surface, not guessed:
@@ -163,7 +171,13 @@ def headers(supabase_url):
         # shipping a policy that quietly permits nothing
         print("  CSP: no Supabase host - connect-src is same-origin only")
     csp.insert(1, "connect-src " + " ".join(send))
-    open(os.path.join(DIST, "_headers"), "w", encoding="utf-8").write(
+    # A hashed name can never mean anything else, so it is cached for a year
+    # and never revalidated. index.html is the opposite: it is the pointer to
+    # which hashes are current, so it must be re-checked on every load or a
+    # new deploy stays invisible until something evicts it.
+    rules = "".join("/%s\n  Cache-Control: public, max-age=31536000, immutable\n\n" % a for a in assets)
+    rules += "/index.html\n  Cache-Control: no-cache\n\n/\n  Cache-Control: no-cache\n\n"
+    open(os.path.join(DIST, "_headers"), "w", encoding="utf-8").write(rules +
         "/*\n"
         "  X-Content-Type-Options: nosniff\n"
         "  Referrer-Policy: no-referrer\n"
@@ -235,6 +249,49 @@ def standalone(html):
         + head + "\n</head>\n<body>\n" + body + "\n</body>\n</html>\n")
 
 
+# WHICH BLOCKS LEAVE THE PAGE, and why each earns its own file: they change at
+# completely different rates. The dex is rewritten every night, the app when it
+# is edited, the engine only when Smogon ships one, the library on a version
+# bump. Inlined together they were one artifact, so a single usage number moving
+# overnight made the phone re-download all 1,314 KB - engine and library
+# included, neither of which had changed.
+#
+# The filename carries a hash of the content, so a changed file is a NEW url and
+# an unchanged one is never fetched again. _headers marks those immutable, which
+# is what makes the split pay: without it the browser still revalidates every
+# asset on every load, and the saving is a round trip rather than a download.
+#
+# index.html stays small and deliberately uncached: it is the pointer saying
+# which hashes are current, so it has to be allowed to change.
+SPLIT = ["vendor-supabase", "engine", "dex", "app"]
+
+
+def split_assets(html):
+    """Move the four big inline blocks into their own files.
+
+    -> (html carrying <script src> tags, {filename: text})
+    """
+    assets = {}
+    for ident in SPLIT:
+        open_tag = '<script id="%s">' % ident
+        if open_tag not in html:
+            sys.exit("the page lost its %s block - split_assets cannot run"
+                     % ident)
+        i = html.index(open_tag)
+        j = html.index("</script>", i)
+        body = html[i + len(open_tag):j]
+        # The inline form escapes </ so a literal </script> inside the code
+        # cannot close the tag early. A separate file has no such constraint and
+        # must carry the original text, or the code is not the code any more.
+        body = body.replace(r"<\/", "</")
+        name = "%s.%s.js" % (
+            ident, hashlib.sha256(body.encode("utf-8")).hexdigest()[:8])
+        assets[name] = body
+        html = (html[:i] + '<script src="%s"></script>' % name
+                + html[j + len("</script>"):])
+    return html, assets
+
+
 def build_dist(html):
     """tracker/dist/ is the ONLY directory that may be deployed.
 
@@ -252,8 +309,11 @@ def build_dist(html):
         shutil.rmtree(DIST)
     os.makedirs(DIST)
 
-    open(os.path.join(DIST, "index.html"), "w",
-         encoding="utf-8").write(standalone(html))
+    page, assets = split_assets(standalone(html))
+    for name, text in sorted(assets.items()):
+        open(os.path.join(DIST, name), "w", encoding="utf-8").write(text)
+        print("  asset %-30s %6.0f KB" % (name, len(text) / 1024))
+    open(os.path.join(DIST, "index.html"), "w", encoding="utf-8").write(page)
 
     manifest = {
         "name": "Champions Ledger",
@@ -280,12 +340,19 @@ def build_dist(html):
 
     # belt and braces: nothing may reach dist/ that was not written above
     allowed = {"index.html", "manifest.webmanifest", "icon-192.png",
-               "icon-512.png", "apple-touch-icon.png", "_headers"}
+               "icon-512.png", "apple-touch-icon.png", "_headers"} | set(assets)
+    # Every asset the page names must exist, or the deploy is a page that loads
+    # nothing. That is the failure this split introduces, so it is checked here
+    # rather than discovered on the phone.
+    for name in assets:
+        if ('src="%s"' % name) not in page:
+            sys.exit("dist/%s was written but the page never references it"
+                     % name)
     stray = set(os.listdir(DIST)) - allowed
     if stray:
         sys.exit("dist/ picked up unexpected files: %s" % sorted(stray))
 
-    headers(BUILT.get("supabase"))
+    headers(BUILT.get("supabase"), sorted(assets))
 
     total = sum(os.path.getsize(os.path.join(DIST, f))
                 for f in os.listdir(DIST))

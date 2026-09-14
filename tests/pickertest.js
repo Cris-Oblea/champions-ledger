@@ -33,8 +33,7 @@ const BUILDS = [{user_id:UID, id:"garchomp", pokemon:"Garchomp", mega:null,
   moves:["Earthquake",null,null,null], role:"", rationale:"", extra:{},
   updated_at:"2026-09-10"}];
 
-const body = fs.readFileSync(ROOT + "tracker/dist/index.html", "utf8")
-  .replace(/<script id="vendor-supabase">[\s\S]*?<\/script>/, "");
+const body = require("./harness.js").page(ROOT);
 const stub = `<script>
 window.__ROWS=${JSON.stringify(ROWS)}; window.__BUILDS=${JSON.stringify(BUILDS)};
 window.supabase={createClient:function(){return{
