@@ -5,6 +5,7 @@ import {
   natMult, statAt, toast, typeChip,
 } from "./01-data.js";
 import { closeSheet, openSheet } from "./04-nav.js";
+import { S } from "./02-state.js";
 /* The modifier tables - which item, weather, terrain and berry touch which
    type. They live in 10-scan for a historical reason and not a good one; this
    import is what finally says so out loud. */

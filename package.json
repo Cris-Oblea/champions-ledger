@@ -6,6 +6,8 @@
     "test": "node tests/pagetest.js"
   },
   "devDependencies": {
+    "acorn": "8.18.0",
+    "acorn-walk": "8.3.5",
     "esbuild": "0.28.2",
     "jsdom": "^30.0.1"
   },
