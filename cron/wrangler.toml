@@ -1,0 +1,24 @@
+# The cron Worker: a punctual trigger for the nightly refresh.
+#
+# SEPARATE FROM THE APP ON PURPOSE. champions-ledger serves the ledger and is
+# pure static assets with no script at all; giving it a scheduled handler would
+# put a piece of code that can throw in front of the thing the phone loads, for
+# a gain that has nothing to do with serving. A second Worker costs nothing on
+# the free plan and cannot take the app down.
+name = "champions-ledger-cron"
+main = "src/cron.js"
+compatibility_date = "2026-09-14"
+
+# 08:07 UTC = 05:07 in Chile. The same minute the GitHub schedule asks for, so
+# that whichever arrives first does the run and the other stops in seconds -
+# the workflow's own "has today already run?" guard makes them idempotent.
+#
+# Cloudflare runs its crons on its own schedule rather than GitHub's queue,
+# which is the entire point: measured, GitHub's was four to seven hours late.
+[triggers]
+crons = ["7 8 * * *"]
+
+# Secrets, set with `npx wrangler secret put` - never written here:
+#   GH_APP_ID            the champions-ledger-bot App's id
+#   GH_APP_PRIVATE_KEY   its private key, converted to PKCS#8
+# See cron/README.md.
