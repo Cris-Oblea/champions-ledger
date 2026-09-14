@@ -124,6 +124,12 @@ BROWSER_TESTS = [
     ("findtest.js",       "the search view"),
     ("sptest.js",         "the SP slider"),
     ("burntest.js",       "burn halves physical only"),
+    # The only test that signs in and loads a ledger WITH ROWS. Every
+    # other one stubs Supabase empty, so the login gate stays up and any
+    # branch that draws something only when there is something to draw
+    # never runs - which is how three missing imports reached the live
+    # page on 2026-09-14 with all sixteen tests green.
+    ("ledgertest.js",     "the app draws a ledger that has rows in it"),
 ]
 
 # How much a table is allowed to shrink before the refresh is treated as
