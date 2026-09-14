@@ -33,10 +33,10 @@ function renderAll(){
   more.innerHTML = "";
   if (homeShown.length > homeCap) {
     more.appendChild(fbtn("Show the other " + (homeShown.length - homeCap), "sm",
-      function(){ HOME_ALL = true; renderAll(); }));
+      function(){ setHomeAll(true); renderAll(); }));
   } else if (HOME_ALL && homeShown.length > 12) {
     more.appendChild(fbtn("Show fewer", "sm",
-      function(){ HOME_ALL = false; renderAll(); }));
+      function(){ setHomeAll(false); renderAll(); }));
   }
   $("nHomeOrigin").textContent = oHome.length;
   $("nChampOrigin").textContent = oChamp.length + oUnk.length;
@@ -142,7 +142,7 @@ Array.prototype.forEach.call($("calcMode").children, function(b){
 document.querySelectorAll(".sortseg").forEach(function(seg){
   Array.prototype.forEach.call(seg.children, function(b){
     b.onclick = function(){
-      SORT = b.dataset.sort;
+      setSort(b.dataset.sort);
       document.querySelectorAll(".sortseg").forEach(function(g){
         Array.prototype.forEach.call(g.children, function(x){
           x.setAttribute("aria-pressed", x.dataset.sort === SORT ? "true" : "false");
@@ -157,7 +157,7 @@ try {
   var savedSort = localStorage.getItem("champ-sort");
   if (savedSort === "order") savedSort = "dex";   // the option that went away
   if (savedSort) {
-    SORT = savedSort;
+    setSort(savedSort);
     document.querySelectorAll(".sortseg").forEach(function(g){
       Array.prototype.forEach.call(g.children, function(x){
         x.setAttribute("aria-pressed", x.dataset.sort === SORT ? "true" : "false");
@@ -171,7 +171,7 @@ $("teamEditBack").onclick  = function(){ leaveEditor("teams"); };
 $("buildSearch").oninput = drawBuilds;
 $("stoneSearch").oninput = drawStones;
 $("itemSearch").oninput = drawItems;
-$("homeFilter").oninput = function(){ HOME_ALL = false; renderAll(); };
+$("homeFilter").oninput = function(){ setHomeAll(false); renderAll(); };
 /* three panes, one switcher - written once so a fourth cannot forget one */
 function gearPane(which){
   var panes = {stones:"gearStonePane", items:"gearItemPane"};

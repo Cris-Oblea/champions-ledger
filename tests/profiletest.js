@@ -39,6 +39,7 @@ const BUILDS = [{user_id:UID,id:"garchomp",pokemon:"Garchomp",mega:null,
   role:"",rationale:"",extra:{},updated_at:"2026-09-11"}];
 
 const src = require("./harness.js").page(ROOT);
+const code = require("./harness.js").source(ROOT);
 const body = src;
 const stub = `<script>
 window.__ROWS=${JSON.stringify(ROWS)}; window.__BUILDS=${JSON.stringify(BUILDS)};
@@ -89,7 +90,7 @@ setTimeout(() => {
   console.log("\n  el VP no se guarda en ningun sitio");
   ok("sin campo de balance", !!d.getElementById("tVp"), false);
   ok("sin chip de VP en la cabecera", !!d.getElementById("vpCount"), false);
-  ok("y el codigo no lo escribe", /vp_balance/.test(src), false);
+  ok("y el codigo no lo escribe", /vp_balance/.test(code), false);
   /* the cost table stays, as pure reference */
   const costs = pairs("costs");
   ok("la tabla de costes sigue", Object.keys(costs).length >= 8, true);

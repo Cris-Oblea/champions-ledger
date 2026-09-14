@@ -16,7 +16,7 @@ and the page picks up the same fix Smogon shipped.
 calc.js is deliberately not the entry point: it requires every generation's
 mechanics, and the vendored copy only carries champions.js.
 """
-import json, os, shutil, subprocess, sys
+import json, os, subprocess, sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CALC = os.path.join(ROOT, "data", "raw", "smogon_calc", "calc")
@@ -43,10 +43,16 @@ def main():
         sys.exit("the engine is not vendored - run scripts/fetch_smogon_calc.py")
     with open(ENTRY, "w", encoding="utf-8") as f:
         f.write(ENTRY_SRC)
-    npx = shutil.which("npx") or shutil.which("npx.cmd")
-    if not npx:
-        sys.exit("npx not found - esbuild is needed to bundle the engine")
-    r = subprocess.run([npx, "esbuild", ENTRY, "--bundle", "--format=iife",
+    # The PINNED esbuild from node_modules, never `npx esbuild`. npx fetches
+    # whatever is newest at the moment it runs - unversioned, unreviewed, and
+    # in CI too - to build a file that then goes straight onto the phone. The
+    # version is in package-lock.json and `npm ci` installs exactly it, which
+    # is the same rule supabase-js follows for the same reason.
+    esb = os.path.join(ROOT, "node_modules", ".bin",
+                       "esbuild.cmd" if os.name == "nt" else "esbuild")
+    if not os.path.exists(esb):
+        sys.exit("esbuild is not installed - run `npm ci`. Looked in %s" % esb)
+    r = subprocess.run([esb, ENTRY, "--bundle", "--format=iife",
                         "--minify", "--outfile=" + OUT],
                        capture_output=True, text=True, cwd=ROOT)
     if r.returncode != 0:
