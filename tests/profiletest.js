@@ -39,7 +39,7 @@ const BUILDS = [{user_id:UID,id:"garchomp",pokemon:"Garchomp",mega:null,
   role:"",rationale:"",extra:{},updated_at:"2026-09-11"}];
 
 const src = fs.readFileSync(ROOT + "tracker/dist/index.html", "utf8");
-const body = src.replace(/<script src="https:\/\/cdn\.jsdelivr[^"]*"><\/script>/, "");
+const body = src.replace(/<script id="vendor-supabase">[\s\S]*?<\/script>/, "");
 const stub = `<script>
 window.__ROWS=${JSON.stringify(ROWS)}; window.__BUILDS=${JSON.stringify(BUILDS)};
 window.supabase={createClient:function(){return{

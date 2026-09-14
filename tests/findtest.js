@@ -33,7 +33,7 @@ const ROWS = [row("garchomp","Garchomp","champions","champions"),
               row("dragonite","Dragonite","home","home")];
 
 const body = fs.readFileSync(ROOT + "tracker/dist/index.html", "utf8")
-  .replace(/<script src="https:\/\/cdn\.jsdelivr[^"]*"><\/script>/, "");
+  .replace(/<script id="vendor-supabase">[\s\S]*?<\/script>/, "");
 const stub = `<script>
 window.__ROWS=${JSON.stringify(ROWS)};
 window.supabase={createClient:function(){return{

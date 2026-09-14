@@ -58,7 +58,7 @@ const TEAMS = [{user_id:UID, id:"t1", name:"Prueba", slots:[
 ], notes:{}, updated_at:"2026-09-13"}];
 
 const body = fs.readFileSync(ROOT + "tracker/dist/index.html", "utf8")
-  .replace(/<script src="https:\/\/cdn\.jsdelivr[^"]*"><\/script>/, "");
+  .replace(/<script id="vendor-supabase">[\s\S]*?<\/script>/, "");
 const stub = `<script>
 window.__ROWS=${JSON.stringify(ROWS)}; window.__BUILDS=${JSON.stringify(BUILDS)};
 window.__TEAMS=${JSON.stringify(TEAMS)};

@@ -42,7 +42,7 @@ const ROWS = [
   R("g5", "Sharpedo",  "home",      "home",      "permanent")];
 
 const body = fs.readFileSync(ROOT + "tracker/dist/index.html", "utf8")
-  .replace(/<script src="https:\/\/cdn\.jsdelivr[^"]*"><\/script>/, "");
+  .replace(/<script id="vendor-supabase">[\s\S]*?<\/script>/, "");
 const stub = `<script>window.__ROWS=${JSON.stringify(ROWS)};
 window.supabase={createClient:function(){return{
  auth:{getSession:function(){return Promise.resolve({data:{session:{user:{id:"u1",email:"t@t"}}}});},

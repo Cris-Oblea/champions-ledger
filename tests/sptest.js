@@ -22,7 +22,7 @@ const BUILDS = [{user_id:UID,id:"primarina",pokemon:"Primarina",mega:null,
   stat_points:{hp:4,atk:0,def:0,spa:32,spd:8,spe:22},
   moves:["Hyper Voice"],role:"",rationale:"",extra:{},updated_at:"2026-09-10"}];
 const body = fs.readFileSync(ROOT + "tracker/dist/index.html","utf8")
-  .replace(/<script src="https:\/\/cdn\.jsdelivr[^"]*"><\/script>/,"");
+  .replace(/<script id="vendor-supabase">[\s\S]*?<\/script>/, "");
 const stub = `<script>
 window.__ROWS=${JSON.stringify(ROWS)}; window.__BUILDS=${JSON.stringify(BUILDS)};
 window.supabase={createClient:function(){return{
