@@ -45,10 +45,16 @@ DEFAULT_DIR = os.environ.get(
 # snapshot should describe the whole database, but it is never restored -
 # migrate.py is what writes it, and replaying it could claim a migration ran
 # against a schema that has not seen it.
-TABLES = ["box", "builds", "teams", "meta", "schema_migrations"]
+# stones and items became tables of their own in migration 6 - a row per
+# owned thing instead of a list inside one meta document. A table missing
+# from this list is a table the backup does not carry, which is the
+# quietest way for a snapshot to stop being a snapshot.
+TABLES = ["box", "builds", "teams", "stones", "items", "meta",
+          "schema_migrations"]
 NO_RESTORE = {"schema_migrations"}
 KEYS = {"box": ("user_id", "id"), "builds": ("user_id", "id"),
-        "teams": ("user_id", "id"), "meta": ("user_id", "id")}
+        "teams": ("user_id", "id"), "meta": ("user_id", "id"),
+        "stones": ("user_id", "id"), "items": ("user_id", "id")}
 
 # How many rows of JSON go into one `supabase db query` argument. The CLI takes
 # the statement as a single command-line argument and Windows caps that around

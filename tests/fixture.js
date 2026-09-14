@@ -18,6 +18,10 @@
  * Keep it awkward. If a row here stops triggering the branch it was written
  * for, ledgertest.js asserts the branch ran and says so - a fixture that has
  * quietly stopped covering anything is worse than none.
+ *
+ * The tables are the real ones: box, builds, teams, stones, items and meta.
+ * stones and items became tables of their own in migration 6 - a row per owned
+ * thing - and meta is down to the documents that really are one document.
  */
 const fs = require("fs");
 const path = require("path");
@@ -110,17 +114,20 @@ const teams = [{
   updated_at: DAY + "T00:00:00Z",
 }];
 
+/* A row per owned thing since migration 6. Two stones, because a team may
+   carry two and 292 of 395 Worlds teams did. The third, Sablenite, unlocks a
+   Mega for a species that is NOT in this box - that is the "dead weight until
+   it arrives" branch, and without it nothing exercises it. */
+const stones = ["Charizardite Y", "Garchompite", "Sablenite"].map(named);
+const items = ["Focus Sash", "Sitrus Berry", "Black Glasses", "Assault Vest"]
+  .map(named);
+
+function named(id) {
+  return { user_id: UID, id, updated_at: DAY + "T00:00:00Z" };
+}
+
 const meta = [
   { user_id: UID, id: "trainer", data: { box_capacity: 50 } },
-  { user_id: UID, id: "stones", data: { owned: ["Charizardite Y", "Garchompite"] } },
-  {
-    user_id: UID, id: "items",
-    data: {
-      categories: ["Held", "Berry"],
-      owned: [["Focus Sash", ["Held"]], ["Sitrus Berry", ["Berry"]],
-              ["Black Glasses", ["Held"]], ["Assault Vest", ["Held"]]],
-    },
-  },
   {
     /* FULL. GTS_SLOTS is 3, and three open offers is what makes the panel draw
        its "all slots are in use" warning - the exact line that threw. */
@@ -142,7 +149,7 @@ const meta = [
   },
 ];
 
-const ROWS = { box, builds, teams, meta };
+const ROWS = { box, builds, teams, stones, items, meta };
 
 /* The stub. It is the same shape supabase-js presents to 03-store.js and
    nothing more: a session, a select per table, and a channel that never

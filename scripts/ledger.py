@@ -74,7 +74,7 @@ def _from_db():
     except ImportError:
         return None
     out = {}
-    for t in ("box", "builds", "teams", "meta"):
+    for t in ("box", "builds", "teams", "stones", "items", "meta"):
         r = backup_ledger.rows(t)
         if r is None:
             return None
@@ -145,6 +145,28 @@ def _box(t, location, rental=None):
     return [r["name"] for r in rows]
 
 
+def _item_categories():
+    """name -> the group the game itself puts the item in.
+
+    Serebii lays the item page out in three tables and that is where the
+    grouping comes from; it was never typed in. It used to be stored beside
+    the owned list, which meant a category could drift from the dex that
+    defines it.
+    """
+    path = os.path.join(ROOT, "data", "db", "items.json")
+    try:
+        rows = json.load(io.open(path, encoding="utf-8"))
+    except (OSError, ValueError):
+        return {}
+    if isinstance(rows, dict):
+        rows = rows.get("items") or []
+    out = {}
+    for r in rows:
+        if isinstance(r, dict) and r.get("name"):
+            out[r["name"]] = (r.get("category") or r.get("kind") or "other")
+    return out
+
+
 def inv(refresh=False):
     """The shape query.py already expects, built from the ledger.
 
@@ -154,18 +176,25 @@ def inv(refresh=False):
     """
     t = tables(refresh)
     trainer = _meta(t, "trainer")
+    # One row per owned item since migration 6, and the categories that used to
+    # ride along in the document are the game's own - they come from
+    # data/db/items.json. The old [name, [category]] pairs were converted by
+    # that migration, so there is one shape to read here rather than two.
+    cats = _item_categories()
     items = {}
-    for row in (_meta(t, "items").get("owned") or []):
-        name, cats = (row[0], row[1]) if isinstance(row, list) else (row, "other")
-        for c in ([cats] if isinstance(cats, str) else cats) or ["other"]:
-            items.setdefault(c, []).append(name)
+    for row in (t.get("items") or []):
+        name = row.get("id")
+        if not name:
+            continue
+        items.setdefault(cats.get(name, "other"), []).append(name)
     champ = _box(t, "champions")
     return {
         "permanent_pokemon": _box(t, "champions", rental=False),
         "rental_pokemon": {"list": _box(t, "champions", rental=True),
                            "can_be_trained": False},
         "home_box": {"list": _box(t, "home")},
-        "mega_stones": sorted(_meta(t, "stones").get("owned") or []),
+        "mega_stones": sorted(r["id"] for r in (t.get("stones") or [])
+                              if r.get("id")),
         "items": {k: sorted(v) for k, v in sorted(items.items())},
         # box_used is DERIVED now. It was a hand-typed number in the file and
         # query.py carried a warning for when it disagreed with the lists;
