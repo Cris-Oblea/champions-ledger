@@ -15,6 +15,9 @@ OUT = os.path.join(ROOT, "tracker", "index.html")
 DIST = os.path.join(ROOT, "tracker", "dist")
 SRC = os.path.join(ROOT, "tracker", "src")
 MARK = "/*__CHAMP_DATA__*/"
+# Filled in during the build, read when the headers are written:
+# only the Supabase URL, and only so the CSP names the same host.
+BUILT = {}
 CMARK = "/*__CHAMP_CONFIG__*/"
 EMARK = "/*__CHAMP_ENGINE__*/"
 ENGINE = os.path.join(ROOT, "tracker", "engine.bundle.js")
@@ -91,10 +94,69 @@ def config_js():
             sys.exit("config.local.json holds a SECRET key (%s). Remove it and "
                      "rotate that key - it must never be built into the page." % k)
     print("  Supabase: %s" % c["url"])
+    # Remembered for the Content-Security-Policy. The policy has to name the exact
+    # host the page was built to talk to, and resolving it twice is how the two
+    # would drift: the day the project URL moves, a second copy keeps pointing at
+    # the old one and the app looks broken with no error, just a blocked request.
+    BUILT["supabase"] = c["url"]
     return "window.CHAMP_CONFIG = " + json.dumps(
         {"supabase": {"url": c["url"], "key": c["publishableKey"],
                       "email": c.get("loginEmail", "")}},
         ensure_ascii=False) + ";"
+
+
+def headers(supabase_url):
+    """What the page may load, and above all where it may SEND.
+
+    Derived from the page's measured surface, not guessed:
+      - one external script, supabase-js from jsDelivr
+      - the IBM Plex stylesheet from fonts.googleapis.com, its files from
+        fonts.gstatic.com
+      - Supabase over https for REST and auth, and over wss for realtime
+      - a same-origin fetch of the page itself, which is how the search view
+        probes whether it is online
+      - photographs held as data:/blob: while a box scan is confirmed
+    Nothing in tracker/src/ or the vendored engine uses eval or new Function -
+    both checked - so no 'unsafe-eval' is needed.
+
+    `script-src` does carry 'unsafe-inline', and that is the price of the single
+    page: the whole app is inline, so there is no origin to allow instead. A hash
+    per block was considered and rejected - five of them, recomputed every build,
+    where one whitespace difference serves a blank screen.
+
+    That trade is fair because the attack this closes is not inline script, it is
+    exfiltration. The page holds the entire ledger behind a login, and the one
+    piece of code on it that nobody here wrote is fetched from a CDN. `connect-src`
+    means a tampered supabase.js can read the ledger and has nowhere to send it:
+    one Supabase project, and the page's own origin.
+    """
+    csp = [
+        "default-src 'self'",
+        "script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net",
+        "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
+        "font-src https://fonts.gstatic.com",
+        "img-src 'self' data: blob:",
+        "object-src 'none'",
+        "base-uri 'none'",
+        # there is exactly one real <form> on the page, the login
+        "form-action 'self'",
+        "frame-ancestors 'none'",
+    ]
+    send = ["'self'"]
+    if supabase_url:
+        host = supabase_url.rstrip("/")
+        send += [host, "wss://" + host.split("://", 1)[-1]]
+    else:
+        # the Claude-db build has no Supabase host to allow, and saying so beats
+        # shipping a policy that quietly permits nothing
+        print("  CSP: no Supabase host - connect-src is same-origin only")
+    csp.insert(1, "connect-src " + " ".join(send))
+    open(os.path.join(DIST, "_headers"), "w", encoding="utf-8").write(
+        "/*\n"
+        "  X-Content-Type-Options: nosniff\n"
+        "  Referrer-Policy: no-referrer\n"
+        "  X-Frame-Options: DENY\n"
+        "  Content-Security-Policy: " + "; ".join(csp) + "\n")
 
 
 def main():
@@ -204,11 +266,7 @@ def build_dist(html):
     if stray:
         sys.exit("dist/ picked up unexpected files: %s" % sorted(stray))
 
-    open(os.path.join(DIST, "_headers"), "w", encoding="utf-8").write(
-        "/*\n"
-        "  X-Content-Type-Options: nosniff\n"
-        "  Referrer-Policy: no-referrer\n"
-        "  X-Frame-Options: DENY\n")
+    headers(BUILT.get("supabase"))
 
     total = sum(os.path.getsize(os.path.join(DIST, f))
                 for f in os.listdir(DIST))
