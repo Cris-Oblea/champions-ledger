@@ -103,8 +103,11 @@ error. Anything quoted here says which one it came from.
 ## How it stays current, without anyone remembering
 
 ```
-05:30  GitHub Actions refreshes every source, rebuilds, runs the gate,
-       deploys, and opens a pull request with whatever moved.
+05:30  GitHub Actions refreshes every source, rebuilds, runs the gate, and
+       opens a pull request with whatever moved. The pull request is gated
+       again on its own, merges itself when green - and the merge is what
+       deploys. A refresh that fails the gate leaves the pull request open
+       and deploys nothing.
 ```
 
 <!-- GATE:START -->
