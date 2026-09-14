@@ -32,8 +32,7 @@ const row = (id, name, location, origin) => ({user_id:UID, id, name, location,
 const ROWS = [row("garchomp","Garchomp","champions","champions"),
               row("dragonite","Dragonite","home","home")];
 
-const body = fs.readFileSync(ROOT + "tracker/dist/index.html", "utf8")
-  .replace(/<script id="vendor-supabase">[\s\S]*?<\/script>/, "");
+const body = require("./harness.js").page(ROOT);
 const stub = `<script>
 window.__ROWS=${JSON.stringify(ROWS)};
 window.supabase={createClient:function(){return{

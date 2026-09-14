@@ -41,8 +41,7 @@ const ROWS = [
   R("g4", "Sableye",   "champions", "home",      "permanent"),
   R("g5", "Sharpedo",  "home",      "home",      "permanent")];
 
-const body = fs.readFileSync(ROOT + "tracker/dist/index.html", "utf8")
-  .replace(/<script id="vendor-supabase">[\s\S]*?<\/script>/, "");
+const body = require("./harness.js").page(ROOT);
 const stub = `<script>window.__ROWS=${JSON.stringify(ROWS)};
 window.supabase={createClient:function(){return{
  auth:{getSession:function(){return Promise.resolve({data:{session:{user:{id:"u1",email:"t@t"}}}});},

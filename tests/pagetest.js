@@ -9,9 +9,7 @@ const ROOT = require("path").join(__dirname, "..") + "/";
 const { JSDOM, VirtualConsole } = require("jsdom");
 const CASES = JSON.parse(fs.readFileSync(__dirname + "/enginecases.json", "utf8"));
 
-const body = fs.readFileSync(
-  ROOT + "tracker/dist/index.html", "utf8")
-  .replace(/<script id="vendor-supabase">[\s\S]*?<\/script>/, "");
+const body = require("./harness.js").page(ROOT);
 const stub = `<script>window.supabase={createClient:function(){return{
   auth:{getSession:function(){return Promise.resolve({data:{session:null}});},
         onAuthStateChange:function(){},signInWithPassword:function(){},signOut:function(){}},
