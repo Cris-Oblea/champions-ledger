@@ -3,8 +3,8 @@
  "game": "Pokemon Champions",
  "note": "VGC formats only (doubles, bring 6 pick 4). Singles dropped.",
  "fetched": "2026-09-14",
- "count": 358,
- "with_vgc_analysis": 56,
+ "count": 323,
+ "with_vgc_analysis": 54,
  "pokemon": [
   {
    "name": "Gholdengo",
@@ -225,58 +225,6 @@
       "pengu",
       "RauSakura"
      ]
-    },
-    {
-     "format": "VGC26 Regulation M-B",
-     "outdated": null,
-     "overview": "",
-     "comments": "",
-     "movesets": [
-      {
-       "name": "Redirection Support",
-       "pokemon": "Sinistcha",
-       "abilities": [
-        "Hospitality"
-       ],
-       "items": [
-        "Colbur Berry",
-        "Sitrus Berry"
-       ],
-       "natures": [
-        "Bold"
-       ],
-       "stat_points": [
-        {
-         "hp": 32,
-         "atk": 0,
-         "def": 14,
-         "spa": 0,
-         "spd": 20,
-         "spe": 0
-        }
-       ],
-       "moveslots": [
-        [
-         "Rage Powder"
-        ],
-        [
-         "Trick Room"
-        ],
-        [
-         "Matcha Gotcha"
-        ],
-        [
-         "Protect",
-         "Life Dew"
-        ]
-       ],
-       "explanation": "Sinistcha is a multifaceted support Pokemon; aside from providing speed control with Trick Room, it's the most notable redirector in Regulation M-B thanks to its solid bulk, decent typing, and ability to automatically heal allies with Hospitality. Said bulk and typing allow it to comfortably redirect attacks like Sneasler's STAB moves and Fake Out, Garchomp's Dragon Claw, and Water-type moves like Basculegion-M's Wave Crash, making it an ideal ally to setup sweepers like Mega Delphox and Mega Blastoise.\nMatcha Gotcha: Although it's a bit unreliable, Matcha Gotcha extends Sinistcha's longevity, deals spread chip damage, and sometimes burns physical attackers, ensuring Sinistcha isn't too passive. Matcha Gotcha also lets Sinistcha handle Mega Swampert by itself.\nProtect vs. Life Dew: Foes like Kingambit and Mega Staraptor will often directly target Sinistcha with a super effective move to bypass Rage Powder; Protect allows it to punish such attacks. Sinistcha can use Life Dew over Protect to keep important allies as well as itself in tip-top shape, though it will become easy to overwhelm.\nColbur Berry vs. Sitrus Berry: Sinistcha is capable of healing itself with Matcha Gotcha, and it's often paired with another support Pokemon like Incineroar that appreciates Sitrus Berry's healing. Thus, Sinistcha can usually manage with a resistance Berry like Colbur Berry, which ensures survival against Kingambit's Kowtow Cleave. If its ally is holding another item, Sinistcha can use Sitrus Berry to more comfortably redirect attacks and take spread moves like Sylveon's Hyper Voice, which is unlikely to 2HKO it with the burst healing.\nKeeping Sinistcha in the Back: Sinistcha is often kept in reserve at the start of a match to let Hospitality heal the initial damage taken by its offensive teammates, giving them more leeway to set up or attack.\nOther Options\nShadow Ball: Shadow Ball allows Sinistcha to win the mirror matchup, 2HKOing opposing Sinistcha even with no investment, and it also can catch Mega Gengar and Gholdengo on the switch. Furthermore, Shadow Ball lets Sinistcha hit Grass-resistant foes like Sneasler and Mega Delphox.\nOcca Berry: Sinistcha can use other resistance Berries if your team requires a bigger safety net against a troublesome foe. Occa Berry lets Sinistcha withstand Fire-type attacks like Incineroar's Flare Blitz and Mega Charizard Y's and Mega Delphox's Heat Wave. Although Mega Charizard Y's Weather Ball can OHKO it even with Occa Berry, heavy Special Attack investment is required to do so, and most Charizard can't afford to make that investment.\nKasib Berry: Kasib Berry enables Sinistcha to take Adaptability Basculegion-M's 150-Base Power Last Respects, helping it prevent a late-game sweep by directly hitting it or setting up Trick Room. It can also let Shadow Ball Sinistcha pressure Mega Gengar and Gholdengo better by letting it take their own Shadow Ball.\nSP Spreads\n32 HP / 14 Def / 20 SpD with Bold: The physical bulk investment prevents Sinistcha from being OHKOed by Jolly Mega Aerodactyl's Dual Wingbeat, while the Special Defense investment lets it usually avoid the 2HKO from Timid Mega Floette's Dazzling Gleam and always withstand Timid Mega Froslass's Blizzard and Shadow Ball.\nTeambuilding\nChecks and Weaknesses: Spread attackers with super effective moves can heavily damage Sinistcha while bypassing Rage Powder's redirection. Fire-types with Heat Wave like Mega Charizard Y and Mega Delphox are the most common examples, and even Mega Charizard Y can outright OHKO Sinistcha. Ice-types like Mega Froslass and Alolan Ninetales are also notable, as they can set up Aurora Veil while threatening Sinistcha with a perfectly accurate Blizzard.\nDark-types like Kingambit and Incineroar can punish Sinistcha's Rage Powder with their STAB attacks, easily pressuring Sinistcha to use Protect or switch out. Additionally, Incineroar's STAB combination can render the Colbur and Occa Berries useless, especially in an open team sheet format, as it will always have a way to heavily damage Sinistcha.\nGhost-types like Gholdengo and Mega Gengar threaten Sinistcha with Shadow Ball and take little from Matcha Gotcha; these two Pokemon also don't care about Rage Powder because they can either safely set up and threaten with a boosted Make It Rain or Perish trap Sinistcha's teammate, respectively. Basculegion-M is capable of OHKOing Sinistcha with just a 100-Base Power Last Respects, though Kasib Berry variants can survive Last Respects and possibly burn it with Matcha Gotcha. Also, Choice Scarf Basculegion-M has its effectiveness dampened late-game if Trick Room is set up or it's locked into a Water-type move.\nGrass-types are unaffected by Rage Powder; this allows them to directly threaten Sinistcha's partners. Whimsicott is the most dangerous because Sinistcha won't be able to stop Encore, while Venusaur can freely put its allies to sleep with Sleep Powder and pressure it with Sludge Bomb, which can 2HKO it if it gets poisoned. These two do not enjoy Trick Room getting set up, however.\nFlying-types like Mega Aerodactyl and Mega Staraptor heavily damage or OHKO Sinistcha with their STAB moves. This makes it easy for them to get Tailwind set up because Sinistcha can't simply set up Trick Room, and Mega Staraptor can also start fortifying itself with Contrary Close Combat's boosts once Sinistcha is removed. Pelipper is generally the best answer to Sinistcha on rain teams because it threatens an OHKO with Hurricane; this is notable because Sinistcha is often a large obstacle for other mainstays like Mega Swampert to overcome.\nGood Partners and Synergies: Setup-oriented Mega Evolutions are the best Pokemon to pair with Sinistcha, as they greatly appreciate its redirection and healing support while outputting enough damage to compensate for its passiveness. Mega Delphox's typing and Speed allow it to deal with Ice- and Grass-types as well as Mega Charizard Y and Mega Staraptor once it has set up Nasty Plot. With Sinistcha's Rage Powder, it can also safely threaten Mega Gengar and Kingambit without having to deal with Shadow Ball and Sucker Punch, respectively. Mega Blastoise absolutely appreciates Hospitality, which restores Water Spout's power, and it's also flexible enough to work under Trick Room due to its mediocre Speed. Furthermore, Mega Blastoise can handle Fire- and Ghost-types with Water Spout and Dark Pulse.\nOther Pokemon like Incineroar and Sneasler pair well with Sinistcha to form a solid support frame for the aforementioned setup sweepers. Incineroar can handle Mega Delphox and Grass-types, as well as Kingambit if it's not affected by Intimidate, and its ability to pivot to Sinistcha with Parting Shot synergizes with Hospitality. Meanwhile, Sneasler's STAB combination lets it directly threaten Dark-types and Whimsicott. This can allow Sinistcha to not use Trick Room against Whimsicott, which won't have many safe opportunities to set up Tailwind against Sneasler.\nSinistcha is a common Pokemon on sand teams, though their shaky matchups against top metagame threats like Basculegion-M and Garchomp make sand a niche archetype in Regulation M-B. Hospitality complements Mega Tyranitar's excellent bulk, and Rage Powder allows Dragon Dance variants to set up more safely. In return, Mega Tyranitar easily handles Fire-, Ice-, and Ghost-types and blocks out Mega Charizard Y's sun and Mega Froslass's snow with its sand. Milotic is a common bulky Pokemon on sand teams that also appreciates Hospitality and likes Sinistcha's extra support against opposing Water-types, and it can set up Coil more easily with Sinistcha's redirection. Milotic can repay Sinistcha by handling Incineroar, a common roadblock for sand teams. Both Mega Tyranitar and Milotic also appreciate Sinistcha's Trick Room support so that they're more likely to move first."
-      }
-     ],
-     "credits": [
-      "pengu",
-      "gephicka"
-     ]
     }
    ]
   },
@@ -340,8 +288,10 @@
     "Iron Defense",
     "Iron Head",
     "Light Screen",
+    "Metal Burst",
     "Metal Sound",
     "Meteor Beam",
+    "Mirror Coat",
     "Night Slash",
     "Outrage",
     "Protect",
@@ -351,7 +301,6 @@
     "Rock Slide",
     "Rock Tomb",
     "Scary Face",
-    "Slash",
     "Sleep Talk",
     "Smack Down",
     "Snarl",
@@ -713,102 +662,6 @@
    "vgc_strategies": []
   },
   {
-   "name": "Mr. Mime",
-   "alias": "mr-mime",
-   "types": [
-    "Psychic",
-    "Fairy"
-   ],
-   "base_stats": {
-    "hp": 40,
-    "atk": 45,
-    "def": 65,
-    "spa": 100,
-    "spd": 120,
-    "spe": 90
-   },
-   "learnset": [
-    "Ally Switch",
-    "Attract",
-    "Baton Pass",
-    "Body Slam",
-    "Brick Break",
-    "Calm Mind",
-    "Charge Beam",
-    "Charm",
-    "Confuse Ray",
-    "Copycat",
-    "Dazzling Gleam",
-    "Drain Punch",
-    "Encore",
-    "Endure",
-    "Energy Ball",
-    "Expanding Force",
-    "Facade",
-    "Fake Out",
-    "Fire Punch",
-    "Fling",
-    "Focus Blast",
-    "Foul Play",
-    "Future Sight",
-    "Giga Impact",
-    "Grass Knot",
-    "Guard Swap",
-    "Helping Hand",
-    "Hyper Beam",
-    "Hypnosis",
-    "Ice Punch",
-    "Icy Wind",
-    "Iron Defense",
-    "Light Screen",
-    "Magic Room",
-    "Mega Kick",
-    "Misty Terrain",
-    "Mystical Fire",
-    "Nasty Plot",
-    "Payback",
-    "Power Split",
-    "Power Swap",
-    "Protect",
-    "Psychic",
-    "Psychic Terrain",
-    "Psyshock",
-    "Quick Guard",
-    "Rain Dance",
-    "Recycle",
-    "Reflect",
-    "Rest",
-    "Role Play",
-    "Round",
-    "Safeguard",
-    "Shadow Ball",
-    "Skill Swap",
-    "Sleep Talk",
-    "Snore",
-    "Solar Beam",
-    "Stored Power",
-    "Substitute",
-    "Sucker Punch",
-    "Sunny Day",
-    "Taunt",
-    "Teeter Dance",
-    "Thief",
-    "Thunder",
-    "Thunder Punch",
-    "Thunder Wave",
-    "Thunderbolt",
-    "Tickle",
-    "Torment",
-    "Trick",
-    "Trick Room",
-    "Uproar",
-    "Wide Guard",
-    "Wonder Room",
-    "Zen Headbutt"
-   ],
-   "vgc_strategies": []
-  },
-  {
    "name": "Pinsir",
    "alias": "pinsir",
    "types": [
@@ -863,7 +716,6 @@
     "Rock Tomb",
     "Round",
     "Seismic Toss",
-    "Slash",
     "Sleep Talk",
     "Snore",
     "Stealth Rock",
@@ -1664,56 +1516,6 @@
       "RauSakura",
       "gephicka"
      ]
-    },
-    {
-     "format": "VGC26 Regulation M-B",
-     "outdated": null,
-     "overview": "",
-     "comments": "",
-     "movesets": [
-      {
-       "name": "Offensive Tailwind Setter",
-       "pokemon": "Aerodactyl",
-       "abilities": [
-        "Unnerve"
-       ],
-       "items": [
-        "Aerodactylite"
-       ],
-       "natures": [
-        "Jolly"
-       ],
-       "stat_points": [
-        {
-         "hp": 2,
-         "atk": 32,
-         "def": 0,
-         "spa": 0,
-         "spd": 0,
-         "spe": 32
-        }
-       ],
-       "moveslots": [
-        [
-         "Rock Slide"
-        ],
-        [
-         "Dual Wingbeat"
-        ],
-        [
-         "Ice Fang"
-        ],
-        [
-         "Tailwind"
-        ]
-       ],
-       "explanation": "Mega Aerodactyl is an incredible Tailwind setter and offensive threat thanks to its massive Speed stat, outspeeding all unboosted Pokemon and some Choice Scarf users like Basculegion-M. With its coverage, it is able to OHKO Pokemon like Mega Charizard Y, Sneasler, and Garchomp.\nRock Slide: Mega Aerodactyl can outspeed and OHKO Mega Charizard Y with Rock Slide. Rock Slide is also a strong spread damaging option for opposing Mega Aerodactyl and opposing Fire-types, and it can threaten foes with flinches due to Mega Aerodactyl's high Speed.\nDual Wingbeat: Mega Aerodactyl's Dual Wingbeat is able to OHKO some of the most common Focus Sash users in the format, such as Sneasler, Whimsicott, and Venusaur. It can also deal huge damage to Mega Staraptor and Sinistcha.\nIce Fang: Mega Aerodactyl's Ice Fang is able to OHKO Garchomp and Inner Focus Dragonite. With Rock Slide and Ice Fang, Mega Aerodactyl is incredible against sun teams, since it can outspeed both Mega Charizard Y and Garchomp and OHKO them.\nMega Evolving Aerodactyl: Aerodactyl can still function as a fast Tailwind setter in its base forme, so it can be brought to a battle to support another Mega Evolution. Aerodactyl can also make use of its ability Unnerve, shutting off Sitrus Berry healing on Pokemon like Incineroar and Farigiraf, as well as Kingambit's Chople Berry.\nOther Options\nProtect: Protect can be run instead of Ice Fang, making Mega Aerodactyl less vulnerable to Fake Out. Without Ice Fang, however, Mega Aerodactyl's matchup against Garchomp is tough due to the latter's access to Rock Slide and its Rough Skin activating twice if Mega Aerodactyl hits it with Dual Wingbeat.\nWide Guard: Wide Guard is another option that can be run over Ice Fang, letting Mega Aerodactyl protect its teammates from the many strong spread attacks of the format like opposing Mega Aerodactyl's Rock Slide and Mega Froslass's Blizzard.\nTeambuilding\nChecks and Weaknesses: Mega Aerodactyl has no way to threaten Steel-types like Mega Metagross, Kingambit, and Archaludon, which can all OHKO Mega Aerodactyl in return with Iron Head and Flash Cannon. Mega Aerodactyl is also susceptible to Fake Out from foes like Sneasler and Mega Raichu Y unless it's running Protect. Incineroar can be an especially problematic Fake Out user, since it also lowers Mega Aerodactyl's Attack with Intimidate.\nRain teams can be problematic for Mega Aerodactyl, since they commonly use Archaludon and Mega Swampert, the latter of which being able to outspeed Mega Aerodactyl thanks to Swift Swim and OHKO it with Wave Crash. Rain teams also commonly use Grimmsnarl, which can reduce Mega Aerodactyl's damage output with Reflect and Parting Shot. Pelipper can also be annoying for Mega Aerodactyl to deal with, able to threaten it with Weather Ball and use Wide Guard to protect Mega Charizard Y from Rock Slide, allowing the latter to OHKO Mega Aerodactyl with its own Water-type Weather Ball.\nSand teams are also problematic for Mega Aerodactyl, since Mega Tyranitar can tank any of Mega Aerodactyl's attacks and threaten it back with Rock Slide. Sand teams also commonly feature Sand Rush Excadrill, which can outspeed Mega Aerodactyl in the sand and OHKO it with Iron Head.\nVenusaur can outspeed Mega Aerodactyl with Chlorophyll and, if it's holding a Life Orb, OHKO it with Leaf Storm or Solar Beam. Venusaur can also put Mega Aerodactyl to sleep with Sleep Powder, allowing a partner like Garchomp to safely attack it with Rock Slide.\nCorviknight can tank any of Mega Aerodactyl's attacks and threaten it with Iron Head, set itself up with Bulk Up, or set its own Tailwind. Rotom-Wash can similarly tank Mega Aerodactyl's attacks and threaten it back with Hydro Pump, Thunderbolt, and Will-O-Wisp.\nTrick Room from Farigiraf can turn Mega Aerodactyl's huge Speed stat against it and allow Pokemon like Kingambit to outspeed it and OHKO with Iron Head. Farigiraf can also 2HKO Mega Aerodactyl with Thunderbolt.\nGood Partners and Synergies: Garchomp is Mega Aerodactyl's strongest partner. It can freely use Earthquake next to Mega Aerodactyl to threaten the Steel- and Rock-types that Mega Aerodactyl hates facing and has an excellent matchup against sand teams. In return, Mega Aerodactyl provides Garchomp with Tailwind, letting it outspeed and OHKO Pokemon like Mega Raichu Y, which could otherwise outspeed Mega Aerodactyl and OHKO it before Garchomp could move.\nMega Charizard Y is a great Mega Evolution to use alongside Aerodactyl with Aerodactylite. It can threaten Steel-types with Heat Wave and Weather Ball, OHKO Mega Swampert, deal significant damage to Rotom-Wash with Solar Beam, and shut off opposing weather. Mega Charizard Y also appreciates base forme Aerodactyl's ability to set Tailwind and heavily damage opposing Mega Charizard Y and Garchomp. Mega Aerodactyl is strong against some of Mega Charizard Y's worst matchups, such as against Mega Dragonite and Mega Delphox, while Mega Charizard Y is strong against Mega Mawile and Mega Metagross.\nKingambit benefits greatly from Tailwind allowing it to outspeed Basculegion-M, opposing Kingambit, and Mega Tyranitar, threatening the former with Kowtow Cleave and the latter two with Low Kick. Sylveon is another good beneficiary of Tailwind, using it to outspeed Pokemon like Sneasler and pose a threat with its strong Hyper Voice, while Mega Aerodactyl can threaten checks to Sylveon like Mega Charizard Y and Sneasler. Both of these Pokemon's naturally slow Speed stats let them punish Trick Room strategies, with Kingambit even being able to OHKO Farigiraf with Kowtow Cleave.\nIncineroar can threaten Farigiraf with Throat Chop and can use Fake Out to let Mega Aerodactyl set up Tailwind in front of Pokemon like Venusaur. Farigiraf can block opposing Fake Out thanks to Armor Tail and negate opposing Trick Room. Farigiraf can also use Thunderbolt to OHKO Pelipper and deal solid damage to Pokemon like Basculegion-M and Corviknight."
-      }
-     ],
-     "credits": [
-      "pengu",
-      "poketitanterra"
-     ]
     }
    ]
   },
@@ -2078,52 +1880,12 @@
         ]
        ],
        "explanation": "Dragonite is a strong anti-metagame pick with respectable offensive coverage into common threats and access to a strong priority move in Extreme Speed. Its well-rounded offensive and defensive profile gives it favorable matchups into metagame staples such as Mega Charizard Y and Kingambit, while its two viable abilities let it adapt to their common teammates, such as Incineroar and Garchomp.\nExtreme Speed: Extreme Speed is valuable not only to finish off weakened foes; with a Life Orb, it can threaten 2HKOs on opposing Fairy-types such as Mega Floette and Sylveon after an ally has used Fake Out. Extreme Speed's ability to meaningfully threaten these Fairy-types is important because they are immune to Dragon Claw and resist Low Kick.\nLow Kick versus Fire Punch: Low Kick provides Dragonite a reliable way to threaten metagame staples such as Kingambit, Mega Tyranitar, and Incineroar. Fire Punch, while not being able to OHKO Kingambit, allows Dragonite to hit a wider variety of threats, notably incuding Gholdengo, Whimsicott, and Alolan Ninetales.\nInner Focus versus Multiscale: Inner Focus grants Dragonite an immunity to common defensive tools like Intimidate and Fake Out, allowing Dragonite to power through teams that rely on Fake Out from Incineroar and Sneasler to protect an offensive sweeper like Mega Delphox and Mega Blastoise. A bulkier spread with Multiscale allows Dragonite to have a better matchup against faster Dragon-types like Garchomp while also providing a safety net against other threats such as boosted Kingambit.\nLife Orb versus Dragon Fang: Life Orb is the preferred item on Inner Focus sets as it significantly powers up all of Dragonite's moves, allowing Dragonite to 2HKO Incineroar with Low Kick even after Sitrus Berry recovery and pick up 2HKOs on most neutral targets with the combination of Dragon Claw and Extreme Speed. On Multiscale sets, Dragon Fang is used instead to secure the OHKO on most variants of Garchomp while not incurring the recoil from Life Orb that would break Multiscale.\nOther Options\nSuperpower: On Inner Focus sets, Superpower's increased power over Low Kick allows Dragonite to OHKO Incineroar while also putting bulkier Steel-types such as Chople Berry Kingambit and Archaludon in KO range of an ally's attack such as Moonblast from Whimsicott. However, the Defense drop does put Dragonite in range of some moves like 100 Base Power Last Respects from Basculegion.\nLum Berry: Multiscale sets running Fire Punch over Low Kick can run Lum Berry to better deal with Sleep Powder from Venusaur and Zap Cannon from Mega Raichu-Y, as well as burns from Sinistcha's Matcha Gotcha and Mega Scovillain's Spicy Spray. Dragonite can then pick them off before they can spread their status further. However, this does leave Dragonite unable to KO bulkier variants of Garchomp with the combination of Dragon Claw and Extreme Speed.\nTailwind: Tailwind can be used on a Multiscale set to provide speed control to the team while allowing Dragonite to outpace Choice Scarf Garchomp and Hydreigon without allied support. However, this does come at the expense of an important coverage move or Protect.\nSP Spreads\n2 HP / 32 Atk / 32 Spe with Adamant: This spread allows Dragonite to outrun Adamant non-Choice Scarf Basculegion and Mega Blastoise. Basculegion is immune to Extreme Speed and can threaten huge damage with Last Respects. Outspeeding Mega Blastoise allows Dragonite to weaken its Water Spout with Dragon Claw; even if Mega Blastoise has already used Shell Smash, Dragonite will attack first if it has Tailwind support.\n18 HP / 32 Atk / 16 Spe with Adamant: Since Dragonite has access to a strong priority attack in Extreme Speed, maximum Speed investment is not strictly necessary. This spread allows Dragonite to outpace even the fastest Kingambit while also outspeeding Choice Scarf Garchomp and Hydreigon under Tailwind. If running Multiscale, the added bulk allows Dragonite to survive Mega Floette's Moonblast and Mega Froslass's Blizzard, giving Dragonite a turn to retaliate.\nTeambuilding\nChecks and Weaknesses: Due to its typing and Speed tier, Dragonite can often struggle into faster Fairy and Ice-types like Mega Floette, Mega Froslass, and Alolan Ninetales; the latter two are also able to set up Aurora Veil to further dampen Dragonite's damage. However, Dragonite can hit bulkless variants of Mega Floette and Alolan Ninetales with Fire Punch to put them into range of Extreme Speed if holding Life Orb.\nWithout Multiscale, opposing Dragon-types like Hydreigon and Garchomp can easily outspeed and threaten a KO on Dragonite. Garchomp partnered with another faster attacker can break Dragonite even through Multiscale.\nAs Dragonite heavily utilizes Extreme Speed to finish off foes, Farigiraf can stop Dragonite from fulfilling its role as a cleaner due to Armor Tail.\nAs a physical attacker lacking spread moves, Dragonite can struggle to pick off its intended targets if they are protected by Rage Powder from partners like Sinistcha and Mega Scovillain. Due to Spicy Extract, Mega Scovillain completely throws off Dragonite's offensive presence; not only does the resultant burn severely weaken Dragonite's physical attacks, but it also breaks Multiscale, allowing its partner to set up and finish Dragonite off.\nGood Partners and Synergies: Poison-types like Mega Gengar and Sneasler can eliminate faster Fairy-types for Dragonite, while Dragonite complements them defensively with its immunity to Ground. Sneasler in particular can offer Fake Out pressure to allow Dragonite more easily deal with faster threats like Garchomp while also possibly using Coaching to boost Dragonite.\nSteel-types like Kingambit likewise help Dragonite pressure opposing Fairy-types and excel into opposing Mega Froslass and Alolan Ninetales, giving Dragonite more freedom to run Low Kick over Fire Punch. Due to its powerful Dark-type STAB moves and low Speed, Kingambit is also a great deterrent for opposing Farigiraf from switching into Dragonite to block Extreme Speed or setting up Trick Room. In return, Dragonite helps eliminate opposing Kingambit, Mega Charizard Y, and Sneasler.\nDragonite also greatly appreciates Tailwind, which allows it to outspeed other Dragon-types and also lowers its reliance on Extreme Speed to pick up KOs. Whimsicott is a natural partner, as it resists STAB moves from the likes of Garchomp and Hydreigon, allowing it to come in on attacks intended for Dragonite or, if Dragonite uses Protect, its partner Whimsicott also capitalizes on Fairy Aura from opposing Mega Floette and can assist in putting it in the range of Extreme Speed with Moonblast."
-      },
-      {
-       "name": "Bulky Attacker",
-       "pokemon": "Dragonite",
-       "abilities": [
-        "Multiscale"
-       ],
-       "items": [
-        "Dragoninite"
-       ],
-       "natures": [
-        "Modest"
-       ],
-       "stat_points": [
-        {
-         "hp": 2,
-         "atk": 0,
-         "def": 0,
-         "spa": 32,
-         "spd": 0,
-         "spe": 32
-        }
-       ],
-       "moveslots": [
-        [
-         "Dragon Pulse"
-        ],
-        [
-         "Heat Wave"
-        ],
-        [
-         "Extreme Speed",
-         "Thunderbolt"
-        ],
-        [
-         "Protect"
-        ]
-       ],
-       "explanation": "This set utilizes Mega Dragonite's high base Special Attack stat as well as its strong type coverage to go for positive trades against other Pokemon. Generally, Mega Dragonite does not look to OHKO opposing Pokemon but rather provide consistent damage. Notably, Mega Dragonite is great for dealing with threats such as Mega Charizard Y, Garchomp, Venusaur, and Sneasler.\nDragon Pulse: While Dragon Pulse OHKOes important attackers such as Garchomp, its main purpose is to provide consistent damage for Mega Dragonite's partners to finish off foes. Notably, Dragon Pulse 2HKOes Mega Charizard Y.\nHeat Wave: Heat Wave provides sizable damage against Steel-type Pokemon such as Kingambit, Excadrill, and Corviknight. Against Whimsicott Tailwind teams in particular, Heat Wave does substantial damage to Whimsicott and can even be further strengthened by Mega Charizard Y's Drought.\nExtreme Speed versus Thunderbolt: Because of Dragon Pulse's lack of damage multipliers, a defensively trained Garchomp or Sneasler will survive with low HP. Additionally, a Whimsicott equipped with Focus Sash will survive a Heat Wave. Dragonite utilizes Extreme Speed as consistent follow-up damage to knock out these low-HP targets. Timid Mega Dragonite often runs Thunderbolt because Dragon Pulse no longer 2HKOes Mega Charizard Y. However, Thunderbolt is also useful for dealing damage to Pelipper and Toxapex.\nModest versus Timid: Modest Mega Dragonite is important when running Extreme Speed so that Dragon Pulse 2HKOes Mega Charizard Y and OHKOes Garchomp. The Modest nature also guarantees that Heat Wave 2HKOes Swords Dance Kingambit. On the other hand, Timid Mega Dragonite is valuable for outspeeding Timid Mega Charizard Y, since most Mega Charizard Y sets do not invest 32 Stat Points into Speed. It also outspeeds Adamant Garchomp.\nOther Options\nTailwind: Pokemon such as Mega Delphox, Mega Floette, and Mega Staraptor naturally outspeed Mega Dragonite. For example, a Kingambit with Tailwind can use Iron Head against Mega Floette to OHKO it and protect Mega Dragonite from Fairy-type moves. Depending on the matchup, Tailwind can be more valuable than Extreme Speed.\nTeambuilding\nChecks and Weaknesses: Mega Dragonite struggles to deal damage to pure Fairy-type Pokemon such as Mega Floette and Sylveon. In particular, these two have high Special Defense stats and will not take much from Heat Wave while retaliating with strong spread damage in the form of Dazzling Gleam and Hyper Voice, respectively.\nMega Froslass and Alolan Ninetales are strong checks because they deal large damage to Mega Dragonite through Multiscale with Blizzard. After setting up an Aurora Veil, Mega Froslass only takes about 30-40% from Heat Wave. Alolan Ninetales can also pressure Dragonite from the back by switching into a Dragon Pulse.\nMega Aerodactyl is a strong check because it has a chance to flinch Mega Dragonite with Rock Slide and threatens an OHKO with Ice Fang after Multiscale is broken. Mega Dragonite often partners with Sneasler to knock out Fairy-types, and Mega Aerodactyl's Dual Wingbeat can OHKO Focus Sash sets as well as set Tailwind so that Sylveon attacks before Sneasler.\nRain teams generally run multiple answers to Mega Dragonite. Mega Swampert checks Mega Dragonite with Ice Punch, outspeeding it thanks to Swift Swim in the rain. Mega Dragonite's Dragon Pulse does not 2HKO Leftovers Calm Archaludon, while Archaludon threatens Mega Dragonite in return with an Electro Shot or Dragon Pulse.\nThough Mega Dragonite is a check to Garchomp with Multiscale, Garchomp can also be a check if Fake Out, Rock Slide, or other chip damage breaks Multiscale. Garchomp often runs a Jolly nature and Life Orb, outspeeding and knocking out a chipped Mega Dragonite with Dragon Claw.\nIncineroar is problematic for Mega Dragonite because Fake Out will not only prevent Mega Dragonite from attacking but also deal damage and break Multiscale. Additionally, Incineroar's Parting Shot will prevent Mega Dragonite from picking up an OHKO against Garchomp or common 2HKOs against Mega Charizard Y and Basculegion-M. Priority moves such as Sneasler's Feint and Sylveon's Quick Attack break Mega Dragonite's Multiscale and allow an opposing partner such as Mega Floette or Mega Aerodactyl, respectively, to knock out Mega Dragonite. A low-HP Sylveon can still provide value with a last Quick Attack before fainting.\nGood Partners and Synergies: Sneasler provides the perfect offensive coverage in tandem with Mega Dragonite. Its use of strong Poison-type moves such as Dire Claw can OHKO the Fairy-types that threaten Mega Dragonite. Sneasler's Close Combat is super effective against bulky Steel-type Pokemon such as Kingambit and Archaludon that Mega Dragonite may not trade positively with. It can also use Fake Out before Incineroar to neuter it as a threat while pressuring it with Close Combat.\nMega Charizard Y similarly provides strong offensive coverage against Steel- and Fairy-type Pokemon. Against Mega Floette with Calm Mind, Mega Dragonite often struggles to deal significant damage while taking a lot from Dazzling Gleam or Moonblast. In this matchup, it is advisable to bring a different Mega Evolution such as Mega Charizard Y to the battle.\nKingambit and Mega Floette: Kingambit can use Iron Head to check the Fairy-type Pokemon that Mega Dragonite struggles against as well as Ice-types such as Mega Froslass and Alolan Ninetales. Mega Floette can OHKO Dragon-types such as Garchomp that Mega Dragonite may struggle with. Mega Dragonite provides consistent damage against Fire-types such as Mega Charizard Y that Mega Floette and Kingambit struggle against.\nGarchomp pairs well with Mega Dragonite because of its Dragon- and Ground-type attacks. Earthquake and Stomping Tantrum check Rock-type Pokemon such as Mega Tyranitar, Lycanroc-D, and Glimmora. Dragon Claw checks opposing Garchomp and Mega Dragonite. Rock Slide threatens Mega Aerodactyl and Mega Froslass.\nBasculegion-M is a great partner for Mega Dragonite because both Pokemon synergize well with Sneasler and Kingambit. A Life Orb-boosted Wave Crash or Last Respects will knock out physically frail Fairy-type Pokemon such as Sylveon and Mega Floette. Combined with Tailwind, Basculegion-M checks Mega Froslass, Mega Aerodactyl, and Swift Swim Mega Swampert. After Hisuian Arcanine's Focus Sash is broken, Aqua Jet will OHKO it and protect Mega Dragonite from Head Smash.\nIf running Tailwind on Mega Dragonite, pair it with bulky attackers such as Kingambit, Basculegion-M, and Gholdengo. Notably, under Tailwind, Kingambit can outspeed opposing Mega Floette, and Basculegion-M and Gholdengo can outspeed Mega Aerodactyl. These Pokemon match the slower tempo of Mega Dragonite."
       }
      ],
      "credits": [
-      "pengu",
       "Carrotman",
-      "RauSakura",
-      "poketitanterra"
+      "poketitanterra",
+      "pengu"
      ]
     }
    ]
@@ -2526,7 +2288,6 @@
     "Scary Face",
     "Screech",
     "Shadow Claw",
-    "Slash",
     "Sleep Talk",
     "Snarl",
     "Snore",
@@ -2902,6 +2663,7 @@
     "Mud-Slap",
     "Muddy Water",
     "Perish Song",
+    "Pound",
     "Protect",
     "Psych Up",
     "Psychic",
@@ -3686,7 +3448,6 @@
     "Sandstorm",
     "Scary Face",
     "Skitter Smack",
-    "Slash",
     "Sleep Talk",
     "Snore",
     "Steel Beam",
@@ -3843,7 +3604,6 @@
     "Sand Tomb",
     "Sandstorm",
     "Sky Attack",
-    "Slash",
     "Sleep Talk",
     "Snore",
     "Spikes",
@@ -4361,7 +4121,6 @@
     "Screech",
     "Seed Bomb",
     "Shed Tail",
-    "Slash",
     "Sleep Talk",
     "Snore",
     "Solar Beam",
@@ -4459,7 +4218,6 @@
     "Round",
     "Scorching Sands",
     "Shadow Claw",
-    "Slash",
     "Sleep Talk",
     "Snore",
     "Solar Beam",
@@ -5959,86 +5717,6 @@
    "vgc_strategies": []
   },
   {
-   "name": "Swalot",
-   "alias": "swalot",
-   "types": [
-    "Poison"
-   ],
-   "base_stats": {
-    "hp": 100,
-    "atk": 73,
-    "def": 83,
-    "spa": 73,
-    "spd": 83,
-    "spe": 55
-   },
-   "learnset": [
-    "Acid Armor",
-    "Acid Spray",
-    "Amnesia",
-    "Belch",
-    "Body Press",
-    "Body Slam",
-    "Brick Break",
-    "Bulldoze",
-    "Bullet Seed",
-    "Clear Smog",
-    "Corrosive Gas",
-    "Curse",
-    "Destiny Bond",
-    "Double-Edge",
-    "Earthquake",
-    "Encore",
-    "Endure",
-    "Facade",
-    "Fire Punch",
-    "Fling",
-    "Gastro Acid",
-    "Giga Drain",
-    "Giga Impact",
-    "Gunk Shot",
-    "Helping Hand",
-    "Hyper Beam",
-    "Ice Beam",
-    "Ice Punch",
-    "Knock Off",
-    "Mud Shot",
-    "Mud-Slap",
-    "Pain Split",
-    "Poison Jab",
-    "Protect",
-    "Rain Dance",
-    "Rest",
-    "Round",
-    "Seed Bomb",
-    "Self-Destruct",
-    "Shadow Ball",
-    "Skitter Smack",
-    "Sleep Talk",
-    "Sludge Bomb",
-    "Sludge Wave",
-    "Snore",
-    "Solar Beam",
-    "Spit Up",
-    "Stockpile",
-    "Stuff Cheeks",
-    "Substitute",
-    "Sunny Day",
-    "Swallow",
-    "Swords Dance",
-    "Thief",
-    "Thunder Punch",
-    "Thunder Wave",
-    "Toxic",
-    "Toxic Spikes",
-    "Venoshock",
-    "Water Pulse",
-    "Yawn",
-    "Zen Headbutt"
-   ],
-   "vgc_strategies": []
-  },
-  {
    "name": "Sharpedo",
    "alias": "sharpedo",
    "types": [
@@ -6097,7 +5775,6 @@
     "Scale Shot",
     "Scary Face",
     "Screech",
-    "Slash",
     "Sleep Talk",
     "Snarl",
     "Snore",
@@ -6668,7 +6345,6 @@
     "Shadow Sneak",
     "Skill Swap",
     "Skitter Smack",
-    "Slash",
     "Sleep Talk",
     "Snore",
     "Spite",
@@ -6842,7 +6518,6 @@
     "Shadow Ball",
     "Shadow Claw",
     "Shadow Sneak",
-    "Slash",
     "Sleep Talk",
     "Snarl",
     "Snore",
@@ -6863,24 +6538,6 @@
     "X-Scissor",
     "Zen Headbutt"
    ],
-   "vgc_strategies": []
-  },
-  {
-   "name": "Absol-Mega-Z",
-   "alias": "absol-mega-z",
-   "types": [
-    "Dark",
-    "Ghost"
-   ],
-   "base_stats": {
-    "hp": 65,
-    "atk": 154,
-    "def": 60,
-    "spa": 75,
-    "spd": 60,
-    "spe": 151
-   },
-   "learnset": [],
    "vgc_strategies": []
   },
   {
@@ -7061,87 +6718,6 @@
     "Trailblaze",
     "Water Pulse",
     "Weather Ball"
-   ],
-   "vgc_strategies": []
-  },
-  {
-   "name": "Salamence",
-   "alias": "salamence",
-   "types": [
-    "Dragon",
-    "Flying"
-   ],
-   "base_stats": {
-    "hp": 95,
-    "atk": 135,
-    "def": 80,
-    "spa": 110,
-    "spd": 80,
-    "spe": 100
-   },
-   "learnset": [
-    "Aerial Ace",
-    "Air Slash",
-    "Bite",
-    "Body Slam",
-    "Breaking Swipe",
-    "Brick Break",
-    "Brutal Swing",
-    "Bulldoze",
-    "Crunch",
-    "Double-Edge",
-    "Draco Meteor",
-    "Dragon Cheer",
-    "Dragon Claw",
-    "Dragon Dance",
-    "Dragon Pulse",
-    "Dragon Rush",
-    "Dragon Tail",
-    "Dual Wingbeat",
-    "Earthquake",
-    "Endure",
-    "Facade",
-    "Fire Blast",
-    "Fire Fang",
-    "Fire Spin",
-    "Flamethrower",
-    "Fly",
-    "Focus Energy",
-    "Giga Impact",
-    "Heat Wave",
-    "Helping Hand",
-    "Hurricane",
-    "Hydro Pump",
-    "Hyper Beam",
-    "Hyper Voice",
-    "Iron Defense",
-    "Iron Head",
-    "Iron Tail",
-    "Mud-Slap",
-    "Outrage",
-    "Protect",
-    "Psychic Fangs",
-    "Rain Dance",
-    "Rest",
-    "Roar",
-    "Rock Slide",
-    "Rock Tomb",
-    "Roost",
-    "Round",
-    "Scary Face",
-    "Shadow Claw",
-    "Slash",
-    "Sleep Talk",
-    "Snore",
-    "Steel Wing",
-    "Stone Edge",
-    "Substitute",
-    "Sunny Day",
-    "Tailwind",
-    "Temper Flare",
-    "Thrash",
-    "Thunder Fang",
-    "Zen Headbutt"
    ],
    "vgc_strategies": []
   },
@@ -7985,123 +7561,6 @@
    ]
   },
   {
-   "name": "Wigglytuff",
-   "alias": "wigglytuff",
-   "types": [
-    "Normal",
-    "Fairy"
-   ],
-   "base_stats": {
-    "hp": 140,
-    "atk": 70,
-    "def": 45,
-    "spa": 85,
-    "spd": 50,
-    "spe": 45
-   },
-   "learnset": [
-    "Alluring Voice",
-    "Amnesia",
-    "Baton Pass",
-    "Blizzard",
-    "Body Press",
-    "Body Slam",
-    "Bounce",
-    "Brick Break",
-    "Calm Mind",
-    "Charm",
-    "Chilling Water",
-    "Copycat",
-    "Covet",
-    "Dark Pulse",
-    "Dazzling Gleam",
-    "Dig",
-    "Disable",
-    "Double-Edge",
-    "Drain Punch",
-    "Draining Kiss",
-    "Encore",
-    "Endeavor",
-    "Endure",
-    "Energy Ball",
-    "Expanding Force",
-    "Facade",
-    "Fake Tears",
-    "Fire Blast",
-    "Fire Punch",
-    "Flamethrower",
-    "Fling",
-    "Focus Blast",
-    "Focus Punch",
-    "Giga Impact",
-    "Grass Knot",
-    "Gravity",
-    "Gyro Ball",
-    "Heal Pulse",
-    "Helping Hand",
-    "Hyper Beam",
-    "Hyper Voice",
-    "Ice Beam",
-    "Ice Punch",
-    "Ice Spinner",
-    "Icy Wind",
-    "Knock Off",
-    "Last Resort",
-    "Light Screen",
-    "Magic Room",
-    "Mega Kick",
-    "Misty Explosion",
-    "Misty Terrain",
-    "Moonblast",
-    "Nasty Plot",
-    "Pain Split",
-    "Perish Song",
-    "Play Rough",
-    "Protect",
-    "Psych Up",
-    "Psychic",
-    "Psychic Noise",
-    "Psyshock",
-    "Rain Dance",
-    "Reflect",
-    "Rest",
-    "Round",
-    "Safeguard",
-    "Sandstorm",
-    "Screech",
-    "Self-Destruct",
-    "Shadow Ball",
-    "Sing",
-    "Skill Swap",
-    "Sleep Talk",
-    "Snore",
-    "Solar Beam",
-    "Spit Up",
-    "Stealth Rock",
-    "Steel Roller",
-    "Stockpile",
-    "Stored Power",
-    "Substitute",
-    "Sunny Day",
-    "Swallow",
-    "Sweet Kiss",
-    "Taunt",
-    "Thief",
-    "Thunder",
-    "Thunder Punch",
-    "Thunder Wave",
-    "Thunderbolt",
-    "Trailblaze",
-    "Tri Attack",
-    "Uproar",
-    "Water Pulse",
-    "Wild Charge",
-    "Wish",
-    "Zen Headbutt"
-   ],
-   "vgc_strategies": []
-  },
-  {
    "name": "Luxray",
    "alias": "luxray",
    "types": [
@@ -8650,7 +8109,6 @@
     "Scary Face",
     "Scorching Sands",
     "Shadow Claw",
-    "Slash",
     "Sleep Talk",
     "Snore",
     "Spikes",
@@ -8866,23 +8324,6 @@
    ]
   },
   {
-   "name": "Garchomp-Mega-Z",
-   "alias": "garchomp-mega-z",
-   "types": [
-    "Dragon"
-   ],
-   "base_stats": {
-    "hp": 108,
-    "atk": 130,
-    "def": 85,
-    "spa": 141,
-    "spd": 85,
-    "spe": 151
-   },
-   "learnset": [],
-   "vgc_strategies": []
-  },
-  {
    "name": "Lucario",
    "alias": "lucario",
    "types": [
@@ -8982,24 +8423,6 @@
     "Water Pulse",
     "Zen Headbutt"
    ],
-   "vgc_strategies": []
-  },
-  {
-   "name": "Lucario-Mega-Z",
-   "alias": "lucario-mega-z",
-   "types": [
-    "Fighting",
-    "Steel"
-   ],
-   "base_stats": {
-    "hp": 70,
-    "atk": 100,
-    "def": 70,
-    "spa": 164,
-    "spd": 70,
-    "spe": 151
-   },
-   "learnset": [],
    "vgc_strategies": []
   },
   {
@@ -9399,7 +8822,6 @@
     "Screech",
     "Shadow Ball",
     "Shadow Claw",
-    "Slash",
     "Sleep Talk",
     "Snarl",
     "Snore",
@@ -9752,7 +9174,6 @@
     "Scary Face",
     "Screech",
     "Skitter Smack",
-    "Slash",
     "Sleep Talk",
     "Sludge Bomb",
     "Snore",
@@ -10006,7 +9427,6 @@
     "Shadow Claw",
     "Shadow Sneak",
     "Skill Swap",
-    "Slash",
     "Sleep Talk",
     "Snore",
     "Solar Blade",
@@ -10170,55 +9590,6 @@
       "Skwovetboi",
       "RauSakura",
       "gephicka"
-     ]
-    },
-    {
-     "format": "VGC26 Regulation M-B",
-     "outdated": null,
-     "overview": "",
-     "comments": "",
-     "movesets": [
-      {
-       "name": "Snow Attacker",
-       "pokemon": "Froslass",
-       "abilities": [
-        "Cursed Body"
-       ],
-       "items": [
-        "Froslassite"
-       ],
-       "natures": [
-        "Timid"
-       ],
-       "stat_points": [
-        {
-         "hp": 30,
-         "atk": 0,
-         "def": 0,
-         "spa": 13,
-         "spd": 0,
-         "spe": 23
-        }
-       ],
-       "moveslots": [
-        [
-         "Blizzard"
-        ],
-        [
-         "Shadow Ball"
-        ],
-        [
-         "Aurora Veil"
-        ],
-        [
-         "Protect"
-        ]
-       ],
-       "explanation": "Mega Froslass is one of the main weather setters of the format, overriding Mega Charizard Y's and Pelipper's respective weathers with the snow while boasting good matchups against Pokemon like Mega Staraptor, Garchomp, and Sneasler.\nBlizzard: Blizzard is Mega Froslass's main source of damage, not only dealing spread damage but also giving you a possible win condition through freezes, though it is not to be relied upon. Mega Froslass should be careful when using Blizzard, as an opposing weather setter can switch in and make Blizzard inaccurate, making foes like Venusaur and Sinistcha feel more comfortable to take on Mega Froslass.\nAurora Veil: Aurora Veil allows Mega Froslass to survive attacks like Heat Wave from Mega Charizard Y under the snow. Similarly to Blizzard, however, Mega Froslass has to be careful when using it. If an opposing weather setter like Tyranitar swaps in, Mega Froslass can essentially lose its turn and be vulnerable to attacks, since it is unable to be set up when the snow isn't up.\nCursed Body: Cursed Body is used to possibly let Froslass disable attacks like Dire Claw from Sneasler and Blizzard from opposing Mega Froslass when swapping into them.\nMega Evolving Froslass: Froslass should avoid Mega Evolving early in matchups against weather setters other than opposing Mega Froslass. Preserving Mega Evolution until the opposing weather setter is KOed or significantly weakened is recommended to maximize Mega Froslass's advantage state in the snow.\nSP Spreads\n30 HP / 13 SpA / 23 Spe with Timid: The given SP spread allows Mega Froslass to survive Black Glasses-boosted Sucker Punch from Kingambit under the snow while having good odds at avoiding a 2HKO from Timid Mega Dragonite's Flamethrower with Aurora Veil. The Speed investment allows Mega Froslass to outspeed maximum Speed Mega Staraptor and Mega Metagross, while the rest is dumped into Special Attack.\n25 HP / 14 Def / 27 Spe with Timid: Taking a more defensive approach, this spread allows Mega Froslass to outspeed Modest Mega Gengar, and when the snow's up, it lets Mega Froslass avoid a 2HKO from Life Orb Jolly Garchomp's Earthquake, Stomping Tantrum, and Rock Slide (RC) and nearly always dodge a 2HKO from Lycanroc-D's Accelerock. It also lets Mega Froslass survive Heat Wave from Mega Delphox.\n8 HP / 28 SpA / 30 Spe with Modest: This spread leans into Mega Froslass's Special Attack, making it capable of OHKOing uninvested Basculegion-M with Shadow Ball and outspeeding maximum Speed Garchomp and Mega Floette, all while maximizing Mega Froslass's chances at surviving Modest Mega Floette's Light of Ruin with Aurora Veil and the HP investment.\nTeambuilding\nChecks and Weaknesses: Opposing weather setters like Mega Charizard Y, Torkoal, Pelipper, and Mega Tyranitar are annoying for Mega Froslass, as all of them can swap in and set up their respective weathers. Mega Charizard Y and Torkoal threaten to OHKO Mega Froslass with Heat Wave while also enabling partners like Venusaur to outspeed Mega Froslass and put it to sleep with Sleep Powder. Pelipper, despite its relatively low Special Defense, does well against Mega Froslass thanks to its ability to set up the rain while using Wide Guard to block Blizzard. Rain also boosts the power and Speed of Mega Swampert and enables Archaludon, and both of them threaten Mega Froslass under rain. Mega Tyranitar easily switches into either of Mega Froslass's attacks and threatens big damage with Rock Slide and Knock Off, while Excadrill, a common partner, also threatens Mega Froslass with Iron Head. Excadrill has the added benefit of outspeeding Mega Froslass when the sand is up thanks to Sand Rush, making it even tougher to face.\nFire-type Pokemon: Fire-type Pokemon like Incineroar and Hisuian Arcanine spell trouble for Mega Froslass, as the former can swap in consistently on Mega Froslass's attacks and weaken it with Parting Shot, and the latter can OHKO Mega Froslass with ease with Head Smash.\nSteel-type Pokemon: Steel-type Pokemon like Kingambit and Gholdengo are also troublesome; Kingambit can swap in on both of Mega Froslass's attacks, use Kowtow Cleave to OHKO it or Sucker Punch to threaten huge damage before it can move, and even punish a potential Special Defense drop from Shadow Ball with Defiant.\nGhost-type Pokemon: While it's vulnerable to Shadow Ball, Gholdengo OHKOes Mega Froslass with its own Shadow Ball or Make It Rain. Basculegion-M is another Ghost-type that, when equipped with the Life Orb and supported by Tailwind or Trick Room, can OHKO Mega Froslass with a 100-Base Power Last Respects despite the snow and even Aurora Veil. Mega Gengar can outspeed and threaten Mega Froslass with Shadow Ball.\nRock-type Pokemon: Mega Aerodactyl can use Wide Guard to block Blizzard and offensively threaten Mega Froslass with Rock Slide. Other Rock-type Pokemon like Lycanroc-D can also use Rock Slide to threaten it, and Lycanroc-D can use Accelerock to pick it off at lower health. Glimmora can target Mega Froslass's generally lower Special Defense to hit it hard with Power Gem.\nDark-type Pokemon: Dark-type Pokemon like the aforementioned Kingambit and Hydreigon are foes Froslass struggles against, as they hit it hard with their strong Dark-type STAB moves. Hydreigon also is able to lower Mega Froslass's Special Attack with Snarl, dealing a large sum of damage on top of that.\nSpecially Defensive Foes: Mega Floette and Sylveon can easily tank Mega Froslass's attacks thanks to their immense special bulk, OHKOing back with Light of Ruin and Hyper Beam or dealing significant chunks of damage with Moonblast and Hyper Voice. Toxapex is also a difficult foe, as it resists Blizzard and blocks Blizzard entirely with Wide Guard. If needed, it can put Mega Froslass on a timer with Toxic, which makes it much harder for Mega Froslass to stay on the field.\nGood Partners and Synergies: Sneasler provides coverage against the Steel-, Rock-, and Dark-types that scare Mega Froslass, hitting them with Close Combat. It also hits Mega Floette and Sylveon with Dire Claw and Gunk Shot. Mega Froslass can, in return, threaten big damage onto slower Ghost-types that annoy Sneasler like Basculegion-M while also helping out against Mega Staraptor. An ally Basculegion-M helps against Rock-type Pokemon as well as Fire-type Pokemon, having the capability to OHKO Mega Charizard Y under sun with Wave Crash. It also blasts through specially defensive Pokemon with Last Respects late-game.\nKingambit is strong against Ghost-type Pokemon, hitting them with Sucker Punch before they can move. Its typing also makes it strong against the likes of Mega Aerodactyl and Mega Tyranitar that forgo Low Kick, and it has Defiant to deter the entrance of Incineroar. Mega Froslass easily takes care of Fighting-types for Kingambit, and it can even set up Aurora Veil to give Kingambit an easier time setting up with Swords Dance.\nLycanroc-D is the answer to Fire-types for Mega Froslass; it obliterates Mega Charizard Y with Rock Slide and Accelerock. It also carries Close Combat to threaten the likes of Kingambit and Mega Tyranitar with an OHKO. However, it does struggle against Fighting-types, specifically Sneasler, which is a Pokemon that Mega Froslass handles amazingly.\nMega Scovillain is the most common Mega-Evolved partner for Mega Froslass, as it helps out in many tough matchups against Pokemon such as Mega Blastoise, Mega Metagross, Mega Mawile, and Mega Floette. Mega Scovillain can easily force Mega Metagross and Mega Mawile to get burned with the combination of Spicy Spray and Rage Powder while threatening them with Overheat. Additionally, Mega Floette's attacks are resisted by Mega Scovillain, and it doesn't appreciate the chip damage from Overheat. Meanwhile, Mega Froslass deals with matchups against Pokemon that Mega Scovillain may struggle against, including Mega Dragonite and Mega Staraptor."
-      }
-     ],
-     "credits": [
-      "RauSakura"
      ]
     }
    ]
@@ -10930,7 +10301,6 @@
     "Sacred Sword",
     "Scary Face",
     "Screech",
-    "Slash",
     "Sleep Talk",
     "Smart Strike",
     "Snore",
@@ -11014,7 +10384,6 @@
     "Sacred Sword",
     "Scary Face",
     "Screech",
-    "Slash",
     "Sleep Talk",
     "Smart Strike",
     "Snarl",
@@ -11166,7 +10535,6 @@
     "Shadow Ball",
     "Shadow Claw",
     "Skitter Smack",
-    "Slash",
     "Sleep Talk",
     "Snarl",
     "Snore",
@@ -11467,181 +10835,6 @@
    "vgc_strategies": []
   },
   {
-   "name": "Persian",
-   "alias": "persian",
-   "types": [
-    "Normal"
-   ],
-   "base_stats": {
-    "hp": 65,
-    "atk": 70,
-    "def": 60,
-    "spa": 65,
-    "spd": 65,
-    "spe": 115
-   },
-   "learnset": [
-    "Aerial Ace",
-    "Agility",
-    "Amnesia",
-    "Assurance",
-    "Bite",
-    "Body Slam",
-    "Charm",
-    "Chilling Water",
-    "Covet",
-    "Dark Pulse",
-    "Dig",
-    "Double Team",
-    "Double-Edge",
-    "Endeavor",
-    "Endure",
-    "Facade",
-    "Fake Out",
-    "Fake Tears",
-    "Feint",
-    "Flail",
-    "Foul Play",
-    "Giga Impact",
-    "Gunk Shot",
-    "Helping Hand",
-    "Hyper Beam",
-    "Hyper Voice",
-    "Hypnosis",
-    "Icy Wind",
-    "Iron Tail",
-    "Knock Off",
-    "Lash Out",
-    "Last Resort",
-    "Nasty Plot",
-    "Pain Split",
-    "Payback",
-    "Play Rough",
-    "Power Gem",
-    "Protect",
-    "Psych Up",
-    "Rain Dance",
-    "Rest",
-    "Roar",
-    "Round",
-    "Screech",
-    "Seed Bomb",
-    "Shadow Ball",
-    "Shadow Claw",
-    "Skitter Smack",
-    "Slash",
-    "Sleep Talk",
-    "Snarl",
-    "Snore",
-    "Spite",
-    "Substitute",
-    "Sunny Day",
-    "Switcheroo",
-    "Taunt",
-    "Thief",
-    "Throat Chop",
-    "Thunder",
-    "Thunder Wave",
-    "Thunderbolt",
-    "Trailblaze",
-    "U-turn",
-    "Uproar",
-    "Water Pulse"
-   ],
-   "vgc_strategies": []
-  },
-  {
-   "name": "Persian-Alola",
-   "alias": "persian-alola",
-   "types": [
-    "Dark"
-   ],
-   "base_stats": {
-    "hp": 65,
-    "atk": 60,
-    "def": 60,
-    "spa": 75,
-    "spd": 65,
-    "spe": 115
-   },
-   "learnset": [
-    "Aerial Ace",
-    "Agility",
-    "Amnesia",
-    "Assurance",
-    "Beat Up",
-    "Bite",
-    "Body Slam",
-    "Burning Jealousy",
-    "Charm",
-    "Chilling Water",
-    "Confuse Ray",
-    "Covet",
-    "Curse",
-    "Dark Pulse",
-    "Dig",
-    "Double Team",
-    "Double-Edge",
-    "Endeavor",
-    "Endure",
-    "Facade",
-    "Fake Out",
-    "Fake Tears",
-    "Feint",
-    "Flail",
-    "Flatter",
-    "Foul Play",
-    "Giga Impact",
-    "Gunk Shot",
-    "Helping Hand",
-    "Hyper Beam",
-    "Hyper Voice",
-    "Hypnosis",
-    "Icy Wind",
-    "Iron Tail",
-    "Knock Off",
-    "Lash Out",
-    "Nasty Plot",
-    "Night Slash",
-    "Parting Shot",
-    "Payback",
-    "Play Rough",
-    "Power Gem",
-    "Protect",
-    "Psych Up",
-    "Quash",
-    "Rain Dance",
-    "Rest",
-    "Roar",
-    "Round",
-    "Screech",
-    "Seed Bomb",
-    "Shadow Ball",
-    "Shadow Claw",
-    "Skitter Smack",
-    "Slash",
-    "Sleep Talk",
-    "Smack Down",
-    "Snarl",
-    "Snore",
-    "Spite",
-    "Substitute",
-    "Sunny Day",
-    "Switcheroo",
-    "Taunt",
-    "Thief",
-    "Throat Chop",
-    "Thunder",
-    "Thunder Wave",
-    "Thunderbolt",
-    "Trailblaze",
-    "U-turn",
-    "Uproar",
-    "Water Pulse"
-   ],
-   "vgc_strategies": []
-  },
-  {
    "name": "Excadrill",
    "alias": "excadrill",
    "types": [
@@ -11698,7 +10891,6 @@
     "Scary Face",
     "Scorching Sands",
     "Shadow Claw",
-    "Slash",
     "Sleep Talk",
     "Sludge Bomb",
     "Smart Strike",
@@ -11762,57 +10954,6 @@
      "credits": [
       "pengu",
       "RauSakura"
-     ]
-    },
-    {
-     "format": "VGC26 Regulation M-B",
-     "outdated": null,
-     "overview": "",
-     "comments": "",
-     "movesets": [
-      {
-       "name": "Sand Sweeper",
-       "pokemon": "Excadrill",
-       "abilities": [
-        "Sand Rush"
-       ],
-       "items": [
-        "Focus Sash"
-       ],
-       "natures": [
-        "Adamant"
-       ],
-       "stat_points": [
-        {
-         "hp": 2,
-         "atk": 32,
-         "def": 0,
-         "spa": 0,
-         "spd": 0,
-         "spe": 32
-        }
-       ],
-       "moveslots": [
-        [
-         "Iron Head"
-        ],
-        [
-         "Protect"
-        ],
-        [
-         "Rock Slide"
-        ],
-        [
-         "High Horsepower",
-         "Earthquake"
-        ]
-       ],
-       "explanation": "Excadrill is an extremely fast, versatile threat on sand teams, being only outsped by Unburden Sneasler and foes supported by Tailwind. Excadrill has a solid matchup against many threats in the metagame, like Sneasler, Incineroar, Kingambit, Mega Charizard Y, Gholdengo, and Mega Floette.\nRock Slide: Rock Slide OHKOes Mega Charizard Y, preventing it from freely switching in and changing the weather to sun. Due to Excadrill's high Speed in sand, it can land a game-changing flinch with Rock Slide, though it shouldn't be relied on as a major win condition due to its inconsistency.\nHigh Horsepower versus Earthquake: High Horsepower is usually preferred to avoid doing damage to partners like Mega Tyranitar. Earthquake can deal spread damage and can be situationally useful when partnered with teammates that avoid or don't mind the damage like Mega Staraptor and Sinistcha; other teammates can also avoid damage by using Protect. Earthquake also notably does not make contact, which enables Excadrill to not break its Focus Sash when attacking Garchomp or targeting Glimmora with Spiky Shield up.\nFocus Sash: By equipping it with Focus Sash, foes that would normally outspeed and OHKO Excadrill like Sneasler and Mega Blaziken may find themselves in a losing matchup in sand.\nTeambuilding\nChecks and Weaknesses: Excadrill is outsped by common threats like Garchomp outside of sand. Therefore, it's important to anticipate potential weather setters switching in, as Pokemon that Excadrill used to check may now check it instead. Pelipper particularly causes issues with its good physical bulk and type advantage, and it also sets up Mega Swampert's Swift Swim. Furthermore, it can also block Rock Slide with Wide Guard, leaving Excadrill with no good ways to damage it. Mega Froslass and Mega Charizard Y can also change the weather, but they generally dislike Excadrill's coverage.\nExcadrill tends to struggle with bulkier Grass- and Water-types like Sinistcha, Milotic, and Mega Blastoise. Milotic can both avoid being 2HKOed by High Horsepower and 2HKO Excadrill with Muddy Water. Mega Blastoise can avoid being 2HKOed with the help of Sinistcha, and it can 2HKO Excadrill back with Dark Pulse. Sinistcha can take multiple Iron Heads from Excadrill, threaten it with a burn with Matcha Gotcha, and redirect High Horsepower. Mega Scovillain can pose a major threat, as Spicy Spray can burn Excadrill. Combined with Rage Powder, Excadrill's offensive utility can be severely hampered when it's forced to attack Mega Scovillain. Intimidate users like Incineroar can also drastically reduce Excadrill's damage despite Excadrill's type advantage. Staraptor particularly can switch into Excadrill's Ground-type attacks, drop its Attack with Intimidate, and then hit it with Close Combat after Mega Evolving.\nGarchomp is a notable threat, since it can break Excadrill's Focus Sash due to Rough Skin and threaten it with an Earthquake. Focus Sash Mamoswine can also take out Excadrill with the combination of High Horsepower and Ice Shard.\nTrick Room users like Farigiraf and Sinistcha turn Excadrill's Speed boost from the sand into a detriment, which enables threats like Torkoal and Kingambit. Torkoal can throw out a devastating Eruption immediately, while Kingambit can attack first without relying on Sucker Punch.\nGood Partners and Synergies: Mega Tyranitar is a mandatory partner with Excadrill due to Sand Stream. Mega Tyranitar helps alleviate Excadrill's bad matchup against Sinistcha, while Excadrill can help against Sneasler, Steel-types like Kingambit and Archaludon, and Fairy-types like Sylveon and Mega Floette. Mega Staraptor can be partnered with Excadrill to deal with Grass-types like Sinistcha and act as a switch-in against Ground-types like Garchomp. Mega Staraptor can also help a lot against Kingambit by threatening with Close Combat, and it's able to boost off of Incineroar's Intimidate with Contrary. In return, Excadrill can handle Gholdengo, Mega Charizard Y, and Fairy-types like Mega Floette.\nCompetitive Milotic is a solid teammate for dealing with Incineroar, and it can do well against Water-types like Mega Blastoise. It can also OHKO Garchomp with Ice Beam. Sinistcha is a good teammate for Excadrill due to Hospitality potentially restoring Focus Sash; it also provides redirection through Rage Powder and threatens Mega Swampert with Matcha Gotcha. Furthermore, Sinistcha can reverse Trick Room. Gholdengo helps with several of Excadrill's checks, as it can withstand Mega Staraptor's Close Combat and Brave Bird, hit Pelipper hard with Shadow Ball, and provide consistent damage against Sinistcha."
-      }
-     ],
-     "credits": [
-      "pengu",
-      "poketitanterra"
      ]
     }
    ]
@@ -13245,7 +12386,6 @@
     "Scary Face",
     "Scorching Sands",
     "Shadow Claw",
-    "Slash",
     "Sleep Talk",
     "Snore",
     "Solar Beam",
@@ -13598,7 +12738,6 @@
     "Scary Face",
     "Shadow Claw",
     "Sheer Cold",
-    "Slash",
     "Sleep Talk",
     "Snarl",
     "Snore",
@@ -15251,78 +14390,6 @@
    "vgc_strategies": []
   },
   {
-   "name": "Gogoat",
-   "alias": "gogoat",
-   "types": [
-    "Grass"
-   ],
-   "base_stats": {
-    "hp": 123,
-    "atk": 100,
-    "def": 62,
-    "spa": 97,
-    "spd": 81,
-    "spe": 68
-   },
-   "learnset": [
-    "Aerial Ace",
-    "Body Slam",
-    "Brick Break",
-    "Bulk Up",
-    "Bulldoze",
-    "Bullet Seed",
-    "Dig",
-    "Double-Edge",
-    "Earthquake",
-    "Endeavor",
-    "Endure",
-    "Energy Ball",
-    "Facade",
-    "Giga Drain",
-    "Giga Impact",
-    "Grass Knot",
-    "Grassy Glide",
-    "Grassy Terrain",
-    "Growth",
-    "Helping Hand",
-    "High Horsepower",
-    "Horn Leech",
-    "Hyper Beam",
-    "Iron Tail",
-    "Leaf Blade",
-    "Leaf Storm",
-    "Leech Seed",
-    "Megahorn",
-    "Milk Drink",
-    "Mud Shot",
-    "Mud-Slap",
-    "Payback",
-    "Play Rough",
-    "Protect",
-    "Rain Dance",
-    "Rest",
-    "Roar",
-    "Rock Slide",
-    "Round",
-    "Seed Bomb",
-    "Sleep Talk",
-    "Snore",
-    "Solar Beam",
-    "Stomping Tantrum",
-    "Substitute",
-    "Sunny Day",
-    "Superpower",
-    "Surf",
-    "Synthesis",
-    "Throat Chop",
-    "Trailblaze",
-    "Wild Charge",
-    "Worry Seed",
-    "Zen Headbutt"
-   ],
-   "vgc_strategies": []
-  },
-  {
    "name": "Pangoro",
    "alias": "pangoro",
    "types": [
@@ -15399,7 +14466,6 @@
     "Scary Face",
     "Seismic Toss",
     "Shadow Claw",
-    "Slash",
     "Sleep Talk",
     "Sludge Bomb",
     "Snarl",
@@ -15767,7 +14833,6 @@
     "Shadow Ball",
     "Shadow Claw",
     "Shadow Sneak",
-    "Slash",
     "Sleep Talk",
     "Snore",
     "Solar Blade",
@@ -16033,7 +15098,6 @@
     "Round",
     "Scary Face",
     "Skill Swap",
-    "Slash",
     "Sleep Talk",
     "Snore",
     "Spite",
@@ -16127,7 +15191,6 @@
     "Screech",
     "Shadow Claw",
     "Shell Smash",
-    "Slash",
     "Sleep Talk",
     "Sludge Bomb",
     "Sludge Wave",
@@ -16650,64 +15713,6 @@
      "credits": [
       "pengu",
       "Carrotman"
-     ]
-    },
-    {
-     "format": "VGC26 Regulation M-B",
-     "outdated": null,
-     "overview": "",
-     "comments": "",
-     "movesets": [
-      {
-       "name": "Bulky Attacker",
-       "pokemon": "Sylveon",
-       "abilities": [
-        "Pixilate"
-       ],
-       "items": [
-        "Fairy Feather"
-       ],
-       "natures": [
-        "Modest"
-       ],
-       "stat_points": [
-        {
-         "hp": 9,
-         "atk": 0,
-         "def": 22,
-         "spa": 20,
-         "spd": 0,
-         "spe": 15
-        },
-        {
-         "hp": 9,
-         "atk": 0,
-         "def": 22,
-         "spa": 30,
-         "spd": 0,
-         "spe": 5
-        }
-       ],
-       "moveslots": [
-        [
-         "Hyper Voice"
-        ],
-        [
-         "Hyper Beam"
-        ],
-        [
-         "Quick Attack"
-        ],
-        [
-         "Detect"
-        ]
-       ],
-       "explanation": "Sylveon has cemented itself as a bulky offensive threat with significant flexibility. Its Speed tier allows it to succeed in Tailwind or Trick Room, and it outputs high Fairy-type damage with Pixliate-boosted Hyper Voice and Hyper Beam. These STAB moves let it threaten OHKOs on threats such as Garchomp, Mega Staraptor, and Tyranitar while still enabling it to deal neutral damage to a large portion of the metagame, such as Kingambit, Basculegion-M, Sneasler, and opposing Fairy-types such as Mega Floette and enemy Whimsicott.\nFairy Feather: Fairy Feather's damage boost is required to secure an OHKO on Life Orb Garchomp with Hyper Voice.\nHyper Voice: Hyper Voice is Sylveon's main source of damage, dealing high enough spread damage to secure 2HKOs on most variants of Basculegion-M, Sneasler, and bulky Garchomp.\nHyper Beam: Hyper Beam offers massive burst damage onto a single target, getting around potential Wide Guard users such as Aerodactyl, while securing an OHKO on bulky threats, most notably Kingambit and Archaludon. This comes with the significant drawback of leaving Sylveon vulnerable for a turn, making the use of Hyper Beam a serious commitment that should be considered carefully.\nQuick Attack: Quick Attack is used as a priority Fairy-type attack that can secure KOs on low-health targets like Sneasler and Lycanroc-D taken down to their Focus Sash or get around Sucker Punch from Kingambit.\n***Other Options\nYawn: Sylveon can forgo Quick Attack or Hyper Beam to run Yawn and put foes to sleep. This is especially effective at disrupting setup sweepers that otherwise would give Sylveon trouble, such as Bulk Up Ceruledge and Nasty Plot Mega Delphox. It does, however, come at the cost of either priority or burst damage.\nSP Spreads\n** 9 HP / 22 Def / 20 SpA / 15 Spe with Modest**: This spread lets Sylveon outspeed Sneasler under Tailwind while guaranteeing it can take a Dire Claw from Jolly Sneasler most of the time. The rest of the SPs are put into Special Attack to maximize damage.\n** 9 HP / 22 Def / 30 SpA / 5 Spe with Modest**: This spread has just enough Speed investment to let Sylveon outrun Garchomp under Tailwind while still allowing it to withstand Jolly Sneasler's Dire Claw. The Special Attack investment allows Sylveon to secure the 2KHO on most Basculegion-M with Hyper Voice.\nTeambuilding\nChecks and Weaknesses: Sylveon lacks coverage moves to deal with the plethora of Fairy-resistant Pokemon that permeate the metagame. Mega Charizard Y can trade extremely well with Sylveon, resisting Fairy and dealing massive damage back with Weather Ball. Gholdengo and Mega Delphox can set up Nasty Plot in front of Sylveon without much issue thanks to their decent special bulk compounded with their Fairy resistance and quickly run away with the game, along with Psyshock and Make It Rain threatening massive damage. Mega Metagross and Mega Glimmora can safely switch into a Hyper Voice thanks to their Fairy resistances and OHKO Sylveon without much trouble with Iron Head and Sludge Bomb.\nIncineroar is a problem for Sylveon, as it takes neutral hits from Sylveon very well. It can disrupt Sylveon with Fake Out, use Throat Chop to disable Hyper Voice, tank a hit for its teammates and then pivot out with Parting Shot, and finally 2HKO it most of the time with Flare Blitz.\nMega Gengar poses an immense threat to Sylveon; it's able to take a Hyper Voice well thanks to its Poison typing and then use Disable next turn to prevent Sylveon from dealing consistent damage. This lets Mega Gengar either go for Sludge Bomb for the 2HKO or easily trap Sylveon while Perish Song ticks down. Venusaur is also a problem, as it's able to outspeed Sylveon under the sun, disrupt it with Sleep Powder, and threaten a 2HKO with Sludge Bomb.\nWide Guard users such as Aerodactyl and Pelipper force Sylveon to commit to a Hyper Beam or use Quick Attack for mediocre damage at best. An especially troublesome foe is Toxapex, which can trap Sylveon with Infestation, block Hyper Voice with Wide Guard, and stomach multiple Hyper Beams. Despite taking significant damage from Sylveon's attacks, Sneasler, Iron Head Kingambit, and Mystic Water Basculegion-M can all threaten Sylveon with an OHKO.\nGood Partners and Synergies: Sylveon thrives when it's able to move first, so allies that can help establish speed control are greatly appreciated. Mega Aerodactyl sets Tailwind and lets Sylveon follow up before foes have a chance to act while also threatening Fire-types, most notably Mega Charizard Y, with Rock Slide. Similarly, Mega Staraptor offers Tailwind support but has Fighting-type coverage to hit Steel-types such as Excadrill and Kingambit that threaten Sylveon with Iron Head and Dual Wingbeat to take care of Focus Sash Venusaur and Sneasler.\nMega Raichu Y is an incredible partner for Sylveon. Zap Cannon's ability to spread paralysis while also dealing hefty damage provides Sylveon with the perfect follow-up opportunity. Additionally, Mega Raichu Y has crucial Fighting-type coverage with Focus Blast, and it also threatens the most common Wide Guard users in Aerodactyl, Pelipper, and Toxaxpex. Sylveon in turn can handle the Dragon-types of the format, such as Mega Dragonite and Garchomp.\nFarigiraf provides Trick Room to give Sylveon the ability to move before faster-paced teams while preventing Sylveon from getting disrupted or chipped down by priority moves with Armor Tail. Additionally, Farigiraf's Psychic-type damage threatens the Poison-types that may attempt to switch into Sylveon's Hyper Voice, and Twin Beam eliminates Sneasler through Focus Sash. Farigiraf also commonly runs Thunderbolt, which can help against the Wide Guard user Pelipper and threaten Mega Aerodactyl, Mega Charizard Y, and Basculegion-M. Farigiraf appreciates Sylveon's ability to switch into the Dark-types that threaten it, such as Mega Tyranitar, and KO them back with Hyper Voice.\nFire-types such as Mega Charizard Y and Hisuian Arcanine melt through Steel-types such as Kingambit and Gholdengo that would otherwise resist Sylveon's Fairy-type attacks, while Sylveon compliments them by threatening the Dragon-types that resist their attacks. Hisuian Arcanine also has Rock-type coverage to threaten the Fire-types that trade well against Sylveon, most notably Mega Charizard Y. Incineroar is another stellar partner, as Intimidate alleviates pressure from the incoming physical attacks that Sylveon can struggle to take while using Fake Out to give Sylveon opportunities to spread damage."
-      }
-     ],
-     "credits": [
-      "poketitanterra",
-      "pengu"
      ]
     }
    ]
@@ -19160,92 +18165,6 @@
    "vgc_strategies": []
   },
   {
-   "name": "Golisopod",
-   "alias": "golisopod",
-   "types": [
-    "Bug",
-    "Water"
-   ],
-   "base_stats": {
-    "hp": 75,
-    "atk": 125,
-    "def": 140,
-    "spa": 60,
-    "spd": 90,
-    "spe": 40
-   },
-   "learnset": [
-    "Agility",
-    "Aqua Jet",
-    "Assurance",
-    "Attract",
-    "Blizzard",
-    "Brick Break",
-    "Bug Bite",
-    "Bug Buzz",
-    "Bulk Up",
-    "Chilling Water",
-    "Close Combat",
-    "Dark Pulse",
-    "Dive",
-    "Double Hit",
-    "Drill Run",
-    "Endure",
-    "Facade",
-    "First Impression",
-    "Fling",
-    "Focus Blast",
-    "Giga Impact",
-    "Gunk Shot",
-    "Hyper Beam",
-    "Ice Beam",
-    "Icy Wind",
-    "Iron Defense",
-    "Iron Head",
-    "Leech Life",
-    "Liquidation",
-    "Mud Shot",
-    "Muddy Water",
-    "Night Slash",
-    "Payback",
-    "Pin Missile",
-    "Poison Jab",
-    "Pounce",
-    "Protect",
-    "Rain Dance",
-    "Razor Shell",
-    "Rest",
-    "Rock Slide",
-    "Rock Tomb",
-    "Round",
-    "Scald",
-    "Screech",
-    "Shadow Claw",
-    "Skitter Smack",
-    "Slash",
-    "Sleep Talk",
-    "Sludge Bomb",
-    "Sludge Wave",
-    "Snarl",
-    "Snore",
-    "Spikes",
-    "Spite",
-    "Struggle Bug",
-    "Substitute",
-    "Sucker Punch",
-    "Surf",
-    "Swords Dance",
-    "Taunt",
-    "Throat Chop",
-    "U-turn",
-    "Venoshock",
-    "Waterfall",
-    "Wide Guard",
-    "X-Scissor"
-   ],
-   "vgc_strategies": []
-  },
-  {
    "name": "Mimikyu",
    "alias": "mimikyu",
    "types": [
@@ -19304,7 +18223,6 @@
     "Shadow Ball",
     "Shadow Claw",
     "Shadow Sneak",
-    "Slash",
     "Sleep Talk",
     "Snore",
     "Spite",
@@ -19776,303 +18694,6 @@
    "vgc_strategies": []
   },
   {
-   "name": "Rillaboom",
-   "alias": "rillaboom",
-   "types": [
-    "Grass"
-   ],
-   "base_stats": {
-    "hp": 100,
-    "atk": 125,
-    "def": 90,
-    "spa": 60,
-    "spd": 70,
-    "spe": 85
-   },
-   "learnset": [
-    "Acrobatics",
-    "Assurance",
-    "Body Press",
-    "Body Slam",
-    "Boomburst",
-    "Brick Break",
-    "Brutal Swing",
-    "Bulk Up",
-    "Bulldoze",
-    "Bullet Seed",
-    "Double Hit",
-    "Double-Edge",
-    "Drain Punch",
-    "Drum Beating",
-    "Earth Power",
-    "Earthquake",
-    "Endeavor",
-    "Endure",
-    "Energy Ball",
-    "Facade",
-    "Fake Out",
-    "Fling",
-    "Focus Blast",
-    "Focus Energy",
-    "Focus Punch",
-    "Frenzy Plant",
-    "Giga Drain",
-    "Giga Impact",
-    "Grass Knot",
-    "Grassy Glide",
-    "Grassy Terrain",
-    "Growth",
-    "Hammer Arm",
-    "High Horsepower",
-    "Hyper Beam",
-    "Hyper Voice",
-    "Knock Off",
-    "Leaf Storm",
-    "Leech Seed",
-    "Low Kick",
-    "Low Sweep",
-    "Mega Kick",
-    "Mud Shot",
-    "Noble Roar",
-    "Protect",
-    "Rest",
-    "Round",
-    "Scary Face",
-    "Screech",
-    "Seed Bomb",
-    "Sleep Talk",
-    "Snarl",
-    "Snore",
-    "Solar Beam",
-    "Solar Blade",
-    "Stomping Tantrum",
-    "Substitute",
-    "Sunny Day",
-    "Superpower",
-    "Swords Dance",
-    "Taunt",
-    "Thief",
-    "Trailblaze",
-    "U-turn",
-    "Uproar",
-    "Wood Hammer",
-    "Worry Seed"
-   ],
-   "vgc_strategies": [
-    {
-     "format": "VGC26 Regulation M-C",
-     "outdated": null,
-     "overview": "",
-     "comments": "",
-     "movesets": [
-      {
-       "name": "Bulky Offensive",
-       "pokemon": "Rillaboom",
-       "abilities": [
-        "Grassy Surge"
-       ],
-       "items": [
-        "Miracle Seed",
-        "Life Orb"
-       ],
-       "natures": [
-        "Adamant"
-       ],
-       "stat_points": [
-        {
-         "hp": 32,
-         "atk": 32,
-         "def": 0,
-         "spa": 0,
-         "spd": 2,
-         "spe": 0
-        }
-       ],
-       "moveslots": [
-        [
-         "Wood Hammer"
-        ],
-        [
-         "Grassy Glide"
-        ],
-        [
-         "Fake Out"
-        ],
-        [
-         "High Horsepower",
-         "U-turn"
-        ]
-       ],
-       "explanation": ""
-      }
-     ],
-     "credits": []
-    }
-   ]
-  },
-  {
-   "name": "Cinderace",
-   "alias": "cinderace",
-   "types": [
-    "Fire"
-   ],
-   "base_stats": {
-    "hp": 80,
-    "atk": 116,
-    "def": 75,
-    "spa": 65,
-    "spd": 75,
-    "spe": 119
-   },
-   "learnset": [
-    "Acrobatics",
-    "Agility",
-    "Assurance",
-    "Baton Pass",
-    "Blast Burn",
-    "Blaze Kick",
-    "Bounce",
-    "Bulk Up",
-    "Burning Jealousy",
-    "Coaching",
-    "Counter",
-    "Court Change",
-    "Double-Edge",
-    "Electro Ball",
-    "Endure",
-    "Facade",
-    "Feint",
-    "Fire Blast",
-    "Fire Fang",
-    "Fire Punch",
-    "Fire Spin",
-    "Flame Charge",
-    "Flamethrower",
-    "Flare Blitz",
-    "Fling",
-    "Focus Blast",
-    "Focus Energy",
-    "Giga Impact",
-    "Gunk Shot",
-    "Heat Wave",
-    "Helping Hand",
-    "High Jump Kick",
-    "Hyper Beam",
-    "Iron Head",
-    "Low Kick",
-    "Low Sweep",
-    "Mega Kick",
-    "Mud Shot",
-    "Mud-Slap",
-    "Overheat",
-    "Protect",
-    "Pyro Ball",
-    "Quick Attack",
-    "Rest",
-    "Reversal",
-    "Round",
-    "Scorching Sands",
-    "Shadow Ball",
-    "Sleep Talk",
-    "Smack Down",
-    "Snarl",
-    "Snore",
-    "Substitute",
-    "Sucker Punch",
-    "Sunny Day",
-    "Super Fang",
-    "Swords Dance",
-    "Taunt",
-    "Temper Flare",
-    "Trailblaze",
-    "U-turn",
-    "Weather Ball",
-    "Will-O-Wisp",
-    "Zen Headbutt"
-   ],
-   "vgc_strategies": []
-  },
-  {
-   "name": "Inteleon",
-   "alias": "inteleon",
-   "types": [
-    "Water"
-   ],
-   "base_stats": {
-    "hp": 70,
-    "atk": 85,
-    "def": 65,
-    "spa": 125,
-    "spd": 65,
-    "spe": 120
-   },
-   "learnset": [
-    "Acrobatics",
-    "Agility",
-    "Air Cutter",
-    "Air Slash",
-    "Aqua Jet",
-    "Aqua Ring",
-    "Baton Pass",
-    "Bind",
-    "Blizzard",
-    "Bounce",
-    "Breaking Swipe",
-    "Chilling Water",
-    "Dark Pulse",
-    "Dive",
-    "Double Team",
-    "Endure",
-    "Facade",
-    "Fell Stinger",
-    "Fling",
-    "Flip Turn",
-    "Focus Energy",
-    "Giga Impact",
-    "Haze",
-    "Hydro Cannon",
-    "Hydro Pump",
-    "Hyper Beam",
-    "Ice Beam",
-    "Ice Shard",
-    "Icicle Spear",
-    "Icy Wind",
-    "Light Screen",
-    "Liquidation",
-    "Mud Shot",
-    "Muddy Water",
-    "Protect",
-    "Psych Up",
-    "Rain Dance",
-    "Reflect",
-    "Rest",
-    "Round",
-    "Scald",
-    "Scale Shot",
-    "Shadow Ball",
-    "Skitter Smack",
-    "Sleep Talk",
-    "Smack Down",
-    "Snipe Shot",
-    "Snore",
-    "Snowscape",
-    "Soak",
-    "Substitute",
-    "Sucker Punch",
-    "Surf",
-    "Swords Dance",
-    "Taunt",
-    "Tearful Look",
-    "U-turn",
-    "Vacuum Wave",
-    "Water Pulse",
-    "Waterfall",
-    "Weather Ball",
-    "Whirlpool"
-   ],
-   "vgc_strategies": []
-  },
-  {
    "name": "Corviknight",
    "alias": "corviknight",
    "types": [
@@ -20196,144 +18817,6 @@
      ]
     }
    ]
-  },
-  {
-   "name": "Thievul",
-   "alias": "thievul",
-   "types": [
-    "Dark"
-   ],
-   "base_stats": {
-    "hp": 70,
-    "atk": 58,
-    "def": 58,
-    "spa": 87,
-    "spd": 92,
-    "spe": 90
-   },
-   "learnset": [
-    "Acrobatics",
-    "Agility",
-    "Assurance",
-    "Attract",
-    "Baton Pass",
-    "Beat Up",
-    "Burning Jealousy",
-    "Crunch",
-    "Dark Pulse",
-    "Dig",
-    "Double Team",
-    "Endure",
-    "Facade",
-    "Fake Tears",
-    "Fire Fang",
-    "First Impression",
-    "Foul Play",
-    "Giga Impact",
-    "Grass Knot",
-    "Howl",
-    "Hyper Beam",
-    "Ice Fang",
-    "Knock Off",
-    "Lash Out",
-    "Mud Shot",
-    "Nasty Plot",
-    "Night Slash",
-    "Parting Shot",
-    "Play Rough",
-    "Protect",
-    "Psychic",
-    "Quick Attack",
-    "Quick Guard",
-    "Rest",
-    "Roar",
-    "Round",
-    "Screech",
-    "Shadow Ball",
-    "Shadow Claw",
-    "Sleep Talk",
-    "Snarl",
-    "Snore",
-    "Substitute",
-    "Sucker Punch",
-    "Tail Slap",
-    "Taunt",
-    "Thief",
-    "Thunder Fang",
-    "Torment",
-    "Trailblaze",
-    "U-turn"
-   ],
-   "vgc_strategies": []
-  },
-  {
-   "name": "Farfetch'd",
-   "alias": "farfetchd",
-   "types": [
-    "Normal",
-    "Flying"
-   ],
-   "base_stats": {
-    "hp": 52,
-    "atk": 90,
-    "def": 55,
-    "spa": 58,
-    "spd": 62,
-    "spe": 60
-   },
-   "learnset": [
-    "Acrobatics",
-    "Aerial Ace",
-    "Agility",
-    "Air Cutter",
-    "Air Slash",
-    "Attract",
-    "Baton Pass",
-    "Body Slam",
-    "Brave Bird",
-    "Brutal Swing",
-    "Close Combat",
-    "Covet",
-    "Curse",
-    "Dual Wingbeat",
-    "Endure",
-    "Facade",
-    "Feather Dance",
-    "Feint",
-    "Final Gambit",
-    "First Impression",
-    "Flail",
-    "Fly",
-    "Focus Energy",
-    "Heat Wave",
-    "Helping Hand",
-    "Iron Tail",
-    "Knock Off",
-    "Leaf Blade",
-    "Night Slash",
-    "Poison Jab",
-    "Protect",
-    "Quick Attack",
-    "Rest",
-    "Roost",
-    "Round",
-    "Simple Beam",
-    "Sky Attack",
-    "Slash",
-    "Sleep Talk",
-    "Snore",
-    "Solar Blade",
-    "Steel Wing",
-    "Substitute",
-    "Sunny Day",
-    "Swords Dance",
-    "Thief",
-    "Throat Chop",
-    "Trailblaze",
-    "U-turn",
-    "Uproar"
-   ],
-   "vgc_strategies": []
   },
   {
    "name": "Flapple",
@@ -20531,247 +19014,6 @@
     "Thunder Fang",
     "Wrap",
     "Zen Headbutt"
-   ],
-   "vgc_strategies": []
-  },
-  {
-   "name": "Toxtricity",
-   "alias": "toxtricity",
-   "types": [
-    "Electric",
-    "Poison"
-   ],
-   "base_stats": {
-    "hp": 75,
-    "atk": 98,
-    "def": 70,
-    "spa": 114,
-    "spd": 70,
-    "spe": 75
-   },
-   "learnset": [
-    "Acid Spray",
-    "Belch",
-    "Boomburst",
-    "Brick Break",
-    "Charge",
-    "Charge Beam",
-    "Charm",
-    "Discharge",
-    "Drain Punch",
-    "Eerie Impulse",
-    "Electric Terrain",
-    "Electro Ball",
-    "Electroweb",
-    "Encore",
-    "Endeavor",
-    "Endure",
-    "Facade",
-    "Fire Punch",
-    "Flail",
-    "Fling",
-    "Giga Impact",
-    "Gunk Shot",
-    "Helping Hand",
-    "Hex",
-    "Hyper Beam",
-    "Hyper Voice",
-    "Mega Kick",
-    "Metal Sound",
-    "Noble Roar",
-    "Nuzzle",
-    "Overdrive",
-    "Payback",
-    "Poison Jab",
-    "Protect",
-    "Psychic Noise",
-    "Rain Dance",
-    "Rest",
-    "Rising Voltage",
-    "Round",
-    "Scary Face",
-    "Screech",
-    "Shift Gear",
-    "Sleep Talk",
-    "Sludge Bomb",
-    "Sludge Wave",
-    "Snarl",
-    "Snore",
-    "Stored Power",
-    "Substitute",
-    "Sunny Day",
-    "Swagger",
-    "Taunt",
-    "Tearful Look",
-    "Thief",
-    "Throat Chop",
-    "Thunder",
-    "Thunder Fang",
-    "Thunder Punch",
-    "Thunder Wave",
-    "Thunderbolt",
-    "Toxic",
-    "Toxic Spikes",
-    "Trailblaze",
-    "Uproar",
-    "Venoshock",
-    "Volt Switch",
-    "Wild Charge",
-    "Zap Cannon"
-   ],
-   "vgc_strategies": []
-  },
-  {
-   "name": "Toxtricity-Low-Key",
-   "alias": "toxtricity-low-key",
-   "types": [
-    "Electric",
-    "Poison"
-   ],
-   "base_stats": {
-    "hp": 75,
-    "atk": 98,
-    "def": 70,
-    "spa": 114,
-    "spd": 70,
-    "spe": 75
-   },
-   "learnset": [
-    "Acid Spray",
-    "Belch",
-    "Boomburst",
-    "Brick Break",
-    "Charge",
-    "Charge Beam",
-    "Charm",
-    "Discharge",
-    "Drain Punch",
-    "Eerie Impulse",
-    "Electric Terrain",
-    "Electro Ball",
-    "Electroweb",
-    "Encore",
-    "Endeavor",
-    "Endure",
-    "Facade",
-    "Fire Punch",
-    "Flail",
-    "Fling",
-    "Giga Impact",
-    "Gunk Shot",
-    "Helping Hand",
-    "Hex",
-    "Hyper Beam",
-    "Hyper Voice",
-    "Magnetic Flux",
-    "Mega Kick",
-    "Metal Sound",
-    "Noble Roar",
-    "Nuzzle",
-    "Overdrive",
-    "Parabolic Charge",
-    "Payback",
-    "Poison Jab",
-    "Protect",
-    "Psychic Noise",
-    "Rain Dance",
-    "Rest",
-    "Rising Voltage",
-    "Round",
-    "Scary Face",
-    "Screech",
-    "Sleep Talk",
-    "Sludge Bomb",
-    "Sludge Wave",
-    "Snarl",
-    "Snore",
-    "Stored Power",
-    "Substitute",
-    "Sunny Day",
-    "Swagger",
-    "Taunt",
-    "Tearful Look",
-    "Thief",
-    "Throat Chop",
-    "Thunder",
-    "Thunder Fang",
-    "Thunder Punch",
-    "Thunder Wave",
-    "Thunderbolt",
-    "Toxic",
-    "Toxic Spikes",
-    "Trailblaze",
-    "Uproar",
-    "Venoshock",
-    "Volt Switch",
-    "Wild Charge"
-   ],
-   "vgc_strategies": []
-  },
-  {
-   "name": "Grapploct",
-   "alias": "grapploct",
-   "types": [
-    "Fighting"
-   ],
-   "base_stats": {
-    "hp": 80,
-    "atk": 118,
-    "def": 90,
-    "spa": 70,
-    "spd": 80,
-    "spe": 42
-   },
-   "learnset": [
-    "Attract",
-    "Bind",
-    "Body Slam",
-    "Brick Break",
-    "Brutal Swing",
-    "Bulk Up",
-    "Chilling Water",
-    "Circle Throw",
-    "Close Combat",
-    "Coaching",
-    "Detect",
-    "Dig",
-    "Dive",
-    "Drain Punch",
-    "Endure",
-    "Facade",
-    "Feint",
-    "Focus Blast",
-    "Giga Impact",
-    "Hydro Pump",
-    "Hyper Beam",
-    "Ice Punch",
-    "Liquidation",
-    "Mach Punch",
-    "Mud Shot",
-    "Muddy Water",
-    "Octolock",
-    "Pain Split",
-    "Payback",
-    "Protect",
-    "Rest",
-    "Reversal",
-    "Round",
-    "Scary Face",
-    "Seismic Toss",
-    "Skitter Smack",
-    "Sleep Talk",
-    "Snore",
-    "Soak",
-    "Stomping Tantrum",
-    "Storm Throw",
-    "Substitute",
-    "Sucker Punch",
-    "Superpower",
-    "Surf",
-    "Taunt",
-    "Topsy-Turvy",
-    "Waterfall",
-    "Whirlpool"
    ],
    "vgc_strategies": []
   },
@@ -21067,165 +19309,6 @@
      ]
     }
    ]
-  },
-  {
-   "name": "Perrserker",
-   "alias": "perrserker",
-   "types": [
-    "Steel"
-   ],
-   "base_stats": {
-    "hp": 70,
-    "atk": 110,
-    "def": 100,
-    "spa": 50,
-    "spd": 60,
-    "spe": 50
-   },
-   "learnset": [
-    "Aerial Ace",
-    "Amnesia",
-    "Assurance",
-    "Baton Pass",
-    "Bite",
-    "Body Slam",
-    "Brick Break",
-    "Bulk Up",
-    "Charm",
-    "Chilling Water",
-    "Close Combat",
-    "Covet",
-    "Crunch",
-    "Curse",
-    "Dark Pulse",
-    "Dig",
-    "Double-Edge",
-    "Endeavor",
-    "Endure",
-    "Facade",
-    "Fake Out",
-    "Fake Tears",
-    "Flail",
-    "Flash Cannon",
-    "Fling",
-    "Foul Play",
-    "Giga Impact",
-    "Gunk Shot",
-    "Gyro Ball",
-    "Heavy Slam",
-    "Helping Hand",
-    "Hyper Beam",
-    "Hyper Voice",
-    "Iron Defense",
-    "Iron Head",
-    "Iron Tail",
-    "Knock Off",
-    "Lash Out",
-    "Metal Burst",
-    "Metal Sound",
-    "Nasty Plot",
-    "Night Slash",
-    "Payback",
-    "Play Rough",
-    "Protect",
-    "Rain Dance",
-    "Rest",
-    "Round",
-    "Screech",
-    "Seed Bomb",
-    "Shadow Ball",
-    "Shadow Claw",
-    "Slash",
-    "Sleep Talk",
-    "Snore",
-    "Spikes",
-    "Spite",
-    "Stealth Rock",
-    "Steel Beam",
-    "Substitute",
-    "Sunny Day",
-    "Swagger",
-    "Swords Dance",
-    "Taunt",
-    "Thief",
-    "Thrash",
-    "Throat Chop",
-    "Thunder",
-    "Thunder Wave",
-    "Thunderbolt",
-    "Trailblaze",
-    "U-turn",
-    "Uproar",
-    "X-Scissor"
-   ],
-   "vgc_strategies": []
-  },
-  {
-   "name": "Sirfetch'd",
-   "alias": "sirfetchd",
-   "types": [
-    "Fighting"
-   ],
-   "base_stats": {
-    "hp": 62,
-    "atk": 135,
-    "def": 95,
-    "spa": 68,
-    "spd": 82,
-    "spe": 65
-   },
-   "learnset": [
-    "Aerial Ace",
-    "Assurance",
-    "Attract",
-    "Body Slam",
-    "Brave Bird",
-    "Brick Break",
-    "Brutal Swing",
-    "Close Combat",
-    "Coaching",
-    "Counter",
-    "Covet",
-    "Curse",
-    "Defog",
-    "Detect",
-    "Double-Edge",
-    "Dual Wingbeat",
-    "Endure",
-    "Facade",
-    "Feather Dance",
-    "Feint",
-    "Final Gambit",
-    "First Impression",
-    "Flail",
-    "Focus Energy",
-    "Grassy Glide",
-    "Helping Hand",
-    "Iron Defense",
-    "Knock Off",
-    "Leaf Blade",
-    "Meteor Assault",
-    "Night Slash",
-    "Poison Jab",
-    "Protect",
-    "Quick Attack",
-    "Quick Guard",
-    "Rest",
-    "Round",
-    "Simple Beam",
-    "Sky Attack",
-    "Slash",
-    "Sleep Talk",
-    "Snore",
-    "Solar Blade",
-    "Steel Wing",
-    "Substitute",
-    "Sunny Day",
-    "Superpower",
-    "Swords Dance",
-    "Throat Chop"
-   ],
-   "vgc_strategies": []
   },
   {
    "name": "Mr. Rime",
@@ -21562,254 +19645,6 @@
     "Zen Headbutt"
    ],
    "vgc_strategies": []
-  },
-  {
-   "name": "Pincurchin",
-   "alias": "pincurchin",
-   "types": [
-    "Electric"
-   ],
-   "base_stats": {
-    "hp": 48,
-    "atk": 101,
-    "def": 95,
-    "spa": 91,
-    "spd": 85,
-    "spe": 15
-   },
-   "learnset": [
-    "Acupressure",
-    "Assurance",
-    "Body Slam",
-    "Charge",
-    "Charge Beam",
-    "Chilling Water",
-    "Curse",
-    "Discharge",
-    "Electric Terrain",
-    "Electro Ball",
-    "Electroweb",
-    "Endure",
-    "Facade",
-    "Giga Impact",
-    "Hex",
-    "Hydro Pump",
-    "Hyper Beam",
-    "Liquidation",
-    "Memento",
-    "Muddy Water",
-    "Pain Split",
-    "Payback",
-    "Pin Missile",
-    "Poison Jab",
-    "Protect",
-    "Rain Dance",
-    "Recover",
-    "Rest",
-    "Reversal",
-    "Rising Voltage",
-    "Round",
-    "Scald",
-    "Self-Destruct",
-    "Sleep Talk",
-    "Snore",
-    "Spikes",
-    "Substitute",
-    "Sucker Punch",
-    "Supercell Slam",
-    "Surf",
-    "Throat Chop",
-    "Thunder",
-    "Thunder Wave",
-    "Thunderbolt",
-    "Toxic Spikes",
-    "Venoshock",
-    "Wild Charge",
-    "Zing Zap"
-   ],
-   "vgc_strategies": []
-  },
-  {
-   "name": "Indeedee",
-   "alias": "indeedee",
-   "types": [
-    "Psychic",
-    "Normal"
-   ],
-   "base_stats": {
-    "hp": 60,
-    "atk": 65,
-    "def": 55,
-    "spa": 105,
-    "spd": 95,
-    "spe": 95
-   },
-   "learnset": [
-    "After You",
-    "Body Slam",
-    "Calm Mind",
-    "Dazzling Gleam",
-    "Drain Punch",
-    "Draining Kiss",
-    "Encore",
-    "Endure",
-    "Energy Ball",
-    "Expanding Force",
-    "Extrasensory",
-    "Facade",
-    "Fake Out",
-    "Future Sight",
-    "Gravity",
-    "Healing Wish",
-    "Helping Hand",
-    "Hyper Voice",
-    "Imprison",
-    "Last Resort",
-    "Magic Room",
-    "Mystical Fire",
-    "Play Rough",
-    "Power Split",
-    "Power Swap",
-    "Protect",
-    "Psych Up",
-    "Psychic",
-    "Psychic Noise",
-    "Psychic Terrain",
-    "Psyshock",
-    "Rest",
-    "Round",
-    "Shadow Ball",
-    "Skill Swap",
-    "Sleep Talk",
-    "Snore",
-    "Stored Power",
-    "Substitute",
-    "Terrain Pulse",
-    "Tri Attack",
-    "Trick",
-    "Trick Room",
-    "Wish",
-    "Wonder Room",
-    "Zen Headbutt"
-   ],
-   "vgc_strategies": []
-  },
-  {
-   "name": "Indeedee-F",
-   "alias": "indeedee-f",
-   "types": [
-    "Psychic",
-    "Normal"
-   ],
-   "base_stats": {
-    "hp": 70,
-    "atk": 55,
-    "def": 65,
-    "spa": 95,
-    "spd": 105,
-    "spe": 85
-   },
-   "learnset": [
-    "Alluring Voice",
-    "Baton Pass",
-    "Body Slam",
-    "Calm Mind",
-    "Charm",
-    "Dazzling Gleam",
-    "Drain Punch",
-    "Draining Kiss",
-    "Endure",
-    "Energy Ball",
-    "Facade",
-    "Fake Out",
-    "Follow Me",
-    "Future Sight",
-    "Guard Split",
-    "Guard Swap",
-    "Heal Pulse",
-    "Healing Wish",
-    "Helping Hand",
-    "Hyper Voice",
-    "Imprison",
-    "Light Screen",
-    "Mystical Fire",
-    "Play Rough",
-    "Protect",
-    "Psych Up",
-    "Psychic",
-    "Psychic Terrain",
-    "Psyshock",
-    "Reflect",
-    "Rest",
-    "Round",
-    "Safeguard",
-    "Shadow Ball",
-    "Sing",
-    "Skill Swap",
-    "Sleep Talk",
-    "Snore",
-    "Stored Power",
-    "Substitute",
-    "Terrain Pulse",
-    "Trick",
-    "Trick Room",
-    "Wish",
-    "Zen Headbutt"
-   ],
-   "vgc_strategies": [
-    {
-     "format": "VGC26 Regulation M-C",
-     "outdated": null,
-     "overview": "",
-     "comments": "",
-     "movesets": [
-      {
-       "name": "Redirection Support",
-       "pokemon": "Indeedee-F",
-       "abilities": [
-        "Psychic Surge"
-       ],
-       "items": [
-        "Psychic Seed",
-        "Rocky Helmet",
-        "Sitrus Berry",
-        "Colbur Berry"
-       ],
-       "natures": [
-        "Relaxed"
-       ],
-       "stat_points": [
-        {
-         "hp": 32,
-         "atk": 0,
-         "def": 32,
-         "spa": 0,
-         "spd": 2,
-         "spe": 0
-        }
-       ],
-       "moveslots": [
-        [
-         "Follow Me"
-        ],
-        [
-         "Trick Room"
-        ],
-        [
-         "Helping Hand"
-        ],
-        [
-         "Psychic",
-         "Terrain Pulse",
-         "Imprison"
-        ]
-       ],
-       "explanation": ""
-      }
-     ],
-     "credits": []
-    }
-   ]
   },
   {
    "name": "Morpeko",
@@ -22205,55 +20040,6 @@
       "pengu",
       "RauSakura"
      ]
-    },
-    {
-     "format": "VGC26 Regulation M-B",
-     "outdated": null,
-     "overview": "",
-     "comments": "",
-     "movesets": [
-      {
-       "name": "Setup Sweeper",
-       "pokemon": "Blastoise",
-       "abilities": [
-        "Rain Dish"
-       ],
-       "items": [
-        "Blastoisinite"
-       ],
-       "natures": [
-        "Modest"
-       ],
-       "stat_points": [
-        {
-         "hp": 13,
-         "atk": 0,
-         "def": 0,
-         "spa": 28,
-         "spd": 0,
-         "spe": 25
-        }
-       ],
-       "moveslots": [
-        [
-         "Water Spout"
-        ],
-        [
-         "Dark Pulse"
-        ],
-        [
-         "Shell Smash"
-        ],
-        [
-         "Protect"
-        ]
-       ],
-       "explanation": "Mega Blastoise is able to utilize its relatively good bulk and solid defensive typing to set up in front of many of the tier's main threats like Basculegion-M and Mega Froslass and proceed to sweep with the powerful spread move Water Spout, ripping through Pokemon such as Incineroar and Garchomp with ease.\nWater Spout: Water Spout is one of Mega Blastoise's main offensive tools it becomes harmless if Mega Blastoise is weakened, however, so Mega Blastoise must be careful when using it. Strong priority moves like Sucker Punch from Kingambit can easily weaken Mega Blastoise, especially after it has used Shell Smash.\nDark Pulse: Dark Pulse hits Basculegion-M and Sinistcha hard while providing a move that can be used when Mega Blastoise is weakened or when the opponent poses the threat of Wide Guard from Pokemon like Toxapex and Pelipper.\nMega Evolving Blastoise: If not necessary to gain bulk the turn Mega Blastoise decides to set up, Blastoise can refrain from Mega Evolution to force the opponent to ponder whether or not another Mega Pokemon, such as Delphox, is hiding in the back. This should only be performed on teams that have two Mega Evolutions.\nSP Spreads\n13 HP / 28 SpA / 25 Spe with Modest: With the given spread, Mega Blastoise outspeeds Adamant Mega Swampert in the rain after using Shell Smash. Additionally, it allows Mega Blastoise to survive +2 Sucker Punch from Black Glasses Kingambit and almost always avoid a 2HKO from Modest Mega Froslass's Shadow Ball and Life Orb Jolly Garchomp's Stomping Tantrum and Earthquake. Additionally, after Shell Smash, the spread allows Mega Blastoise to survive Close Combat or Brave Bird from Mega Staraptor. The rest of the SPs are dumped into Special Attack for maximum damage, OHKOing Mega Floette without bulk investment with +2 Water Spout.\n5 HP / 30 SpA / 31 Spe with Timid: This SP spread is more offensively oriented, outspeeding Adamant Sand Rush Excadrill in the sand after using Shell Smash. It has just enough bulk investment to survive 150 Base Power Last Respects from Jolly Adaptability Basculegion-M and, when Mega Blastoise is at -1 Defense, Close Combat from Jolly Sneasler. The rest of the SPs are dumped into Special Attack to maximize Mega Blastoise's damage output.\n31 HP / 17 SpA / 4 SpD / 14 Spe with Timid: A Timid nature allows Mega Blastoise to run more bulk; this spread outspeeds Adamant Mega Swampert in the rain post-Shell Smash but has enough bulk to survive Hyper Beam from Fairy Feather Sylveon, +2 Psychic from Timid Mega Delphox, and avoid a 2HKO from Dragon Claw from Life Orb Jolly Garchomp. The Special Attack investment allows Mega Blastoise to OHKO Mega Delphox without bulk investment with Water Spout without the need to click Shell Smash.\nTeambuilding\nChecks and Weaknesses: Grass-type Pokemon like Venusaur and Whimsicott resist Water Spout, with the latter also resisting Dark Pulse. Venusaur is commonly seen on sun teams, which further weakens Water Spout, and it can dispatch Mega Blastoise itself with Leaf Storm or can disable it with Sleep Powder to allow an ally Mega Charizard Y to finish it off. Mega Venusaur can also easily dispatch of Mega Blastoise with Giga Drain, this time packing extra bulk to better tank Water Spout. Whimsicott can use Encore to lock Mega Blastoise into Shell Smash or a potentially weakened Water Spout and even packs Tailwind to allow partners like Mega Floette to outspeed and OHKO Mega Blastoise even after it has used Shell Smash.\nDragon-type Pokemon like Archaludon and Mega Dragonite resist Water Spout and can retaliate with Dragon Pulse or their Electric-type coverage in Electro Shot and Thunderbolt, respectively. Hydreigon in particular resists both Water Spout and Dark Pulse and can weaken Mega Blastoise with Snarl or deal heavy damage to it with Draco Meteor. Dragonite has access to Extreme Speed, weakening Water Spout before Mega Blastoise can move.\nOpposing speed control, whether it be Tailwind or Trick Room, allows Pokemon like Gholdengo and Mega Staraptor to become larger issues for Mega Blastoise, especially after Mega Blastoise has used Shell Smash. The aforementioned Whimsicott has Tailwind, as do Mega Aerodactyl and Pelipper, both of which carry Wide Guard to block Water Spout. Sinistcha can use Trick Room in the face of Water Spout, while Farigiraf, once under Trick Room, can use Thunderbolt to chunk Mega Blastoise.\nPriority moves like Sucker Punch from Kingambit and Extreme Speed from Hisuian Arcanine weaken Water Spout. Fake Out from Sneasler and Incineroar can force Mega Blastoise to use Protect, allowing partners like Venusaur to come in safely while putting a halt in Mega Blastoise's momentum.\nGood Partners and Synergies: Sneasler provides Fake Out support for Mega Blastoise, giving it an easier time when setting up while breaking Focus Sash on foes like Venusaur and Whimsicott. Sneasler also hits Kingambit hard with Close Combat while having Poison Jab or Dire Claw for Whimsicott and other Fairy-types like Mega Floette and Sylveon that can tank an unboosted Water Spout and deal lots of damage back to Mega Blastoise. Sneasler often carries Quick Guard when alongside Mega Blastoise, blocking all priority moves. Incineroar is another Fake Out user that has Flare Blitz to threaten Grass-type Pokemon, Intimidate to weaken physical attackers, and Parting Shot to get Mega Blastoise on the field safely. Incineroar can even run Helping Hand to boost the power of Water Spout, allowing a +2 Water Spout to OHKO Sylveon, for example.\nKingambit provides coverage into Sinistcha while forming a strong setup spam core with Mega Blastoise. It also deters Incineroar from coming in, meaning Fake Out becomes less of an issue. Kingambit appreciates Mega Blastoise's ability to remove Garchomp and Fire-types with ease. Sinistcha provides redirection support for Mega Blastoise, redirecting many of the priority attacks that usually threaten Mega Blastoise. It also has Trick Room, reversing opposing Trick Room and turning Mega Blastoise into a Trick Room attacker if it decides against using Shell Smash. Sinistcha's Hospitality and sometimes even Life Dew heal Mega Blastoise, allowing it to fire off more powerful Water Spouts.\nMega Delphox is the most common secondary Mega Evolution for Mega Blastoise, hitting all the Grass-type Pokemon that Mega Blastoise fears. Mega Delphox also does well into Mega Evolutions like Mega Floette, Mega Staraptor and Mega Raichu Y, resisting their attacks and threatening huge damage onto them with +2 Heat Wave and Psyshock. In return, Mega Blastoise provides coverage into other Mega Evolutions like Mega Tyranitar and Mega Swampert."
-      }
-     ],
-     "credits": [
-      "RauSakura"
-     ]
     }
    ]
   },
@@ -22314,7 +20100,6 @@
     "Sandstorm",
     "Scary Face",
     "Skitter Smack",
-    "Slash",
     "Sleep Talk",
     "Smack Down",
     "Stealth Rock",
@@ -22573,50 +20358,10 @@
         ]
        ],
        "explanation": "Choice Scarf Basculegion-M aims to punch holes early in the game, using Wave Crash to chunk and KO threats like Mega Charizard Y and Mega Aerodactyl. It can then clean up late-game with Last Respects, outspeeding and breaking through opposing late-game sweepers like Mega Floette and Gholdengo.\nLast Respects: Last Respects is what turns Basculegion-M into one of the scariest threats in Regulation M-B, easily OHKOing foes like Gholdengo at 100 Base Power and Mega Floette at 150 Base Power.\nFlip Turn: Flip Turn allows Basculegion-M to easily pivot out, dealing chip damage to put foes like Mega Tyranitar and Sylveon in range of Wave Crash and 100-Base Power Last Respects.\nChoice Scarf: Choice Scarf allows Basculegion-M to outspeed foes like Mega Froslass and Sneasler.\nAdaptability: Adaptability allows Basculegion-M to OHKO non-Kasib Berry Sinistcha with 100-Base Power Last Respects.\nTeambuilding\n========\nChecks and Weaknesses: Grass-type Pokemon like Mega Venusaur can easily tank Wave Crash, while non-Mega Venusaur can outspeed and threaten to OHKO Basculegion-M with Solar Beam when in the sun. Whimsicott and Sinistcha can use Tailwind and Trick Room, respectively, to allow partners like Gholdengo and Mega Staraptor to outspeed and threaten Basculegion-M with Shadow Ball and Brave Bird, respectively.\nToxapex can easily swap in on Basculegion-M's Water-type attacks and punish Basculegion-M with Baneful Bunker. Other bulky Water-type Pokemon like Mega Blastoise and Rotom-Wash also give Basculegion-M trouble, hitting it with Dark Pulse and Thunderbolt, respectively. Milotic, after setting up Coil a couple of times, can safely put Basculegion-M to sleep with Hypnosis and either chip it down with Muddy Water or allow partners like Kingambit to OHKO it.\nKingambit can tank Wave Crash and OHKO Basculegion-M with Kowtow Cleave or even use Sucker Punch to deal huge damage to it before it can move. Hydreigon also causes issues, resisting all of Basculegion-M's attacks and retaliating with Dark Pulse or outspeeding and KOing it thanks to its own Choice Scarf.\nTrick Room is an issue for Basculegion-M, exploiting the Choice Scarf to make it move last; slower Pokemon like Kingambit that already threaten Basculegion-M become even more threatening. Tailwind similarly allows otherwise slower Pokemon like Mega Floette to outspeed and OHKO Basculegion-M with Light of Ruin.\nBecause of Basculegion-M's Choice Scarf, it becomes very easy to exploit; when Basculegion-M is locked into Last Respects, Normal-type Pokemon like Farigiraf can easily chunk it down with Thunderbolt, but when Basculegion-M is locked into Wave Crash, the aforementioned Water- and Grass-type Pokemon as well as Dragon-type Pokemon, like Mega Dragonite, become far scarier.\nGood Partners and Synergies: Kingambit deters Trick Room thanks to its low Speed, threatens opposing Ghost-type Pokemon like Basculegion-M with Kowtow Cleave and Sucker Punch, and hits opposing Kingambit hard with Low Kick. Sneasler can hit opposing Dark-type Pokemon hard while also doing well against Venusaur that don't carry Earth Power and Whimsicott thanks to Dire Claw. Sneasler can also form a potent combination with Basculegion-M, threatening the Normal-type Pokemon that annoy it with Close Combat. Both Kingambit and Sneasler appreciate the support against opposing Sneasler and Mega Aerodactyl, respectively. Garchomp can easily switch in on Thunderbolt from Rotom-Wash and hits foes like Toxapex hard with Earthquake.\nMega Charizard Y can OHKO Grass-type Pokemon like Venusaur that give Basculegion-M trouble while using Solar Beam to deal with Water-types, gaining an extra layer of support against Rock-type Pokemon in return. Basculegion-M also provides good coverage against opposing Fire-type Pokemon like Mega Delphox and Mega Charizard Y, which Mega Floette greatly appreciates. To return the favor, Mega Floette hits Dragon- and Dark-type Pokemon hard.\nWhimsicott and Grimmsnarl both help against opposing speed control; Whimsicott helps match Tailwind and lock Trick Room users into Trick Room with Encore, while Grimmsnarl sets up dual screens, allowing Basculegion-M to survive otherwise lethal attacks like Sucker Punch from Kingambit. Both also have access to Fairy-type STAB moves, while Basculegion-M helps out against the aforementioned Fire-type Pokemon as well as Gholdengo."
-      },
-      {
-       "name": "Glass Cannon",
-       "pokemon": "Basculegion",
-       "abilities": [
-        "Adaptability"
-       ],
-       "items": [
-        "Life Orb",
-        "Mystic Water"
-       ],
-       "natures": [
-        "Adamant"
-       ],
-       "stat_points": [
-        {
-         "hp": 0,
-         "atk": 32,
-         "def": 14,
-         "spa": 0,
-         "spd": 0,
-         "spe": 20
-        }
-       ],
-       "moveslots": [
-        [
-         "Wave Crash"
-        ],
-        [
-         "Last Respects"
-        ],
-        [
-         "Aqua Jet"
-        ],
-        [
-         "Protect"
-        ]
-       ],
-       "explanation": "Basculegion-M boasts incredible offensive prowess due to Adaptability, capable of dealing heavy damage to almost every Pokemon in the metagame. Wave Crash is able to take most of neutral foes' health or even OHKO them, while Last Respects allows Basculegion-M to sweep once its partners have fainted as long as it can outspeed its opponents. It also boasts an excellent matchup against Sneasler.\nWave Crash: Wave Crash allows Basculegion-M to threaten heavy damage right off the bat without needing to wait for its partners to faint, notably threatening foes such as Mega Charizard Y and Farigiraf. Wave Crash also allows it to hit foes that resist Last Respects, such as Kingambit and Incineroar.\nLast Respects: This move allows Basculegion-M to threaten foes without damaging itself, relevant when facing foes such as Kingambit, which can bring Basculegion-M to very low HP with Sucker Punch to the point where the recoil from Wave Crash would knock it out. Last Respects also allows Basculegion-M to hit the Grass- and Water-types of the format, such as Sinistcha, Venusaur, and Toxapex.\nAqua Jet: Aqua Jet allows Basculegion-M to pick off foes at low HP, such as Lycanroc-D after activating Focus Sash. Aqua Jet also allows it to threaten significant damage onto foes such as Mega Charizard Y even without the speed advantage.\nLife Orb versus Mystic Water: Life Orb gives Basculegion-M a power boost on all moves, allowing it to take out opposing Basculegion-M even with Last Respects at 50 Base Power, as well as threaten a consistent OHKO on no bulk Garchomp with Wave Crash. However, Life Orb has considerable consequences for Basculegion-M's longevity, particularly preventing it from sticking around for multiple turns after taking a Sucker Punch from Kingambit. Mystic Water gives Basculegion-M a slight power boost on only its Water-type moves, notably allowing it to threaten Mega Charizard Y in the sun and bulky Mega Floette prior to Intimidate while maintaining its health.\nSP Spreads\n32 Atk / 14 Def / 20 Spe with Adamant: Basculegion-M uses this spread in order to survive Sucker Punch from non-Black Glasses Kingambit, allowing Basculegion-M to consistently beat it in an endgame where Kingambit is chipped and Basculegion-M is at full health. The remainder of the spread maximizes Basculegion-M's Attack and optimizes Basculegion-M's Speed, allowing it, with Tailwind support, to outspeed Choice Scarf Garchomp.\nTeambuilding\nChecks and Weaknesses: Basculegion-M is prone to being outsped by foes such as Venusaur, which is able to OHKO it with Leaf Storm. Additionally, it struggles against Kingambit, which is able to survive Wave Crash and Last Respects, before retaliating with Kowtow Cleave or Sucker Punch, both of which are able to OHKO Basculegion-M when Kingambit is holding Black Glasses. Sinistcha is also able to redirect attacks from Basculegion-M, withstanding Wave Crash thanks to its own Water resistance and allowing a partner to take it out. As such, Basculegion-M relies on Last Respects to threaten Sinistcha, meaning it cannot effectively threaten Sinistcha at the start of the game. Finally, Archaludon is able to OHKO Basculegion-M with Electro Shot while being able to switch in on Basculegion-M's Water-type attacks, like Wave Crash, to gain a Defense boost.\nThreatening Mega Evolutions: Many Mega Evolutions are able to threaten Basculegion-M with heavy damage if they outspeed it, such as Mega Gengar, Mega Charizard Y, and Mega Raichu Y with Shadow Ball, Solar Beam, and Zap Cannon, respectively. Additionally, Mega Scovillain can protect a partner with Rage Powder and hamper Basculegion-M's damage output thanks to Spicy Spray, which leaves additional chip damage on Basculegion-M; this can add up quickly when combined with Wave Crash or Life Orb's recoil damage. Mega Scovillain can also deal significant damage to Basculegion-M with Giga Drain.\nGood Partners and Synergies: Basculegion-M appreciates speed control such as Tailwind and Trick Room from allies such as Whimsicott and Farigiraf, as these allow it to outspeed other, faster threats such as Mega Charizard Y, Venusaur, and Mega Raichu Y. However, Basculegion-M can also rely on its partners to take care of these foes. Notably, Lycanroc-D is able to OHKO Mega Charizard Y with Accelerock, while Mega Froslass is able to overwrite the sun, removing the threat of Solar Beam from Mega Charizard Y and allowing Basculegion-M to outspeed Venusaur while hitting it with Blizzard. Additionally, Garchomp is able to switch in on Mega Raichu Y when it uses Zap Cannon and OHKO it.\nOther good partners: Mega Floette is able to threaten Kingambit and Archaludon and even OHKO them with Light of Ruin. Additionally, Kingambit with Low Kick is able to cover for Basculegion-M's weakness to opposing Kingambit, while Basculegion-M deters foes from bringing Sneasler thanks to a great defensive matchup and ability to OHKO it. Additionally, Kingambit covers for opposing Ghost-types such as Mega Gengar, Mega Froslass, and opposing Basculegion-M. Lastly, Mega Charizard Y is able to hit the Grass-types such as Sinistcha and Venusaur that Basculegion-M struggles with, while Baculegion-M is able to hit opposing Rock-types in return. Basculegion-M is also able to take care of opposing Basculegion-M if Mega Charizard Y does not have Solar Beam."
       }
      ],
      "credits": [
-      "RauSakura",
-      "pengu"
+      "RauSakura"
      ]
     }
    ]
@@ -22747,7 +20492,6 @@
     "Screech",
     "Shadow Ball",
     "Shadow Claw",
-    "Slash",
     "Sleep Talk",
     "Sludge Bomb",
     "Sludge Wave",
@@ -23019,7 +20763,6 @@
     "Shadow Ball",
     "Shadow Claw",
     "Skill Swap",
-    "Slash",
     "Sleep Talk",
     "Solar Beam",
     "Spikes",
@@ -23193,89 +20936,6 @@
    "vgc_strategies": []
   },
   {
-   "name": "Pawmot",
-   "alias": "pawmot",
-   "types": [
-    "Electric",
-    "Fighting"
-   ],
-   "base_stats": {
-    "hp": 70,
-    "atk": 115,
-    "def": 70,
-    "spa": 70,
-    "spd": 60,
-    "spe": 105
-   },
-   "learnset": [
-    "Agility",
-    "Baton Pass",
-    "Bite",
-    "Body Press",
-    "Brick Break",
-    "Bulk Up",
-    "Charge",
-    "Charge Beam",
-    "Charm",
-    "Close Combat",
-    "Coaching",
-    "Crunch",
-    "Dig",
-    "Discharge",
-    "Double Shock",
-    "Double-Edge",
-    "Eerie Impulse",
-    "Electric Terrain",
-    "Electro Ball",
-    "Electroweb",
-    "Encore",
-    "Endure",
-    "Entrainment",
-    "Facade",
-    "Fake Out",
-    "Fire Punch",
-    "Fling",
-    "Focus Blast",
-    "Focus Punch",
-    "Giga Impact",
-    "Grass Knot",
-    "Helping Hand",
-    "Hyper Beam",
-    "Ice Punch",
-    "Knock Off",
-    "Low Kick",
-    "Low Sweep",
-    "Mach Punch",
-    "Nuzzle",
-    "Play Rough",
-    "Protect",
-    "Quick Attack",
-    "Rain Dance",
-    "Rest",
-    "Revival Blessing",
-    "Rock Tomb",
-    "Seed Bomb",
-    "Sleep Talk",
-    "Substitute",
-    "Sunny Day",
-    "Super Fang",
-    "Supercell Slam",
-    "Sweet Kiss",
-    "Thief",
-    "Throat Chop",
-    "Thunder",
-    "Thunder Fang",
-    "Thunder Punch",
-    "Thunder Wave",
-    "Thunderbolt",
-    "Upper Hand",
-    "Volt Switch",
-    "Wild Charge",
-    "Wish"
-   ],
-   "vgc_strategies": []
-  },
-  {
    "name": "Maushold",
    "alias": "maushold",
    "types": [
@@ -23419,185 +21079,6 @@
     "spa": 65,
     "spd": 75,
     "spe": 111
-   },
-   "learnset": [],
-   "vgc_strategies": []
-  },
-  {
-   "name": "Arboliva",
-   "alias": "arboliva",
-   "types": [
-    "Grass",
-    "Normal"
-   ],
-   "base_stats": {
-    "hp": 78,
-    "atk": 69,
-    "def": 90,
-    "spa": 125,
-    "spd": 109,
-    "spe": 39
-   },
-   "learnset": [
-    "Alluring Voice",
-    "Bullet Seed",
-    "Charm",
-    "Dazzling Gleam",
-    "Earth Power",
-    "Encore",
-    "Endure",
-    "Energy Ball",
-    "Facade",
-    "Flail",
-    "Fling",
-    "Giga Drain",
-    "Giga Impact",
-    "Grass Knot",
-    "Grassy Terrain",
-    "Growth",
-    "Helping Hand",
-    "Hyper Beam",
-    "Hyper Voice",
-    "Leaf Storm",
-    "Leech Seed",
-    "Light Screen",
-    "Memento",
-    "Mirror Coat",
-    "Petal Blizzard",
-    "Petal Dance",
-    "Pollen Puff",
-    "Protect",
-    "Psych Up",
-    "Reflect",
-    "Rest",
-    "Safeguard",
-    "Seed Bomb",
-    "Sleep Talk",
-    "Solar Beam",
-    "Solar Blade",
-    "Strength Sap",
-    "Substitute",
-    "Sunny Day",
-    "Sweet Scent",
-    "Synthesis",
-    "Terrain Pulse",
-    "Trailblaze",
-    "Weather Ball"
-   ],
-   "vgc_strategies": []
-  },
-  {
-   "name": "Squawkabilly",
-   "alias": "squawkabilly",
-   "types": [
-    "Normal",
-    "Flying"
-   ],
-   "base_stats": {
-    "hp": 82,
-    "atk": 96,
-    "def": 51,
-    "spa": 45,
-    "spd": 51,
-    "spe": 92
-   },
-   "learnset": [
-    "Aerial Ace",
-    "Air Cutter",
-    "Air Slash",
-    "Brave Bird",
-    "Copycat",
-    "Double-Edge",
-    "Dual Wingbeat",
-    "Endeavor",
-    "Endure",
-    "Facade",
-    "Fake Tears",
-    "Feather Dance",
-    "Final Gambit",
-    "Flatter",
-    "Fly",
-    "Foul Play",
-    "Giga Impact",
-    "Heat Wave",
-    "Helping Hand",
-    "Hurricane",
-    "Hyper Beam",
-    "Hyper Voice",
-    "Lash Out",
-    "Lunge",
-    "Parting Shot",
-    "Pounce",
-    "Protect",
-    "Quick Attack",
-    "Rest",
-    "Reversal",
-    "Roost",
-    "Scary Face",
-    "Seed Bomb",
-    "Sleep Talk",
-    "Substitute",
-    "Sunny Day",
-    "Swagger",
-    "Tailwind",
-    "Taunt",
-    "Thief",
-    "Torment",
-    "U-turn",
-    "Uproar"
-   ],
-   "vgc_strategies": []
-  },
-  {
-   "name": "Squawkabilly-Blue",
-   "alias": "squawkabilly-blue",
-   "types": [
-    "Normal",
-    "Flying"
-   ],
-   "base_stats": {
-    "hp": 82,
-    "atk": 96,
-    "def": 51,
-    "spa": 45,
-    "spd": 51,
-    "spe": 92
-   },
-   "learnset": [],
-   "vgc_strategies": []
-  },
-  {
-   "name": "Squawkabilly-White",
-   "alias": "squawkabilly-white",
-   "types": [
-    "Normal",
-    "Flying"
-   ],
-   "base_stats": {
-    "hp": 82,
-    "atk": 96,
-    "def": 51,
-    "spa": 45,
-    "spd": 51,
-    "spe": 92
-   },
-   "learnset": [],
-   "vgc_strategies": []
-  },
-  {
-   "name": "Squawkabilly-Yellow",
-   "alias": "squawkabilly-yellow",
-   "types": [
-    "Normal",
-    "Flying"
-   ],
-   "base_stats": {
-    "hp": 82,
-    "atk": 96,
-    "def": 51,
-    "spa": 45,
-    "spd": 51,
-    "spe": 92
    },
    "learnset": [],
    "vgc_strategies": []
@@ -24121,131 +21602,8 @@
       "Carrotman",
       "RauSakura"
      ]
-    },
-    {
-     "format": "VGC26 Regulation M-B",
-     "outdated": null,
-     "overview": "",
-     "comments": "",
-     "movesets": [
-      {
-       "name": "Fast Attacker",
-       "pokemon": "Gengar",
-       "abilities": [
-        "Cursed Body"
-       ],
-       "items": [
-        "Gengarite"
-       ],
-       "natures": [
-        "Timid",
-        "Modest"
-       ],
-       "stat_points": [
-        {
-         "hp": 2,
-         "atk": 0,
-         "def": 0,
-         "spa": 32,
-         "spd": 0,
-         "spe": 32
-        },
-        {
-         "hp": 30,
-         "atk": 0,
-         "def": 7,
-         "spa": 3,
-         "spd": 19,
-         "spe": 7
-        }
-       ],
-       "moveslots": [
-        [
-         "Shadow Ball"
-        ],
-        [
-         "Sludge Bomb",
-         "Disable"
-        ],
-        [
-         "Substitute",
-         "Perish Song"
-        ],
-        [
-         "Protect"
-        ]
-       ],
-       "explanation": "Mega Gengar uses its high Speed and Special Attack to beat Pokemon like Sinistcha, Mega Floette, and Gholdengo. Its Shadow Tag ability limits the options of non Ghost-type foes and allows it to force KOs with Perish Song or eliminate them with Sludge Bomb and Shadow Ball.\nSludge Bomb vs Disable: Sludge Bomb is used on offensive sets to threaten Mega Floette and Sylveon and allows Mega Gengar to get more value against teams that aren't weak to Perish Song, though it can be used with Perish Song on a team that is weak to Fairy-types. Disable is typically used on Perish Song sets to stop threatening attacks like Kowtow Cleave from Kingambit or pivoting moves like Incineroar's Parting Shot from breaking free of Shadow Tag. It can still be used on an offensive set, typically appearing alongside a teammate with Encore like Maushold or Sableye to completely shut down a foe.\nSubstitute vs Perish Song: Substitute can bait out Sucker Punch from Kingambit, block Sleep Powder from Vivillon, and let Mega Gengar survive strong attacks and thus keep Shadow Tag active longer. Sometimes it even replaces Sludge Bomb to pass turns of Perish Song easier. Perish Song is typically built around as a mode for the team with multiple support partners.\nSP Spreads\n2 HP / 32 SpA / 32 Spe with Timid or Modest: This spread is intended for the offensive set. A Timid nature is used to outspeed Sneasler and Mega Froslass, while a Modest nature guarantees an OHKO on Sinistcha with Shadow Ball while improving the roll to OHKO bulky variants of Basculegion-M.\n30 HP / 7 Def / 3 SpA / 19 SpD / 7 Spe with Modest: This spread is intended for the Perish Song set. The defensive investment allows it to survive Earthquake from Mega Swampert and Stomping Tantrum from Life Orb Garchomp, both at -1 Attack, and Darkest Lariat from Incineroar. The Special Defense lets it survive Psychic from Farigiraf, Weather Ball from bulky variants of Mega Charizard Y, and Shadow Ball from Mega Froslass. The Speed investment lets it outspeed Adamant Garchomp and Modest Mega Charizard Y. The Modest nature lets it OHKO Basculegion-M without bulk investment with Shadow Ball, and the remaining SPs are dumped into Special Attack to improve the roll to OHKO its bulkier variants.\nTeambuilding\nGround-type Weakness: Though the matchup is playable using Perish Song with the help of Incineroar's Intimidate, Mega Swampert threatens an OHKO with Earthquake, High Horsepower, and rain-boosted Wave Crash. Earthquake in particular will hit Mega Gengar and Incineroar for massive damage or ignore Rage Powder from a teammate like Vivillon; Mega Swampert can also just use Wave Crash on Incineroar on the turn the latter wants to use Parting Shot. Garchomp is similarly threatening with Earthquake and Stomping Tantrum, and it pairs well with Mega Charizard Y, which can OHKO Mega Gengar with Weather Ball, making Incineroar have to choose its Fake Out target carefully. Excadrill partnered with Tyranitar outspeeds and threatens Mega Gengar with an OHKO using High Horsepower and Earthquake.\nDark-type Weakness: Kingambit threatens an OHKO with Kowtow Cleave and Sucker Punch, punishes Incineroar's Intimidate with Defiant to guarantee OHKOs on Mega Gengar's teammates like Sinistcha, and is immune to Sludge Bomb. Opposing Incineroar threatens heavy damage or an OHKO with Throat Chop and circumvents Shadow Tag with Parting Shot. Mega Tyranitar threatens heavy damage with Knock Off, shrugs off special attacks in sand, and has Rock Slide for Incineroar.\nPsychic-type Weakness: Farigiraf threatens heavy damage or an OHKO with Psychic, blocks Incineroar's Fake Out, and can even reverse the order that Pokemon faint to Perish Song with Trick Room to clinch an endgame. Mega Delphox outspeeds and threatens an OHKO with Psychic and Psyshock.\nGhost-type Weakness: Basculegion-M can usually beat Mega Gengar with Last Respects if it has Focus Sash or Choice Scarf. Though Ghost-types like Mega Froslass, Gholdengo, and Sableye can typically be handled by Shadow Ball, they can be nuisances to a Perish Song strategy simply by being able to switch. Sableye in particular threatens to use Encore to lock Mega Gengar into its status moves while taking Shadow Ball comfortably.\nGood Partners and Synergies: Vivillon uses Sleep Powder to make it easier for Mega Gengar to set up Perish Song, and Rage Powder redirects threatening attacks like Kingambit's Kowtow Cleave, Basculegion-M's Last Respects, and Garchomp's Stomping Tantrum. Politoed is another Perish Song user that can combine Mega Gengar's Disable with Encore and improve the Mega Charizard Y matchup with Drizzle. Sinistcha helps Mega Gengar survive turns of Perish Song with Hospitality, can nearly OHKO Mega Swampert with Matcha Gotcha, and redirects moves like Stomping Tantrum and Psychic from Garchomp and Farigiraf, respectively, safely with Rage Powder.\nIncineroar: Incineroar's Fake Out support is crucial for setting up and stalling turns of Perish Song, and Intimidate greatly improves the matchup against physical attackers like Mega Swampert, Garchomp, and Basculegion-M. Parting Shot can be used on the turn Mega Gengar switches out to bring it back in safely and preserve Shadow Tag while Perish Song counts down. Incineroar can be paired with Mega Gengar even without Perish Song, as it can switch in safely on Ghost- and Psychic-type attacks like Last Respects and Psychic from Basculegion-M and Mega Delphox, respectively, and threaten good damage with Throat Chop.\nPerish Trap Strategy: Mega Gengar's team can be built with the combination of Perish Song and Shadow Tag in mind by investing in Mega Gengar's bulk and pairing it with supportive partners like Incineroar and Sinistcha to have an easier time passing turns of Perish Song.\nGeneral Teammates: Sneasler has Close Combat to deal with Kingambit and Incineroar. Alolan Ninetales overwrites rain with Snow Warning to shut down Mega Swampert's Swift Swim and OHKOes it and Garchomp with Freeze Dry. Archaludon combines with Politoed on Perish Song teams to handle Mega Charizard Y with Electro Shot and help form an offensive core for the team.\nAlternative Mega Evolutions: Mega Swampert takes advantage of Politoed's Drizzle on Perish Song teams to beat Mega Charizard Y and Incineroar with Wave Crash, Garchomp with Ice Punch, and Excadrill and Tyranitar with any of its STAB attacks. Mega Gengar, in return, is better against Sinistcha and, if running Sludge Bomb, Alolan Ninetales."
-      }
-     ],
-     "credits": [
-      "pengu",
-      "poketitanterra"
-     ]
     }
    ]
-  },
-  {
-   "name": "Mabosstiff",
-   "alias": "mabosstiff",
-   "types": [
-    "Dark"
-   ],
-   "base_stats": {
-    "hp": 80,
-    "atk": 120,
-    "def": 90,
-    "spa": 60,
-    "spd": 70,
-    "spe": 85
-   },
-   "learnset": [
-    "Bite",
-    "Body Slam",
-    "Comeuppance",
-    "Crunch",
-    "Curse",
-    "Dark Pulse",
-    "Destiny Bond",
-    "Dig",
-    "Double-Edge",
-    "Endeavor",
-    "Endure",
-    "Facade",
-    "Fake Tears",
-    "Fire Fang",
-    "Focus Energy",
-    "Giga Impact",
-    "Helping Hand",
-    "Hyper Beam",
-    "Hyper Voice",
-    "Ice Fang",
-    "Jaw Lock",
-    "Lash Out",
-    "Outrage",
-    "Pain Split",
-    "Payback",
-    "Play Rough",
-    "Protect",
-    "Psychic Fangs",
-    "Rain Dance",
-    "Rest",
-    "Reversal",
-    "Roar",
-    "Scary Face",
-    "Sleep Talk",
-    "Snarl",
-    "Spite",
-    "Substitute",
-    "Sunny Day",
-    "Swagger",
-    "Taunt",
-    "Thief",
-    "Thunder Fang",
-    "Trailblaze",
-    "Wild Charge"
-   ],
-   "vgc_strategies": []
   },
   {
    "name": "Scovillain",
@@ -24363,56 +21721,6 @@
       "pengu",
       "poketitanterra",
       "RauSakura"
-     ]
-    },
-    {
-     "format": "VGC26 Regulation M-B",
-     "outdated": null,
-     "overview": "",
-     "comments": "",
-     "movesets": [
-      {
-       "name": "Redirection Support",
-       "pokemon": "Scovillain",
-       "abilities": [
-        "Moody"
-       ],
-       "items": [
-        "Scovillainite"
-       ],
-       "natures": [
-        "Bold"
-       ],
-       "stat_points": [
-        {
-         "hp": 32,
-         "atk": 0,
-         "def": 10,
-         "spa": 0,
-         "spd": 24,
-         "spe": 0
-        }
-       ],
-       "moveslots": [
-        [
-         "Overheat"
-        ],
-        [
-         "Giga Drain"
-        ],
-        [
-         "Rage Powder"
-        ],
-        [
-         "Protect"
-        ]
-       ],
-       "explanation": "Mega Scovillain functions as a support Pokemon, using the combination of Rage Powder and Spicy Spray to essentially guarantee burns on foes like Basculegion-M, Kingambit, and Garchomp. It has offensive options in Overheat and Giga Drain to threaten metagame staples like Kingambit and Basculegion-M. Combining physical damage reduction from burns with Giga Drain and even a Defense or Special Defense boost from Moody before it has Mega Evolved, Mega Scovillain can become difficult to KO.\nRage Powder and Spicy Spray: Rage Powder and Spicy Spray is a combination that is typically used early in a game to scare physical attackers and give teammates a chance to set up and take an early lead. Getting a burn on key foes like Basculegion-M can be crucial to winning a game, so Mega Scovillain should be preserved if these foes switch out.\nMega Evolving Scovillain: Protect prior to Mega Evolving to accrue stat boosts through Moody. A Defense boost lets it live 200 Base Power Last Respects from Life Orb Basculegion-M, and a Special Defense boost allows it to survive Sludge Bomb from Mega Gengar. A Speed boost allows it to outspeed Sneasler. A Special Attack boost lets it OHKO Kingambit with Overheat. Additionally, delaying Mega Evolution can force an opponent to consider whether a different Mega Evolution is in the back.\nOther Options\nLeech Seed: Leech Seed can be run over Giga Drain to increase longevity and improve the matchup against bulky Pokemon like Archaludon and Toxapex. However, it is hard to pass up the value of Giga Drain because it will put Basculegion-M into range for almost any attack to finish it off.\nSP Spreads\n32 HP / 10 Def / 24 SpD with Bold: With the Defense investment, Mega Scovillain survives Dire Claw from Sneasler and 100 Base Power Last Respects from Life Orb Basculegion-M. The remaining SPs are dumped into Special Defense to maximize the chance to survive Weather Ball from Mega Charizard Y, avoid a 2HKO from Blizzard from Mega Froslass's Blizzard, and always survive Hurricane from Vivillon.\nTeambuilding\nFire-type Pokemon: Fire-types like Incineroar and Mega Charizard Y are immune to burns and wall Mega Scovillain's standard set. Mega Charizard Y can threaten an OHKO with Weather Ball, and Incineroar's Fake Out shuts down Rage Powder for a turn, leaving Mega Scovillain's partner vulnerable and Incineroar's partner safe from Spicy Spray. Hisuian Arcanine threatens an OHKO with Head Smash.\nRain Teams: Rain teams are often accompanied by Pelipper, which can threaten Mega Scovillain with massive damage using Hurricane and weaken its Overheat with Drizzle, saving its teammates like Venusaur from an OHKO. Mega Swampert OHKOes it with Wave Crash in rain; although Mega Scovillain will burn Mega Swampert, the trade is typically not in Mega Scovillain's favor.\nPoison-type Pokemon: Mega Gengar threatens an OHKO with Sludge Bomb, and it can take advantage of Mega Scovillain's passive playstyle with Perish Song. Glimmora and Venusaur can deal heavy damage to Mega Scovillain, if not OHKOing it, with Sludge Bomb. None of these Pokemon particularly mind being burned, though chip damage can be helpful to break Glimmora's Focus Sash. Sneasler nearly threatens an OHKO with Dire Claw.\nMega Staraptor: Mega Staraptor is often boosted by its partner Whimsicott, which ignores Rage Powder, using Charm. Mega Scovillain can still force a burn on Mega Staraptor, though it faints in the process and Whimsicott can mitigate burn's Attack drop with Charm.\nGood Partners and Synergies: Basculegion-M is strong against Fire-types in general and can win the damage trade against Mega Swampert. In return, Mega Scovillain keeps it safe from Sucker Punch from Kingambit and Zap Cannon from Mega Raichu Y, burns Kingambit before it can OHKO Basculegion-M, and OHKOes Sinistcha and Venusaur with Overheat. Lycanroc-D is particularly effective against Mega Charizard Y using Rock Slide; unlike Mega Aerodactyl, it does not need to Mega Evolve to do so. Mega Scovillain can help it handle Basculegion-M, redirecting its attacks or putting it in range of Rock Slide with Giga Drain, and Mega Scovillain improves a team's matchup against Garchomp to Lycanroc-D's benefit. Kingambit punishes Intimidate from Incineroar and Staraptor and handles Rock-types like Glimmora with Iron Head and Mega Gengar with Kowtow Cleave. Mega Scovillain's Rage Powder helps Kingambit set up Swords Dance while burning Fighting-type threats like Sneasler.\nLess Used Partners: Archaludon handles Rock-types, threatens Pelipper and Mega Charizard Y with Electro Shot, and plays better against rain. It appreciates Mega Scovillain's Rage Powder saving it from Mega Raichu Y's Focus Blast while burning Sneasler and Mega Swampert, which threaten it with Close Combat and High Horsepower or Earthquake, respectively. Fairy-type attackers like Sylveon improve the matchup against Mega Staraptor. Sylveon appreciates a burn on Sneasler and Overheat's coverage against Steel-types like Gholdengo.\nAlternative Mega Evolutions: Mega Froslass can be brought against rain teams to overwrite Pelipper's Drizzle with Snow Warning and is a better option against Mega Staraptor and Modest Mega Gengar. Mega Aerodactyl and Mega Tyranitar are strong options against Fire-types and, for Mega Aerodactyl specifically, Sneasler. For all three of these Mega Pokemon, Mega Scovillain complements them by doing well against Basculegion-M, Kingambit, and Mega Floette."
-      }
-     ],
-     "credits": [
-      "gephicka",
-      "pengu"
      ]
     }
    ]
@@ -24805,57 +22113,6 @@
       "Carrotman",
       "poketitanterra"
      ]
-    },
-    {
-     "format": "VGC26 Regulation M-B",
-     "outdated": null,
-     "overview": "",
-     "comments": "",
-     "movesets": [
-      {
-       "name": "Fast Attacker",
-       "pokemon": "Glimmora",
-       "abilities": [
-        "Toxic Debris"
-       ],
-       "items": [
-        "Glimmoranite"
-       ],
-       "natures": [
-        "Modest",
-        "Timid"
-       ],
-       "stat_points": [
-        {
-         "hp": 1,
-         "atk": 0,
-         "def": 1,
-         "spa": 32,
-         "spd": 0,
-         "spe": 32
-        }
-       ],
-       "moveslots": [
-        [
-         "Power Gem"
-        ],
-        [
-         "Sludge Bomb"
-        ],
-        [
-         "Spiky Shield"
-        ],
-        [
-         "Earth Power"
-        ]
-       ],
-       "explanation": "Mega Glimmora leverages its high Special Attack and Speed to threaten a large number of metagame threats with its Adaptability-boosted STAB moves, most notably OHKOing Mega Charizard Y, Incineroar, and Pelipper with Power Gem and Mega Floette, Grimmsnarl, and Whimsicott with Sludge Bomb. Its base 101 Speed allows it to outspeed important base 100s like Mega Charizard Y and Mega Dragonite.\nEarth Power: Earth Power provides invaluable coverage for Mega Glimmora, being able to hit Steel-types such as Kingambit and Gholdengo that resist its STAB moves.\nMega Evolving Glimmora: Glimmora's base ability in Toxic Debris is incredibly strong for crippling teams with poison, so delaying its Mega Evolution in the face of physical attackers can be very valuable.\nSP Spreads\nModest vs. Timid: A Modest nature can be very important for allowing Mega Glimmora to OHKO Careful Incineroar with Power Gem, Sylveon with Sludge Bomb, and an uninvested Sneasler with Earth Power most of the time. A Timid nature, however, can be vital for outspeeding Timid Mega Charizard Y and Modest Mega Floette.\nTeambuilding\nChecks and Weaknesses: The most threatening foe to Mega Glimmora is Garchomp, which resists both of its STAB moves, outspeeds it, and OHKOes it with Earthquake or Stomping Tantrum. Other Ground-types such as Mega Swampert and Excadrill are similarly problematic, especially due to their ability to outspeed Mega Glimmora under rain and sand, but they aren't as common.\nSteel-types such as Gholdengo and Archaludon likewise resist both of Mega Glimmora's STAB moves, and they can also take an Earth Power. They can OHKO it with Make It Rain and Flash Cannon, both of which have the benefit of not activating Glimmora's Toxic Debris. Water-types such as Basculegion-M and Milotic can comfortably take any one attack from Mega Glimmora and threaten it back with Wave Crash and Scald, with Basculegion-M's Wave Crash OHKOing it. Additionally, Choice Scarf variants of Basculegion-M can outspeed and OHKO Mega Glimmora.\nMega Delphox can outspeed and OHKO Mega Glimmora with Psychic, as can Mega Metagross with Iron Head or Psychic Fangs. Mega Blastoise can set up a Shell Smash in front of Mega Glimmora, taking any one attack from Mega Glimmora, and OHKO it with Water Spout or Dark Pulse.\nGood Partners and Synergies: Whimsicott is an amazing partner for Mega Glimmora, as it greatly appreciates Tailwind support to outspeed the likes of Mega Floette, Sneasler, and Mega Delphox. Also, Whimsicott resists both of Garchomp's STAB moves and threatens it back with Moonblast, and in return, Glimmora OHKOes the Fire-types that threaten Whimsicott, namely Incineroar and Mega Charizard Y. Alolan Ninetales can also threaten Ground-types such as Garchomp while supporting Mega Glimmora through Aurora Veil.\nKingambit is a great partner that can threaten Steel-types such as Gholdengo and opposing Kingambit with Sucker Punch and Low Kick, and it loves Mega Glimmora's ability to threaten the likes of Mega Charizard Y and Incineroar. Kommo-o can be a strong partner for Mega Glimmora, as its STAB moves can threaten common checks to Glimmora such as Garchomp and Kingambit. Meanwhile, Glimmora can OHKO Sylveon and Mega Floette, both of which can OHKO Kommo-o.\nMega Charizard Y can be a strong secondary Mega Evolution to Mega Glimmora, being able to threaten the Steel-types that Glimmora may encourage the opponent to bring. Mega Glimmora in turn can threaten foes like Mega Aerodactyl that threaten Mega Charizard Y."
-      }
-     ],
-     "credits": [
-      "pengu",
-      "poketitanterra"
-     ]
     }
    ]
   },
@@ -25225,68 +22482,6 @@
       "pengu",
       "RauSakura"
      ]
-    },
-    {
-     "format": "VGC26 Regulation M-B",
-     "outdated": null,
-     "overview": "",
-     "comments": "",
-     "movesets": [
-      {
-       "name": "Trick Room Support",
-       "pokemon": "Farigiraf",
-       "abilities": [
-        "Armor Tail"
-       ],
-       "items": [
-        "Sitrus Berry"
-       ],
-       "natures": [
-        "Bold",
-        "Calm"
-       ],
-       "stat_points": [
-        {
-         "hp": 25,
-         "atk": 0,
-         "def": 26,
-         "spa": 0,
-         "spd": 15,
-         "spe": 0
-        },
-        {
-         "hp": 29,
-         "atk": 0,
-         "def": 14,
-         "spa": 0,
-         "spd": 23,
-         "spe": 0
-        }
-       ],
-       "moveslots": [
-        [
-         "Protect",
-         "Helping Hand"
-        ],
-        [
-         "Psychic",
-         "Twin Beam"
-        ],
-        [
-         "Thunderbolt",
-         "Helping Hand"
-        ],
-        [
-         "Trick Room"
-        ]
-       ],
-       "explanation": "Farigiraf is the premier Trick Room setter in Regulation M-B thanks to amazing natural bulk, a strong defensive typing, and unique ability in Armor Tail that prevents opposing priority moves such as Fake Out, Sucker Punch, and Aqua Jet. Farigiraf can survive some of the strongest attacks in the format such as Mega Charizard Y's Weather Ball to safely set Trick Room for teammates, and it continues to provide support once Trick Room is active.\nArmor Tail: Armor Tail is Farigiraf's only worthwhile ability and a massive part of its appeal. It blocks many attempts to disrupt Farigiraf setting Trick Room, such as Fake Out from Incineroar and Sneasler and Whimsicott's Prankster-boosted Encore.\nSitrus Berry: The Sitrus Berry is Farigiraf's main item of choice. With it, Farigiraf's already impressive bulk is raised to monumental levels, allowing it to stay around longer and survive multiple attacks from opposing Pokemon. A notable example is that Farigiraf will nearly always survive two Close Combats from Jolly Sneasler.\nProtect vs Helping Hand: Protect is not a requirement, as Farigiraf survives many of the attacks thrown its way owing to its bulk, typing, and Sitrus Berry. Helping Hand is an alternative to lessen Farigiraf's passivity, allowing teammates such as Sylveon and Torkoal to deal as much damage as possible under the limited turns of Trick Room.\nPsychic vs Twin Beam: Psychic is Farigiraf's primary STAB option, hitting foes like Sneasler, Mega Staraptor, and Venusaur for respectable damage. Twin Beam can instead be used to OHKO Focus Sash Sneasler, though this lessens Farigiraf's already low damage output into other foes.\nThunderbolt vs Helping Hand: Thunderbolt is used to improve the matchup into rain teams by threatening an OHKO on Pelipper. This also improves Farigiraf's damage into Mega Charizard Y and Basculegion-M. Helping Hand can instead be used on teams that don't struggle against rain teams.\nOther Options\nColbur Berry: Farigiraf can hold the Colbur Berry instead of the Sitrus Berry, freeing up the latter to be used on other Pokémon instead. It also improves Farigiraf's survivability in front of Kingambit, Incineroar, and Tyranitar.\nRoar: Roar is a niche move sometimes used by Farigiraf. It denies opposing Pokemon from setting Trick Room, which can be useful for faster teams. It forces out foes with many stat boosts such as Calm Mind Mega Floette and Stamina Archaludon. Roar can also be used on an allied Sylveon to bypass the recharge turn on Hyper Beam.\nNasty Plot: Nasty Plot can be used alongside Thunderbolt and Psychic or Twin Beam. Farigiraf's typing and bulk give it many opportunities to use Nasty Plot, and the Special Attack boost allows it to output serious damage. This move makes Farigiraf significantly less passive but comes at the cost of running neither Protect nor Helping Hand.\nSP Spreads\n25 HP / 26 Def / 15 SpD Bold: This SP spread prioritizes physical bulk. It allows Farigiraf to nearly always survive Kowtow Cleave from Kingambit holding Black Glasses and Weather Ball from most variants of Modest Mega Charizard Y.\n29 HP / 14 Def / 23 SpD Calm: This SP spread prioritizes special bulk. With it, Farigiraf survives Light of Ruin from Modest Mega Floette most of the time. It also allows Farigiraf to almost always survive Kowtow Cleave from Kingambit without any damage boosting items and Wave Crash from Basculegion-M holding Mystic Water.\nSpeed-Reducing Natures: Relaxed and Sassy natures are options instead of Bold and Calm, respectively. They allow Farigiraf to move before other Pokémon with base 60 Speed under Trick Room, notably Incineroar, Sylveon, and opposing Farigiraf.\nTeambuilding\nChecks and Weaknesses: Dark-types like Kingambit, Incineroar, and Tyranitar are problematic foes for Farigiraf. Their Dark-type attacks are super effective against Farigiraf, and in return, they are immune to Farigiraf's Psychic-type STAB moves. In particular, Kingambit's attacks threaten massive damage on Farigiraf, with Life Orb variants having favorable odds to OHKO the physically defensive SP spread. Its Speed is even lower than Farigiraf's, meaning that variants with no Speed investment will move before Farigiraf under Trick Room. Due to Farigiraf's passivity, Swords Dance variants of Kingambit can use the presence of Farigiraf as an opportunity to set up. Incineroar can chip away at Farigiraf even without offensive investment. Mega Tyranitar will nearly always OHKO the physically defensive SP spread with Knock Off and sandstorm chip damage.\nAdditional Checks and Weaknesses: The format is home to many powerhouses such as Mega Floette, Mega Charizard Y, and Basculegion-M that can double target into Farigiraf lacking proper support and secure a KO despite its good bulk. Trick Room setters such as Sinistcha and opposing Farigiraf can deny Farigiraf's attempts to set Trick Room, resulting in Farigiraf having minimal impact on the battle.\nGood Partners and Synergies: Farigiraf's utility makes it a great partner for a number of Pokémon. Slower powerhouses appreciate Farigiraf's ability to effortlessly set Trick Room, allowing them to wreak havoc on opposing teams. Armor Tail also benefits fast and frail teammates that fear priority attacks that would severely weaken or KO them, and teammates holding the Choice Scarf do not need to worry about Fake Out stopping their momentum.\nPartner Kingambit: Kingambit in particular is an amazing partner for Farigiraf. With low Speed and high damage output, Kingambit takes advantage of Farigiraf's Trick Room support to a high degree. Variants running Low Kick can threaten opposing Kingambit and other Dark-types, which eases stress put on Farigiraf. In return, Farigiraf's Psychic-type STAB move of choice can deal with Fighting-types like Sneasler and Mega Staraptor that threaten Kingambit.\nPartner Sylveon: Sylveon benefits from Trick Room for the same reasons as Kingambit: low Speed and high damage output. Sylveon can throw out powerful spread Hyper Voices to threaten Dark-types while under Trick Room; these attacks can be further boosted by Helping Hand. Farigiraf additionally handles Poison-types like Sneasler and Venusaur with ease that would otherwise threaten Sylveon.\nPartner Torkoal: Torkoal relies on Trick Room support due to it being too slow otherwise. Farigiraf provides it with speed control while further boosting its powerful sun-boosted attacks with Helping Hand. In exchange, Torkoal threatens Steel-types that Farigiraf has a bad matchup into, such as Kingambit and Gholdengo.\nPartner Incineroar: Incineroar's Fake Out and Intimidate help Farigiraf with setting Trick Room. Fake Out denies foes from doubling into Farigiraf and securing a KO, while Intimidate cripples physical attackers, further improving Farigiraf's longevity. Despite having lower damage output than the previously mentioned partners, Incineroar's low Speed means it benefits from Trick Room. Incineroar's Flare Blitz can deal with Steel-types like Kingambit for Farigiraf, while Farigiraf deals with Fighting-types for Incineroar.\nPartner Tailwind Setters: Offensive Tailwind setters such as Mega Aerodactyl and Mega Staraptor function incredibly well with Farigiraf, providing the team with great flexibility and the option to choose between Tailwind or Trick Room as a form of speed control; they can both can even be used at different points in the same battle. Mega Aerodactyl appreciates Armor Tail to prevent chip damage from priority attacks, ensuring it always attacks first. Mega Staraptor threatens Dark-types for Farigiraf with its powerful Close Combats. Both Mega Pokemon dispatch Sinistcha with their Flying-type STAB attack of choice, preventing it from turning off Farigiraf's Trick Room.\nPartners with Medium Speed: Medium Speed partners like Basculegion-M, Mega Charizard Y, and slower variants of Mega Floette appreciate Trick Room, especially when opposing teams are running Tailwind. If Trick Room would allow these powerful Pokemon to move first, then Farigiraf is of benefit to them. Careful management of Trick Room is required, though, as while these Pokemon will move before faster foes under Trick Room, slower foes will cause issues."
-      }
-     ],
-     "credits": [
-      "RauSakura",
-      "poketitanterra"
-     ]
     }
    ]
   },
@@ -25342,7 +22537,6 @@
     "Sandstorm",
     "Scary Face",
     "Shadow Claw",
-    "Slash",
     "Sleep Talk",
     "Snarl",
     "Spite",
@@ -25477,76 +22671,6 @@
      ]
     }
    ]
-  },
-  {
-   "name": "Baxcalibur",
-   "alias": "baxcalibur",
-   "types": [
-    "Dragon",
-    "Ice"
-   ],
-   "base_stats": {
-    "hp": 115,
-    "atk": 145,
-    "def": 92,
-    "spa": 75,
-    "spd": 86,
-    "spe": 87
-   },
-   "learnset": [
-    "Aerial Ace",
-    "Aqua Tail",
-    "Avalanche",
-    "Bite",
-    "Blizzard",
-    "Body Press",
-    "Body Slam",
-    "Breaking Swipe",
-    "Brick Break",
-    "Bulldoze",
-    "Crunch",
-    "Dig",
-    "Double-Edge",
-    "Draco Meteor",
-    "Dragon Cheer",
-    "Dragon Claw",
-    "Dragon Dance",
-    "Dragon Pulse",
-    "Dragon Rush",
-    "Dragon Tail",
-    "Earthquake",
-    "Endure",
-    "Facade",
-    "Focus Energy",
-    "Freeze-Dry",
-    "Frost Breath",
-    "Giga Impact",
-    "Glaive Rush",
-    "Helping Hand",
-    "High Horsepower",
-    "Hyper Beam",
-    "Ice Beam",
-    "Ice Fang",
-    "Ice Shard",
-    "Icicle Crash",
-    "Icicle Spear",
-    "Icy Wind",
-    "Iron Head",
-    "Outrage",
-    "Protect",
-    "Rain Dance",
-    "Rest",
-    "Scale Shot",
-    "Scary Face",
-    "Sleep Talk",
-    "Snowscape",
-    "Stomping Tantrum",
-    "Substitute",
-    "Swords Dance",
-    "Thunder Fang",
-    "Zen Headbutt"
-   ],
-   "vgc_strategies": []
   },
   {
    "name": "Morpeko-Hangry",
@@ -25812,24 +22936,6 @@
     "spa": 65,
     "spd": 115,
     "spe": 110
-   },
-   "learnset": [],
-   "vgc_strategies": []
-  },
-  {
-   "name": "Baxcalibur-Mega",
-   "alias": "baxcalibur-mega",
-   "types": [
-    "Dragon",
-    "Ice"
-   ],
-   "base_stats": {
-    "hp": 115,
-    "atk": 175,
-    "def": 117,
-    "spa": 105,
-    "spd": 101,
-    "spe": 87
    },
    "learnset": [],
    "vgc_strategies": []
@@ -26565,24 +23671,6 @@
    "vgc_strategies": []
   },
   {
-   "name": "Salamence-Mega",
-   "alias": "salamence-mega",
-   "types": [
-    "Dragon",
-    "Flying"
-   ],
-   "base_stats": {
-    "hp": 95,
-    "atk": 145,
-    "def": 130,
-    "spa": 120,
-    "spd": 90,
-    "spe": 120
-   },
-   "learnset": [],
-   "vgc_strategies": []
-  },
-  {
    "name": "Dragalge-Mega",
    "alias": "dragalge-mega",
    "types": [
@@ -26808,24 +23896,6 @@
     "spa": 80,
     "spd": 126,
     "spe": 50
-   },
-   "learnset": [],
-   "vgc_strategies": []
-  },
-  {
-   "name": "Golisopod-Mega",
-   "alias": "golisopod-mega",
-   "types": [
-    "Bug",
-    "Steel"
-   ],
-   "base_stats": {
-    "hp": 75,
-    "atk": 150,
-    "def": 175,
-    "spa": 70,
-    "spd": 120,
-    "spe": 40
    },
    "learnset": [],
    "vgc_strategies": []

@@ -99,6 +99,80 @@ unmatched either way.
 
 ---
 
+## Items and abilities are numbers now, not adjectives (2026-09-14)
+
+**Measured first, because the complaint deserved a measurement: of the 199
+items in Champions, exactly TWO carry a number anywhere in their description.**
+Serebii writes "slightly boosts the power" and "casts a tricky glare". Abilities
+are better - 92 of 215 have a number in the text - and moves already carried
+theirs as fields (`power`, `accuracy`, `pp`, `priority`, `effect_rate: 30.0` on
+Rock Slide, `hits`, `crit_rate`). A set cannot be argued against another set out
+of sentences.
+
+**A multiplier cannot be recovered from a damage ratio, so do not try.** The
+formula ends in `+ 2` and every stage floors: a x1.5 ability measures 1.453 at
+the low roll and 1.477 at the high one, and no averaging makes either of them
+the number. `measure_modifiers.py` recorded Guts as x1.477 for exactly this
+reason.
+
+**The engine does not hide it.** It builds each stage as a list of multipliers
+in 4096ths - 4915 is x1.2, 5324 is x1.3, 6144 is x1.5 - and `champions.js`
+EXPORTS the four functions that build those lists. `scripts/probe_modifiers.js`
+calls them directly and reads the values out, against a baseline identical but
+for the one thing being probed. Exact, attributable, and with none of our
+arithmetic in between. Guts is 6144/4096. Life Orb is 5324/4096.
+
+`scripts/build_effects.py` sweeps every item and every ability that way - 1,760
+generated cases in three seconds - and writes `data/db/effects.json`. The cases
+are GENERATED, not hand-written: the 37 hand-written ones are why only 10 items
+and 27 abilities ever had a number.
+
+**Three ways the probe lied before it was made to stop**, all worth knowing
+because each produced a confident wrong answer:
+
+- The vehicle move must be in the CATEGORY being probed. The first sweep picked
+  the highest-powered move of each type regardless, so the "special" probe ran
+  on Poltergeist - a physical move - and Muscle Band came out boosting special
+  attacks, which it does not.
+- It must be honest about its power. Acrobatics reports 110 with no item and 55
+  with one; anything probed through it measures the item instead.
+- It must deal damage at all. Poltergeist reports a perfectly good 110 and
+  deals ZERO against a target holding no item, because the engine zeroes it a
+  stage later. Every probe through it said "no effect", which is how Wise
+  Glasses came out unmodelled when it is plainly x1.1.
+
+Each vehicle is now verified against the engine on all three before it is used.
+
+**The engine only models DAMAGE, and the rest came from a source already on
+disk.** It does not model healing, accuracy or speed, and its item records
+carry nothing but identity - `Sitrus Berry` is `{isBerry, naturalGift}`. This
+page briefly said those numbers existed nowhere, which was wrong: the player
+pointed at Smogon's own dex, and `data/db/smogon_basics.json` had them all
+along.
+
+    Sitrus Berry  "Restores 1/4 max HP when at 1/2 max HP or less."
+    Wide Lens     "The accuracy of attacks by the holder is 1.1x."
+    Leftovers     "At the end of every turn, holder restores 1/16 of its max HP."
+
+51 of 169 items, 89 of 215 abilities and 267 of 515 moves carry a number there,
+against 2 of 199 items in Serebii's text. Each one extracted keeps the sentence
+it came from, so it can be checked against the words that produced it. Words
+that mean numbers count as numbers - "Fire power against it is halved" is x0.5
+- because otherwise the cross-check reports a disagreement that is not one.
+
+**The two sources are compared, and agreeing is the point.** Guts reads x1.5
+from the engine's own modifier stage and 1.5x from Smogon's text. Where they
+differed, both times the fault was in the comparison rather than the data:
+Fluffy's "takes 1/2 damage" is a multiplier written as a fraction, and Water
+Bubble's is written as a word.
+
+**That comparison also caught a corruption nobody had noticed.**
+`fetch_smogon.py` decoded with `errors="replace"`, and Smogon has served cp1252
+at least once - where the multiplication sign is a bare 0xD7 - so every "1.3x"
+in the item and ability text had been stored as "1.3�". The numbers
+survived, the operator did not. It tries utf-8, then cp1252, and only then
+gives up a character; re-fetched, there are zero replacement characters left.
+
 ## Regulations are detected now, not remembered (2026-09-14)
 
 `fetch_serebii.py` skips any page already cached and the attackdex is where

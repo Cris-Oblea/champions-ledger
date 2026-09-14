@@ -40,7 +40,20 @@ def rpc(method, params, timeout=60):
     for attempt in range(3):
         try:
             with urllib.request.urlopen(req, timeout=timeout) as r:
-                return json.loads(r.read().decode("utf-8", "replace"))
+                raw = r.read()
+            # `decode("utf-8", "replace")` looks safe and silently destroys
+            # data: Smogon has served cp1252 at least once, where the
+            # multiplication sign is a bare 0xD7 - invalid UTF-8 - so every
+            # "1.3x damage" in the item and ability text became "1.3�".
+            # The numbers survived; the operator did not. Try the encoding it
+            # claims, then the one it has actually used, and only then give up
+            # a character.
+            for enc in ("utf-8", "cp1252"):
+                try:
+                    return json.loads(raw.decode(enc))
+                except (UnicodeDecodeError, ValueError):
+                    continue
+            return json.loads(raw.decode("utf-8", "replace"))
         except Exception as e:
             if attempt == 2:
                 print("  RPC failed %s %s -> %s" % (method, params, e))

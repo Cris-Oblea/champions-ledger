@@ -2781,14 +2781,6 @@
    ]
   },
   {
-   "name": "Absolite Z",
-   "description": "If held by an Absol, this item allows it to Mega Evolve into Mega Absol Z in battle.",
-   "isNonstandard": "Standard",
-   "genfamily": [
-    "Champions"
-   ]
-  },
-  {
    "name": "Aerodactylite",
    "description": "If held by an Aerodactyl, this item allows it to Mega Evolve in battle.",
    "isNonstandard": "Standard",
@@ -2805,19 +2797,6 @@
    "description": "If held by an Aggron, this item allows it to Mega Evolve in battle.",
    "isNonstandard": "Standard",
    "genfamily": [
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Air Balloon",
-   "description": "Holder is immune to Ground-type attacks. Pops when holder is hit.",
-   "isNonstandard": "Standard",
-   "genfamily": [
-    "BW",
     "XY",
     "SM",
     "SS",
@@ -2923,14 +2902,6 @@
    ]
   },
   {
-   "name": "Baxcalibrite",
-   "description": "If held by a Baxcalibur, this item allows it to Mega Evolve in battle.",
-   "isNonstandard": "Standard",
-   "genfamily": [
-    "Champions"
-   ]
-  },
-  {
    "name": "Beedrillite",
    "description": "If held by a Beedrill, this item allows it to Mega Evolve in battle.",
    "isNonstandard": "Standard",
@@ -2944,7 +2915,7 @@
   },
   {
    "name": "Big Root",
-   "description": "Holder gains 1.3× HP from draining/Aqua Ring/Ingrain/Leech Seed/Strength Sap.",
+   "description": "Holder gains 1.3x HP from draining/Aqua Ring/Ingrain/Leech Seed/Strength Sap.",
    "isNonstandard": "Standard",
    "genfamily": [
     "DP",
@@ -2957,21 +2928,8 @@
    ]
   },
   {
-   "name": "Binding Band",
-   "description": "Holder's partial-trapping moves deal 1/6 max HP per turn instead of 1/8.",
-   "isNonstandard": "Standard",
-   "genfamily": [
-    "BW",
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
    "name": "Black Belt",
-   "description": "Holder's Fighting-type attacks have 1.2× power.",
+   "description": "Holder's Fighting-type attacks have 1.2x power.",
    "isNonstandard": "Standard",
    "genfamily": [
     "GS",
@@ -2987,7 +2945,7 @@
   },
   {
    "name": "Black Glasses",
-   "description": "Holder's Dark-type attacks have 1.2× power.",
+   "description": "Holder's Dark-type attacks have 1.2x power.",
    "isNonstandard": "Standard",
    "genfamily": [
     "GS",
@@ -3027,7 +2985,7 @@
   },
   {
    "name": "Bright Powder",
-   "description": "The accuracy of attacks against the holder is 0.9×.",
+   "description": "The accuracy of attacks against the holder is 0.9x.",
    "isNonstandard": "Standard",
    "genfamily": [
     "GS",
@@ -3063,7 +3021,7 @@
   },
   {
    "name": "Charcoal",
-   "description": "Holder's Fire-type attacks have 1.2× power.",
+   "description": "Holder's Fire-type attacks have 1.2x power.",
    "isNonstandard": "Standard",
    "genfamily": [
     "GS",
@@ -3191,7 +3149,7 @@
   },
   {
    "name": "Choice Scarf",
-   "description": "Holder's Speed is 1.5×, but it can only select the first move it executes.",
+   "description": "Holder's Speed is 1.5x, but it can only select the first move it executes.",
    "isNonstandard": "Standard",
    "genfamily": [
     "DP",
@@ -3293,7 +3251,7 @@
   },
   {
    "name": "Dragon Fang",
-   "description": "Holder's Dragon-type attacks have 1.2× power.",
+   "description": "Holder's Dragon-type attacks have 1.2x power.",
    "isNonstandard": "Standard",
    "genfamily": [
     "GS",
@@ -3332,30 +3290,6 @@
    ]
   },
   {
-   "name": "Eject Button",
-   "description": "If holder survives a hit, it immediately switches out to a chosen ally. Single use.",
-   "isNonstandard": "Standard",
-   "genfamily": [
-    "BW",
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Electric Seed",
-   "description": "If the terrain is Electric Terrain, raises holder's Defense by 1 stage. Single use.",
-   "isNonstandard": "Standard",
-   "genfamily": [
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
    "name": "Emboarite",
    "description": "If held by an Emboar, this item allows it to Mega Evolve in battle.",
    "isNonstandard": "Standard",
@@ -3373,7 +3307,7 @@
   },
   {
    "name": "Expert Belt",
-   "description": "Holder's attacks that are super effective against the target do 1.2× damage.",
+   "description": "Holder's attacks that are super effective against the target do 1.2x damage.",
    "isNonstandard": "Standard",
    "genfamily": [
     "DP",
@@ -3387,7 +3321,7 @@
   },
   {
    "name": "Fairy Feather",
-   "description": "Holder's Fairy-type attacks have 1.2× power.",
+   "description": "Holder's Fairy-type attacks have 1.2x power.",
    "isNonstandard": "Standard",
    "genfamily": [
     "SV",
@@ -3481,14 +3415,6 @@
    ]
   },
   {
-   "name": "Garchompite Z",
-   "description": "If held by a Garchomp, this item allows it to Mega Evolve into Mega Garchomp Z.",
-   "isNonstandard": "Standard",
-   "genfamily": [
-    "Champions"
-   ]
-  },
-  {
    "name": "Gardevoirite",
    "description": "If held by a Gardevoir, this item allows it to Mega Evolve in battle.",
    "isNonstandard": "Standard",
@@ -3533,29 +3459,10 @@
    ]
   },
   {
-   "name": "Golisopite",
-   "description": "If held by a Golisopod, this item allows it to Mega Evolve in battle.",
-   "isNonstandard": "Standard",
-   "genfamily": [
-    "Champions"
-   ]
-  },
-  {
    "name": "Golurkite",
    "description": "If held by a Golurk, this item allows it to Mega Evolve in battle.",
    "isNonstandard": "Standard",
    "genfamily": [
-    "Champions"
-   ]
-  },
-  {
-   "name": "Grassy Seed",
-   "description": "If the terrain is Grassy Terrain, raises holder's Defense by 1 stage. Single use.",
-   "isNonstandard": "Standard",
-   "genfamily": [
-    "SM",
-    "SS",
-    "SV",
     "Champions"
    ]
   },
@@ -3595,7 +3502,7 @@
   },
   {
    "name": "Hard Stone",
-   "description": "Holder's Rock-type attacks have 1.2× power.",
+   "description": "Holder's Rock-type attacks have 1.2x power.",
    "isNonstandard": "Standard",
    "genfamily": [
     "GS",
@@ -3740,16 +3647,6 @@
    ]
   },
   {
-   "name": "Leek",
-   "description": "If held by a Farfetch’d or Sirfetch’d, its critical hit ratio is raised by 2 stages.",
-   "isNonstandard": "Standard",
-   "genfamily": [
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
    "name": "Leftovers",
    "description": "At the end of every turn, holder restores 1/16 of its max HP.",
    "isNonstandard": "Standard",
@@ -3782,7 +3679,7 @@
   },
   {
    "name": "Life Orb",
-   "description": "Holder's attacks do 1.3× damage, and it loses 1/10 its max HP after the attack.",
+   "description": "Holder's attacks do 1.3x damage, and it loses 1/10 its max HP after the attack.",
    "isNonstandard": "Standard",
    "genfamily": [
     "DP",
@@ -3849,14 +3746,6 @@
    ]
   },
   {
-   "name": "Lucarionite Z",
-   "description": "If held by a Lucario, this item allows it to Mega Evolve into Mega Lucario Z in battle.",
-   "isNonstandard": "Standard",
-   "genfamily": [
-    "Champions"
-   ]
-  },
-  {
    "name": "Lum Berry",
    "description": "Holder cures itself if it has a non-volatile status or is confused. Single use.",
    "isNonstandard": "Standard",
@@ -3873,7 +3762,7 @@
   },
   {
    "name": "Magnet",
-   "description": "Holder's Electric-type attacks have 1.2× power.",
+   "description": "Holder's Electric-type attacks have 1.2x power.",
    "isNonstandard": "Standard",
    "genfamily": [
     "GS",
@@ -3976,7 +3865,7 @@
   },
   {
    "name": "Metal Coat",
-   "description": "Holder's Steel-type attacks have 1.2× power.",
+   "description": "Holder's Steel-type attacks have 1.2x power.",
    "isNonstandard": "Standard",
    "genfamily": [
     "GS",
@@ -3992,7 +3881,7 @@
   },
   {
    "name": "Metronome",
-   "description": "Damage of moves used on consecutive turns is increased. Max 2× after 5 turns.",
+   "description": "Damage of moves used on consecutive turns is increased. Max 2x after 5 turns.",
    "isNonstandard": "Standard",
    "genfamily": [
     "DP",
@@ -4006,7 +3895,7 @@
   },
   {
    "name": "Miracle Seed",
-   "description": "Holder's Grass-type attacks have 1.2× power.",
+   "description": "Holder's Grass-type attacks have 1.2x power.",
    "isNonstandard": "Standard",
    "genfamily": [
     "GS",
@@ -4021,19 +3910,8 @@
    ]
   },
   {
-   "name": "Misty Seed",
-   "description": "If the terrain is Misty Terrain, raises holder's Sp. Def by 1 stage. Single use.",
-   "isNonstandard": "Standard",
-   "genfamily": [
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
    "name": "Muscle Band",
-   "description": "Holder's physical attacks have 1.1× power.",
+   "description": "Holder's physical attacks have 1.1x power.",
    "isNonstandard": "Standard",
    "genfamily": [
     "DP",
@@ -4047,7 +3925,7 @@
   },
   {
    "name": "Mystic Water",
-   "description": "Holder's Water-type attacks have 1.2× power.",
+   "description": "Holder's Water-type attacks have 1.2x power.",
    "isNonstandard": "Standard",
    "genfamily": [
     "GS",
@@ -4063,7 +3941,7 @@
   },
   {
    "name": "Never-Melt Ice",
-   "description": "Holder's Ice-type attacks have 1.2× power.",
+   "description": "Holder's Ice-type attacks have 1.2x power.",
    "isNonstandard": "Standard",
    "genfamily": [
     "GS",
@@ -4085,19 +3963,6 @@
     "GS",
     "RS",
     "DP",
-    "BW",
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Normal Gem",
-   "description": "Holder's first successful Normal-type attack will have 1.3× power. Single use.",
-   "isNonstandard": "Standard",
-   "genfamily": [
     "BW",
     "XY",
     "SM",
@@ -4219,7 +4084,7 @@
   },
   {
    "name": "Poison Barb",
-   "description": "Holder's Poison-type attacks have 1.2× power.",
+   "description": "Holder's Poison-type attacks have 1.2x power.",
    "isNonstandard": "Standard",
    "genfamily": [
     "GS",
@@ -4227,17 +4092,6 @@
     "DP",
     "BW",
     "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Psychic Seed",
-   "description": "If the terrain is Psychic Terrain, raises holder's Sp. Def by 1 stage. Single use.",
-   "isNonstandard": "Standard",
-   "genfamily": [
     "SM",
     "SS",
     "SV",
@@ -4300,37 +4154,11 @@
    ]
   },
   {
-   "name": "Red Card",
-   "description": "If holder survives a hit, attacker is forced to switch to a random ally. Single use.",
-   "isNonstandard": "Standard",
-   "genfamily": [
-    "BW",
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
    "name": "Rindo Berry",
    "description": "Halves damage taken from a supereffective Grass-type attack. Single use.",
    "isNonstandard": "Standard",
    "genfamily": [
     "DP",
-    "BW",
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Rocky Helmet",
-   "description": "If holder is hit by a contact move, the attacker loses 1/6 of its max HP.",
-   "isNonstandard": "Standard",
-   "genfamily": [
     "BW",
     "XY",
     "SM",
@@ -4354,18 +4182,6 @@
   {
    "name": "Sablenite",
    "description": "If held by a Sableye, this item allows it to Mega Evolve in battle.",
-   "isNonstandard": "Standard",
-   "genfamily": [
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Salamencite",
-   "description": "If held by a Salamence, this item allows it to Mega Evolve in battle.",
    "isNonstandard": "Standard",
    "genfamily": [
     "XY",
@@ -4441,7 +4257,7 @@
   },
   {
    "name": "Sharp Beak",
-   "description": "Holder's Flying-type attacks have 1.2× power.",
+   "description": "Holder's Flying-type attacks have 1.2x power.",
    "isNonstandard": "Standard",
    "genfamily": [
     "GS",
@@ -4512,7 +4328,7 @@
   },
   {
    "name": "Silk Scarf",
-   "description": "Holder's Normal-type attacks have 1.2× power.",
+   "description": "Holder's Normal-type attacks have 1.2x power.",
    "isNonstandard": "Standard",
    "genfamily": [
     "RS",
@@ -4527,7 +4343,7 @@
   },
   {
    "name": "Silver Powder",
-   "description": "Holder's Bug-type attacks have 1.2× power.",
+   "description": "Holder's Bug-type attacks have 1.2x power.",
    "isNonstandard": "Standard",
    "genfamily": [
     "GS",
@@ -4592,7 +4408,7 @@
   },
   {
    "name": "Soft Sand",
-   "description": "Holder's Ground-type attacks have 1.2× power.",
+   "description": "Holder's Ground-type attacks have 1.2x power.",
    "isNonstandard": "Standard",
    "genfamily": [
     "GS",
@@ -4608,7 +4424,7 @@
   },
   {
    "name": "Spell Tag",
-   "description": "Holder's Ghost-type attacks have 1.2× power.",
+   "description": "Holder's Ghost-type attacks have 1.2x power.",
    "isNonstandard": "Standard",
    "genfamily": [
     "GS",
@@ -4677,19 +4493,8 @@
    ]
   },
   {
-   "name": "Terrain Extender",
-   "description": "Holder's use of Electric/Grassy/Misty/Psychic Terrain lasts 8 turns instead of 5.",
-   "isNonstandard": "Standard",
-   "genfamily": [
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
    "name": "Twisted Spoon",
-   "description": "Holder's Psychic-type attacks have 1.2× power.",
+   "description": "Holder's Psychic-type attacks have 1.2x power.",
    "isNonstandard": "Standard",
    "genfamily": [
     "GS",
@@ -4737,7 +4542,7 @@
   },
   {
    "name": "Vile Vial",
-   "description": "If held by a Venomicon, its Poison- and Flying-type attacks have 1.2× power.",
+   "description": "If held by a Venomicon, its Poison- and Flying-type attacks have 1.2x power.",
    "isNonstandard": "CAP",
    "genfamily": [
     "SS",
@@ -4776,7 +4581,7 @@
   },
   {
    "name": "Wide Lens",
-   "description": "The accuracy of attacks by the holder is 1.1×.",
+   "description": "The accuracy of attacks by the holder is 1.1x.",
    "isNonstandard": "Standard",
    "genfamily": [
     "DP",
@@ -4790,7 +4595,7 @@
   },
   {
    "name": "Wise Glasses",
-   "description": "Holder's special attacks have 1.1× power.",
+   "description": "Holder's special attacks have 1.1x power.",
    "isNonstandard": "Standard",
    "genfamily": [
     "DP",
@@ -4818,7 +4623,7 @@
   },
   {
    "name": "Zoom Lens",
-   "description": "The accuracy of attacks by the holder is 1.2× if it moves after its target.",
+   "description": "The accuracy of attacks by the holder is 1.2x if it moves after its target.",
    "isNonstandard": "Standard",
    "genfamily": [
     "DP",
@@ -4847,6 +4652,19 @@
    ]
   },
   {
+   "name": "Regenerator",
+   "description": "This Pokemon restores 1/3 of its maximum HP, rounded down, when it switches out.",
+   "isNonstandard": "Standard",
+   "genfamily": [
+    "BW",
+    "XY",
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
    "name": "Aftermath",
    "description": "If this Pokemon is KOed with a contact move, that move's user loses 1/4 its max HP.",
    "isNonstandard": "Standard",
@@ -4862,7 +4680,7 @@
   },
   {
    "name": "Analytic",
-   "description": "This Pokemon's attacks have 1.3× power if it is the last to move in a turn.",
+   "description": "This Pokemon's attacks have 1.3x power if it is the last to move in a turn.",
    "isNonstandard": "Standard",
    "genfamily": [
     "BW",
@@ -4878,6 +4696,21 @@
    "description": "If this Pokemon (not its substitute) takes a critical hit, its Attack is raised 12 stages.",
    "isNonstandard": "Standard",
    "genfamily": [
+    "DP",
+    "BW",
+    "XY",
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
+   "name": "Early Bird",
+   "description": "This Pokemon's sleep counter drops by 2 instead of 1.",
+   "isNonstandard": "Standard",
+   "genfamily": [
+    "RS",
     "DP",
     "BW",
     "XY",
@@ -4931,7 +4764,7 @@
   },
   {
    "name": "Blaze",
-   "description": "At 1/3 or less of its max HP, this Pokemon's offensive stat is 1.5× with Fire attacks.",
+   "description": "At 1/3 or less of its max HP, this Pokemon's offensive stat is 1.5x with Fire attacks.",
    "isNonstandard": "Standard",
    "genfamily": [
     "RS",
@@ -5105,24 +4938,9 @@
   },
   {
    "name": "Dry Skin",
-   "description": "This Pokemon is healed 1/4 by Water, 1/8 by Rain; is hurt 1.25× by Fire, 1/8 by Sun.",
+   "description": "This Pokemon is healed 1/4 by Water, 1/8 by Rain; is hurt 1.25x by Fire, 1/8 by Sun.",
    "isNonstandard": "Standard",
    "genfamily": [
-    "DP",
-    "BW",
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Early Bird",
-   "description": "This Pokemon's sleep counter drops by 2 instead of 1.",
-   "isNonstandard": "Standard",
-   "genfamily": [
-    "RS",
     "DP",
     "BW",
     "XY",
@@ -5178,7 +4996,7 @@
   },
   {
    "name": "Flash Fire",
-   "description": "This Pokemon's Fire attacks do 1.5× damage if hit by one Fire move; Fire immunity.",
+   "description": "This Pokemon's Fire attacks do 1.5x damage if hit by one Fire move; Fire immunity.",
    "isNonstandard": "Standard",
    "genfamily": [
     "RS",
@@ -5263,7 +5081,7 @@
   },
   {
    "name": "Guts",
-   "description": "If this Pokemon is statused, its Attack is 1.5×; ignores burn halving physical damage.",
+   "description": "If this Pokemon is statused, its Attack is 1.5x; ignores burn halving physical damage.",
    "isNonstandard": "Standard",
    "genfamily": [
     "RS",
@@ -5346,7 +5164,7 @@
   },
   {
    "name": "Hustle",
-   "description": "This Pokemon's Attack is 1.5× and accuracy of its physical attacks is 0.8×.",
+   "description": "This Pokemon's Attack is 1.5x and accuracy of its physical attacks is 0.8x.",
    "isNonstandard": "Standard",
    "genfamily": [
     "RS",
@@ -5518,7 +5336,7 @@
   },
   {
    "name": "Iron Fist",
-   "description": "This Pokemon's punch-based attacks have 1.2× power. Sucker Punch is not boosted.",
+   "description": "This Pokemon's punch-based attacks have 1.2x power. Sucker Punch is not boosted.",
    "isNonstandard": "Standard",
    "genfamily": [
     "DP",
@@ -5645,21 +5463,6 @@
    ]
   },
   {
-   "name": "Liquid Ooze",
-   "description": "This Pokemon damages those draining HP from it for as much as they would heal.",
-   "isNonstandard": "Standard",
-   "genfamily": [
-    "RS",
-    "DP",
-    "BW",
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
    "name": "Magic Bounce",
    "description": "This Pokemon blocks certain Status moves and bounces them back to the user.",
    "isNonstandard": "Standard",
@@ -5718,10 +5521,24 @@
   },
   {
    "name": "Minus",
-   "description": "If an active ally has this Ability or the Plus Ability, this Pokemon's Sp. Atk is 1.5×.",
+   "description": "If an active ally has this Ability or the Plus Ability, this Pokemon's Sp. Atk is 1.5x.",
    "isNonstandard": "Standard",
    "genfamily": [
     "RS",
+    "DP",
+    "BW",
+    "XY",
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
+   "name": "Rivalry",
+   "description": "This Pokemon's attacks do 1.25x on same gender targets; 0.75x on opposite gender.",
+   "isNonstandard": "Standard",
+   "genfamily": [
     "DP",
     "BW",
     "XY",
@@ -5870,7 +5687,7 @@
   },
   {
    "name": "Overgrow",
-   "description": "At 1/3 or less of its max HP, this Pokemon's offensive stat is 1.5× with Grass attacks.",
+   "description": "At 1/3 or less of its max HP, this Pokemon's offensive stat is 1.5x with Grass attacks.",
    "isNonstandard": "Standard",
    "genfamily": [
     "RS",
@@ -5928,7 +5745,7 @@
   },
   {
    "name": "Plus",
-   "description": "If an active ally has this Ability or the Minus Ability, this Pokemon's Sp. Atk is 1.5×.",
+   "description": "If an active ally has this Ability or the Minus Ability, this Pokemon's Sp. Atk is 1.5x.",
    "isNonstandard": "Standard",
    "genfamily": [
     "RS",
@@ -6028,7 +5845,7 @@
   },
   {
    "name": "Quick Feet",
-   "description": "If this Pokemon is statused, its Speed is 1.5×; ignores Speed drop from paralysis.",
+   "description": "If this Pokemon is statused, its Speed is 1.5x; ignores Speed drop from paralysis.",
    "isNonstandard": "Standard",
    "genfamily": [
     "DP",
@@ -6056,48 +5873,8 @@
    ]
   },
   {
-   "name": "Rattled",
-   "description": "Speed is raised 1 stage if hit by a Bug-, Dark-, or Ghost-type attack, or Intimidated.",
-   "isNonstandard": "Standard",
-   "genfamily": [
-    "BW",
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
    "name": "Reckless",
-   "description": "This Pokemon's attacks with recoil or crash damage have 1.2× power; not Struggle.",
-   "isNonstandard": "Standard",
-   "genfamily": [
-    "DP",
-    "BW",
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Regenerator",
-   "description": "This Pokemon restores 1/3 of its maximum HP, rounded down, when it switches out.",
-   "isNonstandard": "Standard",
-   "genfamily": [
-    "BW",
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Rivalry",
-   "description": "This Pokemon's attacks do 1.25× on same gender targets; 0.75× on opposite gender.",
+   "description": "This Pokemon's attacks with recoil or crash damage have 1.2x power; not Struggle.",
    "isNonstandard": "Standard",
    "genfamily": [
     "DP",
@@ -6140,23 +5917,8 @@
    ]
   },
   {
-   "name": "Run Away",
-   "description": "No competitive use.",
-   "isNonstandard": "Standard",
-   "genfamily": [
-    "RS",
-    "DP",
-    "BW",
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
    "name": "Sand Force",
-   "description": "This Pokemon's Ground/Rock/Steel attacks do 1.3× in Sandstorm; immunity to it.",
+   "description": "This Pokemon's Ground/Rock/Steel attacks do 1.3x in Sandstorm; immunity to it.",
    "isNonstandard": "Standard",
    "genfamily": [
     "BW",
@@ -6197,7 +5959,7 @@
   },
   {
    "name": "Sand Veil",
-   "description": "If Sandstorm is active, this Pokemon's evasiveness is 1.25×; immunity to Sandstorm.",
+   "description": "If Sandstorm is active, this Pokemon's evasiveness is 1.25x; immunity to Sandstorm.",
    "isNonstandard": "Standard",
    "genfamily": [
     "RS",
@@ -6269,7 +6031,7 @@
   },
   {
    "name": "Sheer Force",
-   "description": "This Pokemon's attacks with secondary effects have 1.3× power; nullifies the effects.",
+   "description": "This Pokemon's attacks with secondary effects have 1.3x power; nullifies the effects.",
    "isNonstandard": "Standard",
    "genfamily": [
     "BW",
@@ -6340,7 +6102,7 @@
   },
   {
    "name": "Snow Cloak",
-   "description": "If Snow is active, this Pokemon's evasiveness is 1.25×.",
+   "description": "If Snow is active, this Pokemon's evasiveness is 1.25x.",
    "isNonstandard": "Standard",
    "genfamily": [
     "DP",
@@ -6368,7 +6130,7 @@
   },
   {
    "name": "Solar Power",
-   "description": "If Sun is active, this Pokemon's Sp. Atk is 1.5×; loses 1/8 max HP per turn.",
+   "description": "If Sun is active, this Pokemon's Sp. Atk is 1.5x; loses 1/8 max HP per turn.",
    "isNonstandard": "Standard",
    "genfamily": [
     "DP",
@@ -6543,7 +6305,7 @@
   },
   {
    "name": "Swarm",
-   "description": "At 1/3 or less of its max HP, this Pokemon's offensive stat is 1.5× with Bug attacks.",
+   "description": "At 1/3 or less of its max HP, this Pokemon's offensive stat is 1.5x with Bug attacks.",
    "isNonstandard": "Standard",
    "genfamily": [
     "RS",
@@ -6602,7 +6364,7 @@
   },
   {
    "name": "Technician",
-   "description": "This Pokemon's moves of 60 power or less have 1.5× power, including Struggle.",
+   "description": "This Pokemon's moves of 60 power or less have 1.5x power, including Struggle.",
    "isNonstandard": "Standard",
    "genfamily": [
     "DP",
@@ -6644,7 +6406,7 @@
   },
   {
    "name": "Torrent",
-   "description": "At 1/3 or less of its max HP, this Pokemon's offensive stat is 1.5× with Water attacks.",
+   "description": "At 1/3 or less of its max HP, this Pokemon's offensive stat is 1.5x with Water attacks.",
    "isNonstandard": "Standard",
    "genfamily": [
     "RS",
@@ -6788,7 +6550,7 @@
   },
   {
    "name": "Aerilate",
-   "description": "This Pokemon's Normal-type moves become Flying type and have 1.2× power.",
+   "description": "This Pokemon's Normal-type moves become Flying type and have 1.2x power.",
    "isNonstandard": "Standard",
    "genfamily": [
     "XY",
@@ -6920,7 +6682,7 @@
   },
   {
    "name": "Dragonize",
-   "description": "This Pokemon's Normal-type moves become Dragon type and have 1.2× power.",
+   "description": "This Pokemon's Normal-type moves become Dragon type and have 1.2x power.",
    "isNonstandard": "Standard",
    "genfamily": [
     "Champions"
@@ -6964,19 +6726,8 @@
    ]
   },
   {
-   "name": "Emergency Exit",
-   "description": "This Pokemon switches out when it reaches 1/2 or less of its maximum HP.",
-   "isNonstandard": "Standard",
-   "genfamily": [
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
    "name": "Fairy Aura",
-   "description": "While this Pokemon is active, a Fairy move used by any Pokemon has 1.33× power.",
+   "description": "While this Pokemon is active, a Fairy move used by any Pokemon has 1.33x power.",
    "isNonstandard": "Standard",
    "genfamily": [
     "XY",
@@ -7008,7 +6759,7 @@
   },
   {
    "name": "Fluffy",
-   "description": "This Pokemon takes 1/2 damage from contact moves, 2× damage from Fire moves.",
+   "description": "This Pokemon takes 1/2 damage from contact moves, 2x damage from Fire moves.",
    "isNonstandard": "Standard",
    "genfamily": [
     "SM",
@@ -7063,38 +6814,6 @@
    ]
   },
   {
-   "name": "Grass Pelt",
-   "description": "If Grassy Terrain is active, this Pokemon's Defense is multiplied by 1.5.",
-   "isNonstandard": "Standard",
-   "genfamily": [
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Grassy Surge",
-   "description": "On switch-in, this Pokemon summons Grassy Terrain.",
-   "isNonstandard": "Standard",
-   "genfamily": [
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Guard Dog",
-   "description": "Immune to Intimidate. Intimidated: +1 Attack. Cannot be forced to switch out.",
-   "isNonstandard": "Standard",
-   "genfamily": [
-    "SV",
-    "Champions"
-   ]
-  },
-  {
    "name": "Hospitality",
    "description": "On switch-in, this Pokemon restores 1/4 of its ally's maximum HP, rounded down.",
    "isNonstandard": "Standard",
@@ -7119,16 +6838,6 @@
    "isNonstandard": "Standard",
    "genfamily": [
     "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Libero",
-   "description": "This Pokemon's type changes to the type of the move it is using. Once per switch-in.",
-   "isNonstandard": "Standard",
-   "genfamily": [
     "SS",
     "SV",
     "Champions"
@@ -7170,7 +6879,7 @@
   },
   {
    "name": "Mega Launcher",
-   "description": "This Pokemon's pulse moves have 1.5× power. Heal Pulse heals 3/4 target's max HP.",
+   "description": "This Pokemon's pulse moves have 1.5x power. Heal Pulse heals 3/4 target's max HP.",
    "isNonstandard": "Standard",
    "genfamily": [
     "XY",
@@ -7250,7 +6959,7 @@
   },
   {
    "name": "Pixilate",
-   "description": "This Pokemon's Normal-type moves become Fairy type and have 1.2× power.",
+   "description": "This Pokemon's Normal-type moves become Fairy type and have 1.2x power.",
    "isNonstandard": "Standard",
    "genfamily": [
     "XY",
@@ -7267,27 +6976,6 @@
    "genfamily": [
     "XY",
     "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Psychic Surge",
-   "description": "On switch-in, this Pokemon summons Psychic Terrain.",
-   "isNonstandard": "Standard",
-   "genfamily": [
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Punk Rock",
-   "description": "This Pokemon receives 1/2 damage from sound moves. Its own have 1.3× power.",
-   "isNonstandard": "Standard",
-   "genfamily": [
     "SS",
     "SV",
     "Champions"
@@ -7336,7 +7024,7 @@
   },
   {
    "name": "Refrigerate",
-   "description": "This Pokemon's Normal-type moves become Ice type and have 1.2× power.",
+   "description": "This Pokemon's Normal-type moves become Ice type and have 1.2x power.",
    "isNonstandard": "Standard",
    "genfamily": [
     "XY",
@@ -7377,15 +7065,6 @@
    ]
   },
   {
-   "name": "Seed Sower",
-   "description": "When this Pokemon is hit by an attack, the effect of Grassy Terrain begins.",
-   "isNonstandard": "Standard",
-   "genfamily": [
-    "SV",
-    "Champions"
-   ]
-  },
-  {
    "name": "Sharpness",
    "description": "This Pokemon's slicing moves have their power multiplied by 1.5.",
    "isNonstandard": "Standard",
@@ -7410,17 +7089,6 @@
    "description": "If this Pokemon is hit by an attack, the attacker becomes burned.",
    "isNonstandard": "Standard",
    "genfamily": [
-    "Champions"
-   ]
-  },
-  {
-   "name": "Stakeout",
-   "description": "This Pokemon's offensive stat is doubled against a target that switched in this turn.",
-   "isNonstandard": "Standard",
-   "genfamily": [
-    "SM",
-    "SS",
-    "SV",
     "Champions"
    ]
   },
@@ -7458,18 +7126,8 @@
    ]
   },
   {
-   "name": "Steely Spirit",
-   "description": "This Pokemon and its allies' Steel-type moves have their power multiplied by 1.5.",
-   "isNonstandard": "Standard",
-   "genfamily": [
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
    "name": "Strong Jaw",
-   "description": "This Pokemon's bite-based attacks have 1.5× power. Bug Bite is not boosted.",
+   "description": "This Pokemon's bite-based attacks have 1.5x power. Bug Bite is not boosted.",
    "isNonstandard": "Standard",
    "genfamily": [
     "XY",
@@ -7533,15 +7191,6 @@
    ]
   },
   {
-   "name": "Thermal Exchange",
-   "description": "This Pokemon's Attack is raised by 1 when damaged by Fire moves; can't be burned.",
-   "isNonstandard": "Standard",
-   "genfamily": [
-    "SV",
-    "Champions"
-   ]
-  },
-  {
    "name": "Tough Claws",
    "description": "This Pokemon's contact moves have their power multiplied by 1.3.",
    "isNonstandard": "Standard",
@@ -7584,7 +7233,7 @@
   },
   {
    "name": "Water Bubble",
-   "description": "This Pokemon's Water power is 2×; it can't be burned; Fire power against it is halved.",
+   "description": "This Pokemon's Water power is 2x; it can't be burned; Fire power against it is halved.",
    "isNonstandard": "Standard",
    "genfamily": [
     "SM",
@@ -8049,7 +7698,7 @@
    "accuracy": 0,
    "priority": 0,
    "pp": 20,
-   "description": "+1 SpD, user's next Electric move 2× power.",
+   "description": "+1 SpD, user's next Electric move 2x power.",
    "type": "Electric",
    "target": "Self",
    "flags": [
@@ -8633,6 +8282,31 @@
    ]
   },
   {
+   "name": "Electroweb",
+   "isNonstandard": "Standard",
+   "category": "Special",
+   "power": 55,
+   "accuracy": 95,
+   "priority": 0,
+   "pp": 15,
+   "description": "100% chance to lower the foe(s) Speed by 1.",
+   "type": "Electric",
+   "target": "AllAdjacentFoes",
+   "flags": [
+    "Metronome",
+    "Mirror",
+    "Protect"
+   ],
+   "genfamily": [
+    "BW",
+    "XY",
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
    "name": "Grassy Terrain",
    "isNonstandard": "Standard",
    "category": "Non-Damaging",
@@ -8663,7 +8337,7 @@
    "accuracy": 0,
    "priority": 0,
    "pp": 5,
-   "description": "5 turns: no Ground immunities, 1.67× accuracy.",
+   "description": "5 turns: no Ground immunities, 1.67x accuracy.",
    "type": "Psychic",
    "target": "All",
    "flags": [
@@ -8879,7 +8553,7 @@
    "accuracy": 0,
    "priority": 5,
    "pp": 20,
-   "description": "One adjacent ally's move power is 1.5× this turn.",
+   "description": "One adjacent ally's move power is 1.5x this turn.",
    "type": "Normal",
    "target": "AdjacentAlly",
    "flags": [
@@ -9259,34 +8933,6 @@
    ]
   },
   {
-   "name": "Milk Drink",
-   "isNonstandard": "Standard",
-   "category": "Non-Damaging",
-   "power": 0,
-   "accuracy": 0,
-   "priority": 0,
-   "pp": 5,
-   "description": "Heals the user by 50% of its max HP.",
-   "type": "Normal",
-   "target": "AdjacentAllyOrSelf",
-   "flags": [
-    "Heal",
-    "Metronome",
-    "Snatch"
-   ],
-   "genfamily": [
-    "GS",
-    "RS",
-    "DP",
-    "BW",
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
    "name": "Minimize",
    "isNonstandard": "Standard",
    "category": "Non-Damaging",
@@ -9567,33 +9213,6 @@
    ]
   },
   {
-   "name": "Razor Shell",
-   "isNonstandard": "Standard",
-   "category": "Physical",
-   "power": 75,
-   "accuracy": 95,
-   "priority": 0,
-   "pp": 10,
-   "description": "50% chance to lower the target's Defense by 1.",
-   "type": "Water",
-   "target": "Normal",
-   "flags": [
-    "Contact",
-    "Metronome",
-    "Mirror",
-    "Protect",
-    "Slicing"
-   ],
-   "genfamily": [
-    "BW",
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
    "name": "Power Trick",
    "isNonstandard": "Standard",
    "category": "Non-Damaging",
@@ -9607,6 +9226,34 @@
    "flags": [
     "Metronome",
     "Snatch"
+   ],
+   "genfamily": [
+    "DP",
+    "BW",
+    "XY",
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
+   "name": "Fire Fang",
+   "isNonstandard": "Standard",
+   "category": "Physical",
+   "power": 65,
+   "accuracy": 95,
+   "priority": 0,
+   "pp": 15,
+   "description": "10% chance to burn. 10% chance to flinch.",
+   "type": "Fire",
+   "target": "Normal",
+   "flags": [
+    "Bite",
+    "Contact",
+    "Metronome",
+    "Mirror",
+    "Protect"
    ],
    "genfamily": [
     "DP",
@@ -9931,53 +9578,6 @@
    ]
   },
   {
-   "name": "Rock Tomb",
-   "isNonstandard": "Standard",
-   "category": "Physical",
-   "power": 60,
-   "accuracy": 95,
-   "priority": 0,
-   "pp": 15,
-   "description": "100% chance to lower the target's Speed by 1.",
-   "type": "Rock",
-   "target": "Normal",
-   "flags": [
-    "Metronome",
-    "Mirror",
-    "Protect"
-   ],
-   "genfamily": [
-    "RS",
-    "DP",
-    "BW",
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Revival Blessing",
-   "isNonstandard": "Standard",
-   "category": "Non-Damaging",
-   "power": 0,
-   "accuracy": 0,
-   "priority": 0,
-   "pp": 1,
-   "description": "Revives a fainted Pokemon to 50% HP.",
-   "type": "Normal",
-   "target": "Self",
-   "flags": [
-    "Fail Sketch",
-    "Heal"
-   ],
-   "genfamily": [
-    "SV",
-    "Champions"
-   ]
-  },
-  {
    "name": "Roar",
    "isNonstandard": "Standard",
    "category": "Non-Damaging",
@@ -10122,7 +9722,7 @@
    "accuracy": 0,
    "priority": 0,
    "pp": 5,
-   "description": "For 5 turns, a sandstorm rages. Rock: 1.5× SpD.",
+   "description": "For 5 turns, a sandstorm rages. Rock: 1.5x SpD.",
    "type": "Rock",
    "target": "All",
    "flags": [
@@ -10227,30 +9827,6 @@
     "Snatch"
    ],
    "genfamily": [
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Shift Gear",
-   "isNonstandard": "Standard",
-   "category": "Non-Damaging",
-   "power": 0,
-   "accuracy": 0,
-   "priority": 0,
-   "pp": 10,
-   "description": "Raises the user's Speed by 2 and Attack by 1.",
-   "type": "Steel",
-   "target": "Self",
-   "flags": [
-    "Metronome",
-    "Snatch"
-   ],
-   "genfamily": [
-    "BW",
-    "XY",
-    "SM",
-    "SS",
     "SV",
     "Champions"
    ]
@@ -10373,7 +9949,7 @@
    "accuracy": 0,
    "priority": 0,
    "pp": 5,
-   "description": "For 5 turns, snow falls. Ice: 1.5× Def.",
+   "description": "For 5 turns, snow falls. Ice: 1.5x Def.",
    "type": "Ice",
    "target": "All",
    "flags": [],
@@ -10477,6 +10053,32 @@
     "GS",
     "RS",
     "DP",
+    "BW",
+    "XY",
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
+   "name": "Flame Charge",
+   "isNonstandard": "Standard",
+   "category": "Physical",
+   "power": 50,
+   "accuracy": 100,
+   "priority": 0,
+   "pp": 20,
+   "description": "100% chance to raise the user's Speed by 1.",
+   "type": "Fire",
+   "target": "Normal",
+   "flags": [
+    "Contact",
+    "Metronome",
+    "Mirror",
+    "Protect"
+   ],
+   "genfamily": [
     "BW",
     "XY",
     "SM",
@@ -11037,7 +10639,7 @@
    "power": 0,
    "accuracy": 0,
    "priority": 0,
-   "pp": 5,
+   "pp": 10,
    "description": "Next turn, 50% of the user's max HP is restored.",
    "type": "Normal",
    "target": "Self",
@@ -11378,6 +10980,35 @@
    ]
   },
   {
+   "name": "Flamethrower",
+   "isNonstandard": "Standard",
+   "category": "Special",
+   "power": 90,
+   "accuracy": 100,
+   "priority": 0,
+   "pp": 15,
+   "description": "10% chance to burn the target.",
+   "type": "Fire",
+   "target": "Normal",
+   "flags": [
+    "Metronome",
+    "Mirror",
+    "Protect"
+   ],
+   "genfamily": [
+    "RB",
+    "GS",
+    "RS",
+    "DP",
+    "BW",
+    "XY",
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
    "name": "Attract",
    "isNonstandard": "Standard",
    "category": "Non-Damaging",
@@ -11488,7 +11119,7 @@
    "accuracy": 100,
    "priority": 0,
    "pp": 10,
-   "description": "50% psn. 2× power if target already poisoned.",
+   "description": "50% psn. 2x power if target already poisoned.",
    "type": "Poison",
    "target": "Normal",
    "flags": [
@@ -11548,32 +11179,6 @@
     "GS",
     "RS",
     "DP",
-    "BW",
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Snarl",
-   "isNonstandard": "Standard",
-   "category": "Special",
-   "power": 55,
-   "accuracy": 95,
-   "priority": 0,
-   "pp": 15,
-   "description": "100% chance to lower the foe(s) Sp. Atk by 1.",
-   "type": "Dark",
-   "target": "AllAdjacentFoes",
-   "flags": [
-    "Bypasses Substitute",
-    "Mirror",
-    "Protect",
-    "Sound"
-   ],
-   "genfamily": [
     "BW",
     "XY",
     "SM",
@@ -12132,7 +11737,7 @@
    "accuracy": 100,
    "priority": 0,
    "pp": 10,
-   "description": "If hit by an attack, returns 1.5× damage.",
+   "description": "If hit by an attack, returns 1.5x damage.",
    "type": "Dark",
    "target": "Scripted",
    "flags": [
@@ -12255,27 +11860,6 @@
     "BW",
     "XY",
     "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Court Change",
-   "isNonstandard": "Standard",
-   "category": "Non-Damaging",
-   "power": 0,
-   "accuracy": 100,
-   "priority": 0,
-   "pp": 10,
-   "description": "Swaps user's field effects with the opposing side.",
-   "type": "Normal",
-   "target": "All",
-   "flags": [
-    "Metronome",
-    "Mirror"
-   ],
-   "genfamily": [
     "SS",
     "SV",
     "Champions"
@@ -12624,28 +12208,6 @@
    ]
   },
   {
-   "name": "Double Shock",
-   "isNonstandard": "Standard",
-   "category": "Physical",
-   "power": 120,
-   "accuracy": 100,
-   "priority": 0,
-   "pp": 5,
-   "description": "User's Electric type: typeless; must be Electric.",
-   "type": "Electric",
-   "target": "Normal",
-   "flags": [
-    "Contact",
-    "Mirror",
-    "Protect",
-    "Punch"
-   ],
-   "genfamily": [
-    "SV",
-    "Champions"
-   ]
-  },
-  {
    "name": "Dragon Claw",
    "isNonstandard": "Standard",
    "category": "Physical",
@@ -12806,27 +12368,6 @@
     "BW",
     "XY",
     "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Drum Beating",
-   "isNonstandard": "Standard",
-   "category": "Physical",
-   "power": 80,
-   "accuracy": 100,
-   "priority": 0,
-   "pp": 10,
-   "description": "100% chance to lower the target's Speed by 1.",
-   "type": "Grass",
-   "target": "Normal",
-   "flags": [
-    "Mirror",
-    "Protect"
-   ],
-   "genfamily": [
     "SS",
     "SV",
     "Champions"
@@ -13134,7 +12675,7 @@
    "accuracy": 100,
    "priority": 0,
    "pp": 10,
-   "description": "User on Psychic Terrain: 1.5× power, hits foes.",
+   "description": "User on Psychic Terrain: 1.5x power, hits foes.",
    "type": "Psychic",
    "target": "Normal",
    "flags": [
@@ -13579,61 +13120,6 @@
    ]
   },
   {
-   "name": "Flame Charge",
-   "isNonstandard": "Standard",
-   "category": "Physical",
-   "power": 50,
-   "accuracy": 100,
-   "priority": 0,
-   "pp": 20,
-   "description": "100% chance to raise the user's Speed by 1.",
-   "type": "Fire",
-   "target": "Normal",
-   "flags": [
-    "Contact",
-    "Metronome",
-    "Mirror",
-    "Protect"
-   ],
-   "genfamily": [
-    "BW",
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Flamethrower",
-   "isNonstandard": "Standard",
-   "category": "Special",
-   "power": 90,
-   "accuracy": 100,
-   "priority": 0,
-   "pp": 15,
-   "description": "10% chance to burn the target.",
-   "type": "Fire",
-   "target": "Normal",
-   "flags": [
-    "Metronome",
-    "Mirror",
-    "Protect"
-   ],
-   "genfamily": [
-    "RB",
-    "GS",
-    "RS",
-    "DP",
-    "BW",
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
    "name": "Flare Blitz",
    "isNonstandard": "Standard",
    "category": "Physical",
@@ -13978,28 +13464,6 @@
    ]
   },
   {
-   "name": "Glaive Rush",
-   "isNonstandard": "Standard",
-   "category": "Physical",
-   "power": 120,
-   "accuracy": 100,
-   "priority": 0,
-   "pp": 5,
-   "description": "User takes sure-hit 2× damage until its next turn.",
-   "type": "Dragon",
-   "target": "Normal",
-   "flags": [
-    "Contact",
-    "Metronome",
-    "Mirror",
-    "Protect"
-   ],
-   "genfamily": [
-    "SV",
-    "Champions"
-   ]
-  },
-  {
    "name": "Glare",
    "isNonstandard": "Standard",
    "category": "Non-Damaging",
@@ -14088,7 +13552,7 @@
    "accuracy": 100,
    "priority": 0,
    "pp": 10,
-   "description": "Target: 100% -1 Def. During Gravity: 1.5× power.",
+   "description": "Target: 100% -1 Def. During Gravity: 1.5x power.",
    "type": "Grass",
    "target": "Normal",
    "flags": [
@@ -14454,7 +13918,7 @@
    "accuracy": 100,
    "priority": 0,
    "pp": 15,
-   "description": "30% burn. 2× power if target is already statused.",
+   "description": "30% burn. 2x power if target is already statused.",
    "type": "Ghost",
    "target": "Normal",
    "flags": [
@@ -14520,30 +13984,6 @@
    ]
   },
   {
-   "name": "Jaw Lock",
-   "isNonstandard": "Standard",
-   "category": "Physical",
-   "power": 80,
-   "accuracy": 100,
-   "priority": 0,
-   "pp": 10,
-   "description": "Prevents both user and target from switching out.",
-   "type": "Dark",
-   "target": "Normal",
-   "flags": [
-    "Bite",
-    "Contact",
-    "Metronome",
-    "Mirror",
-    "Protect"
-   ],
-   "genfamily": [
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
    "name": "Jet Punch",
    "isNonstandard": "Standard",
    "category": "Physical",
@@ -14573,7 +14013,7 @@
    "accuracy": 100,
    "priority": 0,
    "pp": 20,
-   "description": "1.5× damage if foe holds an item. Removes item.",
+   "description": "1.5x damage if foe holds an item. Removes item.",
    "type": "Dark",
    "target": "Normal",
    "flags": [
@@ -14601,7 +14041,7 @@
    "accuracy": 100,
    "priority": 0,
    "pp": 5,
-   "description": "2× power if the user had a stat lowered this turn.",
+   "description": "2x power if the user had a stat lowered this turn.",
    "type": "Dark",
    "target": "Normal",
    "flags": [
@@ -14964,7 +14404,7 @@
    "accuracy": 100,
    "priority": 0,
    "pp": 10,
-   "description": "If hit by an attack, returns 1.5× damage.",
+   "description": "If hit by an attack, returns 1.5x damage.",
    "type": "Steel",
    "target": "Scripted",
    "flags": [
@@ -14978,29 +14418,6 @@
     "BW",
     "XY",
     "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Meteor Assault",
-   "isNonstandard": "Standard",
-   "category": "Physical",
-   "power": 170,
-   "accuracy": 100,
-   "priority": 0,
-   "pp": 5,
-   "description": "User cannot move next turn.",
-   "type": "Fighting",
-   "target": "Normal",
-   "flags": [
-    "Fail Instruct",
-    "Mirror",
-    "Protect",
-    "Recharge"
-   ],
-   "genfamily": [
     "SS",
     "SV",
     "Champions"
@@ -15042,7 +14459,7 @@
    "accuracy": 100,
    "priority": 0,
    "pp": 5,
-   "description": "User faints. User on Misty Terrain: 1.5× power.",
+   "description": "User faints. User on Misty Terrain: 1.5x power.",
    "type": "Fairy",
    "target": "AllAdjacent",
    "flags": [
@@ -15264,28 +14681,6 @@
    ]
   },
   {
-   "name": "Octolock",
-   "isNonstandard": "Standard",
-   "category": "Non-Damaging",
-   "power": 0,
-   "accuracy": 100,
-   "priority": 0,
-   "pp": 15,
-   "description": "Traps target, lowers Def and SpD by 1 each turn.",
-   "type": "Fighting",
-   "target": "Normal",
-   "flags": [
-    "Metronome",
-    "Mirror",
-    "Protect"
-   ],
-   "genfamily": [
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
    "name": "Outrage",
    "isNonstandard": "Standard",
    "category": "Physical",
@@ -15310,29 +14705,6 @@
     "BW",
     "XY",
     "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Overdrive",
-   "isNonstandard": "Standard",
-   "category": "Special",
-   "power": 80,
-   "accuracy": 100,
-   "priority": 0,
-   "pp": 10,
-   "description": "No additional effect. Hits foe(s).",
-   "type": "Electric",
-   "target": "AllAdjacentFoes",
-   "flags": [
-    "Bypasses Substitute",
-    "Mirror",
-    "Protect",
-    "Sound"
-   ],
-   "genfamily": [
     "SS",
     "SV",
     "Champions"
@@ -15987,27 +15359,6 @@
    ]
   },
   {
-   "name": "Steel Beam",
-   "isNonstandard": "Standard",
-   "category": "Special",
-   "power": 140,
-   "accuracy": 95,
-   "priority": 0,
-   "pp": 5,
-   "description": "User loses 50% max HP.",
-   "type": "Steel",
-   "target": "Normal",
-   "flags": [
-    "Mirror",
-    "Protect"
-   ],
-   "genfamily": [
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
    "name": "Reversal",
    "isNonstandard": "Standard",
    "category": "Physical",
@@ -16037,6 +15388,30 @@
    ]
   },
   {
+   "name": "High Horsepower",
+   "isNonstandard": "Standard",
+   "category": "Physical",
+   "power": 95,
+   "accuracy": 95,
+   "priority": 0,
+   "pp": 10,
+   "description": "No additional effect.",
+   "type": "Ground",
+   "target": "Normal",
+   "flags": [
+    "Contact",
+    "Metronome",
+    "Mirror",
+    "Protect"
+   ],
+   "genfamily": [
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
    "name": "Rising Voltage",
    "isNonstandard": "Standard",
    "category": "Special",
@@ -16044,7 +15419,7 @@
    "accuracy": 100,
    "priority": 0,
    "pp": 20,
-   "description": "2× power if target is grounded in Electric Terrain.",
+   "description": "2x power if target is grounded in Electric Terrain.",
    "type": "Electric",
    "target": "Normal",
    "flags": [
@@ -16356,6 +15731,42 @@
    ]
   },
   {
+   "name": "Fly",
+   "isNonstandard": "Standard",
+   "category": "Physical",
+   "power": 90,
+   "accuracy": 95,
+   "priority": 0,
+   "pp": 15,
+   "description": "Flies up on first turn, then strikes the next turn.",
+   "type": "Flying",
+   "target": "Any",
+   "flags": [
+    "Charge",
+    "Contact",
+    "Distance",
+    "Fail Instruct",
+    "Gravity",
+    "Metronome",
+    "Mirror",
+    "No Assist",
+    "No Sleep Talk",
+    "Protect"
+   ],
+   "genfamily": [
+    "RB",
+    "GS",
+    "RS",
+    "DP",
+    "BW",
+    "XY",
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
    "name": "Shadow Sneak",
    "isNonstandard": "Standard",
    "category": "Physical",
@@ -16422,37 +15833,6 @@
     "Reflectable"
    ],
    "genfamily": [
-    "BW",
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Slash",
-   "isNonstandard": "Standard",
-   "category": "Physical",
-   "power": 80,
-   "accuracy": 100,
-   "priority": 0,
-   "pp": 20,
-   "description": "High critical hit ratio.",
-   "type": "Normal",
-   "target": "Normal",
-   "flags": [
-    "Contact",
-    "Metronome",
-    "Mirror",
-    "Protect",
-    "Slicing"
-   ],
-   "genfamily": [
-    "RB",
-    "GS",
-    "RS",
-    "DP",
     "BW",
     "XY",
     "SM",
@@ -16554,28 +15934,6 @@
    "target": "Normal",
    "flags": [
     "Contact",
-    "Mirror",
-    "Protect"
-   ],
-   "genfamily": [
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Snipe Shot",
-   "isNonstandard": "Standard",
-   "category": "Special",
-   "power": 85,
-   "accuracy": 100,
-   "priority": 0,
-   "pp": 15,
-   "description": "High critical hit ratio. Cannot be redirected.",
-   "type": "Water",
-   "target": "Normal",
-   "flags": [
-    "Metronome",
     "Mirror",
     "Protect"
    ],
@@ -16905,6 +16263,35 @@
    ]
   },
   {
+   "name": "Flying Press",
+   "isNonstandard": "Standard",
+   "category": "Physical",
+   "power": 100,
+   "accuracy": 95,
+   "priority": 0,
+   "pp": 10,
+   "description": "Combines Flying in its type effectiveness.",
+   "type": "Fighting",
+   "target": "Any",
+   "flags": [
+    "Contact",
+    "Distance",
+    "Gravity",
+    "Metronome",
+    "Minimize",
+    "Mirror",
+    "Non-sky",
+    "Protect"
+   ],
+   "genfamily": [
+    "XY",
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
    "name": "Stored Power",
    "isNonstandard": "Standard",
    "category": "Special",
@@ -16962,7 +16349,7 @@
    "power": 0,
    "accuracy": 100,
    "priority": 0,
-   "pp": 5,
+   "pp": 10,
    "description": "User heals HP=target's Atk stat. Lowers Atk by 1.",
    "type": "Grass",
    "target": "Normal",
@@ -17110,6 +16497,34 @@
    "genfamily": [
     "GS",
     "RS",
+    "DP",
+    "BW",
+    "XY",
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
+   "name": "Ice Fang",
+   "isNonstandard": "Standard",
+   "category": "Physical",
+   "power": 65,
+   "accuracy": 95,
+   "priority": 0,
+   "pp": 15,
+   "description": "10% chance to freeze. 10% chance to flinch.",
+   "type": "Ice",
+   "target": "Normal",
+   "flags": [
+    "Bite",
+    "Contact",
+    "Metronome",
+    "Mirror",
+    "Protect"
+   ],
+   "genfamily": [
     "DP",
     "BW",
     "XY",
@@ -17268,36 +16683,6 @@
     "Protect"
    ],
    "genfamily": [
-    "GS",
-    "RS",
-    "DP",
-    "BW",
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "String Shot",
-   "isNonstandard": "Standard",
-   "category": "Non-Damaging",
-   "power": 0,
-   "accuracy": 95,
-   "priority": 0,
-   "pp": 40,
-   "description": "Lowers the foe(s) Speed by 2.",
-   "type": "Bug",
-   "target": "AllAdjacentFoes",
-   "flags": [
-    "Metronome",
-    "Mirror",
-    "Protect",
-    "Reflectable"
-   ],
-   "genfamily": [
-    "RB",
     "GS",
     "RS",
     "DP",
@@ -17881,29 +17266,6 @@
    ]
   },
   {
-   "name": "Supercell Slam",
-   "isNonstandard": "Standard",
-   "category": "Physical",
-   "power": 100,
-   "accuracy": 95,
-   "priority": 0,
-   "pp": 15,
-   "description": "User is hurt by 50% of its max HP if it misses.",
-   "type": "Electric",
-   "target": "Normal",
-   "flags": [
-    "Contact",
-    "Metronome",
-    "Minimize",
-    "Mirror",
-    "Protect"
-   ],
-   "genfamily": [
-    "SV",
-    "Champions"
-   ]
-  },
-  {
    "name": "Water Pulse",
    "isNonstandard": "Standard",
    "category": "Special",
@@ -18165,30 +17527,6 @@
     "DP",
     "BW",
     "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Zing Zap",
-   "isNonstandard": "Standard",
-   "category": "Physical",
-   "power": 80,
-   "accuracy": 100,
-   "priority": 0,
-   "pp": 10,
-   "description": "30% chance to make the target flinch.",
-   "type": "Electric",
-   "target": "Normal",
-   "flags": [
-    "Contact",
-    "Metronome",
-    "Mirror",
-    "Protect"
-   ],
-   "genfamily": [
     "SM",
     "SS",
     "SV",
@@ -20236,29 +19574,6 @@
    ]
   },
   {
-   "name": "Pyro Ball",
-   "isNonstandard": "Standard",
-   "category": "Physical",
-   "power": 120,
-   "accuracy": 90,
-   "priority": 0,
-   "pp": 5,
-   "description": "10% chance to burn the target. Thaws user.",
-   "type": "Fire",
-   "target": "Normal",
-   "flags": [
-    "Bullet",
-    "Defrost",
-    "Mirror",
-    "Protect"
-   ],
-   "genfamily": [
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
    "name": "Rock Blast",
    "isNonstandard": "Standard",
    "category": "Physical",
@@ -20332,34 +19647,6 @@
     "Mirror",
     "Protect",
     "Recharge"
-   ],
-   "genfamily": [
-    "DP",
-    "BW",
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Thunder Fang",
-   "isNonstandard": "Standard",
-   "category": "Physical",
-   "power": 65,
-   "accuracy": 95,
-   "priority": 0,
-   "pp": 15,
-   "description": "10% chance to paralyze. 10% chance to flinch.",
-   "type": "Electric",
-   "target": "Normal",
-   "flags": [
-    "Bite",
-    "Contact",
-    "Metronome",
-    "Mirror",
-    "Protect"
    ],
    "genfamily": [
     "DP",
@@ -20836,176 +20123,6 @@
    ]
   },
   {
-   "name": "Electroweb",
-   "isNonstandard": "Standard",
-   "category": "Special",
-   "power": 55,
-   "accuracy": 95,
-   "priority": 0,
-   "pp": 15,
-   "description": "100% chance to lower the foe(s) Speed by 1.",
-   "type": "Electric",
-   "target": "AllAdjacentFoes",
-   "flags": [
-    "Metronome",
-    "Mirror",
-    "Protect"
-   ],
-   "genfamily": [
-    "BW",
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Fire Fang",
-   "isNonstandard": "Standard",
-   "category": "Physical",
-   "power": 65,
-   "accuracy": 95,
-   "priority": 0,
-   "pp": 15,
-   "description": "10% chance to burn. 10% chance to flinch.",
-   "type": "Fire",
-   "target": "Normal",
-   "flags": [
-    "Bite",
-    "Contact",
-    "Metronome",
-    "Mirror",
-    "Protect"
-   ],
-   "genfamily": [
-    "DP",
-    "BW",
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Fly",
-   "isNonstandard": "Standard",
-   "category": "Physical",
-   "power": 90,
-   "accuracy": 95,
-   "priority": 0,
-   "pp": 15,
-   "description": "Flies up on first turn, then strikes the next turn.",
-   "type": "Flying",
-   "target": "Any",
-   "flags": [
-    "Charge",
-    "Contact",
-    "Distance",
-    "Fail Instruct",
-    "Gravity",
-    "Metronome",
-    "Mirror",
-    "No Assist",
-    "No Sleep Talk",
-    "Protect"
-   ],
-   "genfamily": [
-    "RB",
-    "GS",
-    "RS",
-    "DP",
-    "BW",
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Flying Press",
-   "isNonstandard": "Standard",
-   "category": "Physical",
-   "power": 100,
-   "accuracy": 95,
-   "priority": 0,
-   "pp": 10,
-   "description": "Combines Flying in its type effectiveness.",
-   "type": "Fighting",
-   "target": "Any",
-   "flags": [
-    "Contact",
-    "Distance",
-    "Gravity",
-    "Metronome",
-    "Minimize",
-    "Mirror",
-    "Non-sky",
-    "Protect"
-   ],
-   "genfamily": [
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "High Horsepower",
-   "isNonstandard": "Standard",
-   "category": "Physical",
-   "power": 95,
-   "accuracy": 95,
-   "priority": 0,
-   "pp": 10,
-   "description": "No additional effect.",
-   "type": "Ground",
-   "target": "Normal",
-   "flags": [
-    "Contact",
-    "Metronome",
-    "Mirror",
-    "Protect"
-   ],
-   "genfamily": [
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Ice Fang",
-   "isNonstandard": "Standard",
-   "category": "Physical",
-   "power": 65,
-   "accuracy": 95,
-   "priority": 0,
-   "pp": 15,
-   "description": "10% chance to freeze. 10% chance to flinch.",
-   "type": "Ice",
-   "target": "Normal",
-   "flags": [
-    "Bite",
-    "Contact",
-    "Metronome",
-    "Mirror",
-    "Protect"
-   ],
-   "genfamily": [
-    "DP",
-    "BW",
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
    "name": "Icy Wind",
    "isNonstandard": "Standard",
    "category": "Special",
@@ -21126,6 +20243,188 @@
     "RB",
     "GS",
     "RS",
+    "DP",
+    "BW",
+    "XY",
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
+   "name": "Razor Shell",
+   "isNonstandard": "Standard",
+   "category": "Physical",
+   "power": 75,
+   "accuracy": 95,
+   "priority": 0,
+   "pp": 10,
+   "description": "50% chance to lower the target's Defense by 1.",
+   "type": "Water",
+   "target": "Normal",
+   "flags": [
+    "Contact",
+    "Metronome",
+    "Mirror",
+    "Protect",
+    "Slicing"
+   ],
+   "genfamily": [
+    "BW",
+    "XY",
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
+   "name": "Rock Tomb",
+   "isNonstandard": "Standard",
+   "category": "Physical",
+   "power": 60,
+   "accuracy": 95,
+   "priority": 0,
+   "pp": 15,
+   "description": "100% chance to lower the target's Speed by 1.",
+   "type": "Rock",
+   "target": "Normal",
+   "flags": [
+    "Metronome",
+    "Mirror",
+    "Protect"
+   ],
+   "genfamily": [
+    "RS",
+    "DP",
+    "BW",
+    "XY",
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
+   "name": "Snarl",
+   "isNonstandard": "Standard",
+   "category": "Special",
+   "power": 55,
+   "accuracy": 95,
+   "priority": 0,
+   "pp": 15,
+   "description": "100% chance to lower the foe(s) Sp. Atk by 1.",
+   "type": "Dark",
+   "target": "AllAdjacentFoes",
+   "flags": [
+    "Bypasses Substitute",
+    "Mirror",
+    "Protect",
+    "Sound"
+   ],
+   "genfamily": [
+    "BW",
+    "XY",
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
+   "name": "Steel Beam",
+   "isNonstandard": "Standard",
+   "category": "Special",
+   "power": 140,
+   "accuracy": 95,
+   "priority": 0,
+   "pp": 5,
+   "description": "User loses 50% max HP.",
+   "type": "Steel",
+   "target": "Normal",
+   "flags": [
+    "Mirror",
+    "Protect"
+   ],
+   "genfamily": [
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
+   "name": "String Shot",
+   "isNonstandard": "Standard",
+   "category": "Non-Damaging",
+   "power": 0,
+   "accuracy": 95,
+   "priority": 0,
+   "pp": 40,
+   "description": "Lowers the foe(s) Speed by 2.",
+   "type": "Bug",
+   "target": "AllAdjacentFoes",
+   "flags": [
+    "Metronome",
+    "Mirror",
+    "Protect",
+    "Reflectable"
+   ],
+   "genfamily": [
+    "RB",
+    "GS",
+    "RS",
+    "DP",
+    "BW",
+    "XY",
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
+   "name": "Supercell Slam",
+   "isNonstandard": "Standard",
+   "category": "Physical",
+   "power": 100,
+   "accuracy": 95,
+   "priority": 0,
+   "pp": 15,
+   "description": "User is hurt by 50% of its max HP if it misses.",
+   "type": "Electric",
+   "target": "Normal",
+   "flags": [
+    "Contact",
+    "Metronome",
+    "Minimize",
+    "Mirror",
+    "Protect"
+   ],
+   "genfamily": [
+    "SV",
+    "Champions"
+   ]
+  },
+  {
+   "name": "Thunder Fang",
+   "isNonstandard": "Standard",
+   "category": "Physical",
+   "power": 65,
+   "accuracy": 95,
+   "priority": 0,
+   "pp": 15,
+   "description": "10% chance to paralyze. 10% chance to flinch.",
+   "type": "Electric",
+   "target": "Normal",
+   "flags": [
+    "Bite",
+    "Contact",
+    "Metronome",
+    "Mirror",
+    "Protect"
+   ],
+   "genfamily": [
     "DP",
     "BW",
     "XY",
