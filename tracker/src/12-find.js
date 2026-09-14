@@ -8,7 +8,7 @@ import { S, boxRows, originOf, ownedNames } from "./02-state.js";
 import { closeSheet, fbtn, openSheet } from "./04-nav.js";
 import { battleFormNote } from "./05-box.js";
 import { AB_SET, abilityHit, abilityTag, engineReady } from "./11-damage.js";
-import { fill } from "./13-boot.js";
+import { fill, note } from "./13-boot.js";
 /* --------------------------------------------------------- the search view --
    The question this exists for is "who learns Imprison AND Wide Guard AND
    Protect" - a chain that used to mean asking Claude. Filters are ANDed. */

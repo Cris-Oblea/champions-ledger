@@ -7,6 +7,7 @@ import {
 import { ORIGIN_LABEL, S, boxRows, hasStone, originOf } from "./02-state.js";
 import { drop, put } from "./03-store.js";
 import { closeSheet, fbtn, openSheet } from "./04-nav.js";
+import { note } from "./13-boot.js";
 /* ======================================================================= gts */
 function drawGts(){
   var list = $("listGts");

@@ -444,6 +444,16 @@ meta/gts      {open_offers:[{offered, requested, deposited, status, note}]}
   Nothing relies on the old file order any more - the only top-level statements
   left in the parts attach handlers to their own elements.
 
+  **`node scripts/check_app.js` is what keeps that honest**, and it is a real
+  parse: acorn, with the scope chain built properly, reporting any name a part
+  uses that another part exports and it never imported. esbuild links such a
+  name happily - by the rules of the language it is a global - and it throws on
+  the phone. The first version of the check scanned with a regex and skipped
+  any name the file bound anywhere, so one `var note` inside one function in
+  09-gts hid every other use of `note` in that file, and the missing import
+  reached production. The browser tests did not see it either: their Supabase
+  stub returns no rows, so the branch that draws that note never ran.
+
   **What a part keeps to itself is now the interesting half.** The Item Clause
   is `teamPickItem` in `08-teams`, the only way an item can be set. What a GTS
   chip is worth is `chipValue` and its three axes in `09-gts`. What a build

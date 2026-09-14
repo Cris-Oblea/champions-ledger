@@ -150,77 +150,159 @@ console.log("element ids used but not in the markup");
   if (problems === before) console.log("  none");
 }
 
-/* 4. A MODULE that reads a name another part declares without importing it.
+/* 4. A PART that reads a name another part exports without importing it.
  *
- * This is the one fault the module pass introduces, and no other check can see
+ * This is the one fault the module pass introduced, and no other check can see
  * it. esbuild does not complain: an identifier a module never declares or
  * imports is, by the rules of the language, a global - so it links cleanly and
  * throws ReferenceError on the phone, in whatever function happens to touch it
  * first. Before the pass there was nothing to get wrong, because every part
  * shared one scope.
  *
- * It reports only names some OTHER part declares at its top level, which is
- * what keeps it quiet: an ordinary browser global is never in that set. A name
- * the file itself declares or takes as a parameter anywhere is skipped, so a
- * deliberate local shadow - `var S = window.SMOGON` inside one function, with
- * the ledger's own S elsewhere - does not read as a missing import.
+ * IT IS A REAL PARSE, and the first version was not. That one scanned with a
+ * regex and skipped any name the file bound ANYWHERE, so one `var note` inside
+ * one function in 09-gts hid every other use of `note` in the file - and the
+ * missing import went to production, where the GTS panel threw the moment real
+ * data arrived. The browser tests did not catch it either: their Supabase stub
+ * returns no rows, so the branch that draws a note never ran.
+ *
+ * So: acorn, the scope chain built properly (function scopes for var and
+ * function declarations, block scopes for let/const/class, parameters, catch
+ * bindings, named function expressions, and hoisting into the right one), and
+ * a name is free only where it really is free. A shadow shadows exactly what
+ * it should, which is why `var S = window.SMOGON` inside one function in
+ * 11-damage is not reported while the ledger's own `S` elsewhere would be.
  */
-console.log("a module using a name it never imported");
+console.log("a part using a name it never imported");
 {
   const before = problems;
-  const strip = code => {
-    let out = "", i = 0;
-    while (i < code.length) {
-      const c = code[i];
-      if (c === '"' || c === "'" || c === "`") {
-        const q = c; i++;
-        while (i < code.length && code[i] !== q) { if (code[i] === "\\") i++; i++; }
-        i++; out += " "; continue;
+  const acorn = require("acorn");
+
+  function analyse(code) {
+    const ast = acorn.parse(code, { ecmaVersion: 2022, sourceType: "module",
+                                    locations: true });
+    const scopes = [];
+    const free = new Map();
+    const imported = new Set();
+    const push = fn => scopes.push({ vars: new Set(), fn: !!fn });
+    const pop = () => scopes.pop();
+    function declare(name, kind) {
+      for (let i = scopes.length - 1; i >= 0; i--) {
+        if (kind !== "var" || scopes[i].fn) { scopes[i].vars.add(name); return; }
       }
-      if (c === "/" && code[i + 1] === "/") {
-        while (i < code.length && code[i] !== "\n") i++;
-        continue;
-      }
-      if (c === "/" && code[i + 1] === "*") {
-        const j = code.indexOf("*/", i);
-        i = j < 0 ? code.length : j + 2; continue;
-      }
-      out += c; i++;
     }
-    return out;
-  };
-  const clean = {}, tops = {}, owner = {};
-  const TOP = /^(?:var|let|const|function)\s+([A-Za-z_$][\w$]*)/gm;
+    const known = name => scopes.some(s => s.vars.has(name)) || imported.has(name);
+    function pattern(node, kind) {
+      if (!node) return;
+      if (node.type === "Identifier") return declare(node.name, kind);
+      if (node.type === "ObjectPattern")
+        return node.properties.forEach(pr =>
+          pattern(pr.type === "RestElement" ? pr.argument : pr.value, kind));
+      if (node.type === "ArrayPattern")
+        return node.elements.forEach(e => pattern(e, kind));
+      if (node.type === "RestElement") return pattern(node.argument, kind);
+      if (node.type === "AssignmentPattern") return pattern(node.left, kind);
+    }
+    /* var and function declarations belong to the enclosing FUNCTION, however
+       deeply nested in blocks they are written */
+    function hoist(body) {
+      (function walk(n) {
+        if (!n || typeof n !== "object") return;
+        if (Array.isArray(n)) return n.forEach(walk);
+        if (n.type === "FunctionDeclaration") {
+          if (n.id) declare(n.id.name, "var");
+          return;
+        }
+        if (n.type === "FunctionExpression" || n.type === "ArrowFunctionExpression") return;
+        if (n.type === "VariableDeclaration" && n.kind === "var")
+          n.declarations.forEach(d => pattern(d.id, "var"));
+        for (const k of Object.keys(n)) if (k !== "type") walk(n[k]);
+      })(body);
+    }
+
+    push(true);
+    ast.body.forEach(n => {
+      if (n.type === "ImportDeclaration")
+        n.specifiers.forEach(sp => imported.add(sp.local.name));
+    });
+    hoist(ast.body);
+
+    (function visit(node, parent) {
+      if (!node || typeof node !== "object") return;
+      if (Array.isArray(node)) return node.forEach(n => visit(n, parent));
+      if (!node.type) return;
+      switch (node.type) {
+        case "Identifier": {
+          const p = parent || {};
+          if (p.type === "MemberExpression" && p.property === node && !p.computed) return;
+          if (p.type === "Property" && p.key === node && !p.computed) return;
+          if (p.type === "LabeledStatement" || p.type === "BreakStatement" ||
+              p.type === "ContinueStatement") return;
+          if (!known(node.name) && !free.has(node.name))
+            free.set(node.name, node.loc.start.line);
+          return;
+        }
+        case "VariableDeclaration":
+          node.declarations.forEach(d => { pattern(d.id, node.kind); visit(d.init, d); });
+          return;
+        case "FunctionDeclaration":
+        case "FunctionExpression":
+        case "ArrowFunctionExpression": {
+          const named = node.type === "FunctionExpression" && node.id;
+          if (named) { push(true); declare(node.id.name, "let"); }
+          push(true);
+          node.params.forEach(pp => pattern(pp, "var"));
+          if (node.body.type === "BlockStatement") hoist(node.body.body);
+          visit(node.body, node);
+          pop();
+          if (named) pop();
+          return;
+        }
+        case "BlockStatement":
+          push(false);
+          node.body.forEach(n => {
+            if (n.type === "FunctionDeclaration" && n.id) declare(n.id.name, "var");
+          });
+          node.body.forEach(n => visit(n, node));
+          pop();
+          return;
+        case "CatchClause":
+          push(false);
+          pattern(node.param, "let");
+          node.body.body.forEach(n => visit(n, node));
+          pop();
+          return;
+        case "ImportDeclaration":
+          return;
+        default:
+          for (const k of Object.keys(node)) {
+            if (k === "type" || k === "loc" || k === "start" || k === "end") continue;
+            visit(node[k], node);
+          }
+      }
+    })(ast, null);
+    return free;
+  }
+
+  const owner = {};
   for (const f of files) {
-    clean[f] = strip(text[f]);
-    tops[f] = new Set([...clean[f].matchAll(TOP)].map(m => m[1]));
-    for (const n of tops[f]) owner[n] = f;
+    for (const m of text[f].matchAll(/^export\s*\{([^}]*)\}/gm)) {
+      m[1].split(",").forEach(n => n.trim() && (owner[n.trim()] = f));
+    }
   }
   for (const f of files) {
-    if (!/^(?:import|export)\s/m.test(clean[f])) continue;   // not converted yet
-    const imported = new Set();
-    for (const m of clean[f].matchAll(/^import\s*\{([^}]*)\}/gm)) {
-      m[1].split(",").forEach(n => n.trim() && imported.add(n.trim()));
+    let free;
+    try {
+      free = analyse(text[f]);
+    } catch (e) {
+      fail(f + " does not parse as a module: " + e.message);
+      continue;
     }
-    /* anything this file declares or binds ANYWHERE - locals, nested
-       functions, parameters, catch bindings - is its own business */
-    const mine = new Set(tops[f]);
-    for (const m of clean[f].matchAll(/\b(?:var|let|const|function)\s+([A-Za-z_$][\w$]*)/g)) mine.add(m[1]);
-    for (const m of clean[f].matchAll(/\bfunction\s*[A-Za-z_$\w$]*\s*\(([^)]*)\)/g)) {
-      m[1].split(",").forEach(n => n.trim() && mine.add(n.trim()));
-    }
-    for (const m of clean[f].matchAll(/\bcatch\s*\(\s*([A-Za-z_$][\w$]*)/g)) mine.add(m[1]);
-    const said = new Set();
-    /* not after a dot (a property), not before a colon (an object key or a
-       label) - both are names that only look like references */
-    for (const m of clean[f].matchAll(/(?<![.\w$])([A-Za-z_$][\w$]*)\s*(:?)/g)) {
-      const n = m[1];
-      if (m[2] === ":" || said.has(n)) continue;
-      if (mine.has(n) || imported.has(n)) continue;
-      if (owner[n] && owner[n] !== f) {
-        said.add(n);
-        fail(f + " uses " + n + ", which " + owner[n] + " declares, without " +
-             "importing it - that links fine and throws on the phone");
+    for (const [name, line] of free) {
+      if (owner[name] && owner[name] !== f) {
+        fail(f + ":" + line + " uses " + name + ", which " + owner[name] +
+             " exports, without importing it - that links fine and throws " +
+             "on the phone");
       }
     }
   }
