@@ -238,6 +238,26 @@ def link():
              "   The app's one deliberate contact with the global object. The",
              "   list is PUBLIC in that script, and a name here that its module",
              "   does not export is an esbuild error, not a blank page. */"]
+    if pile:
+        # THE BRIDGE IS IMPORTED FIRST, and the order is the whole point.
+        #
+        # A module's body runs when the graph reaches it, and the entry's
+        # imports are walked depth-first in the order they are written. Import
+        # 04-nav before the bridge and the walk goes entry -> 04-nav -> bridge
+        # (04-nav needs three redraws from it), so the BRIDGE's body runs first
+        # and 13-boot's startup calls buildTabs() before 04-nav has built TABS.
+        # Which is exactly what happened: sixteen browser tests failed at once
+        # with `Cannot read properties of undefined`.
+        #
+        # Entering through the bridge fixes it by construction. The bridge
+        # imports every converted module at its top, in numeric order, so the
+        # walk emits them in that order and the bridge's own body - which ends
+        # in 13-boot, the code that starts the app - runs after all of them.
+        # That is the order the parts had when they were concatenated.
+        #
+        # Not a bundler quirk: this is what the language does with a cycle, and
+        # native modules would do the same. check_order() below asserts it held.
+        entry.append('import "./_legacy.js";')
     for f in sorted(by_file):
         entry.append('import {%s} from "./%s";'
                      % (", ".join(sorted(by_file[f])), f))
@@ -263,11 +283,38 @@ def link():
         sys.exit("esbuild could not link the app:" + chr(10)
                  + (r.stderr or r.stdout))
     js = open(out_js, encoding="utf-8").read()
+    check_order(js, [f for f, _ in mods], bool(pile))
     BUILT["app_map"] = open(out_js + ".map", encoding="utf-8").read()
     print("  app: %d module%s linked, %d part%s still in the bridge, %.0f KB"
           % (len(mods), "" if len(mods) == 1 else "s", len(pile),
              "" if len(pile) == 1 else "s", len(js) / 1024))
     return js.rstrip(chr(10))
+
+
+def check_order(js, mods, has_bridge):
+    """The modules ran in numeric order, and the bridge ran last.
+
+    An app whose parts execute in the wrong order does not fail where it is
+    wrong - it fails wherever the first name is read too early, with a message
+    that names neither file. Sixteen tests went red at once for it, and the
+    stack said `buildTabs`. So the order is asserted here, where the answer
+    is one line long.
+
+    esbuild writes a `// tracker/src/<part>` comment above each module body,
+    which is what makes this readable. If it ever stops, the count check below
+    fails rather than the whole thing passing silently.
+    """
+    seen = re.findall(r"^\s*// tracker/src/(\S+)$", js, re.M)
+    want = len(mods) + (1 if has_bridge else 0) + 1        # + the entry
+    if len(seen) != want:
+        sys.exit("cannot read the link order out of the bundle: expected %d "
+                 "module markers, found %d" % (want, len(seen)))
+    got = [f for f in seen if f in mods]
+    if got != sorted(mods):
+        sys.exit("the modules link out of order: %s" % " ".join(got))
+    if has_bridge and seen.index("_legacy.js") < len(mods):
+        sys.exit("_legacy.js runs before a module it imports - 13-boot would "
+                 "start the app before that part had built anything")
 
 
 def write(path, text):
