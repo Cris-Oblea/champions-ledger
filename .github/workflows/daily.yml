@@ -108,10 +108,20 @@ jobs:
       # passed, on the content being merged. Re-running it would be two
       # identical runs and the same answer.
       #
-      # Why a status rather than letting the PR trigger the gate workflow:
-      # GitHub does not start workflows for pushes made with GITHUB_TOKEN, so
-      # a pull_request run would never appear, the required check would never
-      # arrive, and the PR would sit open for ever waiting for itself.
+      # Why a status rather than letting the PR trigger the gate workflow, and
+      # this is MEASURED, not assumed - the old wording said the run "would
+      # never appear" and cost two pull requests chasing it:
+      #
+      # The run DOES appear. GitHub creates it for the pull_request event, then
+      # refuses to execute it because the actor is github-actions[bot] - zero
+      # jobs, conclusion `failure`, created and updated in the same second. So
+      # the required check would never arrive and the PR would sit open for ever
+      # waiting for itself, which is why this status is posted by hand.
+      #
+      # The cost is one red ghost run per night on the Actions page, and NOTHING
+      # in push.yml can prevent it: a job-level `if` is never evaluated, because
+      # no job is ever created. Do not try again from that side. The run to read
+      # is this one.
       #
       # REQUIRES A REPOSITORY SETTING that exists nowhere in this file:
       # Settings > Actions > General > Workflow permissions > "Allow GitHub
@@ -162,16 +172,11 @@ jobs:
           # and PR #25 lost it, fourteen minutes apart, with the refresh and the
           # deploy already done in both. Merge it outright if it can be, and
           # queue auto-merge only if it cannot.
-          # NOT --delete-branch, and that is the fix for the last red run.
-          # push.yml is triggered by this PR opening and now skips itself for a
-          # daily/* head - but deleting the ref three seconds later means the run
-          # can never schedule the job that would skip, so it fails before its
-          # first step instead. Leaving today's branch alone gives it the few
-          # seconds it needs to report "skipped".
-          gh pr merge --squash "$BR" || gh pr merge --auto --squash "$BR"
-          # Yesterday's, then. A stranded branch - one a run pushed but could not
-          # merge - is no loss either: this run refreshed from the same sources,
-          # so it holds everything that one held.
+          gh pr merge --squash --delete-branch "$BR" || gh pr merge --auto --squash --delete-branch "$BR"
+          # And sweep up any branch an EARLIER run stranded, which is what a
+          # failed merge leaves behind - two of them sat there tonight. No loss:
+          # this run refreshed from the same sources, so it holds everything the
+          # stranded one held.
           git ls-remote --heads origin "refs/heads/daily/*" | awk '{print $2}' | sed 's|refs/heads/||' | grep -vx "$BR" | while read -r old; do echo "removing the branch $old"; git push -q origin --delete "$old" || true; done
 
       - name: save the source cache
