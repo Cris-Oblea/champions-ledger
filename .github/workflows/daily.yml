@@ -263,7 +263,18 @@ jobs:
           AUTH="https://x-access-token:$GH_TOKEN@github.com/$GITHUB_REPOSITORY"
           git push "$AUTH" "HEAD:refs/heads/$BR"
           RUN="$GITHUB_SERVER_URL/$GITHUB_REPOSITORY/actions/runs/$GITHUB_RUN_ID"
-          gh pr create --base main --head "$BR" --title "daily refresh $(date -u +%Y-%m-%d)" --body "Automated. daily.py refreshed every source and passed the whole gate on this tree before the branch existed. Opened by the champions-ledger-bot app so the gate runs on the pull request too, and set to merge itself once it is green - the merge is what deploys. Log: $RUN"
+          # A REGULATION IS NOT A DAILY REFRESH, and the title should not
+          # pretend otherwise. data/db/regulation.json records what the
+          # database is built for, so git already knows: if it moved in this
+          # run, the sources changed regulation and refresh.py ran the recipe
+          # that clears Serebii's caches. That is the one night worth reading
+          # the diff on.
+          TITLE="daily refresh $(date -u +%Y-%m-%d)"
+          if git diff --name-only "origin/main..$BR" | grep -qx "data/db/regulation.json"; then
+            REG=$(python -c "import json;print(json.load(open('data/db/regulation.json'))['label'])" 2>/dev/null || echo "?")
+            TITLE="REGULATION $REG - $TITLE"
+          fi
+          gh pr create --base main --head "$BR" --title "$TITLE" --body "Automated. daily.py refreshed every source and passed the whole gate on this tree before the branch existed. Opened by the champions-ledger-bot app so the gate runs on the pull request too, and set to merge itself once it is green - the merge is what deploys. Log: $RUN"
           # --auto FIRST, which is the other way round from before. Nothing has
           # reported `gate` on this PR yet - push.yml is only just starting on it
           # and takes about eighty seconds - so the PR is not mergeable and
