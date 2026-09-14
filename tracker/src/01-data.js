@@ -20,8 +20,16 @@ function dexLabel(name){
   var n = dexNo(name);
   return n === 99999 ? "#----" : "#" + String(n).padStart(4, "0");
 }
+/* Two pieces of VIEW state, read all over the app and written by the controls
+   in 13-boot. They live here because sortRows() and rowMatches() below are what
+   read them, but a module's binding may only be assigned by the module that
+   declares it - so the writers call these instead of assigning across the
+   boundary. That restriction is the point: before, any of thirteen files could
+   have written either one and nothing said so. */
 var SORT = "dex";
 var HOME_ALL = false;
+function setSort(v){ SORT = v; }
+function setHomeAll(v){ HOME_ALL = v; }
 function rowMatches(r, q){
   if (!q) return true;
   if (r.name.toLowerCase().indexOf(q) >= 0) return true;
@@ -190,3 +198,17 @@ function megasFor(name){
   return (p && MEGAS_OF[p.species]) || MEGAS_OF[name] || [];
 }
 
+/* ------------------------------------------------------- what leaves here --
+   The surface of this part. Everything not named below is private to the file:
+   `slug` (freeSlug is the only caller) and `toastT` (toast's own timer).
+
+   Until the module pass this list did not exist - every one of these names, and
+   the two private ones, was a global that any of the thirteen parts could read
+   or overwrite. */
+export {
+  $, C, COSTS, DEX, FORMS, HOME_ALL, MEGAS_OF, MOVES, MOVE_BY, SORT,
+  STAT_KEYS, STAT_LABEL, STONE_OF, TYPE_COLOR,
+  bst, byName, catName, defence, dexLabel, dexNo, el, freeSlug, learnset,
+  megasFor, natMult, rowMatches, setHomeAll, setSort, sortRows, statAt,
+  statLine, toast, typeChip,
+};

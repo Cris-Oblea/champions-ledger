@@ -31,4 +31,26 @@ function page(root) {
   return html.replace(/<script id="vendor-supabase">[\s\S]*?<\/script>/, "");
 }
 
-module.exports = { page };
+/* The app's own SOURCE, as a person edits it: the numbered parts under
+ * tracker/src/, in the order the build reads them.
+ *
+ * Three assertions in these tests are about the source and not about
+ * behaviour - a `var` declared twice, a table read behind the back of its one
+ * accessor, a column the app must never write. They used to grep page(), which
+ * worked while the page was the parts concatenated verbatim. It is a linked
+ * bundle now, and a bundler is entitled to reformat a two-line `if` into one
+ * and to RENAME a name that two modules both declare - so those greps would
+ * have gone quietly wrong rather than failed. They read this instead, which is
+ * the text the fault would actually be written in.
+ *
+ * The generated `_legacy.js` and `_entry.js` are deliberately not included:
+ * they are output, and a smell found in one of them was written elsewhere.
+ */
+function source(root) {
+  const src = path.join(root, "tracker", "src");
+  return fs.readdirSync(src)
+    .filter(f => /^\d/.test(f) && f.endsWith(".js")).sort()
+    .map(f => fs.readFileSync(path.join(src, f), "utf8")).join("");
+}
+
+module.exports = { page, source };

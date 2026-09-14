@@ -115,8 +115,8 @@ setTimeout(() => {
 
   /* every screen that offers moves goes through this one helper, so the fix
      reaches all of them - assert that nothing reads the table directly */
-  const src = require("./harness.js").page(ROOT);
-  const direct = (src.match(/C\.LEARN\[/g) || []).length;
+  const code = require("./harness.js").source(ROOT);
+  const direct = (code.match(/C\.LEARN\[/g) || []).length;
   ok("solo learnset() lee la tabla (3 lecturas, todas suyas)", direct, 3);
 
   console.log("\n  ERRORES JS: " + (errs.length ? errs.join(" | ") : "ninguno"));

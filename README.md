@@ -40,6 +40,12 @@ request returns nothing.
 | **GTS** | Open trades, what a chip is worth, and what it can realistically fetch |
 | **Profile** | Box capacity, and everything else derived so it cannot go stale |
 
+Its source is thirteen ES modules under `tracker/src/`, each one a tab or the
+thing the tabs share, saying what it exports and importing what it needs. The
+build links them into the single script the browser is handed, plus a sourcemap
+so a stack trace still names the file a person edits. **Edit a part, never
+`tracker/index.html`** - that file is generated.
+
 ---
 
 ## What is in the database
@@ -120,8 +126,9 @@ passing all of them:
   matching across all five sources, every derived index resolving, every form
   still accounted for, the README's own numbers, and that no SQL migration is
   still waiting to be applied
-- **one source check** — the app is assembled from thirteen files, so a name
-  two of them both declare is read for once, not clicked
+- **one source check** — the app is linked from thirteen ES modules, so a name
+  two of them both declare, or one of them uses without importing,
+  is read for once rather than clicked
 - **seventeen browser tests** — run against the built page, because no Python
   check can see a template regression
 <!-- GATE:END -->
@@ -194,12 +201,11 @@ python scripts/refresh.py --regulation    # ...when a new regulation drops
 scripts/     fetchers, the database build, the query CLI, the damage calculator
 data/db/     the built database - the thing everything else reads
 data/meta/   usage, tournaments, speed tiers, written analyses
-tracker/     the app: a shell, its source parts under src/, and a generated data blob
+tracker/     the app: a shell, its ES modules under src/, and a generated data blob
 <!-- TESTS:START -->
 tests/       seventeen browser tests, run against the BUILT page
 <!-- TESTS:END -->
 analysis/    write-ups: the Smogon engine, regulation M-C, the roadmap
-inventory/   the box, the builds and the teams, as files
 CLAUDE.md    the rules this project works by, including everything learned the hard way
 ```
 
