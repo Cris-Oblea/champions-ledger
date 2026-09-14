@@ -398,6 +398,19 @@ def main():
     else:
         out.append("nothing moved")
 
+    # WHICH FIELDS MOVED, not just which files. "CHANGED: move table" says a
+    # file's hash differs; it does not say that Rock Slide went from 75 to 70
+    # power and from a 30% flinch to 20%, which is the only part that changes
+    # how a battle goes. Every number is already in the database - effect_rate
+    # is 30.0, not a sentence - they simply were not being compared.
+    #
+    # A REPORT, never a gate: a regulation is meant to change things. What
+    # blocks is the shrink guard, which is about damage rather than change.
+    d, dout = sh([PY, "scripts/diff_db.py", "--limit", "30"])
+    if d == 0 and dout.strip() and "no field changed" not in dout:
+        out.append("WHAT CHANGED, field by field:")
+        out += ["  " + l for l in dout.splitlines()[:60]]
+
     if before_ladder and after_ladder and before_ladder != after_ladder:
         out.append("  ladder %s (%d rows) -> %s (%d rows)"
                    % (before_ladder["fetched"], before_ladder["rows"],
