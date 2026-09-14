@@ -2,13 +2,14 @@
    Part of the app; linked into one script by scripts/build_tracker_page.py. */
 import { $, el } from "./01-data.js";
 import { S } from "./02-state.js";
-/* Three redraws that live in parts not converted yet, reached through the
-   bridge the build generates. Each is only ever CALLED - two of them from a
-   setTimeout - so the cycle they form with this file (the bridge imports go,
-   openSheet and the rest from here) costs nothing: function declarations are
-   hoisted, and nothing runs while the modules are still loading. When those
-   parts become modules these three lines name them instead. */
-import { buildsPane, calcDraw, findDraw } from "./_legacy.js";
+/* Three redraws, one per tab that has to rebuild itself when it is shown.
+   Each is only ever CALLED - two of them from a setTimeout - so the cycles
+   they form with this file (all three import `go` back) cost nothing:
+   function declarations are hoisted, and nothing runs while the modules are
+   still loading. */
+import { calcDraw } from "./11-damage.js";
+import { findDraw } from "./12-find.js";
+import { buildsPane } from "./13-boot.js";
 /* ===================================================================== tabs */
 var TABS = [
   /* One word each. "Champs Box" was the only label that wrapped to two lines

@@ -1,5 +1,19 @@
 /* 11-damage.js - Smogon's engine, and the calculator screen around it.
-   Part of the app; assembled into one script by scripts/build_tracker_page.py. */
+   Part of the app; linked into one script by scripts/build_tracker_page.py. */
+import {
+  $, C, DEX, MOVE_BY, STAT_KEYS, STAT_LABEL, byName, catName, el, learnset,
+  natMult, statAt, toast, typeChip,
+} from "./01-data.js";
+import { closeSheet, openSheet } from "./04-nav.js";
+/* The modifier tables - which item, weather, terrain and berry touch which
+   type. They live in 10-scan for a historical reason and not a good one; this
+   import is what finally says so out loud. */
+import { BERRY_TYPE, MODS, TERRAIN_MOVE, TYPE_ITEM, WEATHER_MOVE, modFor }
+  from "./10-scan.js";
+/* One label: whether a move hits both opponents. 12-find imports this file
+   back for the ability set, and the cycle costs nothing - both sides are
+   function declarations, called from a click, never while loading. */
+import { spreadTags } from "./12-find.js";
 /* ================================================== the damage calculator ==
    A port of scripts/damage.py, which reproduces all 504 numbers in
    data/meta/speed_tiers.json and agrees with Smogon's own Champions engine on
@@ -1118,3 +1132,17 @@ function abilityTag(ability, move, poke){
   return t;
 }
 
+/* ------------------------------------------------------- what leaves here --
+   The engine's answer and the screen that asks for it. What stays private is
+   everything that would let a second caller compute damage a slightly
+   different way: engSide and engName (how a Pokemon is handed to Smogon's
+   engine), typeMult, boostMult, weightPower, pokeRound.
+
+   `CALC` is the screen's own state and is exported for PUBLIC - the browser
+   tests set an attacker, a move and a defender on it and compare the page's
+   roll against Node's. `engineCalc` is exported for the same reason.
+*/
+export {
+  AB_SET, CALC, abilityHit, abilityTag, calcDamage, calcDraw, engineCalc,
+  engineReady, koCount,
+};

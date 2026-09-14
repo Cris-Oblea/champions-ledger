@@ -2,15 +2,12 @@
    Part of the app; assembled into one script by scripts/build_tracker_page.py. */
 import { $, el, toast } from "./01-data.js";
 import { S } from "./02-state.js";
-/* renderAll still lives in 13-boot, which is not a module yet, so it is reached
-   through the bridge the build generates for the parts that have not been
-   converted. When 13-boot becomes a module this line changes to name it and
-   the bridge shrinks by one - that is what makes the remaining debt visible
-   from inside the code instead of only in a plan. A cycle either way (the
-   bridge imports this file's put/patch/drop), which ES modules resolve on
-   their own: renderAll is a hoisted function declaration and is only ever
-   CALLED after both sides have loaded. */
-import { renderAll } from "./_legacy.js";
+/* The one redraw. Every snapshot from the store ends in a call to it, and it
+   is the only thing this file knows about the screen. The cycle it makes with
+   13-boot (which imports put/patch/drop from here) is resolved by the language:
+   both sides are function declarations, and neither is called while the modules
+   are still loading. */
+import { renderAll } from "./13-boot.js";
 /* ===================================================================== db */
 function put(path, body){
   if (!S.db) { toast("Not connected to the store"); return Promise.resolve(); }
