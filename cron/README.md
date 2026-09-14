@@ -80,10 +80,15 @@ npx wrangler secret put GH_APP_PRIVATE_KEY
 
 **4. Prove it works, without waiting for 08:07.**
 
+`--remote` is not optional here: a plain `wrangler dev` runs the Worker locally,
+where the deployed secrets do not exist, so the test fails for a reason that has
+nothing to do with the setup. `--remote` runs it on Cloudflare with the real
+ones.
+
 ```bash
-npx wrangler dev --test-scheduled
+npx wrangler dev --remote --test-scheduled --port 8799
 # in another terminal:
-curl "http://localhost:8787/__scheduled?cron=7+8+*+*+*"
+curl "http://127.0.0.1:8799/__scheduled?cron=7+8+*+*+*"
 ```
 
 The first terminal prints `[cron] dispatched`, and a `daily refresh` run appears
@@ -102,6 +107,26 @@ keyData` — tested, along with the converted one importing cleanly.
 
 **5. Watch the first real one.** `npx wrangler tail` streams the Worker's logs
 live, so the 08:07 firing can be read as it happens.
+
+## Verified, 2026-09-14
+
+Set up and fired end to end on the day it was written:
+
+```
+[wrangler:info] GET /__scheduled 200 OK (729ms)
+[cron] dispatched
+```
+
+and, fifteen seconds later, a `daily refresh` run whose event is
+`workflow_dispatch`. Cloudflare's schedule -> the Worker -> a JWT signed with
+the App's key -> an installation token -> the workflow started.
+
+The crypto path was proved before the real key was ever pasted: with a
+throwaway RSA key, the Worker's own code produces a three-part JWT whose header
+and payload decode correctly and whose signature Node verifies against the
+public key. And the conversion in step 1 is necessary rather than cargo-cult -
+handed the PKCS#1 key GitHub hands out, Web Crypto refuses with `DataError:
+Invalid keyData`.
 
 ## What to check if the refresh stops being punctual
 
