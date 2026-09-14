@@ -1,5 +1,12 @@
 /* 09-gts.js - GTS: what may be offered, what it is worth, and the export.
-   Part of the app; assembled into one script by scripts/build_tracker_page.py. */
+   Part of the app; linked into one script by scripts/build_tracker_page.py. */
+import {
+  $, C, FORMS, MEGAS_OF, STONE_OF, bst, byName, dexLabel, dexNo, el, freeSlug,
+  megasFor, statLine, toast, typeChip,
+} from "./01-data.js";
+import { ORIGIN_LABEL, S, boxRows, hasStone, originOf } from "./02-state.js";
+import { drop, put } from "./03-store.js";
+import { closeSheet, fbtn, openSheet } from "./04-nav.js";
 /* ======================================================================= gts */
 function drawGts(){
   var list = $("listGts");
@@ -1291,3 +1298,14 @@ document.querySelectorAll("[data-export]").forEach(function(b){
   };
 });
 
+/* ------------------------------------------------------- what leaves here --
+   The biggest part in the app and the smallest surface: a drawing, the badges
+   05-box puts on a row, and `gtsPickMine` for PUBLIC - the browser tests use
+   it to assert that only what can actually leave the game is ever offered.
+
+   Everything that decides what a chip is WORTH stays in here: chipValue and
+   its three axes, the shiny and demand premiums, the difficulty chips, the
+   history and what counts as the last copy of a form. Those rules are argued
+   in one file, and now they can only be argued in one file.
+*/
+export { boxBadges, drawGts, gtsPickMine };

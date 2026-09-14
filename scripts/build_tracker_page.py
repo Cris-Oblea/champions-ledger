@@ -225,6 +225,16 @@ def link():
     missing = [n for n in out if not re.search(
         r"\b(?:function|var|let|const)\s+%s\b" % n, pile_text)]
     if missing:
+        # Converting a part moves its names OUT of the pile, and any module
+        # that was reaching them through the bridge has to be pointed at the
+        # real file. That is the ordinary next step of the pass, not a bug, so
+        # the message says which file to name rather than just what is absent.
+        moved = [(n, owner[n]) for n in missing if n in owner]
+        if moved:
+            sys.exit("no longer in the bridge: %s. Import %s from there "
+                     "instead of \"./_legacy.js\"."
+                     % (", ".join("%s (now %s)" % m for m in moved),
+                        "it" if len(moved) == 1 else "them"))
         sys.exit("nothing in tracker/src/ declares: %s" % ", ".join(missing))
     tail = ["", "/* what the converted modules and the entry still take from "
             "this pile */", "export {%s};" % ", ".join(out), ""]
@@ -292,29 +302,42 @@ def link():
 
 
 def check_order(js, mods, has_bridge):
-    """The modules ran in numeric order, and the bridge ran last.
+    """Every module's body ran before the bridge's, which starts the app.
 
     An app whose parts execute in the wrong order does not fail where it is
     wrong - it fails wherever the first name is read too early, with a message
-    that names neither file. Sixteen tests went red at once for it, and the
-    stack said `buildTabs`. So the order is asserted here, where the answer
-    is one line long.
+    that names neither file. Sixteen tests went red at once for it and the
+    stack said `buildTabs`. So it is asserted here, where the answer is one
+    line long.
+
+    Only that one ordering is required, and it is required absolutely: the
+    bridge ends in 13-boot, whose top-level statements build the tab bar and
+    draw the first screen, so anything it touches has to exist by then.
+
+    Among the modules themselves the order is whatever the import graph says,
+    and that is the improvement: 05-box runs after 09-gts because it imports
+    boxBadges from it, not because of a number in a filename. Nothing depends
+    on the old concatenation order any more - the only top-level statements
+    left in the converted parts attach handlers to their own elements.
 
     esbuild writes a `// tracker/src/<part>` comment above each module body,
-    which is what makes this readable. If it ever stops, the count check below
-    fails rather than the whole thing passing silently.
+    which is what makes this readable. If it ever stops, the count check fails
+    rather than the whole thing passing silently.
     """
     seen = re.findall(r"^\s*// tracker/src/(\S+)$", js, re.M)
     want = len(mods) + (1 if has_bridge else 0) + 1        # + the entry
     if len(seen) != want:
         sys.exit("cannot read the link order out of the bundle: expected %d "
                  "module markers, found %d" % (want, len(seen)))
-    got = [f for f in seen if f in mods]
-    if got != sorted(mods):
-        sys.exit("the modules link out of order: %s" % " ".join(got))
-    if has_bridge and seen.index("_legacy.js") < len(mods):
-        sys.exit("_legacy.js runs before a module it imports - 13-boot would "
-                 "start the app before that part had built anything")
+    print("  link order: %s" % " ".join(f.replace(".js", "") for f in seen
+                                        if f != "_entry.js"))
+    if not has_bridge:
+        return
+    after = [f for f in seen[seen.index("_legacy.js"):] if f in mods]
+    if after:
+        sys.exit("%s runs AFTER the bridge, so 13-boot would start the app "
+                 "before that part had built anything. The entry must import "
+                 "./_legacy.js first." % ", ".join(after))
 
 
 def write(path, text):

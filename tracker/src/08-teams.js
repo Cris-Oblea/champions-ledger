@@ -1,5 +1,12 @@
 /* 08-teams.js - Six slots, the clauses checked, and what is still to get.
-   Part of the app; assembled into one script by scripts/build_tracker_page.py. */
+   Part of the app; linked into one script by scripts/build_tracker_page.py. */
+import { $, C, STONE_OF, byName, el, toast, typeChip } from "./01-data.js";
+import { S, buildLink, buildsFor, hasStone } from "./02-state.js";
+import { drop, put, putNew } from "./03-store.js";
+import { closeSheet, fbtn, leaveEditor, openEditor, openSheet }
+  from "./04-nav.js";
+/* One coloured note element, still declared in 13-boot. */
+import { note } from "./_legacy.js";
 /* ===================================================================== teams
    A team is six slots, and a slot points at a BUILD rather than at a box row -
    so one Pokemon can sit in any number of teams and editing its set updates
@@ -406,3 +413,13 @@ function teamSheet(id, t){
   ]);
 }
 
+/* ------------------------------------------------------- what leaves here --
+   The Item Clause lives in `teamPickItem`, which greys out what another slot
+   already holds, and it is private: an item is a decision about the TEAM, so
+   the only way to set one is through the slot that is being edited.
+
+   `teamReport` and `teamTypes` are exported for PUBLIC, not for another part -
+   the browser tests read the type table and the clause report straight off
+   `window` and assert on them.
+*/
+export { drawTeams, teamReport, teamSheet, teamTypes };
