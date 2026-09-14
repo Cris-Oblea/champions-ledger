@@ -1,0 +1,6575 @@
+{
+ "_comment": "Exact multipliers read out of Smogon's Champions engine by scripts/build_effects.py - the values the engine itself pushes, in 4096ths, never measured from a damage ratio and never recited.",
+ "effects": {
+  "Acid Spray": {
+   "described": "100% chance to lower the target's Sp. Def by 2.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "100%",
+     "kind": "percent",
+     "phrase": "00% chance to lower the target's Sp.",
+     "value": 100.0
+    }
+   ]
+  },
+  "Acrobatics": {
+   "described": "Power doubles if the user has no held item.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "double",
+     "kind": "multiplier",
+     "phrase": "ower doubles if the user has no held item.",
+     "value": 2.0
+    }
+   ]
+  },
+  "Aerilate": {
+   "described": "This Pokemon's Normal-type moves become Flying type and have 1.2x power.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1.2x",
+     "kind": "multiplier",
+     "phrase": "his Pokemon's Normal-type moves become Flying type and have 1.2x power.",
+     "value": 1.2
+    }
+   ]
+  },
+  "Aftermath": {
+   "described": "If this Pokemon is KOed with a contact move, that move's user loses 1/4 its max HP.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1/4",
+     "kind": "fraction of max HP",
+     "phrase": "f this Pokemon is KOed with a contact move, that move's user loses 1/4 its max HP.",
+     "value": 0.25
+    }
+   ]
+  },
+  "Air Slash": {
+   "described": "30% chance to make the target flinch.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "30%",
+     "kind": "percent",
+     "phrase": "0% chance to make the target flinch.",
+     "value": 30.0
+    }
+   ]
+  },
+  "Alluring Voice": {
+   "described": "100% confuse target that had a stat rise this turn.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "100%",
+     "kind": "percent",
+     "phrase": "00% confuse target that had a stat rise this turn.",
+     "value": 100.0
+    }
+   ]
+  },
+  "Analytic": {
+   "described": "This Pokemon's attacks have 1.3x power if it is the last to move in a turn.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1.3x",
+     "kind": "multiplier",
+     "phrase": "his Pokemon's attacks have 1.3x power if it is the last to move in a turn.",
+     "value": 1.3
+    }
+   ]
+  },
+  "Ancient Power": {
+   "described": "10% chance to raise all stats by 1 (not acc/eva).",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "10%",
+     "kind": "percent",
+     "phrase": "0% chance to raise all stats by 1 (not acc/eva).",
+     "value": 10.0
+    }
+   ]
+  },
+  "Anger Point": {
+   "described": "If this Pokemon (not its substitute) takes a critical hit, its Attack is raised 12 stages.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "12 stages",
+     "kind": "stages",
+     "phrase": "f this Pokemon (not its substitute) takes a critical hit, its Attack is raised 12 stages.",
+     "value": 12.0
+    }
+   ]
+  },
+  "Apple Acid": {
+   "described": "100% chance to lower the target's Sp. Def by 1.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "100%",
+     "kind": "percent",
+     "phrase": "00% chance to lower the target's Sp.",
+     "value": 100.0
+    }
+   ]
+  },
+  "Aqua Ring": {
+   "described": "User recovers 1/16 max HP per turn.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1/16",
+     "kind": "fraction of max HP",
+     "phrase": "ser recovers 1/16 max HP per turn.",
+     "value": 0.0625
+    }
+   ]
+  },
+  "Aqua Step": {
+   "described": "100% chance to raise the user's Speed by 1.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "100%",
+     "kind": "percent",
+     "phrase": "00% chance to raise the user's Speed by 1.",
+     "value": 100.0
+    }
+   ]
+  },
+  "Assurance": {
+   "described": "Power doubles if target was damaged this turn.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "double",
+     "kind": "multiplier",
+     "phrase": "ower doubles if target was damaged this turn.",
+     "value": 2.0
+    }
+   ]
+  },
+  "Aura Guard": {
+   "effects": [
+    {
+     "multiplier": 0.5,
+     "stage": "final",
+     "when": "as defender, using Accelerock",
+     "x4096": 2048
+    },
+    {
+     "multiplier": 0.5,
+     "stage": "final",
+     "when": "as defender, using Acrobatics",
+     "x4096": 2048
+    }
+   ],
+   "kind": "ability",
+   "notes": []
+  },
+  "Aura Wheel": {
+   "described": "Morpeko: Electric; Hangry: Dark; 100% +1 Spe.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "100%",
+     "kind": "percent",
+     "phrase": "orpeko: Electric; Hangry: Dark; 100% +1 Spe.",
+     "value": 100.0
+    }
+   ]
+  },
+  "Aurora Veil": {
+   "described": "For 5 turns, damage to allies halved. Snow only.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "5 turns",
+     "kind": "turns",
+     "phrase": "or 5 turns, damage to allies halved.",
+     "value": 5.0
+    },
+    {
+     "as_written": "half",
+     "kind": "multiplier",
+     "phrase": "or 5 turns, damage to allies halved.",
+     "value": 0.5
+    }
+   ]
+  },
+  "Avalanche": {
+   "described": "Power doubles if user is damaged by the target.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "double",
+     "kind": "multiplier",
+     "phrase": "ower doubles if user is damaged by the target.",
+     "value": 2.0
+    }
+   ]
+  },
+  "Axe Kick": {
+   "described": "30% confusion. User loses 50% max HP if miss.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "30%",
+     "kind": "percent",
+     "phrase": "0% confusion.",
+     "value": 30.0
+    },
+    {
+     "as_written": "50%",
+     "kind": "percent",
+     "phrase": "User loses 50% max HP if miss.",
+     "value": 50.0
+    }
+   ]
+  },
+  "Babiri Berry": {
+   "described": "Halves damage taken from a supereffective Steel-type attack. Single use.",
+   "effects": [
+    {
+     "multiplier": 0.5,
+     "stage": "final",
+     "when": "as defender, super-effective Steel physical",
+     "x4096": 2048
+    },
+    {
+     "multiplier": 0.5,
+     "stage": "final",
+     "when": "as defender, super-effective Steel special",
+     "x4096": 2048
+    }
+   ],
+   "kind": "item",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "half",
+     "kind": "multiplier",
+     "phrase": "alves damage taken from a supereffective Steel-type attack.",
+     "value": 0.5
+    }
+   ]
+  },
+  "Barb Barrage": {
+   "described": "50% psn. 2x power if target already poisoned.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "2x",
+     "kind": "multiplier",
+     "phrase": "2x power if target already poisoned.",
+     "value": 2.0
+    },
+    {
+     "as_written": "50%",
+     "kind": "percent",
+     "phrase": "0% psn.",
+     "value": 50.0
+    }
+   ]
+  },
+  "Battle Bond": {
+   "described": "After KOing a Pokemon: raises Attack, Sp. Atk, Speed by 1 stage. Once per battle.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1 stages",
+     "kind": "stages",
+     "phrase": "Atk, Speed by 1 stage.",
+     "value": 1.0
+    }
+   ]
+  },
+  "Belly Drum": {
+   "described": "User loses 50% max HP. Maximizes Attack.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "50%",
+     "kind": "percent",
+     "phrase": "ser loses 50% max HP.",
+     "value": 50.0
+    }
+   ]
+  },
+  "Berserk": {
+   "described": "This Pokemon's Sp. Atk is raised by 1 when it reaches 1/2 or less of its max HP.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1/2",
+     "kind": "fraction",
+     "phrase": "Atk is raised by 1 when it reaches 1/2 or less of its max HP.",
+     "value": 0.5
+    }
+   ]
+  },
+  "Big Root": {
+   "described": "Holder gains 1.3x HP from draining/Aqua Ring/Ingrain/Leech Seed/Strength Sap.",
+   "effects": [],
+   "kind": "item",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1.3x",
+     "kind": "multiplier",
+     "phrase": "older gains 1.3x HP from draining/Aqua Ring/Ingrain/Leech Seed/Strength Sap.",
+     "value": 1.3
+    }
+   ]
+  },
+  "Bind": {
+   "described": "Traps and damages the target for 4-5 turns.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "5 turns",
+     "kind": "turns",
+     "phrase": "raps and damages the target for 4-5 turns.",
+     "value": 5.0
+    }
+   ]
+  },
+  "Bite": {
+   "described": "30% chance to make the target flinch.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "30%",
+     "kind": "percent",
+     "phrase": "0% chance to make the target flinch.",
+     "value": 30.0
+    }
+   ]
+  },
+  "Bitter Blade": {
+   "described": "User recovers 50% of the damage dealt.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "50%",
+     "kind": "percent",
+     "phrase": "ser recovers 50% of the damage dealt.",
+     "value": 50.0
+    }
+   ]
+  },
+  "Bitter Malice": {
+   "described": "100% chance to lower the target's Attack by 1.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "100%",
+     "kind": "percent",
+     "phrase": "00% chance to lower the target's Attack by 1.",
+     "value": 100.0
+    }
+   ]
+  },
+  "Black Belt": {
+   "described": "Holder's Fighting-type attacks have 1.2x power.",
+   "effects": [
+    {
+     "multiplier": 1.2,
+     "stage": "base power",
+     "when": "as attacker, Fighting physical move",
+     "x4096": 4915
+    },
+    {
+     "from": 170,
+     "stage": "base power",
+     "to": 204,
+     "when": "as attacker, Fighting physical move"
+    },
+    {
+     "multiplier": 1.2,
+     "stage": "base power",
+     "when": "as attacker, Fighting special move",
+     "x4096": 4915
+    },
+    {
+     "from": 120,
+     "stage": "base power",
+     "to": 144,
+     "when": "as attacker, Fighting special move"
+    }
+   ],
+   "kind": "item",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1.2x",
+     "kind": "multiplier",
+     "phrase": "older's Fighting-type attacks have 1.2x power.",
+     "value": 1.2
+    }
+   ]
+  },
+  "Black Glasses": {
+   "described": "Holder's Dark-type attacks have 1.2x power.",
+   "effects": [
+    {
+     "multiplier": 1.2,
+     "stage": "base power",
+     "when": "as attacker, Dark physical move",
+     "x4096": 4915
+    },
+    {
+     "from": 95,
+     "stage": "base power",
+     "to": 114,
+     "when": "as attacker, Dark physical move"
+    },
+    {
+     "multiplier": 1.2,
+     "stage": "base power",
+     "when": "as attacker, Dark special move",
+     "x4096": 4915
+    },
+    {
+     "from": 90,
+     "stage": "base power",
+     "to": 108,
+     "when": "as attacker, Dark special move"
+    }
+   ],
+   "kind": "item",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1.2x",
+     "kind": "multiplier",
+     "phrase": "older's Dark-type attacks have 1.2x power.",
+     "value": 1.2
+    }
+   ]
+  },
+  "Blaze": {
+   "described": "At 1/3 or less of its max HP, this Pokemon's offensive stat is 1.5x with Fire attacks.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1.5x",
+     "kind": "multiplier",
+     "phrase": "t 1/3 or less of its max HP, this Pokemon's offensive stat is 1.5x with Fire attacks.",
+     "value": 1.5
+    },
+    {
+     "as_written": "1/3",
+     "kind": "fraction",
+     "phrase": "t 1/3 or less of its max HP, this Pokemon's offensive stat is 1.5x with Fire attacks.",
+     "value": 0.333333
+    }
+   ]
+  },
+  "Blaze Kick": {
+   "described": "High critical hit ratio. 10% chance to burn.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "10%",
+     "kind": "percent",
+     "phrase": "10% chance to burn.",
+     "value": 10.0
+    }
+   ]
+  },
+  "Blizzard": {
+   "described": "10% chance to freeze foe(s). Can't miss in Snow.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "10%",
+     "kind": "percent",
+     "phrase": "0% chance to freeze foe(s).",
+     "value": 10.0
+    }
+   ]
+  },
+  "Body Slam": {
+   "described": "30% chance to paralyze the target.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "30%",
+     "kind": "percent",
+     "phrase": "0% chance to paralyze the target.",
+     "value": 30.0
+    }
+   ]
+  },
+  "Bounce": {
+   "described": "Bounces turn 1. Hits turn 2. 30% paralyze.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "30%",
+     "kind": "percent",
+     "phrase": "30% paralyze.",
+     "value": 30.0
+    }
+   ]
+  },
+  "Brave Bird": {
+   "described": "Has 33% recoil.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "33%",
+     "kind": "percent",
+     "phrase": "as 33% recoil.",
+     "value": 33.0
+    }
+   ]
+  },
+  "Breaking Swipe": {
+   "described": "100% chance to lower the foe(s) Attack by 1.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "100%",
+     "kind": "percent",
+     "phrase": "00% chance to lower the foe(s) Attack by 1.",
+     "value": 100.0
+    }
+   ]
+  },
+  "Bright Powder": {
+   "described": "The accuracy of attacks against the holder is 0.9x.",
+   "effects": [],
+   "kind": "item",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "0.9x",
+     "kind": "multiplier",
+     "phrase": "he accuracy of attacks against the holder is 0.9x.",
+     "value": 0.9
+    }
+   ]
+  },
+  "Bug Buzz": {
+   "described": "10% chance to lower the target's Sp. Def by 1.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "10%",
+     "kind": "percent",
+     "phrase": "0% chance to lower the target's Sp.",
+     "value": 10.0
+    }
+   ]
+  },
+  "Bulldoze": {
+   "described": "100% chance lower adjacent Pkmn Speed by 1.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "100%",
+     "kind": "percent",
+     "phrase": "00% chance lower adjacent Pkmn Speed by 1.",
+     "value": 100.0
+    }
+   ]
+  },
+  "Burning Jealousy": {
+   "described": "100% burns a target that had a stat rise this turn.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "100%",
+     "kind": "percent",
+     "phrase": "00% burns a target that had a stat rise this turn.",
+     "value": 100.0
+    }
+   ]
+  },
+  "Charcoal": {
+   "described": "Holder's Fire-type attacks have 1.2x power.",
+   "effects": [
+    {
+     "multiplier": 1.2,
+     "stage": "base power",
+     "when": "as attacker, Fire physical move",
+     "x4096": 4915
+    },
+    {
+     "from": 120,
+     "stage": "base power",
+     "to": 144,
+     "when": "as attacker, Fire physical move"
+    },
+    {
+     "multiplier": 1.2,
+     "stage": "base power",
+     "when": "as attacker, Fire special move",
+     "x4096": 4915
+    },
+    {
+     "from": 150,
+     "stage": "base power",
+     "to": 180,
+     "when": "as attacker, Fire special move"
+    }
+   ],
+   "kind": "item",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1.2x",
+     "kind": "multiplier",
+     "phrase": "older's Fire-type attacks have 1.2x power.",
+     "value": 1.2
+    }
+   ]
+  },
+  "Charge": {
+   "described": "+1 SpD, user's next Electric move 2x power.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "2x",
+     "kind": "multiplier",
+     "phrase": "1 SpD, user's next Electric move 2x power.",
+     "value": 2.0
+    }
+   ]
+  },
+  "Charge Beam": {
+   "described": "70% chance to raise the user's Sp. Atk by 1.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "70%",
+     "kind": "percent",
+     "phrase": "0% chance to raise the user's Sp.",
+     "value": 70.0
+    }
+   ]
+  },
+  "Charti Berry": {
+   "described": "Halves damage taken from a supereffective Rock-type attack. Single use.",
+   "effects": [
+    {
+     "multiplier": 0.5,
+     "stage": "final",
+     "when": "as defender, super-effective Rock physical",
+     "x4096": 2048
+    },
+    {
+     "multiplier": 0.5,
+     "stage": "final",
+     "when": "as defender, super-effective Rock special",
+     "x4096": 2048
+    }
+   ],
+   "kind": "item",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "half",
+     "kind": "multiplier",
+     "phrase": "alves damage taken from a supereffective Rock-type attack.",
+     "value": 0.5
+    }
+   ]
+  },
+  "Cheek Pouch": {
+   "described": "If this Pokemon eats a Berry, it restores 1/3 of its max HP after the Berry's effect.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1/3",
+     "kind": "fraction of max HP",
+     "phrase": "f this Pokemon eats a Berry, it restores 1/3 of its max HP after the Berry's effect.",
+     "value": 0.333333
+    }
+   ]
+  },
+  "Chilan Berry": {
+   "described": "Halves damage taken from a Normal-type attack. Single use.",
+   "effects": [
+    {
+     "multiplier": 0.5,
+     "stage": "final",
+     "when": "as defender, super-effective Normal physical",
+     "x4096": 2048
+    },
+    {
+     "multiplier": 0.5,
+     "stage": "final",
+     "when": "as defender, super-effective Normal special",
+     "x4096": 2048
+    }
+   ],
+   "kind": "item",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "half",
+     "kind": "multiplier",
+     "phrase": "alves damage taken from a Normal-type attack.",
+     "value": 0.5
+    }
+   ]
+  },
+  "Chilling Water": {
+   "described": "100% chance to lower the target's Attack by 1.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "100%",
+     "kind": "percent",
+     "phrase": "00% chance to lower the target's Attack by 1.",
+     "value": 100.0
+    }
+   ]
+  },
+  "Chlorophyll": {
+   "described": "If Sun is active, this Pokemon's Speed is doubled.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "double",
+     "kind": "multiplier",
+     "phrase": "f Sun is active, this Pokemon's Speed is doubled.",
+     "value": 2.0
+    }
+   ]
+  },
+  "Choice Scarf": {
+   "described": "Holder's Speed is 1.5x, but it can only select the first move it executes.",
+   "effects": [],
+   "kind": "item",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1.5x",
+     "kind": "multiplier",
+     "phrase": "older's Speed is 1.5x, but it can only select the first move it executes.",
+     "value": 1.5
+    }
+   ]
+  },
+  "Chople Berry": {
+   "described": "Halves damage taken from a supereffective Fighting-type attack. Single use.",
+   "effects": [
+    {
+     "multiplier": 0.5,
+     "stage": "final",
+     "when": "as defender, super-effective Fighting physical",
+     "x4096": 2048
+    },
+    {
+     "multiplier": 0.5,
+     "stage": "final",
+     "when": "as defender, super-effective Fighting special",
+     "x4096": 2048
+    }
+   ],
+   "kind": "item",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "half",
+     "kind": "multiplier",
+     "phrase": "alves damage taken from a supereffective Fighting-type attack.",
+     "value": 0.5
+    }
+   ]
+  },
+  "Clangorous Soul": {
+   "described": "User loses 33% of its max HP. +1 to all stats.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "33%",
+     "kind": "percent",
+     "phrase": "ser loses 33% of its max HP.",
+     "value": 33.0
+    }
+   ]
+  },
+  "Coba Berry": {
+   "described": "Halves damage taken from a supereffective Flying-type attack. Single use.",
+   "effects": [
+    {
+     "multiplier": 0.5,
+     "stage": "final",
+     "when": "as defender, super-effective Flying physical",
+     "x4096": 2048
+    },
+    {
+     "multiplier": 0.5,
+     "stage": "final",
+     "when": "as defender, super-effective Flying special",
+     "x4096": 2048
+    }
+   ],
+   "kind": "item",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "half",
+     "kind": "multiplier",
+     "phrase": "alves damage taken from a supereffective Flying-type attack.",
+     "value": 0.5
+    }
+   ]
+  },
+  "Colbur Berry": {
+   "described": "Halves damage taken from a supereffective Dark-type attack. Single use.",
+   "effects": [
+    {
+     "multiplier": 0.5,
+     "stage": "final",
+     "when": "as defender, super-effective Dark physical",
+     "x4096": 2048
+    },
+    {
+     "multiplier": 0.5,
+     "stage": "final",
+     "when": "as defender, super-effective Dark special",
+     "x4096": 2048
+    }
+   ],
+   "kind": "item",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "half",
+     "kind": "multiplier",
+     "phrase": "alves damage taken from a supereffective Dark-type attack.",
+     "value": 0.5
+    }
+   ]
+  },
+  "Comeuppance": {
+   "described": "If hit by an attack, returns 1.5x damage.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1.5x",
+     "kind": "multiplier",
+     "phrase": "f hit by an attack, returns 1.5x damage.",
+     "value": 1.5
+    }
+   ]
+  },
+  "Counter": {
+   "described": "If hit by physical attack, returns double damage.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "double",
+     "kind": "multiplier",
+     "phrase": "f hit by physical attack, returns double damage.",
+     "value": 2.0
+    }
+   ]
+  },
+  "Cross Poison": {
+   "described": "High critical hit ratio. 10% chance to poison.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "10%",
+     "kind": "percent",
+     "phrase": "10% chance to poison.",
+     "value": 10.0
+    }
+   ]
+  },
+  "Crunch": {
+   "described": "20% chance to lower the target's Defense by 1.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "20%",
+     "kind": "percent",
+     "phrase": "0% chance to lower the target's Defense by 1.",
+     "value": 20.0
+    }
+   ]
+  },
+  "Crush Claw": {
+   "described": "50% chance to lower the target's Defense by 1.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "50%",
+     "kind": "percent",
+     "phrase": "0% chance to lower the target's Defense by 1.",
+     "value": 50.0
+    }
+   ]
+  },
+  "Cursed Body": {
+   "described": "If this Pokemon is hit by an attack, there is a 30% chance that move gets disabled.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "30%",
+     "kind": "percent",
+     "phrase": "f this Pokemon is hit by an attack, there is a 30% chance that move gets disabled.",
+     "value": 30.0
+    }
+   ]
+  },
+  "Cute Charm": {
+   "described": "30% chance of infatuating Pokemon of the opposite gender if they make contact.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "30%",
+     "kind": "percent",
+     "phrase": "0% chance of infatuating Pokemon of the opposite gender if they make contact.",
+     "value": 30.0
+    }
+   ]
+  },
+  "Damp Rock": {
+   "described": "Holder's use of Rain Dance lasts 8 turns instead of 5.",
+   "effects": [],
+   "kind": "item",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "8 turns",
+     "kind": "turns",
+     "phrase": "older's use of Rain Dance lasts 8 turns instead of 5.",
+     "value": 8.0
+    }
+   ]
+  },
+  "Dark Pulse": {
+   "described": "20% chance to make the target flinch.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "20%",
+     "kind": "percent",
+     "phrase": "0% chance to make the target flinch.",
+     "value": 20.0
+    }
+   ]
+  },
+  "Dire Claw": {
+   "described": "30% chance to sleep, poison, or paralyze target.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "30%",
+     "kind": "percent",
+     "phrase": "0% chance to sleep, poison, or paralyze target.",
+     "value": 30.0
+    }
+   ]
+  },
+  "Disable": {
+   "described": "For 4 turns, disables the target's last move used.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "4 turns",
+     "kind": "turns",
+     "phrase": "or 4 turns, disables the target's last move used.",
+     "value": 4.0
+    }
+   ]
+  },
+  "Discharge": {
+   "described": "30% chance to paralyze adjacent Pokemon.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "30%",
+     "kind": "percent",
+     "phrase": "0% chance to paralyze adjacent Pokemon.",
+     "value": 30.0
+    }
+   ]
+  },
+  "Disguise": {
+   "described": "(Mimikyu only) The first hit it takes is blocked, and it takes 1/8 HP damage instead.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1/8",
+     "kind": "fraction",
+     "phrase": "Mimikyu only) The first hit it takes is blocked, and it takes 1/8 HP damage instead.",
+     "value": 0.125
+    }
+   ]
+  },
+  "Double-Edge": {
+   "described": "Has 33% recoil.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "33%",
+     "kind": "percent",
+     "phrase": "as 33% recoil.",
+     "value": 33.0
+    }
+   ]
+  },
+  "Dragon Darts": {
+   "described": "Hits twice. Doubles: Tries to hit each foe once.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "double",
+     "kind": "multiplier",
+     "phrase": "Doubles: Tries to hit each foe once.",
+     "value": 2.0
+    }
+   ]
+  },
+  "Dragon Fang": {
+   "described": "Holder's Dragon-type attacks have 1.2x power.",
+   "effects": [
+    {
+     "multiplier": 1.2,
+     "stage": "base power",
+     "when": "as attacker, Dragon physical move",
+     "x4096": 4915
+    },
+    {
+     "from": 120,
+     "stage": "base power",
+     "to": 144,
+     "when": "as attacker, Dragon physical move"
+    },
+    {
+     "multiplier": 1.2,
+     "stage": "base power",
+     "when": "as attacker, Dragon special move",
+     "x4096": 4915
+    },
+    {
+     "from": 130,
+     "stage": "base power",
+     "to": 156,
+     "when": "as attacker, Dragon special move"
+    }
+   ],
+   "kind": "item",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1.2x",
+     "kind": "multiplier",
+     "phrase": "older's Dragon-type attacks have 1.2x power.",
+     "value": 1.2
+    }
+   ]
+  },
+  "Dragon Rush": {
+   "described": "20% chance to make the target flinch.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "20%",
+     "kind": "percent",
+     "phrase": "0% chance to make the target flinch.",
+     "value": 20.0
+    }
+   ]
+  },
+  "Dragonize": {
+   "described": "This Pokemon's Normal-type moves become Dragon type and have 1.2x power.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1.2x",
+     "kind": "multiplier",
+     "phrase": "his Pokemon's Normal-type moves become Dragon type and have 1.2x power.",
+     "value": 1.2
+    }
+   ]
+  },
+  "Drain Punch": {
+   "described": "User recovers 50% of the damage dealt.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "50%",
+     "kind": "percent",
+     "phrase": "ser recovers 50% of the damage dealt.",
+     "value": 50.0
+    }
+   ]
+  },
+  "Draining Kiss": {
+   "described": "User recovers 75% of the damage dealt.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "75%",
+     "kind": "percent",
+     "phrase": "ser recovers 75% of the damage dealt.",
+     "value": 75.0
+    }
+   ]
+  },
+  "Dry Skin": {
+   "described": "This Pokemon is healed 1/4 by Water, 1/8 by Rain; is hurt 1.25x by Fire, 1/8 by Sun.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1.25x",
+     "kind": "multiplier",
+     "phrase": "his Pokemon is healed 1/4 by Water, 1/8 by Rain; is hurt 1.25x by Fire, 1/8 by Sun.",
+     "value": 1.25
+    },
+    {
+     "as_written": "1/4",
+     "kind": "fraction",
+     "phrase": "his Pokemon is healed 1/4 by Water, 1/8 by Rain; is hurt 1.25x by Fire, 1/8 by Sun.",
+     "value": 0.25
+    },
+    {
+     "as_written": "1/8",
+     "kind": "fraction",
+     "phrase": "his Pokemon is healed 1/4 by Water, 1/8 by Rain; is hurt 1.25x by Fire, 1/8 by Sun.",
+     "value": 0.125
+    },
+    {
+     "as_written": "1/8",
+     "kind": "fraction",
+     "phrase": "his Pokemon is healed 1/4 by Water, 1/8 by Rain; is hurt 1.25x by Fire, 1/8 by Sun.",
+     "value": 0.125
+    }
+   ]
+  },
+  "Dynamic Punch": {
+   "described": "100% chance to confuse the target.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "100%",
+     "kind": "percent",
+     "phrase": "00% chance to confuse the target.",
+     "value": 100.0
+    }
+   ]
+  },
+  "Earth Eater": {
+   "described": "This Pokemon heals 1/4 of its max HP when hit by Ground moves; Ground immunity.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1/4",
+     "kind": "fraction of max HP",
+     "phrase": "his Pokemon heals 1/4 of its max HP when hit by Ground moves; Ground immunity.",
+     "value": 0.25
+    }
+   ]
+  },
+  "Earth Power": {
+   "described": "10% chance to lower the target's Sp. Def by 1.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "10%",
+     "kind": "percent",
+     "phrase": "0% chance to lower the target's Sp.",
+     "value": 10.0
+    }
+   ]
+  },
+  "Earthquake": {
+   "described": "Hits adjacent Pokemon. Double damage on Dig.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "double",
+     "kind": "multiplier",
+     "phrase": "Double damage on Dig.",
+     "value": 2.0
+    }
+   ]
+  },
+  "Effect Spore": {
+   "described": "30% chance of poison/paralysis/sleep on others making contact with this Pokemon.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "30%",
+     "kind": "percent",
+     "phrase": "0% chance of poison/paralysis/sleep on others making contact with this Pokemon.",
+     "value": 30.0
+    }
+   ]
+  },
+  "Electric Terrain": {
+   "described": "5 turns. Grounded: +Electric power, can't sleep.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "5 turns",
+     "kind": "turns",
+     "phrase": "turns.",
+     "value": 5.0
+    }
+   ]
+  },
+  "Electroweb": {
+   "described": "100% chance to lower the foe(s) Speed by 1.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "100%",
+     "kind": "percent",
+     "phrase": "00% chance to lower the foe(s) Speed by 1.",
+     "value": 100.0
+    }
+   ]
+  },
+  "Encore": {
+   "described": "Target repeats its last move for its next 3 turns.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "3 turns",
+     "kind": "turns",
+     "phrase": "arget repeats its last move for its next 3 turns.",
+     "value": 3.0
+    }
+   ]
+  },
+  "Energy Ball": {
+   "described": "10% chance to lower the target's Sp. Def by 1.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "10%",
+     "kind": "percent",
+     "phrase": "0% chance to lower the target's Sp.",
+     "value": 10.0
+    }
+   ]
+  },
+  "Expanding Force": {
+   "described": "User on Psychic Terrain: 1.5x power, hits foes.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1.5x",
+     "kind": "multiplier",
+     "phrase": "ser on Psychic Terrain: 1.5x power, hits foes.",
+     "value": 1.5
+    }
+   ]
+  },
+  "Expert Belt": {
+   "described": "Holder's attacks that are super effective against the target do 1.2x damage.",
+   "effects": [
+    {
+     "multiplier": 1.2,
+     "stage": "final",
+     "when": "as attacker, Normal physical move",
+     "x4096": 4915
+    },
+    {
+     "multiplier": 1.2,
+     "stage": "final",
+     "when": "as attacker, Normal special move",
+     "x4096": 4915
+    }
+   ],
+   "kind": "item",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1.2x",
+     "kind": "multiplier",
+     "phrase": "older's attacks that are super effective against the target do 1.2x damage.",
+     "value": 1.2
+    }
+   ]
+  },
+  "Extrasensory": {
+   "described": "10% chance to make the target flinch.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "10%",
+     "kind": "percent",
+     "phrase": "0% chance to make the target flinch.",
+     "value": 10.0
+    }
+   ]
+  },
+  "Facade": {
+   "described": "Power doubles if user is burn/poison/paralyzed.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "double",
+     "kind": "multiplier",
+     "phrase": "ower doubles if user is burn/poison/paralyzed.",
+     "value": 2.0
+    }
+   ]
+  },
+  "Fairy Aura": {
+   "described": "While this Pokemon is active, a Fairy move used by any Pokemon has 1.33x power.",
+   "effects": [
+    {
+     "multiplier": 1.3301,
+     "stage": "base power",
+     "when": "as attacker, using Alluring Voice",
+     "x4096": 5448
+    },
+    {
+     "from": 80,
+     "stage": "base power",
+     "to": 106,
+     "when": "as attacker, using Alluring Voice"
+    },
+    {
+     "multiplier": 1.3301,
+     "stage": "base power",
+     "when": "as defender, using Alluring Voice",
+     "x4096": 5448
+    },
+    {
+     "from": 80,
+     "stage": "base power",
+     "to": 106,
+     "when": "as defender, using Alluring Voice"
+    },
+    {
+     "multiplier": 1.3301,
+     "stage": "base power",
+     "when": "as attacker, using Dazzling Gleam",
+     "x4096": 5448
+    },
+    {
+     "from": 80,
+     "stage": "base power",
+     "to": 106,
+     "when": "as attacker, using Dazzling Gleam"
+    },
+    {
+     "multiplier": 1.3301,
+     "stage": "base power",
+     "when": "as defender, using Dazzling Gleam",
+     "x4096": 5448
+    },
+    {
+     "from": 80,
+     "stage": "base power",
+     "to": 106,
+     "when": "as defender, using Dazzling Gleam"
+    }
+   ],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1.33x",
+     "kind": "multiplier",
+     "phrase": "hile this Pokemon is active, a Fairy move used by any Pokemon has 1.33x power.",
+     "value": 1.33
+    }
+   ]
+  },
+  "Fairy Feather": {
+   "described": "Holder's Fairy-type attacks have 1.2x power.",
+   "effects": [
+    {
+     "multiplier": 1.2,
+     "stage": "base power",
+     "when": "as attacker, Fairy physical move",
+     "x4096": 4915
+    },
+    {
+     "from": 90,
+     "stage": "base power",
+     "to": 108,
+     "when": "as attacker, Fairy physical move"
+    },
+    {
+     "multiplier": 1.2,
+     "stage": "base power",
+     "when": "as attacker, Fairy special move",
+     "x4096": 4915
+    },
+    {
+     "from": 140,
+     "stage": "base power",
+     "to": 168,
+     "when": "as attacker, Fairy special move"
+    }
+   ],
+   "kind": "item",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1.2x",
+     "kind": "multiplier",
+     "phrase": "older's Fairy-type attacks have 1.2x power.",
+     "value": 1.2
+    }
+   ]
+  },
+  "Fake Out": {
+   "described": "Hits first. First turn out only. 100% flinch chance.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "100%",
+     "kind": "percent",
+     "phrase": "100% flinch chance.",
+     "value": 100.0
+    }
+   ]
+  },
+  "Fickle Beam": {
+   "described": "Has a 30% chance this move's power is doubled.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "30%",
+     "kind": "percent",
+     "phrase": "as a 30% chance this move's power is doubled.",
+     "value": 30.0
+    },
+    {
+     "as_written": "double",
+     "kind": "multiplier",
+     "phrase": "as a 30% chance this move's power is doubled.",
+     "value": 2.0
+    }
+   ]
+  },
+  "Fiery Dance": {
+   "described": "50% chance to raise the user's Sp. Atk by 1.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "50%",
+     "kind": "percent",
+     "phrase": "0% chance to raise the user's Sp.",
+     "value": 50.0
+    }
+   ]
+  },
+  "Filter": {
+   "described": "This Pokemon receives 3/4 damage from supereffective attacks.",
+   "effects": [
+    {
+     "multiplier": 0.75,
+     "stage": "final",
+     "when": "as defender, Normal physical move",
+     "x4096": 3072
+    },
+    {
+     "multiplier": 0.75,
+     "stage": "final",
+     "when": "as defender, Normal special move",
+     "x4096": 3072
+    }
+   ],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "3/4",
+     "kind": "fraction",
+     "phrase": "his Pokemon receives 3/4 damage from supereffective attacks.",
+     "value": 0.75
+    }
+   ]
+  },
+  "Fire Blast": {
+   "described": "10% chance to burn the target.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "10%",
+     "kind": "percent",
+     "phrase": "0% chance to burn the target.",
+     "value": 10.0
+    }
+   ]
+  },
+  "Fire Fang": {
+   "described": "10% chance to burn. 10% chance to flinch.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "10%",
+     "kind": "percent",
+     "phrase": "0% chance to burn.",
+     "value": 10.0
+    },
+    {
+     "as_written": "10%",
+     "kind": "percent",
+     "phrase": "10% chance to flinch.",
+     "value": 10.0
+    }
+   ]
+  },
+  "Fire Lash": {
+   "described": "100% chance to lower the target's Defense by 1.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "100%",
+     "kind": "percent",
+     "phrase": "00% chance to lower the target's Defense by 1.",
+     "value": 100.0
+    }
+   ]
+  },
+  "Fire Mane": {
+   "effects": [
+    {
+     "multiplier": 1.5,
+     "stage": "attack",
+     "when": "as attacker, using Armor Cannon",
+     "x4096": 6144
+    },
+    {
+     "multiplier": 1.5,
+     "stage": "attack",
+     "when": "as attacker, using Bitter Blade",
+     "x4096": 6144
+    }
+   ],
+   "kind": "ability",
+   "notes": []
+  },
+  "Fire Punch": {
+   "described": "10% chance to burn the target.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "10%",
+     "kind": "percent",
+     "phrase": "0% chance to burn the target.",
+     "value": 10.0
+    }
+   ]
+  },
+  "Fire Spin": {
+   "described": "Traps and damages the target for 4-5 turns.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "5 turns",
+     "kind": "turns",
+     "phrase": "raps and damages the target for 4-5 turns.",
+     "value": 5.0
+    }
+   ]
+  },
+  "Flame Body": {
+   "described": "30% chance a Pokemon making contact with this Pokemon will be burned.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "30%",
+     "kind": "percent",
+     "phrase": "0% chance a Pokemon making contact with this Pokemon will be burned.",
+     "value": 30.0
+    }
+   ]
+  },
+  "Flame Charge": {
+   "described": "100% chance to raise the user's Speed by 1.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "100%",
+     "kind": "percent",
+     "phrase": "00% chance to raise the user's Speed by 1.",
+     "value": 100.0
+    }
+   ]
+  },
+  "Flamethrower": {
+   "described": "10% chance to burn the target.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "10%",
+     "kind": "percent",
+     "phrase": "0% chance to burn the target.",
+     "value": 10.0
+    }
+   ]
+  },
+  "Flare Blitz": {
+   "described": "Has 33% recoil. 10% chance to burn. Thaws user.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "33%",
+     "kind": "percent",
+     "phrase": "as 33% recoil.",
+     "value": 33.0
+    },
+    {
+     "as_written": "10%",
+     "kind": "percent",
+     "phrase": "10% chance to burn.",
+     "value": 10.0
+    }
+   ]
+  },
+  "Flash Cannon": {
+   "described": "10% chance to lower the target's Sp. Def by 1.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "10%",
+     "kind": "percent",
+     "phrase": "0% chance to lower the target's Sp.",
+     "value": 10.0
+    }
+   ]
+  },
+  "Flash Fire": {
+   "described": "This Pokemon's Fire attacks do 1.5x damage if hit by one Fire move; Fire immunity.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1.5x",
+     "kind": "multiplier",
+     "phrase": "his Pokemon's Fire attacks do 1.5x damage if hit by one Fire move; Fire immunity.",
+     "value": 1.5
+    }
+   ]
+  },
+  "Fluffy": {
+   "described": "This Pokemon takes 1/2 damage from contact moves, 2x damage from Fire moves.",
+   "effects": [
+    {
+     "multiplier": 0.5,
+     "stage": "final",
+     "when": "as defender, using Accelerock",
+     "x4096": 2048
+    },
+    {
+     "multiplier": 0.5,
+     "stage": "final",
+     "when": "as defender, using Acrobatics",
+     "x4096": 2048
+    }
+   ],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "2x",
+     "kind": "multiplier",
+     "phrase": "his Pokemon takes 1/2 damage from contact moves, 2x damage from Fire moves.",
+     "value": 2.0
+    },
+    {
+     "as_written": "1/2",
+     "kind": "fraction",
+     "phrase": "his Pokemon takes 1/2 damage from contact moves, 2x damage from Fire moves.",
+     "value": 0.5
+    }
+   ]
+  },
+  "Focus Band": {
+   "described": "Holder has a 10% chance to survive an attack that would KO it with 1 HP.",
+   "effects": [],
+   "kind": "item",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "10%",
+     "kind": "percent",
+     "phrase": "older has a 10% chance to survive an attack that would KO it with 1 HP.",
+     "value": 10.0
+    }
+   ]
+  },
+  "Focus Blast": {
+   "described": "10% chance to lower the target's Sp. Def by 1.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "10%",
+     "kind": "percent",
+     "phrase": "0% chance to lower the target's Sp.",
+     "value": 10.0
+    }
+   ]
+  },
+  "Friend Guard": {
+   "described": "This Pokemon's allies receive 3/4 damage from other Pokemon's attacks.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "3/4",
+     "kind": "fraction",
+     "phrase": "his Pokemon's allies receive 3/4 damage from other Pokemon's attacks.",
+     "value": 0.75
+    }
+   ]
+  },
+  "Fur Coat": {
+   "described": "This Pokemon's Defense is doubled.",
+   "effects": [
+    {
+     "multiplier": 2.0,
+     "stage": "defence",
+     "when": "as defender, Normal physical move",
+     "x4096": 8192
+    }
+   ],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "double",
+     "kind": "multiplier",
+     "phrase": "his Pokemon's Defense is doubled.",
+     "value": 2.0
+    }
+   ]
+  },
+  "Giga Drain": {
+   "described": "User recovers 50% of the damage dealt.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "50%",
+     "kind": "percent",
+     "phrase": "ser recovers 50% of the damage dealt.",
+     "value": 50.0
+    }
+   ]
+  },
+  "Gluttony": {
+   "described": "This Pokemon eats Berries at 1/2 max HP or less instead of their usual 1/4 max HP.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1/2",
+     "kind": "fraction of max HP",
+     "phrase": "his Pokemon eats Berries at 1/2 max HP or less instead of their usual 1/4 max HP.",
+     "value": 0.5
+    },
+    {
+     "as_written": "1/4",
+     "kind": "fraction of max HP",
+     "phrase": "his Pokemon eats Berries at 1/2 max HP or less instead of their usual 1/4 max HP.",
+     "value": 0.25
+    }
+   ]
+  },
+  "Gooey": {
+   "described": "Pokemon making contact with this Pokemon have their Speed lowered by 1 stage.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1 stages",
+     "kind": "stages",
+     "phrase": "okemon making contact with this Pokemon have their Speed lowered by 1 stage.",
+     "value": 1.0
+    }
+   ]
+  },
+  "Grassy Terrain": {
+   "described": "5 turns. Grounded: +Grass power, +1/16 max HP.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1/16",
+     "kind": "fraction of max HP",
+     "phrase": "Grounded: +Grass power, +1/16 max HP.",
+     "value": 0.0625
+    },
+    {
+     "as_written": "5 turns",
+     "kind": "turns",
+     "phrase": "turns.",
+     "value": 5.0
+    }
+   ]
+  },
+  "Grav Apple": {
+   "described": "Target: 100% -1 Def. During Gravity: 1.5x power.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1.5x",
+     "kind": "multiplier",
+     "phrase": "During Gravity: 1.5x power.",
+     "value": 1.5
+    },
+    {
+     "as_written": "100%",
+     "kind": "percent",
+     "phrase": "arget: 100% -1 Def.",
+     "value": 100.0
+    }
+   ]
+  },
+  "Gravity": {
+   "described": "5 turns: no Ground immunities, 1.67x accuracy.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1.67x",
+     "kind": "multiplier",
+     "phrase": "turns: no Ground immunities, 1.67x accuracy.",
+     "value": 1.67
+    },
+    {
+     "as_written": "5 turns",
+     "kind": "turns",
+     "phrase": "turns: no Ground immunities, 1.67x accuracy.",
+     "value": 5.0
+    }
+   ]
+  },
+  "Gunk Shot": {
+   "described": "30% chance to poison the target.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "30%",
+     "kind": "percent",
+     "phrase": "0% chance to poison the target.",
+     "value": 30.0
+    }
+   ]
+  },
+  "Guts": {
+   "described": "If this Pokemon is statused, its Attack is 1.5x; ignores burn halving physical damage.",
+   "effects": [
+    {
+     "multiplier": 1.5,
+     "stage": "attack",
+     "when": "as attacker, Normal physical move",
+     "x4096": 6144
+    }
+   ],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1.5x",
+     "kind": "multiplier",
+     "phrase": "f this Pokemon is statused, its Attack is 1.5x; ignores burn halving physical damage.",
+     "value": 1.5
+    }
+   ]
+  },
+  "Haban Berry": {
+   "described": "Halves damage taken from a supereffective Dragon-type attack. Single use.",
+   "effects": [
+    {
+     "multiplier": 0.5,
+     "stage": "final",
+     "when": "as defender, super-effective Dragon physical",
+     "x4096": 2048
+    },
+    {
+     "multiplier": 0.5,
+     "stage": "final",
+     "when": "as defender, super-effective Dragon special",
+     "x4096": 2048
+    }
+   ],
+   "kind": "item",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "half",
+     "kind": "multiplier",
+     "phrase": "alves damage taken from a supereffective Dragon-type attack.",
+     "value": 0.5
+    }
+   ]
+  },
+  "Hard Stone": {
+   "described": "Holder's Rock-type attacks have 1.2x power.",
+   "effects": [
+    {
+     "multiplier": 1.2,
+     "stage": "base power",
+     "when": "as attacker, Rock physical move",
+     "x4096": 4915
+    },
+    {
+     "from": 150,
+     "stage": "base power",
+     "to": 180,
+     "when": "as attacker, Rock physical move"
+    },
+    {
+     "multiplier": 1.2,
+     "stage": "base power",
+     "when": "as attacker, Rock special move",
+     "x4096": 4915
+    },
+    {
+     "from": 120,
+     "stage": "base power",
+     "to": 144,
+     "when": "as attacker, Rock special move"
+    }
+   ],
+   "kind": "item",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1.2x",
+     "kind": "multiplier",
+     "phrase": "older's Rock-type attacks have 1.2x power.",
+     "value": 1.2
+    }
+   ]
+  },
+  "Harvest": {
+   "described": "If last item used is a Berry, 50% chance to restore it each end of turn. 100% in Sun.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "50%",
+     "kind": "percent",
+     "phrase": "f last item used is a Berry, 50% chance to restore it each end of turn.",
+     "value": 50.0
+    },
+    {
+     "as_written": "100%",
+     "kind": "percent",
+     "phrase": "100% in Sun.",
+     "value": 100.0
+    }
+   ]
+  },
+  "Head Smash": {
+   "described": "Has 1/2 recoil.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1/2",
+     "kind": "fraction",
+     "phrase": "as 1/2 recoil.",
+     "value": 0.5
+    }
+   ]
+  },
+  "Heal Pulse": {
+   "described": "Heals the target by 50% of its max HP.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "50%",
+     "kind": "percent",
+     "phrase": "eals the target by 50% of its max HP.",
+     "value": 50.0
+    }
+   ]
+  },
+  "Healer": {
+   "described": "50% chance this Pokemon's ally has its status cured at the end of each turn.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "50%",
+     "kind": "percent",
+     "phrase": "0% chance this Pokemon's ally has its status cured at the end of each turn.",
+     "value": 50.0
+    }
+   ]
+  },
+  "Heat Rock": {
+   "described": "Holder's use of Sunny Day lasts 8 turns instead of 5.",
+   "effects": [],
+   "kind": "item",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "8 turns",
+     "kind": "turns",
+     "phrase": "older's use of Sunny Day lasts 8 turns instead of 5.",
+     "value": 8.0
+    }
+   ]
+  },
+  "Heat Wave": {
+   "described": "10% chance to burn the foe(s).",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "10%",
+     "kind": "percent",
+     "phrase": "0% chance to burn the foe(s).",
+     "value": 10.0
+    }
+   ]
+  },
+  "Heatproof": {
+   "described": "Fire damage against this Pokemon is dealt with 1/2 offensive stat; 1/2 burn damage.",
+   "effects": [
+    {
+     "multiplier": 0.5,
+     "stage": "attack",
+     "when": "as defender, using Armor Cannon",
+     "x4096": 2048
+    },
+    {
+     "multiplier": 0.5,
+     "stage": "attack",
+     "when": "as defender, using Bitter Blade",
+     "x4096": 2048
+    }
+   ],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1/2",
+     "kind": "fraction",
+     "phrase": "ire damage against this Pokemon is dealt with 1/2 offensive stat; 1/2 burn damage.",
+     "value": 0.5
+    },
+    {
+     "as_written": "1/2",
+     "kind": "fraction",
+     "phrase": "ire damage against this Pokemon is dealt with 1/2 offensive stat; 1/2 burn damage.",
+     "value": 0.5
+    }
+   ]
+  },
+  "Heavy Metal": {
+   "described": "This Pokemon's weight is doubled.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "double",
+     "kind": "multiplier",
+     "phrase": "his Pokemon's weight is doubled.",
+     "value": 2.0
+    }
+   ]
+  },
+  "Helping Hand": {
+   "described": "One adjacent ally's move power is 1.5x this turn.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1.5x",
+     "kind": "multiplier",
+     "phrase": "ne adjacent ally's move power is 1.5x this turn.",
+     "value": 1.5
+    }
+   ]
+  },
+  "Hex": {
+   "described": "Power doubles if the target has a status ailment.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "double",
+     "kind": "multiplier",
+     "phrase": "ower doubles if the target has a status ailment.",
+     "value": 2.0
+    }
+   ]
+  },
+  "High Jump Kick": {
+   "described": "User is hurt by 50% of its max HP if it misses.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "50%",
+     "kind": "percent",
+     "phrase": "ser is hurt by 50% of its max HP if it misses.",
+     "value": 50.0
+    }
+   ]
+  },
+  "Horn Leech": {
+   "described": "User recovers 50% of the damage dealt.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "50%",
+     "kind": "percent",
+     "phrase": "ser recovers 50% of the damage dealt.",
+     "value": 50.0
+    }
+   ]
+  },
+  "Hospitality": {
+   "described": "On switch-in, this Pokemon restores 1/4 of its ally's maximum HP, rounded down.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1/4",
+     "kind": "fraction",
+     "phrase": "n switch-in, this Pokemon restores 1/4 of its ally's maximum HP, rounded down.",
+     "value": 0.25
+    }
+   ]
+  },
+  "Huge Power": {
+   "described": "This Pokemon's Attack is doubled.",
+   "effects": [
+    {
+     "multiplier": 2.0,
+     "stage": "attack",
+     "when": "as attacker, Normal physical move",
+     "x4096": 8192
+    }
+   ],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "double",
+     "kind": "multiplier",
+     "phrase": "his Pokemon's Attack is doubled.",
+     "value": 2.0
+    }
+   ]
+  },
+  "Hurricane": {
+   "described": "30% chance to confuse target. Can't miss in rain.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "30%",
+     "kind": "percent",
+     "phrase": "0% chance to confuse target.",
+     "value": 30.0
+    }
+   ]
+  },
+  "Hustle": {
+   "described": "This Pokemon's Attack is 1.5x and accuracy of its physical attacks is 0.8x.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1.5x",
+     "kind": "multiplier",
+     "phrase": "his Pokemon's Attack is 1.5x and accuracy of its physical attacks is 0.8x.",
+     "value": 1.5
+    },
+    {
+     "as_written": "0.8x",
+     "kind": "multiplier",
+     "phrase": "his Pokemon's Attack is 1.5x and accuracy of its physical attacks is 0.8x.",
+     "value": 0.8
+    }
+   ]
+  },
+  "Ice Beam": {
+   "described": "10% chance to freeze the target.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "10%",
+     "kind": "percent",
+     "phrase": "0% chance to freeze the target.",
+     "value": 10.0
+    }
+   ]
+  },
+  "Ice Body": {
+   "described": "If Snow is active, this Pokemon heals 1/16 of its max HP each turn.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1/16",
+     "kind": "fraction of max HP",
+     "phrase": "f Snow is active, this Pokemon heals 1/16 of its max HP each turn.",
+     "value": 0.0625
+    }
+   ]
+  },
+  "Ice Fang": {
+   "described": "10% chance to freeze. 10% chance to flinch.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "10%",
+     "kind": "percent",
+     "phrase": "0% chance to freeze.",
+     "value": 10.0
+    },
+    {
+     "as_written": "10%",
+     "kind": "percent",
+     "phrase": "10% chance to flinch.",
+     "value": 10.0
+    }
+   ]
+  },
+  "Ice Punch": {
+   "described": "10% chance to freeze the target.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "10%",
+     "kind": "percent",
+     "phrase": "0% chance to freeze the target.",
+     "value": 10.0
+    }
+   ]
+  },
+  "Icicle Crash": {
+   "described": "30% chance to make the target flinch.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "30%",
+     "kind": "percent",
+     "phrase": "0% chance to make the target flinch.",
+     "value": 30.0
+    }
+   ]
+  },
+  "Icy Rock": {
+   "described": "Holder's use of Snowscape lasts 8 turns instead of 5.",
+   "effects": [],
+   "kind": "item",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "8 turns",
+     "kind": "turns",
+     "phrase": "older's use of Snowscape lasts 8 turns instead of 5.",
+     "value": 8.0
+    }
+   ]
+  },
+  "Icy Wind": {
+   "described": "100% chance to lower the foe(s) Speed by 1.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "100%",
+     "kind": "percent",
+     "phrase": "00% chance to lower the foe(s) Speed by 1.",
+     "value": 100.0
+    }
+   ]
+  },
+  "Infernal Parade": {
+   "described": "30% burn. 2x power if target is already statused.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "2x",
+     "kind": "multiplier",
+     "phrase": "2x power if target is already statused.",
+     "value": 2.0
+    },
+    {
+     "as_written": "30%",
+     "kind": "percent",
+     "phrase": "0% burn.",
+     "value": 30.0
+    }
+   ]
+  },
+  "Inferno": {
+   "described": "100% chance to burn the target.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "100%",
+     "kind": "percent",
+     "phrase": "00% chance to burn the target.",
+     "value": 100.0
+    }
+   ]
+  },
+  "Infestation": {
+   "described": "Traps and damages the target for 4-5 turns.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "5 turns",
+     "kind": "turns",
+     "phrase": "raps and damages the target for 4-5 turns.",
+     "value": 5.0
+    }
+   ]
+  },
+  "Ingrain": {
+   "described": "Traps/grounds user; heals 1/16 max HP per turn.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1/16",
+     "kind": "fraction of max HP",
+     "phrase": "raps/grounds user; heals 1/16 max HP per turn.",
+     "value": 0.0625
+    }
+   ]
+  },
+  "Intimidate": {
+   "described": "On switch-in, this Pokemon lowers the Attack of opponents by 1 stage.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1 stages",
+     "kind": "stages",
+     "phrase": "n switch-in, this Pokemon lowers the Attack of opponents by 1 stage.",
+     "value": 1.0
+    }
+   ]
+  },
+  "Iron Ball": {
+   "described": "Holder is grounded, Speed halved. If Flying type, takes neutral Ground damage.",
+   "effects": [],
+   "kind": "item",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "half",
+     "kind": "multiplier",
+     "phrase": "older is grounded, Speed halved.",
+     "value": 0.5
+    }
+   ]
+  },
+  "Iron Fist": {
+   "described": "This Pokemon's punch-based attacks have 1.2x power. Sucker Punch is not boosted.",
+   "effects": [
+    {
+     "multiplier": 1.2,
+     "stage": "base power",
+     "when": "as attacker, using Bullet Punch",
+     "x4096": 4915
+    },
+    {
+     "from": 40,
+     "stage": "base power",
+     "to": 48,
+     "when": "as attacker, using Bullet Punch"
+    },
+    {
+     "multiplier": 1.2,
+     "stage": "base power",
+     "when": "as attacker, using Double Shock",
+     "x4096": 4915
+    },
+    {
+     "from": 120,
+     "stage": "base power",
+     "to": 144,
+     "when": "as attacker, using Double Shock"
+    }
+   ],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1.2x",
+     "kind": "multiplier",
+     "phrase": "his Pokemon's punch-based attacks have 1.2x power.",
+     "value": 1.2
+    }
+   ]
+  },
+  "Iron Head": {
+   "described": "20% chance to make the target flinch.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "20%",
+     "kind": "percent",
+     "phrase": "0% chance to make the target flinch.",
+     "value": 20.0
+    }
+   ]
+  },
+  "Iron Tail": {
+   "described": "30% chance to lower the target's Defense by 1.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "30%",
+     "kind": "percent",
+     "phrase": "0% chance to lower the target's Defense by 1.",
+     "value": 30.0
+    }
+   ]
+  },
+  "Justified": {
+   "described": "This Pokemon's Attack is raised by 1 stage after it is damaged by a Dark-type move.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1 stages",
+     "kind": "stages",
+     "phrase": "his Pokemon's Attack is raised by 1 stage after it is damaged by a Dark-type move.",
+     "value": 1.0
+    }
+   ]
+  },
+  "Kasib Berry": {
+   "described": "Halves damage taken from a supereffective Ghost-type attack. Single use.",
+   "effects": [
+    {
+     "multiplier": 0.5,
+     "stage": "final",
+     "when": "as defender, super-effective Ghost physical",
+     "x4096": 2048
+    },
+    {
+     "multiplier": 0.5,
+     "stage": "final",
+     "when": "as defender, super-effective Ghost special",
+     "x4096": 2048
+    }
+   ],
+   "kind": "item",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "half",
+     "kind": "multiplier",
+     "phrase": "alves damage taken from a supereffective Ghost-type attack.",
+     "value": 0.5
+    }
+   ]
+  },
+  "Kebia Berry": {
+   "described": "Halves damage taken from a supereffective Poison-type attack. Single use.",
+   "effects": [],
+   "kind": "item",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "half",
+     "kind": "multiplier",
+     "phrase": "alves damage taken from a supereffective Poison-type attack.",
+     "value": 0.5
+    }
+   ]
+  },
+  "King's Rock": {
+   "described": "Holder's attacks without a chance to flinch gain a 10% chance to flinch.",
+   "effects": [],
+   "kind": "item",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "10%",
+     "kind": "percent",
+     "phrase": "older's attacks without a chance to flinch gain a 10% chance to flinch.",
+     "value": 10.0
+    }
+   ]
+  },
+  "Knock Off": {
+   "described": "1.5x damage if foe holds an item. Removes item.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1.5x",
+     "kind": "multiplier",
+     "phrase": ".5x damage if foe holds an item.",
+     "value": 1.5
+    }
+   ]
+  },
+  "Lash Out": {
+   "described": "2x power if the user had a stat lowered this turn.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "2x",
+     "kind": "multiplier",
+     "phrase": "x power if the user had a stat lowered this turn.",
+     "value": 2.0
+    }
+   ]
+  },
+  "Lava Plume": {
+   "described": "30% chance to burn adjacent Pokemon.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "30%",
+     "kind": "percent",
+     "phrase": "0% chance to burn adjacent Pokemon.",
+     "value": 30.0
+    }
+   ]
+  },
+  "Leech Life": {
+   "described": "User recovers 50% of the damage dealt.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "50%",
+     "kind": "percent",
+     "phrase": "ser recovers 50% of the damage dealt.",
+     "value": 50.0
+    }
+   ]
+  },
+  "Leech Seed": {
+   "described": "1/8 of target's HP is restored to user every turn.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1/8",
+     "kind": "fraction",
+     "phrase": "/8 of target's HP is restored to user every turn.",
+     "value": 0.125
+    }
+   ]
+  },
+  "Leftovers": {
+   "described": "At the end of every turn, holder restores 1/16 of its max HP.",
+   "effects": [],
+   "kind": "item",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1/16",
+     "kind": "fraction of max HP",
+     "phrase": "t the end of every turn, holder restores 1/16 of its max HP.",
+     "value": 0.0625
+    }
+   ]
+  },
+  "Life Dew": {
+   "described": "Heals the user and its allies by 1/4 their max HP.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1/4",
+     "kind": "fraction",
+     "phrase": "eals the user and its allies by 1/4 their max HP.",
+     "value": 0.25
+    }
+   ]
+  },
+  "Life Orb": {
+   "described": "Holder's attacks do 1.3x damage, and it loses 1/10 its max HP after the attack.",
+   "effects": [
+    {
+     "multiplier": 1.2998,
+     "stage": "final",
+     "when": "as attacker, Normal physical move",
+     "x4096": 5324
+    },
+    {
+     "multiplier": 1.2998,
+     "stage": "final",
+     "when": "as attacker, Normal special move",
+     "x4096": 5324
+    }
+   ],
+   "kind": "item",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1.3x",
+     "kind": "multiplier",
+     "phrase": "older's attacks do 1.3x damage, and it loses 1/10 its max HP after the attack.",
+     "value": 1.3
+    },
+    {
+     "as_written": "1/10",
+     "kind": "fraction of max HP",
+     "phrase": "older's attacks do 1.3x damage, and it loses 1/10 its max HP after the attack.",
+     "value": 0.1
+    }
+   ]
+  },
+  "Light Ball": {
+   "described": "If held by a Pikachu, its Attack and Sp. Atk are doubled.",
+   "effects": [],
+   "kind": "item",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "double",
+     "kind": "multiplier",
+     "phrase": "Atk are doubled.",
+     "value": 2.0
+    }
+   ]
+  },
+  "Light Clay": {
+   "described": "Holder's use of Aurora Veil, Light Screen, or Reflect lasts 8 turns instead of 5.",
+   "effects": [],
+   "kind": "item",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "8 turns",
+     "kind": "turns",
+     "phrase": "older's use of Aurora Veil, Light Screen, or Reflect lasts 8 turns instead of 5.",
+     "value": 8.0
+    }
+   ]
+  },
+  "Light Metal": {
+   "described": "This Pokemon's weight is halved.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "half",
+     "kind": "multiplier",
+     "phrase": "his Pokemon's weight is halved.",
+     "value": 0.5
+    }
+   ]
+  },
+  "Light Screen": {
+   "described": "For 5 turns, special damage to allies is halved.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "5 turns",
+     "kind": "turns",
+     "phrase": "or 5 turns, special damage to allies is halved.",
+     "value": 5.0
+    },
+    {
+     "as_written": "half",
+     "kind": "multiplier",
+     "phrase": "or 5 turns, special damage to allies is halved.",
+     "value": 0.5
+    }
+   ]
+  },
+  "Light of Ruin": {
+   "described": "Has 1/2 recoil.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1/2",
+     "kind": "fraction",
+     "phrase": "as 1/2 recoil.",
+     "value": 0.5
+    }
+   ]
+  },
+  "Liquidation": {
+   "described": "20% chance to lower the target's Defense by 1.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "20%",
+     "kind": "percent",
+     "phrase": "0% chance to lower the target's Defense by 1.",
+     "value": 20.0
+    }
+   ]
+  },
+  "Low Sweep": {
+   "described": "100% chance to lower the target's Speed by 1.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "100%",
+     "kind": "percent",
+     "phrase": "00% chance to lower the target's Speed by 1.",
+     "value": 100.0
+    }
+   ]
+  },
+  "Lumina Crash": {
+   "described": "100% chance to lower the target's Sp. Def by 2.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "100%",
+     "kind": "percent",
+     "phrase": "00% chance to lower the target's Sp.",
+     "value": 100.0
+    }
+   ]
+  },
+  "Lunge": {
+   "described": "100% chance to lower the target's Attack by 1.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "100%",
+     "kind": "percent",
+     "phrase": "00% chance to lower the target's Attack by 1.",
+     "value": 100.0
+    }
+   ]
+  },
+  "Magic Room": {
+   "described": "For 5 turns, all held items have no effect.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "5 turns",
+     "kind": "turns",
+     "phrase": "or 5 turns, all held items have no effect.",
+     "value": 5.0
+    }
+   ]
+  },
+  "Magnet": {
+   "described": "Holder's Electric-type attacks have 1.2x power.",
+   "effects": [
+    {
+     "multiplier": 1.2,
+     "stage": "base power",
+     "when": "as attacker, Electric physical move",
+     "x4096": 4915
+    },
+    {
+     "from": 120,
+     "stage": "base power",
+     "to": 144,
+     "when": "as attacker, Electric physical move"
+    },
+    {
+     "multiplier": 1.2,
+     "stage": "base power",
+     "when": "as attacker, Electric special move",
+     "x4096": 4915
+    },
+    {
+     "from": 130,
+     "stage": "base power",
+     "to": 156,
+     "when": "as attacker, Electric special move"
+    }
+   ],
+   "kind": "item",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1.2x",
+     "kind": "multiplier",
+     "phrase": "older's Electric-type attacks have 1.2x power.",
+     "value": 1.2
+    }
+   ]
+  },
+  "Magnet Rise": {
+   "described": "For 5 turns, the user has immunity to Ground.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "5 turns",
+     "kind": "turns",
+     "phrase": "or 5 turns, the user has immunity to Ground.",
+     "value": 5.0
+    }
+   ]
+  },
+  "Marvel Scale": {
+   "effects": [
+    {
+     "multiplier": 1.5,
+     "stage": "defence",
+     "when": "as defender, Normal physical move",
+     "x4096": 6144
+    }
+   ],
+   "kind": "ability",
+   "notes": []
+  },
+  "Matcha Gotcha": {
+   "described": "20% burn. Recovers 50% dmg dealt. Thaws foe(s).",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "20%",
+     "kind": "percent",
+     "phrase": "0% burn.",
+     "value": 20.0
+    },
+    {
+     "as_written": "50%",
+     "kind": "percent",
+     "phrase": "Recovers 50% dmg dealt.",
+     "value": 50.0
+    }
+   ]
+  },
+  "Mega Launcher": {
+   "described": "This Pokemon's pulse moves have 1.5x power. Heal Pulse heals 3/4 target's max HP.",
+   "effects": [
+    {
+     "multiplier": 1.5,
+     "stage": "base power",
+     "when": "as attacker, using Aura Sphere",
+     "x4096": 6144
+    },
+    {
+     "from": 80,
+     "stage": "base power",
+     "to": 120,
+     "when": "as attacker, using Aura Sphere"
+    },
+    {
+     "multiplier": 1.5,
+     "stage": "base power",
+     "when": "as attacker, using Dark Pulse",
+     "x4096": 6144
+    },
+    {
+     "from": 80,
+     "stage": "base power",
+     "to": 120,
+     "when": "as attacker, using Dark Pulse"
+    }
+   ],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1.5x",
+     "kind": "multiplier",
+     "phrase": "his Pokemon's pulse moves have 1.5x power.",
+     "value": 1.5
+    },
+    {
+     "as_written": "3/4",
+     "kind": "fraction",
+     "phrase": "Heal Pulse heals 3/4 target's max HP.",
+     "value": 0.75
+    }
+   ]
+  },
+  "Metal Burst": {
+   "described": "If hit by an attack, returns 1.5x damage.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1.5x",
+     "kind": "multiplier",
+     "phrase": "f hit by an attack, returns 1.5x damage.",
+     "value": 1.5
+    }
+   ]
+  },
+  "Metal Coat": {
+   "described": "Holder's Steel-type attacks have 1.2x power.",
+   "effects": [
+    {
+     "multiplier": 1.2,
+     "stage": "base power",
+     "when": "as attacker, Steel physical move",
+     "x4096": 4915
+    },
+    {
+     "from": 160,
+     "stage": "base power",
+     "to": 192,
+     "when": "as attacker, Steel physical move"
+    },
+    {
+     "multiplier": 1.2,
+     "stage": "base power",
+     "when": "as attacker, Steel special move",
+     "x4096": 4915
+    },
+    {
+     "from": 140,
+     "stage": "base power",
+     "to": 168,
+     "when": "as attacker, Steel special move"
+    }
+   ],
+   "kind": "item",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1.2x",
+     "kind": "multiplier",
+     "phrase": "older's Steel-type attacks have 1.2x power.",
+     "value": 1.2
+    }
+   ]
+  },
+  "Meteor Mash": {
+   "described": "20% chance to raise the user's Attack by 1.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "20%",
+     "kind": "percent",
+     "phrase": "0% chance to raise the user's Attack by 1.",
+     "value": 20.0
+    }
+   ]
+  },
+  "Metronome": {
+   "described": "Damage of moves used on consecutive turns is increased. Max 2x after 5 turns.",
+   "effects": [],
+   "kind": "item",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "2x",
+     "kind": "multiplier",
+     "phrase": "Max 2x after 5 turns.",
+     "value": 2.0
+    },
+    {
+     "as_written": "5 turns",
+     "kind": "turns",
+     "phrase": "Max 2x after 5 turns.",
+     "value": 5.0
+    }
+   ]
+  },
+  "Minus": {
+   "described": "If an active ally has this Ability or the Plus Ability, this Pokemon's Sp. Atk is 1.5x.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1.5x",
+     "kind": "multiplier",
+     "phrase": "Atk is 1.5x.",
+     "value": 1.5
+    }
+   ]
+  },
+  "Miracle Seed": {
+   "described": "Holder's Grass-type attacks have 1.2x power.",
+   "effects": [
+    {
+     "multiplier": 1.2,
+     "stage": "base power",
+     "when": "as attacker, Grass physical move",
+     "x4096": 4915
+    },
+    {
+     "from": 125,
+     "stage": "base power",
+     "to": 150,
+     "when": "as attacker, Grass physical move"
+    },
+    {
+     "multiplier": 1.2,
+     "stage": "base power",
+     "when": "as attacker, Grass special move",
+     "x4096": 4915
+    },
+    {
+     "from": 150,
+     "stage": "base power",
+     "to": 180,
+     "when": "as attacker, Grass special move"
+    }
+   ],
+   "kind": "item",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1.2x",
+     "kind": "multiplier",
+     "phrase": "older's Grass-type attacks have 1.2x power.",
+     "value": 1.2
+    }
+   ]
+  },
+  "Mirror Coat": {
+   "described": "If hit by special attack, returns double damage.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "double",
+     "kind": "multiplier",
+     "phrase": "f hit by special attack, returns double damage.",
+     "value": 2.0
+    }
+   ]
+  },
+  "Misty Explosion": {
+   "described": "User faints. User on Misty Terrain: 1.5x power.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1.5x",
+     "kind": "multiplier",
+     "phrase": "User on Misty Terrain: 1.5x power.",
+     "value": 1.5
+    }
+   ]
+  },
+  "Misty Terrain": {
+   "described": "5 turns. Can't status,-Dragon power vs grounded.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "5 turns",
+     "kind": "turns",
+     "phrase": "turns.",
+     "value": 5.0
+    }
+   ]
+  },
+  "Moonblast": {
+   "described": "10% chance to lower the target's Sp. Atk by 1.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "10%",
+     "kind": "percent",
+     "phrase": "0% chance to lower the target's Sp.",
+     "value": 10.0
+    }
+   ]
+  },
+  "Motor Drive": {
+   "described": "This Pokemon's Speed is raised 1 stage if hit by an Electric move; Electric immunity.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1 stages",
+     "kind": "stages",
+     "phrase": "his Pokemon's Speed is raised 1 stage if hit by an Electric move; Electric immunity.",
+     "value": 1.0
+    }
+   ]
+  },
+  "Mountain Gale": {
+   "described": "30% chance to make the target flinch.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "30%",
+     "kind": "percent",
+     "phrase": "0% chance to make the target flinch.",
+     "value": 30.0
+    }
+   ]
+  },
+  "Moxie": {
+   "described": "This Pokemon's Attack is raised by 1 stage if it attacks and KOes another Pokemon.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1 stages",
+     "kind": "stages",
+     "phrase": "his Pokemon's Attack is raised by 1 stage if it attacks and KOes another Pokemon.",
+     "value": 1.0
+    }
+   ]
+  },
+  "Mud Shot": {
+   "described": "100% chance to lower the target's Speed by 1.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "100%",
+     "kind": "percent",
+     "phrase": "00% chance to lower the target's Speed by 1.",
+     "value": 100.0
+    }
+   ]
+  },
+  "Mud-Slap": {
+   "described": "100% chance to lower the target's accuracy by 1.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "100%",
+     "kind": "percent",
+     "phrase": "00% chance to lower the target's accuracy by 1.",
+     "value": 100.0
+    }
+   ]
+  },
+  "Muddy Water": {
+   "described": "30% chance to lower the foe(s) accuracy by 1.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "30%",
+     "kind": "percent",
+     "phrase": "0% chance to lower the foe(s) accuracy by 1.",
+     "value": 30.0
+    }
+   ]
+  },
+  "Multiscale": {
+   "described": "If this Pokemon is at full HP, damage taken from attacks is halved.",
+   "effects": [
+    {
+     "multiplier": 0.5,
+     "stage": "final",
+     "when": "as defender, Normal physical move",
+     "x4096": 2048
+    },
+    {
+     "multiplier": 0.5,
+     "stage": "final",
+     "when": "as defender, Normal special move",
+     "x4096": 2048
+    }
+   ],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "half",
+     "kind": "multiplier",
+     "phrase": "f this Pokemon is at full HP, damage taken from attacks is halved.",
+     "value": 0.5
+    }
+   ]
+  },
+  "Muscle Band": {
+   "described": "Holder's physical attacks have 1.1x power.",
+   "effects": [
+    {
+     "multiplier": 1.0999,
+     "stage": "base power",
+     "when": "as attacker, Normal physical move",
+     "x4096": 4505
+    },
+    {
+     "from": 250,
+     "stage": "base power",
+     "to": 275,
+     "when": "as attacker, Normal physical move"
+    }
+   ],
+   "kind": "item",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1.1x",
+     "kind": "multiplier",
+     "phrase": "older's physical attacks have 1.1x power.",
+     "value": 1.1
+    }
+   ]
+  },
+  "Mystic Water": {
+   "described": "Holder's Water-type attacks have 1.2x power.",
+   "effects": [
+    {
+     "multiplier": 1.2,
+     "stage": "base power",
+     "when": "as attacker, Water physical move",
+     "x4096": 4915
+    },
+    {
+     "from": 120,
+     "stage": "base power",
+     "to": 144,
+     "when": "as attacker, Water physical move"
+    },
+    {
+     "multiplier": 1.2,
+     "stage": "base power",
+     "when": "as attacker, Water special move",
+     "x4096": 4915
+    },
+    {
+     "from": 150,
+     "stage": "base power",
+     "to": 180,
+     "when": "as attacker, Water special move"
+    }
+   ],
+   "kind": "item",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1.2x",
+     "kind": "multiplier",
+     "phrase": "older's Water-type attacks have 1.2x power.",
+     "value": 1.2
+    }
+   ]
+  },
+  "Mystical Fire": {
+   "described": "100% chance to lower the target's Sp. Atk by 1.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "100%",
+     "kind": "percent",
+     "phrase": "00% chance to lower the target's Sp.",
+     "value": 100.0
+    }
+   ]
+  },
+  "Never-Melt Ice": {
+   "described": "Holder's Ice-type attacks have 1.2x power.",
+   "effects": [
+    {
+     "multiplier": 1.2,
+     "stage": "base power",
+     "when": "as attacker, Ice physical move",
+     "x4096": 4915
+    },
+    {
+     "from": 120,
+     "stage": "base power",
+     "to": 144,
+     "when": "as attacker, Ice physical move"
+    },
+    {
+     "multiplier": 1.2,
+     "stage": "base power",
+     "when": "as attacker, Ice special move",
+     "x4096": 4915
+    },
+    {
+     "from": 110,
+     "stage": "base power",
+     "to": 132,
+     "when": "as attacker, Ice special move"
+    }
+   ],
+   "kind": "item",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1.2x",
+     "kind": "multiplier",
+     "phrase": "older's Ice-type attacks have 1.2x power.",
+     "value": 1.2
+    }
+   ]
+  },
+  "Night Daze": {
+   "described": "40% chance to lower the target's accuracy by 1.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "40%",
+     "kind": "percent",
+     "phrase": "0% chance to lower the target's accuracy by 1.",
+     "value": 40.0
+    }
+   ]
+  },
+  "Normal Gem": {
+   "effects": [
+    {
+     "multiplier": 1.3,
+     "stage": "base power",
+     "when": "as attacker, Normal physical move",
+     "x4096": 5325
+    },
+    {
+     "from": 250,
+     "stage": "base power",
+     "to": 325,
+     "when": "as attacker, Normal physical move"
+    },
+    {
+     "multiplier": 1.3,
+     "stage": "base power",
+     "when": "as attacker, Normal special move",
+     "x4096": 5325
+    },
+    {
+     "from": 150,
+     "stage": "base power",
+     "to": 195,
+     "when": "as attacker, Normal special move"
+    }
+   ],
+   "kind": "item",
+   "notes": []
+  },
+  "Nuzzle": {
+   "described": "100% chance to paralyze the target.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "100%",
+     "kind": "percent",
+     "phrase": "00% chance to paralyze the target.",
+     "value": 100.0
+    }
+   ]
+  },
+  "Occa Berry": {
+   "described": "Halves damage taken from a supereffective Fire-type attack. Single use.",
+   "effects": [
+    {
+     "multiplier": 0.5,
+     "stage": "final",
+     "when": "as defender, super-effective Fire physical",
+     "x4096": 2048
+    },
+    {
+     "multiplier": 0.5,
+     "stage": "final",
+     "when": "as defender, super-effective Fire special",
+     "x4096": 2048
+    }
+   ],
+   "kind": "item",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "half",
+     "kind": "multiplier",
+     "phrase": "alves damage taken from a supereffective Fire-type attack.",
+     "value": 0.5
+    }
+   ]
+  },
+  "Oran Berry": {
+   "described": "Restores 10 HP when at 1/2 max HP or less. Single use.",
+   "effects": [],
+   "kind": "item",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1/2",
+     "kind": "fraction of max HP",
+     "phrase": "estores 10 HP when at 1/2 max HP or less.",
+     "value": 0.5
+    }
+   ]
+  },
+  "Outrage": {
+   "described": "Lasts 2-3 turns. Confuses the user afterwards.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "3 turns",
+     "kind": "turns",
+     "phrase": "asts 2-3 turns.",
+     "value": 3.0
+    }
+   ]
+  },
+  "Overgrow": {
+   "described": "At 1/3 or less of its max HP, this Pokemon's offensive stat is 1.5x with Grass attacks.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1.5x",
+     "kind": "multiplier",
+     "phrase": "t 1/3 or less of its max HP, this Pokemon's offensive stat is 1.5x with Grass attacks.",
+     "value": 1.5
+    },
+    {
+     "as_written": "1/3",
+     "kind": "fraction",
+     "phrase": "t 1/3 or less of its max HP, this Pokemon's offensive stat is 1.5x with Grass attacks.",
+     "value": 0.333333
+    }
+   ]
+  },
+  "Parabolic Charge": {
+   "described": "User recovers 50% of the damage dealt.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "50%",
+     "kind": "percent",
+     "phrase": "ser recovers 50% of the damage dealt.",
+     "value": 50.0
+    }
+   ]
+  },
+  "Passho Berry": {
+   "described": "Halves damage taken from a supereffective Water-type attack. Single use.",
+   "effects": [
+    {
+     "multiplier": 0.5,
+     "stage": "final",
+     "when": "as defender, super-effective Water physical",
+     "x4096": 2048
+    },
+    {
+     "multiplier": 0.5,
+     "stage": "final",
+     "when": "as defender, super-effective Water special",
+     "x4096": 2048
+    }
+   ],
+   "kind": "item",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "half",
+     "kind": "multiplier",
+     "phrase": "alves damage taken from a supereffective Water-type attack.",
+     "value": 0.5
+    }
+   ]
+  },
+  "Payapa Berry": {
+   "described": "Halves damage taken from a supereffective Psychic-type attack. Single use.",
+   "effects": [],
+   "kind": "item",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "half",
+     "kind": "multiplier",
+     "phrase": "alves damage taken from a supereffective Psychic-type attack.",
+     "value": 0.5
+    }
+   ]
+  },
+  "Payback": {
+   "described": "Power doubles if the user moves after the target.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "double",
+     "kind": "multiplier",
+     "phrase": "ower doubles if the user moves after the target.",
+     "value": 2.0
+    }
+   ]
+  },
+  "Perish Song": {
+   "described": "All active Pokemon will faint in 3 turns.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "3 turns",
+     "kind": "turns",
+     "phrase": "ll active Pokemon will faint in 3 turns.",
+     "value": 3.0
+    }
+   ]
+  },
+  "Petal Dance": {
+   "described": "Lasts 2-3 turns. Confuses the user afterwards.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "3 turns",
+     "kind": "turns",
+     "phrase": "asts 2-3 turns.",
+     "value": 3.0
+    }
+   ]
+  },
+  "Piercing Drill": {
+   "described": "This Pokemon's contact moves ignore a target's protection and deal 1/4 the usual damage.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1/4",
+     "kind": "fraction",
+     "phrase": "his Pokemon's contact moves ignore a target's protection and deal 1/4 the usual damage.",
+     "value": 0.25
+    }
+   ]
+  },
+  "Pixilate": {
+   "described": "This Pokemon's Normal-type moves become Fairy type and have 1.2x power.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1.2x",
+     "kind": "multiplier",
+     "phrase": "his Pokemon's Normal-type moves become Fairy type and have 1.2x power.",
+     "value": 1.2
+    }
+   ]
+  },
+  "Play Rough": {
+   "described": "10% chance to lower the target's Attack by 1.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "10%",
+     "kind": "percent",
+     "phrase": "0% chance to lower the target's Attack by 1.",
+     "value": 10.0
+    }
+   ]
+  },
+  "Plus": {
+   "described": "If an active ally has this Ability or the Minus Ability, this Pokemon's Sp. Atk is 1.5x.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1.5x",
+     "kind": "multiplier",
+     "phrase": "Atk is 1.5x.",
+     "value": 1.5
+    }
+   ]
+  },
+  "Poison Barb": {
+   "described": "Holder's Poison-type attacks have 1.2x power.",
+   "effects": [],
+   "kind": "item",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1.2x",
+     "kind": "multiplier",
+     "phrase": "older's Poison-type attacks have 1.2x power.",
+     "value": 1.2
+    }
+   ]
+  },
+  "Poison Fang": {
+   "described": "50% chance to badly poison the target.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "50%",
+     "kind": "percent",
+     "phrase": "0% chance to badly poison the target.",
+     "value": 50.0
+    }
+   ]
+  },
+  "Poison Heal": {
+   "described": "This Pokemon is healed by 1/8 of its max HP each turn when poisoned; no HP loss.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1/8",
+     "kind": "fraction of max HP",
+     "phrase": "his Pokemon is healed by 1/8 of its max HP each turn when poisoned; no HP loss.",
+     "value": 0.125
+    }
+   ]
+  },
+  "Poison Jab": {
+   "described": "30% chance to poison the target.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "30%",
+     "kind": "percent",
+     "phrase": "0% chance to poison the target.",
+     "value": 30.0
+    }
+   ]
+  },
+  "Poison Point": {
+   "described": "30% chance a Pokemon making contact with this Pokemon will be poisoned.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "30%",
+     "kind": "percent",
+     "phrase": "0% chance a Pokemon making contact with this Pokemon will be poisoned.",
+     "value": 30.0
+    }
+   ]
+  },
+  "Poison Touch": {
+   "described": "This Pokemon's contact moves have a 30% chance of poisoning.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "30%",
+     "kind": "percent",
+     "phrase": "his Pokemon's contact moves have a 30% chance of poisoning.",
+     "value": 30.0
+    }
+   ]
+  },
+  "Pollen Puff": {
+   "described": "If the target is an ally, heals 50% of its max HP.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "50%",
+     "kind": "percent",
+     "phrase": "f the target is an ally, heals 50% of its max HP.",
+     "value": 50.0
+    }
+   ]
+  },
+  "Pounce": {
+   "described": "100% chance to lower the target's Speed by 1.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "100%",
+     "kind": "percent",
+     "phrase": "00% chance to lower the target's Speed by 1.",
+     "value": 100.0
+    }
+   ]
+  },
+  "Psychic": {
+   "described": "10% chance to lower the target's Sp. Def by 1.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "10%",
+     "kind": "percent",
+     "phrase": "0% chance to lower the target's Sp.",
+     "value": 10.0
+    }
+   ]
+  },
+  "Psychic Noise": {
+   "described": "For 2 turns, the target is prevented from healing.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "2 turns",
+     "kind": "turns",
+     "phrase": "or 2 turns, the target is prevented from healing.",
+     "value": 2.0
+    }
+   ]
+  },
+  "Psychic Terrain": {
+   "described": "5 turns. Grounded: +Psychic power, priority-safe.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "5 turns",
+     "kind": "turns",
+     "phrase": "turns.",
+     "value": 5.0
+    }
+   ]
+  },
+  "Psyshield Bash": {
+   "described": "100% chance to raise the user's Defense by 1.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "100%",
+     "kind": "percent",
+     "phrase": "00% chance to raise the user's Defense by 1.",
+     "value": 100.0
+    }
+   ]
+  },
+  "Punk Rock": {
+   "effects": [
+    {
+     "multiplier": 1.3,
+     "stage": "base power",
+     "when": "as attacker, using Alluring Voice",
+     "x4096": 5325
+    },
+    {
+     "from": 80,
+     "stage": "base power",
+     "to": 104,
+     "when": "as attacker, using Alluring Voice"
+    },
+    {
+     "multiplier": 0.5,
+     "stage": "final",
+     "when": "as defender, using Alluring Voice",
+     "x4096": 2048
+    },
+    {
+     "multiplier": 1.3,
+     "stage": "base power",
+     "when": "as attacker, using Boomburst",
+     "x4096": 5325
+    },
+    {
+     "from": 140,
+     "stage": "base power",
+     "to": 182,
+     "when": "as attacker, using Boomburst"
+    },
+    {
+     "multiplier": 0.5,
+     "stage": "final",
+     "when": "as defender, using Boomburst",
+     "x4096": 2048
+    }
+   ],
+   "kind": "ability",
+   "notes": []
+  },
+  "Pure Power": {
+   "described": "This Pokemon's Attack is doubled.",
+   "effects": [
+    {
+     "multiplier": 2.0,
+     "stage": "attack",
+     "when": "as attacker, Normal physical move",
+     "x4096": 8192
+    }
+   ],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "double",
+     "kind": "multiplier",
+     "phrase": "his Pokemon's Attack is doubled.",
+     "value": 2.0
+    }
+   ]
+  },
+  "Purifying Salt": {
+   "described": "Ghost damage to this Pokemon dealt with a halved offensive stat; can't be statused.",
+   "effects": [
+    {
+     "multiplier": 0.5,
+     "stage": "attack",
+     "when": "as defender, using Bitter Malice",
+     "x4096": 2048
+    },
+    {
+     "multiplier": 0.5,
+     "stage": "attack",
+     "when": "as defender, using Confuse Ray",
+     "x4096": 2048
+    }
+   ],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "half",
+     "kind": "multiplier",
+     "phrase": "host damage to this Pokemon dealt with a halved offensive stat; can't be statused.",
+     "value": 0.5
+    }
+   ]
+  },
+  "Quick Claw": {
+   "described": "Each turn, holder has a 20% chance to move first in its priority bracket.",
+   "effects": [],
+   "kind": "item",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "20%",
+     "kind": "percent",
+     "phrase": "ach turn, holder has a 20% chance to move first in its priority bracket.",
+     "value": 20.0
+    }
+   ]
+  },
+  "Quick Draw": {
+   "described": "This Pokemon has a 30% chance to move first in its priority bracket with attacking moves.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "30%",
+     "kind": "percent",
+     "phrase": "his Pokemon has a 30% chance to move first in its priority bracket with attacking moves.",
+     "value": 30.0
+    }
+   ]
+  },
+  "Quick Feet": {
+   "described": "If this Pokemon is statused, its Speed is 1.5x; ignores Speed drop from paralysis.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1.5x",
+     "kind": "multiplier",
+     "phrase": "f this Pokemon is statused, its Speed is 1.5x; ignores Speed drop from paralysis.",
+     "value": 1.5
+    }
+   ]
+  },
+  "Raging Fury": {
+   "described": "Lasts 2-3 turns. Confuses the user afterwards.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "3 turns",
+     "kind": "turns",
+     "phrase": "asts 2-3 turns.",
+     "value": 3.0
+    }
+   ]
+  },
+  "Rain Dance": {
+   "described": "For 5 turns, heavy rain powers Water moves.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "5 turns",
+     "kind": "turns",
+     "phrase": "or 5 turns, heavy rain powers Water moves.",
+     "value": 5.0
+    }
+   ]
+  },
+  "Rain Dish": {
+   "described": "If Rain is active, this Pokemon heals 1/16 of its max HP each turn.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1/16",
+     "kind": "fraction of max HP",
+     "phrase": "f Rain is active, this Pokemon heals 1/16 of its max HP each turn.",
+     "value": 0.0625
+    }
+   ]
+  },
+  "Razor Shell": {
+   "described": "50% chance to lower the target's Defense by 1.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "50%",
+     "kind": "percent",
+     "phrase": "0% chance to lower the target's Defense by 1.",
+     "value": 50.0
+    }
+   ]
+  },
+  "Reckless": {
+   "described": "This Pokemon's attacks with recoil or crash damage have 1.2x power; not Struggle.",
+   "effects": [
+    {
+     "multiplier": 1.2,
+     "stage": "base power",
+     "when": "as attacker, using Brave Bird",
+     "x4096": 4915
+    },
+    {
+     "from": 120,
+     "stage": "base power",
+     "to": 144,
+     "when": "as attacker, using Brave Bird"
+    },
+    {
+     "multiplier": 1.2,
+     "stage": "base power",
+     "when": "as attacker, using Double-Edge",
+     "x4096": 4915
+    },
+    {
+     "from": 120,
+     "stage": "base power",
+     "to": 144,
+     "when": "as attacker, using Double-Edge"
+    }
+   ],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1.2x",
+     "kind": "multiplier",
+     "phrase": "his Pokemon's attacks with recoil or crash damage have 1.2x power; not Struggle.",
+     "value": 1.2
+    }
+   ]
+  },
+  "Recover": {
+   "described": "Heals the user by 50% of its max HP.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "50%",
+     "kind": "percent",
+     "phrase": "eals the user by 50% of its max HP.",
+     "value": 50.0
+    }
+   ]
+  },
+  "Reflect": {
+   "described": "For 5 turns, physical damage to allies is halved.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "5 turns",
+     "kind": "turns",
+     "phrase": "or 5 turns, physical damage to allies is halved.",
+     "value": 5.0
+    },
+    {
+     "as_written": "half",
+     "kind": "multiplier",
+     "phrase": "or 5 turns, physical damage to allies is halved.",
+     "value": 0.5
+    }
+   ]
+  },
+  "Refrigerate": {
+   "described": "This Pokemon's Normal-type moves become Ice type and have 1.2x power.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1.2x",
+     "kind": "multiplier",
+     "phrase": "his Pokemon's Normal-type moves become Ice type and have 1.2x power.",
+     "value": 1.2
+    }
+   ]
+  },
+  "Regenerator": {
+   "described": "This Pokemon restores 1/3 of its maximum HP, rounded down, when it switches out.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1/3",
+     "kind": "fraction",
+     "phrase": "his Pokemon restores 1/3 of its maximum HP, rounded down, when it switches out.",
+     "value": 0.333333
+    }
+   ]
+  },
+  "Rest": {
+   "described": "User sleeps 2 turns and restores HP and status.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "2 turns",
+     "kind": "turns",
+     "phrase": "ser sleeps 2 turns and restores HP and status.",
+     "value": 2.0
+    }
+   ]
+  },
+  "Rindo Berry": {
+   "described": "Halves damage taken from a supereffective Grass-type attack. Single use.",
+   "effects": [
+    {
+     "multiplier": 0.5,
+     "stage": "final",
+     "when": "as defender, super-effective Grass physical",
+     "x4096": 2048
+    },
+    {
+     "multiplier": 0.5,
+     "stage": "final",
+     "when": "as defender, super-effective Grass special",
+     "x4096": 2048
+    }
+   ],
+   "kind": "item",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "half",
+     "kind": "multiplier",
+     "phrase": "alves damage taken from a supereffective Grass-type attack.",
+     "value": 0.5
+    }
+   ]
+  },
+  "Ripen": {
+   "described": "When this Pokemon eats certain Berries, the effects are doubled.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "double",
+     "kind": "multiplier",
+     "phrase": "hen this Pokemon eats certain Berries, the effects are doubled.",
+     "value": 2.0
+    }
+   ]
+  },
+  "Rising Voltage": {
+   "described": "2x power if target is grounded in Electric Terrain.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "2x",
+     "kind": "multiplier",
+     "phrase": "x power if target is grounded in Electric Terrain.",
+     "value": 2.0
+    }
+   ]
+  },
+  "Rivalry": {
+   "described": "This Pokemon's attacks do 1.25x on same gender targets; 0.75x on opposite gender.",
+   "effects": [
+    {
+     "multiplier": 1.25,
+     "stage": "base power",
+     "when": "as attacker, Normal physical move",
+     "x4096": 5120
+    },
+    {
+     "from": 250,
+     "stage": "base power",
+     "to": 312,
+     "when": "as attacker, Normal physical move"
+    }
+   ],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1.25x",
+     "kind": "multiplier",
+     "phrase": "his Pokemon's attacks do 1.25x on same gender targets; 0.75x on opposite gender.",
+     "value": 1.25
+    },
+    {
+     "as_written": "0.75x",
+     "kind": "multiplier",
+     "phrase": "his Pokemon's attacks do 1.25x on same gender targets; 0.75x on opposite gender.",
+     "value": 0.75
+    }
+   ]
+  },
+  "Rock Slide": {
+   "described": "30% chance to make the foe(s) flinch.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "30%",
+     "kind": "percent",
+     "phrase": "0% chance to make the foe(s) flinch.",
+     "value": 30.0
+    }
+   ]
+  },
+  "Rock Tomb": {
+   "described": "100% chance to lower the target's Speed by 1.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "100%",
+     "kind": "percent",
+     "phrase": "00% chance to lower the target's Speed by 1.",
+     "value": 100.0
+    }
+   ]
+  },
+  "Roost": {
+   "described": "Heals 50% HP. Flying-type removed 'til turn ends.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "50%",
+     "kind": "percent",
+     "phrase": "eals 50% HP.",
+     "value": 50.0
+    }
+   ]
+  },
+  "Roseli Berry": {
+   "described": "Halves damage taken from a supereffective Fairy-type attack. Single use.",
+   "effects": [
+    {
+     "multiplier": 0.5,
+     "stage": "final",
+     "when": "as defender, super-effective Fairy physical",
+     "x4096": 2048
+    },
+    {
+     "multiplier": 0.5,
+     "stage": "final",
+     "when": "as defender, super-effective Fairy special",
+     "x4096": 2048
+    }
+   ],
+   "kind": "item",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "half",
+     "kind": "multiplier",
+     "phrase": "alves damage taken from a supereffective Fairy-type attack.",
+     "value": 0.5
+    }
+   ]
+  },
+  "Rough Skin": {
+   "described": "Pokemon making contact with this Pokemon lose 1/8 of their max HP.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1/8",
+     "kind": "fraction",
+     "phrase": "okemon making contact with this Pokemon lose 1/8 of their max HP.",
+     "value": 0.125
+    }
+   ]
+  },
+  "Round": {
+   "described": "Power doubles if others used Round this turn.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "double",
+     "kind": "multiplier",
+     "phrase": "ower doubles if others used Round this turn.",
+     "value": 2.0
+    }
+   ]
+  },
+  "Safeguard": {
+   "described": "For 5 turns, protects user's party from status.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "5 turns",
+     "kind": "turns",
+     "phrase": "or 5 turns, protects user's party from status.",
+     "value": 5.0
+    }
+   ]
+  },
+  "Salt Cure": {
+   "described": "Deals 1/16 max HP each turn; 1/8 on Steel, Water.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1/16",
+     "kind": "fraction of max HP",
+     "phrase": "eals 1/16 max HP each turn; 1/8 on Steel, Water.",
+     "value": 0.0625
+    },
+    {
+     "as_written": "1/8",
+     "kind": "fraction",
+     "phrase": "eals 1/16 max HP each turn; 1/8 on Steel, Water.",
+     "value": 0.125
+    }
+   ]
+  },
+  "Sand Force": {
+   "described": "This Pokemon's Ground/Rock/Steel attacks do 1.3x in Sandstorm; immunity to it.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1.3x",
+     "kind": "multiplier",
+     "phrase": "his Pokemon's Ground/Rock/Steel attacks do 1.3x in Sandstorm; immunity to it.",
+     "value": 1.3
+    }
+   ]
+  },
+  "Sand Rush": {
+   "described": "If Sandstorm is active, this Pokemon's Speed is doubled; immunity to Sandstorm.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "double",
+     "kind": "multiplier",
+     "phrase": "f Sandstorm is active, this Pokemon's Speed is doubled; immunity to Sandstorm.",
+     "value": 2.0
+    }
+   ]
+  },
+  "Sand Tomb": {
+   "described": "Traps and damages the target for 4-5 turns.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "5 turns",
+     "kind": "turns",
+     "phrase": "raps and damages the target for 4-5 turns.",
+     "value": 5.0
+    }
+   ]
+  },
+  "Sand Veil": {
+   "described": "If Sandstorm is active, this Pokemon's evasiveness is 1.25x; immunity to Sandstorm.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1.25x",
+     "kind": "multiplier",
+     "phrase": "f Sandstorm is active, this Pokemon's evasiveness is 1.25x; immunity to Sandstorm.",
+     "value": 1.25
+    }
+   ]
+  },
+  "Sandstorm": {
+   "described": "For 5 turns, a sandstorm rages. Rock: 1.5x SpD.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1.5x",
+     "kind": "multiplier",
+     "phrase": "Rock: 1.5x SpD.",
+     "value": 1.5
+    },
+    {
+     "as_written": "5 turns",
+     "kind": "turns",
+     "phrase": "or 5 turns, a sandstorm rages.",
+     "value": 5.0
+    }
+   ]
+  },
+  "Sap Sipper": {
+   "described": "This Pokemon's Attack is raised 1 stage if hit by a Grass move; Grass immunity.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1 stages",
+     "kind": "stages",
+     "phrase": "his Pokemon's Attack is raised 1 stage if hit by a Grass move; Grass immunity.",
+     "value": 1.0
+    }
+   ]
+  },
+  "Scald": {
+   "described": "30% chance to burn the target. Thaws target.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "30%",
+     "kind": "percent",
+     "phrase": "0% chance to burn the target.",
+     "value": 30.0
+    }
+   ]
+  },
+  "Scope Lens": {
+   "described": "Holder's critical hit ratio is raised by 1 stage.",
+   "effects": [],
+   "kind": "item",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1 stages",
+     "kind": "stages",
+     "phrase": "older's critical hit ratio is raised by 1 stage.",
+     "value": 1.0
+    }
+   ]
+  },
+  "Scorching Sands": {
+   "described": "30% chance to burn the target. Thaws target.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "30%",
+     "kind": "percent",
+     "phrase": "0% chance to burn the target.",
+     "value": 30.0
+    }
+   ]
+  },
+  "Shadow Ball": {
+   "described": "20% chance to lower the target's Sp. Def by 1.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "20%",
+     "kind": "percent",
+     "phrase": "0% chance to lower the target's Sp.",
+     "value": 20.0
+    }
+   ]
+  },
+  "Sharp Beak": {
+   "described": "Holder's Flying-type attacks have 1.2x power.",
+   "effects": [
+    {
+     "multiplier": 1.2,
+     "stage": "base power",
+     "when": "as attacker, Flying physical move",
+     "x4096": 4915
+    },
+    {
+     "from": 140,
+     "stage": "base power",
+     "to": 168,
+     "when": "as attacker, Flying physical move"
+    },
+    {
+     "multiplier": 1.2,
+     "stage": "base power",
+     "when": "as attacker, Flying special move",
+     "x4096": 4915
+    },
+    {
+     "from": 110,
+     "stage": "base power",
+     "to": 132,
+     "when": "as attacker, Flying special move"
+    }
+   ],
+   "kind": "item",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1.2x",
+     "kind": "multiplier",
+     "phrase": "older's Flying-type attacks have 1.2x power.",
+     "value": 1.2
+    }
+   ]
+  },
+  "Sharpness": {
+   "effects": [
+    {
+     "multiplier": 1.5,
+     "stage": "base power",
+     "when": "as attacker, using Aerial Ace",
+     "x4096": 6144
+    },
+    {
+     "from": 60,
+     "stage": "base power",
+     "to": 90,
+     "when": "as attacker, using Aerial Ace"
+    },
+    {
+     "multiplier": 1.5,
+     "stage": "base power",
+     "when": "as attacker, using Air Cutter",
+     "x4096": 6144
+    },
+    {
+     "from": 60,
+     "stage": "base power",
+     "to": 90,
+     "when": "as attacker, using Air Cutter"
+    }
+   ],
+   "kind": "ability",
+   "notes": []
+  },
+  "Shed Skin": {
+   "described": "This Pokemon has a 33% chance to have its status cured at the end of each turn.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "33%",
+     "kind": "percent",
+     "phrase": "his Pokemon has a 33% chance to have its status cured at the end of each turn.",
+     "value": 33.0
+    }
+   ]
+  },
+  "Shed Tail": {
+   "described": "User takes 1/2 its max HP to pass a substitute.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1/2",
+     "kind": "fraction of max HP",
+     "phrase": "ser takes 1/2 its max HP to pass a substitute.",
+     "value": 0.5
+    }
+   ]
+  },
+  "Sheer Force": {
+   "described": "This Pokemon's attacks with secondary effects have 1.3x power; nullifies the effects.",
+   "effects": [
+    {
+     "multiplier": 1.3,
+     "stage": "base power",
+     "when": "as attacker, using Acid Spray",
+     "x4096": 5325
+    },
+    {
+     "from": 40,
+     "stage": "base power",
+     "to": 52,
+     "when": "as attacker, using Acid Spray"
+    },
+    {
+     "multiplier": 1.3,
+     "stage": "base power",
+     "when": "as attacker, using Air Slash",
+     "x4096": 5325
+    },
+    {
+     "from": 75,
+     "stage": "base power",
+     "to": 98,
+     "when": "as attacker, using Air Slash"
+    }
+   ],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1.3x",
+     "kind": "multiplier",
+     "phrase": "his Pokemon's attacks with secondary effects have 1.3x power; nullifies the effects.",
+     "value": 1.3
+    }
+   ]
+  },
+  "Shell Bell": {
+   "described": "After an attack, holder gains 1/8 of the damage in HP dealt to other Pokemon.",
+   "effects": [],
+   "kind": "item",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1/8",
+     "kind": "fraction",
+     "phrase": "fter an attack, holder gains 1/8 of the damage in HP dealt to other Pokemon.",
+     "value": 0.125
+    }
+   ]
+  },
+  "Shell Side Arm": {
+   "described": "20% psn. Physical+contact if it would be stronger.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "20%",
+     "kind": "percent",
+     "phrase": "0% psn.",
+     "value": 20.0
+    }
+   ]
+  },
+  "Shuca Berry": {
+   "described": "Halves damage taken from a supereffective Ground-type attack. Single use.",
+   "effects": [
+    {
+     "multiplier": 0.5,
+     "stage": "final",
+     "when": "as defender, super-effective Ground physical",
+     "x4096": 2048
+    },
+    {
+     "multiplier": 0.5,
+     "stage": "final",
+     "when": "as defender, super-effective Ground special",
+     "x4096": 2048
+    }
+   ],
+   "kind": "item",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "half",
+     "kind": "multiplier",
+     "phrase": "alves damage taken from a supereffective Ground-type attack.",
+     "value": 0.5
+    }
+   ]
+  },
+  "Silk Scarf": {
+   "described": "Holder's Normal-type attacks have 1.2x power.",
+   "effects": [
+    {
+     "multiplier": 1.2,
+     "stage": "base power",
+     "when": "as attacker, Normal physical move",
+     "x4096": 4915
+    },
+    {
+     "from": 250,
+     "stage": "base power",
+     "to": 300,
+     "when": "as attacker, Normal physical move"
+    },
+    {
+     "multiplier": 1.2,
+     "stage": "base power",
+     "when": "as attacker, Normal special move",
+     "x4096": 4915
+    },
+    {
+     "from": 150,
+     "stage": "base power",
+     "to": 180,
+     "when": "as attacker, Normal special move"
+    }
+   ],
+   "kind": "item",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1.2x",
+     "kind": "multiplier",
+     "phrase": "older's Normal-type attacks have 1.2x power.",
+     "value": 1.2
+    }
+   ]
+  },
+  "Silver Powder": {
+   "described": "Holder's Bug-type attacks have 1.2x power.",
+   "effects": [
+    {
+     "multiplier": 1.2,
+     "stage": "base power",
+     "when": "as attacker, Bug physical move",
+     "x4096": 4915
+    },
+    {
+     "from": 120,
+     "stage": "base power",
+     "to": 144,
+     "when": "as attacker, Bug physical move"
+    },
+    {
+     "multiplier": 1.2,
+     "stage": "base power",
+     "when": "as attacker, Bug special move",
+     "x4096": 4915
+    },
+    {
+     "from": 90,
+     "stage": "base power",
+     "to": 108,
+     "when": "as attacker, Bug special move"
+    }
+   ],
+   "kind": "item",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1.2x",
+     "kind": "multiplier",
+     "phrase": "older's Bug-type attacks have 1.2x power.",
+     "value": 1.2
+    }
+   ]
+  },
+  "Sitrus Berry": {
+   "described": "Restores 1/4 max HP when at 1/2 max HP or less. Single use.",
+   "effects": [],
+   "kind": "item",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1/4",
+     "kind": "fraction of max HP",
+     "phrase": "estores 1/4 max HP when at 1/2 max HP or less.",
+     "value": 0.25
+    },
+    {
+     "as_written": "1/2",
+     "kind": "fraction of max HP",
+     "phrase": "estores 1/4 max HP when at 1/2 max HP or less.",
+     "value": 0.5
+    }
+   ]
+  },
+  "Skitter Smack": {
+   "described": "100% chance to lower target's Sp. Atk by 1.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "100%",
+     "kind": "percent",
+     "phrase": "00% chance to lower target's Sp.",
+     "value": 100.0
+    }
+   ]
+  },
+  "Sky Attack": {
+   "described": "Charges, then hits turn 2. 30% flinch. High crit.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "30%",
+     "kind": "percent",
+     "phrase": "30% flinch.",
+     "value": 30.0
+    }
+   ]
+  },
+  "Slack Off": {
+   "described": "Heals the user by 50% of its max HP.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "50%",
+     "kind": "percent",
+     "phrase": "eals the user by 50% of its max HP.",
+     "value": 50.0
+    }
+   ]
+  },
+  "Sludge Bomb": {
+   "described": "30% chance to poison the target.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "30%",
+     "kind": "percent",
+     "phrase": "0% chance to poison the target.",
+     "value": 30.0
+    }
+   ]
+  },
+  "Sludge Wave": {
+   "described": "10% chance to poison adjacent Pokemon.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "10%",
+     "kind": "percent",
+     "phrase": "0% chance to poison adjacent Pokemon.",
+     "value": 10.0
+    }
+   ]
+  },
+  "Slush Rush": {
+   "described": "If Snow is active, this Pokemon's Speed is doubled.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "double",
+     "kind": "multiplier",
+     "phrase": "f Snow is active, this Pokemon's Speed is doubled.",
+     "value": 2.0
+    }
+   ]
+  },
+  "Smooth Rock": {
+   "described": "Holder's use of Sandstorm lasts 8 turns instead of 5.",
+   "effects": [],
+   "kind": "item",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "8 turns",
+     "kind": "turns",
+     "phrase": "older's use of Sandstorm lasts 8 turns instead of 5.",
+     "value": 8.0
+    }
+   ]
+  },
+  "Snap Trap": {
+   "described": "Traps and damages the target for 4-5 turns.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "5 turns",
+     "kind": "turns",
+     "phrase": "raps and damages the target for 4-5 turns.",
+     "value": 5.0
+    }
+   ]
+  },
+  "Snarl": {
+   "described": "100% chance to lower the foe(s) Sp. Atk by 1.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "100%",
+     "kind": "percent",
+     "phrase": "00% chance to lower the foe(s) Sp.",
+     "value": 100.0
+    }
+   ]
+  },
+  "Snore": {
+   "described": "User must be asleep. 30% chance to flinch target.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "30%",
+     "kind": "percent",
+     "phrase": "30% chance to flinch target.",
+     "value": 30.0
+    }
+   ]
+  },
+  "Snow Cloak": {
+   "described": "If Snow is active, this Pokemon's evasiveness is 1.25x.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1.25x",
+     "kind": "multiplier",
+     "phrase": "f Snow is active, this Pokemon's evasiveness is 1.25x.",
+     "value": 1.25
+    }
+   ]
+  },
+  "Snowscape": {
+   "described": "For 5 turns, snow falls. Ice: 1.5x Def.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1.5x",
+     "kind": "multiplier",
+     "phrase": "Ice: 1.5x Def.",
+     "value": 1.5
+    },
+    {
+     "as_written": "5 turns",
+     "kind": "turns",
+     "phrase": "or 5 turns, snow falls.",
+     "value": 5.0
+    }
+   ]
+  },
+  "Soft Sand": {
+   "described": "Holder's Ground-type attacks have 1.2x power.",
+   "effects": [
+    {
+     "multiplier": 1.2,
+     "stage": "base power",
+     "when": "as attacker, Ground physical move",
+     "x4096": 4915
+    },
+    {
+     "from": 120,
+     "stage": "base power",
+     "to": 144,
+     "when": "as attacker, Ground physical move"
+    },
+    {
+     "multiplier": 1.2,
+     "stage": "base power",
+     "when": "as attacker, Ground special move",
+     "x4096": 4915
+    },
+    {
+     "from": 90,
+     "stage": "base power",
+     "to": 108,
+     "when": "as attacker, Ground special move"
+    }
+   ],
+   "kind": "item",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1.2x",
+     "kind": "multiplier",
+     "phrase": "older's Ground-type attacks have 1.2x power.",
+     "value": 1.2
+    }
+   ]
+  },
+  "Soft-Boiled": {
+   "described": "Heals the user by 50% of its max HP.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "50%",
+     "kind": "percent",
+     "phrase": "eals the user by 50% of its max HP.",
+     "value": 50.0
+    }
+   ]
+  },
+  "Solar Power": {
+   "described": "If Sun is active, this Pokemon's Sp. Atk is 1.5x; loses 1/8 max HP per turn.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1.5x",
+     "kind": "multiplier",
+     "phrase": "Atk is 1.5x; loses 1/8 max HP per turn.",
+     "value": 1.5
+    },
+    {
+     "as_written": "1/8",
+     "kind": "fraction of max HP",
+     "phrase": "Atk is 1.5x; loses 1/8 max HP per turn.",
+     "value": 0.125
+    }
+   ]
+  },
+  "Solid Rock": {
+   "described": "This Pokemon receives 3/4 damage from supereffective attacks.",
+   "effects": [
+    {
+     "multiplier": 0.75,
+     "stage": "final",
+     "when": "as defender, Normal physical move",
+     "x4096": 3072
+    },
+    {
+     "multiplier": 0.75,
+     "stage": "final",
+     "when": "as defender, Normal special move",
+     "x4096": 3072
+    }
+   ],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "3/4",
+     "kind": "fraction",
+     "phrase": "his Pokemon receives 3/4 damage from supereffective attacks.",
+     "value": 0.75
+    }
+   ]
+  },
+  "Speed Boost": {
+   "described": "This Pokemon's Speed is raised 1 stage at the end of each full turn on the field.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1 stages",
+     "kind": "stages",
+     "phrase": "his Pokemon's Speed is raised 1 stage at the end of each full turn on the field.",
+     "value": 1.0
+    }
+   ]
+  },
+  "Spell Tag": {
+   "described": "Holder's Ghost-type attacks have 1.2x power.",
+   "effects": [
+    {
+     "multiplier": 1.2,
+     "stage": "base power",
+     "when": "as attacker, Ghost physical move",
+     "x4096": 4915
+    },
+    {
+     "from": 90,
+     "stage": "base power",
+     "to": 108,
+     "when": "as attacker, Ghost physical move"
+    },
+    {
+     "multiplier": 1.2,
+     "stage": "base power",
+     "when": "as attacker, Ghost special move",
+     "x4096": 4915
+    },
+    {
+     "from": 80,
+     "stage": "base power",
+     "to": 96,
+     "when": "as attacker, Ghost special move"
+    }
+   ],
+   "kind": "item",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1.2x",
+     "kind": "multiplier",
+     "phrase": "older's Ghost-type attacks have 1.2x power.",
+     "value": 1.2
+    }
+   ]
+  },
+  "Spiky Shield": {
+   "described": "Protects from moves. Contact: loses 1/8 max HP.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1/8",
+     "kind": "fraction of max HP",
+     "phrase": "Contact: loses 1/8 max HP.",
+     "value": 0.125
+    }
+   ]
+  },
+  "Spirit Break": {
+   "described": "100% chance to lower the target's Sp. Atk by 1.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "100%",
+     "kind": "percent",
+     "phrase": "00% chance to lower the target's Sp.",
+     "value": 100.0
+    }
+   ]
+  },
+  "Stamina": {
+   "described": "This Pokemon's Defense is raised by 1 stage after it is damaged by a move.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1 stages",
+     "kind": "stages",
+     "phrase": "his Pokemon's Defense is raised by 1 stage after it is damaged by a move.",
+     "value": 1.0
+    }
+   ]
+  },
+  "Static": {
+   "described": "30% chance a Pokemon making contact with this Pokemon will be paralyzed.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "30%",
+     "kind": "percent",
+     "phrase": "0% chance a Pokemon making contact with this Pokemon will be paralyzed.",
+     "value": 30.0
+    }
+   ]
+  },
+  "Steadfast": {
+   "described": "If this Pokemon flinches, its Speed is raised by 1 stage.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1 stages",
+     "kind": "stages",
+     "phrase": "f this Pokemon flinches, its Speed is raised by 1 stage.",
+     "value": 1.0
+    }
+   ]
+  },
+  "Steel Beam": {
+   "described": "User loses 50% max HP.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "50%",
+     "kind": "percent",
+     "phrase": "ser loses 50% max HP.",
+     "value": 50.0
+    }
+   ]
+  },
+  "Steel Wing": {
+   "described": "10% chance to raise the user's Defense by 1.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "10%",
+     "kind": "percent",
+     "phrase": "0% chance to raise the user's Defense by 1.",
+     "value": 10.0
+    }
+   ]
+  },
+  "Steely Spirit": {
+   "effects": [
+    {
+     "multiplier": 1.5,
+     "stage": "base power",
+     "when": "as attacker, using Bullet Punch",
+     "x4096": 6144
+    },
+    {
+     "from": 40,
+     "stage": "base power",
+     "to": 60,
+     "when": "as attacker, using Bullet Punch"
+    },
+    {
+     "multiplier": 1.5,
+     "stage": "base power",
+     "when": "as attacker, using Flash Cannon",
+     "x4096": 6144
+    },
+    {
+     "from": 80,
+     "stage": "base power",
+     "to": 120,
+     "when": "as attacker, using Flash Cannon"
+    }
+   ],
+   "kind": "ability",
+   "notes": []
+  },
+  "Stench": {
+   "described": "This Pokemon's attacks without a chance to flinch gain a 10% chance to flinch.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "10%",
+     "kind": "percent",
+     "phrase": "his Pokemon's attacks without a chance to flinch gain a 10% chance to flinch.",
+     "value": 10.0
+    }
+   ]
+  },
+  "Stomping Tantrum": {
+   "described": "Power doubles if the user's last move failed.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "double",
+     "kind": "multiplier",
+     "phrase": "ower doubles if the user's last move failed.",
+     "value": 2.0
+    }
+   ]
+  },
+  "Strong Jaw": {
+   "described": "This Pokemon's bite-based attacks have 1.5x power. Bug Bite is not boosted.",
+   "effects": [
+    {
+     "multiplier": 1.5,
+     "stage": "base power",
+     "when": "as attacker, using Bite",
+     "x4096": 6144
+    },
+    {
+     "from": 60,
+     "stage": "base power",
+     "to": 90,
+     "when": "as attacker, using Bite"
+    },
+    {
+     "multiplier": 1.5,
+     "stage": "base power",
+     "when": "as attacker, using Crunch",
+     "x4096": 6144
+    },
+    {
+     "from": 80,
+     "stage": "base power",
+     "to": 120,
+     "when": "as attacker, using Crunch"
+    }
+   ],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1.5x",
+     "kind": "multiplier",
+     "phrase": "his Pokemon's bite-based attacks have 1.5x power.",
+     "value": 1.5
+    }
+   ]
+  },
+  "Struggle": {
+   "described": "User loses 1/4 of its max HP.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1/4",
+     "kind": "fraction of max HP",
+     "phrase": "ser loses 1/4 of its max HP.",
+     "value": 0.25
+    }
+   ]
+  },
+  "Struggle Bug": {
+   "described": "100% chance to lower the foe(s) Sp. Atk by 1.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "100%",
+     "kind": "percent",
+     "phrase": "00% chance to lower the foe(s) Sp.",
+     "value": 100.0
+    }
+   ]
+  },
+  "Substitute": {
+   "described": "User takes 1/4 its max HP to put in a substitute.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1/4",
+     "kind": "fraction of max HP",
+     "phrase": "ser takes 1/4 its max HP to put in a substitute.",
+     "value": 0.25
+    }
+   ]
+  },
+  "Sunny Day": {
+   "described": "For 5 turns, intense sunlight powers Fire moves.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "5 turns",
+     "kind": "turns",
+     "phrase": "or 5 turns, intense sunlight powers Fire moves.",
+     "value": 5.0
+    }
+   ]
+  },
+  "Super Fang": {
+   "described": "Does damage equal to 1/2 target's current HP.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1/2",
+     "kind": "fraction",
+     "phrase": "oes damage equal to 1/2 target's current HP.",
+     "value": 0.5
+    }
+   ]
+  },
+  "Super Luck": {
+   "described": "This Pokemon's critical hit ratio is raised by 1 stage.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1 stages",
+     "kind": "stages",
+     "phrase": "his Pokemon's critical hit ratio is raised by 1 stage.",
+     "value": 1.0
+    }
+   ]
+  },
+  "Supercell Slam": {
+   "described": "User is hurt by 50% of its max HP if it misses.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "50%",
+     "kind": "percent",
+     "phrase": "ser is hurt by 50% of its max HP if it misses.",
+     "value": 50.0
+    }
+   ]
+  },
+  "Supersweet Syrup": {
+   "described": "On switch-in, this Pokemon lowers the evasiveness of opponents 1 stage. Once per battle.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1 stages",
+     "kind": "stages",
+     "phrase": "n switch-in, this Pokemon lowers the evasiveness of opponents 1 stage.",
+     "value": 1.0
+    }
+   ]
+  },
+  "Supreme Overlord": {
+   "described": "This Pokemon's moves have 10% more power for each fainted ally, up to 5 allies.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "10%",
+     "kind": "percent",
+     "phrase": "his Pokemon's moves have 10% more power for each fainted ally, up to 5 allies.",
+     "value": 10.0
+    }
+   ]
+  },
+  "Surf": {
+   "described": "Hits adjacent Pokemon. Double damage on Dive.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "double",
+     "kind": "multiplier",
+     "phrase": "Double damage on Dive.",
+     "value": 2.0
+    }
+   ]
+  },
+  "Surge Surfer": {
+   "described": "If Electric Terrain is active, this Pokemon's Speed is doubled.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "double",
+     "kind": "multiplier",
+     "phrase": "f Electric Terrain is active, this Pokemon's Speed is doubled.",
+     "value": 2.0
+    }
+   ]
+  },
+  "Swarm": {
+   "described": "At 1/3 or less of its max HP, this Pokemon's offensive stat is 1.5x with Bug attacks.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1.5x",
+     "kind": "multiplier",
+     "phrase": "t 1/3 or less of its max HP, this Pokemon's offensive stat is 1.5x with Bug attacks.",
+     "value": 1.5
+    },
+    {
+     "as_written": "1/3",
+     "kind": "fraction",
+     "phrase": "t 1/3 or less of its max HP, this Pokemon's offensive stat is 1.5x with Bug attacks.",
+     "value": 0.333333
+    }
+   ]
+  },
+  "Swift Swim": {
+   "described": "If Rain is active, this Pokemon's Speed is doubled.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "double",
+     "kind": "multiplier",
+     "phrase": "f Rain is active, this Pokemon's Speed is doubled.",
+     "value": 2.0
+    }
+   ]
+  },
+  "Syrup Bomb": {
+   "described": "Target's Speed is lowered by 1 stage for 3 turns.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1 stages",
+     "kind": "stages",
+     "phrase": "arget's Speed is lowered by 1 stage for 3 turns.",
+     "value": 1.0
+    },
+    {
+     "as_written": "3 turns",
+     "kind": "turns",
+     "phrase": "arget's Speed is lowered by 1 stage for 3 turns.",
+     "value": 3.0
+    }
+   ]
+  },
+  "Tailwind": {
+   "described": "For 4 turns, allies' Speed is doubled.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "4 turns",
+     "kind": "turns",
+     "phrase": "or 4 turns, allies' Speed is doubled.",
+     "value": 4.0
+    },
+    {
+     "as_written": "double",
+     "kind": "multiplier",
+     "phrase": "or 4 turns, allies' Speed is doubled.",
+     "value": 2.0
+    }
+   ]
+  },
+  "Tanga Berry": {
+   "described": "Halves damage taken from a supereffective Bug-type attack. Single use.",
+   "effects": [
+    {
+     "multiplier": 0.5,
+     "stage": "final",
+     "when": "as defender, super-effective Bug physical",
+     "x4096": 2048
+    },
+    {
+     "multiplier": 0.5,
+     "stage": "final",
+     "when": "as defender, super-effective Bug special",
+     "x4096": 2048
+    }
+   ],
+   "kind": "item",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "half",
+     "kind": "multiplier",
+     "phrase": "alves damage taken from a supereffective Bug-type attack.",
+     "value": 0.5
+    }
+   ]
+  },
+  "Tangled Feet": {
+   "described": "This Pokemon's evasiveness is doubled as long as it is confused.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "double",
+     "kind": "multiplier",
+     "phrase": "his Pokemon's evasiveness is doubled as long as it is confused.",
+     "value": 2.0
+    }
+   ]
+  },
+  "Taunt": {
+   "described": "Target can't use status moves its next 3 turns.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "3 turns",
+     "kind": "turns",
+     "phrase": "arget can't use status moves its next 3 turns.",
+     "value": 3.0
+    }
+   ]
+  },
+  "Technician": {
+   "described": "This Pokemon's moves of 60 power or less have 1.5x power, including Struggle.",
+   "effects": [
+    {
+     "multiplier": 1.5,
+     "stage": "base power",
+     "when": "as attacker, using Accelerock",
+     "x4096": 6144
+    },
+    {
+     "from": 40,
+     "stage": "base power",
+     "to": 60,
+     "when": "as attacker, using Accelerock"
+    },
+    {
+     "multiplier": 1.5,
+     "stage": "base power",
+     "when": "as attacker, using Acid Spray",
+     "x4096": 6144
+    },
+    {
+     "from": 40,
+     "stage": "base power",
+     "to": 60,
+     "when": "as attacker, using Acid Spray"
+    }
+   ],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1.5x",
+     "kind": "multiplier",
+     "phrase": "his Pokemon's moves of 60 power or less have 1.5x power, including Struggle.",
+     "value": 1.5
+    }
+   ]
+  },
+  "Temper Flare": {
+   "described": "Power doubles if the user's last move failed.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "double",
+     "kind": "multiplier",
+     "phrase": "ower doubles if the user's last move failed.",
+     "value": 2.0
+    }
+   ]
+  },
+  "Terrain Pulse": {
+   "described": "User on terrain: power doubles, type varies.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "double",
+     "kind": "multiplier",
+     "phrase": "ser on terrain: power doubles, type varies.",
+     "value": 2.0
+    }
+   ]
+  },
+  "Thick Fat": {
+   "described": "Fire-/Ice-type moves against this Pokemon deal damage with a halved offensive stat.",
+   "effects": [
+    {
+     "multiplier": 0.5,
+     "stage": "attack",
+     "when": "as defender, using Armor Cannon",
+     "x4096": 2048
+    },
+    {
+     "multiplier": 0.5,
+     "stage": "attack",
+     "when": "as defender, using Avalanche",
+     "x4096": 2048
+    }
+   ],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "half",
+     "kind": "multiplier",
+     "phrase": "ire-/Ice-type moves against this Pokemon deal damage with a halved offensive stat.",
+     "value": 0.5
+    }
+   ]
+  },
+  "Thrash": {
+   "described": "Lasts 2-3 turns. Confuses the user afterwards.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "3 turns",
+     "kind": "turns",
+     "phrase": "asts 2-3 turns.",
+     "value": 3.0
+    }
+   ]
+  },
+  "Throat Chop": {
+   "described": "For 2 turns, the target cannot use sound moves.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "2 turns",
+     "kind": "turns",
+     "phrase": "or 2 turns, the target cannot use sound moves.",
+     "value": 2.0
+    }
+   ]
+  },
+  "Thunder": {
+   "described": "30% chance to paralyze. Can't miss in rain.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "30%",
+     "kind": "percent",
+     "phrase": "0% chance to paralyze.",
+     "value": 30.0
+    }
+   ]
+  },
+  "Thunder Fang": {
+   "described": "10% chance to paralyze. 10% chance to flinch.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "10%",
+     "kind": "percent",
+     "phrase": "0% chance to paralyze.",
+     "value": 10.0
+    },
+    {
+     "as_written": "10%",
+     "kind": "percent",
+     "phrase": "10% chance to flinch.",
+     "value": 10.0
+    }
+   ]
+  },
+  "Thunder Punch": {
+   "described": "10% chance to paralyze the target.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "10%",
+     "kind": "percent",
+     "phrase": "0% chance to paralyze the target.",
+     "value": 10.0
+    }
+   ]
+  },
+  "Thunderbolt": {
+   "described": "10% chance to paralyze the target.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "10%",
+     "kind": "percent",
+     "phrase": "0% chance to paralyze the target.",
+     "value": 10.0
+    }
+   ]
+  },
+  "Torch Song": {
+   "described": "100% chance to raise the user's Sp. Atk by 1.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "100%",
+     "kind": "percent",
+     "phrase": "00% chance to raise the user's Sp.",
+     "value": 100.0
+    }
+   ]
+  },
+  "Torrent": {
+   "described": "At 1/3 or less of its max HP, this Pokemon's offensive stat is 1.5x with Water attacks.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1.5x",
+     "kind": "multiplier",
+     "phrase": "t 1/3 or less of its max HP, this Pokemon's offensive stat is 1.5x with Water attacks.",
+     "value": 1.5
+    },
+    {
+     "as_written": "1/3",
+     "kind": "fraction",
+     "phrase": "t 1/3 or less of its max HP, this Pokemon's offensive stat is 1.5x with Water attacks.",
+     "value": 0.333333
+    }
+   ]
+  },
+  "Tough Claws": {
+   "effects": [
+    {
+     "multiplier": 1.3,
+     "stage": "base power",
+     "when": "as attacker, using Accelerock",
+     "x4096": 5325
+    },
+    {
+     "from": 40,
+     "stage": "base power",
+     "to": 52,
+     "when": "as attacker, using Accelerock"
+    },
+    {
+     "multiplier": 1.3,
+     "stage": "base power",
+     "when": "as attacker, using Acrobatics",
+     "x4096": 5325
+    },
+    {
+     "from": 110,
+     "stage": "base power",
+     "to": 143,
+     "when": "as attacker, using Acrobatics"
+    }
+   ],
+   "kind": "ability",
+   "notes": []
+  },
+  "Trailblaze": {
+   "described": "100% chance to raise the user's Speed by 1.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "100%",
+     "kind": "percent",
+     "phrase": "00% chance to raise the user's Speed by 1.",
+     "value": 100.0
+    }
+   ]
+  },
+  "Tri Attack": {
+   "described": "20% chance to paralyze or burn or freeze target.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "20%",
+     "kind": "percent",
+     "phrase": "0% chance to paralyze or burn or freeze target.",
+     "value": 20.0
+    }
+   ]
+  },
+  "Trick Room": {
+   "described": "Goes last. For 5 turns, turn order is reversed.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "5 turns",
+     "kind": "turns",
+     "phrase": "For 5 turns, turn order is reversed.",
+     "value": 5.0
+    }
+   ]
+  },
+  "Triple Arrows": {
+   "described": "High crit. Target: 50% -1 Defense, 30% flinch.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "50%",
+     "kind": "percent",
+     "phrase": "Target: 50% -1 Defense, 30% flinch.",
+     "value": 50.0
+    },
+    {
+     "as_written": "30%",
+     "kind": "percent",
+     "phrase": "Target: 50% -1 Defense, 30% flinch.",
+     "value": 30.0
+    }
+   ]
+  },
+  "Trop Kick": {
+   "described": "100% chance to lower the target's Attack by 1.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "100%",
+     "kind": "percent",
+     "phrase": "00% chance to lower the target's Attack by 1.",
+     "value": 100.0
+    }
+   ]
+  },
+  "Twisted Spoon": {
+   "described": "Holder's Psychic-type attacks have 1.2x power.",
+   "effects": [],
+   "kind": "item",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1.2x",
+     "kind": "multiplier",
+     "phrase": "older's Psychic-type attacks have 1.2x power.",
+     "value": 1.2
+    }
+   ]
+  },
+  "Unburden": {
+   "described": "Speed is doubled on held item loss; boost is lost if it switches, gets new item/Ability.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "double",
+     "kind": "multiplier",
+     "phrase": "peed is doubled on held item loss; boost is lost if it switches, gets new item/Ability.",
+     "value": 2.0
+    }
+   ]
+  },
+  "Unseen Fist": {
+   "described": "This Pokemon's contact moves ignore a target's protection and deal 1/4 the usual damage.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1/4",
+     "kind": "fraction",
+     "phrase": "his Pokemon's contact moves ignore a target's protection and deal 1/4 the usual damage.",
+     "value": 0.25
+    }
+   ]
+  },
+  "Upper Hand": {
+   "described": "100% flinch. Fails unless target using priority attack.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "100%",
+     "kind": "percent",
+     "phrase": "00% flinch.",
+     "value": 100.0
+    }
+   ]
+  },
+  "Uproar": {
+   "described": "Lasts 3 turns. Active Pokemon cannot fall asleep.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "3 turns",
+     "kind": "turns",
+     "phrase": "asts 3 turns.",
+     "value": 3.0
+    }
+   ]
+  },
+  "Venoshock": {
+   "described": "Power doubles if the target is poisoned.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "double",
+     "kind": "multiplier",
+     "phrase": "ower doubles if the target is poisoned.",
+     "value": 2.0
+    }
+   ]
+  },
+  "Vile Vial": {
+   "described": "If held by a Venomicon, its Poison- and Flying-type attacks have 1.2x power.",
+   "effects": [],
+   "kind": "item",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1.2x",
+     "kind": "multiplier",
+     "phrase": "f held by a Venomicon, its Poison- and Flying-type attacks have 1.2x power.",
+     "value": 1.2
+    }
+   ]
+  },
+  "Volt Absorb": {
+   "described": "This Pokemon heals 1/4 of its max HP when hit by Electric moves; Electric immunity.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1/4",
+     "kind": "fraction of max HP",
+     "phrase": "his Pokemon heals 1/4 of its max HP when hit by Electric moves; Electric immunity.",
+     "value": 0.25
+    }
+   ]
+  },
+  "Volt Tackle": {
+   "described": "Has 33% recoil. 10% chance to paralyze target.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "33%",
+     "kind": "percent",
+     "phrase": "as 33% recoil.",
+     "value": 33.0
+    },
+    {
+     "as_written": "10%",
+     "kind": "percent",
+     "phrase": "10% chance to paralyze target.",
+     "value": 10.0
+    }
+   ]
+  },
+  "Wacan Berry": {
+   "described": "Halves damage taken from a supereffective Electric-type attack. Single use.",
+   "effects": [
+    {
+     "multiplier": 0.5,
+     "stage": "final",
+     "when": "as defender, super-effective Electric physical",
+     "x4096": 2048
+    },
+    {
+     "multiplier": 0.5,
+     "stage": "final",
+     "when": "as defender, super-effective Electric special",
+     "x4096": 2048
+    }
+   ],
+   "kind": "item",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "half",
+     "kind": "multiplier",
+     "phrase": "alves damage taken from a supereffective Electric-type attack.",
+     "value": 0.5
+    }
+   ]
+  },
+  "Water Absorb": {
+   "described": "This Pokemon heals 1/4 of its max HP when hit by Water moves; Water immunity.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1/4",
+     "kind": "fraction of max HP",
+     "phrase": "his Pokemon heals 1/4 of its max HP when hit by Water moves; Water immunity.",
+     "value": 0.25
+    }
+   ]
+  },
+  "Water Bubble": {
+   "described": "This Pokemon's Water power is 2x; it can't be burned; Fire power against it is halved.",
+   "effects": [
+    {
+     "multiplier": 2.0,
+     "stage": "attack",
+     "when": "as attacker, using Aqua Cutter",
+     "x4096": 8192
+    },
+    {
+     "multiplier": 2.0,
+     "stage": "attack",
+     "when": "as attacker, using Aqua Jet",
+     "x4096": 8192
+    }
+   ],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "2x",
+     "kind": "multiplier",
+     "phrase": "his Pokemon's Water power is 2x; it can't be burned; Fire power against it is halved.",
+     "value": 2.0
+    },
+    {
+     "as_written": "half",
+     "kind": "multiplier",
+     "phrase": "his Pokemon's Water power is 2x; it can't be burned; Fire power against it is halved.",
+     "value": 0.5
+    }
+   ]
+  },
+  "Water Pulse": {
+   "described": "20% chance to confuse the target.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "20%",
+     "kind": "percent",
+     "phrase": "0% chance to confuse the target.",
+     "value": 20.0
+    }
+   ]
+  },
+  "Waterfall": {
+   "described": "20% chance to make the target flinch.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "20%",
+     "kind": "percent",
+     "phrase": "0% chance to make the target flinch.",
+     "value": 20.0
+    }
+   ]
+  },
+  "Wave Crash": {
+   "described": "Has 33% recoil.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "33%",
+     "kind": "percent",
+     "phrase": "as 33% recoil.",
+     "value": 33.0
+    }
+   ]
+  },
+  "Weather Ball": {
+   "described": "Power doubles and type varies in each weather.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "double",
+     "kind": "multiplier",
+     "phrase": "ower doubles and type varies in each weather.",
+     "value": 2.0
+    }
+   ]
+  },
+  "Whirlpool": {
+   "described": "Traps and damages the target for 4-5 turns.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "5 turns",
+     "kind": "turns",
+     "phrase": "raps and damages the target for 4-5 turns.",
+     "value": 5.0
+    }
+   ]
+  },
+  "Wide Lens": {
+   "described": "The accuracy of attacks by the holder is 1.1x.",
+   "effects": [],
+   "kind": "item",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1.1x",
+     "kind": "multiplier",
+     "phrase": "he accuracy of attacks by the holder is 1.1x.",
+     "value": 1.1
+    }
+   ]
+  },
+  "Wild Charge": {
+   "described": "Has 1/4 recoil.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1/4",
+     "kind": "fraction",
+     "phrase": "as 1/4 recoil.",
+     "value": 0.25
+    }
+   ]
+  },
+  "Wise Glasses": {
+   "described": "Holder's special attacks have 1.1x power.",
+   "effects": [
+    {
+     "multiplier": 1.0999,
+     "stage": "base power",
+     "when": "as attacker, Normal special move",
+     "x4096": 4505
+    },
+    {
+     "from": 150,
+     "stage": "base power",
+     "to": 165,
+     "when": "as attacker, Normal special move"
+    }
+   ],
+   "kind": "item",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1.1x",
+     "kind": "multiplier",
+     "phrase": "older's special attacks have 1.1x power.",
+     "value": 1.1
+    }
+   ]
+  },
+  "Wish": {
+   "described": "Next turn, 50% of the user's max HP is restored.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "50%",
+     "kind": "percent",
+     "phrase": "ext turn, 50% of the user's max HP is restored.",
+     "value": 50.0
+    }
+   ]
+  },
+  "Wonder Room": {
+   "described": "For 5 turns, all Defense and Sp. Def stats switch.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "5 turns",
+     "kind": "turns",
+     "phrase": "or 5 turns, all Defense and Sp.",
+     "value": 5.0
+    }
+   ]
+  },
+  "Wood Hammer": {
+   "described": "Has 33% recoil.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "33%",
+     "kind": "percent",
+     "phrase": "as 33% recoil.",
+     "value": 33.0
+    }
+   ]
+  },
+  "Wrap": {
+   "described": "Traps and damages the target for 4-5 turns.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "5 turns",
+     "kind": "turns",
+     "phrase": "raps and damages the target for 4-5 turns.",
+     "value": 5.0
+    }
+   ]
+  },
+  "Yache Berry": {
+   "described": "Halves damage taken from a supereffective Ice-type attack. Single use.",
+   "effects": [
+    {
+     "multiplier": 0.5,
+     "stage": "final",
+     "when": "as defender, super-effective Ice physical",
+     "x4096": 2048
+    },
+    {
+     "multiplier": 0.5,
+     "stage": "final",
+     "when": "as defender, super-effective Ice special",
+     "x4096": 2048
+    }
+   ],
+   "kind": "item",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "half",
+     "kind": "multiplier",
+     "phrase": "alves damage taken from a supereffective Ice-type attack.",
+     "value": 0.5
+    }
+   ]
+  },
+  "Yawn": {
+   "described": "Puts the target to sleep after 1 turn.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1 turns",
+     "kind": "turns",
+     "phrase": "uts the target to sleep after 1 turn.",
+     "value": 1.0
+    }
+   ]
+  },
+  "Zap Cannon": {
+   "described": "100% chance to paralyze the target.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "100%",
+     "kind": "percent",
+     "phrase": "00% chance to paralyze the target.",
+     "value": 100.0
+    }
+   ]
+  },
+  "Zen Headbutt": {
+   "described": "20% chance to make the target flinch.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "20%",
+     "kind": "percent",
+     "phrase": "0% chance to make the target flinch.",
+     "value": 20.0
+    }
+   ]
+  },
+  "Zoom Lens": {
+   "described": "The accuracy of attacks by the holder is 1.2x if it moves after its target.",
+   "effects": [],
+   "kind": "item",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1.2x",
+     "kind": "multiplier",
+     "phrase": "he accuracy of attacks by the holder is 1.2x if it moves after its target.",
+     "value": 1.2
+    }
+   ]
+  }
+ }
+}

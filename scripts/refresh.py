@@ -111,6 +111,13 @@ def stages(reg, deep=False):
               ["scripts/build_statuses.py"]),
         Stage("ability_moves", "re-derive which ability touches which move",
               ["scripts/build_ability_moves.py"]),
+        # Every item and ability as an exact number, read out of Smogon's
+        # engine rather than out of Serebii's prose - which is qualitative for
+        # 197 of the 199 items. Three seconds, and it has to re-run whenever
+        # the engine or the tables move, because that is exactly when a
+        # multiplier would change without anyone noticing.
+        Stage("effects", "exact multipliers, from the engine itself",
+              ["scripts/build_effects.py"]),
         # after pokebase, because that is where the 20 prices Serebii prints
         # as "??? VP" come from
         Stage("audit_sources", "do the sources agree on the numbers?",
