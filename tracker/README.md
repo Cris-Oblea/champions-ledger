@@ -413,11 +413,25 @@ items/{name}  a row per item owned, same shape and same reason.
                something twice is not a state the database can be in.
                The old documents are still there, untouched, so rolling back
                is dropping two tables.
-meta/gts      {open_offers:[{offered, requested, deposited, status, note}],
-               history:[...]}   - still a document, and next in line: the
-               history only appends, one call site truncates it to 60, and it
-               is at 34. A closed trade is the only real evidence of what the
-               market pays, so losing the oldest ones is not a small thing.
+gts/{id}      {offered, requested, offered_id, deposited, deposited_at,
+               closed, closed_at, note, data:{gaveBst, gaveValue, gotBst,
+               gaveShiny, days, tookMs, rankAtDeposit}}
+
+               ONE ROW PER TRADE, from the deposit to the close (migration 7).
+               Open and closed are not two lists: `closed` is null or it is
+               not. So closing a trade UPDATES the row that already exists
+               rather than deleting it from one array and pushing a
+               differently-shaped record onto another - the two shapes even
+               used different names for the same two Pokemon, offered/requested
+               against gave/got, which is the same symptom.
+
+               Three faults went with the document. Every write rewrote both
+               arrays, and the "Withdrew it" button carried a comment warning
+               that a put() omitting history "would erase every closed trade on
+               record". Two devices could silently drop each other's offers.
+               And one call site wrote history.slice(0, 60), so the 61st closed
+               trade would delete the oldest - there were 34, and the pricing
+               rule is derived from them.
 ```
 
 ## Files

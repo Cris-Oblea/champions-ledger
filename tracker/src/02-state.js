@@ -1,8 +1,8 @@
 /* 02-state.js - S: the ledger as this device sees it, and what a build is bound to.
    Part of the app; assembled into one script by scripts/build_tracker_page.py. */
 /* ===================================================================== state */
-var S = {box:{}, builds:{}, teams:{}, stones:{}, items:{}, meta:{},
-         db:null, ready:false, tab:"box"};
+var S = {box:{}, builds:{}, teams:{}, stones:{}, items:{}, gts:{},
+         meta:{}, db:null, ready:false, tab:"box"};
 
 function boxRows(loc, st){
   return Object.keys(S.box).map(function(k){

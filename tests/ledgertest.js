@@ -62,6 +62,10 @@ const TABS = ["box", "home", "builds", "calc", "find", "gear", "trainer"];
 
   const gts = d.getElementById("listGts");
   ok("el panel GTS se dibujo", !!gts && gts.children.length > 0, true);
+  ok("con las tres ofertas abiertas, y la cerrada fuera",
+     d.getElementById("nGts").textContent, "3/3");
+  ok("el cierre esta en el historial",
+     d.getElementById("nGtsHist").textContent, "1");
   ok("y avisa que los 3 slots estan ocupados",
      /All 3 GTS slots are in use/.test(gts.innerHTML), true);
   ok("el boton de anadir queda deshabilitado",

@@ -5,14 +5,14 @@ import {
   megasFor, statLine, toast, typeChip,
 } from "./01-data.js";
 import { ORIGIN_LABEL, S, boxRows, hasStone, originOf } from "./02-state.js";
-import { drop, put } from "./03-store.js";
+import { drop, put, putNew } from "./03-store.js";
 import { closeSheet, fbtn, openSheet } from "./04-nav.js";
 import { note } from "./13-boot.js";
 /* ======================================================================= gts */
 function drawGts(){
   var list = $("listGts");
   list.innerHTML = "";
-  var offers = (S.meta.gts && S.meta.gts.open_offers) || [];
+  var offers = gtsOffers();
   /* "3" alone reads as an amount; "3/3" reads as a limit, which is the fact
      that changes what he does next */
   $("nGts").textContent = offers.length + "/" + GTS_SLOTS;
@@ -69,8 +69,8 @@ function drawGts(){
       clash.join(", ") + ". Withdraw one and re-log it against a different copy " +
       "before either trade closes."));
   }
-  offers.forEach(function(o, i){
-    list.appendChild(gtsRow(i, o));
+  offers.forEach(function(o){
+    list.appendChild(gtsRow(o._id, o));
   });
   drawGtsHistory();
 }
@@ -121,7 +121,8 @@ function drawGtsHistory(){
     var row = el("div", "row perm");
     var m = el("div", "rmain");
     var nm = el("div", "rname");
-    nm.appendChild(document.createTextNode(r.gave + "  →  " + r.got));
+    nm.appendChild(document.createTextNode(
+      r.offered + "  →  " + r.requested));
     if (r.closed) nm.appendChild(el("span", "tag", r.closed));
     m.appendChild(nm);
     var meta = el("div", "rmeta");
@@ -591,7 +592,28 @@ function elapsedText(ms){
   return Math.round(h / 24) + " days";
 }
 
-function gtsHistory(){ return ((S.meta.gts && S.meta.gts.history) || []).slice(); }
+/* One table, and `closed` is what sorts a trade into one list or the other
+   (migration 7). They used to be two arrays in one document, which is why
+   every write had to carry both - the "Withdrew it" button still carried a
+   comment warning that a put() omitting history would erase every closed
+   trade on record. It cannot now: closing a trade is an update of the row
+   that was already there.
+
+   The history was also truncated to 60 by one call site, with 34 in it. A
+   closed trade is the only hard evidence of what the market pays, and the
+   pricing rule rests on them, so the cap is gone with the array. */
+function gtsRows(){
+  return Object.keys(S.gts).map(function(id){
+    var r = S.gts[id]; r._id = id; return r;
+  });
+}
+function gtsHistory(){
+  return gtsRows().filter(function(r){ return r.closed; })
+    .sort(function(a, b){
+      return String(b.closedAt || b.closed || "")
+        .localeCompare(String(a.closedAt || a.closed || ""));
+    });
+}
 
 /* THE KEEP-ONE RULE (player, 2026-09-10): "yo siempre quiero quedarme con 1
    especie en home para siempre". Only two things may be offered - a duplicate
@@ -635,17 +657,23 @@ function otherFormsOf(rec){
   return Object.keys(out);
 }
 
-function gtsOffers(){ return ((S.meta.gts && S.meta.gts.open_offers) || []).slice(); }
+function gtsOffers(){
+  return gtsRows().filter(function(r){ return !r.closed; })
+    .sort(function(a, b){
+      return String(a.depositedAt || a.deposited || "")
+        .localeCompare(String(b.depositedAt || b.deposited || ""));
+    });
+}
 function gtsFree(){ return Math.max(0, GTS_SLOTS - gtsOffers().length); }
 /* The picker greys committed copies out, but the picker is only the UI. One
    Pokemon cannot sit in two GTS slots, so the rule is checked again at save -
    an offer edited, or a stale sheet left open, must not be able to write a
    collision. Returns the clashing offer, or null. */
-function gtsClash(d, exceptIdx){
+function gtsClash(d, exceptId){
   if (!d.offeredId) return null;
   var hit = null;
-  gtsOffers().forEach(function(o, k){
-    if (k !== exceptIdx && o.offeredId === d.offeredId) hit = o;
+  gtsOffers().forEach(function(o){
+    if (o._id !== exceptId && o.offeredId === d.offeredId) hit = o;
   });
   return hit;
 }
@@ -716,16 +744,18 @@ function pickField(label, current, subtitle, opener, rec){
 /* The Pokemon you can deposit are the ones you actually hold, so the list is
    the box itself - and it carries the box id, not just the name, so three
    Chesnaught stay three distinguishable Chesnaught. */
-/* `exceptIdx` is the offer being EDITED - its own current pick has to stay
+/* `exceptId` is the offer being EDITED - its own current pick has to stay
    selectable or re-saving that offer would be impossible. Every other open
-   offer's Pokemon is physically sitting in a GTS slot and cannot be in two. */
-function gtsPickMine(onPick, exceptIdx){
+   offer's Pokemon is physically sitting in a GTS slot and cannot be in two.
+   It is the row's id since migration 7; it used to be a position in an array,
+   which is a fragile thing to identify a trade by. */
+function gtsPickMine(onPick, exceptId){
   /* one Pokemon, one GTS slot (player, 2026-09-11): "no debería dejarme
      elegir el mismo pokemon". A committed copy is shown, greyed, with what it
      is already waiting for - hiding it would just look like it went missing. */
   var taken = {};
-  gtsOffers().forEach(function(o, k){
-    if (k !== exceptIdx && o.offeredId) taken[o.offeredId] = o;
+  gtsOffers().forEach(function(o){
+    if (o._id !== exceptId && o.offeredId) taken[o.offeredId] = o;
   });
   openSheet("Which one are you depositing?", function(body){
     /* A Champions-ORIGIN Pokemon can never leave the game, so it can never
@@ -1062,7 +1092,7 @@ function gtsPickWanted(onPick, chipName, chipShiny){
   }, []);
 }
 
-function gtsSheet(i, o){
+function gtsSheet(id, o){
   /* `deposited` is a date the player can edit, so it stays. `depositedAt` is
      the machine stamp: BST does not explain why Indeedee went in hours while
      a Beedrill sat for days (player, 2026-09-12), and a date alone cannot
@@ -1073,22 +1103,22 @@ function gtsSheet(i, o){
             depositedAt:now.toISOString(),
             status:"PENDING", note:""};
   var d = JSON.parse(JSON.stringify(o));
-  openSheet(i == null ? "Log a GTS offer" : "GTS offer", function(body){
+  openSheet(id == null ? "Log a GTS offer" : "GTS offer", function(body){
     body.appendChild(pickField("You deposited", d.offered,
       "From your box - it remembers WHICH copy",
       function(){
         gtsPickMine(function(rec){
           d.offered = rec.name;
           d.offeredId = rec._id;      // so three Chesnaught stay three
-          closeSheet(); gtsSheet(i, d);
-        }, i);
+          closeSheet(); gtsSheet(id, d);
+        }, id);
       }, d.offeredId ? S.box[d.offeredId] : null));
     body.appendChild(pickField("You asked for", d.requested,
       "Any Pokemon, including ones Champions does not allow",
       function(){
         gtsPickWanted(function(name){
           d.requested = name;
-          closeSheet(); gtsSheet(i, d);
+          closeSheet(); gtsSheet(id, d);
         }, d.offered || null,
            !!(d.offeredId && S.box[d.offeredId] && S.box[d.offeredId].shiny));
       }, null));
@@ -1110,18 +1140,19 @@ function gtsSheet(i, o){
       "withdrawn — but it is parked, so it cannot be sent to Champions while " +
       "it sits there."));
   }, [
-    i != null ? fbtn("Save changes", "primary", function(){
+    id != null ? fbtn("Save changes", "primary", function(){
       if (!d.offered || !d.requested) { toast("Both sides are needed"); return; }
-      var cl = gtsClash(d, i);
+      var cl = gtsClash(d, id);
       if (cl) { toast("That copy is already in the GTS, waiting for " +
                       (cl.requested || "something")); return; }
-      var rows = gtsOffers();
-      rows[i] = d;
-      put("meta/gts", {open_offers:rows, history:gtsHistory()}).then(function(){
+      /* ONE row. This used to rewrite both arrays of the document, so an edit
+         made here carried every open offer and every closed trade with it,
+         from this device's copy of them. */
+      put("gts/" + id, d).then(function(){
         closeSheet(); toast("Offer updated");
       });
     }) : null,
-    i != null ? fbtn("Trade went through", "danger", function(){
+    id != null ? fbtn("Trade went through", "danger", function(){
       /* A trade is an EXCHANGE: the Pokemon you deposited is gone the moment
          someone takes it, so it has to leave the box as the new one arrives.
          Adding without removing left a Chesnaught behind that no longer
@@ -1147,7 +1178,8 @@ function gtsSheet(i, o){
           " will be added.";
       if (!confirm(msg)) return;
 
-      var rows = gtsOffers(); rows.splice(i, 1);
+      /* The offer is not deleted and re-filed - it is the same trade, and
+         closing it writes the ending onto the row it already has. */
       /* A completed trade is the only hard evidence of what the market pays,
          and it was being thrown away. The player's own pricing rule - that a
          chip fetches its MEGA's BST, not its base - came from remembering
@@ -1155,21 +1187,21 @@ function gtsSheet(i, o){
       var offRec = d.offeredId ? S.box[d.offeredId] : null;
       var wasShiny = !!(offRec && offRec.shiny);
       var vOff = chipValue(d.offered, wasShiny), vGot = chipValue(d.requested);
-      var hist = gtsHistory();
-      hist.unshift({gave:d.offered, got:d.requested,
-                    deposited:d.deposited || null,
-                    depositedAt:d.depositedAt || null,
-                    closed:new Date().toISOString().slice(0, 10),
-                    closedAt:new Date().toISOString(),
-                    days:offerAge(d),
-                    /* the number that ranks demand better than BST does */
-                    tookMs:(d.depositedAt
-                            ? (Date.now() - Date.parse(d.depositedAt)) : null),
-                    gaveShiny:wasShiny,
-                    gaveBst:vOff && vOff.base, gaveValue:vOff && vOff.value,
-                    gotBst:vGot && vGot.base,
-                    rankAtDeposit:d.rankAtDeposit != null ? d.rankAtDeposit : null});
-      put("meta/gts", {open_offers:rows, history:hist.slice(0, 60)}).then(function(){
+      var done = Object.assign({}, d, {
+        closed:new Date().toISOString().slice(0, 10),
+        closedAt:new Date().toISOString(),
+        days:offerAge(d),
+        /* the number that ranks demand better than BST does */
+        tookMs:(d.depositedAt ? (Date.now() - Date.parse(d.depositedAt)) : null),
+        gaveShiny:wasShiny,
+        gaveBst:vOff && vOff.base, gaveValue:vOff && vOff.value,
+        gotBst:vGot && vGot.base,
+        rankAtDeposit:d.rankAtDeposit != null ? d.rankAtDeposit : null});
+      /* `history.slice(0, 60)` used to live on this line, so the 61st closed
+         trade deleted the oldest. A closed trade is the only hard evidence of
+         what the market pays and the pricing rule is derived from them, so the
+         cap went with the array. */
+      put("gts/" + id, done).then(function(){
         var id = freeSlug(d.requested, S.box);
         // it came in by trade, so it is HOME origin and the slot stays elastic
         return put("box/" + id, {name:d.requested, location:"home",
@@ -1212,8 +1244,12 @@ function gtsSheet(i, o){
       var cl2 = gtsClash(d, null);
       if (cl2) { toast("That copy is already in the GTS, waiting for " +
                        (cl2.requested || "something")); return; }
-      var rows = gtsOffers(); rows.push(d);
-      put("meta/gts", {open_offers:rows, history:gtsHistory()}).then(function(){
+      /* A NEW row asks the database for a free id rather than guessing from
+         what this device has loaded, the same way a build does - beedrill,
+         beedrill-2 - so two devices logging at once cannot both pick one. */
+      var stem = String(d.offered).toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "offer";
+      putNew("gts", stem, d).then(function(){
         closeSheet(); toast("Offer logged");
       });
     }),
@@ -1223,11 +1259,11 @@ function gtsSheet(i, o){
        reversible button on the sheet look like the scary one, while "Trade
        went through" - which really does delete a Pokemon from the box - sat
        there in plain grey. Player caught the layout side of this 2026-09-11. */
-    i != null ? fbtn("Withdrew it", "", function(){
-      var rows = gtsOffers(); rows.splice(i, 1);
-      /* history is a sibling key on the same document - a put() that omits it
-         would erase every closed trade on record */
-      put("meta/gts", {open_offers:rows, history:gtsHistory()}).then(function(){
+    id != null ? fbtn("Withdrew it", "", function(){
+      /* This carried a warning that a put() omitting `history` would erase
+         every closed trade on record, because the two lived in one document.
+         Withdrawing deletes one row now, and there is nothing else on it. */
+      drop("gts/" + id).then(function(){
         closeSheet(); toast("Offer removed");
       });
     }) : fbtn("Cancel", "", closeSheet)
