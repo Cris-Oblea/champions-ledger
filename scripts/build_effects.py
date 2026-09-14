@@ -299,7 +299,11 @@ WORD_VALUES = [
 
 def sentence_around(text, at):
     """The sentence a number sits in - the evidence for it."""
-    start = max(text.rfind(". ", 0, at) + 2, 0)
+    # `rfind` returns -1 when there is no earlier sentence, and -1 + 2 is 1 -
+    # which quietly ate the first letter of every phrase that began the text
+    # ("t the end of every turn...").
+    found = text.rfind(". ", 0, at)
+    start = 0 if found < 0 else found + 2
     end = text.find(". ", at)
     return text[start:(end + 1 if end >= 0 else len(text))].strip()
 

@@ -198,6 +198,64 @@ function megasFor(name){
   return (p && MEGAS_OF[p.species]) || MEGAS_OF[name] || [];
 }
 
+/* ----------------------------------------------------- what a thing DOES ---
+   As a number, not as an adjective.
+
+   Serebii writes "It slowly but steadily restores the holder's HP" for
+   Leftovers and "boosts the power of the holder's moves" for Life Orb - which
+   is what this app showed, with the 1/16 and the x1.3 nowhere on screen. The
+   player's complaint was exact: "no me sirve una descripcion bonita que en el
+   fondo no me diga la verdad calculada."
+
+   C.EFFECTS carries both halves for an item, an ability or a move:
+
+     x  the multipliers the ENGINE applies, read out of its own modifier
+        stages in 4096ths - Guts is 6144/4096, not the 1.477 a damage ratio
+        suggests
+     t  the numbers Smogon writes down, each with the sentence it came from,
+        so a number on screen can always be traced back to its words
+
+   Both, where both exist, because agreeing is the evidence. */
+function effectOf(name){
+  return (C.EFFECTS || {})[name] || null;
+}
+/* The numbers as short chips: "x1.3", "1/16 of max HP". Deliberately not a
+   sentence - a sentence is what this is replacing. */
+function effectChips(e){
+  var out = [];
+  (e.x || []).forEach(function(p){
+    out.push({text:"x" + p[1], why:p[0] + " (measured in the engine)"});
+  });
+  (e.t || []).forEach(function(p){
+    var unit = p[1] === "fraction of max HP" ? " of max HP"
+             : p[1] === "stages" ? " stages"
+             : p[1] === "turns" ? " turns" : "";
+    out.push({text:p[0] + unit, why:p[2]});
+  });
+  return out;
+}
+/* A row of them, with the source behind each on hover. */
+function effectLine(name){
+  var e = effectOf(name);
+  if (!e) return null;
+  var chips = effectChips(e);
+  if (!chips.length && !e.desc) return null;
+  var box = el("div", "st");
+  box.style.marginTop = "2px";
+  chips.forEach(function(c){
+    var t = el("span", "tag ok", c.text);
+    t.title = c.why;
+    t.style.marginRight = "4px";
+    box.appendChild(t);
+  });
+  if (e.desc) {
+    var d = el("span", null, e.desc);
+    d.style.opacity = ".85";
+    box.appendChild(d);
+  }
+  return box;
+}
+
 /* ------------------------------------------------------- what leaves here --
    The surface of this part. Everything not named below is private to the file:
    `slug` (freeSlug is the only caller) and `toastT` (toast's own timer).
@@ -209,6 +267,7 @@ export {
   $, C, COSTS, DEX, FORMS, HOME_ALL, MEGAS_OF, MOVES, MOVE_BY, SORT,
   STAT_KEYS, STAT_LABEL, STONE_OF, TYPE_COLOR,
   bst, byName, catName, defence, dexLabel, dexNo, el, freeSlug, learnset,
+  effectChips, effectLine, effectOf,
   megasFor, natMult, rowMatches, setHomeAll, setSort, sortRows, statAt,
   statLine, toast, typeChip,
 };

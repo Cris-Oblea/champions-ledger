@@ -1,6 +1,7 @@
 /* 07-gear.js - Items, stones, statuses, and the Profile tab.
    Part of the app; linked into one script by scripts/build_tracker_page.py. */
-import { $, C, COSTS, bst, byName, el, toast, typeChip } from "./01-data.js";
+import { $, C, COSTS, bst, byName, effectLine, el, toast, typeChip }
+  from "./01-data.js";
 import { S, boxRows, capacity, hasStone, ownedItems, ownedNames,
          ownedStones } from "./02-state.js";
 import { drop, patch, put } from "./03-store.js";
@@ -132,6 +133,11 @@ function itemRow(r, have){
   h.appendChild(document.createTextNode(name));
   m.appendChild(h);
   if (effect) m.appendChild(el("div", "st", effect));
+  /* Serebii's sentence says what it is for; this says what it DOES, with the
+     number. Leftovers read "slowly but steadily restores the holder's HP" and
+     said 1/16 nowhere. */
+  var num = effectLine(name);
+  if (num) m.appendChild(num);
   /* what this item is FOR: the move and the ability it serves, together.
      Heat Rock extends the sun, so it belongs to Sunny Day and to Drought -
      naming only the move would miss the half that actually sets the weather

@@ -10,7 +10,7 @@
     {
      "as_written": "100%",
      "kind": "percent",
-     "phrase": "00% chance to lower the target's Sp.",
+     "phrase": "100% chance to lower the target's Sp.",
      "value": 100.0
     }
    ]
@@ -24,7 +24,7 @@
     {
      "as_written": "double",
      "kind": "multiplier",
-     "phrase": "ower doubles if the user has no held item.",
+     "phrase": "Power doubles if the user has no held item.",
      "value": 2.0
     }
    ]
@@ -38,7 +38,7 @@
     {
      "as_written": "1.2x",
      "kind": "multiplier",
-     "phrase": "his Pokemon's Normal-type moves become Flying type and have 1.2x power.",
+     "phrase": "This Pokemon's Normal-type moves become Flying type and have 1.2x power.",
      "value": 1.2
     }
    ]
@@ -52,7 +52,7 @@
     {
      "as_written": "1/4",
      "kind": "fraction of max HP",
-     "phrase": "f this Pokemon is KOed with a contact move, that move's user loses 1/4 its max HP.",
+     "phrase": "If this Pokemon is KOed with a contact move, that move's user loses 1/4 its max HP.",
      "value": 0.25
     }
    ]
@@ -66,7 +66,7 @@
     {
      "as_written": "30%",
      "kind": "percent",
-     "phrase": "0% chance to make the target flinch.",
+     "phrase": "30% chance to make the target flinch.",
      "value": 30.0
     }
    ]
@@ -80,7 +80,7 @@
     {
      "as_written": "100%",
      "kind": "percent",
-     "phrase": "00% confuse target that had a stat rise this turn.",
+     "phrase": "100% confuse target that had a stat rise this turn.",
      "value": 100.0
     }
    ]
@@ -94,7 +94,7 @@
     {
      "as_written": "1.3x",
      "kind": "multiplier",
-     "phrase": "his Pokemon's attacks have 1.3x power if it is the last to move in a turn.",
+     "phrase": "This Pokemon's attacks have 1.3x power if it is the last to move in a turn.",
      "value": 1.3
     }
    ]
@@ -108,7 +108,7 @@
     {
      "as_written": "10%",
      "kind": "percent",
-     "phrase": "0% chance to raise all stats by 1 (not acc/eva).",
+     "phrase": "10% chance to raise all stats by 1 (not acc/eva).",
      "value": 10.0
     }
    ]
@@ -122,7 +122,7 @@
     {
      "as_written": "12 stages",
      "kind": "stages",
-     "phrase": "f this Pokemon (not its substitute) takes a critical hit, its Attack is raised 12 stages.",
+     "phrase": "If this Pokemon (not its substitute) takes a critical hit, its Attack is raised 12 stages.",
      "value": 12.0
     }
    ]
@@ -136,7 +136,7 @@
     {
      "as_written": "100%",
      "kind": "percent",
-     "phrase": "00% chance to lower the target's Sp.",
+     "phrase": "100% chance to lower the target's Sp.",
      "value": 100.0
     }
    ]
@@ -150,7 +150,7 @@
     {
      "as_written": "1/16",
      "kind": "fraction of max HP",
-     "phrase": "ser recovers 1/16 max HP per turn.",
+     "phrase": "User recovers 1/16 max HP per turn.",
      "value": 0.0625
     }
    ]
@@ -164,7 +164,7 @@
     {
      "as_written": "100%",
      "kind": "percent",
-     "phrase": "00% chance to raise the user's Speed by 1.",
+     "phrase": "100% chance to raise the user's Speed by 1.",
      "value": 100.0
     }
    ]
@@ -178,7 +178,7 @@
     {
      "as_written": "double",
      "kind": "multiplier",
-     "phrase": "ower doubles if target was damaged this turn.",
+     "phrase": "Power doubles if target was damaged this turn.",
      "value": 2.0
     }
    ]
@@ -210,7 +210,7 @@
     {
      "as_written": "100%",
      "kind": "percent",
-     "phrase": "orpeko: Electric; Hangry: Dark; 100% +1 Spe.",
+     "phrase": "Morpeko: Electric; Hangry: Dark; 100% +1 Spe.",
      "value": 100.0
     }
    ]
@@ -224,13 +224,13 @@
     {
      "as_written": "5 turns",
      "kind": "turns",
-     "phrase": "or 5 turns, damage to allies halved.",
+     "phrase": "For 5 turns, damage to allies halved.",
      "value": 5.0
     },
     {
      "as_written": "half",
      "kind": "multiplier",
-     "phrase": "or 5 turns, damage to allies halved.",
+     "phrase": "For 5 turns, damage to allies halved.",
      "value": 0.5
     }
    ]
@@ -244,7 +244,7 @@
     {
      "as_written": "double",
      "kind": "multiplier",
-     "phrase": "ower doubles if user is damaged by the target.",
+     "phrase": "Power doubles if user is damaged by the target.",
      "value": 2.0
     }
    ]
@@ -258,7 +258,7 @@
     {
      "as_written": "30%",
      "kind": "percent",
-     "phrase": "0% confusion.",
+     "phrase": "30% confusion.",
      "value": 30.0
     },
     {
@@ -291,7 +291,7 @@
     {
      "as_written": "half",
      "kind": "multiplier",
-     "phrase": "alves damage taken from a supereffective Steel-type attack.",
+     "phrase": "Halves damage taken from a supereffective Steel-type attack.",
      "value": 0.5
     }
    ]
@@ -311,7 +311,7 @@
     {
      "as_written": "50%",
      "kind": "percent",
-     "phrase": "0% psn.",
+     "phrase": "50% psn.",
      "value": 50.0
     }
    ]
@@ -339,7 +339,7 @@
     {
      "as_written": "50%",
      "kind": "percent",
-     "phrase": "ser loses 50% max HP.",
+     "phrase": "User loses 50% max HP.",
      "value": 50.0
     }
    ]
@@ -367,7 +367,7 @@
     {
      "as_written": "1.3x",
      "kind": "multiplier",
-     "phrase": "older gains 1.3x HP from draining/Aqua Ring/Ingrain/Leech Seed/Strength Sap.",
+     "phrase": "Holder gains 1.3x HP from draining/Aqua Ring/Ingrain/Leech Seed/Strength Sap.",
      "value": 1.3
     }
    ]
@@ -381,7 +381,7 @@
     {
      "as_written": "5 turns",
      "kind": "turns",
-     "phrase": "raps and damages the target for 4-5 turns.",
+     "phrase": "Traps and damages the target for 4-5 turns.",
      "value": 5.0
     }
    ]
@@ -395,7 +395,7 @@
     {
      "as_written": "30%",
      "kind": "percent",
-     "phrase": "0% chance to make the target flinch.",
+     "phrase": "30% chance to make the target flinch.",
      "value": 30.0
     }
    ]
@@ -409,7 +409,7 @@
     {
      "as_written": "50%",
      "kind": "percent",
-     "phrase": "ser recovers 50% of the damage dealt.",
+     "phrase": "User recovers 50% of the damage dealt.",
      "value": 50.0
     }
    ]
@@ -423,7 +423,7 @@
     {
      "as_written": "100%",
      "kind": "percent",
-     "phrase": "00% chance to lower the target's Attack by 1.",
+     "phrase": "100% chance to lower the target's Attack by 1.",
      "value": 100.0
     }
    ]
@@ -462,7 +462,7 @@
     {
      "as_written": "1.2x",
      "kind": "multiplier",
-     "phrase": "older's Fighting-type attacks have 1.2x power.",
+     "phrase": "Holder's Fighting-type attacks have 1.2x power.",
      "value": 1.2
     }
    ]
@@ -501,7 +501,7 @@
     {
      "as_written": "1.2x",
      "kind": "multiplier",
-     "phrase": "older's Dark-type attacks have 1.2x power.",
+     "phrase": "Holder's Dark-type attacks have 1.2x power.",
      "value": 1.2
     }
    ]
@@ -515,13 +515,13 @@
     {
      "as_written": "1.5x",
      "kind": "multiplier",
-     "phrase": "t 1/3 or less of its max HP, this Pokemon's offensive stat is 1.5x with Fire attacks.",
+     "phrase": "At 1/3 or less of its max HP, this Pokemon's offensive stat is 1.5x with Fire attacks.",
      "value": 1.5
     },
     {
      "as_written": "1/3",
      "kind": "fraction",
-     "phrase": "t 1/3 or less of its max HP, this Pokemon's offensive stat is 1.5x with Fire attacks.",
+     "phrase": "At 1/3 or less of its max HP, this Pokemon's offensive stat is 1.5x with Fire attacks.",
      "value": 0.333333
     }
    ]
@@ -549,7 +549,7 @@
     {
      "as_written": "10%",
      "kind": "percent",
-     "phrase": "0% chance to freeze foe(s).",
+     "phrase": "10% chance to freeze foe(s).",
      "value": 10.0
     }
    ]
@@ -563,7 +563,7 @@
     {
      "as_written": "30%",
      "kind": "percent",
-     "phrase": "0% chance to paralyze the target.",
+     "phrase": "30% chance to paralyze the target.",
      "value": 30.0
     }
    ]
@@ -591,7 +591,7 @@
     {
      "as_written": "33%",
      "kind": "percent",
-     "phrase": "as 33% recoil.",
+     "phrase": "Has 33% recoil.",
      "value": 33.0
     }
    ]
@@ -605,7 +605,7 @@
     {
      "as_written": "100%",
      "kind": "percent",
-     "phrase": "00% chance to lower the foe(s) Attack by 1.",
+     "phrase": "100% chance to lower the foe(s) Attack by 1.",
      "value": 100.0
     }
    ]
@@ -619,7 +619,7 @@
     {
      "as_written": "0.9x",
      "kind": "multiplier",
-     "phrase": "he accuracy of attacks against the holder is 0.9x.",
+     "phrase": "The accuracy of attacks against the holder is 0.9x.",
      "value": 0.9
     }
    ]
@@ -633,7 +633,7 @@
     {
      "as_written": "10%",
      "kind": "percent",
-     "phrase": "0% chance to lower the target's Sp.",
+     "phrase": "10% chance to lower the target's Sp.",
      "value": 10.0
     }
    ]
@@ -647,7 +647,7 @@
     {
      "as_written": "100%",
      "kind": "percent",
-     "phrase": "00% chance lower adjacent Pkmn Speed by 1.",
+     "phrase": "100% chance lower adjacent Pkmn Speed by 1.",
      "value": 100.0
     }
    ]
@@ -661,7 +661,7 @@
     {
      "as_written": "100%",
      "kind": "percent",
-     "phrase": "00% burns a target that had a stat rise this turn.",
+     "phrase": "100% burns a target that had a stat rise this turn.",
      "value": 100.0
     }
    ]
@@ -700,7 +700,7 @@
     {
      "as_written": "1.2x",
      "kind": "multiplier",
-     "phrase": "older's Fire-type attacks have 1.2x power.",
+     "phrase": "Holder's Fire-type attacks have 1.2x power.",
      "value": 1.2
     }
    ]
@@ -714,7 +714,7 @@
     {
      "as_written": "2x",
      "kind": "multiplier",
-     "phrase": "1 SpD, user's next Electric move 2x power.",
+     "phrase": "+1 SpD, user's next Electric move 2x power.",
      "value": 2.0
     }
    ]
@@ -728,7 +728,7 @@
     {
      "as_written": "70%",
      "kind": "percent",
-     "phrase": "0% chance to raise the user's Sp.",
+     "phrase": "70% chance to raise the user's Sp.",
      "value": 70.0
     }
    ]
@@ -755,7 +755,7 @@
     {
      "as_written": "half",
      "kind": "multiplier",
-     "phrase": "alves damage taken from a supereffective Rock-type attack.",
+     "phrase": "Halves damage taken from a supereffective Rock-type attack.",
      "value": 0.5
     }
    ]
@@ -769,7 +769,7 @@
     {
      "as_written": "1/3",
      "kind": "fraction of max HP",
-     "phrase": "f this Pokemon eats a Berry, it restores 1/3 of its max HP after the Berry's effect.",
+     "phrase": "If this Pokemon eats a Berry, it restores 1/3 of its max HP after the Berry's effect.",
      "value": 0.333333
     }
    ]
@@ -796,7 +796,7 @@
     {
      "as_written": "half",
      "kind": "multiplier",
-     "phrase": "alves damage taken from a Normal-type attack.",
+     "phrase": "Halves damage taken from a Normal-type attack.",
      "value": 0.5
     }
    ]
@@ -810,7 +810,7 @@
     {
      "as_written": "100%",
      "kind": "percent",
-     "phrase": "00% chance to lower the target's Attack by 1.",
+     "phrase": "100% chance to lower the target's Attack by 1.",
      "value": 100.0
     }
    ]
@@ -824,7 +824,7 @@
     {
      "as_written": "double",
      "kind": "multiplier",
-     "phrase": "f Sun is active, this Pokemon's Speed is doubled.",
+     "phrase": "If Sun is active, this Pokemon's Speed is doubled.",
      "value": 2.0
     }
    ]
@@ -838,7 +838,7 @@
     {
      "as_written": "1.5x",
      "kind": "multiplier",
-     "phrase": "older's Speed is 1.5x, but it can only select the first move it executes.",
+     "phrase": "Holder's Speed is 1.5x, but it can only select the first move it executes.",
      "value": 1.5
     }
    ]
@@ -865,7 +865,7 @@
     {
      "as_written": "half",
      "kind": "multiplier",
-     "phrase": "alves damage taken from a supereffective Fighting-type attack.",
+     "phrase": "Halves damage taken from a supereffective Fighting-type attack.",
      "value": 0.5
     }
    ]
@@ -879,7 +879,7 @@
     {
      "as_written": "33%",
      "kind": "percent",
-     "phrase": "ser loses 33% of its max HP.",
+     "phrase": "User loses 33% of its max HP.",
      "value": 33.0
     }
    ]
@@ -906,7 +906,7 @@
     {
      "as_written": "half",
      "kind": "multiplier",
-     "phrase": "alves damage taken from a supereffective Flying-type attack.",
+     "phrase": "Halves damage taken from a supereffective Flying-type attack.",
      "value": 0.5
     }
    ]
@@ -933,7 +933,7 @@
     {
      "as_written": "half",
      "kind": "multiplier",
-     "phrase": "alves damage taken from a supereffective Dark-type attack.",
+     "phrase": "Halves damage taken from a supereffective Dark-type attack.",
      "value": 0.5
     }
    ]
@@ -947,7 +947,7 @@
     {
      "as_written": "1.5x",
      "kind": "multiplier",
-     "phrase": "f hit by an attack, returns 1.5x damage.",
+     "phrase": "If hit by an attack, returns 1.5x damage.",
      "value": 1.5
     }
    ]
@@ -961,7 +961,7 @@
     {
      "as_written": "double",
      "kind": "multiplier",
-     "phrase": "f hit by physical attack, returns double damage.",
+     "phrase": "If hit by physical attack, returns double damage.",
      "value": 2.0
     }
    ]
@@ -989,7 +989,7 @@
     {
      "as_written": "20%",
      "kind": "percent",
-     "phrase": "0% chance to lower the target's Defense by 1.",
+     "phrase": "20% chance to lower the target's Defense by 1.",
      "value": 20.0
     }
    ]
@@ -1003,7 +1003,7 @@
     {
      "as_written": "50%",
      "kind": "percent",
-     "phrase": "0% chance to lower the target's Defense by 1.",
+     "phrase": "50% chance to lower the target's Defense by 1.",
      "value": 50.0
     }
    ]
@@ -1017,7 +1017,7 @@
     {
      "as_written": "30%",
      "kind": "percent",
-     "phrase": "f this Pokemon is hit by an attack, there is a 30% chance that move gets disabled.",
+     "phrase": "If this Pokemon is hit by an attack, there is a 30% chance that move gets disabled.",
      "value": 30.0
     }
    ]
@@ -1031,7 +1031,7 @@
     {
      "as_written": "30%",
      "kind": "percent",
-     "phrase": "0% chance of infatuating Pokemon of the opposite gender if they make contact.",
+     "phrase": "30% chance of infatuating Pokemon of the opposite gender if they make contact.",
      "value": 30.0
     }
    ]
@@ -1045,7 +1045,7 @@
     {
      "as_written": "8 turns",
      "kind": "turns",
-     "phrase": "older's use of Rain Dance lasts 8 turns instead of 5.",
+     "phrase": "Holder's use of Rain Dance lasts 8 turns instead of 5.",
      "value": 8.0
     }
    ]
@@ -1059,7 +1059,7 @@
     {
      "as_written": "20%",
      "kind": "percent",
-     "phrase": "0% chance to make the target flinch.",
+     "phrase": "20% chance to make the target flinch.",
      "value": 20.0
     }
    ]
@@ -1073,7 +1073,7 @@
     {
      "as_written": "30%",
      "kind": "percent",
-     "phrase": "0% chance to sleep, poison, or paralyze target.",
+     "phrase": "30% chance to sleep, poison, or paralyze target.",
      "value": 30.0
     }
    ]
@@ -1087,7 +1087,7 @@
     {
      "as_written": "4 turns",
      "kind": "turns",
-     "phrase": "or 4 turns, disables the target's last move used.",
+     "phrase": "For 4 turns, disables the target's last move used.",
      "value": 4.0
     }
    ]
@@ -1101,7 +1101,7 @@
     {
      "as_written": "30%",
      "kind": "percent",
-     "phrase": "0% chance to paralyze adjacent Pokemon.",
+     "phrase": "30% chance to paralyze adjacent Pokemon.",
      "value": 30.0
     }
    ]
@@ -1115,7 +1115,7 @@
     {
      "as_written": "1/8",
      "kind": "fraction",
-     "phrase": "Mimikyu only) The first hit it takes is blocked, and it takes 1/8 HP damage instead.",
+     "phrase": "(Mimikyu only) The first hit it takes is blocked, and it takes 1/8 HP damage instead.",
      "value": 0.125
     }
    ]
@@ -1129,7 +1129,7 @@
     {
      "as_written": "33%",
      "kind": "percent",
-     "phrase": "as 33% recoil.",
+     "phrase": "Has 33% recoil.",
      "value": 33.0
     }
    ]
@@ -1182,7 +1182,7 @@
     {
      "as_written": "1.2x",
      "kind": "multiplier",
-     "phrase": "older's Dragon-type attacks have 1.2x power.",
+     "phrase": "Holder's Dragon-type attacks have 1.2x power.",
      "value": 1.2
     }
    ]
@@ -1196,7 +1196,7 @@
     {
      "as_written": "20%",
      "kind": "percent",
-     "phrase": "0% chance to make the target flinch.",
+     "phrase": "20% chance to make the target flinch.",
      "value": 20.0
     }
    ]
@@ -1210,7 +1210,7 @@
     {
      "as_written": "1.2x",
      "kind": "multiplier",
-     "phrase": "his Pokemon's Normal-type moves become Dragon type and have 1.2x power.",
+     "phrase": "This Pokemon's Normal-type moves become Dragon type and have 1.2x power.",
      "value": 1.2
     }
    ]
@@ -1224,7 +1224,7 @@
     {
      "as_written": "50%",
      "kind": "percent",
-     "phrase": "ser recovers 50% of the damage dealt.",
+     "phrase": "User recovers 50% of the damage dealt.",
      "value": 50.0
     }
    ]
@@ -1238,7 +1238,7 @@
     {
      "as_written": "75%",
      "kind": "percent",
-     "phrase": "ser recovers 75% of the damage dealt.",
+     "phrase": "User recovers 75% of the damage dealt.",
      "value": 75.0
     }
    ]
@@ -1252,25 +1252,25 @@
     {
      "as_written": "1.25x",
      "kind": "multiplier",
-     "phrase": "his Pokemon is healed 1/4 by Water, 1/8 by Rain; is hurt 1.25x by Fire, 1/8 by Sun.",
+     "phrase": "This Pokemon is healed 1/4 by Water, 1/8 by Rain; is hurt 1.25x by Fire, 1/8 by Sun.",
      "value": 1.25
     },
     {
      "as_written": "1/4",
      "kind": "fraction",
-     "phrase": "his Pokemon is healed 1/4 by Water, 1/8 by Rain; is hurt 1.25x by Fire, 1/8 by Sun.",
+     "phrase": "This Pokemon is healed 1/4 by Water, 1/8 by Rain; is hurt 1.25x by Fire, 1/8 by Sun.",
      "value": 0.25
     },
     {
      "as_written": "1/8",
      "kind": "fraction",
-     "phrase": "his Pokemon is healed 1/4 by Water, 1/8 by Rain; is hurt 1.25x by Fire, 1/8 by Sun.",
+     "phrase": "This Pokemon is healed 1/4 by Water, 1/8 by Rain; is hurt 1.25x by Fire, 1/8 by Sun.",
      "value": 0.125
     },
     {
      "as_written": "1/8",
      "kind": "fraction",
-     "phrase": "his Pokemon is healed 1/4 by Water, 1/8 by Rain; is hurt 1.25x by Fire, 1/8 by Sun.",
+     "phrase": "This Pokemon is healed 1/4 by Water, 1/8 by Rain; is hurt 1.25x by Fire, 1/8 by Sun.",
      "value": 0.125
     }
    ]
@@ -1284,7 +1284,7 @@
     {
      "as_written": "100%",
      "kind": "percent",
-     "phrase": "00% chance to confuse the target.",
+     "phrase": "100% chance to confuse the target.",
      "value": 100.0
     }
    ]
@@ -1298,7 +1298,7 @@
     {
      "as_written": "1/4",
      "kind": "fraction of max HP",
-     "phrase": "his Pokemon heals 1/4 of its max HP when hit by Ground moves; Ground immunity.",
+     "phrase": "This Pokemon heals 1/4 of its max HP when hit by Ground moves; Ground immunity.",
      "value": 0.25
     }
    ]
@@ -1312,7 +1312,7 @@
     {
      "as_written": "10%",
      "kind": "percent",
-     "phrase": "0% chance to lower the target's Sp.",
+     "phrase": "10% chance to lower the target's Sp.",
      "value": 10.0
     }
    ]
@@ -1340,7 +1340,7 @@
     {
      "as_written": "30%",
      "kind": "percent",
-     "phrase": "0% chance of poison/paralysis/sleep on others making contact with this Pokemon.",
+     "phrase": "30% chance of poison/paralysis/sleep on others making contact with this Pokemon.",
      "value": 30.0
     }
    ]
@@ -1354,7 +1354,7 @@
     {
      "as_written": "5 turns",
      "kind": "turns",
-     "phrase": "turns.",
+     "phrase": "5 turns.",
      "value": 5.0
     }
    ]
@@ -1368,7 +1368,7 @@
     {
      "as_written": "100%",
      "kind": "percent",
-     "phrase": "00% chance to lower the foe(s) Speed by 1.",
+     "phrase": "100% chance to lower the foe(s) Speed by 1.",
      "value": 100.0
     }
    ]
@@ -1382,7 +1382,7 @@
     {
      "as_written": "3 turns",
      "kind": "turns",
-     "phrase": "arget repeats its last move for its next 3 turns.",
+     "phrase": "Target repeats its last move for its next 3 turns.",
      "value": 3.0
     }
    ]
@@ -1396,7 +1396,7 @@
     {
      "as_written": "10%",
      "kind": "percent",
-     "phrase": "0% chance to lower the target's Sp.",
+     "phrase": "10% chance to lower the target's Sp.",
      "value": 10.0
     }
    ]
@@ -1410,7 +1410,7 @@
     {
      "as_written": "1.5x",
      "kind": "multiplier",
-     "phrase": "ser on Psychic Terrain: 1.5x power, hits foes.",
+     "phrase": "User on Psychic Terrain: 1.5x power, hits foes.",
      "value": 1.5
     }
    ]
@@ -1437,7 +1437,7 @@
     {
      "as_written": "1.2x",
      "kind": "multiplier",
-     "phrase": "older's attacks that are super effective against the target do 1.2x damage.",
+     "phrase": "Holder's attacks that are super effective against the target do 1.2x damage.",
      "value": 1.2
     }
    ]
@@ -1451,7 +1451,7 @@
     {
      "as_written": "10%",
      "kind": "percent",
-     "phrase": "0% chance to make the target flinch.",
+     "phrase": "10% chance to make the target flinch.",
      "value": 10.0
     }
    ]
@@ -1465,7 +1465,7 @@
     {
      "as_written": "double",
      "kind": "multiplier",
-     "phrase": "ower doubles if user is burn/poison/paralyzed.",
+     "phrase": "Power doubles if user is burn/poison/paralyzed.",
      "value": 2.0
     }
    ]
@@ -1528,7 +1528,7 @@
     {
      "as_written": "1.33x",
      "kind": "multiplier",
-     "phrase": "hile this Pokemon is active, a Fairy move used by any Pokemon has 1.33x power.",
+     "phrase": "While this Pokemon is active, a Fairy move used by any Pokemon has 1.33x power.",
      "value": 1.33
     }
    ]
@@ -1567,7 +1567,7 @@
     {
      "as_written": "1.2x",
      "kind": "multiplier",
-     "phrase": "older's Fairy-type attacks have 1.2x power.",
+     "phrase": "Holder's Fairy-type attacks have 1.2x power.",
      "value": 1.2
     }
    ]
@@ -1595,13 +1595,13 @@
     {
      "as_written": "30%",
      "kind": "percent",
-     "phrase": "as a 30% chance this move's power is doubled.",
+     "phrase": "Has a 30% chance this move's power is doubled.",
      "value": 30.0
     },
     {
      "as_written": "double",
      "kind": "multiplier",
-     "phrase": "as a 30% chance this move's power is doubled.",
+     "phrase": "Has a 30% chance this move's power is doubled.",
      "value": 2.0
     }
    ]
@@ -1615,7 +1615,7 @@
     {
      "as_written": "50%",
      "kind": "percent",
-     "phrase": "0% chance to raise the user's Sp.",
+     "phrase": "50% chance to raise the user's Sp.",
      "value": 50.0
     }
    ]
@@ -1642,7 +1642,7 @@
     {
      "as_written": "3/4",
      "kind": "fraction",
-     "phrase": "his Pokemon receives 3/4 damage from supereffective attacks.",
+     "phrase": "This Pokemon receives 3/4 damage from supereffective attacks.",
      "value": 0.75
     }
    ]
@@ -1656,7 +1656,7 @@
     {
      "as_written": "10%",
      "kind": "percent",
-     "phrase": "0% chance to burn the target.",
+     "phrase": "10% chance to burn the target.",
      "value": 10.0
     }
    ]
@@ -1670,7 +1670,7 @@
     {
      "as_written": "10%",
      "kind": "percent",
-     "phrase": "0% chance to burn.",
+     "phrase": "10% chance to burn.",
      "value": 10.0
     },
     {
@@ -1690,7 +1690,7 @@
     {
      "as_written": "100%",
      "kind": "percent",
-     "phrase": "00% chance to lower the target's Defense by 1.",
+     "phrase": "100% chance to lower the target's Defense by 1.",
      "value": 100.0
     }
    ]
@@ -1722,7 +1722,7 @@
     {
      "as_written": "10%",
      "kind": "percent",
-     "phrase": "0% chance to burn the target.",
+     "phrase": "10% chance to burn the target.",
      "value": 10.0
     }
    ]
@@ -1736,7 +1736,7 @@
     {
      "as_written": "5 turns",
      "kind": "turns",
-     "phrase": "raps and damages the target for 4-5 turns.",
+     "phrase": "Traps and damages the target for 4-5 turns.",
      "value": 5.0
     }
    ]
@@ -1750,7 +1750,7 @@
     {
      "as_written": "30%",
      "kind": "percent",
-     "phrase": "0% chance a Pokemon making contact with this Pokemon will be burned.",
+     "phrase": "30% chance a Pokemon making contact with this Pokemon will be burned.",
      "value": 30.0
     }
    ]
@@ -1764,7 +1764,7 @@
     {
      "as_written": "100%",
      "kind": "percent",
-     "phrase": "00% chance to raise the user's Speed by 1.",
+     "phrase": "100% chance to raise the user's Speed by 1.",
      "value": 100.0
     }
    ]
@@ -1778,7 +1778,7 @@
     {
      "as_written": "10%",
      "kind": "percent",
-     "phrase": "0% chance to burn the target.",
+     "phrase": "10% chance to burn the target.",
      "value": 10.0
     }
    ]
@@ -1792,7 +1792,7 @@
     {
      "as_written": "33%",
      "kind": "percent",
-     "phrase": "as 33% recoil.",
+     "phrase": "Has 33% recoil.",
      "value": 33.0
     },
     {
@@ -1812,7 +1812,7 @@
     {
      "as_written": "10%",
      "kind": "percent",
-     "phrase": "0% chance to lower the target's Sp.",
+     "phrase": "10% chance to lower the target's Sp.",
      "value": 10.0
     }
    ]
@@ -1826,7 +1826,7 @@
     {
      "as_written": "1.5x",
      "kind": "multiplier",
-     "phrase": "his Pokemon's Fire attacks do 1.5x damage if hit by one Fire move; Fire immunity.",
+     "phrase": "This Pokemon's Fire attacks do 1.5x damage if hit by one Fire move; Fire immunity.",
      "value": 1.5
     }
    ]
@@ -1853,13 +1853,13 @@
     {
      "as_written": "2x",
      "kind": "multiplier",
-     "phrase": "his Pokemon takes 1/2 damage from contact moves, 2x damage from Fire moves.",
+     "phrase": "This Pokemon takes 1/2 damage from contact moves, 2x damage from Fire moves.",
      "value": 2.0
     },
     {
      "as_written": "1/2",
      "kind": "fraction",
-     "phrase": "his Pokemon takes 1/2 damage from contact moves, 2x damage from Fire moves.",
+     "phrase": "This Pokemon takes 1/2 damage from contact moves, 2x damage from Fire moves.",
      "value": 0.5
     }
    ]
@@ -1873,7 +1873,7 @@
     {
      "as_written": "10%",
      "kind": "percent",
-     "phrase": "older has a 10% chance to survive an attack that would KO it with 1 HP.",
+     "phrase": "Holder has a 10% chance to survive an attack that would KO it with 1 HP.",
      "value": 10.0
     }
    ]
@@ -1887,7 +1887,7 @@
     {
      "as_written": "10%",
      "kind": "percent",
-     "phrase": "0% chance to lower the target's Sp.",
+     "phrase": "10% chance to lower the target's Sp.",
      "value": 10.0
     }
    ]
@@ -1901,7 +1901,7 @@
     {
      "as_written": "3/4",
      "kind": "fraction",
-     "phrase": "his Pokemon's allies receive 3/4 damage from other Pokemon's attacks.",
+     "phrase": "This Pokemon's allies receive 3/4 damage from other Pokemon's attacks.",
      "value": 0.75
     }
    ]
@@ -1922,7 +1922,7 @@
     {
      "as_written": "double",
      "kind": "multiplier",
-     "phrase": "his Pokemon's Defense is doubled.",
+     "phrase": "This Pokemon's Defense is doubled.",
      "value": 2.0
     }
    ]
@@ -1936,7 +1936,7 @@
     {
      "as_written": "50%",
      "kind": "percent",
-     "phrase": "ser recovers 50% of the damage dealt.",
+     "phrase": "User recovers 50% of the damage dealt.",
      "value": 50.0
     }
    ]
@@ -1950,13 +1950,13 @@
     {
      "as_written": "1/2",
      "kind": "fraction of max HP",
-     "phrase": "his Pokemon eats Berries at 1/2 max HP or less instead of their usual 1/4 max HP.",
+     "phrase": "This Pokemon eats Berries at 1/2 max HP or less instead of their usual 1/4 max HP.",
      "value": 0.5
     },
     {
      "as_written": "1/4",
      "kind": "fraction of max HP",
-     "phrase": "his Pokemon eats Berries at 1/2 max HP or less instead of their usual 1/4 max HP.",
+     "phrase": "This Pokemon eats Berries at 1/2 max HP or less instead of their usual 1/4 max HP.",
      "value": 0.25
     }
    ]
@@ -1970,7 +1970,7 @@
     {
      "as_written": "1 stages",
      "kind": "stages",
-     "phrase": "okemon making contact with this Pokemon have their Speed lowered by 1 stage.",
+     "phrase": "Pokemon making contact with this Pokemon have their Speed lowered by 1 stage.",
      "value": 1.0
     }
    ]
@@ -1990,7 +1990,7 @@
     {
      "as_written": "5 turns",
      "kind": "turns",
-     "phrase": "turns.",
+     "phrase": "5 turns.",
      "value": 5.0
     }
    ]
@@ -2010,7 +2010,7 @@
     {
      "as_written": "100%",
      "kind": "percent",
-     "phrase": "arget: 100% -1 Def.",
+     "phrase": "Target: 100% -1 Def.",
      "value": 100.0
     }
    ]
@@ -2024,13 +2024,13 @@
     {
      "as_written": "1.67x",
      "kind": "multiplier",
-     "phrase": "turns: no Ground immunities, 1.67x accuracy.",
+     "phrase": "5 turns: no Ground immunities, 1.67x accuracy.",
      "value": 1.67
     },
     {
      "as_written": "5 turns",
      "kind": "turns",
-     "phrase": "turns: no Ground immunities, 1.67x accuracy.",
+     "phrase": "5 turns: no Ground immunities, 1.67x accuracy.",
      "value": 5.0
     }
    ]
@@ -2044,7 +2044,7 @@
     {
      "as_written": "30%",
      "kind": "percent",
-     "phrase": "0% chance to poison the target.",
+     "phrase": "30% chance to poison the target.",
      "value": 30.0
     }
    ]
@@ -2065,7 +2065,7 @@
     {
      "as_written": "1.5x",
      "kind": "multiplier",
-     "phrase": "f this Pokemon is statused, its Attack is 1.5x; ignores burn halving physical damage.",
+     "phrase": "If this Pokemon is statused, its Attack is 1.5x; ignores burn halving physical damage.",
      "value": 1.5
     }
    ]
@@ -2092,7 +2092,7 @@
     {
      "as_written": "half",
      "kind": "multiplier",
-     "phrase": "alves damage taken from a supereffective Dragon-type attack.",
+     "phrase": "Halves damage taken from a supereffective Dragon-type attack.",
      "value": 0.5
     }
    ]
@@ -2131,7 +2131,7 @@
     {
      "as_written": "1.2x",
      "kind": "multiplier",
-     "phrase": "older's Rock-type attacks have 1.2x power.",
+     "phrase": "Holder's Rock-type attacks have 1.2x power.",
      "value": 1.2
     }
    ]
@@ -2145,7 +2145,7 @@
     {
      "as_written": "50%",
      "kind": "percent",
-     "phrase": "f last item used is a Berry, 50% chance to restore it each end of turn.",
+     "phrase": "If last item used is a Berry, 50% chance to restore it each end of turn.",
      "value": 50.0
     },
     {
@@ -2165,7 +2165,7 @@
     {
      "as_written": "1/2",
      "kind": "fraction",
-     "phrase": "as 1/2 recoil.",
+     "phrase": "Has 1/2 recoil.",
      "value": 0.5
     }
    ]
@@ -2179,7 +2179,7 @@
     {
      "as_written": "50%",
      "kind": "percent",
-     "phrase": "eals the target by 50% of its max HP.",
+     "phrase": "Heals the target by 50% of its max HP.",
      "value": 50.0
     }
    ]
@@ -2193,7 +2193,7 @@
     {
      "as_written": "50%",
      "kind": "percent",
-     "phrase": "0% chance this Pokemon's ally has its status cured at the end of each turn.",
+     "phrase": "50% chance this Pokemon's ally has its status cured at the end of each turn.",
      "value": 50.0
     }
    ]
@@ -2207,7 +2207,7 @@
     {
      "as_written": "8 turns",
      "kind": "turns",
-     "phrase": "older's use of Sunny Day lasts 8 turns instead of 5.",
+     "phrase": "Holder's use of Sunny Day lasts 8 turns instead of 5.",
      "value": 8.0
     }
    ]
@@ -2221,7 +2221,7 @@
     {
      "as_written": "10%",
      "kind": "percent",
-     "phrase": "0% chance to burn the foe(s).",
+     "phrase": "10% chance to burn the foe(s).",
      "value": 10.0
     }
    ]
@@ -2248,13 +2248,13 @@
     {
      "as_written": "1/2",
      "kind": "fraction",
-     "phrase": "ire damage against this Pokemon is dealt with 1/2 offensive stat; 1/2 burn damage.",
+     "phrase": "Fire damage against this Pokemon is dealt with 1/2 offensive stat; 1/2 burn damage.",
      "value": 0.5
     },
     {
      "as_written": "1/2",
      "kind": "fraction",
-     "phrase": "ire damage against this Pokemon is dealt with 1/2 offensive stat; 1/2 burn damage.",
+     "phrase": "Fire damage against this Pokemon is dealt with 1/2 offensive stat; 1/2 burn damage.",
      "value": 0.5
     }
    ]
@@ -2268,7 +2268,7 @@
     {
      "as_written": "double",
      "kind": "multiplier",
-     "phrase": "his Pokemon's weight is doubled.",
+     "phrase": "This Pokemon's weight is doubled.",
      "value": 2.0
     }
    ]
@@ -2282,7 +2282,7 @@
     {
      "as_written": "1.5x",
      "kind": "multiplier",
-     "phrase": "ne adjacent ally's move power is 1.5x this turn.",
+     "phrase": "One adjacent ally's move power is 1.5x this turn.",
      "value": 1.5
     }
    ]
@@ -2296,7 +2296,7 @@
     {
      "as_written": "double",
      "kind": "multiplier",
-     "phrase": "ower doubles if the target has a status ailment.",
+     "phrase": "Power doubles if the target has a status ailment.",
      "value": 2.0
     }
    ]
@@ -2310,7 +2310,7 @@
     {
      "as_written": "50%",
      "kind": "percent",
-     "phrase": "ser is hurt by 50% of its max HP if it misses.",
+     "phrase": "User is hurt by 50% of its max HP if it misses.",
      "value": 50.0
     }
    ]
@@ -2324,7 +2324,7 @@
     {
      "as_written": "50%",
      "kind": "percent",
-     "phrase": "ser recovers 50% of the damage dealt.",
+     "phrase": "User recovers 50% of the damage dealt.",
      "value": 50.0
     }
    ]
@@ -2338,7 +2338,7 @@
     {
      "as_written": "1/4",
      "kind": "fraction",
-     "phrase": "n switch-in, this Pokemon restores 1/4 of its ally's maximum HP, rounded down.",
+     "phrase": "On switch-in, this Pokemon restores 1/4 of its ally's maximum HP, rounded down.",
      "value": 0.25
     }
    ]
@@ -2359,7 +2359,7 @@
     {
      "as_written": "double",
      "kind": "multiplier",
-     "phrase": "his Pokemon's Attack is doubled.",
+     "phrase": "This Pokemon's Attack is doubled.",
      "value": 2.0
     }
    ]
@@ -2373,7 +2373,7 @@
     {
      "as_written": "30%",
      "kind": "percent",
-     "phrase": "0% chance to confuse target.",
+     "phrase": "30% chance to confuse target.",
      "value": 30.0
     }
    ]
@@ -2387,13 +2387,13 @@
     {
      "as_written": "1.5x",
      "kind": "multiplier",
-     "phrase": "his Pokemon's Attack is 1.5x and accuracy of its physical attacks is 0.8x.",
+     "phrase": "This Pokemon's Attack is 1.5x and accuracy of its physical attacks is 0.8x.",
      "value": 1.5
     },
     {
      "as_written": "0.8x",
      "kind": "multiplier",
-     "phrase": "his Pokemon's Attack is 1.5x and accuracy of its physical attacks is 0.8x.",
+     "phrase": "This Pokemon's Attack is 1.5x and accuracy of its physical attacks is 0.8x.",
      "value": 0.8
     }
    ]
@@ -2407,7 +2407,7 @@
     {
      "as_written": "10%",
      "kind": "percent",
-     "phrase": "0% chance to freeze the target.",
+     "phrase": "10% chance to freeze the target.",
      "value": 10.0
     }
    ]
@@ -2421,7 +2421,7 @@
     {
      "as_written": "1/16",
      "kind": "fraction of max HP",
-     "phrase": "f Snow is active, this Pokemon heals 1/16 of its max HP each turn.",
+     "phrase": "If Snow is active, this Pokemon heals 1/16 of its max HP each turn.",
      "value": 0.0625
     }
    ]
@@ -2435,7 +2435,7 @@
     {
      "as_written": "10%",
      "kind": "percent",
-     "phrase": "0% chance to freeze.",
+     "phrase": "10% chance to freeze.",
      "value": 10.0
     },
     {
@@ -2455,7 +2455,7 @@
     {
      "as_written": "10%",
      "kind": "percent",
-     "phrase": "0% chance to freeze the target.",
+     "phrase": "10% chance to freeze the target.",
      "value": 10.0
     }
    ]
@@ -2469,7 +2469,7 @@
     {
      "as_written": "30%",
      "kind": "percent",
-     "phrase": "0% chance to make the target flinch.",
+     "phrase": "30% chance to make the target flinch.",
      "value": 30.0
     }
    ]
@@ -2483,7 +2483,7 @@
     {
      "as_written": "8 turns",
      "kind": "turns",
-     "phrase": "older's use of Snowscape lasts 8 turns instead of 5.",
+     "phrase": "Holder's use of Snowscape lasts 8 turns instead of 5.",
      "value": 8.0
     }
    ]
@@ -2497,7 +2497,7 @@
     {
      "as_written": "100%",
      "kind": "percent",
-     "phrase": "00% chance to lower the foe(s) Speed by 1.",
+     "phrase": "100% chance to lower the foe(s) Speed by 1.",
      "value": 100.0
     }
    ]
@@ -2517,7 +2517,7 @@
     {
      "as_written": "30%",
      "kind": "percent",
-     "phrase": "0% burn.",
+     "phrase": "30% burn.",
      "value": 30.0
     }
    ]
@@ -2531,7 +2531,7 @@
     {
      "as_written": "100%",
      "kind": "percent",
-     "phrase": "00% chance to burn the target.",
+     "phrase": "100% chance to burn the target.",
      "value": 100.0
     }
    ]
@@ -2545,7 +2545,7 @@
     {
      "as_written": "5 turns",
      "kind": "turns",
-     "phrase": "raps and damages the target for 4-5 turns.",
+     "phrase": "Traps and damages the target for 4-5 turns.",
      "value": 5.0
     }
    ]
@@ -2559,7 +2559,7 @@
     {
      "as_written": "1/16",
      "kind": "fraction of max HP",
-     "phrase": "raps/grounds user; heals 1/16 max HP per turn.",
+     "phrase": "Traps/grounds user; heals 1/16 max HP per turn.",
      "value": 0.0625
     }
    ]
@@ -2573,7 +2573,7 @@
     {
      "as_written": "1 stages",
      "kind": "stages",
-     "phrase": "n switch-in, this Pokemon lowers the Attack of opponents by 1 stage.",
+     "phrase": "On switch-in, this Pokemon lowers the Attack of opponents by 1 stage.",
      "value": 1.0
     }
    ]
@@ -2587,7 +2587,7 @@
     {
      "as_written": "half",
      "kind": "multiplier",
-     "phrase": "older is grounded, Speed halved.",
+     "phrase": "Holder is grounded, Speed halved.",
      "value": 0.5
     }
    ]
@@ -2626,7 +2626,7 @@
     {
      "as_written": "1.2x",
      "kind": "multiplier",
-     "phrase": "his Pokemon's punch-based attacks have 1.2x power.",
+     "phrase": "This Pokemon's punch-based attacks have 1.2x power.",
      "value": 1.2
     }
    ]
@@ -2640,7 +2640,7 @@
     {
      "as_written": "20%",
      "kind": "percent",
-     "phrase": "0% chance to make the target flinch.",
+     "phrase": "20% chance to make the target flinch.",
      "value": 20.0
     }
    ]
@@ -2654,7 +2654,7 @@
     {
      "as_written": "30%",
      "kind": "percent",
-     "phrase": "0% chance to lower the target's Defense by 1.",
+     "phrase": "30% chance to lower the target's Defense by 1.",
      "value": 30.0
     }
    ]
@@ -2668,7 +2668,7 @@
     {
      "as_written": "1 stages",
      "kind": "stages",
-     "phrase": "his Pokemon's Attack is raised by 1 stage after it is damaged by a Dark-type move.",
+     "phrase": "This Pokemon's Attack is raised by 1 stage after it is damaged by a Dark-type move.",
      "value": 1.0
     }
    ]
@@ -2695,7 +2695,7 @@
     {
      "as_written": "half",
      "kind": "multiplier",
-     "phrase": "alves damage taken from a supereffective Ghost-type attack.",
+     "phrase": "Halves damage taken from a supereffective Ghost-type attack.",
      "value": 0.5
     }
    ]
@@ -2709,7 +2709,7 @@
     {
      "as_written": "half",
      "kind": "multiplier",
-     "phrase": "alves damage taken from a supereffective Poison-type attack.",
+     "phrase": "Halves damage taken from a supereffective Poison-type attack.",
      "value": 0.5
     }
    ]
@@ -2723,7 +2723,7 @@
     {
      "as_written": "10%",
      "kind": "percent",
-     "phrase": "older's attacks without a chance to flinch gain a 10% chance to flinch.",
+     "phrase": "Holder's attacks without a chance to flinch gain a 10% chance to flinch.",
      "value": 10.0
     }
    ]
@@ -2737,7 +2737,7 @@
     {
      "as_written": "1.5x",
      "kind": "multiplier",
-     "phrase": ".5x damage if foe holds an item.",
+     "phrase": "1.5x damage if foe holds an item.",
      "value": 1.5
     }
    ]
@@ -2751,7 +2751,7 @@
     {
      "as_written": "2x",
      "kind": "multiplier",
-     "phrase": "x power if the user had a stat lowered this turn.",
+     "phrase": "2x power if the user had a stat lowered this turn.",
      "value": 2.0
     }
    ]
@@ -2765,7 +2765,7 @@
     {
      "as_written": "30%",
      "kind": "percent",
-     "phrase": "0% chance to burn adjacent Pokemon.",
+     "phrase": "30% chance to burn adjacent Pokemon.",
      "value": 30.0
     }
    ]
@@ -2779,7 +2779,7 @@
     {
      "as_written": "50%",
      "kind": "percent",
-     "phrase": "ser recovers 50% of the damage dealt.",
+     "phrase": "User recovers 50% of the damage dealt.",
      "value": 50.0
     }
    ]
@@ -2793,7 +2793,7 @@
     {
      "as_written": "1/8",
      "kind": "fraction",
-     "phrase": "/8 of target's HP is restored to user every turn.",
+     "phrase": "1/8 of target's HP is restored to user every turn.",
      "value": 0.125
     }
    ]
@@ -2807,7 +2807,7 @@
     {
      "as_written": "1/16",
      "kind": "fraction of max HP",
-     "phrase": "t the end of every turn, holder restores 1/16 of its max HP.",
+     "phrase": "At the end of every turn, holder restores 1/16 of its max HP.",
      "value": 0.0625
     }
    ]
@@ -2821,7 +2821,7 @@
     {
      "as_written": "1/4",
      "kind": "fraction",
-     "phrase": "eals the user and its allies by 1/4 their max HP.",
+     "phrase": "Heals the user and its allies by 1/4 their max HP.",
      "value": 0.25
     }
    ]
@@ -2848,13 +2848,13 @@
     {
      "as_written": "1.3x",
      "kind": "multiplier",
-     "phrase": "older's attacks do 1.3x damage, and it loses 1/10 its max HP after the attack.",
+     "phrase": "Holder's attacks do 1.3x damage, and it loses 1/10 its max HP after the attack.",
      "value": 1.3
     },
     {
      "as_written": "1/10",
      "kind": "fraction of max HP",
-     "phrase": "older's attacks do 1.3x damage, and it loses 1/10 its max HP after the attack.",
+     "phrase": "Holder's attacks do 1.3x damage, and it loses 1/10 its max HP after the attack.",
      "value": 0.1
     }
    ]
@@ -2882,7 +2882,7 @@
     {
      "as_written": "8 turns",
      "kind": "turns",
-     "phrase": "older's use of Aurora Veil, Light Screen, or Reflect lasts 8 turns instead of 5.",
+     "phrase": "Holder's use of Aurora Veil, Light Screen, or Reflect lasts 8 turns instead of 5.",
      "value": 8.0
     }
    ]
@@ -2896,7 +2896,7 @@
     {
      "as_written": "half",
      "kind": "multiplier",
-     "phrase": "his Pokemon's weight is halved.",
+     "phrase": "This Pokemon's weight is halved.",
      "value": 0.5
     }
    ]
@@ -2910,13 +2910,13 @@
     {
      "as_written": "5 turns",
      "kind": "turns",
-     "phrase": "or 5 turns, special damage to allies is halved.",
+     "phrase": "For 5 turns, special damage to allies is halved.",
      "value": 5.0
     },
     {
      "as_written": "half",
      "kind": "multiplier",
-     "phrase": "or 5 turns, special damage to allies is halved.",
+     "phrase": "For 5 turns, special damage to allies is halved.",
      "value": 0.5
     }
    ]
@@ -2930,7 +2930,7 @@
     {
      "as_written": "1/2",
      "kind": "fraction",
-     "phrase": "as 1/2 recoil.",
+     "phrase": "Has 1/2 recoil.",
      "value": 0.5
     }
    ]
@@ -2944,7 +2944,7 @@
     {
      "as_written": "20%",
      "kind": "percent",
-     "phrase": "0% chance to lower the target's Defense by 1.",
+     "phrase": "20% chance to lower the target's Defense by 1.",
      "value": 20.0
     }
    ]
@@ -2958,7 +2958,7 @@
     {
      "as_written": "100%",
      "kind": "percent",
-     "phrase": "00% chance to lower the target's Speed by 1.",
+     "phrase": "100% chance to lower the target's Speed by 1.",
      "value": 100.0
     }
    ]
@@ -2972,7 +2972,7 @@
     {
      "as_written": "100%",
      "kind": "percent",
-     "phrase": "00% chance to lower the target's Sp.",
+     "phrase": "100% chance to lower the target's Sp.",
      "value": 100.0
     }
    ]
@@ -2986,7 +2986,7 @@
     {
      "as_written": "100%",
      "kind": "percent",
-     "phrase": "00% chance to lower the target's Attack by 1.",
+     "phrase": "100% chance to lower the target's Attack by 1.",
      "value": 100.0
     }
    ]
@@ -3000,7 +3000,7 @@
     {
      "as_written": "5 turns",
      "kind": "turns",
-     "phrase": "or 5 turns, all held items have no effect.",
+     "phrase": "For 5 turns, all held items have no effect.",
      "value": 5.0
     }
    ]
@@ -3039,7 +3039,7 @@
     {
      "as_written": "1.2x",
      "kind": "multiplier",
-     "phrase": "older's Electric-type attacks have 1.2x power.",
+     "phrase": "Holder's Electric-type attacks have 1.2x power.",
      "value": 1.2
     }
    ]
@@ -3053,7 +3053,7 @@
     {
      "as_written": "5 turns",
      "kind": "turns",
-     "phrase": "or 5 turns, the user has immunity to Ground.",
+     "phrase": "For 5 turns, the user has immunity to Ground.",
      "value": 5.0
     }
    ]
@@ -3079,7 +3079,7 @@
     {
      "as_written": "20%",
      "kind": "percent",
-     "phrase": "0% burn.",
+     "phrase": "20% burn.",
      "value": 20.0
     },
     {
@@ -3124,7 +3124,7 @@
     {
      "as_written": "1.5x",
      "kind": "multiplier",
-     "phrase": "his Pokemon's pulse moves have 1.5x power.",
+     "phrase": "This Pokemon's pulse moves have 1.5x power.",
      "value": 1.5
     },
     {
@@ -3144,7 +3144,7 @@
     {
      "as_written": "1.5x",
      "kind": "multiplier",
-     "phrase": "f hit by an attack, returns 1.5x damage.",
+     "phrase": "If hit by an attack, returns 1.5x damage.",
      "value": 1.5
     }
    ]
@@ -3183,7 +3183,7 @@
     {
      "as_written": "1.2x",
      "kind": "multiplier",
-     "phrase": "older's Steel-type attacks have 1.2x power.",
+     "phrase": "Holder's Steel-type attacks have 1.2x power.",
      "value": 1.2
     }
    ]
@@ -3197,7 +3197,7 @@
     {
      "as_written": "20%",
      "kind": "percent",
-     "phrase": "0% chance to raise the user's Attack by 1.",
+     "phrase": "20% chance to raise the user's Attack by 1.",
      "value": 20.0
     }
    ]
@@ -3270,7 +3270,7 @@
     {
      "as_written": "1.2x",
      "kind": "multiplier",
-     "phrase": "older's Grass-type attacks have 1.2x power.",
+     "phrase": "Holder's Grass-type attacks have 1.2x power.",
      "value": 1.2
     }
    ]
@@ -3284,7 +3284,7 @@
     {
      "as_written": "double",
      "kind": "multiplier",
-     "phrase": "f hit by special attack, returns double damage.",
+     "phrase": "If hit by special attack, returns double damage.",
      "value": 2.0
     }
    ]
@@ -3312,7 +3312,7 @@
     {
      "as_written": "5 turns",
      "kind": "turns",
-     "phrase": "turns.",
+     "phrase": "5 turns.",
      "value": 5.0
     }
    ]
@@ -3326,7 +3326,7 @@
     {
      "as_written": "10%",
      "kind": "percent",
-     "phrase": "0% chance to lower the target's Sp.",
+     "phrase": "10% chance to lower the target's Sp.",
      "value": 10.0
     }
    ]
@@ -3340,7 +3340,7 @@
     {
      "as_written": "1 stages",
      "kind": "stages",
-     "phrase": "his Pokemon's Speed is raised 1 stage if hit by an Electric move; Electric immunity.",
+     "phrase": "This Pokemon's Speed is raised 1 stage if hit by an Electric move; Electric immunity.",
      "value": 1.0
     }
    ]
@@ -3354,7 +3354,7 @@
     {
      "as_written": "30%",
      "kind": "percent",
-     "phrase": "0% chance to make the target flinch.",
+     "phrase": "30% chance to make the target flinch.",
      "value": 30.0
     }
    ]
@@ -3368,7 +3368,7 @@
     {
      "as_written": "1 stages",
      "kind": "stages",
-     "phrase": "his Pokemon's Attack is raised by 1 stage if it attacks and KOes another Pokemon.",
+     "phrase": "This Pokemon's Attack is raised by 1 stage if it attacks and KOes another Pokemon.",
      "value": 1.0
     }
    ]
@@ -3382,7 +3382,7 @@
     {
      "as_written": "100%",
      "kind": "percent",
-     "phrase": "00% chance to lower the target's Speed by 1.",
+     "phrase": "100% chance to lower the target's Speed by 1.",
      "value": 100.0
     }
    ]
@@ -3396,7 +3396,7 @@
     {
      "as_written": "100%",
      "kind": "percent",
-     "phrase": "00% chance to lower the target's accuracy by 1.",
+     "phrase": "100% chance to lower the target's accuracy by 1.",
      "value": 100.0
     }
    ]
@@ -3410,7 +3410,7 @@
     {
      "as_written": "30%",
      "kind": "percent",
-     "phrase": "0% chance to lower the foe(s) accuracy by 1.",
+     "phrase": "30% chance to lower the foe(s) accuracy by 1.",
      "value": 30.0
     }
    ]
@@ -3437,7 +3437,7 @@
     {
      "as_written": "half",
      "kind": "multiplier",
-     "phrase": "f this Pokemon is at full HP, damage taken from attacks is halved.",
+     "phrase": "If this Pokemon is at full HP, damage taken from attacks is halved.",
      "value": 0.5
     }
    ]
@@ -3464,7 +3464,7 @@
     {
      "as_written": "1.1x",
      "kind": "multiplier",
-     "phrase": "older's physical attacks have 1.1x power.",
+     "phrase": "Holder's physical attacks have 1.1x power.",
      "value": 1.1
     }
    ]
@@ -3503,7 +3503,7 @@
     {
      "as_written": "1.2x",
      "kind": "multiplier",
-     "phrase": "older's Water-type attacks have 1.2x power.",
+     "phrase": "Holder's Water-type attacks have 1.2x power.",
      "value": 1.2
     }
    ]
@@ -3517,7 +3517,7 @@
     {
      "as_written": "100%",
      "kind": "percent",
-     "phrase": "00% chance to lower the target's Sp.",
+     "phrase": "100% chance to lower the target's Sp.",
      "value": 100.0
     }
    ]
@@ -3556,7 +3556,7 @@
     {
      "as_written": "1.2x",
      "kind": "multiplier",
-     "phrase": "older's Ice-type attacks have 1.2x power.",
+     "phrase": "Holder's Ice-type attacks have 1.2x power.",
      "value": 1.2
     }
    ]
@@ -3570,7 +3570,7 @@
     {
      "as_written": "40%",
      "kind": "percent",
-     "phrase": "0% chance to lower the target's accuracy by 1.",
+     "phrase": "40% chance to lower the target's accuracy by 1.",
      "value": 40.0
     }
    ]
@@ -3614,7 +3614,7 @@
     {
      "as_written": "100%",
      "kind": "percent",
-     "phrase": "00% chance to paralyze the target.",
+     "phrase": "100% chance to paralyze the target.",
      "value": 100.0
     }
    ]
@@ -3641,7 +3641,7 @@
     {
      "as_written": "half",
      "kind": "multiplier",
-     "phrase": "alves damage taken from a supereffective Fire-type attack.",
+     "phrase": "Halves damage taken from a supereffective Fire-type attack.",
      "value": 0.5
     }
    ]
@@ -3655,7 +3655,7 @@
     {
      "as_written": "1/2",
      "kind": "fraction of max HP",
-     "phrase": "estores 10 HP when at 1/2 max HP or less.",
+     "phrase": "Restores 10 HP when at 1/2 max HP or less.",
      "value": 0.5
     }
    ]
@@ -3669,7 +3669,7 @@
     {
      "as_written": "3 turns",
      "kind": "turns",
-     "phrase": "asts 2-3 turns.",
+     "phrase": "Lasts 2-3 turns.",
      "value": 3.0
     }
    ]
@@ -3683,13 +3683,13 @@
     {
      "as_written": "1.5x",
      "kind": "multiplier",
-     "phrase": "t 1/3 or less of its max HP, this Pokemon's offensive stat is 1.5x with Grass attacks.",
+     "phrase": "At 1/3 or less of its max HP, this Pokemon's offensive stat is 1.5x with Grass attacks.",
      "value": 1.5
     },
     {
      "as_written": "1/3",
      "kind": "fraction",
-     "phrase": "t 1/3 or less of its max HP, this Pokemon's offensive stat is 1.5x with Grass attacks.",
+     "phrase": "At 1/3 or less of its max HP, this Pokemon's offensive stat is 1.5x with Grass attacks.",
      "value": 0.333333
     }
    ]
@@ -3703,7 +3703,7 @@
     {
      "as_written": "50%",
      "kind": "percent",
-     "phrase": "ser recovers 50% of the damage dealt.",
+     "phrase": "User recovers 50% of the damage dealt.",
      "value": 50.0
     }
    ]
@@ -3730,7 +3730,7 @@
     {
      "as_written": "half",
      "kind": "multiplier",
-     "phrase": "alves damage taken from a supereffective Water-type attack.",
+     "phrase": "Halves damage taken from a supereffective Water-type attack.",
      "value": 0.5
     }
    ]
@@ -3744,7 +3744,7 @@
     {
      "as_written": "half",
      "kind": "multiplier",
-     "phrase": "alves damage taken from a supereffective Psychic-type attack.",
+     "phrase": "Halves damage taken from a supereffective Psychic-type attack.",
      "value": 0.5
     }
    ]
@@ -3758,7 +3758,7 @@
     {
      "as_written": "double",
      "kind": "multiplier",
-     "phrase": "ower doubles if the user moves after the target.",
+     "phrase": "Power doubles if the user moves after the target.",
      "value": 2.0
     }
    ]
@@ -3772,7 +3772,7 @@
     {
      "as_written": "3 turns",
      "kind": "turns",
-     "phrase": "ll active Pokemon will faint in 3 turns.",
+     "phrase": "All active Pokemon will faint in 3 turns.",
      "value": 3.0
     }
    ]
@@ -3786,7 +3786,7 @@
     {
      "as_written": "3 turns",
      "kind": "turns",
-     "phrase": "asts 2-3 turns.",
+     "phrase": "Lasts 2-3 turns.",
      "value": 3.0
     }
    ]
@@ -3800,7 +3800,7 @@
     {
      "as_written": "1/4",
      "kind": "fraction",
-     "phrase": "his Pokemon's contact moves ignore a target's protection and deal 1/4 the usual damage.",
+     "phrase": "This Pokemon's contact moves ignore a target's protection and deal 1/4 the usual damage.",
      "value": 0.25
     }
    ]
@@ -3814,7 +3814,7 @@
     {
      "as_written": "1.2x",
      "kind": "multiplier",
-     "phrase": "his Pokemon's Normal-type moves become Fairy type and have 1.2x power.",
+     "phrase": "This Pokemon's Normal-type moves become Fairy type and have 1.2x power.",
      "value": 1.2
     }
    ]
@@ -3828,7 +3828,7 @@
     {
      "as_written": "10%",
      "kind": "percent",
-     "phrase": "0% chance to lower the target's Attack by 1.",
+     "phrase": "10% chance to lower the target's Attack by 1.",
      "value": 10.0
     }
    ]
@@ -3856,7 +3856,7 @@
     {
      "as_written": "1.2x",
      "kind": "multiplier",
-     "phrase": "older's Poison-type attacks have 1.2x power.",
+     "phrase": "Holder's Poison-type attacks have 1.2x power.",
      "value": 1.2
     }
    ]
@@ -3870,7 +3870,7 @@
     {
      "as_written": "50%",
      "kind": "percent",
-     "phrase": "0% chance to badly poison the target.",
+     "phrase": "50% chance to badly poison the target.",
      "value": 50.0
     }
    ]
@@ -3884,7 +3884,7 @@
     {
      "as_written": "1/8",
      "kind": "fraction of max HP",
-     "phrase": "his Pokemon is healed by 1/8 of its max HP each turn when poisoned; no HP loss.",
+     "phrase": "This Pokemon is healed by 1/8 of its max HP each turn when poisoned; no HP loss.",
      "value": 0.125
     }
    ]
@@ -3898,7 +3898,7 @@
     {
      "as_written": "30%",
      "kind": "percent",
-     "phrase": "0% chance to poison the target.",
+     "phrase": "30% chance to poison the target.",
      "value": 30.0
     }
    ]
@@ -3912,7 +3912,7 @@
     {
      "as_written": "30%",
      "kind": "percent",
-     "phrase": "0% chance a Pokemon making contact with this Pokemon will be poisoned.",
+     "phrase": "30% chance a Pokemon making contact with this Pokemon will be poisoned.",
      "value": 30.0
     }
    ]
@@ -3926,7 +3926,7 @@
     {
      "as_written": "30%",
      "kind": "percent",
-     "phrase": "his Pokemon's contact moves have a 30% chance of poisoning.",
+     "phrase": "This Pokemon's contact moves have a 30% chance of poisoning.",
      "value": 30.0
     }
    ]
@@ -3940,7 +3940,7 @@
     {
      "as_written": "50%",
      "kind": "percent",
-     "phrase": "f the target is an ally, heals 50% of its max HP.",
+     "phrase": "If the target is an ally, heals 50% of its max HP.",
      "value": 50.0
     }
    ]
@@ -3954,7 +3954,7 @@
     {
      "as_written": "100%",
      "kind": "percent",
-     "phrase": "00% chance to lower the target's Speed by 1.",
+     "phrase": "100% chance to lower the target's Speed by 1.",
      "value": 100.0
     }
    ]
@@ -3968,7 +3968,7 @@
     {
      "as_written": "10%",
      "kind": "percent",
-     "phrase": "0% chance to lower the target's Sp.",
+     "phrase": "10% chance to lower the target's Sp.",
      "value": 10.0
     }
    ]
@@ -3982,7 +3982,7 @@
     {
      "as_written": "2 turns",
      "kind": "turns",
-     "phrase": "or 2 turns, the target is prevented from healing.",
+     "phrase": "For 2 turns, the target is prevented from healing.",
      "value": 2.0
     }
    ]
@@ -3996,7 +3996,7 @@
     {
      "as_written": "5 turns",
      "kind": "turns",
-     "phrase": "turns.",
+     "phrase": "5 turns.",
      "value": 5.0
     }
    ]
@@ -4010,7 +4010,7 @@
     {
      "as_written": "100%",
      "kind": "percent",
-     "phrase": "00% chance to raise the user's Defense by 1.",
+     "phrase": "100% chance to raise the user's Defense by 1.",
      "value": 100.0
     }
    ]
@@ -4073,7 +4073,7 @@
     {
      "as_written": "double",
      "kind": "multiplier",
-     "phrase": "his Pokemon's Attack is doubled.",
+     "phrase": "This Pokemon's Attack is doubled.",
      "value": 2.0
     }
    ]
@@ -4100,7 +4100,7 @@
     {
      "as_written": "half",
      "kind": "multiplier",
-     "phrase": "host damage to this Pokemon dealt with a halved offensive stat; can't be statused.",
+     "phrase": "Ghost damage to this Pokemon dealt with a halved offensive stat; can't be statused.",
      "value": 0.5
     }
    ]
@@ -4114,7 +4114,7 @@
     {
      "as_written": "20%",
      "kind": "percent",
-     "phrase": "ach turn, holder has a 20% chance to move first in its priority bracket.",
+     "phrase": "Each turn, holder has a 20% chance to move first in its priority bracket.",
      "value": 20.0
     }
    ]
@@ -4128,7 +4128,7 @@
     {
      "as_written": "30%",
      "kind": "percent",
-     "phrase": "his Pokemon has a 30% chance to move first in its priority bracket with attacking moves.",
+     "phrase": "This Pokemon has a 30% chance to move first in its priority bracket with attacking moves.",
      "value": 30.0
     }
    ]
@@ -4142,7 +4142,7 @@
     {
      "as_written": "1.5x",
      "kind": "multiplier",
-     "phrase": "f this Pokemon is statused, its Speed is 1.5x; ignores Speed drop from paralysis.",
+     "phrase": "If this Pokemon is statused, its Speed is 1.5x; ignores Speed drop from paralysis.",
      "value": 1.5
     }
    ]
@@ -4156,7 +4156,7 @@
     {
      "as_written": "3 turns",
      "kind": "turns",
-     "phrase": "asts 2-3 turns.",
+     "phrase": "Lasts 2-3 turns.",
      "value": 3.0
     }
    ]
@@ -4170,7 +4170,7 @@
     {
      "as_written": "5 turns",
      "kind": "turns",
-     "phrase": "or 5 turns, heavy rain powers Water moves.",
+     "phrase": "For 5 turns, heavy rain powers Water moves.",
      "value": 5.0
     }
    ]
@@ -4184,7 +4184,7 @@
     {
      "as_written": "1/16",
      "kind": "fraction of max HP",
-     "phrase": "f Rain is active, this Pokemon heals 1/16 of its max HP each turn.",
+     "phrase": "If Rain is active, this Pokemon heals 1/16 of its max HP each turn.",
      "value": 0.0625
     }
    ]
@@ -4198,7 +4198,7 @@
     {
      "as_written": "50%",
      "kind": "percent",
-     "phrase": "0% chance to lower the target's Defense by 1.",
+     "phrase": "50% chance to lower the target's Defense by 1.",
      "value": 50.0
     }
    ]
@@ -4237,7 +4237,7 @@
     {
      "as_written": "1.2x",
      "kind": "multiplier",
-     "phrase": "his Pokemon's attacks with recoil or crash damage have 1.2x power; not Struggle.",
+     "phrase": "This Pokemon's attacks with recoil or crash damage have 1.2x power; not Struggle.",
      "value": 1.2
     }
    ]
@@ -4251,7 +4251,7 @@
     {
      "as_written": "50%",
      "kind": "percent",
-     "phrase": "eals the user by 50% of its max HP.",
+     "phrase": "Heals the user by 50% of its max HP.",
      "value": 50.0
     }
    ]
@@ -4265,13 +4265,13 @@
     {
      "as_written": "5 turns",
      "kind": "turns",
-     "phrase": "or 5 turns, physical damage to allies is halved.",
+     "phrase": "For 5 turns, physical damage to allies is halved.",
      "value": 5.0
     },
     {
      "as_written": "half",
      "kind": "multiplier",
-     "phrase": "or 5 turns, physical damage to allies is halved.",
+     "phrase": "For 5 turns, physical damage to allies is halved.",
      "value": 0.5
     }
    ]
@@ -4285,7 +4285,7 @@
     {
      "as_written": "1.2x",
      "kind": "multiplier",
-     "phrase": "his Pokemon's Normal-type moves become Ice type and have 1.2x power.",
+     "phrase": "This Pokemon's Normal-type moves become Ice type and have 1.2x power.",
      "value": 1.2
     }
    ]
@@ -4299,7 +4299,7 @@
     {
      "as_written": "1/3",
      "kind": "fraction",
-     "phrase": "his Pokemon restores 1/3 of its maximum HP, rounded down, when it switches out.",
+     "phrase": "This Pokemon restores 1/3 of its maximum HP, rounded down, when it switches out.",
      "value": 0.333333
     }
    ]
@@ -4313,7 +4313,7 @@
     {
      "as_written": "2 turns",
      "kind": "turns",
-     "phrase": "ser sleeps 2 turns and restores HP and status.",
+     "phrase": "User sleeps 2 turns and restores HP and status.",
      "value": 2.0
     }
    ]
@@ -4340,7 +4340,7 @@
     {
      "as_written": "half",
      "kind": "multiplier",
-     "phrase": "alves damage taken from a supereffective Grass-type attack.",
+     "phrase": "Halves damage taken from a supereffective Grass-type attack.",
      "value": 0.5
     }
    ]
@@ -4354,7 +4354,7 @@
     {
      "as_written": "double",
      "kind": "multiplier",
-     "phrase": "hen this Pokemon eats certain Berries, the effects are doubled.",
+     "phrase": "When this Pokemon eats certain Berries, the effects are doubled.",
      "value": 2.0
     }
    ]
@@ -4368,7 +4368,7 @@
     {
      "as_written": "2x",
      "kind": "multiplier",
-     "phrase": "x power if target is grounded in Electric Terrain.",
+     "phrase": "2x power if target is grounded in Electric Terrain.",
      "value": 2.0
     }
    ]
@@ -4395,13 +4395,13 @@
     {
      "as_written": "1.25x",
      "kind": "multiplier",
-     "phrase": "his Pokemon's attacks do 1.25x on same gender targets; 0.75x on opposite gender.",
+     "phrase": "This Pokemon's attacks do 1.25x on same gender targets; 0.75x on opposite gender.",
      "value": 1.25
     },
     {
      "as_written": "0.75x",
      "kind": "multiplier",
-     "phrase": "his Pokemon's attacks do 1.25x on same gender targets; 0.75x on opposite gender.",
+     "phrase": "This Pokemon's attacks do 1.25x on same gender targets; 0.75x on opposite gender.",
      "value": 0.75
     }
    ]
@@ -4415,7 +4415,7 @@
     {
      "as_written": "30%",
      "kind": "percent",
-     "phrase": "0% chance to make the foe(s) flinch.",
+     "phrase": "30% chance to make the foe(s) flinch.",
      "value": 30.0
     }
    ]
@@ -4429,7 +4429,7 @@
     {
      "as_written": "100%",
      "kind": "percent",
-     "phrase": "00% chance to lower the target's Speed by 1.",
+     "phrase": "100% chance to lower the target's Speed by 1.",
      "value": 100.0
     }
    ]
@@ -4443,7 +4443,7 @@
     {
      "as_written": "50%",
      "kind": "percent",
-     "phrase": "eals 50% HP.",
+     "phrase": "Heals 50% HP.",
      "value": 50.0
     }
    ]
@@ -4470,7 +4470,7 @@
     {
      "as_written": "half",
      "kind": "multiplier",
-     "phrase": "alves damage taken from a supereffective Fairy-type attack.",
+     "phrase": "Halves damage taken from a supereffective Fairy-type attack.",
      "value": 0.5
     }
    ]
@@ -4484,7 +4484,7 @@
     {
      "as_written": "1/8",
      "kind": "fraction",
-     "phrase": "okemon making contact with this Pokemon lose 1/8 of their max HP.",
+     "phrase": "Pokemon making contact with this Pokemon lose 1/8 of their max HP.",
      "value": 0.125
     }
    ]
@@ -4498,7 +4498,7 @@
     {
      "as_written": "double",
      "kind": "multiplier",
-     "phrase": "ower doubles if others used Round this turn.",
+     "phrase": "Power doubles if others used Round this turn.",
      "value": 2.0
     }
    ]
@@ -4512,7 +4512,7 @@
     {
      "as_written": "5 turns",
      "kind": "turns",
-     "phrase": "or 5 turns, protects user's party from status.",
+     "phrase": "For 5 turns, protects user's party from status.",
      "value": 5.0
     }
    ]
@@ -4526,13 +4526,13 @@
     {
      "as_written": "1/16",
      "kind": "fraction of max HP",
-     "phrase": "eals 1/16 max HP each turn; 1/8 on Steel, Water.",
+     "phrase": "Deals 1/16 max HP each turn; 1/8 on Steel, Water.",
      "value": 0.0625
     },
     {
      "as_written": "1/8",
      "kind": "fraction",
-     "phrase": "eals 1/16 max HP each turn; 1/8 on Steel, Water.",
+     "phrase": "Deals 1/16 max HP each turn; 1/8 on Steel, Water.",
      "value": 0.125
     }
    ]
@@ -4546,7 +4546,7 @@
     {
      "as_written": "1.3x",
      "kind": "multiplier",
-     "phrase": "his Pokemon's Ground/Rock/Steel attacks do 1.3x in Sandstorm; immunity to it.",
+     "phrase": "This Pokemon's Ground/Rock/Steel attacks do 1.3x in Sandstorm; immunity to it.",
      "value": 1.3
     }
    ]
@@ -4560,7 +4560,7 @@
     {
      "as_written": "double",
      "kind": "multiplier",
-     "phrase": "f Sandstorm is active, this Pokemon's Speed is doubled; immunity to Sandstorm.",
+     "phrase": "If Sandstorm is active, this Pokemon's Speed is doubled; immunity to Sandstorm.",
      "value": 2.0
     }
    ]
@@ -4574,7 +4574,7 @@
     {
      "as_written": "5 turns",
      "kind": "turns",
-     "phrase": "raps and damages the target for 4-5 turns.",
+     "phrase": "Traps and damages the target for 4-5 turns.",
      "value": 5.0
     }
    ]
@@ -4588,7 +4588,7 @@
     {
      "as_written": "1.25x",
      "kind": "multiplier",
-     "phrase": "f Sandstorm is active, this Pokemon's evasiveness is 1.25x; immunity to Sandstorm.",
+     "phrase": "If Sandstorm is active, this Pokemon's evasiveness is 1.25x; immunity to Sandstorm.",
      "value": 1.25
     }
    ]
@@ -4608,7 +4608,7 @@
     {
      "as_written": "5 turns",
      "kind": "turns",
-     "phrase": "or 5 turns, a sandstorm rages.",
+     "phrase": "For 5 turns, a sandstorm rages.",
      "value": 5.0
     }
    ]
@@ -4622,7 +4622,7 @@
     {
      "as_written": "1 stages",
      "kind": "stages",
-     "phrase": "his Pokemon's Attack is raised 1 stage if hit by a Grass move; Grass immunity.",
+     "phrase": "This Pokemon's Attack is raised 1 stage if hit by a Grass move; Grass immunity.",
      "value": 1.0
     }
    ]
@@ -4636,7 +4636,7 @@
     {
      "as_written": "30%",
      "kind": "percent",
-     "phrase": "0% chance to burn the target.",
+     "phrase": "30% chance to burn the target.",
      "value": 30.0
     }
    ]
@@ -4650,7 +4650,7 @@
     {
      "as_written": "1 stages",
      "kind": "stages",
-     "phrase": "older's critical hit ratio is raised by 1 stage.",
+     "phrase": "Holder's critical hit ratio is raised by 1 stage.",
      "value": 1.0
     }
    ]
@@ -4664,7 +4664,7 @@
     {
      "as_written": "30%",
      "kind": "percent",
-     "phrase": "0% chance to burn the target.",
+     "phrase": "30% chance to burn the target.",
      "value": 30.0
     }
    ]
@@ -4678,7 +4678,7 @@
     {
      "as_written": "20%",
      "kind": "percent",
-     "phrase": "0% chance to lower the target's Sp.",
+     "phrase": "20% chance to lower the target's Sp.",
      "value": 20.0
     }
    ]
@@ -4717,7 +4717,7 @@
     {
      "as_written": "1.2x",
      "kind": "multiplier",
-     "phrase": "older's Flying-type attacks have 1.2x power.",
+     "phrase": "Holder's Flying-type attacks have 1.2x power.",
      "value": 1.2
     }
    ]
@@ -4761,7 +4761,7 @@
     {
      "as_written": "33%",
      "kind": "percent",
-     "phrase": "his Pokemon has a 33% chance to have its status cured at the end of each turn.",
+     "phrase": "This Pokemon has a 33% chance to have its status cured at the end of each turn.",
      "value": 33.0
     }
    ]
@@ -4775,7 +4775,7 @@
     {
      "as_written": "1/2",
      "kind": "fraction of max HP",
-     "phrase": "ser takes 1/2 its max HP to pass a substitute.",
+     "phrase": "User takes 1/2 its max HP to pass a substitute.",
      "value": 0.5
     }
    ]
@@ -4814,7 +4814,7 @@
     {
      "as_written": "1.3x",
      "kind": "multiplier",
-     "phrase": "his Pokemon's attacks with secondary effects have 1.3x power; nullifies the effects.",
+     "phrase": "This Pokemon's attacks with secondary effects have 1.3x power; nullifies the effects.",
      "value": 1.3
     }
    ]
@@ -4828,7 +4828,7 @@
     {
      "as_written": "1/8",
      "kind": "fraction",
-     "phrase": "fter an attack, holder gains 1/8 of the damage in HP dealt to other Pokemon.",
+     "phrase": "After an attack, holder gains 1/8 of the damage in HP dealt to other Pokemon.",
      "value": 0.125
     }
    ]
@@ -4842,7 +4842,7 @@
     {
      "as_written": "20%",
      "kind": "percent",
-     "phrase": "0% psn.",
+     "phrase": "20% psn.",
      "value": 20.0
     }
    ]
@@ -4869,7 +4869,7 @@
     {
      "as_written": "half",
      "kind": "multiplier",
-     "phrase": "alves damage taken from a supereffective Ground-type attack.",
+     "phrase": "Halves damage taken from a supereffective Ground-type attack.",
      "value": 0.5
     }
    ]
@@ -4908,7 +4908,7 @@
     {
      "as_written": "1.2x",
      "kind": "multiplier",
-     "phrase": "older's Normal-type attacks have 1.2x power.",
+     "phrase": "Holder's Normal-type attacks have 1.2x power.",
      "value": 1.2
     }
    ]
@@ -4947,7 +4947,7 @@
     {
      "as_written": "1.2x",
      "kind": "multiplier",
-     "phrase": "older's Bug-type attacks have 1.2x power.",
+     "phrase": "Holder's Bug-type attacks have 1.2x power.",
      "value": 1.2
     }
    ]
@@ -4961,13 +4961,13 @@
     {
      "as_written": "1/4",
      "kind": "fraction of max HP",
-     "phrase": "estores 1/4 max HP when at 1/2 max HP or less.",
+     "phrase": "Restores 1/4 max HP when at 1/2 max HP or less.",
      "value": 0.25
     },
     {
      "as_written": "1/2",
      "kind": "fraction of max HP",
-     "phrase": "estores 1/4 max HP when at 1/2 max HP or less.",
+     "phrase": "Restores 1/4 max HP when at 1/2 max HP or less.",
      "value": 0.5
     }
    ]
@@ -4981,7 +4981,7 @@
     {
      "as_written": "100%",
      "kind": "percent",
-     "phrase": "00% chance to lower target's Sp.",
+     "phrase": "100% chance to lower target's Sp.",
      "value": 100.0
     }
    ]
@@ -5009,7 +5009,7 @@
     {
      "as_written": "50%",
      "kind": "percent",
-     "phrase": "eals the user by 50% of its max HP.",
+     "phrase": "Heals the user by 50% of its max HP.",
      "value": 50.0
     }
    ]
@@ -5023,7 +5023,7 @@
     {
      "as_written": "30%",
      "kind": "percent",
-     "phrase": "0% chance to poison the target.",
+     "phrase": "30% chance to poison the target.",
      "value": 30.0
     }
    ]
@@ -5037,7 +5037,7 @@
     {
      "as_written": "10%",
      "kind": "percent",
-     "phrase": "0% chance to poison adjacent Pokemon.",
+     "phrase": "10% chance to poison adjacent Pokemon.",
      "value": 10.0
     }
    ]
@@ -5051,7 +5051,7 @@
     {
      "as_written": "double",
      "kind": "multiplier",
-     "phrase": "f Snow is active, this Pokemon's Speed is doubled.",
+     "phrase": "If Snow is active, this Pokemon's Speed is doubled.",
      "value": 2.0
     }
    ]
@@ -5065,7 +5065,7 @@
     {
      "as_written": "8 turns",
      "kind": "turns",
-     "phrase": "older's use of Sandstorm lasts 8 turns instead of 5.",
+     "phrase": "Holder's use of Sandstorm lasts 8 turns instead of 5.",
      "value": 8.0
     }
    ]
@@ -5079,7 +5079,7 @@
     {
      "as_written": "5 turns",
      "kind": "turns",
-     "phrase": "raps and damages the target for 4-5 turns.",
+     "phrase": "Traps and damages the target for 4-5 turns.",
      "value": 5.0
     }
    ]
@@ -5093,7 +5093,7 @@
     {
      "as_written": "100%",
      "kind": "percent",
-     "phrase": "00% chance to lower the foe(s) Sp.",
+     "phrase": "100% chance to lower the foe(s) Sp.",
      "value": 100.0
     }
    ]
@@ -5121,7 +5121,7 @@
     {
      "as_written": "1.25x",
      "kind": "multiplier",
-     "phrase": "f Snow is active, this Pokemon's evasiveness is 1.25x.",
+     "phrase": "If Snow is active, this Pokemon's evasiveness is 1.25x.",
      "value": 1.25
     }
    ]
@@ -5141,7 +5141,7 @@
     {
      "as_written": "5 turns",
      "kind": "turns",
-     "phrase": "or 5 turns, snow falls.",
+     "phrase": "For 5 turns, snow falls.",
      "value": 5.0
     }
    ]
@@ -5180,7 +5180,7 @@
     {
      "as_written": "1.2x",
      "kind": "multiplier",
-     "phrase": "older's Ground-type attacks have 1.2x power.",
+     "phrase": "Holder's Ground-type attacks have 1.2x power.",
      "value": 1.2
     }
    ]
@@ -5194,7 +5194,7 @@
     {
      "as_written": "50%",
      "kind": "percent",
-     "phrase": "eals the user by 50% of its max HP.",
+     "phrase": "Heals the user by 50% of its max HP.",
      "value": 50.0
     }
    ]
@@ -5241,7 +5241,7 @@
     {
      "as_written": "3/4",
      "kind": "fraction",
-     "phrase": "his Pokemon receives 3/4 damage from supereffective attacks.",
+     "phrase": "This Pokemon receives 3/4 damage from supereffective attacks.",
      "value": 0.75
     }
    ]
@@ -5255,7 +5255,7 @@
     {
      "as_written": "1 stages",
      "kind": "stages",
-     "phrase": "his Pokemon's Speed is raised 1 stage at the end of each full turn on the field.",
+     "phrase": "This Pokemon's Speed is raised 1 stage at the end of each full turn on the field.",
      "value": 1.0
     }
    ]
@@ -5294,7 +5294,7 @@
     {
      "as_written": "1.2x",
      "kind": "multiplier",
-     "phrase": "older's Ghost-type attacks have 1.2x power.",
+     "phrase": "Holder's Ghost-type attacks have 1.2x power.",
      "value": 1.2
     }
    ]
@@ -5322,7 +5322,7 @@
     {
      "as_written": "100%",
      "kind": "percent",
-     "phrase": "00% chance to lower the target's Sp.",
+     "phrase": "100% chance to lower the target's Sp.",
      "value": 100.0
     }
    ]
@@ -5336,7 +5336,7 @@
     {
      "as_written": "1 stages",
      "kind": "stages",
-     "phrase": "his Pokemon's Defense is raised by 1 stage after it is damaged by a move.",
+     "phrase": "This Pokemon's Defense is raised by 1 stage after it is damaged by a move.",
      "value": 1.0
     }
    ]
@@ -5350,7 +5350,7 @@
     {
      "as_written": "30%",
      "kind": "percent",
-     "phrase": "0% chance a Pokemon making contact with this Pokemon will be paralyzed.",
+     "phrase": "30% chance a Pokemon making contact with this Pokemon will be paralyzed.",
      "value": 30.0
     }
    ]
@@ -5364,7 +5364,7 @@
     {
      "as_written": "1 stages",
      "kind": "stages",
-     "phrase": "f this Pokemon flinches, its Speed is raised by 1 stage.",
+     "phrase": "If this Pokemon flinches, its Speed is raised by 1 stage.",
      "value": 1.0
     }
    ]
@@ -5378,7 +5378,7 @@
     {
      "as_written": "50%",
      "kind": "percent",
-     "phrase": "ser loses 50% max HP.",
+     "phrase": "User loses 50% max HP.",
      "value": 50.0
     }
    ]
@@ -5392,7 +5392,7 @@
     {
      "as_written": "10%",
      "kind": "percent",
-     "phrase": "0% chance to raise the user's Defense by 1.",
+     "phrase": "10% chance to raise the user's Defense by 1.",
      "value": 10.0
     }
    ]
@@ -5436,7 +5436,7 @@
     {
      "as_written": "10%",
      "kind": "percent",
-     "phrase": "his Pokemon's attacks without a chance to flinch gain a 10% chance to flinch.",
+     "phrase": "This Pokemon's attacks without a chance to flinch gain a 10% chance to flinch.",
      "value": 10.0
     }
    ]
@@ -5450,7 +5450,7 @@
     {
      "as_written": "double",
      "kind": "multiplier",
-     "phrase": "ower doubles if the user's last move failed.",
+     "phrase": "Power doubles if the user's last move failed.",
      "value": 2.0
     }
    ]
@@ -5489,7 +5489,7 @@
     {
      "as_written": "1.5x",
      "kind": "multiplier",
-     "phrase": "his Pokemon's bite-based attacks have 1.5x power.",
+     "phrase": "This Pokemon's bite-based attacks have 1.5x power.",
      "value": 1.5
     }
    ]
@@ -5503,7 +5503,7 @@
     {
      "as_written": "1/4",
      "kind": "fraction of max HP",
-     "phrase": "ser loses 1/4 of its max HP.",
+     "phrase": "User loses 1/4 of its max HP.",
      "value": 0.25
     }
    ]
@@ -5517,7 +5517,7 @@
     {
      "as_written": "100%",
      "kind": "percent",
-     "phrase": "00% chance to lower the foe(s) Sp.",
+     "phrase": "100% chance to lower the foe(s) Sp.",
      "value": 100.0
     }
    ]
@@ -5531,7 +5531,7 @@
     {
      "as_written": "1/4",
      "kind": "fraction of max HP",
-     "phrase": "ser takes 1/4 its max HP to put in a substitute.",
+     "phrase": "User takes 1/4 its max HP to put in a substitute.",
      "value": 0.25
     }
    ]
@@ -5545,7 +5545,7 @@
     {
      "as_written": "5 turns",
      "kind": "turns",
-     "phrase": "or 5 turns, intense sunlight powers Fire moves.",
+     "phrase": "For 5 turns, intense sunlight powers Fire moves.",
      "value": 5.0
     }
    ]
@@ -5559,7 +5559,7 @@
     {
      "as_written": "1/2",
      "kind": "fraction",
-     "phrase": "oes damage equal to 1/2 target's current HP.",
+     "phrase": "Does damage equal to 1/2 target's current HP.",
      "value": 0.5
     }
    ]
@@ -5573,7 +5573,7 @@
     {
      "as_written": "1 stages",
      "kind": "stages",
-     "phrase": "his Pokemon's critical hit ratio is raised by 1 stage.",
+     "phrase": "This Pokemon's critical hit ratio is raised by 1 stage.",
      "value": 1.0
     }
    ]
@@ -5587,7 +5587,7 @@
     {
      "as_written": "50%",
      "kind": "percent",
-     "phrase": "ser is hurt by 50% of its max HP if it misses.",
+     "phrase": "User is hurt by 50% of its max HP if it misses.",
      "value": 50.0
     }
    ]
@@ -5601,7 +5601,7 @@
     {
      "as_written": "1 stages",
      "kind": "stages",
-     "phrase": "n switch-in, this Pokemon lowers the evasiveness of opponents 1 stage.",
+     "phrase": "On switch-in, this Pokemon lowers the evasiveness of opponents 1 stage.",
      "value": 1.0
     }
    ]
@@ -5615,7 +5615,7 @@
     {
      "as_written": "10%",
      "kind": "percent",
-     "phrase": "his Pokemon's moves have 10% more power for each fainted ally, up to 5 allies.",
+     "phrase": "This Pokemon's moves have 10% more power for each fainted ally, up to 5 allies.",
      "value": 10.0
     }
    ]
@@ -5643,7 +5643,7 @@
     {
      "as_written": "double",
      "kind": "multiplier",
-     "phrase": "f Electric Terrain is active, this Pokemon's Speed is doubled.",
+     "phrase": "If Electric Terrain is active, this Pokemon's Speed is doubled.",
      "value": 2.0
     }
    ]
@@ -5657,13 +5657,13 @@
     {
      "as_written": "1.5x",
      "kind": "multiplier",
-     "phrase": "t 1/3 or less of its max HP, this Pokemon's offensive stat is 1.5x with Bug attacks.",
+     "phrase": "At 1/3 or less of its max HP, this Pokemon's offensive stat is 1.5x with Bug attacks.",
      "value": 1.5
     },
     {
      "as_written": "1/3",
      "kind": "fraction",
-     "phrase": "t 1/3 or less of its max HP, this Pokemon's offensive stat is 1.5x with Bug attacks.",
+     "phrase": "At 1/3 or less of its max HP, this Pokemon's offensive stat is 1.5x with Bug attacks.",
      "value": 0.333333
     }
    ]
@@ -5677,7 +5677,7 @@
     {
      "as_written": "double",
      "kind": "multiplier",
-     "phrase": "f Rain is active, this Pokemon's Speed is doubled.",
+     "phrase": "If Rain is active, this Pokemon's Speed is doubled.",
      "value": 2.0
     }
    ]
@@ -5691,13 +5691,13 @@
     {
      "as_written": "1 stages",
      "kind": "stages",
-     "phrase": "arget's Speed is lowered by 1 stage for 3 turns.",
+     "phrase": "Target's Speed is lowered by 1 stage for 3 turns.",
      "value": 1.0
     },
     {
      "as_written": "3 turns",
      "kind": "turns",
-     "phrase": "arget's Speed is lowered by 1 stage for 3 turns.",
+     "phrase": "Target's Speed is lowered by 1 stage for 3 turns.",
      "value": 3.0
     }
    ]
@@ -5711,13 +5711,13 @@
     {
      "as_written": "4 turns",
      "kind": "turns",
-     "phrase": "or 4 turns, allies' Speed is doubled.",
+     "phrase": "For 4 turns, allies' Speed is doubled.",
      "value": 4.0
     },
     {
      "as_written": "double",
      "kind": "multiplier",
-     "phrase": "or 4 turns, allies' Speed is doubled.",
+     "phrase": "For 4 turns, allies' Speed is doubled.",
      "value": 2.0
     }
    ]
@@ -5744,7 +5744,7 @@
     {
      "as_written": "half",
      "kind": "multiplier",
-     "phrase": "alves damage taken from a supereffective Bug-type attack.",
+     "phrase": "Halves damage taken from a supereffective Bug-type attack.",
      "value": 0.5
     }
    ]
@@ -5758,7 +5758,7 @@
     {
      "as_written": "double",
      "kind": "multiplier",
-     "phrase": "his Pokemon's evasiveness is doubled as long as it is confused.",
+     "phrase": "This Pokemon's evasiveness is doubled as long as it is confused.",
      "value": 2.0
     }
    ]
@@ -5772,7 +5772,7 @@
     {
      "as_written": "3 turns",
      "kind": "turns",
-     "phrase": "arget can't use status moves its next 3 turns.",
+     "phrase": "Target can't use status moves its next 3 turns.",
      "value": 3.0
     }
    ]
@@ -5811,7 +5811,7 @@
     {
      "as_written": "1.5x",
      "kind": "multiplier",
-     "phrase": "his Pokemon's moves of 60 power or less have 1.5x power, including Struggle.",
+     "phrase": "This Pokemon's moves of 60 power or less have 1.5x power, including Struggle.",
      "value": 1.5
     }
    ]
@@ -5825,7 +5825,7 @@
     {
      "as_written": "double",
      "kind": "multiplier",
-     "phrase": "ower doubles if the user's last move failed.",
+     "phrase": "Power doubles if the user's last move failed.",
      "value": 2.0
     }
    ]
@@ -5839,7 +5839,7 @@
     {
      "as_written": "double",
      "kind": "multiplier",
-     "phrase": "ser on terrain: power doubles, type varies.",
+     "phrase": "User on terrain: power doubles, type varies.",
      "value": 2.0
     }
    ]
@@ -5866,7 +5866,7 @@
     {
      "as_written": "half",
      "kind": "multiplier",
-     "phrase": "ire-/Ice-type moves against this Pokemon deal damage with a halved offensive stat.",
+     "phrase": "Fire-/Ice-type moves against this Pokemon deal damage with a halved offensive stat.",
      "value": 0.5
     }
    ]
@@ -5880,7 +5880,7 @@
     {
      "as_written": "3 turns",
      "kind": "turns",
-     "phrase": "asts 2-3 turns.",
+     "phrase": "Lasts 2-3 turns.",
      "value": 3.0
     }
    ]
@@ -5894,7 +5894,7 @@
     {
      "as_written": "2 turns",
      "kind": "turns",
-     "phrase": "or 2 turns, the target cannot use sound moves.",
+     "phrase": "For 2 turns, the target cannot use sound moves.",
      "value": 2.0
     }
    ]
@@ -5908,7 +5908,7 @@
     {
      "as_written": "30%",
      "kind": "percent",
-     "phrase": "0% chance to paralyze.",
+     "phrase": "30% chance to paralyze.",
      "value": 30.0
     }
    ]
@@ -5922,7 +5922,7 @@
     {
      "as_written": "10%",
      "kind": "percent",
-     "phrase": "0% chance to paralyze.",
+     "phrase": "10% chance to paralyze.",
      "value": 10.0
     },
     {
@@ -5942,7 +5942,7 @@
     {
      "as_written": "10%",
      "kind": "percent",
-     "phrase": "0% chance to paralyze the target.",
+     "phrase": "10% chance to paralyze the target.",
      "value": 10.0
     }
    ]
@@ -5956,7 +5956,7 @@
     {
      "as_written": "10%",
      "kind": "percent",
-     "phrase": "0% chance to paralyze the target.",
+     "phrase": "10% chance to paralyze the target.",
      "value": 10.0
     }
    ]
@@ -5970,7 +5970,7 @@
     {
      "as_written": "100%",
      "kind": "percent",
-     "phrase": "00% chance to raise the user's Sp.",
+     "phrase": "100% chance to raise the user's Sp.",
      "value": 100.0
     }
    ]
@@ -5984,13 +5984,13 @@
     {
      "as_written": "1.5x",
      "kind": "multiplier",
-     "phrase": "t 1/3 or less of its max HP, this Pokemon's offensive stat is 1.5x with Water attacks.",
+     "phrase": "At 1/3 or less of its max HP, this Pokemon's offensive stat is 1.5x with Water attacks.",
      "value": 1.5
     },
     {
      "as_written": "1/3",
      "kind": "fraction",
-     "phrase": "t 1/3 or less of its max HP, this Pokemon's offensive stat is 1.5x with Water attacks.",
+     "phrase": "At 1/3 or less of its max HP, this Pokemon's offensive stat is 1.5x with Water attacks.",
      "value": 0.333333
     }
    ]
@@ -6034,7 +6034,7 @@
     {
      "as_written": "100%",
      "kind": "percent",
-     "phrase": "00% chance to raise the user's Speed by 1.",
+     "phrase": "100% chance to raise the user's Speed by 1.",
      "value": 100.0
     }
    ]
@@ -6048,7 +6048,7 @@
     {
      "as_written": "20%",
      "kind": "percent",
-     "phrase": "0% chance to paralyze or burn or freeze target.",
+     "phrase": "20% chance to paralyze or burn or freeze target.",
      "value": 20.0
     }
    ]
@@ -6096,7 +6096,7 @@
     {
      "as_written": "100%",
      "kind": "percent",
-     "phrase": "00% chance to lower the target's Attack by 1.",
+     "phrase": "100% chance to lower the target's Attack by 1.",
      "value": 100.0
     }
    ]
@@ -6110,7 +6110,7 @@
     {
      "as_written": "1.2x",
      "kind": "multiplier",
-     "phrase": "older's Psychic-type attacks have 1.2x power.",
+     "phrase": "Holder's Psychic-type attacks have 1.2x power.",
      "value": 1.2
     }
    ]
@@ -6124,7 +6124,7 @@
     {
      "as_written": "double",
      "kind": "multiplier",
-     "phrase": "peed is doubled on held item loss; boost is lost if it switches, gets new item/Ability.",
+     "phrase": "Speed is doubled on held item loss; boost is lost if it switches, gets new item/Ability.",
      "value": 2.0
     }
    ]
@@ -6138,7 +6138,7 @@
     {
      "as_written": "1/4",
      "kind": "fraction",
-     "phrase": "his Pokemon's contact moves ignore a target's protection and deal 1/4 the usual damage.",
+     "phrase": "This Pokemon's contact moves ignore a target's protection and deal 1/4 the usual damage.",
      "value": 0.25
     }
    ]
@@ -6152,7 +6152,7 @@
     {
      "as_written": "100%",
      "kind": "percent",
-     "phrase": "00% flinch.",
+     "phrase": "100% flinch.",
      "value": 100.0
     }
    ]
@@ -6166,7 +6166,7 @@
     {
      "as_written": "3 turns",
      "kind": "turns",
-     "phrase": "asts 3 turns.",
+     "phrase": "Lasts 3 turns.",
      "value": 3.0
     }
    ]
@@ -6180,7 +6180,7 @@
     {
      "as_written": "double",
      "kind": "multiplier",
-     "phrase": "ower doubles if the target is poisoned.",
+     "phrase": "Power doubles if the target is poisoned.",
      "value": 2.0
     }
    ]
@@ -6194,7 +6194,7 @@
     {
      "as_written": "1.2x",
      "kind": "multiplier",
-     "phrase": "f held by a Venomicon, its Poison- and Flying-type attacks have 1.2x power.",
+     "phrase": "If held by a Venomicon, its Poison- and Flying-type attacks have 1.2x power.",
      "value": 1.2
     }
    ]
@@ -6208,7 +6208,7 @@
     {
      "as_written": "1/4",
      "kind": "fraction of max HP",
-     "phrase": "his Pokemon heals 1/4 of its max HP when hit by Electric moves; Electric immunity.",
+     "phrase": "This Pokemon heals 1/4 of its max HP when hit by Electric moves; Electric immunity.",
      "value": 0.25
     }
    ]
@@ -6222,7 +6222,7 @@
     {
      "as_written": "33%",
      "kind": "percent",
-     "phrase": "as 33% recoil.",
+     "phrase": "Has 33% recoil.",
      "value": 33.0
     },
     {
@@ -6255,7 +6255,7 @@
     {
      "as_written": "half",
      "kind": "multiplier",
-     "phrase": "alves damage taken from a supereffective Electric-type attack.",
+     "phrase": "Halves damage taken from a supereffective Electric-type attack.",
      "value": 0.5
     }
    ]
@@ -6269,7 +6269,7 @@
     {
      "as_written": "1/4",
      "kind": "fraction of max HP",
-     "phrase": "his Pokemon heals 1/4 of its max HP when hit by Water moves; Water immunity.",
+     "phrase": "This Pokemon heals 1/4 of its max HP when hit by Water moves; Water immunity.",
      "value": 0.25
     }
    ]
@@ -6296,13 +6296,13 @@
     {
      "as_written": "2x",
      "kind": "multiplier",
-     "phrase": "his Pokemon's Water power is 2x; it can't be burned; Fire power against it is halved.",
+     "phrase": "This Pokemon's Water power is 2x; it can't be burned; Fire power against it is halved.",
      "value": 2.0
     },
     {
      "as_written": "half",
      "kind": "multiplier",
-     "phrase": "his Pokemon's Water power is 2x; it can't be burned; Fire power against it is halved.",
+     "phrase": "This Pokemon's Water power is 2x; it can't be burned; Fire power against it is halved.",
      "value": 0.5
     }
    ]
@@ -6316,7 +6316,7 @@
     {
      "as_written": "20%",
      "kind": "percent",
-     "phrase": "0% chance to confuse the target.",
+     "phrase": "20% chance to confuse the target.",
      "value": 20.0
     }
    ]
@@ -6330,7 +6330,7 @@
     {
      "as_written": "20%",
      "kind": "percent",
-     "phrase": "0% chance to make the target flinch.",
+     "phrase": "20% chance to make the target flinch.",
      "value": 20.0
     }
    ]
@@ -6344,7 +6344,7 @@
     {
      "as_written": "33%",
      "kind": "percent",
-     "phrase": "as 33% recoil.",
+     "phrase": "Has 33% recoil.",
      "value": 33.0
     }
    ]
@@ -6358,7 +6358,7 @@
     {
      "as_written": "double",
      "kind": "multiplier",
-     "phrase": "ower doubles and type varies in each weather.",
+     "phrase": "Power doubles and type varies in each weather.",
      "value": 2.0
     }
    ]
@@ -6372,7 +6372,7 @@
     {
      "as_written": "5 turns",
      "kind": "turns",
-     "phrase": "raps and damages the target for 4-5 turns.",
+     "phrase": "Traps and damages the target for 4-5 turns.",
      "value": 5.0
     }
    ]
@@ -6386,7 +6386,7 @@
     {
      "as_written": "1.1x",
      "kind": "multiplier",
-     "phrase": "he accuracy of attacks by the holder is 1.1x.",
+     "phrase": "The accuracy of attacks by the holder is 1.1x.",
      "value": 1.1
     }
    ]
@@ -6400,7 +6400,7 @@
     {
      "as_written": "1/4",
      "kind": "fraction",
-     "phrase": "as 1/4 recoil.",
+     "phrase": "Has 1/4 recoil.",
      "value": 0.25
     }
    ]
@@ -6427,7 +6427,7 @@
     {
      "as_written": "1.1x",
      "kind": "multiplier",
-     "phrase": "older's special attacks have 1.1x power.",
+     "phrase": "Holder's special attacks have 1.1x power.",
      "value": 1.1
     }
    ]
@@ -6441,7 +6441,7 @@
     {
      "as_written": "50%",
      "kind": "percent",
-     "phrase": "ext turn, 50% of the user's max HP is restored.",
+     "phrase": "Next turn, 50% of the user's max HP is restored.",
      "value": 50.0
     }
    ]
@@ -6455,7 +6455,7 @@
     {
      "as_written": "5 turns",
      "kind": "turns",
-     "phrase": "or 5 turns, all Defense and Sp.",
+     "phrase": "For 5 turns, all Defense and Sp.",
      "value": 5.0
     }
    ]
@@ -6469,7 +6469,7 @@
     {
      "as_written": "33%",
      "kind": "percent",
-     "phrase": "as 33% recoil.",
+     "phrase": "Has 33% recoil.",
      "value": 33.0
     }
    ]
@@ -6483,7 +6483,7 @@
     {
      "as_written": "5 turns",
      "kind": "turns",
-     "phrase": "raps and damages the target for 4-5 turns.",
+     "phrase": "Traps and damages the target for 4-5 turns.",
      "value": 5.0
     }
    ]
@@ -6510,7 +6510,7 @@
     {
      "as_written": "half",
      "kind": "multiplier",
-     "phrase": "alves damage taken from a supereffective Ice-type attack.",
+     "phrase": "Halves damage taken from a supereffective Ice-type attack.",
      "value": 0.5
     }
    ]
@@ -6524,7 +6524,7 @@
     {
      "as_written": "1 turns",
      "kind": "turns",
-     "phrase": "uts the target to sleep after 1 turn.",
+     "phrase": "Puts the target to sleep after 1 turn.",
      "value": 1.0
     }
    ]
@@ -6538,7 +6538,7 @@
     {
      "as_written": "100%",
      "kind": "percent",
-     "phrase": "00% chance to paralyze the target.",
+     "phrase": "100% chance to paralyze the target.",
      "value": 100.0
     }
    ]
@@ -6552,7 +6552,7 @@
     {
      "as_written": "20%",
      "kind": "percent",
-     "phrase": "0% chance to make the target flinch.",
+     "phrase": "20% chance to make the target flinch.",
      "value": 20.0
     }
    ]
@@ -6566,7 +6566,7 @@
     {
      "as_written": "1.2x",
      "kind": "multiplier",
-     "phrase": "he accuracy of attacks by the holder is 1.2x if it moves after its target.",
+     "phrase": "The accuracy of attacks by the holder is 1.2x if it moves after its target.",
      "value": 1.2
     }
    ]
