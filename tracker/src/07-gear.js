@@ -4,9 +4,10 @@ import { $, C, COSTS, bst, byName, el, toast, typeChip } from "./01-data.js";
 import { S, boxRows, capacity, hasStone, ownedNames, ownedStones }
   from "./02-state.js";
 import { patch, put } from "./03-store.js";
-/* One button on the Profile tab opens the team sheet, which lives in 08-teams
-   and is not a module yet. Called from a click handler, never while loading. */
-import { teamSheet } from "./_legacy.js";
+/* One button on the Profile tab opens the team sheet. Called from a click
+   handler, never while loading, so the cycle it forms with 08-teams - which
+   reaches back here for nothing, but might - would cost nothing either. */
+import { teamSheet } from "./08-teams.js";
 /* ====================================================================== gear */
 function drawStones(){
   var q = ($("stoneSearch").value || "").trim().toLowerCase();

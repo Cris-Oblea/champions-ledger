@@ -1,5 +1,17 @@
 /* 05-box.js - The box and HOME: every row, and every way one gets added.
-   Part of the app; assembled into one script by scripts/build_tracker_page.py. */
+   Part of the app; linked into one script by scripts/build_tracker_page.py. */
+import {
+  $, C, FORMS, SORT, STAT_KEYS, STAT_LABEL, STONE_OF, bst, byName, defence,
+  dexLabel, el, freeSlug, megasFor, statLine, toast, typeChip,
+} from "./01-data.js";
+import { S, hasStone, originOf } from "./02-state.js";
+import { drop, put } from "./03-store.js";
+import { closeSheet, fbtn, openSheet } from "./04-nav.js";
+/* The badges on a box row - in the GTS, a duplicate, the last copy - are the
+   GTS view's own answer about that Pokemon, so they are asked for rather than
+   recomputed here. This is why the link order is no longer numeric: 09-gts
+   runs before this file because this file imports it. */
+import { boxBadges } from "./09-gts.js";
 /* ===================================================================== rows */
 function pokeRow(rec){
   var p = byName[rec.name];
@@ -491,3 +503,14 @@ function addSheet(loc){
   }, []);
 }
 
+/* ------------------------------------------------------- what leaves here --
+   `pokeRow` is the row both box views draw, `addSheet` the one way a Pokemon
+   enters the box, and `battleFormNote` the line explaining a form that only
+   exists mid-battle.
+
+   `pokeSheet` is exported for a different reason and it is worth naming: no
+   other part calls it. It is in PUBLIC, so the browser tests drive it through
+   `window` - they open a sheet for every form in the dex and assert what it
+   shows. `moveButtons` stays private.
+*/
+export { addSheet, battleFormNote, pokeRow, pokeSheet };
