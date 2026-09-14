@@ -50,7 +50,7 @@ jobs:
       contents: read
 
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1   # v7
         with:
           # Without this, checkout leaves GITHUB_TOKEN in the local git config
           # as an `http.https://github.com/.extraheader`, and that Authorization
@@ -62,17 +62,20 @@ jobs:
           # checkout, so persisting no credential costs nothing.
           persist-credentials: false
 
-      - uses: actions/setup-python@v7
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97   # v7
         with:
           python-version: "3.12"
 
-      - uses: actions/setup-node@v7
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020   # v7
         with:
           node-version: "22"
           # From v5 this action caches the package manager by itself when
-          # package.json names one. Ours does not, and the gate's `npm install`
-          # writes the lockfile it would key on, so say no rather than leave it
-          # to what a future major decides the default should be.
+          # package.json names one. Ours does not - and now that
+          # package-lock.json is committed the auto-cache would finally have
+          # something to key on, which is exactly why it stays off explicitly
+          # instead of being left to whatever a future major picks as default.
+          # One dev dependency is not worth a cache; a surprise inside the
+          # gate's install is worth less still.
           package-manager-cache: false
 
       # the fetchers' own cache. Keyed by run number so each day writes a new
@@ -86,7 +89,7 @@ jobs:
       # warm for the next one even if it died later.
       - name: restore the source cache
         id: cache
-        uses: actions/cache/restore@v6
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9   # v6
         with:
           path: data/raw
           key: sources-${{ github.run_number }}
@@ -98,7 +101,12 @@ jobs:
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
           # jsdom, for the browser tests in daily.py's gate. Without it they
           # cannot run at all, which is how four of them drifted unnoticed.
-          npm install --no-audit --no-fund
+          # `npm ci`, not `npm install`: it installs exactly what
+          # package-lock.json pins and fails if the lock and package.json have
+          # drifted. With `install` and a caret range, the gate resolved jsdom
+          # fresh on every run - so the seventeen browser tests could break one
+          # morning on a version nobody chose.
+          npm ci --no-audit --no-fund
 
       # Refreshes and gates, and does NOT deploy. The deploy belongs to the push
       # to main that the merge below now produces - push.yml's job, on the
@@ -172,7 +180,7 @@ jobs:
       # fails loudly and that is the right place to decide.
       - name: mint a token as the app
         id: app
-        uses: actions/create-github-app-token@v3
+        uses: actions/create-github-app-token@bcd2ba49218906704ab6c1aa796996da409d3eb1   # v3
         with:
           client-id: ${{ secrets.APP_CLIENT_ID }}
           private-key: ${{ secrets.APP_PRIVATE_KEY }}
@@ -223,14 +231,14 @@ jobs:
 
       - name: save the source cache
         if: always() && steps.cache.outputs.cache-hit != 'true'
-        uses: actions/cache/save@v6
+        uses: actions/cache/save@55cc8345863c7cc4c66a329aec7e433d2d1c52a9   # v6
         with:
           path: data/raw
           key: sources-${{ github.run_number }}
 
       - name: keep the log
         if: always()
-        uses: actions/upload-artifact@v7
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a   # v7
         with:
           name: daily-log
           path: data/raw/daily_logs/

@@ -48,24 +48,27 @@ jobs:
     timeout-minutes: 20
 
     steps:
-      - uses: actions/checkout@v7
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1   # v7
         with:
           # shrink_check() compares the rebuilt tables against HEAD, so it
           # needs the commit to exist locally. A depth-1 checkout is enough
           # for that, but the audits read the previous state too.
           fetch-depth: 2
 
-      - uses: actions/setup-python@v7
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97   # v7
         with:
           python-version: "3.12"
 
-      - uses: actions/setup-node@v7
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020   # v7
         with:
           node-version: "22"
           # From v5 this action caches the package manager by itself when
-          # package.json names one. Ours does not, and the gate's `npm install`
-          # writes the lockfile it would key on, so say no rather than leave it
-          # to what a future major decides the default should be.
+          # package.json names one. Ours does not - and now that
+          # package-lock.json is committed the auto-cache would finally have
+          # something to key on, which is exactly why it stays off explicitly
+          # instead of being left to whatever a future major picks as default.
+          # One dev dependency is not worth a cache; a surprise inside the
+          # gate's install is worth less still.
           package-manager-cache: false
 
       # The SAME cache the nightly job writes. Most of the gate reads it: the
@@ -77,7 +80,7 @@ jobs:
       # writes one every morning, so a miss means the checks fail loudly rather
       # than a weaker gate passing quietly.
       - name: restore the source cache
-        uses: actions/cache/restore@v6
+        uses: actions/cache/restore@55cc8345863c7cc4c66a329aec7e433d2d1c52a9   # v6
         with:
           path: data/raw
           key: sources-${{ github.run_number }}
@@ -87,7 +90,12 @@ jobs:
         run: |
           python -m pip install --upgrade pip
           if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-          npm install --no-audit --no-fund
+          # `npm ci`, not `npm install`: it installs exactly what
+          # package-lock.json pins and fails if the lock and package.json have
+          # drifted. With `install` and a caret range, the gate resolved jsdom
+          # fresh on every run - so the seventeen browser tests could break one
+          # morning on a version nobody chose.
+          npm ci --no-audit --no-fund
 
       - name: gate, then publish
         env:

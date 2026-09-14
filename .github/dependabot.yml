@@ -1,0 +1,34 @@
+# Nobody was being told when any of this went stale.
+#
+# The lesson that prompted it: every workflow run was warning that six actions
+# targeted Node 20 and were being forced onto Node 24, and the only reason anyone
+# noticed was reading a log by hand. Dependabot would have opened a pull request
+# for it - and one of those actions, upload-artifact, needed a MAJOR bump to
+# actually change runtime, which is exactly the kind of detail a bot reads and a
+# person skims.
+#
+# It matters more than usual here because the actions are pinned to commit SHAs.
+# A pin with nobody watching it is a version frozen for ever; Dependabot is the
+# half that moves it, and it rewrites the SHA and the `# v7` comment together.
+version: 2
+updates:
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    # This repo takes pull requests only, so a batch of them is a batch of gate
+    # runs. One a week, grouped, is plenty for three workflows.
+    groups:
+      actions:
+        patterns: ["*"]
+
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    # jsdom is the only dependency, and the seventeen browser tests in the gate
+    # all run under it. A jsdom that moves unannounced is a gate that fails one
+    # morning for a reason nobody changed.
+    groups:
+      npm:
+        patterns: ["*"]
