@@ -5,8 +5,8 @@ import { S, buildLink, buildsFor, hasStone } from "./02-state.js";
 import { drop, put, putNew } from "./03-store.js";
 import { closeSheet, fbtn, leaveEditor, openEditor, openSheet }
   from "./04-nav.js";
-/* One coloured note element, still declared in 13-boot. */
-import { note } from "./_legacy.js";
+/* One coloured note element. */
+import { note } from "./13-boot.js";
 /* ===================================================================== teams
    A team is six slots, and a slot points at a BUILD rather than at a box row -
    so one Pokemon can sit in any number of teams and editing its set updates

@@ -718,12 +718,15 @@ them, and four of the five faults below were invisible in a green run.
   Postgres' 23505 say which id is taken (`putNew`). UUIDs were considered and
   rejected: the primary key is already `(user_id, id)`, so slugs never collide
   between accounts, and the readable id is what the build picker shows.
-- **The page is thirteen ES modules.** `tracker/src/`, linked by the build
-  into a 23-line shell. **Edit the part, never `index.template.html`.**
-  `node scripts/check_app.js` reads them back as one program, inside the gate -
-  and since the module pass it also catches a module using a name it never
+- **The page is thirteen ES modules**, and as of 2026-09-14 all thirteen
+  really are: each says what it exports and imports what it needs, esbuild
+  links them, and a part that declares neither is a build error.
+  `tracker/src/`, linked into a 23-line shell. **Edit the part, never
+  `index.template.html`.** `node scripts/check_app.js` reads them back as one
+  program, inside the gate - and it catches a module using a name it never
   imported, which esbuild links without complaint and which throws on the
-  phone.
+  phone. The build asserts one ordering: everything runs before `13-boot`,
+  which starts the app.
 
 ### Forms, finished
 

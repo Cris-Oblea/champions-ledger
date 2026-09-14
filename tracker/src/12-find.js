@@ -1,5 +1,14 @@
 /* 12-find.js - Find: moves, abilities, items, and one Pokemon's whole sheet.
-   Part of the app; assembled into one script by scripts/build_tracker_page.py. */
+   Part of the app; linked into one script by scripts/build_tracker_page.py. */
+import {
+  $, C, DEX, MOVES, MOVE_BY, SORT, STAT_KEYS, STAT_LABEL, TYPE_COLOR, bst,
+  byName, catName, el, learnset, statLine, toast, typeChip,
+} from "./01-data.js";
+import { S, boxRows, originOf, ownedNames } from "./02-state.js";
+import { closeSheet, fbtn, openSheet } from "./04-nav.js";
+import { battleFormNote } from "./05-box.js";
+import { AB_SET, abilityHit, abilityTag, engineReady } from "./11-damage.js";
+import { fill } from "./13-boot.js";
 /* --------------------------------------------------------- the search view --
    The question this exists for is "who learns Imprison AND Wide Guard AND
    Protect" - a chain that used to mean asking Claude. Filters are ANDed. */
@@ -913,3 +922,18 @@ function drawDupeHome(){
   }
 }
 
+/* ------------------------------------------------------- what leaves here --
+   The search view, the diagnostics panel, and the move vocabulary every other
+   screen borrows: how a move is scored, what its badges say, whether it hits
+   the ally. Those are exported precisely because they must not be reimplemented
+   - a move ranked one way in the picker and another way in search is the bug
+   this prevents.
+
+   `findDetail` and `moveRowFor` are exported for PUBLIC: the browser tests
+   stack the filters and read the rows back off window.
+*/
+export {
+  DIAG_LATEST, FIND, checkLatest, drawDiag, drawDupeHome, findDetail, findDraw,
+  findInit, findRun, itemTags, moveFilters, moveRowFor, moveScore, priorityTag,
+  spreadNote, spreadTags,
+};

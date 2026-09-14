@@ -1,5 +1,20 @@
 /* 06-builds.js - The build editor - species, Mega, ability, nature, SP, moves.
-   Part of the app; assembled into one script by scripts/build_tracker_page.py. */
+   Part of the app; linked into one script by scripts/build_tracker_page.py. */
+import {
+  $, C, COSTS, FORMS, MOVE_BY, STAT_KEYS, STAT_LABEL, STONE_OF, byName,
+  catName, el, learnset, megasFor, natMult, statAt, toast, typeChip,
+} from "./01-data.js";
+import { S, boxRows, buildLink, hasStone, ownedNames } from "./02-state.js";
+import { drop, put, putNew } from "./03-store.js";
+import { closeSheet, fbtn, leaveEditor, openEditor, openSheet }
+  from "./04-nav.js";
+/* The move picker badges each move with what the build's own ability does to
+   it, and ranks the list - both are the damage screen's and the search view's
+   rules, asked for rather than copied. A build is where an ability meets a
+   movepool, so this file is the one place those two have to meet. */
+import { AB_SET, abilityHit, abilityTag } from "./11-damage.js";
+import { itemTags, moveFilters, moveScore, priorityTag, spreadNote, spreadTags }
+  from "./12-find.js";
 /* ==================================================================== builds */
 function spTotal(sp){
   return STAT_KEYS.reduce(function(a,k){ return a + (Number(sp[k]) || 0); }, 0);
@@ -637,3 +652,11 @@ function movePicker(draft, idx, ls, done){
   ]);
 }
 
+/* ------------------------------------------------------- what leaves here --
+   A row and the sheet behind it. `checks` - the SP budget, the 32 cap, the
+   moveset rules - is private, and so is `retuneCost`, so what a build COSTS
+   is computed in one place. `movePicker` too: every move that enters a build
+   goes through it, which is what makes the badges and the ranking consistent
+   wherever a move is offered.
+*/
+export { buildRow, buildSheet };

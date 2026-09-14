@@ -1,5 +1,23 @@
 /* 13-boot.js - renderAll(), go(), and everything that runs on load.
-   Part of the app; assembled into one script by scripts/build_tracker_page.py. */
+   Part of the app; linked into one script by scripts/build_tracker_page.py. */
+import {
+  $, HOME_ALL, MOVE_BY, SORT, byName, el, rowMatches, setHomeAll, setSort,
+  sortRows,
+} from "./01-data.js";
+import { S, boxRows, buildLink, capacity, originRows } from "./02-state.js";
+import { connect } from "./03-store.js";
+import { buildTabs, fbtn, go, leaveEditor, mq } from "./04-nav.js";
+import { addSheet, pokeRow } from "./05-box.js";
+import { buildRow, buildSheet } from "./06-builds.js";
+import { drawItems, drawStatuses, drawStones, drawTrainer } from "./07-gear.js";
+import { drawTeams } from "./08-teams.js";
+import { drawGts } from "./09-gts.js";
+import { initScan } from "./10-scan.js";
+import { AB_SET, CALC, abilityHit, abilityTag, calcDamage, calcDraw, koCount }
+  from "./11-damage.js";
+import {
+  DIAG_LATEST, FIND, checkLatest, drawDiag, drawDupeHome, findInit, findRun,
+} from "./12-find.js";
 /* ==================================================================== render */
 function renderAll(){
   var perm = boxRows("champions", "permanent");
@@ -232,3 +250,15 @@ if (window.claude && window.claude.use) {
   window.claude.use("downloads").then(function(d){ if (d) window.__dl = d; },
                                       function(){});
 }
+
+/* ------------------------------------------------------- what leaves here --
+   This file STARTS the app - the statements at the bottom build the tab bar,
+   draw the first screen and connect to the store - which is why the entry
+   imports it first: everything it touches is built by the time it runs.
+
+   It is also the only part that imports every other one, and that is the
+   shape it should have. `renderAll` is the one redraw, called from the store
+   whenever a row changes; `fill`, `note` and `buildsPane` are the three small
+   pieces other views ask it for. `drawBuilds` and `gearPane` are private.
+*/
+export { buildsPane, fill, note, renderAll };
