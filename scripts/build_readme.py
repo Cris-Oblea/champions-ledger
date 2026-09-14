@@ -128,8 +128,12 @@ def gate():
     import daily
     py, node, browser = (len(daily.GATE_CHECKS), len(daily.SOURCE_CHECKS),
                          len(daily.BROWSER_TESTS))
+    # the NUMBERED parts: what a person edits. tracker/src/ also holds the
+    # bridge and the entry that build_tracker_page.py generates, and counting
+    # those made the README claim fifteen files the first time this ran after
+    # the module pass.
     parts = len([f for f in os.listdir(os.path.join(ROOT, "tracker", "src"))
-                 if f.endswith(".js")])
+                 if f.endswith(".js") and f[0].isdigit()])
     return (
         "**The gate** is %s checks, and nothing reaches the phone without\n"
         "passing all of them:\n\n"
@@ -140,8 +144,9 @@ def gate():
         "engine, name\n  matching across all five sources, every derived index "
         "resolving, every form\n  still accounted for, the README's own "
         "numbers, and that no SQL migration is\n  still waiting to be applied\n"
-        "- **%s source check** — the app is assembled from %s files, so a "
-        "name\n  two of them both declare is read for once, not clicked\n"
+        "- **%s source check** — the app is linked from %s ES modules, so a "
+        "name\n  two of them both declare, or one of them uses without "
+        "importing,\n  is read for once rather than clicked\n"
         "- **%s browser tests** — run against the built page, because no "
         "Python\n  check can see a template regression"
         % (word(1 + py + node + browser), word(py), word(node),

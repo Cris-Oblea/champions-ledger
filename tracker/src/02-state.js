@@ -78,3 +78,18 @@ function ownedNames(){
   return m;
 }
 
+/* ------------------------------------------------------- what leaves here --
+   `boxUsed` stays private: capacity warnings are drawn in 13-boot from
+   boxRows("champions").length, and a second way to ask the same question is
+   how two counters end up disagreeing.
+
+   S itself is exported, and it is the one mutable thing in the app that every
+   part touches. Exporting the OBJECT is deliberate - parts write S.box, S.tab,
+   S.ready, and a module binding may only be reassigned by its own module, so
+   `S = ...` anywhere else is now a build error rather than a silent second
+   ledger. */
+export {
+  ORIGIN_LABEL, S,
+  boxRows, buildLink, buildsFor, capacity, hasStone, originOf, originRows,
+  ownedNames, ownedStones,
+};

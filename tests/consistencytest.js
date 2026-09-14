@@ -34,6 +34,8 @@ const list = (a, n) => a.length ? a.slice(0, n || 6).join(", ") +
   (a.length > (n || 6) ? " (+" + (a.length - (n || 6)) + ")" : "") : "0";
 
 const src = require("./harness.js").page(ROOT);
+/* the code smells below are about the SOURCE, so they read the source */
+const code = require("./harness.js").source(ROOT);
 const body = src;
 const stub = `<script>window.supabase={createClient:function(){return{
  auth:{getSession:function(){return Promise.resolve({data:{session:null}});},
@@ -55,8 +57,8 @@ setTimeout(() => {
   console.log("\n  el codigo");
   const decl = {}, fdecl = {};
   let m, re = /^var ([A-Za-z_$][\w$]*)\s*=/gm, fre = /^function ([A-Za-z_$][\w$]*)\s*\(/gm;
-  while ((m = re.exec(src))) (decl[m[1]] = decl[m[1]] || []).push(1);
-  while ((m = fre.exec(src))) (fdecl[m[1]] = fdecl[m[1]] || []).push(1);
+  while ((m = re.exec(code))) (decl[m[1]] = decl[m[1]] || []).push(1);
+  while ((m = fre.exec(code))) (fdecl[m[1]] = fdecl[m[1]] || []).push(1);
   ok("ningun var declarado dos veces",
      list(Object.keys(decl).filter(k => decl[k].length > 1)), "0");
   ok("ninguna funcion declarada dos veces",
@@ -64,7 +66,7 @@ setTimeout(() => {
   /* the drawItems bug: a guard that skips the redraw when focus is inside the
      container it is about to rebuild. Legitimate for a form of text inputs
      (the Trainer tab), wrong for a list of buttons. */
-  const guards = src.split("\n").filter(function(l){
+  const guards = code.split("\n").filter(function(l){
     return /activeElement/.test(l) && !/^\s*\/?\*/.test(l);
   });
   ok("solo queda un guard de foco", guards.length, 2);   // una sentencia if, dos lineas
