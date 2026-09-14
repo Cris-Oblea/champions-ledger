@@ -1,5 +1,9 @@
 /* 10-scan.js - Reading a screenshot of the box.
-   Part of the app; assembled into one script by scripts/build_tracker_page.py. */
+   Part of the app; linked into one script by scripts/build_tracker_page.py. */
+import { $, C, FORMS, byName, el, freeSlug, toast } from "./01-data.js";
+import { S } from "./02-state.js";
+import { put } from "./03-store.js";
+import { fbtn } from "./04-nav.js";
 /* ====================================================================== scan */
 function initScan(){
   if (!window.claude || !window.claude.use) return;
@@ -164,3 +168,16 @@ var TYPE_ITEM = {
   "Soft Sand": "Ground", "Spell Tag": "Ghost", "Twisted Spoon": "Psychic"
 };
 
+/* ------------------------------------------------------- what leaves here --
+   `initScan` is the screenshot reader, and the rest is the MODIFIER TABLES -
+   which item, weather, terrain and berry touch which type, and by how much.
+   11-damage is their only other reader.
+
+   They sit in this file for a historical reason and not a good one: the scan
+   view was where the first table was needed. Moving them to a part of their
+   own is a separate change, and a file that says what it exports is the thing
+   that makes it visible at all - before, nothing recorded that the damage
+   screen was reaching into the scanner. */
+export {
+  BERRY_TYPE, MODS, TERRAIN_MOVE, TYPE_ITEM, WEATHER_MOVE, initScan, modFor,
+};

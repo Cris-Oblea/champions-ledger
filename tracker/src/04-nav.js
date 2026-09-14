@@ -1,5 +1,14 @@
 /* 04-nav.js - Tabs, editor views, and the modal sheet they used to be.
-   Part of the app; assembled into one script by scripts/build_tracker_page.py. */
+   Part of the app; linked into one script by scripts/build_tracker_page.py. */
+import { $, el } from "./01-data.js";
+import { S } from "./02-state.js";
+/* Three redraws that live in parts not converted yet, reached through the
+   bridge the build generates. Each is only ever CALLED - two of them from a
+   setTimeout - so the cycle they form with this file (the bridge imports go,
+   openSheet and the rest from here) costs nothing: function declarations are
+   hoisted, and nothing runs while the modules are still loading. When those
+   parts become modules these three lines name them instead. */
+import { buildsPane, calcDraw, findDraw } from "./_legacy.js";
 /* ===================================================================== tabs */
 var TABS = [
   /* One word each. "Champs Box" was the only label that wrapped to two lines
@@ -164,3 +173,14 @@ function fbtn(label, cls, fn){
   return b;
 }
 
+/* ------------------------------------------------------- what leaves here --
+   Navigation is a small surface on purpose: everything else asks `go` to
+   change tab, `openSheet` to show a sheet and `fbtn` for a footer button.
+
+   What stays private is the furniture - TABS and EXTRA_VIEWS (the tab bar's
+   own data), lockScroll and _lockY (the iOS scroll lock behind a sheet),
+   syncNavHeight, sheetSave and EDITOR_HOME. Before the module pass any of the
+   other twelve parts could have reached in and set _lockY. */
+export {
+  buildTabs, closeSheet, fbtn, go, leaveEditor, mq, openEditor, openSheet,
+};

@@ -1,5 +1,12 @@
 /* 07-gear.js - Items, stones, statuses, and the Profile tab.
-   Part of the app; assembled into one script by scripts/build_tracker_page.py. */
+   Part of the app; linked into one script by scripts/build_tracker_page.py. */
+import { $, C, COSTS, bst, byName, el, toast, typeChip } from "./01-data.js";
+import { S, boxRows, capacity, hasStone, ownedNames, ownedStones }
+  from "./02-state.js";
+import { patch, put } from "./03-store.js";
+/* One button on the Profile tab opens the team sheet, which lives in 08-teams
+   and is not a module yet. Called from a click handler, never while loading. */
+import { teamSheet } from "./_legacy.js";
 /* ====================================================================== gear */
 function drawStones(){
   var q = ($("stoneSearch").value || "").trim().toLowerCase();
@@ -336,3 +343,11 @@ $("tSave").onclick = function(){
   }).then(function(){ toast("Box capacity saved"); });
 };
 
+/* ------------------------------------------------------- what leaves here --
+   Four drawings, one per panel. Everything they are built from is private:
+   ITEM_CATS and the item row, the stone toggle, the price helpers, and `kv`.
+
+   `setItem` in particular: the Item Clause is enforced by the picker greying
+   out what another slot holds, and that rule is only correct if every write
+   goes through here. It is now unreachable from anywhere else. */
+export { drawItems, drawStatuses, drawStones, drawTrainer };
