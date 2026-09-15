@@ -30,7 +30,7 @@
    ]
   },
   "Aerilate": {
-   "described": "This Pokemon's Normal-type moves become Flying type and have 1.2x power.",
+   "described": "This Pokemon's Normal-type moves become Flying type and have 1.2× power.",
    "effects": [],
    "kind": "ability",
    "notes": [],
@@ -38,7 +38,7 @@
     {
      "as_written": "1.2x",
      "kind": "multiplier",
-     "phrase": "This Pokemon's Normal-type moves become Flying type and have 1.2x power.",
+     "phrase": "This Pokemon's Normal-type moves become Flying type and have 1.2× power.",
      "value": 1.2
     }
    ]
@@ -86,7 +86,7 @@
    ]
   },
   "Analytic": {
-   "described": "This Pokemon's attacks have 1.3x power if it is the last to move in a turn.",
+   "described": "This Pokemon's attacks have 1.3× power if it is the last to move in a turn.",
    "effects": [],
    "kind": "ability",
    "notes": [],
@@ -94,7 +94,7 @@
     {
      "as_written": "1.3x",
      "kind": "multiplier",
-     "phrase": "This Pokemon's attacks have 1.3x power if it is the last to move in a turn.",
+     "phrase": "This Pokemon's attacks have 1.3× power if it is the last to move in a turn.",
      "value": 1.3
     }
    ]
@@ -297,7 +297,7 @@
    ]
   },
   "Barb Barrage": {
-   "described": "50% psn. 2x power if target already poisoned.",
+   "described": "50% psn. 2× power if target already poisoned.",
    "effects": [],
    "kind": "move",
    "notes": [],
@@ -305,7 +305,7 @@
     {
      "as_written": "2x",
      "kind": "multiplier",
-     "phrase": "2x power if target already poisoned.",
+     "phrase": "2× power if target already poisoned.",
      "value": 2.0
     },
     {
@@ -359,7 +359,7 @@
    ]
   },
   "Big Root": {
-   "described": "Holder gains 1.3x HP from draining/Aqua Ring/Ingrain/Leech Seed/Strength Sap.",
+   "described": "Holder gains 1.3× HP from draining/Aqua Ring/Ingrain/Leech Seed/Strength Sap.",
    "effects": [],
    "kind": "item",
    "notes": [],
@@ -367,7 +367,7 @@
     {
      "as_written": "1.3x",
      "kind": "multiplier",
-     "phrase": "Holder gains 1.3x HP from draining/Aqua Ring/Ingrain/Leech Seed/Strength Sap.",
+     "phrase": "Holder gains 1.3× HP from draining/Aqua Ring/Ingrain/Leech Seed/Strength Sap.",
      "value": 1.3
     }
    ]
@@ -383,6 +383,26 @@
      "kind": "turns",
      "phrase": "Traps and damages the target for 4-5 turns.",
      "value": 5.0
+    }
+   ]
+  },
+  "Binding Band": {
+   "described": "Holder's partial-trapping moves deal 1/6 max HP per turn instead of 1/8.",
+   "effects": [],
+   "kind": "item",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1/6 of max HP",
+     "kind": "fraction of max HP",
+     "phrase": "Holder's partial-trapping moves deal 1/6 max HP per turn instead of 1/8.",
+     "value": 0.166667
+    },
+    {
+     "as_written": "1/8",
+     "kind": "fraction",
+     "phrase": "Holder's partial-trapping moves deal 1/6 max HP per turn instead of 1/8.",
+     "value": 0.125
     }
    ]
   },
@@ -429,7 +449,7 @@
    ]
   },
   "Black Belt": {
-   "described": "Holder's Fighting-type attacks have 1.2x power.",
+   "described": "Holder's Fighting-type attacks have 1.2× power.",
    "effects": [
     {
      "multiplier": 1.2,
@@ -462,13 +482,13 @@
     {
      "as_written": "1.2x",
      "kind": "multiplier",
-     "phrase": "Holder's Fighting-type attacks have 1.2x power.",
+     "phrase": "Holder's Fighting-type attacks have 1.2× power.",
      "value": 1.2
     }
    ]
   },
   "Black Glasses": {
-   "described": "Holder's Dark-type attacks have 1.2x power.",
+   "described": "Holder's Dark-type attacks have 1.2× power.",
    "effects": [
     {
      "multiplier": 1.2,
@@ -501,13 +521,13 @@
     {
      "as_written": "1.2x",
      "kind": "multiplier",
-     "phrase": "Holder's Dark-type attacks have 1.2x power.",
+     "phrase": "Holder's Dark-type attacks have 1.2× power.",
      "value": 1.2
     }
    ]
   },
   "Blaze": {
-   "described": "At 1/3 or less of its max HP, this Pokemon's offensive stat is 1.5x with Fire attacks.",
+   "described": "At 1/3 or less of its max HP, this Pokemon's offensive stat is 1.5× with Fire attacks.",
    "effects": [],
    "kind": "ability",
    "notes": [],
@@ -515,13 +535,13 @@
     {
      "as_written": "1.5x",
      "kind": "multiplier",
-     "phrase": "At 1/3 or less of its max HP, this Pokemon's offensive stat is 1.5x with Fire attacks.",
+     "phrase": "At 1/3 or less of its max HP, this Pokemon's offensive stat is 1.5× with Fire attacks.",
      "value": 1.5
     },
     {
      "as_written": "1/3",
      "kind": "fraction",
-     "phrase": "At 1/3 or less of its max HP, this Pokemon's offensive stat is 1.5x with Fire attacks.",
+     "phrase": "At 1/3 or less of its max HP, this Pokemon's offensive stat is 1.5× with Fire attacks.",
      "value": 0.333333
     }
    ]
@@ -611,7 +631,7 @@
    ]
   },
   "Bright Powder": {
-   "described": "The accuracy of attacks against the holder is 0.9x.",
+   "described": "The accuracy of attacks against the holder is 0.9×.",
    "effects": [],
    "kind": "item",
    "notes": [],
@@ -619,7 +639,7 @@
     {
      "as_written": "0.9x",
      "kind": "multiplier",
-     "phrase": "The accuracy of attacks against the holder is 0.9x.",
+     "phrase": "The accuracy of attacks against the holder is 0.9×.",
      "value": 0.9
     }
    ]
@@ -667,7 +687,7 @@
    ]
   },
   "Charcoal": {
-   "described": "Holder's Fire-type attacks have 1.2x power.",
+   "described": "Holder's Fire-type attacks have 1.2× power.",
    "effects": [
     {
      "multiplier": 1.2,
@@ -700,13 +720,13 @@
     {
      "as_written": "1.2x",
      "kind": "multiplier",
-     "phrase": "Holder's Fire-type attacks have 1.2x power.",
+     "phrase": "Holder's Fire-type attacks have 1.2× power.",
      "value": 1.2
     }
    ]
   },
   "Charge": {
-   "described": "+1 SpD, user's next Electric move 2x power.",
+   "described": "+1 SpD, user's next Electric move 2× power.",
    "effects": [],
    "kind": "move",
    "notes": [],
@@ -714,7 +734,7 @@
     {
      "as_written": "2x",
      "kind": "multiplier",
-     "phrase": "+1 SpD, user's next Electric move 2x power.",
+     "phrase": "+1 SpD, user's next Electric move 2× power.",
      "value": 2.0
     }
    ]
@@ -830,7 +850,7 @@
    ]
   },
   "Choice Scarf": {
-   "described": "Holder's Speed is 1.5x, but it can only select the first move it executes.",
+   "described": "Holder's Speed is 1.5×, but it can only select the first move it executes.",
    "effects": [],
    "kind": "item",
    "notes": [],
@@ -838,7 +858,7 @@
     {
      "as_written": "1.5x",
      "kind": "multiplier",
-     "phrase": "Holder's Speed is 1.5x, but it can only select the first move it executes.",
+     "phrase": "Holder's Speed is 1.5×, but it can only select the first move it executes.",
      "value": 1.5
     }
    ]
@@ -939,7 +959,7 @@
    ]
   },
   "Comeuppance": {
-   "described": "If hit by an attack, returns 1.5x damage.",
+   "described": "If hit by an attack, returns 1.5× damage.",
    "effects": [],
    "kind": "move",
    "notes": [],
@@ -947,7 +967,7 @@
     {
      "as_written": "1.5x",
      "kind": "multiplier",
-     "phrase": "If hit by an attack, returns 1.5x damage.",
+     "phrase": "If hit by an attack, returns 1.5× damage.",
      "value": 1.5
     }
    ]
@@ -1149,7 +1169,7 @@
    ]
   },
   "Dragon Fang": {
-   "described": "Holder's Dragon-type attacks have 1.2x power.",
+   "described": "Holder's Dragon-type attacks have 1.2× power.",
    "effects": [
     {
      "multiplier": 1.2,
@@ -1182,7 +1202,7 @@
     {
      "as_written": "1.2x",
      "kind": "multiplier",
-     "phrase": "Holder's Dragon-type attacks have 1.2x power.",
+     "phrase": "Holder's Dragon-type attacks have 1.2× power.",
      "value": 1.2
     }
    ]
@@ -1202,7 +1222,7 @@
    ]
   },
   "Dragonize": {
-   "described": "This Pokemon's Normal-type moves become Dragon type and have 1.2x power.",
+   "described": "This Pokemon's Normal-type moves become Dragon type and have 1.2× power.",
    "effects": [],
    "kind": "ability",
    "notes": [],
@@ -1210,7 +1230,7 @@
     {
      "as_written": "1.2x",
      "kind": "multiplier",
-     "phrase": "This Pokemon's Normal-type moves become Dragon type and have 1.2x power.",
+     "phrase": "This Pokemon's Normal-type moves become Dragon type and have 1.2× power.",
      "value": 1.2
     }
    ]
@@ -1243,8 +1263,22 @@
     }
    ]
   },
+  "Drum Beating": {
+   "described": "100% chance to lower the target's Speed by 1.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "100%",
+     "kind": "percent",
+     "phrase": "100% chance to lower the target's Speed by 1.",
+     "value": 100.0
+    }
+   ]
+  },
   "Dry Skin": {
-   "described": "This Pokemon is healed 1/4 by Water, 1/8 by Rain; is hurt 1.25x by Fire, 1/8 by Sun.",
+   "described": "This Pokemon is healed 1/4 by Water, 1/8 by Rain; is hurt 1.25× by Fire, 1/8 by Sun.",
    "effects": [],
    "kind": "ability",
    "notes": [],
@@ -1252,25 +1286,25 @@
     {
      "as_written": "1.25x",
      "kind": "multiplier",
-     "phrase": "This Pokemon is healed 1/4 by Water, 1/8 by Rain; is hurt 1.25x by Fire, 1/8 by Sun.",
+     "phrase": "This Pokemon is healed 1/4 by Water, 1/8 by Rain; is hurt 1.25× by Fire, 1/8 by Sun.",
      "value": 1.25
     },
     {
      "as_written": "1/4",
      "kind": "fraction",
-     "phrase": "This Pokemon is healed 1/4 by Water, 1/8 by Rain; is hurt 1.25x by Fire, 1/8 by Sun.",
+     "phrase": "This Pokemon is healed 1/4 by Water, 1/8 by Rain; is hurt 1.25× by Fire, 1/8 by Sun.",
      "value": 0.25
     },
     {
      "as_written": "1/8",
      "kind": "fraction",
-     "phrase": "This Pokemon is healed 1/4 by Water, 1/8 by Rain; is hurt 1.25x by Fire, 1/8 by Sun.",
+     "phrase": "This Pokemon is healed 1/4 by Water, 1/8 by Rain; is hurt 1.25× by Fire, 1/8 by Sun.",
      "value": 0.125
     },
     {
      "as_written": "1/8",
      "kind": "fraction",
-     "phrase": "This Pokemon is healed 1/4 by Water, 1/8 by Rain; is hurt 1.25x by Fire, 1/8 by Sun.",
+     "phrase": "This Pokemon is healed 1/4 by Water, 1/8 by Rain; is hurt 1.25× by Fire, 1/8 by Sun.",
      "value": 0.125
     }
    ]
@@ -1345,6 +1379,20 @@
     }
    ]
   },
+  "Electric Seed": {
+   "described": "If the terrain is Electric Terrain, raises holder's Defense by 1 stage. Single use.",
+   "effects": [],
+   "kind": "item",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1 stage",
+     "kind": "stages",
+     "phrase": "If the terrain is Electric Terrain, raises holder's Defense by 1 stage.",
+     "value": 1.0
+    }
+   ]
+  },
   "Electric Terrain": {
    "described": "5 turns. Grounded: +Electric power, can't sleep.",
    "effects": [],
@@ -1370,6 +1418,20 @@
      "kind": "percent",
      "phrase": "100% chance to lower the foe(s) Speed by 1.",
      "value": 100.0
+    }
+   ]
+  },
+  "Emergency Exit": {
+   "described": "This Pokemon switches out when it reaches 1/2 or less of its maximum HP.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1/2",
+     "kind": "fraction",
+     "phrase": "This Pokemon switches out when it reaches 1/2 or less of its maximum HP.",
+     "value": 0.5
     }
    ]
   },
@@ -1402,7 +1464,7 @@
    ]
   },
   "Expanding Force": {
-   "described": "User on Psychic Terrain: 1.5x power, hits foes.",
+   "described": "User on Psychic Terrain: 1.5× power, hits foes.",
    "effects": [],
    "kind": "move",
    "notes": [],
@@ -1410,13 +1472,13 @@
     {
      "as_written": "1.5x",
      "kind": "multiplier",
-     "phrase": "User on Psychic Terrain: 1.5x power, hits foes.",
+     "phrase": "User on Psychic Terrain: 1.5× power, hits foes.",
      "value": 1.5
     }
    ]
   },
   "Expert Belt": {
-   "described": "Holder's attacks that are super effective against the target do 1.2x damage.",
+   "described": "Holder's attacks that are super effective against the target do 1.2× damage.",
    "effects": [
     {
      "multiplier": 1.2,
@@ -1437,7 +1499,7 @@
     {
      "as_written": "1.2x",
      "kind": "multiplier",
-     "phrase": "Holder's attacks that are super effective against the target do 1.2x damage.",
+     "phrase": "Holder's attacks that are super effective against the target do 1.2× damage.",
      "value": 1.2
     }
    ]
@@ -1471,7 +1533,7 @@
    ]
   },
   "Fairy Aura": {
-   "described": "While this Pokemon is active, a Fairy move used by any Pokemon has 1.33x power.",
+   "described": "While this Pokemon is active, a Fairy move used by any Pokemon has 1.33× power.",
    "effects": [
     {
      "multiplier": 1.3301,
@@ -1528,13 +1590,13 @@
     {
      "as_written": "1.33x",
      "kind": "multiplier",
-     "phrase": "While this Pokemon is active, a Fairy move used by any Pokemon has 1.33x power.",
+     "phrase": "While this Pokemon is active, a Fairy move used by any Pokemon has 1.33× power.",
      "value": 1.33
     }
    ]
   },
   "Fairy Feather": {
-   "described": "Holder's Fairy-type attacks have 1.2x power.",
+   "described": "Holder's Fairy-type attacks have 1.2× power.",
    "effects": [
     {
      "multiplier": 1.2,
@@ -1567,7 +1629,7 @@
     {
      "as_written": "1.2x",
      "kind": "multiplier",
-     "phrase": "Holder's Fairy-type attacks have 1.2x power.",
+     "phrase": "Holder's Fairy-type attacks have 1.2× power.",
      "value": 1.2
     }
    ]
@@ -1818,7 +1880,7 @@
    ]
   },
   "Flash Fire": {
-   "described": "This Pokemon's Fire attacks do 1.5x damage if hit by one Fire move; Fire immunity.",
+   "described": "This Pokemon's Fire attacks do 1.5× damage if hit by one Fire move; Fire immunity.",
    "effects": [],
    "kind": "ability",
    "notes": [],
@@ -1826,13 +1888,13 @@
     {
      "as_written": "1.5x",
      "kind": "multiplier",
-     "phrase": "This Pokemon's Fire attacks do 1.5x damage if hit by one Fire move; Fire immunity.",
+     "phrase": "This Pokemon's Fire attacks do 1.5× damage if hit by one Fire move; Fire immunity.",
      "value": 1.5
     }
    ]
   },
   "Fluffy": {
-   "described": "This Pokemon takes 1/2 damage from contact moves, 2x damage from Fire moves.",
+   "described": "This Pokemon takes 1/2 damage from contact moves, 2× damage from Fire moves.",
    "effects": [
     {
      "multiplier": 0.5,
@@ -1853,13 +1915,13 @@
     {
      "as_written": "2x",
      "kind": "multiplier",
-     "phrase": "This Pokemon takes 1/2 damage from contact moves, 2x damage from Fire moves.",
+     "phrase": "This Pokemon takes 1/2 damage from contact moves, 2× damage from Fire moves.",
      "value": 2.0
     },
     {
      "as_written": "1/2",
      "kind": "fraction",
-     "phrase": "This Pokemon takes 1/2 damage from contact moves, 2x damage from Fire moves.",
+     "phrase": "This Pokemon takes 1/2 damage from contact moves, 2× damage from Fire moves.",
      "value": 0.5
     }
    ]
@@ -1941,6 +2003,20 @@
     }
    ]
   },
+  "Glaive Rush": {
+   "described": "User takes sure-hit 2× damage until its next turn.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "2x",
+     "kind": "multiplier",
+     "phrase": "User takes sure-hit 2× damage until its next turn.",
+     "value": 2.0
+    }
+   ]
+  },
   "Gluttony": {
    "described": "This Pokemon eats Berries at 1/2 max HP or less instead of their usual 1/4 max HP.",
    "effects": [],
@@ -1975,6 +2051,20 @@
     }
    ]
   },
+  "Grassy Seed": {
+   "described": "If the terrain is Grassy Terrain, raises holder's Defense by 1 stage. Single use.",
+   "effects": [],
+   "kind": "item",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1 stage",
+     "kind": "stages",
+     "phrase": "If the terrain is Grassy Terrain, raises holder's Defense by 1 stage.",
+     "value": 1.0
+    }
+   ]
+  },
   "Grassy Terrain": {
    "described": "5 turns. Grounded: +Grass power, +1/16 max HP.",
    "effects": [],
@@ -1996,7 +2086,7 @@
    ]
   },
   "Grav Apple": {
-   "described": "Target: 100% -1 Def. During Gravity: 1.5x power.",
+   "described": "Target: 100% -1 Def. During Gravity: 1.5× power.",
    "effects": [],
    "kind": "move",
    "notes": [],
@@ -2004,7 +2094,7 @@
     {
      "as_written": "1.5x",
      "kind": "multiplier",
-     "phrase": "During Gravity: 1.5x power.",
+     "phrase": "During Gravity: 1.5× power.",
      "value": 1.5
     },
     {
@@ -2016,7 +2106,7 @@
    ]
   },
   "Gravity": {
-   "described": "5 turns: no Ground immunities, 1.67x accuracy.",
+   "described": "5 turns: no Ground immunities, 1.67× accuracy.",
    "effects": [],
    "kind": "move",
    "notes": [],
@@ -2024,13 +2114,13 @@
     {
      "as_written": "1.67x",
      "kind": "multiplier",
-     "phrase": "5 turns: no Ground immunities, 1.67x accuracy.",
+     "phrase": "5 turns: no Ground immunities, 1.67× accuracy.",
      "value": 1.67
     },
     {
      "as_written": "5 turns",
      "kind": "turns",
-     "phrase": "5 turns: no Ground immunities, 1.67x accuracy.",
+     "phrase": "5 turns: no Ground immunities, 1.67× accuracy.",
      "value": 5.0
     }
    ]
@@ -2050,7 +2140,7 @@
    ]
   },
   "Guts": {
-   "described": "If this Pokemon is statused, its Attack is 1.5x; ignores burn halving physical damage.",
+   "described": "If this Pokemon is statused, its Attack is 1.5×; ignores burn halving physical damage.",
    "effects": [
     {
      "multiplier": 1.5,
@@ -2065,7 +2155,7 @@
     {
      "as_written": "1.5x",
      "kind": "multiplier",
-     "phrase": "If this Pokemon is statused, its Attack is 1.5x; ignores burn halving physical damage.",
+     "phrase": "If this Pokemon is statused, its Attack is 1.5×; ignores burn halving physical damage.",
      "value": 1.5
     }
    ]
@@ -2098,7 +2188,7 @@
    ]
   },
   "Hard Stone": {
-   "described": "Holder's Rock-type attacks have 1.2x power.",
+   "described": "Holder's Rock-type attacks have 1.2× power.",
    "effects": [
     {
      "multiplier": 1.2,
@@ -2131,7 +2221,7 @@
     {
      "as_written": "1.2x",
      "kind": "multiplier",
-     "phrase": "Holder's Rock-type attacks have 1.2x power.",
+     "phrase": "Holder's Rock-type attacks have 1.2× power.",
      "value": 1.2
     }
    ]
@@ -2274,7 +2364,7 @@
    ]
   },
   "Helping Hand": {
-   "described": "One adjacent ally's move power is 1.5x this turn.",
+   "described": "One adjacent ally's move power is 1.5× this turn.",
    "effects": [],
    "kind": "move",
    "notes": [],
@@ -2282,7 +2372,7 @@
     {
      "as_written": "1.5x",
      "kind": "multiplier",
-     "phrase": "One adjacent ally's move power is 1.5x this turn.",
+     "phrase": "One adjacent ally's move power is 1.5× this turn.",
      "value": 1.5
     }
    ]
@@ -2379,7 +2469,7 @@
    ]
   },
   "Hustle": {
-   "described": "This Pokemon's Attack is 1.5x and accuracy of its physical attacks is 0.8x.",
+   "described": "This Pokemon's Attack is 1.5× and accuracy of its physical attacks is 0.8×.",
    "effects": [],
    "kind": "ability",
    "notes": [],
@@ -2387,13 +2477,13 @@
     {
      "as_written": "1.5x",
      "kind": "multiplier",
-     "phrase": "This Pokemon's Attack is 1.5x and accuracy of its physical attacks is 0.8x.",
+     "phrase": "This Pokemon's Attack is 1.5× and accuracy of its physical attacks is 0.8×.",
      "value": 1.5
     },
     {
      "as_written": "0.8x",
      "kind": "multiplier",
-     "phrase": "This Pokemon's Attack is 1.5x and accuracy of its physical attacks is 0.8x.",
+     "phrase": "This Pokemon's Attack is 1.5× and accuracy of its physical attacks is 0.8×.",
      "value": 0.8
     }
    ]
@@ -2503,7 +2593,7 @@
    ]
   },
   "Infernal Parade": {
-   "described": "30% burn. 2x power if target is already statused.",
+   "described": "30% burn. 2× power if target is already statused.",
    "effects": [],
    "kind": "move",
    "notes": [],
@@ -2511,7 +2601,7 @@
     {
      "as_written": "2x",
      "kind": "multiplier",
-     "phrase": "2x power if target is already statused.",
+     "phrase": "2× power if target is already statused.",
      "value": 2.0
     },
     {
@@ -2593,7 +2683,7 @@
    ]
   },
   "Iron Fist": {
-   "described": "This Pokemon's punch-based attacks have 1.2x power. Sucker Punch is not boosted.",
+   "described": "This Pokemon's punch-based attacks have 1.2× power. Sucker Punch is not boosted.",
    "effects": [
     {
      "multiplier": 1.2,
@@ -2626,7 +2716,7 @@
     {
      "as_written": "1.2x",
      "kind": "multiplier",
-     "phrase": "This Pokemon's punch-based attacks have 1.2x power.",
+     "phrase": "This Pokemon's punch-based attacks have 1.2× power.",
      "value": 1.2
     }
    ]
@@ -2729,7 +2819,7 @@
    ]
   },
   "Knock Off": {
-   "described": "1.5x damage if foe holds an item. Removes item.",
+   "described": "1.5× damage if foe holds an item. Removes item.",
    "effects": [],
    "kind": "move",
    "notes": [],
@@ -2737,13 +2827,13 @@
     {
      "as_written": "1.5x",
      "kind": "multiplier",
-     "phrase": "1.5x damage if foe holds an item.",
+     "phrase": "1.5× damage if foe holds an item.",
      "value": 1.5
     }
    ]
   },
   "Lash Out": {
-   "described": "2x power if the user had a stat lowered this turn.",
+   "described": "2× power if the user had a stat lowered this turn.",
    "effects": [],
    "kind": "move",
    "notes": [],
@@ -2751,7 +2841,7 @@
     {
      "as_written": "2x",
      "kind": "multiplier",
-     "phrase": "2x power if the user had a stat lowered this turn.",
+     "phrase": "2× power if the user had a stat lowered this turn.",
      "value": 2.0
     }
    ]
@@ -2798,6 +2888,20 @@
     }
    ]
   },
+  "Leek": {
+   "described": "If held by a Farfetch’d or Sirfetch’d, its critical hit ratio is raised by 2 stages.",
+   "effects": [],
+   "kind": "item",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "2 stages",
+     "kind": "stages",
+     "phrase": "If held by a Farfetch’d or Sirfetch’d, its critical hit ratio is raised by 2 stages.",
+     "value": 2.0
+    }
+   ]
+  },
   "Leftovers": {
    "described": "At the end of every turn, holder restores 1/16 of its max HP.",
    "effects": [],
@@ -2827,7 +2931,7 @@
    ]
   },
   "Life Orb": {
-   "described": "Holder's attacks do 1.3x damage, and it loses 1/10 its max HP after the attack.",
+   "described": "Holder's attacks do 1.3× damage, and it loses 1/10 its max HP after the attack.",
    "effects": [
     {
      "multiplier": 1.2998,
@@ -2848,13 +2952,13 @@
     {
      "as_written": "1.3x",
      "kind": "multiplier",
-     "phrase": "Holder's attacks do 1.3x damage, and it loses 1/10 its max HP after the attack.",
+     "phrase": "Holder's attacks do 1.3× damage, and it loses 1/10 its max HP after the attack.",
      "value": 1.3
     },
     {
      "as_written": "1/10 of max HP",
      "kind": "fraction of max HP",
-     "phrase": "Holder's attacks do 1.3x damage, and it loses 1/10 its max HP after the attack.",
+     "phrase": "Holder's attacks do 1.3× damage, and it loses 1/10 its max HP after the attack.",
      "value": 0.1
     }
    ]
@@ -3006,7 +3110,7 @@
    ]
   },
   "Magnet": {
-   "described": "Holder's Electric-type attacks have 1.2x power.",
+   "described": "Holder's Electric-type attacks have 1.2× power.",
    "effects": [
     {
      "multiplier": 1.2,
@@ -3039,7 +3143,7 @@
     {
      "as_written": "1.2x",
      "kind": "multiplier",
-     "phrase": "Holder's Electric-type attacks have 1.2x power.",
+     "phrase": "Holder's Electric-type attacks have 1.2× power.",
      "value": 1.2
     }
    ]
@@ -3091,7 +3195,7 @@
    ]
   },
   "Mega Launcher": {
-   "described": "This Pokemon's pulse moves have 1.5x power. Heal Pulse heals 3/4 target's max HP.",
+   "described": "This Pokemon's pulse moves have 1.5× power. Heal Pulse heals 3/4 target's max HP.",
    "effects": [
     {
      "multiplier": 1.5,
@@ -3124,7 +3228,7 @@
     {
      "as_written": "1.5x",
      "kind": "multiplier",
-     "phrase": "This Pokemon's pulse moves have 1.5x power.",
+     "phrase": "This Pokemon's pulse moves have 1.5× power.",
      "value": 1.5
     },
     {
@@ -3136,7 +3240,7 @@
    ]
   },
   "Metal Burst": {
-   "described": "If hit by an attack, returns 1.5x damage.",
+   "described": "If hit by an attack, returns 1.5× damage.",
    "effects": [],
    "kind": "move",
    "notes": [],
@@ -3144,13 +3248,13 @@
     {
      "as_written": "1.5x",
      "kind": "multiplier",
-     "phrase": "If hit by an attack, returns 1.5x damage.",
+     "phrase": "If hit by an attack, returns 1.5× damage.",
      "value": 1.5
     }
    ]
   },
   "Metal Coat": {
-   "described": "Holder's Steel-type attacks have 1.2x power.",
+   "described": "Holder's Steel-type attacks have 1.2× power.",
    "effects": [
     {
      "multiplier": 1.2,
@@ -3183,7 +3287,7 @@
     {
      "as_written": "1.2x",
      "kind": "multiplier",
-     "phrase": "Holder's Steel-type attacks have 1.2x power.",
+     "phrase": "Holder's Steel-type attacks have 1.2× power.",
      "value": 1.2
     }
    ]
@@ -3203,7 +3307,7 @@
    ]
   },
   "Metronome": {
-   "described": "Damage of moves used on consecutive turns is increased. Max 2x after 5 turns.",
+   "described": "Damage of moves used on consecutive turns is increased. Max 2× after 5 turns.",
    "effects": [],
    "kind": "item",
    "notes": [],
@@ -3211,19 +3315,33 @@
     {
      "as_written": "2x",
      "kind": "multiplier",
-     "phrase": "Max 2x after 5 turns.",
+     "phrase": "Max 2× after 5 turns.",
      "value": 2.0
     },
     {
      "as_written": "5 turns",
      "kind": "turns",
-     "phrase": "Max 2x after 5 turns.",
+     "phrase": "Max 2× after 5 turns.",
      "value": 5.0
     }
    ]
   },
+  "Milk Drink": {
+   "described": "Heals the user by 50% of its max HP.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "50%",
+     "kind": "percent",
+     "phrase": "Heals the user by 50% of its max HP.",
+     "value": 50.0
+    }
+   ]
+  },
   "Minus": {
-   "described": "If an active ally has this Ability or the Plus Ability, this Pokemon's Sp. Atk is 1.5x.",
+   "described": "If an active ally has this Ability or the Plus Ability, this Pokemon's Sp. Atk is 1.5×.",
    "effects": [],
    "kind": "ability",
    "notes": [],
@@ -3231,13 +3349,13 @@
     {
      "as_written": "1.5x",
      "kind": "multiplier",
-     "phrase": "Atk is 1.5x.",
+     "phrase": "Atk is 1.5×.",
      "value": 1.5
     }
    ]
   },
   "Miracle Seed": {
-   "described": "Holder's Grass-type attacks have 1.2x power.",
+   "described": "Holder's Grass-type attacks have 1.2× power.",
    "effects": [
     {
      "multiplier": 1.2,
@@ -3270,7 +3388,7 @@
     {
      "as_written": "1.2x",
      "kind": "multiplier",
-     "phrase": "Holder's Grass-type attacks have 1.2x power.",
+     "phrase": "Holder's Grass-type attacks have 1.2× power.",
      "value": 1.2
     }
    ]
@@ -3290,7 +3408,7 @@
    ]
   },
   "Misty Explosion": {
-   "described": "User faints. User on Misty Terrain: 1.5x power.",
+   "described": "User faints. User on Misty Terrain: 1.5× power.",
    "effects": [],
    "kind": "move",
    "notes": [],
@@ -3298,8 +3416,22 @@
     {
      "as_written": "1.5x",
      "kind": "multiplier",
-     "phrase": "User on Misty Terrain: 1.5x power.",
+     "phrase": "User on Misty Terrain: 1.5× power.",
      "value": 1.5
+    }
+   ]
+  },
+  "Misty Seed": {
+   "described": "If the terrain is Misty Terrain, raises holder's Sp. Def by 1 stage. Single use.",
+   "effects": [],
+   "kind": "item",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1 stage",
+     "kind": "stages",
+     "phrase": "Def by 1 stage.",
+     "value": 1.0
     }
    ]
   },
@@ -3443,7 +3575,7 @@
    ]
   },
   "Muscle Band": {
-   "described": "Holder's physical attacks have 1.1x power.",
+   "described": "Holder's physical attacks have 1.1× power.",
    "effects": [
     {
      "multiplier": 1.0999,
@@ -3464,13 +3596,13 @@
     {
      "as_written": "1.1x",
      "kind": "multiplier",
-     "phrase": "Holder's physical attacks have 1.1x power.",
+     "phrase": "Holder's physical attacks have 1.1× power.",
      "value": 1.1
     }
    ]
   },
   "Mystic Water": {
-   "described": "Holder's Water-type attacks have 1.2x power.",
+   "described": "Holder's Water-type attacks have 1.2× power.",
    "effects": [
     {
      "multiplier": 1.2,
@@ -3503,7 +3635,7 @@
     {
      "as_written": "1.2x",
      "kind": "multiplier",
-     "phrase": "Holder's Water-type attacks have 1.2x power.",
+     "phrase": "Holder's Water-type attacks have 1.2× power.",
      "value": 1.2
     }
    ]
@@ -3523,7 +3655,7 @@
    ]
   },
   "Never-Melt Ice": {
-   "described": "Holder's Ice-type attacks have 1.2x power.",
+   "described": "Holder's Ice-type attacks have 1.2× power.",
    "effects": [
     {
      "multiplier": 1.2,
@@ -3556,7 +3688,7 @@
     {
      "as_written": "1.2x",
      "kind": "multiplier",
-     "phrase": "Holder's Ice-type attacks have 1.2x power.",
+     "phrase": "Holder's Ice-type attacks have 1.2× power.",
      "value": 1.2
     }
    ]
@@ -3576,6 +3708,7 @@
    ]
   },
   "Normal Gem": {
+   "described": "Holder's first successful Normal-type attack will have 1.3× power. Single use.",
    "effects": [
     {
      "multiplier": 1.3,
@@ -3603,7 +3736,15 @@
     }
    ],
    "kind": "item",
-   "notes": []
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1.3x",
+     "kind": "multiplier",
+     "phrase": "Holder's first successful Normal-type attack will have 1.3× power.",
+     "value": 1.3
+    }
+   ]
   },
   "Nuzzle": {
    "described": "100% chance to paralyze the target.",
@@ -3675,7 +3816,7 @@
    ]
   },
   "Overgrow": {
-   "described": "At 1/3 or less of its max HP, this Pokemon's offensive stat is 1.5x with Grass attacks.",
+   "described": "At 1/3 or less of its max HP, this Pokemon's offensive stat is 1.5× with Grass attacks.",
    "effects": [],
    "kind": "ability",
    "notes": [],
@@ -3683,13 +3824,13 @@
     {
      "as_written": "1.5x",
      "kind": "multiplier",
-     "phrase": "At 1/3 or less of its max HP, this Pokemon's offensive stat is 1.5x with Grass attacks.",
+     "phrase": "At 1/3 or less of its max HP, this Pokemon's offensive stat is 1.5× with Grass attacks.",
      "value": 1.5
     },
     {
      "as_written": "1/3",
      "kind": "fraction",
-     "phrase": "At 1/3 or less of its max HP, this Pokemon's offensive stat is 1.5x with Grass attacks.",
+     "phrase": "At 1/3 or less of its max HP, this Pokemon's offensive stat is 1.5× with Grass attacks.",
      "value": 0.333333
     }
    ]
@@ -3806,7 +3947,7 @@
    ]
   },
   "Pixilate": {
-   "described": "This Pokemon's Normal-type moves become Fairy type and have 1.2x power.",
+   "described": "This Pokemon's Normal-type moves become Fairy type and have 1.2× power.",
    "effects": [],
    "kind": "ability",
    "notes": [],
@@ -3814,7 +3955,7 @@
     {
      "as_written": "1.2x",
      "kind": "multiplier",
-     "phrase": "This Pokemon's Normal-type moves become Fairy type and have 1.2x power.",
+     "phrase": "This Pokemon's Normal-type moves become Fairy type and have 1.2× power.",
      "value": 1.2
     }
    ]
@@ -3834,7 +3975,7 @@
    ]
   },
   "Plus": {
-   "described": "If an active ally has this Ability or the Minus Ability, this Pokemon's Sp. Atk is 1.5x.",
+   "described": "If an active ally has this Ability or the Minus Ability, this Pokemon's Sp. Atk is 1.5×.",
    "effects": [],
    "kind": "ability",
    "notes": [],
@@ -3842,13 +3983,13 @@
     {
      "as_written": "1.5x",
      "kind": "multiplier",
-     "phrase": "Atk is 1.5x.",
+     "phrase": "Atk is 1.5×.",
      "value": 1.5
     }
    ]
   },
   "Poison Barb": {
-   "described": "Holder's Poison-type attacks have 1.2x power.",
+   "described": "Holder's Poison-type attacks have 1.2× power.",
    "effects": [],
    "kind": "item",
    "notes": [],
@@ -3856,7 +3997,7 @@
     {
      "as_written": "1.2x",
      "kind": "multiplier",
-     "phrase": "Holder's Poison-type attacks have 1.2x power.",
+     "phrase": "Holder's Poison-type attacks have 1.2× power.",
      "value": 1.2
     }
    ]
@@ -3987,6 +4128,20 @@
     }
    ]
   },
+  "Psychic Seed": {
+   "described": "If the terrain is Psychic Terrain, raises holder's Sp. Def by 1 stage. Single use.",
+   "effects": [],
+   "kind": "item",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1 stage",
+     "kind": "stages",
+     "phrase": "Def by 1 stage.",
+     "value": 1.0
+    }
+   ]
+  },
   "Psychic Terrain": {
    "described": "5 turns. Grounded: +Psychic power, priority-safe.",
    "effects": [],
@@ -4016,6 +4171,7 @@
    ]
   },
   "Punk Rock": {
+   "described": "This Pokemon receives 1/2 damage from sound moves. Its own have 1.3× power.",
    "effects": [
     {
      "multiplier": 1.3,
@@ -4055,7 +4211,21 @@
     }
    ],
    "kind": "ability",
-   "notes": []
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1.3x",
+     "kind": "multiplier",
+     "phrase": "Its own have 1.3× power.",
+     "value": 1.3
+    },
+    {
+     "as_written": "1/2",
+     "kind": "fraction",
+     "phrase": "This Pokemon receives 1/2 damage from sound moves.",
+     "value": 0.5
+    }
+   ]
   },
   "Pure Power": {
    "described": "This Pokemon's Attack is doubled.",
@@ -4105,6 +4275,20 @@
     }
    ]
   },
+  "Pyro Ball": {
+   "described": "10% chance to burn the target. Thaws user.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "10%",
+     "kind": "percent",
+     "phrase": "10% chance to burn the target.",
+     "value": 10.0
+    }
+   ]
+  },
   "Quick Claw": {
    "described": "Each turn, holder has a 20% chance to move first in its priority bracket.",
    "effects": [],
@@ -4134,7 +4318,7 @@
    ]
   },
   "Quick Feet": {
-   "described": "If this Pokemon is statused, its Speed is 1.5x; ignores Speed drop from paralysis.",
+   "described": "If this Pokemon is statused, its Speed is 1.5×; ignores Speed drop from paralysis.",
    "effects": [],
    "kind": "ability",
    "notes": [],
@@ -4142,7 +4326,7 @@
     {
      "as_written": "1.5x",
      "kind": "multiplier",
-     "phrase": "If this Pokemon is statused, its Speed is 1.5x; ignores Speed drop from paralysis.",
+     "phrase": "If this Pokemon is statused, its Speed is 1.5×; ignores Speed drop from paralysis.",
      "value": 1.5
     }
    ]
@@ -4189,6 +4373,20 @@
     }
    ]
   },
+  "Rattled": {
+   "described": "Speed is raised 1 stage if hit by a Bug-, Dark-, or Ghost-type attack, or Intimidated.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1 stage",
+     "kind": "stages",
+     "phrase": "Speed is raised 1 stage if hit by a Bug-, Dark-, or Ghost-type attack, or Intimidated.",
+     "value": 1.0
+    }
+   ]
+  },
   "Razor Shell": {
    "described": "50% chance to lower the target's Defense by 1.",
    "effects": [],
@@ -4204,7 +4402,7 @@
    ]
   },
   "Reckless": {
-   "described": "This Pokemon's attacks with recoil or crash damage have 1.2x power; not Struggle.",
+   "described": "This Pokemon's attacks with recoil or crash damage have 1.2× power; not Struggle.",
    "effects": [
     {
      "multiplier": 1.2,
@@ -4237,7 +4435,7 @@
     {
      "as_written": "1.2x",
      "kind": "multiplier",
-     "phrase": "This Pokemon's attacks with recoil or crash damage have 1.2x power; not Struggle.",
+     "phrase": "This Pokemon's attacks with recoil or crash damage have 1.2× power; not Struggle.",
      "value": 1.2
     }
    ]
@@ -4277,7 +4475,7 @@
    ]
   },
   "Refrigerate": {
-   "described": "This Pokemon's Normal-type moves become Ice type and have 1.2x power.",
+   "described": "This Pokemon's Normal-type moves become Ice type and have 1.2× power.",
    "effects": [],
    "kind": "ability",
    "notes": [],
@@ -4285,7 +4483,7 @@
     {
      "as_written": "1.2x",
      "kind": "multiplier",
-     "phrase": "This Pokemon's Normal-type moves become Ice type and have 1.2x power.",
+     "phrase": "This Pokemon's Normal-type moves become Ice type and have 1.2× power.",
      "value": 1.2
     }
    ]
@@ -4315,6 +4513,20 @@
      "kind": "turns",
      "phrase": "User sleeps 2 turns and restores HP and status.",
      "value": 2.0
+    }
+   ]
+  },
+  "Revival Blessing": {
+   "described": "Revives a fainted Pokemon to 50% HP.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "50%",
+     "kind": "percent",
+     "phrase": "Revives a fainted Pokemon to 50% HP.",
+     "value": 50.0
     }
    ]
   },
@@ -4360,7 +4572,7 @@
    ]
   },
   "Rising Voltage": {
-   "described": "2x power if target is grounded in Electric Terrain.",
+   "described": "2× power if target is grounded in Electric Terrain.",
    "effects": [],
    "kind": "move",
    "notes": [],
@@ -4368,13 +4580,13 @@
     {
      "as_written": "2x",
      "kind": "multiplier",
-     "phrase": "2x power if target is grounded in Electric Terrain.",
+     "phrase": "2× power if target is grounded in Electric Terrain.",
      "value": 2.0
     }
    ]
   },
   "Rivalry": {
-   "described": "This Pokemon's attacks do 1.25x on same gender targets; 0.75x on opposite gender.",
+   "described": "This Pokemon's attacks do 1.25× on same gender targets; 0.75× on opposite gender.",
    "effects": [
     {
      "multiplier": 1.25,
@@ -4395,13 +4607,13 @@
     {
      "as_written": "1.25x",
      "kind": "multiplier",
-     "phrase": "This Pokemon's attacks do 1.25x on same gender targets; 0.75x on opposite gender.",
+     "phrase": "This Pokemon's attacks do 1.25× on same gender targets; 0.75× on opposite gender.",
      "value": 1.25
     },
     {
      "as_written": "0.75x",
      "kind": "multiplier",
-     "phrase": "This Pokemon's attacks do 1.25x on same gender targets; 0.75x on opposite gender.",
+     "phrase": "This Pokemon's attacks do 1.25× on same gender targets; 0.75× on opposite gender.",
      "value": 0.75
     }
    ]
@@ -4431,6 +4643,20 @@
      "kind": "percent",
      "phrase": "100% chance to lower the target's Speed by 1.",
      "value": 100.0
+    }
+   ]
+  },
+  "Rocky Helmet": {
+   "described": "If holder is hit by a contact move, the attacker loses 1/6 of its max HP.",
+   "effects": [],
+   "kind": "item",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1/6 of max HP",
+     "kind": "fraction of max HP",
+     "phrase": "If holder is hit by a contact move, the attacker loses 1/6 of its max HP.",
+     "value": 0.166667
     }
    ]
   },
@@ -4538,7 +4764,7 @@
    ]
   },
   "Sand Force": {
-   "described": "This Pokemon's Ground/Rock/Steel attacks do 1.3x in Sandstorm; immunity to it.",
+   "described": "This Pokemon's Ground/Rock/Steel attacks do 1.3× in Sandstorm; immunity to it.",
    "effects": [],
    "kind": "ability",
    "notes": [],
@@ -4546,7 +4772,7 @@
     {
      "as_written": "1.3x",
      "kind": "multiplier",
-     "phrase": "This Pokemon's Ground/Rock/Steel attacks do 1.3x in Sandstorm; immunity to it.",
+     "phrase": "This Pokemon's Ground/Rock/Steel attacks do 1.3× in Sandstorm; immunity to it.",
      "value": 1.3
     }
    ]
@@ -4580,7 +4806,7 @@
    ]
   },
   "Sand Veil": {
-   "described": "If Sandstorm is active, this Pokemon's evasiveness is 1.25x; immunity to Sandstorm.",
+   "described": "If Sandstorm is active, this Pokemon's evasiveness is 1.25×; immunity to Sandstorm.",
    "effects": [],
    "kind": "ability",
    "notes": [],
@@ -4588,13 +4814,13 @@
     {
      "as_written": "1.25x",
      "kind": "multiplier",
-     "phrase": "If Sandstorm is active, this Pokemon's evasiveness is 1.25x; immunity to Sandstorm.",
+     "phrase": "If Sandstorm is active, this Pokemon's evasiveness is 1.25×; immunity to Sandstorm.",
      "value": 1.25
     }
    ]
   },
   "Sandstorm": {
-   "described": "For 5 turns, a sandstorm rages. Rock: 1.5x SpD.",
+   "described": "For 5 turns, a sandstorm rages. Rock: 1.5× SpD.",
    "effects": [],
    "kind": "move",
    "notes": [],
@@ -4602,7 +4828,7 @@
     {
      "as_written": "1.5x",
      "kind": "multiplier",
-     "phrase": "Rock: 1.5x SpD.",
+     "phrase": "Rock: 1.5× SpD.",
      "value": 1.5
     },
     {
@@ -4684,7 +4910,7 @@
    ]
   },
   "Sharp Beak": {
-   "described": "Holder's Flying-type attacks have 1.2x power.",
+   "described": "Holder's Flying-type attacks have 1.2× power.",
    "effects": [
     {
      "multiplier": 1.2,
@@ -4717,7 +4943,7 @@
     {
      "as_written": "1.2x",
      "kind": "multiplier",
-     "phrase": "Holder's Flying-type attacks have 1.2x power.",
+     "phrase": "Holder's Flying-type attacks have 1.2× power.",
      "value": 1.2
     }
    ]
@@ -4781,7 +5007,7 @@
    ]
   },
   "Sheer Force": {
-   "described": "This Pokemon's attacks with secondary effects have 1.3x power; nullifies the effects.",
+   "described": "This Pokemon's attacks with secondary effects have 1.3× power; nullifies the effects.",
    "effects": [
     {
      "multiplier": 1.3,
@@ -4814,7 +5040,7 @@
     {
      "as_written": "1.3x",
      "kind": "multiplier",
-     "phrase": "This Pokemon's attacks with secondary effects have 1.3x power; nullifies the effects.",
+     "phrase": "This Pokemon's attacks with secondary effects have 1.3× power; nullifies the effects.",
      "value": 1.3
     }
    ]
@@ -4875,7 +5101,7 @@
    ]
   },
   "Silk Scarf": {
-   "described": "Holder's Normal-type attacks have 1.2x power.",
+   "described": "Holder's Normal-type attacks have 1.2× power.",
    "effects": [
     {
      "multiplier": 1.2,
@@ -4908,13 +5134,13 @@
     {
      "as_written": "1.2x",
      "kind": "multiplier",
-     "phrase": "Holder's Normal-type attacks have 1.2x power.",
+     "phrase": "Holder's Normal-type attacks have 1.2× power.",
      "value": 1.2
     }
    ]
   },
   "Silver Powder": {
-   "described": "Holder's Bug-type attacks have 1.2x power.",
+   "described": "Holder's Bug-type attacks have 1.2× power.",
    "effects": [
     {
      "multiplier": 1.2,
@@ -4947,7 +5173,7 @@
     {
      "as_written": "1.2x",
      "kind": "multiplier",
-     "phrase": "Holder's Bug-type attacks have 1.2x power.",
+     "phrase": "Holder's Bug-type attacks have 1.2× power.",
      "value": 1.2
     }
    ]
@@ -5113,7 +5339,7 @@
    ]
   },
   "Snow Cloak": {
-   "described": "If Snow is active, this Pokemon's evasiveness is 1.25x.",
+   "described": "If Snow is active, this Pokemon's evasiveness is 1.25×.",
    "effects": [],
    "kind": "ability",
    "notes": [],
@@ -5121,13 +5347,13 @@
     {
      "as_written": "1.25x",
      "kind": "multiplier",
-     "phrase": "If Snow is active, this Pokemon's evasiveness is 1.25x.",
+     "phrase": "If Snow is active, this Pokemon's evasiveness is 1.25×.",
      "value": 1.25
     }
    ]
   },
   "Snowscape": {
-   "described": "For 5 turns, snow falls. Ice: 1.5x Def.",
+   "described": "For 5 turns, snow falls. Ice: 1.5× Def.",
    "effects": [],
    "kind": "move",
    "notes": [],
@@ -5135,7 +5361,7 @@
     {
      "as_written": "1.5x",
      "kind": "multiplier",
-     "phrase": "Ice: 1.5x Def.",
+     "phrase": "Ice: 1.5× Def.",
      "value": 1.5
     },
     {
@@ -5147,7 +5373,7 @@
    ]
   },
   "Soft Sand": {
-   "described": "Holder's Ground-type attacks have 1.2x power.",
+   "described": "Holder's Ground-type attacks have 1.2× power.",
    "effects": [
     {
      "multiplier": 1.2,
@@ -5180,7 +5406,7 @@
     {
      "as_written": "1.2x",
      "kind": "multiplier",
-     "phrase": "Holder's Ground-type attacks have 1.2x power.",
+     "phrase": "Holder's Ground-type attacks have 1.2× power.",
      "value": 1.2
     }
    ]
@@ -5200,7 +5426,7 @@
    ]
   },
   "Solar Power": {
-   "described": "If Sun is active, this Pokemon's Sp. Atk is 1.5x; loses 1/8 max HP per turn.",
+   "described": "If Sun is active, this Pokemon's Sp. Atk is 1.5×; loses 1/8 max HP per turn.",
    "effects": [],
    "kind": "ability",
    "notes": [],
@@ -5208,13 +5434,13 @@
     {
      "as_written": "1.5x",
      "kind": "multiplier",
-     "phrase": "Atk is 1.5x; loses 1/8 max HP per turn.",
+     "phrase": "Atk is 1.5×; loses 1/8 max HP per turn.",
      "value": 1.5
     },
     {
      "as_written": "1/8 of max HP",
      "kind": "fraction of max HP",
-     "phrase": "Atk is 1.5x; loses 1/8 max HP per turn.",
+     "phrase": "Atk is 1.5×; loses 1/8 max HP per turn.",
      "value": 0.125
     }
    ]
@@ -5261,7 +5487,7 @@
    ]
   },
   "Spell Tag": {
-   "described": "Holder's Ghost-type attacks have 1.2x power.",
+   "described": "Holder's Ghost-type attacks have 1.2× power.",
    "effects": [
     {
      "multiplier": 1.2,
@@ -5294,7 +5520,7 @@
     {
      "as_written": "1.2x",
      "kind": "multiplier",
-     "phrase": "Holder's Ghost-type attacks have 1.2x power.",
+     "phrase": "Holder's Ghost-type attacks have 1.2× power.",
      "value": 1.2
     }
    ]
@@ -5324,6 +5550,20 @@
      "kind": "percent",
      "phrase": "100% chance to lower the target's Sp.",
      "value": 100.0
+    }
+   ]
+  },
+  "Stakeout": {
+   "described": "This Pokemon's offensive stat is doubled against a target that switched in this turn.",
+   "effects": [],
+   "kind": "ability",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "double",
+     "kind": "multiplier",
+     "phrase": "This Pokemon's offensive stat is doubled against a target that switched in this turn.",
+     "value": 2.0
     }
    ]
   },
@@ -5456,7 +5696,7 @@
    ]
   },
   "Strong Jaw": {
-   "described": "This Pokemon's bite-based attacks have 1.5x power. Bug Bite is not boosted.",
+   "described": "This Pokemon's bite-based attacks have 1.5× power. Bug Bite is not boosted.",
    "effects": [
     {
      "multiplier": 1.5,
@@ -5489,7 +5729,7 @@
     {
      "as_written": "1.5x",
      "kind": "multiplier",
-     "phrase": "This Pokemon's bite-based attacks have 1.5x power.",
+     "phrase": "This Pokemon's bite-based attacks have 1.5× power.",
      "value": 1.5
     }
    ]
@@ -5649,7 +5889,7 @@
    ]
   },
   "Swarm": {
-   "described": "At 1/3 or less of its max HP, this Pokemon's offensive stat is 1.5x with Bug attacks.",
+   "described": "At 1/3 or less of its max HP, this Pokemon's offensive stat is 1.5× with Bug attacks.",
    "effects": [],
    "kind": "ability",
    "notes": [],
@@ -5657,13 +5897,13 @@
     {
      "as_written": "1.5x",
      "kind": "multiplier",
-     "phrase": "At 1/3 or less of its max HP, this Pokemon's offensive stat is 1.5x with Bug attacks.",
+     "phrase": "At 1/3 or less of its max HP, this Pokemon's offensive stat is 1.5× with Bug attacks.",
      "value": 1.5
     },
     {
      "as_written": "1/3",
      "kind": "fraction",
-     "phrase": "At 1/3 or less of its max HP, this Pokemon's offensive stat is 1.5x with Bug attacks.",
+     "phrase": "At 1/3 or less of its max HP, this Pokemon's offensive stat is 1.5× with Bug attacks.",
      "value": 0.333333
     }
    ]
@@ -5778,7 +6018,7 @@
    ]
   },
   "Technician": {
-   "described": "This Pokemon's moves of 60 power or less have 1.5x power, including Struggle.",
+   "described": "This Pokemon's moves of 60 power or less have 1.5× power, including Struggle.",
    "effects": [
     {
      "multiplier": 1.5,
@@ -5811,7 +6051,7 @@
     {
      "as_written": "1.5x",
      "kind": "multiplier",
-     "phrase": "This Pokemon's moves of 60 power or less have 1.5x power, including Struggle.",
+     "phrase": "This Pokemon's moves of 60 power or less have 1.5× power, including Struggle.",
      "value": 1.5
     }
    ]
@@ -5827,6 +6067,20 @@
      "kind": "multiplier",
      "phrase": "Power doubles if the user's last move failed.",
      "value": 2.0
+    }
+   ]
+  },
+  "Terrain Extender": {
+   "described": "Holder's use of Electric/Grassy/Misty/Psychic Terrain lasts 8 turns instead of 5.",
+   "effects": [],
+   "kind": "item",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "8 turns",
+     "kind": "turns",
+     "phrase": "Holder's use of Electric/Grassy/Misty/Psychic Terrain lasts 8 turns instead of 5.",
+     "value": 8.0
     }
    ]
   },
@@ -5976,7 +6230,7 @@
    ]
   },
   "Torrent": {
-   "described": "At 1/3 or less of its max HP, this Pokemon's offensive stat is 1.5x with Water attacks.",
+   "described": "At 1/3 or less of its max HP, this Pokemon's offensive stat is 1.5× with Water attacks.",
    "effects": [],
    "kind": "ability",
    "notes": [],
@@ -5984,13 +6238,13 @@
     {
      "as_written": "1.5x",
      "kind": "multiplier",
-     "phrase": "At 1/3 or less of its max HP, this Pokemon's offensive stat is 1.5x with Water attacks.",
+     "phrase": "At 1/3 or less of its max HP, this Pokemon's offensive stat is 1.5× with Water attacks.",
      "value": 1.5
     },
     {
      "as_written": "1/3",
      "kind": "fraction",
-     "phrase": "At 1/3 or less of its max HP, this Pokemon's offensive stat is 1.5x with Water attacks.",
+     "phrase": "At 1/3 or less of its max HP, this Pokemon's offensive stat is 1.5× with Water attacks.",
      "value": 0.333333
     }
    ]
@@ -6102,7 +6356,7 @@
    ]
   },
   "Twisted Spoon": {
-   "described": "Holder's Psychic-type attacks have 1.2x power.",
+   "described": "Holder's Psychic-type attacks have 1.2× power.",
    "effects": [],
    "kind": "item",
    "notes": [],
@@ -6110,7 +6364,7 @@
     {
      "as_written": "1.2x",
      "kind": "multiplier",
-     "phrase": "Holder's Psychic-type attacks have 1.2x power.",
+     "phrase": "Holder's Psychic-type attacks have 1.2× power.",
      "value": 1.2
     }
    ]
@@ -6186,7 +6440,7 @@
    ]
   },
   "Vile Vial": {
-   "described": "If held by a Venomicon, its Poison- and Flying-type attacks have 1.2x power.",
+   "described": "If held by a Venomicon, its Poison- and Flying-type attacks have 1.2× power.",
    "effects": [],
    "kind": "item",
    "notes": [],
@@ -6194,7 +6448,7 @@
     {
      "as_written": "1.2x",
      "kind": "multiplier",
-     "phrase": "If held by a Venomicon, its Poison- and Flying-type attacks have 1.2x power.",
+     "phrase": "If held by a Venomicon, its Poison- and Flying-type attacks have 1.2× power.",
      "value": 1.2
     }
    ]
@@ -6275,7 +6529,7 @@
    ]
   },
   "Water Bubble": {
-   "described": "This Pokemon's Water power is 2x; it can't be burned; Fire power against it is halved.",
+   "described": "This Pokemon's Water power is 2×; it can't be burned; Fire power against it is halved.",
    "effects": [
     {
      "multiplier": 2.0,
@@ -6296,13 +6550,13 @@
     {
      "as_written": "2x",
      "kind": "multiplier",
-     "phrase": "This Pokemon's Water power is 2x; it can't be burned; Fire power against it is halved.",
+     "phrase": "This Pokemon's Water power is 2×; it can't be burned; Fire power against it is halved.",
      "value": 2.0
     },
     {
      "as_written": "half",
      "kind": "multiplier",
-     "phrase": "This Pokemon's Water power is 2x; it can't be burned; Fire power against it is halved.",
+     "phrase": "This Pokemon's Water power is 2×; it can't be burned; Fire power against it is halved.",
      "value": 0.5
     }
    ]
@@ -6378,7 +6632,7 @@
    ]
   },
   "Wide Lens": {
-   "described": "The accuracy of attacks by the holder is 1.1x.",
+   "described": "The accuracy of attacks by the holder is 1.1×.",
    "effects": [],
    "kind": "item",
    "notes": [],
@@ -6386,7 +6640,7 @@
     {
      "as_written": "1.1x",
      "kind": "multiplier",
-     "phrase": "The accuracy of attacks by the holder is 1.1x.",
+     "phrase": "The accuracy of attacks by the holder is 1.1×.",
      "value": 1.1
     }
    ]
@@ -6406,7 +6660,7 @@
    ]
   },
   "Wise Glasses": {
-   "described": "Holder's special attacks have 1.1x power.",
+   "described": "Holder's special attacks have 1.1× power.",
    "effects": [
     {
      "multiplier": 1.0999,
@@ -6427,7 +6681,7 @@
     {
      "as_written": "1.1x",
      "kind": "multiplier",
-     "phrase": "Holder's special attacks have 1.1x power.",
+     "phrase": "Holder's special attacks have 1.1× power.",
      "value": 1.1
     }
    ]
@@ -6557,8 +6811,22 @@
     }
    ]
   },
+  "Zing Zap": {
+   "described": "30% chance to make the target flinch.",
+   "effects": [],
+   "kind": "move",
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "30%",
+     "kind": "percent",
+     "phrase": "30% chance to make the target flinch.",
+     "value": 30.0
+    }
+   ]
+  },
   "Zoom Lens": {
-   "described": "The accuracy of attacks by the holder is 1.2x if it moves after its target.",
+   "described": "The accuracy of attacks by the holder is 1.2× if it moves after its target.",
    "effects": [],
    "kind": "item",
    "notes": [],
@@ -6566,7 +6834,7 @@
     {
      "as_written": "1.2x",
      "kind": "multiplier",
-     "phrase": "The accuracy of attacks by the holder is 1.2x if it moves after its target.",
+     "phrase": "The accuracy of attacks by the holder is 1.2× if it moves after its target.",
      "value": 1.2
     }
    ]
