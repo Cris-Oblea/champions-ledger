@@ -250,6 +250,13 @@ function buildSheet(id, b, keepOriginal){
     ((p && p.ab) || []).forEach(function(a){ sa.appendChild(new Option(a, a)); });
     if (draft.ability && (!p || p.ab.indexOf(draft.ability) < 0))
       sa.appendChild(new Option(draft.ability, draft.ability));
+    /* The same question as the moves: of the people running this Pokemon,
+       which ability do they pick? Kingambit is 94% Defiant, and a list of
+       three cannot say that on its own. */
+    Array.prototype.forEach.call(sa.options, function(opt){
+      var pct = splitPct(draft.pokemon, "a", opt.value);
+      if (pct != null) opt.text = opt.text + "   ·   " + pct + "%";
+    });
     sa.value = draft.ability || (p && p.ab[0]) || "";
     sa.onchange = function(){ draft.ability = sa.value; redraw(); };
     fa.appendChild(sa);
@@ -280,6 +287,32 @@ function buildSheet(id, b, keepOriginal){
          calculation */
       var abnum = effectLine(draft.ability);
       if (abnum) body.appendChild(abnum);
+    }
+
+    /* THE SPREADS ITS PLAYERS RUN - SHOWN, NEVER APPLIED.
+       His rule, and he had to correct me on it (2026-09-15): "no quiero
+       autollenado, solo quiero un indicador de lo mas popular para armar las
+       builds... el armado final es mio." The first version made these buttons
+       that set the six numbers, which is exactly the thing he does not want.
+       An indicator informs a decision; a button makes it. So this is text,
+       with no click and no handler - the sliders are his. */
+    var sp = splitsFor(draft.pokemon);
+    if (sp && (sp.s || []).length) {
+      var sprow = el("div", "field");
+      sprow.appendChild(el("label", "f", "Spreads its players run · reference"));
+      sp.s.slice(0, 3).forEach(function(pair){
+        var vals = pair[0], pct = pair[1];
+        var bits = STAT_KEYS.map(function(k){
+          return vals[k] ? vals[k] + " " + STAT_LABEL[k] : null;
+        }).filter(Boolean).join(" / ");
+        var line = el("div", "st");
+        var t = el("span", "tag", pct + "%");
+        t.style.marginRight = "6px";
+        line.appendChild(t);
+        line.appendChild(document.createTextNode(bits));
+        sprow.appendChild(line);
+      });
+      body.appendChild(sprow);
     }
 
     /* SMOGON'S GUIDE, HERE, because this is where the decisions are made.

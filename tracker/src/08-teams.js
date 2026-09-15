@@ -1,6 +1,7 @@
 /* 08-teams.js - Six slots, the clauses checked, and what is still to get.
    Part of the app; linked into one script by scripts/build_tracker_page.py. */
-import { $, C, STONE_OF, byName, el, toast, typeChip } from "./01-data.js";
+import { $, C, STONE_OF, byName, el, splitPct, toast, typeChip, usageTag }
+  from "./01-data.js";
 import { S, buildLink, buildsFor, hasStone } from "./02-state.js";
 import { drop, put, putNew } from "./03-store.js";
 import { closeSheet, fbtn, leaveEditor, openEditor, openSheet }
@@ -252,6 +253,13 @@ function teamPickItem(draft, i, redraw){
         h.appendChild(document.createTextNode(it[0]));
         if (taken[it[0]])
           h.appendChild(el("span", "tag bad", "another slot holds it"));
+        /* How many of THIS slot's Pokemon hold this item on the ladder. The
+           item is a team decision - the Item Clause makes it one - so the
+           number belongs here, at the slot, and not on the build. */
+        var who = draft.slots[i] && draft.slots[i].build
+          && S.builds[draft.slots[i].build];
+        var utag = who ? usageTag(splitPct(who.pokemon, "i", it[0])) : null;
+        if (utag) h.appendChild(utag);
         m.appendChild(h);
         if (it[3]) m.appendChild(el("div", "st", String(it[3]).slice(0, 120)));
         btn.appendChild(m);
