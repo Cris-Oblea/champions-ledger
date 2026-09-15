@@ -624,17 +624,59 @@ function analysisSet(st){
     line.style.color = "var(--accent)";
     box.appendChild(line);
   });
-  if (st.why) {
-    /* Smogon writes it as one block with labelled paragraphs; the labels are
-       what make it skimmable, so the breaks are kept rather than flattened. */
-    var why = el("div", "st");
-    why.style.whiteSpace = "pre-wrap";
-    why.style.marginTop = "6px";
-    why.style.opacity = ".9";
-    why.textContent = st.why;
-    box.appendChild(why);
-  }
+  if (st.why) box.appendChild(prose(st.why));
   return box;
+}
+
+/* Smogon's prose, laid out the way their page lays it out.
+ *
+ * It arrives as one block of lines and reads as a wall - the player's words:
+ * "me parece muy dificil de leer". It is not shapeless, though. Three kinds of
+ * line, and telling them apart is what makes it skimmable:
+ *
+ *   Other Options            a section heading - short, no colon
+ *   Make It Rain: it hits    a labelled paragraph - the label is the subject
+ *   32 HP / 8 Def ... with Timid: the given spread outspeeds ...
+ *   Gholdengo, thanks to     plain prose
+ *
+ * The labelled form is the useful one: the label says what the paragraph is
+ * ABOUT, so a reader looking for why an item was chosen can find it without
+ * reading the rest. The spread lines use the same shape, with the spread
+ * itself as the label, which is exactly how they should be read.
+ */
+function prose(text){
+  var wrap = el("div");
+  wrap.style.marginTop = "6px";
+  String(text).split(/\n+/).forEach(function(line){
+    line = line.trim();
+    if (!line) return;
+    var cut = line.indexOf(":");
+    var label = cut > 0 ? line.slice(0, cut).trim() : "";
+    /* A heading is short and has no colon. A label is short and does. Both
+       tests are on LENGTH rather than on a list of known words, because
+       Smogon's headings differ per Pokemon and a list would go stale. */
+    /* ...and does not end in a full stop. "Other Options" is a heading; "Un
+       atacante especial." is a short sentence, and the first version drew it
+       as one. */
+    if (!label && line.split(" ").length <= 5 && !/[.!?]$/.test(line)) {
+      var h = el("div", "rname", line);
+      h.style.marginTop = "8px";
+      wrap.appendChild(h);
+      return;
+    }
+    var para = el("div", "st");
+    para.style.marginTop = "4px";
+    if (label && label.length <= 70 && cut < line.length - 1) {
+      var b = el("strong", null, label);
+      b.style.color = "var(--accent)";
+      para.appendChild(b);
+      para.appendChild(document.createTextNode(" " + line.slice(cut + 1).trim()));
+    } else {
+      para.textContent = line;
+    }
+    wrap.appendChild(para);
+  });
+  return wrap;
 }
 
 /* The panel: a fold, because the prose is long and the sheet has a job to do
@@ -671,13 +713,7 @@ function analysisPanel(name, host){
         head.appendChild(el("span", null, "  by " + st.credits.join(", ")));
       }
       host.appendChild(head);
-      if (st.overview) {
-        var ov = el("div", "st");
-        ov.style.whiteSpace = "pre-wrap";
-        ov.style.marginBottom = "6px";
-        ov.textContent = st.overview;
-        host.appendChild(ov);
-      }
+      if (st.overview) host.appendChild(prose(st.overview));
       (st.sets || []).forEach(function(x){ host.appendChild(analysisSet(x)); });
     });
   });
@@ -693,4 +729,4 @@ function analysisPanel(name, host){
    `window` - they open a sheet for every form in the dex and assert what it
    shows. `moveButtons` stays private.
 */
-export { addSheet, battleFormNote, pokeRow, pokeSheet };
+export { addSheet, analysisPanel, battleFormNote, pokeRow, pokeSheet };
