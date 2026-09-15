@@ -508,15 +508,27 @@ var CALC = {
 
    The Champions budget is enforced here and nowhere else has to: 66 points
    total, 32 in any one stat. */
-/* One stat line. Labelled when a Pokemon has more than one, because "60 / 50 /
-   140 / 50 / 140 / 60" means nothing without knowing which forme it is. */
+/* ONE STAT LINE, WITH THE LABELS ON THE NUMBERS.
+
+   Two things this has to get right, and it only ever got the first.
+
+   WHICH FORME. "60 / 50 / 140 / 50 / 140 / 60" means nothing until you know
+   whether it is the Blade or the Shield, so every line names itself.
+
+   WHICH STAT. The labels used to live in the span's `title`, which is a hover,
+   and a phone has no hover - so on the device this tab is actually used on,
+   six bare numbers were being read in the hope that the reader remembered the
+   order. They are written out now, one span per stat so the line wraps between
+   stats and never inside one, which is what makes that affordable on a 360px
+   screen. It also retires the separate "HP / Atk / Def / SpA / SpD / Spe"
+   legend row: a legend is what you need when the data is not labelled. */
 function statSpan(b, formName){
-  var sp = el("span", "mono",
-    (formName ? formName + " " : "base ") + b.join(" / "));
-  sp.title = STAT_KEYS.map(function(k, i){
-    return STAT_LABEL[k] + " " + b[i];
-  }).join("  ·  ");
-  return sp;
+  var box = el("span", "statrow");
+  box.appendChild(el("span", "mono fact", (formName || "base") + ":"));
+  STAT_KEYS.forEach(function(k, i){
+    box.appendChild(el("span", "mono fact", b[i] + " " + STAT_LABEL[k]));
+  });
+  return box;
 }
 
 function calcSideCtl(which){
@@ -562,10 +574,6 @@ function calcSideCtl(which){
         row.appendChild(tag);
         m.appendChild(row);
       });
-      var base = el("div", "rmeta");
-      base.appendChild(el("span", null,
-        "HP / Atk / Def / SpA / SpD / Spe"));
-      m.appendChild(base);
     }
   } else {
     m.appendChild(el("div", "rname", which === "atk" ? "Pick the attacker"

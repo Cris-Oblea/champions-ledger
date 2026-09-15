@@ -246,8 +246,33 @@ h2 .n{font-family:var(--mono);color:var(--faint);font-weight:500;letter-spacing:
    the separator is drawn by CSS between them, so a wrap can only happen at a
    join. */
 .rmeta .fact{white-space:nowrap}
-.rmeta .fact + .fact::before{content:"·";color:var(--faint);margin-right:6px;
+/* A stat line is a run of facts inside one .rmeta, so it needs its own flex
+   context - otherwise the six stats space out against the type chips beside
+   them instead of staying together as one reading.
+
+   `flex:1 1 100%` rather than inline-flex, and the difference is measurable:
+   an inline-flex child of a flex row is sized by its content and refuses to
+   shrink, so six labelled stats ran 359px wide inside a 345px viewport and
+   pushed the page sideways. Given its own full-width row it wraps internally
+   instead - and reads better anyway, with the type chips on one line and the
+   numbers on the next. */
+/* THE SEPARATOR BELONGS TO THE FACT BEFORE IT, not the one after.
+   As a ::before on the following fact, a wrap put the dot at the START of the
+   new line - the orphaned separator this was written to prevent, just moved
+   one place along. On ::after it stays on the line it ends. */
+.rmeta .fact:not(:last-child)::after{content:" ·";color:var(--faint);
   font-family:var(--sans)}
+/* NOT `.statline` - that name was already a 7-column grid for the box sheet's
+   stat blocks, 200 lines further down, and the later definition silently won:
+   this laid out as a grid, its children stopped wrapping and six labelled
+   stats ran 49px past the edge of a 360px phone. Caught by measuring, not by
+   reading. */
+.statrow{display:flex;flex-wrap:wrap;align-items:center;gap:6px;
+  flex:1 1 100%;min-width:0}
+/* no dots between stats - "140 Def" is already labelled, and a run of six
+   reads as one line rather than six facts */
+.statrow .fact:not(:last-child)::after{content:""}
+.statrow .fact:first-child{color:var(--faint)}
 .rside{display:flex;align-items:center;gap:6px;flex-shrink:0}
 
 /* ---------- chips -------------------------------------------------------- */
