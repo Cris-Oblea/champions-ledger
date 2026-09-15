@@ -208,39 +208,68 @@ setTimeout(() => {
        learns Fake Out and I own it". The two fixed Speed boxes are gone. */
     w.go("find");
     setTimeout(() => {
-      const sortTab = t => [...d.querySelectorAll("#findSort .tog")]
-        .find(b => b.textContent.trim() === t);
+      /* The active tab's label carries an arrow, so an exact match would
+         stop finding it the moment it is selected. */
+      const sortTab2 = t => [...d.querySelectorAll("#findSort .tog")]
+        .find(b => b.textContent.trim().replace(/[↑↓]/, "").trim() === t);
+      const sortTab = sortTab2;
       ["Dex #","BST","HP","Atk","Def","SpA","SpD","Spe"].forEach(t =>
         ok("orden por " + t, !!sortTab(t), true));
       ok("las cajas fijas de Speed ya no existen",
          !d.getElementById("findSpeMin") && !d.getElementById("findSpeMax") &&
          !d.getElementById("findBst"), true);
-      ok("y hay un + Stat en su lugar", !!d.getElementById("findAddStat"), true);
+      /* And no min/max either: the player cut that idea the same hour. An
+         order answers "who is slowest" without needing a threshold guessed
+         in advance, which is what the Trick Room box was asking for. */
+      ok("ni minimos ni maximos", !d.getElementById("findAddStat"), true);
       ok("BST es el orden por defecto",
          sortTab("BST").getAttribute("aria-pressed"), "true");
 
       const rows = () => [...d.querySelectorAll("#findOut .row")];
-      const bstOf = r => Number(
-        r.querySelector(".mono").textContent.match(/BST (\d+)/)[1]);
-      const v = rows().map(bstOf);
+      const statOf = (r, lab) => Number(
+        [...r.querySelectorAll(".statrow .fact")]
+          .map(x => x.textContent.trim())
+          .find(t => t.endsWith(" " + lab) || t.startsWith(lab + " "))
+          .replace(/[^\d]/g, ""));
+      const v = rows().map(r => statOf(r, "BST"));
       ok("hay filas", v.length > 20, true);
       ok("ordenado por BST", v.every((x,i) => i===0 || v[i-1] >= x), true);
-      ok("BST no trae fila de tier", !rows()[0].querySelector(".statrow"), true);
 
+      /* NOTHING IS HIDDEN. Ranking by one stat must not drop the other five -
+         an Attack list is read with the Speed beside it. The ranked one is
+         marked instead. */
       click(sortTab("Spe"));
-      const tierNum = r => {
-        const sr = r.querySelector(".statrow");
-        return sr ? Number(sr.textContent.match(/(\d+) base/)[1]) : null;
-      };
-      const sp = rows().map(tierNum);
+      const sp = rows().map(r => statOf(r, "Spe"));
       ok("cambiar a Spe reordena la misma tabla",
          sp.every((x,i) => i===0 || sp[i-1] >= x), true);
-      ok("y cada fila trae los tres numeros",
-         /at 0 SP/.test(rows()[0].textContent) &&
-         /max/.test(rows()[0].textContent), true);
+      ok("y las seis stats siguen ahi",
+         ["HP","Atk","Def","SpA","SpD","Spe"].every(k =>
+           [...rows()[0].querySelectorAll(".statrow .fact")]
+             .some(x => x.textContent.trim().endsWith(" " + k))), true);
+      ok("la rankeada va marcada",
+         rows()[0].querySelector(".fact.on").textContent.trim().endsWith(" Spe"),
+         true);
+      /* SP and nature are the builder's business, not the list's. */
+      ok("sin SPs en el listado",
+         /at 0 SP|max/.test(rows()[0].textContent), false);
       ok("el encabezado dice por que ordena",
          /by Spe, highest first/.test(
            d.querySelector("#findOut .sub").textContent), true);
+      ok("y la pestana activa lleva la flecha",
+         /↓/.test(sortTab2("Spe").textContent), true);
+
+      /* Tapping the active stat flips the direction - and ascending Speed IS
+         the Trick Room list, which is why there is no "Speed at most" box. */
+      click(sortTab2("Spe"));
+      const asc = rows().map(r => statOf(r, "Spe"));
+      ok("tocarla de nuevo invierte el orden",
+         asc.every((x,i) => i===0 || asc[i-1] <= x), true);
+      ok("y el encabezado lo dice",
+         /by Spe, lowest first/.test(
+           d.querySelector("#findOut .sub").textContent), true);
+      ok("con la flecha al reves",
+         /↑/.test(sortTab2("Spe").textContent), true);
+      click(sortTab2("Spe"));   // back to descending
 
       /* The row count is capped at 120, so both lists would read 120 and the
          filter would look like it did nothing. The header carries the real

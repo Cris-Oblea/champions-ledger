@@ -2,8 +2,7 @@
    Part of the app; linked into one script by scripts/build_tracker_page.py. */
 import {
   $, C, DEX, MOVES, MOVE_BY, SORT, STAT_KEYS, STAT_LABEL, TYPE_COLOR, bst,
-  byName, catName, dexNo, effectLine, el, learnset, splitPct, statAt,
-  statLine, toast, typeChip,
+  byName, catName, dexNo, effectLine, el, learnset, splitPct, toast, typeChip,
 } from "./01-data.js";
 import { S, boxRows, originOf, ownedNames } from "./02-state.js";
 import { closeSheet, fbtn, openSheet } from "./04-nav.js";
@@ -26,11 +25,22 @@ import { fill, note } from "./13-boot.js";
    filters compose with them. A speed tier that is also "learns Fake Out and I
    own one" is a question the old shape could not ask.
 
-   `stats` is {key: {min, max}} over the six plus `bst`. `sort` is a stat key,
-   "bst" or "dex"; any stat sorts descending, which IS the tier reading. */
+   A DIRECTION, NOT A PAIR OF BOUNDS. The first go at this gave every stat a
+   min and a max, and the player cut it the same hour (2026-09-15): "creo que
+   poner el maximo y el minimo esta demas, es mejor un orden ascendente y
+   descendente como opciones, asi veo como se ordena por ese stat de mayor a
+   menor o viceversa."
+
+   He is right, and it also subsumes the thing the old fixed boxes were for.
+   "Speed at most" was labelled the Trick Room filter; sorting Speed ASCENDING
+   answers that better, because it ranks the slow rather than making you guess
+   a threshold first. Two controls became one, and nothing was lost.
+
+   `sort` is a stat key, "bst" or "dex". `dir` is "desc" or "asc"; tapping the
+   stat you are already on flips it. */
 var FIND = {moves: [], types: [], typeMode: "and", ability: "",
             inChamp: false, inHome: false, inMeta: false,
-            stats: {}, sort: "bst", cat: ""};
+            sort: "bst", dir: "desc", cat: ""};
 /* bst is not a base stat but it filters and sorts exactly like one, so it
    rides in the same table rather than keeping its own input. */
 var FIND_STATS = [["bst","BST"],["hp","HP"],["atk","Atk"],["def","Def"],
@@ -78,18 +88,7 @@ function findDraw(){
     function(){ FIND.inHome = false; findDraw(); });
   if (FIND.inMeta) chip("brought to an M-C tournament",
     function(){ FIND.inMeta = false; findDraw(); });
-  /* One chip per bound, so each can be dropped on its own - "Spe 100+" and
-     "Spe 50 or less" are two different questions and removing one should not
-     take the other with it. */
-  FIND_STATS.forEach(function(o){
-    var b = FIND.stats[o[0]];
-    if (!b) return;
-    if (b.min) chip(o[1] + " " + b.min + "+", function(){
-      delete FIND.stats[o[0]].min; tidyStat(o[0]); findDraw(); });
-    if (b.max) chip(o[1] + " " + b.max + " or less", function(){
-      delete FIND.stats[o[0]].max; tidyStat(o[0]); findDraw(); },
-      o[0] === "spe" ? "ok" : "", "Speed at most is the Trick Room filter");
-  });
+
   if (!host.children.length) {
     host.appendChild(el("p", "sub",
       "No filters yet. Add one below - they all have to be true at once."));
@@ -122,11 +121,6 @@ function findRun(){
     }
     if (FIND.ability && (p.ab || []).indexOf(FIND.ability) < 0) return false;
     if (FIND.inMeta && !(seen[p.name] || seen[p.species])) return false;
-    for (var k in FIND.stats) {
-      var b = FIND.stats[k], v = statOf(p, k);
-      if (b.min && v < b.min) return false;
-      if (b.max && v > b.max) return false;
-    }
     if (FIND.moves.length) {
       var ls = learnset(p.name);
       if (!ls) return false;
@@ -142,7 +136,8 @@ function findRun(){
     (FIND.moves.length > 1
       ? " - all " + FIND.moves.length + " moves on the same Pokemon" : "") +
     (FIND.sort === "dex" ? ", in dex order"
-     : ", by " + statLabel(FIND.sort) + ", highest first");
+     : ", by " + statLabel(FIND.sort) +
+       (FIND.dir === "asc" ? ", lowest first" : ", highest first"));
   out.appendChild(head);
 
   if (!hits.length) {
@@ -153,16 +148,18 @@ function findRun(){
         : "Nothing learns all of that. Drop a filter and try again."));
     return;
   }
-  /* THE SORT IS THE TIER LIST. Ordering by one stat, descending, is exactly
-     what a tier chart is - there is no second view to build. Dex order is
-     kept as the one non-ranking answer, for "what is in this bracket". */
+  /* THE SORT IS THE TIER LIST, and it reads both ways. Descending is the
+     speed tier; ascending is the Trick Room one, and it replaces the "Speed
+     at most" box that used to ask for a threshold nobody knows in advance.
+     Dex order is the one non-ranking answer. */
   if (FIND.sort === "dex") {
     hits.sort(function(a, b){
       return dexNo(a.name) - dexNo(b.name) || a.name.localeCompare(b.name);
     });
   } else {
+    var sign = FIND.dir === "asc" ? -1 : 1;
     hits.sort(function(a, b){
-      return statOf(b, FIND.sort) - statOf(a, FIND.sort) ||
+      return sign * (statOf(b, FIND.sort) - statOf(a, FIND.sort)) ||
              a.name.localeCompare(b.name);
     });
   }
@@ -188,42 +185,33 @@ function findRun(){
     m.appendChild(h);
     var meta = el("div", "rmeta");
     p.types.forEach(function(t){ meta.appendChild(typeChip(t)); });
-    /* ALL SIX STATS, UNLESS ONE OF THEM IS THE QUESTION. Ranking by Speed and
-       then printing "65 HP / 154 Atk / 60 Def / 75 SpA / 60 SpD / 151 Spe"
-       above the Speed tier row says the same number twice and buries it in
-       five that were not asked about - 138px of phone per row, five rows to a
-       screen. When a stat is being ranked, its own row below answers it and
-       this line stays out of the way. */
-    var ranking = FIND.sort !== "dex" && FIND.sort !== "bst";
-    meta.appendChild(el("span", "mono",
-      ranking ? "BST " + bst(p) : "BST " + bst(p) + "  ·  " + statLine(p)));
+    /* ALL SIX STATS, ALWAYS, AND THE RANKED ONE MARKED.
+
+       This briefly dropped the other five when one was being ranked, on the
+       grounds that they were noise. The player cut that immediately and he is
+       right: "si filtro por atk, de mayor a menor, pero tambien quiero ver la
+       speed, no puedes quitarme esa informacion." An Attack ranking is read
+       WITH the Speed beside it - that is half of what picks the Pokemon.
+
+       So nothing is hidden and the ranked stat is simply made findable, which
+       is what the eye needed rather than fewer numbers.
+
+       BASE VALUES ONLY: "no necesito ver en el listado los SPs, puede estar
+       todo base." The level-50 floor and ceiling belong on the Pokemon's own
+       sheet, where one Pokemon is being decided about; in a list of 120 they
+       were three numbers per row answering a question nobody asked yet. */
+    var ranking = FIND.sort !== "dex";
+    var stats = el("span", "statrow");
+    stats.appendChild(el("span", "mono fact" +
+      (FIND.sort === "bst" ? " on" : ""), "BST " + bst(p)));
+    STAT_KEYS.forEach(function(k, i){
+      stats.appendChild(el("span", "mono fact" +
+        (ranking && FIND.sort === k ? " on" : ""),
+        p.b[i] + " " + STAT_LABEL[k]));
+    });
+    meta.appendChild(stats);
     meta.appendChild(el("span", null, (p.ab || []).join(" / ")));
     m.appendChild(meta);
-    /* THE THREE NUMBERS THAT MAKE IT A TIER LIST, on the stat being sorted
-       by. A base stat alone cannot be compared against a real Pokemon and
-       neither can the level-50 value with no SP in it, because the whole
-       question is "can I outrun it if I invest". So: base, the floor at 0 SP,
-       and the ceiling at 32 - the per-stat cap - with a nature that raises it.
-       statAt() is the formula verified against all 504 rows of
-       data/meta/speed_tiers.json, never a second copy. */
-    if (ranking) {
-      var isHp = FIND.sort === "hp";
-      var base = statOf(p, FIND.sort);
-      var tier = el("div", "rmeta");
-      var row = el("span", "statrow");
-      row.appendChild(el("span", "mono fact", statLabel(FIND.sort) + ":"));
-      row.appendChild(el("span", "mono fact", base + " base"));
-      row.appendChild(el("span", "mono fact",
-        statAt(base, 0, isHp, 1) + " at 0 SP"));
-      row.appendChild(el("span", "mono fact",
-        statAt(base, 32, isHp, isHp ? 1 : 1.1) + " max"));
-      row.title = isHp
-        ? "Level 50. HP takes no nature, so the ceiling is 32 SP alone."
-        : "Level 50. The ceiling is 32 SP - the per-stat cap - and a nature "
-          + "that raises this stat.";
-      tier.appendChild(row);
-      m.appendChild(tier);
-    }
     r.appendChild(m);
     r.onclick = function(){ findDetail(p); };
     list.appendChild(r);
@@ -233,12 +221,6 @@ function findRun(){
     "Showing the first 120. Narrow it further to see the rest."));
 }
 
-/* A stat bound is dropped entirely once neither end is set, so the chip row
-   does not keep an empty entry alive. */
-function tidyStat(key){
-  var b = FIND.stats[key];
-  if (b && !b.min && !b.max) delete FIND.stats[key];
-}
 
 function findDetail(p){
   openSheet(p.name, function(body){
@@ -845,66 +827,12 @@ function findInit(){
   $("findInMeta").onclick = function(){
     FIND.inMeta = !FIND.inMeta; findDraw(); };
 
-  /* ONE STAT AT A TIME, with both ends, because that is how the question is
-     actually shaped: "Speed 100 or more" and "Speed 50 or less" are the two
-     halves of speed control and each is asked on its own. Twelve number boxes
-     on a phone would be a wall; this is the same "+ Move" / "+ Type" gesture
-     the rest of the filters use, and each bound becomes its own chip. */
-  $("findAddStat").onclick = function(){
-    var pick = "spe";
-    openSheet("Filter by a stat", function(body){
-      var row = el("div", "toggles");
-      row.style.marginBottom = "10px";
-      FIND_STATS.forEach(function(o){
-        var t = el("button", "tog", o[1]);
-        t.setAttribute("aria-pressed", o[0] === pick ? "true" : "false");
-        t.onclick = function(){
-          pick = o[0];
-          Array.prototype.forEach.call(row.children, function(x){
-            x.setAttribute("aria-pressed", x === t ? "true" : "false");
-          });
-        };
-        row.appendChild(t);
-      });
-      body.appendChild(el("div", "sub", "Which stat"));
-      body.appendChild(row);
-      var g = el("div", "grid2");
-      var fmin = el("div", "field");
-      fmin.appendChild(el("label", "f", "At least"));
-      var imin = el("input"); imin.type = "number"; imin.placeholder = "any";
-      fmin.appendChild(imin); g.appendChild(fmin);
-      var fmax = el("div", "field");
-      fmax.appendChild(el("label", "f", "At most"));
-      var imax = el("input"); imax.type = "number"; imax.placeholder = "any";
-      fmax.appendChild(imax); g.appendChild(fmax);
-      body.appendChild(g);
-      body.appendChild(el("p", "sub",
-        "Speed at most is the Trick Room filter."));
-      body._apply = function(){
-        var lo = Number(imin.value) || 0, hi = Number(imax.value) || 0;
-        if (!lo && !hi) { closeSheet(); return; }
-        var b = FIND.stats[pick] || (FIND.stats[pick] = {});
-        if (lo) b.min = lo; if (hi) b.max = hi;
-        /* sorting by the stat just filtered is what you want nine times out
-           of ten - you asked about it, so the list ranks by it */
-        FIND.sort = pick;
-        paintSort();
-        closeSheet();
-        findDraw();
-      };
-      setTimeout(function(){ imin.focus(); }, 60);
-    }, [
-      fbtn("Apply", "primary", function(){ $("sheetBody")._apply(); }),
-      fbtn("Cancel", "", closeSheet)
-    ]);
-  };
-
   paintSort();
   $("findClear").onclick = function(){
     FIND.moves = []; FIND.types = []; FIND.typeMode = "and";
     FIND.ability = "";
     FIND.inChamp = false; FIND.inHome = false; FIND.inMeta = false;
-    FIND.stats = {}; FIND.sort = "bst";
+    FIND.sort = "bst"; FIND.dir = "desc";
     $("findInMeta").setAttribute("aria-pressed", "false");
     paintSort();
     findDraw();
@@ -914,19 +842,34 @@ function findInit(){
 
 /* The sort row. Dex order plus BST and the six stats - picking one turns the
    result list into that stat's tier order, which is the whole of what the
-   separate Tiers block used to be. */
+   separate Tiers block used to be.
+
+   TAPPING THE ONE YOU ARE ALREADY ON FLIPS THE DIRECTION, and the arrow on
+   it says which way it is pointing. Descending is the speed tier; ascending
+   is the Trick Room one. That second reading is the reason there are no min
+   and max boxes: a threshold has to be guessed before you can ask, and an
+   order does not. */
 function paintSort(){
   var row = $("findSort");
   if (!row) return;
   row.innerHTML = "";
   [["dex","Dex #"]].concat(FIND_STATS).forEach(function(o){
-    var t = el("button", "tog", o[1]);
-    t.setAttribute("aria-pressed", o[0] === FIND.sort ? "true" : "false");
+    var on = o[0] === FIND.sort;
+    var arrow = o[0] === "dex" ? ""
+              : FIND.dir === "asc" ? " ↑" : " ↓";
+    var t = el("button", "tog", o[1] + (on ? arrow : ""));
+    t.setAttribute("aria-pressed", on ? "true" : "false");
+    t.title = o[0] === "dex" ? "Dex order"
+      : on ? "Tap again for " +
+             (FIND.dir === "asc" ? "highest first" : "lowest first")
+      : "Rank by " + o[1] + ", highest first";
     t.onclick = function(){
-      FIND.sort = o[0];
-      Array.prototype.forEach.call(row.children, function(x){
-        x.setAttribute("aria-pressed", x === t ? "true" : "false");
-      });
+      /* already here: flip. Somewhere else: go there, highest first, which is
+         what you mean nine times out of ten. */
+      if (o[0] === FIND.sort && o[0] !== "dex")
+        FIND.dir = FIND.dir === "asc" ? "desc" : "asc";
+      else { FIND.sort = o[0]; FIND.dir = "desc"; }
+      paintSort();
       findRun();
     };
     row.appendChild(t);

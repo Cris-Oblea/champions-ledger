@@ -149,11 +149,26 @@ cuadro de speed y colocar filtros per stat y cumpliria de mejor manera."
 He is right, and it is the argument Find was built on. A tier list IS the
 result list sorted by one column; keeping it separate meant a speed tier could
 never also be "and it learns Fake Out and I own one", which is the question
-worth asking. The two fixed Speed boxes are gone, every stat filters with both
-bounds through the same `+ Stat` gesture as `+ Move`, a third scope toggle
-narrows to what was actually brought to an M-C tournament, and the sort row
-turns the result into any stat's tier order - with the base, the floor at 0 SP
-and the ceiling at 32 SP plus nature on every row.
+worth asking.
+
+The shape settled over three more corrections from him, each of which made it
+smaller:
+
+- **A direction, not a pair of bounds.** Min and max boxes per stat were the
+  first idea; he cut them ("es mejor un orden ascendente y descendente"). It
+  also subsumes what the old "Speed at most" box was for - that was labelled
+  the Trick Room filter, and sorting Speed ASCENDING answers it without having
+  to guess a threshold first. Tapping the stat you are already on flips it.
+- **All six stats stay.** Ranking by one briefly hid the other five as noise;
+  he cut that too ("si filtro por atk... tambien quiero ver la speed, no
+  puedes quitarme esa informacion"). An Attack ranking is read WITH the Speed
+  beside it. Nothing is hidden - the ranked one is marked instead.
+- **Base values only.** "Los SPs y naturaleza son parte del builder." The
+  level-50 floor and ceiling belong where one Pokemon is being decided about,
+  not on 120 rows of a list.
+
+A third scope toggle, "Brought to M-C", narrows the dex to the field: 291 of
+the 345 forms.
 
 ## Items and abilities are numbers now, not adjectives (2026-09-14)
 
