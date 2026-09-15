@@ -249,7 +249,7 @@ jobs:
           # that moved a count left main's README behind and the next person to
           # push was blocked by "README is OUT OF DATE" for a drift they did not
           # cause. Smogon publishing 35 more analyses was enough to do it.
-          git add -A data/db data/meta tracker/data.js tracker/engine.bundle.js README.md || true
+          git add -A data/db data/meta tracker/data.js tracker/analysis.js tracker/engine.bundle.js README.md || true
           if git diff --cached --quiet; then
             echo "nothing changed"
             exit 0

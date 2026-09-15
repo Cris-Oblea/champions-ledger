@@ -27,7 +27,7 @@ assets, plus the app's sourcemap. Same program, cached in pieces that change at
 different rates, so a nightly dex refresh costs 347 KB instead of 1,314. See
 split_assets().
 """
-import hashlib, json, os, re, shutil, subprocess, sys
+import hashlib, io, json, os, re, shutil, subprocess, sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TPL = os.path.join(ROOT, "tracker", "index.template.html")
@@ -351,7 +351,12 @@ def config_js():
     # would drift: the day the project URL moves, a second copy keeps pointing at
     # the old one and the app looks broken with no error, just a blocked request.
     BUILT["supabase"] = c["url"]
-    return "window.CHAMP_CONFIG = " + json.dumps(
+    # Filled in by build_dist() once the analysis asset has been hashed. Empty
+    # in tracker/index.html, the single-file shape, and the app hides the panel
+    # rather than pretending: 407 KB inlined into a page that is already 1.3 MB
+    # would be paid by everyone for something opened occasionally.
+    return ("window.CHAMP_ANALYSIS_URL = '';" + chr(10)
+            + "window.CHAMP_CONFIG = ") + json.dumps(
         {"supabase": {"url": c["url"], "key": c["publishableKey"],
                       "email": c.get("loginEmail", "")}},
         ensure_ascii=False) + ";"
@@ -577,6 +582,29 @@ def build_dist(html):
     open(os.path.join(DIST, app[0] + ".map"), "w", encoding="utf-8",
          newline="").write(BUILT["app_map"])
 
+    # SMOGON'S WRITTEN ANALYSES, as an asset nobody downloads until they ask.
+    #
+    # 407 KB against a dex payload of 419: loading it with the page would
+    # double what the phone fetches every time a usage number moves, for a
+    # panel that is opened when a build is being argued about and not before.
+    # So it is hashed like the rest - immutable, cached for a year once
+    # fetched - and the page is told its name rather than its contents.
+    src = os.path.join(ROOT, "tracker", "analysis.js")
+    if os.path.exists(src):
+        text = io.open(src, encoding="utf-8").read()
+        name = "analysis.%s.js" % hashlib.sha256(
+            text.encode("utf-8")).hexdigest()[:8]
+        open(os.path.join(DIST, name), "w", encoding="utf-8",
+             newline="").write(text)
+        page = page.replace("window.CHAMP_ANALYSIS_URL = '';",
+                            "window.CHAMP_ANALYSIS_URL = %r;" % name)
+        open(os.path.join(DIST, "index.html"), "w", encoding="utf-8",
+             newline="").write(page)
+        assets[name] = text
+        print("  asset %-30s %6.0f KB  (on demand)" % (name, len(text) / 1024))
+    else:
+        print("  no tracker/analysis.js - run build_analysis_data.py")
+
     manifest = {
         "name": "Champions Ledger",
         "short_name": "Ledger",
@@ -608,7 +636,12 @@ def build_dist(html):
     # nothing. That is the failure this split introduces, so it is checked here
     # rather than discovered on the phone.
     for name in assets:
-        if ('src="%s"' % name) not in page:
+        # Either form counts: a <script src> for the four the page loads
+        # itself, or the bare name for the analysis asset, which the page holds
+        # as a URL and fetches only when a panel asks for it. What the check is
+        # for is unchanged - an asset nothing names is a file nobody will ever
+        # load, and a name with no file is a panel that breaks on the phone.
+        if ('src="%s"' % name) not in page and name not in page:
             sys.exit("dist/%s was written but the page never references it"
                      % name)
     stray = set(os.listdir(DIST)) - allowed

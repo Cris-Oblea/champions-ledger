@@ -221,6 +221,25 @@ function pokeSheet(rec){
     body.appendChild(el("p", "sub",
       "Tap Save below to keep these."));
 
+    /* WHAT SMOGON WROTE. Last, because it is long and because the decisions
+       above it - origin, training, the note - are what the sheet is for. A
+       fold, and the 407 KB behind it is not fetched until it is opened. */
+    var wrap = el("div");
+    var tog = el("button", "btn sm fold");
+    tog.setAttribute("aria-expanded", "false");
+    var host = el("div");
+    host.hidden = true;
+    tog.textContent = "What Smogon says about " + rec.name;
+    tog.onclick = function(){
+      var open = host.hidden;
+      host.hidden = !open;
+      tog.setAttribute("aria-expanded", open ? "true" : "false");
+      if (open && !host._drawn) { host._drawn = 1; analysisPanel(rec.name, host); }
+    };
+    wrap.appendChild(tog);
+    wrap.appendChild(host);
+    body.appendChild(wrap);
+
     body.appendChild(el("h2", null, "Note"));
     var ta = el("textarea");
     ta.value = rec.note || "";
@@ -501,6 +520,167 @@ function addSheet(loc){
     draw();
     if (loc === "home") setTimeout(function(){ inp.focus(); }, 60);
   }, []);
+}
+
+/* ------------------------------------------------ what Smogon wrote ------
+   The only source in this project with REASONING in it, and until now the
+   only one the phone never saw. 54 Pokemon have a written VGC analysis: the
+   sets people actually run, the SP spread and what each point of it survives,
+   which Pokemon check it, which partners cover its holes. It was downloaded
+   every night and read only through `query.py pokemon` on the laptop.
+
+   LOADED ON DEMAND. 407 KB against a dex payload of 419 - paying that on every
+   visit for a panel opened while arguing about a build is the wrong trade. The
+   script tag is added the first time a sheet asks, and the file is immutable
+   by its content hash, so it is fetched once ever.
+
+   A tag rather than fetch(): the CSP allows same-origin scripts and the file
+   is one assignment, so there is nothing to parse by hand and nothing to get
+   wrong about encoding. */
+var ANALYSIS_STATE = null;          // null | "loading" | "ready" | "absent"
+var ANALYSIS_WAITING = [];
+
+function analysisFor(name){
+  var all = window.CHAMP_ANALYSIS;
+  if (!all) return null;
+  /* Smogon files a Mega under its own name and the box knows it as one too,
+     so a direct hit comes first; failing that, a Mega falls back to the base
+     species, whose analysis is the one that discusses the stone. */
+  if (all[name]) return all[name];
+  var p = byName[name];
+  if (p && p.species && all[p.species]) return all[p.species];
+  return null;
+}
+
+function loadAnalysis(then){
+  /* Already here? Then there is nothing to load. The asset is a plain
+     assignment to window, so anything that has run it - a second panel, a
+     future view, a test - counts, and asking again would sit on a script tag
+     that resolves nothing. */
+  if (window.CHAMP_ANALYSIS) { ANALYSIS_STATE = "ready"; return then(); }
+  if (ANALYSIS_STATE === "ready" || ANALYSIS_STATE === "absent") return then();
+  ANALYSIS_WAITING.push(then);
+  if (ANALYSIS_STATE === "loading") return;
+  var url = window.CHAMP_ANALYSIS_URL;
+  if (!url) {                       // the single-file build carries no asset
+    ANALYSIS_STATE = "absent";
+    return flushAnalysis();
+  }
+  ANALYSIS_STATE = "loading";
+  var sc = document.createElement("script");
+  sc.src = url;
+  sc.onload = function(){ ANALYSIS_STATE = "ready"; flushAnalysis(); };
+  sc.onerror = function(){ ANALYSIS_STATE = "absent"; flushAnalysis(); };
+  document.head.appendChild(sc);
+}
+
+function flushAnalysis(){
+  var q = ANALYSIS_WAITING;
+  ANALYSIS_WAITING = [];
+  q.forEach(function(fn){ try { fn(); } catch (e) {} });
+}
+
+/* One set, as the thing you would actually build: the four slots, the spread,
+   and the reasoning underneath. */
+function analysisSet(st){
+  var box = el("div", "note");
+  box.style.marginBottom = "8px";
+  var head = el("div", "rname");
+  head.appendChild(el("span", null, st.name || "Set"));
+  (st.ability || []).slice(0, 1).forEach(function(a){
+    head.appendChild(el("span", "tag", a));
+  });
+  (st.nature || []).slice(0, 1).forEach(function(n){
+    head.appendChild(el("span", "tag", n));
+  });
+  box.appendChild(head);
+
+  /* The items are a LIST on purpose - Smogon offers alternatives and the Item
+     Clause means a team of six fields exactly one of each, so which one is a
+     team decision rather than part of the set. */
+  if ((st.item || []).length) {
+    box.appendChild(el("div", "st", "Items: " + st.item.join(" / ")));
+  }
+  var mv = (st.moves || []).map(function(slot){
+    return Array.isArray(slot) ? slot.join(" / ") : String(slot);
+  }).filter(Boolean);
+  if (mv.length) {
+    var row = el("div", "st");
+    row.style.marginTop = "2px";
+    mv.forEach(function(m){
+      var t = el("span", "tag ok", m);
+      t.style.marginRight = "4px";
+      row.appendChild(t);
+    });
+    box.appendChild(row);
+  }
+  (st.sp || []).forEach(function(sp){
+    var bits = STAT_KEYS.map(function(k){
+      return sp[k] ? sp[k] + " " + STAT_LABEL[k] : null;
+    }).filter(Boolean);
+    if (!bits.length) return;
+    var total = STAT_KEYS.reduce(function(a, k){ return a + (sp[k] || 0); }, 0);
+    var line = el("div", "st", bits.join(" / ") + "   ·   " + total + "/66 SP");
+    line.style.color = "var(--accent)";
+    box.appendChild(line);
+  });
+  if (st.why) {
+    /* Smogon writes it as one block with labelled paragraphs; the labels are
+       what make it skimmable, so the breaks are kept rather than flattened. */
+    var why = el("div", "st");
+    why.style.whiteSpace = "pre-wrap";
+    why.style.marginTop = "6px";
+    why.style.opacity = ".9";
+    why.textContent = st.why;
+    box.appendChild(why);
+  }
+  return box;
+}
+
+/* The panel: a fold, because the prose is long and the sheet has a job to do
+   before it. */
+function analysisPanel(name, host){
+  host.innerHTML = "";
+  /* Something on screen from the first frame. A panel that is empty while a
+     407 KB script loads is indistinguishable from a panel that is broken, and
+     on a phone on mobile data that wait is real. */
+  var wait = el("div", "st", "Loading Smogon's analysis...");
+  host.appendChild(wait);
+  var gaveUp = setTimeout(function(){
+    if (host.contains(wait)) {
+      wait.textContent = "Smogon's analysis did not load. It is a separate "
+        + "file, fetched only when this is opened - try again in a moment.";
+    }
+  }, 8000);
+  loadAnalysis(function(){
+    clearTimeout(gaveUp);
+    if (wait.parentNode) wait.parentNode.removeChild(wait);
+    var got = analysisFor(name);
+    if (!got || !got.length) {
+      host.appendChild(el("div", "st", ANALYSIS_STATE === "absent"
+        ? "Smogon's analyses are not in this build."
+        : "Smogon has not written one for " + name + " - 54 Pokemon have one."));
+      return;
+    }
+    got.forEach(function(st){
+      var head = el("div", "st");
+      head.style.marginBottom = "4px";
+      head.appendChild(el("span", "tag" + (st.outdated ? " warn" : ""),
+                          st.format + (st.outdated ? " · outdated" : "")));
+      if ((st.credits || []).length) {
+        head.appendChild(el("span", null, "  by " + st.credits.join(", ")));
+      }
+      host.appendChild(head);
+      if (st.overview) {
+        var ov = el("div", "st");
+        ov.style.whiteSpace = "pre-wrap";
+        ov.style.marginBottom = "6px";
+        ov.textContent = st.overview;
+        host.appendChild(ov);
+      }
+      (st.sets || []).forEach(function(x){ host.appendChild(analysisSet(x)); });
+    });
+  });
 }
 
 /* ------------------------------------------------------- what leaves here --

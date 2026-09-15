@@ -138,6 +138,10 @@ def stages(reg, deep=False):
         # supply, and must run BEFORE the tracker blob that carries it
         Stage("gts", "GTS difficulty - demand from the ladder, supply declared",
               ["scripts/build_gts_difficulty.py"]),
+        # Smogon's written analyses, as the app's on-demand asset. Cheap, and
+        # it has to follow fetch_smogon or the panel serves yesterday's prose.
+        Stage("analysis", "Smogon's analyses, for the app",
+              ["scripts/build_analysis_data.py"]),
         Stage("tracker", "regenerate tracker/data.js",
               ["scripts/build_tracker_data.py"]),
         Stage("dexnos", "National Dex numbers (the order HOME lists in)",
