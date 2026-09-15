@@ -9,6 +9,9 @@ import { S, boxRows, buildLink, hasStone, ownedNames } from "./02-state.js";
 import { drop, put, putNew } from "./03-store.js";
 import { closeSheet, fbtn, leaveEditor, openEditor, openSheet }
   from "./04-nav.js";
+/* The analysis panel is the box sheet's, deliberately - one renderer, so the
+   guide reads the same wherever it is opened. */
+import { analysisPanel } from "./05-box.js";
 /* The move picker badges each move with what the build's own ability does to
    it, and ranks the list - both are the damage screen's and the search view's
    rules, asked for rather than copied. A build is where an ability meets a
@@ -271,6 +274,31 @@ function buildSheet(id, b, keepOriginal){
          calculation */
       var abnum = effectLine(draft.ability);
       if (abnum) body.appendChild(abnum);
+    }
+
+    /* SMOGON'S GUIDE, HERE, because this is where the decisions are made.
+       The same panel the box sheet opens - one place that knows how to draw
+       it - and folded, so the 407 KB behind it is fetched only when a build is
+       actually being argued about. */
+    if (draft.pokemon) {
+      var gwrap = el("div");
+      var gtog = el("button", "btn sm fold");
+      gtog.setAttribute("aria-expanded", "false");
+      gtog.textContent = "Read Smogon on " + draft.pokemon;
+      var ghost = el("div");
+      ghost.hidden = true;
+      gtog.onclick = function(){
+        var open = ghost.hidden;
+        ghost.hidden = !open;
+        gtog.setAttribute("aria-expanded", open ? "true" : "false");
+        if (open && !ghost._drawn) {
+          ghost._drawn = 1;
+          analysisPanel(draft.pokemon, ghost);
+        }
+      };
+      gwrap.appendChild(gtog);
+      gwrap.appendChild(ghost);
+      body.appendChild(gwrap);
     }
 
     /* --- stat points -------------------------------------------------- */
