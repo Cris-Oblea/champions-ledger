@@ -116,6 +116,60 @@ carry the same shape of data - which moves, item, ability, nature and SP spread
 each Pokemon's own players run, with percentages - off the LIVE M-C ladder.
 `scripts/fetch_pokebase_splits.py`.
 
+### Those pages paginate, and it took two goes to read them (2026-09-15)
+
+The player caught it: "pokebase si publica todo... TIENE PAGES!". The sections
+paginate **client-side**, out of props the server already sent, so `?page=N`
+does not exist on a per-Pokemon page and the rendered HTML holds page 1 for
+ever. The fetcher knew five of Rillaboom's nineteen moves. It reads the Next.js
+flight payload now and gets every page of every section: **2884 moves priced
+across 290 Pokemon**, against about 1400 before.
+
+Looking for the pages found the worse bug. That page carries **two datasets
+under the same headings** - tournament teamlists for one regulation, and the
+ladder season - and they do not measure the same thing. Keeping whichever run
+of percentages was longer mixed them, so the stored file had Kingambit's moves
+summing to 370 (a share of SETS) and Rillaboom's to 94 (a share of move SLOTS).
+Rillaboom has no season block at all, which is how it stayed invisible.
+
+Both are captured now, separately and whole. The app ships the tournament
+block - present for every Pokemon, stamped with the regulation, one measurement
+throughout - and `build_splits_data.py --check` asserts what every column is a
+share of, on every Pokemon, inside the gate. A source that quietly changes a
+denominator is caught rather than silently redefining every number on screen.
+
+### A tier list is Find, sorted (2026-09-15)
+
+Speed tiers were built as their own block with a tab per stat, and the player
+replaced the idea with a better one the same afternoon: "en vez de ser varias
+tablas de tier por stat, que sea una sola tabla, pero con filtros por stats...
+find ya cuenta con filtros de tipo, abilities y move, habria que quitar el
+cuadro de speed y colocar filtros per stat y cumpliria de mejor manera."
+
+He is right, and it is the argument Find was built on. A tier list IS the
+result list sorted by one column; keeping it separate meant a speed tier could
+never also be "and it learns Fake Out and I own one", which is the question
+worth asking.
+
+The shape settled over three more corrections from him, each of which made it
+smaller:
+
+- **A direction, not a pair of bounds.** Min and max boxes per stat were the
+  first idea; he cut them ("es mejor un orden ascendente y descendente"). It
+  also subsumes what the old "Speed at most" box was for - that was labelled
+  the Trick Room filter, and sorting Speed ASCENDING answers it without having
+  to guess a threshold first. Tapping the stat you are already on flips it.
+- **All six stats stay.** Ranking by one briefly hid the other five as noise;
+  he cut that too ("si filtro por atk... tambien quiero ver la speed, no
+  puedes quitarme esa informacion"). An Attack ranking is read WITH the Speed
+  beside it. Nothing is hidden - the ranked one is marked instead.
+- **Base values only.** "Los SPs y naturaleza son parte del builder." The
+  level-50 floor and ceiling belong where one Pokemon is being decided about,
+  not on 120 rows of a list.
+
+A third scope toggle, "Brought to M-C", narrows the dex to the field: 291 of
+the 345 forms.
+
 ## Items and abilities are numbers now, not adjectives (2026-09-14)
 
 **Measured first, because the complaint deserved a measurement: of the 199

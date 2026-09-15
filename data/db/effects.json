@@ -50,7 +50,7 @@
    "notes": [],
    "text_numbers": [
     {
-     "as_written": "1/4",
+     "as_written": "1/4 of max HP",
      "kind": "fraction of max HP",
      "phrase": "If this Pokemon is KOed with a contact move, that move's user loses 1/4 its max HP.",
      "value": 0.25
@@ -148,7 +148,7 @@
    "notes": [],
    "text_numbers": [
     {
-     "as_written": "1/16",
+     "as_written": "1/16 of max HP",
      "kind": "fraction of max HP",
      "phrase": "User recovers 1/16 max HP per turn.",
      "value": 0.0625
@@ -323,7 +323,7 @@
    "notes": [],
    "text_numbers": [
     {
-     "as_written": "1 stages",
+     "as_written": "1 stage",
      "kind": "stages",
      "phrase": "Atk, Speed by 1 stage.",
      "value": 1.0
@@ -393,7 +393,7 @@
    "notes": [],
    "text_numbers": [
     {
-     "as_written": "1/6",
+     "as_written": "1/6 of max HP",
      "kind": "fraction of max HP",
      "phrase": "Holder's partial-trapping moves deal 1/6 max HP per turn instead of 1/8.",
      "value": 0.166667
@@ -787,7 +787,7 @@
    "notes": [],
    "text_numbers": [
     {
-     "as_written": "1/3",
+     "as_written": "1/3 of max HP",
      "kind": "fraction of max HP",
      "phrase": "If this Pokemon eats a Berry, it restores 1/3 of its max HP after the Berry's effect.",
      "value": 0.333333
@@ -1330,7 +1330,7 @@
    "notes": [],
    "text_numbers": [
     {
-     "as_written": "1/4",
+     "as_written": "1/4 of max HP",
      "kind": "fraction of max HP",
      "phrase": "This Pokemon heals 1/4 of its max HP when hit by Ground moves; Ground immunity.",
      "value": 0.25
@@ -1386,7 +1386,7 @@
    "notes": [],
    "text_numbers": [
     {
-     "as_written": "1 stages",
+     "as_written": "1 stage",
      "kind": "stages",
      "phrase": "If the terrain is Electric Terrain, raises holder's Defense by 1 stage.",
      "value": 1.0
@@ -2024,13 +2024,13 @@
    "notes": [],
    "text_numbers": [
     {
-     "as_written": "1/2",
+     "as_written": "1/2 of max HP",
      "kind": "fraction of max HP",
      "phrase": "This Pokemon eats Berries at 1/2 max HP or less instead of their usual 1/4 max HP.",
      "value": 0.5
     },
     {
-     "as_written": "1/4",
+     "as_written": "1/4 of max HP",
      "kind": "fraction of max HP",
      "phrase": "This Pokemon eats Berries at 1/2 max HP or less instead of their usual 1/4 max HP.",
      "value": 0.25
@@ -2044,7 +2044,7 @@
    "notes": [],
    "text_numbers": [
     {
-     "as_written": "1 stages",
+     "as_written": "1 stage",
      "kind": "stages",
      "phrase": "Pokemon making contact with this Pokemon have their Speed lowered by 1 stage.",
      "value": 1.0
@@ -2058,7 +2058,7 @@
    "notes": [],
    "text_numbers": [
     {
-     "as_written": "1 stages",
+     "as_written": "1 stage",
      "kind": "stages",
      "phrase": "If the terrain is Grassy Terrain, raises holder's Defense by 1 stage.",
      "value": 1.0
@@ -2072,7 +2072,7 @@
    "notes": [],
    "text_numbers": [
     {
-     "as_written": "1/16",
+     "as_written": "1/16 of max HP",
      "kind": "fraction of max HP",
      "phrase": "Grounded: +Grass power, +1/16 max HP.",
      "value": 0.0625
@@ -2509,7 +2509,7 @@
    "notes": [],
    "text_numbers": [
     {
-     "as_written": "1/16",
+     "as_written": "1/16 of max HP",
      "kind": "fraction of max HP",
      "phrase": "If Snow is active, this Pokemon heals 1/16 of its max HP each turn.",
      "value": 0.0625
@@ -2647,7 +2647,7 @@
    "notes": [],
    "text_numbers": [
     {
-     "as_written": "1/16",
+     "as_written": "1/16 of max HP",
      "kind": "fraction of max HP",
      "phrase": "Traps/grounds user; heals 1/16 max HP per turn.",
      "value": 0.0625
@@ -2661,7 +2661,7 @@
    "notes": [],
    "text_numbers": [
     {
-     "as_written": "1 stages",
+     "as_written": "1 stage",
      "kind": "stages",
      "phrase": "On switch-in, this Pokemon lowers the Attack of opponents by 1 stage.",
      "value": 1.0
@@ -2756,7 +2756,7 @@
    "notes": [],
    "text_numbers": [
     {
-     "as_written": "1 stages",
+     "as_written": "1 stage",
      "kind": "stages",
      "phrase": "This Pokemon's Attack is raised by 1 stage after it is damaged by a Dark-type move.",
      "value": 1.0
@@ -2909,7 +2909,7 @@
    "notes": [],
    "text_numbers": [
     {
-     "as_written": "1/16",
+     "as_written": "1/16 of max HP",
      "kind": "fraction of max HP",
      "phrase": "At the end of every turn, holder restores 1/16 of its max HP.",
      "value": 0.0625
@@ -2956,7 +2956,7 @@
      "value": 1.3
     },
     {
-     "as_written": "1/10",
+     "as_written": "1/10 of max HP",
      "kind": "fraction of max HP",
      "phrase": "Holder's attacks do 1.3× damage, and it loses 1/10 its max HP after the attack.",
      "value": 0.1
@@ -3428,7 +3428,7 @@
    "notes": [],
    "text_numbers": [
     {
-     "as_written": "1 stages",
+     "as_written": "1 stage",
      "kind": "stages",
      "phrase": "Def by 1 stage.",
      "value": 1.0
@@ -3470,7 +3470,7 @@
    "notes": [],
    "text_numbers": [
     {
-     "as_written": "1 stages",
+     "as_written": "1 stage",
      "kind": "stages",
      "phrase": "This Pokemon's Speed is raised 1 stage if hit by an Electric move; Electric immunity.",
      "value": 1.0
@@ -3498,7 +3498,7 @@
    "notes": [],
    "text_numbers": [
     {
-     "as_written": "1 stages",
+     "as_written": "1 stage",
      "kind": "stages",
      "phrase": "This Pokemon's Attack is raised by 1 stage if it attacks and KOes another Pokemon.",
      "value": 1.0
@@ -3794,7 +3794,7 @@
    "notes": [],
    "text_numbers": [
     {
-     "as_written": "1/2",
+     "as_written": "1/2 of max HP",
      "kind": "fraction of max HP",
      "phrase": "Restores 10 HP when at 1/2 max HP or less.",
      "value": 0.5
@@ -4023,7 +4023,7 @@
    "notes": [],
    "text_numbers": [
     {
-     "as_written": "1/8",
+     "as_written": "1/8 of max HP",
      "kind": "fraction of max HP",
      "phrase": "This Pokemon is healed by 1/8 of its max HP each turn when poisoned; no HP loss.",
      "value": 0.125
@@ -4135,7 +4135,7 @@
    "notes": [],
    "text_numbers": [
     {
-     "as_written": "1 stages",
+     "as_written": "1 stage",
      "kind": "stages",
      "phrase": "Def by 1 stage.",
      "value": 1.0
@@ -4366,7 +4366,7 @@
    "notes": [],
    "text_numbers": [
     {
-     "as_written": "1/16",
+     "as_written": "1/16 of max HP",
      "kind": "fraction of max HP",
      "phrase": "If Rain is active, this Pokemon heals 1/16 of its max HP each turn.",
      "value": 0.0625
@@ -4380,7 +4380,7 @@
    "notes": [],
    "text_numbers": [
     {
-     "as_written": "1 stages",
+     "as_written": "1 stage",
      "kind": "stages",
      "phrase": "Speed is raised 1 stage if hit by a Bug-, Dark-, or Ghost-type attack, or Intimidated.",
      "value": 1.0
@@ -4653,7 +4653,7 @@
    "notes": [],
    "text_numbers": [
     {
-     "as_written": "1/6",
+     "as_written": "1/6 of max HP",
      "kind": "fraction of max HP",
      "phrase": "If holder is hit by a contact move, the attacker loses 1/6 of its max HP.",
      "value": 0.166667
@@ -4750,7 +4750,7 @@
    "notes": [],
    "text_numbers": [
     {
-     "as_written": "1/16",
+     "as_written": "1/16 of max HP",
      "kind": "fraction of max HP",
      "phrase": "Deals 1/16 max HP each turn; 1/8 on Steel, Water.",
      "value": 0.0625
@@ -4846,7 +4846,7 @@
    "notes": [],
    "text_numbers": [
     {
-     "as_written": "1 stages",
+     "as_written": "1 stage",
      "kind": "stages",
      "phrase": "This Pokemon's Attack is raised 1 stage if hit by a Grass move; Grass immunity.",
      "value": 1.0
@@ -4874,7 +4874,7 @@
    "notes": [],
    "text_numbers": [
     {
-     "as_written": "1 stages",
+     "as_written": "1 stage",
      "kind": "stages",
      "phrase": "Holder's critical hit ratio is raised by 1 stage.",
      "value": 1.0
@@ -4999,7 +4999,7 @@
    "notes": [],
    "text_numbers": [
     {
-     "as_written": "1/2",
+     "as_written": "1/2 of max HP",
      "kind": "fraction of max HP",
      "phrase": "User takes 1/2 its max HP to pass a substitute.",
      "value": 0.5
@@ -5185,13 +5185,13 @@
    "notes": [],
    "text_numbers": [
     {
-     "as_written": "1/4",
+     "as_written": "1/4 of max HP",
      "kind": "fraction of max HP",
      "phrase": "Restores 1/4 max HP when at 1/2 max HP or less.",
      "value": 0.25
     },
     {
-     "as_written": "1/2",
+     "as_written": "1/2 of max HP",
      "kind": "fraction of max HP",
      "phrase": "Restores 1/4 max HP when at 1/2 max HP or less.",
      "value": 0.5
@@ -5438,7 +5438,7 @@
      "value": 1.5
     },
     {
-     "as_written": "1/8",
+     "as_written": "1/8 of max HP",
      "kind": "fraction of max HP",
      "phrase": "Atk is 1.5×; loses 1/8 max HP per turn.",
      "value": 0.125
@@ -5479,7 +5479,7 @@
    "notes": [],
    "text_numbers": [
     {
-     "as_written": "1 stages",
+     "as_written": "1 stage",
      "kind": "stages",
      "phrase": "This Pokemon's Speed is raised 1 stage at the end of each full turn on the field.",
      "value": 1.0
@@ -5532,7 +5532,7 @@
    "notes": [],
    "text_numbers": [
     {
-     "as_written": "1/8",
+     "as_written": "1/8 of max HP",
      "kind": "fraction of max HP",
      "phrase": "Contact: loses 1/8 max HP.",
      "value": 0.125
@@ -5574,7 +5574,7 @@
    "notes": [],
    "text_numbers": [
     {
-     "as_written": "1 stages",
+     "as_written": "1 stage",
      "kind": "stages",
      "phrase": "This Pokemon's Defense is raised by 1 stage after it is damaged by a move.",
      "value": 1.0
@@ -5602,7 +5602,7 @@
    "notes": [],
    "text_numbers": [
     {
-     "as_written": "1 stages",
+     "as_written": "1 stage",
      "kind": "stages",
      "phrase": "If this Pokemon flinches, its Speed is raised by 1 stage.",
      "value": 1.0
@@ -5741,7 +5741,7 @@
    "notes": [],
    "text_numbers": [
     {
-     "as_written": "1/4",
+     "as_written": "1/4 of max HP",
      "kind": "fraction of max HP",
      "phrase": "User loses 1/4 of its max HP.",
      "value": 0.25
@@ -5769,7 +5769,7 @@
    "notes": [],
    "text_numbers": [
     {
-     "as_written": "1/4",
+     "as_written": "1/4 of max HP",
      "kind": "fraction of max HP",
      "phrase": "User takes 1/4 its max HP to put in a substitute.",
      "value": 0.25
@@ -5811,7 +5811,7 @@
    "notes": [],
    "text_numbers": [
     {
-     "as_written": "1 stages",
+     "as_written": "1 stage",
      "kind": "stages",
      "phrase": "This Pokemon's critical hit ratio is raised by 1 stage.",
      "value": 1.0
@@ -5839,7 +5839,7 @@
    "notes": [],
    "text_numbers": [
     {
-     "as_written": "1 stages",
+     "as_written": "1 stage",
      "kind": "stages",
      "phrase": "On switch-in, this Pokemon lowers the evasiveness of opponents 1 stage.",
      "value": 1.0
@@ -5929,7 +5929,7 @@
    "notes": [],
    "text_numbers": [
     {
-     "as_written": "1 stages",
+     "as_written": "1 stage",
      "kind": "stages",
      "phrase": "Target's Speed is lowered by 1 stage for 3 turns.",
      "value": 1.0
@@ -6460,7 +6460,7 @@
    "notes": [],
    "text_numbers": [
     {
-     "as_written": "1/4",
+     "as_written": "1/4 of max HP",
      "kind": "fraction of max HP",
      "phrase": "This Pokemon heals 1/4 of its max HP when hit by Electric moves; Electric immunity.",
      "value": 0.25
@@ -6521,7 +6521,7 @@
    "notes": [],
    "text_numbers": [
     {
-     "as_written": "1/4",
+     "as_written": "1/4 of max HP",
      "kind": "fraction of max HP",
      "phrase": "This Pokemon heals 1/4 of its max HP when hit by Water moves; Water immunity.",
      "value": 0.25
@@ -6776,7 +6776,7 @@
    "notes": [],
    "text_numbers": [
     {
-     "as_written": "1 turns",
+     "as_written": "1 turn",
      "kind": "turns",
      "phrase": "Puts the target to sleep after 1 turn.",
      "value": 1.0

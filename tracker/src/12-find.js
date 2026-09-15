@@ -2,7 +2,7 @@
    Part of the app; linked into one script by scripts/build_tracker_page.py. */
 import {
   $, C, DEX, MOVES, MOVE_BY, SORT, STAT_KEYS, STAT_LABEL, TYPE_COLOR, bst,
-  byName, catName, effectLine, el, learnset, statLine, toast, typeChip,
+  byName, catName, dexNo, effectLine, el, learnset, splitPct, toast, typeChip,
 } from "./01-data.js";
 import { S, boxRows, originOf, ownedNames } from "./02-state.js";
 import { closeSheet, fbtn, openSheet } from "./04-nav.js";
@@ -16,9 +16,41 @@ import { fill, note } from "./13-boot.js";
    "do I have this in Champions right now" - the question that decides whether
    a Pokemon is playable today - separately from "can I bring it in from
    HOME". Two flags, and both on means either box. */
+/* STATS ARE A FILTER LIKE ANY OTHER NOW, and the sort is what makes this the
+   tier list. It used to be two fixed boxes - "Speed at least", "Speed at
+   most" - which answered one stat and only by filtering, so "where does this
+   sit in the Speed order" had no answer here at all and lived in a separate
+   block with a tab per stat. The player collapsed the two ideas (2026-09-15):
+   one table, per-stat filters, and Find's existing type / ability / move
+   filters compose with them. A speed tier that is also "learns Fake Out and I
+   own one" is a question the old shape could not ask.
+
+   A DIRECTION, NOT A PAIR OF BOUNDS. The first go at this gave every stat a
+   min and a max, and the player cut it the same hour (2026-09-15): "creo que
+   poner el maximo y el minimo esta demas, es mejor un orden ascendente y
+   descendente como opciones, asi veo como se ordena por ese stat de mayor a
+   menor o viceversa."
+
+   He is right, and it also subsumes the thing the old fixed boxes were for.
+   "Speed at most" was labelled the Trick Room filter; sorting Speed ASCENDING
+   answers that better, because it ranks the slow rather than making you guess
+   a threshold first. Two controls became one, and nothing was lost.
+
+   `sort` is a stat key, "bst" or "dex". `dir` is "desc" or "asc"; tapping the
+   stat you are already on flips it. */
 var FIND = {moves: [], types: [], typeMode: "and", ability: "",
-            inChamp: false, inHome: false,
-            minBst: 0, maxSpe: 0, minSpe: 0, cat: ""};
+            inChamp: false, inHome: false, inMeta: false,
+            sort: "bst", dir: "desc", cat: ""};
+/* bst is not a base stat but it filters and sorts exactly like one, so it
+   rides in the same table rather than keeping its own input. */
+var FIND_STATS = [["bst","BST"],["hp","HP"],["atk","Atk"],["def","Def"],
+                  ["spa","SpA"],["spd","SpD"],["spe","Spe"]];
+function statOf(p, key){
+  return key === "bst" ? bst(p) : p.b[STAT_KEYS.indexOf(key)];
+}
+function statLabel(key){
+  return key === "bst" ? "BST" : STAT_LABEL[key];
+}
 
 function findDraw(){
   var host = $("findChips");
@@ -54,12 +86,9 @@ function findDraw(){
     function(){ FIND.inChamp = false; findDraw(); });
   if (FIND.inHome) chip("in HOME",
     function(){ FIND.inHome = false; findDraw(); });
-  if (FIND.minBst) chip("BST " + FIND.minBst + "+",
-    function(){ FIND.minBst = 0; findDraw(); });
-  if (FIND.minSpe) chip("Speed " + FIND.minSpe + "+",
-    function(){ FIND.minSpe = 0; findDraw(); });
-  if (FIND.maxSpe) chip("Speed " + FIND.maxSpe + " or less",
-    function(){ FIND.maxSpe = 0; findDraw(); });
+  if (FIND.inMeta) chip("brought to an M-C tournament",
+    function(){ FIND.inMeta = false; findDraw(); });
+
   if (!host.children.length) {
     host.appendChild(el("p", "sub",
       "No filters yet. Add one below - they all have to be true at once."));
@@ -73,6 +102,11 @@ function findRun(){
   var own = ownedNames();
   var inHome = {};
   boxRows("home").forEach(function(r){ inHome[r.name] = 1; });
+  /* "Brought to M-C" is the splits table read as a membership test: a Pokemon
+     with a row there is one somebody actually took to an event this
+     regulation. It is the difference between a tier list of all 345 forms and
+     one of the field. */
+  var seen = ((window.CHAMP_SPLITS || {}).p) || {};
   var hits = DEX.filter(function(p){
     if (FIND.inChamp || FIND.inHome) {
       var c = FIND.inChamp && ((p.name in own) || (p.species in own));
@@ -86,9 +120,7 @@ function findRun(){
       if (!tm) return false;
     }
     if (FIND.ability && (p.ab || []).indexOf(FIND.ability) < 0) return false;
-    if (FIND.minBst && bst(p) < FIND.minBst) return false;
-    if (FIND.minSpe && p.b[5] < FIND.minSpe) return false;
-    if (FIND.maxSpe && p.b[5] > FIND.maxSpe) return false;
+    if (FIND.inMeta && !(seen[p.name] || seen[p.species])) return false;
     if (FIND.moves.length) {
       var ls = learnset(p.name);
       if (!ls) return false;
@@ -102,7 +134,10 @@ function findRun(){
   var head = el("p", "sub");
   head.textContent = hits.length + " of " + DEX.length + " forms match" +
     (FIND.moves.length > 1
-      ? " - all " + FIND.moves.length + " moves on the same Pokemon" : "");
+      ? " - all " + FIND.moves.length + " moves on the same Pokemon" : "") +
+    (FIND.sort === "dex" ? ", in dex order"
+     : ", by " + statLabel(FIND.sort) +
+       (FIND.dir === "asc" ? ", lowest first" : ", highest first"));
   out.appendChild(head);
 
   if (!hits.length) {
@@ -113,9 +148,23 @@ function findRun(){
         : "Nothing learns all of that. Drop a filter and try again."));
     return;
   }
-  hits.sort(function(a, b){ return bst(b) - bst(a); });
+  /* THE SORT IS THE TIER LIST, and it reads both ways. Descending is the
+     speed tier; ascending is the Trick Room one, and it replaces the "Speed
+     at most" box that used to ask for a threshold nobody knows in advance.
+     Dex order is the one non-ranking answer. */
+  if (FIND.sort === "dex") {
+    hits.sort(function(a, b){
+      return dexNo(a.name) - dexNo(b.name) || a.name.localeCompare(b.name);
+    });
+  } else {
+    var sign = FIND.dir === "asc" ? -1 : 1;
+    hits.sort(function(a, b){
+      return sign * (statOf(b, FIND.sort) - statOf(a, FIND.sort)) ||
+             a.name.localeCompare(b.name);
+    });
+  }
   var list = el("div", "list");
-  hits.slice(0, 80).forEach(function(p){
+  hits.slice(0, 120).forEach(function(p){
     var here = (p.name in own) || (p.species in own);
     var r = el("button", "row" + (here ? " perm" : ""));
     var m = el("div", "rmain");
@@ -136,8 +185,31 @@ function findRun(){
     m.appendChild(h);
     var meta = el("div", "rmeta");
     p.types.forEach(function(t){ meta.appendChild(typeChip(t)); });
-    meta.appendChild(el("span", "mono", "BST " + bst(p) + "  ·  " + statLine(p)));
+    /* ALL SIX STATS, ALWAYS, AND THE RANKED ONE MARKED.
 
+       This briefly dropped the other five when one was being ranked, on the
+       grounds that they were noise. The player cut that immediately and he is
+       right: "si filtro por atk, de mayor a menor, pero tambien quiero ver la
+       speed, no puedes quitarme esa informacion." An Attack ranking is read
+       WITH the Speed beside it - that is half of what picks the Pokemon.
+
+       So nothing is hidden and the ranked stat is simply made findable, which
+       is what the eye needed rather than fewer numbers.
+
+       BASE VALUES ONLY: "no necesito ver en el listado los SPs, puede estar
+       todo base." The level-50 floor and ceiling belong on the Pokemon's own
+       sheet, where one Pokemon is being decided about; in a list of 120 they
+       were three numbers per row answering a question nobody asked yet. */
+    var ranking = FIND.sort !== "dex";
+    var stats = el("span", "statrow");
+    stats.appendChild(el("span", "mono fact" +
+      (FIND.sort === "bst" ? " on" : ""), "BST " + bst(p)));
+    STAT_KEYS.forEach(function(k, i){
+      stats.appendChild(el("span", "mono fact" +
+        (ranking && FIND.sort === k ? " on" : ""),
+        p.b[i] + " " + STAT_LABEL[k]));
+    });
+    meta.appendChild(stats);
     meta.appendChild(el("span", null, (p.ab || []).join(" / ")));
     m.appendChild(meta);
     r.appendChild(m);
@@ -145,9 +217,10 @@ function findRun(){
     list.appendChild(r);
   });
   out.appendChild(list);
-  if (hits.length > 80) out.appendChild(el("p", "sub",
-    "Showing the 80 highest BST. Narrow it further to see the rest."));
+  if (hits.length > 120) out.appendChild(el("p", "sub",
+    "Showing the first 120. Narrow it further to see the rest."));
 }
+
 
 function findDetail(p){
   openSheet(p.name, function(body){
@@ -274,6 +347,41 @@ function findDetail(p){
 function spreadTags(m, host){
   if (m.spread) host.appendChild(el("span", "tag warn", "spread"));
   if (m.hitsAlly) host.appendChild(el("span", "tag bad", "hits ally"));
+  multiHitTag(m, host);
+}
+/* MULTI-HIT, WITH THE TOTAL. 14 moves in Champions hit more than once, and the
+   BP column shows one hit of them - Bullet Seed reads 25 BP next to Seed Bomb's
+   80 and loses, when it is really 75 across three hits and 125 with Skill Link.
+   A row that does not say so is comparing the wrong numbers, which is why the
+   player asked for the tag (2026-09-15: "falta que los movimientos tengan tag
+   de si son multi-hit").
+
+   Three shapes, and they are genuinely different moves:
+     fixed     Dragon Darts always twice - the total is just n x BP
+     2 to 5    quoted at THREE hits, the repo's own convention, and Skill Link
+               replaces the range with a flat five (and one accuracy roll for
+               the whole move, so it is all-or-nothing)
+     1 to 10   Population Bomb, where "the attack ends if the user misses"
+               makes the 1 a miss rather than a hit count */
+function multiHitTag(m, host){
+  var h = m.hits;
+  if (!h || !h.length) return;
+  var lo = h[0], hi = h.length > 1 ? h[1] : h[0];
+  var fixed = lo === hi;
+  var typical = fixed ? lo : (lo === 2 && hi === 5 ? 3 : lo);
+  var t = el("span", "tag ok",
+              fixed ? "×" + lo + " hits" : lo + "–" + hi + " hits");
+  var bits = [];
+  if (m.bp) {
+    bits.push(fixed ? lo + " × " + m.bp + " BP = " + (lo * m.bp)
+                    : "quoted at " + typical + " hits = " +
+                      (typical * m.bp) + " BP");
+    if (!fixed && lo === 2 && hi === 5)
+      bits.push("Skill Link forces 5 = " + (5 * m.bp) +
+                " BP, on one accuracy roll for the whole move");
+  }
+  t.title = bits.join(" · ") || "Hits more than once";
+  host.appendChild(t);
 }
 /* Priority, with its NUMBER. Filtering a movepool by "priority" and getting
    back rows that do not say how much is no answer: +1 and +2 are a different
@@ -319,8 +427,16 @@ function spreadNote(m){
    badges abilities and effective BP and the search view does not. */
 function moveScore(m){ return (m.bp || 0) * Math.min(100, m.acc || 100) / 100; }
 
-function moveFilters(body, pool, onChange, placeholder){
-  var sorter = {v:"bp"};
+function moveFilters(body, pool, onChange, placeholder, opts){
+  /* `usageOf` is a Pokemon name, and it is what turns this from "rank the
+     movepool by raw power" into "rank it by what its players actually bring".
+     Only the build editor passes one - the Find tab lists moves with no
+     Pokemon in hand, so there is nothing to be a share OF there - and when it
+     does, usage is the DEFAULT sort, because that is the first question asked
+     of a movepool (player, 2026-09-15: "seria bueno poner filtro a los
+     movimientos de mayor a menor uso por el %"). */
+  var usageOf = (opts || {}).usageOf || null;
+  var sorter = {v: usageOf ? "usage" : "bp"};
   var F = {cat:{}, trait:{}, type:{}};
   function label(t){
     var d = el("div", "sub"); d.style.margin = "0 0 4px"; d.textContent = t;
@@ -335,7 +451,9 @@ function moveFilters(body, pool, onChange, placeholder){
   inp.oninput = function(){ onChange(); };
 
   var srow = el("div", "toggles"); srow.style.marginBottom = "8px";
-  [["bp","BP × acc"],["name","A–Z"],["pp","PP"],["type","Type"]].forEach(function(o){
+  var sorts = [["bp","BP × acc"],["name","A–Z"],["pp","PP"],["type","Type"]];
+  if (usageOf) sorts.unshift(["usage","Usage %"]);
+  sorts.forEach(function(o){
     var t = el("button", "tog", o[1]);
     t.setAttribute("aria-pressed", o[0] === sorter.v ? "true" : "false");
     t.onclick = function(){
@@ -421,6 +539,17 @@ function moveFilters(body, pool, onChange, placeholder){
       return true;
     });
     hits.sort(function(a, b){
+      if (sorter.v === "usage") {
+        /* A move nobody brought sorts below one at 0.1%, and both sort below
+           silence - a Pokemon with no table at all gets -1 for everything, so
+           the list falls back to power rather than to alphabetical noise. */
+        var ua = splitPct(usageOf, "m", a.name);
+        var ub = splitPct(usageOf, "m", b.name);
+        if (ua == null && ub == null) return moveScore(b) - moveScore(a) ||
+                                             a.name.localeCompare(b.name);
+        return (ub == null ? -1 : ub) - (ua == null ? -1 : ua) ||
+               moveScore(b) - moveScore(a) || a.name.localeCompare(b.name);
+      }
       if (sorter.v === "name") return a.name.localeCompare(b.name);
       if (sorter.v === "pp")
         return (b.pp || 0) - (a.pp || 0) || a.name.localeCompare(b.name);
@@ -436,6 +565,25 @@ function moveFilters(body, pool, onChange, placeholder){
     return hits;
   }
   return {apply:apply, input:inp};
+}
+
+/* A META LINE THAT BREAKS BETWEEN FACTS AND NEVER INSIDE ONE.
+
+   "Physical · 40 BP · 100 acc · 12 PP · 40 effective" as one text node lets a
+   phone wrap it wherever a space happens to fall, so "100" ends a line and
+   "acc" starts the next, or a separator dot is orphaned in the left margin.
+   Each fact is its own nowrap span and the dot between them is drawn by CSS,
+   which means the only place a wrap can happen is a join.
+
+   Falsy parts are dropped, so a caller can pass a conditional straight in
+   rather than assembling a string with the separators in it - which is what
+   every one of these did, three times over, with slightly different spacing. */
+function factLine(parts){
+  var box = el("div", "rmeta");
+  parts.filter(Boolean).forEach(function(t){
+    box.appendChild(el("span", "mono fact", t));
+  });
+  return box;
 }
 
 /* one move row, badged with whatever ability of this Pokemon touches it.
@@ -466,14 +614,21 @@ function moveRowFor(m, ability, poke){
     hits.push({ability:a, hit:hit});
   });
   mm.appendChild(h);
-  var line = catName(m.cat) + "  ·  " + (m.bp ? m.bp + " BP" : "— BP") +
-    "  ·  " + (m.acc == null ? "—" : m.acc) + " acc  ·  " +
-    (m.pp == null ? "—" : m.pp) + " PP" + spreadNote(m);
+  var facts = [catName(m.cat),
+               m.bp ? m.bp + " BP" : "— BP",
+               (m.acc == null ? "—" : m.acc) + " acc",
+               (m.pp == null ? "—" : m.pp) + " PP"];
+  /* spreadNote can carry TWO facts joined by its own separator - the x0.75
+     and "lands on your own ally too" - so it is split back apart rather than
+     pushed in as one long unbreakable span. */
+  spreadNote(m).split("·").forEach(function(bit){
+    if (bit.trim()) facts.push(bit.trim());
+  });
   hits.forEach(function(x){
     if (x.hit.x && m.bp)
-      line += "  →  " + Math.round(m.bp * x.hit.x) + " BP with " + x.ability;
+      facts.push(Math.round(m.bp * x.hit.x) + " BP with " + x.ability);
   });
-  mm.appendChild(el("div", "st", line));
+  mm.appendChild(factLine(facts));
   if (m.text) mm.appendChild(el("div", "st", m.text));
   hits.forEach(function(x){
     var w = el("div", "st");
@@ -669,20 +824,156 @@ function findInit(){
     FIND.inChamp = !FIND.inChamp; findDraw(); };
   $("findInHome").onclick = function(){
     FIND.inHome = !FIND.inHome; findDraw(); };
+  $("findInMeta").onclick = function(){
+    FIND.inMeta = !FIND.inMeta; findDraw(); };
+
+  paintSort();
   $("findClear").onclick = function(){
     FIND.moves = []; FIND.types = []; FIND.typeMode = "and";
     FIND.ability = "";
-    FIND.inChamp = false; FIND.inHome = false;
-    FIND.minBst = 0; FIND.minSpe = 0; FIND.maxSpe = 0;
-    $("findBst").value = ""; $("findSpeMin").value = ""; $("findSpeMax").value = "";
+    FIND.inChamp = false; FIND.inHome = false; FIND.inMeta = false;
+    FIND.sort = "bst"; FIND.dir = "desc";
+    $("findInMeta").setAttribute("aria-pressed", "false");
+    paintSort();
     findDraw();
   };
-  $("findBst").oninput = function(){
-    FIND.minBst = Number($("findBst").value) || 0; findDraw(); };
-  $("findSpeMin").oninput = function(){
-    FIND.minSpe = Number($("findSpeMin").value) || 0; findDraw(); };
-  $("findSpeMax").oninput = function(){
-    FIND.maxSpe = Number($("findSpeMax").value) || 0; findDraw(); };
+  worldInit();
+}
+
+/* The sort row. Dex order plus BST and the six stats - picking one turns the
+   result list into that stat's tier order, which is the whole of what the
+   separate Tiers block used to be.
+
+   TAPPING THE ONE YOU ARE ALREADY ON FLIPS THE DIRECTION, and the arrow on
+   it says which way it is pointing. Descending is the speed tier; ascending
+   is the Trick Room one. That second reading is the reason there are no min
+   and max boxes: a threshold has to be guessed before you can ask, and an
+   order does not. */
+function paintSort(){
+  var row = $("findSort");
+  if (!row) return;
+  row.innerHTML = "";
+  [["dex","Dex #"]].concat(FIND_STATS).forEach(function(o){
+    var on = o[0] === FIND.sort;
+    var arrow = o[0] === "dex" ? ""
+              : FIND.dir === "asc" ? " ↑" : " ↓";
+    var t = el("button", "tog", o[1] + (on ? arrow : ""));
+    t.setAttribute("aria-pressed", on ? "true" : "false");
+    t.title = o[0] === "dex" ? "Dex order"
+      : on ? "Tap again for " +
+             (FIND.dir === "asc" ? "highest first" : "lowest first")
+      : "Rank by " + o[1] + ", highest first";
+    t.onclick = function(){
+      /* already here: flip. Somewhere else: go there, highest first, which is
+         what you mean nine times out of ten. */
+      if (o[0] === FIND.sort && o[0] !== "dex")
+        FIND.dir = FIND.dir === "asc" ? "desc" : "asc";
+      else { FIND.sort = o[0]; FIND.dir = "desc"; }
+      paintSort();
+      findRun();
+    };
+    row.appendChild(t);
+  });
+}
+
+/* ----------------------------------------------------------------- worlds --
+   Every World Championship pokedata publishes, as HISTORY.
+
+   The distinction is the whole point and the app has to keep saying it: a
+   Worlds is played once, under one regulation, and then frozen. 2026 was M-B.
+   Quoting any of it as what is popular now is the mistake this block exists
+   to prevent, so the year carries its format and the lede says "frozen".
+
+   THE THREE DIVISIONS ARE NEVER POOLED. Masters, Seniors and Juniors run the
+   same roster and are three different metagames - Incineroar is 41% of the
+   Masters teams and 26% of the Juniors' - so they are tabs and there is no
+   "all" option. Masters leads because that is the division he enters.
+
+   Counted per TEAM, not per appearance: under the Species Clause a team holds
+   a species at most once, so "52.8%" is 208 of 394 teams and not 208 slots. */
+var WORLD = {year: null, div: "masters"};
+
+function worldInit(){
+  var years = C.WORLDS || [];
+  var yrow = $("worldYear"); yrow.innerHTML = "";
+  $("worldOut").innerHTML = "";
+  if (!years.length) {
+    $("worldOut").appendChild(el("div", "empty",
+      "No Worlds archive in this build."));
+    return;
+  }
+  WORLD.year = years[0].y;
+  years.forEach(function(r){
+    var t = el("button", "tog", String(r.y));
+    t.setAttribute("aria-pressed", r.y === WORLD.year ? "true" : "false");
+    t.onclick = function(){
+      WORLD.year = r.y;
+      Array.prototype.forEach.call(yrow.children, function(x){
+        x.setAttribute("aria-pressed", x === t ? "true" : "false");
+      });
+      worldDraw();
+    };
+    yrow.appendChild(t);
+  });
+  var drow = $("worldDiv"); drow.innerHTML = "";
+  [["masters","Masters"],["seniors","Seniors"],["juniors","Juniors"]]
+    .forEach(function(o){
+      var t = el("button", "tog", o[1]);
+      t.setAttribute("aria-pressed", o[0] === WORLD.div ? "true" : "false");
+      t.onclick = function(){
+        WORLD.div = o[0];
+        Array.prototype.forEach.call(drow.children, function(x){
+          x.setAttribute("aria-pressed", x === t ? "true" : "false");
+        });
+        worldDraw();
+      };
+      drow.appendChild(t);
+    });
+  worldDraw();
+}
+
+function worldDraw(){
+  var out = $("worldOut");
+  if (!out) return;
+  out.innerHTML = "";
+  var yr = (C.WORLDS || []).filter(function(r){ return r.y === WORLD.year; })[0];
+  var d = yr && yr.d[WORLD.div];
+  if (!d) {
+    out.appendChild(el("div", "empty",
+      "pokedata published no " + WORLD.div + " teamlists for " + WORLD.year +
+      " — standings only, upstream."));
+    return;
+  }
+  var own = ownedNames();
+  var head = el("p", "sub");
+  head.textContent = "Worlds " + WORLD.year + " " + WORLD.div + " · " + d.n +
+    " teams · the " + d.top.length + " most brought";
+  out.appendChild(head);
+  var list = el("div", "list");
+  d.top.forEach(function(row, i){
+    var name = row[0], teams = row[1], pct = row[2];
+    var p = byName[name];
+    var mine = (name in own) || (p && p.species in own);
+    var r = el("button", "row" + (mine ? " perm" : ""));
+    var m = el("div", "rmain");
+    var h = el("div", "rname");
+    h.appendChild(el("span", "mono", "#" + (i + 1) + "  "));
+    h.appendChild(document.createTextNode(name));
+    if (mine) h.appendChild(el("span", "tag ok", "yours"));
+    m.appendChild(h);
+    var meta = el("div", "rmeta");
+    if (p) p.types.forEach(function(t){ meta.appendChild(typeChip(t)); });
+    var sp = el("span", "mono", pct + "%  ·  " + teams + " of " + d.n + " teams");
+    sp.title = teams + " of the " + d.n + " " + WORLD.div +
+      " teams at Worlds " + WORLD.year + " carried " + name +
+      ". One per team - the Species Clause allows no second copy.";
+    meta.appendChild(sp);
+    m.appendChild(meta);
+    r.appendChild(m);
+    if (p) r.onclick = function(){ findDetail(p); };
+    list.appendChild(r);
+  });
+  out.appendChild(list);
 }
 
 /* ------------------------------------------------------------ diagnostics --
@@ -762,6 +1053,12 @@ function diagLines(){
   add("Regulation", (C && C.REG ? C.REG : "unknown") +
       (C && C.REG_STARTED ? " since " + C.REG_STARTED : ""));
   add("Ladder usage fetched", (C && C.USAGE_AT) || "unknown");
+  add("Per-Pokemon splits", (function(){
+    var S = window.CHAMP_SPLITS || {};
+    var n = Object.keys(S.p || {}).length;
+    return n ? n + " Pokemon, " + (S.r || "?") + ", fetched " + (S.f || "?")
+             : "absent";
+  })());
   /* A truncated download looks like a working page with things missing, so the
      counts are stated and anything at zero is called out. */
   add("Blob integrity", [
@@ -937,5 +1234,5 @@ function drawDupeHome(){
 export {
   DIAG_LATEST, FIND, checkLatest, drawDiag, drawDupeHome, findDetail, findDraw,
   findInit, findRun, itemTags, moveFilters, moveRowFor, moveScore, priorityTag,
-  spreadNote, spreadTags,
+  factLine, spreadNote, spreadTags, worldDraw,
 };

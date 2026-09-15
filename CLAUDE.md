@@ -631,8 +631,33 @@ What the file cannot record:
   tables instead; only Megas come from the Pokedex.
 - **The Attackdex flag table alternates header/value rows.** Start the parse at
   the `<tr>` that opens the "Physical Contact" row or every flag shifts by one.
-- **pokebase renders only 100 rows per page** and the usage % exists only in that
-  rendered HTML — walk `?page=N`.
+- **pokebase's GLOBAL tables render only 100 rows per page** and the usage %
+  exists only in that rendered HTML — walk `?page=N`.
+- **A pokebase PER-POKEMON page paginates the other way, and `?page=N` does not
+  exist there** (found 2026-09-15, player: "TIENE PAGES!"). Those sections are
+  client components: the server sends every row as props and the buttons slice
+  them in the browser, so the rendered HTML holds page 1 for ever and there is
+  no URL for page 2. Everything is in the Next.js flight payload — the
+  `self.__next_f.push([1,"..."])` chunks, concatenated and unescaped into one
+  JSON string. `fetch_pokebase_splits.py:flight()` does that. Rillaboom: 19
+  moves over four pages, 26 spreads over six, 19 items over four. Reading the
+  markup saw five of each.
+- **That page carries TWO datasets with the same headings and they are NOT the
+  same numbers.** `Tournament Stats` is teamlists for one regulation, stamped
+  with it on the page, and exists for every Pokemon. `Season Stats` is the
+  ladder, per season, split doubles/singles, and **is missing entirely for some
+  Pokemon** — Rillaboom has none. Kingambit is Defiant 98.6% in one and 94% in
+  the other. Anything that finds a heading and keeps the longest run of
+  percentages will mix them, which is exactly what happened: the stored file
+  had Kingambit's moves summing to 370 and Rillaboom's to 94.
+- **And within the tournament block the MOVE column is divided by move SLOTS,
+  not by sets.** It sums to ~100 across the whole movepool, so nothing in it
+  can pass ~25 and Fake Out at 24.6% means nearly every Rillaboom runs it.
+  Items, abilities, natures and spreads are per SET and read directly;
+  teammates are per TEAM and sum to ~400, more when a Mega-capable teammate is
+  listed twice (base and Mega). Never colour or threshold a move percentage
+  against the others. `python scripts/build_splits_data.py --check` asserts all
+  four shapes over all 283 Pokemon and runs inside the gate.
 - **Do not pipe a fetch script into `head`**; SIGPIPE kills it before it writes.
 - **A Pokemon page labels both Mega blocks the same** ("Mega Charizard" twice).
   The X/Y suffix exists only in the master list, and Raichu's two Megas are both

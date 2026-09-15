@@ -318,11 +318,21 @@ def numbers_from(text):
                     continue
                 value = round(num / den, 6)
                 shown = "%d/%d" % (num, den)
+                if kind == "fraction of max HP":
+                    shown += " of max HP"
             else:
                 value = float(m.group(1))
-                shown = m.group(1) + {"multiplier": "x", "percent": "%",
-                                      "stages": " stages",
-                                      "turns": " turns"}.get(kind, "")
+                shown = m.group(1) + {"multiplier": "x", "percent": "%"}.get(
+                    kind, "")
+                if kind in ("stages", "turns"):
+                    # ONE STAGE, NOT "1 stages". The unit belongs to the number
+                    # and is written once, here: the app used to append it a
+                    # second time and Intimidate read "1 stages stages" on the
+                    # player's screen, Light Clay "8 TURNS TURNS". `as_written`
+                    # is now complete on its own, which is what stops that
+                    # happening again wherever else it gets printed.
+                    unit = kind[:-1] if value == 1 else kind
+                    shown = "%s %s" % (m.group(1), unit)
             key = (kind, shown, m.start())
             if key in seen:
                 continue
@@ -335,12 +345,14 @@ def numbers_from(text):
                         "as_written": shown,
                         "phrase": sentence_around(text, m.start())})
     # a fraction already claimed as "of max HP" should not be repeated as a
-    # bare fraction: one number, one meaning
-    hp = {(n["as_written"], n["phrase"]) for n in out
+    # bare fraction: one number, one meaning. Matched on the VALUE and not on
+    # what it reads as, because "1/16" and "1/16 of max HP" are the same number
+    # written two ways and comparing the words stopped catching it.
+    hp = {(n["value"], n["phrase"]) for n in out
           if n["kind"] == "fraction of max HP"}
     return [n for n in out
             if not (n["kind"] == "fraction"
-                    and (n["as_written"], n["phrase"]) in hp)]
+                    and (n["value"], n["phrase"]) in hp)]
 
 
 def smogon_text():

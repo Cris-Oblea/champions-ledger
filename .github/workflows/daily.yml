@@ -12,9 +12,19 @@
 #  * The correctness gate lives in daily.py, not here. If the damage selftest
 #    or the name-matching test fails, it refuses to deploy and the job fails
 #    loudly. A stale app beats a wrong one.
-#  * Mondays run --deep, which forces Smogon's 324 written analyses and
-#    Pikalytics. Both skip anything already cached, so without it they would
-#    freeze for good.
+#  * Mondays run --deep, which forces Smogon's written analyses, Pikalytics
+#    and pokebase's per-Pokemon splits. All three skip anything already
+#    cached, so without it they would freeze for good.
+#
+#    THIS WAS A COMMENT AND NOT A BEHAVIOUR until 2026-09-15. The flag was
+#    wired to `workflow_dispatch` alone, so --deep only ever ran when a person
+#    clicked it by hand, and the three slow sources had not been re-fetched by
+#    the schedule at all. It is decided below, in one step, and the run log
+#    prints which mode it chose - a flag nobody can see is how this went
+#    unnoticed. The player's requirement is that the usage percentages stay
+#    live on their own (2026-09-15: "debes pensar en el % de uso de items,
+#    moves, ability, nature como algo actualizable como se hace con el ladder
+#    en gts").
 #
 # A REGULATION still needs a human: `refresh.py --regulation` clears the
 # Serebii page caches, and getting that wrong leaves new species with no
@@ -48,7 +58,7 @@ on:
   workflow_dispatch:
     inputs:
       deep:
-        description: "Force Smogon analyses and Pikalytics too"
+        description: "Force Smogon analyses, Pikalytics and the splits too"
         type: boolean
         default: false
 
@@ -173,13 +183,31 @@ jobs:
             echo "skip=no" >> "$GITHUB_OUTPUT"
           fi
 
+      # WEEKLY, AND SAID OUT LOUD. Monday in UTC - the schedule runs at 08:07
+      # UTC, so the date the runner sees is the date intended. A manual run
+      # with the box ticked forces it on any day.
+      - name: deep today?
+        id: mode
+        run: |
+          asked="${{ github.event_name }}/${{ inputs.deep }}"
+          if [ "$asked" = "workflow_dispatch/true" ]; then
+            echo "deep=--deep" >> "$GITHUB_OUTPUT"
+            echo "DEEP: asked for by hand"
+          elif [ "$(date -u +%u)" = "1" ]; then
+            echo "deep=--deep" >> "$GITHUB_OUTPUT"
+            echo "DEEP: it is Monday - Smogon, Pikalytics and the pokebase splits"
+          else
+            echo "deep=" >> "$GITHUB_OUTPUT"
+            echo "normal refresh: the nightly sources only"
+          fi
+
       - name: refresh and verify
         if: steps.already.outputs.skip != 'yes' 
         env:
           SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           SUPABASE_PUBLISHABLE_KEY: ${{ secrets.SUPABASE_PUBLISHABLE_KEY }}
         run: |
-          python scripts/daily.py --skip-deploy ${{ (github.event_name == 'workflow_dispatch' && inputs.deep) && '--deep' || '' }}
+          python scripts/daily.py --skip-deploy ${{ steps.mode.outputs.deep }}
 
       # main is a protected branch now: it takes pull requests only, and the
       # gate must be green. A bot pushing straight to it is exactly what that

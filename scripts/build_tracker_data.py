@@ -524,7 +524,31 @@ def main():
         EFFECTS[name] = {"kind": v.get("kind"), "desc": v.get("described"),
                          "x": x, "t": t}
 
+    # EVERY WORLDS, AS HISTORY. A Worlds is played once under one regulation
+    # and then frozen, so this is what the field brought that August and never
+    # what is current - the app labels it that way. It rides on the dex rather
+    # than getting an asset of its own because it changes once a YEAR and is
+    # 9 KB: a separate file would cost a second request forever to save nine
+    # kilobytes a night.
+    #
+    # The three divisions stay apart. They are three metagames off one roster
+    # and pooling them is wrong - Incineroar is 41% of Masters teams and 26%
+    # of the kids' - so the app tabs between them instead of averaging.
+    WORLDS = []
+    for y in (Q.meta("worlds_archive") or {}).get("years") or []:
+        divs = {}
+        for dname, d in (y.get("divisions") or {}).items():
+            if not d.get("teamlists") or not d.get("top"):
+                continue
+            divs[dname] = {"n": d.get("teams") or 0,
+                           "top": [[t["name"], t["teams"], t["pct"]]
+                                   for t in d["top"]]}
+        if divs:
+            WORLDS.append({"y": y.get("year"), "d": divs})
+    WORLDS.sort(key=lambda r: -(r["y"] or 0))
+
     blob = {"DEX": DEX, "HOME_ONLY": HOME_ONLY, "MODS": MODS,
+            "WORLDS": WORLDS,
             "DEXNO": DEXNO, "BFORMS": BFORMS,
             "REG": REG, "REG_STARTED": REG_STARTED, "USAGE_AT": USAGE_AT,
             "SMOGON_NAME": SMOGON_NAME, "AEGIS": AEGIS,

@@ -3,7 +3,7 @@
 import {
   $, C, COSTS, FORMS, MOVE_BY, STAT_KEYS, STAT_LABEL, STONE_OF, byName,
   catName, effectLine, el, learnset, megasFor, natMult, splitPct, splitsFor,
-  statAt, toast, typeChip, usageTag,
+  splitsReg, statAt, toast, typeChip, usageTag,
 } from "./01-data.js";
 import { S, boxRows, buildLink, hasStone, ownedNames } from "./02-state.js";
 import { drop, put, putNew } from "./03-store.js";
@@ -17,8 +17,8 @@ import { analysisPanel } from "./05-box.js";
    rules, asked for rather than copied. A build is where an ability meets a
    movepool, so this file is the one place those two have to meet. */
 import { AB_SET, abilityHit, abilityTag } from "./11-damage.js";
-import { itemTags, moveFilters, moveScore, priorityTag, spreadNote, spreadTags }
-  from "./12-find.js";
+import { factLine, itemTags, moveFilters, moveScore, priorityTag, spreadNote,
+  spreadTags } from "./12-find.js";
 /* ==================================================================== builds */
 function spTotal(sp){
   return STAT_KEYS.reduce(function(a,k){ return a + (Number(sp[k]) || 0); }, 0);
@@ -66,6 +66,39 @@ function buildRow(id, b){
   row.appendChild(m);
   row.onclick = function(){ buildSheet(id, b); };
   return row;
+}
+
+/* A <select> REORDERED by what this Pokemon's players run.
+
+   A dropdown of 25 natures in alphabetical order makes the player read all 25
+   to find the two that anyone actually picks; sorting it by usage puts those
+   two at the top and costs nothing, because the whole list is still there
+   (player, 2026-09-15: "lo mismo para las naturalezas debe ordenarse por % de
+   uso... lo mismo para las habilidades").
+
+   ANYTHING THE TABLE DOES NOT LIST KEEPS ITS ORIGINAL ORDER, below the ones
+   that do, and is not labelled. A nature nobody brought is not "0% popular",
+   it is simply absent from a sample, and stamping it with a number would be
+   inventing a measurement. The moves list is the deliberate exception, and it
+   says why there.
+
+   This only REORDERS and LABELS. The selected value is untouched, and the
+   caller sets it afterwards - an indicator sits beside a choice and never
+   makes it. */
+function orderByUsage(sel, pokemon, kind){
+  var opts = Array.prototype.slice.call(sel.options);
+  var rows = opts.map(function(opt, i){
+    return {opt:opt, i:i, pct:splitPct(pokemon, kind, opt.value)};
+  });
+  if (!rows.some(function(r){ return r.pct; })) return;
+  rows.sort(function(a, b){
+    var pa = a.pct || 0, pb = b.pct || 0;
+    return pb - pa || a.i - b.i;
+  });
+  rows.forEach(function(r){
+    if (r.pct) r.opt.text = r.opt.text + "   ·   " + r.pct + "%";
+    sel.appendChild(r.opt);              // appending an existing node MOVES it
+  });
 }
 
 function buildSheet(id, b, keepOriginal){
@@ -141,14 +174,17 @@ function buildSheet(id, b, keepOriginal){
     body.appendChild(f1);
 
     var lk = id ? buildLink(id) : {state:draft._boxId ? "active" : "unbound"};
-    if (lk.state === "unbound") {
+    /* NO NOTE WHEN HE OWNS ONE. The select directly above already reads
+       "— not installed (just an idea) —", so a paragraph underneath saying
+       "Not installed on anything" was the same sentence twice (player,
+       2026-09-15: "ese mensaje de not installed es redudandte"). The other
+       half stays, because it is not in the dropdown: a set for a species that
+       is not in either box cannot be trained or brought at all. */
+    if (lk.state === "unbound" && !copies.length) {
       var ub = el("div", "note");
-      ub.innerHTML = copies.length
-        ? "<strong>Not installed on anything.</strong> Kept as a plan. Nothing " +
-          "here costs VP until you point it at one of your " + draft.pokemon + "."
-        : "<strong>You do not have a " + draft.pokemon + " yet.</strong> The " +
-          "set is saved anyway, so the idea keeps — it just cannot be trained " +
-          "or brought to a battle until one arrives.";
+      ub.innerHTML = "<strong>You do not have a " + draft.pokemon +
+        " yet.</strong> The set is saved anyway, so the idea keeps — it just " +
+        "cannot be trained or brought to a battle until one arrives.";
       body.appendChild(ub);
     }
     if (lk.state === "parked") {
@@ -243,6 +279,12 @@ function buildSheet(id, b, keepOriginal){
     }
 
     /* --- ability + nature -------------------------------------------- */
+    /* HEADINGS, BECAUSE THIS IS A LONG SCROLL ON A PHONE. Stat Points, Moves,
+       Role and Why already had one; the two blocks above them did not, so the
+       editor opened as an unbroken column of controls with no way to see
+       where you were in it. Same size and weight as the others - this is
+       signposting, not decoration. */
+    body.appendChild(el("h2", null, "Ability and nature · 500 VP each"));
     var g = el("div", "grid2");
     var fa = el("div", "field");
     fa.appendChild(el("label", "f", "Ability (base form)"));
@@ -251,43 +293,42 @@ function buildSheet(id, b, keepOriginal){
     if (draft.ability && (!p || p.ab.indexOf(draft.ability) < 0))
       sa.appendChild(new Option(draft.ability, draft.ability));
     /* The same question as the moves: of the people running this Pokemon,
-       which ability do they pick? Kingambit is 94% Defiant, and a list of
-       three cannot say that on its own. */
-    Array.prototype.forEach.call(sa.options, function(opt){
-      var pct = splitPct(draft.pokemon, "a", opt.value);
-      if (pct != null) opt.text = opt.text + "   ·   " + pct + "%";
-    });
+       which ability do they pick? Kingambit is 98.6% Defiant, and a list of
+       three cannot say that on its own - so the list is REORDERED by it. */
+    orderByUsage(sa, draft.pokemon, "a");
     sa.value = draft.ability || (p && p.ab[0]) || "";
     sa.onchange = function(){ draft.ability = sa.value; redraw(); };
     fa.appendChild(sa);
+    /* WHAT THE ABILITY DOES, UNDER THE ABILITY. This used to be appended after
+       the whole two-column block, which reads correctly at desktop width -
+       the paragraph sits under both columns - and reads WRONG on a phone,
+       where the columns stack and the sentence lands directly beneath the
+       NATURE select, describing the wrong control. Seen at 360px. Inside the
+       field it stays attached in either layout. */
+    if (draft.ability && C.ABIL[draft.ability]) {
+      fa.appendChild(el("p", "sub", C.ABIL[draft.ability]));
+      /* and what it does as a NUMBER - Guts reads x1.5 from the engine's own
+         modifier stage, which is the half of the sentence that decides a
+         calculation */
+      var abnum = effectLine(draft.ability);
+      if (abnum) fa.appendChild(abnum);
+    }
     g.appendChild(fa);
 
     var fn = el("div", "field");
-    fn.appendChild(el("label", "f", "Nature · 500 VP"));
+    fn.appendChild(el("label", "f", "Nature"));
     var sn = el("select");
     Object.keys(C.NATURES).sort().forEach(function(n){
       sn.appendChild(new Option(n + " — " + C.NATURES[n][2], n));
     });
-    /* and the same on natures - 86.9% Adamant on Kingambit is the answer to
-       "what do people actually pick", which a list of 25 cannot give */
-    Array.prototype.forEach.call(sn.options, function(opt){
-      var pct = splitPct(draft.pokemon, "n", opt.value);
-      if (pct != null) opt.text = opt.text + "   ·   " + pct + "%";
-    });
+    /* and the same on natures - 90.3% Adamant on Kingambit is the answer to
+       "what do people actually pick", which 25 alphabetical rows cannot give */
+    orderByUsage(sn, draft.pokemon, "n");
     sn.value = draft.nature || "Hardy";
     sn.onchange = function(){ draft.nature = sn.value; redraw(); };
     fn.appendChild(sn);
     g.appendChild(fn);
     body.appendChild(g);
-
-    if (draft.ability && C.ABIL[draft.ability]) {
-      body.appendChild(el("p", "sub", C.ABIL[draft.ability]));
-      /* and what it does as a NUMBER - Guts reads x1.5 from the engine's own
-         modifier stage, which is the half of the sentence that decides a
-         calculation */
-      var abnum = effectLine(draft.ability);
-      if (abnum) body.appendChild(abnum);
-    }
 
     /* THE SPREADS ITS PLAYERS RUN - SHOWN, NEVER APPLIED.
        His rule, and he had to correct me on it (2026-09-15): "no quiero
@@ -297,22 +338,54 @@ function buildSheet(id, b, keepOriginal){
        An indicator informs a decision; a button makes it. So this is text,
        with no click and no handler - the sliders are his. */
     var sp = splitsFor(draft.pokemon);
+    if (sp && ((sp.s || []).length || (sp.t || []).length)) {
+      var rh = el("h2", null, "What its players run" +
+                  (splitsReg() ? " · " + splitsReg() : ""));
+      rh.title = "Reference only. Nothing here fills anything in.";
+      body.appendChild(rh);
+      body.appendChild(el("p", "sub",
+        "Reference only — nothing here fills anything in."));
+    }
     if (sp && (sp.s || []).length) {
       var sprow = el("div", "field");
-      sprow.appendChild(el("label", "f", "Spreads its players run · reference"));
-      sp.s.slice(0, 3).forEach(function(pair){
-        var vals = pair[0], pct = pair[1];
-        var bits = STAT_KEYS.map(function(k){
-          return vals[k] ? vals[k] + " " + STAT_LABEL[k] : null;
+      sprow.appendChild(el("label", "f", "SP spreads"));
+      /* A spread is [hp, atk, def, spa, spd, spe, percent] - six numbers in
+         STAT_KEYS order and then its share. Flat, because an object per row
+         was more than twice the bytes for 283 Pokemon and this is the one
+         section long enough for that to matter. */
+      sp.s.slice(0, 6).forEach(function(row){
+        var bits = STAT_KEYS.map(function(k, i){
+          return row[i] ? row[i] + " " + STAT_LABEL[k] : null;
         }).filter(Boolean).join(" / ");
         var line = el("div", "st");
-        var t = el("span", "tag", pct + "%");
+        var t = el("span", "tag", row[6] + "%");
         t.style.marginRight = "6px";
         line.appendChild(t);
         line.appendChild(document.createTextNode(bits));
         sprow.appendChild(line);
       });
       body.appendChild(sprow);
+    }
+
+    /* WHO IT IS BROUGHT WITH. The Item Clause makes a team a set of six
+       decisions that constrain each other, so "53.9% of the teams that
+       brought this also brought Sneasler" is the single most useful line in
+       the whole block for team building - and it was being thrown away,
+       because pokebase renders only the first five and the rest sit in the
+       page payload (player, 2026-09-15: "es super completo eso y la ayuda que
+       brinda para armar teams"). Reference only, like the spreads. */
+    if (sp && (sp.t || []).length) {
+      var tmrow = el("div", "field");
+      tmrow.appendChild(el("label", "f", "Brought alongside"));
+      var tmline = el("div", "rmeta");
+      sp.t.forEach(function(pair){
+        var t = el("span", "tag", pair[0] + " " + pair[1] + "%");
+        t.title = pair[1] + "% of the teams that brought " + draft.pokemon +
+          " also brought " + pair[0];
+        tmline.appendChild(t);
+      });
+      tmrow.appendChild(tmline);
+      body.appendChild(tmrow);
     }
 
     /* SMOGON'S GUIDE, HERE, because this is where the decisions are made.
@@ -663,6 +736,15 @@ function retuneCost(a, b){
 function movePicker(draft, idx, ls, done){
   var abil = draft.mega ? (draft.mega_ability || draft.ability) : draft.ability;
   var apoke = byName[draft.mega || draft.pokemon];
+  /* CLOSE THE SHEET, THEN REDRAW. `done` is the editor's redraw and nothing
+     more, so every exit from this picker used to leave the sheet sitting on
+     top of the editor it had just changed. Picking a move looked like it
+     worked - the slot really was set, underneath - but "Clear slot" and
+     "Back" looked broken, because their whole effect was on the screen behind
+     the one still covering it, and the only way out was the X (player,
+     2026-09-15: "el botón clear slot y back de la ventana de slot de moves no
+     funcionan, debo cerrar con la X"). Every exit goes through here now. */
+  function finish(){ closeSheet(); done(); }
   openSheet("Slot " + (idx + 1), function(body){
     if (!ls) {
       body.appendChild(el("div", "note bad",
@@ -679,7 +761,8 @@ function movePicker(draft, idx, ls, done){
       body.appendChild(n);
     }
     var ui = moveFilters(body, ls, function(){ draw(); },
-                         "Filter " + ls.length + " legal moves");
+                         "Filter " + ls.length + " legal moves",
+                         {usageOf: draft.pokemon});
     var list = el("div", "list");
     body.appendChild(list);
     var score = moveScore;
@@ -695,29 +778,36 @@ function movePicker(draft, idx, ls, done){
         priorityTag(m, h); spreadTags(m, h); itemTags(m, h);
         var atag = abil ? abilityTag(abil, m, apoke) : null;
         if (atag) h.appendChild(atag);
-        /* How many of THIS Pokemon's players run this move. The thing the
-           picker could not tell you before, and usually the first question:
-           99.1% on Sucker Punch says it is not a choice, it is the set. */
-        var utag = usageTag(splitPct(draft.pokemon, "m", m.name));
+        /* EVERY move carries one, including the ones at 0%. The picker used
+           to badge four or five and leave the rest of the movepool blank, and
+           blank reads as "no data" when it actually meant "nobody brought it"
+           - which is an answer, and the one the player asked to see (2026-09-
+           15: "lo que yo quiero es que marque todos los ataques posibles con %
+           de uso"). splitPct returns null only when the Pokemon has no table
+           at all, and that is the one case that stays silent. */
+        var utag = usageTag(splitPct(draft.pokemon, "m", m.name),
+                            draft.pokemon, "m");
         if (utag) h.appendChild(utag);
         mm.appendChild(h);
-        mm.appendChild(el("div", "rmeta")).appendChild(el("span", "mono",
-          catName(m.cat) +
-          "  ·  " + (m.bp ? m.bp + " BP" : "— BP") +
-          "  ·  " + (m.acc == null ? "—" : m.acc) + " acc" +
-          "  ·  " + (m.pp == null ? "—" : m.pp) + " PP" +
-          (m.bp ? "  ·  " + Math.round(score(m)) + " effective" : "") +
-          (function(){
-            var hh = abil ? abilityHit(abil, m, apoke) : null;
-            return hh && hh.x && m.bp
-              ? "  ·  " + Math.round(m.bp * hh.x) + " BP with " + abil : "";
-          })()));
-        mm.appendChild(el("div", "rmeta")).appendChild(el("span", null, m.target));
+        /* One span per fact, so a phone breaks the line between them and
+           never inside one - see factLine. Nine badges and five numbers on a
+           360px row is what made that matter. */
+        var hh = abil ? abilityHit(abil, m, apoke) : null;
+        mm.appendChild(factLine([
+          catName(m.cat),
+          m.bp ? m.bp + " BP" : "— BP",
+          (m.acc == null ? "—" : m.acc) + " acc",
+          (m.pp == null ? "—" : m.pp) + " PP",
+          m.bp ? Math.round(score(m)) + " effective" : null,
+          hh && hh.x && m.bp
+            ? Math.round(m.bp * hh.x) + " BP with " + abil : null,
+          m.target
+        ]));
         if (m.text) mm.appendChild(el("div", "st", m.text));
         r.appendChild(mm);
         r.onclick = function(){
           draft.moves[idx] = m.name;
-          done();
+          finish();
         };
         list.appendChild(r);
       });
@@ -725,8 +815,8 @@ function movePicker(draft, idx, ls, done){
     }
     draw();
   }, [
-    fbtn("Clear slot", "", function(){ draft.moves[idx] = null; done(); }),
-    fbtn("Back", "", function(){ done(); })
+    fbtn("Clear slot", "", function(){ draft.moves[idx] = null; finish(); }),
+    fbtn("Back", "", finish)
   ]);
 }
 
