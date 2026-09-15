@@ -1,8 +1,8 @@
 /* 09-gts.js - GTS: what may be offered, what it is worth, and the export.
    Part of the app; linked into one script by scripts/build_tracker_page.py. */
 import {
-  $, C, FORMS, MEGAS_OF, STONE_OF, bst, byName, dexLabel, dexNo, el, freeSlug,
-  megasFor, statLine, toast, typeChip,
+  $, C, FORMS, MEGAS_OF, STONE_OF, bst, byName, capNote, dexLabel, dexNo, el,
+  freeSlug, megasFor, statLine, toast, typeChip,
 } from "./01-data.js";
 import { ORIGIN_LABEL, S, boxRows, hasStone, originOf } from "./02-state.js";
 import { drop, put, putNew } from "./03-store.js";
@@ -1039,9 +1039,10 @@ function gtsPickWanted(onPick, chipName, chipShiny){
     function draw(){
       var q = inp.value.trim().toLowerCase();
       list.innerHTML = "";
-      var hits = FORMS.filter(function(p){
+      var pool = FORMS.filter(function(p){
         return !q || p.name.toLowerCase().indexOf(q) >= 0;
-      }).slice(0, 40);
+      });
+      var hits = pool.slice(0, 120);
       hits.forEach(function(p){
         var b = el("button", "row");
         var m = el("div", "rmain");
@@ -1065,9 +1066,10 @@ function gtsPickWanted(onPick, chipName, chipShiny){
         list.appendChild(b);
       });
       if (q) {
-        (C.HOME_ONLY || []).filter(function(n){
+        var homeAll = (C.HOME_ONLY || []).filter(function(n){
           return n.toLowerCase().indexOf(q) >= 0;
-        }).slice(0, 20).forEach(function(n){
+        });
+        homeAll.slice(0, 40).forEach(function(n){
           var b = el("button", "row illegal");
           var m = el("div", "rmain");
           var h = el("div", "rname");
@@ -1080,7 +1082,10 @@ function gtsPickWanted(onPick, chipName, chipShiny){
           b.onclick = function(){ onPick(n); };
           list.appendChild(b);
         });
+        capNote(list, Math.min(40, homeAll.length), homeAll.length,
+                "HOME-only names");
       }
+      capNote(list, hits.length, pool.length, "forms");
       if (!list.children.length) {
         list.appendChild(el("div", "empty",
           q ? "Nothing matches" : "Start typing a name"));

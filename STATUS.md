@@ -167,8 +167,47 @@ smaller:
   level-50 floor and ceiling belong where one Pokemon is being decided about,
   not on 120 rows of a list.
 
-A third scope toggle, "Brought to M-C", narrows the dex to the field: 291 of
-the 345 forms.
+A third scope toggle, "Played in M-C", narrows the dex to the field: 291 of
+the 345 forms. It was called "Brought to M-C" for an afternoon and he could
+not tell what it meant, which on a phone is fatal - there is no hover to
+explain a label.
+
+### Medals, and the set that won (2026-09-15)
+
+Everything else in the app is a RATE - how often a thing is brought. This is a
+RESULT. Anything that finished **top 8** at a World Championship wears a medal
+in the search, and its sheet folds open to the exact sets: item, ability,
+nature and four moves, with the player and their record, per year and per
+division.
+
+**A Mega is filed under the MEGA, and the stone is the only thing that can say
+so.** A teamlist records the BASE ability - the 2026 champion's Floette is
+listed with Flower Veil and its Dragonite with Multiscale - so the ability
+cannot tell you it evolved. The item can: `stone_for()` is 1:1 over all 81
+Megas, so a Floette holding a Floettite is Mega Floette. The player put it
+exactly: "por las piedras se saben que son megas". The base form does NOT
+inherit the medal; they are two different entrants and only one of them stood
+there.
+
+42 forms have a podium entry over 2023-2026, three divisions each. 2022 has
+standings only, and 2023 splits its divisions across two pokedata events - the
+one with more players wins, or Seniors and Juniors get two podiums each.
+
+### No list may cut itself in silence (2026-09-15)
+
+Found because a movepool was short on his phone: "la lista de moves en el find
+cuando se abre la ficha de un pokemon no se alcanza a ver toda en el movil, se
+corta". The sheet drew 60 and the filter's own counter only warned past 80, so
+they disagreed - and **131 of the 264 learnsets in Champions are longer than
+60**, so half the dex was losing moves off the end with nothing on screen
+saying so.
+
+He then asked for all of them checked, and every picker in the app was doing
+it: the damage calculator drew 50 of 345 forms, the team's item picker 60 of
+118, the GTS 40, the abilities list 80 of 215 while its counter said "215".
+The cap now lives with the count that reports it, `capNote()` says it in the
+same words everywhere, and a single Pokemon's movepool is not capped at all -
+the longest in Champions is Gallade at 106.
 
 ## Items and abilities are numbers now, not adjectives (2026-09-14)
 

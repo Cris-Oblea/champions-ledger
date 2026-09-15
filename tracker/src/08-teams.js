@@ -1,7 +1,7 @@
 /* 08-teams.js - Six slots, the clauses checked, and what is still to get.
    Part of the app; linked into one script by scripts/build_tracker_page.py. */
-import { $, C, STONE_OF, byName, el, splitPct, toast, typeChip, usageTag }
-  from "./01-data.js";
+import { $, C, STONE_OF, byName, capNote, el, splitPct, toast, typeChip,
+  usageTag } from "./01-data.js";
 import { S, buildLink, buildsFor, hasStone } from "./02-state.js";
 import { drop, put, putNew } from "./03-store.js";
 import { closeSheet, fbtn, leaveEditor, openEditor, openSheet }
@@ -242,10 +242,14 @@ function teamPickItem(draft, i, redraw){
       none.onclick = function(){
         draft.slots[i].item = ""; draft.slots[i].why = ""; closeSheet(); redraw(); };
       list.appendChild(none);
-      (C.ITEMS || []).filter(function(it){
+      /* ALL of them. There are 118 items in Champions and this drew 60,
+         so with an empty box half the pool was invisible and nothing said
+         so - the worst shape for a list you are choosing FROM. */
+      var pool = (C.ITEMS || []).filter(function(it){
         return !q || it[0].toLowerCase().indexOf(q) >= 0 ||
                String(it[3] || "").toLowerCase().indexOf(q) >= 0;
-      }).slice(0, 60).forEach(function(it){
+      });
+      pool.forEach(function(it){
         var btn = el("button", "row" + (taken[it[0]] ? " illegal" : ""));
         if (taken[it[0]]) { btn.disabled = true; btn.style.opacity = "0.5"; }
         var m = el("div", "rmain");
