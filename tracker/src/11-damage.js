@@ -508,6 +508,17 @@ var CALC = {
 
    The Champions budget is enforced here and nowhere else has to: 66 points
    total, 32 in any one stat. */
+/* One stat line. Labelled when a Pokemon has more than one, because "60 / 50 /
+   140 / 50 / 140 / 60" means nothing without knowing which forme it is. */
+function statSpan(b, formName){
+  var sp = el("span", "mono",
+    (formName ? formName + " " : "base ") + b.join(" / "));
+  sp.title = STAT_KEYS.map(function(k, i){
+    return STAT_LABEL[k] + " " + b[i];
+  }).join("  ·  ");
+  return sp;
+}
+
 function calcSideCtl(which){
   var side = CALC[which], host = $(which === "atk" ? "calcAtk" : "calcDef");
   host.innerHTML = "";
@@ -522,8 +533,40 @@ function calcSideCtl(which){
     m.appendChild(h);
     var meta = el("div", "rmeta");
     (p ? p.types : []).forEach(function(t){ meta.appendChild(typeChip(t)); });
-    if (p) meta.appendChild(el("span", "mono", "base " + p.b.join(" / ")));
+    if (p) meta.appendChild(statSpan(p.b, null));
     m.appendChild(meta);
+    /* THE OTHER SPREAD, WRITTEN OUT. A Pokemon that changes stats mid-battle
+       has two, and printing one of them plus a sentence about the other is
+       what this used to do: "Aegislash attacks as Blade Forme - 140 Attack,
+       not the Shield spread's 50." The player's answer (2026-09-15): "yo
+       tambien necesito ver las estadisticas fisicas y especiales, no me sirve
+       asi."
+       The CALCULATION was already right - engName() asks the engine for
+       Aegislash-Blade when it attacks and -Shield when it is hit - so this is
+       the display catching up with the arithmetic. Both rows are shown, and
+       the one that governs THIS side is marked. */
+    var bf = p && (C.BFORMS || {})[p.name];
+    if (bf && bf.f) {
+      Object.keys(bf.f).forEach(function(fname){
+        var alt = bf.f[fname].b;
+        if (!alt) return;
+        var row = el("div", "rmeta");
+        row.appendChild(statSpan(alt, fname));
+        /* Aegislash is the one the app switches by itself, and only on the
+           attacking side. Anything else is shown as what it WOULD be, because
+           claiming it is in play would be a guess about the battle. */
+        var mine = p.name === "Aegislash" && which === "atk";
+        var tag = el("span", "tag" + (mine ? " ok" : ""),
+                     mine ? "in play attacking" : "when " + (bf.by || "it")
+                            + " flips it");
+        row.appendChild(tag);
+        m.appendChild(row);
+      });
+      var base = el("div", "rmeta");
+      base.appendChild(el("span", null,
+        "HP / Atk / Def / SpA / SpD / Spe"));
+      m.appendChild(base);
+    }
   } else {
     m.appendChild(el("div", "rname", which === "atk" ? "Pick the attacker"
                                                      : "Pick the defender"));
@@ -1022,9 +1065,9 @@ function calcRun(){
       "sides, or this is the empty-handed number."]);
   if (m.name === "Payback")
     flags.push(["warn", "Payback doubles only if it moves last."]);
-  if (a.name === "Aegislash")
-    flags.push(["", "Aegislash attacks as Blade Forme - 140 Attack, not the " +
-      "Shield spread's 50."]);
+  /* No note for Aegislash any more: both spreads are printed on the side
+     control with the governing one marked, which is what a note about numbers
+     should have been in the first place. */
   if (flags.length) {
     var fl = el("div", "calcflags");
     flags.forEach(function(t){
