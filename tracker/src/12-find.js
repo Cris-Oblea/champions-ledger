@@ -2,7 +2,8 @@
    Part of the app; linked into one script by scripts/build_tracker_page.py. */
 import {
   $, C, DEX, MOVES, MOVE_BY, SORT, STAT_KEYS, STAT_LABEL, TYPE_COLOR, bst,
-  byName, catName, effectLine, el, learnset, statLine, toast, typeChip,
+  byName, catName, effectLine, el, learnset, splitPct, statAt, statLine,
+  toast, typeChip,
 } from "./01-data.js";
 import { S, boxRows, originOf, ownedNames } from "./02-state.js";
 import { closeSheet, fbtn, openSheet } from "./04-nav.js";
@@ -274,6 +275,41 @@ function findDetail(p){
 function spreadTags(m, host){
   if (m.spread) host.appendChild(el("span", "tag warn", "spread"));
   if (m.hitsAlly) host.appendChild(el("span", "tag bad", "hits ally"));
+  multiHitTag(m, host);
+}
+/* MULTI-HIT, WITH THE TOTAL. 14 moves in Champions hit more than once, and the
+   BP column shows one hit of them - Bullet Seed reads 25 BP next to Seed Bomb's
+   80 and loses, when it is really 75 across three hits and 125 with Skill Link.
+   A row that does not say so is comparing the wrong numbers, which is why the
+   player asked for the tag (2026-09-15: "falta que los movimientos tengan tag
+   de si son multi-hit").
+
+   Three shapes, and they are genuinely different moves:
+     fixed     Dragon Darts always twice - the total is just n x BP
+     2 to 5    quoted at THREE hits, the repo's own convention, and Skill Link
+               replaces the range with a flat five (and one accuracy roll for
+               the whole move, so it is all-or-nothing)
+     1 to 10   Population Bomb, where "the attack ends if the user misses"
+               makes the 1 a miss rather than a hit count */
+function multiHitTag(m, host){
+  var h = m.hits;
+  if (!h || !h.length) return;
+  var lo = h[0], hi = h.length > 1 ? h[1] : h[0];
+  var fixed = lo === hi;
+  var typical = fixed ? lo : (lo === 2 && hi === 5 ? 3 : lo);
+  var t = el("span", "tag ok",
+              fixed ? "×" + lo + " hits" : lo + "–" + hi + " hits");
+  var bits = [];
+  if (m.bp) {
+    bits.push(fixed ? lo + " × " + m.bp + " BP = " + (lo * m.bp)
+                    : "quoted at " + typical + " hits = " +
+                      (typical * m.bp) + " BP");
+    if (!fixed && lo === 2 && hi === 5)
+      bits.push("Skill Link forces 5 = " + (5 * m.bp) +
+                " BP, on one accuracy roll for the whole move");
+  }
+  t.title = bits.join(" · ") || "Hits more than once";
+  host.appendChild(t);
 }
 /* Priority, with its NUMBER. Filtering a movepool by "priority" and getting
    back rows that do not say how much is no answer: +1 and +2 are a different
@@ -319,8 +355,16 @@ function spreadNote(m){
    badges abilities and effective BP and the search view does not. */
 function moveScore(m){ return (m.bp || 0) * Math.min(100, m.acc || 100) / 100; }
 
-function moveFilters(body, pool, onChange, placeholder){
-  var sorter = {v:"bp"};
+function moveFilters(body, pool, onChange, placeholder, opts){
+  /* `usageOf` is a Pokemon name, and it is what turns this from "rank the
+     movepool by raw power" into "rank it by what its players actually bring".
+     Only the build editor passes one - the Find tab lists moves with no
+     Pokemon in hand, so there is nothing to be a share OF there - and when it
+     does, usage is the DEFAULT sort, because that is the first question asked
+     of a movepool (player, 2026-09-15: "seria bueno poner filtro a los
+     movimientos de mayor a menor uso por el %"). */
+  var usageOf = (opts || {}).usageOf || null;
+  var sorter = {v: usageOf ? "usage" : "bp"};
   var F = {cat:{}, trait:{}, type:{}};
   function label(t){
     var d = el("div", "sub"); d.style.margin = "0 0 4px"; d.textContent = t;
@@ -335,7 +379,9 @@ function moveFilters(body, pool, onChange, placeholder){
   inp.oninput = function(){ onChange(); };
 
   var srow = el("div", "toggles"); srow.style.marginBottom = "8px";
-  [["bp","BP × acc"],["name","A–Z"],["pp","PP"],["type","Type"]].forEach(function(o){
+  var sorts = [["bp","BP × acc"],["name","A–Z"],["pp","PP"],["type","Type"]];
+  if (usageOf) sorts.unshift(["usage","Usage %"]);
+  sorts.forEach(function(o){
     var t = el("button", "tog", o[1]);
     t.setAttribute("aria-pressed", o[0] === sorter.v ? "true" : "false");
     t.onclick = function(){
@@ -421,6 +467,17 @@ function moveFilters(body, pool, onChange, placeholder){
       return true;
     });
     hits.sort(function(a, b){
+      if (sorter.v === "usage") {
+        /* A move nobody brought sorts below one at 0.1%, and both sort below
+           silence - a Pokemon with no table at all gets -1 for everything, so
+           the list falls back to power rather than to alphabetical noise. */
+        var ua = splitPct(usageOf, "m", a.name);
+        var ub = splitPct(usageOf, "m", b.name);
+        if (ua == null && ub == null) return moveScore(b) - moveScore(a) ||
+                                             a.name.localeCompare(b.name);
+        return (ub == null ? -1 : ub) - (ua == null ? -1 : ua) ||
+               moveScore(b) - moveScore(a) || a.name.localeCompare(b.name);
+      }
       if (sorter.v === "name") return a.name.localeCompare(b.name);
       if (sorter.v === "pp")
         return (b.pp || 0) - (a.pp || 0) || a.name.localeCompare(b.name);
@@ -436,6 +493,25 @@ function moveFilters(body, pool, onChange, placeholder){
     return hits;
   }
   return {apply:apply, input:inp};
+}
+
+/* A META LINE THAT BREAKS BETWEEN FACTS AND NEVER INSIDE ONE.
+
+   "Physical · 40 BP · 100 acc · 12 PP · 40 effective" as one text node lets a
+   phone wrap it wherever a space happens to fall, so "100" ends a line and
+   "acc" starts the next, or a separator dot is orphaned in the left margin.
+   Each fact is its own nowrap span and the dot between them is drawn by CSS,
+   which means the only place a wrap can happen is a join.
+
+   Falsy parts are dropped, so a caller can pass a conditional straight in
+   rather than assembling a string with the separators in it - which is what
+   every one of these did, three times over, with slightly different spacing. */
+function factLine(parts){
+  var box = el("div", "rmeta");
+  parts.filter(Boolean).forEach(function(t){
+    box.appendChild(el("span", "mono fact", t));
+  });
+  return box;
 }
 
 /* one move row, badged with whatever ability of this Pokemon touches it.
@@ -466,14 +542,21 @@ function moveRowFor(m, ability, poke){
     hits.push({ability:a, hit:hit});
   });
   mm.appendChild(h);
-  var line = catName(m.cat) + "  ·  " + (m.bp ? m.bp + " BP" : "— BP") +
-    "  ·  " + (m.acc == null ? "—" : m.acc) + " acc  ·  " +
-    (m.pp == null ? "—" : m.pp) + " PP" + spreadNote(m);
+  var facts = [catName(m.cat),
+               m.bp ? m.bp + " BP" : "— BP",
+               (m.acc == null ? "—" : m.acc) + " acc",
+               (m.pp == null ? "—" : m.pp) + " PP"];
+  /* spreadNote can carry TWO facts joined by its own separator - the x0.75
+     and "lands on your own ally too" - so it is split back apart rather than
+     pushed in as one long unbreakable span. */
+  spreadNote(m).split("·").forEach(function(bit){
+    if (bit.trim()) facts.push(bit.trim());
+  });
   hits.forEach(function(x){
     if (x.hit.x && m.bp)
-      line += "  →  " + Math.round(m.bp * x.hit.x) + " BP with " + x.ability;
+      facts.push(Math.round(m.bp * x.hit.x) + " BP with " + x.ability);
   });
-  mm.appendChild(el("div", "st", line));
+  mm.appendChild(factLine(facts));
   if (m.text) mm.appendChild(el("div", "st", m.text));
   hits.forEach(function(x){
     var w = el("div", "st");
@@ -683,6 +766,235 @@ function findInit(){
     FIND.minSpe = Number($("findSpeMin").value) || 0; findDraw(); };
   $("findSpeMax").oninput = function(){
     FIND.maxSpe = Number($("findSpeMax").value) || 0; findDraw(); };
+  tierInit();
+  worldInit();
+}
+
+/* ----------------------------------------------------------------- worlds --
+   Every World Championship pokedata publishes, as HISTORY.
+
+   The distinction is the whole point and the app has to keep saying it: a
+   Worlds is played once, under one regulation, and then frozen. 2026 was M-B.
+   Quoting any of it as what is popular now is the mistake this block exists
+   to prevent, so the year carries its format and the lede says "frozen".
+
+   THE THREE DIVISIONS ARE NEVER POOLED. Masters, Seniors and Juniors run the
+   same roster and are three different metagames - Incineroar is 41% of the
+   Masters teams and 26% of the Juniors' - so they are tabs and there is no
+   "all" option. Masters leads because that is the division he enters.
+
+   Counted per TEAM, not per appearance: under the Species Clause a team holds
+   a species at most once, so "52.8%" is 208 of 394 teams and not 208 slots. */
+var WORLD = {year: null, div: "masters"};
+
+function worldInit(){
+  var years = C.WORLDS || [];
+  var yrow = $("worldYear");
+  if (!years.length) {
+    $("worldOut").appendChild(el("div", "empty",
+      "No Worlds archive in this build."));
+    return;
+  }
+  WORLD.year = years[0].y;
+  years.forEach(function(r){
+    var t = el("button", "tog", String(r.y));
+    t.setAttribute("aria-pressed", r.y === WORLD.year ? "true" : "false");
+    t.onclick = function(){
+      WORLD.year = r.y;
+      Array.prototype.forEach.call(yrow.children, function(x){
+        x.setAttribute("aria-pressed", x === t ? "true" : "false");
+      });
+      worldDraw();
+    };
+    yrow.appendChild(t);
+  });
+  var drow = $("worldDiv");
+  [["masters","Masters"],["seniors","Seniors"],["juniors","Juniors"]]
+    .forEach(function(o){
+      var t = el("button", "tog", o[1]);
+      t.setAttribute("aria-pressed", o[0] === WORLD.div ? "true" : "false");
+      t.onclick = function(){
+        WORLD.div = o[0];
+        Array.prototype.forEach.call(drow.children, function(x){
+          x.setAttribute("aria-pressed", x === t ? "true" : "false");
+        });
+        worldDraw();
+      };
+      drow.appendChild(t);
+    });
+  worldDraw();
+}
+
+function worldDraw(){
+  var out = $("worldOut");
+  if (!out) return;
+  out.innerHTML = "";
+  var yr = (C.WORLDS || []).filter(function(r){ return r.y === WORLD.year; })[0];
+  var d = yr && yr.d[WORLD.div];
+  if (!d) {
+    out.appendChild(el("div", "empty",
+      "pokedata published no " + WORLD.div + " teamlists for " + WORLD.year +
+      " — standings only, upstream."));
+    return;
+  }
+  var own = ownedNames();
+  var head = el("p", "sub");
+  head.textContent = "Worlds " + WORLD.year + " " + WORLD.div + " · " + d.n +
+    " teams · the " + d.top.length + " most brought";
+  out.appendChild(head);
+  var list = el("div", "list");
+  d.top.forEach(function(row, i){
+    var name = row[0], teams = row[1], pct = row[2];
+    var p = byName[name];
+    var mine = (name in own) || (p && p.species in own);
+    var r = el("button", "row" + (mine ? " perm" : ""));
+    var m = el("div", "rmain");
+    var h = el("div", "rname");
+    h.appendChild(el("span", "mono", "#" + (i + 1) + "  "));
+    h.appendChild(document.createTextNode(name));
+    if (mine) h.appendChild(el("span", "tag ok", "yours"));
+    m.appendChild(h);
+    var meta = el("div", "rmeta");
+    if (p) p.types.forEach(function(t){ meta.appendChild(typeChip(t)); });
+    var sp = el("span", "mono", pct + "%  ·  " + teams + " of " + d.n + " teams");
+    sp.title = teams + " of the " + d.n + " " + WORLD.div +
+      " teams at Worlds " + WORLD.year + " carried " + name +
+      ". One per team - the Species Clause allows no second copy.";
+    meta.appendChild(sp);
+    m.appendChild(meta);
+    r.appendChild(m);
+    if (p) r.onclick = function(){ findDetail(p); };
+    list.appendChild(r);
+  });
+  out.appendChild(list);
+}
+
+/* ------------------------------------------------------------------ tiers --
+   The order on one stat, which is a different question from the filters above
+   and gets its own block for that reason. Speed decides who moves, so it
+   leads; the other five are the same list read down a different column, which
+   is why they are tabs over one list rather than six screens.
+
+   THE THREE NUMBERS ARE THE POINT. A base stat alone cannot be compared
+   against a real Pokemon, and the level-50 value with no SP in it cannot
+   either, because the whole question is "can I outrun it if I invest". So
+   every row prints base, the floor (0 SP) and the ceiling (32 SP, the cap,
+   and a boosting nature). statAt() is the formula this repo verified against
+   all 504 rows of data/meta/speed_tiers.json - never a second copy of it.
+
+   SCOPE MATTERS MORE THAN THE LIST. All 345 forms includes a great deal that
+   nobody brings; the M-C tournament set is the 283 that were actually played,
+   and "mine" is the only list a decision can be made from today. */
+var TIER = {stat: "spe", scope: "meta"};
+var TIER_STATS = [["spe","Speed"],["atk","Atk"],["spa","SpA"],
+                  ["def","Def"],["spd","SpD"],["hp","HP"],["bst","BST"]];
+
+function tierInit(){
+  var srow = $("tierStat");
+  TIER_STATS.forEach(function(o){
+    var t = el("button", "tog", o[1]);
+    t.setAttribute("aria-pressed", o[0] === TIER.stat ? "true" : "false");
+    t.onclick = function(){
+      TIER.stat = o[0];
+      Array.prototype.forEach.call(srow.children, function(x){
+        x.setAttribute("aria-pressed", x === t ? "true" : "false");
+      });
+      tierDraw();
+    };
+    srow.appendChild(t);
+  });
+  var prow = $("tierScope");
+  [["meta","Brought to M-C"],["mine","Mine"],["all","Every form"]]
+    .forEach(function(o){
+      var t = el("button", "tog", o[1]);
+      t.setAttribute("aria-pressed", o[0] === TIER.scope ? "true" : "false");
+      t.onclick = function(){
+        TIER.scope = o[0];
+        Array.prototype.forEach.call(prow.children, function(x){
+          x.setAttribute("aria-pressed", x === t ? "true" : "false");
+        });
+        tierDraw();
+      };
+      prow.appendChild(t);
+    });
+  tierDraw();
+}
+
+function tierDraw(){
+  var out = $("tierOut");
+  if (!out) return;
+  out.innerHTML = "";
+  var key = TIER.stat;
+  var idx = STAT_KEYS.indexOf(key);
+  var own = ownedNames();
+  var inHome = {};
+  boxRows("home").forEach(function(r){ inHome[r.name] = 1; });
+  var seen = (window.CHAMP_SPLITS || {}).p || {};
+
+  var rows = DEX.filter(function(p){
+    if (TIER.scope === "mine")
+      return (p.name in own) || (p.species in own) ||
+             (p.name in inHome) || (p.species in inHome);
+    if (TIER.scope === "meta")
+      return !!(seen[p.name] || seen[p.species]);
+    return true;
+  });
+  var val = function(p){ return key === "bst" ? bst(p) : p.b[idx]; };
+  rows.sort(function(a, b){
+    return val(b) - val(a) || a.name.localeCompare(b.name);
+  });
+
+  var head = el("p", "sub");
+  head.textContent = rows.length + " " +
+    (TIER.scope === "mine" ? "in your boxes"
+     : TIER.scope === "meta" ? "brought to an M-C tournament"
+     : "forms") + ", by " +
+    (key === "bst" ? "BST" : STAT_LABEL[key]) + ", highest first";
+  out.appendChild(head);
+  if (!rows.length) {
+    out.appendChild(el("div", "empty", TIER.scope === "mine"
+      ? "Nothing in the boxes yet."
+      : "No usage table in this build — run scripts/fetch_pokebase_splits.py."));
+    return;
+  }
+
+  var list = el("div", "list");
+  rows.slice(0, 120).forEach(function(p){
+    var mine = (p.name in own) || (p.species in own);
+    var r = el("button", "row" + (mine ? " perm" : ""));
+    var m = el("div", "rmain");
+    var h = el("div", "rname");
+    h.appendChild(document.createTextNode(p.name));
+    if (p.mega) h.appendChild(el("span", "tag mega", "mega"));
+    if (mine) h.appendChild(el("span", "tag ok", "yours"));
+    m.appendChild(h);
+    var meta = el("div", "rmeta");
+    p.types.forEach(function(t){ meta.appendChild(typeChip(t)); });
+    if (key === "bst") {
+      meta.appendChild(el("span", "mono", "BST " + bst(p)));
+      meta.appendChild(el("span", null, statLine(p)));
+    } else {
+      var isHp = key === "hp";
+      var base = p.b[idx];
+      var floor = statAt(base, 0, isHp, 1);
+      var ceil = statAt(base, 32, isHp, isHp ? 1 : 1.1);
+      var sp = el("span", "mono",
+        base + " base  ·  " + floor + " at 0 SP  ·  " + ceil + " max");
+      sp.title = isHp
+        ? "Level 50. HP takes no nature, so the ceiling is 32 SP alone."
+        : "Level 50. The ceiling is 32 SP - the per-stat cap - and a nature "
+          + "that raises this stat.";
+      meta.appendChild(sp);
+    }
+    m.appendChild(meta);
+    r.appendChild(m);
+    r.onclick = function(){ findDetail(p); };
+    list.appendChild(r);
+  });
+  out.appendChild(list);
+  if (rows.length > 120)
+    out.appendChild(el("p", "sub", "Showing the top 120. Narrow the scope to "
+      + "see further down."));
 }
 
 /* ------------------------------------------------------------ diagnostics --
@@ -762,6 +1074,12 @@ function diagLines(){
   add("Regulation", (C && C.REG ? C.REG : "unknown") +
       (C && C.REG_STARTED ? " since " + C.REG_STARTED : ""));
   add("Ladder usage fetched", (C && C.USAGE_AT) || "unknown");
+  add("Per-Pokemon splits", (function(){
+    var S = window.CHAMP_SPLITS || {};
+    var n = Object.keys(S.p || {}).length;
+    return n ? n + " Pokemon, " + (S.r || "?") + ", fetched " + (S.f || "?")
+             : "absent";
+  })());
   /* A truncated download looks like a working page with things missing, so the
      counts are stated and anything at zero is called out. */
   add("Blob integrity", [
@@ -937,5 +1255,5 @@ function drawDupeHome(){
 export {
   DIAG_LATEST, FIND, checkLatest, drawDiag, drawDupeHome, findDetail, findDraw,
   findInit, findRun, itemTags, moveFilters, moveRowFor, moveScore, priorityTag,
-  spreadNote, spreadTags,
+  factLine, spreadNote, spreadTags, tierDraw, worldDraw,
 };

@@ -258,7 +258,8 @@ function teamPickItem(draft, i, redraw){
            number belongs here, at the slot, and not on the build. */
         var who = draft.slots[i] && draft.slots[i].build
           && S.builds[draft.slots[i].build];
-        var utag = who ? usageTag(splitPct(who.pokemon, "i", it[0])) : null;
+        var utag = who ? usageTag(splitPct(who.pokemon, "i", it[0]),
+                                  who.pokemon, "i") : null;
         if (utag) h.appendChild(utag);
         m.appendChild(h);
         if (it[3]) m.appendChild(el("div", "st", String(it[3]).slice(0, 120)));

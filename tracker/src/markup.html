@@ -272,6 +272,42 @@
         <p class="sub" style="margin:0">Speed at most is the Trick Room filter.</p>
       </div>
       <div id="findOut"></div>
+
+      <!-- ===================================================== TIERS ====
+           A tier list is a different question from a filter, so it gets its
+           own block rather than another row of inputs: not "who matches all
+           of this" but "where does this Pokemon sit in the order". Speed is
+           the one that decides turns, so it leads; the other five are the
+           same list read down a different column, which is why they are tabs
+           over one list and not six screens (player, 2026-09-15: "con
+           respecto a los tiers, seria interesante tenerlos en find en
+           pestanas separadas"). -->
+      <h2 style="margin-top:26px">Tiers</h2>
+      <p class="sub">Where everything sits on one stat. The order is what
+        decides a turn, so it is worth reading straight rather than filtering
+        for. Level 50, and the three numbers are the base, what it is with no
+        SP in it, and the most it can reach — 32 SP and a boosting nature.</p>
+      <div class="toggles" id="tierStat" style="margin-bottom:8px"></div>
+      <div class="toggles" id="tierScope" style="margin-bottom:10px"></div>
+      <div id="tierOut"></div>
+
+      <!-- ==================================================== WORLDS ====
+           HISTORY, and labelled as history. A World Championship is played
+           once under one regulation and then frozen, so these numbers say
+           what the field brought that August - never what is current. They
+           live here rather than on the front page for that reason: this is
+           the reference shelf, not the state of the game.
+
+           The three divisions are three metagames off one roster and are
+           never pooled, so they are tabs. -->
+      <h2 style="margin-top:26px">Worlds</h2>
+      <p class="sub">What the field actually brought, per World Championship.
+        Counted per TEAM — the Species Clause means a team holds a species at
+        most once — so the percentage is the share of teams that carried it.
+        Frozen history: each event keeps the regulation it was played in.</p>
+      <div class="toggles" id="worldYear" style="margin-bottom:8px"></div>
+      <div class="toggles" id="worldDiv" style="margin-bottom:10px"></div>
+      <div id="worldOut"></div>
     </section>
 
     <!-- ======================================================== TRAINER -->

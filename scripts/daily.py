@@ -122,6 +122,10 @@ BROWSER_TESTS = [
     ("buildlinktest.js",  "a build follows its Pokemon"),
     ("pickertest.js",     "the move picker's filters stack"),
     ("findtest.js",       "the search view"),
+    # Guards the measurement, not just the pixels: if pokebase ever switches
+    # the move column back to a share of SETS it sums to ~400 instead of ~100
+    # and every percentage in the builder silently means something else.
+    ("usagetest.js",      "what this Pokemon's players run, and what of"),
     ("sptest.js",         "the SP slider"),
     ("burntest.js",       "burn halves physical only"),
     # The only test that signs in and loads a ledger WITH ROWS. Every
@@ -365,6 +369,8 @@ def main():
         if vendored:
             steps = [([PY, "scripts/build_tracker_data.py"], "data.js"),
                      ([PY, "scripts/build_analysis_data.py"], "the analyses"),
+                     ([PY, "scripts/build_splits_data.py", "--check"],
+                      "what the splits percentages are a share of"),
                      ([PY, "scripts/build_splits_data.py"], "the ladder splits"),
                      ([PY, "scripts/build_engine_bundle.py"], "engine bundle")] + steps
         else:

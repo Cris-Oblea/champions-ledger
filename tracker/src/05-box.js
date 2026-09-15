@@ -704,7 +704,29 @@ function analysisPanel(name, host){
         : "Smogon has not written one for " + name + " - 54 Pokemon have one."));
       return;
     }
-    got.forEach(function(st){
+    /* EVERY VGC FORMAT SMOGON HAS, NEWEST FIRST, and the panel says so out
+       loud. Nothing here has ever filtered by regulation - Garchomp carries
+       both an M-A and an M-B analysis and both were always drawn - but the
+       panel gave no way to tell "this is all of it" from "this is the one we
+       kept", which is what the player was asking about (2026-09-15: "necesito
+       ver todas las opciones de smogon en formato vgc sea de la regulacion
+       que sea"). A regulation missing from this line is missing UPSTREAM:
+       Smogon writes an analysis per regulation and had published none for the
+       current one at the time of the last fetch.
+
+       Sorted by the regulation letter rather than by arrival, so the newest
+       reading is the one at the top. Singles stays out - see
+       scripts/fetch_smogon.py, that call is settled. */
+    var order = got.slice().sort(function(a, b){
+      return String(b.format).localeCompare(String(a.format));
+    });
+    if (order.length > 1) {
+      host.appendChild(el("div", "st",
+        "Smogon has " + order.length + " VGC analyses for " + name + ": " +
+        order.map(function(x){ return x.format; }).join(", ") +
+        ". All of them are below."));
+    }
+    order.forEach(function(st){
       var head = el("div", "st");
       head.style.marginBottom = "4px";
       head.appendChild(el("span", "tag" + (st.outdated ? " warn" : ""),

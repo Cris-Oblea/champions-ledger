@@ -226,11 +226,13 @@ function effectChips(e){
   (e.x || []).forEach(function(p){
     out.push({text:"x" + p[1], why:p[0] + " (measured in the engine)"});
   });
+  /* p[0] ALREADY CARRIES ITS UNIT. This used to append one - " stages" onto
+     "1 stages", " turns" onto "8 turns" - and the player read the result on
+     his phone: Intimidate saying "1 stages stages" and an item "8 TURNS
+     TURNS". The unit is written once, by build_effects.py, where the number
+     is extracted. Nothing is added here. */
   (e.t || []).forEach(function(p){
-    var unit = p[1] === "fraction of max HP" ? " of max HP"
-             : p[1] === "stages" ? " stages"
-             : p[1] === "turns" ? " turns" : "";
-    out.push({text:p[0] + unit, why:p[2]});
+    out.push({text:p[0], why:p[2]});
   });
   return out;
 }
@@ -257,46 +259,80 @@ function effectLine(name){
 }
 
 /* ------------------------------------- what THIS Pokemon's players run ----
-   pokebase's per-Pokemon pages, off the live M-C ladder: of the people using
-   Kingambit, 99.1% run Sucker Punch, 37.6% hold a Chople Berry, 94% pick
-   Defiant, 86.9% go Adamant.
+   pokebase's per-Pokemon pages: of the Rillaboom brought to an M-C tournament,
+   57.2% held a Miracle Seed, 86.3% were Adamant, 99% ran Grassy Surge, and
+   53.9% of their teams also carried Sneasler.
 
    The global tables answer "how used is Sucker Punch". This answers the
    question a build actually asks, which is a different question and the one
    worth having while choosing.
 
+   WHAT THE NUMBER IS A SHARE OF IS NOT THE SAME IN EVERY SECTION, and it has
+   to be said out loud because it decides how the chip may be coloured. A set
+   holds one item, one ability, one nature and one spread, so those columns are
+   a share of SETS and read directly: 57.2% of them held the Seed. It holds up
+   to FOUR moves, and pokebase divides by slots, so the move column sums to 100
+   across the whole movepool and its top row is near 25 - Fake Out at 24.6% is
+   not a quarter of Rillaboom running it, it is essentially all of them. A fixed
+   "50% is popular" rule reads every move in the game as fringe, so emphasis is
+   measured against that Pokemon's own top row instead, and the tooltip says
+   which denominator it is. Teammates are a share of TEAMS, and a team has five
+   other slots, so that column sums to ~400.
+
    Its own asset because it is fetched WEEKLY - the dex is rebuilt nightly, and
-   grouping them would re-download 206 KB every night that had not changed.
+   grouping them would re-download the lot every night unchanged.
 
    A Mega falls back to its base species: pokebase files usage under the
    species people ladder with, and a Mega Charizard Y is a Charizard holding a
-   stone as far as the ladder is concerned. */
+   stone as far as the results are concerned. */
 function splitsFor(name){
-  var all = window.CHAMP_SPLITS || {};
+  var all = (window.CHAMP_SPLITS || {}).p || {};
   if (all[name]) return all[name];
   var p = byName[name];
   return (p && p.species && all[p.species]) || null;
 }
-/* The percentage for one thing, or null when this Pokemon's players do not
-   run it at all - which is itself worth showing differently from 0%. */
+/* The regulation these numbers came from, for anything that prints a source. */
+function splitsReg(){
+  return (window.CHAMP_SPLITS || {}).r || null;
+}
+/* The percentage for one thing.
+
+   `null` means this Pokemon has no table at all - a species nobody has
+   brought - and 0 means the table exists and this is not in it. They are
+   different answers and the app shows them differently: silence against a
+   measured "nobody". */
 function splitPct(name, kind, what){
   var s = splitsFor(name);
   var rows = s && s[kind];
-  if (!rows) return null;
+  if (!rows || !rows.length) return null;
   for (var i = 0; i < rows.length; i++) {
     if (rows[i][0] === what) return rows[i][1];
   }
-  return null;
+  return 0;
 }
-/* A chip. Above 50% it is the norm, below 5% it is a fringe pick, and saying
-   which is more useful than the bare number. */
-function usageTag(pct){
+/* That Pokemon's own top row for a section. Rows arrive sorted descending, so
+   this is row 0 and not a scan. */
+function splitMax(name, kind){
+  var s = splitsFor(name);
+  var rows = s && s[kind];
+  return rows && rows.length ? rows[0][1] : 0;
+}
+/* A chip, emphasised RELATIVE to that Pokemon's own maximum - see above for
+   why a fixed threshold cannot work across sections. */
+function usageTag(pct, name, kind){
   if (pct == null) return null;
-  var t = el("span", "tag" + (pct >= 50 ? " ok" : pct < 5 ? " warn" : ""),
-             pct + "%");
-  t.title = pct >= 50 ? "Most of this Pokemon's players run this"
-          : pct < 5 ? "Very few of this Pokemon's players run this"
-          : "Some of this Pokemon's players run this";
+  var top = splitMax(name, kind) || 100;
+  var share = pct / top;
+  var t = el("span", "tag" + (share >= 0.5 ? " ok" : pct === 0 ? " warn" : ""),
+             (pct === 0 ? "0%" : pct + "%"));
+  var of = kind === "m" ? "of this Pokemon's move slots"
+         : kind === "t" ? "of its teams also carried this"
+         : "of its sets";
+  t.title = (pct === 0
+        ? "In the table and at 0% — nobody brought this"
+        : pct + "% " + of)
+    + " · most-run is " + top + "%"
+    + (splitsReg() ? " · " + splitsReg() + " tournaments" : "");
   return t;
 }
 
@@ -311,7 +347,8 @@ export {
   $, C, COSTS, DEX, FORMS, HOME_ALL, MEGAS_OF, MOVES, MOVE_BY, SORT,
   STAT_KEYS, STAT_LABEL, STONE_OF, TYPE_COLOR,
   bst, byName, catName, defence, dexLabel, dexNo, el, freeSlug, learnset,
-  effectChips, effectLine, effectOf, splitPct, splitsFor, usageTag,
+  effectChips, effectLine, effectOf, splitMax, splitPct, splitsFor, splitsReg,
+  usageTag,
   megasFor, natMult, rowMatches, setHomeAll, setSort, sortRows, statAt,
   statLine, toast, typeChip,
 };

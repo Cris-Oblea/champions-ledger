@@ -238,6 +238,16 @@ h2 .n{font-family:var(--mono);color:var(--faint);font-weight:500;letter-spacing:
 .rmeta{color:var(--muted);font-size:12px;display:flex;align-items:center;
   gap:6px;flex-wrap:wrap;margin-top:2px}
 .rmeta .mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+/* ONE FACT PER SPAN, so the line breaks BETWEEN facts and never inside one.
+   A move's meta line is "Physical · 40 BP · 100 acc · 12 PP · 40 effective",
+   and as a single text node a phone breaks it wherever the space falls - "100"
+   at the end of one line and "acc" at the start of the next, or a separator
+   dot orphaned in the left margin. Each fact is its own nowrap span now and
+   the separator is drawn by CSS between them, so a wrap can only happen at a
+   join. */
+.rmeta .fact{white-space:nowrap}
+.rmeta .fact + .fact::before{content:"·";color:var(--faint);margin-right:6px;
+  font-family:var(--sans)}
 .rside{display:flex;align-items:center;gap:6px;flex-shrink:0}
 
 /* ---------- chips -------------------------------------------------------- */
@@ -312,6 +322,16 @@ input:-webkit-autofill,input:-webkit-autofill:focus{
 textarea{resize:vertical;min-height:64px;line-height:1.45}
 .field{margin-bottom:12px}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+/* TWO COLUMNS NEED THE WIDTH FOR TWO COLUMNS. At 360px each half of a .grid2
+   is about 165px, and what goes in them is not 165px wide: "Nature - 500 VP"
+   over a <select> reading "Adamant - +Atk, -SpA   ·   90.3%", and the build
+   editor puts Ability beside it. A native select truncates with no ellipsis
+   and no way to widen it, so the half that matters - the percentage - was the
+   half being cut off. Below 430px they stack, which costs one scroll and
+   makes both readable.
+   430 rather than 400: a 412px phone (Pixel) is the common case that was
+   still splitting. */
+@media (max-width:430px){ .grid2{grid-template-columns:1fr;gap:0} }
 .search{position:relative}
 .search input{padding-left:32px}
 .search svg{position:absolute;left:9px;top:50%;transform:translateY(-50%);
@@ -516,6 +536,15 @@ details.rolls[open] summary::before{content:"2 "}
 .calcresult{position:sticky;top:51px;z-index:20;background:var(--ground);
   padding:10px 0 12px;margin-bottom:4px;border-bottom:1px solid var(--line)}
 .calcgrid{display:grid;gap:14px;margin-top:14px}
+/* THE FIELD GOES LAST WHEREVER THERE IS ONE COLUMN. The DOM order is
+   attacker / field / defender, which is the right reading order at three
+   columns across - the field sits between the two sides it applies to. In a
+   single column it means 32 toggles stand between the attacker and the
+   defender, so comparing the two sides costs a screen and a half of
+   scrolling, and the defender is the half you change most.
+   The two-column rule below 1180px already did exactly this; the phone was
+   the case it was never written for. */
+.calccol:nth-child(2){order:3}
 @media (min-width:820px){.calcgrid{grid-template-columns:1fr 1fr}
   .calccol:nth-child(2){grid-column:1 / -1;order:3}}
 @media (min-width:1180px){.calcgrid{grid-template-columns:1fr 1fr 1fr}
@@ -568,6 +597,39 @@ details.rolls[open] summary::before{content:"2 "}
   .sortseg button{min-height:40px}
   .tog{min-height:40px;padding-top:8px;padding-bottom:8px}
   .row{min-height:56px}
+}
+
+/* ---------- phone density ------------------------------------------------
+   Measured on the deployed build at 360px (2026-09-15) after the usage
+   percentages landed. A move row in the build picker can now carry a type
+   chip, the name, priority, spread, hits-ally, multi-hit, an item, an ability
+   and the usage share - nine things where there used to be four - and at
+   10.5px with 6px gaps that wrapped to four lines and pushed the numbers
+   below the fold.
+
+   The name is what you scan for, so it keeps its size and the CHIPS give way:
+   a point smaller and tighter, which is legible because a chip is two or
+   three words of known shape rather than prose. Above 430px nothing changes -
+   there the row fits as it is. */
+@media (max-width:430px){
+  .t,.tag{font-size:9.5px;padding:2px 5px;letter-spacing:.04em}
+  .rname{gap:5px;font-size:14px}
+  .rmeta{gap:5px;font-size:11.5px}
+  /* the calculator's columns are already one per row here; the padding was
+     sized for a desktop card and is 26px of the 360 */
+  .calccol{padding:10px}
+  main{padding-left:calc(11px + env(safe-area-inset-left));
+       padding-right:calc(11px + env(safe-area-inset-right))}
+}
+
+/* THE VERDICT MUST NOT EAT THE SCREEN. .calcresult is sticky so the answer
+   stays in view while the inputs are changed below it - which is right, and
+   was costing up to a third of a short phone once the KO line, the roll and
+   the flags stacked. Capped and scrollable: it can never take more than a
+   quarter of the viewport, and what overflows is reachable by scrolling the
+   block itself rather than by losing the controls underneath. */
+@media (max-height:760px){
+  .calcresult{max-height:26vh;overflow:auto}
 }
 
 /* the field was a wall of near-identical pills; the rules separate the groups */

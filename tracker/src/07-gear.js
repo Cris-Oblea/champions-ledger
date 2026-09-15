@@ -312,6 +312,19 @@ function drawTrainer(){
     ["Ladder usage", C.USAGE_AT
        ? "fetched " + C.USAGE_AT + ", " + (C.REG || "?") + " ladder"
        : "unknown"],
+    /* The per-Pokemon splits are a SEPARATE asset on a separate clock - the
+       dex is rebuilt nightly, these weekly - so their date is its own line.
+       Two numbers from two fetches shown under one date is how a stale one
+       hides. */
+    ["What each Pokemon runs", (function(){
+      var S = window.CHAMP_SPLITS || {};
+      var n = Object.keys(S.p || {}).length;
+      return n ? n + " Pokemon, " + (S.r || "?") +
+                 " tournaments, fetched " + (S.f || "?") + " · weekly"
+               : "not in this build";
+    })(), null,
+      "Refreshed by the Monday deep run. Moves are a share of move slots, " +
+      "everything else a share of sets."],
     ["Tournament data", "Worlds 2026, played under M-B — history, not current",
        null, "A finished event keeps the format it was played in"],
     ["Page built", window.CHAMP_BUILD || "unknown"]

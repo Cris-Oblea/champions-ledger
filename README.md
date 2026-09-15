@@ -33,9 +33,9 @@ request returns nothing.
 | Tab | What it answers |
 |---|---|
 | **Champs / HOME** | What is in each box, what came from where, and what can still leave the game |
-| **Builds** | Every set written, and the **Teams** made of them — six slots, the item each holds, and the clauses checked |
+| **Builds** | Every set written, and the **Teams** made of them — six slots, the item each holds, and the clauses checked. Every move, ability, nature and spread carries what this Pokemon's own players run |
 | **Damage Calc.** | Real damage rolls, running Smogon's Champions engine in the page |
-| **Find** | "Who learns Imprison *and* Wide Guard *and* Protect" — filters that stack |
+| **Find** | "Who learns Imprison *and* Wide Guard *and* Protect" — filters that stack, plus **Tiers** (the order on any one stat) and **Worlds** (what the field actually brought, per championship) |
 | **Items** | Every item, what it does, what it costs, and which move or ability it serves |
 | **GTS** | Open trades, what a chip is worth, and what it can realistically fetch |
 | **Profile** | Box capacity, and everything else derived so it cannot go stale |
@@ -64,7 +64,7 @@ so a stack trace still names the file a person edits. **Edit a part, never
 | `data/meta/usage_pokemon.json` | 283 | Ladder usage per Pokemon |
 | `data/meta/usage_moves.json` | 365 | Ladder usage per move |
 | `data/meta/speed_tiers.json` | 89 | Base Speed to real Speed at every investment |
-| `data/meta/smogon_analyses.json` | 323 | Smogon's written VGC analyses |
+| `data/meta/smogon_analyses.json` | 358 | Smogon's written VGC analyses |
 <!-- COUNTS:END -->
 
 That table is **generated** by `scripts/build_readme.py` and checked on every
@@ -98,12 +98,23 @@ Every command takes `-h`.
 |---|---|---|
 | **Serebii** | Rules and mechanics. What exists, what it does, exact Champions numbers | Anything about what people play |
 | **pokedata.ovh** | Official tournament teamlists — what actually wins, all three age divisions | Current usage: a finished event keeps the format it was played in |
-| **pokebase.app** | Live ladder usage and per-Pokemon splits | Rules text |
+| **pokebase.app** | Live ladder usage, and the per-Pokemon splits: every move, item, ability, nature, SP spread and teammate the people running that Pokemon actually brought | Rules text |
 | **Pikalytics** | Win rates, top SP spreads, and 2-/3-Pokemon cores | What is popular — its data lags |
 | **Smogon's calculator** | Damage arithmetic and ability behaviour. The only *executable* source | Per-Pokemon data: it inherits from Scarlet/Violet and the leaks show |
 
 Ladder usage and tournament usage disagree, and that is signal rather than
 error. Anything quoted here says which one it came from.
+
+**A percentage always says what it is a share OF.** pokebase's per-Pokemon
+pages publish two different datasets under the same headings — tournament
+teamlists for the current regulation, and the ladder season — and they do not
+measure the same thing. Worse, within one of them the move column is divided by
+move SLOTS while every other column is divided by SETS, so no move can ever
+reach 50% and "24.6% Fake Out" means nearly every Rillaboom runs it. The app
+carries one dataset, labels it, and scales its emphasis against that Pokemon's
+own top row rather than against a fixed threshold; `build_splits_data.py
+--check` asserts the shape of every column on every Pokemon, and the gate runs
+it. A source that quietly changes a denominator is the failure this catches.
 
 ---
 
@@ -138,7 +149,7 @@ error. Anything quoted here says which one it came from.
 ```
 
 <!-- GATE:START -->
-**The gate** is twenty-nine checks, and nothing reaches the phone without
+**The gate** is thirty checks, and nothing reaches the phone without
 passing all of them:
 
 - a **shrink guard** — if a rebuild comes back with fewer forms, moves or
@@ -150,7 +161,7 @@ passing all of them:
 - **one source check** — the app is linked from thirteen ES modules, so a name
   two of them both declare, or one of them uses without importing,
   is read for once rather than clicked
-- **eighteen browser tests** — run against the built page, because no Python
+- **nineteen browser tests** — run against the built page, because no Python
   check can see a template regression
 <!-- GATE:END -->
 
@@ -224,7 +235,7 @@ data/db/     the built database - the thing everything else reads
 data/meta/   usage, tournaments, speed tiers, written analyses
 tracker/     the app: a shell, its ES modules under src/, and a generated data blob
 <!-- TESTS:START -->
-tests/       eighteen browser tests, run against the BUILT page
+tests/       nineteen browser tests, run against the BUILT page
 <!-- TESTS:END -->
 analysis/    write-ups: the Smogon engine, regulation M-C, the roadmap
 CLAUDE.md    the rules this project works by, including everything learned the hard way
