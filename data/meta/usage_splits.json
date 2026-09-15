@@ -1,6 +1,6 @@
 {
- "count": 283,
- "fetched": "2026-09-14",
+ "count": 290,
+ "fetched": "2026-09-15",
  "note": "What each Pokemon's own players run, from the live ladder. The raw pages are not cached: 1.3 MB each and 321 of them.",
  "pokemon": {
   "Abomasnow": {
@@ -7039,6 +7039,178 @@
     "Delphox"
    ]
   },
+  "Cofagrigus": {
+   "abilities": [
+    {
+     "name": "Mummy",
+     "percent": 100.0
+    }
+   ],
+   "items": [
+    {
+     "name": "Leftovers",
+     "percent": 29.3
+    },
+    {
+     "name": "Sitrus Berry",
+     "percent": 25.1
+    },
+    {
+     "name": "Mental Herb",
+     "percent": 16.2
+    },
+    {
+     "name": "Colbur Berry",
+     "percent": 13.3
+    },
+    {
+     "name": "Focus Sash",
+     "percent": 3.0
+    }
+   ],
+   "moves": [
+    {
+     "name": "Trick Room",
+     "percent": 87.1
+    },
+    {
+     "name": "Will-O-Wisp",
+     "percent": 57.5
+    },
+    {
+     "name": "Shadow Ball",
+     "percent": 54.7
+    },
+    {
+     "name": "Body Press",
+     "percent": 43.9
+    },
+    {
+     "name": "Ally Switch",
+     "percent": 24.6
+    },
+    {
+     "name": "Mummy",
+     "percent": 100.0
+    },
+    {
+     "name": "32",
+     "percent": 48.5
+    },
+    {
+     "name": "2",
+     "percent": 18.2
+    },
+    {
+     "name": "2",
+     "percent": 1.0
+    },
+    {
+     "name": "32",
+     "percent": 32.3
+    }
+   ],
+   "natures": [
+    {
+     "effect": "+Def / −Spe",
+     "name": "Relaxed",
+     "percent": 33.7
+    },
+    {
+     "effect": "+Sp. Def / −Spe",
+     "name": "Sassy",
+     "percent": 21.8
+    },
+    {
+     "effect": "+Def / −Atk",
+     "name": "Bold",
+     "percent": 15.5
+    },
+    {
+     "effect": "+Sp. Def / −Atk",
+     "name": "Calm",
+     "percent": 12.0
+    },
+    {
+     "effect": "+Sp. Atk / −Spe",
+     "name": "Quiet",
+     "percent": 9.8
+    },
+    {
+     "effect": "+Def / −Atk",
+     "name": "Bold",
+     "percent": 100.0
+    }
+   ],
+   "spreads": [
+    {
+     "percent": 14.5,
+     "sp": {
+      "def": 32,
+      "hp": 32,
+      "spd": 2
+     }
+    },
+    {
+     "percent": 12.8,
+     "sp": {
+      "def": 2,
+      "hp": 32,
+      "spd": 32
+     }
+    },
+    {
+     "percent": 4.7,
+     "sp": {
+      "def": 32,
+      "hp": 2,
+      "spd": 32
+     }
+    },
+    {
+     "percent": 3.4,
+     "sp": {
+      "hp": 32,
+      "spa": 32,
+      "spd": 2
+     }
+    },
+    {
+     "percent": 3.3,
+     "sp": {
+      "def": 5,
+      "hp": 32,
+      "spd": 29
+     }
+    },
+    {
+     "percent": 66.7,
+     "sp": {
+      "def": 2,
+      "hp": 32,
+      "spd": 32
+     }
+    },
+    {
+     "percent": 33.3,
+     "sp": {
+      "def": 32,
+      "hp": 32,
+      "spa": 2
+     }
+    }
+   ],
+   "teammates": [
+    "Kingambit",
+    "Incineroar",
+    "Torkoal",
+    "Farigiraf",
+    "Sinistcha",
+    "Sylveon",
+    "Mawile",
+    "Tyranitar"
+   ]
+  },
   "Conkeldurr": {
    "abilities": [
     {
@@ -9507,6 +9679,153 @@
     "Incineroar",
     "Politoed",
     "Sylveon"
+   ]
+  },
+  "Espeon": {
+   "abilities": [
+    {
+     "name": "Magic Bounce",
+     "percent": 94.4
+    },
+    {
+     "name": "Synchronize",
+     "percent": 5.6
+    }
+   ],
+   "items": [
+    {
+     "name": "Focus Sash",
+     "percent": 27.4
+    },
+    {
+     "name": "Life Orb",
+     "percent": 13.5
+    },
+    {
+     "name": "Twisted Spoon",
+     "percent": 10.9
+    },
+    {
+     "name": "Choice Scarf",
+     "percent": 10.2
+    },
+    {
+     "name": "Expert Belt",
+     "percent": 7.4
+    }
+   ],
+   "moves": [
+    {
+     "name": "Psychic",
+     "percent": 64.4
+    },
+    {
+     "name": "Power Gem",
+     "percent": 58.0
+    },
+    {
+     "name": "Dazzling Gleam",
+     "percent": 35.0
+    },
+    {
+     "name": "Expanding Force",
+     "percent": 28.8
+    },
+    {
+     "name": "Protect",
+     "percent": 28.2
+    }
+   ],
+   "natures": [
+    {
+     "effect": "+Spe / −Atk",
+     "name": "Timid",
+     "percent": 54.3
+    },
+    {
+     "effect": "+Sp. Atk / −Atk",
+     "name": "Modest",
+     "percent": 30.2
+    },
+    {
+     "effect": "+Sp. Atk / −Spe",
+     "name": "Quiet",
+     "percent": 3.6
+    },
+    {
+     "effect": "+Def / −Atk",
+     "name": "Bold",
+     "percent": 3.2
+    },
+    {
+     "effect": "+Sp. Atk / −Def",
+     "name": "Mild",
+     "percent": 2.4
+    },
+    {
+     "effect": "+Sp. Def / −Atk",
+     "name": "Calm",
+     "percent": 100.0
+    }
+   ],
+   "spreads": [
+    {
+     "percent": 35.1,
+     "sp": {
+      "hp": 2,
+      "spa": 32,
+      "spe": 32
+     }
+    },
+    {
+     "percent": 11.1,
+     "sp": {
+      "spa": 32,
+      "spd": 2,
+      "spe": 32
+     }
+    },
+    {
+     "percent": 10.2,
+     "sp": {
+      "def": 2,
+      "spa": 32,
+      "spe": 32
+     }
+    },
+    {
+     "percent": 3.0,
+     "sp": {
+      "spa": 32,
+      "spe": 32
+     }
+    },
+    {
+     "percent": 2.3,
+     "sp": {
+      "hp": 32,
+      "spa": 32,
+      "spd": 2
+     }
+    },
+    {
+     "percent": 100.0,
+     "sp": {
+      "def": 2,
+      "spa": 32,
+      "spe": 32
+     }
+    }
+   ],
+   "teammates": [
+    "Sylveon",
+    "Umbreon",
+    "Whimsicott",
+    "Vaporeon",
+    "Charizard",
+    "Jolteon",
+    "Milotic",
+    "Sneasler"
    ]
   },
   "Excadrill": {
@@ -12228,6 +12547,166 @@
     "Incineroar",
     "Whimsicott",
     "Sneasler"
+   ]
+  },
+  "Garganacl": {
+   "abilities": [
+    {
+     "name": "Purifying Salt",
+     "percent": 73.5
+    },
+    {
+     "name": "Clear Body",
+     "percent": 14.7
+    },
+    {
+     "name": "Sturdy",
+     "percent": 11.9
+    }
+   ],
+   "items": [
+    {
+     "name": "Leftovers",
+     "percent": 54.7
+    },
+    {
+     "name": "Sitrus Berry",
+     "percent": 14.4
+    },
+    {
+     "name": "Silk Scarf",
+     "percent": 4.6
+    },
+    {
+     "name": "Quick Claw",
+     "percent": 4.0
+    },
+    {
+     "name": "Life Orb",
+     "percent": 3.4
+    }
+   ],
+   "moves": [
+    {
+     "name": "Salt Cure",
+     "percent": 79.0
+    },
+    {
+     "name": "Wide Guard",
+     "percent": 57.5
+    },
+    {
+     "name": "Recover",
+     "percent": 56.1
+    },
+    {
+     "name": "Protect",
+     "percent": 44.3
+    },
+    {
+     "name": "Body Press",
+     "percent": 42.4
+    }
+   ],
+   "natures": [
+    {
+     "effect": "+Sp. Def / −Sp. Atk",
+     "name": "Careful",
+     "percent": 25.9
+    },
+    {
+     "effect": "+Def / −Sp. Atk",
+     "name": "Impish",
+     "percent": 16.8
+    },
+    {
+     "effect": "+Def / −Spe",
+     "name": "Relaxed",
+     "percent": 15.6
+    },
+    {
+     "effect": "+Sp. Def / −Spe",
+     "name": "Sassy",
+     "percent": 11.5
+    },
+    {
+     "effect": "+Atk / −Spe",
+     "name": "Brave",
+     "percent": 11.0
+    },
+    {
+     "effect": "+Sp. Def / −Spe",
+     "name": "Sassy",
+     "percent": 100.0
+    }
+   ],
+   "spreads": [
+    {
+     "percent": 17.6,
+     "sp": {
+      "def": 2,
+      "hp": 32,
+      "spd": 32
+     }
+    },
+    {
+     "percent": 8.5,
+     "sp": {
+      "def": 32,
+      "hp": 32,
+      "spd": 2
+     }
+    },
+    {
+     "percent": 5.4,
+     "sp": {
+      "atk": 32,
+      "hp": 32,
+      "spd": 2
+     }
+    },
+    {
+     "percent": 5.0,
+     "sp": {
+      "def": 32,
+      "hp": 2,
+      "spd": 32
+     }
+    },
+    {
+     "percent": 4.7,
+     "sp": {
+      "atk": 32,
+      "def": 2,
+      "hp": 32
+     }
+    },
+    {
+     "percent": 50.0,
+     "sp": {
+      "atk": 32,
+      "hp": 2,
+      "spe": 32
+     }
+    },
+    {
+     "percent": 50.0,
+     "sp": {
+      "def": 2,
+      "hp": 32,
+      "spd": 32
+     }
+    }
+   ],
+   "teammates": [
+    "Farigiraf",
+    "Sinistcha",
+    "Whimsicott",
+    "Tyranitar",
+    "Incineroar",
+    "Kingambit",
+    "Garchomp",
+    "Charizard"
    ]
   },
   "Gengar": {
@@ -18610,6 +19089,172 @@
     "Staraptor",
     "Aerodactyl",
     "Charizard"
+   ]
+  },
+  "Liepard": {
+   "abilities": [
+    {
+     "name": "Prankster",
+     "percent": 96.7
+    },
+    {
+     "name": "Unburden",
+     "percent": 3.0
+    },
+    {
+     "name": "Limber",
+     "percent": 0.3
+    }
+   ],
+   "items": [
+    {
+     "name": "Focus Sash",
+     "percent": 68.6
+    },
+    {
+     "name": "Iron Ball",
+     "percent": 5.6
+    },
+    {
+     "name": "Sitrus Berry",
+     "percent": 5.1
+    },
+    {
+     "name": "Chople Berry",
+     "percent": 4.1
+    },
+    {
+     "name": "Roseli Berry",
+     "percent": 2.7
+    }
+   ],
+   "moves": [
+    {
+     "name": "Fake Out",
+     "percent": 79.2
+    },
+    {
+     "name": "Encore",
+     "percent": 64.3
+    },
+    {
+     "name": "Knock Off",
+     "percent": 39.1
+    },
+    {
+     "name": "Fake Tears",
+     "percent": 23.7
+    },
+    {
+     "name": "Charm",
+     "percent": 22.9
+    }
+   ],
+   "natures": [
+    {
+     "effect": "+Spe / −Sp. Atk",
+     "name": "Jolly",
+     "percent": 52.2
+    },
+    {
+     "effect": "+Atk / −Sp. Atk",
+     "name": "Adamant",
+     "percent": 10.4
+    },
+    {
+     "effect": "+Spe / −Atk",
+     "name": "Timid",
+     "percent": 8.1
+    },
+    {
+     "effect": "+Def / −Spe",
+     "name": "Relaxed",
+     "percent": 6.3
+    },
+    {
+     "effect": "+Def / −Sp. Atk",
+     "name": "Impish",
+     "percent": 5.5
+    },
+    {
+     "effect": "+Atk / −Spe",
+     "name": "Brave",
+     "percent": 50.0
+    },
+    {
+     "effect": "+Spe / −Sp. Atk",
+     "name": "Jolly",
+     "percent": 50.0
+    }
+   ],
+   "spreads": [
+    {
+     "percent": 30.9,
+     "sp": {
+      "atk": 32,
+      "hp": 2,
+      "spe": 32
+     }
+    },
+    {
+     "percent": 6.6,
+     "sp": {
+      "def": 2,
+      "hp": 32,
+      "spe": 32
+     }
+    },
+    {
+     "percent": 6.1,
+     "sp": {
+      "def": 20,
+      "hp": 32,
+      "spd": 14
+     }
+    },
+    {
+     "percent": 3.4,
+     "sp": {
+      "atk": 32,
+      "def": 2,
+      "spe": 32
+     }
+    },
+    {
+     "percent": 3.1,
+     "sp": {
+      "def": 1,
+      "hp": 32,
+      "spd": 1,
+      "spe": 32
+     }
+    },
+    {
+     "percent": 50.0,
+     "sp": {
+      "def": 32,
+      "hp": 2,
+      "spe": 32
+     }
+    },
+    {
+     "percent": 50.0,
+     "sp": {
+      "atk": 32,
+      "hp": 2,
+      "spe": 32
+     }
+    }
+   ],
+   "teammates": [
+    "Staraptor",
+    "Sinistcha",
+    "Basculegion",
+    "Farigiraf",
+    "Whimsicott",
+    "Sneasler",
+    "Garchomp",
+    "Raichu"
    ]
   },
   "Lopunny": {
@@ -35002,6 +35647,146 @@
     "Camerupt"
    ]
   },
+  "Slurpuff": {
+   "abilities": [
+    {
+     "name": "Unburden",
+     "percent": 65.9
+    },
+    {
+     "name": "Sweet Veil",
+     "percent": 34.1
+    }
+   ],
+   "items": [
+    {
+     "name": "Sitrus Berry",
+     "percent": 35.7
+    },
+    {
+     "name": "Persim Berry",
+     "percent": 13.9
+    },
+    {
+     "name": "Leftovers",
+     "percent": 10.7
+    },
+    {
+     "name": "Lum Berry",
+     "percent": 8.3
+    },
+    {
+     "name": "White Herb",
+     "percent": 7.4
+    }
+   ],
+   "moves": [
+    {
+     "name": "Protect",
+     "percent": 43.9
+    },
+    {
+     "name": "Dazzling Gleam",
+     "percent": 40.7
+    },
+    {
+     "name": "Cotton Guard",
+     "percent": 36.9
+    },
+    {
+     "name": "Draining Kiss",
+     "percent": 29.6
+    },
+    {
+     "name": "Flamethrower",
+     "percent": 28.0
+    }
+   ],
+   "natures": [
+    {
+     "effect": "+Sp. Atk / −Atk",
+     "name": "Modest",
+     "percent": 27.5
+    },
+    {
+     "effect": "+Atk / −Sp. Atk",
+     "name": "Adamant",
+     "percent": 20.5
+    },
+    {
+     "effect": "+Def / −Atk",
+     "name": "Bold",
+     "percent": 15.7
+    },
+    {
+     "effect": "+Spe / −Atk",
+     "name": "Timid",
+     "percent": 10.4
+    },
+    {
+     "effect": "+Sp. Def / −Atk",
+     "name": "Calm",
+     "percent": 8.5
+    },
+    {
+     "effect": "+Def / −Atk",
+     "name": "Bold",
+     "percent": 100.0
+    }
+   ],
+   "spreads": [
+    {
+     "percent": 10.6,
+     "sp": {
+      "hp": 2,
+      "spa": 32,
+      "spe": 32
+     }
+    },
+    {
+     "percent": 8.5,
+     "sp": {
+      "atk": 32,
+      "hp": 2,
+      "spe": 32
+     }
+    },
+    {
+     "percent": 8.3,
+     "sp": {
+      "def": 2,
+      "hp": 32,
+      "spa": 32
+     }
+    },
+    {
+     "percent": 5.4,
+     "sp": {
+      "def": 32,
+      "spa": 32,
+      "spd": 2
+     }
+    },
+    {
+     "percent": 3.8,
+     "sp": {
+      "def": 14,
+      "hp": 32,
+      "spd": 20
+     }
+    }
+   ],
+   "teammates": [
+    "Sableye",
+    "Garchomp",
+    "Chandelure",
+    "Sinistcha",
+    "Clefable",
+    "Banette",
+    "Charizard",
+    "Audino"
+   ]
+  },
   "Sneasler": {
    "abilities": [
     {
@@ -37534,6 +38319,167 @@
     "Raichu"
    ]
   },
+  "Toucannon": {
+   "abilities": [
+    {
+     "name": "Skill Link",
+     "percent": 90.5
+    },
+    {
+     "name": "Sheer Force",
+     "percent": 6.8
+    },
+    {
+     "name": "Keen Eye",
+     "percent": 2.7
+    }
+   ],
+   "items": [
+    {
+     "name": "King’s Rock",
+     "percent": 20.3
+    },
+    {
+     "name": "Life Orb",
+     "percent": 15.8
+    },
+    {
+     "name": "Sitrus Berry",
+     "percent": 11.1
+    },
+    {
+     "name": "Focus Sash",
+     "percent": 10.7
+    },
+    {
+     "name": "Expert Belt",
+     "percent": 8.1
+    }
+   ],
+   "moves": [
+    {
+     "name": "Rock Blast",
+     "percent": 86.7
+    },
+    {
+     "name": "Bullet Seed",
+     "percent": 85.5
+    },
+    {
+     "name": "Beak Blast",
+     "percent": 72.4
+    },
+    {
+     "name": "Protect",
+     "percent": 46.2
+    },
+    {
+     "name": "Tailwind",
+     "percent": 17.8
+    }
+   ],
+   "natures": [
+    {
+     "effect": "+Atk / −Sp. Atk",
+     "name": "Adamant",
+     "percent": 46.2
+    },
+    {
+     "effect": "+Atk / −Spe",
+     "name": "Brave",
+     "percent": 28.1
+    },
+    {
+     "effect": "+Spe / −Sp. Atk",
+     "name": "Jolly",
+     "percent": 9.6
+    },
+    {
+     "effect": "+Def / −Sp. Atk",
+     "name": "Impish",
+     "percent": 4.4
+    },
+    {
+     "effect": "+Def / −Spe",
+     "name": "Relaxed",
+     "percent": 2.1
+    },
+    {
+     "effect": "+Def / −Sp. Atk",
+     "name": "Impish",
+     "percent": 100.0
+    }
+   ],
+   "spreads": [
+    {
+     "percent": 14.2,
+     "sp": {
+      "atk": 32,
+      "def": 2,
+      "hp": 32
+     }
+    },
+    {
+     "percent": 9.6,
+     "sp": {
+      "atk": 32,
+      "hp": 32,
+      "spd": 2
+     }
+    },
+    {
+     "percent": 9.0,
+     "sp": {
+      "atk": 32,
+      "hp": 2,
+      "spe": 32
+     }
+    },
+    {
+     "percent": 6.1,
+     "sp": {
+      "atk": 32,
+      "def": 1,
+      "hp": 32,
+      "spd": 1
+     }
+    },
+    {
+     "percent": 3.9,
+     "sp": {
+      "atk": 32,
+      "def": 32,
+      "hp": 2
+     }
+    },
+    {
+     "percent": 50.0,
+     "sp": {
+      "atk": 32,
+      "def": 17,
+      "spd": 17
+     }
+    },
+    {
+     "percent": 50.0,
+     "sp": {
+      "atk": 32,
+      "hp": 2,
+      "spe": 32
+     }
+    }
+   ],
+   "teammates": [
+    "Farigiraf",
+    "Torkoal",
+    "Whimsicott",
+    "Sinistcha",
+    "Incineroar",
+    "Garchomp",
+    "Oranguru",
+    "Sneasler"
+   ]
+  },
   "Toxapex": {
    "abilities": [
     {
@@ -37964,6 +38910,75 @@
     "2-2",
     "2-6",
     "1-3"
+   ]
+  },
+  "Toxtricity (Low Key)": {
+   "abilities": [
+    {
+     "name": "Punk Rock",
+     "percent": 100.0
+    }
+   ],
+   "items": [
+    {
+     "name": "Air Balloon",
+     "percent": 33.3
+    },
+    {
+     "name": "Choice Scarf",
+     "percent": 33.3
+    },
+    {
+     "name": "Focus Sash",
+     "percent": 33.3
+    }
+   ],
+   "moves": [
+    {
+     "name": "Overdrive",
+     "percent": 16.7
+    },
+    {
+     "name": "Protect",
+     "percent": 16.7
+    },
+    {
+     "name": "Sludge Bomb",
+     "percent": 16.7
+    },
+    {
+     "name": "Boomburst",
+     "percent": 8.3
+    },
+    {
+     "name": "Electroweb",
+     "percent": 8.3
+    }
+   ],
+   "natures": [
+    {
+     "effect": "+Sp. Atk / −Atk",
+     "name": "Modest",
+     "percent": 33.3
+    },
+    {
+     "effect": "+Sp. Atk / −Spe",
+     "name": "Quiet",
+     "percent": 33.3
+    },
+    {
+     "effect": "+Spe / −Atk",
+     "name": "Timid",
+     "percent": 33.3
+    }
+   ],
+   "spreads": [],
+   "teammates": [
+    "of",
+    "of",
+    "Tournament Teams",
+    "5-4",
+    "1-2"
    ]
   },
   "Trevenant": {
