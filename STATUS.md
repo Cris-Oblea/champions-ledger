@@ -116,6 +116,28 @@ carry the same shape of data - which moves, item, ability, nature and SP spread
 each Pokemon's own players run, with percentages - off the LIVE M-C ladder.
 `scripts/fetch_pokebase_splits.py`.
 
+### Those pages paginate, and it took two goes to read them (2026-09-15)
+
+The player caught it: "pokebase si publica todo... TIENE PAGES!". The sections
+paginate **client-side**, out of props the server already sent, so `?page=N`
+does not exist on a per-Pokemon page and the rendered HTML holds page 1 for
+ever. The fetcher knew five of Rillaboom's nineteen moves. It reads the Next.js
+flight payload now and gets every page of every section: **2884 moves priced
+across 290 Pokemon**, against about 1400 before.
+
+Looking for the pages found the worse bug. That page carries **two datasets
+under the same headings** - tournament teamlists for one regulation, and the
+ladder season - and they do not measure the same thing. Keeping whichever run
+of percentages was longer mixed them, so the stored file had Kingambit's moves
+summing to 370 (a share of SETS) and Rillaboom's to 94 (a share of move SLOTS).
+Rillaboom has no season block at all, which is how it stayed invisible.
+
+Both are captured now, separately and whole. The app ships the tournament
+block - present for every Pokemon, stamped with the regulation, one measurement
+throughout - and `build_splits_data.py --check` asserts what every column is a
+share of, on every Pokemon, inside the gate. A source that quietly changes a
+denominator is caught rather than silently redefining every number on screen.
+
 ## Items and abilities are numbers now, not adjectives (2026-09-14)
 
 **Measured first, because the complaint deserved a measurement: of the 199
