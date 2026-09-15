@@ -99,6 +99,23 @@ unmatched either way.
 
 ---
 
+## Pikalytics is on notice until 2026-10-15 (player, 2026-09-15)
+
+**"Voy a darle 1 mes de tiempo a pikalytics, si no se actualiza prefiero
+sacarlo de fuente, smogon y pokebase han demostrado ser fuentes mucho más
+confiables para todo, serebii ha servido para verificar lo mismo."**
+
+It is still stamped `2026-05` with its ladder code on season 3, two regulations
+behind. Nothing new should be built on it, and its numbers must never be quoted
+as current - which was already the rule, now with a date on it. If it has not
+moved by **15 October 2026**, `fetch_pikalytics.py` and
+`data/meta/pikalytics_*.json` come out and the source list drops to four.
+
+What replaced it in the meantime is better anyway: pokebase's per-Pokemon pages
+carry the same shape of data - which moves, item, ability, nature and SP spread
+each Pokemon's own players run, with percentages - off the LIVE M-C ladder.
+`scripts/fetch_pokebase_splits.py`.
+
 ## Items and abilities are numbers now, not adjectives (2026-09-14)
 
 **Measured first, because the complaint deserved a measurement: of the 199

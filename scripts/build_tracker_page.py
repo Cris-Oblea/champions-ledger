@@ -40,6 +40,12 @@ SRC = os.path.join(ROOT, "tracker", "src")
 # byte in it is generated, and both CI and any local run rebuild it.
 BUILD = os.path.join(ROOT, "tracker", "build")
 MARK = "/*__CHAMP_DATA__*/"
+# What each Pokemon's own players run. Its own block, and therefore its
+# own hashed asset, because it is fetched WEEKLY while the dex is rebuilt
+# nightly - grouped together, a nightly refresh would re-download 206 KB
+# that had not changed.
+SPMARK = "/*__CHAMP_SPLITS__*/"
+SPLITS_JS = os.path.join(ROOT, "tracker", "splits.js")
 # Filled in during the build, read when the headers are written:
 # only the Supabase URL, and only so the CSP names the same host.
 BUILT = {}
@@ -438,7 +444,7 @@ def main():
     if not os.path.exists(DATA):
         sys.exit("tracker/data.js is missing - run scripts/build_tracker_data.py")
     tpl = assemble(open(TPL, encoding="utf-8").read())
-    for m in (MARK, CMARK, EMARK, SBMARK):
+    for m in (MARK, CMARK, EMARK, SBMARK, SPMARK):
         if m not in tpl:
             sys.exit("the template lost its %s marker" % m)
     data = open(DATA, encoding="utf-8").read()
@@ -462,6 +468,13 @@ def main():
     out = out.replace(SBMARK, sbjs.replace("</", r"<\/"))
     out = out.replace(CMARK, config_js().replace("</", r"<\/"))
     out = out.replace(MARK, data.replace("</", r"<\/"))
+    splits = ""
+    if os.path.exists(SPLITS_JS):
+        splits = io.open(SPLITS_JS, encoding="utf-8").read()
+        print("  splits: %.0f KB" % (len(splits) / 1024))
+    else:
+        print("  no tracker/splits.js - run build_splits_data.py")
+    out = out.replace(SPMARK, splits.replace("</", r"<\/"))
     open(OUT, "w", encoding="utf-8").write(out)
     print("wrote %s  (%.0f KB)" % (OUT, os.path.getsize(OUT) / 1024))
     build_dist(out)
@@ -512,7 +525,7 @@ def standalone(html):
 #
 # index.html stays small and deliberately uncached: it is the pointer saying
 # which hashes are current, so it has to be allowed to change.
-SPLIT = ["vendor-supabase", "engine", "dex", "app"]
+SPLIT = ["vendor-supabase", "engine", "dex", "splits", "app"]
 
 
 def split_assets(html):

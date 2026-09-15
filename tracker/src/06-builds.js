@@ -2,8 +2,8 @@
    Part of the app; linked into one script by scripts/build_tracker_page.py. */
 import {
   $, C, COSTS, FORMS, MOVE_BY, STAT_KEYS, STAT_LABEL, STONE_OF, byName,
-  catName, effectLine, el, learnset, megasFor, natMult, statAt, toast,
-  typeChip,
+  catName, effectLine, el, learnset, megasFor, natMult, splitPct, splitsFor,
+  statAt, toast, typeChip, usageTag,
 } from "./01-data.js";
 import { S, boxRows, buildLink, hasStone, ownedNames } from "./02-state.js";
 import { drop, put, putNew } from "./03-store.js";
@@ -260,6 +260,12 @@ function buildSheet(id, b, keepOriginal){
     var sn = el("select");
     Object.keys(C.NATURES).sort().forEach(function(n){
       sn.appendChild(new Option(n + " — " + C.NATURES[n][2], n));
+    });
+    /* and the same on natures - 86.9% Adamant on Kingambit is the answer to
+       "what do people actually pick", which a list of 25 cannot give */
+    Array.prototype.forEach.call(sn.options, function(opt){
+      var pct = splitPct(draft.pokemon, "n", opt.value);
+      if (pct != null) opt.text = opt.text + "   ·   " + pct + "%";
     });
     sn.value = draft.nature || "Hardy";
     sn.onchange = function(){ draft.nature = sn.value; redraw(); };
@@ -656,6 +662,11 @@ function movePicker(draft, idx, ls, done){
         priorityTag(m, h); spreadTags(m, h); itemTags(m, h);
         var atag = abil ? abilityTag(abil, m, apoke) : null;
         if (atag) h.appendChild(atag);
+        /* How many of THIS Pokemon's players run this move. The thing the
+           picker could not tell you before, and usually the first question:
+           99.1% on Sucker Punch says it is not a choice, it is the set. */
+        var utag = usageTag(splitPct(draft.pokemon, "m", m.name));
+        if (utag) h.appendChild(utag);
         mm.appendChild(h);
         mm.appendChild(el("div", "rmeta")).appendChild(el("span", "mono",
           catName(m.cat) +

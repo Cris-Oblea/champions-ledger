@@ -365,6 +365,7 @@ def main():
         if vendored:
             steps = [([PY, "scripts/build_tracker_data.py"], "data.js"),
                      ([PY, "scripts/build_analysis_data.py"], "the analyses"),
+                     ([PY, "scripts/build_splits_data.py"], "the ladder splits"),
                      ([PY, "scripts/build_engine_bundle.py"], "engine bundle")] + steps
         else:
             out.append("no source cache here: using the committed data.js, "
