@@ -789,7 +789,8 @@ var WORLD = {year: null, div: "masters"};
 
 function worldInit(){
   var years = C.WORLDS || [];
-  var yrow = $("worldYear");
+  var yrow = $("worldYear"); yrow.innerHTML = "";
+  $("worldOut").innerHTML = "";
   if (!years.length) {
     $("worldOut").appendChild(el("div", "empty",
       "No Worlds archive in this build."));
@@ -808,7 +809,7 @@ function worldInit(){
     };
     yrow.appendChild(t);
   });
-  var drow = $("worldDiv");
+  var drow = $("worldDiv"); drow.innerHTML = "";
   [["masters","Masters"],["seniors","Seniors"],["juniors","Juniors"]]
     .forEach(function(o){
       var t = el("button", "tog", o[1]);
@@ -890,7 +891,10 @@ var TIER_STATS = [["spe","Speed"],["atk","Atk"],["spa","SpA"],
                   ["def","Def"],["spd","SpD"],["hp","HP"],["bst","BST"]];
 
 function tierInit(){
-  var srow = $("tierStat");
+  /* Emptied first. findInit() is called once, from boot, and if that ever
+     stops being true a second call would append a second row of tabs rather
+     than fail - which is the kind of thing that is noticed months later. */
+  var srow = $("tierStat"); srow.innerHTML = "";
   TIER_STATS.forEach(function(o){
     var t = el("button", "tog", o[1]);
     t.setAttribute("aria-pressed", o[0] === TIER.stat ? "true" : "false");
@@ -903,7 +907,7 @@ function tierInit(){
     };
     srow.appendChild(t);
   });
-  var prow = $("tierScope");
+  var prow = $("tierScope"); prow.innerHTML = "";
   [["meta","Brought to M-C"],["mine","Mine"],["all","Every form"]]
     .forEach(function(o){
       var t = el("button", "tog", o[1]);
