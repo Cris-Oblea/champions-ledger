@@ -1,8 +1,8 @@
 /* 05-box.js - The box and HOME: every row, and every way one gets added.
    Part of the app; linked into one script by scripts/build_tracker_page.py. */
 import {
-  $, C, FORMS, SORT, STAT_KEYS, STAT_LABEL, STONE_OF, bst, byName, defence,
-  dexLabel, el, freeSlug, megasFor, statLine, toast, typeChip,
+  $, C, FORMS, SORT, STAT_KEYS, STAT_LABEL, STONE_OF, bst, byName, capNote,
+  defence, dexLabel, el, freeSlug, megasFor, statLine, toast, typeChip,
 } from "./01-data.js";
 import { S, hasStone, originOf } from "./02-state.js";
 import { drop, put } from "./03-store.js";
@@ -436,13 +436,15 @@ function addSheet(loc){
       }
       inp.disabled = false;
       inp.placeholder = "Species or form";
-      var hits = FORMS.filter(function(p){
+      var pool = FORMS.filter(function(p){
         return !q || p.name.toLowerCase().indexOf(q) >= 0;
-      }).slice(0, 60);
+      });
+      var hits = pool.slice(0, 120);
       if (loc === "home") {
-        var extra = (C.HOME_ONLY || []).filter(function(n){
+        var homeAll = (C.HOME_ONLY || []).filter(function(n){
           return q && n.toLowerCase().indexOf(q) >= 0;
-        }).slice(0, 40);
+        });
+        var extra = homeAll.slice(0, 40);
         extra.forEach(function(n){
           var r = el("button", "row illegal");
           var m2 = el("div", "rmain");
@@ -516,6 +518,9 @@ function addSheet(loc){
         };
         list.appendChild(r);
       });
+      capNote(list, hits.length, pool.length, "forms");
+      if (typeof homeAll !== "undefined")
+        capNote(list, extra.length, homeAll.length, "HOME-only names");
     }
     draw();
     if (loc === "home") setTimeout(function(){ inp.focus(); }, 60);

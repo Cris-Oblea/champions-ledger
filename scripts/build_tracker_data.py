@@ -534,6 +534,78 @@ def main():
     # The three divisions stay apart. They are three metagames off one roster
     # and pooling them is wrong - Incineroar is 41% of Masters teams and 26%
     # of the kids' - so the app tabs between them instead of averaging.
+    # --- WHO STOOD ON THE PODIUM, AND WITH WHAT ------------------------
+    # The top 8 of every World Championship, per division, with the actual
+    # set each Pokemon carried: item, ability, nature and four moves. This is
+    # the one thing in the project that is a RESULT rather than a rate - not
+    # "how often is this brought" but "this exact set won".
+    #
+    # A POKEMON HOLDING A MEGA STONE WAS BROUGHT AS A MEGA, and that is the
+    # only reliable signal. The player put it exactly (2026-09-15): "por las
+    # piedras se saben que son megas". A teamlist records the BASE ability -
+    # the 2026 champion's Floette is listed with Flower Veil and its Dragonite
+    # with Multiscale - because that is what the Pokemon has until it evolves,
+    # so the ability cannot be used to tell. The stone can: stone_for() is 1:1
+    # over all 81 Megas. The medal therefore lands on Mega Floette rather than
+    # on Floette, which is the Pokemon that actually played.
+    #
+    # Placement comes from the players list's own `rank`, which is the final
+    # standing - NOT a swiss round number. See the note in CLAUDE.md: pokedata
+    # numbers the top cut straight on from the last swiss round.
+    MEGA_OF_STONE = {}
+    for st, mega, _sp in STONES:
+        if st:
+            MEGA_OF_STONE[Q.norm(st)] = mega
+    # ONE EVENT PER (YEAR, DIVISION). 2023 is the case that forces this:
+    # pokedata put that year's Masters teamlists on the Day 1 event and its
+    # Seniors and Juniors on the Day 2 one, so both events carry rows for the
+    # same championship and reading them straight gave Seniors and Juniors two
+    # podiums each. The one with more players is the complete list.
+    best_src = {}
+    for ev in (Q.meta("worlds_archive") or {}).get("events") or []:
+        for div, info in (ev.get("divisions") or {}).items():
+            if not info.get("teamlists"):
+                continue
+            key = (ev["year"], div)
+            n = info.get("players") or info.get("teams") or 0
+            if n > (best_src.get(key) or (0, None))[0]:
+                best_src[key] = (n, ev["tid"])
+
+    PODIUM = {}
+    seen_events = []
+    for (year, div), (_n, tid) in sorted(best_src.items()):
+            t = Q.meta("tournament_%s_%s" % (tid, div))
+            if not t:
+                continue
+            n = 0
+            for pl in t.get("players") or []:
+                rank = pl.get("rank")
+                if not rank or rank > 8:
+                    continue
+                n += 1
+                for slot in pl.get("team") or []:
+                    raw = slot.get("pokemon") or ""
+                    form = canon.get(Q.norm(raw))
+                    mega = MEGA_OF_STONE.get(Q.norm(slot.get("item") or ""))
+                    name = mega or form
+                    if not name:
+                        continue
+                    PODIUM.setdefault(name, []).append({
+                        "y": year, "d": div, "r": rank,
+                        "who": pl.get("player") or "",
+                        "rec": pl.get("record") or "",
+                        "it": slot.get("item") or "",
+                        "ab": slot.get("ability") or "",
+                        "na": slot.get("nature") or "",
+                        "mv": slot.get("moves") or [],
+                    })
+            if n:
+                seen_events.append("%s %s %d" % (year, div, n))
+    for v in PODIUM.values():
+        v.sort(key=lambda r: (-r["y"], r["d"] != "masters", r["r"]))
+    print("  worlds podium: %d forms over %s"
+          % (len(PODIUM), ", ".join(seen_events)))
+
     WORLDS = []
     for y in (Q.meta("worlds_archive") or {}).get("years") or []:
         divs = {}
@@ -548,7 +620,7 @@ def main():
     WORLDS.sort(key=lambda r: -(r["y"] or 0))
 
     blob = {"DEX": DEX, "HOME_ONLY": HOME_ONLY, "MODS": MODS,
-            "WORLDS": WORLDS,
+            "WORLDS": WORLDS, "PODIUM": PODIUM,
             "DEXNO": DEXNO, "BFORMS": BFORMS,
             "REG": REG, "REG_STARTED": REG_STARTED, "USAGE_AT": USAGE_AT,
             "SMOGON_NAME": SMOGON_NAME, "AEGIS": AEGIS,

@@ -279,17 +279,20 @@ setTimeout(() => {
       const all = matched();
       click(d.getElementById("findInMeta"));
       const meta = matched();
-      ok("\"Brought to M-C\" acota la lista (" + meta + " de " + all + ")",
+      ok("\"Played in M-C\" acota la lista (" + meta + " de " + all + ")",
          meta > 0 && meta < all, true);
-      ok("y lo dice en los chips",
-         /brought to an M-C tournament/.test(
+      /* The label has to say what it means on its own: he could not tell
+         what "Brought to M-C" was ("ese filtro no lo entiendo"), and a phone
+         has no hover to explain it. */
+      ok("y el chip dice la frase completa",
+         /someone played it in an M-C tournament/.test(
            d.getElementById("findChips").textContent), true);
       click(d.getElementById("findClear"));
       ok("Clear lo deja limpio",
          d.getElementById("findInMeta").getAttribute("aria-pressed"), "false");
       ok("y vuelve a BST",
          sortTab("BST").getAttribute("aria-pressed"), "true");
-      worlds();
+      medals();
     }, 300);
   }
 
@@ -330,6 +333,67 @@ setTimeout(() => {
     ok("y el encabezado lo dice",
        /juniors/.test(d.querySelector("#worldOut .sub").textContent), true);
     done();
+  }
+
+  /* THE PODIUM. A result, not a rate - and a Mega is filed under the MEGA,
+     resolved by the stone it held, because a teamlist records the BASE
+     ability and so cannot tell you. The 2026 champion ran a Floette holding
+     a Floettite and a Dragonite holding a Dragoninite; both were Megas. */
+  function medals(){
+    console.log("\n  medallas de Worlds, y el set con que se ganaron");
+    const P = w.CHAMP.PODIUM || {};
+    ok("hay formas con podio", Object.keys(P).length > 20, true);
+    const champ = (P["Mega Dragonite"] || []).find(
+      e => e.y === 2026 && e.d === "masters" && e.r === 1);
+    ok("Mega Dragonite gano el 2026 masters", !!champ, true);
+    ok("y se resolvio por la piedra", champ.it, "Dragoninite");
+    ok("con su set completo",
+       champ.ab === "Multiscale" && champ.na === "Modest" &&
+       champ.mv.length === 4, true);
+    ok("Mega Floette tambien estaba en ese equipo",
+       (P["Mega Floette"] || []).some(
+         e => e.y === 2026 && e.d === "masters" && e.r === 1), true);
+    /* the base form must NOT inherit its Mega's medal - they are two
+       different entrants and only one of them stood there */
+    ok("y Dragonite base NO hereda la medalla",
+       (P["Dragonite"] || []).some(e => e.y === 2026 && e.r === 1), false);
+    ok("ningun podio pasa del top 8",
+       Object.values(P).every(v => v.every(e => e.r >= 1 && e.r <= 8)), true);
+    /* 2023 split its divisions across two pokedata events; reading both gave
+       Seniors and Juniors two podiums each */
+    const dupes = Object.values(P).some(v => {
+      const seen = {};
+      return v.some(e => {
+        const k = e.y + e.d + e.r + e.who;
+        if (seen[k]) return true;
+        seen[k] = 1; return false;
+      });
+    });
+    ok("sin entradas duplicadas (2023 va en dos eventos)", dupes, false);
+
+    w.closeSheet();
+    const dex = w.CHAMP.DEX.map(r => ({name:r[0], species:r[1], types:r[2],
+      b:r[3], mega:!!r[4], ab:r[5], dex:r[6]||0}));
+    w.findDetail(dex.find(x => x.name === "Mega Dragonite"));
+    setTimeout(() => {
+      ok("la ficha lleva la medalla",
+         /Worlds 2026 · 1st/.test(
+           (d.querySelector(".sheet .tag.gold")||{}).textContent||""), true);
+      const fold = [...d.querySelectorAll(".sheet .fold")]
+        .find(b => /Worlds/.test(b.textContent));
+      ok("y un desplegable con los sets", !!fold, true);
+      click(fold);
+      const cards = [...d.querySelectorAll(".sheet .note")]
+        .filter(n => /Worlds \d{4}/.test(n.textContent));
+      ok("que muestra item, ability, nature y moves",
+         /Dragoninite/.test(cards[0].textContent) &&
+         /Multiscale/.test(cards[0].textContent) &&
+         /Modest/.test(cards[0].textContent) &&
+         /Extreme Speed/.test(cards[0].textContent), true);
+      ok("y dice la division", /masters/.test(cards[0].textContent), true);
+      w.closeSheet();
+      worlds();
+    }, 500);
   }
 
   function done(){

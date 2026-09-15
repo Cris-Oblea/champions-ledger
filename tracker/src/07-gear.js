@@ -173,7 +173,9 @@ function itemRow(r, have){
 function priceless(src){
   var s = (src || "").replace(/^Shop\s*/, "").replace(/\?\?\?\s*VP/, "").trim();
   if (!s || s === "-") return "not sold";
-  return s.slice(0, 24);
+  /* Not truncated. 24 characters cut "Received from ..." mid-word, and where
+     an item comes from is the whole content of this line. */
+  return s;
 }
 
 /* ------------------------------------------------------------- statuses ---
@@ -236,7 +238,7 @@ function drawStatuses(){
       mline.style.color = "var(--accent)";
       mline.textContent = mv.length + (mv.length === 1 ? " move causes it: "
                                                        : " moves cause it: ") +
-        mv.slice(0, 8).join(", ") + (mv.length > 8 ? "…" : "");
+        mv.join(", ");
       m.appendChild(mline);
     }
     row.appendChild(m);

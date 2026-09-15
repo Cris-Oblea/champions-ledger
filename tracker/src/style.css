@@ -292,6 +292,10 @@ h2 .n{font-family:var(--mono);color:var(--faint);font-weight:500;letter-spacing:
 .tag.warn{background:var(--warn-soft);border-color:var(--warn);color:var(--warn)}
 .tag.bad{background:var(--bad-soft);border-color:var(--bad);color:var(--bad)}
 .tag.ok{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+/* A podium finish is not "good" or "bad", it is a medal - so it gets its own
+   colour rather than borrowing the accent that already means something else
+   on the same row. */
+.tag.gold{background:rgba(190,150,40,.16);border-color:#b8912c;color:#c79a2e}
 
 /* ---------- buttons ------------------------------------------------------ */
 .btn{background:var(--surface);border:1px solid var(--line-hard);border-radius:8px;

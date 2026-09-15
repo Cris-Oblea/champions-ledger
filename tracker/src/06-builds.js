@@ -762,14 +762,16 @@ function movePicker(draft, idx, ls, done){
     }
     var ui = moveFilters(body, ls, function(){ draw(); },
                          "Filter " + ls.length + " legal moves",
-                         {usageOf: draft.pokemon});
+                         /* one Pokemon's legal moves, so show all of them -
+                            the longest movepool in Champions is 106 */
+                         {usageOf: draft.pokemon, cap: 200});
     var list = el("div", "list");
     body.appendChild(list);
     var score = moveScore;
     function draw(){
       var hits = ui.apply();
       list.innerHTML = "";
-      hits.slice(0, 80).forEach(function(m){
+      hits.forEach(function(m){
         var r = el("button", "row");
         var mm = el("div", "rmain");
         var h = el("div", "rname");

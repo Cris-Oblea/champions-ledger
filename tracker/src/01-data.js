@@ -336,6 +336,68 @@ function usageTag(pct, name, kind){
   return t;
 }
 
+/* --------------------------------------------------------- what WON, and with
+   The top 8 of every World Championship, per division, with the exact set the
+   Pokemon carried. Everything else in this app is a RATE - how often a thing
+   is brought. This is a RESULT: this set, this placement, this player.
+
+   A MEGA IS FILED UNDER THE MEGA. A teamlist records the base ability - the
+   2026 champion's Floette is listed with Flower Veil - so the ability cannot
+   say whether it Mega Evolved. The STONE can, and does: that Floette held a
+   Floettite, so the medal belongs to Mega Floette, which is the Pokemon that
+   actually played. build_tracker_data.py resolves it; nothing here guesses.
+
+   AND THERE IS NO FALLBACK TO THE SPECIES. A base-form Garchomp and a Mega
+   Garchomp are two different entrants and only one of them stood there. */
+function podiumFor(name){
+  return (C.PODIUM || {})[name] || [];
+}
+/* The single best finish, as a chip. A Pokemon that has been top 8 eighteen
+   times cannot wear eighteen badges, so the row wears its best and the sheet
+   lists them all. */
+function podiumChip(name){
+  var all = podiumFor(name);
+  if (!all.length) return null;
+  var best = all[0];
+  all.forEach(function(e){
+    if (e.r < best.r || (e.r === best.r && e.y > best.y)) best = e;
+  });
+  var place = best.r === 1 ? "1st" : best.r === 2 ? "2nd"
+            : best.r === 3 ? "3rd" : best.r + "th";
+  var t = el("span", "tag" + (best.r <= 3 ? " gold" : ""),
+             "Worlds " + best.y + " · " + place);
+  t.title = "Top 8 at " + all.length + " World Championship" +
+    (all.length === 1 ? "" : "s") + ": " +
+    all.map(function(e){
+      return e.y + " " + e.d + " #" + e.r;
+    }).join(", ") + ". Open it to see the sets.";
+  return t;
+}
+
+/* ------------------------------------------------------ nothing cut silently
+
+   NO LIST MAY SHOW FEWER ROWS THAN IT HAS WITHOUT SAYING SO.
+
+   Every picker in the app capped itself and none of them mentioned it: the
+   species list in the damage calculator drew 50 of 345 forms, the team's item
+   picker 60 of 118, a Pokemon's own movepool 60 - and 131 of the 264
+   learnsets in Champions are longer than 60, so half the dex was quietly
+   losing moves off the end. The player found it on Rillaboom, 67 moves and 60
+   drawn: "no se alcanza a ver toda en el movil, se corta".
+
+   A cap is sometimes right - 512 move rows is too many to draw on a phone -
+   but a cap nobody can see is indistinguishable from a Pokemon that does not
+   learn the move. This says it, in the same words everywhere. */
+function capNote(host, shown, total, what){
+  if (shown >= total) return null;
+  var n = el("div", "sub");
+  n.style.margin = "6px 0 0";
+  n.textContent = "Showing " + shown + " of " + total + " " + what +
+                  " — type above to narrow the list.";
+  host.appendChild(n);
+  return n;
+}
+
 /* ------------------------------------------------------- what leaves here --
    The surface of this part. Everything not named below is private to the file:
    `slug` (freeSlug is the only caller) and `toastT` (toast's own timer).
@@ -346,9 +408,10 @@ function usageTag(pct, name, kind){
 export {
   $, C, COSTS, DEX, FORMS, HOME_ALL, MEGAS_OF, MOVES, MOVE_BY, SORT,
   STAT_KEYS, STAT_LABEL, STONE_OF, TYPE_COLOR,
-  bst, byName, catName, defence, dexLabel, dexNo, el, freeSlug, learnset,
-  effectChips, effectLine, effectOf, splitMax, splitPct, splitsFor, splitsReg,
-  usageTag,
+  bst, byName, capNote, catName, defence, dexLabel, dexNo, el, freeSlug,
+  learnset,
+  effectChips, effectLine, effectOf, podiumChip, podiumFor, splitMax, splitPct,
+  splitsFor, splitsReg, usageTag,
   megasFor, natMult, rowMatches, setHomeAll, setSort, sortRows, statAt,
   statLine, toast, typeChip,
 };

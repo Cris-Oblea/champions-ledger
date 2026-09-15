@@ -2,7 +2,8 @@
    Part of the app; linked into one script by scripts/build_tracker_page.py. */
 import {
   $, C, DEX, MOVES, MOVE_BY, SORT, STAT_KEYS, STAT_LABEL, TYPE_COLOR, bst,
-  byName, catName, dexNo, effectLine, el, learnset, splitPct, toast, typeChip,
+  byName, capNote, catName, dexNo, effectLine, el, learnset, podiumChip,
+  podiumFor, splitPct, toast, typeChip, usageTag,
 } from "./01-data.js";
 import { S, boxRows, originOf, ownedNames } from "./02-state.js";
 import { closeSheet, fbtn, openSheet } from "./04-nav.js";
@@ -86,7 +87,10 @@ function findDraw(){
     function(){ FIND.inChamp = false; findDraw(); });
   if (FIND.inHome) chip("in HOME",
     function(){ FIND.inHome = false; findDraw(); });
-  if (FIND.inMeta) chip("brought to an M-C tournament",
+  /* "Brought to M-C" meant nothing to the player - "ese filtro no lo
+     entiendo". The chip says the whole sentence now, because a chip is the
+     only place a phone user can read it: there is no hover. */
+  if (FIND.inMeta) chip("someone played it in an M-C tournament",
     function(){ FIND.inMeta = false; findDraw(); });
 
   if (!host.children.length) {
@@ -182,6 +186,10 @@ function findRun(){
         : "yours, origin?"));
     }
     if (p.mega) h.appendChild(el("span", "tag mega", "mega"));
+    /* THE MEDAL. A result rather than a rate, so it sits on the name with the
+       ownership and Mega badges and not down among the numbers. */
+    var med = podiumChip(p.name);
+    if (med) h.appendChild(med);
     m.appendChild(h);
     var meta = el("div", "rmeta");
     p.types.forEach(function(t){ meta.appendChild(typeChip(t)); });
@@ -227,6 +235,8 @@ function findDetail(p){
     var chips = el("div", "rmeta");
     p.types.forEach(function(t){ chips.appendChild(typeChip(t)); });
     chips.appendChild(el("span", "mono", "BST " + bst(p)));
+    var med0 = podiumChip(p.name);
+    if (med0) chips.appendChild(med0);
     body.appendChild(chips);
     /* The other spellings that mean this Pokemon. Squawkabilly's three extra
        plumages and Indeedee-F used to show up as separate entries marked "not
@@ -296,6 +306,66 @@ function findDetail(p){
       body.appendChild(n);
     });
 
+    /* WHAT IT WON WITH. Folded, because a Kingambit has eighteen of these
+       and the movepool below is what the sheet is usually opened for - but
+       one tap away, because "what did the set that actually won look like" is
+       a different and better question than "what is popular" (player,
+       2026-09-15: "ver que moveset llevo, que item, que habilidad, naturaleza
+       etc. toda la info disponible").
+
+       History, and it says so: each line carries its year and division, and a
+       Worlds keeps the regulation it was played in. */
+    var pod = podiumFor(p.name);
+    if (pod.length) {
+      var wrap = el("div");
+      wrap.style.marginBottom = "10px";
+      var tog = el("button", "btn sm fold");
+      tog.setAttribute("aria-expanded", "false");
+      tog.textContent = "Worlds — " + pod.length + " top-8 set" +
+                        (pod.length === 1 ? "" : "s");
+      var host = el("div");
+      host.hidden = true;
+      tog.onclick = function(){
+        var open = host.hidden;
+        host.hidden = !open;
+        tog.setAttribute("aria-expanded", open ? "true" : "false");
+      };
+      wrap.appendChild(tog);
+      host.appendChild(el("p", "sub",
+        "Frozen history — each World Championship keeps the regulation it " +
+        "was played in. The three divisions are separate metagames and are " +
+        "never pooled, so each set says which it came from."));
+      pod.forEach(function(e){
+        var card = el("div", "note");
+        card.style.marginBottom = "6px";
+        var head = el("div", "rname");
+        var place = e.r === 1 ? "1st" : e.r === 2 ? "2nd"
+                  : e.r === 3 ? "3rd" : e.r + "th";
+        head.appendChild(el("span", "tag" + (e.r <= 3 ? " gold" : ""),
+                            "Worlds " + e.y + " · " + e.d + " · " + place));
+        if (e.who) head.appendChild(document.createTextNode(e.who));
+        if (e.rec) head.appendChild(el("span", "tag", e.rec));
+        card.appendChild(head);
+        card.appendChild(factLine([
+          e.it ? e.it : "no item recorded",
+          e.ab ? e.ab : null,
+          e.na ? e.na : null]));
+        var mv = el("div", "rmeta");
+        (e.mv || []).forEach(function(n){
+          var mm2 = MOVE_BY[n];
+          var chip = el("span", "tag", n);
+          if (mm2) chip.title = catName(mm2.cat) + " · " +
+            (mm2.bp ? mm2.bp + " BP" : "— BP") + " · " +
+            (mm2.acc == null ? "—" : mm2.acc) + " acc";
+          mv.appendChild(chip);
+        });
+        if ((e.mv || []).length) card.appendChild(mv);
+        host.appendChild(card);
+      });
+      wrap.appendChild(host);
+      body.appendChild(wrap);
+    }
+
     if (ls && FIND.moves.length) {
       body.appendChild(el("h2", null, "The moves you asked for"));
       var l = el("div", "list");
@@ -313,13 +383,17 @@ function findDetail(p){
          the way searching anywhere else does. */
       body.appendChild(el("h2", null, "Movepool"));
       var ui = moveFilters(body, ls, function(){ drawPool(); },
-                           "Filter " + ls.length + " moves it learns");
+                           "Filter " + ls.length + " moves it learns",
+                           /* the whole pool, and its own usage numbers - this
+                              is the same question the build editor asks, so
+                              it gets the same answer */
+                           {cap: 200, usageOf: p.name});
       var pool = el("div", "list");
       body.appendChild(pool);
       function drawPool(){
         var hits = ui.apply();
         pool.innerHTML = "";
-        hits.slice(0, 60).forEach(function(m){
+        hits.forEach(function(m){
           pool.appendChild(moveRowFor(m, p.ab || [], p));
         });
         if (!hits.length)
@@ -436,6 +510,18 @@ function moveFilters(body, pool, onChange, placeholder, opts){
      of a movepool (player, 2026-09-15: "seria bueno poner filtro a los
      movimientos de mayor a menor uso por el %"). */
   var usageOf = (opts || {}).usageOf || null;
+  /* THE CAP LIVES HERE, WITH THE COUNT THAT REPORTS IT. Every caller used to
+     slice the result itself and this told the user a different number: the
+     count line said "first 80 shown" while a Pokemon's own sheet was slicing
+     at 60. Half the dex - 131 of the 264 learnsets are longer than 60 - had
+     its movepool quietly truncated with nothing on screen saying so, which is
+     what the player hit on Rillaboom (67 moves, 60 shown). `apply()` returns
+     the list already capped, so the two cannot disagree again.
+
+     A single Pokemon's movepool is not capped in practice: the longest in
+     Champions is Gallade at 106. The default 80 is for the whole move table,
+     where 512 rows really is too many to draw. */
+  var cap = (opts || {}).cap || 80;
   var sorter = {v: usageOf ? "usage" : "bp"};
   var F = {cat:{}, trait:{}, type:{}};
   function label(t){
@@ -561,8 +647,9 @@ function moveFilters(body, pool, onChange, placeholder, opts){
     count.textContent = hits.length === pool.length
       ? pool.length + " moves"
       : hits.length + " of " + pool.length + " moves";
-    if (hits.length > 80) count.textContent += " · first 80 shown";
-    return hits;
+    if (hits.length > cap)
+      count.textContent += " · first " + cap + " shown";
+    return hits.slice(0, cap);
   }
   return {apply:apply, input:inp};
 }
@@ -594,7 +681,16 @@ function factLine(parts){
    only ever answered for Guts, and the two that actually pick out moves were
    invisible. Every ability that hits is badged now, by name, because the
    question is "which moves, and with WHICH ability". They are alternatives,
-   never at once: a Pokemon has one ability per battle. */
+   never at once: a Pokemon has one ability per battle.
+
+   THIS ROW AND THE BUILD PICKER'S ARE THE SAME ROW, and they have to stay
+   that way. A Pokemon's moves are shown in exactly two places - the builder
+   and the search - and they had drifted: the picker gained the usage share,
+   the effective number and the target, and this one did not, so the same move
+   read differently depending on which screen you were on (player, 2026-09-15:
+   "la ficha de moves cambio en build y la de find igual deberia conservar los
+   mismos cambios para que se entienda de la misma forma en ambas partes").
+   Anything added to one belongs in the other. */
 function moveRowFor(m, ability, poke){
   var abils = ability == null ? []
             : (typeof ability === "string" ? [ability] : ability.slice());
@@ -613,22 +709,40 @@ function moveRowFor(m, ability, poke){
     h.appendChild(tag);
     hits.push({ability:a, hit:hit});
   });
+  /* How many of THIS Pokemon's players ran it - the same chip the builder
+     shows, on the same terms. Only where there IS a Pokemon: the "+ Move"
+     sheet searches the whole table with nobody in hand, and a share needs
+     something to be a share of. */
+  if (poke && poke.name) {
+    var utag = usageTag(splitPct(poke.name, "m", m.name), poke.name, "m");
+    if (utag) h.appendChild(utag);
+  }
   mm.appendChild(h);
   var facts = [catName(m.cat),
                m.bp ? m.bp + " BP" : "— BP",
                (m.acc == null ? "—" : m.acc) + " acc",
-               (m.pp == null ? "—" : m.pp) + " PP"];
-  /* spreadNote can carry TWO facts joined by its own separator - the x0.75
-     and "lands on your own ally too" - so it is split back apart rather than
-     pushed in as one long unbreakable span. */
-  spreadNote(m).split("·").forEach(function(bit){
-    if (bit.trim()) facts.push(bit.trim());
-  });
+               (m.pp == null ? "—" : m.pp) + " PP",
+               /* BP x accuracy, which is how this project ranks moves - and
+                  the number the picker sorts on by default */
+               m.bp ? Math.round(moveScore(m)) + " effective" : null];
+  /* THE SPREAD SENTENCE IS PROSE, NOT A FACT, and it has to go somewhere that
+     can wrap. A `.fact` is `white-space:nowrap` so that "100 acc" never breaks
+     between the number and the unit; "spread x0.75 while both targets are up,
+     full power with one" inside one is 413px wide on a 360px screen and runs
+     straight off the edge. The "spread" chip on the name already flags it;
+     the explanation goes below, where a line break is allowed. */
+  var spread = spreadNote(m).replace(/^\s*·\s*/, "").trim();
   hits.forEach(function(x){
     if (x.hit.x && m.bp)
       facts.push(Math.round(m.bp * x.hit.x) + " BP with " + x.ability);
   });
+  facts.push(m.target);
   mm.appendChild(factLine(facts));
+  if (spread) {
+    var sp = el("div", "st", spread.replace(/\s*·\s*/g, " · "));
+    sp.style.color = "var(--warn)";
+    mm.appendChild(sp);
+  }
   if (m.text) mm.appendChild(el("div", "st", m.text));
   hits.forEach(function(x){
     var w = el("div", "st");
@@ -656,7 +770,7 @@ function findInit(){
       function draw(){
         var hits = ui.apply();
         list.innerHTML = "";
-        hits.slice(0, 80).forEach(function(m){
+        hits.forEach(function(m){
           var r = el("button", "row");
           var mm = el("div", "rmain");
           var h = el("div", "rname");
@@ -786,11 +900,14 @@ function findInit(){
           if (ks.length && ks.indexOf(CLS[a] || "other") < 0) return false;
           return true;
         });
+        /* It said "215 abilities" while drawing 80 of them, which is a
+           count of the wrong thing. There are 215 in Champions, so there is
+           no reason to cut at all - all of them are drawn now. */
         count.textContent = hits.length === all.length
           ? all.length + " abilities"
           : hits.length + " of " + all.length + " abilities";
         list.innerHTML = "";
-        hits.slice(0, 80).forEach(function(a){
+        hits.forEach(function(a){
           var r = el("button", "row");
           var mm = el("div", "rmain");
           var h = el("div", "rname");
@@ -803,7 +920,11 @@ function findInit(){
             h.appendChild(el("span", "tag", it));
           });
           mm.appendChild(h);
-          mm.appendChild(el("div", "st", (C.ABIL[a] || "").slice(0, 110)));
+          /* The WHOLE text. Clicking this row sets the filter and closes the
+             sheet - it does not open the ability anywhere - so 110 characters
+             was the only place the description appeared, cut mid-sentence and
+             without even an ellipsis to admit it. */
+          mm.appendChild(el("div", "st", C.ABIL[a] || ""));
           r.appendChild(mm);
           r.onclick = function(){ FIND.ability = a; closeSheet(); findDraw(); };
           list.appendChild(r);
@@ -824,6 +945,9 @@ function findInit(){
     FIND.inChamp = !FIND.inChamp; findDraw(); };
   $("findInHome").onclick = function(){
     FIND.inHome = !FIND.inHome; findDraw(); };
+  $("findInMeta").title = "Only Pokemon somebody actually brought to a " +
+    "tournament in the current regulation - 291 of the 345 forms in the dex. " +
+    "It is the field, not the Pokedex.";
   $("findInMeta").onclick = function(){
     FIND.inMeta = !FIND.inMeta; findDraw(); };
 

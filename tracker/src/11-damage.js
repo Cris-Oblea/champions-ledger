@@ -1,8 +1,8 @@
 /* 11-damage.js - Smogon's engine, and the calculator screen around it.
    Part of the app; linked into one script by scripts/build_tracker_page.py. */
 import {
-  $, C, DEX, MOVE_BY, STAT_KEYS, STAT_LABEL, byName, catName, el, learnset,
-  natMult, statAt, toast, typeChip,
+  $, C, DEX, MOVE_BY, STAT_KEYS, STAT_LABEL, byName, capNote, catName, el,
+  learnset, natMult, statAt, toast, typeChip,
 } from "./01-data.js";
 import { closeSheet, openSheet } from "./04-nav.js";
 import { S } from "./02-state.js";
@@ -801,9 +801,13 @@ function calcPickSheet(which){
     function draw(){
       var q = inp.value.trim().toLowerCase();
       list.innerHTML = "";
-      DEX.filter(function(p){
+      /* 120, not 50. Picking the attacker used to draw a sixth of the dex
+         with nothing on screen saying so, so a Pokemon that was merely past
+         the cut looked like one the calculator did not know about. */
+      var all = DEX.filter(function(p){
         return !q || p.name.toLowerCase().indexOf(q) >= 0;
-      }).slice(0, 50).forEach(function(p){
+      });
+      all.slice(0, 120).forEach(function(p){
         var r = el("button", "row");
         var mm = el("div", "rmain");
         var h = el("div", "rname");
@@ -822,6 +826,7 @@ function calcPickSheet(which){
         };
         list.appendChild(r);
       });
+      capNote(list, Math.min(120, all.length), all.length, "forms");
       if (!list.children.length) list.appendChild(el("div", "empty", "Nothing matches"));
     }
     inp.oninput = draw;
@@ -875,13 +880,16 @@ function calcMoveSheet(){
     function draw(){
       var q = inp.value.trim().toLowerCase();
       list.innerHTML = "";
+      /* ALL of a movepool, not 60 of it. The longest in Champions is 106,
+         and 131 of the 264 learnsets are longer than 60 - so this was cutting
+         moves off half the dex with nothing saying so. */
       pool.filter(function(m){
         return !q || m.name.toLowerCase().indexOf(q) >= 0 ||
                m.type.toLowerCase().indexOf(q) >= 0;
       }).sort(function(x, y){
         return (y.bp || 0) * Math.min(100, y.acc || 100) -
                (x.bp || 0) * Math.min(100, x.acc || 100);
-      }).slice(0, 60).forEach(function(m){ list.appendChild(calcMoveRow(m)); });
+      }).forEach(function(m){ list.appendChild(calcMoveRow(m)); });
       if (!list.children.length) list.appendChild(el("div", "empty", "Nothing matches"));
     }
     inp.oninput = draw;
