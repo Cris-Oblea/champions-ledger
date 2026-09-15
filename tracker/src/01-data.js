@@ -256,6 +256,50 @@ function effectLine(name){
   return box;
 }
 
+/* ------------------------------------- what THIS Pokemon's players run ----
+   pokebase's per-Pokemon pages, off the live M-C ladder: of the people using
+   Kingambit, 99.1% run Sucker Punch, 37.6% hold a Chople Berry, 94% pick
+   Defiant, 86.9% go Adamant.
+
+   The global tables answer "how used is Sucker Punch". This answers the
+   question a build actually asks, which is a different question and the one
+   worth having while choosing.
+
+   Its own asset because it is fetched WEEKLY - the dex is rebuilt nightly, and
+   grouping them would re-download 206 KB every night that had not changed.
+
+   A Mega falls back to its base species: pokebase files usage under the
+   species people ladder with, and a Mega Charizard Y is a Charizard holding a
+   stone as far as the ladder is concerned. */
+function splitsFor(name){
+  var all = window.CHAMP_SPLITS || {};
+  if (all[name]) return all[name];
+  var p = byName[name];
+  return (p && p.species && all[p.species]) || null;
+}
+/* The percentage for one thing, or null when this Pokemon's players do not
+   run it at all - which is itself worth showing differently from 0%. */
+function splitPct(name, kind, what){
+  var s = splitsFor(name);
+  var rows = s && s[kind];
+  if (!rows) return null;
+  for (var i = 0; i < rows.length; i++) {
+    if (rows[i][0] === what) return rows[i][1];
+  }
+  return null;
+}
+/* A chip. Above 50% it is the norm, below 5% it is a fringe pick, and saying
+   which is more useful than the bare number. */
+function usageTag(pct){
+  if (pct == null) return null;
+  var t = el("span", "tag" + (pct >= 50 ? " ok" : pct < 5 ? " warn" : ""),
+             pct + "%");
+  t.title = pct >= 50 ? "Most of this Pokemon's players run this"
+          : pct < 5 ? "Very few of this Pokemon's players run this"
+          : "Some of this Pokemon's players run this";
+  return t;
+}
+
 /* ------------------------------------------------------- what leaves here --
    The surface of this part. Everything not named below is private to the file:
    `slug` (freeSlug is the only caller) and `toastT` (toast's own timer).
@@ -267,7 +311,7 @@ export {
   $, C, COSTS, DEX, FORMS, HOME_ALL, MEGAS_OF, MOVES, MOVE_BY, SORT,
   STAT_KEYS, STAT_LABEL, STONE_OF, TYPE_COLOR,
   bst, byName, catName, defence, dexLabel, dexNo, el, freeSlug, learnset,
-  effectChips, effectLine, effectOf,
+  effectChips, effectLine, effectOf, splitPct, splitsFor, usageTag,
   megasFor, natMult, rowMatches, setHomeAll, setSort, sortRows, statAt,
   statLine, toast, typeChip,
 };

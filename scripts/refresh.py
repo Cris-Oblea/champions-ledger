@@ -77,6 +77,14 @@ def stages(reg, deep=False):
         Stage("pokebase", "pokebase - ladder usage", pokebase, False),
         Stage("pikalytics", "Pikalytics - spreads, win rates, cores",
               pika, False),
+        # WHAT EACH POKEMON'S OWN PLAYERS RUN, from the live ladder: the moves,
+        # item, ability, nature and SP spread of the people using it, with
+        # percentages. Weekly, not nightly - 321 pages at 1.3 MB each is six
+        # minutes and 427 MB of someone else's bandwidth for numbers that
+        # drift slowly, so it rides with --deep like the Smogon analyses.
+        Stage("splits", "pokebase - what each Pokemon runs",
+              ["scripts/fetch_pokebase_splits.py"]
+              + (["--force"] if (reg or deep) else []), False),
         Stage("smogon", "Smogon - written analyses", smogon, False),
         Stage("smogon_calc", "Smogon - the Champions engine",
               ["scripts/fetch_smogon_calc.py"], False),
@@ -142,6 +150,8 @@ def stages(reg, deep=False):
         # it has to follow fetch_smogon or the panel serves yesterday's prose.
         Stage("analysis", "Smogon's analyses, for the app",
               ["scripts/build_analysis_data.py"]),
+        Stage("splitsdata", "per-Pokemon ladder splits, for the app",
+              ["scripts/build_splits_data.py"], False),
         Stage("tracker", "regenerate tracker/data.js",
               ["scripts/build_tracker_data.py"]),
         Stage("dexnos", "National Dex numbers (the order HOME lists in)",
