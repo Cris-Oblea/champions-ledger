@@ -364,10 +364,12 @@ def main():
         steps = [([PY, "scripts/build_tracker_page.py"], "the page")]
         if vendored:
             steps = [([PY, "scripts/build_tracker_data.py"], "data.js"),
+                     ([PY, "scripts/build_analysis_data.py"], "the analyses"),
                      ([PY, "scripts/build_engine_bundle.py"], "engine bundle")] + steps
         else:
-            out.append("no source cache here: using the committed data.js and "
-                       "engine bundle, rebuilding the page from them")
+            out.append("no source cache here: using the committed data.js, "
+                       "analyses and engine bundle, rebuilding the page from "
+                       "them")
         for argv, what in steps:
             rc, bout = sh(argv)
             if rc != 0:
