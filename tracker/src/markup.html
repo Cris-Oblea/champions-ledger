@@ -252,44 +252,35 @@
       <div class="panel" style="margin-bottom:10px">
         <div class="toggles" id="findChips"></div>
       </div>
+      <!-- ONE TABLE, NOT SEVEN. This started as a separate "Tiers" block with
+           a tab per stat, and the player replaced the idea with a better one
+           (2026-09-15): "en vez de ser varias tablas de tier por stat, que sea
+           una sola tabla, pero con filtros por stats... find ya cuenta con
+           filtros de tipo, abilities y move, habria que quitar el cuadro de
+           speed y colocar filtros per stat y cumpliria de mejor manera."
+
+           He is right, and it is the same argument the filters here were built
+           on: a tier list IS this list sorted by one column. Keeping it apart
+           meant a speed tier could not also be "and it learns Fake Out and I
+           own it", which is the question actually worth asking. So the two
+           fixed Speed boxes are gone, every stat can be filtered, and the sort
+           turns the result into that stat's tier list. -->
       <div class="btnrow" style="margin-bottom:10px">
         <button class="btn sm" id="findAddMove">+ Move</button>
         <button class="btn sm" id="findAddType">+ Type</button>
         <button class="btn sm" id="findAddAbility">+ Ability</button>
+        <button class="btn sm" id="findAddStat">+ Stat</button>
         <button class="btn sm" id="findInChamp" aria-pressed="false">In Champions</button>
         <button class="btn sm" id="findInHome" aria-pressed="false">In HOME</button>
+        <button class="btn sm" id="findInMeta" aria-pressed="false">Brought to M-C</button>
         <button class="btn sm quiet" id="findClear">Clear</button>
       </div>
       <div class="panel" style="margin-bottom:12px">
-        <div class="grid2">
-          <div class="field"><label class="f" for="findBst">BST at least</label>
-            <input type="number" id="findBst" placeholder="any"></div>
-          <div class="field"><label class="f" for="findSpeMin">Speed at least</label>
-            <input type="number" id="findSpeMin" placeholder="any"></div>
-          <div class="field"><label class="f" for="findSpeMax">Speed at most</label>
-            <input type="number" id="findSpeMax" placeholder="any"></div>
-        </div>
-        <p class="sub" style="margin:0">Speed at most is the Trick Room filter.</p>
+        <p class="sub" style="margin:0 0 6px">Sort — pick a stat and the list
+          becomes that stat's tier order, highest first.</p>
+        <div class="toggles" id="findSort"></div>
       </div>
       <div id="findOut"></div>
-
-      <!-- ===================================================== TIERS ====
-           A tier list is a different question from a filter, so it gets its
-           own block rather than another row of inputs: not "who matches all
-           of this" but "where does this Pokemon sit in the order". Speed is
-           the one that decides turns, so it leads; the other five are the
-           same list read down a different column, which is why they are tabs
-           over one list and not six screens (player, 2026-09-15: "con
-           respecto a los tiers, seria interesante tenerlos en find en
-           pestanas separadas"). -->
-      <h2 style="margin-top:26px">Tiers</h2>
-      <p class="sub">Where everything sits on one stat. The order is what
-        decides a turn, so it is worth reading straight rather than filtering
-        for. Level 50, and the three numbers are the base, what it is with no
-        SP in it, and the most it can reach — 32 SP and a boosting nature.</p>
-      <div class="toggles" id="tierStat" style="margin-bottom:8px"></div>
-      <div class="toggles" id="tierScope" style="margin-bottom:10px"></div>
-      <div id="tierOut"></div>
 
       <!-- ==================================================== WORLDS ====
            HISTORY, and labelled as history. A World Championship is played

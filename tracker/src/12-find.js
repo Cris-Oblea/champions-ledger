@@ -2,8 +2,8 @@
    Part of the app; linked into one script by scripts/build_tracker_page.py. */
 import {
   $, C, DEX, MOVES, MOVE_BY, SORT, STAT_KEYS, STAT_LABEL, TYPE_COLOR, bst,
-  byName, catName, effectLine, el, learnset, splitPct, statAt, statLine,
-  toast, typeChip,
+  byName, catName, dexNo, effectLine, el, learnset, splitPct, statAt,
+  statLine, toast, typeChip,
 } from "./01-data.js";
 import { S, boxRows, originOf, ownedNames } from "./02-state.js";
 import { closeSheet, fbtn, openSheet } from "./04-nav.js";
@@ -17,9 +17,30 @@ import { fill, note } from "./13-boot.js";
    "do I have this in Champions right now" - the question that decides whether
    a Pokemon is playable today - separately from "can I bring it in from
    HOME". Two flags, and both on means either box. */
+/* STATS ARE A FILTER LIKE ANY OTHER NOW, and the sort is what makes this the
+   tier list. It used to be two fixed boxes - "Speed at least", "Speed at
+   most" - which answered one stat and only by filtering, so "where does this
+   sit in the Speed order" had no answer here at all and lived in a separate
+   block with a tab per stat. The player collapsed the two ideas (2026-09-15):
+   one table, per-stat filters, and Find's existing type / ability / move
+   filters compose with them. A speed tier that is also "learns Fake Out and I
+   own one" is a question the old shape could not ask.
+
+   `stats` is {key: {min, max}} over the six plus `bst`. `sort` is a stat key,
+   "bst" or "dex"; any stat sorts descending, which IS the tier reading. */
 var FIND = {moves: [], types: [], typeMode: "and", ability: "",
-            inChamp: false, inHome: false,
-            minBst: 0, maxSpe: 0, minSpe: 0, cat: ""};
+            inChamp: false, inHome: false, inMeta: false,
+            stats: {}, sort: "bst", cat: ""};
+/* bst is not a base stat but it filters and sorts exactly like one, so it
+   rides in the same table rather than keeping its own input. */
+var FIND_STATS = [["bst","BST"],["hp","HP"],["atk","Atk"],["def","Def"],
+                  ["spa","SpA"],["spd","SpD"],["spe","Spe"]];
+function statOf(p, key){
+  return key === "bst" ? bst(p) : p.b[STAT_KEYS.indexOf(key)];
+}
+function statLabel(key){
+  return key === "bst" ? "BST" : STAT_LABEL[key];
+}
 
 function findDraw(){
   var host = $("findChips");
@@ -55,12 +76,20 @@ function findDraw(){
     function(){ FIND.inChamp = false; findDraw(); });
   if (FIND.inHome) chip("in HOME",
     function(){ FIND.inHome = false; findDraw(); });
-  if (FIND.minBst) chip("BST " + FIND.minBst + "+",
-    function(){ FIND.minBst = 0; findDraw(); });
-  if (FIND.minSpe) chip("Speed " + FIND.minSpe + "+",
-    function(){ FIND.minSpe = 0; findDraw(); });
-  if (FIND.maxSpe) chip("Speed " + FIND.maxSpe + " or less",
-    function(){ FIND.maxSpe = 0; findDraw(); });
+  if (FIND.inMeta) chip("brought to an M-C tournament",
+    function(){ FIND.inMeta = false; findDraw(); });
+  /* One chip per bound, so each can be dropped on its own - "Spe 100+" and
+     "Spe 50 or less" are two different questions and removing one should not
+     take the other with it. */
+  FIND_STATS.forEach(function(o){
+    var b = FIND.stats[o[0]];
+    if (!b) return;
+    if (b.min) chip(o[1] + " " + b.min + "+", function(){
+      delete FIND.stats[o[0]].min; tidyStat(o[0]); findDraw(); });
+    if (b.max) chip(o[1] + " " + b.max + " or less", function(){
+      delete FIND.stats[o[0]].max; tidyStat(o[0]); findDraw(); },
+      o[0] === "spe" ? "ok" : "", "Speed at most is the Trick Room filter");
+  });
   if (!host.children.length) {
     host.appendChild(el("p", "sub",
       "No filters yet. Add one below - they all have to be true at once."));
@@ -74,6 +103,11 @@ function findRun(){
   var own = ownedNames();
   var inHome = {};
   boxRows("home").forEach(function(r){ inHome[r.name] = 1; });
+  /* "Brought to M-C" is the splits table read as a membership test: a Pokemon
+     with a row there is one somebody actually took to an event this
+     regulation. It is the difference between a tier list of all 345 forms and
+     one of the field. */
+  var seen = ((window.CHAMP_SPLITS || {}).p) || {};
   var hits = DEX.filter(function(p){
     if (FIND.inChamp || FIND.inHome) {
       var c = FIND.inChamp && ((p.name in own) || (p.species in own));
@@ -87,9 +121,12 @@ function findRun(){
       if (!tm) return false;
     }
     if (FIND.ability && (p.ab || []).indexOf(FIND.ability) < 0) return false;
-    if (FIND.minBst && bst(p) < FIND.minBst) return false;
-    if (FIND.minSpe && p.b[5] < FIND.minSpe) return false;
-    if (FIND.maxSpe && p.b[5] > FIND.maxSpe) return false;
+    if (FIND.inMeta && !(seen[p.name] || seen[p.species])) return false;
+    for (var k in FIND.stats) {
+      var b = FIND.stats[k], v = statOf(p, k);
+      if (b.min && v < b.min) return false;
+      if (b.max && v > b.max) return false;
+    }
     if (FIND.moves.length) {
       var ls = learnset(p.name);
       if (!ls) return false;
@@ -103,7 +140,9 @@ function findRun(){
   var head = el("p", "sub");
   head.textContent = hits.length + " of " + DEX.length + " forms match" +
     (FIND.moves.length > 1
-      ? " - all " + FIND.moves.length + " moves on the same Pokemon" : "");
+      ? " - all " + FIND.moves.length + " moves on the same Pokemon" : "") +
+    (FIND.sort === "dex" ? ", in dex order"
+     : ", by " + statLabel(FIND.sort) + ", highest first");
   out.appendChild(head);
 
   if (!hits.length) {
@@ -114,9 +153,21 @@ function findRun(){
         : "Nothing learns all of that. Drop a filter and try again."));
     return;
   }
-  hits.sort(function(a, b){ return bst(b) - bst(a); });
+  /* THE SORT IS THE TIER LIST. Ordering by one stat, descending, is exactly
+     what a tier chart is - there is no second view to build. Dex order is
+     kept as the one non-ranking answer, for "what is in this bracket". */
+  if (FIND.sort === "dex") {
+    hits.sort(function(a, b){
+      return dexNo(a.name) - dexNo(b.name) || a.name.localeCompare(b.name);
+    });
+  } else {
+    hits.sort(function(a, b){
+      return statOf(b, FIND.sort) - statOf(a, FIND.sort) ||
+             a.name.localeCompare(b.name);
+    });
+  }
   var list = el("div", "list");
-  hits.slice(0, 80).forEach(function(p){
+  hits.slice(0, 120).forEach(function(p){
     var here = (p.name in own) || (p.species in own);
     var r = el("button", "row" + (here ? " perm" : ""));
     var m = el("div", "rmain");
@@ -137,17 +188,56 @@ function findRun(){
     m.appendChild(h);
     var meta = el("div", "rmeta");
     p.types.forEach(function(t){ meta.appendChild(typeChip(t)); });
-    meta.appendChild(el("span", "mono", "BST " + bst(p) + "  ·  " + statLine(p)));
-
+    /* ALL SIX STATS, UNLESS ONE OF THEM IS THE QUESTION. Ranking by Speed and
+       then printing "65 HP / 154 Atk / 60 Def / 75 SpA / 60 SpD / 151 Spe"
+       above the Speed tier row says the same number twice and buries it in
+       five that were not asked about - 138px of phone per row, five rows to a
+       screen. When a stat is being ranked, its own row below answers it and
+       this line stays out of the way. */
+    var ranking = FIND.sort !== "dex" && FIND.sort !== "bst";
+    meta.appendChild(el("span", "mono",
+      ranking ? "BST " + bst(p) : "BST " + bst(p) + "  ·  " + statLine(p)));
     meta.appendChild(el("span", null, (p.ab || []).join(" / ")));
     m.appendChild(meta);
+    /* THE THREE NUMBERS THAT MAKE IT A TIER LIST, on the stat being sorted
+       by. A base stat alone cannot be compared against a real Pokemon and
+       neither can the level-50 value with no SP in it, because the whole
+       question is "can I outrun it if I invest". So: base, the floor at 0 SP,
+       and the ceiling at 32 - the per-stat cap - with a nature that raises it.
+       statAt() is the formula verified against all 504 rows of
+       data/meta/speed_tiers.json, never a second copy. */
+    if (ranking) {
+      var isHp = FIND.sort === "hp";
+      var base = statOf(p, FIND.sort);
+      var tier = el("div", "rmeta");
+      var row = el("span", "statrow");
+      row.appendChild(el("span", "mono fact", statLabel(FIND.sort) + ":"));
+      row.appendChild(el("span", "mono fact", base + " base"));
+      row.appendChild(el("span", "mono fact",
+        statAt(base, 0, isHp, 1) + " at 0 SP"));
+      row.appendChild(el("span", "mono fact",
+        statAt(base, 32, isHp, isHp ? 1 : 1.1) + " max"));
+      row.title = isHp
+        ? "Level 50. HP takes no nature, so the ceiling is 32 SP alone."
+        : "Level 50. The ceiling is 32 SP - the per-stat cap - and a nature "
+          + "that raises this stat.";
+      tier.appendChild(row);
+      m.appendChild(tier);
+    }
     r.appendChild(m);
     r.onclick = function(){ findDetail(p); };
     list.appendChild(r);
   });
   out.appendChild(list);
-  if (hits.length > 80) out.appendChild(el("p", "sub",
-    "Showing the 80 highest BST. Narrow it further to see the rest."));
+  if (hits.length > 120) out.appendChild(el("p", "sub",
+    "Showing the first 120. Narrow it further to see the rest."));
+}
+
+/* A stat bound is dropped entirely once neither end is set, so the chip row
+   does not keep an empty entry alive. */
+function tidyStat(key){
+  var b = FIND.stats[key];
+  if (b && !b.min && !b.max) delete FIND.stats[key];
 }
 
 function findDetail(p){
@@ -752,22 +842,95 @@ function findInit(){
     FIND.inChamp = !FIND.inChamp; findDraw(); };
   $("findInHome").onclick = function(){
     FIND.inHome = !FIND.inHome; findDraw(); };
+  $("findInMeta").onclick = function(){
+    FIND.inMeta = !FIND.inMeta; findDraw(); };
+
+  /* ONE STAT AT A TIME, with both ends, because that is how the question is
+     actually shaped: "Speed 100 or more" and "Speed 50 or less" are the two
+     halves of speed control and each is asked on its own. Twelve number boxes
+     on a phone would be a wall; this is the same "+ Move" / "+ Type" gesture
+     the rest of the filters use, and each bound becomes its own chip. */
+  $("findAddStat").onclick = function(){
+    var pick = "spe";
+    openSheet("Filter by a stat", function(body){
+      var row = el("div", "toggles");
+      row.style.marginBottom = "10px";
+      FIND_STATS.forEach(function(o){
+        var t = el("button", "tog", o[1]);
+        t.setAttribute("aria-pressed", o[0] === pick ? "true" : "false");
+        t.onclick = function(){
+          pick = o[0];
+          Array.prototype.forEach.call(row.children, function(x){
+            x.setAttribute("aria-pressed", x === t ? "true" : "false");
+          });
+        };
+        row.appendChild(t);
+      });
+      body.appendChild(el("div", "sub", "Which stat"));
+      body.appendChild(row);
+      var g = el("div", "grid2");
+      var fmin = el("div", "field");
+      fmin.appendChild(el("label", "f", "At least"));
+      var imin = el("input"); imin.type = "number"; imin.placeholder = "any";
+      fmin.appendChild(imin); g.appendChild(fmin);
+      var fmax = el("div", "field");
+      fmax.appendChild(el("label", "f", "At most"));
+      var imax = el("input"); imax.type = "number"; imax.placeholder = "any";
+      fmax.appendChild(imax); g.appendChild(fmax);
+      body.appendChild(g);
+      body.appendChild(el("p", "sub",
+        "Speed at most is the Trick Room filter."));
+      body._apply = function(){
+        var lo = Number(imin.value) || 0, hi = Number(imax.value) || 0;
+        if (!lo && !hi) { closeSheet(); return; }
+        var b = FIND.stats[pick] || (FIND.stats[pick] = {});
+        if (lo) b.min = lo; if (hi) b.max = hi;
+        /* sorting by the stat just filtered is what you want nine times out
+           of ten - you asked about it, so the list ranks by it */
+        FIND.sort = pick;
+        paintSort();
+        closeSheet();
+        findDraw();
+      };
+      setTimeout(function(){ imin.focus(); }, 60);
+    }, [
+      fbtn("Apply", "primary", function(){ $("sheetBody")._apply(); }),
+      fbtn("Cancel", "", closeSheet)
+    ]);
+  };
+
+  paintSort();
   $("findClear").onclick = function(){
     FIND.moves = []; FIND.types = []; FIND.typeMode = "and";
     FIND.ability = "";
-    FIND.inChamp = false; FIND.inHome = false;
-    FIND.minBst = 0; FIND.minSpe = 0; FIND.maxSpe = 0;
-    $("findBst").value = ""; $("findSpeMin").value = ""; $("findSpeMax").value = "";
+    FIND.inChamp = false; FIND.inHome = false; FIND.inMeta = false;
+    FIND.stats = {}; FIND.sort = "bst";
+    $("findInMeta").setAttribute("aria-pressed", "false");
+    paintSort();
     findDraw();
   };
-  $("findBst").oninput = function(){
-    FIND.minBst = Number($("findBst").value) || 0; findDraw(); };
-  $("findSpeMin").oninput = function(){
-    FIND.minSpe = Number($("findSpeMin").value) || 0; findDraw(); };
-  $("findSpeMax").oninput = function(){
-    FIND.maxSpe = Number($("findSpeMax").value) || 0; findDraw(); };
-  tierInit();
   worldInit();
+}
+
+/* The sort row. Dex order plus BST and the six stats - picking one turns the
+   result list into that stat's tier order, which is the whole of what the
+   separate Tiers block used to be. */
+function paintSort(){
+  var row = $("findSort");
+  if (!row) return;
+  row.innerHTML = "";
+  [["dex","Dex #"]].concat(FIND_STATS).forEach(function(o){
+    var t = el("button", "tog", o[1]);
+    t.setAttribute("aria-pressed", o[0] === FIND.sort ? "true" : "false");
+    t.onclick = function(){
+      FIND.sort = o[0];
+      Array.prototype.forEach.call(row.children, function(x){
+        x.setAttribute("aria-pressed", x === t ? "true" : "false");
+      });
+      findRun();
+    };
+    row.appendChild(t);
+  });
 }
 
 /* ----------------------------------------------------------------- worlds --
@@ -868,137 +1031,6 @@ function worldDraw(){
     list.appendChild(r);
   });
   out.appendChild(list);
-}
-
-/* ------------------------------------------------------------------ tiers --
-   The order on one stat, which is a different question from the filters above
-   and gets its own block for that reason. Speed decides who moves, so it
-   leads; the other five are the same list read down a different column, which
-   is why they are tabs over one list rather than six screens.
-
-   THE THREE NUMBERS ARE THE POINT. A base stat alone cannot be compared
-   against a real Pokemon, and the level-50 value with no SP in it cannot
-   either, because the whole question is "can I outrun it if I invest". So
-   every row prints base, the floor (0 SP) and the ceiling (32 SP, the cap,
-   and a boosting nature). statAt() is the formula this repo verified against
-   all 504 rows of data/meta/speed_tiers.json - never a second copy of it.
-
-   SCOPE MATTERS MORE THAN THE LIST. All 345 forms includes a great deal that
-   nobody brings; the M-C tournament set is the 283 that were actually played,
-   and "mine" is the only list a decision can be made from today. */
-var TIER = {stat: "spe", scope: "meta"};
-var TIER_STATS = [["spe","Speed"],["atk","Atk"],["spa","SpA"],
-                  ["def","Def"],["spd","SpD"],["hp","HP"],["bst","BST"]];
-
-function tierInit(){
-  /* Emptied first. findInit() is called once, from boot, and if that ever
-     stops being true a second call would append a second row of tabs rather
-     than fail - which is the kind of thing that is noticed months later. */
-  var srow = $("tierStat"); srow.innerHTML = "";
-  TIER_STATS.forEach(function(o){
-    var t = el("button", "tog", o[1]);
-    t.setAttribute("aria-pressed", o[0] === TIER.stat ? "true" : "false");
-    t.onclick = function(){
-      TIER.stat = o[0];
-      Array.prototype.forEach.call(srow.children, function(x){
-        x.setAttribute("aria-pressed", x === t ? "true" : "false");
-      });
-      tierDraw();
-    };
-    srow.appendChild(t);
-  });
-  var prow = $("tierScope"); prow.innerHTML = "";
-  [["meta","Brought to M-C"],["mine","Mine"],["all","Every form"]]
-    .forEach(function(o){
-      var t = el("button", "tog", o[1]);
-      t.setAttribute("aria-pressed", o[0] === TIER.scope ? "true" : "false");
-      t.onclick = function(){
-        TIER.scope = o[0];
-        Array.prototype.forEach.call(prow.children, function(x){
-          x.setAttribute("aria-pressed", x === t ? "true" : "false");
-        });
-        tierDraw();
-      };
-      prow.appendChild(t);
-    });
-  tierDraw();
-}
-
-function tierDraw(){
-  var out = $("tierOut");
-  if (!out) return;
-  out.innerHTML = "";
-  var key = TIER.stat;
-  var idx = STAT_KEYS.indexOf(key);
-  var own = ownedNames();
-  var inHome = {};
-  boxRows("home").forEach(function(r){ inHome[r.name] = 1; });
-  var seen = (window.CHAMP_SPLITS || {}).p || {};
-
-  var rows = DEX.filter(function(p){
-    if (TIER.scope === "mine")
-      return (p.name in own) || (p.species in own) ||
-             (p.name in inHome) || (p.species in inHome);
-    if (TIER.scope === "meta")
-      return !!(seen[p.name] || seen[p.species]);
-    return true;
-  });
-  var val = function(p){ return key === "bst" ? bst(p) : p.b[idx]; };
-  rows.sort(function(a, b){
-    return val(b) - val(a) || a.name.localeCompare(b.name);
-  });
-
-  var head = el("p", "sub");
-  head.textContent = rows.length + " " +
-    (TIER.scope === "mine" ? "in your boxes"
-     : TIER.scope === "meta" ? "brought to an M-C tournament"
-     : "forms") + ", by " +
-    (key === "bst" ? "BST" : STAT_LABEL[key]) + ", highest first";
-  out.appendChild(head);
-  if (!rows.length) {
-    out.appendChild(el("div", "empty", TIER.scope === "mine"
-      ? "Nothing in the boxes yet."
-      : "No usage table in this build — run scripts/fetch_pokebase_splits.py."));
-    return;
-  }
-
-  var list = el("div", "list");
-  rows.slice(0, 120).forEach(function(p){
-    var mine = (p.name in own) || (p.species in own);
-    var r = el("button", "row" + (mine ? " perm" : ""));
-    var m = el("div", "rmain");
-    var h = el("div", "rname");
-    h.appendChild(document.createTextNode(p.name));
-    if (p.mega) h.appendChild(el("span", "tag mega", "mega"));
-    if (mine) h.appendChild(el("span", "tag ok", "yours"));
-    m.appendChild(h);
-    var meta = el("div", "rmeta");
-    p.types.forEach(function(t){ meta.appendChild(typeChip(t)); });
-    if (key === "bst") {
-      meta.appendChild(el("span", "mono", "BST " + bst(p)));
-      meta.appendChild(el("span", null, statLine(p)));
-    } else {
-      var isHp = key === "hp";
-      var base = p.b[idx];
-      var floor = statAt(base, 0, isHp, 1);
-      var ceil = statAt(base, 32, isHp, isHp ? 1 : 1.1);
-      var sp = el("span", "mono",
-        base + " base  ·  " + floor + " at 0 SP  ·  " + ceil + " max");
-      sp.title = isHp
-        ? "Level 50. HP takes no nature, so the ceiling is 32 SP alone."
-        : "Level 50. The ceiling is 32 SP - the per-stat cap - and a nature "
-          + "that raises this stat.";
-      meta.appendChild(sp);
-    }
-    m.appendChild(meta);
-    r.appendChild(m);
-    r.onclick = function(){ findDetail(p); };
-    list.appendChild(r);
-  });
-  out.appendChild(list);
-  if (rows.length > 120)
-    out.appendChild(el("p", "sub", "Showing the top 120. Narrow the scope to "
-      + "see further down."));
 }
 
 /* ------------------------------------------------------------ diagnostics --
@@ -1259,5 +1291,5 @@ function drawDupeHome(){
 export {
   DIAG_LATEST, FIND, checkLatest, drawDiag, drawDupeHome, findDetail, findDraw,
   findInit, findRun, itemTags, moveFilters, moveRowFor, moveScore, priorityTag,
-  factLine, spreadNote, spreadTags, tierDraw, worldDraw,
+  factLine, spreadNote, spreadTags, worldDraw,
 };

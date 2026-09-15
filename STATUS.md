@@ -138,6 +138,23 @@ throughout - and `build_splits_data.py --check` asserts what every column is a
 share of, on every Pokemon, inside the gate. A source that quietly changes a
 denominator is caught rather than silently redefining every number on screen.
 
+### A tier list is Find, sorted (2026-09-15)
+
+Speed tiers were built as their own block with a tab per stat, and the player
+replaced the idea with a better one the same afternoon: "en vez de ser varias
+tablas de tier por stat, que sea una sola tabla, pero con filtros por stats...
+find ya cuenta con filtros de tipo, abilities y move, habria que quitar el
+cuadro de speed y colocar filtros per stat y cumpliria de mejor manera."
+
+He is right, and it is the argument Find was built on. A tier list IS the
+result list sorted by one column; keeping it separate meant a speed tier could
+never also be "and it learns Fake Out and I own one", which is the question
+worth asking. The two fixed Speed boxes are gone, every stat filters with both
+bounds through the same `+ Stat` gesture as `+ Move`, a third scope toggle
+narrows to what was actually brought to an M-C tournament, and the sort row
+turns the result into any stat's tier order - with the base, the floor at 0 SP
+and the ceiling at 32 SP plus nature on every row.
+
 ## Items and abilities are numbers now, not adjectives (2026-09-14)
 
 **Measured first, because the complaint deserved a measurement: of the 199

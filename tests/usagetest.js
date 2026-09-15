@@ -200,37 +200,66 @@ setTimeout(() => {
   }, 400);
 
   function tiers(){
-    console.log("\n  tiers en Find, una pestana por estadistica");
+    console.log("\n  una sola tabla, con filtros y orden por stat");
+    /* This started as a separate "Tiers" block with a tab per stat. The player
+       replaced the idea with a better one: Find already filters by type,
+       ability and move, so a tier list is just this list sorted by one column
+       - and keeping it apart meant a speed tier could never also be "and it
+       learns Fake Out and I own it". The two fixed Speed boxes are gone. */
     w.go("find");
     setTimeout(() => {
-      const tab = t => [...d.querySelectorAll("#tierStat .tog")]
+      const sortTab = t => [...d.querySelectorAll("#findSort .tog")]
         .find(b => b.textContent.trim() === t);
-      ["Speed","Atk","SpA","Def","SpD","HP","BST"].forEach(t =>
-        ok("pestana " + t, !!tab(t), true));
-      ok("Speed es la que viene puesta",
-         tab("Speed").getAttribute("aria-pressed"), "true");
-      const rows = () => [...d.querySelectorAll("#tierOut .row")];
-      const val = r => Number(
-        (r.querySelector(".mono").textContent.match(/^(\d+) base/) || [])[1]);
-      let v = rows().map(val);
+      ["Dex #","BST","HP","Atk","Def","SpA","SpD","Spe"].forEach(t =>
+        ok("orden por " + t, !!sortTab(t), true));
+      ok("las cajas fijas de Speed ya no existen",
+         !d.getElementById("findSpeMin") && !d.getElementById("findSpeMax") &&
+         !d.getElementById("findBst"), true);
+      ok("y hay un + Stat en su lugar", !!d.getElementById("findAddStat"), true);
+      ok("BST es el orden por defecto",
+         sortTab("BST").getAttribute("aria-pressed"), "true");
+
+      const rows = () => [...d.querySelectorAll("#findOut .row")];
+      const bstOf = r => Number(
+        r.querySelector(".mono").textContent.match(/BST (\d+)/)[1]);
+      const v = rows().map(bstOf);
       ok("hay filas", v.length > 20, true);
-      ok("ordenadas de mayor a menor",
-         v.every((x, i) => i === 0 || v[i - 1] >= x), true);
-      ok("y dicen el techo con 32 SP",
+      ok("ordenado por BST", v.every((x,i) => i===0 || v[i-1] >= x), true);
+      ok("BST no trae fila de tier", !rows()[0].querySelector(".statrow"), true);
+
+      click(sortTab("Spe"));
+      const tierNum = r => {
+        const sr = r.querySelector(".statrow");
+        return sr ? Number(sr.textContent.match(/(\d+) base/)[1]) : null;
+      };
+      const sp = rows().map(tierNum);
+      ok("cambiar a Spe reordena la misma tabla",
+         sp.every((x,i) => i===0 || sp[i-1] >= x), true);
+      ok("y cada fila trae los tres numeros",
          /at 0 SP/.test(rows()[0].textContent) &&
          /max/.test(rows()[0].textContent), true);
-      const speedTop = v[0];
-      click(tab("Atk"));
-      const v2 = rows().map(val);
-      ok("cambiar de pestana cambia el orden", v2[0] !== speedTop, true);
-      ok("y sigue ordenado",
-         v2.every((x, i) => i === 0 || v2[i - 1] >= x), true);
-      const scope = t => [...d.querySelectorAll("#tierScope .tog")]
-        .find(b => b.textContent.trim() === t);
-      ok("y el alcance se puede cambiar", !!scope("Mine"), true);
-      click(scope("Mine"));
-      ok("Mine deja solo lo suyo", rows().length, 1);
-      ok("y es Rillaboom", /Rillaboom/.test(rows()[0].textContent), true);
+      ok("el encabezado dice por que ordena",
+         /by Spe, highest first/.test(
+           d.querySelector("#findOut .sub").textContent), true);
+
+      /* The row count is capped at 120, so both lists would read 120 and the
+         filter would look like it did nothing. The header carries the real
+         number. */
+      const matched = () => Number(
+        d.querySelector("#findOut .sub").textContent.match(/^(\d+) of/)[1]);
+      const all = matched();
+      click(d.getElementById("findInMeta"));
+      const meta = matched();
+      ok("\"Brought to M-C\" acota la lista (" + meta + " de " + all + ")",
+         meta > 0 && meta < all, true);
+      ok("y lo dice en los chips",
+         /brought to an M-C tournament/.test(
+           d.getElementById("findChips").textContent), true);
+      click(d.getElementById("findClear"));
+      ok("Clear lo deja limpio",
+         d.getElementById("findInMeta").getAttribute("aria-pressed"), "false");
+      ok("y vuelve a BST",
+         sortTab("BST").getAttribute("aria-pressed"), "true");
       worlds();
     }, 300);
   }
