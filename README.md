@@ -35,7 +35,7 @@ request returns nothing.
 | **Champs / HOME** | What is in each box, what came from where, and what can still leave the game |
 | **Builds** | Every set written, and the **Teams** made of them — six slots, the item each holds, and the clauses checked. Every move, ability, nature and spread carries what this Pokemon's own players run |
 | **Damage Calc.** | Real damage rolls, running Smogon's Champions engine in the page |
-| **Find** | "Who learns Imprison *and* Wide Guard *and* Protect" — filters that stack, and sorting by any stat turns the same list into that stat's tier order, either way up. A **Worlds medal** on anything that finished top 8, with the exact set it played. Plus **Worlds**: what the field actually brought, per championship |
+| **Find** | "Who learns Imprison *and* Wide Guard *and* Protect" — filters that stack, and sorting by any stat turns the same list into that stat's tier order, either way up. A **Worlds medal** on anything that finished top 8, with the exact set it played — filed under the form that was registered, and the stone says which Mega it became. Plus **Worlds**: what the field actually brought, per championship |
 | **Items** | Every item, what it does, what it costs, and which move or ability it serves |
 | **GTS** | Open trades, what a chip is worth, and what it can realistically fetch |
 | **Profile** | Box capacity, and everything else derived so it cannot go stale |

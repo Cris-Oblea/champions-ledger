@@ -40,7 +40,7 @@ import { fill, note } from "./13-boot.js";
    `sort` is a stat key, "bst" or "dex". `dir` is "desc" or "asc"; tapping the
    stat you are already on flips it. */
 var FIND = {moves: [], types: [], typeMode: "and", ability: "",
-            inChamp: false, inHome: false, inMeta: false,
+            inChamp: false, inHome: false,
             sort: "bst", dir: "desc", cat: ""};
 /* bst is not a base stat but it filters and sorts exactly like one, so it
    rides in the same table rather than keeping its own input. */
@@ -87,11 +87,6 @@ function findDraw(){
     function(){ FIND.inChamp = false; findDraw(); });
   if (FIND.inHome) chip("in HOME",
     function(){ FIND.inHome = false; findDraw(); });
-  /* "Brought to M-C" meant nothing to the player - "ese filtro no lo
-     entiendo". The chip says the whole sentence now, because a chip is the
-     only place a phone user can read it: there is no hover. */
-  if (FIND.inMeta) chip("someone played it in an M-C tournament",
-    function(){ FIND.inMeta = false; findDraw(); });
 
   if (!host.children.length) {
     host.appendChild(el("p", "sub",
@@ -106,11 +101,6 @@ function findRun(){
   var own = ownedNames();
   var inHome = {};
   boxRows("home").forEach(function(r){ inHome[r.name] = 1; });
-  /* "Brought to M-C" is the splits table read as a membership test: a Pokemon
-     with a row there is one somebody actually took to an event this
-     regulation. It is the difference between a tier list of all 345 forms and
-     one of the field. */
-  var seen = ((window.CHAMP_SPLITS || {}).p) || {};
   var hits = DEX.filter(function(p){
     if (FIND.inChamp || FIND.inHome) {
       var c = FIND.inChamp && ((p.name in own) || (p.species in own));
@@ -124,7 +114,6 @@ function findRun(){
       if (!tm) return false;
     }
     if (FIND.ability && (p.ab || []).indexOf(FIND.ability) < 0) return false;
-    if (FIND.inMeta && !(seen[p.name] || seen[p.species])) return false;
     if (FIND.moves.length) {
       var ls = learnset(p.name);
       if (!ls) return false;
@@ -350,6 +339,19 @@ function findDetail(p){
           e.it ? e.it : "no item recorded",
           e.ab ? e.ab : null,
           e.na ? e.na : null]));
+        /* THE STONE SAYS IT MEGA EVOLVED, AND SAYS INTO WHAT. The ability
+           above is the BASE one - that is what a teamlist records and it is
+           correct, because it is the ability the Pokemon actually has until
+           it evolves. A Mega has exactly one ability, so the stone settles
+           what it becomes; that is derived rather than left to be worked out
+           (player, 2026-09-15: "esa se sabe por descarte"). */
+        if (e.mg) {
+          var mg = el("div", "st");
+          mg.style.color = "var(--mega)";
+          mg.textContent = "Mega Evolves into " + e.mg +
+            (e.mgab ? " — ability becomes " + e.mgab : "");
+          card.appendChild(mg);
+        }
         var mv = el("div", "rmeta");
         (e.mv || []).forEach(function(n){
           var mm2 = MOVE_BY[n];
@@ -945,19 +947,13 @@ function findInit(){
     FIND.inChamp = !FIND.inChamp; findDraw(); };
   $("findInHome").onclick = function(){
     FIND.inHome = !FIND.inHome; findDraw(); };
-  $("findInMeta").title = "Only Pokemon somebody actually brought to a " +
-    "tournament in the current regulation - 291 of the 345 forms in the dex. " +
-    "It is the field, not the Pokedex.";
-  $("findInMeta").onclick = function(){
-    FIND.inMeta = !FIND.inMeta; findDraw(); };
 
   paintSort();
   $("findClear").onclick = function(){
     FIND.moves = []; FIND.types = []; FIND.typeMode = "and";
     FIND.ability = "";
-    FIND.inChamp = false; FIND.inHome = false; FIND.inMeta = false;
+    FIND.inChamp = false; FIND.inHome = false;
     FIND.sort = "bst"; FIND.dir = "desc";
-    $("findInMeta").setAttribute("aria-pressed", "false");
     paintSort();
     findDraw();
   };

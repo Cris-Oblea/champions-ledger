@@ -540,22 +540,40 @@ def main():
     # the one thing in the project that is a RESULT rather than a rate - not
     # "how often is this brought" but "this exact set won".
     #
-    # A POKEMON HOLDING A MEGA STONE WAS BROUGHT AS A MEGA, and that is the
-    # only reliable signal. The player put it exactly (2026-09-15): "por las
-    # piedras se saben que son megas". A teamlist records the BASE ability -
-    # the 2026 champion's Floette is listed with Flower Veil and its Dragonite
-    # with Multiscale - because that is what the Pokemon has until it evolves,
-    # so the ability cannot be used to tell. The stone can: stone_for() is 1:1
-    # over all 81 Megas. The medal therefore lands on Mega Floette rather than
-    # on Floette, which is the Pokemon that actually played.
+    # IT IS FILED UNDER THE FORM THAT WAS REGISTERED, which is always the
+    # BASE one. Measured rather than assumed: of the 16,875 team slots pokedata
+    # publishes, exactly ZERO are written as "Mega something". Takuma Yamazaki
+    # won 2026 with "Floette [Eternal Flower] @ Floettite", and Floette is the
+    # entrant.
+    #
+    # This was the other way round for an afternoon - the medal went to Mega
+    # Floette - and the player corrected it: "creo que deberia ser al reves, la
+    # base tener la medalla y por consiguiente por el item se sabe que es
+    # mega". He is right twice over. Filing it under the Mega invents an
+    # entrant that was never on the sheet, and it makes a search for Floette
+    # come back empty about the team that won with one.
+    #
+    # NOTHING IS LOST, because the stone is right there in the set, and the
+    # stone settles it: stone_for() is 1:1 over all 81 Megas, so the Mega and
+    # the single ability it gains are both derivable. They are derived HERE
+    # rather than left to the reader - "esa se sabe por descarte" is true and
+    # is exactly the kind of deduction a database should do for you.
+    #
+    # And the recorded ability is the BASE one, which is correct and must never
+    # be called mislabelled: it is what the Pokemon has until it evolves, and
+    # WHEN to evolve is a real decision because that ability is doing something
+    # until then.
     #
     # Placement comes from the players list's own `rank`, which is the final
     # standing - NOT a swiss round number. See the note in CLAUDE.md: pokedata
     # numbers the top cut straight on from the last swiss round.
-    MEGA_OF_STONE = {}
+    MEGA_OF_STONE, MEGA_ABIL = {}, {}
     for st, mega, _sp in STONES:
         if st:
             MEGA_OF_STONE[Q.norm(st)] = mega
+    for m in mons:
+        if m.get("is_mega"):
+            MEGA_ABIL[m["name"]] = ", ".join(m.get("abilities") or [])
     # ONE EVENT PER (YEAR, DIVISION). 2023 is the case that forces this:
     # pokedata put that year's Masters teamlists on the Day 1 event and its
     # Seniors and Juniors on the Day 2 one, so both events carry rows for the
@@ -586,11 +604,9 @@ def main():
                 for slot in pl.get("team") or []:
                     raw = slot.get("pokemon") or ""
                     form = canon.get(Q.norm(raw))
-                    mega = MEGA_OF_STONE.get(Q.norm(slot.get("item") or ""))
-                    name = mega or form
-                    if not name:
+                    if not form:
                         continue
-                    PODIUM.setdefault(name, []).append({
+                    row = {
                         "y": year, "d": div, "r": rank,
                         "who": pl.get("player") or "",
                         "rec": pl.get("record") or "",
@@ -598,7 +614,14 @@ def main():
                         "ab": slot.get("ability") or "",
                         "na": slot.get("nature") or "",
                         "mv": slot.get("moves") or [],
-                    })
+                    }
+                    # the stone says it Mega Evolved, and says into what
+                    mega = MEGA_OF_STONE.get(Q.norm(slot.get("item") or ""))
+                    if mega:
+                        row["mg"] = mega
+                        if MEGA_ABIL.get(mega):
+                            row["mgab"] = MEGA_ABIL[mega]
+                    PODIUM.setdefault(form, []).append(row)
             if n:
                 seen_events.append("%s %s %d" % (year, div, n))
     for v in PODIUM.values():

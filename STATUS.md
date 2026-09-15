@@ -167,10 +167,12 @@ smaller:
   level-50 floor and ceiling belong where one Pokemon is being decided about,
   not on 120 rows of a list.
 
-A third scope toggle, "Played in M-C", narrows the dex to the field: 291 of
-the 345 forms. It was called "Brought to M-C" for an afternoon and he could
-not tell what it meant, which on a phone is fatal - there is no hover to
-explain a label.
+A third scope toggle narrowed the dex to the field. It was called "Brought to
+M-C", he could not tell what it meant - which on a phone is fatal, there being
+no hover to explain a label - it was renamed "Played in M-C", and then he cut
+it outright: "no me sirve en find, lo encuentro malo". The two box filters
+stay. Worth recording as a shape, not a defeat: a filter that has to be
+explained is usually one nobody wanted.
 
 ### Medals, and the set that won (2026-09-15)
 
@@ -180,16 +182,27 @@ in the search, and its sheet folds open to the exact sets: item, ability,
 nature and four moves, with the player and their record, per year and per
 division.
 
-**A Mega is filed under the MEGA, and the stone is the only thing that can say
-so.** A teamlist records the BASE ability - the 2026 champion's Floette is
-listed with Flower Veil and its Dragonite with Multiscale - so the ability
-cannot tell you it evolved. The item can: `stone_for()` is 1:1 over all 81
-Megas, so a Floette holding a Floettite is Mega Floette. The player put it
-exactly: "por las piedras se saben que son megas". The base form does NOT
-inherit the medal; they are two different entrants and only one of them stood
-there.
+**It is filed under the form that was REGISTERED, which is always the base
+one.** Measured rather than assumed: of the 16,875 team slots pokedata
+publishes, exactly zero are written as "Mega something". Takuma Yamazaki won
+2026 with "Floette [Eternal Flower] @ Floettite", so Floette is the entrant.
 
-42 forms have a podium entry over 2023-2026, three divisions each. 2022 has
+This went in the other way round first - the medal on Mega Floette - and the
+player corrected it: "la base tener la medalla y por consiguiente por el item
+se sabe que es mega". He is right twice. Filing it under the Mega invents an
+entrant that was never on the sheet, and it makes a search for Floette come
+back empty about the team that won with one.
+
+Nothing is lost, because the stone is in the set and the stone settles it:
+`stone_for()` is 1:1 over all 81 Megas, so the Mega and the single ability it
+gains are both derived - "Mega Evolves into Mega Floette — ability becomes
+Fairy Aura" - rather than left as an exercise. His words for that half: "esa
+se sabe por descarte". And the recorded ability is the BASE one, which is
+correct and must never be called mislabelled: it is what the Pokemon has until
+it evolves, and when to evolve is a real decision because that ability is
+doing something until then.
+
+41 forms have a podium entry over 2023-2026, three divisions each. 2022 has
 standings only, and 2023 splits its divisions across two pokedata events - the
 one with more players wins, or Seniors and Juniors get two podiums each.
 
