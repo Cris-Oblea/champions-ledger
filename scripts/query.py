@@ -662,6 +662,78 @@ def show_smogon(name):
     print("\n  Smogon: no entry found.")
 
 
+# The order a spread is written in, and how each stat is spelled, everywhere
+# in this project. "Hp" from a bare .capitalize() is not how anyone writes it.
+SP_ORDER = [("hp", "HP"), ("atk", "Atk"), ("def", "Def"),
+            ("spa", "SpA"), ("spd", "SpD"), ("spe", "Spe")]
+
+
+def print_splits(name):
+    """What the people who brought THIS Pokemon actually ran.
+
+    pokebase publishes it per Pokemon and `fetch_pokebase_splits.py` stores
+    both of its datasets. Nothing here read either of them until now, which
+    meant the richest per-Pokemon data in the project was reachable from the
+    phone and not from the command line that answers questions about it.
+
+    THE TWO BLOCKS ARE NOT THE SAME MEASUREMENT and are printed apart and
+    labelled, because merging them is the bug this whole file was rebuilt to
+    stop. In `tournament` the MOVE column is a share of move SLOTS - it sums
+    to ~100 over the whole movepool, so its top row sits near 25 and "Fake Out
+    24.6%" means nearly every one of them ran it - while items, abilities,
+    natures and spreads are per SET and read directly. `season` is the ladder
+    and is per SET throughout; it is missing entirely for a Pokemon that was
+    not ranked that season.
+    """
+    blob = meta("usage_splits") or {}
+    row = (blob.get("pokemon") or {}).get(name)
+    if not row:
+        # a Mega is filed under the species people ladder with
+        p = find_pokemon(name) or {}
+        row = (blob.get("pokemon") or {}).get(p.get("species") or "")
+    if not row:
+        return
+
+    def line(label, rows, n=8):
+        if not rows:
+            return
+        print("  %-10s %s" % (label, ", ".join(
+            "%s %s%%" % (r["name"], r["percent"])
+            for r in rows[:n] if "percent" in r)))
+
+    t = row.get("tournament") or {}
+    if any(t.get(k) for k in ("moves", "items", "abilities", "natures")):
+        print("\nWhat its players ran [pokebase, %s tournaments, fetched %s]"
+              % (t.get("regulation") or "?", blob.get("fetched") or "?"))
+        line("Moves:", t.get("moves"), 12)
+        print("             ^ share of move SLOTS, so ~25% is nearly all of "
+              "them")
+        line("Items:", t.get("items"))
+        line("Ability:", t.get("abilities"))
+        line("Nature:", t.get("natures"))
+        for sp in (t.get("spreads") or [])[:3]:
+            # HP / Atk / Def / SpA / SpD / Spe, which is how a spread is
+            # written everywhere else. Sorting the keys alphabetically read
+            # "2 ATK / 32 HP / 32 SPD" and nobody writes one that way.
+            vals = sp.get("sp") or {}
+            print("  %-10s %s  %s%%"
+                  % ("Spread:", " / ".join(
+                      "%d %s" % (vals[k], lab) for k, lab in SP_ORDER
+                      if vals.get(k)), sp["percent"]))
+        line("Alongside:", t.get("teammates"))
+
+    se = row.get("season") or {}
+    if se.get("moves"):
+        print("\nLadder [%s, %s]  rank %s of %s"
+              % (se.get("name") or "?", se.get("dates") or "?",
+                 se.get("rank"), se.get("of")))
+        line("Moves:", se.get("moves"), 10)
+        print("             ^ share of SETS here, NOT the same measure as above")
+        line("Items:", se.get("items"))
+        line("Ability:", se.get("abilities"))
+        line("Nature:", se.get("natures"))
+
+
 def cmd_brief(a):
     """Everything known about one Pokemon, in one place.
 
@@ -750,6 +822,9 @@ def cmd_brief(a):
                   % ("   [" + ", ".join("%s %d/%d" % (d, c, tot)
                                         for d, c, tot in others) + "]"
                      if others else ""))
+
+    # --- what THIS Pokemon's own players run ---
+    print_splits(name)
 
     # --- Pikalytics: spreads, win rate, cores ---
     for fmt in ("championstournaments", "battledataregmbs3"):
