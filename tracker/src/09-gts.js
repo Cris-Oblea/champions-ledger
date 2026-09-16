@@ -740,7 +740,7 @@ function pickField(label, current, subtitle, opener, rec){
   if (p) {
     m.appendChild(cardLine([
       labelBox(bst(p), "BST"),
-      labelBox((p.ab || []).join(" / "), "Possible ability", "wide")
+      labelBox(p.ab || [], "Possible ability", "wide")
     ]));
     m.appendChild(statGrid(p));
   }

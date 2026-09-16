@@ -213,7 +213,7 @@ function findRun(){
        own cell above the six instead of joining them as a seventh column. */
     m.appendChild(cardLine([
       labelBox(bst(p), "BST", FIND.sort === "bst" ? "on" : null),
-      labelBox((p.ab || []).join(" / "), "Ability", "wide")
+      labelBox(p.ab || [], "Ability", "wide")
     ]));
     /* A TABLE, NOT A SENTENCE. "115 HP 175 Atk 117 Def ..." is six numbers
        with six words between them, which is prose - it gets read, never

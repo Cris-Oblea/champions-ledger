@@ -234,8 +234,12 @@ setTimeout(() => {
          an assertion. Reading the label and the value as the two elements
          they are cannot go stale the same way. */
       const cells = r => [...r.querySelectorAll(".statline > div, .cardline > div")];
+      /* ".lbl", not the first span: a cell whose value is a LIST holds one
+         unbreakable span per item inside its <b>, so the first span in the
+         cell is an ability name and not the caption. */
       const cellOf = (r, lab) => cells(r).find(c =>
-        c.querySelector("span").textContent.trim() === lab);
+        (c.querySelector("span.lbl") || c.querySelector("span"))
+          .textContent.trim() === lab);
       const statOf = (r, lab) => {
         const c = cellOf(r, lab);
         if (!c) throw new Error("no hay celda '" + lab + "' en la tarjeta: " +
@@ -331,7 +335,8 @@ setTimeout(() => {
        97 of 394 teams" was prose in a ranking, which is the one place numbers
        have to be scannable down the column. */
     const wcell = (r, lab) => [...r.querySelectorAll(".cardline > div")]
-      .find(c => c.querySelector("span").textContent.trim() === lab);
+      .find(c => (c.querySelector("span.lbl") || c.querySelector("span"))
+        .textContent.trim() === lab);
     ok("con su cuenta de equipos",
        /^\d+ \/ \d+$/.test(wcell(rr[0], "brought it")
          .querySelector("b").textContent.trim()), true);

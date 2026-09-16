@@ -54,7 +54,7 @@ function pokeRow(rec){
   if (p) {
     main.appendChild(cardLine([
       labelBox(bst(p), "BST"),
-      labelBox((p.ab || []).join(" / "), "Possible ability", "wide")
+      labelBox(p.ab || [], "Possible ability", "wide")
     ]));
     main.appendChild(statGrid(p));
   }

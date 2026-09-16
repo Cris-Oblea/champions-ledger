@@ -193,9 +193,24 @@ function statGrid(p, mark){
    marks the cell the list is currently ranked by, exactly as in statGrid. */
 function labelBox(value, label, cls){
   var d = el("div", cls || null);
-  d.appendChild(el("b", null, value === null || value === undefined ||
-                              value === "" ? "—" : value));
-  d.appendChild(el("span", null, label));
+  var b = el("b");
+  /* AN ARRAY BREAKS ONLY BETWEEN ITS ITEMS. Joining three abilities into one
+     string and letting the browser wrap it split "Sticky Hold" across two
+     lines, which reads as two different abilities - the break has to land on
+     the separator, never inside a name. Each item is therefore its own
+     unbreakable span and only the " / " between them may wrap. */
+  if (Array.isArray(value)) {
+    if (!value.length) b.textContent = "—";
+    value.forEach(function(v, i){
+      if (i) b.appendChild(document.createTextNode(" / "));
+      b.appendChild(el("span", "whole", v));
+    });
+  } else {
+    b.textContent = (value === null || value === undefined || value === "")
+      ? "—" : value;
+  }
+  d.appendChild(b);
+  d.appendChild(el("span", "lbl", label));
   return d;
 }
 /* The strip of them that sits above the stat table. Nulls are dropped, so a
