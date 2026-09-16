@@ -124,8 +124,8 @@ PUBLIC = [
     "AB_SET", "CALC", "DEX", "MOVE_BY", "S", "TYPE_COLOR",
     "abilityTag", "buildLink", "buildSheet", "buildsPane", "byName",
     "closeSheet", "engineCalc", "findDetail", "go", "gtsPickMine", "learnset",
-    "megasFor", "moveRowFor", "pokeSheet", "teamReport", "teamSheet",
-    "teamTypes",
+    "megasFor", "moveRowFor", "overlapSweep", "pokeSheet", "teamReport",
+    "teamSheet", "teamTypes",
 ]
 
 # WHY A BUNDLER AT ALL, when the source is standard ES modules that the browser

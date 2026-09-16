@@ -42,18 +42,18 @@
       <p class="sub">The real permanents. Park one back to HOME to free the slot
         and recall it later with its moves, nature, ability and SP intact — free,
         as often as you like. Only these make the box elastic.</p>
-      <div class="list" id="listHomeOrigin"></div>
+      <div class="list cards" id="listHomeOrigin"></div>
 
       <h2>Champions origin <span class="n" id="nChampOrigin"></span></h2>
       <p class="sub">Came out of an Encounter, whether bought for 2500 VP or
         with a ticket. It can never be sent to HOME. The slot frees only by
         releasing it, which destroys the Pokemon.</p>
-      <div class="list" id="listChampOrigin"></div>
+      <div class="list cards" id="listChampOrigin"></div>
 
       <h2>Rental <span class="n" id="nRent"></span></h2>
       <p class="sub">Timed, 0 VP, cannot be trained. Always Champions origin —
         buying one does not make it a real permanent.</p>
-      <div class="list" id="listRent"></div>
+      <div class="list cards" id="listRent"></div>
     </section>
 
     <!-- =========================================================== HOME -->
@@ -104,7 +104,7 @@
         <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
         <input type="text" id="homeFilter" placeholder="Filter by name, type, number, shiny, trained">
       </div>
-      <div class="list" id="listHome"></div>
+      <div class="list cards" id="listHome"></div>
       <div class="btnrow" id="homeMore"></div>
     </section>
 
@@ -131,7 +131,7 @@
       <div id="buildsPane">
         <div class="search field"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
           <input type="text" id="buildSearch" placeholder="Filter builds"></div>
-        <div class="list" id="listBuilds"></div>
+        <div class="list cards" id="listBuilds"></div>
       </div>
       <div id="teamsPane" hidden>
         <p class="sub">Six slots, and the item lives on the slot — the Item
@@ -140,7 +140,7 @@
         <div class="btnrow" style="margin-bottom:10px">
           <button class="btn primary" id="teamAdd">New team</button>
         </div>
-        <div class="list" id="listTeams"></div>
+        <div class="list cards" id="listTeams"></div>
       </div>
     </section>
 
@@ -186,9 +186,9 @@
           <input type="text" id="stoneSearch" placeholder="Filter stones"></div>
         <div class="note" id="stoneNote" style="margin-bottom:12px"></div>
         <h2>Owned <span class="n" id="nStones"></span></h2>
-        <div class="list" id="listStonesOwned"></div>
+        <div class="list cards" id="listStonesOwned"></div>
         <h2>Not owned <span class="n" id="nStonesNot"></span></h2>
-        <div class="list" id="listStonesNot"></div>
+        <div class="list cards" id="listStonesNot"></div>
       </div>
       <div id="gearItemPane" hidden>
         <div class="search field"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
@@ -249,55 +249,79 @@
       <div class="viewhead"><div><h1>Find</h1>
         <p class="lede">Every filter has to be true at once. <em>Learns Imprison
            and Wide Guard and Protect</em> is one query, not three.</p></div></div>
-      <div class="panel" style="margin-bottom:10px">
-        <div class="toggles" id="findChips"></div>
-      </div>
-      <!-- ONE TABLE, NOT SEVEN. This started as a separate "Tiers" block with
-           a tab per stat, and the player replaced the idea with a better one
-           (2026-09-15): "en vez de ser varias tablas de tier por stat, que sea
-           una sola tabla, pero con filtros por stats... find ya cuenta con
-           filtros de tipo, abilities y move, habria que quitar el cuadro de
-           speed y colocar filtros per stat y cumpliria de mejor manera."
 
-           He is right, and it is the same argument the filters here were built
-           on: a tier list IS this list sorted by one column. Keeping it apart
-           meant a speed tier could not also be "and it learns Fake Out and I
-           own it", which is the question actually worth asking. So the two
-           fixed Speed boxes are gone, every stat can be filtered, and the sort
-           turns the result into that stat's tier list. -->
-      <div class="btnrow" style="margin-bottom:10px">
-        <button class="btn sm" id="findAddMove">+ Move</button>
-        <button class="btn sm" id="findAddType">+ Type</button>
-        <button class="btn sm" id="findAddAbility">+ Ability</button>
-        <button class="btn sm" id="findInChamp" aria-pressed="false">In Champions</button>
-        <button class="btn sm" id="findInHome" aria-pressed="false">In HOME</button>
-        <button class="btn sm quiet" id="findClear">Clear</button>
+      <!-- TWO QUESTIONS, NOT ONE SCROLL. "Who matches this" and "what won that
+           August" are different questions, and Worlds used to sit BELOW 345
+           result rows - nineteen screens down, which is the same as not being
+           there. One tap now.
+
+           A segmented control rather than another tab in the rail: it belongs
+           to Find, it is not a seventh place to be. -->
+      <div class="seg" id="findMode" role="group" aria-label="What to look at">
+        <button data-mode="search" aria-pressed="true">Search</button>
+        <button data-mode="worlds" aria-pressed="false">Worlds</button>
       </div>
-      <div class="panel" style="margin-bottom:12px">
-        <p class="sub" style="margin:0 0 6px">Sort — pick a stat and the list
-          becomes that stat's tier order. Tap it again to flip: highest first
-          is the speed tier, lowest first is the Trick Room one.</p>
-        <div class="toggles" id="findSort"></div>
+
+      <!-- CONTROLS BESIDE THE ANSWER. They were stacked above it, so the
+           answer started below the fold and scrolling to read it took the
+           controls off screen. On a phone this stacks exactly as before. -->
+      <div class="workspace" id="findSearch">
+        <div class="wside">
+          <div class="panel" style="margin-bottom:10px">
+            <div class="toggles" id="findChips"></div>
+          </div>
+          <div class="btnrow" style="margin-bottom:10px">
+            <button class="btn sm" id="findAddMove">+ Move</button>
+            <button class="btn sm" id="findAddType">+ Type</button>
+            <button class="btn sm" id="findAddAbility">+ Ability</button>
+            <button class="btn sm" id="findInChamp" aria-pressed="false">In Champions</button>
+            <button class="btn sm" id="findInHome" aria-pressed="false">In HOME</button>
+            <button class="btn sm quiet" id="findClear">Clear</button>
+          </div>
+          <!-- ONE TABLE, NOT SEVEN. This began as a separate "Tiers" block
+               with a tab per stat and the player replaced the idea with a
+               better one: a tier list IS this list sorted by one column, so
+               keeping it apart meant a speed tier could never also be "and it
+               learns Fake Out and I own one". -->
+          <div class="panel">
+            <p class="sub" style="margin:0 0 6px">Sort — pick a stat and the
+              list becomes that stat's tier order. Tap it again to flip:
+              highest first is the speed tier, lowest first is the Trick Room
+              one.</p>
+            <div class="toggles" id="findSort"></div>
+          </div>
+        </div>
+        <div class="wmain">
+          <div id="findOut"></div>
+        </div>
       </div>
-      <div id="findOut"></div>
 
       <!-- ==================================================== WORLDS ====
            HISTORY, and labelled as history. A World Championship is played
-           once under one regulation and then frozen, so these numbers say
-           what the field brought that August - never what is current. They
-           live here rather than on the front page for that reason: this is
-           the reference shelf, not the state of the game.
+           once under one regulation and then frozen, so these numbers say what
+           the field brought that August - never what is current.
 
-           The three divisions are three metagames off one roster and are
-           never pooled, so they are tabs. -->
-      <h2 style="margin-top:26px">Worlds</h2>
-      <p class="sub">What the field actually brought, per World Championship.
-        Counted per TEAM — the Species Clause means a team holds a species at
-        most once — so the percentage is the share of teams that carried it.
-        Frozen history: each event keeps the regulation it was played in.</p>
-      <div class="toggles" id="worldYear" style="margin-bottom:8px"></div>
-      <div class="toggles" id="worldDiv" style="margin-bottom:10px"></div>
-      <div id="worldOut"></div>
+           The three divisions are three metagames off one roster and are never
+           pooled, so they are tabs. -->
+      <div id="findWorlds" hidden>
+        <p class="lede">What the field actually brought, per World
+          Championship. Counted per TEAM — the Species Clause means a team
+          holds a species at most once — so the percentage is the share of
+          teams that carried it. Frozen history: each event keeps the
+          regulation it was played in.</p>
+        <div class="workspace">
+          <div class="wside">
+            <div class="panel">
+              <p class="sub" style="margin:0 0 6px">Championship</p>
+              <div class="toggles" id="worldYear" style="margin-bottom:12px"></div>
+              <p class="sub" style="margin:0 0 6px">Division — three separate
+                metagames off one roster, never pooled</p>
+              <div class="toggles" id="worldDiv"></div>
+            </div>
+          </div>
+          <div class="wmain"><div id="worldOut"></div></div>
+        </div>
+      </div>
     </section>
 
     <!-- ======================================================== TRAINER -->
@@ -370,6 +394,28 @@
       <div class="panel" id="diagOut"></div>
     </section>
   </main>
+</div>
+
+<!-- THE APP'S OWN CONFIRM. `confirm()` draws the operating system's dialog in
+     the middle of a designed app: another typeface, another button order,
+     another set of words, and on a phone it arrives at the top of the screen
+     far from the thumb that asked for it. Seven of them were in here, and
+     every one of them guards something irreversible - deleting a build,
+     buying a rental into Champions origin, closing a trade.
+
+     z-index 70: above the sheet (60), below the toast (80), because several
+     of these are asked FROM an open sheet and must not fight it for the
+     scrim. -->
+<div class="scrim askscrim" id="askScrim" hidden>
+  <div class="askbox" role="alertdialog" aria-modal="true"
+       aria-labelledby="askTitle" aria-describedby="askBody">
+    <h3 id="askTitle"></h3>
+    <div id="askBody"></div>
+    <div class="askfoot">
+      <button class="btn" id="askNo">Cancel</button>
+      <button class="btn primary" id="askYes">OK</button>
+    </div>
+  </div>
 </div>
 
 <div class="scrim" id="scrim" hidden><div class="sheet" role="dialog" aria-modal="true">

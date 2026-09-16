@@ -171,11 +171,189 @@ nav.tabs button:active{background:var(--sunk)}
   main{grid-area:main;padding:20px 24px 60px}
 }
 
+/* ---------- the desktop workspace ----------------------------------------
+   MEASURED BEFORE IT WAS CHANGED, on the deployed build at 2026-09-16:
+
+     Find   @1920   43% of the width used,  445px dead,  19.1 screens tall
+     Items  @1920   29% of the width used,  578px dead,   6.7 screens
+     Box    @1440   58%,  Builds @1440  45%
+
+   `main` was capped at 820px and never grew, so past about 1024px every extra
+   pixel of monitor became margin. It was a phone layout centred on a desktop -
+   and the column width drifted per tab (553 / 636 / 820) with no reason a
+   reader could see, which reads as accident rather than design.
+
+   The cap moves out to 1560 so an ultra-wide does not run a row to the far
+   edge - a 1900px row carrying 300px of content is worse, not better. */
+@media (min-width:900px){
+  /* `width:100%` MATTERS HERE, and it is not decoration. `main` carries
+     `margin:0 auto` from the base rule, and an auto inline margin on a GRID
+     ITEM turns off stretching: the item shrinks to its content and centres
+     instead. So raising max-width alone changed nothing - Items still drew
+     552px inside a 1228px track and sat in the middle of it, which is exactly
+     the "column adrift on a monitor" this was meant to fix. Width 100% fills
+     the track, max-width still caps it, and the auto margins only do anything
+     once the track is wider than 1560. */
+  main{width:100%;max-width:1560px}
+}
+
+/* CONTROLS BESIDE THE RESULTS, NOT ON TOP OF THEM.
+   The filters, the sort and the count sat above the list, so on every screen
+   the first thing under the title was a block of controls and the answer
+   started below the fold - and scrolling to read the answer took the controls
+   away with it. Beside it, sticky, both are permanently in reach. Below
+   1100px it falls back to the stacked order, which is what a phone wants. */
+.workspace{display:block}
+@media (min-width:1100px){
+  .workspace{display:grid;grid-template-columns:300px minmax(0,1fr);
+    gap:22px;align-items:start}
+  .workspace > .wside{position:sticky;top:71px;
+    max-height:calc(100dvh - 90px);overflow:auto;
+    padding-right:4px}
+  .workspace > .wmain{min-width:0}
+}
+@media (min-width:1500px){
+  .workspace{grid-template-columns:320px minmax(0,1fr)}
+}
+
+/* ---------- a card with presence ----------------------------------------
+   The list rows were a name, two chips and a line of numbers on a flat
+   surface, repeated 345 times: correct, and with nothing to catch the eye or
+   tell one row from the next at a glance. A card carries its Pokemon's own
+   TYPE as colour - a band across the top and a whisper of tint behind it - so
+   the grid reads as a set of things rather than as a wall of text, and the
+   type is legible before you have read a word.
+
+   The tint is deliberately faint. It has to sit under body text at both
+   themes, and a card you cannot read is not a card. */
+/* A CARD IS A CARD WHEREVER IT IS. This was scoped to `.cards` while only the
+   search used it. The player asked for the presentation across the whole app
+   ("me gustaria que esté en toda la app no solo en find"), and several places
+   that show a Pokemon are not grids - a team's six slots, the GTS picker. The
+   class decides now, not the container.
+
+   TWO HALVES, EACH FADING DOWN. A dual type wears both of its colours - the
+   left half of the card tinted by the first, the right half by the second -
+   and a mono type sets both to the same value and looks exactly as it did.
+   Two layers rather than one diagonal gradient because a single gradient
+   cannot vary along both axes, and the downward fade is the half that keeps
+   the text readable. */
+.row.card{display:block;padding:0;overflow:hidden;position:relative;
+  background:
+    linear-gradient(180deg, var(--tsoft, transparent) 0, transparent 76px)
+      left top / 50% 100% no-repeat,
+    linear-gradient(180deg, var(--tsoft2, var(--tsoft, transparent)) 0,
+                    transparent 76px) right top / 50% 100% no-repeat,
+    var(--surface)}
+/* and the band blends one into the other, so Fire/Rock and Fire/Psychic are
+   told apart before a word is read */
+.row.card::before{content:"";display:block;height:4px;
+  background:linear-gradient(90deg, var(--tcol, var(--line-hard)) 0,
+                             var(--tcol, var(--line-hard)) 34%,
+                             var(--tcol2, var(--tcol, var(--line-hard))) 66%,
+                             var(--tcol2, var(--tcol, var(--line-hard))) 100%)}
+.row.card .rmain{padding:11px 13px 12px}
+.row.card .rname{font-size:15.5px;margin-bottom:3px}
+/* THE STATS AS A TABLE, NOT A SENTENCE. They were a run of "115 HP 175 Atk
+   117 Def ..." and the player could not read them: "sale primero el número
+   del stat y luego el stat, eso se ve feo, no se sabe cómo leerlo bien... va
+   todo escrito como prosa prácticamente." He is right - six numbers with six
+   words between them is prose, and prose is read, not scanned. Six columns,
+   the label under the number, so the eye can go straight down a column and
+   compare two cards without reading either. */
+/* THE SAME CELL AS A STAT, for the things that are not stats. BST and the
+   ability were loose text beside the type chips while six stats sat in neat
+   boxes below them - two visual languages on one card. The strip sizes itself
+   to its contents: a number stays narrow, a word takes the rest. */
+/* FLEX, NOT GRID, and deliberately: the grid version needed `:has(.wide)` to
+   know whether to make a track flexible, and a browser without `:has()` drops
+   that rule silently and lets the cell push the card wider. Flex needs no such
+   question - a number cell sizes to itself, the word cell takes what is left. */
+.row.card .cardline{display:flex;gap:4px;margin-top:7px;align-items:stretch}
+.row.card .cardline > div{background:var(--sunk);border-radius:6px;
+  padding:3px 9px;text-align:center;min-width:0;flex:0 0 auto}
+.row.card .cardline > div.wide{flex:1 1 auto}
+.row.card .cardline b{display:block;font-family:var(--mono);font-size:12.5px;
+  font-weight:500;font-variant-numeric:tabular-nums}
+.row.card .cardline span.lbl{font-family:var(--cond);font-weight:600;
+  font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--faint)}
+/* one ability, one unbreakable word-group: the line may only break on the
+   " / " between them, never inside "Sticky Hold" */
+.row.card .cardline b .whole{white-space:nowrap}
+/* A WORD, NOT A NUMBER: the sans face, and it WRAPS rather than being cut.
+
+   It was written with an ellipsis, which measured badly the moment it was
+   measured: 17 of 120 cards lost the tail of their ability list at 1366 wide
+   and 6 did at the player's own 1536 - Kingambit, the most used Pokemon in the
+   format, was showing "Defiant / Supreme Overlord / Pres...". Hiding a third
+   ability to keep a line tidy is the one thing this app must not do, so the
+   cell grows instead. The break lands on the spaces around the "/", so the
+   abilities stack whole. */
+.row.card .cardline > div.wide{text-align:left}
+.row.card .cardline > div.wide b{font-family:var(--sans);font-size:12.5px;
+  white-space:normal;line-height:1.25}
+.row.card .cardline > div.wide span.lbl{display:block}
+
+.row.card .statline{margin-top:7px;gap:4px}
+.row.card .statline div{padding:3px 1px}
+.row.card .statline b{font-size:12.5px}
+/* the stat the list is ranked by, marked here too */
+.statline div.on{background:var(--accent-soft);
+  box-shadow:inset 0 0 0 1px var(--accent)}
+.statline div.on b{color:var(--accent);font-weight:600}
+.statline div.on span{color:var(--accent)}
+/* An item has no type, so its band is the neutral rule - visibly the same
+   component, honestly not carrying a colour it does not have. */
+.row.card:hover{border-color:var(--tcol, var(--line-hard));
+  box-shadow:var(--shadow)}
+/* THE LEFT STRIPE STAYS. It was flattened here on the grounds that it would
+   fight the type band, and that is throwing away information to tidy a
+   picture: the stripe is what says a Pokemon is YOURS in Find, and which kind
+   of slot it sits in everywhere else - HOME-elastic, Champions-welded,
+   rental. Two edges, two facts: the top band is the type, the left stripe is
+   the standing. */
+
+/* A LIST THAT IS REALLY A GRID once there is room for one. 345 results in a
+   single column is 19 screens; three across is six. auto-fill rather than a
+   fixed count, so the number of columns follows the width instead of a
+   breakpoint guessing at it. */
+/* `.list.cards`, not `.cards`. Several of these containers carry BOTH classes
+   - the markup says `class="list cards"` - and `.list` is `display:flex` a few
+   hundred lines further down, so at equal specificity it won and the grid was
+   silently a flex column. Measured: Items drew 199 cards in one column. */
+.cards,.list.cards{display:grid;gap:10px;grid-template-columns:1fr}
+@media (min-width:640px){
+    /* 250, not 270, and the difference is one whole column on a 1366-wide
+     laptop: with the sidebar taking 300 there are 790px left, and three
+     cards need a minimum of 256 each. 270 gave two columns and eleven
+     screens there, 250 gives three and eight. A 1080p screen is unaffected -
+     it fits four either way. Six stat cells still read at 256px. */
+  .cards,.list.cards{grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+}
+
 /* ---------- type scale & headings --------------------------------------- */
 h1{font-size:21px;margin:0;font-weight:600;letter-spacing:-.01em}
 h2{font-family:var(--cond);text-transform:uppercase;letter-spacing:.08em;
    font-size:12px;font-weight:600;color:var(--muted);margin:22px 0 8px}
 h2:first-of-type{margin-top:4px}
+/* A SECTION SHOULD LOOK LIKE ONE. The title was 21px, the section headings
+   12px, and the body 15px - so a view read as one flat run of text at three
+   sizes that are nearly the same size, and "where does this part end" had no
+   answer. A rule above each heading answers it, and costs nothing.
+
+   `main h2` on purpose: the sheets and the confirm dialog live outside main
+   and are one thought each, where a rule would only add furniture. */
+main h2{padding-top:11px;border-top:1px solid var(--line)}
+main h2:first-of-type{border-top:0;padding-top:0}
+/* On a desktop the title can be a title. It stays 21px on a phone, where the
+   screen is the constraint and a 28px heading is a wasted band. */
+@media (min-width:900px){
+  h1{font-size:28px;letter-spacing:-.02em}
+  .lede{font-size:14.5px}
+  .viewhead{padding-bottom:15px;border-bottom:1px solid var(--line);
+    margin-bottom:20px}
+}
 h2 .n{font-family:var(--mono);color:var(--faint);font-weight:500;letter-spacing:0}
 .lede{color:var(--muted);font-size:13.5px;margin:2px 0 0;max-width:60ch}
 /* The action used to be a flex item after a spacer, so as soon as the lede
@@ -525,7 +703,10 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border:2px solid var(
 .kv dt{color:var(--muted)}
 .kv dd{margin:0;font-family:var(--mono);font-variant-numeric:tabular-nums;
   text-align:right}
-.statline{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-top:8px}
+/* SIX COLUMNS, because there are six stats. It said seven, so every stat grid
+   in the app has been drawing an empty seventh cell and squeezing the real
+   ones to fit. */
+.statline{display:grid;grid-template-columns:repeat(6,1fr);gap:5px;margin-top:8px}
 .statline div{text-align:center;background:var(--sunk);border-radius:6px;padding:4px 2px}
 .statline b{display:block;font-family:var(--mono);font-size:13px;font-weight:500;
   font-variant-numeric:tabular-nums}
@@ -541,6 +722,27 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border:2px solid var(
 /* 78px was a guess at the tab bar's height. It is 47px at 320, 68px at 412,
    plus whatever the gesture bar takes - so the toast either floated or sat on
    the nav. --navh is measured from the real element instead. */
+/* ---------- the app's own confirm ---------------------------------------
+   Centred rather than bottom-sheeted, because it is a question and not a
+   surface: it should stop you, and it is two words long. Above the sheet so
+   it can be asked from inside one. */
+.askscrim{z-index:70;align-items:center}
+.askbox{background:var(--surface);border:1px solid var(--line-hard);
+  border-radius:14px;box-shadow:var(--shadow);
+  width:calc(100% - 32px);max-width:420px;padding:18px 18px 14px;
+  margin:0 16px}
+.askbox h3{margin:0 0 6px;font-size:16px}
+.askbox #askBody{color:var(--muted);font-size:14px;line-height:1.5}
+.askfoot{display:flex;gap:8px;justify-content:flex-end;margin-top:16px}
+/* THE SAFE ANSWER IS ON THE LEFT AND IS NOT THE LOUD ONE. Every question this
+   asks guards something irreversible, so the destructive button has to be the
+   one you reach for on purpose. */
+.askfoot .btn{min-width:96px;justify-content:center;text-align:center}
+@media (max-width:380px){
+  .askfoot{flex-direction:column-reverse}
+  .askfoot .btn{width:100%}
+}
+
 .toast{position:fixed;left:50%;z-index:80;
   bottom:calc(var(--navh,68px) + env(safe-area-inset-bottom) + 12px);
   background:var(--text);color:var(--ground);padding:10px 16px;border-radius:10px;

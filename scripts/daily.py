@@ -126,6 +126,10 @@ BROWSER_TESTS = [
     # the move column back to a share of SETS it sums to ~400 instead of ~100
     # and every percentage in the builder silently means something else.
     ("usagetest.js",      "what this Pokemon's players run, and what of"),
+    # The ALGORITHM half. jsdom lays nothing out, so the real screens are
+    # swept on the device by the diagnostics button - this proves the sweep
+    # itself finds what it should and, just as importantly, stays linear.
+    ("overlaptest.js",    "nothing painted on top of anything else"),
     ("sptest.js",         "the SP slider"),
     ("burntest.js",       "burn halves physical only"),
     # The only test that signs in and loads a ledger WITH ROWS. Every

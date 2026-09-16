@@ -2,8 +2,9 @@
    Part of the app; linked into one script by scripts/build_tracker_page.py. */
 import {
   $, C, DEX, MOVES, MOVE_BY, SORT, STAT_KEYS, STAT_LABEL, TYPE_COLOR, bst,
-  byName, capNote, catName, dexNo, effectLine, el, learnset, podiumChip,
-  podiumFor, splitPct, toast, typeChip, usageTag,
+  byName, capNote, cardLine, catName, dexNo, effectLine, el, labelBox,
+  learnset, podiumChip, podiumFor, splitPct, statGrid, toast, typeCard,
+  typeChip, usageTag,
 } from "./01-data.js";
 import { S, boxRows, originOf, ownedNames } from "./02-state.js";
 import { closeSheet, fbtn, openSheet } from "./04-nav.js";
@@ -156,10 +157,17 @@ function findRun(){
              a.name.localeCompare(b.name);
     });
   }
-  var list = el("div", "list");
+  /* A GRID once there is room for one: 345 results in a single column is
+     nineteen screens, three across is six. The class does the deciding, by
+     width, so a phone still gets one column. */
+  var list = el("div", "cards");
   hits.slice(0, 120).forEach(function(p){
     var here = (p.name in own) || (p.species in own);
-    var r = el("button", "row" + (here ? " perm" : ""));
+    /* A CARD, WEARING ITS OWN TYPE. The band across the top and the whisper of
+       tint behind it both come from the primary type, so a grid of these reads
+       as a set of things rather than 345 identical strips - and the type
+       registers before a word has been read. */
+    var r = typeCard(el("button", "row" + (here ? " perm" : "")), p);
     var m = el("div", "rmain");
     var h = el("div", "rname");
     h.appendChild(document.createTextNode(p.name));
@@ -198,17 +206,20 @@ function findRun(){
        sheet, where one Pokemon is being decided about; in a list of 120 they
        were three numbers per row answering a question nobody asked yet. */
     var ranking = FIND.sort !== "dex";
-    var stats = el("span", "statrow");
-    stats.appendChild(el("span", "mono fact" +
-      (FIND.sort === "bst" ? " on" : ""), "BST " + bst(p)));
-    STAT_KEYS.forEach(function(k, i){
-      stats.appendChild(el("span", "mono fact" +
-        (ranking && FIND.sort === k ? " on" : ""),
-        p.b[i] + " " + STAT_LABEL[k]));
-    });
-    meta.appendChild(stats);
-    meta.appendChild(el("span", null, (p.ab || []).join(" / ")));
     m.appendChild(meta);
+    /* BST AND THE ABILITY GET A BOX EACH, for the same reason the stats did:
+       they were loose text on a card whose other numbers were all in cells
+       (player, 2026-09-16). BST is a total rather than a stat, so it keeps its
+       own cell above the six instead of joining them as a seventh column. */
+    m.appendChild(cardLine([
+      labelBox(bst(p), "BST", FIND.sort === "bst" ? "on" : null),
+      labelBox(p.ab || [], "Ability", "wide")
+    ]));
+    /* A TABLE, NOT A SENTENCE. "115 HP 175 Atk 117 Def ..." is six numbers
+       with six words between them, which is prose - it gets read, never
+       scanned, and you cannot line two cards up against each other. Six
+       columns with the label under the number can be read straight down. */
+    m.appendChild(statGrid(p, ranking ? FIND.sort : null));
     r.appendChild(m);
     r.onclick = function(){ findDetail(p); };
     list.appendChild(r);
@@ -948,6 +959,23 @@ function findInit(){
   $("findInHome").onclick = function(){
     FIND.inHome = !FIND.inHome; findDraw(); };
 
+  /* SEARCH OR WORLDS, one tap apart. They answer different questions - "who
+     matches this" and "what won that August" - and Worlds used to live BELOW
+     345 result rows, which at nineteen screens is the same as not being
+     there. A segmented control rather than a seventh entry in the rail,
+     because it belongs to Find rather than being another place to be. */
+  var mrow = $("findMode");
+  Array.prototype.forEach.call(mrow.children, function(b){
+    b.onclick = function(){
+      var m = b.getAttribute("data-mode");
+      Array.prototype.forEach.call(mrow.children, function(x){
+        x.setAttribute("aria-pressed", x === b ? "true" : "false");
+      });
+      $("findSearch").hidden = m !== "search";
+      $("findWorlds").hidden = m !== "worlds";
+    };
+  });
+
   paintSort();
   $("findClear").onclick = function(){
     FIND.moves = []; FIND.types = []; FIND.typeMode = "and";
@@ -1069,12 +1097,14 @@ function worldDraw(){
   head.textContent = "Worlds " + WORLD.year + " " + WORLD.div + " · " + d.n +
     " teams · the " + d.top.length + " most brought";
   out.appendChild(head);
-  var list = el("div", "list");
+  var list = el("div", "cards");
   d.top.forEach(function(row, i){
     var name = row[0], teams = row[1], pct = row[2];
     var p = byName[name];
     var mine = (name in own) || (p && p.species in own);
-    var r = el("button", "row" + (mine ? " perm" : ""));
+    /* The Worlds list is Pokemon too, so it reads like the rest of the app -
+     the player asked for the card everywhere, not only in the search. */
+    var r = typeCard(el("button", "row" + (mine ? " perm" : "")), p);
     var m = el("div", "rmain");
     var h = el("div", "rname");
     h.appendChild(el("span", "mono", "#" + (i + 1) + "  "));
@@ -1083,12 +1113,19 @@ function worldDraw(){
     m.appendChild(h);
     var meta = el("div", "rmeta");
     if (p) p.types.forEach(function(t){ meta.appendChild(typeChip(t)); });
-    var sp = el("span", "mono", pct + "%  ·  " + teams + " of " + d.n + " teams");
-    sp.title = teams + " of the " + d.n + " " + WORLD.div +
+    m.appendChild(meta);
+    /* Two numbers, so two cells. "24.6% · 97 of 394 teams" is a sentence you
+       read; a share and a count side by side are numbers you scan down the
+       column, which is the only way a ranking gets used. */
+    var cells = cardLine([
+      labelBox(pct + "%", "of teams"),
+      labelBox(teams + " / " + d.n, "brought it")
+    ]);
+    cells.title = teams + " of the " + d.n + " " + WORLD.div +
       " teams at Worlds " + WORLD.year + " carried " + name +
       ". One per team - the Species Clause allows no second copy.";
-    meta.appendChild(sp);
-    m.appendChild(meta);
+    m.appendChild(cells);
+    if (p) m.appendChild(statGrid(p));
     r.appendChild(m);
     if (p) r.onclick = function(){ findDetail(p); };
     list.appendChild(r);
@@ -1238,7 +1275,146 @@ function drawDiag(){
     } catch (e) { diagFallback(txt); }
   };
   host.appendChild(b);
+
+  /* ------------------------------------------- nothing painted on top -----
+     The search icon sat on the text you were typing, in all eight search
+     boxes, for as long as those boxes had existed - and the only thing that
+     ever found it was a person looking at a phone. He asked for the check
+     rather than for the one bug: "si es algo bueno entonces seria bueno
+     terminarlo... tal vez se nos ocurran mas cosas y queden solapamientos."
+
+     It lives HERE, in diagnostics, and not in the test suite, for a reason
+     that is not laziness: jsdom does not lay anything out - every rectangle
+     it reports is zero - so a test there would pass while the screen was
+     wrong, which is the worst kind of check. Run on the real device, against
+     the real layout, it is the measurement that would have caught it.
+
+     SWEPT, NOT COMPARED PAIRWISE. Find lays out thousands of boxes and the
+     obvious double loop froze the renderer outright. Sorted by top edge, each
+     box is only measured against the ones that start before it ends. */
+  var ob = el("button", "btn sm", "Check every screen for overlaps");
+  ob.style.marginTop = "8px";
+  ob.style.marginLeft = "8px";
+  ob.onclick = function(){ overlapReport(host); };
+  host.appendChild(ob);
 }
+
+function overlapSweep(view){
+  var boxes = [], all = view.querySelectorAll("*");
+  for (var i = 0; i < all.length; i++) {
+    var e = all[i], tag = e.tagName;
+    /* An ICON paints without carrying a word, and an icon on top of text is
+       the exact bug this exists for - so svg and img count as painted even
+       though their textContent is empty. Anything else has to say something
+       to be worth colliding with. */
+    var isIcon = /^(svg|img)$/i.test(tag);
+    /* A FIELD PAINTS ITS VALUE, and `value` is not `textContent`. Without
+       this line an <input> was never a box at all - so the sweep could not
+       see the one bug it was written for, and said "nothing overlaps" with
+       the icon sitting on the text. Caught by planting the bug back and
+       watching the tool miss it. */
+    var isField = /^(input|textarea|select)$/i.test(tag);
+    if (e.children.length && !isIcon) continue;
+    if (!isIcon && !isField && !e.textContent.trim()) continue;
+    var r = e.getBoundingClientRect();
+    if (isField) r = contentBox(e, r);
+    if (r.width < 4 || r.height < 4) continue;
+    boxes.push({e: e, r: r});
+  }
+  boxes.sort(function(a, b){ return a.r.top - b.r.top; });
+  var hits = [];
+  for (var i2 = 0; i2 < boxes.length && hits.length < 12; i2++) {
+    var A = boxes[i2];
+    for (var j = i2 + 1; j < boxes.length; j++) {
+      var B = boxes[j];
+      if (B.r.top >= A.r.bottom - 1) break;         /* the sweep's whole point */
+      if (A.e.contains(B.e) || B.e.contains(A.e)) continue;
+      var ox = Math.min(A.r.right, B.r.right) - Math.max(A.r.left, B.r.left);
+      var oy = Math.min(A.r.bottom, B.r.bottom) - Math.max(A.r.top, B.r.top);
+      /* a two-pixel kiss is layout, not a collision */
+      if (ox <= 1 || oy <= 1 || ox * oy < 30) continue;
+      hits.push(label(A.e) + "  over  " + label(B.e) +
+                "  (" + Math.round(ox * oy) + "px²)");
+      break;
+    }
+  }
+  return {boxes: boxes.length, hits: hits};
+
+  /* A FIELD'S BOX INCLUDES ITS PADDING, and the icon lives in that padding ON
+     PURPOSE - that is the whole point of the 34px. Compared as border boxes
+     the two always intersect, so the sweep called a correct search box broken
+     and would have gone on calling it broken after any fix. What matters is
+     whether something covers the field's TEXT, so a field is measured by its
+     content box. */
+  function contentBox(e, r){
+    var cs = window.getComputedStyle(e);
+    function n(v){ return parseFloat(v) || 0; }
+    var l = r.left + n(cs.borderLeftWidth) + n(cs.paddingLeft);
+    var t = r.top + n(cs.borderTopWidth) + n(cs.paddingTop);
+    var rt = r.right - n(cs.borderRightWidth) - n(cs.paddingRight);
+    var b = r.bottom - n(cs.borderBottomWidth) - n(cs.paddingBottom);
+    /* A NONSENSE COMPUTED STYLE MUST NOT BLIND THE SWEEP. If the insets come
+       back bigger than the box - jsdom resolves a border to 16px here, and a
+       real browser could do something odd with a shorthand - the content box
+       collapses, the element falls under the 4px floor and quietly stops
+       being checked at all. Falling back to the border box keeps it visible:
+       a slightly generous rectangle reports a false positive, which someone
+       reads, and missing one reports nothing, which nobody does. */
+    if (rt - l < 4 || b - t < 4) return r;
+    return {left:l, top:t, right:rt, bottom:b, width:rt - l, height:b - t};
+  }
+  function label(e){
+    /* An SVG's className is an SVGAnimatedString, so String() on it reads
+       "[object SVGAnimatedString]" - which is what the first report said. */
+    var c = (e.getAttribute && e.getAttribute("class") || "").split(" ")[0];
+    var t = (e.value || e.textContent || "").trim().slice(0, 14);
+    return e.tagName.toLowerCase() + (c ? "." + c : "") +
+           (t ? " “" + t + "”" : "");
+  }
+}
+
+function overlapReport(host){
+  /* Found through `host`, not by id: `$()` is for ids the MARKUP declares, and
+     check_app asserts exactly that - a lookup for something no markup
+     contains is usually a typo, which is a check worth keeping sharp. */
+  var old = host.querySelector(".overlapout");
+  if (old) old.parentNode.removeChild(old);
+  var out = el("div", "note overlapout");
+  out.style.marginTop = "10px";
+  /* EVERY VIEW, not just the one you are standing on. The diagnostics panel
+     lives in Profile, so a sweep of "the current screen" could only ever
+     sweep Profile - the one screen nobody was worried about.
+
+     A hidden view reports every rectangle as zero, so each one is shown for
+     the length of a measurement and put straight back. The flicker is the
+     price of measuring the real layout instead of guessing at it. */
+  var open = document.querySelector(".view:not([hidden])");
+  var views = [].slice.call(document.querySelectorAll(".view"));
+  var total = 0, bad = [];
+  views.forEach(function(v){
+    var was = v.hidden;
+    v.hidden = false;
+    var r = overlapSweep(v);
+    v.hidden = was;
+    total += r.boxes;
+    r.hits.forEach(function(h){ bad.push(v.id + " — " + h); });
+  });
+  if (open) open.hidden = false;
+
+  if (!bad.length) {
+    out.innerHTML = "<strong>Nothing overlaps.</strong> Swept " + total +
+      " painted boxes across " + views.length + " views at " +
+      window.innerWidth + "px wide.";
+  } else {
+    out.className = "note bad overlapout";
+    out.innerHTML = "<strong>" + bad.length + " overlap" +
+      (bad.length === 1 ? "" : "s") + "</strong> at " + window.innerWidth +
+      "px, of " + total + " painted boxes:";
+    bad.slice(0, 14).forEach(function(h){ out.appendChild(el("div", "st", h)); });
+  }
+  host.appendChild(out);
+}
+
 function diagFallback(txt){
   openSheet("Diagnostics", function(body){
     body.appendChild(el("p", "sub", "Select it all and copy."));
@@ -1354,5 +1530,5 @@ function drawDupeHome(){
 export {
   DIAG_LATEST, FIND, checkLatest, drawDiag, drawDupeHome, findDetail, findDraw,
   findInit, findRun, itemTags, moveFilters, moveRowFor, moveScore, priorityTag,
-  factLine, spreadNote, spreadTags, worldDraw,
+  factLine, overlapSweep, spreadNote, spreadTags, worldDraw,
 };

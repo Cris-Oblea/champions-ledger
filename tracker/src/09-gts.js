@@ -1,12 +1,12 @@
 /* 09-gts.js - GTS: what may be offered, what it is worth, and the export.
    Part of the app; linked into one script by scripts/build_tracker_page.py. */
 import {
-  $, C, FORMS, MEGAS_OF, STONE_OF, bst, byName, capNote, dexLabel, dexNo, el,
-  freeSlug, megasFor, statLine, toast, typeChip,
+  $, C, FORMS, MEGAS_OF, STONE_OF, bst, byName, capNote, cardLine, dexLabel,
+  dexNo, el, freeSlug, labelBox, megasFor, statGrid, toast, typeCard, typeChip,
 } from "./01-data.js";
 import { ORIGIN_LABEL, S, boxRows, hasStone, originOf } from "./02-state.js";
 import { drop, put, putNew } from "./03-store.js";
-import { closeSheet, fbtn, openSheet } from "./04-nav.js";
+import { ask, closeSheet, fbtn, openSheet } from "./04-nav.js";
 import { note } from "./13-boot.js";
 /* ======================================================================= gts */
 function drawGts(){
@@ -715,9 +715,11 @@ function pickField(label, current, subtitle, opener, rec){
   /* the same shape the box uses, badges and all - a Pokemon should not look
      like two different things on two screens */
   var p = byName[current];
-  var b = el("button", "row " + (rec
+  /* the same card as everywhere else - a Pokemon should not look like two
+     different things on two screens */
+  var b = typeCard(el("button", "row " + (rec
       ? (rec.location === "home" ? "home" : "perm")
-      : (p ? "" : "illegal")));
+      : (p ? "" : "illegal"))), p);
   var m = el("div", "rmain");
   var h = el("div", "rname");
   h.appendChild(document.createTextNode(current));
@@ -728,13 +730,20 @@ function pickField(label, current, subtitle, opener, rec){
   meta.appendChild(el("span", "mono", dexLabel(current)));
   if (p) {
     p.types.forEach(function(t){ meta.appendChild(typeChip(t)); });
-    meta.appendChild(el("span", "mono", "BST " + bst(p) + "  •  " + statLine(p)));
-
   } else {
     meta.appendChild(el("span", null,
       "it can sit in HOME but never enter the game"));
   }
   m.appendChild(meta);
+  /* BST is the whole argument on this screen - equivalence in a GTS deposit is
+     the BST tier - so it is the one number that must not be prose. */
+  if (p) {
+    m.appendChild(cardLine([
+      labelBox(bst(p), "BST"),
+      labelBox(p.ab || [], "Possible ability", "wide")
+    ]));
+    m.appendChild(statGrid(p));
+  }
   b.appendChild(m);
   b.onclick = opener;
   w.appendChild(b);
@@ -1181,7 +1190,10 @@ function gtsSheet(id, o){
               " - the first one is the one being removed." : "")
         : d.offered + " is not in the box any more, so only " + d.requested +
           " will be added.";
-      if (!confirm(msg)) return;
+      ask("Close this trade?", msg, "Trade done").then(function(ok){
+        if (ok) closeTrade();
+      });
+      function closeTrade(){
 
       /* The offer is not deleted and re-filed - it is the same trade, and
          closing it writes the ending onto the row it already has. */
@@ -1220,6 +1232,7 @@ function gtsSheet(id, o){
         toast(going ? d.offered + " out, " + d.requested + " in"
                     : d.requested + " is in HOME");
       });
+      }
     }) : fbtn("Log it", "primary", function(){
       if (!d.offered || !d.requested) { toast("Both names are needed"); return; }
       if (!gtsFree()) {
@@ -1233,13 +1246,17 @@ function gtsSheet(id, o){
          When a sibling form is in the box the picker has already said so, and
          choosing between forms is his call, not the app's. */
       var lastRec = d.offeredId ? S.box[d.offeredId] : null;
-      if (lastCopyOf(lastRec) && !otherFormsOf(lastRec).length &&
-          !confirm("This is your only " + d.offered + ", and it is in "
-                   + "the Champions dex. Trading it means losing the "
-                   + "species for good - your own rule is to keep one "
-                   + "of everything Champions allows. Go ahead?")) {
+      if (lastCopyOf(lastRec) && !otherFormsOf(lastRec).length) {
+        ask("Your only " + d.offered + "?",
+            "It is in the Champions dex, so trading it means losing the "
+            + "species for good — your own rule is to keep one of everything "
+            + "Champions allows.", "Offer it anyway", true)
+          .then(function(ok){ if (ok) logIt(); });
         return;
       }
+      logIt();
+
+      function logIt(){
       /* stamp what the ladder said TODAY, so a later reading can tell you the
          target moved rather than silently comparing against nothing */
       var rdNow = gtsDiff(d.requested);
@@ -1257,6 +1274,7 @@ function gtsSheet(id, o){
       putNew("gts", stem, d).then(function(){
         closeSheet(); toast("Offer logged");
       });
+      }
     }),
     /* NOT danger. Withdrawing a deposit takes your own Pokemon back and loses
        nothing - you can re-log the offer in a second. Red is reserved for the

@@ -40,6 +40,25 @@ request returns nothing.
 | **GTS** | Open trades, what a chip is worth, and what it can realistically fetch |
 | **Profile** | Box capacity, and everything else derived so it cannot go stale |
 
+On a phone it is one column and a bottom tab bar. On a desktop it spreads:
+the controls sit beside the answer in a sticky sidebar instead of on top of
+it, results come back as a grid of cards that wear their Pokemon's type, and
+the column grows to 1560px rather than staying at the 820 it was drawn for.
+Every question the app asks - deleting a build, releasing a Pokemon, closing a
+trade - is asked in its own dialog rather than the browser's.
+
+**A Pokemon looks the same wherever it appears** - in the box, in a build, in a
+team slot, in a trade, in a search result or in a Worlds ranking. One card: a
+band of its type across the top, two of them for a dual type, then every fact
+in a cell of its own with the label under the value - BST, the ability, and the
+six base stats - so two cards can be read against each other down the column
+instead of as six numbers with six words between them. Nothing is trimmed to
+fit: a long ability list wraps rather than ending in an ellipsis.
+
+`python scripts/preview.py` puts three viewports side by side in a browser -
+desktop, laptop and phone - each in its own iframe so the media queries are
+real, with the cache cleared first and the app's own overlap check on a button.
+
 Its source is thirteen ES modules under `tracker/src/`, each one a tab or the
 thing the tabs share, saying what it exports and importing what it needs. The
 build links them into the single script the browser is handed, plus a sourcemap
@@ -149,7 +168,7 @@ it. A source that quietly changes a denominator is the failure this catches.
 ```
 
 <!-- GATE:START -->
-**The gate** is thirty checks, and nothing reaches the phone without
+**The gate** is 31 checks, and nothing reaches the phone without
 passing all of them:
 
 - a **shrink guard** — if a rebuild comes back with fewer forms, moves or
@@ -161,7 +180,7 @@ passing all of them:
 - **one source check** — the app is linked from thirteen ES modules, so a name
   two of them both declare, or one of them uses without importing,
   is read for once rather than clicked
-- **nineteen browser tests** — run against the built page, because no Python
+- **twenty browser tests** — run against the built page, because no Python
   check can see a template regression
 <!-- GATE:END -->
 
@@ -235,7 +254,7 @@ data/db/     the built database - the thing everything else reads
 data/meta/   usage, tournaments, speed tiers, written analyses
 tracker/     the app: a shell, its ES modules under src/, and a generated data blob
 <!-- TESTS:START -->
-tests/       nineteen browser tests, run against the BUILT page
+tests/       twenty browser tests, run against the BUILT page
 <!-- TESTS:END -->
 analysis/    write-ups: the Smogon engine, regulation M-C, the roadmap
 CLAUDE.md    the rules this project works by, including everything learned the hard way

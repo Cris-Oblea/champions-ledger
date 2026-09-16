@@ -2,6 +2,9 @@
    Part of the app; assembled into one script by scripts/build_tracker_page.py. */
 import { $, el, toast } from "./01-data.js";
 import { S } from "./02-state.js";
+/* The app's own confirm, rather than the operating system's. 04-nav does not
+   import this file, so the edge adds no cycle. */
+import { ask } from "./04-nav.js";
 /* The one redraw. Every snapshot from the store ends in a call to it, and it
    is the only thing this file knows about the screen. The cycle it makes with
    13-boot (which imports put/patch/drop from here) is resolved by the language:
@@ -377,8 +380,8 @@ function signedInChip(email){
     'stroke="currentColor" stroke-width="1.7" stroke-linecap="round">' +
     '<path d="M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3M10 16l-4-4 4-4M6 12h11"/></svg>';
   b.onclick = function(){
-    if (!confirm("Sign out of " + email + "?")) return;
-    SB.auth.signOut();
+    ask("Sign out?", "You are signed in as " + email + ".", "Sign out")
+      .then(function(ok){ if (ok) SB.auth.signOut(); });
   };
   bar.insertBefore(b, $("themeBtn"));
 }

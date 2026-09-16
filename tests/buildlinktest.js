@@ -61,7 +61,12 @@ const BUILDS = [build("garchomp","Garchomp"), build("dragonite","Dragonite"),
 const body = require("./harness.js").page(ROOT);
 const stub = `<script>
 window.__ROWS=${JSON.stringify(ROWS)}; window.__BUILDS=${JSON.stringify(BUILDS)};
-window.__DELETED=[]; window.__WROTE=[]; window.confirm=function(m){ window.__ASKED=m; return true; };
+window.__DELETED=[]; window.__WROTE=[];
+/* The app asks with its OWN dialog now, not the operating system's, so there
+   is nothing to stub: the question is in the DOM and the test answers it by
+   clicking, which is what a person does too. A confirm() stub left here would
+   keep passing while the real dialog was broken. */
+window.confirm=function(){ throw new Error("native confirm() must not be used"); };
 window.supabase={createClient:function(){return{
  auth:{getSession:function(){return Promise.resolve({data:{session:{user:{id:"u1",email:"t@t"}}}});},
        onAuthStateChange:function(){},signInWithPassword:function(){},signOut:function(){}},
@@ -128,23 +133,39 @@ setTimeout(() => {
          not be lost for want of a row to hang it on. So a release unbinds and
          keeps them - and garchomp carries TWO, which is the case the old
          one-build-per-row model could not produce. */
+      /* THE APP'S OWN QUESTION, not the operating system's. */
+      ok("pregunta con el dialogo propio",
+         d.getElementById("askScrim").hidden, false);
+      const asked = d.getElementById("askTitle").textContent + " " +
+                    d.getElementById("askBody").textContent;
+      ok("y el boton seguro es el que tiene el foco",
+         d.activeElement === d.getElementById("askNo"), true);
       ok("avisa de que las builds se conservan",
-         /will be KEPT as ideas/.test(w.__ASKED || ""), true);
-      ok("...y dice cuantas", /2 builds/.test(w.__ASKED || ""), true);
-      ok("borra la fila de la caja",
-         w.__DELETED.indexOf("box/garchomp") >= 0, true);
-      ok("NO borra ninguna build",
-         w.__DELETED.filter(x => x.indexOf("builds/") === 0).length, 0);
-      const wroteBuilds = w.__WROTE.filter(x => x.table === "builds");
-      const unbound = wroteBuilds.filter(x => x.row.box_id === null)
-        .map(x => x.row.id).sort();
-      ok("desata las dos de ese Pokemon", unbound.join(","), "garchomp,garchomp-2");
-      ok("y no toca la de otro",
-         wroteBuilds.some(x => x.row.id === "dragonite"), false);
+         /will be KEPT as ideas/.test(asked), true);
+      ok("...y dice cuantas", /2 builds/.test(asked), true);
+      /* answered the way a person answers it */
+      click(d.getElementById("askYes"));
+      ok("y se cierra al responder",
+         d.getElementById("askScrim").hidden, true);
+      /* The release only STARTS when the question is answered, so the writes
+         land a tick later - the old native confirm() returned inline and the
+         assertions could follow it straight away. */
+      setTimeout(() => {
+        ok("borra la fila de la caja",
+           w.__DELETED.indexOf("box/garchomp") >= 0, true);
+        ok("NO borra ninguna build",
+           w.__DELETED.filter(x => x.indexOf("builds/") === 0).length, 0);
+        const wroteBuilds = w.__WROTE.filter(x => x.table === "builds");
+        const unbound = wroteBuilds.filter(x => x.row.box_id === null)
+          .map(x => x.row.id).sort();
+        ok("desata las dos de ese Pokemon", unbound.join(","), "garchomp,garchomp-2");
+        ok("y no toca la de otro",
+           wroteBuilds.some(x => x.row.id === "dragonite"), false);
 
-      console.log("\n  ERRORES JS: " + (errs.length ? errs.join(" | ") : "ninguno"));
-      console.log(bad ? "\n  " + bad + " FALLOS\n" : "\n  todo bien\n");
-      process.exit(bad || errs.length ? 1 : 0);
+        console.log("\n  ERRORES JS: " + (errs.length ? errs.join(" | ") : "ninguno"));
+        console.log(bad ? "\n  " + bad + " FALLOS\n" : "\n  todo bien\n");
+        process.exit(bad || errs.length ? 1 : 0);
+      }, 400);
     }, 500);
   }, 400);
 }, 1200);

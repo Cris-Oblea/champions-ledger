@@ -114,6 +114,112 @@ function toast(msg){
   var ms = Math.min(7000, Math.max(2600, 1200 + msg.length * 55));
   toastT = setTimeout(function(){ t.hidden = true; }, ms);
 }
+/* A type's colour as rgba, so a card can be tinted with it without needing
+   color-mix - which would add a newer browser requirement than anything else
+   this page relies on. Returns the hex untouched when it is not one. */
+function typeTint(t, alpha){
+  var h = TYPE_COLOR[t];
+  if (!h || h.charAt(0) !== "#" || h.length !== 7) return null;
+  return "rgba(" + parseInt(h.slice(1, 3), 16) + "," +
+                   parseInt(h.slice(3, 5), 16) + "," +
+                   parseInt(h.slice(5, 7), 16) + "," + alpha + ")";
+}
+/* Dress a row as a CARD wearing its Pokemon's type: the band across the top
+   and the tint behind it. Used by every list that shows Pokemon, so the four
+   of them cannot drift apart.
+
+   It only adds - the caller's own classes stay, and that matters: the LEFT
+   stripe still means origin (HOME-elastic, Champions-welded, rental) or
+   ownership, which is a different fact from the type and must not be traded
+   away for a tidier picture. Two edges, two facts.
+
+   The card styling itself is scoped to `.cards`, so a row marked here and
+   dropped into a plain `.list` simply stays a row. */
+function typeCard(row, p){
+  row.className += " card";
+  var types = (p && p.types) || [];
+  var c1 = TYPE_COLOR[types[0]];
+  if (!c1) return row;
+  /* A DUAL TYPE IS ITS OWN COLOUR, not its first half. Fire/Psychic and
+     Fire/Rock are different Pokemon and should not wear the same card
+     (player, 2026-09-16: "podría ser color diferente... tener más tonalidades
+     para los tipo doble. una combinación de colores. para los mono tipo el
+     color principal solamente").
+
+     Two variables rather than one gradient, because the tint is painted as
+     two half-width columns that each fade downward - a single gradient cannot
+     vary along both axes, and this way a mono type sets both halves to the
+     same colour and comes out exactly as it did. */
+  var c2 = TYPE_COLOR[types[1]] || c1;
+  row.style.setProperty("--tcol", c1);     /* solid, for borders */
+  row.style.setProperty("--tcol2", c2);
+  var s1 = typeTint(types[0], 0.14);
+  var s2 = typeTint(types[1], 0.14) || s1;
+  if (s1) row.style.setProperty("--tsoft", s1);
+  if (s2) row.style.setProperty("--tsoft2", s2);
+  return row;
+}
+/* THE SIX STATS AS A TABLE. Written three times in three files before this
+   existed, which is why one of them silently did not mark the ranked stat and
+   the class itself had been declaring seven columns for six numbers.
+
+   A table rather than a sentence: "115 HP 175 Atk 117 Def ..." is six numbers
+   with six words between them, and that gets read rather than scanned - you
+   cannot line two of them up against each other (player, 2026-09-16: "no se
+   sabe como leerlo bien... va todo escrito como prosa practicamente").
+
+   `mark` is a stat key to highlight, for the list that is ranked by one. */
+function statGrid(p, mark){
+  var sl = el("div", "statline");
+  STAT_KEYS.forEach(function(k, i){
+    var cell = el("div", mark === k ? "on" : null);
+    cell.appendChild(el("b", null, p.b[i]));
+    cell.appendChild(el("span", null, STAT_LABEL[k]));
+    sl.appendChild(cell);
+  });
+  return sl;
+}
+/* ONE LABELLED CELL, the same object the stat table is made of.
+
+   BST and the ability were loose text beside the type chips while the six
+   stats sat in neat boxes underneath, so a card had two visual languages on
+   it at once (player, 2026-09-16: "seria bonito que bst tambien tuviera un
+   cuadro como los stats, puede ser diferente... asi todo queda bien
+   presentable").
+
+   `cls` takes "wide" for a value that is a WORD rather than a number - an
+   ability, a nature - which needs the sans face and room to breathe; a number
+   keeps the tabular mono the stat cells use, so columns of them line up. "on"
+   marks the cell the list is currently ranked by, exactly as in statGrid. */
+function labelBox(value, label, cls){
+  var d = el("div", cls || null);
+  var b = el("b");
+  /* AN ARRAY BREAKS ONLY BETWEEN ITS ITEMS. Joining three abilities into one
+     string and letting the browser wrap it split "Sticky Hold" across two
+     lines, which reads as two different abilities - the break has to land on
+     the separator, never inside a name. Each item is therefore its own
+     unbreakable span and only the " / " between them may wrap. */
+  if (Array.isArray(value)) {
+    if (!value.length) b.textContent = "—";
+    value.forEach(function(v, i){
+      if (i) b.appendChild(document.createTextNode(" / "));
+      b.appendChild(el("span", "whole", v));
+    });
+  } else {
+    b.textContent = (value === null || value === undefined || value === "")
+      ? "—" : value;
+  }
+  d.appendChild(b);
+  d.appendChild(el("span", "lbl", label));
+  return d;
+}
+/* The strip of them that sits above the stat table. Nulls are dropped, so a
+   caller can offer a cell it does not always have without branching. */
+function cardLine(cells){
+  var row = el("div", "cardline");
+  cells.filter(Boolean).forEach(function(c){ row.appendChild(c); });
+  return row;
+}
 function typeChip(t){
   var s = el("span", "t", t);
   s.style.background = TYPE_COLOR[t] || "#777";
@@ -418,7 +524,7 @@ export {
   $, C, COSTS, DEX, FORMS, HOME_ALL, MEGAS_OF, MOVES, MOVE_BY, SORT,
   STAT_KEYS, STAT_LABEL, STONE_OF, TYPE_COLOR,
   bst, byName, capNote, catName, defence, dexLabel, dexNo, el, freeSlug,
-  learnset,
+  cardLine, labelBox, learnset, statGrid, typeCard, typeTint,
   effectChips, effectLine, effectOf, podiumChip, podiumFor, splitMax, splitPct,
   splitsFor, splitsReg, usageTag,
   megasFor, natMult, rowMatches, setHomeAll, setSort, sortRows, statAt,

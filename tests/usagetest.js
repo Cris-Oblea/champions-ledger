@@ -226,11 +226,26 @@ setTimeout(() => {
          sortTab("BST").getAttribute("aria-pressed"), "true");
 
       const rows = () => [...d.querySelectorAll("#findOut .row")];
-      const statOf = (r, lab) => Number(
-        [...r.querySelectorAll(".statrow .fact")]
-          .map(x => x.textContent.trim())
-          .find(t => t.endsWith(" " + lab) || t.startsWith(lab + " "))
-          .replace(/[^\d]/g, ""));
+      /* EVERY NUMBER ON A CARD IS A CELL NOW: a <b> with the value and a
+         <span> with the label under it. It used to be one prose line of
+         ".fact" spans inside a ".statrow", and this read it by matching the
+         text - so when the stats became a table and BST a box of its own, the
+         selector found nothing and the test died on a null instead of failing
+         an assertion. Reading the label and the value as the two elements
+         they are cannot go stale the same way. */
+      const cells = r => [...r.querySelectorAll(".statline > div, .cardline > div")];
+      /* ".lbl", not the first span: a cell whose value is a LIST holds one
+         unbreakable span per item inside its <b>, so the first span in the
+         cell is an ability name and not the caption. */
+      const cellOf = (r, lab) => cells(r).find(c =>
+        (c.querySelector("span.lbl") || c.querySelector("span"))
+          .textContent.trim() === lab);
+      const statOf = (r, lab) => {
+        const c = cellOf(r, lab);
+        if (!c) throw new Error("no hay celda '" + lab + "' en la tarjeta: " +
+          cells(r).map(x => x.querySelector("span").textContent).join("/"));
+        return Number(c.querySelector("b").textContent.replace(/[^\d]/g, ""));
+      };
       const v = rows().map(r => statOf(r, "BST"));
       ok("hay filas", v.length > 20, true);
       ok("ordenado por BST", v.every((x,i) => i===0 || v[i-1] >= x), true);
@@ -243,11 +258,18 @@ setTimeout(() => {
       ok("cambiar a Spe reordena la misma tabla",
          sp.every((x,i) => i===0 || sp[i-1] >= x), true);
       ok("y las seis stats siguen ahi",
-         ["HP","Atk","Def","SpA","SpD","Spe"].every(k =>
-           [...rows()[0].querySelectorAll(".statrow .fact")]
-             .some(x => x.textContent.trim().endsWith(" " + k))), true);
+         ["HP","Atk","Def","SpA","SpD","Spe"].every(k => !!cellOf(rows()[0], k)),
+         true);
       ok("la rankeada va marcada",
-         rows()[0].querySelector(".fact.on").textContent.trim().endsWith(" Spe"),
+         rows()[0].querySelector(".statline .on span").textContent.trim(), "Spe");
+      /* BST AND LA HABILIDAD TAMBIEN SON CUADROS. The player asked for it so
+         the card speaks one visual language ("seria bonito que bst tambien
+         tuviera un cuadro como los stats... y tambien para la habilidad"), and
+         a cell is the only shape this file can assert without matching prose. */
+      ok("BST tiene su propio cuadro", !!cellOf(rows()[0], "BST"), true);
+      ok("y la habilidad tambien", !!cellOf(rows()[0], "Ability"), true);
+      ok("la habilidad dice algo",
+         cellOf(rows()[0], "Ability").querySelector("b").textContent.length > 2,
          true);
       /* SP and nature are the builder's business, not the list's. */
       ok("sin SPs en el listado",
@@ -309,12 +331,17 @@ setTimeout(() => {
     const rr = rows();
     ok("Masters 2026 trae filas", rr.length > 10, true);
     ok("Kingambit encabeza", /Kingambit/.test(rr[0].textContent), true);
+    /* The share and the count are two cells now, not one sentence - "24.6% ·
+       97 of 394 teams" was prose in a ranking, which is the one place numbers
+       have to be scannable down the column. */
+    const wcell = (r, lab) => [...r.querySelectorAll(".cardline > div")]
+      .find(c => (c.querySelector("span.lbl") || c.querySelector("span"))
+        .textContent.trim() === lab);
     ok("con su cuenta de equipos",
-       / of \d+ teams/.test(rr[0].textContent), true);
-    /* .rmeta .mono, not the first .mono: the rank sits in .rname and carries
-       no percentage. */
-    const pct = r => Number(r.querySelector(".rmeta .mono").textContent.match(
-      /([\d.]+)%/)[1]);
+       /^\d+ \/ \d+$/.test(wcell(rr[0], "brought it")
+         .querySelector("b").textContent.trim()), true);
+    const pct = r => Number(wcell(r, "of teams")
+      .querySelector("b").textContent.replace("%", ""));
     const ps = rr.map(pct);
     ok("de mayor a menor", ps.every((v, i) => i === 0 || ps[i - 1] >= v), true);
     click(dv("Juniors"));

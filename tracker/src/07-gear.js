@@ -107,7 +107,9 @@ function drawItems(){
     var h = el("h2", null, cat + " ");
     h.appendChild(el("span", "n", have + "/" + hits.length));
     pane.appendChild(h);
-    var list = el("div", "list");
+    /* Items are a list you PICK FROM, 118 of them: a grid is the shape of
+       that, not a column six screens long. */
+    var list = el("div", "list cards");
     /* owned first, then by name - the same order the stone list reads in */
     hits.sort(function(x, y){
       return (own[y[0]] ? 1 : 0) - (own[x[0]] ? 1 : 0) ||
@@ -127,7 +129,11 @@ function drawItems(){
 function itemRow(r, have){
   var name = r[0], vp = r[1], effect = r[3] || "", src = r[4] || "",
       from = r[5] || "";
-  var row = el("button", "row " + (have ? "perm" : ""));
+  /* THE SAME CARD, without a type - an item has none. It gets the shape and
+     the padding so a grid of items reads like every other grid in the app;
+     the band falls back to the neutral line colour, which is honest: there is
+     no type here to colour it with. */
+  var row = el("button", "row card " + (have ? "perm" : ""));
   var m = el("div", "rmain");
   var h = el("div", "rname");
   h.appendChild(document.createTextNode(name));

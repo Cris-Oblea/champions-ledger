@@ -66,10 +66,16 @@ setTimeout(() => {
   /* the drawItems bug: a guard that skips the redraw when focus is inside the
      container it is about to rebuild. Legitimate for a form of text inputs
      (the Trainer tab), wrong for a list of buttons. */
+  /* Counted by SHAPE rather than by counting every line that says
+     activeElement. The old rule was "expect 2 lines" and it broke the day a
+     DIALOG read activeElement to decide what Enter should do - which is not a
+     redraw guard at all. What makes this a smell is the early `return`, so
+     that is what is matched. */
   const guards = code.split("\n").filter(function(l){
-    return /activeElement/.test(l) && !/^\s*\/?\*/.test(l);
+    return /activeElement/.test(l) && /\breturn\b/.test(l) &&
+           !/^\s*\/?\*/.test(l);
   });
-  ok("solo queda un guard de foco", guards.length, 2);   // una sentencia if, dos lineas
+  ok("solo queda un guard de redibujado", guards.length, 1);
   ok("y es el de la pestaña Trainer",
      guards.join(" ").indexOf("#v-trainer") >= 0, true);
 

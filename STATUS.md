@@ -206,6 +206,180 @@ doing something until then.
 standings only, and 2023 splits its divisions across two pokedata events - the
 one with more players wins, or Seniors and Juniors get two podiums each.
 
+## The desktop stopped being a phone in the middle of a monitor (2026-09-16)
+
+He asked for a design study, and the numbers were blunt. Measured on the
+deployed build at 1440 and 1920:
+
+| | width used | dead space | height |
+|---|---|---|---|
+| Find @1920 | **43%** | 445px | **19.1 screens** |
+| Items @1920 | **29%** | 578px | 6.7 screens |
+| Box @1440 | 58% | 205px | 1 screen |
+| Builds @1440 | 45% | 296px | — |
+
+`main` was capped at 820px and never grew, so past about 1024px every extra
+pixel of monitor became margin - and the column drifted per tab (553 / 636 /
+820) with no reason a reader could see. It was a phone layout centred on a
+desktop.
+
+**He chose the direction: wide plus a grid, and cards with presence.** And he
+corrected the framing - it is not paint: "no me refiero al estilo, me refiero
+también al orden en que se presenta la información, la estructura web. piensa
+que lo usan humanos."
+
+What changed, and why each:
+
+- **`main` grows to 1560px.** Not further: a 1900px row carrying 300px of
+  content is worse, not better.
+- **Controls beside the answer, not on top of it.** The filters, the sort and
+  the count sat above the list, so the answer began below the fold and
+  scrolling to read it took the controls away. A sticky 300px sidebar holds
+  both permanently in reach. Under 1100px it falls back to the stacked order,
+  which is what a phone wants.
+- **Results in a grid.** 345 rows in one column is nineteen screens; two
+  across is eleven, three is seven. `auto-fill`, so the column count follows
+  the width instead of a breakpoint guessing at it.
+- **Worlds came out of the scroll.** "Who matches this" and "what won that
+  August" are different questions, and Worlds sat BELOW 345 result rows, which
+  at nineteen screens is the same as not being there. A segmented control at
+  the top of Find, one tap.
+- **Cards wear their type.** A band across the top and a whisper of tint
+  behind, both from the primary type, so a grid reads as a set of things
+  rather than 345 identical strips.
+
+**Two bugs found by measuring after, not before.** The first pass raised
+`max-width` and nothing moved: Items still drew 552px inside a 1228px track
+and sat centred in it. `main` carries `margin:0 auto`, and an auto inline
+margin on a GRID ITEM turns stretching off - the item shrinks to its content
+and centres. `width:100%` fills the track; the max-width still caps it and the
+auto margins only do anything past 1560.
+
+The second: the grids were `class="list cards"`, and `.list` is `display:flex`
+a few hundred lines further down the stylesheet, so at equal specificity it
+won and the "grid" was a flex column. Items drew 199 cards in a single file.
+`.list.cards` settles it.
+
+Measured after both, at 1440:
+
+| | before | after |
+|---|---|---|
+| width used | 29–58%, varying per tab | **86%, the same everywhere** |
+| Find | 19.1 screens | **7.2** |
+| Items | 6.7 screens | **3.8** |
+
+The phone is untouched: one column at 345px, zero horizontal overflow on every
+tab, the workspace falls back to stacked and the sidebar unsticks.
+
+### Nothing painted on top of anything else
+
+The search icon sat on the text you were typing, in all eight search boxes,
+for as long as those boxes had existed - and the only thing that ever found it
+was a person looking at a phone. He asked for the check rather than the fix:
+"si es algo bueno entonces sería bueno terminarlo... tal vez se nos ocurran más
+cosas y queden solapamientos."
+
+**Two halves, because neither is enough alone.** jsdom lays nothing out - every
+rectangle it reports is zero - so a sweep of the real app under jsdom would
+find nothing and pass while the screen was wrong, which is worse than no check
+at all. So:
+
+- the ALGORITHM is tested in `overlaptest.js`, fed rectangles the test
+  controls: it must find a planted icon-over-text, ignore a one-pixel kiss and
+  anything nested, and stay linear (the naive double loop froze a real
+  renderer, twice).
+- the LAYOUT is swept on the device, by a button in diagnostics - **Check every
+  screen for overlaps**. Every view, not just the one you are standing on: the
+  panel lives in Profile, so "the current screen" could only ever have been
+  Profile. A hidden view reports zeroes, so each is shown for the length of one
+  measurement and put back.
+
+**Using it sharpened it three times, and only the third was found by thinking.**
+
+1. Writing the test: the sweep counted `svg` as painted but not `img`, so an
+   image icon over text - which is what the item rows use - would have slipped
+   through the very check written for it.
+2. Planting the original bug back into the running app and watching the tool
+   MISS it: an `<input>` has no `textContent` - its text is `value` - so a
+   field was never a box at all. The sweep could not see the one bug it exists
+   for.
+3. Fixing that made it report the *correct* search box as broken: a field's
+   rectangle includes its padding, and the icon lives in that padding on
+   purpose. Fields are measured by their CONTENT box now, which is the real
+   question - does something cover the text.
+
+4. And the fix for (3) introduced a fourth, which the gate caught before it
+   could be pushed: subtracting the border and padding means trusting the
+   computed style, and jsdom resolves this app's border shorthand to **16px**.
+   A 24px field then has a negative content box, falls under the 4px floor and
+   **stops being swept at all** - silently. That is the dangerous failure: not
+   a false positive but blindness. If the insets come back bigger than the
+   box, it falls back to the border box. A slightly generous rectangle reports
+   something someone reads; a vanished one reports nothing nobody reads.
+
+Proven rather than assumed, against the real browser, before and after that
+last fix: fixed → **0**, bug reintroduced → **1**, named `input over svg`,
+fixed again → **0**. Then swept clean over the whole app: 1,931 painted boxes
+at 1440px and 1,949 at 345px, across seven views, no overlaps.
+
+### Three corrections after seeing it (2026-09-16)
+
+**A dual type is its own colour, not its first half.** Fire/Psychic and
+Fire/Rock are different Pokemon and were wearing the same card. The band
+blends the two and the tint is painted as two half-width columns, each fading
+downward - two layers rather than one diagonal gradient, because a gradient
+cannot vary along both axes. A mono type sets both halves to the same value
+and comes out exactly as before.
+
+**The stats were prose.** "115 HP 175 Atk 117 Def ..." is six numbers with six
+words between them: "no se sabe cómo leerlo bien". They are a six-column table
+now, label under number, so a column can be read straight down and two cards
+can be compared without reading either. Doing it found `.statline` had been
+declared `repeat(7,1fr)` for six stats all along - every stat grid in the app
+was drawing an empty seventh cell.
+
+**And the resolutions were wrong.** The study ran at 1440x900; his screen is
+1080p and there is a second one "un poquito diferente". Re-measured on the
+real ones:
+
+| | width used | columns | screens |
+|---|---|---|---|
+| 1920×1080 | 82% | 4 | **4.5** |
+| 1680×1050 | 88% | 3 | 5.7 |
+| 1366×768 | 86% | 3 | **8.7** |
+| 360 phone | 100% | 1 | 22.4 |
+
+1366 was two columns and 11.3 screens until the card minimum dropped from 270
+to 250 - three cards need 256 each once the sidebar has taken 300. **The phone
+is honestly unchanged in length**: 345 results in one column is 22 screens
+whatever the card looks like. What improved there is each card, not the list.
+
+Find at 1440 also uses the shared `typeCard()` now. It had its own inline copy
+of the colour logic, which is exactly the drift the helper exists to stop -
+and it is why the dual-type colours did not appear there at first.
+
+The card tint was checked the same way rather than eyeballed. Worst contrast
+of a card's name against its own tinted background: **12.3:1 dark, 14.6:1
+light**, where AAA asks 7:1.
+
+### The app asks its own questions now
+
+Seven `confirm()` calls drew the OPERATING SYSTEM's dialog in the middle of a
+designed app - another typeface, another button order, and on a phone it
+arrives at the top of the screen, far from the thumb that asked for it. Every
+one of them guards something irreversible: deleting a build, buying a rental
+into Champions origin, closing a trade, releasing a Pokemon.
+
+`ask()` in 04-nav replaces them, promise-shaped so the call sites read the way
+they did. **The safe answer is the default**: Escape, the backdrop and Cancel
+all resolve false, and Cancel is what takes focus - a question about something
+that cannot be undone should not be dismissable into a yes. The body is
+rendered as TEXT, never markup, because several of these interpolate a
+Pokemon's name or a trade's contents.
+
+`buildlinktest` stubbed `window.confirm` to answer yes; it now clicks the real
+dialog, and the stub throws if anything reaches for the native one again.
+
 ### The splits joined the shrink guard (2026-09-15)
 
 Every bug in this batch was found by a person noticing something on a phone,
