@@ -171,6 +171,74 @@ nav.tabs button:active{background:var(--sunk)}
   main{grid-area:main;padding:20px 24px 60px}
 }
 
+/* ---------- the desktop workspace ----------------------------------------
+   MEASURED BEFORE IT WAS CHANGED, on the deployed build at 2026-09-16:
+
+     Find   @1920   43% of the width used,  445px dead,  19.1 screens tall
+     Items  @1920   29% of the width used,  578px dead,   6.7 screens
+     Box    @1440   58%,  Builds @1440  45%
+
+   `main` was capped at 820px and never grew, so past about 1024px every extra
+   pixel of monitor became margin. It was a phone layout centred on a desktop -
+   and the column width drifted per tab (553 / 636 / 820) with no reason a
+   reader could see, which reads as accident rather than design.
+
+   The cap moves out to 1560 so an ultra-wide does not run a row to the far
+   edge - a 1900px row carrying 300px of content is worse, not better. */
+@media (min-width:900px){
+  main{max-width:1560px}
+}
+
+/* CONTROLS BESIDE THE RESULTS, NOT ON TOP OF THEM.
+   The filters, the sort and the count sat above the list, so on every screen
+   the first thing under the title was a block of controls and the answer
+   started below the fold - and scrolling to read the answer took the controls
+   away with it. Beside it, sticky, both are permanently in reach. Below
+   1100px it falls back to the stacked order, which is what a phone wants. */
+.workspace{display:block}
+@media (min-width:1100px){
+  .workspace{display:grid;grid-template-columns:300px minmax(0,1fr);
+    gap:22px;align-items:start}
+  .workspace > .wside{position:sticky;top:71px;
+    max-height:calc(100dvh - 90px);overflow:auto;
+    padding-right:4px}
+  .workspace > .wmain{min-width:0}
+}
+@media (min-width:1500px){
+  .workspace{grid-template-columns:320px minmax(0,1fr)}
+}
+
+/* ---------- a card with presence ----------------------------------------
+   The list rows were a name, two chips and a line of numbers on a flat
+   surface, repeated 345 times: correct, and with nothing to catch the eye or
+   tell one row from the next at a glance. A card carries its Pokemon's own
+   TYPE as colour - a band across the top and a whisper of tint behind it - so
+   the grid reads as a set of things rather than as a wall of text, and the
+   type is legible before you have read a word.
+
+   The tint is deliberately faint. It has to sit under body text at both
+   themes, and a card you cannot read is not a card. */
+.cards .row.card{display:block;padding:0;overflow:hidden;position:relative;
+  background:linear-gradient(180deg, var(--tsoft, transparent) 0,
+                             transparent 76px), var(--surface)}
+.cards .row.card::before{content:"";display:block;height:4px;
+  background:var(--tcol, var(--line-hard))}
+.cards .row.card .rmain{padding:11px 13px 12px}
+.cards .row.card .rname{font-size:15.5px;margin-bottom:3px}
+.cards .row.card:hover{border-color:var(--tcol, var(--line-hard));
+  box-shadow:var(--shadow)}
+/* the left stripe means ORIGIN on a box row and would fight the type band */
+.cards .row.card{border-left-width:1px;border-left-color:var(--line)}
+
+/* A LIST THAT IS REALLY A GRID once there is room for one. 345 results in a
+   single column is 19 screens; three across is six. auto-fill rather than a
+   fixed count, so the number of columns follows the width instead of a
+   breakpoint guessing at it. */
+.cards{display:grid;gap:10px;grid-template-columns:1fr}
+@media (min-width:640px){
+  .cards{grid-template-columns:repeat(auto-fill,minmax(270px,1fr))}
+}
+
 /* ---------- type scale & headings --------------------------------------- */
 h1{font-size:21px;margin:0;font-weight:600;letter-spacing:-.01em}
 h2{font-family:var(--cond);text-transform:uppercase;letter-spacing:.08em;
@@ -541,6 +609,27 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border:2px solid var(
 /* 78px was a guess at the tab bar's height. It is 47px at 320, 68px at 412,
    plus whatever the gesture bar takes - so the toast either floated or sat on
    the nav. --navh is measured from the real element instead. */
+/* ---------- the app's own confirm ---------------------------------------
+   Centred rather than bottom-sheeted, because it is a question and not a
+   surface: it should stop you, and it is two words long. Above the sheet so
+   it can be asked from inside one. */
+.askscrim{z-index:70;align-items:center}
+.askbox{background:var(--surface);border:1px solid var(--line-hard);
+  border-radius:14px;box-shadow:var(--shadow);
+  width:calc(100% - 32px);max-width:420px;padding:18px 18px 14px;
+  margin:0 16px}
+.askbox h3{margin:0 0 6px;font-size:16px}
+.askbox #askBody{color:var(--muted);font-size:14px;line-height:1.5}
+.askfoot{display:flex;gap:8px;justify-content:flex-end;margin-top:16px}
+/* THE SAFE ANSWER IS ON THE LEFT AND IS NOT THE LOUD ONE. Every question this
+   asks guards something irreversible, so the destructive button has to be the
+   one you reach for on purpose. */
+.askfoot .btn{min-width:96px;justify-content:center;text-align:center}
+@media (max-width:380px){
+  .askfoot{flex-direction:column-reverse}
+  .askfoot .btn{width:100%}
+}
+
 .toast{position:fixed;left:50%;z-index:80;
   bottom:calc(var(--navh,68px) + env(safe-area-inset-bottom) + 12px);
   background:var(--text);color:var(--ground);padding:10px 16px;border-radius:10px;

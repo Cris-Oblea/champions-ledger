@@ -206,6 +206,70 @@ doing something until then.
 standings only, and 2023 splits its divisions across two pokedata events - the
 one with more players wins, or Seniors and Juniors get two podiums each.
 
+## The desktop stopped being a phone in the middle of a monitor (2026-09-16)
+
+He asked for a design study, and the numbers were blunt. Measured on the
+deployed build at 1440 and 1920:
+
+| | width used | dead space | height |
+|---|---|---|---|
+| Find @1920 | **43%** | 445px | **19.1 screens** |
+| Items @1920 | **29%** | 578px | 6.7 screens |
+| Box @1440 | 58% | 205px | 1 screen |
+| Builds @1440 | 45% | 296px | — |
+
+`main` was capped at 820px and never grew, so past about 1024px every extra
+pixel of monitor became margin - and the column drifted per tab (553 / 636 /
+820) with no reason a reader could see. It was a phone layout centred on a
+desktop.
+
+**He chose the direction: wide plus a grid, and cards with presence.** And he
+corrected the framing - it is not paint: "no me refiero al estilo, me refiero
+también al orden en que se presenta la información, la estructura web. piensa
+que lo usan humanos."
+
+What changed, and why each:
+
+- **`main` grows to 1560px.** Not further: a 1900px row carrying 300px of
+  content is worse, not better.
+- **Controls beside the answer, not on top of it.** The filters, the sort and
+  the count sat above the list, so the answer began below the fold and
+  scrolling to read it took the controls away. A sticky 300px sidebar holds
+  both permanently in reach. Under 1100px it falls back to the stacked order,
+  which is what a phone wants.
+- **Results in a grid.** 345 rows in one column is nineteen screens; two
+  across is eleven, three is seven. `auto-fill`, so the column count follows
+  the width instead of a breakpoint guessing at it.
+- **Worlds came out of the scroll.** "Who matches this" and "what won that
+  August" are different questions, and Worlds sat BELOW 345 result rows, which
+  at nineteen screens is the same as not being there. A segmented control at
+  the top of Find, one tap.
+- **Cards wear their type.** A band across the top and a whisper of tint
+  behind, both from the primary type, so a grid reads as a set of things
+  rather than 345 identical strips.
+
+Measured after: Find at 1440 went from 58% of the width to **79%**, and from
+19.1 screens to **10.8**. The phone is untouched - zero horizontal overflow on
+every tab, the workspace falls back to one column, the sidebar unsticks.
+
+### The app asks its own questions now
+
+Seven `confirm()` calls drew the OPERATING SYSTEM's dialog in the middle of a
+designed app - another typeface, another button order, and on a phone it
+arrives at the top of the screen, far from the thumb that asked for it. Every
+one of them guards something irreversible: deleting a build, buying a rental
+into Champions origin, closing a trade, releasing a Pokemon.
+
+`ask()` in 04-nav replaces them, promise-shaped so the call sites read the way
+they did. **The safe answer is the default**: Escape, the backdrop and Cancel
+all resolve false, and Cancel is what takes focus - a question about something
+that cannot be undone should not be dismissable into a yes. The body is
+rendered as TEXT, never markup, because several of these interpolate a
+Pokemon's name or a trade's contents.
+
+`buildlinktest` stubbed `window.confirm` to answer yes; it now clicks the real
+dialog, and the stub throws if anything reaches for the native one again.
+
 ### The splits joined the shrink guard (2026-09-15)
 
 Every bug in this batch was found by a person noticing something on a phone,

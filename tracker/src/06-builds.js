@@ -7,7 +7,7 @@ import {
 } from "./01-data.js";
 import { S, boxRows, buildLink, hasStone, ownedNames } from "./02-state.js";
 import { drop, put, putNew } from "./03-store.js";
-import { closeSheet, fbtn, leaveEditor, openEditor, openSheet }
+import { ask, closeSheet, fbtn, leaveEditor, openEditor, openSheet }
   from "./04-nav.js";
 /* The analysis panel is the box sheet's, deliberately - one renderer, so the
    guide reads the same wherever it is opened. */
@@ -619,8 +619,12 @@ function buildSheet(id, b, keepOriginal){
     }),
     fbtn(id ? "Delete" : "Cancel", id ? "danger" : "", function(){
       if (!id) { leaveEditor(); return; }
-      if (!confirm("Delete the " + draft.pokemon + " build?")) return;
-      drop("builds/" + id).then(function(){ leaveEditor(); toast("Deleted"); });
+      ask("Delete the " + draft.pokemon + " build?",
+          "The Pokemon itself is not touched — only this set.",
+          "Delete", true).then(function(ok){
+        if (!ok) return;
+        drop("builds/" + id).then(function(){ leaveEditor(); toast("Deleted"); });
+      });
     })
   ]);
 

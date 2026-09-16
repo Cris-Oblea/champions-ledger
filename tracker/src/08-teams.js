@@ -4,7 +4,7 @@ import { $, C, STONE_OF, byName, capNote, el, splitPct, toast, typeChip,
   usageTag } from "./01-data.js";
 import { S, buildLink, buildsFor, hasStone } from "./02-state.js";
 import { drop, put, putNew } from "./03-store.js";
-import { closeSheet, fbtn, leaveEditor, openEditor, openSheet }
+import { ask, closeSheet, fbtn, leaveEditor, openEditor, openSheet }
   from "./04-nav.js";
 /* One coloured note element. */
 import { note } from "./13-boot.js";
@@ -419,9 +419,12 @@ function teamSheet(id, t){
     }),
     fbtn(id ? "Delete" : "Cancel", id ? "danger" : "", function(){
       if (!id) { leaveEditor("teams"); return; }
-      if (!confirm("Delete the team \"" + draft.name + "\"? The builds are " +
-                   "not touched - only this arrangement of them.")) return;
-      drop("teams/" + id).then(function(){ leaveEditor("teams"); toast("Deleted"); });
+      ask("Delete the team “" + draft.name + "”?",
+          "The builds are not touched — only this arrangement of them.",
+          "Delete", true).then(function(ok){
+        if (!ok) return;
+        drop("teams/" + id).then(function(){ leaveEditor("teams"); toast("Deleted"); });
+      });
     })
   ]);
 }

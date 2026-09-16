@@ -3,7 +3,7 @@
 import {
   $, C, DEX, MOVES, MOVE_BY, SORT, STAT_KEYS, STAT_LABEL, TYPE_COLOR, bst,
   byName, capNote, catName, dexNo, effectLine, el, learnset, podiumChip,
-  podiumFor, splitPct, toast, typeChip, usageTag,
+  podiumFor, splitPct, toast, typeChip, typeTint, usageTag,
 } from "./01-data.js";
 import { S, boxRows, originOf, ownedNames } from "./02-state.js";
 import { closeSheet, fbtn, openSheet } from "./04-nav.js";
@@ -156,10 +156,23 @@ function findRun(){
              a.name.localeCompare(b.name);
     });
   }
-  var list = el("div", "list");
+  /* A GRID once there is room for one: 345 results in a single column is
+     nineteen screens, three across is six. The class does the deciding, by
+     width, so a phone still gets one column. */
+  var list = el("div", "cards");
   hits.slice(0, 120).forEach(function(p){
     var here = (p.name in own) || (p.species in own);
-    var r = el("button", "row" + (here ? " perm" : ""));
+    /* A CARD, WEARING ITS OWN TYPE. The band across the top and the whisper of
+       tint behind it both come from the primary type, so a grid of these reads
+       as a set of things rather than 345 identical strips - and the type
+       registers before a word has been read. */
+    var r = el("button", "row card" + (here ? " perm" : ""));
+    var tcol = TYPE_COLOR[(p.types || [])[0]];
+    if (tcol) {
+      r.style.setProperty("--tcol", tcol);
+      var soft = typeTint(p.types[0], 0.13);
+      if (soft) r.style.setProperty("--tsoft", soft);
+    }
     var m = el("div", "rmain");
     var h = el("div", "rname");
     h.appendChild(document.createTextNode(p.name));
@@ -948,6 +961,23 @@ function findInit(){
   $("findInHome").onclick = function(){
     FIND.inHome = !FIND.inHome; findDraw(); };
 
+  /* SEARCH OR WORLDS, one tap apart. They answer different questions - "who
+     matches this" and "what won that August" - and Worlds used to live BELOW
+     345 result rows, which at nineteen screens is the same as not being
+     there. A segmented control rather than a seventh entry in the rail,
+     because it belongs to Find rather than being another place to be. */
+  var mrow = $("findMode");
+  Array.prototype.forEach.call(mrow.children, function(b){
+    b.onclick = function(){
+      var m = b.getAttribute("data-mode");
+      Array.prototype.forEach.call(mrow.children, function(x){
+        x.setAttribute("aria-pressed", x === b ? "true" : "false");
+      });
+      $("findSearch").hidden = m !== "search";
+      $("findWorlds").hidden = m !== "worlds";
+    };
+  });
+
   paintSort();
   $("findClear").onclick = function(){
     FIND.moves = []; FIND.types = []; FIND.typeMode = "and";
@@ -1069,7 +1099,7 @@ function worldDraw(){
   head.textContent = "Worlds " + WORLD.year + " " + WORLD.div + " · " + d.n +
     " teams · the " + d.top.length + " most brought";
   out.appendChild(head);
-  var list = el("div", "list");
+  var list = el("div", "cards");
   d.top.forEach(function(row, i){
     var name = row[0], teams = row[1], pct = row[2];
     var p = byName[name];

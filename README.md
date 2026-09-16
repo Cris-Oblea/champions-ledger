@@ -40,6 +40,13 @@ request returns nothing.
 | **GTS** | Open trades, what a chip is worth, and what it can realistically fetch |
 | **Profile** | Box capacity, and everything else derived so it cannot go stale |
 
+On a phone it is one column and a bottom tab bar. On a desktop it spreads:
+the controls sit beside the answer in a sticky sidebar instead of on top of
+it, results come back as a grid of cards that wear their Pokemon's type, and
+the column grows to 1560px rather than staying at the 820 it was drawn for.
+Every question the app asks - deleting a build, releasing a Pokemon, closing a
+trade - is asked in its own dialog rather than the browser's.
+
 Its source is thirteen ES modules under `tracker/src/`, each one a tab or the
 thing the tabs share, saying what it exports and importing what it needs. The
 build links them into the single script the browser is handed, plus a sourcemap

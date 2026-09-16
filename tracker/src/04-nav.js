@@ -168,6 +168,64 @@ $("scrim").onclick = function(e){ if (e.target === $("scrim")) closeSheet(); };
 document.addEventListener("keydown", function(e){
   if (e.key === "Escape" && !$("scrim").hidden) closeSheet();
 });
+/* ------------------------------------------------- the app's own confirm ---
+   `confirm()` draws the OPERATING SYSTEM's dialog in the middle of a designed
+   app: another typeface, another button order, another set of words, and on a
+   phone it lands at the top of the screen, far from the thumb that asked for
+   it. Seven of them were in here and every one guards something irreversible
+   - deleting a build, buying a rental into Champions origin, closing a trade
+   (player, 2026-09-16: "debería la app tener su propio estilo de alertas y
+   notificaciones, para conservar el mismo diseño").
+
+   Returns a promise so the callers read the same way they did with confirm(),
+   one `await`-shaped step instead of a callback pyramid.
+
+   THE SAFE ANSWER IS THE DEFAULT. Escape, the backdrop and the Cancel button
+   all resolve false, and Cancel is the button that takes focus - a question
+   about something that cannot be undone should not be dismissable into a yes. */
+function ask(title, body, okLabel, danger){
+  return new Promise(function(resolve){
+    var scrim = $("askScrim");
+    $("askTitle").textContent = title;
+    /* TEXT, NOT HTML. Several of these messages interpolate a Pokemon's name
+       or a trade's contents; none of that should ever be parsed as markup.
+       A blank line starts a new paragraph, which is how the messages were
+       already written for confirm(). */
+    var host = $("askBody");
+    host.innerHTML = "";
+    if (body && body.nodeType) host.appendChild(body);
+    else String(body || "").split(/\n\s*\n/).forEach(function(par){
+      if (par.trim()) host.appendChild(el("p", null, par.trim()));
+    });
+    var yes = $("askYes"), no = $("askNo");
+    yes.textContent = okLabel || "OK";
+    yes.className = "btn " + (danger ? "danger" : "primary");
+    var done = false;
+    function finish(v){
+      if (done) return;
+      done = true;
+      scrim.hidden = true;
+      yes.onclick = no.onclick = scrim.onclick = null;
+      document.removeEventListener("keydown", onKey, true);
+      /* the sheet underneath, if there is one, keeps its own scroll lock */
+      if ($("scrim").hidden) lockScroll(false);
+      resolve(v);
+    }
+    function onKey(e){
+      if (e.key === "Escape") { e.stopPropagation(); finish(false); }
+      else if (e.key === "Enter" && document.activeElement === yes) finish(true);
+    }
+    yes.onclick = function(){ finish(true); };
+    no.onclick = function(){ finish(false); };
+    scrim.onclick = function(e){ if (e.target === scrim) finish(false); };
+    /* capture, so Escape closes the QUESTION and not the sheet behind it */
+    document.addEventListener("keydown", onKey, true);
+    if ($("scrim").hidden) lockScroll(true);
+    scrim.hidden = false;
+    setTimeout(function(){ no.focus(); }, 30);
+  });
+}
+
 function fbtn(label, cls, fn){
   var b = el("button", "btn " + (cls || ""), label);
   b.onclick = fn;
@@ -183,5 +241,5 @@ function fbtn(label, cls, fn){
    syncNavHeight, sheetSave and EDITOR_HOME. Before the module pass any of the
    other twelve parts could have reached in and set _lockY. */
 export {
-  buildTabs, closeSheet, fbtn, go, leaveEditor, mq, openEditor, openSheet,
+  ask, buildTabs, closeSheet, fbtn, go, leaveEditor, mq, openEditor, openSheet,
 };

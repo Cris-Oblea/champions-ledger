@@ -114,6 +114,16 @@ function toast(msg){
   var ms = Math.min(7000, Math.max(2600, 1200 + msg.length * 55));
   toastT = setTimeout(function(){ t.hidden = true; }, ms);
 }
+/* A type's colour as rgba, so a card can be tinted with it without needing
+   color-mix - which would add a newer browser requirement than anything else
+   this page relies on. Returns the hex untouched when it is not one. */
+function typeTint(t, alpha){
+  var h = TYPE_COLOR[t];
+  if (!h || h.charAt(0) !== "#" || h.length !== 7) return null;
+  return "rgba(" + parseInt(h.slice(1, 3), 16) + "," +
+                   parseInt(h.slice(3, 5), 16) + "," +
+                   parseInt(h.slice(5, 7), 16) + "," + alpha + ")";
+}
 function typeChip(t){
   var s = el("span", "t", t);
   s.style.background = TYPE_COLOR[t] || "#777";
@@ -418,7 +428,7 @@ export {
   $, C, COSTS, DEX, FORMS, HOME_ALL, MEGAS_OF, MOVES, MOVE_BY, SORT,
   STAT_KEYS, STAT_LABEL, STONE_OF, TYPE_COLOR,
   bst, byName, capNote, catName, defence, dexLabel, dexNo, el, freeSlug,
-  learnset,
+  learnset, typeTint,
   effectChips, effectLine, effectOf, podiumChip, podiumFor, splitMax, splitPct,
   splitsFor, splitsReg, usageTag,
   megasFor, natMult, rowMatches, setHomeAll, setSort, sortRows, statAt,
