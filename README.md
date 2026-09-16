@@ -47,6 +47,17 @@ the column grows to 1560px rather than staying at the 820 it was drawn for.
 Every question the app asks - deleting a build, releasing a Pokemon, closing a
 trade - is asked in its own dialog rather than the browser's.
 
+The type colours are **Pokemon's own**, not an approximation. All eighteen used
+to be hand-written and darkened so white text would sit on them, which made
+every one of them wrong - Fire read `#C8501E` against the real `#FD7D24`.
+`scripts/build_type_colors.py` reads them out of pokemon.com's stylesheet, and
+each type brings three facts rather than one: its colour, its **second** colour
+where it has one (Dragon, Flying and Ground are officially two-toned), and the
+ink its name is written in - eight of the eighteen are written in black, which
+is what lets the app keep the true colour instead of darkening it. A card's
+band and hover ring carry all of them: a Dragon/Flying wears four colours,
+halved by type.
+
 **A Pokemon looks the same wherever it appears** - in the box, in a build, in a
 team slot, in a trade, in a search result or in a Worlds ranking. One card: a
 band of its type across the top, two of them for a dual type, then every fact

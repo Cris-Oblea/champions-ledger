@@ -240,18 +240,41 @@ nav.tabs button:active{background:var(--sunk)}
    the text readable. */
 .row.card{display:block;padding:0;overflow:hidden;position:relative;
   background:
-    linear-gradient(180deg, var(--tsoft, transparent) 0, transparent 76px)
+    linear-gradient(180deg, var(--tsoft, transparent) 0,
+                    var(--tsoftb, var(--tsoft, transparent)) 34px,
+                    transparent 76px)
       left top / 50% 100% no-repeat,
     linear-gradient(180deg, var(--tsoft2, var(--tsoft, transparent)) 0,
+                    var(--tsoft2b, var(--tsoft2, var(--tsoft, transparent))) 34px,
                     transparent 76px) right top / 50% 100% no-repeat,
     var(--surface)}
-/* and the band blends one into the other, so Fire/Rock and Fire/Psychic are
-   told apart before a word is read */
-.row.card::before{content:"";display:block;height:4px;
-  background:linear-gradient(90deg, var(--tcol, var(--line-hard)) 0,
-                             var(--tcol, var(--line-hard)) 34%,
-                             var(--tcol2, var(--tcol, var(--line-hard))) 66%,
-                             var(--tcol2, var(--tcol, var(--line-hard))) 100%)}
+/* ONE BAND, HALVED BY TYPE - AND EACH HALF SHOWS ITS OWN COLOURS.
+
+   Three types are officially two-toned, so a Dragon/Flying like Mega Salamence
+   has FOUR colours and the band was showing two (player, 2026-09-16: "dragon
+   flying tiene 4 colores pero en la banda se ven solo dos").
+
+   The first attempt made it two full-width stripes and he cut that straight
+   away: "yo pensaba solo en 1 franja por tipo como estaba antes, solamente que
+   por ejemplo dragon que es dos colores que se represente en su mitad ambos
+   colores y la otra mitad que también represente su o sus colores." Which is
+   right - the LEFT half is type one and the RIGHT half is type two, and that
+   reading is what tells Fire/Rock from Fire/Psychic. A type's own two tones
+   belong inside its own half, not spread across the whole card.
+
+   So: two half-width layers, each split top-to-bottom by that type's tones. A
+   single-toned type sets both tones the same and its half is solid, exactly as
+   before. A mono Pokemon puts the same type in both halves, so a pure Dragon
+   comes out one band halved top and bottom - which is how the badge is halved.
+   6px rather than 4 so each tone gets a readable 3px. */
+.row.card::before{content:"";display:block;height:6px;
+  background:
+    linear-gradient(180deg, var(--tcol, var(--line-hard)) 50%,
+                    var(--tcolb, var(--tcol, var(--line-hard))) 50%)
+      left top / 50% 100% no-repeat,
+    linear-gradient(180deg, var(--tcol2, var(--tcol, var(--line-hard))) 50%,
+                    var(--tcol2b, var(--tcol2, var(--tcol, var(--line-hard)))) 50%)
+      right top / 50% 100% no-repeat}
 .row.card .rmain{padding:11px 13px 12px}
 .row.card .rname{font-size:15.5px;margin-bottom:3px}
 /* THE STATS AS A TABLE, NOT A SENTENCE. They were a run of "115 HP 175 Atk
@@ -305,8 +328,56 @@ nav.tabs button:active{background:var(--sunk)}
 .statline div.on span{color:var(--accent)}
 /* An item has no type, so its band is the neutral rule - visibly the same
    component, honestly not carrying a colour it does not have. */
-.row.card:hover{border-color:var(--tcol, var(--line-hard));
+/* HOVER LIGHTS THE EDGE IN THE POKEMON'S OWN COLOURS, all of them.
+
+   It used to light up in var(--tcol) alone - the first type's first colour -
+   so a Dragon/Flying glowed plain blue while its band carried four colours
+   (player, 2026-09-16: "seria interesante aplicar lo mismo que hicimos con las
+   bandas, que se ilumine cada mitad con los colores del tipo, asi se conserva
+   en todo el diseno completo").
+
+   AND IT USED TO EAT THE LEFT STRIPE. `border-color` is a shorthand, so it set
+   all four sides at a specificity that beat `.row.perm`, and hovering a card
+   replaced the one edge that says whether the Pokemon is yours, a rental, or
+   which origin it came from. This file already says that must not happen -
+   "two edges, two facts" - so the three sides are named individually now and
+   the left one is left alone. */
+.row.card:hover{border-top-color:var(--tcol, var(--line-hard));
+  border-right-color:var(--tcol, var(--line-hard));
+  border-bottom-color:var(--tcol, var(--line-hard));
   box-shadow:var(--shadow)}
+/* The ring itself: the same two halves as the band, each split into that
+   type's own two tones. Drawn as a masked frame rather than a border because a
+   border takes one colour and cannot take a gradient.
+
+   GATED, because the fallback for an unsupported mask-composite is not a
+   missing ring but a filled rectangle over the whole card. Without the
+   @supports a browser that cannot do it would paint the Pokemon out entirely,
+   so the plain coloured border above stays the answer for anything that
+   cannot. */
+@supports ((mask-composite: exclude) or (-webkit-mask-composite: xor)) {
+  .row.card::after{content:"";position:absolute;inset:0;pointer-events:none;
+    border-radius:inherit;padding:2px;opacity:0;transition:opacity .12s;
+    background:
+      linear-gradient(180deg, var(--tcol, var(--line-hard)) 50%,
+                      var(--tcolb, var(--tcol, var(--line-hard))) 50%)
+        left top / 50% 100% no-repeat,
+      linear-gradient(180deg, var(--tcol2, var(--tcol, var(--line-hard))) 50%,
+                      var(--tcol2b, var(--tcol2, var(--tcol, var(--line-hard)))) 50%)
+        right top / 50% 100% no-repeat;
+    -webkit-mask:linear-gradient(#000 0 0) content-box,
+                 linear-gradient(#000 0 0);
+    mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite:xor;mask-composite:exclude}
+  .row.card:hover::after{opacity:1}
+  /* the ring IS the edge now, so the flat colour underneath would only show
+     as a second line around it */
+  .row.card:hover{border-top-color:var(--line-hard);
+    border-right-color:var(--line-hard);
+    border-bottom-color:var(--line-hard)}
+}
+/* a finger has no hover: on a touch screen it would stick after a tap */
+@media (hover:none){ .row.card::after{display:none} }
 /* THE LEFT STRIPE STAYS. It was flattened here on the grounds that it would
    fight the type band, and that is throwing away information to tidy a
    picture: the stripe is what says a Pokemon is YOURS in Find, and which kind
@@ -460,6 +531,10 @@ h2 .n{font-family:var(--mono);color:var(--faint);font-weight:500;letter-spacing:
 .rside{display:flex;align-items:center;gap:6px;flex-shrink:0}
 
 /* ---------- chips -------------------------------------------------------- */
+/* The ink is set per chip now, from pokemon.com's own choice for that type -
+   eight of the eighteen are written in black there, which is why this can keep
+   the true colour instead of darkening it until white works. #fff stays as the
+   fallback for a type with no row. */
 .t{font-family:var(--cond);font-size:10.5px;font-weight:600;letter-spacing:.06em;
   text-transform:uppercase;padding:2px 6px;border-radius:4px;color:#fff;
   white-space:nowrap}

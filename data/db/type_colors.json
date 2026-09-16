@@ -1,0 +1,154 @@
+{
+ "Bug": {
+  "bottom": "#729F3F",
+  "contrast": 3.11,
+  "ink": "#FFFFFF",
+  "official": true,
+  "top": "#729F3F",
+  "two_tone": false
+ },
+ "Dark": {
+  "bottom": "#707070",
+  "contrast": 4.95,
+  "ink": "#FFFFFF",
+  "official": true,
+  "top": "#707070",
+  "two_tone": false
+ },
+ "Dragon": {
+  "bottom": "#F16E57",
+  "contrast": 2.77,
+  "ink": "#FFFFFF",
+  "official": true,
+  "top": "#53A4CF",
+  "two_tone": true
+ },
+ "Electric": {
+  "bottom": "#EED535",
+  "contrast": 10.89,
+  "ink": "#212121",
+  "official": true,
+  "top": "#EED535",
+  "two_tone": false
+ },
+ "Fairy": {
+  "bottom": "#FDB9E9",
+  "contrast": 10.19,
+  "ink": "#212121",
+  "official": true,
+  "top": "#FDB9E9",
+  "two_tone": false
+ },
+ "Fighting": {
+  "bottom": "#D56723",
+  "contrast": 3.62,
+  "ink": "#FFFFFF",
+  "official": true,
+  "top": "#D56723",
+  "two_tone": false
+ },
+ "Fire": {
+  "bottom": "#FD7D24",
+  "contrast": 2.58,
+  "ink": "#FFFFFF",
+  "official": true,
+  "top": "#FD7D24",
+  "two_tone": false
+ },
+ "Flying": {
+  "bottom": "#BDB9B8",
+  "contrast": 8.14,
+  "ink": "#212121",
+  "official": true,
+  "top": "#3DC7EF",
+  "two_tone": true
+ },
+ "Ghost": {
+  "bottom": "#7B62A3",
+  "contrast": 5.1,
+  "ink": "#FFFFFF",
+  "official": true,
+  "top": "#7B62A3",
+  "two_tone": false
+ },
+ "Grass": {
+  "bottom": "#9BCC50",
+  "contrast": 8.55,
+  "ink": "#212121",
+  "official": true,
+  "top": "#9BCC50",
+  "two_tone": false
+ },
+ "Ground": {
+  "bottom": "#AB9842",
+  "contrast": 11.87,
+  "ink": "#212121",
+  "official": true,
+  "top": "#F7DE3F",
+  "two_tone": true
+ },
+ "Ice": {
+  "bottom": "#51C4E7",
+  "contrast": 7.97,
+  "ink": "#212121",
+  "official": true,
+  "top": "#51C4E7",
+  "two_tone": false
+ },
+ "Normal": {
+  "bottom": "#A4ACAF",
+  "contrast": 6.98,
+  "ink": "#212121",
+  "official": true,
+  "top": "#A4ACAF",
+  "two_tone": false
+ },
+ "Poison": {
+  "bottom": "#B97FC9",
+  "contrast": 3.03,
+  "ink": "#FFFFFF",
+  "official": true,
+  "top": "#B97FC9",
+  "two_tone": false
+ },
+ "Psychic": {
+  "bottom": "#F366B9",
+  "contrast": 2.83,
+  "ink": "#FFFFFF",
+  "official": true,
+  "top": "#F366B9",
+  "two_tone": false
+ },
+ "Rock": {
+  "bottom": "#A38C21",
+  "contrast": 3.32,
+  "ink": "#FFFFFF",
+  "official": true,
+  "top": "#A38C21",
+  "two_tone": false
+ },
+ "Steel": {
+  "bottom": "#9EB7B8",
+  "contrast": 7.61,
+  "ink": "#212121",
+  "official": true,
+  "top": "#9EB7B8",
+  "two_tone": false
+ },
+ "Stellar": {
+  "bottom": "#3F7F7A",
+  "contrast": 4.64,
+  "ink": "#FFFFFF",
+  "official": false,
+  "top": "#3F7F7A",
+  "two_tone": false
+ },
+ "Water": {
+  "bottom": "#4592C4",
+  "contrast": 3.41,
+  "ink": "#FFFFFF",
+  "official": true,
+  "top": "#4592C4",
+  "two_tone": false
+ }
+}

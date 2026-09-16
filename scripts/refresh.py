@@ -113,6 +113,12 @@ def stages(reg, deep=False):
         # order matters: the merged text feeds the status table, the status
         # table feeds the ability rules, and the ability rules feed the item
         # links. Built the other way round, each one reads yesterday's file.
+        # The type colours, re-read from pokemon.com's own stylesheet. Not a
+        # game source and it changes about never - but the whole point of it is
+        # that nobody types these in, so it is re-derived rather than trusted
+        # to stay right. It runs BEFORE the tracker, which ships the table.
+        Stage("type_colors", "the type colours, from Pokemon's own stylesheet",
+              ["scripts/build_type_colors.py"], False),
         Stage("text_facts", "pick the better description per move and ability",
               ["scripts/build_text_facts.py"]),
         Stage("statuses", "status conditions, with Champions' own rebalance",
