@@ -1,0 +1,208 @@
+#!/usr/bin/env python3
+"""Types, base stats and abilities for the species Champions does NOT have.
+
+    python scripts/fetch_home_dex.py            # cached; re-uses data/raw/
+    python scripts/fetch_home_dex.py --force    # re-download the tables
+    python scripts/fetch_home_dex.py --check    # has the pinned data moved?
+
+WHY THIS EXISTS.
+
+A HOME row for a species Champions has never heard of showed a name, a "not in
+the Champions dex" tag and nothing else - no types, no BST, no stats, no
+ability. 24 of the player's 129 HOME Pokemon are in that state, and HOME is
+exactly where he decides what to keep and what to send on:
+
+    "no me parece correcto que no me muestre el tipo bst y stats y ability como
+     el resto de cards, porque si quisiera hacer un cambio en pokemon home, no
+     sabria por que cambiarlos"  (2026-09-16)
+
+    "la idea es tener el dex completo en home, necesito tener esa informacion y
+     conservar el tag de not in champion dex, asi se cuales cambiar por otros
+     motivos."
+
+THE TAG STAYS. This does not make these Pokemon playable and must never read as
+if it did - it fills in the card so a decision can be made about a Pokemon
+sitting in HOME, and the tag is what says it cannot come into the game.
+
+WHY POKEAPI IS ALLOWED HERE, when fetch_dex_numbers.py says it is used "for
+nothing else - no stats, no movepools, no usage".
+
+That rule protects the source hierarchy for what POKEMON CHAMPIONS HAS. It
+cannot apply to a species Champions does not have: Serebii's Champions pages do
+not cover them, Smogon's Champions roster does not list them, pokebase has no
+usage for them, and there is nothing for a main-series number to contradict.
+These are main-series rows about main-series Pokemon, which is all that exists -
+so the payload marks every one and the card says where the numbers came from.
+
+THE CSVs, NOT THE REST API (the player found the repo, 2026-09-16). PokeAPI
+publishes its whole database as plain tables under data/v2/csv. Six of them,
+263 KB, one download each - against 1027 HTTP requests and a slug guessed per
+form, which is what the first version of this did.
+
+AND THE COMMIT IS PINNED. He asked whether the repository is safe, which is the
+right question to ask of anything fetched. Two halves to the answer:
+
+  * NOTHING HERE IS EXECUTED. These are CSV tables, read as text into numbers
+    and names. The worst a bad commit upstream could do is give a wrong stat -
+    it cannot run anything.
+  * So the risk is a number changing quietly, and that is what the pin closes:
+    the files are read at ONE COMMIT, not at "whatever master says today".
+    `--check` re-downloads at that pin and fails if the result moved, and the
+    output is committed, so any change shows in a diff before it ships.
+
+Moving the pin is a deliberate edit, with the diff to read.
+"""
+import argparse
+import csv
+import io
+import json
+import os
+import re
+import sys
+import urllib.request
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+sys.path.insert(0, os.path.join(ROOT, "scripts"))
+import query as Q                                             # noqa: E402
+
+RAW = os.path.join(ROOT, "data", "raw", "pokeapi_csv")
+OUT = os.path.join(ROOT, "data", "db", "home_dex.json")
+# PokeAPI/pokeapi, BSD-3-Clause, pinned. Bump deliberately and read the diff.
+PIN = "4b82c204ddd19ecb8eda2ea044ccb59e222b721c"
+BASE = "https://raw.githubusercontent.com/PokeAPI/pokeapi/%s/data/v2/csv/" % PIN
+# stat_id order: 1 hp, 2 attack, 3 defense, 4 sp.atk, 5 sp.def, 6 speed
+STAT_ORDER = [1, 2, 3, 4, 5, 6]
+ENGLISH = "9"                       # local_language_id
+
+# The few spellings that are genuinely different words rather than punctuation.
+ALIASES = {
+    "toxtricity-l": "toxtricity-low-key",
+    "toxtricity": "toxtricity-amped",
+    "urshifu-r": "urshifu-rapid-strike",
+    "farfetchd-galar": "sirfetchd",
+    "indeedee-f": "indeedee-female",
+    "indeedee-m": "indeedee-male",
+}
+
+
+def table(name, force=False):
+    os.makedirs(RAW, exist_ok=True)
+    path = os.path.join(RAW, name)
+    if not os.path.exists(path) or force:
+        req = urllib.request.Request(BASE + name,
+                                     headers={"User-Agent": "champions-ledger"})
+        with urllib.request.urlopen(req, timeout=60) as r:
+            open(path, "wb").write(r.read())
+    return list(csv.DictReader(io.open(path, encoding="utf-8")))
+
+
+def key(name):
+    """A spelling reduced to something both sides agree on."""
+    s = name.lower().replace("’", "").replace("'", "").replace(".", "")
+    s = re.sub("[^a-z0-9]+", "-", s).strip("-")
+    return ALIASES.get(s, s)
+
+
+def home_only_names():
+    """Every name in the weight table Champions has no row for - the same rule
+    build_tracker_data.py uses for HOME_ONLY, so the two cannot drift."""
+    wt = Q.db("weights")["weights"]
+    champ = set()
+    for p in Q.db("pokemon"):                 # a LIST of form rows
+        for n in (p.get("name"), p.get("species")):
+            if n:
+                champ.add(Q.norm(n))
+    return sorted(n for n in wt
+                  if Q.norm(n) not in champ
+                  and "-Mega" not in n and "-Gmax" not in n
+                  and "-Totem" not in n and "-Starter" not in n)
+
+
+def build(force=False):
+    pokemon = table("pokemon.csv", force)
+    stats = table("pokemon_stats.csv", force)
+    ptypes = table("pokemon_types.csv", force)
+    pabil = table("pokemon_abilities.csv", force)
+    types = dict((r["id"], r["identifier"].capitalize())
+                 for r in table("types.csv", force))
+    abil = dict((r["ability_id"], r["name"])
+                for r in table("ability_names.csv", force)
+                if r.get("local_language_id") == ENGLISH)
+
+    by_key = {}
+    for r in pokemon:
+        by_key.setdefault(r["identifier"], r["id"])
+
+    st, ty, ab = {}, {}, {}
+    for r in stats:
+        if int(r["stat_id"]) in STAT_ORDER:
+            st.setdefault(r["pokemon_id"], {})[int(r["stat_id"])] = \
+                int(r["base_stat"])
+    for r in ptypes:
+        ty.setdefault(r["pokemon_id"], []).append((int(r["slot"]), r["type_id"]))
+    for r in pabil:
+        ab.setdefault(r["pokemon_id"], []).append((int(r["slot"]),
+                                                   r["ability_id"]))
+
+    out, missed = {}, []
+    for name in home_only_names():
+        k = key(name)
+        pid = by_key.get(k)
+        approx = None
+        if not pid and "-" in k:
+            # No row for this exact form. The base species is the honest
+            # fallback for a cosmetic split - Arceus' eighteen plates share one
+            # spread - and WRONG for anything that really differs, so it is
+            # recorded rather than applied silently.
+            base = k.split("-")[0]
+            pid = by_key.get(base)
+            approx = base if pid else None
+        if not pid or pid not in st:
+            missed.append(name)
+            continue
+        row = {"t": [types[t] for _, t in sorted(ty.get(pid, []))],
+               "b": [st[pid].get(i, 0) for i in STAT_ORDER],
+               "ab": [abil.get(a, a) for _, a in sorted(ab.get(pid, []))]}
+        if approx:
+            row["approx"] = approx
+        out[name] = row
+    return out, missed
+
+
+def main():
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument("--force", action="store_true")
+    ap.add_argument("--check", action="store_true",
+                    help="re-download at the pin and fail if the result moved")
+    args = ap.parse_args()
+
+    out, missed = build(args.force or args.check)
+    if args.check:
+        if not os.path.exists(OUT):
+            sys.exit("no stored table yet - run without --check")
+        old = json.load(io.open(OUT, encoding="utf-8"))
+        moved = sorted(k for k in set(old) | set(out) if old.get(k) != out.get(k))
+        if moved:
+            sys.exit("the pinned data no longer matches for %d: %s"
+                     % (len(moved), ", ".join(moved[:12])))
+        print("home dex matches the pin (%d species)" % len(out))
+        return
+
+    json.dump(out, io.open(OUT, "w", encoding="utf-8"),
+              ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+    approx = [k for k, v in out.items() if v.get("approx")]
+    print("wrote %s  (%d species, %.0f KB)"
+          % (os.path.relpath(OUT, ROOT), len(out),
+             os.path.getsize(OUT) / 1024.0))
+    if approx:
+        print("  %d use their base species' row, marked `approx`: %s"
+              % (len(approx), ", ".join(sorted(approx)[:10])))
+    if missed:
+        print("  %d have NO PokeAPI row at all: %s"
+              % (len(missed), ", ".join(missed[:20])))
+        print("  those stay blank in HOME - add an ALIASES entry if the name "
+              "is only spelled differently")
+
+
+if __name__ == "__main__":
+    main()

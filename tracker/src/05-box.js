@@ -2,8 +2,8 @@
    Part of the app; linked into one script by scripts/build_tracker_page.py. */
 import {
   $, C, FORMS, SORT, STAT_KEYS, STAT_LABEL, STONE_OF, bst, byName, capNote,
-  cardLine, defence, dexLabel, el, freeSlug, labelBox, megasFor, statGrid,
-  toast, typeCard, typeChip,
+  cardLine, defence, dexLabel, el, freeSlug, labelBox, megasFor, outsideRow,
+  statGrid, toast, typeCard, typeChip,
 } from "./01-data.js";
 import { S, hasStone, originOf } from "./02-state.js";
 import { drop, put } from "./03-store.js";
@@ -16,11 +16,16 @@ import { boxBadges } from "./09-gts.js";
 /* ===================================================================== rows */
 function pokeRow(rec){
   var p = byName[rec.name];
+  /* WHAT TO DRAW vs WHAT IT CAN DO. `p` stays the Champions dex row and every
+     rule below keeps asking it - legality, Megas, whether it can be brought.
+     `d` is the row to DRAW, which for a species Champions does not have comes
+     from PokeAPI so the card is a card instead of a name and a tag. */
+  var d = p || outsideRow(rec.name);
   var o = originOf(rec);
   var cls = rec.location === "home" ? (p ? "home" : "illegal")
           : rec.status === "rental" ? "rental"
           : o === "home" ? "perm" : o === "champions" ? "locked" : "unknown";
-  var row = typeCard(el("button", "row " + cls), p);
+  var row = typeCard(el("button", "row " + cls), d);
   var main = el("div", "rmain");
   var nm = el("div", "rname");
   nm.appendChild(document.createTextNode(rec.name));
@@ -36,14 +41,10 @@ function pokeRow(rec){
   }
   main.appendChild(nm);
   var meta = el("div", "rmeta");
-  if (p) {
-    p.types.forEach(function(t){ meta.appendChild(typeChip(t)); });
-    if (SORT === "dex") meta.appendChild(el("span", "mono", dexLabel(rec.name)));
-  } else {
-    meta.appendChild(el("span", "mono",
-      (SORT === "dex" ? dexLabel(rec.name) + "  •  " : "") +
-      "not in the Champions dex - it can sit in HOME but never enter the game"));
-  }
+  if (d) d.types.forEach(function(t){ meta.appendChild(typeChip(t)); });
+  if (SORT === "dex") meta.appendChild(el("span", "mono", dexLabel(rec.name)));
+  if (!p) meta.appendChild(el("span", null,
+    "it can sit in HOME but never enter the game"));
   main.appendChild(meta);
   /* THE SAME TABLE THE SEARCH USES. The stats were a prose line here too -
      "BST 530 • 100 HP / 125 Atk / ..." - and the box is where two Pokemon get
@@ -51,12 +52,23 @@ function pokeRow(rec){
      The ability cell says what this one CAN have, not what it has: a box row
      records no ability (only a build does), so it is labelled for the dex
      reading it is - "Ability" on a build row is the chosen one. */
-  if (p) {
+  if (d) {
     main.appendChild(cardLine([
-      labelBox(bst(p), "BST"),
-      labelBox(p.ab || [], "Possible ability", "wide")
+      labelBox(bst(d), "BST"),
+      labelBox(d.ab || [], "Possible ability", "wide")
     ]));
-    main.appendChild(statGrid(p));
+    main.appendChild(statGrid(d));
+    /* WHERE THE NUMBERS CAME FROM. Champions has no row for this species, so
+       these are main-series values and the card says so rather than letting
+       them pass as Champions data. */
+    if (d.outside) {
+      var src = el("div", "st");
+      src.style.marginTop = "6px";
+      src.textContent = "Main-series numbers — Champions has no data for "
+        + "this species" + (d.approx ? ", and no row for this exact form: "
+        + "shown as " + d.approx : "") + ".";
+      main.appendChild(src);
+    }
   }
   row.appendChild(main);
   row.onclick = function(){ pokeSheet(rec); };
@@ -98,19 +110,39 @@ function battleFormNote(p){
 
 function pokeSheet(rec){
   var p = byName[rec.name];
+  /* The row to DRAW, which for a species Champions does not have is the
+     main-series one - the sheet was as blank as the card was.
+
+     NOT CALLED `d`: the damage table further down declares `var d =
+     defence(...)` inside the same callback, and `var` hoists to the top of it,
+     so a row named `d` was already undefined by the time `if (d)` ran and the
+     whole sheet fell into the "not in the dex" branch - for Aegislash, which
+     very much is. profiletest caught it on the first run. */
+  var show = p || outsideRow(rec.name);
   var isHome = rec.location === "home";
   openSheet(rec.name, function(body){
-    if (p) {
+    if (show) {
       var chips = el("div", "rmeta");
-      p.types.forEach(function(t){ chips.appendChild(typeChip(t)); });
+      show.types.forEach(function(t){ chips.appendChild(typeChip(t)); });
       body.appendChild(chips);
       /* the same cells the list behind this sheet shows - it read "BST 700"
          as loose text here while the card outside had it in a box */
       body.appendChild(cardLine([
-        labelBox(bst(p), "BST"),
-        labelBox(p.ab || [], "Possible ability", "wide")
+        labelBox(bst(show), "BST"),
+        labelBox(show.ab || [], "Possible ability", "wide")
       ]));
-      body.appendChild(statGrid(p));
+      body.appendChild(statGrid(show));
+      if (show.outside) {
+        var osrc = el("div", "note");
+        osrc.style.marginBottom = "10px";
+        osrc.innerHTML = "<strong>Not in the Champions dex.</strong> It can "
+          + "sit in HOME but never enter the game, so these are MAIN-SERIES "
+          + "numbers - Champions publishes none for this species"
+          + (show.approx ? ", and none for this exact form either: shown as "
+             + show.approx : "") + ". Here to say what it IS, not what it "
+          + "could do.";
+        body.appendChild(osrc);
+      }
       var bfn0 = battleFormNote(p);
       if (bfn0) body.appendChild(bfn0);
 

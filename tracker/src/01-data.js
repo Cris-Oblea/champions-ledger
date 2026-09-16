@@ -302,6 +302,33 @@ function typeSkin(node, t, on){
 }
 function typeChip(t){ return typeSkin(el("span", "t", t), t); }
 function bst(p){ return p.b.reduce(function(a,b){ return a+b; }, 0); }
+/* THE CARD FOR A POKEMON CHAMPIONS DOES NOT HAVE.
+
+   A HOME row for one of these used to be a name and a tag and nothing else -
+   no types, no BST, no stats, no ability - and HOME is exactly where the
+   player decides what to keep and what to send on: "si quisiera hacer un
+   cambio en pokemon home, no sabria por que cambiarlos" (2026-09-16). 24 of
+   his 129 HOME Pokemon were blank.
+
+   Returns a row shaped like a dex row so every card component can take it
+   unchanged, with `outside` set so callers can say where the numbers came
+   from. MAIN-SERIES NUMBERS: Champions has no row for these at all, which is
+   why there is nothing of ours to contradict - but it is never Champions data
+   and the card must not imply it is. `approx` names the base species when
+   PokeAPI had no row for that exact form.
+
+   FOR DISPLAY ONLY. Everything that decides what a Pokemon can DO - whether it
+   is legal, whether it Mega Evolves, whether it can be brought - still asks
+   byName, which knows only the Champions dex. */
+function outsideRow(name){
+  var h = (C.HOME_DEX || {})[name];
+  if (!h) return null;
+  return {name:name, species:name, types:h.t || [], b:h.b || [],
+          ab:h.ab || [], mega:false, dex:0,
+          outside:true, approx:h.approx || null};
+}
+/* byName first, always: a Champions Pokemon is never described by this table */
+function anyRow(name){ return byName[name] || outsideRow(name); }
 
 /* The compact rows printed Atk / SpA / Spe and silently dropped HP, Def and
    SpD - the same three missing in all three copies of the line, which is what
@@ -600,7 +627,8 @@ export {
   $, C, COSTS, DEX, FORMS, HOME_ALL, MEGAS_OF, MOVES, MOVE_BY, SORT,
   STAT_KEYS, STAT_LABEL, STONE_OF, TYPE_COLOR, TYPE_COLOR2, TYPE_INK,
   bst, byName, capNote, catName, defence, dexLabel, dexNo, el, freeSlug,
-  cardLine, labelBox, learnset, statGrid, typeCard, typeSkin, typeTint,
+  anyRow, cardLine, labelBox, learnset, outsideRow, statGrid, typeCard,
+  typeSkin, typeTint,
   effectChips, effectLine, effectOf, podiumChip, podiumFor, splitMax, splitPct,
   splitsFor, splitsReg, usageTag,
   megasFor, natMult, rowMatches, setHomeAll, setSort, sortRows, statAt,
