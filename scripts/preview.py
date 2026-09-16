@@ -64,6 +64,8 @@ PAGE = """<!doctype html><meta charset="utf-8"><title>resolutions</title>
    border-radius:6px;padding:5px 10px;cursor:pointer;margin-right:6px}
  button:hover{border-color:#5d7370}
  #note{color:#8fa3a1}
+ .hint{color:#6f8280;padding-top:8px;max-width:70ch;line-height:1.5}
+ .hint b{color:#cfd8d7}
 </style>
 <body>
 <h1>Champions Ledger &mdash; the three screens at once</h1>
@@ -77,6 +79,9 @@ PAGE = """<!doctype html><meta charset="utf-8"><title>resolutions</title>
   <button onclick="tab('damage')">Damage</button>
   <button onclick="sweep()">check for overlaps</button>
   <span id="note"></span>
+  <div class="hint">Sign in inside any one pane: the three are the same origin,
+    so the session is shared &mdash; press <b>reload all</b> and all three come
+    back with your box in them.</div>
 </div>
 <div id="board"></div>
 <script>
