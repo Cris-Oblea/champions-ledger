@@ -1,6 +1,6 @@
 {
- "count": 290,
- "fetched": "2026-09-15",
+ "count": 304,
+ "fetched": "2026-09-16",
  "note": "What each Pokemon's own players run. TWO datasets, kept apart because their percentages are not the same measure: `tournament` is teamlists for one regulation and exists for every Pokemon; `season` is the ladder and only exists for a Pokemon ranked that season. Read from the Next.js payload, which carries every page of every section - the rendered HTML only ever holds page 1.",
  "pokemon": {
   "Abomasnow": {
@@ -14713,6 +14713,490 @@
     ]
    }
   },
+  "Bastiodon": {
+   "season": {
+    "abilities": [
+     {
+      "name": "Sturdy",
+      "percent": 68.3
+     },
+     {
+      "name": "Soundproof",
+      "percent": 31.7
+     }
+    ],
+    "dates": "Aug 5 – Sep 9, 2026",
+    "items": [
+     {
+      "name": "Leftovers",
+      "percent": 35.9
+     },
+     {
+      "name": "Sitrus Berry",
+      "percent": 12
+     },
+     {
+      "name": "Chople Berry",
+      "percent": 10.2
+     },
+     {
+      "name": "Quick Claw",
+      "percent": 8.8
+     },
+     {
+      "name": "Lum Berry",
+      "percent": 3.1
+     },
+     {
+      "name": "Never-Melt Ice",
+      "percent": 3.1
+     },
+     {
+      "name": "Hard Stone",
+      "percent": 2.7
+     },
+     {
+      "name": "Shell Bell",
+      "percent": 2.7
+     },
+     {
+      "name": "Shuca Berry",
+      "percent": 2.5
+     },
+     {
+      "name": "Focus Sash",
+      "percent": 2.1
+     }
+    ],
+    "moves": [
+     {
+      "name": "Body Press",
+      "percent": 70.4
+     },
+     {
+      "name": "Wide Guard",
+      "percent": 54.4
+     },
+     {
+      "name": "Metal Burst",
+      "percent": 36.6
+     },
+     {
+      "name": "Iron Defense",
+      "percent": 31.7
+     },
+     {
+      "name": "Heavy Slam",
+      "percent": 27.3
+     },
+     {
+      "name": "Protect",
+      "percent": 24.6
+     },
+     {
+      "name": "Foul Play",
+      "percent": 18.4
+     },
+     {
+      "name": "Fissure",
+      "percent": 15
+     },
+     {
+      "name": "Rock Slide",
+      "percent": 13.7
+     },
+     {
+      "name": "Stealth Rock",
+      "percent": 13.2
+     }
+    ],
+    "name": "Season M-5",
+    "natures": [
+     {
+      "name": "Relaxed",
+      "percent": 26.5
+     },
+     {
+      "name": "Impish",
+      "percent": 24.6
+     },
+     {
+      "name": "Sassy",
+      "percent": 16.1
+     },
+     {
+      "name": "Careful",
+      "percent": 13.3
+     },
+     {
+      "name": "Adamant",
+      "percent": 6.3
+     },
+     {
+      "name": "Brave",
+      "percent": 5.4
+     },
+     {
+      "name": "Modest",
+      "percent": 3.9
+     },
+     {
+      "name": "Bold",
+      "percent": 1.4
+     },
+     {
+      "name": "Calm",
+      "percent": 0.8
+     },
+     {
+      "name": "Naughty",
+      "percent": 0.4
+     }
+    ],
+    "of": 235,
+    "rank": 210,
+    "spreads": [
+     {
+      "percent": 24.1,
+      "sp": {
+       "def": 32,
+       "hp": 32,
+       "spd": 2
+      }
+     },
+     {
+      "percent": 11.7,
+      "sp": {
+       "def": 2,
+       "hp": 32,
+       "spd": 32
+      }
+     },
+     {
+      "percent": 9,
+      "sp": {
+       "def": 32,
+       "hp": 2,
+       "spd": 32
+      }
+     },
+     {
+      "percent": 5.4,
+      "sp": {
+       "atk": 32,
+       "def": 2,
+       "spd": 32
+      }
+     },
+     {
+      "percent": 5,
+      "sp": {
+       "atk": 32,
+       "def": 32,
+       "spd": 2
+      }
+     },
+     {
+      "percent": 4.1,
+      "sp": {
+       "atk": 32,
+       "hp": 32,
+       "spd": 2
+      }
+     },
+     {
+      "percent": 3.2,
+      "sp": {
+       "atk": 32,
+       "def": 32,
+       "hp": 2
+      }
+     },
+     {
+      "percent": 3.1,
+      "sp": {
+       "hp": 32,
+       "spa": 32,
+       "spd": 2
+      }
+     },
+     {
+      "percent": 2.7,
+      "sp": {
+       "def": 12,
+       "hp": 32,
+       "spd": 22
+      }
+     },
+     {
+      "percent": 2.3,
+      "sp": {
+       "def": 22,
+       "hp": 32,
+       "spd": 12
+      }
+     },
+     {
+      "percent": 2.1,
+      "sp": {
+       "hp": 32,
+       "spd": 32
+      }
+     },
+     {
+      "percent": 2,
+      "sp": {
+       "atk": 32,
+       "hp": 2,
+       "spd": 32
+      }
+     },
+     {
+      "percent": 2,
+      "sp": {
+       "atk": 32,
+       "def": 2,
+       "hp": 32
+      }
+     },
+     {
+      "percent": 1.9,
+      "sp": {
+       "def": 32,
+       "hp": 32
+      }
+     },
+     {
+      "percent": 1.6,
+      "sp": {
+       "atk": 2,
+       "def": 32,
+       "spd": 32
+      }
+     },
+     {
+      "percent": 1.2,
+      "sp": {
+       "atk": 21,
+       "def": 32,
+       "hp": 4,
+       "spd": 2,
+       "spe": 7
+      }
+     },
+     {
+      "percent": 1.2,
+      "sp": {
+       "def": 32,
+       "hp": 22,
+       "spd": 12
+      }
+     },
+     {
+      "percent": 0.8,
+      "sp": {
+       "def": 13,
+       "hp": 27,
+       "spd": 26
+      }
+     },
+     {
+      "percent": 0.7,
+      "sp": {
+       "def": 24,
+       "hp": 23,
+       "spd": 19
+      }
+     },
+     {
+      "percent": 0.7,
+      "sp": {
+       "atk": 2,
+       "def": 32,
+       "hp": 32
+      }
+     },
+     {
+      "percent": 0.7,
+      "sp": {
+       "def": 32,
+       "spd": 32
+      }
+     },
+     {
+      "percent": 0.7,
+      "sp": {
+       "def": 22,
+       "hp": 22,
+       "spd": 22
+      }
+     },
+     {
+      "percent": 0.6,
+      "sp": {
+       "def": 14,
+       "hp": 32,
+       "spd": 20
+      }
+     },
+     {
+      "percent": 0.6,
+      "sp": {
+       "atk": 18,
+       "def": 32,
+       "spd": 16
+      }
+     },
+     {
+      "percent": 0.6,
+      "sp": {
+       "def": 32,
+       "hp": 25,
+       "spd": 9
+      }
+     },
+     {
+      "percent": 0.6,
+      "sp": {
+       "def": 12,
+       "hp": 30,
+       "spd": 24
+      }
+     },
+     {
+      "percent": 0.5,
+      "sp": {
+       "def": 27,
+       "hp": 32,
+       "spd": 6
+      }
+     },
+     {
+      "percent": 0.4,
+      "sp": {
+       "atk": 32,
+       "def": 2,
+       "spe": 32
+      }
+     },
+     {
+      "percent": 0.4,
+      "sp": {
+       "def": 25,
+       "hp": 32,
+       "spd": 9
+      }
+     },
+     {
+      "percent": 0.4,
+      "sp": {
+       "def": 3,
+       "hp": 31,
+       "spd": 32
+      }
+     }
+    ],
+    "teammates": [
+     {
+      "name": "Tyranitar"
+     },
+     {
+      "name": "Farigiraf"
+     },
+     {
+      "name": "Rampardos"
+     },
+     {
+      "name": "Sinistcha"
+     },
+     {
+      "name": "Torkoal"
+     },
+     {
+      "name": "Raichu"
+     },
+     {
+      "name": "Aerodactyl"
+     },
+     {
+      "name": "Basculegion"
+     },
+     {
+      "name": "Chandelure"
+     },
+     {
+      "name": "Aurorus"
+     }
+    ]
+   },
+   "tournament": {
+    "abilities": [
+     {
+      "name": "Soundproof",
+      "percent": 100.0
+     }
+    ],
+    "items": [
+     {
+      "name": "Leftovers",
+      "percent": 100
+     }
+    ],
+    "moves": [
+     {
+      "name": "Body Press",
+      "percent": 25
+     },
+     {
+      "name": "Iron Defense",
+      "percent": 25
+     },
+     {
+      "name": "Metal Burst",
+      "percent": 25
+     },
+     {
+      "name": "Protect",
+      "percent": 25
+     }
+    ],
+    "natures": [
+     {
+      "effect": "+Def / -Spe",
+      "name": "Relaxed",
+      "percent": 100
+     }
+    ],
+    "regulation": "M-C",
+    "spreads": [],
+    "teammates": [
+     {
+      "name": "Tyranitar",
+      "percent": 100
+     },
+     {
+      "name": "Mega Tyranitar",
+      "percent": 100
+     },
+     {
+      "name": "Incineroar",
+      "percent": 100
+     },
+     {
+      "name": "Garchomp",
+      "percent": 100
+     },
+     {
+      "name": "Basculegion",
+      "percent": 100
+     },
+     {
+      "name": "Rillaboom",
+      "percent": 100
+     }
+    ]
+   }
+  },
   "Baxcalibur": {
    "tournament": {
     "abilities": [
@@ -21192,6 +21676,505 @@
      {
       "name": "Baxcalibur",
       "percent": 25
+     }
+    ]
+   }
+  },
+  "Chimecho": {
+   "season": {
+    "abilities": [
+     {
+      "name": "Levitate",
+      "percent": 100
+     }
+    ],
+    "dates": "Aug 5 – Sep 9, 2026",
+    "items": [
+     {
+      "name": "Chimechite",
+      "percent": 88.7
+     },
+     {
+      "name": "Sitrus Berry",
+      "percent": 4.3
+     },
+     {
+      "name": "Leftovers",
+      "percent": 1.3
+     },
+     {
+      "name": "Colbur Berry",
+      "percent": 1.2
+     },
+     {
+      "name": "Focus Sash",
+      "percent": 0.9
+     },
+     {
+      "name": "Twisted Spoon",
+      "percent": 0.8
+     },
+     {
+      "name": "Quick Claw",
+      "percent": 0.5
+     },
+     {
+      "name": "Mental Herb",
+      "percent": 0.4
+     },
+     {
+      "name": "Bright Powder",
+      "percent": 0.3
+     },
+     {
+      "name": "Life Orb",
+      "percent": 0.3
+     }
+    ],
+    "moves": [
+     {
+      "name": "Flash Cannon",
+      "percent": 58.9
+     },
+     {
+      "name": "Psychic",
+      "percent": 44.9
+     },
+     {
+      "name": "Trick Room",
+      "percent": 44.2
+     },
+     {
+      "name": "Protect",
+      "percent": 36
+     },
+     {
+      "name": "Recover",
+      "percent": 27.5
+     },
+     {
+      "name": "Boomburst",
+      "percent": 23.1
+     },
+     {
+      "name": "Stored Power",
+      "percent": 21
+     },
+     {
+      "name": "Calm Mind",
+      "percent": 19.3
+     },
+     {
+      "name": "Cosmic Power",
+      "percent": 19
+     },
+     {
+      "name": "Dazzling Gleam",
+      "percent": 10.1
+     }
+    ],
+    "name": "Season M-5",
+    "natures": [
+     {
+      "name": "Quiet",
+      "percent": 32.9
+     },
+     {
+      "name": "Modest",
+      "percent": 23.5
+     },
+     {
+      "name": "Bold",
+      "percent": 16.2
+     },
+     {
+      "name": "Relaxed",
+      "percent": 9.4
+     },
+     {
+      "name": "Calm",
+      "percent": 9
+     },
+     {
+      "name": "Timid",
+      "percent": 3.3
+     },
+     {
+      "name": "Sassy",
+      "percent": 3.2
+     },
+     {
+      "name": "Mild",
+      "percent": 1.3
+     },
+     {
+      "name": "Careful",
+      "percent": 0.3
+     },
+     {
+      "name": "Gentle",
+      "percent": 0.3
+     }
+    ],
+    "of": 235,
+    "rank": 170,
+    "spreads": [
+     {
+      "percent": 23.6,
+      "sp": {
+       "def": 2,
+       "hp": 32,
+       "spa": 32
+      }
+     },
+     {
+      "percent": 6.5,
+      "sp": {
+       "hp": 32,
+       "spa": 32,
+       "spd": 2
+      }
+     },
+     {
+      "percent": 5.2,
+      "sp": {
+       "def": 32,
+       "hp": 32,
+       "spd": 2
+      }
+     },
+     {
+      "percent": 2.7,
+      "sp": {
+       "def": 20,
+       "hp": 32,
+       "spd": 14
+      }
+     },
+     {
+      "percent": 2.5,
+      "sp": {
+       "def": 32,
+       "hp": 2,
+       "spa": 32
+      }
+     },
+     {
+      "percent": 2.2,
+      "sp": {
+       "def": 32,
+       "hp": 32,
+       "spa": 2
+      }
+     },
+     {
+      "percent": 1.8,
+      "sp": {
+       "def": 10,
+       "hp": 31,
+       "spa": 25
+      }
+     },
+     {
+      "percent": 1.7,
+      "sp": {
+       "def": 2,
+       "hp": 32,
+       "spd": 32
+      }
+     },
+     {
+      "percent": 1.5,
+      "sp": {
+       "def": 32,
+       "hp": 2,
+       "spd": 32
+      }
+     },
+     {
+      "percent": 1.5,
+      "sp": {
+       "hp": 32,
+       "spa": 32
+      }
+     },
+     {
+      "percent": 1.4,
+      "sp": {
+       "def": 19,
+       "hp": 32,
+       "spd": 15
+      }
+     },
+     {
+      "percent": 1.3,
+      "sp": {
+       "def": 2,
+       "spa": 32,
+       "spd": 32
+      }
+     },
+     {
+      "percent": 1.3,
+      "sp": {
+       "def": 18,
+       "hp": 32,
+       "spd": 16
+      }
+     },
+     {
+      "percent": 1.2,
+      "sp": {
+       "spa": 32,
+       "spd": 2,
+       "spe": 32
+      }
+     },
+     {
+      "percent": 1.2,
+      "sp": {
+       "def": 32,
+       "spa": 32,
+       "spd": 2
+      }
+     },
+     {
+      "percent": 1.1,
+      "sp": {
+       "def": 30,
+       "hp": 32,
+       "spd": 4
+      }
+     },
+     {
+      "percent": 1.1,
+      "sp": {
+       "hp": 2,
+       "spa": 32,
+       "spd": 32
+      }
+     },
+     {
+      "percent": 1,
+      "sp": {
+       "hp": 32,
+       "spa": 32,
+       "spe": 2
+      }
+     },
+     {
+      "percent": 1,
+      "sp": {
+       "def": 32,
+       "spd": 32
+      }
+     },
+     {
+      "percent": 0.9,
+      "sp": {
+       "spa": 32,
+       "spd": 32,
+       "spe": 2
+      }
+     },
+     {
+      "percent": 0.9,
+      "sp": {
+       "def": 20,
+       "hp": 32,
+       "spa": 14
+      }
+     },
+     {
+      "percent": 0.8,
+      "sp": {
+       "hp": 2,
+       "spa": 32,
+       "spe": 32
+      }
+     },
+     {
+      "percent": 0.8,
+      "sp": {
+       "def": 1,
+       "hp": 32,
+       "spa": 32,
+       "spd": 1
+      }
+     },
+     {
+      "percent": 0.7,
+      "sp": {
+       "def": 3,
+       "hp": 31,
+       "spa": 32
+      }
+     },
+     {
+      "percent": 0.7,
+      "sp": {
+       "def": 32,
+       "hp": 10,
+       "spa": 4,
+       "spd": 20
+      }
+     },
+     {
+      "percent": 0.7,
+      "sp": {
+       "def": 13,
+       "hp": 32,
+       "spa": 15,
+       "spd": 6
+      }
+     },
+     {
+      "percent": 0.7,
+      "sp": {
+       "def": 15,
+       "hp": 32,
+       "spd": 19
+      }
+     },
+     {
+      "percent": 0.6,
+      "sp": {
+       "def": 17,
+       "hp": 32,
+       "spd": 17
+      }
+     },
+     {
+      "percent": 0.6,
+      "sp": {
+       "def": 32,
+       "spa": 2,
+       "spd": 32
+      }
+     },
+     {
+      "percent": 0.6,
+      "sp": {
+       "def": 24,
+       "hp": 32,
+       "spd": 10
+      }
+     }
+    ],
+    "teammates": [
+     {
+      "name": "Sinistcha"
+     },
+     {
+      "name": "Incineroar"
+     },
+     {
+      "name": "Garchomp"
+     },
+     {
+      "name": "Farigiraf"
+     },
+     {
+      "name": "Sylveon"
+     },
+     {
+      "name": "Tyranitar"
+     },
+     {
+      "name": "Kommo-o"
+     },
+     {
+      "name": "Sneasler"
+     },
+     {
+      "name": "Torkoal"
+     },
+     {
+      "name": "Kingambit"
+     }
+    ]
+   },
+   "tournament": {
+    "abilities": [
+     {
+      "name": "Levitate",
+      "percent": 100.0
+     }
+    ],
+    "items": [
+     {
+      "name": "Chimechite",
+      "percent": 100
+     }
+    ],
+    "moves": [
+     {
+      "name": "Charge Beam",
+      "percent": 25
+     },
+     {
+      "name": "Cosmic Power",
+      "percent": 25
+     },
+     {
+      "name": "Recover",
+      "percent": 25
+     },
+     {
+      "name": "Stored Power",
+      "percent": 25
+     }
+    ],
+    "natures": [
+     {
+      "effect": "+Def / -Spe",
+      "name": "Relaxed",
+      "percent": 100
+     }
+    ],
+    "regulation": "M-C",
+    "spreads": [
+     {
+      "percent": 50,
+      "sp": {
+       "def": 2,
+       "hp": 32,
+       "spa": 32
+      }
+     },
+     {
+      "percent": 50,
+      "sp": {
+       "def": 32,
+       "hp": 32,
+       "spa": 2
+      }
+     }
+    ],
+    "teammates": [
+     {
+      "name": "Snorlax",
+      "percent": 100
+     },
+     {
+      "name": "Rillaboom",
+      "percent": 100
+     },
+     {
+      "name": "Incineroar",
+      "percent": 100
+     },
+     {
+      "name": "Hawlucha",
+      "percent": 100
+     },
+     {
+      "name": "Mega Hawlucha",
+      "percent": 100
+     },
+     {
+      "name": "Annihilape",
+      "percent": 100
      }
     ]
    }
@@ -29854,6 +30837,491 @@
     ]
    }
   },
+  "Emboar": {
+   "season": {
+    "abilities": [
+     {
+      "name": "Reckless",
+      "percent": 71.3
+     },
+     {
+      "name": "Blaze",
+      "percent": 28.7
+     }
+    ],
+    "dates": "Aug 5 – Sep 9, 2026",
+    "items": [
+     {
+      "name": "Emboarite",
+      "percent": 70.9
+     },
+     {
+      "name": "Life Orb",
+      "percent": 5.3
+     },
+     {
+      "name": "Expert Belt",
+      "percent": 3.7
+     },
+     {
+      "name": "Leftovers",
+      "percent": 3
+     },
+     {
+      "name": "Choice Scarf",
+      "percent": 2.9
+     },
+     {
+      "name": "Sitrus Berry",
+      "percent": 2.3
+     },
+     {
+      "name": "Shell Bell",
+      "percent": 2.1
+     },
+     {
+      "name": "Quick Claw",
+      "percent": 2
+     },
+     {
+      "name": "Charcoal",
+      "percent": 1.2
+     },
+     {
+      "name": "Muscle Band",
+      "percent": 1.2
+     }
+    ],
+    "moves": [
+     {
+      "name": "Flare Blitz",
+      "percent": 81.8
+     },
+     {
+      "name": "Protect",
+      "percent": 64
+     },
+     {
+      "name": "Drain Punch",
+      "percent": 39.6
+     },
+     {
+      "name": "Sucker Punch",
+      "percent": 39.1
+     },
+     {
+      "name": "Close Combat",
+      "percent": 34
+     },
+     {
+      "name": "Wild Charge",
+      "percent": 21.7
+     },
+     {
+      "name": "Head Smash",
+      "percent": 11.2
+     },
+     {
+      "name": "Bulk Up",
+      "percent": 10.4
+     },
+     {
+      "name": "Rock Slide",
+      "percent": 10.4
+     },
+     {
+      "name": "Storm Throw",
+      "percent": 10
+     }
+    ],
+    "name": "Season M-5",
+    "natures": [
+     {
+      "name": "Adamant",
+      "percent": 42
+     },
+     {
+      "name": "Brave",
+      "percent": 36.2
+     },
+     {
+      "name": "Jolly",
+      "percent": 6.4
+     },
+     {
+      "name": "Relaxed",
+      "percent": 2.3
+     },
+     {
+      "name": "Impish",
+      "percent": 2.2
+     },
+     {
+      "name": "Modest",
+      "percent": 1.6
+     },
+     {
+      "name": "Naughty",
+      "percent": 1.6
+     },
+     {
+      "name": "Sassy",
+      "percent": 1.6
+     },
+     {
+      "name": "Gentle",
+      "percent": 1.5
+     },
+     {
+      "name": "Quiet",
+      "percent": 1.4
+     }
+    ],
+    "of": 235,
+    "rank": 189,
+    "spreads": [
+     {
+      "percent": 13.9,
+      "sp": {
+       "atk": 32,
+       "def": 2,
+       "hp": 32
+      }
+     },
+     {
+      "percent": 11,
+      "sp": {
+       "atk": 32,
+       "def": 1,
+       "hp": 32,
+       "spd": 1
+      }
+     },
+     {
+      "percent": 9.3,
+      "sp": {
+       "atk": 32,
+       "hp": 32,
+       "spd": 2
+      }
+     },
+     {
+      "percent": 5.9,
+      "sp": {
+       "atk": 32,
+       "hp": 32,
+       "spe": 2
+      }
+     },
+     {
+      "percent": 5.2,
+      "sp": {
+       "atk": 32,
+       "hp": 2,
+       "spe": 32
+      }
+     },
+     {
+      "percent": 2,
+      "sp": {
+       "atk": 32,
+       "hp": 19,
+       "spe": 15
+      }
+     },
+     {
+      "percent": 1.8,
+      "sp": {
+       "atk": 32,
+       "spd": 32,
+       "spe": 2
+      }
+     },
+     {
+      "percent": 1.7,
+      "sp": {
+       "atk": 32,
+       "def": 32,
+       "hp": 2
+      }
+     },
+     {
+      "percent": 1.5,
+      "sp": {
+       "atk": 10,
+       "def": 23,
+       "hp": 16,
+       "spd": 17
+      }
+     },
+     {
+      "percent": 1.5,
+      "sp": {
+       "atk": 32,
+       "hp": 2,
+       "spd": 32
+      }
+     },
+     {
+      "percent": 1.4,
+      "sp": {
+       "atk": 32,
+       "hp": 32
+      }
+     },
+     {
+      "percent": 1.1,
+      "sp": {
+       "def": 2,
+       "hp": 32,
+       "spa": 32
+      }
+     },
+     {
+      "percent": 1,
+      "sp": {
+       "atk": 32,
+       "def": 18,
+       "hp": 16
+      }
+     },
+     {
+      "percent": 1,
+      "sp": {
+       "atk": 32,
+       "def": 2,
+       "spd": 32
+      }
+     },
+     {
+      "percent": 0.9,
+      "sp": {
+       "atk": 28,
+       "hp": 30,
+       "spd": 8
+      }
+     },
+     {
+      "percent": 0.9,
+      "sp": {
+       "atk": 32,
+       "def": 2,
+       "spe": 32
+      }
+     },
+     {
+      "percent": 0.8,
+      "sp": {
+       "atk": 18,
+       "def": 7,
+       "hp": 28,
+       "spd": 7,
+       "spe": 6
+      }
+     },
+     {
+      "percent": 0.7,
+      "sp": {
+       "atk": 16,
+       "def": 14,
+       "hp": 20,
+       "spd": 16
+      }
+     },
+     {
+      "percent": 0.7,
+      "sp": {
+       "atk": 32,
+       "spd": 2,
+       "spe": 32
+      }
+     },
+     {
+      "percent": 0.7,
+      "sp": {
+       "atk": 32,
+       "def": 22,
+       "hp": 12
+      }
+     },
+     {
+      "percent": 0.7,
+      "sp": {
+       "atk": 32,
+       "def": 32,
+       "spd": 2
+      }
+     },
+     {
+      "percent": 0.6,
+      "sp": {
+       "atk": 27,
+       "def": 7,
+       "hp": 32
+      }
+     },
+     {
+      "percent": 0.6,
+      "sp": {
+       "atk": 32,
+       "def": 10,
+       "hp": 15,
+       "spd": 9
+      }
+     },
+     {
+      "percent": 0.6,
+      "sp": {
+       "atk": 32,
+       "def": 17,
+       "spd": 17
+      }
+     },
+     {
+      "percent": 0.5,
+      "sp": {
+       "atk": 22,
+       "hp": 12,
+       "spe": 32
+      }
+     },
+     {
+      "percent": 0.5,
+      "sp": {
+       "atk": 12,
+       "def": 16,
+       "hp": 30,
+       "spe": 8
+      }
+     },
+     {
+      "percent": 0.5,
+      "sp": {
+       "atk": 20,
+       "def": 15,
+       "hp": 10,
+       "spd": 21
+      }
+     },
+     {
+      "percent": 0.5,
+      "sp": {
+       "atk": 32,
+       "def": 14,
+       "hp": 20
+      }
+     },
+     {
+      "percent": 0.5,
+      "sp": {
+       "atk": 2,
+       "def": 32,
+       "hp": 32
+      }
+     },
+     {
+      "percent": 0.5,
+      "sp": {
+       "atk": 32,
+       "def": 15,
+       "spd": 19
+      }
+     }
+    ],
+    "teammates": [
+     {
+      "name": "Farigiraf"
+     },
+     {
+      "name": "Sinistcha"
+     },
+     {
+      "name": "Sylveon"
+     },
+     {
+      "name": "Torkoal"
+     },
+     {
+      "name": "Gholdengo"
+     },
+     {
+      "name": "Kingambit"
+     },
+     {
+      "name": "Whimsicott"
+     },
+     {
+      "name": "Grimmsnarl"
+     },
+     {
+      "name": "Sneasler"
+     },
+     {
+      "name": "Incineroar"
+     }
+    ]
+   },
+   "tournament": {
+    "abilities": [
+     {
+      "name": "Blaze",
+      "percent": 100.0
+     }
+    ],
+    "items": [],
+    "moves": [
+     {
+      "name": "Emboarite",
+      "percent": 100
+     }
+    ],
+    "natures": [
+     {
+      "effect": "+Atk / -Spe",
+      "name": "Brave",
+      "percent": 100
+     }
+    ],
+    "regulation": "M-C",
+    "spreads": [
+     {
+      "percent": 100,
+      "sp": {
+       "atk": 32,
+       "def": 31,
+       "hp": 2,
+       "spe": 1
+      }
+     }
+    ],
+    "teammates": [
+     {
+      "name": "Gyarados",
+      "percent": 100
+     },
+     {
+      "name": "Farigiraf",
+      "percent": 100
+     },
+     {
+      "name": "Sylveon",
+      "percent": 100
+     },
+     {
+      "name": "Golisopod",
+      "percent": 100
+     },
+     {
+      "name": "Mega Golisopod",
+      "percent": 100
+     },
+     {
+      "name": "Venusaur",
+      "percent": 100
+     }
+    ]
+   }
+  },
   "Empoleon": {
    "season": {
     "abilities": [
@@ -35792,6 +37260,492 @@
      },
      {
       "name": "Dragonite",
+      "percent": 100
+     }
+    ]
+   }
+  },
+  "Forretress": {
+   "season": {
+    "abilities": [
+     {
+      "name": "Sturdy",
+      "percent": 85.9
+     },
+     {
+      "name": "Overcoat",
+      "percent": 14.1
+     }
+    ],
+    "dates": "Aug 5 – Sep 9, 2026",
+    "items": [
+     {
+      "name": "Leftovers",
+      "percent": 34.3
+     },
+     {
+      "name": "Sitrus Berry",
+      "percent": 16.3
+     },
+     {
+      "name": "Life Orb",
+      "percent": 8.7
+     },
+     {
+      "name": "Occa Berry",
+      "percent": 8.2
+     },
+     {
+      "name": "Quick Claw",
+      "percent": 7.1
+     },
+     {
+      "name": "Iron Ball",
+      "percent": 3.2
+     },
+     {
+      "name": "Bright Powder",
+      "percent": 2.7
+     },
+     {
+      "name": "Light Clay",
+      "percent": 2.2
+     },
+     {
+      "name": "Expert Belt",
+      "percent": 2
+     },
+     {
+      "name": "Silk Scarf",
+      "percent": 1.8
+     }
+    ],
+    "moves": [
+     {
+      "name": "Body Press",
+      "percent": 55.1
+     },
+     {
+      "name": "Protect",
+      "percent": 36.6
+     },
+     {
+      "name": "Iron Head",
+      "percent": 35.2
+     },
+     {
+      "name": "Gyro Ball",
+      "percent": 29.7
+     },
+     {
+      "name": "Lunge",
+      "percent": 28.5
+     },
+     {
+      "name": "Iron Defense",
+      "percent": 24.4
+     },
+     {
+      "name": "Explosion",
+      "percent": 23.3
+     },
+     {
+      "name": "Toxic Spikes",
+      "percent": 17.8
+     },
+     {
+      "name": "Stealth Rock",
+      "percent": 15
+     },
+     {
+      "name": "Ice Spinner",
+      "percent": 14.7
+     }
+    ],
+    "name": "Season M-5",
+    "natures": [
+     {
+      "name": "Relaxed",
+      "percent": 35.8
+     },
+     {
+      "name": "Brave",
+      "percent": 15.8
+     },
+     {
+      "name": "Adamant",
+      "percent": 11.2
+     },
+     {
+      "name": "Impish",
+      "percent": 10.8
+     },
+     {
+      "name": "Careful",
+      "percent": 9.5
+     },
+     {
+      "name": "Sassy",
+      "percent": 7.3
+     },
+     {
+      "name": "Lax",
+      "percent": 4.6
+     },
+     {
+      "name": "Naughty",
+      "percent": 1.3
+     },
+     {
+      "name": "Jolly",
+      "percent": 1
+     },
+     {
+      "name": "Lonely",
+      "percent": 0.8
+     }
+    ],
+    "of": 235,
+    "rank": 217,
+    "spreads": [
+     {
+      "percent": 14.9,
+      "sp": {
+       "def": 32,
+       "hp": 32,
+       "spd": 2
+      }
+     },
+     {
+      "percent": 14.5,
+      "sp": {
+       "atk": 32,
+       "def": 32,
+       "hp": 2
+      }
+     },
+     {
+      "percent": 10.5,
+      "sp": {
+       "def": 2,
+       "hp": 32,
+       "spd": 32
+      }
+     },
+     {
+      "percent": 7.7,
+      "sp": {
+       "atk": 32,
+       "def": 2,
+       "hp": 32
+      }
+     },
+     {
+      "percent": 5.1,
+      "sp": {
+       "def": 32,
+       "hp": 2,
+       "spd": 32
+      }
+     },
+     {
+      "percent": 4.4,
+      "sp": {
+       "atk": 32,
+       "hp": 32,
+       "spd": 2
+      }
+     },
+     {
+      "percent": 4.1,
+      "sp": {
+       "atk": 32,
+       "hp": 2,
+       "spd": 32
+      }
+     },
+     {
+      "percent": 3.7,
+      "sp": {
+       "atk": 32,
+       "def": 32,
+       "spd": 2
+      }
+     },
+     {
+      "percent": 3.6,
+      "sp": {
+       "def": 30,
+       "hp": 32,
+       "spd": 4
+      }
+     },
+     {
+      "percent": 2.7,
+      "sp": {
+       "atk": 2,
+       "def": 32,
+       "hp": 32
+      }
+     },
+     {
+      "percent": 2.2,
+      "sp": {
+       "def": 32,
+       "hp": 32
+      }
+     },
+     {
+      "percent": 2.2,
+      "sp": {
+       "atk": 30,
+       "def": 31,
+       "hp": 5
+      }
+     },
+     {
+      "percent": 1.7,
+      "sp": {
+       "atk": 32,
+       "def": 2,
+       "spd": 32
+      }
+     },
+     {
+      "percent": 1.3,
+      "sp": {
+       "hp": 32,
+       "spd": 32
+      }
+     },
+     {
+      "percent": 1.1,
+      "sp": {
+       "atk": 32,
+       "def": 32,
+       "spe": 2
+      }
+     },
+     {
+      "percent": 1.1,
+      "sp": {
+       "def": 32,
+       "hp": 32,
+       "spd": 1,
+       "spe": 1
+      }
+     },
+     {
+      "percent": 0.9,
+      "sp": {
+       "atk": 30,
+       "def": 20,
+       "spd": 16
+      }
+     },
+     {
+      "percent": 0.9,
+      "sp": {
+       "atk": 2,
+       "hp": 32,
+       "spd": 32
+      }
+     },
+     {
+      "percent": 0.8,
+      "sp": {
+       "def": 31,
+       "hp": 32,
+       "spe": 3
+      }
+     },
+     {
+      "percent": 0.8,
+      "sp": {
+       "atk": 32,
+       "def": 2,
+       "spe": 32
+      }
+     },
+     {
+      "percent": 0.8,
+      "sp": {
+       "def": 20,
+       "hp": 32,
+       "spd": 12,
+       "spe": 2
+      }
+     },
+     {
+      "percent": 0.7,
+      "sp": {
+       "def": 31,
+       "hp": 25,
+       "spd": 10
+      }
+     },
+     {
+      "percent": 0.7,
+      "sp": {
+       "atk": 32,
+       "spe": 32
+      }
+     },
+     {
+      "percent": 0.6,
+      "sp": {
+       "atk": 32,
+       "hp": 24,
+       "spd": 10
+      }
+     },
+     {
+      "percent": 0.6,
+      "sp": {
+       "atk": 2,
+       "def": 32,
+       "spd": 32
+      }
+     },
+     {
+      "percent": 0.6,
+      "sp": {
+       "atk": 32,
+       "spd": 32
+      }
+     },
+     {
+      "percent": 0.5,
+      "sp": {
+       "def": 32,
+       "spd": 32
+      }
+     },
+     {
+      "percent": 0.5,
+      "sp": {
+       "def": 20,
+       "hp": 30,
+       "spd": 16
+      }
+     },
+     {
+      "percent": 0.5,
+      "sp": {
+       "def": 4,
+       "hp": 32,
+       "spd": 30
+      }
+     },
+     {
+      "percent": 0.5,
+      "sp": {
+       "atk": 32,
+       "hp": 2,
+       "spe": 32
+      }
+     }
+    ],
+    "teammates": [
+     {
+      "name": "Farigiraf"
+     },
+     {
+      "name": "Araquanid"
+     },
+     {
+      "name": "Kleavor"
+     },
+     {
+      "name": "Volcarona"
+     },
+     {
+      "name": "Tyranitar"
+     },
+     {
+      "name": "Torkoal"
+     },
+     {
+      "name": "Pelipper"
+     },
+     {
+      "name": "Hippowdon"
+     },
+     {
+      "name": "Scizor"
+     },
+     {
+      "name": "Raichu"
+     }
+    ]
+   },
+   "tournament": {
+    "abilities": [
+     {
+      "name": "Overcoat",
+      "percent": 100.0
+     }
+    ],
+    "items": [
+     {
+      "name": "Iron Ball",
+      "percent": 100
+     }
+    ],
+    "moves": [
+     {
+      "name": "Gyro Ball",
+      "percent": 25
+     },
+     {
+      "name": "Lunge",
+      "percent": 25
+     },
+     {
+      "name": "Power Trick",
+      "percent": 25
+     },
+     {
+      "name": "Steel Roller",
+      "percent": 25
+     }
+    ],
+    "natures": [
+     {
+      "effect": "+SpD / -Spe",
+      "name": "Sassy",
+      "percent": 100
+     }
+    ],
+    "regulation": "M-C",
+    "spreads": [],
+    "teammates": [
+     {
+      "name": "Sableye",
+      "percent": 100
+     },
+     {
+      "name": "Toxtricity (Low Key)",
+      "percent": 100
+     },
+     {
+      "name": "Spiritomb",
+      "percent": 100
+     },
+     {
+      "name": "Golisopod",
+      "percent": 100
+     },
+     {
+      "name": "Mega Golisopod",
+      "percent": 100
+     },
+     {
+      "name": "Aggron",
+      "percent": 100
+     },
+     {
+      "name": "Mega Aggron",
       "percent": 100
      }
     ]
@@ -56042,6 +57996,497 @@
     ]
    }
   },
+  "Hydrapple": {
+   "season": {
+    "abilities": [
+     {
+      "name": "Regenerator",
+      "percent": 65.8
+     },
+     {
+      "name": "Supersweet Syrup",
+      "percent": 30.7
+     },
+     {
+      "name": "Sticky Hold",
+      "percent": 3.5
+     }
+    ],
+    "dates": "Aug 5 – Sep 9, 2026",
+    "items": [
+     {
+      "name": "Leftovers",
+      "percent": 23.6
+     },
+     {
+      "name": "Life Orb",
+      "percent": 22.6
+     },
+     {
+      "name": "Yache Berry",
+      "percent": 11.8
+     },
+     {
+      "name": "Sitrus Berry",
+      "percent": 11.5
+     },
+     {
+      "name": "Quick Claw",
+      "percent": 4
+     },
+     {
+      "name": "Focus Sash",
+      "percent": 3.3
+     },
+     {
+      "name": "White Herb",
+      "percent": 3.1
+     },
+     {
+      "name": "Dragon Fang",
+      "percent": 2.5
+     },
+     {
+      "name": "Wise Glasses",
+      "percent": 2.3
+     },
+     {
+      "name": "Big Root",
+      "percent": 2
+     }
+    ],
+    "moves": [
+     {
+      "name": "Fickle Beam",
+      "percent": 90.8
+     },
+     {
+      "name": "Protect",
+      "percent": 68.1
+     },
+     {
+      "name": "Giga Drain",
+      "percent": 57.1
+     },
+     {
+      "name": "Earth Power",
+      "percent": 54.3
+     },
+     {
+      "name": "Pollen Puff",
+      "percent": 24.3
+     },
+     {
+      "name": "Energy Ball",
+      "percent": 19.9
+     },
+     {
+      "name": "Nasty Plot",
+      "percent": 13.9
+     },
+     {
+      "name": "Leaf Storm",
+      "percent": 11.1
+     },
+     {
+      "name": "Syrup Bomb",
+      "percent": 9.5
+     },
+     {
+      "name": "Hydro Pump",
+      "percent": 8.7
+     }
+    ],
+    "name": "Season M-5",
+    "natures": [
+     {
+      "name": "Quiet",
+      "percent": 49.7
+     },
+     {
+      "name": "Modest",
+      "percent": 24.6
+     },
+     {
+      "name": "Sassy",
+      "percent": 9.5
+     },
+     {
+      "name": "Calm",
+      "percent": 6.3
+     },
+     {
+      "name": "Bold",
+      "percent": 4.1
+     },
+     {
+      "name": "Relaxed",
+      "percent": 2.9
+     },
+     {
+      "name": "Timid",
+      "percent": 1.6
+     },
+     {
+      "name": "Mild",
+      "percent": 0.7
+     },
+     {
+      "name": "Adamant",
+      "percent": 0.2
+     },
+     {
+      "name": "Brave",
+      "percent": 0.2
+     }
+    ],
+    "of": 235,
+    "rank": 160,
+    "spreads": [
+     {
+      "percent": 21.5,
+      "sp": {
+       "hp": 32,
+       "spa": 32,
+       "spd": 2
+      }
+     },
+     {
+      "percent": 13.3,
+      "sp": {
+       "def": 2,
+       "hp": 32,
+       "spa": 32
+      }
+     },
+     {
+      "percent": 4.9,
+      "sp": {
+       "hp": 2,
+       "spa": 32,
+       "spd": 32
+      }
+     },
+     {
+      "percent": 4.4,
+      "sp": {
+       "def": 2,
+       "spa": 32,
+       "spd": 32
+      }
+     },
+     {
+      "percent": 3.9,
+      "sp": {
+       "def": 8,
+       "hp": 28,
+       "spd": 30
+      }
+     },
+     {
+      "percent": 3.2,
+      "sp": {
+       "def": 32,
+       "hp": 2,
+       "spa": 32
+      }
+     },
+     {
+      "percent": 2.8,
+      "sp": {
+       "def": 32,
+       "spa": 32,
+       "spd": 2
+      }
+     },
+     {
+      "percent": 2.5,
+      "sp": {
+       "hp": 19,
+       "spa": 32,
+       "spd": 15
+      }
+     },
+     {
+      "percent": 1.7,
+      "sp": {
+       "hp": 32,
+       "spa": 32
+      }
+     },
+     {
+      "percent": 1.5,
+      "sp": {
+       "def": 2,
+       "hp": 32,
+       "spd": 32
+      }
+     },
+     {
+      "percent": 1.1,
+      "sp": {
+       "hp": 4,
+       "spa": 32,
+       "spd": 30
+      }
+     },
+     {
+      "percent": 0.9,
+      "sp": {
+       "def": 32,
+       "hp": 32,
+       "spd": 2
+      }
+     },
+     {
+      "percent": 0.9,
+      "sp": {
+       "hp": 32,
+       "spa": 32,
+       "spe": 2
+      }
+     },
+     {
+      "percent": 0.8,
+      "sp": {
+       "hp": 24,
+       "spa": 32,
+       "spd": 10
+      }
+     },
+     {
+      "percent": 0.8,
+      "sp": {
+       "def": 11,
+       "hp": 9,
+       "spa": 32,
+       "spd": 14
+      }
+     },
+     {
+      "percent": 0.8,
+      "sp": {
+       "hp": 32,
+       "spa": 14,
+       "spd": 20
+      }
+     },
+     {
+      "percent": 0.7,
+      "sp": {
+       "def": 3,
+       "hp": 31,
+       "spd": 32
+      }
+     },
+     {
+      "percent": 0.6,
+      "sp": {
+       "hp": 32,
+       "spa": 30,
+       "spd": 4
+      }
+     },
+     {
+      "percent": 0.6,
+      "sp": {
+       "spa": 32,
+       "spd": 2,
+       "spe": 32
+      }
+     },
+     {
+      "percent": 0.6,
+      "sp": {
+       "def": 1,
+       "hp": 32,
+       "spa": 32,
+       "spd": 1
+      }
+     },
+     {
+      "percent": 0.6,
+      "sp": {
+       "hp": 14,
+       "spa": 32,
+       "spd": 20
+      }
+     },
+     {
+      "percent": 0.6,
+      "sp": {
+       "hp": 32,
+       "spa": 2,
+       "spd": 32
+      }
+     },
+     {
+      "percent": 0.5,
+      "sp": {
+       "def": 15,
+       "hp": 19,
+       "spd": 32
+      }
+     },
+     {
+      "percent": 0.5,
+      "sp": {
+       "hp": 16,
+       "spa": 32,
+       "spd": 18
+      }
+     },
+     {
+      "percent": 0.4,
+      "sp": {
+       "hp": 2,
+       "spa": 32,
+       "spe": 32
+      }
+     },
+     {
+      "percent": 0.4,
+      "sp": {
+       "hp": 32,
+       "spa": 20,
+       "spd": 14
+      }
+     },
+     {
+      "percent": 0.4,
+      "sp": {
+       "def": 32,
+       "hp": 2,
+       "spd": 32
+      }
+     },
+     {
+      "percent": 0.4,
+      "sp": {
+       "def": 4,
+       "spa": 32,
+       "spd": 30
+      }
+     },
+     {
+      "percent": 0.4,
+      "sp": {
+       "def": 14,
+       "hp": 32,
+       "spd": 20
+      }
+     },
+     {
+      "percent": 0.4,
+      "sp": {
+       "def": 13,
+       "hp": 32,
+       "spa": 20,
+       "spd": 1
+      }
+     }
+    ],
+    "teammates": [
+     {
+      "name": "Farigiraf"
+     },
+     {
+      "name": "Incineroar"
+     },
+     {
+      "name": "Torkoal"
+     },
+     {
+      "name": "Mawile"
+     },
+     {
+      "name": "Kingambit"
+     },
+     {
+      "name": "Oranguru"
+     },
+     {
+      "name": "Sinistcha"
+     },
+     {
+      "name": "Sylveon"
+     },
+     {
+      "name": "Hatterene"
+     },
+     {
+      "name": "Sneasler"
+     }
+    ]
+   },
+   "tournament": {
+    "abilities": [
+     {
+      "name": "Regenerator",
+      "percent": 100.0
+     }
+    ],
+    "items": [],
+    "moves": [
+     {
+      "name": "Sitrus Berry",
+      "percent": 100
+     }
+    ],
+    "natures": [
+     {
+      "effect": "+SpA / -Atk",
+      "name": "Modest",
+      "percent": 100
+     }
+    ],
+    "regulation": "M-C",
+    "spreads": [
+     {
+      "percent": 66.7,
+      "sp": {
+       "def": 2,
+       "hp": 32,
+       "spd": 32
+      }
+     },
+     {
+      "percent": 33.3,
+      "sp": {
+       "def": 2,
+       "hp": 32,
+       "spa": 32
+      }
+     }
+    ],
+    "teammates": [
+     {
+      "name": "Sableye",
+      "percent": 100
+     },
+     {
+      "name": "Golisopod",
+      "percent": 100
+     },
+     {
+      "name": "Mega Golisopod",
+      "percent": 100
+     },
+     {
+      "name": "Basculegion",
+      "percent": 100
+     },
+     {
+      "name": "Pelipper",
+      "percent": 100
+     },
+     {
+      "name": "Archaludon",
+      "percent": 100
+     }
+    ]
+   }
+  },
   "Hydreigon": {
    "season": {
     "abilities": [
@@ -58095,6 +60540,485 @@
     ]
    }
   },
+  "Jolteon": {
+   "season": {
+    "abilities": [
+     {
+      "name": "Volt Absorb",
+      "percent": 90.9
+     },
+     {
+      "name": "Quick Feet",
+      "percent": 9.1
+     }
+    ],
+    "dates": "Aug 5 – Sep 9, 2026",
+    "items": [
+     {
+      "name": "Life Orb",
+      "percent": 27.2
+     },
+     {
+      "name": "Focus Sash",
+      "percent": 23.6
+     },
+     {
+      "name": "Magnet",
+      "percent": 20.8
+     },
+     {
+      "name": "Sitrus Berry",
+      "percent": 4.8
+     },
+     {
+      "name": "Choice Scarf",
+      "percent": 4.3
+     },
+     {
+      "name": "Shuca Berry",
+      "percent": 3.8
+     },
+     {
+      "name": "Bright Powder",
+      "percent": 2.5
+     },
+     {
+      "name": "Wise Glasses",
+      "percent": 2.3
+     },
+     {
+      "name": "Expert Belt",
+      "percent": 2.1
+     },
+     {
+      "name": "Quick Claw",
+      "percent": 1.8
+     }
+    ],
+    "moves": [
+     {
+      "name": "Thunderbolt",
+      "percent": 40.5
+     },
+     {
+      "name": "Protect",
+      "percent": 37.9
+     },
+     {
+      "name": "Shadow Ball",
+      "percent": 33.7
+     },
+     {
+      "name": "Volt Switch",
+      "percent": 32.4
+     },
+     {
+      "name": "Discharge",
+      "percent": 32.1
+     },
+     {
+      "name": "Detect",
+      "percent": 30.6
+     },
+     {
+      "name": "Rising Voltage",
+      "percent": 27.7
+     },
+     {
+      "name": "Alluring Voice",
+      "percent": 23.8
+     },
+     {
+      "name": "Weather Ball",
+      "percent": 22.4
+     },
+     {
+      "name": "Electroweb",
+      "percent": 21.9
+     }
+    ],
+    "name": "Season M-5",
+    "natures": [
+     {
+      "name": "Timid",
+      "percent": 68
+     },
+     {
+      "name": "Modest",
+      "percent": 24.1
+     },
+     {
+      "name": "Hasty",
+      "percent": 2.4
+     },
+     {
+      "name": "Mild",
+      "percent": 1.9
+     },
+     {
+      "name": "Bold",
+      "percent": 1.4
+     },
+     {
+      "name": "Calm",
+      "percent": 1
+     },
+     {
+      "name": "Naive",
+      "percent": 0.4
+     },
+     {
+      "name": "Quiet",
+      "percent": 0.2
+     },
+     {
+      "name": "Relaxed",
+      "percent": 0.2
+     },
+     {
+      "name": "Sassy",
+      "percent": 0.1
+     }
+    ],
+    "of": 235,
+    "rank": 109,
+    "spreads": [
+     {
+      "percent": 44.3,
+      "sp": {
+       "hp": 2,
+       "spa": 32,
+       "spe": 32
+      }
+     },
+     {
+      "percent": 13.9,
+      "sp": {
+       "spa": 32,
+       "spd": 2,
+       "spe": 32
+      }
+     },
+     {
+      "percent": 12.2,
+      "sp": {
+       "def": 2,
+       "spa": 32,
+       "spe": 32
+      }
+     },
+     {
+      "percent": 3.6,
+      "sp": {
+       "spa": 32,
+       "spe": 32
+      }
+     },
+     {
+      "percent": 2.9,
+      "sp": {
+       "def": 1,
+       "hp": 1,
+       "spa": 32,
+       "spe": 32
+      }
+     },
+     {
+      "percent": 1.4,
+      "sp": {
+       "hp": 32,
+       "spa": 32,
+       "spe": 2
+      }
+     },
+     {
+      "percent": 0.9,
+      "sp": {
+       "spa": 32,
+       "spd": 32,
+       "spe": 2
+      }
+     },
+     {
+      "percent": 0.7,
+      "sp": {
+       "def": 2,
+       "spa": 32,
+       "spd": 32
+      }
+     },
+     {
+      "percent": 0.7,
+      "sp": {
+       "def": 32,
+       "spa": 32,
+       "spe": 2
+      }
+     },
+     {
+      "percent": 0.6,
+      "sp": {
+       "def": 2,
+       "hp": 32,
+       "spa": 32
+      }
+     },
+     {
+      "percent": 0.6,
+      "sp": {
+       "hp": 1,
+       "spa": 32,
+       "spd": 1,
+       "spe": 32
+      }
+     },
+     {
+      "percent": 0.6,
+      "sp": {
+       "def": 2,
+       "hp": 32,
+       "spe": 32
+      }
+     },
+     {
+      "percent": 0.5,
+      "sp": {
+       "def": 32,
+       "spd": 2,
+       "spe": 32
+      }
+     },
+     {
+      "percent": 0.5,
+      "sp": {
+       "hp": 4,
+       "spa": 32,
+       "spe": 30
+      }
+     },
+     {
+      "percent": 0.5,
+      "sp": {
+       "hp": 1,
+       "spa": 32,
+       "spe": 32
+      }
+     },
+     {
+      "percent": 0.4,
+      "sp": {
+       "def": 32,
+       "spa": 32,
+       "spd": 2
+      }
+     },
+     {
+      "percent": 0.4,
+      "sp": {
+       "hp": 2,
+       "spa": 32,
+       "spd": 32
+      }
+     },
+     {
+      "percent": 0.4,
+      "sp": {
+       "def": 25,
+       "hp": 10,
+       "spa": 31
+      }
+     },
+     {
+      "percent": 0.4,
+      "sp": {
+       "def": 32,
+       "hp": 2,
+       "spa": 32
+      }
+     },
+     {
+      "percent": 0.4,
+      "sp": {
+       "hp": 32,
+       "spa": 32,
+       "spd": 2
+      }
+     },
+     {
+      "percent": 0.3,
+      "sp": {
+       "hp": 6,
+       "spa": 28,
+       "spe": 32
+      }
+     },
+     {
+      "percent": 0.3,
+      "sp": {
+       "hp": 19,
+       "spa": 15,
+       "spe": 32
+      }
+     },
+     {
+      "percent": 0.3,
+      "sp": {
+       "hp": 32,
+       "spa": 2,
+       "spe": 32
+      }
+     },
+     {
+      "percent": 0.3,
+      "sp": {
+       "hp": 5,
+       "spa": 32,
+       "spe": 29
+      }
+     },
+     {
+      "percent": 0.3,
+      "sp": {
+       "def": 3,
+       "spa": 31,
+       "spe": 32
+      }
+     },
+     {
+      "percent": 0.3,
+      "sp": {
+       "hp": 26,
+       "spa": 20,
+       "spe": 20
+      }
+     },
+     {
+      "percent": 0.2,
+      "sp": {
+       "def": 6,
+       "spa": 30,
+       "spe": 30
+      }
+     },
+     {
+      "percent": 0.2,
+      "sp": {
+       "def": 1,
+       "spa": 32,
+       "spd": 1,
+       "spe": 32
+      }
+     },
+     {
+      "percent": 0.2,
+      "sp": {
+       "hp": 7,
+       "spa": 32,
+       "spe": 27
+      }
+     },
+     {
+      "percent": 0.2,
+      "sp": {
+       "def": 20,
+       "spa": 32,
+       "spe": 14
+      }
+     }
+    ],
+    "teammates": [
+     {
+      "name": "Raichu"
+     },
+     {
+      "name": "Sceptile"
+     },
+     {
+      "name": "Alolan Ninetales"
+     },
+     {
+      "name": "Whimsicott"
+     },
+     {
+      "name": "Garchomp"
+     },
+     {
+      "name": "Sylveon"
+     },
+     {
+      "name": "Pelipper"
+     },
+     {
+      "name": "Talonflame"
+     },
+     {
+      "name": "Staraptor"
+     },
+     {
+      "name": "Basculegion"
+     }
+    ]
+   },
+   "tournament": {
+    "abilities": [
+     {
+      "name": "Volt Absorb",
+      "percent": 100.0
+     }
+    ],
+    "items": [],
+    "moves": [
+     {
+      "name": "Life Orb",
+      "percent": 100
+     }
+    ],
+    "natures": [
+     {
+      "effect": "+Spe / -Atk",
+      "name": "Timid",
+      "percent": 100
+     }
+    ],
+    "regulation": "M-C",
+    "spreads": [
+     {
+      "percent": 100,
+      "sp": {
+       "hp": 2,
+       "spa": 32,
+       "spe": 32
+      }
+     }
+    ],
+    "teammates": [
+     {
+      "name": "Pelipper",
+      "percent": 100
+     },
+     {
+      "name": "Pincurchin",
+      "percent": 100
+     },
+     {
+      "name": "Eelektross",
+      "percent": 100
+     },
+     {
+      "name": "Mega Eelektross",
+      "percent": 100
+     },
+     {
+      "name": "Golisopod",
+      "percent": 100
+     },
+     {
+      "name": "Farigiraf",
+      "percent": 100
+     }
+    ]
+   }
+  },
   "Kangaskhan": {
    "season": {
     "abilities": [
@@ -60029,6 +62953,516 @@
      {
       "name": "Scizor",
       "percent": 16.7
+     }
+    ]
+   }
+  },
+  "Klefki": {
+   "season": {
+    "abilities": [
+     {
+      "name": "Prankster",
+      "percent": 98.8
+     },
+     {
+      "name": "Magician",
+      "percent": 1.2
+     }
+    ],
+    "dates": "Aug 5 – Sep 9, 2026",
+    "items": [
+     {
+      "name": "Light Clay",
+      "percent": 32.9
+     },
+     {
+      "name": "Sitrus Berry",
+      "percent": 25.6
+     },
+     {
+      "name": "Leftovers",
+      "percent": 7.3
+     },
+     {
+      "name": "Mental Herb",
+      "percent": 7.2
+     },
+     {
+      "name": "Focus Sash",
+      "percent": 5.4
+     },
+     {
+      "name": "Occa Berry",
+      "percent": 4.5
+     },
+     {
+      "name": "Bright Powder",
+      "percent": 2.8
+     },
+     {
+      "name": "Shuca Berry",
+      "percent": 2.7
+     },
+     {
+      "name": "Fairy Feather",
+      "percent": 2.6
+     },
+     {
+      "name": "Wide Lens",
+      "percent": 1.4
+     }
+    ],
+    "moves": [
+     {
+      "name": "Light Screen",
+      "percent": 45.2
+     },
+     {
+      "name": "Reflect",
+      "percent": 42.7
+     },
+     {
+      "name": "Dazzling Gleam",
+      "percent": 37.9
+     },
+     {
+      "name": "Draining Kiss",
+      "percent": 31.7
+     },
+     {
+      "name": "Thunder Wave",
+      "percent": 27.6
+     },
+     {
+      "name": "Psych Up",
+      "percent": 27.4
+     },
+     {
+      "name": "Trick Room",
+      "percent": 25.4
+     },
+     {
+      "name": "Rain Dance",
+      "percent": 25.2
+     },
+     {
+      "name": "Calm Mind",
+      "percent": 25
+     },
+     {
+      "name": "Substitute",
+      "percent": 19
+     }
+    ],
+    "name": "Season M-5",
+    "natures": [
+     {
+      "name": "Bold",
+      "percent": 42.6
+     },
+     {
+      "name": "Calm",
+      "percent": 21.6
+     },
+     {
+      "name": "Modest",
+      "percent": 14.9
+     },
+     {
+      "name": "Relaxed",
+      "percent": 6.1
+     },
+     {
+      "name": "Quiet",
+      "percent": 4.9
+     },
+     {
+      "name": "Sassy",
+      "percent": 4.2
+     },
+     {
+      "name": "Timid",
+      "percent": 1.7
+     },
+     {
+      "name": "Impish",
+      "percent": 1.4
+     },
+     {
+      "name": "Careful",
+      "percent": 1.2
+     },
+     {
+      "name": "Mild",
+      "percent": 0.5
+     }
+    ],
+    "of": 235,
+    "rank": 116,
+    "spreads": [
+     {
+      "percent": 15.8,
+      "sp": {
+       "def": 29,
+       "hp": 32,
+       "spd": 5
+      }
+     },
+     {
+      "percent": 7.8,
+      "sp": {
+       "def": 32,
+       "hp": 32,
+       "spd": 2
+      }
+     },
+     {
+      "percent": 5.3,
+      "sp": {
+       "def": 32,
+       "hp": 2,
+       "spd": 32
+      }
+     },
+     {
+      "percent": 4.3,
+      "sp": {
+       "def": 2,
+       "hp": 32,
+       "spd": 32
+      }
+     },
+     {
+      "percent": 4.1,
+      "sp": {
+       "def": 21,
+       "hp": 32,
+       "spd": 13
+      }
+     },
+     {
+      "percent": 3.4,
+      "sp": {
+       "def": 9,
+       "hp": 32,
+       "spd": 25
+      }
+     },
+     {
+      "percent": 3.3,
+      "sp": {
+       "hp": 32,
+       "spa": 32,
+       "spd": 2
+      }
+     },
+     {
+      "percent": 2.4,
+      "sp": {
+       "def": 19,
+       "hp": 32,
+       "spd": 15
+      }
+     },
+     {
+      "percent": 2.2,
+      "sp": {
+       "def": 11,
+       "hp": 32,
+       "spd": 23
+      }
+     },
+     {
+      "percent": 1.8,
+      "sp": {
+       "def": 2,
+       "hp": 32,
+       "spa": 32
+      }
+     },
+     {
+      "percent": 1.8,
+      "sp": {
+       "def": 2,
+       "spa": 32,
+       "spd": 32
+      }
+     },
+     {
+      "percent": 1.6,
+      "sp": {
+       "def": 32,
+       "spa": 32,
+       "spd": 2
+      }
+     },
+     {
+      "percent": 1.3,
+      "sp": {
+       "def": 15,
+       "hp": 32,
+       "spd": 19
+      }
+     },
+     {
+      "percent": 1.2,
+      "sp": {
+       "hp": 32,
+       "spa": 32
+      }
+     },
+     {
+      "percent": 1,
+      "sp": {
+       "hp": 32,
+       "spa": 30,
+       "spd": 4
+      }
+     },
+     {
+      "percent": 1,
+      "sp": {
+       "def": 10,
+       "hp": 32,
+       "spd": 24
+      }
+     },
+     {
+      "percent": 1,
+      "sp": {
+       "def": 16,
+       "hp": 32,
+       "spd": 18
+      }
+     },
+     {
+      "percent": 1,
+      "sp": {
+       "def": 19,
+       "hp": 28,
+       "spd": 19
+      }
+     },
+     {
+      "percent": 1,
+      "sp": {
+       "def": 32,
+       "spa": 2,
+       "spd": 32
+      }
+     },
+     {
+      "percent": 0.8,
+      "sp": {
+       "spa": 32,
+       "spd": 32,
+       "spe": 2
+      }
+     },
+     {
+      "percent": 0.8,
+      "sp": {
+       "def": 17,
+       "hp": 32,
+       "spd": 17
+      }
+     },
+     {
+      "percent": 0.8,
+      "sp": {
+       "def": 13,
+       "hp": 32,
+       "spd": 21
+      }
+     },
+     {
+      "percent": 0.8,
+      "sp": {
+       "def": 21,
+       "hp": 13,
+       "spd": 32
+      }
+     },
+     {
+      "percent": 0.7,
+      "sp": {
+       "def": 2,
+       "spa": 32,
+       "spe": 32
+      }
+     },
+     {
+      "percent": 0.7,
+      "sp": {
+       "hp": 32,
+       "spa": 32,
+       "spe": 2
+      }
+     },
+     {
+      "percent": 0.7,
+      "sp": {
+       "hp": 2,
+       "spa": 32,
+       "spd": 32
+      }
+     },
+     {
+      "percent": 0.6,
+      "sp": {
+       "def": 32,
+       "spd": 32
+      }
+     },
+     {
+      "percent": 0.6,
+      "sp": {
+       "def": 32,
+       "hp": 32
+      }
+     },
+     {
+      "percent": 0.5,
+      "sp": {
+       "hp": 32,
+       "spd": 32
+      }
+     },
+     {
+      "percent": 0.5,
+      "sp": {
+       "hp": 2,
+       "spa": 32,
+       "spe": 32
+      }
+     }
+    ],
+    "teammates": [
+     {
+      "name": "Overqwil"
+     },
+     {
+      "name": "Sableye"
+     },
+     {
+      "name": "Sinistcha"
+     },
+     {
+      "name": "Meowstic"
+     },
+     {
+      "name": "Sneasler"
+     },
+     {
+      "name": "Delphox"
+     },
+     {
+      "name": "Tyranitar"
+     },
+     {
+      "name": "Archaludon"
+     },
+     {
+      "name": "Garchomp"
+     },
+     {
+      "name": "Venusaur"
+     }
+    ]
+   },
+   "tournament": {
+    "abilities": [
+     {
+      "name": "Prankster",
+      "percent": 100.0
+     }
+    ],
+    "items": [
+     {
+      "name": "Light Clay",
+      "percent": 100
+     }
+    ],
+    "moves": [
+     {
+      "name": "Light Screen",
+      "percent": 25
+     },
+     {
+      "name": "Rain Dance",
+      "percent": 25
+     },
+     {
+      "name": "Reflect",
+      "percent": 25
+     },
+     {
+      "name": "Trick Room",
+      "percent": 25
+     }
+    ],
+    "natures": [
+     {
+      "effect": "+Def / -Atk",
+      "name": "Bold",
+      "percent": 100
+     }
+    ],
+    "regulation": "M-C",
+    "spreads": [
+     {
+      "percent": 60,
+      "sp": {
+       "def": 32,
+       "hp": 32,
+       "spd": 2
+      }
+     },
+     {
+      "percent": 20,
+      "sp": {
+       "def": 30,
+       "hp": 28,
+       "spd": 8
+      }
+     },
+     {
+      "percent": 20,
+      "sp": {
+       "def": 2,
+       "hp": 32,
+       "spd": 32
+      }
+     }
+    ],
+    "teammates": [
+     {
+      "name": "Golisopod",
+      "percent": 100
+     },
+     {
+      "name": "Mega Golisopod",
+      "percent": 100
+     },
+     {
+      "name": "Gholdengo",
+      "percent": 100
+     },
+     {
+      "name": "Empoleon",
+      "percent": 100
+     },
+     {
+      "name": "Lucario",
+      "percent": 100
+     },
+     {
+      "name": "Mega Lucario Z",
+      "percent": 100
+     },
+     {
+      "name": "Archaludon",
+      "percent": 100
      }
     ]
    }
@@ -64504,6 +67938,79 @@
     ]
    }
   },
+  "Mabosstiff": {
+   "tournament": {
+    "abilities": [
+     {
+      "name": "Intimidate",
+      "percent": 100.0
+     }
+    ],
+    "items": [
+     {
+      "name": "Sitrus Berry",
+      "percent": 100
+     }
+    ],
+    "moves": [
+     {
+      "name": "Helping Hand",
+      "percent": 25
+     },
+     {
+      "name": "Jaw Lock",
+      "percent": 25
+     },
+     {
+      "name": "Protect",
+      "percent": 25
+     },
+     {
+      "name": "Snarl",
+      "percent": 25
+     }
+    ],
+    "natures": [
+     {
+      "effect": "+SpD / -SpA",
+      "name": "Careful",
+      "percent": 100
+     }
+    ],
+    "regulation": "M-C",
+    "spreads": [],
+    "teammates": [
+     {
+      "name": "Charizard",
+      "percent": 100
+     },
+     {
+      "name": "Mega Charizard Y",
+      "percent": 100
+     },
+     {
+      "name": "Glimmora",
+      "percent": 100
+     },
+     {
+      "name": "Froslass",
+      "percent": 100
+     },
+     {
+      "name": "Mega Froslass",
+      "percent": 100
+     },
+     {
+      "name": "Rillaboom",
+      "percent": 100
+     },
+     {
+      "name": "Whimsicott",
+      "percent": 100
+     }
+    ]
+   }
+  },
   "Machamp": {
    "season": {
     "abilities": [
@@ -68179,6 +71686,84 @@
     ]
    }
   },
+  "Mega Absol": {
+   "tournament": {
+    "abilities": [
+     {
+      "name": "Justified",
+      "percent": 100.0
+     }
+    ],
+    "items": [
+     {
+      "name": "Absolite",
+      "percent": 100
+     }
+    ],
+    "moves": [
+     {
+      "name": "Detect",
+      "percent": 25
+     },
+     {
+      "name": "Night Slash",
+      "percent": 25
+     },
+     {
+      "name": "Shadow Claw",
+      "percent": 25
+     },
+     {
+      "name": "X-Scissor",
+      "percent": 25
+     }
+    ],
+    "natures": [
+     {
+      "effect": "+Atk / -SpA",
+      "name": "Adamant",
+      "percent": 100
+     }
+    ],
+    "regulation": "M-C",
+    "spreads": [
+     {
+      "percent": 100,
+      "sp": {
+       "atk": 32,
+       "spa": 2,
+       "spe": 32
+      }
+     }
+    ],
+    "teammates": [
+     {
+      "name": "Garchomp",
+      "percent": 100
+     },
+     {
+      "name": "Mega Garchomp",
+      "percent": 100
+     },
+     {
+      "name": "Weavile",
+      "percent": 100
+     },
+     {
+      "name": "Talonflame",
+      "percent": 100
+     },
+     {
+      "name": "Krookodile",
+      "percent": 100
+     },
+     {
+      "name": "Indeedee",
+      "percent": 100
+     }
+    ]
+   }
+  },
   "Mega Absol Z": {
    "tournament": {
     "abilities": [
@@ -70527,6 +74112,194 @@
     ]
    }
   },
+  "Mega Chimecho": {
+   "tournament": {
+    "abilities": [
+     {
+      "name": "Levitate",
+      "percent": 100.0
+     }
+    ],
+    "items": [
+     {
+      "name": "Chimechite",
+      "percent": 100
+     }
+    ],
+    "moves": [
+     {
+      "name": "Charge Beam",
+      "percent": 25
+     },
+     {
+      "name": "Cosmic Power",
+      "percent": 25
+     },
+     {
+      "name": "Recover",
+      "percent": 25
+     },
+     {
+      "name": "Stored Power",
+      "percent": 25
+     }
+    ],
+    "natures": [
+     {
+      "effect": "+Def / -Spe",
+      "name": "Relaxed",
+      "percent": 100
+     }
+    ],
+    "regulation": "M-C",
+    "spreads": [
+     {
+      "percent": 33.3,
+      "sp": {
+       "hp": 32,
+       "spa": 32,
+       "spd": 2
+      }
+     },
+     {
+      "percent": 33.3,
+      "sp": {
+       "def": 2,
+       "hp": 32,
+       "spa": 32
+      }
+     },
+     {
+      "percent": 33.3,
+      "sp": {
+       "def": 32,
+       "hp": 32,
+       "spa": 2
+      }
+     }
+    ],
+    "teammates": [
+     {
+      "name": "Snorlax",
+      "percent": 100
+     },
+     {
+      "name": "Rillaboom",
+      "percent": 100
+     },
+     {
+      "name": "Incineroar",
+      "percent": 100
+     },
+     {
+      "name": "Hawlucha",
+      "percent": 100
+     },
+     {
+      "name": "Mega Hawlucha",
+      "percent": 100
+     },
+     {
+      "name": "Annihilape",
+      "percent": 100
+     }
+    ]
+   }
+  },
+  "Mega Clefable": {
+   "tournament": {
+    "abilities": [
+     {
+      "name": "Magic Guard",
+      "percent": 100.0
+     }
+    ],
+    "items": [
+     {
+      "name": "Clefablite",
+      "percent": 100
+     }
+    ],
+    "moves": [
+     {
+      "name": "Flamethrower",
+      "percent": 25
+     },
+     {
+      "name": "Follow Me",
+      "percent": 25
+     },
+     {
+      "name": "Misty Terrain",
+      "percent": 25
+     },
+     {
+      "name": "Moonblast",
+      "percent": 25
+     }
+    ],
+    "natures": [
+     {
+      "effect": "+SpD / -Atk",
+      "name": "Calm",
+      "percent": 100
+     }
+    ],
+    "regulation": "M-C",
+    "spreads": [
+     {
+      "percent": 50,
+      "sp": {
+       "def": 32,
+       "hp": 32,
+       "spa": 2
+      }
+     },
+     {
+      "percent": 25,
+      "sp": {
+       "hp": 2,
+       "spa": 32,
+       "spe": 32
+      }
+     },
+     {
+      "percent": 25,
+      "sp": {
+       "def": 32,
+       "hp": 32,
+       "spe": 2
+      }
+     }
+    ],
+    "teammates": [
+     {
+      "name": "Sirfetch’d",
+      "percent": 100
+     },
+     {
+      "name": "Sableye",
+      "percent": 100
+     },
+     {
+      "name": "Toxtricity (Low Key)",
+      "percent": 100
+     },
+     {
+      "name": "Spiritomb",
+      "percent": 100
+     },
+     {
+      "name": "Aggron",
+      "percent": 100
+     },
+     {
+      "name": "Mega Aggron",
+      "percent": 100
+     }
+    ]
+   }
+  },
   "Mega Crabominable": {
    "tournament": {
     "abilities": [
@@ -71490,6 +75263,85 @@
      {
       "name": "Scrafty",
       "percent": 14.3
+     }
+    ]
+   }
+  },
+  "Mega Emboar": {
+   "tournament": {
+    "abilities": [
+     {
+      "name": "Blaze",
+      "percent": 100.0
+     }
+    ],
+    "items": [
+     {
+      "name": "Emboarite",
+      "percent": 100
+     }
+    ],
+    "moves": [
+     {
+      "name": "Close Combat",
+      "percent": 25
+     },
+     {
+      "name": "Flare Blitz",
+      "percent": 25
+     },
+     {
+      "name": "Knock Off",
+      "percent": 25
+     },
+     {
+      "name": "Protect",
+      "percent": 25
+     }
+    ],
+    "natures": [
+     {
+      "effect": "+Atk / -Spe",
+      "name": "Brave",
+      "percent": 100
+     }
+    ],
+    "regulation": "M-C",
+    "spreads": [
+     {
+      "percent": 100,
+      "sp": {
+       "atk": 32,
+       "def": 31,
+       "hp": 2,
+       "spe": 1
+      }
+     }
+    ],
+    "teammates": [
+     {
+      "name": "Gyarados",
+      "percent": 100
+     },
+     {
+      "name": "Farigiraf",
+      "percent": 100
+     },
+     {
+      "name": "Sylveon",
+      "percent": 100
+     },
+     {
+      "name": "Golisopod",
+      "percent": 100
+     },
+     {
+      "name": "Mega Golisopod",
+      "percent": 100
+     },
+     {
+      "name": "Venusaur",
+      "percent": 100
      }
     ]
    }
@@ -89294,6 +93146,79 @@
     ]
    }
   },
+  "Persian": {
+   "tournament": {
+    "abilities": [
+     {
+      "name": "Technician",
+      "percent": 100.0
+     }
+    ],
+    "items": [
+     {
+      "name": "Wise Glasses",
+      "percent": 100
+     }
+    ],
+    "moves": [
+     {
+      "name": "Fake Out",
+      "percent": 25
+     },
+     {
+      "name": "Icy Wind",
+      "percent": 25
+     },
+     {
+      "name": "Snarl",
+      "percent": 25
+     },
+     {
+      "name": "Water Pulse",
+      "percent": 25
+     }
+    ],
+    "natures": [
+     {
+      "effect": "+Spe / -Def",
+      "name": "Hasty",
+      "percent": 100
+     }
+    ],
+    "regulation": "M-C",
+    "spreads": [],
+    "teammates": [
+     {
+      "name": "Lucario",
+      "percent": 100
+     },
+     {
+      "name": "Mega Lucario Z",
+      "percent": 100
+     },
+     {
+      "name": "Toxtricity (Low Key)",
+      "percent": 100
+     },
+     {
+      "name": "Raichu",
+      "percent": 100
+     },
+     {
+      "name": "Mega Raichu X",
+      "percent": 100
+     },
+     {
+      "name": "Hawlucha",
+      "percent": 100
+     },
+     {
+      "name": "Meowscarada",
+      "percent": 100
+     }
+    ]
+   }
+  },
   "Pidgeot": {
    "season": {
     "abilities": [
@@ -91089,6 +95014,494 @@
      {
       "name": "Sinistcha",
       "percent": 19.3
+     }
+    ]
+   }
+  },
+  "Polteageist": {
+   "season": {
+    "abilities": [
+     {
+      "name": "Cursed Body",
+      "percent": 62.7
+     },
+     {
+      "name": "Weak Armor",
+      "percent": 37.3
+     }
+    ],
+    "dates": "Aug 5 – Sep 9, 2026",
+    "items": [
+     {
+      "name": "White Herb",
+      "percent": 42.2
+     },
+     {
+      "name": "Focus Sash",
+      "percent": 30.4
+     },
+     {
+      "name": "Bright Powder",
+      "percent": 5.7
+     },
+     {
+      "name": "Sitrus Berry",
+      "percent": 4.2
+     },
+     {
+      "name": "Life Orb",
+      "percent": 3.4
+     },
+     {
+      "name": "Mental Herb",
+      "percent": 2.4
+     },
+     {
+      "name": "Colbur Berry",
+      "percent": 2.2
+     },
+     {
+      "name": "Quick Claw",
+      "percent": 1.9
+     },
+     {
+      "name": "Choice Scarf",
+      "percent": 1.7
+     },
+     {
+      "name": "Spell Tag",
+      "percent": 1.6
+     }
+    ],
+    "moves": [
+     {
+      "name": "Shadow Ball",
+      "percent": 84
+     },
+     {
+      "name": "Shell Smash",
+      "percent": 70.8
+     },
+     {
+      "name": "Stored Power",
+      "percent": 43.8
+     },
+     {
+      "name": "Protect",
+      "percent": 32.8
+     },
+     {
+      "name": "Baton Pass",
+      "percent": 32.7
+     },
+     {
+      "name": "Giga Drain",
+      "percent": 25.4
+     },
+     {
+      "name": "Strength Sap",
+      "percent": 24
+     },
+     {
+      "name": "Trick Room",
+      "percent": 17.9
+     },
+     {
+      "name": "Psychic",
+      "percent": 11.8
+     },
+     {
+      "name": "Dark Pulse",
+      "percent": 10.3
+     }
+    ],
+    "name": "Season M-5",
+    "natures": [
+     {
+      "name": "Modest",
+      "percent": 43.9
+     },
+     {
+      "name": "Timid",
+      "percent": 18.8
+     },
+     {
+      "name": "Bold",
+      "percent": 18
+     },
+     {
+      "name": "Calm",
+      "percent": 5.9
+     },
+     {
+      "name": "Quiet",
+      "percent": 5
+     },
+     {
+      "name": "Sassy",
+      "percent": 2.8
+     },
+     {
+      "name": "Relaxed",
+      "percent": 2.6
+     },
+     {
+      "name": "Mild",
+      "percent": 1.4
+     },
+     {
+      "name": "Hasty",
+      "percent": 0.7
+     },
+     {
+      "name": "Impish",
+      "percent": 0.4
+     }
+    ],
+    "of": 235,
+    "rank": 206,
+    "spreads": [
+     {
+      "percent": 21.7,
+      "sp": {
+       "hp": 2,
+       "spa": 32,
+       "spe": 32
+      }
+     },
+     {
+      "percent": 9.5,
+      "sp": {
+       "spa": 32,
+       "spd": 2,
+       "spe": 32
+      }
+     },
+     {
+      "percent": 6,
+      "sp": {
+       "def": 32,
+       "hp": 32,
+       "spd": 2
+      }
+     },
+     {
+      "percent": 5.1,
+      "sp": {
+       "hp": 2,
+       "spa": 32,
+       "spd": 32
+      }
+     },
+     {
+      "percent": 4.7,
+      "sp": {
+       "hp": 32,
+       "spa": 32,
+       "spe": 2
+      }
+     },
+     {
+      "percent": 3.4,
+      "sp": {
+       "def": 2,
+       "spa": 32,
+       "spe": 32
+      }
+     },
+     {
+      "percent": 1.9,
+      "sp": {
+       "def": 32,
+       "hp": 32,
+       "spe": 2
+      }
+     },
+     {
+      "percent": 1.7,
+      "sp": {
+       "hp": 32,
+       "spa": 32,
+       "spd": 2
+      }
+     },
+     {
+      "percent": 1.6,
+      "sp": {
+       "spa": 32,
+       "spe": 32
+      }
+     },
+     {
+      "percent": 1.5,
+      "sp": {
+       "def": 32,
+       "hp": 2,
+       "spa": 32
+      }
+     },
+     {
+      "percent": 1.3,
+      "sp": {
+       "hp": 3,
+       "spa": 32,
+       "spe": 31
+      }
+     },
+     {
+      "percent": 1.2,
+      "sp": {
+       "def": 2,
+       "spa": 32,
+       "spd": 32
+      }
+     },
+     {
+      "percent": 1.2,
+      "sp": {
+       "def": 2,
+       "hp": 32,
+       "spe": 32
+      }
+     },
+     {
+      "percent": 1.1,
+      "sp": {
+       "def": 15,
+       "spa": 32,
+       "spd": 19
+      }
+     },
+     {
+      "percent": 1.1,
+      "sp": {
+       "def": 32,
+       "spa": 32,
+       "spd": 2
+      }
+     },
+     {
+      "percent": 1.1,
+      "sp": {
+       "def": 2,
+       "hp": 32,
+       "spa": 32
+      }
+     },
+     {
+      "percent": 1,
+      "sp": {
+       "hp": 32,
+       "spa": 2,
+       "spe": 32
+      }
+     },
+     {
+      "percent": 0.8,
+      "sp": {
+       "def": 15,
+       "hp": 19,
+       "spa": 32
+      }
+     },
+     {
+      "percent": 0.8,
+      "sp": {
+       "def": 32,
+       "hp": 25,
+       "spd": 9
+      }
+     },
+     {
+      "percent": 0.8,
+      "sp": {
+       "hp": 32,
+       "spd": 2,
+       "spe": 32
+      }
+     },
+     {
+      "percent": 0.7,
+      "sp": {
+       "def": 32,
+       "hp": 2,
+       "spd": 32
+      }
+     },
+     {
+      "percent": 0.7,
+      "sp": {
+       "def": 2,
+       "hp": 32,
+       "spd": 32
+      }
+     },
+     {
+      "percent": 0.7,
+      "sp": {
+       "def": 20,
+       "hp": 12,
+       "spa": 16,
+       "spd": 18
+      }
+     },
+     {
+      "percent": 0.7,
+      "sp": {
+       "def": 15,
+       "hp": 19,
+       "spe": 32
+      }
+     },
+     {
+      "percent": 0.6,
+      "sp": {
+       "def": 23,
+       "hp": 15,
+       "spa": 28
+      }
+     },
+     {
+      "percent": 0.6,
+      "sp": {
+       "def": 32,
+       "hp": 2,
+       "spe": 32
+      }
+     },
+     {
+      "percent": 0.6,
+      "sp": {
+       "hp": 32,
+       "spd": 32,
+       "spe": 2
+      }
+     },
+     {
+      "percent": 0.6,
+      "sp": {
+       "def": 32,
+       "hp": 32
+      }
+     },
+     {
+      "percent": 0.6,
+      "sp": {
+       "spa": 32,
+       "spd": 32,
+       "spe": 2
+      }
+     },
+     {
+      "percent": 0.6,
+      "sp": {
+       "def": 29,
+       "spd": 13,
+       "spe": 24
+      }
+     }
+    ],
+    "teammates": [
+     {
+      "name": "Maushold"
+     },
+     {
+      "name": "Sinistcha"
+     },
+     {
+      "name": "Farigiraf"
+     },
+     {
+      "name": "Incineroar"
+     },
+     {
+      "name": "Sneasler"
+     },
+     {
+      "name": "Whimsicott"
+     },
+     {
+      "name": "Clefable"
+     },
+     {
+      "name": "Charizard"
+     },
+     {
+      "name": "Sableye"
+     },
+     {
+      "name": "Sylveon"
+     }
+    ]
+   },
+   "tournament": {
+    "abilities": [
+     {
+      "name": "Cursed Body",
+      "percent": 100.0
+     }
+    ],
+    "items": [
+     {
+      "name": "White Herb",
+      "percent": 100
+     }
+    ],
+    "moves": [
+     {
+      "name": "Shadow Ball",
+      "percent": 25
+     },
+     {
+      "name": "Shell Smash",
+      "percent": 25
+     },
+     {
+      "name": "Stored Power",
+      "percent": 25
+     },
+     {
+      "name": "Strength Sap",
+      "percent": 25
+     }
+    ],
+    "natures": [
+     {
+      "effect": "+Def / -Atk",
+      "name": "Bold",
+      "percent": 100
+     }
+    ],
+    "regulation": "M-C",
+    "spreads": [],
+    "teammates": [
+     {
+      "name": "Feraligatr",
+      "percent": 100
+     },
+     {
+      "name": "Mega Feraligatr",
+      "percent": 100
+     },
+     {
+      "name": "Alolan Ninetales",
+      "percent": 100
+     },
+     {
+      "name": "Garchomp",
+      "percent": 100
+     },
+     {
+      "name": "Golisopod",
+      "percent": 100
+     },
+     {
+      "name": "Mega Golisopod",
+      "percent": 100
+     },
+     {
+      "name": "Hippowdon",
+      "percent": 100
      }
     ]
    }
