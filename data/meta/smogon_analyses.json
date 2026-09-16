@@ -2,7 +2,7 @@
  "source": "smogon.com/dex/champions",
  "game": "Pokemon Champions",
  "note": "VGC formats only (doubles, bring 6 pick 4). Singles dropped.",
- "fetched": "2026-09-15",
+ "fetched": "2026-09-16",
  "count": 358,
  "with_vgc_analysis": 56,
  "pokemon": [
@@ -4203,67 +4203,6 @@
      "credits": [
       "Carrotman",
       "pengu"
-     ]
-    },
-    {
-     "format": "VGC26 Regulation M-B",
-     "outdated": null,
-     "overview": "",
-     "comments": "",
-     "movesets": [
-      {
-       "name": "Sand Attacker",
-       "pokemon": "Tyranitar",
-       "abilities": [
-        "Sand Stream"
-       ],
-       "items": [
-        "Tyranitarite"
-       ],
-       "natures": [
-        "Jolly",
-        "Adamant"
-       ],
-       "stat_points": [
-        {
-         "hp": 18,
-         "atk": 16,
-         "def": 0,
-         "spa": 0,
-         "spd": 0,
-         "spe": 32
-        },
-        {
-         "hp": 25,
-         "atk": 16,
-         "def": 0,
-         "spa": 0,
-         "spd": 0,
-         "spe": 25
-        }
-       ],
-       "moveslots": [
-        [
-         "Rock Slide"
-        ],
-        [
-         "Knock Off"
-        ],
-        [
-         "Low Kick",
-         "Dragon Dance"
-        ],
-        [
-         "Protect"
-        ]
-       ],
-       "explanation": "With great natural bulk and access to a highly coveted ability in Sand Stream, Mega Tyranitar capitalizes on its strong matchups against Mega Charizard Y, Mega Delphox, and Mega Froslass, establishing a niche for sand teams as a strong anti-metagame threat against opposing weather teams.\nLow Kick vs. Dragon Dance: Low Kick allows Mega Tyranitar to deal heavy damage to Kingambit and opposing Mega Tyranitar. Dragon Dance, especially when coupled with defensive support from partners like Sinistcha, turns Mega Tyranitar into a terrifying late-game sweeper; after a single boost, it is able to outspeed Pokemon like Mega Froslass and Mega Gengar while also bolstering the damage of Rock Slide and Knock Off to levels that could 2HKO even bulkier neutral targets like Toxapex and Sylveon with Rock Slide.\nMega Evolving Tyranitar: Due to its typing and lower speed, when facing opposing weather setters like Mega Charizard Y and Mega Froslass, Tyranitar does not need to Mega Evolve to be immediately threatening. Tyranitar can stay in its base forme, pressure them to Mega Evolve first, then Mega Evolve on a later turn to reclaim weather control without having to switch out. Mega Evolution can also be used on an expected switch to a weather setter like Pelipper. In fact, thanks to its already excellent stats without Mega Evolving, Tyranitar can be brought into matchups without Mega Evolving at all, allowing another Pokemon like Staraptor to use its Mega Evolution instead.\nSP Spreads\n18 HP / 16 Atk / 32 Spe with Jolly: Maximizing Speed investment makes the most of the boosts from Dragon Dance, allowing Mega Tyranitar to outspeed Mega Raichu Y before it can damage it with Focus Blast. Before using Dragon Dance, or on sets running Low Kick instead, this spread allows Mega Tyranitar to outspeed and OHKO some bulky Mega Charizard Y with Rock Slide and Adamant Basculegion-M without Choice Scarf with Knock Off while surviving two Mystic Water-boosted Aqua Jets in return. After its teammate's Intimidate lowers the opposing Pokemon's Attack, Mega Tyranitar can survive two Earthquakes from Life Orb Garchomp while also having a high chance to survive Iron Head from Kingambit after it gets a Defiant boost from Intimidate.\n25 HP / 16 Atk / 25 Spe with Adamant: An Adamant nature can be used for more immediate unboosted power on Knock Off and Rock Slide, notably, allowing Rock Slide to OHKO Mega Delphox while bypassing redirection from Sinistcha. In addition, this spread gives Mega Tyranitar a chance to OHKO Farigiraf and Sinistcha, possibly denying Trick Room after a bit of chip damage from an allied Pokemon's attack. After a Dragon Dance, the Speed investment allows Mega Tyranitar to outrun Modest Mega Froslass and OHKO it with Knock Off. After two Dragon Dances or with Tailwind, it is also able to outspeed Choice Scarf Garchomp.\nTeambuilding\nChecks and Weaknesses: Mega Tyranitar is weak to common Fighting- and Fairy-type attacks; as such, Sneasler, Sylveon, and Mega Floette can deal heavy damage to it. Sneasler and Mega Floette particularly make for effective switch-ins to Knock Off from Mega Tyranitar, as Sneasler is able to benefit from Unburden, and Mega Floette cannot have its Mega Stone removed by Knock Off. In return, they can immediately threaten to OHKO Mega Tyranitar with Close Combat and Light of Ruin.\nEven though Mega Tyranitar is excellent at disrupting opposing weather, Mega Evolution timing can often put it in a position where Mega Charizard Y can remove the sand and its associated special defense boost, allowing Solar Beam from Mega Charizard Y or Leaf Storm from Venusaur to put a significant dent into Mega Tyranitar; while rain staples like Archaludon and Mega Swampert can deal heavy damage with Flash Cannon and Wave Crash, respectively. In addition, Pelipper often runs Wide Guard and is often paired with Grimmsnarl, which can use Parting Shot to bring Pelipper back in even if Tyranitar overwrites rain by Mega Evolving. Notably, some teams even run Mega Charizard Y alongside Pelipper and Grimmsnarl, giving them multiple avenues to establish their preferred weather. In such teams, Mega Charizard Y is able to use rain-boosted Weather Ball to deal significant damage to Mega Tyranitar, as Mega Tyranitar struggles to maintain the special defense boost from keeping sand up.\nSteel-types like Mega Mawile and Kingambit can prove problematic, as they resist Rock Slide and Knock Off while threatening huge damage in return with Iron Head. Even if Mega Tyranitar runs Low Kick, Kingambit commonly runs Focus Sash or Chople Berry, allowing it to survive the hit and OHKO Mega Tyranitar in return with Low Kick.\nEven after a Dragon Dance, Mega Tyranitar's Speed still leaves much to be desired. Metagame staples like Basculegion-M and Garchomp commonly run Choice Scarf, allowing them to outspeed Mega Tyranitar unless it has already accumulated several boosts, and threaten huge damage with Wave Crash and Earthquake, respectively. When not running Choice Scarf, Basculegion-M and Garchomp are commonly run with speed control in the form of Whimsicott's Tailwind and a damage-boosting item, allowing them to brute force through even bulkier spreads.\nWithout Dragon Dance, Mega Tyranitar's middling Speed becomes even more exploitable. It often has to take two attacks before it can attack, which greatly hampers its longevity. Its huge number of common weaknesses further undermines its otherwise excellent bulk, allowing even supportive Pokemon like Whimsicott and Milotic to be able to deal considerable damage to it.\nStatus conditions can also be problematic for Tyranitar, with burns being particularly detrimental. Mega Scovillain is a notable example, as it can cripple Tyranitar with Spicy Extract while using Rage Powder to redirect attacks and safely absorb Knock Off with its Mega Stone before recovering the damage with Giga Drain. Toxapex can similarly exploit Tyranitar's vulnerability to passive damage by trapping it with Infestation and stalling it with Toxic, while Wide Guard can provide an avenue for partners such as Mega Charizard Y to safely enter the field and claim the weather.\nGood Partners and Synergies: As a centrepiece of sand teams, Mega Tyranitar synergizes excellently with Sand Rush Excadrill. With sand up, Excadrill can outspeed and take out Sneasler and Mega Floette. Excadrill’s access to a strong Ground-type STAB move in High Horsepower also provides excellent complementary damage against Steel-types such as Kingambit.\nSinistcha's typing allows it to use Rage Powder to redirect Water- and Ground-type attacks intended for Mega Tyranitar, allowing Mega Tyranitar more chances to attack or set up with Dragon Dance. Sinistcha's access to Hospitality further complements this redirection by keeping Mega Tyranitar healthy. This combination makes Mega Tyranitar difficult to remove while allowing it to continue threatening the opposing team with its powerful attacks. Against faster teams, Sinistcha is also able to provide Trick Room, allowing Mega Tyranitar to get the Speed advantage without needing Dragon Dance.\nGholdengo is an exceptional partner for Mega Tyranitar that can take advantage of Fighting- and Fairy-type Pokemon switching into Mega Tyranitar, leveraging its typing to set up Nasty Plot in front of Pokemon like Sneasler and Sylveon. Mega Tyranitar's strong matchups into Mega Charizard Y, Incineroar and Mega Froslass additionally allows Gholdengo more opportunities to unlease powerful Shadow Ball and Make It Rain.\nMilotic's Competitive deters Intimidate users like Incineroar and Staraptor from switching in and weakening Mega Tyranitar's offense, while Haze can remove any stat drops Mega Tyranitar has accumulated. Haze is also able to reset boosts from Mega Blastoise and Mega Floette, whose powerful attacks force Mega Tyranitar out and grant opportunities to set up with Shell Smash or Calm Mind, respectively. Its access to strong Ice-type moves like Ice Beam and Icy Wind threatens Garchomp, with Icy Wind doubling as an invaluable form of speed control.\nAs Tyranitar does not necessarily need to Mega Evolve to function, it can be brought into a matchup alongside another Pokemon with a Mega Evolution. Mega Staraptor is a perfect partner for this purpose, having Flying-type STAB attacks like Brave Bird to threaten opposing Grass-types such as Venusaur and a strong Close Combat to deal with Kingambit. In return, Mega Tyranitar excels against Mega Delphox and Mega Charizard Y, whose raw damage output can quickly overwhelm Mega Staraptor despite its defensive boosts. In matchups favoring Mega Tyranitar, Staraptor can remain in its base form to provide valuable offensive coverage while also providing support with Intimidate and Tailwind. Mega Tyranitar greatly appreciates the Speed boost granted by Tailwind, allowing it to outspeed faster Pokemon like Basculegion-M and Mega Charizard Y and OHKO them before taking a Wave Crash or Solar Beam in return. This is especially useful on sets not running Dragon Dance, as it provides a way to compensate for their lower Speed. In matchups favoring Mega Staraptor, Tyranitar can remain in its base form to help deal with opposing Ghost-types such as Mega Froslass, which Mega Staraptor cannot target with Close Combat. The strategic flexibility of having both Pokemon remain viable in their base forms can itself be advantageous, as Incineroar, which can otherwise soften Tyranitar with repeated Intimidate, risks becoming a liability against Mega Staraptor thanks to Contrary."
-      }
-     ],
-     "credits": [
-      "pengu",
-      "poketitanterra",
-      "a blue banana"
      ]
     }
    ]
