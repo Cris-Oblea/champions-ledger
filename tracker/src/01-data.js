@@ -220,11 +220,15 @@ function typeCard(row, p){
 
    `mark` is a stat key to highlight, for the list that is ranked by one. */
 function statGrid(p, mark){
+  /* A POKEMON OR A BARE SPREAD. The damage calculator holds raw arrays - a
+     battle form's other spread has no Pokemon of its own - and taking only an
+     object is what left it writing its own fourth version of this. */
+  var b = (p && p.b) || p || [];
   var sl = el("div", "statline");
   STAT_KEYS.forEach(function(k, i){
     var cell = el("div", mark === k ? "on" : null);
-    cell.appendChild(el("b", null, p.b[i]));
-    cell.appendChild(el("span", null, STAT_LABEL[k]));
+    cell.appendChild(el("b", null, b[i]));
+    cell.appendChild(el("span", "lbl", STAT_LABEL[k]));
     sl.appendChild(cell);
   });
   return sl;
