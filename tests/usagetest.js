@@ -322,7 +322,7 @@ setTimeout(() => {
        rows()[0].textContent !== rr[0].textContent, true);
     ok("y el encabezado lo dice",
        /juniors/.test(d.querySelector("#worldOut .sub").textContent), true);
-    done();
+    fields();
   }
 
   /* THE PODIUM. A result, not a rate - and a Mega is filed under the MEGA,
@@ -390,6 +390,41 @@ setTimeout(() => {
       w.closeSheet();
       worlds();
     }, 500);
+  }
+
+  /* THE SPECIFICITY TRAP. The field rule guarded itself with a bare `:not()`
+     chain, and `:not()` takes the specificity of its ARGUMENT - (0,4,1),
+     heavier than any sane rule aimed at a field. Three rules lost to it in
+     silence for as long as they had existed, and nothing about CSS says out
+     loud that a rule never applied. Asserted here so it cannot come back. */
+  function fields(){
+    console.log("\n  los campos reciben el estilo que les escribieron");
+    const cs = n => w.getComputedStyle(n);
+    w.go("find");
+    click(d.getElementById("findAddMove"));
+    setTimeout(() => {
+      const si = d.querySelector(".sheet .search input");
+      const svg = d.querySelector(".sheet .search svg");
+      ok("el texto arranca despues de la lupa",
+         parseFloat(cs(si).paddingLeft) >= 34, true);
+      ok("y la lupa no se come el clic", cs(svg).pointerEvents, "none");
+      w.closeSheet();
+      const pass = d.getElementById("gatePass");
+      ok("el campo de contrasena deja sitio al ojito del navegador",
+         parseFloat(cs(pass).paddingRight) >= 34, true);
+      w.go("builds");
+      click(d.querySelectorAll("#listBuilds .row")[0]);
+      setTimeout(() => {
+        const num = d.querySelector(".sp .spnum");
+        ok("el numero de SP usa su propio padding", cs(num).padding, "6px 2px");
+        const normal = cs(num).color;
+        num.closest(".sp").classList.add("over");
+        const over = cs(num).color;
+        ok("y se pone rojo al pasarse del tope de 32", over !== normal, true);
+        num.closest(".sp").classList.remove("over");
+        done();
+      }, 700);
+    }, 700);
   }
 
   function done(){
