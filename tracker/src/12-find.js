@@ -1268,7 +1268,112 @@ function drawDiag(){
     } catch (e) { diagFallback(txt); }
   };
   host.appendChild(b);
+
+  /* ------------------------------------------- nothing painted on top -----
+     The search icon sat on the text you were typing, in all eight search
+     boxes, for as long as those boxes had existed - and the only thing that
+     ever found it was a person looking at a phone. He asked for the check
+     rather than for the one bug: "si es algo bueno entonces seria bueno
+     terminarlo... tal vez se nos ocurran mas cosas y queden solapamientos."
+
+     It lives HERE, in diagnostics, and not in the test suite, for a reason
+     that is not laziness: jsdom does not lay anything out - every rectangle
+     it reports is zero - so a test there would pass while the screen was
+     wrong, which is the worst kind of check. Run on the real device, against
+     the real layout, it is the measurement that would have caught it.
+
+     SWEPT, NOT COMPARED PAIRWISE. Find lays out thousands of boxes and the
+     obvious double loop froze the renderer outright. Sorted by top edge, each
+     box is only measured against the ones that start before it ends. */
+  var ob = el("button", "btn sm", "Check every screen for overlaps");
+  ob.style.marginTop = "8px";
+  ob.style.marginLeft = "8px";
+  ob.onclick = function(){ overlapReport(host); };
+  host.appendChild(ob);
 }
+
+function overlapSweep(view){
+  var boxes = [], all = view.querySelectorAll("*");
+  for (var i = 0; i < all.length; i++) {
+    var e = all[i], tag = e.tagName;
+    /* An ICON paints without carrying a word, and an icon on top of text is
+       the exact bug this exists for - so svg and img count as painted even
+       though their textContent is empty. Anything else has to say something
+       to be worth colliding with. */
+    var isIcon = /^(svg|img)$/i.test(tag);
+    if (e.children.length && !isIcon) continue;
+    if (!isIcon && !e.textContent.trim()) continue;
+    var r = e.getBoundingClientRect();
+    if (r.width < 4 || r.height < 4) continue;
+    boxes.push({e: e, r: r});
+  }
+  boxes.sort(function(a, b){ return a.r.top - b.r.top; });
+  var hits = [];
+  for (var i2 = 0; i2 < boxes.length && hits.length < 12; i2++) {
+    var A = boxes[i2];
+    for (var j = i2 + 1; j < boxes.length; j++) {
+      var B = boxes[j];
+      if (B.r.top >= A.r.bottom - 1) break;         /* the sweep's whole point */
+      if (A.e.contains(B.e) || B.e.contains(A.e)) continue;
+      var ox = Math.min(A.r.right, B.r.right) - Math.max(A.r.left, B.r.left);
+      var oy = Math.min(A.r.bottom, B.r.bottom) - Math.max(A.r.top, B.r.top);
+      /* a two-pixel kiss is layout, not a collision */
+      if (ox <= 1 || oy <= 1 || ox * oy < 30) continue;
+      hits.push(label(A.e) + "  over  " + label(B.e) +
+                "  (" + Math.round(ox * oy) + "px²)");
+      break;
+    }
+  }
+  return {boxes: boxes.length, hits: hits};
+  function label(e){
+    var c = String(e.className || "").split(" ")[0];
+    var t = e.textContent.trim().slice(0, 14);
+    return e.tagName.toLowerCase() + (c ? "." + c : "") + (t ? " “" + t + "”" : "");
+  }
+}
+
+function overlapReport(host){
+  /* Found through `host`, not by id: `$()` is for ids the MARKUP declares, and
+     check_app asserts exactly that - a lookup for something no markup
+     contains is usually a typo, which is a check worth keeping sharp. */
+  var old = host.querySelector(".overlapout");
+  if (old) old.parentNode.removeChild(old);
+  var out = el("div", "note overlapout");
+  out.style.marginTop = "10px";
+  /* EVERY VIEW, not just the one you are standing on. The diagnostics panel
+     lives in Profile, so a sweep of "the current screen" could only ever
+     sweep Profile - the one screen nobody was worried about.
+
+     A hidden view reports every rectangle as zero, so each one is shown for
+     the length of a measurement and put straight back. The flicker is the
+     price of measuring the real layout instead of guessing at it. */
+  var open = document.querySelector(".view:not([hidden])");
+  var views = [].slice.call(document.querySelectorAll(".view"));
+  var total = 0, bad = [];
+  views.forEach(function(v){
+    var was = v.hidden;
+    v.hidden = false;
+    var r = overlapSweep(v);
+    v.hidden = was;
+    total += r.boxes;
+    r.hits.forEach(function(h){ bad.push(v.id + " — " + h); });
+  });
+  if (open) open.hidden = false;
+
+  if (!bad.length) {
+    out.innerHTML = "<strong>Nothing overlaps.</strong> Swept " + total +
+      " painted boxes across " + views.length + " views at " +
+      window.innerWidth + "px wide.";
+  } else {
+    out.className = "note bad overlapout";
+    out.innerHTML = "<strong>" + bad.length + " overlap" +
+      (bad.length === 1 ? "" : "s") + "</strong> at " + window.innerWidth +
+      "px, of " + total + " painted boxes:";
+    bad.slice(0, 14).forEach(function(h){ out.appendChild(el("div", "st", h)); });
+  }
+  host.appendChild(out);
+}
+
 function diagFallback(txt){
   openSheet("Diagnostics", function(body){
     body.appendChild(el("p", "sub", "Select it all and copy."));
@@ -1384,5 +1489,5 @@ function drawDupeHome(){
 export {
   DIAG_LATEST, FIND, checkLatest, drawDiag, drawDupeHome, findDetail, findDraw,
   findInit, findRun, itemTags, moveFilters, moveRowFor, moveScore, priorityTag,
-  factLine, spreadNote, spreadTags, worldDraw,
+  factLine, overlapSweep, spreadNote, spreadTags, worldDraw,
 };

@@ -271,6 +271,33 @@ Measured after both, at 1440:
 The phone is untouched: one column at 345px, zero horizontal overflow on every
 tab, the workspace falls back to stacked and the sidebar unsticks.
 
+### Nothing painted on top of anything else
+
+The search icon sat on the text you were typing, in all eight search boxes,
+for as long as those boxes had existed - and the only thing that ever found it
+was a person looking at a phone. He asked for the check rather than the fix:
+"si es algo bueno entonces sería bueno terminarlo... tal vez se nos ocurran más
+cosas y queden solapamientos."
+
+**Two halves, because neither is enough alone.** jsdom lays nothing out - every
+rectangle it reports is zero - so a sweep of the real app under jsdom would
+find nothing and pass while the screen was wrong, which is worse than no check
+at all. So:
+
+- the ALGORITHM is tested in `overlaptest.js`, fed rectangles the test
+  controls: it must find a planted icon-over-text, ignore a one-pixel kiss and
+  anything nested, and stay linear (the naive double loop froze a real
+  renderer, twice).
+- the LAYOUT is swept on the device, by a button in diagnostics - **Check every
+  screen for overlaps**. Every view, not just the one you are standing on: the
+  panel lives in Profile, so "the current screen" could only ever have been
+  Profile. A hidden view reports zeroes, so each is shown for the length of one
+  measurement and put back.
+
+Writing the test found a second gap: the sweep counted `svg` as painted but not
+`img`, so an image icon over text - which is what the item rows use - would
+have slipped through the very check written for it.
+
 ### The app asks its own questions now
 
 Seven `confirm()` calls drew the OPERATING SYSTEM's dialog in the middle of a

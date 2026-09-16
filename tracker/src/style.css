@@ -260,6 +260,23 @@ h1{font-size:21px;margin:0;font-weight:600;letter-spacing:-.01em}
 h2{font-family:var(--cond);text-transform:uppercase;letter-spacing:.08em;
    font-size:12px;font-weight:600;color:var(--muted);margin:22px 0 8px}
 h2:first-of-type{margin-top:4px}
+/* A SECTION SHOULD LOOK LIKE ONE. The title was 21px, the section headings
+   12px, and the body 15px - so a view read as one flat run of text at three
+   sizes that are nearly the same size, and "where does this part end" had no
+   answer. A rule above each heading answers it, and costs nothing.
+
+   `main h2` on purpose: the sheets and the confirm dialog live outside main
+   and are one thought each, where a rule would only add furniture. */
+main h2{padding-top:11px;border-top:1px solid var(--line)}
+main h2:first-of-type{border-top:0;padding-top:0}
+/* On a desktop the title can be a title. It stays 21px on a phone, where the
+   screen is the constraint and a 28px heading is a wasted band. */
+@media (min-width:900px){
+  h1{font-size:28px;letter-spacing:-.02em}
+  .lede{font-size:14.5px}
+  .viewhead{padding-bottom:15px;border-bottom:1px solid var(--line);
+    margin-bottom:20px}
+}
 h2 .n{font-family:var(--mono);color:var(--faint);font-weight:500;letter-spacing:0}
 .lede{color:var(--muted);font-size:13.5px;margin:2px 0 0;max-width:60ch}
 /* The action used to be a flex item after a spacer, so as soon as the lede
