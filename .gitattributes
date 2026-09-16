@@ -1,0 +1,37 @@
+# LINE ENDINGS, DECLARED - because the alternative is a permanently dirty tree.
+#
+# This machine has core.autocrlf=true, so git rewrites LF to CRLF on checkout.
+# Every generator here writes LF (Python, opened with newline=""), and CI runs
+# on Linux. So a file that is checked out and then regenerated comes back
+# different in every byte that ends a line, and `git status` has been showing
+# tracker/analysis.js and tracker/splits.js as modified after every single
+# build - with an empty diff under --ignore-cr-at-eol.
+#
+# That is worse than untidy. A permanently dirty tree is a tree nobody reads,
+# and it has already cost one `git checkout` that had to be talked through
+# before it was safe to run.
+#
+# Declaring the endings here beats autocrlf, so the bytes on disk match the
+# bytes in the index and the two stop arguing.
+
+# Everything this repository generates or ships to the browser.
+*.js        text eol=lf
+*.json      text eol=lf
+*.css       text eol=lf
+*.html      text eol=lf
+*.py        text eol=lf
+*.md        text eol=lf
+*.yml       text eol=lf
+*.toml      text eol=lf
+*.sql       text eol=lf
+*.csv       text eol=lf
+
+# Images and fonts are bytes, and must never be touched.
+*.png       binary
+*.jpg       binary
+*.jpeg      binary
+*.gif       binary
+*.ico       binary
+*.webp      binary
+*.woff      binary
+*.woff2     binary
