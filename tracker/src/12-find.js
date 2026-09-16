@@ -1346,8 +1346,15 @@ function overlapSweep(view){
     var t = r.top + n(cs.borderTopWidth) + n(cs.paddingTop);
     var rt = r.right - n(cs.borderRightWidth) - n(cs.paddingRight);
     var b = r.bottom - n(cs.borderBottomWidth) - n(cs.paddingBottom);
-    return {left:l, top:t, right:rt, bottom:b,
-            width:Math.max(0, rt - l), height:Math.max(0, b - t)};
+    /* A NONSENSE COMPUTED STYLE MUST NOT BLIND THE SWEEP. If the insets come
+       back bigger than the box - jsdom resolves a border to 16px here, and a
+       real browser could do something odd with a shorthand - the content box
+       collapses, the element falls under the 4px floor and quietly stops
+       being checked at all. Falling back to the border box keeps it visible:
+       a slightly generous rectangle reports a false positive, which someone
+       reads, and missing one reports nothing, which nobody does. */
+    if (rt - l < 4 || b - t < 4) return r;
+    return {left:l, top:t, right:rt, bottom:b, width:rt - l, height:b - t};
   }
   function label(e){
     /* An SVG's className is an SVGAnimatedString, so String() on it reads

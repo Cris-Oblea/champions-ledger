@@ -51,6 +51,10 @@ function view(boxes){
     const host = b.parent || v;
     const e = d.createElement(b.tag || "span");
     e.className = b.cls || "";
+    /* jsdom resolves this app's border shorthand to 16px, which would make a
+       field's content box collapse - so the fixture states the box it means
+       rather than leaning on jsdom's CSS. */
+    if (b.style) e.setAttribute("style", b.style);
     e.textContent = b.text === undefined ? "x" : b.text;
     e.getBoundingClientRect = () => ({
       left:b.l, top:b.t, right:b.l + b.w, bottom:b.t + b.h,
@@ -91,7 +95,8 @@ setTimeout(() => {
      it, which is the only way that kind of hole ever shows. */
   r = sweep(view([
     {tag:"svg", cls:"icon", l:9, t:10, w:16, h:16, text:""},
-    {tag:"input", cls:"campo", l:2, t:8, w:300, h:24, text:""}
+    {tag:"input", cls:"campo", l:2, t:8, w:300, h:24, text:"",
+     style:"padding:9px 11px;border-width:1px"}
   ]));
   ok("un icono sobre un <input> tambien cuenta", r.hits.length, 1);
 

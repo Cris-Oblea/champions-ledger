@@ -308,10 +308,23 @@ at all. So:
    purpose. Fields are measured by their CONTENT box now, which is the real
    question - does something cover the text.
 
-Proven rather than assumed, against the real browser: fixed → **0**, bug
-reintroduced → **1**, named `input over svg`, fixed again → **0**. Then swept
-clean over the whole app: 1,931 painted boxes at 1440px and 1,949 at 345px,
-across seven views, no overlaps.
+4. And the fix for (3) introduced a fourth, which the gate caught before it
+   could be pushed: subtracting the border and padding means trusting the
+   computed style, and jsdom resolves this app's border shorthand to **16px**.
+   A 24px field then has a negative content box, falls under the 4px floor and
+   **stops being swept at all** - silently. That is the dangerous failure: not
+   a false positive but blindness. If the insets come back bigger than the
+   box, it falls back to the border box. A slightly generous rectangle reports
+   something someone reads; a vanished one reports nothing nobody reads.
+
+Proven rather than assumed, against the real browser, before and after that
+last fix: fixed → **0**, bug reintroduced → **1**, named `input over svg`,
+fixed again → **0**. Then swept clean over the whole app: 1,931 painted boxes
+at 1440px and 1,949 at 345px, across seven views, no overlaps.
+
+The card tint was checked the same way rather than eyeballed. Worst contrast
+of a card's name against its own tinted background: **12.3:1 dark, 14.6:1
+light**, where AAA asks 7:1.
 
 ### The app asks its own questions now
 
