@@ -2,11 +2,12 @@
    Part of the app; linked into one script by scripts/build_tracker_page.py. */
 import {
   $, C, FORMS, SORT, STAT_KEYS, STAT_LABEL, STONE_OF, bst, byName, capNote,
-  defence, dexLabel, el, freeSlug, megasFor, statLine, toast, typeChip,
+  defence, dexLabel, el, freeSlug, megasFor, statLine, toast, typeCard,
+  typeChip,
 } from "./01-data.js";
 import { S, hasStone, originOf } from "./02-state.js";
 import { drop, put } from "./03-store.js";
-import { closeSheet, fbtn, openSheet } from "./04-nav.js";
+import { ask, closeSheet, fbtn, openSheet } from "./04-nav.js";
 /* The badges on a box row - in the GTS, a duplicate, the last copy - are the
    GTS view's own answer about that Pokemon, so they are asked for rather than
    recomputed here. This is why the link order is no longer numeric: 09-gts
@@ -19,7 +20,7 @@ function pokeRow(rec){
   var cls = rec.location === "home" ? (p ? "home" : "illegal")
           : rec.status === "rental" ? "rental"
           : o === "home" ? "perm" : o === "champions" ? "locked" : "unknown";
-  var row = el("button", "row " + cls);
+  var row = typeCard(el("button", "row " + cls), p);
   var main = el("div", "rmain");
   var nm = el("div", "rname");
   nm.appendChild(document.createTextNode(rec.name));
@@ -287,9 +288,11 @@ function moveButtons(rec, isHome){
        primary button here reads as "this is what you came to do", which is
        the app arguing against its owner's strategy. */
     out.push(fbtn("Buy it · 2500 VP", "", function(){
-      if (!confirm("Buying " + rec.name + " makes it Champions origin — it can " +
-                   "never be sent to HOME, and the slot only frees by releasing " +
-                   "it. Go ahead?")) return;
+      ask("Buy " + rec.name + " for 2500 VP?",
+          "It becomes Champions origin: it can never be sent to HOME, and the " +
+          "slot only frees by releasing it.", "Buy · 2500 VP")
+        .then(function(ok){
+      if (!ok) return;
       /* The 2500 VP is NOT deducted from a stored balance any more. The
          ledger tracked one number that only ever went down - buying a rental -
          while ranked wins, which are the other half, went unrecorded, so it
@@ -297,6 +300,7 @@ function moveButtons(rec, isHome){
          the app does not pretend to (player, 2026-09-12). */
       saveNote({status:"permanent", origin:"champions"})
         .then(function(){ closeSheet(); toast("Champions origin. Costs 2500 VP"); });
+      });
     }));
   } else if (originOf(rec) === "home") {
     out.push(fbtn("Park back to HOME", "primary", function(){
@@ -330,16 +334,21 @@ function moveButtons(rec, isHome){
     var mine = Object.keys(S.builds).filter(function(k){
       return S.builds[k].box_id === rec._id;
     });
-    var msg = "Remove " + rec.name + " from the ledger?";
+    var msg = [];
     if (mine.length) {
-      msg += "\n\n" + mine.length + " build" + (mine.length > 1 ? "s" : "") +
-             " will be KEPT as " + (mine.length > 1 ? "ideas" : "an idea") +
-             ", no longer installed on anything.";
+      msg.push(mine.length + " build" + (mine.length > 1 ? "s" : "") +
+               " will be KEPT as " + (mine.length > 1 ? "ideas" : "an idea") +
+               ", no longer installed on anything.");
     }
-    msg += (originOf(rec) === "home" && !isHome)
-      ? "\n\nTo free the slot and keep it playable, park it back to HOME instead."
-      : "\n\nThis one is Champions origin, so it cannot come back.";
-    if (!confirm(msg)) return;
+    msg.push((originOf(rec) === "home" && !isHome)
+      ? "To free the slot and keep it playable, park it back to HOME instead."
+      : "This one is Champions origin, so it cannot come back.");
+    ask("Remove " + rec.name + " from the ledger?", msg.join("\n\n"),
+        "Remove", true).then(function(ok){
+      if (!ok) return;
+      release();
+    });
+    function release(){
     drop(path).then(function(){
       return Promise.all(mine.map(function(k){
         var doc = JSON.parse(JSON.stringify(S.builds[k]));
@@ -353,6 +362,7 @@ function moveButtons(rec, isHome){
             (mine.length ? "; its " + (mine.length > 1 ? "builds are" : "build is") +
                            " kept as an idea" : ""));
     });
+    }
   }));
   return out;
 }

@@ -6,7 +6,7 @@ import {
 } from "./01-data.js";
 import { ORIGIN_LABEL, S, boxRows, hasStone, originOf } from "./02-state.js";
 import { drop, put, putNew } from "./03-store.js";
-import { closeSheet, fbtn, openSheet } from "./04-nav.js";
+import { ask, closeSheet, fbtn, openSheet } from "./04-nav.js";
 import { note } from "./13-boot.js";
 /* ======================================================================= gts */
 function drawGts(){
@@ -1181,7 +1181,10 @@ function gtsSheet(id, o){
               " - the first one is the one being removed." : "")
         : d.offered + " is not in the box any more, so only " + d.requested +
           " will be added.";
-      if (!confirm(msg)) return;
+      ask("Close this trade?", msg, "Trade done").then(function(ok){
+        if (ok) closeTrade();
+      });
+      function closeTrade(){
 
       /* The offer is not deleted and re-filed - it is the same trade, and
          closing it writes the ending onto the row it already has. */
@@ -1220,6 +1223,7 @@ function gtsSheet(id, o){
         toast(going ? d.offered + " out, " + d.requested + " in"
                     : d.requested + " is in HOME");
       });
+      }
     }) : fbtn("Log it", "primary", function(){
       if (!d.offered || !d.requested) { toast("Both names are needed"); return; }
       if (!gtsFree()) {
@@ -1233,13 +1237,17 @@ function gtsSheet(id, o){
          When a sibling form is in the box the picker has already said so, and
          choosing between forms is his call, not the app's. */
       var lastRec = d.offeredId ? S.box[d.offeredId] : null;
-      if (lastCopyOf(lastRec) && !otherFormsOf(lastRec).length &&
-          !confirm("This is your only " + d.offered + ", and it is in "
-                   + "the Champions dex. Trading it means losing the "
-                   + "species for good - your own rule is to keep one "
-                   + "of everything Champions allows. Go ahead?")) {
+      if (lastCopyOf(lastRec) && !otherFormsOf(lastRec).length) {
+        ask("Your only " + d.offered + "?",
+            "It is in the Champions dex, so trading it means losing the "
+            + "species for good — your own rule is to keep one of everything "
+            + "Champions allows.", "Offer it anyway", true)
+          .then(function(ok){ if (ok) logIt(); });
         return;
       }
+      logIt();
+
+      function logIt(){
       /* stamp what the ladder said TODAY, so a later reading can tell you the
          target moved rather than silently comparing against nothing */
       var rdNow = gtsDiff(d.requested);
@@ -1257,6 +1265,7 @@ function gtsSheet(id, o){
       putNew("gts", stem, d).then(function(){
         closeSheet(); toast("Offer logged");
       });
+      }
     }),
     /* NOT danger. Withdrawing a deposit takes your own Pokemon back and loses
        nothing - you can re-log the offer in a second. Red is reserved for the

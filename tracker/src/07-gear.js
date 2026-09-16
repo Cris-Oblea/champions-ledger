@@ -107,7 +107,9 @@ function drawItems(){
     var h = el("h2", null, cat + " ");
     h.appendChild(el("span", "n", have + "/" + hits.length));
     pane.appendChild(h);
-    var list = el("div", "list");
+    /* Items are a list you PICK FROM, 118 of them: a grid is the shape of
+       that, not a column six screens long. */
+    var list = el("div", "list cards");
     /* owned first, then by name - the same order the stone list reads in */
     hits.sort(function(x, y){
       return (own[y[0]] ? 1 : 0) - (own[x[0]] ? 1 : 0) ||
