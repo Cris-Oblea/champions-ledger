@@ -207,6 +207,12 @@ function typeCard(row, p){
   if (s1b) row.style.setProperty("--tsoftb", s1b);
   if (s2) row.style.setProperty("--tsoft2", s2);
   if (s2b) row.style.setProperty("--tsoft2b", s2b);
+  /* THE PICTURE GOES ON HERE, so it lands on every card from one place rather
+     than at six call sites. A marker class rather than `:has(.sprite)`: a
+     browser without `:has()` drops the rule silently and the badges would run
+     under the image, which is the exact fault the overlap sweep exists for. */
+  var pic = spriteFor(p.name);
+  if (pic) { row.appendChild(pic); row.className += " hassprite"; }
   return row;
 }
 /* THE SIX STATS AS A TABLE. Written three times in three files before this
@@ -329,6 +335,53 @@ function outsideRow(name){
 }
 /* byName first, always: a Champions Pokemon is never described by this table */
 function anyRow(name){ return byName[name] || outsideRow(name); }
+
+/* THE PICTURE, FETCHED AND NEVER STORED.
+
+   A sprite is the one thing PokeAPI has that is safe for the species Champions
+   DOES have as well: its numbers are rebalanced and PokeAPI's are not, but a
+   picture of a Pikachu is a picture of a Pikachu, and Champions publishes none
+   of its own.
+
+   THE IMAGES ARE NOT IN THIS REPOSITORY, deliberately. They are Nintendo and
+   Game Freak artwork - PokeAPI licenses its own sprites repo NOASSERTION for
+   exactly that reason - and this repository is public. Only the id ships; the
+   image comes from a CDN at a pinned commit, so nothing of theirs is
+   redistributed from here and a takedown is one line rather than a rewritten
+   git history.
+
+   The pixel sprite, not the artwork: 1.3-1.7 KB against 126 KB, and at the
+   size a card shows it the artwork would be downscaled into mush anyway. */
+var SPRITE_PIN = "2ecb4eeacd5a1718621fc30f12772e3f60d830b9";
+var SPRITE_BASE = "https://cdn.jsdelivr.net/gh/PokeAPI/sprites@" + SPRITE_PIN +
+                  "/sprites/pokemon/";
+/* TWO SETS, AND THE REASON IS RESOLUTION, NOT TASTE.
+
+     pokemon/<id>.png        96x96,   1.3 KB   - the pixel sprite
+     other/home/<id>.png     512x512, ~130 KB  - the HOME render
+
+   A list draws up to 159 of them at once, so it gets the small one; 159 renders
+   would be 22 MB. A SHEET draws exactly one, where 130 KB is nothing and the
+   detail is really there.
+
+   This is also the answer to "con mas pixeles": the pixel file HAS 96 and no
+   more, so drawing it larger enlarges the same 96 pixels and adds nothing. The
+   extra detail only exists in the 512 set, which is why the sheet gets it and
+   the list cannot. */
+function spriteFor(name, big){
+  var id = (C.SPRITE_ID || {})[name];
+  if (!id) return null;
+  var img = el("img", big ? "sprite big" : "sprite");
+  img.src = SPRITE_BASE + (big ? "other/home/" : "") + id + ".png";
+  img.alt = "";                       /* the name is right beside it */
+  img.width = big ? 180 : 96; img.height = big ? 180 : 96;
+  img.loading = "lazy";               /* only what is actually on screen */
+  img.decoding = "async";
+  /* OFFLINE IS A NORMAL STATE for this app, and a broken-image glyph would be
+     worse than no picture. The card is built to read without it. */
+  img.onerror = function(){ img.remove(); };
+  return img;
+}
 
 /* The compact rows printed Atk / SpA / Spe and silently dropped HP, Def and
    SpD - the same three missing in all three copies of the line, which is what
@@ -627,8 +680,8 @@ export {
   $, C, COSTS, DEX, FORMS, HOME_ALL, MEGAS_OF, MOVES, MOVE_BY, SORT,
   STAT_KEYS, STAT_LABEL, STONE_OF, TYPE_COLOR, TYPE_COLOR2, TYPE_INK,
   bst, byName, capNote, catName, defence, dexLabel, dexNo, el, freeSlug,
-  anyRow, cardLine, labelBox, learnset, outsideRow, statGrid, typeCard,
-  typeSkin, typeTint,
+  anyRow, cardLine, labelBox, learnset, outsideRow, spriteFor, statGrid,
+  typeCard, typeSkin, typeTint,
   effectChips, effectLine, effectOf, podiumChip, podiumFor, splitMax, splitPct,
   splitsFor, splitsReg, usageTag,
   megasFor, natMult, rowMatches, setHomeAll, setSort, sortRows, statAt,

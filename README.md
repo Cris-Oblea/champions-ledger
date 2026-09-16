@@ -77,6 +77,15 @@ is nothing of ours to contradict - and nothing of theirs is ever used for a
 species Champions does have, where the move rebalance makes PokeAPI wrong (81%
 of its PP values and 16 of its base powers disagree with Champions).
 
+**Every card carries its Pokemon's sprite**, fetched from a CDN at a pinned
+commit and never copied into this repository - those are Nintendo and Game Freak
+images, PokeAPI licenses its own sprites repo NOASSERTION for exactly that
+reason, and this repo is public. Only the id ships. The pixel set rather than
+the artwork, measured: 1.3 KB against 139 KB for the HOME render and 153 KB for
+the official one, and a screen of 159 cards would be 22 MB of those. A sprite is
+also the one thing PokeAPI has that is safe for the species Champions DOES have
+- a picture is not rebalanced.
+
 `python scripts/preview.py` puts three viewports side by side in a browser -
 desktop, laptop and phone - each in its own iframe so the media queries are
 real, with the cache cleared first and the app's own overlap check on a button.

@@ -3,7 +3,7 @@
 import {
   $, C, FORMS, SORT, STAT_KEYS, STAT_LABEL, STONE_OF, bst, byName, capNote,
   cardLine, defence, dexLabel, el, freeSlug, labelBox, megasFor, outsideRow,
-  statGrid, toast, typeCard, typeChip,
+  spriteFor, statGrid, toast, typeCard, typeChip,
 } from "./01-data.js";
 import { S, hasStone, originOf } from "./02-state.js";
 import { drop, put } from "./03-store.js";
@@ -132,16 +132,23 @@ function pokeSheet(rec){
   var isHome = rec.location === "home";
   openSheet(rec.name, function(body){
     if (show) {
+      /* beside the facts, not above them - see findDetail for the measurement */
+      var head = el("div", "sheethead");
+      var big = spriteFor(rec.name, true);
+      if (big) head.appendChild(big);
+      var info = el("div", "sheetfacts");
       var chips = el("div", "rmeta");
       show.types.forEach(function(t){ chips.appendChild(typeChip(t)); });
-      body.appendChild(chips);
+      info.appendChild(chips);
       /* the same cells the list behind this sheet shows - it read "BST 700"
          as loose text here while the card outside had it in a box */
-      body.appendChild(cardLine([
+      info.appendChild(cardLine([
         labelBox(bst(show), "BST"),
         labelBox(show.ab || [], "Possible ability", "wide")
       ]));
-      body.appendChild(statGrid(show));
+      info.appendChild(statGrid(show));
+      head.appendChild(info);
+      body.appendChild(head);
       /* The sheet keeps ONE line, because it is the only place that says the
          consequence rather than the label - and it is where a keep-or-send
          decision gets made. Trimmed to that: no repeat of the tag. */

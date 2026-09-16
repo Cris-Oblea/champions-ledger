@@ -3,8 +3,8 @@
 import {
   $, C, DEX, MOVES, MOVE_BY, SORT, STAT_KEYS, STAT_LABEL, TYPE_COLOR, bst,
   byName, capNote, cardLine, catName, dexNo, effectLine, el, labelBox,
-  learnset, podiumChip, podiumFor, splitPct, statGrid, toast, typeCard,
-  typeChip, typeSkin, usageTag,
+  learnset, podiumChip, podiumFor, splitPct, spriteFor, statGrid, toast,
+  typeCard, typeChip, typeSkin, usageTag,
 } from "./01-data.js";
 import { S, boxRows, originOf, ownedNames } from "./02-state.js";
 import { closeSheet, fbtn, openSheet } from "./04-nav.js";
@@ -232,22 +232,34 @@ function findRun(){
 
 function findDetail(p){
   openSheet(p.name, function(body){
+    /* THE PICTURE SITS BESIDE THE FACTS, NOT ABOVE THEM. Centred on its own
+       row at 180px it cost about 190px of height before a single number
+       (player, 2026-09-16: "la imagen del profile del pokemon si la encuentro
+       grande, ocupa mucho espacio"). Beside the chips and the BST cell it
+       shares vertical space those rows were using anyway.
+
+       The 512px render rather than the 96px pixel sprite: a sheet draws one
+       Pokemon and can afford the file a list of 159 cannot. */
+    var head = el("div", "sheethead");
+    var big = spriteFor(p.name, true);
+    if (big) head.appendChild(big);
+    var info = el("div", "sheetfacts");
     var chips = el("div", "rmeta");
     p.types.forEach(function(t){ chips.appendChild(typeChip(t)); });
     var med0 = podiumChip(p.name);
     if (med0) chips.appendChild(med0);
-    body.appendChild(chips);
-    /* THE SAME CELL AS THE CARD THAT OPENED THIS. The sheet still said
-       "BST 700" in prose while the card behind it had the number in a box
-       (player, 2026-09-16).
-
-       BST ONLY. An Ability cell went in beside it and came straight back out:
-       this sheet already has an Abilities section further down with the name,
-       the text and the measured multiplier, so the cell was the same word
-       twice on one screen (player: "ojito que dentro de la ficha la ability
-       viene explicada en su propio cuadro"). A cell is for a fact with nowhere
-       else to live, not a second copy of one that has a home. */
-    body.appendChild(cardLine([labelBox(bst(p), "BST")]));
+    info.appendChild(chips);
+    /* THE SAME CELL AS THE CARD THAT OPENED THIS - BST only. An Ability cell
+       went in beside it and came straight back out: this sheet already has an
+       Abilities section with the name, the text and the measured multiplier. */
+    info.appendChild(cardLine([labelBox(bst(p), "BST")]));
+    /* THE STATS COME UP HERE TOO, which is what makes the picture free: the
+       column beside a 128px render was holding two short rows and a lot of
+       nothing. This was also a FIFTH hand-written stat line - built inline
+       with its own loop, and without the label class the others use. */
+    info.appendChild(statGrid(p));
+    head.appendChild(info);
+    body.appendChild(head);
     /* The other spellings that mean this Pokemon. Squawkabilly's three extra
        plumages and Indeedee-F used to show up as separate entries marked "not
        in the Champions dex" - they are in it, under this name. The note says
@@ -263,14 +275,6 @@ function findDetail(p){
         (also.length > 1 ? " for all of them." : ".");
       body.appendChild(an);
     }
-    var sl = el("div", "statline");
-    STAT_KEYS.forEach(function(k, i){
-      var d = el("div");
-      d.appendChild(el("b", null, p.b[i]));
-      d.appendChild(el("span", null, STAT_LABEL[k]));
-      sl.appendChild(d);
-    });
-    body.appendChild(sl);
 
     var bfn = battleFormNote(p);
     if (bfn) body.appendChild(bfn);
