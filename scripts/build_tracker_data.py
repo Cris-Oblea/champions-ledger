@@ -271,6 +271,7 @@ def main():
     DEXNO = (Q.db("dex_numbers") or {}).get("numbers", {})
     TYPE_COLORS = Q.db("type_colors") or {}
     HOME_DEX = Q.db("home_dex") or {}
+    SPRITE_ID = Q.db("sprite_ids") or {}
     # How hard each species is to pull off the GTS: demand measured from
     # ladder usage, supply declared in data/meta/go_sourcing.json. Only the
     # fields the phone needs, to keep the blob small.
@@ -691,6 +692,13 @@ def main():
             # scripts/fetch_home_dex.py, from PokeAPI's tables at a pinned
             # commit. The "not in the Champions dex" tag stays on every one.
             "HOME_DEX": HOME_DEX,
+            # PokeAPI's own id per name, so the app can build a sprite URL.
+            # THE IMAGES ARE NOT IN THIS REPOSITORY and must not be: they are
+            # Nintendo and Game Freak artwork, PokeAPI licenses its sprites
+            # repo NOASSERTION for exactly that reason, and this repo is
+            # public. Only the number travels; the picture is fetched from a
+            # CDN at a pinned commit when a card is actually on screen.
+            "SPRITE_ID": SPRITE_ID,
             "AB_CLASS": am.get("classes") or {},
             "AB_CLASS_LABEL": am.get("class_labels") or {},
             # WHAT A THING ACTUALLY DOES, AS A NUMBER. Serebii's item text is

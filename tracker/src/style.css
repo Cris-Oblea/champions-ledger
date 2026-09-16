@@ -289,6 +289,77 @@ nav.tabs button:active{background:var(--sunk)}
     linear-gradient(180deg, var(--tcol2, var(--tcol, var(--line-hard))) 50%,
                     var(--tcol2b, var(--tcol2, var(--tcol, var(--line-hard)))) 50%)
       right top / 50% 100% no-repeat}
+/* THE SPRITE sits in the top-right corner, out of the flow so it cannot push
+   the stat table around, with a gutter reserved on the two rows that reach
+   that far. Everything below - the cells and the stat table - is full width
+   and starts under it.
+
+   `image-rendering:pixelated` because these are 96px pixel sprites: smoothing
+   them turns a crisp sprite into a smudge at this size. */
+/* NATIVE SIZE, 96x96. It was drawn at 48 with `image-rendering:pixelated`,
+   which is backwards: pixelated is for UPSCALING - it keeps big square pixels
+   crisp - and on a downscale it samples nearest-neighbour and throws away
+   every other row, which is exactly the mush the player asked about ("se ven
+   pixelados por el reescalado o no?"). At 1:1 there is no resampling to get
+   wrong, and on a HiDPI screen the slight upscale is the case `pixelated` is
+   actually for.
+
+   The pixel set and not the pretty one, measured: 1.3 KB against 139 KB for
+   the HOME render, 153 KB for the official artwork and 107 KB for the animated
+   Showdown gif. One screen of 159 cards would be 22 MB of those. */
+/* 64px IN THE CORNER, SMOOTHED. Three sizes were built as real cards and
+   looked at side by side, which is the only way this kind of question gets
+   settled:
+
+     96 native, own column - crisp, but it takes a third of a 300px card and
+                             squeezes the six stats into an unreadable row
+     64 in the corner      - legible sprite, content keeps its full width
+     48 in the corner      - fine, but the picture stops carrying information
+
+   The player's complaint was not the size, it was the mush: the first version
+   drew 96px art at 48 with `image-rendering:pixelated`, and pixelated is an
+   UPSCALING mode - on a downscale it samples nearest-neighbour and throws away
+   every other row ("se ven pixelados por el reescalado o no?"). At 64 with
+   ordinary smoothing there is nothing to throw away. */
+.row.card .sprite{position:absolute;right:4px;top:4px;width:96px;height:96px;
+  pointer-events:none;opacity:.95}
+/* NARROWER, NOT PADDED. `padding-right` moves the text but leaves the BOX
+   reaching under the sprite, and the overlap sweep measures boxes - it
+   reported the sprite sitting on eight names, correctly. Teaching the checker
+   to look away is how that tool goes blind; making the box true is the fix. */
+/* 96 IS THE FILE'S OWN SIZE, so there is no resampling to get wrong - which
+   was the actual complaint, not the scale. Three rows have to step aside for
+   it rather than two: at 4px from the top it ends at 100, and the cell strip
+   starts at 80. The stat table below it keeps the full width. */
+.row.card.hassprite .rname{width:calc(100% - 88px)}
+.row.card.hassprite .rmeta{width:calc(100% - 88px)}
+.row.card.hassprite .cardline{width:calc(100% - 88px)}
+/* THE SHEET GETS THE 512px RENDER, because it draws one Pokemon and can
+   afford 130 KB where a list of 159 cannot - and it sits BESIDE the facts.
+   Centred on its own row at 180px it cost ~190px of height before a single
+   number; here it shares the space the chips and the BST cell were using. */
+.sheethead{display:flex;gap:12px;align-items:flex-start;margin-bottom:10px}
+.sheetfacts{flex:1 1 auto;min-width:0}
+.sheet .sprite.big{flex:0 0 auto;width:128px;height:128px;margin:-6px 0 0}
+@media (max-width:479px){
+  /* on a phone the row would leave the chips 200px; the picture steps down a
+     size rather than squeezing them */
+  .sheet .sprite.big{width:96px;height:96px}
+}
+/* NARROWER, NOT PADDED. `padding-right` moves the text but leaves the BOX
+   reaching under the sprite, and the overlap sweep measures boxes - it
+   reported the sprite sitting on eight names, correctly. Teaching the checker
+   to ignore it is how that tool goes blind; making the box true is the fix.
+   48px of sprite + 6px of offset - 13px of .rmain padding = 41, plus air. */
+/* NARROWER, NOT PADDED. `padding-right` moves the text but leaves the BOX
+   reaching under the sprite, and the overlap sweep measures boxes - it
+   reported the sprite sitting on eight names, correctly. Teaching the checker
+   to ignore it is how that tool goes blind; making the box true is the fix.
+
+   The sprite's own canvas is wider than the creature on it - these are 96px
+   squares with the art centred - so the gutter is cut to what the drawing
+   actually occupies rather than the full width of the file. */
+
 .row.card .rmain{padding:11px 13px 12px}
 .row.card .rname{font-size:15.5px;margin-bottom:3px}
 /* THE STATS AS A TABLE, NOT A SENTENCE. They were a run of "115 HP 175 Atk

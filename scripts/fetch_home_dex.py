@@ -67,6 +67,7 @@ import query as Q                                             # noqa: E402
 
 RAW = os.path.join(ROOT, "data", "raw", "pokeapi_csv")
 OUT = os.path.join(ROOT, "data", "db", "home_dex.json")
+SPRITES = os.path.join(ROOT, "data", "db", "sprite_ids.json")
 # PokeAPI/pokeapi, BSD-3-Clause, pinned. Bump deliberately and read the diff.
 PIN = "4b82c204ddd19ecb8eda2ea044ccb59e222b721c"
 BASE = "https://raw.githubusercontent.com/PokeAPI/pokeapi/%s/data/v2/csv/" % PIN
@@ -82,7 +83,54 @@ ALIASES = {
     "farfetchd-galar": "sirfetchd",
     "indeedee-f": "indeedee-female",
     "indeedee-m": "indeedee-male",
+    # PokeAPI names the DEFAULT of a split family explicitly where our dex
+    # writes the bare species. Each of these is the form our row means.
+    "indeedee": "indeedee-male",
+    "meowstic": "meowstic-male",
+    "pyroar": "pyroar-male",
+    "basculin": "basculin-red-striped",
+    "aegislash": "aegislash-shield",
+    "lycanroc": "lycanroc-midday",
+    "mimikyu": "mimikyu-disguised",
+    "eiscue": "eiscue-ice",
+    "morpeko": "morpeko-full-belly",
+    "wishiwashi": "wishiwashi-solo",
+    "oricorio": "oricorio-baile",
+    "darmanitan-galar": "darmanitan-galar-standard",
+    "zygarde": "zygarde-50",
+    # Gourgeist and Pumpkaboo: ours are sizes, theirs are the same sizes under
+    # other words. Ours with no suffix IS the Medium/Average one.
+    "gourgeist": "gourgeist-average",
+    "gourgeist-small": "gourgeist-small",
+    "gourgeist-large": "gourgeist-large",
+    "gourgeist-jumbo": "gourgeist-super",
+    "pumpkaboo": "pumpkaboo-average",
+    "pumpkaboo-jumbo": "pumpkaboo-super",
+    # Tauros' Paldean breeds carry "-breed" upstream
+    "tauros-paldea-aqua": "tauros-paldea-aqua-breed",
+    "tauros-paldea-blaze": "tauros-paldea-blaze-breed",
+    "tauros-paldea-combat": "tauros-paldea-combat-breed",
+    # Looked up upstream rather than guessed: each of these is the row that
+    # actually exists there, and our bare name means that one.
+    "basculegion": "basculegion-male",
+    "maushold": "maushold-family-of-four",
+    "palafin": "palafin-zero",
+    "squawkabilly": "squawkabilly-green-plumage",
+    "squawkabilly-blue": "squawkabilly-blue-plumage",
+    "squawkabilly-yellow": "squawkabilly-yellow-plumage",
+    "squawkabilly-white": "squawkabilly-white-plumage",
 }
+
+# A Mega whose BASE is an alias must not inherit the alias: Pyroar is
+# `pyroar-male` on its own, but its Mega is `pyroar-mega`, not
+# `pyroar-male-mega`. Looked up, not assumed.
+MEGA_BASE = {"pyroar-male": "pyroar"}
+
+# OUR NAME FOR A MEGA IS A PREFIX; THEIRS IS A SUFFIX. "Mega Charizard X" is
+# `charizard-mega-x` upstream, and getting that one transform right resolves 80
+# of the 81 Megas - including the Z line Regulation M-C added, which PokeAPI
+# already carries (absol-mega-z, garchomp-mega-z, lucario-mega-z).
+MEGA = re.compile(r"^Mega (.+?)(?: ([XYZ]))?$")
 
 
 def table(name, force=False):
@@ -98,6 +146,11 @@ def table(name, force=False):
 
 def key(name):
     """A spelling reduced to something both sides agree on."""
+    m = MEGA.match(name)
+    if m:
+        base = key(m.group(1))
+        base = MEGA_BASE.get(base, base)
+        return base + "-mega" + (("-" + m.group(2).lower()) if m.group(2) else "")
     s = name.lower().replace("’", "").replace("'", "").replace(".", "")
     s = re.sub("[^a-z0-9]+", "-", s).strip("-")
     return ALIASES.get(s, s)
@@ -169,6 +222,34 @@ def build(force=False):
     return out, missed
 
 
+def sprite_ids(force=False):
+    """PokeAPI's own id for every name the app can put on a card.
+
+    A SPRITE IS NOT A RULE. Everything else fetched here is refused for the
+    species Champions HAS, because its numbers are rebalanced and PokeAPI's are
+    not - but a picture of a Pikachu is a picture of a Pikachu, and Champions
+    publishes none of its own. So this half covers the Champions dex too.
+
+    The images are NOT copied into this repository. They are Nintendo and Game
+    Freak artwork; PokeAPI itself licenses its sprites repo as NOASSERTION for
+    exactly that reason, and this repository is public. The app builds a CDN
+    URL from these ids at run time, so nothing of theirs is ever redistributed
+    from here and a takedown is a one-line change rather than a git history to
+    rewrite."""
+    by_key = {}
+    for r in table("pokemon.csv", force):
+        by_key.setdefault(r["identifier"], r["id"])
+    out, missed = {}, []
+    names = [p["name"] for p in Q.db("pokemon")] + home_only_names()
+    for name in names:
+        pid = by_key.get(key(name))
+        if pid:
+            out[name] = int(pid)
+        else:
+            missed.append(name)
+    return out, missed
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--force", action="store_true")
@@ -190,6 +271,17 @@ def main():
 
     json.dump(out, io.open(OUT, "w", encoding="utf-8"),
               ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+    sid, snot = sprite_ids(args.force)
+    json.dump(sid, io.open(SPRITES, "w", encoding="utf-8"),
+              ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+    print("wrote %s  (%d names, %.0f KB)"
+          % (os.path.relpath(SPRITES, ROOT), len(sid),
+             os.path.getsize(SPRITES) / 1024.0))
+    champ = [p["name"] for p in Q.db("pokemon")]
+    gap = [n for n in champ if n not in sid]
+    if gap:
+        print("  %d CHAMPIONS forms have no sprite id: %s"
+              % (len(gap), ", ".join(gap[:12])))
     approx = [k for k, v in out.items() if v.get("approx")]
     print("wrote %s  (%d species, %.0f KB)"
           % (os.path.relpath(OUT, ROOT), len(out),
