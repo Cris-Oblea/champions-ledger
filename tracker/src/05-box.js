@@ -30,7 +30,11 @@ function pokeRow(rec){
   var nm = el("div", "rname");
   nm.appendChild(document.createTextNode(rec.name));
   boxBadges(nm, rec);
-  if (!p) nm.appendChild(el("span", "tag bad", "not in dex"));
+  /* "not in dex" was wrong the moment these rows got their stats: it IS in a
+     dex, just not this game's (player, 2026-09-16: "deberia decir not in the
+     dex Champs o algo parecido y no solamente not in dex porque si esta en el
+     dex xd"). The tag names WHICH dex now. */
+  if (!p) nm.appendChild(el("span", "tag bad", "not in Champions"));
   var ms = megasFor(rec.name);
   if (ms.length) {
     var owned = ms.filter(function(m){ return hasStone(STONE_OF[m.name]); });
@@ -58,15 +62,21 @@ function pokeRow(rec){
       labelBox(d.ab || [], "Possible ability", "wide")
     ]));
     main.appendChild(statGrid(d));
-    /* WHERE THE NUMBERS CAME FROM. Champions has no row for this species, so
-       these are main-series values and the card says so rather than letting
-       them pass as Champions data. */
-    if (d.outside) {
+    /* THE TAG ALREADY SAID IT. A "Main-series numbers - Champions has no data
+       for this species" line went here and came straight back out: the card
+       already carries a "not in Champions" tag and a line saying it can never
+       enter the game, so this was the third way of saying one thing (player,
+       2026-09-16: "creo que el texto main-series numbers es totalmente
+       innecesario si se tiene el tag").
+
+       What survives is the part the tag CANNOT say: that PokeAPI had no row
+       for this exact form and the numbers belong to the base species. That is
+       a caveat about the numbers themselves, not a restatement. */
+    if (d.approx) {
       var src = el("div", "st");
       src.style.marginTop = "6px";
-      src.textContent = "Main-series numbers — Champions has no data for "
-        + "this species" + (d.approx ? ", and no row for this exact form: "
-        + "shown as " + d.approx : "") + ".";
+      src.textContent = "No row for this exact form — showing "
+        + d.approx + ".";
       main.appendChild(src);
     }
   }
@@ -132,15 +142,16 @@ function pokeSheet(rec){
         labelBox(show.ab || [], "Possible ability", "wide")
       ]));
       body.appendChild(statGrid(show));
+      /* The sheet keeps ONE line, because it is the only place that says the
+         consequence rather than the label - and it is where a keep-or-send
+         decision gets made. Trimmed to that: no repeat of the tag. */
       if (show.outside) {
         var osrc = el("div", "note");
         osrc.style.marginBottom = "10px";
         osrc.innerHTML = "<strong>Not in the Champions dex.</strong> It can "
-          + "sit in HOME but never enter the game, so these are MAIN-SERIES "
-          + "numbers - Champions publishes none for this species"
-          + (show.approx ? ", and none for this exact form either: shown as "
-             + show.approx : "") + ". Here to say what it IS, not what it "
-          + "could do.";
+          + "live in HOME but never enter the game"
+          + (show.approx ? ". No row for this exact form either — the "
+             + "numbers shown are " + show.approx + "'s" : "") + ".";
         body.appendChild(osrc);
       }
       var bfn0 = battleFormNote(p);

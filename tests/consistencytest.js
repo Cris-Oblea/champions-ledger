@@ -79,6 +79,28 @@ setTimeout(() => {
   ok("y es el de la pestaña Trainer",
      guards.join(" ").indexOf("#v-trainer") >= 0, true);
 
+  /* A CARD MUST SAY WHERE ITS CONTENTS START.
+
+     A card is a <button>, and a button centres its own contents when its box
+     is taller than they are - which is every card in a grid row except the
+     tallest, because grid items stretch. That put 43px of nothing above the
+     name and 38 below, and it had been latent for as long as the cards
+     existed: it only showed when a neighbour grew taller - the HOME rows that
+     now carry their own extra line are what made it visible.
+
+     `display:block` does NOT stop it, because the centring happens inside the
+     button own box - so this asserts the explicit answer, not the absence of
+     the symptom. Geometry cannot be tested here at all: jsdom lays nothing
+     out and reports every rectangle as zero, so the shape of the rule is the
+     only thing this file can hold on to. */
+  console.log(String.fromCharCode(10) + "  la tarjeta");
+  const css = (src.match(/<style>([^]*?)<\/style>/g) || []).join(" ");
+  const cardRule = (css.match(/\.row\.card\{[^}]*\}/) || [""])[0];
+  ok("existe la regla .row.card", !!cardRule, true);
+  ok("dice hacia donde apila", /flex-direction:\s*column/.test(cardRule), true);
+  ok("y donde empieza el contenido",
+     /justify-content:\s*flex-start/.test(cardRule), true);
+
   /* ---- every key the page will ask for, in every table ---------------- */
   console.log("\n  las tablas, barridas");
   const DEX = C.DEX, names = {}, species = {};
