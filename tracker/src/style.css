@@ -337,16 +337,42 @@ h2 .n{font-family:var(--mono);color:var(--faint);font-weight:500;letter-spacing:
 label.f{display:block;font-family:var(--cond);text-transform:uppercase;
   letter-spacing:.07em;font-size:11px;font-weight:600;color:var(--muted);
   margin-bottom:4px}
-input:not([type=range]):not([type=file]):not([type=checkbox]):not([type=radio]),
+/* `:where()` RATHER THAN A BARE `:not()` CHAIN, and it is not a style choice.
+   `:not()` takes the specificity of its argument, so this selector used to
+   weigh (0,4,1) - heavier than any sane rule written against a field. Three
+   rules elsewhere in this file were losing to it in silence and had been for
+   as long as they existed:
+
+     .search input     padding-left  the icon sat on top of the text, in all
+                                     eight search boxes
+     .sp .spnum        padding       9px 11px in a 42px column, instead of the
+                                     6px 2px it was drawn for
+     .sp.over .spnum   color         the RED that says a stat is over the 32
+                                     cap never appeared on the number itself
+
+   `:where()` weighs zero, so the selector is (0,0,1) and anything aimed at a
+   specific field wins, which is what every one of those rules was written
+   expecting. Supported since Chrome 88 / Safari 14 - below the floor this page
+   already sits on, since it relies on `dvh`. */
+input:where(:not([type=range]):not([type=file]):not([type=checkbox]):not([type=radio])),
 select,textarea{width:100%;
   background:var(--surface);border:1px solid var(--line-hard);border-radius:8px;
   padding:9px 11px;font-size:14px;color:var(--text);min-height:42px}
+/* THE BROWSER DRAWS ITS OWN EYE IN A PASSWORD FIELD, inside our 11px of right
+   padding, so a long password runs underneath it. Give that side room. Edge
+   adds a second one of its own next to it, which is why ::-ms-reveal goes. */
+input[type=password]{padding-right:38px}
+input[type=password]::-ms-reveal,input[type=password]::-ms-clear{display:none}
 /* Safari zooms the whole page when a field under 16px takes focus, and never
    zooms back out. Coarse pointer = a touch device, so it costs desktop
    nothing. */
 @media (pointer:coarse){
-  input:not([type=range]):not([type=file]):not([type=checkbox]):not([type=radio]),
+  input:where(:not([type=range]):not([type=file]):not([type=checkbox]):not([type=radio])),
   select,textarea{font-size:16px}
+  /* Named on purpose. Now that the rule above weighs nothing, a field styled
+     by class would out-rank it and take its own smaller size back - which is
+     exactly the Safari zoom this guard exists to stop. */
+  .sp .spnum{font-size:16px}
 }
 input::placeholder{color:var(--faint)}
 /* Chrome paints its own background over autofilled fields */
@@ -370,20 +396,19 @@ textarea{resize:vertical;min-height:64px;line-height:1.45}
 /* THE ICON AND THE TEXT SAT ON TOP OF EACH OTHER, in every search box in the
    app, and the reason is a specificity trap worth writing down.
 
-   The field rule above is written
-   `input:not([type=range]):not([type=file]):not([type=checkbox]):not([type=radio])`,
-   and `:not()` takes the specificity of its ARGUMENT - so four attribute
-   selectors plus the type make it (0,4,1). `.search input` is (0,1,1). Being
-   later in the file does not help: specificity is decided first, so the
-   generic `padding:9px 11px` won and the 32px of room for the icon was never
-   applied. The text started at 11px, underneath a 16px icon sitting at 9px.
+   The field rule above used a bare `:not()` chain, and `:not()` takes the
+   specificity of its ARGUMENT - four attribute selectors plus the type, so
+   (0,4,1) against this rule's (0,1,1). Being later in the file does not help:
+   specificity is decided first. The generic `padding:9px 11px` won and the
+   room reserved for the icon was never applied - measured at 2px of text
+   inset, underneath a 16px icon sitting at 9px.
 
-   Matched at the same shape here, which makes it (0,5,1) and puts it back in
-   charge. 34px rather than 32: the icon ends at 25px, so this leaves a clear
-   gap instead of the text touching it. */
+   The chain is wrapped in `:where()` now, so this plain selector wins on its
+   own and the next person to style a field does not fall in. 34px rather than
+   32: the icon ends at 25px, so this leaves a clear gap instead of the text
+   touching it. */
 .search{position:relative}
-.search input:not([type=range]):not([type=file]):not([type=checkbox]):not([type=radio]){
-  padding-left:34px}
+.search input{padding-left:34px}
 .search svg{position:absolute;left:9px;top:50%;transform:translateY(-50%);
   width:16px;height:16px;stroke:var(--faint);fill:none;stroke-width:1.8;
   pointer-events:none}

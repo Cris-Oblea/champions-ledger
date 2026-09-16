@@ -206,6 +206,38 @@ doing something until then.
 standings only, and 2023 splits its divisions across two pokedata events - the
 one with more players wins, or Seniors and Juniors get two podiums each.
 
+### A `:not()` chain had been eating rules for as long as they existed
+
+He pointed at the search icon sitting on top of the text, and at the login
+screen: "el ojito de contraseña y otros iconos igual se ven mal, igual
+deberías revisar todo eso". The rule for the icon was there and always had
+been - `.search input{padding-left:32px}` - and it had never once applied.
+
+`:not()` takes the specificity of its ARGUMENT. The field rule guarded itself
+with four of them, so it weighed **(0,4,1)** - heavier than any sane rule
+written against a field. Three rules were losing to it silently, and CSS never
+says out loud that a rule did not apply:
+
+| Rule | What it wanted | What happened |
+|---|---|---|
+| `.search input` | 32px of room for the icon | text started at **2px**, under it — all 8 search boxes |
+| `.sp .spnum` | `padding: 6px 2px` in a 42px column | got `9px 11px` |
+| `.sp.over .spnum` | **red when a stat passes the 32 cap** | never appeared |
+
+That last one is not cosmetic: the number that tells you a stat is over the
+cap was never turning red.
+
+Fixed at the root rather than by out-shouting it three times: the chain is
+wrapped in `:where()`, which weighs nothing, so the selector is (0,0,1) and
+anything aimed at a specific field wins - which is what all three were written
+expecting. `:where()` is Chrome 88 / Safari 14, below the floor this page
+already sits on since it uses `dvh`. The coarse-pointer font-size guard names
+`.sp .spnum` explicitly now, because a class rule would otherwise take its
+smaller size back and bring the Safari focus-zoom with it.
+
+The password field also gets right-hand room: the browser draws its own eye
+inside our padding, and Edge adds a second, so `::-ms-reveal` goes.
+
 ### No list may cut itself in silence (2026-09-15)
 
 Found because a movepool was short on his phone: "la lista de moves en el find
