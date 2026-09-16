@@ -367,10 +367,26 @@ textarea{resize:vertical;min-height:64px;line-height:1.45}
    430 rather than 400: a 412px phone (Pixel) is the common case that was
    still splitting. */
 @media (max-width:430px){ .grid2{grid-template-columns:1fr;gap:0} }
+/* THE ICON AND THE TEXT SAT ON TOP OF EACH OTHER, in every search box in the
+   app, and the reason is a specificity trap worth writing down.
+
+   The field rule above is written
+   `input:not([type=range]):not([type=file]):not([type=checkbox]):not([type=radio])`,
+   and `:not()` takes the specificity of its ARGUMENT - so four attribute
+   selectors plus the type make it (0,4,1). `.search input` is (0,1,1). Being
+   later in the file does not help: specificity is decided first, so the
+   generic `padding:9px 11px` won and the 32px of room for the icon was never
+   applied. The text started at 11px, underneath a 16px icon sitting at 9px.
+
+   Matched at the same shape here, which makes it (0,5,1) and puts it back in
+   charge. 34px rather than 32: the icon ends at 25px, so this leaves a clear
+   gap instead of the text touching it. */
 .search{position:relative}
-.search input{padding-left:32px}
+.search input:not([type=range]):not([type=file]):not([type=checkbox]):not([type=radio]){
+  padding-left:34px}
 .search svg{position:absolute;left:9px;top:50%;transform:translateY(-50%);
-  width:16px;height:16px;stroke:var(--faint);fill:none;stroke-width:1.8}
+  width:16px;height:16px;stroke:var(--faint);fill:none;stroke-width:1.8;
+  pointer-events:none}
 
 /* ---------- SP editor ---------------------------------------------------- */
 .sp{display:grid;grid-template-columns:34px 1fr 40px 52px;align-items:center;

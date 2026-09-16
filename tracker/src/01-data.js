@@ -341,14 +341,23 @@ function usageTag(pct, name, kind){
    Pokemon carried. Everything else in this app is a RATE - how often a thing
    is brought. This is a RESULT: this set, this placement, this player.
 
-   A MEGA IS FILED UNDER THE MEGA. A teamlist records the base ability - the
-   2026 champion's Floette is listed with Flower Veil - so the ability cannot
-   say whether it Mega Evolved. The STONE can, and does: that Floette held a
-   Floettite, so the medal belongs to Mega Floette, which is the Pokemon that
-   actually played. build_tracker_data.py resolves it; nothing here guesses.
+   IT IS FILED UNDER THE FORM THAT WAS REGISTERED, which is always the BASE
+   one - measured, not assumed: of the 16,875 team slots pokedata publishes,
+   exactly zero are written as "Mega something". Takuma Yamazaki won 2026 with
+   "Floette [Eternal Flower] @ Floettite", so Floette is who wears the medal.
 
-   AND THERE IS NO FALLBACK TO THE SPECIES. A base-form Garchomp and a Mega
-   Garchomp are two different entrants and only one of them stood there. */
+   This was the other way round for an afternoon and the player corrected it:
+   "la base tener la medalla y por consiguiente por el item se sabe que es
+   mega". Filing it under the Mega invents an entrant that was never on the
+   sheet, and makes a search for Floette come back empty about the team that
+   won with one.
+
+   NOTHING IS LOST. The stone is in the set, and the stone settles it - so the
+   Mega it becomes and the single ability it gains are both derived for you in
+   build_tracker_data.py rather than left as an exercise. The recorded ability
+   is the BASE one and that is correct, never mislabelled: it is what the
+   Pokemon has until it evolves, and when to evolve is a real decision because
+   that ability is doing something until then. */
 function podiumFor(name){
   return (C.PODIUM || {})[name] || [];
 }

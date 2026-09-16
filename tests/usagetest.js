@@ -271,26 +271,16 @@ setTimeout(() => {
          /↑/.test(sortTab2("Spe").textContent), true);
       click(sortTab2("Spe"));   // back to descending
 
-      /* The row count is capped at 120, so both lists would read 120 and the
-         filter would look like it did nothing. The header carries the real
-         number. */
-      const matched = () => Number(
-        d.querySelector("#findOut .sub").textContent.match(/^(\d+) of/)[1]);
-      const all = matched();
-      click(d.getElementById("findInMeta"));
-      const meta = matched();
-      ok("\"Played in M-C\" acota la lista (" + meta + " de " + all + ")",
-         meta > 0 && meta < all, true);
-      /* The label has to say what it means on its own: he could not tell
-         what "Brought to M-C" was ("ese filtro no lo entiendo"), and a phone
-         has no hover to explain it. */
-      ok("y el chip dice la frase completa",
-         /someone played it in an M-C tournament/.test(
-           d.getElementById("findChips").textContent), true);
+      /* The M-C scope toggle is GONE. It was added, renamed because he could
+         not tell what it meant, and then cut outright - "no me sirve en find,
+         lo encuentro malo". The two box filters stay. */
+      ok("no hay filtro de M-C", !d.getElementById("findInMeta"), true);
+      ok("pero si los de las cajas",
+         !!d.getElementById("findInChamp") && !!d.getElementById("findInHome"),
+         true);
+      click(sortTab("Atk"));
       click(d.getElementById("findClear"));
-      ok("Clear lo deja limpio",
-         d.getElementById("findInMeta").getAttribute("aria-pressed"), "false");
-      ok("y vuelve a BST",
+      ok("Clear vuelve a BST",
          sortTab("BST").getAttribute("aria-pressed"), "true");
       medals();
     }, 300);
@@ -343,20 +333,24 @@ setTimeout(() => {
     console.log("\n  medallas de Worlds, y el set con que se ganaron");
     const P = w.CHAMP.PODIUM || {};
     ok("hay formas con podio", Object.keys(P).length > 20, true);
-    const champ = (P["Mega Dragonite"] || []).find(
+    /* FILED UNDER WHAT WAS REGISTERED. Of the 16,875 team slots pokedata
+       publishes, zero are written as "Mega something" - the entrant is always
+       the base form holding a stone, and that is who wears the medal. */
+    ok("nada se archiva como Mega",
+       Object.keys(P).some(k => /^Mega /.test(k)), false);
+    const champ = (P["Dragonite"] || []).find(
       e => e.y === 2026 && e.d === "masters" && e.r === 1);
-    ok("Mega Dragonite gano el 2026 masters", !!champ, true);
-    ok("y se resolvio por la piedra", champ.it, "Dragoninite");
+    ok("Dragonite gano el 2026 masters", !!champ, true);
     ok("con su set completo",
-       champ.ab === "Multiscale" && champ.na === "Modest" &&
-       champ.mv.length === 4, true);
-    ok("Mega Floette tambien estaba en ese equipo",
-       (P["Mega Floette"] || []).some(
-         e => e.y === 2026 && e.d === "masters" && e.r === 1), true);
-    /* the base form must NOT inherit its Mega's medal - they are two
-       different entrants and only one of them stood there */
-    ok("y Dragonite base NO hereda la medalla",
-       (P["Dragonite"] || []).some(e => e.y === 2026 && e.r === 1), false);
+       champ.it === "Dragoninite" && champ.ab === "Multiscale" &&
+       champ.na === "Modest" && champ.mv.length === 4, true);
+    /* and the stone says what it became, derived rather than deduced by hand */
+    ok("y la piedra dice en que mega evoluciona", champ.mg, "Mega Dragonite");
+    ok("y con que habilidad", !!champ.mgab, true);
+    ok("Floette tambien estaba en ese equipo",
+       (P["Floette-Eternal"] || []).some(
+         e => e.y === 2026 && e.d === "masters" && e.r === 1 &&
+              e.mg === "Mega Floette"), true);
     ok("ningun podio pasa del top 8",
        Object.values(P).every(v => v.every(e => e.r >= 1 && e.r <= 8)), true);
     /* 2023 split its divisions across two pokedata events; reading both gave
@@ -374,7 +368,7 @@ setTimeout(() => {
     w.closeSheet();
     const dex = w.CHAMP.DEX.map(r => ({name:r[0], species:r[1], types:r[2],
       b:r[3], mega:!!r[4], ab:r[5], dex:r[6]||0}));
-    w.findDetail(dex.find(x => x.name === "Mega Dragonite"));
+    w.findDetail(dex.find(x => x.name === "Dragonite"));
     setTimeout(() => {
       ok("la ficha lleva la medalla",
          /Worlds 2026 · 1st/.test(
@@ -391,6 +385,8 @@ setTimeout(() => {
          /Modest/.test(cards[0].textContent) &&
          /Extreme Speed/.test(cards[0].textContent), true);
       ok("y dice la division", /masters/.test(cards[0].textContent), true);
+      ok("y en que Mega evoluciona",
+         /Mega Evolves into Mega Dragonite/.test(cards[0].textContent), true);
       w.closeSheet();
       worlds();
     }, 500);
