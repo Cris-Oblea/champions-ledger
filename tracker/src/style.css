@@ -186,7 +186,15 @@ nav.tabs button:active{background:var(--sunk)}
    The cap moves out to 1560 so an ultra-wide does not run a row to the far
    edge - a 1900px row carrying 300px of content is worse, not better. */
 @media (min-width:900px){
-  main{max-width:1560px}
+  /* `width:100%` MATTERS HERE, and it is not decoration. `main` carries
+     `margin:0 auto` from the base rule, and an auto inline margin on a GRID
+     ITEM turns off stretching: the item shrinks to its content and centres
+     instead. So raising max-width alone changed nothing - Items still drew
+     552px inside a 1228px track and sat in the middle of it, which is exactly
+     the "column adrift on a monitor" this was meant to fix. Width 100% fills
+     the track, max-width still caps it, and the auto margins only do anything
+     once the track is wider than 1560. */
+  main{width:100%;max-width:1560px}
 }
 
 /* CONTROLS BESIDE THE RESULTS, NOT ON TOP OF THEM.
@@ -227,16 +235,24 @@ nav.tabs button:active{background:var(--sunk)}
 .cards .row.card .rname{font-size:15.5px;margin-bottom:3px}
 .cards .row.card:hover{border-color:var(--tcol, var(--line-hard));
   box-shadow:var(--shadow)}
-/* the left stripe means ORIGIN on a box row and would fight the type band */
-.cards .row.card{border-left-width:1px;border-left-color:var(--line)}
+/* THE LEFT STRIPE STAYS. It was flattened here on the grounds that it would
+   fight the type band, and that is throwing away information to tidy a
+   picture: the stripe is what says a Pokemon is YOURS in Find, and which kind
+   of slot it sits in everywhere else - HOME-elastic, Champions-welded,
+   rental. Two edges, two facts: the top band is the type, the left stripe is
+   the standing. */
 
 /* A LIST THAT IS REALLY A GRID once there is room for one. 345 results in a
    single column is 19 screens; three across is six. auto-fill rather than a
    fixed count, so the number of columns follows the width instead of a
    breakpoint guessing at it. */
-.cards{display:grid;gap:10px;grid-template-columns:1fr}
+/* `.list.cards`, not `.cards`. Several of these containers carry BOTH classes
+   - the markup says `class="list cards"` - and `.list` is `display:flex` a few
+   hundred lines further down, so at equal specificity it won and the grid was
+   silently a flex column. Measured: Items drew 199 cards in one column. */
+.cards,.list.cards{display:grid;gap:10px;grid-template-columns:1fr}
 @media (min-width:640px){
-  .cards{grid-template-columns:repeat(auto-fill,minmax(270px,1fr))}
+  .cards,.list.cards{grid-template-columns:repeat(auto-fill,minmax(270px,1fr))}
 }
 
 /* ---------- type scale & headings --------------------------------------- */

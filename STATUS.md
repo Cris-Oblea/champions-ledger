@@ -248,9 +248,28 @@ What changed, and why each:
   behind, both from the primary type, so a grid reads as a set of things
   rather than 345 identical strips.
 
-Measured after: Find at 1440 went from 58% of the width to **79%**, and from
-19.1 screens to **10.8**. The phone is untouched - zero horizontal overflow on
-every tab, the workspace falls back to one column, the sidebar unsticks.
+**Two bugs found by measuring after, not before.** The first pass raised
+`max-width` and nothing moved: Items still drew 552px inside a 1228px track
+and sat centred in it. `main` carries `margin:0 auto`, and an auto inline
+margin on a GRID ITEM turns stretching off - the item shrinks to its content
+and centres. `width:100%` fills the track; the max-width still caps it and the
+auto margins only do anything past 1560.
+
+The second: the grids were `class="list cards"`, and `.list` is `display:flex`
+a few hundred lines further down the stylesheet, so at equal specificity it
+won and the "grid" was a flex column. Items drew 199 cards in a single file.
+`.list.cards` settles it.
+
+Measured after both, at 1440:
+
+| | before | after |
+|---|---|---|
+| width used | 29–58%, varying per tab | **86%, the same everywhere** |
+| Find | 19.1 screens | **7.2** |
+| Items | 6.7 screens | **3.8** |
+
+The phone is untouched: one column at 345px, zero horizontal overflow on every
+tab, the workspace falls back to stacked and the sidebar unsticks.
 
 ### The app asks its own questions now
 

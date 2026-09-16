@@ -3,7 +3,7 @@
 import {
   $, C, COSTS, FORMS, MOVE_BY, STAT_KEYS, STAT_LABEL, STONE_OF, byName,
   catName, effectLine, el, learnset, megasFor, natMult, splitPct, splitsFor,
-  splitsReg, statAt, toast, typeChip, usageTag,
+  splitsReg, statAt, toast, typeCard, typeChip, usageTag,
 } from "./01-data.js";
 import { S, boxRows, buildLink, hasStone, ownedNames } from "./02-state.js";
 import { drop, put, putNew } from "./03-store.js";
@@ -27,9 +27,9 @@ function buildRow(id, b){
   var p = byName[b.mega || b.pokemon] || byName[b.pokemon];
   var lk = buildLink(id);
   var isRental = !!(lk.row && lk.row.status === "rental");
-  var row = el("button", "row " + (lk.state === "orphan" ? "illegal"
+  var row = typeCard(el("button", "row " + (lk.state === "orphan" ? "illegal"
                                  : lk.state === "parked" || isRental ? "rental"
-                                 : "perm"));
+                                 : "perm")), p);
   var m = el("div", "rmain");
   var nm = el("div", "rname");
   nm.appendChild(document.createTextNode(b.pokemon));

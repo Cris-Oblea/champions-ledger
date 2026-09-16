@@ -2,7 +2,8 @@
    Part of the app; linked into one script by scripts/build_tracker_page.py. */
 import {
   $, C, FORMS, SORT, STAT_KEYS, STAT_LABEL, STONE_OF, bst, byName, capNote,
-  defence, dexLabel, el, freeSlug, megasFor, statLine, toast, typeChip,
+  defence, dexLabel, el, freeSlug, megasFor, statLine, toast, typeCard,
+  typeChip,
 } from "./01-data.js";
 import { S, hasStone, originOf } from "./02-state.js";
 import { drop, put } from "./03-store.js";
@@ -19,7 +20,7 @@ function pokeRow(rec){
   var cls = rec.location === "home" ? (p ? "home" : "illegal")
           : rec.status === "rental" ? "rental"
           : o === "home" ? "perm" : o === "champions" ? "locked" : "unknown";
-  var row = el("button", "row " + cls);
+  var row = typeCard(el("button", "row " + cls), p);
   var main = el("div", "rmain");
   var nm = el("div", "rname");
   nm.appendChild(document.createTextNode(rec.name));

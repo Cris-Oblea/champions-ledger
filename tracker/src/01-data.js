@@ -124,6 +124,27 @@ function typeTint(t, alpha){
                    parseInt(h.slice(3, 5), 16) + "," +
                    parseInt(h.slice(5, 7), 16) + "," + alpha + ")";
 }
+/* Dress a row as a CARD wearing its Pokemon's type: the band across the top
+   and the tint behind it. Used by every list that shows Pokemon, so the four
+   of them cannot drift apart.
+
+   It only adds - the caller's own classes stay, and that matters: the LEFT
+   stripe still means origin (HOME-elastic, Champions-welded, rental) or
+   ownership, which is a different fact from the type and must not be traded
+   away for a tidier picture. Two edges, two facts.
+
+   The card styling itself is scoped to `.cards`, so a row marked here and
+   dropped into a plain `.list` simply stays a row. */
+function typeCard(row, p){
+  row.className += " card";
+  var t = p && (p.types || [])[0];
+  var c = t && TYPE_COLOR[t];
+  if (!c) return row;
+  row.style.setProperty("--tcol", c);
+  var soft = typeTint(t, 0.13);
+  if (soft) row.style.setProperty("--tsoft", soft);
+  return row;
+}
 function typeChip(t){
   var s = el("span", "t", t);
   s.style.background = TYPE_COLOR[t] || "#777";
@@ -428,7 +449,7 @@ export {
   $, C, COSTS, DEX, FORMS, HOME_ALL, MEGAS_OF, MOVES, MOVE_BY, SORT,
   STAT_KEYS, STAT_LABEL, STONE_OF, TYPE_COLOR,
   bst, byName, capNote, catName, defence, dexLabel, dexNo, el, freeSlug,
-  learnset, typeTint,
+  learnset, typeCard, typeTint,
   effectChips, effectLine, effectOf, podiumChip, podiumFor, splitMax, splitPct,
   splitsFor, splitsReg, usageTag,
   megasFor, natMult, rowMatches, setHomeAll, setSort, sortRows, statAt,
