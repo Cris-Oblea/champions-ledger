@@ -1,7 +1,7 @@
 /* 07-gear.js - Items, stones, statuses, and the Profile tab.
    Part of the app; linked into one script by scripts/build_tracker_page.py. */
-import { $, C, COSTS, bst, byName, effectLine, el, toast, typeChip }
-  from "./01-data.js";
+import { $, C, COSTS, bst, byName, cardLine, effectLine, el, labelBox, toast,
+  typeChip } from "./01-data.js";
 import { S, boxRows, capacity, hasStone, ownedItems, ownedNames,
          ownedStones } from "./02-state.js";
 import { drop, patch, put } from "./03-store.js";
@@ -31,10 +31,17 @@ function drawStones(){
     var mp = byName[mega];
     if (mp) {
       mp.types.forEach(function(t){ meta.appendChild(typeChip(t)); });
-      meta.appendChild(el("span", "mono", mega + "  •  BST " + bst(mp) +
-        "  •  " + mp.ab.join("/")));
+      meta.appendChild(el("span", null, mega));
     } else meta.appendChild(el("span", null, mega));
     m.appendChild(meta);
+    /* AN EIGHTH PLACE WITH BST IN PROSE. It read "Mega Salamence • BST 700 •
+       Aerilate" as one run of text and the first sweep missed it, because the
+       search was for the string "BST " and here it is glued to a bullet. The
+       ability is the whole reason to own most stones, so it gets the room. */
+    if (mp) m.appendChild(cardLine([
+      labelBox(bst(mp), "BST"),
+      labelBox(mp.ab || [], "Mega ability", "wide")
+    ]));
     row.appendChild(m);
     var side = el("div", "rside");
     side.appendChild(el("span", "tag " + (have ? "mega" : "warn"),
