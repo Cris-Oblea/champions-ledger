@@ -270,17 +270,33 @@ function cardLine(cells){
   cells.filter(Boolean).forEach(function(c){ row.appendChild(c); });
   return row;
 }
-function typeChip(t){
-  var s = el("span", "t", t);
+/* ONE PLACE THAT KNOWS WHAT A TYPE LOOKS LIKE.
+
+   There were three others painting a type by hand, and all three had the same
+   bug the moment the colours became the real ones: they wrote `color:#fff`
+   next to the background, so a selected Electric or Ground filter would have
+   been white on yellow. The ink is not a constant - it is the type's own
+   (player, 2026-09-16: "los filtros por tipo siguen otros colores que no son
+   los que deberían. tiene que estar todo al mismo diseño y colores").
+
+   `on` false leaves the fill off and keeps only the edge, which is what an
+   unselected filter is. */
+function typeSkin(node, t, on){
   var a = TYPE_COLOR[t], b = TYPE_COLOR2[t];
-  if (!a) { s.style.background = "#777"; return s; }
-  /* the badge is halved the way pokemon.com halves it, which only shows on the
-     three types that carry two colours */
-  s.style.background = (b && b !== a)
+  if (!a) {
+    if (on !== false) { node.style.background = "#777"; node.style.color = "#fff"; }
+    return node;
+  }
+  node.style.borderColor = a;
+  if (on === false) { node.style.background = ""; node.style.color = ""; return node; }
+  /* halved the way pokemon.com halves it, which shows on the three types that
+     carry two colours */
+  node.style.background = (b && b !== a)
     ? "linear-gradient(180deg," + a + " 50%," + b + " 50%)" : a;
-  s.style.color = TYPE_INK[t] || "#FFFFFF";
-  return s;
+  node.style.color = TYPE_INK[t] || "#FFFFFF";
+  return node;
 }
+function typeChip(t){ return typeSkin(el("span", "t", t), t); }
 function bst(p){ return p.b.reduce(function(a,b){ return a+b; }, 0); }
 
 /* The compact rows printed Atk / SpA / Spe and silently dropped HP, Def and
@@ -580,7 +596,7 @@ export {
   $, C, COSTS, DEX, FORMS, HOME_ALL, MEGAS_OF, MOVES, MOVE_BY, SORT,
   STAT_KEYS, STAT_LABEL, STONE_OF, TYPE_COLOR, TYPE_COLOR2, TYPE_INK,
   bst, byName, capNote, catName, defence, dexLabel, dexNo, el, freeSlug,
-  cardLine, labelBox, learnset, statGrid, typeCard, typeTint,
+  cardLine, labelBox, learnset, statGrid, typeCard, typeSkin, typeTint,
   effectChips, effectLine, effectOf, podiumChip, podiumFor, splitMax, splitPct,
   splitsFor, splitsReg, usageTag,
   megasFor, natMult, rowMatches, setHomeAll, setSort, sortRows, statAt,

@@ -292,18 +292,24 @@ nav.tabs button:active{background:var(--sunk)}
    know whether to make a track flexible, and a browser without `:has()` drops
    that rule silently and lets the cell push the card wider. Flex needs no such
    question - a number cell sizes to itself, the word cell takes what is left. */
-.row.card .cardline{display:flex;gap:4px;margin-top:7px;align-items:stretch}
-.row.card .cardline > div{background:var(--sunk);border-radius:6px;
+/* UNSCOPED, because these cells belong wherever a fact is shown - the sheet
+   that opens on a Pokemon had "BST 700" as loose text beside its type chips
+   while the list behind it showed the same number in a box (player,
+   2026-09-16: "en la ficha de un pokemon todavia dice bst sin cuadro... tiene
+   que estar todo al mismo diseno"). Scoped to `.row.card` it could only ever
+   dress a list row, which is exactly how the two drifted apart. */
+.cardline{display:flex;gap:4px;margin-top:7px;align-items:stretch;flex-wrap:wrap}
+.cardline > div{background:var(--sunk);border-radius:6px;
   padding:3px 9px;text-align:center;min-width:0;flex:0 0 auto}
-.row.card .cardline > div.wide{flex:1 1 auto}
-.row.card .cardline b{display:block;font-family:var(--mono);font-size:12.5px;
+.cardline > div.wide{flex:1 1 auto}
+.cardline b{display:block;font-family:var(--mono);font-size:12.5px;
   font-weight:500;font-variant-numeric:tabular-nums}
-.row.card .cardline span.lbl{font-family:var(--cond);font-weight:600;
+.cardline span.lbl{font-family:var(--cond);font-weight:600;
   font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;
   color:var(--faint)}
 /* one ability, one unbreakable word-group: the line may only break on the
    " / " between them, never inside "Sticky Hold" */
-.row.card .cardline b .whole{white-space:nowrap}
+.cardline b .whole{white-space:nowrap}
 /* A WORD, NOT A NUMBER: the sans face, and it WRAPS rather than being cut.
 
    It was written with an ellipsis, which measured badly the moment it was
@@ -313,10 +319,10 @@ nav.tabs button:active{background:var(--sunk)}
    ability to keep a line tidy is the one thing this app must not do, so the
    cell grows instead. The break lands on the spaces around the "/", so the
    abilities stack whole. */
-.row.card .cardline > div.wide{text-align:left}
-.row.card .cardline > div.wide b{font-family:var(--sans);font-size:12.5px;
+.cardline > div.wide{text-align:left}
+.cardline > div.wide b{font-family:var(--sans);font-size:12.5px;
   white-space:normal;line-height:1.25}
-.row.card .cardline > div.wide span.lbl{display:block}
+.cardline > div.wide span.lbl{display:block}
 
 .row.card .statline{margin-top:7px;gap:4px}
 .row.card .statline div{padding:3px 1px}

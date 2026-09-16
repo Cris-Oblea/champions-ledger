@@ -4,7 +4,7 @@ import {
   $, C, DEX, MOVES, MOVE_BY, SORT, STAT_KEYS, STAT_LABEL, TYPE_COLOR, bst,
   byName, capNote, cardLine, catName, dexNo, effectLine, el, labelBox,
   learnset, podiumChip, podiumFor, splitPct, statGrid, toast, typeCard,
-  typeChip, usageTag,
+  typeChip, typeSkin, usageTag,
 } from "./01-data.js";
 import { S, boxRows, originOf, ownedNames } from "./02-state.js";
 import { closeSheet, fbtn, openSheet } from "./04-nav.js";
@@ -234,10 +234,20 @@ function findDetail(p){
   openSheet(p.name, function(body){
     var chips = el("div", "rmeta");
     p.types.forEach(function(t){ chips.appendChild(typeChip(t)); });
-    chips.appendChild(el("span", "mono", "BST " + bst(p)));
     var med0 = podiumChip(p.name);
     if (med0) chips.appendChild(med0);
     body.appendChild(chips);
+    /* THE SAME CELL AS THE CARD THAT OPENED THIS. The sheet still said
+       "BST 700" in prose while the card behind it had the number in a box
+       (player, 2026-09-16).
+
+       BST ONLY. An Ability cell went in beside it and came straight back out:
+       this sheet already has an Abilities section further down with the name,
+       the text and the measured multiplier, so the cell was the same word
+       twice on one screen (player: "ojito que dentro de la ficha la ability
+       viene explicada en su propio cuadro"). A cell is for a fact with nowhere
+       else to live, not a second copy of one that has a home. */
+    body.appendChild(cardLine([labelBox(bst(p), "BST")]));
     /* The other spellings that mean this Pokemon. Squawkabilly's three extra
        plumages and Indeedee-F used to show up as separate entries marked "not
        in the Champions dex" - they are in it, under this name. The note says
@@ -569,18 +579,19 @@ function moveFilters(body, pool, onChange, placeholder, opts){
 
   /* one filter chip. A type chip carries its own type colour, because that is
      how the rest of the page names a type. */
-  function chip(row, group, key, text, colour){
+  /* `type` is a TYPE NAME, not a colour: the fill and the ink both come from
+     typeSkin, which is the only thing that knows a type is two-toned and which
+     of the eighteen are written in black. Passing a bare colour here is what
+     let this one write #fff next to it. */
+  function chip(row, group, key, text, type){
     var t = el("button", "tog", text);
     t.setAttribute("aria-pressed", "false");
-    if (colour) t.style.borderColor = colour;
+    if (type) typeSkin(t, type, false);
     t.onclick = function(){
       var on = !F[group][key];
       if (on) F[group][key] = 1; else delete F[group][key];
       t.setAttribute("aria-pressed", on ? "true" : "false");
-      if (colour) {
-        t.style.background = on ? colour : "";
-        t.style.color = on ? "#fff" : "";
-      }
+      if (type) typeSkin(t, type, on);
       onChange();
     };
     row.appendChild(t);
@@ -610,7 +621,7 @@ function moveFilters(body, pool, onChange, placeholder, opts){
   types.sort();
   if (types.length > 1) {
     var trow = el("div", "toggles"); trow.style.marginBottom = "10px";
-    types.forEach(function(ty){ chip(trow, "type", ty, ty, TYPE_COLOR[ty]); });
+    types.forEach(function(ty){ chip(trow, "type", ty, ty, ty); });
     body.appendChild(label("Type — any of these"));
     body.appendChild(trow);
   }
@@ -834,9 +845,20 @@ function findInit(){
       var t = el("div", "toggles");
       body.appendChild(t);
       var chips = {};
-      Object.keys(TYPE_COLOR).sort().forEach(function(ty){
+      /* THE TYPES THAT EXIST HERE, not every type that has a colour. Stellar
+         was on the list and nothing in Champions is Stellar - the format has
+         no Terastallization at all - so it was a filter that could only ever
+         return zero. Derived from the dex rather than from the palette, so a
+         regulation that adds a type adds the filter and one that never had a
+         carrier never shows one. */
+      /* DEX here is the mapped OBJECT list, not C.DEX's raw arrays - reading
+         r[2] off it gave undefined, the forEach threw, and the filter rendered
+         with no types at all. findtest caught it on the first run. */
+      var live = {};
+      DEX.forEach(function(p){ (p.types || []).forEach(function(t){ live[t] = 1; }); });
+      Object.keys(live).sort().forEach(function(ty){
         var b = el("button", "tog", ty);
-        b.style.borderColor = TYPE_COLOR[ty];
+        typeSkin(b, ty, false);
         b.onclick = function(){
           var i = FIND.types.indexOf(ty);
           if (i >= 0) FIND.types.splice(i, 1); else FIND.types.push(ty);
@@ -849,8 +871,9 @@ function findInit(){
         Object.keys(chips).forEach(function(ty){
           var on = FIND.types.indexOf(ty) >= 0, b = chips[ty];
           b.setAttribute("aria-pressed", on ? "true" : "false");
-          b.style.background = on ? TYPE_COLOR[ty] : "";
-          b.style.color = on ? "#fff" : "";
+          /* the type's own ink, not #fff - eight of the eighteen are written
+             in black and white on Electric is unreadable */
+          typeSkin(b, ty, on);
         });
         note.textContent = FIND.typeMode === "or"
           ? "Any one of the types you pick is enough - pick as many as you like."

@@ -117,8 +117,17 @@ setTimeout(() => {
      "Electric,Fairy,Flying,Grass,Ground,Ice,Normal,Steel");
   ok("y cada tipo tiene tinta", list(Object.keys(TC)
      .filter(t => !/^#[0-9A-F]{6}$/.test(w.TYPE_INK[t] || ""))), "0");
-  ok("solo Stellar no es oficial (Champions no tiene Tera)",
-     Object.keys(TC).filter(t => !TC[t].official).join(","), "Stellar");
+  /* NADA INVENTADO. A Stellar row was added here first, because the type is in
+     the chart and a missing colour paints something grey. The player settled
+     it: "stellar no existe, eso es una invencion de smogon" - it reaches
+     typechart.json only because that file is built from Smogon's dump-basics,
+     which inherits from Scarlet/Violet. Champions has no Terastallization and
+     no Pokemon carries the type. So the palette is exactly the eighteen
+     pokemon.com publishes, and this asserts nobody adds a nineteenth. */
+  ok("los 18 y nada mas", Object.keys(TC).length, 18);
+  ok("ninguno inventado", list(Object.keys(TC).filter(t => !TC[t].official)), "0");
+  ok("Stellar no tiene color, porque no existe aqui",
+     !!(w.TYPE_COLOR || {}).Stellar, false);
   ok("cada habilidad del dex tiene texto",
      list([...new Set([].concat.apply([], DEX.map(r => r[5] || [])))]
        .filter(a => !C.ABIL[a])), "0");

@@ -54,12 +54,19 @@ GRAD = re.compile(r"background\s*:\s*linear-gradient\(180deg,\s*"
 FLAT = re.compile(r"background-color\s*:\s*(#[0-9a-fA-F]{6})")
 INK = re.compile(r"(?<![-a-z])color\s*:\s*(#[0-9a-fA-F]{3,6})")
 
-# Champions has no Terastallization, so no Pokemon is Stellar - but the type
-# exists in the chart, and a missing colour would paint a card grey with no
-# explanation. It is NOT on pokemon.com's Pokedex, so it is declared here as
-# the one colour this file does not get to claim is official.
-EXTRA = {"Stellar": {"top": "#3F7F7A", "bottom": "#3F7F7A", "ink": "#FFFFFF",
-                     "official": False}}
+# NOTHING IS ADDED TO WHAT THE STYLESHEET SAYS.
+#
+# A Stellar entry was invented here first, on the reasoning that the type is in
+# data/db/typechart.json and a missing colour would paint something grey. The
+# player settled it (2026-09-16): "stellar no existe, eso es una invencion de
+# smogon". It reaches the chart because that file is built from Smogon's
+# dump-basics, which inherits from Scarlet/Violet - Champions has no
+# Terastallization at all, no Pokemon carries the type, and `08-teams.js` was
+# already filtering it out of the weakness table by name.
+#
+# So the palette is exactly the eighteen pokemon.com publishes. Anything asking
+# for a nineteenth is asking about something that is not in this game.
+EXTRA = {}
 
 
 def luminance(hexstr):

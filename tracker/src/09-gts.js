@@ -232,10 +232,12 @@ function gtsRow(i, o){
     meta.appendChild(el("span", "mono", dexLabel(name)));
     if (p) {
       p.types.forEach(function(t){ meta.appendChild(typeChip(t)); });
-      meta.appendChild(el("span", "mono", "BST " + bst(p)));
     } else if (name) {
       meta.appendChild(el("span", "tag bad", "not in the Champions dex"));
     }
+    /* BST in a cell, like everywhere else - and on this screen it is the whole
+       argument, because equivalence in a deposit is the BST tier. */
+    var bstLine = p ? cardLine([labelBox(bst(p), "BST")]) : null;
     /* Both sides now (player, 2026-09-11: "beedrill en que posicion esta?").
        The ask decides whether anyone CAN give it; the chip decides whether
        anyone WANTS to. An offer needs both to be true, so both are on screen. */
@@ -252,6 +254,7 @@ function gtsRow(i, o){
         "shiny — reaches ~" + cv.reach));
     }
     box.appendChild(meta);
+    if (bstLine) box.appendChild(bstLine);
     return box;
   }
 
@@ -856,7 +859,6 @@ function gtsPickMine(onPick, exceptId){
         var meta = el("div", "rmeta");
         meta.appendChild(el("span", "mono", dexLabel(r.name)));
         if (p) p.types.forEach(function(t){ meta.appendChild(typeChip(t)); });
-        if (p) meta.appendChild(el("span", "mono", "BST " + bst(p)));
         /* The ladder belongs on THIS side of the trade too (player,
            2026-09-13). It was only ever shown for the Pokemon being asked for,
            which answers "can I get it" and says nothing about the half he
@@ -983,11 +985,11 @@ function gtsPickWanted(onPick, chipName, chipShiny){
           if (c.stone) h2.appendChild(el("span", "tag ok", "you own " + c.stone));
           m2.appendChild(h2);
           var mt = el("div", "rmeta");
-          mt.appendChild(el("span", "mono", "BST " + c.bst));
-          mt.appendChild(el("span", "mono", "Spe " + c.spe));
           mt.appendChild(el("span", "tag " + (c.rank == null ? "warn" : ""),
             c.rank == null ? "no ladder row" : "ladder #" + c.rank));
           m2.appendChild(mt);
+          m2.appendChild(cardLine([labelBox(c.bst, "BST"),
+                                   labelBox(c.spe, "Spe")]));
           if (c.stone) {
             m2.appendChild(el("div", "st",
               "You bought " + c.stone + " and have nothing to put it on — " +
@@ -1058,11 +1060,11 @@ function gtsPickWanted(onPick, chipName, chipShiny){
         m.appendChild(el("div", "rname", p.name));
         var meta = el("div", "rmeta");
         p.types.forEach(function(t){ meta.appendChild(typeChip(t)); });
-        meta.appendChild(el("span", "mono", "BST " + bst(p)));
         /* the difficulty belongs HERE most of all - the moment to find out an
            ask is hopeless is before depositing, not weeks later */
         diffChip(p.name, meta);
         m.appendChild(meta);
+        m.appendChild(cardLine([labelBox(bst(p), "BST")]));
         var wd = gtsDiff(p.name);
         if (wd && gtsSelfServe(wd)) {
           m.appendChild(el("div", "st",

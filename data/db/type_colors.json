@@ -135,14 +135,6 @@
   "top": "#9EB7B8",
   "two_tone": false
  },
- "Stellar": {
-  "bottom": "#3F7F7A",
-  "contrast": 4.64,
-  "ink": "#FFFFFF",
-  "official": false,
-  "top": "#3F7F7A",
-  "two_tone": false
- },
  "Water": {
   "bottom": "#4592C4",
   "contrast": 3.41,
