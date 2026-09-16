@@ -84,6 +84,17 @@ setTimeout(() => {
   ]));
   ok("y un <img> encima cuenta igual", r.hits.length, 1);
 
+  /* A FIELD PAINTS ITS VALUE, and `value` is not `textContent` - so without
+     a rule for it an <input> is never a box, and the sweep reports "nothing
+     overlaps" with the icon sitting squarely on the text. Found by planting
+     the original bug back into the running app and watching the tool miss
+     it, which is the only way that kind of hole ever shows. */
+  r = sweep(view([
+    {tag:"svg", cls:"icon", l:9, t:10, w:16, h:16, text:""},
+    {tag:"input", cls:"campo", l:2, t:8, w:300, h:24, text:""}
+  ]));
+  ok("un icono sobre un <input> tambien cuenta", r.hits.length, 1);
+
   /* FIXED: the text now starts past the icon. */
   r = sweep(view([
     {cls:"icon", l:9,  t:10, w:16, h:16, text:""},

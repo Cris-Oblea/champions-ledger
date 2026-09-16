@@ -1301,9 +1301,16 @@ function overlapSweep(view){
        though their textContent is empty. Anything else has to say something
        to be worth colliding with. */
     var isIcon = /^(svg|img)$/i.test(tag);
+    /* A FIELD PAINTS ITS VALUE, and `value` is not `textContent`. Without
+       this line an <input> was never a box at all - so the sweep could not
+       see the one bug it was written for, and said "nothing overlaps" with
+       the icon sitting on the text. Caught by planting the bug back and
+       watching the tool miss it. */
+    var isField = /^(input|textarea|select)$/i.test(tag);
     if (e.children.length && !isIcon) continue;
-    if (!isIcon && !e.textContent.trim()) continue;
+    if (!isIcon && !isField && !e.textContent.trim()) continue;
     var r = e.getBoundingClientRect();
+    if (isField) r = contentBox(e, r);
     if (r.width < 4 || r.height < 4) continue;
     boxes.push({e: e, r: r});
   }
@@ -1325,10 +1332,30 @@ function overlapSweep(view){
     }
   }
   return {boxes: boxes.length, hits: hits};
+
+  /* A FIELD'S BOX INCLUDES ITS PADDING, and the icon lives in that padding ON
+     PURPOSE - that is the whole point of the 34px. Compared as border boxes
+     the two always intersect, so the sweep called a correct search box broken
+     and would have gone on calling it broken after any fix. What matters is
+     whether something covers the field's TEXT, so a field is measured by its
+     content box. */
+  function contentBox(e, r){
+    var cs = window.getComputedStyle(e);
+    function n(v){ return parseFloat(v) || 0; }
+    var l = r.left + n(cs.borderLeftWidth) + n(cs.paddingLeft);
+    var t = r.top + n(cs.borderTopWidth) + n(cs.paddingTop);
+    var rt = r.right - n(cs.borderRightWidth) - n(cs.paddingRight);
+    var b = r.bottom - n(cs.borderBottomWidth) - n(cs.paddingBottom);
+    return {left:l, top:t, right:rt, bottom:b,
+            width:Math.max(0, rt - l), height:Math.max(0, b - t)};
+  }
   function label(e){
-    var c = String(e.className || "").split(" ")[0];
-    var t = e.textContent.trim().slice(0, 14);
-    return e.tagName.toLowerCase() + (c ? "." + c : "") + (t ? " “" + t + "”" : "");
+    /* An SVG's className is an SVGAnimatedString, so String() on it reads
+       "[object SVGAnimatedString]" - which is what the first report said. */
+    var c = (e.getAttribute && e.getAttribute("class") || "").split(" ")[0];
+    var t = (e.value || e.textContent || "").trim().slice(0, 14);
+    return e.tagName.toLowerCase() + (c ? "." + c : "") +
+           (t ? " “" + t + "”" : "");
   }
 }
 

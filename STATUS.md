@@ -294,9 +294,24 @@ at all. So:
   Profile. A hidden view reports zeroes, so each is shown for the length of one
   measurement and put back.
 
-Writing the test found a second gap: the sweep counted `svg` as painted but not
-`img`, so an image icon over text - which is what the item rows use - would
-have slipped through the very check written for it.
+**Using it sharpened it three times, and only the third was found by thinking.**
+
+1. Writing the test: the sweep counted `svg` as painted but not `img`, so an
+   image icon over text - which is what the item rows use - would have slipped
+   through the very check written for it.
+2. Planting the original bug back into the running app and watching the tool
+   MISS it: an `<input>` has no `textContent` - its text is `value` - so a
+   field was never a box at all. The sweep could not see the one bug it exists
+   for.
+3. Fixing that made it report the *correct* search box as broken: a field's
+   rectangle includes its padding, and the icon lives in that padding on
+   purpose. Fields are measured by their CONTENT box now, which is the real
+   question - does something cover the text.
+
+Proven rather than assumed, against the real browser: fixed → **0**, bug
+reintroduced → **1**, named `input over svg`, fixed again → **0**. Then swept
+clean over the whole app: 1,931 painted boxes at 1440px and 1,949 at 345px,
+across seven views, no overlaps.
 
 ### The app asks its own questions now
 
