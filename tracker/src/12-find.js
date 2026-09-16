@@ -1322,7 +1322,7 @@ function overlapSweep(view){
     boxes.push({e: e, r: r});
   }
   boxes.sort(function(a, b){ return a.r.top - b.r.top; });
-  var hits = [];
+  var hits = [], floats = [];
   for (var i2 = 0; i2 < boxes.length && hits.length < 12; i2++) {
     var A = boxes[i2];
     for (var j = i2 + 1; j < boxes.length; j++) {
@@ -1333,12 +1333,48 @@ function overlapSweep(view){
       var oy = Math.min(A.r.bottom, B.r.bottom) - Math.max(A.r.top, B.r.top);
       /* a two-pixel kiss is layout, not a collision */
       if (ox <= 1 || oy <= 1 || ox * oy < 30) continue;
-      hits.push(label(A.e) + "  over  " + label(B.e) +
-                "  (" + Math.round(ox * oy) + "px²)");
+      var line = label(A.e) + "  over  " + label(B.e) +
+                 "  (" + Math.round(ox * oy) + "px²)";
+      /* A FLOATING LAYER IS NOT A COLLISION, AND IS NOT HIDDEN EITHER.
+
+         Exactly one of the two is out of the flow - the "+" button that floats
+         over the list below 900px, a sheet, a toast - so it is MEANT to be on
+         top and the page scrolls out from under it. Counting that as a fault
+         put a permanent "1 overlap" on HOME and Builds, and a check that cries
+         wolf is a check that gets turned off.
+
+         But it is NOT dropped, because that is how a check goes blind - the
+         last time something was quietly excluded here the sweep stopped seeing
+         the bug it was written for. It is reported in its own list, so a
+         floating layer that really is swallowing something is still visible.
+
+         BOTH out of the flow is a genuine fault: two floating layers fighting
+         over the same corner is nobody's design. */
+      if (floatingLayer(A.e) !== floatingLayer(B.e)) {
+        if (floats.length < 8) floats.push(line);
+        continue;
+      }
+      hits.push(line);
       break;
     }
   }
-  return {boxes: boxes.length, hits: hits};
+  return {boxes: boxes.length, hits: hits, floating: floats};
+
+  /* Out of the flow: its own layer, by declaration. Read off the ancestors
+     because the painted leaf inherits the positioning of the box that floats -
+     the "+" glyph is a plain span inside a fixed button.
+
+     ASKED ONLY WHEN TWO BOXES ACTUALLY TOUCH, never per box. Asking up front
+     cost a getComputedStyle per ancestor of all 200 boxes and pushed the sweep
+     past its own 150ms budget - the linear-time test caught it on the first
+     run. Collisions are rare, so this runs a handful of times. */
+  function floatingLayer(e){
+    for (var n = e; n && n.nodeType === 1 && n !== view; n = n.parentNode) {
+      var pos = window.getComputedStyle(n).position;
+      if (pos === "fixed" || pos === "sticky" || pos === "absolute") return true;
+    }
+    return false;
+  }
 
   /* A FIELD'S BOX INCLUDES ITS PADDING, and the icon lives in that padding ON
      PURPOSE - that is the whole point of the 34px. Compared as border boxes
@@ -1390,7 +1426,7 @@ function overlapReport(host){
      price of measuring the real layout instead of guessing at it. */
   var open = document.querySelector(".view:not([hidden])");
   var views = [].slice.call(document.querySelectorAll(".view"));
-  var total = 0, bad = [];
+  var total = 0, bad = [], over = [];
   views.forEach(function(v){
     var was = v.hidden;
     v.hidden = false;
@@ -1398,6 +1434,7 @@ function overlapReport(host){
     v.hidden = was;
     total += r.boxes;
     r.hits.forEach(function(h){ bad.push(v.id + " — " + h); });
+    (r.floating || []).forEach(function(h){ over.push(v.id + " — " + h); });
   });
   if (open) open.hidden = false;
 
@@ -1411,6 +1448,20 @@ function overlapReport(host){
       (bad.length === 1 ? "" : "s") + "</strong> at " + window.innerWidth +
       "px, of " + total + " painted boxes:";
     bad.slice(0, 14).forEach(function(h){ out.appendChild(el("div", "st", h)); });
+  }
+  /* SHOWN, NOT COUNTED. The "+" button floats over the list on purpose and the
+     page scrolls out from under it, so it is not a fault - but listing it is
+     what keeps the check honest: a floating layer really swallowing something
+     would otherwise be invisible, which is how this tool went blind once
+     before. */
+  if (over.length) {
+    var fl = el("div", "st");
+    fl.style.marginTop = "8px";
+    fl.innerHTML = "<strong>" + over.length + " floating layer" +
+      (over.length === 1 ? "" : "s") + " over content</strong> — by " +
+      "design (the + button, a sheet, a toast). Listed so it cannot hide:";
+    out.appendChild(fl);
+    over.slice(0, 8).forEach(function(h){ out.appendChild(el("div", "st", h)); });
   }
   host.appendChild(out);
 }

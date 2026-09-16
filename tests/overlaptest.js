@@ -55,6 +55,9 @@ function view(boxes){
        field's content box collapse - so the fixture states the box it means
        rather than leaning on jsdom's CSS. */
     if (b.style) e.setAttribute("style", b.style);
+    /* a fixture that cannot express "out of the flow" cannot test the rule
+       that treats it differently */
+    if (b.fixed) e.style.position = "fixed";
     e.textContent = b.text === undefined ? "x" : b.text;
     e.getBoundingClientRect = () => ({
       left:b.l, top:b.t, right:b.l + b.w, bottom:b.t + b.h,
@@ -143,6 +146,41 @@ setTimeout(() => {
   r = sweep(view(many));
   ok("encuentra uno malo entre 60 buenos", r.hits.length, 1);
   ok("y dice cual", /intruso|\.r/.test(r.hits[0]), true);
+
+  /* A FLOATING LAYER IS NOT A FAULT - BUT IT IS NOT HIDDEN EITHER.
+
+     The "+" button floats over the list below 900px on purpose, and the page
+     scrolls out from under it. Counting that as a fault put a permanent
+     "1 overlap" on HOME and Builds the first time this was run on a signed-in
+     page with real rows (2026-09-16), and a check that cries wolf is a check
+     that gets turned off.
+
+     The danger in fixing it is going blind, which this tool has already done
+     once. So the case is pinned from both ends: it must NOT be a hit, and it
+     MUST still be reported. */
+  r = sweep(view([
+    {cls:"fila", l:0, t:0, w:300, h:60, text:"115"},
+    {cls:"fab", l:200, t:20, w:110, h:44, text:"+ New build", fixed:true}
+  ]));
+  ok("el boton flotante no cuenta como fallo", r.hits.length, 0);
+  ok("pero SI se reporta aparte", r.floating.length, 1);
+  ok("y nombra a los dos",
+     /fab/.test(r.floating[0]) && /fila/.test(r.floating[0]), true);
+
+  /* Two floating layers fighting over one corner is nobody's design. */
+  r = sweep(view([
+    {cls:"toast", l:200, t:20, w:110, h:44, text:"saved", fixed:true},
+    {cls:"fab", l:210, t:24, w:110, h:44, text:"+ New", fixed:true}
+  ]));
+  ok("dos capas flotantes encimadas SI es fallo", r.hits.length, 1);
+
+  /* And the one it was written for must survive the new rule: neither of
+     those is out of the flow, so it stays a hit. */
+  r = sweep(view([
+    {tag:"svg", cls:"icon", l:9, t:10, w:16, h:16, text:""},
+    {cls:"text", l:2,  t:8,  w:300, h:20, text:"Search 345 forms"}
+  ]));
+  ok("y el bug original sigue siendo fallo", r.hits.length, 1);
 
   console.log("\n  ERRORES JS: " + (errs.length ? errs.join(" | ") : "ninguno"));
   console.log(bad ? "\n  " + bad + " FALLOS\n" : "\n  todo bien\n");
