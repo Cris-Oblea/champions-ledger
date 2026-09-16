@@ -66,6 +66,17 @@ six base stats - so two cards can be read against each other down the column
 instead of as six numbers with six words between them. Nothing is trimmed to
 fit: a long ability list wraps rather than ending in an ellipsis.
 
+**A HOME Pokemon Champions has never heard of is still a card.** HOME holds
+species the game does not have, and those rows used to be a name and a "not in
+the Champions dex" tag with nothing else - no types, no BST, no stats, no
+ability - which is no help at all on the one screen where you decide what to
+keep. `scripts/fetch_home_dex.py` fills them in for 920 species from PokeAPI's
+own tables, read at a pinned commit. The tag stays, and the card says plainly
+that these are main-series numbers: Champions publishes none for them, so there
+is nothing of ours to contradict - and nothing of theirs is ever used for a
+species Champions does have, where the move rebalance makes PokeAPI wrong (81%
+of its PP values and 16 of its base powers disagree with Champions).
+
 `python scripts/preview.py` puts three viewports side by side in a browser -
 desktop, laptop and phone - each in its own iframe so the media queries are
 real, with the cache cleared first and the app's own overlap check on a button.

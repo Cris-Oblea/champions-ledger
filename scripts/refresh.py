@@ -119,6 +119,12 @@ def stages(reg, deep=False):
         # to stay right. It runs BEFORE the tracker, which ships the table.
         Stage("type_colors", "the type colours, from Pokemon's own stylesheet",
               ["scripts/build_type_colors.py"], False),
+        # The species Champions does NOT have, so a HOME row for one is a card
+        # rather than a name and a tag. Read from PokeAPI's tables at a pinned
+        # commit - main-series numbers for main-series Pokemon, which is all
+        # that exists for them, and the card says so.
+        Stage("home_dex", "types and stats for the species outside Champions",
+              ["scripts/fetch_home_dex.py"], False),
         Stage("text_facts", "pick the better description per move and ability",
               ["scripts/build_text_facts.py"]),
         Stage("statuses", "status conditions, with Champions' own rebalance",

@@ -270,6 +270,7 @@ def main():
     # box without one.
     DEXNO = (Q.db("dex_numbers") or {}).get("numbers", {})
     TYPE_COLORS = Q.db("type_colors") or {}
+    HOME_DEX = Q.db("home_dex") or {}
     # How hard each species is to pull off the GTS: demand measured from
     # ladder usage, supply declared in data/meta/go_sourcing.json. Only the
     # fields the phone needs, to keep the blob small.
@@ -681,6 +682,15 @@ def main():
             # that is a decision pokemon.com already made per type.
             # scripts/build_type_colors.py, and --check says if upstream moved.
             "TYPE_COLORS": TYPE_COLORS,
+            # THE SPECIES CHAMPIONS DOES NOT HAVE, so a HOME row for one is a
+            # card like any other instead of a name and a tag. The player keeps
+            # 129 Pokemon in HOME and 24 of them were blank: "si quisiera hacer
+            # un cambio en pokemon home, no sabria por que cambiarlos".
+            # MAIN-SERIES NUMBERS, and the card says so - Champions has no row
+            # for these at all, so there is nothing of ours to contradict.
+            # scripts/fetch_home_dex.py, from PokeAPI's tables at a pinned
+            # commit. The "not in the Champions dex" tag stays on every one.
+            "HOME_DEX": HOME_DEX,
             "AB_CLASS": am.get("classes") or {},
             "AB_CLASS_LABEL": am.get("class_labels") or {},
             # WHAT A THING ACTUALLY DOES, AS A NUMBER. Serebii's item text is
