@@ -2,7 +2,7 @@
    Part of the app; linked into one script by scripts/build_tracker_page.py. */
 import {
   $, C, DEX, MOVE_BY, STAT_KEYS, STAT_LABEL, byName, capNote, catName, el,
-  learnset, natMult, statAt, toast, typeChip,
+  learnset, natMult, statAt, statGrid, toast, typeChip,
 } from "./01-data.js";
 import { closeSheet, openSheet } from "./04-nav.js";
 import { S } from "./02-state.js";
@@ -522,15 +522,6 @@ var CALC = {
    stats and never inside one, which is what makes that affordable on a 360px
    screen. It also retires the separate "HP / Atk / Def / SpA / SpD / Spe"
    legend row: a legend is what you need when the data is not labelled. */
-function statSpan(b, formName){
-  var box = el("span", "statrow");
-  box.appendChild(el("span", "mono fact", (formName || "base") + ":"));
-  STAT_KEYS.forEach(function(k, i){
-    box.appendChild(el("span", "mono fact", b[i] + " " + STAT_LABEL[k]));
-  });
-  return box;
-}
-
 function calcSideCtl(which){
   var side = CALC[which], host = $(which === "atk" ? "calcAtk" : "calcDef");
   host.innerHTML = "";
@@ -545,8 +536,13 @@ function calcSideCtl(which){
     m.appendChild(h);
     var meta = el("div", "rmeta");
     (p ? p.types : []).forEach(function(t){ meta.appendChild(typeChip(t)); });
-    if (p) meta.appendChild(statSpan(p.b, null));
     m.appendChild(meta);
+    /* THE SAME SIX-CELL TABLE AS EVERY OTHER SCREEN. This was the last place
+       reading "base: 115 HP 175 Atk 117 Def ..." as one run of text - the prose
+       the player could not read anywhere else either ("va todo escrito como
+       prosa practicamente"), and statSpan() was the FOURTH implementation of a
+       stat line in this app. It is gone; statGrid takes the spread. */
+    if (p) m.appendChild(statGrid(p));
     /* THE OTHER SPREAD, WRITTEN OUT. A Pokemon that changes stats mid-battle
        has two, and printing one of them plus a sentence about the other is
        what this used to do: "Aegislash attacks as Blade Forme - 140 Attack,
@@ -563,7 +559,6 @@ function calcSideCtl(which){
         var alt = bf.f[fname].b;
         if (!alt) return;
         var row = el("div", "rmeta");
-        row.appendChild(statSpan(alt, fname));
         /* Aegislash is the one the app switches by itself, and only on the
            attacking side. Anything else is shown as what it WOULD be, because
            claiming it is in play would be a guess about the battle. */
@@ -571,8 +566,10 @@ function calcSideCtl(which){
         var tag = el("span", "tag" + (mine ? " ok" : ""),
                      mine ? "in play attacking" : "when " + (bf.by || "it")
                             + " flips it");
+        row.appendChild(el("span", null, fname));
         row.appendChild(tag);
         m.appendChild(row);
+        m.appendChild(statGrid(alt));
       });
     }
   } else {

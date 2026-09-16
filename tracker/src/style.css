@@ -517,17 +517,16 @@ h2 .n{font-family:var(--mono);color:var(--faint);font-weight:500;letter-spacing:
    one place along. On ::after it stays on the line it ends. */
 .rmeta .fact:not(:last-child)::after{content:" ·";color:var(--faint);
   font-family:var(--sans)}
-/* NOT `.statline` - that name was already a 7-column grid for the box sheet's
-   stat blocks, 200 lines further down, and the later definition silently won:
-   this laid out as a grid, its children stopped wrapping and six labelled
-   stats ran 49px past the edge of a 360px phone. Caught by measuring, not by
-   reading. */
-.statrow{display:flex;flex-wrap:wrap;align-items:center;gap:6px;
-  flex:1 1 100%;min-width:0}
-/* no dots between stats - "140 Def" is already labelled, and a run of six
-   reads as one line rather than six facts */
-.statrow .fact:not(:last-child)::after{content:""}
-.statrow .fact:first-child{color:var(--faint)}
+/* `.statrow` LIVED HERE AND IS GONE. It was the flex line of "115 HP 175 Atk
+   ..." facts, and it existed under that name because `.statline` was already
+   taken by a grid 200 lines further down - a collision that once pushed six
+   labelled stats 49px past the edge of a 360px phone.
+
+   Both problems ended the same way: there is one stat line in this app now,
+   `statGrid()`, and the calculator was the last caller writing its own. The
+   rules are deleted rather than left lying around, because a dead selector
+   with a plausible name is what gets picked up by the next person who wants
+   "the stat row". */
 /* THE STAT BEING RANKED, made findable rather than made lonely. A list sorted
    by Attack is read WITH the Speed beside it - dropping the other five to
    "reduce noise" took away half of what picks the Pokemon (player,
