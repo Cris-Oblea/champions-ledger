@@ -238,7 +238,21 @@ nav.tabs button:active{background:var(--sunk)}
    Two layers rather than one diagonal gradient because a single gradient
    cannot vary along both axes, and the downward fade is the half that keeps
    the text readable. */
-.row.card{display:block;padding:0;overflow:hidden;position:relative;
+/* A CARD IS A <button>, AND A BUTTON CENTRES ITS OWN CONTENTS.
+
+   Not a rule anyone wrote here - it is what the browser does to a button whose
+   box is taller than what is in it. These are grid items, so every card in a
+   row is stretched to the tallest one, and the shorter ones were quietly
+   centring inside that height: 43px of nothing above the name and 38 below
+   (player, 2026-09-16: "se ven raras con un espacio arriba en el borde").
+
+   It had been latent for as long as the cards existed and only showed when a
+   neighbour got taller - the HOME rows that now carry a "main-series numbers"
+   note are what made it visible. `display:block` does NOT stop it; the
+   centring happens in the button's own internal box, so the fix is to say
+   explicitly which way the contents stack and where they start. */
+.row.card{display:flex;flex-direction:column;align-items:stretch;
+  justify-content:flex-start;padding:0;overflow:hidden;position:relative;
   background:
     linear-gradient(180deg, var(--tsoft, transparent) 0,
                     var(--tsoftb, var(--tsoft, transparent)) 34px,
