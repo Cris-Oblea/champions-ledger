@@ -226,13 +226,43 @@ nav.tabs button:active{background:var(--sunk)}
 
    The tint is deliberately faint. It has to sit under body text at both
    themes, and a card you cannot read is not a card. */
+/* TWO HALVES, EACH FADING DOWN. A dual type wears both of its colours - the
+   left half of the card tinted by the first, the right half by the second -
+   and a mono type sets both to the same value and looks exactly as it did.
+   Two layers rather than one diagonal gradient because a single gradient
+   cannot vary along both axes, and the downward fade is the half that keeps
+   the text readable. */
 .cards .row.card{display:block;padding:0;overflow:hidden;position:relative;
-  background:linear-gradient(180deg, var(--tsoft, transparent) 0,
-                             transparent 76px), var(--surface)}
+  background:
+    linear-gradient(180deg, var(--tsoft, transparent) 0, transparent 76px)
+      left top / 50% 100% no-repeat,
+    linear-gradient(180deg, var(--tsoft2, var(--tsoft, transparent)) 0,
+                    transparent 76px) right top / 50% 100% no-repeat,
+    var(--surface)}
+/* and the band blends one into the other, so Fire/Rock and Fire/Psychic are
+   told apart before a word is read */
 .cards .row.card::before{content:"";display:block;height:4px;
-  background:var(--tcol, var(--line-hard))}
+  background:linear-gradient(90deg, var(--tcol, var(--line-hard)) 0,
+                             var(--tcol, var(--line-hard)) 34%,
+                             var(--tcol2, var(--tcol, var(--line-hard))) 66%,
+                             var(--tcol2, var(--tcol, var(--line-hard))) 100%)}
 .cards .row.card .rmain{padding:11px 13px 12px}
 .cards .row.card .rname{font-size:15.5px;margin-bottom:3px}
+/* THE STATS AS A TABLE, NOT A SENTENCE. They were a run of "115 HP 175 Atk
+   117 Def ..." and the player could not read them: "sale primero el número
+   del stat y luego el stat, eso se ve feo, no se sabe cómo leerlo bien... va
+   todo escrito como prosa prácticamente." He is right - six numbers with six
+   words between them is prose, and prose is read, not scanned. Six columns,
+   the label under the number, so the eye can go straight down a column and
+   compare two cards without reading either. */
+.cards .row.card .statline{margin-top:7px;gap:4px}
+.cards .row.card .statline div{padding:3px 1px}
+.cards .row.card .statline b{font-size:12.5px}
+/* the stat the list is ranked by, marked here too */
+.statline div.on{background:var(--accent-soft);
+  box-shadow:inset 0 0 0 1px var(--accent)}
+.statline div.on b{color:var(--accent);font-weight:600}
+.statline div.on span{color:var(--accent)}
 .cards .row.card:hover{border-color:var(--tcol, var(--line-hard));
   box-shadow:var(--shadow)}
 /* THE LEFT STRIPE STAYS. It was flattened here on the grounds that it would
@@ -252,7 +282,12 @@ nav.tabs button:active{background:var(--sunk)}
    silently a flex column. Measured: Items drew 199 cards in one column. */
 .cards,.list.cards{display:grid;gap:10px;grid-template-columns:1fr}
 @media (min-width:640px){
-  .cards,.list.cards{grid-template-columns:repeat(auto-fill,minmax(270px,1fr))}
+    /* 250, not 270, and the difference is one whole column on a 1366-wide
+     laptop: with the sidebar taking 300 there are 790px left, and three
+     cards need a minimum of 256 each. 270 gave two columns and eleven
+     screens there, 250 gives three and eight. A 1080p screen is unaffected -
+     it fits four either way. Six stat cells still read at 256px. */
+  .cards,.list.cards{grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
 }
 
 /* ---------- type scale & headings --------------------------------------- */
@@ -626,7 +661,10 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border:2px solid var(
 .kv dt{color:var(--muted)}
 .kv dd{margin:0;font-family:var(--mono);font-variant-numeric:tabular-nums;
   text-align:right}
-.statline{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;margin-top:8px}
+/* SIX COLUMNS, because there are six stats. It said seven, so every stat grid
+   in the app has been drawing an empty seventh cell and squeezing the real
+   ones to fit. */
+.statline{display:grid;grid-template-columns:repeat(6,1fr);gap:5px;margin-top:8px}
 .statline div{text-align:center;background:var(--sunk);border-radius:6px;padding:4px 2px}
 .statline b{display:block;font-family:var(--mono);font-size:13px;font-weight:500;
   font-variant-numeric:tabular-nums}

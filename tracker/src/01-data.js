@@ -137,12 +137,26 @@ function typeTint(t, alpha){
    dropped into a plain `.list` simply stays a row. */
 function typeCard(row, p){
   row.className += " card";
-  var t = p && (p.types || [])[0];
-  var c = t && TYPE_COLOR[t];
-  if (!c) return row;
-  row.style.setProperty("--tcol", c);
-  var soft = typeTint(t, 0.13);
-  if (soft) row.style.setProperty("--tsoft", soft);
+  var types = (p && p.types) || [];
+  var c1 = TYPE_COLOR[types[0]];
+  if (!c1) return row;
+  /* A DUAL TYPE IS ITS OWN COLOUR, not its first half. Fire/Psychic and
+     Fire/Rock are different Pokemon and should not wear the same card
+     (player, 2026-09-16: "podría ser color diferente... tener más tonalidades
+     para los tipo doble. una combinación de colores. para los mono tipo el
+     color principal solamente").
+
+     Two variables rather than one gradient, because the tint is painted as
+     two half-width columns that each fade downward - a single gradient cannot
+     vary along both axes, and this way a mono type sets both halves to the
+     same colour and comes out exactly as it did. */
+  var c2 = TYPE_COLOR[types[1]] || c1;
+  row.style.setProperty("--tcol", c1);     /* solid, for borders */
+  row.style.setProperty("--tcol2", c2);
+  var s1 = typeTint(types[0], 0.14);
+  var s2 = typeTint(types[1], 0.14) || s1;
+  if (s1) row.style.setProperty("--tsoft", s1);
+  if (s2) row.style.setProperty("--tsoft2", s2);
   return row;
 }
 function typeChip(t){

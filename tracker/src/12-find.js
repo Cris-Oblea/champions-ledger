@@ -3,7 +3,7 @@
 import {
   $, C, DEX, MOVES, MOVE_BY, SORT, STAT_KEYS, STAT_LABEL, TYPE_COLOR, bst,
   byName, capNote, catName, dexNo, effectLine, el, learnset, podiumChip,
-  podiumFor, splitPct, toast, typeChip, typeTint, usageTag,
+  podiumFor, splitPct, toast, typeCard, typeChip, usageTag,
 } from "./01-data.js";
 import { S, boxRows, originOf, ownedNames } from "./02-state.js";
 import { closeSheet, fbtn, openSheet } from "./04-nav.js";
@@ -166,13 +166,7 @@ function findRun(){
        tint behind it both come from the primary type, so a grid of these reads
        as a set of things rather than 345 identical strips - and the type
        registers before a word has been read. */
-    var r = el("button", "row card" + (here ? " perm" : ""));
-    var tcol = TYPE_COLOR[(p.types || [])[0]];
-    if (tcol) {
-      r.style.setProperty("--tcol", tcol);
-      var soft = typeTint(p.types[0], 0.13);
-      if (soft) r.style.setProperty("--tsoft", soft);
-    }
+    var r = typeCard(el("button", "row" + (here ? " perm" : "")), p);
     var m = el("div", "rmain");
     var h = el("div", "rname");
     h.appendChild(document.createTextNode(p.name));
@@ -211,17 +205,22 @@ function findRun(){
        sheet, where one Pokemon is being decided about; in a list of 120 they
        were three numbers per row answering a question nobody asked yet. */
     var ranking = FIND.sort !== "dex";
-    var stats = el("span", "statrow");
-    stats.appendChild(el("span", "mono fact" +
+    meta.appendChild(el("span", "mono fact" +
       (FIND.sort === "bst" ? " on" : ""), "BST " + bst(p)));
-    STAT_KEYS.forEach(function(k, i){
-      stats.appendChild(el("span", "mono fact" +
-        (ranking && FIND.sort === k ? " on" : ""),
-        p.b[i] + " " + STAT_LABEL[k]));
-    });
-    meta.appendChild(stats);
     meta.appendChild(el("span", null, (p.ab || []).join(" / ")));
     m.appendChild(meta);
+    /* A TABLE, NOT A SENTENCE. "115 HP 175 Atk 117 Def ..." is six numbers
+       with six words between them, which is prose - it gets read, never
+       scanned, and you cannot line two cards up against each other. Six
+       columns with the label under the number can be read straight down. */
+    var sl = el("div", "statline");
+    STAT_KEYS.forEach(function(k, i){
+      var cell = el("div", ranking && FIND.sort === k ? "on" : null);
+      cell.appendChild(el("b", null, p.b[i]));
+      cell.appendChild(el("span", null, STAT_LABEL[k]));
+      sl.appendChild(cell);
+    });
+    m.appendChild(sl);
     r.appendChild(m);
     r.onclick = function(){ findDetail(p); };
     list.appendChild(r);

@@ -322,6 +322,42 @@ last fix: fixed → **0**, bug reintroduced → **1**, named `input over svg`,
 fixed again → **0**. Then swept clean over the whole app: 1,931 painted boxes
 at 1440px and 1,949 at 345px, across seven views, no overlaps.
 
+### Three corrections after seeing it (2026-09-16)
+
+**A dual type is its own colour, not its first half.** Fire/Psychic and
+Fire/Rock are different Pokemon and were wearing the same card. The band
+blends the two and the tint is painted as two half-width columns, each fading
+downward - two layers rather than one diagonal gradient, because a gradient
+cannot vary along both axes. A mono type sets both halves to the same value
+and comes out exactly as before.
+
+**The stats were prose.** "115 HP 175 Atk 117 Def ..." is six numbers with six
+words between them: "no se sabe cómo leerlo bien". They are a six-column table
+now, label under number, so a column can be read straight down and two cards
+can be compared without reading either. Doing it found `.statline` had been
+declared `repeat(7,1fr)` for six stats all along - every stat grid in the app
+was drawing an empty seventh cell.
+
+**And the resolutions were wrong.** The study ran at 1440x900; his screen is
+1080p and there is a second one "un poquito diferente". Re-measured on the
+real ones:
+
+| | width used | columns | screens |
+|---|---|---|---|
+| 1920×1080 | 82% | 4 | **4.5** |
+| 1680×1050 | 88% | 3 | 5.7 |
+| 1366×768 | 86% | 3 | **8.7** |
+| 360 phone | 100% | 1 | 22.4 |
+
+1366 was two columns and 11.3 screens until the card minimum dropped from 270
+to 250 - three cards need 256 each once the sidebar has taken 300. **The phone
+is honestly unchanged in length**: 345 results in one column is 22 screens
+whatever the card looks like. What improved there is each card, not the list.
+
+Find at 1440 also uses the shared `typeCard()` now. It had its own inline copy
+of the colour logic, which is exactly the drift the helper exists to stop -
+and it is why the dual-type colours did not appear there at first.
+
 The card tint was checked the same way rather than eyeballed. Worst contrast
 of a card's name against its own tinted background: **12.3:1 dark, 14.6:1
 light**, where AAA asks 7:1.
