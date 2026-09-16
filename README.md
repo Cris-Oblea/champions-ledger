@@ -77,6 +77,12 @@ is nothing of ours to contradict - and nothing of theirs is ever used for a
 species Champions does have, where the move rebalance makes PokeAPI wrong (81%
 of its PP values and 16 of its base powers disagree with Champions).
 
+**The explanation does not stand in front of the answer.** Each screen opens
+with the one sentence that says what it is; the rest of the intro sits behind a
+link that states how many words are in it. Nothing is deleted and nothing is
+guessed at - the text is one tap away and still in the page - but Builds now
+reaches its first build in 181px instead of 220, and HOME in 161 instead of 199.
+
 **The movepools finally have a second opinion.** Every other number here is
 crossed against something - the damage formula against Smogon's engine, the type
 chart against Serebii's own weakness tables, the item prices against pokebase -

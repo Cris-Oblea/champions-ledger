@@ -575,6 +575,16 @@ h2 .n{font-family:var(--mono);color:var(--faint);font-weight:500;letter-spacing:
 .rmain{flex:1;min-width:0}
 .rname{font-weight:600;font-size:14.5px;display:flex;align-items:center;
   gap:6px;flex-wrap:wrap}
+/* THE "WHY" BUTTON that holds the rest of an intro. It reads as a link rather
+   than a control because it reveals text, not an action - and it says how many
+   words are behind it, so nobody has to tap to find out whether it is worth
+   tapping. */
+.whybtn{font:inherit;background:none;border:0;padding:0;margin:0;
+  color:var(--accent);cursor:pointer;text-decoration:underline;
+  text-underline-offset:2px;white-space:nowrap}
+.whybtn:hover{color:var(--text)}
+.lede .more,.sub .more{display:block;margin-top:4px}
+
 .rmeta{color:var(--muted);font-size:12px;display:flex;align-items:center;
   gap:6px;flex-wrap:wrap;margin-top:2px}
 .rmeta .mono{font-family:var(--mono);font-variant-numeric:tabular-nums}

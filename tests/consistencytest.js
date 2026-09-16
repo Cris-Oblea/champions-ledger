@@ -101,6 +101,40 @@ setTimeout(() => {
   ok("y donde empieza el contenido",
      /justify-content:\s*flex-start/.test(cardRule), true);
 
+  /* THE INTROS FOLD, AND NOTHING IS LOST WHEN THEY DO.
+
+     Measured at 758px before this: Builds spent 220px and 58 words before
+     the first build and HOME 199px, on paragraphs stating rules the player
+     knows by heart. The first sentence stays and the rest goes behind a
+     button that says how many words are in it.
+
+     IT FAILED SILENTLY TWICE while being written, which is why it is tested
+     at all: once because the boundary rule wanted a capital after the full
+     stop and Builds continues "...it waits. 66 Stat Points", and once
+     because the markup indents these across several lines and a regex dot
+     does not cross a newline. Both times the result was no fold and no
+     complaint - the exact shape of bug this file exists for. */
+  console.log(String.fromCharCode(10) + "  los textos de entrada");
+  const d = w.document;
+  const ledes = [...d.querySelectorAll(".view .lede, .view > .sub")];
+  const folded = ledes.filter(p => p.dataset.folded);
+  ok("hay textos plegados", folded.length >= 3, true);
+  ok("y el de Builds es uno de ellos",
+     !!d.querySelector("#v-builds .lede .whybtn"), true);
+  const bl = d.querySelector("#v-builds .lede");
+  ok("la primera frase sigue visible",
+     /A set is its own thing/.test(bl.firstChild.textContent), true);
+  /* NOT DELETED - one tap away, and in the page for anyone reading source */
+  ok("el resto sigue en el DOM",
+     /66 Stat Points/.test(bl.querySelector(".more").textContent), true);
+  ok("pero oculto de entrada", bl.querySelector(".more").hidden, true);
+  ok("el boton dice cuantas palabras esconde",
+     /^why \(\d+ words\)$/.test(bl.querySelector(".whybtn").textContent), true);
+  bl.querySelector(".whybtn").dispatchEvent(
+    new w.MouseEvent("click", {bubbles:true}));
+  ok("y al pulsarlo se abre", bl.querySelector(".more").hidden, false);
+  ok("...diciendo como cerrarlo", bl.querySelector(".whybtn").textContent,
+     "less");
   /* ---- every key the page will ask for, in every table ---------------- */
   console.log("\n  las tablas, barridas");
   const DEX = C.DEX, names = {}, species = {};
