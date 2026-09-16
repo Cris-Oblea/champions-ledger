@@ -47,6 +47,18 @@ the column grows to 1560px rather than staying at the 820 it was drawn for.
 Every question the app asks - deleting a build, releasing a Pokemon, closing a
 trade - is asked in its own dialog rather than the browser's.
 
+**A Pokemon looks the same wherever it appears** - in the box, in a build, in a
+team slot, in a trade, in a search result or in a Worlds ranking. One card: a
+band of its type across the top, two of them for a dual type, then every fact
+in a cell of its own with the label under the value - BST, the ability, and the
+six base stats - so two cards can be read against each other down the column
+instead of as six numbers with six words between them. Nothing is trimmed to
+fit: a long ability list wraps rather than ending in an ellipsis.
+
+`python scripts/preview.py` puts three viewports side by side in a browser -
+desktop, laptop and phone - each in its own iframe so the media queries are
+real, with the cache cleared first and the app's own overlap check on a button.
+
 Its source is thirteen ES modules under `tracker/src/`, each one a tab or the
 thing the tabs share, saying what it exports and importing what it needs. The
 build links them into the single script the browser is handed, plus a sourcemap

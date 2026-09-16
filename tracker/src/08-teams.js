@@ -1,7 +1,7 @@
 /* 08-teams.js - Six slots, the clauses checked, and what is still to get.
    Part of the app; linked into one script by scripts/build_tracker_page.py. */
-import { $, C, STONE_OF, byName, capNote, el, splitPct, toast, typeChip,
-  usageTag } from "./01-data.js";
+import { $, C, STONE_OF, byName, capNote, cardLine, el, labelBox, splitPct,
+  toast, typeCard, typeChip, usageTag } from "./01-data.js";
 import { S, buildLink, buildsFor, hasStone } from "./02-state.js";
 import { drop, put, putNew } from "./03-store.js";
 import { ask, closeSheet, fbtn, leaveEditor, openEditor, openSheet }
@@ -117,7 +117,12 @@ function teamTypes(r){
    team-level rule; the picker greys out anything another slot already holds
    rather than letting the clash happen and complaining afterwards. */
 function teamSlotRow(draft, x, i, redraw){
-  var row = el("div", "row");
+  /* A slot holds a Pokemon, so it wears one - the same card as everywhere
+     else. Its type is the BUILD's Pokemon, Mega included when a stone is on
+     it, because that is what walks onto the field. */
+  var row = typeCard(el("div", "row"),
+    x.build ? (byName[x.build.mega || x.build.pokemon] ||
+               byName[x.build.pokemon]) : null);
   var m = el("div", "rmain");
   var h = el("div", "rname");
 
@@ -140,10 +145,15 @@ function teamSlotRow(draft, x, i, redraw){
   if (x.build) {
     var meta = el("div", "rmeta");
     if (x.types) x.types.forEach(function(t){ meta.appendChild(typeChip(t)); });
-    meta.appendChild(el("span", null, x.build.nature || "—"));
     meta.appendChild(el("span", "mono", (x.build.moves || []).length + " moves"));
-    meta.appendChild(el("span", null, x.slot.item || "no item"));
     m.appendChild(meta);
+    /* THE ITEM GETS A BOX OF ITS OWN, because on this screen it is the
+       decision being made - the Item Clause is a team rule, so the six items
+       are read down the column against each other. */
+    m.appendChild(cardLine([
+      labelBox(x.build.nature || null, "Nature"),
+      labelBox(x.slot.item || null, "Item", "wide")
+    ]));
     if (x.slot.why) m.appendChild(el("div", "st", x.slot.why));
   }
   row.appendChild(m);

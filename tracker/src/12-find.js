@@ -2,8 +2,9 @@
    Part of the app; linked into one script by scripts/build_tracker_page.py. */
 import {
   $, C, DEX, MOVES, MOVE_BY, SORT, STAT_KEYS, STAT_LABEL, TYPE_COLOR, bst,
-  byName, capNote, catName, dexNo, effectLine, el, learnset, podiumChip,
-  podiumFor, splitPct, toast, typeCard, typeChip, usageTag,
+  byName, capNote, cardLine, catName, dexNo, effectLine, el, labelBox,
+  learnset, podiumChip, podiumFor, splitPct, statGrid, toast, typeCard,
+  typeChip, usageTag,
 } from "./01-data.js";
 import { S, boxRows, originOf, ownedNames } from "./02-state.js";
 import { closeSheet, fbtn, openSheet } from "./04-nav.js";
@@ -205,22 +206,20 @@ function findRun(){
        sheet, where one Pokemon is being decided about; in a list of 120 they
        were three numbers per row answering a question nobody asked yet. */
     var ranking = FIND.sort !== "dex";
-    meta.appendChild(el("span", "mono fact" +
-      (FIND.sort === "bst" ? " on" : ""), "BST " + bst(p)));
-    meta.appendChild(el("span", null, (p.ab || []).join(" / ")));
     m.appendChild(meta);
+    /* BST AND THE ABILITY GET A BOX EACH, for the same reason the stats did:
+       they were loose text on a card whose other numbers were all in cells
+       (player, 2026-09-16). BST is a total rather than a stat, so it keeps its
+       own cell above the six instead of joining them as a seventh column. */
+    m.appendChild(cardLine([
+      labelBox(bst(p), "BST", FIND.sort === "bst" ? "on" : null),
+      labelBox((p.ab || []).join(" / "), "Ability", "wide")
+    ]));
     /* A TABLE, NOT A SENTENCE. "115 HP 175 Atk 117 Def ..." is six numbers
        with six words between them, which is prose - it gets read, never
        scanned, and you cannot line two cards up against each other. Six
        columns with the label under the number can be read straight down. */
-    var sl = el("div", "statline");
-    STAT_KEYS.forEach(function(k, i){
-      var cell = el("div", ranking && FIND.sort === k ? "on" : null);
-      cell.appendChild(el("b", null, p.b[i]));
-      cell.appendChild(el("span", null, STAT_LABEL[k]));
-      sl.appendChild(cell);
-    });
-    m.appendChild(sl);
+    m.appendChild(statGrid(p, ranking ? FIND.sort : null));
     r.appendChild(m);
     r.onclick = function(){ findDetail(p); };
     list.appendChild(r);
@@ -1103,7 +1102,9 @@ function worldDraw(){
     var name = row[0], teams = row[1], pct = row[2];
     var p = byName[name];
     var mine = (name in own) || (p && p.species in own);
-    var r = el("button", "row" + (mine ? " perm" : ""));
+    /* The Worlds list is Pokemon too, so it reads like the rest of the app -
+     the player asked for the card everywhere, not only in the search. */
+    var r = typeCard(el("button", "row" + (mine ? " perm" : "")), p);
     var m = el("div", "rmain");
     var h = el("div", "rname");
     h.appendChild(el("span", "mono", "#" + (i + 1) + "  "));
@@ -1112,12 +1113,19 @@ function worldDraw(){
     m.appendChild(h);
     var meta = el("div", "rmeta");
     if (p) p.types.forEach(function(t){ meta.appendChild(typeChip(t)); });
-    var sp = el("span", "mono", pct + "%  ·  " + teams + " of " + d.n + " teams");
-    sp.title = teams + " of the " + d.n + " " + WORLD.div +
+    m.appendChild(meta);
+    /* Two numbers, so two cells. "24.6% · 97 of 394 teams" is a sentence you
+       read; a share and a count side by side are numbers you scan down the
+       column, which is the only way a ranking gets used. */
+    var cells = cardLine([
+      labelBox(pct + "%", "of teams"),
+      labelBox(teams + " / " + d.n, "brought it")
+    ]);
+    cells.title = teams + " of the " + d.n + " " + WORLD.div +
       " teams at Worlds " + WORLD.year + " carried " + name +
       ". One per team - the Species Clause allows no second copy.";
-    meta.appendChild(sp);
-    m.appendChild(meta);
+    m.appendChild(cells);
+    if (p) m.appendChild(statGrid(p));
     r.appendChild(m);
     if (p) r.onclick = function(){ findDetail(p); };
     list.appendChild(r);

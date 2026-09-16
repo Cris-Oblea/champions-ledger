@@ -2,8 +2,8 @@
    Part of the app; linked into one script by scripts/build_tracker_page.py. */
 import {
   $, C, FORMS, SORT, STAT_KEYS, STAT_LABEL, STONE_OF, bst, byName, capNote,
-  defence, dexLabel, el, freeSlug, megasFor, statLine, toast, typeCard,
-  typeChip,
+  cardLine, defence, dexLabel, el, freeSlug, labelBox, megasFor, statGrid,
+  toast, typeCard, typeChip,
 } from "./01-data.js";
 import { S, hasStone, originOf } from "./02-state.js";
 import { drop, put } from "./03-store.js";
@@ -38,16 +38,26 @@ function pokeRow(rec){
   var meta = el("div", "rmeta");
   if (p) {
     p.types.forEach(function(t){ meta.appendChild(typeChip(t)); });
-    var s = el("span", "mono",
-      (SORT === "dex" ? dexLabel(rec.name) + "  •  " : "") +
-      "BST " + bst(p) + "  •  " + statLine(p));
-    meta.appendChild(s);
+    if (SORT === "dex") meta.appendChild(el("span", "mono", dexLabel(rec.name)));
   } else {
     meta.appendChild(el("span", "mono",
       (SORT === "dex" ? dexLabel(rec.name) + "  •  " : "") +
       "not in the Champions dex - it can sit in HOME but never enter the game"));
   }
   main.appendChild(meta);
+  /* THE SAME TABLE THE SEARCH USES. The stats were a prose line here too -
+     "BST 530 • 100 HP / 125 Atk / ..." - and the box is where two Pokemon get
+     compared most often, so it needs scanning more than Find does.
+     The ability cell says what this one CAN have, not what it has: a box row
+     records no ability (only a build does), so it is labelled for the dex
+     reading it is - "Ability" on a build row is the chosen one. */
+  if (p) {
+    main.appendChild(cardLine([
+      labelBox(bst(p), "BST"),
+      labelBox((p.ab || []).join(" / "), "Possible ability", "wide")
+    ]));
+    main.appendChild(statGrid(p));
+  }
   row.appendChild(main);
   row.onclick = function(){ pokeSheet(rec); };
   return row;
@@ -96,14 +106,7 @@ function pokeSheet(rec){
       chips.appendChild(el("span", "mono", "BST " + bst(p)));
       chips.appendChild(el("span", null, p.ab.join(" / ")));
       body.appendChild(chips);
-      var sl = el("div", "statline");
-      STAT_KEYS.forEach(function(k, i){
-        var d = el("div");
-        d.appendChild(el("b", null, p.b[i]));
-        d.appendChild(el("span", null, STAT_LABEL[k]));
-        sl.appendChild(d);
-      });
-      body.appendChild(sl);
+      body.appendChild(statGrid(p));
       var bfn0 = battleFormNote(p);
       if (bfn0) body.appendChild(bfn0);
 

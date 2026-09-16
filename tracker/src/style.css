@@ -226,13 +226,19 @@ nav.tabs button:active{background:var(--sunk)}
 
    The tint is deliberately faint. It has to sit under body text at both
    themes, and a card you cannot read is not a card. */
-/* TWO HALVES, EACH FADING DOWN. A dual type wears both of its colours - the
+/* A CARD IS A CARD WHEREVER IT IS. This was scoped to `.cards` while only the
+   search used it. The player asked for the presentation across the whole app
+   ("me gustaria que esté en toda la app no solo en find"), and several places
+   that show a Pokemon are not grids - a team's six slots, the GTS picker. The
+   class decides now, not the container.
+
+   TWO HALVES, EACH FADING DOWN. A dual type wears both of its colours - the
    left half of the card tinted by the first, the right half by the second -
    and a mono type sets both to the same value and looks exactly as it did.
    Two layers rather than one diagonal gradient because a single gradient
    cannot vary along both axes, and the downward fade is the half that keeps
    the text readable. */
-.cards .row.card{display:block;padding:0;overflow:hidden;position:relative;
+.row.card{display:block;padding:0;overflow:hidden;position:relative;
   background:
     linear-gradient(180deg, var(--tsoft, transparent) 0, transparent 76px)
       left top / 50% 100% no-repeat,
@@ -241,13 +247,13 @@ nav.tabs button:active{background:var(--sunk)}
     var(--surface)}
 /* and the band blends one into the other, so Fire/Rock and Fire/Psychic are
    told apart before a word is read */
-.cards .row.card::before{content:"";display:block;height:4px;
+.row.card::before{content:"";display:block;height:4px;
   background:linear-gradient(90deg, var(--tcol, var(--line-hard)) 0,
                              var(--tcol, var(--line-hard)) 34%,
                              var(--tcol2, var(--tcol, var(--line-hard))) 66%,
                              var(--tcol2, var(--tcol, var(--line-hard))) 100%)}
-.cards .row.card .rmain{padding:11px 13px 12px}
-.cards .row.card .rname{font-size:15.5px;margin-bottom:3px}
+.row.card .rmain{padding:11px 13px 12px}
+.row.card .rname{font-size:15.5px;margin-bottom:3px}
 /* THE STATS AS A TABLE, NOT A SENTENCE. They were a run of "115 HP 175 Atk
    117 Def ..." and the player could not read them: "sale primero el número
    del stat y luego el stat, eso se ve feo, no se sabe cómo leerlo bien... va
@@ -255,15 +261,48 @@ nav.tabs button:active{background:var(--sunk)}
    words between them is prose, and prose is read, not scanned. Six columns,
    the label under the number, so the eye can go straight down a column and
    compare two cards without reading either. */
-.cards .row.card .statline{margin-top:7px;gap:4px}
-.cards .row.card .statline div{padding:3px 1px}
-.cards .row.card .statline b{font-size:12.5px}
+/* THE SAME CELL AS A STAT, for the things that are not stats. BST and the
+   ability were loose text beside the type chips while six stats sat in neat
+   boxes below them - two visual languages on one card. The strip sizes itself
+   to its contents: a number stays narrow, a word takes the rest. */
+/* FLEX, NOT GRID, and deliberately: the grid version needed `:has(.wide)` to
+   know whether to make a track flexible, and a browser without `:has()` drops
+   that rule silently and lets the cell push the card wider. Flex needs no such
+   question - a number cell sizes to itself, the word cell takes what is left. */
+.row.card .cardline{display:flex;gap:4px;margin-top:7px;align-items:stretch}
+.row.card .cardline > div{background:var(--sunk);border-radius:6px;
+  padding:3px 9px;text-align:center;min-width:0;flex:0 0 auto}
+.row.card .cardline > div.wide{flex:1 1 auto}
+.row.card .cardline b{display:block;font-family:var(--mono);font-size:12.5px;
+  font-weight:500;font-variant-numeric:tabular-nums}
+.row.card .cardline span{font-family:var(--cond);font-weight:600;
+  font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--faint)}
+/* A WORD, NOT A NUMBER: the sans face, and it WRAPS rather than being cut.
+
+   It was written with an ellipsis, which measured badly the moment it was
+   measured: 17 of 120 cards lost the tail of their ability list at 1366 wide
+   and 6 did at the player's own 1536 - Kingambit, the most used Pokemon in the
+   format, was showing "Defiant / Supreme Overlord / Pres...". Hiding a third
+   ability to keep a line tidy is the one thing this app must not do, so the
+   cell grows instead. The break lands on the spaces around the "/", so the
+   abilities stack whole. */
+.row.card .cardline > div.wide{text-align:left}
+.row.card .cardline > div.wide b{font-family:var(--sans);font-size:12.5px;
+  white-space:normal;line-height:1.25}
+.row.card .cardline > div.wide span{display:block}
+
+.row.card .statline{margin-top:7px;gap:4px}
+.row.card .statline div{padding:3px 1px}
+.row.card .statline b{font-size:12.5px}
 /* the stat the list is ranked by, marked here too */
 .statline div.on{background:var(--accent-soft);
   box-shadow:inset 0 0 0 1px var(--accent)}
 .statline div.on b{color:var(--accent);font-weight:600}
 .statline div.on span{color:var(--accent)}
-.cards .row.card:hover{border-color:var(--tcol, var(--line-hard));
+/* An item has no type, so its band is the neutral rule - visibly the same
+   component, honestly not carrying a colour it does not have. */
+.row.card:hover{border-color:var(--tcol, var(--line-hard));
   box-shadow:var(--shadow)}
 /* THE LEFT STRIPE STAYS. It was flattened here on the grounds that it would
    fight the type band, and that is throwing away information to tidy a

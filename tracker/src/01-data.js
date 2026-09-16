@@ -159,6 +159,52 @@ function typeCard(row, p){
   if (s2) row.style.setProperty("--tsoft2", s2);
   return row;
 }
+/* THE SIX STATS AS A TABLE. Written three times in three files before this
+   existed, which is why one of them silently did not mark the ranked stat and
+   the class itself had been declaring seven columns for six numbers.
+
+   A table rather than a sentence: "115 HP 175 Atk 117 Def ..." is six numbers
+   with six words between them, and that gets read rather than scanned - you
+   cannot line two of them up against each other (player, 2026-09-16: "no se
+   sabe como leerlo bien... va todo escrito como prosa practicamente").
+
+   `mark` is a stat key to highlight, for the list that is ranked by one. */
+function statGrid(p, mark){
+  var sl = el("div", "statline");
+  STAT_KEYS.forEach(function(k, i){
+    var cell = el("div", mark === k ? "on" : null);
+    cell.appendChild(el("b", null, p.b[i]));
+    cell.appendChild(el("span", null, STAT_LABEL[k]));
+    sl.appendChild(cell);
+  });
+  return sl;
+}
+/* ONE LABELLED CELL, the same object the stat table is made of.
+
+   BST and the ability were loose text beside the type chips while the six
+   stats sat in neat boxes underneath, so a card had two visual languages on
+   it at once (player, 2026-09-16: "seria bonito que bst tambien tuviera un
+   cuadro como los stats, puede ser diferente... asi todo queda bien
+   presentable").
+
+   `cls` takes "wide" for a value that is a WORD rather than a number - an
+   ability, a nature - which needs the sans face and room to breathe; a number
+   keeps the tabular mono the stat cells use, so columns of them line up. "on"
+   marks the cell the list is currently ranked by, exactly as in statGrid. */
+function labelBox(value, label, cls){
+  var d = el("div", cls || null);
+  d.appendChild(el("b", null, value === null || value === undefined ||
+                              value === "" ? "—" : value));
+  d.appendChild(el("span", null, label));
+  return d;
+}
+/* The strip of them that sits above the stat table. Nulls are dropped, so a
+   caller can offer a cell it does not always have without branching. */
+function cardLine(cells){
+  var row = el("div", "cardline");
+  cells.filter(Boolean).forEach(function(c){ row.appendChild(c); });
+  return row;
+}
 function typeChip(t){
   var s = el("span", "t", t);
   s.style.background = TYPE_COLOR[t] || "#777";
@@ -463,7 +509,7 @@ export {
   $, C, COSTS, DEX, FORMS, HOME_ALL, MEGAS_OF, MOVES, MOVE_BY, SORT,
   STAT_KEYS, STAT_LABEL, STONE_OF, TYPE_COLOR,
   bst, byName, capNote, catName, defence, dexLabel, dexNo, el, freeSlug,
-  learnset, typeCard, typeTint,
+  cardLine, labelBox, learnset, statGrid, typeCard, typeTint,
   effectChips, effectLine, effectOf, podiumChip, podiumFor, splitMax, splitPct,
   splitsFor, splitsReg, usageTag,
   megasFor, natMult, rowMatches, setHomeAll, setSort, sortRows, statAt,

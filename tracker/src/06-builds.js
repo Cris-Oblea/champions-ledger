@@ -1,9 +1,10 @@
 /* 06-builds.js - The build editor - species, Mega, ability, nature, SP, moves.
    Part of the app; linked into one script by scripts/build_tracker_page.py. */
 import {
-  $, C, COSTS, FORMS, MOVE_BY, STAT_KEYS, STAT_LABEL, STONE_OF, byName,
-  catName, effectLine, el, learnset, megasFor, natMult, splitPct, splitsFor,
-  splitsReg, statAt, toast, typeCard, typeChip, usageTag,
+  $, C, COSTS, FORMS, MOVE_BY, STAT_KEYS, STAT_LABEL, STONE_OF, bst, byName,
+  cardLine, catName, effectLine, el, labelBox, learnset, megasFor, natMult,
+  splitPct, splitsFor, splitsReg, statAt, statGrid, toast, typeCard, typeChip,
+  usageTag,
 } from "./01-data.js";
 import { S, boxRows, buildLink, hasStone, ownedNames } from "./02-state.js";
 import { drop, put, putNew } from "./03-store.js";
@@ -59,10 +60,25 @@ function buildRow(id, b){
   m.appendChild(nm);
   var meta = el("div", "rmeta");
   if (p) p.types.forEach(function(t){ meta.appendChild(typeChip(t)); });
-  meta.appendChild(el("span", null, b.nature || "—"));
   meta.appendChild(el("span", "mono", (b.moves || []).length + " moves"));
   if (b.role) meta.appendChild(el("span", null, b.role));
   m.appendChild(meta);
+  /* A build is a Pokemon, so it reads like one. The stats here are the base
+     row's - what the set is built ON - and seeing them beside the nature is
+     most of what tells two Farigiraf apart at a glance.
+     Here the ability is a DECISION, not a list of options, so the cell shows
+     the one the set runs - and the Mega's when a stone is on it, because that
+     is the ability that is live for most of the battle. */
+  if (p) {
+    var abil = (b.mega && b.mega_ability) || b.ability;
+    m.appendChild(cardLine([
+      labelBox(bst(p), "BST"),
+      labelBox(b.nature || null, "Nature"),
+      labelBox(abil || null, b.mega && b.mega_ability ? "Mega ability"
+                                                      : "Ability", "wide")
+    ]));
+    m.appendChild(statGrid(p));
+  }
   row.appendChild(m);
   row.onclick = function(){ buildSheet(id, b); };
   return row;

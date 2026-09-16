@@ -1,8 +1,8 @@
 /* 09-gts.js - GTS: what may be offered, what it is worth, and the export.
    Part of the app; linked into one script by scripts/build_tracker_page.py. */
 import {
-  $, C, FORMS, MEGAS_OF, STONE_OF, bst, byName, capNote, dexLabel, dexNo, el,
-  freeSlug, megasFor, statLine, toast, typeChip,
+  $, C, FORMS, MEGAS_OF, STONE_OF, bst, byName, capNote, cardLine, dexLabel,
+  dexNo, el, freeSlug, labelBox, megasFor, statGrid, toast, typeCard, typeChip,
 } from "./01-data.js";
 import { ORIGIN_LABEL, S, boxRows, hasStone, originOf } from "./02-state.js";
 import { drop, put, putNew } from "./03-store.js";
@@ -715,9 +715,11 @@ function pickField(label, current, subtitle, opener, rec){
   /* the same shape the box uses, badges and all - a Pokemon should not look
      like two different things on two screens */
   var p = byName[current];
-  var b = el("button", "row " + (rec
+  /* the same card as everywhere else - a Pokemon should not look like two
+     different things on two screens */
+  var b = typeCard(el("button", "row " + (rec
       ? (rec.location === "home" ? "home" : "perm")
-      : (p ? "" : "illegal")));
+      : (p ? "" : "illegal"))), p);
   var m = el("div", "rmain");
   var h = el("div", "rname");
   h.appendChild(document.createTextNode(current));
@@ -728,13 +730,20 @@ function pickField(label, current, subtitle, opener, rec){
   meta.appendChild(el("span", "mono", dexLabel(current)));
   if (p) {
     p.types.forEach(function(t){ meta.appendChild(typeChip(t)); });
-    meta.appendChild(el("span", "mono", "BST " + bst(p) + "  •  " + statLine(p)));
-
   } else {
     meta.appendChild(el("span", null,
       "it can sit in HOME but never enter the game"));
   }
   m.appendChild(meta);
+  /* BST is the whole argument on this screen - equivalence in a GTS deposit is
+     the BST tier - so it is the one number that must not be prose. */
+  if (p) {
+    m.appendChild(cardLine([
+      labelBox(bst(p), "BST"),
+      labelBox((p.ab || []).join(" / "), "Possible ability", "wide")
+    ]));
+    m.appendChild(statGrid(p));
+  }
   b.appendChild(m);
   b.onclick = opener;
   w.appendChild(b);
