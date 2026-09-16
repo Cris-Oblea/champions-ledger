@@ -103,9 +103,13 @@ function pokeSheet(rec){
     if (p) {
       var chips = el("div", "rmeta");
       p.types.forEach(function(t){ chips.appendChild(typeChip(t)); });
-      chips.appendChild(el("span", "mono", "BST " + bst(p)));
-      chips.appendChild(el("span", null, p.ab.join(" / ")));
       body.appendChild(chips);
+      /* the same cells the list behind this sheet shows - it read "BST 700"
+         as loose text here while the card outside had it in a box */
+      body.appendChild(cardLine([
+        labelBox(bst(p), "BST"),
+        labelBox(p.ab || [], "Possible ability", "wide")
+      ]));
       body.appendChild(statGrid(p));
       var bfn0 = battleFormNote(p);
       if (bfn0) body.appendChild(bfn0);
@@ -124,8 +128,11 @@ function pokeSheet(rec){
           pn.appendChild(h);
           var mt = el("div", "rmeta");
           m.types.forEach(function(t){ mt.appendChild(typeChip(t)); });
-          mt.appendChild(el("span", "mono", "BST " + bst(m)));
           pn.appendChild(mt);
+          /* BST only: the line right below already reads "Ability X -> Y",
+             which says more than a cell can - it names what is GIVEN UP as
+             well as what is gained. */
+          pn.appendChild(cardLine([labelBox(bst(m), "BST")]));
           var gained = m.ab.join(" / "), lost = p.ab.join(" / ");
           pn.appendChild(el("p", "sub",
             "Ability " + lost + " → " + gained + ". Base " +
@@ -499,9 +506,9 @@ function addSheet(loc){
         m.appendChild(el("div", "rname", p.name));
         var meta = el("div", "rmeta");
         p.types.forEach(function(t){ meta.appendChild(typeChip(t)); });
-        meta.appendChild(el("span", "mono", "BST " + bst(p)));
         if (megasFor(p.name).length) meta.appendChild(el("span", "tag mega", "mega"));
         m.appendChild(meta);
+        m.appendChild(cardLine([labelBox(bst(p), "BST")]));
         r.appendChild(m);
         r.onclick = function(){
           /* HOME never asks bought-or-rental, so it must never read an

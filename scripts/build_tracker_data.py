@@ -269,6 +269,7 @@ def main():
     # far more than the Champions dex: Melmetal and Oricorio are already in the
     # box without one.
     DEXNO = (Q.db("dex_numbers") or {}).get("numbers", {})
+    TYPE_COLORS = Q.db("type_colors") or {}
     # How hard each species is to pull off the GTS: demand measured from
     # ladder usage, supply declared in data/meta/go_sourcing.json. Only the
     # fields the phone needs, to keep the blob small.
@@ -671,6 +672,15 @@ def main():
             "MEGA_OWNER": MEGA_OWNER,
             "STATUSES": (Q.db("statuses") or {}).get("statuses") or {},
             "GTSDIFF": GTSDIFF,
+            # THE TYPE COLOURS, TAKEN FROM POKEMON'S OWN STYLESHEET rather than
+            # guessed at. All eighteen used to be hand-written and darkened so
+            # white text would sit on them, which made every one of them wrong -
+            # Fire was #C8501E against the real #FD7D24. Each row carries the
+            # top colour, the bottom one (Dragon, Flying and Ground really are
+            # two-toned) and the text colour that type is written in, because
+            # that is a decision pokemon.com already made per type.
+            # scripts/build_type_colors.py, and --check says if upstream moved.
+            "TYPE_COLORS": TYPE_COLORS,
             "AB_CLASS": am.get("classes") or {},
             "AB_CLASS_LABEL": am.get("class_labels") or {},
             # WHAT A THING ACTUALLY DOES, AS A NUMBER. Serebii's item text is

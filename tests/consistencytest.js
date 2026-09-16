@@ -88,6 +88,46 @@ setTimeout(() => {
      list(DEX.map(r => r[0]).filter(n => !(w.learnset(n) || []).length)), "0");
   ok("cada forma tiene tipos con color",
      list(DEX.filter(r => r[2].some(t => !(w.TYPE_COLOR||{})[t])).map(r => r[0])), "0");
+  /* THE COLOURS ARE FETCHED, NOT TYPED, and this is what stops them being
+     typed again. All eighteen used to be hand-written and darkened so white
+     text would sit on them, which made every one of them wrong - Fire read
+     #C8501E against the real #FD7D24 (player, 2026-09-16: "son esos los
+     originales o solo un aproximado?").
+
+     Three facts per type, all three from pokemon.com's own rule: the colour,
+     the second tone, and the ink that type's name is written in. */
+  const TC = C.TYPE_COLORS || {};
+  ok("la tabla de colores viaja en el payload", Object.keys(TC).length >= 18, true);
+  ok("y cada color del app sale de ella",
+     list(Object.keys(w.TYPE_COLOR || {})
+       .filter(t => !TC[t] || TC[t].top !== w.TYPE_COLOR[t])), "0");
+  ok("Fire es el oficial, no el oscurecido",
+     (w.TYPE_COLOR || {}).Fire, "#FD7D24");
+  /* the three the player spotted before the script did */
+  ok("Dragon, Flying y Ground son de dos tonos",
+     Object.keys(TC).filter(t => TC[t].two_tone).sort().join(","),
+     "Dragon,Flying,Ground");
+  ok("y los demas repiten su color",
+     list(Object.keys(TC).filter(t => !TC[t].two_tone &&
+       w.TYPE_COLOR2[t] !== w.TYPE_COLOR[t])), "0");
+  /* the ink is a decision pokemon.com already made, and reading it is what
+     lets the app keep the true colour instead of darkening it */
+  ok("ocho tipos se escriben en negro",
+     Object.keys(TC).filter(t => TC[t].ink !== "#FFFFFF").sort().join(","),
+     "Electric,Fairy,Flying,Grass,Ground,Ice,Normal,Steel");
+  ok("y cada tipo tiene tinta", list(Object.keys(TC)
+     .filter(t => !/^#[0-9A-F]{6}$/.test(w.TYPE_INK[t] || ""))), "0");
+  /* NADA INVENTADO. A Stellar row was added here first, because the type is in
+     the chart and a missing colour paints something grey. The player settled
+     it: "stellar no existe, eso es una invencion de smogon" - it reaches
+     typechart.json only because that file is built from Smogon's dump-basics,
+     which inherits from Scarlet/Violet. Champions has no Terastallization and
+     no Pokemon carries the type. So the palette is exactly the eighteen
+     pokemon.com publishes, and this asserts nobody adds a nineteenth. */
+  ok("los 18 y nada mas", Object.keys(TC).length, 18);
+  ok("ninguno inventado", list(Object.keys(TC).filter(t => !TC[t].official)), "0");
+  ok("Stellar no tiene color, porque no existe aqui",
+     !!(w.TYPE_COLOR || {}).Stellar, false);
   ok("cada habilidad del dex tiene texto",
      list([...new Set([].concat.apply([], DEX.map(r => r[5] || [])))]
        .filter(a => !C.ABIL[a])), "0");

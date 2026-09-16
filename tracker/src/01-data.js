@@ -73,13 +73,36 @@ function catName(c){ return c === "P" ? "Physical" : c === "S" ? "Special" : "St
 var MOVE_BY = {}; MOVES.forEach(function(m){ MOVE_BY[m.name] = m; });
 var STAT_KEYS = ["hp","atk","def","spa","spd","spe"];
 var STAT_LABEL = {hp:"HP", atk:"Atk", def:"Def", spa:"SpA", spd:"SpD", spe:"Spe"};
-var TYPE_COLOR = {
-  Normal:"#8A8A78", Fire:"#C8501E", Water:"#2E6FC4", Electric:"#B08A08",
-  Grass:"#3E8C33", Ice:"#3E92A6", Fighting:"#A63424", Poison:"#8140A0",
-  Ground:"#9A7A28", Flying:"#6C6BC4", Psychic:"#C43F76", Bug:"#6E8A18",
-  Rock:"#8A7A3A", Ghost:"#5A4C90", Dragon:"#5340C8", Dark:"#4E423A",
-  Steel:"#6E7C8A", Fairy:"#C0538A", Stellar:"#3F7F7A"
-};
+/* THE REAL TYPE COLOURS, NOT AN APPROXIMATION.
+
+   These were eighteen hand-written hexes with no source beside them, darkened
+   at some point so white text would sit on them - and a darkened colour is no
+   longer the colour. Every one of the eighteen was wrong: Fire read #C8501E, a
+   dark brick, against the real #FD7D24. The player asked the question that
+   settled it (2026-09-16): "son esos los originales o solo un aproximado?"
+
+   They come from pokemon.com's own stylesheet now, fetched and parsed by
+   scripts/build_type_colors.py, and each type brings three facts:
+
+     top     the type's colour
+     bottom  the SECOND colour - and three types really have one, which the
+             player spotted before the script did: Flying is #3DC7EF over
+             #BDB9B8, Ground #F7DE3F over #AB9842, Dragon #53A4CF over #F16E57
+     ink     the colour that type's name is written in, #FFFFFF or #212121,
+             which is why some badges are white-on-colour and some are black.
+             Eight of the eighteen are written in black, and reading their
+             choice is what lets the app keep the true colour instead of
+             darkening it until white works.
+
+   The three tables below are views onto that one source. They are built rather
+   than written so nothing can drift from it. */
+var TYPE_COLORS = (window.CHAMP && window.CHAMP.TYPE_COLORS) || {};
+var TYPE_COLOR = {}, TYPE_COLOR2 = {}, TYPE_INK = {};
+Object.keys(TYPE_COLORS).forEach(function(t){
+  TYPE_COLOR[t] = TYPE_COLORS[t].top;
+  TYPE_COLOR2[t] = TYPE_COLORS[t].bottom || TYPE_COLORS[t].top;
+  TYPE_INK[t] = TYPE_COLORS[t].ink || "#FFFFFF";
+});
 var COSTS = {ranked_win:300, mega_stone_shop:2000, keep_rental_pokemon:2500,
              training_move:250, training_nature:500, training_ability:500,
              training_stat_point:5};
@@ -117,13 +140,13 @@ function toast(msg){
 /* A type's colour as rgba, so a card can be tinted with it without needing
    color-mix - which would add a newer browser requirement than anything else
    this page relies on. Returns the hex untouched when it is not one. */
-function typeTint(t, alpha){
-  var h = TYPE_COLOR[t];
+function tintOf(h, alpha){
   if (!h || h.charAt(0) !== "#" || h.length !== 7) return null;
   return "rgba(" + parseInt(h.slice(1, 3), 16) + "," +
                    parseInt(h.slice(3, 5), 16) + "," +
                    parseInt(h.slice(5, 7), 16) + "," + alpha + ")";
 }
+function typeTint(t, alpha){ return tintOf(TYPE_COLOR[t], alpha); }
 /* Dress a row as a CARD wearing its Pokemon's type: the band across the top
    and the tint behind it. Used by every list that shows Pokemon, so the four
    of them cannot drift apart.
@@ -150,13 +173,40 @@ function typeCard(row, p){
      two half-width columns that each fade downward - a single gradient cannot
      vary along both axes, and this way a mono type sets both halves to the
      same colour and comes out exactly as it did. */
-  var c2 = TYPE_COLOR[types[1]] || c1;
+  /* A MONO TYPE WITH TWO OFFICIAL TONES USES ITS OWN SECOND ONE. Flying,
+     Ground and Dragon are halved on pokemon.com's own badge, so a pure Flying
+     card wears sky over grey exactly as the badge does - the same mechanism
+     the dual type uses, fed from one type instead of two. */
+  /* FOUR COLOURS, because a Dragon/Flying has four: each type's top tone and
+     each type's bottom tone. The band paints them as two stripes that blend
+     left to right, so a single-toned type's stripe comes out solid and the
+     other fifteen look exactly as they did.
+
+     The band's LEFT half is always type 1 and its RIGHT half type 2, each
+     split top-to-bottom by that type's own two tones. A mono Pokemon has no
+     type 2, so BOTH halves take type 1 and the band halves top-to-bottom -
+     which is how the badge itself is halved. Setting the right half to the
+     second tone instead drew an X on pure Dragon. */
+  var mono = !types[1];
+  var top1 = c1, bot1 = TYPE_COLOR2[types[0]] || c1;
+  var top2 = mono ? top1 : TYPE_COLOR[types[1]];
+  var bot2 = mono ? bot1 : (TYPE_COLOR2[types[1]] || top2);
   row.style.setProperty("--tcol", c1);     /* solid, for borders */
-  row.style.setProperty("--tcol2", c2);
-  var s1 = typeTint(types[0], 0.14);
-  var s2 = typeTint(types[1], 0.14) || s1;
+  row.style.setProperty("--tcolb", bot1);
+  row.style.setProperty("--tcol2", top2);
+  row.style.setProperty("--tcol2b", bot2);
+  /* THE TINT RUNS THROUGH BOTH TONES TOO, in the same half as the band above
+     it (player: "asi la sombra o contraste igual difumina el/los color/es del
+     tipo en cada mitad"). So the left half fades Dragon-blue into
+     Dragon-salmon before it fades out, and the right half Flying-cyan into
+     Flying-grey. A single-toned type sets both to the same value and its fade
+     is the plain one it always was. */
+  var s1 = tintOf(top1, 0.14), s1b = tintOf(bot1, 0.14) || s1;
+  var s2 = tintOf(top2, 0.14) || s1, s2b = tintOf(bot2, 0.14) || s2;
   if (s1) row.style.setProperty("--tsoft", s1);
+  if (s1b) row.style.setProperty("--tsoftb", s1b);
   if (s2) row.style.setProperty("--tsoft2", s2);
+  if (s2b) row.style.setProperty("--tsoft2b", s2b);
   return row;
 }
 /* THE SIX STATS AS A TABLE. Written three times in three files before this
@@ -220,11 +270,33 @@ function cardLine(cells){
   cells.filter(Boolean).forEach(function(c){ row.appendChild(c); });
   return row;
 }
-function typeChip(t){
-  var s = el("span", "t", t);
-  s.style.background = TYPE_COLOR[t] || "#777";
-  return s;
+/* ONE PLACE THAT KNOWS WHAT A TYPE LOOKS LIKE.
+
+   There were three others painting a type by hand, and all three had the same
+   bug the moment the colours became the real ones: they wrote `color:#fff`
+   next to the background, so a selected Electric or Ground filter would have
+   been white on yellow. The ink is not a constant - it is the type's own
+   (player, 2026-09-16: "los filtros por tipo siguen otros colores que no son
+   los que deberían. tiene que estar todo al mismo diseño y colores").
+
+   `on` false leaves the fill off and keeps only the edge, which is what an
+   unselected filter is. */
+function typeSkin(node, t, on){
+  var a = TYPE_COLOR[t], b = TYPE_COLOR2[t];
+  if (!a) {
+    if (on !== false) { node.style.background = "#777"; node.style.color = "#fff"; }
+    return node;
+  }
+  node.style.borderColor = a;
+  if (on === false) { node.style.background = ""; node.style.color = ""; return node; }
+  /* halved the way pokemon.com halves it, which shows on the three types that
+     carry two colours */
+  node.style.background = (b && b !== a)
+    ? "linear-gradient(180deg," + a + " 50%," + b + " 50%)" : a;
+  node.style.color = TYPE_INK[t] || "#FFFFFF";
+  return node;
 }
+function typeChip(t){ return typeSkin(el("span", "t", t), t); }
 function bst(p){ return p.b.reduce(function(a,b){ return a+b; }, 0); }
 
 /* The compact rows printed Atk / SpA / Spe and silently dropped HP, Def and
@@ -522,9 +594,9 @@ function capNote(host, shown, total, what){
    or overwrite. */
 export {
   $, C, COSTS, DEX, FORMS, HOME_ALL, MEGAS_OF, MOVES, MOVE_BY, SORT,
-  STAT_KEYS, STAT_LABEL, STONE_OF, TYPE_COLOR,
+  STAT_KEYS, STAT_LABEL, STONE_OF, TYPE_COLOR, TYPE_COLOR2, TYPE_INK,
   bst, byName, capNote, catName, defence, dexLabel, dexNo, el, freeSlug,
-  cardLine, labelBox, learnset, statGrid, typeCard, typeTint,
+  cardLine, labelBox, learnset, statGrid, typeCard, typeSkin, typeTint,
   effectChips, effectLine, effectOf, podiumChip, podiumFor, splitMax, splitPct,
   splitsFor, splitsReg, usageTag,
   megasFor, natMult, rowMatches, setHomeAll, setSort, sortRows, statAt,

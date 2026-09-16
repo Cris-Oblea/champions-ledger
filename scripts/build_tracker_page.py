@@ -121,7 +121,8 @@ def assemble(tpl):
 # put them on window themselves, from their own scripts. The app only consumes
 # them, so closing the app over its names never touched them.
 PUBLIC = [
-    "AB_SET", "CALC", "DEX", "MOVE_BY", "S", "TYPE_COLOR",
+    "AB_SET", "CALC", "DEX", "MOVE_BY", "S",
+    "TYPE_COLOR", "TYPE_COLOR2", "TYPE_INK",
     "abilityTag", "buildLink", "buildSheet", "buildsPane", "byName",
     "closeSheet", "engineCalc", "findDetail", "go", "gtsPickMine", "learnset",
     "megasFor", "moveRowFor", "overlapSweep", "pokeSheet", "teamReport",
