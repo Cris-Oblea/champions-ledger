@@ -165,10 +165,30 @@ SHRINK = [
     ("data/db/learnsets.json",    "learnsets", 0.98, "rows"),
     ("data/db/learnsets.json",    "moves across every learnset", 0.98, "inside"),
     ("data/meta/usage_pokemon.json", "ladder rows", 0.80, "rows"),
+    # Weekly rather than nightly, so on six nights in seven this compares the
+    # file against itself and costs nothing. On the seventh it is the only
+    # thing standing between a broken parse and an app full of blank
+    # percentages. 0.80 on the roster because a Pokemon really can drop off
+    # the ladder; 0.85 on the move rows because those only move when the
+    # PARSE moves - a Pokemon losing a move it was never brought with does
+    # not shift 2884 by much.
+    ("data/meta/usage_splits.json", "Pokemon with splits", 0.80, "rows"),
+    ("data/meta/usage_splits.json", "move rows priced", 0.85, "priced"),
 ]
 
 
 def _count(blob, how="rows"):
+    # THE PER-POKEMON SPLITS ARE THE ONE FILE WHOSE SHAPE CHANGED UNDER US.
+    # pokebase paginates those sections client-side; reading the rendered HTML
+    # saw five rows of nineteen, and the same page carries two datasets whose
+    # percentages do not mean the same thing. Both were found by a person
+    # noticing, not by a check. "priced" counts the move rows across every
+    # Pokemon - the number that collapses if the payload parse ever breaks
+    # again - and it is the reason this file is in SHRINK at all.
+    if how == "priced":
+        mons = (blob.get("pokemon") or {}) if isinstance(blob, dict) else {}
+        return sum(len((v.get("tournament") or {}).get("moves") or [])
+                   for v in mons.values() if isinstance(v, dict))
     if how == "inside":
         rows = blob.get("learnsets", blob) if isinstance(blob, dict) else blob
         if isinstance(rows, dict):
@@ -180,7 +200,7 @@ def _count(blob, how="rows"):
     if isinstance(blob, list):
         return len(blob)
     if isinstance(blob, dict):
-        for k in ("rows", "numbers", "weights", "prices"):
+        for k in ("rows", "numbers", "weights", "prices", "pokemon"):
             if isinstance(blob.get(k), (list, dict)):
                 return len(blob[k])
         return len([k for k in blob if not k.startswith("_")])

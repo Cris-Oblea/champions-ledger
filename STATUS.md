@@ -206,6 +206,22 @@ doing something until then.
 standings only, and 2023 splits its divisions across two pokedata events - the
 one with more players wins, or Seniors and Juniors get two podiums each.
 
+### The splits joined the shrink guard (2026-09-15)
+
+Every bug in this batch was found by a person noticing something on a phone,
+which is a bad way to find out that a source moved. `data/meta/usage_splits.json`
+was not in `daily.py`'s shrink table at all - the richest per-Pokemon data in
+the project, fetched weekly from a page that had already changed shape under
+us twice in one day.
+
+It is in now, on two counts. `rows` is the roster, floored at 0.80 because a
+Pokemon really can drop off the ladder. `priced` is the move rows summed
+across every Pokemon - 2884 today - floored at 0.85, because that number only
+moves when the PARSE moves.
+
+Checked against the bug it exists for: replaying the old "first page only"
+failure gives **1365 of 2884, 47%**, so the gate would have blocked it.
+
 ### A `:not()` chain had been eating rules for as long as they existed
 
 He pointed at the search icon sitting on top of the text, and at the login
