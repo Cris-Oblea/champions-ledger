@@ -77,6 +77,17 @@ is nothing of ours to contradict - and nothing of theirs is ever used for a
 species Champions does have, where the move rebalance makes PokeAPI wrong (81%
 of its PP values and 16 of its base powers disagree with Champions).
 
+**The movepools finally have a second opinion.** Every other number here is
+crossed against something - the damage formula against Smogon's engine, the type
+chart against Serebii's own weakness tables, the item prices against pokebase -
+but a movepool came from one parse of one page, and when that parse went wrong
+it went wrong silently. PokeAPI tracks Champions as its own version group, so
+`scripts/audit_learnsets.py` pairs 235 of them against an independent read:
+~14,600 move-species pairs, **seven disagreements, and Serebii backed this
+project on all seven**. It never rewrites anything - when the two disagree,
+Serebii decides - and each known disagreement records which Serebii page
+settled it, so only a NEW one speaks up.
+
 **Every card carries its Pokemon's sprite**, fetched from a CDN at a pinned
 commit and never copied into this repository - those are Nintendo and Game Freak
 images, PokeAPI licenses its own sprites repo NOASSERTION for exactly that

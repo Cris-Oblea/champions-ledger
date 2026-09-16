@@ -125,6 +125,15 @@ def stages(reg, deep=False):
         # that exists for them, and the card says so.
         Stage("home_dex", "types and stats for the species outside Champions",
               ["scripts/fetch_home_dex.py"], False),
+        # THE ONLY SECOND OPINION THE MOVEPOOLS HAVE. PokeAPI carries Champions
+        # as its own version group, so "who learns what" can finally be crossed
+        # against something - the one number in this project that never was.
+        # It never rewrites anything: when the two disagree, Serebii decides,
+        # and the seven disagreements there are today were each checked that
+        # way. Not in the gate, because it needs a 10 MB table that data/raw
+        # does not commit.
+        Stage("learnset_audit", "cross the movepools against PokeAPI",
+              ["scripts/audit_learnsets.py"], False),
         Stage("text_facts", "pick the better description per move and ability",
               ["scripts/build_text_facts.py"]),
         Stage("statuses", "status conditions, with Champions' own rebalance",
