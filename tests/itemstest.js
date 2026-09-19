@@ -265,11 +265,19 @@ setTimeout(() => {
            [...d.querySelectorAll("#calcField > .fieldgroup")].length, 0);
         ok("los 32 botones del campo siguen ahi",
            d.querySelectorAll("#calcField .tog").length, 32);
-        /* las dos mitades de un lado, una al lado de la otra */
-        ok("un lado se parte en dos", !!col.querySelector(".calcsplit"), true);
-        ok("los ajustes en una mitad y las stats en la otra",
-           !!col.querySelector(".calcsplit > .setblock") &&
-           !!col.querySelector(".calcsplit > .spblock"), true);
+        /* Y LAS DOS MITADES DE UN LADO SIGUEN APILADAS, a proposito. Ponerlas
+           una al lado de la otra ahorraba 107px - 950 a 843 - y estuvo puesto
+           hasta que se MIRO la pantalla: un lado mide 360px a tres columnas,
+           asi que cada mitad son 169 y la casilla del SP salia de VEINTIDOS
+           pixeles. Ningun ancho arregla eso; a 1920 serian 220. */
+        ok("un lado no se parte en dos", !!col.querySelector(".calcsplit"), false);
+        /* y la fila de stat conserva sus cuatro partes: etiqueta, casilla,
+           stage y el valor calculado */
+        /* [2], no [1]: la 0 es la cabecera y la 1 es HP, que no lleva stage */
+        const sprow = [...col.querySelectorAll(".sp")][2];
+        ok("la fila de stat tiene sus cuatro partes", sprow.children.length, 4);
+        ok("con su casilla editable", !!sprow.querySelector("input"), true);
+        ok("y su selector de stage", !!sprow.querySelector("select"), true);
 
 
         console.log("\n  las piedras siguen en su panel");

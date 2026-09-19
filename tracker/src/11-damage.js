@@ -657,27 +657,19 @@ function calcSideCtl(which){
   ss0.onchange = function(){ side.status = ss0.value || null; calcDraw(); };
   fs0.appendChild(ss0);
   g2.appendChild(fs0);
-  /* The two halves of a side, so it costs the height of the TALLER one
-     rather than the sum of both. Falls back to one column under 980px,
-     where there is no room for two and stacking is the right answer. */
-  var split = el("div", "calcsplit");
-  var setBox = el("div", "setblock");
-  setBox.appendChild(g2);
-  split.appendChild(setBox);
-  host.appendChild(split);
+  /* THE TWO HALVES STAY STACKED, and that was measured twice. Running the
+     dropdowns beside the stats saves 107px - 950 down to 843 - and it was in
+     for about an hour until the screen was actually LOOKED at: a side is 360px
+     wide at three columns, so each half is 169, and the SP number box came out
+     TWENTY-TWO PIXELS wide. A stat editor you cannot read is not worth 107px,
+     and no viewport makes those halves wide enough - even at 1920 they are
+     about 220. The height that mattered was the field's, and that is fixed
+     where it was broken. */
+  host.appendChild(g2);
 
   /* which stat does the chosen move actually read on this side? Body Press
      attacks off Defense and Psyshock hits it, so this is not the category. */
   var live = calcLiveStats();
-
-  /* THE STATS AND THE DROPDOWNS, SIDE BY SIDE WHERE THERE IS ROOM. Measured
-     against pokebase's calculator, which is what the player pointed at: its
-     six stat rows are a 43px pitch and ours are 44, so the rows were never the
-     difference. What it does that we did not is run the item, the ability and
-     the moves in a SECOND COLUMN beside the stats instead of stacking them, so
-     a side costs the height of the taller half rather than the sum of both.
-     127px per side, 254px for the pair. */
-  var statBox = el("div", "spblock");
 
   var head = el("div", "sp");
   head.style.color = "var(--faint)";
@@ -685,7 +677,7 @@ function calcSideCtl(which){
     var s = el("span", i === 0 ? "k" : i === 3 ? "calc" : "v", t);
     head.appendChild(s);
   });
-  statBox.appendChild(head);
+  host.appendChild(head);
 
   STAT_KEYS.forEach(function(k, i){
     var used = (which === "atk" && k === live.aKey) ||
@@ -722,7 +714,7 @@ function calcSideCtl(which){
     var vs = el("span", "calc", String(val));
     if (used) { vs.style.color = "var(--accent)"; vs.style.fontWeight = "600"; }
     row.appendChild(vs);
-    statBox.appendChild(row);
+    host.appendChild(row);
   });
 
   var g3 = el("div", "grid2 tight");
@@ -741,13 +733,12 @@ function calcSideCtl(which){
     };
     fh.appendChild(ih);
     g3.appendChild(fh);
-    setBox.appendChild(g3);
+    host.appendChild(g3);
   }
 
   var b = el("div", "budget");
   b.id = which + "Budget";
-  statBox.appendChild(b);
-  split.appendChild(statBox);
+  host.appendChild(b);
   calcBudget(which);
 }
 
@@ -1015,7 +1006,10 @@ function calcFieldCtl(){
   tog("Stealth Rock", CALC.stealthRock, function(){
     CALC.stealthRock = !CALC.stealthRock; calcDraw(); });
   [1, 2, 3].forEach(function(n){
-    tog(n + " Spikes", CALC.spikes === n, function(){
+    /* "1 Spikes  2 Spikes  3 Spikes" spent the word three times and
+       wrapped the row. The group already says what it is - these are
+       layers, and the tooltip says so. */
+    tog("Spikes ×" + n, CALC.spikes === n, function(){
       CALC.spikes = CALC.spikes === n ? 0 : n; calcDraw(); });
   });
   tog("Leech Seed", CALC.leechSeed, function(){

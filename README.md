@@ -121,10 +121,27 @@ its **label on a line of its own**, so eight lines were pure heading and the
 column reached 747px — which, since the grid stretches all three columns to the
 tallest, was holding the attacker and the defender open at 370; and Ability,
 Item, Nature and Status stacked full-width instead of sitting beside the stats.
-Fixed, the calculator is **843px instead of 1100** at 1526, **1385 instead of
-1704** at 820 and **2472 instead of 2864** on a phone. Nothing was removed, and
-`itemstest` asserts the structure that produced it — all 32 field buttons still
-there, every group label inside its row, and the six stat rows intact. The **status dictionary is folded**: seven entries you read once, which
+A fourth came from Smogon's calculator: its caption sits **beside** its control
+rather than above it, so four fields cost two lines instead of four. Its selects
+are 19px tall and its rows 16px, which is desktop-only density a phone-first app
+cannot copy — but that one idea is portable, and the control keeps a height a
+thumb can hit.
+
+Fixed, the calculator is **904px instead of 1100** at 1526, **1275 instead of
+1704** at 820 and **2208 instead of 2864** on a phone, with the field column
+alone going from 747px to 374.
+
+One change was made, measured as a 107px saving, and then **taken back out after
+looking at it**: running the dropdowns beside the stats rather than above them.
+A side is 360px wide at three columns, so each half is 169 and the SP number box
+came out **22 pixels** wide — and no viewport fixes that, since even 1920 leaves
+about 220. A stat editor you cannot read is not worth 107px. The number box is
+sized for a number now (70px) and the space goes to the computed stat, which is
+the half you read.
+
+Nothing was removed, and `itemstest` asserts the structure that produced it —
+all 32 field buttons still there, every group label inside its row, the six stat
+rows intact with all four parts, and the side **not** split. The **status dictionary is folded**: seven entries you read once, which
 were sitting open under the controls and pushing the number the screen exists
 for further up the scroll. It stays on this screen, because that is where a
 status gets applied and where its multiplier is read, and it is drawn the first
