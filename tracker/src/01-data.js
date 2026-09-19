@@ -481,34 +481,30 @@ function megasFor(name){
    player's complaint was exact: "no me sirve una descripcion bonita que en el
    fondo no me diga la verdad calculada."
 
-   C.EFFECTS carries both halves for an item, an ability or a move:
+   C.EFFECTS carries, for an item, an ability or a move:
 
-     x  the multipliers the ENGINE applies, read out of its own modifier
-        stages in 4096ths - Guts is 6144/4096, not the 1.477 a damage ratio
-        suggests
-     t  the numbers Smogon writes down, each with the sentence it came from,
-        so a number on screen can always be traced back to its words
+     desc  Smogon's own sentence
+     c     the chips - one per FACT, each already carrying its subject
 
-   Both, where both exist, because agreeing is the evidence. */
+   THE CHIPS ARE NOT ASSEMBLED HERE any more, and that is the fix. This used
+   to push one chip per engine measurement and one per number found in the
+   text, so Black Glasses read "x1.2  x1.2  1.2x" - the physical probe, the
+   special probe and Smogon's sentence, all saying the same thing - and Life
+   Orb read "x1.2998  x1.2998  1.3x", disagreeing with itself because the
+   engine works in 4096ths (player, 2026-09-18: "se tiene que llegar a 1 solo
+   concenso de la verdad... no duplicar mas la informacion, es un desperdicio
+   y es feo visualmente").
+
+   Deciding that needs the exact 4096ths, the stage each was pushed at and the
+   sentence each number sits in - none of which belongs on a phone. It is done
+   in scripts/effect_chips.py, where `--audit` can also list the numbers whose
+   subject it cannot name yet. What arrives here is [text, why] and is drawn. */
 function effectOf(name){
   return (C.EFFECTS || {})[name] || null;
 }
-/* The numbers as short chips: "x1.3", "1/16 of max HP". Deliberately not a
-   sentence - a sentence is what this is replacing. */
+/* The numbers as short chips: "x1.3 damage dealt", "1/10 of max HP". */
 function effectChips(e){
-  var out = [];
-  (e.x || []).forEach(function(p){
-    out.push({text:"x" + p[1], why:p[0] + " (measured in the engine)"});
-  });
-  /* p[0] ALREADY CARRIES ITS UNIT. This used to append one - " stages" onto
-     "1 stages", " turns" onto "8 turns" - and the player read the result on
-     his phone: Intimidate saying "1 stages stages" and an item "8 TURNS
-     TURNS". The unit is written once, by build_effects.py, where the number
-     is extracted. Nothing is added here. */
-  (e.t || []).forEach(function(p){
-    out.push({text:p[0], why:p[2]});
-  });
-  return out;
+  return (e.c || []).map(function(p){ return {text:p[0], why:p[1]}; });
 }
 /* A row of them, with the source behind each on hover. */
 function effectLine(name){

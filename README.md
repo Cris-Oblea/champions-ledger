@@ -66,6 +66,24 @@ six base stats - so two cards can be read against each other down the column
 instead of as six numbers with six words between them. Nothing is trimmed to
 fit: a long ability list wraps rather than ending in an ellipsis.
 
+**One fact, one chip, and the chip says what its number governs.** An item, an
+ability or a move carries its numbers as chips beside Smogon's sentence, and
+they are worked out once — in `scripts/effect_chips.py`, never on the phone —
+because deciding them needs things a screen does not have. The engine is probed
+through a physical and a special vehicle, so the same multiplier comes back
+twice; it works in 4096ths, so Life Orb's is 5324/4096 and not 1.3; and Smogon's
+sentence usually states it as well. Black Glasses used to read `x1.2  x1.2
+1.2x`. It reads **`x1.2 damage dealt`** now: measurements collapsed by the value
+and the quantity they multiply, rounded to what the engine means, a text number
+dropped where the engine already measured it, and the last one dropped entirely
+when the sentence holds only that one number — Aerilate's `1.2x` beside "have
+1.2× power" was the same three characters twice. What survives is labelled from
+the words either side of it in the sentence, so Overgrow reads `x1.5 offensive
+stat` and `at 1/3 max HP` rather than `1.5x` and `1/3`. `effect_chips.py
+--audit` lists the two numbers whose subject it still cannot name, so the gaps
+are counted rather than quietly wrong. The exact 4096ths stays in
+`data/db/effects.json` and in each chip's tooltip.
+
 **A HOME Pokemon Champions has never heard of is still a card.** HOME holds
 species the game does not have, and those rows used to be a name and a "not in
 the Champions dex" tag with nothing else - no types, no BST, no stats, no
