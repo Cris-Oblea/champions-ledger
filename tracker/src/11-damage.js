@@ -588,8 +588,15 @@ function calcSideCtl(which){
   /* WHO has the ability matters, so each side owns its own picker. The list
      leads with this Pokemon's real abilities and then every ability that has a
      measured effect, because the opponent's is often the unknown. */
-  var g2 = el("div", "grid2");
-  g2.style.marginTop = "10px";
+  /* ONE COMPACT BLOCK, NOT FOUR STACKED ONES. Ability, Item and Nature each
+     had a full-width field of their own and Status a fifth further down, so a
+     side spent about 200px on four dropdowns before the stats began - and the
+     screen carries two sides (player, 2026-09-19: "ocupa demasiado espacio en
+     pantalla... tenemos botones grandes, un espaciado enorme entre lineas y
+     secciones"). They belong together: they are the four things you set on a
+     Pokemon before you read the number. */
+  var g2 = el("div", "grid2 tight");
+  g2.style.marginTop = "8px";
   var fa = el("div", "field");
   fa.appendChild(el("label", "f", "Ability"));
   var sa = el("select");
@@ -625,7 +632,6 @@ function calcSideCtl(which){
   si.onchange = function(){ side.item = si.value || null; calcDraw(); };
   fi.appendChild(si);
   g2.appendChild(fi);
-  host.appendChild(g2);
 
   var fn = el("div", "field");
   fn.appendChild(el("label", "f", "Nature"));
@@ -637,7 +643,21 @@ function calcSideCtl(which){
   sn.value = side.nature || "";
   sn.onchange = function(){ side.nature = sn.value || null; calcDraw(); };
   fn.appendChild(sn);
-  host.appendChild(fn);
+  g2.appendChild(fn);
+
+  var fs0 = el("div", "field");
+  fs0.appendChild(el("label", "f", "Status"));
+  var ss0 = el("select");
+  [["", "healthy"], ["brn", "burned"], ["psn", "poisoned"],
+   ["tox", "badly poisoned"], ["par", "paralysed"], ["slp", "asleep"],
+   ["frz", "frozen"]].forEach(function(o){
+    ss0.appendChild(new Option(o[1], o[0]));
+  });
+  ss0.value = side.status || "";
+  ss0.onchange = function(){ side.status = ss0.value || null; calcDraw(); };
+  fs0.appendChild(ss0);
+  g2.appendChild(fs0);
+  host.appendChild(g2);
 
   /* which stat does the chosen move actually read on this side? Body Press
      attacks off Defense and Psyshock hits it, so this is not the category. */
@@ -689,19 +709,7 @@ function calcSideCtl(which){
     host.appendChild(row);
   });
 
-  var g3 = el("div", "grid2");
-  var fs = el("div", "field");
-  fs.appendChild(el("label", "f", "Status"));
-  var ss = el("select");
-  [["", "healthy"], ["brn", "burned"], ["psn", "poisoned"],
-   ["tox", "badly poisoned"], ["par", "paralysed"], ["slp", "asleep"],
-   ["frz", "frozen"]].forEach(function(o){
-    ss.appendChild(new Option(o[1], o[0]));
-  });
-  ss.value = side.status || "";
-  ss.onchange = function(){ side.status = ss.value || null; calcDraw(); };
-  fs.appendChild(ss);
-  g3.appendChild(fs);
+  var g3 = el("div", "grid2 tight");
   if (which === "def") {
     /* the HP it is ON, not its maximum - after a switch, after chip, after the
        first attack. This is what turns a percentage into a KO answer. */
@@ -717,8 +725,8 @@ function calcSideCtl(which){
     };
     fh.appendChild(ih);
     g3.appendChild(fh);
+    host.appendChild(g3);
   }
-  host.appendChild(g3);
 
   var b = el("div", "budget");
   b.id = which + "Budget";

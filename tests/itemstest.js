@@ -187,12 +187,19 @@ setTimeout(() => {
            was quietly implying the console games' 25%. */
         /* The status table no longer sits behind a third tab on Items: it was
            moved next to the field toggles on the damage view, which is where
-           it actually gets applied (page comment, 2026-09-11). It is drawn at
-           startup, so there is nothing to click - the stale click on a button
-           that no longer exists was crashing this file. */
+           it actually gets applied (page comment, 2026-09-11).
+
+           FOLDED since 2026-09-19, and drawn when the fold is first opened -
+           it is a dictionary you read once, and open by default it was pushing
+           the number this screen exists for further up the scroll. So this
+           opens it, which doubles as the assertion that opening it works. */
         console.log("\n  los estados");
         ok("la tabla vive ahora en la vista de damage",
            !!d.querySelector("#v-calc #statusList"), true);
+        ok("y arranca plegada", d.getElementById("statusBody").hidden, true);
+        d.getElementById("statusFold")
+         .dispatchEvent(new w.MouseEvent("click", {bubbles:true}));
+        ok("se abre al tocarla", d.getElementById("statusBody").hidden, false);
         const st = [...d.querySelectorAll("#statusList .row")];
         ok("los ocho estados", st.length, 8);
         const par = st.find(r => r.textContent.indexOf("Paralysis") === 0);
@@ -211,6 +218,31 @@ setTimeout(() => {
            true);
         ok("y lista los movimientos que lo causan",
            /moves cause it/.test(par.textContent), true);
+        /* ------------------------ y el resto de la pantalla, mas junto */
+        /* La calculadora lleva un atacante Y un defensor, asi que cada
+           milimetro que gasta lo gasta dos veces. Eran cuatro desplegables de
+           ancho completo por lado, uno debajo de otro, antes de llegar a las
+           stats (2026-09-19: "ocupa demasiado espacio... espaciado enorme
+           entre lineas y secciones"). No se quita nada: se juntan. */
+        console.log("\n  la calculadora, mas junta");
+        w.CALC.atk = {name:"Garchomp", buildId:null,
+          sp:{hp:0,atk:32,def:0,spa:0,spd:0,spe:32},
+          boost:{atk:0,def:0,spa:0,spd:0,spe:0}, nature:null, ability:null,
+          item:null, status:null, curHP:null};
+        w.calcDraw();
+        const col = d.getElementById("calcAtk");
+        const loose = [...col.querySelectorAll(".field")]
+          .filter(f => !f.closest(".grid2"));
+        ok("ningun desplegable suelto a ancho completo", loose.length, 0);
+        const grid = col.querySelector(".grid2.tight");
+        ok("los cuatro van en un solo bloque",
+           grid ? grid.querySelectorAll(".field").length : 0, 4);
+        ok("y son los cuatro que se ponen antes de leer el numero",
+           [...grid.querySelectorAll("label.f")].map(l => l.textContent).join(","),
+           "Ability,Item,Nature,Status");
+        ok("las seis stats siguen ahi, con su cabecera",
+           col.querySelectorAll(".sp").length, 7);
+
 
         console.log("\n  las piedras siguen en su panel");
         click(d.getElementById("gearStones"));

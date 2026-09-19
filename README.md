@@ -111,6 +111,19 @@ counts as a block on a status move. So Will-O-Wisp is blocked by Thermal
 Exchange and Fire Lash is not, because Big Pecks only eats its Defence drop and
 that is not the move being stopped.
 
+**The calculator carries two of everything, so every millimetre it spends is
+spent twice.** Ability, Item, Nature and Status each had a full-width field of
+its own, stacked, on both sides — about 200px per side before the stats began.
+They sit together now in one tighter block, the six SP rows lost 10px each, and
+the sections lost their padding: the same controls, closer, the way pokebase's
+and Smogon's are. Nothing was removed, and `itemstest` asserts that — four
+fields in one grid, no loose full-width dropdown, and the six stat rows still
+there. The **status dictionary is folded**: seven entries you read once, which
+were sitting open under the controls and pushing the number the screen exists
+for further up the scroll. It stays on this screen, because that is where a
+status gets applied and where its multiplier is read, and it is drawn the first
+time it is opened rather than on every redraw.
+
 **Every row in a Worlds ranking has a Pokemon behind it.** A Worlds list is
 history, and **53 of the names across the four championships are not in the
 Champions dex** — the 2025 field was full of Calyrex, Koraidon and Flutter Mane.

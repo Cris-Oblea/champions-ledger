@@ -237,11 +237,25 @@
            damage roll. It used to sit behind a third tab on Items, which is
            where the player found it wrong (2026-09-11). Here it is next to
            the field toggles that actually apply it. -->
-      <h2 style="margin-top:22px">Status effects</h2>
-      <p class="sub">What each one does to the numbers above. Champions
-        rebalanced three of them; every value says where it came from, so a
-        figure nobody measured here never looks like one that was.</p>
-      <div id="statusList" class="list"></div>
+      <!-- FOLDED. It is a DICTIONARY - seven entries you read once and
+           then know - and it was sitting open under the controls, pushing the
+           thing you came here for further up the scroll every time (player,
+           2026-09-19: "el apartado de status effects deberia ir en una pestana
+           como diccionario, y no ocupar espacio en pagina de damage calc...
+           debe estar colapsada en algun lado"). It stays on this screen,
+           because this is where a status is applied and where its multiplier
+           is read - one tap, and shut by default. -->
+      <div class="foldwrap">
+        <button class="btn sm fold" id="statusFold" aria-expanded="false"
+          aria-controls="statusBody">Status effects — what each does to
+          the numbers</button>
+        <div id="statusBody" hidden>
+          <p class="sub">Champions rebalanced three of them; every value says
+            where it came from, so a figure nobody measured here never looks
+            like one that was.</p>
+          <div id="statusList" class="list"></div>
+        </div>
+      </div>
     </section>
 
     <!-- =========================================================== FIND -->
