@@ -84,6 +84,28 @@ stat` and `at 1/3 max HP` rather than `1.5x` and `1/3`. `effect_chips.py
 are counted rather than quietly wrong. The exact 4096ths stays in
 `data/db/effects.json` and in each chip's tooltip.
 
+**One Pokemon sheet, three doors.** Opening a Pokemon from the Champions box,
+from HOME or from a search result used to give three different sheets: the
+search view had the abilities, the Worlds sets and the whole movepool, the box
+had the Mega line, the type chart and Smogon's write-up, and neither had the
+other half — so which door you came through decided what you were allowed to
+know about the same Pokemon. It is one sheet now, drawn in two halves with a
+gap in the middle: **identity** (picture, types, BST, the six stats, the other
+spellings of the name, what it becomes mid-battle), then whatever that door
+owns, then **reference** (the Mega line and what the stone costs as well as
+adds, what damages it, its abilities and how much of its own movepool each one
+touches, the top-8 sets it won with, its movepool under the same filters the
+build editor uses, and what Smogon wrote). Only ownership may sit in that gap —
+origin, shiny, trained, and the note — and it sits there rather than at the
+bottom because an edit belongs under the name it applies to, not below two
+hundred rows of movepool. `ledgertest` holds all three to it: the box may add
+those and nothing else.
+
+**A shiny is a different picture.** Both sprite sets carry one, so a copy
+recorded as shiny wears its own colours on its card and on its sheet. Only
+where a specific copy is in hand — the search view draws the species, not his
+copy of it.
+
 **A HOME Pokemon Champions has never heard of is still a card.** HOME holds
 species the game does not have, and those rows used to be a name and a "not in
 the Champions dex" tag with nothing else - no types, no BST, no stats, no

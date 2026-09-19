@@ -2,7 +2,7 @@
    Part of the app; linked into one script by scripts/build_tracker_page.py. */
 import {
   $, C, FORMS, SORT, STAT_KEYS, STAT_LABEL, STONE_OF, bst, byName, capNote,
-  cardLine, defence, dexLabel, el, freeSlug, labelBox, megasFor, outsideRow,
+  cardLine, dexLabel, el, freeSlug, labelBox, megasFor, outsideRow,
   spriteFor, statGrid, toast, typeCard, typeChip,
 } from "./01-data.js";
 import { S, hasStone, originOf } from "./02-state.js";
@@ -13,6 +13,10 @@ import { ask, closeSheet, fbtn, openSheet } from "./04-nav.js";
    recomputed here. This is why the link order is no longer numeric: 09-gts
    runs before this file because this file imports it. */
 import { boxBadges } from "./09-gts.js";
+/* ONE sheet, three doors. pokeHead and pokeBody are the whole of a
+   Pokemon's sheet; this file supplies only what owning a copy adds -
+   origin, shiny, trained, the note and the buttons. */
+import { pokeBody, pokeHead } from "./12-find.js";
 /* ===================================================================== rows */
 function pokeRow(rec){
   var p = byName[rec.name];
@@ -25,7 +29,9 @@ function pokeRow(rec){
   var cls = rec.location === "home" ? (p ? "home" : "illegal")
           : rec.status === "rental" ? "rental"
           : o === "home" ? "perm" : o === "champions" ? "locked" : "unknown";
-  var row = typeCard(el("button", "row " + cls), d);
+  /* HIS COPY'S COLOURS, not the species'. A shiny really is a different
+     picture and both sprite sets carry one (player, 2026-09-18). */
+  var row = typeCard(el("button", "row " + cls), d, !!rec.shiny);
   var main = el("div", "rmain");
   var nm = el("div", "rname");
   nm.appendChild(document.createTextNode(rec.name));
@@ -119,106 +125,23 @@ function battleFormNote(p){
 }
 
 function pokeSheet(rec){
-  var p = byName[rec.name];
-  /* The row to DRAW, which for a species Champions does not have is the
-     main-series one - the sheet was as blank as the card was.
+  /* THE SAME SHEET THE SEARCH VIEW DRAWS, with this copy's own facts wedged
+     into the middle of it. It used to be a second, smaller sheet: it had the
+     Mega line, the type chart and Smogon's write-up, and it had no abilities,
+     no Worlds sets and no movepool at all - so which door you came through
+     decided what you were allowed to know about the same Pokemon (player,
+     2026-09-18: "las fichas... deben ser todas iguales").
 
-     NOT CALLED `d`: the damage table further down declares `var d =
-     defence(...)` inside the same callback, and `var` hoists to the top of it,
-     so a row named `d` was already undefined by the time `if (d)` ran and the
-     whole sheet fell into the "not in the dex" branch - for Aegislash, which
-     very much is. profiletest caught it on the first run. */
-  var show = p || outsideRow(rec.name);
+     The row to DRAW, which for a species Champions does not have is the
+     main-series one. NOT CALLED `d`: the damage table used to declare
+     `var d = defence(...)` inside this same callback and `var` hoists to the
+     top of it, so a row named `d` was already undefined by the time `if (d)`
+     ran and the whole sheet fell into the "not in the dex" branch - for
+     Aegislash, which very much is. */
+  var show = byName[rec.name] || outsideRow(rec.name);
   var isHome = rec.location === "home";
   openSheet(rec.name, function(body){
-    if (show) {
-      /* beside the facts, not above them - see findDetail for the measurement */
-      var head = el("div", "sheethead");
-      var big = spriteFor(rec.name, true);
-      if (big) head.appendChild(big);
-      var info = el("div", "sheetfacts");
-      var chips = el("div", "rmeta");
-      show.types.forEach(function(t){ chips.appendChild(typeChip(t)); });
-      info.appendChild(chips);
-      /* the same cells the list behind this sheet shows - it read "BST 700"
-         as loose text here while the card outside had it in a box */
-      info.appendChild(cardLine([
-        labelBox(bst(show), "BST"),
-        labelBox(show.ab || [], "Possible ability", "wide")
-      ]));
-      info.appendChild(statGrid(show));
-      head.appendChild(info);
-      body.appendChild(head);
-      /* The sheet keeps ONE line, because it is the only place that says the
-         consequence rather than the label - and it is where a keep-or-send
-         decision gets made. Trimmed to that: no repeat of the tag. */
-      if (show.outside) {
-        var osrc = el("div", "note");
-        osrc.style.marginBottom = "10px";
-        osrc.innerHTML = "<strong>Not in the Champions dex.</strong> It can "
-          + "live in HOME but never enter the game"
-          + (show.approx ? ". No row for this exact form either — the "
-             + "numbers shown are " + show.approx + "'s" : "") + ".";
-        body.appendChild(osrc);
-      }
-      var bfn0 = battleFormNote(p);
-      if (bfn0) body.appendChild(bfn0);
-
-      var ms = megasFor(rec.name);
-      if (ms.length) {
-        body.appendChild(el("h2", null, "Mega line"));
-        ms.forEach(function(m){
-          var st = STONE_OF[m.name], own = hasStone(st);
-          var pn = el("div", "panel");
-          pn.style.marginBottom = "8px";
-          var h = el("div", "rname");
-          h.appendChild(document.createTextNode(m.name));
-          h.appendChild(el("span", "tag " + (own ? "mega" : "warn"),
-            own ? st + " owned" : st + " — 2000 VP"));
-          pn.appendChild(h);
-          var mt = el("div", "rmeta");
-          m.types.forEach(function(t){ mt.appendChild(typeChip(t)); });
-          pn.appendChild(mt);
-          /* BST only: the line right below already reads "Ability X -> Y",
-             which says more than a cell can - it names what is GIVEN UP as
-             well as what is gained. */
-          pn.appendChild(cardLine([labelBox(bst(m), "BST")]));
-          var gained = m.ab.join(" / "), lost = p.ab.join(" / ");
-          pn.appendChild(el("p", "sub",
-            "Ability " + lost + " → " + gained + ". Base " +
-            p.types.join("/") + " → " + m.types.join("/") + ". Spe " +
-            p.b[5] + " → " + m.b[5] + ", SpA " + p.b[3] + " → " +
-            m.b[3] + ", Atk " + p.b[1] + " → " + m.b[1] + "."));
-          body.appendChild(pn);
-        });
-      }
-
-      body.appendChild(el("h2", null, "Takes damage"));
-      /* `show`, NOT `p` - the same lesson as the `var d` note above, learned a
-         second time. For a species Champions has never heard of `p` is
-         undefined, so opening the sheet of anything tagged "Not in Champions"
-         threw before it could draw a single row: the card knew the types, the
-         stats and the abilities, and the sheet died on the one line that read
-         them off the wrong row (player, 2026-09-18, "1 script error"). A type
-         chart is a type chart - it does not care which game the row came
-         from. */
-      var d = defence(show.types);
-      var groups = [[4,"×4"],[2,"×2"],[.5,"½"],[.25,"¼"],[0,"immune"]];
-      var dl = el("div");
-      groups.forEach(function(g){
-        var hits = Object.keys(d).filter(function(t){ return d[t] === g[0]; });
-        if (!hits.length) return;
-        var line = el("div", "rmeta");
-        line.style.marginBottom = "5px";
-        line.appendChild(el("span", "tag" + (g[0] > 1 ? " bad" : g[0] < 1 ? " ok" : ""), g[1]));
-        hits.forEach(function(t){ line.appendChild(typeChip(t)); });
-        dl.appendChild(line);
-      });
-      body.appendChild(dl);
-    } else {
-      body.appendChild(el("div", "note bad",
-        "Not in the Champions dex. It can live in HOME forever, but it can never be sent into the game."));
-    }
+    pokeHead(body, show, {shiny: !!rec.shiny, rec: rec});
 
     if (rec.status === "rental") {
       var w = el("div", "note warn");
@@ -290,30 +213,18 @@ function pokeSheet(rec){
     body.appendChild(el("p", "sub",
       "Tap Save below to keep these."));
 
-    /* WHAT SMOGON WROTE. Last, because it is long and because the decisions
-       above it - origin, training, the note - are what the sheet is for. A
-       fold, and the 407 KB behind it is not fetched until it is opened. */
-    var wrap = el("div");
-    var tog = el("button", "btn sm fold");
-    tog.setAttribute("aria-expanded", "false");
-    var host = el("div");
-    host.hidden = true;
-    tog.textContent = "What Smogon says about " + rec.name;
-    tog.onclick = function(){
-      var open = host.hidden;
-      host.hidden = !open;
-      tog.setAttribute("aria-expanded", open ? "true" : "false");
-      if (open && !host._drawn) { host._drawn = 1; analysisPanel(rec.name, host); }
-    };
-    wrap.appendChild(tog);
-    wrap.appendChild(host);
-    body.appendChild(wrap);
-
     body.appendChild(el("h2", null, "Note"));
     var ta = el("textarea");
     ta.value = rec.note || "";
     ta.id = "pkNote";
     body.appendChild(ta);
+
+    /* AND THEN EVERYTHING IT IS, the same as the search view draws it: the
+       Mega line, what damages it, its abilities, the Worlds sets it won with,
+       its whole movepool and what Smogon wrote. Below the editable half,
+       because origin, training and the note are what this door is FOR and an
+       edit does not belong under two hundred rows of movepool. */
+    pokeBody(body, show, {shiny: !!rec.shiny, rec: rec});
   }, moveButtons(rec, isHome));
 }
 

@@ -158,7 +158,7 @@ function typeTint(t, alpha){ return tintOf(TYPE_COLOR[t], alpha); }
 
    The card styling itself is scoped to `.cards`, so a row marked here and
    dropped into a plain `.list` simply stays a row. */
-function typeCard(row, p){
+function typeCard(row, p, shiny){
   row.className += " card";
   var types = (p && p.types) || [];
   var c1 = TYPE_COLOR[types[0]];
@@ -211,7 +211,7 @@ function typeCard(row, p){
      than at six call sites. A marker class rather than `:has(.sprite)`: a
      browser without `:has()` drops the rule silently and the badges would run
      under the image, which is the exact fault the overlap sweep exists for. */
-  var pic = spriteFor(p.name);
+  var pic = spriteFor(p.name, false, shiny);
   if (pic) { row.appendChild(pic); row.className += " hassprite"; }
   return row;
 }
@@ -380,11 +380,21 @@ var SPRITE_BASE = IMG_HOSTS[0] + "/gh/PokeAPI/sprites@" + SPRITE_PIN +
    more, so drawing it larger enlarges the same 96 pixels and adds nothing. The
    extra detail only exists in the 512 set, which is why the sheet gets it and
    the list cannot. */
-function spriteFor(name, big){
+/* AND A SHINY REALLY IS A DIFFERENT PICTURE (player, 2026-09-18: "tienen otros
+   colores y seria mas representativo"). Both sets carry one - checked at the
+   pinned commit, not assumed: sprites/pokemon/shiny/<id>.png is 598 bytes and
+   other/home/shiny/<id>.png is 85 KB, beside 597 and 79 KB for the normal
+   pair - so it costs a path segment and nothing else.
+
+   It is asked for by the CALLER, and only where a specific copy is in hand:
+   a box row, a HOME row, a trade. The search view draws the species rather
+   than his copy of it, so it stays the ordinary colour. */
+function spriteFor(name, big, shiny){
   var id = (C.SPRITE_ID || {})[name];
   if (!id) return null;
   var img = el("img", big ? "sprite big" : "sprite");
-  img.src = SPRITE_BASE + (big ? "other/home/" : "") + id + ".png";
+  img.src = SPRITE_BASE + (big ? "other/home/" : "") + (shiny ? "shiny/" : "")
+            + id + ".png";
   img.alt = "";                       /* the name is right beside it */
   img.width = big ? 180 : 96; img.height = big ? 180 : 96;
   img.loading = "lazy";               /* only what is actually on screen */

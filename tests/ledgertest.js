@@ -132,6 +132,59 @@ const TABS = ["box", "home", "builds", "calc", "find", "gear", "trainer"];
      /Takes damage/.test(osheet) && /Fire/.test(osheet), true);
   w.closeSheet();
 
+  /* LAS TRES PUERTAS DAN LA MISMA FICHA. Find tenia las habilidades, los sets
+     de Worlds y el movepool entero; la caja tenia la linea Mega, el "takes
+     damage" y lo que escribio Smogon. Ninguna tenia la mitad de la otra, asi
+     que la puerta por la que entrabas decidia que te dejaban saber del mismo
+     Pokemon. Lo unico que puede diferenciarlas es lo que se POSEE: origen,
+     shiny, entrenado y la nota. */
+  console.log("\n  la misma ficha por las tres puertas");
+  const heads = () => [...d.getElementById("sheetBody").querySelectorAll("h2")]
+    .map(h => h.textContent.trim());
+  const folds = () => [...d.getElementById("sheetBody").querySelectorAll(".fold")]
+    .map(b => b.textContent.trim());
+
+  w.findDetail(w.byName["Garchomp"]);
+  await tick(150);
+  const findHeads = heads(), findFolds = folds();
+  w.closeSheet();
+
+  w.pokeSheet({ _id: "garchomp", name: "Garchomp", location: "champions",
+                status: "permanent", origin: "home" });
+  await tick(150);
+  const boxHeads = heads();
+  w.closeSheet();
+
+  w.pokeSheet({ _id: "garchomp-home", name: "Garchomp", location: "home",
+                status: "permanent", origin: "home" });
+  await tick(150);
+  const homeHeads = heads(), homeFolds = folds();
+  w.closeSheet();
+
+  const REF = ["Mega line", "Takes damage", "Abilities", "Movepool"];
+  REF.forEach(h => {
+    ok("Find trae " + h, findHeads.indexOf(h) >= 0, true);
+    ok("...la caja Champions tambien", boxHeads.indexOf(h) >= 0, true);
+    ok("...y HOME tambien", homeHeads.indexOf(h) >= 0, true);
+  });
+  /* y la caja NO puede anadir nada que no sea propiedad: origen, esta copia
+     (shiny / entrenado) y la nota. Cualquier otra cosa que aparezca aqui es
+     una ficha volviendo a separarse en dos. */
+  ok("la caja solo anade lo que se POSEE",
+     boxHeads.filter(h => findHeads.indexOf(h) < 0).join(", "),
+     "Where did it come from?, This copy, Note");
+  ok("y HOME solo anade esta copia y la nota",
+     homeHeads.filter(h => findHeads.indexOf(h) < 0).join(", "),
+     "This copy, Note");
+  ok("lo que Smogon escribio esta en las tres",
+     findFolds.concat(homeFolds).filter(t => /What Smogon says/.test(t)).length, 2);
+  /* lo unico que puede cambiar entre puertas */
+  ok("solo la caja pregunta por el origen",
+     boxHeads.indexOf("Where did it come from?") >= 0 &&
+     findHeads.indexOf("Where did it come from?") < 0, true);
+  ok("y solo la caja guarda una nota",
+     homeHeads.indexOf("Note") >= 0 && findHeads.indexOf("Note") < 0, true);
+
   before = errors.length;
   w.buildSheet("charizard");
   await tick(150);

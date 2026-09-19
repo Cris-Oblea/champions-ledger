@@ -1,14 +1,14 @@
 /* 12-find.js - Find: moves, abilities, items, and one Pokemon's whole sheet.
    Part of the app; linked into one script by scripts/build_tracker_page.py. */
 import {
-  $, C, DEX, MOVES, MOVE_BY, SORT, STAT_KEYS, STAT_LABEL, TYPE_COLOR, bst,
-  byName, capNote, cardLine, catName, dexNo, effectLine, el, labelBox,
-  learnset, podiumChip, podiumFor, splitPct, spriteFor, statGrid, toast,
-  typeCard, typeChip, typeSkin, usageTag,
+  $, C, DEX, MOVES, MOVE_BY, SORT, STAT_KEYS, STAT_LABEL, STONE_OF, TYPE_COLOR,
+  bst, byName, capNote, cardLine, catName, defence, dexNo, effectLine, el,
+  labelBox, learnset, megasFor, podiumChip, podiumFor, splitPct, spriteFor,
+  statGrid, toast, typeCard, typeChip, typeSkin, usageTag,
 } from "./01-data.js";
-import { S, boxRows, originOf, ownedNames } from "./02-state.js";
+import { S, boxRows, hasStone, originOf, ownedNames } from "./02-state.js";
 import { closeSheet, fbtn, openSheet } from "./04-nav.js";
-import { battleFormNote } from "./05-box.js";
+import { analysisPanel, battleFormNote } from "./05-box.js";
 import { AB_SET, abilityHit, abilityTag, engineReady } from "./11-damage.js";
 import { fill, note } from "./13-boot.js";
 /* --------------------------------------------------------- the search view --
@@ -230,204 +230,331 @@ function findRun(){
 }
 
 
+/* ================================================= ONE SHEET, THREE DOORS ==
+   A Pokemon's sheet is the same sheet whether it was opened from the Champions
+   box, from HOME or from a search result. It was three sheets (player,
+   2026-09-18):
+
+     "las fichas tanto de home box, champions box y find... deben ser todas
+      iguales, la mas completa es la de find, que dice absolutamente todo,
+      habilidades, moves, etc. creo que solo le falta el takes damage que tiene
+      la ficha de home box... la unica diferencia es la opcion shiny y si esta
+      entrenado en champions y el origen."
+
+   Find had the abilities, the Worlds sets and the whole movepool; the box had
+   the Mega line, the type chart and what Smogon wrote. Neither had the other
+   half, so which door you came through decided what you were allowed to know.
+
+   Two functions rather than one, and the split is where the box needs to put
+   its own controls: IDENTITY first, then whatever that door owns, then the
+   REFERENCE. Origin, shiny and trained are edits, and an edit belongs under
+   the name it applies to - not below two hundred rows of movepool.
+
+     pokeHead   picture, types, BST, the six stats, the other spellings of
+                this name, and what it turns into mid-battle
+     pokeBody   the Mega line, what damages it, the abilities, the Worlds sets
+                it won with, its movepool, and what Smogon wrote
+
+   `opts.shiny` draws his copy's colours; `opts.rec` is the box row when there
+   is one, and its absence is what makes the search view the species rather
+   than a copy of it. */
+function pokeHead(body, p, opts){
+  opts = opts || {};
+  /* THE PICTURE SITS BESIDE THE FACTS, NOT ABOVE THEM. Centred on its own
+     row at 180px it cost about 190px of height before a single number
+     (player, 2026-09-16: "la imagen del profile del pokemon si la encuentro
+     grande, ocupa mucho espacio"). Beside the chips and the BST cell it
+     shares vertical space those rows were using anyway.
+
+     The 512px render rather than the 96px pixel sprite: a sheet draws one
+     Pokemon and can afford the file a list of 159 cannot. */
+  var head = el("div", "sheethead");
+  var big = spriteFor(p.name, true, opts.shiny);
+  if (big) head.appendChild(big);
+  var info = el("div", "sheetfacts");
+  var chips = el("div", "rmeta");
+  p.types.forEach(function(t){ chips.appendChild(typeChip(t)); });
+  var med0 = podiumChip(p.name);
+  if (med0) chips.appendChild(med0);
+  info.appendChild(chips);
+  /* THE SAME CELL AS THE CARD THAT OPENED THIS - BST only. An Ability cell
+     went in beside it and came straight back out: this sheet already has an
+     Abilities section with the name, the text and the measured multiplier. */
+  info.appendChild(cardLine([labelBox(bst(p), "BST")]));
+  /* THE STATS COME UP HERE TOO, which is what makes the picture free: the
+     column beside a 128px render was holding two short rows and a lot of
+     nothing. This was also a FIFTH hand-written stat line - built inline
+     with its own loop, and without the label class the others use. */
+  info.appendChild(statGrid(p));
+  head.appendChild(info);
+  body.appendChild(head);
+  /* The other spellings that mean this Pokemon. Squawkabilly's three extra
+     plumages and Indeedee-F used to show up as separate entries marked "not
+     in the Champions dex" - they are in it, under this name. The note says
+     "also written", not "changes nothing", because a few of these do change
+     something in battle (Palafin-Hero, Castform's weather forms); what they
+     share is one dex entry. */
+  var also = (C.COSMETIC || {})[p.name];
+  if (also && also.length) {
+    var an = el("div", "note");
+    an.style.marginBottom = "10px";
+    an.innerHTML = "<strong>Also written:</strong> " + also.join(", ") +
+      ". Same Pokemon — the dex keeps one entry" +
+      (also.length > 1 ? " for all of them." : ".");
+    body.appendChild(an);
+  }
+
+  /* A SPECIES CHAMPIONS HAS NEVER HEARD OF says so, on every door. HOME can
+     hold one for ever and never send it in, and the numbers above it are
+     main-series ones because Champions publishes none - which the sheet has
+     to say plainly rather than let them read as ours. */
+  if (p.outside) {
+    var osrc = el("div", "note");
+    osrc.style.marginBottom = "10px";
+    osrc.innerHTML = "<strong>Not in the Champions dex.</strong> It can live "
+      + "in HOME but never enter the game"
+      + (p.approx ? ". No row for this exact form either — the numbers "
+         + "shown are " + p.approx + "'s" : "") + ".";
+    body.appendChild(osrc);
+  }
+
+  var bfn = battleFormNote(p);
+  if (bfn) body.appendChild(bfn);
+}
+
+
+/* Everything a Pokemon IS, under whatever the door that opened it owns. */
+function pokeBody(body, p, opts){
+  opts = opts || {};
+
+  /* THE MEGA LINE, WHICH THE SEARCH VIEW NEVER SHOWED. Judging a Pokemon on
+     its Mega rather than its base row is the project's own rule, and the one
+     sheet a person opens to judge one had no Mega on it at all. Both halves,
+     because the stone costs something as well as adding something: the
+     ability it REPLACES is named beside the one it gains. */
+  var ms = megasFor(p.name);
+  if (ms.length) {
+    body.appendChild(el("h2", null, "Mega line"));
+    ms.forEach(function(m){
+      var st = STONE_OF[m.name], own = hasStone(st);
+      var pn = el("div", "panel");
+      pn.style.marginBottom = "8px";
+      var h = el("div", "rname");
+      h.appendChild(document.createTextNode(m.name));
+      h.appendChild(el("span", "tag " + (own ? "mega" : "warn"),
+        own ? st + " owned" : st + " — 2000 VP"));
+      pn.appendChild(h);
+      var mt = el("div", "rmeta");
+      m.types.forEach(function(t){ mt.appendChild(typeChip(t)); });
+      pn.appendChild(mt);
+      pn.appendChild(cardLine([labelBox(bst(m), "BST")]));
+      pn.appendChild(el("p", "sub",
+        "Ability " + (p.ab || []).join(" / ") + " → " + m.ab.join(" / ") +
+        ". Base " + p.types.join("/") + " → " + m.types.join("/") +
+        ". Spe " + p.b[5] + " → " + m.b[5] + ", SpA " + p.b[3] +
+        " → " + m.b[3] + ", Atk " + p.b[1] + " → " + m.b[1] + "."));
+      body.appendChild(pn);
+    });
+  }
+
+  /* WHAT DAMAGES IT. The box sheet had this and the search view did not, which
+     is backwards - the search view is where a Pokemon is being weighed against
+     the field. A type chart is a type chart: it needs the types and nothing
+     else, so a species Champions has never heard of gets one too. */
+  body.appendChild(el("h2", null, "Takes damage"));
+  var dfc = defence(p.types);
+  var dl = el("div");
+  [[4, "×4"], [2, "×2"], [.5, "½"], [.25, "¼"],
+   [0, "immune"]].forEach(function(g){
+    var hits = Object.keys(dfc).filter(function(t){ return dfc[t] === g[0]; });
+    if (!hits.length) return;
+    var line = el("div", "rmeta");
+    line.style.marginBottom = "5px";
+    line.appendChild(el("span",
+      "tag" + (g[0] > 1 ? " bad" : g[0] < 1 ? " ok" : ""), g[1]));
+    hits.forEach(function(t){ line.appendChild(typeChip(t)); });
+    dl.appendChild(line);
+  });
+  body.appendChild(dl);
+
+  /* resolved BEFORE the abilities, because each ability now reports how much
+     of THIS movepool it touches - `var` hoisting made the check pass with
+     `ls` still undefined and the line silently never rendered */
+  var ls = learnset(p.name);
+
+  body.appendChild(el("h2", null, "Abilities"));
+  (p.ab || []).forEach(function(a){
+    var n = el("div", "note");
+    n.style.marginBottom = "6px";
+    n.innerHTML = "<strong>" + a + ".</strong> " + (C.ABIL[a] || "");
+    var anum = effectLine(a);
+    if (anum) n.appendChild(anum);
+    /* What it does to this Pokemon's moves, said HERE rather than as a badge
+       on every row. Two shapes, and the difference is the whole point:
+       an ability that covers a category (Guts, every physical move) names
+       the category, because badging all of them picks out nothing; one that
+       really selects says how many of THIS movepool it hits, so the badges
+       below have a number to be checked against. */
+    var r = AB_SET[a], sc = el("div", "st");
+    sc.style.marginTop = "2px";
+    if (r && r.side === "off" && r.scope) {
+      sc.textContent = "Affects " + r.scope + " it knows — " + r.why +
+                       ". No per-move tag: it picks out nothing.";
+      n.appendChild(sc);
+    } else if (r && r.side === "off" && ls) {
+      var k = ls.filter(function(mn){
+        var mv = MOVE_BY[mn];
+        return mv && abilityTag(a, mv, p);
+      }).length;
+      sc.textContent = k
+        ? "Tags " + k + " of the " + ls.length + " moves it learns."
+        : "Touches none of the moves it learns.";
+      n.appendChild(sc);
+    } else if (r && r.side === "def") {
+      sc.textContent = "Changes what lands on it, not its own moves — " +
+                       r.why + ".";
+      n.appendChild(sc);
+    }
+    body.appendChild(n);
+  });
+
+  /* WHAT IT WON WITH. Folded, because a Kingambit has eighteen of these
+     and the movepool below is what the sheet is usually opened for - but
+     one tap away, because "what did the set that actually won look like" is
+     a different and better question than "what is popular" (player,
+     2026-09-15: "ver que moveset llevo, que item, que habilidad, naturaleza
+     etc. toda la info disponible").
+
+     History, and it says so: each line carries its year and division, and a
+     Worlds keeps the regulation it was played in. */
+  var pod = podiumFor(p.name);
+  if (pod.length) {
+    var wrap = el("div");
+    wrap.style.marginBottom = "10px";
+    var tog = el("button", "btn sm fold");
+    tog.setAttribute("aria-expanded", "false");
+    tog.textContent = "Worlds — " + pod.length + " top-8 set" +
+                      (pod.length === 1 ? "" : "s");
+    var host = el("div");
+    host.hidden = true;
+    tog.onclick = function(){
+      var open = host.hidden;
+      host.hidden = !open;
+      tog.setAttribute("aria-expanded", open ? "true" : "false");
+    };
+    wrap.appendChild(tog);
+    host.appendChild(el("p", "sub",
+      "Frozen history — each World Championship keeps the regulation it " +
+      "was played in. The three divisions are separate metagames and are " +
+      "never pooled, so each set says which it came from."));
+    pod.forEach(function(e){
+      var card = el("div", "note");
+      card.style.marginBottom = "6px";
+      var head = el("div", "rname");
+      var place = e.r === 1 ? "1st" : e.r === 2 ? "2nd"
+                : e.r === 3 ? "3rd" : e.r + "th";
+      head.appendChild(el("span", "tag" + (e.r <= 3 ? " gold" : ""),
+                          "Worlds " + e.y + " · " + e.d + " · " + place));
+      if (e.who) head.appendChild(document.createTextNode(e.who));
+      if (e.rec) head.appendChild(el("span", "tag", e.rec));
+      card.appendChild(head);
+      card.appendChild(factLine([
+        e.it ? e.it : "no item recorded",
+        e.ab ? e.ab : null,
+        e.na ? e.na : null]));
+      /* THE STONE SAYS IT MEGA EVOLVED, AND SAYS INTO WHAT. The ability
+         above is the BASE one - that is what a teamlist records and it is
+         correct, because it is the ability the Pokemon actually has until
+         it evolves. A Mega has exactly one ability, so the stone settles
+         what it becomes; that is derived rather than left to be worked out
+         (player, 2026-09-15: "esa se sabe por descarte"). */
+      if (e.mg) {
+        var mg = el("div", "st");
+        mg.style.color = "var(--mega)";
+        mg.textContent = "Mega Evolves into " + e.mg +
+          (e.mgab ? " — ability becomes " + e.mgab : "");
+        card.appendChild(mg);
+      }
+      var mv = el("div", "rmeta");
+      (e.mv || []).forEach(function(n){
+        var mm2 = MOVE_BY[n];
+        var chip = el("span", "tag", n);
+        if (mm2) chip.title = catName(mm2.cat) + " · " +
+          (mm2.bp ? mm2.bp + " BP" : "— BP") + " · " +
+          (mm2.acc == null ? "—" : mm2.acc) + " acc";
+        mv.appendChild(chip);
+      });
+      if ((e.mv || []).length) card.appendChild(mv);
+      host.appendChild(card);
+    });
+    wrap.appendChild(host);
+    body.appendChild(wrap);
+  }
+
+  if (ls && FIND.moves.length) {
+    body.appendChild(el("h2", null, "The moves you asked for"));
+    var l = el("div", "list");
+    FIND.moves.forEach(function(n){
+      var mv = MOVE_BY[n];
+      if (mv) l.appendChild(moveRowFor(mv, p.ab || [], p));
+    });
+    body.appendChild(l);
+  }
+  if (ls) {
+    /* The movepool was the top 40 by base power with every status move
+       dropped, so Protect and Trick Room were not in a Pokemon's own sheet
+       at all. It runs the same controls as the build editor and the search
+       now - one implementation, so searching inside one Pokemon's pool works
+       the way searching anywhere else does. */
+    body.appendChild(el("h2", null, "Movepool"));
+    var ui = moveFilters(body, ls, function(){ drawPool(); },
+                         "Filter " + ls.length + " moves it learns",
+                         /* the whole pool, and its own usage numbers - this
+                            is the same question the build editor asks, so
+                            it gets the same answer */
+                         {cap: 200, usageOf: p.name});
+    var pool = el("div", "list");
+    body.appendChild(pool);
+    function drawPool(){
+      var hits = ui.apply();
+      pool.innerHTML = "";
+      hits.forEach(function(m){
+        pool.appendChild(moveRowFor(m, p.ab || [], p));
+      });
+      if (!hits.length)
+        pool.appendChild(el("div", "empty", "Nothing matches"));
+    }
+    drawPool();
+  }
+
+  /* WHAT SMOGON WROTE. Last, and folded, because it is long and the 407 KB
+     behind it is not fetched until it is opened. The box sheet had it and the
+     search view did not, which meant the one place built for reading about a
+     Pokemon was the one place that would not show you the prose. */
+  var aw = el("div");
+  aw.style.marginTop = "10px";
+  var atog = el("button", "btn sm fold");
+  atog.setAttribute("aria-expanded", "false");
+  var ahost = el("div");
+  ahost.hidden = true;
+  atog.textContent = "What Smogon says about " + p.name;
+  atog.onclick = function(){
+    var open = ahost.hidden;
+    ahost.hidden = !open;
+    atog.setAttribute("aria-expanded", open ? "true" : "false");
+    if (open && !ahost._drawn) { ahost._drawn = 1; analysisPanel(p.name, ahost); }
+  };
+  aw.appendChild(atog);
+  aw.appendChild(ahost);
+  body.appendChild(aw);
+}
+
+/* The search view's door: the species, not a copy of it, so no shiny and no
+   ownership block between the two halves. */
 function findDetail(p){
   openSheet(p.name, function(body){
-    /* THE PICTURE SITS BESIDE THE FACTS, NOT ABOVE THEM. Centred on its own
-       row at 180px it cost about 190px of height before a single number
-       (player, 2026-09-16: "la imagen del profile del pokemon si la encuentro
-       grande, ocupa mucho espacio"). Beside the chips and the BST cell it
-       shares vertical space those rows were using anyway.
-
-       The 512px render rather than the 96px pixel sprite: a sheet draws one
-       Pokemon and can afford the file a list of 159 cannot. */
-    var head = el("div", "sheethead");
-    var big = spriteFor(p.name, true);
-    if (big) head.appendChild(big);
-    var info = el("div", "sheetfacts");
-    var chips = el("div", "rmeta");
-    p.types.forEach(function(t){ chips.appendChild(typeChip(t)); });
-    var med0 = podiumChip(p.name);
-    if (med0) chips.appendChild(med0);
-    info.appendChild(chips);
-    /* THE SAME CELL AS THE CARD THAT OPENED THIS - BST only. An Ability cell
-       went in beside it and came straight back out: this sheet already has an
-       Abilities section with the name, the text and the measured multiplier. */
-    info.appendChild(cardLine([labelBox(bst(p), "BST")]));
-    /* THE STATS COME UP HERE TOO, which is what makes the picture free: the
-       column beside a 128px render was holding two short rows and a lot of
-       nothing. This was also a FIFTH hand-written stat line - built inline
-       with its own loop, and without the label class the others use. */
-    info.appendChild(statGrid(p));
-    head.appendChild(info);
-    body.appendChild(head);
-    /* The other spellings that mean this Pokemon. Squawkabilly's three extra
-       plumages and Indeedee-F used to show up as separate entries marked "not
-       in the Champions dex" - they are in it, under this name. The note says
-       "also written", not "changes nothing", because a few of these do change
-       something in battle (Palafin-Hero, Castform's weather forms); what they
-       share is one dex entry. */
-    var also = (C.COSMETIC || {})[p.name];
-    if (also && also.length) {
-      var an = el("div", "note");
-      an.style.marginBottom = "10px";
-      an.innerHTML = "<strong>Also written:</strong> " + also.join(", ") +
-        ". Same Pokemon — the dex keeps one entry" +
-        (also.length > 1 ? " for all of them." : ".");
-      body.appendChild(an);
-    }
-
-    var bfn = battleFormNote(p);
-    if (bfn) body.appendChild(bfn);
-
-    /* resolved BEFORE the abilities, because each ability now reports how much
-       of THIS movepool it touches - `var` hoisting made the check pass with
-       `ls` still undefined and the line silently never rendered */
-    var ls = learnset(p.name);
-
-    body.appendChild(el("h2", null, "Abilities"));
-    (p.ab || []).forEach(function(a){
-      var n = el("div", "note");
-      n.style.marginBottom = "6px";
-      n.innerHTML = "<strong>" + a + ".</strong> " + (C.ABIL[a] || "");
-      var anum = effectLine(a);
-      if (anum) n.appendChild(anum);
-      /* What it does to this Pokemon's moves, said HERE rather than as a badge
-         on every row. Two shapes, and the difference is the whole point:
-         an ability that covers a category (Guts, every physical move) names
-         the category, because badging all of them picks out nothing; one that
-         really selects says how many of THIS movepool it hits, so the badges
-         below have a number to be checked against. */
-      var r = AB_SET[a], sc = el("div", "st");
-      sc.style.marginTop = "2px";
-      if (r && r.side === "off" && r.scope) {
-        sc.textContent = "Affects " + r.scope + " it knows — " + r.why +
-                         ". No per-move tag: it picks out nothing.";
-        n.appendChild(sc);
-      } else if (r && r.side === "off" && ls) {
-        var k = ls.filter(function(mn){
-          var mv = MOVE_BY[mn];
-          return mv && abilityTag(a, mv, p);
-        }).length;
-        sc.textContent = k
-          ? "Tags " + k + " of the " + ls.length + " moves it learns."
-          : "Touches none of the moves it learns.";
-        n.appendChild(sc);
-      } else if (r && r.side === "def") {
-        sc.textContent = "Changes what lands on it, not its own moves — " +
-                         r.why + ".";
-        n.appendChild(sc);
-      }
-      body.appendChild(n);
-    });
-
-    /* WHAT IT WON WITH. Folded, because a Kingambit has eighteen of these
-       and the movepool below is what the sheet is usually opened for - but
-       one tap away, because "what did the set that actually won look like" is
-       a different and better question than "what is popular" (player,
-       2026-09-15: "ver que moveset llevo, que item, que habilidad, naturaleza
-       etc. toda la info disponible").
-
-       History, and it says so: each line carries its year and division, and a
-       Worlds keeps the regulation it was played in. */
-    var pod = podiumFor(p.name);
-    if (pod.length) {
-      var wrap = el("div");
-      wrap.style.marginBottom = "10px";
-      var tog = el("button", "btn sm fold");
-      tog.setAttribute("aria-expanded", "false");
-      tog.textContent = "Worlds — " + pod.length + " top-8 set" +
-                        (pod.length === 1 ? "" : "s");
-      var host = el("div");
-      host.hidden = true;
-      tog.onclick = function(){
-        var open = host.hidden;
-        host.hidden = !open;
-        tog.setAttribute("aria-expanded", open ? "true" : "false");
-      };
-      wrap.appendChild(tog);
-      host.appendChild(el("p", "sub",
-        "Frozen history — each World Championship keeps the regulation it " +
-        "was played in. The three divisions are separate metagames and are " +
-        "never pooled, so each set says which it came from."));
-      pod.forEach(function(e){
-        var card = el("div", "note");
-        card.style.marginBottom = "6px";
-        var head = el("div", "rname");
-        var place = e.r === 1 ? "1st" : e.r === 2 ? "2nd"
-                  : e.r === 3 ? "3rd" : e.r + "th";
-        head.appendChild(el("span", "tag" + (e.r <= 3 ? " gold" : ""),
-                            "Worlds " + e.y + " · " + e.d + " · " + place));
-        if (e.who) head.appendChild(document.createTextNode(e.who));
-        if (e.rec) head.appendChild(el("span", "tag", e.rec));
-        card.appendChild(head);
-        card.appendChild(factLine([
-          e.it ? e.it : "no item recorded",
-          e.ab ? e.ab : null,
-          e.na ? e.na : null]));
-        /* THE STONE SAYS IT MEGA EVOLVED, AND SAYS INTO WHAT. The ability
-           above is the BASE one - that is what a teamlist records and it is
-           correct, because it is the ability the Pokemon actually has until
-           it evolves. A Mega has exactly one ability, so the stone settles
-           what it becomes; that is derived rather than left to be worked out
-           (player, 2026-09-15: "esa se sabe por descarte"). */
-        if (e.mg) {
-          var mg = el("div", "st");
-          mg.style.color = "var(--mega)";
-          mg.textContent = "Mega Evolves into " + e.mg +
-            (e.mgab ? " — ability becomes " + e.mgab : "");
-          card.appendChild(mg);
-        }
-        var mv = el("div", "rmeta");
-        (e.mv || []).forEach(function(n){
-          var mm2 = MOVE_BY[n];
-          var chip = el("span", "tag", n);
-          if (mm2) chip.title = catName(mm2.cat) + " · " +
-            (mm2.bp ? mm2.bp + " BP" : "— BP") + " · " +
-            (mm2.acc == null ? "—" : mm2.acc) + " acc";
-          mv.appendChild(chip);
-        });
-        if ((e.mv || []).length) card.appendChild(mv);
-        host.appendChild(card);
-      });
-      wrap.appendChild(host);
-      body.appendChild(wrap);
-    }
-
-    if (ls && FIND.moves.length) {
-      body.appendChild(el("h2", null, "The moves you asked for"));
-      var l = el("div", "list");
-      FIND.moves.forEach(function(n){
-        var mv = MOVE_BY[n];
-        if (mv) l.appendChild(moveRowFor(mv, p.ab || [], p));
-      });
-      body.appendChild(l);
-    }
-    if (ls) {
-      /* The movepool was the top 40 by base power with every status move
-         dropped, so Protect and Trick Room were not in a Pokemon's own sheet
-         at all. It runs the same controls as the build editor and the search
-         now - one implementation, so searching inside one Pokemon's pool works
-         the way searching anywhere else does. */
-      body.appendChild(el("h2", null, "Movepool"));
-      var ui = moveFilters(body, ls, function(){ drawPool(); },
-                           "Filter " + ls.length + " moves it learns",
-                           /* the whole pool, and its own usage numbers - this
-                              is the same question the build editor asks, so
-                              it gets the same answer */
-                           {cap: 200, usageOf: p.name});
-      var pool = el("div", "list");
-      body.appendChild(pool);
-      function drawPool(){
-        var hits = ui.apply();
-        pool.innerHTML = "";
-        hits.forEach(function(m){
-          pool.appendChild(moveRowFor(m, p.ab || [], p));
-        });
-        if (!hits.length)
-          pool.appendChild(el("div", "empty", "Nothing matches"));
-      }
-      drawPool();
-    }
+    pokeHead(body, p, {});
+    pokeBody(body, p, {});
   }, []);
 }
 
@@ -1607,6 +1734,7 @@ function drawDupeHome(){
 */
 export {
   DIAG_LATEST, FIND, checkLatest, drawDiag, drawDupeHome, findDetail, findDraw,
-  findInit, findRun, itemTags, moveFilters, moveRowFor, moveScore, priorityTag,
+  findInit, findRun, itemTags, moveFilters, moveRowFor, moveScore, pokeBody,
+  pokeHead, priorityTag,
   factLine, overlapSweep, spreadNote, spreadTags, worldDraw,
 };
