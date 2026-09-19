@@ -240,6 +240,39 @@ setTimeout(() => {
   }
 
   function afterTypes(){
+    /* --------------------------- el operador NO, en el filtro de TIPO --- */
+    /* "en el filtro de tipo esta el operador logico and y or, pero falta algo
+       que diga no, por ejemplo, si pongo en move trick room, pero en type
+       quiero colocar que no me muestre ningun pokemon de tipo psyquico"
+
+       Lo construi primero en el picker de MOVES, que es otra pantalla: alli un
+       chip de tipo significa "un movimiento Psiquico", no "un Pokemon
+       Psiquico". El lo busco donde lo pidio y no estaba. */
+    console.log("\n  el operador NO, en el filtro de tipo");
+    w.FIND.moves = ["Trick Room"]; w.FIND.types = []; w.FIND.notTypes = [];
+    w.findRun();
+    const nm = () => [...d.querySelectorAll("#findOut .row .rname")]
+      .map(n => n.firstChild.textContent.trim());
+    const isPsy = n => (w.byName[n].types || []).indexOf("Psychic") >= 0;
+    const withTR = nm();
+    ok("Trick Room devuelve un monton", withTR.length > 30, true);
+    ok("y muchos son Psychic", withTR.filter(isPsy).length > 10, true);
+    w.FIND.notTypes = ["Psychic"];
+    w.findRun();
+    const after = nm();
+    ok("al descartarlo quedan menos", after.length < withTR.length, true);
+    ok("y ninguno es Psychic", after.filter(isPsy).length, 0);
+    ok("los que no lo eran siguen ahi",
+       after.length, withTR.filter(n => !isPsy(n)).length);
+    /* y se ve como filtro, no solo dentro de la hoja */
+    w.findDraw();
+    ok("el chip lo dice arriba",
+       [...d.querySelectorAll("#findChips .tog")].map(t => t.textContent)
+         .indexOf("not Psychic") >= 0, true);
+    d.getElementById("findClear").click();
+    ok("y Clear lo suelta", w.FIND.notTypes.length, 0);
+    w.FIND.moves = [];
+
         /* ------------------------ buscar por nombre, sin filtrar ----- */
         /* "seria bueno agregar en el buscador algo que pueda buscar pokemon
            por simple nombre, cuando quiero ver la ficha rapidamente de uno
