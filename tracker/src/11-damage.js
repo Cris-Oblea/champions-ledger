@@ -1,8 +1,8 @@
 /* 11-damage.js - Smogon's engine, and the calculator screen around it.
    Part of the app; linked into one script by scripts/build_tracker_page.py. */
 import {
-  $, C, DEX, MOVE_BY, STAT_KEYS, STAT_LABEL, byName, capNote, catName, el,
-  learnset, natMult, statAt, statGrid, toast, typeChip,
+  $, C, DEX, MOVE_BY, STAT_KEYS, STAT_LABEL, anyRow, byName, capNote, catName,
+  el, learnset, natMult, statAt, statGrid, toast, typeCard, typeChip,
 } from "./01-data.js";
 import { closeSheet, openSheet } from "./04-nav.js";
 import { S } from "./02-state.js";
@@ -526,7 +526,14 @@ function calcSideCtl(which){
   var side = CALC[which], host = $(which === "atk" ? "calcAtk" : "calcDef");
   host.innerHTML = "";
 
-  var pick = el("button", "row" + (side.name ? "" : " unknown"));
+  /* THE CARD, WITH ITS POKEMON ON IT. This was the one list in the app still
+     drawing a bare row: the calculator's two sides had the name, the types and
+     the stats and no picture, while the box, HOME, the search, the builds, the
+     teams and the GTS all wear one (player, 2026-09-19: "a la calculadora
+     tambien le faltan los sprites"). typeCard puts the band and the sprite on
+     from one place, which is why it is the same call here as everywhere. */
+  var p0 = side.name ? anyRow(side.name) : null;
+  var pick = typeCard(el("button", "row" + (side.name ? "" : " unknown")), p0);
   var m = el("div", "rmain");
   if (side.name) {
     var p = byName[side.name];

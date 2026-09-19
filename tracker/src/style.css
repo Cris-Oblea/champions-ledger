@@ -334,6 +334,12 @@ nav.tabs button:active{background:var(--sunk)}
 .row.card.hassprite .rname{width:calc(100% - 88px)}
 .row.card.hassprite .rmeta{width:calc(100% - 88px)}
 .row.card.hassprite .cardline{width:calc(100% - 88px)}
+/* The comment above is right about a BOX card, where a BST cell and an
+   ability list stand between the name and the stats, so the strip clears
+   the sprite on its own. The CALCULATOR's card has neither - name, types,
+   stats - so the strip starts at about 60 and Garchomp's tail sat on its
+   Speed. Narrowed here and only here; six cells still have ~300px. */
+.calccol .row.card.hassprite .statline{width:calc(100% - 88px)}
 /* THE SHEET GETS THE 512px RENDER, because it draws one Pokemon and can
    afford 130 KB where a list of 159 cannot - and it sits BESIDE the facts.
    Centred on its own row at 180px it cost ~190px of height before a single
@@ -966,7 +972,13 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border:2px solid var(
    so the same trick would put the picture on the name. Floating it makes the
    text flow around it instead, and it stays inside the layout - which is also
    what keeps the overlap sweep honest, since a float is a box it can measure. */
-.gtsside .gtspic{float:right;width:56px;height:56px;margin:-2px -2px 2px 6px;
+/* 96, THE SIZE THE FILE IS. It was set to 56 to fit a narrow side, which
+   is the one thing a pixel sprite must never be: 96 scaled to 56 is a
+   resample, and `image-rendering:pixelated` on a DOWNscale makes it worse
+   rather than better - it drops pixels instead of blending them (player,
+   2026-09-19: "los sprites se ven mas chicos y no de tamano nativo").
+   Native or nothing; the float still keeps the text clear of it. */
+.gtsside .gtspic{float:right;width:96px;height:96px;margin:-2px -2px 2px 8px;
   image-rendering:pixelated}
 .gtsside .statline{margin-top:6px;clear:both}
 .gtslabel{font-family:var(--cond);text-transform:uppercase;letter-spacing:.07em;
