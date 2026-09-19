@@ -194,7 +194,15 @@ function pokeSheet(rec){
       }
 
       body.appendChild(el("h2", null, "Takes damage"));
-      var d = defence(p.types);
+      /* `show`, NOT `p` - the same lesson as the `var d` note above, learned a
+         second time. For a species Champions has never heard of `p` is
+         undefined, so opening the sheet of anything tagged "Not in Champions"
+         threw before it could draw a single row: the card knew the types, the
+         stats and the abilities, and the sheet died on the one line that read
+         them off the wrong row (player, 2026-09-18, "1 script error"). A type
+         chart is a type chart - it does not care which game the row came
+         from. */
+      var d = defence(show.types);
       var groups = [[4,"×4"],[2,"×2"],[.5,"½"],[.25,"¼"],[0,"immune"]];
       var dl = el("div");
       groups.forEach(function(g){

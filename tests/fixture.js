@@ -51,6 +51,12 @@ const box = [
   row("sneasler-home", "Sneasler", "home", "permanent", "home"),
   row("kingambit-home", "Kingambit", "home", "permanent", "home"),
   row("whimsicott-home", "Whimsicott", "home", "permanent", "home"),
+  /* A SPECIES CHAMPIONS HAS NEVER HEARD OF, which HOME can hold for ever. Its
+     card and its sheet are drawn off HOME_DEX rather than the Champions dex,
+     and that is a whole branch nothing here used to enter: opening the sheet
+     of one threw on its first line, in production, for two days (player,
+     2026-09-18). Bulbasaur, because it is unmistakably not in the format. */
+  row("bulbasaur-home", "Bulbasaur", "home", "permanent", "home"),
 ];
 
 function row(id, name, location, status, origin, extra) {
