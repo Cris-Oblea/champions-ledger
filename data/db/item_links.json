@@ -19,7 +19,8 @@
     "Stomping Tantrum"
    ],
    "abilities": [],
-   "why": "nothing Ground-type can touch it while it holds this"
+   "why": "nothing Ground-type can touch it while it holds this",
+   "side": "against"
   },
   "Big Root": {
    "moves": [
@@ -33,7 +34,8 @@
     "Parabolic Charge"
    ],
    "abilities": [],
-   "why": "gives back more from its draining moves"
+   "why": "gives back more from its draining moves",
+   "side": "for"
   },
   "Binding Band": {
    "moves": [
@@ -47,7 +49,8 @@
     "Wrap"
    ],
    "abilities": [],
-   "why": "boosts its binding moves"
+   "why": "boosts its binding moves",
+   "side": "for"
   },
   "Black Belt": {
    "moves": [
@@ -81,7 +84,8 @@
     "Vacuum Wave"
    ],
    "abilities": [],
-   "why": "boosts every Fighting move it uses"
+   "why": "boosts every Fighting move it uses",
+   "side": "for"
   },
   "Black Glasses": {
    "moves": [
@@ -110,7 +114,8 @@
     "Throat Chop"
    ],
    "abilities": [],
-   "why": "boosts every Dark move it uses"
+   "why": "boosts every Dark move it uses",
+   "side": "for"
   },
   "Bright Powder": {
    "moves": [
@@ -229,7 +234,8 @@
     "Zen Headbutt"
    ],
    "abilities": [],
-   "why": "changes the odds on everything that can miss"
+   "why": "changes the odds on everything that can miss",
+   "side": "for"
   },
   "Charcoal": {
    "moves": [
@@ -261,7 +267,8 @@
     "Torch Song"
    ],
    "abilities": [],
-   "why": "boosts every Fire move it uses"
+   "why": "boosts every Fire move it uses",
+   "side": "for"
   },
   "Choice Scarf": {
    "moves": [
@@ -779,7 +786,8 @@
     "Zing Zap"
    ],
    "abilities": [],
-   "why": "locks it into the first move it picks"
+   "why": "locks it into the first move it picks",
+   "side": "against"
   },
   "Damp Rock": {
    "moves": [
@@ -788,7 +796,8 @@
    "abilities": [
     "Drizzle"
    ],
-   "why": "extends rain however it was set - by the move or by the ability"
+   "why": "extends rain however it was set - by the move or by the ability",
+   "side": "for"
   },
   "Dragon Fang": {
    "moves": [
@@ -806,7 +815,8 @@
     "Scale Shot"
    ],
    "abilities": [],
-   "why": "boosts every Dragon move it uses"
+   "why": "boosts every Dragon move it uses",
+   "side": "for"
   },
   "Electric Seed": {
    "moves": [
@@ -815,7 +825,8 @@
    "abilities": [
     "Electric Surge"
    ],
-   "why": "extends Electric Terrain however it was set - by the move or by the ability"
+   "why": "extends Electric Terrain however it was set - by the move or by the ability",
+   "side": "for"
   },
   "Expert Belt": {
    "moves": [
@@ -1156,7 +1167,8 @@
     "Zing Zap"
    ],
    "abilities": [],
-   "why": "boosts whatever it uses that is supereffective"
+   "why": "boosts whatever it uses that is supereffective",
+   "side": "for"
   },
   "Fairy Feather": {
    "moves": [
@@ -1170,7 +1182,8 @@
     "Spirit Break"
    ],
    "abilities": [],
-   "why": "boosts every Fairy move it uses"
+   "why": "boosts every Fairy move it uses",
+   "side": "for"
   },
   "Grassy Seed": {
    "moves": [
@@ -1180,7 +1193,8 @@
     "Grassy Surge",
     "Seed Sower"
    ],
-   "why": "extends Grassy Terrain however it was set - by the move or by the ability"
+   "why": "extends Grassy Terrain however it was set - by the move or by the ability",
+   "side": "for"
   },
   "Hard Stone": {
    "moves": [
@@ -1199,7 +1213,8 @@
     "Stone Edge"
    ],
    "abilities": [],
-   "why": "boosts every Rock move it uses"
+   "why": "boosts every Rock move it uses",
+   "side": "for"
   },
   "Heat Rock": {
    "moves": [
@@ -1208,7 +1223,8 @@
    "abilities": [
     "Drought"
    ],
-   "why": "extends harsh sunlight however it was set - by the move or by the ability"
+   "why": "extends harsh sunlight however it was set - by the move or by the ability",
+   "side": "for"
   },
   "Icy Rock": {
    "moves": [
@@ -1218,7 +1234,8 @@
    "abilities": [
     "Snow Warning"
    ],
-   "why": "extends snow however it was set - by the move or by the ability"
+   "why": "extends snow however it was set - by the move or by the ability",
+   "side": "for"
   },
   "Iron Ball": {
    "moves": [
@@ -1238,7 +1255,8 @@
     "Stomping Tantrum"
    ],
    "abilities": [],
-   "why": "an incoming Ground move hits it even through Flying"
+   "why": "an incoming Ground move hits it even through Flying",
+   "side": "for"
   },
   "King's Rock": {
    "moves": [
@@ -1579,7 +1597,8 @@
     "Zing Zap"
    ],
    "abilities": [],
-   "why": "rides on every attack it lands"
+   "why": "rides on every attack it lands",
+   "side": "for"
   },
   "Leek": {
    "moves": [
@@ -1920,7 +1939,8 @@
     "Zing Zap"
    ],
    "abilities": [],
-   "why": "raises the critical-hit ratio of its attacks"
+   "why": "raises the critical-hit ratio of its attacks",
+   "side": "for"
   },
   "Life Orb": {
    "moves": [
@@ -2261,7 +2281,8 @@
     "Zing Zap"
    ],
    "abilities": [],
-   "why": "rides on every attack it lands"
+   "why": "rides on every attack it lands",
+   "side": "for"
   },
   "Light Ball": {
    "moves": [
@@ -2602,7 +2623,8 @@
     "Zing Zap"
    ],
    "abilities": [],
-   "why": "rides on every attack it lands"
+   "why": "rides on every attack it lands",
+   "side": "for"
   },
   "Light Clay": {
    "moves": [
@@ -2611,7 +2633,8 @@
     "Reflect"
    ],
    "abilities": [],
-   "why": "changes what these moves do"
+   "why": "changes what these moves do",
+   "side": "for"
   },
   "Magnet": {
    "moves": [
@@ -2638,7 +2661,8 @@
     "Zing Zap"
    ],
    "abilities": [],
-   "why": "boosts every Electric move it uses"
+   "why": "boosts every Electric move it uses",
+   "side": "for"
   },
   "Mental Herb": {
    "moves": [
@@ -2649,7 +2673,8 @@
     "Torment"
    ],
    "abilities": [],
-   "why": "shakes off what would lock its moves"
+   "why": "shakes off what would lock its moves",
+   "side": "against"
   },
   "Metal Coat": {
    "moves": [
@@ -2671,7 +2696,8 @@
     "Steel Wing"
    ],
    "abilities": [],
-   "why": "boosts every Steel move it uses"
+   "why": "boosts every Steel move it uses",
+   "side": "for"
   },
   "Metronome": {
    "moves": [
@@ -3012,7 +3038,8 @@
     "Zing Zap"
    ],
    "abilities": [],
-   "why": "rides on every attack it lands"
+   "why": "rides on every attack it lands",
+   "side": "for"
   },
   "Miracle Seed": {
    "moves": [
@@ -3042,14 +3069,16 @@
     "Wood Hammer"
    ],
    "abilities": [],
-   "why": "boosts every Grass move it uses"
+   "why": "boosts every Grass move it uses",
+   "side": "for"
   },
   "Misty Seed": {
    "moves": [
     "Misty Terrain"
    ],
    "abilities": [],
-   "why": "extends Misty Terrain however it was set - by the move or by the ability"
+   "why": "extends Misty Terrain however it was set - by the move or by the ability",
+   "side": "for"
   },
   "Muscle Band": {
    "moves": [
@@ -3268,7 +3297,8 @@
     "Zing Zap"
    ],
    "abilities": [],
-   "why": "boosts its physical moves"
+   "why": "boosts its physical moves",
+   "side": "for"
   },
   "Mystic Water": {
    "moves": [
@@ -3298,7 +3328,8 @@
     "Whirlpool"
    ],
    "abilities": [],
-   "why": "boosts every Water move it uses"
+   "why": "boosts every Water move it uses",
+   "side": "for"
   },
   "Never-Melt Ice": {
    "moves": [
@@ -3320,7 +3351,8 @@
     "Triple Axel"
    ],
    "abilities": [],
-   "why": "boosts every Ice move it uses"
+   "why": "boosts every Ice move it uses",
+   "side": "for"
   },
   "Normal Gem": {
    "moves": [
@@ -3366,7 +3398,8 @@
     "Wrap"
    ],
    "abilities": [],
-   "why": "boosts every Normal move it uses"
+   "why": "boosts every Normal move it uses",
+   "side": "for"
   },
   "Poison Barb": {
    "moves": [
@@ -3386,7 +3419,8 @@
     "Venoshock"
    ],
    "abilities": [],
-   "why": "boosts every Poison move it uses"
+   "why": "boosts every Poison move it uses",
+   "side": "for"
   },
   "Psychic Seed": {
    "moves": [
@@ -3395,7 +3429,8 @@
    "abilities": [
     "Psychic Surge"
    ],
-   "why": "extends Psychic Terrain however it was set - by the move or by the ability"
+   "why": "extends Psychic Terrain however it was set - by the move or by the ability",
+   "side": "for"
   },
   "Rocky Helmet": {
    "moves": [
@@ -3572,7 +3607,8 @@
     "Zing Zap"
    ],
    "abilities": [],
-   "why": "punishes an incoming contact move"
+   "why": "punishes an incoming contact move",
+   "side": "against"
   },
   "Scope Lens": {
    "moves": [
@@ -3913,7 +3949,8 @@
     "Zing Zap"
    ],
    "abilities": [],
-   "why": "raises the critical-hit ratio of its attacks"
+   "why": "raises the critical-hit ratio of its attacks",
+   "side": "for"
   },
   "Sharp Beak": {
    "moves": [
@@ -3932,7 +3969,8 @@
     "Sky Attack"
    ],
    "abilities": [],
-   "why": "boosts every Flying move it uses"
+   "why": "boosts every Flying move it uses",
+   "side": "for"
   },
   "Shell Bell": {
    "moves": [
@@ -4273,7 +4311,8 @@
     "Zing Zap"
    ],
    "abilities": [],
-   "why": "rides on every attack it lands"
+   "why": "rides on every attack it lands",
+   "side": "for"
   },
   "Silk Scarf": {
    "moves": [
@@ -4319,7 +4358,8 @@
     "Wrap"
    ],
    "abilities": [],
-   "why": "boosts every Normal move it uses"
+   "why": "boosts every Normal move it uses",
+   "side": "for"
   },
   "Silver Powder": {
    "moves": [
@@ -4340,7 +4380,8 @@
     "X-Scissor"
    ],
    "abilities": [],
-   "why": "boosts every Bug move it uses"
+   "why": "boosts every Bug move it uses",
+   "side": "for"
   },
   "Smooth Rock": {
    "moves": [
@@ -4349,7 +4390,8 @@
    "abilities": [
     "Sand Stream"
    ],
-   "why": "extends sandstorm however it was set - by the move or by the ability"
+   "why": "extends sandstorm however it was set - by the move or by the ability",
+   "side": "for"
   },
   "Soft Sand": {
    "moves": [
@@ -4369,7 +4411,8 @@
     "Stomping Tantrum"
    ],
    "abilities": [],
-   "why": "boosts every Ground move it uses"
+   "why": "boosts every Ground move it uses",
+   "side": "for"
   },
   "Spell Tag": {
    "moves": [
@@ -4388,7 +4431,8 @@
     "Spirit Shackle"
    ],
    "abilities": [],
-   "why": "boosts every Ghost move it uses"
+   "why": "boosts every Ghost move it uses",
+   "side": "for"
   },
   "Terrain Extender": {
    "moves": [
@@ -4403,7 +4447,8 @@
     "Psychic Surge",
     "Seed Sower"
    ],
-   "why": "extends any terrain it sets"
+   "why": "extends any terrain it sets",
+   "side": "for"
   },
   "Twisted Spoon": {
    "moves": [
@@ -4424,7 +4469,8 @@
     "Zen Headbutt"
    ],
    "abilities": [],
-   "why": "boosts every Psychic move it uses"
+   "why": "boosts every Psychic move it uses",
+   "side": "for"
   },
   "White Herb": {
    "moves": [
@@ -4492,7 +4538,8 @@
     "Trop Kick"
    ],
    "abilities": [],
-   "why": "restores what an incoming move lowered"
+   "why": "restores what an incoming move lowered",
+   "side": "against"
   },
   "Wide Lens": {
    "moves": [
@@ -4611,7 +4658,8 @@
     "Zen Headbutt"
    ],
    "abilities": [],
-   "why": "changes the odds on everything that can miss"
+   "why": "changes the odds on everything that can miss",
+   "side": "for"
   },
   "Wise Glasses": {
    "moves": [
@@ -4739,7 +4787,8 @@
     "Zap Cannon"
    ],
    "abilities": [],
-   "why": "boosts its special moves"
+   "why": "boosts its special moves",
+   "side": "for"
   },
   "Zoom Lens": {
    "moves": [
@@ -4858,7 +4907,8 @@
     "Zen Headbutt"
    ],
    "abilities": [],
-   "why": "changes the odds on everything that can miss"
+   "why": "changes the odds on everything that can miss",
+   "side": "for"
   },
   "Aspear Berry": {
    "moves": [
@@ -4870,7 +4920,8 @@
     "Tri Attack"
    ],
    "abilities": [],
-   "why": "cures the freeze this inflicts"
+   "why": "cures the freeze this inflicts",
+   "side": "against"
   },
   "Babiri Berry": {
    "moves": [
@@ -4892,7 +4943,8 @@
     "Steel Wing"
    ],
    "abilities": [],
-   "why": "weakens an incoming Steel move"
+   "why": "weakens an incoming Steel move",
+   "side": "against"
   },
   "Charti Berry": {
    "moves": [
@@ -4911,7 +4963,8 @@
     "Stone Edge"
    ],
    "abilities": [],
-   "why": "weakens an incoming Rock move"
+   "why": "weakens an incoming Rock move",
+   "side": "against"
   },
   "Cheri Berry": {
    "moves": [
@@ -4932,7 +4985,8 @@
     "Zap Cannon"
    ],
    "abilities": [],
-   "why": "cures the paralysis this inflicts"
+   "why": "cures the paralysis this inflicts",
+   "side": "against"
   },
   "Chesto Berry": {
    "moves": [
@@ -4943,7 +4997,8 @@
     "Yawn"
    ],
    "abilities": [],
-   "why": "cures the sleep this inflicts"
+   "why": "cures the sleep this inflicts",
+   "side": "against"
   },
   "Chilan Berry": {
    "moves": [
@@ -4989,7 +5044,8 @@
     "Wrap"
    ],
    "abilities": [],
-   "why": "weakens an incoming Normal move"
+   "why": "weakens an incoming Normal move",
+   "side": "against"
   },
   "Chople Berry": {
    "moves": [
@@ -5023,7 +5079,8 @@
     "Vacuum Wave"
    ],
    "abilities": [],
-   "why": "weakens an incoming Fighting move"
+   "why": "weakens an incoming Fighting move",
+   "side": "against"
   },
   "Coba Berry": {
    "moves": [
@@ -5042,7 +5099,8 @@
     "Sky Attack"
    ],
    "abilities": [],
-   "why": "weakens an incoming Flying move"
+   "why": "weakens an incoming Flying move",
+   "side": "against"
   },
   "Colbur Berry": {
    "moves": [
@@ -5071,7 +5129,8 @@
     "Throat Chop"
    ],
    "abilities": [],
-   "why": "weakens an incoming Dark move"
+   "why": "weakens an incoming Dark move",
+   "side": "against"
   },
   "Haban Berry": {
    "moves": [
@@ -5089,7 +5148,8 @@
     "Scale Shot"
    ],
    "abilities": [],
-   "why": "weakens an incoming Dragon move"
+   "why": "weakens an incoming Dragon move",
+   "side": "against"
   },
   "Kasib Berry": {
    "moves": [
@@ -5108,7 +5168,8 @@
     "Spirit Shackle"
    ],
    "abilities": [],
-   "why": "weakens an incoming Ghost move"
+   "why": "weakens an incoming Ghost move",
+   "side": "against"
   },
   "Kebia Berry": {
    "moves": [
@@ -5128,7 +5189,8 @@
     "Venoshock"
    ],
    "abilities": [],
-   "why": "weakens an incoming Poison move"
+   "why": "weakens an incoming Poison move",
+   "side": "against"
   },
   "Lum Berry": {
    "moves": [
@@ -5214,7 +5276,8 @@
     "Zing Zap"
    ],
    "abilities": [],
-   "why": "cures whatever status just landed on it"
+   "why": "cures whatever status just landed on it",
+   "side": "against"
   },
   "Occa Berry": {
    "moves": [
@@ -5246,7 +5309,8 @@
     "Torch Song"
    ],
    "abilities": [],
-   "why": "weakens an incoming Fire move"
+   "why": "weakens an incoming Fire move",
+   "side": "against"
   },
   "Passho Berry": {
    "moves": [
@@ -5276,7 +5340,8 @@
     "Whirlpool"
    ],
    "abilities": [],
-   "why": "weakens an incoming Water move"
+   "why": "weakens an incoming Water move",
+   "side": "against"
   },
   "Payapa Berry": {
    "moves": [
@@ -5297,7 +5362,8 @@
     "Zen Headbutt"
    ],
    "abilities": [],
-   "why": "weakens an incoming Psychic move"
+   "why": "weakens an incoming Psychic move",
+   "side": "against"
   },
   "Pecha Berry": {
    "moves": [
@@ -5314,7 +5380,8 @@
     "Toxic Thread"
    ],
    "abilities": [],
-   "why": "cures the poison this inflicts"
+   "why": "cures the poison this inflicts",
+   "side": "against"
   },
   "Persim Berry": {
    "moves": [
@@ -5330,7 +5397,8 @@
     "Water Pulse"
    ],
    "abilities": [],
-   "why": "cures the confusion this inflicts"
+   "why": "cures the confusion this inflicts",
+   "side": "against"
   },
   "Rawst Berry": {
    "moves": [
@@ -5354,7 +5422,8 @@
     "Will-O-Wisp"
    ],
    "abilities": [],
-   "why": "cures the burn this inflicts"
+   "why": "cures the burn this inflicts",
+   "side": "against"
   },
   "Rindo Berry": {
    "moves": [
@@ -5384,7 +5453,8 @@
     "Wood Hammer"
    ],
    "abilities": [],
-   "why": "weakens an incoming Grass move"
+   "why": "weakens an incoming Grass move",
+   "side": "against"
   },
   "Roseli Berry": {
    "moves": [
@@ -5398,7 +5468,8 @@
     "Spirit Break"
    ],
    "abilities": [],
-   "why": "weakens an incoming Fairy move"
+   "why": "weakens an incoming Fairy move",
+   "side": "against"
   },
   "Shuca Berry": {
    "moves": [
@@ -5418,7 +5489,8 @@
     "Stomping Tantrum"
    ],
    "abilities": [],
-   "why": "weakens an incoming Ground move"
+   "why": "weakens an incoming Ground move",
+   "side": "against"
   },
   "Tanga Berry": {
    "moves": [
@@ -5439,7 +5511,8 @@
     "X-Scissor"
    ],
    "abilities": [],
-   "why": "weakens an incoming Bug move"
+   "why": "weakens an incoming Bug move",
+   "side": "against"
   },
   "Wacan Berry": {
    "moves": [
@@ -5466,7 +5539,8 @@
     "Zing Zap"
    ],
    "abilities": [],
-   "why": "weakens an incoming Electric move"
+   "why": "weakens an incoming Electric move",
+   "side": "against"
   },
   "Yache Berry": {
    "moves": [
@@ -5488,7 +5562,8 @@
     "Triple Axel"
    ],
    "abilities": [],
-   "why": "weakens an incoming Ice move"
+   "why": "weakens an incoming Ice move",
+   "side": "against"
   }
  },
  "by_move": {

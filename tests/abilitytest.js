@@ -144,6 +144,90 @@ setTimeout(() => {
        has(n, "Earthquake") || has(n, "Fake Out"), false);
   });
 
+  /* ------------------------------------ lo que APAGA un movimiento -------- */
+  /* Una defensiva no etiqueta el movepool propio, y eso sigue bien: la
+     alternativa eran las 67, y Fire Lash habria llevado 32 chips grises. Pero
+     hay una clase mas estrecha, la que el jugador nombro exactamente:
+
+       "si viese zap cannon en algun pokemon como raichu, y veo que tiene el
+        tag bulletproof, sabria que ese move es bloqueado por esa habilidad"
+
+     BLOQUEADO. No "recibe la mitad", no "te puede quemar de vuelta" - el
+     movimiento no hace nada. Esa lista se dibuja en rojo sobre la fila. */
+  console.log("\n  lo que apaga un movimiento, en rojo");
+  const blockers = mv => {
+    const host = w.document.createElement("div");
+    w.blockerTags(MOVE[mv], host);
+    return [...host.children].map(n => n.textContent).sort();
+  };
+  const allBad = mv => {
+    const host = w.document.createElement("div");
+    w.blockerTags(MOVE[mv], host);
+    return [...host.children].every(n => / bad\b/.test(n.className));
+  };
+  ok("Zap Cannon lo bloquean cuatro",
+     blockers("Zap Cannon").join(", "),
+     "Bulletproof, Lightning Rod, Motor Drive, Volt Absorb");
+  ok("...y las cuatro van en negativo", allBad("Zap Cannon"), true);
+  ok("Boomburst: Soundproof y Telepathy",
+     blockers("Boomburst").join(", "), "Soundproof, Telepathy");
+  ok("Sleep Powder trae Overcoat", blockers("Sleep Powder").indexOf("Overcoat") >= 0, true);
+  ok("Earthquake trae Levitate", blockers("Earthquake").indexOf("Levitate") >= 0, true);
+  /* la mitad que hay que NO etiquetar: Big Pecks se come la bajada de Defensa
+     de Fire Lash, que no es el movimiento siendo bloqueado */
+  ok("Fire Lash no lleva ninguno", blockers("Fire Lash").length, 0);
+  ok("Protect tampoco", blockers("Protect").length, 0);
+  /* y una defensiva que solo amortigua nunca aparece */
+  ok("Fur Coat no bloquea nada",
+     Object.keys(w.CHAMP.AB_MOVES).filter(
+       n => n === "Fur Coat" && w.CHAMP.AB_MOVES[n].stop).length, 0);
+  /* ------------------------------ "hit by" no es lo mismo que "damage" --- */
+  /* El jugador leyo el tag de Will-O-Wisp y cazo la regla (2026-09-19):
+     "thermal exchange se activa con dano y no con ataques fuego de status".
+     Serebii lo dice con esas palabras - "takes DAMAGE from a Fire-type move" -
+     y la regla decia solo "tipo Fuego". Lo mismo pasaba en otras cuatro.
+
+     Will-O-Wisp SIGUE bloqueado, pero por la otra mitad de la habilidad: no
+     puede ser quemado, lo queme lo que lo queme. Es la razon la que cambia. */
+  console.log("\n  una habilidad de dano no reacciona a un status");
+  const statusOf = n => (AB[n] ? Object.keys(AB[n].m || {}) : [])
+    .map(i => w.CHAMP.MOVES[i]).filter(m => m[2] === "T").map(m => m[0]).sort();
+  ok("Thermal Exchange solo toca Will-O-Wisp, y por la quemadura",
+     statusOf("Thermal Exchange").join(","), "Will-O-Wisp");
+  ok("...y lo dice en el texto",
+     /damaging Fire move/.test(AB["Thermal Exchange"].why), true);
+  ok("Rattled ya no se asusta de un Taunt", statusOf("Rattled").join(","), "");
+  ok("Thick Fat no amortigua un Will-O-Wisp", statusOf("Thick Fat").join(","), "");
+  ok("Heatproof tampoco", statusOf("Heatproof").join(","), "");
+  ok("Dry Skin ni con Soak ni con Will-O-Wisp",
+     statusOf("Dry Skin").join(","), "");
+  /* y las que SI absorben el tipo entero, status incluido, siguen haciendolo */
+  ok("Sap Sipper sigue comiendose el Sleep Powder",
+     statusOf("Sap Sipper").indexOf("Sleep Powder") >= 0, true);
+  ok("Lightning Rod sigue atrayendo el Thunder Wave",
+     statusOf("Lightning Rod").indexOf("Thunder Wave") >= 0, true);
+
+
+  console.log("\n  y los items dicen para que lado juegan");
+  const items = mv => {
+    const host = w.document.createElement("div");
+    w.itemTags(MOVE[mv], host);
+    return [...host.children].map(
+      n => n.textContent + (/ bad\b/.test(n.className) ? "!" : ""));
+  };
+  /* el ejemplo del jugador: la baya descongela, asi que el freeze - que era
+     todo el punto del tag - no llega */
+  ok("Aspear Berry en Ice Fang va en negativo",
+     items("Ice Fang").indexOf("Aspear Berry!") >= 0, true);
+  ok("Chesto Berry en Sleep Powder tambien",
+     items("Sleep Powder").indexOf("Chesto Berry!") >= 0, true);
+  /* y uno que de verdad sirve al movimiento sigue en positivo */
+  ok("Heat Rock en Sunny Day sigue en positivo",
+     items("Sunny Day").indexOf("Heat Rock") >= 0, true);
+  ok("Light Clay en Reflect tambien",
+     items("Reflect").indexOf("Light Clay") >= 0, true);
+
+
   console.log("\n  ERRORES JS: " + (errs.length ? errs.join(" | ") : "ninguno"));
   console.log(bad ? "\n  " + bad + " FALLOS\n" : "\n  todo bien\n");
   process.exit(bad || errs.length ? 1 : 0);

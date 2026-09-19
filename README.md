@@ -84,6 +84,33 @@ stat` and `at 1/3 max HP` rather than `1.5x` and `1/3`. `effect_chips.py
 are counted rather than quietly wrong. The exact 4096ths stays in
 `data/db/effects.json` and in each chip's tooltip.
 
+**Choosing which Pokemon a build is for is a search, not a scroll.** It was a
+`<select>` of 264 forms in one alphabetical run with no way to look inside it.
+It is a field you tap now, opening the same kind of sheet the GTS and the
+calculator use: a search box that matches the **name, either type, or the dex
+number**, the app's usual sorts, and the same card as everywhere else. The
+whole dex stays on offer — a set for a Pokemon that has not arrived yet is an
+idea worth keeping — so "in your boxes" is a filter and never a limit.
+
+**A tag on a move row is not neutral.** Heat Rock on Sunny Day is a reason to
+run the move; **Aspear Berry on Ice Beam is the reason it will not work** — the
+target thaws and the freeze was the whole point. Both read as the same grey
+chip, so the row said "these items are related" and left which way to be worked
+out. Each link now carries the side it plays on, decided in
+`build_item_links.py` from the reason the link was made for, and the ones that
+answer the move are drawn in red.
+
+**And what turns a move off is on the row too.** A defensive ability badges
+nothing as a rule — the alternative is all 67 of them, and Fire Lash would
+carry 32 grey chips. But the narrow class that makes a move do **nothing** is
+worth seeing: Zap Cannon comes back **Bulletproof, Lightning Rod, Motor Drive,
+Volt Absorb**, and Boomburst **Soundproof, Telepathy**. Which abilities those
+are is derived in `build_ability_moves.py`, in two groups — one that stops the
+move whatever it was, and one that stops the thing the move *does*, which only
+counts as a block on a status move. So Will-O-Wisp is blocked by Thermal
+Exchange and Fire Lash is not, because Big Pecks only eats its Defence drop and
+that is not the move being stopped.
+
 **A GTS box is a shortlist, so it is filtered like one.** What may go into one
 is settled by two rules rather than taste — only a **duplicate** (the Species
 Clause means a second copy can never share a team with the first) or a species

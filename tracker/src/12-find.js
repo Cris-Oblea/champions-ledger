@@ -632,8 +632,41 @@ function priorityTag(m, host){
    so a tag here means "this item was made for this move": Heat Rock on Sunny
    Day, Light Clay on Reflect, Big Root on Giga Drain. */
 function itemTags(m, host){
-  ((C.ITEM_FOR_MOVE || {})[m.name] || []).forEach(function(it){
-    host.appendChild(el("span", "tag", it));
+  ((C.ITEM_FOR_MOVE || {})[m.name] || []).forEach(function(p){
+    /* WHICH WAY THE TAG POINTS. Heat Rock on Sunny Day is a reason to run the
+       move; Aspear Berry on Ice Beam is the reason it will not work, because
+       the target thaws and the freeze was the whole point. Both read as the
+       same grey chip, so the row said "these items are related" and left which
+       way to be worked out (player, 2026-09-18). The side is decided in
+       scripts/build_item_links.py, from the reason the link was made for. */
+    var t = el("span", "tag" + (p[1] === "against" ? " bad" : ""), p[0]);
+    t.title = p[1] === "against"
+      ? p[0] + " answers this move"
+      : p[0] + " is an item made for this move";
+    host.appendChild(t);
+  });
+}
+
+/* WHAT TURNS THIS MOVE OFF. A defensive ability badges nothing on a move row
+   as a rule, and that is right while the alternative is all 67 of them - Fire
+   Lash would carry 32 grey chips. These are the narrow class the player asked
+   for and named exactly: the ones that make the move do NOTHING.
+
+     "si viese zap cannon en algun pokemon como raichu, y veo que tiene el tag
+      bulletproof, sabria que ese move es bloqueado por esa habilidad"
+
+   Zap Cannon comes back Bulletproof, Lightning Rod, Motor Drive, Volt Absorb;
+   Fire Lash comes back empty, because Big Pecks only eats its Defence drop and
+   that is not the move being blocked. Which is which is derived in
+   scripts/build_ability_moves.py, never listed here. */
+function blockerTags(m, host){
+  var AB = C.AB_MOVES || {};
+  Object.keys(AB).forEach(function(a){
+    var st = AB[a].stop;
+    if (!st || st.indexOf(m.i) < 0) return;
+    var t = el("span", "tag bad", a);
+    t.title = a + ": " + AB[a].why;
+    host.appendChild(t);
   });
 }
 function spreadNote(m){
@@ -855,6 +888,7 @@ function moveRowFor(m, ability, poke){
   h.appendChild(typeChip(m.type));
   h.appendChild(document.createTextNode(m.name));
   priorityTag(m, h); spreadTags(m, h); itemTags(m, h);
+  blockerTags(m, h);
   var hits = [];
   abils.forEach(function(a){
     var hit = abilityHit(a, m, poke);
@@ -932,6 +966,7 @@ function findInit(){
           h.appendChild(typeChip(m.type));
           h.appendChild(document.createTextNode(m.name));
           priorityTag(m, h); spreadTags(m, h); itemTags(m, h);
+          blockerTags(m, h);
           mm.appendChild(h);
           mm.appendChild(el("div", "st", catName(m.cat) + "  ·  " +
             (m.bp ? m.bp + " BP" : "— BP") + "  ·  " +
@@ -1734,6 +1769,7 @@ function drawDupeHome(){
 */
 export {
   DIAG_LATEST, FIND, checkLatest, drawDiag, drawDupeHome, findDetail, findDraw,
+  blockerTags,
   findInit, findRun, itemTags, moveFilters, moveRowFor, moveScore, pokeBody,
   pokeHead, priorityTag,
   factLine, overlapSweep, spreadNote, spreadTags, worldDraw,
