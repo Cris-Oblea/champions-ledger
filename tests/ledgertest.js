@@ -111,6 +111,27 @@ const TABS = ["box", "home", "builds", "calc", "find", "gear", "trainer"];
   ok("la hoja de un Pokemon", errors.length === before ? "ok" : errors[errors.length - 1], "ok");
   w.closeSheet();
 
+  /* THE ONE CHAMPIONS HAS NEVER HEARD OF. Its card already carried the types,
+     the BST, the stats and the abilities - and the sheet read them off the
+     Champions row instead, which for this Pokemon does not exist, so it threw
+     before drawing anything. The tag is what says it cannot come into the
+     game; the facts are what a keep-or-send decision is made on, so both have
+     to be there. */
+  before = errors.length;
+  w.pokeSheet({ _id: "bulbasaur-home", name: "Bulbasaur", location: "home",
+                status: "permanent", origin: "home" });
+  await tick(150);
+  ok("la hoja de uno que no esta en Champions",
+     errors.length === before ? "ok" : errors[errors.length - 1], "ok");
+  const osheet = d.getElementById("sheetBody").textContent.replace(/\s+/g, " ");
+  ok("...dice que no esta en el dex", /Not in the Champions dex/.test(osheet), true);
+  ok("...y aun asi lista sus tipos", /Grass/.test(osheet) && /Poison/.test(osheet), true);
+  ok("...su BST", /318/.test(osheet), true);
+  ok("...su habilidad", /Chlorophyll/.test(osheet), true);
+  ok("...y lo que le hace dano, que es del tipo y no del juego",
+     /Takes damage/.test(osheet) && /Fire/.test(osheet), true);
+  w.closeSheet();
+
   before = errors.length;
   w.buildSheet("charizard");
   await tick(150);

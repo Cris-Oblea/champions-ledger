@@ -271,9 +271,38 @@ def link():
                  + (r.stderr or r.stdout))
     js = open(out_js, encoding="utf-8").read()
     check_order(js, parts())
+    BUILT["img_hosts"] = image_hosts(js)
     BUILT["app_map"] = open(out_js + ".map", encoding="utf-8").read()
     print("  app: %d modules linked, %.0f KB" % (len(parts()), len(js) / 1024))
     return js.rstrip(chr(10))
+
+
+def image_hosts(js):
+    """Which outside hosts the app draws PICTURES from, read off the app itself.
+
+    THE POLICY BELOW IS A LIST OF WHAT THE PAGE ACTUALLY LOADS, and the day a
+    feature loads something new the two halves have to move together. They did
+    not: `img-src 'self' data: blob:` was written when every image on the page
+    was one of those three, sprites arrived later from a CDN, and Cloudflare
+    served a policy that blocked every one of them. Locally nothing enforces
+    `_headers`, so the sprites were there all through development and gone the
+    moment they shipped - the failure had no error anyone would see, just 345
+    Pokemon with no picture (player, 2026-09-18).
+
+    So the host is not typed here twice. It is read out of the linked app, and
+    the build FAILS if the app has stopped loading any - because that would mean
+    either the sprites went away or this stopped being able to see them, and
+    both deserve to be read about rather than discovered on a phone.
+    """
+    decl = re.search(r"IMG_HOSTS\s*=\s*\[([^\]]*)\]", js)
+    found = re.findall(r'"(https://[^"]+)"', decl.group(1)) if decl else []
+    hosts = sorted(set(found))
+    if not hosts:
+        sys.exit("build_tracker_page: IMG_HOSTS is missing or empty in the "
+                 "linked app. If the sprites were removed on purpose, remove "
+                 "this check; otherwise the CSP is about to block them in "
+                 "production, silently, exactly as it did before.")
+    return hosts
 
 
 def check_order(js, linked):
@@ -380,6 +409,10 @@ def headers(supabase_url, assets=()):
       - a same-origin fetch of the page itself, which is how the search view
         probes whether it is online
       - photographs held as data:/blob: while a box scan is confirmed
+      - the Pokemon sprites, from the CDN the app names - and that host is READ
+        OFF the linked app by image_hosts() rather than typed here, because the
+        two were typed separately once and production spent two days with no
+        pictures at all
     Nothing in tracker/src/ or the vendored engine uses eval or new Function -
     both checked - so no 'unsafe-eval' is needed.
 
@@ -401,7 +434,7 @@ def headers(supabase_url, assets=()):
         "script-src 'self' 'unsafe-inline'",
         "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
         "font-src https://fonts.gstatic.com",
-        "img-src 'self' data: blob:",
+        " ".join(["img-src 'self' data: blob:"] + BUILT.get("img_hosts", [])),
         "object-src 'none'",
         "base-uri 'none'",
         # there is exactly one real <form> on the page, the login

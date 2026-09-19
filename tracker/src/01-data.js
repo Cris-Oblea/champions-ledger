@@ -352,8 +352,20 @@ function anyRow(name){ return byName[name] || outsideRow(name); }
 
    The pixel sprite, not the artwork: 1.3-1.7 KB against 126 KB, and at the
    size a card shows it the artwork would be downscaled into mush anyway. */
+/* EVERY OUTSIDE HOST THIS APP DRAWS A PICTURE FROM, DECLARED ONCE.
+
+   scripts/build_tracker_page.py reads this array out of the linked app and
+   writes it into the Content-Security-Policy, so adding a host here is what
+   allows it in production - there is no second place to edit.
+
+   That is not tidiness, it is the bug. The policy said `img-src 'self' data:
+   blob:` from the day it was written, the sprites arrived later from a CDN,
+   and nothing local enforces _headers: every sprite was there in development
+   and blocked the moment it shipped, with no error a person would ever see
+   (player, 2026-09-18). */
+var IMG_HOSTS = ["https://cdn.jsdelivr.net"];
 var SPRITE_PIN = "2ecb4eeacd5a1718621fc30f12772e3f60d830b9";
-var SPRITE_BASE = "https://cdn.jsdelivr.net/gh/PokeAPI/sprites@" + SPRITE_PIN +
+var SPRITE_BASE = IMG_HOSTS[0] + "/gh/PokeAPI/sprites@" + SPRITE_PIN +
                   "/sprites/pokemon/";
 /* TWO SETS, AND THE REASON IS RESOLUTION, NOT TASTE.
 
