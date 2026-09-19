@@ -295,18 +295,33 @@ const TABS = ["box", "home", "builds", "calc", "find", "gear", "trainer"];
      entonces. Aqui se simula ya cargado: lo que se comprueba es que la seccion
      se dibuje y diga de donde salen los movimientos. */
   console.log("\n  el que no esta en Champions tambien lista sus movimientos");
-  w.CHAMP_HOME_MOVES = {Bulbasaur: {m: ["Tackle", "Growl", "Vine Whip",
-                                        "Sleep Powder", "Giga Drain"], x: 9}};
+  /* La dex entera va en su propio asset y se pide solo al abrir una de estas
+     fichas, asi que aqui se simula ya cargada. Lleva las tres cosas que le
+     faltaban a la app: el movepool, las FILAS de los moves que la app no
+     manda al telefono, y el texto de las abilities que Champions no tiene. */
+  w.CHAMP_OUTSIDE = {
+    m: {Bulbasaur: ["Tackle", "Growl", "Vine Whip", "Sleep Powder",
+                    "Giga Drain", "Mega Drain"]},
+    mv: {"Mega Drain": ["Grass", "S", 40, 100, 15]},
+    ab: {Chlorophyll: "Doubles Speed in harsh sunlight."}};
   w.findDetail(w.anyRow("Bulbasaur"));
   await tick(200);
   const sheet2 = d.getElementById("sheetBody").textContent.replace(/\s+/g, " ");
   ok("hay seccion de movepool", /Movepool/.test(sheet2), true);
-  ok("...y dice que son de la serie principal",
-     /Main-series moves/.test(sheet2), true);
-  ok("...y cuenta los que Champions no tiene",
-     /9 more that Champions has no move for/.test(sheet2), true);
+  ok("...y dice de donde sale la lista",
+     /Which moves it learns is main-series/.test(sheet2), true);
   ok("...y los movimientos estan ahi",
      /Giga Drain/.test(sheet2) && /Sleep Powder/.test(sheet2), true);
+  /* NADA SE TIRA YA. Antes se descartaban los moves que la app no manda -
+     Flutter Mane perdia seis, uno de ellos Tera Blast - con el argumento de
+     que un nombre sin BP es una palabra y no informacion. El argumento era
+     bueno y la conclusion no: moves.json YA los tiene, con su fila completa
+     de Champions; solo no se envian al telefono, para que ningun picker deje
+     construir con ellos. Aqui se muestran, marcados. */
+  ok("...incluido el que Champions no habilita", /Mega Drain/.test(sheet2), true);
+  ok("...y va marcado como tal", /not in Champions/.test(sheet2), true);
+  ok("...y lo dice en la cabecera",
+     /1 of them are moves Champions has in its database/.test(sheet2), true);
   w.closeSheet();
 
   before = errors.length;

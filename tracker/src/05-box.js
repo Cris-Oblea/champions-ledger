@@ -574,43 +574,59 @@ function flushAnalysis(){
   q.forEach(function(fn){ try { fn(); } catch (e) {} });
 }
 
-/* ------------------------------ what a Pokemon Champions LACKS knows -------
-   The same shape, for a different 425 KB. HOME holds 933 species the game has
-   never heard of, and the sheet showed their types, BST, stats and abilities
-   but nothing about their moves - which was the other half of the request
-   (player, 2026-09-18: "tambien deberia poder abrir la ficha y listar los
-   movimientos que aprende ese pokemon").
+/* ------------------------------- THE REST OF THE DEX, ON DEMAND ----------
+   The same shape as the analysis loader, for a different 503 KB.
 
-   Fetched when one of those sheets is opened and never otherwise, because
-   most sessions never open one. Everything else about this file is argued in
-   scripts/build_home_moves.py, including why reading PokeAPI's main-series
-   movepool is allowed for a species Champions does not have and forbidden for
-   one it does. */
-var HM_STATE = "idle", HM_WAITING = [];
+     "La idea es tener la DEX COMPLETA... necesito tener la database de todas
+      las abilities, todos los moves, todos los pokemones. asi cuando se
+      consulta por algo se sabe todo y el tag not in champions indica si es
+      posible usarlo o no."  (player, 2026-09-19)
 
-function loadHomeMoves(then){
-  if (window.CHAMP_HOME_MOVES) { HM_STATE = "ready"; return then(); }
-  if (HM_STATE === "ready" || HM_STATE === "absent") return then();
-  HM_WAITING.push(then);
-  if (HM_STATE === "loading") return;
-  var url = window.CHAMP_HOME_MOVES_URL;
-  if (!url) { HM_STATE = "absent"; return flushHomeMoves(); }
-  HM_STATE = "loading";
+   So this carries three things for the 933 species the game has not added:
+   every movepool, the move rows the app does not ship to the phone, and the
+   ability text Champions has no entry for - Protosynthesis had a name on the
+   sheet and nothing to say about it.
+
+   Fetched when one of those sheets is opened and never otherwise, because most
+   sessions never open one. What is in it and where each part comes from is
+   argued in scripts/build_outside_dex.py - the short version being that the
+   MOVES are Champions' own data all along, and only the ability text is
+   main-series. */
+var OUT_STATE = "idle", OUT_WAITING = [];
+
+function loadOutside(then){
+  if (window.CHAMP_OUTSIDE) { OUT_STATE = "ready"; return then(); }
+  if (OUT_STATE === "ready" || OUT_STATE === "absent") return then();
+  OUT_WAITING.push(then);
+  if (OUT_STATE === "loading") return;
+  var url = window.CHAMP_OUTSIDE_URL;
+  if (!url) { OUT_STATE = "absent"; return flushOutside(); }
+  OUT_STATE = "loading";
   var sc = document.createElement("script");
   sc.src = url;
-  sc.onload = function(){ HM_STATE = "ready"; flushHomeMoves(); };
-  sc.onerror = function(){ HM_STATE = "absent"; flushHomeMoves(); };
+  sc.onload = function(){ OUT_STATE = "ready"; flushOutside(); };
+  sc.onerror = function(){ OUT_STATE = "absent"; flushOutside(); };
   document.head.appendChild(sc);
 }
 
-function flushHomeMoves(){
-  var q = HM_WAITING;
-  HM_WAITING = [];
+function flushOutside(){
+  var q = OUT_WAITING;
+  OUT_WAITING = [];
   q.forEach(function(fn){ try { fn(); } catch (e) {} });
 }
 
-function homeMovesFor(name){
-  return (window.CHAMP_HOME_MOVES || {})[name] || null;
+function outsideDex(){ return window.CHAMP_OUTSIDE || {}; }
+function outsideMovesFor(name){ return (outsideDex().m || {})[name] || null; }
+/* A move the app does not ship, dressed as one it does, so the same row
+   renderer draws it. `i` is -1 on purpose: the ability badges and the blocker
+   tags index by it, and a move with no index must match none of them rather
+   than match move 0. */
+function outsideMove(name){
+  var r = (outsideDex().mv || {})[name];
+  if (!r) return null;
+  return {i:-1, name:name, type:r[0], cat:r[1], bp:r[2], acc:r[3], pp:r[4],
+          pri:0, target:"Selected Target", spread:false, hitsAlly:false,
+          hits:null, crit:false, f:"", sec:false, text:"", notInChampions:true};
 }
 
 /* One set, as the thing you would actually build: the four slots, the spread,
@@ -784,5 +800,5 @@ function analysisPanel(name, host){
    `window` - they open a sheet for every form in the dex and assert what it
    shows. `moveButtons` stays private.
 */
-export { addSheet, analysisPanel, battleFormNote, homeMovesFor,
-  loadHomeMoves, pokeRow, pokeSheet };
+export { addSheet, analysisPanel, battleFormNote, loadOutside,
+  outsideDex, outsideMove, outsideMovesFor, pokeRow, pokeSheet };

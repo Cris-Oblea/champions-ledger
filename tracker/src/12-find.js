@@ -9,8 +9,8 @@ import {
 } from "./01-data.js";
 import { S, boxRows, hasStone, originOf, ownedNames } from "./02-state.js";
 import { closeSheet, fbtn, openSheet } from "./04-nav.js";
-import { analysisPanel, battleFormNote, homeMovesFor, loadHomeMoves }
-  from "./05-box.js";
+import { analysisPanel, battleFormNote, loadOutside, outsideDex,
+  outsideMove, outsideMovesFor } from "./05-box.js";
 import { AB_SET, abilityHit, abilityTag, engineReady } from "./11-damage.js";
 import { fill, note } from "./13-boot.js";
 /* --------------------------------------------------------- the search view --
@@ -388,7 +388,28 @@ function pokeBody(body, p, opts){
   (p.ab || []).forEach(function(a){
     var n = el("div", "note");
     n.style.marginBottom = "6px";
-    n.innerHTML = "<strong>" + a + ".</strong> " + (C.ABIL[a] || "");
+    /* CHAMPIONS' OWN TEXT FIRST, ALWAYS. 95 of the abilities carried by
+       species the game has not added have no row here at all - Protosynthesis
+       was a name on the sheet with nothing to say about it - so those fall
+       back to the outside dex, which says on screen that it is main-series.
+       An ability Champions HAS never reaches that branch. */
+    n.innerHTML = "<strong>" + a + ".</strong> ";
+    var say = el("span");
+    say.textContent = C.ABIL[a] || "";
+    n.appendChild(say);
+    if (!C.ABIL[a]) {
+      say.textContent = "Loading…";
+      loadOutside(function(){
+        var t = (outsideDex().ab || {})[a];
+        say.textContent = t || "No description on record for " + a + ".";
+        if (t) {
+          var tg = el("span", "tag", "main-series text");
+          tg.title = "Champions has no row for " + a + " because no Pokemon it "
+                   + "allows carries it. This is the main-series description.";
+          say.appendChild(tg);
+        }
+      });
+    }
     var anum = effectLine(a);
     if (anum) n.appendChild(anum);
     /* What it does to this Pokemon's moves, said HERE rather than as a badge
@@ -538,24 +559,35 @@ function pokeBody(body, p, opts){
     var host = el("div");
     body.appendChild(host);
     host.appendChild(el("div", "st", "Loading what it knows..."));
-    loadHomeMoves(function(){
+    loadOutside(function(){
       host.innerHTML = "";
-      var got = homeMovesFor(p.name);
+      var got = outsideMovesFor(p.name);
       if (!got) {
         host.appendChild(el("div", "st",
           "No movepool on record for " + p.name + " — there is no "
           + "Champions page for it and nothing upstream either."));
         return;
       }
-      var pool = got.m.map(function(n){ return MOVE_BY[n]; })
-                     .filter(Boolean);
+      /* THE WHOLE MOVEPOOL, not the half the app happens to ship. A move
+         Champions has DISABLED still has a full Champions row - type,
+         category, base power, accuracy, PP - it is simply not sent to the
+         phone, because the pickers draw from that list and a build made of a
+         disabled move would be an illegal build the app helped write. Here
+         they are wanted, and they carry a tag saying which they are. */
+      var off = 0;
+      var pool = got.map(function(n){
+        var m = MOVE_BY[n];
+        if (m) return m;
+        var o = outsideMove(n);
+        if (o) off++;
+        return o;
+      }).filter(Boolean);
       host.appendChild(el("p", "sub",
-        "Main-series moves, from the same tables the numbers above came from "
-        + "— Champions publishes none for a species it does not have. "
-        + "What each one DOES below is Champions' own row for that move."
-        + (got.x ? " " + got.x + " more that Champions has no move for at all "
-           + "are not listed, because a name with no base power, accuracy or "
-           + "PP is a word rather than information." : "")));
+        "Which moves it learns is main-series — Champions publishes no "
+        + "page for a species it does not have. What each one DOES is "
+        + "Champions' own row for that move."
+        + (off ? " " + off + " of them are moves Champions has in its database "
+           + "but has not enabled; they are marked." : "")));
       var ui2 = moveFilters(host, pool, function(){ drawOut(); },
                             "Filter " + pool.length + " moves it learns",
                             {cap: 200});
@@ -934,6 +966,16 @@ function moveRowFor(m, ability, poke){
   var h = el("div", "rname");
   h.appendChild(typeChip(m.type));
   h.appendChild(document.createTextNode(m.name));
+  /* A move Champions carries but has not enabled. It is shown - the whole
+     movepool is the point on a sheet for a species the game has not added -
+     and it says plainly that it cannot be used, so nothing here ever reads as
+     something you could build with. */
+  if (m.notInChampions) {
+    var ni = el("span", "tag bad", "not in Champions");
+    ni.title = "Champions has a row for this move but no Pokemon it allows can "
+             + "use it. It becomes playable if the game enables it.";
+    h.appendChild(ni);
+  }
   priorityTag(m, h); spreadTags(m, h); itemTags(m, h);
   blockerTags(m, h);
   var hits = [];

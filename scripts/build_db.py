@@ -9,7 +9,7 @@ Writes to data/db/:
 
 Everything comes from the Champions sections of Serebii. No other Pokemon game.
 """
-import os, re, json, html
+import io, os, re, json, html
 from collections import defaultdict
 
 from serebii_text import read, unmojibake
@@ -562,12 +562,90 @@ def parse_champions_abilities(pokemon_rows):
 
 
 # --------------------------------------------------------------------------
+def abilities_by_form(path):
+    """The Pokedex page's Abilities cell, split by the form each group names.
+
+    A PAGE WITH SEVERAL FORMS WRITES ONE CELL FOR ALL OF THEM:
+
+        Keen Eye - Sand Rush - Steadfast (Midday Form) -
+        Keen Eye - Vital Spirit - No Guard (Midnight Form) -
+        Tough Claws (Dusk Form)
+
+    EVERY parenthesis ends a group, including the one that just repeats the
+    species - Arcanine's cell reads "... (Arcanine) - ... (Hisuian Form)".
+    Reading only the ones that say "Form" was tried and was worse than doing
+    nothing: the first group has no terminator, so its abilities spill into the
+    next label and Ninetales-Alola came out with Flash Fire and Drought, which
+    are the BASE form's. Caught by running it.
+
+    Form rows come from the ATTACKDEX, not from here, because that is the only
+    place each form gets a row of its own. Usually the two agree. Lycanroc is
+    where they do not: the attackdex row for Midnight lists Keen Eye and Vital
+    Spirit and stops, so **No Guard was missing from the database entirely** -
+    found in game by the player (2026-09-19: "smogon y el juego si dicen que
+    tiene no guard"), then confirmed here, in Serebii's own markup, which links
+    /abilitydex/noguard.shtml on that page.
+
+    16 pages group their abilities this way and only that one form was short,
+    so this ONLY EVER ADDS - it never replaces the attackdex's list, which is
+    right everywhere else. Returns {form label: [abilities]}.
+    """
+    try:
+        s = io.open(path, encoding="cp1252", errors="replace").read()
+    except OSError:
+        return {}
+    m = re.search(r"<b>Abilities</b>\s*:(.*?)</td>", s, re.S)
+    if not m:
+        return {}
+    # the links in order, and the "(... Form)" markers between them
+    cell = m.group(1)
+    out, cur = {}, []
+    for tok in re.finditer(
+            r'/abilitydex/[a-z0-9]+\.shtml"[^>]*>\s*<b>([^<]+)</b>'
+            r'|\(([^)]{1,30})\)', cell):
+        if tok.group(1):
+            cur.append(re.sub(r"\s+", " ", html.unescape(tok.group(1))).strip())
+        elif cur:
+            out[tok.group(2).strip()] = cur
+            cur = []
+    return out
+
+
+def complete_form_abilities(forms):
+    """Add anything the Pokedex page lists for a form that its row is missing.
+
+    Matched with query.norm(), the project's own name matcher, so "(Midnight
+    Form)" on the Lycanroc page finds "Lycanroc-Midnight" and "(Hisuian Form)"
+    on the Arcanine page finds "Arcanine-Hisui" without a table of suffixes.
+    """
+    import query as _Q
+    by_norm = {}
+    for name, p in forms.items():
+        by_norm.setdefault(_Q.norm(name), []).append(p)
+    added = []
+    for fn in sorted(os.listdir(os.path.join(RAW, "pokedex"))):
+        species = os.path.splitext(fn)[0]
+        for label, abs_ in abilities_by_form(
+                os.path.join(RAW, "pokedex", fn)).items():
+            for p in by_norm.get(_Q.norm(species + " " + label), []):
+                have = p.get("abilities") or []
+                new = [a for a in abs_ if a not in have]
+                if new:
+                    p["abilities"] = have + new
+                    added.append((p["name"], new))
+    for name, new in added:
+        print("  +ability  %-22s %s  (from its Pokedex page)"
+              % (name, ", ".join(new)))
+    return len(added)
+
+
 def main():
     os.makedirs(DB, exist_ok=True)
 
     print("Pokemon...", flush=True)
     # base and regional forms from the attackdex (one row per form)
     forms = forms_from_attackdex()
+    complete_form_abilities(forms)
     # Megas only exist on the Pokedex page
     mega_names = master_mega_names()
     dex_rows = []

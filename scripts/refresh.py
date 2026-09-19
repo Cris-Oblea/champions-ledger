@@ -177,8 +177,15 @@ def stages(reg, deep=False):
         # has to follow home_dex: it is keyed by exactly the names that file
         # resolved, so a species added there without running this afterwards
         # gets a sheet with an empty section rather than a movepool.
-        Stage("homemoves", "movepools for the species outside Champions",
-              ["scripts/build_home_moves.py"], False),
+        Stage("outsidedex",
+              "the rest of the dex for what Champions does not have",
+              ["scripts/build_outside_dex.py"], False),
+        # The ability lists get the second opinion the movepools have had
+        # since 2026-09-16. Lycanroc-Midnight was missing No Guard for
+        # months because Serebii's attackdex row and its Pokedex page
+        # disagree, and nothing was comparing them to anything.
+        Stage("abilityaudit", "every form's abilities, crossed upstream",
+              ["scripts/audit_abilities.py"], False),
         Stage("tracker", "regenerate tracker/data.js",
               ["scripts/build_tracker_data.py"]),
         Stage("dexnos", "National Dex numbers (the order HOME lists in)",

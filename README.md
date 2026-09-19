@@ -157,16 +157,23 @@ sources of "a name the app can draw" can never disagree. Floette was a second
 case on top of that — it *is* in Champions, as **Floette-Eternal**, the only
 one the game has — so name resolution follows the alias table before giving up.
 
-**And a species Champions does not have still knows things.** Its movepool is
-not in `learnsets.json` because nothing of ours covers it, so it comes from the
-same tables its stats do: PokeAPI's newest main-series version group, at the
-pinned commit, and never for a species Champions *does* have — there, Champions
-has its own group (32) and the move rebalance makes upstream wrong. The section
-says so on screen. A move is listed only if Champions has a row for it, because
-a name with no base power, accuracy or PP is a word rather than information,
-and the ones dropped are **counted** beside the list rather than quietly
-missing. 425 KB for 870 species, so it is its own hashed asset, fetched the
-first time one of those sheets is opened and never otherwise.
+**The dex is complete; Champions is the part of it that is switched on.**
+That framing is the player's (2026-09-19) and it is the right one: the game
+rebalances a Pokemon *when it adds it*, so until then there is nothing of ours
+to contradict, and knowing what Flutter Mane would bring is how you judge
+whether you want it. So the app carries **every** species, **every** move and
+**every** ability, and the *not in Champions* tag is what says a thing cannot
+be played yet.
+
+Three parts fill that in for the 933 species the game has not added: their
+**movepools**, the **move rows** the app does not ship, and the **ability text**
+Champions has no entry for. Only the last is main-series — the moves were ours
+all along. `data/db/moves.json` holds 901 moves of which 512 are useable, and
+388 of the other 389 carry a full Champions row; they were never missing, just
+not sent to the phone, because the pickers draw from that list and a build made
+of a disabled move would be an illegal build the app helped write. They are
+shown here, marked. 503 KB, so it is its own hashed asset, fetched the first
+time one of those sheets is opened and never otherwise.
 
 **A GTS box is a shortlist, so it is filtered like one.** What may go into one
 is settled by two rules rather than taste — only a **duplicate** (the Species
@@ -203,6 +210,18 @@ those and nothing else.
 recorded as shiny wears its own colours on its card and on its sheet. Only
 where a specific copy is in hand — the search view draws the species, not his
 copy of it.
+
+**Two sources inside one site can disagree, so the ability lists are crossed
+too.** A form's abilities come from the **attackdex**, because that is the only
+place each form gets a row of its own — and Serebii's attackdex row for
+Lycanroc-Midnight lists Keen Eye and Vital Spirit and stops, while its **Pokedex
+page** lists all three and links `/abilitydex/noguard.shtml`. **No Guard was
+missing from the database entirely**, found in game by the player. `build_db.py`
+completes a short form row from the page now — it only ever adds — and
+`scripts/audit_abilities.py` crosses all 264 forms against PokeAPI at the pin so
+the next one speaks up instead of sitting there. One known difference is
+recorded with its reason rather than silenced: Serebii writes *Compoundeyes* as
+one word and our whole database does too.
 
 **A HOME Pokemon Champions has never heard of is still a card.** HOME holds
 species the game does not have, and those rows used to be a name and a "not in

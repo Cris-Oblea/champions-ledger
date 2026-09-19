@@ -396,12 +396,12 @@ def main():
                      ([PY, "scripts/build_splits_data.py", "--check"],
                       "what the splits percentages are a share of"),
                      ([PY, "scripts/build_splits_data.py"], "the ladder splits"),
-                     ([PY, "scripts/build_home_moves.py"],
-                      "what the species outside Champions know"),
+                     ([PY, "scripts/build_outside_dex.py"],
+                      "the rest of the dex"),
                      ([PY, "scripts/build_engine_bundle.py"], "engine bundle")] + steps
         else:
             out.append("no source cache here: using the committed data.js, "
-                       "analyses, home movepools and engine bundle, "
+                       "analyses, the outside dex and engine bundle, "
                        "rebuilding the page from them")
         for argv, what in steps:
             rc, bout = sh(argv)
