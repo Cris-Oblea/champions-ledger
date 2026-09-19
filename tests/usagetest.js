@@ -84,13 +84,42 @@ setTimeout(() => {
   ok("ningun move pasa de 30%", rilla.m.every(r => r[1] <= 30), true);
 
   /* ------------------------------------------------ chips sin duplicacion */
-  console.log("\n  las unidades se escriben una sola vez");
+  /* UN HECHO, UN CHIP, Y EL CHIP DICE DE QUE. Black Glasses decia x1.2 tres
+     veces - la sonda fisica, la especial y la frase de Smogon, las tres lo
+     mismo - y Life Orb se contradecia a si mismo con x1.2998 dos veces y 1.3x
+     una. Y un chip que pone "1/3", o "Double", no nombra ningun sujeto.
+     scripts/effect_chips.py decide todo eso; esto comprueba el resultado. */
+  console.log("\n  un hecho, un chip, y el chip dice de que");
   const E = w.CHAMP.EFFECTS || {};
-  const dup = Object.keys(E).filter(n => (E[n].t || []).some(
-    p => / stages stages| turns turns/.test(p[0])));
-  ok("nada dice 'stages stages' ni 'turns turns'", dup.length, 0);
-  ok("Intimidate en singular",
-     (E["Intimidate"].t || [])[0][0], "1 stage");
+  const txt = n => (E[n].c || []).map(p => p[0]);
+  const twice = Object.keys(E).filter(n => {
+    const t = txt(n);
+    return new Set(t).size !== t.length;
+  });
+  ok("ninguna entrada repite un chip", twice.join(", "), "");
+  const units = Object.keys(E).filter(
+    n => txt(n).some(t => / stages stages| turns turns|max HP max HP/.test(t)));
+  ok("ninguna unidad se escribe dos veces", units.join(", "), "");
+  const bare = Object.keys(E).filter(
+    n => txt(n).some(t => /^(half|double|third|quarter)$/i.test(t)));
+  ok("ningun chip es solo una palabra sin numero", bare.join(", "), "");
+
+  ok("Black Glasses dice x1.2 una sola vez", txt("Black Glasses").join(" | "),
+     "x1.2 damage dealt");
+  ok("Life Orb redondea a lo que el motor quiere decir",
+     txt("Life Orb").join(" | "), "x1.3 damage dealt | 1/10 of max HP");
+  ok("...y 1.2998 ya no aparece en ningun sitio",
+     JSON.stringify(E).indexOf("1.2998") >= 0, false);
+  ok("Overgrow nombra el sujeto de sus dos numeros",
+     txt("Overgrow").join(" | "), "x1.5 offensive stat | at 1/3 max HP");
+  ok("Fur Coat nombra la estadistica, no el dano",
+     txt("Fur Coat").join(" | "), "x2 Defence");
+  ok("Fairy Aura no dice el mismo numero por cada lado",
+     txt("Fairy Aura").length, 1);
+  /* una sola cifra en la frase: la frase YA es el chip */
+  ok("Swift Swim no repite lo que la frase dice", txt("Swift Swim").length, 0);
+  ok("Aerilate tampoco", txt("Aerilate").length, 0);
+  ok("...pero la frase sigue ahi", !!E["Aerilate"].desc, true);
 
   w.go("builds");
   click(d.querySelectorAll("#listBuilds .row")[0]);

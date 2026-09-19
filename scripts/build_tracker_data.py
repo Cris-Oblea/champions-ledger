@@ -9,6 +9,7 @@ import json, os, re, sys, unicodedata
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "scripts"))
 import query as Q
+import effect_chips
 
 OUT = os.path.join(ROOT, "tracker", "data.js")
 
@@ -513,19 +514,26 @@ def main():
         pass
     USAGE_AT = ((Q.meta("usage_pokemon") or {}).get("fetched"))
 
-    # Trimmed to what a screen needs: the quantified sentence, the engine's
-    # multipliers, and the numbers found in the text. The probe's raw stage
-    # dumps stay in data/db/effects.json for anyone checking the working.
+    # Trimmed to what a screen needs: the quantified sentence and the chips.
+    #
+    # THE CHIPS ARE DECIDED HERE, not on the phone. They used to be one per
+    # measurement and one per number found in the text, which is how Black
+    # Glasses came to say x1.2 three times and Life Orb managed to disagree
+    # with itself - x1.2998 twice from the engine's 4096ths and 1.3x once from
+    # Smogon's sentence (player, 2026-09-18: "se tiene que llegar a 1 solo
+    # concenso de la verdad y mostrar la informacion claramente 1 vez").
+    #
+    # scripts/effect_chips.py is that consensus, and it is a script rather than
+    # a few lines here so that `--audit` can list the numbers whose subject it
+    # still cannot name. The probe's raw stage dumps and every number it found
+    # stay in data/db/effects.json for anyone checking the working.
     EFFECTS = {}
     for name, v in ((Q.db("effects") or {}).get("effects") or {}).items():
-        x = [[f["when"], f["multiplier"]] for f in v.get("effects") or []
-             if f.get("multiplier")]
-        t = [[n["as_written"], n["kind"], n["phrase"]]
-             for n in v.get("text_numbers") or []]
-        if not (x or t or v.get("described")):
+        c = effect_chips.chips(v)
+        if not (c or v.get("described")):
             continue
         EFFECTS[name] = {"kind": v.get("kind"), "desc": v.get("described"),
-                         "x": x, "t": t}
+                         "c": c}
 
     # EVERY WORLDS, AS HISTORY. A Worlds is played once under one regulation
     # and then frozen, so this is what the field brought that August and never
