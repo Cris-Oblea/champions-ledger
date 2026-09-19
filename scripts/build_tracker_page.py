@@ -125,7 +125,7 @@ PUBLIC = [
     "TYPE_COLOR", "TYPE_COLOR2", "TYPE_INK",
     "abilityTag", "buildLink", "buildSheet", "buildsPane", "byName",
     "blockerTags", "closeSheet", "engineCalc", "findDetail", "go",
-    "gtsPickMine", "itemTags", "leaveEditor",
+    "anyRow", "gtsPickMine", "itemTags", "leaveEditor",
     "gtsPickWanted", "learnset",
     "megasFor", "moveRowFor", "overlapSweep", "pokeSheet", "teamReport",
     "teamSheet", "teamTypes",
@@ -394,6 +394,7 @@ def config_js():
     # rather than pretending: 407 KB inlined into a page that is already 1.3 MB
     # would be paid by everyone for something opened occasionally.
     return ("window.CHAMP_ANALYSIS_URL = '';" + chr(10)
+            + "window.CHAMP_HOME_MOVES_URL = '';" + chr(10)
             + "window.CHAMP_CONFIG = ") + json.dumps(
         {"supabase": {"url": c["url"], "key": c["publishableKey"],
                       "email": c.get("loginEmail", "")}},
@@ -638,21 +639,28 @@ def build_dist(html):
     # panel that is opened when a build is being argued about and not before.
     # So it is hashed like the rest - immutable, cached for a year once
     # fetched - and the page is told its name rather than its contents.
-    src = os.path.join(ROOT, "tracker", "analysis.js")
-    if os.path.exists(src):
+    # TWO of them now, and the second one is why this is a loop. HOME holds 933
+    # species Champions has never heard of, and what each of them KNOWS is 425
+    # KB - bigger than the engine - for a list that is read when one of those
+    # sheets is opened and never otherwise.
+    for src_name, var, made_by in (
+            ("analysis.js", "CHAMP_ANALYSIS_URL", "build_analysis_data.py"),
+            ("homemoves.js", "CHAMP_HOME_MOVES_URL", "build_home_moves.py")):
+        src = os.path.join(ROOT, "tracker", src_name)
+        if not os.path.exists(src):
+            print("  no tracker/%s - run %s" % (src_name, made_by))
+            continue
         text = io.open(src, encoding="utf-8").read()
-        name = "analysis.%s.js" % hashlib.sha256(
-            text.encode("utf-8")).hexdigest()[:8]
+        name = "%s.%s.js" % (src_name[:-3], hashlib.sha256(
+            text.encode("utf-8")).hexdigest()[:8])
         open(os.path.join(DIST, name), "w", encoding="utf-8",
              newline="").write(text)
-        page = page.replace("window.CHAMP_ANALYSIS_URL = '';",
-                            "window.CHAMP_ANALYSIS_URL = %r;" % name)
-        open(os.path.join(DIST, "index.html"), "w", encoding="utf-8",
-             newline="").write(page)
+        page = page.replace("window.%s = '';" % var,
+                            "window.%s = %r;" % (var, name))
         assets[name] = text
         print("  asset %-30s %6.0f KB  (on demand)" % (name, len(text) / 1024))
-    else:
-        print("  no tracker/analysis.js - run build_analysis_data.py")
+    open(os.path.join(DIST, "index.html"), "w", encoding="utf-8",
+         newline="").write(page)
 
     manifest = {
         "name": "Champions Ledger",

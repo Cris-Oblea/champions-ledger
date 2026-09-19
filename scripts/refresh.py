@@ -173,6 +173,12 @@ def stages(reg, deep=False):
               ["scripts/build_analysis_data.py"]),
         Stage("splitsdata", "per-Pokemon ladder splits, for the app",
               ["scripts/build_splits_data.py"], False),
+        # ...and what those species KNOW, as a second on-demand asset. It
+        # has to follow home_dex: it is keyed by exactly the names that file
+        # resolved, so a species added there without running this afterwards
+        # gets a sheet with an empty section rather than a movepool.
+        Stage("homemoves", "movepools for the species outside Champions",
+              ["scripts/build_home_moves.py"], False),
         Stage("tracker", "regenerate tracker/data.js",
               ["scripts/build_tracker_data.py"]),
         Stage("dexnos", "National Dex numbers (the order HOME lists in)",

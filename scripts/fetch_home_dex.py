@@ -66,6 +66,7 @@ sys.path.insert(0, os.path.join(ROOT, "scripts"))
 import query as Q                                             # noqa: E402
 
 RAW = os.path.join(ROOT, "data", "raw", "pokeapi_csv")
+META = os.path.join(ROOT, "data", "meta")
 OUT = os.path.join(ROOT, "data", "db", "home_dex.json")
 SPRITES = os.path.join(ROOT, "data", "db", "sprite_ids.json")
 # PokeAPI/pokeapi, BSD-3-Clause, pinned. Bump deliberately and read the diff.
@@ -119,6 +120,16 @@ ALIASES = {
     "squawkabilly-blue": "squawkabilly-blue-plumage",
     "squawkabilly-yellow": "squawkabilly-yellow-plumage",
     "squawkabilly-white": "squawkabilly-white-plumage",
+    # The six a WORLDS TEAMLIST writes bare while the weight table only carries
+    # the suffixed forms, so neither side had a row to meet on and the card was
+    # a name and nothing else. pokedata publishes "Landorus"; upstream calls
+    # the default form "landorus-incarnate". Each of these was looked up in
+    # pokemon.csv rather than guessed.
+    "landorus": "landorus-incarnate",
+    "thundurus": "thundurus-incarnate",
+    "tornadus": "tornadus-incarnate",
+    "urshifu": "urshifu-single-strike",
+    "tatsugiri": "tatsugiri-curly",
 }
 
 # A Mega whose BASE is an alias must not inherit the alias: Pyroar is
@@ -156,16 +167,71 @@ def key(name):
     return ALIASES.get(s, s)
 
 
+def worlds_names():
+    """Every Pokemon a WORLDS TEAMLIST names, across all four championships and
+    all three divisions.
+
+    These are not in the weight table under the spelling pokedata uses, and 53
+    of them are not in the Champions dex at all - the 2025 field was full of
+    Calyrex, Koraidon and Flutter Mane, none of which this game has. The app
+    drew each of them as a bare name: no types, no BST, no stats, no ability
+    and no sheet behind it.
+
+        "en Find, en el apartado Worlds, floette no tiene ficha, si deberia
+         tenerla... igualmente en los otros anos habian otros pokemones
+         disponibles y existe el mismo problema que en la caja de home... es
+         mejor tenerla ahora que ir cargandola despues, ya que cuando los
+         pokemones llegan a champions por actualizacion de regulation, muy
+         pocas veces sufren balanceos, en stats es poco probable"
+         (player, 2026-09-18)
+
+    He is right about the second half too, and it is why this is safe: a
+    regulation rebalances MOVEPOOLS far more often than spreads, and a main-
+    series spread for a species Champions does not have contradicts nothing of
+    ours. The moment it arrives, Serebii's row replaces this one.
+    """
+    # Walked rather than keyed, because the three shapes here - a round's
+    # standings, a year's archive and a division's teamlists - nest a name at
+    # three different depths, and a reader that knows only one of them finds
+    # five of the six and looks like it worked. Ogerpon was the sixth.
+    out = set()
+    files = [f for f in os.listdir(META)
+             if f.endswith(".json")
+             and (f.startswith("tournament_") or f == "worlds_archive.json")]
+
+    def walk(node):
+        if isinstance(node, dict):
+            n = node.get("name")
+            if isinstance(n, str) and n:
+                out.add(n)
+            for v in node.values():
+                walk(v)
+        elif isinstance(node, list):
+            for v in node:
+                walk(v)
+
+    for f in files:
+        try:
+            walk(json.load(io.open(os.path.join(META, f), encoding="utf-8")))
+        except (OSError, ValueError):
+            continue
+    return out
+
+
 def home_only_names():
-    """Every name in the weight table Champions has no row for - the same rule
-    build_tracker_data.py uses for HOME_ONLY, so the two cannot drift."""
-    wt = Q.db("weights")["weights"]
+    """Every name the app can put on a card that Champions has no row for.
+
+    Two sources, because the box is not the only screen that draws one: the
+    weight table (which is what HOME can hold) and every Worlds teamlist (which
+    is history, and had no numbers on it at all).
+    """
+    wt = set(Q.db("weights")["weights"])
     champ = set()
     for p in Q.db("pokemon"):                 # a LIST of form rows
         for n in (p.get("name"), p.get("species")):
             if n:
                 champ.add(Q.norm(n))
-    return sorted(n for n in wt
+    return sorted(n for n in (wt | worlds_names())
                   if Q.norm(n) not in champ
                   and "-Mega" not in n and "-Gmax" not in n
                   and "-Totem" not in n and "-Starter" not in n)

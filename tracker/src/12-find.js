@@ -2,13 +2,15 @@
    Part of the app; linked into one script by scripts/build_tracker_page.py. */
 import {
   $, C, DEX, MOVES, MOVE_BY, SORT, STAT_KEYS, STAT_LABEL, STONE_OF, TYPE_COLOR,
-  bst, byName, capNote, cardLine, catName, defence, dexNo, effectLine, el,
+  anyRow, bst, byName, capNote, cardLine, catName, defence, dexNo,
+  effectLine, el,
   labelBox, learnset, megasFor, podiumChip, podiumFor, splitPct, spriteFor,
   statGrid, toast, typeCard, typeChip, typeSkin, usageTag,
 } from "./01-data.js";
 import { S, boxRows, hasStone, originOf, ownedNames } from "./02-state.js";
 import { closeSheet, fbtn, openSheet } from "./04-nav.js";
-import { analysisPanel, battleFormNote } from "./05-box.js";
+import { analysisPanel, battleFormNote, homeMovesFor, loadHomeMoves }
+  from "./05-box.js";
 import { AB_SET, abilityHit, abilityTag, engineReady } from "./11-damage.js";
 import { fill, note } from "./13-boot.js";
 /* --------------------------------------------------------- the search view --
@@ -525,6 +527,51 @@ function pokeBody(body, p, opts){
         pool.appendChild(el("div", "empty", "Nothing matches"));
     }
     drawPool();
+  } else if (p.outside) {
+    /* A SPECIES CHAMPIONS DOES NOT HAVE STILL KNOWS THINGS. Its movepool is
+       not in learnsets.json - nothing of ours covers it - so it comes from
+       the same PokeAPI tables its stats do, fetched only when a sheet like
+       this one is opened. The section says where it came from, because these
+       are main-series moves on a main-series Pokemon and must never read as
+       Champions data. */
+    body.appendChild(el("h2", null, "Movepool"));
+    var host = el("div");
+    body.appendChild(host);
+    host.appendChild(el("div", "st", "Loading what it knows..."));
+    loadHomeMoves(function(){
+      host.innerHTML = "";
+      var got = homeMovesFor(p.name);
+      if (!got) {
+        host.appendChild(el("div", "st",
+          "No movepool on record for " + p.name + " — there is no "
+          + "Champions page for it and nothing upstream either."));
+        return;
+      }
+      var pool = got.m.map(function(n){ return MOVE_BY[n]; })
+                     .filter(Boolean);
+      host.appendChild(el("p", "sub",
+        "Main-series moves, from the same tables the numbers above came from "
+        + "— Champions publishes none for a species it does not have. "
+        + "What each one DOES below is Champions' own row for that move."
+        + (got.x ? " " + got.x + " more that Champions has no move for at all "
+           + "are not listed, because a name with no base power, accuracy or "
+           + "PP is a word rather than information." : "")));
+      var ui2 = moveFilters(host, pool, function(){ drawOut(); },
+                            "Filter " + pool.length + " moves it learns",
+                            {cap: 200});
+      var list2 = el("div", "list");
+      host.appendChild(list2);
+      function drawOut(){
+        var hits = ui2.apply();
+        list2.innerHTML = "";
+        hits.forEach(function(m){
+          list2.appendChild(moveRowFor(m, p.ab || [], p));
+        });
+        if (!hits.length)
+          list2.appendChild(el("div", "empty", "Nothing matches"));
+      }
+      drawOut();
+    });
   }
 
   /* WHAT SMOGON WROTE. Last, and folded, because it is long and the 407 KB
@@ -1289,7 +1336,14 @@ function worldDraw(){
   var list = el("div", "cards");
   d.top.forEach(function(row, i){
     var name = row[0], teams = row[1], pct = row[2];
-    var p = byName[name];
+    /* anyRow, not byName. A Worlds list is HISTORY: 53 of the names across the
+       four championships are not in the Champions dex - the 2025 field was
+       full of Calyrex and Koraidon - and every one of them drew a bare name
+       with no types, no stats, no BST and no sheet behind it. They have all
+       three now, off the same HOME_DEX the box uses, and the sheet says where
+       the numbers came from (player, 2026-09-18: "necesito que todos si tengan
+       esa informacion"). */
+    var p = anyRow(name);
     var mine = (name in own) || (p && p.species in own);
     /* The Worlds list is Pokemon too, so it reads like the rest of the app -
      the player asked for the card everywhere, not only in the search. */
