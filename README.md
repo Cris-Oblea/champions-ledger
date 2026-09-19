@@ -84,6 +84,38 @@ stat` and `at 1/3 max HP` rather than `1.5x` and `1/3`. `effect_chips.py
 are counted rather than quietly wrong. The exact 4096ths stays in
 `data/db/effects.json` and in each chip's tooltip.
 
+**A Mega lives on its base Pokemon's row.** The search listed all 345 forms,
+81 of which are Megas — a fifth of every page was a Pokemon you cannot own,
+because a Mega only exists mid-battle and only while a stone is held. It is not
+a thing you store, so it is not a thing you browse: it is a fact *about* the
+Pokemon you store. **264 rows instead of 345**, and three things survive the
+fold, because without them it would cost more than it saves.
+
+*The query.* A filter matches the base **or any of its Megas**, and the card
+says which — searching Fighting still finds Staraptor, whose Mega is
+Fighting/Flying, and the card is tagged `as Mega Staraptor` rather than looking
+like a bug. *The rank.* The sort reads the value the Pokemon can **reach**:
+highest across the line going down, lowest going up, since a Mega that raises
+Speed does not help a Trick Room list. That is why Absol, Garchomp and Lucario
+head a descending Speed sort — all three reach 151. *And only what changes.* A
+stat cell gains a second line where the stone moves it, tagged `M` or `Z` when
+a species has two; the types and the ability appear only when the stone really
+swaps them; and a Pokemon with no Mega line is the card it always was.
+
+The card carries the **whole line at native size** — base, then what it becomes
+— and on the sheet each Mega gets its own block: its picture, its stone, its
+types, its six stats with what the stone moved, its ability, and **its own
+damage table when the typing changes**, since Mega Ampharos picks up a Dragon's
+weaknesses. Nothing the sheet already said is repeated there. The order is the
+order a Pokemon is read in: types and stats, then abilities, then what damages
+it, then the Mega line.
+
+**And no sprite is ever drawn with `image-rendering: pixelated`.** It looks
+like it should do nothing at native size, and on a 1x display it does — but a
+1.25 device-pixel ratio draws 96 CSS px into 120 real ones, and `pixelated`
+makes that a nearest-neighbour upscale with hard square edges. That is what
+"se ven pixelados" was.
+
 **A filter chip has three states, not two.** A tap includes, the next rules
 out, the third clears — so "Trick Room, but nothing Psychic" is one query
 instead of an impossible one. An excluded chip is struck through with a minus

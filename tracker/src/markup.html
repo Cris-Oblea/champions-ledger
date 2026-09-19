@@ -281,6 +281,18 @@
            controls off screen. On a phone this stacks exactly as before. -->
       <div class="workspace" id="findSearch">
         <div class="wside">
+          <!-- BY NAME, FIRST. Every other control here narrows a field
+               of 264; this one is for when you already know which
+               Pokemon you want and only came to open its sheet (player,
+               2026-09-19: "cuando quiero ver la ficha rapidamente de uno
+               sin tener que filtrar"). It matches the name, the species,
+               the dex number and a Mega's name. -->
+          <div class="search field" style="margin-bottom:10px">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/>
+              <path d="m20 20-3.5-3.5"/></svg>
+            <input type="text" id="findName" autocomplete="off"
+              placeholder="Name or dex number">
+          </div>
           <div class="panel" style="margin-bottom:10px">
             <div class="toggles" id="findChips"></div>
           </div>

@@ -240,6 +240,28 @@ setTimeout(() => {
   }
 
   function afterTypes(){
+        /* ------------------------ buscar por nombre, sin filtrar ----- */
+        /* "seria bueno agregar en el buscador algo que pueda buscar pokemon
+           por simple nombre, cuando quiero ver la ficha rapidamente de uno
+           sin tener que filtrar" (2026-09-19) */
+        console.log("\n  el buscador por nombre");
+        const box = d.getElementById("findName");
+        const type = v => { box.value = v;
+          box.dispatchEvent(new w.Event("input")); };
+        const named = () => [...d.querySelectorAll("#findOut .row .rname")]
+          .map(n => n.firstChild.textContent.trim());
+        type("garchomp");
+        ok("por nombre", named().join(","), "Garchomp");
+        type("445");
+        ok("por numero de dex", named().join(","), "Garchomp");
+        /* y por el nombre de la Mega, que ya no tiene fila propia */
+        type("mega absol");
+        ok("por el nombre de su Mega", named().join(","), "Absol");
+        type("zzzz");
+        ok("lo que no existe no devuelve nada", named().length, 0);
+        type("");
+
+
         console.log("\n  in my box, ahora en dos");
         ok("hay boton In Champions", !!d.getElementById("findInChamp"), true);
         ok("hay boton In HOME", !!d.getElementById("findInHome"), true);
@@ -251,18 +273,31 @@ setTimeout(() => {
              the line, not just the row. */
           ok("solo la linea de Garchomp",
              champ.length && champ.every(t => /Garchomp/.test(t)), true);
-          ok("son las tres formas", champ.length, 3);
+          /* UNA CARD POR POKEMON, no una por forma. Las Megas ya no son filas
+             propias: viven en la de su base y solo aportan lo que CAMBIA
+             (2026-09-19: "en el buscador se me llena de pokemones mega...
+             solo necesito saber las cosas que cambian"). Garchomp tiene dos
+             Megas, asi que la card lleva dos chips. */
+          ok("una sola card, no tres", champ.length, 1);
+          /* contados como CHIPS, no buscando la palabra en todo el texto: la
+             tira de sprites de arriba tambien se etiqueta "mega M" / "mega Z",
+             asi que un match sobre el textContent daba cuatro. */
+          ok("con un chip por cada Mega de la linea",
+             [...results()[0].querySelectorAll(".rname .tag")]
+               .filter(t => /^mega/.test(t.textContent)).length, 2);
           click(d.getElementById("findInChamp"));
           click(d.getElementById("findInHome"));
           setTimeout(() => {
             const home = results().map(r => r.textContent);
             ok("solo la linea de Dragonite",
                home.length && home.every(t => /Dragonite/.test(t)), true);
-            ok("son sus dos formas", home.length, 2);
+            ok("una sola card tambien", home.length, 1);
+            ok("y su Mega va como chip",
+               /mega/.test(home[0]), true);
             click(d.getElementById("findInChamp"));
             setTimeout(() => {
               ok("los dos a la vez = cualquiera de las dos cajas",
-                 results().length, 5);
+                 results().length, 2);
               console.log("\n  ERRORES JS: " +
                           (errs.length ? errs.join(" | ") : "ninguno"));
               console.log(bad ? "\n  " + bad + " FALLOS\n" : "\n  todo bien\n");

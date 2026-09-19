@@ -225,16 +225,51 @@ function typeCard(row, p, shiny){
    sabe como leerlo bien... va todo escrito como prosa practicamente").
 
    `mark` is a stat key to highlight, for the list that is ranked by one. */
-function statGrid(p, mark){
+/* X, Y, Z - or M for the Mega that has no letter. Champions has all four
+   shapes: one Mega, an X/Y pair, and since M-C a Z marking a SECOND Mega on a
+   species that already had one. */
+function megaSuffix(m, base){
+  var sp = (base && (base.species || base.name)) || "";
+  var s = String(m.name).replace("Mega ", "").replace(sp, "").trim();
+  return s || "M";
+}
+
+function statGrid(p, mark, megas){
   /* A POKEMON OR A BARE SPREAD. The damage calculator holds raw arrays - a
      battle form's other spread has no Pokemon of its own - and taking only an
-     object is what left it writing its own fourth version of this. */
+     object is what left it writing its own fourth version of this.
+
+     `megas` adds a SECOND NUMBER under any cell a Mega moves, and nothing at
+     all under the ones it does not. That is the whole of what the player asked
+     to see - "solo necesito saber las cosas que cambian del pokemon base a
+     mega" - and it is why a Pokemon with no Mega line looks exactly as it did
+     before: the extra line is only ever drawn where there is a difference. */
   var b = (p && p.b) || p || [];
   var sl = el("div", "statline");
   STAT_KEYS.forEach(function(k, i){
     var cell = el("div", mark === k ? "on" : null);
     cell.appendChild(el("b", null, b[i]));
     cell.appendChild(el("span", "lbl", STAT_LABEL[k]));
+    (megas || []).forEach(function(m){
+      if (!m.b || m.b[i] === b[i]) return;
+      /* Two Megas that move a stat to the SAME value say it once - Absol's
+         both reach 565 BST, and a cell repeating itself is the noise this
+         change exists to remove. */
+      if (cell._seen && cell._seen[m.b[i]]) return;
+      (cell._seen = cell._seen || {})[m.b[i]] = 1;
+      var d = el("span", "mg" + (m.b[i] > b[i] ? " up" : " down"));
+      /* WHOSE NUMBER IT IS. With one Mega the arrow is enough; with two, two
+         bare arrows in a cell say nothing about which is which (player,
+         2026-09-19: "en la tabla de stats no se cual es el stat de quien").
+         The suffix is what tells them apart - X, Y, Z, or M for the one with
+         no letter - so that is what labels the line. */
+      var sfx = megaSuffix(m, p);
+      if ((megas || []).length > 1) d.appendChild(el("span", "mgk", sfx));
+      d.appendChild(document.createTextNode(
+        (m.b[i] > b[i] ? "↑" : "↓") + m.b[i]));
+      d.title = m.name + ": " + STAT_LABEL[k] + " " + b[i] + " → " + m.b[i];
+      cell.appendChild(d);
+    });
     sl.appendChild(cell);
   });
   return sl;
@@ -709,7 +744,8 @@ export {
   $, C, COSTS, DEX, FORMS, HOME_ALL, MEGAS_OF, MOVES, MOVE_BY, SORT,
   STAT_KEYS, STAT_LABEL, STONE_OF, TYPE_COLOR, TYPE_COLOR2, TYPE_INK,
   bst, byName, capNote, catName, defence, dexLabel, dexNo, el, freeSlug,
-  anyRow, cardLine, labelBox, learnset, outsideRow, spriteFor, statGrid,
+  anyRow, cardLine, labelBox, learnset, megaSuffix, outsideRow,
+  spriteFor, statGrid,
   typeCard, typeSkin, typeTint,
   effectChips, effectLine, effectOf, podiumChip, podiumFor, splitMax, splitPct,
   splitsFor, splitsReg, usageTag,

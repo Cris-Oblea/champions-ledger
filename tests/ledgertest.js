@@ -161,20 +161,24 @@ const TABS = ["box", "home", "builds", "calc", "find", "gear", "trainer"];
   const homeHeads = heads(), homeFolds = folds();
   w.closeSheet();
 
+  /* "Mega line" lleva ahora la cuenta cuando hay dos - Garchomp tiene dos y el
+     encabezado avisa de que solo una puede evolucionar por combate - asi que
+     se compara por prefijo y no por igualdad. */
   const REF = ["Mega line", "Takes damage", "Abilities", "Movepool"];
+  const hasHead = (list, h) => list.some(x => x.indexOf(h) === 0);
   REF.forEach(h => {
-    ok("Find trae " + h, findHeads.indexOf(h) >= 0, true);
-    ok("...la caja Champions tambien", boxHeads.indexOf(h) >= 0, true);
-    ok("...y HOME tambien", homeHeads.indexOf(h) >= 0, true);
+    ok("Find trae " + h, hasHead(findHeads, h), true);
+    ok("...la caja Champions tambien", hasHead(boxHeads, h), true);
+    ok("...y HOME tambien", hasHead(homeHeads, h), true);
   });
   /* y la caja NO puede anadir nada que no sea propiedad: origen, esta copia
      (shiny / entrenado) y la nota. Cualquier otra cosa que aparezca aqui es
      una ficha volviendo a separarse en dos. */
   ok("la caja solo anade lo que se POSEE",
-     boxHeads.filter(h => findHeads.indexOf(h) < 0).join(", "),
+     boxHeads.filter(h => !hasHead(findHeads, h)).join(", "),
      "Where did it come from?, This copy, Note");
   ok("y HOME solo anade esta copia y la nota",
-     homeHeads.filter(h => findHeads.indexOf(h) < 0).join(", "),
+     homeHeads.filter(h => !hasHead(findHeads, h)).join(", "),
      "This copy, Note");
   ok("lo que Smogon escribio esta en las tres",
      findFolds.concat(homeFolds).filter(t => /What Smogon says/.test(t)).length, 2);
