@@ -574,6 +574,45 @@ function flushAnalysis(){
   q.forEach(function(fn){ try { fn(); } catch (e) {} });
 }
 
+/* ------------------------------ what a Pokemon Champions LACKS knows -------
+   The same shape, for a different 425 KB. HOME holds 933 species the game has
+   never heard of, and the sheet showed their types, BST, stats and abilities
+   but nothing about their moves - which was the other half of the request
+   (player, 2026-09-18: "tambien deberia poder abrir la ficha y listar los
+   movimientos que aprende ese pokemon").
+
+   Fetched when one of those sheets is opened and never otherwise, because
+   most sessions never open one. Everything else about this file is argued in
+   scripts/build_home_moves.py, including why reading PokeAPI's main-series
+   movepool is allowed for a species Champions does not have and forbidden for
+   one it does. */
+var HM_STATE = "idle", HM_WAITING = [];
+
+function loadHomeMoves(then){
+  if (window.CHAMP_HOME_MOVES) { HM_STATE = "ready"; return then(); }
+  if (HM_STATE === "ready" || HM_STATE === "absent") return then();
+  HM_WAITING.push(then);
+  if (HM_STATE === "loading") return;
+  var url = window.CHAMP_HOME_MOVES_URL;
+  if (!url) { HM_STATE = "absent"; return flushHomeMoves(); }
+  HM_STATE = "loading";
+  var sc = document.createElement("script");
+  sc.src = url;
+  sc.onload = function(){ HM_STATE = "ready"; flushHomeMoves(); };
+  sc.onerror = function(){ HM_STATE = "absent"; flushHomeMoves(); };
+  document.head.appendChild(sc);
+}
+
+function flushHomeMoves(){
+  var q = HM_WAITING;
+  HM_WAITING = [];
+  q.forEach(function(fn){ try { fn(); } catch (e) {} });
+}
+
+function homeMovesFor(name){
+  return (window.CHAMP_HOME_MOVES || {})[name] || null;
+}
+
 /* One set, as the thing you would actually build: the four slots, the spread,
    and the reasoning underneath. */
 function analysisSet(st){
@@ -745,4 +784,5 @@ function analysisPanel(name, host){
    `window` - they open a sheet for every form in the dex and assert what it
    shows. `moveButtons` stays private.
 */
-export { addSheet, analysisPanel, battleFormNote, pokeRow, pokeSheet };
+export { addSheet, analysisPanel, battleFormNote, homeMovesFor,
+  loadHomeMoves, pokeRow, pokeSheet };

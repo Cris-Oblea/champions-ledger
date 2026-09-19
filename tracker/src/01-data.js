@@ -334,7 +334,18 @@ function outsideRow(name){
           outside:true, approx:h.approx || null};
 }
 /* byName first, always: a Champions Pokemon is never described by this table */
-function anyRow(name){ return byName[name] || outsideRow(name); }
+/* ...and one more step before giving up: THE OTHER SPELLING OF THE SAME
+   POKEMON. C.LEARN_ALIAS already maps every name the sources write differently
+   onto the dex row it really is, and this is the same question - a bare
+   "Floette" from a Worlds teamlist IS Floette-Eternal, because that is the
+   only Floette the game has. Without it the row drew no types, no stats, no
+   BST and no sheet at all (player, 2026-09-18: "floette no tiene ficha, si
+   deberia tenerla"). */
+function anyRow(name){
+  var alias = (C.LEARN_ALIAS || {})[name];
+  return byName[name] || (alias && byName[alias]) || outsideRow(name)
+         || (alias && outsideRow(alias)) || null;
+}
 
 /* THE PICTURE, FETCHED AND NEVER STORED.
 

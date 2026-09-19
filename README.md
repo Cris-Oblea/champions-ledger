@@ -111,6 +111,27 @@ counts as a block on a status move. So Will-O-Wisp is blocked by Thermal
 Exchange and Fire Lash is not, because Big Pecks only eats its Defence drop and
 that is not the move being stopped.
 
+**Every row in a Worlds ranking has a Pokemon behind it.** A Worlds list is
+history, and **53 of the names across the four championships are not in the
+Champions dex** — the 2025 field was full of Calyrex, Koraidon and Flutter Mane.
+Each of those drew a bare name with no types, no stats, no BST and no sheet.
+They all have one now, off the same PokeAPI tables the HOME cards use, and
+`fetch_home_dex.py` walks the teamlists as well as the weight table so the two
+sources of "a name the app can draw" can never disagree. Floette was a second
+case on top of that — it *is* in Champions, as **Floette-Eternal**, the only
+one the game has — so name resolution follows the alias table before giving up.
+
+**And a species Champions does not have still knows things.** Its movepool is
+not in `learnsets.json` because nothing of ours covers it, so it comes from the
+same tables its stats do: PokeAPI's newest main-series version group, at the
+pinned commit, and never for a species Champions *does* have — there, Champions
+has its own group (32) and the move rebalance makes upstream wrong. The section
+says so on screen. A move is listed only if Champions has a row for it, because
+a name with no base power, accuracy or PP is a word rather than information,
+and the ones dropped are **counted** beside the list rather than quietly
+missing. 425 KB for 870 species, so it is its own hashed asset, fetched the
+first time one of those sheets is opened and never otherwise.
+
 **A GTS box is a shortlist, so it is filtered like one.** What may go into one
 is settled by two rules rather than taste — only a **duplicate** (the Species
 Clause means a second copy can never share a team with the first) or a species

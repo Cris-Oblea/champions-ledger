@@ -248,6 +248,67 @@ const TABS = ["box", "home", "builds", "calc", "find", "gear", "trainer"];
   w.leaveEditor();
   await tick(100);
 
+
+  /* ------------------------------------- Worlds: todos tienen ficha ------- */
+  /* 53 de los nombres de las cuatro finales no estan en el dex de Champions -
+     el campo de 2025 iba lleno de Calyrex y Koraidon - y cada uno se dibujaba
+     como un nombre pelado: sin tipos, sin stats, sin BST y sin ficha detras.
+
+       "en Find, en el apartado Worlds, floette no tiene ficha, si deberia
+        tenerla... igualmente en los otros anos habian otros pokemones
+        disponibles y existe el mismo problema" (2026-09-18)
+
+     Floette era ademas otro caso: SI esta en Champions, pero como
+     Floette-Eternal, que es la unica que el juego tiene. */
+  console.log("\n  toda fila de Worlds tiene una ficha detras");
+  const dexNames = new Set(w.DEX.map(p => p.name));
+  const home = w.CHAMP.HOME_DEX || {};
+  const alias = w.CHAMP.LEARN_ALIAS || {};
+  let rows = 0;
+  const orphan = [];
+  (w.CHAMP.WORLDS || []).forEach(y => {
+    Object.keys(y.d || {}).forEach(div => {
+      (y.d[div].top || []).forEach(r => {
+        rows++;
+        const n = r[0], a = alias[n];
+        if (dexNames.has(n) || home[n] || (a && (dexNames.has(a) || home[a])))
+          return;
+        orphan.push(y.y + "/" + div + " " + n);
+      });
+    });
+  });
+  ok("hay filas que comprobar", rows > 400, true);
+  ok("ninguna se queda sin fila", orphan.slice(0, 3).join(", "), "");
+  /* y el resolvedor de la app las encuentra, que es lo que dibuja la card */
+  ok("Floette resuelve a la unica que el juego tiene",
+     (w.anyRow("Floette") || {}).name, "Floette-Eternal");
+  ["Calyrex", "Koraidon", "Landorus", "Ogerpon", "Urshifu", "Tatsugiri"]
+    .forEach(n => {
+      const r = w.anyRow(n);
+      ok(n + " trae tipos y stats",
+         !!(r && r.types.length && r.b.length === 6), true);
+    });
+
+  /* ------------------------------ y lo que sabe el que no esta en el juego */
+  /* 425 KB, mas que el motor, para una lista que se lee al abrir una de estas
+     fichas y nunca en otro momento - asi que es su propio asset y se pide solo
+     entonces. Aqui se simula ya cargado: lo que se comprueba es que la seccion
+     se dibuje y diga de donde salen los movimientos. */
+  console.log("\n  el que no esta en Champions tambien lista sus movimientos");
+  w.CHAMP_HOME_MOVES = {Bulbasaur: {m: ["Tackle", "Growl", "Vine Whip",
+                                        "Sleep Powder", "Giga Drain"], x: 9}};
+  w.findDetail(w.anyRow("Bulbasaur"));
+  await tick(200);
+  const sheet2 = d.getElementById("sheetBody").textContent.replace(/\s+/g, " ");
+  ok("hay seccion de movepool", /Movepool/.test(sheet2), true);
+  ok("...y dice que son de la serie principal",
+     /Main-series moves/.test(sheet2), true);
+  ok("...y cuenta los que Champions no tiene",
+     /9 more that Champions has no move for/.test(sheet2), true);
+  ok("...y los movimientos estan ahi",
+     /Giga Drain/.test(sheet2) && /Sleep Powder/.test(sheet2), true);
+  w.closeSheet();
+
   before = errors.length;
   w.buildSheet("charizard");
   await tick(150);
