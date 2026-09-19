@@ -39,7 +39,12 @@ const ROWS = [
   R("g2", "Sneasler",  "champions", "home",      "rental"),   // rental beats origin
   R("g3", "Mawile",    "champions", null,        "permanent"),
   R("g4", "Sableye",   "champions", "home",      "permanent"),
-  R("g5", "Sharpedo",  "home",      "home",      "permanent")];
+  R("g5", "Sharpedo",  "home",      "home",      "permanent"),
+  /* un DUPLICADO y un pokemon que Champions no tiene: las dos unicas cosas
+     que su propia regla deja ofrecer, y las dos que habia que encontrar a
+     ojo bajando la lista entera (2026-09-18) */
+  R("g6", "Sharpedo",  "home",      "home",      "permanent"),
+  R("g7", "Bulbasaur", "home",      "home",      "permanent")];
 
 const body = require("./harness.js").page(ROOT);
 const stub = `<script>window.__ROWS=${JSON.stringify(ROWS)};
@@ -69,7 +74,7 @@ setTimeout(() => {
   ok("Sharpedo, que esta en HOME", offered.indexOf("Sharpedo") >= 0, true);
   ok("Sableye, HOME origin dentro de la caja",
      offered.indexOf("Sableye") >= 0, true);
-  ok("y nada mas", offered.length, 2);
+  ok("y nada mas", offered.length, 4);
 
   console.log("\n  lo que no puede salir del juego");
   ok("Garchomp (origen Champions) fuera",
@@ -84,6 +89,51 @@ setTimeout(() => {
      notes.some(t => /3 more in the Champions box/.test(t)), true);
   ok("y explica por que",
      notes.some(t => /never leave the game/.test(t)), true);
+
+  /* ------------------------------------------- la card, y como se ordena */
+  /* Era una fila pelada con un BST y una Speed, que no alcanza para decidir
+     que regalas (2026-09-18: "solo muestra bst y speed, pero falta todo lo
+     demas"). Ahora es la misma card que el resto de la app. */
+  console.log("\n  la misma card que en todas partes");
+  const cards = () => [...sheet.querySelectorAll(".list .row")];
+  const nameOf = b => b.querySelector(".rname").firstChild.textContent.trim();
+  ok("cada fila es una card",
+     cards().every(b => / card\b/.test(b.className)), true);
+  ok("con sus seis stats",
+     cards().every(b => !!b.querySelector(".statline")), true);
+  ok("y con su BST", cards().every(b => /BST/.test(b.textContent)), true);
+  /* el que Champions no tiene TAMBIEN, que es justo el que sirve de moneda */
+  const bulba = cards().find(b => nameOf(b) === "Bulbasaur");
+  ok("hasta el que no esta en Champions trae numeros",
+     !!bulba && /318/.test(bulba.textContent), true);
+
+  const tog = t => [...sheet.querySelectorAll(".tog")]
+    .find(b => b.textContent.trim() === t);
+  const press = t => tog(t)
+    .dispatchEvent(new w.MouseEvent("click", {bubbles:true}));
+
+  console.log("\n  los dos filtros que esta pantalla existe para responder");
+  ok("hay orden por numero de dex", !!tog("Dex no."), true);
+  press("Duplicates only");
+  ok("duplicados: solo los dos Sharpedo",
+     cards().map(nameOf).join(","), "Sharpedo,Sharpedo");
+  press("Duplicates only");
+  press("Not in Champions only");
+  ok("fuera del dex: solo Bulbasaur", cards().map(nameOf).join(","), "Bulbasaur");
+  press("Not in Champions only");
+  ok("y al soltarlos vuelven los cuatro", cards().length, 4);
+
+  console.log("\n  el que no esta en Champions tiene precio, y por tanto consejo");
+  /* chipValue() leia byName, que para una especie que Champions no conoce es
+     undefined - sin precio no hay banda en la que buscar, asi que meter uno en
+     una caja GTS no daba NINGUNA recomendacion (2026-09-18). */
+  w.closeSheet();
+  w.gtsPickWanted(function(){}, "Bulbasaur", false);
+  const wanted = d.getElementById("sheetBody");
+  ok("dice cuanto vale", /is worth about 318/.test(wanted.textContent), true);
+  ok("y propone algo que pedir",
+     wanted.querySelectorAll(".list .row").length > 0, true);
+
 
   console.log("\n  ERRORES JS: " + (errs.length ? errs.join(" | ") : "ninguno"));
   console.log(bad ? "\n  " + bad + " FALLOS\n" : "\n  todo bien\n");

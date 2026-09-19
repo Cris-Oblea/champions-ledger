@@ -1,8 +1,9 @@
 /* 09-gts.js - GTS: what may be offered, what it is worth, and the export.
    Part of the app; linked into one script by scripts/build_tracker_page.py. */
 import {
-  $, C, FORMS, MEGAS_OF, STONE_OF, bst, byName, capNote, cardLine, dexLabel,
-  dexNo, el, freeSlug, labelBox, megasFor, statGrid, toast, typeCard, typeChip,
+  $, C, FORMS, MEGAS_OF, STONE_OF, anyRow, bst, byName, capNote, cardLine,
+  dexLabel, dexNo, el, freeSlug, labelBox, megasFor, spriteFor, statGrid,
+  toast, typeCard, typeChip,
 } from "./01-data.js";
 import { ORIGIN_LABEL, S, boxRows, hasStone, originOf } from "./02-state.js";
 import { drop, put, putNew } from "./03-store.js";
@@ -223,11 +224,18 @@ function gtsRow(i, o){
   function side(label, name, rec){
     var box = el("div", "gtsside");
     box.appendChild(el("div", "gtslabel", label));
+    /* THE PICTURE, HERE TOO. An offer is two Pokemon and it read as two names
+       with a BST under each - the only list in the app that did not show what
+       it was talking about (player, 2026-09-18: "las cards de gts siguen en
+       formato antiguo solo mostrando unicamente BST"). It floats, so it moves
+       the text aside instead of sitting on top of it in a box this narrow. */
+    var pic = spriteFor(name, false, !!(rec && rec.shiny));
+    if (pic) { pic.className = "sprite gtspic"; box.appendChild(pic); }
     var nm = el("div", "rname");
     nm.appendChild(document.createTextNode(name || "—"));
     if (rec) boxBadges(nm, rec);
     box.appendChild(nm);
-    var p = byName[name];
+    var p = anyRow(name);
     var meta = el("div", "rmeta");
     meta.appendChild(el("span", "mono", dexLabel(name)));
     if (p) {
@@ -255,6 +263,9 @@ function gtsRow(i, o){
     }
     box.appendChild(meta);
     if (bstLine) box.appendChild(bstLine);
+    /* and the six stats, which is what "BST 510" leaves out: two Pokemon of
+       the same total are not the same trade */
+    if (p) box.appendChild(statGrid(p));
     return box;
   }
 
@@ -276,7 +287,7 @@ function gtsRow(i, o){
      verdict now prices the chip the way his closed trades did. */
   var aRec = o.offeredId ? S.box[o.offeredId] : null;
   var cv = chipValue(o.offered, !!(aRec && aRec.shiny));
-  var bP = byName[o.requested];
+  var bP = anyRow(o.requested);
   if (cv && bP) {
     var target = bst(bP);
     var diff = target - cv.reach;
@@ -446,7 +457,18 @@ function demandReach(name){
   return 0;
 }
 function chipValue(name, shiny){
-  var p = byName[name];
+  /* anyRow, NOT byName. A species Champions has never heard of has no row in
+     its dex, so this returned null for every one of them - and with no price
+     there was no band to search in, so putting one in a GTS box produced no
+     recommendation at all (player, 2026-09-18: "faltan las recomendaciones de
+     los pokemones que tienen tag not in champions"). Those are exactly the
+     Pokemon a GTS chip is MADE of: by his own rule only duplicates and
+     species Champions cannot use may be offered.
+
+     A BST is a BST. HOME_DEX has the real one, there is no Mega line to reach
+     for and no ladder row to want it, so the price comes out as the base row
+     and says so rather than being absent. */
+  var p = anyRow(name);
   if (!p) return null;
   var base = bst(p);
   var best = base;
@@ -717,7 +739,7 @@ function pickField(label, current, subtitle, opener, rec){
   }
   /* the same shape the box uses, badges and all - a Pokemon should not look
      like two different things on two screens */
-  var p = byName[current];
+  var p = anyRow(current);
   /* the same card as everywhere else - a Pokemon should not look like two
      different things on two screens */
   var b = typeCard(el("button", "row " + (rec
@@ -803,26 +825,96 @@ function gtsPickMine(onPick, exceptId){
     wrap.appendChild(inp);
     body.appendChild(wrap);
 
+    /* SORTING AND TWO FILTERS, BECAUSE THIS IS A SHORTLIST, NOT A BOX.
+       What goes into a GTS box is decided by his own rule - only DUPLICATES
+       and species Champions cannot use may be offered - so those two are the
+       question this screen exists to answer, and both were left to be found
+       by eye down a hundred rows (player, 2026-09-18: "seria muy interesante
+       que el listado tuviese orden por dex number o filtro de pokemones
+       duplicados o pokemones con tag not in champions, para asi llegar a
+       tener la informacion mas rapida de que podria intercambiar primero").
+
+       Dex order is the default because that is the order HOME itself lists in,
+       which is how one screen gets checked against the other. */
+    var PICK = {sort: "dex", dupes: false, outside: false};
+    var sortWrap = el("div", "toggles");
+    [["dex", "Dex no."], ["az", "A-Z"], ["bst", "BST"],
+     ["reach", "What it can ask"]].forEach(function(o){
+      var t = el("button", "tog", o[1]);
+      t.setAttribute("aria-pressed", PICK.sort === o[0] ? "true" : "false");
+      t.onclick = function(){
+        PICK.sort = o[0];
+        [].forEach.call(sortWrap.children, function(c){
+          c.setAttribute("aria-pressed", c === t ? "true" : "false");
+        });
+        draw();
+      };
+      sortWrap.appendChild(t);
+    });
+    body.appendChild(sortWrap);
+
+    var filtWrap = el("div", "toggles");
+    [["dupes", "Duplicates only", "You hold more than one of this species - " +
+      "the Species Clause means a second copy can never share a team with the " +
+      "first, so it is pure trade material."],
+     ["outside", "Not in Champions only", "HOME can hold it for ever and it " +
+      "can never enter the game, so it costs you nothing to give away."]
+    ].forEach(function(o){
+      var t = el("button", "tog", o[1]);
+      t.title = o[2];
+      t.setAttribute("aria-pressed", "false");
+      t.onclick = function(){
+        PICK[o[0]] = !PICK[o[0]];
+        t.setAttribute("aria-pressed", PICK[o[0]] ? "true" : "false");
+        draw();
+      };
+      filtWrap.appendChild(t);
+    });
+    body.appendChild(filtWrap);
+
     var out = el("div");
     body.appendChild(out);
 
+    /* how many of this species are anywhere in either box - the count the
+       duplicate filter asks about, over the WHOLE ledger and not the section */
+    var copies = {};
+    home.concat(champAll).forEach(function(r){
+      copies[r.name] = (copies[r.name] || 0) + 1;
+    });
+
     function matches(r, q){
+      if (PICK.dupes && (copies[r.name] || 0) < 2) return false;
+      if (PICK.outside && byName[r.name]) return false;
       if (!q) return true;
       if (r.name.toLowerCase().indexOf(q) >= 0) return true;
       if (String(dexNo(r.name)).indexOf(q) >= 0) return true;
-      var p = byName[r.name];
+      var p = anyRow(r.name);
       if (p && p.types.join(" ").toLowerCase().indexOf(q) >= 0) return true;
       if (q === "shiny" && r.shiny) return true;
       if (q === "trained" && r.trained) return true;
       return false;
     }
 
+    function orderOf(r){
+      var p = anyRow(r.name);
+      if (PICK.sort === "az") return r.name;
+      if (PICK.sort === "bst") return -(p ? bst(p) : 0);
+      if (PICK.sort === "reach") {
+        var cv = chipValueOf(r);
+        return -(cv ? cv.reach : 0);
+      }
+      return dexNo(r.name);
+    }
     function section(title, all, note, q){
       var rows = all.filter(function(r){ return matches(r, q); });
       if (!rows.length) return 0;
+      rows.sort(function(a, b){
+        var x = orderOf(a), y = orderOf(b);
+        return x < y ? -1 : x > y ? 1 : a.name.localeCompare(b.name);
+      });
       out.appendChild(el("h2", null, title));
       if (note) out.appendChild(el("p", "sub", note));
-      var l = el("div", "list");
+      var l = el("div", "list cards");
       /* the copy count is over the WHOLE set, not the filtered one: "copy 2 of
          2" has to mean the same thing whether or not you typed anything */
       var seen = {}, nth = {};
@@ -831,10 +923,15 @@ function gtsPickMine(onPick, exceptId){
         nth[r._id] = (nth[r.name + "#"] = (nth[r.name + "#"] || 0) + 1);
       });
       rows.forEach(function(r){
-        var p = byName[r.name];
+        var p = anyRow(r.name);
         var held = taken[r._id];
-        var b = el("button", "row " + (held ? "illegal"
-                   : r.location === "home" ? "home" : "perm"));
+        /* THE SAME CARD AS EVERY OTHER LIST IN THE APP. This was a bare row
+           with a BST and a Speed on it, which is not enough to choose what to
+           give away (player, 2026-09-18: "solo muestra bst y speed, pero
+           falta todo lo demas"). It wears its type, its picture - its own
+           colours if the copy is shiny - and its six stats, like the box. */
+        var b = typeCard(el("button", "row " + (held ? "illegal"
+                   : r.location === "home" ? "home" : "perm")), p, !!r.shiny);
         if (held) { b.disabled = true; b.style.opacity = "0.55"; }
         var m = el("div", "rmain");
         var h = el("div", "rname");
@@ -874,6 +971,11 @@ function gtsPickMine(onPick, exceptId){
           meta.appendChild(el("span", "mono", "asks up to ~" + cv.reach));
         if (r.note) meta.appendChild(el("span", null, String(r.note).slice(0, 40)));
         m.appendChild(meta);
+        if (p) {
+          m.appendChild(cardLine([labelBox(bst(p), "BST"),
+            labelBox(p.ab || [], "Possible ability", "wide")]));
+          m.appendChild(statGrid(p));
+        }
         /* Only when the price is above the base row, and it says WHICH part is
            measured: the Mega half comes from his own closed trades, the other
            two are estimates. */
@@ -917,7 +1019,15 @@ function gtsPickMine(onPick, exceptId){
         "HOME first, then deposit it. Its training comes back with it.", q);
       if (!n) {
         out.appendChild(el("div", "empty",
-          "Nothing you can deposit matches “" + inp.value.trim() + "”"));
+          PICK.dupes || PICK.outside
+            ? "Nothing you can deposit is " +
+              (PICK.dupes && PICK.outside
+                ? "both a duplicate and outside the Champions dex"
+                : PICK.dupes ? "a duplicate" : "outside the Champions dex") +
+              (inp.value.trim() ? " and matches “" +
+                inp.value.trim() + "”" : "")
+            : "Nothing you can deposit matches “" +
+              inp.value.trim() + "”"));
       }
       /* Said, not silently hidden: a row that vanishes with no explanation is
          a row you think you have lost. */
@@ -1337,7 +1447,9 @@ document.querySelectorAll("[data-export]").forEach(function(b){
       var rows = [["name","location","status","types","bst","note"]];
       ["champions","home"].forEach(function(loc){
         boxRows(loc).forEach(function(r){
-          var p = byName[r.name];
+          /* anyRow: an exported box should carry the HOME-only rows'
+             numbers too, not a pair of empty columns */
+          var p = anyRow(r.name);
           rows.push([r.name, loc, r.status, p ? p.types.join("/") : "",
                      p ? bst(p) : "", r.note || ""]);
         });
@@ -1362,12 +1474,14 @@ document.querySelectorAll("[data-export]").forEach(function(b){
 
 /* ------------------------------------------------------- what leaves here --
    The biggest part in the app and the smallest surface: a drawing, the badges
-   05-box puts on a row, and `gtsPickMine` for PUBLIC - the browser tests use
-   it to assert that only what can actually leave the game is ever offered.
+   05-box puts on a row, and two pickers for PUBLIC - the browser tests use
+   `gtsPickMine` to assert that only what can actually leave the game is ever
+   offered, and `gtsPickWanted` to assert that a chip Champions has never heard
+   of still gets a price and therefore still gets recommendations.
 
    Everything that decides what a chip is WORTH stays in here: chipValue and
    its three axes, the shiny and demand premiums, the difficulty chips, the
    history and what counts as the last copy of a form. Those rules are argued
    in one file, and now they can only be argued in one file.
 */
-export { boxBadges, drawGts, gtsPickMine };
+export { boxBadges, drawGts, gtsPickMine, gtsPickWanted };
