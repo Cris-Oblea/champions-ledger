@@ -53,6 +53,40 @@ FIELD = {
 # what an item that names a field effect is doing about it
 FIELD_WHY = "extends it"
 
+# WHICH WAY A LINK POINTS, from the point of view of whoever USES the move.
+#
+# A tag on a move row is not neutral. Heat Rock on Sunny Day is a reason to run
+# the move; Aspear Berry on Ice Beam is the reason it will not work - the target
+# thaws and the freeze was the whole point. Both read as the same grey chip, so
+# the screen said "these items are related" and left which way to be worked out
+# (player, 2026-09-18: "necesito que ese tag sea visualmente negativo, puesto
+# que significa que el freeze de ese ataque se puede evitar con ese item. La
+# vision del movimiento es cosas beneficiosas para el usuario y las cosas
+# negativas las que lo pueden perjudicar").
+#
+# Keyed on the reason the rule gave, because that is where the direction was
+# already decided - and asserted complete below, so a new rule cannot arrive
+# without one.
+AGAINST = {
+    "cures the {status} this inflicts",       # the target shrugs off the point
+    "cures whatever status just landed on it",
+    "weakens an incoming {type} move",        # the resist berries
+    "punishes an incoming contact move",      # Rocky Helmet
+    "nothing {type}-type can touch it while it holds this",
+    "shakes off what would lock its moves",   # Mental Herb answers Taunt
+    "restores what an incoming move lowered", # White Herb
+    "locks it into the first move it picks",  # the Choice items, a cost
+}
+
+
+def side_of(why):
+    """'for' or 'against', from the reason - shaped so a type or a status
+    in the middle of one does not need an entry of its own."""
+    shaped = re.sub(r"\b(?:" + "|".join(TYPES) + r")\b", "{type}", why)
+    shaped = re.sub(r"cures the \w+ this inflicts",
+                    "cures the {status} this inflicts", shaped)
+    return "against" if shaped in AGAINST else "for"
+
 
 def clean(s):
     return " ".join((s or "").replace("�", "'").split())
@@ -247,7 +281,8 @@ def build():
         if ms is None:
             unlinked.append((it["name"], why))
             continue
-        items[it["name"]] = {"moves": ms, "abilities": abs_, "why": why}
+        items[it["name"]] = {"moves": ms, "abilities": abs_,
+                             "why": why, "side": side_of(why)}
 
     by_move, by_abil = {}, {}
     for it, r in items.items():
@@ -279,8 +314,8 @@ def main():
         print("\n--- every link ---")
         for n in sorted(items):
             r = items[n]
-            print("   %-18s %-46s %s"
-                  % (n, r["why"][:46],
+            print("   %-18s %-7s %-46s %s"
+                  % (n, r["side"], r["why"][:46],
                      ("%d moves" % len(r["moves"]) if len(r["moves"]) > 4
                       else ", ".join(r["moves"])) +
                      (" + " + ", ".join(r["abilities"]) if r["abilities"] else "")))

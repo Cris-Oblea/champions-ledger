@@ -20546,6 +20546,26 @@
     "Sludge Bomb",
     "Weather Ball",
     "Zap Cannon"
+   ],
+   "stop": [
+    "Acid Spray",
+    "Aura Sphere",
+    "Beak Blast",
+    "Bullet Seed",
+    "Electro Ball",
+    "Energy Ball",
+    "Focus Blast",
+    "Gyro Ball",
+    "Matcha Gotcha",
+    "Pollen Puff",
+    "Pyro Ball",
+    "Rock Blast",
+    "Rock Wrecker",
+    "Seed Bomb",
+    "Shadow Ball",
+    "Sludge Bomb",
+    "Weather Ball",
+    "Zap Cannon"
    ]
   },
   "Soundproof": {
@@ -20574,6 +20594,29 @@
     "Sparkling Aria",
     "Torch Song",
     "Uproar"
+   ],
+   "stop": [
+    "Alluring Voice",
+    "Boomburst",
+    "Bug Buzz",
+    "Clanging Scales",
+    "Eerie Spell",
+    "Hyper Voice",
+    "Metal Sound",
+    "Noble Roar",
+    "Overdrive",
+    "Parting Shot",
+    "Perish Song",
+    "Psychic Noise",
+    "Roar",
+    "Round",
+    "Screech",
+    "Sing",
+    "Snarl",
+    "Snore",
+    "Sparkling Aria",
+    "Torch Song",
+    "Uproar"
    ]
   },
   "Overcoat": {
@@ -20581,6 +20624,13 @@
    "x": null,
    "why": "immune to powder moves",
    "moves": [
+    "Cotton Spore",
+    "Magic Powder",
+    "Poison Powder",
+    "Sleep Powder",
+    "Stun Spore"
+   ],
+   "stop": [
     "Cotton Spore",
     "Magic Powder",
     "Poison Powder",
@@ -20827,8 +20877,7 @@
     "Sheer Cold",
     "Temper Flare",
     "Torch Song",
-    "Triple Axel",
-    "Will-O-Wisp"
+    "Triple Axel"
    ]
   },
   "Friend Guard": {
@@ -26307,8 +26356,7 @@
     "Pyro Ball",
     "Raging Fury",
     "Temper Flare",
-    "Torch Song",
-    "Will-O-Wisp"
+    "Torch Song"
    ]
   },
   "Purifying Salt": {
@@ -26573,7 +26621,6 @@
     "Razor Shell",
     "Scald",
     "Snipe Shot",
-    "Soak",
     "Sparkling Aria",
     "Surf",
     "Temper Flare",
@@ -26583,8 +26630,7 @@
     "Water Spout",
     "Waterfall",
     "Wave Crash",
-    "Whirlpool",
-    "Will-O-Wisp"
+    "Whirlpool"
    ]
   },
   "Levitate": {
@@ -26592,6 +26638,22 @@
    "x": null,
    "why": "damaging Ground moves do nothing",
    "moves": [
+    "Bone Rush",
+    "Bulldoze",
+    "Dig",
+    "Drill Run",
+    "Earth Power",
+    "Earthquake",
+    "Fissure",
+    "Headlong Rush",
+    "High Horsepower",
+    "Mud Shot",
+    "Mud-Slap",
+    "Sand Tomb",
+    "Scorching Sands",
+    "Stomping Tantrum"
+   ],
+   "stop": [
     "Bone Rush",
     "Bulldoze",
     "Dig",
@@ -26627,6 +26689,22 @@
     "Sand Tomb",
     "Scorching Sands",
     "Stomping Tantrum"
+   ],
+   "stop": [
+    "Bone Rush",
+    "Bulldoze",
+    "Dig",
+    "Drill Run",
+    "Earth Power",
+    "Earthquake",
+    "Fissure",
+    "Headlong Rush",
+    "High Horsepower",
+    "Mud Shot",
+    "Mud-Slap",
+    "Sand Tomb",
+    "Scorching Sands",
+    "Stomping Tantrum"
    ]
   },
   "Water Absorb": {
@@ -26634,6 +26712,33 @@
    "x": null,
    "why": "no damage - it heals 25% instead",
    "moves": [
+    "Aqua Cutter",
+    "Aqua Jet",
+    "Aqua Step",
+    "Aqua Tail",
+    "Chilling Water",
+    "Crabhammer",
+    "Dive",
+    "Flip Turn",
+    "Hydro Cannon",
+    "Hydro Pump",
+    "Jet Punch",
+    "Liquidation",
+    "Muddy Water",
+    "Razor Shell",
+    "Scald",
+    "Snipe Shot",
+    "Soak",
+    "Sparkling Aria",
+    "Surf",
+    "Water Pulse",
+    "Water Shuriken",
+    "Water Spout",
+    "Waterfall",
+    "Wave Crash",
+    "Whirlpool"
+   ],
+   "stop": [
     "Aqua Cutter",
     "Aqua Jet",
     "Aqua Step",
@@ -26690,6 +26795,32 @@
     "Wild Charge",
     "Zap Cannon",
     "Zing Zap"
+   ],
+   "stop": [
+    "Aura Wheel",
+    "Charge Beam",
+    "Discharge",
+    "Double Shock",
+    "Eerie Impulse",
+    "Electrify",
+    "Electro Ball",
+    "Electro Shot",
+    "Electroweb",
+    "Nuzzle",
+    "Overdrive",
+    "Parabolic Charge",
+    "Rising Voltage",
+    "Supercell Slam",
+    "Thunder",
+    "Thunder Fang",
+    "Thunder Punch",
+    "Thunder Wave",
+    "Thunderbolt",
+    "Volt Switch",
+    "Volt Tackle",
+    "Wild Charge",
+    "Zap Cannon",
+    "Zing Zap"
    ]
   },
   "Earth Eater": {
@@ -26712,6 +26843,23 @@
     "Scorching Sands",
     "Spikes",
     "Stomping Tantrum"
+   ],
+   "stop": [
+    "Bone Rush",
+    "Bulldoze",
+    "Dig",
+    "Drill Run",
+    "Earth Power",
+    "Earthquake",
+    "Fissure",
+    "Headlong Rush",
+    "High Horsepower",
+    "Mud Shot",
+    "Mud-Slap",
+    "Sand Tomb",
+    "Scorching Sands",
+    "Spikes",
+    "Stomping Tantrum"
    ]
   },
   "Motor Drive": {
@@ -26719,6 +26867,32 @@
    "x": null,
    "why": "no damage, and +1 Speed",
    "moves": [
+    "Aura Wheel",
+    "Charge Beam",
+    "Discharge",
+    "Double Shock",
+    "Eerie Impulse",
+    "Electrify",
+    "Electro Ball",
+    "Electro Shot",
+    "Electroweb",
+    "Nuzzle",
+    "Overdrive",
+    "Parabolic Charge",
+    "Rising Voltage",
+    "Supercell Slam",
+    "Thunder",
+    "Thunder Fang",
+    "Thunder Punch",
+    "Thunder Wave",
+    "Thunderbolt",
+    "Volt Switch",
+    "Volt Tackle",
+    "Wild Charge",
+    "Zap Cannon",
+    "Zing Zap"
+   ],
+   "stop": [
     "Aura Wheel",
     "Charge Beam",
     "Discharge",
@@ -26782,6 +26956,40 @@
     "Trop Kick",
     "Wood Hammer",
     "Worry Seed"
+   ],
+   "stop": [
+    "Apple Acid",
+    "Bullet Seed",
+    "Cotton Spore",
+    "Drum Beating",
+    "Energy Ball",
+    "Flower Trick",
+    "Forest's Curse",
+    "Frenzy Plant",
+    "Giga Drain",
+    "Grass Knot",
+    "Grassy Glide",
+    "Grav Apple",
+    "Horn Leech",
+    "Leaf Blade",
+    "Leaf Storm",
+    "Leech Seed",
+    "Matcha Gotcha",
+    "Petal Blizzard",
+    "Petal Dance",
+    "Power Whip",
+    "Seed Bomb",
+    "Sleep Powder",
+    "Solar Beam",
+    "Solar Blade",
+    "Spicy Extract",
+    "Strength Sap",
+    "Stun Spore",
+    "Syrup Bomb",
+    "Trailblaze",
+    "Trop Kick",
+    "Wood Hammer",
+    "Worry Seed"
    ]
   },
   "Lightning Rod": {
@@ -26789,6 +26997,32 @@
    "x": null,
    "why": "drawn to it, does no damage, and gives it +1 Sp. Atk",
    "moves": [
+    "Aura Wheel",
+    "Charge Beam",
+    "Discharge",
+    "Double Shock",
+    "Eerie Impulse",
+    "Electrify",
+    "Electro Ball",
+    "Electro Shot",
+    "Electroweb",
+    "Nuzzle",
+    "Overdrive",
+    "Parabolic Charge",
+    "Rising Voltage",
+    "Supercell Slam",
+    "Thunder",
+    "Thunder Fang",
+    "Thunder Punch",
+    "Thunder Wave",
+    "Thunderbolt",
+    "Volt Switch",
+    "Volt Tackle",
+    "Wild Charge",
+    "Zap Cannon",
+    "Zing Zap"
+   ],
+   "stop": [
     "Aura Wheel",
     "Charge Beam",
     "Discharge",
@@ -26857,7 +27091,7 @@
   "Thermal Exchange": {
    "side": "def",
    "x": null,
-   "why": "+1 Attack, and it cannot be burned",
+   "why": "+1 Attack off a damaging Fire move, and it cannot be burned",
    "moves": [
     "Armor Cannon",
     "Bitter Blade",
@@ -26877,14 +27111,22 @@
     "Flare Blitz",
     "Heat Crash",
     "Heat Wave",
+    "Infernal Parade",
     "Inferno",
     "Lava Plume",
+    "Matcha Gotcha",
     "Mystical Fire",
     "Overheat",
     "Pyro Ball",
     "Raging Fury",
+    "Scald",
+    "Scorching Sands",
     "Temper Flare",
     "Torch Song",
+    "Tri Attack",
+    "Will-O-Wisp"
+   ],
+   "stop": [
     "Will-O-Wisp"
    ]
   },
@@ -26902,14 +27144,11 @@
     "Bug Buzz",
     "Ceaseless Edge",
     "Comeuppance",
-    "Confuse Ray",
     "Crunch",
     "Dark Pulse",
     "Darkest Lariat",
-    "Fake Tears",
     "Fell Stinger",
     "First Impression",
-    "Flatter",
     "Fling",
     "Foul Play",
     "Hex",
@@ -26923,11 +27162,9 @@
     "Leech Life",
     "Lunge",
     "Megahorn",
-    "Memento",
     "Night Daze",
     "Night Shade",
     "Night Slash",
-    "Parting Shot",
     "Payback",
     "Phantom Force",
     "Pin Missile",
@@ -26935,7 +27172,6 @@
     "Poltergeist",
     "Pounce",
     "Power Trip",
-    "Quash",
     "Rage Fist",
     "Shadow Ball",
     "Shadow Claw",
@@ -26944,18 +27180,10 @@
     "Skitter Smack",
     "Snarl",
     "Spirit Shackle",
-    "Spite",
-    "Sticky Web",
-    "String Shot",
     "Struggle Bug",
     "Sucker Punch",
-    "Switcheroo",
-    "Taunt",
     "Thief",
     "Throat Chop",
-    "Topsy-Turvy",
-    "Torment",
-    "Trick-or-Treat",
     "U-turn",
     "X-Scissor"
    ]
@@ -26980,6 +27208,92 @@
    "x": null,
    "why": "a foe's status move does nothing to it",
    "moves": [
+    "After You",
+    "Attract",
+    "Baby-Doll Eyes",
+    "Block",
+    "Charm",
+    "Confuse Ray",
+    "Corrosive Gas",
+    "Cotton Spore",
+    "Decorate",
+    "Defog",
+    "Disable",
+    "Dragon Cheer",
+    "Eerie Impulse",
+    "Electrify",
+    "Encore",
+    "Entrainment",
+    "Fake Tears",
+    "Feather Dance",
+    "Flatter",
+    "Forest's Curse",
+    "Gastro Acid",
+    "Glare",
+    "Guard Split",
+    "Guard Swap",
+    "Heal Pulse",
+    "Hypnosis",
+    "Instruct",
+    "Leech Seed",
+    "Lock-On",
+    "Magic Powder",
+    "Mean Look",
+    "Memento",
+    "Metal Sound",
+    "Noble Roar",
+    "Octolock",
+    "Pain Split",
+    "Parting Shot",
+    "Perish Song",
+    "Poison Powder",
+    "Power Split",
+    "Power Swap",
+    "Psych Up",
+    "Quash",
+    "Reflect Type",
+    "Roar",
+    "Role Play",
+    "Scary Face",
+    "Screech",
+    "Simple Beam",
+    "Sing",
+    "Skill Swap",
+    "Sleep Powder",
+    "Soak",
+    "Speed Swap",
+    "Spicy Extract",
+    "Spikes",
+    "Spite",
+    "Stealth Rock",
+    "Sticky Web",
+    "Strength Sap",
+    "String Shot",
+    "Stun Spore",
+    "Swagger",
+    "Sweet Kiss",
+    "Sweet Scent",
+    "Switcheroo",
+    "Taunt",
+    "Tearful Look",
+    "Teatime",
+    "Teeter Dance",
+    "Thunder Wave",
+    "Tickle",
+    "Topsy-Turvy",
+    "Torment",
+    "Toxic",
+    "Toxic Spikes",
+    "Toxic Thread",
+    "Transform",
+    "Trick",
+    "Trick-or-Treat",
+    "Whirlwind",
+    "Will-O-Wisp",
+    "Worry Seed",
+    "Yawn"
+   ],
+   "stop": [
     "After You",
     "Attract",
     "Baby-Doll Eyes",
@@ -27155,6 +27469,92 @@
     "Will-O-Wisp",
     "Worry Seed",
     "Yawn"
+   ],
+   "stop": [
+    "After You",
+    "Attract",
+    "Baby-Doll Eyes",
+    "Block",
+    "Charm",
+    "Confuse Ray",
+    "Corrosive Gas",
+    "Cotton Spore",
+    "Decorate",
+    "Defog",
+    "Disable",
+    "Dragon Cheer",
+    "Eerie Impulse",
+    "Electrify",
+    "Encore",
+    "Entrainment",
+    "Fake Tears",
+    "Feather Dance",
+    "Flatter",
+    "Forest's Curse",
+    "Gastro Acid",
+    "Glare",
+    "Guard Split",
+    "Guard Swap",
+    "Heal Pulse",
+    "Hypnosis",
+    "Instruct",
+    "Leech Seed",
+    "Lock-On",
+    "Magic Powder",
+    "Mean Look",
+    "Memento",
+    "Metal Sound",
+    "Noble Roar",
+    "Octolock",
+    "Pain Split",
+    "Parting Shot",
+    "Perish Song",
+    "Poison Powder",
+    "Power Split",
+    "Power Swap",
+    "Psych Up",
+    "Quash",
+    "Reflect Type",
+    "Roar",
+    "Role Play",
+    "Scary Face",
+    "Screech",
+    "Simple Beam",
+    "Sing",
+    "Skill Swap",
+    "Sleep Powder",
+    "Soak",
+    "Speed Swap",
+    "Spicy Extract",
+    "Spikes",
+    "Spite",
+    "Stealth Rock",
+    "Sticky Web",
+    "Strength Sap",
+    "String Shot",
+    "Stun Spore",
+    "Swagger",
+    "Sweet Kiss",
+    "Sweet Scent",
+    "Switcheroo",
+    "Taunt",
+    "Tearful Look",
+    "Teatime",
+    "Teeter Dance",
+    "Thunder Wave",
+    "Tickle",
+    "Topsy-Turvy",
+    "Torment",
+    "Toxic",
+    "Toxic Spikes",
+    "Toxic Thread",
+    "Transform",
+    "Trick",
+    "Trick-or-Treat",
+    "Whirlwind",
+    "Will-O-Wisp",
+    "Worry Seed",
+    "Yawn"
    ]
   },
   "Armor Tail": {
@@ -27179,6 +27579,25 @@
     "Upper Hand",
     "Vacuum Wave",
     "Water Shuriken"
+   ],
+   "stop": [
+    "Accelerock",
+    "Aqua Jet",
+    "Baby-Doll Eyes",
+    "Bullet Punch",
+    "Extreme Speed",
+    "Fake Out",
+    "Feint",
+    "First Impression",
+    "Ice Shard",
+    "Jet Punch",
+    "Mach Punch",
+    "Quick Attack",
+    "Shadow Sneak",
+    "Sucker Punch",
+    "Upper Hand",
+    "Vacuum Wave",
+    "Water Shuriken"
    ]
   },
   "Queenly Majesty": {
@@ -27186,6 +27605,25 @@
    "x": null,
    "why": "an opponent cannot use it against this Pokemon or its ally",
    "moves": [
+    "Accelerock",
+    "Aqua Jet",
+    "Baby-Doll Eyes",
+    "Bullet Punch",
+    "Extreme Speed",
+    "Fake Out",
+    "Feint",
+    "First Impression",
+    "Ice Shard",
+    "Jet Punch",
+    "Mach Punch",
+    "Quick Attack",
+    "Shadow Sneak",
+    "Sucker Punch",
+    "Upper Hand",
+    "Vacuum Wave",
+    "Water Shuriken"
+   ],
+   "stop": [
     "Accelerock",
     "Aqua Jet",
     "Baby-Doll Eyes",
@@ -27331,7 +27769,8 @@
     "Zap Cannon",
     "Zen Headbutt",
     "Zing Zap"
-   ]
+   ],
+   "stop": []
   },
   "Cursed Body": {
    "side": "def",
@@ -27709,6 +28148,24 @@
     "Sparkling Aria",
     "Surf",
     "Teeter Dance"
+   ],
+   "stop": [
+    "Boomburst",
+    "Brutal Swing",
+    "Bulldoze",
+    "Corrosive Gas",
+    "Discharge",
+    "Earthquake",
+    "Explosion",
+    "Lava Plume",
+    "Misty Explosion",
+    "Parabolic Charge",
+    "Petal Blizzard",
+    "Self-Destruct",
+    "Sludge Wave",
+    "Sparkling Aria",
+    "Surf",
+    "Teeter Dance"
    ]
   },
   "Clear Body": {
@@ -27777,6 +28234,28 @@
     "Toxic Thread",
     "Triple Arrows",
     "Trop Kick"
+   ],
+   "stop": [
+    "Baby-Doll Eyes",
+    "Charm",
+    "Cotton Spore",
+    "Defog",
+    "Eerie Impulse",
+    "Fake Tears",
+    "Feather Dance",
+    "Memento",
+    "Metal Sound",
+    "Noble Roar",
+    "Parting Shot",
+    "Scary Face",
+    "Screech",
+    "Spicy Extract",
+    "Strength Sap",
+    "String Shot",
+    "Sweet Scent",
+    "Tearful Look",
+    "Tickle",
+    "Toxic Thread"
    ]
   },
   "White Smoke": {
@@ -27845,6 +28324,28 @@
     "Toxic Thread",
     "Triple Arrows",
     "Trop Kick"
+   ],
+   "stop": [
+    "Baby-Doll Eyes",
+    "Charm",
+    "Cotton Spore",
+    "Defog",
+    "Eerie Impulse",
+    "Fake Tears",
+    "Feather Dance",
+    "Memento",
+    "Metal Sound",
+    "Noble Roar",
+    "Parting Shot",
+    "Scary Face",
+    "Screech",
+    "Spicy Extract",
+    "Strength Sap",
+    "String Shot",
+    "Sweet Scent",
+    "Tearful Look",
+    "Tickle",
+    "Toxic Thread"
    ]
   },
   "Mirror Armor": {
@@ -27913,6 +28414,28 @@
     "Toxic Thread",
     "Triple Arrows",
     "Trop Kick"
+   ],
+   "stop": [
+    "Baby-Doll Eyes",
+    "Charm",
+    "Cotton Spore",
+    "Defog",
+    "Eerie Impulse",
+    "Fake Tears",
+    "Feather Dance",
+    "Memento",
+    "Metal Sound",
+    "Noble Roar",
+    "Parting Shot",
+    "Scary Face",
+    "Screech",
+    "Spicy Extract",
+    "Strength Sap",
+    "String Shot",
+    "Sweet Scent",
+    "Tearful Look",
+    "Tickle",
+    "Toxic Thread"
    ]
   },
   "Hyper Cutter": {
@@ -27936,6 +28459,18 @@
     "Tearful Look",
     "Tickle",
     "Trop Kick"
+   ],
+   "stop": [
+    "Baby-Doll Eyes",
+    "Charm",
+    "Feather Dance",
+    "Memento",
+    "Noble Roar",
+    "Parting Shot",
+    "Spicy Extract",
+    "Strength Sap",
+    "Tearful Look",
+    "Tickle"
    ]
   },
   "Big Pecks": {
@@ -27954,6 +28489,11 @@
     "Spicy Extract",
     "Tickle",
     "Triple Arrows"
+   ],
+   "stop": [
+    "Screech",
+    "Spicy Extract",
+    "Tickle"
    ]
   },
   "Keen Eye": {
@@ -27964,7 +28504,8 @@
     "Mud-Slap",
     "Muddy Water",
     "Night Daze"
-   ]
+   ],
+   "stop": []
   },
   "Illuminate": {
    "side": "def",
@@ -27974,7 +28515,8 @@
     "Mud-Slap",
     "Muddy Water",
     "Night Daze"
-   ]
+   ],
+   "stop": []
   },
   "Rough Skin": {
    "side": "def",
@@ -30826,7 +31368,8 @@
     "Waterfall",
     "Zen Headbutt",
     "Zing Zap"
-   ]
+   ],
+   "stop": []
   },
   "Steadfast": {
    "side": "def",
@@ -30863,6 +31406,10 @@
     "Dragon Tail",
     "Roar",
     "Whirlwind"
+   ],
+   "stop": [
+    "Roar",
+    "Whirlwind"
    ]
   },
   "Guard Dog": {
@@ -30874,6 +31421,10 @@
     "Dragon Tail",
     "Roar",
     "Whirlwind"
+   ],
+   "stop": [
+    "Roar",
+    "Whirlwind"
    ]
   },
   "Aroma Veil": {
@@ -30881,6 +31432,13 @@
    "x": null,
    "why": "it and its ally are protected from this",
    "moves": [
+    "Disable",
+    "Encore",
+    "Psychic Noise",
+    "Taunt",
+    "Torment"
+   ],
+   "stop": [
     "Disable",
     "Encore",
     "Psychic Noise",
@@ -31120,6 +31678,12 @@
     "Sing",
     "Sleep Powder",
     "Yawn"
+   ],
+   "stop": [
+    "Hypnosis",
+    "Sing",
+    "Sleep Powder",
+    "Yawn"
    ]
   },
   "Vital Spirit": {
@@ -31132,6 +31696,12 @@
     "Sing",
     "Sleep Powder",
     "Yawn"
+   ],
+   "stop": [
+    "Hypnosis",
+    "Sing",
+    "Sleep Powder",
+    "Yawn"
    ]
   },
   "Sweet Veil": {
@@ -31140,6 +31710,12 @@
    "why": "neither it nor its ally can be put to sleep",
    "moves": [
     "Dire Claw",
+    "Hypnosis",
+    "Sing",
+    "Sleep Powder",
+    "Yawn"
+   ],
+   "stop": [
     "Hypnosis",
     "Sing",
     "Sleep Powder",
@@ -31166,6 +31742,11 @@
     "Tri Attack",
     "Volt Tackle",
     "Zap Cannon"
+   ],
+   "stop": [
+    "Glare",
+    "Stun Spore",
+    "Thunder Wave"
    ]
   },
   "Immunity": {
@@ -31186,6 +31767,11 @@
     "Sludge Wave",
     "Toxic",
     "Toxic Thread"
+   ],
+   "stop": [
+    "Poison Powder",
+    "Toxic",
+    "Toxic Thread"
    ]
   },
   "Magma Armor": {
@@ -31199,7 +31785,8 @@
     "Ice Fang",
     "Ice Punch",
     "Tri Attack"
-   ]
+   ],
+   "stop": []
   },
   "Own Tempo": {
    "side": "def",
@@ -31216,6 +31803,13 @@
     "Sweet Kiss",
     "Teeter Dance",
     "Water Pulse"
+   ],
+   "stop": [
+    "Confuse Ray",
+    "Flatter",
+    "Swagger",
+    "Sweet Kiss",
+    "Teeter Dance"
    ]
   },
   "Leaf Guard": {
@@ -31302,6 +31896,24 @@
     "Zap Cannon",
     "Zen Headbutt",
     "Zing Zap"
+   ],
+   "stop": [
+    "Confuse Ray",
+    "Flatter",
+    "Glare",
+    "Hypnosis",
+    "Poison Powder",
+    "Sing",
+    "Sleep Powder",
+    "Stun Spore",
+    "Swagger",
+    "Sweet Kiss",
+    "Teeter Dance",
+    "Thunder Wave",
+    "Toxic",
+    "Toxic Thread",
+    "Will-O-Wisp",
+    "Yawn"
    ]
   },
   "Flower Veil": {
@@ -31388,6 +32000,24 @@
     "Zap Cannon",
     "Zen Headbutt",
     "Zing Zap"
+   ],
+   "stop": [
+    "Confuse Ray",
+    "Flatter",
+    "Glare",
+    "Hypnosis",
+    "Poison Powder",
+    "Sing",
+    "Sleep Powder",
+    "Stun Spore",
+    "Swagger",
+    "Sweet Kiss",
+    "Teeter Dance",
+    "Thunder Wave",
+    "Toxic",
+    "Toxic Thread",
+    "Will-O-Wisp",
+    "Yawn"
    ]
   },
   "Synchronize": {

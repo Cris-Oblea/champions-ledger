@@ -18,7 +18,8 @@ import { analysisPanel } from "./05-box.js";
    rules, asked for rather than copied. A build is where an ability meets a
    movepool, so this file is the one place those two have to meet. */
 import { AB_SET, abilityHit, abilityTag } from "./11-damage.js";
-import { factLine, itemTags, moveFilters, moveScore, priorityTag, spreadNote,
+import { blockerTags, factLine, itemTags, moveFilters, moveScore,
+  priorityTag, spreadNote,
   spreadTags } from "./12-find.js";
 /* ==================================================================== builds */
 function spTotal(sp){
@@ -798,6 +799,7 @@ function movePicker(draft, idx, ls, done){
         h.appendChild(typeChip(m.type));
         h.appendChild(document.createTextNode(m.name));
         priorityTag(m, h); spreadTags(m, h); itemTags(m, h);
+        blockerTags(m, h);
         var atag = abil ? abilityTag(abil, m, apoke) : null;
         if (atag) h.appendChild(atag);
         /* EVERY move carries one, including the ones at 0%. The picker used

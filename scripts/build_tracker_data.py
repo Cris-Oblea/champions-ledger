@@ -377,6 +377,12 @@ def main():
         else:
             e["m"] = sorted(midx[n] for n in (rule.get("moves") or [])
                             if n in midx)
+            # ...and which of those it STOPS OUTRIGHT, which is the only half
+            # a defensive ability may badge a move row with. Everything else it
+            # does - halving, punishing, a 30% burn back - belongs on the
+            # ability, not on 169 move rows.
+            if rule.get("stop"):
+                e["stop"] = sorted(midx[n] for n in rule["stop"] if n in midx)
         if ab == "Contrary":
             e["up"] = sorted(midx[n] for n in (rule.get("up") or []) if n in midx)
             e["down"] = sorted(midx[n] for n in (rule.get("down") or [])
@@ -669,7 +675,11 @@ def main():
             # ones. Life Orb rides on all 334 attacks and would badge every
             # row with noise, so anything covering more than 8 moves is left
             # out of the reverse index.
-            "ITEM_FOR_MOVE": {k: [i for i in v
+            # ...and WHICH WAY each one points. Heat Rock on Sunny Day is a
+            # reason to run the move; Aspear Berry on Ice Beam is the reason
+            # it will not work. Both were the same grey chip.
+            "ITEM_FOR_MOVE": {k: [[i, LINKS["items"][i].get("side") or "for"]
+                                  for i in v
                                   if len(LINKS["items"][i]["moves"]) <= 8]
                               for k, v in (LINKS.get("by_move") or {}).items()
                               if any(len(LINKS["items"][i]["moves"]) <= 8

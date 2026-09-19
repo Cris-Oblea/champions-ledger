@@ -356,7 +356,10 @@ RULES = {
  "Solid Rock":    ("def", None, None, "super-effective damage taken -25%"),
  "Multiscale":    ("def", None, None, "damage taken halved at full HP"),
  "Aura Guard":    ("def", lambda m: m["contact"], None, "contact damage taken -50%"),
- "Thick Fat":     ("def", lambda m: m["type"] in ("Fire", "Ice"), None,
+ # "Fire and Ice-type moves deal 50% DAMAGE" - so a move that deals none is
+ # not halved by it, and Will-O-Wisp had no business on this list.
+ "Thick Fat":     ("def",
+                   lambda m: dmg(m) and m["type"] in ("Fire", "Ice"), None,
                    "Fire and Ice taken at 50%"),
  "Friend Guard":  ("def", None, None, "allies take 25% less"),
  "Defiant":       ("def", None, None,
@@ -453,14 +456,20 @@ RULES = {
                    "physical damage halved"),
  "Marvel Scale":  ("def", lambda m: m["cat"] == "Physical", None,
                    "Defense x1.5 while statused"),
- "Heatproof":     ("def", lambda m: m["type"] == "Fire", None,
+ # "DAMAGE from Fire-type moves and the Burn status is halved." Both halves
+ # are about damage; neither is about a Fire move that deals none.
+ "Heatproof":     ("def", lambda m: dmg(m) and m["type"] == "Fire", None,
                    "Fire damage halved, and so is burn chip"),
  "Purifying Salt": ("def", lambda m: m["type"] == "Ghost", None,
                    "Ghost damage halved, and no status at all"),
  "Fluffy":        ("def", lambda m: m["contact"] or m["type"] == "Fire", None,
                    "contact halved - but Fire doubled, both at once on a "
                    "Fire contact move"),
- "Dry Skin":      ("def", lambda m: m["type"] in ("Water", "Fire"), None,
+ # healed BY Water moves, weak TO Fire ones - both are about damage dealt,
+ # so Soak and Will-O-Wisp do not belong here either.
+ "Dry Skin":      ("def",
+                   lambda m: dmg(m) and m["type"] in ("Water", "Fire"),
+                   None,
                    "Water heals it instead of hurting; Fire hurts more"),
  # immunities that give something back
  "Levitate":      ("def", lambda m: dmg(m) and m["type"] == "Ground", None,
@@ -480,9 +489,20 @@ RULES = {
  "Lightning Rod": ("def", lambda m: m["type"] == "Electric", None,
                    "drawn to it, does no damage, and gives it +1 Sp. Atk"),
  "Justified":     ("def", lambda m: m["type"] == "Dark", None, "+1 Attack"),
- "Thermal Exchange": ("def", lambda m: m["type"] == "Fire", None,
-                   "+1 Attack, and it cannot be burned"),
- "Rattled":       ("def", lambda m: m["type"] in ("Bug", "Ghost", "Dark"),
+ # DAMAGE, not "any Fire move" - the player caught this on the move tags
+ # (2026-09-19: "thermal exchange se activa con dano y no con ataques fuego
+ # de status"), and Serebii says it in as many words: "When the Pokemon
+ # takes DAMAGE from a Fire-type move". Will-O-Wisp is still answered, but
+ # by the second clause and not the first - it cannot be burned, whatever
+ # burns it - so the two halves are written as the two halves they are.
+ "Thermal Exchange": ("def",
+                   lambda m: (dmg(m) and m["type"] == "Fire")
+                             or st(m, "Burn"), None,
+                   "+1 Attack off a damaging Fire move, and it cannot be burned"),
+ # likewise: "takes DAMAGE from a Dark-, Ghost-, or Bug-type move". A Taunt
+ # is a Dark move and does not rattle anything.
+ "Rattled":       ("def", lambda m: dmg(m)
+                   and m["type"] in ("Bug", "Ghost", "Dark"),
                    None, "+1 Speed"),
  "Liquid Ooze":   ("def", lambda m: m["heals"], None,
                    "the drain is reversed - the attacker loses that HP"),
@@ -667,6 +687,45 @@ def _scopes(props):
 SCOPE_EXEMPT = {"Adaptability"}
 
 
+# ---------------------------------------------------- what STOPS a move -----
+# A defensive rule badges nothing on a move row, and that was right while the
+# alternative was all 67 of them: Fire Lash would have carried 32 grey chips.
+# But the player asked for a narrower thing, and named it exactly:
+#
+#     "habilidades como bulletproof, overcoat y soundproof deben salir tageadas
+#      de forma negativa en los moves que afectan. asi por ejemplo si viese zap
+#      cannon en algun pokemon como raichu, y veo que tiene el tag bulletproof,
+#      sabria que ese move es bloqueado por esa habilidad en concreto."
+#
+# BLOQUEADO. Not "takes half", not "may burn you back" - the move does nothing.
+# That is a different and much smaller class, and it splits in two:
+#
+#   STOPS_MOVE    the move does not happen at all, whatever it was.
+#   STOPS_EFFECT  the thing the move DOES does not happen. For a status move
+#                 that is the move failing; for a damaging move with a
+#                 secondary it is only the secondary, which is not a block and
+#                 must not be badged as one. So these only count on a status
+#                 move, and Fire Lash keeps a clean row while Will-O-Wisp does
+#                 not.
+#
+# Named rather than pattern-matched, because "no damage" and "cannot be
+# lowered" are English, and a rule that arrives without an entry here simply
+# badges nothing - which `--audit` prints, so it is a gap rather than a guess.
+STOPS_MOVE = {
+    "Bulletproof", "Overcoat", "Soundproof", "Levitate", "Eelevate",
+    "Earth Eater", "Volt Absorb", "Water Absorb", "Motor Drive", "Sap Sipper",
+    "Lightning Rod", "Good as Gold", "Telepathy", "Magic Bounce", "Armor Tail",
+    "Queenly Majesty", "Aroma Veil",
+}
+STOPS_EFFECT = {
+    "Big Pecks", "Clear Body", "White Smoke", "Hyper Cutter", "Illuminate",
+    "Keen Eye", "Mirror Armor", "Immunity", "Insomnia", "Vital Spirit",
+    "Own Tempo", "Magma Armor", "Limber", "Flower Veil", "Leaf Guard",
+    "Sweet Veil", "Thermal Exchange", "Guard Dog", "Suction Cups",
+    "Inner Focus", "Shield Dust",
+}
+
+
 def build(props):
     table, report = {}, {}
     scopes = _scopes(props)
@@ -690,6 +749,11 @@ def build(props):
             entry["why_up"], entry["why_down"] = CONTRARY_UP, CONTRARY_DOWN
             entry["up"] = sorted(n for n, p in props.items() if p["self_up"])
             entry["down"] = sorted(n for n, p in props.items() if p["self_down"])
+        # which of those it STOPS, as opposed to merely blunting
+        if ab in STOPS_MOVE:
+            entry["stop"] = hits
+        elif ab in STOPS_EFFECT:
+            entry["stop"] = [n for n in hits if props[n]["cat"] == "Status"]
         table[ab] = entry
         report[ab] = hits
     return table, report
