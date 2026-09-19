@@ -275,15 +275,29 @@ setTimeout(() => {
           cells(r).map(x => x.querySelector("span").textContent).join("/"));
         return Number(c.querySelector("b").textContent.replace(/[^\d]/g, ""));
       };
-      const v = rows().map(r => statOf(r, "BST"));
-      ok("hay filas", v.length > 20, true);
-      ok("ordenado por BST", v.every((x,i) => i===0 || v[i-1] >= x), true);
+      /* LO QUE EL POKEMON ALCANZA, no lo que dice su fila base. El orden lo
+         decide la linea Mega entera: "absol, garchomp y lucario deberian
+         aparecer primero en el filtro de speed de mayor a menor, porque sus
+         formas base tienen una velocidad diferente a la mega, pero igualmente
+         los stats de la mega afectan al rank" (2026-09-19). La celda dibuja la
+         base y, debajo, lo que cada Mega mueve; el maximo de las dos es la
+         clave con la que se ordena. */
+      const reachOf = (r, lab) => {
+        /* cada numero que la celda dibuja: la base y lo que cada Mega mueve.
+           BST los escribe como "465 -> 565" y las stats como lineas aparte,
+           asi que se leen del texto entero y no de una etiqueta concreta. */
+        const ns = (cellOf(r, lab).textContent.match(/\d+/g) || []).map(Number);
+        return ns.length ? Math.max.apply(null, ns) : 0;
+      };
+      const vr = rows().map(r => reachOf(r, "BST"));
+      ok("hay filas", vr.length > 20, true);
+      ok("ordenado por BST", vr.every((x,i) => i===0 || vr[i-1] >= x), true);
 
       /* NOTHING IS HIDDEN. Ranking by one stat must not drop the other five -
          an Attack list is read with the Speed beside it. The ranked one is
          marked instead. */
       click(sortTab("Spe"));
-      const sp = rows().map(r => statOf(r, "Spe"));
+      const sp = rows().map(r => reachOf(r, "Spe"));
       ok("cambiar a Spe reordena la misma tabla",
          sp.every((x,i) => i===0 || sp[i-1] >= x), true);
       ok("y las seis stats siguen ahi",
@@ -312,7 +326,14 @@ setTimeout(() => {
       /* Tapping the active stat flips the direction - and ascending Speed IS
          the Trick Room list, which is why there is no "Speed at most" box. */
       click(sortTab2("Spe"));
-      const asc = rows().map(r => statOf(r, "Spe"));
+      /* ascendente = Trick Room, y ahi lo que manda es lo MAS LENTO que el
+         Pokemon puede ser: una Mega que sube la Speed no ayuda a ir lento, asi
+         que la clave es el minimo de la linea y no el maximo. */
+      const lowOf = (r, lab) => {
+        const ns = (cellOf(r, lab).textContent.match(/\d+/g) || []).map(Number);
+        return ns.length ? Math.min.apply(null, ns) : 0;
+      };
+      const asc = rows().map(r => lowOf(r, "Spe"));
       ok("tocarla de nuevo invierte el orden",
          asc.every((x,i) => i===0 || asc[i-1] <= x), true);
       ok("y el encabezado lo dice",

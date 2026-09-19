@@ -2,7 +2,7 @@
    Part of the app; linked into one script by scripts/build_tracker_page.py. */
 import {
   $, C, DEX, MOVES, MOVE_BY, SORT, STAT_KEYS, STAT_LABEL, STONE_OF, TYPE_COLOR,
-  anyRow, bst, byName, capNote, cardLine, catName, defence, dexNo,
+  anyRow, bst, byName, capNote, cardLine, catName, defence, dexNo, megaSuffix,
   effectLine, el,
   labelBox, learnset, megasFor, podiumChip, podiumFor, splitPct, spriteFor,
   statGrid, toast, typeCard, typeChip, typeSkin, usageTag,
@@ -42,9 +42,62 @@ import { fill, note } from "./13-boot.js";
 
    `sort` is a stat key, "bst" or "dex". `dir` is "desc" or "asc"; tapping the
    stat you are already on flips it. */
-var FIND = {moves: [], types: [], typeMode: "and", ability: "",
+var FIND = {q: "", moves: [], types: [], typeMode: "and", ability: "",
             inChamp: false, inHome: false,
             sort: "bst", dir: "desc", cat: ""};
+
+/* ============================================ A MEGA LIVES ON ITS BASE ROW ==
+   The search listed all 345 forms, 81 of which are Megas, so a fifth of every
+   result page was a Pokemon you cannot own:
+
+     "en el buscador se me llena de pokemones mega, y necesito saber solo su
+      cambio de tipo, de habilidad, de stats. Solo necesito saber las cosas que
+      cambian del pokemon base a mega... los pokemones se guardan en todo lugar
+      en su forma normal y no mega."  (player, 2026-09-19)
+
+   That is the whole argument: a Mega only exists mid-battle, and only because
+   a stone is held. It is not a thing you store, so it is not a thing you
+   browse - it is a fact ABOUT the Pokemon you store.
+
+   THREE THINGS HAVE TO SURVIVE THE FOLD, or it costs more than it saves.
+
+   1. THE QUERY. Mega Ampharos is Electric/Dragon and Mega Staraptor is
+      Fighting/Flying; searching those types found them while they were rows of
+      their own, and folding them in would silently lose the answer. A filter
+      matches the base form OR any of its Megas, and the card says which.
+
+   2. THE RANK. "en el filtro de stats, por ejemplo absol, garchomp y lucario
+      deberian aparecer primero en el filtro de speed de mayor a menor, porque
+      sus formas base tienen una velocidad diferente a la mega, pero igualmente
+      los stats de la mega afectan al rank." So the sort reads the value the
+      Pokemon can REACH: the highest across the line going down, the lowest
+      going up - because a Mega that raises Speed does not help a Trick Room
+      list, and the base is what is slow.
+
+   3. WHAT CHANGES. Only that. A stat cell gains a second number when the Mega
+      moves it, the types and the ability are shown only when the stone really
+      swaps them, and a Pokemon with no Mega looks exactly as it did before. */
+function megaLine(p){
+  return p.mega ? [] : megasFor(p.name);
+}
+/* the value this Pokemon can reach in the direction being ranked */
+function reach(p, key, dir){
+  var best = statOf(p, key);
+  megaLine(p).forEach(function(m){
+    var v = statOf(m, key);
+    best = dir === "asc" ? Math.min(best, v) : Math.max(best, v);
+  });
+  return best;
+}
+/* does the base OR any of its Megas satisfy `fn`? Returns the form that did,
+   so the card can say "matched as Mega Ampharos" rather than leaving it to be
+   worked out. */
+function orMega(p, fn){
+  if (fn(p)) return p;
+  var ms = megaLine(p);
+  for (var i = 0; i < ms.length; i++) if (fn(ms[i])) return ms[i];
+  return null;
+}
 /* bst is not a base stat but it filters and sorts exactly like one, so it
    rides in the same table rather than keeping its own input. */
 var FIND_STATS = [["bst","BST"],["hp","HP"],["atk","Atk"],["def","Def"],
@@ -104,31 +157,62 @@ function findRun(){
   var own = ownedNames();
   var inHome = {};
   boxRows("home").forEach(function(r){ inHome[r.name] = 1; });
+  var q = (FIND.q || "").trim().toLowerCase();
+  var matchedAs = {};                 /* base name -> the Mega that matched */
   var hits = DEX.filter(function(p){
+    if (p.mega) return false;         /* it rides on its base row now */
+    /* THE NAME BOX. "seria bueno agregar en el buscador algo que pueda buscar
+       pokemon por simple nombre, cuando quiero ver la ficha rapidamente de uno
+       sin tener que filtrar" - so it matches the name, the species and the dex
+       number, and it matches a Mega's name too, because typing "mega absol"
+       should find the card that carries it. */
+    if (q) {
+      var named = p.name.toLowerCase().indexOf(q) >= 0 ||
+                  (p.species || "").toLowerCase().indexOf(q) >= 0 ||
+                  String(dexNo(p.name)).indexOf(q) >= 0 ||
+                  megaLine(p).some(function(m){
+                    return m.name.toLowerCase().indexOf(q) >= 0; });
+      if (!named) return false;
+    }
     if (FIND.inChamp || FIND.inHome) {
       var c = FIND.inChamp && ((p.name in own) || (p.species in own));
       var h = FIND.inHome && ((p.name in inHome) || (p.species in inHome));
       if (!c && !h) return false;
     }
+    /* Each filter may be satisfied by the base OR by a Mega, and the LAST one
+       that needed a Mega is remembered so the card can say so. */
+    var via = null;
     if (FIND.types.length) {
-      var tm = FIND.typeMode === "or"
-        ? FIND.types.some(function(t){ return p.types.indexOf(t) >= 0; })
-        : FIND.types.every(function(t){ return p.types.indexOf(t) >= 0; });
-      if (!tm) return false;
+      var hit = orMega(p, function(f){
+        return FIND.typeMode === "or"
+          ? FIND.types.some(function(t){ return f.types.indexOf(t) >= 0; })
+          : FIND.types.every(function(t){ return f.types.indexOf(t) >= 0; });
+      });
+      if (!hit) return false;
+      if (hit !== p) via = hit;
     }
-    if (FIND.ability && (p.ab || []).indexOf(FIND.ability) < 0) return false;
+    if (FIND.ability) {
+      var ah = orMega(p, function(f){
+        return (f.ab || []).indexOf(FIND.ability) >= 0; });
+      if (!ah) return false;
+      if (ah !== p) via = ah;
+    }
     if (FIND.moves.length) {
+      /* A MEGA SHARES ITS BASE'S MOVEPOOL - "el moveset es el mismo en el base
+         que en el mega al final" - so this one is asked of the base only. */
       var ls = learnset(p.name);
       if (!ls) return false;
       var have = {};
       ls.forEach(function(m){ have[m.name] = 1; });
       if (!FIND.moves.every(function(n){ return have[n]; })) return false;
     }
+    if (via) matchedAs[p.name] = via;
     return true;
   });
 
   var head = el("p", "sub");
-  head.textContent = hits.length + " of " + DEX.length + " forms match" +
+  var BASES = DEX.filter(function(p){ return !p.mega; }).length;
+  head.textContent = hits.length + " of " + BASES + " Pokemon match" +
     (FIND.moves.length > 1
       ? " - all " + FIND.moves.length + " moves on the same Pokemon" : "") +
     (FIND.sort === "dex" ? ", in dex order"
@@ -155,7 +239,8 @@ function findRun(){
   } else {
     var sign = FIND.dir === "asc" ? -1 : 1;
     hits.sort(function(a, b){
-      return sign * (statOf(b, FIND.sort) - statOf(a, FIND.sort)) ||
+      return sign * (reach(b, FIND.sort, FIND.dir) -
+                     reach(a, FIND.sort, FIND.dir)) ||
              a.name.localeCompare(b.name);
     });
   }
@@ -184,7 +269,31 @@ function findRun(){
         : o === "champions" ? "yours, Champions origin"
         : "yours, origin?"));
     }
-    if (p.mega) h.appendChild(el("span", "tag mega", "mega"));
+    /* THE LINE, NOT THE FORMS. One chip per Mega, carrying only the letter
+       that tells them apart - Charizard X and Y, Garchomp and Garchomp Z - so
+       a two-Mega species costs two small chips instead of two more cards. */
+    var ms = megaLine(p);
+    ms.forEach(function(mm){
+      var st = STONE_OF[mm.name], own2 = hasStone(st);
+      var suffix = ms.length > 1 ? megaSuffix(mm, p) : "";
+      var chip2 = el("span", "tag " + (own2 ? "mega" : ""),
+                     "mega" + (suffix ? " " + suffix : ""));
+      chip2.title = mm.name + " — " + st +
+        (own2 ? ", owned" : ", 2000 VP") + ". " +
+        (mm.types.join("/") !== p.types.join("/")
+          ? "Becomes " + mm.types.join("/") + ". " : "") +
+        "Ability " + (p.ab || []).join(" / ") + " → " + mm.ab.join(" / ");
+      h.appendChild(chip2);
+    });
+    /* ...and when a Mega is the reason this Pokemon matched at all, say so.
+       Searching Fighting finds Staraptor because its Mega is Fighting/Flying,
+       and a card that showed only Normal/Flying would look like a bug. */
+    var via = matchedAs[p.name];
+    if (via) {
+      var vt = el("span", "tag warn", "as " + via.name);
+      vt.title = "The base form does not match - this one does.";
+      h.appendChild(vt);
+    }
     /* THE MEDAL. A result rather than a rate, so it sits on the name with the
        ownership and Mega badges and not down among the numbers. */
     var med = podiumChip(p.name);
@@ -192,6 +301,19 @@ function findRun(){
     m.appendChild(h);
     var meta = el("div", "rmeta");
     p.types.forEach(function(t){ meta.appendChild(typeChip(t)); });
+    /* THE TYPES ONLY WHEN THE STONE REALLY SWAPS THEM. Most Megas keep them,
+       and repeating an unchanged pair beside itself is the noise this whole
+       change exists to remove. Ampharos, Staraptor, Meganium and Sceptile are
+       what this is for. */
+    ms.forEach(function(mm){
+      if (mm.types.join("/") === p.types.join("/")) return;
+      var arrow = el("span", "megato");
+      arrow.textContent = "→" + (ms.length > 1
+        ? " " + (mm.name.replace("Mega ", "").replace(p.species, "").trim()
+                 || "M") : "");
+      meta.appendChild(arrow);
+      mm.types.forEach(function(t){ meta.appendChild(typeChip(t)); });
+    });
     /* ALL SIX STATS, ALWAYS, AND THE RANKED ONE MARKED.
 
        This briefly dropped the other five when one was being ranked, on the
@@ -213,16 +335,92 @@ function findRun(){
        they were loose text on a card whose other numbers were all in cells
        (player, 2026-09-16). BST is a total rather than a stat, so it keeps its
        own cell above the six instead of joining them as a seventh column. */
+    /* WHICH Mega, when there are two of them. The suffix is the only thing
+       that tells them apart - Charizard X and Y, Garchomp and Garchomp Z - so
+       it is what labels the line, and a species with one Mega needs no label
+       at all. */
+    var tagOf = function(mm){
+      var sfx = mm.name.replace("Mega ", "").replace(p.species, "").trim();
+      return ms.length > 1 ? (sfx || "M") + " " : "";
+    };
+    /* DEDUPED, because Absol's two Megas are both 565 and "465 -> 565 -> 565"
+       says the same number twice to no purpose. */
+    var bstTxt = String(bst(p)), seenB = {};
+    ms.forEach(function(mm){
+      var v = bst(mm);
+      if (v === bst(p) || seenB[v]) return;
+      seenB[v] = 1;
+      bstTxt += " → " + v;
+    });
+    /* One ENTRY per Mega, not an arrow loose among the names: labelBox breaks
+       an array between its items, so a bare "→" became a list item of its
+       own and read as an ability called nothing. */
+    var abTxt = (p.ab || []).slice();
+    ms.forEach(function(mm){
+      if (mm.ab.join("/") !== (p.ab || []).join("/"))
+        abTxt.push("→ " + tagOf(mm) + mm.ab.join(" / "));
+    });
     m.appendChild(cardLine([
-      labelBox(bst(p), "BST", FIND.sort === "bst" ? "on" : null),
-      labelBox(p.ab || [], "Ability", "wide")
+      labelBox(bstTxt, "BST", FIND.sort === "bst" ? "on" : null),
+      labelBox(abTxt, "Ability", "wide")
     ]));
     /* A TABLE, NOT A SENTENCE. "115 HP 175 Atk 117 Def ..." is six numbers
        with six words between them, which is prose - it gets read, never
        scanned, and you cannot line two cards up against each other. Six
        columns with the label under the number can be read straight down. */
-    m.appendChild(statGrid(p, ranking ? FIND.sort : null));
+    m.appendChild(statGrid(p, ranking ? FIND.sort : null, ms));
     r.appendChild(m);
+    /* AND WHAT IT TURNS INTO, as a picture. The card carries the base sprite
+       because that is the form you own and store; a Mega is a thing that
+       happens for one battle. But it is still a different Pokemon to look at,
+       and a line of names with no faces was the half of the fold that lost
+       something (player, 2026-09-19: "faltan los sprites de cada mega
+       evolution"). Smaller than the base one, in the same corner, under it -
+       so the eye reads "this, then these". */
+    if (ms.length) {
+      /* ALL OF THEM AT NATIVE SIZE. The file has 96 pixels and no more, so
+         anything smaller is a resample of a pixel sprite - the same reason the
+         GTS one went back to 96 (player, 2026-09-19: "podrias intentar que los
+         sprites de afuera de la ficha del pokemon igual se vieran a tamano
+         nativo... hacer que los 3 sprites o 2 quepan en la card").
+
+         Two or three of those do not fit in a corner, so they stop being a
+         corner: the card marks itself `.hasline` and the strip becomes a row
+         of its own across the top, base first and then what it becomes. The
+         corner sprite stays exactly as it was for every Pokemon without a
+         Mega, which is most of them. */
+      r.classList.add("hasline");
+      r.classList.remove("hassprite");
+      /* typeCard already pinned one to the corner. Dropping the CLASS only
+         stops it narrowing the text; the image is still there and still
+         absolutely positioned, so the base Pokemon appeared twice - which is
+         the duplication this whole pass is about. */
+      var corner = r.querySelector("img.sprite");
+      if (corner) corner.remove();
+      var mrow = el("div", "megapics");
+      var self = spriteFor(p.name);
+      if (self) {
+        self.className = "megapic";
+        self.title = p.name;
+        var c0 = el("div", "megapicwrap");
+        c0.appendChild(self);
+        c0.appendChild(el("span", "megapickey base", "base"));
+        mrow.appendChild(c0);
+      }
+      ms.forEach(function(mm){
+        var mp = spriteFor(mm.name);
+        if (!mp) return;
+        mp.className = "megapic";
+        mp.title = mm.name;
+        var cellm = el("div", "megapicwrap");
+        cellm.appendChild(mp);
+        cellm.appendChild(el("span", "megapickey",
+          ms.length > 1 ? "mega " + megaSuffix(mm, p) : "mega"));
+        mrow.appendChild(cellm);
+      });
+      if (mrow.children.length > 1) r.insertBefore(mrow, r.firstChild);
+      else { r.classList.remove("hasline"); r.classList.add("hassprite"); }
+    }
     r.onclick = function(){ findDetail(p); };
     list.appendChild(r);
   });
@@ -326,45 +524,12 @@ function pokeHead(body, p, opts){
 
 
 /* Everything a Pokemon IS, under whatever the door that opened it owns. */
-function pokeBody(body, p, opts){
-  opts = opts || {};
-
-  /* THE MEGA LINE, WHICH THE SEARCH VIEW NEVER SHOWED. Judging a Pokemon on
-     its Mega rather than its base row is the project's own rule, and the one
-     sheet a person opens to judge one had no Mega on it at all. Both halves,
-     because the stone costs something as well as adding something: the
-     ability it REPLACES is named beside the one it gains. */
-  var ms = megasFor(p.name);
-  if (ms.length) {
-    body.appendChild(el("h2", null, "Mega line"));
-    ms.forEach(function(m){
-      var st = STONE_OF[m.name], own = hasStone(st);
-      var pn = el("div", "panel");
-      pn.style.marginBottom = "8px";
-      var h = el("div", "rname");
-      h.appendChild(document.createTextNode(m.name));
-      h.appendChild(el("span", "tag " + (own ? "mega" : "warn"),
-        own ? st + " owned" : st + " — 2000 VP"));
-      pn.appendChild(h);
-      var mt = el("div", "rmeta");
-      m.types.forEach(function(t){ mt.appendChild(typeChip(t)); });
-      pn.appendChild(mt);
-      pn.appendChild(cardLine([labelBox(bst(m), "BST")]));
-      pn.appendChild(el("p", "sub",
-        "Ability " + (p.ab || []).join(" / ") + " → " + m.ab.join(" / ") +
-        ". Base " + p.types.join("/") + " → " + m.types.join("/") +
-        ". Spe " + p.b[5] + " → " + m.b[5] + ", SpA " + p.b[3] +
-        " → " + m.b[3] + ", Atk " + p.b[1] + " → " + m.b[1] + "."));
-      body.appendChild(pn);
-    });
-  }
-
-  /* WHAT DAMAGES IT. The box sheet had this and the search view did not, which
-     is backwards - the search view is where a Pokemon is being weighed against
-     the field. A type chart is a type chart: it needs the types and nothing
-     else, so a species Champions has never heard of gets one too. */
-  body.appendChild(el("h2", null, "Takes damage"));
-  var dfc = defence(p.types);
+/* The type chart for one typing, as rows of chips. A function because a Mega
+   that RETYPES needs its own - Mega Ampharos is Electric/Dragon and takes Ice
+   at x2 where Ampharos does not - and printing one table under two typings
+   would be the same number meaning two different things. */
+function damageTable(types){
+  var dfc = defence(types);
   var dl = el("div");
   [[4, "×4"], [2, "×2"], [.5, "½"], [.25, "¼"],
    [0, "immune"]].forEach(function(g){
@@ -377,7 +542,19 @@ function pokeBody(body, p, opts){
     hits.forEach(function(t){ line.appendChild(typeChip(t)); });
     dl.appendChild(line);
   });
-  body.appendChild(dl);
+  return dl;
+}
+
+function pokeBody(body, p, opts){
+  opts = opts || {};
+
+  /* THE ORDER IS THE ORDER A POKEMON IS READ IN (player, 2026-09-19): "estan
+     los datos como el tipo, stats y la habilidad deberia seguirle, luego la
+     info de las megas y tabla de debilidad extra por si algun tipo cambio."
+
+     So: the head above carries the types and the six stats, then the
+     abilities, then what damages it, then the Mega line - and each Mega
+     carries its OWN damage table, but only when the stone really retypes it. */
 
   /* resolved BEFORE the abilities, because each ability now reports how much
      of THIS movepool it touches - `var` hoisting made the check pass with
@@ -441,6 +618,102 @@ function pokeBody(body, p, opts){
     body.appendChild(n);
   });
 
+  /* WHAT DAMAGES IT. The box sheet had this and the search view did not,
+     which is backwards - the search view is where a Pokemon is being
+     weighed against the field. A type chart is a type chart: it needs the
+     types and nothing else, so a species Champions has never heard of gets
+     one too. */
+  body.appendChild(el("h2", null, "Takes damage"));
+  body.appendChild(damageTable(p.types));
+
+  /* ============================================ WHAT THE STONE MAKES OF IT ==
+     One block per Mega, and each one is a whole Pokemon rather than a line of
+     differences. The version before this was the stones panel from the Items
+     tab with a sentence bolted on:
+
+       "adentro de la ficha del pokemon, creo que copiaste y pegaste lo de las
+        piedras de los items, ese cuadro esta horrible, repite informacion...
+        feisimo"
+
+     He was right - and it also said too little. It printed a BST and then a
+     sentence naming three of the six stats, so "what does Mega Absol Z
+     actually look like" had no answer on the sheet built to answer it:
+
+       "dice los bst, pero le falta toda la info, y deberia decir solo la info
+        de mega absol, lo mismo para lo de mega absol z."
+
+     So each Mega gets its picture, its stone, its types, its full six stats
+     with the ones the stone MOVES marked, and its ability beside the one it
+     gives up. Nothing is repeated from the base block above: what is the same
+     is simply not mentioned. */
+  var ms = megasFor(p.name);
+  if (ms.length) {
+    body.appendChild(el("h2", null,
+      ms.length > 1 ? "Mega line — " + ms.length + " of them, and only one"
+                      + " may evolve in a battle"
+                    : "Mega line"));
+    ms.forEach(function(m){
+      var st = STONE_OF[m.name], own = hasStone(st);
+      var retype = m.types.join("/") !== p.types.join("/");
+      var pn = el("div", "panel megablock");
+      pn.style.marginBottom = "10px";
+
+      var head = el("div", "sheethead");
+      var pic = spriteFor(m.name, true);
+      if (pic) head.appendChild(pic);
+      var info = el("div", "sheetfacts");
+      var h = el("div", "rname");
+      h.appendChild(document.createTextNode(m.name));
+      h.appendChild(el("span", "tag " + (own ? "mega" : "warn"),
+        own ? st + " — owned" : st + " — 2000 VP"));
+      info.appendChild(h);
+
+      var mt = el("div", "rmeta");
+      m.types.forEach(function(t){ mt.appendChild(typeChip(t)); });
+      info.appendChild(mt);
+
+      /* THE ABILITY IS OFTEN THE REASON, and sometimes the cost - Mawile gains
+         Huge Power, Froslass trades Cursed Body for Snow Warning - so both
+         halves are named and neither is left to be worked out. */
+      /* NOTHING THE SHEET ALREADY SAID. The base types, its BST and its
+         abilities are four lines up, in the head and in Abilities, so naming
+         them again here is the duplication this block was rebuilt to stop
+         (player, 2026-09-19: "me parece tonto mencionar las habilidades que un
+         pokemon tuvo antes de ser mega, si la ficha ya dice la informacion de
+         las habilidades de ese pokemon... es muy importante no duplicar la
+         informacion"). What is left is only what the stone makes. */
+      info.appendChild(cardLine([
+        labelBox(bst(m), "BST"),
+        labelBox(m.ab, "Ability", "wide")
+      ]));
+      head.appendChild(info);
+      pn.appendChild(head);
+
+      /* ITS OWN SIX, with the ones the stone moved marked. The base spread is
+         four lines up; this is the other one, not a repeat of it. */
+      pn.appendChild(statGrid(m));
+      var moved = STAT_KEYS.map(function(k, i){
+        return m.b[i] === p.b[i] ? null
+             : STAT_LABEL[k] + " " + p.b[i] + " → " + m.b[i];
+      }).filter(Boolean);
+      pn.appendChild(el("div", "st",
+        moved.length ? "The stone moves " + moved.join(", ") + "."
+                     : "The stone moves no stat — it is here for the "
+                       + "ability."));
+
+      /* AND ITS OWN DAMAGE TABLE, only when the typing really changes.
+         "la tabla de takes damage deberia ser diferente si el pokemon cambia
+          de tipo" - it should, and it is a different table, not a caveat:
+         Mega Ampharos picks up a Dragon's weaknesses and loses none of the
+         Electric ones. Drawn here rather than above, because above is the
+         Pokemon you own. */
+      if (retype) {
+        pn.appendChild(el("div", "st", "Takes damage differently:"));
+        pn.appendChild(damageTable(m.types));
+      }
+      body.appendChild(pn);
+    });
+  }
   /* WHAT IT WON WITH. Folded, because a Kingambit has eighteen of these
      and the movepool below is what the sheet is usually opened for - but
      one tap away, because "what did the set that actually won look like" is
@@ -1088,6 +1361,14 @@ function moveRowFor(m, ability, poke){
 }
 
 function findInit(){
+  /* Typed, not tapped: this one narrows as you go rather than adding a chip,
+     because it is the control for "open Garchomp" and not for building a
+     query. It still lives beside the chips, so clearing it is one gesture. */
+  var nameBox = $("findName");
+  if (nameBox) {
+    nameBox.value = FIND.q || "";
+    nameBox.oninput = function(){ FIND.q = nameBox.value; findRun(); };
+  }
   $("findAddMove").onclick = function(){
     openSheet("Add a move filter", function(body){
       /* the same controls the build editor has - one implementation, so

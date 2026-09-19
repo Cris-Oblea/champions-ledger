@@ -294,8 +294,10 @@ nav.tabs button:active{background:var(--sunk)}
    that far. Everything below - the cells and the stat table - is full width
    and starts under it.
 
-   `image-rendering:pixelated` because these are 96px pixel sprites: smoothing
-   them turns a crisp sprite into a smudge at this size. */
+   NO `image-rendering` here either, and the note above about it keeping a
+   96px sprite crisp is wrong on this hardware: at a 1.25 device ratio the
+   browser draws those 96 CSS px into 120 real ones, and `pixelated`
+   turns that into a nearest-neighbour upscale with hard square edges. */
 /* NATIVE SIZE, 96x96. It was drawn at 48 with `image-rendering:pixelated`,
    which is backwards: pixelated is for UPSCALING - it keeps big square pixels
    crisp - and on a downscale it samples nearest-neighbour and throws away
@@ -418,6 +420,47 @@ nav.tabs button:active{background:var(--sunk)}
 .row.card .statline{margin-top:7px;gap:4px}
 .row.card .statline div{padding:3px 1px}
 .row.card .statline b{font-size:12.5px}
+/* WHAT THE STONE MOVES, under the number it moves. A second line rather than
+   a replacement, because the base value is the one the Pokemon has in the box
+   and the Mega's is what it reaches for one battle - both are true and the
+   card has to say which is which. Drawn only where they differ, so a Pokemon
+   with no Mega line is the card it always was. */
+.statline .mg{display:block;font-family:var(--mono);font-size:10px;
+  line-height:1.25;font-variant-numeric:tabular-nums;color:var(--mega)}
+.statline .mg.down{color:var(--muted)}
+/* whose number it is, when a species has two Megas */
+.statline .mg .mgk{font-size:8.5px;letter-spacing:.06em;opacity:.75;
+  margin-right:2px}
+
+/* THE WHOLE LINE, AT NATIVE SIZE. A pixel sprite has 96 pixels and no more,
+   so drawing it at 48 is a resample of the one thing that must not be
+   resampled. Two or three of them do not fit in a corner, so a card that has
+   a Mega line puts them in a strip of their own across the top instead -
+   base first, then what it becomes - and the corner sprite is switched off
+   for that card only. Wraps rather than shrinks, because the column is 250px
+   at its narrowest and three 96s are 300.
+
+   A card WITHOUT a Mega keeps the corner exactly as it was, which is most of
+   the dex and the layout everything else was measured against. */
+.megapics{display:flex;flex-wrap:wrap;gap:6px;padding:8px 13px 0;
+  justify-content:flex-start}
+.row.card.hasline .rmain{padding-top:6px}
+.megapicwrap{position:relative;width:96px;height:96px;flex:0 0 auto}
+/* NO `image-rendering:pixelated`, AT ANY SIZE (player, 2026-09-19: "en
+   todos lados tamano nativo + suavizado, sino se ven pixelados!"). At
+   native size it looks like it should do nothing, and on a 1x display it
+   does - but his screen is 1.25, so 96 CSS px is drawn into 120 device
+   px and `pixelated` makes that a nearest-neighbour upscale: hard square
+   edges, which is precisely the "pixelado" he keeps seeing. Ordinary
+   smoothing interpolates those 24 extra pixels instead. */
+.megapic{width:96px;height:96px;display:block}
+.megapickey{position:absolute;left:2px;bottom:0;font-family:var(--cond);
+  text-transform:uppercase;letter-spacing:.06em;
+  font-size:8.5px;font-weight:600;color:var(--mega);
+  background:var(--surface);border-radius:3px;padding:0 4px;line-height:1.35}
+.megapickey.base{color:var(--muted)}
+/* the arrow between a base type pair and the Mega's */
+.megato{font-family:var(--mono);color:var(--mega);margin:0 1px}
 /* the stat the list is ranked by, marked here too */
 .statline div.on{background:var(--accent-soft);
   box-shadow:inset 0 0 0 1px var(--accent)}
@@ -985,8 +1028,7 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border:2px solid var(
    rather than better - it drops pixels instead of blending them (player,
    2026-09-19: "los sprites se ven mas chicos y no de tamano nativo").
    Native or nothing; the float still keeps the text clear of it. */
-.gtsside .gtspic{float:right;width:96px;height:96px;margin:-2px -2px 2px 8px;
-  image-rendering:pixelated}
+.gtsside .gtspic{float:right;width:96px;height:96px;margin:-2px -2px 2px 8px}
 .gtsside .statline{margin-top:6px;clear:both}
 .gtslabel{font-family:var(--cond);text-transform:uppercase;letter-spacing:.07em;
   font-size:9.5px;font-weight:600;color:var(--faint);margin-bottom:3px}
