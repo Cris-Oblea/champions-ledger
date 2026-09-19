@@ -125,7 +125,7 @@ PUBLIC = [
     "TYPE_COLOR", "TYPE_COLOR2", "TYPE_INK",
     "abilityTag", "buildLink", "buildSheet", "buildsPane", "byName",
     "blockerTags", "closeSheet", "engineCalc", "findDetail", "go",
-    "gtsPickMine", "itemTags",
+    "gtsPickMine", "itemTags", "leaveEditor",
     "gtsPickWanted", "learnset",
     "megasFor", "moveRowFor", "overlapSweep", "pokeSheet", "teamReport",
     "teamSheet", "teamTypes",

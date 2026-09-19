@@ -2,9 +2,9 @@
    Part of the app; linked into one script by scripts/build_tracker_page.py. */
 import {
   $, C, COSTS, FORMS, MOVE_BY, STAT_KEYS, STAT_LABEL, STONE_OF, bst, byName,
-  cardLine, catName, effectLine, el, labelBox, learnset, megasFor, natMult,
-  splitPct, splitsFor, splitsReg, statAt, statGrid, toast, typeCard, typeChip,
-  usageTag,
+  capNote, cardLine, catName, dexLabel, dexNo, effectLine, el, labelBox,
+  learnset, megasFor, natMult, splitPct, splitsFor, splitsReg, statAt,
+  statGrid, toast, typeCard, typeChip, usageTag,
 } from "./01-data.js";
 import { S, boxRows, buildLink, hasStone, ownedNames } from "./02-state.js";
 import { drop, put, putNew } from "./03-store.js";
@@ -22,6 +22,133 @@ import { blockerTags, factLine, itemTags, moveFilters, moveScore,
   priorityTag, spreadNote,
   spreadTags } from "./12-find.js";
 /* ==================================================================== builds */
+/* ------------------------------------------- choosing which Pokemon it is --
+   A <select> of 264 forms in one alphabetical run, with no way to search it:
+
+     "el selector de pokemon en el apartado de builds al crear una nueva build
+      me muestra un listado sin filtro por nombre ni dex ni nada, es solo un
+      box con opciones, necesito buscar rapidamente entre los pokemones
+      disponibles del juego, y no buscar manualmente en una lista."
+      (player, 2026-09-18)
+
+   So it is a field you TAP, like the GTS pickers and the calculator's - a
+   sheet with a search box, the sorts the rest of the app offers, and the same
+   card everywhere else draws. Searching matches the name, either type, or the
+   dex number, because those are the three things anyone knows about a Pokemon
+   they are looking for.
+
+   The WHOLE dex, still. A set for a Pokemon he has not got yet is an idea
+   worth keeping until he has it (2026-09-13), so "in your boxes" is a filter
+   and never a limit - and the ones he owns are marked rather than the ones he
+   does not, which is the shorter list to read. */
+function speciesSheet(onPick){
+  var PS = {sort: "dex", mine: false};
+  openSheet("Which Pokemon?", function(body){
+    var ownedNow = {};
+    boxRows("champions").concat(boxRows("home")).forEach(function(r){
+      ownedNow[r.name] = (ownedNow[r.name] || 0) + 1;
+    });
+
+    var wrap = el("div", "search field");
+    wrap.innerHTML = '<svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/>'
+                   + '<path d="m20 20-3.5-3.5"/></svg>';
+    var inp = el("input");
+    inp.type = "text";
+    inp.placeholder = "Search " + FORMS.length + " forms - name, type or number";
+    wrap.appendChild(inp);
+    body.appendChild(wrap);
+
+    var sortWrap = el("div", "toggles");
+    [["dex", "Dex no."], ["az", "A-Z"], ["bst", "BST"],
+     ["spe", "Speed"]].forEach(function(o){
+      var t = el("button", "tog", o[1]);
+      t.setAttribute("aria-pressed", PS.sort === o[0] ? "true" : "false");
+      t.onclick = function(){
+        PS.sort = o[0];
+        [].forEach.call(sortWrap.children, function(c){
+          c.setAttribute("aria-pressed", c === t ? "true" : "false");
+        });
+        draw();
+      };
+      sortWrap.appendChild(t);
+    });
+    body.appendChild(sortWrap);
+
+    var mineWrap = el("div", "toggles");
+    var mineTog = el("button", "tog", "In your boxes");
+    mineTog.title = "Everything else is still here - a set for a Pokemon you "
+                  + "have not got yet is an idea worth keeping.";
+    mineTog.setAttribute("aria-pressed", "false");
+    mineTog.onclick = function(){
+      PS.mine = !PS.mine;
+      mineTog.setAttribute("aria-pressed", PS.mine ? "true" : "false");
+      draw();
+    };
+    mineWrap.appendChild(mineTog);
+    body.appendChild(mineWrap);
+
+    var list = el("div", "list cards");
+    body.appendChild(list);
+
+    function draw(){
+      var q = inp.value.trim().toLowerCase();
+      list.innerHTML = "";
+      var hits = FORMS.filter(function(p){
+        if (PS.mine && !ownedNow[p.name]) return false;
+        if (!q) return true;
+        return p.name.toLowerCase().indexOf(q) >= 0
+            || p.types.join(" ").toLowerCase().indexOf(q) >= 0
+            || String(dexNo(p.name)).indexOf(q) >= 0;
+      });
+      hits.sort(function(a, b){
+        if (PS.sort === "az") return a.name.localeCompare(b.name);
+        if (PS.sort === "bst") return bst(b) - bst(a) || a.name.localeCompare(b.name);
+        if (PS.sort === "spe") return b.b[5] - a.b[5] || a.name.localeCompare(b.name);
+        return dexNo(a.name) - dexNo(b.name) || a.name.localeCompare(b.name);
+      });
+      /* 120, and it SAYS so - the same cap and the same note the calculator's
+         picker uses, because a list that stops without saying reads as a
+         Pokemon the app has never heard of. */
+      hits.slice(0, 120).forEach(function(p){
+        var b = typeCard(el("button", "row" + (ownedNow[p.name] ? " perm" : "")), p);
+        var m = el("div", "rmain");
+        var h = el("div", "rname");
+        h.appendChild(document.createTextNode(p.name));
+        if (ownedNow[p.name]) {
+          h.appendChild(el("span", "tag ok", ownedNow[p.name] > 1
+            ? ownedNow[p.name] + " in your boxes" : "yours"));
+        }
+        var ms = megasFor(p.name);
+        if (ms.length) {
+          var own = ms.filter(function(x){ return hasStone(STONE_OF[x.name]); });
+          h.appendChild(el("span", "tag " + (own.length ? "mega" : ""),
+            own.length ? "mega ×" + own.length : "mega — no stone"));
+        }
+        m.appendChild(h);
+        var meta = el("div", "rmeta");
+        meta.appendChild(el("span", "mono", dexLabel(p.name)));
+        p.types.forEach(function(t){ meta.appendChild(typeChip(t)); });
+        m.appendChild(meta);
+        m.appendChild(cardLine([labelBox(bst(p), "BST"),
+          labelBox(p.ab || [], "Possible ability", "wide")]));
+        m.appendChild(statGrid(p));
+        b.appendChild(m);
+        b.onclick = function(){ onPick(p.name); };
+        list.appendChild(b);
+      });
+      capNote(list, Math.min(120, hits.length), hits.length, "forms");
+      if (!list.children.length) {
+        list.appendChild(el("div", "empty", PS.mine
+          ? "Nothing in your boxes matches"
+          : "Nothing matches"));
+      }
+    }
+    inp.oninput = draw;
+    draw();
+    setTimeout(function(){ inp.focus(); }, 60);
+  }, []);
+}
+
 function spTotal(sp){
   return STAT_KEYS.reduce(function(a,k){ return a + (Number(sp[k]) || 0); }, 0);
 }
@@ -141,23 +268,30 @@ function buildSheet(id, b, keepOriginal){
     if (!id) {
       var f0 = el("div", "field");
       f0.appendChild(el("label", "f", "Pokemon"));
-      var sel0 = el("select");
-      sel0.appendChild(new Option("— pick —", ""));
-      var ownedNow = {};
-      boxRows("champions").concat(boxRows("home")).forEach(function(r){
-        ownedNow[r.name] = (ownedNow[r.name] || 0) + 1;
-      });
-      FORMS.forEach(function(q){        /* already the non-Mega dex, sorted */
-        sel0.appendChild(new Option(
-          q.name + (ownedNow[q.name] ? "" : "  (not in your boxes)"), q.name));
-      });
-      sel0.onchange = function(){
-        draft.pokemon = sel0.value;
-        draft._boxId = null;            // the copy is chosen separately
-        redraw();
+      var chosen = draft.pokemon ? byName[draft.pokemon] : null;
+      var pick = typeCard(
+        el("button", "row " + (draft.pokemon ? "perm" : "unknown")), chosen);
+      var pm = el("div", "rmain");
+      pm.appendChild(el("div", "rname", draft.pokemon || "Tap to choose"));
+      var pmeta = el("div", "rmeta");
+      if (chosen) {
+        chosen.types.forEach(function(t){ pmeta.appendChild(typeChip(t)); });
+        pmeta.appendChild(el("span", "mono", "BST " + bst(chosen)));
+      } else {
+        pmeta.appendChild(el("span", null,
+          "any of the " + FORMS.length + " forms in the game, owned or not"));
+      }
+      pm.appendChild(pmeta);
+      pick.appendChild(pm);
+      pick.onclick = function(){
+        speciesSheet(function(name){
+          draft.pokemon = name;
+          draft._boxId = null;          // the copy is chosen separately
+          closeSheet();
+          redraw();
+        });
       };
-      sel0.value = draft.pokemon || "";
-      f0.appendChild(sel0);
+      f0.appendChild(pick);
       body.appendChild(f0);
       if (!draft.pokemon) return;
     }

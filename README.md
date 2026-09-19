@@ -84,6 +84,14 @@ stat` and `at 1/3 max HP` rather than `1.5x` and `1/3`. `effect_chips.py
 are counted rather than quietly wrong. The exact 4096ths stays in
 `data/db/effects.json` and in each chip's tooltip.
 
+**Choosing which Pokemon a build is for is a search, not a scroll.** It was a
+`<select>` of 264 forms in one alphabetical run with no way to look inside it.
+It is a field you tap now, opening the same kind of sheet the GTS and the
+calculator use: a search box that matches the **name, either type, or the dex
+number**, the app's usual sorts, and the same card as everywhere else. The
+whole dex stays on offer — a set for a Pokemon that has not arrived yet is an
+idea worth keeping — so "in your boxes" is a filter and never a limit.
+
 **A tag on a move row is not neutral.** Heat Rock on Sunny Day is a reason to
 run the move; **Aspear Berry on Ice Beam is the reason it will not work** — the
 target thaws and the freeze was the whole point. Both read as the same grey

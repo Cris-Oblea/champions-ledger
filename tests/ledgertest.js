@@ -185,6 +185,69 @@ const TABS = ["box", "home", "builds", "calc", "find", "gear", "trainer"];
   ok("y solo la caja guarda una nota",
      homeHeads.indexOf("Note") >= 0 && findHeads.indexOf("Note") < 0, true);
 
+
+  /* ----------------------------------------- el selector de especie -------- */
+  /* Era un <select> con las 264 formas en una sola tirada alfabetica y ninguna
+     forma de buscar dentro:
+
+       "necesito buscar rapidamente entre los pokemones disponibles del juego,
+        y no buscar manualmente en una lista" (2026-09-18)
+
+     Ahora es un campo que se toca, con la misma hoja de busqueda que usan el
+     GTS y la calculadora. */
+  console.log("\n  el selector de especie se busca, no se recorre");
+  w.buildSheet(null, {});
+  await tick(150);
+  const field = [...d.querySelectorAll("#v-buildedit .field")]
+    .find(f => /^Pokemon$/.test((f.querySelector("label") || {}).textContent || ""));
+  ok("ya no hay un desplegable de 264 opciones",
+     !!field && !field.querySelector("select"), true);
+  ok("sino una card que se toca", !!field.querySelector("button.row"), true);
+  field.querySelector("button.row")
+    .dispatchEvent(new w.MouseEvent("click", {bubbles:true}));
+  await tick(150);
+
+  const sheet = d.getElementById("sheetBody");
+  const inp = sheet.querySelector(".search input");
+  ok("la hoja trae un buscador", !!inp, true);
+  const names = () => [...sheet.querySelectorAll(".list .row")]
+    .map(b => b.querySelector(".rname").firstChild.textContent.trim());
+  /* Venusaur, no Bulbasaur: el dex de Champions empieza ahi - por eso
+     Bulbasaur sirve de fixture para "no esta en Champions" */
+  ok("y arranca en orden de dex", names()[0], "Venusaur");
+  ok("con la card completa, seis stats incluidas",
+     !!sheet.querySelector(".list .row .statline"), true);
+
+  const type = t => { inp.value = t; inp.dispatchEvent(new w.Event("input")); };
+  type("garchomp");
+  ok("busca por nombre", names().join(","), "Garchomp");
+  type("zzzz");
+  ok("lo que no existe no devuelve nada", names().length, 0);
+  type("445");
+  ok("busca por numero de dex", names().indexOf("Garchomp") >= 0, true);
+  type("dragon");
+  ok("y por tipo", names().length > 5 && names().indexOf("Garchomp") >= 0, true);
+  type("");
+  ok("al vaciarlo vuelven todas", names().length > 100, true);
+
+  /* la caja es un FILTRO, nunca un limite: una build para algo que todavia no
+     tiene es una idea que vale la pena guardar (2026-09-13) */
+  const mine = [...sheet.querySelectorAll(".tog")]
+    .find(b => /In your boxes/.test(b.textContent));
+  mine.dispatchEvent(new w.MouseEvent("click", {bubbles:true}));
+  ok("y el filtro de la caja deja solo lo que tiene",
+     names().sort().join(","), "Charizard,Farigiraf,Garchomp,Kingambit,Sneasler,Whimsicott");
+  mine.dispatchEvent(new w.MouseEvent("click", {bubbles:true}));
+
+  type("sneasler");
+  [...sheet.querySelectorAll(".list .row")][0]
+    .dispatchEvent(new w.MouseEvent("click", {bubbles:true}));
+  await tick(150);
+  ok("al elegir uno queda puesto en la build",
+     /Sneasler/.test(d.getElementById("v-buildedit").textContent), true);
+  w.leaveEditor();
+  await tick(100);
+
   before = errors.length;
   w.buildSheet("charizard");
   await tick(150);
