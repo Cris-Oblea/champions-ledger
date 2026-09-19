@@ -271,6 +271,15 @@ setTimeout(() => {
            asi que cada mitad son 169 y la casilla del SP salia de VEINTIDOS
            pixeles. Ningun ancho arregla eso; a 1920 serian 220. */
         ok("un lado no se parte en dos", !!col.querySelector(".calcsplit"), false);
+        /* y lleva su Pokemon encima, como TODAS las demas listas de la app -
+           era la ultima que dibujaba una fila pelada (2026-09-19: "a la
+           calculadora tambien le faltan los sprites") */
+        ok("el lado lleva la card con su tipo",
+           col.querySelector(".row").className.split(" ").indexOf("card") >= 0,
+           true);
+        ok("y su sprite", !!col.querySelector(".row img"), true);
+        ok("a tamano nativo, no reescalado",
+           col.querySelector(".row img").getAttribute("width"), "96");
         /* y la fila de stat conserva sus cuatro partes: etiqueta, casilla,
            stage y el valor calculado */
         /* [2], no [1]: la 0 es la cabecera y la 1 es HP, que no lleva stage */
