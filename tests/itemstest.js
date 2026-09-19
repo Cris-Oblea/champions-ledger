@@ -243,6 +243,34 @@ setTimeout(() => {
         ok("las seis stats siguen ahi, con su cabecera",
            col.querySelectorAll(".sp").length, 7);
 
+        /* LO QUE SE MIDIO EN EL NAVEGADOR, NO EN JSDOM. jsdom no maqueta, asi
+           que las alturas reales se tomaron con scripts/preview.py en iframes
+           de 400 / 820 / 1526px y estan en el PR. Lo que SI se puede asegurar
+           aqui es la estructura que las produjo, que es lo que se rompe sin
+           que nadie lo note:
+
+             - la etiqueta de cada grupo del campo va DENTRO de su fila, no en
+               una linea propia: eran ocho lineas de puro titulo y una columna
+               de 747px que estiraba al atacante y al defensor a su altura
+             - y los controles de las stats bajan del suelo global de 42px,
+               que es un objetivo tactil y sigue vigente en todo lo demas. */
+        console.log("\n  el campo, junto en lugar de en lineas sueltas");
+        const frows = [...d.querySelectorAll("#calcField .fieldrow")];
+        ok("cada grupo es una fila", frows.length, 8);
+        ok("con su etiqueta dentro, no encima",
+           frows.every(r => r.firstElementChild.className === "fieldgroup"), true);
+        ok("y sus botones en la misma fila",
+           frows.every(r => r.querySelectorAll(".tog").length > 0), true);
+        ok("ninguna etiqueta suelta fuera de una fila",
+           [...d.querySelectorAll("#calcField > .fieldgroup")].length, 0);
+        ok("los 32 botones del campo siguen ahi",
+           d.querySelectorAll("#calcField .tog").length, 32);
+        /* las dos mitades de un lado, una al lado de la otra */
+        ok("un lado se parte en dos", !!col.querySelector(".calcsplit"), true);
+        ok("los ajustes en una mitad y las stats en la otra",
+           !!col.querySelector(".calcsplit > .setblock") &&
+           !!col.querySelector(".calcsplit > .spblock"), true);
+
 
         console.log("\n  las piedras siguen en su panel");
         click(d.getElementById("gearStones"));

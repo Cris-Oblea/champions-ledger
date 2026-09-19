@@ -112,13 +112,19 @@ Exchange and Fire Lash is not, because Big Pecks only eats its Defence drop and
 that is not the move being stopped.
 
 **The calculator carries two of everything, so every millimetre it spends is
-spent twice.** Ability, Item, Nature and Status each had a full-width field of
-its own, stacked, on both sides — about 200px per side before the stats began.
-They sit together now in one tighter block, the six SP rows lost 10px each, and
-the sections lost their padding: the same controls, closer, the way pokebase's
-and Smogon's are. Nothing was removed, and `itemstest` asserts that — four
-fields in one grid, no loose full-width dropdown, and the six stat rows still
-there. The **status dictionary is folded**: seven entries you read once, which
+spent twice** — and it was measured against pokebase's, in a real browser at
+three widths, rather than guessed at. Its stat rows run at a 43px pitch and
+ours at 44, so the rows were never the difference. Three things were: a global
+`min-height:42px` held every control 10px taller than it needed to be (it is a
+touch target, and stays everywhere else); each of the field's eight groups put
+its **label on a line of its own**, so eight lines were pure heading and the
+column reached 747px — which, since the grid stretches all three columns to the
+tallest, was holding the attacker and the defender open at 370; and Ability,
+Item, Nature and Status stacked full-width instead of sitting beside the stats.
+Fixed, the calculator is **843px instead of 1100** at 1526, **1385 instead of
+1704** at 820 and **2472 instead of 2864** on a phone. Nothing was removed, and
+`itemstest` asserts the structure that produced it — all 32 field buttons still
+there, every group label inside its row, and the six stat rows intact. The **status dictionary is folded**: seven entries you read once, which
 were sitting open under the controls and pushing the number the screen exists
 for further up the scroll. It stays on this screen, because that is where a
 status gets applied and where its multiplier is read, and it is drawn the first

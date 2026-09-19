@@ -657,11 +657,27 @@ function calcSideCtl(which){
   ss0.onchange = function(){ side.status = ss0.value || null; calcDraw(); };
   fs0.appendChild(ss0);
   g2.appendChild(fs0);
-  host.appendChild(g2);
+  /* The two halves of a side, so it costs the height of the TALLER one
+     rather than the sum of both. Falls back to one column under 980px,
+     where there is no room for two and stacking is the right answer. */
+  var split = el("div", "calcsplit");
+  var setBox = el("div", "setblock");
+  setBox.appendChild(g2);
+  split.appendChild(setBox);
+  host.appendChild(split);
 
   /* which stat does the chosen move actually read on this side? Body Press
      attacks off Defense and Psyshock hits it, so this is not the category. */
   var live = calcLiveStats();
+
+  /* THE STATS AND THE DROPDOWNS, SIDE BY SIDE WHERE THERE IS ROOM. Measured
+     against pokebase's calculator, which is what the player pointed at: its
+     six stat rows are a 43px pitch and ours are 44, so the rows were never the
+     difference. What it does that we did not is run the item, the ability and
+     the moves in a SECOND COLUMN beside the stats instead of stacking them, so
+     a side costs the height of the taller half rather than the sum of both.
+     127px per side, 254px for the pair. */
+  var statBox = el("div", "spblock");
 
   var head = el("div", "sp");
   head.style.color = "var(--faint)";
@@ -669,7 +685,7 @@ function calcSideCtl(which){
     var s = el("span", i === 0 ? "k" : i === 3 ? "calc" : "v", t);
     head.appendChild(s);
   });
-  host.appendChild(head);
+  statBox.appendChild(head);
 
   STAT_KEYS.forEach(function(k, i){
     var used = (which === "atk" && k === live.aKey) ||
@@ -706,7 +722,7 @@ function calcSideCtl(which){
     var vs = el("span", "calc", String(val));
     if (used) { vs.style.color = "var(--accent)"; vs.style.fontWeight = "600"; }
     row.appendChild(vs);
-    host.appendChild(row);
+    statBox.appendChild(row);
   });
 
   var g3 = el("div", "grid2 tight");
@@ -725,12 +741,13 @@ function calcSideCtl(which){
     };
     fh.appendChild(ih);
     g3.appendChild(fh);
-    host.appendChild(g3);
+    setBox.appendChild(g3);
   }
 
   var b = el("div", "budget");
   b.id = which + "Budget";
-  host.appendChild(b);
+  statBox.appendChild(b);
+  split.appendChild(statBox);
   calcBudget(which);
 }
 
@@ -925,20 +942,34 @@ function calcMoveRow(m, fromBuild){
 function calcFieldCtl(){
   var host = $("calcField");
   host.innerHTML = "";
+  /* A GROUP'S LABEL SITS ON THE SAME LINE AS ITS BUTTONS. Every `group()` used
+     to emit a full-width heading which forced a line break, so eight groups
+     cost eight lines of nothing but their own titles before a single toggle -
+     747px of a column that then set the height of the attacker and the
+     defender beside it, both of which are 368 (player, 2026-09-19: "sigo
+     pensando que ocupan espacio innecesario", pointing at how close together
+     pokebase and Smogon put theirs).
+
+     Same labels, same toggles, same order. The label is a cell in the row now
+     instead of a line above it. */
+  var cur = null;
   function tog(label, on, fn, cls){
     var t = el("button", "tog " + (cls || ""), label);
     t.setAttribute("aria-pressed", on ? "true" : "false");
     t.onclick = fn;
-    host.appendChild(t);
+    (cur || host).appendChild(t);
     return t;
   }
   var m = CALC.move;
-  group("The hit itself");
+  group("The hit", "What happens on this particular hit");
   tog("Critical hit", CALC.crit, function(){ CALC.crit = !CALC.crit; calcDraw(); });
-  function group(label){
-    var h = el("div", "fieldgroup");
+  function group(label, why){
+    cur = el("div", "fieldrow");
+    var h = el("span", "fieldgroup");
     h.textContent = label;
-    host.appendChild(h);
+    if (why) h.title = why;
+    cur.appendChild(h);
+    host.appendChild(cur);
   }
   group("Weather");
   ["Sun", "Rain", "Sand", "Snow"].forEach(function(w){
@@ -952,7 +983,7 @@ function calcFieldCtl(){
       CALC.terrain = CALC.terrain === t ? null : t; calcDraw();
     });
   });
-  group("The attacker's side");
+  group("Attacker", "On the attacking Pokemon's side of the field");
   tog("Helping Hand", CALC.helpingHand, function(){
     CALC.helpingHand = !CALC.helpingHand; calcDraw(); });
   tog("Charge", CALC.charge, function(){
@@ -963,7 +994,7 @@ function calcFieldCtl(){
     CALC.powerTrickAtk = !CALC.powerTrickAtk; calcDraw(); });
   tog("+1 All Stats", CALC.plusOneAtk, function(){
     CALC.plusOneAtk = !CALC.plusOneAtk; calcDraw(); });
-  group("The target's side");
+  group("Target", "On the target's side of the field");
   tog("Friend Guard", CALC.friendGuard, function(){
     CALC.friendGuard = !CALC.friendGuard; calcDraw(); });
   tog("Protecting", CALC.protected, function(){
@@ -977,7 +1008,10 @@ function calcFieldCtl(){
   /* These do not change one hit - they change the HP the target is ON, which
      is what decides whether the NEXT hit KOes. The player's point: you
      calculate after a switch, after chip, after an attack. */
-  group("Already on the target (changes the KO count)");
+  /* the parenthesis used to be part of the label, and in a row that is now
+     label-plus-buttons it pushed seven toggles onto a third line all by
+     itself. It is a tooltip: the same sentence, none of the height. */
+  group("On the target", "These change the KO count rather than the roll");
   tog("Stealth Rock", CALC.stealthRock, function(){
     CALC.stealthRock = !CALC.stealthRock; calcDraw(); });
   [1, 2, 3].forEach(function(n){
@@ -990,7 +1024,7 @@ function calcFieldCtl(){
     CALC.saltCure = !CALC.saltCure; calcDraw(); });
   tog("Nightmare", CALC.nightmare, function(){
     CALC.nightmare = !CALC.nightmare; calcDraw(); });
-  group("Screens on the target's side");
+  group("Screens", "Reflect, Light Screen and Aurora Veil on the target's side");
   [["Reflect", "physical", "P"], ["Light Screen", "special", "S"],
    ["Aurora Veil", "both", null]].forEach(function(r){
     var sc = r[0], relevant = !m || !r[2] || m.cat === r[2];
@@ -1001,7 +1035,7 @@ function calcFieldCtl(){
     if (!relevant) { t.style.opacity = ".45";
       t.title = sc + " only stops " + r[1] + " moves"; }
   });
-  group("The whole field");
+  group("Field", "Conditions that apply to both sides at once");
   tog("Gravity", CALC.gravity, function(){
     CALC.gravity = !CALC.gravity; calcDraw(); });
   tog("Wonder Room", CALC.wonderRoom, function(){
