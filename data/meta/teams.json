@@ -1,28 +1,68 @@
 {
  "source": "pokebase.app/pokemon-champions",
  "game": "Pokemon Champions",
- "fetched": "2026-09-18",
+ "fetched": "2026-09-19",
  "count": 33,
  "rows": [
   {
-   "name": "Justin's Metagross Blaziken Team",
-   "creator": "Justin Cerioni",
+   "name": "spy_anya11's Recreation of y0ssh1_pkmn's Tera Square Offline Meetup #2 Champion Team",
+   "creator": "spy_anya11",
    "regulation": "M-C",
-   "rental_code": "MN1BMUTKR9",
-   "source_url": "https://x.com/Byte_v24/status/2099862916472189233",
-   "date_shared": "2026-09-15T00:00:00.000Z",
+   "rental_code": "085MDPDKDD",
+   "source_url": "https://x.com/spy_anya11/status/2100040233874345995",
+   "date_shared": "2026-09-16T00:00:00.000Z",
    "members": [
     {
-     "pokemon": "Metagross",
-     "slug": "metagross",
-     "ability": "Clear Body",
-     "item": "Metagrossite",
-     "nature": "jolly",
+     "pokemon": "Rillaboom",
+     "slug": "rillaboom",
+     "ability": "Grassy Surge",
+     "item": "Miracle Seed",
+     "nature": "adamant",
      "moves": [
-      "Steel Roller",
-      "Psychic Fangs",
-      "Ice Punch",
+      "Wood Hammer",
+      "Grassy Glide",
+      "U-turn",
+      "Fake Out"
+     ],
+     "stat_points": {
+      "hp": 32,
+      "attack": 32,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 2
+     }
+    },
+    {
+     "pokemon": "Excadrill",
+     "slug": "excadrill",
+     "ability": "Sand Rush",
+     "item": "Focus Sash",
+     "nature": "adamant",
+     "moves": [
+      "High Horsepower",
+      "Iron Head",
+      "Rock Slide",
       "Protect"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 32,
+      "defense": 2,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 32
+     }
+    },
+    {
+     "pokemon": "Sneasler",
+     "slug": "sneasler",
+     "ability": "Unburden",
+     "item": "Grassy Seed",
+     "nature": "adamant",
+     "moves": [
+      "Dire Claw",
+      "Close Combat"
      ],
      "stat_points": {
       "hp": 2,
@@ -34,16 +74,34 @@
      }
     },
     {
-     "pokemon": "Blaziken",
-     "slug": "blaziken",
-     "ability": "Speed Boost",
-     "item": "Focus Sash",
-     "nature": "modest",
+     "pokemon": "Tyranitar",
+     "slug": "tyranitar",
+     "ability": "Sand Stream",
+     "item": "Tyranitarite",
+     "nature": "jolly",
      "moves": [
-      "Heat Wave",
-      "Aura Sphere",
-      "Coaching",
-      "Detect"
+      "Knock Off",
+      "Low Kick"
+     ],
+     "stat_points": {
+      "hp": 2,
+      "attack": 32,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 32
+     }
+    },
+    {
+     "pokemon": "Salamence",
+     "slug": "salamence",
+     "ability": "Intimidate",
+     "item": "Salamencite",
+     "nature": "timid",
+     "moves": [
+      "Hyper Voice",
+      "Draco Meteor",
+      "Tailwind"
      ],
      "stat_points": {
       "hp": 2,
@@ -55,14 +113,44 @@
      }
     },
     {
+     "pokemon": "Milotic",
+     "slug": "milotic",
+     "ability": "Competitive",
+     "item": "Sitrus Berry",
+     "nature": "modest",
+     "moves": [
+      "Scald",
+      "Icy Wind",
+      "Ice Beam"
+     ],
+     "stat_points": {
+      "hp": 32,
+      "attack": 0,
+      "defense": 1,
+      "specialAttack": 31,
+      "specialDefense": 0,
+      "speed": 2
+     }
+    }
+   ]
+  },
+  {
+   "name": "JustLatroy's Golisopod Grapploct Team",
+   "creator": "JustLatroy",
+   "regulation": null,
+   "rental_code": "2LCHE26J77",
+   "source_url": "https://x.com/JustLatroy/status/2100029073640559019",
+   "date_shared": "2026-09-16T00:00:00.000Z",
+   "members": [
+    {
      "pokemon": "Indeedee",
      "slug": "indeedee",
      "ability": "Psychic Surge",
      "item": "Psychic Seed",
      "nature": "bold",
      "moves": [
-      "Psychic",
       "Helping Hand",
+      "Psychic",
       "Trick Room"
      ],
      "stat_points": {
@@ -75,26 +163,109 @@
      }
     },
     {
-     "pokemon": "Rillaboom",
-     "slug": "rillaboom",
-     "ability": "Grassy Surge",
-     "item": "Miracle Seed",
-     "nature": "adamant",
+     "pokemon": "Grapploct",
+     "slug": "grapploct",
+     "ability": "Technician",
+     "item": "Expert Belt",
+     "nature": "brave",
      "moves": [
-      "Fake Out",
-      "Wood Hammer",
-      "Grassy Glide",
-      "U-turn"
+      "Storm Throw",
+      "Sucker Punch",
+      "Bulk Up"
      ],
      "stat_points": {
-      "hp": 31,
+      "hp": 32,
       "attack": 32,
-      "defense": 2,
+      "defense": 0,
       "specialAttack": 0,
-      "specialDefense": 1,
+      "specialDefense": 2,
       "speed": 0
      }
     },
+    {
+     "pokemon": "Golisopod",
+     "slug": "golisopod",
+     "ability": "Emergency Exit",
+     "item": "Golisopite",
+     "nature": "brave",
+     "moves": [
+      "Leech Life"
+     ],
+     "stat_points": {
+      "hp": 32,
+      "attack": 32,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 2,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": "Armarouge",
+     "slug": "armarouge",
+     "ability": "Flash Fire",
+     "item": "Twisted Spoon",
+     "nature": "sassy",
+     "moves": [
+      "Wide Guard",
+      "Expanding Force",
+      "Armor Cannon",
+      "Ally Switch"
+     ],
+     "stat_points": {
+      "hp": 32,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 32,
+      "specialDefense": 2,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": "Hatterene",
+     "slug": "hatterene",
+     "ability": "Magic Bounce",
+     "item": "Life Orb",
+     "nature": "quiet",
+     "moves": [
+      "Dazzling Gleam",
+      "Magic Powder"
+     ],
+     "stat_points": {
+      "hp": 32,
+      "attack": 0,
+      "defense": 2,
+      "specialAttack": 32,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": "Perrserker",
+     "slug": "perrserker",
+     "ability": "Steely Spirit",
+     "item": "Chople Berry",
+     "nature": "brave",
+     "moves": [],
+     "stat_points": {
+      "hp": 32,
+      "attack": 32,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 2,
+      "speed": 0
+     }
+    }
+   ]
+  },
+  {
+   "name": "Peter's Salamence Dragapult Team",
+   "creator": "Peter Chen",
+   "regulation": null,
+   "rental_code": "86F1HSTUG4",
+   "source_url": "https://x.com/MrPTPablo/status/2099628578841481256",
+   "date_shared": "2026-09-16T00:00:00.000Z",
+   "members": [
     {
      "pokemon": "Raichu",
      "slug": "raichu",
@@ -103,8 +274,7 @@
      "nature": "timid",
      "moves": [
       "Zap Cannon",
-      "Focus Blast",
-      "Encore"
+      "Focus Blast"
      ],
      "stat_points": {
       "hp": 32,
@@ -116,70 +286,20 @@
      }
     },
     {
-     "pokemon": "Dragonite",
-     "slug": "dragonite",
-     "ability": "Inner Focus",
-     "item": "Life Orb",
-     "nature": "adamant",
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:community:0:team:4:ability",
+     "item": "$4b:props:showcase:community:0:team:4:item",
+     "nature": "jolly",
      "moves": [
-      "Dragon Claw",
-      "Low Kick",
-      "Extreme Speed"
+      "Slash",
+      "Dragon Claw"
      ],
      "stat_points": {
-      "hp": 32,
+      "hp": 2,
       "attack": 32,
       "defense": 0,
       "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 2
-     }
-    }
-   ]
-  },
-  {
-   "name": "Rod's Lucario-Z Overqwil Team",
-   "creator": "Rod",
-   "regulation": null,
-   "rental_code": "WV1V1B62FY",
-   "source_url": "https://x.com/trnrrodvgc/status/2099861565696794641",
-   "date_shared": "2026-09-15T00:00:00.000Z",
-   "members": [
-    {
-     "pokemon": "Overqwil",
-     "slug": "overqwil",
-     "ability": "Poison Point",
-     "item": "Leftovers",
-     "nature": "careful",
-     "moves": [
-      "Barb Barrage",
-      "Stockpile",
-      "Minimize"
-     ],
-     "stat_points": {
-      "hp": 32,
-      "attack": 0,
-      "defense": 2,
-      "specialAttack": 0,
-      "specialDefense": 32,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": "Lucario",
-     "slug": "lucario",
-     "ability": "$4b:props:showcase:community:0:team:5:ability",
-     "item": "Lucarionite Z",
-     "nature": "timid",
-     "moves": [
-      "Flash Cannon",
-      "Psych Up"
-     ],
-     "stat_points": {
-      "hp": 32,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 2,
       "specialDefense": 0,
       "speed": 32
      }
@@ -187,148 +307,33 @@
     {
      "pokemon": "Incineroar",
      "slug": "incineroar",
-     "ability": "Intimidate",
-     "item": "Chople Berry",
+     "ability": "$4b:props:showcase:community:0:team:4:ability",
+     "item": "$4b:props:showcase:community:0:team:5:item",
      "nature": "careful",
      "moves": [
-      "Snarl",
       "Flare Blitz",
+      "Throat Chop",
       "Parting Shot"
      ],
      "stat_points": {
       "hp": 32,
       "attack": 0,
-      "defense": 2,
-      "specialAttack": 0,
-      "specialDefense": 32,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:community:0:team:3:ability",
-     "item": "Occa Berry",
-     "nature": "adamant",
-     "moves": [],
-     "stat_points": {
-      "hp": 32,
-      "attack": 1,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 32,
-      "speed": 1
-     }
-    },
-    {
-     "pokemon": "Sneasler",
-     "slug": "sneasler",
-     "ability": "Unburden",
-     "item": "Grassy Seed",
-     "nature": "adamant",
-     "moves": [
-      "Close Combat",
-      "Dire Claw",
-      "Rock Slide"
-     ],
-     "stat_points": {
-      "hp": 32,
-      "attack": 2,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 32
-     }
-    },
-    {
-     "pokemon": "Klefki",
-     "slug": "klefki",
-     "ability": "Prankster",
-     "item": "Sitrus Berry",
-     "nature": "calm",
-     "moves": [
-      "Draining Kiss",
-      "Substitute",
-      "Calm Mind"
-     ],
-     "stat_points": {
-      "hp": 32,
-      "attack": 0,
-      "defense": 32,
-      "specialAttack": 0,
-      "specialDefense": 2,
-      "speed": 0
-     }
-    }
-   ]
-  },
-  {
-   "name": "ayoitsbenji's WCG VGC Challenge Champion Team (Recreation of MichaelderBeste's VR September Challenge Champion Team)",
-   "creator": "ayoitsbenji",
-   "regulation": null,
-   "rental_code": "FY0K55GDWA",
-   "source_url": "https://x.com/ayoitsbenji/status/2099873194882802078",
-   "date_shared": "2026-09-15T00:00:00.000Z",
-   "members": [
-    {
-     "pokemon": "Staraptor",
-     "slug": "staraptor",
-     "ability": "$4b:props:showcase:community:1:team:2:ability",
-     "item": "Staraptite",
-     "nature": "jolly",
-     "moves": [
-      "Brave Bird",
-      "Tailwind"
-     ],
-     "stat_points": {
-      "hp": 32,
-      "attack": 2,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 32
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:community:0:team:4:ability",
-     "item": "$4b:props:showcase:community:0:team:4:item",
-     "nature": "timid",
-     "moves": [],
-     "stat_points": {
-      "hp": 32,
-      "attack": 0,
-      "defense": 2,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 32
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:community:0:team:3:ability",
-     "item": "$4b:props:showcase:community:0:team:3:item",
-     "nature": "adamant",
-     "moves": [],
-     "stat_points": {
-      "hp": 31,
-      "attack": 32,
       "defense": 1,
       "specialAttack": 0,
-      "specialDefense": 1,
+      "specialDefense": 32,
       "speed": 1
      }
     },
     {
-     "pokemon": "Hisuian Arcanine",
-     "slug": "arcanine-hisui",
-     "ability": "Rock Head",
-     "item": "$4b:props:showcase:community:0:team:1:item",
-     "nature": "jolly",
+     "pokemon": "Sirfetch’d",
+     "slug": "sirfetchd",
+     "ability": "Scrappy",
+     "item": "Leek",
+     "nature": "adamant",
      "moves": [
-      "Head Smash"
+      "Meteor Assault",
+      "Quick Guard",
+      "Detect"
      ],
      "stat_points": {
       "hp": 2,
@@ -340,178 +345,86 @@
      }
     },
     {
-     "pokemon": "Sylveon",
-     "slug": "sylveon",
-     "ability": "Pixilate",
-     "item": "Fairy Feather",
-     "nature": "modest",
+     "pokemon": "Dragapult",
+     "slug": "dragapult",
+     "ability": "Cursed Body",
+     "item": "$4b:props:showcase:community:0:team:1:item",
+     "nature": "timid",
      "moves": [
-      "Hyper Voice",
-      "Hyper Beam",
-      "Quick Attack"
+      "Dragon Cheer",
+      "Will-O-Wisp",
+      "Shadow Ball"
      ],
      "stat_points": {
-      "hp": 31,
+      "hp": 2,
       "attack": 0,
-      "defense": 1,
+      "defense": 0,
       "specialAttack": 32,
       "specialDefense": 0,
-      "speed": 2
+      "speed": 32
      }
     },
     {
      "pokemon": "Gholdengo",
      "slug": "gholdengo",
      "ability": "Good as Gold",
-     "item": "$4b:props:showcase:community:0:team:5:item",
-     "nature": "timid",
+     "item": "$4b:props:showcase:community:1:team:4:item",
+     "nature": "modest",
      "moves": [
       "Make It Rain",
-      "Shadow Ball",
       "Nasty Plot"
-     ],
-     "stat_points": {
-      "hp": 2,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 32,
-      "specialDefense": 0,
-      "speed": 32
-     }
-    }
-   ]
-  },
-  {
-   "name": "Justin's Recreation of MichaelderBeste's VR September Challenge Champion Team",
-   "creator": null,
-   "regulation": null,
-   "rental_code": "HQ9LV16V9V",
-   "source_url": "https://x.com/byte_v24/status/2099977934060626159",
-   "date_shared": "2026-09-15T00:00:00.000Z",
-   "members": [
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:community:0:team:4:ability",
-     "item": "$4b:props:showcase:community:0:team:4:item",
-     "nature": "timid",
-     "moves": [],
-     "stat_points": {
-      "hp": 3,
-      "attack": 0,
-      "defense": 31,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 32
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:community:0:team:3:ability",
-     "item": "$4b:props:showcase:community:0:team:3:item",
-     "nature": "adamant",
-     "moves": [
-      "High Horsepower"
-     ],
-     "stat_points": {
-      "hp": 32,
-      "attack": 32,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 2
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:community:2:team:3:ability",
-     "item": "$4b:props:showcase:community:0:team:1:item",
-     "nature": "jolly",
-     "moves": [],
-     "stat_points": {
-      "hp": 2,
-      "attack": 32,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 32
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:community:2:team:4:ability",
-     "item": "$4b:props:showcase:community:2:team:4:item",
-     "nature": "modest",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 32,
-      "specialAttack": 32,
-      "specialDefense": 0,
-      "speed": 2
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:community:2:team:5:ability",
-     "item": "$4b:props:showcase:community:0:team:5:item",
-     "nature": "timid",
-     "moves": [],
-     "stat_points": {
-      "hp": 32,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 2,
-      "specialDefense": 0,
-      "speed": 32
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:community:1:team:2:ability",
-     "item": "$4b:props:showcase:community:2:team:0:item",
-     "nature": "jolly",
-     "moves": [],
-     "stat_points": {
-      "hp": 32,
-      "attack": 2,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 32
-     }
-    }
-   ]
-  },
-  {
-   "name": "Ste's Garchomp-Z Floette Team",
-   "creator": "Stefano Greppi",
-   "regulation": null,
-   "rental_code": "U7143RBX15",
-   "source_url": "https://x.com/ssteccaa/status/2099951804247077280",
-   "date_shared": "2026-09-15T00:00:00.000Z",
-   "members": [
-    {
-     "pokemon": "Floette (Eternal)",
-     "slug": "floette-eternal",
-     "ability": "Flower Veil",
-     "item": "Floettite",
-     "nature": "modest",
-     "moves": [
-      "Moonblast",
-      "Dazzling Gleam"
      ],
      "stat_points": {
       "hp": 32,
       "attack": 0,
       "defense": 31,
       "specialAttack": 1,
+      "specialDefense": 1,
+      "speed": 1
+     }
+    }
+   ]
+  },
+  {
+   "name": "Danyul_YT's Raichu-Y Floette Team",
+   "creator": "danyul_yt",
+   "regulation": null,
+   "rental_code": "F8Q1B39XCP",
+   "source_url": "https://x.com/Danyul_YT/status/2100062256562155774",
+   "date_shared": "2026-09-16T00:00:00.000Z",
+   "members": [
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:community:2:team:0:ability",
+     "item": "$4b:props:showcase:community:2:team:0:item",
+     "nature": "timid",
+     "moves": [],
+     "stat_points": {
+      "hp": 2,
+      "attack": 0,
+      "defense": 32,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 32
+     }
+    },
+    {
+     "pokemon": "Baxcalibur",
+     "slug": "baxcalibur",
+     "ability": "Thermal Exchange",
+     "item": "$4b:props:showcase:community:1:team:4:item",
+     "nature": "adamant",
+     "moves": [
+      "Icicle Crash",
+      "Ice Shard",
+      "Glaive Rush"
+     ],
+     "stat_points": {
+      "hp": 32,
+      "attack": 32,
+      "defense": 0,
+      "specialAttack": 0,
       "specialDefense": 0,
       "speed": 2
      }
@@ -519,26 +432,12 @@
     {
      "pokemon": null,
      "slug": null,
-     "ability": "$4b:props:showcase:community:0:team:3:ability",
-     "item": "$4b:props:showcase:community:0:team:3:item",
-     "nature": "adamant",
-     "moves": [],
-     "stat_points": {
-      "hp": 32,
-      "attack": 1,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 32,
-      "speed": 1
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:community:1:team:2:ability",
+     "ability": "$4b:props:showcase:community:0:team:4:ability",
      "item": "$4b:props:showcase:community:1:team:5:item",
-     "nature": "impish",
-     "moves": [],
+     "nature": "careful",
+     "moves": [
+      "Darkest Lariat"
+     ],
      "stat_points": {
       "hp": 32,
       "attack": 0,
@@ -549,261 +448,13 @@
      }
     },
     {
-     "pokemon": "Garchomp",
-     "slug": "garchomp",
-     "ability": "Rough Skin",
-     "item": "Garchompite Z",
-     "nature": "modest",
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:community:2:team:5:ability",
+     "item": "Choice Scarf",
+     "nature": "timid",
      "moves": [
       "Power Gem",
-      "Draco Meteor",
-      "Flamethrower"
-     ],
-     "stat_points": {
-      "hp": 2,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 32,
-      "specialDefense": 0,
-      "speed": 32
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:community:2:team:5:ability",
-     "item": "$4b:props:showcase:community:0:team:5:item",
-     "nature": "timid",
-     "moves": [],
-     "stat_points": {
-      "hp": 2,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 32,
-      "specialDefense": 0,
-      "speed": 32
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:community:1:team:4:ability",
-     "item": "$4b:props:showcase:community:1:team:4:item",
-     "nature": "adamant",
-     "moves": [
-      "Rock Tomb"
-     ],
-     "stat_points": {
-      "hp": 32,
-      "attack": 1,
-      "defense": 1,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 32
-     }
-    }
-   ]
-  },
-  {
-   "name": "lovejapanfrombr's Salamence Sand Team",
-   "creator": "lovejapanfrombr",
-   "regulation": null,
-   "rental_code": "VETY6ESEJH",
-   "source_url": "https://x.com/lovejapanfrombr/status/2099973149148553471",
-   "date_shared": "2026-09-15T00:00:00.000Z",
-   "members": [
-    {
-     "pokemon": "Tyranitar",
-     "slug": "tyranitar",
-     "ability": "Sand Stream",
-     "item": "Tyranitarite",
-     "nature": "jolly",
-     "moves": [
-      "Knock Off"
-     ],
-     "stat_points": {
-      "hp": 32,
-      "attack": 2,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 32
-     }
-    },
-    {
-     "pokemon": "Excadrill",
-     "slug": "excadrill",
-     "ability": "Sand Rush",
-     "item": "$4b:props:showcase:community:0:team:1:item",
-     "nature": "jolly",
-     "moves": [
-      "Iron Head"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 32,
-      "defense": 2,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 32
-     }
-    },
-    {
-     "pokemon": "Milotic",
-     "slug": "milotic",
-     "ability": "Competitive",
-     "item": "$4b:props:showcase:community:1:team:5:item",
-     "nature": "calm",
-     "moves": [
-      "Scald",
-      "Icy Wind",
-      "Ice Beam"
-     ],
-     "stat_points": {
-      "hp": 32,
-      "attack": 0,
-      "defense": 2,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 32
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:community:2:team:5:ability",
-     "item": "$4b:props:showcase:community:0:team:5:item",
-     "nature": "modest",
-     "moves": [],
-     "stat_points": {
-      "hp": 32,
-      "attack": 0,
-      "defense": 1,
-      "specialAttack": 0,
-      "specialDefense": 2,
-      "speed": 31
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:community:0:team:3:ability",
-     "item": "Expert Belt",
-     "nature": "adamant",
-     "moves": [
-      "Superpower"
-     ],
-     "stat_points": {
-      "hp": 32,
-      "attack": 2,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 30,
-      "speed": 2
-     }
-    },
-    {
-     "pokemon": "Salamence",
-     "slug": "salamence",
-     "ability": "$4b:props:showcase:community:1:team:2:ability",
-     "item": "Salamencite",
-     "nature": "timid",
-     "moves": [],
-     "stat_points": {
-      "hp": 2,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 32,
-      "specialDefense": 0,
-      "speed": 32
-     }
-    }
-   ]
-  },
-  {
-   "name": "WyatVGC's Garchomp-Z Metagross Team",
-   "creator": "Wyatt McDonald",
-   "regulation": null,
-   "rental_code": "17SXQN4G6B",
-   "source_url": "https://x.com/wyatvgc/status/2099971048573981078",
-   "date_shared": "2026-09-15T00:00:00.000Z",
-   "members": [
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:community:0:team:0:ability",
-     "item": "$4b:props:showcase:community:0:team:0:item",
-     "nature": "adamant",
-     "moves": [
-      "Body Press"
-     ],
-     "stat_points": {
-      "hp": 32,
-      "attack": 1,
-      "defense": 1,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 32
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:community:4:team:3:ability",
-     "item": "$4b:props:showcase:community:4:team:3:item",
-     "nature": "modest",
-     "moves": [],
-     "stat_points": {
-      "hp": 1,
-      "attack": 0,
-      "defense": 1,
-      "specialAttack": 32,
-      "specialDefense": 0,
-      "speed": 32
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:community:2:team:3:ability",
-     "item": "$4b:props:showcase:community:0:team:1:item",
-     "nature": "jolly",
-     "moves": [],
-     "stat_points": {
-      "hp": 2,
-      "attack": 32,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 32
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:community:5:team:2:ability",
-     "item": "$4b:props:showcase:community:1:team:5:item",
-     "nature": "modest",
-     "moves": [],
-     "stat_points": {
-      "hp": 32,
-      "attack": 0,
-      "defense": 31,
-      "specialAttack": 1,
-      "specialDefense": 0,
-      "speed": 2
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:community:0:team:2:ability",
-     "item": "Choice Scarf",
-     "nature": "modest",
-     "moves": [
-      "Expanding Force",
-      "Tri Attack",
-      "Mystical Fire",
       "Trick"
      ],
      "stat_points": {
@@ -818,10 +469,57 @@
     {
      "pokemon": null,
      "slug": null,
-     "ability": "$4b:props:showcase:community:1:team:4:ability",
-     "item": "$4b:props:showcase:community:0:team:2:item",
+     "ability": "$4b:props:showcase:community:0:team:0:ability",
+     "item": "$4b:props:showcase:community:0:team:0:item",
      "nature": "adamant",
      "moves": [],
+     "stat_points": {
+      "hp": 32,
+      "attack": 2,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 32
+     }
+    },
+    {
+     "pokemon": "Floette (Eternal)",
+     "slug": "floette-eternal",
+     "ability": "Flower Veil",
+     "item": "Floettite",
+     "nature": "timid",
+     "moves": [
+      "Moonblast",
+      "Light of Ruin"
+     ],
+     "stat_points": {
+      "hp": 1,
+      "attack": 0,
+      "defense": 1,
+      "specialAttack": 32,
+      "specialDefense": 0,
+      "speed": 32
+     }
+    }
+   ]
+  },
+  {
+   "name": "humidori's Salamence Absol-Z Team",
+   "creator": "humidori",
+   "regulation": null,
+   "rental_code": "SYNQAHRAS2",
+   "source_url": "https://x.com/humidori/status/2100077496876310621",
+   "date_shared": "2026-09-16T00:00:00.000Z",
+   "members": [
+    {
+     "pokemon": "Mega Absol Z",
+     "slug": "absol-mega-z",
+     "ability": "Sharpness",
+     "item": "Absolite Z",
+     "nature": "adamant",
+     "moves": [
+      "Night Slash"
+     ],
      "stat_points": {
       "hp": 2,
       "attack": 32,
@@ -830,22 +528,12 @@
       "specialDefense": 0,
       "speed": 32
      }
-    }
-   ]
-  },
-  {
-   "name": "yozora_952's Salamence Gholdengo Team",
-   "creator": "yozora_952",
-   "regulation": null,
-   "rental_code": "8T0AMYQ2C5",
-   "source_url": "https://x.com/yozora_952/status/2099878042591965302",
-   "date_shared": "2026-09-15T00:00:00.000Z",
-   "members": [
+    },
     {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:community:1:team:2:ability",
-     "item": "$4b:props:showcase:community:5:team:5:item",
+     "pokemon": "Mega Salamence",
+     "slug": "salamence-mega",
+     "ability": "Aerilate",
+     "item": "$4b:props:showcase:community:0:team:4:item",
      "nature": "timid",
      "moves": [],
      "stat_points": {
@@ -860,65 +548,15 @@
     {
      "pokemon": null,
      "slug": null,
-     "ability": "$4b:props:showcase:community:2:team:5:ability",
-     "item": "$4b:props:showcase:community:0:team:5:item",
-     "nature": "modest",
-     "moves": [],
-     "stat_points": {
-      "hp": 32,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 2,
-      "specialDefense": 0,
-      "speed": 32
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:community:5:team:2:ability",
-     "item": "$4b:props:showcase:community:1:team:5:item",
-     "nature": "modest",
-     "moves": [
-      "Recover"
-     ],
-     "stat_points": {
-      "hp": 32,
-      "attack": 0,
-      "defense": 32,
-      "specialAttack": 1,
-      "specialDefense": 0,
-      "speed": 1
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:community:1:team:4:ability",
-     "item": "$4b:props:showcase:community:0:team:2:item",
-     "nature": "adamant",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 32,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 2,
-      "speed": 32
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
      "ability": "$4b:props:showcase:community:0:team:2:ability",
-     "item": "Twisted Spoon",
-     "nature": "timid",
+     "item": "White Herb",
+     "nature": "jolly",
      "moves": [],
      "stat_points": {
       "hp": 2,
-      "attack": 0,
+      "attack": 32,
       "defense": 0,
-      "specialAttack": 32,
+      "specialAttack": 0,
       "specialDefense": 0,
       "speed": 32
      }
@@ -926,52 +564,8 @@
     {
      "pokemon": null,
      "slug": null,
-     "ability": "$4b:props:showcase:community:2:team:3:ability",
-     "item": "$4b:props:showcase:community:0:team:1:item",
-     "nature": "adamant",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 32,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 2,
-      "speed": 32
-     }
-    }
-   ]
-  },
-  {
-   "name": "Xeminan's Gardevoir Psyspam Team",
-   "creator": "Joe Brown",
-   "regulation": null,
-   "rental_code": "0XJX4NBLXM",
-   "source_url": "https://www.youtube.com/watch?v=X7SDc5RhoKw",
-   "date_shared": "2026-09-15T00:00:00.000Z",
-   "members": [
-    {
-     "pokemon": "Armarouge",
-     "slug": "armarouge",
-     "ability": "Flash Fire",
-     "item": "$4b:props:showcase:community:0:team:5:item",
-     "nature": "quiet",
-     "moves": [
-      "Armor Cannon"
-     ],
-     "stat_points": {
-      "hp": 32,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 32,
-      "specialDefense": 2,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:community:0:team:2:ability",
-     "item": "Colbur Berry",
+     "ability": "$4b:props:showcase:community:1:team:0:ability",
+     "item": "Rocky Helmet",
      "nature": "relaxed",
      "moves": [],
      "stat_points": {
@@ -984,93 +578,58 @@
      }
     },
     {
-     "pokemon": "Torkoal",
-     "slug": "torkoal",
-     "ability": "Drought",
-     "item": "Charcoal",
-     "nature": "quiet",
-     "moves": [
-      "Eruption",
-      "Weather Ball"
-     ],
-     "stat_points": {
-      "hp": 32,
-      "attack": 0,
-      "defense": 2,
-      "specialAttack": 32,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
      "pokemon": null,
      "slug": null,
-     "ability": "$4b:props:showcase:community:1:team:4:ability",
-     "item": "$4b:props:showcase:community:0:team:2:item",
-     "nature": "adamant",
+     "ability": "$4b:props:showcase:community:1:team:3:ability",
+     "item": "$4b:props:showcase:community:1:team:4:item",
+     "nature": "modest",
      "moves": [
-      "Throat Chop"
+      "Heat Wave",
+      "Aura Sphere"
      ],
      "stat_points": {
       "hp": 2,
-      "attack": 32,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 32
-     }
-    },
-    {
-     "pokemon": "Gardevoir",
-     "slug": "gardevoir",
-     "ability": "Synchronize",
-     "item": "Gardevoirite",
-     "nature": "modest",
-     "moves": [],
-     "stat_points": {
-      "hp": 32,
       "attack": 0,
-      "defense": 1,
+      "defense": 0,
       "specialAttack": 32,
       "specialDefense": 0,
-      "speed": 1
+      "speed": 32
      }
     },
     {
      "pokemon": "Kingambit",
      "slug": "kingambit",
      "ability": "Defiant",
-     "item": "$4b:props:showcase:community:1:team:2:item",
+     "item": "$4b:props:showcase:community:1:team:5:item",
      "nature": "adamant",
      "moves": [
-      "Kowtow Cleave",
-      "Sucker Punch"
+      "Kowtow Cleave"
      ],
      "stat_points": {
       "hp": 32,
-      "attack": 32,
-      "defense": 2,
+      "attack": 2,
+      "defense": 0,
       "specialAttack": 0,
-      "specialDefense": 0,
+      "specialDefense": 32,
       "speed": 0
      }
     }
    ]
   },
   {
-   "name": "DomingoVGC's Salamence Hippowdon Team",
-   "creator": "Damahni Palmer",
+   "name": "WoodTofu's Golisopod Blastoise Team",
+   "creator": "WoodTofu",
    "regulation": null,
-   "rental_code": "YM8P3T36XR",
-   "source_url": "https://x.com/DmanVGC/status/2099872931769655540",
-   "date_shared": "2026-09-15T00:00:00.000Z",
+   "rental_code": "LP70GFVN3A",
+   "source_url": "https://x.com/woodtofuvgc/status/2100143557449523628",
+   "date_shared": "2026-09-16T00:00:00.000Z",
    "members": [
     {
      "pokemon": null,
      "slug": null,
-     "ability": "$4b:props:showcase:community:1:team:2:ability",
-     "item": "$4b:props:showcase:community:5:team:5:item",
-     "nature": "naive",
+     "ability": "$4b:props:showcase:community:1:team:3:ability",
+     "item": "$4b:props:showcase:community:0:team:1:item",
+     "nature": "modest",
      "moves": [],
      "stat_points": {
       "hp": 2,
@@ -1082,67 +641,30 @@
      }
     },
     {
-     "pokemon": "Volcarona",
-     "slug": "volcarona",
-     "ability": "Flame Body",
-     "item": "Rocky Helmet",
-     "nature": "bold",
-     "moves": [
-      "Overheat",
-      "Struggle Bug",
-      "Rage Powder"
-     ],
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:community:1:team:0:ability",
+     "item": "Colbur Berry",
+     "nature": "calm",
+     "moves": [],
      "stat_points": {
       "hp": 32,
       "attack": 0,
       "defense": 32,
-      "specialAttack": 2,
-      "specialDefense": 0,
+      "specialAttack": 1,
+      "specialDefense": 1,
       "speed": 0
      }
     },
     {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:community:8:team:5:ability",
-     "item": "$4b:props:showcase:community:1:team:2:item",
-     "nature": "adamant",
-     "moves": [],
-     "stat_points": {
-      "hp": 32,
-      "attack": 2,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 32
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:community:0:team:3:ability",
-     "item": "$4b:props:showcase:community:0:team:5:item",
-     "nature": "adamant",
-     "moves": [],
-     "stat_points": {
-      "hp": 32,
-      "attack": 2,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 32
-     }
-    },
-    {
-     "pokemon": "Glimmora",
-     "slug": "glimmora",
-     "ability": "Toxic Debris",
-     "item": "Glimmoranite",
-     "nature": "timid",
+     "pokemon": "Blastoise",
+     "slug": "blastoise",
+     "ability": "Torrent",
+     "item": "Blastoisinite",
+     "nature": "modest",
      "moves": [
-      "Spiky Shield",
-      "Sludge Bomb",
-      "Earth Power"
+      "Water Spout",
+      "Shell Smash"
      ],
      "stat_points": {
       "hp": 2,
@@ -1154,14 +676,14 @@
      }
     },
     {
-     "pokemon": "Hippowdon",
-     "slug": "hippowdon",
-     "ability": "$4b:props:showcase:community:5:team:0:ability",
-     "item": "$4b:props:showcase:community:1:team:0:item",
-     "nature": "careful",
+     "pokemon": "Sinistcha",
+     "slug": "sinistcha",
+     "ability": "Hospitality",
+     "item": "Occa Berry",
+     "nature": "calm",
      "moves": [
-      "Yawn",
-      "Ice Fang"
+      "Matcha Gotcha",
+      "Rage Powder"
      ],
      "stat_points": {
       "hp": 32,
@@ -1171,58 +693,16 @@
       "specialDefense": 32,
       "speed": 0
      }
-    }
-   ]
-  },
-  {
-   "name": "gilberto_vgc's Local Tour Champion Team (Recreation of MichaelderBeste's VR September Challenge Champion Team)",
-   "creator": "gilberto_vgc",
-   "regulation": null,
-   "rental_code": "4SVXQSPBQE",
-   "source_url": "https://x.com/gilberto_vgc/status/2099332139544117324",
-   "date_shared": "2026-09-14T00:00:00.000Z",
-   "members": [
+    },
     {
      "pokemon": null,
      "slug": null,
      "ability": "$4b:props:showcase:community:1:team:2:ability",
-     "item": "$4b:props:showcase:community:2:team:0:item",
-     "nature": "jolly",
-     "moves": [
-      "Dual Wingbeat"
-     ],
-     "stat_points": {
-      "hp": 32,
-      "attack": 2,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 32
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:community:2:team:3:ability",
-     "item": "$4b:props:showcase:community:0:team:1:item",
-     "nature": "jolly",
-     "moves": [],
-     "stat_points": {
-      "hp": 2,
-      "attack": 32,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 32
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:community:0:team:3:ability",
-     "item": "$4b:props:showcase:community:0:team:3:item",
+     "item": "$4b:props:showcase:community:1:team:2:item",
      "nature": "adamant",
-     "moves": [],
+     "moves": [
+      "Swords Dance"
+     ],
      "stat_points": {
       "hp": 32,
       "attack": 32,
@@ -1233,17 +713,50 @@
      }
     },
     {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:community:2:team:5:ability",
-     "item": "$4b:props:showcase:community:0:team:5:item",
-     "nature": "timid",
-     "moves": [],
+     "pokemon": "Torkoal",
+     "slug": "torkoal",
+     "ability": "Drought",
+     "item": "Charcoal",
+     "nature": "quiet",
+     "moves": [
+      "Eruption",
+      "Weather Ball",
+      "Earth Power"
+     ],
      "stat_points": {
-      "hp": 2,
+      "hp": 32,
       "attack": 0,
-      "defense": 0,
+      "defense": 2,
       "specialAttack": 32,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    }
+   ]
+  },
+  {
+   "name": "4milkfang's Salamence Froslass Team",
+   "creator": "4milkfang",
+   "regulation": null,
+   "rental_code": "GMAWTS6D40",
+   "source_url": "https://x.com/4milkfang/status/2100150668405416425",
+   "date_shared": "2026-09-16T00:00:00.000Z",
+   "members": [
+    {
+     "pokemon": "Froslass",
+     "slug": "froslass",
+     "ability": "$4b:props:showcase:community:2:team:4:ability",
+     "item": "Froslassite",
+     "nature": "timid",
+     "moves": [
+      "Blizzard",
+      "Aurora Veil"
+     ],
+     "stat_points": {
+      "hp": 32,
+      "attack": 0,
+      "defense": 1,
+      "specialAttack": 1,
       "specialDefense": 0,
       "speed": 32
      }
@@ -1251,15 +764,36 @@
     {
      "pokemon": null,
      "slug": null,
-     "ability": "$4b:props:showcase:community:2:team:4:ability",
-     "item": "$4b:props:showcase:community:2:team:4:item",
-     "nature": "modest",
-     "moves": [],
+     "ability": "$4b:props:showcase:community:0:team:0:ability",
+     "item": "$4b:props:showcase:community:1:team:4:item",
+     "nature": "adamant",
+     "moves": [
+      "Superpower"
+     ],
      "stat_points": {
-      "hp": 31,
+      "hp": 32,
+      "attack": 2,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 32,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:community:0:team:5:ability",
+     "item": "Leftovers",
+     "nature": "bold",
+     "moves": [
+      "Hypnosis",
+      "Coil"
+     ],
+     "stat_points": {
+      "hp": 32,
       "attack": 0,
-      "defense": 1,
-      "specialAttack": 32,
+      "defense": 32,
+      "specialAttack": 0,
       "specialDefense": 0,
       "speed": 2
      }
@@ -1269,65 +803,25 @@
      "slug": null,
      "ability": "$4b:props:showcase:community:0:team:4:ability",
      "item": "$4b:props:showcase:community:0:team:4:item",
-     "nature": "timid",
-     "moves": [],
-     "stat_points": {
-      "hp": 32,
-      "attack": 0,
-      "defense": 2,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 32
-     }
-    }
-   ]
-  },
-  {
-   "name": "parrobot7's Local Tour Champion Team (Recreation of MichaelderBeste's VR September Challenge Champion Team)",
-   "creator": "parrobot7",
-   "regulation": null,
-   "rental_code": "5EFXWLXV71",
-   "source_url": "https://x.com/parrobot7/status/2099273890585256358",
-   "date_shared": "2026-09-14T00:00:00.000Z",
-   "members": [
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:community:2:team:5:ability",
-     "item": "$4b:props:showcase:community:0:team:5:item",
-     "nature": "timid",
-     "moves": [],
+     "nature": "modest",
+     "moves": [
+      "Flamethrower"
+     ],
      "stat_points": {
       "hp": 2,
       "attack": 0,
-      "defense": 32,
-      "specialAttack": 2,
-      "specialDefense": 0,
-      "speed": 30
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:community:0:team:3:ability",
-     "item": "$4b:props:showcase:community:0:team:3:item",
-     "nature": "adamant",
-     "moves": [],
-     "stat_points": {
-      "hp": 32,
-      "attack": 30,
       "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 2,
-      "speed": 2
+      "specialAttack": 32,
+      "specialDefense": 0,
+      "speed": 32
      }
     },
     {
      "pokemon": null,
      "slug": null,
-     "ability": "$4b:props:showcase:community:2:team:3:ability",
+     "ability": "$4b:props:showcase:community:0:team:2:ability",
      "item": "$4b:props:showcase:community:0:team:1:item",
-     "nature": "jolly",
+     "nature": "adamant",
      "moves": [],
      "stat_points": {
       "hp": 0,
@@ -1341,15 +835,57 @@
     {
      "pokemon": null,
      "slug": null,
-     "ability": "$4b:props:showcase:community:2:team:4:ability",
-     "item": "$4b:props:showcase:community:2:team:4:item",
+     "ability": "$4b:props:showcase:community:4:team:5:ability",
+     "item": "Black Glasses",
+     "nature": "adamant",
+     "moves": [],
+     "stat_points": {
+      "hp": 32,
+      "attack": 32,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 2
+     }
+    }
+   ]
+  },
+  {
+   "name": "zeen's Salamence Kingambit Team",
+   "creator": "Shohei Kimura",
+   "regulation": null,
+   "rental_code": "LUVHWWVKFX",
+   "source_url": "https://x.com/zeen172m/status/2100170279192564139",
+   "date_shared": "2026-09-16T00:00:00.000Z",
+   "members": [
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:community:0:team:4:ability",
+     "item": "$4b:props:showcase:community:0:team:4:item",
      "nature": "modest",
      "moves": [],
      "stat_points": {
-      "hp": 1,
+      "hp": 2,
       "attack": 0,
-      "defense": 32,
-      "specialAttack": 31,
+      "defense": 0,
+      "specialAttack": 32,
+      "specialDefense": 0,
+      "speed": 32
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:community:4:team:5:ability",
+     "item": "$4b:props:showcase:community:1:team:5:item",
+     "nature": "adamant",
+     "moves": [],
+     "stat_points": {
+      "hp": 32,
+      "attack": 32,
+      "defense": 0,
+      "specialAttack": 0,
       "specialDefense": 0,
       "speed": 2
      }
@@ -1357,13 +893,574 @@
     {
      "pokemon": null,
      "slug": null,
+     "ability": "$4b:props:showcase:community:2:team:5:ability",
+     "item": "$4b:props:showcase:community:1:team:4:item",
+     "nature": "modest",
+     "moves": [],
+     "stat_points": {
+      "hp": 32,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 32,
+      "specialDefense": 0,
+      "speed": 2
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:community:0:team:0:ability",
+     "item": "$4b:props:showcase:community:0:team:5:item",
+     "nature": "adamant",
+     "moves": [],
+     "stat_points": {
+      "hp": 32,
+      "attack": 32,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 2
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:community:0:team:2:ability",
+     "item": "$4b:props:showcase:community:0:team:2:item",
+     "nature": "adamant",
+     "moves": [],
+     "stat_points": {
+      "hp": 32,
+      "attack": 32,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 2
+     }
+    },
+    {
+     "pokemon": "Hisuian Arcanine",
+     "slug": "arcanine-hisui",
      "ability": "$4b:props:showcase:community:0:team:4:ability",
+     "item": "$4b:props:showcase:community:0:team:1:item",
+     "nature": "jolly",
+     "moves": [
+      "Head Smash",
+      "Extreme Speed"
+     ],
+     "stat_points": {
+      "hp": 2,
+      "attack": 32,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 32
+     }
+    }
+   ]
+  },
+  {
+   "name": "tukibiya_moeru's Golisopod Meowstic Team",
+   "creator": "Tukibiya_Moeru",
+   "regulation": null,
+   "rental_code": "495UNG4R21",
+   "source_url": "https://x.com/tukibiya_moeru/status/2100164727314002008",
+   "date_shared": "2026-09-16T00:00:00.000Z",
+   "members": [
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:community:1:team:2:ability",
+     "item": "$4b:props:showcase:community:1:team:2:item",
+     "nature": "brave",
+     "moves": [
+      "Liquidation"
+     ],
+     "stat_points": {
+      "hp": 32,
+      "attack": 32,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 2,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:community:0:team:2:ability",
+     "item": "$4b:props:showcase:community:1:team:0:item",
+     "nature": "adamant",
+     "moves": [],
+     "stat_points": {
+      "hp": 2,
+      "attack": 32,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 32
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "Weak Armor",
+     "item": "$4b:props:showcase:community:0:team:1:item",
+     "nature": "modest",
+     "moves": [],
+     "stat_points": {
+      "hp": 2,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 32,
+      "specialDefense": 0,
+      "speed": 32
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:community:1:team:0:ability",
+     "item": "$4b:props:showcase:community:0:team:5:item",
+     "nature": "relaxed",
+     "moves": [],
+     "stat_points": {
+      "hp": 32,
+      "attack": 0,
+      "defense": 32,
+      "specialAttack": 0,
+      "specialDefense": 2,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": "Cinderace",
+     "slug": "cinderace",
+     "ability": "Libero",
+     "item": "$4b:props:showcase:community:4:team:2:item",
+     "nature": "adamant",
+     "moves": [
+      "Pyro Ball",
+      "High Jump Kick",
+      "Snarl"
+     ],
+     "stat_points": {
+      "hp": 2,
+      "attack": 32,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 32
+     }
+    },
+    {
+     "pokemon": "Meowstic",
+     "slug": "meowstic",
+     "ability": "$4b:props:showcase:community:0:team:5:ability",
+     "item": "Meowsticite",
+     "nature": "timid",
+     "moves": [
+      "Alluring Voice"
+     ],
+     "stat_points": {
+      "hp": 2,
+      "attack": 0,
+      "defense": 1,
+      "specialAttack": 31,
+      "specialDefense": 0,
+      "speed": 32
+     }
+    }
+   ]
+  },
+  {
+   "name": "VGCLuca's VGC UmbreNews #32 Champion Team",
+   "creator": "VGCLuca",
+   "regulation": null,
+   "rental_code": null,
+   "source_url": "https://x.com/VGCLuca/status/2100148309939675627",
+   "date_shared": "2026-09-16T00:00:00.000Z",
+   "members": [
+    {
+     "pokemon": "Mega Gardevoir",
+     "slug": "gardevoir-mega",
+     "ability": "Pixilate",
+     "item": "Gardevoirite",
+     "nature": "serious",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:community:1:team:0:ability",
+     "item": "$4b:props:showcase:community:4:team:3:item",
+     "nature": "serious",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": "Whimsicott",
+     "slug": "whimsicott",
+     "ability": "Prankster",
+     "item": "$4b:props:showcase:community:0:team:1:item",
+     "nature": "serious",
+     "moves": [
+      "Encore"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": "Hisuian Typhlosion",
+     "slug": "typhlosion-hisui",
+     "ability": "Blaze",
+     "item": "$4b:props:showcase:community:1:team:4:item",
+     "nature": "serious",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:community:4:team:5:ability",
+     "item": "$4b:props:showcase:community:1:team:5:item",
+     "nature": "serious",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:community:4:team:1:ability",
      "item": "$4b:props:showcase:community:0:team:4:item",
+     "nature": "serious",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    }
+   ]
+  },
+  {
+   "name": "DjSanders' Gardevoir Golisopod Team",
+   "creator": "DjSanders",
+   "regulation": null,
+   "rental_code": "BS25SGLRE5",
+   "source_url": "https://pokepast.es/d52fbc5f7a7d6390",
+   "date_shared": "2026-09-16T00:00:00.000Z",
+   "members": [
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:community:1:team:2:ability",
+     "item": "$4b:props:showcase:community:1:team:2:item",
+     "nature": "brave",
+     "moves": [],
+     "stat_points": {
+      "hp": 32,
+      "attack": 32,
+      "defense": 1,
+      "specialAttack": 0,
+      "specialDefense": 1,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": "Gardevoir",
+     "slug": "gardevoir",
+     "ability": "Synchronize",
+     "item": "$4b:props:showcase:community:9:team:0:item",
+     "nature": "modest",
+     "moves": [
+      "Calm Mind"
+     ],
+     "stat_points": {
+      "hp": 32,
+      "attack": 0,
+      "defense": 31,
+      "specialAttack": 2,
+      "specialDefense": 0,
+      "speed": 1
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:community:1:team:0:ability",
+     "item": "$4b:props:showcase:community:4:team:3:item",
+     "nature": "bold",
+     "moves": [
+      "Terrain Pulse"
+     ],
+     "stat_points": {
+      "hp": 32,
+      "attack": 0,
+      "defense": 32,
+      "specialAttack": 0,
+      "specialDefense": 2,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": "Pelipper",
+     "slug": "pelipper",
+     "ability": "Drizzle",
+     "item": "$4b:props:showcase:community:0:team:5:item",
+     "nature": "modest",
+     "moves": [
+      "Hurricane"
+     ],
+     "stat_points": {
+      "hp": 32,
+      "attack": 0,
+      "defense": 31,
+      "specialAttack": 1,
+      "specialDefense": 0,
+      "speed": 2
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:community:1:team:3:ability",
+     "item": "$4b:props:showcase:community:1:team:4:item",
+     "nature": "modest",
+     "moves": [],
+     "stat_points": {
+      "hp": 2,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 32,
+      "specialDefense": 0,
+      "speed": 32
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:community:0:team:2:ability",
+     "item": "$4b:props:showcase:community:1:team:0:item",
+     "nature": "adamant",
+     "moves": [],
+     "stat_points": {
+      "hp": 2,
+      "attack": 32,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 32
+     }
+    }
+   ]
+  },
+  {
+   "name": "joserockzvgc's Golisopod Swampert Team",
+   "creator": "joserockzvgc",
+   "regulation": null,
+   "rental_code": "IMUR6TYA84",
+   "source_url": "https://www.youtube.com/watch?v=2cbSO41gDRQ",
+   "date_shared": "2026-09-16T00:00:00.000Z",
+   "members": [
+    {
+     "pokemon": "Mega Golisopod",
+     "slug": "golisopod-mega",
+     "ability": "Tough Claws",
+     "item": "$4b:props:showcase:community:1:team:2:item",
+     "nature": "adamant",
+     "moves": [],
+     "stat_points": {
+      "hp": 32,
+      "attack": 1,
+      "defense": 1,
+      "specialAttack": 0,
+      "specialDefense": 32,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:community:1:team:0:ability",
+     "item": "$4b:props:showcase:community:5:team:1:item",
+     "nature": "sassy",
+     "moves": [],
+     "stat_points": {
+      "hp": 32,
+      "attack": 0,
+      "defense": 32,
+      "specialAttack": 1,
+      "specialDefense": 1,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:community:10:team:3:ability",
+     "item": "$4b:props:showcase:community:0:team:1:item",
+     "nature": "timid",
+     "moves": [
+      "Soak"
+     ],
+     "stat_points": {
+      "hp": 2,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 32,
+      "specialDefense": 0,
+      "speed": 32
+     }
+    },
+    {
+     "pokemon": "Archaludon",
+     "slug": "archaludon",
+     "ability": "Stamina",
+     "item": "$4b:props:showcase:community:6:team:2:item",
+     "nature": "modest",
+     "moves": [
+      "Flash Cannon",
+      "Electro Shot"
+     ],
+     "stat_points": {
+      "hp": 32,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 1,
+      "specialDefense": 32,
+      "speed": 1
+     }
+    },
+    {
+     "pokemon": "Annihilape",
+     "slug": "annihilape",
+     "ability": "$4b:props:showcase:community:4:team:5:ability",
+     "item": "$4b:props:showcase:community:3:team:3:item",
+     "nature": "jolly",
+     "moves": [
+      "Coaching",
+      "Rain Dance",
+      "Shadow Claw"
+     ],
+     "stat_points": {
+      "hp": 2,
+      "attack": 31,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 1,
+      "speed": 32
+     }
+    },
+    {
+     "pokemon": "Mega Swampert",
+     "slug": "swampert-mega",
+     "ability": "Swift Swim",
+     "item": "Swampertite",
+     "nature": "adamant",
+     "moves": [
+      "Wave Crash",
+      "Ice Punch"
+     ],
+     "stat_points": {
+      "hp": 2,
+      "attack": 32,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 32
+     }
+    }
+   ]
+  },
+  {
+   "name": "wotuh (edited)",
+   "creator": null,
+   "regulation": null,
+   "rental_code": null,
+   "source_url": null,
+   "date_shared": "2026-09-18T12:00:00.000Z",
+   "members": [
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:community:10:team:3:ability",
+     "item": "$4b:props:showcase:community:0:team:1:item",
      "nature": "timid",
      "moves": [],
      "stat_points": {
       "hp": 32,
       "attack": 0,
+      "defense": 0,
+      "specialAttack": 2,
+      "specialDefense": 0,
+      "speed": 32
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:community:11:team:0:ability",
+     "item": "$4b:props:showcase:community:1:team:2:item",
+     "nature": "adamant",
+     "moves": [],
+     "stat_points": {
+      "hp": 32,
+      "attack": 32,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 2,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:community:0:team:2:ability",
+     "item": "$4b:props:showcase:community:0:team:2:item",
+     "nature": "adamant",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 32,
       "defense": 2,
       "specialAttack": 0,
       "specialDefense": 0,
@@ -1373,17 +1470,51 @@
     {
      "pokemon": null,
      "slug": null,
-     "ability": "$4b:props:showcase:community:1:team:2:ability",
-     "item": "$4b:props:showcase:community:2:team:0:item",
-     "nature": "jolly",
+     "ability": "$4b:props:showcase:community:0:team:0:ability",
+     "item": "$4b:props:showcase:community:0:team:0:item",
+     "nature": "adamant",
      "moves": [],
      "stat_points": {
-      "hp": 32,
-      "attack": 2,
+      "hp": 2,
+      "attack": 32,
       "defense": 0,
       "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 32
+      "specialDefense": 32,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": "Farigiraf",
+     "slug": "farigiraf",
+     "ability": "Armor Tail",
+     "item": null,
+     "nature": "bold",
+     "moves": [
+      "Thunderbolt"
+     ],
+     "stat_points": {
+      "hp": 32,
+      "attack": 0,
+      "defense": 32,
+      "specialAttack": 0,
+      "specialDefense": 2,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:community:4:team:5:ability",
+     "item": "$4b:props:showcase:community:1:team:4:item",
+     "nature": "adamant",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 1,
+      "specialAttack": 0,
+      "specialDefense": 2,
+      "speed": 0
      }
     }
    ]
@@ -1397,14 +1528,12 @@
    "date_shared": "2026-09-15T12:00:00.000Z",
    "members": [
     {
-     "pokemon": "Baxcalibur",
-     "slug": "baxcalibur",
-     "ability": "Thermal Exchange",
-     "item": "$4b:props:showcase:community:6:team:4:item",
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:community:3:team:1:ability",
+     "item": "$4b:props:showcase:community:3:team:3:item",
      "nature": "adamant",
      "moves": [
-      "Glaive Rush",
-      "Icicle Crash",
       "Brick Break"
      ],
      "stat_points": {
@@ -1417,10 +1546,10 @@
      }
     },
     {
-     "pokemon": "Farigiraf",
-     "slug": "farigiraf",
-     "ability": "Armor Tail",
-     "item": "$4b:props:showcase:community:1:team:5:item",
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:community:12:team:4:ability",
+     "item": "$4b:props:showcase:community:0:team:5:item",
      "nature": "calm",
      "moves": [
       "Twin Beam",
@@ -1454,14 +1583,12 @@
      }
     },
     {
-     "pokemon": "Sinistcha",
-     "slug": "sinistcha",
-     "ability": "Hospitality",
-     "item": "$4b:props:showcase:community:9:team:1:item",
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:community:5:team:3:ability",
+     "item": "$4b:props:showcase:community:4:team:3:item",
      "nature": "bold",
-     "moves": [
-      "Matcha Gotcha"
-     ],
+     "moves": [],
      "stat_points": {
       "hp": 32,
       "attack": 0,
@@ -1474,12 +1601,10 @@
     {
      "pokemon": null,
      "slug": null,
-     "ability": "$4b:props:showcase:community:1:team:4:ability",
+     "ability": "$4b:props:showcase:community:0:team:2:ability",
      "item": "$4b:props:showcase:community:0:team:1:item",
      "nature": "adamant",
-     "moves": [
-      "Swords Dance"
-     ],
+     "moves": [],
      "stat_points": {
       "hp": 2,
       "attack": 32,
@@ -1493,7 +1618,7 @@
      "pokemon": null,
      "slug": null,
      "ability": "Supreme Overlord",
-     "item": "Black Glasses",
+     "item": "$4b:props:showcase:community:6:team:5:item",
      "nature": "careful",
      "moves": [],
      "stat_points": {
@@ -1536,13 +1661,12 @@
      }
     },
     {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:community:0:team:5:ability",
-     "item": "$4b:props:showcase:community:1:team:1:item",
+     "pokemon": "Lucario",
+     "slug": "lucario",
+     "ability": "Inner Focus",
+     "item": "Lucarionite Z",
      "nature": "timid",
      "moves": [
-      "Terrain Pulse",
       "Steel Beam"
      ],
      "stat_points": {
@@ -1557,8 +1681,8 @@
     {
      "pokemon": null,
      "slug": null,
-     "ability": "$4b:props:showcase:community:12:team:3:ability",
-     "item": "$4b:props:showcase:community:1:team:0:item",
+     "ability": "$4b:props:showcase:community:5:team:3:ability",
+     "item": "$4b:props:showcase:community:6:team:2:item",
      "nature": "sassy",
      "moves": [
       "Grassy Terrain"
@@ -1594,7 +1718,7 @@
     {
      "pokemon": "Politoed",
      "slug": "politoed",
-     "ability": "Drizzle",
+     "ability": "$4b:props:showcase:community:10:team:3:ability",
      "item": "Wacan Berry",
      "nature": "modest",
      "moves": [],
@@ -1613,9 +1737,7 @@
      "ability": "Snow Warning",
      "item": "Light Clay",
      "nature": "timid",
-     "moves": [
-      "Aurora Veil"
-     ],
+     "moves": [],
      "stat_points": {
       "hp": 32,
       "attack": 0,
@@ -1623,126 +1745,6 @@
       "specialAttack": 0,
       "specialDefense": 0,
       "speed": 32
-     }
-    }
-   ]
-  },
-  {
-   "name": "Rain + Trick Room Team",
-   "creator": null,
-   "regulation": "M-B",
-   "rental_code": null,
-   "source_url": null,
-   "date_shared": "2026-08-26T12:00:00.000Z",
-   "members": [
-    {
-     "pokemon": "Meowstic",
-     "slug": "meowstic",
-     "ability": "$4b:props:showcase:community:1:team:5:ability",
-     "item": "King’s Rock",
-     "nature": "bold",
-     "moves": [
-      "Extrasensory"
-     ],
-     "stat_points": {
-      "hp": 16,
-      "attack": 0,
-      "defense": 25,
-      "specialAttack": 0,
-      "specialDefense": 25,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:community:12:team:3:ability",
-     "item": "$4b:props:showcase:community:1:team:5:item",
-     "nature": "modest",
-     "moves": [
-      "Life Dew"
-     ],
-     "stat_points": {
-      "hp": 10,
-      "attack": 0,
-      "defense": 24,
-      "specialAttack": 0,
-      "specialDefense": 32,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": "Swampert",
-     "slug": "swampert",
-     "ability": "Torrent",
-     "item": "Swampertite",
-     "nature": "adamant",
-     "moves": [
-      "Wave Crash",
-      "Earthquake"
-     ],
-     "stat_points": {
-      "hp": 2,
-      "attack": 30,
-      "defense": 2,
-      "specialAttack": 0,
-      "specialDefense": 2,
-      "speed": 30
-     }
-    },
-    {
-     "pokemon": "Slowbro",
-     "slug": "slowbro",
-     "ability": "Regenerator",
-     "item": "Slowbronite",
-     "nature": "quiet",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 30,
-      "specialAttack": 26,
-      "specialDefense": 10,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": "Pelipper",
-     "slug": "pelipper",
-     "ability": "$4b:props:showcase:community:13:team:4:ability",
-     "item": "Quick Claw",
-     "nature": "timid",
-     "moves": [
-      "Hurricane",
-      "Wide Guard"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 8,
-      "specialAttack": 32,
-      "specialDefense": 20,
-      "speed": 6
-     }
-    },
-    {
-     "pokemon": "Basculegion",
-     "slug": "basculegion",
-     "ability": "Adaptability",
-     "item": "$4b:props:showcase:community:6:team:4:item",
-     "nature": "jolly",
-     "moves": [
-      "Last Respects",
-      "Aqua Jet",
-      "Flip Turn"
-     ],
-     "stat_points": {
-      "hp": 4,
-      "attack": 18,
-      "defense": 5,
-      "specialAttack": 0,
-      "specialDefense": 12,
-      "speed": 27
      }
     }
    ]
@@ -1759,12 +1761,11 @@
      "pokemon": "Sableye",
      "slug": "sableye",
      "ability": "Keen Eye",
-     "item": "$4b:props:showcase:community:13:team:5:item",
+     "item": "$4b:props:showcase:community:14:team:5:item",
      "nature": "impish",
      "moves": [
       "Reflect",
       "Light Screen",
-      "Rain Dance",
       "Quash"
      ],
      "stat_points": {
@@ -1777,15 +1778,12 @@
      }
     },
     {
-     "pokemon": "Golisopod",
-     "slug": "golisopod",
-     "ability": "Emergency Exit",
-     "item": "Golisopite",
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:community:1:team:2:ability",
+     "item": "$4b:props:showcase:community:1:team:2:item",
      "nature": "careful",
-     "moves": [
-      "Leech Life",
-      "Liquidation"
-     ],
+     "moves": [],
      "stat_points": {
       "hp": 20,
       "attack": 20,
@@ -1798,10 +1796,12 @@
     {
      "pokemon": null,
      "slug": null,
-     "ability": "$4b:props:showcase:community:12:team:3:ability",
-     "item": "$4b:props:showcase:community:1:team:5:item",
+     "ability": "$4b:props:showcase:community:5:team:3:ability",
+     "item": "$4b:props:showcase:community:0:team:5:item",
      "nature": "calm",
-     "moves": [],
+     "moves": [
+      "Life Dew"
+     ],
      "stat_points": {
       "hp": 32,
       "attack": 0,
@@ -1814,8 +1814,8 @@
     {
      "pokemon": null,
      "slug": null,
-     "ability": "$4b:props:showcase:community:13:team:4:ability",
-     "item": "$4b:props:showcase:community:1:team:0:item",
+     "ability": "$4b:props:showcase:community:10:team:3:ability",
+     "item": "$4b:props:showcase:community:6:team:2:item",
      "nature": "calm",
      "moves": [],
      "stat_points": {
@@ -1828,8 +1828,8 @@
      }
     },
     {
-     "pokemon": null,
-     "slug": null,
+     "pokemon": "Dragonite",
+     "slug": "dragonite",
      "ability": "Multiscale",
      "item": "Dragoninite",
      "nature": "modest",
@@ -1847,9 +1847,9 @@
      }
     },
     {
-     "pokemon": "Whimsicott",
-     "slug": "whimsicott",
-     "ability": "$4b:props:showcase:community:1:team:5:ability",
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:community:9:team:2:ability",
      "item": "$4b:props:showcase:community:0:team:1:item",
      "nature": "modest",
      "moves": [],
@@ -1875,8 +1875,8 @@
     {
      "pokemon": "Indeedee (Female)",
      "slug": "indeedee-female",
-     "ability": "$4b:props:showcase:community:0:team:2:ability",
-     "item": "$4b:props:showcase:community:1:team:5:item",
+     "ability": "$4b:props:showcase:community:1:team:0:ability",
+     "item": "$4b:props:showcase:community:0:team:5:item",
      "nature": "relaxed",
      "moves": [
       "Follow Me"
@@ -1894,7 +1894,7 @@
      "pokemon": null,
      "slug": null,
      "ability": "Telepathy",
-     "item": "$4b:props:showcase:community:8:team:4:item",
+     "item": "$4b:props:showcase:community:9:team:0:item",
      "nature": "bold",
      "moves": [],
      "stat_points": {
@@ -1909,8 +1909,8 @@
     {
      "pokemon": null,
      "slug": null,
-     "ability": "$4b:props:showcase:community:1:team:2:ability",
-     "item": "$4b:props:showcase:community:5:team:5:item",
+     "ability": "$4b:props:showcase:community:0:team:4:ability",
+     "item": "$4b:props:showcase:community:0:team:4:item",
      "nature": "timid",
      "moves": [],
      "stat_points": {
@@ -1925,7 +1925,7 @@
     {
      "pokemon": null,
      "slug": null,
-     "ability": "$4b:props:showcase:community:8:team:0:ability",
+     "ability": "$4b:props:showcase:community:1:team:3:ability",
      "item": "Kasib Berry",
      "nature": null,
      "moves": [],
@@ -1939,12 +1939,16 @@
      }
     },
     {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:community:14:team:5:ability",
-     "item": "$4b:props:showcase:community:0:team:5:item",
+     "pokemon": "Basculegion",
+     "slug": "basculegion",
+     "ability": "Adaptability",
+     "item": "$4b:props:showcase:community:1:team:4:item",
      "nature": null,
-     "moves": [],
+     "moves": [
+      "Ice Fang",
+      "Last Respects",
+      "Flip Turn"
+     ],
      "stat_points": {
       "hp": 6,
       "attack": 32,
@@ -1957,7 +1961,7 @@
     {
      "pokemon": null,
      "slug": null,
-     "ability": "$4b:props:showcase:community:8:team:5:ability",
+     "ability": "$4b:props:showcase:community:4:team:5:ability",
      "item": "$4b:props:showcase:community:0:team:1:item",
      "nature": "adamant",
      "moves": [],
@@ -1984,7 +1988,7 @@
      "pokemon": "Mega Garchomp Z",
      "slug": "garchomp-mega-z",
      "ability": "Levitate",
-     "item": "$4b:props:showcase:community:4:team:3:item",
+     "item": "Garchompite Z",
      "nature": "timid",
      "moves": [],
      "stat_points": {
@@ -1999,10 +2003,12 @@
     {
      "pokemon": "Mega Aerodactyl",
      "slug": "aerodactyl-mega",
-     "ability": "Tough Claws",
+     "ability": "$4b:props:showcase:community:11:team:0:ability",
      "item": "Aerodactylite",
      "nature": "jolly",
-     "moves": [],
+     "moves": [
+      "Dual Wingbeat"
+     ],
      "stat_points": {
       "hp": 2,
       "attack": 32,
@@ -2013,12 +2019,15 @@
      }
     },
     {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:community:2:team:4:ability",
-     "item": "$4b:props:showcase:community:2:team:4:item",
+     "pokemon": "Sylveon",
+     "slug": "sylveon",
+     "ability": "$4b:props:showcase:community:9:team:0:ability",
+     "item": "Fairy Feather",
      "nature": "modest",
-     "moves": [],
+     "moves": [
+      "Hyper Beam",
+      "Quick Attack"
+     ],
      "stat_points": {
       "hp": 13,
       "attack": 0,
@@ -2031,8 +2040,8 @@
     {
      "pokemon": null,
      "slug": null,
-     "ability": "$4b:props:showcase:community:0:team:2:ability",
-     "item": "$4b:props:showcase:community:0:team:2:item",
+     "ability": "$4b:props:showcase:community:1:team:0:ability",
+     "item": "$4b:props:showcase:community:1:team:0:item",
      "nature": "relaxed",
      "moves": [],
      "stat_points": {
@@ -2047,7 +2056,7 @@
     {
      "pokemon": null,
      "slug": null,
-     "ability": "$4b:props:showcase:community:1:team:4:ability",
+     "ability": "$4b:props:showcase:community:0:team:2:ability",
      "item": "$4b:props:showcase:community:0:team:1:item",
      "nature": "jolly",
      "moves": [
@@ -2065,8 +2074,8 @@
     {
      "pokemon": null,
      "slug": null,
-     "ability": "$4b:props:showcase:community:8:team:5:ability",
-     "item": "$4b:props:showcase:community:1:team:2:item",
+     "ability": "$4b:props:showcase:community:4:team:5:ability",
+     "item": "$4b:props:showcase:community:1:team:5:item",
      "nature": "brave",
      "moves": [],
      "stat_points": {
@@ -2081,7 +2090,7 @@
    ]
   },
   {
-   "name": "Alpensee Tour (Reg M-C) #75 – Koalelu (#1)",
+   "name": "CHAMPIONS REG. M-C |👑CROWN FIGHT Bo3 TOUR #86👑 – eternalton (#1)",
    "creator": null,
    "regulation": "M-C",
    "rental_code": null,
@@ -2089,36 +2098,15 @@
    "date_shared": null,
    "members": [
     {
-     "pokemon": "Incineroar",
-     "slug": "incineroar",
-     "ability": "Intimidate",
-     "item": "Sitrus Berry",
-     "nature": "impish",
-     "moves": [
-      "Flare Blitz",
-      "Throat Chop",
-      "Parting Shot",
-      "Fake Out"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": "Gengar",
-     "slug": "gengar",
-     "ability": "Cursed Body",
-     "item": "Gengarite",
+     "pokemon": "Raichu",
+     "slug": "raichu",
+     "ability": "Lightning Rod",
+     "item": "Raichunite Y",
      "nature": "timid",
      "moves": [
-      "Sludge Bomb",
-      "Shadow Ball",
-      "Icy Wind",
+      "Zap Cannon",
+      "Focus Blast",
+      "Fake Out",
       "Protect"
      ],
      "stat_points": {
@@ -2131,105 +2119,15 @@
      }
     },
     {
-     "pokemon": "Archaludon",
-     "slug": "archaludon",
-     "ability": "Stamina",
-     "item": "Leftovers",
-     "nature": "bold",
-     "moves": [
-      "Flash Cannon",
-      "Dragon Pulse",
-      "Electro Shot"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": "Pelipper",
-     "slug": "pelipper",
-     "ability": "Drizzle",
+     "pokemon": "Gholdengo",
+     "slug": "gholdengo",
+     "ability": "Good as Gold",
      "item": "Life Orb",
-     "nature": "modest",
-     "moves": [
-      "Weather Ball",
-      "Hurricane",
-      "Tailwind",
-      "Wide Guard"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": "Annihilape",
-     "slug": "annihilape",
-     "ability": "Defiant",
-     "item": "Focus Sash",
-     "nature": "jolly",
-     "moves": [
-      "Close Combat",
-      "Shadow Claw",
-      "Rock Slide"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": "Golisopod",
-     "slug": "golisopod",
-     "ability": "Emergency Exit",
-     "item": "Golisopite",
-     "nature": "adamant",
-     "moves": [
-      "Leech Life",
-      "Iron Head",
-      "Drill Run"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    }
-   ]
-  },
-  {
-   "name": "Alpensee Tour (Reg M-C) #75 – ARegularGuy (#2)",
-   "creator": null,
-   "regulation": null,
-   "rental_code": null,
-   "source_url": null,
-   "date_shared": null,
-   "members": [
-    {
-     "pokemon": "Froslass",
-     "slug": "froslass",
-     "ability": "$4b:props:showcase:tournament:0:team:1:ability",
-     "item": "Froslassite",
      "nature": "timid",
      "moves": [
-      "Blizzard",
-      "Aurora Veil"
+      "Shadow Ball",
+      "Make It Rain",
+      "Nasty Plot"
      ],
      "stat_points": {
       "hp": 0,
@@ -2247,184 +2145,10 @@
      "item": "Miracle Seed",
      "nature": "adamant",
      "moves": [
-      "Wood Hammer",
+      "Drum Beating",
       "Grassy Glide",
       "High Horsepower"
      ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": "Salamence",
-     "slug": "salamence",
-     "ability": "$4b:props:showcase:tournament:0:team:0:ability",
-     "item": "Salamencite",
-     "nature": "timid",
-     "moves": [
-      "Hyper Voice",
-      "Heat Wave"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": "Sneasler",
-     "slug": "sneasler",
-     "ability": "Unburden",
-     "item": "Grassy Seed",
-     "nature": "adamant",
-     "moves": [
-      "Dire Claw"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": "Kingambit",
-     "slug": "kingambit",
-     "ability": "$4b:props:showcase:tournament:0:team:4:ability",
-     "item": "Chople Berry",
-     "nature": "adamant",
-     "moves": [
-      "Kowtow Cleave",
-      "Sucker Punch",
-      "Low Kick"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": "Hisuian Arcanine",
-     "slug": "arcanine-hisui",
-     "ability": "Rock Head",
-     "item": "$4b:props:showcase:tournament:0:team:4:item",
-     "nature": "jolly",
-     "moves": [
-      "Head Smash",
-      "Extreme Speed"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    }
-   ]
-  },
-  {
-   "name": "Alpensee Tour (Reg M-C) #75 – Mentosbombe (#3)",
-   "creator": null,
-   "regulation": null,
-   "rental_code": null,
-   "source_url": null,
-   "date_shared": null,
-   "members": [
-    {
-     "pokemon": "Staraptor",
-     "slug": "staraptor",
-     "ability": "$4b:props:showcase:tournament:0:team:0:ability",
-     "item": "Staraptite",
-     "nature": "jolly",
-     "moves": [
-      "Brave Bird"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": "Raichu",
-     "slug": "raichu",
-     "ability": "Lightning Rod",
-     "item": "Raichunite Y",
-     "nature": "timid",
-     "moves": [
-      "Zap Cannon",
-      "Focus Blast"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": "Gholdengo",
-     "slug": "gholdengo",
-     "ability": "Good as Gold",
-     "item": "$4b:props:showcase:tournament:0:team:3:item",
-     "nature": "timid",
-     "moves": [
-      "Make It Rain",
-      "Nasty Plot"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:tournament:1:team:1:ability",
-     "item": "$4b:props:showcase:tournament:1:team:1:item",
-     "nature": "adamant",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:tournament:1:team:5:ability",
-     "item": "$4b:props:showcase:tournament:0:team:4:item",
-     "nature": "jolly",
-     "moves": [],
      "stat_points": {
       "hp": 0,
       "attack": 0,
@@ -2441,9 +2165,50 @@
      "item": "Fairy Feather",
      "nature": "modest",
      "moves": [
-      "Hyper Beam",
+      "Detect",
       "Quick Attack",
-      "Detect"
+      "Hyper Beam",
+      "Hyper Voice"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": "Staraptor",
+     "slug": "staraptor",
+     "ability": "Intimidate",
+     "item": "Staraptite",
+     "nature": "jolly",
+     "moves": [
+      "Tailwind",
+      "Brave Bird",
+      "Close Combat"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": "Hisuian Arcanine",
+     "slug": "arcanine-hisui",
+     "ability": "Rock Head",
+     "item": "Focus Sash",
+     "nature": "jolly",
+     "moves": [
+      "Extreme Speed",
+      "Head Smash",
+      "Flare Blitz"
      ],
      "stat_points": {
       "hp": 0,
@@ -2457,7 +2222,7 @@
    ]
   },
   {
-   "name": "Alpensee Tour (Reg M-C) #75 – Dot1Q (#4)",
+   "name": "CHAMPIONS REG. M-C |👑CROWN FIGHT Bo3 TOUR #86👑 – Cecil9 (#2)",
    "creator": null,
    "regulation": null,
    "rental_code": null,
@@ -2467,12 +2232,643 @@
     {
      "pokemon": null,
      "slug": null,
-     "ability": "$4b:props:showcase:tournament:0:team:4:ability",
+     "ability": "$4b:props:showcase:tournament:0:team:5:ability",
+     "item": "$4b:props:showcase:tournament:0:team:5:item",
+     "nature": "adamant",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:tournament:0:team:2:ability",
+     "item": "$4b:props:showcase:tournament:0:team:2:item",
+     "nature": "adamant",
+     "moves": [
+      "U-turn",
+      "Wood Hammer"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": "Floette (Eternal)",
+     "slug": "floette-eternal",
+     "ability": "Flower Veil",
+     "item": "Floettite",
+     "nature": "modest",
+     "moves": [
+      "Calm Mind",
+      "Moonblast",
+      "Dazzling Gleam"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:tournament:0:team:1:ability",
+     "item": "Grassy Seed",
+     "nature": "modest",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:tournament:0:team:0:ability",
+     "item": "$4b:props:showcase:tournament:0:team:0:item",
+     "nature": "timid",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": "Garchomp",
+     "slug": "garchomp",
+     "ability": "Rough Skin",
      "item": "Choice Scarf",
      "nature": "adamant",
      "moves": [
-      "Seed Bomb",
-      "Ice Punch"
+      "Rock Slide",
+      "Stomping Tantrum",
+      "Dragon Claw",
+      "Earthquake"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    }
+   ]
+  },
+  {
+   "name": "CHAMPIONS REG. M-C |👑CROWN FIGHT Bo3 TOUR #86👑 – RyukeiVGC (#3)",
+   "creator": null,
+   "regulation": null,
+   "rental_code": null,
+   "source_url": null,
+   "date_shared": null,
+   "members": [
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:tournament:0:team:3:ability",
+     "item": "$4b:props:showcase:tournament:0:team:3:item",
+     "nature": "modest",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": "Farigiraf",
+     "slug": "farigiraf",
+     "ability": "Armor Tail",
+     "item": "Sitrus Berry",
+     "nature": "relaxed",
+     "moves": [
+      "Psychic",
+      "Thunderbolt",
+      "Trick Room"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:tournament:1:team:5:ability",
+     "item": "$4b:props:showcase:tournament:1:team:5:item",
+     "nature": "jolly",
+     "moves": [
+      "Rock Tomb"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": "Charizard",
+     "slug": "charizard",
+     "ability": "Solar Power",
+     "item": "Charizardite Y",
+     "nature": "modest",
+     "moves": [
+      "Heat Wave",
+      "Weather Ball",
+      "Ancient Power"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": "Kingambit",
+     "slug": "kingambit",
+     "ability": "Defiant",
+     "item": "$4b:props:showcase:tournament:0:team:5:item",
+     "nature": "adamant",
+     "moves": [
+      "Kowtow Cleave",
+      "Sucker Punch",
+      "Low Kick",
+      "Iron Head"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:tournament:0:team:2:ability",
+     "item": null,
+     "nature": "adamant",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    }
+   ]
+  },
+  {
+   "name": "CHAMPIONS REG. M-C |👑CROWN FIGHT Bo3 TOUR #86👑 – Tachyon112358 (#4)",
+   "creator": null,
+   "regulation": null,
+   "rental_code": null,
+   "source_url": null,
+   "date_shared": null,
+   "members": [
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:tournament:1:team:5:ability",
+     "item": "Garchompite Z",
+     "nature": "modest",
+     "moves": [
+      "Dragon Pulse",
+      "Fire Blast",
+      "Power Gem"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:tournament:0:team:2:ability",
+     "item": "$4b:props:showcase:tournament:0:team:2:item",
+     "nature": "adamant",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": "Sneasler",
+     "slug": "sneasler",
+     "ability": "Unburden",
+     "item": "$4b:props:showcase:tournament:1:team:3:item",
+     "nature": "adamant",
+     "moves": [
+      "Dire Claw",
+      "Throat Chop"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:tournament:0:team:1:ability",
+     "item": "$4b:props:showcase:tournament:0:team:1:item",
+     "nature": "timid",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:tournament:0:team:5:ability",
+     "item": "$4b:props:showcase:tournament:0:team:5:item",
+     "nature": "jolly",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:tournament:0:team:0:ability",
+     "item": "$4b:props:showcase:tournament:0:team:0:item",
+     "nature": "timid",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    }
+   ]
+  },
+  {
+   "name": "CHAMPIONS REG. M-C |👑CROWN FIGHT Bo3 TOUR #86👑 – Gurrasnurra5 (#5)",
+   "creator": null,
+   "regulation": null,
+   "rental_code": null,
+   "source_url": null,
+   "date_shared": null,
+   "members": [
+    {
+     "pokemon": "Whimsicott",
+     "slug": "whimsicott",
+     "ability": "Prankster",
+     "item": "$4b:props:showcase:tournament:0:team:3:item",
+     "nature": "timid",
+     "moves": [
+      "Helping Hand"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": "Indeedee",
+     "slug": "indeedee",
+     "ability": "Psychic Surge",
+     "item": "$4b:props:showcase:tournament:0:team:5:item",
+     "nature": "timid",
+     "moves": [
+      "Expanding Force",
+      "Imprison"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "Blaze",
+     "item": "$4b:props:showcase:tournament:2:team:3:item",
+     "nature": "modest",
+     "moves": [
+      "Solar Beam"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": "Kommo-o",
+     "slug": "kommo-o",
+     "ability": "Soundproof",
+     "item": "$4b:props:showcase:tournament:0:team:1:item",
+     "nature": "modest",
+     "moves": [
+      "Clanging Scales",
+      "Aura Sphere",
+      "Flamethrower"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": "Basculegion",
+     "slug": "basculegion",
+     "ability": "Adaptability",
+     "item": "Mystic Water",
+     "nature": "adamant",
+     "moves": [
+      "Wave Crash",
+      "Last Respects",
+      "Aqua Jet"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": "Glimmora",
+     "slug": "glimmora",
+     "ability": "Toxic Debris",
+     "item": "Glimmoranite",
+     "nature": "modest",
+     "moves": [
+      "Sludge Bomb",
+      "Earth Power",
+      "Spiky Shield"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    }
+   ]
+  },
+  {
+   "name": "CHAMPIONS REG. M-C |👑CROWN FIGHT Bo3 TOUR #86👑 – Zinso (#6)",
+   "creator": null,
+   "regulation": null,
+   "rental_code": null,
+   "source_url": null,
+   "date_shared": null,
+   "members": [
+    {
+     "pokemon": "Tyranitar",
+     "slug": "tyranitar",
+     "ability": "Sand Stream",
+     "item": "Tyranitarite",
+     "nature": "adamant",
+     "moves": [
+      "Crunch",
+      "Dragon Dance"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": "Salamence",
+     "slug": "salamence",
+     "ability": "$4b:props:showcase:tournament:0:team:4:ability",
+     "item": "Salamencite",
+     "nature": "serious",
+     "moves": [
+      "Double-Edge"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:tournament:4:team:1:ability",
+     "item": "$4b:props:showcase:tournament:1:team:5:item",
+     "nature": "modest",
+     "moves": [
+      "Trick",
+      "Mystical Fire"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": "Excadrill",
+     "slug": "excadrill",
+     "ability": "Sand Rush",
+     "item": "$4b:props:showcase:tournament:0:team:5:item",
+     "nature": "adamant",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:tournament:3:team:2:ability",
+     "item": "White Herb",
+     "nature": "jolly",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": "Milotic",
+     "slug": "milotic",
+     "ability": "Competitive",
+     "item": "Leftovers",
+     "nature": "timid",
+     "moves": [
+      "Scald",
+      "Icy Wind",
+      "Recover"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    }
+   ]
+  },
+  {
+   "name": "CHAMPIONS REG. M-C |👑CROWN FIGHT Bo3 TOUR #86👑 – Lakenta (#7)",
+   "creator": null,
+   "regulation": null,
+   "rental_code": null,
+   "source_url": null,
+   "date_shared": null,
+   "members": [
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:tournament:4:team:2:ability",
+     "item": "$4b:props:showcase:tournament:2:team:3:item",
+     "nature": "timid",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": "Venusaur",
+     "slug": "venusaur",
+     "ability": "Chlorophyll",
+     "item": "$4b:props:showcase:tournament:0:team:5:item",
+     "nature": "timid",
+     "moves": [
+      "Sleep Powder",
+      "Leaf Storm"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": "Annihilape",
+     "slug": "annihilape",
+     "ability": "$4b:props:showcase:tournament:2:team:4:ability",
+     "item": "$4b:props:showcase:tournament:1:team:5:item",
+     "nature": "adamant",
+     "moves": [
+      "Rage Fist",
+      "Ice Punch",
+      "Taunt"
      ],
      "stat_points": {
       "hp": 0,
@@ -2486,7 +2882,7 @@
     {
      "pokemon": "Dragonite",
      "slug": "dragonite",
-     "ability": "Inner Focus",
+     "ability": "Multiscale",
      "item": "Dragoninite",
      "nature": "modest",
      "moves": [],
@@ -2500,54 +2896,73 @@
      }
     },
     {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:tournament:2:team:4:ability",
+     "item": "Chople Berry",
+     "nature": "adamant",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:tournament:2:team:1:ability",
+     "item": "$4b:props:showcase:tournament:2:team:1:item",
+     "nature": "modest",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    }
+   ]
+  },
+  {
+   "name": "CHAMPIONS REG. M-C |👑CROWN FIGHT Bo3 TOUR #86👑 – Katiclus (#8)",
+   "creator": null,
+   "regulation": null,
+   "rental_code": null,
+   "source_url": null,
+   "date_shared": null,
+   "members": [
+    {
+     "pokemon": "Indeedee (Female)",
+     "slug": "indeedee-female",
+     "ability": "$4b:props:showcase:tournament:4:team:1:ability",
+     "item": "Colbur Berry",
+     "nature": "bold",
+     "moves": [
+      "Follow Me"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
      "pokemon": "Armarouge",
      "slug": "armarouge",
      "ability": "Flash Fire",
-     "item": "$4b:props:showcase:tournament:0:team:2:item",
-     "nature": "modest",
+     "item": "$4b:props:showcase:tournament:0:team:5:item",
+     "nature": "timid",
      "moves": [
-      "Psychic",
-      "Calm Mind",
-      "Trick Room"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": "Torkoal",
-     "slug": "torkoal",
-     "ability": "Drought",
-     "item": "Charcoal",
-     "nature": "quiet",
-     "moves": [
-      "Eruption",
-      "Earth Power"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": "Maushold",
-     "slug": "maushold",
-     "ability": "Technician",
-     "item": "Wide Lens",
-     "nature": "jolly",
-     "moves": [
-      "Population Bomb",
-      "Bite",
-      "Follow Me"
+      "Wide Guard"
      ],
      "stat_points": {
       "hp": 0,
@@ -2562,33 +2977,7 @@
      "pokemon": null,
      "slug": null,
      "ability": "$4b:props:showcase:tournament:0:team:4:ability",
-     "item": "$4b:props:showcase:tournament:0:team:3:item",
-     "nature": "adamant",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    }
-   ]
-  },
-  {
-   "name": "Alpensee Tour (Reg M-C) #75 – Altkyle (#5)",
-   "creator": null,
-   "regulation": null,
-   "rental_code": null,
-   "source_url": null,
-   "date_shared": null,
-   "members": [
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:tournament:0:team:0:ability",
-     "item": "$4b:props:showcase:tournament:1:team:2:item",
+     "item": "$4b:props:showcase:tournament:5:team:1:item",
      "nature": "timid",
      "moves": [
       "Draco Meteor"
@@ -2605,701 +2994,7 @@
     {
      "pokemon": null,
      "slug": null,
-     "ability": "$4b:props:showcase:tournament:0:team:4:ability",
-     "item": "$4b:props:showcase:tournament:3:team:0:item",
-     "nature": "adamant",
-     "moves": [
-      "Rock Tomb"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:tournament:2:team:1:ability",
-     "item": "$4b:props:showcase:tournament:2:team:1:item",
-     "nature": "timid",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:tournament:2:team:2:ability",
-     "item": "$4b:props:showcase:tournament:0:team:3:item",
-     "nature": "timid",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:tournament:1:team:5:ability",
-     "item": "$4b:props:showcase:tournament:0:team:4:item",
-     "nature": "jolly",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:tournament:1:team:1:ability",
-     "item": "$4b:props:showcase:tournament:1:team:1:item",
-     "nature": "adamant",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    }
-   ]
-  },
-  {
-   "name": "Alpensee Tour (Reg M-C) #75 – rlanvgc (#6)",
-   "creator": null,
-   "regulation": null,
-   "rental_code": null,
-   "source_url": null,
-   "date_shared": null,
-   "members": [
-    {
-     "pokemon": "Charizard",
-     "slug": "charizard",
-     "ability": "Blaze",
-     "item": "Charizardite Y",
-     "nature": "modest",
-     "moves": [
-      "Solar Beam"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:tournament:0:team:4:ability",
-     "item": "$4b:props:showcase:tournament:0:team:4:item",
-     "nature": "adamant",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:tournament:2:team:5:ability",
-     "item": "$4b:props:showcase:tournament:2:team:5:item",
-     "nature": "modest",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": "Farigiraf",
-     "slug": "farigiraf",
-     "ability": "Armor Tail",
-     "item": "$4b:props:showcase:tournament:0:team:0:item",
-     "nature": "bold",
-     "moves": [
-      "Thunderbolt"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": "Garchomp",
-     "slug": "garchomp",
-     "ability": "Rough Skin",
-     "item": "$4b:props:showcase:tournament:0:team:3:item",
-     "nature": "jolly",
-     "moves": [
-      "Dragon Claw",
-      "Earthquake"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": "Aerodactyl",
-     "slug": "aerodactyl",
-     "ability": "Unnerve",
-     "item": "Aerodactylite",
-     "nature": "jolly",
-     "moves": [
-      "Dual Wingbeat"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    }
-   ]
-  },
-  {
-   "name": "Alpensee Tour (Reg M-C) #75 – JeanChasuble (#7)",
-   "creator": null,
-   "regulation": null,
-   "rental_code": null,
-   "source_url": null,
-   "date_shared": null,
-   "members": [
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:tournament:0:team:0:ability",
-     "item": "$4b:props:showcase:tournament:1:team:2:item",
-     "nature": "timid",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:tournament:2:team:1:ability",
-     "item": "$4b:props:showcase:tournament:2:team:1:item",
-     "nature": "timid",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:tournament:2:team:5:ability",
-     "item": "$4b:props:showcase:tournament:2:team:5:item",
-     "nature": "modest",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:tournament:1:team:5:ability",
-     "item": "$4b:props:showcase:tournament:0:team:4:item",
-     "nature": "jolly",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:tournament:0:team:4:ability",
-     "item": "$4b:props:showcase:tournament:0:team:3:item",
-     "nature": "adamant",
-     "moves": [
-      "Swords Dance"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:tournament:1:team:1:ability",
-     "item": "Kebia Berry",
-     "nature": "adamant",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    }
-   ]
-  },
-  {
-   "name": "Alpensee Tour (Reg M-C) #75 – Saufgebet (#8)",
-   "creator": null,
-   "regulation": null,
-   "rental_code": null,
-   "source_url": null,
-   "date_shared": null,
-   "members": [
-    {
-     "pokemon": "Metagross",
-     "slug": "metagross",
-     "ability": "Clear Body",
-     "item": "Metagrossite",
-     "nature": "adamant",
-     "moves": [
-      "Steel Roller",
-      "Psychic Fangs",
-      "Stomping Tantrum"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:tournament:0:team:0:ability",
-     "item": "$4b:props:showcase:tournament:2:team:0:item",
-     "nature": "jolly",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:tournament:1:team:1:ability",
-     "item": "$4b:props:showcase:tournament:1:team:1:item",
-     "nature": "adamant",
-     "moves": [
-      "U-turn"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:tournament:1:team:5:ability",
-     "item": "$4b:props:showcase:tournament:0:team:4:item",
-     "nature": "jolly",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": "Milotic",
-     "slug": "milotic",
-     "ability": "Competitive",
-     "item": "$4b:props:showcase:tournament:0:team:0:item",
-     "nature": "modest",
-     "moves": [
-      "Scald",
-      "Ice Beam"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": "Hydreigon",
-     "slug": "hydreigon",
-     "ability": "Levitate",
-     "item": "$4b:props:showcase:tournament:3:team:0:item",
-     "nature": "modest",
-     "moves": [
-      "Snarl",
-      "Dark Pulse"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    }
-   ]
-  },
-  {
-   "name": "Alpensee Tour (Reg M-C) #75 – babouras (#9)",
-   "creator": null,
-   "regulation": null,
-   "rental_code": null,
-   "source_url": null,
-   "date_shared": null,
-   "members": [
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:tournament:0:team:1:ability",
-     "item": "$4b:props:showcase:tournament:0:team:1:item",
-     "nature": "modest",
-     "moves": [
-      "Perish Song"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:tournament:0:team:0:ability",
-     "item": "$4b:props:showcase:tournament:0:team:0:item",
-     "nature": "relaxed",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:tournament:1:team:1:ability",
-     "item": "$4b:props:showcase:tournament:0:team:2:item",
-     "nature": "careful",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": "Altaria",
-     "slug": "altaria",
-     "ability": "Cloud Nine",
-     "item": "Rocky Helmet",
-     "nature": "jolly",
-     "moves": [
-      "Fire Spin"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:tournament:0:team:4:ability",
-     "item": "$4b:props:showcase:tournament:3:team:0:item",
-     "nature": "adamant",
-     "moves": [
-      "Phantom Force"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:tournament:0:team:4:ability",
-     "item": "$4b:props:showcase:tournament:0:team:4:item",
-     "nature": "adamant",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    }
-   ]
-  },
-  {
-   "name": "Alpensee Tour (Reg M-C) #75 – Sela133VII (#10)",
-   "creator": null,
-   "regulation": null,
-   "rental_code": null,
-   "source_url": null,
-   "date_shared": null,
-   "members": [
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:tournament:0:team:0:ability",
-     "item": "$4b:props:showcase:tournament:1:team:2:item",
-     "nature": "timid",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:tournament:2:team:1:ability",
-     "item": "$4b:props:showcase:tournament:2:team:1:item",
-     "nature": "timid",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": "Basculegion",
-     "slug": "basculegion",
-     "ability": "Adaptability",
-     "item": "$4b:props:showcase:tournament:3:team:0:item",
-     "nature": "adamant",
-     "moves": [
-      "Wave Crash",
-      "Flip Turn",
-      "Last Respects",
-      "Soak"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:tournament:1:team:1:ability",
-     "item": "$4b:props:showcase:tournament:0:team:3:item",
-     "nature": "jolly",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:tournament:2:team:5:ability",
-     "item": "$4b:props:showcase:tournament:2:team:5:item",
-     "nature": "modest",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:tournament:0:team:4:ability",
-     "item": "$4b:props:showcase:tournament:0:team:4:item",
-     "nature": "adamant",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    }
-   ]
-  },
-  {
-   "name": "Alpensee Tour (Reg M-C) #75 – LelloCartello (#11)",
-   "creator": null,
-   "regulation": null,
-   "rental_code": null,
-   "source_url": null,
-   "date_shared": null,
-   "members": [
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:tournament:7:team:0:ability",
-     "item": "$4b:props:showcase:tournament:7:team:0:item",
-     "nature": "adamant",
-     "moves": [
-      "Body Press"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": "Indeedee",
-     "slug": "indeedee",
-     "ability": "Psychic Surge",
-     "item": "$4b:props:showcase:tournament:3:team:0:item",
-     "nature": "timid",
-     "moves": [
-      "Expanding Force",
-      "Mystical Fire",
-      "Trick"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:tournament:1:team:3:ability",
+     "ability": "$4b:props:showcase:tournament:3:team:2:ability",
      "item": "Psychic Seed",
      "nature": "adamant",
      "moves": [],
@@ -3315,42 +3010,28 @@
     {
      "pokemon": null,
      "slug": null,
-     "ability": "$4b:props:showcase:tournament:1:team:5:ability",
-     "item": "$4b:props:showcase:tournament:0:team:4:item",
+     "ability": "$4b:props:showcase:tournament:2:team:4:ability",
+     "item": "$4b:props:showcase:tournament:0:team:1:item",
+     "nature": "adamant",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:tournament:4:team:4:ability",
+     "item": "$4b:props:showcase:tournament:1:team:5:item",
      "nature": "jolly",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:tournament:0:team:0:ability",
-     "item": "$4b:props:showcase:tournament:1:team:2:item",
-     "nature": "timid",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:tournament:7:team:4:ability",
-     "item": "$4b:props:showcase:tournament:0:team:0:item",
-     "nature": "bold",
-     "moves": [],
+     "moves": [
+      "Flip Turn"
+     ],
      "stat_points": {
       "hp": 0,
       "attack": 0,
@@ -3363,7 +3044,7 @@
    ]
   },
   {
-   "name": "Alpensee Tour (Reg M-C) #75 – VioPhoenixVGC (#12)",
+   "name": "CHAMPIONS REG. M-C |👑CROWN FIGHT Bo3 TOUR #86👑 – Leon000 (#9)",
    "creator": null,
    "regulation": null,
    "rental_code": null,
@@ -3373,10 +3054,12 @@
     {
      "pokemon": null,
      "slug": null,
-     "ability": "$4b:props:showcase:tournament:0:team:0:ability",
-     "item": "$4b:props:showcase:tournament:2:team:0:item",
-     "nature": "jolly",
-     "moves": [],
+     "ability": "$4b:props:showcase:tournament:4:team:2:ability",
+     "item": "$4b:props:showcase:tournament:2:team:3:item",
+     "nature": "modest",
+     "moves": [
+      "Hurricane"
+     ],
      "stat_points": {
       "hp": 0,
       "attack": 0,
@@ -3389,24 +3072,8 @@
     {
      "pokemon": null,
      "slug": null,
-     "ability": "$4b:props:showcase:tournament:2:team:1:ability",
-     "item": "$4b:props:showcase:tournament:2:team:1:item",
-     "nature": "timid",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:tournament:2:team:5:ability",
-     "item": "$4b:props:showcase:tournament:2:team:5:item",
+     "ability": "$4b:props:showcase:tournament:6:team:1:ability",
+     "item": "$4b:props:showcase:tournament:0:team:5:item",
      "nature": "modest",
      "moves": [],
      "stat_points": {
@@ -3419,12 +3086,15 @@
      }
     },
     {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:tournament:2:team:2:ability",
-     "item": "$4b:props:showcase:tournament:0:team:3:item",
-     "nature": "timid",
-     "moves": [],
+     "pokemon": "Golisopod",
+     "slug": "golisopod",
+     "ability": "Emergency Exit",
+     "item": "Golisopite",
+     "nature": "adamant",
+     "moves": [
+      "Leech Life",
+      "Swords Dance"
+     ],
      "stat_points": {
       "hp": 0,
       "attack": 0,
@@ -3435,9 +3105,75 @@
      }
     },
     {
+     "pokemon": "Archaludon",
+     "slug": "archaludon",
+     "ability": "Stamina",
+     "item": "$4b:props:showcase:tournament:5:team:5:item",
+     "nature": "calm",
+     "moves": [
+      "Electro Shot",
+      "Flash Cannon"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": "Grimmsnarl",
+     "slug": "grimmsnarl",
+     "ability": "$4b:props:showcase:tournament:4:team:0:ability",
+     "item": "Light Clay",
+     "nature": "sassy",
+     "moves": [
+      "Spirit Break",
+      "Light Screen",
+      "Reflect",
+      "Parting Shot"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": "Pelipper",
+     "slug": "pelipper",
+     "ability": "Drizzle",
+     "item": "$4b:props:showcase:tournament:2:team:1:item",
+     "nature": "bold",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    }
+   ]
+  },
+  {
+   "name": "CHAMPIONS REG. M-C |👑CROWN FIGHT Bo3 TOUR #86👑 – Kirlikira (#10)",
+   "creator": null,
+   "regulation": null,
+   "rental_code": null,
+   "source_url": null,
+   "date_shared": null,
+   "members": [
+    {
      "pokemon": null,
      "slug": null,
-     "ability": "$4b:props:showcase:tournament:1:team:5:ability",
+     "ability": "$4b:props:showcase:tournament:0:team:4:ability",
      "item": "$4b:props:showcase:tournament:0:team:4:item",
      "nature": "jolly",
      "moves": [],
@@ -3453,35 +3189,9 @@
     {
      "pokemon": null,
      "slug": null,
-     "ability": "$4b:props:showcase:tournament:1:team:1:ability",
-     "item": "$4b:props:showcase:tournament:1:team:1:item",
-     "nature": "adamant",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    }
-   ]
-  },
-  {
-   "name": "Alpensee Tour (Reg M-C) #75 – mxva (#13)",
-   "creator": null,
-   "regulation": null,
-   "rental_code": null,
-   "source_url": null,
-   "date_shared": null,
-   "members": [
-    {
-     "pokemon": "Swampert",
-     "slug": "swampert",
-     "ability": "Torrent",
-     "item": "Soft Sand",
-     "nature": "adamant",
+     "ability": "$4b:props:showcase:tournament:0:team:0:ability",
+     "item": "$4b:props:showcase:tournament:0:team:0:item",
+     "nature": "timid",
      "moves": [],
      "stat_points": {
       "hp": 0,
@@ -3495,9 +3205,9 @@
     {
      "pokemon": null,
      "slug": null,
-     "ability": "$4b:props:showcase:tournament:0:team:3:ability",
-     "item": "$4b:props:showcase:tournament:0:team:0:item",
-     "nature": "bold",
+     "ability": "$4b:props:showcase:tournament:0:team:1:ability",
+     "item": "$4b:props:showcase:tournament:0:team:1:item",
+     "nature": "timid",
      "moves": [],
      "stat_points": {
       "hp": 0,
@@ -3513,7 +3223,7 @@
      "slug": null,
      "ability": "$4b:props:showcase:tournament:0:team:2:ability",
      "item": "$4b:props:showcase:tournament:0:team:2:item",
-     "nature": "calm",
+     "nature": "adamant",
      "moves": [],
      "stat_points": {
       "hp": 0,
@@ -3527,9 +3237,9 @@
     {
      "pokemon": null,
      "slug": null,
-     "ability": "$4b:props:showcase:tournament:5:team:0:ability",
-     "item": "$4b:props:showcase:tournament:5:team:0:item",
-     "nature": "modest",
+     "ability": "$4b:props:showcase:tournament:0:team:5:ability",
+     "item": "$4b:props:showcase:tournament:0:team:5:item",
+     "nature": "jolly",
      "moves": [],
      "stat_points": {
       "hp": 0,
@@ -3541,15 +3251,89 @@
      }
     },
     {
-     "pokemon": "Grimmsnarl",
-     "slug": "grimmsnarl",
-     "ability": "Prankster",
-     "item": "Light Clay",
-     "nature": "sassy",
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:tournament:0:team:3:ability",
+     "item": "$4b:props:showcase:tournament:0:team:3:item",
+     "nature": "modest",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    }
+   ]
+  },
+  {
+   "name": "CHAMPIONS REG. M-C |👑CROWN FIGHT Bo3 TOUR #86👑 – Kyler101 (#11)",
+   "creator": null,
+   "regulation": null,
+   "rental_code": null,
+   "source_url": null,
+   "date_shared": null,
+   "members": [
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:tournament:0:team:4:ability",
+     "item": "$4b:props:showcase:tournament:5:team:1:item",
+     "nature": "timid",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:tournament:0:team:2:ability",
+     "item": "Occa Berry",
+     "nature": "adamant",
      "moves": [
-      "Spirit Break",
-      "Reflect",
-      "Light Screen"
+      "Superpower"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:tournament:0:team:1:ability",
+     "item": "$4b:props:showcase:tournament:1:team:3:item",
+     "nature": "timid",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": "Mawile",
+     "slug": "mawile",
+     "ability": "$4b:props:showcase:tournament:0:team:4:ability",
+     "item": "Mawilite",
+     "nature": "brave",
+     "moves": [
+      "Play Rough"
      ],
      "stat_points": {
       "hp": 0,
@@ -3565,8 +3349,27 @@
      "slug": null,
      "ability": "$4b:props:showcase:tournament:0:team:5:ability",
      "item": "$4b:props:showcase:tournament:0:team:5:item",
-     "nature": "adamant",
+     "nature": "jolly",
      "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:tournament:4:team:1:ability",
+     "item": "$4b:props:showcase:tournament:1:team:5:item",
+     "nature": "timid",
+     "moves": [
+      "Encore",
+      "After You"
+     ],
      "stat_points": {
       "hp": 0,
       "attack": 0,
@@ -3579,7 +3382,7 @@
    ]
   },
   {
-   "name": "Alpensee Tour (Reg M-C) #75 – KrystalKiwii (#14)",
+   "name": "CHAMPIONS REG. M-C |👑CROWN FIGHT Bo3 TOUR #86👑 – Fullox (#12)",
    "creator": null,
    "regulation": null,
    "rental_code": null,
@@ -3589,12 +3392,170 @@
     {
      "pokemon": null,
      "slug": null,
-     "ability": "$4b:props:showcase:tournament:5:team:4:ability",
-     "item": "Garchompite Z",
-     "nature": "modest",
+     "ability": "$4b:props:showcase:tournament:2:team:4:ability",
+     "item": "$4b:props:showcase:tournament:6:team:4:item",
+     "nature": "adamant",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:tournament:0:team:2:ability",
+     "item": "$4b:props:showcase:tournament:2:team:1:item",
+     "nature": "adamant",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:tournament:3:team:2:ability",
+     "item": "$4b:props:showcase:tournament:1:team:3:item",
+     "nature": "adamant",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:tournament:0:team:5:ability",
+     "item": "$4b:props:showcase:tournament:0:team:5:item",
+     "nature": "jolly",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:tournament:0:team:4:ability",
+     "item": "$4b:props:showcase:tournament:5:team:1:item",
+     "nature": "timid",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": "Froslass",
+     "slug": "froslass",
+     "ability": "Cursed Body",
+     "item": "Froslassite",
+     "nature": "timid",
      "moves": [
-      "Flamethrower",
-      "Power Gem"
+      "Blizzard",
+      "Aurora Veil"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    }
+   ]
+  },
+  {
+   "name": "CHAMPIONS REG. M-C |👑CROWN FIGHT Bo3 TOUR #86👑 – MaxxUpgrade (#13)",
+   "creator": null,
+   "regulation": null,
+   "rental_code": null,
+   "source_url": null,
+   "date_shared": null,
+   "members": [
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:tournament:0:team:4:ability",
+     "item": "$4b:props:showcase:tournament:5:team:1:item",
+     "nature": "timid",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:tournament:0:team:1:ability",
+     "item": "$4b:props:showcase:tournament:0:team:1:item",
+     "nature": "timid",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:tournament:8:team:3:ability",
+     "item": "$4b:props:showcase:tournament:5:team:5:item",
+     "nature": "calm",
+     "moves": [
+      "Snarl"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": "Politoed",
+     "slug": "politoed",
+     "ability": "$4b:props:showcase:tournament:8:team:5:ability",
+     "item": "$4b:props:showcase:tournament:2:team:1:item",
+     "nature": "calm",
+     "moves": [
+      "Perish Song"
      ],
      "stat_points": {
       "hp": 0,
@@ -3608,10 +3569,12 @@
     {
      "pokemon": null,
      "slug": null,
-     "ability": "$4b:props:showcase:tournament:1:team:1:ability",
-     "item": "$4b:props:showcase:tournament:1:team:1:item",
+     "ability": "$4b:props:showcase:tournament:0:team:2:ability",
+     "item": "$4b:props:showcase:tournament:0:team:2:item",
      "nature": "adamant",
-     "moves": [],
+     "moves": [
+      "Knock Off"
+     ],
      "stat_points": {
       "hp": 0,
       "attack": 0,
@@ -3621,13 +3584,75 @@
       "speed": 0
      }
     },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:tournament:3:team:2:ability",
+     "item": "$4b:props:showcase:tournament:1:team:3:item",
+     "nature": "jolly",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    }
+   ]
+  },
+  {
+   "name": "CHAMPIONS REG. M-C |👑CROWN FIGHT Bo3 TOUR #86👑 – Shadak (#14)",
+   "creator": null,
+   "regulation": null,
+   "rental_code": null,
+   "source_url": null,
+   "date_shared": null,
+   "members": [
     {
      "pokemon": null,
      "slug": null,
      "ability": "$4b:props:showcase:tournament:0:team:0:ability",
      "item": "$4b:props:showcase:tournament:0:team:0:item",
-     "nature": "impish",
+     "nature": "timid",
      "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": "Incineroar",
+     "slug": "incineroar",
+     "ability": "$4b:props:showcase:tournament:0:team:4:ability",
+     "item": "$4b:props:showcase:tournament:2:team:1:item",
+     "nature": "careful",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": "Ceruledge",
+     "slug": "ceruledge",
+     "ability": "$4b:props:showcase:tournament:7:team:1:ability",
+     "item": "$4b:props:showcase:tournament:7:team:0:item",
+     "nature": "adamant",
+     "moves": [
+      "Bitter Blade",
+      "Shadow Sneak",
+      "Bulk Up"
+     ],
      "stat_points": {
       "hp": 0,
       "attack": 0,
@@ -3640,13 +3665,13 @@
     {
      "pokemon": null,
      "slug": null,
-     "ability": "$4b:props:showcase:tournament:7:team:4:ability",
-     "item": "$4b:props:showcase:tournament:0:team:2:item",
+     "ability": "$4b:props:showcase:tournament:5:team:5:ability",
+     "item": "$4b:props:showcase:tournament:5:team:5:item",
      "nature": "calm",
      "moves": [
       "Muddy Water",
-      "Coil",
-      "Hypnosis"
+      "Hypnosis",
+      "Coil"
      ],
      "stat_points": {
       "hp": 0,
@@ -3660,10 +3685,12 @@
     {
      "pokemon": null,
      "slug": null,
-     "ability": "$4b:props:showcase:tournament:7:team:0:ability",
-     "item": "$4b:props:showcase:tournament:7:team:0:item",
-     "nature": "adamant",
-     "moves": [],
+     "ability": "$4b:props:showcase:tournament:1:team:2:ability",
+     "item": "$4b:props:showcase:tournament:1:team:2:item",
+     "nature": "timid",
+     "moves": [
+      "Draining Kiss"
+     ],
      "stat_points": {
       "hp": 0,
       "attack": 0,
@@ -3676,8 +3703,8 @@
     {
      "pokemon": null,
      "slug": null,
-     "ability": "$4b:props:showcase:tournament:1:team:3:ability",
-     "item": "$4b:props:showcase:tournament:1:team:3:item",
+     "ability": "$4b:props:showcase:tournament:0:team:2:ability",
+     "item": "$4b:props:showcase:tournament:0:team:2:item",
      "nature": "adamant",
      "moves": [],
      "stat_points": {
@@ -3692,7 +3719,7 @@
    ]
   },
   {
-   "name": "Alpensee Tour (Reg M-C) #75 – VGCTilde (#15)",
+   "name": "CHAMPIONS REG. M-C |👑CROWN FIGHT Bo3 TOUR #86👑 – MugiWara56 (#15)",
    "creator": null,
    "regulation": null,
    "rental_code": null,
@@ -3700,30 +3727,11 @@
    "date_shared": null,
    "members": [
     {
-     "pokemon": "Floette (Eternal)",
-     "slug": "floette-eternal",
-     "ability": "Flower Veil",
-     "item": "Floettite",
-     "nature": "modest",
-     "moves": [
-      "Moonblast",
-      "Dazzling Gleam"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:tournament:0:team:0:ability",
-     "item": "$4b:props:showcase:tournament:0:team:0:item",
-     "nature": "impish",
+     "pokemon": "Hatterene",
+     "slug": "hatterene",
+     "ability": "Magic Bounce",
+     "item": "$4b:props:showcase:tournament:0:team:1:item",
+     "nature": "quiet",
      "moves": [],
      "stat_points": {
       "hp": 0,
@@ -3737,9 +3745,9 @@
     {
      "pokemon": null,
      "slug": null,
-     "ability": "$4b:props:showcase:tournament:1:team:3:ability",
-     "item": "$4b:props:showcase:tournament:1:team:3:item",
-     "nature": "adamant",
+     "ability": "$4b:props:showcase:tournament:8:team:2:ability",
+     "item": "$4b:props:showcase:tournament:8:team:2:item",
+     "nature": "brave",
      "moves": [],
      "stat_points": {
       "hp": 0,
@@ -3753,44 +3761,61 @@
     {
      "pokemon": null,
      "slug": null,
-     "ability": "$4b:props:showcase:tournament:1:team:1:ability",
-     "item": "$4b:props:showcase:tournament:1:team:1:item",
-     "nature": "jolly",
-     "moves": [
-      "Drum Beating",
-      "Superpower"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:tournament:2:team:2:ability",
-     "item": "$4b:props:showcase:tournament:0:team:3:item",
-     "nature": "modest",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "No Guard",
+     "ability": "$4b:props:showcase:tournament:8:team:5:ability",
      "item": "$4b:props:showcase:tournament:2:team:1:item",
-     "nature": "timid",
+     "nature": "sassy",
+     "moves": [
+      "Substitute"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:tournament:4:team:1:ability",
+     "item": "$4b:props:showcase:tournament:7:team:3:item",
+     "nature": "relaxed",
+     "moves": [
+      "Baton Pass"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:tournament:8:team:3:ability",
+     "item": "$4b:props:showcase:tournament:5:team:5:item",
+     "nature": "sassy",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:tournament:4:team:2:ability",
+     "item": "$4b:props:showcase:tournament:2:team:3:item",
+     "nature": "quiet",
      "moves": [],
      "stat_points": {
       "hp": 0,
