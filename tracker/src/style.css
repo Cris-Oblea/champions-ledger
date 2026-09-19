@@ -1111,8 +1111,13 @@ details.rolls[open] summary::before{content:"2 "}
 /* the field was a wall of near-identical pills; the rules separate the groups
    - and the label rides in the row rather than on a line of its own, which is
    eight lines of pure heading back on a column that was 747px tall */
-.fieldrow{display:flex;flex-wrap:wrap;align-items:center;gap:6px;width:100%;
-  padding-top:7px;margin-top:7px;border-top:1px solid var(--line)}
+/* 4px of air and a rule, not 14. Eight groups were paying 7px above the
+   line and 7px below it - 98px of a 448px column spent on separators
+   alone (player, 2026-09-19: "tambien es muyyy grande y todo separado y
+   con demasiado espacio"). The rule still separates them; it just does
+   not need a finger's width on each side to do it. */
+.fieldrow{display:flex;flex-wrap:wrap;align-items:center;gap:4px;width:100%;
+  padding-top:4px;margin-top:4px;border-top:1px solid var(--line)}
 .fieldrow:first-child{padding-top:0;margin-top:0;border-top:0}
 .fieldgroup{flex:0 0 auto;font-family:var(--cond);text-transform:uppercase;
   letter-spacing:.08em;font-size:10.5px;font-weight:600;color:var(--faint);
@@ -1120,7 +1125,7 @@ details.rolls[open] summary::before{content:"2 "}
 /* the field's own buttons sit closer than a toggle elsewhere: there are 32
    of them in one column and they are read as a group, not tapped one by
    one out of a list */
-.calccol .toggles .tog,#calcField .tog{padding:5px 8px;font-size:12px}
+.calccol .toggles .tog,#calcField .tog{padding:4px 7px;font-size:11.5px}
 /* The label rides in the row on a phone too. It was given its own line under
    430px while it was 96px wide, on the reasoning that a 96px column out of
    360 leaves nothing for buttons - true then. At 74px it fits, and measured
@@ -1140,6 +1145,21 @@ details.rolls[open] summary::before{content:"2 "}
    Smogon's do: a tighter grid, a shorter row, less air between sections. */
 .grid2.tight{gap:7px 8px}
 .grid2.tight .field{margin-bottom:0}
+/* LABEL TO THE LEFT, ONE LINE PER FIELD - the idea taken from Smogon's
+   calculator, which the player pointed at. Its selects are 19px tall and
+   its rows 16px, which is desktop-only density a phone-first app cannot
+   copy; what IS portable is that the caption sits beside the control
+   rather than above it. Four fields cost two lines instead of four.
+   The control keeps its height, so it is still something a thumb hits. */
+.calccol .grid2.tight .field{display:grid;grid-template-columns:52px 1fr;
+  align-items:center;gap:7px}
+.calccol .grid2.tight label.f{margin:0;line-height:1.1}
+@media (max-width:380px){
+  /* at 360px a 52px caption plus a select is not a control, it is two
+     slivers - so the caption goes back on top where it started */
+  .calccol .grid2.tight .field{grid-template-columns:1fr}
+  .calccol .grid2.tight label.f{margin-bottom:2px}
+}
 .grid2.tight label.f{margin-bottom:2px}
 @media (min-width:430px){.grid2.tight{grid-template-columns:1fr 1fr}}
 
@@ -1162,10 +1182,12 @@ details.rolls[open] summary::before{content:"2 "}
 
    Both are fixed here, and only here: the 42px floor is a touch target and
    stays everywhere else, including on this screen under a coarse pointer. */
-.calcsplit{display:grid;gap:10px;align-items:start}
-@media (min-width:980px){.calcsplit{grid-template-columns:1fr 1fr}}
-.setblock{min-width:0}
-.spblock{min-width:0}
+/* AND THE NUMBER BOX IS SIZED FOR A NUMBER. The row is
+   `34px 1fr 40px 52px` and the 1fr is the SP input, so a field holding
+   "32" was 201px wide while the stat it computes had 52. Two digits need
+   about 70; the space goes to the computed value, which is the half you
+   read. */
+.calccol .sp{grid-template-columns:34px 70px 46px 1fr}
 .calccol .sp input,.calccol .sp select{min-height:30px;padding:4px 6px}
 @media (pointer:coarse){
   /* a finger still needs something to land on - 38px, not 30, and still 4px
