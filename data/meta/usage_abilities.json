@@ -1,7 +1,7 @@
 {
  "source": "pokebase.app/pokemon-champions",
  "game": "Pokemon Champions",
- "fetched": "2026-09-18",
+ "fetched": "2026-09-19",
  "count": 182,
  "rows": [
   {
@@ -15,7 +15,7 @@
    "rank": 2,
    "slug": "grassy-surge",
    "name": "Grassy Surge",
-   "usage_percent": 8.5,
+   "usage_percent": 8.6,
    "description": ""
   },
   {
@@ -50,7 +50,7 @@
    "rank": 7,
    "slug": "good-as-gold",
    "name": "Good as Gold",
-   "usage_percent": 3.0,
+   "usage_percent": 3.1,
    "description": ""
   },
   {
@@ -111,22 +111,22 @@
   },
   {
    "rank": 16,
+   "slug": "lightning-rod",
+   "name": "Lightning Rod",
+   "usage_percent": 1.9,
+   "description": ""
+  },
+  {
+   "rank": 17,
    "slug": "pixilate",
    "name": "Pixilate",
    "usage_percent": 1.9,
    "description": ""
   },
   {
-   "rank": 17,
+   "rank": 18,
    "slug": "competitive",
    "name": "Competitive",
-   "usage_percent": 1.8,
-   "description": ""
-  },
-  {
-   "rank": 18,
-   "slug": "lightning-rod",
-   "name": "Lightning Rod",
    "usage_percent": 1.8,
    "description": ""
   },
@@ -146,22 +146,22 @@
   },
   {
    "rank": 21,
-   "slug": "inner-focus",
-   "name": "Inner Focus",
-   "usage_percent": 1.4,
-   "description": ""
-  },
-  {
-   "rank": 22,
    "slug": "sand-stream",
    "name": "Sand Stream",
    "usage_percent": 1.4,
    "description": ""
   },
   {
-   "rank": 23,
+   "rank": 22,
    "slug": "flash-fire",
    "name": "Flash Fire",
+   "usage_percent": 1.3,
+   "description": ""
+  },
+  {
+   "rank": 23,
+   "slug": "inner-focus",
+   "name": "Inner Focus",
    "usage_percent": 1.3,
    "description": ""
   },
@@ -342,15 +342,15 @@
   },
   {
    "rank": 49,
-   "slug": "scrappy",
-   "name": "Scrappy",
+   "slug": "solid-rock",
+   "name": "Solid Rock",
    "usage_percent": 0.3,
    "description": ""
   },
   {
    "rank": 50,
-   "slug": "solid-rock",
-   "name": "Solid Rock",
+   "slug": "soundproof",
+   "name": "Soundproof",
    "usage_percent": 0.3,
    "description": ""
   },
@@ -426,15 +426,15 @@
   },
   {
    "rank": 61,
-   "slug": "solar-power",
-   "name": "Solar Power",
+   "slug": "scrappy",
+   "name": "Scrappy",
    "usage_percent": 0.2,
    "description": ""
   },
   {
    "rank": 62,
-   "slug": "soundproof",
-   "name": "Soundproof",
+   "slug": "solar-power",
+   "name": "Solar Power",
    "usage_percent": 0.2,
    "description": ""
   },
