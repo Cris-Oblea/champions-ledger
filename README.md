@@ -84,6 +84,20 @@ stat` and `at 1/3 max HP` rather than `1.5x` and `1/3`. `effect_chips.py
 are counted rather than quietly wrong. The exact 4096ths stays in
 `data/db/effects.json` and in each chip's tooltip.
 
+**A GTS box is a shortlist, so it is filtered like one.** What may go into one
+is settled by two rules rather than taste — only a **duplicate** (the Species
+Clause means a second copy can never share a team with the first) or a species
+**Champions cannot use** — and both were left to be found by eye down a hundred
+rows. They are two toggles now, beside a sort that defaults to **dex order**,
+which is the order HOME itself lists in and therefore how one screen gets
+checked against the other. The rows carry the same card as every other list:
+type band, the picture in the copy's own colours, BST, the ability and the six
+stats, instead of a BST and a Speed. An offer shows both sides the same way.
+And a chip Champions has never heard of now has a **price**, so it gets
+recommendations — `chipValue` read the Champions dex, found nothing, and
+returned no price at all, which meant the one kind of Pokemon the rules say to
+trade was the one kind the app would not advise on.
+
 **One Pokemon sheet, three doors.** Opening a Pokemon from the Champions box,
 from HOME or from a search result used to give three different sheets: the
 search view had the abilities, the Worlds sets and the whole movepool, the box

@@ -52,6 +52,15 @@ setTimeout(()=>{
       .find(b=>/Trade went through/.test(b.textContent));
     console.log("  boton encontrado:", !!btn);
     btn.dispatchEvent(new w.MouseEvent("click",{bubbles:true}));
+    /* AND THEN CONFIRM IT. Closing a trade is asked in the app's own dialog
+       now, not the browser's - so the click above opens a question and stops
+       there, and this test has been clicking into a scrim ever since. It kept
+       "passing" because it had no exit code either: three checks printing NO
+       and a gate line reading ok. Both halves are fixed here. */
+    const yes = d.getElementById("askYes");
+    if (yes && !d.getElementById("askScrim").hidden) {
+      yes.dispatchEvent(new w.MouseEvent("click",{bubbles:true}));
+    }
     setTimeout(()=>{
       console.log("\n  ESCRITURAS:");
       w.__WRITES.forEach(x=>console.log("    ", x[0], JSON.stringify(x[1]).slice(0,110)));
@@ -68,6 +77,17 @@ setTimeout(()=>{
       console.log("  Chesnaught borrado :", removed ? "SI" : "NO  <-- EL BUG");
       console.log("  oferta cerrada     :", offerCleared ? "SI" : "NO");
       console.log("  ERRORES:", errs.length?errs.slice(0,2):"ninguno");
+      /* A TEST WITH NO EXIT CODE IS NOT A TEST. This one printed its three
+         answers and exited 0 whatever they said, so the gate has been reading
+         "a trade removes what you gave away: ok" off a check that could not
+         fail - and all three were NO. */
+      const fails = [!added && "el Pokemon recibido no se agrego",
+                     !removed && "el que diste sigue en la caja",
+                     !offerCleared && "la oferta no se cerro",
+                     errs.length && ("errores JS: " + errs[0])].filter(Boolean);
+      if (fails.length) console.log("\n  FALLOS: " + fails.join(" | ") + "\n");
+      else console.log("\n  todo bien\n");
+      process.exit(fails.length ? 1 : 0);
     },400);
   },400);
 },1500);
