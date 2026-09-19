@@ -70,6 +70,27 @@ var EXTRA_VIEWS = ["buildedit", "teamedit"];
 var EDITOR_HOME = {buildedit: "builds", teamedit: "builds"};
 
 function go(tab){
+  /* ONE HISTORY ENTRY PER TAB CHANGE, so Back walks them one at a time.
+
+     Two things here were wrong when this was first written and both were found
+     by pressing Back in Edge rather than by reading it. THE FIRST TAB WAS
+     NEVER RECORDED: boot calls go() with S.tab already set to the same tab, so
+     the "did it change" guard skipped it and TABHIST started empty - which
+     meant the first real move made it length 1, not 2, and the entry that Back
+     needed was never pushed. AND ONLY ONE WAS EVER PUSHED, so a second Back
+     walked off the page. It seeds itself now, and every change pays its own
+     entry.
+
+     Never while servicing a Back - the handler calls go() itself and would
+     re-push what it just popped - and never on the way OUT of an editor, which
+     returns through go("builds") and is already paying for itself in
+     leaveEditor(). */
+  if (!NAV_BACK && S.tab !== tab &&
+      EXTRA_VIEWS.indexOf(tab) < 0 && EXTRA_VIEWS.indexOf(S.tab) < 0) {
+    if (!TABHIST.length) TABHIST.push(S.tab || tab);
+    TABHIST.push(tab);
+    try { history.pushState({champTab: TABHIST.length}, ""); } catch (e) {}
+  }
   S.tab = tab;
   if (tab === "calc") setTimeout(calcDraw, 0);
   if (tab === "find") setTimeout(findDraw, 0);
@@ -89,8 +110,10 @@ function go(tab){
 /* Leaving an editor returns to the list it came from, which is the Builds tab
    with one pane or the other showing. */
 function leaveEditor(pane){
+  var wasOpen = inEditor();
   go("builds");
   buildsPane(pane === "teams" ? "teams" : "builds");
+  if (wasOpen) layerClosed();
 }
 
 function openEditor(view, title, build, foot){
@@ -105,7 +128,9 @@ function openEditor(view, title, build, foot){
   var f = $(pre + "Foot");
   f.innerHTML = "";
   (foot || []).filter(Boolean).forEach(function(b){ f.appendChild(b); });
+  var wasOpen = inEditor();
   go(view);
+  if (!wasOpen) layerOpened();
 }
 
 /* ===================================================================== sheet */
@@ -153,7 +178,7 @@ function openSheet(title, build, foot){
   f.hidden = !btns.length;
   var wasOpen = !$("scrim").hidden;
   $("scrim").hidden = false;
-  if (!wasOpen) lockScroll(true);
+  if (!wasOpen) { lockScroll(true); layerOpened(); }
   /* a sheet that opens scrolled halfway down its predecessor is disorienting */
   body.scrollTop = 0;
 }
@@ -161,7 +186,7 @@ function closeSheet(){
   var wasOpen = !$("scrim").hidden;
   $("scrim").hidden = true;
   sheetSave = null;
-  if (wasOpen) lockScroll(false);
+  if (wasOpen) { lockScroll(false); layerClosed(); }
 }
 $("sheetClose").onclick = closeSheet;
 $("scrim").onclick = function(e){ if (e.target === $("scrim")) closeSheet(); };
@@ -205,6 +230,7 @@ function ask(title, body, okLabel, danger){
       if (done) return;
       done = true;
       scrim.hidden = true;
+      layerClosed();
       yes.onclick = no.onclick = scrim.onclick = null;
       document.removeEventListener("keydown", onKey, true);
       /* the sheet underneath, if there is one, keeps its own scroll lock */
@@ -222,6 +248,7 @@ function ask(title, body, okLabel, danger){
     document.addEventListener("keydown", onKey, true);
     if ($("scrim").hidden) lockScroll(true);
     scrim.hidden = false;
+    layerOpened();
     setTimeout(function(){ no.focus(); }, 30);
   });
 }
@@ -240,6 +267,88 @@ function fbtn(label, cls, fn){
    own data), lockScroll and _lockY (the iOS scroll lock behind a sheet),
    syncNavHeight, sheetSave and EDITOR_HOME. Before the module pass any of the
    other twelve parts could have reached in and set _lockY. */
+
+/* ================================================= THE PHONE'S BACK BUTTON ==
+   On Android, Back minimised the app.
+
+     "el boton atras de los celulares android minimiza la app, deberia solo ir
+      atras dentro de la app, habria que habilitar la navegacion nativa movil
+      para la comodidad en movil."  (player, 2026-09-19)
+
+   It did that because nothing here ever touched history: the page loads once
+   and everything after is a hidden/shown <section>, so the browser's only
+   entry IS the page and Back leaves it.
+
+   WHAT BACK SHOULD UNDO, topmost first - the same order the eye would expect:
+
+       the confirm dialog   ->  cancel it, which is already the safe answer
+       an open sheet        ->  close it
+       an editor            ->  return to the list it came from
+       a tab change         ->  the tab before it
+       nothing left         ->  and only then does Back leave the app
+
+   HOW IT STAYS HONEST. Every layer that opens pushes one history entry, and a
+   layer closed from inside the app calls history.back() to spend it. That
+   second half is the part that is easy to get wrong: without it the entry
+   survives its own dialog, and the next Back finds nothing open and walks the
+   user off a tab they never left. SWALLOW counts the pops we caused
+   ourselves, so the handler ignores exactly those and no more. */
+var LAYERS = 0;                  /* history entries pushed for open layers */
+var SWALLOW = 0;                 /* pops we caused and have already acted on */
+var TABHIST = [];                /* tabs visited, so Back can step through */
+var NAV_BACK = false;            /* true while a pop is being serviced */
+
+function layerOpened(){
+  /* A NEW LAYER DRAINS ANY STALE SWALLOW. layerClosed() asks the browser to
+     spend an entry and counts on the pop coming back; if that pop never
+     arrives - a browser that refuses history.back(), a jsdom that implements
+     back() without dispatching popstate - the count leaks and every future
+     Back is eaten by a press that already happened. Opening a layer is the
+     moment that can never be true any more, so it resets there. */
+  SWALLOW = 0;
+  LAYERS++;
+  try { history.pushState({champLayer: LAYERS}, ""); } catch (e) {}
+}
+function layerClosed(){
+  if (LAYERS <= 0 || NAV_BACK) return;
+  LAYERS--; SWALLOW++;
+  try { history.back(); } catch (e) { SWALLOW--; }
+}
+
+function inEditor(){
+  return EXTRA_VIEWS.some(function(v){
+    var n = $("v-" + v);
+    return n && !n.hidden;
+  });
+}
+
+window.addEventListener("popstate", function(){
+  if (SWALLOW > 0) { SWALLOW--; return; }
+  NAV_BACK = true;
+  try {
+    if (LAYERS > 0) {
+      LAYERS--;
+      if (!$("askScrim").hidden) {
+        /* the dialog resolves false on its own Cancel path */
+        var no = $("askNo");
+        if (no && no.onclick) no.onclick();
+      } else if (!$("scrim").hidden) {
+        closeSheet();
+      } else if (inEditor()) {
+        leaveEditor();
+      }
+      return;
+    }
+    /* no layer left: step back through the tabs this session has visited */
+    /* No re-push: every tab change already bought its own entry on the way
+       in, so the stack and the browser's history stay the same length. */
+    if (TABHIST.length > 1) {
+      TABHIST.pop();
+      go(TABHIST[TABHIST.length - 1]);
+    }
+  } finally { NAV_BACK = false; }
+});
+
 export {
   ask, buildTabs, closeSheet, fbtn, go, leaveEditor, mq, openEditor, openSheet,
 };
