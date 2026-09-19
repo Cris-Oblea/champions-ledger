@@ -826,15 +826,58 @@ function moveFilters(body, pool, onChange, placeholder, opts){
      typeSkin, which is the only thing that knows a type is two-toned and which
      of the eighteen are written in black. Passing a bare colour here is what
      let this one write #fff next to it. */
+  /* THREE STATES, NOT TWO: off, include, EXCLUDE.
+
+       "en el filtro de tipo esta el operador logico and y or, pero falta algo
+        que diga no, por ejemplo, si pongo en move trick room, pero en type
+        quiero colocar que no me muestre ningun pokemon de tipo psyquico, no
+        existe esa opcion."  (player, 2026-09-19)
+
+     A tap cycles off -> include -> exclude -> off, and an excluded chip is
+     drawn struck through with a minus, because it has to read as the opposite
+     of the chip beside it rather than as a second shade of on.
+
+     It also answers the one thing the category group loses by going exclusive
+     below: "physical or special" is "NOT status". */
+  var EXCL = {};                       // group -> key -> the chip node
   function chip(row, group, key, text, type){
     var t = el("button", "tog", text);
     t.setAttribute("aria-pressed", "false");
     if (type) typeSkin(t, type, false);
+    (EXCL[group] = EXCL[group] || {})[key] = t;
+    function paint(v){
+      t.setAttribute("aria-pressed", v === 1 ? "true" : "false");
+      t.classList.toggle("no", v === -1);
+      t.textContent = (v === -1 ? "− " : "") + text;
+      if (type) {
+        typeSkin(t, type, v === 1);
+        /* typeSkin keeps the type's colour on the border even when it is off,
+           which is right for an unpicked chip and wrong for a ruled-out one:
+           the border is the only thing left saying "this is a Psychic chip"
+           when the whole point is that Psychic is being refused. */
+        if (v === -1) t.style.borderColor = "";
+      }
+    }
+    t._paint = paint;
     t.onclick = function(){
-      var on = !F[group][key];
-      if (on) F[group][key] = 1; else delete F[group][key];
-      t.setAttribute("aria-pressed", on ? "true" : "false");
-      if (type) typeSkin(t, type, on);
+      var was = F[group][key] || 0;
+      var now = was === 0 ? 1 : was === 1 ? -1 : 0;
+      if (now) F[group][key] = now; else delete F[group][key];
+      /* A MOVE HAS EXACTLY ONE CATEGORY, so two of them included at once can
+         only ever mean "either", and the player read the group as an AND and
+         expected picking one to drop the other (2026-09-19: "seleccionar una
+         desactiva la otra... un move solo puede tener 1 de las 3 categorias").
+         Includes are exclusive here; excludes still stack, which is what keeps
+         "not status" and "neither status nor physical" sayable. */
+      if (group === "cat" && now === 1) {
+        Object.keys(EXCL.cat).forEach(function(k){
+          if (k !== key && F.cat[k] === 1) {
+            delete F.cat[k];
+            EXCL.cat[k]._paint(0);
+          }
+        });
+      }
+      paint(now);
       onChange();
     };
     row.appendChild(t);
@@ -849,14 +892,14 @@ function moveFilters(body, pool, onChange, placeholder, opts){
   chip(crow, "cat", "P", "Physical");
   chip(crow, "cat", "S", "Special");
   chip(crow, "cat", "T", "Status");
-  body.appendChild(label("Category — any of these"));
+  body.appendChild(label("Category — one at a time, or − to rule out"));
   body.appendChild(crow);
 
   var mrow = el("div", "toggles"); mrow.style.marginBottom = "8px";
   chip(mrow, "trait", "spread", "Spread");
   chip(mrow, "trait", "ally", "Hits ally");
   chip(mrow, "trait", "pri", "Priority");
-  body.appendChild(label("Must have — all of these"));
+  body.appendChild(label("Must have — all of these, or − to rule out"));
   body.appendChild(mrow);
 
   var types = [];
@@ -865,7 +908,7 @@ function moveFilters(body, pool, onChange, placeholder, opts){
   if (types.length > 1) {
     var trow = el("div", "toggles"); trow.style.marginBottom = "10px";
     types.forEach(function(ty){ chip(trow, "type", ty, ty, ty); });
-    body.appendChild(label("Type — any of these"));
+    body.appendChild(label("Type — any of these, or − to rule out"));
     body.appendChild(trow);
   }
   var count = label("");
@@ -882,13 +925,24 @@ function moveFilters(body, pool, onChange, placeholder, opts){
       if (q && m.name.toLowerCase().indexOf(q) < 0 &&
           m.type.toLowerCase().indexOf(q) < 0 &&
           (m.text || "").toLowerCase().indexOf(q) < 0) return false;
-      if (cats.length && cats.indexOf(m.cat) < 0) return false;
-      if (tys.length && tys.indexOf(m.type) < 0) return false;
-      if (trs.length && !trs.every(function(k){
+      /* An EXCLUDE is checked before an include, and on its own: "no Psychic"
+         has to work with nothing else picked, which it cannot do if an empty
+         include list is read as "everything is rejected". */
+      if (F.cat[m.cat] === -1) return false;
+      if (F.type[m.type] === -1) return false;
+      var inCat = cats.filter(function(k){ return F.cat[k] === 1; });
+      var inTy = tys.filter(function(k){ return F.type[k] === 1; });
+      if (inCat.length && inCat.indexOf(m.cat) < 0) return false;
+      if (inTy.length && inTy.indexOf(m.type) < 0) return false;
+      var has = function(k){
         return k === "spread" ? !!m.spread
              : k === "ally" ? !!m.hitsAlly
              : (m.pri || 0) > 0;
-      })) return false;
+      };
+      if (trs.some(function(k){ return F.trait[k] === -1 && has(k); }))
+        return false;
+      var inTr = trs.filter(function(k){ return F.trait[k] === 1; });
+      if (inTr.length && !inTr.every(has)) return false;
       return true;
     });
     hits.sort(function(a, b){

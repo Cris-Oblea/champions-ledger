@@ -84,6 +84,23 @@ stat` and `at 1/3 max HP` rather than `1.5x` and `1/3`. `effect_chips.py
 are counted rather than quietly wrong. The exact 4096ths stays in
 `data/db/effects.json` and in each chip's tooltip.
 
+**A filter chip has three states, not two.** A tap includes, the next rules
+out, the third clears — so "Trick Room, but nothing Psychic" is one query
+instead of an impossible one. An excluded chip is struck through with a minus
+rather than shaded, because it has to read as the opposite of the chip beside
+it. And the **category** group picks one at a time: a move has exactly one of
+Physical, Special and Status, so two of them included could only ever mean
+"either", which is what ruling out the third already says.
+
+**The phone's Back button navigates the app instead of leaving it.** Nothing
+here touched history before — the page loads once and every screen after is a
+hidden `<section>` — so the browser's only entry *was* the page, and on Android
+Back minimised it. Every layer that opens now spends one history entry, and
+Back undoes them topmost first: the confirm dialog, then an open sheet, then an
+editor, then the tab before it, and only when none of those are left does it
+leave. Verified in Edge on a clean tab, including the last part: an app that
+cannot be left would be worse than the bug.
+
 **Choosing which Pokemon a build is for is a search, not a scroll.** It was a
 `<select>` of 264 forms in one alphabetical run with no way to look inside it.
 It is a field you tap now, opening the same kind of sheet the GTS and the

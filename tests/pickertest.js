@@ -62,8 +62,19 @@ setTimeout(() => {
     const slot = [...d.querySelectorAll(".slot")].find(s => /Earthquake/.test(s.textContent));
     click(slot);
     setTimeout(() => {
+      /* UN CHIP TIENE TRES ESTADOS y escribe un menos en su propia etiqueta
+         cuando excluye, asi que buscarlo por texto exacto deja de encontrarlo
+         en cuanto se usa. Se busca por el texto sin el signo. */
       const chip = t => [...d.querySelectorAll(".sheet .tog")]
-        .find(b => b.textContent.trim() === t);
+        .find(b => b.textContent.replace(/^−\s*/, "").trim() === t);
+      const state = t => {
+        const b = chip(t);
+        return b.classList.contains("no") ? "no"
+             : b.getAttribute("aria-pressed") === "true" ? "si" : "off";
+      };
+      /* off -> incluir -> excluir -> off, asi que "apagar" puede ser mas de
+         un toque */
+      const off = t => { while (state(t) !== "off") click(chip(t)); };
       const rows = () => [...d.querySelectorAll(".sheet .list .row")];
       const names = () => rows().map(r => r.querySelector(".rname").textContent
         .replace(/priority \+\d| ?spread| ?hits ally|Rough Skin/g, "").trim());
@@ -102,39 +113,74 @@ setTimeout(() => {
          az.join("|") === az.slice().sort((a,b)=>a.localeCompare(b)).join("|"), true);
 
       console.log("\n  quitar un chip lo devuelve");
-      click(chip("Ground"));
-      click(chip("Physical"));
+      off("Ground"); off("Physical");
       ok("vuelven todos", rows().length, all);
 
       console.log("\n  los otros filtros");
       click(chip("Priority"));
       ok("todas con prioridad",
          rows().every(r => /priority \+/.test(r.querySelector(".rname").textContent)), true);
-      click(chip("Priority"));
+      off("Priority");
       click(chip("Hits ally"));
       ok("todas golpean al aliado",
          rows().length > 0 &&
          rows().every(r => /hits ally/.test(r.querySelector(".rname").textContent)), true);
-      click(chip("Hits ally"));
+      off("Hits ally");
       click(chip("Status"));
       ok("solo status", meta().every(t => /^Status/.test(t)), true);
-      click(chip("Status"));
+      off("Status");
 
       /* Two chips in "Must have" mean BOTH, not either - the player caught
          this returning the union. A move cannot be spread and priority at
          once in Champions, and 0 results is the honest answer to that. */
       console.log("\n  dos rasgos a la vez piden LOS DOS");
-      click(chip("Spread")); click(chip("Hits ally"));
+      off("Status"); click(chip("Spread")); click(chip("Hits ally"));
       const bothTraits = rows();
       ok("spread + hits ally: cumplen ambos",
          bothTraits.length > 0 && bothTraits.every(r => {
            const t = r.querySelector(".rname").textContent;
            return /spread/.test(t) && /hits ally/.test(t); }), true);
-      click(chip("Hits ally")); click(chip("Priority"));
+      off("Hits ally"); click(chip("Priority"));
       ok("spread + priority: no existe ninguno", rows().length, 0);
       ok("y el contador lo dice", /^0 of \d+ moves/.test(countLine()), true);
-      click(chip("Spread")); click(chip("Priority"));
+      off("Spread"); off("Priority");
       ok("al quitarlos vuelven todos", rows().length, all);
+      /* ------------------------------------- el tercer estado: NO ------ */
+      /* "en el filtro de tipo esta el operador logico and y or, pero falta
+         algo que diga no" (2026-09-19). Un toque incluye, el siguiente
+         excluye, el tercero lo apaga. */
+      console.log("\n  el tercer estado de un chip: excluir");
+      off("Spread"); off("Priority"); off("Status");
+      click(chip("Water"));
+      ok("un toque incluye", state("Water"), "si");
+      click(chip("Water"));
+      ok("dos toques excluyen", state("Water"), "no");
+      ok("y lo dice con un menos", chip("Water").textContent.charAt(0), "−");
+      ok("no queda ningun Water", meta().some(t => /Water/.test(t)), false);
+      ok("pero si quedan moves", rows().length > 0, true);
+      click(chip("Water"));
+      ok("el tercer toque lo apaga", state("Water"), "off");
+      ok("y vuelven todos", rows().length, all);
+
+      /* --------------------------- y la categoria es de una en una ------ */
+      /* "un move solo puede tener 1 de las 3 categorias... seleccionar una
+         desactiva la otra" */
+      console.log("\n  la categoria se elige de una en una");
+      click(chip("Physical"));
+      click(chip("Special"));
+      ok("elegir Special suelta Physical", state("Physical"), "off");
+      ok("y Special queda puesta", state("Special"), "si");
+      ok("solo salen specials", meta().every(t => /^Special/.test(t)), true);
+      /* excluir SI se puede acumular: es como se pide "ni status ni fisico" */
+      off("Special");
+      click(chip("Status")); click(chip("Status"));
+      click(chip("Physical")); click(chip("Physical"));
+      ok("dos exclusiones conviven",
+         state("Status") + "/" + state("Physical"), "no/no");
+      ok("y solo quedan specials", meta().every(t => /^Special/.test(t)), true);
+      off("Status"); off("Physical");
+      ok("al soltarlas vuelven todos", rows().length, all);
+
 
       console.log("\n  ERRORES JS: " + (errs.length ? errs.join(" | ") : "ninguno"));
       console.log(bad ? "\n  " + bad + " FALLOS\n" : "\n  todo bien\n");

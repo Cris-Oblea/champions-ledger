@@ -896,6 +896,13 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border:2px solid var(
 .toggles{display:flex;flex-wrap:wrap;gap:6px}
 .tog{border:1px solid var(--line);background:var(--surface);border-radius:7px;
   padding:6px 9px;font-size:12.5px;display:flex;align-items:center;gap:6px}
+/* AN EXCLUDED CHIP IS THE OPPOSITE OF THE ONE BESIDE IT, not a second
+   shade of on. Struck through, in the bad colour, with the minus the
+   button itself writes - so it reads the same way with or without
+   colour, which matters on a chip that also carries a type skin. */
+.tog.no{background:var(--bad-soft);
+  border-color:var(--bad);color:var(--bad);text-decoration:line-through;
+  text-decoration-thickness:1px}
 .tog[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent);
   color:var(--accent);font-weight:500}
 .tog.mega[aria-pressed="true"]{background:var(--mega-soft);border-color:var(--mega);

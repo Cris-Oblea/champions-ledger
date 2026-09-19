@@ -324,6 +324,36 @@ const TABS = ["box", "home", "builds", "calc", "find", "gear", "trainer"];
      /1 of them are moves Champions has in its database/.test(sheet2), true);
   w.closeSheet();
 
+  /* ------------------------------------- el boton atras del telefono ----- */
+  /* En Android, Atras minimizaba la app: la pagina carga una vez y todo lo
+     demas es una <section> que se muestra o se esconde, asi que la unica
+     entrada del historial ERA la pagina (2026-09-19). Ahora cada capa que se
+     abre gasta una entrada y Atras las deshace de arriba abajo. */
+  console.log("\n  atras deshace capas, no cierra la app");
+  w.go("find"); w.go("calc");
+  w.findDetail(w.byName["Garchomp"]);
+  await tick(150);
+  ok("con la hoja abierta", !d.getElementById("scrim").hidden, true);
+  /* jsdom implementa history.back() pero NO despacha popstate por el, asi que
+     aqui se lanza el evento igual que lo lanza el navegador. La integracion de
+     verdad - pulsar Atras y que se cierre la hoja - se comprobo en Edge sobre
+     la pagina servida, que es donde el boton existe. */
+  const back = async () => {
+    w.dispatchEvent(new w.PopStateEvent("popstate", {state: null}));
+    await tick(120);
+  };
+  await back();
+  ok("el primer atras cierra la hoja", d.getElementById("scrim").hidden, true);
+  ok("...y no se mueve de pestana", w.S.tab, "calc");
+  await back();
+  ok("el segundo atras vuelve a la pestana anterior", w.S.tab, "find");
+  /* y sigue retrocediendo por donde se paso, no a una pestana fija: este test
+     ya ha recorrido todas antes de llegar aqui */
+  const before3 = w.S.tab;
+  await back();
+  ok("el tercero sigue retrocediendo", w.S.tab !== before3, true);
+  ok("...y nunca sale de la app", !!d.getElementById("v-" + w.S.tab), true);
+
   before = errors.length;
   w.buildSheet("charizard");
   await tick(150);
