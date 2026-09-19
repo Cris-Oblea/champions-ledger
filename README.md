@@ -117,8 +117,10 @@ makes that a nearest-neighbour upscale with hard square edges. That is what
 "se ven pixelados" was.
 
 **A filter chip has three states, not two.** A tap includes, the next rules
-out, the third clears — so "Trick Room, but nothing Psychic" is one query
-instead of an impossible one. An excluded chip is struck through with a minus
+out, the third clears — so **"Trick Room, but nothing Psychic"** is one query
+instead of an impossible one: 46 Pokemon learn it, 27 are Psychic, and ruling
+that out leaves 19. It is in the **Find tab's type filter**, which is where the
+question gets asked, and in the move filters as well. An excluded chip is struck through with a minus
 rather than shaded, because it has to read as the opposite of the chip beside
 it. And the **category** group picks one at a time: a move has exactly one of
 Physical, Special and Status, so two of them included could only ever mean

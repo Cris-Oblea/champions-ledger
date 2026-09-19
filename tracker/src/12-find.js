@@ -42,7 +42,8 @@ import { fill, note } from "./13-boot.js";
 
    `sort` is a stat key, "bst" or "dex". `dir` is "desc" or "asc"; tapping the
    stat you are already on flips it. */
-var FIND = {q: "", moves: [], types: [], typeMode: "and", ability: "",
+var FIND = {q: "", moves: [], types: [], notTypes: [], typeMode: "and",
+            ability: "",
             inChamp: false, inHome: false,
             sort: "bst", dir: "desc", cat: ""};
 
@@ -125,6 +126,13 @@ function findDraw(){
   FIND.types.forEach(function(t, i){
     chip("is " + t, function(){ FIND.types.splice(i, 1); findDraw(); });
   });
+  /* A RULED-OUT TYPE IS A FILTER TOO, so it gets a chip up here with the rest
+     - otherwise it is invisible once the sheet is shut and a search quietly
+     returns fewer Pokemon than it should for no reason on screen. */
+  FIND.notTypes.forEach(function(t, i){
+    chip("not " + t, function(){ FIND.notTypes.splice(i, 1); findDraw(); },
+         "no", "Remove this filter");
+  });
   /* the AND/OR only means something with two or more, and it is the whole
      difference between "a Rock/Steel Pokemon" and "the Rock, Steel and Ground
      ones" - so it is switchable from here, not buried in the sheet */
@@ -182,6 +190,13 @@ function findRun(){
     /* Each filter may be satisfied by the base OR by a Mega, and the LAST one
        that needed a Mega is remembered so the card can say so. */
     var via = null;
+    /* RULED OUT WINS, and it is checked on the BASE form only. A Mega that
+       picks up Psychic does not make the Pokemon Psychic in the box, and the
+       question being asked - "nothing Psychic on this team" - is about what
+       walks on. */
+    if (FIND.notTypes.length &&
+        FIND.notTypes.some(function(t){ return p.types.indexOf(t) >= 0; }))
+      return false;
     if (FIND.types.length) {
       var hit = orMega(p, function(f){
         return FIND.typeMode === "or"
@@ -1449,9 +1464,20 @@ function findInit(){
       Object.keys(live).sort().forEach(function(ty){
         var b = el("button", "tog", ty);
         typeSkin(b, ty, false);
+        /* OFF -> HAS IT -> HASN'T IT -> OFF. The ALL/ANY control above says
+           how the picked types combine and had no way to say NOT, which is the
+           one the player actually asked for and the one I first built in the
+           wrong screen - it went into the MOVE picker's chips, where it reads
+           "a Psychic move", not "a Psychic Pokemon" (2026-09-19: "en el filtro
+           de tipo esta el operador logico and y or, pero falta algo que diga
+           no... si pongo en move trick room, pero en type quiero colocar que
+           no me muestre ningun pokemon de tipo psyquico"). He looked for it
+           here, where he said it, and it was not here. */
         b.onclick = function(){
-          var i = FIND.types.indexOf(ty);
-          if (i >= 0) FIND.types.splice(i, 1); else FIND.types.push(ty);
+          var i = FIND.types.indexOf(ty), j = FIND.notTypes.indexOf(ty);
+          if (i < 0 && j < 0) FIND.types.push(ty);
+          else if (i >= 0) { FIND.types.splice(i, 1); FIND.notTypes.push(ty); }
+          else FIND.notTypes.splice(j, 1);
           paint(); findDraw();
         };
         chips[ty] = b;
@@ -1459,16 +1485,27 @@ function findInit(){
       });
       function paint(){
         Object.keys(chips).forEach(function(ty){
-          var on = FIND.types.indexOf(ty) >= 0, b = chips[ty];
+          var on = FIND.types.indexOf(ty) >= 0;
+          var no = FIND.notTypes.indexOf(ty) >= 0;
+          var b = chips[ty];
           b.setAttribute("aria-pressed", on ? "true" : "false");
+          b.classList.toggle("no", no);
+          b.textContent = (no ? "− " : "") + ty;
           /* the type's own ink, not #fff - eight of the eighteen are written
              in black and white on Electric is unreadable */
           typeSkin(b, ty, on);
+          /* a ruled-out chip drops the type's border too: that border is the
+             last thing still saying "this is a Psychic chip" when the whole
+             point is that Psychic is being refused */
+          if (no) b.style.borderColor = "";
         });
-        note.textContent = FIND.typeMode === "or"
+        note.textContent = (FIND.typeMode === "or"
           ? "Any one of the types you pick is enough - pick as many as you like."
           : "The Pokemon must have every type you pick. Nothing has more than " +
-            "two, so three or more can never match.";
+            "two, so three or more can never match.")
+          + " Tap a type twice to rule it OUT instead"
+          + (FIND.notTypes.length
+             ? " — ruling out " + FIND.notTypes.join(", ") + "." : ".");
         note.className = "sub";
         if (FIND.typeMode === "and" && FIND.types.length > 2) {
           note.textContent = "Nothing has three types. Switch to “has ANY " +
@@ -1591,7 +1628,8 @@ function findInit(){
 
   paintSort();
   $("findClear").onclick = function(){
-    FIND.moves = []; FIND.types = []; FIND.typeMode = "and";
+    FIND.q = ""; if ($("findName")) $("findName").value = "";
+    FIND.moves = []; FIND.types = []; FIND.notTypes = []; FIND.typeMode = "and";
     FIND.ability = "";
     FIND.inChamp = false; FIND.inHome = false;
     FIND.sort = "bst"; FIND.dir = "desc";
