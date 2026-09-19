@@ -1152,12 +1152,13 @@
   "effect": "The accuracy of all moves known by this Pokémon and all Pokémon targeting this Pokémon raises to 100%",
   "pokemon": [
    "Golurk",
+   "Lycanroc-Midnight",
    "Machamp",
    "Mega Hawlucha",
    "Mega Pidgeot",
    "Mega Raichu Y"
   ],
-  "count": 5
+  "count": 6
  },
  {
   "name": "Oblivious",
