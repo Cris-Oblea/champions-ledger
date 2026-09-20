@@ -604,43 +604,56 @@ function pokeCard(p, o){
   row.appendChild(m);
 
   /* --- the sprites ---------------------------------------------------- */
-  /* ALL OF THEM AT NATIVE SIZE: the file has 96 pixels and no more, so
-     anything smaller is a resample of a pixel sprite. Two or three do not fit
-     in a corner, so they stop being a corner - the card marks itself
-     `.hasline` and the strip runs across the top, base first and then what it
-     becomes. A Pokemon with no Mega keeps the corner sprite exactly as it
-     was, which is most of them. */
-  if (ms.length) {
+  /* EVERY CARD PUTS ITS SPRITES IN A STRIP ACROSS THE TOP, whether there is
+     one of them or three (player, 2026-09-20: "unificar, para ver como
+     queda").
+
+     The corner was not a style choice, it was what one 96px sprite allowed
+     and three did not - sprites are drawn at native size and nothing shrinks
+     them. So a Pokemon with a Mega line got the strip and everything else
+     kept the corner, and that left two card shapes in one grid. Measured over
+     the Find grid: a corner card starts its name at y=28 and a strip card at
+     y=137, and in a row holding both they sit 109px apart. In dex order 55%
+     of rows hold both, by Speed 45%, by BST 20%.
+
+     What it costs is the strip's own 104px on the cards that used to overlap
+     it: +10% of scroll on the desktop grid, +15% on a phone. What it buys is
+     one shape - and 274px of usable width instead of 186, because the corner
+     sprite was stealing 88 of it from the name, the types and the boxes.
+
+     A LONE SPRITE CARRIES NO CAPTION. "base" only means something beside the
+     thing it is not; on its own it is a word under a picture of the Pokemon
+     whose name is written underneath anyway. */
+  var strip = el("div", "megapics");
+  var self = spriteFor(p.name, false, !!o.shiny);
+  if (self) {
+    self.className = "megapic";
+    self.title = p.name;
+    var c0 = el("div", "megapicwrap");
+    c0.appendChild(self);
+    if (ms.length) c0.appendChild(el("span", "megapickey base", "base"));
+    strip.appendChild(c0);
+  }
+  ms.forEach(function(mm){
+    var mp = spriteFor(mm.name, false, !!o.shiny);
+    if (!mp) return;
+    mp.className = "megapic";
+    mp.title = mm.name;
+    var cell = el("div", "megapicwrap");
+    cell.appendChild(mp);
+    cell.appendChild(el("span", "megapickey " + megaInk(mm, p),
+      megaSuffix(mm, p) ? "mega " + megaSuffix(mm, p) : "mega"));
+    strip.appendChild(cell);
+  });
+  if (strip.children.length) {
     row.classList.add("hasline");
     row.classList.remove("hassprite");
     /* typeCard already pinned one to the corner, and dropping the CLASS only
        stops it narrowing the text - the image is still there and still
-       absolutely positioned, so the base Pokemon appeared twice. */
+       absolutely positioned, so the Pokemon appeared twice. */
     var corner = row.querySelector("img.sprite");
     if (corner) corner.remove();
-    var strip = el("div", "megapics");
-    var self = spriteFor(p.name, false, !!o.shiny);
-    if (self) {
-      self.className = "megapic";
-      self.title = p.name;
-      var c0 = el("div", "megapicwrap");
-      c0.appendChild(self);
-      c0.appendChild(el("span", "megapickey base", "base"));
-      strip.appendChild(c0);
-    }
-    ms.forEach(function(mm){
-      var mp = spriteFor(mm.name, false, !!o.shiny);
-      if (!mp) return;
-      mp.className = "megapic";
-      mp.title = mm.name;
-      var cell = el("div", "megapicwrap");
-      cell.appendChild(mp);
-      cell.appendChild(el("span", "megapickey " + megaInk(mm, p),
-        megaSuffix(mm, p) ? "mega " + megaSuffix(mm, p) : "mega"));
-      strip.appendChild(cell);
-    });
-    if (strip.children.length > 1) row.insertBefore(strip, row.firstChild);
-    else { row.classList.remove("hasline"); row.classList.add("hassprite"); }
+    row.insertBefore(strip, row.firstChild);
   }
   if (o.onclick) row.onclick = o.onclick;
   return row;
