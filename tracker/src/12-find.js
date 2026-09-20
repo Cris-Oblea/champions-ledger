@@ -3,7 +3,7 @@
 import { $, C, DEX, MOVES, MOVE_BY, SORT, STAT_KEYS, STAT_LABEL, STONE_OF,
  TYPE_COLOR, anyRow, bst, byName, capNote, cardLine, catName, defence,
  dexNo, effectLine, el, labelBox, learnset, megaLine, megaSuffix, megasFor,
- podiumChip, podiumFor, pokeCard, splitPct, spriteFor, statGrid, toast,
+ podiumChip, pokeFacts, podiumFor, pokeCard, splitPct, spriteFor, statGrid, toast,
  typeCard, typeChip, typeSkin, usageTag } from "./01-data.js";
 import { S, boxRows, hasStone, originOf, ownedNames } from "./02-state.js";
 import { closeSheet, fbtn, openSheet } from "./04-nav.js";
@@ -354,20 +354,22 @@ function pokeHead(body, p, opts){
   var big = spriteFor(p.name, true, opts.shiny);
   if (big) head.appendChild(big);
   var info = el("div", "sheetfacts");
-  var chips = el("div", "rmeta");
-  p.types.forEach(function(t){ chips.appendChild(typeChip(t)); });
-  var med0 = podiumChip(p.name);
-  if (med0) chips.appendChild(med0);
-  info.appendChild(chips);
-  /* THE SAME CELL AS THE CARD THAT OPENED THIS - BST only. An Ability cell
-     went in beside it and came straight back out: this sheet already has an
-     Abilities section with the name, the text and the measured multiplier. */
-  info.appendChild(cardLine([labelBox(bst(p), "BST")]));
-  /* THE STATS COME UP HERE TOO, which is what makes the picture free: the
-     column beside a 128px render was holding two short rows and a lot of
-     nothing. This was also a FIFTH hand-written stat line - built inline
-     with its own loop, and without the label class the others use. */
-  info.appendChild(statGrid(p));
+  /* EXACTLY WHAT THE CARD DRAWS, from the same function. This head used to
+     write its own: a chips row, a BST cell alone on a line, and a stat table
+     with no Mega deltas and no inks - so tapping a card opened something
+     that looked like a different app (player, 2026-09-20: "no lo veo
+     reflejado en todas las cards de toda la app... la idea es que todas las
+     cards sean iguales en todos lados de la app, sin excepciones").
+
+     The dex number is dropped - the sheet has it in the title - and the
+     medal joins the chips, which is the one thing this door adds. */
+  pokeFacts(info, p, p.mega ? [] : megaLine(p), {
+    dex: false,
+    meta: function(chips){
+      var med0 = podiumChip(p.name);
+      if (med0) chips.appendChild(med0);
+    }
+  });
   head.appendChild(info);
   body.appendChild(head);
   /* The other spellings that mean this Pokemon. Squawkabilly's three extra

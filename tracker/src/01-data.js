@@ -464,36 +464,26 @@ function cardLine(cells){
      meta      fn(metaLine)  - chips that belong beside the types
      notes     fn(cardBody)  - the .st lines underneath
      onclick   what tapping it does                                        */
-function pokeCard(p, o){
+/* THE FACTS OF A POKEMON, in the order the card settled: the type chips
+   and what the stone swaps them to, BST beside the base abilities, one box
+   per Mega ability in its own ink, and the six stats with every form on its
+   own row.
+
+   IT IS A FUNCTION BECAUSE THE SHEET NEEDS THE SAME THING. Splitting the
+   card into one implementation fixed the lists and left the SHEET - what
+   opens when you tap a card - still drawing its own head: a BST cell alone
+   on a line, no abilities beside it, and a stat table with no Mega deltas
+   and no inks (player, 2026-09-20: "no lo veo reflejado en todas las cards
+   de toda la app... bst en una linea, habilidades base en otra... la idea
+   es que todas las cards sean iguales en todos lados de la app, sin
+   excepciones").
+
+   So the shared middle lives here and both callers append it. `ms` is
+   passed in rather than recomputed, because the caller has already decided
+   whether this Pokemon has a Mega line to show. */
+function pokeFacts(m, p, ms, o){
   o = o || {};
-  var row = typeCard(el(o.tag || "button", "row" + (o.cls ? " " + o.cls : "")),
-                     p, !!o.shiny);
-  var m = el("div", "rmain");
   var label = o.name || p.name;
-
-  /* --- the name line ------------------------------------------------- */
-  var h = el("div", "rname");
-  if (o.pre) o.pre(h);
-  h.appendChild(document.createTextNode(label));
-  if (o.badges) o.badges(h);
-  /* THE LINE, NOT THE FORMS. One chip per Mega carrying only the letter that
-     tells them apart - Charizard X and Y, Garchomp and Garchomp Z - and the
-     title says what the stone costs and what it swaps, so the card never has
-     to spend a line on it. A Mega drawn as itself has no Mega line of its
-     own. */
-  var ms = (o.megas === false || p.mega) ? [] : megaLine(p);
-  /* NO MEGA CHIPS HERE ANY MORE (player, 2026-09-20: "los tags MEGA, MEGA Z,
-     Mega X, Mega Y ya no sirven, porque ahora los sprites representan
-     visualmente las megas con la leyenda morada que tienen"). They were the
-     only way to know a species had a second form back when the card carried
-     one picture; the strip of sprites says it better, in colour, with the
-     form's own face. What the chip also carried - which stone, and whether it
-     is owned - moved to the ability box below, which is the row that is
-     actually about that Mega. */
-  var med = podiumChip(label);
-  if (med) h.appendChild(med);
-  m.appendChild(h);
-
   /* --- the meta line -------------------------------------------------- */
   var meta = el("div", "rmeta");
   if (o.dex !== false) meta.appendChild(el("span", "mono", dexLabel(label)));
@@ -551,12 +541,42 @@ function pokeCard(p, o){
   }
   /* --- the six stats -------------------------------------------------- */
   m.appendChild(statGrid(p, o.mark, ms));
-  /* AND THE COLOUR ITSELF SAYS SO when the stone changes the typing. Last,
-     because it reads the same `ms` the chips and the arrows above were
-     built from - one decision about what the Mega line is, used four
-     ways. */
-  retypeLayer(row, p, ms);
+}
+function pokeCard(p, o){
+  o = o || {};
+  var row = typeCard(el(o.tag || "button", "row" + (o.cls ? " " + o.cls : "")),
+                     p, !!o.shiny);
+  var m = el("div", "rmain");
+  var label = o.name || p.name;
 
+  /* --- the name line ------------------------------------------------- */
+  var h = el("div", "rname");
+  if (o.pre) o.pre(h);
+  h.appendChild(document.createTextNode(label));
+  if (o.badges) o.badges(h);
+  /* THE LINE, NOT THE FORMS. One chip per Mega carrying only the letter that
+     tells them apart - Charizard X and Y, Garchomp and Garchomp Z - and the
+     title says what the stone costs and what it swaps, so the card never has
+     to spend a line on it. A Mega drawn as itself has no Mega line of its
+     own. */
+  var ms = (o.megas === false || p.mega) ? [] : megaLine(p);
+  /* NO MEGA CHIPS HERE ANY MORE (player, 2026-09-20: "los tags MEGA, MEGA Z,
+     Mega X, Mega Y ya no sirven, porque ahora los sprites representan
+     visualmente las megas con la leyenda morada que tienen"). They were the
+     only way to know a species had a second form back when the card carried
+     one picture; the strip of sprites says it better, in colour, with the
+     form's own face. What the chip also carried - which stone, and whether it
+     is owned - moved to the ability box below, which is the row that is
+     actually about that Mega. */
+  var med = podiumChip(label);
+  if (med) h.appendChild(med);
+  m.appendChild(h);
+
+  pokeFacts(m, p, ms, o);
+  /* AND THE COLOUR ITSELF SAYS SO when the stone changes the typing.
+     The CARD's job, not the facts': it paints the card's own band, tint
+     and frame, and a sheet has none of those to cross-fade. */
+  retypeLayer(row, p, ms);
   /* NO ROW FOR THIS EXACT FORM. A caveat about the numbers themselves, which
      no tag can say for the caller. */
   if (p.approx) {
@@ -1047,6 +1067,7 @@ export {
   STAT_KEYS, STAT_LABEL, STONE_OF, TYPE_COLOR, TYPE_COLOR2, TYPE_INK,
   bst, byName, capNote, catName, defence, dexLabel, dexNo, el, freeSlug,
   anyRow, cardLine, labelBox, learnset, megaInk, megaKey, megaSuffix,
+  pokeFacts,
   outsideRow,
   retypeLayer,
   spriteFor, statGrid,

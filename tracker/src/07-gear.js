@@ -1,6 +1,6 @@
 /* 07-gear.js - Items, stones, statuses, and the Profile tab.
    Part of the app; linked into one script by scripts/build_tracker_page.py. */
-import { $, C, COSTS, bst, byName, cardLine, effectLine, el, labelBox, toast,
+import { $, C, COSTS, bst, byName, cardLine, effectLine, el, labelBox, pokeFacts, toast,
   typeChip } from "./01-data.js";
 import { S, boxRows, capacity, hasStone, ownedItems, ownedNames,
          ownedStones } from "./02-state.js";
@@ -27,21 +27,23 @@ function drawStones(){
     h.appendChild(document.createTextNode(stone));
     if (!inBox) h.appendChild(el("span", "tag", "no " + species + " in the box"));
     m.appendChild(h);
-    var meta = el("div", "rmeta");
     var mp = byName[mega];
     if (mp) {
-      mp.types.forEach(function(t){ meta.appendChild(typeChip(t)); });
+      /* THE MEGA'S OWN FACTS, drawn by the same function as every card and
+         the sheet. A stone row is ABOUT a Pokemon - the one the stone
+         creates - and it was the last place still writing its own BST cell
+         and ability cell, with no stat table at all. Which is the question
+         this screen exists to answer: is this 2000 VP worth it. */
+      pokeFacts(m, mp, [], {
+        dex: false,
+        abLabel: "Mega ability",
+        meta: function(meta){ meta.appendChild(el("span", null, mega)); }
+      });
+    } else {
+      var meta = el("div", "rmeta");
       meta.appendChild(el("span", null, mega));
-    } else meta.appendChild(el("span", null, mega));
-    m.appendChild(meta);
-    /* AN EIGHTH PLACE WITH BST IN PROSE. It read "Mega Salamence • BST 700 •
-       Aerilate" as one run of text and the first sweep missed it, because the
-       search was for the string "BST " and here it is glued to a bullet. The
-       ability is the whole reason to own most stones, so it gets the room. */
-    if (mp) m.appendChild(cardLine([
-      labelBox(bst(mp), "BST"),
-      labelBox(mp.ab || [], "Mega ability", "wide")
-    ]));
+      m.appendChild(meta);
+    }
     row.appendChild(m);
     var side = el("div", "rside");
     side.appendChild(el("span", "tag " + (have ? "mega" : "warn"),
