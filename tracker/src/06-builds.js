@@ -180,26 +180,25 @@ function buildRow(id, b){
     bare.onclick = function(){ buildSheet(id, b); };
     return bare;
   }
-  /* A build is a Pokemon, so it reads like one - the same card, with the
-     three facts a BUILD adds. The stats are the base row's, what the set is
-     built ON, and seeing them beside the nature is most of what tells two
-     Farigiraf apart at a glance. Here the ability is a DECISION rather than a
-     list of options, so the cell shows the one the set runs - and the Mega's
-     when a stone is on it, because that is the ability that is live for most
-     of the battle. */
+  /* A BUILD SHOWS ONLY WHAT THE BUILD POINTS AT. It is one Pokemon in one
+     configuration, so the card carries that form and nothing else: if a stone
+     is on it, the Mega's own types, BST and spread and the ability it runs as
+     a Mega; if not, the base form and the ability it runs as a base. No
+     "possible" list, no other Mega line, no deltas to a form this set does
+     not use (player, 2026-09-20: "si es mega o no, cual habilidad en
+     especifico tiene la build, porque se ve muy desordenado").
+
+     `p` is already the right row - byName[b.mega] when there is a stone - so
+     the only thing left is to stop the card offering the species' options
+     beside the decision. */
   var abil = (b.mega && b.mega_ability) || b.ability;
   return pokeCard(p, {
     cls: cls,
     name: b.pokemon,
-    /* the Mega is named by its own badge above, so the card does not also
-       offer the species' whole Mega line here */
-    megas: !b.mega,
-    cells: [
-      labelBox(b.nature || null, "Nature", "wide"),
-      labelBox(abil || null,
-               b.mega && b.mega_ability ? "Mega ability" : "Ability", "wide")
-    ],
-    abLabel: "Possible ability",
+    megas: false,
+    abValue: abil || null,
+    abLabel: b.mega && b.mega_ability ? "Mega ability" : "Ability",
+    cells: [labelBox(b.nature || null, "Nature", "wide")],
     badges: badges,
     meta: function(meta){
       meta.appendChild(el("span", "mono", (b.moves || []).length + " moves"));

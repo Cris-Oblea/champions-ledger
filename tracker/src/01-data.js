@@ -458,6 +458,7 @@ function cardLine(cells){
      mark      a stat key to highlight, for a list ranked by one
      megas     false suppresses the whole Mega half
      abLabel   "Possible ability" (default) or "Ability" where one is chosen
+     abValue   the ONE ability this set runs, instead of the species list
      cells     extra labelBox cells for the line above the stats
      pre       fn(nameLine)  - a rank number, before the name
      badges    fn(nameLine)  - tags that belong on the name
@@ -486,6 +487,13 @@ function pokeFacts(m, p, ms, o){
   var label = o.name || p.name;
   /* --- the meta line -------------------------------------------------- */
   var meta = el("div", "rmeta");
+  /* THE DEX NUMBER STAYS HERE. It went to the name line for one build, on the
+     theory that its 36px was what made the retyping Megas wrap - and measuring
+     properly said otherwise: the type line was never over, the detector was
+     counting a 1px baseline difference on the arrow as a second row. What the
+     move DID do was push 25 names onto two lines, the ones carrying a Worlds
+     tag. Measured before and after: type line 0 wraps either way, name line 0
+     with the number here and 25 with it there. */
   if (o.dex !== false) meta.appendChild(el("span", "mono", dexLabel(label)));
   (p.types || []).forEach(function(t){ meta.appendChild(typeChip(t)); });
   /* THE MEGA'S TYPES ONLY WHEN THE STONE REALLY SWAPS THEM. Most keep them,
@@ -516,9 +524,16 @@ function pokeFacts(m, p, ms, o){
      (player, 2026-09-20: "que diga las posibles habilidades de la forma
      normal, pero que tenga un cuadro que indique cual es la habilidad mega y
      en caso de tener mas mega evoluciones tener otro cuadro mas"). */
+  /* `abValue` REPLACES the list with one chosen ability, which is what a
+     BUILD has: a build is not a species, it is one decision about one
+     Pokemon, so its card must not also offer the other two abilities it
+     could have had (player, 2026-09-20: "las cards de build solo deben
+     mostrar unicamente a lo que la build apunta... el concepto de build es
+     eso, mostrar solo lo que pertenece a ello"). */
   m.appendChild(cardLine([
     labelBox(bstTxt, "BST", o.mark === "bst" ? "on" : null),
-    labelBox(p.ab || [], o.abLabel || "Possible ability", "wide")
+    labelBox(o.abValue !== undefined ? o.abValue : (p.ab || []),
+             o.abLabel || "Possible ability", "wide")
   ].concat(o.cells || [])));
   /* ONE BOX PER MEGA, on a line of their own and sharing it. Labelled in that
      Mega's own ink, so the box, the sprite caption and the stat deltas are
