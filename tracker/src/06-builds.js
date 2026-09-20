@@ -6,7 +6,7 @@ import {
   learnset, megasFor, natMult, pokeCard, splitPct, splitsFor, splitsReg, statAt,
   statGrid, toast, typeCard, typeChip, usageTag,
 } from "./01-data.js";
-import { S, boxRows, buildLink, hasStone, ownedNames } from "./02-state.js";
+import { S, boxRows, buildLink, ownedNames } from "./02-state.js";
 import { drop, put, putNew } from "./03-store.js";
 import { ask, closeSheet, fbtn, leaveEditor, openEditor, openSheet }
   from "./04-nav.js";
@@ -142,12 +142,10 @@ function buildRow(id, b){
   var lk = buildLink(id);
   var isRental = !!(lk.row && lk.row.status === "rental");
   var badges = function(nm){
-    if (b.mega) {
-      var st = STONE_OF[b.mega];
-      var t = el("span", "tag mega", b.mega.replace(/^Mega /, "Mega "));
-      if (!hasStone(st)) { t.className = "tag warn"; t.textContent = st + " missing"; }
-      nm.appendChild(t);
-    }
+    /* the form the set runs, named. NO "stone missing" badge: that was an
+       audit of what he owns on a card about a SET, and a stone's status
+       belongs to the Items tab. */
+    if (b.mega) nm.appendChild(el("span", "tag mega", b.mega));
     var tot = spTotal(b.stat_points || {});
     if (tot !== 66) nm.appendChild(el("span", "tag bad", tot + "/66 SP"));
     if (isRental) nm.appendChild(el("span", "tag warn", "rental — cannot train"));
@@ -402,9 +400,9 @@ function buildSheet(id, b, keepOriginal){
       none.onclick = function(){ draft.mega = null; draft.mega_ability = null; redraw(); };
       togs.appendChild(none);
       ms.forEach(function(m){
-        var st = STONE_OF[m.name];
-        var t = el("button", "tog mega",
-          m.name + (hasStone(st) ? "" : " · " + st + " 2000 VP"));
+        /* the form's name, and only that: what the stone costs is the Items
+           tab's business, not this picker's */
+        var t = el("button", "tog mega", m.name);
         t.setAttribute("aria-pressed", draft.mega === m.name ? "true" : "false");
         t.onclick = function(){
           draft.mega = m.name;

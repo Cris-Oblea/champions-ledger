@@ -1,9 +1,5 @@
 /* 01-data.js - The dex blob unpacked, and the small helpers everything else calls.
    Part of the app; assembled into one script by scripts/build_tracker_page.py. */
-/* The one thing the lowest layer asks of the ledger: whether a stone is
-   owned, which decides how the card draws a Mega chip. 02-state.js
-   imports nothing, so this is a dependency and not a cycle. */
-import { hasStone } from "./02-state.js";
 /* ===================================================================== data */
 var C = window.CHAMP;
 var DEX = C.DEX.map(function(r){
@@ -541,18 +537,20 @@ function pokeFacts(m, p, ms, o){
      stone went: which one it needs, and whether it is owned. */
   if (ms.length) {
     m.appendChild(cardLine(ms.map(function(mm){
-      var st = STONE_OF[mm.name], own = hasStone(st);
       var sfx = megaSuffix(mm, p);
       var cell = labelBox(mm.ab || [],
         (sfx ? "Mega " + sfx : "Mega") + " ability", "wide");
       var lbl = cell.querySelector(".lbl");
       if (lbl) lbl.className = "lbl " + megaInk(mm, p);
-      /* no class for "no stone": the box is about the ABILITY, which the Mega
-         has either way, and the stone is a different object with its own tab.
-         It stays in the title below. */
-      cell.title = mm.name + " - " + st + (own ? ", owned" : ", 2000 VP") +
-        (mm.types.join("/") !== p.types.join("/")
-          ? ". Becomes " + mm.types.join("/") : "");
+      /* WHETHER THE STONE IS OWNED IS NOT SAID HERE AT ALL - not as a shape,
+         not in the title (player, 2026-09-20: "el tag de tener piedra o no
+         deberia ir solo en el apartado de items, me estorba esa info en el
+         pokemon... el apartado de items es el que dice si tengo el item o
+         no"). One object, one place: a stone is an item and the Items tab is
+         what tracks it. What this box is about is the ability the Mega has,
+         which is true whether or not the stone is in the bag. */
+      cell.title = mm.name + (mm.types.join("/") !== p.types.join("/")
+        ? " - becomes " + mm.types.join("/") : "");
       return cell;
     })));
   }
