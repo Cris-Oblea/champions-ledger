@@ -69,8 +69,10 @@ GATE_CHECKS = [
     (["scripts/audit_forms.py"], "no form went missing"),
     # The README is the front door of a public repo, and every number in it
     # had drifted by the time anyone looked. The counts are generated now, so
-    # this only has to check they were regenerated.
-    (["scripts/build_readme.py", "--check"], "the README is current"),
+    # this only has to check they were regenerated. STATUS.md joined it on
+    # 2026-09-20, for the same reason and with the same table.
+    (["scripts/build_docs.py", "--check"],
+     "the README and STATUS are current"),
     # Schema and client drifting apart is a runtime failure, not a build one:
     # the app asks for a column the database has never heard of. Migrations
     # were pasted by hand and nothing recorded it, so this is the first thing

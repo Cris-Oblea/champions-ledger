@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
-"""Keep the README's numbers honest by generating them.
+"""Keep the documents' numbers honest by generating them.
 
-    python scripts/build_readme.py           # rewrite the generated blocks
-    python scripts/build_readme.py --check   # fail if they are out of date
+    python scripts/build_docs.py           # rewrite the generated blocks
+    python scripts/build_docs.py --check   # fail if they are out of date
 
 Every count in the README had drifted by 2026-09-13 - 308 forms against a real
 345, 200 abilities against 215, a regulation two versions old, and instructions
@@ -22,6 +22,7 @@ import argparse, io, json, os, re, sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 README = os.path.join(ROOT, "README.md")
+STATUS = os.path.join(ROOT, "STATUS.md")
 
 
 def load(rel, key=None):
@@ -89,6 +90,56 @@ def counts():
     out = ["| File | Rows | What it holds |", "|---|---|---|"]
     for name, n, what in rows:
         out.append("| %s | %s | %s |" % (name, n, what))
+    return "\n".join(out)
+
+
+def loaded():
+    """What the database holds, for STATUS.md's "What is loaded" table.
+
+    The same rule as the README's: this table had a count in every row and
+    every one of them was typed by hand, so it drifted the moment a
+    regulation moved. The M-C column that used to sit beside them is gone -
+    a diff against one past regulation cannot be regenerated, and a number
+    nobody can regenerate is the kind that goes stale in place.
+    """
+    mons = load("data/db/pokemon.json") or []
+    moves = load("data/db/moves.json") or []
+    rows = [
+        ("Pokemon forms (**%d Mega**)" % sum(1 for p in mons if p.get("is_mega")),
+         len(mons)),
+        ("Moves (**%d useable** in Champions)"
+         % sum(1 for m in moves if m.get("useable")), len(moves)),
+        ("Abilities", len(load("data/db/abilities.json") or [])),
+        ("Items", len(load("data/db/items.json") or [])),
+        ("Learnsets", len(load("data/db/learnsets.json") or {})),
+        ("Ladder usage - Pokemon / moves / abilities / items",
+         " / ".join(str(_payload("data/meta/usage_%s.json" % k))
+                    for k in ("pokemon", "moves", "abilities", "items"))),
+        ("Speed tiers", _payload("data/meta/speed_tiers.json")),
+        # `count` is every Pokemon Smogon carries; `with_vgc_analysis` is the
+        # few that have PROSE. Reading one number for both said "358 with a
+        # written analysis" out of 358, which is the same mistake in reverse as
+        # the envelope counts above.
+        ("Smogon Pokemon (**%d with a written VGC analysis**)"
+         % ((load("data/meta/smogon_analyses.json") or {}).get(
+                "with_vgc_analysis") or 0),
+         _payload("data/meta/smogon_analyses.json")),
+    ]
+    # The Worlds events are a LIST, newest first, and each carries its three
+    # divisions with their own counts. The newest complete one is the field the
+    # rest of this file talks about.
+    arc = load("data/meta/worlds_archive.json") or {}
+    ev = sorted([e for e in (arc.get("events") or []) if e.get("divisions")],
+                key=lambda e: e.get("year") or 0, reverse=True)
+    if ev:
+        top = ev[0]
+        for div, t in (top.get("divisions") or {}).items():
+            rows.append(("Worlds %s %s - players / teamlists"
+                         % (top.get("year"), div.title()),
+                         "%s / %s" % (t.get("players"), t.get("teams"))))
+    out = ["| Data | Count |", "|---|---|"]
+    for name, n in rows:
+        out.append("| %s | **%s** |" % (name, n))
     return "\n".join(out)
 
 
@@ -171,16 +222,24 @@ def tests_line():
     return "tests/       %s browser tests, run against the BUILT page" % word(n)
 
 
-BLOCKS = {"COUNTS": counts, "VINTAGE": vintage,
-          "GATE": gate, "TESTS": tests_line}
+# Which generated block belongs to which document. STATUS.md joined on
+# 2026-09-20: it carried its own hand-typed table of the same counts, one
+# regulation out of date, while the README's were generated three feet
+# away. Two documents, one generator, no second place to be wrong.
+DOCS = {
+    README: {"COUNTS": counts, "VINTAGE": vintage,
+             "GATE": gate, "TESTS": tests_line},
+    STATUS: {"LOADED": loaded, "VINTAGE": vintage},
+}
 
 
-def render(text):
-    for name, fn in BLOCKS.items():
+def render(text, blocks, what):
+    for name, fn in blocks.items():
         pat = re.compile(r"(<!-- %s:START -->\n).*?(\n<!-- %s:END -->)"
                          % (name, name), re.S)
         if not pat.search(text):
-            sys.exit("README has no %s block - add the markers back" % name)
+            sys.exit("%s has no %s block - add the markers back"
+                     % (what, name))
         text = pat.sub(lambda m: m.group(1) + fn() + m.group(2), text)
     return text
 
@@ -188,19 +247,26 @@ def render(text):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--check", action="store_true",
-                    help="exit non-zero if the README is out of date")
+                    help="exit non-zero if a document is out of date")
     a = ap.parse_args()
 
-    cur = io.open(README, encoding="utf-8").read()
-    new = render(cur)
-    if cur == new:
-        print("README is current")
-        return 0
-    if a.check:
-        print("README is OUT OF DATE - run: python scripts/build_readme.py")
+    stale = []
+    for path, blocks in DOCS.items():
+        what = os.path.basename(path)
+        cur = io.open(path, encoding="utf-8").read()
+        new = render(cur, blocks, what)
+        if cur == new:
+            print("%s is current" % what)
+            continue
+        if a.check:
+            stale.append(what)
+            continue
+        io.open(path, "w", encoding="utf-8").write(new)
+        print("%s updated" % what)
+    if stale:
+        print("%s OUT OF DATE - run: python scripts/build_docs.py"
+              % " and ".join(stale))
         return 1
-    io.open(README, "w", encoding="utf-8").write(new)
-    print("README updated")
     return 0
 
 

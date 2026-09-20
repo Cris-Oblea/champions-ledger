@@ -1,5 +1,9 @@
 /* 01-data.js - The dex blob unpacked, and the small helpers everything else calls.
    Part of the app; assembled into one script by scripts/build_tracker_page.py. */
+/* The one thing the lowest layer asks of the ledger: whether a stone is
+   owned, which decides how the card draws a Mega chip. 02-state.js
+   imports nothing, so this is a dependency and not a cycle. */
+import { hasStone } from "./02-state.js";
 /* ===================================================================== data */
 var C = window.CHAMP;
 var DEX = C.DEX.map(function(r){
@@ -225,13 +229,28 @@ function typeCard(row, p, shiny){
    sabe como leerlo bien... va todo escrito como prosa practicamente").
 
    `mark` is a stat key to highlight, for the list that is ranked by one. */
-/* X, Y, Z - or M for the Mega that has no letter. Champions has all four
-   shapes: one Mega, an X/Y pair, and since M-C a Z marking a SECOND Mega on a
-   species that already had one. */
+/* X, Y, Z - AND NOTHING AT ALL, which is the fourth shape and the common one.
+   Champions writes exactly four: plain **Mega**, **Mega X**, **Mega Y** and,
+   since M-C, **Mega Z** marking a second Mega on a species that already had
+   one.
+
+   THERE IS NO "MEGA M" (player, 2026-09-20: "no existe la mega M... solo esta
+   bien Mega (a secas, solo), Mega X, Mega Y y Mega Z"). This returned "M" as a
+   stand-in letter for the unlettered Mega, and it went straight onto the
+   badges - a species with two lines showed "MEGA M" beside "MEGA Z", naming a
+   form the game does not have. An empty suffix is the right answer; the two
+   callers that need to TELL two Megas apart use megaKey() instead, which says
+   the word "mega" rather than inventing a letter for it. */
 function megaSuffix(m, base){
   var sp = (base && (base.species || base.name)) || "";
-  var s = String(m.name).replace("Mega ", "").replace(sp, "").trim();
-  return s || "M";
+  return String(m.name).replace("Mega ", "").replace(sp, "").trim();
+}
+/* The same thing where a label has to distinguish two Megas of one species and
+   cannot be blank - a stat cell's delta, the arrow before an ability. Garchomp
+   is the case: plain Mega Garchomp and Mega Garchomp Z, so the pair reads
+   "mega" and "Z" rather than the "M" and "Z" it used to. */
+function megaKey(m, base){
+  return megaSuffix(m, base) || "mega";
 }
 
 function statGrid(p, mark, megas){
@@ -263,7 +282,7 @@ function statGrid(p, mark, megas){
          2026-09-19: "en la tabla de stats no se cual es el stat de quien").
          The suffix is what tells them apart - X, Y, Z, or M for the one with
          no letter - so that is what labels the line. */
-      var sfx = megaSuffix(m, p);
+      var sfx = megaKey(m, p);
       if ((megas || []).length > 1) d.appendChild(el("span", "mgk", sfx));
       d.appendChild(document.createTextNode(
         (m.b[i] > b[i] ? "↑" : "↓") + m.b[i]));
@@ -314,6 +333,180 @@ function cardLine(cells){
   var row = el("div", "cardline");
   cells.filter(Boolean).forEach(function(c){ row.appendChild(c); });
   return row;
+}
+/* ============================================================ THE CARD ===
+   ONE Pokemon CARD, drawn one way, wherever a Pokemon appears.
+
+   It existed four times over: the box wrote one, Find wrote a richer one, the
+   GTS deposit chooser was brought up to match by hand, and every picker that
+   lives inside a sheet - add to the box, what to ask for in a trade, who is
+   attacking in the calculator, which build fills a team slot - kept the bare
+   strip all of them started as. So the same Pokemon showed six stats and its
+   abilities on one screen and a name with a BST on the next (player,
+   2026-09-20: "no todas las cards de pokemon son iguales... si en un lado una
+   card me muestra bst y todos los stats con info completa, espero lo mismo de
+   todos los otros lugares").
+
+   The fix is not to copy the good one again - copying is what produced this -
+   but to have ONE, with the per-screen extras passed in. Everything a card
+   carries is here: its type skin and its picture, the Mega line with the
+   stone it needs, BST and abilities with what the Mega turns them into, the
+   six stats with the Mega's deltas, and the strip of sprites when there is
+   more than one form to look at.
+
+   `p` is the row to DRAW - a Champions dex row, or an outsider's row from
+   PokeAPI, which is why nothing here asks whether the game allows it.
+
+   Options, all optional:
+     cls       extra classes for the element (origin stripe, "illegal", ...)
+     tag       "button" (default) or "div" for a card nobody clicks
+     name      the label to show, when it is a box row's own name
+     shiny     draw the shiny palette - his copy's colours, not the species'
+     dex       false drops the dex number chip
+     mark      a stat key to highlight, for a list ranked by one
+     megas     false suppresses the whole Mega half
+     abLabel   "Possible ability" (default) or "Ability" where one is chosen
+     cells     extra labelBox cells for the line above the stats
+     pre       fn(nameLine)  - a rank number, before the name
+     badges    fn(nameLine)  - tags that belong on the name
+     meta      fn(metaLine)  - chips that belong beside the types
+     notes     fn(cardBody)  - the .st lines underneath
+     onclick   what tapping it does                                        */
+function pokeCard(p, o){
+  o = o || {};
+  var row = typeCard(el(o.tag || "button", "row" + (o.cls ? " " + o.cls : "")),
+                     p, !!o.shiny);
+  var m = el("div", "rmain");
+  var label = o.name || p.name;
+
+  /* --- the name line ------------------------------------------------- */
+  var h = el("div", "rname");
+  if (o.pre) o.pre(h);
+  h.appendChild(document.createTextNode(label));
+  if (o.badges) o.badges(h);
+  /* THE LINE, NOT THE FORMS. One chip per Mega carrying only the letter that
+     tells them apart - Charizard X and Y, Garchomp and Garchomp Z - and the
+     title says what the stone costs and what it swaps, so the card never has
+     to spend a line on it. A Mega drawn as itself has no Mega line of its
+     own. */
+  var ms = (o.megas === false || p.mega) ? [] : megaLine(p);
+  ms.forEach(function(mm){
+    var st = STONE_OF[mm.name], own = hasStone(st);
+    var sfx = ms.length > 1 ? megaSuffix(mm, p) : "";
+    var chip = el("span", "tag " + (own ? "mega" : ""),
+                  "mega" + (sfx ? " " + sfx : ""));
+    chip.title = mm.name + " - " + st + (own ? ", owned" : ", 2000 VP") + ". " +
+      (mm.types.join("/") !== p.types.join("/")
+        ? "Becomes " + mm.types.join("/") + ". " : "") +
+      "Ability " + (p.ab || []).join(" / ") + " → " + (mm.ab || []).join(" / ");
+    h.appendChild(chip);
+  });
+  var med = podiumChip(label);
+  if (med) h.appendChild(med);
+  m.appendChild(h);
+
+  /* --- the meta line -------------------------------------------------- */
+  var meta = el("div", "rmeta");
+  if (o.dex !== false) meta.appendChild(el("span", "mono", dexLabel(label)));
+  (p.types || []).forEach(function(t){ meta.appendChild(typeChip(t)); });
+  /* THE MEGA'S TYPES ONLY WHEN THE STONE REALLY SWAPS THEM. Most keep them,
+     and repeating an unchanged pair beside itself is noise. */
+  ms.forEach(function(mm){
+    if (mm.types.join("/") === p.types.join("/")) return;
+    var arrow = el("span", "megato");
+    arrow.textContent = "→" + (ms.length > 1 ? " " + megaKey(mm, p) : "");
+    meta.appendChild(arrow);
+    mm.types.forEach(function(t){ meta.appendChild(typeChip(t)); });
+  });
+  if (o.meta) o.meta(meta);
+  m.appendChild(meta);
+
+  /* --- BST, abilities, and what the Mega makes of them ---------------- */
+  /* DEDUPED: Absol's two Megas are both 565, and "465 -> 565 -> 565" says one
+     number twice. */
+  var bstTxt = String(bst(p)), seen = {};
+  ms.forEach(function(mm){
+    var v = bst(mm);
+    if (v === bst(p) || seen[v]) return;
+    seen[v] = 1;
+    bstTxt += " → " + v;
+  });
+  /* One ENTRY per Mega, never a bare arrow loose among the names: labelBox
+     breaks an array between its items, so a lone arrow read as an ability
+     called nothing. */
+  var abTxt = (p.ab || []).slice();
+  ms.forEach(function(mm){
+    if ((mm.ab || []).join("/") === (p.ab || []).join("/")) return;
+    abTxt.push("→ " + (ms.length > 1 ? megaKey(mm, p) + " " : "") +
+               (mm.ab || []).join(" / "));
+  });
+  m.appendChild(cardLine([
+    labelBox(bstTxt, "BST", o.mark === "bst" ? "on" : null),
+    labelBox(abTxt, o.abLabel || "Possible ability", "wide")
+  ].concat(o.cells || [])));
+
+  /* --- the six stats -------------------------------------------------- */
+  m.appendChild(statGrid(p, o.mark, ms));
+
+  /* NO ROW FOR THIS EXACT FORM. A caveat about the numbers themselves, which
+     no tag can say for the caller. */
+  if (p.approx) {
+    var src = el("div", "st");
+    src.style.marginTop = "6px";
+    src.textContent = "No row for this exact form — showing " + p.approx + ".";
+    m.appendChild(src);
+  }
+  if (o.notes) o.notes(m);
+  row.appendChild(m);
+
+  /* --- the sprites ---------------------------------------------------- */
+  /* ALL OF THEM AT NATIVE SIZE: the file has 96 pixels and no more, so
+     anything smaller is a resample of a pixel sprite. Two or three do not fit
+     in a corner, so they stop being a corner - the card marks itself
+     `.hasline` and the strip runs across the top, base first and then what it
+     becomes. A Pokemon with no Mega keeps the corner sprite exactly as it
+     was, which is most of them. */
+  if (ms.length) {
+    row.classList.add("hasline");
+    row.classList.remove("hassprite");
+    /* typeCard already pinned one to the corner, and dropping the CLASS only
+       stops it narrowing the text - the image is still there and still
+       absolutely positioned, so the base Pokemon appeared twice. */
+    var corner = row.querySelector("img.sprite");
+    if (corner) corner.remove();
+    var strip = el("div", "megapics");
+    var self = spriteFor(p.name, false, !!o.shiny);
+    if (self) {
+      self.className = "megapic";
+      self.title = p.name;
+      var c0 = el("div", "megapicwrap");
+      c0.appendChild(self);
+      c0.appendChild(el("span", "megapickey base", "base"));
+      strip.appendChild(c0);
+    }
+    ms.forEach(function(mm){
+      var mp = spriteFor(mm.name, false, !!o.shiny);
+      if (!mp) return;
+      mp.className = "megapic";
+      mp.title = mm.name;
+      var cell = el("div", "megapicwrap");
+      cell.appendChild(mp);
+      cell.appendChild(el("span", "megapickey",
+        megaSuffix(mm, p) ? "mega " + megaSuffix(mm, p) : "mega"));
+      strip.appendChild(cell);
+    });
+    if (strip.children.length > 1) row.insertBefore(strip, row.firstChild);
+    else { row.classList.remove("hasline"); row.classList.add("hassprite"); }
+  }
+  if (o.onclick) row.onclick = o.onclick;
+  return row;
+}
+/* A Mega is drawn as itself and has no Mega line of its own; everything else
+   carries the stones its species can hold. Lived in the Find module while it
+   was the only screen that showed them - which is exactly how the other
+   screens ended up without them. */
+function megaLine(p){
+  return p.mega ? [] : megasFor(p.name);
 }
 /* ONE PLACE THAT KNOWS WHAT A TYPE LOOKS LIKE.
 
@@ -744,11 +937,12 @@ export {
   $, C, COSTS, DEX, FORMS, HOME_ALL, MEGAS_OF, MOVES, MOVE_BY, SORT,
   STAT_KEYS, STAT_LABEL, STONE_OF, TYPE_COLOR, TYPE_COLOR2, TYPE_INK,
   bst, byName, capNote, catName, defence, dexLabel, dexNo, el, freeSlug,
-  anyRow, cardLine, labelBox, learnset, megaSuffix, outsideRow,
+  anyRow, cardLine, labelBox, learnset, megaKey, megaSuffix, outsideRow,
   spriteFor, statGrid,
   typeCard, typeSkin, typeTint,
   effectChips, effectLine, effectOf, podiumChip, podiumFor, splitMax, splitPct,
   splitsFor, splitsReg, usageTag,
+  megaLine, pokeCard,
   megasFor, natMult, rowMatches, setHomeAll, setSort, sortRows, statAt,
   statLine, toast, typeChip,
 };

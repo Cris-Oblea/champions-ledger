@@ -428,9 +428,14 @@ nav.tabs button:active{background:var(--sunk)}
 .statline .mg{display:block;font-family:var(--mono);font-size:10px;
   line-height:1.25;font-variant-numeric:tabular-nums;color:var(--mega)}
 .statline .mg.down{color:var(--muted)}
-/* whose number it is, when a species has two Megas */
-.statline .mg .mgk{font-size:8.5px;letter-spacing:.06em;opacity:.75;
-  margin-right:2px}
+/* WHOSE NUMBER IT IS, when a species has two Megas - and ON ITS OWN LINE.
+   Beside the number it added its whole width to the cell, which is what
+   overflowed the line: a key reading "mega" (the game's own name for the
+   unlettered one - there is no Mega M) is wider than the number it
+   labels. Stacked, the cell is as wide as the WIDER of the two rather
+   than as wide as both, and X/Y/Z read exactly as they did. */
+.statline .mg .mgk{display:block;font-size:8px;letter-spacing:.06em;
+  opacity:.75;line-height:1.1}
 
 /* THE WHOLE LINE, AT NATIVE SIZE. A pixel sprite has 96 pixels and no more,
    so drawing it at 48 is a resample of the one thing that must not be
@@ -930,7 +935,16 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border:2px solid var(
 /* SIX COLUMNS, because there are six stats. It said seven, so every stat grid
    in the app has been drawing an empty seventh cell and squeezing the real
    ones to fit. */
-.statline{display:grid;grid-template-columns:repeat(6,1fr);gap:5px;margin-top:8px}
+/* minmax(0,1fr), NOT 1fr. A grid track's default minimum is its content,
+   so `repeat(6,1fr)` is only equal columns while nothing inside is wider
+   than its share - and a two-Mega stat cell is. Garchomp's line measured
+   301px inside a 264px card and the Speed column hung off the right edge
+   (player, 2026-09-20: "no se alcanza ver la stat de speed en el
+   garchomp... en la card"). With a zero minimum the six always fit and
+   the cell's own content is what adapts. */
+.statline{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));
+  gap:5px;margin-top:8px}
+.statline div{min-width:0}
 .statline div{text-align:center;background:var(--sunk);border-radius:6px;padding:4px 2px}
 .statline b{display:block;font-family:var(--mono);font-size:13px;font-weight:500;
   font-variant-numeric:tabular-nums}
@@ -1015,6 +1029,11 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border:2px solid var(
   gap:10px;margin-top:8px}
 .gtsside{min-width:0;background:var(--sunk);border:1px solid var(--line);
   border-radius:8px;padding:8px 10px}
+/* THE CARD LIVES INSIDE THE SIDE, so it gets the card skin the rest of the
+   app has - the type band, the tint and the sprite strip - without the
+   side box drawing a second border around a second background. */
+.gtsside > .row{background:transparent;border:0;padding:0;width:100%;
+  text-align:left}
 .gtsside .rname{font-size:13.5px}
 .gtsside .rmeta{margin-top:3px}
 /* FLOATED, not absolute. A card's sprite is pinned to its top-right corner

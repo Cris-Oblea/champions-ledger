@@ -125,6 +125,22 @@ DECISIONS = [
      "VP costs are rules and stay; the balance is not tracked - ask him",
      DOCS),
 
+    # HIS STATE IS THE APP'S, NOT THE DOCUMENTATION'S (player, 2026-09-20:
+    # "todo lo que tenga que ver con team, build, piedras y todo eso lo veo
+    # yo... la app ya me maneja las cosas que tengo"). STATUS.md carried a box
+    # count, a list of twenty builds, fourteen untrained permanents with their
+    # ladder percentages and a plan for what to release next - and every one of
+    # those numbers was stale, because the app is where they change. A count
+    # typed into prose cannot be regenerated and nobody retypes it.
+    ("the-app-owns-his-state",
+     r"^#+ *(player state|builds recorded|untrained permanents)|"
+     r"\*\*Builds recorded|"
+     r"[Bb]ox \*{0,2}\d+ ?/ ?\d+|"
+     r"(he|you) (own|owns|holds?) \d+ (Pokemon|builds|stones|rentals)",
+     "the box, the builds, the stones and the teams live in the app; "
+     "query the ledger and never restate it",
+     DOCS),
+
     # A snapshot is the whole ledger in plaintext and this repo is public.
     ("no-ledger-data-in-the-repo",
      r"commit (the )?(snapshot|seed|backup)|"

@@ -193,7 +193,7 @@ def stages(reg, deep=False):
         Stage("engine", "bundle Smogon's engine for the browser",
               ["scripts/build_engine_bundle.py"]),
         Stage("readme", "regenerate the README's counts",
-              ["scripts/build_readme.py"]),
+              ["scripts/build_docs.py"]),
         Stage("page", "rebuild tracker/index.html",
               ["scripts/build_tracker_page.py"]),
     ]

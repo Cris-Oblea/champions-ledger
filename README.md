@@ -66,6 +66,15 @@ six base stats - so two cards can be read against each other down the column
 instead of as six numbers with six words between them. Nothing is trimmed to
 fit: a long ability list wraps rather than ending in an ellipsis.
 
+**Wherever** now includes every picker that opens inside a sheet - adding a
+Pokemon to the box, choosing what to ask for in a trade, picking the attacker
+in the calculator, choosing a species for a build, filling a team slot. Those
+were bare rows with a name and a BST while the screen behind them showed the
+full card, because each had been written on the day its screen was built and
+every improvement since was made by copying the best card into one more place.
+There is one implementation now - `pokeCard()` - and each screen passes in its
+own extras: a ladder chip, an item cell, the reason a suggestion is in range.
+
 **One fact, one chip, and the chip says what its number governs.** An item, an
 ability or a move carries its numbers as chips beside Smogon's sentence, and
 they are worked out once — in `scripts/effect_chips.py`, never on the phone —
@@ -342,7 +351,7 @@ so a stack trace still names the file a person edits. **Edit a part, never
 | `data/meta/smogon_analyses.json` | 358 | Smogon's written VGC analyses |
 <!-- COUNTS:END -->
 
-That table is **generated** by `scripts/build_readme.py` and checked on every
+That table is **generated** by `scripts/build_docs.py` and checked on every
 build. See [Keeping this file honest](#keeping-this-file-honest).
 
 ---
@@ -521,7 +530,7 @@ CLAUDE.md    the rules this project works by, including everything learned the h
 ## Keeping this file honest
 
 Every number above is **generated** from the data and verified on every build:
-`scripts/build_readme.py --check` runs inside the gate, so a README that has
+`scripts/build_docs.py --check` runs inside the gate, so a README that has
 drifted blocks the deploy exactly like a failing test.
 
 This exists because by 2026-09-13 the README claimed 308 forms against a real

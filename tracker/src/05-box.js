@@ -1,10 +1,8 @@
 /* 05-box.js - The box and HOME: every row, and every way one gets added.
    Part of the app; linked into one script by scripts/build_tracker_page.py. */
-import {
-  $, C, FORMS, SORT, STAT_KEYS, STAT_LABEL, STONE_OF, bst, byName, capNote,
-  cardLine, dexLabel, el, freeSlug, labelBox, megasFor, outsideRow,
-  spriteFor, statGrid, toast, typeCard, typeChip,
-} from "./01-data.js";
+import { $, C, FORMS, SORT, STAT_KEYS, STAT_LABEL, STONE_OF, anyRow, bst,
+ byName, capNote, cardLine, dexLabel, el, freeSlug, labelBox, megasFor,
+ outsideRow, pokeCard, spriteFor, statGrid, toast, typeCard, typeChip } from "./01-data.js";
 import { S, hasStone, originOf } from "./02-state.js";
 import { drop, put } from "./03-store.js";
 import { ask, closeSheet, fbtn, openSheet } from "./04-nav.js";
@@ -29,66 +27,43 @@ function pokeRow(rec){
   var cls = rec.location === "home" ? (p ? "home" : "illegal")
           : rec.status === "rental" ? "rental"
           : o === "home" ? "perm" : o === "champions" ? "locked" : "unknown";
-  /* HIS COPY'S COLOURS, not the species'. A shiny really is a different
-     picture and both sprite sets carry one (player, 2026-09-18). */
-  var row = typeCard(el("button", "row " + cls), d, !!rec.shiny);
-  var main = el("div", "rmain");
-  var nm = el("div", "rname");
-  nm.appendChild(document.createTextNode(rec.name));
-  boxBadges(nm, rec);
-  /* "not in dex" was wrong the moment these rows got their stats: it IS in a
-     dex, just not this game's (player, 2026-09-16: "deberia decir not in the
-     dex Champs o algo parecido y no solamente not in dex porque si esta en el
-     dex xd"). The tag names WHICH dex now. */
-  if (!p) nm.appendChild(el("span", "tag bad", "not in Champions"));
-  var ms = megasFor(rec.name);
-  if (ms.length) {
-    var owned = ms.filter(function(m){ return hasStone(STONE_OF[m.name]); });
-    var tg = el("span", "tag mega",
-      owned.length ? ("mega ×" + owned.length) : "mega — no stone");
-    if (!owned.length) tg.className = "tag";
-    nm.appendChild(tg);
+  if (!d) {
+    /* no row anywhere: a name typed by hand into HOME. It still has to be
+       tappable, so it keeps the one shape that needs no data. */
+    var bare = el("button", "row " + cls);
+    var bm = el("div", "rmain");
+    var bh = el("div", "rname");
+    bh.appendChild(document.createTextNode(rec.name));
+    boxBadges(bh, rec);
+    bh.appendChild(el("span", "tag bad", "not in Champions"));
+    bm.appendChild(bh);
+    bare.appendChild(bm);
+    bare.onclick = function(){ pokeSheet(rec); };
+    return bare;
   }
-  main.appendChild(nm);
-  var meta = el("div", "rmeta");
-  if (d) d.types.forEach(function(t){ meta.appendChild(typeChip(t)); });
-  if (SORT === "dex") meta.appendChild(el("span", "mono", dexLabel(rec.name)));
-  if (!p) meta.appendChild(el("span", null,
-    "it can sit in HOME but never enter the game"));
-  main.appendChild(meta);
-  /* THE SAME TABLE THE SEARCH USES. The stats were a prose line here too -
-     "BST 530 • 100 HP / 125 Atk / ..." - and the box is where two Pokemon get
-     compared most often, so it needs scanning more than Find does.
-     The ability cell says what this one CAN have, not what it has: a box row
-     records no ability (only a build does), so it is labelled for the dex
-     reading it is - "Ability" on a build row is the chosen one. */
-  if (d) {
-    main.appendChild(cardLine([
-      labelBox(bst(d), "BST"),
-      labelBox(d.ab || [], "Possible ability", "wide")
-    ]));
-    main.appendChild(statGrid(d));
-    /* THE TAG ALREADY SAID IT. A "Main-series numbers - Champions has no data
-       for this species" line went here and came straight back out: the card
-       already carries a "not in Champions" tag and a line saying it can never
-       enter the game, so this was the third way of saying one thing (player,
-       2026-09-16: "creo que el texto main-series numbers es totalmente
-       innecesario si se tiene el tag").
-
-       What survives is the part the tag CANNOT say: that PokeAPI had no row
-       for this exact form and the numbers belong to the base species. That is
-       a caveat about the numbers themselves, not a restatement. */
-    if (d.approx) {
-      var src = el("div", "st");
-      src.style.marginTop = "6px";
-      src.textContent = "No row for this exact form — showing "
-        + d.approx + ".";
-      main.appendChild(src);
-    }
-  }
-  row.appendChild(main);
-  row.onclick = function(){ pokeSheet(rec); };
-  return row;
+  /* THE CARD EVERY OTHER LIST DRAWS. The box used to write its own, which is
+     how it ended up with six stats while the pickers had none. What is left
+     here is only what a BOX row knows and a dex row cannot: which copy this
+     is, where it came from, and that his shiny is a different picture. */
+  return pokeCard(d, {
+    cls: cls,
+    name: rec.name,
+    shiny: !!rec.shiny,
+    dex: SORT === "dex",
+    /* The ability cell says what this one CAN have, not what it has: a box
+       row records no ability - only a build does. */
+    badges: function(nm){
+      boxBadges(nm, rec);
+      /* "not in dex" was wrong the moment these rows got their stats: it IS
+         in a dex, just not this game's (player, 2026-09-16). */
+      if (!p) nm.appendChild(el("span", "tag bad", "not in Champions"));
+    },
+    meta: function(meta){
+      if (!p) meta.appendChild(el("span", null,
+        "it can sit in HOME but never enter the game"));
+    },
+    onclick: function(){ pokeSheet(rec); }
+  });
 }
 
 /* The stat line on a sheet is the form the Pokemon STARTS in, and for two of
@@ -402,7 +377,7 @@ function addSheet(loc){
     body.appendChild(wrap);
     inp.oninput = function(){ draw(); };
 
-    var list = el("div", "list");
+    var list = el("div", "list cards");
     body.appendChild(list);
     /* The Champions Box can only hold what the game allows. The HOME Box can
        hold anything, so it also offers everything the Champions dex has never
@@ -435,21 +410,40 @@ function addSheet(loc){
         });
         var extra = homeAll.slice(0, 40);
         extra.forEach(function(n){
-          var r = el("button", "row illegal");
-          var m2 = el("div", "rmain");
-          var h2 = el("div", "rname");
-          h2.appendChild(document.createTextNode(n));
-          h2.appendChild(el("span", "tag bad", "not in the Champions dex"));
-          m2.appendChild(h2);
-          m2.appendChild(el("div", "rmeta")).appendChild(el("span", null,
-            "It can live in HOME, but it can never be sent into the game."));
-          r.appendChild(m2);
-          r.onclick = function(){
+          /* THE SAME CARD, even here. These are the species Champions does not
+             have, and they still have a picture, a typing and six stats from
+             PokeAPI - which is the whole reason the HOME shelf can be planned
+             at all. Drawn as a name and one tag, this was the poorest row in
+             the app and it sat on the screen where a Pokemon is chosen. */
+          var op = anyRow(n);
+          var add = function(){
             var id = freeSlug(n, S.box);
             put("box/" + id, {name:n, location:"home", status:"permanent",
                 origin:"home", note:"", order:Object.keys(S.box).length})
               .then(function(){ closeSheet(); toast(n + " added to HOME"); });
           };
+          var badge = function(h){
+            h.appendChild(el("span", "tag bad", "not in the Champions dex"));
+          };
+          var why = function(m){
+            m.appendChild(el("div", "st",
+              "It can live in HOME, but it can never be sent into the game."));
+          };
+          var r;
+          if (op) {
+            r = pokeCard(op, {cls:"illegal", name:n, badges:badge, notes:why,
+                              onclick:add});
+          } else {
+            r = el("button", "row illegal");
+            var m2 = el("div", "rmain");
+            var h2 = el("div", "rname");
+            h2.appendChild(document.createTextNode(n));
+            badge(h2);
+            m2.appendChild(h2);
+            why(m2);
+            r.appendChild(m2);
+            r.onclick = add;
+          }
           list.appendChild(r);
         });
       }
@@ -470,16 +464,11 @@ function addSheet(loc){
         return;
       }
       hits.forEach(function(p){
-        var r = el("button", "row");
-        var m = el("div", "rmain");
-        m.appendChild(el("div", "rname", p.name));
-        var meta = el("div", "rmeta");
-        p.types.forEach(function(t){ meta.appendChild(typeChip(t)); });
-        if (megasFor(p.name).length) meta.appendChild(el("span", "tag mega", "mega"));
-        m.appendChild(meta);
-        m.appendChild(cardLine([labelBox(bst(p), "BST")]));
-        r.appendChild(m);
-        r.onclick = function(){
+        /* ONE CARD, THE SAME ONE. Choosing what to add is exactly the moment
+           the six stats and the Mega line matter, and this list had a name, a
+           typing and a BST (player, 2026-09-20: "lo mismo pasa en otras cards
+           que estan en submenus"). */
+        var r = pokeCard(p, {onclick: function(){
           /* HOME never asks bought-or-rental, so it must never read an
              answer: everything in HOME is permanent and HOME origin by
              definition. Only the Champions sheet builds a mode, and only the
@@ -504,7 +493,7 @@ function addSheet(loc){
                     : mode === "rental" ? " added as a rental"
                     : " added, Champions origin"));
             });
-        };
+        }});
         list.appendChild(r);
       });
       capNote(list, hits.length, pool.length, "forms");

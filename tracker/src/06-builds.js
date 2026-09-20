@@ -3,7 +3,7 @@
 import {
   $, C, COSTS, FORMS, MOVE_BY, STAT_KEYS, STAT_LABEL, STONE_OF, bst, byName,
   capNote, cardLine, catName, dexLabel, dexNo, effectLine, el, labelBox,
-  learnset, megasFor, natMult, splitPct, splitsFor, splitsReg, statAt,
+  learnset, megasFor, natMult, pokeCard, splitPct, splitsFor, splitsReg, statAt,
   statGrid, toast, typeCard, typeChip, usageTag,
 } from "./01-data.js";
 import { S, boxRows, buildLink, hasStone, ownedNames } from "./02-state.js";
@@ -110,31 +110,16 @@ function speciesSheet(onPick){
          picker uses, because a list that stops without saying reads as a
          Pokemon the app has never heard of. */
       hits.slice(0, 120).forEach(function(p){
-        var b = typeCard(el("button", "row" + (ownedNow[p.name] ? " perm" : "")), p);
-        var m = el("div", "rmain");
-        var h = el("div", "rname");
-        h.appendChild(document.createTextNode(p.name));
-        if (ownedNow[p.name]) {
-          h.appendChild(el("span", "tag ok", ownedNow[p.name] > 1
-            ? ownedNow[p.name] + " in your boxes" : "yours"));
-        }
-        var ms = megasFor(p.name);
-        if (ms.length) {
-          var own = ms.filter(function(x){ return hasStone(STONE_OF[x.name]); });
-          h.appendChild(el("span", "tag " + (own.length ? "mega" : ""),
-            own.length ? "mega ×" + own.length : "mega — no stone"));
-        }
-        m.appendChild(h);
-        var meta = el("div", "rmeta");
-        meta.appendChild(el("span", "mono", dexLabel(p.name)));
-        p.types.forEach(function(t){ meta.appendChild(typeChip(t)); });
-        m.appendChild(meta);
-        m.appendChild(cardLine([labelBox(bst(p), "BST"),
-          labelBox(p.ab || [], "Possible ability", "wide")]));
-        m.appendChild(statGrid(p));
-        b.appendChild(m);
-        b.onclick = function(){ onPick(p.name); };
-        list.appendChild(b);
+        list.appendChild(pokeCard(p, {
+          cls: ownedNow[p.name] ? "perm" : "",
+          badges: function(h){
+            if (ownedNow[p.name]) {
+              h.appendChild(el("span", "tag ok", ownedNow[p.name] > 1
+                ? ownedNow[p.name] + " in your boxes" : "yours"));
+            }
+          },
+          onclick: function(){ onPick(p.name); }
+        }));
       });
       capNote(list, Math.min(120, hits.length), hits.length, "forms");
       if (!list.children.length) {
@@ -156,60 +141,72 @@ function buildRow(id, b){
   var p = byName[b.mega || b.pokemon] || byName[b.pokemon];
   var lk = buildLink(id);
   var isRental = !!(lk.row && lk.row.status === "rental");
-  var row = typeCard(el("button", "row " + (lk.state === "orphan" ? "illegal"
-                                 : lk.state === "parked" || isRental ? "rental"
-                                 : "perm")), p);
-  var m = el("div", "rmain");
-  var nm = el("div", "rname");
-  nm.appendChild(document.createTextNode(b.pokemon));
-  if (b.mega) {
-    var st = STONE_OF[b.mega];
-    var t = el("span", "tag mega", b.mega.replace(/^Mega /, "Mega "));
-    if (!hasStone(st)) { t.className = "tag warn"; t.textContent = st + " missing"; }
-    nm.appendChild(t);
+  var badges = function(nm){
+    if (b.mega) {
+      var st = STONE_OF[b.mega];
+      var t = el("span", "tag mega", b.mega.replace(/^Mega /, "Mega "));
+      if (!hasStone(st)) { t.className = "tag warn"; t.textContent = st + " missing"; }
+      nm.appendChild(t);
+    }
+    var tot = spTotal(b.stat_points || {});
+    if (tot !== 66) nm.appendChild(el("span", "tag bad", tot + "/66 SP"));
+    if (isRental) nm.appendChild(el("span", "tag warn", "rental — cannot train"));
+    if (lk.state === "parked")
+      nm.appendChild(el("span", "tag warn", "in HOME — inactive"));
+    if (lk.state === "orphan")
+      nm.appendChild(el("span", "tag bad", "orphan — no Pokemon"));
+    /* Unbound is not a fault, so it is not badged "bad": it is a set written
+       for a Pokemon that is not carrying it yet. The two cases read
+       differently and only one is a shopping-list item. */
+    if (lk.state === "unbound") {
+      var own = boxRows("champions").concat(boxRows("home"))
+        .some(function(r){ return r.name === b.pokemon; });
+      nm.appendChild(el("span", "tag", own ? "an idea — not installed"
+                                           : "an idea — you have none yet"));
+    }
+  };
+  var cls = lk.state === "orphan" ? "illegal"
+          : lk.state === "parked" || isRental ? "rental" : "perm";
+  if (!p) {
+    /* a set for a species the dex does not carry - still a build, still
+       openable */
+    var bare = el("button", "row " + cls);
+    var bm = el("div", "rmain");
+    var bh = el("div", "rname");
+    bh.appendChild(document.createTextNode(b.pokemon));
+    badges(bh);
+    bm.appendChild(bh);
+    bare.appendChild(bm);
+    bare.onclick = function(){ buildSheet(id, b); };
+    return bare;
   }
-  var sp = b.stat_points || {};
-  var tot = spTotal(sp);
-  if (tot !== 66) nm.appendChild(el("span", "tag bad", tot + "/66 SP"));
-  if (isRental) nm.appendChild(el("span", "tag warn", "rental — cannot train"));
-  if (lk.state === "parked")
-    nm.appendChild(el("span", "tag warn", "in HOME — inactive"));
-  if (lk.state === "orphan")
-    nm.appendChild(el("span", "tag bad", "orphan — no Pokemon"));
-  /* Unbound is not a fault, so it is not badged "bad": it is a set written for
-     a Pokemon that is not carrying it yet. The two cases read differently and
-     only one is a shopping-list item, so they are told apart. */
-  if (lk.state === "unbound") {
-    var own = boxRows("champions").concat(boxRows("home"))
-      .some(function(r){ return r.name === b.pokemon; });
-    nm.appendChild(el("span", "tag", own ? "an idea — not installed"
-                                         : "an idea — you have none yet"));
-  }
-  m.appendChild(nm);
-  var meta = el("div", "rmeta");
-  if (p) p.types.forEach(function(t){ meta.appendChild(typeChip(t)); });
-  meta.appendChild(el("span", "mono", (b.moves || []).length + " moves"));
-  if (b.role) meta.appendChild(el("span", null, b.role));
-  m.appendChild(meta);
-  /* A build is a Pokemon, so it reads like one. The stats here are the base
-     row's - what the set is built ON - and seeing them beside the nature is
-     most of what tells two Farigiraf apart at a glance.
-     Here the ability is a DECISION, not a list of options, so the cell shows
-     the one the set runs - and the Mega's when a stone is on it, because that
-     is the ability that is live for most of the battle. */
-  if (p) {
-    var abil = (b.mega && b.mega_ability) || b.ability;
-    m.appendChild(cardLine([
-      labelBox(bst(p), "BST"),
-      labelBox(b.nature || null, "Nature"),
-      labelBox(abil || null, b.mega && b.mega_ability ? "Mega ability"
-                                                      : "Ability", "wide")
-    ]));
-    m.appendChild(statGrid(p));
-  }
-  row.appendChild(m);
-  row.onclick = function(){ buildSheet(id, b); };
-  return row;
+  /* A build is a Pokemon, so it reads like one - the same card, with the
+     three facts a BUILD adds. The stats are the base row's, what the set is
+     built ON, and seeing them beside the nature is most of what tells two
+     Farigiraf apart at a glance. Here the ability is a DECISION rather than a
+     list of options, so the cell shows the one the set runs - and the Mega's
+     when a stone is on it, because that is the ability that is live for most
+     of the battle. */
+  var abil = (b.mega && b.mega_ability) || b.ability;
+  return pokeCard(p, {
+    cls: cls,
+    name: b.pokemon,
+    /* the Mega is named by its own badge above, so the card does not also
+       offer the species' whole Mega line here */
+    megas: !b.mega,
+    cells: [
+      labelBox(b.nature || null, "Nature", "wide"),
+      labelBox(abil || null,
+               b.mega && b.mega_ability ? "Mega ability" : "Ability", "wide")
+    ],
+    abLabel: "Possible ability",
+    badges: badges,
+    meta: function(meta){
+      meta.appendChild(el("span", "mono", (b.moves || []).length + " moves"));
+      if (b.role) meta.appendChild(el("span", null, b.role));
+    },
+    onclick: function(){ buildSheet(id, b); }
+  });
 }
 
 /* A <select> REORDERED by what this Pokemon's players run.
@@ -269,21 +266,7 @@ function buildSheet(id, b, keepOriginal){
       var f0 = el("div", "field");
       f0.appendChild(el("label", "f", "Pokemon"));
       var chosen = draft.pokemon ? byName[draft.pokemon] : null;
-      var pick = typeCard(
-        el("button", "row " + (draft.pokemon ? "perm" : "unknown")), chosen);
-      var pm = el("div", "rmain");
-      pm.appendChild(el("div", "rname", draft.pokemon || "Tap to choose"));
-      var pmeta = el("div", "rmeta");
-      if (chosen) {
-        chosen.types.forEach(function(t){ pmeta.appendChild(typeChip(t)); });
-        pmeta.appendChild(el("span", "mono", "BST " + bst(chosen)));
-      } else {
-        pmeta.appendChild(el("span", null,
-          "any of the " + FORMS.length + " forms in the game, owned or not"));
-      }
-      pm.appendChild(pmeta);
-      pick.appendChild(pm);
-      pick.onclick = function(){
+      var open = function(){
         speciesSheet(function(name){
           draft.pokemon = name;
           draft._boxId = null;          // the copy is chosen separately
@@ -291,6 +274,22 @@ function buildSheet(id, b, keepOriginal){
           redraw();
         });
       };
+      var pick;
+      if (chosen) {
+        /* the card, so the species you picked reads the same here as in the
+           list you picked it from */
+        pick = pokeCard(chosen, {cls:"perm", onclick:open});
+      } else {
+        pick = el("button", "row unknown");
+        var pm = el("div", "rmain");
+        pm.appendChild(el("div", "rname", "Tap to choose"));
+        var pmeta = el("div", "rmeta");
+        pmeta.appendChild(el("span", null,
+          "any of the " + FORMS.length + " forms in the game, owned or not"));
+        pm.appendChild(pmeta);
+        pick.appendChild(pm);
+        pick.onclick = open;
+      }
       f0.appendChild(pick);
       body.appendChild(f0);
       if (!draft.pokemon) return;

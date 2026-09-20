@@ -1,10 +1,8 @@
 /* 09-gts.js - GTS: what may be offered, what it is worth, and the export.
    Part of the app; linked into one script by scripts/build_tracker_page.py. */
-import {
-  $, C, FORMS, MEGAS_OF, STONE_OF, anyRow, bst, byName, capNote, cardLine,
-  dexLabel, dexNo, el, freeSlug, labelBox, megasFor, spriteFor, statGrid,
-  toast, typeCard, typeChip,
-} from "./01-data.js";
+import { $, C, FORMS, MEGAS_OF, STONE_OF, anyRow, bst, byName, capNote,
+ cardLine, dexLabel, dexNo, el, freeSlug, labelBox, megasFor, pokeCard,
+ spriteFor, statGrid, toast, typeCard, typeChip } from "./01-data.js";
 import { ORIGIN_LABEL, S, boxRows, hasStone, originOf } from "./02-state.js";
 import { drop, put, putNew } from "./03-store.js";
 import { ask, closeSheet, fbtn, openSheet } from "./04-nav.js";
@@ -229,43 +227,48 @@ function gtsRow(i, o){
        it was talking about (player, 2026-09-18: "las cards de gts siguen en
        formato antiguo solo mostrando unicamente BST"). It floats, so it moves
        the text aside instead of sitting on top of it in a box this narrow. */
-    var pic = spriteFor(name, false, !!(rec && rec.shiny));
-    if (pic) { pic.className = "sprite gtspic"; box.appendChild(pic); }
-    var nm = el("div", "rname");
-    nm.appendChild(document.createTextNode(name || "—"));
-    if (rec) boxBadges(nm, rec);
-    box.appendChild(nm);
     var p = anyRow(name);
-    var meta = el("div", "rmeta");
-    meta.appendChild(el("span", "mono", dexLabel(name)));
-    if (p) {
-      p.types.forEach(function(t){ meta.appendChild(typeChip(t)); });
-    } else if (name) {
-      meta.appendChild(el("span", "tag bad", "not in the Champions dex"));
-    }
-    /* BST in a cell, like everywhere else - and on this screen it is the whole
-       argument, because equivalence in a deposit is the BST tier. */
-    var bstLine = p ? cardLine([labelBox(bst(p), "BST")]) : null;
-    /* Both sides now (player, 2026-09-11: "beedrill en que posicion esta?").
-       The ask decides whether anyone CAN give it; the chip decides whether
-       anyone WANTS to. An offer needs both to be true, so both are on screen. */
     var sd = gtsDiff(name);
-    if (sd) {
-      if (label.indexOf("asked") >= 0) diffChip(name, meta);
-      else meta.appendChild(el("span", "tag", "ladder " + ladderText(sd)));
+    if (!p) {
+      /* a name no dex carries - it still holds its side of the trade */
+      var nm0 = el("div", "rname");
+      nm0.appendChild(document.createTextNode(name || "—"));
+      if (rec) boxBadges(nm0, rec);
+      box.appendChild(nm0);
+      var mt0 = el("div", "rmeta");
+      mt0.appendChild(el("span", "mono", dexLabel(name)));
+      if (name) mt0.appendChild(el("span", "tag bad", "not in the Champions dex"));
+      box.appendChild(mt0);
+      return box;
     }
-    /* a shiny chip is a more expensive coin than its species - say so on the
-       side you are giving, where it changes what you can ask for */
-    if (rec && rec.shiny && label.indexOf("asked") < 0) {
-      var cv = chipValueOf(rec);
-      if (cv) meta.appendChild(el("span", "tag mega",
-        "shiny — reaches ~" + cv.reach));
-    }
-    box.appendChild(meta);
-    if (bstLine) box.appendChild(bstLine);
-    /* and the six stats, which is what "BST 510" leaves out: two Pokemon of
-       the same total are not the same trade */
-    if (p) box.appendChild(statGrid(p));
+    /* THE CARD, half-width. This side used to draw its own sprite, its own
+       name line and its own BST cell - and it left out the one fact this
+       screen is FOR: the Mega line. A chip is priced by its Mega's BST, which
+       is the app's own rule, so a trade row that does not show it is missing
+       its own argument (player, 2026-09-20). */
+    var card = pokeCard(p, {
+      tag: "div",
+      name: name,
+      shiny: !!(rec && rec.shiny),
+      badges: function(nm){ if (rec) boxBadges(nm, rec); },
+      meta: function(meta){
+        /* Both sides (player, 2026-09-11: "beedrill en que posicion esta?").
+           The ask decides whether anyone CAN give it; the chip decides whether
+           anyone WANTS to. An offer needs both, so both are on screen. */
+        if (sd) {
+          if (label.indexOf("asked") >= 0) diffChip(name, meta);
+          else meta.appendChild(el("span", "tag", "ladder " + ladderText(sd)));
+        }
+        /* a shiny chip is a more expensive coin than its species - say so on
+           the side you are giving, where it changes what you can ask for */
+        if (rec && rec.shiny && label.indexOf("asked") < 0) {
+          var cvs = chipValueOf(rec);
+          if (cvs) meta.appendChild(el("span", "tag mega",
+            "shiny — reaches ~" + cvs.reach));
+        }
+      }
+    });
+    box.appendChild(card);
     return box;
   }
 
@@ -737,40 +740,36 @@ function pickField(label, current, subtitle, opener, rec){
     w.appendChild(blank);
     return w;
   }
-  /* the same shape the box uses, badges and all - a Pokemon should not look
-     like two different things on two screens */
+  /* THE SAME CARD AS EVERYWHERE ELSE - a Pokemon should not look like two
+     different things on two screens. BST is the whole argument on this screen,
+     since equivalence in a GTS deposit is the BST tier, and the card puts it
+     in a cell of its own. */
   var p = anyRow(current);
-  /* the same card as everywhere else - a Pokemon should not look like two
-     different things on two screens */
-  var b = typeCard(el("button", "row " + (rec
-      ? (rec.location === "home" ? "home" : "perm")
-      : (p ? "" : "illegal"))), p);
-  var m = el("div", "rmain");
-  var h = el("div", "rname");
-  h.appendChild(document.createTextNode(current));
-  if (rec) boxBadges(h, rec);
-  if (!p) h.appendChild(el("span", "tag bad", "not in the Champions dex"));
-  m.appendChild(h);
-  var meta = el("div", "rmeta");
-  meta.appendChild(el("span", "mono", dexLabel(current)));
+  var b;
   if (p) {
-    p.types.forEach(function(t){ meta.appendChild(typeChip(t)); });
+    b = pokeCard(p, {
+      cls: rec ? (rec.location === "home" ? "home" : "perm") : "",
+      name: current,
+      shiny: !!(rec && rec.shiny),
+      badges: function(h){ if (rec) boxBadges(h, rec); },
+      onclick: opener
+    });
   } else {
+    b = el("button", "row illegal");
+    var m = el("div", "rmain");
+    var h = el("div", "rname");
+    h.appendChild(document.createTextNode(current));
+    if (rec) boxBadges(h, rec);
+    h.appendChild(el("span", "tag bad", "not in the Champions dex"));
+    m.appendChild(h);
+    var meta = el("div", "rmeta");
+    meta.appendChild(el("span", "mono", dexLabel(current)));
     meta.appendChild(el("span", null,
       "it can sit in HOME but never enter the game"));
+    m.appendChild(meta);
+    b.appendChild(m);
+    b.onclick = opener;
   }
-  m.appendChild(meta);
-  /* BST is the whole argument on this screen - equivalence in a GTS deposit is
-     the BST tier - so it is the one number that must not be prose. */
-  if (p) {
-    m.appendChild(cardLine([
-      labelBox(bst(p), "BST"),
-      labelBox(p.ab || [], "Possible ability", "wide")
-    ]));
-    m.appendChild(statGrid(p));
-  }
-  b.appendChild(m);
-  b.onclick = opener;
   w.appendChild(b);
   return w;
 }
@@ -925,57 +924,48 @@ function gtsPickMine(onPick, exceptId){
       rows.forEach(function(r){
         var p = anyRow(r.name);
         var held = taken[r._id];
-        /* THE SAME CARD AS EVERY OTHER LIST IN THE APP. This was a bare row
-           with a BST and a Speed on it, which is not enough to choose what to
-           give away (player, 2026-09-18: "solo muestra bst y speed, pero
-           falta todo lo demas"). It wears its type, its picture - its own
-           colours if the copy is shiny - and its six stats, like the box. */
-        var b = typeCard(el("button", "row " + (held ? "illegal"
-                   : r.location === "home" ? "home" : "perm")), p, !!r.shiny);
-        if (held) { b.disabled = true; b.style.opacity = "0.55"; }
-        var m = el("div", "rmain");
-        var h = el("div", "rname");
-        h.appendChild(document.createTextNode(r.name));
-        if (held) {
-          h.appendChild(el("span", "tag bad", "already in the GTS"));
-        }
         var last = !held && lastCopyOf(r);
         var kin = last ? otherFormsOf(r) : [];
-        if (last) {
-          h.appendChild(el("span", "tag " + (kin.length ? "" : "warn"),
-            kin.length ? "only one of this form" : "your only one"));
-        }
-        if (seen[r.name] > 1) {
-          h.appendChild(el("span", "tag", "copy " + nth[r._id] + " of " +
-            seen[r.name]));
-        }
-        /* "copy 1 of 2" does not say WHICH one. The marks do - that is the
-           whole reason they exist, and this is where the choice is made. */
-        boxBadges(h, r);
-        m.appendChild(h);
-        var meta = el("div", "rmeta");
-        meta.appendChild(el("span", "mono", dexLabel(r.name)));
-        if (p) p.types.forEach(function(t){ meta.appendChild(typeChip(t)); });
-        /* The ladder belongs on THIS side of the trade too (player,
-           2026-09-13). It was only ever shown for the Pokemon being asked for,
-           which answers "can I get it" and says nothing about the half he
-           controls: how fast his own chip clears, and how high it can therefore
-           ask. Indeedee is the case that proved it - 475 with no Mega, ladder
-           #28, gone the same day, twice. */
         var cd = p && gtsDiff(r.name);
         var cv = p && chipValueOf(r);
-        if (cd) meta.appendChild(el("span", "tag" + (cd.demand >= 4 ? " ok" : ""),
-          "ladder " + ladderText(cd)));
-        else if (p) meta.appendChild(el("span", "tag warn", "no ladder row"));
-        if (cv && cv.reach > cv.base)
-          meta.appendChild(el("span", "mono", "asks up to ~" + cv.reach));
-        if (r.note) meta.appendChild(el("span", null, String(r.note).slice(0, 40)));
-        m.appendChild(meta);
-        if (p) {
-          m.appendChild(cardLine([labelBox(bst(p), "BST"),
-            labelBox(p.ab || [], "Possible ability", "wide")]));
-          m.appendChild(statGrid(p));
-        }
+        var m = null;
+        /* THE SAME CARD AS EVERY OTHER LIST IN THE APP, and the same
+           function now: it wears its type, its picture - its own colours if
+           the copy is shiny - its Mega line and its six stats, because this
+           was a bare row with a BST and a Speed on it and that is not enough
+           to choose what to give away (player, 2026-09-18: "solo muestra bst
+           y speed, pero falta todo lo demas"). */
+        var b = pokeCard(p || anyRow(r.name) || {name:r.name, types:[], b:[0,0,0,0,0,0], ab:[]}, {
+          cls: held ? "illegal" : r.location === "home" ? "home" : "perm",
+          name: r.name,
+          shiny: !!r.shiny,
+          badges: function(h){
+            if (held) h.appendChild(el("span", "tag bad", "already in the GTS"));
+            if (last) h.appendChild(el("span", "tag " + (kin.length ? "" : "warn"),
+              kin.length ? "only one of this form" : "your only one"));
+            if (seen[r.name] > 1)
+              h.appendChild(el("span", "tag", "copy " + nth[r._id] + " of " +
+                seen[r.name]));
+            /* "copy 1 of 2" does not say WHICH one. The marks do - that is the
+               whole reason they exist, and this is where the choice is made. */
+            boxBadges(h, r);
+          },
+          meta: function(meta){
+            /* The ladder belongs on THIS side of the trade too (player,
+               2026-09-13). It was only ever shown for the Pokemon being asked
+               for, which answers "can I get it" and says nothing about the
+               half he controls: how fast his own chip clears, and how high it
+               can therefore ask. */
+            if (cd) meta.appendChild(el("span", "tag" + (cd.demand >= 4 ? " ok" : ""),
+              "ladder " + ladderText(cd)));
+            else if (p) meta.appendChild(el("span", "tag warn", "no ladder row"));
+            if (cv && cv.reach > cv.base)
+              meta.appendChild(el("span", "mono", "asks up to ~" + cv.reach));
+            if (r.note) meta.appendChild(el("span", null, String(r.note).slice(0, 40)));
+          },
+          notes: function(body2){ m = body2; }
+        });
+        if (held) { b.disabled = true; b.style.opacity = "0.55"; }
         /* Only when the price is above the base row, and it says WHICH part is
            measured: the Mega half comes from his own closed trades, the other
            two are estimates. */
@@ -1002,7 +992,6 @@ function gtsPickMine(onPick, exceptId){
             (held.requested || "something") +
             ". Withdraw that offer first to free this copy."));
         }
-        b.appendChild(m);
         if (!held) b.onclick = function(){ onPick(r); };
         l.appendChild(b);
       });
@@ -1087,19 +1076,28 @@ function gtsPickWanted(onPick, chipName, chipShiny){
         /* Two sections, because the two bands answer different questions:
            what this chip can REACH, and what it can reach that someone will
            actually take today. */
+        /* THE SAME CARD AS EVERY OTHER LIST. This was a name, a BST and a
+           Speed - the half of the trade you are choosing blind (player,
+           2026-09-20). The two loose numbers are gone because the card
+           carries all six of them, and the Mega line with them: what a chip
+           can fetch is mostly a question about the target Mega. */
         function pickRow(c){
-          var b2 = el("button", "row" + (c.stone ? " perm" : ""));
-          var m2 = el("div", "rmain");
-          var h2 = el("div", "rname");
-          h2.appendChild(document.createTextNode(c.name));
-          if (c.stone) h2.appendChild(el("span", "tag ok", "you own " + c.stone));
-          m2.appendChild(h2);
-          var mt = el("div", "rmeta");
-          mt.appendChild(el("span", "tag " + (c.rank == null ? "warn" : ""),
-            c.rank == null ? "no ladder row" : "ladder #" + c.rank));
-          m2.appendChild(mt);
-          m2.appendChild(cardLine([labelBox(c.bst, "BST"),
-                                   labelBox(c.spe, "Spe")]));
+          var p2 = anyRow(c.name);
+          if (!p2) return null;
+          var m2 = null;
+          var b2 = pokeCard(p2, {
+            cls: c.stone ? "perm" : "",
+            badges: function(h2){
+              if (c.stone)
+                h2.appendChild(el("span", "tag ok", "you own " + c.stone));
+            },
+            meta: function(mt){
+              mt.appendChild(el("span", "tag " + (c.rank == null ? "warn" : ""),
+                c.rank == null ? "no ladder row" : "ladder #" + c.rank));
+            },
+            notes: function(body2){ m2 = body2; },
+            onclick: function(){ onPick(c.name); }
+          });
           if (c.stone) {
             m2.appendChild(el("div", "st",
               "You bought " + c.stone + " and have nothing to put it on — " +
@@ -1123,16 +1121,17 @@ function gtsPickWanted(onPick, chipName, chipShiny){
               " — asking for less than you could is what makes an offer clear " +
               "the same day."));
           }
-          b2.appendChild(m2);
-          b2.onclick = function(){ onPick(c.name); };
           return b2;
         }
         function pickList(title, sub, rows){
           if (!rows.length) return;
           body.appendChild(el("h2", null, title));
           if (sub) body.appendChild(el("p", "sub", sub));
-          var sl = el("div", "list");
-          rows.forEach(function(c){ sl.appendChild(pickRow(c)); });
+          var sl = el("div", "list cards");
+          rows.forEach(function(c){
+            var r2 = pickRow(c);
+            if (r2) sl.appendChild(r2);
+          });
           body.appendChild(sl);
         }
         pickList("Worth asking for",
@@ -1155,7 +1154,7 @@ function gtsPickWanted(onPick, chipName, chipShiny){
     inp.placeholder = "Search any Pokemon";
     wrap.appendChild(inp);
     body.appendChild(wrap);
-    var list = el("div", "list");
+    var list = el("div", "list cards");
     body.appendChild(list);
     function draw(){
       var q = inp.value.trim().toLowerCase();
@@ -1165,42 +1164,54 @@ function gtsPickWanted(onPick, chipName, chipShiny){
       });
       var hits = pool.slice(0, 120);
       hits.forEach(function(p){
-        var b = el("button", "row");
-        var m = el("div", "rmain");
-        m.appendChild(el("div", "rname", p.name));
-        var meta = el("div", "rmeta");
-        p.types.forEach(function(t){ meta.appendChild(typeChip(t)); });
-        /* the difficulty belongs HERE most of all - the moment to find out an
-           ask is hopeless is before depositing, not weeks later */
-        diffChip(p.name, meta);
-        m.appendChild(meta);
-        m.appendChild(cardLine([labelBox(bst(p), "BST")]));
-        var wd = gtsDiff(p.name);
-        if (wd && gtsSelfServe(wd)) {
-          m.appendChild(el("div", "st",
-            "You can get this in GO yourself — don't spend a chip on it."));
-        } else if (wd && wd.supply >= 4 && wd.how) {
-          m.appendChild(el("div", "st", wd.how));
-        }
-        b.appendChild(m);
-        b.onclick = function(){ onPick(p.name); };
-        list.appendChild(b);
+        list.appendChild(pokeCard(p, {
+          /* the difficulty belongs HERE most of all - the moment to find out
+             an ask is hopeless is before depositing, not weeks later */
+          meta: function(meta){ diffChip(p.name, meta); },
+          notes: function(m){
+            var wd = gtsDiff(p.name);
+            if (wd && gtsSelfServe(wd)) {
+              m.appendChild(el("div", "st",
+                "You can get this in GO yourself — don't spend a chip on it."));
+            } else if (wd && wd.supply >= 4 && wd.how) {
+              m.appendChild(el("div", "st", wd.how));
+            }
+          },
+          onclick: function(){ onPick(p.name); }
+        }));
       });
       if (q) {
         var homeAll = (C.HOME_ONLY || []).filter(function(n){
           return n.toLowerCase().indexOf(q) >= 0;
         });
         homeAll.slice(0, 40).forEach(function(n){
-          var b = el("button", "row illegal");
-          var m = el("div", "rmain");
-          var h = el("div", "rname");
-          h.appendChild(document.createTextNode(n));
-          h.appendChild(el("span", "tag bad", "HOME only"));
-          m.appendChild(h);
-          m.appendChild(el("div", "st",
-            "It can live in HOME, but never enter Champions."));
-          b.appendChild(m);
-          b.onclick = function(){ onPick(n); };
+          /* A species Champions has never heard of still gets a card: the
+             numbers come from PokeAPI and the tag says which dex they are.
+             Asking for one is a real decision - it is how a HOME shelf gets
+             filled - and it was the one row in the app with nothing on it but
+             a name. */
+          var op = anyRow(n), b;
+          var badge = function(h){
+            h.appendChild(el("span", "tag bad", "HOME only"));
+          };
+          var why = function(m){
+            m.appendChild(el("div", "st",
+              "It can live in HOME, but never enter Champions."));
+          };
+          if (op) {
+            b = pokeCard(op, {cls:"illegal", name:n, badges:badge, notes:why,
+                              onclick:function(){ onPick(n); }});
+          } else {
+            b = el("button", "row illegal");
+            var m = el("div", "rmain");
+            var h = el("div", "rname");
+            h.appendChild(document.createTextNode(n));
+            badge(h);
+            m.appendChild(h);
+            why(m);
+            b.appendChild(m);
+            b.onclick = function(){ onPick(n); };
+          }
           list.appendChild(b);
         });
         capNote(list, Math.min(40, homeAll.length), homeAll.length,
