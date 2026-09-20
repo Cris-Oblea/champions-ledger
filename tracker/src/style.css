@@ -804,12 +804,26 @@ nav.tabs button:active{background:var(--sunk)}
    silently a flex column. Measured: Items drew 199 cards in one column. */
 .cards,.list.cards{display:grid;gap:10px;grid-template-columns:1fr}
 @media (min-width:640px){
-    /* 250, not 270, and the difference is one whole column on a 1366-wide
-     laptop: with the sidebar taking 300 there are 790px left, and three
-     cards need a minimum of 256 each. 270 gave two columns and eleven
-     screens there, 250 gives three and eight. A 1080p screen is unaffected -
-     it fits four either way. Six stat cells still read at 256px. */
-  .cards,.list.cards{grid-template-columns:repeat(auto-fill,minmax(250px,1fr))}
+  /* 300, AND THIS REVERSES THE 250 THAT WAS HERE. The old note is worth
+     keeping because it was right under its own premise: 250 against 270 was
+     one whole column on a 1366-wide laptop, and six stat cells still read at
+     256px.
+
+     The premise changed when every card got a sprite strip. THREE SPRITES
+     ARE 294px - 3 x 96 at native size plus two 3px gaps - and nothing
+     shrinks a sprite. So a 254px column cannot draw what a card IS: the
+     five species with two Megas wrapped their strip onto a second row
+     (player, 2026-09-20: "los pokemones que tienen 3 mega evoluciones
+     volvieron a quedar en 2 filas, cuando antes se veia excelente los 3
+     sprites en 1 sola fila").
+
+     Measured at four widths: at 1100 the card was 273 and at 1366 it was
+     254, and all five split at both. At 300 they fit everywhere, the player's
+     own 1536 screen is UNCHANGED at three columns of 304, and what it costs
+     is a column between about 1000 and 1400 - where the cards come out wider
+     rather than more numerous. A card that cannot show its Pokemon is not a
+     card worth fitting one more of. */
+  .cards,.list.cards{grid-template-columns:repeat(auto-fill,minmax(300px,1fr))}
 }
 
 /* ---------- type scale & headings --------------------------------------- */
