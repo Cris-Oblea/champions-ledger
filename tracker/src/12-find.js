@@ -2,7 +2,7 @@
    Part of the app; linked into one script by scripts/build_tracker_page.py. */
 import { $, C, DEX, MOVES, MOVE_BY, SORT, STAT_KEYS, STAT_LABEL, STONE_OF,
  TYPE_COLOR, anyRow, bst, byName, capNote, cardLine, catName, defence,
- dexNo, effectLine, el, labelBox, learnset, megaLine, megaSuffix, megasFor,
+ dexNo, effectLine, el, labelBox, learnset, megaInk, megaLine, megaSuffix, megasFor,
  podiumChip, pokeFacts, podiumFor, pokeCard, splitPct, spriteFor, statGrid, toast,
  typeCard, typeChip, typeSkin, usageTag } from "./01-data.js";
 import { S, boxRows, originOf, ownedNames } from "./02-state.js";
@@ -454,7 +454,7 @@ function pokeBody(body, p, opts){
   var ls = learnset(p.name);
 
   body.appendChild(el("h2", null, "Abilities"));
-  (p.ab || []).forEach(function(a){
+  function abilityNote(a, form, badge){
     var n = el("div", "note");
     n.style.marginBottom = "6px";
     /* CHAMPIONS' OWN TEXT FIRST, ALWAYS. 95 of the abilities carried by
@@ -463,6 +463,10 @@ function pokeBody(body, p, opts){
        back to the outside dex, which says on screen that it is main-series.
        An ability Champions HAS never reaches that branch. */
     n.innerHTML = "<strong>" + a + ".</strong> ";
+    /* WHOSE ability it is, when it is not the base form's. In that Mega's
+       own ink, so the note, the sprite caption, the stat deltas and the
+       card all say the same form the same way. */
+    if (badge) n.insertBefore(badge, n.firstChild);
     var say = el("span");
     say.textContent = C.ABIL[a] || "";
     n.appendChild(say);
@@ -496,7 +500,7 @@ function pokeBody(body, p, opts){
     } else if (r && r.side === "off" && ls) {
       var k = ls.filter(function(mn){
         var mv = MOVE_BY[mn];
-        return mv && abilityTag(a, mv, p);
+        return mv && abilityTag(a, mv, form);
       }).length;
       sc.textContent = k
         ? "Tags " + k + " of the " + ls.length + " moves it learns."
@@ -507,8 +511,14 @@ function pokeBody(body, p, opts){
                        r.why + ".";
       n.appendChild(sc);
     }
-    body.appendChild(n);
-  });
+    return n;
+  }
+  /* THE BASE FORM'S, AND ONLY THOSE. A Mega's ability is explained in the
+     Mega line block, beside the form that has it - everything about a Mega
+     lives there (player, 2026-09-20: "para tener el orden correcto, cosas
+     de mega tipo, habilidad, debilidades, resistencias etc. todo en mega
+     line... la informacion se entrega de manera ordenada"). */
+  (p.ab || []).forEach(function(a){ body.appendChild(abilityNote(a, p, null)); });
 
   /* WHAT DAMAGES IT. The box sheet had this and the search view did not,
      which is backwards - the search view is where a Pokemon is being
@@ -580,6 +590,18 @@ function pokeBody(body, p, opts){
       ]));
       head.appendChild(info);
       pn.appendChild(head);
+
+      /* ITS ABILITY, EXPLAINED, HERE. The block named it in a cell and left
+         it at that, so a sheet that spells out three base abilities went
+         quiet on the one that is live for most of the battle. It is
+         explained in the same shape as the others - the text, the measured
+         multiplier, what it does to this movepool - under the form that
+         has it rather than up in the base Pokemon's list. */
+      (m.ab || []).forEach(function(ab){
+        var note = abilityNote(ab, m, null);
+        note.style.marginTop = "8px";
+        pn.appendChild(note);
+      });
 
       /* ITS OWN SIX, with the ones the stone moved marked. The base spread is
          four lines up; this is the other one, not a repeat of it. */
