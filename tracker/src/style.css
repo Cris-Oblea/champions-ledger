@@ -585,16 +585,20 @@ nav.tabs button:active{background:var(--sunk)}
 .cardline > div.wide{flex:1 1 0}
 /* and the words inside may break, since the box no longer can */
 .cardline > div.wide b{overflow-wrap:break-word}
-/* A MEGA'S ABILITY BOX, which is a box about a DIFFERENT Pokemon sitting
-   next to the base one's. Its label is already in that Mega's ink; the
-   surface is tinted the same way at a whisper, so the eye groups the two
-   mega boxes as a pair and keeps them apart from the base row above.
-   `nostone` is the one that cannot happen yet - the stone is 2000 VP and
-   not owned - so it reads as an outline rather than a filled cell. The
-   title on the box names the stone either way. */
-.cardline > div.nostone{background:transparent;
-  box-shadow:inset 0 0 0 1px var(--line)}
-.cardline > div.nostone b{opacity:.75}
+/* EVERY ABILITY BOX LOOKS THE SAME, because they are the same kind of
+   thing. One of them used to be drawn as an outline instead of a filled
+   cell - the one whose stone is not owned yet - and that made two boxes of
+   the same category read as two different categories (player, 2026-09-20:
+   "por que algunas casillas de mega ability tienen borde y otras no?...,
+   pareciera que son cosas diferentes cuando son la misma categoria
+   ability").
+
+   He is right, and the mistake is worth naming: SHAPE was carrying a fact
+   that belongs to a different object. Whether the stone is owned is a fact
+   about the STONE, not about the ability the Mega has - the Mega has that
+   ability whether or not the stone is in the bag. So the box says the
+   ability, always the same way, and the stone's status is where stones
+   live: the Items tab, and this box's own title. */
 .cardline b{display:block;font-family:var(--mono);font-size:12.5px;
   font-weight:500;font-variant-numeric:tabular-nums}
 .cardline span.lbl{font-family:var(--cond);font-weight:600;

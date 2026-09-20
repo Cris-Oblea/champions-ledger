@@ -547,7 +547,9 @@ function pokeFacts(m, p, ms, o){
         (sfx ? "Mega " + sfx : "Mega") + " ability", "wide");
       var lbl = cell.querySelector(".lbl");
       if (lbl) lbl.className = "lbl " + megaInk(mm, p);
-      if (!own) cell.className = ((cell.className || "") + " nostone").trim();
+      /* no class for "no stone": the box is about the ABILITY, which the Mega
+         has either way, and the stone is a different object with its own tab.
+         It stays in the title below. */
       cell.title = mm.name + " - " + st + (own ? ", owned" : ", 2000 VP") +
         (mm.types.join("/") !== p.types.join("/")
           ? ". Becomes " + mm.types.join("/") : "");
