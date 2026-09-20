@@ -354,16 +354,24 @@ function pokeHead(body, p, opts){
   var big = spriteFor(p.name, true, opts.shiny);
   if (big) head.appendChild(big);
   var info = el("div", "sheetfacts");
-  /* EXACTLY WHAT THE CARD DRAWS, from the same function. This head used to
-     write its own: a chips row, a BST cell alone on a line, and a stat table
-     with no Mega deltas and no inks - so tapping a card opened something
-     that looked like a different app (player, 2026-09-20: "no lo veo
-     reflejado en todas las cards de toda la app... la idea es que todas las
-     cards sean iguales en todos lados de la app, sin excepciones").
+  /* THE SAME FUNCTION AS THE CARD, drawing the BASE POKEMON ONLY.
+
+     A card has one chance to say everything, so it carries the Mega line:
+     the ability boxes, the arrows, the deltas. A SHEET HAS A MEGA LINE
+     SECTION further down that says all of it properly - each Mega with its
+     own picture, its own typing, its own ability and its own six stats, plus
+     a sentence naming what the stone moved. Bringing it up here as well put
+     the same facts on the screen twice (player, 2026-09-20: "cuando abajo
+     donde dice mega line ya dice esos datos... info duplicada = info inutil
+     ocupando espacio repitiendo lo mismo que ya se sabe").
+
+     So `ms` is empty: no Mega ability box, no type arrow, no BST arrow and no
+     deltas in the stat table. What is left is what this head is for - the
+     Pokemon you opened, as it is before any stone.
 
      The dex number is dropped - the sheet has it in the title - and the
      medal joins the chips, which is the one thing this door adds. */
-  pokeFacts(info, p, p.mega ? [] : megaLine(p), {
+  pokeFacts(info, p, [], {
     dex: false,
     meta: function(chips){
       var med0 = podiumChip(p.name);
