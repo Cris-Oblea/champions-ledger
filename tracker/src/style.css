@@ -517,6 +517,26 @@ nav.tabs button:active{background:var(--sunk)}
    something the card cannot say twice - which box the Pokemon is welded to,
    and that this species won a World Championship. */
 .row.card .rname .tag{font-size:9px;padding:1px 4px;letter-spacing:.04em}
+/* THE TYPE CHIPS SHRINK ON A CARD for the same reason the tags did. Measured
+   across all 345 forms: the type line needs 137px at the median and 163 at
+   the 90th, and exactly ONE Pokemon overflows a full-width card - Staraptor,
+   at 288 against 274, because Normal/Flying becoming Fighting/Flying is four
+   chips and an arrow. Smaller chips carry that one without touching
+   anything else. */
+/* The gap too, and it is worth the note: after the chips shrank, exactly ONE
+   Pokemon in the whole dex still wrapped its type line, and only at the
+   narrowest desktop card - Staraptor, Normal/Flying becoming Fighting/Flying,
+   which is six pieces. It needed 251px in 245: over by six, which is one
+   gap. Four instead of six buys ten and costs nothing anyone can see. */
+.row.card .rmeta{gap:4px}
+.row.card .rmeta .t{font-size:9px;padding:1px 5px}
+.row.card .rmeta .mono{font-size:10px}
+/* The dex number, in front of the name it identifies. Quiet and monospaced,
+   so it reads as a label rather than as part of the name - and out of the
+   type line, where its 36px was the difference between one row of chips and
+   two on every Mega that retypes. */
+.rname .dexno{font-family:var(--mono);font-size:10.5px;font-weight:500;
+  color:var(--faint);font-variant-numeric:tabular-nums}
 /* THE STATS AS A TABLE, NOT A SENTENCE. They were a run of "115 HP 175 Atk
    117 Def ..." and the player could not read them: "sale primero el número
    del stat y luego el stat, eso se ve feo, no se sabe cómo leerlo bien... va
@@ -538,10 +558,33 @@ nav.tabs button:active{background:var(--sunk)}
    2026-09-16: "en la ficha de un pokemon todavia dice bst sin cuadro... tiene
    que estar todo al mismo diseno"). Scoped to `.row.card` it could only ever
    dress a list row, which is exactly how the two drifted apart. */
-.cardline{display:flex;gap:4px;margin-top:7px;align-items:stretch;flex-wrap:wrap}
+/* ONE LINE, AND THE BOXES SHRINK INSTEAD OF DROPPING (player, 2026-09-20:
+   "quiero que veas bien que cada linea horizontal no pase a una 2da
+   linea").
+
+   This wrapped, and the reason is worth writing down because it looks like
+   a width problem and is not: flex breaks lines on each item's HYPOTHETICAL
+   size - its content width - and only then shrinks what is left on the
+   line. So a `flex:1 1 auto` ability box that could perfectly well have
+   narrowed to fit beside BST jumped to a line of its own first, and BST sat
+   alone on a line using a fifth of it. Measured over the whole dex: the
+   median card wanted 230px of boxes and the worst wanted 363, against 186
+   available beside a corner sprite - so 284 of 341 lines wrapped.
+
+   `nowrap` plus `flex:1 1 0` is the fix: the line never breaks, and the
+   wide boxes - the ones holding words rather than a number - take what is
+   left and wrap their TEXT inside instead. A box moving is a layout
+   changing shape; text wrapping inside a box is just text. */
+.cardline{display:flex;gap:4px;margin-top:7px;align-items:stretch;
+  flex-wrap:nowrap}
 .cardline > div{background:var(--sunk);border-radius:6px;
   padding:3px 9px;text-align:center;min-width:0;flex:0 0 auto}
-.cardline > div.wide{flex:1 1 auto}
+/* `1 1 0`, not `1 1 auto`: basis 0 means the box asks for nothing and
+   divides the leftover space, so two of them beside a BST cell come out
+   even instead of one hogging its content width. */
+.cardline > div.wide{flex:1 1 0}
+/* and the words inside may break, since the box no longer can */
+.cardline > div.wide b{overflow-wrap:break-word}
 /* A MEGA'S ABILITY BOX, which is a box about a DIFFERENT Pokemon sitting
    next to the base one's. Its label is already in that Mega's ink; the
    surface is tinted the same way at a whisper, so the eye groups the two
