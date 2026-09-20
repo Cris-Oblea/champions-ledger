@@ -266,6 +266,9 @@ function retypeLayer(row, base, megas){
   /* FIRST, so it paints over the card's own background and under everything
      the card is made of - the content sets its own stacking in the CSS. */
   row.insertBefore(layer, row.firstChild);
+  /* the card has to know too: its own ring is a pseudo-element painted
+     ABOVE this layer, so it is given the opposite half of the cycle. */
+  row.classList.add("retyping");
   row.title = base.name + " is " + bt + ", and " + m.name + " is " +
               t.join("/") + " - the card shows both.";
 }
@@ -299,6 +302,14 @@ function megaSuffix(m, base){
    cannot be blank - a stat cell's delta, the arrow before an ability. Garchomp
    is the case: plain Mega Garchomp and Mega Garchomp Z, so the pair reads
    "mega" and "Z" rather than the "M" and "Z" it used to. */
+/* The class that colours a Mega wherever it is named - the caption under its
+   sprite, the key in a stat cell, the label on its ability box. Four inks,
+   and they never all meet: a species has either an X/Y pair or a plain Mega
+   with a Z, so each card only has to hold two apart. */
+function megaInk(m, base){
+  var k = megaSuffix(m, base).toUpperCase();
+  return "mk-" + (k === "X" || k === "Y" || k === "Z" ? k.toLowerCase() : "m");
+}
 function megaKey(m, base){
   return megaSuffix(m, base) || "mega";
 }
@@ -319,21 +330,52 @@ function statGrid(p, mark, megas){
     var cell = el("div", mark === k ? "on" : null);
     cell.appendChild(el("b", null, b[i]));
     cell.appendChild(el("span", "lbl", STAT_LABEL[k]));
+    /* ONE ROW PER MEGA, ALWAYS IN THE SAME ORDER, and a blank where that
+       form does not move the stat. It used to append only the Megas that
+       changed something, so the FIRST line of a cell meant "whichever one
+       moved it" - Charizard's Sp. Def is moved by Y alone, and its line sat
+       where X's line sits in every other cell (player, 2026-09-20: "en
+       charizard la spd en la forma y sube, pero esta alineada con lo de la
+       forma x, todo lo de una misma forma debe ir alineado").
+
+       Reading a stat table means reading DOWN a column and ACROSS a row, and
+       across only works if row two is the same Pokemon in all six cells. The
+       blank costs one invisible line in the cells where that form changes
+       nothing, and buys that.
+
+       It also retires the de-duplication that used to sit here: two Megas
+       reaching the same number printed it once, which was right while the
+       lines were unlabelled arrows and is wrong now that each line says whose
+       it is. Two forms landing on the same value is a fact about the two
+       forms, and hiding one of them breaks the alignment this fixes. */
+    var line = (megas || []).length > 1;
     (megas || []).forEach(function(m){
-      if (!m.b || m.b[i] === b[i]) return;
-      /* Two Megas that move a stat to the SAME value say it once - Absol's
-         both reach 565 BST, and a cell repeating itself is the noise this
-         change exists to remove. */
-      if (cell._seen && cell._seen[m.b[i]]) return;
-      (cell._seen = cell._seen || {})[m.b[i]] = 1;
-      var d = el("span", "mg" + (m.b[i] > b[i] ? " up" : " down"));
+      if (!m.b) return;
+      if (m.b[i] === b[i]) {
+        /* THE PLACEHOLDER HAS TO BE THE SAME SHAPE, not just the same
+           class. A real delta is TWO lines - the form's key above its
+           number - so a one-line blank left every later row half a line
+           high and the columns still did not line up. It carries a hidden
+           key of its own now, so the two boxes are identical in height. */
+        if (line) {
+          var gh = el("span", "mg ghost");
+          gh.appendChild(el("span", "mgk", megaKey(m, p)));
+          gh.appendChild(document.createTextNode("—"));
+          cell.appendChild(gh);
+        }
+        return;
+      }
+      /* THE NUMBER ITSELF CARRIES THE MEGA'S INK, not just the little key
+         beside it - otherwise a species with two Megas prints both deltas in
+         the same purple and the cell says nothing about which is which. */
+      var d = el("span", "mg " + megaInk(m, p) +
+                         (m.b[i] > b[i] ? " up" : " down"));
       /* WHOSE NUMBER IT IS. With one Mega the arrow is enough; with two, two
          bare arrows in a cell say nothing about which is which (player,
          2026-09-19: "en la tabla de stats no se cual es el stat de quien").
-         The suffix is what tells them apart - X, Y, Z, or M for the one with
-         no letter - so that is what labels the line. */
-      var sfx = megaKey(m, p);
-      if ((megas || []).length > 1) d.appendChild(el("span", "mgk", sfx));
+         The suffix is what tells them apart - X, Y, Z, or the word "mega" for
+         the one with no letter, because there is no Mega M. */
+      if (line) d.appendChild(el("span", "mgk " + megaInk(m, p), megaKey(m, p)));
       d.appendChild(document.createTextNode(
         (m.b[i] > b[i] ? "↑" : "↓") + m.b[i]));
       d.title = m.name + ": " + STAT_LABEL[k] + " " + b[i] + " → " + m.b[i];
@@ -440,17 +482,14 @@ function pokeCard(p, o){
      to spend a line on it. A Mega drawn as itself has no Mega line of its
      own. */
   var ms = (o.megas === false || p.mega) ? [] : megaLine(p);
-  ms.forEach(function(mm){
-    var st = STONE_OF[mm.name], own = hasStone(st);
-    var sfx = ms.length > 1 ? megaSuffix(mm, p) : "";
-    var chip = el("span", "tag " + (own ? "mega" : ""),
-                  "mega" + (sfx ? " " + sfx : ""));
-    chip.title = mm.name + " - " + st + (own ? ", owned" : ", 2000 VP") + ". " +
-      (mm.types.join("/") !== p.types.join("/")
-        ? "Becomes " + mm.types.join("/") + ". " : "") +
-      "Ability " + (p.ab || []).join(" / ") + " → " + (mm.ab || []).join(" / ");
-    h.appendChild(chip);
-  });
+  /* NO MEGA CHIPS HERE ANY MORE (player, 2026-09-20: "los tags MEGA, MEGA Z,
+     Mega X, Mega Y ya no sirven, porque ahora los sprites representan
+     visualmente las megas con la leyenda morada que tienen"). They were the
+     only way to know a species had a second form back when the card carried
+     one picture; the strip of sprites says it better, in colour, with the
+     form's own face. What the chip also carried - which stone, and whether it
+     is owned - moved to the ability box below, which is the row that is
+     actually about that Mega. */
   var med = podiumChip(label);
   if (med) h.appendChild(med);
   m.appendChild(h);
@@ -463,7 +502,7 @@ function pokeCard(p, o){
      and repeating an unchanged pair beside itself is noise. */
   ms.forEach(function(mm){
     if (mm.types.join("/") === p.types.join("/")) return;
-    var arrow = el("span", "megato");
+    var arrow = el("span", "megato " + megaInk(mm, p));
     arrow.textContent = "→" + (ms.length > 1 ? " " + megaKey(mm, p) : "");
     meta.appendChild(arrow);
     mm.types.forEach(function(t){ meta.appendChild(typeChip(t)); });
@@ -481,20 +520,35 @@ function pokeCard(p, o){
     seen[v] = 1;
     bstTxt += " → " + v;
   });
-  /* One ENTRY per Mega, never a bare arrow loose among the names: labelBox
-     breaks an array between its items, so a lone arrow read as an ability
-     called nothing. */
-  var abTxt = (p.ab || []).slice();
-  ms.forEach(function(mm){
-    if ((mm.ab || []).join("/") === (p.ab || []).join("/")) return;
-    abTxt.push("→ " + (ms.length > 1 ? megaKey(mm, p) + " " : "") +
-               (mm.ab || []).join(" / "));
-  });
+  /* THE BASE ABILITIES ONLY. The Megas used to be folded in here behind
+     arrows - "Blaze / Solar Power / -> X Tough Claws / -> Y Drought" - which
+     made one cell carry three different Pokemon and grow to four lines
+     (player, 2026-09-20: "que diga las posibles habilidades de la forma
+     normal, pero que tenga un cuadro que indique cual es la habilidad mega y
+     en caso de tener mas mega evoluciones tener otro cuadro mas"). */
   m.appendChild(cardLine([
     labelBox(bstTxt, "BST", o.mark === "bst" ? "on" : null),
-    labelBox(abTxt, o.abLabel || "Possible ability", "wide")
+    labelBox(p.ab || [], o.abLabel || "Possible ability", "wide")
   ].concat(o.cells || [])));
-
+  /* ONE BOX PER MEGA, on a line of their own and sharing it. Labelled in that
+     Mega's own ink, so the box, the sprite caption and the stat deltas are
+     tied together by colour rather than by reading. The title is where the
+     stone went: which one it needs, and whether it is owned. */
+  if (ms.length) {
+    m.appendChild(cardLine(ms.map(function(mm){
+      var st = STONE_OF[mm.name], own = hasStone(st);
+      var sfx = megaSuffix(mm, p);
+      var cell = labelBox(mm.ab || [],
+        (sfx ? "Mega " + sfx : "Mega") + " ability", "wide");
+      var lbl = cell.querySelector(".lbl");
+      if (lbl) lbl.className = "lbl " + megaInk(mm, p);
+      if (!own) cell.className = ((cell.className || "") + " nostone").trim();
+      cell.title = mm.name + " - " + st + (own ? ", owned" : ", 2000 VP") +
+        (mm.types.join("/") !== p.types.join("/")
+          ? ". Becomes " + mm.types.join("/") : "");
+      return cell;
+    })));
+  }
   /* --- the six stats -------------------------------------------------- */
   m.appendChild(statGrid(p, o.mark, ms));
   /* AND THE COLOUR ITSELF SAYS SO when the stone changes the typing. Last,
@@ -546,7 +600,7 @@ function pokeCard(p, o){
       mp.title = mm.name;
       var cell = el("div", "megapicwrap");
       cell.appendChild(mp);
-      cell.appendChild(el("span", "megapickey",
+      cell.appendChild(el("span", "megapickey " + megaInk(mm, p),
         megaSuffix(mm, p) ? "mega " + megaSuffix(mm, p) : "mega"));
       strip.appendChild(cell);
     });
@@ -992,7 +1046,8 @@ export {
   $, C, COSTS, DEX, FORMS, HOME_ALL, MEGAS_OF, MOVES, MOVE_BY, SORT,
   STAT_KEYS, STAT_LABEL, STONE_OF, TYPE_COLOR, TYPE_COLOR2, TYPE_INK,
   bst, byName, capNote, catName, defence, dexLabel, dexNo, el, freeSlug,
-  anyRow, cardLine, labelBox, learnset, megaKey, megaSuffix, outsideRow,
+  anyRow, cardLine, labelBox, learnset, megaInk, megaKey, megaSuffix,
+  outsideRow,
   retypeLayer,
   spriteFor, statGrid,
   typeCard, typeSkin, typeTint,

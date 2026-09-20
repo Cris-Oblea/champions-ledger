@@ -5,6 +5,24 @@
   --text:#111819; --muted:#5A6A6B; --faint:#849695;
   --accent:#0A8A7C; --accent-ink:#FFFFFF; --accent-soft:#D9EFEC;
   --mega:#6743C6; --mega-soft:#E9E2FA;
+  /* ONE INK PER MEGA, AND THE LETTERS TAKE THE GAMES' OWN COLOURS. The
+     player pointed at where they come from (2026-09-20: "vi la portada de
+     pokemon x e y, y los del anime, X es azul, Y es rojo y Z es verde"),
+     which beats the first guess here - it had Y orange off Charizard Y.
+
+     Nobody publishes a hex for those wordmarks: the documented Pokemon
+     palette is the franchise logo's yellow #FFCB05, blue #3D7DCA and navy
+     #003A70, and the rest is box art. So these are the right HUES - Xerneas
+     blue, Yveltal red, Zygarde green - tuned to sit legibly on this app's
+     surfaces, one value per theme.
+
+     PLAIN MEGA KEEPS THE PURPLE. Mega Evolution's own mark has no single
+     colour - it is drawn as a spectrum - and purple is already what this app
+     means by Mega everywhere else. It also only ever shares a card with Z,
+     since a species carries EITHER an X/Y pair OR a plain Mega with a Z, so
+     the only pairs that must be told apart are purple against green and blue
+     against red. */
+  --mega-x:#2C6FC4; --mega-y:#C63A2E; --mega-z:#2F8F4E;
   --warn:#A9640F; --warn-soft:#F7EBD8;
   --bad:#B5372E; --bad-soft:#FAE3E0;
   --good:#2A7442;
@@ -21,6 +39,7 @@
     --text:#E3EBE9; --muted:#8DA09F; --faint:#6C7F7E;
     --accent:#33C0AD; --accent-ink:#04211D; --accent-soft:#0D2E2A;
     --mega:#A78BF2; --mega-soft:#20193A;
+    --mega-x:#6FAEF0; --mega-y:#F0837A; --mega-z:#5FC77E;
     --warn:#E0A44C; --warn-soft:#31250F;
     --bad:#E4756A; --bad-soft:#361714;
     --good:#5CBE7C;
@@ -33,6 +52,7 @@
   --text:#E3EBE9; --muted:#8DA09F; --faint:#6C7F7E;
   --accent:#33C0AD; --accent-ink:#04211D; --accent-soft:#0D2E2A;
   --mega:#A78BF2; --mega-soft:#20193A;
+  --mega-x:#6FAEF0; --mega-y:#F0837A; --mega-z:#5FC77E;
   --warn:#E0A44C; --warn-soft:#31250F;
   --bad:#E4756A; --bad-soft:#361714;
   --good:#5CBE7C;
@@ -352,12 +372,55 @@ nav.tabs button:active{background:var(--sunk)}
 .row.card > .rmain, .row.card > .megapics, .row.card > .rside{
   position:relative;z-index:1}
 .row.card > .sprite{z-index:1}
+/* AND THE FRAME, so all three change together. Same masked-frame trick as
+   the card's own ring, in the Mega's colours, inside the same overlay - so
+   one opacity carries the band, the tint and the edge. */
+@supports ((mask-composite: exclude) or (-webkit-mask-composite: xor)) {
+  .row.card > .retype::after{content:"";position:absolute;inset:0;
+    border-radius:inherit;padding:2px;pointer-events:none;
+    background:
+      linear-gradient(180deg, var(--mcol, var(--line-hard)) 50%,
+                      var(--mcolb, var(--mcol, var(--line-hard))) 50%)
+        left top / 50% 100% no-repeat,
+      linear-gradient(180deg, var(--mcol2, var(--mcol, var(--line-hard))) 50%,
+                      var(--mcol2b, var(--mcol2, var(--mcol, var(--line-hard)))) 50%)
+        right top / 50% 100% no-repeat;
+    -webkit-mask:linear-gradient(#000 0 0) content-box,
+                 linear-gradient(#000 0 0);
+    mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
+    -webkit-mask-composite:xor;mask-composite:exclude}
+}
 /* Held, changed, held, changed back. The holds are what make it legible: a
    continuous fade never shows either typing long enough to be read. */
 @keyframes retypefade{
   0%, 38%   {opacity:0}
   50%, 88%  {opacity:1}
   100%      {opacity:0}
+}
+/* AND THE BASE RING FADES OUT AS THAT ONE FADES IN. It has to be told to:
+   a pseudo-element ::after is generated as the element's LAST child, so the
+   base ring paints ON TOP of the overlay no matter what the overlay does.
+   The Mega ring was being drawn and then covered over, which is exactly what
+   he saw (player, 2026-09-20: "al pasar de dragon y ground a solo dragon, la
+   mitad del marco conserva 1 de los colores de ground... staraptor cambia a
+   fighting flying pero el color fighting se mezclo con el normal") - Ground's
+   half and Normal's half were the BASE ring still there, blended through the
+   half-covered frame underneath.
+
+   The band and the tint never had the problem: ::before is the FIRST child
+   and the background is below everything, so the overlay already covers
+   both. Only the ring is generated above it, and only the eighteen cards
+   that carry a retype layer run this. */
+@keyframes retypeout{
+  0%, 38%   {opacity:1}
+  50%, 88%  {opacity:0}
+  100%      {opacity:1}
+}
+@supports ((mask-composite: exclude) or (-webkit-mask-composite: xor)) {
+  .row.card.retyping::after{animation:retypeout 9s ease-in-out infinite}
+}
+@media (prefers-reduced-motion: reduce){
+  .row.card.retyping::after{animation:none;opacity:1}
 }
 @media (prefers-reduced-motion: reduce){
   .row.card > .retype{animation:none;opacity:0}
@@ -443,6 +506,17 @@ nav.tabs button:active{background:var(--sunk)}
 
 .row.card .rmain{padding:11px 13px 12px}
 .row.card .rname{font-size:15.5px;margin-bottom:3px}
+/* THE TAGS SHRINK ON A CARD so the name line stays a line (player,
+   2026-09-20: "seria buena idea achicar los tags de origin y de worlds para
+   que no ocupen mas de 1 linea horizontal"). A card is ~300px wide and
+   gives up 88 of it to the sprite, so "Garchomp" plus HOME ORIGIN plus
+   WORLDS 2026 - 1ST at 10.5px could not fit and wrapped to a second and
+   sometimes third line, pushing everything below it down.
+
+   Smaller type and tighter padding, not fewer tags: both of them say
+   something the card cannot say twice - which box the Pokemon is welded to,
+   and that this species won a World Championship. */
+.row.card .rname .tag{font-size:9px;padding:1px 4px;letter-spacing:.04em}
 /* THE STATS AS A TABLE, NOT A SENTENCE. They were a run of "115 HP 175 Atk
    117 Def ..." and the player could not read them: "sale primero el número
    del stat y luego el stat, eso se ve feo, no se sabe cómo leerlo bien... va
@@ -468,11 +542,21 @@ nav.tabs button:active{background:var(--sunk)}
 .cardline > div{background:var(--sunk);border-radius:6px;
   padding:3px 9px;text-align:center;min-width:0;flex:0 0 auto}
 .cardline > div.wide{flex:1 1 auto}
+/* A MEGA'S ABILITY BOX, which is a box about a DIFFERENT Pokemon sitting
+   next to the base one's. Its label is already in that Mega's ink; the
+   surface is tinted the same way at a whisper, so the eye groups the two
+   mega boxes as a pair and keeps them apart from the base row above.
+   `nostone` is the one that cannot happen yet - the stone is 2000 VP and
+   not owned - so it reads as an outline rather than a filled cell. The
+   title on the box names the stone either way. */
+.cardline > div.nostone{background:transparent;
+  box-shadow:inset 0 0 0 1px var(--line)}
+.cardline > div.nostone b{opacity:.75}
 .cardline b{display:block;font-family:var(--mono);font-size:12.5px;
   font-weight:500;font-variant-numeric:tabular-nums}
 .cardline span.lbl{font-family:var(--cond);font-weight:600;
   font-size:9.5px;letter-spacing:.06em;text-transform:uppercase;
-  color:var(--faint)}
+  color:var(--ink, var(--faint))}
 /* one ability, one unbreakable word-group: the line may only break on the
    " / " between them, never inside "Sticky Hold" */
 .cardline b .whole{white-space:nowrap}
@@ -499,8 +583,16 @@ nav.tabs button:active{background:var(--sunk)}
    card has to say which is which. Drawn only where they differ, so a Pokemon
    with no Mega line is the card it always was. */
 .statline .mg{display:block;font-family:var(--mono);font-size:10px;
-  line-height:1.25;font-variant-numeric:tabular-nums;color:var(--mega)}
-.statline .mg.down{color:var(--muted)}
+  line-height:1.25;font-variant-numeric:tabular-nums;
+  color:var(--ink, var(--mega))}
+/* A DROP KEEPS ITS MEGA'S COLOUR and says "down" with the arrow and a
+   softer weight instead. It used to go grey, which told you the
+   direction and hid WHOSE number it was - and on a two-Mega card that
+   is the more useful half. */
+.statline .mg.down{color:var(--ink, var(--muted));opacity:.72}
+/* The blank that keeps the rows lined up: it holds the line, reads as
+   nothing, and is skipped by a screen reader. */
+.statline .mg.ghost{visibility:hidden}
 /* WHOSE NUMBER IT IS, when a species has two Megas - and ON ITS OWN LINE.
    Beside the number it added its whole width to the cell, which is what
    overflowed the line: a key reading "mega" (the game's own name for the
@@ -550,11 +642,33 @@ nav.tabs button:active{background:var(--sunk)}
 .megapic{width:96px;height:96px;display:block}
 .megapickey{position:absolute;left:2px;bottom:0;font-family:var(--cond);
   text-transform:uppercase;letter-spacing:.06em;
-  font-size:8.5px;font-weight:600;color:var(--mega);
+  font-size:8.5px;font-weight:600;color:var(--ink, var(--mega));
   background:var(--surface);border-radius:3px;padding:0 4px;line-height:1.35}
 .megapickey.base{color:var(--muted)}
-/* the arrow between a base type pair and the Mega's */
-.megato{font-family:var(--mono);color:var(--mega);margin:0 1px}
+/* The suffix colours the caption under the sprite, the key in a stat cell
+   and the label on that Mega's ability box - the same ink in all three, so
+   a number, a picture and an ability can be tied to the same form without
+   reading a word (player, 2026-09-20: "la mega, mega y, mega x y mega z
+   podrian tener diferentes colores para diferenciar tanto en el sprite,
+   como en los stats"). */
+/* SET A VARIABLE, DO NOT SET THE COLOUR. Every place a Mega is named has
+   its own rule - `.statline .mg`, `.cardline span.lbl`, `.megapickey` -
+   and all three are more specific than a bare class, so `.mk-z{color:...}`
+   lost every fight and the stat deltas stayed purple on all of them
+   (player, 2026-09-20: "los numeros de stats igual deben cambiar su color
+   con respecto a su forma mega, o si no para un pokemon con varias megas
+   siempre se vera todo morado"). A custom property does not compete: it
+   inherits down and each of those rules reads it with its own fallback. */
+.mk-x{--ink:var(--mega-x)}
+.mk-y{--ink:var(--mega-y)}
+.mk-z{--ink:var(--mega-z)}
+.mk-m{--ink:var(--mega)}
+/* The arrow between a base type pair and the Mega's - in that Mega's ink,
+   like everything else that names it. It was the last thing still hard-wired
+   to purple (player, 2026-09-20: "en el tipo de garchomp se sigue viendo una
+   flecha apuntando a la z y estan en morado"). */
+.megato{font-family:var(--mono);color:var(--ink, var(--mega));margin:0 1px;
+  font-weight:600}
 /* the stat the list is ranked by, marked here too */
 .statline div.on{background:var(--accent-soft);
   box-shadow:inset 0 0 0 1px var(--accent)}
@@ -591,7 +705,7 @@ nav.tabs button:active{background:var(--sunk)}
    cannot. */
 @supports ((mask-composite: exclude) or (-webkit-mask-composite: xor)) {
   .row.card::after{content:"";position:absolute;inset:0;pointer-events:none;
-    border-radius:inherit;padding:2px;opacity:0;transition:opacity .12s;
+    border-radius:inherit;padding:2px;opacity:1;
     background:
       linear-gradient(180deg, var(--tcol, var(--line-hard)) 50%,
                       var(--tcolb, var(--tcol, var(--line-hard))) 50%)
@@ -603,21 +717,35 @@ nav.tabs button:active{background:var(--sunk)}
                  linear-gradient(#000 0 0);
     mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
     -webkit-mask-composite:xor;mask-composite:exclude}
-  .row.card:hover::after{opacity:1}
-  /* the ring IS the edge now, so the flat colour underneath would only show
-     as a second line around it */
-  .row.card:hover{border-top-color:var(--line-hard);
-    border-right-color:var(--line-hard);
-    border-bottom-color:var(--line-hard)}
+  /* ALWAYS ON, not on hover (player, 2026-09-20: "los colores del marco
+     cuando cambian por los diferentes tipos, los bordes no estan cambiando
+     con el, debe cambiar todo junto"). The band, the tint and the frame are
+     one statement about one Pokemon; two of them changing while the third
+     stayed grey is what made the cross-fade look like a bug. Hover is a
+     lift now - a shadow - because the colour is already spent saying
+     something truer. */
+  .row.card{border-color:var(--line)}
 }
-/* a finger has no hover: on a touch screen it would stick after a tap */
-@media (hover:none){ .row.card::after{display:none} }
-/* THE LEFT STRIPE STAYS. It was flattened here on the grounds that it would
-   fight the type band, and that is throwing away information to tidy a
-   picture: the stripe is what says a Pokemon is YOURS in Find, and which kind
-   of slot it sits in everywhere else - HOME-elastic, Champions-welded,
-   rental. Two edges, two facts: the top band is the type, the left stripe is
-   the standing. */
+/* The ring used to be hidden on touch, because a hover state sticks after a
+   tap. It is not a hover state any more - it is the card's edge - so the
+   phone gets it too, which is the screen he actually plays on. */
+/* THE LEFT STRIPE IS GONE FROM A CARD (player, 2026-09-20: "me molesta que
+   en el lado izquierdo del marco de las card tiene como un azul verde que se
+   superpone al color del marco, hay que quitarlo, total si es por el origin
+   ya tienen el tag").
+
+   THIS REVERSES "the left stripe stays", and the old reasoning is worth
+   keeping because it was right at the time: two edges, two facts - the top
+   band is the type, the left stripe is the standing - and flattening it
+   then WOULD have thrown information away, because the tag did not exist
+   on every card yet. It does now: HOME ORIGIN, CHAMPIONS ORIGIN, RENTAL are
+   on the name line of every row that has an origin at all. So the stripe
+   had stopped being the only place that fact lived, and a teal edge lying
+   over a card whose frame is now the Pokemon's own colours is one
+   statement too many.
+
+   A row that is NOT a card keeps it - those lists have no band and no ring,
+   so there the stripe is still the only edge carrying anything. */
 
 /* A LIST THAT IS REALLY A GRID once there is room for one. 345 results in a
    single column is 19 screens; three across is six. auto-fill rather than a
@@ -715,6 +843,12 @@ h2 .n{font-family:var(--mono);color:var(--faint);font-weight:500;letter-spacing:
 .row.rental{border-left-color:var(--warn);border-left-style:dashed}
 .row.home{border-left-color:var(--muted)}
 .row.illegal{border-left-color:var(--bad)}
+/* ...AND NOT ON A CARD. Written here rather than up with the card rules
+   because the six above have the same specificity, so source order is what
+   decides: placed earlier it lost to `.row.perm` and the teal edge stayed.
+   A card already carries the type ring; the origin is on its tag. */
+.row.card{border-left-width:1px;border-left-color:var(--line);
+  border-left-style:solid}
 .rmain{flex:1;min-width:0}
 .rname{font-weight:600;font-size:14.5px;display:flex;align-items:center;
   gap:6px;flex-wrap:wrap}
