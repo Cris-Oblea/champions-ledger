@@ -219,6 +219,56 @@ function typeCard(row, p, shiny){
   if (pic) { row.appendChild(pic); row.className += " hassprite"; }
   return row;
 }
+/* THE MEGA'S COLOURS, CROSS-FADED OVER THE BASE ONES.
+
+   Eighteen of the 76 Mega species change typing, and four of those change how
+   MANY types there are - Garchomp and Aggron come back with one, Ampharos and
+   Pinsir with two. The card is made of type colour and said none of it
+   (player, 2026-09-20: "como podriamos hacer para las cards que tienen cambio
+   de tipo (por ende mas o menos colores) se vea visible?").
+
+   This sets a second set of variables - the same four the band uses and the
+   same four the tint uses, under `--m*` - and drops in the layer that carries
+   them. The animation lives in the stylesheet; everything here does is decide
+   WHETHER there is anything to fade to. A Mega that keeps its typing gets
+   nothing at all, which is 57 of the 76.
+
+   No Champions species has two Megas with two DIFFERENT new typings - checked
+   over the whole dex - so this is always a two-state fade rather than a
+   cycle. If a regulation ever adds one, the first differing Mega wins and the
+   second is still spelled out in the chips and the arrows. */
+function retypeLayer(row, base, megas){
+  var bt = (base.types || []).join("/");
+  var m = null;
+  for (var i = 0; i < (megas || []).length; i++) {
+    if ((megas[i].types || []).join("/") !== bt) { m = megas[i]; break; }
+  }
+  if (!m) return;
+  var t = m.types || [];
+  var c1 = TYPE_COLOR[t[0]];
+  if (!c1) return;
+  var mono = !t[1];
+  var top1 = c1, bot1 = TYPE_COLOR2[t[0]] || c1;
+  var top2 = mono ? top1 : TYPE_COLOR[t[1]];
+  var bot2 = mono ? bot1 : (TYPE_COLOR2[t[1]] || top2);
+  row.style.setProperty("--mcol", c1);
+  row.style.setProperty("--mcolb", bot1);
+  row.style.setProperty("--mcol2", top2);
+  row.style.setProperty("--mcol2b", bot2);
+  var s1 = tintOf(top1, 0.14), s1b = tintOf(bot1, 0.14) || s1;
+  var s2 = tintOf(top2, 0.14) || s1, s2b = tintOf(bot2, 0.14) || s2;
+  if (s1) row.style.setProperty("--msoft", s1);
+  if (s1b) row.style.setProperty("--msoftb", s1b);
+  if (s2) row.style.setProperty("--msoft2", s2);
+  if (s2b) row.style.setProperty("--msoft2b", s2b);
+  var layer = el("i", "retype");
+  layer.setAttribute("aria-hidden", "true");
+  /* FIRST, so it paints over the card's own background and under everything
+     the card is made of - the content sets its own stacking in the CSS. */
+  row.insertBefore(layer, row.firstChild);
+  row.title = base.name + " is " + bt + ", and " + m.name + " is " +
+              t.join("/") + " - the card shows both.";
+}
 /* THE SIX STATS AS A TABLE. Written three times in three files before this
    existed, which is why one of them silently did not mark the ranked stat and
    the class itself had been declaring seven columns for six numbers.
@@ -447,6 +497,11 @@ function pokeCard(p, o){
 
   /* --- the six stats -------------------------------------------------- */
   m.appendChild(statGrid(p, o.mark, ms));
+  /* AND THE COLOUR ITSELF SAYS SO when the stone changes the typing. Last,
+     because it reads the same `ms` the chips and the arrows above were
+     built from - one decision about what the Mega line is, used four
+     ways. */
+  retypeLayer(row, p, ms);
 
   /* NO ROW FOR THIS EXACT FORM. A caveat about the numbers themselves, which
      no tag can say for the caller. */
@@ -938,6 +993,7 @@ export {
   STAT_KEYS, STAT_LABEL, STONE_OF, TYPE_COLOR, TYPE_COLOR2, TYPE_INK,
   bst, byName, capNote, catName, defence, dexLabel, dexNo, el, freeSlug,
   anyRow, cardLine, labelBox, learnset, megaKey, megaSuffix, outsideRow,
+  retypeLayer,
   spriteFor, statGrid,
   typeCard, typeSkin, typeTint,
   effectChips, effectLine, effectOf, podiumChip, podiumFor, splitMax, splitPct,
