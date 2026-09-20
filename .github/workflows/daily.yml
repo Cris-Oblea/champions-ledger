@@ -277,7 +277,15 @@ jobs:
           # that moved a count left main's README behind and the next person to
           # push was blocked by "README is OUT OF DATE" for a drift they did not
           # cause. Smogon publishing 35 more analyses was enough to do it.
-          git add -A data/db data/meta tracker/data.js tracker/analysis.js tracker/splits.js tracker/engine.bundle.js README.md || true
+          # STATUS.md is in this list for the same reason README.md is: its
+          # counts are GENERATED from data/db and data/meta, so this very run
+          # rewrites them and the gate then checks them. Leaving it out is not
+          # a stale file, it is a BLOCKED NIGHTLY - the refresh regenerates
+          # STATUS, does not commit it, and its own pull request fails on
+          # "STATUS.md OUT OF DATE" every single night. Which is exactly what
+          # happened on 2026-09-20, the first night after STATUS joined the
+          # generator.
+          git add -A data/db data/meta tracker/data.js tracker/analysis.js tracker/splits.js tracker/engine.bundle.js README.md STATUS.md || true
           if git diff --cached --quiet; then
             echo "nothing changed"
             exit 0
