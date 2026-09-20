@@ -2,7 +2,7 @@
    Part of the app; linked into one script by scripts/build_tracker_page.py. */
 import { $, C, DEX, MOVES, MOVE_BY, SORT, STAT_KEYS, STAT_LABEL, STONE_OF,
  TYPE_COLOR, anyRow, bst, byName, capNote, cardLine, catName, defence,
- dexNo, effectLine, el, labelBox, learnset, megaLine, megaSuffix, megasFor,
+ dexNo, effectLine, el, labelBox, learnset, megaInk, megaLine, megaSuffix, megasFor,
  podiumChip, pokeFacts, podiumFor, pokeCard, splitPct, spriteFor, statGrid, toast,
  typeCard, typeChip, typeSkin, usageTag } from "./01-data.js";
 import { S, boxRows, originOf, ownedNames } from "./02-state.js";
@@ -373,13 +373,35 @@ function pokeHead(body, p, opts){
      medal joins the chips, which is the one thing this door adds. */
   pokeFacts(info, p, [], {
     dex: false,
+    stats: false,
+    name: p.name,
     meta: function(chips){
       var med0 = podiumChip(p.name);
       if (med0) chips.appendChild(med0);
     }
   });
   head.appendChild(info);
-  body.appendChild(head);
+
+  /* THE BASE FORM GETS THE SAME BOX AS A MEGA (player, 2026-09-20: "mega
+     line tiene todo dentro de un mismo cuadro, pero la forma base no,
+     deberias dejar ambas formas de igual manera").
+
+     It was the odd one out by history rather than by design: the head was
+     written first and loose on the page, then abilities got a section of
+     their own, then the damage table did, and the Mega block - written last
+     - put all three in one panel and read better than any of them. So the
+     base is a panel too, in the Mega's order: picture and facts, the six
+     stats full width, the abilities explained, what damages it. Two forms,
+     one shape, and the sheet is a stack of Pokemon rather than a stack of
+     topics. */
+  var panel = el("div", "panel megablock");
+  panel.style.marginBottom = "10px";
+  panel.appendChild(head);
+  panel.appendChild(statGrid(p));
+  body.appendChild(panel);
+  /* handed to pokeBody, which fills it with the abilities and the damage
+     table - they are the base form's and belong in the base form's box. */
+  body._basePanel = panel;
   /* The other spellings that mean this Pokemon. Squawkabilly's three extra
      plumages and Indeedee-F used to show up as separate entries marked "not
      in the Champions dex" - they are in it, under this name. The note says
@@ -420,6 +442,71 @@ function pokeHead(body, p, opts){
    that RETYPES needs its own - Mega Ampharos is Electric/Dragon and takes Ice
    at x2 where Ampharos does not - and printing one table under two typings
    would be the same number meaning two different things. */
+/* ONE ABILITY, EXPLAINED: the text, the measured multiplier, and what it
+   does to THIS movepool. A function at module level because both the base
+   panel and each Mega panel call it - and `form` matters, since "tags N of
+   the moves it learns" has to be counted against the form that HAS the
+   ability. */
+function abilityNote(a, form, badge, ls){
+  var n = el("div", "note");
+  n.style.marginBottom = "6px";
+  /* CHAMPIONS' OWN TEXT FIRST, ALWAYS. 95 of the abilities carried by
+     species the game has not added have no row here at all - Protosynthesis
+     was a name on the sheet with nothing to say about it - so those fall
+     back to the outside dex, which says on screen that it is main-series.
+     An ability Champions HAS never reaches that branch. */
+  n.innerHTML = "<strong>" + a + ".</strong> ";
+  /* WHOSE ability it is, when it is not the base form's. In that Mega's
+     own ink, so the note, the sprite caption, the stat deltas and the
+     card all say the same form the same way. */
+  if (badge) n.insertBefore(badge, n.firstChild);
+  var say = el("span");
+  say.textContent = C.ABIL[a] || "";
+  n.appendChild(say);
+  if (!C.ABIL[a]) {
+    say.textContent = "Loading…";
+    loadOutside(function(){
+      var t = (outsideDex().ab || {})[a];
+      say.textContent = t || "No description on record for " + a + ".";
+      if (t) {
+        var tg = el("span", "tag", "main-series text");
+        tg.title = "Champions has no row for " + a + " because no Pokemon it "
+                 + "allows carries it. This is the main-series description.";
+        say.appendChild(tg);
+      }
+    });
+  }
+  var anum = effectLine(a);
+  if (anum) n.appendChild(anum);
+  /* What it does to this Pokemon's moves, said HERE rather than as a badge
+     on every row. Two shapes, and the difference is the whole point:
+     an ability that covers a category (Guts, every physical move) names
+     the category, because badging all of them picks out nothing; one that
+     really selects says how many of THIS movepool it hits, so the badges
+     below have a number to be checked against. */
+  var r = AB_SET[a], sc = el("div", "st");
+  sc.style.marginTop = "2px";
+  if (r && r.side === "off" && r.scope) {
+    sc.textContent = "Affects " + r.scope + " it knows — " + r.why +
+                     ". No per-move tag: it picks out nothing.";
+    n.appendChild(sc);
+  } else if (r && r.side === "off" && ls) {
+    var k = ls.filter(function(mn){
+      var mv = MOVE_BY[mn];
+      return mv && abilityTag(a, mv, form);
+    }).length;
+    sc.textContent = k
+      ? "Tags " + k + " of the " + ls.length + " moves it learns."
+      : "Touches none of the moves it learns.";
+    n.appendChild(sc);
+  } else if (r && r.side === "def") {
+    sc.textContent = "Changes what lands on it, not its own moves — " +
+                     r.why + ".";
+    n.appendChild(sc);
+  }
+  return n;
+}
+
 function damageTable(types){
   var dfc = defence(types);
   var dl = el("div");
@@ -453,61 +540,16 @@ function pokeBody(body, p, opts){
      `ls` still undefined and the line silently never rendered */
   var ls = learnset(p.name);
 
-  body.appendChild(el("h2", null, "Abilities"));
+
+
+  /* THE BASE FORM'S, AND ONLY THOSE. A Mega's ability is explained in the
+     Mega line block, beside the form that has it - everything about a Mega
+     lives there (player, 2026-09-20: "para tener el orden correcto, cosas
+     de mega tipo, habilidad, debilidades, resistencias etc. todo en mega
+     line... la informacion se entrega de manera ordenada"). */
+  var caja = body._basePanel || body;
   (p.ab || []).forEach(function(a){
-    var n = el("div", "note");
-    n.style.marginBottom = "6px";
-    /* CHAMPIONS' OWN TEXT FIRST, ALWAYS. 95 of the abilities carried by
-       species the game has not added have no row here at all - Protosynthesis
-       was a name on the sheet with nothing to say about it - so those fall
-       back to the outside dex, which says on screen that it is main-series.
-       An ability Champions HAS never reaches that branch. */
-    n.innerHTML = "<strong>" + a + ".</strong> ";
-    var say = el("span");
-    say.textContent = C.ABIL[a] || "";
-    n.appendChild(say);
-    if (!C.ABIL[a]) {
-      say.textContent = "Loading…";
-      loadOutside(function(){
-        var t = (outsideDex().ab || {})[a];
-        say.textContent = t || "No description on record for " + a + ".";
-        if (t) {
-          var tg = el("span", "tag", "main-series text");
-          tg.title = "Champions has no row for " + a + " because no Pokemon it "
-                   + "allows carries it. This is the main-series description.";
-          say.appendChild(tg);
-        }
-      });
-    }
-    var anum = effectLine(a);
-    if (anum) n.appendChild(anum);
-    /* What it does to this Pokemon's moves, said HERE rather than as a badge
-       on every row. Two shapes, and the difference is the whole point:
-       an ability that covers a category (Guts, every physical move) names
-       the category, because badging all of them picks out nothing; one that
-       really selects says how many of THIS movepool it hits, so the badges
-       below have a number to be checked against. */
-    var r = AB_SET[a], sc = el("div", "st");
-    sc.style.marginTop = "2px";
-    if (r && r.side === "off" && r.scope) {
-      sc.textContent = "Affects " + r.scope + " it knows — " + r.why +
-                       ". No per-move tag: it picks out nothing.";
-      n.appendChild(sc);
-    } else if (r && r.side === "off" && ls) {
-      var k = ls.filter(function(mn){
-        var mv = MOVE_BY[mn];
-        return mv && abilityTag(a, mv, p);
-      }).length;
-      sc.textContent = k
-        ? "Tags " + k + " of the " + ls.length + " moves it learns."
-        : "Touches none of the moves it learns.";
-      n.appendChild(sc);
-    } else if (r && r.side === "def") {
-      sc.textContent = "Changes what lands on it, not its own moves — " +
-                       r.why + ".";
-      n.appendChild(sc);
-    }
-    body.appendChild(n);
+    caja.appendChild(abilityNote(a, p, null, ls));
   });
 
   /* WHAT DAMAGES IT. The box sheet had this and the search view did not,
@@ -515,8 +557,8 @@ function pokeBody(body, p, opts){
      weighed against the field. A type chart is a type chart: it needs the
      types and nothing else, so a species Champions has never heard of gets
      one too. */
-  body.appendChild(el("h2", null, "Takes damage"));
-  body.appendChild(damageTable(p.types));
+  caja.appendChild(el("div", "st", "Takes damage:"));
+  caja.appendChild(damageTable(p.types));
 
   /* ============================================ WHAT THE STONE MAKES OF IT ==
      One block per Mega, and each one is a whole Pokemon rather than a line of
@@ -580,6 +622,18 @@ function pokeBody(body, p, opts){
       ]));
       head.appendChild(info);
       pn.appendChild(head);
+
+      /* ITS ABILITY, EXPLAINED, HERE. The block named it in a cell and left
+         it at that, so a sheet that spells out three base abilities went
+         quiet on the one that is live for most of the battle. It is
+         explained in the same shape as the others - the text, the measured
+         multiplier, what it does to this movepool - under the form that
+         has it rather than up in the base Pokemon's list. */
+      (m.ab || []).forEach(function(ab){
+        var note = abilityNote(ab, m, null, ls);
+        note.style.marginTop = "8px";
+        pn.appendChild(note);
+      });
 
       /* ITS OWN SIX, with the ones the stone moved marked. The base spread is
          four lines up; this is the other one, not a repeat of it. */

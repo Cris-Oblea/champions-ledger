@@ -141,36 +141,56 @@ const TABS = ["box", "home", "builds", "calc", "find", "gear", "trainer"];
   console.log("\n  la misma ficha por las tres puertas");
   const heads = () => [...d.getElementById("sheetBody").querySelectorAll("h2")]
     .map(h => h.textContent.trim());
+  /* EL CUADRO DE LA FORMA BASE. Las habilidades y la tabla de dano dejaron
+     de ser secciones sueltas el 2026-09-20 y viven dentro del cuadro de la
+     forma base, igual que las de cada Mega viven dentro del suyo ("mega line
+     tiene todo dentro de un mismo cuadro, pero la forma base no"). Siguen
+     teniendo que estar en las tres puertas - eso es lo que este test mide -
+     asi que se buscan donde ahora estan. */
+  const base = () => {
+    const pn = d.getElementById("sheetBody").querySelector(".panel");
+    if (!pn) return {abilities: 0, dano: false, stats: false};
+    return {abilities: pn.querySelectorAll(".note strong").length,
+            dano: /Takes damage/.test(pn.textContent),
+            stats: !!pn.querySelector(".statline")};
+  };
   const folds = () => [...d.getElementById("sheetBody").querySelectorAll(".fold")]
     .map(b => b.textContent.trim());
 
   w.findDetail(w.byName["Garchomp"]);
   await tick(150);
-  const findHeads = heads(), findFolds = folds();
+  const findHeads = heads(), findFolds = folds(), findBase = base();
   w.closeSheet();
 
   w.pokeSheet({ _id: "garchomp", name: "Garchomp", location: "champions",
                 status: "permanent", origin: "home" });
   await tick(150);
-  const boxHeads = heads();
+  const boxHeads = heads(), boxBase = base();
   w.closeSheet();
 
   w.pokeSheet({ _id: "garchomp-home", name: "Garchomp", location: "home",
                 status: "permanent", origin: "home" });
   await tick(150);
-  const homeHeads = heads(), homeFolds = folds();
+  const homeHeads = heads(), homeFolds = folds(), homeBase = base();
   w.closeSheet();
 
   /* "Mega line" lleva ahora la cuenta cuando hay dos - Garchomp tiene dos y el
      encabezado avisa de que solo una puede evolucionar por combate - asi que
      se compara por prefijo y no por igualdad. */
-  const REF = ["Mega line", "Takes damage", "Abilities", "Movepool"];
+  const REF = ["Mega line", "Movepool"];
   const hasHead = (list, h) => list.some(x => x.indexOf(h) === 0);
   REF.forEach(h => {
     ok("Find trae " + h, hasHead(findHeads, h), true);
     ok("...la caja Champions tambien", hasHead(boxHeads, h), true);
     ok("...y HOME tambien", hasHead(homeHeads, h), true);
   });
+  /* y lo que se mudo al cuadro de la forma base sigue estando en las tres */
+  [["Find", findBase], ["la caja", boxBase], ["HOME", homeBase]].forEach(function(x){
+    ok(x[0] + " explica las habilidades en el cuadro base", x[1].abilities > 0, true);
+    ok(x[0] + " lleva su tabla de dano ahi", x[1].dano, true);
+    ok(x[0] + " lleva sus stats ahi", x[1].stats, true);
+  });
+
   /* y la caja NO puede anadir nada que no sea propiedad: origen, esta copia
      (shiny / entrenado) y la nota. Cualquier otra cosa que aparezca aqui es
      una ficha volviendo a separarse en dos. */

@@ -453,6 +453,7 @@ function cardLine(cells){
      dex       false drops the dex number chip
      mark      a stat key to highlight, for a list ranked by one
      megas     false suppresses the whole Mega half
+     stats     false leaves the six-stat table to the caller
      abLabel   "Possible ability" (default) or "Ability" where one is chosen
      abValue   the ONE ability this set runs, instead of the species list
      cells     extra labelBox cells for the line above the stats
@@ -555,7 +556,10 @@ function pokeFacts(m, p, ms, o){
     })));
   }
   /* --- the six stats -------------------------------------------------- */
-  m.appendChild(statGrid(p, o.mark, ms));
+  /* `stats:false` leaves them out, for a caller that wants the table at FULL
+     WIDTH below rather than in the narrow column beside a picture - which is
+     what a sheet panel does, base form and Mega alike. */
+  if (o.stats !== false) m.appendChild(statGrid(p, o.mark, ms));
 }
 function pokeCard(p, o){
   o = o || {};
