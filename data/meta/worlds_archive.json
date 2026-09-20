@@ -504,12 +504,12 @@
        "pct": 16.2
       },
       {
-       "name": "Archaludon",
+       "name": "Venusaur",
        "teams": 16,
        "pct": 14.4
       },
       {
-       "name": "Venusaur",
+       "name": "Archaludon",
        "teams": 16,
        "pct": 14.4
       },
@@ -564,12 +564,12 @@
        "pct": 7.2
       },
       {
-       "name": "Scovillain",
+       "name": "Lycanroc",
        "teams": 7,
        "pct": 6.3
       },
       {
-       "name": "Lycanroc",
+       "name": "Scovillain",
        "teams": 7,
        "pct": 6.3
       },
@@ -737,12 +737,12 @@
        "pct": 11.9
       },
       {
-       "name": "Lunala",
+       "name": "Ursaluna",
        "teams": 43,
        "pct": 11.6
       },
       {
-       "name": "Ursaluna",
+       "name": "Lunala",
        "teams": 43,
        "pct": 11.6
       },
@@ -1037,12 +1037,12 @@
        "pct": 2.4
       },
       {
-       "name": "Sneasler",
+       "name": "Tatsugiri",
        "teams": 3,
        "pct": 2.4
       },
       {
-       "name": "Tatsugiri",
+       "name": "Sneasler",
        "teams": 3,
        "pct": 2.4
       },
@@ -1122,12 +1122,12 @@
        "pct": 19.8
       },
       {
-       "name": "Lunala",
+       "name": "Whimsicott",
        "teams": 20,
        "pct": 18.0
       },
       {
-       "name": "Whimsicott",
+       "name": "Lunala",
        "teams": 20,
        "pct": 18.0
       },
@@ -1142,12 +1142,12 @@
        "pct": 17.1
       },
       {
-       "name": "Smeargle",
+       "name": "Ogerpon",
        "teams": 18,
        "pct": 16.2
       },
       {
-       "name": "Ogerpon",
+       "name": "Smeargle",
        "teams": 18,
        "pct": 16.2
       },
@@ -1207,12 +1207,12 @@
        "pct": 8.1
       },
       {
-       "name": "Tatsugiri",
+       "name": "Weezing",
        "teams": 9,
        "pct": 8.1
       },
       {
-       "name": "Weezing",
+       "name": "Tatsugiri",
        "teams": 9,
        "pct": 8.1
       },
@@ -1535,12 +1535,12 @@
        "pct": 33.1
       },
       {
-       "name": "Iron Hands",
+       "name": "Farigiraf",
        "teams": 35,
        "pct": 26.9
       },
       {
-       "name": "Farigiraf",
+       "name": "Iron Hands",
        "teams": 35,
        "pct": 26.9
       },
@@ -2077,12 +2077,12 @@
        "pct": 2.7
       },
       {
-       "name": "Pelipper",
+       "name": "Basculegion",
        "teams": 2,
        "pct": 2.7
       },
       {
-       "name": "Basculegion",
+       "name": "Pelipper",
        "teams": 2,
        "pct": 2.7
       },
@@ -2107,12 +2107,12 @@
        "pct": 1.4
       },
       {
-       "name": "Talonflame",
+       "name": "Scizor",
        "teams": 1,
        "pct": 1.4
       },
       {
-       "name": "Scizor",
+       "name": "Talonflame",
        "teams": 1,
        "pct": 1.4
       },
@@ -2127,12 +2127,12 @@
        "pct": 1.4
       },
       {
-       "name": "Azumarill",
+       "name": "Articuno",
        "teams": 1,
        "pct": 1.4
       },
       {
-       "name": "Articuno",
+       "name": "Azumarill",
        "teams": 1,
        "pct": 1.4
       },
@@ -2247,12 +2247,12 @@
        "pct": 6.7
       },
       {
-       "name": "Pelipper",
+       "name": "Basculegion",
        "teams": 6,
        "pct": 6.7
       },
       {
-       "name": "Basculegion",
+       "name": "Pelipper",
        "teams": 6,
        "pct": 6.7
       },
@@ -2287,12 +2287,12 @@
        "pct": 4.4
       },
       {
-       "name": "Lilligant",
+       "name": "Torkoal",
        "teams": 4,
        "pct": 4.4
       },
       {
-       "name": "Torkoal",
+       "name": "Lilligant",
        "teams": 4,
        "pct": 4.4
       },
@@ -2620,12 +2620,12 @@
        "pct": 24.4
       },
       {
-       "name": "Iron Hands",
+       "name": "Ursaluna",
        "teams": 17,
        "pct": 19.8
       },
       {
-       "name": "Ursaluna",
+       "name": "Iron Hands",
        "teams": 17,
        "pct": 19.8
       },
@@ -2655,12 +2655,12 @@
        "pct": 10.5
       },
       {
-       "name": "Regidrago",
+       "name": "Iron Bundle",
        "teams": 7,
        "pct": 8.1
       },
       {
-       "name": "Iron Bundle",
+       "name": "Regidrago",
        "teams": 7,
        "pct": 8.1
       },
@@ -2965,12 +2965,12 @@
        "pct": 2.3
       },
       {
-       "name": "Pelipper",
+       "name": "Palafin",
        "teams": 2,
        "pct": 2.3
       },
       {
-       "name": "Palafin",
+       "name": "Pelipper",
        "teams": 2,
        "pct": 2.3
       },
@@ -3562,12 +3562,12 @@
        "pct": 16.2
       },
       {
-       "name": "Archaludon",
+       "name": "Venusaur",
        "teams": 16,
        "pct": 14.4
       },
       {
-       "name": "Venusaur",
+       "name": "Archaludon",
        "teams": 16,
        "pct": 14.4
       },
@@ -3622,12 +3622,12 @@
        "pct": 7.2
       },
       {
-       "name": "Scovillain",
+       "name": "Lycanroc",
        "teams": 7,
        "pct": 6.3
       },
       {
-       "name": "Lycanroc",
+       "name": "Scovillain",
        "teams": 7,
        "pct": 6.3
       },
@@ -3800,12 +3800,12 @@
        "pct": 11.9
       },
       {
-       "name": "Lunala",
+       "name": "Ursaluna",
        "teams": 43,
        "pct": 11.6
       },
       {
-       "name": "Ursaluna",
+       "name": "Lunala",
        "teams": 43,
        "pct": 11.6
       },
@@ -4100,12 +4100,12 @@
        "pct": 2.4
       },
       {
-       "name": "Sneasler",
+       "name": "Tatsugiri",
        "teams": 3,
        "pct": 2.4
       },
       {
-       "name": "Tatsugiri",
+       "name": "Sneasler",
        "teams": 3,
        "pct": 2.4
       },
@@ -4185,12 +4185,12 @@
        "pct": 19.8
       },
       {
-       "name": "Lunala",
+       "name": "Whimsicott",
        "teams": 20,
        "pct": 18.0
       },
       {
-       "name": "Whimsicott",
+       "name": "Lunala",
        "teams": 20,
        "pct": 18.0
       },
@@ -4205,12 +4205,12 @@
        "pct": 17.1
       },
       {
-       "name": "Smeargle",
+       "name": "Ogerpon",
        "teams": 18,
        "pct": 16.2
       },
       {
-       "name": "Ogerpon",
+       "name": "Smeargle",
        "teams": 18,
        "pct": 16.2
       },
@@ -4270,12 +4270,12 @@
        "pct": 8.1
       },
       {
-       "name": "Tatsugiri",
+       "name": "Weezing",
        "teams": 9,
        "pct": 8.1
       },
       {
-       "name": "Weezing",
+       "name": "Tatsugiri",
        "teams": 9,
        "pct": 8.1
       },
@@ -4603,12 +4603,12 @@
        "pct": 33.1
       },
       {
-       "name": "Iron Hands",
+       "name": "Farigiraf",
        "teams": 35,
        "pct": 26.9
       },
       {
-       "name": "Farigiraf",
+       "name": "Iron Hands",
        "teams": 35,
        "pct": 26.9
       },
@@ -5256,12 +5256,12 @@
        "pct": 24.4
       },
       {
-       "name": "Iron Hands",
+       "name": "Ursaluna",
        "teams": 17,
        "pct": 19.8
       },
       {
-       "name": "Ursaluna",
+       "name": "Iron Hands",
        "teams": 17,
        "pct": 19.8
       },
@@ -5291,12 +5291,12 @@
        "pct": 10.5
       },
       {
-       "name": "Regidrago",
+       "name": "Iron Bundle",
        "teams": 7,
        "pct": 8.1
       },
       {
-       "name": "Iron Bundle",
+       "name": "Regidrago",
        "teams": 7,
        "pct": 8.1
       },
@@ -5521,12 +5521,12 @@
        "pct": 6.7
       },
       {
-       "name": "Pelipper",
+       "name": "Basculegion",
        "teams": 6,
        "pct": 6.7
       },
       {
-       "name": "Basculegion",
+       "name": "Pelipper",
        "teams": 6,
        "pct": 6.7
       },
@@ -5561,12 +5561,12 @@
        "pct": 4.4
       },
       {
-       "name": "Lilligant",
+       "name": "Torkoal",
        "teams": 4,
        "pct": 4.4
       },
       {
-       "name": "Torkoal",
+       "name": "Lilligant",
        "teams": 4,
        "pct": 4.4
       },
