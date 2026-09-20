@@ -5,7 +5,7 @@ import { $, C, DEX, MOVES, MOVE_BY, SORT, STAT_KEYS, STAT_LABEL, STONE_OF,
  dexNo, effectLine, el, labelBox, learnset, megaLine, megaSuffix, megasFor,
  podiumChip, pokeFacts, podiumFor, pokeCard, splitPct, spriteFor, statGrid, toast,
  typeCard, typeChip, typeSkin, usageTag } from "./01-data.js";
-import { S, boxRows, hasStone, originOf, ownedNames } from "./02-state.js";
+import { S, boxRows, originOf, ownedNames } from "./02-state.js";
 import { closeSheet, fbtn, openSheet } from "./04-nav.js";
 import { analysisPanel, battleFormNote, loadOutside, outsideDex,
   outsideMove, outsideMovesFor } from "./05-box.js";
@@ -537,7 +537,6 @@ function pokeBody(body, p, opts){
                       + " may evolve in a battle"
                     : "Mega line"));
     ms.forEach(function(m){
-      var st = STONE_OF[m.name], own = hasStone(st);
       var retype = m.types.join("/") !== p.types.join("/");
       var pn = el("div", "panel megablock");
       pn.style.marginBottom = "10px";
@@ -548,8 +547,9 @@ function pokeBody(body, p, opts){
       var info = el("div", "sheetfacts");
       var h = el("div", "rname");
       h.appendChild(document.createTextNode(m.name));
-      h.appendChild(el("span", "tag " + (own ? "mega" : "warn"),
-        own ? st + " — owned" : st + " — 2000 VP"));
+      /* the stone is named, because it is what this block is about - but NOT
+         whether it is owned. That lives in the Items tab and nowhere else. */
+      h.appendChild(el("span", "tag mega", STONE_OF[m.name]));
       info.appendChild(h);
 
       var mt = el("div", "rmeta");
