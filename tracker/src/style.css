@@ -583,6 +583,15 @@ nav.tabs button:active{background:var(--sunk)}
    divides the leftover space, so two of them beside a BST cell come out
    even instead of one hogging its content width. */
 .cardline > div.wide{flex:1 1 0}
+/* THE BST BOX MARKS ITSELF TOO, when the list is ranked by BST. It has
+   carried the class since the ranking existed and had no rule to show it, so
+   the default sort in Find was the one sort that marked nothing. Same
+   treatment as a ranked stat cell, and the same restraint: the tint, the
+   ring, the number and the label - never anything else living in the box. */
+.cardline > div.on{background:var(--accent-soft);
+  box-shadow:inset 0 0 0 1px var(--accent)}
+.cardline > div.on > b{color:var(--accent);font-weight:600}
+.cardline > div.on > span.lbl{color:var(--accent)}
 /* and the words inside may break, since the box no longer can */
 .cardline > div.wide b{overflow-wrap:break-word}
 /* EVERY ABILITY BOX LOOKS THE SAME, because they are the same kind of
@@ -716,11 +725,27 @@ nav.tabs button:active{background:var(--sunk)}
    flecha apuntando a la z y estan en morado"). */
 .megato{font-family:var(--mono);color:var(--ink, var(--mega));margin:0 1px;
   font-weight:600}
-/* the stat the list is ranked by, marked here too */
+/* THE STAT THE LIST IS RANKED BY, marked - AND ONLY THE BASE NUMBER AND ITS
+   LABEL. `div.on span` was every span in the cell, and the Mega deltas are
+   spans: ranking by Speed repainted X's number and Y's number in the
+   filter's teal, so the one card that says which form each number belongs
+   to stopped saying it exactly where you were looking (player, 2026-09-20:
+   "los numeros que marca por ejemplo de diferentes mega se tinen de color
+   del filtro del marco... la idea es marcar el stat filtrado, pero que no se
+   pierdan los colores").
+
+   It half-survived on a two-Mega card, which is the detail that gives the
+   cause away: `.statline .mg .mgk` is three classes and beat `div.on span`,
+   so the little X/Z/mega key kept its ink while the number beside it lost
+   its own. Garchomp looked like it kept the purple and had not.
+
+   The mark belongs to the cell, not to everything in it: the tint, the
+   ring, the base number and the label. What a Mega does to that stat is a
+   different fact and keeps its own colour. */
 .statline div.on{background:var(--accent-soft);
   box-shadow:inset 0 0 0 1px var(--accent)}
-.statline div.on b{color:var(--accent);font-weight:600}
-.statline div.on span{color:var(--accent)}
+.statline div.on > b{color:var(--accent);font-weight:600}
+.statline div.on > span.lbl{color:var(--accent)}
 /* An item has no type, so its band is the neutral rule - visibly the same
    component, honestly not carrying a colour it does not have. */
 /* HOVER LIGHTS THE EDGE IN THE POKEMON'S OWN COLOURS, all of them.
