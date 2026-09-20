@@ -289,6 +289,79 @@ nav.tabs button:active{background:var(--sunk)}
     linear-gradient(180deg, var(--tcol2, var(--tcol, var(--line-hard))) 50%,
                     var(--tcol2b, var(--tcol2, var(--tcol, var(--line-hard)))) 50%)
       right top / 50% 100% no-repeat}
+/* ------- A CARD WHOSE TYPE CHANGES SAYS SO IN ITS OWN COLOURS -----------
+
+   The card wears its Pokemon's types. Eighteen species change types when they
+   Mega Evolve - Ampharos gains Dragon, Staraptor stops being Normal, Garchomp
+   and Aggron LOSE a type and come back with fewer colours - and none of that
+   reached the one thing on the card that is made of type colour (player,
+   2026-09-20: "como podriamos hacer para las cards que tienen cambio de tipo
+   (por ende mas o menos colores) se vea visible? una especie de colores
+   dinamicos?").
+
+   He picked the moving answer over the static ones, with the cost stated: a
+   colour that changes cannot be compared at a glance. So it is built to be
+   read rather than noticed:
+
+   * ONLY the eighteen. A card whose Mega keeps its typing is exactly the card
+     it was, with no overlay, no animation and nothing to compose. That is 57
+     of the 76 Mega species, and every Pokemon without a Mega at all.
+   * SLOW, and mostly at rest. Nine seconds a cycle, held at each end - about
+     three and a half seconds of stillness per state, with the change itself
+     taking a second. A grid of these reads as a room with something moving in
+     it, not as a page of blinking.
+   * NOTHING DEPENDS ON CATCHING IT. The type chips still spell out
+     "ELECTRIC -> X ELECTRIC DRAGON" in text, and the stat cells still carry
+     their arrows. The colour is the invitation to look, never the statement.
+   * prefers-reduced-motion STOPS IT, at the base typing - the card the rest of
+     the app draws - because someone who has asked for less motion has asked
+     for exactly this less.
+
+   HOW. An overlay rather than animated custom properties: `@property` would
+   let the variables themselves interpolate, but the band is painted by a
+   pseudo-element reading them off its parent, and registering an inherited
+   custom property to animate it puts a lot of weight on one place. An
+   absolutely positioned layer carrying the Mega's colours, cross-fading its
+   own opacity, is composited on the GPU and cannot affect layout at all. */
+.row.card > .retype{position:absolute;inset:0;z-index:0;pointer-events:none;
+  opacity:0;border-radius:inherit;
+  /* the same two-half tint as the card, in the Mega's tones... */
+  background:
+    linear-gradient(180deg, var(--msoft, transparent) 0,
+                    var(--msoftb, var(--msoft, transparent)) 34px,
+                    transparent 76px)
+      left top / 50% 100% no-repeat,
+    linear-gradient(180deg, var(--msoft2, var(--msoft, transparent)) 0,
+                    var(--msoft2b, var(--msoft2, var(--msoft, transparent))) 34px,
+                    transparent 76px) right top / 50% 100% no-repeat;
+  animation:retypefade 9s ease-in-out infinite}
+/* ...and the 6px band on top of it, halved exactly as the real one is, so the
+   two line up pixel for pixel while they cross-fade. */
+.row.card > .retype::before{content:"";position:absolute;left:0;right:0;top:0;
+  height:6px;
+  background:
+    linear-gradient(180deg, var(--mcol, var(--line-hard)) 50%,
+                    var(--mcolb, var(--mcol, var(--line-hard))) 50%)
+      left top / 50% 100% no-repeat,
+    linear-gradient(180deg, var(--mcol2, var(--mcol, var(--line-hard))) 50%,
+                    var(--mcol2b, var(--mcol2, var(--mcol, var(--line-hard)))) 50%)
+      right top / 50% 100% no-repeat}
+/* The content sits ABOVE the overlay. Named rather than `> *`, because the
+   sprite is absolutely positioned and `position:relative` on it would drop it
+   back into the flow. */
+.row.card > .rmain, .row.card > .megapics, .row.card > .rside{
+  position:relative;z-index:1}
+.row.card > .sprite{z-index:1}
+/* Held, changed, held, changed back. The holds are what make it legible: a
+   continuous fade never shows either typing long enough to be read. */
+@keyframes retypefade{
+  0%, 38%   {opacity:0}
+  50%, 88%  {opacity:1}
+  100%      {opacity:0}
+}
+@media (prefers-reduced-motion: reduce){
+  .row.card > .retype{animation:none;opacity:0}
+}
 /* THE SPRITE sits in the top-right corner, out of the flow so it cannot push
    the stat table around, with a gutter reserved on the two rows that reach
    that far. Everything below - the cells and the stat table - is full width
@@ -447,8 +520,24 @@ nav.tabs button:active{background:var(--sunk)}
 
    A card WITHOUT a Mega keeps the corner exactly as it was, which is most of
    the dex and the layout everything else was measured against. */
-.megapics{display:flex;flex-wrap:wrap;gap:6px;padding:8px 13px 0;
-  justify-content:flex-start}
+/* THREE IN A LINE, when the card is wide enough to hold them at native
+   size (player, 2026-09-20: "se puede hacer que una card aguante hasta 3
+   sprites de manera horizontal? asi los que tienen 2 megas diferentes los
+   3 sprites quedan en una linea").
+
+   Three sprites are 288px and nothing may shrink them - a 96px file drawn
+   smaller is the one resample this app does not do. So the space around
+   them is what gives: 13px of side padding and 6px gaps needed 326px and
+   a card is 309, which is why the third one wrapped. At 3px gaps and no
+   side padding the line needs 294 and fits, with the strip centred so two
+   sprites still sit evenly.
+
+   IT STILL WRAPS where it truly cannot fit, and that is deliberate: the
+   grid's 250px minimum is worth a whole column on a 1366-wide laptop (see
+   the note on .cards) and is not being traded for this. Wide card, one
+   line; narrow card, two rows rather than a shrunken sprite. */
+.megapics{display:flex;flex-wrap:wrap;gap:3px;padding:8px 0 0;
+  justify-content:center}
 .row.card.hasline .rmain{padding-top:6px}
 .megapicwrap{position:relative;width:96px;height:96px;flex:0 0 auto}
 /* NO `image-rendering:pixelated`, AT ANY SIZE (player, 2026-09-19: "en
