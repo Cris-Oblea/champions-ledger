@@ -312,12 +312,21 @@ setTimeout(() => {
              solo necesito saber las cosas que cambian"). Garchomp tiene dos
              Megas, asi que la card lleva dos chips. */
           ok("una sola card, no tres", champ.length, 1);
-          /* contados como CHIPS, no buscando la palabra en todo el texto: la
-             tira de sprites de arriba tambien se etiqueta "mega M" / "mega Z",
-             asi que un match sobre el textContent daba cuatro. */
-          ok("con un chip por cada Mega de la linea",
+          /* UNA CAJA DE HABILIDAD POR MEGA, que es donde viven ahora: los
+             chips "MEGA" / "MEGA Z" del nombre se quitaron el 2026-09-20
+             ("los tags MEGA, MEGA Z, Mega X, Mega Y ya no sirven, porque
+             ahora los sprites representan visualmente las megas"). La card
+             sigue diciendo que hay dos, en tres sitios a la vez: el sprite,
+             la caja de habilidad y el delta de cada stat. */
+          ok("una caja de habilidad por cada Mega de la linea",
+             [...results()[0].querySelectorAll(".cardline .lbl")]
+               .filter(t => /^Mega/.test(t.textContent)).length, 2);
+          ok("y un sprite rotulado por cada una",
+             [...results()[0].querySelectorAll(".megapickey")]
+               .filter(t => !/base/.test(t.textContent)).length, 2);
+          ok("sin chips de mega en el nombre",
              [...results()[0].querySelectorAll(".rname .tag")]
-               .filter(t => /^mega/.test(t.textContent)).length, 2);
+               .filter(t => /^mega/i.test(t.textContent)).length, 0);
           click(d.getElementById("findInChamp"));
           click(d.getElementById("findInHome"));
           setTimeout(() => {
@@ -325,8 +334,8 @@ setTimeout(() => {
             ok("solo la linea de Dragonite",
                home.length && home.every(t => /Dragonite/.test(t)), true);
             ok("una sola card tambien", home.length, 1);
-            ok("y su Mega va como chip",
-               /mega/.test(home[0]), true);
+            ok("y su Mega sigue estando en la card",
+               /mega/i.test(home[0]), true);
             click(d.getElementById("findInChamp"));
             setTimeout(() => {
               ok("los dos a la vez = cualquiera de las dos cajas",
