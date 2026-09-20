@@ -99,7 +99,11 @@ setTimeout(() => {
 
   w.go("builds");
   const rows = [...d.querySelectorAll("#listBuilds .row")];
-  const by = n => rows.find(r => r.textContent.indexOf(n) === 0);
+  /* by the NAME LINE, not by where the name falls in the row text: a
+     card with Megas opens with a strip of sprites, so "starts with the
+     name" was testing the DOM order of a picture. */
+  const by = n => rows.find(r => ((r.querySelector(".rname") || r)
+    .textContent.trim().indexOf(n) === 0));
   console.log("\n  como se ven en la lista");
   ok("Garchomp sin avisos",
      tags(by("Garchomp")).filter(t => /HOME|orphan/.test(t)).length, 0);

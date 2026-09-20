@@ -1,9 +1,8 @@
 /* 11-damage.js - Smogon's engine, and the calculator screen around it.
    Part of the app; linked into one script by scripts/build_tracker_page.py. */
-import {
-  $, C, DEX, MOVE_BY, STAT_KEYS, STAT_LABEL, anyRow, byName, capNote, catName,
-  el, learnset, natMult, statAt, statGrid, toast, typeCard, typeChip,
-} from "./01-data.js";
+import { $, C, DEX, MOVE_BY, STAT_KEYS, STAT_LABEL, anyRow, byName, capNote,
+ catName, el, labelBox, learnset, natMult, pokeCard, statAt, statGrid, toast,
+ typeCard, typeChip } from "./01-data.js";
 import { closeSheet, openSheet } from "./04-nav.js";
 import { S } from "./02-state.js";
 /* The modifier tables - which item, weather, terrain and berry touch which
@@ -533,23 +532,18 @@ function calcSideCtl(which){
      tambien le faltan los sprites"). typeCard puts the band and the sprite on
      from one place, which is why it is the same call here as everywhere. */
   var p0 = side.name ? anyRow(side.name) : null;
-  var pick = typeCard(el("button", "row" + (side.name ? "" : " unknown")), p0);
-  var m = el("div", "rmain");
-  if (side.name) {
+  var pick, m;
+  if (side.name && p0) {
     var p = byName[side.name];
-    var h = el("div", "rname");
-    h.appendChild(document.createTextNode(side.name));
-    if (side.buildId) h.appendChild(el("span", "tag ok", "your build"));
-    m.appendChild(h);
-    var meta = el("div", "rmeta");
-    (p ? p.types : []).forEach(function(t){ meta.appendChild(typeChip(t)); });
-    m.appendChild(meta);
-    /* THE SAME SIX-CELL TABLE AS EVERY OTHER SCREEN. This was the last place
-       reading "base: 115 HP 175 Atk 117 Def ..." as one run of text - the prose
-       the player could not read anywhere else either ("va todo escrito como
-       prosa practicamente"), and statSpan() was the FOURTH implementation of a
-       stat line in this app. It is gone; statGrid takes the spread. */
-    if (p) m.appendChild(statGrid(p));
+    /* THE CARD, the same one the pickers now draw, so the Pokemon you chose
+       looks like the Pokemon you chose it from. */
+    pick = pokeCard(p0, {
+      badges: function(h){
+        if (side.buildId) h.appendChild(el("span", "tag ok", "your build"));
+      },
+      notes: function(body){ m = body; },
+      onclick: function(){ calcPickSheet(which); }
+    });
     /* THE OTHER SPREAD, WRITTEN OUT. A Pokemon that changes stats mid-battle
        has two, and printing one of them plus a sentence about the other is
        what this used to do: "Aegislash attacks as Blade Forme - 140 Attack,
@@ -580,13 +574,18 @@ function calcSideCtl(which){
       });
     }
   } else {
-    m.appendChild(el("div", "rname", which === "atk" ? "Pick the attacker"
-                                                     : "Pick the defender"));
+    /* nothing chosen yet, or a name with no row anywhere: the one shape that
+       needs no data */
+    pick = el("button", "row unknown");
+    m = el("div", "rmain");
+    m.appendChild(el("div", "rname", side.name
+      ? side.name
+      : which === "atk" ? "Pick the attacker" : "Pick the defender"));
     m.appendChild(el("div", "rmeta")).appendChild(
       el("span", null, "From a build, or any Pokemon in the dex"));
+    pick.appendChild(m);
+    pick.onclick = function(){ calcPickSheet(which); };
   }
-  pick.appendChild(m);
-  pick.onclick = function(){ calcPickSheet(which); };
   host.appendChild(pick);
   if (!side.name) return;
 
@@ -785,25 +784,27 @@ function calcPickSheet(which){
     });
     if (builds.length) {
       body.appendChild(el("h2", null, "From your builds"));
-      var bl = el("div", "list");
+      var bl = el("div", "list cards");
       builds.forEach(function(id){
         var b = S.builds[id];
         var nm = b.mega || b.pokemon;
         var p = byName[nm] || byName[b.pokemon];
         if (!p) return;
-        var r = el("button", "row perm");
-        var mm = el("div", "rmain");
-        var h = el("div", "rname");
-        h.appendChild(document.createTextNode(nm));
-        if (b.mega) h.appendChild(el("span", "tag mega", "mega"));
-        mm.appendChild(h);
-        var meta = el("div", "rmeta");
-        p.types.forEach(function(t){ meta.appendChild(typeChip(t)); });
-        meta.appendChild(el("span", "mono", (b.nature || "—") + "  ·  " +
-          STAT_KEYS.map(function(k){ return (b.stat_points || {})[k] || 0; }).join("/")));
-        mm.appendChild(meta);
-        r.appendChild(mm);
-        r.onclick = function(){ calcLoadBuild(which, id, b); };
+        /* THE SAME CARD AS THE BOX AND FIND. Picking who is attacking is a
+           comparison between Pokemon, so it needs the numbers being compared -
+           this was a name, a typing and the spread as prose. The build's own
+           two facts ride along as cells, where the card already puts BST. */
+        var r = pokeCard(p, {
+          cls: "perm",
+          abLabel: "Ability",
+          cells: [
+            labelBox(b.nature || "—", "Nature", "wide"),
+            labelBox(STAT_KEYS.map(function(k){
+              return (b.stat_points || {})[k] || 0;
+            }).join("/"), "SP")
+          ],
+          onclick: function(){ calcLoadBuild(which, id, b); }
+        });
         bl.appendChild(r);
       });
       body.appendChild(bl);
@@ -816,7 +817,7 @@ function calcPickSheet(which){
     inp.placeholder = "Search " + DEX.length + " forms, Megas included";
     wrap.appendChild(inp);
     body.appendChild(wrap);
-    var list = el("div", "list");
+    var list = el("div", "list cards");
     body.appendChild(list);
     function draw(){
       var q = inp.value.trim().toLowerCase();
@@ -828,23 +829,16 @@ function calcPickSheet(which){
         return !q || p.name.toLowerCase().indexOf(q) >= 0;
       });
       all.slice(0, 120).forEach(function(p){
-        var r = el("button", "row");
-        var mm = el("div", "rmain");
-        var h = el("div", "rname");
-        h.appendChild(document.createTextNode(p.name));
-        if (p.mega) h.appendChild(el("span", "tag mega", "mega"));
-        mm.appendChild(h);
-        var meta = el("div", "rmeta");
-        p.types.forEach(function(t){ meta.appendChild(typeChip(t)); });
-        meta.appendChild(el("span", "mono", p.b.join(" / ")));
-        mm.appendChild(meta);
-        r.appendChild(mm);
-        r.onclick = function(){
-          side.name = p.name; side.buildId = null;
-          if (which === "atk") CALC.move = null;
-          closeSheet(); calcDraw();
-        };
-        list.appendChild(r);
+        /* and the same one again for the whole dex - the stat line was
+           `p.b.join(" / ")`, six numbers as prose, which is the exact fault
+           the stat table was built to remove */
+        list.appendChild(pokeCard(p, {
+          onclick: function(){
+            side.name = p.name; side.buildId = null;
+            if (which === "atk") CALC.move = null;
+            closeSheet(); calcDraw();
+          }
+        }));
       });
       capNote(list, Math.min(120, all.length), all.length, "forms");
       if (!list.children.length) list.appendChild(el("div", "empty", "Nothing matches"));

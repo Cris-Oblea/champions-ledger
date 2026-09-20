@@ -310,10 +310,15 @@ setTimeout(() => {
          tuviera un cuadro como los stats... y tambien para la habilidad"), and
          a cell is the only shape this file can assert without matching prose. */
       ok("BST tiene su propio cuadro", !!cellOf(rows()[0], "BST"), true);
-      ok("y la habilidad tambien", !!cellOf(rows()[0], "Ability"), true);
+      /* "Possible ability", not "Ability": a dex row lists what this
+         Pokemon CAN have, while a build row shows the one it runs. The
+         two labels were the same word on cards that mean different
+         things, and the search shares its card with the box now. */
+      ok("y la habilidad tambien",
+         !!cellOf(rows()[0], "Possible ability"), true);
       ok("la habilidad dice algo",
-         cellOf(rows()[0], "Ability").querySelector("b").textContent.length > 2,
-         true);
+         cellOf(rows()[0], "Possible ability").querySelector("b")
+           .textContent.length > 2, true);
       /* SP and nature are the builder's business, not the list's. */
       ok("sin SPs en el listado",
          /at 0 SP|max/.test(rows()[0].textContent), false);

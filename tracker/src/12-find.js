@@ -1,12 +1,10 @@
 /* 12-find.js - Find: moves, abilities, items, and one Pokemon's whole sheet.
    Part of the app; linked into one script by scripts/build_tracker_page.py. */
-import {
-  $, C, DEX, MOVES, MOVE_BY, SORT, STAT_KEYS, STAT_LABEL, STONE_OF, TYPE_COLOR,
-  anyRow, bst, byName, capNote, cardLine, catName, defence, dexNo, megaSuffix,
-  effectLine, el,
-  labelBox, learnset, megasFor, podiumChip, podiumFor, splitPct, spriteFor,
-  statGrid, toast, typeCard, typeChip, typeSkin, usageTag,
-} from "./01-data.js";
+import { $, C, DEX, MOVES, MOVE_BY, SORT, STAT_KEYS, STAT_LABEL, STONE_OF,
+ TYPE_COLOR, anyRow, bst, byName, capNote, cardLine, catName, defence,
+ dexNo, effectLine, el, labelBox, learnset, megaLine, megaSuffix, megasFor,
+ podiumChip, podiumFor, pokeCard, splitPct, spriteFor, statGrid, toast,
+ typeCard, typeChip, typeSkin, usageTag } from "./01-data.js";
 import { S, boxRows, hasStone, originOf, ownedNames } from "./02-state.js";
 import { closeSheet, fbtn, openSheet } from "./04-nav.js";
 import { analysisPanel, battleFormNote, loadOutside, outsideDex,
@@ -78,9 +76,7 @@ var FIND = {q: "", moves: [], types: [], notTypes: [], typeMode: "and",
    3. WHAT CHANGES. Only that. A stat cell gains a second number when the Mega
       moves it, the types and the ability are shown only when the stone really
       swaps them, and a Pokemon with no Mega looks exactly as it did before. */
-function megaLine(p){
-  return p.mega ? [] : megasFor(p.name);
-}
+/* megaLine lives in 01-data.js now, with the card. */
 /* the value this Pokemon can reach in the direction being ranked */
 function reach(p, key, dir){
   var best = statOf(p, key);
@@ -265,178 +261,49 @@ function findRun(){
   var list = el("div", "cards");
   hits.slice(0, 120).forEach(function(p){
     var here = (p.name in own) || (p.species in own);
-    /* A CARD, WEARING ITS OWN TYPE. The band across the top and the whisper of
-       tint behind it both come from the primary type, so a grid of these reads
-       as a set of things rather than 345 identical strips - and the type
-       registers before a word has been read. */
-    var r = typeCard(el("button", "row" + (here ? " perm" : "")), p);
-    var m = el("div", "rmain");
-    var h = el("div", "rname");
-    h.appendChild(document.createTextNode(p.name));
-    if (here) {
-      // say WHICH copy and how elastic it is, not the retired word "permanent"
-      var rec = boxRows("champions").filter(function(x){
-        return x.name === p.name || x.name === p.species; })[0];
-      var o = rec ? originOf(rec) : null;
-      h.appendChild(el("span", "tag " + (o === "home" ? "ok" : ""),
-        rec && rec.status === "rental" ? "rental in your box"
-        : o === "home" ? "yours, HOME origin"
-        : o === "champions" ? "yours, Champions origin"
-        : "yours, origin?"));
-    }
-    /* THE LINE, NOT THE FORMS. One chip per Mega, carrying only the letter
-       that tells them apart - Charizard X and Y, Garchomp and Garchomp Z - so
-       a two-Mega species costs two small chips instead of two more cards. */
-    var ms = megaLine(p);
-    ms.forEach(function(mm){
-      var st = STONE_OF[mm.name], own2 = hasStone(st);
-      var suffix = ms.length > 1 ? megaSuffix(mm, p) : "";
-      var chip2 = el("span", "tag " + (own2 ? "mega" : ""),
-                     "mega" + (suffix ? " " + suffix : ""));
-      chip2.title = mm.name + " — " + st +
-        (own2 ? ", owned" : ", 2000 VP") + ". " +
-        (mm.types.join("/") !== p.types.join("/")
-          ? "Becomes " + mm.types.join("/") + ". " : "") +
-        "Ability " + (p.ab || []).join(" / ") + " → " + mm.ab.join(" / ");
-      h.appendChild(chip2);
-    });
-    /* ...and when a Mega is the reason this Pokemon matched at all, say so.
-       Searching Fighting finds Staraptor because its Mega is Fighting/Flying,
-       and a card that showed only Normal/Flying would look like a bug. */
-    var via = matchedAs[p.name];
-    if (via) {
-      var vt = el("span", "tag warn", "as " + via.name);
-      vt.title = "The base form does not match - this one does.";
-      h.appendChild(vt);
-    }
-    /* THE MEDAL. A result rather than a rate, so it sits on the name with the
-       ownership and Mega badges and not down among the numbers. */
-    var med = podiumChip(p.name);
-    if (med) h.appendChild(med);
-    m.appendChild(h);
-    var meta = el("div", "rmeta");
-    p.types.forEach(function(t){ meta.appendChild(typeChip(t)); });
-    /* THE TYPES ONLY WHEN THE STONE REALLY SWAPS THEM. Most Megas keep them,
-       and repeating an unchanged pair beside itself is the noise this whole
-       change exists to remove. Ampharos, Staraptor, Meganium and Sceptile are
-       what this is for. */
-    ms.forEach(function(mm){
-      if (mm.types.join("/") === p.types.join("/")) return;
-      var arrow = el("span", "megato");
-      arrow.textContent = "→" + (ms.length > 1
-        ? " " + (mm.name.replace("Mega ", "").replace(p.species, "").trim()
-                 || "M") : "");
-      meta.appendChild(arrow);
-      mm.types.forEach(function(t){ meta.appendChild(typeChip(t)); });
-    });
-    /* ALL SIX STATS, ALWAYS, AND THE RANKED ONE MARKED.
+    /* THE CARD, and nothing about it lives here any more. Everything this
+       block used to draw by hand - the type skin, the Mega chips and what
+       they swap, BST and the ability with their arrows, the six stats with
+       the Mega deltas, the strip of sprites - is pokeCard() in 01-data.js,
+       because the same card has to appear on every screen that shows a
+       Pokemon and copying this one is what let the others fall behind
+       (player, 2026-09-20).
 
-       This briefly dropped the other five when one was being ranked, on the
-       grounds that they were noise. The player cut that immediately and he is
-       right: "si filtro por atk, de mayor a menor, pero tambien quiero ver la
-       speed, no puedes quitarme esa informacion." An Attack ranking is read
-       WITH the Speed beside it - that is half of what picks the Pokemon.
-
-       So nothing is hidden and the ranked stat is simply made findable, which
-       is what the eye needed rather than fewer numbers.
-
-       BASE VALUES ONLY: "no necesito ver en el listado los SPs, puede estar
-       todo base." The level-50 floor and ceiling belong on the Pokemon's own
-       sheet, where one Pokemon is being decided about; in a list of 120 they
-       were three numbers per row answering a question nobody asked yet. */
+       ALL SIX STATS, ALWAYS, AND THE RANKED ONE MARKED. This briefly dropped
+       the other five when one was being ranked and the player cut it
+       immediately: "si filtro por atk, de mayor a menor, pero tambien quiero
+       ver la speed, no puedes quitarme esa informacion." Nothing is hidden;
+       the ranked stat is simply made findable. */
     var ranking = FIND.sort !== "dex";
-    m.appendChild(meta);
-    /* BST AND THE ABILITY GET A BOX EACH, for the same reason the stats did:
-       they were loose text on a card whose other numbers were all in cells
-       (player, 2026-09-16). BST is a total rather than a stat, so it keeps its
-       own cell above the six instead of joining them as a seventh column. */
-    /* WHICH Mega, when there are two of them. The suffix is the only thing
-       that tells them apart - Charizard X and Y, Garchomp and Garchomp Z - so
-       it is what labels the line, and a species with one Mega needs no label
-       at all. */
-    var tagOf = function(mm){
-      var sfx = mm.name.replace("Mega ", "").replace(p.species, "").trim();
-      return ms.length > 1 ? (sfx || "M") + " " : "";
-    };
-    /* DEDUPED, because Absol's two Megas are both 565 and "465 -> 565 -> 565"
-       says the same number twice to no purpose. */
-    var bstTxt = String(bst(p)), seenB = {};
-    ms.forEach(function(mm){
-      var v = bst(mm);
-      if (v === bst(p) || seenB[v]) return;
-      seenB[v] = 1;
-      bstTxt += " → " + v;
+    var r = pokeCard(p, {
+      cls: here ? "perm" : "",
+      mark: ranking ? FIND.sort : null,
+      badges: function(h){
+        if (here) {
+          /* say WHICH copy and how elastic it is, not the retired word
+             "permanent" */
+          var rec = boxRows("champions").filter(function(x){
+            return x.name === p.name || x.name === p.species; })[0];
+          var o = rec ? originOf(rec) : null;
+          h.appendChild(el("span", "tag " + (o === "home" ? "ok" : ""),
+            rec && rec.status === "rental" ? "rental in your box"
+            : o === "home" ? "yours, HOME origin"
+            : o === "champions" ? "yours, Champions origin"
+            : "yours, origin?"));
+        }
+        /* WHEN A MEGA IS THE REASON THIS POKEMON MATCHED AT ALL, say so.
+           Searching Fighting finds Staraptor because its Mega is
+           Fighting/Flying, and a card showing only Normal/Flying looks like a
+           bug. */
+        var via = matchedAs[p.name];
+        if (via) {
+          var vt = el("span", "tag warn", "as " + via.name);
+          vt.title = "The base form does not match - this one does.";
+          h.appendChild(vt);
+        }
+      },
+      onclick: function(){ findDetail(p); }
     });
-    /* One ENTRY per Mega, not an arrow loose among the names: labelBox breaks
-       an array between its items, so a bare "→" became a list item of its
-       own and read as an ability called nothing. */
-    var abTxt = (p.ab || []).slice();
-    ms.forEach(function(mm){
-      if (mm.ab.join("/") !== (p.ab || []).join("/"))
-        abTxt.push("→ " + tagOf(mm) + mm.ab.join(" / "));
-    });
-    m.appendChild(cardLine([
-      labelBox(bstTxt, "BST", FIND.sort === "bst" ? "on" : null),
-      labelBox(abTxt, "Ability", "wide")
-    ]));
-    /* A TABLE, NOT A SENTENCE. "115 HP 175 Atk 117 Def ..." is six numbers
-       with six words between them, which is prose - it gets read, never
-       scanned, and you cannot line two cards up against each other. Six
-       columns with the label under the number can be read straight down. */
-    m.appendChild(statGrid(p, ranking ? FIND.sort : null, ms));
-    r.appendChild(m);
-    /* AND WHAT IT TURNS INTO, as a picture. The card carries the base sprite
-       because that is the form you own and store; a Mega is a thing that
-       happens for one battle. But it is still a different Pokemon to look at,
-       and a line of names with no faces was the half of the fold that lost
-       something (player, 2026-09-19: "faltan los sprites de cada mega
-       evolution"). Smaller than the base one, in the same corner, under it -
-       so the eye reads "this, then these". */
-    if (ms.length) {
-      /* ALL OF THEM AT NATIVE SIZE. The file has 96 pixels and no more, so
-         anything smaller is a resample of a pixel sprite - the same reason the
-         GTS one went back to 96 (player, 2026-09-19: "podrias intentar que los
-         sprites de afuera de la ficha del pokemon igual se vieran a tamano
-         nativo... hacer que los 3 sprites o 2 quepan en la card").
-
-         Two or three of those do not fit in a corner, so they stop being a
-         corner: the card marks itself `.hasline` and the strip becomes a row
-         of its own across the top, base first and then what it becomes. The
-         corner sprite stays exactly as it was for every Pokemon without a
-         Mega, which is most of them. */
-      r.classList.add("hasline");
-      r.classList.remove("hassprite");
-      /* typeCard already pinned one to the corner. Dropping the CLASS only
-         stops it narrowing the text; the image is still there and still
-         absolutely positioned, so the base Pokemon appeared twice - which is
-         the duplication this whole pass is about. */
-      var corner = r.querySelector("img.sprite");
-      if (corner) corner.remove();
-      var mrow = el("div", "megapics");
-      var self = spriteFor(p.name);
-      if (self) {
-        self.className = "megapic";
-        self.title = p.name;
-        var c0 = el("div", "megapicwrap");
-        c0.appendChild(self);
-        c0.appendChild(el("span", "megapickey base", "base"));
-        mrow.appendChild(c0);
-      }
-      ms.forEach(function(mm){
-        var mp = spriteFor(mm.name);
-        if (!mp) return;
-        mp.className = "megapic";
-        mp.title = mm.name;
-        var cellm = el("div", "megapicwrap");
-        cellm.appendChild(mp);
-        cellm.appendChild(el("span", "megapickey",
-          ms.length > 1 ? "mega " + megaSuffix(mm, p) : "mega"));
-        mrow.appendChild(cellm);
-      });
-      if (mrow.children.length > 1) r.insertBefore(mrow, r.firstChild);
-      else { r.classList.remove("hasline"); r.classList.add("hassprite"); }
-    }
-    r.onclick = function(){ findDetail(p); };
     list.appendChild(r);
   });
   out.appendChild(list);
@@ -1761,31 +1628,45 @@ function worldDraw(){
     var p = anyRow(name);
     var mine = (name in own) || (p && p.species in own);
     /* The Worlds list is Pokemon too, so it reads like the rest of the app -
-     the player asked for the card everywhere, not only in the search. */
-    var r = typeCard(el("button", "row" + (mine ? " perm" : "")), p);
-    var m = el("div", "rmain");
-    var h = el("div", "rname");
-    h.appendChild(el("span", "mono", "#" + (i + 1) + "  "));
-    h.appendChild(document.createTextNode(name));
-    if (mine) h.appendChild(el("span", "tag ok", "yours"));
-    m.appendChild(h);
-    var meta = el("div", "rmeta");
-    if (p) p.types.forEach(function(t){ meta.appendChild(typeChip(t)); });
-    m.appendChild(meta);
-    /* Two numbers, so two cells. "24.6% · 97 of 394 teams" is a sentence you
+       the player asked for the card everywhere, not only in the search. */
+    /* Two numbers, so two cells. "24.6% - 97 of 394 teams" is a sentence you
        read; a share and a count side by side are numbers you scan down the
        column, which is the only way a ranking gets used. */
-    var cells = cardLine([
+    var cells = [
       labelBox(pct + "%", "of teams"),
       labelBox(teams + " / " + d.n, "brought it")
-    ]);
-    cells.title = teams + " of the " + d.n + " " + WORLD.div +
+    ];
+    var title = teams + " of the " + d.n + " " + WORLD.div +
       " teams at Worlds " + WORLD.year + " carried " + name +
       ". One per team - the Species Clause allows no second copy.";
-    m.appendChild(cells);
-    if (p) m.appendChild(statGrid(p));
-    r.appendChild(m);
-    if (p) r.onclick = function(){ findDetail(p); };
+    var r;
+    if (p) {
+      r = pokeCard(p, {
+        cls: mine ? "perm" : "",
+        name: name,
+        cells: cells,
+        pre: function(h){ h.appendChild(el("span", "mono", "#" + (i + 1) + "  ")); },
+        badges: function(h){
+          if (mine) h.appendChild(el("span", "tag ok", "yours"));
+        },
+        onclick: function(){ findDetail(p); }
+      });
+      var cl = r.querySelector(".cardline");
+      if (cl) cl.title = title;
+    } else {
+      /* a name with no row in any dex - it still holds its place in the
+         ranking rather than disappearing from it */
+      r = el("button", "row");
+      var m = el("div", "rmain");
+      var h = el("div", "rname");
+      h.appendChild(el("span", "mono", "#" + (i + 1) + "  "));
+      h.appendChild(document.createTextNode(name));
+      m.appendChild(h);
+      var cl2 = cardLine(cells);
+      cl2.title = title;
+      m.appendChild(cl2);
+      r.appendChild(m);
+    }
     list.appendChild(r);
   });
   out.appendChild(list);

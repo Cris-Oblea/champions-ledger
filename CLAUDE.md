@@ -838,7 +838,7 @@ anyone sees first - and by the time it was read it claimed 308 forms against a
 real 345, named a regulation two versions old, and told the reader to hand-edit
 a file the app had replaced.
 
-The counts are therefore **generated**, never typed: `scripts/build_readme.py`
+The counts are therefore **generated**, never typed: `scripts/build_docs.py`
 writes them between `<!-- COUNTS:START -->` markers, `--check` is one of the
 gate's checks in `daily.py`, and `refresh.py` regenerates them every night. A
 drifted README blocks the deploy exactly like a failing test.

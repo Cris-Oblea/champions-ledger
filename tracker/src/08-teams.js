@@ -1,7 +1,7 @@
 /* 08-teams.js - Six slots, the clauses checked, and what is still to get.
    Part of the app; linked into one script by scripts/build_tracker_page.py. */
-import { $, C, STONE_OF, byName, capNote, cardLine, el, labelBox, splitPct,
-  toast, typeCard, typeChip, usageTag } from "./01-data.js";
+import { $, C, STONE_OF, byName, capNote, cardLine, el, labelBox, pokeCard,
+ splitPct, toast, typeCard, typeChip, usageTag } from "./01-data.js";
 import { S, buildLink, buildsFor, hasStone } from "./02-state.js";
 import { drop, put, putNew } from "./03-store.js";
 import { ask, closeSheet, fbtn, leaveEditor, openEditor, openSheet }
@@ -120,43 +120,50 @@ function teamSlotRow(draft, x, i, redraw){
   /* A slot holds a Pokemon, so it wears one - the same card as everywhere
      else. Its type is the BUILD's Pokemon, Mega included when a stone is on
      it, because that is what walks onto the field. */
-  var row = typeCard(el("div", "row"),
-    x.build ? (byName[x.build.mega || x.build.pokemon] ||
-               byName[x.build.pokemon]) : null);
-  var m = el("div", "rmain");
-  var h = el("div", "rname");
-
-  if (!x.build) {
-    h.appendChild(el("span", "st", "Slot " + (i + 1) + " — empty"));
+  var draw = x.build ? (byName[x.build.mega || x.build.pokemon] ||
+                        byName[x.build.pokemon]) : null;
+  var row, m;
+  if (draw) {
+    row = pokeCard(draw, {
+      tag: "div",
+      name: x.build.pokemon,
+      /* the stone the build runs is named on its own badge, so the card does
+         not also list the species' whole Mega line here */
+      megas: !x.build.mega,
+      /* THE ITEM GETS A CELL OF ITS OWN, because on this screen it is the
+         decision being made - the Item Clause is a team rule, so the six
+         items are read down the column against each other. */
+      cells: [
+        labelBox(x.build.nature || null, "Nature", "wide"),
+        labelBox(x.slot.item || null, "Item", "wide")
+      ],
+      badges: function(h){
+        if (x.build.mega) h.appendChild(el("span", "tag mega", x.build.mega));
+        if (x.state === "parked")
+          h.appendChild(el("span", "tag warn", "in HOME — recall it first"));
+        else if (x.state === "unbound")
+          h.appendChild(el("span", "tag warn", "you do not have one yet"));
+        else if (x.state === "orphan")
+          h.appendChild(el("span", "tag bad", "its Pokemon is gone"));
+        if (x.row && x.row.status === "rental")
+          h.appendChild(el("span", "tag warn", "rental — cannot be trained"));
+      },
+      meta: function(meta){
+        meta.appendChild(el("span", "mono",
+          (x.build.moves || []).length + " moves"));
+      },
+      notes: function(body){
+        if (x.slot.why) body.appendChild(el("div", "st", x.slot.why));
+      }
+    });
   } else {
-    h.appendChild(document.createTextNode(x.build.pokemon));
-    if (x.build.mega) h.appendChild(el("span", "tag mega", x.build.mega));
-    if (x.state === "parked")
-      h.appendChild(el("span", "tag warn", "in HOME — recall it first"));
-    else if (x.state === "unbound")
-      h.appendChild(el("span", "tag warn", "you do not have one yet"));
-    else if (x.state === "orphan")
-      h.appendChild(el("span", "tag bad", "its Pokemon is gone"));
-    if (x.row && x.row.status === "rental")
-      h.appendChild(el("span", "tag warn", "rental — cannot be trained"));
+    row = el("div", "row");
+    m = el("div", "rmain");
+    var h = el("div", "rname");
+    h.appendChild(el("span", "st", "Slot " + (i + 1) + " — empty"));
+    m.appendChild(h);
+    row.appendChild(m);
   }
-  m.appendChild(h);
-
-  if (x.build) {
-    var meta = el("div", "rmeta");
-    if (x.types) x.types.forEach(function(t){ meta.appendChild(typeChip(t)); });
-    meta.appendChild(el("span", "mono", (x.build.moves || []).length + " moves"));
-    m.appendChild(meta);
-    /* THE ITEM GETS A BOX OF ITS OWN, because on this screen it is the
-       decision being made - the Item Clause is a team rule, so the six items
-       are read down the column against each other. */
-    m.appendChild(cardLine([
-      labelBox(x.build.nature || null, "Nature"),
-      labelBox(x.slot.item || null, "Item", "wide")
-    ]));
-    if (x.slot.why) m.appendChild(el("div", "st", x.slot.why));
-  }
-  row.appendChild(m);
 
   var side = el("div", "rside");
   var pick = el("button", "btn sm", x.build ? "Change" : "Fill");
@@ -194,29 +201,54 @@ function teamPickBuild(onPick){
         "No builds yet. A team is made of builds, so write one first."));
       return;
     }
-    var list = el("div", "list");
+    var list = el("div", "list cards");
     ids.forEach(function(bid){
       var b = S.builds[bid], lk = buildLink(bid), p = byName[b.pokemon];
-      var btn = el("button", "row");
-      var m = el("div", "rmain");
-      var h = el("div", "rname");
-      h.appendChild(document.createTextNode(b.pokemon));
-      /* several builds per species is the point, so the id is shown: it is
-         what tells farigiraf from farigiraf-2 */
-      if (buildsFor(b.pokemon).length > 1)
-        h.appendChild(el("span", "tag", bid));
-      if (b.role) h.appendChild(el("span", "tag", b.role));
-      if (lk.state === "unbound")
-        h.appendChild(el("span", "tag warn", "not owned yet"));
-      if (lk.state === "parked") h.appendChild(el("span", "tag warn", "in HOME"));
-      m.appendChild(h);
-      var meta = el("div", "rmeta");
-      if (p) p.types.forEach(function(t){ meta.appendChild(typeChip(t)); });
-      meta.appendChild(el("span", null, b.nature || "—"));
-      meta.appendChild(el("span", "mono", (b.moves || []).join(", ") || "no moves"));
-      m.appendChild(meta);
-      btn.appendChild(m);
-      btn.onclick = function(){ closeSheet(); onPick(bid); };
+      /* A BUILD IS STILL A POKEMON, so the slot picker shows the card every
+         other list shows, with the build's own facts as the extra cells. It
+         had a typing, a nature and the four move names and nothing else -
+         and this is the screen where a team is decided. */
+      var badges = function(h){
+        /* several builds per species is the point, so the id is shown: it is
+           what tells farigiraf from farigiraf-2 */
+        if (buildsFor(b.pokemon).length > 1)
+          h.appendChild(el("span", "tag", bid));
+        if (b.role) h.appendChild(el("span", "tag", b.role));
+        if (lk.state === "unbound")
+          h.appendChild(el("span", "tag warn", "not owned yet"));
+        if (lk.state === "parked")
+          h.appendChild(el("span", "tag warn", "in HOME"));
+      };
+      var opts = {
+        cls: lk.state === "orphan" ? "illegal" : "",
+        name: b.pokemon,
+        abLabel: "Ability",
+        cells: [labelBox(b.nature || "—", "Nature", "wide")],
+        badges: badges,
+        meta: function(meta){
+          meta.appendChild(el("span", "mono",
+            (b.moves || []).join(", ") || "no moves"));
+        },
+        onclick: function(){ closeSheet(); onPick(bid); }
+      };
+      /* The Mega the build actually runs is the form it plays as, so that is
+         the row to draw - the same rule the calculator picker follows. */
+      var draw = (b.mega && byName[b.mega]) || p;
+      var btn;
+      if (draw) {
+        btn = pokeCard(draw, opts);
+      } else {
+        /* a build for a species the dex does not carry: it is still an idea
+           worth picking, so it keeps a row rather than disappearing */
+        btn = el("button", "row");
+        var m = el("div", "rmain");
+        var h = el("div", "rname");
+        h.appendChild(document.createTextNode(b.pokemon));
+        badges(h);
+        m.appendChild(h);
+        btn.appendChild(m);
+        btn.onclick = opts.onclick;
+      }
       list.appendChild(btn);
     });
     body.appendChild(list);

@@ -1,4 +1,4 @@
-# Status — 2026-09-09
+# Status — 2026-09-20
 
 Where the project stands, and what comes next.
 
@@ -66,29 +66,34 @@ python scripts/query.py speed --min 100
 
 ## What is loaded
 
-**Regulation M-C is live (2026-09-09) and loaded.** Rules data is current, and
-so is the **ladder usage: it is M-C**, fetched 2026-09-12 — pokebase defaults to
-the latest regulation and species that are only legal in M-C now carry real
-numbers (Indeedee-F 17.1% and top ten, Sinistcha 9.1%, Archaludon 7.6%). This
-page said "usage is still M-B" until the player corrected it on 2026-09-12; that
-was written on the day M-C opened and stopped being true the next. The **Worlds
-teamlists stay M-B** because that is when they were played, and **Pikalytics
-still lags** at `2026-05`. Full write-up in `analysis/regulation_m_c.md`.
+<!-- VINTAGE:START -->
+Regulation **M-C**. Ladder usage fetched 2026-09-19, from 323 Pokemon.
+Tournament data is Worlds 2026, played under M-B - that is history, not stale.
+<!-- VINTAGE:END -->
 
-| Data | Count | M-C change |
-|---|---|---|
-| Pokemon forms (**81 Mega**) | **345** | +32 (23 species, 3 forms, 6 Megas) |
-| Moves (**514 useable** in Champions) | 901 | +15 useable |
-| Abilities | **215** | +15 |
-| Items | **199** | +18 (6 stones, 12 held) |
-| Learnsets | **264** | +25 |
-| Ladder usage — Pokemon / moves / abilities / items | 321 / 501 / 192 / 139 |
-| Speed tiers | 84 |
-| Smogon Pokemon (**53 with written VGC analysis**) | 323 |
-| Pikalytics — tournaments / ladder | 243 / 231 |
-| **Worlds 2026 Masters** — final, players / teamlists | **395 / 394** |
-| **Worlds 2026 Seniors** — final, players / teamlists | **139 / 137** |
-| **Worlds 2026 Juniors** — final, players / teamlists | **111 / 111** |
+The regulation and the fetch date above are GENERATED, and so is the table
+below. Both were typed by hand until 2026-09-20 and both were wrong: the line
+here said "usage is still M-B" for a day after it stopped being true, and the
+counts were a regulation behind. A number nobody can regenerate is a number
+that goes stale in place. Full write-up of the M-C move in
+`analysis/regulation_m_c.md`; **Pikalytics still lags** at `2026-05`, which is
+why it is on notice.
+
+<!-- LOADED:START -->
+| Data | Count |
+|---|---|
+| Pokemon forms (**81 Mega**) | **345** |
+| Moves (**512 useable** in Champions) | **901** |
+| Abilities | **215** |
+| Items | **199** |
+| Learnsets | **264** |
+| Ladder usage - Pokemon / moves / abilities / items | **323 / 427 / 182 / 153** |
+| Speed tiers | **89** |
+| Smogon Pokemon (**56 with a written VGC analysis**) | **358** |
+| Worlds 2026 Masters - players / teamlists | **395 / 394** |
+| Worlds 2026 Seniors - players / teamlists | **139 / 137** |
+| Worlds 2026 Juniors - players / teamlists | **111 / 111** |
+<!-- LOADED:END -->
 
 Health after the M-C refresh: `audit_forms.py` clean (no collisions, nothing
 missing), `test_norm.py` all pass (**53** name groups collapse, **25** pairs stay
@@ -795,68 +800,42 @@ worth more than the Masters check alone:
 
 ---
 
-## Player state
+## What he owns is not written down here
 
-Master Ball Tier Rank 3. The box, the stones and the items live
-in the ledger (they used to be in `inventory/inventory.json`, deleted
-2026-09-13) and are printed by `python scripts/query.py owned`
-— they are deliberately not copied here, because the two would drift (this
-paragraph did: it still claimed 48/50 and 34 permanent slots).
+**The box, HOME, the stones, the items, the builds and the teams live in the
+app, and this file does not restate any of it** (player, 2026-09-20: "todo lo
+que tenga que ver con team, build, piedras y todo eso lo veo yo... la app ya me
+maneja las cosas que tengo, no es necesario que la ia se preocupe de lo que
+tengo o no hecho").
 
-Reached Master Rank 3 with an off-meta Trick Room team built on Mega
-Eelektross. Prefers **special main attackers** — Intimidate is on 57.5% of
-Worlds teams and only touches Attack.
+This section used to hold a box count, a list of twenty builds, fourteen
+untrained permanents with their ladder percentages, and a numbered plan for
+what to release next. Every one of those numbers was a promise to come back and
+retype it, and none of them was kept: the box line still said 48/50 against a
+real 43, the build list named ten sets the app had never seen, and the team plan
+had been overtaken in game weeks earlier. The app shows him all of it, live, on
+the phone he plays on. A second copy in a file he does not open can only be
+wrong.
 
-### Builds recorded (20) — registration complete
+So: **query it, never restate it, and never audit it.**
 
-Every Pokemon the player has actually trained is in the ledger's `builds`
-table. (This said `inventory/builds.json`, which no longer exists.)
-Print them with `python scripts/query.py build [pokemon]`, which rule-checks each
-spread as it goes. Do not restate them here — the two copies would drift.
+```bash
+python scripts/ledger.py            # box, HOME, stones, items, builds, teams
+supabase db query "select location, status, count(*) from box group by 1,2" --linked
+```
 
-19 species, 20 builds (Incineroar ×2, same set, one tuned to Defense and one to
-Sp. Def): Aerodactyl, Basculegion, Ceruledge, Eelektross, Farigiraf, Froslass,
-Garchomp, Gholdengo, Incineroar, Jolteon, Kingambit, Maushold, Ninetales-Alola,
-Rotom-Wash, Samurott-Hisui, Sceptile, Scrafty, Staraptor, Sylveon.
+What still belongs in this file is what the PROJECT is: the pipeline, the
+sources, the app's own structure, and the decisions behind them. What he has
+done with it is his.
 
-Items are deliberately absent: the player decides them once the six of a team are
-fixed. Mega Stones live in each build's `mega` field.
-
-**Untrained permanents (14)** — raw material, nothing planned for them yet. The
-percentage is how much the OPPOSITION runs them on the ladder, which is the
-reason to know they are sitting in the box: Sneasler 22.6%, Archaludon 14.9%,
-Raichu 10.5%, Tyranitar 7.6%, Dragonite 5.1%, Vivillon 2.3%, Meowscarada 1.3%,
-Chandelure 1.0%, Aggron 0.4%, Empoleon 0.3%, Arcanine 0.3%, Quaquaval 0.2%,
-Pikachu 0.1%, Machamp 0.1%.
+The COSTS stay, because they are rules rather than state - SP 5 VP, a move 250,
+a nature 500, an ability 500, a Mega Stone 2000, keeping a rental 2500 - so what
+a build costs is still part of any recommendation.
 
 ---
 
-## Next session
 
-1. **Assemble teams from the 20 builds.** Items get argued at that point and
-   only then — six slots, no repeats. Megas are not a constraint to minimise:
-   a team may carry two stones and choose in-game which one evolves.
-2. **Build outward from the interactions the box already has**, not from
-   tournament lists:
-   - **The Charm install.** Ten owned Pokemon learn Charm, and on Contrary
-     Mega Staraptor it is +2 Attack instead of -2. Maushold is the best carrier:
-     Charm, Friend Guard (-25% damage to the ally) and Follow Me in one slot.
-   - **Mega Staraptor as an Intimidate trap.** Contrary turns every opposing
-     Intimidate into +1 Attack, and 57.5% of Worlds teams carry one.
-   - **Mega Scrafty's double Intimidate**, -2 Attack on both opponents from one
-     slot, and Swords Dance out-scaling anything Intimidate does back.
-   - **Spread moves that hit the ally**: Earthquake (Garchomp) and Discharge
-     (Rotom-Wash, Jolteon) target All Adjacent Pokemon. Garchomp is immune to
-     Electric and Mega Sceptile's Lightning Rod converts it into +1 Sp. Atk, so
-     the pairing is a choice, not an accident.
-3. Decide whether any of the 14 untrained permanents earns the VP.
-
-### Open questions
-
-- Farigiraf **Modest → Quiet** costs 500 VP. Under Trick Room, Quiet would
-  outspeed neutral base-60s (Sylveon 25%, Incineroar 41% of Worlds teams).
-
-### Worth refreshing
+## Worth refreshing
 
 **Come back to the metagame sources in a few days.** M-C's rules are loaded, but
 three sources had not caught up on launch day and each one is worth a re-pull
@@ -1036,28 +1015,9 @@ ability rules; `Indeedee-F` vs `Indeedee-Female` and Squawkabilly's plumages
 listed as separate Pokemon. Two permanent sweeps now hunt the shape:
 `node tests/consistencytest.js` and `python scripts/audit_lookups.py`.
 
-### The ledger, as of 2026-09-11
+### The app icon was invisible, not missing (2026-09-11)
 
-Box **48/50** (stale - the ledger answers this now), 31 permanents and 17
-rentals. HOME holds **84 / 78 species**. GTS: Chesnaught -> Gholdengo and
-Pidgeot -> Crabominable pending, **one slot free**.
-
-**Next, in the order that costs least** (answered 2026-09-11, on request):
-
-1. **Release rentals first** - they cannot be trained and expire anyway. The
-   Toxapex rental is redundant now that HOME has one; Garganacl 0.1%,
-   Machamp 0.1%, Hatterene 0.7%, Dragapult 0.7%, Chandelure 0.9% and
-   Meganium 0.9% are the least-played of the rest.
-2. **Then the eight replacements already half-done** - Eelektross, Farigiraf,
-   Froslass, Glalie, Jolteon, Ninetales-Alola, Scrafty, Staraptor all have a
-   HOME copy. Order matters: **import, re-enter the build while the old one is
-   still on screen, then release the stuck twin** - releasing deletes the
-   build. ~2300 VP each, so three fit in 8000. Eelektross first.
-3. **Do not release Tyranitar 600 or Archaludon 600.** With Melmetal blocked
-   there is no 600-tier chip in HOME, so neither can be traded back.
-   Vivillon 411 is the only cheap permanent to let go.
-
-**The icon was invisible, not missing** (player, 2026-09-11). It was being
+Player, 2026-09-11. It was being
 served fine - the design was a dark frame on the app's near-black ground, so
 86% of its pixels sat within a few points of black, average luminance 38/255:
 a black square on a phone home screen. Rewritten full-bleed in the teal accent
@@ -1067,10 +1027,15 @@ and the manifest declares `any` and `maskable` separately instead of both on
 one file. Added `apple-touch-icon.png` at 180x180 with no alpha, which is what
 iOS asks for. Deployed as `388a099a`.
 
-**Still open:** a service worker for instant repeat opens, the same filter/cap
-treatment for the Champions Box list that the HOME list got, and the four
-numbers the sources disagree on (Slash, Snipe Shot, Night Slash, Meteor
-Assault) which only the game can settle.
+**Still open from that day:** the four numbers the sources disagree on
+(Slash, Snipe Shot, Night Slash, Meteor Assault), which only the game can
+settle. The other two items that sat here - a service worker, and the HOME
+list's filter and cap copied onto the Champions Box - were IDEAS OF MINE that
+nobody asked for, and both were struck on 2026-09-20 when the player read them
+back: "eso del service worker nunca lo entendi" and "eso de la champion box sin
+filtro ni cap tampoco se de que me hablas". A backlog only the assistant can
+explain is not a backlog.
+
 
 ---
 
@@ -1089,7 +1054,7 @@ and nothing reaches the phone without passing all of them.
   `.github/workflows/push.yml` gates every PR; the nightly job opens its own PR
   and auto-merges it. `scripts/hooks/pre-push` runs the same gate locally.
 - **The README is generated and checked.** Counts, vintage, the gate paragraph
-  and the test count all live between markers; `build_readme.py --check` is in
+  and the test count all live between markers; `build_docs.py --check` is in
   the gate, so a drifted README blocks the deploy.
 - **`scripts/migrate.py`** and a `schema_migrations` table. The four
   `supabase_migrate_*.sql` had been pasted into the SQL editor by hand with
@@ -1216,7 +1181,105 @@ python scripts/backup_ledger.py --list      # and what each snapshot held
   stripped to `box_capacity` alone in the database the same day, so the frozen
   `vp_balance`, `rank`, `regulation` ("M-B", two versions old), `season` and
   the ticket counts are gone rather than sitting there readable as current.
-- Still open from before: a service worker for instant repeat opens, the same
-  filter/cap treatment for the Champions Box list that HOME got, and the four
-  numbers only the game can settle (Slash, Snipe Shot, Night Slash, Meteor
-  Assault).
+- Still open, and the only one of the three that ever was: the four numbers
+  the sources disagree on - Slash, Snipe Shot, Night Slash, Meteor Assault -
+  which only the game can settle. ~~a service worker~~ and ~~the same
+  filter/cap treatment for the Champions Box list that HOME got~~ were struck
+  on 2026-09-20: both were mine, neither was asked for, and the player could
+  not place either when he read them back.
+
+---
+
+## Where we stopped, 2026-09-14/20
+
+Twenty-eight pull requests landed in these six days and none of them reached
+this file, which is why it opened on 2026-09-20 describing an app three
+versions behind. The commit subjects are the record; what follows is only what
+a future session needs to know rather than a changelog.
+
+### The app stopped being a phone in the middle of a monitor
+
+The desktop layout, the type colours taken from Pokemon's own badges, and a
+sweep for anything painted on top of anything else. Three corrections followed
+within the hour of him seeing it, all of them about density rather than taste,
+and the rule that came out of it is in the memory notes: **fix density with
+emphasis, never by removing a number.**
+
+### Numbers, not adjectives
+
+Items and abilities carry exact multipliers read out of the engine's own
+4096ths and Smogon's text, never an adjective and never a figure derived from a
+damage ratio. `scripts/measure_modifiers.py` runs each one through the engine
+with and without it; `scripts/build_ability_moves.py --audit` classifies all
+215 abilities and prints the ones it has no rule for.
+
+### The dex is complete
+
+Every species, move and ability ships in the page. Champions is the part that
+is **switched on**, and a Mega lives on its base Pokemon's row rather than as a
+row of its own. That is what makes a card for a species the game has never
+heard of possible at all, and the HOME shelf plannable.
+
+### The calculator, twice
+
+Measured against the one he pointed at rather than against itself, then given
+the same stat table, the same sprites and the same density as every other
+screen. The engine is Smogon's, bundled by `scripts/build_engine_bundle.py` -
+**never hand-port the modifier chain**; it runs in four buckets with a rounding
+step between each and a one-point drift flips a KO count.
+
+### Find became a search, and the filters learned to say no
+
+Choosing a Pokemon is a search rather than a scroll, a chip can exclude as well
+as include (the NOT operator, in the filter he asked for it in), and Back goes
+back.
+
+### ONE Pokemon card, everywhere (2026-09-20)
+
+The thing he actually opened the app and found: **not every card was the same
+card.** The GTS chooser for what you are ASKING for showed a name, a BST and a
+Speed, while the chooser for what you are DEPOSITING - two taps away, in the
+same trade - showed the type skin, the sprites, the Mega line, the abilities
+and all six stats. The same gap sat in every picker that lives inside a sheet:
+adding a Pokemon to the box, picking the attacker in the calculator, choosing
+the species for a build, filling a team slot.
+
+The cause is worth keeping, because it is not carelessness: each of those was
+written as a bare row on the day its screen was built, and every time one was
+improved it was improved **by copying the best one of the moment into that one
+place**. Copying is what spreads a fix and guarantees the next one is missed.
+
+So there is now exactly one implementation - `pokeCard()` in
+`tracker/src/01-data.js` - and every list in the app calls it. It draws the
+type band and the tint, the sprite (his copy's shiny palette when the row is
+shiny), the Mega chips with the stone each needs, BST and the abilities with
+what the Mega turns them into, the six stats with the Mega's deltas, and the
+strip of sprites when there is more than one form to look at. Per-screen extras
+go in as callbacks - `badges`, `meta`, `cells`, `notes`, `pre` - so a screen
+can add its ladder chip or its item cell without owning a second copy of the
+card.
+
+`typeCard()` still exists and is now called from exactly one place, which is
+the check: **a second `typeCard(` call site anywhere in `tracker/src/` means a
+card is being built by hand again.**
+
+Two things this uncovered:
+
+- **A GTS trade row did not show the Mega line**, on the one screen where the
+  Mega line IS the argument - the app's own pricing rule says a chip fetches
+  its Mega's BST. Both halves of a trade wear the card now, inside the paired
+  layout they already had.
+- **Two browser tests were asserting an accident.** One found a build row with
+  `textContent.indexOf(name) === 0`, which stopped being true the moment the
+  row began with a strip of Mega sprites; it looks up `.rname` now. The other
+  asked for a cell labelled "Ability" on a Find card. A dex row lists what a
+  Pokemon CAN have - "Possible ability" - and a build row shows the one it
+  runs; the two labels were the same word on cards that mean different things,
+  and the search shares its card with the box now.
+
+Verified in the browser, on the built page, with every picker opened: 0 rows
+without the stat table in the GTS depositing chooser, the GTS asking chooser,
+the build species picker, the team slot picker, the calculator's attacker
+picker, the box, HOME, the builds list and Find. The only rows in the app that
+carry no stat table are the ones that are not a Pokemon - an item, a stone, a
+move, an ability, a team.
