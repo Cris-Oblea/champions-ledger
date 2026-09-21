@@ -1,8 +1,8 @@
 /* 11-damage.js - Smogon's engine, and the calculator screen around it.
    Part of the app; linked into one script by scripts/build_tracker_page.py. */
 import { $, C, DEX, MOVE_BY, STAT_KEYS, STAT_LABEL, anyRow, byName, capNote,
- catName, el, labelBox, learnset, natMult, pokeCard, statAt, statGrid, toast,
- typeCard, typeChip } from "./01-data.js";
+ catName, el, labelBox, learnset, natMult, pokeCard, searchField, statAt,
+ statGrid, toast, typeCard, typeChip } from "./01-data.js";
 import { closeSheet, openSheet } from "./04-nav.js";
 import { S } from "./02-state.js";
 /* The modifier tables - which item, weather, terrain and berry touch which
@@ -784,12 +784,29 @@ function calcPickSheet(which){
     });
     if (builds.length) {
       body.appendChild(el("h2", null, "From your builds"));
+      /* THE SAME FAULT AS THE TEAM SLOT PICKER, on the same data: every build
+         in the ledger in one alphabetical run, with nothing to narrow it. A
+         hundred builds is a hundred cards to scroll past before the dex list
+         underneath even starts. */
+      var bq = searchField(body, "Filter " + builds.length + " build" +
+        (builds.length === 1 ? "" : "s"), function(){ drawBuilds(); });
       var bl = el("div", "list cards");
+      var bcount = el("div", "sub"); bcount.style.margin = "0 0 6px";
+      body.appendChild(bcount);
+      function drawBuilds(){
+      var q = bq.q();
+      bl.innerHTML = "";
+      var shown = 0;
       builds.forEach(function(id){
         var b = S.builds[id];
         var nm = b.mega || b.pokemon;
         var p = byName[nm] || byName[b.pokemon];
         if (!p) return;
+        var hay = [id, b.pokemon, b.mega, b.role, b.nature, b.ability,
+                   (b.moves || []).join(" "), p.types.join(" ")]
+          .filter(Boolean).join(" ").toLowerCase();
+        if (q && hay.indexOf(q) < 0) return;
+        shown++;
         /* THE SAME CARD AS THE BOX AND FIND. Picking who is attacking is a
            comparison between Pokemon, so it needs the numbers being compared -
            this was a name, a typing and the spread as prose. The build's own
@@ -807,20 +824,22 @@ function calcPickSheet(which){
         });
         bl.appendChild(r);
       });
+      bcount.textContent = shown === builds.length
+        ? builds.length + " build" + (builds.length === 1 ? "" : "s")
+        : shown + " of " + builds.length + " builds";
+      if (!shown) bl.appendChild(el("div", "empty", "No build matches"));
+      }
       body.appendChild(bl);
+      drawBuilds();
     }
 
     body.appendChild(el("h2", null, "Or any Pokemon"));
-    var wrap = el("div", "search field");
-    wrap.innerHTML = '<svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>';
-    var inp = el("input"); inp.type = "text";
-    inp.placeholder = "Search " + DEX.length + " forms, Megas included";
-    wrap.appendChild(inp);
-    body.appendChild(wrap);
+    var inp = searchField(body, "Search " + DEX.length +
+      " forms, Megas included", function(){ draw(); });
     var list = el("div", "list cards");
     body.appendChild(list);
     function draw(){
-      var q = inp.value.trim().toLowerCase();
+      var q = inp.q();
       list.innerHTML = "";
       /* 120, not 50. Picking the attacker used to draw a sixth of the dex
          with nothing on screen saying so, so a Pokemon that was merely past
@@ -843,7 +862,6 @@ function calcPickSheet(which){
       capNote(list, Math.min(120, all.length), all.length, "forms");
       if (!list.children.length) list.appendChild(el("div", "empty", "Nothing matches"));
     }
-    inp.oninput = draw;
     draw();
   }, []);
 }
@@ -879,11 +897,8 @@ function calcMoveSheet(){
       body.appendChild(bl);
     }
     body.appendChild(el("h2", null, ls ? "Everything it learns" : "All moves"));
-    var wrap = el("div", "search field");
-    wrap.innerHTML = '<svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>';
-    var inp = el("input"); inp.type = "text"; inp.placeholder = "Filter";
-    wrap.appendChild(inp);
-    body.appendChild(wrap);
+    var inp = searchField(body, "Filter by name or type",
+                          function(){ draw(); });
     var list = el("div", "list");
     body.appendChild(list);
     if (!ls) {
@@ -892,7 +907,7 @@ function calcMoveSheet(){
     }
     var pool = (ls || []).filter(function(m){ return m.cat !== "T"; });
     function draw(){
-      var q = inp.value.trim().toLowerCase();
+      var q = inp.q();
       list.innerHTML = "";
       /* ALL of a movepool, not 60 of it. The longest in Champions is 106,
          and 131 of the 264 learnsets are longer than 60 - so this was cutting
@@ -906,7 +921,6 @@ function calcMoveSheet(){
       }).forEach(function(m){ list.appendChild(calcMoveRow(m)); });
       if (!list.children.length) list.appendChild(el("div", "empty", "Nothing matches"));
     }
-    inp.oninput = draw;
     draw();
   }, []);
 }

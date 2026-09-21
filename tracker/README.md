@@ -115,6 +115,48 @@ controls** - one `moveFilters` implementation for both, so the same question is
 not asked two different ways. The calculator's own move sheet still has the
 plain search.
 
+## Every list is searchable
+
+A search box existed wherever somebody had remembered to paste the same six
+lines in, which is exactly why the screen a team is assembled on did not have
+one:
+
+> "el selector de slot no tiene buscador! imaginate tener 100 builds diferentes
+> y tener que deslizar, es mucho tiempo perdido. yo necesito que todos los menus
+> de busqueda de cualquier cosa puedan tener un search y/o filtros asi puedo ir
+> viendo rapidamente como armar el team!"  (player, 2026-09-21)
+
+`searchField()` in `01-data.js` is the one implementation now, and
+`wireClears()` upgrades the boxes written straight into the markup, so both
+ways a field can be born look the same. **Every box has a clear button** - a
+filter you cannot empty in one tap is a filter you stop using - and it is ours
+rather than `type=search`'s, which Safari drops the moment a field is restyled.
+
+Where a text match was not enough, the list also got chips:
+
+- **The team's slot picker** searches the build's own words as well as its
+  Pokemon's - id, species, Mega, role, nature, ability, any of its moves, a
+  type, a dex number - and filters by **where the build is** (ready today,
+  parked in HOME, not owned yet, orphan), by the **roles that exist** in the
+  ledger, and by the **type the build plays as**, which is the Mega's when a
+  stone is on it. Sorts by A-Z, ready first, Speed or BST. The role and type
+  chips are derived from the builds that exist, so a row with one chip is not
+  drawn at all.
+- **The item picker** adds the game's own categories and "only ones you own",
+  and now says the price of one that is not recorded.
+- **The Champions Box** has the filter HOME has had for months, across all
+  three origin sections at once, and each heading reads "3 of 18" while it is on.
+- **Teams**, the **GTS shortlist** and the **closed trades** each got one;
+  the trade history searches both sides, because "what did a Chesnaught fetch"
+  is a question about either half of it.
+- **The calculator's "from your builds"** list had the same fault as the slot
+  picker, on the same data, and got the same box.
+
+**And the Species Clause is enforced in the slot picker**, the way the Item
+Clause always was in the item picker: a species another slot holds is greyed
+out, sorted last and carries the reason on the row, instead of being accepted
+and reported as illegal underneath afterwards. Locked in by `tests/teamtest.js`.
+
 ## Items
 
 The tab is called **Items**, because that is what the game calls it, and it

@@ -3,8 +3,8 @@
 import {
   $, C, COSTS, FORMS, MOVE_BY, STAT_KEYS, STAT_LABEL, STONE_OF, bst, byName,
   capNote, cardLine, catName, dexLabel, dexNo, effectLine, el, labelBox,
-  learnset, megasFor, natMult, pokeCard, splitPct, splitsFor, splitsReg, statAt,
-  statGrid, toast, typeCard, typeChip, usageTag,
+  learnset, megasFor, natMult, pokeCard, searchField, splitPct, splitsFor,
+  splitsReg, statAt, statGrid, toast, typeCard, typeChip, usageTag,
 } from "./01-data.js";
 import { S, boxRows, buildLink, ownedNames } from "./02-state.js";
 import { drop, put, putNew } from "./03-store.js";
@@ -49,14 +49,8 @@ function speciesSheet(onPick){
       ownedNow[r.name] = (ownedNow[r.name] || 0) + 1;
     });
 
-    var wrap = el("div", "search field");
-    wrap.innerHTML = '<svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/>'
-                   + '<path d="m20 20-3.5-3.5"/></svg>';
-    var inp = el("input");
-    inp.type = "text";
-    inp.placeholder = "Search " + FORMS.length + " forms - name, type or number";
-    wrap.appendChild(inp);
-    body.appendChild(wrap);
+    var inp = searchField(body, "Search " + FORMS.length +
+      " forms \u2014 name, type or number", function(){ draw(); });
 
     var sortWrap = el("div", "toggles");
     [["dex", "Dex no."], ["az", "A-Z"], ["bst", "BST"],
@@ -91,7 +85,7 @@ function speciesSheet(onPick){
     body.appendChild(list);
 
     function draw(){
-      var q = inp.value.trim().toLowerCase();
+      var q = inp.q();
       list.innerHTML = "";
       var hits = FORMS.filter(function(p){
         if (PS.mine && !ownedNow[p.name]) return false;
@@ -128,7 +122,6 @@ function speciesSheet(onPick){
           : "Nothing matches"));
       }
     }
-    inp.oninput = draw;
     draw();
     setTimeout(function(){ inp.focus(); }, 60);
   }, []);

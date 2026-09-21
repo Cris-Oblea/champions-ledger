@@ -1233,6 +1233,19 @@ textarea{resize:vertical;min-height:64px;line-height:1.45}
 .search svg{position:absolute;left:9px;top:50%;transform:translateY(-50%);
   width:16px;height:16px;stroke:var(--faint);fill:none;stroke-width:1.8;
   pointer-events:none}
+/* THE CLEAR BUTTON, on every search box in the app. It appears only once
+   there is something to clear, so an empty field is the same box it always
+   was; `.has` is set by addClear in 01-data. Not the browser's own: a
+   restyled search field loses it in Safari, and it is drawn inside our border
+   in Chrome. 30px of right padding only while it is showing, so nothing
+   reflows a field that is empty. */
+.search .clr{position:absolute;right:5px;top:50%;transform:translateY(-50%);
+  display:none;width:28px;height:28px;min-height:0;padding:0;border:0;
+  border-radius:7px;background:transparent;color:var(--muted);
+  font-size:18px;line-height:1;cursor:pointer}
+.search .clr:hover{background:var(--line);color:var(--text)}
+.search.has .clr{display:block}
+.search.has input{padding-right:36px}
 
 /* ---------- SP editor ---------------------------------------------------- */
 .sp{display:grid;grid-template-columns:34px 1fr 40px 52px;align-items:center;

@@ -36,7 +36,14 @@
         <button data-sort="dex" aria-pressed="true">Dex #</button>
         <button data-sort="az" aria-pressed="false">A&ndash;Z</button>
       </div>
-
+      <!-- The HOME box has had one of these for months and this one never
+           did, which is backwards: this is the box with the capacity limit
+           and the one a team is picked out of. It filters all three sections
+           at once, because "where is my Chesnaught" is not a question about
+           which origin it has. -->
+      <div class="search field"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input type="text" id="boxFilter" placeholder="Filter by name, type, number, shiny, trained">
+      </div>
 
       <h2>HOME origin <span class="n" id="nHomeOrigin"></span></h2>
       <p class="sub">The real permanents. Park one back to HOME to free the slot
@@ -106,6 +113,9 @@
         <button data-want="outside" aria-pressed="false">Not in Champions</button>
         <button data-want="dupes" aria-pressed="false">Duplicates</button>
       </div>
+      <div class="search field"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input type="text" id="gtsWantSearch" placeholder="Filter by the chip&rsquo;s name or type">
+      </div>
       <div class="list cards" id="listGtsWant"></div>
       <div class="btnrow" id="gtsWantMore"></div>
       <!-- Closed trades are the only real evidence of what the market pays.
@@ -123,6 +133,9 @@
         </button>
         <p class="sub" id="gtsHistSub"></p>
         <div id="gtsHistBody" hidden>
+          <div class="search field"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+            <input type="text" id="gtsHistSearch" placeholder="Filter by either side of the trade">
+          </div>
           <div class="list" id="listGtsHist"></div>
         </div>
       </div>
@@ -202,6 +215,11 @@
           item is a team decision, never part of a build.</p>
         <div class="btnrow" style="margin-bottom:10px">
           <button class="btn primary" id="teamAdd">New team</button>
+        </div>
+        <!-- It searches the members too, so "which team is my Farigiraf in"
+             is one question rather than six teams opened one at a time. -->
+        <div class="search field"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <input type="text" id="teamSearch" placeholder="Filter teams &mdash; name or a Pokemon on it">
         </div>
         <div class="list cards" id="listTeams"></div>
       </div>

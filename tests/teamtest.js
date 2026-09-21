@@ -44,7 +44,7 @@ const B = (id, pokemon, box_id, extra) => Object.assign({user_id:UID, id,
 const ROWS = [R("garchomp","Garchomp","champions","champions","permanent"),
               R("farigiraf","Farigiraf","champions","champions","permanent"),
               R("sableye","Sableye","home","home","permanent")];
-const BUILDS = [B("garchomp","Garchomp","garchomp"),
+const BUILDS = [B("garchomp","Garchomp","garchomp",{moves:["Earthquake","Protect"]}),
                 B("farigiraf","Farigiraf","farigiraf",{role:"Trick Room"}),
                 B("farigiraf-2","Farigiraf","farigiraf",{role:"Armor Tail"}),
                 B("sableye","Sableye","sableye"),
@@ -123,6 +123,94 @@ setTimeout(() => {
   ok("con cuantos huecos lleva", /5\/6/.test(row.textContent), true);
   ok("cuantos son jugables hoy", /3 playable today/.test(row.textContent), true);
   ok("y que es ilegal", /2 illegal/.test(row.textContent), true);
+
+  /* ------------------------------------------------------------------ */
+  /* El selector de build de un hueco. Era la lista entera del ledger en
+     orden alfabetico y sin nada con que acotarla (jugador, 2026-09-21: "el
+     selector de slot no tiene buscador! imaginate tener 100 builds
+     diferentes y tener que deslizar, es mucho tiempo perdido"). */
+  console.log("\n  el selector de un hueco: buscador y filtros");
+  w.teamSheet("t1", w.S.teams.t1);
+  const fill = [...d.querySelectorAll("#teamEditBody button")]
+    .filter(b => /^(Change|Fill)$/.test(b.textContent.trim()));
+  ok("cada hueco tiene su boton", fill.length >= 6, true);
+  fill[0].click();                       /* el hueco 1, el de Garchomp */
+  const sb = d.getElementById("sheetBody");
+  const inp = sb.querySelector(".search input");
+  const rows = () => [...sb.querySelectorAll(".list .row")];
+  ok("el selector tiene buscador", !!inp, true);
+  ok("y estan las cinco builds", rows().length, 5);
+  ok("dice cuantas hay", /5 builds/.test(sb.textContent), true);
+
+  inp.value = "armor"; inp.oninput();
+  ok("busca por el ROL de la build", rows().length, 1);
+  ok("y es la que lleva ese rol",
+     /Farigiraf/.test(rows()[0].textContent), true);
+  inp.value = "earthquake"; inp.oninput();
+  ok("busca por un MOVIMIENTO", rows().length, 1);
+  ok("y da con su Pokemon", /Garchomp/.test(rows()[0].textContent), true);
+  inp.value = "dragon"; inp.oninput();
+  ok("busca por TIPO", rows().length, 1);
+  ok("lo dice el contador", /1 of 5 builds/.test(sb.textContent), true);
+
+  /* la X: sin ella un filtro se vacia a base de borrar */
+  sb.querySelector(".search .clr").click();
+  ok("la X vacia el campo", inp.value, "");
+  ok("y vuelven todas", rows().length, 5);
+
+  /* La Clausula de Especie se aplica AQUI, igual que la de Objeto en el
+     selector de item: una especie que ya lleva otro hueco sale apagada y con
+     el motivo escrito, en vez de aceptarse y declararse ilegal despues. */
+  const dis = rows().filter(r => r.disabled);
+  ok("las especies que ya estan en el equipo salen apagadas", dis.length, 4);
+  ok("con el motivo escrito",
+     /no team may run two of the same species/.test(sb.textContent), true);
+  ok("y la unica elegible va primero",
+     /Garchomp/.test(rows()[0].textContent), true);
+  ok("que no esta apagada", rows()[0].disabled, false);
+
+  /* Los chips salen de las builds que EXISTEN, no de un vocabulario fijo. */
+  const chip = t => [...sb.querySelectorAll(".tog")]
+    .find(b => b.textContent.trim().indexOf(t) === 0);
+  ok("hay un filtro por donde esta", !!chip("Ready today"), true);
+  ok("y uno por rol", !!chip("Trick Room"), true);
+  chip("Ready today").click();
+  ok("solo las que se pueden llevar hoy", rows().length, 3);
+  ok("y el contador lo dice", /3 of 5 builds/.test(sb.textContent), true);
+  chip("Ready today").click();
+  ok("al soltarlo vuelven todas", rows().length, 5);
+
+  /* El selector de item ya tenia buscador; ahora tambien filtros. */
+  w.teamSheet("t1", w.S.teams.t1);
+  const it = [...d.querySelectorAll("#teamEditBody button")]
+    .filter(b => /^(\+ Item|Item)$/.test(b.textContent.trim()));
+  it[0].click();
+  const ib = d.getElementById("sheetBody");
+  ok("el de items tambien busca", !!ib.querySelector(".search input"), true);
+  ok("y ahora filtra por categoria",
+     [...ib.querySelectorAll(".tog")].some(b => /Berries/.test(b.textContent)),
+     true);
+  ok("y por lo que tienes",
+     [...ib.querySelectorAll(".tog")]
+       .some(b => /Only ones you own/.test(b.textContent)), true);
+
+  /* Y los buscadores que viven en el markup: la misma X, puesta por
+     wireClears en el arranque, y el filtro que la Champions Box no tenia. */
+  console.log("\n  los filtros de las pestanas");
+  ok("el filtro de builds tiene su X",
+     !!d.querySelector("#buildSearch").parentNode.querySelector(".clr"), true);
+  const bf = d.getElementById("boxFilter");
+  ok("la Champions Box ya tiene filtro", !!bf, true);
+  const champ = () => d.querySelectorAll("#listChampOrigin .row").length;
+  ok("y estan los dos de Encounter", champ(), 2);
+  bf.value = "farigiraf"; bf.oninput();
+  ok("filtra por nombre", champ(), 1);
+  ok("y el encabezado dice cuantos de cuantos",
+     d.getElementById("nChampOrigin").textContent, "1 of 2");
+  bf.parentNode.querySelector(".clr").click();
+  ok("la X lo devuelve entero", champ(), 2);
+  ok("y el encabezado vuelve al total",
+     d.getElementById("nChampOrigin").textContent, "2");
 
   console.log("\n  ERRORES JS: " + (errs.length ? errs.join(" | ") : "ninguno"));
   console.log(bad ? "\n  " + bad + " FALLOS\n" : "\n  todo bien\n");

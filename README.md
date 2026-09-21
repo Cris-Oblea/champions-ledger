@@ -258,6 +258,26 @@ number**, the app's usual sorts, and the same card as everywhere else. The
 whole dex stays on offer — a set for a Pokemon that has not arrived yet is an
 idea worth keeping — so "in your boxes" is a filter and never a limit.
 
+**And that goes for every list, not just that one.** A search box only existed
+where somebody remembered to paste one in, so the screen where a team is
+actually assembled — the slot picker, which lists every build in the ledger —
+had none at all. There is one helper now, and it is what every list uses, so
+the next list cannot be born without one. Where it was worth more than a text
+match the list also got chips: the slot picker filters by **where the build is**
+(ready today, parked in HOME, not owned yet), by the **roles that exist** in the
+ledger and by the **type the build plays as**, Mega included, which is the
+question a sixth slot is really asking. The item picker filters by category and
+by what you own. Every box carries a clear button, because a filter you cannot
+empty in one tap is a filter you stop using.
+
+**The Species Clause is enforced where the choice is made.** The item picker
+already greyed out anything another slot held; the build picker accepted a
+second Farigiraf and reported it as illegal underneath afterwards. It greys it
+out now, sorts it to the bottom and writes the reason on the row. Both clauses
+are measurements — 0 of the 642 Worlds teams with a full list repeats a species,
+0 of the 636 with a full item list repeats an item — so neither is a preference
+to be argued with at save time.
+
 **A tag on a move row is not neutral.** Heat Rock on Sunny Day is a reason to
 run the move; **Aspear Berry on Ice Beam is the reason it will not work** — the
 target thaws and the freeze was the whole point. Both read as the same grey

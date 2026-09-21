@@ -2,7 +2,8 @@
    Part of the app; linked into one script by scripts/build_tracker_page.py. */
 import { $, C, FORMS, SORT, STAT_KEYS, STAT_LABEL, STONE_OF, anyRow, bst,
  byName, capNote, cardLine, dexLabel, el, freeSlug, labelBox, megasFor,
- outsideRow, pokeCard, spriteFor, statGrid, toast, typeCard, typeChip } from "./01-data.js";
+ outsideRow, pokeCard, searchField, spriteFor, statGrid, toast, typeCard,
+ typeChip } from "./01-data.js";
 import { S, boxRows, hasStone, originOf } from "./02-state.js";
 import { drop, put } from "./03-store.js";
 import { ask, closeSheet, fbtn, openSheet } from "./04-nav.js";
@@ -363,12 +364,7 @@ function addSheet(loc){
     body.appendChild(mrow);
 
     /* asked first, because until it is answered there is nothing to search */
-    var wrap = el("div", "search field");
-    wrap.innerHTML = '<svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>';
-    var inp = el("input"); inp.type = "text"; inp.placeholder = "Species or form";
-    wrap.appendChild(inp);
-    body.appendChild(wrap);
-    inp.oninput = function(){ draw(); };
+    var inp = searchField(body, "Species or form", function(){ draw(); });
 
     var list = el("div", "list cards");
     body.appendChild(list);
@@ -377,7 +373,7 @@ function addSheet(loc){
        heard of - Melmetal and Oricorio are already in it - and takes a typed
        name on top, because no list here is guaranteed to be complete. */
     function draw(){
-      var q = inp.value.trim().toLowerCase();
+      var q = inp.q();
       list.innerHTML = "";
       /* nothing can be added to the Champions Box until it is said where it
          came from - that answer is what decides whether the slot is elastic */
