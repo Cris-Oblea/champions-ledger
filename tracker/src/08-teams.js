@@ -66,9 +66,9 @@ function teamReport(t){
   var slots = teamSlots(t), r = {
     slots: [], filled: 0, ready: 0, problems: [], warnings: [],
     missing: [], stones: [], speeds: [],
-    /* the slots whose stone REtypes them - what makes the weakness table
-       more than one table */
-    retypers: []
+    /* the slots whose stone changes something the screen shows - what makes
+       the type table and the Speed order more than one table each */
+    megaCases: []
   };
   var itemSeen = {}, formSeen = {};
   slots.forEach(function(sl, i){
@@ -108,28 +108,33 @@ function teamReport(t){
          Speed order quoting the base row for a build carrying the stone names
          the wrong one as moving first. */
       var mg = megaOf(b, sl);
-      var pf = (b.mega && byName[b.mega]) || p;
       if (p) {
+        info.p = p;
         info.types = p.types;
-        /* ONLY WHEN THE STONE ACTUALLY SWAPS THE TYPING. Mega Camerupt is
-           Fire/Ground exactly like Camerupt, so it changes nothing this table
-           can show; Mega Ampharos goes Electric to Electric/Dragon, which
-           changes every column. The second one earns a scenario and the first
-           does not. */
         info.mega = mg || null;
-        if (mg && mg.types.join("/") !== p.types.join("/")) {
-          info.megaTypes = mg.types;
-          r.retypers.push({i: i, name: b.pokemon, mega: mg.name,
-                           from: p.types, to: mg.types});
-        }
-        if (pf) {
-          r.speeds.push({name: b.pokemon,
-                         form: b.mega || b.pokemon,
-                         base: pf.b[5],
-                         nature: b.nature || "",
-                         sp: (b.stat_points || {}).spe || 0,
-                         spe: statAt(pf.b[5], (b.stat_points || {}).spe,
-                                     false, natMult(b.nature, "spe"))});
+        info.sp = (b.stat_points || {}).spe || 0;
+        info.nature = b.nature || "";
+        /* A SCENARIO IS EARNED BY A CHANGE, whichever half of the screen it
+           lands in. The stone swaps the typing, the stats, or both - and the
+           player settled the model by naming the reason (2026-09-21): "el
+           pokemon solo cambia de stat al mega evolucionar y si no mega
+           evoluciona la tabla de speed no cambia".
+
+           So the two sections answer to ONE selector, and the list is the
+           union of what either of them would notice. Mega Sceptile retypes
+           AND gains 25 Speed; Mega Camerupt keeps Fire/Ground and drops from
+           40 to 20, which the type table cannot see and the Speed order very
+           much can. Filing scenarios by retyping alone would have lost it. */
+        if (mg) {
+          var retype = mg.types.join("/") !== p.types.join("/");
+          var respeed = mg.b[5] !== p.b[5];
+          if (retype) info.megaTypes = mg.types;
+          if (retype || respeed) {
+            r.megaCases.push({i: i, name: b.pokemon, mega: mg.name,
+                              retype: retype, respeed: respeed,
+                              from: p.types, to: mg.types,
+                              speFrom: p.b[5], speTo: mg.b[5]});
+          }
         }
         /* Species Clause is per FORM, not per species: two Squawkabilly of
            different plumage still cannot share a team. */
@@ -155,8 +160,36 @@ function teamReport(t){
   r.stones.filter(function(x){ return x.stone && !x.owned; }).forEach(function(x){
     r.warnings.push(x.stone + " is not owned, so " + x.name + " is not reachable yet");
   });
-  r.speeds.sort(function(a, b){ return b.spe - a.spe; });
+  /* THE BASE WORLD, so `r.speeds` still means one definite thing. Every
+     other world is asked for by name through teamSpeeds(). */
+  r.speeds = teamSpeeds(r, null);
   return r;
+}
+
+/* The Speed order for one outcome. `megaAt` is the slot that Mega Evolved,
+   or null for nobody - the same argument teamTypes takes, because they are
+   two readings of the same battle and must never disagree on screen.
+
+   A Pokemon only gains the Mega's stats by evolving, so an unevolved slot is
+   its base row no matter what stone it is carrying. That is the whole reason
+   this is a selector and not four Megas listed at once, which is what it used
+   to be and could not happen. */
+function teamSpeeds(r, megaAt){
+  var out = [];
+  r.slots.forEach(function(s, i){
+    if (!s.build || !s.p) return;
+    var evolved = megaAt != null && i === megaAt && s.mega;
+    var row = evolved ? s.mega : s.p;
+    out.push({name: s.name,
+              form: evolved ? s.mega.name : s.name,
+              mega: evolved,
+              base: row.b[5],
+              nature: s.nature,
+              sp: s.sp,
+              spe: statAt(row.b[5], s.sp, false, natMult(s.nature, "spe"))});
+  });
+  out.sort(function(a, b){ return b.spe - a.spe; });
+  return out;
 }
 
 /* What the six of them, together, are weak to. The chart is already shipped,
@@ -982,21 +1015,103 @@ function teamSheet(id, t){
     });
     body.appendChild(list);
 
+    /* ONE SELECTOR, BOTH SECTIONS. The Speed order and the type table are
+       two readings of the same battle, so they cannot be allowed to disagree
+       on screen - and they did: the order listed four Megas at once while the
+       table had just learned that only one of them happens.
+
+         "creo que el selector de mega es mas honesto no? porque el pokemon
+          solo cambia de stat al mega evolucionar y si no mega evoluciona la
+          tabla de speed no cambia."   (player, 2026-09-21)
+
+       Exactly so. An unevolved slot is its base row whatever stone it holds,
+       so the honest unit is a WORLD - nobody evolved, or this one did - and
+       both sections are drawn from it. */
+    var SCEN = [{at: null, tab: r.megaCases.length ? "Nobody evolves" : "The six",
+                 why: "Every one of them in base form. Mega Evolution resolves "
+                    + "after switch-ins, so this is what takes the first hit "
+                    + "\u2014 and staying here to resist something is a play, "
+                    + "not a delay."}];
+    r.megaCases.forEach(function(x){
+      var bits = [];
+      if (x.retype) bits.push(x.from.join("/") + " \u2192 " + x.to.join("/"));
+      if (x.respeed) bits.push("Speed " + x.speFrom + " \u2192 " + x.speTo);
+      SCEN.push({at: x.i, tab: x.mega,
+                 why: x.name + " Mega Evolves: " + bits.join(", ")
+                    + ". Only one Pokemon may Mega Evolve per battle, so this "
+                    + "is a different team from the others, never an upgrade "
+                    + "to them."});
+    });
+    var scenAt = {v: null};
+    var scenWhy = null, speedBox = null, typeBox = null;
+
+    if (SCEN.length > 1) {
+      body.appendChild(el("h2", null, "Which one Mega Evolves"));
+      body.appendChild(el("p", "sub", "A Pokemon only takes the Mega's stats "
+        + "and typing by evolving, and only one may do it per battle \u2014 so "
+        + "these are " + SCEN.length + " different teams, not one. The Speed "
+        + "order and the weaknesses below both follow this choice."));
+      var seg = el("div", "seg");
+      seg.setAttribute("role", "group");
+      seg.setAttribute("aria-label", "Which one Mega Evolves");
+      SCEN.forEach(function(sc){
+        var b2 = el("button", null, sc.tab);
+        b2.setAttribute("aria-pressed", sc.at === scenAt.v ? "true" : "false");
+        b2.onclick = function(){
+          scenAt.v = sc.at;
+          Array.prototype.forEach.call(seg.children, function(x){
+            x.setAttribute("aria-pressed", x === b2 ? "true" : "false");
+          });
+          paintScenario();
+        };
+        seg.appendChild(b2);
+      });
+      body.appendChild(seg);
+      scenWhy = el("p", "sub");
+      body.appendChild(scenWhy);
+    }
+
     if (r.speeds.length > 1) {
       body.appendChild(el("h2", null, "Speed order"));
-      var so = el("div", "note");
-      r.speeds.forEach(function(x){
+      speedBox = el("div", "note");
+      body.appendChild(speedBox);
+    }
+
+    if (r.filled) {
+      body.appendChild(el("h2", null, "What the six are weak to"));
+      typeBox = el("div");
+      body.appendChild(typeBox);
+    }
+    paintScenario();
+
+    /* ONE WORLD AT A TIME, drawn into both boxes from the same choice. This
+       is what keeps the Speed order and the weaknesses from ever telling two
+       different stories about the same battle. */
+    function paintScenario(){
+      var cur = SCEN.filter(function(x){ return x.at === scenAt.v; })[0]
+                || SCEN[0];
+      if (scenWhy) scenWhy.textContent = cur.why;
+      if (speedBox) paintSpeeds(speedBox, teamSpeeds(r, cur.at));
+      if (typeBox) paintTypes(typeBox, teamTypes(r, cur.at));
+    }
+
+    /* WHERE EACH NUMBER CAME FROM, on its own line: the base, the SP spent
+       on it and what the nature did. Without that a Speed order is six
+       numbers you have to take on trust, and the SP is the half he can still
+       change. The evolved one is written in the Mega's ink so the row that
+       changed is the one that stands out. */
+    function paintSpeeds(host, rows){
+      host.innerHTML = "";
+      rows.forEach(function(x){
         var line = el("div");
         line.style.marginBottom = "3px";
-        line.appendChild(el("strong", null, x.form));
+        var nm = el("strong", null, x.form);
+        if (x.mega) nm.style.color = "var(--mega)";
+        line.appendChild(nm);
         var num = el("span", "mono");
         num.style.margin = "0 6px";
         num.textContent = String(x.spe);
         line.appendChild(num);
-        /* WHERE THE NUMBER CAME FROM, on the same line: the base, the SP
-           spent on it and what the nature did. Without that a Speed order is
-           six numbers you have to take on trust, and the SP is the half he
-           can still change. */
         var how = el("span");
         how.style.color = "var(--faint)";
         how.textContent = x.base + " base"
@@ -1004,118 +1119,56 @@ function teamSheet(id, t){
           + (natMult(x.nature, "spe") !== 1
              ? "  ×" + natMult(x.nature, "spe") + " " + x.nature : "");
         line.appendChild(how);
-        so.appendChild(line);
+        host.appendChild(line);
       });
       var sfoot = el("div", "st");
       sfoot.style.marginTop = "6px";
-      sfoot.textContent = "At level 50, with each build's own SP and nature, "
-        + "on the form it plays as. Fastest first — so the bottom of the "
-        + "list is what moves first under Trick Room.";
-      so.appendChild(sfoot);
-      body.appendChild(so);
+      sfoot.textContent = "At level 50, with each build's own SP and nature. "
+        + "Fastest first — so the bottom of the list is what moves first "
+        + "under Trick Room.";
+      host.appendChild(sfoot);
     }
 
-    if (r.filled) {
-      body.appendChild(el("h2", null, "What the six are weak to"));
-
-      /* ONE TABLE PER OUTCOME, and only when there is more than one outcome.
-         A stone that keeps the typing - Mega Camerupt is Fire/Ground like
-         Camerupt - produces the same table, so it gets no tab. A stone that
-         swaps it produces a different team, and only one Pokemon may Mega
-         Evolve per battle, so those cannot be merged. "Before" leads because
-         Mega Evolution resolves after switch-ins and holding base form to
-         resist something is a real play, not a delay. */
-      var SCEN = [{at: null, key: "base",
-                   tab: r.retypers.length ? "Before Mega" : "The six",
-                   why: "Every one of them in base form. Mega Evolution "
-                      + "resolves after switch-ins, so this is what takes the "
-                      + "first hit \u2014 and staying here to resist "
-                      + "something is a play, not a delay."}];
-      r.retypers.forEach(function(x){
-        SCEN.push({at: x.i, key: "m" + x.i, tab: x.mega,
-                   why: x.name + " Mega Evolves: " + x.from.join("/")
-                      + " \u2192 " + x.to.join("/")
-                      + ". Only one Pokemon may Mega Evolve per battle, so "
-                      + "this is a different team from the others, never an "
-                      + "upgrade to them."});
-      });
-      var scenAt = {v: null};
-      if (SCEN.length > 1) {
-        body.appendChild(el("p", "sub", "This team carries "
-          + (r.retypers.length === 1 ? "a stone that retypes"
-                                     : r.retypers.length + " stones that retype")
-          + " its holder, so it has " + SCEN.length
-          + " different type profiles. Only one of them happens per battle."));
-        var seg = el("div", "seg");
-        seg.setAttribute("role", "group");
-        SCEN.forEach(function(sc){
-          var b2 = el("button", null, sc.tab);
-          b2.setAttribute("aria-pressed", sc.at === scenAt.v ? "true" : "false");
-          b2.onclick = function(){
-            scenAt.v = sc.at;
-            Array.prototype.forEach.call(seg.children, function(x){
-              x.setAttribute("aria-pressed", x === b2 ? "true" : "false");
-            });
-            paintTypes();
-          };
-          seg.appendChild(b2);
-        });
-        body.appendChild(seg);
-      }
-      var scenWhy = el("p", "sub");
-      body.appendChild(scenWhy);
-      var tw = el("div");
-      body.appendChild(tw);
-      paintTypes();
-
-      function paintTypes(){
-      var cur = SCEN.filter(function(x){ return x.at === scenAt.v; })[0]
-                || SCEN[0];
-      scenWhy.textContent = SCEN.length > 1 ? cur.why : "";
-      var tt = teamTypes(r, cur.at).filter(function(x){ return x.weak; })
-                 .slice(0, 6);
-      tw.innerHTML = "";
+    function paintTypes(host, all){
+      var tt = all.filter(function(x){ return x.weak; }).slice(0, 6);
+      host.innerHTML = "";
       if (!tt.length) {
-        tw.appendChild(el("div", "note", "Nothing hits more than one of them "
+        host.appendChild(el("div", "note", "Nothing hits more than one of them "
           + "for super effective damage."));
-      } else {
-        /* EVERY NAME CARRIES ITS OWN MULTIPLIER (player, 2026-09-21:
-           "tampoco dice el multiplicador de x por cuanto resiste o por cuanto
-           es debil"). Not only the outliers: x4 and x2 are different problems,
-           and so are x0.25, x0.5 and an outright immunity. Which one it is
-           decides whether a shared weakness is worth restructuring the team
-           for, so it is on every name rather than left to be remembered. */
-        var say = function(list){
-          return list.map(function(e){
-            return e.name + " \u00d7" + (e.m === 0 ? "0" : e.m);
-          }).join(", ");
-        };
-        tt.forEach(function(x){
-          var d = el("div", "st");
-          d.style.marginBottom = "6px";
-          var head = el("div");
-          head.appendChild(typeChip(x.type));
-          if (x.weak >= 3) {
-            var hot = el("span", "tag bad", x.weak + " of the six");
-            head.appendChild(hot);
-          }
-          d.appendChild(head);
-          var wk = el("div");
-          wk.style.color = "var(--bad)";
-          wk.textContent = "weak: " + say(x.weakOf);
-          d.appendChild(wk);
-          /* the other half of the answer, and the one that decides whether a
-             shared weakness is actually a problem: who can take the hit */
-          var rs = el("div");
-          rs.style.color = x.resistOf.length ? "var(--ok)" : "var(--faint)";
-          rs.textContent = x.resistOf.length
-            ? "resists: " + say(x.resistOf)
-            : "nothing on the team resists it";
-          d.appendChild(rs);
-          tw.appendChild(d);
-        });
+        return;
       }
-      }
+      /* EVERY NAME CARRIES ITS OWN MULTIPLIER (player, 2026-09-21: "tampoco
+         dice el multiplicador de x por cuanto resiste o por cuanto es
+         debil"). Not only the outliers: x4 and x2 are different problems, and
+         so are x0.25, x0.5 and an outright immunity. Which one it is decides
+         whether a shared weakness is worth restructuring the team for. */
+      var say = function(list){
+        return list.map(function(e){
+          return e.name + " \u00d7" + (e.m === 0 ? "0" : e.m);
+        }).join(", ");
+      };
+      tt.forEach(function(x){
+        var d = el("div", "st");
+        d.style.marginBottom = "6px";
+        var head = el("div");
+        head.appendChild(typeChip(x.type));
+        if (x.weak >= 3) head.appendChild(el("span", "tag bad",
+          x.weak + " of the six"));
+        d.appendChild(head);
+        var wk = el("div");
+        wk.style.color = "var(--bad)";
+        wk.textContent = "weak: " + say(x.weakOf);
+        d.appendChild(wk);
+        /* the other half of the answer, and the one that decides whether a
+           shared weakness is actually a problem: who can take the hit */
+        var rs = el("div");
+        rs.style.color = x.resistOf.length ? "var(--ok)" : "var(--faint)";
+        rs.textContent = x.resistOf.length
+          ? "resists: " + say(x.resistOf)
+          : "nothing on the team resists it";
+        d.appendChild(rs);
+        host.appendChild(d);
+      });
     }
 
     var fw = el("div", "field");
@@ -1158,4 +1211,8 @@ function teamSheet(id, t){
    the browser tests read the type table and the clause report straight off
    `window` and assert on them.
 */
-export { drawTeams, teamReport, teamSheet, teamTypes };
+/* `teamSpeeds` leaves with `teamTypes` because they are the same question
+   asked of the same battle - the browser tests assert that the two agree
+   about which slot evolved, and they can only do that if both are reachable
+   from outside. */
+export { drawTeams, teamReport, teamSheet, teamSpeeds, teamTypes };

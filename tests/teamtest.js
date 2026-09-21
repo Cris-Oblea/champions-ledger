@@ -315,27 +315,45 @@ setTimeout(async () => {
   ok("y es la build correcta",
      /Garchomp/.test(d.getElementById("buildEditTitle").textContent), true);
 
-  /* UNA TABLA POR DESENLACE. Solo una puede Mega Evolucionar por combate, asi
-     que dos piedras que retipan son dos equipos distintos y nunca uno; y
-     "antes" no es un estado de paso, porque la Mega resuelve DESPUES de los
-     cambios y quedarse en base para resistir algo es jugada (jugador,
-     2026-09-21). */
-  console.log("\n  las tablas de tipo, una por desenlace");
+  /* UN SELECTOR, DOS SECCIONES. Solo una puede Mega Evolucionar por combate,
+     y un Pokemon solo toma las stats de su Mega al evolucionar - asi que
+     "nadie evoluciona" y "evoluciona esta" son equipos distintos, y el orden
+     de velocidad y las debilidades tienen que contar la MISMA historia
+     (jugador, 2026-09-21: "el pokemon solo cambia de stat al mega evolucionar
+     y si no mega evoluciona la tabla de speed no cambia"). */
+  console.log("\n  un mundo a la vez: velocidad y tipos bajo el mismo selector");
   const r2 = w.teamReport(w.S.teams.t2);
-  ok("detecta la piedra que retipa", r2.retypers.length, 1);
-  ok("y es la que cambia el tipo", r2.retypers[0].mega, "Mega Ampharos");
-  ok("de que tipo sale", r2.retypers[0].from.join("/"), "Electric");
-  ok("y a cual llega", r2.retypers[0].to.join("/"), "Electric/Dragon");
+  const caso = n => r2.megaCases.find(x => new RegExp(n).test(x.mega));
 
-  /* Camerupt lleva piedra y NO aparece: Mega Camerupt sigue Fire/Ground. */
-  ok("la piedra que no retipa no crea tabla",
-     r2.retypers.some(x => /Camerupt/.test(x.mega)), false);
+  /* Ampharos retipa Y cambia velocidad; Camerupt NO retipa pero SI cambia
+     velocidad, y filtrar por retipado solo lo habria perdido. */
+  ok("dos piedras cambian algo", r2.megaCases.length, 2);
+  ok("Ampharos retipa", caso("Ampharos").retype, true);
+  ok("de Electric", caso("Ampharos").from.join("/"), "Electric");
+  ok("a Electric/Dragon", caso("Ampharos").to.join("/"), "Electric/Dragon");
+  ok("Camerupt NO retipa", caso("Camerupt").retype, false);
+  ok("pero si cambia velocidad", caso("Camerupt").respeed, true);
+  ok("de 40", caso("Camerupt").speFrom, 40);
+  ok("a 20", caso("Camerupt").speTo, 20);
 
+  /* LA VELOCIDAD SIGUE AL SELECTOR. Sin evolucionar, la piedra no hace nada. */
+  const spBase = w.teamSpeeds(r2, null);
+  const spCam  = w.teamSpeeds(r2, caso("Camerupt").i);
+  const find = (rows, n) => rows.find(x => new RegExp(n).test(x.form));
+  ok("sin evolucionar, Camerupt corre a su base", find(spBase, "Camerupt").base, 40);
+  ok("y no se llama Mega", /^Camerupt$/.test(find(spBase, "Camerupt").form), true);
+  ok("al evolucionarla, cae a la base de la Mega",
+     find(spCam, "Mega Camerupt").base, 20);
+  ok("y el resto del equipo no se mueve",
+     find(spCam, "Ampharos").base, find(spBase, "Ampharos").base);
+  ok("solo una evoluciona a la vez",
+     spCam.filter(x => x.mega).length, 1);
+  ok("y en el mundo base, ninguna", spBase.filter(x => x.mega).length, 0);
+
+  /* LOS TIPOS SIGUEN EL MISMO SELECTOR. */
   const base = w.teamTypes(r2, null);
-  const mega = w.teamTypes(r2, r2.retypers[0].i);
+  const mega = w.teamTypes(r2, caso("Ampharos").i);
   const byType = (t, rows) => rows.find(x => x.type === t);
-  /* Electric/Dragon deja de ser neutral a Tierra: Ampharos base es x2, la
-     Mega sigue x2 por Electric... el cambio que importa es Hielo y Hada. */
   ok("antes de evolucionar no es debil a Hielo",
      byType("Ice", base).weakOf.some(x => /Ampharos/.test(x.name)), false);
   ok("despues si lo es",
@@ -348,31 +366,54 @@ setTimeout(async () => {
   ok("que antes no",
      byType("Fairy", base).weakOf.some(x => /Ampharos/.test(x.name)), false);
 
-  /* Y en pantalla: dos pestañas, la de "antes" primero. */
+  /* Y en pantalla: UN selector, y las dos secciones debajo. */
   w.teamSheet("t2", w.S.teams.t2);
   const eb2 = d.getElementById("teamEditBody");
   const seg = [...eb2.querySelectorAll(".seg")].pop();
   const tabs = seg ? [...seg.children].map(b => b.textContent.trim()) : [];
-  ok("hay dos pestañas", tabs.length, 2);
-  ok("y la de antes va primero", tabs[0], "Before Mega");
-  ok("la otra es la Mega", tabs[1], "Mega Ampharos");
-  ok("empieza en la de antes",
-     seg.children[0].getAttribute("aria-pressed"), "true");
-  ok("y dice por que hay dos",
-     /Only one of them happens per battle/.test(eb2.textContent), true);
-  seg.children[1].click();
-  ok("al cambiar explica el intercambio",
-     /Electric → Electric\/Dragon/.test(eb2.textContent), true);
-  ok("y la tabla ya usa la forma Mega",
-     /Mega Ampharos ×/.test(eb2.textContent), true);
+  ok("tres mundos", tabs.length, 3);
+  ok("y el de nadie va primero", tabs[0], "Nobody evolves");
+  ok("empieza ahi", seg.children[0].getAttribute("aria-pressed"), "true");
+  ok("dice que mandan los dos de abajo",
+     /Speed order and the weaknesses below both follow this choice/
+       .test(eb2.textContent), true);
+  ok("el selector esta ENCIMA del orden de velocidad",
+     eb2.textContent.indexOf("Which one Mega Evolves")
+       < eb2.textContent.indexOf("Speed order"), true);
 
-  /* Un equipo sin piedra que retipe no gana controles. */
+  /* SOLO EL BLOQUE DE VELOCIDAD. El nombre de una Mega tambien vive en la
+     pestaña del selector y en la card del hueco, asi que buscarlo en todo el
+     editor no dice nada sobre que forma se esta usando. */
+  const speedTxt = () => {
+    const h = [...eb2.querySelectorAll("h2")].find(x => /Speed order/.test(x.textContent));
+    return h.nextSibling.textContent.replace(/\s+/g, " ");
+  };
+  const camTab = tabs.findIndex(t => /Camerupt/.test(t));
+  seg.children[camTab].click();
+  ok("al elegir Camerupt lo dice con su velocidad",
+     /Speed 40 → 20/.test(eb2.textContent), true);
+  ok("y el orden ya la nombra Mega", /Mega Camerupt/.test(speedTxt()), true);
+  ok("sin evolucionar la otra", /Mega Ampharos/.test(speedTxt()), false);
+
+  const ampTab = tabs.findIndex(t => /Ampharos/.test(t));
+  seg.children[ampTab].click();
+  ok("al cambiar explica el intercambio de tipo",
+     /Electric → Electric\/Dragon/.test(eb2.textContent), true);
+  ok("y ahora la que evoluciona es la otra",
+     /Mega Ampharos/.test(speedTxt()), true);
+  ok("con Camerupt de vuelta en su forma base",
+     /Mega Camerupt/.test(speedTxt()), false);
+  ok("y su velocidad vuelve a la de base",
+     /40 base/.test(speedTxt()), true);
+
+  /* Un equipo sin piedra que cambie nada no gana controles. */
   w.teamSheet("t1", w.S.teams.t1);
   const eb1 = d.getElementById("teamEditBody");
-  ok("sin retipado no hay pestañas",
-     /Before Mega/.test(eb1.textContent), false);
-  ok("pero la tabla sigue estando",
-     /weak: /.test(eb1.textContent), true);
+  ok("sin cambios no hay selector",
+     /Which one Mega Evolves/.test(eb1.textContent), false);
+  ok("pero la tabla sigue estando", /weak: /.test(eb1.textContent), true);
+  ok("y el orden de velocidad tambien",
+     /Speed order/.test(eb1.textContent), true);
 
   console.log("\n  los filtros de las pestanas");
   ok("el filtro de builds tiene su X",
