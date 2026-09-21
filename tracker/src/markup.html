@@ -66,12 +66,20 @@
         <span class="spacer"></span>
         <button class="btn primary fab" data-add="home"><span class="fabplus" aria-hidden="true">+</span>Add to HOME</button>
       </div>
-      <div class="seg sortseg" role="group" aria-label="Sort order">
-        <button data-sort="dex" aria-pressed="true">Dex #</button>
-        <button data-sort="az" aria-pressed="false">A&ndash;Z</button>
+      <!-- THREE THINGS LIVE IN HOME AND THEY ARE ASKED AT DIFFERENT TIMES:
+           what is parked there, what is out on the GTS, and what is still
+           missing from the dex. They were one scroll, so the checklist would
+           have opened under a 170-row box (player, 2026-09-20: "podria ser
+           algun submenu o algo que me indique los pokemones con prioridad de
+           captura o intercambio"). A segmented control rather than an eighth
+           tab: the bar was measured at its limit with seven. -->
+      <div class="seg homeseg" role="group" aria-label="What to look at">
+        <button data-home="box" aria-pressed="true">HOME box</button>
+        <button data-home="gts" aria-pressed="false">GTS</button>
+        <button data-home="dex" aria-pressed="false">Dex</button>
       </div>
-      <!-- the offers are few and waiting on an answer; the box is long and
-           mostly static, so the thing you act on goes first -->
+
+      <div id="homePaneGts" hidden>
       <h2>GTS offers open <span class="n" id="nGts"></span></h2>
       <p class="sub">Three slots, and an open offer holds one until it is taken
         or withdrawn. A deposit is not a trade: until someone accepts it, the
@@ -99,6 +107,13 @@
         </div>
       </div>
 
+      </div><!-- /homePaneGts -->
+
+      <div id="homePaneBox">
+      <div class="seg sortseg" role="group" aria-label="Sort order">
+        <button data-sort="dex" aria-pressed="true">Dex #</button>
+        <button data-sort="az" aria-pressed="false">A&ndash;Z</button>
+      </div>
       <h2>In HOME <span class="n" id="nHome"></span></h2>
       <div class="search field">
         <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
@@ -106,6 +121,34 @@
       </div>
       <div class="list cards" id="listHome"></div>
       <div class="btnrow" id="homeMore"></div>
+      </div><!-- /homePaneBox -->
+
+      <!-- WHAT IS STILL MISSING, in the order it is worth going after.
+           The dex is finished through HOME - caught in GO where that is
+           possible, traded on the GTS where it is not - and the list that
+           matters is not "everything you do not have" but "what to go after
+           next" (player, 2026-09-20: "la idea es ir priorizando pokemones
+           que no tengo por al menos 1 copia por especie"). -->
+      <div id="homePaneDex" hidden>
+        <p class="lede">Every Pokemon Champions lets you own, and what is
+          missing. Caught in GO and sent through HOME where that works, traded
+          on the GTS where it does not.</p>
+        <div class="search field">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <input type="text" id="dexFilter" placeholder="Filter by name, type or number">
+        </div>
+        <div id="dexDone"></div>
+
+        <h2>Frees a slot in Champions <span class="n" id="nDexFree"></span></h2>
+        <p class="sub" id="dexFreeSub"></p>
+        <div class="list cards" id="listDexFree"></div>
+        <div class="btnrow" id="dexFreeMore"></div>
+
+        <h2>Not in the box or in HOME <span class="n" id="nDexMissing"></span></h2>
+        <p class="sub" id="dexMissingSub"></p>
+        <div class="list cards" id="listDexMissing"></div>
+        <div class="btnrow" id="dexMissingMore"></div>
+      </div><!-- /homePaneDex -->
     </section>
 
     <!-- ========================================================= BUILDS -->

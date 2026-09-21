@@ -3,18 +3,22 @@
 import { $, C, FORMS, SORT, STAT_KEYS, STAT_LABEL, STONE_OF, anyRow, bst,
  byName, capNote, cardLine, dexLabel, el, freeSlug, labelBox, megasFor,
  outsideRow, pokeCard, spriteFor, statGrid, toast, typeCard, typeChip } from "./01-data.js";
-import { S, hasStone, originOf } from "./02-state.js";
+import { S, boxRows, hasStone, originOf } from "./02-state.js";
 import { drop, put } from "./03-store.js";
 import { ask, closeSheet, fbtn, openSheet } from "./04-nav.js";
 /* The badges on a box row - in the GTS, a duplicate, the last copy - are the
    GTS view's own answer about that Pokemon, so they are asked for rather than
    recomputed here. This is why the link order is no longer numeric: 09-gts
    runs before this file because this file imports it. */
-import { boxBadges } from "./09-gts.js";
+import { boxBadges, diffChip, gtsDiff } from "./09-gts.js";
 /* ONE sheet, three doors. pokeHead and pokeBody are the whole of a
    Pokemon's sheet; this file supplies only what owning a copy adds -
    origin, shiny, trained, the note and the buttons. */
-import { pokeBody, pokeHead } from "./12-find.js";
+import { findDetail, pokeBody, pokeHead } from "./12-find.js";
+/* `note` draws the app's one grey/amber callout box. Only ever CALLED,
+   so the cycle it forms with 13-boot costs nothing - the same arrangement
+   the three redraws in 04-nav.js already use. */
+import { note } from "./13-boot.js";
 /* ===================================================================== rows */
 function pokeRow(rec){
   var p = byName[rec.name];
@@ -746,6 +750,140 @@ function analysisPanel(name, host){
   });
 }
 
+/* ====================================================== what is still missing
+
+   THE DEX IS THE POINT OF THE HOME BOX. Champions' own route in is a gacha -
+   ten random species, take one - so the only way to decide what you own is
+   Pokemon GO into HOME, and the GTS for what GO cannot give (player,
+   2026-09-20: "tengo como objetivo completar todo el pokedex de champions...
+   los que no puedo conseguir en go facilmente o que simplemente no estan en
+   go, se usa la caja gts para intercambios mundiales").
+
+   A list of everything he does not own would be 134 cards in dex order and
+   answer nothing. What he asked for is an ORDER OF ATTACK, and he named the
+   first bucket himself: "los mas priorizados deberian ser los que estan
+   haciendo espacio en pokemon champions en estos momentos. para ir
+   liberandolos en champions".
+
+   That is the standing plan the box warning already states, made actionable.
+   A Champions-origin Pokemon came out of an Encounter and can NEVER leave the
+   box - releasing it is the only exit - so every one of them welds a slot
+   shut. Catch that same species in GO, send it through HOME, and the welded
+   copy becomes releasable: the slot comes back elastic and the Pokemon is
+   trainable besides. Each one is worth a slot, which nothing in the second
+   bucket is.
+
+   ONE COPY PER SPECIES IS THE TARGET, and extra copies are a later question
+   ("cuando hagan falta mas pokemones puedo pensar en copias adicionales"), so
+   there is no third bucket - just a line saying so. */
+function dexChecklist(){
+  var inHome = {}, inChamp = {};
+  boxRows("home").forEach(function(r){ inHome[r.name] = true; });
+  boxRows("champions").forEach(function(r){
+    /* a rental is an Encounter loan, so it welds a slot exactly like a bought
+       one - but it can be handed back, which the second line below says */
+    if (!inChamp[r.name] || r.status !== "rental") inChamp[r.name] = r.status;
+  });
+  var frees = [], missing = [], have = 0;
+  FORMS.forEach(function(p){
+    if (inHome[p.name]) { have++; return; }
+    if (inChamp[p.name]) { have++; frees.push(p); return; }
+    missing.push(p);
+  });
+  /* WITHIN A BUCKET, EASIEST FIRST. `supply` is the estimate of how hard the
+     species is to get in GO, which is the only thing he can act on - a 1 is an
+     afternoon and a 5 is the Gimmighoul grind. The permanents lead the first
+     bucket because a rental hands its slot back on its own. */
+  function bySupply(a, b){
+    var da = gtsDiff(a.name), db = gtsDiff(b.name);
+    return ((da && da.supply) || 3) - ((db && db.supply) || 3) ||
+           a.name.localeCompare(b.name);
+  }
+  frees.sort(function(a, b){
+    var ra = inChamp[a.name] === "rental" ? 1 : 0;
+    var rb = inChamp[b.name] === "rental" ? 1 : 0;
+    return ra - rb || bySupply(a, b);
+  });
+  missing.sort(bySupply);
+  return {frees:frees, missing:missing, have:have, total:FORMS.length,
+          statusOf:inChamp};
+}
+/* One entry. The same card every other list draws, plus the two things this
+   list is for: how hard it is to get, and what getting it would buy. */
+function dexCard(p, why){
+  return pokeCard(p, {
+    dex: SORT === "dex",
+    badges: function(nm){ diffChip(p.name, nm); },
+    notes: function(m){
+      if (why) m.appendChild(el("div", "st", why));
+    },
+    /* THE DEX SHEET, not the box one. There is no copy to open - that is the
+       whole point of the list - so it opens what a Pokemon IS. */
+    onclick: function(){ findDetail(p); }
+  });
+}
+var DEX_CAP = 12, dexAll = {free:false, missing:false};
+function drawDexPane(){
+  var c = dexChecklist();
+  var q = ($("dexFilter") && $("dexFilter").value || "").trim().toLowerCase();
+  function match(p){
+    return !q || p.name.toLowerCase().indexOf(q) >= 0 ||
+           String(dexLabel(p.name)).toLowerCase().indexOf(q) >= 0 ||
+           p.types.join(" ").toLowerCase().indexOf(q) >= 0;
+  }
+  var free = c.frees.filter(match), miss = c.missing.filter(match);
+
+  $("dexDone").innerHTML = "";
+  $("dexDone").appendChild(note("", "<strong>" + c.have + " of " + c.total +
+    "</strong> species are yours somewhere — in the Champions box, in " +
+    "HOME, or both. " + (c.total - c.have) + " to go."));
+
+  $("nDexFree").textContent = c.frees.length;
+  $("dexFreeSub").textContent = c.frees.length
+    ? "These are in your Champions box and NOT in HOME, so each one is a slot "
+      + "that cannot be freed without releasing the Pokemon. Catch it in GO, "
+      + "send it through HOME, and the slot comes back elastic — and the "
+      + "copy is trainable, which a rental never is. Easiest to get first."
+    : "Nothing: every species in the Champions box is also in HOME.";
+  $("nDexMissing").textContent = c.missing.length;
+  $("dexMissingSub").textContent = "One copy per species is the target here. "
+    + "Extra copies are a later question, so nothing on this page asks for a "
+    + "second of anything. Easiest to get first.";
+
+  function paint(host, moreHost, list, key, why){
+    var cap = dexAll[key] ? list.length : DEX_CAP;
+    host.innerHTML = "";
+    if (!list.length) {
+      host.appendChild(el("div", "empty", q ? "Nothing here matches that"
+                                            : "Nothing left in this list"));
+    } else {
+      list.slice(0, cap).forEach(function(p){
+        host.appendChild(dexCard(p, why(p)));
+      });
+    }
+    moreHost.innerHTML = "";
+    if (list.length > cap) {
+      moreHost.appendChild(fbtn("Show the other " + (list.length - cap), "sm",
+        function(){ dexAll[key] = true; drawDexPane(); }));
+    } else if (dexAll[key] && list.length > DEX_CAP) {
+      moreHost.appendChild(fbtn("Show fewer", "sm",
+        function(){ dexAll[key] = false; drawDexPane(); }));
+    }
+  }
+  paint($("listDexFree"), $("dexFreeMore"), free, "free", function(p){
+    var d = gtsDiff(p.name);
+    return (c.statusOf[p.name] === "rental"
+      ? "A rental in the box now — it cannot be trained, and it hands the "
+        + "slot back on its own."
+      : "Bought from an Encounter, so it can only leave by being released.")
+      + (d && d.how ? " " + d.how : "");
+  });
+  paint($("listDexMissing"), $("dexMissingMore"), miss, "missing", function(p){
+    var d = gtsDiff(p.name);
+    return d && d.how ? d.how : "";
+  });
+}
+
 /* ------------------------------------------------------- what leaves here --
    `pokeRow` is the row both box views draw and `addSheet` the one way a
    Pokemon enters the box. `battleFormNote` used to live here too - one grey
@@ -758,5 +896,5 @@ function analysisPanel(name, host){
    `window` - they open a sheet for every form in the dex and assert what it
    shows. `moveButtons` stays private.
 */
-export { addSheet, analysisPanel, loadOutside,
+export { addSheet, analysisPanel, drawDexPane, loadOutside,
   outsideDex, outsideMove, outsideMovesFor, pokeRow, pokeSheet };

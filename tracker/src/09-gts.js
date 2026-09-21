@@ -1495,4 +1495,4 @@ document.querySelectorAll("[data-export]").forEach(function(b){
    history and what counts as the last copy of a form. Those rules are argued
    in one file, and now they can only be argued in one file.
 */
-export { boxBadges, drawGts, gtsPickMine, gtsPickWanted };
+export { boxBadges, diffChip, drawGts, gtsDiff, gtsPickMine, gtsPickWanted };
