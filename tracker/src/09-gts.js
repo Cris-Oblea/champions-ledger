@@ -1690,7 +1690,12 @@ function drawGtsWanted(){
   chips.forEach(function(c){
     var k = c.name + (c.shiny ? "|shiny" : "");
     if (group[k]) { group[k].n++; return; }
-    var asks = gtsSuggest(c.name, 24, !!c.shiny);
+    /* 40, NOT 24. The playable asks fill the list first, so a short limit
+       spent the whole of it on the Champions dex and left two outside
+       species at the tail - which is not the wider view he asked for. The
+       card still opens with six; the rest is behind one tap, so a longer
+       list costs nothing on screen. */
+    var asks = gtsSuggest(c.name, 40, !!c.shiny);
     if (!asks.length) return;
     group[k] = {rec:c, n:1, asks:asks,
                 frees:asks.filter(function(a){ return a.frees; }),
