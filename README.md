@@ -196,12 +196,18 @@ into the game and can never come back out, so it does not make the HOME copy
 expendable. Getting this wrong offered a singleton as trade material and would
 have lost the species.
 
-**The asks include the species Champions cannot use.** The GTS is HOME to HOME,
-so what comes back does not have to be playable — and the HOME dex is being
-completed on purpose, while a species Champions cannot use is exactly what the
-keep-one rule always lets you offer next. They are ranked below everything
-playable and drawn without a colour, because a Pokemon you can bring to a game
-is worth more than one you cannot.
+**What you ask for is always playable; what you offer usually should not be.**
+The two sides of a trade are not the same question. An ask that Champions
+cannot use buys a HOME row and nothing else, so the suggester never proposes
+one. The *chip*, though, is best spent on something you could never field: a
+Pokemon in HOME that Champions cannot use costs nothing playable to give away,
+so those lead the list, carry a tag saying why, and have a filter of their own.
+
+**And it will not recommend a chip the GTS refuses to hold.** Melmetal is in
+HOME, is unplayable in Champions, and was top of the list — and HOME's GTS will
+not take it. `data/meta/gts_blocked.json` is that list, and it records who
+confirmed each entry and when, because none of the five sources covers HOME's
+own rules and there is nothing to check it against.
 
 **Nothing on it claims a species is easy in Pokemon GO.** It did, from a
 declared supply score — and 260 of the 264 sit at the default of 2, so the

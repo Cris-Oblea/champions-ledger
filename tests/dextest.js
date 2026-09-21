@@ -114,6 +114,20 @@ setTimeout(() => {
   const asks = [...d.querySelectorAll("#listGtsWant .st")]
     .map(x => x.textContent).join(" ");
   ok("y aparece como algo que pedir", /Aggron/.test(asks), true);
+  /* LO QUE SE PIDE ES JUGABLE, SIEMPRE. Cambiar por algo que Champions no
+     puede usar compra una fila de HOME y nada mas (player, 2026-09-21: "no
+     quiero cambiar por pokemones que no pueda usar"). */
+  ok("y nunca se propone pedir algo que Champions no tiene",
+     [...d.querySelectorAll("#listGtsWant .st .tag")]
+       .every(t => !!w.byName[t.textContent]), true);
+  /* EL FILTRO, que es la pregunta con la que abre la pantalla */
+  const wantTog = v => [...d.querySelectorAll("#gtsWantFilter button")]
+    .find(b => b.dataset.want === v);
+  ok("hay filtro por los que no puede usar", !!wantTog("outside"), true);
+  wantTog("outside").dispatchEvent(new w.MouseEvent("click", {bubbles:true}));
+  ok("y deja solo esos",
+     names("listGtsWant").every(n => !w.byName[n]), true);
+  wantTog("all").dispatchEvent(new w.MouseEvent("click", {bubbles:true}));
   ok("marcado como que libera slot",
      !!d.querySelector("#listGtsWant .tag.ok"), true);
   ok("el record sale de sus propios trades cerrados",

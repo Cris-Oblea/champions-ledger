@@ -692,6 +692,11 @@ def main():
             "MEGA_OWNER": MEGA_OWNER,
             "STATUSES": (Q.db("statuses") or {}).get("statuses") or {},
             "GTSDIFF": GTSDIFF,
+            # Species HOME's own GTS refuses to take. Not a Champions rule and
+            # not scraped from anywhere - the player found it in the game, and
+            # data/meta/gts_blocked.json says so per entry. Recommending a chip
+            # he cannot deposit is recommending something impossible.
+            "GTSBLOCK": (Q.meta("gts_blocked") or {}).get("blocked") or {},
             # THE TYPE COLOURS, TAKEN FROM POKEMON'S OWN STYLESHEET rather than
             # guessed at. All eighteen used to be hand-written and darkened so
             # white text would sit on them, which made every one of them wrong -
