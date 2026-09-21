@@ -1541,6 +1541,12 @@ details.rolls[open] summary::before{content:"2 "}
 .seg button + button{border-left:1px solid var(--line)}
 .seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
 .sortseg{margin-bottom:10px}
+/* The chip filter on the GTS recommendations. NOT `.sortseg`, which it
+   was for one build: boot wires every .sortseg to setSort() off a
+   `data-sort` these buttons do not have, so clicking one would have
+   re-sorted every box list to undefined. Same shape, its own hook. */
+.wantseg{margin-bottom:10px}
+.wantseg button{padding:6px 13px;font-size:11px}
 .sortseg button{padding:6px 13px;font-size:11px}
 
 /* ---------- touch targets ------------------------------------------------
@@ -1559,7 +1565,7 @@ details.rolls[open] summary::before{content:"2 "}
   .btn{min-height:44px;padding-top:9px;padding-bottom:9px}
   .btn.sm{min-height:40px;padding-top:8px;padding-bottom:8px}
   .seg button{min-height:42px;padding-top:0;padding-bottom:0}
-  .sortseg button{min-height:40px}
+  .sortseg button, .wantseg button{min-height:40px}
   .tog{min-height:40px;padding-top:8px;padding-bottom:8px}
   .row{min-height:56px}
 }

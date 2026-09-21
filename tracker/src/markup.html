@@ -94,8 +94,18 @@
            the species welded into it (player, 2026-09-21: "el listado de
            champions se puede usar como recomendaciones de cambio en el gts.
            eso quedaria mucho mejor"). -->
-      <h2>Worth asking for <span class="n" id="nGtsWant"></span></h2>
+      <h2>Worth trading <span class="n" id="nGtsWant"></span></h2>
       <p class="sub" id="gtsWantSub"></p>
+      <!-- The question he actually opens this for: "de esos que no puedo usar
+           cambiarlos por pokemones usables en champions". The unusable ones
+           lead the list anyway, but with 44 chips a filter is the difference
+           between reading and scrolling. -->
+      <div class="seg wantseg" id="gtsWantFilter" role="group"
+           aria-label="Which of your Pokemon to offer">
+        <button data-want="all" aria-pressed="true">All</button>
+        <button data-want="outside" aria-pressed="false">Not in Champions</button>
+        <button data-want="dupes" aria-pressed="false">Duplicates</button>
+      </div>
       <div class="list cards" id="listGtsWant"></div>
       <div class="btnrow" id="gtsWantMore"></div>
       <!-- Closed trades are the only real evidence of what the market pays.

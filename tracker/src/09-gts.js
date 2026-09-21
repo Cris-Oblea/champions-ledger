@@ -1,8 +1,7 @@
 /* 09-gts.js - GTS: what may be offered, what it is worth, and the export.
    Part of the app; linked into one script by scripts/build_tracker_page.py. */
 import { $, C, FORMS, MEGAS_OF, STONE_OF, anyRow, bst, byName, capNote,
- cardLine, dexLabel, dexNo, el, freeSlug, labelBox, megasFor, outsideRow,
- pokeCard,
+ cardLine, dexLabel, dexNo, el, freeSlug, labelBox, megasFor, pokeCard,
  spriteFor, statGrid, toast, typeCard, typeChip } from "./01-data.js";
 import { ORIGIN_LABEL, S, boxRows, hasStone, originOf } from "./02-state.js";
 import { drop, put, putNew } from "./03-store.js";
@@ -619,47 +618,15 @@ function gtsSuggest(chipName, limit, shiny){
                     (d && d.demand != null ? (5 - d.demand) * 6 : 8) +
                     Math.max(0, 20 - Math.abs(anchor - b) / 3)});
   });
-  /* AND THE SPECIES CHAMPIONS DOES NOT HAVE, which is most of the dex and
-     was none of this list.
-
-     The GTS is HOME to HOME: what comes back does not have to be playable,
-     and he asked to see those too (player, 2026-09-21: "me gustaria tener una
-     vision mas amplia que tambien me deje ver los pokemones que no estan en
-     champions para ver por que pokemon cambiarlo"). Two reasons they belong
-     here. One is the HOME dex, which he is completing on purpose. The other
-     is that a species Champions cannot use is exactly what his own rule lets
-     him offer NEXT - taking one is buying a future chip.
-
-     They are ranked BELOW everything playable, because a Pokemon you can
-     bring to a game is worth more than one you cannot, and they carry no
-     ladder row at all - no demand, no rank - so nothing here pretends to
-     know how hard they are to get. */
-  var outAsk = [];
-  Object.keys(C.HOME_DEX || {}).forEach(function(n){
-    if (owned[n] || byName[n]) return;
-    var row = outsideRow(n);
-    if (!row || !row.b || !row.b.length) return;
-    var b2 = bst(row);
-    var band2 = chipBand(v, b2);
-    if (!band2) return;
-    outAsk.push({name:n, bst:b2, spe:row.b[5], stone:null, rank:null,
-                 demand:null, band:band2, frees:false, outside:true,
-                 stretch:b2 > v.value,
-                 score:Math.max(0, 20 - Math.abs(
-                   (band2 === "reach" ? v.reach : v.base) - b2) / 3)});
-  });
   function byScore(a, b){ return b.score - a.score || b.bst - a.bst; }
   bands.reach.sort(byScore);
   bands.base.sort(byScore);
-  outAsk.sort(byScore);
   var want = limit || 14;
   var out = [];
   while (out.length < want && (bands.reach.length || bands.base.length)) {
     if (bands.reach.length) out.push(bands.reach.shift());
     if (out.length < want && bands.base.length) out.push(bands.base.shift());
   }
-  /* the outside dex fills whatever is left, never displacing a playable ask */
-  while (out.length < want && outAsk.length) out.push(outAsk.shift());
   return out;
 }
 
@@ -1637,9 +1604,16 @@ function gtsChips(){
   /* HIS RULE, NOT OURS: only a duplicate past the first copy, or a species
      Champions cannot use. Offering a singleton of a legal species loses it -
      and a rental of that species in the Champions box does not make it a
-     duplicate, because a rental can never come back out. */
+     duplicate, because a rental can never come back out.
+
+     AND WHAT HOME'S GTS WILL NOT TAKE AT ALL. Melmetal is in his box, is a
+     species Champions cannot use, and was being recommended as a chip - and
+     the GTS refuses to hold it (player, 2026-09-21: "melmetal esta bloqueado
+     del gts"). A recommendation you cannot act on is worse than none.
+     data/meta/gts_blocked.json is the list and says who confirmed each. */
   return all.filter(function(r){
     if (taken[r._id]) return false;              /* already in a GTS slot */
+    if ((C.GTSBLOCK || {})[r.name]) return false;
     return (copies[r.name] || 0) > 1 || !byName[r.name];
   });
 }
@@ -1675,11 +1649,32 @@ function gtsRecord(name){
   return {n:all.length, median:mid(all), mine:mine.length, myMedian:mid(mine),
           gap:mid(gaps), gapMax:gaps.length ? Math.max.apply(null, gaps) : null};
 }
-var TRADE_CAP = 6, tradeAll = false;
+var TRADE_CAP = 6, tradeAll = false, WANT_FILTER = "all";
+function setWantFilter(v){
+  WANT_FILTER = v;
+  tradeAll = false;
+  var seg = $("gtsWantFilter");
+  if (seg) Array.prototype.forEach.call(seg.children, function(b){
+    b.setAttribute("aria-pressed", b.dataset.want === v ? "true" : "false");
+  });
+  drawGtsWanted();
+}
 function drawGtsWanted(){
   var host = $("listGtsWant"), more = $("gtsWantMore");
   if (!host) return;
+  var seg = $("gtsWantFilter");
+  if (seg && !seg._wired) {
+    seg._wired = 1;
+    Array.prototype.forEach.call(seg.children, function(b){
+      b.onclick = function(){ setWantFilter(b.dataset.want); };
+    });
+  }
   var chips = gtsChips(), rec = gtsRecord(null);
+  if (WANT_FILTER === "outside") {
+    chips = chips.filter(function(c){ return !byName[c.name]; });
+  } else if (WANT_FILTER === "dupes") {
+    chips = chips.filter(function(c){ return !!byName[c.name]; });
+  }
   /* ONE CARD PER SPECIES, COUNTED. Three spare Garchomp are three chips and
      one recommendation - they price identically and fetch identically, so
      three identical cards is the top of the list saying one thing three
@@ -1690,22 +1685,28 @@ function drawGtsWanted(){
   chips.forEach(function(c){
     var k = c.name + (c.shiny ? "|shiny" : "");
     if (group[k]) { group[k].n++; return; }
-    /* 40, NOT 24. The playable asks fill the list first, so a short limit
-       spent the whole of it on the Champions dex and left two outside
-       species at the tail - which is not the wider view he asked for. The
-       card still opens with six; the rest is behind one tap, so a longer
-       list costs nothing on screen. */
-    var asks = gtsSuggest(c.name, 40, !!c.shiny);
+    /* THE ASKS ARE PLAYABLE ONLY, and that was never the thing to widen
+       (player, 2026-09-21: "eso estaba bien, no quiero cambiar por pokemones
+       que no pueda usar"). A trade that comes back with something Champions
+       cannot play has bought a HOME row and nothing else. It is the CHIP
+       side he meant - see the filter below. */
+    var asks = gtsSuggest(c.name, 24, !!c.shiny);
     if (!asks.length) return;
     group[k] = {rec:c, n:1, asks:asks,
                 frees:asks.filter(function(a){ return a.frees; }),
                 stones:asks.filter(function(a){ return a.stone; })};
     ideas.push(group[k]);
   });
-  /* the chip that can buy back a welded slot first, then one that turns on a
-     dead stone, then whatever reaches furthest */
+  /* THE CHEAPEST CURRENCY FIRST, which is his own reasoning: "de esos que no
+     puedo usar cambiarlos por pokemones usables en champions". A duplicate of
+     a playable species is still a Pokemon he could bring to a game; one
+     Champions cannot use costs him nothing at all to give away, so it is what
+     to spend before anything else. Then the best outcome - a chip that can
+     buy back a welded slot, then one that turns on a dead stone - and then
+     whatever reaches furthest. */
   ideas.sort(function(a, b){
-    return (b.frees.length ? 1 : 0) - (a.frees.length ? 1 : 0) ||
+    return (byName[a.rec.name] ? 1 : 0) - (byName[b.rec.name] ? 1 : 0) ||
+           (b.frees.length ? 1 : 0) - (a.frees.length ? 1 : 0) ||
            (b.stones.length ? 1 : 0) - (a.stones.length ? 1 : 0) ||
            (b.asks[0] ? b.asks[0].bst : 0) - (a.asks[0] ? a.asks[0].bst : 0);
   });
@@ -1727,7 +1728,11 @@ function drawGtsWanted(){
       + "the first copy, or a species Champions cannot use — a singleton "
       + "of a legal species would be lost for good.";
   host.innerHTML = "";
-  if (!ideas.length) host.appendChild(el("div", "empty", "Nothing to offer"));
+  if (!ideas.length) {
+    host.appendChild(el("div", "empty", WANT_FILTER === "outside"
+      ? "Nothing in HOME that Champions cannot use can go up right now"
+      : WANT_FILTER === "dupes" ? "No duplicates to spare" : "Nothing to offer"));
+  }
   var cap = tradeAll ? ideas.length : TRADE_CAP;
   ideas.slice(0, cap).forEach(function(i){
     var p = anyRow(i.rec.name);
@@ -1742,6 +1747,13 @@ function drawGtsWanted(){
            side with nothing to tell them apart read as a bug (seen live,
            2026-09-21). The sprite is the shiny one; at card size that is not
            a difference you can rely on. */
+        if (!byName[i.rec.name]) {
+          var ox = el("span", "tag", "not in Champions");
+          ox.title = "It can live in HOME for ever and can never enter a "
+            + "game, so giving it away costs you nothing playable. This is "
+            + "the currency to spend first.";
+          nm.appendChild(ox);
+        }
         if (i.rec.shiny) nm.appendChild(el("span", "tag warn", "shiny"));
         if (i.n > 1) {
           var c = el("span", "tag", i.n + " spare");
@@ -1769,15 +1781,12 @@ function drawGtsWanted(){
            at a glance and 24 tags is not a glance - but the rest is one tap
            away and nothing is behind a scroll you cannot reach. */
         function askTag(a){
-          var tag = el("span", "tag" + (a.frees ? " ok"
-                       : a.stone ? " warn" : a.outside ? " quiet" : ""),
+          var tag = el("span", "tag" + (a.frees ? " ok" : a.stone ? " warn" : ""),
                        a.name);
           tag.title = a.bst + " BST"
             + (a.frees ? " — you hold it only in the Champions box, so a "
                 + "HOME copy frees that slot" : "")
             + (a.stone ? " — turns on " + a.stone + ", already bought" : "")
-            + (a.outside ? " — not in Champions: it can live in HOME and "
-                + "never enter a game, which also makes it your next chip" : "")
             + (a.band === "base" ? " — under what this chip is worth, "
                 + "which is the ask that clears fastest"
               : " — at or above what this chip is worth");
