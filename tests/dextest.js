@@ -34,6 +34,7 @@ const ROWS = [
   row("dragonite", "Dragonite", "home",      "permanent", "home"),
   row("garchomp",  "Garchomp",  "champions", "permanent", "champions"),
   row("garchomp2", "Garchomp",  "home",      "permanent", "home"),
+  row("dragonite2","Dragonite", "home",      "permanent", "home"),
 ];
 
 const body = require("./harness.js").page(ROOT);
@@ -57,8 +58,13 @@ const dom = new JSDOM(body.replace("<head>", "<head>" + stub),
 const w = dom.window, d = w.document;
 const pane = k => [...d.querySelectorAll(".homeseg button")]
   .find(b => b.dataset.home === k);
+/* THE NAME, NOT THE WHOLE LINE. A card's name line also carries badges - a
+   difficulty chip, "frees a slot", a Worlds medal - and they are elements,
+   while the name itself is the one bare text node pokeCard appends. Splitting
+   the textContent on capitals worked until a badge arrived in lower case. */
 const names = id => [...d.querySelectorAll("#" + id + " .row.card .rname")]
-  .map(x => x.textContent.split(/[A-Z]{2,}|doable|easy|hard/)[0].trim());
+  .map(x => [...x.childNodes].filter(n => n.nodeType === 3)
+                             .map(n => n.textContent).join("").trim());
 
 setTimeout(() => {
   w.go("home");
@@ -79,17 +85,43 @@ setTimeout(() => {
      w.CHAMP.DEX.filter(p => !p[4]).length, 264);
   ok("cuatro especies son suyas", /4 of 264/.test(
      d.getElementById("dexDone").textContent), true);
-  ok("dos liberan slot", d.getElementById("nDexFree").textContent, 2);
-  ok("y faltan 260", d.getElementById("nDexMissing").textContent, 260);
+  ok("faltan 260", d.getElementById("nDexMissing").textContent, 260);
 
-  const free = names("listDexFree");
-  ok("Aggron libera slot", free.indexOf("Aggron") >= 0, true);
-  ok("Meganium tambien", free.indexOf("Meganium") >= 0, true);
-  /* EL CASO QUE IMPORTA: Garchomp esta en la caja Y en HOME, asi que ya esta
-     resuelto - la copia de HOME es la que hace el slot elastico. */
-  ok("Garchomp NO, porque ya esta en HOME", free.indexOf("Garchomp") >= 0, false);
-  ok("y no aparece entre los que faltan",
+  console.log("\n  y los que SI tienes en Champions son objetivos de GTS");
+  /* EL LISTADO DE LO QUE TIENE EN CHAMPIONS NO ES UNA CHECKLIST. Se ve en la
+     Champions Box; lo que la caja no puede decir es con que cambiarlo
+     (player, 2026-09-21: "el listado de champions se puede usar como
+     recomendaciones de cambio en el gts"). */
+  ok("la lista de 'libera slot' ya no esta en Dex",
+     !!d.getElementById("listDexFree"), false);
+  pane("gts").click();
+  /* LAS CARDS SON LOS CHIPS, NO LOS OBJETIVOS. Se lee desde HOME: lo que su
+     propia regla deja ofrecer - un duplicado pasada la primera copia, o una
+     especie que Champions no puede usar. Los objetivos van en la linea
+     "Ask for", y el que libera slot va marcado. */
+  const chips = names("listGtsWant");
+  ok("Garchomp es un chip: lo tienes dos veces",
+     chips.indexOf("Garchomp") >= 0, true);
+  ok("Dragonite tambien, duplicado dentro de HOME",
+     chips.indexOf("Dragonite") >= 0, true);
+  ok("Aggron no es un chip, es un objetivo",
+     chips.indexOf("Aggron") >= 0, false);
+  const asks = [...d.querySelectorAll("#listGtsWant .st")]
+    .map(x => x.textContent).join(" ");
+  ok("y aparece como algo que pedir", /Aggron/.test(asks), true);
+  ok("marcado como que libera slot",
+     !!d.querySelector("#listGtsWant .tag.ok"), true);
+  ok("el record sale de sus propios trades cerrados",
+     /closed trades/.test(d.getElementById("gtsWantSub").textContent) ||
+     !w.CHAMP_GTS_ROWS, true);
+  pane("dex").click();
+
+  /* EL CASO QUE IMPORTA: Garchomp esta en la caja Y en HOME, y ninguna de las
+     dos listas debe pedirlo. */
+  ok("Garchomp no aparece entre los que faltan",
      names("listDexMissing").indexOf("Garchomp") >= 0, false);
+  ok("Aggron tampoco, lo tienes en Champions",
+     names("listDexMissing").indexOf("Aggron") >= 0, false);
   ok("Dragonite tampoco, solo vive en HOME",
      names("listDexMissing").indexOf("Dragonite") >= 0, false);
 
@@ -97,12 +129,19 @@ setTimeout(() => {
   const inp = d.getElementById("dexFilter");
   inp.value = "aggron";
   inp.dispatchEvent(new w.Event("input", {bubbles:true}));
-  ok("filtra la primera lista", names("listDexFree").join(","), "Aggron");
-  ok("y vacia la segunda",
+  ok("filtra a nada, porque Aggron no falta",
      !!d.querySelector("#listDexMissing .empty"), true);
+  /* el nombre sale de la propia lista, para que el test no dependa de que
+     tal especie este o no en el roster de Champions */
   inp.value = "";
   inp.dispatchEvent(new w.Event("input", {bubbles:true}));
-  ok("y se deshace", d.getElementById("nDexFree").textContent, 2);
+  const one = names("listDexMissing")[0];
+  inp.value = one.toLowerCase();
+  inp.dispatchEvent(new w.Event("input", {bubbles:true}));
+  ok("y encuentra lo que si falta", names("listDexMissing").join(","), one);
+  inp.value = "";
+  inp.dispatchEvent(new w.Event("input", {bubbles:true}));
+  ok("y se deshace", d.getElementById("nDexMissing").textContent, 260);
 
   console.log("\n  HOME aguanta cualquier nombre");
   /* Oinkologne vive en HOME y no en Champions, y PokeAPI no tiene fila

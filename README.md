@@ -174,20 +174,27 @@ its limit with seven tabs, so it is a segmented control rather than an eighth.
 **The dex checklist is an order of attack, not a list of holes.** Champions'
 own route in is a gacha — ten random species, take one — so the dex is
 finished through Pokemon GO into HOME, and through the GTS for what GO cannot
-give. Two buckets, easiest first inside each:
+give. It lists what is **in neither box**, easiest to get first; one copy per
+species is the target, and extra copies are a later question, so nothing there
+asks for a second of anything. A species already in HOME is **done** even when
+a copy is also welded into the Champions box. Megas are not on it at all: a
+Mega is not caught, it is a stone on something you own.
 
-- **Frees a slot in Champions.** A species in the Champions box and *not* in
-  HOME. It came out of an Encounter, so releasing it is its only exit and it
-  welds a slot shut; catch the same species in GO, send it through HOME, and
-  the welded copy becomes releasable — the slot comes back elastic and the
-  copy is trainable, which a rental never is. Each one is worth a slot, which
-  nothing in the second bucket is.
-- **Not in the box or in HOME.** One copy per species is the target; extra
-  copies are a later question, so nothing here asks for a second of anything.
+**The GTS pane recommends trades by reading the HOME box.** Every Pokemon in
+HOME that the keep-one rule allows you to put up — a duplicate past the first
+copy, or a species Champions cannot use — is asked what it could fetch, using
+the same two price bands the deposit screen uses one chip at a time. The asks
+that would **free a Champions slot** are marked and ranked first: a species you
+hold only in the Champions box is welded there, because an Encounter Pokemon
+can only leave by being released, so a HOME copy of one is worth more than the
+dead Mega Stone the suggester used to rank top.
 
-A species already in HOME is **done**, even when a copy is also welded into
-the box — the HOME copy is the one that makes the slot elastic. Megas are not
-on it at all: a Mega is not caught, it is a stone on something you own.
+**Nothing on it claims a species is easy in Pokemon GO.** It did, from a
+declared supply score — and 260 of the 264 sit at the default of 2, so the
+claim was mostly a guess wearing a number. What is there instead is the only
+measured evidence in the building: the closed trades. How many have cleared,
+how long half of them took, and how much BST came back against what went
+out — per species where the record is long enough to mean anything.
 
 **And no sprite is ever drawn with `image-rendering: pixelated`.** It looks
 like it should do nothing at native size, and on a 1x display it does — but a

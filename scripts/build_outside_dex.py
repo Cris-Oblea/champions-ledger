@@ -65,7 +65,7 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(ROOT, "scripts"))
 import query as Q                                             # noqa: E402
 from audit_learnsets import CHAMPIONS_VG                      # noqa: E402
-from fetch_home_dex import key as hkey, table                 # noqa: E402
+from fetch_home_dex import key as hkey, resolver, table       # noqa: E402
 
 OUT = os.path.join(ROOT, "tracker", "outsidedex.js")
 ENGLISH = "9"
@@ -126,16 +126,26 @@ def build():
             ab[n] = txt
 
     # --- movepools, complete, plus rows for what Champions lacks ----------
-    pk = {}
-    for r in table("pokemon.csv"):
-        pk.setdefault(r["identifier"], r["id"])
+    # THE SAME RESOLVER THE STATS USE, and for the same reason: PokeAPI files
+    # a species whose only rows are forms under those forms, so asking for the
+    # bare name misses. `oinkologne` is `oinkologne-male`, `deoxys` is
+    # `deoxys-normal`, `giratina` is Altered - and each of those had a spread
+    # and an ability here while its movepool came back empty, which is half a
+    # sheet (player, 2026-09-21: "el moveset que aprenden cada uno de esos
+    # pokemones junto con sus habilidades supongo que los puedes sacar del
+    # ultimo juego en el que estuvieron presentes").
+    #
+    # The approximate half is taken here too, and it is right: Arceus' plates
+    # and Silvally's memories share one movepool exactly as they share one
+    # spread, and the sheet already says whose row it is showing.
+    resolve = resolver(table("pokemon.csv"))
     by_pid = collections.defaultdict(lambda: collections.defaultdict(set))
     for r in table("pokemon_moves.csv"):
         by_pid[r["pokemon_id"]][r["version_group_id"]].add(r["move_id"])
 
     pools, mv, missing, nomatch = {}, {}, [], set()
     for name in sorted(home):
-        pid = pk.get(hkey(name))
+        pid = resolve(hkey(name))[0]
         groups = by_pid.get(pid) if pid else None
         if not groups:
             missing.append(name)

@@ -88,6 +88,16 @@
       <div class="btnrow" style="margin-top:8px;margin-bottom:6px">
         <button class="btn sm" id="gtsAdd">Log an offer</button>
       </div>
+
+      <!-- WHAT TO ASK FOR, AND WITH WHAT. The Champions box is already a
+           screen; what it cannot say is which of your spares would buy one of
+           the species welded into it (player, 2026-09-21: "el listado de
+           champions se puede usar como recomendaciones de cambio en el gts.
+           eso quedaria mucho mejor"). -->
+      <h2>Worth asking for <span class="n" id="nGtsWant"></span></h2>
+      <p class="sub" id="gtsWantSub"></p>
+      <div class="list cards" id="listGtsWant"></div>
+      <div class="btnrow" id="gtsWantMore"></div>
       <!-- Closed trades are the only real evidence of what the market pays.
            The player's own pricing rule came from remembering five of them. -->
       <!-- Collapsed. There are 21 closed trades already and the list only
@@ -139,11 +149,11 @@
         </div>
         <div id="dexDone"></div>
 
-        <h2>Frees a slot in Champions <span class="n" id="nDexFree"></span></h2>
-        <p class="sub" id="dexFreeSub"></p>
-        <div class="list cards" id="listDexFree"></div>
-        <div class="btnrow" id="dexFreeMore"></div>
-
+        <!-- The bucket that used to sit here - "frees a slot in Champions" -
+             was a list of Pokemon he already owns, printed under a different
+             heading, and the Champions Box tab is that screen. It moved to the
+             GTS pane, where the same species are TARGETS and each one can be
+             shown with the chips that would fetch it. -->
         <h2>Not in the box or in HOME <span class="n" id="nDexMissing"></span></h2>
         <p class="sub" id="dexMissingSub"></p>
         <div class="list cards" id="listDexMissing"></div>

@@ -801,34 +801,21 @@ function analysisPanel(name, host){
 function dexChecklist(){
   var inHome = {}, inChamp = {};
   boxRows("home").forEach(function(r){ inHome[r.name] = true; });
-  boxRows("champions").forEach(function(r){
-    /* a rental is an Encounter loan, so it welds a slot exactly like a bought
-       one - but it can be handed back, which the second line below says */
-    if (!inChamp[r.name] || r.status !== "rental") inChamp[r.name] = r.status;
-  });
-  var frees = [], missing = [], have = 0;
+  boxRows("champions").forEach(function(r){ inChamp[r.name] = r.status; });
+  var missing = [], have = 0;
   FORMS.forEach(function(p){
-    if (inHome[p.name]) { have++; return; }
-    if (inChamp[p.name]) { have++; frees.push(p); return; }
+    if (inHome[p.name] || inChamp[p.name]) { have++; return; }
     missing.push(p);
   });
-  /* WITHIN A BUCKET, EASIEST FIRST. `supply` is the estimate of how hard the
-     species is to get in GO, which is the only thing he can act on - a 1 is an
-     afternoon and a 5 is the Gimmighoul grind. The permanents lead the first
-     bucket because a rental hands its slot back on its own. */
-  function bySupply(a, b){
+  /* EASIEST FIRST. `supply` is the estimate of how hard the species is to get
+     in GO, which is the only half he can act on - a 1 is an afternoon and a 5
+     is the Gimmighoul grind. */
+  missing.sort(function(a, b){
     var da = gtsDiff(a.name), db = gtsDiff(b.name);
     return ((da && da.supply) || 3) - ((db && db.supply) || 3) ||
            a.name.localeCompare(b.name);
-  }
-  frees.sort(function(a, b){
-    var ra = inChamp[a.name] === "rental" ? 1 : 0;
-    var rb = inChamp[b.name] === "rental" ? 1 : 0;
-    return ra - rb || bySupply(a, b);
   });
-  missing.sort(bySupply);
-  return {frees:frees, missing:missing, have:have, total:FORMS.length,
-          statusOf:inChamp};
+  return {missing:missing, have:have, total:FORMS.length};
 }
 /* One entry. The same card every other list draws, plus the two things this
    list is for: how hard it is to get, and what getting it would buy. */
@@ -844,66 +831,48 @@ function dexCard(p, why){
     onclick: function(){ findDetail(p); }
   });
 }
-var DEX_CAP = 12, dexAll = {free:false, missing:false};
+var DEX_CAP = 12, dexAll = {missing:false};
 function drawDexPane(){
   var c = dexChecklist();
   var q = ($("dexFilter") && $("dexFilter").value || "").trim().toLowerCase();
-  function match(p){
+  var miss = c.missing.filter(function(p){
     return !q || p.name.toLowerCase().indexOf(q) >= 0 ||
            String(dexLabel(p.name)).toLowerCase().indexOf(q) >= 0 ||
            p.types.join(" ").toLowerCase().indexOf(q) >= 0;
-  }
-  var free = c.frees.filter(match), miss = c.missing.filter(match);
+  });
 
   $("dexDone").innerHTML = "";
   $("dexDone").appendChild(note("", "<strong>" + c.have + " of " + c.total +
     "</strong> species are yours somewhere — in the Champions box, in " +
     "HOME, or both. " + (c.total - c.have) + " to go."));
 
-  $("nDexFree").textContent = c.frees.length;
-  $("dexFreeSub").textContent = c.frees.length
-    ? "These are in your Champions box and NOT in HOME, so each one is a slot "
-      + "that cannot be freed without releasing the Pokemon. Catch it in GO, "
-      + "send it through HOME, and the slot comes back elastic — and the "
-      + "copy is trainable, which a rental never is. Easiest to get first."
-    : "Nothing: every species in the Champions box is also in HOME.";
   $("nDexMissing").textContent = c.missing.length;
   $("dexMissingSub").textContent = "One copy per species is the target here. "
     + "Extra copies are a later question, so nothing on this page asks for a "
-    + "second of anything. Easiest to get first.";
+    + "second of anything. Easiest to get first. The ones you own in Champions "
+    + "but not in HOME are not here — they are targets rather than holes, "
+    + "and the GTS pane lists them with what you could offer for each.";
 
-  function paint(host, moreHost, list, key, why){
-    var cap = dexAll[key] ? list.length : DEX_CAP;
-    host.innerHTML = "";
-    if (!list.length) {
-      host.appendChild(el("div", "empty", q ? "Nothing here matches that"
-                                            : "Nothing left in this list"));
-    } else {
-      list.slice(0, cap).forEach(function(p){
-        host.appendChild(dexCard(p, why(p)));
-      });
-    }
-    moreHost.innerHTML = "";
-    if (list.length > cap) {
-      moreHost.appendChild(fbtn("Show the other " + (list.length - cap), "sm",
-        function(){ dexAll[key] = true; drawDexPane(); }));
-    } else if (dexAll[key] && list.length > DEX_CAP) {
-      moreHost.appendChild(fbtn("Show fewer", "sm",
-        function(){ dexAll[key] = false; drawDexPane(); }));
-    }
+  var host = $("listDexMissing"), more = $("dexMissingMore");
+  var cap = dexAll.missing ? miss.length : DEX_CAP;
+  host.innerHTML = "";
+  if (!miss.length) {
+    host.appendChild(el("div", "empty", q ? "Nothing here matches that"
+                                          : "Nothing left — the dex is done"));
+  } else {
+    miss.slice(0, cap).forEach(function(p){
+      var d = gtsDiff(p.name);
+      host.appendChild(dexCard(p, d && d.how ? d.how : ""));
+    });
   }
-  paint($("listDexFree"), $("dexFreeMore"), free, "free", function(p){
-    var d = gtsDiff(p.name);
-    return (c.statusOf[p.name] === "rental"
-      ? "A rental in the box now — it cannot be trained, and it hands the "
-        + "slot back on its own."
-      : "Bought from an Encounter, so it can only leave by being released.")
-      + (d && d.how ? " " + d.how : "");
-  });
-  paint($("listDexMissing"), $("dexMissingMore"), miss, "missing", function(p){
-    var d = gtsDiff(p.name);
-    return d && d.how ? d.how : "";
-  });
+  more.innerHTML = "";
+  if (miss.length > cap) {
+    more.appendChild(fbtn("Show the other " + (miss.length - cap), "sm",
+      function(){ dexAll.missing = true; drawDexPane(); }));
+  } else if (dexAll.missing && miss.length > DEX_CAP) {
+    more.appendChild(fbtn("Show fewer", "sm",
+      function(){ dexAll.missing = false; drawDexPane(); }));
+  }
 }
 
 /* ------------------------------------------------------- what leaves here --
