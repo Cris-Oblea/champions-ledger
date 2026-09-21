@@ -697,6 +697,13 @@ def main():
             # data/meta/gts_blocked.json says so per entry. Recommending a chip
             # he cannot deposit is recommending something impossible.
             "GTSBLOCK": (Q.meta("gts_blocked") or {}).get("blocked") or {},
+            # Mythical, read off PokeAPI at the pinned commit rather than
+            # typed from memory. Champions has none of them, so every one that
+            # reaches HOME lands in the pile the GTS recommendations put
+            # first - and Melmetal, the only one he has, is refused by the
+            # GTS. See data/meta/gts_blocked.json for what that is and is not
+            # allowed to conclude.
+            "MYTHICAL": (Q.db("species_flags") or {}).get("mythical") or [],
             # THE TYPE COLOURS, TAKEN FROM POKEMON'S OWN STYLESHEET rather than
             # guessed at. All eighteen used to be hand-written and darkened so
             # white text would sit on them, which made every one of them wrong -

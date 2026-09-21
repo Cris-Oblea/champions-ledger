@@ -1613,9 +1613,35 @@ function gtsChips(){
      data/meta/gts_blocked.json is the list and says who confirmed each. */
   return all.filter(function(r){
     if (taken[r._id]) return false;              /* already in a GTS slot */
-    if ((C.GTSBLOCK || {})[r.name]) return false;
+    if (gtsBlocked(r.name) === "confirmed") return false;
     return (copies[r.name] || 0) > 1 || !byName[r.name];
   });
+}
+/* CONFIRMED, INFERRED, OR FINE - and the difference decides what the list
+   does about it.
+
+   CONFIRMED is one name: Melmetal, which he tried. It is dropped, because a
+   recommendation you cannot act on is worse than none.
+
+   INFERRED is the other Mythicals. He confirmed Melmetal is one, which makes
+   "HOME's GTS refuses Mythicals" the obvious reading of a single data point -
+   and a single data point is not a rule. They are ranked LAST and tagged
+   instead of dropped, because a wrong guess that hides a chip is worse than
+   one that warns about it. When a second is refused the rule earns its place
+   and the name moves into data/meta/gts_blocked.json.
+
+   It matters more than one Pokemon: Champions has ZERO Mythicals, so every
+   one that ever arrives is a species Champions cannot use - which is exactly
+   the pile this list puts first - and thirteen of the twenty-three can be
+   caught in GO. */
+var MYTH_SET = null;
+function gtsBlocked(name){
+  if ((C.GTSBLOCK || {})[name]) return "confirmed";
+  if (!MYTH_SET) {
+    MYTH_SET = {};
+    (C.MYTHICAL || []).forEach(function(n){ MYTH_SET[n] = 1; });
+  }
+  return MYTH_SET[name] ? "inferred" : null;
 }
 /* WHAT HIS OWN TRADES SAY, which is the only evidence on this screen that was
    measured rather than estimated. Time to close is the axis BST cannot see:
@@ -1705,7 +1731,8 @@ function drawGtsWanted(){
      buy back a welded slot, then one that turns on a dead stone - and then
      whatever reaches furthest. */
   ideas.sort(function(a, b){
-    return (byName[a.rec.name] ? 1 : 0) - (byName[b.rec.name] ? 1 : 0) ||
+    return (gtsBlocked(a.rec.name) ? 1 : 0) - (gtsBlocked(b.rec.name) ? 1 : 0) ||
+           (byName[a.rec.name] ? 1 : 0) - (byName[b.rec.name] ? 1 : 0) ||
            (b.frees.length ? 1 : 0) - (a.frees.length ? 1 : 0) ||
            (b.stones.length ? 1 : 0) - (a.stones.length ? 1 : 0) ||
            (b.asks[0] ? b.asks[0].bst : 0) - (a.asks[0] ? a.asks[0].bst : 0);
@@ -1727,6 +1754,16 @@ function drawGtsWanted(){
     : "Nothing in HOME can go up right now. Your rule allows a duplicate past "
       + "the first copy, or a species Champions cannot use — a singleton "
       + "of a legal species would be lost for good.";
+  /* NOTHING IS HIDDEN SILENTLY. One name is dropped for being impossible, so
+     the count says which and why rather than leaving a gap in a list. */
+  var dropped = boxRows("home").filter(function(r){
+    return gtsBlocked(r.name) === "confirmed";
+  }).map(function(r){ return r.name; });
+  if (dropped.length) {
+    $("gtsWantSub").innerHTML += " Not shown: <strong>"
+      + dropped.join(", ") + "</strong> — HOME’s GTS will not hold "
+      + (dropped.length === 1 ? "it" : "them") + " at all.";
+  }
   host.innerHTML = "";
   if (!ideas.length) {
     host.appendChild(el("div", "empty", WANT_FILTER === "outside"
@@ -1747,6 +1784,14 @@ function drawGtsWanted(){
            side with nothing to tell them apart read as a bug (seen live,
            2026-09-21). The sprite is the shiny one; at card size that is not
            a difference you can rely on. */
+        if (gtsBlocked(i.rec.name) === "inferred") {
+          var mb = el("span", "tag bad", "GTS may refuse it");
+          mb.title = "It is a Mythical, and the one Mythical you have tried - "
+            + "Melmetal - the GTS would not hold. That is one data point, not "
+            + "a rule, so it is still listed. If this one is refused too, say "
+            + "so and it stops being a guess.";
+          nm.appendChild(mb);
+        }
         if (!byName[i.rec.name]) {
           var ox = el("span", "tag", "not in Champions");
           ox.title = "It can live in HOME for ever and can never enter a "

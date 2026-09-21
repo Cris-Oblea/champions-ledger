@@ -1,11 +1,13 @@
 {
   "_what": "Species that cannot be deposited in Pokemon HOME's GTS at all, so recommending one as a chip is recommending something impossible.",
   "_how_we_know": "The player, from the game. NONE of this repo's five sources covers HOME's own rules - they are about Champions - so there is nothing to scrape and nothing to check it against. Each entry says who confirmed it and when.",
-  "_open_question": "Melmetal is a Mythical, and Mythicals are widely said to be undepositable in HOME's GTS. That general rule is NOT confirmed here and is not written into this file as if it were: Melmetal is the only Mythical in his HOME box, so there is nothing else to apply it to yet. If a second one arrives and is also refused, the rule earns its place.",
+  "_open_question": "Melmetal is a Mythical - he confirmed that too (2026-09-21) - so \"HOME's GTS refuses Mythicals\" is the obvious reading of one data point. It is treated as INFERRED, not confirmed: the other Mythicals are ranked last and tagged, never dropped, because a wrong guess that hides a chip is worse than one that warns about it. The moment a second Mythical is refused, move it into `blocked` and the rule has earned its place.",
   "blocked": {
     "Melmetal": {
       "confirmed": "player, 2026-09-21",
       "note": "\"melmetal esta bloqueado del gts\". He was unsure why - \"debe ser porque es un pokemon que no esta presente en muchos juegos o no se\"."
     }
-  }
+  },
+  "_why_it_matters": "Champions has ZERO Mythicals and ZERO Legendaries - measured over the whole dex - so every Mythical that ever reaches HOME is a species Champions cannot use, which is exactly the pile the GTS recommendations put FIRST. Thirteen of the 23 are obtainable in Pokemon GO, so this is not a one-off.",
+  "_the_list_is_derived": "Which species are Mythical comes from PokeAPI's is_mythical at the pinned commit, via scripts/fetch_home_dex.py -> data/db/species_flags.json. It is never typed out here."
 }

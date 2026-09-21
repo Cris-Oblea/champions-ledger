@@ -35,6 +35,12 @@ const ROWS = [
   row("garchomp",  "Garchomp",  "champions", "permanent", "champions"),
   row("garchomp2", "Garchomp",  "home",      "permanent", "home"),
   row("dragonite2","Dragonite", "home",      "permanent", "home"),
+  /* EL GTS NO LOS ACEPTA, Y NO SON EL MISMO CASO. Melmetal lo probo el
+     jugador y lo rechazo: se cae de la lista. Celebi es Mythical como
+     Melmetal, que es UN dato y no una regla, asi que se queda pero al final
+     y avisando. */
+  row("melmetal", "Melmetal",  "home",      "permanent", "home"),
+  row("celebi",   "Celebi",    "home",      "permanent", "home"),
 ];
 
 const body = require("./harness.js").page(ROOT);
@@ -124,6 +130,18 @@ setTimeout(() => {
   const wantTog = v => [...d.querySelectorAll("#gtsWantFilter button")]
     .find(b => b.dataset.want === v);
   ok("hay filtro por los que no puede usar", !!wantTog("outside"), true);
+  ok("Melmetal no se recomienda: el GTS no lo acepta",
+     names("listGtsWant").indexOf("Melmetal") >= 0, false);
+  ok("y se dice, no se esconde",
+     /Melmetal/.test(d.getElementById("gtsWantSub").textContent), true);
+  /* Celebi si se lista - un dato no es una regla - pero al final y avisando */
+  const celebi = [...d.querySelectorAll("#listGtsWant .row.card")]
+    .find(c => [...c.querySelector(".rname").childNodes]
+      .filter(n => n.nodeType === 3).map(n => n.textContent).join("").trim()
+        === "Celebi");
+  ok("Celebi sigue en la lista", !!celebi, true);
+  ok("...avisando de que el GTS puede rechazarlo",
+     !!celebi && /GTS may refuse it/.test(celebi.textContent), true);
   wantTog("outside").dispatchEvent(new w.MouseEvent("click", {bubbles:true}));
   ok("y deja solo esos",
      names("listGtsWant").every(n => !w.byName[n]), true);
