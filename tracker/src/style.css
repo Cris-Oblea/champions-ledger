@@ -301,14 +301,36 @@ nav.tabs button:active{background:var(--sunk)}
    before. A mono Pokemon puts the same type in both halves, so a pure Dragon
    comes out one band halved top and bottom - which is how the badge is halved.
    6px rather than 4 so each tone gets a readable 3px. */
+/* TWO HALVES THAT MEET ARE A BLACK LINE, so the lower one is FULL WIDTH and
+   only the upper one is a half (player, 2026-09-20: "hay una linea vertical al
+   medio de algunas cards... literal se ve una linea negra al medio y se ve
+   feo").
+
+   Two background layers clipped to 50% each land on a fractional device pixel
+   whenever the card's width is odd in the wrong way, and Chrome snaps the two
+   edges independently: the left layer ends at x.5 and the right one starts at
+   x+1, so half a pixel of the card's own dark surface is left showing. Down
+   the middle of a bright 6px band that is a black hairline. Measured over 200
+   widths from 300px to 350px, with the real Steel/Rock band colours over
+   `--surface`: the seam pixel drops from luminance 436 to 254 on 50 of them -
+   a quarter of all widths, which is why it was "algunas cards" - and with the
+   lower layer at 100% it happens on none.
+
+   It costs nothing: the halves never overlapped anyway, so painting the left
+   one across the whole width and the right one over it gives the same picture
+   with no edge to miss. Only the OPAQUE ones are written this way - the band
+   and the two rings. The tints are 14% alpha over that same surface, where
+   the worst case is a pixel losing half of 0.14 and nobody can see it, and
+   stacking them full-width WOULD show: measured, the doubled pixel jumps from
+   41,45,41 to 57,61,59, a brighter line in place of an invisible one. */
 .row.card::before{content:"";display:block;height:6px;
   background:
-    linear-gradient(180deg, var(--tcol, var(--line-hard)) 50%,
-                    var(--tcolb, var(--tcol, var(--line-hard))) 50%)
-      left top / 50% 100% no-repeat,
     linear-gradient(180deg, var(--tcol2, var(--tcol, var(--line-hard))) 50%,
                     var(--tcol2b, var(--tcol2, var(--tcol, var(--line-hard)))) 50%)
-      right top / 50% 100% no-repeat}
+      right top / 50% 100% no-repeat,
+    linear-gradient(180deg, var(--tcol, var(--line-hard)) 50%,
+                    var(--tcolb, var(--tcol, var(--line-hard))) 50%)
+      left top / 100% 100% no-repeat}
 /* ------- A CARD WHOSE TYPE CHANGES SAYS SO IN ITS OWN COLOURS -----------
 
    The card wears its Pokemon's types. Eighteen species change types when they
@@ -360,35 +382,51 @@ nav.tabs button:active{background:var(--sunk)}
 .row.card > .retype::before{content:"";position:absolute;left:0;right:0;top:0;
   height:6px;
   background:
-    linear-gradient(180deg, var(--mcol, var(--line-hard)) 50%,
-                    var(--mcolb, var(--mcol, var(--line-hard))) 50%)
-      left top / 50% 100% no-repeat,
     linear-gradient(180deg, var(--mcol2, var(--mcol, var(--line-hard))) 50%,
                     var(--mcol2b, var(--mcol2, var(--mcol, var(--line-hard)))) 50%)
-      right top / 50% 100% no-repeat}
+      right top / 50% 100% no-repeat,
+    linear-gradient(180deg, var(--mcol, var(--line-hard)) 50%,
+                    var(--mcolb, var(--mcol, var(--line-hard))) 50%)
+      left top / 100% 100% no-repeat}
 /* The content sits ABOVE the overlay. Named rather than `> *`, because the
    sprite is absolutely positioned and `position:relative` on it would drop it
    back into the flow. */
 .row.card > .rmain, .row.card > .megapics, .row.card > .rside{
   position:relative;z-index:1}
 .row.card > .sprite{z-index:1}
-/* AND THE FRAME, so all three change together. Same masked-frame trick as
-   the card's own ring, in the Mega's colours, inside the same overlay - so
-   one opacity carries the band, the tint and the edge. */
+/* AND THE FRAME, on a layer of its own ABOVE the base ring.
+
+   It lived inside the overlay, so one opacity carried the band, the tint and
+   the edge - and that is exactly what could not work. `::after` is generated
+   as the card's last child, so the base ring always painted over the overlay;
+   the answer at the time was to fade the base ring out as this one faded in,
+   and two fades do not add up to one. At the crossing point both sit at 0.5
+   and the coverage is 1 - 0.5 x 0.5 = 0.75, so a quarter of the dark card
+   came through its own 2px frame and the edge read as a line drawn behind the
+   card, twice a cycle (player, 2026-09-20: "a veces se ve una linea detras en
+   el fondo, se dibuja cada vez que cambia y se va"). Measured in the browser
+   at the crossing point: 0.751.
+
+   Now the ring works the way the band and the tint always did - the base one
+   stays solid and the Mega one fades in on top of it - so the colour changes
+   and the coverage never does. */
+.row.card > .retyperim{position:absolute;inset:0;border-radius:inherit;
+  pointer-events:none;opacity:0;z-index:3}
 @supports ((mask-composite: exclude) or (-webkit-mask-composite: xor)) {
-  .row.card > .retype::after{content:"";position:absolute;inset:0;
-    border-radius:inherit;padding:2px;pointer-events:none;
+  .row.card > .retyperim{
     background:
-      linear-gradient(180deg, var(--mcol, var(--line-hard)) 50%,
-                      var(--mcolb, var(--mcol, var(--line-hard))) 50%)
-        left top / 50% 100% no-repeat,
       linear-gradient(180deg, var(--mcol2, var(--mcol, var(--line-hard))) 50%,
                       var(--mcol2b, var(--mcol2, var(--mcol, var(--line-hard)))) 50%)
-        right top / 50% 100% no-repeat;
+        right top / 50% 100% no-repeat,
+      linear-gradient(180deg, var(--mcol, var(--line-hard)) 50%,
+                      var(--mcolb, var(--mcol, var(--line-hard))) 50%)
+        left top / 100% 100% no-repeat;
+    padding:2px;
     -webkit-mask:linear-gradient(#000 0 0) content-box,
                  linear-gradient(#000 0 0);
     mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-    -webkit-mask-composite:xor;mask-composite:exclude}
+    -webkit-mask-composite:xor;mask-composite:exclude;
+    animation:retypefade 9s ease-in-out infinite}
 }
 /* Held, changed, held, changed back. The holds are what make it legible: a
    continuous fade never shows either typing long enough to be read. */
@@ -397,33 +435,20 @@ nav.tabs button:active{background:var(--sunk)}
   50%, 88%  {opacity:1}
   100%      {opacity:0}
 }
-/* AND THE BASE RING FADES OUT AS THAT ONE FADES IN. It has to be told to:
-   a pseudo-element ::after is generated as the element's LAST child, so the
-   base ring paints ON TOP of the overlay no matter what the overlay does.
-   The Mega ring was being drawn and then covered over, which is exactly what
-   he saw (player, 2026-09-20: "al pasar de dragon y ground a solo dragon, la
-   mitad del marco conserva 1 de los colores de ground... staraptor cambia a
-   fighting flying pero el color fighting se mezclo con el normal") - Ground's
-   half and Normal's half were the BASE ring still there, blended through the
-   half-covered frame underneath.
-
-   The band and the tint never had the problem: ::before is the FIRST child
-   and the background is below everything, so the overlay already covers
-   both. Only the ring is generated above it, and only the eighteen cards
-   that carry a retype layer run this. */
-@keyframes retypeout{
-  0%, 38%   {opacity:1}
-  50%, 88%  {opacity:0}
-  100%      {opacity:1}
-}
-@supports ((mask-composite: exclude) or (-webkit-mask-composite: xor)) {
-  .row.card.retyping::after{animation:retypeout 9s ease-in-out infinite}
-}
+/* THE BASE RING NO LONGER FADES OUT, and the bug it was put there to fix is
+   fixed a second time by the same move. It was answering this (player,
+   2026-09-20: "al pasar de dragon y ground a solo dragon, la mitad del marco
+   conserva 1 de los colores de ground... staraptor cambia a fighting flying
+   pero el color fighting se mezclo con el normal") - the Mega ring was
+   painted and then covered by the base one. Lifting the Mega ring above it
+   is what that needed; fading the base ring out was reaching the same place
+   through a hole in the floor, and the hole is the translucent frame above.
+   So the card's own ring is simply always solid now, and it is drawn ABOVE
+   the content rather than under it - the edge of a card is not something its
+   own sprites should cover, and the two rings have to sit in the same plane
+   or they are not interchangeable. */
 @media (prefers-reduced-motion: reduce){
-  .row.card.retyping::after{animation:none;opacity:1}
-}
-@media (prefers-reduced-motion: reduce){
-  .row.card > .retype{animation:none;opacity:0}
+  .row.card > .retype, .row.card > .retyperim{animation:none;opacity:0}
 }
 /* THE SPRITE sits in the top-right corner, out of the flow so it cannot push
    the stat table around, with a gutter reserved on the two rows that reach
@@ -777,14 +802,14 @@ nav.tabs button:active{background:var(--sunk)}
    cannot. */
 @supports ((mask-composite: exclude) or (-webkit-mask-composite: xor)) {
   .row.card::after{content:"";position:absolute;inset:0;pointer-events:none;
-    border-radius:inherit;padding:2px;opacity:1;
+    border-radius:inherit;padding:2px;opacity:1;z-index:2;
     background:
-      linear-gradient(180deg, var(--tcol, var(--line-hard)) 50%,
-                      var(--tcolb, var(--tcol, var(--line-hard))) 50%)
-        left top / 50% 100% no-repeat,
       linear-gradient(180deg, var(--tcol2, var(--tcol, var(--line-hard))) 50%,
                       var(--tcol2b, var(--tcol2, var(--tcol, var(--line-hard)))) 50%)
-        right top / 50% 100% no-repeat;
+        right top / 50% 100% no-repeat,
+      linear-gradient(180deg, var(--tcol, var(--line-hard)) 50%,
+                      var(--tcolb, var(--tcol, var(--line-hard))) 50%)
+        left top / 100% 100% no-repeat;
     -webkit-mask:linear-gradient(#000 0 0) content-box,
                  linear-gradient(#000 0 0);
     mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);

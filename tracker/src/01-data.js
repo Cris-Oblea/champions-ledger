@@ -262,8 +262,28 @@ function retypeLayer(row, base, megas){
   /* FIRST, so it paints over the card's own background and under everything
      the card is made of - the content sets its own stacking in the CSS. */
   row.insertBefore(layer, row.firstChild);
-  /* the card has to know too: its own ring is a pseudo-element painted
-     ABOVE this layer, so it is given the opposite half of the cycle. */
+  /* THE RING IS A LAYER OF ITS OWN, and it has to be, because two fades
+     never add up to one.
+
+     The band and the tint have always cross-faded correctly: the base one
+     is opaque and stays, the Mega one fades in on top of it, so the card is
+     covered at every instant. The ring was the odd one out - the base ring
+     faded OUT while this one faded IN, and complementary opacities are not
+     complementary COVERAGE. Two layers at 0.5 leave 1 - 0.5 x 0.5 = 0.75,
+     so for half a second, twice a cycle, a quarter of the dark card showed
+     through its own 2px frame and the edge read as a line drawn behind it
+     (player, 2026-09-20: "a veces se ve una linea detras en el fondo, se
+     dibuja cada vez que cambia y se va"). Measured in the browser at the
+     crossing point: 0.751.
+
+     So the Mega ring gets the same treatment as the band and the tint - its
+     own element, painted ABOVE the base ring, fading in over something that
+     is never less than solid. A pseudo-element could not: `::after` is
+     generated last, so the base ring is always above `.retype`, which is
+     what forced the fade-out in the first place. */
+  var rim = el("i", "retyperim");
+  rim.setAttribute("aria-hidden", "true");
+  row.appendChild(rim);
   row.classList.add("retyping");
   row.title = base.name + " is " + bt + ", and " + m.name + " is " +
               t.join("/") + " - the card shows both.";
