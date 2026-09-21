@@ -84,10 +84,32 @@ function pokeSheet(rec){
      top of it, so a row named `d` was already undefined by the time `if (d)`
      ran and the whole sheet fell into the "not in the dex" branch - for
      Aegislash, which very much is. */
-  var show = byName[rec.name] || outsideRow(rec.name);
+  /* `anyRow`, not the two halves of it by hand. It is the same question with
+     one more step - the OTHER SPELLING of the same Pokemon - and asking it
+     the short way here is what left Floette without a sheet once already. */
+  var show = anyRow(rec.name);
   var isHome = rec.location === "home";
   openSheet(rec.name, function(body){
+    /* AND A ROW THAT EXISTS NOWHERE MUST NOT TAKE THE SHEET DOWN WITH IT.
+       `pokeHead` reads `p.name` on its first line, so a null walked straight
+       into a TypeError and the sheet opened empty with the console throwing
+       (player, 2026-09-21: "la card y la ficha de Oinkolgne-f tira error de
+       script"). The card had handled it since it was written; the sheet never
+       did, and the two doors disagreed about the same Pokemon.
+
+       The name itself came back with the HOME dex fix below, but the guard
+       stays: HOME can hold anything, including a name no table has heard of,
+       and the honest answer is to say so rather than to fall over. */
+    if (!show) {
+      var gone = el("div", "note warn");
+      gone.innerHTML = "<strong>" + rec.name + "</strong> is not in any dex " +
+        "this app carries — not Champions', and not the main series' " +
+        "either. It can sit in HOME, but there is nothing to show about it. " +
+        "If the spelling is off, renaming it is what fixes this.";
+      body.appendChild(gone);
+    } else {
     pokeHead(body, show, {shiny: !!rec.shiny, rec: rec});
+    }
 
     if (rec.status === "rental") {
       var w = el("div", "note warn");
@@ -170,7 +192,7 @@ function pokeSheet(rec){
        its whole movepool and what Smogon wrote. Below the editable half,
        because origin, training and the note are what this door is FOR and an
        edit does not belong under two hundred rows of movepool. */
-    pokeBody(body, show, {shiny: !!rec.shiny, rec: rec});
+    if (show) pokeBody(body, show, {shiny: !!rec.shiny, rec: rec});
   }, moveButtons(rec, isHome));
 }
 

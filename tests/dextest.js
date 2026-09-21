@@ -104,6 +104,29 @@ setTimeout(() => {
   inp.dispatchEvent(new w.Event("input", {bubbles:true}));
   ok("y se deshace", d.getElementById("nDexFree").textContent, 2);
 
+  console.log("\n  HOME aguanta cualquier nombre");
+  /* Oinkologne vive en HOME y no en Champions, y PokeAPI no tiene fila
+     `oinkologne` - la especie esta archivada como `oinkologne-male` y
+     `oinkologne-female`. La busqueda pedia el nombre pelado, fallaba, caia a
+     lo mismo y volvia a fallar, asi que la ficha se construia con null y
+     reventaba en su primera linea. */
+  const hd = w.CHAMP.HOME_DEX || {};
+  ["Oinkologne", "Oinkologne-F", "Deoxys", "Giratina", "Shaymin", "Meloetta",
+   "Keldeo", "Wormadam", "Darmanitan", "Minior", "Enamorus", "Dudunsparce",
+   "Frillish", "Jellicent"].forEach(function(n){
+    ok(n + " tiene fila", !!(hd[n] && hd[n].b && hd[n].b[0]), true);
+  });
+  ok("y la hembra no es el macho", (hd["Oinkologne-F"] || {b:[]}).b.join("/"),
+     "115/90/70/59/90/65");
+  /* y una fila que no existe en ningun dex abre ficha en vez de tirar error */
+  w.pokeSheet({name:"Syclant", location:"home", status:"permanent",
+               origin:"home", _id:"cap"});
+  ok("un nombre que no conoce ningun dex no rompe la ficha",
+     !!d.getElementById("sheetBody"), true);
+  ok("...y lo dice", /not in any dex/.test(
+     d.getElementById("sheetBody").textContent), true);
+  w.closeSheet();
+
   console.log(bad ? "\n  " + bad + " FALLAN\n" : "\n  todo bien\n");
   process.exit(bad ? 1 : 0);
 }, 1200);
