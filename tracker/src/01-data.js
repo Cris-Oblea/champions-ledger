@@ -233,40 +233,60 @@ function typeCard(row, p, shiny){
    over the whole dex - so this is always a two-state fade rather than a
    cycle. If a regulation ever adds one, the first differing Mega wins and the
    second is still spelled out in the chips and the arrows. */
-function retypeLayer(row, base, megas){
+function retypeLayer(row, base, forms){
   var bt = (base.types || []).join("/");
-  var m = null;
-  for (var i = 0; i < (megas || []).length; i++) {
-    if ((megas[i].types || []).join("/") !== bt) { m = megas[i]; break; }
+  /* EVERY TYPING IT REACHES, not the first one. Castform reaches three and
+     the card showed none of them, because this took the first form that
+     differed and cross-faded to it - which on a Castform would have meant
+     picking Fire and calling the other two nothing. Deduped, because two
+     Megas landing on the same new typing is one colour, not two. */
+  var seen = {}, list = [];
+  (forms || []).forEach(function(f){
+    var k = (f.types || []).join("/");
+    if (k === bt || seen[k] || !TYPE_COLOR[(f.types || [])[0]]) return;
+    seen[k] = 1;
+    list.push(f);
+  });
+  if (!list.length) return;
+  /* NO SPECIES REACHES FOUR, so there is no fourth slot written. If a
+     regulation ever adds one, the card falls back to the two-state fade it
+     has always done rather than running a cycle with no keyframes. */
+  if (list.length > 3) list = list.slice(0, 1);
+
+  function paint(node, f){
+    var t = f.types || [], c1 = TYPE_COLOR[t[0]], mono = !t[1];
+    var top1 = c1, bot1 = TYPE_COLOR2[t[0]] || c1;
+    var top2 = mono ? top1 : TYPE_COLOR[t[1]];
+    var bot2 = mono ? bot1 : (TYPE_COLOR2[t[1]] || top2);
+    node.style.setProperty("--mcol", c1);
+    node.style.setProperty("--mcolb", bot1);
+    node.style.setProperty("--mcol2", top2);
+    node.style.setProperty("--mcol2b", bot2);
+    var s1 = tintOf(top1, 0.14), s1b = tintOf(bot1, 0.14) || s1;
+    var s2 = tintOf(top2, 0.14) || s1, s2b = tintOf(bot2, 0.14) || s2;
+    if (s1) node.style.setProperty("--msoft", s1);
+    if (s1b) node.style.setProperty("--msoftb", s1b);
+    if (s2) node.style.setProperty("--msoft2", s2);
+    if (s2b) node.style.setProperty("--msoft2b", s2b);
+    node.setAttribute("aria-hidden", "true");
+    return node;
   }
-  if (!m) return;
-  var t = m.types || [];
-  var c1 = TYPE_COLOR[t[0]];
-  if (!c1) return;
-  var mono = !t[1];
-  var top1 = c1, bot1 = TYPE_COLOR2[t[0]] || c1;
-  var top2 = mono ? top1 : TYPE_COLOR[t[1]];
-  var bot2 = mono ? bot1 : (TYPE_COLOR2[t[1]] || top2);
-  row.style.setProperty("--mcol", c1);
-  row.style.setProperty("--mcolb", bot1);
-  row.style.setProperty("--mcol2", top2);
-  row.style.setProperty("--mcol2b", bot2);
-  var s1 = tintOf(top1, 0.14), s1b = tintOf(bot1, 0.14) || s1;
-  var s2 = tintOf(top2, 0.14) || s1, s2b = tintOf(bot2, 0.14) || s2;
-  if (s1) row.style.setProperty("--msoft", s1);
-  if (s1b) row.style.setProperty("--msoftb", s1b);
-  if (s2) row.style.setProperty("--msoft2", s2);
-  if (s2b) row.style.setProperty("--msoft2b", s2b);
-  var layer = el("i", "retype");
-  layer.setAttribute("aria-hidden", "true");
-  /* FIRST, so it paints over the card's own background and under everything
-     the card is made of - the content sets its own stacking in the CSS. */
-  row.insertBefore(layer, row.firstChild);
+  /* THE COLOURS LIVE ON THE LAYER NOW, not on the card. With one alternate
+     typing the card could carry them, because there was one; with three the
+     card would be carrying whichever was written last. The band reads them
+     off its own parent either way. */
+  var tints = document.createDocumentFragment();
+  list.forEach(function(f, i){
+    tints.appendChild(paint(el("i", "retype i" + (i + 1)), f));
+  });
+  /* the tints go FIRST, over the card's own background and under everything
+     the card is made of - the content sets its own stacking in the CSS */
+  row.insertBefore(tints, row.firstChild);
   /* THE RING IS A LAYER OF ITS OWN, and it has to be, because two fades
      never add up to one.
 
      The band and the tint have always cross-faded correctly: the base one
-     is opaque and stays, the Mega one fades in on top of it, so the card is
+     is opaque and stays, the other fades in on top of it, so the card is
      covered at every instant. The ring was the odd one out - the base ring
      faded OUT while this one faded IN, and complementary opacities are not
      complementary COVERAGE. Two layers at 0.5 leave 1 - 0.5 x 0.5 = 0.75,
@@ -276,17 +296,25 @@ function retypeLayer(row, base, megas){
      dibuja cada vez que cambia y se va"). Measured in the browser at the
      crossing point: 0.751.
 
-     So the Mega ring gets the same treatment as the band and the tint - its
-     own element, painted ABOVE the base ring, fading in over something that
-     is never less than solid. A pseudo-element could not: `::after` is
-     generated last, so the base ring is always above `.retype`, which is
-     what forced the fade-out in the first place. */
-  var rim = el("i", "retyperim");
-  rim.setAttribute("aria-hidden", "true");
-  row.appendChild(rim);
+     So each ring is its own element, painted ABOVE the base ring, fading in
+     over something that is never less than solid. A pseudo-element could
+     not: `::after` is generated last, so the base ring is always above
+     `.retype`, which is what forced the fade-out in the first place.
+
+     THE SAME RULE IS WHAT ORDERS A CYCLE. Layer 2 fades in while layer 1 is
+     still solid, and layer 1 only drops once layer 2 is fully up - where it
+     is covered and cannot be seen going. The last one is the only one that
+     fades OUT, over the base, with the others already at zero. Every
+     transition is therefore one moving layer over something solid. */
+  list.forEach(function(f, i){
+    row.appendChild(paint(el("i", "retyperim i" + (i + 1)), f));
+  });
   row.classList.add("retyping");
-  row.title = base.name + " is " + bt + ", and " + m.name + " is " +
-              t.join("/") + " - the card shows both.";
+  if (list.length > 1) row.classList.add("n" + list.length);
+  row.title = base.name + " is " + bt + ", and it becomes " +
+    list.map(function(f){
+      return f.name + " " + (f.types || []).join("/");
+    }).join(", ") + " - the card shows them all.";
 }
 /* THE SIX STATS AS A TABLE. Written three times in three files before this
    existed, which is why one of them silently did not mark the ranked stat and
@@ -670,10 +698,14 @@ function pokeCard(p, o){
   m.appendChild(h);
 
   pokeFacts(m, p, ms, o);
-  /* AND THE COLOUR ITSELF SAYS SO when the stone changes the typing.
+  /* AND THE COLOUR ITSELF SAYS SO when the typing changes - by a stone or by
+     an ability, which is why it is handed the whole form line. Castform is
+     the one that needed the second half: Forecast reaches three typings and
+     the card is made of type colour, so it cycles all four states rather
+     than picking one of them to be the answer.
      The CARD's job, not the facts': it paints the card's own band, tint
      and frame, and a sheet has none of those to cross-fade. */
-  retypeLayer(row, p, megas);
+  retypeLayer(row, p, ms);
   /* NO ROW FOR THIS EXACT FORM. A caveat about the numbers themselves, which
      no tag can say for the caller. */
   if (p.approx) {

@@ -385,8 +385,7 @@ nav.tabs button:active{background:var(--sunk)}
       left top / 50% 100% no-repeat,
     linear-gradient(180deg, var(--msoft2, var(--msoft, transparent)) 0,
                     var(--msoft2b, var(--msoft2, var(--msoft, transparent))) 34px,
-                    transparent 76px) right top / 50% 100% no-repeat;
-  animation:retypefade 9s ease-in-out infinite}
+                    transparent 76px) right top / 50% 100% no-repeat}
 /* ...and the 6px band on top of it, halved exactly as the real one is, so the
    two line up pixel for pixel while they cross-fade. */
 .row.card > .retype::before{content:"";position:absolute;left:0;right:0;top:0;
@@ -435,16 +434,70 @@ nav.tabs button:active{background:var(--sunk)}
     -webkit-mask:linear-gradient(#000 0 0) content-box,
                  linear-gradient(#000 0 0);
     mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-    -webkit-mask-composite:xor;mask-composite:exclude;
-    animation:retypefade 9s ease-in-out infinite}
+    -webkit-mask-composite:xor;mask-composite:exclude}
 }
 /* Held, changed, held, changed back. The holds are what make it legible: a
-   continuous fade never shows either typing long enough to be read. */
+   continuous fade never shows either typing long enough to be read.
+
+   ONE SLOT PER TYPING, AND THE BASE GETS ONE TOO. A Pokemon with one
+   alternate typing runs two slots over nine seconds, which is what this has
+   always been. Castform has THREE - Forecast retypes it to Fire, Water or
+   Ice - so it runs four slots over eighteen, and a species with two would run
+   three over 13.5. The rhythm is the same in all of them: each slot is a hold
+   of about three and a half seconds with a one-second change into it, which
+   is the 38/12 split of the original written as 76% and 24% of a slot.
+
+   WHY EACH INDEX NEEDS ITS OWN. A layer holds at 1 until its successor is
+   fully up, then drops - instantly, because it is covered at that moment and
+   nothing can be seen going. Only the LAST one fades out, over the base, with
+   the others already at zero. That is what keeps every transition a single
+   moving layer over something solid, which is the rule the ring taught us.
+
+   What it does NOT keep perfect is the tint, which is a 14% wash rather than
+   a covering: during a change the outgoing layer's wash and the incoming
+   one's are briefly both on the card, so the tint deepens for about a second
+   and comes back. It cannot make a hole - that is the part that matters - and
+   at 0.14 it measures as a wobble between 0.26 and 0.36 combined alpha. */
 @keyframes retypefade{
   0%, 38%   {opacity:0}
   50%, 88%  {opacity:1}
   100%      {opacity:0}
 }
+/* two alternate typings: three slots of 13.5s */
+@keyframes retypecyc2a{
+  0%, 25.33%   {opacity:0}
+  33.33%, 66.67% {opacity:1}
+  66.68%, 100% {opacity:0}
+}
+@keyframes retypecyc2b{
+  0%, 58.67%   {opacity:0}
+  66.67%, 92%  {opacity:1}
+  100%         {opacity:0}
+}
+/* three of them - Castform, and nothing else in the dex: four slots of 18s */
+@keyframes retypecyc3a{
+  0%, 19%     {opacity:0}
+  25%, 50%    {opacity:1}
+  50.01%, 100%{opacity:0}
+}
+@keyframes retypecyc3b{
+  0%, 44%     {opacity:0}
+  50%, 75%    {opacity:1}
+  75.01%, 100%{opacity:0}
+}
+@keyframes retypecyc3c{
+  0%, 69%     {opacity:0}
+  75%, 94%    {opacity:1}
+  100%        {opacity:0}
+}
+/* One typing, the common case and the one that has always run. */
+.row.card.retyping > .retype,
+.row.card.retyping > .retyperim{animation:retypefade 9s ease-in-out infinite}
+.row.card.retyping.n2 > .i1{animation:retypecyc2a 13.5s ease-in-out infinite}
+.row.card.retyping.n2 > .i2{animation:retypecyc2b 13.5s ease-in-out infinite}
+.row.card.retyping.n3 > .i1{animation:retypecyc3a 18s ease-in-out infinite}
+.row.card.retyping.n3 > .i2{animation:retypecyc3b 18s ease-in-out infinite}
+.row.card.retyping.n3 > .i3{animation:retypecyc3c 18s ease-in-out infinite}
 /* THE BASE RING NO LONGER FADES OUT, and the bug it was put there to fix is
    fixed a second time by the same move. It was answering this (player,
    2026-09-20: "al pasar de dragon y ground a solo dragon, la mitad del marco

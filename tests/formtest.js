@@ -96,11 +96,22 @@ setTimeout(() => {
      "→ sunny → rainy → snowy");
   ["Fire", "Water", "Ice"].forEach(t => ok("chip de " + t,
      [...ca.querySelectorAll(".rmeta .t")].some(x => x.textContent === t), true));
+  /* EL COLOR DE LA CARD TAMBIEN CICLA. Una capa por tipo, no una sola: con
+     una sola el color habria elegido Fuego y llamado nada a los otros dos.
+     Cada transicion es UNA capa moviendose sobre algo solido, que es la
+     regla que dejo el marco. */
+  ok("una capa de color por tipo", ca.querySelectorAll(".retype").length, 3);
+  ok("y un marco por tipo", ca.querySelectorAll(".retyperim").length, 3);
+  ok("la card pide el ciclo de cuatro", ca.classList.contains("n3"), true);
 
   console.log("\n  un Pokemon sin forma de batalla no cambia en nada");
   const ga = card("Garchomp");
   ok("Garchomp no tiene tinta de forma de batalla",
      !!ga.querySelector(".mk-b"), false);
+  /* y una mega que SI cambia de tipo sigue con su fundido de dos estados */
+  ok("Garchomp cicla dos estados, no cuatro",
+     ga.className.indexOf("n3") < 0 && /retyping/.test(ga.className), true);
+  ok("con una sola capa", ga.querySelectorAll(".retype").length, 1);
 
   console.log(bad ? "\n  " + bad + " FALLAN\n" : "\n  todo bien\n");
   process.exit(bad ? 1 : 0);
