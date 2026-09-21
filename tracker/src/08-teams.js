@@ -1129,12 +1129,18 @@ function teamSheet(id, t){
       host.appendChild(sfoot);
     }
 
+    /* EVERY TYPE THAT HITS ANY OF THEM, never the first six (player,
+       2026-09-21: "no debería tener límite de tipo que mostrar tanto para
+       weak como para resists"). The list is sorted worst first, so a cap at
+       six silently dropped the tail - and the tail is where a single x4 sits.
+       A Chesnaught weak to Flying x4 was invisible behind six shared
+       weaknesses, which is exactly the hole the table exists to find. */
     function paintTypes(host, all){
-      var tt = all.filter(function(x){ return x.weak; }).slice(0, 6);
+      var tt = all.filter(function(x){ return x.weak; });
       host.innerHTML = "";
       if (!tt.length) {
-        host.appendChild(el("div", "note", "Nothing hits more than one of them "
-          + "for super effective damage."));
+        host.appendChild(el("div", "note", "Nothing on the team is weak to "
+          + "anything."));
         return;
       }
       /* EVERY NAME CARRIES ITS OWN MULTIPLIER (player, 2026-09-21: "tampoco
