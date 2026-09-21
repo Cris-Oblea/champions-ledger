@@ -44,7 +44,7 @@ const B = (id, pokemon, box_id, extra) => Object.assign({user_id:UID, id,
 const ROWS = [R("garchomp","Garchomp","champions","champions","permanent"),
               R("farigiraf","Farigiraf","champions","champions","permanent"),
               R("sableye","Sableye","home","home","permanent")];
-const BUILDS = [B("garchomp","Garchomp","garchomp",{moves:["Earthquake","Protect"]}),
+const BUILDS = [B("garchomp","Garchomp","garchomp",{moves:["Earthquake","Protect"], ability:"Rough Skin"}),
                 B("farigiraf","Farigiraf","farigiraf",{role:"Trick Room"}),
                 B("farigiraf-2","Farigiraf","farigiraf",{role:"Armor Tail"}),
                 B("sableye","Sableye","sableye"),
@@ -78,7 +78,7 @@ const dom = new JSDOM(body.replace("<head>", "<head>" + stub),
   {runScripts:"dangerously", pretendToBeVisual:true, virtualConsole:vc});
 const w = dom.window, d = w.document;
 
-setTimeout(() => {
+setTimeout(async () => {
   const r = w.teamReport(w.S.teams.t1);
 
   console.log("\n  lo que tiene, donde esta, y que falta");
@@ -169,15 +169,41 @@ setTimeout(() => {
      /Garchomp/.test(rows()[0].textContent), true);
   ok("que no esta apagada", rows()[0].disabled, false);
 
-  /* Los chips salen de las builds que EXISTEN, no de un vocabulario fijo. */
+  /* DONDE ESTA UNA COPIA ES COSA DE LAS CAJAS. Un equipo puede ser teorico,
+     asi que ese filtro no pinta nada aqui (jugador, 2026-09-21). */
   const chip = t => [...sb.querySelectorAll(".tog")]
     .find(b => b.textContent.trim().indexOf(t) === 0);
-  ok("hay un filtro por donde esta", !!chip("Ready today"), true);
-  ok("y uno por rol", !!chip("Trick Room"), true);
-  chip("Ready today").click();
-  ok("solo las que se pueden llevar hoy", rows().length, 3);
-  ok("y el contador lo dice", /3 of 5 builds/.test(sb.textContent), true);
-  chip("Ready today").click();
+  ok("ya no filtra por donde esta", !!chip("Ready today"), false);
+  ok("ni por si la tienes", !!chip("Not owned"), false);
+  ok("ni ordena por eso", !!chip("Ready first"), false);
+
+  /* Solo A-Z y Dex a la vista; las stats, completas, plegadas. */
+  ok("ordena por A–Z", !!chip("A–Z"), true);
+  ok("y por Dex", !!chip("Dex no."), true);
+  const fold = t => [...sb.querySelectorAll(".btn.fold")]
+    .find(b => b.textContent.indexOf(t) >= 0);
+  ok("las stats van detras de un pliegue", !!fold("By a stat"), true);
+  const statRow = fold("By a stat").nextSibling;
+  ok("cerrado de entrada", statRow.hidden, true);
+  fold("By a stat").click();
+  ok("y se abre", statRow.hidden, false);
+  /* si estan BST y Speed, estan las seis: media lista es arbitraria */
+  ["BST", "HP", "Atk", "Def", "SpA", "SpD", "Spe"].forEach(function(k){
+    ok("  ordena por " + k, !!chip(k), true);
+  });
+  chip("Spe").click();
+  ok("el mas rapido primero", /Garchomp/.test(rows()[0].textContent), true);
+
+  /* El rol ocupaba demasiado, asi que va plegado y siempre. */
+  ok("el rol va plegado", !!fold("Role"), true);
+  const roleRow = fold("Role").nextSibling;
+  ok("cerrado de entrada", roleRow.hidden, true);
+  fold("Role").click();
+  ok("y se abre", roleRow.hidden, false);
+  ok("con los roles que existen", !!chip("Trick Room"), true);
+  chip("Trick Room").click();
+  ok("filtra por rol", rows().length, 1);
+  chip("Trick Room").click();
   ok("al soltarlo vuelven todas", rows().length, 5);
 
   /* El selector de item ya tenia buscador; ahora tambien filtros. */
@@ -187,15 +213,88 @@ setTimeout(() => {
   it[0].click();
   const ib = d.getElementById("sheetBody");
   ok("el de items tambien busca", !!ib.querySelector(".search input"), true);
-  ok("y ahora filtra por categoria",
-     [...ib.querySelectorAll(".tog")].some(b => /Berries/.test(b.textContent)),
-     true);
+  const icat = t => [...ib.querySelectorAll(".tog")]
+    .some(b => b.textContent.indexOf(t) === 0);
+  ok("filtra por categoria", icat("Berries"), true);
   ok("y por lo que tienes",
      [...ib.querySelectorAll(".tog")]
        .some(b => /Only ones you own/.test(b.textContent)), true);
 
+  /* SOLO LO QUE SE PUEDE LLEVAR. Las 81 piedras nunca estuvieron en la lista
+     - build_tracker_data las salta al construir C.ITEMS - y un tercio de lo
+     que si estaba, Miscellaneous, no se puede equipar (jugador, 2026-09-21).  */
+  ok("las Mega Piedras se pueden equipar", icat("Mega Stones"), true);
+  ok("y Miscellaneous ya no se ofrece", icat("Miscellaneous"), false);
+  const irow = n => [...ib.querySelectorAll(".list .row")]
+    .find(r => r.textContent.indexOf(n) === 0);
+  ok("una piedra concreta esta", !!irow("Garchompite"), true);
+  ok("y se puede pulsar", irow("Garchompite").disabled, false);
+  ok("marcada como piedra",
+     /Mega Stone/.test(irow("Garchompite").textContent), true);
+  const misc = [...ib.querySelectorAll(".list .row")]
+    .some(r => /Rare Candy|Exp\. Share|Ability Capsule/.test(r.textContent));
+  ok("nada de lo no equipable en la lista", misc, false);
+
+  /* Y el orden de velocidad con el numero REAL de cada build. */
+  w.teamSheet("t1", w.S.teams.t1);
+  const sp = w.teamReport(w.S.teams.t1).speeds;
+  /* Garchomp: base 102, +32 SP, Adamant no toca Speed -> 102+32+20 = 154 */
+  ok("velocidad real, no la base", sp[0].spe, 154);
+  ok("y dice de donde sale", sp[0].base, 102);
+  ok("con la SP invertida", sp[0].sp, 32);
+  ok("el mas rapido primero", sp[0].name, "Garchomp");
+  ok("y el mas lento al final", sp[sp.length - 1].spe <= sp[0].spe, true);
+  ok("la pantalla lo escribe",
+     /154/.test(d.getElementById("teamEditBody").textContent), true);
+
+  /* Las debilidades dicen QUIEN y POR CUANTO. */
+  const weak = d.getElementById("teamEditBody").textContent;
+  ok("nombra quien es debil", /weak: [A-Z]/.test(weak), true);
+  ok("con su multiplicador", /weak: [^\n]*×[0-9]/.test(weak), true);
+  ok("y quien resiste", /resists: |nothing on the team resists it/.test(weak),
+     true);
+  const tt = w.teamTypes(w.teamReport(w.S.teams.t1));
+  const one = tt.find(x => x.weak);
+  ok("y el dato lleva los nombres", one.weakOf.length, one.weak);
+  ok("con el multiplicador de cada uno", typeof one.weakOf[0].m, "number");
+
   /* Y los buscadores que viven en el markup: la misma X, puesta por
      wireClears en el arranque, y el filtro que la Champions Box no tenia. */
+  /* LA CARD DE UN HUECO LLEVA EL SET ENTERO. Decia un nombre, una naturaleza
+     y "4 moves", asi que revisar lo que hace el equipo eran seis builds
+     abiertas de una en una (jugador, 2026-09-21). */
+  console.log("\n  la card del hueco, y el atajo a la build");
+  w.teamSheet("t1", w.S.teams.t1);
+  const eb = d.getElementById("teamEditBody");
+  const slot0 = eb.querySelectorAll(".list .row")[0];
+  ok("la card nombra la habilidad elegida",
+     /Rough Skin/.test(slot0.textContent), true);
+  ok("y la etiqueta dice que es LA suya",
+     /Ability/.test(slot0.textContent), true);
+  ok("lleva la naturaleza", /Adamant/.test(slot0.textContent), true);
+  ok("lleva los SP", /0\/32\/0\/0\/2\/32/.test(slot0.textContent), true);
+  ok("y los NOMBRES de los moves, no el numero",
+     /Earthquake/.test(slot0.textContent) && /Protect/.test(slot0.textContent),
+     true);
+  ok("el item sigue en su celda", /Life Orb/.test(slot0.textContent), true);
+
+  const edBtn = [...eb.querySelectorAll("button")]
+    .filter(b => b.textContent.trim() === "Edit set");
+  ok("cada hueco lleno tiene atajo a su build", edBtn.length, 5);
+  edBtn[0].click();
+  /* EL ATAJO ESCRIBE EL EQUIPO ANTES DE IRSE, y eso es una promesa: los dos
+     editores son vistas, asi que saltar sin guardar se llevaria el borrador
+     por delante. El test tiene que esperar ese write igual que lo espera la
+     pantalla. */
+  await new Promise(r => setTimeout(r, 60));
+  /* El atajo guarda el equipo ANTES de irse: los dos editores son vistas, y
+     saltar sin escribir se llevaria el borrador por delante. */
+  ok("y abre el editor de la build",
+     d.getElementById("v-buildedit").hidden, false);
+  ok("el del equipo se cierra", d.getElementById("v-teamedit").hidden, true);
+  ok("y es la build correcta",
+     /Garchomp/.test(d.getElementById("buildEditTitle").textContent), true);
+
   console.log("\n  los filtros de las pestanas");
   ok("el filtro de builds tiene su X",
      !!d.querySelector("#buildSearch").parentNode.querySelector(".clr"), true);

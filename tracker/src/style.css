@@ -1140,6 +1140,11 @@ h2 .n{font-family:var(--mono);color:var(--faint);font-weight:500;letter-spacing:
 .btn.fold .n{font-family:var(--mono);color:var(--faint);letter-spacing:0;
   margin-left:auto}
 .foldcaret{font-size:10px;display:inline-block;width:10px}
+/* THE SAME FOLD, INSIDE A SHEET. `.btn.fold` is a section divider - a rule
+   above it and 16px of air - which is right between two blocks of a tab and
+   far too heavy for a control sitting between two rows of chips. Same
+   affordance, none of the furniture. */
+.btn.fold.inline{margin-top:0;padding:6px 2px;border-top:0;font-size:11px}
 .btnrow{display:flex;gap:8px;flex-wrap:wrap}
 
 /* ---------- panels ------------------------------------------------------- */
