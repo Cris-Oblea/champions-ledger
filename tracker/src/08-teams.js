@@ -1,12 +1,15 @@
 /* 08-teams.js - Six slots, the clauses checked, and what is still to get.
    Part of the app; linked into one script by scripts/build_tracker_page.py. */
-import { $, C, STONE_OF, bst, byName, capNote, cardLine, dexNo, el, labelBox,
- pokeCard, searchField, splitPct, toast, typeCard, typeChip, typeSkin,
- usageTag } from "./01-data.js";
+import { $, C, COSTS, MOVE_BY, STAT_KEYS, STONE_OF, bst, byName, capNote,
+ cardLine, dexNo, el, labelBox, natMult, pokeCard, searchField, splitPct,
+ statAt, toast, typeCard, typeChip, typeSkin, usageTag } from "./01-data.js";
 import { S, buildLink, buildsFor, hasItem, hasStone } from "./02-state.js";
 import { drop, put, putNew } from "./03-store.js";
 import { ask, closeSheet, fbtn, leaveEditor, openEditor, openSheet }
   from "./04-nav.js";
+/* The build editor itself, so a set can be opened from the team it is in
+   rather than from the other tab. One editor, not a second copy of it. */
+import { buildSheet } from "./06-builds.js";
 /* One coloured note element. */
 import { note } from "./13-boot.js";
 /* ===================================================================== teams
@@ -21,6 +24,15 @@ import { note } from "./13-boot.js";
    preference that cannot survive contact with a team. That is why builds
    deliberately carry no item at all. */
 var TEAM_SLOTS = 6;
+
+/* What gets written. Built in one place because it is now saved from two -
+   the Save button, and the quick jump into a build's editor, which has to
+   put this draft somewhere before it leaves the screen. */
+function teamDoc(draft){
+  return {name: draft.name,
+          slots: draft.slots.filter(function(x){ return x && x.build_id; }),
+          notes: draft.notes || {}};
+}
 
 function teamSlots(t){
   var out = (t && t.slots || []).slice(0, TEAM_SLOTS);
@@ -55,9 +67,35 @@ function teamReport(t){
       else r.missing.push(b.pokemon);
 
       var p = byName[b.pokemon];
+      /* THE SPEED THE BUILD ACTUALLY HAS, not its species' base row:
+
+           "seria bueno que representara el numero real de la build de cada
+            pokemon, para saber quien es mas rapido en mi build y saber el
+            orden correcto como saber quien es mas lento en mis builds de mi
+            team."   (player, 2026-09-21)
+
+         Base Speed cannot answer that. Two builds of the same species differ
+         by 32 SP and a nature - 0.9 to 1.1 is a fifth of the number either
+         way - which is most of what a Speed order is decided by, and it is
+         precisely the part a Trick Room team is built around. Same formula
+         the calculator and the SP editor use, at level 50.
+
+         READ OFF THE FORM IT PLAYS AS, Mega included, like every other number
+         on this screen: Garchomp is 102 and Mega Garchomp Z is 151, so a
+         Speed order quoting the base row for a build carrying the stone names
+         the wrong one as moving first. */
+      var pf = (b.mega && byName[b.mega]) || p;
       if (p) {
         info.types = p.types;
-        r.speeds.push({name: b.pokemon, spe: p.b[5]});
+        if (pf) {
+          r.speeds.push({name: b.pokemon,
+                         form: b.mega || b.pokemon,
+                         base: pf.b[5],
+                         nature: b.nature || "",
+                         sp: (b.stat_points || {}).spe || 0,
+                         spe: statAt(pf.b[5], (b.stat_points || {}).spe,
+                                     false, natMult(b.nature, "spe"))});
+        }
         /* Species Clause is per FORM, not per species: two Squawkabilly of
            different plumage still cannot share a team. */
         if (formSeen[b.pokemon]) r.problems.push("two " + b.pokemon + " - the Species Clause forbids it");
@@ -95,17 +133,28 @@ function teamTypes(r){
      no move can be that type and counting it would invent a weakness. */
   Object.keys(C.CHART).filter(function(t){ return t !== "Stellar"; })
         .forEach(function(atk){
-    var weak = 0, resist = 0;
+    /* THE NAMES, not just the tally. "Fire: 3 weak, 1 resist" is a count of
+       a thing you then have to work out for yourself, one Pokemon at a time
+       (player, 2026-09-21: "no dice quien es debil a que cosa ni tampoco
+       quien resiste que cosa"). The multiplier rides along because x4 and x2
+       are not the same problem, and neither are x0.25 and x0.5. */
+    var weakOf = [], resistOf = [];
     r.slots.forEach(function(s){
-      if (!s.types) return;
+      if (!s.types || !s.name) return;
       var m = 1;
       s.types.forEach(function(t){
         var v = C.CHART[atk] && C.CHART[atk][t];
         m *= (v == null ? 1 : v);
       });
-      if (m > 1) weak++; else if (m < 1) resist++;
+      if (m > 1) weakOf.push({name: s.name, m: m});
+      else if (m < 1) resistOf.push({name: s.name, m: m});
     });
-    out.push({type: atk, weak: weak, resist: resist});
+    /* worst first on each side, so the x4 leads the weaknesses and the
+       immunity leads the resistances */
+    weakOf.sort(function(a, b){ return b.m - a.m; });
+    resistOf.sort(function(a, b){ return a.m - b.m; });
+    out.push({type: atk, weak: weakOf.length, resist: resistOf.length,
+              weakOf: weakOf, resistOf: resistOf});
   });
   return out.sort(function(a, b){ return b.weak - a.weak || a.resist - b.resist; });
 }
@@ -117,7 +166,33 @@ function teamTypes(r){
    every team carrying it. The item is chosen here because the Item Clause is a
    team-level rule; the picker greys out anything another slot already holds
    rather than letting the clash happen and complaining afterwards. */
-function teamSlotRow(draft, x, i, redraw){
+/* STRAIGHT INTO THE SET, from the screen where its problems are visible.
+
+     "podria haber un acceso rapido si uno quisiera cambiar rapido una build
+      en el team builder en vez de ir a la otra pestaña."  (player, 2026-09-21)
+
+   THE TEAM IS WRITTEN FIRST, and that is not a convenience. Both editors are
+   VIEWS - they stopped being sheets on 2026-09-13 precisely because a sheet
+   on a sheet took every unsaved slot with it - so leaving for the build
+   editor abandons this draft. Saving first is the only version of this that
+   cannot lose work.
+
+   A team that has never been saved has no id to write to, and inventing one
+   would create a team he never asked for, so that case asks for a name
+   instead of guessing. */
+function teamEditBuild(draft, id, bid){
+  var b = S.builds[bid];
+  if (!b) { toast("That build is gone"); return; }
+  if (!id) {
+    toast("Name and save the team first — editing a build leaves this screen");
+    return;
+  }
+  put("teams/" + id, teamDoc(draft)).then(function(){
+    buildSheet(bid, b);
+  });
+}
+
+function teamSlotRow(draft, id, x, i, redraw){
   /* A slot holds a Pokemon, so it wears one - the same card as everywhere
      else. Its type is the BUILD's Pokemon, Mega included when a stone is on
      it, because that is what walks onto the field. */
@@ -125,9 +200,23 @@ function teamSlotRow(draft, x, i, redraw){
                         byName[x.build.pokemon]) : null;
   var row, m;
   if (draw) {
+    /* THE SET IT IS RUNNING, on the card. There is room for it - the card is
+       already the tallest thing on the screen - and without it the six slots
+       said a name, a nature and "4 moves", so checking what the team actually
+       does meant opening six builds one at a time (player, 2026-09-21: "la
+       card en team builder del pokemon es suficientemente grande como para
+       mostrar el resumen de habilidad, Nature, SPs, moves"). */
+    var ab = x.build.mega ? (x.build.mega_ability || x.build.ability)
+                          : x.build.ability;
+    var spTxt = STAT_KEYS.map(function(k){
+      return (x.build.stat_points || {})[k] || 0; }).join("/");
     row = pokeCard(draw, {
       tag: "div",
       name: x.build.pokemon,
+      /* the ability the build CHOSE, not the three the species could have -
+         a build's card shows only what the build points at */
+      abValue: ab || "—",
+      abLabel: x.build.mega ? "Ability after Mega" : "Ability",
       /* the stone the build runs is named on its own badge, so the card does
          not also list the species' whole Mega line here */
       megas: !x.build.mega,
@@ -136,7 +225,9 @@ function teamSlotRow(draft, x, i, redraw){
          items are read down the column against each other. */
       cells: [
         labelBox(x.build.nature || null, "Nature", "wide"),
-        labelBox(x.slot.item || null, "Item", "wide")
+        labelBox(x.slot.item || null, "Item", "wide"),
+        labelBox(spTxt === "0/0/0/0/0/0" ? null : spTxt,
+                 "SP  hp/atk/def/spa/spd/spe", "wide")
       ],
       badges: function(h){
         if (x.build.mega) h.appendChild(el("span", "tag mega", x.build.mega));
@@ -154,6 +245,23 @@ function teamSlotRow(draft, x, i, redraw){
           (x.build.moves || []).length + " moves"));
       },
       notes: function(body){
+        /* THE MOVE NAMES, not the count. A count tells you a set is finished;
+           the names are what you read a team off. Each is its own chip so a
+           phone breaks between them and never inside one. */
+        var mv = el("div", "rmeta");
+        mv.style.marginTop = "4px";
+        if ((x.build.moves || []).length) {
+          x.build.moves.forEach(function(n){
+            var mrow = MOVE_BY[n];
+            var sp2 = el("span", "tag");
+            if (mrow) sp2.appendChild(typeChip(mrow.type));
+            sp2.appendChild(document.createTextNode(n));
+            mv.appendChild(sp2);
+          });
+        } else {
+          mv.appendChild(el("span", "st", "no moves yet"));
+        }
+        body.appendChild(mv);
         if (x.slot.why) body.appendChild(el("div", "st", x.slot.why));
       }
     });
@@ -186,6 +294,13 @@ function teamSlotRow(draft, x, i, redraw){
       teamPickItem(draft, i, redraw);
     };
     side.appendChild(it);
+    var ed = el("button", "btn sm", "Edit set");
+    ed.title = "Open this build's editor — the team is saved first";
+    ed.onclick = function(e){
+      e.stopPropagation();
+      teamEditBuild(draft, id, x.slot.build_id);
+    };
+    side.appendChild(ed);
     var rm = el("button", "btn sm", "×");
     rm.title = "Empty this slot";
     rm.onclick = function(e){ e.stopPropagation(); draft.slots[i] = {}; redraw(); };
@@ -231,7 +346,7 @@ function teamPickBuild(draft, idx, onPick){
     var ob = S.builds[sl.build_id];
     if (ob && ob.pokemon) taken[ob.pokemon] = 1;
   });
-  var F = {state:{}, role:{}, type:{}, sort:"az"};
+  var F = {role:{}, type:{}, sort:"az"};
   openSheet("Which build?", function(body){
     var ids = Object.keys(S.builds);
     if (!ids.length) {
@@ -254,7 +369,8 @@ function teamPickBuild(draft, idx, onPick){
       return {id:bid, b:b, p:p, lk:lk, hay:hay,
               types: (p && p.types) || [],
               role: (b.role || "").trim(),
-              spe: p ? p.b[5] : -1, bst: p ? bst(p) : -1,
+              bst: p ? bst(p) : -1,
+              dex: byName[b.pokemon] ? dexNo(b.pokemon) : 99999,
               dupe: !!taken[b.pokemon]};
     });
 
@@ -284,42 +400,86 @@ function teamPickBuild(draft, idx, onPick){
       (rows.length === 1 ? "" : "s") + " \u2014 name, move, role, nature, type",
       function(){ draw(); });
 
+    /* A–Z AND DEX, AND THE STATS ARE ALL OR NONE.
+
+         "el sort de ready first speed bst son super random??? me basta con el
+          orden de a-z, dex, y si voy a poner bst y speed, entonces tambien
+          importan los de atk, def, spa, spd..."   (player, 2026-09-21)
+
+       He is right twice. "Ready first" was sorting by where the copy lives,
+       which is the same box question the filter above it lost. And offering
+       BST and Speed but not the other four is a half-set: there is no reason
+       Speed is a sort and Attack is not. So the two he asked for are the row,
+       and the six stats plus BST are complete, together, behind a fold - the
+       same shape the Role chips take, for the same reason. */
+    var SORTS = [["az", "A\u2013Z"], ["dex", "Dex no."]];
+    var STATSORTS = [["bst", "BST"], ["hp", "HP"], ["atk", "Atk"],
+                     ["def", "Def"], ["spa", "SpA"], ["spd", "SpD"],
+                     ["spe", "Spe"]];
     var srow = el("div", "toggles"); srow.style.marginBottom = "8px";
-    [["az", "A\u2013Z"], ["ready", "Ready first"], ["spe", "Speed"],
-     ["bst", "BST"]].forEach(function(o){
-      var t = el("button", "tog", o[1]);
-      t.setAttribute("aria-pressed", F.sort === o[0] ? "true" : "false");
+    var strow2 = el("div", "toggles");
+    strow2.style.margin = "0 0 8px";
+    strow2.hidden = true;
+    function sortBtn(row, key, text){
+      var t = el("button", "tog", text);
+      t.setAttribute("aria-pressed", F.sort === key ? "true" : "false");
       t.onclick = function(){
-        F.sort = o[0];
-        Array.prototype.forEach.call(srow.children, function(x){
-          x.setAttribute("aria-pressed", x === t ? "true" : "false");
+        F.sort = key;
+        [srow, strow2].forEach(function(g){
+          Array.prototype.forEach.call(g.children, function(x){
+            x.setAttribute("aria-pressed", x === t ? "true" : "false");
+          });
         });
         draw();
       };
-      srow.appendChild(t);
-    });
+      row.appendChild(t);
+    }
+    SORTS.forEach(function(o){ sortBtn(srow, o[0], o[1]); });
+    STATSORTS.forEach(function(o){ sortBtn(strow2, o[0], o[1]); });
     body.appendChild(label("Sort"));
     body.appendChild(srow);
+    var stog = el("button", "btn sm fold inline");
+    stog.type = "button";
+    stog.setAttribute("aria-expanded", "false");
+    var scaret = el("span", "foldcaret");
+    scaret.innerHTML = "&#9656;";
+    stog.appendChild(scaret);
+    stog.appendChild(el("span", null, "By a stat"));
+    stog.appendChild(el("span", "n", String(STATSORTS.length)));
+    stog.onclick = function(){
+      var open = strow2.hidden;
+      strow2.hidden = !open;
+      stog.setAttribute("aria-expanded", open ? "true" : "false");
+      scaret.innerHTML = open ? "&#9662;" : "&#9656;";
+    };
+    body.appendChild(stog);
+    body.appendChild(strow2);
 
-    /* CAN I BRING IT. The states are the four `buildLink` returns, counted -
-       a state nothing is in would be a chip that can only ever return
-       nothing, so it is not drawn at all. */
-    var nState = {};
-    rows.forEach(function(r){ nState[r.lk.state] = (nState[r.lk.state] || 0) + 1; });
-    var strow = el("div", "toggles"); strow.style.marginBottom = "8px";
-    [["active", "Ready today"], ["parked", "In HOME"],
-     ["unbound", "Not owned yet"], ["orphan", "Orphan"]].forEach(function(o){
-      if (!nState[o[0]]) return;
-      chip(strow, "state", o[0], o[1] + " \u00b7 " + nState[o[0]]);
-    });
-    if (strow.children.length > 1) {
-      body.appendChild(label("Where it is \u2014 any of these"));
-      body.appendChild(strow);
-    }
+    /* NO "WHERE IT IS" FILTER HERE. It had one - ready today / in HOME / not
+       owned - and it was answering a question this screen does not ask
+       (player, 2026-09-21):
+
+         "quiero que saques lo de donde esta, porque podria crear incluso un
+          team teorico y no necesito saber eso, el donde esta, origen, entre
+          otros pertenece a las cajas."
+
+       Which is right, and it is the same rule that made a build its own thing
+       in the first place: a team can be written down before a single one of
+       its six exists. Where a copy is living is a fact about the BOX, and the
+       Box and HOME tabs are the screens for it. The slot rows still say it -
+       a badge on the one you picked is information, not a filter - and
+       `teamReport` still counts what is playable today above the six. */
 
     /* WHAT JOB IT DOES. `role` is typed by hand, so the chips are the
        distinct roles that exist, matched case-insensitively and labelled with
-       the spelling first used. */
+       the spelling first used.
+
+       FOLDED, AND IT STAYS FOLDED. With a role per build these are as many
+       chips as there are builds, so the list you came here to read was pushed
+       off the screen by the controls above it (player, 2026-09-21: "el role
+       podria ir oculto o plegado siempre, ocupa demasiado espacio"). The
+       count rides on the button, so what is in there is visible without
+       opening it. */
     var roleKeys = [], roleN = {}, roleText = {};
     rows.forEach(function(r){
       if (!r.role) return;
@@ -330,11 +490,28 @@ function teamPickBuild(draft, idx, onPick){
     roleKeys.sort(function(a, b){
       return roleN[b] - roleN[a] || a.localeCompare(b); });
     if (roleKeys.length > 1) {
-      var rrow = el("div", "toggles"); rrow.style.marginBottom = "8px";
+      var rrow = el("div", "toggles");
+      rrow.style.margin = "0 0 8px";
+      rrow.hidden = true;
       roleKeys.forEach(function(k){
         chip(rrow, "role", k, roleText[k] + " \u00b7 " + roleN[k]);
       });
-      body.appendChild(label("Role \u2014 any of these"));
+      var rtog = el("button", "btn sm fold inline");
+      rtog.type = "button";
+      rtog.setAttribute("aria-expanded", "false");
+      var caret = el("span", "foldcaret");
+      caret.innerHTML = "&#9656;";
+      rtog.appendChild(caret);
+      rtog.appendChild(el("span", null, "Role"));
+      var rn = el("span", "n", String(roleKeys.length));
+      rtog.appendChild(rn);
+      rtog.onclick = function(){
+        var open = rrow.hidden;
+        rrow.hidden = !open;
+        rtog.setAttribute("aria-expanded", open ? "true" : "false");
+        caret.innerHTML = open ? "&#9662;" : "&#9656;";
+      };
+      body.appendChild(rtog);
       body.appendChild(rrow);
     }
 
@@ -363,25 +540,28 @@ function teamPickBuild(draft, idx, onPick){
 
     function draw(){
       var q = inp.q();
-      var st = Object.keys(F.state), ro = Object.keys(F.role),
-          ty = Object.keys(F.type);
+      var ro = Object.keys(F.role), ty = Object.keys(F.type);
       var hits = rows.filter(function(r){
         if (q && r.hay.indexOf(q) < 0) return false;
-        if (st.length && st.indexOf(r.lk.state) < 0) return false;
         if (ro.length && ro.indexOf(r.role.toLowerCase()) < 0) return false;
         if (ty.length && !r.types.some(function(t){ return ty.indexOf(t) >= 0; }))
           return false;
         return true;
       });
-      var RANK = {active:0, parked:1, unbound:2, orphan:3};
+      /* A stat sort reads the FORM THE BUILD PLAYS AS, Mega included - the
+         same row every other number on this card comes from. A build with no
+         dex row sorts last rather than at zero. */
+      var IDX = {hp:0, atk:1, def:2, spa:3, spd:4, spe:5};
       hits.sort(function(a, b){
-        if (F.sort === "spe")
-          return b.spe - a.spe || a.b.pokemon.localeCompare(b.b.pokemon);
+        if (F.sort === "dex")
+          return a.dex - b.dex || a.b.pokemon.localeCompare(b.b.pokemon);
         if (F.sort === "bst")
           return b.bst - a.bst || a.b.pokemon.localeCompare(b.b.pokemon);
-        if (F.sort === "ready")
-          return (RANK[a.lk.state] || 0) - (RANK[b.lk.state] || 0) ||
-                 a.b.pokemon.localeCompare(b.b.pokemon);
+        if (IDX[F.sort] != null) {
+          var k = IDX[F.sort];
+          var av = a.p ? a.p.b[k] : -1, bv = b.p ? b.p.b[k] : -1;
+          return bv - av || a.b.pokemon.localeCompare(b.b.pokemon);
+        }
         return a.b.pokemon.localeCompare(b.b.pokemon) || a.id.localeCompare(b.id);
       });
       /* A SPECIES ANOTHER SLOT HOLDS GOES LAST, and is not hidden: the clause
@@ -396,8 +576,7 @@ function teamPickBuild(draft, idx, onPick){
       hits.forEach(function(r){ list.appendChild(buildPickRow(r, onPick)); });
       if (!hits.length) {
         list.appendChild(el("div", "empty",
-          q || st.length || ro.length || ty.length
-            ? "Nothing matches" : "No builds yet"));
+          q || ro.length || ty.length ? "Nothing matches" : "No builds yet"));
       }
     }
     draw();
@@ -430,7 +609,10 @@ function buildPickRow(r, onPick){
   var opts = {
     cls: (r.dupe || lk.state === "orphan") ? "illegal" : "",
     name: b.pokemon,
-    abLabel: "Ability",
+    /* the one it CHOSE, not the three the species could have had - a build's
+       card shows only what the build points at */
+    abValue: (b.mega ? (b.mega_ability || b.ability) : b.ability) || "\u2014",
+    abLabel: b.mega ? "Ability after Mega" : "Ability",
     cells: [labelBox(b.nature || "\u2014", "Nature", "wide")],
     badges: badges,
     meta: function(meta){
@@ -466,6 +648,52 @@ function buildPickRow(r, onPick){
   return btn;
 }
 
+/* ------------------------------------------------ WHAT CAN ACTUALLY BE HELD --
+   Two things were wrong with the pool this picker offered, and the player hit
+   both in the same minute (2026-09-21):
+
+     "en el apartado de items no puedo equipar mega piedras!"
+     "los items miscellaneous no se pueden equipar...."
+     "solo necesito los hold items (los berries son hold items igual) y las
+      mega piedras para equiparlas..."
+
+   THE STONES WERE NEVER IN THE LIST. `build_tracker_data.py` skips every row
+   with `is_mega_stone` when it builds C.ITEMS - deliberately, because the
+   Items tab gives them a pane of their own - so all 81 of them were missing
+   from the one screen where an item is actually equipped. They come from
+   C.STONES here instead, which is [stone, mega, species].
+
+   AND A THIRD OF WHAT WAS THERE COULD NOT BE HELD. 33 of the 118 rows are
+   Miscellaneous, which is the game's bucket for things that are not held at
+   all, so they were a third of the list you scroll through and none of them
+   was ever an answer.
+
+   Berries are Hold Items in every sense that matters here - the category is
+   the shop's shelf, not a rule - so they stay, and the chip stays with them
+   because "which Berry" is a real question. */
+function holdable(){
+  var out = (C.ITEMS || []).filter(function(it){
+    var cat = it[2] || "Miscellaneous";
+    return cat === "Hold Items" || cat === "Berries";
+  }).map(function(it){
+    return {name: it[0], vp: it[1], cat: it[2] || "Hold Items",
+            text: it[3] || "", stone: false};
+  });
+  /* one row per STONE, not per Mega: Charizardite X and Y are two stones and
+     one species, and the mapping is 1:1 over all 81 */
+  var seen = {};
+  (C.STONES || []).forEach(function(r){
+    var st = r[0];
+    if (!st || seen[st]) return;
+    seen[st] = 1;
+    out.push({name: st, vp: COSTS.mega_stone_shop, cat: "Mega Stones",
+              text: "Mega Evolves " + (r[2] || r[1]) + " into " + r[1] + ".",
+              stone: true});
+  });
+  out.sort(function(a, b){ return a.name.localeCompare(b.name); });
+  return out;
+}
+
 function teamPickItem(draft, i, redraw){
   /* Taken is computed from the OTHER slots, so the clause is enforced where
      the choice is made rather than reported after the fact. */
@@ -477,8 +705,9 @@ function teamPickItem(draft, i, redraw){
     body.appendChild(el("p", "sub",
       "One item per team — the Item Clause. Anything another slot already " +
       "holds is greyed out."));
-    var inp = searchField(body, "Search " + (C.ITEMS || []).length +
-      " items \u2014 name or effect", function(){ draw(); });
+    var POOL = holdable();
+    var inp = searchField(body, "Search " + POOL.length +
+      " holdable items \u2014 name or effect", function(){ draw(); });
 
     /* THE SAME TWO QUESTIONS AS EVERY OTHER PICKER: what kind of thing is it,
        and can I actually use it. A category here is the game's own grouping,
@@ -490,12 +719,10 @@ function teamPickItem(draft, i, redraw){
       return d;
     }
     var nCat = {};
-    (C.ITEMS || []).forEach(function(it){
-      var k = it[2] || "Miscellaneous";
-      nCat[k] = (nCat[k] || 0) + 1;
-    });
+    POOL.forEach(function(x){ nCat[x.cat] = (nCat[x.cat] || 0) + 1; });
     var crow = el("div", "toggles"); crow.style.marginBottom = "8px";
-    Object.keys(nCat).sort().forEach(function(k){
+    ["Hold Items", "Berries", "Mega Stones"].forEach(function(k){
+      if (!nCat[k]) return;
       var t = el("button", "tog", k + " \u00b7 " + nCat[k]);
       t.setAttribute("aria-pressed", "false");
       t.onclick = function(){
@@ -535,32 +762,35 @@ function teamPickItem(draft, i, redraw){
       /* ALL of them. There are 118 items in Champions and this drew 60,
          so with an empty box half the pool was invisible and nothing said
          so - the worst shape for a list you are choosing FROM. */
-      var pool = (C.ITEMS || []).filter(function(it){
-        if (cats.length && cats.indexOf(it[2] || "Miscellaneous") < 0) return false;
-        if (F.own && !hasItem(it[0])) return false;
-        return !q || it[0].toLowerCase().indexOf(q) >= 0 ||
-               String(it[3] || "").toLowerCase().indexOf(q) >= 0;
+      var pool = POOL.filter(function(x){
+        if (cats.length && cats.indexOf(x.cat) < 0) return false;
+        /* a stone is owned when the STONE ledger says so, not the item one -
+           they are two different tables and always have been */
+        if (F.own && !(x.stone ? hasStone(x.name) : hasItem(x.name))) return false;
+        return !q || x.name.toLowerCase().indexOf(q) >= 0 ||
+               x.text.toLowerCase().indexOf(q) >= 0;
       });
-      count.textContent = pool.length === (C.ITEMS || []).length
-        ? pool.length + " items"
-        : pool.length + " of " + (C.ITEMS || []).length + " items";
+      count.textContent = pool.length === POOL.length
+        ? POOL.length + " holdable items"
+        : pool.length + " of " + POOL.length + " holdable items";
       if (!pool.length) {
         list.appendChild(el("div", "empty", F.own
           ? "Nothing you own matches" : "Nothing matches"));
       }
-      pool.forEach(function(it){
-        var btn = el("button", "row" + (taken[it[0]] ? " illegal" : ""));
-        if (taken[it[0]]) { btn.disabled = true; btn.style.opacity = "0.5"; }
+      pool.forEach(function(x){
+        var btn = el("button", "row" + (taken[x.name] ? " illegal" : ""));
+        if (taken[x.name]) { btn.disabled = true; btn.style.opacity = "0.5"; }
         var m = el("div", "rmain");
         var h = el("div", "rname");
-        h.appendChild(document.createTextNode(it[0]));
-        if (taken[it[0]])
+        h.appendChild(document.createTextNode(x.name));
+        if (x.stone) h.appendChild(el("span", "tag mega", "Mega Stone"));
+        if (taken[x.name])
           h.appendChild(el("span", "tag bad", "another slot holds it"));
         /* owned or not, said on the row - otherwise the filter above is the
            only place the fact exists, and a filter you have to turn on to
            read is not an answer */
-        else if (!hasItem(it[0]))
-          h.appendChild(el("span", "tag warn", it[1] ? it[1] + " VP" : "not owned"));
+        else if (!(x.stone ? hasStone(x.name) : hasItem(x.name)))
+          h.appendChild(el("span", "tag warn", x.vp ? x.vp + " VP" : "not owned"));
         /* How many of THIS slot's Pokemon hold this item on the ladder. The
            item is a team decision - the Item Clause makes it one - so the
            number belongs here, at the slot, and not on the build. */
@@ -570,17 +800,17 @@ function teamPickItem(draft, i, redraw){
            hold, and it was silently off. */
         var who = draft.slots[i] && draft.slots[i].build_id
           && S.builds[draft.slots[i].build_id];
-        var utag = who ? usageTag(splitPct(who.pokemon, "i", it[0]),
+        var utag = who ? usageTag(splitPct(who.pokemon, "i", x.name),
                                   who.pokemon, "i") : null;
         if (utag) h.appendChild(utag);
         m.appendChild(h);
-        if (it[3]) m.appendChild(el("div", "st", String(it[3]).slice(0, 120)));
+        if (x.text) m.appendChild(el("div", "st", x.text.slice(0, 120)));
         btn.appendChild(m);
-        if (!taken[it[0]]) btn.onclick = function(){
-          draft.slots[i].item = it[0];
+        if (!taken[x.name]) btn.onclick = function(){
+          draft.slots[i].item = x.name;
           closeSheet();
           /* why it holds it - the half of teams.json that is not derivable */
-          openSheet(it[0] + " on " + (S.builds[draft.slots[i].build_id] || {}).pokemon,
+          openSheet(x.name + " on " + (S.builds[draft.slots[i].build_id] || {}).pokemon,
             function(b2){
               b2.appendChild(el("p", "sub", "Why this one? One line is enough."));
               var f = el("div", "field");
@@ -692,15 +922,41 @@ function teamSheet(id, t){
     body.appendChild(el("h2", null, "The six"));
     var list = el("div", "list");
     r.slots.forEach(function(x, i){
-      list.appendChild(teamSlotRow(draft, x, i, redraw));
+      list.appendChild(teamSlotRow(draft, id, x, i, redraw));
     });
     body.appendChild(list);
 
     if (r.speeds.length > 1) {
       body.appendChild(el("h2", null, "Speed order"));
-      body.appendChild(el("div", "note", r.speeds.map(function(x){
-        return x.name + " " + x.spe; }).join("  ·  ") +
-        "  — base Speed, before nature and SP"));
+      var so = el("div", "note");
+      r.speeds.forEach(function(x){
+        var line = el("div");
+        line.style.marginBottom = "3px";
+        line.appendChild(el("strong", null, x.form));
+        var num = el("span", "mono");
+        num.style.margin = "0 6px";
+        num.textContent = String(x.spe);
+        line.appendChild(num);
+        /* WHERE THE NUMBER CAME FROM, on the same line: the base, the SP
+           spent on it and what the nature did. Without that a Speed order is
+           six numbers you have to take on trust, and the SP is the half he
+           can still change. */
+        var how = el("span");
+        how.style.color = "var(--faint)";
+        how.textContent = x.base + " base"
+          + (x.sp ? " + " + x.sp + " SP" : "")
+          + (natMult(x.nature, "spe") !== 1
+             ? "  ×" + natMult(x.nature, "spe") + " " + x.nature : "");
+        line.appendChild(how);
+        so.appendChild(line);
+      });
+      var sfoot = el("div", "st");
+      sfoot.style.marginTop = "6px";
+      sfoot.textContent = "At level 50, with each build's own SP and nature, "
+        + "on the form it plays as. Fastest first — so the bottom of the "
+        + "list is what moves first under Trick Room.";
+      so.appendChild(sfoot);
+      body.appendChild(so);
     }
 
     if (r.filled) {
@@ -711,12 +967,39 @@ function teamSheet(id, t){
         tw.appendChild(el("div", "note", "Nothing hits more than one of them "
           + "for super effective damage."));
       } else {
+        /* EVERY NAME CARRIES ITS OWN MULTIPLIER (player, 2026-09-21:
+           "tampoco dice el multiplicador de x por cuanto resiste o por cuanto
+           es debil"). Not only the outliers: x4 and x2 are different problems,
+           and so are x0.25, x0.5 and an outright immunity. Which one it is
+           decides whether a shared weakness is worth restructuring the team
+           for, so it is on every name rather than left to be remembered. */
+        var say = function(list){
+          return list.map(function(e){
+            return e.name + " \u00d7" + (e.m === 0 ? "0" : e.m);
+          }).join(", ");
+        };
         tt.forEach(function(x){
           var d = el("div", "st");
-          d.appendChild(typeChip(x.type));
-          d.appendChild(document.createTextNode(
-            "  " + x.weak + " weak, " + x.resist + " resist"));
-          if (x.weak >= 3) d.style.color = "var(--bad)";
+          d.style.marginBottom = "6px";
+          var head = el("div");
+          head.appendChild(typeChip(x.type));
+          if (x.weak >= 3) {
+            var hot = el("span", "tag bad", x.weak + " of the six");
+            head.appendChild(hot);
+          }
+          d.appendChild(head);
+          var wk = el("div");
+          wk.style.color = "var(--bad)";
+          wk.textContent = "weak: " + say(x.weakOf);
+          d.appendChild(wk);
+          /* the other half of the answer, and the one that decides whether a
+             shared weakness is actually a problem: who can take the hit */
+          var rs = el("div");
+          rs.style.color = x.resistOf.length ? "var(--ok)" : "var(--faint)";
+          rs.textContent = x.resistOf.length
+            ? "resists: " + say(x.resistOf)
+            : "nothing on the team resists it";
+          d.appendChild(rs);
           tw.appendChild(d);
         });
       }
@@ -736,9 +1019,7 @@ function teamSheet(id, t){
       if (!draft.name) { toast("Give the team a name"); return; }
       var stem = String(draft.name).toLowerCase()
         .replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 40) || "team";
-      var doc = {name:draft.name,
-                 slots:draft.slots.filter(function(x){ return x && x.build_id; }),
-                 notes:draft.notes || {}};
+      var doc = teamDoc(draft);
       (id ? put("teams/" + id, doc).then(function(){ return id; })
           : putNew("teams", stem, doc)).then(function(){
         leaveEditor("teams"); toast("Team saved");
