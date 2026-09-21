@@ -7,6 +7,9 @@ import { ORIGIN_LABEL, S, boxRows, hasStone, originOf } from "./02-state.js";
 import { drop, put, putNew } from "./03-store.js";
 import { ask, closeSheet, fbtn, openSheet } from "./04-nav.js";
 import { note } from "./13-boot.js";
+/* the dex sheet, for a target there is no box row to open - which is the
+   whole point of a recommendation */
+import { findDetail } from "./12-find.js";
 /* ======================================================================= gts */
 function drawGts(){
   var list = $("listGts");
@@ -523,18 +526,42 @@ function deadStones(){
        Beedrill 495 -> Steelix 510 is the kind of deal that does land)
      - low demand, because a top-of-ladder Pokemon is being played, not traded
      - and a stone you already own with nothing to put it on wins outright */
+/* IS THIS ASK IN RANGE FOR THAT CHIP? The two bands, written once.
+
+   It was inline in gtsSuggest, which asks "what could this chip fetch" and
+   walks the dex. Anything asking the mirror question needs the same
+   arithmetic, and a second copy of it is how two answers about one trade
+   start disagreeing.
+
+   `reach` is at or above what the chip is worth, up to its full price plus a
+   little; `base` is under it, down to 70 below the base row. Asking for less
+   than you could is how an offer clears the same day. */
+function chipBand(v, b){
+  if (!v) return null;
+  if (b > v.reach + 20 || b < Math.min(v.base, v.value) - 70) return null;
+  return b >= v.value - 25 ? "reach" : "base";
+}
 function gtsSuggest(chipName, limit, shiny){
   var v = chipValue(chipName, shiny);
   if (!v) return [];
-  var owned = {};
-  boxRows("home").concat(boxRows("champions")).forEach(function(r){
-    owned[r.name] = 1;
+  /* OWNED IN HOME IS DONE; OWNED ONLY IN CHAMPIONS IS STILL A TARGET.
+     Both used to count as owned, which quietly removed the best asks on the
+     board: an Encounter Pokemon can never leave the box, so a second copy
+     arriving through HOME is worth a whole slot. They are suggested now,
+     and marked. */
+  var owned = {}, frees = {};
+  function mark(into, r){
+    into[r.name] = 1;
     var p = byName[r.name];
-    if (p && p.species) owned[p.species] = 1;
+    if (p && p.species) into[p.species] = 1;
+  }
+  boxRows("home").forEach(function(r){ mark(owned, r); });
+  boxRows("champions").forEach(function(r){
+    mark(originOf(r) === "home" ? owned : frees, r);
   });
   var dead = {};
   Object.keys(MEGAS_OF).forEach(function(sp){
-    if (owned[sp]) return;
+    if (owned[sp] || frees[sp]) return;
     MEGAS_OF[sp].forEach(function(m){
       var st = STONE_OF[m.name];
       if (st && hasStone(st)) dead[sp] = st;
@@ -556,27 +583,29 @@ function gtsSuggest(chipName, limit, shiny){
 
      The two are filled alternately below so a chip with a big Mega cannot bury
      the safer half under thirty reach-band targets. */
-  var top = v.reach + 20;
-  var floor = Math.min(v.base, v.value) - 70;
   var bands = {reach:[], base:[]};
   FORMS.forEach(function(p){
     if (owned[p.name] || owned[p.species]) return;
     var b = bst(p);
-    if (b > top || b < floor) return;
+    var band = chipBand(v, b);
+    if (!band) return;
     var d = gtsDiff(p.name);
     /* demand 4+ is a Pokemon people are running; it will not be handed over.
        An unknown demand is NOT a low one, so it is allowed through but never
        ranked as if it were cheap. */
     if (d && d.demand != null && d.demand >= 4) return;
-    var band = b >= v.value - 25 ? "reach" : "base";
     var stone = dead[p.species];
     /* Each band is ranked against its OWN anchor, or the base band would be
        nothing but a list of near-misses sorted by how badly they miss. */
     var anchor = band === "reach" ? v.reach : v.base;
+    /* A SLOT IS WORTH MORE THAN A STONE. A dead stone is 2000 VP already
+       spent; a welded Champions slot is the only thing in this game that
+       cannot be bought back at all. */
+    var free = !!(frees[p.name] || frees[p.species]);
     bands[band].push({name:p.name, bst:b, spe:p.b[5], stone:stone || null,
-              rank:d && d.rank, demand:d && d.demand, band:band,
+              rank:d && d.rank, demand:d && d.demand, band:band, frees:free,
               stretch:b > v.value,
-              score:(stone ? 100 : 0) +
+              score:(free ? 150 : 0) + (stone ? 100 : 0) +
                     (d && d.demand != null ? (5 - d.demand) * 6 : 8) +
                     Math.max(0, 20 - Math.abs(anchor - b) / 3)});
   });
@@ -1495,4 +1524,203 @@ document.querySelectorAll("[data-export]").forEach(function(b){
    history and what counts as the last copy of a form. Those rules are argued
    in one file, and now they can only be argued in one file.
 */
-export { boxBadges, diffChip, drawGts, gtsDiff, gtsPickMine, gtsPickWanted };
+
+/* ============================================ trades worth making, from HOME
+
+   THIS READS THE HOME BOX, not the Champions one. The first version listed
+   the species welded into Champions and called them targets, which is a list
+   of Pokemon he already owns printed under a new heading - and the Champions
+   Box tab is that screen (player, 2026-09-21: "el listado de los pokemones
+   que tengo en champions es un poco tonto... si lo puedo ver desde champions
+   box"). The second half of what he said is the design: "seria bueno que el
+   gts recomendara hacer intercambios leyendo los pokemones que estan en mi
+   home, y que no solo sea una copia de la lista de la caja de champions".
+
+   So it starts from the CHIPS. Every Pokemon in HOME that his own rule allows
+   him to put up - a duplicate past the first copy, or a species Champions
+   cannot use - is asked the question the deposit screen asks one at a time:
+   what could this fetch? The answer is gtsSuggest, which already knows the
+   two price bands, drops what people are actually running, and prefers a
+   species whose Mega Stone is sitting dead in the bag.
+
+   What was ADDED to it is the slot: a species owned only in the Champions box
+   used to count as owned and was filtered out, which removed the best asks on
+   the board. An Encounter Pokemon can never leave, so a HOME copy of one is
+   worth a whole slot - more than a dead stone, and the only thing here that
+   cannot be bought back.
+
+   AND NOTHING SAYS "EASY IN GO" ANY MORE. It did, off a declared `supply`
+   score, and he cut it: "es dificil que pongas que algunos son faciles en go,
+   porque sigue siendo dificil obtener algunos. para determinar que es facil
+   en go es mejor hacer un estudio". He is right - 260 of the 264 sit at
+   supply 2 because 2 is the default, so the claim was mostly a guess wearing
+   a number. What replaced it is his own closed trades, which are measured. */
+function gtsChips(){
+  var taken = {};
+  gtsOffers().forEach(function(o){ if (o.offeredId) taken[o.offeredId] = 1; });
+  /* what can LEAVE: HOME, plus anything in the Champions box that came from
+     HOME and can go back. A rental or an Encounter buy can never reach a GTS
+     box at all. */
+  var all = boxRows("home").concat(boxRows("champions").filter(function(r){
+    return originOf(r) === "home";
+  }));
+  var copies = {};
+  boxRows("home").concat(boxRows("champions")).forEach(function(r){
+    copies[r.name] = (copies[r.name] || 0) + 1;
+  });
+  /* HIS RULE, NOT OURS: only a duplicate past the first copy, or a species
+     Champions cannot use. Offering a singleton of a legal species loses it. */
+  return all.filter(function(r){
+    if (taken[r._id]) return false;              /* already in a GTS slot */
+    return (copies[r.name] || 0) > 1 || !byName[r.name];
+  });
+}
+/* WHAT HIS OWN TRADES SAY, which is the only evidence on this screen that was
+   measured rather than estimated. Time to close is the axis BST cannot see:
+   it is what the other side WANTED, and a chip that sat for three days was
+   priced wrong however good the arithmetic looked. */
+function closeMs(o){
+  var start = offerStart(o);
+  if (start == null) return null;
+  var end = o.closedAt ? Date.parse(o.closedAt)
+          : (o.closed && o.closed !== true) ? Date.parse(o.closed + "T00:00:00")
+          : NaN;
+  if (isNaN(end)) return null;
+  var ms = end - start;
+  return ms >= 0 ? ms : null;
+}
+function gtsRecord(name){
+  var all = [], mine = [], gaps = [];
+  gtsHistory().forEach(function(o){
+    var ms = closeMs(o);
+    if (ms == null) return;
+    all.push(ms);
+    if (name && o.offered === name) mine.push(ms);
+    var a = anyRow(o.offered), b = anyRow(o.requested);
+    if (a && b) gaps.push(bst(b) - bst(a));
+  });
+  function mid(xs){
+    if (!xs.length) return null;
+    var v = xs.slice().sort(function(x, y){ return x - y; });
+    return v[Math.floor(v.length / 2)];
+  }
+  return {n:all.length, median:mid(all), mine:mine.length, myMedian:mid(mine),
+          gap:mid(gaps), gapMax:gaps.length ? Math.max.apply(null, gaps) : null};
+}
+var TRADE_CAP = 6, tradeAll = false;
+function drawGtsWanted(){
+  var host = $("listGtsWant"), more = $("gtsWantMore");
+  if (!host) return;
+  var chips = gtsChips(), rec = gtsRecord(null);
+  /* ONE CARD PER SPECIES, COUNTED. Three spare Garchomp are three chips and
+     one recommendation - they price identically and fetch identically, so
+     three identical cards is the top of the list saying one thing three
+     times (seen live, 2026-09-21). Which COPY goes up is a decision for the
+     deposit screen, which knows about shininess and training; a shiny prices
+     differently, so it keeps a card of its own. */
+  var group = {}, ideas = [];
+  chips.forEach(function(c){
+    var k = c.name + (c.shiny ? "|shiny" : "");
+    if (group[k]) { group[k].n++; return; }
+    var asks = gtsSuggest(c.name, 24, !!c.shiny);
+    if (!asks.length) return;
+    group[k] = {rec:c, n:1, asks:asks,
+                frees:asks.filter(function(a){ return a.frees; }),
+                stones:asks.filter(function(a){ return a.stone; })};
+    ideas.push(group[k]);
+  });
+  /* the chip that can buy back a welded slot first, then one that turns on a
+     dead stone, then whatever reaches furthest */
+  ideas.sort(function(a, b){
+    return (b.frees.length ? 1 : 0) - (a.frees.length ? 1 : 0) ||
+           (b.stones.length ? 1 : 0) - (a.stones.length ? 1 : 0) ||
+           (b.asks[0] ? b.asks[0].bst : 0) - (a.asks[0] ? a.asks[0].bst : 0);
+  });
+  $("nGtsWant").textContent = ideas.length;
+  $("gtsWantSub").innerHTML = ideas.length
+    ? "Read off your <strong>HOME box</strong>: everything your own rule lets "
+      + "you put up — a duplicate past the first copy, or a species "
+      + "Champions cannot use — with what it could realistically fetch. "
+      + "An ask marked <em>frees a slot</em> is a species you hold only in the "
+      + "Champions box, where it is welded: a HOME copy is worth the whole slot."
+      + (rec.n ? " Your own record: <strong>" + rec.n + "</strong> closed "
+          + "trades, half of them inside "
+          + (elapsedText(rec.median) || "an unknown time")
+          + (rec.gap != null ? ", and what came back ran "
+              + (rec.gap >= 0 ? "+" : "") + rec.gap + " BST on the median"
+              + (rec.gapMax != null ? " and +" + rec.gapMax + " at best" : "")
+              : "") + "." : "")
+    : "Nothing in HOME can go up right now. Your rule allows a duplicate past "
+      + "the first copy, or a species Champions cannot use — a singleton "
+      + "of a legal species would be lost for good.";
+  host.innerHTML = "";
+  if (!ideas.length) host.appendChild(el("div", "empty", "Nothing to offer"));
+  var cap = tradeAll ? ideas.length : TRADE_CAP;
+  ideas.slice(0, cap).forEach(function(i){
+    var p = anyRow(i.rec.name);
+    var mine = gtsRecord(i.rec.name);
+    host.appendChild(pokeCard(p, {
+      name: i.rec.name,
+      shiny: !!i.rec.shiny,
+      badges: function(nm){
+        /* A SHINY IS ITS OWN CARD AND HAS TO SAY SO. It prices differently -
+           the shiny premium is part of what the chip is worth - so it does
+           not group with the plain copies, and two Garchomp cards side by
+           side with nothing to tell them apart read as a bug (seen live,
+           2026-09-21). The sprite is the shiny one; at card size that is not
+           a difference you can rely on. */
+        if (i.rec.shiny) nm.appendChild(el("span", "tag warn", "shiny"));
+        if (i.n > 1) {
+          var c = el("span", "tag", i.n + " spare");
+          c.title = "You hold " + i.n + " of these that your rule lets you "
+            + "trade. They price the same, so this is one recommendation.";
+          nm.appendChild(c);
+        }
+        if (i.frees.length) nm.appendChild(el("span", "tag ok", "frees a slot"));
+        if (mine.mine) {
+          var t = el("span", "tag", mine.mine + " traded · "
+            + (elapsedText(mine.myMedian) || "?"));
+          t.title = "You have closed " + mine.mine + " trade"
+            + (mine.mine === 1 ? "" : "s") + " offering this species. Half of "
+            + "them cleared inside "
+            + (elapsedText(mine.myMedian) || "an unknown time") + ".";
+          nm.appendChild(t);
+        }
+      },
+      notes: function(m){
+        var line = el("div", "st");
+        line.appendChild(document.createTextNode("Ask for: "));
+        i.asks.slice(0, 6).forEach(function(a, k){
+          if (k) line.appendChild(document.createTextNode(" "));
+          var tag = el("span", "tag" + (a.frees ? " ok" : a.stone ? " warn" : ""),
+                       a.name);
+          tag.title = a.bst + " BST"
+            + (a.frees ? " — you hold it only in the Champions box, so a "
+                + "HOME copy frees that slot" : "")
+            + (a.stone ? " — turns on " + a.stone + ", already bought" : "")
+            + (a.band === "base" ? " — under what this chip is worth, "
+                + "which is the ask that clears fastest"
+              : " — at or above what this chip is worth");
+          line.appendChild(tag);
+        });
+        if (i.asks.length > 6) {
+          line.appendChild(document.createTextNode(
+            " +" + (i.asks.length - 6) + " more"));
+        }
+        m.appendChild(line);
+      },
+      onclick: function(){ findDetail(p); }
+    }));
+  });
+  more.innerHTML = "";
+  if (ideas.length > cap) {
+    more.appendChild(fbtn("Show the other " + (ideas.length - cap), "sm",
+      function(){ tradeAll = true; drawGtsWanted(); }));
+  } else if (tradeAll && ideas.length > TRADE_CAP) {
+    more.appendChild(fbtn("Show fewer", "sm",
+      function(){ tradeAll = false; drawGtsWanted(); }));
+  }
+}
+
+export { boxBadges, diffChip, drawGts, drawGtsWanted,
+  gtsDiff, gtsPickMine, gtsPickWanted };

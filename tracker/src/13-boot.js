@@ -11,7 +11,7 @@ import { addSheet, drawDexPane, pokeRow } from "./05-box.js";
 import { buildRow, buildSheet } from "./06-builds.js";
 import { drawItems, drawStatuses, drawStones, drawTrainer } from "./07-gear.js";
 import { drawTeams } from "./08-teams.js";
-import { drawGts } from "./09-gts.js";
+import { drawGts, drawGtsWanted } from "./09-gts.js";
 import { initScan } from "./10-scan.js";
 import { AB_SET, CALC, abilityHit, abilityTag, calcDamage, calcDraw, koCount }
   from "./11-damage.js";
@@ -59,6 +59,10 @@ function renderAll(){
   /* the checklist is derived from the box and HOME, so it goes stale the
      moment either does - but only the visible pane is worth the work */
   if (!$("homePaneDex").hidden) drawDexPane();
+  /* the recommendations are derived from the box and from HOME, so they go
+     stale the moment either does - and from the open offers, since a chip
+     already sitting in a GTS slot is not a chip */
+  if (!$("homePaneGts").hidden) drawGtsWanted();
   $("nHomeOrigin").textContent = oHome.length;
   $("nChampOrigin").textContent = oChamp.length + oUnk.length;
   $("nRent").textContent = rent.length;
@@ -278,6 +282,7 @@ function homePane(which){
   });
   try { localStorage.setItem("champ-homepane", which); } catch (e) {}
   if (which === "dex") drawDexPane();
+  if (which === "gts") drawGtsWanted();
 }
 document.querySelectorAll(".homeseg").forEach(function(seg){
   Array.prototype.forEach.call(seg.children, function(b){
