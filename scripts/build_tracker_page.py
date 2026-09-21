@@ -361,6 +361,24 @@ def config_js():
     string. A secret / service_role key must NEVER end up here - it bypasses
     RLS, and this file is meant to be served to anyone.
     """
+    # DECLARED IN EVERY SHAPE OF THE PAGE, including the one built with no
+    # Supabase config at all. build_dist() fills these two in by substituting
+    # into these exact strings once the on-demand assets have been hashed, so
+    # a page that omits them gets an asset written into dist/ that nothing
+    # references - which is a hard failure raised three hundred lines from the
+    # `return` that caused it.
+    #
+    # Not hypothetical, and not rare. A Dependabot pull request never receives
+    # the repository's secrets, so SUPABASE_URL is empty on every one of them,
+    # and CI has no config.local.json either - both fell through to the short
+    # return below. So EVERY Dependabot PR failed the gate with
+    #
+    #     dist/analysis.<hash>.js was written but the page never references it
+    #
+    # a message about the Smogon analysis panel, on a pull request that bumps
+    # jsdom. #135 on 2026-09-21, and it would have been every one after it.
+    lazy = ("window.CHAMP_ANALYSIS_URL = '';" + chr(10)
+            + "window.CHAMP_OUTSIDE_URL = '';" + chr(10))
     # CI has no config.local.json - it is gitignored, because it is per
     # machine. Without a fallback the build would quietly succeed and deploy a
     # page with CHAMP_CONFIG = {}, i.e. the app with its ledger disconnected.
@@ -373,7 +391,7 @@ def config_js():
         print("  Supabase: from the environment")
     elif not os.path.exists(CFG):
         print("  no tracker/config.local.json - building the Claude-db version")
-        return "window.CHAMP_CONFIG = {};"
+        return lazy + "window.CHAMP_CONFIG = {};"
     else:
         c = json.load(open(CFG, encoding="utf-8"))
     for k in ("url", "publishableKey"):
@@ -390,13 +408,11 @@ def config_js():
     # would drift: the day the project URL moves, a second copy keeps pointing at
     # the old one and the app looks broken with no error, just a blocked request.
     BUILT["supabase"] = c["url"]
-    # Filled in by build_dist() once the analysis asset has been hashed. Empty
-    # in tracker/index.html, the single-file shape, and the app hides the panel
-    # rather than pretending: 407 KB inlined into a page that is already 1.3 MB
-    # would be paid by everyone for something opened occasionally.
-    return ("window.CHAMP_ANALYSIS_URL = '';" + chr(10)
-            + "window.CHAMP_OUTSIDE_URL = '';" + chr(10)
-            + "window.CHAMP_CONFIG = ") + json.dumps(
+    # `lazy` stays empty in tracker/index.html, the single-file shape, and the
+    # app hides the panel rather than pretending: 407 KB inlined into a page
+    # that is already 1.3 MB would be paid by everyone for something opened
+    # occasionally.
+    return lazy + "window.CHAMP_CONFIG = " + json.dumps(
         {"supabase": {"url": c["url"], "key": c["publishableKey"],
                       "email": c.get("loginEmail", "")}},
         ensure_ascii=False) + ";"
@@ -655,10 +671,21 @@ def build_dist(html):
         text = io.open(src, encoding="utf-8").read()
         name = "%s.%s.js" % (src_name[:-3], hashlib.sha256(
             text.encode("utf-8")).hexdigest()[:8])
+        # SAY WHAT ACTUALLY WENT WRONG. The substitution below is silent when
+        # its target is absent, so the build carried on and failed 60 lines
+        # later with "written but the page never references it" - true, and
+        # about the wrong thing. Whoever adds a third on-demand asset and
+        # forgets its placeholder should be told that, not sent to read the
+        # asset check.
+        slot = "window.%s = '';" % var
+        if slot not in page:
+            sys.exit("config_js() never declared window.%s, so the hashed "
+                     "asset has nowhere to be named. Add it to `lazy` - it "
+                     "has to be emitted on EVERY path through that function, "
+                     "including the one with no Supabase config." % var)
         open(os.path.join(DIST, name), "w", encoding="utf-8",
              newline="").write(text)
-        page = page.replace("window.%s = '';" % var,
-                            "window.%s = %r;" % (var, name))
+        page = page.replace(slot, "window.%s = %r;" % (var, name))
         assets[name] = text
         print("  asset %-30s %6.0f KB  (on demand)" % (name, len(text) / 1024))
     open(os.path.join(DIST, "index.html"), "w", encoding="utf-8",
