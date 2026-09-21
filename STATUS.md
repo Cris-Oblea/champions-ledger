@@ -1283,3 +1283,88 @@ the build species picker, the team slot picker, the calculator's attacker
 picker, the box, HOME, the builds list and Find. The only rows in the app that
 carry no stat table are the ones that are not a Pokemon - an item, a stone, a
 move, an ability, a team.
+
+### ...and then eight more passes on the same card, all of them his
+
+The one-card pass above was the start of it. What followed is worth recording
+as a sequence, because none of it came from a plan and every one of them was
+found by opening the app and looking:
+
+**Colours that change with the typing.** Eighteen of the 76 Mega species retype
+- four of them change how MANY types there are - and none of it reached the two
+things on a card made of type colour. Offered a second band, a band segmented
+over the sprites, an outer frame or a cross-fade, he picked the cross-fade with
+its cost stated: nine seconds a cycle, held at each end, and only on the
+eighteen.
+
+**The frame had to change with it, and change back.** The ring was a hover
+state and stayed grey while the band and tint faded, which made the fade look
+like a bug. It is the card's edge now, on touch too. The base ring then had to
+be told to fade OUT: `::after` is generated as the element's LAST child, so it
+painted over the overlay and Ground's half of Garchomp survived into the Mega
+state. Measured over a cycle: exact complements.
+
+**The left stripe went**, reversing "the left stripe stays". That note was right
+when written - two edges, two facts - and stopped being right when every row
+with an origin got a tag that says it.
+
+**There is no Mega "M".** `megaSuffix()` returned `"M"` as a stand-in letter and
+it reached the badges, naming a form the game does not have. The four labels are
+Mega, Mega X, Mega Y, Mega Z. He said it twice, an hour apart, which is how a
+thing gets into CLAUDE.md.
+
+**One ink per Mega, and it is a custom property.** X blue, Y red, Z green off
+the games' own box art - it beat the first guess here, which had Y orange from
+Charizard - and plain Mega purple. Setting `color` on `.mk-z` lost every fight,
+because `.statline .mg`, `.cardline span.lbl`, `.megapickey` and `.megato` are
+each more specific than a bare class. A variable does not compete.
+
+**One ability box per Mega**, so the base cell stopped carrying three Pokemon
+behind arrows - and BST stopped sitting alone on a line.
+
+**Rows align by form.** A stat cell used to append only the Megas that moved
+something, so row one meant "whichever moved it". Every form gets a row now,
+with a blank where it changes nothing - and the blank carries a hidden key,
+because a real delta is two lines and a one-line blank left everything below
+half a line out.
+
+**Three sprites in a line**, then one shape for every card. The corner sprite
+was never a style choice - it was what one 96px sprite allowed and three did
+not. Two shapes in one grid put names 109px apart in a mixed row, and in dex
+order 55% of rows were mixed. Every card builds the strip now, which costs
++10% of scroll on the desktop grid and +15% on a phone, priced and accepted
+before it was done. That in turn set the grid's minimum column to 300px,
+reversing a 250 that had been right under its own premise: three sprites are
+294 and a column that cannot draw them is not worth fitting one more of.
+
+**No line wraps.** `.cardline` was `flex-wrap:wrap`, and flex breaks lines on an
+item's CONTENT width before it shrinks anything. 284 of 341 lines wrapped.
+`nowrap` with `flex:1 1 0` fixed all of them; 264 forms at five widths is 1320
+cards with nothing broken and nothing overflowing.
+
+**The ranked stat marks its cell, not everything in it.** `.statline div.on
+span` repainted the Mega deltas in the filter's teal on every card with a Mega.
+It half-survived on a two-Mega card - the little key beat it on specificity -
+which is the detail that gave the cause away. 264 forms x six sorts is 1584
+cards, all marked, not one delta tinted. The sweep also found that ranking by
+BST marked a box nothing drew, so Find's default sort was the one sort that
+marked nothing.
+
+**Stone ownership left the Pokemon entirely.** It had leaked into an outline on
+a box, a tooltip, a sheet tag, a picker button and a build badge. A stone is an
+item and the Items tab tracks items; a Mega has its ability whether or not the
+stone is in the bag. `01-data.js` stopped importing anything at all as a
+result.
+
+**And the sheet became a stack of Pokemon.** First its head stopped repeating
+the Mega line that the Mega blocks already carry; then the Mega's ability got
+explained where it lives rather than in the base form's list; then the base
+form got the same box as a Mega, with its stats, its abilities and its damage
+table inside it. The loose "Abilities" and "Takes damage" headings are gone -
+that content belongs to a form, and a form is a box.
+
+**What it cost in tests:** three assertions measured the old shape and were
+rewritten to measure the new one - a row found by `textContent.indexOf(name)`,
+a cell labelled "Ability" on a dex card, and `ledgertest` looking for two
+headings that are now inside a panel. Each one still checks what it was written
+to check.
