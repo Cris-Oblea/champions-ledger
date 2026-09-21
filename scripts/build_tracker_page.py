@@ -129,7 +129,7 @@ PUBLIC = [
     "gtsPickMine", "itemTags", "leaveEditor",
     "gtsPickWanted", "learnset",
     "megasFor", "moveRowFor", "overlapSweep", "pokeSheet", "teamReport",
-    "teamSheet", "teamTypes",
+    "teamSheet", "teamSpeeds", "teamTypes",
 ]
 
 # WHY A BUNDLER AT ALL, when the source is standard ES modules that the browser
