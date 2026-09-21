@@ -1153,9 +1153,10 @@ function teamSheet(id, t){
           return e.name + " \u00d7" + (e.m === 0 ? "0" : e.m);
         }).join(", ");
       };
+      var grid = el("div", "typegrid");
+      host.appendChild(grid);
       tt.forEach(function(x){
         var d = el("div", "st");
-        d.style.marginBottom = "6px";
         var head = el("div");
         head.appendChild(typeChip(x.type));
         if (x.weak >= 3) head.appendChild(el("span", "tag bad",
@@ -1173,7 +1174,7 @@ function teamSheet(id, t){
           ? "resists: " + say(x.resistOf)
           : "nothing on the team resists it";
         d.appendChild(rs);
-        host.appendChild(d);
+        grid.appendChild(d);
       });
     }
 
