@@ -1,7 +1,8 @@
 /* 09-gts.js - GTS: what may be offered, what it is worth, and the export.
    Part of the app; linked into one script by scripts/build_tracker_page.py. */
 import { $, C, FORMS, MEGAS_OF, STONE_OF, anyRow, bst, byName, capNote,
- cardLine, dexLabel, dexNo, el, freeSlug, labelBox, megasFor, pokeCard,
+ cardLine, dexLabel, dexNo, el, freeSlug, labelBox, megasFor, outsideRow,
+ pokeCard,
  spriteFor, statGrid, toast, typeCard, typeChip } from "./01-data.js";
 import { ORIGIN_LABEL, S, boxRows, hasStone, originOf } from "./02-state.js";
 import { drop, put, putNew } from "./03-store.js";
@@ -418,6 +419,7 @@ function gtsRow(i, o){
    open offer occupies one until it is taken or withdrawn, so the fourth
    deposit is not a thing the game will accept. A fixed rule, unlike the box
    capacity, which grows and therefore lives in meta.trainer. */
+var CEILING = 60;
 var GTS_SLOTS = 3;
 /* ==================================================== GTS intelligence ====
    Five things the app knew half of and never joined up. All of it is derived
@@ -538,9 +540,17 @@ function deadStones(){
    than you could is how an offer clears the same day. */
 function chipBand(v, b){
   if (!v) return null;
-  if (b > v.reach + 20 || b < Math.min(v.base, v.value) - 70) return null;
+  if (b > v.reach + CEILING || b < Math.min(v.base, v.value) - 70) return null;
   return b >= v.value - 25 ? "reach" : "base";
 }
+/* THE CEILING IS MEASURED NOW, not guessed. It was reach + 20, and his own
+   61 closed trades say that is a little tight: 5 of the 51 priced on both
+   sides landed ABOVE it, the furthest being Indeedee 475 -> Rillaboom 530,
+   and every one of the five closed - three of them inside six hours. 60
+   covers all five with nothing to spare. The floor stays at 70 under,
+   because in 51 trades NOTHING landed below it: asking for less than you
+   could is safe, and a generous floor costs nothing.
+   Full write-up in analysis/gts_pricing.md. */
 function gtsSuggest(chipName, limit, shiny){
   var v = chipValue(chipName, shiny);
   if (!v) return [];
@@ -609,15 +619,47 @@ function gtsSuggest(chipName, limit, shiny){
                     (d && d.demand != null ? (5 - d.demand) * 6 : 8) +
                     Math.max(0, 20 - Math.abs(anchor - b) / 3)});
   });
+  /* AND THE SPECIES CHAMPIONS DOES NOT HAVE, which is most of the dex and
+     was none of this list.
+
+     The GTS is HOME to HOME: what comes back does not have to be playable,
+     and he asked to see those too (player, 2026-09-21: "me gustaria tener una
+     vision mas amplia que tambien me deje ver los pokemones que no estan en
+     champions para ver por que pokemon cambiarlo"). Two reasons they belong
+     here. One is the HOME dex, which he is completing on purpose. The other
+     is that a species Champions cannot use is exactly what his own rule lets
+     him offer NEXT - taking one is buying a future chip.
+
+     They are ranked BELOW everything playable, because a Pokemon you can
+     bring to a game is worth more than one you cannot, and they carry no
+     ladder row at all - no demand, no rank - so nothing here pretends to
+     know how hard they are to get. */
+  var outAsk = [];
+  Object.keys(C.HOME_DEX || {}).forEach(function(n){
+    if (owned[n] || byName[n]) return;
+    var row = outsideRow(n);
+    if (!row || !row.b || !row.b.length) return;
+    var b2 = bst(row);
+    var band2 = chipBand(v, b2);
+    if (!band2) return;
+    outAsk.push({name:n, bst:b2, spe:row.b[5], stone:null, rank:null,
+                 demand:null, band:band2, frees:false, outside:true,
+                 stretch:b2 > v.value,
+                 score:Math.max(0, 20 - Math.abs(
+                   (band2 === "reach" ? v.reach : v.base) - b2) / 3)});
+  });
   function byScore(a, b){ return b.score - a.score || b.bst - a.bst; }
   bands.reach.sort(byScore);
   bands.base.sort(byScore);
+  outAsk.sort(byScore);
   var want = limit || 14;
   var out = [];
   while (out.length < want && (bands.reach.length || bands.base.length)) {
     if (bands.reach.length) out.push(bands.reach.shift());
     if (out.length < want && bands.base.length) out.push(bands.base.shift());
   }
+  /* the outside dex fills whatever is left, never displacing a playable ask */
+  while (out.length < want && outAsk.length) out.push(outAsk.shift());
   return out;
 }
 
@@ -672,6 +714,30 @@ function gtsHistory(){
     });
 }
 
+/* WHAT COUNTS AS A DUPLICATE, and a welded copy does not.
+
+   It was "how many rows of this species exist in either box", which is a
+   different question and a dangerous one to confuse with this one. He has a
+   Metagross in HOME and a Metagross RENTAL in the Champions box, and the
+   filter called that a duplicate and offered the HOME one as trade material
+   (player, 2026-09-21: "ESO NO ES DUPLICADO!, duplicado seria tener dos
+   pokemones iguales del mismo origen, aqui tengo un metagross real y un
+   metagross rental que nunca se podra mover!, por lo que metagross no es
+   duplicado en home"). Trading it away would have lost the species from HOME
+   for good, which is exactly what the keep-one rule exists to prevent.
+
+   A rental and an Encounter buy are Champions origin: they can never leave
+   the game, so they can never be the copy he keeps. Only a row that can BE in
+   HOME counts - one already there, or one in the Champions box that came from
+   HOME and can be parked back. */
+function keepableCopies(){
+  var n = {};
+  boxRows("home").forEach(function(r){ n[r.name] = (n[r.name] || 0) + 1; });
+  boxRows("champions").forEach(function(r){
+    if (originOf(r) === "home") n[r.name] = (n[r.name] || 0) + 1;
+  });
+  return n;
+}
 /* THE KEEP-ONE RULE (player, 2026-09-10): "yo siempre quiero quedarme con 1
    especie en home para siempre". Only two things may be offered - a duplicate
    past the first copy, or a species Champions does not allow at all. Offering
@@ -683,15 +749,18 @@ function gtsHistory(){
    not the ledger doing its job.
 
    Counts the BOX, not the offers: depositing does not remove the Pokemon, so
-   the copy is still there until the trade actually closes. */
+   the copy is still there until the trade actually closes.
+
+   AND IT COUNTS KEEPABLE COPIES ONLY, which is the same correction the
+   duplicate filter needed and for the same reason: a rental or an Encounter
+   buy of the species is welded into the Champions box and can never be the
+   copy he keeps, so it must not make the one in HOME look expendable. This
+   is the warning that catches the mistake the filter would have let through,
+   and it was reading the same wrong number. */
 function lastCopyOf(rec){
   if (!rec) return false;
   if (!byName[rec.name]) return false;          // not in the dex: free to trade
-  var n = 0;
-  boxRows("home").concat(boxRows("champions")).forEach(function(r){
-    if (r.name === rec.name) n++;
-  });
-  return n <= 1;
+  return (keepableCopies()[rec.name] || 0) <= 1;
 }
 /* THE RULE IS PER FORM, NOT PER SPECIES, AND HE PICKS WHICH FORM (player,
    2026-09-12): "tenía indeedee macho y uno hembra, me quedo con la hembra me
@@ -882,9 +951,12 @@ function gtsPickMine(onPick, exceptId){
     body.appendChild(sortWrap);
 
     var filtWrap = el("div", "toggles");
-    [["dupes", "Duplicates only", "You hold more than one of this species - " +
-      "the Species Clause means a second copy can never share a team with the " +
-      "first, so it is pure trade material."],
+    [["dupes", "Duplicates only", "You hold more than one copy you could " +
+      "KEEP - in HOME, or in the Champions box and able to go back there. A " +
+      "rental or an Encounter buy of the same species does not count: it can " +
+      "never leave the game, so it can never be the copy you keep. The " +
+      "Species Clause means a real second copy can never share a team with " +
+      "the first, so it is pure trade material."],
      ["outside", "Not in Champions only", "HOME can hold it for ever and it " +
       "can never enter the game, so it costs you nothing to give away."]
     ].forEach(function(o){
@@ -903,12 +975,9 @@ function gtsPickMine(onPick, exceptId){
     var out = el("div");
     body.appendChild(out);
 
-    /* how many of this species are anywhere in either box - the count the
-       duplicate filter asks about, over the WHOLE ledger and not the section */
-    var copies = {};
-    home.concat(champAll).forEach(function(r){
-      copies[r.name] = (copies[r.name] || 0) + 1;
-    });
+    /* Copies he could KEEP, over the whole ledger and not the section. A
+       welded Champions row is not one of them - see keepableCopies. */
+    var copies = keepableCopies();
 
     function matches(r, q){
       if (PICK.dupes && (copies[r.name] || 0) < 2) return false;
@@ -1564,12 +1633,11 @@ function gtsChips(){
   var all = boxRows("home").concat(boxRows("champions").filter(function(r){
     return originOf(r) === "home";
   }));
-  var copies = {};
-  boxRows("home").concat(boxRows("champions")).forEach(function(r){
-    copies[r.name] = (copies[r.name] || 0) + 1;
-  });
+  var copies = keepableCopies();
   /* HIS RULE, NOT OURS: only a duplicate past the first copy, or a species
-     Champions cannot use. Offering a singleton of a legal species loses it. */
+     Champions cannot use. Offering a singleton of a legal species loses it -
+     and a rental of that species in the Champions box does not make it a
+     duplicate, because a rental can never come back out. */
   return all.filter(function(r){
     if (taken[r._id]) return false;              /* already in a GTS slot */
     return (copies[r.name] || 0) > 1 || !byName[r.name];
@@ -1689,24 +1757,44 @@ function drawGtsWanted(){
       },
       notes: function(m){
         var line = el("div", "st");
-        line.appendChild(document.createTextNode("Ask for: "));
-        i.asks.slice(0, 6).forEach(function(a, k){
-          if (k) line.appendChild(document.createTextNode(" "));
-          var tag = el("span", "tag" + (a.frees ? " ok" : a.stone ? " warn" : ""),
+        /* THE WHOLE LIST OPENS. It showed six and said "+16 more", which is
+           the app knowing something and not saying it (player, 2026-09-21:
+           "solo pones algunos pokemones, me gustaria tener una vision mas
+           amplia"). Six is still what it opens with, because a card is read
+           at a glance and 24 tags is not a glance - but the rest is one tap
+           away and nothing is behind a scroll you cannot reach. */
+        function askTag(a){
+          var tag = el("span", "tag" + (a.frees ? " ok"
+                       : a.stone ? " warn" : a.outside ? " quiet" : ""),
                        a.name);
           tag.title = a.bst + " BST"
             + (a.frees ? " — you hold it only in the Champions box, so a "
                 + "HOME copy frees that slot" : "")
             + (a.stone ? " — turns on " + a.stone + ", already bought" : "")
+            + (a.outside ? " — not in Champions: it can live in HOME and "
+                + "never enter a game, which also makes it your next chip" : "")
             + (a.band === "base" ? " — under what this chip is worth, "
                 + "which is the ask that clears fastest"
               : " — at or above what this chip is worth");
-          line.appendChild(tag);
-        });
-        if (i.asks.length > 6) {
-          line.appendChild(document.createTextNode(
-            " +" + (i.asks.length - 6) + " more"));
+          return tag;
         }
+        function paintAsks(n){
+          line.innerHTML = "";
+          line.appendChild(document.createTextNode("Ask for: "));
+          i.asks.slice(0, n).forEach(function(a, k){
+            if (k) line.appendChild(document.createTextNode(" "));
+            line.appendChild(askTag(a));
+          });
+          if (i.asks.length > n) {
+            line.appendChild(document.createTextNode(" "));
+            line.appendChild(fbtn("+" + (i.asks.length - n) + " more", "sm quiet",
+              function(ev){
+                if (ev && ev.stopPropagation) ev.stopPropagation();
+                paintAsks(i.asks.length);
+              }));
+          }
+        }
+        paintAsks(6);
         m.appendChild(line);
       },
       onclick: function(){ findDetail(p); }

@@ -189,6 +189,20 @@ hold only in the Champions box is welded there, because an Encounter Pokemon
 can only leave by being released, so a HOME copy of one is worth more than the
 dead Mega Stone the suggester used to rank top.
 
+**What counts as a duplicate is an origin question.** A copy only counts if it
+could be the one you keep — in HOME, or in the Champions box and able to be
+parked back there. A rental or an Encounter buy of the same species is welded
+into the game and can never come back out, so it does not make the HOME copy
+expendable. Getting this wrong offered a singleton as trade material and would
+have lost the species.
+
+**The asks include the species Champions cannot use.** The GTS is HOME to HOME,
+so what comes back does not have to be playable — and the HOME dex is being
+completed on purpose, while a species Champions cannot use is exactly what the
+keep-one rule always lets you offer next. They are ranked below everything
+playable and drawn without a colour, because a Pokemon you can bring to a game
+is worth more than one you cannot.
+
 **Nothing on it claims a species is easy in Pokemon GO.** It did, from a
 declared supply score — and 260 of the 264 sit at the default of 2, so the
 claim was mostly a guess wearing a number. What is there instead is the only
@@ -598,7 +612,7 @@ tracker/     the app: a shell, its ES modules under src/, and a generated data b
 <!-- TESTS:START -->
 tests/       twenty-two browser tests, run against the BUILT page
 <!-- TESTS:END -->
-analysis/    write-ups: the Smogon engine, regulation M-C, the roadmap
+analysis/    write-ups: the Smogon engine, regulation M-C, GTS pricing, the roadmap
 CLAUDE.md    the rules this project works by, including everything learned the hard way
 ```
 

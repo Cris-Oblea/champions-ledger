@@ -100,10 +100,15 @@ setTimeout(() => {
      especie que Champions no puede usar. Los objetivos van en la linea
      "Ask for", y el que libera slot va marcado. */
   const chips = names("listGtsWant");
-  ok("Garchomp es un chip: lo tienes dos veces",
-     chips.indexOf("Garchomp") >= 0, true);
-  ok("Dragonite tambien, duplicado dentro de HOME",
+  ok("Dragonite es un chip: duplicado dentro de HOME",
      chips.indexOf("Dragonite") >= 0, true);
+  /* Y GARCHOMP NO, aunque haya dos filas. Una es de origen Champions y esa
+     no puede salir del juego nunca, asi que no puede ser la copia que se
+     queda - la de HOME es la unica de verdad (player, 2026-09-21: "los
+     duplicados solo se cuentan cuando el origen es home. cuando el origen es
+     champions sea permanente o rental no cuentan para duplicado"). */
+  ok("Garchomp no, su segunda copia es de origen Champions",
+     chips.indexOf("Garchomp") >= 0, false);
   ok("Aggron no es un chip, es un objetivo",
      chips.indexOf("Aggron") >= 0, false);
   const asks = [...d.querySelectorAll("#listGtsWant .st")]
