@@ -1159,6 +1159,31 @@ h2 .n{font-family:var(--mono);color:var(--faint);font-weight:500;letter-spacing:
 .empty{color:var(--faint);font-size:13px;padding:14px;text-align:center;
   border:1px dashed var(--line);border-radius:var(--r)}
 
+/* THE WHOLE TYPE READ AS ONE BLOCK (player, 2026-09-21: "la idea es
+   presentar en un bloque rapido TODOS los weak y resist del team").
+
+   Removing the six-type cap made the honest version of this list a long thin
+   ribbon - up to 17 entries, three screens on a phone. auto-fill rather than
+   a fixed two, so the column count follows the width instead of a breakpoint
+   guessing at it: one column on a narrow phone, two on his screen, three when
+   there is genuinely room.
+
+   `min(100%, 400px)`, never a bare 400px: a grid track's minimum is a
+   minimum, so on a 360px phone `minmax(400px,1fr)` lays a 400px track and
+   the page scrolls sideways. The min() clamps the track to the container on
+   anything narrower than one column. 400 rather than the cards' 300 because
+   an entry is two sentences, not a title - a weak line can name six Pokemon
+   with a multiplier each - and 400 is what keeps his own screen at the two
+   columns he asked for.
+
+   Each entry gets the sunk background because in two columns the eye has to
+   know where one type ends and the next begins; as loose text the columns
+   read as one paragraph. */
+.typegrid{display:grid;gap:8px;
+  grid-template-columns:repeat(auto-fill,minmax(min(100%,400px),1fr))}
+.typegrid>div{background:var(--sunk);border:1px solid var(--line);
+  border-radius:var(--r);padding:8px 10px}
+
 /* ---------- forms -------------------------------------------------------- */
 label.f{display:block;font-family:var(--cond);text-transform:uppercase;
   letter-spacing:.07em;font-size:11px;font-weight:600;color:var(--muted);
