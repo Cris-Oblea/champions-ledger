@@ -66,39 +66,6 @@ function pokeRow(rec){
   });
 }
 
-/* The stat line on a sheet is the form the Pokemon STARTS in, and for two of
-   these that is the form it never attacks in: Aegislash showed 50 Attack while
-   Stance Change gives it 140 the moment it uses a damaging move, and Palafin
-   showed 70 against Hero Form's 160. Castform changes TYPE instead, which is
-   its whole defensive profile and its STAB. `battle_forms` has carried all
-   three in the database for a while and nothing ever shipped it to the app, so
-   both sheets were showing the misleading half (found 2026-09-12).
-   Returns a node or null, and is used by BOTH sheets - the dex one and the
-   one for a Pokemon in your box - because the number is equally wrong on each. */
-function battleFormNote(p){
-  var bfm = p && (C.BFORMS || {})[p.name];
-  if (!bfm) return null;
-  var bx = el("div", "note");
-  bx.style.marginTop = "8px";
-  var lead = el("div");
-  lead.innerHTML = "<strong>In battle it changes.</strong> " +
-    (bfm.by ? bfm.by + ":" : "");
-  bx.appendChild(lead);
-  Object.keys(bfm.f).forEach(function(lab){
-    var e = bfm.f[lab], bits = [];
-    if (e.t) bits.push(e.t.join("/"));
-    if (e.b) {
-      /* only the stats that actually move, so the eye goes to them */
-      STAT_KEYS.forEach(function(k, i){
-        if (e.b[i] !== p.b[i])
-          bits.push(STAT_LABEL[k] + " " + p.b[i] + " → " + e.b[i]);
-      });
-    }
-    bx.appendChild(el("div", "st", lab + " — " + bits.join(", ")));
-  });
-  return bx;
-}
-
 function pokeSheet(rec){
   /* THE SAME SHEET THE SEARCH VIEW DRAWS, with this copy's own facts wedged
      into the middle of it. It used to be a second, smaller sheet: it had the
@@ -780,14 +747,16 @@ function analysisPanel(name, host){
 }
 
 /* ------------------------------------------------------- what leaves here --
-   `pokeRow` is the row both box views draw, `addSheet` the one way a Pokemon
-   enters the box, and `battleFormNote` the line explaining a form that only
-   exists mid-battle.
+   `pokeRow` is the row both box views draw and `addSheet` the one way a
+   Pokemon enters the box. `battleFormNote` used to live here too - one grey
+   line saying what a Pokemon turns into mid-battle - and it is gone: the
+   sheet draws those forms the way it draws a Mega now, and the card draws
+   them too, so the line was saying a third time what two pictures say.
 
    `pokeSheet` is exported for a different reason and it is worth naming: no
    other part calls it. It is in PUBLIC, so the browser tests drive it through
    `window` - they open a sheet for every form in the dex and assert what it
    shows. `moveButtons` stays private.
 */
-export { addSheet, analysisPanel, battleFormNote, loadOutside,
+export { addSheet, analysisPanel, loadOutside,
   outsideDex, outsideMove, outsideMovesFor, pokeRow, pokeSheet };

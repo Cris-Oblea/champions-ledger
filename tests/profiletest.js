@@ -125,11 +125,20 @@ setTimeout(() => {
      misleading half (found 2026-09-12). Asserted on BOTH, because the number
      is equally wrong on each. */
   console.log("\n  lo que cambia en combate");
+  /* IT IS A BLOCK NOW, NOT A LINE (2026-09-21). It was one grey sentence
+     while there was nowhere better to put it; the sheet draws these forms
+     the way it draws a Mega now - sprite, typing, six stats, its own damage
+     table - so this reads the block instead. The facts asserted below are
+     the same ones, and that is the point of changing only the reader. */
   const bnote = () => {
     const b = d.getElementById("sheetBody");
-    const n = [...b.querySelectorAll(".note")]
-      .find(x => /In battle it changes/.test(x.textContent));
-    return n ? n.textContent.replace(/\s+/g, " ") : "";
+    const hs = [...b.querySelectorAll("h2")]
+      .filter(x => /^In battle/.test(x.textContent));
+    if (!hs.length) return "";
+    let t = hs[0].textContent;
+    for (let n = hs[0].nextElementSibling; n && n.tagName !== "H2";
+         n = n.nextElementSibling) t += " " + n.textContent;
+    return t.replace(/\s+/g, " ");
   };
   w.findDetail(w.byName["Aegislash"]);
   ok("Aegislash avisa de Blade Forme", /Blade/.test(bnote()), true);
