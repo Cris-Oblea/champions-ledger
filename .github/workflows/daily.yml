@@ -76,8 +76,13 @@ jobs:
     # GITHUB_TOKEN's own permissions, which now cover only the deploy half of
     # this job. The branch push and the pull request are done with a GitHub App
     # token instead - see the step that mints it.
+    #
+    # `pull-requests: read` is for the guard below, which asks whether a
+    # daily pull request is still open before deciding the day is done. It
+    # reads; the one that WRITES a pull request is the App.
     permissions:
       contents: read
+      pull-requests: read
 
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1   # v7
@@ -176,9 +181,30 @@ jobs:
                    --json createdAt,conclusion \
                    --jq "[.[] | select(.conclusion==\"success\" and (.createdAt | startswith(\"$today\")))] | length" \
                  2>/dev/null || echo 0)
-          if [ "${done:-0}" -gt 0 ]; then
+          # A RUN THAT SUCCEEDED IS NOT A REFRESH THAT LANDED, and the
+          # difference cost a whole day on 2026-09-20. That morning it did
+          # everything right - refreshed every source, passed the gate on its
+          # own tree, pushed the branch, opened the pull request - and then the
+          # PR's own gate failed, so it sat open and nothing reached the phone.
+          # Both fallbacks saw "a run succeeded today" and stopped. The day was
+          # only rescued because a person noticed.
+          #
+          # So an OPEN daily/* pull request means the day is NOT done, whatever
+          # the run history says: the last attempt is stuck and this one should
+          # go again. Its push replaces the branch and the sweep at the end of
+          # this job deletes the stranded one, so it converges instead of
+          # piling up.
+          stuck=$(gh pr list --state open --limit 20 \
+                    --json headRefName \
+                    --jq '[.[] | select(.headRefName | startswith("daily/"))] | length' \
+                  2>/dev/null || echo 0)
+          if [ "${stuck:-0}" -gt 0 ]; then
+            echo "skip=no" >> "$GITHUB_OUTPUT"
+            echo "$stuck daily pull request(s) still open - the last attempt did"
+            echo "not land. Refreshing again."
+          elif [ "${done:-0}" -gt 0 ]; then
             echo "skip=yes" >> "$GITHUB_OUTPUT"
-            echo "A refresh already succeeded today ($done). Stopping here."
+            echo "A refresh already landed today ($done run(s), nothing open)."
           else
             echo "skip=no" >> "$GITHUB_OUTPUT"
           fi

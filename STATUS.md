@@ -879,9 +879,32 @@ and two cells Serebii leaves empty another source fills:**
 | Meteor Assault | BP | 150 | **170** (Smogon calc) |
 | Double Shock | PP / accuracy | *empty* | **8 / 100** (pokebase) |
 
-These are for the player to settle in game - his observation outranks every
-scraped source - and Slash matters most, because M-C handed it to 29 already
-legal Pokemon, seven of them in his box.
+**THREE OF THE FOUR ARE SETTLED, and Smogon settled them** (checked
+2026-09-21, at the player's suggestion: "los 4 ataques los puedes confirmar en
+smogon"). Its Champions engine carries a base power for every move, so the
+three BP disputes have a third voice:
+
+| Move | Serebii | pokebase | Smogon calc | stored | settled |
+|---|---|---|---|---|---|
+| Slash | 80 | 70 | **80** | 80 | Serebii; pokebase has the main-series 70 |
+| Snipe Shot | 85 | 80 | **85** | 85 | Serebii; pokebase has the main-series 80 |
+| Meteor Assault | 150 | - | **170** | 170 | Smogon; Serebii has the main-series 150 |
+| Night Slash | 20 PP | 16 PP | *no PP field* | 20 | **cannot be settled there** |
+
+The pattern is the useful part: **whichever source carries the main-series
+number is the one that is wrong**, and it is not always the same source. Serebii
+is right on the two where pokebase never applied the rebalance, and wrong on the
+one where it did not apply it itself.
+
+`audit_sources.py` is down to TWO disagreements: Snipe Shot's BP, which is now
+decided, and Night Slash's PP, which Smogon cannot decide because **its move
+table has no PP field at all** - 28 fields, none of them PP, because a
+calculator does not need one. That one stays Serebii's 20 under the source
+hierarchy, and it is the least consequential kind of disagreement: PP is
+rescaled globally in Champions and both 16 and 20 are real buckets.
+
+Anything still open here is for the player to settle in game - his observation
+outranks every scraped source.
 
 **Bulbapedia and WikiDex are deliberately not in that audit.** They are
 main-series canon and Champions rebalances: Body Slam is 16 PP here, Aerial Ace
@@ -1028,8 +1051,10 @@ one file. Added `apple-touch-icon.png` at 180x180 with no alpha, which is what
 iOS asks for. Deployed as `388a099a`.
 
 **Still open from that day:** the four numbers the sources disagree on
-(Slash, Snipe Shot, Night Slash, Meteor Assault), which only the game can
-settle. The other two items that sat here - a service worker, and the HOME
+(Slash, Snipe Shot, Night Slash, Meteor Assault). THREE OF THOSE ARE
+SETTLED now - Smogon's engine carries a base power and agreed with Serebii
+twice and against it once; only Night Slash's PP is left, because that table
+has no PP field. The other two items that sat here - a service worker, and the HOME
 list's filter and cap copied onto the Champions Box - were IDEAS OF MINE that
 nobody asked for, and both were struck on 2026-09-20 when the player read them
 back: "eso del service worker nunca lo entendi" and "eso de la champion box sin
@@ -1181,9 +1206,11 @@ python scripts/backup_ledger.py --list      # and what each snapshot held
   stripped to `box_capacity` alone in the database the same day, so the frozen
   `vp_balance`, `rank`, `regulation` ("M-B", two versions old), `season` and
   the ticket counts are gone rather than sitting there readable as current.
-- Still open, and the only one of the three that ever was: the four numbers
-  the sources disagree on - Slash, Snipe Shot, Night Slash, Meteor Assault -
-  which only the game can settle. ~~a service worker~~ and ~~the same
+- ~~the four numbers the sources disagree on~~ **THREE SETTLED 2026-09-21**
+  against Smogon's engine: Slash 80 and Snipe Shot 85 with Serebii, Meteor
+  Assault 170 against it. Only **Night Slash's PP** is left (Serebii 20,
+  pokebase 16) and Smogon cannot settle it - its move table has no PP
+  field. ~~a service worker~~ and ~~the same
   filter/cap treatment for the Champions Box list that HOME got~~ were struck
   on 2026-09-20: both were mine, neither was asked for, and the player could
   not place either when he read them back.
