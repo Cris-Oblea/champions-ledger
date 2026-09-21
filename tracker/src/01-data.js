@@ -1227,6 +1227,83 @@ function capNote(host, shown, total, what){
   return n;
 }
 
+/* ONE SEARCH BOX, AND EVERY LIST GETS ONE.
+
+   Eight copies of the same six lines - a div, an inline magnifier, an input -
+   had grown across the app, so a screen only got a search box if whoever wrote
+   it remembered to paste them. The team's build picker did not:
+
+     "el selector de slot no tiene buscador! imaginate tener 100 builds
+      diferentes y tener que deslizar, es mucho tiempo perdido. yo necesito que
+      todos los menus de busqueda de cualquier cosa puedan tener un search y/o
+      filtros"  (player, 2026-09-21)
+
+   A helper makes adding one a line rather than a paste, which is the only way
+   "every list" stays true of the next list as well.
+
+   It carries its own clear button rather than relying on `type=search`: the
+   native one is drawn by the browser inside our own border, Safari hides it
+   the moment a search field is restyled, and a filter you cannot empty in one
+   tap is a filter you stop using. */
+function addClear(wrap, inp){
+  if (!wrap || !inp || wrap.querySelector(".clr")) return;
+  var clr = el("button", "clr", "×");
+  clr.type = "button";
+  clr.title = "Clear";
+  clr.setAttribute("aria-label", "Clear the filter");
+  wrap.appendChild(clr);
+  function paint(){ wrap.classList.toggle("has", !!inp.value); }
+  /* WRAPS whatever handler is already on the field rather than replacing it.
+     The seven boxes written straight into the markup are wired in 13-boot,
+     and this pass runs over them afterwards - taking `oninput` would have
+     silently unwired all seven. */
+  var prev = inp.oninput;
+  inp.oninput = function(e){ paint(); if (prev) prev.call(inp, e); };
+  clr.onclick = function(e){
+    /* guarded: a test, or any code, may call this handler directly */
+    if (e) { e.preventDefault(); e.stopPropagation(); }
+    inp.value = "";
+    /* through the field's own handler, so the list redraws exactly as it does
+       for a keystroke - there is no second code path to keep in step */
+    if (inp.oninput) inp.oninput.call(inp, e);
+    inp.focus();
+  };
+  paint();
+}
+
+/* Every search box written straight into the markup gets the same clear
+   button, so the two ways a field can be born look identical on screen. */
+function wireClears(root){
+  var wraps = (root || document).querySelectorAll(".search");
+  Array.prototype.forEach.call(wraps, function(w){
+    var inp = w.querySelector("input");
+    if (inp) addClear(w, inp);
+  });
+}
+
+function searchField(host, placeholder, onInput){
+  var wrap = el("div", "search field");
+  wrap.innerHTML = '<svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/>'
+                 + '<path d="m20 20-3.5-3.5"/></svg>';
+  var inp = el("input");
+  inp.type = "text";
+  inp.placeholder = placeholder || "Search";
+  /* a filter box is not a name being typed for the first time - autocorrect
+     and a capital letter on a phone both fight what is being typed here */
+  inp.setAttribute("autocomplete", "off");
+  inp.setAttribute("autocapitalize", "none");
+  inp.setAttribute("autocorrect", "off");
+  inp.setAttribute("spellcheck", "false");
+  wrap.appendChild(inp);
+  if (onInput) inp.oninput = onInput;
+  addClear(wrap, inp);
+  if (host) host.appendChild(wrap);
+  inp.wrap = wrap;
+  /* the value, lowercased and trimmed - every caller was writing this out */
+  inp.q = function(){ return inp.value.trim().toLowerCase(); };
+  return inp;
+}
+
 /* ------------------------------------------------------- what leaves here --
    The surface of this part. Everything not named below is private to the file:
    `slug` (freeSlug is the only caller) and `toastT` (toast's own timer).
@@ -1243,7 +1320,7 @@ export {
   pokeFacts,
   outsideRow,
   retypeLayer,
-  spriteFor, statGrid,
+  searchField, spriteFor, statGrid, wireClears,
   typeCard, typeSkin, typeTint,
   effectChips, effectLine, effectOf, podiumChip, podiumFor, splitMax, splitPct,
   splitsFor, splitsReg, usageTag,

@@ -4,7 +4,8 @@ import { $, C, DEX, MOVES, MOVE_BY, SORT, STAT_KEYS, STAT_LABEL, STONE_OF,
  TYPE_COLOR, anyRow, bst, byName, capNote, cardLine, catName, defence,
  battleFormsOf, dexNo, effectLine, el, formInk, labelBox, learnset,
  megaLine, megaSuffix, megasFor,
- podiumChip, pokeFacts, podiumFor, pokeCard, splitPct, spriteFor, statGrid, toast,
+ podiumChip, pokeFacts, podiumFor, pokeCard, searchField, splitPct, spriteFor,
+ statGrid, toast,
  typeCard, typeChip, typeSkin, usageTag } from "./01-data.js";
 import { S, boxRows, originOf, ownedNames } from "./02-state.js";
 import { closeSheet, fbtn, openSheet } from "./04-nav.js";
@@ -1082,13 +1083,8 @@ function moveFilters(body, pool, onChange, placeholder, opts){
     var d = el("div", "sub"); d.style.margin = "0 0 4px"; d.textContent = t;
     return d;
   }
-  var wrap = el("div", "search field");
-  wrap.innerHTML = '<svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>';
-  var inp = el("input"); inp.type = "text";
-  inp.placeholder = placeholder || ("Filter " + pool.length + " moves");
-  wrap.appendChild(inp);
-  body.appendChild(wrap);
-  inp.oninput = function(){ onChange(); };
+  var inp = searchField(body, placeholder || ("Filter " + pool.length +
+    " moves"), function(){ onChange(); });
 
   var srow = el("div", "toggles"); srow.style.marginBottom = "8px";
   var sorts = [["bp","BP × acc"],["name","A–Z"],["pp","PP"],["type","Type"]];
@@ -1204,7 +1200,7 @@ function moveFilters(body, pool, onChange, placeholder, opts){
   body.appendChild(count);
 
   function apply(){
-    var q = inp.value.trim().toLowerCase();
+    var q = inp.q();
     var cats = Object.keys(F.cat), tys = Object.keys(F.type),
         trs = Object.keys(F.trait);
     var hits = pool.filter(function(m){
@@ -1519,11 +1515,8 @@ function findInit(){
 
   $("findAddAbility").onclick = function(){
     openSheet("Add an ability filter", function(body){
-      var wrap = el("div", "search field");
-      wrap.innerHTML = '<svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>';
-      var inp = el("input"); inp.type = "text"; inp.placeholder = "Ability";
-      wrap.appendChild(inp);
-      body.appendChild(wrap);
+      var inp = searchField(body, "Search " + Object.keys(C.ABIL).length +
+        " abilities — name or effect", function(){ draw(); });
       /* Every ability sorted into ONE bucket, so 215 names can be narrowed to
          the kind you are actually after. The two "changes moves" buckets are
          not re-derived here: they ARE the rule table in
@@ -1555,7 +1548,7 @@ function findInit(){
       body.appendChild(list);
       var all = Object.keys(C.ABIL).sort();
       function draw(){
-        var q = inp.value.trim().toLowerCase();
+        var q = inp.q();
         var ks = Object.keys(pick);
         var hits = all.filter(function(a){
           if (q && a.toLowerCase().indexOf(q) < 0 &&
@@ -1594,7 +1587,6 @@ function findInit(){
         });
         if (!hits.length) list.appendChild(el("div", "empty", "Nothing matches"));
       }
-      inp.oninput = draw;
       draw();
       setTimeout(function(){ inp.focus(); }, 60);
     }, []);

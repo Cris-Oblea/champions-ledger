@@ -2,7 +2,7 @@
    Part of the app; linked into one script by scripts/build_tracker_page.py. */
 import {
   $, HOME_ALL, MOVE_BY, SORT, byName, el, rowMatches, setHomeAll, setSort,
-  sortRows,
+  sortRows, wireClears,
 } from "./01-data.js";
 import { S, boxRows, buildLink, capacity, originRows } from "./02-state.js";
 import { connect } from "./03-store.js";
@@ -35,10 +35,20 @@ function renderAll(){
   bc.textContent = "box " + used + "/" + cap;
   bc.className = "counter" + (used >= cap ? " full" : used >= cap - 3 ? " tight" : "");
 
-  fill($("listHomeOrigin"), sortRows(oHome), "Nothing routed in from HOME yet");
-  fill($("listChampOrigin"), sortRows(oChamp.concat(oUnk)),
-       "Nothing marked as Encounter-bought");
-  fill($("listRent"), sortRows(rent), "No rentals");
+  /* ONE FILTER, THREE SECTIONS. Which origin a Pokemon has is not part of
+     "where is my Chesnaught", so the box's filter runs across all three and
+     each heading says how much of itself is showing. */
+  var bq = ($("boxFilter") && $("boxFilter").value || "").trim().toLowerCase();
+  function boxFill(node, rows, empty){
+    var hits = rows.filter(function(r){ return rowMatches(r, bq); });
+    fill(node, hits, bq ? "Nothing here matches that" : empty);
+    return hits.length;
+  }
+  var nHO = boxFill($("listHomeOrigin"), sortRows(oHome),
+                    "Nothing routed in from HOME yet");
+  var nCO = boxFill($("listChampOrigin"), sortRows(oChamp.concat(oUnk)),
+                    "Nothing marked as Encounter-bought");
+  var nRe = boxFill($("listRent"), sortRows(rent), "No rentals");
   var hq = ($("homeFilter") && $("homeFilter").value || "").trim().toLowerCase();
   var homeShown = sortRows(home).filter(function(r){ return rowMatches(r, hq); });
   /* NOT `cap` - that is the box capacity, ten lines up, and reusing the name
@@ -63,9 +73,14 @@ function renderAll(){
      stale the moment either does - and from the open offers, since a chip
      already sitting in a GTS slot is not a chip */
   if (!$("homePaneGts").hidden) drawGtsWanted();
-  $("nHomeOrigin").textContent = oHome.length;
-  $("nChampOrigin").textContent = oChamp.length + oUnk.length;
-  $("nRent").textContent = rent.length;
+  /* "3 of 18" while a filter is on, because a bare 3 under a heading reads
+     as the section having shrunk rather than as the filter working. */
+  function nOf(id, shown, total){
+    $(id).textContent = bq && shown !== total ? shown + " of " + total : total;
+  }
+  nOf("nHomeOrigin", nHO, oHome.length);
+  nOf("nChampOrigin", nCO, oChamp.length + oUnk.length);
+  nOf("nRent", nRe, rent.length);
   $("nHome").textContent = home.length;
 
   var warn = $("boxWarn");
@@ -261,9 +276,21 @@ $("buildAdd").onclick = function(){ buildSheet(null, {}); };
 $("buildEditBack").onclick = function(){ leaveEditor(); };
 $("teamEditBack").onclick  = function(){ leaveEditor("teams"); };
 $("buildSearch").oninput = drawBuilds;
+$("teamSearch").oninput = drawTeams;
 $("stoneSearch").oninput = drawStones;
 $("itemSearch").oninput = drawItems;
 $("homeFilter").oninput = function(){ setHomeAll(false); renderAll(); };
+/* The whole of renderAll, like homeFilter above it: the three box sections
+   are filled from there and the field itself lives outside every container
+   that gets rebuilt, so nothing steals focus mid-keystroke. */
+$("boxFilter").oninput = renderAll;
+$("gtsWantSearch").oninput = drawGtsWanted;
+$("gtsHistSearch").oninput = drawGts;
+/* EVERY search box in the markup gets the clear button the ones built in JS
+   already have. Last, so it runs over a DOM that is fully wired - addClear
+   WRAPS the handler it finds rather than replacing it, and the handlers are
+   assigned directly above. */
+wireClears();
 /* THREE PANES IN HOME, one switcher. The box, the GTS and the dex checklist
    are asked at different times and were one scroll, so the checklist would
    have opened under a 170-row box. The chosen pane is remembered, because

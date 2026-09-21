@@ -2,7 +2,8 @@
    Part of the app; linked into one script by scripts/build_tracker_page.py. */
 import { $, C, FORMS, MEGAS_OF, STONE_OF, anyRow, bst, byName, capNote,
  cardLine, dexLabel, dexNo, el, freeSlug, labelBox, megasFor, pokeCard,
- spriteFor, statGrid, toast, typeCard, typeChip } from "./01-data.js";
+ searchField, spriteFor, statGrid, toast, typeCard, typeChip }
+  from "./01-data.js";
 import { ORIGIN_LABEL, S, boxRows, hasStone, originOf } from "./02-state.js";
 import { drop, put, putNew } from "./03-store.js";
 import { ask, closeSheet, fbtn, openSheet } from "./04-nav.js";
@@ -83,7 +84,6 @@ function drawGtsHistory(){
   var h = gtsHistory();
   wrap.hidden = !h.length;
   if (!h.length) return;
-  $("nGtsHist").textContent = h.length;
   var tog = $("gtsHistToggle"), bod = $("gtsHistBody");
   if (!tog._wired) {
     tog._wired = 1;
@@ -119,7 +119,19 @@ function drawGtsHistory(){
       " — so that ceiling is reachable, not automatic."
     : "What the market actually paid.";
   host.innerHTML = "";
-  h.forEach(function(r){
+  /* BOTH SIDES OF THE TRADE, because the question this list answers is "what
+     did a Chesnaught fetch last time" - and a Chesnaught can be either half
+     of it. 21 closed trades today and it only grows. */
+  var hq = ($("gtsHistSearch") && $("gtsHistSearch").value || "")
+    .trim().toLowerCase();
+  var shown = h.filter(function(r){
+    return !hq || (r.offered + " " + r.requested + " " + (r.note || ""))
+      .toLowerCase().indexOf(hq) >= 0;
+  });
+  $("nGtsHist").textContent = hq && shown.length !== h.length
+    ? shown.length + " of " + h.length : h.length;
+  if (!shown.length) host.appendChild(el("div", "empty", "No trade matches"));
+  shown.forEach(function(r){
     var row = el("div", "row perm");
     var m = el("div", "rmain");
     var nm = el("div", "rname");
@@ -880,14 +892,8 @@ function gtsPickMine(onPick, exceptId){
     /* The box is under a hundred today and scrolling works. It will not stay
        that way, and scrolling a thousand rows to find one Chesnaught is not a
        thing to discover later. */
-    var wrap = el("div", "search field");
-    wrap.innerHTML = '<svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>';
-    var inp = el("input");
-    inp.type = "text";
-    inp.placeholder = "Filter " + (home.length + champ.length) +
-      " in your box - name, type or number";
-    wrap.appendChild(inp);
-    body.appendChild(wrap);
+    var inp = searchField(body, "Filter " + (home.length + champ.length) +
+      " in your box — name, type or number", function(){ draw(); });
 
     /* SORTING AND TWO FILTERS, BECAUSE THIS IS A SHORTLIST, NOT A BOX.
        What goes into a GTS box is decided by his own rule - only DUPLICATES
@@ -1065,7 +1071,7 @@ function gtsPickMine(onPick, exceptId){
     }
 
     function draw(){
-      var q = inp.value.trim().toLowerCase();
+      var q = inp.q();
       out.innerHTML = "";
       var n = section("In HOME", home, "A GTS deposit comes out of HOME.", q);
       n += section("In the Champions Box", champ,
@@ -1092,7 +1098,6 @@ function gtsPickMine(onPick, exceptId){
           "can never leave the game, so they can never reach a GTS box."));
       }
     }
-    inp.oninput = draw;
     draw();
     setTimeout(function(){ inp.focus(); }, 60);
   }, []);
@@ -1212,17 +1217,11 @@ function gtsPickWanted(onPick, chipName, chipShiny){
         body.appendChild(el("h2", null, "Or anything else"));
       }
     }
-    var wrap = el("div", "search field");
-    wrap.innerHTML = '<svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>';
-    var inp = el("input");
-    inp.type = "text";
-    inp.placeholder = "Search any Pokemon";
-    wrap.appendChild(inp);
-    body.appendChild(wrap);
+    var inp = searchField(body, "Search any Pokemon", function(){ draw(); });
     var list = el("div", "list cards");
     body.appendChild(list);
     function draw(){
-      var q = inp.value.trim().toLowerCase();
+      var q = inp.q();
       list.innerHTML = "";
       var pool = FORMS.filter(function(p){
         return !q || p.name.toLowerCase().indexOf(q) >= 0;
@@ -1288,7 +1287,6 @@ function gtsPickWanted(onPick, chipName, chipShiny){
           q ? "Nothing matches" : "Start typing a name"));
       }
     }
-    inp.oninput = draw;
     draw();
     setTimeout(function(){ inp.focus(); }, 60);
   }, []);
@@ -1696,6 +1694,17 @@ function drawGtsWanted(){
     });
   }
   var chips = gtsChips(), rec = gtsRecord(null);
+  /* The segment answers "which KIND of chip"; this answers "that one". With
+     44 chips the two are different questions and the segment cannot do both. */
+  var wq = ($("gtsWantSearch") && $("gtsWantSearch").value || "")
+    .trim().toLowerCase();
+  if (wq) {
+    chips = chips.filter(function(c){
+      var p = byName[c.name];
+      return c.name.toLowerCase().indexOf(wq) >= 0 ||
+             (p && p.types.join(" ").toLowerCase().indexOf(wq) >= 0);
+    });
+  }
   if (WANT_FILTER === "outside") {
     chips = chips.filter(function(c){ return !byName[c.name]; });
   } else if (WANT_FILTER === "dupes") {
@@ -1766,7 +1775,9 @@ function drawGtsWanted(){
   }
   host.innerHTML = "";
   if (!ideas.length) {
-    host.appendChild(el("div", "empty", WANT_FILTER === "outside"
+    host.appendChild(el("div", "empty", wq
+      ? "Nothing in HOME matches that"
+      : WANT_FILTER === "outside"
       ? "Nothing in HOME that Champions cannot use can go up right now"
       : WANT_FILTER === "dupes" ? "No duplicates to spare" : "Nothing to offer"));
   }
