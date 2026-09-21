@@ -69,6 +69,7 @@ RAW = os.path.join(ROOT, "data", "raw", "pokeapi_csv")
 META = os.path.join(ROOT, "data", "meta")
 OUT = os.path.join(ROOT, "data", "db", "home_dex.json")
 SPRITES = os.path.join(ROOT, "data", "db", "sprite_ids.json")
+FLAGS = os.path.join(ROOT, "data", "db", "species_flags.json")
 # PokeAPI/pokeapi, BSD-3-Clause, pinned. Bump deliberately and read the diff.
 PIN = "4b82c204ddd19ecb8eda2ea044ccb59e222b721c"
 BASE = "https://raw.githubusercontent.com/PokeAPI/pokeapi/%s/data/v2/csv/" % PIN
@@ -353,6 +354,41 @@ def build(force=False):
     return out, missed
 
 
+def species_flags(force=False):
+    """Which names are Mythical, and which Legendary.
+
+    WHY IT IS DERIVED AND NOT TYPED. Melmetal cannot be deposited in HOME's
+    GTS (player, 2026-09-21) and he confirmed it is a Mythical, which makes
+    "Mythicals are refused" the obvious explanation - but a list of the 23
+    Mythicals written from memory is exactly the kind of thing this project
+    does not do. PokeAPI publishes the flag, at the same pinned commit as
+    everything else here, so it is read rather than recalled.
+
+    CHAMPIONS HAS NONE OF EITHER - checked over the whole dex, 0 Mythicals and
+    0 Legendaries - so every one of them that ever reaches HOME is a species
+    Champions cannot use, which is precisely the pile the GTS recommendations
+    put FIRST. The flag is what stops that list leading with something the GTS
+    will refuse to hold.
+
+    Returned per NAME, every form, because that is what the app has in hand."""
+    myth, leg = set(), set()
+    for r in table("pokemon_species.csv", force):
+        if r.get("is_mythical") == "1":
+            myth.add(r["identifier"])
+        if r.get("is_legendary") == "1":
+            leg.add(r["identifier"])
+    names = [p["name"] for p in Q.db("pokemon")] + home_only_names()
+    out = {"mythical": [], "legendary": []}
+    for n in sorted(set(names)):
+        k = key(n)
+        base = k.split("-")[0]
+        if k in myth or base in myth:
+            out["mythical"].append(n)
+        elif k in leg or base in leg:
+            out["legendary"].append(n)
+    return out
+
+
 def sprite_ids(force=False):
     """PokeAPI's own id for every name the app can put on a card.
 
@@ -422,6 +458,12 @@ def main():
     print("wrote %s  (%d names, %.0f KB)"
           % (os.path.relpath(SPRITES, ROOT), len(sid),
              os.path.getsize(SPRITES) / 1024.0))
+    flags = species_flags(args.force)
+    json.dump(flags, io.open(FLAGS, "w", encoding="utf-8"),
+              ensure_ascii=False, sort_keys=True, indent=1)
+    print("wrote %s  (%d mythical, %d legendary)"
+          % (os.path.relpath(FLAGS, ROOT), len(flags["mythical"]),
+             len(flags["legendary"])))
     champ = [p["name"] for p in Q.db("pokemon")]
     gap = [n for n in champ if n not in sid]
     if gap:

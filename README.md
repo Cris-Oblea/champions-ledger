@@ -209,6 +209,15 @@ not take it. `data/meta/gts_blocked.json` is that list, and it records who
 confirmed each entry and when, because none of the five sources covers HOME's
 own rules and there is nothing to check it against.
 
+Melmetal is also a **Mythical**, which makes "the GTS refuses Mythicals" the
+obvious reading of one data point — and one data point is not a rule. So the
+other Mythicals are **ranked last and tagged**, never dropped: a wrong guess
+that hides a chip is worse than one that warns about it. It matters beyond one
+Pokemon, because Champions has **zero** Mythicals and zero Legendaries, so
+every one that ever reaches HOME lands in exactly the pile this list puts
+first — and thirteen of the twenty-three can be caught in GO. Which species
+carry the flag is read off PokeAPI at the pinned commit, never typed out.
+
 **Nothing on it claims a species is easy in Pokemon GO.** It did, from a
 declared supply score — and 260 of the 264 sit at the default of 2, so the
 claim was mostly a guess wearing a number. What is there instead is the only
