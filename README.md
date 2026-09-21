@@ -74,6 +74,23 @@ full card, because each had been written on the day its screen was built and
 every improvement since was made by copying the best card into one more place.
 There is one implementation now - `pokeCard()` - and each screen passes in its
 own extras: a ladder chip, an item cell, the reason a suggestion is in range.
+The sheet and the stones tab share its middle, `pokeFacts()`, so the box that
+opens when you tap a card says the same things in the same order as the card
+that opened it.
+
+**And no line on a card ever wraps to a second line.** That took one word of
+CSS and a measurement to find: flex breaks a line on each item's CONTENT width
+before it shrinks anything, so an ability box that could have narrowed to fit
+beside BST jumped to a row of its own and left BST using a fifth of it. The
+median card wanted 230px of boxes and the worst 363, against 186 beside a
+corner sprite - 284 of 341 lines wrapped. The boxes shrink now and their text
+wraps inside them, which is what a card is allowed to do; 264 forms were
+re-measured at five widths from a 320px phone to a 1536px desktop, and nothing
+breaks or overflows.
+
+**A build card shows only the build.** It is one Pokemon in one configuration,
+so it draws that form and the one ability it runs - not the species' other
+options, and not a Mega line the set does not use.
 
 **One fact, one chip, and the chip says what its number governs.** An item, an
 ability or a move carries its numbers as chips beside Smogon's sentence, and
@@ -107,17 +124,32 @@ like a bug. *The rank.* The sort reads the value the Pokemon can **reach**:
 highest across the line going down, lowest going up, since a Mega that raises
 Speed does not help a Trick Room list. That is why Absol, Garchomp and Lucario
 head a descending Speed sort — all three reach 151. *And only what changes.* A
-stat cell gains a second line where the stone moves it, tagged `M` or `Z` when
-a species has two; the types and the ability appear only when the stone really
-swaps them; and a Pokemon with no Mega line is the card it always was.
+stat cell gains a second line where the stone moves it, and the types appear
+again only when the stone really swaps them.
 
-The card carries the **whole line at native size** — base, then what it becomes
-— and on the sheet each Mega gets its own block: its picture, its stone, its
-types, its six stats with what the stone moved, its ability, and **its own
-damage table when the typing changes**, since Mega Ampharos picks up a Dragon's
-weaknesses. Nothing the sheet already said is repeated there. The order is the
-order a Pokemon is read in: types and stats, then abilities, then what damages
-it, then the Mega line.
+**Each Mega is named by its own colour**, and the same ink runs through every
+place that names it: the caption under its sprite, the key on a stat delta, the
+arrow before its typing and the label on its ability box. X is blue, Y red and
+Z green — the games' own — and a plain Mega keeps the app's purple. Four work
+in an 8.5px caption because they never all meet: a species carries either an
+X/Y pair or a plain Mega with a Z. **There is no "Mega M":** Champions writes
+`Mega`, `Mega X`, `Mega Y` and `Mega Z`, so the unlettered one is labelled with
+the word rather than an invented letter.
+
+**Every form gets a row in a stat cell, in the same order**, with a blank where
+it changes nothing — so row two is the same Pokemon in all six cells and a
+table can be read across as well as down.
+
+The card carries the **whole line at native size**, base first and then what it
+becomes, which is why a card is never narrower than 300px: three sprites are
+294 and nothing shrinks them.
+
+On the sheet, **each form is a box and they are all the same box** — the base
+one too. Picture and facts, the six stats, the abilities explained, and what
+damages it; a Mega adds the sentence naming what the stone moved, and gets its
+own damage table when the typing changes, since Mega Ampharos picks up a
+Dragon's weaknesses. Nothing is said in two boxes: a sheet is a stack of
+Pokemon rather than a stack of topics.
 
 **And no sprite is ever drawn with `image-rendering: pixelated`.** It looks
 like it should do nothing at native size, and on a 1x display it does — but a
