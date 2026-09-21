@@ -237,6 +237,83 @@ def home_only_names():
                   and "-Totem" not in n and "-Starter" not in n)
 
 
+def resolver(pokemon):
+    """PokeAPI's id for a name, or the closest honest stand-in.
+
+    THE SPELLING IS NOT THE PROBLEM; THE DEFAULT FORM IS. PokeAPI has no row
+    called `oinkologne` - it files the species as `oinkologne-male` and
+    `oinkologne-female`, and the old lookup asked for the bare name, missed,
+    fell back to `k.split("-")[0]`, which is the same bare name, and missed
+    again. So a Pokemon sitting in his HOME box had no types, no stats, no
+    ability and no picture, and tapping it opened a sheet built from null
+    (player, 2026-09-21: "la card y la ficha de Oinkolgne-f tira error de
+    script, creo que sigue sin reconocer todos los pokemones"). Sixty-odd
+    names were in that state, all of them species whose only rows are forms.
+
+    Three steps, in order, and only the third is an approximation:
+
+    1. THE NAME ITSELF. Unchanged, and still what almost everything hits.
+    2. THE FORM THAT NAME MEANS. `deoxys` means Deoxys-Normal, `giratina`
+       means Altered, `oinkologne` means the male - so a name with no exact
+       row takes the DEFAULT form filed under it. The same step reads a
+       shortened suffix: `oinkologne-f` is `oinkologne-female` because every
+       earlier token matches and `f` starts `female`. Neither is a guess
+       about a different Pokemon, so neither is marked approximate.
+       The shortened-suffix rule needs at least one earlier token, which is
+       what stops `mew` from resolving to `mewtwo`.
+    3. ONE SUFFIX AT A TIME. Only then, and recorded: `arceus-bug` has no row
+       of its own and Arceus' eighteen plates share one spread, so the base
+       row is the honest answer and the card says whose numbers it is showing.
+       Dropping one token rather than all of them is what lets
+       `necrozma-dusk-mane` land on `necrozma-dusk` instead of on Necrozma.
+    """
+    by_key, is_def, order = {}, {}, []
+    for r in pokemon:
+        i = r["identifier"]
+        if i in by_key:
+            continue
+        by_key[i] = r["id"]
+        is_def[i] = str(r.get("is_default") or "") in ("1", "True", "true")
+        order.append(i)
+
+    def near(k):
+        """Rows that ARE k: a form of it, or its suffix written short."""
+        kt = k.split("-")
+        out = []
+        for i in order:
+            if i == k:
+                continue
+            if i.startswith(k + "-"):
+                out.append(i)
+                continue
+            it = i.split("-")
+            if len(kt) > 1 and len(it) == len(kt) and kt[:-1] == it[:-1]                and it[-1].startswith(kt[-1]):
+                out.append(i)
+        # the default form first, then the shortest name, then alphabetical -
+        # a total order, so the same input always gives the same row
+        out.sort(key=lambda i: (not is_def[i], len(i), i))
+        return out
+
+    def resolve(k):
+        if k in by_key:
+            return by_key[k], None
+        n = near(k)
+        if n:
+            return by_key[n[0]], None
+        parts = k.split("-")
+        while len(parts) > 1:
+            parts.pop()
+            base = "-".join(parts)
+            if base in by_key:
+                return by_key[base], base
+            nb = near(base)
+            if nb:
+                return by_key[nb[0]], base
+        return None, None
+
+    return resolve
+
+
 def build(force=False):
     pokemon = table("pokemon.csv", force)
     stats = table("pokemon_stats.csv", force)
@@ -248,9 +325,7 @@ def build(force=False):
                 for r in table("ability_names.csv", force)
                 if r.get("local_language_id") == ENGLISH)
 
-    by_key = {}
-    for r in pokemon:
-        by_key.setdefault(r["identifier"], r["id"])
+    resolve = resolver(pokemon)
 
     st, ty, ab = {}, {}, {}
     for r in stats:
@@ -265,17 +340,7 @@ def build(force=False):
 
     out, missed = {}, []
     for name in home_only_names():
-        k = key(name)
-        pid = by_key.get(k)
-        approx = None
-        if not pid and "-" in k:
-            # No row for this exact form. The base species is the honest
-            # fallback for a cosmetic split - Arceus' eighteen plates share one
-            # spread - and WRONG for anything that really differs, so it is
-            # recorded rather than applied silently.
-            base = k.split("-")[0]
-            pid = by_key.get(base)
-            approx = base if pid else None
+        pid, approx = resolve(key(name))
         if not pid or pid not in st:
             missed.append(name)
             continue
@@ -302,9 +367,8 @@ def sprite_ids(force=False):
     URL from these ids at run time, so nothing of theirs is ever redistributed
     from here and a takedown is a one-line change rather than a git history to
     rewrite."""
-    by_key = {}
-    for r in table("pokemon.csv", force):
-        by_key.setdefault(r["identifier"], r["id"])
+    pokemon = table("pokemon.csv", force)
+    resolve = resolver(pokemon)
     out, missed = {}, []
     names = [p["name"] for p in Q.db("pokemon")] + home_only_names()
     # AND THE FORMS A POKEMON TAKES DURING A BATTLE, which are not dex rows and
@@ -319,8 +383,12 @@ def sprite_ids(force=False):
         for form in sorted(p.get("battle_forms") or {}):
             names.append(p["name"] + "-" + form)
     for name in names:
-        pid = by_key.get(key(name))
-        if pid:
+        # EXACT ROWS ONLY. A stand-in spread is honest because the card says
+        # whose it is; a stand-in PICTURE is not - every Arceus plate looks
+        # different, and drawing the plain one under "Arceus-Bug" would be the
+        # app asserting something false. No sprite stays the right answer.
+        pid, approx = resolve(key(name))
+        if pid and not approx:
             out[name] = int(pid)
         else:
             missed.append(name)
@@ -369,8 +437,14 @@ def main():
     if missed:
         print("  %d have NO PokeAPI row at all: %s"
               % (len(missed), ", ".join(missed[:20])))
-        print("  those stay blank in HOME - add an ALIASES entry if the name "
-              "is only spelled differently")
+        # WHAT IS LEFT IS NOT A SPELLING PROBLEM, and the line that used to sit
+        # here said it was. Every remaining name is a CAP - a Pokemon Smogon's
+        # community invented, which rides in on the weights table and has never
+        # existed in a game, so no alias can find it and none should be written.
+        # Syclant, Revenankh, Pyroak and the rest cannot be in HOME either.
+        print("  those are Smogon's CAP creations, carried in by the weights "
+              "table. They are not Pokemon and stay blank; an ALIASES entry "
+              "would only make one point at a different species.")
 
 
 if __name__ == "__main__":
