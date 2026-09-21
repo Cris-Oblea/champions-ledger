@@ -166,6 +166,29 @@ naming the ability instead of the stone — and Castform's three earn three
 damage tables, which is the whole of what Forecast does. Nothing is said in two boxes: a sheet is a stack of
 Pokemon rather than a stack of topics.
 
+**HOME holds three questions, so it has three panes.** What is parked there,
+what is out on the GTS, and what is still missing from the dex — one scroll
+would have opened the checklist under a 170-row box. The bar was measured at
+its limit with seven tabs, so it is a segmented control rather than an eighth.
+
+**The dex checklist is an order of attack, not a list of holes.** Champions'
+own route in is a gacha — ten random species, take one — so the dex is
+finished through Pokemon GO into HOME, and through the GTS for what GO cannot
+give. Two buckets, easiest first inside each:
+
+- **Frees a slot in Champions.** A species in the Champions box and *not* in
+  HOME. It came out of an Encounter, so releasing it is its only exit and it
+  welds a slot shut; catch the same species in GO, send it through HOME, and
+  the welded copy becomes releasable — the slot comes back elastic and the
+  copy is trainable, which a rental never is. Each one is worth a slot, which
+  nothing in the second bucket is.
+- **Not in the box or in HOME.** One copy per species is the target; extra
+  copies are a later question, so nothing here asks for a second of anything.
+
+A species already in HOME is **done**, even when a copy is also welded into
+the box — the HOME copy is the one that makes the slot elastic. Megas are not
+on it at all: a Mega is not caught, it is a stone on something you own.
+
 **And no sprite is ever drawn with `image-rendering: pixelated`.** It looks
 like it should do nothing at native size, and on a 1x display it does — but a
 1.25 device-pixel ratio draws 96 CSS px into 120 real ones, and `pixelated`
@@ -480,7 +503,7 @@ it. A source that quietly changes a denominator is the failure this catches.
 ```
 
 <!-- GATE:START -->
-**The gate** is 32 checks, and nothing reaches the phone without
+**The gate** is 33 checks, and nothing reaches the phone without
 passing all of them:
 
 - a **shrink guard** — if a rebuild comes back with fewer forms, moves or
@@ -492,7 +515,7 @@ passing all of them:
 - **one source check** — the app is linked from thirteen ES modules, so a name
   two of them both declare, or one of them uses without importing,
   is read for once rather than clicked
-- **twenty-one browser tests** — run against the built page, because no Python
+- **twenty-two browser tests** — run against the built page, because no Python
   check can see a template regression
 <!-- GATE:END -->
 
@@ -566,7 +589,7 @@ data/db/     the built database - the thing everything else reads
 data/meta/   usage, tournaments, speed tiers, written analyses
 tracker/     the app: a shell, its ES modules under src/, and a generated data blob
 <!-- TESTS:START -->
-tests/       twenty-one browser tests, run against the BUILT page
+tests/       twenty-two browser tests, run against the BUILT page
 <!-- TESTS:END -->
 analysis/    write-ups: the Smogon engine, regulation M-C, the roadmap
 CLAUDE.md    the rules this project works by, including everything learned the hard way

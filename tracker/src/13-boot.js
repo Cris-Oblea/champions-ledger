@@ -7,7 +7,7 @@ import {
 import { S, boxRows, buildLink, capacity, originRows } from "./02-state.js";
 import { connect } from "./03-store.js";
 import { buildTabs, fbtn, go, leaveEditor, mq } from "./04-nav.js";
-import { addSheet, pokeRow } from "./05-box.js";
+import { addSheet, drawDexPane, pokeRow } from "./05-box.js";
 import { buildRow, buildSheet } from "./06-builds.js";
 import { drawItems, drawStatuses, drawStones, drawTrainer } from "./07-gear.js";
 import { drawTeams } from "./08-teams.js";
@@ -56,6 +56,9 @@ function renderAll(){
     more.appendChild(fbtn("Show fewer", "sm",
       function(){ setHomeAll(false); renderAll(); }));
   }
+  /* the checklist is derived from the box and HOME, so it goes stale the
+     moment either does - but only the visible pane is worth the work */
+  if (!$("homePaneDex").hidden) drawDexPane();
   $("nHomeOrigin").textContent = oHome.length;
   $("nChampOrigin").textContent = oChamp.length + oUnk.length;
   $("nRent").textContent = rent.length;
@@ -257,6 +260,33 @@ $("buildSearch").oninput = drawBuilds;
 $("stoneSearch").oninput = drawStones;
 $("itemSearch").oninput = drawItems;
 $("homeFilter").oninput = function(){ setHomeAll(false); renderAll(); };
+/* THREE PANES IN HOME, one switcher. The box, the GTS and the dex checklist
+   are asked at different times and were one scroll, so the checklist would
+   have opened under a 170-row box. The chosen pane is remembered, because
+   the answer to "what was I doing in here" is almost always the same one
+   (player, 2026-09-20: "podria ser algun submenu"). */
+var HOME_PANES = {box:"homePaneBox", gts:"homePaneGts", dex:"homePaneDex"};
+function homePane(which){
+  if (!HOME_PANES[which]) which = "box";
+  Object.keys(HOME_PANES).forEach(function(k){
+    $(HOME_PANES[k]).hidden = k !== which;
+  });
+  document.querySelectorAll(".homeseg").forEach(function(g){
+    Array.prototype.forEach.call(g.children, function(x){
+      x.setAttribute("aria-pressed", x.dataset.home === which ? "true" : "false");
+    });
+  });
+  try { localStorage.setItem("champ-homepane", which); } catch (e) {}
+  if (which === "dex") drawDexPane();
+}
+document.querySelectorAll(".homeseg").forEach(function(seg){
+  Array.prototype.forEach.call(seg.children, function(b){
+    b.onclick = function(){ homePane(b.dataset.home); };
+  });
+});
+$("dexFilter").oninput = drawDexPane;
+try { homePane(localStorage.getItem("champ-homepane") || "box"); }
+catch (e) { homePane("box"); }
 /* three panes, one switcher - written once so a fourth cannot forget one */
 function gearPane(which){
   var panes = {stones:"gearStonePane", items:"gearItemPane"};

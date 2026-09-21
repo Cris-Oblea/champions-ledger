@@ -129,6 +129,10 @@ BROWSER_TESTS = [
     # regulation adding a Wishiwashi or an Eiscue - both one species away on
     # the watchlist - fails here instead of shipping a card that omits it.
     ("formtest.js",       "what a Pokemon turns into, stone or not"),
+    # The dex checklist, and the rule that is easy to get backwards: a species
+    # already in HOME is done even when a copy is also welded into the
+    # Champions box, because the HOME copy is the one that frees the slot.
+    ("dextest.js",        "what is still missing, and in what order"),
     # Guards the measurement, not just the pixels: if pokebase ever switches
     # the move column back to a share of SETS it sums to ~400 instead of ~100
     # and every percentage in the builder silently means something else.
