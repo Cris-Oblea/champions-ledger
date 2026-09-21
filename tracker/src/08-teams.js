@@ -1,8 +1,9 @@
 /* 08-teams.js - Six slots, the clauses checked, and what is still to get.
    Part of the app; linked into one script by scripts/build_tracker_page.py. */
 import { $, C, COSTS, MOVE_BY, STAT_KEYS, STONE_OF, bst, byName, capNote,
- cardLine, dexNo, el, labelBox, natMult, pokeCard, searchField, splitPct,
- statAt, toast, typeCard, typeChip, typeSkin, usageTag } from "./01-data.js";
+ cardLine, dexNo, el, labelBox, megasFor, natMult, pokeCard, searchField,
+ splitPct, statAt, toast, typeCard, typeChip, typeSkin, usageTag }
+  from "./01-data.js";
 import { S, buildLink, buildsFor, hasItem, hasStone } from "./02-state.js";
 import { drop, put, putNew } from "./03-store.js";
 import { ask, closeSheet, fbtn, leaveEditor, openEditor, openSheet }
@@ -34,6 +35,25 @@ function teamDoc(draft){
           notes: draft.notes || {}};
 }
 
+/* WHAT THIS SLOT BECOMES IF IT MEGA EVOLVES, or null.
+
+   Two routes, because the stone is recorded in two places for two different
+   reasons and both are real. A BUILD declares its `mega` - the stone is what
+   creates the form, so it lives in the build. A SLOT can also hold the stone
+   as its item, which is where the Item Clause puts it. Reading only one of
+   them would miss half the teams. */
+function megaOf(b, slot){
+  if (!b) return null;
+  if (b.mega && byName[b.mega]) return byName[b.mega];
+  if (slot && slot.item) {
+    var ms = megasFor(b.pokemon) || [];
+    for (var i = 0; i < ms.length; i++) {
+      if (ms[i] && STONE_OF[ms[i].name] === slot.item) return ms[i];
+    }
+  }
+  return null;
+}
+
 function teamSlots(t){
   var out = (t && t.slots || []).slice(0, TEAM_SLOTS);
   while (out.length < TEAM_SLOTS) out.push({});
@@ -45,7 +65,10 @@ function teamSlots(t){
 function teamReport(t){
   var slots = teamSlots(t), r = {
     slots: [], filled: 0, ready: 0, problems: [], warnings: [],
-    missing: [], stones: [], speeds: []
+    missing: [], stones: [], speeds: [],
+    /* the slots whose stone REtypes them - what makes the weakness table
+       more than one table */
+    retypers: []
   };
   var itemSeen = {}, formSeen = {};
   slots.forEach(function(sl, i){
@@ -84,9 +107,21 @@ function teamReport(t){
          on this screen: Garchomp is 102 and Mega Garchomp Z is 151, so a
          Speed order quoting the base row for a build carrying the stone names
          the wrong one as moving first. */
+      var mg = megaOf(b, sl);
       var pf = (b.mega && byName[b.mega]) || p;
       if (p) {
         info.types = p.types;
+        /* ONLY WHEN THE STONE ACTUALLY SWAPS THE TYPING. Mega Camerupt is
+           Fire/Ground exactly like Camerupt, so it changes nothing this table
+           can show; Mega Ampharos goes Electric to Electric/Dragon, which
+           changes every column. The second one earns a scenario and the first
+           does not. */
+        info.mega = mg || null;
+        if (mg && mg.types.join("/") !== p.types.join("/")) {
+          info.megaTypes = mg.types;
+          r.retypers.push({i: i, name: b.pokemon, mega: mg.name,
+                           from: p.types, to: mg.types});
+        }
         if (pf) {
           r.speeds.push({name: b.pokemon,
                          form: b.mega || b.pokemon,
@@ -127,7 +162,25 @@ function teamReport(t){
 /* What the six of them, together, are weak to. The chart is already shipped,
    so this is a count rather than a claim: how many of the team take super
    effective damage from each attacking type, and how many resist it. */
-function teamTypes(r){
+/* `megaAt` is the slot index that has Mega Evolved, or null for nobody.
+
+   ONE TABLE WAS NEVER THE TRUTH FOR A TEAM CARRYING A RETYPING STONE, and the
+   player named the shape himself (2026-09-21):
+
+     "podria la tabla mencionar dos casos cuando se hallen? ... si mi equipo
+      tiene 2 megapiedras, hacer dos tablas cuando una o ambos de los pokemones
+      que evolucionan cambian de tipo ... también es importante mencionar que a
+      veces no se megaevoluciona de inmediato porque es preferible esperar tal
+      vez para resistir algo, entre otros. así que también debería quedar una
+      tabla antes de ser mega si el tipo cambiase."
+
+   Both halves are right and both are already rules of this format. Only ONE
+   Pokemon may Mega Evolve per battle, so two stones are two different teams
+   and never one, which is why they cannot be merged into a single table. And
+   "before" is not a transitional state to be skipped: Mega Evolution resolves
+   AFTER switch-ins, so the base typing is what takes the first hit, and
+   staying in base form to resist something is a real play. */
+function teamTypes(r, megaAt){
   var out = [];
   /* Stellar is in the chart and NOT in Champions - there is no Tera here, so
      no move can be that type and counting it would invent a weakness. */
@@ -139,15 +192,18 @@ function teamTypes(r){
        quien resiste que cosa"). The multiplier rides along because x4 and x2
        are not the same problem, and neither are x0.25 and x0.5. */
     var weakOf = [], resistOf = [];
-    r.slots.forEach(function(s){
+    r.slots.forEach(function(s, si){
       if (!s.types || !s.name) return;
+      var evolved = megaAt != null && si === megaAt && s.megaTypes;
+      var types = evolved ? s.megaTypes : s.types;
+      var who = evolved ? s.mega.name : s.name;
       var m = 1;
-      s.types.forEach(function(t){
+      types.forEach(function(t){
         var v = C.CHART[atk] && C.CHART[atk][t];
         m *= (v == null ? 1 : v);
       });
-      if (m > 1) weakOf.push({name: s.name, m: m});
-      else if (m < 1) resistOf.push({name: s.name, m: m});
+      if (m > 1) weakOf.push({name: who, m: m});
+      else if (m < 1) resistOf.push({name: who, m: m});
     });
     /* worst first on each side, so the x4 leads the weaknesses and the
        immunity leads the resistances */
@@ -961,8 +1017,64 @@ function teamSheet(id, t){
 
     if (r.filled) {
       body.appendChild(el("h2", null, "What the six are weak to"));
-      var tt = teamTypes(r).filter(function(x){ return x.weak; }).slice(0, 6);
+
+      /* ONE TABLE PER OUTCOME, and only when there is more than one outcome.
+         A stone that keeps the typing - Mega Camerupt is Fire/Ground like
+         Camerupt - produces the same table, so it gets no tab. A stone that
+         swaps it produces a different team, and only one Pokemon may Mega
+         Evolve per battle, so those cannot be merged. "Before" leads because
+         Mega Evolution resolves after switch-ins and holding base form to
+         resist something is a real play, not a delay. */
+      var SCEN = [{at: null, key: "base",
+                   tab: r.retypers.length ? "Before Mega" : "The six",
+                   why: "Every one of them in base form. Mega Evolution "
+                      + "resolves after switch-ins, so this is what takes the "
+                      + "first hit \u2014 and staying here to resist "
+                      + "something is a play, not a delay."}];
+      r.retypers.forEach(function(x){
+        SCEN.push({at: x.i, key: "m" + x.i, tab: x.mega,
+                   why: x.name + " Mega Evolves: " + x.from.join("/")
+                      + " \u2192 " + x.to.join("/")
+                      + ". Only one Pokemon may Mega Evolve per battle, so "
+                      + "this is a different team from the others, never an "
+                      + "upgrade to them."});
+      });
+      var scenAt = {v: null};
+      if (SCEN.length > 1) {
+        body.appendChild(el("p", "sub", "This team carries "
+          + (r.retypers.length === 1 ? "a stone that retypes"
+                                     : r.retypers.length + " stones that retype")
+          + " its holder, so it has " + SCEN.length
+          + " different type profiles. Only one of them happens per battle."));
+        var seg = el("div", "seg");
+        seg.setAttribute("role", "group");
+        SCEN.forEach(function(sc){
+          var b2 = el("button", null, sc.tab);
+          b2.setAttribute("aria-pressed", sc.at === scenAt.v ? "true" : "false");
+          b2.onclick = function(){
+            scenAt.v = sc.at;
+            Array.prototype.forEach.call(seg.children, function(x){
+              x.setAttribute("aria-pressed", x === b2 ? "true" : "false");
+            });
+            paintTypes();
+          };
+          seg.appendChild(b2);
+        });
+        body.appendChild(seg);
+      }
+      var scenWhy = el("p", "sub");
+      body.appendChild(scenWhy);
       var tw = el("div");
+      body.appendChild(tw);
+      paintTypes();
+
+      function paintTypes(){
+      var cur = SCEN.filter(function(x){ return x.at === scenAt.v; })[0]
+                || SCEN[0];
+      scenWhy.textContent = SCEN.length > 1 ? cur.why : "";
+      var tt = teamTypes(r, cur.at).filter(function(x){ return x.weak; })
+                 .slice(0, 6);
+      tw.innerHTML = "";
       if (!tt.length) {
         tw.appendChild(el("div", "note", "Nothing hits more than one of them "
           + "for super effective damage."));
@@ -1003,7 +1115,7 @@ function teamSheet(id, t){
           tw.appendChild(d);
         });
       }
-      body.appendChild(tw);
+      }
     }
 
     var fw = el("div", "field");

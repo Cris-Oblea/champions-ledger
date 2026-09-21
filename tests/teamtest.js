@@ -48,14 +48,25 @@ const BUILDS = [B("garchomp","Garchomp","garchomp",{moves:["Earthquake","Protect
                 B("farigiraf","Farigiraf","farigiraf",{role:"Trick Room"}),
                 B("farigiraf-2","Farigiraf","farigiraf",{role:"Armor Tail"}),
                 B("sableye","Sableye","sableye"),
-                B("kingambit-idea","Kingambit",null)];
+                B("kingambit-idea","Kingambit",null),
+                /* Ampharos Electric -> Electric/Dragon: la piedra cambia el
+                   tipo, asi que su equipo tiene DOS perfiles. */
+                B("ampharos","Ampharos",null,{mega:"Mega Ampharos"}),
+                /* Camerupt Fire/Ground -> Fire/Ground: la piedra NO cambia
+                   nada, asi que no gana pestaña. */
+                B("camerupt","Camerupt",null,{mega:"Mega Camerupt"})];
 const TEAMS = [{user_id:UID, id:"t1", name:"Prueba", slots:[
   {build_id:"garchomp",      item:"Life Orb",     why:"power"},
   {build_id:"farigiraf",     item:"Sitrus Berry", why:"bulk"},
   {build_id:"farigiraf-2",   item:"Focus Sash",   why:"second Farigiraf, on purpose"},
   {build_id:"sableye",       item:"Life Orb",     why:"repeated item, on purpose"},
   {build_id:"kingambit-idea",item:"Leftovers",    why:"not owned yet"}
-], notes:{}, updated_at:"2026-09-13"}];
+], notes:{}, updated_at:"2026-09-13"},
+  {user_id:UID, id:"t2", name:"Piedras", slots:[
+    {build_id:"ampharos", item:"", why:""},
+    {build_id:"camerupt", item:"", why:""},
+    {build_id:"garchomp", item:"", why:""}
+  ], notes:{}, updated_at:"2026-09-13"}];
 
 const body = require("./harness.js").page(ROOT);
 const stub = `<script>
@@ -118,7 +129,11 @@ setTimeout(async () => {
      d.getElementById("teamsPane").hidden, false);
   ok("mientras el de builds se esconde",
      d.getElementById("buildsPane").hidden, true);
-  const row = d.querySelector("#listTeams .row");
+  /* DOS equipos en la lista desde que existe el de las piedras, y "Piedras"
+     va antes que "Prueba" alfabeticamente - buscar la fila por su nombre en
+     vez de por su posicion. */
+  const row = [...d.querySelectorAll("#listTeams .row")]
+    .find(x => /Prueba/.test(x.textContent));
   ok("el equipo aparece", !!row, true);
   ok("con cuantos huecos lleva", /5\/6/.test(row.textContent), true);
   ok("cuantos son jugables hoy", /3 playable today/.test(row.textContent), true);
@@ -139,8 +154,8 @@ setTimeout(async () => {
   const inp = sb.querySelector(".search input");
   const rows = () => [...sb.querySelectorAll(".list .row")];
   ok("el selector tiene buscador", !!inp, true);
-  ok("y estan las cinco builds", rows().length, 5);
-  ok("dice cuantas hay", /5 builds/.test(sb.textContent), true);
+  ok("y estan las siete builds", rows().length, 7);
+  ok("dice cuantas hay", /7 builds/.test(sb.textContent), true);
 
   inp.value = "armor"; inp.oninput();
   ok("busca por el ROL de la build", rows().length, 1);
@@ -150,13 +165,17 @@ setTimeout(async () => {
   ok("busca por un MOVIMIENTO", rows().length, 1);
   ok("y da con su Pokemon", /Garchomp/.test(rows()[0].textContent), true);
   inp.value = "dragon"; inp.oninput();
-  ok("busca por TIPO", rows().length, 1);
-  ok("lo dice el contador", /1 of 5 builds/.test(sb.textContent), true);
+  /* Garchomp, y la build de Ampharos porque su piedra la hace Electric/Dragon
+     - el filtro lee la forma que JUEGA, que es justo lo que tiene que hacer */
+  ok("busca por TIPO", rows().length, 2);
+  ok("y encuentra el tipo que da la piedra",
+     /Ampharos/.test(sb.textContent), true);
+  ok("lo dice el contador", /2 of 7 builds/.test(sb.textContent), true);
 
   /* la X: sin ella un filtro se vacia a base de borrar */
   sb.querySelector(".search .clr").click();
   ok("la X vacia el campo", inp.value, "");
-  ok("y vuelven todas", rows().length, 5);
+  ok("y vuelven todas", rows().length, 7);
 
   /* La Clausula de Especie se aplica AQUI, igual que la de Objeto en el
      selector de item: una especie que ya lleva otro hueco sale apagada y con
@@ -165,9 +184,10 @@ setTimeout(async () => {
   ok("las especies que ya estan en el equipo salen apagadas", dis.length, 4);
   ok("con el motivo escrito",
      /no team may run two of the same species/.test(sb.textContent), true);
-  ok("y la unica elegible va primero",
-     /Garchomp/.test(rows()[0].textContent), true);
-  ok("que no esta apagada", rows()[0].disabled, false);
+  /* las apagadas van al final, asi que la primera fila siempre es elegible */
+  ok("y una elegible va primero", rows()[0].disabled, false);
+  ok("con las apagadas al final",
+     rows()[rows().length - 1].disabled, true);
 
   /* DONDE ESTA UNA COPIA ES COSA DE LAS CAJAS. Un equipo puede ser teorico,
      asi que ese filtro no pinta nada aqui (jugador, 2026-09-21). */
@@ -204,7 +224,7 @@ setTimeout(async () => {
   chip("Trick Room").click();
   ok("filtra por rol", rows().length, 1);
   chip("Trick Room").click();
-  ok("al soltarlo vuelven todas", rows().length, 5);
+  ok("al soltarlo vuelven todas", rows().length, 7);
 
   /* El selector de item ya tenia buscador; ahora tambien filtros. */
   w.teamSheet("t1", w.S.teams.t1);
@@ -294,6 +314,65 @@ setTimeout(async () => {
   ok("el del equipo se cierra", d.getElementById("v-teamedit").hidden, true);
   ok("y es la build correcta",
      /Garchomp/.test(d.getElementById("buildEditTitle").textContent), true);
+
+  /* UNA TABLA POR DESENLACE. Solo una puede Mega Evolucionar por combate, asi
+     que dos piedras que retipan son dos equipos distintos y nunca uno; y
+     "antes" no es un estado de paso, porque la Mega resuelve DESPUES de los
+     cambios y quedarse en base para resistir algo es jugada (jugador,
+     2026-09-21). */
+  console.log("\n  las tablas de tipo, una por desenlace");
+  const r2 = w.teamReport(w.S.teams.t2);
+  ok("detecta la piedra que retipa", r2.retypers.length, 1);
+  ok("y es la que cambia el tipo", r2.retypers[0].mega, "Mega Ampharos");
+  ok("de que tipo sale", r2.retypers[0].from.join("/"), "Electric");
+  ok("y a cual llega", r2.retypers[0].to.join("/"), "Electric/Dragon");
+
+  /* Camerupt lleva piedra y NO aparece: Mega Camerupt sigue Fire/Ground. */
+  ok("la piedra que no retipa no crea tabla",
+     r2.retypers.some(x => /Camerupt/.test(x.mega)), false);
+
+  const base = w.teamTypes(r2, null);
+  const mega = w.teamTypes(r2, r2.retypers[0].i);
+  const byType = (t, rows) => rows.find(x => x.type === t);
+  /* Electric/Dragon deja de ser neutral a Tierra: Ampharos base es x2, la
+     Mega sigue x2 por Electric... el cambio que importa es Hielo y Hada. */
+  ok("antes de evolucionar no es debil a Hielo",
+     byType("Ice", base).weakOf.some(x => /Ampharos/.test(x.name)), false);
+  ok("despues si lo es",
+     byType("Ice", mega).weakOf.some(x => /Mega Ampharos/.test(x.name)), true);
+  ok("y la tabla lo nombra por su forma Mega",
+     byType("Ice", mega).weakOf.find(x => /Ampharos/.test(x.name)).name,
+     "Mega Ampharos");
+  ok("Hada pasa a pegarle",
+     byType("Fairy", mega).weakOf.some(x => /Mega Ampharos/.test(x.name)), true);
+  ok("que antes no",
+     byType("Fairy", base).weakOf.some(x => /Ampharos/.test(x.name)), false);
+
+  /* Y en pantalla: dos pestañas, la de "antes" primero. */
+  w.teamSheet("t2", w.S.teams.t2);
+  const eb2 = d.getElementById("teamEditBody");
+  const seg = [...eb2.querySelectorAll(".seg")].pop();
+  const tabs = seg ? [...seg.children].map(b => b.textContent.trim()) : [];
+  ok("hay dos pestañas", tabs.length, 2);
+  ok("y la de antes va primero", tabs[0], "Before Mega");
+  ok("la otra es la Mega", tabs[1], "Mega Ampharos");
+  ok("empieza en la de antes",
+     seg.children[0].getAttribute("aria-pressed"), "true");
+  ok("y dice por que hay dos",
+     /Only one of them happens per battle/.test(eb2.textContent), true);
+  seg.children[1].click();
+  ok("al cambiar explica el intercambio",
+     /Electric → Electric\/Dragon/.test(eb2.textContent), true);
+  ok("y la tabla ya usa la forma Mega",
+     /Mega Ampharos ×/.test(eb2.textContent), true);
+
+  /* Un equipo sin piedra que retipe no gana controles. */
+  w.teamSheet("t1", w.S.teams.t1);
+  const eb1 = d.getElementById("teamEditBody");
+  ok("sin retipado no hay pestañas",
+     /Before Mega/.test(eb1.textContent), false);
+  ok("pero la tabla sigue estando",
+     /weak: /.test(eb1.textContent), true);
 
   console.log("\n  los filtros de las pestanas");
   ok("el filtro de builds tiene su X",
