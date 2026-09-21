@@ -136,9 +136,22 @@ X/Y pair or a plain Mega with a Z. **There is no "Mega M":** Champions writes
 `Mega`, `Mega X`, `Mega Y` and `Mega Z`, so the unlettered one is labelled with
 the word rather than an invented letter.
 
+**A stone is not the only thing a Pokemon turns into.** Three of them change
+stats or typing in the middle of the battle, off an ability rather than an
+item, and they are drawn exactly the way a Mega is — sprite in the strip, its
+own ink, a second number under every stat it moves, an arrow when the typing
+changes. Stance Change gives Aegislash 140 Attack the moment it attacks, Zero
+to Hero takes Palafin from 70 to 160, and Forecast retypes Castform to Fire,
+Water or Ice with the weather. They wear an amber that is none of the four
+Mega inks, because one is a decision you make at team preview and the other
+just happens. There are exactly three, and a test says so: a regulation
+adding a fourth fails the gate rather than shipping a card that omits it.
+
 **Every form gets a row in a stat cell, in the same order**, with a blank where
 it changes nothing — so row two is the same Pokemon in all six cells and a
-table can be read across as well as down.
+table can be read across as well as down. A form that moves *nothing at all*
+gets no row anywhere, because the blank buys alignment and there is nothing to
+align: Castform's three weather forms are 70 across the board.
 
 The card carries the **whole line at native size**, base first and then what it
 becomes, which is why a card is never narrower than 300px: three sprites are
@@ -148,7 +161,9 @@ On the sheet, **each form is a box and they are all the same box** — the base
 one too. Picture and facts, the six stats, the abilities explained, and what
 damages it; a Mega adds the sentence naming what the stone moved, and gets its
 own damage table when the typing changes, since Mega Ampharos picks up a
-Dragon's weaknesses. Nothing is said in two boxes: a sheet is a stack of
+Dragon's weaknesses. A battle form gets the same box under its own heading,
+naming the ability instead of the stone — and Castform's three earn three
+damage tables, which is the whole of what Forecast does. Nothing is said in two boxes: a sheet is a stack of
 Pokemon rather than a stack of topics.
 
 **And no sprite is ever drawn with `image-rendering: pixelated`.** It looks
@@ -465,7 +480,7 @@ it. A source that quietly changes a denominator is the failure this catches.
 ```
 
 <!-- GATE:START -->
-**The gate** is 31 checks, and nothing reaches the phone without
+**The gate** is 32 checks, and nothing reaches the phone without
 passing all of them:
 
 - a **shrink guard** — if a rebuild comes back with fewer forms, moves or
@@ -477,7 +492,7 @@ passing all of them:
 - **one source check** — the app is linked from thirteen ES modules, so a name
   two of them both declare, or one of them uses without importing,
   is read for once rather than clicked
-- **twenty browser tests** — run against the built page, because no Python
+- **twenty-one browser tests** — run against the built page, because no Python
   check can see a template regression
 <!-- GATE:END -->
 
@@ -551,7 +566,7 @@ data/db/     the built database - the thing everything else reads
 data/meta/   usage, tournaments, speed tiers, written analyses
 tracker/     the app: a shell, its ES modules under src/, and a generated data blob
 <!-- TESTS:START -->
-tests/       twenty browser tests, run against the BUILT page
+tests/       twenty-one browser tests, run against the BUILT page
 <!-- TESTS:END -->
 analysis/    write-ups: the Smogon engine, regulation M-C, the roadmap
 CLAUDE.md    the rules this project works by, including everything learned the hard way

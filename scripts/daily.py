@@ -124,6 +124,11 @@ BROWSER_TESTS = [
     ("buildlinktest.js",  "a build follows its Pokemon"),
     ("pickertest.js",     "the move picker's filters stack"),
     ("findtest.js",       "the search view"),
+    # Three species turn into something else mid-battle and the card has to
+    # say so the way it says a Mega. It also pins the COUNT at three, so a
+    # regulation adding a Wishiwashi or an Eiscue - both one species away on
+    # the watchlist - fails here instead of shipping a card that omits it.
+    ("formtest.js",       "what a Pokemon turns into, stone or not"),
     # Guards the measurement, not just the pixels: if pokebase ever switches
     # the move column back to a share of SETS it sums to ~400 instead of ~100
     # and every percentage in the builder silently means something else.

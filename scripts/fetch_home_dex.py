@@ -307,6 +307,17 @@ def sprite_ids(force=False):
         by_key.setdefault(r["identifier"], r["id"])
     out, missed = {}, []
     names = [p["name"] for p in Q.db("pokemon")] + home_only_names()
+    # AND THE FORMS A POKEMON TAKES DURING A BATTLE, which are not dex rows and
+    # so were never asked for. A card draws its Megas as pictures; Aegislash
+    # turning into Blade Forme is the same kind of fact and had no picture to
+    # draw (player, 2026-09-20: "faltan las formas de batalla... hay que
+    # incluir esas formas en las fichas, porque tambien son modificaciones in
+    # battle, como los megas"). PokeAPI spells them exactly as this file's
+    # key() reduces them - aegislash-blade, palafin-hero, castform-sunny - so
+    # they resolve with no alias of their own.
+    for p in Q.db("pokemon"):
+        for form in sorted(p.get("battle_forms") or {}):
+            names.append(p["name"] + "-" + form)
     for name in names:
         pid = by_key.get(key(name))
         if pid:

@@ -2,12 +2,13 @@
    Part of the app; linked into one script by scripts/build_tracker_page.py. */
 import { $, C, DEX, MOVES, MOVE_BY, SORT, STAT_KEYS, STAT_LABEL, STONE_OF,
  TYPE_COLOR, anyRow, bst, byName, capNote, cardLine, catName, defence,
- dexNo, effectLine, el, labelBox, learnset, megaInk, megaLine, megaSuffix, megasFor,
+ battleFormsOf, dexNo, effectLine, el, formInk, labelBox, learnset,
+ megaLine, megaSuffix, megasFor,
  podiumChip, pokeFacts, podiumFor, pokeCard, splitPct, spriteFor, statGrid, toast,
  typeCard, typeChip, typeSkin, usageTag } from "./01-data.js";
 import { S, boxRows, originOf, ownedNames } from "./02-state.js";
 import { closeSheet, fbtn, openSheet } from "./04-nav.js";
-import { analysisPanel, battleFormNote, loadOutside, outsideDex,
+import { analysisPanel, loadOutside, outsideDex,
   outsideMove, outsideMovesFor } from "./05-box.js";
 import { AB_SET, abilityHit, abilityTag, engineReady } from "./11-damage.js";
 import { fill, note } from "./13-boot.js";
@@ -432,8 +433,13 @@ function pokeHead(body, p, opts){
     body.appendChild(osrc);
   }
 
-  var bfn = battleFormNote(p);
-  if (bfn) body.appendChild(bfn);
+  /* THE PROSE NOTE THAT USED TO SIT HERE IS GONE. It said "In battle it
+     changes. Stance Change: Blade - Atk 50 -> 140, Def 140 -> 50..." in one
+     grey line, which was the whole of what the app knew about a battle form
+     while there was nowhere better to put it. There is now: the block below
+     the Mega line draws the same fact as a form - its sprite, its typing, its
+     six stats and its own damage table - so keeping the line as well printed
+     it twice on the same sheet (seen on the sheet, 2026-09-21). */
 }
 
 
@@ -656,6 +662,69 @@ function pokeBody(body, p, opts){
       if (retype) {
         pn.appendChild(el("div", "st", "Takes damage differently:"));
         pn.appendChild(damageTable(m.types));
+      }
+      body.appendChild(pn);
+    });
+  }
+  /* AND THE SAME BLOCK FOR THE FORM IT TAKES WITHOUT A STONE.
+
+     A Mega is not the only thing a Pokemon turns into, and for two of these
+     the base row is the most misleading number on the sheet: Stance Change
+     gives Aegislash 140 Attack the moment it uses a damaging move, and Zero
+     to Hero takes Palafin from 70 to 160. Castform changes TYPE instead,
+     three ways, which is its whole defensive profile and its STAB - so it
+     earns the same separate damage table a retyping Mega gets (player,
+     2026-09-20: "faltan las formas de batalla... hay que incluir esas formas
+     en las fichas, porque tambien son modificaciones in battle, como los
+     megas").
+
+     It is NOT a stone and must never read like one: no item tag, and the
+     line underneath says which ability does it instead of what the stone
+     moves. There is no choice to make here either - a Mega is a decision at
+     team preview, this just happens. */
+  var bfs = battleFormsOf(p);
+  if (bfs.length) {
+    body.appendChild(el("h2", null,
+      bfs.length > 1 ? "In battle — " + bfs[0].by + " gives it "
+                       + bfs.length + " more forms"
+                     : "In battle — " + bfs[0].by));
+    bfs.forEach(function(f){
+      var retype = f.types.join("/") !== p.types.join("/");
+      var pn = el("div", "panel megablock");
+      pn.style.marginBottom = "10px";
+
+      var head = el("div", "sheethead");
+      var pic = spriteFor(f.name, true);
+      if (pic) head.appendChild(pic);
+      var info = el("div", "sheetfacts");
+      var h = el("div", "rname");
+      h.appendChild(document.createTextNode(p.name + " — " + f.battle));
+      h.appendChild(el("span", "tag bf", f.by));
+      info.appendChild(h);
+
+      var mt = el("div", "rmeta");
+      f.types.forEach(function(t){ mt.appendChild(typeChip(t)); });
+      info.appendChild(mt);
+      /* NO ABILITY CELL. The ability is not something this form gains - it is
+         the ability the Pokemon already has, and the sheet explained it in
+         Abilities a few lines up. Repeating it is the duplication the Mega
+         block was rebuilt to stop. */
+      info.appendChild(cardLine([labelBox(bst(f), "BST")]));
+      head.appendChild(info);
+      pn.appendChild(head);
+
+      pn.appendChild(statGrid(f));
+      var moved = STAT_KEYS.map(function(k, i){
+        return f.b[i] === p.b[i] ? null
+             : STAT_LABEL[k] + " " + p.b[i] + " → " + f.b[i];
+      }).filter(Boolean);
+      pn.appendChild(el("div", "st",
+        moved.length ? f.by + " moves " + moved.join(", ") + "."
+                     : f.by + " changes the typing, not the spread."));
+
+      if (retype) {
+        pn.appendChild(el("div", "st", "Takes damage differently:"));
+        pn.appendChild(damageTable(f.types));
       }
       body.appendChild(pn);
     });

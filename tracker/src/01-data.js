@@ -308,9 +308,10 @@ function retypeLayer(row, base, megas){
    stand-in letter for the unlettered Mega, and it went straight onto the
    badges - a species with two lines showed "MEGA M" beside "MEGA Z", naming a
    form the game does not have. An empty suffix is the right answer; the two
-   callers that need to TELL two Megas apart use megaKey() instead, which says
+   callers that need to TELL two Megas apart use formKey() instead, which says
    the word "mega" rather than inventing a letter for it. */
 function megaSuffix(m, base){
+  if (m && m.battle) return m.battle;          /* Blade, Hero, Sunny... */
   var sp = (base && (base.species || base.name)) || "";
   return String(m.name).replace("Mega ", "").replace(sp, "").trim();
 }
@@ -322,11 +323,25 @@ function megaSuffix(m, base){
    sprite, the key in a stat cell, the label on its ability box. Four inks,
    and they never all meet: a species has either an X/Y pair or a plain Mega
    with a Z, so each card only has to hold two apart. */
-function megaInk(m, base){
+/* A MEGA IS NOT THE ONLY THING A POKEMON TURNS INTO. Three of them change
+   stats or typing DURING the battle, off an ability rather than a stone -
+   Aegislash to Blade Forme, Palafin to Hero, Castform to whichever of Fire,
+   Water and Ice the weather says - and the card had none of it (player,
+   2026-09-20: "faltan las formas de batalla (sobre todo las que cambian de
+   stats como la de aegislash y la de palafin)... tambien son modificaciones
+   in battle, como los megas").
+
+   So the three label helpers below take a FORM, Mega or battle, and a battle
+   form answers with its own name. Everything downstream - the type arrow, the
+   stat deltas, the sprite caption - is keyed off these and needed no other
+   change, which is the point of having had them in one place. */
+function formInk(m, base){
+  if (m && m.battle) return "mk-b";
   var k = megaSuffix(m, base).toUpperCase();
   return "mk-" + (k === "X" || k === "Y" || k === "Z" ? k.toLowerCase() : "m");
 }
-function megaKey(m, base){
+function formKey(m, base){
+  if (m && m.battle) return m.battle.toLowerCase();
   return megaSuffix(m, base) || "mega";
 }
 
@@ -364,9 +379,21 @@ function statGrid(p, mark, megas){
        lines were unlabelled arrows and is wrong now that each line says whose
        it is. Two forms landing on the same value is a fact about the two
        forms, and hiding one of them breaks the alignment this fixes. */
-    var line = (megas || []).length > 1;
-    (megas || []).forEach(function(m){
-      if (!m.b) return;
+    /* A FORM THAT MOVES NOTHING GETS NO ROW AT ALL, in any cell.
+
+       The blank above is what keeps two forms aligned across the six cells,
+       and it is worth its invisible line for a form that moves SOMETHING
+       somewhere. A form that moves nothing anywhere buys nothing with it and
+       costs a line in all six: Castform's three weather forms are 70 across
+       the board - they change the typing, not the spread - so the table was
+       reserving three empty rows under every number and the card grew half
+       its height again to say nothing (seen on the card, 2026-09-21). The
+       same applies to a Mega that is taken purely for its ability. */
+    var moved = (megas || []).filter(function(m){
+      return m.b && m.b.some(function(v, j){ return v !== b[j]; });
+    });
+    var line = moved.length > 1;
+    moved.forEach(function(m){
       if (m.b[i] === b[i]) {
         /* THE PLACEHOLDER HAS TO BE THE SAME SHAPE, not just the same
            class. A real delta is TWO lines - the form's key above its
@@ -375,7 +402,7 @@ function statGrid(p, mark, megas){
            key of its own now, so the two boxes are identical in height. */
         if (line) {
           var gh = el("span", "mg ghost");
-          gh.appendChild(el("span", "mgk", megaKey(m, p)));
+          gh.appendChild(el("span", "mgk", formKey(m, p)));
           gh.appendChild(document.createTextNode("—"));
           cell.appendChild(gh);
         }
@@ -384,14 +411,14 @@ function statGrid(p, mark, megas){
       /* THE NUMBER ITSELF CARRIES THE MEGA'S INK, not just the little key
          beside it - otherwise a species with two Megas prints both deltas in
          the same purple and the cell says nothing about which is which. */
-      var d = el("span", "mg " + megaInk(m, p) +
+      var d = el("span", "mg " + formInk(m, p) +
                          (m.b[i] > b[i] ? " up" : " down"));
       /* WHOSE NUMBER IT IS. With one Mega the arrow is enough; with two, two
          bare arrows in a cell say nothing about which is which (player,
          2026-09-19: "en la tabla de stats no se cual es el stat de quien").
          The suffix is what tells them apart - X, Y, Z, or the word "mega" for
          the one with no letter, because there is no Mega M. */
-      if (line) d.appendChild(el("span", "mgk " + megaInk(m, p), megaKey(m, p)));
+      if (line) d.appendChild(el("span", "mgk " + formInk(m, p), formKey(m, p)));
       d.appendChild(document.createTextNode(
         (m.b[i] > b[i] ? "↑" : "↓") + m.b[i]));
       d.title = m.name + ": " + STAT_LABEL[k] + " " + b[i] + " → " + m.b[i];
@@ -513,12 +540,17 @@ function pokeFacts(m, p, ms, o){
      with the number here and 25 with it there. */
   if (o.dex !== false) meta.appendChild(el("span", "mono", dexLabel(label)));
   (p.types || []).forEach(function(t){ meta.appendChild(typeChip(t)); });
-  /* THE MEGA'S TYPES ONLY WHEN THE STONE REALLY SWAPS THEM. Most keep them,
-     and repeating an unchanged pair beside itself is noise. */
+  /* THE OTHER FORM'S TYPES ONLY WHEN IT REALLY SWAPS THEM. Most keep them,
+     and repeating an unchanged pair beside itself is noise.
+     A BATTLE FORM ALWAYS NAMES ITSELF, even when it is the only arrow on the
+     line: "-> FIRE" on a Castform says the stone swaps it, which is a
+     different and wrong story. The Megas keep the old rule, where a lone
+     arrow needs no letter because there is nothing to tell it apart from. */
   ms.forEach(function(mm){
     if (mm.types.join("/") === p.types.join("/")) return;
-    var arrow = el("span", "megato " + megaInk(mm, p));
-    arrow.textContent = "→" + (ms.length > 1 ? " " + megaKey(mm, p) : "");
+    var arrow = el("span", "megato " + formInk(mm, p));
+    arrow.textContent = "→" +
+      ((mm.battle || ms.length > 1) ? " " + formKey(mm, p) : "");
     meta.appendChild(arrow);
     mm.types.forEach(function(t){ meta.appendChild(typeChip(t)); });
   });
@@ -556,13 +588,29 @@ function pokeFacts(m, p, ms, o){
      Mega's own ink, so the box, the sprite caption and the stat deltas are
      tied together by colour rather than by reading. The title is where the
      stone went: which one it needs, and whether it is owned. */
-  if (ms.length) {
-    m.appendChild(cardLine(ms.map(function(mm){
+  var megasOnly = ms.filter(function(mm){ return !mm.battle; });
+  var battleOnly = ms.filter(function(mm){ return mm.battle; });
+  /* NO BOX FOR THE BATTLE FORMS, and that is not an omission.
+
+     A Mega gets one because the stone REPLACES its ability, so the card is
+     carrying a fact it has nowhere else. A battle form gains nothing: the
+     ability that flips it is the one the Pokemon already has, printed in the
+     cell above. All three in Champions have exactly one ability, so a box
+     here read "Stance Change" directly under "Stance Change" (seen on the
+     card, 2026-09-21) - the same duplication the Mega block was rebuilt to
+     stop.
+
+     What the card still says, three ways over: the sprite captioned BLADE in
+     its own ink, every stat it moves carrying that ink underneath, and the
+     type arrow when the form retypes. Which ability does it is the sheet's
+     job, and the sheet's "In battle" block opens with exactly that. */
+  if (megasOnly.length) {
+    m.appendChild(cardLine(megasOnly.map(function(mm){
       var sfx = megaSuffix(mm, p);
       var cell = labelBox(mm.ab || [],
         (sfx ? "Mega " + sfx : "Mega") + " ability", "wide");
       var lbl = cell.querySelector(".lbl");
-      if (lbl) lbl.className = "lbl " + megaInk(mm, p);
+      if (lbl) lbl.className = "lbl " + formInk(mm, p);
       /* WHETHER THE STONE IS OWNED IS NOT SAID HERE AT ALL - not as a shape,
          not in the title (player, 2026-09-20: "el tag de tener piedra o no
          deberia ir solo en el apartado de items, me estorba esa info en el
@@ -598,7 +646,17 @@ function pokeCard(p, o){
      title says what the stone costs and what it swaps, so the card never has
      to spend a line on it. A Mega drawn as itself has no Mega line of its
      own. */
-  var ms = (o.megas === false || p.mega) ? [] : megaLine(p);
+  /* THE FORM LINE IS MEGAS AND BATTLE FORMS TOGETHER, because everything
+     below this point - the type arrow, the BST arrow, the stat deltas, the
+     strip of sprites - is asking the same question of both: what does this
+     Pokemon turn into, and what changes when it does.
+
+     `megas:false` still silences the MEGAS. It is the build card, which shows
+     one configuration and nothing the build declined - but a battle form is
+     not a thing a build declines. An Aegislash build attacks at 140, whichever
+     set it runs, so the form stays on the card. */
+  var megas = (o.megas === false || p.mega) ? [] : megaLine(p);
+  var ms = megas.concat(battleFormsOf(p));
   /* NO MEGA CHIPS HERE ANY MORE (player, 2026-09-20: "los tags MEGA, MEGA Z,
      Mega X, Mega Y ya no sirven, porque ahora los sprites representan
      visualmente las megas con la leyenda morada que tienen"). They were the
@@ -615,7 +673,7 @@ function pokeCard(p, o){
   /* AND THE COLOUR ITSELF SAYS SO when the stone changes the typing.
      The CARD's job, not the facts': it paints the card's own band, tint
      and frame, and a sheet has none of those to cross-fade. */
-  retypeLayer(row, p, ms);
+  retypeLayer(row, p, megas);
   /* NO ROW FOR THIS EXACT FORM. A caveat about the numbers themselves, which
      no tag can say for the caller. */
   if (p.approx) {
@@ -662,11 +720,16 @@ function pokeCard(p, o){
     var mp = spriteFor(mm.name, false, !!o.shiny);
     if (!mp) return;
     mp.className = "megapic";
-    mp.title = mm.name;
+    mp.title = mm.name + (mm.battle && mm.by ? " - " + mm.by : "");
     var cell = el("div", "megapicwrap");
     cell.appendChild(mp);
-    cell.appendChild(el("span", "megapickey " + megaInk(mm, p),
-      megaSuffix(mm, p) ? "mega " + megaSuffix(mm, p) : "mega"));
+    /* A BATTLE FORM IS CAPTIONED WITH ITS OWN NAME AND NOT THE WORD "MEGA".
+       Blade, Hero, Sunny - the caption has to be readable as the thing the
+       sprite shows, and calling any of them a Mega would be a lie about how
+       it is reached. */
+    cell.appendChild(el("span", "megapickey " + formInk(mm, p),
+      mm.battle ? mm.battle.toLowerCase()
+                : (megaSuffix(mm, p) ? "mega " + megaSuffix(mm, p) : "mega")));
     strip.appendChild(cell);
   });
   if (strip.children.length) {
@@ -688,6 +751,31 @@ function pokeCard(p, o){
    screens ended up without them. */
 function megaLine(p){
   return p.mega ? [] : megasFor(p.name);
+}
+/* THE FORMS IT TAKES DURING THE BATTLE, shaped exactly like a Mega row so the
+   card can draw them with the machinery it already has.
+
+   There are three in Champions and no more - checked over the whole dex.
+   Stance Change flips Aegislash to 140 Atk / 140 Def the moment it attacks,
+   Zero to Hero takes Palafin from 70 Attack to 160, and Forecast retypes
+   Castform to Fire, Water or Ice with the weather. Two others transform for
+   real and move no number, so they have no row here and must not be invented
+   one: Hunger Switch only retypes Morpeko's Aura Wheel, and Disguise only
+   costs Mimikyu one hit and 1/8 of its HP.
+
+   `battle` carries the form's own name and is what tells the three label
+   helpers this is not a Mega. `by` is the ability that does it, which is the
+   difference between a number and an explanation. */
+function battleFormsOf(p){
+  if (!p || p.mega) return [];
+  var bfm = (C.BFORMS || {})[p.name];
+  if (!bfm) return [];
+  return Object.keys(bfm.f).map(function(lab){
+    var e = bfm.f[lab];
+    return {name: p.name + "-" + lab, species: p.species || p.name,
+            types: e.t || p.types, b: e.b || p.b, ab: p.ab || [],
+            battle: lab, by: bfm.by};
+  });
 }
 /* ONE PLACE THAT KNOWS WHAT A TYPE LOOKS LIKE.
 
@@ -1118,7 +1206,8 @@ export {
   $, C, COSTS, DEX, FORMS, HOME_ALL, MEGAS_OF, MOVES, MOVE_BY, SORT,
   STAT_KEYS, STAT_LABEL, STONE_OF, TYPE_COLOR, TYPE_COLOR2, TYPE_INK,
   bst, byName, capNote, catName, defence, dexLabel, dexNo, el, freeSlug,
-  anyRow, cardLine, labelBox, learnset, megaInk, megaKey, megaSuffix,
+  anyRow, battleFormsOf, cardLine, formInk, formKey, labelBox, learnset,
+  megaSuffix,
   pokeFacts,
   outsideRow,
   retypeLayer,
