@@ -44,7 +44,14 @@ const ROWS = [
      que su propia regla deja ofrecer, y las dos que habia que encontrar a
      ojo bajando la lista entera (2026-09-18) */
   R("g6", "Sharpedo",  "home",      "home",      "permanent"),
-  R("g7", "Bulbasaur", "home",      "home",      "permanent")];
+  R("g7", "Bulbasaur", "home",      "home",      "permanent"),
+  /* Y EL CASO QUE ROMPIA EL FILTRO: un Metagross de verdad en HOME y un
+     Metagross RENTAL en la caja de Champions. Contarlos juntos daba 2 y el
+     filtro ofrecia el de HOME como material de cambio, que es perder la
+     especie (player, 2026-09-21: "ESO NO ES DUPLICADO!... aqui tengo un
+     metagross real y un metagross rental que nunca se podra mover"). */
+  R("g8", "Metagross", "home",      "home",      "permanent"),
+  R("g9", "Metagross", "champions", "champions", "rental")];
 
 const body = require("./harness.js").page(ROOT);
 const stub = `<script>window.__ROWS=${JSON.stringify(ROWS)};
@@ -74,7 +81,7 @@ setTimeout(() => {
   ok("Sharpedo, que esta en HOME", offered.indexOf("Sharpedo") >= 0, true);
   ok("Sableye, HOME origin dentro de la caja",
      offered.indexOf("Sableye") >= 0, true);
-  ok("y nada mas", offered.length, 4);
+  ok("y nada mas", offered.length, 5);
 
   console.log("\n  lo que no puede salir del juego");
   ok("Garchomp (origen Champions) fuera",
@@ -86,7 +93,7 @@ setTimeout(() => {
   console.log("\n  y se dice, no se esconde");
   const notes = [...sheet.querySelectorAll("p.sub")].map(p => p.textContent);
   ok("cuenta los que quedan fuera",
-     notes.some(t => /3 more in the Champions box/.test(t)), true);
+     notes.some(t => /4 more in the Champions box/.test(t)), true);
   ok("y explica por que",
      notes.some(t => /never leave the game/.test(t)), true);
 
@@ -115,13 +122,29 @@ setTimeout(() => {
   console.log("\n  los dos filtros que esta pantalla existe para responder");
   ok("hay orden por numero de dex", !!tog("Dex no."), true);
   press("Duplicates only");
+  /* UN RENTAL NO HACE DUPLICADO. Los dos Sharpedo si lo son; el Metagross de
+     HOME esta solo, porque el rental de la caja nunca podra salir del juego y
+     por tanto nunca podra ser la copia que se queda. */
   ok("duplicados: solo los dos Sharpedo",
      cards().map(nameOf).join(","), "Sharpedo,Sharpedo");
+  ok("Metagross no cuenta como duplicado",
+     cards().map(nameOf).indexOf("Metagross") >= 0, false);
   press("Duplicates only");
   press("Not in Champions only");
   ok("fuera del dex: solo Bulbasaur", cards().map(nameOf).join(","), "Bulbasaur");
   press("Not in Champions only");
-  ok("y al soltarlos vuelven los cuatro", cards().length, 4);
+  ok("y al soltarlos vuelven los cinco", cards().length, 5);
+  /* Y LA RED DE SEGURIDAD LEIA EL MISMO NUMERO EQUIVOCADO. El aviso de
+     "ultima copia" es lo que atrapa el error que el filtro dejaba pasar, y
+     con el rental contado como copia no salia. */
+  const badgesOf = n => {
+    const c = cards().find(b => nameOf(b) === n);
+    return c ? [...c.querySelectorAll(".rname .tag")].map(t => t.textContent) : [];
+  };
+  ok("el Metagross de HOME avisa de que es la ultima copia",
+     badgesOf("Metagross").some(t => /your only one/i.test(t)), true);
+  ok("y un Sharpedo no", badgesOf("Sharpedo").some(t => /your only one/i.test(t)),
+     false);
 
   console.log("\n  el que no esta en Champions tiene precio, y por tanto consejo");
   /* chipValue() leia byName, que para una especie que Champions no conoce es
