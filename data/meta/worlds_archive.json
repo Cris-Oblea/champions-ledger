@@ -399,12 +399,12 @@
        "pct": 5.1
       },
       {
-       "name": "Gengar",
+       "name": "Politoed",
        "teams": 6,
        "pct": 4.4
       },
       {
-       "name": "Politoed",
+       "name": "Gengar",
        "teams": 6,
        "pct": 4.4
       },
@@ -504,22 +504,22 @@
        "pct": 16.2
       },
       {
-       "name": "Archaludon",
-       "teams": 16,
-       "pct": 14.4
-      },
-      {
        "name": "Venusaur",
        "teams": 16,
        "pct": 14.4
       },
       {
-       "name": "Grimmsnarl",
+       "name": "Archaludon",
+       "teams": 16,
+       "pct": 14.4
+      },
+      {
+       "name": "Pelipper",
        "teams": 15,
        "pct": 13.5
       },
       {
-       "name": "Pelipper",
+       "name": "Grimmsnarl",
        "teams": 15,
        "pct": 13.5
       },
@@ -564,12 +564,12 @@
        "pct": 7.2
       },
       {
-       "name": "Scovillain",
+       "name": "Lycanroc",
        "teams": 7,
        "pct": 6.3
       },
       {
-       "name": "Lycanroc",
+       "name": "Scovillain",
        "teams": 7,
        "pct": 6.3
       },
@@ -737,12 +737,12 @@
        "pct": 11.9
       },
       {
-       "name": "Ursaluna",
+       "name": "Lunala",
        "teams": 43,
        "pct": 11.6
       },
       {
-       "name": "Lunala",
+       "name": "Ursaluna",
        "teams": 43,
        "pct": 11.6
       },
@@ -1032,17 +1032,17 @@
        "pct": 3.2
       },
       {
+       "name": "Tatsugiri",
+       "teams": 3,
+       "pct": 2.4
+      },
+      {
        "name": "Sneasler",
        "teams": 3,
        "pct": 2.4
       },
       {
        "name": "Dondozo",
-       "teams": 3,
-       "pct": 2.4
-      },
-      {
-       "name": "Tatsugiri",
        "teams": 3,
        "pct": 2.4
       },
@@ -1122,12 +1122,12 @@
        "pct": 19.8
       },
       {
-       "name": "Whimsicott",
+       "name": "Lunala",
        "teams": 20,
        "pct": 18.0
       },
       {
-       "name": "Lunala",
+       "name": "Whimsicott",
        "teams": 20,
        "pct": 18.0
       },
@@ -1202,17 +1202,17 @@
        "pct": 8.1
       },
       {
+       "name": "Tatsugiri",
+       "teams": 9,
+       "pct": 8.1
+      },
+      {
        "name": "Weezing",
        "teams": 9,
        "pct": 8.1
       },
       {
        "name": "Dondozo",
-       "teams": 9,
-       "pct": 8.1
-      },
-      {
-       "name": "Tatsugiri",
        "teams": 9,
        "pct": 8.1
       },
@@ -1640,12 +1640,12 @@
        "pct": 4.6
       },
       {
-       "name": "Dondozo",
+       "name": "Tatsugiri",
        "teams": 5,
        "pct": 3.8
       },
       {
-       "name": "Tatsugiri",
+       "name": "Dondozo",
        "teams": 5,
        "pct": 3.8
       },
@@ -1830,12 +1830,12 @@
        "pct": 7.6
       },
       {
-       "name": "Dondozo",
+       "name": "Tatsugiri",
        "teams": 8,
        "pct": 6.8
       },
       {
-       "name": "Tatsugiri",
+       "name": "Dondozo",
        "teams": 8,
        "pct": 6.8
       },
@@ -2077,12 +2077,12 @@
        "pct": 2.7
       },
       {
-       "name": "Basculegion",
+       "name": "Pelipper",
        "teams": 2,
        "pct": 2.7
       },
       {
-       "name": "Pelipper",
+       "name": "Basculegion",
        "teams": 2,
        "pct": 2.7
       },
@@ -2117,12 +2117,12 @@
        "pct": 1.4
       },
       {
-       "name": "Articuno",
+       "name": "Azumarill",
        "teams": 1,
        "pct": 1.4
       },
       {
-       "name": "Azumarill",
+       "name": "Articuno",
        "teams": 1,
        "pct": 1.4
       },
@@ -2247,12 +2247,12 @@
        "pct": 6.7
       },
       {
-       "name": "Basculegion",
+       "name": "Pelipper",
        "teams": 6,
        "pct": 6.7
       },
       {
-       "name": "Pelipper",
+       "name": "Basculegion",
        "teams": 6,
        "pct": 6.7
       },
@@ -2287,12 +2287,12 @@
        "pct": 4.4
       },
       {
-       "name": "Torkoal",
+       "name": "Lilligant",
        "teams": 4,
        "pct": 4.4
       },
       {
-       "name": "Lilligant",
+       "name": "Torkoal",
        "teams": 4,
        "pct": 4.4
       },
@@ -2405,12 +2405,12 @@
        "pct": 30.0
       },
       {
-       "name": "Rillaboom",
+       "name": "Heatran",
        "teams": 80,
        "pct": 27.9
       },
       {
-       "name": "Heatran",
+       "name": "Rillaboom",
        "teams": 80,
        "pct": 27.9
       },
@@ -2580,12 +2580,12 @@
      "complete": false,
      "top": [
       {
-       "name": "Urshifu",
+       "name": "Flutter Mane",
        "teams": 61,
        "pct": 70.9
       },
       {
-       "name": "Flutter Mane",
+       "name": "Urshifu",
        "teams": 61,
        "pct": 70.9
       },
@@ -3457,12 +3457,12 @@
        "pct": 5.1
       },
       {
-       "name": "Gengar",
+       "name": "Politoed",
        "teams": 6,
        "pct": 4.4
       },
       {
-       "name": "Politoed",
+       "name": "Gengar",
        "teams": 6,
        "pct": 4.4
       },
@@ -3562,22 +3562,22 @@
        "pct": 16.2
       },
       {
-       "name": "Archaludon",
-       "teams": 16,
-       "pct": 14.4
-      },
-      {
        "name": "Venusaur",
        "teams": 16,
        "pct": 14.4
       },
       {
-       "name": "Grimmsnarl",
+       "name": "Archaludon",
+       "teams": 16,
+       "pct": 14.4
+      },
+      {
+       "name": "Pelipper",
        "teams": 15,
        "pct": 13.5
       },
       {
-       "name": "Pelipper",
+       "name": "Grimmsnarl",
        "teams": 15,
        "pct": 13.5
       },
@@ -3622,12 +3622,12 @@
        "pct": 7.2
       },
       {
-       "name": "Scovillain",
+       "name": "Lycanroc",
        "teams": 7,
        "pct": 6.3
       },
       {
-       "name": "Lycanroc",
+       "name": "Scovillain",
        "teams": 7,
        "pct": 6.3
       },
@@ -3800,12 +3800,12 @@
        "pct": 11.9
       },
       {
-       "name": "Ursaluna",
+       "name": "Lunala",
        "teams": 43,
        "pct": 11.6
       },
       {
-       "name": "Lunala",
+       "name": "Ursaluna",
        "teams": 43,
        "pct": 11.6
       },
@@ -4095,17 +4095,17 @@
        "pct": 3.2
       },
       {
+       "name": "Tatsugiri",
+       "teams": 3,
+       "pct": 2.4
+      },
+      {
        "name": "Sneasler",
        "teams": 3,
        "pct": 2.4
       },
       {
        "name": "Dondozo",
-       "teams": 3,
-       "pct": 2.4
-      },
-      {
-       "name": "Tatsugiri",
        "teams": 3,
        "pct": 2.4
       },
@@ -4185,12 +4185,12 @@
        "pct": 19.8
       },
       {
-       "name": "Whimsicott",
+       "name": "Lunala",
        "teams": 20,
        "pct": 18.0
       },
       {
-       "name": "Lunala",
+       "name": "Whimsicott",
        "teams": 20,
        "pct": 18.0
       },
@@ -4265,17 +4265,17 @@
        "pct": 8.1
       },
       {
+       "name": "Tatsugiri",
+       "teams": 9,
+       "pct": 8.1
+      },
+      {
        "name": "Weezing",
        "teams": 9,
        "pct": 8.1
       },
       {
        "name": "Dondozo",
-       "teams": 9,
-       "pct": 8.1
-      },
-      {
-       "name": "Tatsugiri",
        "teams": 9,
        "pct": 8.1
       },
@@ -4708,12 +4708,12 @@
        "pct": 4.6
       },
       {
-       "name": "Dondozo",
+       "name": "Tatsugiri",
        "teams": 5,
        "pct": 3.8
       },
       {
-       "name": "Tatsugiri",
+       "name": "Dondozo",
        "teams": 5,
        "pct": 3.8
       },
@@ -4898,12 +4898,12 @@
        "pct": 7.6
       },
       {
-       "name": "Dondozo",
+       "name": "Tatsugiri",
        "teams": 8,
        "pct": 6.8
       },
       {
-       "name": "Tatsugiri",
+       "name": "Dondozo",
        "teams": 8,
        "pct": 6.8
       },
@@ -5041,12 +5041,12 @@
        "pct": 30.0
       },
       {
-       "name": "Rillaboom",
+       "name": "Heatran",
        "teams": 80,
        "pct": 27.9
       },
       {
-       "name": "Heatran",
+       "name": "Rillaboom",
        "teams": 80,
        "pct": 27.9
       },
@@ -5216,12 +5216,12 @@
      "complete": false,
      "top": [
       {
-       "name": "Urshifu",
+       "name": "Flutter Mane",
        "teams": 61,
        "pct": 70.9
       },
       {
-       "name": "Flutter Mane",
+       "name": "Urshifu",
        "teams": 61,
        "pct": 70.9
       },
@@ -5521,12 +5521,12 @@
        "pct": 6.7
       },
       {
-       "name": "Basculegion",
+       "name": "Pelipper",
        "teams": 6,
        "pct": 6.7
       },
       {
-       "name": "Pelipper",
+       "name": "Basculegion",
        "teams": 6,
        "pct": 6.7
       },
@@ -5561,12 +5561,12 @@
        "pct": 4.4
       },
       {
-       "name": "Torkoal",
+       "name": "Lilligant",
        "teams": 4,
        "pct": 4.4
       },
       {
-       "name": "Lilligant",
+       "name": "Torkoal",
        "teams": 4,
        "pct": 4.4
       },
