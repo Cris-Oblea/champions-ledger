@@ -87,12 +87,49 @@ COLUMN_SUMS = [
     # resolve the ability: Palafin publishes Zero to Hero at 66.7% and nothing
     # for the rest. That is upstream and faithful, so the floor allows it.
     ("abilities", 60, 110, "one ability per set, upstream sometimes short"),
-    # five other slots - but a Mega-capable teammate is listed TWICE, once as
-    # the base and once as the Mega ("Salamence 47.1%, Mega Salamence 47%"),
-    # so a Pokemon seen on one team can reach 1000. Rampardos is on exactly
-    # one and sums to 700.
-    ("teammates", 150, 1100, "share of teams, base and Mega listed apart"),
+    # TEAMMATES ARE CHECKED SEPARATELY - see teammate_sum() - because the
+    # column is TRUNCATED and a single range cannot describe both halves.
 ]
+
+# pokebase publishes at most ten teammates. Measured over both the committed
+# file and a fresh fetch: 287 of 324 sit at exactly ten and nothing exceeds
+# it, so a ten-row list is a top-ten and its sum is a LOWER BOUND, while a
+# shorter one is the whole distribution.
+TEAMMATE_CAP = 10
+
+
+def teammate_sum(rows, s):
+    """Is this teammates column the right shape? Two different guarantees.
+
+    THE ONE RANGE THIS REPLACES BLOCKED THE NIGHTLY on 2026-09-21, and it was
+    right to fail and wrong about why: Krookodile summed to 144.3 against a
+    floor of 150. Nothing upstream had changed. Krookodile is on nine
+    tournament teams - its rows are 44.4 (4/9) and nine of 11.1 (1/9) - and
+    the top TEN teammates of a nine-team sample simply do not add up to much.
+    The floor was a round number that a thin sample can fall under.
+
+    So the two halves are asserted apart, which makes the check STRICTER where
+    it can be and honest where it cannot:
+
+      COMPLETE (fewer than ten rows) - every teammate this Pokemon has ever
+      had is present, so the sum is five other slots at 100% each, plus more
+      where a Mega-capable teammate is listed twice, once as the base and once
+      as the Mega. Measured: never below 500, up to 800. The old floor of 150
+      let a genuinely broken column through here.
+
+      TRUNCATED (ten rows) - the sum is whatever the top ten happen to cover,
+      144 to 600 in the same measurement, and no floor in that range means
+      anything. What CAN still be asserted is the thing this check exists for:
+      if pokebase ever switched the denominator from teams to sets, the whole
+      column would sum to ~100 and its top ten could not exceed that. So 110
+      is the line, and it catches the failure without inventing a bound on the
+      sample size."""
+    if len(rows) < TEAMMATE_CAP:
+        return (500 <= s <= 1100,
+                "complete list, want 500-1100 (five other slots, Megas twice)")
+    return (110 < s <= 1100,
+            "top %d only, want over 110 (a per-SET denominator could not pass "
+            "100)" % TEAMMATE_CAP)
 
 
 def check(mons):
@@ -108,6 +145,13 @@ def check(mons):
             if not (lo <= s <= hi):
                 bad.append("%s %s sums to %.1f, want %d-%d (%s)"
                            % (name, sec, s, lo, hi, why))
+        rows = t.get("teammates") or []
+        if rows:
+            s = sum(r["percent"] for r in rows if "percent" in r)
+            good, why = teammate_sum(rows, s)
+            if not good:
+                bad.append("%s teammates sums to %.1f over %d rows: %s"
+                           % (name, s, len(rows), why))
     for line in bad[:20]:
         print("  " + line)
     if bad:
