@@ -4,7 +4,8 @@ import { $, C, COSTS, MOVE_BY, STAT_KEYS, STONE_OF, bst, byName, capNote,
  cardLine, dexNo, el, labelBox, megasFor, natMult, pokeCard, searchField,
  splitPct, statAt, toast, typeCard, typeChip, typeSkin, usageTag }
   from "./01-data.js";
-import { S, buildLink, buildsFor, hasItem, hasStone } from "./02-state.js";
+import { S, activeAbility, baseAbility, buildLink, buildsFor, hasItem,
+  hasStone } from "./02-state.js";
 import { drop, put, putNew } from "./03-store.js";
 import { ask, closeSheet, fbtn, leaveEditor, openEditor, openSheet }
   from "./04-nav.js";
@@ -295,8 +296,7 @@ function teamSlotRow(draft, id, x, i, redraw){
        does meant opening six builds one at a time (player, 2026-09-21: "la
        card en team builder del pokemon es suficientemente grande como para
        mostrar el resumen de habilidad, Nature, SPs, moves"). */
-    var ab = x.build.mega ? (x.build.mega_ability || x.build.ability)
-                          : x.build.ability;
+    var ab = activeAbility(x.build);
     var spTxt = STAT_KEYS.map(function(k){
       return (x.build.stat_points || {})[k] || 0; }).join("/");
     row = pokeCard(draw, {
@@ -450,8 +450,8 @@ function teamPickBuild(draft, idx, onPick){
       /* the form it PLAYS AS - the Mega when a stone is on it, which is the
          row the rest of the app judges a build by */
       var p = (b.mega && byName[b.mega]) || byName[b.pokemon] || null;
-      var hay = [bid, b.pokemon, b.mega, b.role, b.nature, b.ability,
-                 b.mega_ability, b.rationale, (b.moves || []).join(" "),
+      var hay = [bid, b.pokemon, b.mega, b.role, b.nature, baseAbility(b),
+                 activeAbility(b), b.rationale, (b.moves || []).join(" "),
                  p ? p.types.join(" ") : "",
                  byName[b.pokemon] ? dexNo(b.pokemon) : ""]
         .filter(Boolean).join(" ").toLowerCase();
@@ -700,7 +700,7 @@ function buildPickRow(r, onPick){
     name: b.pokemon,
     /* the one it CHOSE, not the three the species could have had - a build's
        card shows only what the build points at */
-    abValue: (b.mega ? (b.mega_ability || b.ability) : b.ability) || "\u2014",
+    abValue: activeAbility(b) || "\u2014",
     abLabel: b.mega ? "Ability after Mega" : "Ability",
     cells: [labelBox(b.nature || "\u2014", "Nature", "wide")],
     badges: badges,

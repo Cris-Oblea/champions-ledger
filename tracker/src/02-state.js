@@ -1,5 +1,6 @@
 /* 02-state.js - S: the ledger as this device sees it, and what a build is bound to.
    Part of the app; assembled into one script by scripts/build_tracker_page.py. */
+import { byName } from "./01-data.js";
 /* ===================================================================== state */
 var S = {box:{}, builds:{}, teams:{}, stones:{}, items:{}, gts:{},
          meta:{}, db:null, ready:false, tab:"box"};
@@ -63,6 +64,39 @@ function buildsFor(name){
     return S.builds[k].pokemon === name;
   });
 }
+/* ------------------------------------------- the ability a build RUNS ------
+   A SPECIES WITH ONE ABILITY NEVER MADE A CHOICE, so an empty `ability` on
+   such a build is not a blank to be drawn as an em dash - it is the only
+   ability that Pokemon has ever had. Aegislash is Stance Change, Clawitzer is
+   Mega Launcher, and the editor showed exactly that in a <select> of one
+   option while the row it saved held null (player, 2026-09-22: "los pokemones
+   que tienen solo 1 ability no se guardan... no se reflejan los bonos en su
+   movelist"). The editor writes it now; this is what makes the rows written
+   before it did read correctly anyway, on the card, in the team builder and
+   in the calculator.
+
+   Where the species really does offer two or three, an unset ability STAYS
+   unset. Nothing here picks the first or the popular one - an indicator sits
+   beside a choice and never makes it (2026-09-15).
+
+   All 81 Megas have exactly one ability, so a stone always resolves. */
+function soleAbility(name){
+  var p = name ? byName[name] : null;
+  return p && p.ab && p.ab.length === 1 ? p.ab[0] : null;
+}
+function baseAbility(b){
+  return (b && b.ability) || soleAbility(b && b.pokemon) || null;
+}
+/* what the stone turns it into - null when the build carries no stone */
+function megaAbility(b){
+  return b && b.mega ? (b.mega_ability || soleAbility(b.mega)) : null;
+}
+/* the one actually on the field: the Mega's while it is a Mega, otherwise the
+   base form's. The base ability is the fallback for a stone whose own ability
+   is somehow missing, which is the shape every call site already used. */
+function activeAbility(b){
+  return megaAbility(b) || baseAbility(b);
+}
 function originRows(o){
   return boxRows("champions", "permanent").filter(function(r){
     return originOf(r) === o;
@@ -101,6 +135,7 @@ function ownedNames(){
    ledger. */
 export {
   ORIGIN_LABEL, S,
-  boxRows, buildLink, buildsFor, capacity, hasStone, originOf, originRows,
-  hasItem, ownedItems, ownedNames, ownedStones,
+  activeAbility, baseAbility, boxRows, buildLink, buildsFor, capacity,
+  hasStone, megaAbility, originOf, originRows,
+  hasItem, ownedItems, ownedNames, ownedStones, soleAbility,
 };

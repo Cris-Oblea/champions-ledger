@@ -4,7 +4,8 @@ import { $, C, FORMS, MEGAS_OF, STONE_OF, anyRow, bst, byName, capNote,
  cardLine, dexLabel, dexNo, el, freeSlug, labelBox, megasFor, pokeCard,
  searchField, spriteFor, statGrid, toast, typeCard, typeChip }
   from "./01-data.js";
-import { ORIGIN_LABEL, S, boxRows, hasStone, originOf } from "./02-state.js";
+import { ORIGIN_LABEL, S, baseAbility, boxRows, hasStone, originOf }
+  from "./02-state.js";
 import { drop, put, putNew } from "./03-store.js";
 import { ask, closeSheet, fbtn, openSheet } from "./04-nav.js";
 import { note } from "./13-boot.js";
@@ -1534,7 +1535,7 @@ document.querySelectorAll("[data-export]").forEach(function(b){
                     "spd","spe","sp_total","move1","move2","move3","move4","role"]];
       Object.keys(S.builds).sort().forEach(function(id){
         var b2 = S.builds[id], sp = b2.stat_points || {}, mv = b2.moves || [];
-        rows2.push([b2.pokemon, b2.mega || "", b2.ability || "", b2.nature || "",
+        rows2.push([b2.pokemon, b2.mega || "", baseAbility(b2) || "", b2.nature || "",
           sp.hp||0, sp.atk||0, sp.def||0, sp.spa||0, sp.spd||0, sp.spe||0,
           spTotal(sp), mv[0]||"", mv[1]||"", mv[2]||"", mv[3]||"", b2.role||""]);
       });

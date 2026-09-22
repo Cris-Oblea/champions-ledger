@@ -6,7 +6,8 @@ import {
   learnset, megasFor, natMult, pokeCard, searchField, splitPct, splitsFor,
   splitsReg, statAt, statGrid, toast, typeCard, typeChip, usageTag,
 } from "./01-data.js";
-import { S, boxRows, buildLink, ownedNames } from "./02-state.js";
+import { S, activeAbility, baseAbility, boxRows, buildLink, megaAbility,
+  ownedNames, soleAbility } from "./02-state.js";
 import { drop, put, putNew } from "./03-store.js";
 import { ask, closeSheet, fbtn, leaveEditor, openEditor, openSheet }
   from "./04-nav.js";
@@ -182,13 +183,13 @@ function buildRow(id, b){
      `p` is already the right row - byName[b.mega] when there is a stone - so
      the only thing left is to stop the card offering the species' options
      beside the decision. */
-  var abil = (b.mega && b.mega_ability) || b.ability;
+  var mab = megaAbility(b);
   return pokeCard(p, {
     cls: cls,
     name: b.pokemon,
     megas: false,
-    abValue: abil || null,
-    abLabel: b.mega && b.mega_ability ? "Mega ability" : "Ability",
+    abValue: activeAbility(b),
+    abLabel: mab ? "Mega ability" : "Ability",
     cells: [labelBox(b.nature || null, "Nature", "wide")],
     badges: badges,
     meta: function(meta){
@@ -239,6 +240,16 @@ function buildSheet(id, b, keepOriginal){
   draft._boxId = draft.box_id || null;
   draft.stat_points = draft.stat_points || {hp:0,atk:0,def:0,spa:0,spd:0,spe:0};
   draft.moves = draft.moves || [];
+  /* THE ONE ABILITY A SPECIES HAS IS A FACT, NOT A CHOICE, and it belongs in
+     the build rather than only in the control that displays it. A <select> of
+     one option can never fire its own onchange, so Aegislash and Clawitzer
+     saved a null ability: no badges on their moves, nothing for the
+     calculator to model (player, 2026-09-22). Written here, BEFORE `original`
+     is snapshotted, so recording it costs no VP - he is not changing an
+     ability, he is writing down the one it has always had. */
+  if (!draft.ability) draft.ability = soleAbility(draft.pokemon);
+  if (draft.mega && !draft.mega_ability)
+    draft.mega_ability = soleAbility(draft.mega);
   var original = keepOriginal || JSON.parse(JSON.stringify(draft));
   /* built here, filled in place by paintChecks/paintCost below - they live at
      this scope because the sliders repaint them without rebuilding the sheet */
@@ -260,6 +271,12 @@ function buildSheet(id, b, keepOriginal){
         speciesSheet(function(name){
           draft.pokemon = name;
           draft._boxId = null;          // the copy is chosen separately
+          /* and everything that belonged to the OTHER species goes with it -
+             a stone it cannot hold, and the ability the block above committed
+             for it. The redraw fills in the new species' own single ability. */
+          draft.ability = null;
+          draft.mega = null;
+          draft.mega_ability = null;
           closeSheet();
           redraw();
         });
@@ -436,8 +453,17 @@ function buildSheet(id, b, keepOriginal){
        which ability do they pick? Kingambit is 98.6% Defiant, and a list of
        three cannot say that on its own - so the list is REORDERED by it. */
     orderByUsage(sa, draft.pokemon, "a");
-    sa.value = draft.ability || (p && p.ab[0]) || "";
-    sa.onchange = function(){ draft.ability = sa.value; redraw(); };
+    /* A REAL CHOICE STARTS UNMADE, and the control has to be able to say so.
+       A <select> always displays one of its options, so two or three
+       abilities opened on the first one and read as chosen while the build
+       held nothing - the same gap as the single-ability case, in the other
+       direction. The blank row says "not chosen" out loud and disappears the
+       moment he picks. It is inserted after the usage sort so it stays at the
+       top. */
+    if (!draft.ability)
+      sa.insertBefore(new Option("— not chosen —", ""), sa.firstChild);
+    sa.value = draft.ability || "";
+    sa.onchange = function(){ draft.ability = sa.value || null; redraw(); };
     fa.appendChild(sa);
     /* WHAT THE ABILITY DOES, UNDER THE ABILITY. This used to be appended after
        the whole two-column block, which reads correctly at desktop width -
@@ -464,8 +490,13 @@ function buildSheet(id, b, keepOriginal){
     /* and the same on natures - 90.3% Adamant on Kingambit is the answer to
        "what do people actually pick", which 25 alphabetical rows cannot give */
     orderByUsage(sn, draft.pokemon, "n");
-    sn.value = draft.nature || "Hardy";
-    sn.onchange = function(){ draft.nature = sn.value; redraw(); };
+    /* and the same here: the editor showed "Hardy" on a build whose card
+       showed an em dash, because Hardy was only ever the first option the
+       control landed on. A nature is 25 choices and 500 VP - it is his. */
+    if (!draft.nature)
+      sn.insertBefore(new Option("— not chosen —", ""), sn.firstChild);
+    sn.value = draft.nature || "";
+    sn.onchange = function(){ draft.nature = sn.value || null; redraw(); };
     fn.appendChild(sn);
     g.appendChild(fn);
     body.appendChild(g);
@@ -683,7 +714,7 @@ function buildSheet(id, b, keepOriginal){
           h.appendChild(el("span", "nm", mv.name));
           if (mv.pri > 0) h.appendChild(el("span", "tag ok", "+" + mv.pri));
           spreadTags(mv, h);
-          var ab2 = draft.mega ? (draft.mega_ability || draft.ability) : draft.ability;
+          var ab2 = activeAbility(draft);
           var at2 = ab2 ? abilityTag(ab2, mv, byName[draft.mega || draft.pokemon]) : null;
           if (at2) h.appendChild(at2);
           mm.appendChild(h);
@@ -828,8 +859,8 @@ function checks(d, p){
           "Only run it if the partner absorbs it or is immune."]);
       }
     });
-    var abil = d.mega ? (d.mega_ability || "") : (d.ability || "");
-    if (abil === "Intimidate" || d.ability === "Intimidate") {
+    var abil = megaAbility(d) || "";
+    if (abil === "Intimidate" || baseAbility(d) === "Intimidate") {
       out.push(["warn", "<strong>Intimidate on your own side.</strong> Defiant, " +
         "Competitive, Contrary, Guard Dog and Rattled all turn it into a free " +
         "boost for the opponent."]);
@@ -849,6 +880,14 @@ function checks(d, p){
       });
     }
   }
+  /* AND SAY SO WHEN THE CHOICE IS STILL OPEN. The blank row in the select is
+     honest but quiet, and an unset ability is not free: the move badges and
+     the damage screen both run without it. Printing the options is an
+     indicator, not a pick. */
+  if (p && (p.ab || []).length > 1 && !d.ability)
+    out.push(["warn", "<strong>No ability chosen.</strong> " + d.pokemon +
+      " can have " + p.ab.join(", ") + ". Until one is picked the move badges " +
+      "and the calculator run without it."]);
   var own = ownedNames();
   if (d.pokemon && !(d.pokemon in own))
     out.push(["bad", "<strong>" + d.pokemon + " is not in the Champions Box.</strong>"]);
@@ -873,12 +912,16 @@ function retuneCost(a, b){
     parts.push(n + " move" + (n === 1 ? "" : "s") + " × 250");
   }
   if ((a.nature || "") !== (b.nature || "")) { vp += 500; parts.push("nature 500"); }
-  if ((a.ability || "") !== (b.ability || "")) { vp += 500; parts.push("ability 500"); }
+  /* RESOLVED on both sides: writing down the ability a single-ability species
+     always had is not a retune, and must not print 500 VP. */
+  if ((baseAbility(a) || "") !== (baseAbility(b) || "")) {
+    vp += 500; parts.push("ability 500");
+  }
   return vp ? {vp:vp, parts:parts} : null;
 }
 
 function movePicker(draft, idx, ls, done){
-  var abil = draft.mega ? (draft.mega_ability || draft.ability) : draft.ability;
+  var abil = activeAbility(draft);
   var apoke = byName[draft.mega || draft.pokemon];
   /* CLOSE THE SHEET, THEN REDRAW. `done` is the editor's redraw and nothing
      more, so every exit from this picker used to leave the sheet sitting on
