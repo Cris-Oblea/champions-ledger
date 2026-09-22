@@ -1064,8 +1064,9 @@ def cmd_build(a):
             bs = p["base_stats"]
             print("  base   HP %s Atk %s Def %s SpA %s SpD %s Spe %s"
                   % (bs["hp"], bs["atk"], bs["def"], bs["spa"], bs["spd"], bs["spe"]))
-        print("  abil   %s%s" % (b.get("ability") or "--",
-                                 " -> " + b["mega_ability"] if b.get("mega_ability") else ""))
+        mab = build_mega_ability(b)
+        print("  abil   %s%s" % (build_ability(b) or "--",
+                                 " -> " + mab if mab else ""))
         nat = natures().get(b.get("nature") or "")
         print("  nature %s%s" % (b.get("nature") or "-- not recorded --",
                                  "   (%s)" % nat["summary"] if nat else ""))
@@ -1163,13 +1164,42 @@ ABILITY_DEFENCE = {
 }
 
 
+def sole_ability(name):
+    """The ability of a species that only has one - which is not a choice.
+
+    Aegislash is Stance Change, Clawitzer is Mega Launcher, and every one of
+    the 81 Megas is a single line, so a build that records no ability for one
+    of them is not undecided: the app's <select> had one option and could never
+    fire its own onchange, so it saved null (player, 2026-09-22). The app
+    writes it now and resolves it the same way for the rows saved before that.
+    Where the species really offers two or three, this returns None and the
+    choice stays his.
+    """
+    p = find_pokemon(name) if name else None
+    ab = (p or {}).get("abilities") or []
+    return ab[0] if len(ab) == 1 else None
+
+
+def build_ability(b):
+    """The ability a build runs as a base form."""
+    return b.get("ability") or sole_ability(b.get("pokemon"))
+
+
+def build_mega_ability(b):
+    """...and the one the stone turns it into, if the build carries one."""
+    if not b.get("mega"):
+        return None
+    return b.get("mega_ability") or sole_ability(b["mega"])
+
+
 def build_abilities():
     """Pokemon name -> the ability the player actually runs, from builds.json."""
     out = {}
     for b in ledger.builds():
-        out[norm(b["pokemon"])] = b.get("ability")
-        if b.get("mega") and b.get("mega_ability"):
-            out[norm(b["mega"])] = b["mega_ability"]
+        out[norm(b["pokemon"])] = build_ability(b)
+        mab = build_mega_ability(b)
+        if mab:
+            out[norm(b["mega"])] = mab
     return out
 
 
