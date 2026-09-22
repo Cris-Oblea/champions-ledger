@@ -4,7 +4,7 @@ import { $, C, DEX, MOVE_BY, STAT_KEYS, STAT_LABEL, anyRow, byName, capNote,
  catName, el, labelBox, learnset, natMult, pokeCard, searchField, statAt,
  statGrid, toast, typeCard, typeChip } from "./01-data.js";
 import { closeSheet, openSheet } from "./04-nav.js";
-import { S } from "./02-state.js";
+import { S, activeAbility, baseAbility } from "./02-state.js";
 /* The modifier tables - which item, weather, terrain and berry touch which
    type. They live in 10-scan for a historical reason and not a good one; this
    import is what finally says so out loud. */
@@ -802,7 +802,7 @@ function calcPickSheet(which){
         var nm = b.mega || b.pokemon;
         var p = byName[nm] || byName[b.pokemon];
         if (!p) return;
-        var hay = [id, b.pokemon, b.mega, b.role, b.nature, b.ability,
+        var hay = [id, b.pokemon, b.mega, b.role, b.nature, baseAbility(b),
                    (b.moves || []).join(" "), p.types.join(" ")]
           .filter(Boolean).join(" ").toLowerCase();
         if (q && hay.indexOf(q) < 0) return;
@@ -871,7 +871,7 @@ function calcLoadBuild(which, id, b){
   side.name = b.mega || b.pokemon;
   side.buildId = id;
   side.nature = b.nature || null;
-  side.ability = (b.mega ? (b.mega_ability || b.ability) : b.ability) || null;
+  side.ability = activeAbility(b);
   var sp = b.stat_points || {};
   STAT_KEYS.forEach(function(k){ side.sp[k] = sp[k] || 0; });
   STAT_KEYS.forEach(function(k){ if (k !== "hp") side.boost[k] = 0; });

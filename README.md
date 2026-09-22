@@ -92,6 +92,13 @@ breaks or overflows.
 so it draws that form and the one ability it runs - not the species' other
 options, and not a Mega line the set does not use.
 
+**And a species with ONE ability never chose it.** Aegislash is Stance Change,
+Clawitzer is Mega Launcher, and every one of the 81 Megas is a single line, so
+the build carries that ability whether or not anyone ever touched the control -
+on the card, on the move rows it boosts, and in the calculator. Where the
+species really does offer two or three, the choice stays open, the editor says
+so, and nothing fills it in.
+
 **One fact, one chip, and the chip says what its number governs.** An item, an
 ability or a move carries its numbers as chips beside Smogon's sentence, and
 they are worked out once — in `scripts/effect_chips.py`, never on the phone —
@@ -559,7 +566,7 @@ it. A source that quietly changes a denominator is the failure this catches.
 ```
 
 <!-- GATE:START -->
-**The gate** is 33 checks, and nothing reaches the phone without
+**The gate** is 34 checks, and nothing reaches the phone without
 passing all of them:
 
 - a **shrink guard** — if a rebuild comes back with fewer forms, moves or
@@ -571,7 +578,7 @@ passing all of them:
 - **one source check** — the app is linked from thirteen ES modules, so a name
   two of them both declare, or one of them uses without importing,
   is read for once rather than clicked
-- **twenty-two browser tests** — run against the built page, because no Python
+- **twenty-three browser tests** — run against the built page, because no Python
   check can see a template regression
 <!-- GATE:END -->
 
@@ -645,7 +652,7 @@ data/db/     the built database - the thing everything else reads
 data/meta/   usage, tournaments, speed tiers, written analyses
 tracker/     the app: a shell, its ES modules under src/, and a generated data blob
 <!-- TESTS:START -->
-tests/       twenty-two browser tests, run against the BUILT page
+tests/       twenty-three browser tests, run against the BUILT page
 <!-- TESTS:END -->
 analysis/    write-ups: the Smogon engine, regulation M-C, GTS pricing, the roadmap
 CLAUDE.md    the rules this project works by, including everything learned the hard way

@@ -4,7 +4,8 @@ import {
   $, HOME_ALL, MOVE_BY, SORT, byName, el, rowMatches, setHomeAll, setSort,
   sortRows, wireClears,
 } from "./01-data.js";
-import { S, boxRows, buildLink, capacity, originRows } from "./02-state.js";
+import { S, activeAbility, boxRows, buildLink, capacity, originRows }
+  from "./02-state.js";
 import { connect } from "./03-store.js";
 import { buildTabs, fbtn, go, leaveEditor, mq } from "./04-nav.js";
 import { addSheet, drawDexPane, pokeRow } from "./05-box.js";
@@ -371,6 +372,7 @@ try {
 window.calcDamage=calcDamage; window.koCount=koCount; window.byName=byName;
 window.MOVE_BY=MOVE_BY; window.AB_SET=AB_SET; window.abilityTag=abilityTag; window.abilityHit=abilityHit;
 window.buildLink=buildLink;   /* tests/buildlinktest.js */
+window.activeAbility=activeAbility;  /* tests/buildabilitytest.js */
 window.FIND=FIND; window.findRun=findRun;
 renderAll();
 foldIntros();
