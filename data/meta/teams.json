@@ -1,7 +1,7 @@
 {
  "source": "pokebase.app/pokemon-champions",
  "game": "Pokemon Champions",
- "fetched": "2026-09-22",
+ "fetched": "2026-09-23",
  "count": 33,
  "rows": [
   {
@@ -2083,7 +2083,7 @@
    ]
   },
   {
-   "name": "Amyverse VGC Champions Arena #11 ❤️ Cash Prize! – Vuultur (#1)",
+   "name": "TARTAN TAKEDOWN #39! - [CHAMPIONS REG M-C!] – Vinnamon (#1)",
    "creator": null,
    "regulation": "M-C",
    "rental_code": null,
@@ -2091,16 +2091,97 @@
    "date_shared": null,
    "members": [
     {
-     "pokemon": "Sneasler",
-     "slug": "sneasler",
-     "ability": "Unburden",
-     "item": "Focus Sash",
-     "nature": "jolly",
+     "pokemon": "Farigiraf",
+     "slug": "farigiraf",
+     "ability": "Armor Tail",
+     "item": "Grassy Seed",
+     "nature": "quiet",
      "moves": [
+      "Trick Room",
+      "Psychic",
+      "Protect",
+      "Helping Hand"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": "Rillaboom",
+     "slug": "rillaboom",
+     "ability": "Grassy Surge",
+     "item": "Life Orb",
+     "nature": "adamant",
+     "moves": [
+      "Grassy Glide",
       "Fake Out",
-      "Close Combat",
-      "Dire Claw",
-      "Coaching"
+      "Wood Hammer",
+      "High Horsepower"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": "Sylveon",
+     "slug": "sylveon",
+     "ability": "Pixilate",
+     "item": "Fairy Feather",
+     "nature": "quiet",
+     "moves": [
+      "Hyper Voice",
+      "Quick Attack",
+      "Hyper Beam",
+      "Detect"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": "Camerupt",
+     "slug": "camerupt",
+     "ability": "Solid Rock",
+     "item": "Cameruptite",
+     "nature": "quiet",
+     "moves": [
+      "Earth Power",
+      "Heat Wave",
+      "Ancient Power"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": "Garchomp",
+     "slug": "garchomp",
+     "ability": "Rough Skin",
+     "item": "Garchompite Z",
+     "nature": "modest",
+     "moves": [
+      "Draco Meteor",
+      "Flamethrower"
      ],
      "stat_points": {
       "hp": 0,
@@ -2119,89 +2200,8 @@
      "nature": "careful",
      "moves": [
       "Flare Blitz",
-      "Helping Hand",
-      "Parting Shot"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": "Floette (Eternal)",
-     "slug": "floette-eternal",
-     "ability": "Flower Veil",
-     "item": "Floettite",
-     "nature": "timid",
-     "moves": [
-      "Dazzling Gleam",
-      "Draining Kiss",
-      "Calm Mind",
-      "Protect"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": "Kingambit",
-     "slug": "kingambit",
-     "ability": "Defiant",
-     "item": "Life Orb",
-     "nature": "adamant",
-     "moves": [
-      "Kowtow Cleave",
-      "Sucker Punch",
-      "Swords Dance"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": "Garchomp",
-     "slug": "garchomp",
-     "ability": "Rough Skin",
-     "item": "Garchompite",
-     "nature": "adamant",
-     "moves": [
-      "Dragon Claw",
-      "Stomping Tantrum",
-      "Rock Slide"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": "Sinistcha",
-     "slug": "sinistcha",
-     "ability": "Hospitality",
-     "item": "Colbur Berry",
-     "nature": "bold",
-     "moves": [
-      "Matcha Gotcha",
-      "Rage Powder",
-      "Trick Room"
+      "Parting Shot",
+      "Throat Chop"
      ],
      "stat_points": {
       "hp": 0,
@@ -2215,7 +2215,7 @@
    ]
   },
   {
-   "name": "Amyverse VGC Champions Arena #11 ❤️ Cash Prize! – AleRivas (#2)",
+   "name": "TARTAN TAKEDOWN #39! - [CHAMPIONS REG M-C!] – danchunks7 (#2)",
    "creator": null,
    "regulation": null,
    "rental_code": null,
@@ -2223,200 +2223,12 @@
    "date_shared": null,
    "members": [
     {
-     "pokemon": "Golisopod",
-     "slug": "golisopod",
-     "ability": "Emergency Exit",
-     "item": "Golisopite",
-     "nature": "adamant",
-     "moves": [
-      "Drill Run",
-      "Leech Life",
-      "Iron Head"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": "Farigiraf",
-     "slug": "farigiraf",
-     "ability": "Armor Tail",
-     "item": "$4b:props:showcase:tournament:0:team:1:item",
-     "nature": "calm",
-     "moves": [
-      "Psychic",
-      "Grass Knot"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": "Grimmsnarl",
-     "slug": "grimmsnarl",
-     "ability": "Prankster",
-     "item": "Light Clay",
-     "nature": "careful",
-     "moves": [
-      "Reflect",
-      "Light Screen",
-      "Spirit Break"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": "Politoed",
-     "slug": "politoed",
-     "ability": "Drizzle",
-     "item": "Mystic Water",
-     "nature": "modest",
-     "moves": [
-      "Muddy Water",
-      "Ice Beam",
-      "Weather Ball"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": "Archaludon",
-     "slug": "archaludon",
-     "ability": "Stamina",
-     "item": "Leftovers",
-     "nature": "bold",
-     "moves": [
-      "Aura Sphere",
-      "Dragon Pulse",
-      "Electro Shot"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": "Charizard",
-     "slug": "charizard",
-     "ability": "Blaze",
-     "item": "Charizardite Y",
-     "nature": "timid",
-     "moves": [
-      "Hurricane",
-      "Heat Wave"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    }
-   ]
-  },
-  {
-   "name": "Amyverse VGC Champions Arena #11 ❤️ Cash Prize! – The_Chicken_Man (#3)",
-   "creator": null,
-   "regulation": null,
-   "rental_code": null,
-   "source_url": null,
-   "date_shared": null,
-   "members": [
-    {
-     "pokemon": "Tyranitar",
-     "slug": "tyranitar",
-     "ability": "Sand Stream",
-     "item": "Tyranitarite",
-     "nature": "adamant",
-     "moves": [
-      "Knock Off",
-      "Low Kick"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": "Excadrill",
-     "slug": "excadrill",
-     "ability": "Sand Rush",
-     "item": "$4b:props:showcase:tournament:0:team:0:item",
-     "nature": "adamant",
-     "moves": [
-      "High Horsepower"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": "Salamence",
-     "slug": "salamence",
+     "pokemon": null,
+     "slug": null,
      "ability": "$4b:props:showcase:tournament:0:team:1:ability",
-     "item": "Salamencite",
-     "nature": "modest",
-     "moves": [
-      "Hyper Voice",
-      "Tailwind"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": "Indeedee",
-     "slug": "indeedee",
-     "ability": "Psychic Surge",
-     "item": "Choice Scarf",
-     "nature": "timid",
-     "moves": [
-      "Expanding Force",
-      "Mystical Fire",
-      "Trick"
-     ],
+     "item": "Miracle Seed",
+     "nature": "adamant",
+     "moves": [],
      "stat_points": {
       "hp": 0,
       "attack": 0,
@@ -2429,8 +2241,8 @@
     {
      "pokemon": null,
      "slug": null,
-     "ability": "$4b:props:showcase:tournament:0:team:0:ability",
-     "item": "Psychic Seed",
+     "ability": "$4b:props:showcase:tournament:0:team:5:ability",
+     "item": "Chople Berry",
      "nature": "jolly",
      "moves": [],
      "stat_points": {
@@ -2443,45 +2255,14 @@
      }
     },
     {
-     "pokemon": "Milotic",
-     "slug": "milotic",
-     "ability": "Competitive",
-     "item": "$4b:props:showcase:tournament:0:team:1:item",
-     "nature": "modest",
+     "pokemon": "Dragonite",
+     "slug": "dragonite",
+     "ability": "Inner Focus",
+     "item": "Dragoninite",
+     "nature": "timid",
      "moves": [
-      "Scald",
-      "Icy Wind",
-      "Life Dew"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    }
-   ]
-  },
-  {
-   "name": "Amyverse VGC Champions Arena #11 ❤️ Cash Prize! – RacletteOVNI (#4)",
-   "creator": null,
-   "regulation": null,
-   "rental_code": null,
-   "source_url": null,
-   "date_shared": null,
-   "members": [
-    {
-     "pokemon": "Rillaboom",
-     "slug": "rillaboom",
-     "ability": "Grassy Surge",
-     "item": "Miracle Seed",
-     "nature": "adamant",
-     "moves": [
-      "Wood Hammer",
-      "Grassy Glide",
-      "U-turn"
+      "Tailwind",
+      "Dragon Pulse"
      ],
      "stat_points": {
       "hp": 0,
@@ -2493,33 +2274,15 @@
      }
     },
     {
-     "pokemon": "Ceruledge",
-     "slug": "ceruledge",
-     "ability": "Flash Fire",
-     "item": "$4b:props:showcase:tournament:0:team:5:item",
-     "nature": "adamant",
-     "moves": [
-      "Bitter Blade",
-      "Shadow Sneak",
-      "Bulk Up"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:tournament:2:team:5:ability",
+     "pokemon": "Gholdengo",
+     "slug": "gholdengo",
+     "ability": "Good as Gold",
      "item": "$4b:props:showcase:tournament:0:team:1:item",
      "nature": "modest",
      "moves": [
-      "Recover"
+      "Make It Rain",
+      "Shadow Ball",
+      "Nasty Plot"
      ],
      "stat_points": {
       "hp": 0,
@@ -2550,146 +2313,15 @@
      }
     },
     {
-     "pokemon": "Gholdengo",
-     "slug": "gholdengo",
-     "ability": "Good as Gold",
-     "item": "$4b:props:showcase:tournament:0:team:3:item",
-     "nature": "modest",
-     "moves": [
-      "Make It Rain",
-      "Shadow Ball",
-      "Nasty Plot"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": "Staraptor",
-     "slug": "staraptor",
-     "ability": "$4b:props:showcase:tournament:0:team:1:ability",
-     "item": "Staraptite",
-     "nature": "jolly",
-     "moves": [
-      "Brave Bird"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    }
-   ]
-  },
-  {
-   "name": "Amyverse VGC Champions Arena #11 ❤️ Cash Prize! – Spodermees (#5)",
-   "creator": null,
-   "regulation": null,
-   "rental_code": null,
-   "source_url": null,
-   "date_shared": null,
-   "members": [
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:tournament:0:team:1:ability",
-     "item": "$4b:props:showcase:tournament:3:team:5:item",
-     "nature": "jolly",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:tournament:3:team:3:ability",
-     "item": "$4b:props:showcase:tournament:3:team:3:item",
-     "nature": "timid",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:tournament:3:team:4:ability",
-     "item": "$4b:props:showcase:tournament:0:team:3:item",
-     "nature": "modest",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:tournament:3:team:0:ability",
-     "item": "$4b:props:showcase:tournament:3:team:0:item",
-     "nature": "adamant",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": "Hisuian Arcanine",
-     "slug": "arcanine-hisui",
-     "ability": "Rock Head",
+     "pokemon": "Sneasler",
+     "slug": "sneasler",
+     "ability": "Unburden",
      "item": "$4b:props:showcase:tournament:0:team:0:item",
-     "nature": "jolly",
+     "nature": "adamant",
      "moves": [
-      "Head Smash",
-      "Extreme Speed"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": "Sylveon",
-     "slug": "sylveon",
-     "ability": "Pixilate",
-     "item": "Fairy Feather",
-     "nature": "modest",
-     "moves": [
-      "Hyper Beam",
-      "Quick Attack",
-      "Detect"
+      "Dire Claw",
+      "Close Combat",
+      "Rock Slide"
      ],
      "stat_points": {
       "hp": 0,
@@ -2703,7 +2335,7 @@
    ]
   },
   {
-   "name": "Amyverse VGC Champions Arena #11 ❤️ Cash Prize! – Exonarf (#6)",
+   "name": "TARTAN TAKEDOWN #39! - [CHAMPIONS REG M-C!] – JuliiiHD (#3)",
    "creator": null,
    "regulation": null,
    "rental_code": null,
@@ -2711,13 +2343,14 @@
    "date_shared": null,
    "members": [
     {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:tournament:0:team:1:ability",
-     "item": "$4b:props:showcase:tournament:2:team:2:item",
+     "pokemon": "Charizard",
+     "slug": "charizard",
+     "ability": "Blaze",
+     "item": "Charizardite Y",
      "nature": "timid",
      "moves": [
-      "Draco Meteor"
+      "Weather Ball",
+      "Hurricane"
      ],
      "stat_points": {
       "hp": 0,
@@ -2729,12 +2362,15 @@
      }
     },
     {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:tournament:2:team:0:ability",
-     "item": "Chople Berry",
-     "nature": "adamant",
-     "moves": [],
+     "pokemon": "Archaludon",
+     "slug": "archaludon",
+     "ability": "Stamina",
+     "item": "Leftovers",
+     "nature": "bold",
+     "moves": [
+      "Electro Shot",
+      "Snarl"
+     ],
      "stat_points": {
       "hp": 0,
       "attack": 0,
@@ -2745,12 +2381,16 @@
      }
     },
     {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:tournament:2:team:3:ability",
-     "item": "$4b:props:showcase:tournament:2:team:3:item",
-     "nature": "modest",
-     "moves": [],
+     "pokemon": "Grimmsnarl",
+     "slug": "grimmsnarl",
+     "ability": "Prankster",
+     "item": "Light Clay",
+     "nature": "careful",
+     "moves": [
+      "Spirit Break",
+      "Reflect",
+      "Light Screen"
+     ],
      "stat_points": {
       "hp": 0,
       "attack": 0,
@@ -2764,10 +2404,10 @@
      "pokemon": null,
      "slug": null,
      "ability": "$4b:props:showcase:tournament:0:team:0:ability",
-     "item": "$4b:props:showcase:tournament:2:team:4:item",
-     "nature": "adamant",
+     "item": "$4b:props:showcase:tournament:0:team:5:item",
+     "nature": "bold",
      "moves": [
-      "Fire Punch"
+      "Grass Knot"
      ],
      "stat_points": {
       "hp": 0,
@@ -2779,14 +2419,14 @@
      }
     },
     {
-     "pokemon": "Mamoswine",
-     "slug": "mamoswine",
-     "ability": "Oblivious",
-     "item": "$4b:props:showcase:tournament:0:team:0:item",
-     "nature": "adamant",
+     "pokemon": "Politoed",
+     "slug": "politoed",
+     "ability": "Drizzle",
+     "item": "Mystic Water",
+     "nature": "modest",
      "moves": [
-      "Icicle Crash",
-      "Ice Shard"
+      "Ice Beam",
+      "Muddy Water"
      ],
      "stat_points": {
       "hp": 0,
@@ -2798,14 +2438,15 @@
      }
     },
     {
-     "pokemon": "Metagross",
-     "slug": "metagross",
-     "ability": "Clear Body",
-     "item": "Metagrossite",
+     "pokemon": "Golisopod",
+     "slug": "golisopod",
+     "ability": "Emergency Exit",
+     "item": "Golisopite",
      "nature": "adamant",
      "moves": [
-      "Psychic Fangs",
-      "Steel Roller"
+      "Leech Life",
+      "Iron Head",
+      "Drill Run"
      ],
      "stat_points": {
       "hp": 0,
@@ -2819,7 +2460,7 @@
    ]
   },
   {
-   "name": "Amyverse VGC Champions Arena #11 ❤️ Cash Prize! – JakesDucky (#7)",
+   "name": "TARTAN TAKEDOWN #39! - [CHAMPIONS REG M-C!] – Shmon (#4)",
    "creator": null,
    "regulation": null,
    "rental_code": null,
@@ -2827,10 +2468,30 @@
    "date_shared": null,
    "members": [
     {
+     "pokemon": "Floette",
+     "slug": "floette",
+     "ability": "Flower Veil",
+     "item": "Floettite",
+     "nature": "modest",
+     "moves": [
+      "Moonblast",
+      "Dazzling Gleam",
+      "Calm Mind"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
      "pokemon": null,
      "slug": null,
-     "ability": "$4b:props:showcase:tournament:1:team:0:ability",
-     "item": "$4b:props:showcase:tournament:1:team:0:item",
+     "ability": "$4b:props:showcase:tournament:0:team:1:ability",
+     "item": "Occa Berry",
      "nature": "adamant",
      "moves": [],
      "stat_points": {
@@ -2845,9 +2506,9 @@
     {
      "pokemon": null,
      "slug": null,
-     "ability": "$4b:props:showcase:tournament:1:team:1:ability",
-     "item": "Grassy Seed",
-     "nature": "relaxed",
+     "ability": "$4b:props:showcase:tournament:0:team:5:ability",
+     "item": "$4b:props:showcase:tournament:0:team:5:item",
+     "nature": "careful",
      "moves": [],
      "stat_points": {
       "hp": 0,
@@ -2861,9 +2522,9 @@
     {
      "pokemon": null,
      "slug": null,
-     "ability": "$4b:props:showcase:tournament:3:team:0:ability",
-     "item": "$4b:props:showcase:tournament:0:team:3:item",
-     "nature": "brave",
+     "ability": "$4b:props:showcase:tournament:1:team:3:ability",
+     "item": "$4b:props:showcase:tournament:0:team:1:item",
+     "nature": "modest",
      "moves": [],
      "stat_points": {
       "hp": 0,
@@ -2875,13 +2536,13 @@
      }
     },
     {
-     "pokemon": "Pelipper",
-     "slug": "pelipper",
-     "ability": "$4b:props:showcase:tournament:1:team:3:ability",
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:tournament:1:team:5:ability",
      "item": "$4b:props:showcase:tournament:0:team:0:item",
-     "nature": "modest",
+     "nature": "adamant",
      "moves": [
-      "Wide Guard"
+      "Rock Tomb"
      ],
      "stat_points": {
       "hp": 0,
@@ -2897,25 +2558,6 @@
      "slug": null,
      "ability": "$4b:props:showcase:tournament:1:team:4:ability",
      "item": "$4b:props:showcase:tournament:1:team:4:item",
-     "nature": "modest",
-     "moves": [
-      "Snarl",
-      "Flash Cannon"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:tournament:0:team:1:ability",
-     "item": "$4b:props:showcase:tournament:2:team:2:item",
      "nature": "timid",
      "moves": [],
      "stat_points": {
@@ -2930,7 +2572,7 @@
    ]
   },
   {
-   "name": "Amyverse VGC Champions Arena #11 ❤️ Cash Prize! – henrique9379 (#8)",
+   "name": "TARTAN TAKEDOWN #39! - [CHAMPIONS REG M-C!] – Daneil_The_Idk (#5)",
    "creator": null,
    "regulation": null,
    "rental_code": null,
@@ -2938,11 +2580,11 @@
    "date_shared": null,
    "members": [
     {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:tournament:0:team:1:ability",
-     "item": "$4b:props:showcase:tournament:3:team:5:item",
-     "nature": "jolly",
+     "pokemon": "Floette (Eternal)",
+     "slug": "floette-eternal",
+     "ability": "$4b:props:showcase:tournament:3:team:0:ability",
+     "item": "$4b:props:showcase:tournament:3:team:0:item",
+     "nature": "modest",
      "moves": [],
      "stat_points": {
       "hp": 0,
@@ -2956,9 +2598,143 @@
     {
      "pokemon": null,
      "slug": null,
-     "ability": "$4b:props:showcase:tournament:3:team:3:ability",
-     "item": "$4b:props:showcase:tournament:3:team:3:item",
-     "nature": "timid",
+     "ability": "$4b:props:showcase:tournament:0:team:5:ability",
+     "item": "$4b:props:showcase:tournament:1:team:1:item",
+     "nature": "adamant",
+     "moves": [
+      "Darkest Lariat"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:tournament:0:team:1:ability",
+     "item": "$4b:props:showcase:tournament:0:team:5:item",
+     "nature": "adamant",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:tournament:0:team:0:ability",
+     "item": "$4b:props:showcase:tournament:0:team:1:item",
+     "nature": "quiet",
+     "moves": [
+      "Twin Beam"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:tournament:1:team:5:ability",
+     "item": "$4b:props:showcase:tournament:0:team:0:item",
+     "nature": "adamant",
+     "moves": [
+      "Swords Dance"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": "Kingambit",
+     "slug": "kingambit",
+     "ability": "Defiant",
+     "item": "Black Glasses",
+     "nature": "adamant",
+     "moves": [
+      "Kowtow Cleave",
+      "Sucker Punch"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    }
+   ]
+  },
+  {
+   "name": "TARTAN TAKEDOWN #39! - [CHAMPIONS REG M-C!] – Manuel M (#6)",
+   "creator": null,
+   "regulation": null,
+   "rental_code": null,
+   "source_url": null,
+   "date_shared": null,
+   "members": [
+    {
+     "pokemon": "Salamence",
+     "slug": "salamence",
+     "ability": "$4b:props:showcase:tournament:0:team:5:ability",
+     "item": "Salamencite",
+     "nature": "modest",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": "Hisuian Arcanine",
+     "slug": "arcanine-hisui",
+     "ability": "Rock Head",
+     "item": "Focus Sash",
+     "nature": "jolly",
+     "moves": [
+      "Head Smash",
+      "Extreme Speed"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:tournament:0:team:1:ability",
+     "item": "$4b:props:showcase:tournament:1:team:0:item",
+     "nature": "adamant",
      "moves": [],
      "stat_points": {
       "hp": 0,
@@ -2973,134 +2749,10 @@
      "pokemon": null,
      "slug": null,
      "ability": "$4b:props:showcase:tournament:4:team:5:ability",
-     "item": "$4b:props:showcase:tournament:4:team:5:item",
-     "nature": "modest",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:tournament:3:team:0:ability",
-     "item": "$4b:props:showcase:tournament:3:team:0:item",
-     "nature": "adamant",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:tournament:4:team:4:ability",
-     "item": "$4b:props:showcase:tournament:0:team:0:item",
-     "nature": "adamant",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:tournament:3:team:4:ability",
-     "item": "$4b:props:showcase:tournament:0:team:3:item",
-     "nature": "timid",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    }
-   ]
-  },
-  {
-   "name": "Amyverse VGC Champions Arena #11 ❤️ Cash Prize! – Adiyan_Hussain (#9)",
-   "creator": null,
-   "regulation": null,
-   "rental_code": null,
-   "source_url": null,
-   "date_shared": null,
-   "members": [
-    {
-     "pokemon": "Gardevoir",
-     "slug": "gardevoir",
-     "ability": "Synchronize",
-     "item": "Gardevoirite",
-     "nature": "modest",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": "Indeedee (Female)",
-     "slug": "indeedee-female",
-     "ability": "$4b:props:showcase:tournament:2:team:3:ability",
-     "item": "$4b:props:showcase:tournament:0:team:5:item",
-     "nature": "relaxed",
+     "item": "$4b:props:showcase:tournament:1:team:1:item",
+     "nature": "brave",
      "moves": [
-      "Follow Me"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": "Armarouge",
-     "slug": "armarouge",
-     "ability": "$4b:props:showcase:tournament:3:team:1:ability",
-     "item": "$4b:props:showcase:tournament:0:team:3:item",
-     "nature": "modest",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": "Torkoal",
-     "slug": "torkoal",
-     "ability": "White Smoke",
-     "item": "Eject Button",
-     "nature": "quiet",
-     "moves": [
-      "Eruption"
+      "Low Kick"
      ],
      "stat_points": {
       "hp": 0,
@@ -3115,101 +2767,10 @@
      "pokemon": null,
      "slug": null,
      "ability": "$4b:props:showcase:tournament:0:team:0:ability",
-     "item": "$4b:props:showcase:tournament:2:team:4:item",
-     "nature": "adamant",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:tournament:0:team:3:ability",
-     "item": "$4b:props:showcase:tournament:5:team:1:item",
-     "nature": "adamant",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    }
-   ]
-  },
-  {
-   "name": "Amyverse VGC Champions Arena #11 ❤️ Cash Prize! – TobiYume (#10)",
-   "creator": null,
-   "regulation": null,
-   "rental_code": null,
-   "source_url": null,
-   "date_shared": null,
-   "members": [
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:tournament:3:team:3:ability",
-     "item": "$4b:props:showcase:tournament:3:team:3:item",
-     "nature": "timid",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:tournament:0:team:1:ability",
-     "item": "$4b:props:showcase:tournament:3:team:5:item",
-     "nature": "jolly",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:tournament:3:team:1:ability",
-     "item": "$4b:props:showcase:tournament:6:team:1:item",
-     "nature": "adamant",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:tournament:2:team:5:ability",
-     "item": "$4b:props:showcase:tournament:0:team:1:item",
-     "nature": "calm",
+     "item": "$4b:props:showcase:tournament:0:team:5:item",
+     "nature": "relaxed",
      "moves": [
-      "Coil",
-      "Hypnosis"
+      "Thunderbolt"
      ],
      "stat_points": {
       "hp": 0,
@@ -3223,24 +2784,8 @@
     {
      "pokemon": null,
      "slug": null,
-     "ability": "$4b:props:showcase:tournament:3:team:0:ability",
-     "item": "$4b:props:showcase:tournament:3:team:0:item",
-     "nature": "adamant",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:tournament:3:team:4:ability",
-     "item": "$4b:props:showcase:tournament:0:team:3:item",
+     "ability": "$4b:props:showcase:tournament:0:team:2:ability",
+     "item": "$4b:props:showcase:tournament:0:team:2:item",
      "nature": "modest",
      "moves": [],
      "stat_points": {
@@ -3255,7 +2800,7 @@
    ]
   },
   {
-   "name": "Amyverse VGC Champions Arena #11 ❤️ Cash Prize! – Mnky (#11)",
+   "name": "TARTAN TAKEDOWN #39! - [CHAMPIONS REG M-C!] – Giuli (#7)",
    "creator": null,
    "regulation": null,
    "rental_code": null,
@@ -3265,9 +2810,9 @@
     {
      "pokemon": null,
      "slug": null,
-     "ability": "$4b:props:showcase:tournament:4:team:4:ability",
-     "item": "$4b:props:showcase:tournament:0:team:0:item",
-     "nature": "jolly",
+     "ability": "$4b:props:showcase:tournament:0:team:5:ability",
+     "item": "$4b:props:showcase:tournament:5:team:0:item",
+     "nature": "timid",
      "moves": [],
      "stat_points": {
       "hp": 0,
@@ -3283,6 +2828,24 @@
      "slug": null,
      "ability": "$4b:props:showcase:tournament:3:team:0:ability",
      "item": "$4b:props:showcase:tournament:3:team:0:item",
+     "nature": "modest",
+     "moves": [
+      "Draining Kiss"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:tournament:1:team:5:ability",
+     "item": "$4b:props:showcase:tournament:0:team:0:item",
      "nature": "adamant",
      "moves": [],
      "stat_points": {
@@ -3297,9 +2860,9 @@
     {
      "pokemon": null,
      "slug": null,
-     "ability": "$4b:props:showcase:tournament:3:team:4:ability",
-     "item": "$4b:props:showcase:tournament:0:team:3:item",
-     "nature": "timid",
+     "ability": "$4b:props:showcase:tournament:0:team:5:ability",
+     "item": "Rocky Helmet",
+     "nature": "impish",
      "moves": [],
      "stat_points": {
       "hp": 0,
@@ -3314,8 +2877,8 @@
      "pokemon": null,
      "slug": null,
      "ability": "$4b:props:showcase:tournament:0:team:1:ability",
-     "item": "$4b:props:showcase:tournament:3:team:5:item",
-     "nature": "jolly",
+     "item": "$4b:props:showcase:tournament:1:team:0:item",
+     "nature": "adamant",
      "moves": [],
      "stat_points": {
       "hp": 0,
@@ -3329,25 +2892,9 @@
     {
      "pokemon": null,
      "slug": null,
-     "ability": "$4b:props:showcase:tournament:3:team:3:ability",
-     "item": "$4b:props:showcase:tournament:3:team:3:item",
+     "ability": "$4b:props:showcase:tournament:1:team:3:ability",
+     "item": "$4b:props:showcase:tournament:0:team:1:item",
      "nature": "timid",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:tournament:4:team:5:ability",
-     "item": "$4b:props:showcase:tournament:4:team:5:item",
-     "nature": "modest",
      "moves": [],
      "stat_points": {
       "hp": 0,
@@ -3361,7 +2908,7 @@
    ]
   },
   {
-   "name": "Amyverse VGC Champions Arena #11 ❤️ Cash Prize! – BonnieSSR (#12)",
+   "name": "TARTAN TAKEDOWN #39! - [CHAMPIONS REG M-C!] – EcoMcC (#8)",
    "creator": null,
    "regulation": null,
    "rental_code": null,
@@ -3369,12 +2916,83 @@
    "date_shared": null,
    "members": [
     {
+     "pokemon": "Aerodactyl",
+     "slug": "aerodactyl",
+     "ability": "Unnerve",
+     "item": "Aerodactylite",
+     "nature": "jolly",
+     "moves": [
+      "Dual Wingbeat",
+      "Wide Guard"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
      "pokemon": null,
      "slug": null,
-     "ability": "$4b:props:showcase:tournament:2:team:1:ability",
-     "item": "$4b:props:showcase:tournament:0:team:0:item",
-     "nature": "jolly",
+     "ability": "$4b:props:showcase:tournament:4:team:5:ability",
+     "item": "$4b:props:showcase:tournament:5:team:1:item",
+     "nature": "adamant",
      "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:tournament:0:team:2:ability",
+     "item": "$4b:props:showcase:tournament:0:team:2:item",
+     "nature": "modest",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:tournament:0:team:0:ability",
+     "item": "$4b:props:showcase:tournament:0:team:5:item",
+     "nature": "bold",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:tournament:0:team:4:ability",
+     "item": "Choice Scarf",
+     "nature": "jolly",
+     "moves": [
+      "Dragon Claw",
+      "Earthquake",
+      "Stomping Tantrum"
+     ],
      "stat_points": {
       "hp": 0,
       "attack": 0,
@@ -3389,77 +3007,10 @@
      "slug": null,
      "ability": "$4b:props:showcase:tournament:2:team:0:ability",
      "item": "$4b:props:showcase:tournament:2:team:0:item",
-     "nature": "jolly",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:tournament:0:team:1:ability",
-     "item": "$4b:props:showcase:tournament:2:team:2:item",
-     "nature": "timid",
-     "moves": [
-      "Flamethrower"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:tournament:2:team:3:ability",
-     "item": "$4b:props:showcase:tournament:2:team:3:item",
      "nature": "modest",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": "Corviknight",
-     "slug": "corviknight",
-     "ability": "Mirror Armor",
-     "item": "$4b:props:showcase:tournament:2:team:4:item",
-     "nature": "careful",
      "moves": [
-      "Power Trip",
-      "Roost"
+      "Solar Beam"
      ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:tournament:0:team:0:ability",
-     "item": "White Herb",
-     "nature": "adamant",
-     "moves": [],
      "stat_points": {
       "hp": 0,
       "attack": 0,
@@ -3472,7 +3023,7 @@
    ]
   },
   {
-   "name": "Amyverse VGC Champions Arena #11 ❤️ Cash Prize! – MiniMitre (#13)",
+   "name": "TARTAN TAKEDOWN #39! - [CHAMPIONS REG M-C!] – Saeko12 (#9)",
    "creator": null,
    "regulation": null,
    "rental_code": null,
@@ -3480,12 +3031,33 @@
    "date_shared": null,
    "members": [
     {
+     "pokemon": "Lucario",
+     "slug": "lucario",
+     "ability": "$4b:props:showcase:tournament:1:team:2:ability",
+     "item": "Lucarionite Z",
+     "nature": "timid",
+     "moves": [
+      "Aura Sphere",
+      "Flash Cannon"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
      "pokemon": null,
      "slug": null,
-     "ability": "$4b:props:showcase:tournament:4:team:4:ability",
-     "item": "$4b:props:showcase:tournament:0:team:0:item",
-     "nature": "jolly",
-     "moves": [],
+     "ability": "$4b:props:showcase:tournament:0:team:4:ability",
+     "item": "$4b:props:showcase:tournament:7:team:4:item",
+     "nature": "adamant",
+     "moves": [
+      "Fire Fang"
+     ],
      "stat_points": {
       "hp": 0,
       "attack": 0,
@@ -3500,7 +3072,7 @@
      "slug": null,
      "ability": "$4b:props:showcase:tournament:3:team:0:ability",
      "item": "$4b:props:showcase:tournament:3:team:0:item",
-     "nature": "adamant",
+     "nature": "timid",
      "moves": [],
      "stat_points": {
       "hp": 0,
@@ -3514,10 +3086,12 @@
     {
      "pokemon": null,
      "slug": null,
-     "ability": "$4b:props:showcase:tournament:3:team:4:ability",
-     "item": "$4b:props:showcase:tournament:0:team:3:item",
-     "nature": "timid",
-     "moves": [],
+     "ability": "$4b:props:showcase:tournament:0:team:5:ability",
+     "item": "$4b:props:showcase:tournament:0:team:5:item",
+     "nature": "careful",
+     "moves": [
+      "Taunt"
+     ],
      "stat_points": {
       "hp": 0,
       "attack": 0,
@@ -3531,24 +3105,8 @@
      "pokemon": null,
      "slug": null,
      "ability": "$4b:props:showcase:tournament:0:team:1:ability",
-     "item": "$4b:props:showcase:tournament:3:team:5:item",
-     "nature": "jolly",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:tournament:3:team:3:ability",
-     "item": "$4b:props:showcase:tournament:3:team:3:item",
-     "nature": "timid",
+     "item": "$4b:props:showcase:tournament:6:team:3:item",
+     "nature": "adamant",
      "moves": [],
      "stat_points": {
       "hp": 0,
@@ -3564,7 +3122,7 @@
      "slug": null,
      "ability": "$4b:props:showcase:tournament:4:team:5:ability",
      "item": "$4b:props:showcase:tournament:4:team:5:item",
-     "nature": "modest",
+     "nature": "adamant",
      "moves": [],
      "stat_points": {
       "hp": 0,
@@ -3578,7 +3136,7 @@
    ]
   },
   {
-   "name": "Amyverse VGC Champions Arena #11 ❤️ Cash Prize! – Lyfix (#14)",
+   "name": "TARTAN TAKEDOWN #39! - [CHAMPIONS REG M-C!] – Shinbu (#10)",
    "creator": null,
    "regulation": null,
    "rental_code": null,
@@ -3586,34 +3144,12 @@
    "date_shared": null,
    "members": [
     {
-     "pokemon": "Annihilape",
-     "slug": "annihilape",
-     "ability": "$4b:props:showcase:tournament:0:team:3:ability",
-     "item": "$4b:props:showcase:tournament:1:team:4:item",
-     "nature": "adamant",
-     "moves": [
-      "Rage Fist",
-      "Drain Punch"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": "Maushold",
-     "slug": "maushold",
-     "ability": "Friend Guard",
-     "item": "$4b:props:showcase:tournament:0:team:0:item",
-     "nature": "jolly",
-     "moves": [
-      "Beat Up",
-      "Feint"
-     ],
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:tournament:2:team:5:ability",
+     "item": "$4b:props:showcase:tournament:2:team:5:item",
+     "nature": "brave",
+     "moves": [],
      "stat_points": {
       "hp": 0,
       "attack": 0,
@@ -3626,8 +3162,40 @@
     {
      "pokemon": null,
      "slug": null,
-     "ability": "$4b:props:showcase:tournament:3:team:4:ability",
-     "item": "$4b:props:showcase:tournament:0:team:3:item",
+     "ability": "$4b:props:showcase:tournament:0:team:4:ability",
+     "item": "$4b:props:showcase:tournament:7:team:4:item",
+     "nature": "adamant",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": "Pelipper",
+     "slug": "pelipper",
+     "ability": "$4b:props:showcase:tournament:2:team:4:ability",
+     "item": "$4b:props:showcase:tournament:5:team:1:item",
+     "nature": "quiet",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:tournament:2:team:1:ability",
+     "item": "$4b:props:showcase:tournament:2:team:1:item",
      "nature": "modest",
      "moves": [],
      "stat_points": {
@@ -3642,9 +3210,9 @@
     {
      "pokemon": null,
      "slug": null,
-     "ability": "$4b:props:showcase:tournament:0:team:1:ability",
-     "item": "$4b:props:showcase:tournament:2:team:2:item",
-     "nature": "timid",
+     "ability": "$4b:props:showcase:tournament:0:team:0:ability",
+     "item": "$4b:props:showcase:tournament:0:team:5:item",
+     "nature": "sassy",
      "moves": [],
      "stat_points": {
       "hp": 0,
@@ -3656,15 +3224,42 @@
      }
     },
     {
-     "pokemon": "Azumarill",
-     "slug": "azumarill",
-     "ability": "Huge Power",
-     "item": "$4b:props:showcase:tournament:0:team:1:item",
-     "nature": "adamant",
+     "pokemon": "Blastoise",
+     "slug": "blastoise",
+     "ability": "Rain Dish",
+     "item": "Blastoisinite",
+     "nature": "quiet",
      "moves": [
-      "Aqua Jet",
-      "Play Rough",
-      "Belly Drum"
+      "Dark Pulse",
+      "Water Spout"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    }
+   ]
+  },
+  {
+   "name": "TARTAN TAKEDOWN #39! - [CHAMPIONS REG M-C!] – emose (#11)",
+   "creator": null,
+   "regulation": null,
+   "rental_code": null,
+   "source_url": null,
+   "date_shared": null,
+   "members": [
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:tournament:1:team:4:ability",
+     "item": "$4b:props:showcase:tournament:1:team:4:item",
+     "nature": "timid",
+     "moves": [
+      "Encore"
      ],
      "stat_points": {
       "hp": 0,
@@ -3680,51 +3275,7 @@
      "slug": null,
      "ability": "$4b:props:showcase:tournament:3:team:0:ability",
      "item": "$4b:props:showcase:tournament:3:team:0:item",
-     "nature": "adamant",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    }
-   ]
-  },
-  {
-   "name": "Amyverse VGC Champions Arena #11 ❤️ Cash Prize! – DutchTurtle (#15)",
-   "creator": null,
-   "regulation": null,
-   "rental_code": null,
-   "source_url": null,
-   "date_shared": null,
-   "members": [
-    {
-     "pokemon": "Gengar",
-     "slug": "gengar",
-     "ability": "Cursed Body",
-     "item": "Gengarite",
      "nature": "modest",
-     "moves": [
-      "Sludge Bomb"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$4b:props:showcase:tournament:2:team:3:ability",
-     "item": "$4b:props:showcase:tournament:0:team:5:item",
-     "nature": "relaxed",
      "moves": [],
      "stat_points": {
       "hp": 0,
@@ -3738,12 +3289,10 @@
     {
      "pokemon": null,
      "slug": null,
-     "ability": "$4b:props:showcase:tournament:3:team:1:ability",
-     "item": "$4b:props:showcase:tournament:0:team:0:item",
-     "nature": "timid",
-     "moves": [
-      "Armor Cannon"
-     ],
+     "ability": "$4b:props:showcase:tournament:0:team:5:ability",
+     "item": "$4b:props:showcase:tournament:0:team:5:item",
+     "nature": "careful",
+     "moves": [],
      "stat_points": {
       "hp": 0,
       "attack": 0,
@@ -3757,8 +3306,291 @@
      "pokemon": null,
      "slug": null,
      "ability": "$4b:props:showcase:tournament:0:team:1:ability",
-     "item": "$4b:props:showcase:tournament:3:team:5:item",
+     "item": "$4b:props:showcase:tournament:1:team:0:item",
+     "nature": "adamant",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:tournament:1:team:5:ability",
+     "item": "$4b:props:showcase:tournament:0:team:0:item",
+     "nature": "adamant",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:tournament:1:team:3:ability",
+     "item": "$4b:props:showcase:tournament:0:team:1:item",
+     "nature": "modest",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    }
+   ]
+  },
+  {
+   "name": "TARTAN TAKEDOWN #39! - [CHAMPIONS REG M-C!] – BonnieSSR (#12)",
+   "creator": null,
+   "regulation": null,
+   "rental_code": null,
+   "source_url": null,
+   "date_shared": null,
+   "members": [
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:tournament:0:team:5:ability",
+     "item": "$4b:props:showcase:tournament:5:team:0:item",
+     "nature": "timid",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": "Tyranitar",
+     "slug": "tyranitar",
+     "ability": "Sand Stream",
+     "item": "Tyranitarite",
      "nature": "jolly",
+     "moves": [
+      "Knock Off"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": "Corviknight",
+     "slug": "corviknight",
+     "ability": "Mirror Armor",
+     "item": "Psychic Seed",
+     "nature": "careful",
+     "moves": [
+      "Brave Bird",
+      "Power Trip",
+      "Roost",
+      "Bulk Up"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": "Excadrill",
+     "slug": "excadrill",
+     "ability": "Sand Rush",
+     "item": "$4b:props:showcase:tournament:5:team:1:item",
+     "nature": "jolly",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": "Indeedee",
+     "slug": "indeedee",
+     "ability": "Psychic Surge",
+     "item": "$4b:props:showcase:tournament:7:team:4:item",
+     "nature": "modest",
+     "moves": [
+      "Expanding Force",
+      "Mystical Fire",
+      "Trick"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:tournament:1:team:5:ability",
+     "item": "White Herb",
+     "nature": "adamant",
+     "moves": [
+      "Coaching"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    }
+   ]
+  },
+  {
+   "name": "TARTAN TAKEDOWN #39! - [CHAMPIONS REG M-C!] – Lithic (#13)",
+   "creator": null,
+   "regulation": null,
+   "rental_code": null,
+   "source_url": null,
+   "date_shared": null,
+   "members": [
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:tournament:11:team:4:ability",
+     "item": "$4b:props:showcase:tournament:7:team:4:item",
+     "nature": "modest",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:tournament:1:team:5:ability",
+     "item": "$4b:props:showcase:tournament:11:team:5:item",
+     "nature": "adamant",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:tournament:1:team:3:ability",
+     "item": "$4b:props:showcase:tournament:0:team:1:item",
+     "nature": "timid",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:tournament:11:team:1:ability",
+     "item": "$4b:props:showcase:tournament:11:team:1:item",
+     "nature": "adamant",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:tournament:11:team:3:ability",
+     "item": "$4b:props:showcase:tournament:5:team:1:item",
+     "nature": "adamant",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:tournament:0:team:5:ability",
+     "item": "$4b:props:showcase:tournament:5:team:0:item",
+     "nature": "timid",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    }
+   ]
+  },
+  {
+   "name": "TARTAN TAKEDOWN #39! - [CHAMPIONS REG M-C!] – OshawottMasterPaolo (#14)",
+   "creator": null,
+   "regulation": null,
+   "rental_code": null,
+   "source_url": null,
+   "date_shared": null,
+   "members": [
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:tournament:0:team:4:ability",
+     "item": "$4b:props:showcase:tournament:0:team:4:item",
+     "nature": "modest",
      "moves": [],
      "stat_points": {
       "hp": 0,
@@ -3773,9 +3605,10 @@
      "pokemon": "Dragapult",
      "slug": "dragapult",
      "ability": "Infiltrator",
-     "item": "$4b:props:showcase:tournament:0:team:3:item",
+     "item": "$4b:props:showcase:tournament:5:team:1:item",
      "nature": "timid",
      "moves": [
+      "Dragon Cheer",
       "Will-O-Wisp"
      ],
      "stat_points": {
@@ -3790,9 +3623,174 @@
     {
      "pokemon": null,
      "slug": null,
+     "ability": "$4b:props:showcase:tournament:11:team:1:ability",
+     "item": "$4b:props:showcase:tournament:11:team:1:item",
+     "nature": "adamant",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:tournament:1:team:3:ability",
+     "item": "$4b:props:showcase:tournament:11:team:2:item",
+     "nature": "modest",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:tournament:11:team:3:ability",
+     "item": "$4b:props:showcase:tournament:0:team:1:item",
+     "nature": "adamant",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": "Indeedee (Female)",
+     "slug": "indeedee-female",
+     "ability": "$4b:props:showcase:tournament:11:team:4:ability",
+     "item": "Colbur Berry",
+     "nature": "relaxed",
+     "moves": [
+      "Follow Me"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    }
+   ]
+  },
+  {
+   "name": "TARTAN TAKEDOWN #39! - [CHAMPIONS REG M-C!] – Tandoori (#15)",
+   "creator": null,
+   "regulation": null,
+   "rental_code": null,
+   "source_url": null,
+   "date_shared": null,
+   "members": [
+    {
+     "pokemon": null,
+     "slug": null,
      "ability": "$4b:props:showcase:tournament:2:team:5:ability",
-     "item": "$4b:props:showcase:tournament:2:team:4:item",
+     "item": "$4b:props:showcase:tournament:2:team:5:item",
+     "nature": "brave",
+     "moves": [
+      "First Impression",
+      "Liquidation"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:tournament:0:team:0:ability",
+     "item": "$4b:props:showcase:tournament:0:team:5:item",
      "nature": "bold",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:tournament:4:team:5:ability",
+     "item": "$4b:props:showcase:tournament:1:team:1:item",
+     "nature": "adamant",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": "Pawmot",
+     "slug": "pawmot",
+     "ability": "Iron Fist",
+     "item": "$4b:props:showcase:tournament:5:team:1:item",
+     "nature": "adamant",
+     "moves": [
+      "Double Shock",
+      "Revival Blessing"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": "Staraptor",
+     "slug": "staraptor",
+     "ability": "$4b:props:showcase:tournament:0:team:5:ability",
+     "item": "$4b:props:showcase:tournament:7:team:4:item",
+     "nature": "jolly",
+     "moves": [
+      "Final Gambit",
+      "U-turn"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$4b:props:showcase:tournament:2:team:4:ability",
+     "item": "$4b:props:showcase:tournament:0:team:1:item",
+     "nature": "quiet",
      "moves": [],
      "stat_points": {
       "hp": 0,

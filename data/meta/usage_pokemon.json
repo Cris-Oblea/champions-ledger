@@ -1,7 +1,7 @@
 {
  "source": "pokebase.app/pokemon-champions",
  "game": "Pokemon Champions",
- "fetched": "2026-09-22",
+ "fetched": "2026-09-23",
  "count": 333,
  "rows": [
   {
@@ -18,7 +18,7 @@
     "spd": 70,
     "spe": 85
    },
-   "usage_percent": 53.5,
+   "usage_percent": 53.7,
    "rank": 1
   },
   {
@@ -35,7 +35,7 @@
     "spd": 80,
     "spe": 120
    },
-   "usage_percent": 46.4,
+   "usage_percent": 45.9,
    "rank": 2
   },
   {
@@ -52,7 +52,7 @@
     "spd": 80,
     "spe": 100
    },
-   "usage_percent": 34.7,
+   "usage_percent": 34.5,
    "rank": 3
   },
   {
@@ -69,7 +69,7 @@
     "spd": 90,
     "spe": 120
    },
-   "usage_percent": 34.7,
+   "usage_percent": 34.5,
    "rank": 4
   },
   {
@@ -103,7 +103,7 @@
     "spd": 85,
     "spe": 50
    },
-   "usage_percent": 26.9,
+   "usage_percent": 26.4,
    "rank": 6
   },
   {
@@ -120,7 +120,7 @@
     "spd": 91,
     "spe": 84
    },
-   "usage_percent": 22.5,
+   "usage_percent": 23.2,
    "rank": 7
   },
   {
@@ -137,7 +137,7 @@
     "spd": 75,
     "spe": 78
    },
-   "usage_percent": 21.6,
+   "usage_percent": 21.1,
    "rank": 8
   },
   {
@@ -171,7 +171,7 @@
     "spd": 80,
     "spe": 90
    },
-   "usage_percent": 16.5,
+   "usage_percent": 16.6,
    "rank": 10
   },
   {
@@ -188,7 +188,7 @@
     "spd": 90,
     "spe": 40
    },
-   "usage_percent": 16.0,
+   "usage_percent": 15.8,
    "rank": 11
   },
   {
@@ -205,7 +205,7 @@
     "spd": 120,
     "spe": 40
    },
-   "usage_percent": 15.9,
+   "usage_percent": 15.6,
    "rank": 12
   },
   {
@@ -222,8 +222,25 @@
     "spd": 80,
     "spe": 110
    },
-   "usage_percent": 14.8,
+   "usage_percent": 15.3,
    "rank": 13
+  },
+  {
+   "name": "Mega Raichu Y",
+   "slug": "raichu-mega-y",
+   "national_number": 26,
+   "is_mega": true,
+   "types": [],
+   "base_stats": {
+    "hp": 60,
+    "atk": 100,
+    "def": 55,
+    "spa": 160,
+    "spd": 80,
+    "spe": 130
+   },
+   "usage_percent": 14.6,
+   "rank": 14
   },
   {
    "name": "Garchomp",
@@ -240,7 +257,7 @@
     "spe": 102
    },
    "usage_percent": 14.6,
-   "rank": 14
+   "rank": 15
   },
   {
    "name": "Farigiraf",
@@ -257,23 +274,6 @@
     "spe": 60
    },
    "usage_percent": 14.3,
-   "rank": 15
-  },
-  {
-   "name": "Mega Raichu Y",
-   "slug": "raichu-mega-y",
-   "national_number": 26,
-   "is_mega": true,
-   "types": [],
-   "base_stats": {
-    "hp": 60,
-    "atk": 100,
-    "def": 55,
-    "spa": 160,
-    "spd": 80,
-    "spe": 130
-   },
-   "usage_percent": 14.2,
    "rank": 16
   },
   {
@@ -290,25 +290,8 @@
     "spd": 70,
     "spe": 65
    },
-   "usage_percent": 13.5,
+   "usage_percent": 13.3,
    "rank": 17
-  },
-  {
-   "name": "Sylveon",
-   "slug": "sylveon",
-   "national_number": 700,
-   "is_mega": false,
-   "types": [],
-   "base_stats": {
-    "hp": 95,
-    "atk": 65,
-    "def": 65,
-    "spa": 110,
-    "spd": 130,
-    "spe": 60
-   },
-   "usage_percent": 11.7,
-   "rank": 18
   },
   {
    "name": "Milotic",
@@ -324,7 +307,24 @@
     "spd": 125,
     "spe": 81
    },
-   "usage_percent": 11.5,
+   "usage_percent": 11.9,
+   "rank": 18
+  },
+  {
+   "name": "Sylveon",
+   "slug": "sylveon",
+   "national_number": 700,
+   "is_mega": false,
+   "types": [],
+   "base_stats": {
+    "hp": 95,
+    "atk": 65,
+    "def": 65,
+    "spa": 110,
+    "spd": 130,
+    "spe": 60
+   },
+   "usage_percent": 11.8,
    "rank": 19
   },
   {
@@ -341,7 +341,7 @@
     "spd": 65,
     "spe": 85
    },
-   "usage_percent": 11.2,
+   "usage_percent": 11.3,
    "rank": 20
   },
   {
@@ -360,7 +360,7 @@
     "spd": 85,
     "spe": 100
    },
-   "usage_percent": 10.9,
+   "usage_percent": 11.0,
    "rank": 21
   },
   {
@@ -394,7 +394,7 @@
     "spd": 128,
     "spe": 92
    },
-   "usage_percent": 10.6,
+   "usage_percent": 10.5,
    "rank": 23
   },
   {
@@ -445,7 +445,7 @@
     "spd": 100,
     "spe": 61
    },
-   "usage_percent": 8.2,
+   "usage_percent": 8.3,
    "rank": 26
   },
   {
@@ -462,7 +462,7 @@
     "spd": 60,
     "spe": 100
    },
-   "usage_percent": 7.1,
+   "usage_percent": 7.6,
    "rank": 27
   },
   {
@@ -479,7 +479,7 @@
     "spd": 90,
     "spe": 110
    },
-   "usage_percent": 6.6,
+   "usage_percent": 7.1,
    "rank": 28
   },
   {
@@ -530,24 +530,24 @@
     "spd": 65,
     "spe": 88
    },
-   "usage_percent": 6.1,
+   "usage_percent": 6.2,
    "rank": 31
   },
   {
-   "name": "Whimsicott",
-   "slug": "whimsicott",
-   "national_number": 547,
+   "name": "Sinistcha",
+   "slug": "sinistcha",
+   "national_number": 1013,
    "is_mega": false,
    "types": [],
    "base_stats": {
-    "hp": 60,
-    "atk": 67,
-    "def": 85,
-    "spa": 77,
-    "spd": 75,
-    "spe": 116
+    "hp": 71,
+    "atk": 60,
+    "def": 106,
+    "spa": 121,
+    "spd": 80,
+    "spe": 70
    },
-   "usage_percent": 6.0,
+   "usage_percent": 5.9,
    "rank": 32
   },
   {
@@ -568,18 +568,18 @@
    "rank": 33
   },
   {
-   "name": "Sinistcha",
-   "slug": "sinistcha",
-   "national_number": 1013,
+   "name": "Whimsicott",
+   "slug": "whimsicott",
+   "national_number": 547,
    "is_mega": false,
    "types": [],
    "base_stats": {
-    "hp": 71,
-    "atk": 60,
-    "def": 106,
-    "spa": 121,
-    "spd": 80,
-    "spe": 70
+    "hp": 60,
+    "atk": 67,
+    "def": 85,
+    "spa": 77,
+    "spd": 75,
+    "spe": 116
    },
    "usage_percent": 5.9,
    "rank": 34
@@ -602,23 +602,6 @@
    "rank": 35
   },
   {
-   "name": "Volcarona",
-   "slug": "volcarona",
-   "national_number": 637,
-   "is_mega": false,
-   "types": [],
-   "base_stats": {
-    "hp": 85,
-    "atk": 60,
-    "def": 65,
-    "spa": 135,
-    "spd": 105,
-    "spe": 100
-   },
-   "usage_percent": 5.6,
-   "rank": 36
-  },
-  {
    "name": "Froslass",
    "slug": "froslass",
    "national_number": 478,
@@ -633,7 +616,7 @@
     "spe": 110
    },
    "usage_percent": 5.6,
-   "rank": 37
+   "rank": 36
   },
   {
    "name": "Mega Froslass",
@@ -650,24 +633,24 @@
     "spe": 120
    },
    "usage_percent": 5.6,
-   "rank": 38
+   "rank": 37
   },
   {
-   "name": "Metagross",
-   "slug": "metagross",
-   "national_number": 376,
+   "name": "Volcarona",
+   "slug": "volcarona",
+   "national_number": 637,
    "is_mega": false,
    "types": [],
    "base_stats": {
-    "hp": 80,
-    "atk": 135,
-    "def": 130,
-    "spa": 95,
-    "spd": 90,
-    "spe": 70
+    "hp": 85,
+    "atk": 60,
+    "def": 65,
+    "spa": 135,
+    "spd": 105,
+    "spe": 100
    },
-   "usage_percent": 5.3,
-   "rank": 39
+   "usage_percent": 5.6,
+   "rank": 38
   },
   {
    "name": "Lucario",
@@ -682,6 +665,23 @@
     "spa": 115,
     "spd": 70,
     "spe": 90
+   },
+   "usage_percent": 5.2,
+   "rank": 39
+  },
+  {
+   "name": "Metagross",
+   "slug": "metagross",
+   "national_number": 376,
+   "is_mega": false,
+   "types": [],
+   "base_stats": {
+    "hp": 80,
+    "atk": 135,
+    "def": 130,
+    "spa": 95,
+    "spd": 90,
+    "spe": 70
    },
    "usage_percent": 5.2,
    "rank": 40
@@ -772,6 +772,23 @@
    "rank": 45
   },
   {
+   "name": "Gengar",
+   "slug": "gengar",
+   "national_number": 94,
+   "is_mega": false,
+   "types": [],
+   "base_stats": {
+    "hp": 60,
+    "atk": 65,
+    "def": 60,
+    "spa": 130,
+    "spd": 75,
+    "spe": 110
+   },
+   "usage_percent": 4.1,
+   "rank": 46
+  },
+  {
    "name": "Venusaur",
    "slug": "venusaur",
    "national_number": 3,
@@ -786,23 +803,6 @@
     "spe": 80
    },
    "usage_percent": 4.1,
-   "rank": 46
-  },
-  {
-   "name": "Gengar",
-   "slug": "gengar",
-   "national_number": 94,
-   "is_mega": false,
-   "types": [],
-   "base_stats": {
-    "hp": 60,
-    "atk": 65,
-    "def": 60,
-    "spa": 130,
-    "spd": 75,
-    "spe": 110
-   },
-   "usage_percent": 3.9,
    "rank": 47
   },
   {
@@ -819,7 +819,7 @@
     "spd": 95,
     "spe": 130
    },
-   "usage_percent": 3.9,
+   "usage_percent": 4.0,
    "rank": 48
   },
   {
@@ -840,6 +840,23 @@
    "rank": 49
   },
   {
+   "name": "Politoed",
+   "slug": "politoed",
+   "national_number": 186,
+   "is_mega": false,
+   "types": [],
+   "base_stats": {
+    "hp": 90,
+    "atk": 75,
+    "def": 75,
+    "spa": 90,
+    "spd": 100,
+    "spe": 70
+   },
+   "usage_percent": 3.9,
+   "rank": 50
+  },
+  {
    "name": "Aerodactyl",
    "slug": "aerodactyl",
    "national_number": 142,
@@ -853,8 +870,8 @@
     "spd": 75,
     "spe": 130
    },
-   "usage_percent": 3.8,
-   "rank": 50
+   "usage_percent": 3.7,
+   "rank": 51
   },
   {
    "name": "Mega Floette",
@@ -870,42 +887,8 @@
     "spd": 148,
     "spe": 102
    },
-   "usage_percent": 3.8,
-   "rank": 51
-  },
-  {
-   "name": "Politoed",
-   "slug": "politoed",
-   "national_number": 186,
-   "is_mega": false,
-   "types": [],
-   "base_stats": {
-    "hp": 90,
-    "atk": 75,
-    "def": 75,
-    "spa": 90,
-    "spd": 100,
-    "spe": 70
-   },
-   "usage_percent": 3.7,
+   "usage_percent": 3.6,
    "rank": 52
-  },
-  {
-   "name": "Floette",
-   "slug": "floette",
-   "national_number": 670,
-   "is_mega": false,
-   "types": [],
-   "base_stats": {
-    "hp": 54,
-    "atk": 45,
-    "def": 47,
-    "spa": 75,
-    "spd": 98,
-    "spe": 52
-   },
-   "usage_percent": 3.7,
-   "rank": 53
   },
   {
    "name": "Baxcalibur",
@@ -922,24 +905,24 @@
     "spe": 87
    },
    "usage_percent": 3.5,
-   "rank": 54
+   "rank": 53
   },
   {
-   "name": "Hatterene",
-   "slug": "hatterene",
-   "national_number": 858,
+   "name": "Floette",
+   "slug": "floette",
+   "national_number": 670,
    "is_mega": false,
    "types": [],
    "base_stats": {
-    "hp": 57,
-    "atk": 90,
-    "def": 95,
-    "spa": 136,
-    "spd": 103,
-    "spe": 29
+    "hp": 54,
+    "atk": 45,
+    "def": 47,
+    "spa": 75,
+    "spd": 98,
+    "spe": 52
    },
-   "usage_percent": 3.4,
-   "rank": 55
+   "usage_percent": 3.5,
+   "rank": 54
   },
   {
    "name": "Dragonite",
@@ -956,24 +939,7 @@
     "spe": 80
    },
    "usage_percent": 3.3,
-   "rank": 56
-  },
-  {
-   "name": "Primarina",
-   "slug": "primarina",
-   "national_number": 730,
-   "is_mega": false,
-   "types": [],
-   "base_stats": {
-    "hp": 80,
-    "atk": 74,
-    "def": 74,
-    "spa": 126,
-    "spd": 116,
-    "spe": 60
-   },
-   "usage_percent": 3.3,
-   "rank": 57
+   "rank": 55
   },
   {
    "name": "Glimmora",
@@ -988,6 +954,40 @@
     "spa": 130,
     "spd": 81,
     "spe": 86
+   },
+   "usage_percent": 3.3,
+   "rank": 56
+  },
+  {
+   "name": "Hatterene",
+   "slug": "hatterene",
+   "national_number": 858,
+   "is_mega": false,
+   "types": [],
+   "base_stats": {
+    "hp": 57,
+    "atk": 90,
+    "def": 95,
+    "spa": 136,
+    "spd": 103,
+    "spe": 29
+   },
+   "usage_percent": 3.3,
+   "rank": 57
+  },
+  {
+   "name": "Primarina",
+   "slug": "primarina",
+   "national_number": 730,
+   "is_mega": false,
+   "types": [],
+   "base_stats": {
+    "hp": 80,
+    "atk": 74,
+    "def": 74,
+    "spa": 126,
+    "spd": 116,
+    "spe": 60
    },
    "usage_percent": 3.3,
    "rank": 58
@@ -1023,7 +1023,7 @@
     "spd": 101,
     "spe": 87
    },
-   "usage_percent": 3.0,
+   "usage_percent": 2.9,
    "rank": 60
   },
   {
@@ -1040,7 +1040,7 @@
     "spd": 100,
     "spe": 104
    },
-   "usage_percent": 2.7,
+   "usage_percent": 2.8,
    "rank": 61
   },
   {
@@ -1057,7 +1057,7 @@
     "spd": 125,
     "spe": 134
    },
-   "usage_percent": 2.7,
+   "usage_percent": 2.8,
    "rank": 62
   },
   {
@@ -1146,6 +1146,23 @@
    "rank": 67
   },
   {
+   "name": "Mega Glimmora",
+   "slug": "glimmora-mega",
+   "national_number": 970,
+   "is_mega": true,
+   "types": [],
+   "base_stats": {
+    "hp": 83,
+    "atk": 90,
+    "def": 105,
+    "spa": 150,
+    "spd": 96,
+    "spe": 101
+   },
+   "usage_percent": 2.2,
+   "rank": 68
+  },
+  {
    "name": "Annihilape",
    "slug": "annihilape",
    "national_number": 979,
@@ -1159,8 +1176,8 @@
     "spd": 90,
     "spe": 90
    },
-   "usage_percent": 2.3,
-   "rank": 68
+   "usage_percent": 2.2,
+   "rank": 69
   },
   {
    "name": "Camerupt",
@@ -1177,7 +1194,7 @@
     "spe": 40
    },
    "usage_percent": 2.2,
-   "rank": 69
+   "rank": 70
   },
   {
    "name": "Mega Camerupt",
@@ -1194,7 +1211,7 @@
     "spe": 20
    },
    "usage_percent": 2.2,
-   "rank": 70
+   "rank": 71
   },
   {
    "name": "Kommo-o",
@@ -1211,23 +1228,6 @@
     "spe": 85
    },
    "usage_percent": 2.2,
-   "rank": 71
-  },
-  {
-   "name": "Mega Glimmora",
-   "slug": "glimmora-mega",
-   "national_number": 970,
-   "is_mega": true,
-   "types": [],
-   "base_stats": {
-    "hp": 83,
-    "atk": 90,
-    "def": 105,
-    "spa": 150,
-    "spd": 96,
-    "spe": 101
-   },
-   "usage_percent": 2.1,
    "rank": 72
   },
   {
@@ -1244,25 +1244,8 @@
     "spd": 69,
     "spe": 126
    },
-   "usage_percent": 1.9,
+   "usage_percent": 1.8,
    "rank": 73
-  },
-  {
-   "name": "Absol",
-   "slug": "absol",
-   "national_number": 359,
-   "is_mega": false,
-   "types": [],
-   "base_stats": {
-    "hp": 65,
-    "atk": 130,
-    "def": 60,
-    "spa": 75,
-    "spd": 60,
-    "spe": 75
-   },
-   "usage_percent": 1.7,
-   "rank": 74
   },
   {
    "name": "Mawile",
@@ -1279,7 +1262,7 @@
     "spe": 50
    },
    "usage_percent": 1.7,
-   "rank": 75
+   "rank": 74
   },
   {
    "name": "Mega Mawile",
@@ -1296,6 +1279,23 @@
     "spe": 50
    },
    "usage_percent": 1.7,
+   "rank": 75
+  },
+  {
+   "name": "Absol",
+   "slug": "absol",
+   "national_number": 359,
+   "is_mega": false,
+   "types": [],
+   "base_stats": {
+    "hp": 65,
+    "atk": 130,
+    "def": 60,
+    "spa": 75,
+    "spd": 60,
+    "spe": 75
+   },
+   "usage_percent": 1.6,
    "rank": 76
   },
   {
@@ -1312,8 +1312,25 @@
     "spd": 60,
     "spe": 151
    },
-   "usage_percent": 1.7,
+   "usage_percent": 1.6,
    "rank": 77
+  },
+  {
+   "name": "Maushold",
+   "slug": "maushold",
+   "national_number": 925,
+   "is_mega": false,
+   "types": [],
+   "base_stats": {
+    "hp": 74,
+    "atk": 75,
+    "def": 70,
+    "spa": 65,
+    "spd": 75,
+    "spe": 111
+   },
+   "usage_percent": 1.5,
+   "rank": 78
   },
   {
    "name": "Blaziken",
@@ -1329,8 +1346,8 @@
     "spd": 70,
     "spe": 80
    },
-   "usage_percent": 1.6,
-   "rank": 78
+   "usage_percent": 1.5,
+   "rank": 79
   },
   {
    "name": "Sableye",
@@ -1347,7 +1364,7 @@
     "spe": 50
    },
    "usage_percent": 1.5,
-   "rank": 79
+   "rank": 80
   },
   {
    "name": "Hydreigon",
@@ -1364,24 +1381,24 @@
     "spe": 98
    },
    "usage_percent": 1.5,
-   "rank": 80
+   "rank": 81
   },
   {
-   "name": "Maushold",
-   "slug": "maushold",
-   "national_number": 925,
+   "name": "Ceruledge",
+   "slug": "ceruledge",
+   "national_number": 937,
    "is_mega": false,
    "types": [],
    "base_stats": {
-    "hp": 74,
-    "atk": 75,
-    "def": 70,
-    "spa": 65,
-    "spd": 75,
-    "spe": 111
+    "hp": 75,
+    "atk": 125,
+    "def": 80,
+    "spa": 60,
+    "spd": 100,
+    "spe": 85
    },
    "usage_percent": 1.4,
-   "rank": 81
+   "rank": 82
   },
   {
    "name": "Dragapult",
@@ -1398,24 +1415,24 @@
     "spe": 142
    },
    "usage_percent": 1.2,
-   "rank": 82
+   "rank": 83
   },
   {
-   "name": "Gallade",
-   "slug": "gallade",
-   "national_number": 475,
+   "name": "Corviknight",
+   "slug": "corviknight",
+   "national_number": 823,
    "is_mega": false,
    "types": [],
    "base_stats": {
-    "hp": 68,
-    "atk": 125,
-    "def": 65,
-    "spa": 65,
-    "spd": 115,
-    "spe": 80
+    "hp": 98,
+    "atk": 87,
+    "def": 105,
+    "spa": 53,
+    "spd": 85,
+    "spe": 67
    },
    "usage_percent": 1.2,
-   "rank": 83
+   "rank": 84
   },
   {
    "name": "Toxapex",
@@ -1430,23 +1447,6 @@
     "spa": 53,
     "spd": 142,
     "spe": 35
-   },
-   "usage_percent": 1.2,
-   "rank": 84
-  },
-  {
-   "name": "Ceruledge",
-   "slug": "ceruledge",
-   "national_number": 937,
-   "is_mega": false,
-   "types": [],
-   "base_stats": {
-    "hp": 75,
-    "atk": 125,
-    "def": 80,
-    "spa": 60,
-    "spd": 100,
-    "spe": 85
    },
    "usage_percent": 1.2,
    "rank": 85
@@ -1503,38 +1503,21 @@
    "rank": 88
   },
   {
-   "name": "Corviknight",
-   "slug": "corviknight",
-   "national_number": 823,
+   "name": "Gallade",
+   "slug": "gallade",
+   "national_number": 475,
    "is_mega": false,
    "types": [],
    "base_stats": {
-    "hp": 98,
-    "atk": 87,
-    "def": 105,
-    "spa": 53,
-    "spd": 85,
-    "spe": 67
+    "hp": 68,
+    "atk": 125,
+    "def": 65,
+    "spa": 65,
+    "spd": 115,
+    "spe": 80
    },
    "usage_percent": 1.1,
    "rank": 89
-  },
-  {
-   "name": "Indeedee (Male)",
-   "slug": "indeedee-male",
-   "national_number": 876,
-   "is_mega": false,
-   "types": [],
-   "base_stats": {
-    "hp": 60,
-    "atk": 65,
-    "def": 55,
-    "spa": 105,
-    "spd": 95,
-    "spe": 95
-   },
-   "usage_percent": 1.1,
-   "rank": 90
   },
   {
    "name": "Lycanroc (Dusk)",
@@ -1551,24 +1534,24 @@
     "spe": 110
    },
    "usage_percent": 1.0,
-   "rank": 91
+   "rank": 90
   },
   {
-   "name": "Kleavor",
-   "slug": "kleavor",
-   "national_number": 900,
+   "name": "Indeedee (Male)",
+   "slug": "indeedee-male",
+   "national_number": 876,
    "is_mega": false,
    "types": [],
    "base_stats": {
-    "hp": 70,
-    "atk": 135,
-    "def": 95,
-    "spa": 45,
-    "spd": 70,
-    "spe": 85
+    "hp": 60,
+    "atk": 65,
+    "def": 55,
+    "spa": 105,
+    "spd": 95,
+    "spe": 95
    },
-   "usage_percent": 0.9,
-   "rank": 92
+   "usage_percent": 1.0,
+   "rank": 91
   },
   {
    "name": "Aegislash",
@@ -1585,23 +1568,40 @@
     "spe": 60
    },
    "usage_percent": 0.9,
-   "rank": 93
+   "rank": 92
   },
   {
-   "name": "Wash Rotom",
-   "slug": "rotom-wash",
-   "national_number": 479,
+   "name": "Kleavor",
+   "slug": "kleavor",
+   "national_number": 900,
    "is_mega": false,
    "types": [],
    "base_stats": {
-    "hp": 50,
-    "atk": 65,
-    "def": 107,
-    "spa": 105,
-    "spd": 107,
-    "spe": 86
+    "hp": 70,
+    "atk": 135,
+    "def": 95,
+    "spa": 45,
+    "spd": 70,
+    "spe": 85
    },
    "usage_percent": 0.8,
+   "rank": 93
+  },
+  {
+   "name": "Vivillon",
+   "slug": "vivillon",
+   "national_number": 666,
+   "is_mega": false,
+   "types": [],
+   "base_stats": {
+    "hp": 80,
+    "atk": 52,
+    "def": 50,
+    "spa": 90,
+    "spd": 50,
+    "spe": 89
+   },
+   "usage_percent": 0.7,
    "rank": 94
   },
   {
@@ -1622,42 +1622,8 @@
    "rank": 95
   },
   {
-   "name": "Vivillon",
-   "slug": "vivillon",
-   "national_number": 666,
-   "is_mega": false,
-   "types": [],
-   "base_stats": {
-    "hp": 80,
-    "atk": 52,
-    "def": 50,
-    "spa": 90,
-    "spd": 50,
-    "spe": 89
-   },
-   "usage_percent": 0.6,
-   "rank": 96
-  },
-  {
-   "name": "Weavile",
-   "slug": "weavile",
-   "national_number": 461,
-   "is_mega": false,
-   "types": [],
-   "base_stats": {
-    "hp": 70,
-    "atk": 120,
-    "def": 65,
-    "spa": 45,
-    "spd": 85,
-    "spe": 125
-   },
-   "usage_percent": 0.6,
-   "rank": 97
-  },
-  {
-   "name": "Heat Rotom",
-   "slug": "rotom-heat",
+   "name": "Wash Rotom",
+   "slug": "rotom-wash",
    "national_number": 479,
    "is_mega": false,
    "types": [],
@@ -1669,8 +1635,25 @@
     "spd": 107,
     "spe": 86
    },
+   "usage_percent": 0.7,
+   "rank": 96
+  },
+  {
+   "name": "Mega Raichu X",
+   "slug": "raichu-mega-x",
+   "national_number": 26,
+   "is_mega": true,
+   "types": [],
+   "base_stats": {
+    "hp": 60,
+    "atk": 135,
+    "def": 95,
+    "spa": 90,
+    "spd": 95,
+    "spe": 110
+   },
    "usage_percent": 0.6,
-   "rank": 98
+   "rank": 97
   },
   {
    "name": "Snorlax",
@@ -1687,7 +1670,7 @@
     "spe": 30
    },
    "usage_percent": 0.6,
-   "rank": 99
+   "rank": 98
   },
   {
    "name": "Alakazam",
@@ -1704,21 +1687,38 @@
     "spe": 120
    },
    "usage_percent": 0.6,
+   "rank": 99
+  },
+  {
+   "name": "Weavile",
+   "slug": "weavile",
+   "national_number": 461,
+   "is_mega": false,
+   "types": [],
+   "base_stats": {
+    "hp": 70,
+    "atk": 120,
+    "def": 65,
+    "spa": 45,
+    "spd": 85,
+    "spe": 125
+   },
+   "usage_percent": 0.6,
    "rank": 100
   },
   {
-   "name": "Mega Raichu X",
-   "slug": "raichu-mega-x",
-   "national_number": 26,
-   "is_mega": true,
+   "name": "Heat Rotom",
+   "slug": "rotom-heat",
+   "national_number": 479,
+   "is_mega": false,
    "types": [],
    "base_stats": {
-    "hp": 60,
-    "atk": 135,
-    "def": 95,
-    "spa": 90,
-    "spd": 95,
-    "spe": 110
+    "hp": 50,
+    "atk": 65,
+    "def": 107,
+    "spa": 105,
+    "spd": 107,
+    "spe": 86
    },
    "usage_percent": 0.6,
    "rank": 101
@@ -1741,108 +1741,6 @@
    "rank": 102
   },
   {
-   "name": "Scizor",
-   "slug": "scizor",
-   "national_number": 212,
-   "is_mega": false,
-   "types": [],
-   "base_stats": {
-    "hp": 70,
-    "atk": 130,
-    "def": 100,
-    "spa": 55,
-    "spd": 80,
-    "spe": 65
-   },
-   "usage_percent": 0.5,
-   "rank": 103
-  },
-  {
-   "name": "Scrafty",
-   "slug": "scrafty",
-   "national_number": 560,
-   "is_mega": false,
-   "types": [],
-   "base_stats": {
-    "hp": 65,
-    "atk": 90,
-    "def": 115,
-    "spa": 45,
-    "spd": 115,
-    "spe": 58
-   },
-   "usage_percent": 0.5,
-   "rank": 104
-  },
-  {
-   "name": "Pyroar",
-   "slug": "pyroar",
-   "national_number": 668,
-   "is_mega": false,
-   "types": [],
-   "base_stats": {
-    "hp": 86,
-    "atk": 68,
-    "def": 72,
-    "spa": 109,
-    "spd": 66,
-    "spe": 106
-   },
-   "usage_percent": 0.5,
-   "rank": 105
-  },
-  {
-   "name": "Mega Pyroar",
-   "slug": "pyroar-mega",
-   "national_number": 668,
-   "is_mega": true,
-   "types": [],
-   "base_stats": {
-    "hp": 86,
-    "atk": 88,
-    "def": 92,
-    "spa": 129,
-    "spd": 86,
-    "spe": 126
-   },
-   "usage_percent": 0.5,
-   "rank": 106
-  },
-  {
-   "name": "Mega Venusaur",
-   "slug": "venusaur-mega",
-   "national_number": 3,
-   "is_mega": true,
-   "types": [],
-   "base_stats": {
-    "hp": 80,
-    "atk": 100,
-    "def": 123,
-    "spa": 122,
-    "spd": 120,
-    "spe": 80
-   },
-   "usage_percent": 0.5,
-   "rank": 107
-  },
-  {
-   "name": "Meowscarada",
-   "slug": "meowscarada",
-   "national_number": 908,
-   "is_mega": false,
-   "types": [],
-   "base_stats": {
-    "hp": 76,
-    "atk": 110,
-    "def": 70,
-    "spa": 81,
-    "spd": 70,
-    "spe": 123
-   },
-   "usage_percent": 0.5,
-   "rank": 108
-  },
-  {
    "name": "Hisuian Zoroark",
    "slug": "zoroark-hisui",
    "national_number": 571,
@@ -1857,24 +1755,24 @@
     "spe": 110
    },
    "usage_percent": 0.5,
-   "rank": 109
+   "rank": 103
   },
   {
-   "name": "Toxtricity",
-   "slug": "toxtricity",
-   "national_number": 849,
+   "name": "Scizor",
+   "slug": "scizor",
+   "national_number": 212,
    "is_mega": false,
    "types": [],
    "base_stats": {
-    "hp": 75,
-    "atk": 98,
-    "def": 70,
-    "spa": 114,
-    "spd": 70,
-    "spe": 75
+    "hp": 70,
+    "atk": 130,
+    "def": 100,
+    "spa": 55,
+    "spd": 80,
+    "spe": 65
    },
    "usage_percent": 0.5,
-   "rank": 110
+   "rank": 104
   },
   {
    "name": "Tsareena",
@@ -1891,7 +1789,58 @@
     "spe": 72
    },
    "usage_percent": 0.5,
-   "rank": 111
+   "rank": 105
+  },
+  {
+   "name": "Pyroar",
+   "slug": "pyroar",
+   "national_number": 668,
+   "is_mega": false,
+   "types": [],
+   "base_stats": {
+    "hp": 86,
+    "atk": 68,
+    "def": 72,
+    "spa": 109,
+    "spd": 66,
+    "spe": 106
+   },
+   "usage_percent": 0.5,
+   "rank": 106
+  },
+  {
+   "name": "Mega Pyroar",
+   "slug": "pyroar-mega",
+   "national_number": 668,
+   "is_mega": true,
+   "types": [],
+   "base_stats": {
+    "hp": 86,
+    "atk": 88,
+    "def": 92,
+    "spa": 129,
+    "spd": 86,
+    "spe": 126
+   },
+   "usage_percent": 0.5,
+   "rank": 107
+  },
+  {
+   "name": "Mega Venusaur",
+   "slug": "venusaur-mega",
+   "national_number": 3,
+   "is_mega": true,
+   "types": [],
+   "base_stats": {
+    "hp": 80,
+    "atk": 100,
+    "def": 123,
+    "spa": 122,
+    "spd": 120,
+    "spe": 80
+   },
+   "usage_percent": 0.5,
+   "rank": 108
   },
   {
    "name": "Mega Alakazam",
@@ -1908,7 +1857,7 @@
     "spe": 150
    },
    "usage_percent": 0.5,
-   "rank": 112
+   "rank": 109
   },
   {
    "name": "Mamoswine",
@@ -1925,24 +1874,58 @@
     "spe": 80
    },
    "usage_percent": 0.5,
-   "rank": 113
+   "rank": 110
   },
   {
-   "name": "Empoleon",
-   "slug": "empoleon",
-   "national_number": 395,
+   "name": "Meowscarada",
+   "slug": "meowscarada",
+   "national_number": 908,
    "is_mega": false,
    "types": [],
    "base_stats": {
-    "hp": 84,
-    "atk": 86,
-    "def": 88,
-    "spa": 111,
-    "spd": 101,
-    "spe": 60
+    "hp": 76,
+    "atk": 110,
+    "def": 70,
+    "spa": 81,
+    "spd": 70,
+    "spe": 123
    },
    "usage_percent": 0.5,
-   "rank": 114
+   "rank": 111
+  },
+  {
+   "name": "Scrafty",
+   "slug": "scrafty",
+   "national_number": 560,
+   "is_mega": false,
+   "types": [],
+   "base_stats": {
+    "hp": 65,
+    "atk": 90,
+    "def": 115,
+    "spa": 45,
+    "spd": 115,
+    "spe": 58
+   },
+   "usage_percent": 0.5,
+   "rank": 112
+  },
+  {
+   "name": "Toxtricity",
+   "slug": "toxtricity",
+   "national_number": 849,
+   "is_mega": false,
+   "types": [],
+   "base_stats": {
+    "hp": 75,
+    "atk": 98,
+    "def": 70,
+    "spa": 114,
+    "spd": 70,
+    "spe": 75
+   },
+   "usage_percent": 0.5,
+   "rank": 113
   },
   {
    "name": "Chandelure",
@@ -1959,143 +1942,24 @@
     "spe": 80
    },
    "usage_percent": 0.5,
+   "rank": 114
+  },
+  {
+   "name": "Empoleon",
+   "slug": "empoleon",
+   "national_number": 395,
+   "is_mega": false,
+   "types": [],
+   "base_stats": {
+    "hp": 84,
+    "atk": 86,
+    "def": 88,
+    "spa": 111,
+    "spd": 101,
+    "spe": 60
+   },
+   "usage_percent": 0.5,
    "rank": 115
-  },
-  {
-   "name": "Mega Garchomp",
-   "slug": "garchomp-mega",
-   "national_number": 445,
-   "is_mega": true,
-   "types": [],
-   "base_stats": {
-    "hp": 108,
-    "atk": 170,
-    "def": 115,
-    "spa": 120,
-    "spd": 95,
-    "spe": 92
-   },
-   "usage_percent": 0.4,
-   "rank": 116
-  },
-  {
-   "name": "Meganium",
-   "slug": "meganium",
-   "national_number": 154,
-   "is_mega": false,
-   "types": [],
-   "base_stats": {
-    "hp": 80,
-    "atk": 82,
-    "def": 100,
-    "spa": 83,
-    "spd": 100,
-    "spe": 80
-   },
-   "usage_percent": 0.4,
-   "rank": 117
-  },
-  {
-   "name": "Mega Meganium",
-   "slug": "meganium-mega",
-   "national_number": 154,
-   "is_mega": true,
-   "types": [],
-   "base_stats": {
-    "hp": 80,
-    "atk": 92,
-    "def": 115,
-    "spa": 143,
-    "spd": 115,
-    "spe": 80
-   },
-   "usage_percent": 0.4,
-   "rank": 118
-  },
-  {
-   "name": "Espathra",
-   "slug": "espathra",
-   "national_number": 956,
-   "is_mega": false,
-   "types": [],
-   "base_stats": {
-    "hp": 95,
-    "atk": 60,
-    "def": 60,
-    "spa": 101,
-    "spd": 60,
-    "spe": 105
-   },
-   "usage_percent": 0.4,
-   "rank": 119
-  },
-  {
-   "name": "Kangaskhan",
-   "slug": "kangaskhan",
-   "national_number": 115,
-   "is_mega": false,
-   "types": [],
-   "base_stats": {
-    "hp": 105,
-    "atk": 95,
-    "def": 80,
-    "spa": 40,
-    "spd": 80,
-    "spe": 90
-   },
-   "usage_percent": 0.4,
-   "rank": 120
-  },
-  {
-   "name": "Golurk",
-   "slug": "golurk",
-   "national_number": 623,
-   "is_mega": false,
-   "types": [],
-   "base_stats": {
-    "hp": 89,
-    "atk": 124,
-    "def": 80,
-    "spa": 55,
-    "spd": 80,
-    "spe": 55
-   },
-   "usage_percent": 0.4,
-   "rank": 121
-  },
-  {
-   "name": "Mega Golurk",
-   "slug": "golurk-mega",
-   "national_number": 623,
-   "is_mega": true,
-   "types": [],
-   "base_stats": {
-    "hp": 89,
-    "atk": 159,
-    "def": 105,
-    "spa": 70,
-    "spd": 105,
-    "spe": 55
-   },
-   "usage_percent": 0.4,
-   "rank": 122
-  },
-  {
-   "name": "Vanilluxe",
-   "slug": "vanilluxe",
-   "national_number": 584,
-   "is_mega": false,
-   "types": [],
-   "base_stats": {
-    "hp": 71,
-    "atk": 95,
-    "def": 85,
-    "spa": 110,
-    "spd": 95,
-    "spe": 79
-   },
-   "usage_percent": 0.4,
-   "rank": 123
   },
   {
    "name": "Hawlucha",
@@ -2112,7 +1976,92 @@
     "spe": 118
    },
    "usage_percent": 0.4,
-   "rank": 124
+   "rank": 116
+  },
+  {
+   "name": "Clefable",
+   "slug": "clefable",
+   "national_number": 36,
+   "is_mega": false,
+   "types": [],
+   "base_stats": {
+    "hp": 95,
+    "atk": 70,
+    "def": 73,
+    "spa": 95,
+    "spd": 90,
+    "spe": 60
+   },
+   "usage_percent": 0.4,
+   "rank": 117
+  },
+  {
+   "name": "Meganium",
+   "slug": "meganium",
+   "national_number": 154,
+   "is_mega": false,
+   "types": [],
+   "base_stats": {
+    "hp": 80,
+    "atk": 82,
+    "def": 100,
+    "spa": 83,
+    "spd": 100,
+    "spe": 80
+   },
+   "usage_percent": 0.4,
+   "rank": 118
+  },
+  {
+   "name": "Mega Meganium",
+   "slug": "meganium-mega",
+   "national_number": 154,
+   "is_mega": true,
+   "types": [],
+   "base_stats": {
+    "hp": 80,
+    "atk": 92,
+    "def": 115,
+    "spa": 143,
+    "spd": 115,
+    "spe": 80
+   },
+   "usage_percent": 0.4,
+   "rank": 119
+  },
+  {
+   "name": "Mega Garchomp",
+   "slug": "garchomp-mega",
+   "national_number": 445,
+   "is_mega": true,
+   "types": [],
+   "base_stats": {
+    "hp": 108,
+    "atk": 170,
+    "def": 115,
+    "spa": 120,
+    "spd": 95,
+    "spe": 92
+   },
+   "usage_percent": 0.4,
+   "rank": 120
+  },
+  {
+   "name": "Kangaskhan",
+   "slug": "kangaskhan",
+   "national_number": 115,
+   "is_mega": false,
+   "types": [],
+   "base_stats": {
+    "hp": 105,
+    "atk": 95,
+    "def": 80,
+    "spa": 40,
+    "spd": 80,
+    "spe": 90
+   },
+   "usage_percent": 0.4,
+   "rank": 121
   },
   {
    "name": "Mega Charizard X",
@@ -2131,7 +2080,41 @@
     "spe": 100
    },
    "usage_percent": 0.4,
-   "rank": 125
+   "rank": 122
+  },
+  {
+   "name": "Espathra",
+   "slug": "espathra",
+   "national_number": 956,
+   "is_mega": false,
+   "types": [],
+   "base_stats": {
+    "hp": 95,
+    "atk": 60,
+    "def": 60,
+    "spa": 101,
+    "spd": 60,
+    "spe": 105
+   },
+   "usage_percent": 0.4,
+   "rank": 123
+  },
+  {
+   "name": "Vanilluxe",
+   "slug": "vanilluxe",
+   "national_number": 584,
+   "is_mega": false,
+   "types": [],
+   "base_stats": {
+    "hp": 71,
+    "atk": 95,
+    "def": 85,
+    "spa": 110,
+    "spd": 95,
+    "spe": 79
+   },
+   "usage_percent": 0.4,
+   "rank": 124
   },
   {
    "name": "Crabominable",
@@ -2148,7 +2131,7 @@
     "spe": 43
    },
    "usage_percent": 0.4,
-   "rank": 126
+   "rank": 125
   },
   {
    "name": "Mega Crabominable",
@@ -2165,24 +2148,58 @@
     "spe": 33
    },
    "usage_percent": 0.4,
-   "rank": 127
+   "rank": 126
   },
   {
-   "name": "Clefable",
-   "slug": "clefable",
-   "national_number": 36,
+   "name": "Araquanid",
+   "slug": "araquanid",
+   "national_number": 752,
    "is_mega": false,
    "types": [],
    "base_stats": {
-    "hp": 95,
+    "hp": 68,
     "atk": 70,
-    "def": 73,
-    "spa": 95,
-    "spd": 90,
-    "spe": 60
+    "def": 92,
+    "spa": 50,
+    "spd": 132,
+    "spe": 42
    },
-   "usage_percent": 0.4,
+   "usage_percent": 0.3,
+   "rank": 127
+  },
+  {
+   "name": "Inteleon",
+   "slug": "inteleon",
+   "national_number": 818,
+   "is_mega": false,
+   "types": [],
+   "base_stats": {
+    "hp": 70,
+    "atk": 85,
+    "def": 65,
+    "spa": 125,
+    "spd": 65,
+    "spe": 120
+   },
+   "usage_percent": 0.3,
    "rank": 128
+  },
+  {
+   "name": "Mega Hawlucha",
+   "slug": "hawlucha-mega",
+   "national_number": 701,
+   "is_mega": true,
+   "types": [],
+   "base_stats": {
+    "hp": 78,
+    "atk": 137,
+    "def": 100,
+    "spa": 74,
+    "spd": 93,
+    "spe": 118
+   },
+   "usage_percent": 0.3,
+   "rank": 129
   },
   {
    "name": "Mega Scizor",
@@ -2199,38 +2216,21 @@
     "spe": 75
    },
    "usage_percent": 0.3,
-   "rank": 129
-  },
-  {
-   "name": "Altaria",
-   "slug": "altaria",
-   "national_number": 334,
-   "is_mega": false,
-   "types": [],
-   "base_stats": {
-    "hp": 75,
-    "atk": 70,
-    "def": 90,
-    "spa": 70,
-    "spd": 105,
-    "spe": 80
-   },
-   "usage_percent": 0.3,
    "rank": 130
   },
   {
-   "name": "Ninetales",
-   "slug": "ninetales",
-   "national_number": 38,
+   "name": "Pincurchin",
+   "slug": "pincurchin",
+   "national_number": 871,
    "is_mega": false,
    "types": [],
    "base_stats": {
-    "hp": 73,
-    "atk": 76,
-    "def": 75,
-    "spa": 81,
-    "spd": 100,
-    "spe": 100
+    "hp": 48,
+    "atk": 101,
+    "def": 95,
+    "spa": 91,
+    "spd": 85,
+    "spe": 15
    },
    "usage_percent": 0.3,
    "rank": 131
@@ -2253,40 +2253,6 @@
    "rank": 132
   },
   {
-   "name": "Eelektross",
-   "slug": "eelektross",
-   "national_number": 604,
-   "is_mega": false,
-   "types": [],
-   "base_stats": {
-    "hp": 85,
-    "atk": 115,
-    "def": 80,
-    "spa": 105,
-    "spd": 80,
-    "spe": 50
-   },
-   "usage_percent": 0.3,
-   "rank": 133
-  },
-  {
-   "name": "Mega Eelektross",
-   "slug": "eelektross-mega",
-   "national_number": 604,
-   "is_mega": true,
-   "types": [],
-   "base_stats": {
-    "hp": 85,
-    "atk": 145,
-    "def": 80,
-    "spa": 135,
-    "spd": 90,
-    "spe": 80
-   },
-   "usage_percent": 0.3,
-   "rank": 134
-  },
-  {
    "name": "Mimikyu",
    "slug": "mimikyu",
    "national_number": 778,
@@ -2301,58 +2267,75 @@
     "spe": 96
    },
    "usage_percent": 0.3,
-   "rank": 135
+   "rank": 133
   },
   {
-   "name": "Grapploct",
-   "slug": "grapploct",
-   "national_number": 853,
+   "name": "Ditto",
+   "slug": "ditto",
+   "national_number": 132,
    "is_mega": false,
    "types": [],
    "base_stats": {
-    "hp": 80,
-    "atk": 118,
+    "hp": 48,
+    "atk": 48,
+    "def": 48,
+    "spa": 48,
+    "spd": 48,
+    "spe": 48
+   },
+   "usage_percent": 0.3,
+   "rank": 134
+  },
+  {
+   "name": "Toxtricity (Low Key)",
+   "slug": "toxtricity-low-key",
+   "national_number": 849,
+   "is_mega": false,
+   "types": [],
+   "base_stats": {
+    "hp": 75,
+    "atk": 98,
+    "def": 70,
+    "spa": 114,
+    "spd": 70,
+    "spe": 75
+   },
+   "usage_percent": 0.3,
+   "rank": 135
+  },
+  {
+   "name": "Altaria",
+   "slug": "altaria",
+   "national_number": 334,
+   "is_mega": false,
+   "types": [],
+   "base_stats": {
+    "hp": 75,
+    "atk": 70,
     "def": 90,
     "spa": 70,
-    "spd": 80,
-    "spe": 42
+    "spd": 105,
+    "spe": 80
    },
    "usage_percent": 0.3,
    "rank": 136
   },
   {
-   "name": "Vileplume",
-   "slug": "vileplume",
-   "national_number": 45,
+   "name": "Ninetales",
+   "slug": "ninetales",
+   "national_number": 38,
    "is_mega": false,
    "types": [],
    "base_stats": {
-    "hp": 75,
-    "atk": 80,
-    "def": 85,
-    "spa": 110,
-    "spd": 90,
-    "spe": 50
+    "hp": 73,
+    "atk": 76,
+    "def": 75,
+    "spa": 81,
+    "spd": 100,
+    "spe": 100
    },
    "usage_percent": 0.3,
    "rank": 137
-  },
-  {
-   "name": "Hisuian Samurott",
-   "slug": "samurott-hisui",
-   "national_number": 503,
-   "is_mega": false,
-   "types": [],
-   "base_stats": {
-    "hp": 90,
-    "atk": 108,
-    "def": 80,
-    "spa": 100,
-    "spd": 65,
-    "spe": 85
-   },
-   "usage_percent": 0.3,
-   "rank": 138
   },
   {
    "name": "Drampa",
@@ -2369,7 +2352,7 @@
     "spe": 36
    },
    "usage_percent": 0.3,
-   "rank": 139
+   "rank": 138
   },
   {
    "name": "Mega Drampa",
@@ -2386,24 +2369,7 @@
     "spe": 36
    },
    "usage_percent": 0.3,
-   "rank": 140
-  },
-  {
-   "name": "Mega Hawlucha",
-   "slug": "hawlucha-mega",
-   "national_number": 701,
-   "is_mega": true,
-   "types": [],
-   "base_stats": {
-    "hp": 78,
-    "atk": 137,
-    "def": 100,
-    "spa": 74,
-    "spd": 93,
-    "spe": 118
-   },
-   "usage_percent": 0.3,
-   "rank": 141
+   "rank": 139
   },
   {
    "name": "Cinderace",
@@ -2420,58 +2386,7 @@
     "spe": 119
    },
    "usage_percent": 0.3,
-   "rank": 142
-  },
-  {
-   "name": "Inteleon",
-   "slug": "inteleon",
-   "national_number": 818,
-   "is_mega": false,
-   "types": [],
-   "base_stats": {
-    "hp": 70,
-    "atk": 85,
-    "def": 65,
-    "spa": 125,
-    "spd": 65,
-    "spe": 120
-   },
-   "usage_percent": 0.3,
-   "rank": 143
-  },
-  {
-   "name": "Mega Scrafty",
-   "slug": "scrafty-mega",
-   "national_number": 560,
-   "is_mega": true,
-   "types": [],
-   "base_stats": {
-    "hp": 65,
-    "atk": 130,
-    "def": 135,
-    "spa": 55,
-    "spd": 135,
-    "spe": 68
-   },
-   "usage_percent": 0.3,
-   "rank": 144
-  },
-  {
-   "name": "Starmie",
-   "slug": "starmie",
-   "national_number": 121,
-   "is_mega": false,
-   "types": [],
-   "base_stats": {
-    "hp": 60,
-    "atk": 75,
-    "def": 85,
-    "spa": 100,
-    "spd": 85,
-    "spe": 115
-   },
-   "usage_percent": 0.3,
-   "rank": 145
+   "rank": 140
   },
   {
    "name": "Mega Chandelure",
@@ -2488,21 +2403,106 @@
     "spe": 90
    },
    "usage_percent": 0.3,
-   "rank": 146
+   "rank": 141
   },
   {
-   "name": "Pincurchin",
-   "slug": "pincurchin",
-   "national_number": 871,
+   "name": "Mega Scrafty",
+   "slug": "scrafty-mega",
+   "national_number": 560,
+   "is_mega": true,
+   "types": [],
+   "base_stats": {
+    "hp": 65,
+    "atk": 130,
+    "def": 135,
+    "spa": 55,
+    "spd": 135,
+    "spe": 68
+   },
+   "usage_percent": 0.3,
+   "rank": 142
+  },
+  {
+   "name": "Grapploct",
+   "slug": "grapploct",
+   "national_number": 853,
    "is_mega": false,
    "types": [],
    "base_stats": {
-    "hp": 48,
-    "atk": 101,
-    "def": 95,
-    "spa": 91,
-    "spd": 85,
-    "spe": 15
+    "hp": 80,
+    "atk": 118,
+    "def": 90,
+    "spa": 70,
+    "spd": 80,
+    "spe": 42
+   },
+   "usage_percent": 0.3,
+   "rank": 143
+  },
+  {
+   "name": "Vileplume",
+   "slug": "vileplume",
+   "national_number": 45,
+   "is_mega": false,
+   "types": [],
+   "base_stats": {
+    "hp": 75,
+    "atk": 80,
+    "def": 85,
+    "spa": 110,
+    "spd": 90,
+    "spe": 50
+   },
+   "usage_percent": 0.3,
+   "rank": 144
+  },
+  {
+   "name": "Hisuian Samurott",
+   "slug": "samurott-hisui",
+   "national_number": 503,
+   "is_mega": false,
+   "types": [],
+   "base_stats": {
+    "hp": 90,
+    "atk": 108,
+    "def": 80,
+    "spa": 100,
+    "spd": 65,
+    "spe": 85
+   },
+   "usage_percent": 0.3,
+   "rank": 145
+  },
+  {
+   "name": "Golurk",
+   "slug": "golurk",
+   "national_number": 623,
+   "is_mega": false,
+   "types": [],
+   "base_stats": {
+    "hp": 89,
+    "atk": 124,
+    "def": 80,
+    "spa": 55,
+    "spd": 80,
+    "spe": 55
+   },
+   "usage_percent": 0.3,
+   "rank": 146
+  },
+  {
+   "name": "Mega Golurk",
+   "slug": "golurk-mega",
+   "national_number": 623,
+   "is_mega": true,
+   "types": [],
+   "base_stats": {
+    "hp": 89,
+    "atk": 159,
+    "def": 105,
+    "spa": 70,
+    "spd": 105,
+    "spe": 55
    },
    "usage_percent": 0.3,
    "rank": 147
@@ -2525,40 +2525,6 @@
    "rank": 148
   },
   {
-   "name": "Araquanid",
-   "slug": "araquanid",
-   "national_number": 752,
-   "is_mega": false,
-   "types": [],
-   "base_stats": {
-    "hp": 68,
-    "atk": 70,
-    "def": 92,
-    "spa": 50,
-    "spd": 132,
-    "spe": 42
-   },
-   "usage_percent": 0.3,
-   "rank": 149
-  },
-  {
-   "name": "Ditto",
-   "slug": "ditto",
-   "national_number": 132,
-   "is_mega": false,
-   "types": [],
-   "base_stats": {
-    "hp": 48,
-    "atk": 48,
-    "def": 48,
-    "spa": 48,
-    "spd": 48,
-    "spe": 48
-   },
-   "usage_percent": 0.3,
-   "rank": 150
-  },
-  {
    "name": "Meowstic",
    "slug": "meowstic",
    "national_number": 678,
@@ -2573,160 +2539,7 @@
     "spe": 104
    },
    "usage_percent": 0.3,
-   "rank": 151
-  },
-  {
-   "name": "Toxtricity (Low Key)",
-   "slug": "toxtricity-low-key",
-   "national_number": 849,
-   "is_mega": false,
-   "types": [],
-   "base_stats": {
-    "hp": 75,
-    "atk": 98,
-    "def": 70,
-    "spa": 114,
-    "spd": 70,
-    "spe": 75
-   },
-   "usage_percent": 0.3,
-   "rank": 152
-  },
-  {
-   "name": "Serperior",
-   "slug": "serperior",
-   "national_number": 497,
-   "is_mega": false,
-   "types": [],
-   "base_stats": {
-    "hp": 75,
-    "atk": 75,
-    "def": 95,
-    "spa": 75,
-    "spd": 95,
-    "spe": 113
-   },
-   "usage_percent": 0.2,
-   "rank": 153
-  },
-  {
-   "name": "Mega Altaria",
-   "slug": "altaria-mega",
-   "national_number": 334,
-   "is_mega": true,
-   "types": [],
-   "base_stats": {
-    "hp": 75,
-    "atk": 110,
-    "def": 110,
-    "spa": 110,
-    "spd": 105,
-    "spe": 80
-   },
-   "usage_percent": 0.2,
-   "rank": 154
-  },
-  {
-   "name": "Noivern",
-   "slug": "noivern",
-   "national_number": 715,
-   "is_mega": false,
-   "types": [],
-   "base_stats": {
-    "hp": 85,
-    "atk": 70,
-    "def": 80,
-    "spa": 97,
-    "spd": 80,
-    "spe": 123
-   },
-   "usage_percent": 0.2,
-   "rank": 155
-  },
-  {
-   "name": "Slowbro",
-   "slug": "slowbro",
-   "national_number": 80,
-   "is_mega": false,
-   "types": [],
-   "base_stats": {
-    "hp": 95,
-    "atk": 75,
-    "def": 110,
-    "spa": 100,
-    "spd": 80,
-    "spe": 30
-   },
-   "usage_percent": 0.2,
-   "rank": 156
-  },
-  {
-   "name": "Krookodile",
-   "slug": "krookodile",
-   "national_number": 553,
-   "is_mega": false,
-   "types": [],
-   "base_stats": {
-    "hp": 95,
-    "atk": 117,
-    "def": 80,
-    "spa": 65,
-    "spd": 70,
-    "spe": 92
-   },
-   "usage_percent": 0.2,
-   "rank": 157
-  },
-  {
-   "name": "Mega Greninja",
-   "slug": "greninja-mega",
-   "national_number": 658,
-   "is_mega": true,
-   "types": [],
-   "base_stats": {
-    "hp": 72,
-    "atk": 125,
-    "def": 77,
-    "spa": 133,
-    "spd": 81,
-    "spe": 142
-   },
-   "usage_percent": 0.2,
-   "rank": 158
-  },
-  {
-   "name": "Lopunny",
-   "slug": "lopunny",
-   "national_number": 428,
-   "is_mega": false,
-   "types": [],
-   "base_stats": {
-    "hp": 65,
-    "atk": 76,
-    "def": 84,
-    "spa": 54,
-    "spd": 96,
-    "spe": 105
-   },
-   "usage_percent": 0.2,
-   "rank": 159
-  },
-  {
-   "name": "Mega Lopunny",
-   "slug": "lopunny-mega",
-   "national_number": 428,
-   "is_mega": true,
-   "types": [],
-   "base_stats": {
-    "hp": 65,
-    "atk": 136,
-    "def": 94,
-    "spa": 54,
-    "spd": 96,
-    "spe": 135
-   },
-   "usage_percent": 0.2,
-   "rank": 160
+   "rank": 149
   },
   {
    "name": "Klefki",
@@ -2743,109 +2556,7 @@
     "spe": 75
    },
    "usage_percent": 0.2,
-   "rank": 161
-  },
-  {
-   "name": "Tinkaton",
-   "slug": "tinkaton",
-   "national_number": 959,
-   "is_mega": false,
-   "types": [],
-   "base_stats": {
-    "hp": 85,
-    "atk": 75,
-    "def": 77,
-    "spa": 70,
-    "spd": 105,
-    "spe": 94
-   },
-   "usage_percent": 0.2,
-   "rank": 162
-  },
-  {
-   "name": "Skarmory",
-   "slug": "skarmory",
-   "national_number": 227,
-   "is_mega": false,
-   "types": [],
-   "base_stats": {
-    "hp": 65,
-    "atk": 80,
-    "def": 140,
-    "spa": 40,
-    "spd": 70,
-    "spe": 70
-   },
-   "usage_percent": 0.2,
-   "rank": 163
-  },
-  {
-   "name": "Mega Skarmory",
-   "slug": "skarmory-mega",
-   "national_number": 227,
-   "is_mega": true,
-   "types": [],
-   "base_stats": {
-    "hp": 65,
-    "atk": 140,
-    "def": 110,
-    "spa": 40,
-    "spd": 100,
-    "spe": 110
-   },
-   "usage_percent": 0.2,
-   "rank": 164
-  },
-  {
-   "name": "Feraligatr",
-   "slug": "feraligatr",
-   "national_number": 160,
-   "is_mega": false,
-   "types": [],
-   "base_stats": {
-    "hp": 85,
-    "atk": 105,
-    "def": 100,
-    "spa": 79,
-    "spd": 83,
-    "spe": 78
-   },
-   "usage_percent": 0.2,
-   "rank": 165
-  },
-  {
-   "name": "Mega Feraligatr",
-   "slug": "feraligatr-mega",
-   "national_number": 160,
-   "is_mega": true,
-   "types": [],
-   "base_stats": {
-    "hp": 85,
-    "atk": 160,
-    "def": 125,
-    "spa": 89,
-    "spd": 93,
-    "spe": 78
-   },
-   "usage_percent": 0.2,
-   "rank": 166
-  },
-  {
-   "name": "Hisuian Decidueye",
-   "slug": "decidueye-hisui",
-   "national_number": 724,
-   "is_mega": false,
-   "types": [],
-   "base_stats": {
-    "hp": 88,
-    "atk": 112,
-    "def": 80,
-    "spa": 95,
-    "spd": 95,
-    "spe": 60
-   },
-   "usage_percent": 0.2,
-   "rank": 167
+   "rank": 150
   },
   {
    "name": "Aggron",
@@ -2862,7 +2573,7 @@
     "spe": 50
    },
    "usage_percent": 0.2,
-   "rank": 168
+   "rank": 151
   },
   {
    "name": "Mega Aggron",
@@ -2879,7 +2590,75 @@
     "spe": 50
    },
    "usage_percent": 0.2,
-   "rank": 169
+   "rank": 152
+  },
+  {
+   "name": "Tinkaton",
+   "slug": "tinkaton",
+   "national_number": 959,
+   "is_mega": false,
+   "types": [],
+   "base_stats": {
+    "hp": 85,
+    "atk": 75,
+    "def": 77,
+    "spa": 70,
+    "spd": 105,
+    "spe": 94
+   },
+   "usage_percent": 0.2,
+   "rank": 153
+  },
+  {
+   "name": "Mega Greninja",
+   "slug": "greninja-mega",
+   "national_number": 658,
+   "is_mega": true,
+   "types": [],
+   "base_stats": {
+    "hp": 72,
+    "atk": 125,
+    "def": 77,
+    "spa": 133,
+    "spd": 81,
+    "spe": 142
+   },
+   "usage_percent": 0.2,
+   "rank": 154
+  },
+  {
+   "name": "Palafin",
+   "slug": "palafin",
+   "national_number": 964,
+   "is_mega": false,
+   "types": [],
+   "base_stats": {
+    "hp": 100,
+    "atk": 70,
+    "def": 72,
+    "spa": 53,
+    "spd": 62,
+    "spe": 100
+   },
+   "usage_percent": 0.2,
+   "rank": 155
+  },
+  {
+   "name": "Azumarill",
+   "slug": "azumarill",
+   "national_number": 184,
+   "is_mega": false,
+   "types": [],
+   "base_stats": {
+    "hp": 100,
+    "atk": 50,
+    "def": 80,
+    "spa": 60,
+    "spd": 80,
+    "spe": 50
+   },
+   "usage_percent": 0.2,
+   "rank": 156
   },
   {
    "name": "Malamar",
@@ -2894,6 +2673,227 @@
     "spa": 68,
     "spd": 75,
     "spe": 73
+   },
+   "usage_percent": 0.2,
+   "rank": 157
+  },
+  {
+   "name": "Serperior",
+   "slug": "serperior",
+   "national_number": 497,
+   "is_mega": false,
+   "types": [],
+   "base_stats": {
+    "hp": 75,
+    "atk": 75,
+    "def": 95,
+    "spa": 75,
+    "spd": 95,
+    "spe": 113
+   },
+   "usage_percent": 0.2,
+   "rank": 158
+  },
+  {
+   "name": "Mega Altaria",
+   "slug": "altaria-mega",
+   "national_number": 334,
+   "is_mega": true,
+   "types": [],
+   "base_stats": {
+    "hp": 75,
+    "atk": 110,
+    "def": 110,
+    "spa": 110,
+    "spd": 105,
+    "spe": 80
+   },
+   "usage_percent": 0.2,
+   "rank": 159
+  },
+  {
+   "name": "Noivern",
+   "slug": "noivern",
+   "national_number": 715,
+   "is_mega": false,
+   "types": [],
+   "base_stats": {
+    "hp": 85,
+    "atk": 70,
+    "def": 80,
+    "spa": 97,
+    "spd": 80,
+    "spe": 123
+   },
+   "usage_percent": 0.2,
+   "rank": 160
+  },
+  {
+   "name": "Slowbro",
+   "slug": "slowbro",
+   "national_number": 80,
+   "is_mega": false,
+   "types": [],
+   "base_stats": {
+    "hp": 95,
+    "atk": 75,
+    "def": 110,
+    "spa": 100,
+    "spd": 80,
+    "spe": 30
+   },
+   "usage_percent": 0.2,
+   "rank": 161
+  },
+  {
+   "name": "Krookodile",
+   "slug": "krookodile",
+   "national_number": 553,
+   "is_mega": false,
+   "types": [],
+   "base_stats": {
+    "hp": 95,
+    "atk": 117,
+    "def": 80,
+    "spa": 65,
+    "spd": 70,
+    "spe": 92
+   },
+   "usage_percent": 0.2,
+   "rank": 162
+  },
+  {
+   "name": "Lopunny",
+   "slug": "lopunny",
+   "national_number": 428,
+   "is_mega": false,
+   "types": [],
+   "base_stats": {
+    "hp": 65,
+    "atk": 76,
+    "def": 84,
+    "spa": 54,
+    "spd": 96,
+    "spe": 105
+   },
+   "usage_percent": 0.2,
+   "rank": 163
+  },
+  {
+   "name": "Mega Lopunny",
+   "slug": "lopunny-mega",
+   "national_number": 428,
+   "is_mega": true,
+   "types": [],
+   "base_stats": {
+    "hp": 65,
+    "atk": 136,
+    "def": 94,
+    "spa": 54,
+    "spd": 96,
+    "spe": 135
+   },
+   "usage_percent": 0.2,
+   "rank": 164
+  },
+  {
+   "name": "Sceptile",
+   "slug": "sceptile",
+   "national_number": 254,
+   "is_mega": false,
+   "types": [],
+   "base_stats": {
+    "hp": 70,
+    "atk": 85,
+    "def": 65,
+    "spa": 105,
+    "spd": 85,
+    "spe": 120
+   },
+   "usage_percent": 0.2,
+   "rank": 165
+  },
+  {
+   "name": "Mega Sceptile",
+   "slug": "sceptile-mega",
+   "national_number": 254,
+   "is_mega": true,
+   "types": [],
+   "base_stats": {
+    "hp": 70,
+    "atk": 110,
+    "def": 75,
+    "spa": 145,
+    "spd": 85,
+    "spe": 145
+   },
+   "usage_percent": 0.2,
+   "rank": 166
+  },
+  {
+   "name": "Meowstic (Female)",
+   "slug": "meowstic-female",
+   "national_number": 678,
+   "is_mega": false,
+   "types": [],
+   "base_stats": {
+    "hp": 74,
+    "atk": 48,
+    "def": 76,
+    "spa": 83,
+    "spd": 81,
+    "spe": 104
+   },
+   "usage_percent": 0.2,
+   "rank": 167
+  },
+  {
+   "name": "Skeledirge",
+   "slug": "skeledirge",
+   "national_number": 911,
+   "is_mega": false,
+   "types": [],
+   "base_stats": {
+    "hp": 104,
+    "atk": 75,
+    "def": 100,
+    "spa": 110,
+    "spd": 75,
+    "spe": 66
+   },
+   "usage_percent": 0.2,
+   "rank": 168
+  },
+  {
+   "name": "Skarmory",
+   "slug": "skarmory",
+   "national_number": 227,
+   "is_mega": false,
+   "types": [],
+   "base_stats": {
+    "hp": 65,
+    "atk": 80,
+    "def": 140,
+    "spa": 40,
+    "spd": 70,
+    "spe": 70
+   },
+   "usage_percent": 0.2,
+   "rank": 169
+  },
+  {
+   "name": "Mega Skarmory",
+   "slug": "skarmory-mega",
+   "national_number": 227,
+   "is_mega": true,
+   "types": [],
+   "base_stats": {
+    "hp": 65,
+    "atk": 140,
+    "def": 110,
+    "spa": 40,
+    "spd": 100,
+    "spe": 110
    },
    "usage_percent": 0.2,
    "rank": 170
@@ -2916,72 +2916,89 @@
    "rank": 171
   },
   {
-   "name": "Meowstic (Female)",
-   "slug": "meowstic-female",
-   "national_number": 678,
+   "name": "Eelektross",
+   "slug": "eelektross",
+   "national_number": 604,
    "is_mega": false,
    "types": [],
    "base_stats": {
-    "hp": 74,
-    "atk": 48,
-    "def": 76,
-    "spa": 83,
-    "spd": 81,
-    "spe": 104
+    "hp": 85,
+    "atk": 115,
+    "def": 80,
+    "spa": 105,
+    "spd": 80,
+    "spe": 50
    },
    "usage_percent": 0.2,
    "rank": 172
   },
   {
-   "name": "Mega Lucario",
-   "slug": "lucario-mega",
-   "national_number": 448,
+   "name": "Mega Eelektross",
+   "slug": "eelektross-mega",
+   "national_number": 604,
    "is_mega": true,
    "types": [],
    "base_stats": {
-    "hp": 70,
+    "hp": 85,
     "atk": 145,
-    "def": 88,
-    "spa": 140,
-    "spd": 70,
-    "spe": 112
+    "def": 80,
+    "spa": 135,
+    "spd": 90,
+    "spe": 80
    },
    "usage_percent": 0.2,
    "rank": 173
   },
   {
-   "name": "Mega Slowbro",
-   "slug": "slowbro-mega",
-   "national_number": 80,
-   "is_mega": true,
+   "name": "Feraligatr",
+   "slug": "feraligatr",
+   "national_number": 160,
+   "is_mega": false,
    "types": [],
    "base_stats": {
-    "hp": 95,
-    "atk": 75,
-    "def": 180,
-    "spa": 130,
-    "spd": 80,
-    "spe": 30
+    "hp": 85,
+    "atk": 105,
+    "def": 100,
+    "spa": 79,
+    "spd": 83,
+    "spe": 78
    },
    "usage_percent": 0.2,
    "rank": 174
   },
   {
-   "name": "Mega Excadrill",
-   "slug": "excadrill-mega",
-   "national_number": 530,
+   "name": "Mega Feraligatr",
+   "slug": "feraligatr-mega",
+   "national_number": 160,
    "is_mega": true,
    "types": [],
    "base_stats": {
-    "hp": 110,
-    "atk": 165,
-    "def": 100,
-    "spa": 65,
-    "spd": 65,
-    "spe": 103
+    "hp": 85,
+    "atk": 160,
+    "def": 125,
+    "spa": 89,
+    "spd": 93,
+    "spe": 78
    },
    "usage_percent": 0.2,
    "rank": 175
+  },
+  {
+   "name": "Starmie",
+   "slug": "starmie",
+   "national_number": 121,
+   "is_mega": false,
+   "types": [],
+   "base_stats": {
+    "hp": 60,
+    "atk": 75,
+    "def": 85,
+    "spa": 100,
+    "spd": 85,
+    "spe": 115
+   },
+   "usage_percent": 0.2,
+   "rank": 176
   },
   {
    "name": "Mega Starmie",
@@ -2998,7 +3015,7 @@
     "spe": 120
    },
    "usage_percent": 0.2,
-   "rank": 176
+   "rank": 177
   },
   {
    "name": "Maushold (Family Of Four)",
@@ -3015,7 +3032,7 @@
     "spe": 111
    },
    "usage_percent": 0.2,
-   "rank": 177
+   "rank": 178
   },
   {
    "name": "Bellibolt",
@@ -3032,41 +3049,7 @@
     "spe": 45
    },
    "usage_percent": 0.2,
-   "rank": 178
-  },
-  {
-   "name": "Skeledirge",
-   "slug": "skeledirge",
-   "national_number": 911,
-   "is_mega": false,
-   "types": [],
-   "base_stats": {
-    "hp": 104,
-    "atk": 75,
-    "def": 100,
-    "spa": 110,
-    "spd": 75,
-    "spe": 66
-   },
-   "usage_percent": 0.2,
    "rank": 179
-  },
-  {
-   "name": "Lycanroc (Midday)",
-   "slug": "lycanroc-midday",
-   "national_number": 745,
-   "is_mega": false,
-   "types": [],
-   "base_stats": {
-    "hp": 75,
-    "atk": 115,
-    "def": 65,
-    "spa": 55,
-    "spd": 65,
-    "spe": 112
-   },
-   "usage_percent": 0.2,
-   "rank": 180
   },
   {
    "name": "Ampharos",
@@ -3083,7 +3066,7 @@
     "spe": 55
    },
    "usage_percent": 0.2,
-   "rank": 181
+   "rank": 180
   },
   {
    "name": "Mega Ampharos",
@@ -3100,7 +3083,7 @@
     "spe": 45
    },
    "usage_percent": 0.2,
-   "rank": 182
+   "rank": 181
   },
   {
    "name": "Houndoom",
@@ -3117,7 +3100,7 @@
     "spe": 95
    },
    "usage_percent": 0.2,
-   "rank": 183
+   "rank": 182
   },
   {
    "name": "Mega Houndoom",
@@ -3134,24 +3117,7 @@
     "spe": 115
    },
    "usage_percent": 0.2,
-   "rank": 184
-  },
-  {
-   "name": "Azumarill",
-   "slug": "azumarill",
-   "national_number": 184,
-   "is_mega": false,
-   "types": [],
-   "base_stats": {
-    "hp": 100,
-    "atk": 50,
-    "def": 80,
-    "spa": 60,
-    "spd": 80,
-    "spe": 50
-   },
-   "usage_percent": 0.2,
-   "rank": 185
+   "rank": 183
   },
   {
    "name": "Manectric",
@@ -3168,7 +3134,7 @@
     "spe": 105
    },
    "usage_percent": 0.2,
-   "rank": 186
+   "rank": 184
   },
   {
    "name": "Mega Manectric",
@@ -3185,7 +3151,7 @@
     "spe": 135
    },
    "usage_percent": 0.2,
-   "rank": 187
+   "rank": 185
   },
   {
    "name": "Alolan Raichu",
@@ -3204,7 +3170,7 @@
     "spe": 110
    },
    "usage_percent": 0.2,
-   "rank": 188
+   "rank": 186
   },
   {
    "name": "Mega Gyarados",
@@ -3221,41 +3187,7 @@
     "spe": 81
    },
    "usage_percent": 0.2,
-   "rank": 189
-  },
-  {
-   "name": "Overqwil",
-   "slug": "overqwil",
-   "national_number": 904,
-   "is_mega": false,
-   "types": [],
-   "base_stats": {
-    "hp": 85,
-    "atk": 115,
-    "def": 95,
-    "spa": 65,
-    "spd": 65,
-    "spe": 85
-   },
-   "usage_percent": 0.2,
-   "rank": 190
-  },
-  {
-   "name": "Audino",
-   "slug": "audino",
-   "national_number": 531,
-   "is_mega": false,
-   "types": [],
-   "base_stats": {
-    "hp": 103,
-    "atk": 60,
-    "def": 86,
-    "spa": 60,
-    "spd": 86,
-    "spe": 50
-   },
-   "usage_percent": 0.2,
-   "rank": 191
+   "rank": 187
   },
   {
    "name": "Orthworm",
@@ -3272,7 +3204,7 @@
     "spe": 65
    },
    "usage_percent": 0.2,
-   "rank": 192
+   "rank": 188
   },
   {
    "name": "Abomasnow",
@@ -3289,7 +3221,7 @@
     "spe": 60
    },
    "usage_percent": 0.2,
-   "rank": 193
+   "rank": 189
   },
   {
    "name": "Mega Abomasnow",
@@ -3306,7 +3238,7 @@
     "spe": 30
    },
    "usage_percent": 0.2,
-   "rank": 194
+   "rank": 190
   },
   {
    "name": "Spiritomb",
@@ -3323,7 +3255,7 @@
     "spe": 35
    },
    "usage_percent": 0.2,
-   "rank": 195
+   "rank": 191
   },
   {
    "name": "Alolan Persian",
@@ -3340,24 +3272,7 @@
     "spe": 115
    },
    "usage_percent": 0.2,
-   "rank": 196
-  },
-  {
-   "name": "Palafin",
-   "slug": "palafin",
-   "national_number": 964,
-   "is_mega": false,
-   "types": [],
-   "base_stats": {
-    "hp": 100,
-    "atk": 70,
-    "def": 72,
-    "spa": 53,
-    "spd": 62,
-    "spe": 100
-   },
-   "usage_percent": 0.2,
-   "rank": 197
+   "rank": 192
   },
   {
    "name": "Oranguru",
@@ -3374,92 +3289,194 @@
     "spe": 60
    },
    "usage_percent": 0.2,
+   "rank": 193
+  },
+  {
+   "name": "Steelix",
+   "slug": "steelix",
+   "national_number": 208,
+   "is_mega": false,
+   "types": [],
+   "base_stats": {
+    "hp": 75,
+    "atk": 85,
+    "def": 200,
+    "spa": 55,
+    "spd": 65,
+    "spe": 30
+   },
+   "usage_percent": 0.1,
+   "rank": 194
+  },
+  {
+   "name": "Mega Steelix",
+   "slug": "steelix-mega",
+   "national_number": 208,
+   "is_mega": true,
+   "types": [],
+   "base_stats": {
+    "hp": 75,
+    "atk": 125,
+    "def": 230,
+    "spa": 55,
+    "spd": 95,
+    "spe": 30
+   },
+   "usage_percent": 0.1,
+   "rank": 195
+  },
+  {
+   "name": "Aurorus",
+   "slug": "aurorus",
+   "national_number": 699,
+   "is_mega": false,
+   "types": [],
+   "base_stats": {
+    "hp": 123,
+    "atk": 77,
+    "def": 72,
+    "spa": 99,
+    "spd": 92,
+    "spe": 58
+   },
+   "usage_percent": 0.1,
+   "rank": 196
+  },
+  {
+   "name": "Mega Clefable",
+   "slug": "clefable-mega",
+   "national_number": 36,
+   "is_mega": true,
+   "types": [],
+   "base_stats": {
+    "hp": 95,
+    "atk": 80,
+    "def": 93,
+    "spa": 135,
+    "spd": 110,
+    "spe": 70
+   },
+   "usage_percent": 0.1,
+   "rank": 197
+  },
+  {
+   "name": "Basculegion (Female)",
+   "slug": "basculegion-female",
+   "national_number": 902,
+   "is_mega": false,
+   "types": [],
+   "base_stats": {
+    "hp": 120,
+    "atk": 92,
+    "def": 65,
+    "spa": 100,
+    "spd": 75,
+    "spe": 78
+   },
+   "usage_percent": 0.1,
    "rank": 198
   },
   {
-   "name": "Mudsdale",
-   "slug": "mudsdale",
-   "national_number": 750,
+   "name": "Arcanine",
+   "slug": "arcanine",
+   "national_number": 59,
    "is_mega": false,
    "types": [],
    "base_stats": {
-    "hp": 100,
-    "atk": 125,
-    "def": 100,
-    "spa": 55,
-    "spd": 85,
-    "spe": 35
+    "hp": 90,
+    "atk": 110,
+    "def": 80,
+    "spa": 100,
+    "spd": 80,
+    "spe": 95
    },
-   "usage_percent": 0.2,
+   "usage_percent": 0.1,
    "rank": 199
   },
   {
-   "name": "Wigglytuff",
-   "slug": "wigglytuff",
-   "national_number": 40,
-   "is_mega": false,
+   "name": "Mega Malamar",
+   "slug": "malamar-mega",
+   "national_number": 687,
+   "is_mega": true,
    "types": [],
    "base_stats": {
-    "hp": 140,
-    "atk": 70,
-    "def": 45,
-    "spa": 85,
-    "spd": 50,
-    "spe": 45
+    "hp": 86,
+    "atk": 102,
+    "def": 88,
+    "spa": 98,
+    "spd": 120,
+    "spe": 88
    },
-   "usage_percent": 0.2,
+   "usage_percent": 0.1,
    "rank": 200
   },
   {
-   "name": "Sceptile",
-   "slug": "sceptile",
-   "national_number": 254,
+   "name": "Alcremie",
+   "slug": "alcremie",
+   "national_number": 869,
    "is_mega": false,
    "types": [],
    "base_stats": {
-    "hp": 70,
-    "atk": 85,
-    "def": 65,
-    "spa": 105,
-    "spd": 85,
-    "spe": 120
+    "hp": 65,
+    "atk": 60,
+    "def": 75,
+    "spa": 110,
+    "spd": 121,
+    "spe": 64
    },
-   "usage_percent": 0.2,
+   "usage_percent": 0.1,
    "rank": 201
   },
   {
-   "name": "Mega Sceptile",
-   "slug": "sceptile-mega",
-   "national_number": 254,
-   "is_mega": true,
+   "name": "Scolipede",
+   "slug": "scolipede",
+   "national_number": 545,
+   "is_mega": false,
    "types": [],
    "base_stats": {
-    "hp": 70,
-    "atk": 110,
-    "def": 75,
-    "spa": 145,
-    "spd": 85,
-    "spe": 145
+    "hp": 60,
+    "atk": 100,
+    "def": 89,
+    "spa": 55,
+    "spd": 69,
+    "spe": 112
    },
-   "usage_percent": 0.2,
+   "usage_percent": 0.1,
    "rank": 202
   },
   {
-   "name": "Mega Kangaskhan",
-   "slug": "kangaskhan-mega",
-   "national_number": 115,
+   "name": "Beedrill",
+   "slug": "beedrill",
+   "national_number": 15,
+   "is_mega": false,
+   "types": [],
+   "base_stats": {
+    "hp": 65,
+    "atk": 90,
+    "def": 40,
+    "spa": 45,
+    "spd": 80,
+    "spe": 75
+   },
+   "usage_percent": 0.1,
+   "rank": 203
+  },
+  {
+   "name": "Mega Beedrill",
+   "slug": "beedrill-mega",
+   "national_number": 15,
    "is_mega": true,
    "types": [],
    "base_stats": {
-    "hp": 105,
-    "atk": 125,
-    "def": 100,
-    "spa": 60,
-    "spd": 100,
-    "spe": 100
+    "hp": 65,
+    "atk": 150,
+    "def": 40,
+    "spa": 15,
+    "spd": 80,
+    "spe": 145
    },
-   "usage_percent": 0.2,
-   "rank": 203
+   "usage_percent": 0.1,
+   "rank": 204
   },
   {
    "name": "Goodra",
@@ -3476,7 +3493,7 @@
     "spe": 80
    },
    "usage_percent": 0.1,
-   "rank": 204
+   "rank": 205
   },
   {
    "name": "Conkeldurr",
@@ -3493,7 +3510,58 @@
     "spe": 45
    },
    "usage_percent": 0.1,
-   "rank": 205
+   "rank": 206
+  },
+  {
+   "name": "Heliolisk",
+   "slug": "heliolisk",
+   "national_number": 695,
+   "is_mega": false,
+   "types": [],
+   "base_stats": {
+    "hp": 62,
+    "atk": 55,
+    "def": 52,
+    "spa": 109,
+    "spd": 94,
+    "spe": 109
+   },
+   "usage_percent": 0.1,
+   "rank": 207
+  },
+  {
+   "name": "Jolteon",
+   "slug": "jolteon",
+   "national_number": 135,
+   "is_mega": false,
+   "types": [],
+   "base_stats": {
+    "hp": 65,
+    "atk": 65,
+    "def": 60,
+    "spa": 110,
+    "spd": 95,
+    "spe": 130
+   },
+   "usage_percent": 0.1,
+   "rank": 208
+  },
+  {
+   "name": "Luxray",
+   "slug": "luxray",
+   "national_number": 405,
+   "is_mega": false,
+   "types": [],
+   "base_stats": {
+    "hp": 80,
+    "atk": 120,
+    "def": 79,
+    "spa": 95,
+    "spd": 79,
+    "spe": 70
+   },
+   "usage_percent": 0.1,
+   "rank": 209
   },
   {
    "name": "Pikachu",
@@ -3512,7 +3580,41 @@
     "spe": 90
    },
    "usage_percent": 0.1,
-   "rank": 206
+   "rank": 210
+  },
+  {
+   "name": "Hippowdon",
+   "slug": "hippowdon",
+   "national_number": 450,
+   "is_mega": false,
+   "types": [],
+   "base_stats": {
+    "hp": 108,
+    "atk": 112,
+    "def": 118,
+    "spa": 68,
+    "spd": 72,
+    "spe": 47
+   },
+   "usage_percent": 0.1,
+   "rank": 211
+  },
+  {
+   "name": "Hisuian Decidueye",
+   "slug": "decidueye-hisui",
+   "national_number": 724,
+   "is_mega": false,
+   "types": [],
+   "base_stats": {
+    "hp": 88,
+    "atk": 112,
+    "def": 80,
+    "spa": 95,
+    "spd": 95,
+    "spe": 60
+   },
+   "usage_percent": 0.1,
+   "rank": 212
   },
   {
    "name": "Barbaracle",
@@ -3529,7 +3631,7 @@
     "spe": 68
    },
    "usage_percent": 0.1,
-   "rank": 207
+   "rank": 213
   },
   {
    "name": "Mega Barbaracle",
@@ -3546,24 +3648,7 @@
     "spe": 88
    },
    "usage_percent": 0.1,
-   "rank": 208
-  },
-  {
-   "name": "Toucannon",
-   "slug": "toucannon",
-   "national_number": 733,
-   "is_mega": false,
-   "types": [],
-   "base_stats": {
-    "hp": 80,
-    "atk": 120,
-    "def": 75,
-    "spa": 75,
-    "spd": 75,
-    "spe": 60
-   },
-   "usage_percent": 0.1,
-   "rank": 209
+   "rank": 214
   },
   {
    "name": "Perrserker",
@@ -3580,24 +3665,24 @@
     "spe": 50
    },
    "usage_percent": 0.1,
-   "rank": 210
+   "rank": 215
   },
   {
-   "name": "Jolteon",
-   "slug": "jolteon",
-   "national_number": 135,
-   "is_mega": false,
+   "name": "Mega Lucario",
+   "slug": "lucario-mega",
+   "national_number": 448,
+   "is_mega": true,
    "types": [],
    "base_stats": {
-    "hp": 65,
-    "atk": 65,
-    "def": 60,
-    "spa": 110,
-    "spd": 95,
-    "spe": 130
+    "hp": 70,
+    "atk": 145,
+    "def": 88,
+    "spa": 140,
+    "spd": 70,
+    "spe": 112
    },
    "usage_percent": 0.1,
-   "rank": 211
+   "rank": 216
   },
   {
    "name": "Quaquaval",
@@ -3614,7 +3699,41 @@
     "spe": 85
    },
    "usage_percent": 0.1,
-   "rank": 212
+   "rank": 217
+  },
+  {
+   "name": "Mega Slowbro",
+   "slug": "slowbro-mega",
+   "national_number": 80,
+   "is_mega": true,
+   "types": [],
+   "base_stats": {
+    "hp": 95,
+    "atk": 75,
+    "def": 180,
+    "spa": 130,
+    "spd": 80,
+    "spe": 30
+   },
+   "usage_percent": 0.1,
+   "rank": 218
+  },
+  {
+   "name": "Mega Excadrill",
+   "slug": "excadrill-mega",
+   "national_number": 530,
+   "is_mega": true,
+   "types": [],
+   "base_stats": {
+    "hp": 110,
+    "atk": 165,
+    "def": 100,
+    "spa": 65,
+    "spd": 65,
+    "spe": 103
+   },
+   "usage_percent": 0.1,
+   "rank": 219
   },
   {
    "name": "Typhlosion",
@@ -3631,7 +3750,7 @@
     "spe": 100
    },
    "usage_percent": 0.1,
-   "rank": 213
+   "rank": 220
   },
   {
    "name": "Umbreon",
@@ -3648,7 +3767,7 @@
     "spe": 65
    },
    "usage_percent": 0.1,
-   "rank": 214
+   "rank": 221
   },
   {
    "name": "Rhyperior",
@@ -3665,24 +3784,7 @@
     "spe": 40
    },
    "usage_percent": 0.1,
-   "rank": 215
-  },
-  {
-   "name": "Mega Malamar",
-   "slug": "malamar-mega",
-   "national_number": 687,
-   "is_mega": true,
-   "types": [],
-   "base_stats": {
-    "hp": 86,
-    "atk": 102,
-    "def": 88,
-    "spa": 98,
-    "spd": 120,
-    "spe": 88
-   },
-   "usage_percent": 0.1,
-   "rank": 216
+   "rank": 222
   },
   {
    "name": "Toxicroak",
@@ -3699,7 +3801,7 @@
     "spe": 85
    },
    "usage_percent": 0.1,
-   "rank": 217
+   "rank": 223
   },
   {
    "name": "Mow Rotom",
@@ -3716,7 +3818,7 @@
     "spe": 86
    },
    "usage_percent": 0.1,
-   "rank": 218
+   "rank": 224
   },
   {
    "name": "Tauros - Paldea Aqua Breed",
@@ -3733,24 +3835,7 @@
     "spe": 100
    },
    "usage_percent": 0.1,
-   "rank": 219
-  },
-  {
-   "name": "Runerigus",
-   "slug": "runerigus",
-   "national_number": 867,
-   "is_mega": false,
-   "types": [],
-   "base_stats": {
-    "hp": 58,
-    "atk": 95,
-    "def": 145,
-    "spa": 50,
-    "spd": 105,
-    "spe": 30
-   },
-   "usage_percent": 0.1,
-   "rank": 220
+   "rank": 225
   },
   {
    "name": "Florges",
@@ -3767,7 +3852,7 @@
     "spe": 75
    },
    "usage_percent": 0.1,
-   "rank": 221
+   "rank": 226
   },
   {
    "name": "Pidgeot",
@@ -3784,7 +3869,7 @@
     "spe": 101
    },
    "usage_percent": 0.1,
-   "rank": 222
+   "rank": 227
   },
   {
    "name": "Mega Pidgeot",
@@ -3801,7 +3886,24 @@
     "spe": 121
    },
    "usage_percent": 0.1,
-   "rank": 223
+   "rank": 228
+  },
+  {
+   "name": "Lycanroc (Midday)",
+   "slug": "lycanroc-midday",
+   "national_number": 745,
+   "is_mega": false,
+   "types": [],
+   "base_stats": {
+    "hp": 75,
+    "atk": 115,
+    "def": 65,
+    "spa": 55,
+    "spd": 65,
+    "spe": 112
+   },
+   "usage_percent": 0.1,
+   "rank": 229
   },
   {
    "name": "Chesnaught",
@@ -3818,58 +3920,7 @@
     "spe": 64
    },
    "usage_percent": 0.1,
-   "rank": 224
-  },
-  {
-   "name": "Steelix",
-   "slug": "steelix",
-   "national_number": 208,
-   "is_mega": false,
-   "types": [],
-   "base_stats": {
-    "hp": 75,
-    "atk": 85,
-    "def": 200,
-    "spa": 55,
-    "spd": 65,
-    "spe": 30
-   },
-   "usage_percent": 0.1,
-   "rank": 225
-  },
-  {
-   "name": "Mega Steelix",
-   "slug": "steelix-mega",
-   "national_number": 208,
-   "is_mega": true,
-   "types": [],
-   "base_stats": {
-    "hp": 75,
-    "atk": 125,
-    "def": 230,
-    "spa": 55,
-    "spd": 95,
-    "spe": 30
-   },
-   "usage_percent": 0.1,
-   "rank": 226
-  },
-  {
-   "name": "Alcremie",
-   "slug": "alcremie",
-   "national_number": 869,
-   "is_mega": false,
-   "types": [],
-   "base_stats": {
-    "hp": 65,
-    "atk": 60,
-    "def": 75,
-    "spa": 110,
-    "spd": 121,
-    "spe": 64
-   },
-   "usage_percent": 0.1,
-   "rank": 227
+   "rank": 230
   },
   {
    "name": "Glaceon",
@@ -3886,7 +3937,7 @@
     "spe": 65
    },
    "usage_percent": 0.1,
-   "rank": 228
+   "rank": 231
   },
   {
    "name": "Dragalge",
@@ -3903,7 +3954,7 @@
     "spe": 44
    },
    "usage_percent": 0.1,
-   "rank": 229
+   "rank": 232
   },
   {
    "name": "Mega Dragalge",
@@ -3920,7 +3971,7 @@
     "spe": 44
    },
    "usage_percent": 0.1,
-   "rank": 230
+   "rank": 233
   },
   {
    "name": "Heracross",
@@ -3937,7 +3988,7 @@
     "spe": 85
    },
    "usage_percent": 0.1,
-   "rank": 231
+   "rank": 234
   },
   {
    "name": "Torterra",
@@ -3954,7 +4005,7 @@
     "spe": 56
    },
    "usage_percent": 0.1,
-   "rank": 232
+   "rank": 235
   },
   {
    "name": "Galarian Slowbro",
@@ -3971,7 +4022,7 @@
     "spe": 30
    },
    "usage_percent": 0.1,
-   "rank": 233
+   "rank": 236
   },
   {
    "name": "Clawitzer",
@@ -3988,75 +4039,41 @@
     "spe": 59
    },
    "usage_percent": 0.1,
-   "rank": 234
-  },
-  {
-   "name": "Arcanine",
-   "slug": "arcanine",
-   "national_number": 59,
-   "is_mega": false,
-   "types": [],
-   "base_stats": {
-    "hp": 90,
-    "atk": 110,
-    "def": 80,
-    "spa": 100,
-    "spd": 80,
-    "spe": 95
-   },
-   "usage_percent": 0.1,
-   "rank": 235
-  },
-  {
-   "name": "Basculegion (Female)",
-   "slug": "basculegion-female",
-   "national_number": 902,
-   "is_mega": false,
-   "types": [],
-   "base_stats": {
-    "hp": 120,
-    "atk": 92,
-    "def": 65,
-    "spa": 100,
-    "spd": 75,
-    "spe": 78
-   },
-   "usage_percent": 0.1,
-   "rank": 236
-  },
-  {
-   "name": "Heliolisk",
-   "slug": "heliolisk",
-   "national_number": 695,
-   "is_mega": false,
-   "types": [],
-   "base_stats": {
-    "hp": 62,
-    "atk": 55,
-    "def": 52,
-    "spa": 109,
-    "spd": 94,
-    "spe": 109
-   },
-   "usage_percent": 0.1,
    "rank": 237
   },
   {
-   "name": "Mega Sableye",
-   "slug": "sableye-mega",
-   "national_number": 302,
-   "is_mega": true,
+   "name": "Overqwil",
+   "slug": "overqwil",
+   "national_number": 904,
+   "is_mega": false,
    "types": [],
    "base_stats": {
-    "hp": 50,
-    "atk": 85,
-    "def": 125,
-    "spa": 85,
-    "spd": 115,
-    "spe": 20
+    "hp": 85,
+    "atk": 115,
+    "def": 95,
+    "spa": 65,
+    "spd": 65,
+    "spe": 85
    },
    "usage_percent": 0.1,
    "rank": 238
+  },
+  {
+   "name": "Audino",
+   "slug": "audino",
+   "national_number": 531,
+   "is_mega": false,
+   "types": [],
+   "base_stats": {
+    "hp": 103,
+    "atk": 60,
+    "def": 86,
+    "spa": 60,
+    "spd": 86,
+    "spe": 50
+   },
+   "usage_percent": 0.1,
+   "rank": 239
   },
   {
    "name": "Gliscor",
@@ -4071,23 +4088,6 @@
     "spa": 45,
     "spd": 75,
     "spe": 95
-   },
-   "usage_percent": 0.1,
-   "rank": 239
-  },
-  {
-   "name": "Scolipede",
-   "slug": "scolipede",
-   "national_number": 545,
-   "is_mega": false,
-   "types": [],
-   "base_stats": {
-    "hp": 60,
-    "atk": 100,
-    "def": 89,
-    "spa": 55,
-    "spd": 69,
-    "spe": 112
    },
    "usage_percent": 0.1,
    "rank": 240
@@ -4110,40 +4110,6 @@
    "rank": 241
   },
   {
-   "name": "Hippowdon",
-   "slug": "hippowdon",
-   "national_number": 450,
-   "is_mega": false,
-   "types": [],
-   "base_stats": {
-    "hp": 108,
-    "atk": 112,
-    "def": 118,
-    "spa": 68,
-    "spd": 72,
-    "spe": 47
-   },
-   "usage_percent": 0.1,
-   "rank": 242
-  },
-  {
-   "name": "Machamp",
-   "slug": "machamp",
-   "national_number": 68,
-   "is_mega": false,
-   "types": [],
-   "base_stats": {
-    "hp": 90,
-    "atk": 130,
-    "def": 80,
-    "spa": 65,
-    "spd": 85,
-    "spe": 55
-   },
-   "usage_percent": 0.1,
-   "rank": 243
-  },
-  {
    "name": "Frost Rotom",
    "slug": "rotom-frost",
    "national_number": 479,
@@ -4158,24 +4124,7 @@
     "spe": 86
    },
    "usage_percent": 0.1,
-   "rank": 244
-  },
-  {
-   "name": "Mega Gallade",
-   "slug": "gallade-mega",
-   "national_number": 475,
-   "is_mega": true,
-   "types": [],
-   "base_stats": {
-    "hp": 68,
-    "atk": 165,
-    "def": 95,
-    "spa": 65,
-    "spd": 115,
-    "spe": 110
-   },
-   "usage_percent": 0.1,
-   "rank": 245
+   "rank": 242
   },
   {
    "name": "Swalot",
@@ -4192,7 +4141,7 @@
     "spe": 55
    },
    "usage_percent": 0.1,
-   "rank": 246
+   "rank": 243
   },
   {
    "name": "Mr. Rime",
@@ -4209,7 +4158,7 @@
     "spe": 70
    },
    "usage_percent": 0.1,
-   "rank": 247
+   "rank": 244
   },
   {
    "name": "Mega Scolipede",
@@ -4226,7 +4175,7 @@
     "spe": 62
    },
    "usage_percent": 0.1,
-   "rank": 248
+   "rank": 245
   },
   {
    "name": "Mr. Mime",
@@ -4243,7 +4192,7 @@
     "spe": 90
    },
    "usage_percent": 0.1,
-   "rank": 249
+   "rank": 246
   },
   {
    "name": "Gourgeist",
@@ -4260,7 +4209,7 @@
     "spe": 84
    },
    "usage_percent": 0.1,
-   "rank": 250
+   "rank": 247
   },
   {
    "name": "Chimecho",
@@ -4277,7 +4226,7 @@
     "spe": 65
    },
    "usage_percent": 0.1,
-   "rank": 251
+   "rank": 248
   },
   {
    "name": "Mega Chimecho",
@@ -4294,75 +4243,7 @@
     "spe": 65
    },
    "usage_percent": 0.1,
-   "rank": 252
-  },
-  {
-   "name": "Tauros - Paldea Blaze Breed",
-   "slug": "tauros-paldea-blaze-breed",
-   "national_number": 128,
-   "is_mega": false,
-   "types": [],
-   "base_stats": {
-    "hp": 75,
-    "atk": 110,
-    "def": 105,
-    "spa": 30,
-    "spd": 70,
-    "spe": 100
-   },
-   "usage_percent": 0.1,
-   "rank": 253
-  },
-  {
-   "name": "Avalugg",
-   "slug": "avalugg",
-   "national_number": 713,
-   "is_mega": false,
-   "types": [],
-   "base_stats": {
-    "hp": 95,
-    "atk": 117,
-    "def": 184,
-    "spa": 44,
-    "spd": 46,
-    "spe": 28
-   },
-   "usage_percent": 0.1,
-   "rank": 254
-  },
-  {
-   "name": "Beedrill",
-   "slug": "beedrill",
-   "national_number": 15,
-   "is_mega": false,
-   "types": [],
-   "base_stats": {
-    "hp": 65,
-    "atk": 90,
-    "def": 40,
-    "spa": 45,
-    "spd": 80,
-    "spe": 75
-   },
-   "usage_percent": 0.1,
-   "rank": 255
-  },
-  {
-   "name": "Mega Beedrill",
-   "slug": "beedrill-mega",
-   "national_number": 15,
-   "is_mega": true,
-   "types": [],
-   "base_stats": {
-    "hp": 65,
-    "atk": 150,
-    "def": 40,
-    "spa": 15,
-    "spd": 80,
-    "spe": 145
-   },
-   "usage_percent": 0.1,
-   "rank": 256
+   "rank": 249
   },
   {
    "name": "Pangoro",
@@ -4379,24 +4260,24 @@
     "spe": 58
    },
    "usage_percent": 0.1,
-   "rank": 257
+   "rank": 250
   },
   {
-   "name": "Mega Clefable",
-   "slug": "clefable-mega",
-   "national_number": 36,
-   "is_mega": true,
+   "name": "Mudsdale",
+   "slug": "mudsdale",
+   "national_number": 750,
+   "is_mega": false,
    "types": [],
    "base_stats": {
-    "hp": 95,
-    "atk": 80,
-    "def": 93,
-    "spa": 135,
-    "spd": 110,
-    "spe": 70
+    "hp": 100,
+    "atk": 125,
+    "def": 100,
+    "spa": 55,
+    "spd": 85,
+    "spe": 35
    },
    "usage_percent": 0.1,
-   "rank": 258
+   "rank": 251
   },
   {
    "name": "Decidueye",
@@ -4413,7 +4294,24 @@
     "spe": 70
    },
    "usage_percent": 0.1,
-   "rank": 259
+   "rank": 252
+  },
+  {
+   "name": "Wigglytuff",
+   "slug": "wigglytuff",
+   "national_number": 40,
+   "is_mega": false,
+   "types": [],
+   "base_stats": {
+    "hp": 140,
+    "atk": 70,
+    "def": 45,
+    "spa": 85,
+    "spd": 50,
+    "spe": 45
+   },
+   "usage_percent": 0.1,
+   "rank": 253
   },
   {
    "name": "Galarian Slowking",
@@ -4430,7 +4328,7 @@
     "spe": 30
    },
    "usage_percent": 0.1,
-   "rank": 260
+   "rank": 254
   },
   {
    "name": "Trevenant",
@@ -4447,7 +4345,7 @@
     "spe": 56
    },
    "usage_percent": 0.1,
-   "rank": 261
+   "rank": 255
   },
   {
    "name": "Zoroark",
@@ -4464,7 +4362,7 @@
     "spe": 105
    },
    "usage_percent": 0.1,
-   "rank": 262
+   "rank": 256
   },
   {
    "name": "Squawkabilly",
@@ -4481,7 +4379,7 @@
     "spe": 92
    },
    "usage_percent": 0.1,
-   "rank": 263
+   "rank": 257
   },
   {
    "name": "Mega Chesnaught",
@@ -4498,7 +4396,7 @@
     "spe": 44
    },
    "usage_percent": 0.1,
-   "rank": 264
+   "rank": 258
   },
   {
    "name": "Falinks",
@@ -4515,58 +4413,7 @@
     "spe": 75
    },
    "usage_percent": 0.1,
-   "rank": 265
-  },
-  {
-   "name": "Mega Falinks",
-   "slug": "falinks-mega",
-   "national_number": 870,
-   "is_mega": true,
-   "types": [],
-   "base_stats": {
-    "hp": 65,
-    "atk": 135,
-    "def": 135,
-    "spa": 70,
-    "spd": 65,
-    "spe": 100
-   },
-   "usage_percent": 0.1,
-   "rank": 266
-  },
-  {
-   "name": "Aurorus",
-   "slug": "aurorus",
-   "national_number": 699,
-   "is_mega": false,
-   "types": [],
-   "base_stats": {
-    "hp": 123,
-    "atk": 77,
-    "def": 72,
-    "spa": 99,
-    "spd": 92,
-    "spe": 58
-   },
-   "usage_percent": 0.1,
-   "rank": 267
-  },
-  {
-   "name": "Luxray",
-   "slug": "luxray",
-   "national_number": 405,
-   "is_mega": false,
-   "types": [],
-   "base_stats": {
-    "hp": 80,
-    "atk": 120,
-    "def": 79,
-    "spa": 95,
-    "spd": 79,
-    "spe": 70
-   },
-   "usage_percent": 0.1,
-   "rank": 268
+   "rank": 259
   },
   {
    "name": "Houndstone",
@@ -4583,7 +4430,7 @@
     "spe": 68
    },
    "usage_percent": 0.1,
-   "rank": 269
+   "rank": 260
   },
   {
    "name": "Bastiodon",
@@ -4600,7 +4447,7 @@
     "spe": 30
    },
    "usage_percent": 0.1,
-   "rank": 270
+   "rank": 261
   },
   {
    "name": "Salazzle",
@@ -4617,24 +4464,7 @@
     "spe": 117
    },
    "usage_percent": 0.1,
-   "rank": 271
-  },
-  {
-   "name": "Morpeko",
-   "slug": "morpeko",
-   "national_number": 877,
-   "is_mega": false,
-   "types": [],
-   "base_stats": {
-    "hp": 58,
-    "atk": 95,
-    "def": 58,
-    "spa": 70,
-    "spd": 58,
-    "spe": 97
-   },
-   "usage_percent": 0.1,
-   "rank": 272
+   "rank": 262
   },
   {
    "name": "Wyrdeer",
@@ -4651,24 +4481,7 @@
     "spe": 65
    },
    "usage_percent": 0.1,
-   "rank": 273
-  },
-  {
-   "name": "Reuniclus",
-   "slug": "reuniclus",
-   "national_number": 579,
-   "is_mega": false,
-   "types": [],
-   "base_stats": {
-    "hp": 110,
-    "atk": 65,
-    "def": 75,
-    "spa": 125,
-    "spd": 85,
-    "spe": 30
-   },
-   "usage_percent": 0.1,
-   "rank": 274
+   "rank": 263
   },
   {
    "name": "Mega Audino",
@@ -4685,7 +4498,24 @@
     "spe": 50
    },
    "usage_percent": 0.1,
-   "rank": 275
+   "rank": 264
+  },
+  {
+   "name": "Mega Kangaskhan",
+   "slug": "kangaskhan-mega",
+   "national_number": 115,
+   "is_mega": true,
+   "types": [],
+   "base_stats": {
+    "hp": 105,
+    "atk": 125,
+    "def": 100,
+    "spa": 60,
+    "spd": 100,
+    "spe": 100
+   },
+   "usage_percent": 0.1,
+   "rank": 265
   },
   {
    "name": "Arboliva",
@@ -4702,41 +4532,7 @@
     "spe": 39
    },
    "usage_percent": 0.1,
-   "rank": 276
-  },
-  {
-   "name": "Liepard",
-   "slug": "liepard",
-   "national_number": 510,
-   "is_mega": false,
-   "types": [],
-   "base_stats": {
-    "hp": 64,
-    "atk": 88,
-    "def": 50,
-    "spa": 88,
-    "spd": 50,
-    "spe": 106
-   },
-   "usage_percent": 0.1,
-   "rank": 277
-  },
-  {
-   "name": "Rampardos",
-   "slug": "rampardos",
-   "national_number": 409,
-   "is_mega": false,
-   "types": [],
-   "base_stats": {
-    "hp": 97,
-    "atk": 165,
-    "def": 60,
-    "spa": 65,
-    "spd": 50,
-    "spe": 58
-   },
-   "usage_percent": 0.1,
-   "rank": 278
+   "rank": 266
   },
   {
    "name": "Glalie",
@@ -4753,7 +4549,7 @@
     "spe": 80
    },
    "usage_percent": 0.1,
-   "rank": 279
+   "rank": 267
   },
   {
    "name": "Mega Glalie",
@@ -4770,7 +4566,7 @@
     "spe": 100
    },
    "usage_percent": 0.1,
-   "rank": 280
+   "rank": 268
   },
   {
    "name": "Mega Meowstic",
@@ -4787,7 +4583,41 @@
     "spe": 124
    },
    "usage_percent": 0.1,
-   "rank": 281
+   "rank": 269
+  },
+  {
+   "name": "Thievul",
+   "slug": "thievul",
+   "national_number": 828,
+   "is_mega": false,
+   "types": [],
+   "base_stats": {
+    "hp": 70,
+    "atk": 58,
+    "def": 58,
+    "spa": 87,
+    "spd": 92,
+    "spe": 90
+   },
+   "usage_percent": 0.0,
+   "rank": 270
+  },
+  {
+   "name": "Toucannon",
+   "slug": "toucannon",
+   "national_number": 733,
+   "is_mega": false,
+   "types": [],
+   "base_stats": {
+    "hp": 80,
+    "atk": 120,
+    "def": 75,
+    "spa": 75,
+    "spd": 75,
+    "spe": 60
+   },
+   "usage_percent": 0.0,
+   "rank": 271
   },
   {
    "name": "Farfetch’d",
@@ -4804,7 +4634,24 @@
     "spe": 60
    },
    "usage_percent": 0.0,
-   "rank": 282
+   "rank": 272
+  },
+  {
+   "name": "Runerigus",
+   "slug": "runerigus",
+   "national_number": 867,
+   "is_mega": false,
+   "types": [],
+   "base_stats": {
+    "hp": 58,
+    "atk": 95,
+    "def": 145,
+    "spa": 50,
+    "spd": 105,
+    "spe": 30
+   },
+   "usage_percent": 0.0,
+   "rank": 273
   },
   {
    "name": "Squawkabilly (White Plumage)",
@@ -4821,7 +4668,7 @@
     "spe": 92
    },
    "usage_percent": 0.0,
-   "rank": 283
+   "rank": 274
   },
   {
    "name": "Maushold (Family Of Three)",
@@ -4838,7 +4685,24 @@
     "spe": 111
    },
    "usage_percent": 0.0,
-   "rank": 284
+   "rank": 275
+  },
+  {
+   "name": "Mega Sableye",
+   "slug": "sableye-mega",
+   "national_number": 302,
+   "is_mega": true,
+   "types": [],
+   "base_stats": {
+    "hp": 50,
+    "atk": 85,
+    "def": 125,
+    "spa": 85,
+    "spd": 115,
+    "spe": 20
+   },
+   "usage_percent": 0.0,
+   "rank": 276
   },
   {
    "name": "Roserade",
@@ -4855,7 +4719,24 @@
     "spe": 90
    },
    "usage_percent": 0.0,
-   "rank": 285
+   "rank": 277
+  },
+  {
+   "name": "Machamp",
+   "slug": "machamp",
+   "national_number": 68,
+   "is_mega": false,
+   "types": [],
+   "base_stats": {
+    "hp": 90,
+    "atk": 130,
+    "def": 80,
+    "spa": 65,
+    "spd": 85,
+    "spe": 55
+   },
+   "usage_percent": 0.0,
+   "rank": 278
   },
   {
    "name": "Meowstic (Male)",
@@ -4872,7 +4753,24 @@
     "spe": 104
    },
    "usage_percent": 0.0,
-   "rank": 286
+   "rank": 279
+  },
+  {
+   "name": "Mega Gallade",
+   "slug": "gallade-mega",
+   "national_number": 475,
+   "is_mega": true,
+   "types": [],
+   "base_stats": {
+    "hp": 68,
+    "atk": 165,
+    "def": 95,
+    "spa": 65,
+    "spd": 115,
+    "spe": 110
+   },
+   "usage_percent": 0.0,
+   "rank": 280
   },
   {
    "name": "Leafeon",
@@ -4889,7 +4787,7 @@
     "spe": 95
    },
    "usage_percent": 0.0,
-   "rank": 287
+   "rank": 281
   },
   {
    "name": "Squawkabilly (Green Plumage)",
@@ -4906,7 +4804,7 @@
     "spe": 92
    },
    "usage_percent": 0.0,
-   "rank": 288
+   "rank": 282
   },
   {
    "name": "Tauros",
@@ -4923,7 +4821,7 @@
     "spe": 110
    },
    "usage_percent": 0.0,
-   "rank": 289
+   "rank": 283
   },
   {
    "name": "Emboar",
@@ -4940,7 +4838,7 @@
     "spe": 65
    },
    "usage_percent": 0.0,
-   "rank": 290
+   "rank": 284
   },
   {
    "name": "Mega Emboar",
@@ -4957,7 +4855,41 @@
     "spe": 75
    },
    "usage_percent": 0.0,
-   "rank": 291
+   "rank": 285
+  },
+  {
+   "name": "Tauros - Paldea Blaze Breed",
+   "slug": "tauros-paldea-blaze-breed",
+   "national_number": 128,
+   "is_mega": false,
+   "types": [],
+   "base_stats": {
+    "hp": 75,
+    "atk": 110,
+    "def": 105,
+    "spa": 30,
+    "spd": 70,
+    "spe": 100
+   },
+   "usage_percent": 0.0,
+   "rank": 286
+  },
+  {
+   "name": "Avalugg",
+   "slug": "avalugg",
+   "national_number": 713,
+   "is_mega": false,
+   "types": [],
+   "base_stats": {
+    "hp": 95,
+    "atk": 117,
+    "def": 184,
+    "spa": 44,
+    "spd": 46,
+    "spe": 28
+   },
+   "usage_percent": 0.0,
+   "rank": 287
   },
   {
    "name": "Gogoat",
@@ -4974,7 +4906,7 @@
     "spe": 68
    },
    "usage_percent": 0.0,
-   "rank": 292
+   "rank": 288
   },
   {
    "name": "Lycanroc (Midnight)",
@@ -4991,7 +4923,7 @@
     "spe": 82
    },
    "usage_percent": 0.0,
-   "rank": 293
+   "rank": 289
   },
   {
    "name": "Infernape",
@@ -5008,7 +4940,24 @@
     "spe": 108
    },
    "usage_percent": 0.0,
-   "rank": 294
+   "rank": 290
+  },
+  {
+   "name": "Mega Falinks",
+   "slug": "falinks-mega",
+   "national_number": 870,
+   "is_mega": true,
+   "types": [],
+   "base_stats": {
+    "hp": 65,
+    "atk": 135,
+    "def": 135,
+    "spa": 70,
+    "spd": 65,
+    "spe": 100
+   },
+   "usage_percent": 0.0,
+   "rank": 291
   },
   {
    "name": "Slurpuff",
@@ -5025,7 +4974,7 @@
     "spe": 72
    },
    "usage_percent": 0.0,
-   "rank": 295
+   "rank": 292
   },
   {
    "name": "Passimian",
@@ -5042,7 +4991,7 @@
     "spe": 80
    },
    "usage_percent": 0.0,
-   "rank": 296
+   "rank": 293
   },
   {
    "name": "Garbodor",
@@ -5059,7 +5008,7 @@
     "spe": 75
    },
    "usage_percent": 0.0,
-   "rank": 297
+   "rank": 294
   },
   {
    "name": "Hydrapple",
@@ -5076,7 +5025,7 @@
     "spe": 44
    },
    "usage_percent": 0.0,
-   "rank": 298
+   "rank": 295
   },
   {
    "name": "Stunfisk",
@@ -5093,7 +5042,7 @@
     "spe": 32
    },
    "usage_percent": 0.0,
-   "rank": 299
+   "rank": 296
   },
   {
    "name": "Furfrou",
@@ -5110,7 +5059,7 @@
     "spe": 102
    },
    "usage_percent": 0.0,
-   "rank": 300
+   "rank": 297
   },
   {
    "name": "Mabosstiff",
@@ -5127,7 +5076,7 @@
     "spe": 85
    },
    "usage_percent": 0.0,
-   "rank": 301
+   "rank": 298
   },
   {
    "name": "Vaporeon",
@@ -5144,7 +5093,7 @@
     "spe": 65
    },
    "usage_percent": 0.0,
-   "rank": 302
+   "rank": 299
   },
   {
    "name": "Garganacl",
@@ -5161,7 +5110,7 @@
     "spe": 35
    },
    "usage_percent": 0.0,
-   "rank": 303
+   "rank": 300
   },
   {
    "name": "Sharpedo",
@@ -5178,7 +5127,7 @@
     "spe": 95
    },
    "usage_percent": 0.0,
-   "rank": 304
+   "rank": 301
   },
   {
    "name": "Mega Sharpedo",
@@ -5195,7 +5144,24 @@
     "spe": 105
    },
    "usage_percent": 0.0,
-   "rank": 305
+   "rank": 302
+  },
+  {
+   "name": "Morpeko",
+   "slug": "morpeko",
+   "national_number": 877,
+   "is_mega": false,
+   "types": [],
+   "base_stats": {
+    "hp": 58,
+    "atk": 95,
+    "def": 58,
+    "spa": 70,
+    "spd": 58,
+    "spe": 97
+   },
+   "usage_percent": 0.0,
+   "rank": 303
   },
   {
    "name": "Simisear",
@@ -5212,7 +5178,7 @@
     "spe": 101
    },
    "usage_percent": 0.0,
-   "rank": 306
+   "rank": 304
   },
   {
    "name": "Simipour",
@@ -5229,7 +5195,7 @@
     "spe": 101
    },
    "usage_percent": 0.0,
-   "rank": 307
+   "rank": 305
   },
   {
    "name": "Simisage",
@@ -5246,7 +5212,24 @@
     "spe": 101
    },
    "usage_percent": 0.0,
-   "rank": 308
+   "rank": 306
+  },
+  {
+   "name": "Reuniclus",
+   "slug": "reuniclus",
+   "national_number": 579,
+   "is_mega": false,
+   "types": [],
+   "base_stats": {
+    "hp": 110,
+    "atk": 65,
+    "def": 75,
+    "spa": 125,
+    "spd": 85,
+    "spe": 30
+   },
+   "usage_percent": 0.0,
+   "rank": 307
   },
   {
    "name": "Galarian Stunfisk",
@@ -5261,6 +5244,23 @@
     "spa": 66,
     "spd": 84,
     "spe": 32
+   },
+   "usage_percent": 0.0,
+   "rank": 308
+  },
+  {
+   "name": "Liepard",
+   "slug": "liepard",
+   "national_number": 510,
+   "is_mega": false,
+   "types": [],
+   "base_stats": {
+    "hp": 64,
+    "atk": 88,
+    "def": 50,
+    "spa": 88,
+    "spd": 50,
+    "spe": 106
    },
    "usage_percent": 0.0,
    "rank": 309
@@ -5300,6 +5300,23 @@
    "rank": 311
   },
   {
+   "name": "Rampardos",
+   "slug": "rampardos",
+   "national_number": 409,
+   "is_mega": false,
+   "types": [],
+   "base_stats": {
+    "hp": 97,
+    "atk": 165,
+    "def": 60,
+    "spa": 65,
+    "spd": 50,
+    "spe": 58
+   },
+   "usage_percent": 0.0,
+   "rank": 312
+  },
+  {
    "name": "Forretress",
    "slug": "forretress",
    "national_number": 205,
@@ -5314,7 +5331,7 @@
     "spe": 40
    },
    "usage_percent": 0.0,
-   "rank": 312
+   "rank": 313
   },
   {
    "name": "Persian",
@@ -5331,7 +5348,7 @@
     "spe": 115
    },
    "usage_percent": 0.0,
-   "rank": 313
+   "rank": 314
   },
   {
    "name": "Polteageist",
@@ -5348,7 +5365,7 @@
     "spe": 70
    },
    "usage_percent": 0.0,
-   "rank": 314
+   "rank": 315
   },
   {
    "name": "Cofagrigus",
@@ -5365,7 +5382,7 @@
     "spe": 30
    },
    "usage_percent": 0.0,
-   "rank": 315
+   "rank": 316
   },
   {
    "name": "Mega Absol",
@@ -5382,7 +5399,7 @@
     "spe": 115
    },
    "usage_percent": 0.0,
-   "rank": 316
+   "rank": 317
   },
   {
    "name": "Espeon",
@@ -5399,7 +5416,7 @@
     "spe": 110
    },
    "usage_percent": 0.0,
-   "rank": 317
+   "rank": 318
   },
   {
    "name": "Watchog",
@@ -5416,7 +5433,7 @@
     "spe": 77
    },
    "usage_percent": 0.0,
-   "rank": 318
+   "rank": 319
   },
   {
    "name": "Sandaconda",
@@ -5433,7 +5450,7 @@
     "spe": 71
    },
    "usage_percent": 0.0,
-   "rank": 319
+   "rank": 320
   },
   {
    "name": "Beartic",
@@ -5450,7 +5467,7 @@
     "spe": 50
    },
    "usage_percent": 0.0,
-   "rank": 320
+   "rank": 321
   },
   {
    "name": "Hitmontop",
@@ -5467,7 +5484,7 @@
     "spe": 70
    },
    "usage_percent": 0.0,
-   "rank": 321
+   "rank": 322
   },
   {
    "name": "Castform",
@@ -5484,7 +5501,7 @@
     "spe": 70
    },
    "usage_percent": 0.0,
-   "rank": 322
+   "rank": 323
   },
   {
    "name": "Banette",
@@ -5501,7 +5518,7 @@
     "spe": 65
    },
    "usage_percent": 0.0,
-   "rank": 323
+   "rank": 324
   },
   {
    "name": "Mega Banette",
@@ -5518,7 +5535,7 @@
     "spe": 75
    },
    "usage_percent": 0.0,
-   "rank": 324
+   "rank": 325
   },
   {
    "name": "Ariados",
@@ -5535,7 +5552,7 @@
     "spe": 40
    },
    "usage_percent": 0.0,
-   "rank": 325
+   "rank": 326
   },
   {
    "name": "Dedenne",
@@ -5552,7 +5569,7 @@
     "spe": 101
    },
    "usage_percent": 0.0,
-   "rank": 326
+   "rank": 327
   },
   {
    "name": "Qwilfish",
@@ -5569,7 +5586,7 @@
     "spe": 85
    },
    "usage_percent": 0.0,
-   "rank": 327
+   "rank": 328
   },
   {
    "name": "Flapple",
@@ -5586,7 +5603,7 @@
     "spe": 70
    },
    "usage_percent": 0.0,
-   "rank": 328
+   "rank": 329
   },
   {
    "name": "Slowking",
@@ -5603,7 +5620,7 @@
     "spe": 30
    },
    "usage_percent": 0.0,
-   "rank": 329
+   "rank": 330
   },
   {
    "name": "Lycanroc",
@@ -5620,7 +5637,7 @@
     "spe": 112
    },
    "usage_percent": 0.0,
-   "rank": 330
+   "rank": 331
   },
   {
    "name": "Aegislash (Blade)",
@@ -5637,7 +5654,7 @@
     "spe": 60
    },
    "usage_percent": 0.0,
-   "rank": 331
+   "rank": 332
   },
   {
    "name": "Medicham",
@@ -5652,23 +5669,6 @@
     "spa": 60,
     "spd": 75,
     "spe": 80
-   },
-   "usage_percent": 0.0,
-   "rank": 332
-  },
-  {
-   "name": "Thievul",
-   "slug": "thievul",
-   "national_number": 828,
-   "is_mega": false,
-   "types": [],
-   "base_stats": {
-    "hp": 70,
-    "atk": 58,
-    "def": 58,
-    "spa": 87,
-    "spd": 92,
-    "spe": 90
    },
    "usage_percent": 0.0,
    "rank": 333
