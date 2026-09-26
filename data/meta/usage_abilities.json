@@ -1,7 +1,7 @@
 {
  "source": "pokebase.app/pokemon-champions",
  "game": "Pokemon Champions",
- "fetched": "2026-09-25",
+ "fetched": "2026-09-26",
  "count": 188,
  "rows": [
   {
@@ -62,16 +62,16 @@
   },
   {
    "rank": 9,
-   "slug": "rock-head",
-   "name": "Rock Head",
+   "slug": "lightning-rod",
+   "name": "Lightning Rod",
    "usage_percent": 2.7,
    "description": ""
   },
   {
    "rank": 10,
-   "slug": "lightning-rod",
-   "name": "Lightning Rod",
-   "usage_percent": 2.6,
+   "slug": "rock-head",
+   "name": "Rock Head",
+   "usage_percent": 2.7,
    "description": ""
   },
   {
@@ -113,7 +113,7 @@
    "rank": 16,
    "slug": "flower-veil",
    "name": "Flower Veil",
-   "usage_percent": 2.2,
+   "usage_percent": 2.1,
    "description": ""
   },
   {
@@ -169,7 +169,7 @@
    "rank": 24,
    "slug": "sand-rush",
    "name": "Sand Rush",
-   "usage_percent": 1.0,
+   "usage_percent": 1.1,
    "description": ""
   },
   {

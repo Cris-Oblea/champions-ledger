@@ -1,6 +1,6 @@
 {
- "count": 334,
- "fetched": "2026-09-25",
+ "count": 337,
+ "fetched": "2026-09-26",
  "note": "What each Pokemon's own players run. TWO datasets, kept apart because their percentages are not the same measure: `tournament` is teamlists for one regulation and exists for every Pokemon; `season` is the ladder and only exists for a Pokemon ranked that season. Read from the Next.js payload, which carries every page of every section - the rendered HTML only ever holds page 1.",
  "pokemon": {
   "Abomasnow": {
@@ -7515,6 +7515,87 @@
      {
       "name": "Armarouge",
       "percent": 17.3
+     }
+    ]
+   }
+  },
+  "Appletun": {
+   "season": {
+    "abilities": [],
+    "dates": "Aug 5 – Sep 9, 2026",
+    "items": [],
+    "moves": [],
+    "name": "Season M-5",
+    "natures": [],
+    "of": 235,
+    "rank": 207,
+    "spreads": [],
+    "teammates": []
+   },
+   "tournament": {
+    "abilities": [
+     {
+      "name": "Thick Fat",
+      "percent": 100.0
+     }
+    ],
+    "items": [
+     {
+      "name": "Quick Claw",
+      "percent": 100
+     }
+    ],
+    "moves": [
+     {
+      "name": "Apple Acid",
+      "percent": 25
+     },
+     {
+      "name": "Dragon Pulse",
+      "percent": 25
+     },
+     {
+      "name": "Iron Defense",
+      "percent": 25
+     },
+     {
+      "name": "Recover",
+      "percent": 25
+     }
+    ],
+    "natures": [
+     {
+      "effect": "+Def / -Atk",
+      "name": "Bold",
+      "percent": 100
+     }
+    ],
+    "regulation": "M-C",
+    "spreads": [],
+    "teammates": [
+     {
+      "name": "Golisopod",
+      "percent": 100
+     },
+     {
+      "name": "Mega Golisopod",
+      "percent": 100
+     },
+     {
+      "name": "Indeedee (Female)",
+      "percent": 100
+     },
+     {
+      "name": "Pelipper",
+      "percent": 100
+     },
+     {
+      "name": "Orthworm",
+      "percent": 100
+     },
+     {
+      "name": "Overqwil",
+      "percent": 100
      }
     ]
    }
@@ -28859,6 +28940,100 @@
      {
       "name": "Floette (Eternal)",
       "percent": 15
+     }
+    ]
+   }
+  },
+  "Diggersby": {
+   "season": {
+    "abilities": [],
+    "dates": "Aug 5 – Sep 9, 2026",
+    "items": [],
+    "moves": [],
+    "name": "Season M-5",
+    "natures": [],
+    "of": 235,
+    "rank": 198,
+    "spreads": [],
+    "teammates": []
+   },
+   "tournament": {
+    "abilities": [
+     {
+      "name": "Huge Power",
+      "percent": 100.0
+     }
+    ],
+    "items": [
+     {
+      "name": "Life Orb",
+      "percent": 100
+     }
+    ],
+    "moves": [
+     {
+      "name": "Body Slam",
+      "percent": 25
+     },
+     {
+      "name": "Earthquake",
+      "percent": 25
+     },
+     {
+      "name": "Protect",
+      "percent": 25
+     },
+     {
+      "name": "Quick Attack",
+      "percent": 25
+     }
+    ],
+    "natures": [
+     {
+      "effect": "+Atk / -Spe",
+      "name": "Brave",
+      "percent": 100
+     }
+    ],
+    "regulation": "M-C",
+    "spreads": [
+     {
+      "percent": 100,
+      "sp": {
+       "atk": 32,
+       "hp": 2,
+       "spe": 32
+      }
+     }
+    ],
+    "teammates": [
+     {
+      "name": "Oranguru",
+      "percent": 100
+     },
+     {
+      "name": "Hisuian Decidueye",
+      "percent": 100
+     },
+     {
+      "name": "Aggron",
+      "percent": 100
+     },
+     {
+      "name": "Mega Aggron",
+      "percent": 100
+     },
+     {
+      "name": "Ampharos",
+      "percent": 100
+     },
+     {
+      "name": "Mega Ampharos",
+      "percent": 100
+     },
+     {
+      "name": "Musharna",
+      "percent": 100
      }
     ]
    }
@@ -141268,6 +141443,92 @@
      {
       "name": "Gardevoir",
       "percent": 21.6
+     }
+    ]
+   }
+  },
+  "Victreebel": {
+   "season": {
+    "abilities": [],
+    "dates": "Aug 5 – Sep 9, 2026",
+    "items": [],
+    "moves": [],
+    "name": "Season M-5",
+    "natures": [],
+    "of": 235,
+    "rank": 182,
+    "spreads": [],
+    "teammates": []
+   },
+   "tournament": {
+    "abilities": [
+     {
+      "name": "Chlorophyll",
+      "percent": 100.0
+     }
+    ],
+    "items": [
+     {
+      "name": "Life Orb",
+      "percent": 100
+     }
+    ],
+    "moves": [
+     {
+      "name": "Sludge Bomb",
+      "percent": 25
+     },
+     {
+      "name": "Strength Sap",
+      "percent": 25
+     },
+     {
+      "name": "Sucker Punch",
+      "percent": 25
+     },
+     {
+      "name": "Weather Ball",
+      "percent": 25
+     }
+    ],
+    "natures": [
+     {
+      "effect": "+SpA / -SpD",
+      "name": "Rash",
+      "percent": 100
+     }
+    ],
+    "regulation": "M-C",
+    "spreads": [
+     {
+      "percent": 100,
+      "sp": {
+       "atk": 32,
+       "hp": 2,
+       "spe": 32
+      }
+     }
+    ],
+    "teammates": [
+     {
+      "name": "Pelipper",
+      "percent": 100
+     },
+     {
+      "name": "Archaludon",
+      "percent": 100
+     },
+     {
+      "name": "Basculegion",
+      "percent": 100
+     },
+     {
+      "name": "Pikachu",
+      "percent": 100
+     },
+     {
+      "name": "Ninetales",
+      "percent": 100
      }
     ]
    }
