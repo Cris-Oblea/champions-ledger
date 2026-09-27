@@ -131,7 +131,14 @@ setTimeout(() => {
       click(d.getElementById("findAddAbility"));
       setTimeout(() => {
         const cls = w.CHAMP.AB_CLASS, lbl = w.CHAMP.AB_CLASS_LABEL;
-        ok("las 215 estan clasificadas", Object.keys(cls).length, 215);
+        /* against the abilities the page carries, not a typed 215: Battle
+           Bond made it 216 (2026-09-27) and the literal failed the gate for
+           an ability that WAS classified */
+        const all = Object.keys(w.CHAMP.ABIL);
+        ok("todas estan clasificadas", all.filter(a => !cls[a]).join(", ") ||
+           "todas", "todas");
+        ok("y no clasifica ninguna que no exista",
+           Object.keys(cls).length, all.length);
         const offChip = [...d.querySelectorAll(".sheet .tog")]
           .find(b => b.textContent.indexOf(lbl["moves-off"]) === 0);
         const defChip = [...d.querySelectorAll(".sheet .tog")]
