@@ -287,10 +287,6 @@ def main():
         if _t:
             src["worlds " + _div] = [s.get("pokemon") for p in _t.get("players", [])
                                      for s in p.get("team", [])]
-    for fmt in ("championstournaments", "battledataregmbs3"):
-        pk = meta("pikalytics_" + fmt)
-        if pk:
-            src["pikalytics " + fmt] = [r["name"] for r in pk.get("pokemon", [])]
     for label, names in src.items():
         for n in names:
             if not n:

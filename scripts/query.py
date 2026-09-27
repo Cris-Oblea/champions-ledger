@@ -163,7 +163,8 @@ _BASE_MARKERS = {"male", "m", "standard", "midday", "kanto", "kantonian",
 
 
 # Irreducible spelling differences, keyed by the already-normalised form.
-# Floette: Pikalytics writes the Mega of the Eternal Flower form as
+# Floette: a usage source (Pikalytics, since dropped) wrote the Mega of the
+# Eternal Flower form as
 # "Floette-Eternal-Mega", while Serebii calls it simply "Mega Floette"
 # (the Floettite only works on that form, so the two mean the same thing).
 # Toxtricity (M-C): Serebii suffixes the Low Key form "-L", every other source
@@ -825,36 +826,6 @@ def cmd_brief(a):
 
     # --- what THIS Pokemon's own players run ---
     print_splits(name)
-
-    # --- Pikalytics: spreads, win rate, cores ---
-    for fmt in ("championstournaments", "battledataregmbs3"):
-        pk = meta("pikalytics_" + fmt)
-        if not pk:
-            continue
-        row = next((r for r in pk.get("pokemon", []) if norm(r["name"]) == norm(name)),
-                   None)
-        if not row:
-            continue
-        print("\nPikalytics [%s, data %s]" % (fmt, pk.get("data_date")))
-        if row.get("win_rate"):
-            print("  Win rate: %s  (record %s)" % (row["win_rate"], row.get("record")))
-        sp = row.get("top_spread") or {}
-        if sp.get("stat_points"):
-            print("  Top SP spread: %s %s (%s%% of builds)"
-                  % (sp["stat_points"], sp.get("nature") or "",
-                     sp.get("share_percent")))
-        if row.get("moves"):
-            print("  Moves:  %s" % ", ".join(
-                "%s %s%%" % (m["name"], m["percent"]) for m in row["moves"][:8]))
-        if row.get("items"):
-            print("  Items:  %s" % ", ".join(
-                "%s %s%%" % (m["name"], m["percent"]) for m in row["items"][:6]))
-        cores = [c for c in pk.get("cores_2", []) if
-                 any(norm(x) == norm(name) for x in c["core"])]
-        for c in cores[:4]:
-            print("  Core:   %s  (%s teams, %s)"
-                  % (" + ".join(c["core"]), c["teams"], c["usage"]))
-        break
 
     # --- speed context ---
     tiers = (meta("speed_tiers") or {}).get("rows", [])

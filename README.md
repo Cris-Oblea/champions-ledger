@@ -534,7 +534,7 @@ Every command takes `-h`.
 | **Serebii** | Rules and mechanics. What exists, what it does, exact Champions numbers | Anything about what people play |
 | **pokedata.ovh** | Official tournament teamlists — what actually wins, all three age divisions | Current usage: a finished event keeps the format it was played in |
 | **pokebase.app** | Live ladder usage, and the per-Pokemon splits: every move, item, ability, nature, SP spread and teammate the people running that Pokemon actually brought | Rules text |
-| **Pikalytics** | Win rates, top SP spreads, and 2-/3-Pokemon cores | What is popular — its data lags |
+| **PokeAPI** | Main-series data for the species Champions does not have, so a HOME row still gets a card; and main-series PP as a vote on a PP dispute | Any Champions number: it is the main series |
 | **Smogon's calculator** | Damage arithmetic and ability behaviour. The only *executable* source | Per-Pokemon data: it inherits from Scarlet/Violet and the leaks show |
 
 Ladder usage and tournament usage disagree, and that is signal rather than
@@ -706,7 +706,7 @@ but do not expect it to run for you out of the box.
 **Licence.** The CODE is MIT — see [LICENSE](LICENSE), and [NOTICE](NOTICE)
 for what it does not reach. The contents of `data/`
 are not covered and cannot be: they are derived from public community sources
-(Serebii, pokebase.app, Pikalytics, Smogon, pokedata.ovh) and describe a game
+(Serebii, pokebase.app, Smogon, pokedata.ovh, PokeAPI) and describe a game
 owned by someone else. They are here to make one player's own box searchable,
 not to be redistributed as a dataset.
 

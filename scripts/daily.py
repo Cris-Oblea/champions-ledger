@@ -51,7 +51,6 @@ WATCH = [
     ("items",   "data/db/items.json",                "item table"),
     ("gtsdiff", "data/meta/gts_difficulty.json",     "GTS difficulty"),
     ("analyses", "data/meta/smogon_analyses.json",   "Smogon written analyses"),
-    ("pika",    "data/meta/pikalytics_battledataregmbs3.json", "Pikalytics"),
     ("worlds",  "data/meta/tournament_0000191_masters.json", "Worlds Masters"),
     ("archive", "data/meta/worlds_archive.json",      "the Worlds archive"),
     ("abil",    "data/db/abilities.json",             "ability text"),
@@ -447,7 +446,8 @@ def main():
     #   daily - pokebase's ladder, and Smogon's calculator (which re-downloads
     #           all 23 files every run and compares hashes, so the engine and
     #           its move table are genuinely current).
-    #   deep  - Smogon's 324 written analyses and Pikalytics. Both serve from
+    #   deep  - Smogon's 324 written analyses and pokebase's per-Pokemon
+    #           splits. Both serve from
     #           cache for ever otherwise, so without this they freeze. Neither
     #           changes daily, and 324 requests a night for nothing is rude.
     #           Mondays, or --deep.
@@ -522,7 +522,7 @@ def main():
     else:
         deep = a.deep or datetime.date.today().weekday() == 0
         argv = [PY, "scripts/refresh.py"] + (["--deep"] if deep else [])
-        out.append("mode: " + ("deep (Smogon analyses + Pikalytics forced)"
+        out.append("mode: " + ("deep (Smogon analyses + pokebase splits forced)"
                                if deep else "daily (ladder + engine)"))
         rc, refresh_out = sh(argv)
         tail = [l for l in refresh_out.splitlines() if l.strip()][-4:]

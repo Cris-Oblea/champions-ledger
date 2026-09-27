@@ -12,7 +12,7 @@ Five sources are scraped into local JSON, then joined by one query tool.
   Serebii ─────────┐
   pokebase.app ────┤
   pokedata.ovh ────┼──► data/raw/  (cached HTML+JSON, 164 MB, 2300 files)
-  Pikalytics ──────┤          │
+  PokeAPI ─────────┤          │
   Smogon ──────────┤          ▼
   Smogon calc ─────┘   (the executable one: engine + 406 sets)
                        build_db.py / fetch_*.py
@@ -23,6 +23,12 @@ Five sources are scraped into local JSON, then joined by one query tool.
                               ▼
                         scripts/query.py  ◄── inventory/*.json (what YOU own)
 ```
+
+**Pikalytics was dropped on 2026-09-27.** It had moved to M-C under a new
+format code the fetcher never asked for, but its numbers do not say what they
+measure - move shares summing to ~180, Trace and Magic Bounce listed as
+Incineroar abilities - and a source that cannot say what a number means is not
+one to reason from. pokebase's per-Pokemon splits already cover what it was for.
 
 Nothing is answered from general Pokemon knowledge. Champions rebalances moves,
 so console-game numbers are wrong here; every figure comes from a

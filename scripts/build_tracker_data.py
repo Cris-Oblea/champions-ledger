@@ -437,7 +437,7 @@ def main():
     # did not, because LEARN_ALIAS was built over dex rows alone and these are
     # by definition not dex rows. "Floette" is the live case: Champions has
     # only the Eternal Flower form, so the dex row is "Floette-Eternal" while
-    # pokebase, Pikalytics and every teamlist write the bare name.
+    # pokebase and every teamlist write the bare name.
     for n in wt:
         if n in LEARN or n in LEARN_ALIAS:
             continue
