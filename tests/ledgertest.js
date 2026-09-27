@@ -38,7 +38,7 @@ const TABS = ["box", "home", "builds", "calc", "find", "gear", "trainer"];
      to "what can leave the game" - so the count is across all three */
   const boxRows = ["listHomeOrigin", "listChampOrigin", "listRent"]
     .reduce((n, id) => n + (d.getElementById(id) || { children: [] }).children.length, 0);
-  ok("las tres listas del box tienen filas", boxRows, 5);
+  ok("las tres listas del box tienen filas", boxRows, 10);
   ok("y HOME tambien", d.getElementById("listHome").children.length > 0, true);
   ok("sin errores al cargar", errors.length ? errors[0] : "ninguno", "ninguno");
 
@@ -74,9 +74,12 @@ const TABS = ["box", "home", "builds", "calc", "find", "gear", "trainer"];
   const dupe = d.getElementById("dupeBlock");
   ok("el informe de duplicados se dibujo", !!dupe && !dupe.hidden, true);
   const dnote = d.getElementById("dupeNote");
-  ok("con las tres notas de origen (HOME, rental, Champions)",
-     dnote ? dnote.children.length : 0, 3);
-  ok("y nombra el build que moriria con el Pokemon",
+  /* two, not three: a HOME-origin copy is never offered for release */
+  ok("con las dos notas (rental, Champions origin)",
+     dnote ? dnote.children.length : 0, 2);
+  ok("y el Garchomp de origen HOME no aparece",
+     /Garchomp/.test(d.getElementById("listDupeHome").textContent), false);
+  ok("y nombra el build que se conserva como idea",
      /Kingambit/.test(dnote ? dnote.innerHTML : ""), true);
 
   /* stones and items are rows now (migration 6), and the Items tab is where
@@ -260,7 +263,8 @@ const TABS = ["box", "home", "builds", "calc", "find", "gear", "trainer"];
     .find(b => /In your boxes/.test(b.textContent));
   mine.dispatchEvent(new w.MouseEvent("click", {bubbles:true}));
   ok("y el filtro de la caja deja solo lo que tiene",
-     names().sort().join(","), "Charizard,Farigiraf,Garchomp,Kingambit,Sneasler,Whimsicott");
+     names().sort().join(","), "Charizard,Farigiraf,Garchomp,Gholdengo,Incineroar,Kingambit," +
+     "Maushold,Rillaboom,Sinistcha,Sneasler,Whimsicott");
   mine.dispatchEvent(new w.MouseEvent("click", {bubbles:true}));
 
   type("sneasler");
