@@ -44,7 +44,7 @@ through the doc's `extra` bag.
 ## The two commands
 
 ```bash
-# the sources moved (Serebii / pokebase / Smogon / pokedata / Pikalytics)
+# the sources moved (Serebii / pokebase / Smogon / pokedata)
 python scripts/refresh.py                 # normal
 python scripts/refresh.py --regulation    # a new regulation dropped
 python scripts/refresh.py --tracker-only  # just rebuild the page

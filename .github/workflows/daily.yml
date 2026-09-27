@@ -12,8 +12,8 @@
 #  * The correctness gate lives in daily.py, not here. If the damage selftest
 #    or the name-matching test fails, it refuses to deploy and the job fails
 #    loudly. A stale app beats a wrong one.
-#  * Mondays run --deep, which forces Smogon's written analyses, Pikalytics
-#    and pokebase's per-Pokemon splits. All three skip anything already
+#  * Mondays run --deep, which forces Smogon's written analyses and
+#    pokebase's per-Pokemon splits. Both skip anything already
 #    cached, so without it they would freeze for good.
 #
 #    THIS WAS A COMMENT AND NOT A BEHAVIOUR until 2026-09-15. The flag was
@@ -58,7 +58,7 @@ on:
   workflow_dispatch:
     inputs:
       deep:
-        description: "Force Smogon analyses, Pikalytics and the splits too"
+        description: "Force Smogon analyses and the pokebase splits too"
         type: boolean
         default: false
 
@@ -221,7 +221,7 @@ jobs:
             echo "DEEP: asked for by hand"
           elif [ "$(date -u +%u)" = "1" ]; then
             echo "deep=--deep" >> "$GITHUB_OUTPUT"
-            echo "DEEP: it is Monday - Smogon, Pikalytics and the pokebase splits"
+            echo "DEEP: it is Monday - Smogon and the pokebase splits"
           else
             echo "deep=" >> "$GITHUB_OUTPUT"
             echo "normal refresh: the nightly sources only"

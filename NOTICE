@@ -7,7 +7,7 @@ The licence above applies to the CODE in this repository - the scripts, the
 app, the tests - which is the part its author wrote and can license.
 
 It does NOT apply to the contents of `data/`, and it cannot. Those files are
-derived from public community sources (Serebii, pokebase.app, Pikalytics,
+derived from public community sources (Serebii, pokebase.app,
 Smogon and pokedata.ovh) and describe a game owned by someone else. They are
 here so one player's own box is searchable, not to be redistributed as a
 dataset.

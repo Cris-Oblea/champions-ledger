@@ -2,7 +2,7 @@
 
 Each source names forms its own way: Serebii suffixes ("Ninetales-Alola"),
 pokebase prefixes or parenthesises ("Alolan Ninetales", "Lycanroc (Dusk)"),
-pokedata brackets ("Basculegion [Male]"), Pikalytics hyphenates
+pokedata brackets ("Basculegion [Male]"), Pikalytics (dropped 2026-09-27) hyphenated
 ("Charizard-Mega-Y"). query.norm() has to collapse all of them.
 
 Half the cases below are for species that are NOT in Champions yet. Regulations

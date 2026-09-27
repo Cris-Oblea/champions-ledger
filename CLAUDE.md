@@ -345,7 +345,7 @@ selftest after touching it; if those stop passing the formula is wrong.
 Source: pokebase.app publishes a damage calculator at
 `pokebase.app/pokemon-champions/damage-calc` that bundles `@smogon/calc` driven
 with Champions data. The formula was read out of that bundle, cached under
-`data/raw/pokebase_calc/`. Pikalytics has one too.
+`data/raw/pokebase_calc/`.
 
 **Champions is doubles, so a move with more than one target takes the x0.75
 spread modifier.** Forgetting it overstates every spread move by a third.
@@ -357,7 +357,7 @@ through x1 but leaves Kingambit at 60% of its HP through x0.5.
 **Smogon publishes its own Champions engine, and it is vendored here.** Champions
 is generation 0 in `@smogon/calc`, with its own mechanics file, roster, move
 table and 406 sets. It confirms our stat and damage formulas character for
-character, and it is the sixth source. Full write-up in
+character, and it is the fifth source. Full write-up in
 `analysis/smogon_calc.md`; bundle in `data/raw/smogon_calc/`.
 
 ```bash
@@ -493,7 +493,7 @@ moves → which of them are actually used → do I own any". `--learners` and th
 Metagame figures cited below (usage percentages, Worlds team counts, how many
 Pokemon Smogon covers) are a **snapshot taken 2026-08-29, Regulation M-B /
 Season M-5, Worlds 2026 complete through the Final in all three divisions**.
-**The ladder is on M-C now, and the three usage sources are NOT in the same
+**The ladder is on M-C now, and the usage sources are NOT in the same
 format as each other (player, 2026-09-12 — he corrected the opposite claim,
 which had been written on the day M-C opened and was true only then):**
 
@@ -507,8 +507,14 @@ which had been written on the day M-C opened and was true only then):**
 - **The Worlds teamlists are M-B, and that is correct, not stale.** They were
   played under M-B. Say which format a tournament number came from; never
   "update" it.
-- **Pikalytics still lags** — stamped `2026-05`, ladder code still season 3.
-  Use it for spreads, win rates and cores, not for what is popular.
+- **Pikalytics is NOT a source any more (player, 2026-09-27).** It did move to
+  M-C, under a new format code the fetcher never asked for, but its numbers do
+  not say what they measure: its move percentages sum to ~180 per Pokemon
+  (neither 400 per set nor 100 per slot - they read like "used in a battle"),
+  and its abilities list Trace, Magic Bounce and Psychic Surge on Incineroar
+  with no explanation. "Si no es claro con su data entonces no es confiable."
+  `fetch_pikalytics.py` and its two data files are deleted. Do not bring it
+  back as a source of numbers.
 Unless a figure says otherwise it is the Masters field, which is the division
 the player enters. They are here to explain *why* a rule of thumb
 exists, not to be quoted back as current. Always re-read `data/meta/` for a live
@@ -527,12 +533,9 @@ number. Anything that must stay exact lives in a JSON file, never in prose here.
    Whimsicott and Garchomp run the other way). `--division all` puts the three
    side by side.
 3. **pokebase.app** — live ladder usage and per-Pokemon splits. What is common now.
-4. **Pikalytics** — win rates, top SP spreads, 2-/3-Pokemon cores. Stamped
-   `2026-05` and its ladder code still says season 3, so its usage numbers lag
-   pokebase. Use it for spreads, win rates and cores, not for "what is popular".
-5. **Smogon** — the only source with written reasoning. Covers 53 of 308 forms
+4. **Smogon** — the only source with written reasoning. Covers 53 of 308 forms
    (25 in M-B, 28 more only in M-A).
-6. **Smogon's Champions calculator** — the only *executable* source. Ground truth
+5. **Smogon's Champions calculator** — the only *executable* source. Ground truth
    for damage arithmetic, ability behaviour and conditional base powers, and it
    ships 406 more sets. It is **not** ground truth for rules text or per-Pokemon
    data: it inherits from Scarlet/Violet and the leaks show. Serebii still wins
@@ -722,7 +725,7 @@ What the file cannot record:
   "Floette" from any usage source therefore means that form, and `_ALIASES`
   maps it there. The phantom second row this used to create had no movepool.
 - **A usage row whose item is not the Mega Stone is the BASE form, and says
-  nothing about the Mega.** Pikalytics files Megas as their own entries
+  nothing about the Mega.** Pikalytics (dropped 2026-09-27) filed Megas as their own entries
   (`Aerodactyl Mega`, `Staraptor Mega`, `Mawile Mega`...), so a plain
   `Heracross` row holding a Quick Claw with Moxie is a Heracross that never Mega
   Evolved - quoting its moves or win rate as evidence about Mega Heracross is
@@ -867,7 +870,6 @@ request.
 ```bash
 python scripts/fetch_serebii.py all && python scripts/build_db.py
 python scripts/fetch_pokebase.py
-python scripts/fetch_pikalytics.py
 python scripts/fetch_smogon.py
 python scripts/fetch_tournament.py                    # Masters, newest round
 python scripts/fetch_tournament.py --division seniors
@@ -997,7 +999,7 @@ refuses to build if it finds one. The publishable key in the page is fine and
 is meant to be there.
 
 **The app is regenerated from `data/db/`, so a source refresh must reach it.**
-`python scripts/refresh.py` walks Serebii → build_db → pokebase → Pikalytics →
+`python scripts/refresh.py` walks Serebii → build_db → pokebase →
 Smogon → the calculator → pokedata → the audits → `tracker/data.js` →
 `tracker/index.html`, and `--regulation` clears the Serebii page cache first
 (the trap documented above). After it runs, republish `tracker/index.html` to

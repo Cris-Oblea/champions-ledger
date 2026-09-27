@@ -7,7 +7,7 @@
     python scripts/refresh.py --skip smogon_calc tournament
 
 Order matters.  Serebii is fetched and the database rebuilt BEFORE the usage
-sources, because pokebase and Pikalytics are joined onto the dex by name and a
+sources, because pokebase and pokedata are joined onto the dex by name and a
 species the dex has never heard of drops out of the join silently.  The run
 finishes with audit_forms, test_norm and the damage selftest, then regenerates
 tracker/data.js so the phone sees the same numbers as the CLI.
@@ -38,9 +38,9 @@ def stages(reg, deep=False):
       every run  - pokebase's ladder (changes daily) and Smogon's calculator
                    (re-downloads all 23 files and compares hashes, so it
                    notices the day upstream ships).
-      --deep     - Smogon's written analyses and Pikalytics. Both skip cached
-                   files, so without this they are frozen for good. Neither
-                   changes daily and Smogon is 324 files, so hammering it every
+      --deep     - Smogon's written analyses and pokebase's per-Pokemon
+                   splits. Both skip cached files, so without this they are
+                   frozen for good. Neither changes daily and Smogon is 324 files, so hammering it every
                    night would be rude and slow for nothing.
       --regulation - the destructive one: clears the Serebii page caches,
                    which is the only way new species get movepools.
@@ -70,13 +70,10 @@ def stages(reg, deep=False):
     # its pages are rules, they change on a regulation, so its cache stays.
     pokebase = ["scripts/fetch_pokebase.py", "--force"]
     smogon = ["scripts/fetch_smogon.py"] + (["--force"] if (reg or deep) else [])
-    pika = ["scripts/fetch_pikalytics.py"] + (["--force"] if (reg or deep) else [])
     return [
         Stage("serebii", "Serebii - rules, dex, attackdex", serebii),
         Stage("build_db", "build the local database", ["scripts/build_db.py"]),
         Stage("pokebase", "pokebase - ladder usage", pokebase, False),
-        Stage("pikalytics", "Pikalytics - spreads, win rates, cores",
-              pika, False),
         # WHAT EACH POKEMON'S OWN PLAYERS RUN, from the live ladder: the moves,
         # item, ability, nature and SP spread of the people using it, with
         # percentages. Weekly, not nightly - 321 pages at 1.3 MB each is six
@@ -217,7 +214,7 @@ def main():
     ap.add_argument("--tracker-only", action="store_true",
                     help="skip the network, only rebuild tracker/data.js")
     ap.add_argument("--deep", action="store_true",
-                    help="also re-download Smogon's analyses and Pikalytics, "
+                    help="also re-download Smogon's analyses and the pokebase splits, "
                          "which otherwise serve from cache for ever")
     ap.add_argument("--skip", nargs="*", default=[], metavar="STAGE")
     ap.add_argument("--no-regulation-check", action="store_true",
