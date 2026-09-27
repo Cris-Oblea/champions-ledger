@@ -428,11 +428,21 @@ place each form gets a row of its own — and Serebii's attackdex row for
 Lycanroc-Midnight lists Keen Eye and Vital Spirit and stops, while its **Pokedex
 page** lists all three and links `/abilitydex/noguard.shtml`. **No Guard was
 missing from the database entirely**, found in game by the player. `build_db.py`
-completes a short form row from the page now — it only ever adds — and
-`scripts/audit_abilities.py` crosses all 264 forms against PokeAPI at the pin so
-the next one speaks up instead of sitting there. One known difference is
-recorded with its reason rather than silenced: Serebii writes *Compoundeyes* as
-one word and our whole database does too.
+completes a short form row from the page now — it only ever adds.
+
+**Then Greninja lost Battle Bond, and that audit passed it.** Serebii links it
+as `/abilitydex/.shtml`, an empty slug, and every ability pattern demanded one,
+so the name was skipped without a word; PokeAPI files Battle Bond on a Pokemon
+of its own, so upstream agreed Greninja had two. An ability is read by its
+**name** now, never by its link, and `scripts/audit_abilities.py` asks three
+questions instead of one: what PokeAPI lists for each form, what its
+same-typed, same-statted variants carry (`greninja-battle-bond`), and whether
+every name in bold on a Serebii page landed on a row of that species. Where
+Serebii qualifies an ability rather than naming a form — *"Battle Bond
+(Alternate Greninja Only)"* — the qualifier is kept beside it as
+`ability_notes`. One known difference is recorded with its reason rather than
+silenced: Serebii writes *Compoundeyes* as one word and our whole database does
+too.
 
 **A HOME Pokemon Champions has never heard of is still a card.** HOME holds
 species the game does not have, and those rows used to be a name and a "not in
@@ -490,7 +500,7 @@ so a stack trace still names the file a person edits. **Edit a part, never
 |---|---|---|
 | `data/db/pokemon.json` | 345 | Every playable form: types, base stats, abilities, and the 81 Megas |
 | `data/db/moves.json` | 901 (512 useable) | Champions move data, 15 flags, and who learns it |
-| `data/db/abilities.json` | 215 | Champions ability text and every carrier |
+| `data/db/abilities.json` | 216 | Champions ability text and every carrier |
 | `data/db/items.json` | 199 | Items and Mega Stones with their VP price |
 | `data/db/learnsets.json` | 264 | Reverse index: Pokemon to movepool |
 | `data/db/ability_moves.json` | 140 | Which ability changes which move, derived from the move text |

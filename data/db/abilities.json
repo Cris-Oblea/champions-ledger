@@ -96,6 +96,14 @@
   "count": 2
  },
  {
+  "name": "Battle Bond",
+  "effect": "",
+  "pokemon": [
+   "Greninja"
+  ],
+  "count": 1
+ },
+ {
   "name": "Berserk",
   "effect": "Boosts the Pokémon's Sp. Atk stat when it takes a hit that causes its HP to become half or less.",
   "pokemon": [

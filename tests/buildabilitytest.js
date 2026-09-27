@@ -20,7 +20,16 @@
      Clawitzer   one ability, ability null   -> resolved, badged and saved
      Aegislash   one ability, unbound build  -> resolved on the card
      Garchomp    two abilities, ability null -> stays unset, and says so
-     Camerupt    a stone, mega_ability null  -> the Mega's own ability */
+     Camerupt    a stone, mega_ability null  -> the Mega's own ability
+
+   And the LIST ITSELF, which is what the choice is made from (player,
+   2026-09-27: "greninja tiene 3 habilidades y no 2... algunas habilidades se
+   estan perdiendo"). Serebii links Battle Bond as /abilitydex/.shtml and every
+   pattern demanded a slug, so the picker offered two:
+     Greninja    an idea build              -> Torrent, Protean, Battle Bond
+     Lycanroc-Midnight                      -> still has No Guard (2026-09-19)
+     Greninja-Bond / Rockruff-Dusk in HOME  -> their own ability, not the
+                                               base species' three */
 const { JSDOM, VirtualConsole } = require("jsdom");
 const ROOT = require("path").join(__dirname, "..") + "/";
 const UID = "u1";
@@ -54,6 +63,8 @@ const BUILDS = [
   build("garchomp", "Garchomp", {moves:["Earthquake", null, null, null]}),
   build("camerupt", "Camerupt",
         {mega:"Mega Camerupt", moves:["Eruption", null, null, null]}),
+  build("greninja", "Greninja",
+        {box_id:null, moves:["Dark Pulse", null, null, null]}),
 ];
 
 const body = require("./harness.js").page(ROOT);
@@ -147,10 +158,40 @@ setTimeout(() => {
           const w2 = w.__WROTE.filter(x => x.table === "builds").pop();
           ok("y guarda null, no la primera de la lista", w2.row.ability, "null");
 
-          console.log("\n  sin errores de JS");
-          ok("jsdom no reporta errores", errs.join(" | ") || "ninguno", "ninguno");
-          console.log(bad ? "\n  " + bad + " FALLOS\n" : "\n  todo bien\n");
-          process.exit(bad ? 1 : 0);
+          /* the list the choice is made from - his sentence is the case */
+          const possible = n => {
+            w.findDetail(w.byName[n]);
+            const l = [...d.querySelectorAll("#sheetBody .lbl")]
+              .find(x => x.textContent === "Possible ability");
+            const v = l ? l.previousElementSibling.textContent : "";
+            w.closeSheet();
+            return v;
+          };
+          console.log("\n  ninguna habilidad se pierde por el camino");
+          ok("Greninja: tres en su ficha", possible("Greninja"),
+             "Torrent / Protean / Battle Bond");
+          ok("Lycanroc-Midnight sigue con No Guard",
+             /No Guard/.test(possible("Lycanroc-Midnight")), true);
+          ok("Greninja-Bond de HOME: la suya, no las del base",
+             (w.anyRow("Greninja-Bond").ab || []).join(" / "), "Battle Bond");
+          ok("Rockruff-Dusk de HOME: Own Tempo",
+             (w.anyRow("Rockruff-Dusk").ab || []).join(" / "), "Own Tempo");
+
+          w.go("builds");
+          click(cardFor("Greninja"));
+          setTimeout(() => {
+            const ab3 = [...editor().querySelectorAll("select")]
+              .find(s => [...s.options].some(o => o.value === "Protean"));
+            /* the set, not the order: the picker ranks by what is run */
+            ok("y el selector de su build ofrece las tres",
+               [...ab3.options].map(o => o.value).filter(Boolean).sort()
+                 .join(" / "), "Battle Bond / Protean / Torrent");
+
+            console.log("\n  sin errores de JS");
+            ok("jsdom no reporta errores", errs.join(" | ") || "ninguno", "ninguno");
+            console.log(bad ? "\n  " + bad + " FALLOS\n" : "\n  todo bien\n");
+            process.exit(bad ? 1 : 0);
+          }, 60);
         }, 60);
       }, 60);
     }, 60);

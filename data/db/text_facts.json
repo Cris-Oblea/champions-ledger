@@ -3135,6 +3135,12 @@
    "serebii": "Opponent’s moves cannot Critical Hit.",
    "pokebase": "Hard armor protects the Pokémon from critical hits."
   },
+  "Battle Bond": {
+   "text": "When the Pokémon knocks out a target, its bond with its Trainer is strengthened, and its Attack, Sp. Atk, and Speed stats are boosted.",
+   "source": "pokebase",
+   "serebii": "",
+   "pokebase": "When the Pokémon knocks out a target, its bond with its Trainer is strengthened, and its Attack, Sp. Atk, and Speed stats are boosted."
+  },
   "Berserk": {
    "text": "Boosts the Pokémon's Sp. Atk stat when it takes a hit that causes its HP to become half or less.",
    "source": "serebii",

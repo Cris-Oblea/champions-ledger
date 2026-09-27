@@ -5293,7 +5293,8 @@
   ],
   "abilities": [
    "Torrent",
-   "Protean"
+   "Protean",
+   "Battle Bond"
   ],
   "base_stats": {
    "hp": 72,
@@ -5304,7 +5305,10 @@
    "spe": 122,
    "total": 530
   },
-  "is_mega": false
+  "is_mega": false,
+  "ability_notes": {
+   "Battle Bond": "Alternate Greninja Only"
+  }
  },
  {
   "slug": "greninja",

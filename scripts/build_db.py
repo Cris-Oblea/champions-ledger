@@ -18,6 +18,16 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RAW = os.path.join(ROOT, "data", "raw")
 DB = os.path.join(ROOT, "data", "db")
 
+# An ability is read by its NAME, never by its link's slug. Serebii links
+# Greninja's Battle Bond as href="/abilitydex/.shtml" - an empty slug - and
+# every pattern here used to demand [a-z0-9]+, so the name was skipped without
+# a word and Battle Bond was missing from the database entirely (player,
+# 2026-09-27: "greninja tiene 3 habilidades y no 2... algunas habilidades se
+# estan perdiendo"). The <b> is the name; the slug is decoration, and one
+# broken slug among the 1,389 ability links on the Pokedex pages was enough to
+# lose an ability.
+ABIL_LINK = r'/abilitydex/[^"]*"[^>]*>\s*<b>([^<]+)</b>'
+
 # Sprite suffix -> form. The meaning is species-dependent: "-m" is Mow on
 # Rotom but Midnight on Lycanroc, so the per-species map wins.
 FORM_SUFFIX = {"a": "Alola", "g": "Galar", "h": "Hisui", "p": "Paldea"}
@@ -404,7 +414,7 @@ def parse_pokemon(path, mega_names=None):
         abils = []
         ab = re.search(r"<b>Abilities</b>\s*:(.*?)</td>", blk, re.S)
         if ab:
-            for a in re.finditer(r'/abilitydex/[a-z0-9]+\.shtml"[^>]*>\s*<b>([^<]+)</b>', ab.group(1)):
+            for a in re.finditer(ABIL_LINK, ab.group(1)):
                 abils.append(re.sub(r"\s+", " ", html.unescape(a.group(1))).strip())
         seen, ab2 = set(), []
         for a in abils:
@@ -489,7 +499,7 @@ def forms_from_attackdex():
         r'<img src="(/pokedex-sv/icon/[^"]+)".*?'
         r'<a href="/pokedex-champions/[^"]+">([^<]+)</a>.*?'
         r"(/pokedex-bw/type/\w+\.gif.*?)"
-        r'class="fooinfo">((?:\s*<a href="/abilitydex/[^"]+"[^>]*>[^<]+</a>\s*(?:<br\s*/?>)?)+)</td>'
+        r'class="fooinfo">((?:\s*<a href="/abilitydex/[^"]*"[^>]*>[^<]+</a>\s*(?:<br\s*/?>)?)+)</td>'
         r"((?:\s*<td[^>]*>\s*\d{1,3}\s*</td>){6})", re.S)
     found = {}
     adir = os.path.join(RAW, "attackdex")
@@ -507,7 +517,7 @@ def forms_from_attackdex():
             types = [t.capitalize() for t in
                      re.findall(r"/pokedex-bw/type/(\w+)\.gif", m.group(4))]
             abils = [re.sub(r"\s+", " ", html.unescape(a)).strip() for a in
-                     re.findall(r'/abilitydex/[^"]+"[^>]*>([^<]+)</a>', m.group(5))]
+                     re.findall(r'/abilitydex/[^"]*"[^>]*>([^<]+)</a>', m.group(5))]
             nums = [int(n) for n in re.findall(r">\s*(\d{1,3})\s*<", m.group(6))][:6]
             if len(nums) != 6:
                 continue
@@ -581,7 +591,7 @@ def parse_champions_abilities(pokemon_rows):
     # on a Pokemon page each ability reads <a><b>Name</b></a>: description,
     # with <br /> between consecutive ones
     pat = re.compile(
-        r'<a href="/abilitydex/[a-z0-9]+\.shtml"[^>]*>\s*<b>([^<]+)</b>\s*</a>\s*:\s*'
+        r'<a href="' + ABIL_LINK + r'\s*</a>\s*:\s*'
         r'(.*?)(?=<br\s*/?>\s*<a href="/abilitydex/|</td>)', re.S)
     for fn in sorted(os.listdir(os.path.join(RAW, "pokedex"))):
         s = read(os.path.join(RAW, "pokedex", fn))
@@ -640,9 +650,7 @@ def abilities_by_form(path):
     # the links in order, and the "(... Form)" markers between them
     cell = m.group(1)
     out, cur = {}, []
-    for tok in re.finditer(
-            r'/abilitydex/[a-z0-9]+\.shtml"[^>]*>\s*<b>([^<]+)</b>'
-            r'|\(([^)]{1,30})\)', cell):
+    for tok in re.finditer(ABIL_LINK + r'|\(([^)]{1,30})\)', cell):
         if tok.group(1):
             cur.append(re.sub(r"\s+", " ", html.unescape(tok.group(1))).strip())
         elif cur:
@@ -657,25 +665,56 @@ def complete_form_abilities(forms):
     Matched with query.norm(), the project's own name matcher, so "(Midnight
     Form)" on the Lycanroc page finds "Lycanroc-Midnight" and "(Hisuian Form)"
     on the Arcanine page finds "Arcanine-Hisui" without a table of suffixes.
+
+    NOT EVERY LABEL IS A FORM. Greninja's cell reads
+
+        Torrent - Protean (Standard) - Battle Bond (Alternate Greninja Only)
+
+    and "Alternate Greninja Only" names no row, so matching labels alone put
+    Battle Bond nowhere. A label like that is a QUALIFIER on the abilities in
+    front of it. On a species with ONE row there is only one Pokemon they can
+    belong to, so they go on it, and the label is kept beside them in
+    `ability_notes` - Serebii's words, not ours, and not a rule the player has
+    confirmed. On a species with several rows the label is ambiguous and is
+    left alone: Meowstic's "(Female Hidden Ability)" is already settled by the
+    attackdex's own female row. FIXED_FORMS species are skipped outright:
+    Squawkabilly still has one row at this point only because its plumages
+    are added further down, with their abilities declared, and giving the
+    Green row "(Yellow & White)"'s Sheer Force is the exact mistake that table
+    exists to prevent. audit_abilities.py checks that nothing a page names is
+    left on no row at all.
     """
     import query as _Q
-    by_norm = {}
+    by_norm, by_species = {}, defaultdict(list)
     for name, p in forms.items():
         by_norm.setdefault(_Q.norm(name), []).append(p)
+        by_species[_Q.norm(p.get("species") or name)].append(p)
     added = []
+
+    def add(p, abs_, note=None):
+        have = p.get("abilities") or []
+        new = [a for a in abs_ if a not in have]
+        if new:
+            p["abilities"] = have + new
+            added.append((p["name"], new, note))
+        if note:                       # true whether or not it was already there
+            for a in abs_:
+                p.setdefault("ability_notes", {})[a] = note
+
     for fn in sorted(os.listdir(os.path.join(RAW, "pokedex"))):
         species = os.path.splitext(fn)[0]
+        rows = by_species.get(_Q.norm(species), [])
         for label, abs_ in abilities_by_form(
                 os.path.join(RAW, "pokedex", fn)).items():
-            for p in by_norm.get(_Q.norm(species + " " + label), []):
-                have = p.get("abilities") or []
-                new = [a for a in abs_ if a not in have]
-                if new:
-                    p["abilities"] = have + new
-                    added.append((p["name"], new))
-    for name, new in added:
-        print("  +ability  %-22s %s  (from its Pokedex page)"
-              % (name, ", ".join(new)))
+            hits = by_norm.get(_Q.norm(species + " " + label), [])
+            for p in hits:
+                add(p, abs_)
+            if (not hits and len(rows) == 1
+                    and rows[0].get("species") not in FIXED_FORMS):
+                add(rows[0], abs_, label)
+    for name, new, note in added:
+        print("  +ability  %-22s %s  (from its Pokedex page%s)"
+              % (name, ", ".join(new), ": " + note if note else ""))
     return len(added)
 
 

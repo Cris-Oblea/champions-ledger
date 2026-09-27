@@ -582,7 +582,12 @@ def cmd_pokemon(a):
     print("%s  #%s  %s" % (p["name"], p["dex"], "/".join(p["types"])))
     print("  Base stats  HP %s  Atk %s  Def %s  SpA %s  SpD %s  Spe %s  (BST %s)"
           % (bs["hp"], bs["atk"], bs["def"], bs["spa"], bs["spd"], bs["spe"], bs["total"]))
-    print("  Abilities   %s" % ", ".join(p["abilities"]))
+    # Serebii's qualifier where it gives one, e.g. "Battle Bond (Alternate
+    # Greninja Only)" - its words, not a rule the player has confirmed
+    notes = p.get("ability_notes") or {}
+    print("  Abilities   %s" % ", ".join(
+        a + (" (%s, per Serebii)" % notes[a] if a in notes else "")
+        for a in p["abilities"]))
     u = usage_of(p["name"], ui)
     print("  Ladder use  %s" % (pct(u) if u is not None else "not in usage data"))
     tag = own_tag(p["name"], perm, temp)
@@ -1403,7 +1408,18 @@ def cmd_ability(a):
     au = {key(r["name"]): r["usage_percent"]
           for r in (meta("usage_abilities") or {}).get("rows", [])}
     print("%s" % hit["name"])
-    print("  %s" % hit.get("effect", "(no description)"))
+    print("  %s" % (hit.get("effect") or "(Serebii names it but gives no text)"))
+    # Battle Bond is the case: named on Greninja's page, never described. The
+    # other two sources do describe it, so show them rather than a blank line.
+    if not hit.get("effect"):
+        pb = (((db("text_facts") or {}).get("abilities") or {})
+              .get(hit["name"]) or {}).get("pokebase")
+        sm = next((x.get("description") for x in
+                   (db("smogon_basics") or {}).get("abilities") or []
+                   if x.get("name") == hit["name"]), None)
+        for src, txt in (("pokebase", pb), ("Smogon", sm)):
+            if txt:
+                print("  %-9s %s" % (src + ":", txt))
     print("  Ladder use: %s" % pct(au.get(key(hit["name"]))))
     print("\n  Carriers (%d):" % len(hit["pokemon"]))
     table([[n, pct(usage_of(n, ui)), own_tag(n, perm, temp)] for n in hit["pokemon"]],
