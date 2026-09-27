@@ -16,9 +16,10 @@ character. See analysis/smogon_calc.md.
 Champions is VGC doubles, so a move hitting more than one target takes the 0.75
 spread modifier. Forgetting it overstates every spread move by a third.
 
-The modifier is decided WHEN THE MOVE GOES OFF, not by the move itself: with
-only one opposing Pokemon left it is back to full power (player, confirmed in
-game 2026-09-04). Neither this file nor Smogon's engine can see the field, so
+The modifier is decided WHEN THE MOVE IS CHOSEN, not by the move itself and
+not when it resolves: with only one opposing Pokemon on the field as it is
+picked it is full power, and a partner's KO before it resolves does NOT restore
+full power (player, confirmed in game 2026-09-04 and 2026-09-27). Neither this file nor Smogon's engine can see the field, so
 that case is the caller's to declare - `--single-target`.
 
 WHAT THIS FILE GUARANTEES
@@ -567,8 +568,9 @@ def calc(attacker, move, defender, atk_sp=0, atk_nature=None, def_hp_sp=0,
     if spread:
         base = poke_round(base * 3072 / 4096.0)
         notes.append("spread move in doubles: x0.75")
-        notes.append("  ...but only while TWO targets are alive. With one left "
-                     "it is full power - re-run with --single-target")
+        notes.append("  ...unless the opponent had ONE Pokemon out when the "
+                     "move was chosen - then it is full power: re-run with "
+                     "--single-target")
 
     # Flower Trick, Frost Breath and Storm Throw always crit, which is a flat
     # x1.5 on the base damage - enough to move a roll across a KO boundary.

@@ -301,6 +301,70 @@ def log(lines):
                 pass
 
 
+# ------------------------------------------------- the stale-cache guard --
+# Two of the app's files are GENERATED and COMMITTED, and both are built in
+# part from `data/raw/`, which is 195 MB of fetched pages and is deliberately
+# not in git. The nightly job fetches those sources minutes before building
+# them; this laptop's copy is whatever was last fetched HERE, which has been
+# months behind. So a local rebuild produces an OLDER file that looks exactly
+# like a change:
+#
+#   tracker/engine.bundle.js  built only from data/raw/smogon_calc. The
+#       committed one carried `y?.megaStone` - an optional-chaining guard the
+#       nightly had picked up from upstream - and a local rebuild replaced it
+#       with `y.megaStone`. Twice: once about to be committed inside a change
+#       that was nominally about CSP headers (2026-09-18), and once actually
+#       DEPLOYED by a local --no-refresh run (2026-09-22).
+#   tracker/data.js           built from data/db and data/meta, which ARE
+#       committed, plus two files in data/raw.
+#
+# --no-refresh fetched nothing, so in that mode a difference in either can only
+# mean the local cache is older than the commit - EXCEPT when the repo-side
+# inputs were edited on purpose, which is how a data fix ships between
+# refreshes ("apply it through the same function against the committed rows").
+# So the test is not the artefact, it is its INPUTS: if nothing under data/db
+# or data/meta differs from HEAD, the only input that could have moved is the
+# cache, and the committed artefact - by definition the one the nightly has
+# already gated - wins.
+#
+# It RESTORES rather than blocks. Blocking would stop every local publish from
+# a machine whose cache is stale, which on this one is every publish, and the
+# whole point of --no-refresh is to be the safe way to ship a hand edit.
+PINNED = [
+    # (the artefact, the repo-side inputs it is built from)
+    ("tracker/engine.bundle.js", []),
+    ("tracker/data.js", ["data/db", "data/meta"]),
+]
+
+
+def pin_generated():
+    """Put back any generated artefact this run rebuilt from a stale cache.
+
+    Returns the lines to report, and says which way it decided rather than
+    doing it quietly. Silent when there is nothing to do - and when there is no
+    git to ask, which is also the case that cannot arise: CI has no data/raw,
+    so it never rebuilds either file in the first place.
+    """
+    said = []
+    for rel, inputs in PINNED:
+        rc, diff = sh(["git", "diff", "--name-only", "HEAD", "--", rel])
+        if rc != 0 or not diff.strip():
+            continue                      # unchanged, or no git to ask
+        if inputs:
+            rc2, edited = sh(["git", "diff", "--name-only", "HEAD", "--"] + inputs)
+            if rc2 == 0 and edited.strip():
+                said.append("kept the rebuilt %s: %d file(s) under %s differ "
+                            "from the commit, so the rebuild is the point"
+                            % (rel, len(edited.split()), " and ".join(inputs)))
+                continue
+        rc3, _ = sh(["git", "checkout", "HEAD", "--", rel])
+        said.append(("restored the committed %s: nothing was fetched this run, "
+                     "so the rebuild could only be older" % rel) if rc3 == 0 else
+                    ("WARNING: %s was rebuilt from a stale cache and could not "
+                     "be restored" % rel))
+    return said
+
+
 def sh(argv, cwd=ROOT):
     # npx is npx.cmd on Windows and subprocess will not find it without the
     # extension. It never mattered while the only caller was the Linux runner;
@@ -309,7 +373,14 @@ def sh(argv, cwd=ROOT):
     if os.name == "nt" and argv and argv[0] in ("npx", "npm", "node"):
         argv = [argv[0] + ".cmd" if argv[0] != "node" else argv[0]] + argv[1:]
     try:
-        r = subprocess.run(argv, cwd=cwd, capture_output=True, text=True)
+        # ENCODING NAMED, because text=True decodes with the locale codec and
+        # on this machine that is cp1252: wrangler prints a box-drawing
+        # character and the reader thread dies with a UnicodeDecodeError
+        # traceback in the middle of an otherwise clean run (seen 2026-09-22).
+        # The output is read, never parsed, so replacing an undecodable byte
+        # costs nothing.
+        r = subprocess.run(argv, cwd=cwd, capture_output=True, text=True,
+                           encoding="utf-8", errors="replace")
     except OSError as e:
         return 127, "could not run %s: %s" % (" ".join(argv), e)
     return r.returncode, (r.stdout or "") + (r.stderr or "")
@@ -401,14 +472,17 @@ def main():
         # where it runs, and the difference is stated rather than hidden:
         # data.js and the engine bundle are built from data/raw/smogon_calc,
         # which is the 195 MB source cache and deliberately not in git. On a
-        # laptop it is there, so they are rebuilt and a stale data/db is caught.
+        # laptop it is there, so they are rebuilt and a stale data/db is caught
+        # - and then pin_generated() puts back any of the two the stale cache
+        # made OLDER than the commit, which is the trap that cost two hours.
         # On a fresh CI checkout it is not - but both artifacts are COMMITTED,
         # and committed is by definition what the nightly job already gated.
         # The page is rebuilt either way, because the page is what gets
         # published and must never be a leftover.
         vendored = os.path.exists(os.path.join(
             ROOT, "data", "raw", "smogon_calc", "raw_species.json"))
-        steps = [([PY, "scripts/build_tracker_page.py"], "the page")]
+        page = [([PY, "scripts/build_tracker_page.py"], "the page")]
+        steps = []
         if vendored:
             steps = [([PY, "scripts/build_tracker_data.py"], "data.js"),
                      ([PY, "scripts/build_analysis_data.py"], "the analyses"),
@@ -417,12 +491,25 @@ def main():
                      ([PY, "scripts/build_splits_data.py"], "the ladder splits"),
                      ([PY, "scripts/build_outside_dex.py"],
                       "the rest of the dex"),
-                     ([PY, "scripts/build_engine_bundle.py"], "engine bundle")] + steps
+                     ([PY, "scripts/build_engine_bundle.py"], "engine bundle")]
         else:
             out.append("no source cache here: using the committed data.js, "
                        "analyses, the outside dex and engine bundle, "
                        "rebuilding the page from them")
         for argv, what in steps:
+            rc, bout = sh(argv)
+            if rc != 0:
+                out.append("BLOCKED: could not rebuild %s" % what)
+                out += ["  " + l for l in bout.splitlines()[-6:]]
+                log(out)
+                print("\n".join(out))
+                return 1
+        # THE GUARD SITS BETWEEN THE TWO, because the page embeds whichever
+        # copy of these it finds, and what is embedded is what gets gated and
+        # published.
+        if vendored:
+            out += pin_generated()
+        for argv, what in page:
             rc, bout = sh(argv)
             if rc != 0:
                 out.append("BLOCKED: could not rebuild %s" % what)

@@ -9,6 +9,7 @@ of every move and item against each source that states them, and prints every
 disagreement instead of picking a winner behind the scenes.
 
     moves  base power, accuracy, PP, category   Serebii | pokebase | Smogon calc
+           PP, a fourth voice                   PokeAPI, rescaled (see below)
     items  VP price                             Serebii | pokebase
 
 What it is NOT: a vote. Serebii is this project's ground truth for rules and
@@ -30,6 +31,7 @@ import query as Q
 
 PB = os.path.join(ROOT, "data", "raw", "pokebase")
 SMOG = os.path.join(ROOT, "data", "raw", "smogon_calc", "raw_moves.json")
+API = os.path.join(ROOT, "data", "raw", "pokeapi_csv", "moves.csv")
 
 # pokebase's payload states the four numbers inline, in one shape
 PB_MOVE = re.compile(
@@ -51,6 +53,39 @@ def pokebase_moves():
             out.setdefault(m.group(1), {
                 "cat": CAT.get(m.group(2)), "bp": num(m.group(3)),
                 "acc": num(m.group(4)), "pp": num(m.group(5))})
+    return out
+
+
+def rescaled_pp(ours):
+    """What PP a move SHOULD have here, going by the rest of the table.
+
+    Champions rescales PP globally, so the main-series number is not the answer
+    - but how every other move with that main-series number was rescaled is a
+    strong one. Measured on 2026-09-27: 5 -> 8 (81 of 81), 10 -> 12 (188 of
+    196), 15 -> 16 (101 of 103), 20 and up -> 20. So the majority bucket for a
+    move's main-series PP is a fourth, independent vote on a PP dispute - and
+    the one that settled Night Slash, the only 15-PP move Serebii put at 20.
+
+    Returns {move name: (main-series PP, majority Champions PP, share)}.
+    """
+    if not os.path.exists(API):
+        return {}
+    import csv
+    from collections import Counter, defaultdict
+    main = {r["identifier"]: r["pp"] for r in
+            csv.DictReader(io.open(API, encoding="utf-8"))}
+    ident = lambda n: re.sub(r"[^a-z0-9-]", "", n.lower().replace(" ", "-"))
+    buckets = defaultdict(Counter)
+    for m in ours:
+        k = main.get(ident(m["name"]))
+        if k and m.get("pp") is not None:
+            buckets[k][m["pp"]] += 1
+    out = {}
+    for m in ours:
+        k = main.get(ident(m["name"]))
+        if k and buckets[k]:
+            pp, n = buckets[k].most_common(1)[0]
+            out[m["name"]] = (int(k), pp, "%d/%d" % (n, sum(buckets[k].values())))
     return out
 
 
@@ -99,9 +134,22 @@ def check_moves(show_all):
     print("  %d disagree:" % len(rows))
     for n, f, a, b, who in sorted(rows):
         print("     %-16s %-9s serebii %-6s vs %s %s" % (n, f, a, who, b))
+    vote = rescaled_pp(ours)
+    for n, f, a, b, who in sorted(rows):
+        if f == "PP" and n in vote:
+            k, pp, share = vote[n]
+            print("     %-16s %-9s rescale vote %s (main series %s -> %s in %s)"
+                  % ("", "", pp, k, pp, share))
     print("  %d cells Serebii left empty that another source has:" % len(gaps))
     for n, f, v in sorted(gaps):
         print("     %-16s %-9s pokebase says %s" % (n, f, v))
+    # THE RULINGS, so a settled dispute stays visible as settled rather than
+    # vanishing from the table the day build_db applied it
+    ruled = [(m["name"], f, m.get(f.lower() if f != "PP" else "pp"), why)
+             for m in ours for f, why in (m.get("rulings") or {}).items()]
+    print("  %d settled by a ruling in build_db.MOVE_RULINGS:" % len(ruled))
+    for n, f, v, why in sorted(ruled):
+        print("     %-16s %-9s %-4s %s" % (n, f, v, why))
     return rows, gaps
 
 

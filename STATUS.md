@@ -891,6 +891,12 @@ three BP disputes have a third voice:
 | Meteor Assault | 150 | - | **170** | 170 | Smogon; Serebii has the main-series 150 |
 | Night Slash | 20 PP | 16 PP | *no PP field* | 20 | **cannot be settled there** |
 
+**Night Slash settled 2026-09-27 at 16**, by a fourth voice: PokeAPI's
+main-series PP pushed through the rescale the rest of the table follows. It is
+15 in the main series, and 101 of the 103 useable 15-PP moves are 16 here -
+Night Slash was the only one Serebii put at 20. The ruling lives in
+`build_db.MOVE_RULINGS` with its reason, and `audit_sources.py` lists it.
+
 The pattern is the useful part: **whichever source carries the main-series
 number is the one that is wrong**, and it is not always the same source. Serebii
 is right on the two where pokebase never applied the rebalance, and wrong on the

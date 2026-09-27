@@ -12,10 +12,14 @@ are wrong here often enough to matter (e.g. in Champions, Body Slam is 16 PP,
 Aerial Ace is 60 BP with 101 accuracy). Always read `data/db/` or `data/meta/`.
 
 **PP is rescaled globally, so never read a PP difference as a rebalance.**
-Of the **514** useable moves, **511** carry one of only **four** PP values — 8,
-12, 16 or 20 (verified 2026-09-09: 90 / 189 / 102 / 130). The three exceptions
-are Struggle (1) and two M-C arrivals whose PP Serebii has not filled in yet,
-Double Shock and Revival Blessing, stored as `null`. The player's reading, and it
+Of the **512** useable moves, **510** carry one of only **four** PP values — 8,
+12, 16 or 20 (verified 2026-09-27: 90 / 188 / 102 / 130). The two exceptions
+are Struggle and Revival Blessing, both **1**, which is also their main-series
+value. The rescale is regular enough to vote with: main-series 5 -> 8, 10 -> 12,
+15 -> 16, 20 and up -> 20, and `audit_sources.py` uses it as the fourth voice
+on a PP dispute. Where the sources disagree on a number, the decided value and
+its reason live in `build_db.MOVE_RULINGS` - Night Slash is 16 there, not
+Serebii's 20 (the only 15-PP move Serebii had at 20). The player's reading, and it
 fits: it is as if every move had been fully PP-Upped, then capped. A move at 8 PP
 here can be 5 in the console games without anything having been changed about it.
 Base power, accuracy and effects ARE rebalanced; compare those instead.
@@ -163,19 +167,18 @@ the box.
 
 **Rules confirmed in game by the player — these override every scraped source.**
 
-- **The x0.75 spread modifier is decided WHEN THE MOVE GOES OFF, not by the move
-  (player, confirmed in game 2026-09-04).** Both opposing Pokemon alive when
-  Earthquake goes off: 75% each. Only one left: **back to 100%**. So a spread
-  move is not permanently a three-quarter move — in a 1-vs-1 endgame it is the
-  full number, and Garchomp's Earthquake on Kingambit goes from 102-120 to
-  **134-162**. Neither `damage.py` nor Smogon's engine can see the field, so both
-  apply the x0.75 off the move's target type and the caller has to say otherwise:
-  `--single-target`. Every spread calculation now prints that reminder.
-  **Still open, and worth watching for:** the case where both were alive when you
-  picked the move but your partner KOes one before yours resolves. Serebii and
-  champsdex do not cover it; the main-series wording ("more than one target when
-  the move is executed") implies it goes back to full power, but that is not
-  confirmed here yet.
+- **The x0.75 spread modifier is decided WHEN THE MOVE IS CHOSEN, not by the
+  move and not when it resolves (player, confirmed in game 2026-09-04 and
+  2026-09-27).** A spread move hits at **100% only when the opponent has a
+  single Pokemon on the field** as you pick it. Two opponents out when you
+  choose Earthquake: it is 75% each, and it **stays 75% even if your partner
+  KOes one of them before yours resolves** - the main-series wording ("more
+  than one target when the move is executed") does not apply here. So in a
+  1-vs-1 endgame it is the full number, and Garchomp's Earthquake on Kingambit
+  goes from 102-120 to **134-162**. Neither `damage.py` nor Smogon's engine can
+  see the field, so both apply the x0.75 off the move's target type and the
+  caller has to say otherwise: `--single-target`. Every spread calculation
+  prints that reminder.
 
 - **Mega Glalie Explosion does not work in practice (player, tested 2026-08-31).**
   Tried repeatedly and dismissed as "un chiste". The theory was strong on paper -
@@ -228,10 +231,13 @@ the box.
   effect just because the move text is silent. The consequence for
   **Mega Sol** is the whole point of the ability: Meganium's moves are treated
   as being in sun, so its Fire-type Weather Ball gets the sun boost and does
-  NOT get the rain penalty, even while the team's own rain is up. Weather Ball
-  is 100 BP Fire under Mega Sol (base 50, doubled by weather) and the sun
-  multiplier applies on top of that, which is a different number from the base
-  power alone - worth confirming in game before it is quoted as final.
+  NOT get the rain penalty, even while the team's own rain is up. **Confirmed
+  by the player (2026-09-27): under Mega Sol, Weather Ball is ALWAYS Fire and
+  ALWAYS sun-boosted - with no weather at all, or with another weather up.**
+  100 BP (base 50, doubled) with the sun x1.5 on top. Smogon's engine models
+  exactly that (`mechanics/champions.js`: Fire type, doubled BP and the sun
+  boost all key on `hasAbility('Mega Sol')` alongside real sun), so an engine
+  number for it is final.
 - **Releasing has two in-game limits (player, 2026-09-27).** The game will not
   release a Pokemon while six or fewer are left to battle with, and a
   HOME-origin Pokemon is never released from the Champions box (it parks back
@@ -779,10 +785,11 @@ Revelation Dance, Triple Dive. When a regulation gives one of them a learner,
 Smogon fills the entry in — `python scripts/fetch_smogon_calc.py --check` is how
 that gets noticed.
 
-**A third gap, new with M-C:** two moves are useable and have a learner but
-Serebii has left their PP and accuracy cells **empty** — **Double Shock** and
-**Revival Blessing** (both Pawmot), stored as `null`. That is upstream, not our
-parser. **Octazooka** is the mirror case: flagged useable with no learner at all.
+**A third gap, new with M-C, now closed:** Serebii had left the PP and accuracy
+of **Double Shock** and **Revival Blessing** (both Pawmot) empty. It has since
+filled the PP in (8 and 1); Double Shock's accuracy is still blank there and is
+100 by ruling, from pokebase and the main series. **Octazooka** is the mirror
+case: flagged useable with no learner at all.
 
 ## Smogon format labels: already checked, do not re-open
 
