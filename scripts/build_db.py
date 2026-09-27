@@ -119,6 +119,46 @@ TYPE_PAGES = {"normal", "fire", "water", "electric", "grass", "ice", "fighting",
               "other", "status"}
 
 
+# ------------------------------------------------------ settled numbers --
+# Where the sources disagree on a move's number, the one decided on stands
+# here with its reason (player, 2026-09-27: "siempre escoger el que mejor se
+# acerque a la verdad, puede hacerse una tabla de fuentes y decidir cuál es el
+# número realista"). `scripts/audit_sources.py` is that table: Serebii,
+# pokebase, Smogon's engine, and PokeAPI's main-series PP pushed through the
+# rescale the rest of the move table follows.
+#
+# A ruling only ever FILLS or REPLACES the one field it names, and it says so
+# when Serebii starts agreeing on its own - at that point the line is dead
+# weight and should go, rather than silently pinning a value upstream fixed.
+MOVE_RULINGS = {
+    ("Night Slash", "pp"): (16,
+        "pokebase 16 against Serebii 20. Main series 15 PP, and 101 of the 103 "
+        "useable 15-PP moves are 16 here - Night Slash was the only one at 20."),
+    ("Double Shock", "accuracy"): (100,
+        "Serebii leaves the cell empty; pokebase and the main series both say "
+        "100, and no Champions rebalance of it has been seen."),
+}
+
+
+def apply_move_rulings(moves):
+    """Apply MOVE_RULINGS in place. Returns the lines worth printing."""
+    said = []
+    by = {m["name"]: m for m in moves}
+    for (name, field), (value, why) in MOVE_RULINGS.items():
+        m = by.get(name)
+        if m is None:
+            said.append("ruling for %s %s: the move is gone - drop the ruling"
+                        % (name, field))
+            continue
+        if m.get(field) == value:
+            said.append("ruling for %s %s: Serebii already says %s - drop the "
+                        "ruling" % (name, field, value))
+            continue
+        m[field] = value
+        m.setdefault("rulings", {})[field] = why
+    return said
+
+
 def useable_moves():
     """Slugs from the "Useable Moves" page.
 
@@ -758,6 +798,8 @@ def main():
         moves.append(parse_move(os.path.join(adir, fn), useable))
         if (i + 1) % 250 == 0:
             print("  %d/%d" % (i + 1, len(files)), flush=True)
+    for line in apply_move_rulings(moves):
+        print("  " + line)
     json.dump(moves, open(os.path.join(DB, "moves.json"), "w", encoding="utf-8"),
               ensure_ascii=False, indent=1)
     print("  %d moves (%d useable in Champions)"

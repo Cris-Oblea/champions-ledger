@@ -9713,7 +9713,7 @@
   "type": "Electric",
   "category": "Physical",
   "power": 120,
-  "accuracy": null,
+  "accuracy": 100,
   "pp": 8,
   "effect": "The user loses the Electric type. This move fails unless it is used by an Electric type.",
   "in_depth": "",
@@ -9744,7 +9744,10 @@
    "Pawmot"
   ],
   "learner_count": 1,
-  "useable": true
+  "useable": true,
+  "rulings": {
+   "accuracy": "Serebii leaves the cell empty; pokebase and the main series both say 100, and no Champions rebalance of it has been seen."
+  }
  },
  {
   "slug": "doubleslap",
@@ -28192,7 +28195,7 @@
   "category": "Physical",
   "power": 70,
   "accuracy": 100,
-  "pp": 20,
+  "pp": 16,
   "effect": "This move has a 1-stage Critical-Hit Ratio Boost.",
   "in_depth": "",
   "effect_rate": 12.5,
@@ -28258,7 +28261,10 @@
    "Archaludon"
   ],
   "learner_count": 37,
-  "useable": true
+  "useable": true,
+  "rulings": {
+   "pp": "pokebase 16 against Serebii 20. Main series 15 PP, and 101 of the 103 useable 15-PP moves are 16 here - Night Slash was the only one at 20."
+  }
  },
  {
   "slug": "nihillight",

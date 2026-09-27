@@ -26,6 +26,17 @@ function page(root) {
     return '<script id="' + name.split(".")[0] + '">'
            + body.replace(/<\//g, "<\/") + "</script>";
   });
+  /* A PAGE BUILT WITHOUT SECRETS GETS A TEST ADDRESS. A Dependabot pull
+     request never receives the repository's secrets, so its build writes
+     `window.CHAMP_CONFIG = {};` - the app then never calls createClient, every
+     test's stubbed ledger is never read, and seven of them fail on an empty
+     box (#135, every run since 2026-09-21). The tests stub the client, so the
+     address is never contacted; it only has to exist. `.invalid` is reserved
+     and resolves nowhere, in case anything ever tried. This touches the
+     string the TESTS load, never dist/, so no deployed page carries it. */
+  html = html.replace("window.CHAMP_CONFIG = {};",
+    'window.CHAMP_CONFIG = {"supabase": {"url": "https://ledger.test.invalid", ' +
+    '"key": "test", "email": ""}};');
   /* The real library would load over each harness's stub and every test would
      read an empty ledger. */
   return html.replace(/<script id="vendor-supabase">[\s\S]*?<\/script>/, "");
