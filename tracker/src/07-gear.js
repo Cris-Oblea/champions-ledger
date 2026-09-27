@@ -1,11 +1,11 @@
-/* 07-gear.js - Items, stones, statuses, and the Profile tab.
+/* 07-gear.js - Items, stones, statuses, and the Settings tab.
    Part of the app; linked into one script by scripts/build_tracker_page.py. */
 import { $, C, COSTS, bst, byName, cardLine, effectLine, el, labelBox, pokeFacts, toast,
   typeChip } from "./01-data.js";
 import { S, boxRows, capacity, hasStone, ownedItems, ownedNames,
          ownedStones } from "./02-state.js";
 import { drop, patch, put } from "./03-store.js";
-/* One button on the Profile tab opens the team sheet. Called from a click
+/* One button on the Settings tab opens the team sheet. Called from a click
    handler, never while loading, so the cycle it forms with 08-teams - which
    reaches back here for nothing, but might - would cost nothing either. */
 import { teamSheet } from "./08-teams.js";

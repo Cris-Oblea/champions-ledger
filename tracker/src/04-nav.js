@@ -22,7 +22,10 @@ var TABS = [
   ["calc", "Damage Calc.", "M7 4h10v16H7zM10 8h4M10 12h4M10 16h4"],
   ["find", "Find", "M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14M20 20l-4-4"],
   ["gear", "Items", "M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8M4 12h2m12 0h2m-8-8v2m0 12v2M6.5 6.5 8 8m8 8 1.5 1.5m0-11L16 8M8 16l-1.5 1.5"],
-  ["trainer", "Profile", "M12 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8M5 21v-1a7 7 0 0 1 14 0v1"]
+  /* SETTINGS, not Profile (player, 2026-09-27: "ya no es un profile, solo
+     permite configurar el box"). The view id stays `trainer` - it is an
+     internal name, and renaming it would touch every go("trainer"). */
+  ["trainer", "Settings", "M4 7h9m4 0h3M15 5v4M4 17h3m4 0h9M9 15v4"]
 ];
 /* The toast sits above the tab bar, whose height changes with the breakpoint
    (47px icon-only at 320, 68px with labels at 412) and again in the desktop

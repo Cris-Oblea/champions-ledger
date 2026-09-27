@@ -14,6 +14,9 @@ import { ask, closeSheet, fbtn, leaveEditor, openEditor, openSheet }
 /* The analysis panel is the box sheet's, deliberately - one renderer, so the
    guide reads the same wherever it is opened. */
 import { analysisPanel } from "./05-box.js";
+/* the badges a box row wears - shiny, trained, origin - asked for rather
+   than redrawn, so the copy picker says what the box says */
+import { boxBadges } from "./09-gts.js";
 /* The move picker badges each move with what the build's own ability does to
    it, and ranks the list - both are the damage screen's and the search view's
    rules, asked for rather than copied. A build is where an ability meets a
@@ -23,6 +26,38 @@ import { blockerTags, factLine, itemTags, moveFilters, moveScore,
   priorityTag, spreadNote,
   spreadTags } from "./12-find.js";
 /* ==================================================================== builds */
+/* THE "TRAINED" TAG FOLLOWS THE BUILD, both ways (player, 2026-09-27):
+   "si la coloco sobre un pokemon, ese pokemon se considere entrenado, así no
+   tengo que manualmente estar tageandolos" - and, minutes later, "cuando
+   quiera desmarcar la build sobre un pokemon también el tag debería
+   desaparecer". So when a build moves from one copy to another, is unbound,
+   or is deleted, the copy it LEFT loses the tag - unless another build still
+   sits on it - and the copy it ARRIVED on gains it.
+   The manual toggle in the box sheet stays, for a copy trained with no set
+   written down; this only acts on the copies a build actually moved between.
+   A rental is never tagged: it cannot be trained, whatever set is written.
+   `buildId` is excluded when counting what is left on the old copy, because
+   the local copy of S.builds only catches up when the write echoes back.
+   The whole row goes back, because the store writes a box row whole. */
+function setTrained(boxId, on){
+  var r = boxId && S.box[boxId];
+  if (!r || !!r.trained === on || (on && r.status === "rental"))
+    return Promise.resolve();
+  var row = {};
+  Object.keys(r).forEach(function(k){ if (k !== "_id") row[k] = r[k]; });
+  row.trained = on;
+  return put("box/" + boxId, row);
+}
+function syncTrained(fromId, toId, buildId){
+  if ((fromId || null) === (toId || null)) return setTrained(toId, true);
+  var stillCarried = fromId && Object.keys(S.builds).some(function(k){
+    return k !== buildId && S.builds[k].box_id === fromId;
+  });
+  return Promise.all([
+    stillCarried ? null : setTrained(fromId, false),
+    setTrained(toId, true)
+  ]);
+}
 /* ------------------------------------------- choosing which Pokemon it is --
    A <select> of 264 forms in one alphabetical run, with no way to search it:
 
@@ -285,7 +320,13 @@ function buildSheet(id, b, keepOriginal){
       if (chosen) {
         /* the card, so the species you picked reads the same here as in the
            list you picked it from */
-        pick = pokeCard(chosen, {cls:"perm", onclick:open});
+        /* and the card is the form the BUILD plays as, the same rule the
+           build list follows: the Mega row once a stone is chosen, the base
+           form alone otherwise. The Mega toggles below are where the
+           species' options are offered - the card is the decision. */
+        pick = pokeCard(byName[draft.mega] || chosen,
+                        {cls:"perm", name:draft.pokemon, megas:false,
+                         onclick:open});
       } else {
         pick = el("button", "row unknown");
         var pm = el("div", "rmain");
@@ -310,24 +351,72 @@ function buildSheet(id, b, keepOriginal){
        team. */
     var copies = boxRows("champions").concat(boxRows("home"))
       .filter(function(r){ return r.name === draft.pokemon; });
+    /* EVERY COPY AS ITSELF, not "copy 2 of 3" (player, 2026-09-27: "necesito
+       que me diga todo, si es shiny, si ya está entrenado, etc. para saber
+       sobre qué estoy colocando la build"). A <select> can only hold one line
+       of text, so it said box and position and nothing that tells two
+       Garchomp apart. Each copy is now the card the box draws for it - the
+       same badges (shiny, trained, origin, rental), where it lives, the
+       builds it already carries and his note - and tapping one picks it.
+       Picked in place, not by redrawing the editor, so the page does not jump
+       back to the top under his thumb. */
     var f1 = el("div", "field");
     f1.appendChild(el("label", "f", "Installed on"));
-    var sel1 = el("select");
-    sel1.appendChild(new Option(
-      copies.length ? "— not installed (just an idea) —"
-                    : "— you do not have one yet —", ""));
-    copies.forEach(function(r, i){
-      var other = Object.keys(S.builds).filter(function(k){
-        return k !== id && S.builds[k].box_id === r._id; }).length;
-      sel1.appendChild(new Option(
-        r.name + " · " + (r.location === "home" ? "HOME" : "Champions box") +
-        (copies.length > 1 ? " · copy " + (i + 1) : "") +
-        (r.status === "rental" ? " · rental, cannot be trained" : "") +
-        (other ? " · already carries a build" : ""), r._id));
-    });
-    sel1.onchange = function(){ draft._boxId = sel1.value || null; };
-    sel1.value = draft._boxId || "";
-    f1.appendChild(sel1);
+    if (copies.length) {
+      var clist = el("div", "list");
+      var pickers = [];
+      var paintPick = function(){
+        pickers.forEach(function(x){
+          var on = (draft._boxId || "") === x.id;
+          x.node.classList.toggle("picked", on);
+          x.node.setAttribute("aria-pressed", on ? "true" : "false");
+        });
+      };
+      var choose = function(boxId){
+        draft._boxId = boxId || null;
+        paintPick();
+      };
+      var idea = el("button", "row unknown");
+      var im = el("div", "rmain");
+      im.appendChild(el("div", "rname", "Not installed — just an idea"));
+      im.appendChild(el("div", "rmeta")).appendChild(el("span", null,
+        "the set is kept, on no Pokemon"));
+      idea.appendChild(im);
+      idea.onclick = function(){ choose(null); };
+      clist.appendChild(idea);
+      pickers.push({id:"", node:idea});
+      copies.forEach(function(r){
+        var others = Object.keys(S.builds).filter(function(k){
+          return k !== id && S.builds[k].box_id === r._id; });
+        var pr = byName[r.name];
+        var card = pr ? pokeCard(pr, {
+          name: r.name,
+          shiny: !!r.shiny,
+          megas: false,
+          badges: function(h){
+            h.appendChild(el("span", "tag" + (r.location === "home" ? " warn" : ""),
+              r.location === "home" ? "in HOME" : "Champions box"));
+            boxBadges(h, r);
+          },
+          meta: function(meta){
+            if (r.status === "rental")
+              meta.appendChild(el("span", null, "rental — cannot be trained"));
+            if (others.length)
+              meta.appendChild(el("span", "mono",
+                "already carries " + others.join(", ")));
+            if (r.note) meta.appendChild(el("span", null, r.note));
+          },
+          onclick: function(){ choose(r._id); }
+        }) : el("button", "row", r.name);
+        if (!pr) card.onclick = function(){ choose(r._id); };
+        clist.appendChild(card);
+        pickers.push({id:r._id, node:card});
+      });
+      paintPick();
+      f1.appendChild(clist);
+    } else {
+      f1.appendChild(el("p", "sub", "— you do not have one yet —"));
+    }
     body.appendChild(f1);
 
     var lk = id ? buildLink(id) : {state:draft._boxId ? "active" : "unbound"};
@@ -383,6 +472,8 @@ function buildSheet(id, b, keepOriginal){
           delete doc._boxId;
           doc.box_id = selr.value;
           put("builds/" + id, doc).then(function(){
+            return syncTrained(null, doc.box_id, id);
+          }).then(function(){
             closeSheet(); toast("Linked to " + draft.pokemon);
           });
         };
@@ -785,16 +876,21 @@ function buildSheet(id, b, keepOriginal){
                  extra:(b && b.extra) || {}};
       (id ? put("builds/" + id, doc).then(function(){ return id; })
           : putNew("builds", stem, doc)).then(function(){
+        return syncTrained(b && b.box_id, doc.box_id, id);
+      }).then(function(){
         leaveEditor(); toast("Build saved");
       });
     }),
     fbtn(id ? "Delete" : "Cancel", id ? "danger" : "", function(){
       if (!id) { leaveEditor(); return; }
       ask("Delete the " + draft.pokemon + " build?",
-          "The Pokemon itself is not touched — only this set.",
+          "Only this set goes. The Pokemon it sits on loses its trained tag, " +
+          "unless another build is still on it.",
           "Delete", true).then(function(ok){
         if (!ok) return;
-        drop("builds/" + id).then(function(){ leaveEditor(); toast("Deleted"); });
+        drop("builds/" + id).then(function(){
+          return syncTrained(b && b.box_id, null, id);
+        }).then(function(){ leaveEditor(); toast("Deleted"); });
       });
     })
   ]);

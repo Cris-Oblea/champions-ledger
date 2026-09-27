@@ -38,7 +38,7 @@ request returns nothing.
 | **Find** | "Who learns Imprison *and* Wide Guard *and* Protect" — filters that stack, and sorting by any stat turns the same list into that stat's tier order, either way up. A **Worlds medal** on anything that finished top 8, with the exact set it played — filed under the form that was registered, and the stone says which Mega it became. Plus **Worlds**: what the field actually brought, per championship |
 | **Items** | Every item, what it does, what it costs, and which move or ability it serves |
 | **GTS** | Open trades, what a chip is worth, and what it can realistically fetch |
-| **Profile** | Box capacity, and everything else derived so it cannot go stale |
+| **Settings** | Box capacity, and everything else derived so it cannot go stale |
 
 On a phone it is one column and a bottom tab bar. On a desktop it spreads:
 the controls sit beside the answer in a sticky sidebar instead of on top of
@@ -272,6 +272,16 @@ calculator use: a search box that matches the **name, either type, or the dex
 number**, the app's usual sorts, and the same card as everywhere else. The
 whole dex stays on offer — a set for a Pokemon that has not arrived yet is an
 idea worth keeping — so "in your boxes" is a filter and never a limit.
+
+**Which copy it goes on is shown copy by copy.** Every copy of the species, in
+either box, is drawn as the card the box draws for it — shiny, trained, origin,
+where it lives, the builds it already carries and its note — so two Garchomp
+are told apart by what they are, not by "copy 2 of 3". And the **trained** tag
+follows the build: installing one on a copy tags it, and moving the build off,
+unbinding it or deleting it clears the tag from the copy it left, unless
+another build still sits there. A build's card, in the list and in a team slot,
+shows only the form it plays as — the Mega when a stone is on it, the base form
+alone when not.
 
 **And that goes for every list, not just that one.** A search box only existed
 where somebody remembered to paste one in, so the screen where a team is
@@ -574,7 +584,7 @@ it. A source that quietly changes a denominator is the failure this catches.
 ```
 
 <!-- GATE:START -->
-**The gate** is 35 checks, and nothing reaches the phone without
+**The gate** is 36 checks, and nothing reaches the phone without
 passing all of them:
 
 - a **shrink guard** — if a rebuild comes back with fewer forms, moves or
@@ -586,7 +596,7 @@ passing all of them:
 - **one source check** — the app is linked from thirteen ES modules, so a name
   two of them both declare, or one of them uses without importing,
   is read for once rather than clicked
-- **twenty-four browser tests** — run against the built page, because no Python
+- **twenty-five browser tests** — run against the built page, because no Python
   check can see a template regression
 <!-- GATE:END -->
 
@@ -660,7 +670,7 @@ data/db/     the built database - the thing everything else reads
 data/meta/   usage, tournaments, speed tiers, written analyses
 tracker/     the app: a shell, its ES modules under src/, and a generated data blob
 <!-- TESTS:START -->
-tests/       twenty-four browser tests, run against the BUILT page
+tests/       twenty-five browser tests, run against the BUILT page
 <!-- TESTS:END -->
 analysis/    write-ups: the Smogon engine, regulation M-C, GTS pricing, the roadmap
 CLAUDE.md    the rules this project works by, including everything learned the hard way

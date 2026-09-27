@@ -2083,8 +2083,8 @@ function overlapReport(host){
   var out = el("div", "note overlapout");
   out.style.marginTop = "10px";
   /* EVERY VIEW, not just the one you are standing on. The diagnostics panel
-     lives in Profile, so a sweep of "the current screen" could only ever
-     sweep Profile - the one screen nobody was worried about.
+     lives in Settings, so a sweep of "the current screen" could only ever
+     sweep Settings - the one screen nobody was worried about.
 
      A hidden view reports every rectangle as zero, so each one is shown for
      the length of a measurement and put straight back. The flicker is the
