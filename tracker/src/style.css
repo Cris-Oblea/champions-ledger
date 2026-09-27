@@ -281,14 +281,36 @@ nav.tabs button:active{background:var(--sunk)}
    note are what made it visible. `display:block` does NOT stop it; the
    centring happens in the button's own internal box, so the fix is to say
    explicitly which way the contents stack and where they start. */
+/* THE TINTS ARE 179.9 DEGREES, NOT 180, AND THAT IS THE FIX FOR A LINE.
+
+   Firefox's renderer (WebRender - so Waterfox too) cuts an EXACTLY vertical
+   gradient into one piece per colour stop and paints each piece separately.
+   Where two pieces meet on a fractional pixel, that row is painted twice, and
+   a 14%-alpha tint painted twice is a visibly brighter line. On a card whose
+   Pokemon retypes it showed up at the 34px stop of the Mega overlay's tint,
+   coming and going with the cross-fade (player, 2026-09-27: Aggron, "la linea
+   me ha aparecido en cualquier pantalla"; not in Edge, which is why it hid).
+
+   Measured in his own Waterfox, seven frames over one 9s cycle each: exactly
+   vertical, the line in 4 of 7; the same tint at 179.9deg, 0 of 7, and every
+   other pixel of the tint identical to the last value. Moving the stop, or
+   dropping it for a two-stop gradient, does NOT help - the solid run before
+   the first stop is cut off as a piece of its own too. A gradient that is not
+   axis-aligned is painted in one pass, so it has no seams to double.
+
+   0.1 degree across a 200px half is a third of a pixel of drift, which nothing
+   can see. Only the TRANSLUCENT tints need it: the bands and the rings are
+   opaque, and an opaque colour painted twice is the same colour.
+   tests/tintdirtest.js fails if any tint goes back to an exact vertical. */
+:root{--tint-dir:179.9deg}
 .row.card{display:flex;flex-direction:column;align-items:stretch;
   justify-content:flex-start;padding:0;overflow:hidden;position:relative;
   background:
-    linear-gradient(180deg, var(--tsoft, transparent) 0,
+    linear-gradient(var(--tint-dir), var(--tsoft, transparent) 0,
                     var(--tsoftb, var(--tsoft, transparent)) 34px,
                     transparent 76px)
       left top / 50% 100% no-repeat,
-    linear-gradient(180deg, var(--tsoft2, var(--tsoft, transparent)) 0,
+    linear-gradient(var(--tint-dir), var(--tsoft2, var(--tsoft, transparent)) 0,
                     var(--tsoft2b, var(--tsoft2, var(--tsoft, transparent))) 34px,
                     transparent 76px) right top / 50% 100% no-repeat,
     var(--surface)}
@@ -379,11 +401,11 @@ nav.tabs button:active{background:var(--sunk)}
   opacity:0;border-radius:inherit;
   /* the same two-half tint as the card, in the Mega's tones... */
   background:
-    linear-gradient(180deg, var(--msoft, transparent) 0,
+    linear-gradient(var(--tint-dir), var(--msoft, transparent) 0,
                     var(--msoftb, var(--msoft, transparent)) 34px,
                     transparent 76px)
       left top / 50% 100% no-repeat,
-    linear-gradient(180deg, var(--msoft2, var(--msoft, transparent)) 0,
+    linear-gradient(var(--tint-dir), var(--msoft2, var(--msoft, transparent)) 0,
                     var(--msoft2b, var(--msoft2, var(--msoft, transparent))) 34px,
                     transparent 76px) right top / 50% 100% no-repeat}
 /* ...and the 6px band on top of it, halved exactly as the real one is, so the
