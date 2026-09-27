@@ -1,7 +1,7 @@
 {
  "source": "pokebase.app/pokemon-champions",
  "game": "Pokemon Champions",
- "fetched": "2026-09-26",
+ "fetched": "2026-09-27",
  "count": 755,
  "rows": [
   {
@@ -202,50 +202,50 @@
   },
   {
    "rank": 29,
-   "slug": "low-kick",
-   "name": "Low Kick",
-   "usage_percent": 0.9,
-   "description": ""
-  },
-  {
-   "rank": 30,
    "slug": "moonblast",
    "name": "Moonblast",
    "usage_percent": 0.9,
    "description": ""
   },
   {
-   "rank": 31,
+   "rank": 30,
    "slug": "throat-chop",
    "name": "Throat Chop",
    "usage_percent": 0.9,
    "description": ""
   },
   {
-   "rank": 32,
+   "rank": 31,
    "slug": "aqua-jet",
    "name": "Aqua Jet",
    "usage_percent": 0.8,
    "description": ""
   },
   {
-   "rank": 33,
+   "rank": 32,
    "slug": "dragon-pulse",
    "name": "Dragon Pulse",
    "usage_percent": 0.8,
    "description": ""
   },
   {
-   "rank": 34,
+   "rank": 33,
    "slug": "follow-me",
    "name": "Follow Me",
    "usage_percent": 0.8,
    "description": ""
   },
   {
-   "rank": 35,
+   "rank": 34,
    "slug": "last-respects",
    "name": "Last Respects",
+   "usage_percent": 0.8,
+   "description": ""
+  },
+  {
+   "rank": 35,
+   "slug": "low-kick",
+   "name": "Low Kick",
    "usage_percent": 0.8,
    "description": ""
   },
@@ -510,127 +510,127 @@
   },
   {
    "rank": 73,
+   "slug": "muddy-water",
+   "name": "Muddy Water",
+   "usage_percent": 0.3,
+   "description": ""
+  },
+  {
+   "rank": 74,
    "slug": "perish-song",
    "name": "Perish Song",
    "usage_percent": 0.3,
    "description": ""
   },
   {
-   "rank": 74,
+   "rank": 75,
    "slug": "reflect",
    "name": "Reflect",
    "usage_percent": 0.3,
    "description": ""
   },
   {
-   "rank": 75,
+   "rank": 76,
    "slug": "rock-tomb",
    "name": "Rock Tomb",
    "usage_percent": 0.3,
    "description": ""
   },
   {
-   "rank": 76,
+   "rank": 77,
    "slug": "solar-beam",
    "name": "Solar Beam",
    "usage_percent": 0.3,
    "description": ""
   },
   {
-   "rank": 77,
+   "rank": 78,
    "slug": "stomping-tantrum",
    "name": "Stomping Tantrum",
    "usage_percent": 0.3,
    "description": ""
   },
   {
-   "rank": 78,
+   "rank": 79,
    "slug": "armor-cannon",
    "name": "Armor Cannon",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 79,
+   "rank": 80,
    "slug": "coaching",
    "name": "Coaching",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 80,
+   "rank": 81,
    "slug": "coil",
    "name": "Coil",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 81,
+   "rank": 82,
    "slug": "dark-pulse",
    "name": "Dark Pulse",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 82,
+   "rank": 83,
    "slug": "draining-kiss",
    "name": "Draining Kiss",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 83,
+   "rank": 84,
    "slug": "dual-wingbeat",
    "name": "Dual Wingbeat",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 84,
+   "rank": 85,
    "slug": "eruption",
    "name": "Eruption",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 85,
+   "rank": 86,
    "slug": "giga-drain",
    "name": "Giga Drain",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 86,
+   "rank": 87,
    "slug": "hypnosis",
    "name": "Hypnosis",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 87,
+   "rank": 88,
    "slug": "imprison",
    "name": "Imprison",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 88,
+   "rank": 89,
    "slug": "liquidation",
    "name": "Liquidation",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 89,
+   "rank": 90,
    "slug": "matcha-gotcha",
    "name": "Matcha Gotcha",
-   "usage_percent": 0.2,
-   "description": ""
-  },
-  {
-   "rank": 90,
-   "slug": "muddy-water",
-   "name": "Muddy Water",
    "usage_percent": 0.2,
    "description": ""
   },
