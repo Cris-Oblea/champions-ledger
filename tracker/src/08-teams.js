@@ -306,9 +306,13 @@ function teamSlotRow(draft, id, x, i, redraw){
          a build's card shows only what the build points at */
       abValue: ab || "—",
       abLabel: x.build.mega ? "Ability after Mega" : "Ability",
-      /* the stone the build runs is named on its own badge, so the card does
-         not also list the species' whole Mega line here */
-      megas: !x.build.mega,
+      /* ONLY THE FORM THE BUILD PLAYS AS. This read `!x.build.mega`, which is
+         the rule upside down: a Mega build is drawn as the Mega row, which has
+         no line of its own, so the flag only ever took effect on a BASE build
+         - and there it switched the species' whole Mega line ON, base and
+         Mega side by side for a set that carries no stone (player,
+         2026-09-27). */
+      megas: false,
       /* THE ITEM GETS A CELL OF ITS OWN, because on this screen it is the
          decision being made - the Item Clause is a team rule, so the six
          items are read down the column against each other. */
@@ -702,6 +706,8 @@ function buildPickRow(r, onPick){
        card shows only what the build points at */
     abValue: activeAbility(b) || "\u2014",
     abLabel: b.mega ? "Ability after Mega" : "Ability",
+    /* a build shows only the form it points at, the same as its slot */
+    megas: false,
     cells: [labelBox(b.nature || "\u2014", "Nature", "wide")],
     badges: badges,
     meta: function(meta){

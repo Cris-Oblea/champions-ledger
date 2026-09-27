@@ -77,10 +77,10 @@ const pairs = id => {
 
 setTimeout(() => {
   console.log("\n  el encabezado");
-  ok("se llama Profile", d.querySelector("#v-trainer h1").textContent, "Profile");
+  ok("se llama Settings", d.querySelector("#v-trainer h1").textContent, "Settings");
   ok("y la pestaña tambien",
      [...d.querySelectorAll("#tabs button, #tabs a")]
-       .some(b => b.textContent.trim() === "Profile"), true);
+       .some(b => b.textContent.trim() === "Settings"), true);
 
   console.log("\n  un solo campo editable");
   const inputs = [...d.querySelectorAll("#v-trainer input")]
