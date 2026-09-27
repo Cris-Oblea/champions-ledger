@@ -1,7 +1,7 @@
 {
  "source": "pokebase.app/pokemon-champions",
  "game": "Pokemon Champions",
- "fetched": "2026-09-26",
+ "fetched": "2026-09-27",
  "count": 33,
  "rows": [
   {
@@ -2086,7 +2086,7 @@
    ]
   },
   {
-   "name": "London Corviknights VGC Weekly Tour 14! – Evan M (#1)",
+   "name": "Talon's FIGHT CLUB #103 POKEMON CHAMPIONS REG M-C – Fluffy_m1n (#1)",
    "creator": null,
    "regulation": "M-C",
    "rental_code": null,
@@ -2094,76 +2094,16 @@
    "date_shared": null,
    "members": [
     {
-     "pokemon": "Salamence",
-     "slug": "salamence",
-     "ability": "Intimidate",
-     "item": "Salamencite",
-     "nature": "timid",
-     "moves": [
-      "Draco Meteor",
-      "Hyper Voice",
-      "Tailwind",
-      "Protect"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": "Raichu",
-     "slug": "raichu",
-     "ability": "Lightning Rod",
-     "item": "Raichunite Y",
-     "nature": "timid",
-     "moves": [
-      "Zap Cannon",
-      "Focus Blast",
-      "Fake Out"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": "Hisuian Arcanine",
-     "slug": "arcanine-hisui",
-     "ability": "Rock Head",
-     "item": "Focus Sash",
-     "nature": "jolly",
-     "moves": [
-      "Flare Blitz",
-      "Head Smash",
-      "Extreme Speed"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": "Gholdengo",
-     "slug": "gholdengo",
-     "ability": "Good as Gold",
+     "pokemon": "Kingambit",
+     "slug": "kingambit",
+     "ability": "Defiant",
      "item": "Life Orb",
-     "nature": "timid",
+     "nature": "adamant",
      "moves": [
-      "Make It Rain",
-      "Shadow Ball",
-      "Nasty Plot"
+      "Kowtow Cleave",
+      "Sucker Punch",
+      "Swords Dance",
+      "Protect"
      ],
      "stat_points": {
       "hp": 0,
@@ -2178,12 +2118,13 @@
      "pokemon": "Rillaboom",
      "slug": "rillaboom",
      "ability": "Grassy Surge",
-     "item": "Sitrus Berry",
+     "item": "Miracle Seed",
      "nature": "adamant",
      "moves": [
       "Wood Hammer",
+      "Grassy Glide",
       "High Horsepower",
-      "Grassy Glide"
+      "Fake Out"
      ],
      "stat_points": {
       "hp": 0,
@@ -2197,43 +2138,13 @@
     {
      "pokemon": "Sneasler",
      "slug": "sneasler",
-     "ability": "Unburden",
-     "item": "White Herb",
-     "nature": "adamant",
+     "ability": "Poison Touch",
+     "item": "Focus Sash",
+     "nature": "jolly",
      "moves": [
+      "Poison Jab",
       "Close Combat",
-      "Rock Tomb",
-      "Dire Claw"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    }
-   ]
-  },
-  {
-   "name": "London Corviknights VGC Weekly Tour 14! – bubbabiggums (#2)",
-   "creator": null,
-   "regulation": null,
-   "rental_code": null,
-   "source_url": null,
-   "date_shared": null,
-   "members": [
-    {
-     "pokemon": "Pelipper",
-     "slug": "pelipper",
-     "ability": "Drizzle",
-     "item": "$49:props:showcase:tournament:0:team:4:item",
-     "nature": "modest",
-     "moves": [
-      "Hurricane",
-      "Weather Ball",
-      "Wide Guard"
+      "Quick Guard"
      ],
      "stat_points": {
       "hp": 0,
@@ -2244,108 +2155,6 @@
       "speed": 0
      }
     },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$49:props:showcase:tournament:0:team:4:ability",
-     "item": "Miracle Seed",
-     "nature": "adamant",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$49:props:showcase:tournament:0:team:5:ability",
-     "item": "Grassy Seed",
-     "nature": "adamant",
-     "moves": [
-      "Rock Slide"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": "Golisopod",
-     "slug": "golisopod",
-     "ability": "Emergency Exit",
-     "item": "Golisopite",
-     "nature": "adamant",
-     "moves": [
-      "Swords Dance",
-      "Leech Life",
-      "Iron Head",
-      "Aqua Jet"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$49:props:showcase:tournament:0:team:0:ability",
-     "item": "$49:props:showcase:tournament:0:team:0:item",
-     "nature": "timid",
-     "moves": [
-      "Flamethrower"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": "Basculegion",
-     "slug": "basculegion",
-     "ability": "Swift Swim",
-     "item": "$49:props:showcase:tournament:0:team:3:item",
-     "nature": "adamant",
-     "moves": [
-      "Wave Crash",
-      "Last Respects"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    }
-   ]
-  },
-  {
-   "name": "London Corviknights VGC Weekly Tour 14! – Edward Chan (#3)",
-   "creator": null,
-   "regulation": null,
-   "rental_code": null,
-   "source_url": null,
-   "date_shared": null,
-   "members": [
     {
      "pokemon": "Delphox",
      "slug": "delphox",
@@ -2354,61 +2163,8 @@
      "nature": "timid",
      "moves": [
       "Heat Wave",
-      "Psyshock"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$49:props:showcase:tournament:0:team:4:ability",
-     "item": "$49:props:showcase:tournament:1:team:1:item",
-     "nature": "adamant",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": "Kingambit",
-     "slug": "kingambit",
-     "ability": "Defiant",
-     "item": "Black Glasses",
-     "nature": "adamant",
-     "moves": [
-      "Kowtow Cleave",
-      "Sucker Punch"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "Poison Touch",
-     "item": "$49:props:showcase:tournament:0:team:2:item",
-     "nature": "jolly",
-     "moves": [
-      "Poison Jab",
-      "Quick Guard"
+      "Psychic",
+      "Nasty Plot"
      ],
      "stat_points": {
       "hp": 0,
@@ -2442,11 +2198,12 @@
     {
      "pokemon": "Incineroar",
      "slug": "incineroar",
-     "ability": "$49:props:showcase:tournament:0:team:0:ability",
-     "item": "Rocky Helmet",
-     "nature": "impish",
+     "ability": "Intimidate",
+     "item": "Passho Berry",
+     "nature": "careful",
      "moves": [
-      "Snarl",
+      "Flare Blitz",
+      "Throat Chop",
       "Parting Shot"
      ],
      "stat_points": {
@@ -2461,120 +2218,7 @@
    ]
   },
   {
-   "name": "London Corviknights VGC Weekly Tour 14! – CptAuroOG (#4)",
-   "creator": null,
-   "regulation": null,
-   "rental_code": null,
-   "source_url": null,
-   "date_shared": null,
-   "members": [
-    {
-     "pokemon": "Dragonite",
-     "slug": "dragonite",
-     "ability": "Multiscale",
-     "item": "Dragoninite",
-     "nature": "modest",
-     "moves": [
-      "Dragon Pulse",
-      "Thunderbolt"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": null,
-     "item": "$49:props:showcase:tournament:0:team:1:item",
-     "nature": "timid",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": "Volcarona",
-     "slug": "volcarona",
-     "ability": "Flame Body",
-     "item": "$49:props:showcase:tournament:1:team:2:item",
-     "nature": "timid",
-     "moves": [
-      "Fiery Dance",
-      "Giga Drain",
-      "Quiver Dance"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$49:props:showcase:tournament:0:team:4:ability",
-     "item": "$49:props:showcase:tournament:1:team:1:item",
-     "nature": "adamant",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$49:props:showcase:tournament:0:team:0:ability",
-     "item": "$49:props:showcase:tournament:0:team:4:item",
-     "nature": "careful",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$49:props:showcase:tournament:0:team:5:ability",
-     "item": "$49:props:showcase:tournament:0:team:5:item",
-     "nature": "adamant",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    }
-   ]
-  },
-  {
-   "name": "London Corviknights VGC Weekly Tour 14! – SxToommy (#5)",
+   "name": "Talon's FIGHT CLUB #103 POKEMON CHAMPIONS REG M-C – Lestra (#2)",
    "creator": null,
    "regulation": null,
    "rental_code": null,
@@ -2586,24 +2230,11 @@
      "slug": "excadrill",
      "ability": "Sand Rush",
      "item": "$49:props:showcase:tournament:0:team:2:item",
-     "nature": "jolly",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$49:props:showcase:tournament:0:team:0:ability",
-     "item": "$49:props:showcase:tournament:0:team:0:item",
-     "nature": "timid",
-     "moves": [],
+     "nature": "adamant",
+     "moves": [
+      "Iron Head",
+      "Rock Slide"
+     ],
      "stat_points": {
       "hp": 0,
       "attack": 0,
@@ -2618,10 +2249,48 @@
      "slug": "tyranitar",
      "ability": "Sand Stream",
      "item": "Tyranitarite",
-     "nature": "jolly",
+     "nature": "adamant",
      "moves": [
       "Knock Off",
       "Low Kick"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "Unburden",
+     "item": "White Herb",
+     "nature": "adamant",
+     "moves": [
+      "Gunk Shot"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": "Milotic",
+     "slug": "milotic",
+     "ability": "Competitive",
+     "item": "Sitrus Berry",
+     "nature": "modest",
+     "moves": [
+      "Icy Wind",
+      "Life Dew",
+      "Scald"
      ],
      "stat_points": {
       "hp": 0,
@@ -2640,8 +2309,8 @@
      "nature": "modest",
      "moves": [
       "Expanding Force",
-      "Mystical Fire",
-      "Trick"
+      "Trick",
+      "Trick Room"
      ],
      "stat_points": {
       "hp": 0,
@@ -2653,16 +2322,807 @@
      }
     },
     {
-     "pokemon": "Corviknight",
-     "slug": "corviknight",
-     "ability": "Mirror Armor",
+     "pokemon": "Salamence",
+     "slug": "salamence",
+     "ability": "$49:props:showcase:tournament:0:team:5:ability",
+     "item": "Salamencite",
+     "nature": "timid",
+     "moves": [
+      "Draco Meteor",
+      "Hyper Voice"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    }
+   ]
+  },
+  {
+   "name": "Talon's FIGHT CLUB #103 POKEMON CHAMPIONS REG M-C – NickMint (#3)",
+   "creator": null,
+   "regulation": null,
+   "rental_code": null,
+   "source_url": null,
+   "date_shared": null,
+   "members": [
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$49:props:showcase:tournament:0:team:5:ability",
+     "item": "$49:props:showcase:tournament:1:team:5:item",
+     "nature": "timid",
+     "moves": [
+      "Tailwind"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": "Raichu",
+     "slug": "raichu",
+     "ability": "Lightning Rod",
+     "item": "Raichunite Y",
+     "nature": "timid",
+     "moves": [
+      "Zap Cannon",
+      "Focus Blast",
+      "Encore"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": "Hisuian Arcanine",
+     "slug": "arcanine-hisui",
+     "ability": "Rock Head",
+     "item": "$49:props:showcase:tournament:0:team:2:item",
+     "nature": "jolly",
+     "moves": [
+      "Head Smash",
+      "Extreme Speed"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": "Gholdengo",
+     "slug": "gholdengo",
+     "ability": "Good as Gold",
+     "item": "$49:props:showcase:tournament:0:team:0:item",
+     "nature": "timid",
+     "moves": [
+      "Make It Rain",
+      "Shadow Ball"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$49:props:showcase:tournament:0:team:1:ability",
+     "item": "$49:props:showcase:tournament:1:team:3:item",
+     "nature": "adamant",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$49:props:showcase:tournament:1:team:2:ability",
+     "item": "$49:props:showcase:tournament:1:team:2:item",
+     "nature": "adamant",
+     "moves": [
+      "Dire Claw"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    }
+   ]
+  },
+  {
+   "name": "Talon's FIGHT CLUB #103 POKEMON CHAMPIONS REG M-C – okaime (#4)",
+   "creator": null,
+   "regulation": null,
+   "rental_code": null,
+   "source_url": null,
+   "date_shared": null,
+   "members": [
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$49:props:showcase:tournament:1:team:2:ability",
+     "item": "$49:props:showcase:tournament:0:team:2:item",
+     "nature": "jolly",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": "Sinistcha",
+     "slug": "sinistcha",
+     "ability": "Hospitality",
+     "item": "Colbur Berry",
+     "nature": "relaxed",
+     "moves": [
+      "Matcha Gotcha",
+      "Rage Powder"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$49:props:showcase:tournament:0:team:0:ability",
+     "item": "$49:props:showcase:tournament:0:team:0:item",
+     "nature": "adamant",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$49:props:showcase:tournament:0:team:5:ability",
+     "item": "$49:props:showcase:tournament:1:team:3:item",
+     "nature": "impish",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$49:props:showcase:tournament:0:team:4:ability",
+     "item": "$49:props:showcase:tournament:0:team:4:item",
+     "nature": "modest",
+     "moves": [
+      "Moonblast"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$49:props:showcase:tournament:0:team:3:ability",
+     "item": "$49:props:showcase:tournament:0:team:3:item",
+     "nature": "timid",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    }
+   ]
+  },
+  {
+   "name": "Talon's FIGHT CLUB #103 POKEMON CHAMPIONS REG M-C – Smogolem (#5)",
+   "creator": null,
+   "regulation": null,
+   "rental_code": null,
+   "source_url": null,
+   "date_shared": null,
+   "members": [
+    {
+     "pokemon": "Golurk",
+     "slug": "golurk",
+     "ability": "No Guard",
+     "item": "Golurkite",
+     "nature": "adamant",
+     "moves": [
+      "Headlong Rush",
+      "Poltergeist",
+      "Ice Punch"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": "Indeedee (Female)",
+     "slug": "indeedee-female",
+     "ability": "$49:props:showcase:tournament:1:team:4:ability",
      "item": "Psychic Seed",
+     "nature": "relaxed",
+     "moves": [
+      "Terrain Pulse",
+      "Follow Me",
+      "Helping Hand"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": "Farigiraf",
+     "slug": "farigiraf",
+     "ability": "Armor Tail",
+     "item": "$49:props:showcase:tournament:1:team:3:item",
+     "nature": "bold",
+     "moves": [
+      "Thunderbolt"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": "Armarouge",
+     "slug": "armarouge",
+     "ability": "Flash Fire",
+     "item": "$49:props:showcase:tournament:0:team:0:item",
+     "nature": "modest",
+     "moves": [
+      "Armor Cannon"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": "Torkoal",
+     "slug": "torkoal",
+     "ability": "Drought",
+     "item": "Charcoal",
+     "nature": "modest",
+     "moves": [
+      "Solar Beam",
+      "Eruption"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$49:props:showcase:tournament:0:team:2:ability",
+     "item": "Iron Ball",
+     "nature": "brave",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    }
+   ]
+  },
+  {
+   "name": "Talon's FIGHT CLUB #103 POKEMON CHAMPIONS REG M-C – Javier L (#6)",
+   "creator": null,
+   "regulation": null,
+   "rental_code": null,
+   "source_url": null,
+   "date_shared": null,
+   "members": [
+    {
+     "pokemon": "Archaludon",
+     "slug": "archaludon",
+     "ability": "Stamina",
+     "item": "Leftovers",
+     "nature": "bold",
+     "moves": [
+      "Dragon Pulse",
+      "Flash Cannon",
+      "Electro Shot"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": "Politoed",
+     "slug": "politoed",
+     "ability": "Drizzle",
+     "item": "Mystic Water",
+     "nature": "modest",
+     "moves": [
+      "Muddy Water",
+      "Weather Ball",
+      "Ice Beam"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": "Swampert",
+     "slug": "swampert",
+     "ability": "Torrent",
+     "item": "Swampertite",
+     "nature": "adamant",
+     "moves": [
+      "Wave Crash"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": "Grimmsnarl",
+     "slug": "grimmsnarl",
+     "ability": "Prankster",
+     "item": "Light Clay",
      "nature": "careful",
      "moves": [
-      "Brave Bird",
-      "Power Trip",
-      "Bulk Up",
-      "Roost"
+      "Light Screen",
+      "Reflect",
+      "Spirit Break"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$49:props:showcase:tournament:4:team:2:ability",
+     "item": "$49:props:showcase:tournament:1:team:3:item",
+     "nature": "bold",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": "Golisopod",
+     "slug": "golisopod",
+     "ability": "Emergency Exit",
+     "item": "Golisopite",
+     "nature": "adamant",
+     "moves": [
+      "Leech Life"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    }
+   ]
+  },
+  {
+   "name": "Talon's FIGHT CLUB #103 POKEMON CHAMPIONS REG M-C – Meriwis (#7)",
+   "creator": null,
+   "regulation": null,
+   "rental_code": null,
+   "source_url": null,
+   "date_shared": null,
+   "members": [
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$49:props:showcase:tournament:0:team:1:ability",
+     "item": "$49:props:showcase:tournament:1:team:3:item",
+     "nature": "adamant",
+     "moves": [
+      "U-turn"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": "Staraptor",
+     "slug": "staraptor",
+     "ability": "$49:props:showcase:tournament:0:team:5:ability",
+     "item": "Staraptite",
+     "nature": "jolly",
+     "moves": [
+      "Brave Bird"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$49:props:showcase:tournament:2:team:2:ability",
+     "item": "$49:props:showcase:tournament:0:team:2:item",
+     "nature": "jolly",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$49:props:showcase:tournament:2:team:1:ability",
+     "item": "$49:props:showcase:tournament:2:team:1:item",
+     "nature": "timid",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$49:props:showcase:tournament:2:team:3:ability",
+     "item": "$49:props:showcase:tournament:0:team:0:item",
+     "nature": "timid",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": "Primarina",
+     "slug": "primarina",
+     "ability": "Liquid Voice",
+     "item": "$49:props:showcase:tournament:5:team:1:item",
+     "nature": "modest",
+     "moves": [
+      "Aqua Jet"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    }
+   ]
+  },
+  {
+   "name": "Talon's FIGHT CLUB #103 POKEMON CHAMPIONS REG M-C – LuckyLandia (#8)",
+   "creator": null,
+   "regulation": null,
+   "rental_code": null,
+   "source_url": null,
+   "date_shared": null,
+   "members": [
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$49:props:showcase:tournament:0:team:5:ability",
+     "item": "$49:props:showcase:tournament:6:team:1:item",
+     "nature": "jolly",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": "Volcarona",
+     "slug": "volcarona",
+     "ability": "Flame Body",
+     "item": "Grassy Seed",
+     "nature": "modest",
+     "moves": [
+      "Quiver Dance",
+      "Flamethrower",
+      "Bug Buzz"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$49:props:showcase:tournament:2:team:1:ability",
+     "item": "$49:props:showcase:tournament:2:team:1:item",
+     "nature": "timid",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$49:props:showcase:tournament:0:team:1:ability",
+     "item": "$49:props:showcase:tournament:0:team:1:item",
+     "nature": "adamant",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$49:props:showcase:tournament:2:team:3:ability",
+     "item": "$49:props:showcase:tournament:0:team:0:item",
+     "nature": "modest",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$49:props:showcase:tournament:1:team:3:ability",
+     "item": "$49:props:showcase:tournament:5:team:0:item",
+     "nature": "modest",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    }
+   ]
+  },
+  {
+   "name": "Talon's FIGHT CLUB #103 POKEMON CHAMPIONS REG M-C – ParaAnimates (#9)",
+   "creator": null,
+   "regulation": null,
+   "rental_code": null,
+   "source_url": null,
+   "date_shared": null,
+   "members": [
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$49:props:showcase:tournament:0:team:1:ability",
+     "item": "$49:props:showcase:tournament:0:team:0:item",
+     "nature": "adamant",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": "Basculegion",
+     "slug": "basculegion",
+     "ability": "Adaptability",
+     "item": "$49:props:showcase:tournament:1:team:4:item",
+     "nature": "adamant",
+     "moves": [
+      "Last Respects",
+      "Flip Turn"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$49:props:showcase:tournament:2:team:2:ability",
+     "item": "$49:props:showcase:tournament:0:team:2:item",
+     "nature": "adamant",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": "Lucario",
+     "slug": "lucario",
+     "ability": "Inner Focus",
+     "item": "Lucarionite Z",
+     "nature": "timid",
+     "moves": [
+      "Aura Sphere"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$49:props:showcase:tournament:4:team:2:ability",
+     "item": "$49:props:showcase:tournament:1:team:3:item",
+     "nature": "calm",
+     "moves": [
+      "Imprison"
      ],
      "stat_points": {
       "hp": 0,
@@ -2677,11 +3137,9 @@
      "pokemon": null,
      "slug": null,
      "ability": "$49:props:showcase:tournament:0:team:5:ability",
-     "item": "$49:props:showcase:tournament:0:team:5:item",
-     "nature": "adamant",
-     "moves": [
-      "Coaching"
-     ],
+     "item": "$49:props:showcase:tournament:1:team:5:item",
+     "nature": "modest",
+     "moves": [],
      "stat_points": {
       "hp": 0,
       "attack": 0,
@@ -2694,7 +3152,7 @@
    ]
   },
   {
-   "name": "London Corviknights VGC Weekly Tour 14! – almondspy (#6)",
+   "name": "Talon's FIGHT CLUB #103 POKEMON CHAMPIONS REG M-C – 415jason (#10)",
    "creator": null,
    "regulation": null,
    "rental_code": null,
@@ -2704,11 +3162,28 @@
     {
      "pokemon": null,
      "slug": null,
-     "ability": "$49:props:showcase:tournament:0:team:0:ability",
-     "item": "$49:props:showcase:tournament:0:team:5:item",
-     "nature": "careful",
+     "ability": "$49:props:showcase:tournament:0:team:3:ability",
+     "item": "$49:props:showcase:tournament:0:team:3:item",
+     "nature": "timid",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": "Blastoise",
+     "slug": "blastoise",
+     "ability": "Rain Dish",
+     "item": "Blastoisinite",
+     "nature": "modest",
      "moves": [
-      "Throat Chop"
+      "Shell Smash",
+      "Water Spout"
      ],
      "stat_points": {
       "hp": 0,
@@ -2720,14 +3195,137 @@
      }
     },
     {
-     "pokemon": "Charizard",
-     "slug": "charizard",
-     "ability": "$49:props:showcase:tournament:2:team:0:ability",
-     "item": "Charizardite Y",
-     "nature": "modest",
+     "pokemon": null,
+     "slug": null,
+     "ability": "$49:props:showcase:tournament:0:team:5:ability",
+     "item": "$49:props:showcase:tournament:1:team:3:item",
+     "nature": "impish",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$49:props:showcase:tournament:3:team:1:ability",
+     "item": "Kasib Berry",
+     "nature": "bold",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": "Pawmot",
+     "slug": "pawmot",
+     "ability": "Iron Fist",
+     "item": "$49:props:showcase:tournament:0:team:2:item",
+     "nature": "jolly",
      "moves": [
-      "Ancient Power"
+      "Double Shock",
+      "Revival Blessing"
      ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$49:props:showcase:tournament:1:team:4:ability",
+     "item": "$49:props:showcase:tournament:3:team:1:item",
+     "nature": "bold",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    }
+   ]
+  },
+  {
+   "name": "Talon's FIGHT CLUB #103 POKEMON CHAMPIONS REG M-C – Renato F (#11)",
+   "creator": null,
+   "regulation": null,
+   "rental_code": null,
+   "source_url": null,
+   "date_shared": null,
+   "members": [
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$49:props:showcase:tournament:0:team:5:ability",
+     "item": "$49:props:showcase:tournament:6:team:1:item",
+     "nature": "jolly",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$49:props:showcase:tournament:2:team:1:ability",
+     "item": "$49:props:showcase:tournament:2:team:1:item",
+     "nature": "timid",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$49:props:showcase:tournament:2:team:3:ability",
+     "item": "$49:props:showcase:tournament:0:team:0:item",
+     "nature": "timid",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$49:props:showcase:tournament:2:team:2:ability",
+     "item": "$49:props:showcase:tournament:0:team:2:item",
+     "nature": "jolly",
+     "moves": [],
      "stat_points": {
       "hp": 0,
       "attack": 0,
@@ -2745,236 +3343,7 @@
      "nature": "modest",
      "moves": [
       "Hyper Beam",
-      "Quick Attack"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": "Venusaur",
-     "slug": "venusaur",
-     "ability": "Chlorophyll",
-     "item": "$49:props:showcase:tournament:0:team:2:item",
-     "nature": "modest",
-     "moves": [
-      "Leaf Storm",
-      "Sludge Bomb",
-      "Sleep Powder"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": "Farigiraf",
-     "slug": "farigiraf",
-     "ability": "Armor Tail",
-     "item": "$49:props:showcase:tournament:0:team:4:item",
-     "nature": "bold",
-     "moves": [
-      "Psychic",
-      "Trick Room",
-      "Helping Hand"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": "Mudsdale",
-     "slug": "mudsdale",
-     "ability": "Inner Focus",
-     "item": "$49:props:showcase:tournament:0:team:3:item",
-     "nature": "adamant",
-     "moves": [
-      "Heavy Slam"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    }
-   ]
-  },
-  {
-   "name": "London Corviknights VGC Weekly Tour 14! – Kylos4 (#7)",
-   "creator": null,
-   "regulation": null,
-   "rental_code": null,
-   "source_url": null,
-   "date_shared": null,
-   "members": [
-    {
-     "pokemon": "Archaludon",
-     "slug": "archaludon",
-     "ability": "Stamina",
-     "item": "Leftovers",
-     "nature": "calm",
-     "moves": [
-      "Electro Shot"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$49:props:showcase:tournament:1:team:0:ability",
-     "item": "$49:props:showcase:tournament:0:team:2:item",
-     "nature": "modest",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$49:props:showcase:tournament:1:team:3:ability",
-     "item": "$49:props:showcase:tournament:1:team:3:item",
-     "nature": "adamant",
-     "moves": [
-      "Drill Run"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$49:props:showcase:tournament:0:team:5:ability",
-     "item": "$49:props:showcase:tournament:4:team:4:item",
-     "nature": "adamant",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": "Indeedee (Female)",
-     "slug": "indeedee-female",
-     "ability": "$49:props:showcase:tournament:4:team:3:ability",
-     "item": "Colbur Berry",
-     "nature": "calm",
-     "moves": [
-      "Follow Me"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": "Gardevoir",
-     "slug": "gardevoir",
-     "ability": "Trace",
-     "item": "Gardevoirite",
-     "nature": "modest",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    }
-   ]
-  },
-  {
-   "name": "London Corviknights VGC Weekly Tour 14! – Locke_5 (#8)",
-   "creator": null,
-   "regulation": null,
-   "rental_code": null,
-   "source_url": null,
-   "date_shared": null,
-   "members": [
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$49:props:showcase:tournament:0:team:5:ability",
-     "item": "$49:props:showcase:tournament:4:team:4:item",
-     "nature": "adamant",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$49:props:showcase:tournament:4:team:3:ability",
-     "item": "$49:props:showcase:tournament:0:team:2:item",
-     "nature": "timid",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$49:props:showcase:tournament:5:team:2:ability",
-     "item": "$49:props:showcase:tournament:5:team:2:item",
-     "nature": "modest",
-     "moves": [
+      "Quick Attack",
       "Detect"
      ],
      "stat_points": {
@@ -2989,40 +3358,8 @@
     {
      "pokemon": null,
      "slug": null,
-     "ability": "Adaptability",
-     "item": "$49:props:showcase:tournament:0:team:3:item",
-     "nature": "adamant",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$49:props:showcase:tournament:3:team:0:ability",
-     "item": "$49:props:showcase:tournament:3:team:0:item",
-     "nature": "modest",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$49:props:showcase:tournament:0:team:0:ability",
-     "item": "$49:props:showcase:tournament:0:team:4:item",
+     "ability": "$49:props:showcase:tournament:0:team:1:ability",
+     "item": "$49:props:showcase:tournament:0:team:1:item",
      "nature": "adamant",
      "moves": [],
      "stat_points": {
@@ -3037,7 +3374,7 @@
    ]
   },
   {
-   "name": "London Corviknights VGC Weekly Tour 14! – Julian18 (#9)",
+   "name": "Talon's FIGHT CLUB #103 POKEMON CHAMPIONS REG M-C – averagememer57 (#12)",
    "creator": null,
    "regulation": null,
    "rental_code": null,
@@ -3045,29 +3382,14 @@
    "date_shared": null,
    "members": [
     {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$49:props:showcase:tournament:0:team:5:ability",
-     "item": "$49:props:showcase:tournament:0:team:5:item",
-     "nature": "adamant",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": "Garchomp",
-     "slug": "garchomp",
-     "ability": "Rough Skin",
-     "item": "Garchompite Z",
-     "nature": "modest",
+     "pokemon": "Froslass",
+     "slug": "froslass",
+     "ability": "Cursed Body",
+     "item": "Froslassite",
+     "nature": "timid",
      "moves": [
-      "Power Gem"
+      "Blizzard",
+      "Aurora Veil"
      ],
      "stat_points": {
       "hp": 0,
@@ -3081,9 +3403,9 @@
     {
      "pokemon": null,
      "slug": null,
-     "ability": "$49:props:showcase:tournament:5:team:4:ability",
-     "item": "$49:props:showcase:tournament:0:team:4:item",
-     "nature": "sassy",
+     "ability": "$49:props:showcase:tournament:0:team:1:ability",
+     "item": "$49:props:showcase:tournament:0:team:1:item",
+     "nature": "adamant",
      "moves": [],
      "stat_points": {
       "hp": 0,
@@ -3098,22 +3420,6 @@
      "pokemon": null,
      "slug": null,
      "ability": "$49:props:showcase:tournament:0:team:0:ability",
-     "item": "Passho Berry",
-     "nature": "careful",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$49:props:showcase:tournament:2:team:2:ability",
      "item": "Chople Berry",
      "nature": "adamant",
      "moves": [],
@@ -3129,57 +3435,8 @@
     {
      "pokemon": null,
      "slug": null,
-     "ability": "$49:props:showcase:tournament:5:team:2:ability",
-     "item": "$49:props:showcase:tournament:5:team:2:item",
-     "nature": "modest",
-     "moves": [
-      "Yawn"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    }
-   ]
-  },
-  {
-   "name": "London Corviknights VGC Weekly Tour 14! – Sgarli (#10)",
-   "creator": null,
-   "regulation": null,
-   "rental_code": null,
-   "source_url": null,
-   "date_shared": null,
-   "members": [
-    {
-     "pokemon": "Milotic",
-     "slug": "milotic",
-     "ability": "Competitive",
-     "item": "$49:props:showcase:tournament:0:team:4:item",
-     "nature": "calm",
-     "moves": [
-      "Coil",
-      "Hypnosis",
-      "Ice Beam",
-      "Muddy Water"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$49:props:showcase:tournament:0:team:1:ability",
-     "item": "$49:props:showcase:tournament:0:team:1:item",
+     "ability": "$49:props:showcase:tournament:0:team:5:ability",
+     "item": "$49:props:showcase:tournament:1:team:5:item",
      "nature": "timid",
      "moves": [],
      "stat_points": {
@@ -3192,29 +3449,10 @@
      }
     },
     {
-     "pokemon": "Ceruledge",
-     "slug": "ceruledge",
-     "ability": "Flash Fire",
-     "item": "$49:props:showcase:tournament:1:team:2:item",
-     "nature": "adamant",
-     "moves": [
-      "Bitter Blade",
-      "Shadow Sneak"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": "Staraptor",
-     "slug": "staraptor",
-     "ability": "$49:props:showcase:tournament:0:team:0:ability",
-     "item": "Staraptite",
+     "pokemon": null,
+     "slug": null,
+     "ability": "$49:props:showcase:tournament:1:team:2:ability",
+     "item": "$49:props:showcase:tournament:7:team:1:item",
      "nature": "jolly",
      "moves": [],
      "stat_points": {
@@ -3229,359 +3467,9 @@
     {
      "pokemon": null,
      "slug": null,
-     "ability": "$49:props:showcase:tournament:0:team:3:ability",
-     "item": "$49:props:showcase:tournament:0:team:3:item",
-     "nature": "modest",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$49:props:showcase:tournament:0:team:4:ability",
-     "item": "$49:props:showcase:tournament:1:team:1:item",
-     "nature": "adamant",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    }
-   ]
-  },
-  {
-   "name": "London Corviknights VGC Weekly Tour 14! – Erinus (#11)",
-   "creator": null,
-   "regulation": null,
-   "rental_code": null,
-   "source_url": null,
-   "date_shared": null,
-   "members": [
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$49:props:showcase:tournament:5:team:4:ability",
-     "item": "$49:props:showcase:tournament:6:team:0:item",
-     "nature": "bold",
-     "moves": [
-      "Imprison"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": "Froslass",
-     "slug": "froslass",
-     "ability": "Cursed Body",
-     "item": "Froslassite",
-     "nature": "modest",
-     "moves": [
-      "Blizzard"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": "Chandelure",
-     "slug": "chandelure",
-     "ability": "$49:props:showcase:tournament:9:team:2:ability",
-     "item": "Chandelurite",
-     "nature": "modest",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": "Whimsicott",
-     "slug": "whimsicott",
-     "ability": "Prankster",
-     "item": "$49:props:showcase:tournament:2:team:5:item",
-     "nature": "bold",
-     "moves": [
-      "Sunny Day"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$49:props:showcase:tournament:2:team:3:ability",
-     "item": "$49:props:showcase:tournament:0:team:2:item",
-     "nature": "adamant",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$49:props:showcase:tournament:0:team:4:ability",
-     "item": "$49:props:showcase:tournament:0:team:3:item",
-     "nature": "adamant",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    }
-   ]
-  },
-  {
-   "name": "London Corviknights VGC Weekly Tour 14! – IzuBrad (#12)",
-   "creator": null,
-   "regulation": null,
-   "rental_code": null,
-   "source_url": null,
-   "date_shared": null,
-   "members": [
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$49:props:showcase:tournament:1:team:0:ability",
-     "item": "$49:props:showcase:tournament:0:team:2:item",
-     "nature": "modest",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$49:props:showcase:tournament:6:team:0:ability",
-     "item": "$49:props:showcase:tournament:6:team:0:item",
-     "nature": "modest",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": "Grimmsnarl",
-     "slug": "grimmsnarl",
-     "ability": "$49:props:showcase:tournament:10:team:3:ability",
-     "item": "Light Clay",
-     "nature": "careful",
-     "moves": [
-      "Foul Play",
-      "Reflect",
-      "Light Screen"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$49:props:showcase:tournament:1:team:3:ability",
-     "item": "$49:props:showcase:tournament:1:team:3:item",
-     "nature": "adamant",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$49:props:showcase:tournament:9:team:0:ability",
-     "item": "$49:props:showcase:tournament:4:team:4:item",
-     "nature": "modest",
-     "moves": [
-      "Recover"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$49:props:showcase:tournament:4:team:3:ability",
-     "item": "$49:props:showcase:tournament:6:team:4:item",
-     "nature": "calm",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    }
-   ]
-  },
-  {
-   "name": "London Corviknights VGC Weekly Tour 14! – DarionLorion (#13)",
-   "creator": null,
-   "regulation": null,
-   "rental_code": null,
-   "source_url": null,
-   "date_shared": null,
-   "members": [
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$49:props:showcase:tournament:1:team:3:ability",
-     "item": "$49:props:showcase:tournament:1:team:3:item",
-     "nature": "brave",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": "Camerupt",
-     "slug": "camerupt",
-     "ability": "Solid Rock",
-     "item": "Cameruptite",
-     "nature": "quiet",
-     "moves": [
-      "Earth Power"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$49:props:showcase:tournament:4:team:2:ability",
-     "item": "$49:props:showcase:tournament:0:team:4:item",
-     "nature": "brave",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$49:props:showcase:tournament:4:team:3:ability",
-     "item": "$49:props:showcase:tournament:4:team:4:item",
-     "nature": "relaxed",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": "Hatterene",
-     "slug": "hatterene",
-     "ability": "Magic Bounce",
-     "item": "$49:props:showcase:tournament:0:team:3:item",
-     "nature": "quiet",
-     "moves": [
-      "Magic Powder"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
      "ability": "$49:props:showcase:tournament:2:team:2:ability",
-     "item": "$49:props:showcase:tournament:2:team:2:item",
-     "nature": "brave",
+     "item": "$49:props:showcase:tournament:0:team:2:item",
+     "nature": "jolly",
      "moves": [],
      "stat_points": {
       "hp": 0,
@@ -3595,7 +3483,7 @@
    ]
   },
   {
-   "name": "London Corviknights VGC Weekly Tour 14! – LlubarroKanton (#14)",
+   "name": "Talon's FIGHT CLUB #103 POKEMON CHAMPIONS REG M-C – McBingi (#13)",
    "creator": null,
    "regulation": null,
    "rental_code": null,
@@ -3603,171 +3491,13 @@
    "date_shared": null,
    "members": [
     {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$49:props:showcase:tournament:0:team:1:ability",
-     "item": "$49:props:showcase:tournament:0:team:1:item",
-     "nature": "timid",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$49:props:showcase:tournament:0:team:3:ability",
-     "item": "$49:props:showcase:tournament:0:team:3:item",
-     "nature": "modest",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$49:props:showcase:tournament:0:team:4:ability",
-     "item": "$49:props:showcase:tournament:1:team:1:item",
-     "nature": "adamant",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$49:props:showcase:tournament:0:team:0:ability",
-     "item": "$49:props:showcase:tournament:0:team:4:item",
-     "nature": "careful",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": "Primarina",
-     "slug": "primarina",
-     "ability": "Liquid Voice",
-     "item": "$49:props:showcase:tournament:1:team:2:item",
+     "pokemon": "Gengar",
+     "slug": "gengar",
+     "ability": "$49:props:showcase:tournament:11:team:0:ability",
+     "item": "Gengarite",
      "nature": "modest",
      "moves": [
-      "Moonblast"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$49:props:showcase:tournament:0:team:0:ability",
-     "item": "$49:props:showcase:tournament:0:team:0:item",
-     "nature": "hasty",
-     "moves": [
-      "Double-Edge"
-     ],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    }
-   ]
-  },
-  {
-   "name": "London Corviknights VGC Weekly Tour 14! – Straccavgc (#15)",
-   "creator": null,
-   "regulation": null,
-   "rental_code": null,
-   "source_url": null,
-   "date_shared": null,
-   "members": [
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$49:props:showcase:tournament:0:team:1:ability",
-     "item": "$49:props:showcase:tournament:0:team:1:item",
-     "nature": "timid",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$49:props:showcase:tournament:2:team:4:ability",
-     "item": "$49:props:showcase:tournament:2:team:4:item",
-     "nature": "modest",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$49:props:showcase:tournament:0:team:0:ability",
-     "item": "$49:props:showcase:tournament:0:team:4:item",
-     "nature": "impish",
-     "moves": [],
-     "stat_points": {
-      "hp": 0,
-      "attack": 0,
-      "defense": 0,
-      "specialAttack": 0,
-      "specialDefense": 0,
-      "speed": 0
-     }
-    },
-    {
-     "pokemon": null,
-     "slug": null,
-     "ability": "$49:props:showcase:tournament:0:team:4:ability",
-     "item": "$49:props:showcase:tournament:1:team:1:item",
-     "nature": "adamant",
-     "moves": [
-      "U-turn"
+      "Sludge Bomb"
      ],
      "stat_points": {
       "hp": 0,
@@ -3782,7 +3512,161 @@
      "pokemon": null,
      "slug": null,
      "ability": "$49:props:showcase:tournament:0:team:5:ability",
-     "item": "$49:props:showcase:tournament:1:team:2:item",
+     "item": "$49:props:showcase:tournament:6:team:1:item",
+     "nature": "adamant",
+     "moves": [
+      "Roost"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$49:props:showcase:tournament:1:team:4:ability",
+     "item": "Rocky Helmet",
+     "nature": "relaxed",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$49:props:showcase:tournament:4:team:3:ability",
+     "item": "$49:props:showcase:tournament:0:team:2:item",
+     "nature": "modest",
+     "moves": [
+      "Wide Guard"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": "Dragapult",
+     "slug": "dragapult",
+     "ability": "Infiltrator",
+     "item": "$49:props:showcase:tournament:0:team:0:item",
+     "nature": "timid",
+     "moves": [
+      "Will-O-Wisp"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$49:props:showcase:tournament:1:team:3:ability",
+     "item": "$49:props:showcase:tournament:4:team:1:item",
+     "nature": "calm",
+     "moves": [
+      "Coil",
+      "Hypnosis",
+      "Recover"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    }
+   ]
+  },
+  {
+   "name": "Talon's FIGHT CLUB #103 POKEMON CHAMPIONS REG M-C – Tr1koblin256 (#14)",
+   "creator": null,
+   "regulation": null,
+   "rental_code": null,
+   "source_url": null,
+   "date_shared": null,
+   "members": [
+    {
+     "pokemon": "Garchomp",
+     "slug": "garchomp",
+     "ability": "Rough Skin",
+     "item": "Garchompite Z",
+     "nature": "timid",
+     "moves": [
+      "Power Gem"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$49:props:showcase:tournament:7:team:1:ability",
+     "item": "$49:props:showcase:tournament:7:team:1:item",
+     "nature": "modest",
+     "moves": [
+      "Bug Bite"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$49:props:showcase:tournament:0:team:1:ability",
+     "item": "$49:props:showcase:tournament:0:team:1:item",
+     "nature": "jolly",
+     "moves": [
+      "Drum Beating"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$49:props:showcase:tournament:0:team:0:ability",
+     "item": "$49:props:showcase:tournament:11:team:2:item",
      "nature": "adamant",
      "moves": [],
      "stat_points": {
@@ -3797,10 +3681,138 @@
     {
      "pokemon": null,
      "slug": null,
-     "ability": "$49:props:showcase:tournament:0:team:3:ability",
-     "item": "$49:props:showcase:tournament:0:team:3:item",
+     "ability": "$49:props:showcase:tournament:8:team:1:ability",
+     "item": "$49:props:showcase:tournament:1:team:4:item",
+     "nature": "jolly",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$49:props:showcase:tournament:0:team:4:ability",
+     "item": "$49:props:showcase:tournament:0:team:4:item",
+     "nature": "modest",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    }
+   ]
+  },
+  {
+   "name": "Talon's FIGHT CLUB #103 POKEMON CHAMPIONS REG M-C – Thomas Lima (#15)",
+   "creator": null,
+   "regulation": null,
+   "rental_code": null,
+   "source_url": null,
+   "date_shared": null,
+   "members": [
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$49:props:showcase:tournament:0:team:1:ability",
+     "item": "$49:props:showcase:tournament:0:team:1:item",
+     "nature": "adamant",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$49:props:showcase:tournament:7:team:1:ability",
+     "item": "$49:props:showcase:tournament:7:team:1:item",
+     "nature": "timid",
+     "moves": [
+      "Giga Drain"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$49:props:showcase:tournament:0:team:5:ability",
+     "item": "$49:props:showcase:tournament:1:team:5:item",
      "nature": "timid",
      "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": "Pelipper",
+     "slug": "pelipper",
+     "ability": "$49:props:showcase:tournament:5:team:1:ability",
+     "item": "$49:props:showcase:tournament:1:team:3:item",
+     "nature": "modest",
+     "moves": [
+      "Hurricane"
+     ],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$49:props:showcase:tournament:5:team:0:ability",
+     "item": "$49:props:showcase:tournament:5:team:0:item",
+     "nature": "calm",
+     "moves": [],
+     "stat_points": {
+      "hp": 0,
+      "attack": 0,
+      "defense": 0,
+      "specialAttack": 0,
+      "specialDefense": 0,
+      "speed": 0
+     }
+    },
+    {
+     "pokemon": null,
+     "slug": null,
+     "ability": "$49:props:showcase:tournament:5:team:5:ability",
+     "item": "$49:props:showcase:tournament:5:team:5:item",
+     "nature": "adamant",
+     "moves": [
+      "Liquidation"
+     ],
      "stat_points": {
       "hp": 0,
       "attack": 0,
