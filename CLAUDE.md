@@ -232,6 +232,13 @@ the box.
   is 100 BP Fire under Mega Sol (base 50, doubled by weather) and the sun
   multiplier applies on top of that, which is a different number from the base
   power alone - worth confirming in game before it is quoted as final.
+- **Releasing has two in-game limits (player, 2026-09-27).** The game will not
+  release a Pokemon while six or fewer are left to battle with, and a
+  HOME-origin Pokemon is never released from the Champions box (it parks back
+  to HOME instead). So the last **six Champions-origin** Pokemon hold their
+  slots permanently, and a HOME-origin copy is never "a duplicate to release" -
+  every HOME-origin Pokemon may stay duplicated. `releaseBlock()` in
+  `tracker/src/02-state.js` is the one place both rules live.
 - **Light Clay extends Aurora Veil**, not only Light Screen and Reflect, despite
   the item text naming only those two.
 - **Item prices come from Serebii, and where pokebase disagrees Serebii wins**

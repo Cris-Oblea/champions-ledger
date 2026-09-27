@@ -26,6 +26,32 @@ function originOf(r){
 var ORIGIN_LABEL = {home:"HOME origin", champions:"Champions origin",
                     unknown:"origin?"};
 
+/* ------------------------------------------------ who can be RELEASED ----
+   Two in-game rules (player, 2026-09-27), and releasing is the only way out
+   of the box that destroys the Pokemon, so both are enforced here, once:
+
+   - A HOME-origin Pokemon is never released from the Champions box. The game
+     does not offer it, and it has no reason to: "Park back to HOME" frees the
+     slot and keeps the Pokemon. It is a real Pokemon, so a second copy of it
+     is value, never a duplicate to get rid of.
+   - The game refuses a release that would leave fewer than six to battle
+     with. HOME-origin ones can always be parked out, so the floor lands on
+     the Champions-origin ones: while six or fewer remain, none of them can
+     go, and those six hold their slots for good ("así de simple").
+
+   Returns null when the row can be released, or the reason it cannot. A row
+   in the HOME box is only a ledger entry leaving (a trade, a transfer), so it
+   is not asked about here. */
+var RELEASE_FLOOR = 6;
+function releaseBlock(r){
+  if (!r || r.location !== "champions") return null;
+  if (originOf(r) === "home") return "home";
+  var n = boxRows("champions").filter(function(x){
+    return originOf(x) !== "home";
+  }).length;
+  return n <= RELEASE_FLOOR ? "floor" : null;
+}
+
 /* ------------------------------------------------ a build has an OWNER ----
    A build is not a plan for a species, it is the set THIS Pokemon is carrying,
    so it lives and dies with the box row of the same id (player, 2026-09-10):
@@ -134,8 +160,8 @@ function ownedNames(){
    `S = ...` anywhere else is now a build error rather than a silent second
    ledger. */
 export {
-  ORIGIN_LABEL, S,
+  ORIGIN_LABEL, RELEASE_FLOOR, S,
   activeAbility, baseAbility, boxRows, buildLink, buildsFor, capacity,
-  hasStone, megaAbility, originOf, originRows,
+  hasStone, megaAbility, originOf, originRows, releaseBlock,
   hasItem, ownedItems, ownedNames, ownedStones, soleAbility,
 };

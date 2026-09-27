@@ -7,7 +7,8 @@ import { $, C, DEX, MOVES, MOVE_BY, SORT, STAT_KEYS, STAT_LABEL, STONE_OF,
  podiumChip, pokeFacts, podiumFor, pokeCard, searchField, splitPct, spriteFor,
  statGrid, toast,
  typeCard, typeChip, typeSkin, usageTag } from "./01-data.js";
-import { S, boxRows, originOf, ownedNames } from "./02-state.js";
+import { RELEASE_FLOOR, S, boxRows, originOf, ownedNames, releaseBlock }
+  from "./02-state.js";
 import { closeSheet, fbtn, openSheet } from "./04-nav.js";
 import { analysisPanel, loadOutside, outsideDex,
   outsideMove, outsideMovesFor } from "./05-box.js";
@@ -2143,16 +2144,18 @@ function diagFallback(txt){
 /* ------------------------------------------- duplicates against HOME ----
    The sweep this answers (player, 2026-09-11): which Champions slots am I
    holding for a species I already have safe in HOME? Those are the ones to
-   free first, because the species is not lost when the slot goes - the HOME
-   copy can be sent in whenever it is wanted.
+   free first, because the species is not lost when the slot goes.
 
-   What it costs to free depends entirely on ORIGIN, so the panel splits on
-   that and never on "permanent":
-     - HOME origin    -> Park back to HOME. Free, build kept, recall any time.
-     - Champions origin -> Release only. The Pokemon and its build are gone,
-                          and the VP to rebuild the set is the real price.
-     - rental         -> Champions origin by definition, but nothing is lost:
-                          it cannot be trained, so it carries no build.
+   ONLY WHAT CAN ACTUALLY GO (player, 2026-09-27). It used to list every
+   match and sort it by origin, which put two kinds of row in front of him
+   that the game will not let him act on:
+     - HOME origin. Never a duplicate: it is a real Pokemon, a second copy of
+       it has value, and it cannot be released from the Champions box anyway.
+     - Champions origin at the floor. The game refuses a release that leaves
+       fewer than six to battle with, so with six or fewer left (Sinistcha,
+       with another in HOME) the "free this one" advice was impossible.
+   `releaseBlock` answers both, so what is left is exactly the releasable set:
+   Champions origin above the floor, and rentals.
    Matching is on the exact form name, because Ninetales-Alola in HOME does
    not cover a plain Ninetales. Same-species-different-form pairs are real but
    are NOT interchangeable, so they get a footnote instead of a row. */
@@ -2165,6 +2168,7 @@ function dupeReport(){
   });
   var hits = [], formOnly = [];
   boxRows("champions").forEach(function(r){
+    if (releaseBlock(r)) return;
     if (homeNames[r.name]) { hits.push(r); return; }
     var sp = (byName[r.name] || {}).species || r.name;
     if (homeSpecies[sp]) {
@@ -2172,9 +2176,9 @@ function dupeReport(){
         return n !== r.name; })});
     }
   });
-  var by = {home:[], champions:[], rental:[]};
+  var by = {champions:[], rental:[]};
   hits.forEach(function(r){
-    by[r.status === "rental" ? "rental" : originOf(r)].push(r);
+    by[r.status === "rental" ? "rental" : "champions"].push(r);
   });
   return {hits:hits, formOnly:formOnly, by:by};
 }
@@ -2185,34 +2189,33 @@ function drawDupeHome(){
   blk.hidden = false;
   $("nDupeHome").textContent = d.hits.length;
 
-  var free = d.by.home.length, rent = d.by.rental.length,
-      lock = d.by.champions.length;
+  var rent = d.by.rental.length, lock = d.by.champions.length;
   $("dupeSub").textContent = d.hits.length
-    ? "Champions slots whose species you also hold in HOME. Freeing one does " +
-      "not lose the species - the HOME copy goes in when you want it, and that " +
-      "copy is HOME origin, so the slot stays elastic from then on."
-    : "Nothing in the box is duplicated in HOME.";
+    ? "Champions-origin slots whose species you also hold in HOME, and that " +
+      "the game will let you release. Freeing one does not lose the species - " +
+      "the HOME copy goes in when you want it, and that copy is HOME origin, " +
+      "so the slot stays elastic from then on."
+    : "Nothing releasable in the box is duplicated in HOME.";
 
   var n = $("dupeNote");
   n.innerHTML = "";
-  if (free) {
-    n.appendChild(note("", "<strong>" + free + " HOME origin.</strong> " +
-      "Park these back - the slot frees, the build survives, and you can " +
-      "recall them any time. Nothing is lost, so do these first."));
-  }
   if (rent) {
     n.appendChild(note("", "<strong>" + rent + " rental.</strong> " +
-      "Champions origin, so releasing is the only exit - but a rental " +
-      "cannot be trained, so it carries no build and costs nothing to drop."));
+      "Releasing is the only exit - but a rental cannot be trained, so it " +
+      "carries no build and costs nothing to drop."));
   }
   if (lock) {
-    var withBuild = d.by.champions.filter(function(r){ return S.builds[r._id]; });
+    /* found by the LINK: a build's own id is not the box row's any more */
+    var withBuild = d.by.champions.filter(function(r){
+      return Object.keys(S.builds).some(function(k){
+        return S.builds[k].box_id === r._id;
+      });
+    });
     n.appendChild(note("warn", "<strong>" + lock + " Champions origin.</strong> " +
-      "These can only be freed by <em>releasing</em> them, which destroys the " +
-      "Pokemon. " + (withBuild.length
-        ? withBuild.length + " of them carry a build that dies with it (" +
-          withBuild.map(function(r){ return r.name; }).join(", ") +
-          ") - the set is re-makeable in VP, the slot is not."
+      "Releasing destroys the Pokemon, and only works while more than " +
+      RELEASE_FLOOR + " Champions-origin Pokemon are left. " + (withBuild.length
+        ? withBuild.length + " of them carry a build, which is kept as an idea (" +
+          withBuild.map(function(r){ return r.name; }).join(", ") + ")."
         : "None of them carries a build.")));
   }
   /* an empty list under a heading that already reads "0" is a fourth way of
@@ -2221,7 +2224,7 @@ function drawDupeHome(){
   host.innerHTML = "";
   host.hidden = !d.hits.length;
   if (d.hits.length) {
-    fill(host, d.by.home.concat(d.by.rental, d.by.champions), "");
+    fill(host, d.by.rental.concat(d.by.champions), "");
   }
   if (d.formOnly.length) {
     n.appendChild(note("", "<strong>Same species, different form:</strong> " +

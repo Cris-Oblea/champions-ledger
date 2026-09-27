@@ -122,6 +122,7 @@ BROWSER_TESTS = [
     ("createtest.js",     "creating a record never overwrites one"),
     ("gtstest.js",        "a trade removes what you gave away"),
     ("buildlinktest.js",  "a build follows its Pokemon"),
+    ("releasetest.js",    "only what the game can release"),
     # A <select> of one option never fires its own onchange, so every
     # single-ability species - Aegislash, Clawitzer, and all 81 Megas - showed
     # the right ability and saved null. Pins both halves of the rule: one

@@ -34,8 +34,8 @@ const DAY = "2026-09-14";
 /* Species are real ones from the dex, because the app looks every name up:
    a made-up name draws a row with no types and tests nothing. */
 const box = [
-  /* champions, HOME origin, and its species is in HOME too -> the "park these
-     back" note in the duplicate report */
+  /* champions, HOME origin, and its species is in HOME too -> must NOT reach
+     the duplicate report: a HOME-origin copy is real, never one to release */
   row("garchomp", "Garchomp", "champions", "permanent", "home", { trained: 1 }),
   /* champions, rental, species also in HOME -> the "rental" note */
   row("sneasler", "Sneasler", "champions", "rental", "champions"),
@@ -46,6 +46,11 @@ const box = [
   /* a shiny, and a Pokemon with two Mega lines */
   row("charizard", "Charizard", "champions", "permanent", "home", { shiny: 1 }),
   row("farigiraf", "Farigiraf", "champions", "permanent", "home", { trained: 1 }),
+  /* The game will not release while six or fewer Champions-origin Pokemon
+     remain (player, 2026-09-27), so without these the two above sit at the
+     floor and the duplicate report, rightly, has nothing to offer. */
+  ...["Incineroar", "Rillaboom", "Gholdengo", "Maushold", "Sinistcha"].map(
+    n => row(n.toLowerCase(), n, "champions", "permanent", "champions")),
   /* the HOME side of the three duplicates above, plus one that is only in HOME */
   row("garchomp-home", "Garchomp", "home", "permanent", "home"),
   row("sneasler-home", "Sneasler", "home", "permanent", "home"),
