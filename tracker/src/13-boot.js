@@ -4,8 +4,8 @@ import {
   $, HOME_ALL, MOVE_BY, SORT, byName, el, rowMatches, setHomeAll, setSort,
   sortRows, wireClears,
 } from "./01-data.js";
-import { S, activeAbility, boxRows, buildLink, capacity, originRows }
-  from "./02-state.js";
+import { RELEASE_FLOOR, S, activeAbility, boxRows, buildLink, capacity,
+  originRows, releaseBlock } from "./02-state.js";
 import { connect } from "./03-store.js";
 import { buildTabs, fbtn, go, leaveEditor, mq } from "./04-nav.js";
 import { addSheet, drawDexPane, pokeRow } from "./05-box.js";
@@ -91,8 +91,9 @@ function renderAll(){
   warn.appendChild(note(oHome.length ? "" : "warn",
     "<strong>" + oHome.length + " of " + used + " slots are elastic.</strong> " +
     "The other " + (used - oHome.length) + " can only be freed by releasing " +
-    "the Pokemon. Replacing them with your own GO catches through HOME is the " +
-    "standing plan."));
+    "the Pokemon, and the game stops releases at " + RELEASE_FLOOR + ", so the " +
+    "last " + RELEASE_FLOOR + " Champions-origin ones stay for good. Replacing " +
+    "the rest with your own GO catches through HOME is the standing plan."));
   if (used >= cap) {
     warn.appendChild(note("bad", "<strong>The box is full at " + used + "/" + cap +
       ".</strong> Nothing new fits until something leaves."));
@@ -107,17 +108,24 @@ function renderAll(){
       oUnk.map(function(r){ return r.name; }).join(", "));
     warn.appendChild(w);
   }
+  /* A repeat is only worth a warning when one of the copies can actually go.
+     HOME-origin copies are real Pokemon and may stay duplicated for good, and
+     a Champions-origin one at the release floor cannot leave (player,
+     2026-09-27) - calling either "trade material" asks for the impossible. */
   var dupes = {};
   perm.concat(rent).forEach(function(r){
     var sp = (byName[r.name] || {}).species || r.name;
-    (dupes[sp] = dupes[sp] || []).push(r.name);
+    (dupes[sp] = dupes[sp] || []).push(r);
   });
-  var rep = Object.keys(dupes).filter(function(k){ return dupes[k].length > 1; });
+  var rep = Object.keys(dupes).filter(function(k){
+    return dupes[k].length > 1 &&
+           dupes[k].some(function(r){ return !releaseBlock(r); });
+  });
   if (rep.length) {
     warn.appendChild(note("warn", "<strong>Species Clause.</strong> " +
       rep.join(", ") + " appear" + (rep.length === 1 ? "s" : "") +
-      " more than once, so those copies can never share a team — " +
-      "they are trade material, not spares."));
+      " more than once, so those copies can never share a team, and at " +
+      "least one of them can be released."));
   }
 
   drawDupeHome();

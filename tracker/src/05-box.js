@@ -4,7 +4,8 @@ import { $, C, FORMS, SORT, STAT_KEYS, STAT_LABEL, STONE_OF, anyRow, bst,
  byName, capNote, cardLine, dexLabel, el, freeSlug, labelBox, megasFor,
  outsideRow, pokeCard, searchField, spriteFor, statGrid, toast, typeCard,
  typeChip } from "./01-data.js";
-import { S, boxRows, hasStone, originOf } from "./02-state.js";
+import { RELEASE_FLOOR, S, boxRows, hasStone, originOf, releaseBlock }
+  from "./02-state.js";
 import { drop, put } from "./03-store.js";
 import { ask, closeSheet, fbtn, openSheet } from "./04-nav.js";
 /* The badges on a box row - in the GTS, a duplicate, the last copy - are the
@@ -147,6 +148,11 @@ function pokeSheet(rec){
         ? "<strong>This slot is elastic.</strong> Park it to HOME whenever you " +
           "need the room; HOME keeps the Champions training, so it comes back " +
           "whole. The round trip costs nothing."
+        : o === "champions" && releaseBlock(rec) === "floor"
+        ? "<strong>This slot is permanent.</strong> The game will not release " +
+          "a Pokemon while " + RELEASE_FLOOR + " or fewer are left to battle " +
+          "with, and HOME-origin ones can always be parked out - so the last " +
+          RELEASE_FLOOR + " Champions-origin Pokemon hold their slots for good."
         : o === "champions"
         ? "<strong>This slot is welded.</strong> Training VP spent here can " +
           "never be parked — it plays fine, but it is not an argument for " +
@@ -275,7 +281,13 @@ function moveButtons(rec, isHome){
      unbinding builds was that an idea should not be lost for want of a row to
      hang it on (2026-09-13). So a release UNBINDS rather than deletes, and the
      set survives for the next copy. Parking back to HOME remains the door that
-     keeps the Pokemon itself. */
+     keeps the Pokemon itself.
+
+     AND ONLY WHERE THE GAME ALLOWS IT (player, 2026-09-27): never on a
+     HOME-origin row in the Champions box - Park is its exit - and never on a
+     Champions-origin one once the floor of six is reached. `releaseBlock`
+     holds both rules. */
+  if (releaseBlock(rec)) return out;
   out.push(fbtn("Release", "danger", function(){
     /* There can be more than one now, and they are found by their LINK - the
        box row's id is not a build id any more. */
@@ -288,9 +300,7 @@ function moveButtons(rec, isHome){
                " will be KEPT as " + (mine.length > 1 ? "ideas" : "an idea") +
                ", no longer installed on anything.");
     }
-    msg.push((originOf(rec) === "home" && !isHome)
-      ? "To free the slot and keep it playable, park it back to HOME instead."
-      : "This one is Champions origin, so it cannot come back.");
+    if (!isHome) msg.push("This one is Champions origin, so it cannot come back.");
     ask("Remove " + rec.name + " from the ledger?", msg.join("\n\n"),
         "Remove", true).then(function(ok){
       if (!ok) return;

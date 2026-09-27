@@ -38,6 +38,11 @@ const ROWS = [
   row("dragonite", "Dragonite", "home", "home"),
   row("sylveon", "Sylveon", "champions", "home"),   // HOME origin, in the box
   row("camerupt-2", "Camerupt", "home", "home"),    // the relink candidate
+  /* The game will not release below six Champions-origin Pokemon (player,
+     2026-09-27), so Garchomp needs six more beside it to be releasable at all.
+     tests/releasetest.js covers the floor itself. */
+  ...["Incineroar", "Whimsicott", "Rillaboom", "Sinistcha", "Gholdengo",
+      "Maushold"].map(n => row(n.toLowerCase(), n, "champions", "champions")),
 ];
 /* box_id is the LINK now, and it is not the id. Until 2026-09-13 a build WAS
    the box row it sat on - same id, one build per Pokemon, and no build without

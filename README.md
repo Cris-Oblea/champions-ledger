@@ -203,6 +203,14 @@ into the game and can never come back out, so it does not make the HOME copy
 expendable. Getting this wrong offered a singleton as trade material and would
 have lost the species.
 
+**Release is offered only where the game allows it.** A HOME-origin Pokemon is
+never released from the Champions box — parking it back to HOME is its exit,
+and a second copy of it is a real Pokemon, not a duplicate to get rid of. And
+the game refuses any release that would leave fewer than six to battle with, so
+the last six Champions-origin Pokemon hold their slots for good. The Release
+button, the "Already in HOME" panel and the Species Clause warning all ask the
+same one rule, so none of them suggests a release the game would refuse.
+
 **What you ask for is always playable; what you offer usually should not be.**
 The two sides of a trade are not the same question. An ask that Champions
 cannot use buys a HOME row and nothing else, so the suggester never proposes
