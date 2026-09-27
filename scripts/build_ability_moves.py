@@ -797,6 +797,22 @@ CLASS_OVERRIDE = {
 # decided earlier moves because of a regex written later.
 
 
+def ability_text(a):
+    """Serebii's text, or the merged one where Serebii has none.
+
+    Serebii names Battle Bond on Greninja's page and gives it no text at all,
+    so reading only its column filed the ability under "everything else" for
+    want of a single word - while Moxie, which does the same thing, sits in
+    "stat changes". build_text_facts.py runs first and already picked
+    pokebase's line for it, so this reads that one rather than guessing.
+    """
+    t = (a.get("effect") or "").strip()
+    if t:
+        return t
+    facts = (Q.db("text_facts") or {}).get("abilities") or {}
+    return (facts.get(a["name"]) or {}).get("text") or ""
+
+
 def classify(name, table, text):
     """One bucket per ability: what a player would filter on."""
     if name in CLASS_OVERRIDE:
@@ -857,7 +873,7 @@ def audit(props, table):
     # the filter buckets the app's search offers, so a wrong one is visible
     buckets = {}
     for a in abil:
-        buckets.setdefault(classify(a["name"], table, a.get("effect")),
+        buckets.setdefault(classify(a["name"], table, ability_text(a)),
                            []).append(a["name"])
     print("\n--- the filter buckets in the app ---")
     for tag, _ in [("moves-off", 0), ("moves-def", 0)] + CLASS_ORDER + \
@@ -908,7 +924,7 @@ def main():
     if not a.report and not a.audit:
         with open(OUT, "w", encoding="utf-8") as f:
             classes = dict((a["name"], classify(a["name"], table,
-                                                a.get("effect")))
+                                                ability_text(a)))
                            for a in Q.db("abilities"))
             json.dump({"_comment":
                        "Derived by scripts/build_ability_moves.py from the move "

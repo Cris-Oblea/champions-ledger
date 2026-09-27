@@ -90,7 +90,7 @@ why it is on notice.
 |---|---|
 | Pokemon forms (**81 Mega**) | **345** |
 | Moves (**512 useable** in Champions) | **901** |
-| Abilities | **215** |
+| Abilities | **216** |
 | Items | **199** |
 | Learnsets | **264** |
 | Ladder usage - Pokemon / moves / abilities / items | **337 / 755 / 188 / 153** |

@@ -121,6 +121,15 @@ ALIASES = {
     "squawkabilly-blue": "squawkabilly-blue-plumage",
     "squawkabilly-yellow": "squawkabilly-yellow-plumage",
     "squawkabilly-white": "squawkabilly-white-plumage",
+    # Two Pokemon whose ABILITY is the whole difference, spelled with no token
+    # in common past the species. The resolver drops a suffix it cannot place
+    # and falls back to the base row, so the Battle Bond Greninja came out
+    # with Torrent and Protean and the Own Tempo Rockruff with Keen Eye, Vital
+    # Spirit and Steadfast - each carrying exactly the abilities it cannot
+    # have. Found by the sweep that found Battle Bond missing from our own
+    # Greninja row (2026-09-27).
+    "greninja-bond": "greninja-battle-bond",
+    "rockruff-dusk": "rockruff-own-tempo",
     # The six a WORLDS TEAMLIST writes bare while the weight table only carries
     # the suffixed forms, so neither side had a row to meet on and the card was
     # a name and nothing else. pokedata publishes "Landorus"; upstream calls
