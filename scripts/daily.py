@@ -123,6 +123,10 @@ BROWSER_TESTS = [
     ("buildlinktest.js",  "a build follows its Pokemon"),
     ("releasetest.js",    "only what the game can release"),
     ("installtest.js",    "which copy a build goes on, and its trained tag"),
+    # Waterfox/Firefox cut an exactly vertical gradient into pieces and paint
+    # the seam twice: a bright line across every retyping card, never seen in
+    # Edge. The tints run at 179.9deg; this fails if one goes back to 180.
+    ("tintdirtest.js",    "no card tint is an exact vertical"),
     # A <select> of one option never fires its own onchange, so every
     # single-ability species - Aegislash, Clawitzer, and all 81 Megas - showed
     # the right ability and saved null. Pins both halves of the rule: one
