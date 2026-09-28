@@ -41,6 +41,10 @@ tracker/supabase_seed.sql
 # No password and no key, but nothing there is ours to publish either.
 supabase/.temp/
 tracker/supabase/.temp/
+# The knowledge graph `/graphify .` builds of this repo: graph.json, graph.html,
+# the report and its extraction cache. Generated on one machine and rebuilt from
+# the source at will, so it is output - and graphify does not ignore it itself.
+graphify-out/
 
 __pycache__/
 *.pyc
