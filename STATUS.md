@@ -73,7 +73,7 @@ python scripts/query.py speed --min 100
 ## What is loaded
 
 <!-- VINTAGE:START -->
-Regulation **M-C**. Ladder usage fetched 2026-09-27, from 337 Pokemon.
+Regulation **M-C**. Ladder usage fetched 2026-09-28, from 337 Pokemon.
 Tournament data is Worlds 2026, played under M-B - that is history, not stale.
 <!-- VINTAGE:END -->
 
@@ -93,7 +93,7 @@ why it is on notice.
 | Abilities | **216** |
 | Items | **199** |
 | Learnsets | **264** |
-| Ladder usage - Pokemon / moves / abilities / items | **337 / 755 / 188 / 153** |
+| Ladder usage - Pokemon / moves / abilities / items | **337 / 759 / 190 / 156** |
 | Speed tiers | **89** |
 | Smogon Pokemon (**56 with a written VGC analysis**) | **358** |
 | Worlds 2026 Masters - players / teamlists | **395 / 394** |
