@@ -6043,7 +6043,7 @@
    "hits_ally": false,
    "down_stats": [],
    "sec": false,
-   "sec_serebii": true,
+   "sec_serebii": false,
    "self_up": false,
    "self_down": false,
    "target_up": false,
