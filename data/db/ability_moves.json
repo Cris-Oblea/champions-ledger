@@ -6043,7 +6043,7 @@
    "hits_ally": false,
    "down_stats": [],
    "sec": false,
-   "sec_serebii": true,
+   "sec_serebii": false,
    "self_up": false,
    "self_down": false,
    "target_up": false,
@@ -20547,6 +20547,7 @@
     "Weather Ball",
     "Zap Cannon"
    ],
+   "whose": "any",
    "stop": [
     "Acid Spray",
     "Aura Sphere",
@@ -20595,6 +20596,7 @@
     "Torch Song",
     "Uproar"
    ],
+   "whose": "any",
    "stop": [
     "Alluring Voice",
     "Boomburst",
@@ -20630,6 +20632,7 @@
     "Sleep Powder",
     "Stun Spore"
    ],
+   "whose": "any",
    "stop": [
     "Cotton Spore",
     "Magic Powder",
@@ -26653,6 +26656,7 @@
     "Scorching Sands",
     "Stomping Tantrum"
    ],
+   "whose": "any",
    "stop": [
     "Bone Rush",
     "Bulldoze",
@@ -26690,6 +26694,7 @@
     "Scorching Sands",
     "Stomping Tantrum"
    ],
+   "whose": "any",
    "stop": [
     "Bone Rush",
     "Bulldoze",
@@ -26738,6 +26743,7 @@
     "Wave Crash",
     "Whirlpool"
    ],
+   "whose": "any",
    "stop": [
     "Aqua Cutter",
     "Aqua Jet",
@@ -26796,6 +26802,7 @@
     "Zap Cannon",
     "Zing Zap"
    ],
+   "whose": "any",
    "stop": [
     "Aura Wheel",
     "Charge Beam",
@@ -26844,6 +26851,7 @@
     "Spikes",
     "Stomping Tantrum"
    ],
+   "whose": "any",
    "stop": [
     "Bone Rush",
     "Bulldoze",
@@ -26892,6 +26900,7 @@
     "Zap Cannon",
     "Zing Zap"
    ],
+   "whose": "any",
    "stop": [
     "Aura Wheel",
     "Charge Beam",
@@ -26957,6 +26966,7 @@
     "Wood Hammer",
     "Worry Seed"
    ],
+   "whose": "any",
    "stop": [
     "Apple Acid",
     "Bullet Seed",
@@ -27022,6 +27032,7 @@
     "Zap Cannon",
     "Zing Zap"
    ],
+   "whose": "any",
    "stop": [
     "Aura Wheel",
     "Charge Beam",
@@ -27126,6 +27137,7 @@
     "Tri Attack",
     "Will-O-Wisp"
    ],
+   "whose": "foe",
    "stop": [
     "Will-O-Wisp"
    ]
@@ -27293,6 +27305,7 @@
     "Worry Seed",
     "Yawn"
    ],
+   "whose": "any",
    "stop": [
     "After You",
     "Attract",
@@ -27470,6 +27483,7 @@
     "Worry Seed",
     "Yawn"
    ],
+   "whose": "foe",
    "stop": [
     "After You",
     "Attract",
@@ -27580,6 +27594,7 @@
     "Vacuum Wave",
     "Water Shuriken"
    ],
+   "whose": "foe",
    "stop": [
     "Accelerock",
     "Aqua Jet",
@@ -27623,6 +27638,7 @@
     "Vacuum Wave",
     "Water Shuriken"
    ],
+   "whose": "foe",
    "stop": [
     "Accelerock",
     "Aqua Jet",
@@ -27770,6 +27786,7 @@
     "Zen Headbutt",
     "Zing Zap"
    ],
+   "whose": "foe",
    "stop": []
   },
   "Cursed Body": {
@@ -28149,7 +28166,8 @@
     "Surf",
     "Teeter Dance"
    ],
-   "stop": [
+   "whose": "ally",
+   "ally_safe": [
     "Boomburst",
     "Brutal Swing",
     "Bulldoze",
@@ -28235,6 +28253,7 @@
     "Triple Arrows",
     "Trop Kick"
    ],
+   "whose": "foe",
    "stop": [
     "Baby-Doll Eyes",
     "Charm",
@@ -28325,6 +28344,7 @@
     "Triple Arrows",
     "Trop Kick"
    ],
+   "whose": "foe",
    "stop": [
     "Baby-Doll Eyes",
     "Charm",
@@ -28415,6 +28435,7 @@
     "Triple Arrows",
     "Trop Kick"
    ],
+   "whose": "foe",
    "stop": [
     "Baby-Doll Eyes",
     "Charm",
@@ -28460,6 +28481,7 @@
     "Tickle",
     "Trop Kick"
    ],
+   "whose": "foe",
    "stop": [
     "Baby-Doll Eyes",
     "Charm",
@@ -28490,6 +28512,7 @@
     "Tickle",
     "Triple Arrows"
    ],
+   "whose": "foe",
    "stop": [
     "Screech",
     "Spicy Extract",
@@ -28505,6 +28528,7 @@
     "Muddy Water",
     "Night Daze"
    ],
+   "whose": "foe",
    "stop": []
   },
   "Illuminate": {
@@ -28516,6 +28540,7 @@
     "Muddy Water",
     "Night Daze"
    ],
+   "whose": "foe",
    "stop": []
   },
   "Rough Skin": {
@@ -31369,6 +31394,7 @@
     "Zen Headbutt",
     "Zing Zap"
    ],
+   "whose": "foe",
    "stop": []
   },
   "Steadfast": {
@@ -31407,6 +31433,7 @@
     "Roar",
     "Whirlwind"
    ],
+   "whose": "foe",
    "stop": [
     "Roar",
     "Whirlwind"
@@ -31422,6 +31449,7 @@
     "Roar",
     "Whirlwind"
    ],
+   "whose": "foe",
    "stop": [
     "Roar",
     "Whirlwind"
@@ -31438,6 +31466,7 @@
     "Taunt",
     "Torment"
    ],
+   "whose": "foe",
    "stop": [
     "Disable",
     "Encore",
@@ -31679,6 +31708,7 @@
     "Sleep Powder",
     "Yawn"
    ],
+   "whose": "foe",
    "stop": [
     "Hypnosis",
     "Sing",
@@ -31697,6 +31727,7 @@
     "Sleep Powder",
     "Yawn"
    ],
+   "whose": "foe",
    "stop": [
     "Hypnosis",
     "Sing",
@@ -31715,6 +31746,7 @@
     "Sleep Powder",
     "Yawn"
    ],
+   "whose": "foe",
    "stop": [
     "Hypnosis",
     "Sing",
@@ -31743,6 +31775,7 @@
     "Volt Tackle",
     "Zap Cannon"
    ],
+   "whose": "foe",
    "stop": [
     "Glare",
     "Stun Spore",
@@ -31768,6 +31801,7 @@
     "Toxic",
     "Toxic Thread"
    ],
+   "whose": "foe",
    "stop": [
     "Poison Powder",
     "Toxic",
@@ -31786,6 +31820,7 @@
     "Ice Punch",
     "Tri Attack"
    ],
+   "whose": "foe",
    "stop": []
   },
   "Own Tempo": {
@@ -31804,6 +31839,7 @@
     "Teeter Dance",
     "Water Pulse"
    ],
+   "whose": "foe",
    "stop": [
     "Confuse Ray",
     "Flatter",
@@ -31897,6 +31933,7 @@
     "Zen Headbutt",
     "Zing Zap"
    ],
+   "whose": "foe",
    "stop": [
     "Confuse Ray",
     "Flatter",
@@ -32001,6 +32038,7 @@
     "Zen Headbutt",
     "Zing Zap"
    ],
+   "whose": "foe",
    "stop": [
     "Confuse Ray",
     "Flatter",
@@ -32304,7 +32342,7 @@
   "Wandering Spirit": "moves-def",
   "Water Absorb": "moves-def",
   "Water Bubble": "moves-off",
-  "Weak Armor": "speed",
+  "Weak Armor": "stats",
   "White Smoke": "moves-def",
   "Zero to Hero": "switch"
  },

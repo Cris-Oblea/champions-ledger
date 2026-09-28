@@ -405,7 +405,7 @@ def cmd_move(a):
         print("\nSmogon:  (not in smogon_basics)")
     # ...and the whole of it, which is what the dex page prints: the one-liner
     # above says "Traps target"; this says what ends it and what escapes it.
-    full = ((db("smogon_move_text") or {}).get("moves") or {}).get(mv["name"])
+    full = ((db("smogon_text") or {}).get("moves") or {}).get(mv["name"])
     if full:
         print("\nSmogon, in full (smogon.com/dex/champions):")
         print(textwrap.fill(full, 78, initial_indent="         ",
@@ -1429,6 +1429,12 @@ def cmd_ability(a):
         for src, txt in (("pokebase", pb), ("Smogon", sm)):
             if txt:
                 print("  %-9s %s" % (src + ":", txt))
+    # the whole of it, from Smogon's Champions dex - what the app shows
+    full = ((db("smogon_text") or {}).get("abilities") or {}).get(hit["name"])
+    if full:
+        print("\n  Smogon, in full (smogon.com/dex/champions):")
+        print(textwrap.fill(full, 78, initial_indent="    ",
+                            subsequent_indent="    "))
     print("  Ladder use: %s" % pct(au.get(key(hit["name"]))))
     print("\n  Carriers (%d):" % len(hit["pokemon"]))
     table([[n, pct(usage_of(n, ui)), own_tag(n, perm, temp)] for n in hit["pokemon"]],

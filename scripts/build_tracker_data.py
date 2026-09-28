@@ -375,7 +375,11 @@ def main():
         pr = PRICES.get(i["name"]) or {}
         ITEMS.append([i["name"], pr.get("vp") or i.get("price_vp"),
                       i.get("category") or "Miscellaneous",
-                      " ".join((i.get("effect") or "").replace("�", "'").split()),
+                      # the item's ONE description - Smogon's Champions dex
+                      # first (build_item_facts.py), Serebii's line only where
+                      # neither of the others has the item
+                      " ".join((pr.get("text") or i.get("effect") or "")
+                               .replace("�", "'").split()),
                       pr.get("note") or i.get("source") or "",
                       pr.get("source") or "",
                       # what this item serves: the sentence, the abilities it
@@ -396,7 +400,9 @@ def main():
     ABIL = {}
     for a in (abil if isinstance(abil, list) else abil.values()):
         pick = (ATEXT.get(a["name"]) or {}).get("text") or a.get("effect") or ""
-        ABIL[a["name"]] = " ".join(pick.replace("�", "'").split())[:400]
+        # whole: Smogon's Champions text runs past 400 characters for the
+        # abilities with the most exceptions, and those are the ones to read
+        ABIL[a["name"]] = " ".join(pick.replace("�", "'").split())
 
     # Heavy Slam, Heat Crash, Low Kick and Grass Knot take their base power
     # from weight, which moves.json stores as 1. Only the forms in the
@@ -449,6 +455,12 @@ def main():
             # ability, not on 169 move rows.
             if rule.get("stop"):
                 e["stop"] = sorted(midx[n] for n in rule["stop"] if n in midx)
+            # ...and the moves it keeps off YOUR partner, which is the same
+            # immunity seen from the other side of the field: green, not red
+            # (Telepathy, and Levitate beside your own Earthquake)
+            if rule.get("ally_safe"):
+                e["ally"] = sorted(midx[n] for n in rule["ally_safe"]
+                                   if n in midx)
         if ab == "Contrary":
             e["up"] = sorted(midx[n] for n in (rule.get("up") or []) if n in midx)
             e["down"] = sorted(midx[n] for n in (rule.get("down") or [])
@@ -599,13 +611,24 @@ def main():
     # a few lines here so that `--audit` can list the numbers whose subject it
     # still cannot name. The probe's raw stage dumps and every number it found
     # stay in data/db/effects.json for anyone checking the working.
+    # WHAT THE SCREEN ALREADY SAYS decides what a chip may add (player,
+    # 2026-09-27: "no se dupliquen las descripciones" and "los tags deben ser
+    # informacion util"). Each item, ability and move now carries ONE full
+    # description; Smogon's one-line summary beside it was the same sentence
+    # again, and most chips were its numbers again. So the summary is shipped
+    # only where there is no description, and a chip only when the
+    # description does not state its number - effect_chips.py rule 6.
+    shown_text = dict(ABIL)
+    shown_text.update({r[0]: r[3] for r in ITEMS})
+    shown_text.update({r[0]: r[14] for r in MOVES})
     EFFECTS = {}
     for name, v in ((Q.db("effects") or {}).get("effects") or {}).items():
-        c = effect_chips.chips(v)
-        if not (c or v.get("described")):
+        said = shown_text.get(name) or ""
+        c = effect_chips.unsaid(effect_chips.chips(v), said)
+        desc = None if said else v.get("described")
+        if not (c or desc):
             continue
-        EFFECTS[name] = {"kind": v.get("kind"), "desc": v.get("described"),
-                         "c": c}
+        EFFECTS[name] = {"kind": v.get("kind"), "desc": desc, "c": c}
 
     # EVERY WORLDS, AS HISTORY. A Worlds is played once under one regulation
     # and then frozen, so this is what the field brought that August and never

@@ -726,6 +726,46 @@ STOPS_EFFECT = {
 }
 
 
+# WHOSE ABILITY IT HAS TO BE for the block to matter to the move's user.
+#
+# (player, 2026-09-27) "telepathy sale en tags negativos para todos los moves
+# que hacen hit a los allies, pero en realidad deberia ser verde positivo,
+# porque telepathy protege a tu pokemon de los ataques spread que hitean
+# aliados de tu otro pokemon! si el oponente tiene telepathy no se cubre de
+# mis ataques. hay que tener conocimiento de la perspectiva de una habilidad!"
+#
+# Every block used to be read as the TARGET's, and the target was assumed to
+# be an opponent - so it was always bad news, drawn red. Three cases, and the
+# default of each list is the common one:
+#
+#   foe   it only stops an OPPONENT's move: red on the move, and nothing when
+#         your partner holds it. Armor Tail and Queenly Majesty stop "an
+#         opponent"; Aroma Veil guards its side from the other one; Magic
+#         Bounce on your own partner would send your move back at you.
+#   ally  it only stops an ALLY's move: Telepathy. Useless on a foe, and on
+#         your partner it is the reason to run the spread move - green.
+#   any   the holder is immune whoever attacks. RED, and only red (player,
+#         2026-09-27: "pueden ser negativos para el oponente y positivos para
+#         uno mismo dependiendo de la estrategia... pero solamente por el
+#         pokemon tener la habilidad diria que para el oponente es una
+#         desventaja... si yo tiro earthquake y me switchean a un pokemon con
+#         levitate no le hago nada"). Pairing Earthquake with your own
+#         Levitate is a strategy you choose; a foe's Levitate is a fact you
+#         face - and the tag reports facts. Drawing it green as well would
+#         also print the same name twice on one row. The default for
+#         STOPS_MOVE.
+#
+# STOPS_EFFECT defaults to `foe`: a stat drop or a status is a thing an
+# opponent does to you, and none of those moves is aimed at your own side.
+STOP_WHOSE = {
+    "Telepathy": "ally",
+    "Armor Tail": "foe",
+    "Queenly Majesty": "foe",
+    "Aroma Veil": "foe",
+    "Magic Bounce": "foe",
+}
+
+
 def build(props):
     table, report = {}, {}
     scopes = _scopes(props)
@@ -749,11 +789,20 @@ def build(props):
             entry["why_up"], entry["why_down"] = CONTRARY_UP, CONTRARY_DOWN
             entry["up"] = sorted(n for n, p in props.items() if p["self_up"])
             entry["down"] = sorted(n for n, p in props.items() if p["self_down"])
-        # which of those it STOPS, as opposed to merely blunting
-        if ab in STOPS_MOVE:
-            entry["stop"] = hits
-        elif ab in STOPS_EFFECT:
-            entry["stop"] = [n for n in hits if props[n]["cat"] == "Status"]
+        # which of those it STOPS, as opposed to merely blunting - and from
+        # whose side, which decides whether that is bad news or the point
+        if ab in STOPS_MOVE or ab in STOPS_EFFECT:
+            stopped = (hits if ab in STOPS_MOVE else
+                       [n for n in hits if props[n]["cat"] == "Status"])
+            whose = STOP_WHOSE.get(ab, "any" if ab in STOPS_MOVE else "foe")
+            entry["whose"] = whose
+            if whose != "ally":
+                entry["stop"] = stopped
+            else:
+                # only a move that lands on your own partner can be kept off
+                # it - a single-target move never touches the ally at all
+                entry["ally_safe"] = [n for n in stopped
+                                      if props[n]["hits_ally"]]
         table[ab] = entry
         report[ab] = hits
     return table, report
@@ -821,6 +870,20 @@ def classify(name, table, text):
     if r:
         return "moves-off" if r["side"] == "off" else "moves-def"
     t = clean(text)
+    # SEVERAL STATS AT ONCE IS A STAT ABILITY, even when Speed is one of them.
+    # "speed" sits ahead of "stats" so that Swift Swim is filed by what it is
+    # for; Battle Bond raises Attack, Sp. Atk AND Speed, and the order filed it
+    # under speed the day its text started naming all three (player,
+    # 2026-09-27: "se supone que battle bond da varias estadisticas. deberia
+    # quedar en stats, no?").
+    # Case-sensitive on purpose: the text capitalises a STAT ("its Attack")
+    # and not the noun ("hit by an attack").
+    named = sum(1 for p in (r"(?<!Special )\bAttack\b", r"(?<!Special )\bDefen[cs]e\b",
+                            r"Special Attack|Sp\. ?Atk",
+                            r"Special Defen[cs]e|Sp\. ?Def", r"\bSpeed\b")
+                if re.search(p, t))
+    if named >= 2:
+        return "stats"
     for tag, pat in CLASS_ORDER:
         if re.search(pat, t, re.I):
             return tag

@@ -1,5 +1,5 @@
 {
- "_comment": "Merged by scripts/build_text_facts.py. A move Champions has is described by Smogon's own dex page (`smogon`), with our crit rate and level added where it leaves them as words. Otherwise, per entry, the text that states more wins - numbers, stages, turns - and a bare 'gives the X status' is penalised. Ties go to Serebii. Every original is kept.",
+ "_comment": "Merged by scripts/build_text_facts.py. A move or ability Champions has is described by Smogon's own Champions dex page (`smogon`) - a move with our crit rate and level added where it leaves them as words. Otherwise, per entry, the text that states more wins - numbers, stages, turns - and a bare 'gives the X status' is penalised. Ties go to Serebii. Every original is kept.",
  "moves": {
   "Accelerock": {
    "text": "No additional effect.",
@@ -3588,52 +3588,60 @@
  },
  "abilities": {
   "Adaptability": {
-   "text": "Increases the Same Type Attack Bonus from *1.5 to *2.",
-   "source": "serebii",
+   "text": "This Pokemon's moves that match one of its types have a same-type attack bonus (STAB) of 2 instead of 1.5.",
+   "source": "smogon",
    "serebii": "Increases the Same Type Attack Bonus from *1.5 to *2.",
-   "pokebase": "Increases the Same Type Attack Bonus from *1.5 to *2."
+   "pokebase": "Increases the Same Type Attack Bonus from *1.5 to *2.",
+   "smogon": "This Pokemon's moves that match one of its types have a same-type attack bonus (STAB) of 2 instead of 1.5."
   },
   "Aerilate": {
-   "text": "Increases the power of Normal-type moves by 20%. It then changes those moves to Flying-type.",
-   "source": "serebii",
+   "text": "This Pokemon's Normal-type moves become Flying-type moves and have their power multiplied by 1.2. This effect comes after other effects that change a move's type, but before Ion Deluge and Electrify's effects.",
+   "source": "smogon",
    "serebii": "Increases the power of Normal-type moves by 20%. It then changes those moves to Flying-type.",
-   "pokebase": "Normal-type moves become Flying-type moves. The power of those moves is boosted a little."
+   "pokebase": "Normal-type moves become Flying-type moves. The power of those moves is boosted a little.",
+   "smogon": "This Pokemon's Normal-type moves become Flying-type moves and have their power multiplied by 1.2. This effect comes after other effects that change a move's type, but before Ion Deluge and Electrify's effects."
   },
   "Aftermath": {
-   "text": "The foe that dealt the final hit loses 1/4 of its maximum HP if the move made physical contact.",
-   "source": "serebii",
+   "text": "If this Pokemon is knocked out with a contact move, that move's user loses 1/4 of its maximum HP, rounded down. This effect is prevented if the move's user has the Magic Guard Ability or if any active Pokemon has the Damp Ability.",
+   "source": "smogon",
    "serebii": "The foe that dealt the final hit loses 1/4 of its maximum HP if the move made physical contact.",
-   "pokebase": "Damages the attacker if it knocks out the Pokémon with a move that makes direct contact."
+   "pokebase": "Damages the attacker if it knocks out the Pokémon with a move that makes direct contact.",
+   "smogon": "If this Pokemon is knocked out with a contact move, that move's user loses 1/4 of its maximum HP, rounded down. This effect is prevented if the move's user has the Magic Guard Ability or if any active Pokemon has the Damp Ability."
   },
   "Analytic": {
-   "text": "Attack power increases by 30% if the Pokémon is the last Pokémon to attack this turn",
-   "source": "serebii",
+   "text": "The power of this Pokemon's move is multiplied by 1.3 if it is the last to move in a turn. Does not affect Doom Desire and Future Sight.",
+   "source": "smogon",
    "serebii": "Attack power increases by 30% if the Pokémon is the last Pokémon to attack this turn",
-   "pokebase": "Boosts the power of the Pokémon's move if it is the last to act that turn."
+   "pokebase": "Boosts the power of the Pokémon's move if it is the last to act that turn.",
+   "smogon": "The power of this Pokemon's move is multiplied by 1.3 if it is the last to move in a turn. Does not affect Doom Desire and Future Sight."
   },
   "Anger Point": {
-   "text": "Increases Attack to maximum level upon taking a critical hit.",
-   "source": "serebii",
+   "text": "If this Pokemon, but not its substitute, is struck by a critical hit, its Attack is raised by 12 stages.",
+   "source": "smogon",
    "serebii": "Increases Attack to maximum level upon taking a critical hit.",
-   "pokebase": "The Pokémon is angered when it takes a critical hit, and that maxes its Attack stat."
+   "pokebase": "The Pokémon is angered when it takes a critical hit, and that maxes its Attack stat.",
+   "smogon": "If this Pokemon, but not its substitute, is struck by a critical hit, its Attack is raised by 12 stages."
   },
   "Anticipation": {
-   "text": "Warns when the foe knows 1-hit KO or super-effective moves.",
-   "source": "serebii",
+   "text": "On switch-in, this Pokemon is alerted if any opposing Pokemon has an attacking move with a type that is super effective against this Pokemon, or any OHKO move. This effect considers Hidden Power to be its determined type, and every other move to be its original type.",
+   "source": "smogon",
    "serebii": "Warns when the foe knows 1-hit KO or super-effective moves.",
-   "pokebase": "The Pokémon can sense an opposing Pokémon's dangerous moves."
+   "pokebase": "The Pokémon can sense an opposing Pokémon's dangerous moves.",
+   "smogon": "On switch-in, this Pokemon is alerted if any opposing Pokemon has an attacking move with a type that is super effective against this Pokemon, or any OHKO move. This effect considers Hidden Power to be its determined type, and every other move to be its original type."
   },
   "Armor Tail": {
-   "text": "The mysterious tail covering the Pokémon's head makes opponents unable to use priority moves against the Pokémon or its allies.",
-   "source": "serebii",
+   "text": "Priority moves used by opposing Pokemon targeting this Pokemon or its allies are prevented from having an effect.",
+   "source": "smogon",
    "serebii": "The mysterious tail covering the Pokémon's head makes opponents unable to use priority moves against the Pokémon or its allies.",
-   "pokebase": "The mysterious tail covering the Pokémon's head makes opponents unable to use priority moves against the Pokémon or its allies."
+   "pokebase": "The mysterious tail covering the Pokémon's head makes opponents unable to use priority moves against the Pokémon or its allies.",
+   "smogon": "Priority moves used by opposing Pokemon targeting this Pokemon or its allies are prevented from having an effect."
   },
   "Aroma Veil": {
-   "text": "Protects itself and its allies from attacks that limit their move choices.",
-   "source": "serebii",
+   "text": "This Pokemon and its allies cannot become affected by Attract, Disable, Encore, Heal Block, Taunt, or Torment.",
+   "source": "smogon",
    "serebii": "Protects itself and its allies from attacks that limit their move choices.",
-   "pokebase": "Protects the Pokémon and its allies from effects that prevent the use of moves."
+   "pokebase": "Protects the Pokémon and its allies from effects that prevent the use of moves.",
+   "smogon": "This Pokemon and its allies cannot become affected by Attract, Disable, Encore, Heal Block, Taunt, or Torment."
   },
   "Aura Guard": {
    "text": "Reduces the amount of damage received by moves that make physical contact by 50%",
@@ -3642,1246 +3650,1453 @@
    "pokebase": "Halves the damage the Pokémon takes from contact moves."
   },
   "Battle Armor": {
-   "text": "Opponent’s moves cannot Critical Hit.",
-   "source": "serebii",
+   "text": "This Pokemon cannot be struck by a critical hit.",
+   "source": "smogon",
    "serebii": "Opponent’s moves cannot Critical Hit.",
-   "pokebase": "Hard armor protects the Pokémon from critical hits."
+   "pokebase": "Hard armor protects the Pokémon from critical hits.",
+   "smogon": "This Pokemon cannot be struck by a critical hit."
   },
   "Battle Bond": {
-   "text": "When the Pokémon knocks out a target, its bond with its Trainer is strengthened, and its Attack, Sp. Atk, and Speed stats are boosted.",
-   "source": "pokebase",
+   "text": "If this Pokemon is a Greninja, its Attack, Special Attack, and Speed are raised by 1 stage if it attacks and knocks out another Pokemon. This effect can only happen once per battle.",
+   "source": "smogon",
    "serebii": "",
-   "pokebase": "When the Pokémon knocks out a target, its bond with its Trainer is strengthened, and its Attack, Sp. Atk, and Speed stats are boosted."
+   "pokebase": "When the Pokémon knocks out a target, its bond with its Trainer is strengthened, and its Attack, Sp. Atk, and Speed stats are boosted.",
+   "smogon": "If this Pokemon is a Greninja, its Attack, Special Attack, and Speed are raised by 1 stage if it attacks and knocks out another Pokemon. This effect can only happen once per battle."
   },
   "Berserk": {
-   "text": "Boosts the Pokémon's Sp. Atk stat when it takes a hit that causes its HP to become half or less.",
-   "source": "serebii",
+   "text": "When this Pokemon has more than 1/2 its maximum HP and takes damage from an attack bringing it to 1/2 or less of its maximum HP, its Special Attack is raised by 1 stage. This effect applies after all hits from a multi-hit move. This effect is prevented if the move had a secondary effect removed by the Sheer Force Ability.",
+   "source": "smogon",
    "serebii": "Boosts the Pokémon's Sp. Atk stat when it takes a hit that causes its HP to become half or less.",
-   "pokebase": "Boosts the Pokémon's Sp. Atk stat when it takes a hit that causes its HP to become half or less."
+   "pokebase": "Boosts the Pokémon's Sp. Atk stat when it takes a hit that causes its HP to become half or less.",
+   "smogon": "When this Pokemon has more than 1/2 its maximum HP and takes damage from an attack bringing it to 1/2 or less of its maximum HP, its Special Attack is raised by 1 stage. This effect applies after all hits from a multi-hit move. This effect is prevented if the move had a secondary effect removed by the Sheer Force Ability."
   },
   "Big Pecks": {
-   "text": "Protects the Pokémon from Defense-lowering effects.",
-   "source": "serebii",
+   "text": "Prevents other Pokemon from lowering this Pokemon's Defense stat stage.",
+   "source": "smogon",
    "serebii": "Protects the Pokémon from Defense-lowering effects.",
-   "pokebase": "Prevents the Pokémon from having its Defense stat lowered."
+   "pokebase": "Prevents the Pokémon from having its Defense stat lowered.",
+   "smogon": "Prevents other Pokemon from lowering this Pokemon's Defense stat stage."
   },
   "Blaze": {
-   "text": "When HP is below 1/3rd its maximum, power of Fire-type moves is increased by 50%.",
-   "source": "serebii",
+   "text": "When this Pokemon has 1/3 or less of its maximum HP, rounded down, its offensive stat is multiplied by 1.5 while using a Fire-type attack.",
+   "source": "smogon",
    "serebii": "When HP is below 1/3rd its maximum, power of Fire-type moves is increased by 50%.",
-   "pokebase": "Powers up Fire-type moves when the Pokémon's HP is low."
+   "pokebase": "Powers up Fire-type moves when the Pokémon's HP is low.",
+   "smogon": "When this Pokemon has 1/3 or less of its maximum HP, rounded down, its offensive stat is multiplied by 1.5 while using a Fire-type attack."
   },
   "Bulletproof": {
-   "text": "Protects the Pokémon from some ball and bomb moves.",
-   "source": "serebii",
+   "text": "This Pokemon is immune to bullet moves.",
+   "source": "smogon",
    "serebii": "Protects the Pokémon from some ball and bomb moves.",
-   "pokebase": "Protects the Pokémon from some ball and bomb moves."
+   "pokebase": "Protects the Pokémon from some ball and bomb moves.",
+   "smogon": "This Pokemon is immune to bullet moves."
   },
   "Cheek Pouch": {
-   "text": "Restores HP as well when the Pokémon eats a Berry.",
-   "source": "serebii",
+   "text": "If this Pokemon eats a held Berry, it restores 1/3 of its maximum HP, rounded down, in addition to the Berry's effect. This effect can also activate after the effects of Bug Bite, Fling, Pluck, Stuff Cheeks, and Teatime if the eaten Berry had an effect on this Pokemon.",
+   "source": "smogon",
    "serebii": "Restores HP as well when the Pokémon eats a Berry.",
-   "pokebase": "The Pokémon's HP is restored when it eats any Berry, in addition to the Berry's usual effect."
+   "pokebase": "The Pokémon's HP is restored when it eats any Berry, in addition to the Berry's usual effect.",
+   "smogon": "If this Pokemon eats a held Berry, it restores 1/3 of its maximum HP, rounded down, in addition to the Berry's effect. This effect can also activate after the effects of Bug Bite, Fling, Pluck, Stuff Cheeks, and Teatime if the eaten Berry had an effect on this Pokemon."
   },
   "Chlorophyll": {
-   "text": "When sunny, the Pokémon’s Speed doubles.",
-   "source": "serebii",
+   "text": "If Sun is active, this Pokemon's Speed is doubled. This effect is prevented if this Pokemon is holding a Utility Umbrella.",
+   "source": "smogon",
    "serebii": "When sunny, the Pokémon’s Speed doubles.",
-   "pokebase": "Boosts the Pokémon's Speed stat in harsh sunlight."
+   "pokebase": "Boosts the Pokémon's Speed stat in harsh sunlight.",
+   "smogon": "If Sun is active, this Pokemon's Speed is doubled. This effect is prevented if this Pokemon is holding a Utility Umbrella."
   },
   "Clear Body": {
-   "text": "Opponents’ moves which lower this Pokémon’s stats have no effect. However this Pokémon may lower its own stats with its own moves.",
-   "source": "serebii",
+   "text": "Prevents other Pokemon from lowering this Pokemon's stat stages.",
+   "source": "smogon",
    "serebii": "Opponents’ moves which lower this Pokémon’s stats have no effect. However this Pokémon may lower its own stats with its own moves.",
-   "pokebase": "Prevents other Pokémon's moves or Abilities from lowering the Pokémon's stats."
+   "pokebase": "Prevents other Pokémon's moves or Abilities from lowering the Pokémon's stats.",
+   "smogon": "Prevents other Pokemon from lowering this Pokemon's stat stages."
   },
   "Cloud Nine": {
-   "text": "All weather effects are negated while the Pokémon is on the field.",
-   "source": "serebii",
+   "text": "While this Pokemon is active, the effects of weather conditions are disabled.",
+   "source": "smogon",
    "serebii": "All weather effects are negated while the Pokémon is on the field.",
-   "pokebase": "Eliminates the effects of weather."
+   "pokebase": "Eliminates the effects of weather.",
+   "smogon": "While this Pokemon is active, the effects of weather conditions are disabled."
   },
   "Competitive": {
-   "text": "Raises Sp. Atk stat by two stages whenever a stat is lowered",
-   "source": "serebii",
+   "text": "This Pokemon's Special Attack is raised by 2 stages for each of its stat stages that is lowered by an opposing Pokemon.",
+   "source": "smogon",
    "serebii": "Raises Sp. Atk stat by two stages whenever a stat is lowered",
-   "pokebase": "Boosts the Pokémon's Sp. Atk stat sharply when its stats are lowered by an opposing Pokémon."
+   "pokebase": "Boosts the Pokémon's Sp. Atk stat sharply when its stats are lowered by an opposing Pokémon.",
+   "smogon": "This Pokemon's Special Attack is raised by 2 stages for each of its stat stages that is lowered by an opposing Pokemon."
   },
   "Compoundeyes": {
-   "text": "Raises the Pokémon’s accuracy by 30%.",
-   "source": "serebii",
+   "text": "This Pokemon's moves have their accuracy multiplied by 1.3.",
+   "source": "smogon",
    "serebii": "Raises the Pokémon’s accuracy by 30%.",
-   "pokebase": ""
+   "pokebase": "",
+   "smogon": "This Pokemon's moves have their accuracy multiplied by 1.3."
   },
   "Contrary": {
-   "text": "Moves used on the Pokémon that raise stats lower the stats, while the moves that lower the stats raise the stat",
-   "source": "serebii",
+   "text": "If this Pokemon has a stat stage raised it is lowered instead, and vice versa.",
+   "source": "smogon",
    "serebii": "Moves used on the Pokémon that raise stats lower the stats, while the moves that lower the stats raise the stat",
-   "pokebase": "Reverses any stat changes affecting the Pokémon so that attempts to boost its stats instead lower them—and attempts to lower its stats will boost them."
+   "pokebase": "Reverses any stat changes affecting the Pokémon so that attempts to boost its stats instead lower them—and attempts to lower its stats will boost them.",
+   "smogon": "If this Pokemon has a stat stage raised it is lowered instead, and vice versa."
   },
   "Corrosion": {
-   "text": "The Pokémon can poison the target even if it's a Steel or Poison type.",
-   "source": "serebii",
+   "text": "This Pokemon can poison or badly poison a Pokemon regardless of its typing.",
+   "source": "smogon",
    "serebii": "The Pokémon can poison the target even if it's a Steel or Poison type.",
-   "pokebase": "The Pokémon can poison the target even if it's a Steel or Poison type."
+   "pokebase": "The Pokémon can poison the target even if it's a Steel or Poison type.",
+   "smogon": "This Pokemon can poison or badly poison a Pokemon regardless of its typing."
   },
   "Cud Chew": {
-   "text": "When the Pokémon eats a Berry, it will regurgitate that Berry at the end of the next turn and eat it one more time.",
-   "source": "serebii",
+   "text": "If this Pokemon eats a Berry, it will eat that Berry again at the end of the next turn.",
+   "source": "smogon",
    "serebii": "When the Pokémon eats a Berry, it will regurgitate that Berry at the end of the next turn and eat it one more time.",
-   "pokebase": "When the Pokémon eats a Berry, it will regurgitate that Berry at the end of the next turn and eat it one more time."
+   "pokebase": "When the Pokémon eats a Berry, it will regurgitate that Berry at the end of the next turn and eat it one more time.",
+   "smogon": "If this Pokemon eats a Berry, it will eat that Berry again at the end of the next turn."
   },
   "Curious Medicine": {
-   "text": "When the Pokémon is brought into battle, any stat alterations of allies are removed",
-   "source": "serebii",
+   "text": "On switch-in, this Pokemon's allies have their stat stages reset to 0.",
+   "source": "smogon",
    "serebii": "When the Pokémon is brought into battle, any stat alterations of allies are removed",
-   "pokebase": "When the Pokémon enters a battle, it scatters medicine from its shell, which removes all stat changes from allies."
+   "pokebase": "When the Pokémon enters a battle, it scatters medicine from its shell, which removes all stat changes from allies.",
+   "smogon": "On switch-in, this Pokemon's allies have their stat stages reset to 0."
   },
   "Cursed Body": {
-   "text": "When a move hits the Pokémon, that move has a 30% chance of getting disabled",
-   "source": "serebii",
+   "text": "If this Pokemon is hit by an attack, there is a 30% chance that move gets disabled unless one of the attacker's moves is already disabled.",
+   "source": "smogon",
    "serebii": "When a move hits the Pokémon, that move has a 30% chance of getting disabled",
-   "pokebase": "May disable a move that has dealt damage to the Pokémon."
+   "pokebase": "May disable a move that has dealt damage to the Pokémon.",
+   "smogon": "If this Pokemon is hit by an attack, there is a 30% chance that move gets disabled unless one of the attacker's moves is already disabled."
   },
   "Cute Charm": {
-   "text": "The opponent has a 30% chance of being induced with Attract when using an attack, that requires physical contact, against this Pokémon.",
-   "source": "serebii",
+   "text": "There is a 30% chance a Pokemon making contact with this Pokemon will become infatuated if it is of the opposite gender.",
+   "source": "smogon",
    "serebii": "The opponent has a 30% chance of being induced with Attract when using an attack, that requires physical contact, against this Pokémon.",
-   "pokebase": "The Pokémon may infatuate attackers that make direct contact with it."
+   "pokebase": "The Pokémon may infatuate attackers that make direct contact with it.",
+   "smogon": "There is a 30% chance a Pokemon making contact with this Pokemon will become infatuated if it is of the opposite gender."
   },
   "Damp": {
-   "text": "Explosion, Selfdestruct, Mind Blown & Misty Explosion will not work while the Pokémon is on the field.",
-   "source": "serebii",
+   "text": "While this Pokemon is active, Explosion, Mind Blown, Misty Explosion, Self-Destruct, and the Aftermath Ability are prevented from having an effect.",
+   "source": "smogon",
    "serebii": "Explosion, Selfdestruct, Mind Blown & Misty Explosion will not work while the Pokémon is on the field.",
-   "pokebase": "The Pokémon dampens its surroundings, preventing all Pokémon from using explosive moves such as Self-Destruct."
+   "pokebase": "The Pokémon dampens its surroundings, preventing all Pokémon from using explosive moves such as Self-Destruct.",
+   "smogon": "While this Pokemon is active, Explosion, Mind Blown, Misty Explosion, Self-Destruct, and the Aftermath Ability are prevented from having an effect."
   },
   "Defiant": {
-   "text": "Attack is raised by two stages when the Pokémon has its stats lowered. Doesn't work on self inflicted stat drops or drops from allies",
-   "source": "serebii",
+   "text": "This Pokemon's Attack is raised by 2 stages for each of its stat stages that is lowered by an opposing Pokemon.",
+   "source": "smogon",
    "serebii": "Attack is raised by two stages when the Pokémon has its stats lowered. Doesn't work on self inflicted stat drops or drops from allies",
-   "pokebase": "If the Pokémon has any stat lowered by an opposing Pokémon, its Attack stat will be boosted sharply."
+   "pokebase": "If the Pokémon has any stat lowered by an opposing Pokémon, its Attack stat will be boosted sharply.",
+   "smogon": "This Pokemon's Attack is raised by 2 stages for each of its stat stages that is lowered by an opposing Pokemon."
   },
   "Disguise": {
-   "text": "Once per battle, the Pokémon can withstand one damaging attack without receiving any damage. Damage inflicted through entry hazards, weather or status conditions will not break the disguise. Damage from Confusion will break the Disguise. It causes 1/8th of max Hit Point damage when it breaks",
-   "source": "serebii",
+   "text": "If this Pokemon is a Mimikyu, the first hit it takes in battle deals 0 neutral damage. Its disguise is then broken, it changes to Busted Form, and it loses 1/8 of its max HP. Confusion damage also breaks the disguise.",
+   "source": "smogon",
    "serebii": "Once per battle, the Pokémon can withstand one damaging attack without receiving any damage. Damage inflicted through entry hazards, weather or status conditions will not break the disguise. Damage from Confusion will break the Disguise. It causes 1/8th of max Hit Point damage when it breaks",
-   "pokebase": "Once per battle, the shroud that covers the Pokémon can protect it from an attack."
+   "pokebase": "Once per battle, the shroud that covers the Pokémon can protect it from an attack.",
+   "smogon": "If this Pokemon is a Mimikyu, the first hit it takes in battle deals 0 neutral damage. Its disguise is then broken, it changes to Busted Form, and it loses 1/8 of its max HP. Confusion damage also breaks the disguise."
   },
   "Dragonize": {
-   "text": "The Pokémon's Normal-type moves become Dragon-type moves and their power is boosted by 20%.",
-   "source": "serebii",
+   "text": "This Pokemon's Normal-type moves become Dragon-type moves and have their power multiplied by 1.2. This effect comes after other effects that change a move's type, but before Ion Deluge and Electrify's effects.",
+   "source": "smogon",
    "serebii": "The Pokémon's Normal-type moves become Dragon-type moves and their power is boosted by 20%.",
-   "pokebase": "The Pokémon's Normal-type moves become Dragon-type moves and their power is boosted by 20%."
+   "pokebase": "The Pokémon's Normal-type moves become Dragon-type moves and their power is boosted by 20%.",
+   "smogon": "This Pokemon's Normal-type moves become Dragon-type moves and have their power multiplied by 1.2. This effect comes after other effects that change a move's type, but before Ion Deluge and Electrify's effects."
   },
   "Drizzle": {
-   "text": "Weather changes to Heavy Rain when the Pokémon enters the battle. As of X & Y, this lasts 5 turns.",
-   "source": "serebii",
+   "text": "On switch-in, this Pokemon summons Rain, for 5 turns.",
+   "source": "smogon",
    "serebii": "Weather changes to Heavy Rain when the Pokémon enters the battle. As of X & Y, this lasts 5 turns.",
-   "pokebase": "The Pokémon makes it rain when it enters a battle."
+   "pokebase": "The Pokémon makes it rain when it enters a battle.",
+   "smogon": "On switch-in, this Pokemon summons Rain."
   },
   "Drought": {
-   "text": "Weather changes to Intense Sunshine when the Pokémon enters the battle. As of X & Y, this lasts 5 turns.",
-   "source": "serebii",
+   "text": "On switch-in, this Pokemon summons Sun, for 5 turns.",
+   "source": "smogon",
    "serebii": "Weather changes to Intense Sunshine when the Pokémon enters the battle. As of X & Y, this lasts 5 turns.",
-   "pokebase": "Turns the sunlight harsh when the Pokémon enters a battle."
+   "pokebase": "Turns the sunlight harsh when the Pokémon enters a battle.",
+   "smogon": "On switch-in, this Pokemon summons Sun."
   },
   "Dry Skin": {
-   "text": "HP is restored when hit by Water-type moves or when it is raining but also makes the Pokémon weak to Fire-type moves and reduces HP during strong sunlight.",
-   "source": "serebii",
+   "text": "This Pokemon is immune to Water-type moves and restores 1/4 of its maximum HP, rounded down, when hit by a Water-type move. The power of Fire-type moves is multiplied by 1.25 when used on this Pokemon. At the end of each turn, this Pokemon restores 1/8 of its maximum HP, rounded down, if the weather is Rain, and loses 1/8 of its maximum HP, rounded down, if the weather is Sun. The weather effects are prevented if this Pokemon is holding a Utility Umbrella.",
+   "source": "smogon",
    "serebii": "HP is restored when hit by Water-type moves or when it is raining but also makes the Pokémon weak to Fire-type moves and reduces HP during strong sunlight.",
-   "pokebase": "Restores the Pokémon's HP in rain or when it is hit by Water-type moves. Reduces HP in harsh sunlight, and increases the damage received from Fire-type moves."
+   "pokebase": "Restores the Pokémon's HP in rain or when it is hit by Water-type moves. Reduces HP in harsh sunlight, and increases the damage received from Fire-type moves.",
+   "smogon": "This Pokemon is immune to Water-type moves and restores 1/4 of its maximum HP, rounded down, when hit by a Water-type move. The power of Fire-type moves is multiplied by 1.25 when used on this Pokemon. At the end of each turn, this Pokemon restores 1/8 of its maximum HP, rounded down, if the weather is Rain, and loses 1/8 of its maximum HP, rounded down, if the weather is Sun. The weather effects are prevented if this Pokemon is holding a Utility Umbrella."
   },
   "Early Bird": {
-   "text": "Sleep conditions lasts for half as long, rounding down. For example, half of three turns is 1.5, which rounds down to one turn. When the number of turns to sleep is one, half of this rounded down is zero, and the Pokémon wakes up instantly.",
-   "source": "serebii",
+   "text": "This Pokemon's sleep counter drops by 2 instead of 1.",
+   "source": "smogon",
    "serebii": "Sleep conditions lasts for half as long, rounding down. For example, half of three turns is 1.5, which rounds down to one turn. When the number of turns to sleep is one, half of this rounded down is zero, and the Pokémon wakes up instantly.",
-   "pokebase": "The Pokémon awakens from sleep twice as fast as other Pokémon."
+   "pokebase": "The Pokémon awakens from sleep twice as fast as other Pokémon.",
+   "smogon": "This Pokemon's sleep counter drops by 2 instead of 1."
   },
   "Earth Eater": {
-   "text": "The user recovers 25% of its maximum Hit Points when a Ground-type move is used against it",
-   "source": "serebii",
+   "text": "This Pokemon is immune to Ground-type moves and restores 1/4 of its maximum HP, rounded down, when hit by a Ground-type move.",
+   "source": "smogon",
    "serebii": "The user recovers 25% of its maximum Hit Points when a Ground-type move is used against it",
-   "pokebase": "If hit by a Ground-type move, the Pokémon has its HP restored instead of taking damage."
+   "pokebase": "If hit by a Ground-type move, the Pokémon has its HP restored instead of taking damage.",
+   "smogon": "This Pokemon is immune to Ground-type moves and restores 1/4 of its maximum HP, rounded down, when hit by a Ground-type move."
   },
   "Eelevate": {
-   "text": "The Pokémon floats off the ground, making it immune to Ground-type moves, as well as the Spikes, Toxic Spikes, and Sticky Web statuses. When the Pokémon knocks out a target with an attack, its highest stat is boosted by 1 stage.",
-   "source": "serebii",
+   "text": "This Pokemon is immune to Ground-type attacks and the effects of Spikes, Toxic Spikes, Sticky Web, and the Arena Trap Ability. The effects of Gravity, Ingrain, Smack Down, Thousand Arrows, and Iron Ball nullify the immunity. Thousand Arrows can hit this Pokemon as if it did not have this Ability. This Pokemon's highest stat is raised by 1 stage if it attacks and knocks out another Pokemon. Stat stage changes are not considered. If multiple stats are tied, Attack, Defense, Special Attack, Special Defense, and Speed are prioritized in that order.",
+   "source": "smogon",
    "serebii": "The Pokémon floats off the ground, making it immune to Ground-type moves, as well as the Spikes, Toxic Spikes, and Sticky Web statuses. When the Pokémon knocks out a target with an attack, its highest stat is boosted by 1 stage.",
-   "pokebase": "The Pokémon floats off the ground, making it immune to Ground-type moves, as well as the Spikes, Toxic Spikes, and Sticky Web statuses. When the Pokémon knocks out a target with an attack, its highest stat is boosted by 1 stage."
+   "pokebase": "The Pokémon floats off the ground, making it immune to Ground-type moves, as well as the Spikes, Toxic Spikes, and Sticky Web statuses. When the Pokémon knocks out a target with an attack, its highest stat is boosted by 1 stage.",
+   "smogon": "This Pokemon is immune to Ground-type attacks and the effects of Spikes, Toxic Spikes, Sticky Web, and the Arena Trap Ability. The effects of Gravity, Ingrain, Smack Down, Thousand Arrows, and Iron Ball nullify the immunity. Thousand Arrows can hit this Pokemon as if it did not have this Ability. This Pokemon's highest stat is raised by 1 stage if it attacks and knocks out another Pokemon. Stat stage changes are not considered. If multiple stats are tied, Attack, Defense, Special Attack, Special Defense, and Speed are prioritized in that order."
   },
   "Effect Spore": {
-   "text": "The opponent has a 10% chance of being induced by PARALYZE, POISON, or SLEEP when using an attack, that requires physical contact, against this Pokémon.",
-   "source": "serebii",
+   "text": "30% chance a Pokemon making contact with this Pokemon will be poisoned, paralyzed, or fall asleep.",
+   "source": "smogon",
    "serebii": "The opponent has a 10% chance of being induced by PARALYZE, POISON, or SLEEP when using an attack, that requires physical contact, against this Pokémon.",
-   "pokebase": "When the Pokémon is hit by a contact move, the attacker has a 30% chance of being poisoned, paralyzed, or put to sleep. Grass-type Pokémon are unaffected."
+   "pokebase": "When the Pokémon is hit by a contact move, the attacker has a 30% chance of being poisoned, paralyzed, or put to sleep. Grass-type Pokémon are unaffected.",
+   "smogon": "30% chance a Pokemon making contact with this Pokemon will be poisoned, paralyzed, or fall asleep."
   },
   "Electric Surge": {
-   "text": "Activates Electric Terrain for 5 turns when the Pokémon enters a battle.",
-   "source": "serebii",
+   "text": "On switch-in, this Pokemon summons Electric Terrain, for 5 turns.",
+   "source": "smogon",
    "serebii": "Activates Electric Terrain for 5 turns when the Pokémon enters a battle.",
-   "pokebase": "Turns the ground into Electric Terrain when the Pokémon enters a battle."
+   "pokebase": "Turns the ground into Electric Terrain when the Pokémon enters a battle.",
+   "smogon": "On switch-in, this Pokemon summons Electric Terrain."
   },
   "Electromorphosis": {
-   "text": "The Pokémon becomes charged when it takes damage, boosting the power of the next Electric-type move the Pokémon uses.",
-   "source": "serebii",
+   "text": "This Pokemon gains the Charge effect when it takes a hit from an attack.",
+   "source": "smogon",
    "serebii": "The Pokémon becomes charged when it takes damage, boosting the power of the next Electric-type move the Pokémon uses.",
-   "pokebase": "The Pokémon becomes charged when it takes damage, boosting the power of the next Electric-type move the Pokémon uses."
+   "pokebase": "The Pokémon becomes charged when it takes damage, boosting the power of the next Electric-type move the Pokémon uses.",
+   "smogon": "This Pokemon gains the Charge effect when it takes a hit from an attack."
   },
   "Emergency Exit": {
-   "text": "When the Pokémon's Hit Points hit 50% or less, the Pokémon will switch out. Works once per battle. The Pokémon will not switch out if it drops below 50% due to Confusion, Weather, use of Substitute or when the damage inflicted is by a Pokémon with the Sheer Force ability. It will not activate if health is brought back up above 50% due to a hold item",
-   "source": "serebii",
+   "text": "When this Pokemon has more than 1/2 its maximum HP and takes damage bringing it to 1/2 or less of its maximum HP, it immediately switches out to a chosen ally. This effect applies after all hits from a multi-hit move. This effect is prevented if the move had a secondary effect removed by the Sheer Force Ability. This effect applies to both direct and indirect damage, except Curse and Substitute on use, Belly Drum, Pain Split, and confusion damage.",
+   "source": "smogon",
    "serebii": "When the Pokémon's Hit Points hit 50% or less, the Pokémon will switch out. Works once per battle. The Pokémon will not switch out if it drops below 50% due to Confusion, Weather, use of Substitute or when the damage inflicted is by a Pokémon with the Sheer Force ability. It will not activate if health is brought back up above 50% due to a hold item",
-   "pokebase": "The Pokémon switches out of battle when its HP drops to 1/2 or less of its max."
+   "pokebase": "The Pokémon switches out of battle when its HP drops to 1/2 or less of its max.",
+   "smogon": "When this Pokemon has more than 1/2 its maximum HP and takes damage bringing it to 1/2 or less of its maximum HP, it immediately switches out to a chosen ally. This effect applies after all hits from a multi-hit move. This effect is prevented if the move had a secondary effect removed by the Sheer Force Ability. This effect applies to both direct and indirect damage, except Curse and Substitute on use, Belly Drum, Pain Split, and confusion damage."
   },
   "Fairy Aura": {
-   "text": "Powers up every Pokémon in play's Fairy-type moves by 33%",
-   "source": "serebii",
+   "text": "While this Pokemon is active, the power of Fairy-type moves used by active Pokemon is multiplied by 1.33.",
+   "source": "smogon",
    "serebii": "Powers up every Pokémon in play's Fairy-type moves by 33%",
-   "pokebase": "Powers up every Pokémon in play's Fairy-type moves by 33%"
+   "pokebase": "Powers up every Pokémon in play's Fairy-type moves by 33%",
+   "smogon": "While this Pokemon is active, the power of Fairy-type moves used by active Pokemon is multiplied by 1.33."
   },
   "Filter": {
-   "text": "Damage by super-effective moves is reduced by 25%.",
-   "source": "serebii",
+   "text": "This Pokemon receives 3/4 damage from supereffective attacks.",
+   "source": "smogon",
    "serebii": "Damage by super-effective moves is reduced by 25%.",
-   "pokebase": "Reduces the power of supereffective attacks that hit the Pokémon."
+   "pokebase": "Reduces the power of supereffective attacks that hit the Pokémon.",
+   "smogon": "This Pokemon receives 3/4 damage from supereffective attacks."
   },
   "Fire Mane": {
-   "text": "Boosts the power of the Pokémon's Fire-type moves by 50%.",
-   "source": "serebii",
+   "text": "This Pokemon's offensive stat is multiplied by 1.5 while using a Fire-type attack.",
+   "source": "smogon",
    "serebii": "Boosts the power of the Pokémon's Fire-type moves by 50%.",
-   "pokebase": "Boosts the power of the Pokémon's Fire-type moves by 50%."
+   "pokebase": "Boosts the power of the Pokémon's Fire-type moves by 50%.",
+   "smogon": "This Pokemon's offensive stat is multiplied by 1.5 while using a Fire-type attack."
   },
   "Flame Body": {
-   "text": "The opponent has a 30% chance of being induced with Burn when using an attack, that requires physical contact, against this Pokémon.",
-   "source": "serebii",
+   "text": "30% chance a Pokemon making contact with this Pokemon will be burned.",
+   "source": "smogon",
    "serebii": "The opponent has a 30% chance of being induced with Burn when using an attack, that requires physical contact, against this Pokémon.",
-   "pokebase": "Contact with the Pokémon may burn the attacker."
+   "pokebase": "Contact with the Pokémon may burn the attacker.",
+   "smogon": "30% chance a Pokemon making contact with this Pokemon will be burned."
   },
   "Flash Fire": {
-   "text": "Activates when user is hit by a damaging Fire-type move (including Fire-type Hidden Power). Once activated, user’s Fire-type moves deal 1.5 times damage. While this ability is in effect, this Pokémon is immune to damage from Fire-type attacks and Fire-type Hidden Power (accuracy and effect from these moves are ignored). For Fire-type Pokémon with this ability, Will-O-Wisp activates this ability without having an effect. :",
-   "source": "serebii",
+   "text": "This Pokemon is immune to Fire-type moves. The first time it is hit by a Fire-type move, its offensive stat is multiplied by 1.5 while using a Fire-type attack as long as it remains active and has this Ability. If this Pokemon is frozen, it cannot be defrosted by Fire-type attacks.",
+   "source": "smogon",
    "serebii": "Activates when user is hit by a damaging Fire-type move (including Fire-type Hidden Power). Once activated, user’s Fire-type moves deal 1.5 times damage. While this ability is in effect, this Pokémon is immune to damage from Fire-type attacks and Fire-type Hidden Power (accuracy and effect from these moves are ignored). For Fire-type Pokémon with this ability, Will-O-Wisp activates this ability without having an effect. :",
-   "pokebase": "If hit by a Fire-type move, the Pokémon absorbs the flames and uses them to power up its own Fire-type moves."
+   "pokebase": "If hit by a Fire-type move, the Pokémon absorbs the flames and uses them to power up its own Fire-type moves.",
+   "smogon": "This Pokemon is immune to Fire-type moves. The first time it is hit by a Fire-type move, its offensive stat is multiplied by 1.5 while using a Fire-type attack as long as it remains active and has this Ability. If this Pokemon is frozen, it cannot be defrosted by Fire-type attacks."
   },
   "Flower Veil": {
-   "text": "Ally Grass-type Pokémon are protected from status conditions and the lowering of their stats.",
-   "source": "serebii",
+   "text": "Grass-type Pokemon on this Pokemon's side cannot have their stat stages lowered by other Pokemon or have a non-volatile status condition inflicted on them by other Pokemon.",
+   "source": "smogon",
    "serebii": "Ally Grass-type Pokémon are protected from status conditions and the lowering of their stats.",
-   "pokebase": "Ally Grass-type Pokémon are protected from status conditions and the lowering of their stats."
+   "pokebase": "Ally Grass-type Pokémon are protected from status conditions and the lowering of their stats.",
+   "smogon": "Grass-type Pokemon on this Pokemon's side cannot have their stat stages lowered by other Pokemon or have a non-volatile status condition inflicted on them by other Pokemon."
   },
   "Fluffy": {
-   "text": "Halves the damage taken from moves that make direct contact, but doubles that of Fire-type moves.",
-   "source": "serebii",
+   "text": "This Pokemon receives 1/2 damage from contact moves, but double damage from Fire moves.",
+   "source": "smogon",
    "serebii": "Halves the damage taken from moves that make direct contact, but doubles that of Fire-type moves.",
-   "pokebase": "Halves the damage taken from moves that make direct contact, but doubles that of Fire-type moves."
+   "pokebase": "Halves the damage taken from moves that make direct contact, but doubles that of Fire-type moves.",
+   "smogon": "This Pokemon receives 1/2 damage from contact moves, but double damage from Fire moves."
   },
   "Forecast": {
-   "text": "This Pokémon’ changes its form and type if Harsh Sunlight, Heavy Rain or Snow is in effect.",
-   "source": "serebii",
+   "text": "If this Pokemon is a Castform, its type changes to the current weather condition's type, except Sandstorm. This effect is prevented if this Pokemon is holding a Utility Umbrella and the weather is Rain or Sun.",
+   "source": "smogon",
    "serebii": "This Pokémon’ changes its form and type if Harsh Sunlight, Heavy Rain or Snow is in effect.",
-   "pokebase": "The Pokémon transforms with the weather to change its type to Water, Fire, or Ice."
+   "pokebase": "The Pokémon transforms with the weather to change its type to Water, Fire, or Ice.",
+   "smogon": "If this Pokemon is a Castform, its type changes to the current weather condition's type, except Sandstorm. This effect is prevented if this Pokemon is holding a Utility Umbrella and the weather is Rain or Sun."
   },
   "Forewarn": {
-   "text": "Reveals the foe’s strongest move.",
-   "source": "serebii",
+   "text": "On switch-in, this Pokemon is alerted to the move with the highest power, at random, known by an opposing Pokemon. This effect considers OHKO moves to have 150 power, Counter, Mirror Coat, and Metal Burst to have 120 power, every other attacking move with an unspecified power to have 80 power, and non-damaging moves to have 1 power.",
+   "source": "smogon",
    "serebii": "Reveals the foe’s strongest move.",
-   "pokebase": "When it enters a battle, the Pokémon can tell one of the moves an opposing Pokémon has."
+   "pokebase": "When it enters a battle, the Pokémon can tell one of the moves an opposing Pokémon has.",
+   "smogon": "On switch-in, this Pokemon is alerted to the move with the highest power, at random, known by an opposing Pokemon. This effect considers OHKO moves to have 150 power, Counter, Mirror Coat, and Metal Burst to have 120 power, every other attacking move with an unspecified power to have 80 power, and non-damaging moves to have 1 power."
   },
   "Friend Guard": {
-   "text": "In Double battles, the damage that ally Pokémon receive from attacks is reduced by 25%.",
-   "source": "serebii",
+   "text": "This Pokemon's allies receive 3/4 damage from other Pokemon's attacks.",
+   "source": "smogon",
    "serebii": "In Double battles, the damage that ally Pokémon receive from attacks is reduced by 25%.",
-   "pokebase": "Reduces damage dealt to allies."
+   "pokebase": "Reduces damage dealt to allies.",
+   "smogon": "This Pokemon's allies receive 3/4 damage from other Pokemon's attacks."
   },
   "Frisk": {
-   "text": "Reveals the foe’s held item.",
-   "source": "serebii",
+   "text": "On switch-in, this Pokemon identifies the held items of all opposing Pokemon.",
+   "source": "smogon",
    "serebii": "Reveals the foe’s held item.",
-   "pokebase": "When it enters a battle, the Pokémon can check an opposing Pokémon's held item."
+   "pokebase": "When it enters a battle, the Pokémon can check an opposing Pokémon's held item.",
+   "smogon": "On switch-in, this Pokemon identifies the held items of all opposing Pokemon."
   },
   "Fur Coat": {
-   "text": "Halves the damage from physical moves onto this Pokémon.",
-   "source": "serebii",
+   "text": "This Pokemon's Defense is doubled.",
+   "source": "smogon",
    "serebii": "Halves the damage from physical moves onto this Pokémon.",
-   "pokebase": "Halves the damage from physical moves."
+   "pokebase": "Halves the damage from physical moves.",
+   "smogon": "This Pokemon's Defense is doubled."
   },
   "Gale Wings": {
-   "text": "All Flying-type moves have their Speed Priority increased by 1 if the Pokémon's Hit Points are at maximum",
-   "source": "serebii",
+   "text": "If this Pokemon is at full HP, its Flying-type moves have their priority increased by 1.",
+   "source": "smogon",
    "serebii": "All Flying-type moves have their Speed Priority increased by 1 if the Pokémon's Hit Points are at maximum",
-   "pokebase": "Gives priority to the Pokémon's Flying-type moves while its HP is full."
+   "pokebase": "Gives priority to the Pokémon's Flying-type moves while its HP is full.",
+   "smogon": "If this Pokemon is at full HP, its Flying-type moves have their priority increased by 1."
   },
   "Gluttony": {
-   "text": "The Pokémon will use a berry when its Hit Points are below 50%.",
-   "source": "serebii",
+   "text": "When this Pokemon is holding a Berry that usually activates with 1/4 or less of its maximum HP, it is eaten at 1/2 or less of its maximum HP instead.",
+   "source": "smogon",
    "serebii": "The Pokémon will use a berry when its Hit Points are below 50%.",
-   "pokebase": "If the Pokémon is holding a Berry to be eaten when its HP is low, it will instead eat the Berry when its HP drops to half or less."
+   "pokebase": "If the Pokémon is holding a Berry to be eaten when its HP is low, it will instead eat the Berry when its HP drops to half or less.",
+   "smogon": "When this Pokemon is holding a Berry that usually activates with 1/4 or less of its maximum HP, it is eaten at 1/2 or less of its maximum HP instead."
   },
   "Good as Gold": {
-   "text": "A body of pure, solid gold gives the Pokémon full immunity to other Pokémon's status moves.",
-   "source": "serebii",
+   "text": "This Pokemon is immune to Status moves.",
+   "source": "smogon",
    "serebii": "A body of pure, solid gold gives the Pokémon full immunity to other Pokémon's status moves.",
-   "pokebase": "A body of pure, solid gold gives the Pokémon full immunity to other Pokémon's status moves."
+   "pokebase": "A body of pure, solid gold gives the Pokémon full immunity to other Pokémon's status moves.",
+   "smogon": "This Pokemon is immune to Status moves."
   },
   "Gooey": {
-   "text": "Lowers the opponent's Speed by one stage when it makes physical contact.",
-   "source": "serebii",
+   "text": "Pokemon making contact with this Pokemon have their Speed lowered by 1 stage.",
+   "source": "smogon",
    "serebii": "Lowers the opponent's Speed by one stage when it makes physical contact.",
-   "pokebase": "Contact with the Pokémon lowers the attacker's Speed stat."
+   "pokebase": "Contact with the Pokémon lowers the attacker's Speed stat.",
+   "smogon": "Pokemon making contact with this Pokemon have their Speed lowered by 1 stage."
   },
   "Grass Pelt": {
-   "text": "Increases Defense by 50% when battling on Grass or if the move Grassy Terrain is in effect",
-   "source": "serebii",
+   "text": "If Grassy Terrain is active, this Pokemon's Defense is multiplied by 1.5.",
+   "source": "smogon",
    "serebii": "Increases Defense by 50% when battling on Grass or if the move Grassy Terrain is in effect",
-   "pokebase": "Boosts the Pokémon's Defense stat by 50% on Grassy Terrain."
+   "pokebase": "Boosts the Pokémon's Defense stat by 50% on Grassy Terrain.",
+   "smogon": "If Grassy Terrain is active, this Pokemon's Defense is multiplied by 1.5."
   },
   "Grassy Surge": {
-   "text": "Turns the entire field into Grassy Terrain for 5 turns when the Pokémon enters a battle.",
-   "source": "pokebase",
+   "text": "On switch-in, this Pokemon summons Grassy Terrain, for 5 turns.",
+   "source": "smogon",
    "serebii": "Activates Grassy Terrain for 5 turns when the Pokémon enters a battle.",
-   "pokebase": "Turns the entire field into Grassy Terrain for 5 turns when the Pokémon enters a battle."
+   "pokebase": "Turns the entire field into Grassy Terrain for 5 turns when the Pokémon enters a battle.",
+   "smogon": "On switch-in, this Pokemon summons Grassy Terrain."
   },
   "Guard Dog": {
-   "text": "Intimidate does not work on the Pokémon. Instead, it boosts the Pokémon's Attack stat by 1 stage. The Pokémon is also unaffected by the moves and held items of other Pokémon that would force it to switch out of battle.",
-   "source": "pokebase",
+   "text": "This Pokemon is immune to the effect of the Intimidate Ability and raises its Attack by 1 stage instead. This Pokemon cannot be forced to switch out by another Pokemon's attack or item.",
+   "source": "smogon",
    "serebii": "Boosts the Pokémon's Attack stat if intimidated. Moves and items that would force the Pokémon to switch out also fail to work.",
-   "pokebase": "Intimidate does not work on the Pokémon. Instead, it boosts the Pokémon's Attack stat by 1 stage. The Pokémon is also unaffected by the moves and held items of other Pokémon that would force it to switch out of battle."
+   "pokebase": "Intimidate does not work on the Pokémon. Instead, it boosts the Pokémon's Attack stat by 1 stage. The Pokémon is also unaffected by the moves and held items of other Pokémon that would force it to switch out of battle.",
+   "smogon": "This Pokemon is immune to the effect of the Intimidate Ability and raises its Attack by 1 stage instead. This Pokemon cannot be forced to switch out by another Pokemon's attack or item."
   },
   "Guts": {
-   "text": "Attack is increased by 50% when induced with a status (BURN, PARALYZE, SLEEP, POISON, FREEZE). Burn’s effect of lowering Attack is not applied.",
-   "source": "serebii",
+   "text": "If this Pokemon has a non-volatile status condition, its Attack is multiplied by 1.5. This Pokemon's physical attacks ignore the burn effect of halving damage.",
+   "source": "smogon",
    "serebii": "Attack is increased by 50% when induced with a status (BURN, PARALYZE, SLEEP, POISON, FREEZE). Burn’s effect of lowering Attack is not applied.",
-   "pokebase": "It's so gutsy that having a status condition boosts the Pokémon's Attack stat."
+   "pokebase": "It's so gutsy that having a status condition boosts the Pokémon's Attack stat.",
+   "smogon": "If this Pokemon has a non-volatile status condition, its Attack is multiplied by 1.5. This Pokemon's physical attacks ignore the burn effect of halving damage."
   },
   "Harvest": {
-   "text": "The Pokémon has a 50% chance of restoring a consumed berry. During sunshine, this chance increases to 100%",
-   "source": "serebii",
+   "text": "If the last item this Pokemon used is a Berry, there is a 50% chance it gets restored at the end of each turn. If Sun is active, this chance is 100%.",
+   "source": "smogon",
    "serebii": "The Pokémon has a 50% chance of restoring a consumed berry. During sunshine, this chance increases to 100%",
-   "pokebase": "May create another Berry after one is used."
+   "pokebase": "May create another Berry after one is used.",
+   "smogon": "If the last item this Pokemon used is a Berry, there is a 50% chance it gets restored at the end of each turn. If Sun is active, this chance is 100%."
   },
   "Healer": {
-   "text": "At the end of the turn, there is a 30% chance of either Ally being healed from a status condition",
-   "source": "serebii",
+   "text": "50% chance this Pokemon's ally has its non-volatile status condition cured at the end of each turn.",
+   "source": "smogon",
    "serebii": "At the end of the turn, there is a 30% chance of either Ally being healed from a status condition",
-   "pokebase": "Sometimes cures the status conditions of the Pokémon's allies."
+   "pokebase": "Sometimes cures the status conditions of the Pokémon's allies.",
+   "smogon": "50% chance this Pokemon's ally has its non-volatile status condition cured at the end of each turn."
   },
   "Heatproof": {
-   "text": "Damage from Fire-type moves and the Burn status is halved.",
-   "source": "serebii",
+   "text": "If a Pokemon uses a Fire-type attack against this Pokemon, that Pokemon's offensive stat is halved when calculating the damage to this Pokemon. This Pokemon takes half of the usual burn damage, rounded down.",
+   "source": "smogon",
    "serebii": "Damage from Fire-type moves and the Burn status is halved.",
-   "pokebase": "The Pokémon's heatproof body halves the damage taken from Fire-type moves."
+   "pokebase": "The Pokémon's heatproof body halves the damage taken from Fire-type moves.",
+   "smogon": "If a Pokemon uses a Fire-type attack against this Pokemon, that Pokemon's offensive stat is halved when calculating the damage to this Pokemon. This Pokemon takes half of the usual burn damage, rounded down."
   },
   "Heavy Metal": {
-   "text": "Doubles the Pokémon's weight.",
-   "source": "serebii",
+   "text": "This Pokemon's weight is doubled. This effect is calculated after the effect of Autotomize, and before the effect of Float Stone.",
+   "source": "smogon",
    "serebii": "Doubles the Pokémon's weight.",
-   "pokebase": "Doubles the Pokémon's weight."
+   "pokebase": "Doubles the Pokémon's weight.",
+   "smogon": "This Pokemon's weight is doubled. This effect is calculated after the effect of Autotomize, and before the effect of Float Stone."
   },
   "Hospitality": {
-   "text": "Heals up to 25% of its partner Pokémon's Maximum Hit Points when it enters battle",
-   "source": "serebii",
+   "text": "On switch-in, this Pokemon restores 1/4 of its ally's maximum HP, rounded down.",
+   "source": "smogon",
    "serebii": "Heals up to 25% of its partner Pokémon's Maximum Hit Points when it enters battle",
-   "pokebase": "When the Pokémon enters a battle, it showers its ally with hospitality, restoring a small amount of the ally's HP"
+   "pokebase": "When the Pokémon enters a battle, it showers its ally with hospitality, restoring a small amount of the ally's HP",
+   "smogon": "On switch-in, this Pokemon restores 1/4 of its ally's maximum HP, rounded down."
   },
   "Huge Power": {
-   "text": "The Pokémon's Attack stat is doubled while it has this ability.",
-   "source": "serebii",
+   "text": "This Pokemon's Attack is doubled.",
+   "source": "smogon",
    "serebii": "The Pokémon's Attack stat is doubled while it has this ability.",
-   "pokebase": "The Pokémon's Attack stat is doubled while it has this ability."
+   "pokebase": "The Pokémon's Attack stat is doubled while it has this ability.",
+   "smogon": "This Pokemon's Attack is doubled."
   },
   "Hunger Switch": {
-   "text": "The Pokémon changes its form, alternating between its Full Belly Mode and Hangry Mode after the end of each turn.",
-   "source": "serebii",
+   "text": "If this Pokemon is a Morpeko, it changes formes between its Full Belly Mode and Hangry Mode at the end of each turn.",
+   "source": "smogon",
    "serebii": "The Pokémon changes its form, alternating between its Full Belly Mode and Hangry Mode after the end of each turn.",
-   "pokebase": "The Pokémon changes its form, alternating between its Full Belly Mode and Hangry Mode after the end of every turn."
+   "pokebase": "The Pokémon changes its form, alternating between its Full Belly Mode and Hangry Mode after the end of every turn.",
+   "smogon": "If this Pokemon is a Morpeko, it changes formes between its Full Belly Mode and Hangry Mode at the end of each turn."
   },
   "Hustle": {
-   "text": "Damage from physical attacks is increased by 50%, but average accuracy is only 80%.",
-   "source": "serebii",
+   "text": "This Pokemon's Attack is multiplied by 1.5 and the accuracy of its physical attacks is multiplied by 0.8.",
+   "source": "smogon",
    "serebii": "Damage from physical attacks is increased by 50%, but average accuracy is only 80%.",
-   "pokebase": "Boosts the Pokémon's Attack stat but lowers its accuracy."
+   "pokebase": "Boosts the Pokémon's Attack stat but lowers its accuracy.",
+   "smogon": "This Pokemon's Attack is multiplied by 1.5 and the accuracy of its physical attacks is multiplied by 0.8."
   },
   "Hydration": {
-   "text": "All status problems: Burn, Paralysis, Sleep, Frozen and Poison, are healed when raining. :",
-   "source": "serebii",
+   "text": "This Pokemon has its non-volatile status condition cured at the end of each turn if Rain is active. This effect is prevented if this Pokemon is holding a Utility Umbrella.",
+   "source": "smogon",
    "serebii": "All status problems: Burn, Paralysis, Sleep, Frozen and Poison, are healed when raining. :",
-   "pokebase": "Cures the Pokémon's status conditions in rain."
+   "pokebase": "Cures the Pokémon's status conditions in rain.",
+   "smogon": "This Pokemon has its non-volatile status condition cured at the end of each turn if Rain is active. This effect is prevented if this Pokemon is holding a Utility Umbrella."
   },
   "Hyper Cutter": {
-   "text": "Opponent cannot lower this Pokémon’s Attack value. This Pokémon may still lower its own Attack value using a move of by itself.",
-   "source": "serebii",
+   "text": "Prevents other Pokemon from lowering this Pokemon's Attack stat stage.",
+   "source": "smogon",
    "serebii": "Opponent cannot lower this Pokémon’s Attack value. This Pokémon may still lower its own Attack value using a move of by itself.",
-   "pokebase": "The Pokémon's prized, mighty pincers prevent other Pokémon from lowering its Attack stat."
+   "pokebase": "The Pokémon's prized, mighty pincers prevent other Pokémon from lowering its Attack stat.",
+   "smogon": "Prevents other Pokemon from lowering this Pokemon's Attack stat stage."
   },
   "Ice Body": {
-   "text": "HP is restored by 1/16th of maximum HP when its Snowing. :",
-   "source": "serebii",
+   "text": "If Snow is active, this Pokemon restores 1/16 of its maximum HP, rounded down, at the end of each turn.",
+   "source": "smogon",
    "serebii": "HP is restored by 1/16th of maximum HP when its Snowing. :",
-   "pokebase": "The Pokémon gradually regains HP in snow."
+   "pokebase": "The Pokémon gradually regains HP in snow.",
+   "smogon": "If Snow is active, this Pokemon restores 1/16 of its maximum HP, rounded down, at the end of each turn."
   },
   "Illuminate": {
-   "text": "By Iluminating its surroundings, the Pokémon prevents its accuracy from being lowered",
-   "source": "serebii",
+   "text": "Prevents other Pokemon from lowering this Pokemon's accuracy stat stage. This Pokemon ignores a target's evasiveness stat stage.",
+   "source": "smogon",
    "serebii": "By Iluminating its surroundings, the Pokémon prevents its accuracy from being lowered",
-   "pokebase": "By illuminating its surroundings, the Pokémon prevents its accuracy from being lowered."
+   "pokebase": "By illuminating its surroundings, the Pokémon prevents its accuracy from being lowered.",
+   "smogon": "Prevents other Pokemon from lowering this Pokemon's accuracy stat stage. This Pokemon ignores a target's evasiveness stat stage."
   },
   "Illusion": {
-   "text": "When sent out into battle, it takes the name and appearance of the last non-fainted Pokémon within your party. It breaks when an attack does damage on the Pokémon but not from Weather Effects or Entry Hazards.",
-   "source": "serebii",
+   "text": "When this Pokemon switches in, it appears as the last unfainted Pokemon in its party until it takes direct damage from another Pokemon's attack. This Pokemon's actual level and HP are displayed instead of those of the mimicked Pokemon.",
+   "source": "smogon",
    "serebii": "When sent out into battle, it takes the name and appearance of the last non-fainted Pokémon within your party. It breaks when an attack does damage on the Pokémon but not from Weather Effects or Entry Hazards.",
-   "pokebase": "The Pokémon fools opponents by entering battle disguised as the last Pokémon in its Trainer's party."
+   "pokebase": "The Pokémon fools opponents by entering battle disguised as the last Pokémon in its Trainer's party.",
+   "smogon": "When this Pokemon switches in, it appears as the last unfainted Pokemon in its party until it takes direct damage from another Pokemon's attack. This Pokemon's actual level and HP are displayed instead of those of the mimicked Pokemon."
   },
   "Immunity": {
-   "text": "The Pokémon cannot be Poisoned while having this ability.",
-   "source": "serebii",
+   "text": "This Pokemon cannot be poisoned. Gaining this Ability while poisoned cures it.",
+   "source": "smogon",
    "serebii": "The Pokémon cannot be Poisoned while having this ability.",
-   "pokebase": "The Pokémon's immune system prevents it from being poisoned."
+   "pokebase": "The Pokémon's immune system prevents it from being poisoned.",
+   "smogon": "This Pokemon cannot be poisoned. Gaining this Ability while poisoned cures it."
   },
   "Imposter": {
-   "text": "When sent into battle, the Pokémon automatically transforms into a random opponent that is on the field.",
-   "source": "serebii",
+   "text": "On switch-in, this Pokemon Transforms into the opposing Pokemon that is facing it. If there is no Pokemon at that position, this Pokemon does not Transform.",
+   "source": "smogon",
    "serebii": "When sent into battle, the Pokémon automatically transforms into a random opponent that is on the field.",
-   "pokebase": "The Pokémon transforms itself into the Pokémon it's facing."
+   "pokebase": "The Pokémon transforms itself into the Pokémon it's facing.",
+   "smogon": "On switch-in, this Pokemon Transforms into the opposing Pokemon that is facing it. If there is no Pokemon at that position, this Pokemon does not Transform."
   },
   "Infiltrator": {
-   "text": "The protections and stat boosts caused by the moves Substitute, Reflect, Light Screen and Safeguard by the opponent are ignored.",
-   "source": "serebii",
+   "text": "This Pokemon's moves ignore substitutes and the opposing side's Reflect, Light Screen, Safeguard, Mist, and Aurora Veil.",
+   "source": "smogon",
    "serebii": "The protections and stat boosts caused by the moves Substitute, Reflect, Light Screen and Safeguard by the opponent are ignored.",
-   "pokebase": "The protections and stat boosts caused by the moves Substitute, Reflect, Light Screen and Safeguard by the opponent are ignored."
+   "pokebase": "The protections and stat boosts caused by the moves Substitute, Reflect, Light Screen and Safeguard by the opponent are ignored.",
+   "smogon": "This Pokemon's moves ignore substitutes and the opposing side's Reflect, Light Screen, Safeguard, Mist, and Aurora Veil."
   },
   "Innards Out": {
-   "text": "Damages the attacker landing the finishing hit by the amount equal to its last HP.",
-   "source": "serebii",
+   "text": "If this Pokemon is knocked out with a move, that move's user loses HP equal to the amount of damage inflicted on this Pokemon.",
+   "source": "smogon",
    "serebii": "Damages the attacker landing the finishing hit by the amount equal to its last HP.",
-   "pokebase": "Damages the attacker landing the finishing hit by the amount equal to its last HP."
+   "pokebase": "Damages the attacker landing the finishing hit by the amount equal to its last HP.",
+   "smogon": "If this Pokemon is knocked out with a move, that move's user loses HP equal to the amount of damage inflicted on this Pokemon."
   },
   "Inner Focus": {
-   "text": "This Pokémon will not flinch. Does not prevent flinching with Focus Punch. Also prevents stats from being lowered by the ability Intimidate",
-   "source": "serebii",
+   "text": "This Pokemon cannot be made to flinch. This Pokemon is immune to the effect of the Intimidate Ability.",
+   "source": "smogon",
    "serebii": "This Pokémon will not flinch. Does not prevent flinching with Focus Punch. Also prevents stats from being lowered by the ability Intimidate",
-   "pokebase": "The Pokémon's intense focus prevents it from flinching or being affected by Intimidate."
+   "pokebase": "The Pokémon's intense focus prevents it from flinching or being affected by Intimidate.",
+   "smogon": "This Pokemon cannot be made to flinch. This Pokemon is immune to the effect of the Intimidate Ability."
   },
   "Insomnia": {
-   "text": "The Pokémon cannot be put to Sleep while having this ability.",
-   "source": "serebii",
+   "text": "This Pokemon cannot fall asleep. Gaining this Ability while asleep cures it.",
+   "source": "smogon",
    "serebii": "The Pokémon cannot be put to Sleep while having this ability.",
-   "pokebase": "The Pokémon's insomnia prevents it from falling asleep."
+   "pokebase": "The Pokémon's insomnia prevents it from falling asleep.",
+   "smogon": "This Pokemon cannot fall asleep. Gaining this Ability while asleep cures it."
   },
   "Intimidate": {
-   "text": "Upon entering battle or receiving the ability, the opponent’s Attack lowers one stage. In a Double Battle, both opponents’ Attack are lowered. Pokémon with the Clear Body, Hyper Cutter, or White Smoke ability are unaffected. In a link battle, if both sides switch on the same turn, and first player sends out a Pokémon with Intimidate, the opponent’s Attack will be lowered before the opponent’s Pokémon switches.",
-   "source": "serebii",
+   "text": "On switch-in, or on receiving this Ability (Mega Evolving into it fires it again), this Pokemon lowers the Attack of opposing Pokemon by 1 stage. Pokemon with the Inner Focus, Oblivious, Own Tempo, or Scrappy Abilities and Pokemon behind a substitute are immune.",
+   "source": "smogon",
    "serebii": "Upon entering battle or receiving the ability, the opponent’s Attack lowers one stage. In a Double Battle, both opponents’ Attack are lowered. Pokémon with the Clear Body, Hyper Cutter, or White Smoke ability are unaffected. In a link battle, if both sides switch on the same turn, and first player sends out a Pokémon with Intimidate, the opponent’s Attack will be lowered before the opponent’s Pokémon switches.",
-   "pokebase": "When the Pokémon enters a battle, it intimidates opposing Pokémon and makes them cower, lowering their Attack stats."
+   "pokebase": "When the Pokémon enters a battle, it intimidates opposing Pokémon and makes them cower, lowering their Attack stats.",
+   "smogon": "On switch-in, this Pokemon lowers the Attack of opposing Pokemon by 1 stage. Pokemon with the Inner Focus, Oblivious, Own Tempo, or Scrappy Abilities and Pokemon behind a substitute are immune."
   },
   "Iron Fist": {
-   "text": "The power of punching moves is increased by 20%. This stacks with Punching Glove .",
-   "source": "serebii",
+   "text": "This Pokemon's punch-based attacks have their power multiplied by 1.2.",
+   "source": "smogon",
    "serebii": "The power of punching moves is increased by 20%. This stacks with Punching Glove .",
-   "pokebase": "The power of punching moves is increased by 20%. This stacks with"
+   "pokebase": "The power of punching moves is increased by 20%. This stacks with",
+   "smogon": "This Pokemon's punch-based attacks have their power multiplied by 1.2."
   },
   "Justified": {
-   "text": "Attack is raised by one stage when the Pokémon is hit by a Dark-type move",
-   "source": "serebii",
+   "text": "This Pokemon's Attack is raised by 1 stage after it is damaged by a Dark-type move.",
+   "source": "smogon",
    "serebii": "Attack is raised by one stage when the Pokémon is hit by a Dark-type move",
-   "pokebase": "When the Pokémon is hit by a Dark-type attack, its Attack stat is boosted by its sense of justice."
+   "pokebase": "When the Pokémon is hit by a Dark-type attack, its Attack stat is boosted by its sense of justice.",
+   "smogon": "This Pokemon's Attack is raised by 1 stage after it is damaged by a Dark-type move."
   },
   "Keen Eye": {
-   "text": "Opponent cannot lower this Pokémon’s accuracy. The Pokémon ignores evasion boosts of the opponent",
-   "source": "serebii",
+   "text": "Prevents other Pokemon from lowering this Pokemon's accuracy stat stage. This Pokemon ignores a target's evasiveness stat stage.",
+   "source": "smogon",
    "serebii": "Opponent cannot lower this Pokémon’s accuracy. The Pokémon ignores evasion boosts of the opponent",
-   "pokebase": "The Pokémon's keen eyes prevent its accuracy from being lowered."
+   "pokebase": "The Pokémon's keen eyes prevent its accuracy from being lowered.",
+   "smogon": "Prevents other Pokemon from lowering this Pokemon's accuracy stat stage. This Pokemon ignores a target's evasiveness stat stage."
   },
   "Klutz": {
-   "text": "The Pokémon cannot receive any effect of hold items except those that affect experience, EVs, friendship etc. such as Amulet Coin, Soothe Bell, Lucky Egg, Exp.Share, Macho Brace or the Power Items.",
-   "source": "serebii",
+   "text": "This Pokemon's held item has no effect. This Pokemon cannot use Fling successfully. Macho Brace, Power Anklet, Power Band, Power Belt, Power Bracer, Power Lens, and Power Weight still have their effects.",
+   "source": "smogon",
    "serebii": "The Pokémon cannot receive any effect of hold items except those that affect experience, EVs, friendship etc. such as Amulet Coin, Soothe Bell, Lucky Egg, Exp.Share, Macho Brace or the Power Items.",
-   "pokebase": "The Pokémon can't use any held items."
+   "pokebase": "The Pokémon can't use any held items.",
+   "smogon": "This Pokemon's held item has no effect. This Pokemon cannot use Fling successfully. Macho Brace, Power Anklet, Power Band, Power Belt, Power Bracer, Power Lens, and Power Weight still have their effects."
   },
   "Leaf Guard": {
-   "text": "Prevents the Pokémon from being afflicted by status conditions during strong sunlight.",
-   "source": "serebii",
+   "text": "If Sun is active, this Pokemon cannot become affected by a non-volatile status condition or Yawn, and Rest will fail for it. This effect is prevented if this Pokemon is holding a Utility Umbrella.",
+   "source": "smogon",
    "serebii": "Prevents the Pokémon from being afflicted by status conditions during strong sunlight.",
-   "pokebase": "Prevents status conditions in harsh sunlight."
+   "pokebase": "Prevents status conditions in harsh sunlight.",
+   "smogon": "If Sun is active, this Pokemon cannot become affected by a non-volatile status condition or Yawn, and Rest will fail for it. This effect is prevented if this Pokemon is holding a Utility Umbrella."
   },
   "Levitate": {
-   "text": "Damage dealing Ground-type moves have no effect on this Pokémon. Cannot be trapped by Arena Trap ability. Takes no damage from Spikes.",
-   "source": "serebii",
+   "text": "This Pokemon is immune to Ground-type attacks and the effects of Spikes, Toxic Spikes, Sticky Web, and the Arena Trap Ability. The effects of Gravity, Ingrain, Smack Down, Thousand Arrows, and Iron Ball nullify the immunity. Thousand Arrows can hit this Pokemon as if it did not have this Ability.",
+   "source": "smogon",
    "serebii": "Damage dealing Ground-type moves have no effect on this Pokémon. Cannot be trapped by Arena Trap ability. Takes no damage from Spikes.",
-   "pokebase": "Damage dealing Ground-type moves have no effect on this Pokémon. Cannot be trapped by Arena Trap ability. Takes no damage from Spikes."
+   "pokebase": "Damage dealing Ground-type moves have no effect on this Pokémon. Cannot be trapped by Arena Trap ability. Takes no damage from Spikes.",
+   "smogon": "This Pokemon is immune to Ground-type attacks and the effects of Spikes, Toxic Spikes, Sticky Web, and the Arena Trap Ability. The effects of Gravity, Ingrain, Smack Down, Thousand Arrows, and Iron Ball nullify the immunity. Thousand Arrows can hit this Pokemon as if it did not have this Ability."
   },
   "Libero": {
-   "text": "Before the Pokémon uses a move, it becomes a pure Pokémon of that type. This only works once per switch in.",
-   "source": "serebii",
+   "text": "This Pokemon's type changes to match the type of the move it is about to use. This effect comes after all effects that change a move's type. This effect can only happen once per switch-in, and only if this Pokemon is not Terastallized.",
+   "source": "smogon",
    "serebii": "Before the Pokémon uses a move, it becomes a pure Pokémon of that type. This only works once per switch in.",
-   "pokebase": "Changes the Pokémon's type to the type of the move it's about to use. This works only once per time the Pokémon enters battle."
+   "pokebase": "Changes the Pokémon's type to the type of the move it's about to use. This works only once per time the Pokémon enters battle.",
+   "smogon": "This Pokemon's type changes to match the type of the move it is about to use. This effect comes after all effects that change a move's type. This effect can only happen once per switch-in, and only if this Pokemon is not Terastallized."
   },
   "Light Metal": {
-   "text": "Halves the Pokémon's weight.",
-   "source": "serebii",
+   "text": "This Pokemon's weight is halved, rounded down to a tenth of a kilogram. This effect is calculated after the effect of Autotomize, and before the effect of Float Stone. A Pokemon's weight will not drop below 0.1 kg.",
+   "source": "smogon",
    "serebii": "Halves the Pokémon's weight.",
-   "pokebase": "Halves the Pokémon's weight."
+   "pokebase": "Halves the Pokémon's weight.",
+   "smogon": "This Pokemon's weight is halved, rounded down to a tenth of a kilogram. This effect is calculated after the effect of Autotomize, and before the effect of Float Stone. A Pokemon's weight will not drop below 0.1 kg."
   },
   "Lightning Rod": {
-   "text": "Electric-type moves are drawn to this Pokémon. Electric-type moves will do no damage and the Pokémon's SP ATK is raised one stage.",
-   "source": "serebii",
+   "text": "This Pokemon is immune to Electric-type moves and raises its Special Attack by 1 stage when hit by an Electric-type move. If this Pokemon is not the target of a single-target Electric-type move used by another Pokemon, this Pokemon redirects that move to itself if it is within the range of that move. If multiple Pokemon could redirect with this Ability, it goes to the one with the highest Speed, or in the case of a tie to the one that has had this Ability active longer.",
+   "source": "smogon",
    "serebii": "Electric-type moves are drawn to this Pokémon. Electric-type moves will do no damage and the Pokémon's SP ATK is raised one stage.",
-   "pokebase": "The Pokémon draws in all Electric-type moves. Instead of taking damage from them, its Sp. Atk stat is boosted."
+   "pokebase": "The Pokémon draws in all Electric-type moves. Instead of taking damage from them, its Sp. Atk stat is boosted.",
+   "smogon": "This Pokemon is immune to Electric-type moves and raises its Special Attack by 1 stage when hit by an Electric-type move. If this Pokemon is not the target of a single-target Electric-type move used by another Pokemon, this Pokemon redirects that move to itself if it is within the range of that move. If multiple Pokemon could redirect with this Ability, it goes to the one with the highest Speed, or in the case of a tie to the one that has had this Ability active longer."
   },
   "Limber": {
-   "text": "The Pokémon cannot be Paralysed while having this ability.",
-   "source": "serebii",
+   "text": "This Pokemon cannot be paralyzed. Gaining this Ability while paralyzed cures it.",
+   "source": "smogon",
    "serebii": "The Pokémon cannot be Paralysed while having this ability.",
-   "pokebase": "The Pokémon's limber body prevents it from being paralyzed."
+   "pokebase": "The Pokémon's limber body prevents it from being paralyzed.",
+   "smogon": "This Pokemon cannot be paralyzed. Gaining this Ability while paralyzed cures it."
   },
   "Liquid Ooze": {
-   "text": "When the opponent absorbs Hit Points from this Pokémon, the opponent instead loses Hit Points.",
-   "source": "serebii",
+   "text": "This Pokemon damages those draining HP from it for as much as they would heal.",
+   "source": "smogon",
    "serebii": "When the opponent absorbs Hit Points from this Pokémon, the opponent instead loses Hit Points.",
-   "pokebase": "When the Pokémon is hit by an HP-absorbing move, the attacker does not restore HP but instead takes damage equal to the amount of HP it would have restored."
+   "pokebase": "When the Pokémon is hit by an HP-absorbing move, the attacker does not restore HP but instead takes damage equal to the amount of HP it would have restored.",
+   "smogon": "This Pokemon damages those draining HP from it for as much as they would heal."
   },
   "Liquid Voice": {
-   "text": "All sound-based moves become Water-type moves.",
-   "source": "serebii",
+   "text": "This Pokemon's sound-based moves become Water-type moves. This effect comes after other effects that change a move's type, but before Ion Deluge and Electrify's effects.",
+   "source": "smogon",
    "serebii": "All sound-based moves become Water-type moves.",
-   "pokebase": "Sound-based moves become Water-type moves."
+   "pokebase": "Sound-based moves become Water-type moves.",
+   "smogon": "This Pokemon's sound-based moves become Water-type moves. This effect comes after other effects that change a move's type, but before Ion Deluge and Electrify's effects."
   },
   "Long Reach": {
-   "text": "The Pokémon uses its moves without making contact with the target.",
-   "source": "serebii",
+   "text": "This Pokemon's attacks do not make contact with the target.",
+   "source": "smogon",
    "serebii": "The Pokémon uses its moves without making contact with the target.",
-   "pokebase": "The Pokémon uses its moves without making contact with the target."
+   "pokebase": "The Pokémon uses its moves without making contact with the target.",
+   "smogon": "This Pokemon's attacks do not make contact with the target."
   },
   "Magic Bounce": {
-   "text": "Reflects non-attacking moves used on the Pokémon back to the attacking Pokémon",
-   "source": "serebii",
+   "text": "This Pokemon is unaffected by certain non-damaging moves directed at it and will instead use such moves against the original user. Moves reflected in this way are unable to be reflected again by this or Magic Coat's effect. Spikes, Stealth Rock, Sticky Web, and Toxic Spikes can only be reflected once per side, by the leftmost Pokemon under this or Magic Coat's effect. The Lightning Rod and Storm Drain Abilities redirect their respective moves before this Ability takes effect.",
+   "source": "smogon",
    "serebii": "Reflects non-attacking moves used on the Pokémon back to the attacking Pokémon",
-   "pokebase": "Reflects non-attacking moves used on the Pokémon back to the attacking Pokémon"
+   "pokebase": "Reflects non-attacking moves used on the Pokémon back to the attacking Pokémon",
+   "smogon": "This Pokemon is unaffected by certain non-damaging moves directed at it and will instead use such moves against the original user. Moves reflected in this way are unable to be reflected again by this or Magic Coat's effect. Spikes, Stealth Rock, Sticky Web, and Toxic Spikes can only be reflected once per side, by the leftmost Pokemon under this or Magic Coat's effect. The Lightning Rod and Storm Drain Abilities redirect their respective moves before this Ability takes effect."
   },
   "Magic Guard": {
-   "text": "Prevents all no damage except from direct-attack moves, excluding damage self inflicted from Substitute, Belly Drum, Curse & Pain Split.",
-   "source": "serebii",
+   "text": "This Pokemon can only be damaged by direct attacks. Curse and Substitute on use, Belly Drum, Pain Split, Struggle recoil, and confusion damage are considered direct damage.",
+   "source": "smogon",
    "serebii": "Prevents all no damage except from direct-attack moves, excluding damage self inflicted from Substitute, Belly Drum, Curse & Pain Split.",
-   "pokebase": "The Pokémon only takes damage from attacks."
+   "pokebase": "The Pokémon only takes damage from attacks.",
+   "smogon": "This Pokemon can only be damaged by direct attacks. Curse and Substitute on use, Belly Drum, Pain Split, Struggle recoil, and confusion damage are considered direct damage."
   },
   "Magician": {
-   "text": "The Pokémon steals the held item of a Pokémon it hits with a move.",
-   "source": "serebii",
+   "text": "If this Pokemon has no item, it steals the item off a Pokemon it hits with an attack. Does not affect Doom Desire and Future Sight. If multiple targets are hit by an attack the item is stolen from the fastest Pokemon, while considering the effect of Trick Room and prioritizing opposing Pokemon before allies.",
+   "source": "smogon",
    "serebii": "The Pokémon steals the held item of a Pokémon it hits with a move.",
-   "pokebase": "The Pokémon steals the held item from any target it hits with a move."
+   "pokebase": "The Pokémon steals the held item from any target it hits with a move.",
+   "smogon": "If this Pokemon has no item, it steals the item off a Pokemon it hits with an attack. Does not affect Doom Desire and Future Sight. If multiple targets are hit by an attack the item is stolen from the fastest Pokemon, while considering the effect of Trick Room and prioritizing opposing Pokemon before allies."
   },
   "Magma Armor": {
-   "text": "This Pokémon cannot be Frozen while having this ability.",
-   "source": "serebii",
+   "text": "This Pokemon cannot be frozen. Gaining this Ability while frozen cures it.",
+   "source": "smogon",
    "serebii": "This Pokémon cannot be Frozen while having this ability.",
-   "pokebase": "The Pokémon’s hot magma coating prevents it from being frozen."
+   "pokebase": "The Pokémon’s hot magma coating prevents it from being frozen.",
+   "smogon": "This Pokemon cannot be frozen. Gaining this Ability while frozen cures it."
   },
   "Marvel Scale": {
-   "text": "Defense is increased by 50% when induced with a status (BURN, PARALYZE, SLEEP, POISON, FREEZE).",
-   "source": "serebii",
+   "text": "If this Pokemon has a non-volatile status condition, its Defense is multiplied by 1.5.",
+   "source": "smogon",
    "serebii": "Defense is increased by 50% when induced with a status (BURN, PARALYZE, SLEEP, POISON, FREEZE).",
-   "pokebase": "The Pokémon's marvelous scales boost its Defense stat if it has a status condition."
+   "pokebase": "The Pokémon's marvelous scales boost its Defense stat if it has a status condition.",
+   "smogon": "If this Pokemon has a non-volatile status condition, its Defense is multiplied by 1.5."
   },
   "Mega Launcher": {
-   "text": "Increases the power of Aura and Pulse moves by 50%",
-   "source": "serebii",
+   "text": "This Pokemon's pulse moves have their power multiplied by 1.5. Heal Pulse restores 3/4 of a target's maximum HP, rounded half down.",
+   "source": "smogon",
    "serebii": "Increases the power of Aura and Pulse moves by 50%",
-   "pokebase": "Powers up pulse moves."
+   "pokebase": "Powers up pulse moves.",
+   "smogon": "This Pokemon's pulse moves have their power multiplied by 1.5. Heal Pulse restores 3/4 of a target's maximum HP, rounded half down."
   },
   "Mega Sol": {
-   "text": "Even when the sunlight has not turned harsh, the Pokémon can use its moves as if the weather were harsh sunlight.",
-   "source": "serebii",
+   "text": "This Pokemon's moves are used as if the effects of Sun were active.",
+   "source": "smogon",
    "serebii": "Even when the sunlight has not turned harsh, the Pokémon can use its moves as if the weather were harsh sunlight.",
-   "pokebase": "Even when the sunlight has not turned harsh, the Pokémon can use its moves as if the weather were harsh sunlight."
+   "pokebase": "Even when the sunlight has not turned harsh, the Pokémon can use its moves as if the weather were harsh sunlight.",
+   "smogon": "This Pokemon's moves are used as if the effects of Sun were active."
   },
   "Merciless": {
-   "text": "The Pokémon's attacks become critical hits if the target is poisoned.",
-   "source": "serebii",
+   "text": "This Pokemon's attacks are critical hits if the target is poisoned.",
+   "source": "smogon",
    "serebii": "The Pokémon's attacks become critical hits if the target is poisoned.",
-   "pokebase": "The Pokémon's attacks become critical hits if the target is poisoned."
+   "pokebase": "The Pokémon's attacks become critical hits if the target is poisoned.",
+   "smogon": "This Pokemon's attacks are critical hits if the target is poisoned."
   },
   "Mimicry": {
-   "text": "Changes to Electric-type in Electric Terrain, Psychic-type in Psychic Terrain, Grass-type in Grassy Terrain and Fairy type in Fairy-terrain. The type reverts to normal when the terrain ends.",
-   "source": "serebii",
+   "text": "This Pokemon's types change to match the active Terrain when this Pokemon acquires this Ability, or whenever a Terrain begins. Electric type during Electric Terrain, Grass type during Grassy Terrain, Fairy type during Misty Terrain, and Psychic type during Psychic Terrain. If this Ability is acquired without an active Terrain, or a Terrain ends, this Pokemon's types become the original types for its species.",
+   "source": "smogon",
    "serebii": "Changes to Electric-type in Electric Terrain, Psychic-type in Psychic Terrain, Grass-type in Grassy Terrain and Fairy type in Fairy-terrain. The type reverts to normal when the terrain ends.",
-   "pokebase": "Changes the Pokémon’s type depending on the terrain."
+   "pokebase": "Changes the Pokémon’s type depending on the terrain.",
+   "smogon": "This Pokemon's types change to match the active Terrain when this Pokemon acquires this Ability, or whenever a Terrain begins. Electric type during Electric Terrain, Grass type during Grassy Terrain, Fairy type during Misty Terrain, and Psychic type during Psychic Terrain. If this Ability is acquired without an active Terrain, or a Terrain ends, this Pokemon's types become the original types for its species."
   },
   "Minus": {
-   "text": "When battling with Plus or Minus, Special Attack increases by 50%.",
-   "source": "serebii",
+   "text": "If an active ally has this Ability or the Plus Ability, this Pokemon's Special Attack is multiplied by 1.5.",
+   "source": "smogon",
    "serebii": "When battling with Plus or Minus, Special Attack increases by 50%.",
-   "pokebase": "Boosts the Sp. Atk stat of the Pokémon if an ally with the Plus or Minus Ability is also in battle."
+   "pokebase": "Boosts the Sp. Atk stat of the Pokémon if an ally with the Plus or Minus Ability is also in battle.",
+   "smogon": "If an active ally has this Ability or the Plus Ability, this Pokemon's Special Attack is multiplied by 1.5."
   },
   "Mirror Armor": {
-   "text": "Bounces back only the stat-lowering effects that the Pokémon receives.",
-   "source": "serebii",
+   "text": "When one of this Pokemon's stat stages would be lowered by another Pokemon, that Pokemon's stat stage is lowered instead. This effect does not happen if this Pokemon's stat stage was already -6. If the other Pokemon has a substitute, neither Pokemon has its stat stage lowered.",
+   "source": "smogon",
    "serebii": "Bounces back only the stat-lowering effects that the Pokémon receives.",
-   "pokebase": "Bounces back only the stat-lowering effects that the Pokémon receives."
+   "pokebase": "Bounces back only the stat-lowering effects that the Pokémon receives.",
+   "smogon": "When one of this Pokemon's stat stages would be lowered by another Pokemon, that Pokemon's stat stage is lowered instead. This effect does not happen if this Pokemon's stat stage was already -6. If the other Pokemon has a substitute, neither Pokemon has its stat stage lowered."
   },
   "Mold Breaker": {
-   "text": "The Pokémon's moves are not affected by foe’s abilities during battle",
-   "source": "serebii",
+   "text": "This Pokemon's moves and their effects ignore certain Abilities of other Pokemon. The Abilities that can be negated are Armor Tail, Aroma Veil, Aura Break, Battle Armor, Big Pecks, Bulletproof, Clear Body, Contrary, Damp, Dazzling, Disguise, Dry Skin, Earth Eater, Filter, Flash Fire, Flower Gift, Flower Veil, Fluffy, Friend Guard, Fur Coat, Good as Gold, Grass Pelt, Guard Dog, Heatproof, Heavy Metal, Hyper Cutter, Ice Face, Ice Scales, Illuminate, Immunity, Inner Focus, Insomnia, Keen Eye, Leaf Guard, Levitate, Light Metal, Lightning Rod, Limber, Magic Bounce, Magma Armor, Marvel Scale, Mind's Eye, Mirror Armor, Motor Drive, Multiscale, Oblivious, Overcoat, Own Tempo, Pastel Veil, Punk Rock, Purifying Salt, Queenly Majesty, Sand Veil, Sap Sipper, Shell Armor, Shield Dust, Simple, Snow Cloak, Solid Rock, Soundproof, Sticky Hold, Storm Drain, Sturdy, Suction Cups, Sweet Veil, Tangled Feet, Telepathy, Tera Shell, Thermal Exchange, Thick Fat, Unaware, Vital Spirit, Volt Absorb, Water Absorb, Water Bubble, Water Veil, Well-Baked Body, White Smoke, Wind Rider, Wonder Guard, and Wonder Skin. This affects every other Pokemon on the field, whether or not it is a target of this Pokemon's move, and whether or not their Ability is beneficial to this Pokemon.",
+   "source": "smogon",
    "serebii": "The Pokémon's moves are not affected by foe’s abilities during battle",
-   "pokebase": "The Pokémon's moves are not affected by foe’s abilities during battle"
+   "pokebase": "The Pokémon's moves are not affected by foe’s abilities during battle",
+   "smogon": "This Pokemon's moves and their effects ignore certain Abilities of other Pokemon. The Abilities that can be negated are Armor Tail, Aroma Veil, Aura Break, Battle Armor, Big Pecks, Bulletproof, Clear Body, Contrary, Damp, Dazzling, Disguise, Dry Skin, Earth Eater, Filter, Flash Fire, Flower Gift, Flower Veil, Fluffy, Friend Guard, Fur Coat, Good as Gold, Grass Pelt, Guard Dog, Heatproof, Heavy Metal, Hyper Cutter, Ice Face, Ice Scales, Illuminate, Immunity, Inner Focus, Insomnia, Keen Eye, Leaf Guard, Levitate, Light Metal, Lightning Rod, Limber, Magic Bounce, Magma Armor, Marvel Scale, Mind's Eye, Mirror Armor, Motor Drive, Multiscale, Oblivious, Overcoat, Own Tempo, Pastel Veil, Punk Rock, Purifying Salt, Queenly Majesty, Sand Veil, Sap Sipper, Shell Armor, Shield Dust, Simple, Snow Cloak, Solid Rock, Soundproof, Sticky Hold, Storm Drain, Sturdy, Suction Cups, Sweet Veil, Tangled Feet, Telepathy, Tera Shell, Thermal Exchange, Thick Fat, Unaware, Vital Spirit, Volt Absorb, Water Absorb, Water Bubble, Water Veil, Well-Baked Body, White Smoke, Wind Rider, Wonder Guard, and Wonder Skin. This affects every other Pokemon on the field, whether or not it is a target of this Pokemon's move, and whether or not their Ability is beneficial to this Pokemon."
   },
   "Moody": {
-   "text": "At the end of every turn, a random stat (except Accuracy and Evasion) is raised by two stages while another is lowered by one stage.",
-   "source": "serebii",
+   "text": "This Pokemon has a random stat, other than accuracy or evasiveness, raised by 2 stages and another stat lowered by 1 stage at the end of each turn.",
+   "source": "smogon",
    "serebii": "At the end of every turn, a random stat (except Accuracy and Evasion) is raised by two stages while another is lowered by one stage.",
-   "pokebase": "Every turn, one of the Pokémon's stats will be boosted sharply but another stat will be lowered."
+   "pokebase": "Every turn, one of the Pokémon's stats will be boosted sharply but another stat will be lowered.",
+   "smogon": "This Pokemon has a random stat, other than accuracy or evasiveness, raised by 2 stages and another stat lowered by 1 stage at the end of each turn."
   },
   "Motor Drive": {
-   "text": "The Pokémon takes no damage from Electric-type attacks and Speed raises by one level.",
-   "source": "serebii",
+   "text": "This Pokemon is immune to Electric-type moves and raises its Speed by 1 stage when hit by an Electric-type move.",
+   "source": "smogon",
    "serebii": "The Pokémon takes no damage from Electric-type attacks and Speed raises by one level.",
-   "pokebase": "The Pokémon takes no damage when hit by Electric-type moves. Instead, its Speed stat is boosted."
+   "pokebase": "The Pokémon takes no damage when hit by Electric-type moves. Instead, its Speed stat is boosted.",
+   "smogon": "This Pokemon is immune to Electric-type moves and raises its Speed by 1 stage when hit by an Electric-type move."
   },
   "Moxie": {
-   "text": "Attack is raised by one stage when the Pokémon knocks out another Pokémon",
-   "source": "serebii",
+   "text": "This Pokemon's Attack is raised by 1 stage if it attacks and knocks out another Pokemon.",
+   "source": "smogon",
    "serebii": "Attack is raised by one stage when the Pokémon knocks out another Pokémon",
-   "pokebase": "When the Pokémon knocks out a target, it shows moxie, which boosts its Attack stat."
+   "pokebase": "When the Pokémon knocks out a target, it shows moxie, which boosts its Attack stat.",
+   "smogon": "This Pokemon's Attack is raised by 1 stage if it attacks and knocks out another Pokemon."
   },
   "Multiscale": {
-   "text": "Reduces damage afflicted to the Pokémon by 50% if at maximum HP",
-   "source": "serebii",
+   "text": "If this Pokemon is at full HP, damage taken from attacks is halved.",
+   "source": "smogon",
    "serebii": "Reduces damage afflicted to the Pokémon by 50% if at maximum HP",
-   "pokebase": "Reduces damage afflicted to the Pokémon by 50% if at maximum HP"
+   "pokebase": "Reduces damage afflicted to the Pokémon by 50% if at maximum HP",
+   "smogon": "If this Pokemon is at full HP, damage taken from attacks is halved."
   },
   "Mummy": {
-   "text": "Contact with the Pokémon changes the attacker's Ability to Mummy.",
-   "source": "serebii",
+   "text": "Pokemon making contact with this Pokemon have their Ability changed to Mummy. Does not affect Pokemon with the As One, Battle Bond, Comatose, Disguise, Gulp Missile, Ice Face, Multitype, Mummy, Power Construct, RKS System, Schooling, Shields Down, Stance Change, Tera Shift, Zen Mode, or Zero to Hero Abilities.",
+   "source": "smogon",
    "serebii": "Contact with the Pokémon changes the attacker's Ability to Mummy.",
-   "pokebase": "Contact with the Pokémon changes the attacker’s Ability to Mummy."
+   "pokebase": "Contact with the Pokémon changes the attacker’s Ability to Mummy.",
+   "smogon": "Pokemon making contact with this Pokemon have their Ability changed to Mummy. Does not affect Pokemon with the As One, Battle Bond, Comatose, Disguise, Gulp Missile, Ice Face, Multitype, Mummy, Power Construct, RKS System, Schooling, Shields Down, Stance Change, Tera Shift, Zen Mode, or Zero to Hero Abilities."
   },
   "Natural Cure": {
-   "text": "The Pokémon’s status (BURN, PARALYZE, SLEEP, POISON, FREEZE) is healed when withdrawn from battle.",
-   "source": "serebii",
+   "text": "This Pokemon has its non-volatile status condition cured when it switches out.",
+   "source": "smogon",
    "serebii": "The Pokémon’s status (BURN, PARALYZE, SLEEP, POISON, FREEZE) is healed when withdrawn from battle.",
-   "pokebase": "The Pokémon's status conditions are cured when it switches out."
+   "pokebase": "The Pokémon's status conditions are cured when it switches out.",
+   "smogon": "This Pokemon has its non-volatile status condition cured when it switches out."
   },
   "No Guard": {
-   "text": "The accuracy of all moves known by this Pokémon and all Pokémon targeting this Pokémon raises to 100%",
-   "source": "serebii",
+   "text": "Every move used by or against this Pokemon will always hit.",
+   "source": "smogon",
    "serebii": "The accuracy of all moves known by this Pokémon and all Pokémon targeting this Pokémon raises to 100%",
-   "pokebase": "The accuracy of all moves known by this Pokémon and all Pokémon targeting this Pokémon raises to 100%"
+   "pokebase": "The accuracy of all moves known by this Pokémon and all Pokémon targeting this Pokémon raises to 100%",
+   "smogon": "Every move used by or against this Pokemon will always hit."
   },
   "Oblivious": {
-   "text": "The Pokémon cannot be under the Attract condition, Intimidated, or be taunted, while having this ability.",
-   "source": "serebii",
+   "text": "This Pokemon cannot be infatuated or taunted. Gaining this Ability while infatuated or taunted cures it. This Pokemon is immune to the effect of the Intimidate Ability.",
+   "source": "smogon",
    "serebii": "The Pokémon cannot be under the Attract condition, Intimidated, or be taunted, while having this ability.",
-   "pokebase": "The Pokémon is oblivious, keeping it from being infatuated, falling for taunts, or being affected by Intimidate."
+   "pokebase": "The Pokémon is oblivious, keeping it from being infatuated, falling for taunts, or being affected by Intimidate.",
+   "smogon": "This Pokemon cannot be infatuated or taunted. Gaining this Ability while infatuated or taunted cures it. This Pokemon is immune to the effect of the Intimidate Ability."
   },
   "Opportunist": {
-   "text": "If an opponent's stat is boosted, the Pokémon seizes the opportunity to boost the same stat for itself.",
-   "source": "serebii",
+   "text": "When an opposing Pokemon has a stat stage raised, this Pokemon copies the effect.",
+   "source": "smogon",
    "serebii": "If an opponent's stat is boosted, the Pokémon seizes the opportunity to boost the same stat for itself.",
-   "pokebase": "If an opponent's stat is boosted, the Pokémon seizes the opportunity to boost the same stat for itself."
+   "pokebase": "If an opponent's stat is boosted, the Pokémon seizes the opportunity to boost the same stat for itself.",
+   "smogon": "When an opposing Pokemon has a stat stage raised, this Pokemon copies the effect."
   },
   "Overcoat": {
-   "text": "Protects Pokémon from Weather Effects and Powder moves such as Sleep Powder, Poison Powder etc.",
-   "source": "serebii",
+   "text": "This Pokemon is immune to powder moves, damage from Sandstorm, and the effects of Rage Powder and the Effect Spore Ability.",
+   "source": "smogon",
    "serebii": "Protects Pokémon from Weather Effects and Powder moves such as Sleep Powder, Poison Powder etc.",
-   "pokebase": "The Pokémon takes no damage from sandstorms. It is also protected from the effects of powders and spores."
+   "pokebase": "The Pokémon takes no damage from sandstorms. It is also protected from the effects of powders and spores.",
+   "smogon": "This Pokemon is immune to powder moves, damage from Sandstorm, and the effects of Rage Powder and the Effect Spore Ability."
   },
   "Overgrow": {
-   "text": "When HP is below 1/3rd its maximum, power of Grass-type moves is increased by 50%.",
-   "source": "serebii",
+   "text": "When this Pokemon has 1/3 or less of its maximum HP, rounded down, its offensive stat is multiplied by 1.5 while using a Grass-type attack.",
+   "source": "smogon",
    "serebii": "When HP is below 1/3rd its maximum, power of Grass-type moves is increased by 50%.",
-   "pokebase": "Powers up Grass-type moves when the Pokémon's HP is low."
+   "pokebase": "Powers up Grass-type moves when the Pokémon's HP is low.",
+   "smogon": "When this Pokemon has 1/3 or less of its maximum HP, rounded down, its offensive stat is multiplied by 1.5 while using a Grass-type attack."
   },
   "Own Tempo": {
-   "text": "The Pokémon cannot be Confused while having this ability. Blocks Intimidate",
-   "source": "serebii",
+   "text": "This Pokemon cannot be confused. Gaining this Ability while confused cures it. This Pokemon is immune to the effect of the Intimidate Ability.",
+   "source": "smogon",
    "serebii": "The Pokémon cannot be Confused while having this ability. Blocks Intimidate",
-   "pokebase": "The Pokémon sticks to its own tempo, preventing it from becoming confused or being affected by Intimidate."
+   "pokebase": "The Pokémon sticks to its own tempo, preventing it from becoming confused or being affected by Intimidate.",
+   "smogon": "This Pokemon cannot be confused. Gaining this Ability while confused cures it. This Pokemon is immune to the effect of the Intimidate Ability."
   },
   "Parental Bond": {
-   "text": "Every move used by the Pokémon will hit twice. The damage inflicted by the second hit is reduced to 25%. If the move used is a damaging move, each hit is capable of afflicting Secondary Effects and Critical Hits",
-   "source": "serebii",
+   "text": "This Pokemon's damaging moves become multi-hit moves that hit twice. The second hit has its damage quartered. Does not affect Doom Desire, Dragon Darts, Dynamax Cannon, Endeavor, Explosion, Final Gambit, Fling, Future Sight, Ice Ball, Rollout, Self-Destruct, any multi-hit move, any move that has multiple targets, or any two-turn move.",
+   "source": "smogon",
    "serebii": "Every move used by the Pokémon will hit twice. The damage inflicted by the second hit is reduced to 25%. If the move used is a damaging move, each hit is capable of afflicting Secondary Effects and Critical Hits",
-   "pokebase": "Parent and child each attacks."
+   "pokebase": "Parent and child each attacks.",
+   "smogon": "This Pokemon's damaging moves become multi-hit moves that hit twice. The second hit has its damage quartered. Does not affect Doom Desire, Dragon Darts, Dynamax Cannon, Endeavor, Explosion, Final Gambit, Fling, Future Sight, Ice Ball, Rollout, Self-Destruct, any multi-hit move, any move that has multiple targets, or any two-turn move."
   },
   "Pickpocket": {
-   "text": "When a Pokémon makes physical contact with the Pokémon, the item of the opponent is stolen.",
-   "source": "serebii",
+   "text": "If this Pokemon has no item and is hit by a contact move, it steals the attacker's item. This effect applies after all hits from a multi-hit move. This effect is prevented if the move had a secondary effect removed by the Sheer Force Ability.",
+   "source": "smogon",
    "serebii": "When a Pokémon makes physical contact with the Pokémon, the item of the opponent is stolen.",
-   "pokebase": "The Pokémon steals the held item from attackers that made direct contact with it."
+   "pokebase": "The Pokémon steals the held item from attackers that made direct contact with it.",
+   "smogon": "If this Pokemon has no item and is hit by a contact move, it steals the attacker's item. This effect applies after all hits from a multi-hit move. This effect is prevented if the move had a secondary effect removed by the Sheer Force Ability."
   },
   "Pickup": {
-   "text": "Has a 10% chance of finding and holding an item after battle. Will not work if this Pokémon is already holding an item. From Black & White, it allows for the user to pick up the item of its opponent or ally if they used up the item in battle.",
-   "source": "serebii",
+   "text": "At the end of each turn, if this Pokemon is not holding an item and at least one adjacent Pokemon used an item during this turn, one of those Pokemon is selected at random and this Pokemon obtains that Pokemon's last used item. An item is not considered the last used if it was a popped Air Balloon, if the item was picked up by another Pokemon with this Ability, or if the item was lost to Bug Bite, Corrosive Gas, Covet, Incinerate, Knock Off, Pluck, or Thief. Items thrown with Fling can be picked up.",
+   "source": "smogon",
    "serebii": "Has a 10% chance of finding and holding an item after battle. Will not work if this Pokémon is already holding an item. From Black & White, it allows for the user to pick up the item of its opponent or ally if they used up the item in battle.",
-   "pokebase": "The Pokémon may pick up an item another Pokémon used during a battle. It may pick up items outside of battle, too."
+   "pokebase": "The Pokémon may pick up an item another Pokémon used during a battle. It may pick up items outside of battle, too.",
+   "smogon": "At the end of each turn, if this Pokemon is not holding an item and at least one adjacent Pokemon used an item during this turn, one of those Pokemon is selected at random and this Pokemon obtains that Pokemon's last used item. An item is not considered the last used if it was a popped Air Balloon, if the item was picked up by another Pokemon with this Ability, or if the item was lost to Bug Bite, Corrosive Gas, Covet, Incinerate, Knock Off, Pluck, or Thief. Items thrown with Fling can be picked up."
   },
   "Piercing Drill": {
-   "text": "When the Pokémon uses contact moves, it can hit even targets that are protecting themselves, dealing 1/4 of the damage that the move would otherwise deal. Everything aside from the target's protective effects is still triggered.",
-   "source": "serebii",
+   "text": "This Pokemon's contact moves ignore a target's protection and deal 1/4 the usual damage.",
+   "source": "smogon",
    "serebii": "When the Pokémon uses contact moves, it can hit even targets that are protecting themselves, dealing 1/4 of the damage that the move would otherwise deal. Everything aside from the target's protective effects is still triggered.",
-   "pokebase": "When the Pokémon uses contact moves, it can hit even targets that are protecting themselves, dealing 1/4 of the damage that the move would otherwise deal. Everything aside from the target's protective effects is still triggered."
+   "pokebase": "When the Pokémon uses contact moves, it can hit even targets that are protecting themselves, dealing 1/4 of the damage that the move would otherwise deal. Everything aside from the target's protective effects is still triggered.",
+   "smogon": "This Pokemon's contact moves ignore a target's protection and deal 1/4 the usual damage."
   },
   "Pixilate": {
-   "text": "Increases the power of Normal-type moves by 20%. It then changes those moves to Fairy-type.",
-   "source": "serebii",
+   "text": "This Pokemon's Normal-type moves become Fairy-type moves and have their power multiplied by 1.2. This effect comes after other effects that change a move's type, but before Ion Deluge and Electrify's effects.",
+   "source": "smogon",
    "serebii": "Increases the power of Normal-type moves by 20%. It then changes those moves to Fairy-type.",
-   "pokebase": "Normal-type moves become Fairy-type moves. The power of those moves is boosted a little."
+   "pokebase": "Normal-type moves become Fairy-type moves. The power of those moves is boosted a little.",
+   "smogon": "This Pokemon's Normal-type moves become Fairy-type moves and have their power multiplied by 1.2. This effect comes after other effects that change a move's type, but before Ion Deluge and Electrify's effects."
   },
   "Plus": {
-   "text": "When battling with Plus or Minus, Special Attack increases by 50%.",
-   "source": "serebii",
+   "text": "If an active ally has this Ability or the Minus Ability, this Pokemon's Special Attack is multiplied by 1.5.",
+   "source": "smogon",
    "serebii": "When battling with Plus or Minus, Special Attack increases by 50%.",
-   "pokebase": "Boosts the Sp. Atk stat of the Pokémon if an ally with the Plus or Minus Ability is also in battle."
+   "pokebase": "Boosts the Sp. Atk stat of the Pokémon if an ally with the Plus or Minus Ability is also in battle.",
+   "smogon": "If an active ally has this Ability or the Minus Ability, this Pokemon's Special Attack is multiplied by 1.5."
   },
   "Poison Heal": {
-   "text": "HP is restored by 1/8th the maximum HP every turn while the Pokémon has the Poison condition.",
-   "source": "serebii",
+   "text": "If this Pokemon is poisoned, it restores 1/8 of its maximum HP, rounded down, at the end of each turn instead of losing HP.",
+   "source": "smogon",
    "serebii": "HP is restored by 1/8th the maximum HP every turn while the Pokémon has the Poison condition.",
-   "pokebase": "If poisoned, the Pokémon has its HP restored instead of taking damage."
+   "pokebase": "If poisoned, the Pokémon has its HP restored instead of taking damage.",
+   "smogon": "If this Pokemon is poisoned, it restores 1/8 of its maximum HP, rounded down, at the end of each turn instead of losing HP."
   },
   "Poison Point": {
-   "text": "The opponent has a 30% chance of being induced with Poison when using an attack, that requires physical contact, against this Pokémon.",
-   "source": "serebii",
+   "text": "30% chance a Pokemon making contact with this Pokemon will be poisoned.",
+   "source": "smogon",
    "serebii": "The opponent has a 30% chance of being induced with Poison when using an attack, that requires physical contact, against this Pokémon.",
-   "pokebase": "Contact with the Pokémon may poison the attacker."
+   "pokebase": "Contact with the Pokémon may poison the attacker.",
+   "smogon": "30% chance a Pokemon making contact with this Pokemon will be poisoned."
   },
   "Poison Touch": {
-   "text": "When the Pokémon attacks its opponents with a move that causes Physical Contact, there is a 30% chance that the target is Poisoned.",
-   "source": "serebii",
+   "text": "This Pokemon's contact moves have a 30% chance of poisoning. This effect comes after a move's inherent secondary effect chance.",
+   "source": "smogon",
    "serebii": "When the Pokémon attacks its opponents with a move that causes Physical Contact, there is a 30% chance that the target is Poisoned.",
-   "pokebase": "May poison a target when the Pokémon makes contact."
+   "pokebase": "May poison a target when the Pokémon makes contact.",
+   "smogon": "This Pokemon's contact moves have a 30% chance of poisoning. This effect comes after a move's inherent secondary effect chance."
   },
   "Prankster": {
-   "text": "Increases the priority of the Pokémon's status moves by 1 stage. However, the Pokémon's status moves no longer work against Dark-type Pokémon.",
-   "source": "pokebase",
+   "text": "This Pokemon's non-damaging moves have their priority increased by 1. Opposing Dark-type Pokemon are immune to these moves, and any move called by these moves, if the resulting user of the move has this Ability.",
+   "source": "smogon",
    "serebii": "Status category moves have their Speed Priority increased by 1. Moves increased by this that are used on Dark-type opponents will fail.",
-   "pokebase": "Increases the priority of the Pokémon's status moves by 1 stage. However, the Pokémon's status moves no longer work against Dark-type Pokémon."
+   "pokebase": "Increases the priority of the Pokémon's status moves by 1 stage. However, the Pokémon's status moves no longer work against Dark-type Pokémon.",
+   "smogon": "This Pokemon's non-damaging moves have their priority increased by 1. Opposing Dark-type Pokemon are immune to these moves, and any move called by these moves, if the resulting user of the move has this Ability."
   },
   "Pressure": {
-   "text": "When this Pokémon is hit by a move, the opponent’s PP lowers by 2 rather than 1.",
-   "source": "serebii",
+   "text": "If this Pokemon is the target of an opposing Pokemon's move, that move loses one additional PP. Imprison, Snatch, and Tera Blast also lose one additional PP when used by an opposing Pokemon, but Sticky Web does not.",
+   "source": "smogon",
    "serebii": "When this Pokémon is hit by a move, the opponent’s PP lowers by 2 rather than 1.",
-   "pokebase": "Puts other Pokémon under pressure, causing them to expend more PP to use their moves."
+   "pokebase": "Puts other Pokémon under pressure, causing them to expend more PP to use their moves.",
+   "smogon": "If this Pokemon is the target of an opposing Pokemon's move, that move loses one additional PP. Imprison, Snatch, and Tera Blast also lose one additional PP when used by an opposing Pokemon, but Sticky Web does not."
   },
   "Protean": {
-   "text": "Before the Pokémon uses a move, it becomes a pure Pokémon of that type. This only works once per switch in.",
-   "source": "serebii",
+   "text": "This Pokemon's type changes to match the type of the move it is about to use. This effect comes after all effects that change a move's type. This effect can only happen once per switch-in, and only if this Pokemon is not Terastallized.",
+   "source": "smogon",
    "serebii": "Before the Pokémon uses a move, it becomes a pure Pokémon of that type. This only works once per switch in.",
-   "pokebase": "Before the Pokémon uses a move, it becomes a pure Pokémon of that type. This only works once per switch in."
+   "pokebase": "Before the Pokémon uses a move, it becomes a pure Pokémon of that type. This only works once per switch in.",
+   "smogon": "This Pokemon's type changes to match the type of the move it is about to use. This effect comes after all effects that change a move's type. This effect can only happen once per switch-in, and only if this Pokemon is not Terastallized."
   },
   "Psychic Surge": {
-   "text": "Turns the entire field into Psychic Terrain for 5 turns when the Pokémon enters a battle.",
-   "source": "pokebase",
+   "text": "On switch-in, this Pokemon summons Psychic Terrain, for 5 turns.",
+   "source": "smogon",
    "serebii": "Activates Psychic Terrain for 5 turns when the Pokémon enters a battle.",
-   "pokebase": "Turns the entire field into Psychic Terrain for 5 turns when the Pokémon enters a battle."
+   "pokebase": "Turns the entire field into Psychic Terrain for 5 turns when the Pokémon enters a battle.",
+   "smogon": "On switch-in, this Pokemon summons Psychic Terrain."
   },
   "Punk Rock": {
-   "text": "Increases the damage of Sound based moves by 30%. Reduces damage taken by this Pokémon by Sound based moves by 50%.",
-   "source": "serebii",
+   "text": "This Pokemon's sound-based moves have their power multiplied by 1.3. This Pokemon takes halved damage from sound-based moves.",
+   "source": "smogon",
    "serebii": "Increases the damage of Sound based moves by 30%. Reduces damage taken by this Pokémon by Sound based moves by 50%.",
-   "pokebase": "Boosts the power of the Pokémon's sound-based moves by 30% and halves the damage the Pokémon takes from sound-based moves."
+   "pokebase": "Boosts the power of the Pokémon's sound-based moves by 30% and halves the damage the Pokémon takes from sound-based moves.",
+   "smogon": "This Pokemon's sound-based moves have their power multiplied by 1.3. This Pokemon takes halved damage from sound-based moves."
   },
   "Pure Power": {
-   "text": "The Pokémon’s Attack stat is doubled in battle while having this ability.",
-   "source": "serebii",
+   "text": "This Pokemon's Attack is doubled.",
+   "source": "smogon",
    "serebii": "The Pokémon’s Attack stat is doubled in battle while having this ability.",
-   "pokebase": "Using its pure power, the Pokémon doubles its Attack stat."
+   "pokebase": "Using its pure power, the Pokémon doubles its Attack stat.",
+   "smogon": "This Pokemon's Attack is doubled."
   },
   "Purifying Salt": {
-   "text": "The Pokémon's pure salt protects it from status conditions and halves the damage taken from Ghost-type moves.",
-   "source": "serebii",
+   "text": "This Pokemon cannot become affected by a non-volatile status condition or Yawn. If a Pokemon uses a Ghost-type attack against this Pokemon, that Pokemon's offensive stat is halved when calculating the damage to this Pokemon.",
+   "source": "smogon",
    "serebii": "The Pokémon's pure salt protects it from status conditions and halves the damage taken from Ghost-type moves.",
-   "pokebase": "The Pokémon's pure salt protects it from status conditions and halves the damage taken from Ghost-type moves."
+   "pokebase": "The Pokémon's pure salt protects it from status conditions and halves the damage taken from Ghost-type moves.",
+   "smogon": "This Pokemon cannot become affected by a non-volatile status condition or Yawn. If a Pokemon uses a Ghost-type attack against this Pokemon, that Pokemon's offensive stat is halved when calculating the damage to this Pokemon."
   },
   "Queenly Majesty": {
-   "text": "Prevents the opponent from using moves with increased Speed Priority on this Pokémon or its allies.",
-   "source": "serebii",
+   "text": "Priority moves used by opposing Pokemon targeting this Pokemon or its allies are prevented from having an effect.",
+   "source": "smogon",
    "serebii": "Prevents the opponent from using moves with increased Speed Priority on this Pokémon or its allies.",
-   "pokebase": "Opponents are unable to use priority moves against the Pokémon or its allies."
+   "pokebase": "Opponents are unable to use priority moves against the Pokémon or its allies.",
+   "smogon": "Priority moves used by opposing Pokemon targeting this Pokemon or its allies are prevented from having an effect."
   },
   "Quick Draw": {
-   "text": "At the start of each turn, this Pokémon has a 30% chance of moving first in the Speed Priority Bracket",
-   "source": "serebii",
+   "text": "This Pokemon has a 30% chance to move first in its priority bracket with attacking moves.",
+   "source": "smogon",
    "serebii": "At the start of each turn, this Pokémon has a 30% chance of moving first in the Speed Priority Bracket",
-   "pokebase": "Enables the Pokémon to move first occasionally."
+   "pokebase": "Enables the Pokémon to move first occasionally.",
+   "smogon": "This Pokemon has a 30% chance to move first in its priority bracket with attacking moves."
   },
   "Quick Feet": {
-   "text": "Speed is increased by 50% when induced with a status (Burn, Poison, Sleep, Frozen & Paralysis). If Paralysed, the speed drop is ignored.",
-   "source": "serebii",
+   "text": "If this Pokemon has a non-volatile status condition, its Speed is multiplied by 1.5. This Pokemon ignores the paralysis effect of halving Speed.",
+   "source": "smogon",
    "serebii": "Speed is increased by 50% when induced with a status (Burn, Poison, Sleep, Frozen & Paralysis). If Paralysed, the speed drop is ignored.",
-   "pokebase": "Boosts the Speed stat if the Pokémon has a status condition."
+   "pokebase": "Boosts the Speed stat if the Pokémon has a status condition.",
+   "smogon": "If this Pokemon has a non-volatile status condition, its Speed is multiplied by 1.5. This Pokemon ignores the paralysis effect of halving Speed."
   },
   "Rain Dish": {
-   "text": "If Heavy Rain weather is in effect, recovers 1/16th max Hit Points at the end of the turn.",
-   "source": "serebii",
+   "text": "If Rain is active, this Pokemon restores 1/16 of its maximum HP, rounded down, at the end of each turn. This effect is prevented if this Pokemon is holding a Utility Umbrella.",
+   "source": "smogon",
    "serebii": "If Heavy Rain weather is in effect, recovers 1/16th max Hit Points at the end of the turn.",
-   "pokebase": "The Pokémon gradually regains HP in rain."
+   "pokebase": "The Pokémon gradually regains HP in rain.",
+   "smogon": "If Rain is active, this Pokemon restores 1/16 of its maximum HP, rounded down, at the end of each turn. This effect is prevented if this Pokemon is holding a Utility Umbrella."
   },
   "Rattled": {
-   "text": "When the Pokémon takes damage from a Dark-, Ghost-, or Bug-type move or when it is on the receiving end of Intimidate, its Speed stat is boosted by 1 stage.",
-   "source": "pokebase",
+   "text": "This Pokemon's Speed is raised by 1 stage if hit by a Bug-, Dark-, or Ghost-type attack, or if an opposing Pokemon affected this Pokemon with the Intimidate Ability.",
+   "source": "smogon",
    "serebii": "Speed is raised by one stage when the Pokémon is hit by a Bug-type, Ghost-type or Dark-type move or is Intimidated",
-   "pokebase": "When the Pokémon takes damage from a Dark-, Ghost-, or Bug-type move or when it is on the receiving end of Intimidate, its Speed stat is boosted by 1 stage."
+   "pokebase": "When the Pokémon takes damage from a Dark-, Ghost-, or Bug-type move or when it is on the receiving end of Intimidate, its Speed stat is boosted by 1 stage.",
+   "smogon": "This Pokemon's Speed is raised by 1 stage if hit by a Bug-, Dark-, or Ghost-type attack, or if an opposing Pokemon affected this Pokemon with the Intimidate Ability."
   },
   "Receiver": {
-   "text": "The Pokémon copies the Ability of a defeated ally.",
-   "source": "serebii",
+   "text": "This Pokemon copies the Ability of an ally that faints. Abilities that cannot be copied are As One, Battle Bond, Comatose, Commander, Disguise, Embody Aspect, Flower Gift, Forecast, Hunger Switch, Ice Face, Illusion, Imposter, Multitype, Neutralizing Gas, Poison Puppeteer, Power Construct, Power of Alchemy, Protosynthesis, Quark Drive, Receiver, RKS System, Schooling, Shields Down, Stance Change, Tera Shell, Tera Shift, Teraform Zero, Trace, Wonder Guard, Zen Mode, and Zero to Hero.",
+   "source": "smogon",
    "serebii": "The Pokémon copies the Ability of a defeated ally.",
-   "pokebase": "The Pokémon copies the Ability of a defeated ally."
+   "pokebase": "The Pokémon copies the Ability of a defeated ally.",
+   "smogon": "This Pokemon copies the Ability of an ally that faints. Abilities that cannot be copied are As One, Battle Bond, Comatose, Commander, Disguise, Embody Aspect, Flower Gift, Forecast, Hunger Switch, Ice Face, Illusion, Imposter, Multitype, Neutralizing Gas, Poison Puppeteer, Power Construct, Power of Alchemy, Protosynthesis, Quark Drive, Receiver, RKS System, Schooling, Shields Down, Stance Change, Tera Shell, Tera Shift, Teraform Zero, Trace, Wonder Guard, Zen Mode, and Zero to Hero."
   },
   "Reckless": {
-   "text": "The power of moves that have recoil damage is increased by 20%.",
-   "source": "serebii",
+   "text": "This Pokemon's attacks with recoil or crash damage have their power multiplied by 1.2. Does not affect Struggle.",
+   "source": "smogon",
    "serebii": "The power of moves that have recoil damage is increased by 20%.",
-   "pokebase": "Powers up moves that have recoil damage."
+   "pokebase": "Powers up moves that have recoil damage.",
+   "smogon": "This Pokemon's attacks with recoil or crash damage have their power multiplied by 1.2. Does not affect Struggle."
   },
   "Refrigerate": {
-   "text": "Increases the power of Normal-type moves by 20%. It then changes those moves to Ice-type.",
-   "source": "serebii",
+   "text": "This Pokemon's Normal-type moves become Ice-type moves and have their power multiplied by 1.2. This effect comes after other effects that change a move's type, but before Ion Deluge and Electrify's effects.",
+   "source": "smogon",
    "serebii": "Increases the power of Normal-type moves by 20%. It then changes those moves to Ice-type.",
-   "pokebase": "Normal-type moves become Ice-type moves. The power of those moves is boosted a little."
+   "pokebase": "Normal-type moves become Ice-type moves. The power of those moves is boosted a little.",
+   "smogon": "This Pokemon's Normal-type moves become Ice-type moves and have their power multiplied by 1.2. This effect comes after other effects that change a move's type, but before Ion Deluge and Electrify's effects."
   },
   "Regenerator": {
-   "text": "When the Pokémon switches out of battle, up to 33.3% of its maximum Hit Points are restored",
-   "source": "serebii",
+   "text": "This Pokemon restores 1/3 of its maximum HP, rounded down, when it switches out.",
+   "source": "smogon",
    "serebii": "When the Pokémon switches out of battle, up to 33.3% of its maximum Hit Points are restored",
-   "pokebase": "The Pokémon has a little of its HP restored when withdrawn from battle."
+   "pokebase": "The Pokémon has a little of its HP restored when withdrawn from battle.",
+   "smogon": "This Pokemon restores 1/3 of its maximum HP, rounded down, when it switches out."
   },
   "Ripen": {
-   "text": "Ripens Berries and doubles their effect.",
-   "source": "serebii",
+   "text": "When this Pokemon eats certain Berries, the effects are doubled. Berries that restore HP or PP have the amount doubled, Berries that raise stat stages have the amount doubled, Berries that halve damage taken quarter it instead, and a Jaboca Berry or Rowap Berry has the attacker lose 1/4 of its maximum HP, rounded down.",
+   "source": "smogon",
    "serebii": "Ripens Berries and doubles their effect.",
-   "pokebase": "Ripens Berries and doubles their effect."
+   "pokebase": "Ripens Berries and doubles their effect.",
+   "smogon": "When this Pokemon eats certain Berries, the effects are doubled. Berries that restore HP or PP have the amount doubled, Berries that raise stat stages have the amount doubled, Berries that halve damage taken quarter it instead, and a Jaboca Berry or Rowap Berry has the attacker lose 1/4 of its maximum HP, rounded down."
   },
   "Rivalry": {
-   "text": "Attack & Special Attack is increased by 25% if the foe is of the same gender; Attack & Special Attack is decreased by 25% if the foe is of the opposite gender.",
-   "source": "serebii",
+   "text": "This Pokemon's attacks have their power multiplied by 1.25 against targets of the same gender or multiplied by 0.75 against targets of the opposite gender. There is no modifier if either this Pokemon or the target is genderless.",
+   "source": "smogon",
    "serebii": "Attack & Special Attack is increased by 25% if the foe is of the same gender; Attack & Special Attack is decreased by 25% if the foe is of the opposite gender.",
-   "pokebase": "The Pokémon's competitive spirit makes it deal more damage to Pokémon of the same gender, but less damage to Pokémon of the opposite gender."
+   "pokebase": "The Pokémon's competitive spirit makes it deal more damage to Pokémon of the same gender, but less damage to Pokémon of the opposite gender.",
+   "smogon": "This Pokemon's attacks have their power multiplied by 1.25 against targets of the same gender or multiplied by 0.75 against targets of the opposite gender. There is no modifier if either this Pokemon or the target is genderless."
   },
   "Rock Head": {
-   "text": "Does not receive recoil damage from recoil-causing damages.",
-   "source": "serebii",
+   "text": "This Pokemon does not take recoil damage, except Struggle. Does not affect Life Orb damage or crash damage.",
+   "source": "smogon",
    "serebii": "Does not receive recoil damage from recoil-causing damages.",
-   "pokebase": "Protects the Pokémon from recoil damage."
+   "pokebase": "Protects the Pokémon from recoil damage.",
+   "smogon": "This Pokemon does not take recoil damage, except Struggle. Does not affect Life Orb damage or crash damage."
   },
   "Rough Skin": {
-   "text": "The opponent is hurt by 1/8th of his maxium Hit Points of recoil when using an attack, that requires physical contact, against this Pokémon.",
-   "source": "serebii",
+   "text": "Pokemon making contact with this Pokemon lose 1/8 of their maximum HP, rounded down.",
+   "source": "smogon",
    "serebii": "The opponent is hurt by 1/8th of his maxium Hit Points of recoil when using an attack, that requires physical contact, against this Pokémon.",
-   "pokebase": "The Pokémon's rough skin damages attackers that make direct contact with it."
+   "pokebase": "The Pokémon's rough skin damages attackers that make direct contact with it.",
+   "smogon": "Pokemon making contact with this Pokemon lose 1/8 of their maximum HP, rounded down."
   },
   "Run Away": {
-   "text": "Enables the Pokémon to ignore any effects that would usually prevent it from switching out of battle and being replaced by another party Pokémon.",
-   "source": "serebii",
+   "text": "No competitive use.",
+   "source": "smogon",
    "serebii": "Enables the Pokémon to ignore any effects that would usually prevent it from switching out of battle and being replaced by another party Pokémon.",
-   "pokebase": "Enables the Pokémon to ignore any effects that would usually prevent it from switching out of battle and being replaced by another party Pokémon."
+   "pokebase": "Enables the Pokémon to ignore any effects that would usually prevent it from switching out of battle and being replaced by another party Pokémon.",
+   "smogon": "No competitive use."
   },
   "Sand Force": {
-   "text": "Ground-type, Rock-type & Steel-type moves have their power increased by 30% in a Sandstorm and will not receive damage",
-   "source": "serebii",
+   "text": "If Sandstorm is active, this Pokemon's Ground-, Rock-, and Steel-type attacks have their power multiplied by 1.3. This Pokemon takes no damage from Sandstorm.",
+   "source": "smogon",
    "serebii": "Ground-type, Rock-type & Steel-type moves have their power increased by 30% in a Sandstorm and will not receive damage",
-   "pokebase": "Boosts the power of Rock-, Ground-, and Steel-type moves in a sandstorm."
+   "pokebase": "Boosts the power of Rock-, Ground-, and Steel-type moves in a sandstorm.",
+   "smogon": "If Sandstorm is active, this Pokemon's Ground-, Rock-, and Steel-type attacks have their power multiplied by 1.3. This Pokemon takes no damage from Sandstorm."
   },
   "Sand Rush": {
-   "text": "Speed is doubled within a sandstorm",
-   "source": "serebii",
+   "text": "If Sandstorm is active, this Pokemon's Speed is doubled. This Pokemon takes no damage from Sandstorm.",
+   "source": "smogon",
    "serebii": "Speed is doubled within a sandstorm",
-   "pokebase": "Boosts the Pokémon's Speed stat in a sandstorm."
+   "pokebase": "Boosts the Pokémon's Speed stat in a sandstorm.",
+   "smogon": "If Sandstorm is active, this Pokemon's Speed is doubled. This Pokemon takes no damage from Sandstorm."
   },
   "Sand Spit": {
-   "text": "The Pokémon creates a sandstorm when it's hit by an attack.",
-   "source": "serebii",
+   "text": "When this Pokemon is hit by an attack, the effect of Sandstorm begins.",
+   "source": "smogon",
    "serebii": "The Pokémon creates a sandstorm when it's hit by an attack.",
-   "pokebase": "The Pokémon creates a sandstorm when it's hit by an attack."
+   "pokebase": "The Pokémon creates a sandstorm when it's hit by an attack.",
+   "smogon": "When this Pokemon is hit by an attack, the effect of Sandstorm begins."
   },
   "Sand Stream": {
-   "text": "Sandstorm blows when the Pokémon enters battle. As of X & Y, this lasts 5 turns.",
-   "source": "serebii",
+   "text": "On switch-in, this Pokemon summons Sandstorm, for 5 turns.",
+   "source": "smogon",
    "serebii": "Sandstorm blows when the Pokémon enters battle. As of X & Y, this lasts 5 turns.",
-   "pokebase": "The Pokémon summons a sandstorm when it enters a battle."
+   "pokebase": "The Pokémon summons a sandstorm when it enters a battle.",
+   "smogon": "On switch-in, this Pokemon summons Sandstorm."
   },
   "Sand Veil": {
-   "text": "Boosts the Pokémon's evasiveness by 25% in a sandstorm. The Pokémon takes no damage from sandstorms.",
-   "source": "pokebase",
+   "text": "If Sandstorm is active, the accuracy of moves used against this Pokemon is multiplied by 0.8. This Pokemon takes no damage from Sandstorm.",
+   "source": "smogon",
    "serebii": "Raises the Pokémon’s evasion during a sandstorm by one level.",
-   "pokebase": "Boosts the Pokémon's evasiveness by 25% in a sandstorm. The Pokémon takes no damage from sandstorms."
+   "pokebase": "Boosts the Pokémon's evasiveness by 25% in a sandstorm. The Pokémon takes no damage from sandstorms.",
+   "smogon": "If Sandstorm is active, the accuracy of moves used against this Pokemon is multiplied by 0.8. This Pokemon takes no damage from Sandstorm."
   },
   "Sap Sipper": {
-   "text": "Attack is raised by one stage when the Pokémon is hit by a Grass-type move. User receives no damage from Grass-type attacks.",
-   "source": "serebii",
+   "text": "This Pokemon is immune to Grass-type moves and raises its Attack by 1 stage when hit by a Grass-type move.",
+   "source": "smogon",
    "serebii": "Attack is raised by one stage when the Pokémon is hit by a Grass-type move. User receives no damage from Grass-type attacks.",
-   "pokebase": "The Pokémon takes no damage when hit by Grass-type moves. Instead, its Attack stat is boosted."
+   "pokebase": "The Pokémon takes no damage when hit by Grass-type moves. Instead, its Attack stat is boosted.",
+   "smogon": "This Pokemon is immune to Grass-type moves and raises its Attack by 1 stage when hit by a Grass-type move."
   },
   "Scrappy": {
-   "text": "Allows the Pokémon to hit Ghost-type Pokémon with Normal-type and Fighting-type moves. Blocks Intimidate",
-   "source": "serebii",
+   "text": "This Pokemon can hit Ghost types with Normal- and Fighting-type moves. This Pokemon is immune to the effect of the Intimidate Ability.",
+   "source": "smogon",
    "serebii": "Allows the Pokémon to hit Ghost-type Pokémon with Normal-type and Fighting-type moves. Blocks Intimidate",
-   "pokebase": "The Pokémon can hit Ghost-type Pokémon with Normal- and Fighting-type moves. It is also unaffected by Intimidate."
+   "pokebase": "The Pokémon can hit Ghost-type Pokémon with Normal- and Fighting-type moves. It is also unaffected by Intimidate.",
+   "smogon": "This Pokemon can hit Ghost types with Normal- and Fighting-type moves. This Pokemon is immune to the effect of the Intimidate Ability."
   },
   "Screen Cleaner": {
-   "text": "When the Pokémon enters a battle, the effects of Light Screen, Reflect, and Aurora Veil are nullified for both opposing and ally Pokémon.",
-   "source": "serebii",
+   "text": "On switch-in, the effects of Aurora Veil, Light Screen, and Reflect end for both sides.",
+   "source": "smogon",
    "serebii": "When the Pokémon enters a battle, the effects of Light Screen, Reflect, and Aurora Veil are nullified for both opposing and ally Pokémon.",
-   "pokebase": "When the Pokémon enters a battle, the effects of Light Screen, Reflect, and Aurora Veil are nullified for both opposing and ally Pokémon."
+   "pokebase": "When the Pokémon enters a battle, the effects of Light Screen, Reflect, and Aurora Veil are nullified for both opposing and ally Pokémon.",
+   "smogon": "On switch-in, the effects of Aurora Veil, Light Screen, and Reflect end for both sides."
   },
   "Seed Sower": {
-   "text": "Turns the entire field into Grassy Terrain for 5 turns when the Pokémon takes damage from moves.",
-   "source": "pokebase",
+   "text": "When this Pokemon is hit by an attack, the effect of Grassy Terrain begins, for 5 turns.",
+   "source": "smogon",
    "serebii": "Turns the ground into Grassy Terrain when the Pokémon is hit by an attack.",
-   "pokebase": "Turns the entire field into Grassy Terrain for 5 turns when the Pokémon takes damage from moves."
+   "pokebase": "Turns the entire field into Grassy Terrain for 5 turns when the Pokémon takes damage from moves.",
+   "smogon": "When this Pokemon is hit by an attack, the effect of Grassy Terrain begins."
   },
   "Shadow Tag": {
-   "text": "The opponent cannot run nor switch while this Pokémon is in play. The opponent may still switch by using Baton Pass, U-turn or Volt Switch, if it is holding a Shed Shell or is a Ghost-type.",
-   "source": "serebii",
+   "text": "Prevents opposing Pokemon from choosing to switch out, unless they are holding a Shed Shell, are a Ghost type, or also have this Ability.",
+   "source": "smogon",
    "serebii": "The opponent cannot run nor switch while this Pokémon is in play. The opponent may still switch by using Baton Pass, U-turn or Volt Switch, if it is holding a Shed Shell or is a Ghost-type.",
-   "pokebase": "The Pokémon steps on the opposing Pokémon's shadows to prevent them from fleeing or switching out."
+   "pokebase": "The Pokémon steps on the opposing Pokémon's shadows to prevent them from fleeing or switching out.",
+   "smogon": "Prevents opposing Pokemon from choosing to switch out, unless they are holding a Shed Shell, are a Ghost type, or also have this Ability."
   },
   "Sharpness": {
-   "text": "Increases the power of Slicing moves used by this Pokémon by 50%",
-   "source": "serebii",
+   "text": "This Pokemon's slicing moves have their power multiplied by 1.5.",
+   "source": "smogon",
    "serebii": "Increases the power of Slicing moves used by this Pokémon by 50%",
-   "pokebase": "Powers up slicing moves."
+   "pokebase": "Powers up slicing moves.",
+   "smogon": "This Pokemon's slicing moves have their power multiplied by 1.5."
   },
   "Shed Skin": {
-   "text": "Every turn, it has a 1 in 3 chance of healing from a status condition (BURN, PARALYZE, SLEEP, POISON, FREEZE).",
-   "source": "serebii",
+   "text": "This Pokemon has a 33% chance to have its non-volatile status condition cured at the end of each turn.",
+   "source": "smogon",
    "serebii": "Every turn, it has a 1 in 3 chance of healing from a status condition (BURN, PARALYZE, SLEEP, POISON, FREEZE).",
-   "pokebase": "The Pokémon may cure its own status conditions by shedding its skin."
+   "pokebase": "The Pokémon may cure its own status conditions by shedding its skin.",
+   "smogon": "This Pokemon has a 33% chance to have its non-volatile status condition cured at the end of each turn."
   },
   "Sheer Force": {
-   "text": "Moves with a secondary effect are increased in power by 30% but lose their secondary effect",
-   "source": "serebii",
+   "text": "This Pokemon's attacks with secondary effects have their power multiplied by 1.3, but the secondary effects are removed. If a secondary effect was removed, it also removes the user's Life Orb recoil and Shell Bell recovery, and prevents the target's Anger Shell, Berserk, Color Change, Emergency Exit, Pickpocket, Wimp Out, Red Card, Eject Button, Kee Berry, and Maranga Berry from activating.",
+   "source": "smogon",
    "serebii": "Moves with a secondary effect are increased in power by 30% but lose their secondary effect",
-   "pokebase": "Removes any additional effects from the Pokémon's moves, but increases the moves' power."
+   "pokebase": "Removes any additional effects from the Pokémon's moves, but increases the moves' power.",
+   "smogon": "This Pokemon's attacks with secondary effects have their power multiplied by 1.3, but the secondary effects are removed. If a secondary effect was removed, it also removes the user's Life Orb recoil and Shell Bell recovery, and prevents the target's Anger Shell, Berserk, Color Change, Emergency Exit, Pickpocket, Wimp Out, Red Card, Eject Button, Kee Berry, and Maranga Berry from activating."
   },
   "Shell Armor": {
-   "text": "Opponent’s moves cannot Critical Hit. : (Available) -->",
-   "source": "serebii",
+   "text": "This Pokemon cannot be struck by a critical hit.",
+   "source": "smogon",
    "serebii": "Opponent’s moves cannot Critical Hit. : (Available) -->",
-   "pokebase": "A hard shell protects the Pokémon from critical hits."
+   "pokebase": "A hard shell protects the Pokémon from critical hits.",
+   "smogon": "This Pokemon cannot be struck by a critical hit."
   },
   "Shield Dust": {
-   "text": "Damaging moves used by the opponent will not have an additional effect.",
-   "source": "serebii",
+   "text": "This Pokemon is not affected by the secondary effect of another Pokemon's attack. Attacks with secondary effects that are prevented include those with a chance (even 100%) to paralyze, sleep, freeze, burn, poison, confuse, cause this Pokemon to flinch, cause this Pokemon's stat stages to be lowered, as well as Anchor Shot, Eerie Spell, Fling, Psychic Noise, Salt Cure, Spirit Shackle, Syrup Bomb, and Throat Chop. The effect of Sparkling Aria is prevented if this Pokemon is the only target. Secondary effects added by King's Rock, Razor Fang, and the Poison Touch, Stench, and Toxic Chain Abilities are also prevented against this Pokemon.",
+   "source": "smogon",
    "serebii": "Damaging moves used by the opponent will not have an additional effect.",
-   "pokebase": "Protective dust shields the Pokémon from the additional effects of moves."
+   "pokebase": "Protective dust shields the Pokémon from the additional effects of moves.",
+   "smogon": "This Pokemon is not affected by the secondary effect of another Pokemon's attack. Attacks with secondary effects that are prevented include those with a chance (even 100%) to paralyze, sleep, freeze, burn, poison, confuse, cause this Pokemon to flinch, cause this Pokemon's stat stages to be lowered, as well as Anchor Shot, Eerie Spell, Fling, Psychic Noise, Salt Cure, Spirit Shackle, Syrup Bomb, and Throat Chop. The effect of Sparkling Aria is prevented if this Pokemon is the only target. Secondary effects added by King's Rock, Razor Fang, and the Poison Touch, Stench, and Toxic Chain Abilities are also prevented against this Pokemon."
   },
   "Skill Link": {
-   "text": "Moves that attack 2-5 times always hit 5 times.",
-   "source": "serebii",
+   "text": "This Pokemon's multi-hit attacks always hit the maximum number of times. Triple Kick and Triple Axel do not check accuracy for the second and third hits.",
+   "source": "smogon",
    "serebii": "Moves that attack 2-5 times always hit 5 times.",
-   "pokebase": "Maximizes the number of times multistrike moves hit."
+   "pokebase": "Maximizes the number of times multistrike moves hit.",
+   "smogon": "This Pokemon's multi-hit attacks always hit the maximum number of times. Triple Kick and Triple Axel do not check accuracy for the second and third hits."
   },
   "Slush Rush": {
-   "text": "Doubles the Pokémon's Speed when Snow is in effect",
-   "source": "serebii",
+   "text": "If Snow is active, this Pokemon's Speed is doubled.",
+   "source": "smogon",
    "serebii": "Doubles the Pokémon's Speed when Snow is in effect",
-   "pokebase": "Boosts the Pokémon's Speed stat in snow."
+   "pokebase": "Boosts the Pokémon's Speed stat in snow.",
+   "smogon": "If Snow is active, this Pokemon's Speed is doubled."
   },
   "Sniper": {
-   "text": "Power of critical-hit moves is increased to 225% rather than 150%.",
-   "source": "serebii",
+   "text": "If this Pokemon strikes with a critical hit, the damage is multiplied by 1.5.",
+   "source": "smogon",
    "serebii": "Power of critical-hit moves is increased to 225% rather than 150%.",
-   "pokebase": "If the Pokémon's attack lands a critical hit, the attack is powered up even further."
+   "pokebase": "If the Pokémon's attack lands a critical hit, the attack is powered up even further.",
+   "smogon": "If this Pokemon strikes with a critical hit, the damage is multiplied by 1.5."
   },
   "Snow Cloak": {
-   "text": "Raises the Pokémon’s evasion during a Snowstorm by one level.",
-   "source": "serebii",
+   "text": "If Snow is active, the accuracy of moves used against this Pokemon is multiplied by 0.8.",
+   "source": "smogon",
    "serebii": "Raises the Pokémon’s evasion during a Snowstorm by one level.",
-   "pokebase": "Boosts the Pokémon's evasiveness in snow."
+   "pokebase": "Boosts the Pokémon's evasiveness in snow.",
+   "smogon": "If Snow is active, the accuracy of moves used against this Pokemon is multiplied by 0.8."
   },
   "Snow Warning": {
-   "text": "Snowstorm blows when the Pokémon enters battle. As of X & Y, this lasts 5 turns.",
-   "source": "serebii",
+   "text": "On switch-in, this Pokemon summons Snow, for 5 turns.",
+   "source": "smogon",
    "serebii": "Snowstorm blows when the Pokémon enters battle. As of X & Y, this lasts 5 turns.",
-   "pokebase": ""
+   "pokebase": "",
+   "smogon": "On switch-in, this Pokemon summons Snow."
   },
   "Solar Power": {
-   "text": "During sunshine, the Pokémon’s Special Attack raises to 1.5 times but HP decreases by 1/8th the maximum HP every turn.",
-   "source": "serebii",
+   "text": "If Sun is active, this Pokemon's Special Attack is multiplied by 1.5 and it loses 1/8 of its maximum HP, rounded down, at the end of each turn. These effects are prevented if the Pokemon is holding a Utility Umbrella.",
+   "source": "smogon",
    "serebii": "During sunshine, the Pokémon’s Special Attack raises to 1.5 times but HP decreases by 1/8th the maximum HP every turn.",
-   "pokebase": "In harsh sunlight, the Pokémon's Sp. Atk stat is boosted, but its HP decreases every turn."
+   "pokebase": "In harsh sunlight, the Pokémon's Sp. Atk stat is boosted, but its HP decreases every turn.",
+   "smogon": "If Sun is active, this Pokemon's Special Attack is multiplied by 1.5 and it loses 1/8 of its maximum HP, rounded down, at the end of each turn. These effects are prevented if the Pokemon is holding a Utility Umbrella."
   },
   "Solid Rock": {
-   "text": "Damage by super-effective moves is reduced by 25%.",
-   "source": "serebii",
+   "text": "This Pokemon receives 3/4 damage from supereffective attacks.",
+   "source": "smogon",
    "serebii": "Damage by super-effective moves is reduced by 25%.",
-   "pokebase": "Reduces the power of supereffective attacks that hit the Pokémon."
+   "pokebase": "Reduces the power of supereffective attacks that hit the Pokémon.",
+   "smogon": "This Pokemon receives 3/4 damage from supereffective attacks."
   },
   "Soundproof": {
-   "text": "Unaffected by sound moves. If this Pokémon switches out with Baton Pass, Perish Song against the switched out will not be nullified.",
-   "source": "serebii",
+   "text": "This Pokemon is immune to sound-based moves, unless it used the move.",
+   "source": "smogon",
    "serebii": "Unaffected by sound moves. If this Pokémon switches out with Baton Pass, Perish Song against the switched out will not be nullified.",
-   "pokebase": "Soundproofing gives the Pokémon full immunity to all sound-based moves."
+   "pokebase": "Soundproofing gives the Pokémon full immunity to all sound-based moves.",
+   "smogon": "This Pokemon is immune to sound-based moves, unless it used the move."
   },
   "Speed Boost": {
-   "text": "Boosts the Pokémon's Speed stat by 1 stage at the end of every turn. The Speed stat will not be boosted on the turn that the Pokémon switches into battle.",
-   "source": "pokebase",
+   "text": "This Pokemon's Speed is raised by 1 stage at the end of each full turn it has been on the field.",
+   "source": "smogon",
    "serebii": "Speed increases by one stage at the end of each turn.",
-   "pokebase": "Boosts the Pokémon's Speed stat by 1 stage at the end of every turn. The Speed stat will not be boosted on the turn that the Pokémon switches into battle."
+   "pokebase": "Boosts the Pokémon's Speed stat by 1 stage at the end of every turn. The Speed stat will not be boosted on the turn that the Pokémon switches into battle.",
+   "smogon": "This Pokemon's Speed is raised by 1 stage at the end of each full turn it has been on the field."
   },
   "Spicy Spray": {
-   "text": "When the Pokémon takes damage from a move, it burns the attacker.",
-   "source": "serebii",
+   "text": "If this Pokemon is hit by an attack, the attacker becomes burned.",
+   "source": "smogon",
    "serebii": "When the Pokémon takes damage from a move, it burns the attacker.",
-   "pokebase": "When the Pokémon takes damage from a move, it burns the attacker."
+   "pokebase": "When the Pokémon takes damage from a move, it burns the attacker.",
+   "smogon": "If this Pokemon is hit by an attack, the attacker becomes burned."
   },
   "Stakeout": {
-   "text": "Doubles the damage dealt to the target's replacement if the target switches out.",
-   "source": "serebii",
+   "text": "This Pokemon's offensive stat is doubled against a target that switched in this turn.",
+   "source": "smogon",
    "serebii": "Doubles the damage dealt to the target's replacement if the target switches out.",
-   "pokebase": "Doubles the power of the Pokémon's moves when it attacks targets that have just switched into battle."
+   "pokebase": "Doubles the power of the Pokémon's moves when it attacks targets that have just switched into battle.",
+   "smogon": "This Pokemon's offensive stat is doubled against a target that switched in this turn."
   },
   "Stall": {
-   "text": "The Pokémon always attacks last.",
-   "source": "serebii",
+   "text": "This Pokemon moves last among Pokemon using the same or greater priority moves.",
+   "source": "smogon",
    "serebii": "The Pokémon always attacks last.",
-   "pokebase": "The Pokémon is always the last to use its moves."
+   "pokebase": "The Pokémon is always the last to use its moves.",
+   "smogon": "This Pokemon moves last among Pokemon using the same or greater priority moves."
   },
   "Stalwart": {
-   "text": "Ignores the effects of opposing Pokémon's Abilities and moves that draw in moves.",
-   "source": "serebii",
+   "text": "This Pokemon's moves cannot be redirected to a different target by any effect.",
+   "source": "smogon",
    "serebii": "Ignores the effects of opposing Pokémon's Abilities and moves that draw in moves.",
-   "pokebase": "Ignores the effects of opposing Pokémon's Abilities and moves that draw in moves."
+   "pokebase": "Ignores the effects of opposing Pokémon's Abilities and moves that draw in moves.",
+   "smogon": "This Pokemon's moves cannot be redirected to a different target by any effect."
   },
   "Stamina": {
-   "text": "Boosts the Defense stat when hit by an attack.",
-   "source": "serebii",
+   "text": "This Pokemon's Defense is raised by 1 stage after it is damaged by a move.",
+   "source": "smogon",
    "serebii": "Boosts the Defense stat when hit by an attack.",
-   "pokebase": "Boosts the Defense stat when the Pokémon is hit by an attack."
+   "pokebase": "Boosts the Defense stat when the Pokémon is hit by an attack.",
+   "smogon": "This Pokemon's Defense is raised by 1 stage after it is damaged by a move."
   },
   "Stance Change": {
-   "text": "The Pokémon changes its form to Blade Forme when it uses an attack move, and changes to Shield Forme when it uses King's Shield.",
-   "source": "serebii",
+   "text": "If this Pokemon is an Aegislash, it changes to Blade Forme before using an attacking move, and changes to Shield Forme before using King's Shield.",
+   "source": "smogon",
    "serebii": "The Pokémon changes its form to Blade Forme when it uses an attack move, and changes to Shield Forme when it uses King's Shield.",
-   "pokebase": "The Pokémon changes its form to Blade Forme when it uses an attack move and changes to Shield Forme when it uses King’s Shield."
+   "pokebase": "The Pokémon changes its form to Blade Forme when it uses an attack move and changes to Shield Forme when it uses King’s Shield.",
+   "smogon": "If this Pokemon is an Aegislash, it changes to Blade Forme before using an attacking move, and changes to Shield Forme before using King's Shield."
   },
   "Static": {
-   "text": "The opponent has a 30% chance of being induced with PARALYZE when using an attack, that requires physical contact, against this Pokémon.",
-   "source": "serebii",
+   "text": "30% chance a Pokemon making contact with this Pokemon will be paralyzed.",
+   "source": "smogon",
    "serebii": "The opponent has a 30% chance of being induced with PARALYZE when using an attack, that requires physical contact, against this Pokémon.",
-   "pokebase": "The Pokémon is charged with static electricity and may paralyze attackers that make direct contact with it."
+   "pokebase": "The Pokémon is charged with static electricity and may paralyze attackers that make direct contact with it.",
+   "smogon": "30% chance a Pokemon making contact with this Pokemon will be paralyzed."
   },
   "Steadfast": {
-   "text": "Speed raises by one level every time the Pokémon flinches.",
-   "source": "serebii",
+   "text": "If this Pokemon flinches, its Speed is raised by 1 stage.",
+   "source": "smogon",
    "serebii": "Speed raises by one level every time the Pokémon flinches.",
-   "pokebase": "The Pokémon's determination boosts its Speed stat every time it flinches."
+   "pokebase": "The Pokémon's determination boosts its Speed stat every time it flinches.",
+   "smogon": "If this Pokemon flinches, its Speed is raised by 1 stage."
   },
   "Steely Spirit": {
-   "text": "Increases the power of Steel-type moves used by the user or any Ally Pokémon by 50%",
-   "source": "serebii",
+   "text": "This Pokemon and its allies' Steel-type moves have their power multiplied by 1.5. This affects Doom Desire even if the user is not on the field.",
+   "source": "smogon",
    "serebii": "Increases the power of Steel-type moves used by the user or any Ally Pokémon by 50%",
-   "pokebase": "Boosts the power of the Steel-type moves of the Pokémon and its allies by 50%."
+   "pokebase": "Boosts the power of the Steel-type moves of the Pokémon and its allies by 50%.",
+   "smogon": "This Pokemon and its allies' Steel-type moves have their power multiplied by 1.5. This affects Doom Desire even if the user is not on the field."
   },
   "Stench": {
-   "text": "If the Pokémon uses a move that deals damage on the opponent, there is a chance the opponent flinches",
-   "source": "serebii",
+   "text": "This Pokemon's attacks without a chance to make the target flinch gain a 10% chance to make the target flinch.",
+   "source": "smogon",
    "serebii": "If the Pokémon uses a move that deals damage on the opponent, there is a chance the opponent flinches",
-   "pokebase": "By releasing a stench when attacking, the Pokémon may cause the target to flinch."
+   "pokebase": "By releasing a stench when attacking, the Pokémon may cause the target to flinch.",
+   "smogon": "This Pokemon's attacks without a chance to make the target flinch gain a 10% chance to make the target flinch."
   },
   "Sticky Hold": {
-   "text": "This Pokémon’s item cannot be taken.",
-   "source": "serebii",
+   "text": "This Pokemon cannot lose its held item due to another Pokemon's Ability or attack, unless the attack knocks out this Pokemon. A Sticky Barb will be transferred to other Pokemon regardless of this Ability.",
+   "source": "smogon",
    "serebii": "This Pokémon’s item cannot be taken.",
-   "pokebase": "The Pokémon's held items cling to its sticky body and cannot be removed by other Pokémon."
+   "pokebase": "The Pokémon's held items cling to its sticky body and cannot be removed by other Pokémon.",
+   "smogon": "This Pokemon cannot lose its held item due to another Pokemon's Ability or attack, unless the attack knocks out this Pokemon. A Sticky Barb will be transferred to other Pokemon regardless of this Ability."
   },
   "Strong Jaw": {
-   "text": "Increases the power of biting moves by 50%",
-   "source": "serebii",
+   "text": "This Pokemon's bite-based attacks have their power multiplied by 1.5.",
+   "source": "smogon",
    "serebii": "Increases the power of biting moves by 50%",
-   "pokebase": "The Pokémon's strong jaw boosts the power of its biting moves."
+   "pokebase": "The Pokémon's strong jaw boosts the power of its biting moves.",
+   "smogon": "This Pokemon's bite-based attacks have their power multiplied by 1.5."
   },
   "Sturdy": {
-   "text": "The Pokémon will remain with 1 HP if it was going to be knocked out by a move when at full Hit Points, and it is immune to One Hit KO moves.",
-   "source": "serebii",
+   "text": "If this Pokemon is at full HP, it survives one hit with at least 1 HP. OHKO moves fail when used against this Pokemon.",
+   "source": "smogon",
    "serebii": "The Pokémon will remain with 1 HP if it was going to be knocked out by a move when at full Hit Points, and it is immune to One Hit KO moves.",
-   "pokebase": "The Pokémon cannot be knocked out by a single hit as long as its HP is full. One-hit KO moves will also fail to knock it out."
+   "pokebase": "The Pokémon cannot be knocked out by a single hit as long as its HP is full. One-hit KO moves will also fail to knock it out.",
+   "smogon": "If this Pokemon is at full HP, it survives one hit with at least 1 HP. OHKO moves fail when used against this Pokemon."
   },
   "Suction Cups": {
-   "text": "Negates moves that force switching out.",
-   "source": "serebii",
+   "text": "This Pokemon cannot be forced to switch out by another Pokemon's attack or item.",
+   "source": "smogon",
    "serebii": "Negates moves that force switching out.",
-   "pokebase": "The Pokémon uses suction cups to stay in one spot. This protects it from moves and items that would force it to switch out."
+   "pokebase": "The Pokémon uses suction cups to stay in one spot. This protects it from moves and items that would force it to switch out.",
+   "smogon": "This Pokemon cannot be forced to switch out by another Pokemon's attack or item."
   },
   "Super Luck": {
-   "text": "Raises the critical-hit ratio of moves by one level.",
-   "source": "serebii",
+   "text": "This Pokemon's critical hit ratio is raised by 1 stage.",
+   "source": "smogon",
    "serebii": "Raises the critical-hit ratio of moves by one level.",
-   "pokebase": "The Pokémon is so lucky that the critical-hit ratios of its moves are boosted."
+   "pokebase": "The Pokémon is so lucky that the critical-hit ratios of its moves are boosted.",
+   "smogon": "This Pokemon's critical hit ratio is raised by 1 stage."
   },
   "Supersweet Syrup": {
-   "text": "Lowers the evasion of opposing Pokémon by 1 stage when first sent into battle",
-   "source": "serebii",
+   "text": "On switch-in, this Pokemon lowers the evasiveness of opponents 1 stage. Once per battle.",
+   "source": "smogon",
    "serebii": "Lowers the evasion of opposing Pokémon by 1 stage when first sent into battle",
-   "pokebase": "Lowers the evasion of opposing Pokémon by 1 stage when first sent into battle"
+   "pokebase": "Lowers the evasion of opposing Pokémon by 1 stage when first sent into battle",
+   "smogon": "On switch-in, this Pokemon lowers the evasiveness of opponents 1 stage. Once per battle."
   },
   "Supreme Overlord": {
-   "text": "When the Pokémon enters a battle, its Attack and Sp. Atk stats are boosted by 10% for each of the allies in its party that have already been defeated.",
-   "source": "serebii",
+   "text": "This Pokemon's moves have their power multiplied by 1+(X × 0.1), where X is the total number of times any Pokemon has fainted on the user's side when this Ability became active, and X cannot be greater than 5.",
+   "source": "smogon",
    "serebii": "When the Pokémon enters a battle, its Attack and Sp. Atk stats are boosted by 10% for each of the allies in its party that have already been defeated.",
-   "pokebase": "When the Pokémon enters a battle, its Attack and Sp. Atk stats are slightly boosted for each of the allies in its party that have already been defeated."
+   "pokebase": "When the Pokémon enters a battle, its Attack and Sp. Atk stats are slightly boosted for each of the allies in its party that have already been defeated.",
+   "smogon": "This Pokemon's moves have their power multiplied by 1+(X × 0.1), where X is the total number of times any Pokemon has fainted on the user's side when this Ability became active, and X cannot be greater than 5."
   },
   "Surge Surfer": {
-   "text": "Doubles the Pokémon's Speed stat on Electric Terrain.",
-   "source": "serebii",
+   "text": "If Electric Terrain is active, this Pokemon's Speed is doubled.",
+   "source": "smogon",
    "serebii": "Doubles the Pokémon's Speed stat on Electric Terrain.",
-   "pokebase": "Doubles the Pokémon's Speed stat on Electric Terrain."
+   "pokebase": "Doubles the Pokémon's Speed stat on Electric Terrain.",
+   "smogon": "If Electric Terrain is active, this Pokemon's Speed is doubled."
   },
   "Swarm": {
-   "text": "When HP is below 1/3rd its maximum, power of Bug-type moves is increased by 50%.",
-   "source": "serebii",
+   "text": "When this Pokemon has 1/3 or less of its maximum HP, rounded down, its offensive stat is multiplied by 1.5 while using a Bug-type attack.",
+   "source": "smogon",
    "serebii": "When HP is below 1/3rd its maximum, power of Bug-type moves is increased by 50%.",
-   "pokebase": "Powers up Bug-type moves when the Pokémon's HP is low."
+   "pokebase": "Powers up Bug-type moves when the Pokémon's HP is low.",
+   "smogon": "When this Pokemon has 1/3 or less of its maximum HP, rounded down, its offensive stat is multiplied by 1.5 while using a Bug-type attack."
   },
   "Sweet Veil": {
-   "text": "Prevents itself and ally Pokémon from falling asleep.",
-   "source": "serebii",
+   "text": "This Pokemon and its allies cannot fall asleep, but those already asleep do not wake up immediately. This Pokemon and its allies cannot use Rest successfully or become affected by Yawn, and those previously affected will not fall asleep.",
+   "source": "smogon",
    "serebii": "Prevents itself and ally Pokémon from falling asleep.",
-   "pokebase": "Prevents the Pokémon and its allies from falling asleep."
+   "pokebase": "Prevents the Pokémon and its allies from falling asleep.",
+   "smogon": "This Pokemon and its allies cannot fall asleep, but those already asleep do not wake up immediately. This Pokemon and its allies cannot use Rest successfully or become affected by Yawn, and those previously affected will not fall asleep."
   },
   "Swift Swim": {
-   "text": "When rainy, The Pokémon’s Speed doubles.",
-   "source": "serebii",
+   "text": "If Rain is active, this Pokemon's Speed is doubled. This effect is prevented if this Pokemon is holding a Utility Umbrella.",
+   "source": "smogon",
    "serebii": "When rainy, The Pokémon’s Speed doubles.",
-   "pokebase": "Boosts the Pokémon's Speed stat in rain."
+   "pokebase": "Boosts the Pokémon's Speed stat in rain.",
+   "smogon": "If Rain is active, this Pokemon's Speed is doubled. This effect is prevented if this Pokemon is holding a Utility Umbrella."
   },
   "Symbiosis": {
-   "text": "Passes the Pokémon's hold item to its adjacent ally when that ally consumes its hold item",
-   "source": "serebii",
+   "text": "If an ally uses its item, this Pokemon gives its item to that ally immediately. Does not activate if the ally's item was stolen or knocked off, or if the ally used an Eject Button or Eject Pack.",
+   "source": "smogon",
    "serebii": "Passes the Pokémon's hold item to its adjacent ally when that ally consumes its hold item",
-   "pokebase": "The Pokémon passes its held item to an ally that has used up an item."
+   "pokebase": "The Pokémon passes its held item to an ally that has used up an item.",
+   "smogon": "If an ally uses its item, this Pokemon gives its item to that ally immediately. Does not activate if the ally's item was stolen or knocked off, or if the ally used an Eject Button or Eject Pack."
   },
   "Synchronize": {
-   "text": "When this Pokémon becomes Poisoned, Paralyzed, or Burned, so does the opponent. However, Fire-type and Water Veil ability Pokémon cannot be Burned, Poison-type and Steel-type and Immunity ability Pokémon cannot be Poisoned, and Limber ability Pokémon cannot be Paralyzed.",
-   "source": "serebii",
+   "text": "If another Pokemon burns, paralyzes, poisons, or badly poisons this Pokemon, that Pokemon receives the same non-volatile status condition.",
+   "source": "smogon",
    "serebii": "When this Pokémon becomes Poisoned, Paralyzed, or Burned, so does the opponent. However, Fire-type and Water Veil ability Pokémon cannot be Burned, Poison-type and Steel-type and Immunity ability Pokémon cannot be Poisoned, and Limber ability Pokémon cannot be Paralyzed.",
-   "pokebase": "If the Pokémon is burned, paralyzed, or poisoned by another Pokémon, that Pokémon will be inflicted with the same status condition."
+   "pokebase": "If the Pokémon is burned, paralyzed, or poisoned by another Pokémon, that Pokémon will be inflicted with the same status condition.",
+   "smogon": "If another Pokemon burns, paralyzes, poisons, or badly poisons this Pokemon, that Pokemon receives the same non-volatile status condition."
   },
   "Tangled Feet": {
-   "text": "Pokémon’s evasion raises one level when Confused.",
-   "source": "serebii",
+   "text": "This Pokemon's evasiveness is doubled as long as it is confused.",
+   "source": "smogon",
    "serebii": "Pokémon’s evasion raises one level when Confused.",
-   "pokebase": "Boosts the Pokémon's evasiveness if it is confused."
+   "pokebase": "Boosts the Pokémon's evasiveness if it is confused.",
+   "smogon": "This Pokemon's evasiveness is doubled as long as it is confused."
   },
   "Technician": {
-   "text": "Moves with a base power of 60 or less are boosted in power by 50%",
-   "source": "serebii",
+   "text": "This Pokemon's moves of 60 power or less have their power multiplied by 1.5, including Struggle. This effect comes after a move's effect changes its own power.",
+   "source": "smogon",
    "serebii": "Moves with a base power of 60 or less are boosted in power by 50%",
-   "pokebase": "Powers up weak moves so the Pokémon can deal more damage with them."
+   "pokebase": "Powers up weak moves so the Pokémon can deal more damage with them.",
+   "smogon": "This Pokemon's moves of 60 power or less have their power multiplied by 1.5, including Struggle. This effect comes after a move's effect changes its own power."
   },
   "Telepathy": {
-   "text": "Prevents damage from team-mates during Double battles",
-   "source": "serebii",
+   "text": "This Pokemon does not take damage from attacks made by its allies.",
+   "source": "smogon",
    "serebii": "Prevents damage from team-mates during Double battles",
-   "pokebase": "The Pokémon anticipates and dodges the attacks of its allies."
+   "pokebase": "The Pokémon anticipates and dodges the attacks of its allies.",
+   "smogon": "This Pokemon does not take damage from attacks made by its allies."
   },
   "Thermal Exchange": {
-   "text": "When the Pokémon takes damage from a Fire-type move, its Attack stat is boosted by 1 stage. The Pokémon cannot be burned.",
-   "source": "pokebase",
+   "text": "This Pokemon's Attack is raised 1 stage after it is damaged by a Fire-type move. This Pokemon cannot be burned. Gaining this Ability while burned cures it.",
+   "source": "smogon",
    "serebii": "Boosts the Attack stat when the Pokémon is hit by a Fire-type move. The Pokémon also cannot be burned.",
-   "pokebase": "When the Pokémon takes damage from a Fire-type move, its Attack stat is boosted by 1 stage. The Pokémon cannot be burned."
+   "pokebase": "When the Pokémon takes damage from a Fire-type move, its Attack stat is boosted by 1 stage. The Pokémon cannot be burned.",
+   "smogon": "This Pokemon's Attack is raised 1 stage after it is damaged by a Fire-type move. This Pokemon cannot be burned. Gaining this Ability while burned cures it."
   },
   "Thick Fat": {
-   "text": "Fire and Ice-type moves deal 50% damage.",
-   "source": "serebii",
+   "text": "If a Pokemon uses a Fire- or Ice-type attack against this Pokemon, that Pokemon's offensive stat is halved when calculating the damage to this Pokemon.",
+   "source": "smogon",
    "serebii": "Fire and Ice-type moves deal 50% damage.",
-   "pokebase": "The Pokémon is protected by a layer of thick fat, which halves the damage taken from Fire- and Ice-type moves."
+   "pokebase": "The Pokémon is protected by a layer of thick fat, which halves the damage taken from Fire- and Ice-type moves.",
+   "smogon": "If a Pokemon uses a Fire- or Ice-type attack against this Pokemon, that Pokemon's offensive stat is halved when calculating the damage to this Pokemon."
   },
   "Torrent": {
-   "text": "When HP is below 1/3rd its maximum, power of Water-type moves is increased by 50%.",
-   "source": "serebii",
+   "text": "When this Pokemon has 1/3 or less of its maximum HP, rounded down, its offensive stat is multiplied by 1.5 while using a Water-type attack.",
+   "source": "smogon",
    "serebii": "When HP is below 1/3rd its maximum, power of Water-type moves is increased by 50%.",
-   "pokebase": "Powers up Water-type moves when the Pokémon's HP is low."
+   "pokebase": "Powers up Water-type moves when the Pokémon's HP is low.",
+   "smogon": "When this Pokemon has 1/3 or less of its maximum HP, rounded down, its offensive stat is multiplied by 1.5 while using a Water-type attack."
   },
   "Tough Claws": {
-   "text": "Increases the power of moves that make physical contact by 30%",
-   "source": "serebii",
+   "text": "This Pokemon's contact moves have their power multiplied by 1.3.",
+   "source": "smogon",
    "serebii": "Increases the power of moves that make physical contact by 30%",
-   "pokebase": "Powers up moves that make direct contact."
+   "pokebase": "Powers up moves that make direct contact.",
+   "smogon": "This Pokemon's contact moves have their power multiplied by 1.3."
   },
   "Toxic Debris": {
-   "text": "Scatters poison spikes at the feet of the opposing team when the Pokémon takes damage from physical moves.",
-   "source": "serebii",
+   "text": "If this Pokemon is hit by a physical attack, Toxic Spikes are set on the opposing side.",
+   "source": "smogon",
    "serebii": "Scatters poison spikes at the feet of the opposing team when the Pokémon takes damage from physical moves.",
-   "pokebase": "Scatters poison spikes at the feet of the opposing team when the Pokémon takes damage from physical moves."
+   "pokebase": "Scatters poison spikes at the feet of the opposing team when the Pokémon takes damage from physical moves.",
+   "smogon": "If this Pokemon is hit by a physical attack, Toxic Spikes are set on the opposing side."
   },
   "Trace": {
-   "text": "Ability becomes the same as that of the opponent. Switching this Pokémon out of battle restores its original ability. In a Double Battle, a random opponent’s ability will be copied.",
-   "source": "serebii",
+   "text": "On switch-in, this Pokemon copies a random opposing Pokemon's Ability. Abilities that cannot be copied are As One, Battle Bond, Comatose, Commander, Disguise, Embody Aspect, Flower Gift, Forecast, Hunger Switch, Ice Face, Illusion, Imposter, Multitype, Neutralizing Gas, Poison Puppeteer, Power Construct, Power of Alchemy, Protosynthesis, Quark Drive, Receiver, RKS System, Schooling, Shields Down, Stance Change, Teraform Zero, Tera Shell, Tera Shift, Trace, Zen Mode, and Zero to Hero. If no opposing Pokemon has an Ability that can be copied, this Ability will activate as soon as one does.",
+   "source": "smogon",
    "serebii": "Ability becomes the same as that of the opponent. Switching this Pokémon out of battle restores its original ability. In a Double Battle, a random opponent’s ability will be copied.",
-   "pokebase": "Ability becomes the same as that of the opponent. Switching this Pokémon out of battle restores its original ability. In a Double Battle, a random opponent’s ability will be copied."
+   "pokebase": "Ability becomes the same as that of the opponent. Switching this Pokémon out of battle restores its original ability. In a Double Battle, a random opponent’s ability will be copied.",
+   "smogon": "On switch-in, this Pokemon copies a random opposing Pokemon's Ability. Abilities that cannot be copied are As One, Battle Bond, Comatose, Commander, Disguise, Embody Aspect, Flower Gift, Forecast, Hunger Switch, Ice Face, Illusion, Imposter, Multitype, Neutralizing Gas, Poison Puppeteer, Power Construct, Power of Alchemy, Protosynthesis, Quark Drive, Receiver, RKS System, Schooling, Shields Down, Stance Change, Teraform Zero, Tera Shell, Tera Shift, Trace, Zen Mode, and Zero to Hero. If no opposing Pokemon has an Ability that can be copied, this Ability will activate as soon as one does."
   },
   "Unaware": {
-   "text": "Foe’s stat modifications are ignored.",
-   "source": "serebii",
+   "text": "This Pokemon ignores other Pokemon's Attack, Special Attack, and accuracy stat stages when taking damage, and ignores other Pokemon's Defense, Special Defense, and evasiveness stat stages when dealing damage.",
+   "source": "smogon",
    "serebii": "Foe’s stat modifications are ignored.",
-   "pokebase": "When attacking, the Pokémon ignores the target's stat changes."
+   "pokebase": "When attacking, the Pokémon ignores the target's stat changes.",
+   "smogon": "This Pokemon ignores other Pokemon's Attack, Special Attack, and accuracy stat stages when taking damage, and ignores other Pokemon's Defense, Special Defense, and evasiveness stat stages when dealing damage."
   },
   "Unburden": {
-   "text": "Speed is doubled once the held item is consumed.",
-   "source": "serebii",
+   "text": "If this Pokemon loses its held item for any reason, its Speed is doubled as long as it remains active, has this Ability, and is not holding an item.",
+   "source": "smogon",
    "serebii": "Speed is doubled once the held item is consumed.",
-   "pokebase": "Boosts the Speed stat if the Pokémon's held item is used or lost."
+   "pokebase": "Boosts the Speed stat if the Pokémon's held item is used or lost.",
+   "smogon": "If this Pokemon loses its held item for any reason, its Speed is doubled as long as it remains active, has this Ability, and is not holding an item."
   },
   "Unnerve": {
-   "text": "The opponent Pokémon will never use their held Berry while the Pokémon is in battle.",
-   "source": "serebii",
+   "text": "While this Pokemon is active, it prevents opposing Pokemon from using their Berries. This Ability activates before hazards and other Abilities take effect.",
+   "source": "smogon",
    "serebii": "The opponent Pokémon will never use their held Berry while the Pokémon is in battle.",
-   "pokebase": "Unnerves opposing Pokémon and makes them unable to eat Berries."
+   "pokebase": "Unnerves opposing Pokémon and makes them unable to eat Berries.",
+   "smogon": "While this Pokemon is active, it prevents opposing Pokemon from using their Berries. This Ability activates before hazards and other Abilities take effect."
   },
   "Unseen Fist": {
-   "text": "The Pokémon can deal damage with moves that make physical contact, even if the target is protected. This damage is reduced to 25%",
-   "source": "serebii",
+   "text": "This Pokemon's contact moves ignore a target's protection and deal 1/4 the usual damage.",
+   "source": "smogon",
    "serebii": "The Pokémon can deal damage with moves that make physical contact, even if the target is protected. This damage is reduced to 25%",
-   "pokebase": "The Pokémon can deal damage with moves that make physical contact, even if the target is protected."
+   "pokebase": "The Pokémon can deal damage with moves that make physical contact, even if the target is protected.",
+   "smogon": "This Pokemon's contact moves ignore a target's protection and deal 1/4 the usual damage."
   },
   "Vital Spirit": {
-   "text": "The Pokémon cannot be Asleep while having this ability.",
-   "source": "serebii",
+   "text": "This Pokemon cannot fall asleep. Gaining this Ability while asleep cures it.",
+   "source": "smogon",
    "serebii": "The Pokémon cannot be Asleep while having this ability.",
-   "pokebase": "The Pokémon is full of vitality, and that prevents it from falling asleep."
+   "pokebase": "The Pokémon is full of vitality, and that prevents it from falling asleep.",
+   "smogon": "This Pokemon cannot fall asleep. Gaining this Ability while asleep cures it."
   },
   "Volt Absorb": {
-   "text": "The Pokémon heals up to 1/4 of its maximum Hit Points when hit with Electric-type moves.",
-   "source": "serebii",
+   "text": "This Pokemon is immune to Electric-type moves and restores 1/4 of its maximum HP, rounded down, when hit by an Electric-type move.",
+   "source": "smogon",
    "serebii": "The Pokémon heals up to 1/4 of its maximum Hit Points when hit with Electric-type moves.",
-   "pokebase": "If hit by an Electric-type move, the Pokémon has its HP restored instead of taking damage."
+   "pokebase": "If hit by an Electric-type move, the Pokémon has its HP restored instead of taking damage.",
+   "smogon": "This Pokemon is immune to Electric-type moves and restores 1/4 of its maximum HP, rounded down, when hit by an Electric-type move."
   },
   "Wandering Spirit": {
-   "text": "The Pokémon exchanges Abilities with a Pokémon that hits it with a move that makes direct contact.",
-   "source": "serebii",
+   "text": "Pokemon making contact with this Pokemon have their Ability swapped with this one. Does not affect Pokemon with the Abilities As One, Battle Bond, Comatose, Commander, Disguise, Embody Aspect, Hunger Switch, Ice Face, Illusion, Multitype, Neutralizing Gas, Poison Puppeteer, Power Construct, Protosynthesis, Quark Drive, RKS System, Schooling, Shields Down, Stance Change, Tera Shell, Tera Shift, Teraform Zero, Wonder Guard, Zen Mode, or Zero to Hero.",
+   "source": "smogon",
    "serebii": "The Pokémon exchanges Abilities with a Pokémon that hits it with a move that makes direct contact.",
-   "pokebase": "The Pokémon exchanges Abilities with a Pokémon that hits it with a move that makes direct contact."
+   "pokebase": "The Pokémon exchanges Abilities with a Pokémon that hits it with a move that makes direct contact.",
+   "smogon": "Pokemon making contact with this Pokemon have their Ability swapped with this one. Does not affect Pokemon with the Abilities As One, Battle Bond, Comatose, Commander, Disguise, Embody Aspect, Hunger Switch, Ice Face, Illusion, Multitype, Neutralizing Gas, Poison Puppeteer, Power Construct, Protosynthesis, Quark Drive, RKS System, Schooling, Shields Down, Stance Change, Tera Shell, Tera Shift, Teraform Zero, Wonder Guard, Zen Mode, or Zero to Hero."
   },
   "Water Absorb": {
-   "text": "The Pokémon heals up to 1/4 of its maximum Hit Points when hit with Water-type moves.",
-   "source": "serebii",
+   "text": "This Pokemon is immune to Water-type moves and restores 1/4 of its maximum HP, rounded down, when hit by a Water-type move.",
+   "source": "smogon",
    "serebii": "The Pokémon heals up to 1/4 of its maximum Hit Points when hit with Water-type moves.",
-   "pokebase": "If hit by a Water-type move, the Pokémon has its HP restored instead of taking damage."
+   "pokebase": "If hit by a Water-type move, the Pokémon has its HP restored instead of taking damage.",
+   "smogon": "This Pokemon is immune to Water-type moves and restores 1/4 of its maximum HP, rounded down, when hit by a Water-type move."
   },
   "Water Bubble": {
-   "text": "Decreases Fire-type move power on the Pokémon by 50%. Increases power of Water-type moves used by the Pokémon by 100% before adding STAB. Prevents Burn",
-   "source": "serebii",
+   "text": "This Pokemon's offensive stat is doubled while using a Water-type attack. If a Pokemon uses a Fire-type attack against this Pokemon, that Pokemon's offensive stat is halved when calculating the damage to this Pokemon. This Pokemon cannot be burned. Gaining this Ability while burned cures it.",
+   "source": "smogon",
    "serebii": "Decreases Fire-type move power on the Pokémon by 50%. Increases power of Water-type moves used by the Pokémon by 100% before adding STAB. Prevents Burn",
-   "pokebase": "Lowers the power of Fire-type moves that hit the Pokémon and prevents it from being burned."
+   "pokebase": "Lowers the power of Fire-type moves that hit the Pokémon and prevents it from being burned.",
+   "smogon": "This Pokemon's offensive stat is doubled while using a Water-type attack. If a Pokemon uses a Fire-type attack against this Pokemon, that Pokemon's offensive stat is halved when calculating the damage to this Pokemon. This Pokemon cannot be burned. Gaining this Ability while burned cures it."
   },
   "Weak Armor": {
-   "text": "When hit by an attack, the Pokémon's Defense is lowered by one stage but Speed is increased by two stages.",
-   "source": "serebii",
+   "text": "If a physical attack hits this Pokemon, its Defense is lowered by 1 stage and its Speed is raised by 2 stages.",
+   "source": "smogon",
    "serebii": "When hit by an attack, the Pokémon's Defense is lowered by one stage but Speed is increased by two stages.",
-   "pokebase": "The Pokémon's Defense stat is lowered when it takes damage from physical moves, but its Speed stat is sharply boosted."
+   "pokebase": "The Pokémon's Defense stat is lowered when it takes damage from physical moves, but its Speed stat is sharply boosted.",
+   "smogon": "If a physical attack hits this Pokemon, its Defense is lowered by 1 stage and its Speed is raised by 2 stages."
   },
   "White Smoke": {
-   "text": "Opponents’ moves which lower this Pokémon’s stats have no effect. However this Pokémon may lower its own stats with its own moves.",
-   "source": "serebii",
+   "text": "Prevents other Pokemon from lowering this Pokemon's stat stages.",
+   "source": "smogon",
    "serebii": "Opponents’ moves which lower this Pokémon’s stats have no effect. However this Pokémon may lower its own stats with its own moves.",
-   "pokebase": "The Pokémon is protected by its white smoke, which prevents other Pokémon from lowering its stats."
+   "pokebase": "The Pokémon is protected by its white smoke, which prevents other Pokémon from lowering its stats.",
+   "smogon": "Prevents other Pokemon from lowering this Pokemon's stat stages."
   },
   "Zero to Hero": {
-   "text": "The Pokémon transforms into its Hero Form when it switches out.",
-   "source": "serebii",
+   "text": "If this Pokemon is a Palafin in Zero Form, switching out has it change to Hero Form.",
+   "source": "smogon",
    "serebii": "The Pokémon transforms into its Hero Form when it switches out.",
-   "pokebase": "The Pokémon transforms into its Hero Form when it switches out."
+   "pokebase": "The Pokémon transforms into its Hero Form when it switches out.",
+   "smogon": "If this Pokemon is a Palafin in Zero Form, switching out has it change to Hero Form."
   }
  }
 }

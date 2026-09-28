@@ -92,6 +92,7 @@ def main():
     items = Q.db("items")
     pb = pokebase_unlocks()
     pbtext = pokebase_text()
+    smogon = (Q.db("smogon_text") or {}).get("items") or {}
     rows, filled, agree, clash, nothing = {}, [], 0, [], []
     for it in items:
         name = it["name"]
@@ -125,9 +126,20 @@ def main():
             if not note:
                 nothing.append(name)
         ser = " ".join((it.get("effect") or "").replace("�", "'").split())
+        # SMOGON'S CHAMPIONS DEX FIRST (player, 2026-09-27: "haz lo mismo con
+        # las abilities e items, smogon casi siempre los tiene mejor descritos
+        # y con numeros"). Sitrus Berry is "Restores 1/4 max HP when at 1/2
+        # max HP or less. Single use." there; Light Clay names Aurora Veil,
+        # which the player confirmed in game and Serebii's line leaves out.
+        # pokebase's mechanics and Serebii's flavour stay behind it, and both
+        # are kept, because the item links read them too.
+        smo = smogon.get(name)
+        pbt = pbtext.get(name)
         rows[name] = {"vp": vp, "source": src, "unlock": unlock, "note": note,
-                      "text": pbtext.get(name) or ser,
-                      "text_source": "pokebase" if pbtext.get(name) else "serebii",
+                      "text": smo or pbt or ser,
+                      "text_source": ("smogon" if smo else
+                                      "pokebase" if pbt else "serebii"),
+                      "pokebase_text": pbt or "",
                       "serebii_text": ser}
 
     print("%d items" % len(rows))
@@ -136,9 +148,10 @@ def main():
     print("  %3d filled in from pokebase" % len(filled))
     print("  %3d agree where both have a price" % agree)
     print("  %3d have no price anywhere (rewards, tickets)" % len(nothing))
-    print("  %3d described by pokebase (the mechanics), %d left on Serebii"
-          % (sum(1 for r in rows.values() if r["text_source"] == "pokebase"),
-             sum(1 for r in rows.values() if r["text_source"] == "serebii")))
+    print("  %3d described by Smogon's Champions dex, %d by pokebase, %d left "
+          "on Serebii"
+          % tuple(sum(1 for r in rows.values() if r["text_source"] == k)
+                  for k in ("smogon", "pokebase", "serebii")))
     if clash:
         # SETTLED by the player, 2026-09-13: "los precios son los que dice
         # serebii". Serebii's page IS the shop listing, priced item by item;
@@ -160,8 +173,8 @@ def main():
             json.dump({"_comment":
                        "Merged by scripts/build_item_facts.py. PRICE: Serebii "
                        "first, pokebase's `unlock` filling the ones Serebii "
-                       "prints as '??? VP'. TEXT: pokebase first, because its "
-                       "description is the mechanics and Serebii's is flavour. "
+                       "prints as '??? VP'. TEXT: Smogon's Champions dex first, "
+                       "then pokebase (the mechanics), then Serebii (flavour). "
                        "`source` and `text_source` say which answered.",
                        "prices": rows}, f, ensure_ascii=False, indent=1)
         print("\nwrote %s" % OUT)

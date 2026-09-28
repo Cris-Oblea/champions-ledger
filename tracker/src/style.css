@@ -1773,3 +1773,9 @@ details.rolls[open] summary::before{content:"2 "}
 /* A fold that is shut costs one button, not a section. */
 .foldwrap{margin-top:16px}
 .foldwrap .sub{margin-top:8px}
+
+/* A NUMBER INSIDE A DESCRIPTION, marked so the eye finds it (player,
+   2026-09-27: "se podria remarcar con color los % o numeros para leerlo
+   rapidamente"). It replaced the chips that repeated the same numbers beside
+   the sentence. The accent ink, which both themes already tune for text. */
+b.num{color:var(--accent);font-weight:600}

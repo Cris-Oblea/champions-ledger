@@ -130,19 +130,34 @@ def item_links(item, props, setters, facts):
     # pair means neither phrasing is a single point of failure - reading
     # pokebase alone lost every type booster, because it says "Boosts" where
     # Serebii says "boosts".
+    # ALL THREE since Smogon's Champions text became the shown one (2026-09-27):
+    # the rules below were written against the other two's phrasing, and
+    # reading only the shown text dropped Air Balloon, Bright Powder,
+    # Metronome and Terrain Extender - the same single point of failure,
+    # moved. Every phrasing is matched, so a better description can only add.
     f = facts.get(item["name"]) or {}
-    t = clean(f.get("text")) + " || " + clean(f.get("serebii_text") or
-                                              item.get("effect"))
+    t = " || ".join(clean(x) for x in (
+        f.get("text"), f.get("pokebase_text"),
+        f.get("serebii_text") or item.get("effect")) if x)
     name = item["name"]
     dmg = [n for n, p in props.items() if p["bp"] > 0 and p["cat"] != "Status"]
     def has(pat):
         return re.search(pat, t, re.I)
 
     # --- the field-effect bridge: the move AND the ability, together --------
-    for eff, (ms, abs_) in setters.items():
-        if has(FIELD[eff]) and (ms or abs_):
-            return ms, abs_, ("extends " + eff + " however it was set - "
-                              "by the move or by the ability")
+    # Smogon writes a list with slashes - "Electric/Grassy/Misty/Psychic
+    # Terrain" - which only the last name matched, so Terrain Extender came
+    # out as a Psychic Terrain item. Spelled out first, and more than one
+    # terrain named is the "any terrain" case below.
+    t = re.sub(r"((?:[A-Z][a-z]+/)+[A-Z][a-z]+) Terrain",
+               lambda m: ", ".join(w + " Terrain" for w in m.group(1).split("/")),
+               t)
+    hits = [eff for eff, (ms, abs_) in setters.items()
+            if has(FIELD[eff]) and (ms or abs_)]
+    if len(hits) == 1 or (hits and not all("Terrain" in e for e in hits)):
+        ms, abs_ = setters[hits[0]]
+        return ms, abs_, ("extends " + hits[0] + " however it was set - "
+                          "by the move or by the ability")
     if has(r"\bterrain\b"):
         ms, abs_ = [], []
         for eff, (a, b) in setters.items():

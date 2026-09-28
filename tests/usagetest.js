@@ -104,22 +104,28 @@ setTimeout(() => {
     n => txt(n).some(t => /^(half|double|third|quarter)$/i.test(t)));
   ok("ningun chip es solo una palabra sin numero", bare.join(", "), "");
 
-  ok("Black Glasses dice x1.2 una sola vez", txt("Black Glasses").join(" | "),
-     "x1.2 damage dealt");
-  ok("Life Orb redondea a lo que el motor quiere decir",
-     txt("Life Orb").join(" | "), "x1.3 damage dealt | 1/10 of max HP");
   ok("...y 1.2998 ya no aparece en ningun sitio",
      JSON.stringify(E).indexOf("1.2998") >= 0, false);
-  ok("Overgrow nombra el sujeto de sus dos numeros",
-     txt("Overgrow").join(" | "), "x1.5 offensive stat | at 1/3 max HP");
-  ok("Fur Coat nombra la estadistica, no el dano",
-     txt("Fur Coat").join(" | "), "x2 Defence");
-  ok("Fairy Aura no dice el mismo numero por cada lado",
-     txt("Fairy Aura").length, 1);
-  /* una sola cifra en la frase: la frase YA es el chip */
-  ok("Swift Swim no repite lo que la frase dice", txt("Swift Swim").length, 0);
-  ok("Aerilate tampoco", txt("Aerilate").length, 0);
-  ok("...pero la frase sigue ahi", !!E["Aerilate"].desc, true);
+  /* REGLA 6 (player, 2026-09-27): "sitrus berry dice que al alcanzar 1/2 de
+     hp, te recupera 1/4 de hp y tiene dos tags con 1/2 hp y 1/4 hp, que no
+     dicen absolutamente nada... se debe aplicar a todos los items y
+     abilities." La descripcion es el texto COMPLETO de Smogon ahora, y dice
+     cada numero - asi que un chip solo existe si dice algo que ella no. Y la
+     frase corta de Smogon debajo era la misma descripcion otra vez. */
+  const ABIL = w.CHAMP.ABIL, ITEMS = w.CHAMP.ITEMS;
+  const itemText = n => ((ITEMS.find(r => r[0] === n) || [])[3]) || "";
+  const shown = n => ABIL[n] || itemText(n);
+  ok("Sitrus Berry sin chips que repiten su frase", E["Sitrus Berry"] ? txt("Sitrus Berry").length : 0, 0);
+  ok("...y su frase dice las dos cifras",
+     /1\/4 max HP when at 1\/2 max HP or less/.test(itemText("Sitrus Berry")), true);
+  ok("Life Orb tampoco repite 1.3 y 1/10", E["Life Orb"] ? txt("Life Orb").length : 0, 0);
+  ok("ninguna descripcion aparece dos veces (sin resumen debajo)",
+     Object.keys(E).filter(n => shown(n) && E[n].desc).join(", "), "");
+  ok("ningun chip repite un numero de su descripcion",
+     Object.keys(E).filter(n => shown(n) && txt(n).length).join(", "), "");
+  ok("Intimidate dice que vuelve a activarse al megaevolucionar",
+     /Mega Evolving into it fires it again/.test(ABIL["Intimidate"]), true);
+  ok("Drizzle dice cuantos turnos", /for 5 turns/.test(ABIL["Drizzle"]), true);
 
   w.go("builds");
   click(d.querySelectorAll("#listBuilds .row")[0]);

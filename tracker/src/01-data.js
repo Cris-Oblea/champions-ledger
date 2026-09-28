@@ -1123,6 +1123,34 @@ function megasFor(name){
    sentence each number sits in - none of which belongs on a phone. It is done
    in scripts/effect_chips.py, where `--audit` can also list the numbers whose
    subject it cannot name yet. What arrives here is [text, why] and is drawn. */
+/* A DESCRIPTION WITH ITS NUMBERS MARKED (player, 2026-09-27: "para evitar
+   usar tags innecesarios en los items y habilidades, se podria remarcar con
+   color los % o numeros para leerlo rapidamente").
+
+   The chips repeated the sentence's own numbers once the sentence became
+   Smogon's full text - Sitrus Berry's "1/2 HP" and "1/4 HP" beside "Restores
+   1/4 max HP when at 1/2 max HP or less" - so they went (effect_chips.py rule
+   6). This is what replaces them: the number stays where it means something,
+   in its sentence, and the eye finds it by colour.
+
+   A percentage, a fraction, a multiplier, a count of turns or stages, and the
+   four words that are numbers (halved, doubled, quartered, tripled). Built
+   from text nodes, never innerHTML: the text is scraped, and a scraped string
+   is not markup. */
+var NUM_RE = /\d+(?:\.\d+)?(?:\/\d+)?(?:\s?(?:%|×))?(?:\s(?:turns?|stages?)\b)?|\b(?:halved|halves|doubled|doubles|quartered|tripled)\b/g;
+function numText(text, tag, cls){
+  var node = el(tag || "span", cls || null);
+  var s = String(text == null ? "" : text), last = 0, m;
+  NUM_RE.lastIndex = 0;
+  while ((m = NUM_RE.exec(s))) {
+    if (m.index > last)
+      node.appendChild(document.createTextNode(s.slice(last, m.index)));
+    node.appendChild(el("b", "num", m[0]));
+    last = m.index + m[0].length;
+  }
+  if (last < s.length) node.appendChild(document.createTextNode(s.slice(last)));
+  return node;
+}
 function effectOf(name){
   return (C.EFFECTS || {})[name] || null;
 }
@@ -1397,7 +1425,7 @@ export {
   retypeLayer,
   searchField, formSprite, spriteFor, statGrid, wireClears,
   typeCard, typeSkin, typeTint,
-  effectChips, effectLine, effectOf, podiumChip, podiumFor, splitMax, splitPct,
+  effectChips, effectLine, effectOf, numText, podiumChip, podiumFor, splitMax, splitPct,
   splitsFor, splitsReg, usageTag,
   megaLine, pokeCard,
   megasFor, natMult, rowMatches, setHomeAll, setSort, sortRows, statAt,

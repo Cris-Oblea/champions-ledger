@@ -1,6 +1,6 @@
 /* 07-gear.js - Items, stones, statuses, and the Settings tab.
    Part of the app; linked into one script by scripts/build_tracker_page.py. */
-import { $, C, COSTS, bst, byName, cardLine, effectLine, el, labelBox, pokeFacts, toast,
+import { $, C, COSTS, bst, byName, cardLine, effectLine, el, labelBox, numText, pokeFacts, toast,
   typeChip } from "./01-data.js";
 import { S, boxRows, capacity, hasStone, ownedItems, ownedNames,
          ownedStones } from "./02-state.js";
@@ -147,10 +147,11 @@ function itemRow(r, have){
   var h = el("div", "rname");
   h.appendChild(document.createTextNode(name));
   m.appendChild(h);
-  if (effect) m.appendChild(el("div", "st", effect));
-  /* Serebii's sentence says what it is for; this says what it DOES, with the
-     number. Leftovers read "slowly but steadily restores the holder's HP" and
-     said 1/16 nowhere. */
+  if (effect) m.appendChild(numText(effect, "div", "st"));
+  /* The description is Smogon's Champions text and states its own numbers,
+     marked in colour - Leftovers' 1/16 is in the sentence now, not in a chip
+     beside it. This line only appears when the engine measured something the
+     sentence does NOT say (effect_chips.py rule 6), which today is nothing. */
   var num = effectLine(name);
   if (num) m.appendChild(num);
   /* what this item is FOR: the move and the ability it serves, together.

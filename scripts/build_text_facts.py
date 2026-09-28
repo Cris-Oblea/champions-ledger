@@ -152,7 +152,7 @@ def secondary_rate(m):
 
 def smogon_first(moves, mv):
     """Put Smogon's description in front, and report what it leaves out."""
-    long = (Q.db("smogon_move_text") or {}).get("moves") or {}
+    long = (Q.db("smogon_text") or {}).get("moves") or {}
     rates = {}
     for m in moves:
         c = (m.get("crit_rate") or "").strip()
@@ -186,6 +186,71 @@ def smogon_first(moves, mv):
     return mv
 
 
+# The number reader the effect chips use to decide what a description already
+# says - one reader, so "the text states it" means the same thing in both.
+from effect_chips import values, same_number              # noqa: E402
+
+
+def smogon_abilities(ab):
+    """The same for abilities (player, 2026-09-27: "haz lo mismo con las
+    abilities e items, smogon casi siempre los tiene mejor descritos y con
+    numeros"). Smogon's Champions text replaces the pick outright - Intimidate
+    goes from "lowers the Attack of opposing Pokemon" to that plus who is
+    immune to it - and the two originals stay beside it.
+
+    ONE DESCRIPTION, NOT TWO (player: "no se dupliquen las descripciones...
+    en algunas abilities habian descripciones duplicadas y eran obvias"). The
+    app used to print this line AND Smogon's one-line summary under it, which
+    said the same thing twice; build_tracker_data.py now drops the summary
+    wherever this text exists.
+
+    A number the old pick states and Smogon's text does not is PRINTED, not
+    merged: two sentences about one ability are exactly the duplication just
+    removed, and most of these are one fact in two units (25% evasion is x0.8
+    accuracy)."""
+    long = (Q.db("smogon_text") or {}).get("abilities") or {}
+    used, gaps = 0, []
+    for n, row in ab.items():
+        t = long.get(n)
+        if not t:
+            continue
+        old = row.get("text") or ""
+        full = t
+        # "On switch-in, this Pokemon summons Rain." - and for how long is
+        # the one number the sentence leaves out, which Serebii's own line
+        # for the same ability states. Added from there, as the moves' crit
+        # rate is, never as a second sentence about the whole ability.
+        olds = " ".join(x for x in (row.get("serebii"), row.get("pokebase")) if x)
+        dur = re.search(r"\b(\d+) turns\b", olds)
+        if dur and "turn" not in t and re.search(r"summons|begins", t):
+            full = t.rstrip(".") + ", for %s turns." % dur.group(1)
+        # "Upon entering battle OR RECEIVING THE ABILITY" (Serebii) against
+        # Smogon's "On switch-in": the half Smogon drops is the one the player
+        # confirmed in game - a Pokemon that Mega Evolves into Intimidate
+        # fires it again (CLAUDE.md). Only Intimidate carries the clause today.
+        if re.search(r"receiv\w* the ability", olds, re.I) and \
+                full.startswith("On switch-in"):
+            full = full.replace("On switch-in", "On switch-in, or on receiving "
+                                "this Ability (Mega Evolving into it fires it "
+                                "again)", 1)
+        row.update(smogon=t, text=full, source="smogon")
+        used += 1
+        stated = values(full)
+        lost = sorted(v for v in values(olds) if not same_number(v, stated))
+        if lost:
+            gaps.append((n, lost, olds))
+    print("\nsmogon's full description: %d of %d abilities" % (used, len(ab)))
+    # What is left after the units are allowed for is either a word the
+    # sentence uses instead of a digit, or a real disagreement - Effect Spore
+    # (Serebii 10%, Smogon 30%) and Healer (Serebii 30%, Smogon 50%) were the
+    # two on 2026-09-27. Printed so a new one is seen; Smogon's Champions text
+    # is what ships.
+    for n, lost, old in gaps:
+        print("   only the old text says %-12s %-16s %s"
+              % ("/".join("%g" % v for v in lost), n, old[:60]))
+    return ab
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--report", action="store_true")
@@ -196,6 +261,7 @@ def main():
     mv, mdiff = merge(moves, pokebase("moves"), "moves")
     mv = smogon_first(moves, mv)
     ab, adiff = merge(Q.db("abilities"), pokebase("abilities"), "abilities")
+    ab = smogon_abilities(ab)
 
     print("\n--- where pokebase won, because Serebii only named a status ---")
     shown = 0
@@ -208,10 +274,11 @@ def main():
     if not a.report:
         with open(OUT, "w", encoding="utf-8") as f:
             json.dump({"_comment":
-                       "Merged by scripts/build_text_facts.py. A move "
-                       "Champions has is described by Smogon's own dex page "
-                       "(`smogon`), with our crit rate and level added where "
-                       "it leaves them as words. Otherwise, per entry, the "
+                       "Merged by scripts/build_text_facts.py. A move or "
+                       "ability Champions has is described by Smogon's own "
+                       "Champions dex page (`smogon`) - a move with our crit "
+                       "rate and level added where it leaves them as words. "
+                       "Otherwise, per entry, the "
                        "text that states more wins - numbers, stages, turns - "
                        "and a bare 'gives the X status' is penalised. Ties go "
                        "to Serebii. Every original is kept.",

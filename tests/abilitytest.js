@@ -169,8 +169,37 @@ setTimeout(() => {
      blockers("Zap Cannon").join(", "),
      "Bulletproof, Lightning Rod, Motor Drive, Volt Absorb");
   ok("...y las cuatro van en negativo", allBad("Zap Cannon"), true);
-  ok("Boomburst: Soundproof y Telepathy",
-     blockers("Boomburst").join(", "), "Soundproof, Telepathy");
+
+  /* LA PERSPECTIVA (player, 2026-09-27): "telepathy sale en tags negativos
+     para todos los moves que hacen hit a los allies, pero en realidad deberia
+     ser verde positivo... si el oponente tiene telepathy no se cubre de mis
+     ataques." Rojo es la habilidad de un RIVAL que apaga el move; verde es la
+     de TU COMPANERO que lo esquiva - la razon de emparejarlos. */
+  console.log("\n  la perspectiva: rojo en el rival, verde en tu companero");
+  const tagged = (mv, cls) => {
+    const host = w.document.createElement("div");
+    w.blockerTags(MOVE[mv], host);
+    return [...host.children].filter(n => n.classList.contains(cls))
+      .map(n => n.textContent).sort();
+  };
+  ok("Telepathy nunca es roja", Object.keys(MOVE).some(
+     mv => tagged(mv, "bad").indexOf("Telepathy") >= 0), false);
+  ok("Boomburst: Soundproof en rojo (el rival)",
+     tagged("Boomburst", "bad").join(", "), "Soundproof");
+  ok("...y Telepathy en verde (tu companero)",
+     tagged("Boomburst", "ok").join(", "), "Telepathy");
+  /* "si yo tiro earthquake y me switchean a un pokemon con levitate no le
+     hago nada" - una inmunidad contra cualquiera es un hecho del rival: roja,
+     y solo roja, para no escribir el mismo nombre dos veces en la fila */
+  ok("Earthquake: Levitate en rojo", tagged("Earthquake", "bad").indexOf("Levitate") >= 0, true);
+  ok("...y no tambien en verde", tagged("Earthquake", "ok").indexOf("Levitate") >= 0, false);
+  ok("ninguna fila repite un nombre", Object.keys(MOVE).filter(mv => {
+       const all = tagged(mv, "bad").concat(tagged(mv, "ok"));
+       return new Set(all).size !== all.length; }).join(", "), "");
+  ok("un move que no toca al aliado no tiene verdes",
+     tagged("Zap Cannon", "ok").length, 0);
+  ok("Armor Tail solo cuenta en el rival",
+     Object.keys(MOVE).some(mv => tagged(mv, "ok").indexOf("Armor Tail") >= 0), false);
   ok("Sleep Powder trae Overcoat", blockers("Sleep Powder").indexOf("Overcoat") >= 0, true);
   ok("Earthquake trae Levitate", blockers("Earthquake").indexOf("Levitate") >= 0, true);
   /* la mitad que hay que NO etiquetar: Big Pecks se come la bajada de Defensa
