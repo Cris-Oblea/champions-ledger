@@ -210,6 +210,83 @@ def chips(entry):
     return out
 
 
+# --- 6: nothing the description already says --------------------------------
+# (player, 2026-09-27) "sitrus berry dice que al alcanzar 1/2 de hp, te recupera
+# 1/4 de hp y tiene dos tags con 1/2 hp y 1/4 hp, que no dicen absolutamente
+# nada... los tags deben ser informacion util, no algo que entorpezca la
+# comprension de un item o habilidad." And: "se debe aplicar a todos los items
+# y abilities."
+#
+# Rules 1-5 were written while the line under the chips was Smogon's ONE-LINE
+# summary. The description is Smogon's full Champions text now, and it states
+# nearly every number the chips were built from - so a chip would be the same
+# number twice, the exact thing rule 5 already forbade for a one-number
+# sentence. Rule 6 generalises it: a chip survives only if the description
+# does NOT already state its number, in any unit. "Halves" is x0.5, "by 50%"
+# is x0.5, "1.3x" is +30%.
+NUM = re.compile(r"\d+(?:\.\d+)?(?:/\d+)?")
+WORDNUM = {"one": 1, "two": 2, "three": 3, "four": 4, "five": 5, "half": 0.5,
+           "halved": 0.5, "halves": 0.5, "halve": 0.5, "third": 1 / 3,
+           "quarter": 0.25, "quartered": 0.25, "double": 2, "doubled": 2,
+           "doubles": 2, "twice": 2, "triple": 3, "tripled": 3}
+
+
+def values(s):
+    """Every number a sentence states, as floats - "1/3" also as 0.333."""
+    out = set()
+    s = (s or "").replace(TIMES, " ")
+    for x in NUM.findall(s):
+        if "/" in x:
+            a, b = x.split("/")
+            out |= {float(a), float(b)}
+            if float(b):
+                out.add(round(float(a) / float(b), 3))
+        else:
+            out.add(round(float(x), 3))
+    low = s.lower()
+    for w, v in WORDNUM.items():
+        if re.search(r"\b%s\b" % w, low):
+            out.add(round(v, 3))
+    return out
+
+
+def forms(v):
+    """One number in the units it is written in: 30 (%), 0.3, 1.3, 0.7."""
+    f = {round(v, 3), round(v / 100, 3), round(1 + v / 100, 3),
+         round(1 - v / 100, 3)}
+    if 0 < v < 1:
+        f.add(round(1 / v, 3))
+    return f
+
+
+def same_number(v, stated):
+    """Is `v` already among `stated`, allowing for the unit either one is in -
+    and for the rounding a chip is written with: Gravity's x1.67 is the text's
+    "multiplied by 0.6" turned over, which is 1.667."""
+    mine = forms(v)
+    return any(abs(a - b) <= 0.005 * max(1, abs(b))
+               for s in stated for a in mine for b in forms(s))
+
+
+def chip_values(text):
+    m = re.match(r"x(\d+(?:\.\d+)?)", text)
+    return {float(m.group(1))} if m else values(text)
+
+
+def unsaid(cs, description):
+    """The chips whose number the description does not already state. A chip
+    with no number at all says nothing a sentence cannot, and goes too."""
+    if not description:
+        return cs
+    stated = values(description)
+    keep = []
+    for c in cs:
+        vs = chip_values(c[0])
+        if vs and not all(same_number(v, stated) for v in vs):
+            keep.append(c)
+    return keep
+
+
 def label(shown, what):
     """The number and its subject, written the way the engine's chips are.
 

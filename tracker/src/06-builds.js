@@ -3,7 +3,7 @@
 import {
   $, C, COSTS, FORMS, MOVE_BY, STAT_KEYS, STAT_LABEL, STONE_OF, bst, byName,
   capNote, cardLine, catName, dexLabel, dexNo, effectLine, el, labelBox,
-  learnset, megasFor, natMult, pokeCard, searchField, splitPct, splitsFor,
+  learnset, megasFor, natMult, numText, pokeCard, searchField, splitPct, splitsFor,
   splitsReg, statAt, statGrid, toast, typeCard, typeChip, usageTag,
 } from "./01-data.js";
 import { S, activeAbility, baseAbility, boxRows, buildLink, megaAbility,
@@ -563,7 +563,7 @@ function buildSheet(id, b, keepOriginal){
        NATURE select, describing the wrong control. Seen at 360px. Inside the
        field it stays attached in either layout. */
     if (draft.ability && C.ABIL[draft.ability]) {
-      fa.appendChild(el("p", "sub", C.ABIL[draft.ability]));
+      fa.appendChild(numText(C.ABIL[draft.ability], "p", "sub"));
       /* and what it does as a NUMBER - Guts reads x1.5 from the engine's own
          modifier stage, which is the half of the sentence that decides a
          calculation */
@@ -1089,7 +1089,7 @@ function movePicker(draft, idx, ls, done){
             ? Math.round(m.bp * hh.x) + " BP with " + abil : null,
           m.target
         ]));
-        if (m.text) mm.appendChild(el("div", "st", m.text));
+        if (m.text) mm.appendChild(numText(m.text, "div", "st"));
         r.appendChild(mm);
         r.onclick = function(){
           draft.moves[idx] = m.name;

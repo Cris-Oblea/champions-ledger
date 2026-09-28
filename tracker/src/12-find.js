@@ -3,7 +3,7 @@
 import { $, C, DEX, MOVES, MOVE_BY, SORT, STAT_KEYS, STAT_LABEL, STONE_OF,
  TYPE_COLOR, anyRow, bst, byName, capNote, cardLine, catName, defence,
  battleFormsOf, dexNo, effectLine, el, formInk, formMoves, formSprite,
- labelBox, learnset, megaLine, megaSuffix, megasFor,
+ labelBox, learnset, megaLine, megaSuffix, megasFor, numText,
  podiumChip, pokeFacts, podiumFor, pokeCard, searchField, splitPct, spriteFor,
  statGrid, toast,
  typeCard, typeChip, typeSkin, usageTag } from "./01-data.js";
@@ -468,14 +468,14 @@ function abilityNote(a, form, badge, ls){
      own ink, so the note, the sprite caption, the stat deltas and the
      card all say the same form the same way. */
   if (badge) n.insertBefore(badge, n.firstChild);
-  var say = el("span");
-  say.textContent = C.ABIL[a] || "";
+  var say = numText(C.ABIL[a] || "");
   n.appendChild(say);
   if (!C.ABIL[a]) {
     say.textContent = "Loading…";
     loadOutside(function(){
       var t = (outsideDex().ab || {})[a];
-      say.textContent = t || "No description on record for " + a + ".";
+      say.textContent = "";
+      say.appendChild(numText(t || "No description on record for " + a + "."));
       if (t) {
         var tg = el("span", "tag", "main-series text");
         tg.title = "Champions has no row for " + a + " because no Pokemon it "
@@ -494,9 +494,15 @@ function abilityNote(a, form, badge, ls){
      below have a number to be checked against. */
   var r = AB_SET[a], sc = el("div", "st");
   sc.style.marginTop = "2px";
+  /* NOT r.why HERE. It is the rule's one-line summary - "no damage - it heals
+     25% instead" - written for the tooltip on a move's tag, where the
+     description is not on screen. Under the description it said the same
+     thing a second time (player, 2026-09-27: "en algunas abilities habian
+     descripciones duplicadas y eran obvias"). What stays is only what the
+     description cannot say: how it meets THIS movepool. */
   if (r && r.side === "off" && r.scope) {
-    sc.textContent = "Affects " + r.scope + " it knows — " + r.why +
-                     ". No per-move tag: it picks out nothing.";
+    sc.textContent = "Affects " + r.scope + " it knows. No per-move tag: " +
+                     "it picks out nothing.";
     n.appendChild(sc);
   } else if (r && r.side === "off" && ls) {
     var k = ls.filter(function(mn){
@@ -508,8 +514,7 @@ function abilityNote(a, form, badge, ls){
       : "Touches none of the moves it learns.";
     n.appendChild(sc);
   } else if (r && r.side === "def") {
-    sc.textContent = "Changes what lands on it, not its own moves — " +
-                     r.why + ".";
+    sc.textContent = "Changes what lands on it, not its own moves.";
     n.appendChild(sc);
   }
   return n;
@@ -1048,13 +1053,32 @@ function itemTags(m, host){
    Fire Lash comes back empty, because Big Pecks only eats its Defence drop and
    that is not the move being blocked. Which is which is derived in
    scripts/build_ability_moves.py, never listed here. */
+/* EVERY ABILITY THAT SWITCHES THIS MOVE OFF, SEEN FROM THE SIDE THAT USES IT.
+
+   Red is an ability that stops it when an OPPONENT holds it - Levitate under
+   your Earthquake. Green is one that only ever helps you: Telepathy stops an
+   ALLY's move and nobody else's, so on your partner it is the reason to run
+   the spread move and on a foe it does nothing (player, 2026-09-27: "si el
+   oponente tiene telepathy no se cubre de mis ataques. hay que tener
+   conocimiento de la perspectiva de una habilidad!"). An immunity that works
+   against anyone stays red only: a foe's Levitate is a fact you face, pairing
+   your own is a strategy you choose. Which side each one works from is
+   decided in build_ability_moves.STOP_WHOSE. */
 function blockerTags(m, host){
   var AB = C.AB_MOVES || {};
   Object.keys(AB).forEach(function(a){
     var st = AB[a].stop;
     if (!st || st.indexOf(m.i) < 0) return;
     var t = el("span", "tag bad", a);
-    t.title = a + ": " + AB[a].why;
+    t.title = "On an opponent, " + a + ": " + AB[a].why;
+    host.appendChild(t);
+  });
+  Object.keys(AB).forEach(function(a){
+    var al = AB[a].ally;
+    if (!al || al.indexOf(m.i) < 0) return;
+    var t = el("span", "tag ok", a);
+    t.title = "On your partner, " + a + " keeps this move off it: " +
+              AB[a].why;
     host.appendChild(t);
   });
 }
@@ -1380,7 +1404,7 @@ function moveRowFor(m, ability, poke){
     sp.style.color = "var(--warn)";
     mm.appendChild(sp);
   }
-  if (m.text) mm.appendChild(el("div", "st", m.text));
+  if (m.text) mm.appendChild(numText(m.text, "div", "st"));
   hits.forEach(function(x){
     var w = el("div", "st");
     w.style.color = "var(--accent)";
@@ -1427,7 +1451,7 @@ function findInit(){
           mm.appendChild(el("div", "st", catName(m.cat) + "  ·  " +
             (m.bp ? m.bp + " BP" : "— BP") + "  ·  " +
             (m.acc == null ? "—" : m.acc) + " acc  ·  " + m.target));
-          if (m.text) mm.appendChild(el("div", "st", m.text));
+          if (m.text) mm.appendChild(numText(m.text, "div", "st"));
           r.appendChild(mm);
           r.onclick = function(){
             FIND.moves.push(m.name); closeSheet(); findDraw();
@@ -1601,7 +1625,7 @@ function findInit(){
              sheet - it does not open the ability anywhere - so 110 characters
              was the only place the description appeared, cut mid-sentence and
              without even an ellipsis to admit it. */
-          mm.appendChild(el("div", "st", C.ABIL[a] || ""));
+          mm.appendChild(numText(C.ABIL[a] || "", "div", "st"));
           r.appendChild(mm);
           r.onclick = function(){ FIND.ability = a; closeSheet(); findDraw(); };
           list.appendChild(r);

@@ -100,7 +100,7 @@ def build():
     # text where its Champions dex has the move, else Serebii's
     # attackdex-champions line, which covers every one of them. Never an
     # older game's page, which can describe a different move.
-    smogon = (Q.db("smogon_move_text") or {}).get("moves") or {}
+    smogon = (Q.db("smogon_text") or {}).get("moves") or {}
     champ_abils = {key(a["name"]) for a in Q.db("abilities")}
     home = json.load(io.open(os.path.join(ROOT, "data", "db", "home_dex.json"),
                              encoding="utf-8"))

@@ -478,8 +478,24 @@ Serebii names a status without defining it ("gains the Sealing Off status") and
 mechanic ("No foe can use any move known by the user") and durations Serebii
 omits (Taunt: 3 turns). Missing that produced two wrong answers. The command
 prints both, and Smogon's FULL description beside them - `dump-move`, the text
-its dex page prints, stored in `data/db/smogon_move_text.json` and shipped to
-the app as each move's description.
+its dex page prints, stored in `data/db/smogon_text.json` (with every ability
+and item beside it) and shipped to the app as the one description of each.
+
+**No description is shown twice, and no tag repeats one (player, 2026-09-27:
+"los tags deben ser informacion util, no algo que entorpezca").** A chip beside
+a description survives only if the description does not state its number in
+any unit (`effect_chips.py` rule 6) - today none survives, and the numbers are
+marked in colour inside the sentence instead (`numText()` in the app). Smogon's
+one-line summary is not shown where the full text is, and an ability note does
+not repeat its rule's `why` under the description.
+
+**An ability tag on a move is read from the MOVE USER's side (player,
+2026-09-27: "hay que tener conocimiento de la perspectiva de una
+habilidad!").** Red is an ability that stops the move when an opponent holds
+it; green is one that only ever helps you - Telepathy stops an ally's move and
+nobody else's. An immunity against anyone (Levitate, Volt Absorb) stays red
+only: "si yo tiro earthquake y me switchean a un pokemon con levitate no le
+hago nada". `build_ability_moves.STOP_WHOSE` is where each side is decided.
 
 **A move is read from its CHAMPIONS page, never another game's (player,
 2026-09-27: "al leer un move, siempre la fuente debe ser champions dex o saber

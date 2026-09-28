@@ -99,23 +99,18 @@ on the card, on the move rows it boosts, and in the calculator. Where the
 species really does offer two or three, the choice stays open, the editor says
 so, and nothing fills it in.
 
-**One fact, one chip, and the chip says what its number governs.** An item, an
-ability or a move carries its numbers as chips beside Smogon's sentence, and
-they are worked out once — in `scripts/effect_chips.py`, never on the phone —
-because deciding them needs things a screen does not have. The engine is probed
-through a physical and a special vehicle, so the same multiplier comes back
-twice; it works in 4096ths, so Life Orb's is 5324/4096 and not 1.3; and Smogon's
-sentence usually states it as well. Black Glasses used to read `x1.2  x1.2
-1.2x`. It reads **`x1.2 damage dealt`** now: measurements collapsed by the value
-and the quantity they multiply, rounded to what the engine means, a text number
-dropped where the engine already measured it, and the last one dropped entirely
-when the sentence holds only that one number — Aerilate's `1.2x` beside "have
-1.2× power" was the same three characters twice. What survives is labelled from
-the words either side of it in the sentence, so Overgrow reads `x1.5 offensive
-stat` and `at 1/3 max HP` rather than `1.5x` and `1/3`. `effect_chips.py
---audit` lists the two numbers whose subject it still cannot name, so the gaps
-are counted rather than quietly wrong. The exact 4096ths stays in
-`data/db/effects.json` and in each chip's tooltip.
+**A number is read in its sentence, marked in colour — not repeated beside
+it.** Items, abilities and moves each carry one description, and its
+percentages, fractions, multipliers, turns and stages are drawn in the accent
+ink so the eye finds them: Sitrus Berry reads "Restores **1/4** max HP when at
+**1/2** max HP or less". There used to be chips beside the sentence, worked out
+in `scripts/effect_chips.py` from the engine's own 4096ths and Smogon's words,
+and once the sentence became Smogon's full text they said the same numbers a
+second time. So a chip now survives only if the description does **not** state
+its number, in any unit — "halves" is x0.5, "by 50%" is x0.5, 1.3× is +30% —
+and today, measured over all 390 entries, none does: every multiplier the engine
+measures is already in the text. The day one disagrees, its chip comes back on
+its own. The exact 4096ths stays in `data/db/effects.json`.
 
 **A Mega lives on its base Pokemon's row.** The search listed all 345 forms,
 81 of which are Megas — a fifth of every page was a Pokemon you cannot own,
@@ -322,11 +317,17 @@ out. Each link now carries the side it plays on, decided in
 `build_item_links.py` from the reason the link was made for, and the ones that
 answer the move are drawn in red.
 
-**And what turns a move off is on the row too.** A defensive ability badges
-nothing as a rule — the alternative is all 67 of them, and Fire Lash would
-carry 32 grey chips. But the narrow class that makes a move do **nothing** is
-worth seeing: Zap Cannon comes back **Bulletproof, Lightning Rod, Motor Drive,
-Volt Absorb**, and Boomburst **Soundproof, Telepathy**. Which abilities those
+**And what turns a move off is on the row too, seen from the side that uses
+it.** A defensive ability badges nothing as a rule — the alternative is all 67
+of them, and Fire Lash would carry 32 grey chips. But the narrow class that
+makes a move do **nothing** is worth seeing: Zap Cannon comes back
+**Bulletproof, Lightning Rod, Motor Drive, Volt Absorb** in red, because on an
+opponent each one turns it off. Telepathy is the other way round — it only
+stops an **ally's** move, so on a foe it does nothing and on your partner it is
+the reason to run the spread move: Boomburst shows **Soundproof** in red and
+**Telepathy** in green. An immunity that works against anyone, like Levitate,
+stays red only: a foe's Levitate is a fact you face, pairing your own is a
+strategy you choose. Which abilities those
 are is derived in `build_ability_moves.py`, in two groups — one that stops the
 move whatever it was, and one that stops the thing the move *does*, which only
 counts as a block on a status move. So Will-O-Wisp is blocked by Thermal
@@ -397,19 +398,22 @@ of a disabled move would be an illegal build the app helped write. They are
 shown here, marked. 503 KB, so it is its own hashed asset, fetched the first
 time one of those sheets is opened and never otherwise.
 
-**Every move says what it does, whole, and from Champions.** Serebii names a
-mechanic ("Gives the target the Octolocked and Can't Escape statuses") where
-Smogon's dex page defines it: the target cannot switch, loses 1 Def and 1 SpD
-every turn, can still leave with Shed Shell or a pivot, and is freed when
-either side leaves. So each of the 512 moves carries Smogon's full
-description, uncut, from its **Champions** dex and never an older game's —
+**Every move, ability and item says what it does, whole, and from
+Champions.** Serebii names a mechanic ("Gives the target the Octolocked and
+Can't Escape statuses") where Smogon's dex page defines it: the target cannot
+switch, loses 1 Def and 1 SpD every turn, can still leave with Shed Shell or a
+pivot, and is freed when either side leaves. So all 512 moves, 215 of the 216
+abilities and every holdable item carry Smogon's full description, uncut, as
+their **one** description, from its **Champions** dex and never an older game's —
 Serebii and Smogon both keep one page per move per game, and a move reads
 differently between them: Freeze-Dry freezes in Scarlet/Violet and not here.
 Where the sentence leaves a number as a word, our row adds it (a high-crit
-move's 12.5%, Night Shade's 50 HP at level 50); where our row carries a chance
-Smogon's text does not state, the build reports it as a dispute instead of
-pasting either one. A new move is fetched the night it appears; every text is
-fetched again on the Monday deep refresh.
+move's 12.5%, Night Shade's 50 HP at level 50, a weather ability's 5 turns,
+and Intimidate firing again when a Pokemon Mega Evolves into it); where our row
+carries a number Smogon's text does not state, the build reports it as a
+dispute instead of pasting either one — Effect Spore and Healer are the two
+today. A new entry is fetched the night it appears; every text is fetched again
+on the Monday deep refresh.
 
 **A GTS box is a shortlist, so it is filtered like one.** What may go into one
 is settled by two rules rather than taste — only a **duplicate** (the Species

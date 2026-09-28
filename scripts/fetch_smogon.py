@@ -73,91 +73,125 @@ def strip_html(s):
     return re.sub(r"\n\s*\n+", "\n", s).strip()
 
 
-def move_alias(name):
+# Where Serebii's spelling is a different word, not just different punctuation:
+# it writes Compoundeyes as one, Smogon's page is compound-eyes.
+DEX_ALIAS = {"Compoundeyes": "compound-eyes"}
+
+
+def dex_alias(name):
+    """Smogon's URL spelling: "King's Rock" -> kings-rock, "U-turn" -> u-turn."""
+    if name in DEX_ALIAS:
+        return DEX_ALIAS[name]
     s = name.lower().replace("'", "").replace("’", "").replace(".", "")
     return re.sub(r"[^a-z0-9]+", "-", s).strip("-")
 
 
-def ask_move(alias):
-    """One move from Champions' own dex: its text, None when the dex has no
-    such move, and the string "failed" when the question never got an answer
+def ask_dex(kind, alias):
+    """One entry from Champions' own dex: its text, None when the dex has no
+    such entry, and the string "failed" when the question never got an answer
     - the two must not look alike, or a network blip would be cached as "not
     in Champions" for good."""
     body = json.dumps({"alias": alias, "gen": "champions"}).encode("utf-8")
-    req = urllib.request.Request(RPC + "dump-move", data=body,
+    req = urllib.request.Request(RPC + "dump-" + kind, data=body,
                                  headers={"User-Agent": UA,
                                           "Content-Type": "application/json"})
     for attempt in range(3):
         try:
             with urllib.request.urlopen(req, timeout=60) as r:
-                d = json.loads(r.read().decode("utf-8", "replace"))
+                raw = r.read()
+            # the same two encodings rpc() learned to try: Smogon has served
+            # cp1252 at least once, where the x in "1.3x damage" is a bare 0xD7
+            for enc in ("utf-8", "cp1252"):
+                try:
+                    d = json.loads(raw.decode(enc))
+                    break
+                except (UnicodeDecodeError, ValueError):
+                    d = None
             return (d or {}).get("description") or None
         except Exception:
             time.sleep(1.5 * (attempt + 1))
     return "failed"
 
 
-def move_texts(force=False):
-    """Smogon's FULL description of every move - the text its dex page prints.
+# What is asked for, per kind: the RPC, the cache folder and the list of names.
+DEX_KINDS = (
+    ("moves", "move", "moves.json"),
+    ("abilities", "ability", "abilities.json"),
+    ("items", "item", "items.json"),
+)
+
+
+def dex_texts(force=False):
+    """Smogon's FULL description of every move, ability and item - the text
+    its dex page prints.
 
     WHY (player, 2026-09-27): "octolock solo dice que lo deja octolocked and
     can't escape statuses. pero no dice que significa cada uno de esos
     statuses!... necesito que todos los moves esten igual de bien definidos
-    como lo hace smogon, incluso smogon dice que baja la def y la special
-    defense -1."
+    como lo hace smogon." And then of the other two: "haz lo mismo con las
+    abilities e items, smogon casi siempre los tiene mejor descritos y con
+    numeros... que la base de datos sea util y seria y no una simple
+    descripcion que no aporta nada."
 
     dump-basics carries only the one-line shortDesc ("Traps target, lowers
-    Def and SpD by 1 each turn."). The page itself asks `dump-move`, which
-    answers with the whole mechanic: what the status does, how long, what
-    ends it, what it does not stop.
+    Def and SpD by 1 each turn."). The page itself asks dump-move,
+    dump-ability and dump-item, which answer with the whole mechanic: what it
+    does, how much, how long, what ends it and what does not trigger it.
 
     CHAMPIONS' OWN DEX AND NO OTHER (player, 2026-09-27: "al leer un move,
     siempre la fuente debe ser champions dex o saber que viene de champions y
-    no de una gen"). Serebii and Smogon both keep one page per move PER GAME,
-    and a move reads differently from one to the next - Freeze-Dry freezes in
-    Scarlet/Violet and does not in Champions. A move the Champions dex does
-    not describe gets no text here, never an older game's; the outside dex
-    falls back to Serebii's attackdex-champions line instead.
+    no de una gen"). Serebii and Smogon both keep one page per entry PER GAME,
+    and one reads differently from the next - Freeze-Dry freezes in
+    Scarlet/Violet and does not in Champions. Something the Champions dex does
+    not describe gets no text here, never an older game's.
 
-    One request per move, cached per move INCLUDING "not in Champions", so a
-    nightly run only ever asks about a move it has never seen."""
-    cache_dir = os.path.join(RAW, "moves")
-    os.makedirs(cache_dir, exist_ok=True)
-    moves = json.load(open(os.path.join(DB, "moves.json"), encoding="utf-8"))
+    One request per entry, cached per entry INCLUDING "not in Champions", so a
+    nightly run only asks about what it has never seen; the Monday --deep run
+    asks everything again, which is what keeps it current."""
     out, asked, failed = {}, 0, []
-    for m in moves:
-        alias = move_alias(m["name"])
-        path = os.path.join(cache_dir, alias + ".json")
-        got = None
-        if os.path.exists(path) and not force:
-            got = json.load(open(path, encoding="utf-8"))
-            if got.get("gen") != "champions":
-                got = None                      # another game's: ask again
-        if got is None:
-            t = ask_move(alias)
-            asked += 1
-            time.sleep(0.15)
-            if t == "failed":
-                failed.append(m["name"])
-                continue
-            got = {"gen": "champions", "text": t}
-            json.dump(got, open(path, "w", encoding="utf-8"), ensure_ascii=False)
-        if got.get("text"):
-            out[m["name"]] = got["text"]
-    json.dump({
-        "source": "smogon.com/dex/champions/moves/<alias> (dump-move)",
+    for bucket, rpc_kind, source in DEX_KINDS:
+        cache_dir = os.path.join(RAW, bucket)
+        os.makedirs(cache_dir, exist_ok=True)
+        rows = json.load(open(os.path.join(DB, source), encoding="utf-8"))
+        rows = rows if isinstance(rows, list) else list(rows.values())
+        got_all = {}
+        for r in rows:
+            alias = dex_alias(r["name"])
+            path = os.path.join(cache_dir, alias + ".json")
+            got = None
+            if os.path.exists(path) and not force:
+                got = json.load(open(path, encoding="utf-8"))
+                if got.get("gen") != "champions":
+                    got = None                  # another game's: ask again
+            if got is None:
+                t = ask_dex(rpc_kind, alias)
+                asked += 1
+                time.sleep(0.15)
+                if t == "failed":
+                    failed.append(r["name"])
+                    continue
+                got = {"gen": "champions", "text": t}
+                json.dump(got, open(path, "w", encoding="utf-8"),
+                          ensure_ascii=False)
+            if got.get("text"):
+                got_all[r["name"]] = got["text"]
+        out[bucket] = got_all
+        print("  %-9s %d described by Champions' dex, of %d"
+              % (bucket, len(got_all), len(rows)))
+    json.dump(dict({
+        "source": "smogon.com/dex/champions (dump-move, dump-ability, dump-item)",
         "fetched": time.strftime("%Y-%m-%d"),
-        "note": "Champions' own dex only. A move it does not describe is "
+        "note": "Champions' own dex only. An entry it does not describe is "
                 "absent, never filled from another game.",
-        "moves": out,
-    }, open(os.path.join(DB, "smogon_move_text.json"), "w", encoding="utf-8"),
+    }, **out), open(os.path.join(DB, "smogon_text.json"), "w", encoding="utf-8"),
         ensure_ascii=False, indent=1, sort_keys=True)
-    print("  %d moves described by Champions' dex, %d requests"
-          % (len(out), asked))
+    print("  %d requests" % asked)
     if failed:
         print("  !! %d requests failed and will be asked again: %s"
               % (len(failed), ", ".join(failed[:10])))
-    missing = [m["name"] for m in moves if m.get("useable") and m["name"] not in out]
+    moves = json.load(open(os.path.join(DB, "moves.json"), encoding="utf-8"))
+    missing = [m["name"] for m in moves
+               if m.get("useable") and m["name"] not in out["moves"]]
     if missing:
         print("  !! %d Champions moves with no description: %s"
               % (len(missing), ", ".join(missing[:10])))
@@ -221,8 +255,8 @@ def main():
     }, open(os.path.join(DB, "smogon_basics.json"), "w", encoding="utf-8"),
         ensure_ascii=False, indent=1)
 
-    print("Fetching every move's full description ...")
-    move_texts(force)
+    print("Fetching every move, ability and item's full description ...")
+    dex_texts(force)
 
     print("Fetching per-Pokemon analyses (VGC formats only) ...")
     out, with_analysis = [], 0

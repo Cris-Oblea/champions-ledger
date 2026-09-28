@@ -1,7 +1,7 @@
 /* 08-teams.js - Six slots, the clauses checked, and what is still to get.
    Part of the app; linked into one script by scripts/build_tracker_page.py. */
 import { $, C, COSTS, MOVE_BY, STAT_KEYS, STONE_OF, bst, byName, capNote,
- cardLine, dexNo, el, labelBox, megasFor, natMult, pokeCard, searchField,
+ cardLine, dexNo, el, labelBox, megasFor, natMult, numText, pokeCard, searchField,
  splitPct, statAt, toast, typeCard, typeChip, typeSkin, usageTag }
   from "./01-data.js";
 import { S, activeAbility, baseAbility, buildLink, buildsFor, hasItem,
@@ -899,7 +899,9 @@ function teamPickItem(draft, i, redraw){
                                   who.pokemon, "i") : null;
         if (utag) h.appendChild(utag);
         m.appendChild(h);
-        if (x.text) m.appendChild(el("div", "st", x.text.slice(0, 120)));
+        /* whole, not the first 120 characters: the cut landed exactly where
+           an item says when it does NOT work */
+        if (x.text) m.appendChild(numText(x.text, "div", "st"));
         btn.appendChild(m);
         if (!taken[x.name]) btn.onclick = function(){
           draft.slots[i].item = x.name;
