@@ -135,10 +135,11 @@ BROWSER_TESTS = [
     ("buildabilitytest.js", "the ability a build runs, and the one it saves"),
     ("pickertest.js",     "the move picker's filters stack"),
     ("findtest.js",       "the search view"),
-    # Three species turn into something else mid-battle and the card has to
-    # say so the way it says a Mega. It also pins the COUNT at three, so a
+    # Five species turn into something else mid-battle and the card has to
+    # say so the way it says a Mega. It also pins the COUNT at five, so a
     # regulation adding a Wishiwashi or an Eiscue - both one species away on
     # the watchlist - fails here instead of shipping a card that omits it.
+    # And every name a card can carry has its picture.
     ("formtest.js",       "what a Pokemon turns into, stone or not"),
     # The dex checklist, and the rule that is easy to get backwards: a species
     # already in HOME is done even when a copy is also welded into the

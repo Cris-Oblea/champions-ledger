@@ -128,7 +128,8 @@ PUBLIC = [
     "FIND", "anyRow", "calcDraw", "findDraw", "findRun",
     "gtsPickMine", "itemTags", "leaveEditor",
     "gtsPickWanted", "learnset",
-    "megasFor", "moveRowFor", "overlapSweep", "pokeSheet", "teamReport",
+    "megasFor", "moveRowFor", "overlapSweep", "pokeCard", "pokeSheet",
+    "spriteFor", "teamReport",
     "teamSheet", "teamSpeeds", "teamTypes",
 ]
 

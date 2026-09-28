@@ -712,7 +712,13 @@ What the file cannot record:
   (Electric → Dark) and Disguise only eats one hit and 1/8 max HP on
   **Mimikyu**. The first three carry a `battle_forms` entry with the spread or
   the typing; the last two correctly carry none. Do not file any of the five as
-  cosmetic — the transformation is real every time.
+  cosmetic — the transformation is real every time. **The app draws all five**
+  (player, 2026-09-27: "algunas formas determinan algunas habilidades o
+  ataques"): which forms exist and their pictures come from
+  `data/db/form_line.json` (`fetch_home_dex.py`, off PokeAPI's form table),
+  the numbers from our own rows, and a form that moves a number upstream while
+  ours has no row for it stops `build_tracker_data.py`. The same file gives
+  every species Champions LACKS its Megas and battle forms.
 - **Serebii writes `#0`, not `#0876`, on Indeedee's female row.** A dex-number
   pattern of `\d{4}` dropped that row from the form table AND from all 45
   movepools it appears in, so Indeedee-Female came out with the male's merged

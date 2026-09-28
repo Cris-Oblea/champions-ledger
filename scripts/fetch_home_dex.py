@@ -69,6 +69,13 @@ RAW = os.path.join(ROOT, "data", "raw", "pokeapi_csv")
 META = os.path.join(ROOT, "data", "meta")
 OUT = os.path.join(ROOT, "data", "db", "home_dex.json")
 SPRITES = os.path.join(ROOT, "data", "db", "sprite_ids.json")
+FORMS = os.path.join(ROOT, "data", "db", "form_line.json")
+GAPS = os.path.join(ROOT, "data", "db", "sprite_gaps.json")
+# The sprite commit is pinned in the APP, which is what builds the URLs, and
+# read from there - one pin, so the ids written here can never be checked
+# against a different commit than the one the phone fetches from.
+APP_DATA = os.path.join(ROOT, "tracker", "src", "01-data.js")
+SPRITE_RAW = os.path.join(ROOT, "data", "raw", "pokeapi_sprites")
 FLAGS = os.path.join(ROOT, "data", "db", "species_flags.json")
 # PokeAPI/pokeapi, BSD-3-Clause, pinned. Bump deliberately and read the diff.
 PIN = "4b82c204ddd19ecb8eda2ea044ccb59e222b721c"
@@ -140,6 +147,16 @@ ALIASES = {
     "tornadus": "tornadus-incarnate",
     "urshifu": "urshifu-single-strike",
     "tatsugiri": "tatsugiri-curly",
+    # Four the weight table spells its own way, each of which fell to the
+    # one-suffix-at-a-time step, was marked approximate and so drew NO
+    # picture - while being exactly the Pokemon upstream has a row for.
+    # Minior's meteor shell is one picture for all seven cores; Smogon writes
+    # the Necrozma fusions out in full; and Aegislash-Both is Smogon's own
+    # name for "Aegislash, whichever stance", which is the Shield row.
+    "minior-meteor": "minior-red-meteor",
+    "necrozma-dusk-mane": "necrozma-dusk",
+    "necrozma-dawn-wings": "necrozma-dawn",
+    "aegislash-both": "aegislash-shield",
 }
 
 # A Mega whose BASE is an alias must not inherit the alias: Pyroar is
@@ -348,13 +365,23 @@ def build(force=False):
         ab.setdefault(r["pokemon_id"], []).append((int(r["slot"]),
                                                    r["ability_id"]))
 
+    by_form = form_rows(force)
     out, missed = {}, []
     for name in home_only_names():
         pid, approx = resolve(key(name))
+        # A NAMED FORM OF A ROW IS NOT AN APPROXIMATION. Arceus-Ice has no row
+        # of its own because it has no numbers of its own: its spread IS row
+        # 493's, and its typing is written on the form. So it is exact, and
+        # the card stops saying "showing arceus" under a picture of the Ice
+        # plate - and stops calling it Normal.
+        form = by_form(key(name)) if approx else None
+        if form:
+            pid, approx = form["pid"], None
         if not pid or pid not in st:
             missed.append(name)
             continue
-        row = {"t": [types[t] for _, t in sorted(ty.get(pid, []))],
+        row = {"t": (form and form["t"]) or
+                    [types[t] for _, t in sorted(ty.get(pid, []))],
                "b": [st[pid].get(i, 0) for i in STAT_ORDER],
                "ab": [abil.get(a, a) for _, a in sorted(ab.get(pid, []))]}
         if approx:
@@ -398,46 +425,354 @@ def species_flags(force=False):
     return out
 
 
+def sprite_pin():
+    m = re.search(r'var SPRITE_PIN = "([0-9a-f]{40})"',
+                  io.open(APP_DATA, encoding="utf-8").read())
+    if not m:
+        sys.exit("SPRITE_PIN not found in %s" % os.path.relpath(APP_DATA, ROOT))
+    return m.group(1)
+
+
+# The four sets the app draws from, by their path in the sprites repo.
+SPRITE_DIRS = {
+    "pixel": "sprites/pokemon",
+    "shiny": "sprites/pokemon/shiny",
+    "home": "sprites/pokemon/other/home",
+    "home_shiny": "sprites/pokemon/other/home/shiny",
+}
+
+
+def sprite_files(force=False):
+    """Every picture that EXISTS at the pinned sprites commit, per set.
+
+    WHY THIS IS ASKED AND NOT ASSUMED. An id used to be written whenever the
+    name resolved, on the belief that a row upstream means a picture upstream.
+    It does not, in either direction: 48 cards had no id at all because their
+    picture is filed by FORM rather than by row (Arceus-Ice is `493-ice.png`,
+    Cherrim-Sunshine `421-sunshine.png`), and the HOME set simply lacks a few
+    the pixel set has (Pichu's spiky ear, Sinistea's antique teapot). Reading
+    the directory listing settles both, once per pin: a pinned commit cannot
+    change, so the cached listing is final.
+
+    GitHub's tree API, one call per directory walked. A token is used when the
+    environment has one, only for the rate limit - the repository is public."""
+    pin = sprite_pin()
+    path = os.path.join(SPRITE_RAW, pin + ".json")
+    if os.path.exists(path) and not force:
+        return {k: set(v)
+                for k, v in json.load(io.open(path, encoding="utf-8")).items()}
+    api = "https://api.github.com/repos/PokeAPI/sprites/"
+    head = {"User-Agent": "champions-ledger",
+            "Accept": "application/vnd.github+json"}
+    tok = os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN")
+    if tok:
+        head["Authorization"] = "Bearer " + tok
+    seen = {}
+
+    def get(url):
+        if url not in seen:
+            req = urllib.request.Request(url, headers=head)
+            with urllib.request.urlopen(req, timeout=60) as r:
+                seen[url] = json.loads(r.read().decode("utf-8"))
+        return seen[url]
+
+    root = get(api + "commits/" + pin)["commit"]["tree"]["sha"]
+    out = {}
+    for label, sub in SPRITE_DIRS.items():
+        sha = root
+        for part in sub.split("/"):
+            sha = next(e["sha"] for e in get(api + "git/trees/" + sha)["tree"]
+                       if e["path"] == part and e["type"] == "tree")
+        tree = get(api + "git/trees/" + sha)
+        if tree.get("truncated"):
+            sys.exit("the listing of %s came back truncated" % sub)
+        out[label] = sorted(e["path"][:-4] for e in tree["tree"]
+                            if e["type"] == "blob" and e["path"].endswith(".png"))
+    os.makedirs(SPRITE_RAW, exist_ok=True)
+    json.dump(out, io.open(path, "w", encoding="utf-8"), separators=(",", ":"))
+    return {k: set(v) for k, v in out.items()}
+
+
+def stem_value(stem):
+    """A picture's file name as the app stores it: a number where it is one."""
+    return int(stem) if stem.isdigit() else stem
+
+
+def form_rows(force=False):
+    """Every FORM upstream names, by identifier: the row it belongs to, the
+    picture it is filed under, and its own typing where it has one.
+
+    PokeAPI gives a row - and so a numbered picture and a spread - only to a
+    form whose numbers differ. Arceus' eighteen plates share one spread, so
+    they share row 493, and each one's picture is `493-<form>.png`. The same
+    holds for Silvally's memories, Genesect's drives, Vivillon's patterns,
+    Cherrim in the sun and Pichu's spiky ear. pokemon_forms.csv names every
+    one of them with the row it belongs to, and pokemon_form_types.csv the
+    typing of the few whose TYPE is the difference - Arceus-Ice is Ice, not
+    the Normal of row 493.
+
+    Looked up with the hyphens removed as well, because the weight table
+    writes Vivillon-Pokeball where upstream writes vivillon-poke-ball."""
+    types = dict((r["id"], r["identifier"].capitalize())
+                 for r in table("types.csv", force))
+    ftypes = {}
+    for r in table("pokemon_form_types.csv", force):
+        ftypes.setdefault(r["pokemon_form_id"], []).append(
+            (int(r["slot"]), types[r["type_id"]]))
+    by = {}
+    for r in table("pokemon_forms.csv", force):
+        row = {"pid": r["pokemon_id"],
+               "stem": (r["pokemon_id"] if r.get("is_default") == "1"
+                        else "%s-%s" % (r["pokemon_id"], r["form_identifier"])),
+               "t": [t for _, t in sorted(ftypes.get(r["id"], []))] or None}
+        for k in (r["identifier"], r["identifier"].replace("-", "")):
+            by.setdefault(k, row)
+    return lambda k: by.get(k) or by.get(k.replace("-", ""))
+
+
 def sprite_ids(force=False):
-    """PokeAPI's own id for every name the app can put on a card.
+    """The picture for every name the app can put on a card.
 
     A SPRITE IS NOT A RULE. Everything else fetched here is refused for the
     species Champions HAS, because its numbers are rebalanced and PokeAPI's are
     not - but a picture of a Pikachu is a picture of a Pikachu, and Champions
     publishes none of its own. So this half covers the Champions dex too.
 
-    The images are NOT copied into this repository. They are Nintendo and Game
-    Freak artwork; PokeAPI itself licenses its sprites repo as NOASSERTION for
+    The images are NOT copied into this repository. They are Nintendo and
+    Game Freak artwork; PokeAPI itself licenses its sprites repo as NOASSERTION for
     exactly that reason, and this repository is public. The app builds a CDN
     URL from these ids at run time, so nothing of theirs is ever redistributed
     from here and a takedown is a one-line change rather than a git history to
-    rewrite."""
+    rewrite.
+
+    The value is the file name without `.png`: a number for a row's own
+    picture, `493-ice` for one filed by form. Nothing is written that the
+    pixel set at the pin does not actually hold.
+
+    THE FORMS A POKEMON TAKES MID-BATTLE ARE NOT HERE any more. They are not
+    cards, they are drawn ON a card, and they live in form_line.json with the
+    rest of what the form is - see form_line()."""
     pokemon = table("pokemon.csv", force)
     resolve = resolver(pokemon)
+    by_form = form_rows(force)
+    files = sprite_files(force)
     out, missed = {}, []
     names = [p["name"] for p in Q.db("pokemon")] + home_only_names()
-    # AND THE FORMS A POKEMON TAKES DURING A BATTLE, which are not dex rows and
-    # so were never asked for. A card draws its Megas as pictures; Aegislash
-    # turning into Blade Forme is the same kind of fact and had no picture to
-    # draw (player, 2026-09-20: "faltan las formas de batalla... hay que
-    # incluir esas formas en las fichas, porque tambien son modificaciones in
-    # battle, como los megas"). PokeAPI spells them exactly as this file's
-    # key() reduces them - aegislash-blade, palafin-hero, castform-sunny - so
-    # they resolve with no alias of their own.
-    for p in Q.db("pokemon"):
-        for form in sorted(p.get("battle_forms") or {}):
-            names.append(p["name"] + "-" + form)
     for name in names:
         # EXACT ROWS ONLY. A stand-in spread is honest because the card says
         # whose it is; a stand-in PICTURE is not - every Arceus plate looks
         # different, and drawing the plain one under "Arceus-Bug" would be the
-        # app asserting something false. No sprite stays the right answer.
+        # app asserting something false. The FORM's own file is not a
+        # stand-in, which is why it is the second place looked.
         pid, approx = resolve(key(name))
-        if pid and not approx:
-            out[name] = int(pid)
+        form = None if pid and not approx else by_form(key(name))
+        stem = form["stem"] if form else pid if pid and not approx else None
+        if stem and stem in files["pixel"]:
+            out[name] = stem_value(stem)
         else:
             missed.append(name)
     return out, missed
+
+
+def sprite_gaps(ids, force=False):
+    """The pictures one set has and the other does not, for the ids in use.
+
+    A sheet asks for the 512px HOME render and a card for the 96px pixel
+    sprite, and a missing file is a 404 and then nothing at all. Most gaps
+    run one way - the HOME set lacks Pichu's spiky ear, Sinistea's antique
+    teapot - and those go straight to the pixel sprite. One runs the other:
+    Mega Zygarde arrived with Legends Z-A and upstream has only ever drawn
+    its HOME render, so the card shows that, at card size.
+
+      n / s    no HOME render, normal / shiny  -> use the pixel sprite
+      p / ps   no pixel sprite, normal / shiny -> use the HOME render"""
+    files = sprite_files(force)
+    used = sorted({str(v) for v in ids}, key=lambda s: (len(s), s))
+    out = {}
+    for k, where in (("n", "home"), ("s", "home_shiny"),
+                     ("p", "pixel"), ("ps", "shiny")):
+        out[k] = [stem_value(s) for s in used if s not in files[where]]
+    return out
+
+
+# THE FORMS A POKEMON TAKES DURING A BATTLE, other than a Mega. Declared, one
+# line each, because two things about them are not in any table: which form
+# it turns FROM, and what turns it. PokeAPI flags every one of these
+# `is_battle_only` - except Minior's core, which it does not, and which Shields
+# Down flips exactly as Stance Change flips Aegislash.
+#
+# upstream form          (the form it turns from,        label,       what does it)
+IN_BATTLE = {
+    "castform-sunny":       ("castform",                   "Sunny",     "Forecast"),
+    "castform-rainy":       ("castform",                   "Rainy",     "Forecast"),
+    "castform-snowy":       ("castform",                   "Snowy",     "Forecast"),
+    "cherrim-sunshine":     ("cherrim",                    "Sunshine",  "Flower Gift"),
+    "darmanitan-zen":       ("darmanitan-standard",        "Zen",       "Zen Mode"),
+    "darmanitan-galar-zen": ("darmanitan-galar-standard",  "Zen",       "Zen Mode"),
+    "meloetta-pirouette":   ("meloetta-aria",              "Pirouette", "Relic Song"),
+    "aegislash-blade":      ("aegislash-shield",           "Blade",     "Stance Change"),
+    "kyogre-primal":        ("kyogre",                     "Primal",    "Blue Orb"),
+    "groudon-primal":       ("groudon",                    "Primal",    "Red Orb"),
+    "zygarde-complete":     ("zygarde-50-power-construct", "Complete",  "Power Construct"),
+    "wishiwashi-school":    ("wishiwashi-solo",            "School",    "Schooling"),
+    "minior-red":           ("minior-red-meteor",          "Core",      "Shields Down"),
+    "mimikyu-busted":       ("mimikyu-disguised",          "Busted",    "Disguise"),
+    "cramorant-gulping":    ("cramorant",                  "Gulping",   "Gulp Missile"),
+    "cramorant-gorging":    ("cramorant",                  "Gorging",   "Gulp Missile"),
+    "eiscue-noice":         ("eiscue-ice",                 "Noice",     "Ice Face"),
+    "morpeko-hangry":       ("morpeko-full-belly",         "Hangry",    "Hunger Switch"),
+    "zacian-crowned":       ("zacian",                     "Crowned",   "Rusted Sword"),
+    "zamazenta-crowned":    ("zamazenta",                  "Crowned",   "Rusty Shield"),
+    "palafin-hero":         ("palafin-zero",               "Hero",      "Zero to Hero"),
+    "terapagos-terastal":   ("terapagos",                  "Terastal",  "Tera Shift"),
+}
+# ...and the ones upstream flags battle-only that no card draws, each with its
+# reason. A form in neither table stops this script, so a pin bump that adds
+# one is noticed rather than silently left off every card.
+NOT_DRAWN = {
+    "-gmax": "Gigantamax needs Dynamax, and Champions has none",
+    "-totem": "a Totem is a boss, never a Pokemon a player owns",
+    "terapagos-stellar": "reached by Terastallizing, and Champions has none",
+    "necrozma-ultra": "Ultra Burst needs a Z-Crystal, and Champions has none",
+    # Champions' own Battle Bond (pokebase, off the game) raises Attack, Sp.
+    # Atk and Speed on a KO; it no longer turns Greninja into anything.
+    "greninja-ash": "Champions' Battle Bond raises stats instead",
+    # Xerneas takes it the moment it is sent out and never leaves it: there is
+    # no second state, no trigger and no number to show.
+    "xerneas-active": "not a change - Xerneas is always in it once sent out",
+}
+MEGA_FORM = re.compile(r"^(.+)-mega(?:-([xyz]))?$")
+
+
+def form_line(force=False):
+    """What every card's Pokemon can TURN INTO mid-battle: its Megas and its
+    in-battle forms, with the picture and the main-series numbers of each.
+
+    WHY (player, 2026-09-27): "no todos los sprites estan cargando... morpeko
+    tiene otra forma y es por habilidad y no se ve su otro sprite... la idea
+    es tener todas las imagenes funcionando." And why it matters beyond the
+    picture: "algunas formas determinan algunas habilidades o ataques, como
+    aura wheel de morpeko cambia de tipo el move segun su forma."
+
+    The card only knew what the CHAMPIONS data said a Pokemon becomes, and
+    that data only carries a form when Serebii prints numbers for it - so the
+    two forms that move no number (Morpeko's Hangry Mode, Mimikyu's Busted
+    Form) had no picture, and no species outside Champions had any form at
+    all: no Mega Mewtwo X or Y, no Mega Rayquaza, no Primal Kyogre.
+
+    Keyed by the card's own name. The numbers are upstream's, which is what
+    they are for a species Champions lacks; for one it HAS,
+    build_tracker_data.py takes only the existence and the picture from here
+    and keeps Champions' own numbers - and refuses a form whose upstream
+    numbers move while ours carry none."""
+    pokemon = table("pokemon.csv", force)
+    forms = table("pokemon_forms.csv", force)
+    stats = table("pokemon_stats.csv", force)
+    ptypes = table("pokemon_types.csv", force)
+    pabil = table("pokemon_abilities.csv", force)
+    types = dict((r["id"], r["identifier"].capitalize())
+                 for r in table("types.csv", force))
+    abil = dict((r["ability_id"], r["name"])
+                for r in table("ability_names.csv", force)
+                if r.get("local_language_id") == ENGLISH)
+    files = sprite_files(force)
+    resolve = resolver(pokemon)
+    pid_of = dict((r["identifier"], r["id"]) for r in pokemon)
+    species_ident = dict((r["id"], r["identifier"])
+                         for r in table("pokemon_species.csv", force))
+    species_of = dict((r["id"], r["species_id"]) for r in pokemon)
+
+    st, ty, ab = {}, {}, {}
+    for r in stats:
+        if int(r["stat_id"]) in STAT_ORDER:
+            st.setdefault(r["pokemon_id"], {})[int(r["stat_id"])] = \
+                int(r["base_stat"])
+    for r in ptypes:
+        ty.setdefault(r["pokemon_id"], []).append((int(r["slot"]), r["type_id"]))
+    for r in pabil:
+        ab.setdefault(r["pokemon_id"], []).append((int(r["slot"]),
+                                                   r["ability_id"]))
+
+    def numbers(pid):
+        return {"t": [types[t] for _, t in sorted(ty.get(pid, []))],
+                "b": [st[pid].get(i, 0) for i in STAT_ORDER],
+                "ab": [abil.get(a, a) for _, a in sorted(ab.get(pid, []))]}
+
+    # which cards each upstream row IS - exact resolutions only, the same
+    # standard the pictures are held to
+    cards = {}
+    for name in [p["name"] for p in Q.db("pokemon")
+                 if not p.get("is_mega")] + home_only_names():
+        pid, approx = resolve(key(name))
+        if pid and not approx:
+            cards.setdefault(pid, []).append(name)
+
+    def title(ident):
+        return " ".join(w.capitalize() for w in ident.split("-"))
+
+    out, unknown, orphan = {}, [], []
+    for r in forms:
+        fid = r["identifier"]
+        mega = MEGA_FORM.match(fid) if r.get("is_mega") == "1" else None
+        if mega:
+            base, _ = resolve(mega.group(1))
+            if not base:
+                orphan.append(fid)
+                continue
+            sfx = (mega.group(2) or "").upper()
+            # our name for a Mega is the SPECIES and the stone's letter: "Mega
+            # Tatsugiri" for all three Tatsugiri, told apart by their own
+            # picture, exactly as the games name them
+            sp = species_ident[species_of[base]]
+            entry = {"n": "Mega " + title(sp) + (" " + sfx if sfx else ""),
+                     "mega": sfx}
+        elif fid in IN_BATTLE:
+            b_ident, label, how = IN_BATTLE[fid]
+            base = pid_of.get(b_ident)
+            if not base:
+                sys.exit("IN_BATTLE names %s as the form %s turns from, and "
+                         "upstream has no such row" % (b_ident, fid))
+            entry = {"k": label, "by": how}
+        elif r.get("is_battle_only") == "1":
+            # "-gmax" is a token anywhere in the name: Mimikyu's Totem is
+            # mimikyu-totem-busted, not something ending in -totem
+            if not any(fid == k or (k.startswith("-") and k + "-" in fid + "-")
+                       for k in NOT_DRAWN):
+                unknown.append(fid)
+            continue
+        else:
+            continue
+        # the picture: the form's own row where it has one, else its file
+        form_pid = r["pokemon_id"]
+        stem = (form_pid if form_pid != base
+                else "%s-%s" % (form_pid, r["form_identifier"]))
+        if stem not in files["pixel"] and stem not in files["home"]:
+            sys.exit("no picture for %s at the pinned sprites commit (%s.png)"
+                     % (fid, stem))
+        entry["sp"] = stem_value(stem)
+        entry.update(numbers(form_pid))
+        # MOVES NO NUMBER: the typing and the spread are the base's own. What
+        # lets a Champions species take this form without a Serebii row for
+        # it - Hangry Morpeko is Morpeko's spread in every game
+        base_n = numbers(base)
+        if entry["t"] == base_n["t"] and entry["b"] == base_n["b"]:
+            entry["flat"] = 1
+        owners = cards.get(base)
+        if not owners:
+            orphan.append(fid)
+            continue
+        # ONE NAME FOR THE FORM, however the card is spelled. Minior and
+        # Minior-Meteor are the same row, and its core is Minior-Core from
+        # either - the shortest spelling is the species' own
+        if "k" in entry:
+            entry["n"] = min(owners, key=len) + "-" + entry["k"]
+        for name in owners:
+            out.setdefault(name, []).append(dict(entry))
+    if unknown:
+        sys.exit("upstream flags %d battle-only forms this script has never "
+                 "classified - add each to IN_BATTLE or NOT_DRAWN: %s"
+                 % (len(unknown), ", ".join(sorted(unknown))))
+    return out, sorted(orphan)
 
 
 def main():
@@ -467,6 +802,24 @@ def main():
     print("wrote %s  (%d names, %.0f KB)"
           % (os.path.relpath(SPRITES, ROOT), len(sid),
              os.path.getsize(SPRITES) / 1024.0))
+    fl, orphan = form_line(args.force)
+    json.dump(fl, io.open(FORMS, "w", encoding="utf-8"),
+              ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+    print("wrote %s  (%d forms on %d cards)"
+          % (os.path.relpath(FORMS, ROOT), sum(len(v) for v in fl.values()),
+             len(fl)))
+    if orphan:
+        # a form whose base no card is: Zygarde's Complete Forme turns from
+        # the Power Construct Zygarde, which the weight table never names -
+        # it is a card of its own there instead
+        print("  %d have no card to be drawn on: %s"
+              % (len(orphan), ", ".join(orphan)))
+    gaps = sprite_gaps(list(sid.values()) +
+                    [f["sp"] for fs in fl.values() for f in fs], args.force)
+    json.dump(gaps, io.open(GAPS, "w", encoding="utf-8"),
+              ensure_ascii=False, separators=(",", ":"))
+    print("wrote %s  (%d with no HOME render, %d with no pixel sprite)"
+          % (os.path.relpath(GAPS, ROOT), len(gaps["n"]), len(gaps["p"])))
     flags = species_flags(args.force)
     json.dump(flags, io.open(FLAGS, "w", encoding="utf-8"),
               ensure_ascii=False, sort_keys=True, indent=1)

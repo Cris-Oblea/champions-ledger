@@ -600,6 +600,9 @@ nav.tabs button:active{background:var(--sunk)}
      size rather than squeezing them */
   .sheet .sprite.big{width:96px;height:96px}
 }
+/* the pixel sprite standing in for a HOME render upstream never drew: its
+   own 96, never blown up to the render's slot */
+.sheet .sprite.big.native{width:96px;height:96px;margin:0}
 /* NARROWER, NOT PADDED. `padding-right` moves the text but leaves the BOX
    reaching under the sprite, and the overlap sweep measures boxes - it
    reported the sprite sitting on eight names, correctly. Teaching the checker

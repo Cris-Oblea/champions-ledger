@@ -143,16 +143,27 @@ X/Y pair or a plain Mega with a Z. **There is no "Mega M":** Champions writes
 `Mega`, `Mega X`, `Mega Y` and `Mega Z`, so the unlettered one is labelled with
 the word rather than an invented letter.
 
-**A stone is not the only thing a Pokemon turns into.** Three of them change
-stats or typing in the middle of the battle, off an ability rather than an
+**A stone is not the only thing a Pokemon turns into.** Five Champions
+Pokemon change form in the middle of the battle, off an ability rather than an
 item, and they are drawn exactly the way a Mega is — sprite in the strip, its
 own ink, a second number under every stat it moves, an arrow when the typing
 changes. Stance Change gives Aegislash 140 Attack the moment it attacks, Zero
 to Hero takes Palafin from 70 to 160, and Forecast retypes Castform to Fire,
-Water or Ice with the weather. They wear an amber that is none of the four
-Mega inks, because one is a decision you make at team preview and the other
-just happens. There are exactly three, and a test says so: a regulation
-adding a fourth fails the gate rather than shipping a card that omits it.
+Water or Ice with the weather. Hunger Switch and Disguise move no number, and
+are drawn anyway, because a form is more than its numbers: Hangry Morpeko's
+Aura Wheel is Dark, and its sheet says so beside the form. They wear an amber
+that is none of the four Mega inks, because one is a decision you make at team
+preview and the other just happens. There are exactly five, and a test says
+so: a regulation adding a sixth fails the gate rather than shipping a card
+that omits it.
+
+**A species Champions does not have carries its forms too** — Mewtwo its Mega
+X and Y, Kyogre its Primal, Darmanitan its Zen Mode, each with its picture and
+main-series numbers under the same "not in the Champions dex" tag. Which forms
+exist, and what each looks like, comes from PokeAPI's own form table
+(`data/db/form_line.json`); a form upstream flags as battle-only that no card
+draws is listed with its reason (Gigantamax, a Tera form, Ultra Burst — none of
+which Champions has), and a new one stops the fetch until it is classified.
 
 **Every form gets a row in a stat cell, in the same order**, with a blank where
 it changes nothing — so row two is the same Pokemon in all six cells and a
@@ -480,6 +491,13 @@ the artwork, measured: 1.3 KB against 139 KB for the HOME render and 153 KB for
 the official one, and a screen of 159 cards would be 22 MB of those. A sprite is
 also the one thing PokeAPI has that is safe for the species Champions DOES have
 - a picture is not rebalanced.
+
+**Every card has one**, and a test says so. A picture is filed by row where
+the form has its own numbers and by form where it does not — Arceus' plates
+are `493-ice.png` and the like — so both are looked up, against the directory
+listing of the pinned commit rather than on faith. The HOME set lacks a few
+the pixel set has, and the pixel set lacks Mega Zygarde, which upstream has
+only ever drawn as a HOME render; the page asks for whichever exists.
 
 `python scripts/preview.py` puts three viewports side by side in a browser -
 desktop, laptop and phone - each in its own iframe so the media queries are

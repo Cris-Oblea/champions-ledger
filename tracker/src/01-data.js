@@ -340,6 +340,7 @@ function retypeLayer(row, base, forms){
    the word "mega" rather than inventing a letter for it. */
 function megaSuffix(m, base){
   if (m && m.battle) return m.battle;          /* Blade, Hero, Sunny... */
+  if (m && m.sfx !== undefined) return m.sfx;  /* an outside Mega's letter */
   var sp = (base && (base.species || base.name)) || "";
   return String(m.name).replace("Mega ", "").replace(sp, "").trim();
 }
@@ -749,10 +750,14 @@ function pokeCard(p, o){
     strip.appendChild(c0);
   }
   ms.forEach(function(mm){
-    var mp = spriteFor(mm.name, false, !!o.shiny);
+    var mp = formSprite(mm, p, false, !!o.shiny);
     if (!mp) return;
     mp.className = "megapic";
-    mp.title = mm.name + (mm.battle && mm.by ? " - " + mm.by : "");
+    /* WHAT THE FORM DOES TO ITS MOVES rides on the picture's title, the one
+       place on a card with room for a sentence: "Morpeko-Hangry - Hunger
+       Switch - Aura Wheel is Dark". The sheet says it in full. */
+    mp.title = [mm.name, mm.battle && mm.by].concat(formMoves(mm, p).map(
+      function(c){ return c[0] + " is " + c[2]; })).filter(Boolean).join(" - ");
     var cell = el("div", "megapicwrap");
     cell.appendChild(mp);
     /* A BATTLE FORM IS CAPTIONED WITH ITS OWN NAME AND NOT THE WORD "MEGA".
@@ -780,33 +785,70 @@ function pokeCard(p, o){
 /* A Mega is drawn as itself and has no Mega line of its own; everything else
    carries the stones its species can hold. Lived in the Find module while it
    was the only screen that showed them - which is exactly how the other
-   screens ended up without them. */
+   screens ended up without them.
+   A SPECIES CHAMPIONS LACKS carries its Megas too (player, 2026-09-27: "todos
+   los sprites de las diferentes formas... sea por ser megas (incluso cuando
+   tienen mas de 1 mega)"): Mewtwo's card had neither X nor Y. They come off
+   its outside row with main-series numbers, like the row itself, and are
+   never offered anywhere a Champions stone is - megasFor stays the game's. */
 function megaLine(p){
-  return p.mega ? [] : megasFor(p.name);
+  if (!p || p.mega) return [];
+  return p.outside ? outsideForms(p, true) : megasFor(p.name);
 }
 /* THE FORMS IT TAKES DURING THE BATTLE, shaped exactly like a Mega row so the
    card can draw them with the machinery it already has.
 
-   There are three in Champions and no more - checked over the whole dex.
-   Stance Change flips Aegislash to 140 Atk / 140 Def the moment it attacks,
-   Zero to Hero takes Palafin from 70 Attack to 160, and Forecast retypes
-   Castform to Fire, Water or Ice with the weather. Two others transform for
-   real and move no number, so they have no row here and must not be invented
-   one: Hunger Switch only retypes Morpeko's Aura Wheel, and Disguise only
-   costs Mimikyu one hit and 1/8 of its HP.
+   FIVE in Champions. Stance Change flips Aegislash to 140 Atk / 140 Def the
+   moment it attacks, Zero to Hero takes Palafin from 70 Attack to 160, and
+   Forecast retypes Castform to Fire, Water or Ice with the weather. Hunger
+   Switch and Disguise move no number - and they are here anyway, because a
+   form is more than its numbers (player, 2026-09-27: "algunas formas
+   determinan algunas habilidades o ataques, como aura wheel de morpeko cambia
+   de tipo el move segun su forma"). Hangry Morpeko's Aura Wheel is Dark; the
+   sheet says so beside the form, off C.FORM_TYPED. These two used to be left
+   out as having "nothing to show", and the card lost their picture with it.
 
    `battle` carries the form's own name and is what tells the three label
    helpers this is not a Mega. `by` is the ability that does it, which is the
-   difference between a number and an explanation. */
+   difference between a number and an explanation. `sp` is its picture. */
 function battleFormsOf(p){
   if (!p || p.mega) return [];
+  if (p.outside) return outsideForms(p, false);
   var bfm = (C.BFORMS || {})[p.name];
   if (!bfm) return [];
   return Object.keys(bfm.f).map(function(lab){
     var e = bfm.f[lab];
     return {name: p.name + "-" + lab, species: p.species || p.name,
             types: e.t || p.types, b: e.b || p.b, ab: p.ab || [],
-            battle: lab, by: bfm.by};
+            battle: lab, by: bfm.by, sp: e.sp};
+  });
+}
+/* WHAT A FORM DOES TO ITS MOVES, as [move, type before, type in this form].
+
+   C.FORM_TYPED is the table the calculator already reads - the moves whose
+   type comes from the USER'S form rather than from the move row - so this is
+   the same fact, asked the other way round. Hangry Morpeko is the case that
+   made it matter: Aura Wheel is Electric, and Dark in that form. */
+function formMoves(form, base){
+  var ft = C.FORM_TYPED || {};
+  return Object.keys(ft).filter(function(mv){
+    var t = ft[mv][form.name];
+    return t && t !== ft[mv][base.name];
+  }).map(function(mv){
+    return [mv, ft[mv][base.name] || (MOVE_BY[mv] || {}).type, ft[mv][form.name]];
+  });
+}
+/* The same two lists for a species Champions does not have, read off its
+   outside row. `sfx` is the stone's letter, carried rather than worked out of
+   the name: Tatsugiri-Droopy's Mega is "Mega Tatsugiri", and subtracting the
+   card's name from it leaves nonsense. */
+function outsideForms(p, megas){
+  return (p.forms || []).filter(function(f){
+    return megas ? f.mega !== undefined : f.mega === undefined;
+  }).map(function(f){
+    return {name: f.n, species: p.species || p.name, types: f.t || p.types,
+            b: f.b || p.b, ab: f.ab || [], outside: true, sp: f.sp,
+            sfx: f.mega, battle: f.k, by: f.by};
   });
 }
 /* ONE PLACE THAT KNOWS WHAT A TYPE LOOKS LIKE.
@@ -860,7 +902,7 @@ function outsideRow(name){
   if (!h) return null;
   return {name:name, species:name, types:h.t || [], b:h.b || [],
           ab:h.ab || [], mega:false, dex:0,
-          outside:true, approx:h.approx || null};
+          outside:true, approx:h.approx || null, forms:h.f || null};
 }
 /* byName first, always: a Champions Pokemon is never described by this table */
 /* ...and one more step before giving up: THE OTHER SPELLING OF THE SAME
@@ -930,13 +972,45 @@ var SPRITE_BASE = IMG_HOSTS[0] + "/gh/PokeAPI/sprites@" + SPRITE_PIN +
    a box row, a HOME row, a trade. The search view draws the species rather
    than his copy of it, so it stays the ordinary colour. */
 function spriteFor(name, big, shiny){
-  var id = (C.SPRITE_ID || {})[name];
+  return spriteImg((C.SPRITE_ID || {})[name], big, shiny);
+}
+/* A FORM'S PICTURE, which is not always the one its name would give.
+
+   A battle form and an outside Mega carry their own (`sp`). A Champions Mega
+   is a dex row with its own entry in SPRITE_ID - except where one row stands
+   for two looks: Champions has a single "Mega Meowstic", and the female's is
+   white. C.FORM_SPRITE holds exactly those, keyed by the base it is drawn
+   from. */
+function formSprite(form, base, big, shiny){
+  var own = form.sp ||
+    ((C.FORM_SPRITE || {})[base && base.name] || {})[form.name];
+  return own ? spriteImg(own, big, shiny) : spriteFor(form.name, big, shiny);
+}
+/* THE ID IS THE FILE NAME: a number for a row's own picture, "493-ice" for
+   one filed by form (Arceus' plates, Silvally's memories, Cherrim in the
+   sun). Both are just the part before ".png".
+
+   AND NOT EVERY PICTURE IS IN BOTH SETS. The HOME set lacks nine the pixel
+   set has (Pichu's spiky ear, Sinistea's antique teapot, six Pikachu in
+   caps) and the pixel set lacks Mega Zygarde, which upstream has only ever
+   drawn as a HOME render. C.SPRITE_GAPS lists them per set, measured at the
+   pin, so the page asks for the one that exists instead of drawing a 404 and
+   then nothing - which is what "not every sprite is loading" was, for these. */
+function spriteImg(id, big, shiny){
   if (!id) return null;
-  var img = el("img", big ? "sprite big" : "sprite");
-  img.src = SPRITE_BASE + (big ? "other/home/" : "") + (shiny ? "shiny/" : "")
+  var g = C.SPRITE_GAPS || {};
+  var gone = function(k){ return (g[k] || []).indexOf(id) >= 0; };
+  var home = big ? !gone(shiny ? "s" : "n") : gone(shiny ? "ps" : "p");
+  var img = el("img", big ? "sprite big" + (home ? "" : " native") : "sprite");
+  img.src = SPRITE_BASE + (home ? "other/home/" : "") + (shiny ? "shiny/" : "")
             + id + ".png";
   img.alt = "";                       /* the name is right beside it */
-  img.width = big ? 180 : 96; img.height = big ? 180 : 96;
+  /* THE BOX IS THE SLOT'S, whichever set filled it: a 512 render drawn in a
+     card's 96 is downscaled with smoothing, which a render survives and a
+     pixel sprite would not - and a sheet whose render is missing draws the
+     pixel one at its own 96 rather than blowing it up to 180. */
+  var px = big && home ? 180 : 96;
+  img.width = px; img.height = px;
   img.loading = "lazy";               /* only what is actually on screen */
   img.decoding = "async";
   /* OFFLINE IS A NORMAL STATE for this app, and a broken-image glyph would be
@@ -1315,12 +1389,13 @@ export {
   $, C, COSTS, DEX, FORMS, HOME_ALL, MEGAS_OF, MOVES, MOVE_BY, SORT,
   STAT_KEYS, STAT_LABEL, STONE_OF, TYPE_COLOR, TYPE_COLOR2, TYPE_INK,
   bst, byName, capNote, catName, defence, dexLabel, dexNo, el, freeSlug,
-  anyRow, battleFormsOf, cardLine, formInk, formKey, labelBox, learnset,
+  anyRow, battleFormsOf, cardLine, formInk, formKey, formMoves, labelBox,
+  learnset,
   megaSuffix,
   pokeFacts,
   outsideRow,
   retypeLayer,
-  searchField, spriteFor, statGrid, wireClears,
+  searchField, formSprite, spriteFor, statGrid, wireClears,
   typeCard, typeSkin, typeTint,
   effectChips, effectLine, effectOf, podiumChip, podiumFor, splitMax, splitPct,
   splitsFor, splitsReg, usageTag,

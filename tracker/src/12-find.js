@@ -2,8 +2,8 @@
    Part of the app; linked into one script by scripts/build_tracker_page.py. */
 import { $, C, DEX, MOVES, MOVE_BY, SORT, STAT_KEYS, STAT_LABEL, STONE_OF,
  TYPE_COLOR, anyRow, bst, byName, capNote, cardLine, catName, defence,
- battleFormsOf, dexNo, effectLine, el, formInk, labelBox, learnset,
- megaLine, megaSuffix, megasFor,
+ battleFormsOf, dexNo, effectLine, el, formInk, formMoves, formSprite,
+ labelBox, learnset, megaLine, megaSuffix, megasFor,
  podiumChip, pokeFacts, podiumFor, pokeCard, searchField, splitPct, spriteFor,
  statGrid, toast,
  typeCard, typeChip, typeSkin, usageTag } from "./01-data.js";
@@ -588,7 +588,9 @@ function pokeBody(body, p, opts){
      with the ones the stone MOVES marked, and its ability beside the one it
      gives up. Nothing is repeated from the base block above: what is the same
      is simply not mentioned. */
-  var ms = megasFor(p.name);
+  /* megaLine, not megasFor: the same Champions Megas, plus the ones a
+     species Champions lacks carries on its outside row - Mewtwo's X and Y */
+  var ms = megaLine(p);
   if (ms.length) {
     body.appendChild(el("h2", null,
       ms.length > 1 ? "Mega line — " + ms.length + " of them, and only one"
@@ -600,14 +602,16 @@ function pokeBody(body, p, opts){
       pn.style.marginBottom = "10px";
 
       var head = el("div", "sheethead");
-      var pic = spriteFor(m.name, true);
+      var pic = formSprite(m, p, true);
       if (pic) head.appendChild(pic);
       var info = el("div", "sheetfacts");
       var h = el("div", "rname");
       h.appendChild(document.createTextNode(m.name));
       /* the stone is named, because it is what this block is about - but NOT
-         whether it is owned. That lives in the Items tab and nowhere else. */
-      h.appendChild(el("span", "tag mega", STONE_OF[m.name]));
+         whether it is owned. That lives in the Items tab and nowhere else.
+         A Mega of a species Champions lacks has no stone in the game's item
+         pool to name, and the sheet already says it is not in the dex. */
+      if (STONE_OF[m.name]) h.appendChild(el("span", "tag mega", STONE_OF[m.name]));
       info.appendChild(h);
 
       var mt = el("div", "rmeta");
@@ -696,7 +700,7 @@ function pokeBody(body, p, opts){
       pn.style.marginBottom = "10px";
 
       var head = el("div", "sheethead");
-      var pic = spriteFor(f.name, true);
+      var pic = formSprite(f, p, true);
       if (pic) head.appendChild(pic);
       var info = el("div", "sheetfacts");
       var h = el("div", "rname");
@@ -722,7 +726,23 @@ function pokeBody(body, p, opts){
       }).filter(Boolean);
       pn.appendChild(el("div", "st",
         moved.length ? f.by + " moves " + moved.join(", ") + "."
-                     : f.by + " changes the typing, not the spread."));
+        : retype ? f.by + " changes the typing, not the spread."
+        : f.by + " moves no stat and keeps the typing."));
+      /* WHAT IT DOES TO ITS MOVES, which for a form that moves no number is
+         the whole reason it matters (player, 2026-09-27: "algunas formas
+         determinan algunas habilidades o ataques, como aura wheel de morpeko
+         cambia de tipo el move segun su forma"). Chips rather than words, the
+         way every other type on the sheet is drawn. */
+      formMoves(f, p).forEach(function(c){
+        var line = el("div", "rmeta");
+        line.style.marginTop = "6px";
+        line.appendChild(el("span", null, c[0] + ":"));
+        if (c[1]) line.appendChild(typeChip(c[1]));
+        line.appendChild(el("span", "megato " + formInk(f, p), "→"));
+        line.appendChild(typeChip(c[2]));
+        line.appendChild(el("span", "st", "in this form"));
+        pn.appendChild(line);
+      });
 
       if (retype) {
         pn.appendChild(el("div", "st", "Takes damage differently:"));
