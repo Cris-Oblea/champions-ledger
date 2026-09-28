@@ -881,9 +881,6 @@ nav.tabs button:active{background:var(--sunk)}
   border-right-color:var(--tcol, var(--line-hard));
   border-bottom-color:var(--tcol, var(--line-hard));
   box-shadow:var(--shadow)}
-/* the copy a build is being installed on - after the hover rule, which also
-   sets a shadow, so hovering the picked one does not unpick it visually */
-.row.picked, .row.picked:hover{box-shadow:0 0 0 2px var(--accent)}
 /* The ring itself: the same two halves as the band, each split into that
    type's own two tones. Drawn as a masked frame rather than a border because a
    border takes one colour and cannot take a gradient.
