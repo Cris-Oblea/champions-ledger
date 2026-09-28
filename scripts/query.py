@@ -26,7 +26,7 @@ Examples:
     python scripts/query.py worlds --usage --division all   # divisions compared
     python scripts/query.py owned
 """
-import os, re, sys, json, argparse
+import os, re, sys, json, argparse, textwrap
 from collections import Counter, defaultdict
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -403,6 +403,15 @@ def cmd_move(a):
             print("         flags: %s" % ", ".join(g["flags"]))
     else:
         print("\nSmogon:  (not in smogon_basics)")
+    # ...and the whole of it, which is what the dex page prints: the one-liner
+    # above says "Traps target"; this says what ends it and what escapes it.
+    full = ((db("smogon_move_text") or {}).get("moves") or {}).get(mv["name"])
+    if full:
+        print("\nSmogon, in full (smogon.com/dex/champions):")
+        print(textwrap.fill(full, 78, initial_indent="         ",
+                            subsequent_indent="         "))
+    for field, why in (mv.get("rulings") or {}).items():
+        print("\nRuling on %s: %s" % (field, why))
     on = [k for k, v in f.items() if v]
     if on:
         print("\nSerebii flags: %s" % ", ".join(on))

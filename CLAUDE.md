@@ -247,6 +247,11 @@ the box.
   `tracker/src/02-state.js` is the one place both rules live.
 - **Light Clay extends Aurora Veil**, not only Light Screen and Reflect, despite
   the item text naming only those two.
+- **Freeze-Dry does not freeze in Champions (player, 2026-09-27).** Serebii's
+  Champions page leaves a stray "10 %" in its Effect Rate cell while its Battle
+  Effect names no freeze, and Smogon's engine deletes the secondary on purpose.
+  `build_db.MOVE_RULINGS` sets the rate to none. Every other move with a rate
+  states it in its Battle Effect; one that does not is the same leftover.
 - **Item prices come from Serebii, and where pokebase disagrees Serebii wins**
   (player, 2026-09-13: "los precios son los que dice serebii"). Serebii's item
   page IS the shop listing, priced row by row; pokebase buckets what it is
@@ -472,7 +477,17 @@ Serebii names a status without defining it ("gains the Sealing Off status") and
 `data/db/smogon_basics.json` — a second local source, easy to forget — gives the
 mechanic ("No foe can use any move known by the user") and durations Serebii
 omits (Taunt: 3 turns). Missing that produced two wrong answers. The command
-prints both.
+prints both, and Smogon's FULL description beside them - `dump-move`, the text
+its dex page prints, stored in `data/db/smogon_move_text.json` and shipped to
+the app as each move's description.
+
+**A move is read from its CHAMPIONS page, never another game's (player,
+2026-09-27: "al leer un move, siempre la fuente debe ser champions dex o saber
+que viene de champions y no de una gen").** Serebii and Smogon both keep one
+page per move per game, and they differ: Freeze-Dry freezes in Scarlet/Violet
+and does not in Champions. `fetch_smogon.py` asks `gen: "champions"` only; a
+move Champions' dex does not describe gets Serebii's attackdex-champions line,
+never an older game's text.
 
 `resist` takes any number of attacking types and lists what takes them all at
 x0.5 or better, flagging what is owned and what already has a build. It is the

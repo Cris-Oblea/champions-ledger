@@ -397,6 +397,20 @@ of a disabled move would be an illegal build the app helped write. They are
 shown here, marked. 503 KB, so it is its own hashed asset, fetched the first
 time one of those sheets is opened and never otherwise.
 
+**Every move says what it does, whole, and from Champions.** Serebii names a
+mechanic ("Gives the target the Octolocked and Can't Escape statuses") where
+Smogon's dex page defines it: the target cannot switch, loses 1 Def and 1 SpD
+every turn, can still leave with Shed Shell or a pivot, and is freed when
+either side leaves. So each of the 512 moves carries Smogon's full
+description, uncut, from its **Champions** dex and never an older game's —
+Serebii and Smogon both keep one page per move per game, and a move reads
+differently between them: Freeze-Dry freezes in Scarlet/Violet and not here.
+Where the sentence leaves a number as a word, our row adds it (a high-crit
+move's 12.5%, Night Shade's 50 HP at level 50); where our row carries a chance
+Smogon's text does not state, the build reports it as a dispute instead of
+pasting either one. A new move is fetched the night it appears; every text is
+fetched again on the Monday deep refresh.
+
 **A GTS box is a shortlist, so it is filtered like one.** What may go into one
 is settled by two rules rather than taste — only a **duplicate** (the Species
 Clause means a second copy can never share a team with the first) or a species

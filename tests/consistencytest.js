@@ -287,6 +287,29 @@ setTimeout(() => {
      list(Object.keys(C.LEARN_ALIAS || {})
        .filter(k => !C.LEARN[C.LEARN_ALIAS[k]])), "0");
 
+  /* WHAT A MOVE DOES, WHOLE, AND FROM CHAMPIONS (player, 2026-09-27):
+     "octolock solo dice que lo deja octolocked and can't escape statuses...
+     no dice que significa cada uno de esos statuses" and "al leer un move,
+     siempre la fuente debe ser champions dex". Octolock is his example; the
+     rest pin the three ways the old line fell short. */
+  console.log("\n  lo que hace cada movimiento");
+  const txt = n => (C.MOVES.find(r => r[0] === n) || [])[14] || "";
+  ok("todo movimiento de Champions tiene descripcion",
+     list(C.MOVES.filter(r => !r[14]).map(r => r[0])), "0");
+  ok("Octolock dice que baja Def y SpD cada turno",
+     /Defense and Special Defense are lowered by 1 stage/.test(txt("Octolock")), true);
+  ok("...y como se escapa y cuando termina",
+     /Shed Shell/.test(txt("Octolock")) && /leaves the field/.test(txt("Octolock")),
+     true);
+  ok("nada recortado: Fire Spin llega hasta el final",
+     /not stackable/.test(txt("Fire Spin")), true);
+  ok("Freeze-Dry no congela en Champions",
+     /freez/i.test(txt("Freeze-Dry")), false);
+  ok("un critico alto dice su numero de Champions",
+     /12\.5%/.test(txt("Night Slash")), true);
+  ok("Night Shade dice los 50 de nivel 50",
+     /50 HP/.test(txt("Night Shade")), true);
+
   console.log("\n  ERRORES JS: " + (errs.length ? errs.join(" | ") : "ninguno"));
   console.log(bad ? "\n  " + bad + " FALLOS\n" : "\n  todo bien\n");
   process.exit(bad || errs.length ? 1 : 0);

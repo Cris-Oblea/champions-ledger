@@ -94,6 +94,13 @@ def build():
     # row is the one whose spelling must win - it is the one the rest of the
     # app looks moves up by.
     champ_by_key = {key(m["name"]): m for m in Q.db("moves")}
+    # WHAT EACH ONE DOES. These rows shipped with no description at all - a
+    # name, a type and four numbers. From CHAMPIONS' OWN DEX only (player,
+    # 2026-09-27: "siempre la fuente debe ser champions dex"): Smogon's full
+    # text where its Champions dex has the move, else Serebii's
+    # attackdex-champions line, which covers every one of them. Never an
+    # older game's page, which can describe a different move.
+    smogon = (Q.db("smogon_move_text") or {}).get("moves") or {}
     champ_abils = {key(a["name"]) for a in Q.db("abilities")}
     home = json.load(io.open(os.path.join(ROOT, "data", "db", "home_dex.json"),
                              encoding="utf-8"))
@@ -167,7 +174,8 @@ def build():
             names.append(nm)
             if not row.get("useable") and nm not in mv:
                 mv[nm] = [row.get("type"), CAT.get(row.get("category"), "T"),
-                          row.get("power"), row.get("accuracy"), row.get("pp")]
+                          row.get("power"), row.get("accuracy"), row.get("pp"),
+                          smogon.get(nm) or clean(row.get("effect") or "")]
         if names:
             pools[name] = sorted(set(names))
         else:

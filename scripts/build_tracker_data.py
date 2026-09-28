@@ -47,18 +47,23 @@ TEXTS = None
 
 
 def movetext(m):
-    """The effect line for one move: the best of the two sources.
+    """What one move does, whole.
 
-    scripts/build_text_facts.py picks per move - Serebii where it states the
-    numbers, pokebase where Serebii only names a status ("Gives the target the
-    Bound status") and where Serebii has nothing at all.
+    scripts/build_text_facts.py picks per move: Smogon's full description for
+    every move Champions has, and otherwise Serebii where it states the
+    numbers and pokebase where Serebii only names a status.
+
+    NOT CUT SHORT. This used to stop at 300 characters, which is where a
+    binding move says how to escape it and Protect says what makes it fail -
+    the half the player asked for (2026-09-27: "no dice que significa cada
+    uno de esos statuses... en mi app toda esa info se pierde").
     """
     global TEXTS
     if TEXTS is None:
         TEXTS = (Q.db("text_facts") or {}).get("moves") or {}
     picked = (TEXTS.get(m["name"]) or {}).get("text")
     t = picked or (m.get("effect") or "").strip() or (m.get("in_depth") or "").strip()
-    return " ".join(t.replace("�", "'").split())[:300]
+    return " ".join(t.replace("�", "'").split())
 
 
 def main():
