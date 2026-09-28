@@ -6,8 +6,8 @@ import {
   learnset, megasFor, natMult, numText, pokeCard, searchField, splitPct, splitsFor,
   splitsReg, statAt, statGrid, toast, typeCard, typeChip, usageTag,
 } from "./01-data.js";
-import { S, activeAbility, baseAbility, boxRows, buildLink, megaAbility,
-  ownedNames, soleAbility } from "./02-state.js";
+import { ORIGIN_LABEL, S, activeAbility, baseAbility, boxRows, buildLink,
+  megaAbility, originOf, ownedNames, soleAbility } from "./02-state.js";
 import { drop, put, putNew } from "./03-store.js";
 import { ask, closeSheet, fbtn, leaveEditor, openEditor, openSheet }
   from "./04-nav.js";
@@ -351,45 +351,73 @@ function buildSheet(id, b, keepOriginal){
        team. */
     var copies = boxRows("champions").concat(boxRows("home"))
       .filter(function(r){ return r.name === draft.pokemon; });
-    /* EVERY COPY AS ITSELF, not "copy 2 of 3" (player, 2026-09-27: "necesito
-       que me diga todo, si es shiny, si ya está entrenado, etc. para saber
-       sobre qué estoy colocando la build"). A <select> can only hold one line
-       of text, so it said box and position and nothing that tells two
-       Garchomp apart. Each copy is now the card the box draws for it - the
-       same badges (shiny, trained, origin, rental), where it lives, the
-       builds it already carries and his note - and tapping one picks it.
-       Picked in place, not by redrawing the editor, so the page does not jump
-       back to the top under his thumb. */
+    /* THE DROPDOWN IS THE ANSWER, AND THE CARD UNDER IT IS THE COPY IT NAMES
+       (player, 2026-09-28).
+
+       THIS REVERSES THE LIST OF CARDS of 2026-09-27, which replaced this
+       <select> so that he could see "si es shiny, si ya está entrenado, etc.
+       para saber sobre qué estoy colocando la build". The cards said all of
+       that, and lost the one thing the dropdown had been doing without anyone
+       noticing: its closed face IS the current state. A list has no closed
+       face, so its first row - "Not installed — just an idea", in bold under
+       the label - read as the field's value on every build, installed or not
+       ("sigue diciendo not installed!"). The copy it really sat on was marked
+       by a 2px ring lost inside the card's own type-coloured frame, and taking
+       the build off meant tapping that sentence, which nothing said was a
+       button ("no se puede sacar al ampharos!"). His answer: "la idea era
+       mantener también la parte manual".
+
+       So both halves, each doing what it is good at. The dropdown says where
+       the build is and is where it is changed or taken off, and its options
+       carry the badges, so two copies are told apart before choosing. The
+       card of the chosen copy sits underneath with everything else - sprite,
+       note, the builds it already carries - and is swapped in place, not by
+       redrawing the editor, so the page does not jump under his thumb. */
     var f1 = el("div", "field");
     f1.appendChild(el("label", "f", "Installed on"));
     if (copies.length) {
-      var clist = el("div", "list");
-      var pickers = [];
-      var paintPick = function(){
-        pickers.forEach(function(x){
-          var on = (draft._boxId || "") === x.id;
-          x.node.classList.toggle("picked", on);
-          x.node.setAttribute("aria-pressed", on ? "true" : "false");
-        });
-      };
-      var choose = function(boxId){
-        draft._boxId = boxId || null;
-        paintPick();
-      };
-      var idea = el("button", "row unknown");
-      var im = el("div", "rmain");
-      im.appendChild(el("div", "rname", "Not installed — just an idea"));
-      im.appendChild(el("div", "rmeta")).appendChild(el("span", null,
-        "the set is kept, on no Pokemon"));
-      idea.appendChild(im);
-      idea.onclick = function(){ choose(null); };
-      clist.appendChild(idea);
-      pickers.push({id:"", node:idea});
-      copies.forEach(function(r){
-        var others = Object.keys(S.builds).filter(function(k){
+      var carries = function(r){
+        return Object.keys(S.builds).filter(function(k){
           return k !== id && S.builds[k].box_id === r._id; });
+      };
+      var sel1 = el("select");
+      sel1.appendChild(new Option("— not installed (just an idea) —", ""));
+      var labels = copies.map(function(r){
+        var others = carries(r);
+        var note = r.note && r.note.length > 40
+          ? r.note.slice(0, 39) + "…" : r.note;
+        return [
+          r.name,
+          r.location === "home" ? "in HOME" : "Champions box",
+          r.shiny && "shiny",
+          r.trained && "trained",
+          r.status === "rental" ? "rental, cannot be trained"
+            : r.location === "champions" && ORIGIN_LABEL[originOf(r)],
+          others.length && "already carries " + others.join(", "),
+          note
+        ].filter(Boolean).join(" · ");
+      });
+      /* TWO COPIES CAN BE THE SAME IN EVERYTHING THE LEDGER RECORDS - his two
+         Heracross are both in HOME, neither shiny nor trained, no note - and
+         two identical lines read as a bug. They are not, so the line says so,
+         rather than inventing a "copy 2" that tells nothing apart: whichever
+         he picks is the same Pokemon as far as anything here knows. */
+      copies.forEach(function(r, i){
+        var alike = labels.filter(function(t){ return t === labels[i]; }).length;
+        sel1.appendChild(new Option(labels[i] +
+          (alike > 1 ? " · one of " + alike + " identical" : ""), r._id));
+      });
+      sel1.value = draft._boxId || "";
+      var copyCard = el("div");
+      copyCard.style.marginTop = "8px";
+      var paintCopy = function(){
+        copyCard.innerHTML = "";
+        var r = copies.filter(function(c){ return c._id === draft._boxId; })[0];
+        if (!r) return;
+        var others = carries(r);
         var pr = byName[r.name];
-        var card = pr ? pokeCard(pr, {
+        copyCard.appendChild(pr ? pokeCard(pr, {
+          tag: "div",
           name: r.name,
           shiny: !!r.shiny,
           megas: false,
@@ -405,15 +433,16 @@ function buildSheet(id, b, keepOriginal){
               meta.appendChild(el("span", "mono",
                 "already carries " + others.join(", ")));
             if (r.note) meta.appendChild(el("span", null, r.note));
-          },
-          onclick: function(){ choose(r._id); }
-        }) : el("button", "row", r.name);
-        if (!pr) card.onclick = function(){ choose(r._id); };
-        clist.appendChild(card);
-        pickers.push({id:r._id, node:card});
-      });
-      paintPick();
-      f1.appendChild(clist);
+          }
+        }) : el("div", "row", r.name));
+      };
+      sel1.onchange = function(){
+        draft._boxId = sel1.value || null;
+        paintCopy();
+      };
+      f1.appendChild(sel1);
+      f1.appendChild(copyCard);
+      paintCopy();
     } else {
       f1.appendChild(el("p", "sub", "— you do not have one yet —"));
     }
