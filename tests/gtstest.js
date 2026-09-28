@@ -67,6 +67,9 @@ setTimeout(()=>{
       console.log("  BORRADOS:");
       w.__DELETES.forEach(x=>console.log("    ", x[0], x[1]));
       const added = w.__WRITES.some(x=>x[0]==="box" && x[1].name==="Golisopod");
+      /* the trade is in the history; the note is his, and arrives empty */
+      const noNote = w.__WRITES.filter(x=>x[0]==="box" && x[1].name==="Golisopod")
+        .every(x=>!x[1].note);
       const removed = w.__DELETES.some(x=>x[0]==="box" && x[1]==="chesnaught");
       /* The trade CLOSES on its own row now: the same id comes back with a
          `closed` date on it, so the offer leaves the open list by becoming
@@ -76,6 +79,7 @@ setTimeout(()=>{
       console.log("\n  Golisopod agregado :", added ? "SI" : "NO");
       console.log("  Chesnaught borrado :", removed ? "SI" : "NO  <-- EL BUG");
       console.log("  oferta cerrada     :", offerCleared ? "SI" : "NO");
+      console.log("  llega sin nota     :", noNote ? "SI" : "NO");
       console.log("  ERRORES:", errs.length?errs.slice(0,2):"ninguno");
       /* A TEST WITH NO EXIT CODE IS NOT A TEST. This one printed its three
          answers and exited 0 whatever they said, so the gate has been reading
@@ -84,6 +88,7 @@ setTimeout(()=>{
       const fails = [!added && "el Pokemon recibido no se agrego",
                      !removed && "el que diste sigue en la caja",
                      !offerCleared && "la oferta no se cerro",
+                     !noNote && "el recibido llega con una nota 'GTS for'",
                      errs.length && ("errores JS: " + errs[0])].filter(Boolean);
       if (fails.length) console.log("\n  FALLOS: " + fails.join(" | ") + "\n");
       else console.log("\n  todo bien\n");
