@@ -147,6 +147,17 @@ MOVE_RULINGS = {
     ("Double Shock", "accuracy"): (100,
         "Serebii leaves the cell empty; pokebase and the main series both say "
         "100, and no Champions rebalance of it has been seen."),
+    # NO SECONDARY AT ALL. Serebii's Champions page carries a stray "10 %" in
+    # its Effect Rate cell while its Battle Effect names no freeze - every
+    # other move with a rate states that rate in its Battle Effect ("Has a 10%
+    # chance of freezing"), Freeze-Dry is the only one that does not. Smogon's
+    # engine deletes the secondary for Champions on purpose, its Champions dex
+    # text names none, and the player confirmed it in game (2026-09-27: "ojo
+    # que freeze-dry ya no congela en champions").
+    ("Freeze-Dry", "effect_rate"): (None,
+        "No freeze in Champions: Serebii's Battle Effect names none (the 10% "
+        "sits alone in its rate cell), Smogon's engine deletes the secondary, "
+        "and the player confirmed it in game."),
 }
 
 

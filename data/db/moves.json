@@ -16029,7 +16029,7 @@
   "pp": 20,
   "effect": "This move is also super effective against Water-type Pokémon.",
   "in_depth": "This move has it's own special type affinity Damage Given",
-  "effect_rate": 10.0,
+  "effect_rate": null,
   "crit_rate": "4.17%",
   "priority": 0,
   "target": "Selected Target",
@@ -16063,7 +16063,10 @@
    "Baxcalibur"
   ],
   "learner_count": 8,
-  "useable": true
+  "useable": true,
+  "rulings": {
+   "effect_rate": "No freeze in Champions: Serebii's Battle Effect names none (the 10% sits alone in its rate cell), Smogon's engine deletes the secondary, and the player confirmed it in game."
+  }
  },
  {
   "slug": "freezeshock",

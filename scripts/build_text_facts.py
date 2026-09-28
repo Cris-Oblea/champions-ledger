@@ -102,6 +102,90 @@ def merge(rows, pb, label):
     return out, diffs
 
 
+# --------------------------------------------- Smogon's full description ---
+# (player, 2026-09-27) "octolock solo dice que lo deja octolocked and can't
+# escape statuses. pero no dice que significa cada uno de esos statuses!...
+# necesito que todos los moves esten igual de bien definidos como lo hace
+# smogon."
+#
+# Both sources above NAME a mechanic; Smogon's dex page DEFINES it: Octolock
+# traps the target, lowers its Def and SpD by 1 every turn, can be escaped
+# with Shed Shell or a pivot, and ends when either one leaves. So for a move
+# Champions has, Smogon's text is the description - it is written for
+# Champions' own dex, rebalance included (it has no freeze on Freeze-Dry,
+# which Smogon's engine deletes on purpose for this game).
+#
+# What it says less precisely than our own numbers, the numbers add - never a
+# rewrite, only what the sentence leaves as a word:
+#
+#   "a higher chance for a critical hit"  -> the rate our row carries, 12.5%
+#   "equal to the user's level"           -> 50, the level every Champions
+#                                            Pokemon battles at
+LEVEL = 50
+
+
+def augment(m, text, base_crit):
+    crit = (m.get("crit_rate") or "").strip()
+    if crit and crit not in ("None", base_crit, "100%") and             "higher chance for a critical hit" in text and crit not in text:
+        text = text.replace(
+            "higher chance for a critical hit",
+            "higher chance for a critical hit (%s, against %s for a normal "
+            "move)" % (crit, base_crit), 1)
+    if "equal to the user's level" in text:
+        text = text.replace("equal to the user's level",
+                            "equal to the user's level (%d HP: every Pokemon "
+                            "in Champions is level %d)" % (LEVEL, LEVEL), 1)
+    return text
+
+
+def secondary_rate(m):
+    """The chance of a secondary effect, when effect_rate is one - moves.json
+    puts the crit rate there when the move has none."""
+    er, cr = m.get("effect_rate"), (m.get("crit_rate") or "").rstrip("%")
+    if er in (None, 0):
+        return None
+    try:
+        return None if float(er) == float(cr) else float(er)
+    except ValueError:
+        return float(er)
+
+
+def smogon_first(moves, mv):
+    """Put Smogon's description in front, and report what it leaves out."""
+    long = (Q.db("smogon_move_text") or {}).get("moves") or {}
+    rates = {}
+    for m in moves:
+        c = (m.get("crit_rate") or "").strip()
+        rates[c] = rates.get(c, 0) + 1
+    base_crit = max((c for c in rates if c.endswith("%") and c != "100%"),
+                    key=lambda c: rates[c])
+    used, gaps = 0, []
+    for m in moves:
+        n = m["name"]
+        s = long.get(n)            # Champions' own dex, never another game's
+        if not s:
+            continue
+        row = mv[n]
+        row["smogon"] = s
+        row["text"] = augment(m, s, base_crit)
+        row["source"] = "smogon"
+        used += 1
+        # A CHANCE WE CARRY THAT SMOGON DOES NOT STATE is reported, never
+        # pasted in: it is a disagreement about the game, not about wording.
+        # Freeze-Dry was the case that proved it - Serebii's rate cell said
+        # 10 while its own text named no freeze, Smogon's engine deletes the
+        # secondary for Champions, and the player confirmed it in game. It is
+        # settled in build_db.MOVE_RULINGS now; a new line here is a new one.
+        r = secondary_rate(m)
+        if r and r < 100 and ("%d%%" % r) not in s:
+            gaps.append((n, r))
+    print("\nsmogon's full description: %d of %d moves" % (used, len(moves)))
+    for n, r in gaps:
+        print("   DISPUTE %-14s our row carries a %d%% secondary chance; "
+              "Smogon's Champions text states none" % (n, r))
+    return mv
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--report", action="store_true")
@@ -110,6 +194,7 @@ def main():
 
     moves = [m for m in Q.db("moves") if m.get("useable")]
     mv, mdiff = merge(moves, pokebase("moves"), "moves")
+    mv = smogon_first(moves, mv)
     ab, adiff = merge(Q.db("abilities"), pokebase("abilities"), "abilities")
 
     print("\n--- where pokebase won, because Serebii only named a status ---")
@@ -123,10 +208,13 @@ def main():
     if not a.report:
         with open(OUT, "w", encoding="utf-8") as f:
             json.dump({"_comment":
-                       "Merged by scripts/build_text_facts.py. Per entry, the "
+                       "Merged by scripts/build_text_facts.py. A move "
+                       "Champions has is described by Smogon's own dex page "
+                       "(`smogon`), with our crit rate and level added where "
+                       "it leaves them as words. Otherwise, per entry, the "
                        "text that states more wins - numbers, stages, turns - "
                        "and a bare 'gives the X status' is penalised. Ties go "
-                       "to Serebii. Both originals are kept.",
+                       "to Serebii. Every original is kept.",
                        "moves": mv, "abilities": ab}, f,
                       ensure_ascii=False, indent=1)
         print("\nwrote %s (%.0f KB)" % (OUT, os.path.getsize(OUT) / 1024))

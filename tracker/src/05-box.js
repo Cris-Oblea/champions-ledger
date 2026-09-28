@@ -614,7 +614,8 @@ function outsideMove(name){
   if (!r) return null;
   return {i:-1, name:name, type:r[0], cat:r[1], bp:r[2], acc:r[3], pp:r[4],
           pri:0, target:"Selected Target", spread:false, hitsAlly:false,
-          hits:null, crit:false, f:"", sec:false, text:"", notInChampions:true};
+          hits:null, crit:false, f:"", sec:false, text:r[5] || "",
+          notInChampions:true};
 }
 
 /* One set, as the thing you would actually build: the four slots, the spread,
