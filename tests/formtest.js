@@ -9,10 +9,17 @@
    aegislash y la de palafin)... tambien son modificaciones in battle, como
    los megas").
 
-   There are exactly three in Champions and this test says so, so that a
-   regulation adding a fourth - a Wishiwashi, a Minior, an Eiscue, all of them
+   There are exactly five in Champions and this test says so, so that a
+   regulation adding a sixth - a Wishiwashi, a Minior, an Eiscue, all of them
    one species away on the watchlist - fails here rather than shipping a card
-   that quietly leaves it out. */
+   that quietly leaves it out.
+
+   FIVE, NOT THREE (player, 2026-09-27: "morpeko tiene otra forma y es por
+   habilidad y no se ve su otro sprite... la idea es tener todas las imagenes
+   funcionando"). Hangry Morpeko and Busted Mimikyu move no number and were
+   left off for that - which took their picture with them, and with it the
+   one thing Hangry Mode really changes: "aura wheel de morpeko cambia de tipo
+   el move segun su forma". */
 const { JSDOM, VirtualConsole } = require("jsdom");
 const ROOT = require("path").join(__dirname, "..") + "/";
 
@@ -55,8 +62,10 @@ function card(name){
 setTimeout(() => {
   console.log("\n  cuantas formas de batalla tiene Champions");
   const bf = w.CHAMP.BFORMS;
-  ok("las que mueven un numero", Object.keys(bf).sort().join(","),
-     "Aegislash,Castform,Palafin");
+  ok("las cinco, muevan un numero o no", Object.keys(bf).sort().join(","),
+     "Aegislash,Castform,Mimikyu,Morpeko,Palafin");
+  ok("y cada una trae su propio sprite",
+     Object.keys(bf).every(k => Object.values(bf[k].f).every(e => !!e.sp)), true);
   ok("y cada una dice que habilidad la provoca",
      Object.keys(bf).every(k => !!bf[k].by), true);
 
@@ -103,6 +112,73 @@ setTimeout(() => {
   ok("una capa de color por tipo", ca.querySelectorAll(".retype").length, 3);
   ok("y un marco por tipo", ca.querySelectorAll(".retyperim").length, 3);
   ok("la card pide el ciclo de cuatro", ca.classList.contains("n3"), true);
+
+  const src = (img) => img ? img.getAttribute("src") : "";
+  const keys = (c) => [...c.querySelectorAll(".megapickey")]
+    .map(x => x.textContent).join(" ");
+
+  console.log("\n  Morpeko: Hunger Switch no mueve ningun numero, y es otra forma");
+  const mo = card("Morpeko");
+  ok("el sprite de Hangry esta en la tira", keys(mo), "base hangry");
+  const hang = mo.querySelectorAll(".megapic")[1];
+  ok("y es el dibujo de Hangry, no el de la base",
+     /\/10187\.png$/.test(src(hang)), true);
+  ok("su titulo dice lo que le hace a Aura Wheel",
+     /Aura Wheel is Dark/.test(hang && hang.title), true);
+  ok("sin segundo numero inventado en los stats",
+     mo.querySelectorAll(".statline .mg").length, 0);
+  w.findDetail(w.byName["Morpeko"]);
+  const sb = d.getElementById("sheetBody").textContent.replace(/\s+/g, " ");
+  ok("la ficha abre el bloque In battle", /In battle — Hunger Switch/.test(sb), true);
+  ok("y dice que Aura Wheel pasa de Electric a Dark",
+     /Aura Wheel:\s*Electric\s*→\s*Dark/.test(sb), true);
+  ok("sin decir que cambia el tipo del Pokemon",
+     /changes the typing/.test(sb), false);
+
+  console.log("\n  Mimikyu: Disguise tambien es una forma");
+  ok("el sprite de Busted esta en la tira", keys(card("Mimikyu")), "base busted");
+
+  console.log("\n  una mega, dos dibujos");
+  const mf = w.pokeCard(w.byName["Meowstic-Female"], {});
+  ok("Meowstic hembra dibuja SU mega, no la del macho",
+     /\/10326\.png$/.test(src(mf.querySelectorAll(".megapic")[1])), true);
+  const mm = w.pokeCard(w.byName["Meowstic"], {});
+  ok("y el macho la suya",
+     /\/10314\.png$/.test(src(mm.querySelectorAll(".megapic")[1])), true);
+
+  console.log("\n  un Pokemon que Champions no tiene tambien trae sus formas");
+  const mw = w.pokeCard(w.anyRow("Mewtwo"), {});
+  ok("Mewtwo muestra Mega X y Mega Y", keys(mw), "base mega X mega Y");
+  ok("con la tinta de cada letra",
+     !!mw.querySelector(".megapickey.mk-x") && !!mw.querySelector(".megapickey.mk-y"),
+     true);
+  ok("y Mega X lo vuelve Psychic/Fighting",
+     [...mw.querySelectorAll(".rmeta .t")].map(x => x.textContent).join(","),
+     "Psychic,Psychic,Fighting");
+  ok("Kyogre muestra su forma Primal",
+     keys(w.pokeCard(w.anyRow("Kyogre"), {})), "base primal");
+  const tz = w.pokeCard(w.anyRow("Tatsugiri-Droopy"), {});
+  ok("cada Tatsugiri su propia mega, con su propio dibujo",
+     /\/10323\.png$/.test(src(tz.querySelectorAll(".megapic")[1])), true);
+  const zy = w.pokeCard(w.anyRow("Zygarde"), {});
+  ok("Mega Zygarde, que solo existe como render HOME, lo usa",
+     /other\/home\/10301\.png$/.test(src(zy.querySelectorAll(".megapic")[1])), true);
+  w.findDetail(w.anyRow("Mewtwo"));
+  const mws = d.getElementById("sheetBody").textContent.replace(/\s+/g, " ");
+  ok("la ficha de Mewtwo trae su Mega line",
+     /Mega line — 2 of them/.test(mws) && /Mega Mewtwo Y/.test(mws), true);
+
+  console.log("\n  toda card tiene su dibujo");
+  const sid = w.CHAMP.SPRITE_ID;
+  const names = w.CHAMP.DEX.map(r => r[0]).concat(Object.keys(w.CHAMP.HOME_DEX));
+  ok("ningun nombre del dex ni de HOME sin sprite",
+     names.filter(n => !sid[n]).join(", "), "");
+  ok("Arceus-Ice dibuja su placa, archivada por forma",
+     /\/493-ice\.png$/.test(src(w.pokeCard(w.anyRow("Arceus-Ice"), {})
+       .querySelector(".megapic"))), true);
+  const pi = w.spriteFor("Pichu-Spiky-eared", true);
+  ok("una ficha sin render HOME cae al sprite de 96, a su tamano",
+     /pokemon\/172-spiky-eared\.png$/.test(src(pi)) && pi.width === 96, true);
 
   console.log("\n  un Pokemon sin forma de batalla no cambia en nada");
   const ga = card("Garchomp");

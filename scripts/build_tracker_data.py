@@ -256,6 +256,59 @@ def main():
             BFORMS[p["name"]] = {"by": (p.get("abilities") or [None])[0],
                                  "f": out}
 
+    # --- ...and the forms that move NO number ------------------------------
+    # The loop above only sends what Serebii printed a spread or a typing for,
+    # so a form that changes neither never reached the card: Morpeko's Hangry
+    # Mode and Mimikyu's Busted Form had no picture at all (player,
+    # 2026-09-27: "morpeko tiene otra forma y es por habilidad y no se ve su
+    # otro sprite"). They are real, and one of them is exactly why a form
+    # matters beyond the picture: "aura wheel de morpeko cambia de tipo el
+    # move segun su forma" - which FORM_TYPED already says, keyed by the
+    # form's name, and which the sheet reads beside the form now.
+    #
+    # form_line.json (fetch_home_dex.py) says which forms EXIST and what each
+    # looks like. It carries upstream's numbers, and those are never used for
+    # a species Champions has: Champions' own row wins. A form upstream says
+    # MOVES a number that ours has no row for is refused outright - drawing
+    # it with the base spread would state the wrong number as ours.
+    FORM_LINE = Q.db("form_line") or {}
+    FORM_SPRITE = {}
+    champ_rows = {p["name"]: p for p in mons}
+    mega_names = {p["name"] for p in mons if p.get("is_mega")}
+    sprite_of = Q.db("sprite_ids") or {}
+    for name, forms in FORM_LINE.items():
+        p = champ_rows.get(name)
+        if not p:
+            continue
+        for f in forms:
+            if "mega" in f:
+                # a Champions Mega is its own dex row with its own picture;
+                # only a Mega drawn DIFFERENTLY from a form of its species
+                # gets an entry here - the female Meowstic's is white
+                if f["n"] not in mega_names:
+                    print("  !! upstream has %s on %s; the Champions dex "
+                          "does not" % (f["n"], name))
+                elif f["sp"] != sprite_of.get(f["n"]):
+                    FORM_SPRITE.setdefault(name, {})[f["n"]] = f["sp"]
+                continue
+            bf = BFORMS.setdefault(name, {"by": f["by"], "f": {}})
+            if f["k"] in bf["f"]:
+                bf["f"][f["k"]]["sp"] = f["sp"]
+                continue
+            if not f.get("flat"):
+                raise SystemExit(
+                    "%s changes its numbers upstream and the Champions data "
+                    "has no row for it - fetch its block from Serebii rather "
+                    "than drawing it with %s's spread" % (f["n"], name))
+            if f["by"] not in (p.get("abilities") or []):
+                raise SystemExit("%s is said to come from %s, which %s does "
+                                 "not have" % (f["n"], f["by"], name))
+            bf["f"][f["k"]] = {"sp": f["sp"]}
+    missing_sp = [n + "-" + k for n, v in BFORMS.items()
+                  for k, e in v["f"].items() if "sp" not in e]
+    if missing_sp:
+        print("  !! battle forms with no picture: %s" % ", ".join(missing_sp))
+
     # --- dex -------------------------------------------------------------
     DEX = []
     for p in mons:
@@ -273,6 +326,14 @@ def main():
     TYPE_COLORS = Q.db("type_colors") or {}
     HOME_DEX = Q.db("home_dex") or {}
     SPRITE_ID = Q.db("sprite_ids") or {}
+    # What a species Champions LACKS turns into, which it had no way to say:
+    # Mewtwo's card carried no Mega X or Y, Kyogre no Primal. Main-series
+    # numbers, the same as the row they ride on - and the card's "not in the
+    # Champions dex" tag covers them exactly as it covers the base.
+    for name, forms in FORM_LINE.items():
+        if name in HOME_DEX and name not in champ_rows:
+            HOME_DEX[name] = dict(HOME_DEX[name], f=[
+                {k: v for k, v in f.items() if k != "flat"} for f in forms])
     # How hard each species is to pull off the GTS: demand measured from
     # ladder usage, supply declared in data/meta/go_sourcing.json. Only the
     # fields the phone needs, to keep the blob small.
@@ -729,6 +790,12 @@ def main():
             # public. Only the number travels; the picture is fetched from a
             # CDN at a pinned commit when a card is actually on screen.
             "SPRITE_ID": SPRITE_ID,
+            # A form drawn differently from the name it shares: Champions has
+            # one "Mega Meowstic" row, and the female's Mega is white.
+            "FORM_SPRITE": FORM_SPRITE,
+            # Which pictures one set has and the other lacks, so the page
+            # goes straight to the one that exists instead of drawing a 404.
+            "SPRITE_GAPS": Q.db("sprite_gaps") or {},
             "AB_CLASS": am.get("classes") or {},
             "AB_CLASS_LABEL": am.get("class_labels") or {},
             # WHAT A THING ACTUALLY DOES, AS A NUMBER. Serebii's item text is
