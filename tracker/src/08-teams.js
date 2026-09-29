@@ -5,6 +5,7 @@ import {
   labelBox, megasFor, natMult, numText, pokeCard, searchField, splitPct,
   statAt, toast, typeChip, typeSkin, usageTag,
   plural,
+  byText,
 } from "./01-data.js";
 import { S, activeAbility, baseAbility, buildLink, buildsFor, hasItem,
   hasStone } from "./02-state.js";
@@ -620,7 +621,7 @@ function teamPickBuild(draft, idx, onPick){
         tN[t] = (tN[t] || 0) + 1;
       });
     });
-    tKeys.sort();
+    tKeys.sort(byText);
     if (tKeys.length > 1) {
       var trow = el("div", "toggles"); trow.style.marginBottom = "10px";
       tKeys.forEach(function(t){ chip(trow, "type", t, t + " \u00b7 " + tN[t], t); });
@@ -982,7 +983,7 @@ function drawTeams(){
 }
 
 function teamSheet(id, t){
-  var draft = JSON.parse(JSON.stringify(t || {name:"", slots:[], notes:{}}));
+  var draft = structuredClone(t || {name:"", slots:[], notes:{}});
   draft.slots = teamSlots(draft);
 
   /* Re-render in place. It used to close a sheet and open a new one, which is

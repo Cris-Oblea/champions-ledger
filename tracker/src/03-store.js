@@ -1,6 +1,6 @@
 /* 03-store.js - put/putNew/patch/drop, the Supabase adapter behind them, and sign-in.
    Part of the app; assembled into one script by scripts/build_tracker_page.py. */
-import { $, el, toast } from "./01-data.js";
+import { $, el, toast, byText } from "./01-data.js";
 import { S } from "./02-state.js";
 /* The app's own confirm, rather than the operating system's. 04-nav does not
    import this file, so the edge adds no cycle. */
@@ -152,7 +152,7 @@ function supabaseStore(sb, uid){
 
   function emit(coll){
     var rows = cache[coll] || {};
-    var docs = Object.keys(rows).sort().map(function(id){
+    var docs = Object.keys(rows).sort(byText).map(function(id){
       return {id:id, exists:true, data:function(){
         return docFromRow(coll, rows[id]); }, metadata:{}};
     });

@@ -5,6 +5,7 @@ import {
   catName, el, labelBox, learnset, natMult, pokeCard, searchField, statAt,
   statGrid, toast, typeChip,
   plural,
+  byText,
 } from "./01-data.js";
 import { closeSheet, openSheet } from "./04-nav.js";
 import { S, activeAbility, baseAbility } from "./02-state.js";
@@ -698,7 +699,7 @@ function calcSideCtl(which){
     sa.appendChild(new Option(x + "  (its own)", x));
   });
   Object.keys(MODS[which === "atk" ? "atk_ability" : "def_ability"] || {})
-    .sort().forEach(function(x){
+    .sort(byText).forEach(function(x){
       if (!seen[x]) sa.appendChild(new Option(x, x));
     });
   sa.value = side.ability || "";
@@ -714,7 +715,7 @@ function calcSideCtl(which){
   if (which === "def") pool = pool.concat(Object.keys(BERRY_TYPE));
   if (which === "atk") pool = pool.concat(Object.keys(TYPE_ITEM));
   var done = {};
-  pool.sort();
+  pool.sort(byText);
   pool.forEach(function(x){
     if (done[x]) return;
     done[x] = 1;
@@ -729,7 +730,7 @@ function calcSideCtl(which){
   fn.appendChild(el("label", "f", "Nature"));
   var sn = el("select");
   sn.appendChild(new Option("none", ""));
-  Object.keys(C.NATURES).sort().forEach(function(n){
+  Object.keys(C.NATURES).sort(byText).forEach(function(n){
     sn.appendChild(new Option(n + " (" + C.NATURES[n][2] + ")", n));
   });
   sn.value = side.nature || "";

@@ -6,6 +6,7 @@ import {
   formInk, formMoves, formSprite, labelBox, learnset, megaLine, numText,
   podiumChip, pokeFacts, podiumFor, pokeCard, searchField, splitPct,
   spriteFor, statGrid, toast, typeChip, typeSkin, usageTag, VIEW, ordinal,
+  byText,
 } from "./01-data.js";
 import { RELEASE_FLOOR, S, boxRows, originOf, ownedNames, releaseBlock }
   from "./02-state.js";
@@ -1247,7 +1248,7 @@ function moveFilters(body, pool, onChange, placeholder, opts){
 
   var types = [];
   pool.forEach(function(m){ if (!types.includes(m.type)) types.push(m.type); });
-  types.sort();
+  types.sort(byText);
   if (types.length > 1) {
     var trow = el("div", "toggles"); trow.style.marginBottom = "10px";
     types.forEach(function(ty){ chip(trow, "type", ty, ty, ty); });
@@ -1415,7 +1416,9 @@ function moveRowFor(m, ability, poke){
   facts.push(m.target);
   mm.appendChild(factLine(facts));
   if (spread) {
-    var sp = el("div", "st", spread.replace(/\s*·\s*/g, " · "));
+    var sp = el("div", "st", spread.split("·").map(function(s){
+      return s.trim();
+    }).join(" · "));
     sp.style.color = "var(--warn)";
     mm.appendChild(sp);
   }
@@ -1518,7 +1521,7 @@ function findInit(){
          with no types at all. findtest caught it on the first run. */
       var live = {};
       DEX.forEach(function(p){ (p.types || []).forEach(function(t){ live[t] = 1; }); });
-      Object.keys(live).sort().forEach(function(ty){
+      Object.keys(live).sort(byText).forEach(function(ty){
         var b = el("button", "tog", ty);
         typeSkin(b, ty, false);
         /* OFF -> HAS IT -> HASN'T IT -> OFF. The ALL/ANY control above says
@@ -1607,7 +1610,7 @@ function findInit(){
       body.appendChild(count);
       var list = el("div", "list");
       body.appendChild(list);
-      var all = Object.keys(C.ABIL).sort();
+      var all = Object.keys(C.ABIL).sort(byText);
       function draw(){
         var q = inp.q();
         var ks = Object.keys(pick);

@@ -3,6 +3,7 @@
 import {
   $, C, FORMS, MEGAS_OF, STONE_OF, anyRow, bst, byName, capNote, dexLabel,
   dexNo, el, freeSlug, megasFor, pokeCard, searchField, toast,
+  byText,
 } from "./01-data.js";
 import { ORIGIN_LABEL, S, baseAbility, boxRows, hasStone, originOf }
   from "./02-state.js";
@@ -1344,7 +1345,7 @@ function gtsSheet(id, o){
             deposited:now.toISOString().slice(0,10),
             depositedAt:now.toISOString(),
             status:"PENDING", note:""};
-  var d = JSON.parse(JSON.stringify(o));
+  var d = structuredClone(o);
   openSheet(id == null ? "Log a GTS offer" : "GTS offer", function(body){
     body.appendChild(pickField("You deposited", d.offered,
       "From your box - it remembers WHICH copy",
@@ -1574,7 +1575,7 @@ document.querySelectorAll("[data-export]").forEach(function(b){
     } else if (k === "builds-csv") {
       var rows2 = [["pokemon","mega","ability","nature","hp","atk","def","spa",
                     "spd","spe","sp_total","move1","move2","move3","move4","role"]];
-      Object.keys(S.builds).sort().forEach(function(id){
+      Object.keys(S.builds).sort(byText).forEach(function(id){
         var b2 = S.builds[id], sp = b2.stat_points || {}, mv = b2.moves || [];
         rows2.push([b2.pokemon, b2.mega || "", baseAbility(b2) || "", b2.nature || "",
           sp.hp||0, sp.atk||0, sp.def||0, sp.spa||0, sp.spd||0, sp.spe||0,

@@ -65,6 +65,9 @@ const MOVES = C.MOVES.map(function(r,i){
           text:r[14] || ""};
 });
 /* P physical, S special, T status - three codes, never two */
+/* The comparator for sorting names: locale-aware, so an accent never
+   sorts after "z". */
+function byText(a, b){ return String(a).localeCompare(String(b)); }
 /* 1 -> "1st", 4 -> "4th": a finishing place. Worlds ranks stop at 8. */
 function ordinal(n){ return ({1: "1st", 2: "2nd", 3: "3rd"})[n] || n + "th"; }
 /* "1 build", "3 builds" */
@@ -131,7 +134,7 @@ function toast(msg){
   t.textContent = msg;
   /* restart the entrance animation, otherwise a second toast inside the
      window just swaps the text with no sign anything happened */
-  t.hidden = true; void t.offsetWidth; t.hidden = false;
+  t.hidden = true; t.getBoundingClientRect(); t.hidden = false;
   clearTimeout(toastT);
   /* long messages need longer than short ones - 2.6s is not enough to read
      "That copy is already in the GTS, waiting for Steelix" */
@@ -1128,7 +1131,11 @@ function megasFor(name){
    four words that are numbers (halved, doubled, quartered, tripled). Built
    from text nodes, never innerHTML: the text is scraped, and a scraped string
    is not markup. */
-var NUM_RE = /\d+(?:\.\d+)?(?:\/\d+)?(?:\s?(?:%|×))?(?:\s(?:turns?|stages?)\b)?|\b(?:halved|halves|doubled|doubles|quartered|tripled)\b/g;
+/* a number, a fraction or a percentage, with its unit when one follows */
+var NUMBER = /\d+(?:\.\d+)?(?:\/\d+)?(?:\s?[%×])?(?:\s(?:turns?|stages?)\b)?/;
+/* the four words that are numbers */
+var NUMBER_WORDS = /\b(?:halved|halves|doubled|doubles|quartered|tripled)\b/;
+var NUM_RE = new RegExp(NUMBER.source + "|" + NUMBER_WORDS.source, "g");
 function numText(text, tag, cls){
   var node = el(tag || "span", cls || null);
   var s = String(text == null ? "" : text), last = 0, m;
@@ -1414,5 +1421,5 @@ export {
   formSprite, spriteFor, statGrid, wireClears, typeSkin, effectLine, numText,
   podiumChip, podiumFor, splitPct, splitsFor, splitsReg, usageTag, megaLine,
   pokeCard, megasFor, natMult, rowMatches, sortRows, statAt, toast, typeChip,
-  VIEW, ordinal, plural,
+  VIEW, byText, ordinal, plural,
 };
