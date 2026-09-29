@@ -31,14 +31,39 @@ ADDING ONE. When a decision reverses, add an entry here in the same commit that
 makes the change. It costs three lines and it is the only thing that stops the
 next contradiction.
 """
-import argparse, io, os, re, sys
+import argparse, glob, io, os, re, subprocess, sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Files that state rules. Not analysis/ write-ups, which are dated accounts of
-# one investigation and are allowed to describe what was believed at the time.
+# one investigation and are allowed to describe what was believed at the time -
+# except history.md, which is what STATUS.md used to carry and was watched then.
+# CLAUDE.md was split on 2026-09-28 into a small core plus files Claude Code
+# loads only when needed (.claude/rules/, the champions-rules skill), and every
+# one of them states rules, so every one of them is watched.
 DOCS = ["CLAUDE.md", "README.md", "STATUS.md", "tracker/README.md",
-        "tests/README.md", "analysis/app_plan.md"]
+        "tests/README.md", "analysis/app_plan.md", "analysis/history.md"] + \
+    sorted(os.path.relpath(p, ROOT).replace(os.sep, "/") for p in
+           glob.glob(os.path.join(ROOT, ".claude", "**", "*.md"), recursive=True))
+
+# CLAUDE.md is sent with EVERY request, whole: at 67 KB it cost ~17,000 tokens
+# a message before anything was asked (player, 2026-09-28: "no a costa del
+# rendimiento de claude code"). STATUS.md is what a new session reads first, and
+# the skill's index loads with any game question. Over budget means something
+# belongs in a narrower file - .claude/rules/docs.md has the map - not that the
+# budget should grow.
+BUDGETS = {"CLAUDE.md": 10000, "STATUS.md": 12000,
+           ".claude/skills/champions-rules/SKILL.md": 10000}
+
+# A file named in a document has to exist. The decisions below only catch the
+# wording someone remembered to register; a paragraph about a file that was
+# deleted or replaced goes stale with nothing to match it - STATUS.md listed
+# fetch_pikalytics.py for a day after it was deleted, and CLAUDE.md sent readers
+# to inventory.json for two weeks. Generated files (gitignored) and sentences
+# that say the file is gone are fine.
+NAMED_FILE = re.compile(
+    r"`([A-Za-z0-9_./-]+\.(?:py|js|json|sql|md|yml|html|css|toml))`")
+GONE = re.compile(r"dropped|removed|replaced", re.I)
 
 # Any of these near a match means the sentence knows it is describing the past.
 # Deliberately explicit: an earlier draft also accepted a bare "was" or "were",
@@ -147,7 +172,81 @@ DECISIONS = [
      r"supabase_seed\.sql (is|should be) (versioned|committed)",
      "snapshots and seeds live outside the repo; the repo is public",
      DOCS),
+
+    # The parts under tracker/src/ became ES modules on 2026-09-14, linked by
+    # esbuild, and the order the imports give replaced the order of the file
+    # numbers. CLAUDE.md went on saying "concatenates them" for two weeks,
+    # because nobody registered the change here.
+    ("the-app-is-es-modules",
+     r"concatenates them|pure concatenation|"
+     r"in the order the number\s+prefixes give",
+     "tracker/src parts are ES modules linked by esbuild; imports set the order",
+     DOCS),
 ]
+
+
+def repo_files():
+    """Every file path on disk, repo-relative, minus the two huge trees."""
+    out = []
+    for d, dirs, files in os.walk(ROOT):
+        dirs[:] = [x for x in dirs if x not in (".git", "node_modules")]
+        rel = os.path.relpath(d, ROOT).replace(os.sep, "/")
+        out += [f if rel == "." else rel + "/" + f for f in files]
+    return out
+
+
+def ignored(names):
+    """The subset of names git ignores - generated files, which may be absent."""
+    if not names:
+        return set()
+    try:
+        r = subprocess.run(["git", "check-ignore", "--"] + sorted(names),
+                           cwd=ROOT, capture_output=True, text=True)
+    except OSError:
+        return set()
+    return set(r.stdout.split())
+
+
+def check_named_files():
+    files = repo_files()
+    base = {f.rsplit("/", 1)[-1] for f in files}
+    found = []
+    for rel in DOCS:
+        lines = read(rel) or []
+        for i, line in enumerate(lines):
+            for m in NAMED_FILE.finditer(line):
+                name = m.group(1)
+                name = name[2:] if name.startswith("./") else name
+                if "/" in name:
+                    if any(f == name or f.endswith("/" + name) for f in files):
+                        continue
+                elif name in base:
+                    continue
+                near = "\n".join(lines[max(0, i - WINDOW):i + WINDOW + 1])
+                if ACKNOWLEDGED.search(near) or GONE.search(near):
+                    continue
+                found.append((rel, i + 1, name))
+    gen = ignored({n for _, _, n in found})
+    problems = 0
+    for rel, n, name in found:
+        if name in gen:
+            continue
+        problems += 1
+        print("%s:%d names %s, which does not exist" % (rel, n, name))
+        print("      (fix the reference, or say it was deleted/replaced)")
+    return problems
+
+
+def check_budgets():
+    problems = 0
+    for rel, limit in BUDGETS.items():
+        size = os.path.getsize(os.path.join(ROOT, rel))
+        if size > limit:
+            problems += 1
+            print("%s is %d bytes, over its budget of %d - move detail to the "
+                  "narrowest file that still loads when it matters "
+                  "(.claude/rules/docs.md)" % (rel, size, limit))
+    return problems
 
 
 def read(rel):
@@ -200,12 +299,14 @@ def main():
                 print("      (say it changed - REVERSED, 'no longer', 'used "
                       "to' - and it passes)")
 
+    problems += check_named_files() + check_budgets()
     if problems:
-        print("\n%d contradiction(s). Fix the sentence or mark it as history."
+        print("\n%d problem(s). Fix the sentence or mark it as history."
               % problems)
         return 1
-    print("no document contradicts a settled decision (%d watched)"
-          % len(DECISIONS))
+    print("no document contradicts a settled decision (%d watched), names a "
+          "missing file, or is over budget (%d files)"
+          % (len(DECISIONS), len(DOCS)))
     return 0
 
 

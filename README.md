@@ -723,7 +723,9 @@ tracker/     the app: a shell, its ES modules under src/, and a generated data b
 tests/       twenty-six browser tests, run against the BUILT page
 <!-- TESTS:END -->
 analysis/    write-ups: the Smogon engine, regulation M-C, GTS pricing, the roadmap
-CLAUDE.md    the rules this project works by, including everything learned the hard way
+CLAUDE.md    the rules every Claude Code session needs, kept small on purpose
+.claude/     the rest of those rules, loaded only when needed: rules/ per part of
+             the code, skills/champions-rules/ for the game itself
 ```
 
 ---
