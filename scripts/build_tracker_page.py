@@ -125,7 +125,7 @@ PUBLIC = [
     "megasFor", "moveRowFor", "overlapSweep", "pokeCard", "pokeSheet",
     "spriteFor", "teamReport",
     "teamSheet", "teamSpeeds", "teamTypes",
-    "abilityHit", "activeAbility", "calcDamage", "koCount",
+    "activeAbility",
 ]
 
 # WHY A BUNDLER AT ALL, when the source is standard ES modules that the browser
