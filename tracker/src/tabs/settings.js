@@ -6,6 +6,7 @@ import { BOOT_ERRORS } from "../core/errors.js";
 import {
   baseAbility, boxRows, capacity, ownedStones, S, VIEW,
 } from "../core/state.js";
+import { patch } from "../core/store.js";
 import { closeSheet, openSheet } from "../ui/nav.js";
 import { engineReady } from "./damage.js";
 
@@ -14,6 +15,12 @@ import { engineReady } from "./damage.js";
    capacity, because the app acts on it and only Champions can change it; every
    other field that used to live here was hand-typed, unread, and wrong by the
    time anyone looked (player, 2026-09-12). */
+$("tSave").onclick = function(){
+  patch("meta/trainer", {
+    box_capacity:Number($("tCap").value) || 50
+  }).then(function(){ toast("Box capacity saved"); });
+};
+
 function kv(host, rows){
   host.innerHTML = "";
   rows.forEach(function(r){

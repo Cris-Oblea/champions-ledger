@@ -15,19 +15,18 @@ import {
 import { boxBadges, pokeCard } from "../ui/card.js";
 import { ask, closeSheet, openSheet } from "../ui/nav.js";
 
+$("gtsAdd").onclick = function(){
+  if (!gtsFree()) {
+    toast("All " + GTS_SLOTS + " GTS slots are taken — withdraw one first");
+    return;
+  }
+  gtsSheet(null, null);
+};
+
 /* a box row's card stripe: HOME, or the Champions box */
 function locClass(r){ return r.location === "home" ? "home" : "perm"; }
-/* The deposit picker's empty state, naming whichever filters are on. */
-function emptyPick(pick, q){
-  var match = q ? " and matches “" + q + "”" : "";
-  if (pick.dupes && pick.outside)
-    return "Nothing you can deposit is both a duplicate and outside the " +
-      "Champions dex" + match;
-  if (pick.dupes) return "Nothing you can deposit is a duplicate" + match;
-  if (pick.outside)
-    return "Nothing you can deposit is outside the Champions dex" + match;
-  return "Nothing you can deposit matches “" + q + "”";
-}
+
+/* ============================================================ open offers */
 function drawGts(){
   var list = $("listGts");
   list.innerHTML = "";
@@ -50,25 +49,31 @@ function drawGts(){
   if (!offers.length) {
     list.appendChild(el("div", "empty",
       "No offers sitting in the GTS — " + GTS_SLOTS + " slots free"));
-    /* The history is NOT part of the open-offer list and must not share its
-       early return: with nothing deposited this function used to bail before
-       drawing it, so the closed trades vanished at exactly the moment you
-       would go looking for them - which is what happened the first time every
-       offer cleared at once (player, 2026-09-12). */
+    /* The history is not part of the open-offer list and must not share its
+       early return: the closed trades vanished at exactly the moment you
+       would go looking for them (player, 2026-09-12). */
     drawGtsHistory();
     return;
   }
-  /* a collision already in the data is worse than one being made now - it
-     means two offers believe they hold the same Pokemon, and closing either
-     one would remove a copy the other still counts on */
+  offerWarnings(list, offers);
+  offers.forEach(function(o){
+    list.appendChild(gtsRow(o._id, o));
+  });
+  drawGtsHistory();
+}
+
+/* Two things worth saying above the offers. Stones bought for a Pokemon that
+   is not in the ledger: 2000 VP each, idle - the app knew the stones and the
+   box separately and never crossed them. And a collision already in the
+   data: two offers that believe they hold the same copy, where closing
+   either would remove a Pokemon the other still counts on. */
+function offerWarnings(list, offers){
   var byId = {}, clash = [];
   offers.forEach(function(o){
     if (!o.offeredId) return;
     if (byId[o.offeredId]) clash.push(o.offeredId);
     byId[o.offeredId] = 1;
   });
-  /* 2000 VP each, bought for a Pokemon that is not in the ledger. The app
-     knew the stones and the box separately and never crossed them. */
   var dead = deadStones();
   if (dead.length) {
     var names = {};
@@ -88,54 +93,21 @@ function drawGts(){
       clash.join(", ") + ". Withdraw one and re-log it against a different copy " +
       "before either trade closes."));
   }
-  offers.forEach(function(o){
-    list.appendChild(gtsRow(o._id, o));
-  });
-  drawGtsHistory();
 }
 
+/* ================================================================ history
+   BOTH SIDES OF EVERY CLOSED TRADE, searchable, because the question this
+   list answers is "what did a Chesnaught fetch last time" - and a Chesnaught
+   can be either half of it. Folded; the fold remembers. */
 function drawGtsHistory(){
   var wrap = $("gtsHistWrap"), host = $("listGtsHist");
   if (!wrap) return;
   var h = gtsHistory();
   wrap.hidden = !h.length;
   if (!h.length) return;
-  var tog = $("gtsHistToggle"), bod = $("gtsHistBody");
-  if (!tog._wired) {
-    tog._wired = 1;
-    tog.onclick = function(){
-      var open = bod.hidden;
-      bod.hidden = !open;
-      tog.setAttribute("aria-expanded", open ? "true" : "false");
-      tog.querySelector(".foldcaret").innerHTML = open ? "&#9662;" : "&#9656;";
-      try { localStorage.setItem("champ-gtshist", open ? "1" : ""); } catch (e) {}
-    };
-    /* a fold that forgets is a fold you reopen every visit */
-    try {
-      if (localStorage.getItem("champ-gtshist")) tog.onclick();
-    } catch (e) {}
-  }
-  /* Collapsed, this line IS the feature - so it carries the finding rather
-     than a description. Measured over every closed trade: how often a chip
-     reached the ceiling its Mega line sets. 21 trades say that ceiling is
-     reachable, not automatic - Beedrill hits it every time and twice beat it,
-     while Chesnaught and Starmie traded at base parity instead. */
-  var ceil = h.filter(function(r){ return r.gaveValue && r.gotBst; });
-  var hit = ceil.filter(function(r){ return r.gotBst >= r.gaveValue - 10; });
-  var mega = ceil.filter(function(r){ return r.gaveValue > r.gaveBst; });
-  var paid = "What the market actually paid.";
-  if (ceil.length) {
-    var parity = mega.length
-      ? ", " + (mega.length - hit.length) + " settled at base parity instead" : "";
-    paid = "What the market actually paid, over " + ceil.length + " priced trades. " +
-      hit.length + " reached the ceiling their Mega line sets" + parity +
-      " — so that ceiling is reachable, not automatic.";
-  }
-  $("gtsHistSub").textContent = paid;
+  wireHistoryFold($("gtsHistToggle"), $("gtsHistBody"));
+  $("gtsHistSub").textContent = marketSummary(h);
   host.innerHTML = "";
-  /* BOTH SIDES OF THE TRADE, because the question this list answers is "what
-     did a Chesnaught fetch last time" - and a Chesnaught can be either half
-     of it. 21 closed trades today and it only grows. */
   var hq = ($("gtsHistSearch")?.value || "")
     .trim().toLowerCase();
   var shown = h.filter(function(r){
@@ -145,50 +117,106 @@ function drawGtsHistory(){
   $("nGtsHist").textContent = hq && shown.length !== h.length
     ? shown.length + " of " + h.length : h.length;
   if (!shown.length) host.appendChild(el("div", "empty", "No trade matches"));
-  shown.forEach(function(r){
-    var row = el("div", "row perm");
-    var m = el("div", "rmain");
-    var nm = el("div", "rname");
-    nm.appendChild(document.createTextNode(
-      r.offered + "  →  " + r.requested));
-    if (r.closed) nm.appendChild(el("span", "tag", r.closed));
-    m.appendChild(nm);
-    var meta = el("div", "rmeta");
-    if (r.gaveBst && r.gotBst) {
-      var d = r.gotBst - r.gaveBst;
-      meta.appendChild(el("span", "mono",
-        r.gaveBst + " → " + r.gotBst + " BST"));
-      meta.appendChild(el("span", "tag " + (d > 20 ? "ok" : ""),
-        (d > 0 ? "+" : "") + d));
-    }
-    if (r.gaveValue && r.gaveValue > r.gaveBst) {
-      meta.appendChild(el("span", null,
-        "chip's Mega line: " + r.gaveValue));
-    }
-    /* the row that will eventually price a shiny: what a shiny chip actually
-       fetched, against what the same species is worth plain */
-    if (r.backfilled) {
-      meta.appendChild(el("span", "tag", "recovered"));
-    }
-    if (r.gaveShiny) {
-      var prem = (r.gotBst != null && r.gaveValue != null)
-        ? r.gotBst - r.gaveValue : null;
-      meta.appendChild(el("span", "tag mega", "shiny chip" +
-        (prem != null ? " · " + signed(prem) + " over plain" : "")));
-    }
-    var took = null;
-    if (r.tookMs != null) took = elapsedText(r.tookMs);
-    else if (r.days != null) took = r.days + " days";
-    if (took) {
-      var fast = r.tookMs != null && r.tookMs < 6 * 3600000;
-      meta.appendChild(el("span", "tag " + (fast ? "ok" : ""),
-        took + " to close"));
-    }
-    m.appendChild(meta);
-    row.appendChild(m);
-    host.appendChild(row);
-  });
+  shown.forEach(function(r){ host.appendChild(historyRow(r)); });
 }
+
+/* Wired once. A fold that forgets is a fold you reopen every visit, so its
+   state is kept in localStorage. */
+function wireHistoryFold(tog, bod){
+  if (tog._wired) return;
+  tog._wired = 1;
+  tog.onclick = function(){
+    var open = bod.hidden;
+    bod.hidden = !open;
+    tog.setAttribute("aria-expanded", open ? "true" : "false");
+    tog.querySelector(".foldcaret").innerHTML = open ? "&#9662;" : "&#9656;";
+    try { localStorage.setItem("champ-gtshist", open ? "1" : ""); } catch (e) {}
+  };
+  try {
+    if (localStorage.getItem("champ-gtshist")) tog.onclick();
+  } catch (e) {}
+}
+
+/* Collapsed, the fold's one line IS the feature, so it carries the finding
+   rather than a description: over every closed trade, how often a chip
+   reached the ceiling its Mega line sets. The trades say that ceiling is
+   reachable, not automatic. */
+function marketSummary(h){
+  var ceil = h.filter(function(r){ return r.gaveValue && r.gotBst; });
+  var hit = ceil.filter(function(r){ return r.gotBst >= r.gaveValue - 10; });
+  var mega = ceil.filter(function(r){ return r.gaveValue > r.gaveBst; });
+  if (!ceil.length) return "What the market actually paid.";
+  var parity = mega.length
+    ? ", " + (mega.length - hit.length) + " settled at base parity instead" : "";
+  return "What the market actually paid, over " + ceil.length + " priced trades. " +
+    hit.length + " reached the ceiling their Mega line sets" + parity +
+    " — so that ceiling is reachable, not automatic.";
+}
+
+/* One closed trade: what went and what came, the BST on both sides and the
+   gap, the chip's Mega line when that is what priced it, a shiny chip's
+   premium, and how long it took to close. */
+function historyRow(r){
+  var row = el("div", "row perm");
+  var m = el("div", "rmain");
+  var nm = el("div", "rname");
+  nm.appendChild(document.createTextNode(
+    r.offered + "  →  " + r.requested));
+  if (r.closed) nm.appendChild(el("span", "tag", r.closed));
+  m.appendChild(nm);
+  var meta = el("div", "rmeta");
+  bstChange(meta, r);
+  if (r.backfilled) {
+    meta.appendChild(el("span", "tag", "recovered"));
+  }
+  shinyPremium(meta, r);
+  var took = tradeDuration(r);
+  if (took) {
+    var fast = r.tookMs != null && r.tookMs < 6 * 3600000;
+    meta.appendChild(el("span", "tag " + (fast ? "ok" : ""),
+      took + " to close"));
+  }
+  m.appendChild(meta);
+  row.appendChild(m);
+  return row;
+}
+
+/* BST given -> BST got, the gap, and the chip's Mega line when that is what
+   priced it. */
+function bstChange(meta, r){
+  if (r.gaveBst && r.gotBst) {
+    var d = r.gotBst - r.gaveBst;
+    meta.appendChild(el("span", "mono",
+      r.gaveBst + " → " + r.gotBst + " BST"));
+    meta.appendChild(el("span", "tag " + (d > 20 ? "ok" : ""),
+      (d > 0 ? "+" : "") + d));
+  }
+  if (r.gaveValue && r.gaveValue > r.gaveBst) {
+    meta.appendChild(el("span", null,
+      "chip's Mega line: " + r.gaveValue));
+  }
+}
+
+/* The row that will eventually price a shiny: what a shiny chip actually
+   fetched, against what the same species is worth plain. */
+function shinyPremium(meta, r){
+  if (!r.gaveShiny) return;
+  var prem = (r.gotBst != null && r.gaveValue != null)
+    ? r.gotBst - r.gaveValue : null;
+  meta.appendChild(el("span", "tag mega", "shiny chip" +
+    (prem != null ? " · " + signed(prem) + " over plain" : "")));
+}
+
+/* How long a trade sat: measured to the hour when the deposit was stamped,
+   in days for the ones logged before it was. */
+function tradeDuration(r){
+  if (r.tookMs != null) return elapsedText(r.tookMs);
+  if (r.days != null) return r.days + " days";
+  return null;
+}
+
+/* How hard a species is to get, as a chip coloured by it: hopeless, hard,
+   fair, easy - and where it sits on the ladder. */
 function diffChip(name, node){
   var d = gtsDiff(name);
   if (!d) return;
@@ -200,10 +228,13 @@ function diffChip(name, node){
     DIFF_LABEL[d.score] + " to get · " + ladderText(d)));
 }
 
-/* One offer, shown as the two sides of a trade rather than a line of text.
-   What decides whether a GTS offer is fair here is BST tier - the player's own
-   test - so both BSTs are on screen with the gap between them, instead of two
-   names and a date. */
+/* ============================================================ one offer ==
+   Shown as the two sides of a trade rather than a line of text. What decides
+   whether an offer is fair is BST tier - the player's own test - so both
+   sides wear their card, and under them the verdicts that matter: is the ask
+   within the chip's price, how wanted each side is, what the target costs
+   the other side to give, how long it has waited, and whether the ladder
+   moved under it. */
 function gtsRow(i, o){
   var row = el("button", "row rental gtsrow");
   var m = el("div", "rmain");
@@ -214,189 +245,18 @@ function gtsRow(i, o){
   if (o.deposited) head.appendChild(el("span", "tag", o.deposited));
   m.appendChild(head);
 
-  function side(label, name, rec){
-    var box = el("div", "gtsside");
-    box.appendChild(el("div", "gtslabel", label));
-    /* THE PICTURE, HERE TOO. An offer is two Pokemon and it read as two names
-       with a BST under each - the only list in the app that did not show what
-       it was talking about (player, 2026-09-18: "las cards de gts siguen en
-       formato antiguo solo mostrando unicamente BST"). It floats, so it moves
-       the text aside instead of sitting on top of it in a box this narrow. */
-    var p = anyRow(name);
-    var sd = gtsDiff(name);
-    if (!p) {
-      /* a name no dex carries - it still holds its side of the trade */
-      var nm0 = el("div", "rname");
-      nm0.appendChild(document.createTextNode(name || "—"));
-      if (rec) boxBadges(nm0, rec);
-      box.appendChild(nm0);
-      var mt0 = el("div", "rmeta");
-      mt0.appendChild(el("span", "mono", dexLabel(name)));
-      if (name) mt0.appendChild(el("span", "tag bad", "not in the Champions dex"));
-      box.appendChild(mt0);
-      return box;
-    }
-    /* THE CARD, half-width. This side used to draw its own sprite, its own
-       name line and its own BST cell - and it left out the one fact this
-       screen is FOR: the Mega line. A chip is priced by its Mega's BST, which
-       is the app's own rule, so a trade row that does not show it is missing
-       its own argument (player, 2026-09-20). */
-    var card = pokeCard(p, {
-      tag: "div",
-      name: name,
-      shiny: !!rec?.shiny,
-      badges: function(nm){ if (rec) boxBadges(nm, rec); },
-      meta: function(meta){
-        /* Both sides (player, 2026-09-11: "beedrill en que posicion esta?").
-           The ask decides whether anyone CAN give it; the chip decides whether
-           anyone WANTS to. An offer needs both, so both are on screen. */
-        if (sd) {
-          if (label.includes("asked")) diffChip(name, meta);
-          else meta.appendChild(el("span", "tag", "ladder " + ladderText(sd)));
-        }
-        /* a shiny chip is a more expensive coin than its species - say so on
-           the side you are giving, where it changes what you can ask for */
-        if (rec?.shiny && !label.includes("asked")) {
-          var cvs = chipValueOf(rec);
-          if (cvs) meta.appendChild(el("span", "tag mega",
-            "shiny — reaches ~" + cvs.reach));
-        }
-      }
-    });
-    box.appendChild(card);
-    return box;
-  }
-
   var pair = el("div", "gtspair");
-  pair.appendChild(side("You gave", o.offered,
+  pair.appendChild(offerSide("You gave", o.offered,
     o.offeredId ? S.box[o.offeredId] : null));
   var arrow = el("div", "gtsarrow");
   arrow.textContent = "→";
   pair.appendChild(arrow);
-  pair.appendChild(side("You asked for", o.requested, null));
+  pair.appendChild(offerSide("You asked for", o.requested, null));
   m.appendChild(pair);
 
-  /* the player's own test for a fair GTS offer is same-tier BST, so the gap is
-     worth stating rather than leaving to be worked out from two numbers */
-  /* This used to compare the two BASE rows, which contradicted the app's own
-     pricing rule one line below: Beedrill 395 asking Steelix 510 read as
-     "+115, asking for more than you gave" when the player's measured price
-     for a Beedrill is 495, its Mega's BST - a 15-point stretch, not 115. The
-     verdict now prices the chip the way his closed trades did. */
-  var aRec = o.offeredId ? S.box[o.offeredId] : null;
-  var cv = chipValue(o.offered, !!aRec?.shiny);
-  var bP = anyRow(o.requested);
-  if (cv && bP) {
-    var target = bst(bP);
-    var diff = target - cv.reach;
-    var verdict = el("div", "rmeta");
-    var stretch = "warn";
-    if (diff <= 20) stretch = "ok";
-    else if (diff > 60) stretch = "bad";
-    var over = "+" + diff + " over" + (diff <= 20 ? ", a fair stretch" : "");
-    verdict.appendChild(el("span", "tag " + stretch,
-      diff <= 0 ? "within its price" : over));
-    var how = "";
-    if (cv.viaMega || cv.shiny || cv.demandBonus) {
-      var parts = [cv.base + " base"];
-      if (cv.viaMega) parts.push(cv.value + " via its Mega");
-      if (cv.shiny) parts.push("+" + cv.shinyBonus + " est. shiny");
-      if (cv.demandBonus) parts.push("+" + cv.demandBonus + " est. demand");
-      how = " (" + parts.join(", ") + ")";
-    }
-    verdict.appendChild(el("span", null,
-      "chip is worth ~" + cv.reach + how + ", asking " + target));
-    if (diff > 60) {
-      verdict.appendChild(el("span", null,
-        "that is a tier up — it will sit unclaimed"));
-    }
-    m.appendChild(verdict);
-  }
-
-  /* ---- the desirability gap, which BST cannot see ----
-     "nadie quiere a flamigo" (player): a chip is worth what the other side
-     will take, not what its row says. Two ranks side by side is the whole
-     negotiation in one line. */
   var od = gtsDiff(o.offered), rd = gtsDiff(o.requested);
-  if (od && rd && od.rank != null && rd.rank != null) {
-    var gap = od.rank - rd.rank;   // + means you are asking for the rarer one
-    var mv = el("div", "rmeta");
-    var fit = demandFit(gap);
-    mv.appendChild(el("span", "tag " + fit[0],
-      "offering #" + od.rank + ", asking #" + rd.rank));
-    mv.appendChild(el("span", null, fit[1]));
-    m.appendChild(mv);
-  } else if (od && rd && (od.rank == null || rd.rank == null)) {
-    var mv2 = el("div", "rmeta");
-    mv2.appendChild(el("span", "tag warn", "no demand read"));
-    mv2.appendChild(el("span", null,
-      (od.rank == null ? o.offered : o.requested) +
-      " is not among the " + ((od.size || rd.size) || "ranked") +
-      " species the ladder tracks, so how wanted it is here is unknown — " +
-      "not zero."));
-    m.appendChild(mv2);
-  }
-
-  var wd = rd;
-  if (wd) {
-    var d2 = el("div", "gtsnote");
-    var bits = [];
-    if (wd.demand >= 4) {
-      bits.push("Demand: ladder #" + (wd.rank || "?") +
-        ", so the other side is running it rather than trading it.");
-    }
-    if (wd.supply >= 4) {
-      bits.push("Supply: " + (wd.how || "hard to obtain in GO") +
-        " Everyone who wants one faces the same wall, so spares barely exist.");
-    }
-    if (gtsSelfServe(wd)) {
-      bits.push("You can get this one yourself in GO — " +
-        (wd.how || "it is a normal catch or evolve") +
-        " Spending a chip on it is spending it twice.");
-    }
-    if (wd.demand == null) {
-      bits.push("Not among the " + (wd.size || "ranked") + " species the " +
-        "ladder tracks — either too little played to register, or too new. " +
-        "Either way its demand is unknown rather than low.");
-    }
-    if (!bits.length && wd.score <= 2) {
-      bits.push("Low demand and easy to source — this one should move.");
-    }
-    if (bits.length) { d2.textContent = bits.join(" "); m.appendChild(d2); }
-  }
-
-  /* the deposit date was stored and never shown. An offer nobody has taken in
-     over a week is not waiting - it is priced wrong. */
-  var age = offerAge(o);
-  if (age != null) {
-    var ar = el("div", "rmeta");
-    var waited = elapsedText(Date.now() - offerStart(o));
-    var stale = "";
-    if (age >= 14) stale = "bad";
-    else if (age >= 7) stale = "warn";
-    ar.appendChild(el("span", "tag " + stale,
-      (waited || (age + " days")) + " waiting"));
-    if (age >= 7) {
-      ar.appendChild(el("span", null, age >= 14
-        ? "two weeks unclaimed — the ask is too high for this chip"
-        : "a week unclaimed — worth re-pointing at something lower"));
-    }
-    m.appendChild(ar);
-  }
-  /* the ladder moves under a standing offer: Sneasler went 23% -> 50% while
-     an offer for it was sitting there. Recorded at deposit, compared now. */
-  if (o.rankAtDeposit != null && rd?.rank != null &&
-      Math.abs(o.rankAtDeposit - rd.rank) >= 8) {
-    var moved = o.rankAtDeposit - rd.rank;      // + means it climbed
-    var mr = el("div", "rmeta");
-    mr.appendChild(el("span", "tag " + (moved > 0 ? "bad" : "ok"),
-      "ladder #" + o.rankAtDeposit + " → #" + rd.rank));
-    mr.appendChild(el("span", null, moved > 0
-      ? "it got MORE wanted since you posted — harder now than when you asked"
-      : "it cooled off since you posted — this is likelier to land now"));
-    m.appendChild(mr);
-  }
-
+  [priceVerdict(o), demandGap(o, od, rd), targetNote(rd), waitLine(o),
+   ladderMove(o, rd)].forEach(function(n){ if (n) m.appendChild(n); });
   if (o.note) {
     var n = el("div", "gtsnote");
     n.textContent = o.note;
@@ -408,6 +268,376 @@ function gtsRow(i, o){
   return row;
 }
 
+/* One side of the trade, as the card - half-width. It carries the one fact
+   this screen is FOR: the Mega line, since a chip is priced by its Mega's
+   BST (player, 2026-09-20). A name no dex carries still holds its side. */
+function offerSide(label, name, rec){
+  var box = el("div", "gtsside");
+  box.appendChild(el("div", "gtslabel", label));
+  var p = anyRow(name);
+  var sd = gtsDiff(name);
+  if (!p) {
+    var nm0 = el("div", "rname");
+    nm0.appendChild(document.createTextNode(name || "—"));
+    if (rec) boxBadges(nm0, rec);
+    box.appendChild(nm0);
+    var mt0 = el("div", "rmeta");
+    mt0.appendChild(el("span", "mono", dexLabel(name)));
+    if (name) mt0.appendChild(el("span", "tag bad", "not in the Champions dex"));
+    box.appendChild(mt0);
+    return box;
+  }
+  var asked = label.includes("asked");
+  box.appendChild(pokeCard(p, {
+    tag: "div",
+    name: name,
+    shiny: !!rec?.shiny,
+    badges: function(nm){ if (rec) boxBadges(nm, rec); },
+    meta: function(meta){
+      /* Both sides (player, 2026-09-11: "beedrill en que posicion esta?").
+         The ask decides whether anyone CAN give it; the chip decides whether
+         anyone WANTS to. An offer needs both, so both are on screen. */
+      if (sd) {
+        if (asked) diffChip(name, meta);
+        else meta.appendChild(el("span", "tag", "ladder " + ladderText(sd)));
+      }
+      /* a shiny chip is a more expensive coin than its species - said on the
+         side you are giving, where it changes what you can ask for */
+      if (rec?.shiny && !asked) {
+        var cvs = chipValueOf(rec);
+        if (cvs) meta.appendChild(el("span", "tag mega",
+          "shiny — reaches ~" + cvs.reach));
+      }
+    }
+  }));
+  return box;
+}
+
+/* IS THE ASK WITHIN THE CHIP'S PRICE. The chip is priced the way his closed
+   trades priced it - by its Mega's BST, plus the shiny and demand estimates -
+   not by its base row: Beedrill 395 asking Steelix 510 is a 15-point stretch
+   against a Mega price of 495, not 115. */
+function priceVerdict(o){
+  var aRec = o.offeredId ? S.box[o.offeredId] : null;
+  var cv = chipValue(o.offered, !!aRec?.shiny);
+  var bP = anyRow(o.requested);
+  if (!cv || !bP) return null;
+  var target = bst(bP);
+  var diff = target - cv.reach;
+  var verdict = el("div", "rmeta");
+  var stretch = "warn";
+  if (diff <= 20) stretch = "ok";
+  else if (diff > 60) stretch = "bad";
+  var over = "+" + diff + " over" + (diff <= 20 ? ", a fair stretch" : "");
+  verdict.appendChild(el("span", "tag " + stretch,
+    diff <= 0 ? "within its price" : over));
+  verdict.appendChild(el("span", null,
+    "chip is worth ~" + cv.reach + priceParts(cv) + ", asking " + target));
+  if (diff > 60) {
+    verdict.appendChild(el("span", null,
+      "that is a tier up — it will sit unclaimed"));
+  }
+  return verdict;
+}
+
+/* " (395 base, 495 via its Mega, +20 est. shiny)" - how the price was made,
+   when it is more than the base row. */
+function priceParts(cv){
+  if (!(cv.viaMega || cv.shiny || cv.demandBonus)) return "";
+  var parts = [cv.base + " base"];
+  if (cv.viaMega) parts.push(cv.value + " via its Mega");
+  if (cv.shiny) parts.push("+" + cv.shinyBonus + " est. shiny");
+  if (cv.demandBonus) parts.push("+" + cv.demandBonus + " est. demand");
+  return " (" + parts.join(", ") + ")";
+}
+
+/* THE DESIRABILITY GAP, WHICH BST CANNOT SEE. "nadie quiere a flamigo"
+   (player): a chip is worth what the other side will take. Two ladder ranks
+   side by side are the whole negotiation in one line - and a side the ladder
+   does not rank is unknown, not zero. */
+function demandGap(o, od, rd){
+  if (!od || !rd) return null;
+  if (od.rank != null && rd.rank != null) {
+    var gap = od.rank - rd.rank;   // + means you are asking for the rarer one
+    var mv = el("div", "rmeta");
+    var fit = demandFit(gap);
+    mv.appendChild(el("span", "tag " + fit[0],
+      "offering #" + od.rank + ", asking #" + rd.rank));
+    mv.appendChild(el("span", null, fit[1]));
+    return mv;
+  }
+  var mv2 = el("div", "rmeta");
+  mv2.appendChild(el("span", "tag warn", "no demand read"));
+  mv2.appendChild(el("span", null,
+    (od.rank == null ? o.offered : o.requested) +
+    " is not among the " + ((od.size || rd.size) || "ranked") +
+    " species the ladder tracks, so how wanted it is here is unknown — " +
+    "not zero."));
+  return mv2;
+}
+
+/* What the target costs the OTHER side to give: running it on the ladder,
+   hard to obtain in GO, or so easy he can get it himself - which makes
+   spending a chip on it spending it twice. */
+function targetNote(wd){
+  if (!wd) return null;
+  var bits = [];
+  if (wd.demand >= 4) {
+    bits.push("Demand: ladder #" + (wd.rank || "?") +
+      ", so the other side is running it rather than trading it.");
+  }
+  if (wd.supply >= 4) {
+    bits.push("Supply: " + (wd.how || "hard to obtain in GO") +
+      " Everyone who wants one faces the same wall, so spares barely exist.");
+  }
+  if (gtsSelfServe(wd)) {
+    bits.push("You can get this one yourself in GO — " +
+      (wd.how || "it is a normal catch or evolve") +
+      " Spending a chip on it is spending it twice.");
+  }
+  if (wd.demand == null) {
+    bits.push("Not among the " + (wd.size || "ranked") + " species the " +
+      "ladder tracks — either too little played to register, or too new. " +
+      "Either way its demand is unknown rather than low.");
+  }
+  if (!bits.length && wd.score <= 2) {
+    bits.push("Low demand and easy to source — this one should move.");
+  }
+  if (!bits.length) return null;
+  var d2 = el("div", "gtsnote");
+  d2.textContent = bits.join(" ");
+  return d2;
+}
+
+/* HOW LONG IT HAS WAITED. An offer nobody has taken in over a week is not
+   waiting - it is priced wrong. */
+function waitLine(o){
+  var age = offerAge(o);
+  if (age == null) return null;
+  var ar = el("div", "rmeta");
+  var waited = elapsedText(Date.now() - offerStart(o));
+  var stale = "";
+  if (age >= 14) stale = "bad";
+  else if (age >= 7) stale = "warn";
+  ar.appendChild(el("span", "tag " + stale,
+    (waited || (age + " days")) + " waiting"));
+  if (age >= 7) {
+    ar.appendChild(el("span", null, age >= 14
+      ? "two weeks unclaimed — the ask is too high for this chip"
+      : "a week unclaimed — worth re-pointing at something lower"));
+  }
+  return ar;
+}
+
+/* THE LADDER MOVES UNDER A STANDING OFFER: Sneasler went 23% -> 50% while an
+   offer for it sat there. Its rank is recorded at deposit and compared now;
+   a move of 8 places or more is worth saying. */
+function ladderMove(o, rd){
+  if (o.rankAtDeposit == null || rd?.rank == null ||
+      Math.abs(o.rankAtDeposit - rd.rank) < 8) return null;
+  var moved = o.rankAtDeposit - rd.rank;      // + means it climbed
+  var mr = el("div", "rmeta");
+  mr.appendChild(el("span", "tag " + (moved > 0 ? "bad" : "ok"),
+    "ladder #" + o.rankAtDeposit + " → #" + rd.rank));
+  mr.appendChild(el("span", null, moved > 0
+    ? "it got MORE wanted since you posted — harder now than when you asked"
+    : "it cooled off since you posted — this is likelier to land now"));
+  return mr;
+}
+
+/* ====================================================== the offer's sheet ==
+   Log a new offer, or edit, close or withdraw an open one. `d` is the draft;
+   each picker re-opens this sheet with its answer filled in. */
+function gtsSheet(id, o){
+  /* `deposited` is a date the player can edit, so it stays. `depositedAt` is
+     the machine stamp: BST does not explain why Indeedee went in hours while
+     a Beedrill sat for days (player, 2026-09-12), and a date alone cannot
+     measure that - two trades on the same day look identical. */
+  var now = new Date();
+  o = o || {offered:"", requested:"",
+            deposited:now.toISOString().slice(0,10),
+            depositedAt:now.toISOString(),
+            status:"PENDING", note:""};
+  var d = structuredClone(o);
+  openSheet(id == null ? "Log a GTS offer" : "GTS offer", function(body){
+    offerFields(body, id, d);
+  }, id != null ? [
+    fbtn("Save changes", "primary", function(){ saveOffer(id, d); }),
+    fbtn("Trade went through", "danger", function(){ confirmTrade(id, d); }),
+    /* NOT danger. Withdrawing takes your own Pokemon back and loses nothing -
+       the offer can be re-logged in a second. Red is for what ends something,
+       and "Trade went through", which removes a Pokemon from the box, is. */
+    fbtn("Withdrew it", "", function(){
+      drop("gts/" + id).then(function(){
+        closeSheet(); toast("Offer removed");
+      });
+    })
+  ] : [
+    null,
+    fbtn("Log it", "primary", function(){ logOffer(d); }),
+    fbtn("Cancel", "", closeSheet)
+  ]);
+}
+
+/* The two sides, the date, a note, and what depositing means. */
+function offerFields(body, id, d){
+  body.appendChild(pickField("You deposited", d.offered,
+    "From your box - it remembers WHICH copy",
+    function(){
+      gtsPickMine(function(rec){
+        d.offered = rec.name;
+        d.offeredId = rec._id;      // so three Chesnaught stay three
+        closeSheet(); gtsSheet(id, d);
+      }, id);
+    }, d.offeredId ? S.box[d.offeredId] : null));
+  body.appendChild(pickField("You asked for", d.requested,
+    "Any Pokemon, including ones Champions does not allow",
+    function(){
+      gtsPickWanted(function(name){
+        d.requested = name;
+        closeSheet(); gtsSheet(id, d);
+      }, d.offered || null,
+         !!(d.offeredId && S.box[d.offeredId]?.shiny));
+    }, null));
+  var wd = el("div", "field");
+  wd.appendChild(el("label", "f", "Date"));
+  var di = el("input"); di.type = "text"; di.value = d.deposited || "";
+  di.oninput = function(){ d.deposited = di.value; };
+  wd.appendChild(di);
+  body.appendChild(wd);
+  var w = el("div", "field");
+  w.appendChild(el("label", "f", "Note"));
+  var ta = el("textarea"); ta.value = d.note || "";
+  if ((d.note || "").length > 200) ta.style.minHeight = "180px";
+  ta.oninput = function(){ d.note = ta.value; };
+  w.appendChild(ta);
+  body.appendChild(w);
+  body.appendChild(el("div", "note",
+    "Depositing is not a trade. The offered Pokemon is still yours and can be " +
+    "withdrawn — but it is parked, so it cannot be sent to Champions while " +
+    "it sits there."));
+}
+
+/* Edit an open offer - its own row, and nothing else. */
+function saveOffer(id, d){
+  if (!d.offered || !d.requested) { toast("Both sides are needed"); return; }
+  var cl = gtsClash(d, id);
+  if (cl) { toast("That copy is already in the GTS, waiting for " +
+                  (cl.requested || "something")); return; }
+  put("gts/" + id, d).then(function(){
+    closeSheet(); toast("Offer updated");
+  });
+}
+
+/* A TRADE IS AN EXCHANGE: the Pokemon deposited is gone the moment someone
+   takes it, so it leaves the box as the new one arrives (player,
+   2026-09-09). The offer records WHICH copy went, so a box with three
+   Chesnaught loses the right one; offers logged before that was stored fall
+   back to the first match by name. Asks first, saying exactly that. */
+function confirmTrade(id, d){
+  var going = null;
+  if (d.offeredId && S.box[d.offeredId]) {
+    going = S.box[d.offeredId];
+    going._id = d.offeredId;
+  }
+  var mine = boxRows("home").concat(boxRows("champions"))
+    .filter(function(r){ return r.name === d.offered; });
+  if (!going) going = mine[0];
+  var msg = d.offered + " is not in the box any more, so only " +
+    d.requested + " will be added.";
+  if (going) {
+    msg = "Trade done: " + d.offered + " leaves the box and " + d.requested +
+      " arrives in HOME.";
+    if (mine.length > 1 && !d.offeredId)
+      msg += "  You have " + mine.length + " " + d.offered +
+        " - the first one is the one being removed.";
+  }
+  ask("Close this trade?", msg, "Trade done").then(function(ok){
+    if (ok) closeTrade(id, d, going);
+  });
+}
+
+/* Write the ending onto the offer's own row - it is the same trade, not a
+   new record - with what it MEASURED: how long it took, whether the chip was
+   shiny, both BSTs and the chip's Mega value. A closed trade is the only
+   hard evidence of what the market pays; the pricing rule itself came from
+   remembering five of these. Then the new Pokemon arrives in HOME (HOME
+   origin, so its slot stays elastic) and the one given leaves the box. */
+function closeTrade(id, d, going){
+  var offRec = d.offeredId ? S.box[d.offeredId] : null;
+  var wasShiny = !!offRec?.shiny;
+  var vOff = chipValue(d.offered, wasShiny), vGot = chipValue(d.requested);
+  var done = {...d, closed:new Date().toISOString().slice(0, 10),
+    closedAt:new Date().toISOString(),
+    days:offerAge(d),
+    /* the number that ranks demand better than BST does */
+    tookMs:(d.depositedAt ? (Date.now() - Date.parse(d.depositedAt)) : null),
+    gaveShiny:wasShiny,
+    gaveBst:vOff?.base, gaveValue:vOff?.value,
+    gotBst:vGot?.base,
+    rankAtDeposit:d.rankAtDeposit != null ? d.rankAtDeposit : null};
+  put("gts/" + id, done).then(function(){
+    var newId = freeSlug(d.requested, S.box);
+    /* NO NOTE on the arrival: the closed trade carries the chip, the
+       Pokemon and the date (player, 2026-09-28: "como ya tengo un historial
+       de trades gts, creo que eso quedó sobrando"). The note is his. */
+    return put("box/" + newId, {name:d.requested, location:"home",
+      status:"permanent", origin:"home", note:"",
+      order:Object.keys(S.box).length});
+  }).then(function(){
+    return going ? drop("box/" + going._id) : null;
+  }).then(function(){
+    closeSheet();
+    toast(going ? d.offered + " out, " + d.requested + " in"
+                : d.requested + " is in HOME");
+  });
+}
+
+/* Log a new offer. Only the hard case stops you: your only copy of a
+   species the game allows, with no other form of it anywhere - and even then
+   it asks rather than blocks (the one time this happened he gave a #28 and
+   got a #2). Choosing between forms is his call. */
+function logOffer(d){
+  if (!d.offered || !d.requested) { toast("Both names are needed"); return; }
+  if (!gtsFree()) {
+    toast("All " + GTS_SLOTS + " GTS slots are taken — withdraw one first");
+    return;
+  }
+  var lastRec = d.offeredId ? S.box[d.offeredId] : null;
+  if (lastCopyOf(lastRec) && !otherFormsOf(lastRec).length) {
+    ask("Your only " + d.offered + "?",
+        "It is in the Champions dex, so trading it means losing the "
+        + "species for good — your own rule is to keep one of everything "
+        + "Champions allows.", "Offer it anyway", true)
+      .then(function(ok){ if (ok) postOffer(d); });
+    return;
+  }
+  postOffer(d);
+}
+
+/* Stamp what the ladder says TODAY, so a later reading can tell the target
+   moved; stamp the moment it is really posted; and ask the database for a
+   free id - beedrill, beedrill-2 - rather than guessing from what this
+   device has loaded, so two devices logging at once cannot both pick one. */
+function postOffer(d){
+  var rdNow = gtsDiff(d.requested);
+  if (rdNow?.rank != null) d.rankAtDeposit = rdNow.rank;
+  if (!d.depositedAt) d.depositedAt = new Date().toISOString();
+  var cl2 = gtsClash(d, null);
+  if (cl2) { toast("That copy is already in the GTS, waiting for " +
+                   (cl2.requested || "something")); return; }
+  var stem = String(d.offered).toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "offer";
+  putNew("gts", stem, d).then(function(){
+    closeSheet(); toast("Offer logged");
+  });
+}
+
+/* A field you tap rather than type into: a typed name is a typo waiting to
+   happen. Empty, it says what it offers; filled, it is the same card as
+   everywhere else - BST is the whole argument on this screen, and the card
+   puts it in a cell of its own. A name no dex carries says it can sit in
+   HOME but never enter the game. */
 function pickField(label, current, subtitle, opener, rec){
   var w = el("div", "field");
   w.appendChild(el("label", "f", label));
@@ -421,10 +651,6 @@ function pickField(label, current, subtitle, opener, rec){
     w.appendChild(blank);
     return w;
   }
-  /* THE SAME CARD AS EVERYWHERE ELSE - a Pokemon should not look like two
-     different things on two screens. BST is the whole argument on this screen,
-     since equivalence in a GTS deposit is the BST tier, and the card puts it
-     in a cell of its own. */
   var p = anyRow(current);
   var b;
   if (p) {
@@ -455,32 +681,27 @@ function pickField(label, current, subtitle, opener, rec){
   return w;
 }
 
-/* The Pokemon you can deposit are the ones you actually hold, so the list is
-   the box itself - and it carries the box id, not just the name, so three
-   Chesnaught stay three distinguishable Chesnaught. */
-/* `exceptId` is the offer being EDITED - its own current pick has to stay
-   selectable or re-saving that offer would be impossible. Every other open
-   offer's Pokemon is physically sitting in a GTS slot and cannot be in two.
-   It is the row's id since migration 7; it used to be a position in an array,
-   which is a fragile thing to identify a trade by. */
+/* ====================================================== what you deposit ==
+   The Pokemon you can deposit are the ones you actually hold, so the list is
+   the box itself - carrying the box id, not just the name, so three
+   Chesnaught stay three distinguishable Chesnaught.
+
+   Only what CAN leave: a Champions-ORIGIN Pokemon never leaves the game, so
+   it can never reach a GTS box (player, 2026-09-12). Rentals are Champions
+   origin by definition, and so is a leftover "unknown" - the safe way round:
+   offering something you cannot move is a dead end, hiding something you
+   could move is one question away. And one Pokemon, one GTS slot (player,
+   2026-09-11: "no debería dejarme elegir el mismo pokemon"): a copy already
+   deposited is shown greyed with what it waits for, never hidden.
+
+   `exceptId` is the offer being EDITED - its own pick has to stay
+   selectable, or re-saving that offer would be impossible. */
 function gtsPickMine(onPick, exceptId){
-  /* one Pokemon, one GTS slot (player, 2026-09-11): "no debería dejarme
-     elegir el mismo pokemon". A committed copy is shown, greyed, with what it
-     is already waiting for - hiding it would just look like it went missing. */
   var taken = {};
   gtsOffers().forEach(function(o){
     if (o._id !== exceptId && o.offeredId) taken[o.offeredId] = o;
   });
   openSheet("Which one are you depositing?", function(body){
-    /* A Champions-ORIGIN Pokemon can never leave the game, so it can never
-       reach a GTS box - offering one is not a bad idea, it is impossible
-       (player, 2026-09-12). The section note here already said so; the filter
-       did not, and listed all 40 rows of a box that is entirely Champions
-       origin. Rentals are Champions origin by definition, so originOf() drops
-       them with the rest, and so does a leftover "unknown" - which is counted
-       as Champions origin everywhere else, and is the safe way round: offering
-       something you cannot move is a dead end, hiding something you could move
-       is one question away. */
     var home = boxRows("home");
     var champAll = boxRows("champions");
     var champ = champAll.filter(function(r){ return originOf(r) === "home"; });
@@ -493,197 +714,22 @@ function gtsPickMine(onPick, exceptId){
         : "Nothing in the box yet"));
       return;
     }
-    /* The box is under a hundred today and scrolling works. It will not stay
-       that way, and scrolling a thousand rows to find one Chesnaught is not a
-       thing to discover later. */
     var inp = searchField(body, "Filter " + (home.length + champ.length) +
       " in your box — name, type or number", function(){ draw(); });
-
-    /* SORTING AND TWO FILTERS, BECAUSE THIS IS A SHORTLIST, NOT A BOX.
-       What goes into a GTS box is decided by his own rule - only DUPLICATES
-       and species Champions cannot use may be offered - so those two are the
-       question this screen exists to answer, and both were left to be found
-       by eye down a hundred rows (player, 2026-09-18: "seria muy interesante
-       que el listado tuviese orden por dex number o filtro de pokemones
-       duplicados o pokemones con tag not in champions, para asi llegar a
-       tener la informacion mas rapida de que podria intercambiar primero").
-
-       Dex order is the default because that is the order HOME itself lists in,
-       which is how one screen gets checked against the other. */
     var PICK = {sort: "dex", dupes: false, outside: false};
-    var sortWrap = el("div", "toggles");
-    [["dex", "Dex no."], ["az", "A-Z"], ["bst", "BST"],
-     ["reach", "What it can ask"]].forEach(function(o){
-      var t = el("button", "tog", o[1]);
-      t.setAttribute("aria-pressed", PICK.sort === o[0] ? "true" : "false");
-      t.onclick = function(){
-        PICK.sort = o[0];
-        Array.prototype.forEach.call(sortWrap.children, function(c){
-          c.setAttribute("aria-pressed", c === t ? "true" : "false");
-        });
-        draw();
-      };
-      sortWrap.appendChild(t);
-    });
-    body.appendChild(sortWrap);
-
-    var filtWrap = el("div", "toggles");
-    [["dupes", "Duplicates only", "You hold more than one copy you could " +
-      "KEEP - in HOME, or in the Champions box and able to go back there. A " +
-      "rental or an Encounter buy of the same species does not count: it can " +
-      "never leave the game, so it can never be the copy you keep. The " +
-      "Species Clause means a real second copy can never share a team with " +
-      "the first, so it is pure trade material."],
-     ["outside", "Not in Champions only", "HOME can hold it for ever and it " +
-      "can never enter the game, so it costs you nothing to give away."]
-    ].forEach(function(o){
-      var t = el("button", "tog", o[1]);
-      t.title = o[2];
-      t.setAttribute("aria-pressed", "false");
-      t.onclick = function(){
-        PICK[o[0]] = !PICK[o[0]];
-        t.setAttribute("aria-pressed", PICK[o[0]] ? "true" : "false");
-        draw();
-      };
-      filtWrap.appendChild(t);
-    });
-    body.appendChild(filtWrap);
-
+    mineControls(body, PICK, draw);
     var out = el("div");
     body.appendChild(out);
-
     /* Copies he could KEEP, over the whole ledger and not the section. A
        welded Champions row is not one of them - see keepableCopies. */
-    var copies = keepableCopies();
-
-    function matches(r, q){
-      if (PICK.dupes && (copies[r.name] || 0) < 2) return false;
-      if (PICK.outside && byName[r.name]) return false;
-      if (!q) return true;
-      if (r.name.toLowerCase().includes(q)) return true;
-      if (String(dexNo(r.name)).includes(q)) return true;
-      var p = anyRow(r.name);
-      if (p?.types.join(" ").toLowerCase().includes(q)) return true;
-      if (q === "shiny" && r.shiny) return true;
-      if (q === "trained" && r.trained) return true;
-      return false;
-    }
-
-    function orderOf(r){
-      var p = anyRow(r.name);
-      if (PICK.sort === "az") return r.name;
-      if (PICK.sort === "bst") return -(p ? bst(p) : 0);
-      if (PICK.sort === "reach") {
-        var cv = chipValueOf(r);
-        return -(cv ? cv.reach : 0);
-      }
-      return dexNo(r.name);
-    }
-    function section(title, all, note, q){
-      var rows = all.filter(function(r){ return matches(r, q); });
-      if (!rows.length) return 0;
-      rows.sort(function(a, b){
-        var x = orderOf(a), y = orderOf(b);
-        /* x and y are numbers, or names when sorting A-Z */
-        if (x < y) return -1;
-        if (x > y) return 1;
-        return a.name.localeCompare(b.name);
-      });
-      out.appendChild(el("h2", null, title));
-      if (note) out.appendChild(el("p", "sub", note));
-      var l = el("div", "list cards");
-      /* the copy count is over the WHOLE set, not the filtered one: "copy 2 of
-         2" has to mean the same thing whether or not you typed anything */
-      var seen = {}, nth = {};
-      all.forEach(function(r){ seen[r.name] = (seen[r.name] || 0) + 1; });
-      all.forEach(function(r){
-        nth[r._id] = (nth[r.name + "#"] = (nth[r.name + "#"] || 0) + 1);
-      });
-      rows.forEach(function(r){
-        var p = anyRow(r.name);
-        var held = taken[r._id];
-        var last = !held && lastCopyOf(r);
-        var kin = last ? otherFormsOf(r) : [];
-        var cd = p && gtsDiff(r.name);
-        var cv = p && chipValueOf(r);
-        var m = null;
-        /* THE SAME CARD AS EVERY OTHER LIST IN THE APP, and the same
-           function now: it wears its type, its picture - its own colours if
-           the copy is shiny - its Mega line and its six stats, because this
-           was a bare row with a BST and a Speed on it and that is not enough
-           to choose what to give away (player, 2026-09-18: "solo muestra bst
-           y speed, pero falta todo lo demas"). */
-        var b = pokeCard(p || anyRow(r.name) || {name:r.name, types:[], b:[0,0,0,0,0,0], ab:[]}, {
-          cls: held ? "illegal" : locClass(r),
-          name: r.name,
-          shiny: !!r.shiny,
-          badges: function(h){
-            if (held) h.appendChild(el("span", "tag bad", "already in the GTS"));
-            if (last) h.appendChild(el("span", "tag " + (kin.length ? "" : "warn"),
-              kin.length ? "only one of this form" : "your only one"));
-            if (seen[r.name] > 1)
-              h.appendChild(el("span", "tag", "copy " + nth[r._id] + " of " +
-                seen[r.name]));
-            /* "copy 1 of 2" does not say WHICH one. The marks do - that is the
-               whole reason they exist, and this is where the choice is made. */
-            boxBadges(h, r);
-          },
-          meta: function(meta){
-            /* The ladder belongs on THIS side of the trade too (player,
-               2026-09-13). It was only ever shown for the Pokemon being asked
-               for, which answers "can I get it" and says nothing about the
-               half he controls: how fast his own chip clears, and how high it
-               can therefore ask. */
-            if (cd) meta.appendChild(el("span", "tag" + (cd.demand >= 4 ? " ok" : ""),
-              "ladder " + ladderText(cd)));
-            else if (p) meta.appendChild(el("span", "tag warn", "no ladder row"));
-            if (cv && cv.reach > cv.base)
-              meta.appendChild(el("span", "mono", "asks up to ~" + cv.reach));
-            if (r.note) meta.appendChild(el("span", null, String(r.note).slice(0, 40)));
-          },
-          notes: function(body2){ m = body2; }
-        });
-        if (held) { b.disabled = true; b.style.opacity = "0.55"; }
-        /* Only when the price is above the base row, and it says WHICH part is
-           measured: the Mega half comes from his own closed trades, the other
-           two are estimates. */
-        if (cv && cv.reach > cv.base && !held) {
-          var why = "Base " + cv.base;
-          if (cv.viaMega) why += ", but a chip fetches its Mega's " + cv.value;
-          if (cv.demandBonus) why += " · +" + cv.demandBonus +
-            " because the ladder wants it (estimate)";
-          if (cv.shinyBonus) why += " · +" + cv.shinyBonus + " shiny (estimate)";
-          m.appendChild(el("div", "st", why + "."));
-        }
-        if (last) {
-          m.appendChild(el("div", "st", kin.length
-            ? "The only " + r.name + " you have, but you still hold " +
-              kin.join(", ") + ". Which form to keep is your call — the Male "
-              + "Indeedee went this way and the Female was the keeper."
-            : "The only " + r.name + " you have, and no other form of it. " +
-              "Trading it loses the species — your rule is to keep one of " +
-              "everything Champions allows."));
-        }
-        if (held) {
-          m.appendChild(el("div", "st", "Deposited" +
-            (held.deposited ? " " + held.deposited : "") + ", waiting for " +
-            (held.requested || "something") +
-            ". Withdraw that offer first to free this copy."));
-        }
-        if (!held) b.onclick = function(){ onPick(r); };
-        l.appendChild(b);
-      });
-      out.appendChild(l);
-      return rows.length;
-    }
-
+    var ctx = {PICK: PICK, copies: keepableCopies(), taken: taken, onPick: onPick};
     function draw(){
       var q = inp.q();
       out.innerHTML = "";
-      var n = section("In HOME", home, "A GTS deposit comes out of HOME.", q);
-      n += section("In the Champions Box", champ,
+      var n = mineSection(out, "In HOME", home, "A GTS deposit comes out of HOME.", q, ctx);
+      n += mineSection(out, "In the Champions Box", champ,
         "These came in from HOME, so they can go back to it — park one to " +
-        "HOME first, then deposit it. Its training comes back with it.", q);
+        "HOME first, then deposit it. Its training comes back with it.", q, ctx);
       if (!n) {
         out.appendChild(el("div", "empty",
           emptyPick(PICK, inp.value.trim())));
@@ -702,395 +748,398 @@ function gtsPickMine(onPick, exceptId){
   }, []);
 }
 
-/* What you asked for can be anything that exists, so the list is the whole
-   dex plus everything HOME can hold that Champions cannot. */
+/* SORTING AND TWO FILTERS, BECAUSE THIS IS A SHORTLIST, NOT A BOX. His rule
+   lets only DUPLICATES and species Champions cannot use go (player,
+   2026-09-18: "seria muy interesante que el listado tuviese orden por dex
+   number o filtro de pokemones duplicados o pokemones con tag not in
+   champions"). Dex order first, because that is the order HOME itself lists
+   in, which is how one screen gets checked against the other. */
+function mineControls(body, PICK, draw){
+  var sortWrap = el("div", "toggles");
+  [["dex", "Dex no."], ["az", "A-Z"], ["bst", "BST"],
+   ["reach", "What it can ask"]].forEach(function(o){
+    var t = el("button", "tog", o[1]);
+    t.setAttribute("aria-pressed", PICK.sort === o[0] ? "true" : "false");
+    t.onclick = function(){
+      PICK.sort = o[0];
+      Array.prototype.forEach.call(sortWrap.children, function(c){
+        c.setAttribute("aria-pressed", c === t ? "true" : "false");
+      });
+      draw();
+    };
+    sortWrap.appendChild(t);
+  });
+  body.appendChild(sortWrap);
+
+  var filtWrap = el("div", "toggles");
+  [["dupes", "Duplicates only", "You hold more than one copy you could " +
+    "KEEP - in HOME, or in the Champions box and able to go back there. A " +
+    "rental or an Encounter buy of the same species does not count: it can " +
+    "never leave the game, so it can never be the copy you keep. The " +
+    "Species Clause means a real second copy can never share a team with " +
+    "the first, so it is pure trade material."],
+   ["outside", "Not in Champions only", "HOME can hold it for ever and it " +
+    "can never enter the game, so it costs you nothing to give away."]
+  ].forEach(function(o){
+    var t = el("button", "tog", o[1]);
+    t.title = o[2];
+    t.setAttribute("aria-pressed", "false");
+    t.onclick = function(){
+      PICK[o[0]] = !PICK[o[0]];
+      t.setAttribute("aria-pressed", PICK[o[0]] ? "true" : "false");
+      draw();
+    };
+    filtWrap.appendChild(t);
+  });
+  body.appendChild(filtWrap);
+}
+
+/* The deposit picker's empty state, naming whichever filters are on. */
+function emptyPick(pick, q){
+  var match = q ? " and matches “" + q + "”" : "";
+  if (pick.dupes && pick.outside)
+    return "Nothing you can deposit is both a duplicate and outside the " +
+      "Champions dex" + match;
+  if (pick.dupes) return "Nothing you can deposit is a duplicate" + match;
+  if (pick.outside)
+    return "Nothing you can deposit is outside the Champions dex" + match;
+  return "Nothing you can deposit matches “" + q + "”";
+}
+
+/* Does a box row pass the filters and the search - name, dex number, type,
+   or the words "shiny" and "trained"? */
+function mineMatches(r, q, ctx){
+  if (ctx.PICK.dupes && (ctx.copies[r.name] || 0) < 2) return false;
+  if (ctx.PICK.outside && byName[r.name]) return false;
+  if (!q) return true;
+  if (r.name.toLowerCase().includes(q)) return true;
+  if (String(dexNo(r.name)).includes(q)) return true;
+  var p = anyRow(r.name);
+  if (p?.types.join(" ").toLowerCase().includes(q)) return true;
+  if (q === "shiny" && r.shiny) return true;
+  if (q === "trained" && r.trained) return true;
+  return false;
+}
+
+/* The sort key: a name for A-Z, otherwise a number (negated, so the biggest
+   BST or the highest ask comes first). */
+function mineOrder(r, sort){
+  var p = anyRow(r.name);
+  if (sort === "az") return r.name;
+  if (sort === "bst") return -(p ? bst(p) : 0);
+  if (sort === "reach") {
+    var cv = chipValueOf(r);
+    return -(cv ? cv.reach : 0);
+  }
+  return dexNo(r.name);
+}
+
+/* One box's section. Returns how many rows it drew, so an empty result can
+   be said once for both. */
+function mineSection(out, title, all, sub, q, ctx){
+  var rows = all.filter(function(r){ return mineMatches(r, q, ctx); });
+  if (!rows.length) return 0;
+  rows.sort(function(a, b){
+    var x = mineOrder(a, ctx.PICK.sort), y = mineOrder(b, ctx.PICK.sort);
+    if (x < y) return -1;
+    if (x > y) return 1;
+    return a.name.localeCompare(b.name);
+  });
+  out.appendChild(el("h2", null, title));
+  if (sub) out.appendChild(el("p", "sub", sub));
+  var l = el("div", "list cards");
+  /* the copy count is over the WHOLE section, not the filtered rows: "copy 2
+     of 2" has to mean the same thing whether or not you typed anything */
+  var seen = {}, nth = {};
+  all.forEach(function(r){ seen[r.name] = (seen[r.name] || 0) + 1; });
+  all.forEach(function(r){
+    nth[r._id] = (nth[r.name + "#"] = (nth[r.name + "#"] || 0) + 1);
+  });
+  rows.forEach(function(r){ l.appendChild(mineCard(r, ctx, seen, nth)); });
+  out.appendChild(l);
+  return rows.length;
+}
+
+/* One copy, on the card every list uses - its type, its picture (its own
+   colours if shiny), its Mega line and its six stats, because a bare row with
+   a BST and a Speed is not enough to choose what to give away (player,
+   2026-09-18). The badges say whether it is already deposited, whether it is
+   the last of its form, which copy it is and its marks; the meta, how the
+   ladder rates it and how high it can ask. */
+function mineCard(r, ctx, seen, nth){
+  var p = anyRow(r.name);
+  var held = ctx.taken[r._id];
+  var last = !held && lastCopyOf(r);
+  var kin = last ? otherFormsOf(r) : [];
+  var cd = p && gtsDiff(r.name);
+  var cv = p && chipValueOf(r);
+  var m = null;
+  var b = pokeCard(p || anyRow(r.name) || {name:r.name, types:[], b:[0,0,0,0,0,0], ab:[]}, {
+    cls: held ? "illegal" : locClass(r),
+    name: r.name,
+    shiny: !!r.shiny,
+    badges: function(h){
+      if (held) h.appendChild(el("span", "tag bad", "already in the GTS"));
+      if (last) h.appendChild(el("span", "tag " + (kin.length ? "" : "warn"),
+        kin.length ? "only one of this form" : "your only one"));
+      if (seen[r.name] > 1)
+        h.appendChild(el("span", "tag", "copy " + nth[r._id] + " of " +
+          seen[r.name]));
+      /* "copy 1 of 2" does not say WHICH one. The marks do. */
+      boxBadges(h, r);
+    },
+    meta: function(meta){
+      /* The ladder on THIS side of the trade too (player, 2026-09-13): how
+         fast his own chip clears, and how high it can therefore ask. */
+      if (cd) meta.appendChild(el("span", "tag" + (cd.demand >= 4 ? " ok" : ""),
+        "ladder " + ladderText(cd)));
+      else if (p) meta.appendChild(el("span", "tag warn", "no ladder row"));
+      if (cv && cv.reach > cv.base)
+        meta.appendChild(el("span", "mono", "asks up to ~" + cv.reach));
+      if (r.note) meta.appendChild(el("span", null, String(r.note).slice(0, 40)));
+    },
+    notes: function(body2){ m = body2; }
+  });
+  if (held) { b.disabled = true; b.style.opacity = "0.55"; }
+  mineNotes(m, r, {held: held, last: last, kin: kin, cv: cv});
+  if (!held) b.onclick = function(){ ctx.onPick(r); };
+  return b;
+}
+
+/* Under the card: why it can ask above its base row (and which part of that
+   is measured - the Mega half comes from his own closed trades, the other two
+   are estimates); what being the last copy means; and what a deposited copy
+   is waiting for. */
+function mineNotes(m, r, s){
+  var cv = s.cv;
+  if (cv && cv.reach > cv.base && !s.held) {
+    var why = "Base " + cv.base;
+    if (cv.viaMega) why += ", but a chip fetches its Mega's " + cv.value;
+    if (cv.demandBonus) why += " · +" + cv.demandBonus +
+      " because the ladder wants it (estimate)";
+    if (cv.shinyBonus) why += " · +" + cv.shinyBonus + " shiny (estimate)";
+    m.appendChild(el("div", "st", why + "."));
+  }
+  if (s.last) {
+    m.appendChild(el("div", "st", s.kin.length
+      ? "The only " + r.name + " you have, but you still hold " +
+        s.kin.join(", ") + ". Which form to keep is your call — the Male "
+        + "Indeedee went this way and the Female was the keeper."
+      : "The only " + r.name + " you have, and no other form of it. " +
+        "Trading it loses the species — your rule is to keep one of " +
+        "everything Champions allows."));
+  }
+  if (s.held) {
+    m.appendChild(el("div", "st", "Deposited" +
+      (s.held.deposited ? " " + s.held.deposited : "") + ", waiting for " +
+      (s.held.requested || "something") +
+      ". Withdraw that offer first to free this copy."));
+  }
+}
+
+/* ===================================================== what you ask for ==
+   Anything that exists: the whole dex, plus everything HOME can hold that
+   Champions cannot. And first - given the chip - what it can actually fetch,
+   by the same reasoning that picked Abomasnow and Steelix by hand
+   (2026-09-11): price by the Mega, skip what the ladder is running, and put a
+   stone already owned with nothing to hold it on top. */
 function gtsPickWanted(onPick, chipName, chipShiny){
   openSheet("What did you ask for?", function(body){
-    /* Judging a choice you already made is the easy half. This is the half
-       that matters: given the chip, what can it actually fetch? Same
-       reasoning that produced Abomasnow and Steelix by hand on 2026-09-11 -
-       price by the Mega, skip anything the ladder is running, and put a
-       stone you already own with nothing to hold it at the top. */
-    if (chipName) {
-      var v = chipValue(chipName, chipShiny);
-      var picks = gtsSuggest(chipName, 14, chipShiny);
-      if (v) {
-        body.appendChild(el("p", "sub",
-          chipName + (chipShiny ? " (shiny)" : "") + " is worth about " +
-          v.value +
-          (v.viaMega ? " — its base row says " + v.base +
-                       ", but a chip fetches its Mega's BST, which is what " +
-                       "your own closed trades paid." : ".")));
-        if (v.demandBonus) {
-          var cd = gtsDiff(chipName);
-          body.appendChild(note("", "<strong>People want this one.</strong> " +
-            chipName + " is ladder #" + cd.rank +
-            (cd.usage != null ? " at " + cd.usage.toFixed(1) + "%" : "") +
-            ", so it clears fast and can ask above its stat line — your " +
-            "Indeedee went the same day, twice, on a 475 body with no Mega. " +
-            "About +" + v.demandBonus + " of the " + v.reach +
-            " below is that, and it is an <em>estimate</em> until enough " +
-            "trades close to measure it."));
-        }
-        if (chipShiny) {
-          body.appendChild(note("", "<strong>It is shiny, so it reaches " +
-            "higher.</strong> Targets up to about " + v.reach + " are in range. " +
-            "How much higher is an <em>estimate</em> — your closed trades " +
-            "price the Mega rule exactly, but no shiny has changed hands yet " +
-            "to measure this one. The trade history records shininess, so the " +
-            "first shiny trade you close will settle it."));
-        }
-      }
-      if (picks.length) {
-        /* Two sections, because the two bands answer different questions:
-           what this chip can REACH, and what it can reach that someone will
-           actually take today. */
-        /* THE SAME CARD AS EVERY OTHER LIST. This was a name, a BST and a
-           Speed - the half of the trade you are choosing blind (player,
-           2026-09-20). The two loose numbers are gone because the card
-           carries all six of them, and the Mega line with them: what a chip
-           can fetch is mostly a question about the target Mega. */
-        function pickRow(c){
-          var p2 = anyRow(c.name);
-          if (!p2) return null;
-          var m2 = null;
-          var b2 = pokeCard(p2, {
-            cls: c.stone ? "perm" : "",
-            badges: function(h2){
-              if (c.stone)
-                h2.appendChild(el("span", "tag ok", "you own " + c.stone));
-            },
-            meta: function(mt){
-              mt.appendChild(el("span", "tag " + (c.rank == null ? "warn" : ""),
-                c.rank == null ? "no ladder row" : "ladder #" + c.rank));
-            },
-            notes: function(body2){ m2 = body2; },
-            onclick: function(){ onPick(c.name); }
-          });
-          if (c.stone) {
-            m2.appendChild(el("div", "st",
-              "You bought " + c.stone + " and have nothing to put it on — " +
-              "2000 VP that starts working the moment this lands."));
-          } else if (c.stretch) {
-            /* Say which premium put it in range, and that the premium is an
-               estimate - the Mega half is measured, these two are not. */
-            var lift = [];
-            if (v.shinyBonus) lift.push("it is shiny (+" + v.shinyBonus + ")");
-            if (v.demandBonus) lift.push("the ladder wants your chip (+" +
-              v.demandBonus + ")");
-            m2.appendChild(el("div", "st",
-              "Above the chip's own " + v.value +
-              (lift.length ? " — in range because " + lift.join(" and ") +
-                             ", which is the estimated half of the price."
-                           : " — a stretch, but the kind that lands.")));
-          } else if (c.band === "base") {
-            m2.appendChild(el("div", "st",
-              "Under the " + v.value + " this chip could ask" +
-              (v.viaMega ? ", nearer its base row of " + v.base : "") +
-              " — asking for less than you could is what makes an offer clear " +
-              "the same day."));
-          }
-          return b2;
-        }
-        function pickList(title, sub, rows){
-          if (!rows.length) return;
-          body.appendChild(el("h2", null, title));
-          if (sub) body.appendChild(el("p", "sub", sub));
-          var sl = el("div", "list cards");
-          rows.forEach(function(c){
-            var r2 = pickRow(c);
-            if (r2) sl.appendChild(r2);
-          });
-          body.appendChild(sl);
-        }
-        pickList("Worth asking for",
-          "At or above what the chip is worth — " + v.value +
-          (v.reach > v.value ? ", up to about " + v.reach + " with the estimated "
-                             + "premiums" : "") + ".",
-          picks.filter(function(c){ return c.band === "reach"; }));
-        pickList("Safer asks",
-          "Below its price" + (v.viaMega ? ", around the base row of " + v.base
-                                         : "") + ". Less than the chip could " +
-          "fetch, and far more likely to be taken.",
-          picks.filter(function(c){ return c.band === "base"; }));
-        body.appendChild(el("h2", null, "Or anything else"));
-      }
-    }
+    if (chipName) chipAdvice(body, chipName, chipShiny, onPick);
     var inp = searchField(body, "Search any Pokemon", function(){ draw(); });
     var list = el("div", "list cards");
     body.appendChild(list);
-    function draw(){
-      var q = inp.q();
-      list.innerHTML = "";
-      var pool = FORMS.filter(function(p){
-        return !q || p.name.toLowerCase().includes(q);
-      });
-      var hits = pool.slice(0, 120);
-      hits.forEach(function(p){
-        list.appendChild(pokeCard(p, {
-          /* the difficulty belongs HERE most of all - the moment to find out
-             an ask is hopeless is before depositing, not weeks later */
-          meta: function(meta){ diffChip(p.name, meta); },
-          notes: function(m){
-            var wd = gtsDiff(p.name);
-            if (wd && gtsSelfServe(wd)) {
-              m.appendChild(el("div", "st",
-                "You can get this in GO yourself — don't spend a chip on it."));
-            } else if (wd && wd.supply >= 4 && wd.how) {
-              m.appendChild(el("div", "st", wd.how));
-            }
-          },
-          onclick: function(){ onPick(p.name); }
-        }));
-      });
-      if (q) {
-        var homeAll = (C.HOME_ONLY || []).filter(function(n){
-          return n.toLowerCase().includes(q);
-        });
-        homeAll.slice(0, 40).forEach(function(n){
-          /* A species Champions has never heard of still gets a card: the
-             numbers come from PokeAPI and the tag says which dex they are.
-             Asking for one is a real decision - it is how a HOME shelf gets
-             filled - and it was the one row in the app with nothing on it but
-             a name. */
-          var op = anyRow(n), b;
-          var badge = function(h){
-            h.appendChild(el("span", "tag bad", "HOME only"));
-          };
-          var why = function(m){
-            m.appendChild(el("div", "st",
-              "It can live in HOME, but never enter Champions."));
-          };
-          if (op) {
-            b = pokeCard(op, {cls:"illegal", name:n, badges:badge, notes:why,
-                              onclick:function(){ onPick(n); }});
-          } else {
-            b = el("button", "row illegal");
-            var m = el("div", "rmain");
-            var h = el("div", "rname");
-            h.appendChild(document.createTextNode(n));
-            badge(h);
-            m.appendChild(h);
-            why(m);
-            b.appendChild(m);
-            b.onclick = function(){ onPick(n); };
-          }
-          list.appendChild(b);
-        });
-        capNote(list, Math.min(40, homeAll.length), homeAll.length,
-                "HOME-only names");
-      }
-      capNote(list, hits.length, pool.length, "forms");
-      if (!list.children.length) {
-        list.appendChild(el("div", "empty",
-          q ? "Nothing matches" : "Start typing a name"));
-      }
-    }
+    function draw(){ drawWanted(list, inp.q(), onPick); }
     draw();
     setTimeout(function(){ inp.focus(); }, 60);
   }, []);
 }
 
-function gtsSheet(id, o){
-  /* `deposited` is a date the player can edit, so it stays. `depositedAt` is
-     the machine stamp: BST does not explain why Indeedee went in hours while
-     a Beedrill sat for days (player, 2026-09-12), and a date alone cannot
-     measure that - two trades on the same day look identical. */
-  var now = new Date();
-  o = o || {offered:"", requested:"",
-            deposited:now.toISOString().slice(0,10),
-            depositedAt:now.toISOString(),
-            status:"PENDING", note:""};
-  var d = structuredClone(o);
-  openSheet(id == null ? "Log a GTS offer" : "GTS offer", function(body){
-    body.appendChild(pickField("You deposited", d.offered,
-      "From your box - it remembers WHICH copy",
-      function(){
-        gtsPickMine(function(rec){
-          d.offered = rec.name;
-          d.offeredId = rec._id;      // so three Chesnaught stay three
-          closeSheet(); gtsSheet(id, d);
-        }, id);
-      }, d.offeredId ? S.box[d.offeredId] : null));
-    body.appendChild(pickField("You asked for", d.requested,
-      "Any Pokemon, including ones Champions does not allow",
-      function(){
-        gtsPickWanted(function(name){
-          d.requested = name;
-          closeSheet(); gtsSheet(id, d);
-        }, d.offered || null,
-           !!(d.offeredId && S.box[d.offeredId]?.shiny));
-      }, null));
-    var wd = el("div", "field");
-    wd.appendChild(el("label", "f", "Date"));
-    var di = el("input"); di.type = "text"; di.value = d.deposited || "";
-    di.oninput = function(){ d.deposited = di.value; };
-    wd.appendChild(di);
-    body.appendChild(wd);
-    var w = el("div", "field");
-    w.appendChild(el("label", "f", "Note"));
-    var ta = el("textarea"); ta.value = d.note || "";
-    if ((d.note || "").length > 200) ta.style.minHeight = "180px";
-    ta.oninput = function(){ d.note = ta.value; };
-    w.appendChild(ta);
-    body.appendChild(w);
-    body.appendChild(el("div", "note",
-      "Depositing is not a trade. The offered Pokemon is still yours and can be " +
-      "withdrawn — but it is parked, so it cannot be sent to Champions while " +
-      "it sits there."));
-  }, [
-    id != null ? fbtn("Save changes", "primary", function(){
-      if (!d.offered || !d.requested) { toast("Both sides are needed"); return; }
-      var cl = gtsClash(d, id);
-      if (cl) { toast("That copy is already in the GTS, waiting for " +
-                      (cl.requested || "something")); return; }
-      /* ONE row. This used to rewrite both arrays of the document, so an edit
-         made here carried every open offer and every closed trade with it,
-         from this device's copy of them. */
-      put("gts/" + id, d).then(function(){
-        closeSheet(); toast("Offer updated");
-      });
-    }) : null,
-    id != null ? fbtn("Trade went through", "danger", function(){
-      /* A trade is an EXCHANGE: the Pokemon you deposited is gone the moment
-         someone takes it, so it has to leave the box as the new one arrives.
-         Adding without removing left a Chesnaught behind that no longer
-         existed. Player, 2026-09-09. */
-      /* the offer records WHICH copy was deposited, so a box with three
-         Chesnaught loses the right one. Offers logged before that was stored
-         fall back to the first match by name. */
-      var going = null;
-      if (d.offeredId && S.box[d.offeredId]) {
-        going = S.box[d.offeredId];
-        going._id = d.offeredId;
-      }
-      var mine = boxRows("home").concat(boxRows("champions"))
-        .filter(function(r){ return r.name === d.offered; });
-      if (!going) going = mine[0];
-      var msg = d.offered + " is not in the box any more, so only " +
-        d.requested + " will be added.";
-      if (going) {
-        msg = "Trade done: " + d.offered + " leaves the box and " + d.requested +
-          " arrives in HOME.";
-        if (mine.length > 1 && !d.offeredId)
-          msg += "  You have " + mine.length + " " + d.offered +
-            " - the first one is the one being removed.";
-      }
-      ask("Close this trade?", msg, "Trade done").then(function(ok){
-        if (ok) closeTrade();
-      });
-      function closeTrade(){
-
-      /* The offer is not deleted and re-filed - it is the same trade, and
-         closing it writes the ending onto the row it already has. */
-      /* A completed trade is the only hard evidence of what the market pays,
-         and it was being thrown away. The player's own pricing rule - that a
-         chip fetches its MEGA's BST, not its base - came from remembering
-         five of these. Kept, they become data. */
-      var offRec = d.offeredId ? S.box[d.offeredId] : null;
-      var wasShiny = !!offRec?.shiny;
-      var vOff = chipValue(d.offered, wasShiny), vGot = chipValue(d.requested);
-      var done = {...d, closed:new Date().toISOString().slice(0, 10),
-        closedAt:new Date().toISOString(),
-        days:offerAge(d),
-        /* the number that ranks demand better than BST does */
-        tookMs:(d.depositedAt ? (Date.now() - Date.parse(d.depositedAt)) : null),
-        gaveShiny:wasShiny,
-        gaveBst:vOff?.base, gaveValue:vOff?.value,
-        gotBst:vGot?.base,
-        rankAtDeposit:d.rankAtDeposit != null ? d.rankAtDeposit : null};
-      /* `history.slice(0, 60)` used to live on this line, so the 61st closed
-         trade deleted the oldest. A closed trade is the only hard evidence of
-         what the market pays and the pricing rule is derived from them, so the
-         cap went with the array. */
-      put("gts/" + id, done).then(function(){
-        var id = freeSlug(d.requested, S.box);
-        // it came in by trade, so it is HOME origin and the slot stays elastic
-        /* NO NOTE. It used to arrive saying "GTS for Houndoom, 2026-09-14",
-           which was the only record of the trade before the history existed
-           - the trades closed before 2026-09-12 were recovered from exactly
-           those notes. The row closed above carries the same chip, the same
-           Pokemon and the same date, so the note repeated it on the box card
-           for good. All 92 were checked against the history and cleared
-           (player,
-           2026-09-28: "como ya tengo un historial de trades gts, creo que
-           eso quedó sobrando"). The note is his, for what he writes. */
-        return put("box/" + id, {name:d.requested, location:"home",
-          status:"permanent", origin:"home", note:"",
-          order:Object.keys(S.box).length});
-      }).then(function(){
-        return going ? drop("box/" + going._id) : null;
-      }).then(function(){
-        closeSheet();
-        toast(going ? d.offered + " out, " + d.requested + " in"
-                    : d.requested + " is in HOME");
-      });
-      }
-    }) : fbtn("Log it", "primary", function(){
-      if (!d.offered || !d.requested) { toast("Both names are needed"); return; }
-      if (!gtsFree()) {
-        toast("All " + GTS_SLOTS + " GTS slots are taken — withdraw one first");
-        return;
-      }
-      /* Confirm, not block: it is his box and he may well have a reason - the
-         one time this happened he gave a #28 and got a #2. But it has to be a
-         decision taken, not something noticed afterwards. */
-      /* only the hard case stops you: no other form of the species anywhere.
-         When a sibling form is in the box the picker has already said so, and
-         choosing between forms is his call, not the app's. */
-      var lastRec = d.offeredId ? S.box[d.offeredId] : null;
-      if (lastCopyOf(lastRec) && !otherFormsOf(lastRec).length) {
-        ask("Your only " + d.offered + "?",
-            "It is in the Champions dex, so trading it means losing the "
-            + "species for good — your own rule is to keep one of everything "
-            + "Champions allows.", "Offer it anyway", true)
-          .then(function(ok){ if (ok) logIt(); });
-        return;
-      }
-      logIt();
-
-      function logIt(){
-      /* stamp what the ladder said TODAY, so a later reading can tell you the
-         target moved rather than silently comparing against nothing */
-      var rdNow = gtsDiff(d.requested);
-      if (rdNow?.rank != null) d.rankAtDeposit = rdNow.rank;
-      /* an offer edited before logging keeps the moment it is actually posted */
-      if (!d.depositedAt) d.depositedAt = new Date().toISOString();
-      var cl2 = gtsClash(d, null);
-      if (cl2) { toast("That copy is already in the GTS, waiting for " +
-                       (cl2.requested || "something")); return; }
-      /* A NEW row asks the database for a free id rather than guessing from
-         what this device has loaded, the same way a build does - beedrill,
-         beedrill-2 - so two devices logging at once cannot both pick one. */
-      var stem = String(d.offered).toLowerCase()
-        .replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "offer";
-      putNew("gts", stem, d).then(function(){
-        closeSheet(); toast("Offer logged");
-      });
-      }
-    }),
-    /* NOT danger. Withdrawing a deposit takes your own Pokemon back and loses
-       nothing - you can re-log the offer in a second. Red is reserved for the
-       things that end something, and painting it red here made the only
-       reversible button on the sheet look like the scary one, while "Trade
-       went through" - which really does delete a Pokemon from the box - sat
-       there in plain grey. Player caught the layout side of this 2026-09-11. */
-    id != null ? fbtn("Withdrew it", "", function(){
-      /* This carried a warning that a put() omitting `history` would erase
-         every closed trade on record, because the two lived in one document.
-         Withdrawing deletes one row now, and there is nothing else on it. */
-      drop("gts/" + id).then(function(){
-        closeSheet(); toast("Offer removed");
-      });
-    }) : fbtn("Cancel", "", closeSheet)
-  ]);
+/* What the chip is worth, why, and two lists of what it can fetch: what it
+   can REACH, and what it can reach that someone will actually take today. */
+function chipAdvice(body, chipName, chipShiny, onPick){
+  var v = chipValue(chipName, chipShiny);
+  var picks = gtsSuggest(chipName, 14, chipShiny);
+  if (v) chipWorth(body, chipName, chipShiny, v);
+  if (!picks.length) return;
+  suggestList(body, "Worth asking for",
+    "At or above what the chip is worth — " + v.value +
+    (v.reach > v.value ? ", up to about " + v.reach + " with the estimated "
+                       + "premiums" : "") + ".",
+    picks.filter(function(c){ return c.band === "reach"; }), v, onPick);
+  suggestList(body, "Safer asks",
+    "Below its price" + (v.viaMega ? ", around the base row of " + v.base
+                                   : "") + ". Less than the chip could " +
+    "fetch, and far more likely to be taken.",
+    picks.filter(function(c){ return c.band === "base"; }), v, onPick);
+  body.appendChild(el("h2", null, "Or anything else"));
 }
-$("gtsAdd").onclick = function(){
-  if (!gtsFree()) {
-    toast("All " + GTS_SLOTS + " GTS slots are taken — withdraw one first");
-    return;
+
+/* The chip's price, and the two premiums on it - demand and shininess - each
+   called an ESTIMATE until enough closed trades measure it. */
+function chipWorth(body, chipName, chipShiny, v){
+  body.appendChild(el("p", "sub",
+    chipName + (chipShiny ? " (shiny)" : "") + " is worth about " +
+    v.value +
+    (v.viaMega ? " — its base row says " + v.base +
+                 ", but a chip fetches its Mega's BST, which is what " +
+                 "your own closed trades paid." : ".")));
+  if (v.demandBonus) {
+    var cd = gtsDiff(chipName);
+    body.appendChild(note("", "<strong>People want this one.</strong> " +
+      chipName + " is ladder #" + cd.rank +
+      (cd.usage != null ? " at " + cd.usage.toFixed(1) + "%" : "") +
+      ", so it clears fast and can ask above its stat line — your " +
+      "Indeedee went the same day, twice, on a 475 body with no Mega. " +
+      "About +" + v.demandBonus + " of the " + v.reach +
+      " below is that, and it is an <em>estimate</em> until enough " +
+      "trades close to measure it."));
   }
-  gtsSheet(null, null);
-};
+  if (chipShiny) {
+    body.appendChild(note("", "<strong>It is shiny, so it reaches " +
+      "higher.</strong> Targets up to about " + v.reach + " are in range. " +
+      "How much higher is an <em>estimate</em> — your closed trades " +
+      "price the Mega rule exactly, but no shiny has changed hands yet " +
+      "to measure this one. The trade history records shininess, so the " +
+      "first shiny trade you close will settle it."));
+  }
+}
+
+function suggestList(body, title, sub, rows, v, onPick){
+  if (!rows.length) return;
+  body.appendChild(el("h2", null, title));
+  if (sub) body.appendChild(el("p", "sub", sub));
+  var sl = el("div", "list cards");
+  rows.forEach(function(c){
+    var r2 = suggestCard(c, v, onPick);
+    if (r2) sl.appendChild(r2);
+  });
+  body.appendChild(sl);
+}
+
+/* One suggestion, on the same card as every other list (player,
+   2026-09-20) - what a chip can fetch is mostly a question about the
+   target's Mega - with the reason it is on the list: a stone already owned,
+   a stretch the premiums put in range, or a safer ask under the price. */
+function suggestCard(c, v, onPick){
+  var p2 = anyRow(c.name);
+  if (!p2) return null;
+  var m2 = null;
+  var b2 = pokeCard(p2, {
+    cls: c.stone ? "perm" : "",
+    badges: function(h2){
+      if (c.stone)
+        h2.appendChild(el("span", "tag ok", "you own " + c.stone));
+    },
+    meta: function(mt){
+      mt.appendChild(el("span", "tag " + (c.rank == null ? "warn" : ""),
+        c.rank == null ? "no ladder row" : "ladder #" + c.rank));
+    },
+    notes: function(body2){ m2 = body2; },
+    onclick: function(){ onPick(c.name); }
+  });
+  var why = suggestWhy(c, v);
+  if (why) m2.appendChild(el("div", "st", why));
+  return b2;
+}
+
+function suggestWhy(c, v){
+  if (c.stone) {
+    return "You bought " + c.stone + " and have nothing to put it on — " +
+      "2000 VP that starts working the moment this lands.";
+  }
+  if (c.stretch) {
+    var lift = [];
+    if (v.shinyBonus) lift.push("it is shiny (+" + v.shinyBonus + ")");
+    if (v.demandBonus) lift.push("the ladder wants your chip (+" +
+      v.demandBonus + ")");
+    return "Above the chip's own " + v.value +
+      (lift.length ? " — in range because " + lift.join(" and ") +
+                     ", which is the estimated half of the price."
+                   : " — a stretch, but the kind that lands.");
+  }
+  if (c.band === "base") {
+    return "Under the " + v.value + " this chip could ask" +
+      (v.viaMega ? ", nearer its base row of " + v.base : "") +
+      " — asking for less than you could is what makes an offer clear " +
+      "the same day.";
+  }
+  return null;
+}
+
+/* The search: up to 120 forms from the Champions dex, and - once something
+   is typed - up to 40 names only HOME can hold. Both caps are said. */
+function drawWanted(list, q, onPick){
+  list.innerHTML = "";
+  var pool = FORMS.filter(function(p){
+    return !q || p.name.toLowerCase().includes(q);
+  });
+  var hits = pool.slice(0, 120);
+  hits.forEach(function(p){ list.appendChild(wantedCard(p, onPick)); });
+  if (q) {
+    var homeAll = (C.HOME_ONLY || []).filter(function(n){
+      return n.toLowerCase().includes(q);
+    });
+    homeAll.slice(0, 40).forEach(function(n){
+      list.appendChild(homeOnlyCard(n, onPick));
+    });
+    capNote(list, Math.min(40, homeAll.length), homeAll.length,
+            "HOME-only names");
+  }
+  capNote(list, hits.length, pool.length, "forms");
+  if (!list.children.length) {
+    list.appendChild(el("div", "empty",
+      q ? "Nothing matches" : "Start typing a name"));
+  }
+}
+
+/* A Champions form, with how hard it is to get - the moment to find out an
+   ask is hopeless is before depositing, not weeks later - and a warning when
+   he could get it in GO himself. */
+function wantedCard(p, onPick){
+  return pokeCard(p, {
+    meta: function(meta){ diffChip(p.name, meta); },
+    notes: function(m){
+      var wd = gtsDiff(p.name);
+      if (wd && gtsSelfServe(wd)) {
+        m.appendChild(el("div", "st",
+          "You can get this in GO yourself — don't spend a chip on it."));
+      } else if (wd && wd.supply >= 4 && wd.how) {
+        m.appendChild(el("div", "st", wd.how));
+      }
+    },
+    onclick: function(){ onPick(p.name); }
+  });
+}
+
+/* A species Champions has never heard of still gets a card, its numbers from
+   PokeAPI: asking for one is a real decision - it is how a HOME shelf gets
+   filled. A name with no numbers at all keeps a plain row. */
+function homeOnlyCard(n, onPick){
+  var op = anyRow(n);
+  if (op) {
+    return pokeCard(op, {cls:"illegal", name:n, badges:homeOnlyBadge,
+                         notes:homeOnlyWhy, onclick:function(){ onPick(n); }});
+  }
+  var b = el("button", "row illegal");
+  var m = el("div", "rmain");
+  var h = el("div", "rname");
+  h.appendChild(document.createTextNode(n));
+  homeOnlyBadge(h);
+  m.appendChild(h);
+  homeOnlyWhy(m);
+  b.appendChild(m);
+  b.onclick = function(){ onPick(n); };
+  return b;
+}
+
+function homeOnlyBadge(h){
+  h.appendChild(el("span", "tag bad", "HOME only"));
+}
+
+function homeOnlyWhy(m){
+  m.appendChild(el("div", "st",
+    "It can live in HOME, but never enter Champions."));
+}
 
 export { diffChip, drawGts, gtsPickMine, gtsPickWanted };

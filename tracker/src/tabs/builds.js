@@ -22,7 +22,7 @@ import {
 import {
   ask, closeSheet, leaveEditor, openEditor, openSheet,
 } from "../ui/nav.js";
-import { analysisPanel } from "../ui/pokemon.js";
+import { analysisFold } from "../ui/pokemon.js";
 
 /* ==================================================================== builds */
 /* THE "TRAINED" TAG FOLLOWS THE BUILD, both ways (player, 2026-09-27):
@@ -265,6 +265,20 @@ function orderByUsage(sel, pokemon, kind){
   });
 }
 
+/* THE BUILD EDITOR. One screen, drawn top to bottom by the sections below,
+   each a function of its own that takes the editor's state `ed`:
+
+     ed.id        the build's id, or null for a new one
+     ed.b         the build as saved (null for a new one)
+     ed.draft     the copy being edited - every control writes here
+     ed.original  the draft as it was when the editor opened, which is what
+                  the VP cost is measured against
+     ed.p         the dex row of the species being edited
+     ed.redraw()  rebuild the whole editor from the draft
+     ed.checkBox, ed.costBox   filled in place by paintChecks and paintCost,
+                  because the sliders repaint them without a rebuild
+
+   Nothing is saved until Save; Cancel or Back simply drops the draft. */
 function buildSheet(id, b, keepOriginal){
   var draft = structuredClone(b || {});
   /* the link is stored as box_id and edited as _boxId - seed one from the
@@ -282,674 +296,724 @@ function buildSheet(id, b, keepOriginal){
   if (!draft.ability) draft.ability = soleAbility(draft.pokemon);
   if (draft.mega && !draft.mega_ability)
     draft.mega_ability = soleAbility(draft.mega);
-  var original = keepOriginal || structuredClone(draft);
-  /* built here, filled in place by paintChecks/paintCost below - they live at
-     this scope because the sliders repaint them without rebuilding the sheet */
-  var checkBox = el("div"), costBox = el("div");
-  var p = null;
+  var ed = {id: id, b: b, draft: draft, p: null,
+            original: keepOriginal || structuredClone(draft),
+            checkBox: el("div"), costBox: el("div")};
+  /* redraw rebuilds the sheet from the live draft, carrying the pre-edit
+     snapshot forward so the VP cost is measured against the saved set */
+  ed.redraw = function(){ buildSheet(id, draft, ed.original); };
 
   openEditor("buildedit", draft.pokemon || "New build", function(body){
-    /* --- species (new builds only) ----------------------------------- */
-    /* The species first, and it is ANY form in the dex - not only what is in
-       the box. A set for a Pokemon he has not got yet is an idea worth keeping
-       until he has it, rather than one lost for want of a row to hang it on
-       (player, 2026-09-13). Which copy it is installed on is a second, optional
-       question, answered below. */
-    if (!id) {
-      var f0 = el("div", "field");
-      f0.appendChild(el("label", "f", "Pokemon"));
-      var chosen = draft.pokemon ? byName[draft.pokemon] : null;
-      var open = function(){
-        speciesSheet(function(name){
-          draft.pokemon = name;
-          draft._boxId = null;          // the copy is chosen separately
-          /* and everything that belonged to the OTHER species goes with it -
-             a stone it cannot hold, and the ability the block above committed
-             for it. The redraw fills in the new species' own single ability. */
-          draft.ability = null;
-          draft.mega = null;
-          draft.mega_ability = null;
-          closeSheet();
-          redraw();
-        });
-      };
-      var pick;
-      if (chosen) {
-        /* the card, so the species you picked reads the same here as in the
-           list you picked it from */
-        /* and the card is the form the BUILD plays as, the same rule the
-           build list follows: the Mega row once a stone is chosen, the base
-           form alone otherwise. The Mega toggles below are where the
-           species' options are offered - the card is the decision. */
-        pick = pokeCard(byName[draft.mega] || chosen,
-                        {cls:"perm", name:draft.pokemon, megas:false,
-                         onclick:open});
-      } else {
-        pick = el("button", "row unknown");
-        var pm = el("div", "rmain");
-        pm.appendChild(el("div", "rname", "Tap to choose"));
-        var pmeta = el("div", "rmeta");
-        pmeta.appendChild(el("span", null,
-          "any of the " + FORMS.length + " forms in the game, owned or not"));
-        pm.appendChild(pmeta);
-        pick.appendChild(pm);
-        pick.onclick = open;
-      }
-      f0.appendChild(pick);
-      body.appendChild(f0);
-      if (!draft.pokemon) return;
-    }
-
-    p = byName[draft.pokemon];
-
-    /* WHICH COPY, and "none yet" is a real answer. Every copy is offered, in
-       either box, whether or not it already carries a build - three Farigiraf
-       builds is the point, and choosing between them happens in game or per
-       team. */
-    var copies = boxRows("champions").concat(boxRows("home"))
-      .filter(function(r){ return r.name === draft.pokemon; });
-    /* THE DROPDOWN IS THE ANSWER, AND THE CARD UNDER IT IS THE COPY IT NAMES
-       (player, 2026-09-28).
-
-       THIS REVERSES THE LIST OF CARDS of 2026-09-27, which replaced this
-       <select> so that he could see "si es shiny, si ya está entrenado, etc.
-       para saber sobre qué estoy colocando la build". The cards said all of
-       that, and lost the one thing the dropdown had been doing without anyone
-       noticing: its closed face IS the current state. A list has no closed
-       face, so its first row - "Not installed — just an idea", in bold under
-       the label - read as the field's value on every build, installed or not
-       ("sigue diciendo not installed!"). The copy it really sat on was marked
-       by a 2px ring lost inside the card's own type-coloured frame, and taking
-       the build off meant tapping that sentence, which nothing said was a
-       button ("no se puede sacar al ampharos!"). His answer: "la idea era
-       mantener también la parte manual".
-
-       So both halves, each doing what it is good at. The dropdown says where
-       the build is and is where it is changed or taken off, and its options
-       carry the badges, so two copies are told apart before choosing. The
-       card of the chosen copy sits underneath with everything else - sprite,
-       note, the builds it already carries - and is swapped in place, not by
-       redrawing the editor, so the page does not jump under his thumb. */
-    var f1 = el("div", "field");
-    f1.appendChild(el("label", "f", "Installed on"));
-    if (copies.length) {
-      var carries = function(r){
-        return Object.keys(S.builds).filter(function(k){
-          return k !== id && S.builds[k].box_id === r._id; });
-      };
-      var sel1 = el("select");
-      sel1.appendChild(new Option("— not installed (just an idea) —", ""));
-      var labels = copies.map(function(r){
-        var others = carries(r);
-        var note = r.note && r.note.length > 40
-          ? r.note.slice(0, 39) + "…" : r.note;
-        return [
-          r.name,
-          r.location === "home" ? "in HOME" : "Champions box",
-          r.shiny && "shiny",
-          r.trained && "trained",
-          r.status === "rental" ? "rental, cannot be trained"
-            : r.location === "champions" && ORIGIN_LABEL[originOf(r)],
-          others.length && "already carries " + others.join(", "),
-          note
-        ].filter(Boolean).join(" · ");
-      });
-      /* TWO COPIES CAN BE THE SAME IN EVERYTHING THE LEDGER RECORDS - his two
-         Heracross are both in HOME, neither shiny nor trained, no note - and
-         two identical lines read as a bug. They are not, so the line says so,
-         rather than inventing a "copy 2" that tells nothing apart: whichever
-         he picks is the same Pokemon as far as anything here knows. */
-      copies.forEach(function(r, i){
-        var alike = labels.filter(function(t){ return t === labels[i]; }).length;
-        sel1.appendChild(new Option(labels[i] +
-          (alike > 1 ? " · one of " + alike + " identical" : ""), r._id));
-      });
-      sel1.value = draft._boxId || "";
-      var copyCard = el("div");
-      copyCard.style.marginTop = "8px";
-      var paintCopy = function(){
-        copyCard.innerHTML = "";
-        var r = copies.find(function(c){ return c._id === draft._boxId; });
-        if (!r) return;
-        var others = carries(r);
-        var pr = byName[r.name];
-        copyCard.appendChild(pr ? pokeCard(pr, {
-          tag: "div",
-          name: r.name,
-          shiny: !!r.shiny,
-          megas: false,
-          badges: function(h){
-            h.appendChild(el("span", "tag" + (r.location === "home" ? " warn" : ""),
-              r.location === "home" ? "in HOME" : "Champions box"));
-            boxBadges(h, r);
-          },
-          meta: function(meta){
-            if (r.status === "rental")
-              meta.appendChild(el("span", null, "rental — cannot be trained"));
-            if (others.length)
-              meta.appendChild(el("span", "mono",
-                "already carries " + others.join(", ")));
-            if (r.note) meta.appendChild(el("span", null, r.note));
-          }
-        }) : el("div", "row", r.name));
-      };
-      sel1.onchange = function(){
-        draft._boxId = sel1.value || null;
-        paintCopy();
-      };
-      f1.appendChild(sel1);
-      f1.appendChild(copyCard);
-      paintCopy();
-    } else {
-      f1.appendChild(el("p", "sub", "— you do not have one yet —"));
-    }
-    body.appendChild(f1);
-
-    var lk = id ? buildLink(id) : {state:draft._boxId ? "active" : "unbound"};
-    /* NO NOTE WHEN HE OWNS ONE. The select directly above already reads
-       "— not installed (just an idea) —", so a paragraph underneath saying
-       "Not installed on anything" was the same sentence twice (player,
-       2026-09-15: "ese mensaje de not installed es redudandte"). The other
-       half stays, because it is not in the dropdown: a set for a species that
-       is not in either box cannot be trained or brought at all. */
-    if (lk.state === "unbound" && !copies.length) {
-      var ub = el("div", "note");
-      ub.innerHTML = "<strong>You do not have a " + draft.pokemon +
-        " yet.</strong> The set is saved anyway, so the idea keeps — it just " +
-        "cannot be trained or brought to a battle until one arrives.";
-      body.appendChild(ub);
-    }
-    if (lk.state === "parked") {
-      var pk = el("div", "note warn");
-      pk.innerHTML = "<strong>Parked in HOME — this build is inactive.</strong> " +
-        "It is kept exactly as it is, because a HOME-origin Pokemon comes back " +
-        "with its training. Nothing here can be applied while it sits in HOME; " +
-        "send " + draft.pokemon + " to Champions and it is live again.";
-      body.appendChild(pk);
-    }
-    if (lk.state === "orphan") {
-      var or = el("div", "note bad");
-      or.innerHTML = "<strong>Orphan build.</strong> The Pokemon this belonged " +
-        "to is no longer in the ledger, so this set is not on anything. Point " +
-        "it at another " + draft.pokemon + ", or delete it.";
-      body.appendChild(or);
-      /* every copy, including one that already carries a build: more than one
-         set per Pokemon is allowed now */
-      var cands = boxRows("champions").concat(boxRows("home")).filter(function(r){
-        return r.name === draft.pokemon;
-      });
-      if (cands.length) {
-        var fr = el("div", "field");
-        fr.appendChild(el("label", "f", "Link this build to"));
-        var selr = el("select");
-        cands.forEach(function(r){
-          selr.appendChild(new Option(
-            r.name + " — " + (r.location === "home" ? "in HOME" : "Champions box"),
-            r._id));
-        });
-        fr.appendChild(selr);
-        var go = el("button", "fbtn primary", "Link");
-        go.onclick = function(){
-          /* Re-point the LINK. This used to copy the build to a new id and
-             delete the old one, because the id WAS the box row - so relinking
-             meant rewriting the build's identity, and anything referring to it
-             broke. box_id is a field now; the build keeps its name. */
-          var doc = structuredClone(b);
-          delete doc._boxId;
-          doc.box_id = selr.value;
-          put("builds/" + id, doc).then(function(){
-            return syncTrained(null, doc.box_id, id);
-          }).then(function(){
-            closeSheet(); toast("Linked to " + draft.pokemon);
-          });
-        };
-        fr.appendChild(go);
-        body.appendChild(fr);
-      }
-    }
-    var own = ownedNames();
-    if (own[draft.pokemon] === "rental") {
-      var w = el("div", "note warn");
-      w.innerHTML = "<strong>This one is a rental.</strong> Nothing on this page " +
-        "can be applied in game until it is made permanent (2500 VP). A rental " +
-        "is locked to its default set.";
-      body.appendChild(w);
-    }
-
-    /* --- mega -------------------------------------------------------- */
-    var ms = megasFor(draft.pokemon);
-    if (ms.length) {
-      var fm = el("div", "field");
-      fm.appendChild(el("label", "f", "Mega"));
-      var togs = el("div", "toggles");
-      var none = el("button", "tog", "Base form only");
-      none.setAttribute("aria-pressed", draft.mega ? "false" : "true");
-      none.onclick = function(){ draft.mega = null; draft.mega_ability = null; redraw(); };
-      togs.appendChild(none);
-      ms.forEach(function(m){
-        /* the form's name, and only that: what the stone costs is the Items
-           tab's business, not this picker's */
-        var t = el("button", "tog mega", m.name);
-        t.setAttribute("aria-pressed", draft.mega === m.name ? "true" : "false");
-        t.onclick = function(){
-          draft.mega = m.name;
-          draft.mega_ability = m.ab[0] || null;
-          redraw();
-        };
-        togs.appendChild(t);
-      });
-      fm.appendChild(togs);
-      body.appendChild(fm);
-      if (draft.mega) {
-        var mm = byName[draft.mega];
-        var nt = el("div", "note");
-        nt.innerHTML = "<strong>" + draft.mega + ".</strong> " +
-          p.types.join("/") + " → " + mm.types.join("/") + ". Ability " +
-          p.ab.join("/") + " → " + mm.ab.join("/") + ". Spe " + p.b[5] +
-          " → " + mm.b[5] + ". The registered ability is the base one, and " +
-          "that is correct — it is what the Pokemon has until it evolves.";
-        body.appendChild(nt);
-      }
-    }
-
-    /* --- ability + nature -------------------------------------------- */
-    /* HEADINGS, BECAUSE THIS IS A LONG SCROLL ON A PHONE. Stat Points, Moves,
-       Role and Why already had one; the two blocks above them did not, so the
-       editor opened as an unbroken column of controls with no way to see
-       where you were in it. Same size and weight as the others - this is
-       signposting, not decoration. */
-    body.appendChild(el("h2", null, "Ability and nature · 500 VP each"));
-    var g = el("div", "grid2");
-    var fa = el("div", "field");
-    fa.appendChild(el("label", "f", "Ability (base form)"));
-    var sa = el("select");
-    (p?.ab || []).forEach(function(a){ sa.appendChild(new Option(a, a)); });
-    if (draft.ability && !p?.ab.includes(draft.ability))
-      sa.appendChild(new Option(draft.ability, draft.ability));
-    /* The same question as the moves: of the people running this Pokemon,
-       which ability do they pick? Kingambit is 98.6% Defiant, and a list of
-       three cannot say that on its own - so the list is REORDERED by it. */
-    orderByUsage(sa, draft.pokemon, "a");
-    /* A REAL CHOICE STARTS UNMADE, and the control has to be able to say so.
-       A <select> always displays one of its options, so two or three
-       abilities opened on the first one and read as chosen while the build
-       held nothing - the same gap as the single-ability case, in the other
-       direction. The blank row says "not chosen" out loud and disappears the
-       moment he picks. It is inserted after the usage sort so it stays at the
-       top. */
-    if (!draft.ability)
-      sa.insertBefore(new Option("— not chosen —", ""), sa.firstChild);
-    sa.value = draft.ability || "";
-    sa.onchange = function(){ draft.ability = sa.value || null; redraw(); };
-    fa.appendChild(sa);
-    /* WHAT THE ABILITY DOES, UNDER THE ABILITY. This used to be appended after
-       the whole two-column block, which reads correctly at desktop width -
-       the paragraph sits under both columns - and reads WRONG on a phone,
-       where the columns stack and the sentence lands directly beneath the
-       NATURE select, describing the wrong control. Seen at 360px. Inside the
-       field it stays attached in either layout. */
-    if (draft.ability && C.ABIL[draft.ability]) {
-      fa.appendChild(numText(C.ABIL[draft.ability], "p", "sub"));
-      /* and what it does as a NUMBER - Guts reads x1.5 from the engine's own
-         modifier stage, which is the half of the sentence that decides a
-         calculation */
-      var abnum = effectLine(draft.ability);
-      if (abnum) fa.appendChild(abnum);
-    }
-    g.appendChild(fa);
-
-    var fn = el("div", "field");
-    fn.appendChild(el("label", "f", "Nature"));
-    var sn = el("select");
-    Object.keys(C.NATURES).sort(byText).forEach(function(n){
-      sn.appendChild(new Option(n + " — " + C.NATURES[n][2], n));
-    });
-    /* and the same on natures - 90.3% Adamant on Kingambit is the answer to
-       "what do people actually pick", which 25 alphabetical rows cannot give */
-    orderByUsage(sn, draft.pokemon, "n");
-    /* and the same here: the editor showed "Hardy" on a build whose card
-       showed an em dash, because Hardy was only ever the first option the
-       control landed on. A nature is 25 choices and 500 VP - it is his. */
-    if (!draft.nature)
-      sn.insertBefore(new Option("— not chosen —", ""), sn.firstChild);
-    sn.value = draft.nature || "";
-    sn.onchange = function(){ draft.nature = sn.value || null; redraw(); };
-    fn.appendChild(sn);
-    g.appendChild(fn);
-    body.appendChild(g);
-
-    /* THE SPREADS ITS PLAYERS RUN - SHOWN, NEVER APPLIED.
-       His rule, and he had to correct me on it (2026-09-15): "no quiero
-       autollenado, solo quiero un indicador de lo mas popular para armar las
-       builds... el armado final es mio." The first version made these buttons
-       that set the six numbers, which is exactly the thing he does not want.
-       An indicator informs a decision; a button makes it. So this is text,
-       with no click and no handler - the sliders are his. */
-    var sp = splitsFor(draft.pokemon);
-    if (sp && ((sp.s || []).length || (sp.t || []).length)) {
-      var rh = el("h2", null, "What its players run" +
-                  (splitsReg() ? " · " + splitsReg() : ""));
-      rh.title = "Reference only. Nothing here fills anything in.";
-      body.appendChild(rh);
-      body.appendChild(el("p", "sub",
-        "Reference only — nothing here fills anything in."));
-    }
-    if (sp && (sp.s || []).length) {
-      var sprow = el("div", "field");
-      sprow.appendChild(el("label", "f", "SP spreads"));
-      /* A spread is [hp, atk, def, spa, spd, spe, percent] - six numbers in
-         STAT_KEYS order and then its share. Flat, because an object per row
-         was more than twice the bytes for 283 Pokemon and this is the one
-         section long enough for that to matter. */
-      sp.s.slice(0, 6).forEach(function(row){
-        var bits = STAT_KEYS.map(function(k, i){
-          return row[i] ? row[i] + " " + STAT_LABEL[k] : null;
-        }).filter(Boolean).join(" / ");
-        var line = el("div", "st");
-        var t = el("span", "tag", row[6] + "%");
-        t.style.marginRight = "6px";
-        line.appendChild(t);
-        line.appendChild(document.createTextNode(bits));
-        sprow.appendChild(line);
-      });
-      body.appendChild(sprow);
-    }
-
-    /* WHO IT IS BROUGHT WITH. The Item Clause makes a team a set of six
-       decisions that constrain each other, so "53.9% of the teams that
-       brought this also brought Sneasler" is the single most useful line in
-       the whole block for team building - and it was being thrown away,
-       because pokebase renders only the first five and the rest sit in the
-       page payload (player, 2026-09-15: "es super completo eso y la ayuda que
-       brinda para armar teams"). Reference only, like the spreads. */
-    if (sp && (sp.t || []).length) {
-      var tmrow = el("div", "field");
-      tmrow.appendChild(el("label", "f", "Brought alongside"));
-      var tmline = el("div", "rmeta");
-      sp.t.forEach(function(pair){
-        var t = el("span", "tag", pair[0] + " " + pair[1] + "%");
-        t.title = pair[1] + "% of the teams that brought " + draft.pokemon +
-          " also brought " + pair[0];
-        tmline.appendChild(t);
-      });
-      tmrow.appendChild(tmline);
-      body.appendChild(tmrow);
-    }
-
-    /* SMOGON'S GUIDE, HERE, because this is where the decisions are made.
-       The same panel the box sheet opens - one place that knows how to draw
-       it - and folded, so the 407 KB behind it is fetched only when a build is
-       actually being argued about. */
-    if (draft.pokemon) {
-      var gwrap = el("div");
-      var gtog = el("button", "btn sm fold");
-      gtog.setAttribute("aria-expanded", "false");
-      gtog.textContent = "Read Smogon on " + draft.pokemon;
-      var ghost = el("div");
-      ghost.hidden = true;
-      gtog.onclick = function(){
-        var open = ghost.hidden;
-        ghost.hidden = !open;
-        gtog.setAttribute("aria-expanded", open ? "true" : "false");
-        if (open && !ghost._drawn) {
-          ghost._drawn = 1;
-          analysisPanel(draft.pokemon, ghost);
-        }
-      };
-      gwrap.appendChild(gtog);
-      gwrap.appendChild(ghost);
-      body.appendChild(gwrap);
-    }
-
-    /* --- stat points -------------------------------------------------- */
-    /* Dragging the slider was impossible, and the reason was here: oninput
-       called redraw(), which rebuilds this entire sheet, so the range element
-       under the finger was destroyed on the very first step and the drag died
-       with it. A click still worked because a click is one discrete event.
-       Nothing below rebuilds the sheet - spPaint() repaints only what depends
-       on the value. The slider, the two arrows and the typed box are three
-       doors into the same setSp(), so they can never disagree with each other
-       or with the draft. */
-    body.appendChild(el("h2", null, "Stat Points · 5 VP each"));
-    var meter = el("div", "meter");
-    var fill = el("i");
-    meter.appendChild(fill);
-    body.appendChild(meter);
-    var bud = el("div", "budget");
-    var budSpent = el("span"), budLeft = el("span");
-    bud.appendChild(budSpent);
-    bud.appendChild(budLeft);
-    body.appendChild(bud);
-
-    var spRepaint = [];
-    function setSp(k, v, typing){
-      draft.stat_points[k] = Math.max(0, Math.min(32, v));
-      spPaint(typing);
-    }
-    /* `typing` is the box the player is mid-keystroke in; writing back to it
-       would fight the cursor, so it is the one node spPaint leaves alone */
-    function spPaint(typing){
-      var t = spTotal(draft.stat_points);
-      fill.style.width = Math.min(100, t / 66 * 100) + "%";
-      if (t > 66) meter.classList.add("over"); else meter.classList.remove("over");
-      budSpent.textContent = t + " of 66 spent";
-      budLeft.textContent = t > 66 ? (t - 66) + " over budget"
-                                   : (66 - t) + " left";
-      bud.style.color = t > 66 ? "var(--bad)" : "";
-      spRepaint.forEach(function(f){ f(typing); });
-      paintChecks();
-      paintCost();
-    }
-
-    STAT_KEYS.forEach(function(k, i){
-      var line = el("div", "sp spedit");
-      line.appendChild(el("span", "k", STAT_LABEL[k]));
-
-      var r = el("input"); r.type = "range"; r.min = 0; r.max = 32; r.step = 1;
-      r.setAttribute("aria-label", STAT_LABEL[k] + " stat points");
-      r.oninput = function(){ setSp(k, Number(r.value), null); };
-      line.appendChild(r);
-
-      var dec = el("button", "step", "−");
-      dec.type = "button";
-      dec.setAttribute("aria-label", "One less " + STAT_LABEL[k]);
-      dec.onclick = function(){
-        setSp(k, (Number(draft.stat_points[k]) || 0) - 1, null);
-      };
-      line.appendChild(dec);
-
-      /* type=text with a digit filter, not type=number: a browser spinner
-         would sit right next to our own arrows doing the same job, and on
-         Android type=number still lets "e", "+" and "-" through */
-      var num = el("input", "spnum");
-      num.type = "text";
-      num.inputMode = "numeric";
-      num.setAttribute("aria-label", STAT_LABEL[k] + " stat points, 0 to 32");
-      num.oninput = function(){
-        var clean = num.value.replace(/\D/g, "").slice(0, 2);
-        if (clean !== num.value) num.value = clean;
-        if (clean === "") return;     // let the box be emptied and retyped
-        /* 40 is not a number this box can hold, so correct it on screen too.
-           Only OUT-OF-RANGE text is rewritten mid-keystroke - an in-range
-           value is left alone, because writing it back would jump the cursor
-           to the end while the player is still typing the second digit. */
-        if (Number(clean) > 32) num.value = "32";
-        setSp(k, Number(clean), num);
-      };
-      num.onblur = function(){
-        if (num.value === "") setSp(k, 0, null);
-        num.value = String(Number(draft.stat_points[k]) || 0);
-      };
-      line.appendChild(num);
-
-      var inc = el("button", "step", "+");
-      inc.type = "button";
-      inc.setAttribute("aria-label", "One more " + STAT_LABEL[k]);
-      inc.onclick = function(){
-        setSp(k, (Number(draft.stat_points[k]) || 0) + 1, null);
-      };
-      line.appendChild(inc);
-
-      var cs = el("span", "calc");
-      cs.title = "Level 50 stat";
-      line.appendChild(cs);
-      body.appendChild(line);
-
-      spRepaint.push(function(typing){
-        var v = Number(draft.stat_points[k]) || 0;
-        /* a build imported from elsewhere can hold more than 32; show the real
-           number and flag it rather than quietly clamping the display */
-        r.value = Math.min(32, v);
-        if (num !== typing) num.value = String(v);
-        if (v > 32) line.classList.add("over"); else line.classList.remove("over");
-        dec.disabled = v <= 0;
-        inc.disabled = v >= 32;
-        var basep = byName[draft.mega || draft.pokemon] || p;
-        cs.textContent = basep
-          ? String(statAt(basep.b[i], v, k === "hp", natMult(draft.nature, k)))
-          : "0";
-      });
-    });
-    body.appendChild(el("p", "sub",
-      "Right column is the level-50 stat" +
-      (draft.mega ? " in Mega form." : ".") +
-      " Points in a defensive stat only earn their place if they move a real " +
-      "attack from a 1HKO to a 2HKO — percentages are decoration."));
-
-    /* --- moves --------------------------------------------------------- */
-    body.appendChild(el("h2", null, "Moves · 250 VP each"));
-    var ls = learnset(draft.pokemon);
-    for (var i = 0; i < 4; i++) {
-      (function(idx){
-        var name = draft.moves[idx];
-        var mv = name ? MOVE_BY[name] : null;
-        var s = el("button", "slot" + (name ? "" : " blank"));
-        var mm = el("div", "rmain");
-        if (mv) {
-          var h = el("div", "rname");
-          h.appendChild(typeChip(mv.type));
-          h.appendChild(el("span", "nm", mv.name));
-          if (mv.pri > 0) h.appendChild(el("span", "tag ok", "+" + mv.pri));
-          spreadTags(mv, h);
-          var ab2 = activeAbility(draft);
-          var at2 = ab2 ? abilityTag(ab2, mv, byName[draft.mega || draft.pokemon]) : null;
-          if (at2) h.appendChild(at2);
-          mm.appendChild(h);
-          mm.appendChild(el("div", "st",
-            catName(mv.cat) +
-            "  ·  " + (mv.bp ? mv.bp + " BP" : "—") +
-            "  ·  " + (mv.acc == null ? "—" : mv.acc + " acc") +
-            "  ·  " + (mv.pp == null ? "—" : mv.pp + " PP") +
-            spreadNote(mv)));
-        } else if (name) {
-          mm.appendChild(el("div", "rname", name));
-          mm.appendChild(el("div", "st", "not in the move list"));
-        } else {
-          mm.appendChild(el("div", "rname", "Empty slot " + (idx + 1)));
-          mm.appendChild(el("div", "st",
-            "A set may hold fewer than four moves — and sometimes must."));
-        }
-        s.appendChild(mm);
-        s.onclick = function(){ movePicker(draft, idx, ls, redraw); };
-        body.appendChild(s);
-        body.appendChild(el("div", "gap6"));
-      })(i);
-    }
-
-    /* --- checks -------------------------------------------------------- */
+    if (!id && !speciesField(body, ed)) return;
+    ed.p = byName[draft.pokemon];
+    var copies = copyField(body, ed);
+    linkNotes(body, ed, copies);
+    megaField(body, ed);
+    abilityAndNature(body, ed);
+    usageReference(body, ed);
+    smogonFold(body, draft.pokemon);
+    var spPaint = statPoints(body, ed);
+    moveSlots(body, ed);
     /* The 66-point budget and the 32-per-stat cap are the two things a slider
        drag can break, so they repaint with the slider instead of waiting for
        the sheet to be rebuilt. */
-    body.appendChild(checkBox);
-
-    /* --- prose --------------------------------------------------------- */
-    body.appendChild(el("h2", null, "Role"));
-    var tr = el("input"); tr.type = "text"; tr.value = draft.role || "";
-    tr.oninput = function(){ draft.role = tr.value; };
-    body.appendChild(tr);
-    body.appendChild(el("h2", null, "Why"));
-    var ta = el("textarea"); ta.value = draft.rationale || "";
-    ta.oninput = function(){ draft.rationale = ta.value; };
-    body.appendChild(ta);
-
-    /* --- cost ---------------------------------------------------------- */
-    body.appendChild(costBox);
+    body.appendChild(ed.checkBox);
+    proseFields(body, draft);
+    body.appendChild(ed.costBox);
     spPaint(null);
   }, [
-    fbtn("Save", "primary", function(){
-      if (!draft.pokemon) { toast("Pick a Pokemon first"); return; }
-      /* The key used to BE the box row - one Pokemon, one build, and no build
-         without a Pokemon to carry it. Both halves are gone (player,
-         2026-09-13): he wants three different Farigiraf and he wants to write
-         a set down for a Pokemon he has not got yet, so the idea survives
-         until he does. The id is its own thing now and the link lives in
-         box_id, which may be null.
-         The id is derived from the species so it stays readable in the ledger
-         - farigiraf, farigiraf-2, farigiraf-3 - the same shape the box already
-         uses for duplicates. */
-      /* A NEW build asks the database for a free id instead of guessing from
-         what this device has loaded - see putNew(). An EDIT keeps its own. */
-      var stem = String(draft.pokemon).toLowerCase()
-        .replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
-      var doc = {pokemon:draft.pokemon, box_id:draft._boxId || null,
-                 mega:draft.mega || null,
-                 ability:draft.ability || null,
-                 mega_ability:draft.mega_ability || null,
-                 nature:draft.nature || null,
-                 stat_points:draft.stat_points,
-                 moves:draft.moves.filter(Boolean),
-                 role:draft.role || "", rationale:draft.rationale || "",
-                 extra:b?.extra || {}};
-      (id ? put("builds/" + id, doc).then(function(){ return id; })
-          : putNew("builds", stem, doc)).then(function(){
-        return syncTrained(b?.box_id, doc.box_id, id);
-      }).then(function(){
-        leaveEditor(); toast("Build saved");
-      });
-    }),
-    fbtn(id ? "Delete" : "Cancel", id ? "danger" : "", function(){
-      if (!id) { leaveEditor(); return; }
-      ask("Delete the " + draft.pokemon + " build?",
-          "Only this set goes. The Pokemon it sits on loses its trained tag, " +
-          "unless another build is still on it.",
-          "Delete", true).then(function(ok){
-        if (!ok) return;
-        drop("builds/" + id).then(function(){
-          return syncTrained(b?.box_id, null, id);
-        }).then(function(){ leaveEditor(); toast("Deleted"); });
-      });
-    })
+    fbtn("Save", "primary", function(){ saveBuild(ed); }),
+    fbtn(id ? "Delete" : "Cancel", id ? "danger" : "", function(){ deleteBuild(ed); })
   ]);
+}
 
-  /* redraw rebuilds the sheet from the live draft, carrying the pre-edit
-     snapshot forward so the VP cost is measured against the saved set */
-  /* in place, for the same reason the team editor does */
-  function redraw(){ buildSheet(id, draft, original); }
-
-  /* Both of these sit BELOW the sliders but depend on them, so they are built
-     once and refilled in place rather than rebuilt with the sheet. */
-  function paintChecks(){
-    checkBox.innerHTML = "";
-    var probs = checks(draft, p);
-    if (!probs.length) return;
-    checkBox.appendChild(el("h2", null, "Worth a look"));
-    probs.forEach(function(t){
-      var n = el("div", "note " + t[0]);
-      n.style.marginBottom = "6px";
-      n.innerHTML = t[1];
-      checkBox.appendChild(n);
+/* --- species (new builds only) -------------------------------------------
+   The species first, and it is ANY form in the dex - not only what is in the
+   box. A set for a Pokemon he has not got yet is an idea worth keeping until
+   he has it, rather than one lost for want of a row to hang it on (player,
+   2026-09-13). Which copy it is installed on is a second, optional question,
+   answered below. Returns whether a species is chosen - until one is, there
+   is nothing else to edit. */
+function speciesField(body, ed){
+  var draft = ed.draft;
+  var f0 = el("div", "field");
+  f0.appendChild(el("label", "f", "Pokemon"));
+  var chosen = draft.pokemon ? byName[draft.pokemon] : null;
+  var open = function(){
+    speciesSheet(function(name){
+      draft.pokemon = name;
+      draft._boxId = null;          // the copy is chosen separately
+      /* and everything that belonged to the OTHER species goes with it -
+         a stone it cannot hold, and the ability buildSheet committed for it.
+         The redraw fills in the new species' own single ability. */
+      draft.ability = null;
+      draft.mega = null;
+      draft.mega_ability = null;
+      closeSheet();
+      ed.redraw();
     });
+  };
+  var pick;
+  if (chosen) {
+    /* the card, so the species you picked reads the same here as in the
+       list you picked it from - and it is the form the BUILD plays as, the
+       same rule the build list follows: the Mega row once a stone is chosen,
+       the base form alone otherwise. The Mega toggles below are where the
+       species' options are offered - the card is the decision. */
+    pick = pokeCard(byName[draft.mega] || chosen,
+                    {cls:"perm", name:draft.pokemon, megas:false,
+                     onclick:open});
+  } else {
+    pick = el("button", "row unknown");
+    var pm = el("div", "rmain");
+    pm.appendChild(el("div", "rname", "Tap to choose"));
+    var pmeta = el("div", "rmeta");
+    pmeta.appendChild(el("span", null,
+      "any of the " + FORMS.length + " forms in the game, owned or not"));
+    pm.appendChild(pmeta);
+    pick.appendChild(pm);
+    pick.onclick = open;
   }
-  function paintCost(){
-    costBox.innerHTML = "";
-    var cost = retuneCost(original, draft);
-    if (!cost) return;
-    var cn = el("div", "note");
-    cn.style.marginTop = "12px";
-    cn.innerHTML = "<strong>" + cost.vp + " VP</strong> to apply this in game: " +
-      cost.parts.join(", ") + ".";
-    costBox.appendChild(cn);
+  f0.appendChild(pick);
+  body.appendChild(f0);
+  return !!draft.pokemon;
+}
+
+/* --- which copy ----------------------------------------------------------
+   WHICH COPY, and "none yet" is a real answer. Every copy is offered, in
+   either box, whether or not it already carries a build - three Farigiraf
+   builds is the point, and choosing between them happens in game or per team.
+
+   THE DROPDOWN IS THE ANSWER, AND THE CARD UNDER IT IS THE COPY IT NAMES
+   (player, 2026-09-28). A list of cards was tried first, so he could see "si
+   es shiny, si ya está entrenado, etc. para saber sobre qué estoy colocando
+   la build" - and it lost what the dropdown does without anyone noticing: its
+   closed face IS the current state. A list has no closed face, so its first
+   row read as the value on every build, and taking a build off meant tapping
+   a sentence nothing said was a button. So both halves, each doing what it is
+   good at: the dropdown says where the build is and is where it is changed or
+   taken off, its options carrying the badges so two copies are told apart;
+   the card of the chosen copy sits underneath with everything else, and is
+   swapped in place so the page does not jump under his thumb.
+
+   Returns the copies, which the notes below need. */
+function copyField(body, ed){
+  var draft = ed.draft;
+  var copies = boxRows("champions").concat(boxRows("home"))
+    .filter(function(r){ return r.name === draft.pokemon; });
+  var f1 = el("div", "field");
+  f1.appendChild(el("label", "f", "Installed on"));
+  if (copies.length) {
+    var sel1 = el("select");
+    sel1.appendChild(new Option("— not installed (just an idea) —", ""));
+    var labels = copies.map(function(r){ return copyLabel(r, ed.id); });
+    /* TWO COPIES CAN BE THE SAME IN EVERYTHING THE LEDGER RECORDS - his two
+       Heracross are both in HOME, neither shiny nor trained, no note - and
+       two identical lines read as a bug. They are not, so the line says so,
+       rather than inventing a "copy 2" that tells nothing apart: whichever
+       he picks is the same Pokemon as far as anything here knows. */
+    copies.forEach(function(r, i){
+      var alike = labels.filter(function(t){ return t === labels[i]; }).length;
+      sel1.appendChild(new Option(labels[i] +
+        (alike > 1 ? " · one of " + alike + " identical" : ""), r._id));
+    });
+    sel1.value = draft._boxId || "";
+    var copyCard = el("div");
+    copyCard.style.marginTop = "8px";
+    sel1.onchange = function(){
+      draft._boxId = sel1.value || null;
+      paintCopy(copyCard, copies, ed);
+    };
+    f1.appendChild(sel1);
+    f1.appendChild(copyCard);
+    paintCopy(copyCard, copies, ed);
+  } else {
+    f1.appendChild(el("p", "sub", "— you do not have one yet —"));
   }
+  body.appendChild(f1);
+  return copies;
+}
+
+/* The other builds already sitting on a box row. */
+function buildsOn(r, exceptId){
+  return Object.keys(S.builds).filter(function(k){
+    return k !== exceptId && S.builds[k].box_id === r._id; });
+}
+
+/* One copy, as the dropdown names it: where, shiny, trained, origin, what it
+   already carries, its note. */
+function copyLabel(r, exceptId){
+  var others = buildsOn(r, exceptId);
+  var note = r.note && r.note.length > 40
+    ? r.note.slice(0, 39) + "…" : r.note;
+  return [
+    r.name,
+    r.location === "home" ? "in HOME" : "Champions box",
+    r.shiny && "shiny",
+    r.trained && "trained",
+    r.status === "rental" ? "rental, cannot be trained"
+      : r.location === "champions" && ORIGIN_LABEL[originOf(r)],
+    others.length && "already carries " + others.join(", "),
+    note
+  ].filter(Boolean).join(" · ");
+}
+
+/* The card of the copy the dropdown names, redrawn in place. */
+function paintCopy(copyCard, copies, ed){
+  copyCard.innerHTML = "";
+  var r = copies.find(function(c){ return c._id === ed.draft._boxId; });
+  if (!r) return;
+  var others = buildsOn(r, ed.id);
+  var pr = byName[r.name];
+  copyCard.appendChild(pr ? pokeCard(pr, {
+    tag: "div",
+    name: r.name,
+    shiny: !!r.shiny,
+    megas: false,
+    badges: function(h){
+      h.appendChild(el("span", "tag" + (r.location === "home" ? " warn" : ""),
+        r.location === "home" ? "in HOME" : "Champions box"));
+      boxBadges(h, r);
+    },
+    meta: function(meta){
+      if (r.status === "rental")
+        meta.appendChild(el("span", null, "rental — cannot be trained"));
+      if (others.length)
+        meta.appendChild(el("span", "mono",
+          "already carries " + others.join(", ")));
+      if (r.note) meta.appendChild(el("span", null, r.note));
+    }
+  }) : el("div", "row", r.name));
+}
+
+/* --- what state the build is in ------------------------------------------
+   One note per state that needs saying: a set for a species he has none of,
+   a build parked in HOME, an orphan (with the field that re-links it), and a
+   rental that nothing can be applied to.
+
+   NO NOTE WHEN HE OWNS ONE AND IT IS NOT INSTALLED. The dropdown above
+   already reads "— not installed (just an idea) —", so a paragraph saying
+   "Not installed on anything" was the same sentence twice (player,
+   2026-09-15: "ese mensaje de not installed es redudandte"). */
+function linkNotes(body, ed, copies){
+  var draft = ed.draft;
+  var lk = ed.id ? buildLink(ed.id) : {state:draft._boxId ? "active" : "unbound"};
+  if (lk.state === "unbound" && !copies.length) {
+    var ub = el("div", "note");
+    ub.innerHTML = "<strong>You do not have a " + draft.pokemon +
+      " yet.</strong> The set is saved anyway, so the idea keeps — it just " +
+      "cannot be trained or brought to a battle until one arrives.";
+    body.appendChild(ub);
+  }
+  if (lk.state === "parked") {
+    var pk = el("div", "note warn");
+    pk.innerHTML = "<strong>Parked in HOME — this build is inactive.</strong> " +
+      "It is kept exactly as it is, because a HOME-origin Pokemon comes back " +
+      "with its training. Nothing here can be applied while it sits in HOME; " +
+      "send " + draft.pokemon + " to Champions and it is live again.";
+    body.appendChild(pk);
+  }
+  if (lk.state === "orphan") orphanNote(body, ed);
+  if (ownedNames()[draft.pokemon] === "rental") {
+    var w = el("div", "note warn");
+    w.innerHTML = "<strong>This one is a rental.</strong> Nothing on this page " +
+      "can be applied in game until it is made permanent (2500 VP). A rental " +
+      "is locked to its default set.";
+    body.appendChild(w);
+  }
+}
+
+/* An orphan: the Pokemon it belonged to has left the ledger. Offers every
+   copy of the species - including one that already carries a build, since
+   more than one set per Pokemon is allowed - to re-link it to. */
+function orphanNote(body, ed){
+  var draft = ed.draft;
+  var or = el("div", "note bad");
+  or.innerHTML = "<strong>Orphan build.</strong> The Pokemon this belonged " +
+    "to is no longer in the ledger, so this set is not on anything. Point " +
+    "it at another " + draft.pokemon + ", or delete it.";
+  body.appendChild(or);
+  var cands = boxRows("champions").concat(boxRows("home")).filter(function(r){
+    return r.name === draft.pokemon;
+  });
+  if (!cands.length) return;
+  var fr = el("div", "field");
+  fr.appendChild(el("label", "f", "Link this build to"));
+  var selr = el("select");
+  cands.forEach(function(r){
+    selr.appendChild(new Option(
+      r.name + " — " + (r.location === "home" ? "in HOME" : "Champions box"),
+      r._id));
+  });
+  fr.appendChild(selr);
+  var go = el("button", "fbtn primary", "Link");
+  go.onclick = function(){
+    /* Re-point the LINK. The build keeps its id and its name; only box_id
+       changes. */
+    var doc = structuredClone(ed.b);
+    delete doc._boxId;
+    doc.box_id = selr.value;
+    put("builds/" + ed.id, doc).then(function(){
+      return syncTrained(null, doc.box_id, ed.id);
+    }).then(function(){
+      closeSheet(); toast("Linked to " + draft.pokemon);
+    });
+  };
+  fr.appendChild(go);
+  body.appendChild(fr);
+}
+
+/* --- mega ----------------------------------------------------------------
+   Base form, or one of the species' Megas. Only the form's name: what the
+   stone costs is the Items tab's business, not this picker's. */
+function megaField(body, ed){
+  var draft = ed.draft, p = ed.p;
+  var ms = megasFor(draft.pokemon);
+  if (!ms.length) return;
+  var fm = el("div", "field");
+  fm.appendChild(el("label", "f", "Mega"));
+  var togs = el("div", "toggles");
+  var none = el("button", "tog", "Base form only");
+  none.setAttribute("aria-pressed", draft.mega ? "false" : "true");
+  none.onclick = function(){ draft.mega = null; draft.mega_ability = null; ed.redraw(); };
+  togs.appendChild(none);
+  ms.forEach(function(m){
+    var t = el("button", "tog mega", m.name);
+    t.setAttribute("aria-pressed", draft.mega === m.name ? "true" : "false");
+    t.onclick = function(){
+      draft.mega = m.name;
+      draft.mega_ability = m.ab[0] || null;
+      ed.redraw();
+    };
+    togs.appendChild(t);
+  });
+  fm.appendChild(togs);
+  body.appendChild(fm);
+  if (draft.mega) {
+    var mm = byName[draft.mega];
+    var nt = el("div", "note");
+    nt.innerHTML = "<strong>" + draft.mega + ".</strong> " +
+      p.types.join("/") + " → " + mm.types.join("/") + ". Ability " +
+      p.ab.join("/") + " → " + mm.ab.join("/") + ". Spe " + p.b[5] +
+      " → " + mm.b[5] + ". The registered ability is the base one, and " +
+      "that is correct — it is what the Pokemon has until it evolves.";
+    body.appendChild(nt);
+  }
+}
+
+/* --- ability + nature ----------------------------------------------------
+   HEADINGS, BECAUSE THIS IS A LONG SCROLL ON A PHONE: every block of the
+   editor has one, so there is always a way to see where you are in it. */
+function abilityAndNature(body, ed){
+  body.appendChild(el("h2", null, "Ability and nature · 500 VP each"));
+  var g = el("div", "grid2");
+  g.appendChild(abilityField(ed));
+  g.appendChild(natureField(ed));
+  body.appendChild(g);
+}
+
+/* The base form's ability, the list REORDERED by what this Pokemon's players
+   pick - Kingambit is 98.6% Defiant, and a list of three cannot say that on
+   its own. */
+function abilityField(ed){
+  var draft = ed.draft, p = ed.p;
+  var fa = el("div", "field");
+  fa.appendChild(el("label", "f", "Ability (base form)"));
+  var sa = el("select");
+  (p?.ab || []).forEach(function(a){ sa.appendChild(new Option(a, a)); });
+  if (draft.ability && !p?.ab.includes(draft.ability))
+    sa.appendChild(new Option(draft.ability, draft.ability));
+  orderByUsage(sa, draft.pokemon, "a");
+  /* A REAL CHOICE STARTS UNMADE, and the control has to be able to say so.
+     A <select> always displays one of its options, so two or three
+     abilities opened on the first one and read as chosen while the build
+     held nothing. The blank row says "not chosen" out loud and disappears
+     the moment he picks. Inserted after the usage sort so it stays on top. */
+  if (!draft.ability)
+    sa.insertBefore(new Option("— not chosen —", ""), sa.firstChild);
+  sa.value = draft.ability || "";
+  sa.onchange = function(){ draft.ability = sa.value || null; ed.redraw(); };
+  fa.appendChild(sa);
+  /* WHAT THE ABILITY DOES, UNDER THE ABILITY - inside the field, so on a
+     phone, where the two columns stack, it does not land beneath the nature
+     and describe the wrong control. Then the same as a NUMBER: Guts reads
+     x1.5 from the engine's own modifier stage, which is the half of the
+     sentence that decides a calculation. */
+  if (draft.ability && C.ABIL[draft.ability]) {
+    fa.appendChild(numText(C.ABIL[draft.ability], "p", "sub"));
+    var abnum = effectLine(draft.ability);
+    if (abnum) fa.appendChild(abnum);
+  }
+  return fa;
+}
+
+/* The nature, reordered the same way (90.3% Adamant on Kingambit is the
+   answer 25 alphabetical rows cannot give), and blank until he picks one: a
+   nature is 25 choices and 500 VP - it is his. */
+function natureField(ed){
+  var draft = ed.draft;
+  var fn = el("div", "field");
+  fn.appendChild(el("label", "f", "Nature"));
+  var sn = el("select");
+  Object.keys(C.NATURES).sort(byText).forEach(function(n){
+    sn.appendChild(new Option(n + " — " + C.NATURES[n][2], n));
+  });
+  orderByUsage(sn, draft.pokemon, "n");
+  if (!draft.nature)
+    sn.insertBefore(new Option("— not chosen —", ""), sn.firstChild);
+  sn.value = draft.nature || "";
+  sn.onchange = function(){ draft.nature = sn.value || null; ed.redraw(); };
+  fn.appendChild(sn);
+  return fn;
+}
+
+/* --- what its players run ------------------------------------------------
+   THE SPREADS ITS PLAYERS RUN, AND WHO THEY BRING IT WITH - SHOWN, NEVER
+   APPLIED. His rule (2026-09-15): "no quiero autollenado, solo quiero un
+   indicador de lo mas popular para armar las builds... el armado final es
+   mio." An indicator informs a decision; a button makes it. So this is text,
+   with no click and no handler - the sliders are his. */
+function usageReference(body, ed){
+  var draft = ed.draft;
+  var sp = splitsFor(draft.pokemon);
+  if (!sp) return;
+  if ((sp.s || []).length || (sp.t || []).length) {
+    var rh = el("h2", null, "What its players run" +
+                (splitsReg() ? " · " + splitsReg() : ""));
+    rh.title = "Reference only. Nothing here fills anything in.";
+    body.appendChild(rh);
+    body.appendChild(el("p", "sub",
+      "Reference only — nothing here fills anything in."));
+  }
+  if ((sp.s || []).length) body.appendChild(spreadRows(sp.s));
+  if ((sp.t || []).length) body.appendChild(teammateRow(sp.t, draft.pokemon));
+}
+
+/* The six most-run spreads. A spread is [hp, atk, def, spa, spd, spe,
+   percent] - six numbers in STAT_KEYS order, then its share: flat, because
+   an object per row was more than twice the bytes for 283 Pokemon. */
+function spreadRows(spreads){
+  var sprow = el("div", "field");
+  sprow.appendChild(el("label", "f", "SP spreads"));
+  spreads.slice(0, 6).forEach(function(row){
+    var bits = STAT_KEYS.map(function(k, i){
+      return row[i] ? row[i] + " " + STAT_LABEL[k] : null;
+    }).filter(Boolean).join(" / ");
+    var line = el("div", "st");
+    var t = el("span", "tag", row[6] + "%");
+    t.style.marginRight = "6px";
+    line.appendChild(t);
+    line.appendChild(document.createTextNode(bits));
+    sprow.appendChild(line);
+  });
+  return sprow;
+}
+
+/* WHO IT IS BROUGHT WITH. The Item Clause makes a team six decisions that
+   constrain each other, so "53.9% of the teams that brought this also
+   brought Sneasler" is the most useful line here for team building (player,
+   2026-09-15: "es super completo eso y la ayuda que brinda para armar
+   teams"). */
+function teammateRow(pairs, pokemon){
+  var tmrow = el("div", "field");
+  tmrow.appendChild(el("label", "f", "Brought alongside"));
+  var tmline = el("div", "rmeta");
+  pairs.forEach(function(pair){
+    var t = el("span", "tag", pair[0] + " " + pair[1] + "%");
+    t.title = pair[1] + "% of the teams that brought " + pokemon +
+      " also brought " + pair[0];
+    tmline.appendChild(t);
+  });
+  tmrow.appendChild(tmline);
+  return tmrow;
+}
+
+/* SMOGON'S GUIDE, HERE, because this is where the decisions are made - the
+   same folded panel the Pokemon sheet opens, one place that knows how to draw
+   it, fetched only when a build is actually being argued about. */
+function smogonFold(body, pokemon){
+  if (!pokemon) return;
+  body.appendChild(analysisFold(pokemon, "Read Smogon on " + pokemon));
+}
+
+/* --- stat points ---------------------------------------------------------
+   NOTHING HERE REBUILDS THE EDITOR. Dragging a slider used to be impossible
+   because oninput called redraw(), which destroyed the range element under
+   the finger on the first step. spPaint() repaints only what depends on the
+   values. The slider, the two arrows and the typed box are three doors into
+   the same setSp(), so they can never disagree with each other or with the
+   draft. Returns spPaint, which buildSheet calls once the whole editor -
+   the checks and the cost included - is on the page. */
+function statPoints(body, ed){
+  var draft = ed.draft;
+  body.appendChild(el("h2", null, "Stat Points · 5 VP each"));
+  var meter = el("div", "meter");
+  var fill = el("i");
+  meter.appendChild(fill);
+  body.appendChild(meter);
+  var bud = el("div", "budget");
+  var budSpent = el("span"), budLeft = el("span");
+  bud.appendChild(budSpent);
+  bud.appendChild(budLeft);
+  body.appendChild(bud);
+
+  var spRepaint = [];
+  function setSp(k, v, typing){
+    draft.stat_points[k] = Math.max(0, Math.min(32, v));
+    spPaint(typing);
+  }
+  /* `typing` is the box the player is mid-keystroke in; writing back to it
+     would fight the cursor, so it is the one node spPaint leaves alone */
+  function spPaint(typing){
+    var t = spTotal(draft.stat_points);
+    fill.style.width = Math.min(100, t / 66 * 100) + "%";
+    if (t > 66) meter.classList.add("over"); else meter.classList.remove("over");
+    budSpent.textContent = t + " of 66 spent";
+    budLeft.textContent = t > 66 ? (t - 66) + " over budget"
+                                 : (66 - t) + " left";
+    bud.style.color = t > 66 ? "var(--bad)" : "";
+    spRepaint.forEach(function(f){ f(typing); });
+    paintChecks(ed);
+    paintCost(ed);
+  }
+  STAT_KEYS.forEach(function(k, i){
+    spRepaint.push(statLine(body, ed, k, i, setSp));
+  });
+  body.appendChild(el("p", "sub",
+    "Right column is the level-50 stat" +
+    (draft.mega ? " in Mega form." : ".") +
+    " Points in a defensive stat only earn their place if they move a real " +
+    "attack from a 1HKO to a 2HKO — percentages are decoration."));
+  return spPaint;
+}
+
+/* One stat's row: slider, minus, the typed box, plus, and the level-50 stat
+   it makes. Returns the function that repaints the row from the draft. */
+function statLine(body, ed, k, i, setSp){
+  var draft = ed.draft;
+  var line = el("div", "sp spedit");
+  line.appendChild(el("span", "k", STAT_LABEL[k]));
+
+  var r = el("input"); r.type = "range"; r.min = 0; r.max = 32; r.step = 1;
+  r.setAttribute("aria-label", STAT_LABEL[k] + " stat points");
+  r.oninput = function(){ setSp(k, Number(r.value), null); };
+  line.appendChild(r);
+
+  var dec = el("button", "step", "−");
+  dec.type = "button";
+  dec.setAttribute("aria-label", "One less " + STAT_LABEL[k]);
+  dec.onclick = function(){
+    setSp(k, (Number(draft.stat_points[k]) || 0) - 1, null);
+  };
+  line.appendChild(dec);
+
+  var num = statNumber(draft, k, setSp);
+  line.appendChild(num);
+
+  var inc = el("button", "step", "+");
+  inc.type = "button";
+  inc.setAttribute("aria-label", "One more " + STAT_LABEL[k]);
+  inc.onclick = function(){
+    setSp(k, (Number(draft.stat_points[k]) || 0) + 1, null);
+  };
+  line.appendChild(inc);
+
+  var cs = el("span", "calc");
+  cs.title = "Level 50 stat";
+  line.appendChild(cs);
+  body.appendChild(line);
+
+  return function(typing){
+    var v = Number(draft.stat_points[k]) || 0;
+    /* a build imported from elsewhere can hold more than 32; show the real
+       number and flag it rather than quietly clamping the display */
+    r.value = Math.min(32, v);
+    if (num !== typing) num.value = String(v);
+    if (v > 32) line.classList.add("over"); else line.classList.remove("over");
+    dec.disabled = v <= 0;
+    inc.disabled = v >= 32;
+    var basep = byName[draft.mega || draft.pokemon] || ed.p;
+    cs.textContent = basep
+      ? String(statAt(basep.b[i], v, k === "hp", natMult(draft.nature, k)))
+      : "0";
+  };
+}
+
+/* The typed box. type=text with a digit filter, not type=number: a browser
+   spinner would sit right next to our own arrows doing the same job, and on
+   Android type=number still lets "e", "+" and "-" through. */
+function statNumber(draft, k, setSp){
+  var num = el("input", "spnum");
+  num.type = "text";
+  num.inputMode = "numeric";
+  num.setAttribute("aria-label", STAT_LABEL[k] + " stat points, 0 to 32");
+  num.oninput = function(){
+    var clean = num.value.replace(/\D/g, "").slice(0, 2);
+    if (clean !== num.value) num.value = clean;
+    if (clean === "") return;     // let the box be emptied and retyped
+    /* 40 is not a number this box can hold, so correct it on screen too.
+       Only OUT-OF-RANGE text is rewritten mid-keystroke - an in-range value
+       is left alone, because writing it back would jump the cursor to the
+       end while the player is still typing the second digit. */
+    if (Number(clean) > 32) num.value = "32";
+    setSp(k, Number(clean), num);
+  };
+  num.onblur = function(){
+    if (num.value === "") setSp(k, 0, null);
+    num.value = String(Number(draft.stat_points[k]) || 0);
+  };
+  return num;
+}
+
+/* --- moves ---------------------------------------------------------------
+   Four slots; tapping one opens the move picker for it. */
+function moveSlots(body, ed){
+  body.appendChild(el("h2", null, "Moves · 250 VP each"));
+  var ls = learnset(ed.draft.pokemon);
+  for (var idx = 0; idx < 4; idx++) {
+    body.appendChild(moveSlot(ed, idx, ls));
+    body.appendChild(el("div", "gap6"));
+  }
+}
+
+/* One slot, a button that opens the move picker for it. */
+function moveSlot(ed, idx, ls){
+  var draft = ed.draft;
+  var name = draft.moves[idx];
+  var s = el("button", "slot" + (name ? "" : " blank"));
+  s.appendChild(slotFace(draft, name, idx));
+  s.onclick = function(){ movePicker(draft, idx, ls, ed.redraw); };
+  return s;
+}
+
+/* What a slot shows: the move with its badges and numbers - or, for a name
+   the move list does not know, that; or an empty slot, which is allowed. */
+function slotFace(draft, name, idx){
+  var mv = name ? MOVE_BY[name] : null;
+  var mm = el("div", "rmain");
+  if (mv) {
+    mm.appendChild(slotHead(draft, mv));
+    mm.appendChild(el("div", "st", moveNumbers(mv)));
+  } else if (name) {
+    mm.appendChild(el("div", "rname", name));
+    mm.appendChild(el("div", "st", "not in the move list"));
+  } else {
+    mm.appendChild(el("div", "rname", "Empty slot " + (idx + 1)));
+    mm.appendChild(el("div", "st",
+      "A set may hold fewer than four moves — and sometimes must."));
+  }
+  return mm;
+}
+
+/* The move's type and name, its priority, whether it is a spread move, and
+   what the build's own ability does to it. */
+function slotHead(draft, mv){
+  var h = el("div", "rname");
+  h.appendChild(typeChip(mv.type));
+  h.appendChild(el("span", "nm", mv.name));
+  if (mv.pri > 0) h.appendChild(el("span", "tag ok", "+" + mv.pri));
+  spreadTags(mv, h);
+  var ab2 = activeAbility(draft);
+  var at2 = ab2 ? abilityTag(ab2, mv, byName[draft.mega || draft.pokemon]) : null;
+  if (at2) h.appendChild(at2);
+  return h;
+}
+
+/* "Physical · 100 BP · 95 acc · 16 PP", a dash for any number the move
+   does not have, and the spread note. */
+function moveNumbers(mv){
+  return catName(mv.cat) +
+    "  ·  " + (mv.bp ? mv.bp + " BP" : "—") +
+    "  ·  " + (mv.acc == null ? "—" : mv.acc + " acc") +
+    "  ·  " + (mv.pp == null ? "—" : mv.pp + " PP") +
+    spreadNote(mv);
+}
+
+/* --- role and why --------------------------------------------------------
+   Free text, his own words. They write straight into the draft. */
+function proseFields(body, draft){
+  body.appendChild(el("h2", null, "Role"));
+  var tr = el("input"); tr.type = "text"; tr.value = draft.role || "";
+  tr.oninput = function(){ draft.role = tr.value; };
+  body.appendChild(tr);
+  body.appendChild(el("h2", null, "Why"));
+  var ta = el("textarea"); ta.value = draft.rationale || "";
+  ta.oninput = function(){ draft.rationale = ta.value; };
+  body.appendChild(ta);
+}
+
+/* What the checks in core/build.js find wrong with the draft: over budget, a
+   stat past 32, a moveset rule. Refilled in place on every slider step. */
+function paintChecks(ed){
+  var checkBox = ed.checkBox;
+  checkBox.innerHTML = "";
+  var probs = checks(ed.draft, ed.p);
+  if (!probs.length) return;
+  checkBox.appendChild(el("h2", null, "Worth a look"));
+  probs.forEach(function(t){
+    var n = el("div", "note " + t[0]);
+    n.style.marginBottom = "6px";
+    n.innerHTML = t[1];
+    checkBox.appendChild(n);
+  });
+}
+
+/* What applying the draft in game would cost in VP, against the set as it
+   was when the editor opened. Refilled in place on every slider step. */
+function paintCost(ed){
+  var costBox = ed.costBox;
+  costBox.innerHTML = "";
+  var cost = retuneCost(ed.original, ed.draft);
+  if (!cost) return;
+  var cn = el("div", "note");
+  cn.style.marginTop = "12px";
+  cn.innerHTML = "<strong>" + cost.vp + " VP</strong> to apply this in game: " +
+    cost.parts.join(", ") + ".";
+  costBox.appendChild(cn);
+}
+
+/* SAVE. The id is the build's own now, and the link to a box row lives in
+   box_id, which may be null (player, 2026-09-13: three different Farigiraf,
+   and a set for a Pokemon he has not got yet). A NEW build asks the database
+   for a free id derived from the species - farigiraf, farigiraf-2 - instead
+   of guessing from what this device has loaded (see putNew). An EDIT keeps
+   its own. Then the trained tag follows the build to its copy. */
+function saveBuild(ed){
+  var draft = ed.draft, id = ed.id, b = ed.b;
+  if (!draft.pokemon) { toast("Pick a Pokemon first"); return; }
+  var stem = String(draft.pokemon).toLowerCase()
+    .replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+  var doc = {pokemon:draft.pokemon, box_id:draft._boxId || null,
+             mega:draft.mega || null,
+             ability:draft.ability || null,
+             mega_ability:draft.mega_ability || null,
+             nature:draft.nature || null,
+             stat_points:draft.stat_points,
+             moves:draft.moves.filter(Boolean),
+             role:draft.role || "", rationale:draft.rationale || "",
+             extra:b?.extra || {}};
+  (id ? put("builds/" + id, doc).then(function(){ return id; })
+      : putNew("builds", stem, doc)).then(function(){
+    return syncTrained(b?.box_id, doc.box_id, id);
+  }).then(function(){
+    leaveEditor(); toast("Build saved");
+  });
+}
+
+/* DELETE, after asking - or, for a build never saved, just leave. The copy
+   it sat on loses its trained tag unless another build is still on it. */
+function deleteBuild(ed){
+  var id = ed.id;
+  if (!id) { leaveEditor(); return; }
+  ask("Delete the " + ed.draft.pokemon + " build?",
+      "Only this set goes. The Pokemon it sits on loses its trained tag, " +
+      "unless another build is still on it.",
+      "Delete", true).then(function(ok){
+    if (!ok) return;
+    drop("builds/" + id).then(function(){
+      return syncTrained(ed.b?.box_id, null, id);
+    }).then(function(){ leaveEditor(); toast("Deleted"); });
+  });
 }
 
 function movePicker(draft, idx, ls, done){
