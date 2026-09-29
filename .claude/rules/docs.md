@@ -46,8 +46,8 @@ hook in `.claude/settings.json` calls `check_docs.py --hook` after every Edit or
 Write of a `.md` file. It prints nothing, and so costs no tokens, while
 everything passes. A problem comes back as exit 2, which Claude Code shows to
 Claude straight away. The same hook guards the auto-memory index, which the gate
-never sees: every link resolves, every memory is linked, and `MEMORY.md` stays
-under `MEMORY_BUDGET`. Edits made through Bash skip the hook, and the pre-push
+never sees (it lives in the user's Claude folder, not the repo): every link
+resolves, every memory is linked, and the index stays under `MEMORY_BUDGET`. Edits made through Bash skip the hook, and the pre-push
 gate still catches those.
 
 ## The README is the front door, and it is checked
