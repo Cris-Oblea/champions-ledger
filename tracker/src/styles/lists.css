@@ -1,0 +1,89 @@
+/* ---------- list rows ---------------------------------------------------- */
+.list{display:flex;flex-direction:column;gap:6px}
+.row{display:flex;align-items:center;gap:10px;width:100%;text-align:left;
+  background:var(--surface);border:1px solid var(--line);border-left-width:3px;
+  border-left-color:var(--line-hard);border-radius:var(--r);
+  padding:9px 11px;min-height:52px}
+.row:hover{border-color:var(--line-hard)}
+/* the left stripe encodes ORIGIN, which is what decides whether a slot is
+   elastic - not whether the Pokemon is "permanent" */
+.row.perm{border-left-color:var(--accent)}          /* HOME origin: elastic */
+.row.locked{border-left-color:var(--muted)}         /* Champions origin: welded */
+.row.unknown{border-left-color:var(--line-hard);border-left-style:dotted}
+.row.rental{border-left-color:var(--warn);border-left-style:dashed}
+.row.home{border-left-color:var(--muted)}
+.row.illegal{border-left-color:var(--bad)}
+/* ...AND NOT ON A CARD. Written here rather than up with the card rules
+   because the six above have the same specificity, so source order is what
+   decides: placed earlier it lost to `.row.perm` and the teal edge stayed.
+   A card already carries the type ring; the origin is on its tag. */
+.row.card{display:flex;flex-direction:column;align-items:stretch;
+  justify-content:flex-start;padding:0;overflow:hidden;position:relative;
+  background:
+    linear-gradient(var(--tint-dir), var(--tsoft, transparent) 0,
+                    var(--tsoftb, var(--tsoft, transparent)) 34px,
+                    transparent 76px)
+      left top / 50% 100% no-repeat,
+    linear-gradient(var(--tint-dir), var(--tsoft2, var(--tsoft, transparent)) 0,
+                    var(--tsoft2b, var(--tsoft2, var(--tsoft, transparent))) 34px,
+                    transparent 76px) right top / 50% 100% no-repeat,
+    var(--surface);
+  border-left-width:1px;border-left-color:var(--line);border-left-style:solid}
+.rmain{flex:1;min-width:0}
+.rname{font-weight:600;font-size:14.5px;display:flex;align-items:center;
+  gap:6px;flex-wrap:wrap}
+/* THE "WHY" BUTTON that holds the rest of an intro. It reads as a link rather
+   than a control because it reveals text, not an action - and it says how many
+   words are behind it, so nobody has to tap to find out whether it is worth
+   tapping. */
+.whybtn{font:inherit;background:none;border:0;padding:0;margin:0;
+  color:var(--accent);cursor:pointer;text-decoration:underline;
+  text-underline-offset:2px;white-space:nowrap}
+.whybtn:hover{color:var(--text)}
+.lede .more,.sub .more{display:block;margin-top:4px}
+
+.rmeta{color:var(--muted);font-size:12px;display:flex;align-items:center;
+  gap:6px;flex-wrap:wrap;margin-top:2px}
+.rmeta .mono{font-family:var(--mono);font-variant-numeric:tabular-nums}
+/* ONE FACT PER SPAN, so the line breaks BETWEEN facts and never inside one.
+   A move's meta line is "Physical · 40 BP · 100 acc · 12 PP · 40 effective",
+   and as a single text node a phone breaks it wherever the space falls - "100"
+   at the end of one line and "acc" at the start of the next, or a separator
+   dot orphaned in the left margin. Each fact is its own nowrap span now and
+   the separator is drawn by CSS between them, so a wrap can only happen at a
+   join. */
+.rmeta .fact{white-space:nowrap}
+/* A stat line is a run of facts inside one .rmeta, so it needs its own flex
+   context - otherwise the six stats space out against the type chips beside
+   them instead of staying together as one reading.
+
+   `flex:1 1 100%` rather than inline-flex, and the difference is measurable:
+   an inline-flex child of a flex row is sized by its content and refuses to
+   shrink, so six labelled stats ran 359px wide inside a 345px viewport and
+   pushed the page sideways. Given its own full-width row it wraps internally
+   instead - and reads better anyway, with the type chips on one line and the
+   numbers on the next. */
+/* THE SEPARATOR BELONGS TO THE FACT BEFORE IT, not the one after.
+   As a ::before on the following fact, a wrap put the dot at the START of the
+   new line - the orphaned separator this was written to prevent, just moved
+   one place along. On ::after it stays on the line it ends. */
+.rmeta .fact:not(:last-child)::after{content:" ·";color:var(--faint);
+  font-family:var(--sans)}
+/* `.statrow` LIVED HERE AND IS GONE. It was the flex line of "115 HP 175 Atk
+   ..." facts, and it existed under that name because `.statline` was already
+   taken by a grid 200 lines further down - a collision that once pushed six
+   labelled stats 49px past the edge of a 360px phone.
+
+   Both problems ended the same way: there is one stat line in this app now,
+   `statGrid()`, and the calculator was the last caller writing its own. The
+   rules are deleted rather than left lying around, because a dead selector
+   with a plausible name is what gets picked up by the next person who wants
+   "the stat row". */
+/* THE STAT BEING RANKED, made findable rather than made lonely. A list sorted
+   by Attack is read WITH the Speed beside it - dropping the other five to
+   "reduce noise" took away half of what picks the Pokemon (player,
+   2026-09-15: "no puedes quitarme esa informacion"). All six stay; one is
+   marked. */
+.rmeta .fact.on{color:var(--accent);font-weight:600}
+.rside{display:flex;align-items:center;gap:6px;flex-shrink:0}
+

@@ -1,0 +1,56 @@
+/* ---------- the app's own confirm ---------------------------------------
+   Centred rather than bottom-sheeted, because it is a question and not a
+   surface: it should stop you, and it is two words long. Above the sheet so
+   it can be asked from inside one. */
+.askscrim{z-index:70;align-items:center}
+.askbox{background:var(--surface);border:1px solid var(--line-hard);
+  border-radius:14px;box-shadow:var(--shadow);
+  width:calc(100% - 32px);max-width:420px;padding:18px 18px 14px;
+  margin:0 16px}
+.askbox h3{margin:0 0 6px;font-size:16px}
+.askbox #askBody{color:var(--muted);font-size:14px;line-height:1.5}
+.askfoot{display:flex;gap:8px;justify-content:flex-end;margin-top:16px}
+/* THE SAFE ANSWER IS ON THE LEFT AND IS NOT THE LOUD ONE. Every question this
+   asks guards something irreversible, so the destructive button has to be the
+   one you reach for on purpose. */
+.askfoot .btn{min-width:96px;justify-content:center;text-align:center}
+@media (max-width:380px){
+  .askfoot{flex-direction:column-reverse}
+  .askfoot .btn{width:100%}
+}
+
+.toast{position:fixed;left:50%;z-index:80;
+  bottom:calc(var(--navh,68px) + env(safe-area-inset-bottom) + 12px);
+  background:var(--text);color:var(--ground);padding:10px 16px;border-radius:10px;
+  font-size:13.5px;box-shadow:var(--shadow);
+  max-width:min(88vw, 420px);text-align:center;
+  transform:translateX(-50%);
+  animation:toastIn .18s ease-out}
+@keyframes toastIn{from{transform:translate(-50%,8px);opacity:0}
+                   to{transform:translateX(-50%);opacity:1}}
+.toast[hidden]{display:none}
+.booterr{position:fixed;left:0;right:0;top:0;z-index:95;background:var(--bad);
+  color:#fff;font-size:12.5px;padding:7px 12px;text-align:center}
+.booterr[hidden]{display:none}
+@media (min-width:900px){.toast{bottom:24px}}   /* rail layout: no bottom nav */
+.dot{width:7px;height:7px;border-radius:50%;background:var(--faint);flex:none}
+.dot.live{background:var(--good)}
+.dot.off{background:var(--bad)}
+.scroller{overflow-x:auto}
+.hr{height:1px;background:var(--line);margin:16px 0}
+
+/* ---------- sign-in gate ------------------------------------------------- */
+.gate{position:fixed;inset:0;z-index:90;background:var(--ground);
+  display:flex;align-items:center;justify-content:center;padding:22px}
+.gate[hidden]{display:none}
+.gatebox{background:var(--surface);border:1px solid var(--line);
+  border-radius:14px;padding:26px 24px;width:100%;max-width:380px;
+  box-shadow:var(--shadow)}
+.gatebox h1{font-size:19px;margin:0 0 4px}
+.gatebox .lede{margin-bottom:18px}
+.gatebox .btn{width:100%;text-align:center;margin-top:2px}
+.gatebox .note{margin-bottom:12px}
+.userchip{font-family:var(--mono);font-size:11.5px;color:var(--muted);
+  max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.sub{font-size:12.5px;color:var(--muted);margin:0 0 8px}
+.gap6{height:6px}

@@ -1,0 +1,60 @@
+/* ---------- the damage calculator ---------------------------------------- */
+.calcresult{position:sticky;top:51px;z-index:20;background:var(--ground);
+  padding:10px 0 12px;margin-bottom:4px;border-bottom:1px solid var(--line)}
+.calcgrid{display:grid;margin-top:14px;gap:10px}
+/* THE FIELD GOES LAST WHEREVER THERE IS ONE COLUMN. The DOM order is
+   attacker / field / defender, which is the right reading order at three
+   columns across - the field sits between the two sides it applies to. In a
+   single column it means 32 toggles stand between the attacker and the
+   defender, so comparing the two sides costs a screen and a half of
+   scrolling, and the defender is the half you change most.
+   The two-column rule below 1180px already did exactly this; the phone was
+   the case it was never written for. */
+.calccol:nth-child(2){order:3}
+@media (min-width:820px){.calcgrid{grid-template-columns:1fr 1fr}
+  .calccol:nth-child(2){grid-column:1 / -1;order:3}}
+/* THREE COLUMNS STAY THREE COLUMNS, and the measurement is why. The grid
+   stretches all three to the tallest, so the field decided the height of the
+   attacker and the defender beside it: 794px against their ~370. Moving it to
+   a full-width band below them was tried and measured WORSE - 945px, because
+   a band pays its own height on top of theirs instead of hiding inside it.
+   What fixed it was the label moving into the row: the field is 399px now,
+   which is about what a side costs, so the column it sits in is free. */
+/* 1.35, not 1. The field holds 32 buttons and the two sides hold six rows
+   each; giving all three the same width makes the field wrap to thirteen
+   lines while the sides finish in eight. Measured, then sized. */
+@media (min-width:1180px){.calcgrid{grid-template-columns:1fr 1.35fr 1fr}
+  .calccol:nth-child(2){grid-column:auto;order:0}}
+.calccol h2{margin-top:11px}
+.calccol h2:first-child{margin-top:0}
+
+/* the verdict, sized like the answer it is */
+.verdict{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.verdict .num{font-family:var(--mono);font-size:22px;font-weight:600;
+  font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+.verdict .pct{font-family:var(--mono);font-size:13px;color:var(--muted);
+  font-variant-numeric:tabular-nums}
+.kotag{font-family:var(--cond);text-transform:uppercase;letter-spacing:.06em;
+  font-size:12px;font-weight:600;padding:3px 9px;border-radius:6px;
+  border:1px solid;white-space:nowrap}
+.kotag.k1{background:var(--bad-soft);border-color:var(--bad);color:var(--bad)}
+.kotag.k2{background:var(--warn-soft);border-color:var(--warn);color:var(--warn)}
+.kotag.k3{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+
+/* a segmented control reads as one choice; two loose pills read as two */
+.seg{display:inline-flex;border:1px solid var(--line-hard);border-radius:9px;
+  overflow:hidden;background:var(--surface)}
+.seg button{background:none;border:0;padding:7px 18px;font-family:var(--cond);
+  text-transform:uppercase;letter-spacing:.07em;font-size:12px;font-weight:600;
+  color:var(--muted)}
+.seg button + button{border-left:1px solid var(--line)}
+.seg button[aria-pressed="true"]{background:var(--accent);color:var(--accent-ink)}
+.sortseg{margin-bottom:10px}
+/* The chip filter on the GTS recommendations. NOT `.sortseg`, which it
+   was for one build: boot wires every .sortseg to setSort() off a
+   `data-sort` these buttons do not have, so clicking one would have
+   re-sorted every box list to undefined. Same shape, its own hook. */
+.wantseg{margin-bottom:10px}
+.wantseg button{padding:6px 13px;font-size:11px}
+.sortseg button{padding:6px 13px;font-size:11px}
+

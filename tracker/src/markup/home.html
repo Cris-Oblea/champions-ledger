@@ -1,0 +1,121 @@
+    <!-- =========================================================== HOME -->
+    <section class="view" id="v-home" role="tabpanel" hidden>
+      <div class="viewhead">
+        <div><h1>HOME Box</h1>
+          <p class="lede">Waiting outside Champions. Arrives permanent and
+             trainable, 0 VP &mdash; the only route that delivers a chosen species
+             on purpose.</p></div>
+        <span class="spacer"></span>
+        <button class="btn primary fab" data-add="home"><span class="fabplus" aria-hidden="true">+</span>Add to HOME</button>
+      </div>
+      <!-- THREE THINGS LIVE IN HOME AND THEY ARE ASKED AT DIFFERENT TIMES:
+           what is parked there, what is out on the GTS, and what is still
+           missing from the dex. They were one scroll, so the checklist would
+           have opened under a 170-row box (player, 2026-09-20: "podria ser
+           algun submenu o algo que me indique los pokemones con prioridad de
+           captura o intercambio"). A segmented control rather than an eighth
+           tab: the bar was measured at its limit with seven. -->
+      <fieldset class="seg homeseg" aria-label="What to look at">
+        <button data-home="box" aria-pressed="true">HOME box</button>
+        <button data-home="gts" aria-pressed="false">GTS</button>
+        <button data-home="dex" aria-pressed="false">Dex</button>
+      </fieldset>
+
+      <div id="homePaneGts" hidden>
+      <h2>GTS offers open <span class="n" id="nGts"></span></h2>
+      <p class="sub">Three slots, and an open offer holds one until it is taken
+        or withdrawn. A deposit is not a trade: until someone accepts it, the
+        Pokemon is still yours &mdash; and parked, so it cannot be sent to Champions.</p>
+      <div class="list" id="listGts"></div>
+      <div class="btnrow" style="margin-top:8px;margin-bottom:6px">
+        <button class="btn sm" id="gtsAdd">Log an offer</button>
+      </div>
+
+      <!-- WHAT TO ASK FOR, AND WITH WHAT. The Champions box is already a
+           screen; what it cannot say is which of your spares would buy one of
+           the species welded into it (player, 2026-09-21: "el listado de
+           champions se puede usar como recomendaciones de cambio en el gts.
+           eso quedaria mucho mejor"). -->
+      <h2>Worth trading <span class="n" id="nGtsWant"></span></h2>
+      <p class="sub" id="gtsWantSub"></p>
+      <!-- The question he actually opens this for: "de esos que no puedo usar
+           cambiarlos por pokemones usables en champions". The unusable ones
+           lead the list anyway, but with 44 chips a filter is the difference
+           between reading and scrolling. -->
+      <fieldset class="seg wantseg" id="gtsWantFilter"
+           aria-label="Which of your Pokemon to offer">
+        <button data-want="all" aria-pressed="true">All</button>
+        <button data-want="outside" aria-pressed="false">Not in Champions</button>
+        <button data-want="dupes" aria-pressed="false">Duplicates</button>
+      </fieldset>
+      <div class="search field"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input type="text" id="gtsWantSearch" aria-label="Filter the chips" placeholder="Filter by the chip&rsquo;s name or type">
+      </div>
+      <div class="list cards" id="listGtsWant"></div>
+      <div class="btnrow" id="gtsWantMore"></div>
+      <!-- Closed trades are the only real evidence of what the market pays.
+           The player's own pricing rule came from remembering five of them. -->
+      <!-- Collapsed. There are 21 closed trades already and the list only
+           grows; left open it buried the HOME box under a wall of history
+           you rarely need open (player, 2026-09-12). The summary line is the
+           part worth seeing every time, so it stays outside the fold. -->
+      <div id="gtsHistWrap" hidden>
+        <button class="btn sm fold" id="gtsHistToggle" aria-expanded="false"
+                aria-controls="gtsHistBody">
+          <span class="foldcaret" aria-hidden="true">&#9656;</span>
+          <span>Trades that closed</span>
+          <span class="n" id="nGtsHist"></span>
+        </button>
+        <p class="sub" id="gtsHistSub"></p>
+        <div id="gtsHistBody" hidden>
+          <div class="search field"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+            <input type="text" id="gtsHistSearch" aria-label="Filter closed trades" placeholder="Filter by either side of the trade">
+          </div>
+          <div class="list" id="listGtsHist"></div>
+        </div>
+      </div>
+
+      </div><!-- /homePaneGts -->
+
+      <div id="homePaneBox">
+      <fieldset class="seg sortseg" aria-label="Sort order">
+        <button data-sort="dex" aria-pressed="true">Dex #</button>
+        <button data-sort="az" aria-pressed="false">A&ndash;Z</button>
+      </fieldset>
+      <h2>In HOME <span class="n" id="nHome"></span></h2>
+      <div class="search field">
+        <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+        <input type="text" id="homeFilter" aria-label="Filter HOME" placeholder="Filter by name, type, number, shiny, trained">
+      </div>
+      <div class="list cards" id="listHome"></div>
+      <div class="btnrow" id="homeMore"></div>
+      </div><!-- /homePaneBox -->
+
+      <!-- WHAT IS STILL MISSING, in the order it is worth going after.
+           The dex is finished through HOME - caught in GO where that is
+           possible, traded on the GTS where it is not - and the list that
+           matters is not "everything you do not have" but "what to go after
+           next" (player, 2026-09-20: "la idea es ir priorizando pokemones
+           que no tengo por al menos 1 copia por especie"). -->
+      <div id="homePaneDex" hidden>
+        <p class="lede">Every Pokemon Champions lets you own, and what is
+          missing. Caught in GO and sent through HOME where that works, traded
+          on the GTS where it does not.</p>
+        <div class="search field">
+          <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <input type="text" id="dexFilter" aria-label="Filter the dex checklist" placeholder="Filter by name, type or number">
+        </div>
+        <div id="dexDone"></div>
+
+        <!-- The bucket that used to sit here - "frees a slot in Champions" -
+             was a list of Pokemon he already owns, printed under a different
+             heading, and the Champions Box tab is that screen. It moved to the
+             GTS pane, where the same species are TARGETS and each one can be
+             shown with the chips that would fetch it. -->
+        <h2>Not in the box or in HOME <span class="n" id="nDexMissing"></span></h2>
+        <p class="sub" id="dexMissingSub"></p>
+        <div class="list cards" id="listDexMissing"></div>
+        <div class="btnrow" id="dexMissingMore"></div>
+      </div><!-- /homePaneDex -->
+    </section>
+

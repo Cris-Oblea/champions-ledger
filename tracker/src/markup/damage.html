@@ -1,0 +1,59 @@
+    <!-- =========================================================== CALC -->
+    <section class="view" id="v-calc" role="tabpanel" hidden>
+      <!-- the answer stays put while you change what feeds it: this is the
+           whole reason the page exists, and it used to sit below the fold -->
+      <div class="calcresult" id="calcOut">
+        <div class="empty">Pick an attacker, a move and a defender.</div>
+      </div>
+
+      <fieldset class="seg" id="calcMode" aria-label="Battle format">
+        <button data-mode="Doubles" aria-pressed="true">Doubles</button>
+        <button data-mode="Singles" aria-pressed="false">Singles</button>
+      </fieldset>
+
+      <div class="calcgrid">
+        <section class="calccol">
+          <h2>Attacker</h2>
+          <div id="calcAtk"></div>
+          <h2>Move</h2>
+          <button class="slot blank" id="calcMove"><div class="rmain">
+            <div class="rname">Pick a move</div></div></button>
+        </section>
+
+        <section class="calccol">
+          <h2>The field</h2>
+          <div class="toggles" id="calcField"></div>
+        </section>
+
+        <section class="calccol">
+          <h2>Defender</h2>
+          <div id="calcDef"></div>
+        </section>
+      </div>
+
+      <!-- A status is not gear - you do not own one, you are afflicted by it,
+           and what it is worth knowing for is the multiplier it puts on a
+           damage roll. It used to sit behind a third tab on Items, which is
+           where the player found it wrong (2026-09-11). Here it is next to
+           the field toggles that actually apply it. -->
+      <!-- FOLDED. It is a DICTIONARY - seven entries you read once and
+           then know - and it was sitting open under the controls, pushing the
+           thing you came here for further up the scroll every time (player,
+           2026-09-19: "el apartado de status effects deberia ir en una pestana
+           como diccionario, y no ocupar espacio en pagina de damage calc...
+           debe estar colapsada en algun lado"). It stays on this screen,
+           because this is where a status is applied and where its multiplier
+           is read - one tap, and shut by default. -->
+      <div class="foldwrap">
+        <button class="btn sm fold" id="statusFold" aria-expanded="false"
+          aria-controls="statusBody">Status effects — what each does to
+          the numbers</button>
+        <div id="statusBody" hidden>
+          <p class="sub">Champions rebalanced three of them; every value says
+            where it came from, so a figure nobody measured here never looks
+            like one that was.</p>
+          <div id="statusList" class="list"></div>
+        </div>
+      </div>
+    </section>
+

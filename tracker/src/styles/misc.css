@@ -1,0 +1,40 @@
+/* ---------- misc --------------------------------------------------------- */
+.kv{display:grid;grid-template-columns:auto 1fr;gap:5px 14px;font-size:13.5px}
+.kv dt{color:var(--muted)}
+.kv dd{margin:0;font-family:var(--mono);font-variant-numeric:tabular-nums;
+  text-align:right}
+/* SIX COLUMNS, because there are six stats. It said seven, so every stat grid
+   in the app has been drawing an empty seventh cell and squeezing the real
+   ones to fit. */
+/* minmax(0,1fr), NOT 1fr. A grid track's default minimum is its content,
+   so `repeat(6,1fr)` is only equal columns while nothing inside is wider
+   than its share - and a two-Mega stat cell is. Garchomp's line measured
+   301px inside a 264px card and the Speed column hung off the right edge
+   (player, 2026-09-20: "no se alcanza ver la stat de speed en el
+   garchomp... en la card"). With a zero minimum the six always fit and
+   the cell's own content is what adapts. */
+.statline{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));
+  gap:5px;margin-top:8px}
+.statline div{min-width:0;text-align:center;background:var(--sunk);
+  border-radius:6px;padding:4px 2px}
+.statline b{display:block;font-family:var(--mono);font-size:13px;font-weight:500;
+  font-variant-numeric:tabular-nums}
+.statline span{font-family:var(--cond);font-weight:600;font-size:9.5px;letter-spacing:.06em;
+  text-transform:uppercase;color:var(--faint)}
+.toggles{display:flex;flex-wrap:wrap;gap:6px}
+.tog{border:1px solid var(--line);background:var(--surface);border-radius:7px;
+  padding:6px 9px;font-size:12.5px;display:flex;align-items:center;gap:6px}
+/* AN EXCLUDED CHIP IS THE OPPOSITE OF THE ONE BESIDE IT, not a second
+   shade of on. Struck through, in the bad colour, with the minus the
+   button itself writes - so it reads the same way with or without
+   colour, which matters on a chip that also carries a type skin. */
+.tog.no{background:var(--bad-soft);
+  border-color:var(--bad);color:var(--bad);text-decoration:line-through;
+  text-decoration-thickness:1px}
+.tog[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent);
+  color:var(--accent);font-weight:500}
+.tog.mega[aria-pressed="true"]{background:var(--mega-soft);border-color:var(--mega);
+  color:var(--mega)}
+/* 78px was a guess at the tab bar's height. It is 47px at 320, 68px at 412,
+   plus whatever the gesture bar takes - so the toast either floated or sat on
+   the nav. --navh is measured from the real element instead. */

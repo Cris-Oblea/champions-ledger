@@ -73,4 +73,24 @@ function source(root) {
     .map(f => fs.readFileSync(path.join(src, f), "utf8")).join("");
 }
 
-module.exports = { page, source };
+/* The stylesheet and the markup AS WRITTEN, assembled the way
+ * build_tracker_page.py assembles them: styles/ in the order styles/index.css
+ * lists, and markup/index.html with each include line replaced by its file.
+ * Two checks read these rather than the built page because they are about
+ * what a person wrote - a gradient's angle, an id the script asks for.
+ */
+function styles(root) {
+  const dir = path.join(root, "tracker", "src", "styles");
+  const index = fs.readFileSync(path.join(dir, "index.css"), "utf8");
+  return [...index.matchAll(/^@import "([\w.-]+)";$/gm)]
+    .map(m => fs.readFileSync(path.join(dir, m[1]), "utf8")).join("");
+}
+
+function markup(root) {
+  const dir = path.join(root, "tracker", "src", "markup");
+  return fs.readFileSync(path.join(dir, "index.html"), "utf8")
+    .replace(/^[ \t]*<!--#include ([\w.-]+) -->\r?\n/gm,
+             (m, name) => fs.readFileSync(path.join(dir, name), "utf8"));
+}
+
+module.exports = { page, source, styles, markup };

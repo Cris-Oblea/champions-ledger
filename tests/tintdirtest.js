@@ -17,10 +17,8 @@
      - every gradient painting a tint (--tsoft*, --msoft*) takes its direction
        from var(--tint-dir), not a literal;
      - --tint-dir is defined, and is not an axis-aligned direction. */
-const fs = require("fs");
 const path = require("path");
-const css = fs.readFileSync(
-  path.join(__dirname, "..", "tracker", "src", "style.css"), "utf8");
+const css = require("./harness.js").styles(path.join(__dirname, ".."));
 
 let bad = 0;
 const ok = (label, got, want) => {

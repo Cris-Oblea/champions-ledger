@@ -1,0 +1,69 @@
+    <!-- ========================================================= BUILDS -->
+    <section class="view" id="v-builds" role="tabpanel" hidden>
+      <div class="viewhead">
+        <div><h1>Builds</h1>
+          <p class="lede">A set is its own thing: keep several for one species
+             and pick per team, or write one for a Pokemon you have not got yet
+             and it waits. 66 Stat Points, 32 max in one stat. No item here
+             &mdash; that is decided in <strong>Teams</strong>, next to this,
+             because the Item Clause makes it a team-wide choice.</p></div>
+        <span class="spacer"></span>
+        <button class="btn primary fab" id="buildAdd"><span class="fabplus" aria-hidden="true">+</span>New build</button>
+      </div>
+      <!-- Teams lives in here rather than in its own tab: an eighth tab broke
+           the phone's bar onto two rows and cost more visibility than the tab
+           was worth (player, 2026-09-13). They belong together anyway - a team
+           IS six builds, and this is the same pane pattern Items already uses. -->
+      <div class="btnrow" style="margin-bottom:12px">
+        <button class="btn sm" id="bldPaneBuilds" aria-pressed="true">Builds</button>
+        <button class="btn sm" id="bldPaneTeams" aria-pressed="false">Teams</button>
+      </div>
+      <div id="buildsPane">
+        <div class="search field"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <input type="text" id="buildSearch" aria-label="Filter builds" placeholder="Filter builds"></div>
+        <div class="list cards" id="listBuilds"></div>
+      </div>
+      <div id="teamsPane" hidden>
+        <p class="sub">Six slots, and the item lives on the slot — the Item
+          Clause means the six of them field exactly one Sitrus Berry, so an
+          item is a team decision, never part of a build.</p>
+        <div class="btnrow" style="margin-bottom:10px">
+          <button class="btn primary" id="teamAdd">New team</button>
+        </div>
+        <!-- It searches the members too, so "which team is my Farigiraf in"
+             is one question rather than six teams opened one at a time. -->
+        <div class="search field"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <input type="text" id="teamSearch" aria-label="Filter teams" placeholder="Filter teams &mdash; name or a Pokemon on it">
+        </div>
+        <div class="list cards" id="listTeams"></div>
+      </div>
+    </section>
+
+    <!-- ===================================================== EDITORS ====
+         A build and a team are edited as real VIEWS, not as pop-up sheets.
+         They used to be sheets, and sheets nest: opening the item picker from
+         inside a team put a sheet on a sheet, so pressing Back closed BOTH and
+         took every unsaved slot with it (player, 2026-09-13). A view cannot be
+         dismissed by accident - the pickers stay sheets, because they are
+         short-lived and closing one now returns to an editor that still holds
+         its draft. -->
+    <section class="view" id="v-buildedit" role="tabpanel" hidden>
+      <div class="viewhead">
+        <div><h1 id="buildEditTitle">Build</h1></div>
+        <span class="spacer"></span>
+        <button class="btn" id="buildEditBack">Back</button>
+      </div>
+      <div id="buildEditBody"></div>
+      <div class="btnrow" id="buildEditFoot" style="margin-top:14px"></div>
+    </section>
+
+    <section class="view" id="v-teamedit" role="tabpanel" hidden>
+      <div class="viewhead">
+        <div><h1 id="teamEditTitle">Team</h1></div>
+        <span class="spacer"></span>
+        <button class="btn" id="teamEditBack">Back</button>
+      </div>
+      <div id="teamEditBody"></div>
+      <div class="btnrow" id="teamEditFoot" style="margin-top:14px"></div>
+    </section>
+

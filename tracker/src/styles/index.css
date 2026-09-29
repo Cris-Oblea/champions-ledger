@@ -1,0 +1,21 @@
+/* The app's stylesheet, in CASCADE ORDER.
+
+   build_tracker_page.py inlines these files into the page in exactly the order
+   below, and nothing else. The order is part of the design: at equal
+   specificity a later rule wins, so density.css comes last because it
+   overrides sizes set everywhere above it, and tokens.css comes first because
+   everything else reads its custom properties. A new file must be listed here
+   or the build fails. */
+@import "tokens.css";
+@import "base.css";
+@import "shell.css";
+@import "card.css";
+@import "viewhead.css";
+@import "lists.css";
+@import "controls.css";
+@import "sheet.css";
+@import "misc.css";
+@import "dialogs.css";
+@import "gts.css";
+@import "damage.css";
+@import "density.css";
