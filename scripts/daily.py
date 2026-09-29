@@ -91,7 +91,8 @@ GATE_CHECKS = [
     # and so can every other document. STATUS.md - the file a new session reads
     # first - stated a rule that had been reversed two days earlier, and
     # nothing noticed. This is what notices (player, 2026-09-13).
-    (["scripts/check_docs.py"], "no document contradicts a settled decision"),
+    (["scripts/check_docs.py"],
+     "no document contradicts a decision, names a missing file or outgrows its budget"),
 ]
 
 # Read the app's SOURCE, which is the one thing the browser tests cannot: they
