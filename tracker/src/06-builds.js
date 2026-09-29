@@ -169,7 +169,7 @@ function spTotal(sp){
 function buildRow(id, b){
   var p = byName[b.mega || b.pokemon] || byName[b.pokemon];
   var lk = buildLink(id);
-  var isRental = !!(lk.row && lk.row.status === "rental");
+  var isRental = !!(lk.row?.status === "rental");
   var badges = function(nm){
     /* the form the set runs, named. NO "stone missing" badge: that was an
        audit of what he owns on a card about a SET, and a stone's status
@@ -566,7 +566,7 @@ function buildSheet(id, b, keepOriginal){
     var fa = el("div", "field");
     fa.appendChild(el("label", "f", "Ability (base form)"));
     var sa = el("select");
-    ((p && p.ab) || []).forEach(function(a){ sa.appendChild(new Option(a, a)); });
+    (p?.ab || []).forEach(function(a){ sa.appendChild(new Option(a, a)); });
     if (draft.ability && (!p || p.ab.indexOf(draft.ability) < 0))
       sa.appendChild(new Option(draft.ability, draft.ability));
     /* The same question as the moves: of the people running this Pokemon,
@@ -902,10 +902,10 @@ function buildSheet(id, b, keepOriginal){
                  stat_points:draft.stat_points,
                  moves:draft.moves.filter(Boolean),
                  role:draft.role || "", rationale:draft.rationale || "",
-                 extra:(b && b.extra) || {}};
+                 extra:b?.extra || {}};
       (id ? put("builds/" + id, doc).then(function(){ return id; })
           : putNew("builds", stem, doc)).then(function(){
-        return syncTrained(b && b.box_id, doc.box_id, id);
+        return syncTrained(b?.box_id, doc.box_id, id);
       }).then(function(){
         leaveEditor(); toast("Build saved");
       });
@@ -918,7 +918,7 @@ function buildSheet(id, b, keepOriginal){
           "Delete", true).then(function(ok){
         if (!ok) return;
         drop("builds/" + id).then(function(){
-          return syncTrained(b && b.box_id, null, id);
+          return syncTrained(b?.box_id, null, id);
         }).then(function(){ leaveEditor(); toast("Deleted"); });
       });
     })
@@ -1061,7 +1061,7 @@ function movePicker(draft, idx, ls, done){
         "learnsets come from."));
       return;
     }
-    if (abil && AB_SET[abil] && AB_SET[abil].side === "off") {
+    if (abil && AB_SET[abil]?.side === "off") {
       var n = el("div", "note");
       n.style.marginBottom = "10px";
       n.innerHTML = "<strong>" + abil + ".</strong> " + (AB_SET[abil].why || "") +
@@ -1110,7 +1110,7 @@ function movePicker(draft, idx, ls, done){
           (m.acc == null ? "—" : m.acc) + " acc",
           (m.pp == null ? "—" : m.pp) + " PP",
           m.bp ? Math.round(score(m)) + " effective" : null,
-          hh && hh.x && m.bp
+          hh?.x && m.bp
             ? Math.round(m.bp * hh.x) + " BP with " + abil : null,
           m.target
         ]));

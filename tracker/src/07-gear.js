@@ -101,7 +101,7 @@ function drawItems(){
      lives outside the container now, so nothing here needs protecting. */
   var pane = $("itemCats");
   pane.innerHTML = "";
-  var q = (($("itemSearch") || {}).value || "").trim().toLowerCase();
+  var q = ($("itemSearch")?.value || "").trim().toLowerCase();
   var own = ownedItems();
   var nOwn = 0, nTot = 0;
 
@@ -294,8 +294,7 @@ function kv(host, rows){
 
 function drawTrainer(){
   var t = S.meta.trainer || {};
-  if (document.activeElement && document.activeElement.closest &&
-      document.activeElement.closest("#v-trainer")) return;
+  if (document.activeElement?.closest?.("#v-trainer")) return;
   $("tCap").value = t.box_capacity != null ? t.box_capacity : 50;
 
   /* the capacity number means nothing without the usage beside it */

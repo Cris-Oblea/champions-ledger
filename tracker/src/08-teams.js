@@ -33,7 +33,7 @@ var TEAM_SLOTS = 6;
    put this draft somewhere before it leaves the screen. */
 function teamDoc(draft){
   return {name: draft.name,
-          slots: draft.slots.filter(function(x){ return x && x.build_id; }),
+          slots: draft.slots.filter(function(x){ return x?.build_id; }),
           notes: draft.notes || {}};
 }
 
@@ -47,7 +47,7 @@ function teamDoc(draft){
 function megaOf(b, slot){
   if (!b) return null;
   if (b.mega && byName[b.mega]) return byName[b.mega];
-  if (slot && slot.item) {
+  if (slot?.item) {
     var ms = megasFor(b.pokemon) || [];
     for (var i = 0; i < ms.length; i++) {
       if (ms[i] && STONE_OF[ms[i].name] === slot.item) return ms[i];
@@ -57,7 +57,7 @@ function megaOf(b, slot){
 }
 
 function teamSlots(t){
-  var out = (t && t.slots || []).slice(0, TEAM_SLOTS);
+  var out = (t?.slots || []).slice(0, TEAM_SLOTS);
   while (out.length < TEAM_SLOTS) out.push({});
   return out;
 }
@@ -75,7 +75,7 @@ function teamReport(t){
   var itemSeen = {}, formSeen = {};
   slots.forEach(function(sl, i){
     var b = sl.build_id ? S.builds[sl.build_id] : null;
-    var info = {i: i, slot: sl, build: b, name: b && b.pokemon};
+    var info = {i: i, slot: sl, build: b, name: b?.pokemon};
     if (b) {
       r.filled++;
       var lk = buildLink(sl.build_id);
@@ -114,7 +114,7 @@ function teamReport(t){
         info.p = p;
         info.types = p.types;
         info.mega = mg || null;
-        info.sp = (b.stat_points || {}).spe || 0;
+        info.sp = b.stat_points?.spe || 0;
         info.nature = b.nature || "";
         /* A SCENARIO IS EARNED BY A CHANGE, whichever half of the screen it
            lands in. The stone swaps the typing, the stats, or both - and the
@@ -234,7 +234,7 @@ function teamTypes(r, megaAt){
       var who = evolved ? s.mega.name : s.name;
       var m = 1;
       types.forEach(function(t){
-        var v = C.CHART[atk] && C.CHART[atk][t];
+        var v = C.CHART[atk]?.[t];
         m *= (v == null ? 1 : v);
       });
       if (m > 1) weakOf.push({name: who, m: m});
@@ -299,7 +299,7 @@ function teamSlotRow(draft, id, x, i, redraw){
        mostrar el resumen de habilidad, Nature, SPs, moves"). */
     var ab = activeAbility(x.build);
     var spTxt = STAT_KEYS.map(function(k){
-      return (x.build.stat_points || {})[k] || 0; }).join("/");
+      return x.build.stat_points?.[k] || 0; }).join("/");
     row = pokeCard(draw, {
       tag: "div",
       name: x.build.pokemon,
@@ -331,7 +331,7 @@ function teamSlotRow(draft, id, x, i, redraw){
           h.appendChild(el("span", "tag warn", "you do not have one yet"));
         else if (x.state === "orphan")
           h.appendChild(el("span", "tag bad", "its Pokemon is gone"));
-        if (x.row && x.row.status === "rental")
+        if (x.row?.status === "rental")
           h.appendChild(el("span", "tag warn", "rental — cannot be trained"));
       },
       meta: function(meta){
@@ -435,10 +435,10 @@ function teamPickBuild(draft, idx, onPick){
      teams repeats even a form - so two Squawkabilly of different plumage are
      still two of the same thing here. */
   var taken = {};
-  ((draft && draft.slots) || []).forEach(function(sl, j){
-    if (j === idx || !sl || !sl.build_id) return;
+  (draft?.slots || []).forEach(function(sl, j){
+    if (j === idx || !sl?.build_id) return;
     var ob = S.builds[sl.build_id];
-    if (ob && ob.pokemon) taken[ob.pokemon] = 1;
+    if (ob?.pokemon) taken[ob.pokemon] = 1;
   });
   var F = {role:{}, type:{}, sort:"az"};
   openSheet("Which build?", function(body){
@@ -461,7 +461,7 @@ function teamPickBuild(draft, idx, onPick){
                  byName[b.pokemon] ? dexNo(b.pokemon) : ""]
         .filter(Boolean).join(" ").toLowerCase();
       return {id:bid, b:b, p:p, lk:lk, hay:hay,
-              types: (p && p.types) || [],
+              types: p?.types || [],
               role: (b.role || "").trim(),
               bst: p ? bst(p) : -1,
               dex: byName[b.pokemon] ? dexNo(b.pokemon) : 99999,
@@ -795,7 +795,7 @@ function teamPickItem(draft, i, redraw){
      the choice is made rather than reported after the fact. */
   var taken = {};
   draft.slots.forEach(function(sl, j){
-    if (j !== i && sl && sl.item) taken[sl.item] = 1;
+    if (j !== i && sl?.item) taken[sl.item] = 1;
   });
   openSheet("Which item?", function(body){
     body.appendChild(el("p", "sub",
@@ -894,7 +894,7 @@ function teamPickItem(draft, i, redraw){
            this read undefined and the usage tag never appeared on a single
            item. The one number on this screen that says what other players
            hold, and it was silently off. */
-        var who = draft.slots[i] && draft.slots[i].build_id
+        var who = draft.slots[i]?.build_id
           && S.builds[draft.slots[i].build_id];
         var utag = who ? usageTag(splitPct(who.pokemon, "i", x.name),
                                   who.pokemon, "i") : null;
@@ -908,7 +908,7 @@ function teamPickItem(draft, i, redraw){
           draft.slots[i].item = x.name;
           closeSheet();
           /* why it holds it - the half of teams.json that is not derivable */
-          openSheet(x.name + " on " + (S.builds[draft.slots[i].build_id] || {}).pokemon,
+          openSheet(x.name + " on " + S.builds[draft.slots[i].build_id]?.pokemon,
             function(b2){
               b2.appendChild(el("p", "sub", "Why this one? One line is enough."));
               var f = el("div", "field");
@@ -940,14 +940,14 @@ function drawTeams(){
   /* THE MEMBERS ARE SEARCHED TOO, and the items with them. "Which team is my
      Farigiraf in" and "who is holding the Sitrus Berry" are both questions
      about a Pokemon, asked at the list rather than by opening six teams. */
-  var q = ($("teamSearch") && $("teamSearch").value || "").trim().toLowerCase();
+  var q = ($("teamSearch")?.value || "").trim().toLowerCase();
   var ids = all.filter(function(id){
     if (!q) return true;
     var t = S.teams[id];
-    var hay = [t.name, (t.notes && t.notes.idea) || ""];
+    var hay = [t.name, t.notes?.idea || ""];
     (t.slots || []).forEach(function(sl){
-      if (sl && sl.item) hay.push(sl.item);
-      var b = sl && sl.build_id && S.builds[sl.build_id];
+      if (sl?.item) hay.push(sl.item);
+      var b = sl?.build_id && S.builds[sl.build_id];
       if (b) hay.push(b.pokemon, b.mega, b.role);
     });
     return hay.filter(Boolean).join(" ").toLowerCase().indexOf(q) >= 0;
@@ -1190,7 +1190,7 @@ function teamSheet(id, t){
     var fw = el("div", "field");
     fw.appendChild(el("label", "f", "The idea"));
     var ta = el("textarea");
-    ta.value = (draft.notes && draft.notes.idea) || "";
+    ta.value = draft.notes?.idea || "";
     ta.oninput = function(){
       draft.notes = draft.notes || {}; draft.notes.idea = ta.value; };
     fw.appendChild(ta);

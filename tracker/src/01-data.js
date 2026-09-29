@@ -11,10 +11,10 @@ var DEX = C.DEX.map(function(r){
    of has no number here - Melmetal and Oricorio - and sorts last rather than
    being given one from memory. */
 function dexNo(name){
-  var n = (C.DEXNO || {})[name];
+  var n = C.DEXNO?.[name];
   if (n) return n;
   var p = byName[name];
-  return p && p.dex ? p.dex : 99999;
+  return p?.dex ? p.dex : 99999;
 }
 function dexLabel(name){
   var n = dexNo(name);
@@ -96,7 +96,7 @@ var STAT_LABEL = {hp:"HP", atk:"Atk", def:"Def", spa:"SpA", spd:"SpD", spe:"Spe"
 
    The three tables below are views onto that one source. They are built rather
    than written so nothing can drift from it. */
-var TYPE_COLORS = (window.CHAMP && window.CHAMP.TYPE_COLORS) || {};
+var TYPE_COLORS = window.CHAMP?.TYPE_COLORS || {};
 var TYPE_COLOR = {}, TYPE_COLOR2 = {}, TYPE_INK = {};
 Object.keys(TYPE_COLORS).forEach(function(t){
   TYPE_COLOR[t] = TYPE_COLORS[t].top;
@@ -141,7 +141,7 @@ function toast(msg){
    color-mix - which would add a newer browser requirement than anything else
    this page relies on. Returns the hex untouched when it is not one. */
 function tintOf(h, alpha){
-  if (!h || h.charAt(0) !== "#" || h.length !== 7) return null;
+  if (h?.charAt(0) !== "#" || h.length !== 7) return null;
   return "rgba(" + parseInt(h.slice(1, 3), 16) + "," +
                    parseInt(h.slice(3, 5), 16) + "," +
                    parseInt(h.slice(5, 7), 16) + "," + alpha + ")";
@@ -159,7 +159,7 @@ function tintOf(h, alpha){
    dropped into a plain `.list` simply stays a row. */
 function typeCard(row, p, shiny){
   row.className += " card";
-  var types = (p && p.types) || [];
+  var types = p?.types || [];
   var c1 = TYPE_COLOR[types[0]];
   if (!c1) return row;
   /* A DUAL TYPE IS ITS OWN COLOUR, not its first half. Fire/Psychic and
@@ -338,8 +338,8 @@ function retypeLayer(row, base, forms){
    callers that need to TELL two Megas apart use formKey() instead, which says
    the word "mega" rather than inventing a letter for it. */
 function megaSuffix(m, base){
-  if (m && m.battle) return m.battle;          /* Blade, Hero, Sunny... */
-  if (m && m.sfx !== undefined) return m.sfx;  /* an outside Mega's letter */
+  if (m?.battle) return m.battle;          /* Blade, Hero, Sunny... */
+  if (m?.sfx !== undefined) return m.sfx;  /* an outside Mega's letter */
   var sp = (base && (base.species || base.name)) || "";
   return String(m.name).replace("Mega ", "").replace(sp, "").trim();
 }
@@ -364,12 +364,12 @@ function megaSuffix(m, base){
    stat deltas, the sprite caption - is keyed off these and needed no other
    change, which is the point of having had them in one place. */
 function formInk(m, base){
-  if (m && m.battle) return "mk-b";
+  if (m?.battle) return "mk-b";
   var k = megaSuffix(m, base).toUpperCase();
   return "mk-" + (k === "X" || k === "Y" || k === "Z" ? k.toLowerCase() : "m");
 }
 function formKey(m, base){
-  if (m && m.battle) return m.battle.toLowerCase();
+  if (m?.battle) return m.battle.toLowerCase();
   return megaSuffix(m, base) || "mega";
 }
 
@@ -383,7 +383,7 @@ function statGrid(p, mark, megas){
      to see - "solo necesito saber las cosas que cambian del pokemon base a
      mega" - and it is why a Pokemon with no Mega line looks exactly as it did
      before: the extra line is only ever drawn where there is a difference. */
-  var b = (p && p.b) || p || [];
+  var b = p?.b || p || [];
   var sl = el("div", "statline");
   STAT_KEYS.forEach(function(k, i){
     var cell = el("div", mark === k ? "on" : null);
@@ -418,7 +418,7 @@ function statGrid(p, mark, megas){
        its height again to say nothing (seen on the card, 2026-09-21). The
        same applies to a Mega that is taken purely for its ability. */
     var moved = (megas || []).filter(function(m){
-      return m.b && m.b.some(function(v, j){ return v !== b[j]; });
+      return m.b?.some(function(v, j){ return v !== b[j]; });
     });
     var line = moved.length > 1;
     moved.forEach(function(m){
@@ -812,7 +812,7 @@ function megaLine(p){
 function battleFormsOf(p){
   if (!p || p.mega) return [];
   if (p.outside) return outsideForms(p, false);
-  var bfm = (C.BFORMS || {})[p.name];
+  var bfm = C.BFORMS?.[p.name];
   if (!bfm) return [];
   return Object.keys(bfm.f).map(function(lab){
     var e = bfm.f[lab];
@@ -833,7 +833,7 @@ function formMoves(form, base){
     var t = ft[mv][form.name];
     return t && t !== ft[mv][base.name];
   }).map(function(mv){
-    return [mv, ft[mv][base.name] || (MOVE_BY[mv] || {}).type, ft[mv][form.name]];
+    return [mv, ft[mv][base.name] || MOVE_BY[mv]?.type, ft[mv][form.name]];
   });
 }
 /* The same two lists for a species Champions does not have, read off its
@@ -896,7 +896,7 @@ function bst(p){ return p.b.reduce(function(a,b){ return a+b; }, 0); }
    is legal, whether it Mega Evolves, whether it can be brought - still asks
    byName, which knows only the Champions dex. */
 function outsideRow(name){
-  var h = (C.HOME_DEX || {})[name];
+  var h = C.HOME_DEX?.[name];
   if (!h) return null;
   return {name:name, species:name, types:h.t || [], b:h.b || [],
           ab:h.ab || [], mega:false, dex:0,
@@ -911,7 +911,7 @@ function outsideRow(name){
    BST and no sheet at all (player, 2026-09-18: "floette no tiene ficha, si
    deberia tenerla"). */
 function anyRow(name){
-  var alias = (C.LEARN_ALIAS || {})[name];
+  var alias = C.LEARN_ALIAS?.[name];
   return byName[name] || (alias && byName[alias]) || outsideRow(name)
          || (alias && outsideRow(alias)) || null;
 }
@@ -970,7 +970,7 @@ var SPRITE_BASE = IMG_HOSTS[0] + "/gh/PokeAPI/sprites@" + SPRITE_PIN +
    a box row, a HOME row, a trade. The search view draws the species rather
    than his copy of it, so it stays the ordinary colour. */
 function spriteFor(name, big, shiny){
-  return spriteImg((C.SPRITE_ID || {})[name], big, shiny);
+  return spriteImg(C.SPRITE_ID?.[name], big, shiny);
 }
 /* A FORM'S PICTURE, which is not always the one its name would give.
 
@@ -981,7 +981,7 @@ function spriteFor(name, big, shiny){
    from. */
 function formSprite(form, base, big, shiny){
   var own = form.sp ||
-    ((C.FORM_SPRITE || {})[base && base.name] || {})[form.name];
+    C.FORM_SPRITE?.[base?.name]?.[form.name];
   return own ? spriteImg(own, big, shiny) : spriteFor(form.name, big, shiny);
 }
 /* THE ID IS THE FILE NAME: a number for a row's own picture, "493-ice" for
@@ -1035,7 +1035,7 @@ function defence(types){
     var m = 1;
     types.forEach(function(d){
       var row = C.CHART[atk];
-      if (row && row[d] != null) m *= row[d];
+      if (row?.[d] != null) m *= row[d];
     });
     if (m !== 1) out[atk] = m;
   });
@@ -1058,7 +1058,7 @@ function learnset(name){
      forms inherit the base species' pool. build_tracker_data.py resolves
      those with norm() and ships the answer, so this stays a plain lookup and
      no form is left without a movepool. */
-  var alias = (C.LEARN_ALIAS || {})[name];
+  var alias = C.LEARN_ALIAS?.[name];
   var ids = C.LEARN[name] || (alias && C.LEARN[alias]) || C.LEARN[sp] || null;
   return ids ? ids.map(function(i){ return MOVES[i]; }) : null;
 }
@@ -1070,7 +1070,7 @@ function learnset(name){
    build_tracker_data.py resolves it there; the species is only the fallback
    for a form Smogon does not carry. */
 function megasFor(name){
-  var owned = (C.MEGA_OWNER || {})[name];
+  var owned = C.MEGA_OWNER?.[name];
   if (owned) return owned.map(function(n){ return byName[n]; }).filter(Boolean);
   /* an alternate form with no Megas of its own gets none - it must not
      inherit its base form's */
@@ -1135,7 +1135,7 @@ function numText(text, tag, cls){
   return node;
 }
 function effectOf(name){
-  return (C.EFFECTS || {})[name] || null;
+  return C.EFFECTS?.[name] || null;
 }
 /* The numbers as short chips: "x1.3 damage dealt", "1/10 of max HP". */
 function effectChips(e){
@@ -1191,14 +1191,14 @@ function effectLine(name){
    species people ladder with, and a Mega Charizard Y is a Charizard holding a
    stone as far as the results are concerned. */
 function splitsFor(name){
-  var all = (window.CHAMP_SPLITS || {}).p || {};
+  var all = window.CHAMP_SPLITS?.p || {};
   if (all[name]) return all[name];
   var p = byName[name];
-  return (p && p.species && all[p.species]) || null;
+  return (p?.species && all[p.species]) || null;
 }
 /* The regulation these numbers came from, for anything that prints a source. */
 function splitsReg(){
-  return (window.CHAMP_SPLITS || {}).r || null;
+  return window.CHAMP_SPLITS?.r || null;
 }
 /* The percentage for one thing.
 
@@ -1208,8 +1208,8 @@ function splitsReg(){
    measured "nobody". */
 function splitPct(name, kind, what){
   var s = splitsFor(name);
-  var rows = s && s[kind];
-  if (!rows || !rows.length) return null;
+  var rows = s?.[kind];
+  if (!rows?.length) return null;
   for (var i = 0; i < rows.length; i++) {
     if (rows[i][0] === what) return rows[i][1];
   }
@@ -1219,8 +1219,8 @@ function splitPct(name, kind, what){
    this is row 0 and not a scan. */
 function splitMax(name, kind){
   var s = splitsFor(name);
-  var rows = s && s[kind];
-  return rows && rows.length ? rows[0][1] : 0;
+  var rows = s?.[kind];
+  return rows?.length ? rows[0][1] : 0;
 }
 /* A chip, emphasised RELATIVE to that Pokemon's own maximum - see above for
    why a fixed threshold cannot work across sections. */
@@ -1264,7 +1264,7 @@ function usageTag(pct, name, kind){
    Pokemon has until it evolves, and when to evolve is a real decision because
    that ability is doing something until then. */
 function podiumFor(name){
-  return (C.PODIUM || {})[name] || [];
+  return C.PODIUM?.[name] || [];
 }
 /* The single best finish, as a chip. A Pokemon that has been top 8 eighteen
    times cannot wear eighteen badges, so the row wears its best and the sheet

@@ -44,7 +44,7 @@ var ORIGIN_LABEL = {home:"HOME origin", champions:"Champions origin",
    is not asked about here. */
 var RELEASE_FLOOR = 6;
 function releaseBlock(r){
-  if (!r || r.location !== "champions") return null;
+  if (r?.location !== "champions") return null;
   if (originOf(r) === "home") return "home";
   var n = boxRows("champions").filter(function(x){
     return originOf(x) !== "home";
@@ -74,7 +74,7 @@ function releaseBlock(r){
    Pokemon is released or traded. */
 function buildLink(id){
   var b = S.builds[id];
-  var boxId = b && b.box_id;
+  var boxId = b?.box_id;
   if (!boxId) return {state:"unbound"};
   var row = S.box[boxId];
   if (!row) return {state:"orphan"};
@@ -108,14 +108,14 @@ function buildsFor(name){
    All 81 Megas have exactly one ability, so a stone always resolves. */
 function soleAbility(name){
   var p = name ? byName[name] : null;
-  return p && p.ab && p.ab.length === 1 ? p.ab[0] : null;
+  return p?.ab?.length === 1 ? p.ab[0] : null;
 }
 function baseAbility(b){
-  return (b && b.ability) || soleAbility(b && b.pokemon) || null;
+  return b?.ability || soleAbility(b?.pokemon) || null;
 }
 /* what the stone turns it into - null when the build carries no stone */
 function megaAbility(b){
-  return b && b.mega ? (b.mega_ability || soleAbility(b.mega)) : null;
+  return b?.mega ? (b.mega_ability || soleAbility(b.mega)) : null;
 }
 /* the one actually on the field: the Mega's while it is a Mega, otherwise the
    base form's. The base ability is the fallback for a stone whose own ability
@@ -128,7 +128,7 @@ function originRows(o){
     return originOf(r) === o;
   });
 }
-function capacity(){ return (S.meta.trainer && S.meta.trainer.box_capacity) || 50; }
+function capacity(){ return S.meta.trainer?.box_capacity || 50; }
 /* A ROW PER STONE, not a list inside one document (migration 6).
    Owning a stone is the existence of its row, so marking one on the phone
    and another on the laptop are two independent writes and neither can
