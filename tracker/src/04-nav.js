@@ -125,7 +125,7 @@ function openEditor(view, title, build, foot){
   var body = $(pre + "Body");
   body.innerHTML = "";
   Object.keys(body).forEach(function(k){
-    if (k.charAt(0) === "_") { try { delete body[k]; } catch (e) {} }
+    if (k.startsWith("_")) { try { delete body[k]; } catch (e) {} }
   });
   build(body);
   var f = $(pre + "Foot");
@@ -169,7 +169,7 @@ function openSheet(title, build, foot){
      Anything underscore-prefixed is sheet-local state, so wipe it by hand. */
   var body = $("sheetBody"); body.innerHTML = "";
   Object.keys(body).forEach(function(k){
-    if (k.charAt(0) === "_") { try { delete body[k]; } catch (e) {} }
+    if (k.startsWith("_")) { try { delete body[k]; } catch (e) {} }
   });
   build(body);
   var f = $("sheetFoot"); f.innerHTML = "";
@@ -345,7 +345,7 @@ window.addEventListener("popstate", function(){
        in, so the stack and the browser's history stay the same length. */
     if (TABHIST.length > 1) {
       TABHIST.pop();
-      go(TABHIST[TABHIST.length - 1]);
+      go(TABHIST.at(-1));
     }
   } finally { NAV_BACK = false; }
 });

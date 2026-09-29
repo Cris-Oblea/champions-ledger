@@ -266,8 +266,7 @@ function moveButtons(rec, isHome){
             ? "Its build is kept, inactive until it comes back."
             : "The training is kept — recall it any time."));
         });
-    }));
-    out.push(fbtn("Save", "", function(){
+    }), fbtn("Save", "", function(){
       saveNote().then(function(){ closeSheet(); toast("Saved"); });
     }));
   } else {
@@ -404,11 +403,14 @@ function addSheet(loc){
         return !q || p.name.toLowerCase().includes(q);
       });
       var hits = pool.slice(0, 120);
+      /* HOME can also hold species Champions does not have; only its list
+         searches those. */
+      var homeAll = null, extra = [];
       if (loc === "home") {
-        var homeAll = (C.HOME_ONLY || []).filter(function(n){
+        homeAll = (C.HOME_ONLY || []).filter(function(n){
           return q && n.toLowerCase().includes(q);
         });
-        var extra = homeAll.slice(0, 40);
+        extra = homeAll.slice(0, 40);
         extra.forEach(function(n){
           /* THE SAME CARD, even here. These are the species Champions does not
              have, and they still have a picture, a typing and six stats from
@@ -497,7 +499,7 @@ function addSheet(loc){
         list.appendChild(r);
       });
       capNote(list, hits.length, pool.length, "forms");
-      if (typeof homeAll !== "undefined")
+      if (homeAll)
         capNote(list, extra.length, homeAll.length, "HOME-only names");
     }
     draw();
@@ -735,7 +737,7 @@ function analysisPanel(name, host){
   }, 8000);
   loadAnalysis(function(){
     clearTimeout(gaveUp);
-    if (wait.parentNode) wait.parentNode.removeChild(wait);
+    if (wait.parentNode) wait.remove();
     var got = analysisFor(name);
     if (!got?.length) {
       host.appendChild(el("div", "st", ANALYSIS_STATE === "absent"

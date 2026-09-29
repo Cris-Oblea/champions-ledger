@@ -86,13 +86,13 @@ function docFromRow(coll, row){
      thing that separates an open offer from a piece of history. The columns
      are what the app reads by name; `data` is what the trade MEASURED, spread
      back out so the reader does not have to know which is which. */
-  if (coll === "gts") return Object.assign({
+  if (coll === "gts") return {
     offered:row.offered, requested:row.requested,
     offeredId:row.offered_id || null,
     deposited:row.deposited || null, depositedAt:row.deposited_at || null,
     closed:row.closed || null, closedAt:row.closed_at || null,
-    note:row.note || "", status:row.closed ? "TRADED" : "PENDING"},
-    row.data || {});
+    note:row.note || "", status:row.closed ? "TRADED" : "PENDING",
+    ...row.data};
   if (coll === "box") return {name:row.name, location:row.location,
     status:row.status, origin:row.origin, note:row.note || "",
     shiny:!!row.shiny, trained:!!row.trained,
@@ -240,8 +240,8 @@ function supabaseStore(sb, uid){
           return sb.from(coll).upsert(row, {onConflict:"user_id,id"})
             .then(function(r){
               if (r.error) throw r.error;
-              (cache[coll] = cache[coll] || {})[id] =
-                Object.assign({}, cache[coll][id] || {}, row);
+              cache[coll] ||= {};
+              cache[coll][id] = {...cache[coll][id], ...row};
               emit(coll);
             });
         },
@@ -249,12 +249,12 @@ function supabaseStore(sb, uid){
           // meta bodies merge inside the jsonb; the other tables merge columns
           var cur = cache[coll]?.[id];
           if (coll === "meta") {
-            var merged = Object.assign({}, cur?.data || {});
+            var merged = {...cur?.data};
             Object.keys(d).forEach(function(k){
               if (k !== "updated") merged[k] = d[k]; });
             return this.set(merged);
           }
-          var full = Object.assign({}, cur ? docFromRow(coll, cur) : {}, d);
+          var full = {...(cur && docFromRow(coll, cur)), ...d};
           return this.set(full);
         },
         delete: function(){
@@ -265,7 +265,8 @@ function supabaseStore(sb, uid){
           });
         },
         onSnapshot: function(next){
-          (listeners[coll] = listeners[coll] || []).push(function(snap){
+          listeners[coll] ||= [];
+          listeners[coll].push(function(snap){
             var hit = null;
             snap.docs.forEach(function(x){ if (x.id === id) hit = x; });
             next(hit || {id:id, exists:false,
@@ -280,7 +281,8 @@ function supabaseStore(sb, uid){
     collection: function(name){
       return {
         onSnapshot: function(next){
-          (listeners[name] = listeners[name] || []).push(next);
+          listeners[name] ||= [];
+          listeners[name].push(next);
           if (cache[name]) setTimeout(function(){ emit(name); }, 0);
           return function(){};
         }

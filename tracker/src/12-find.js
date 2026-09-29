@@ -95,7 +95,7 @@ function reach(p, key, dir){
 function orMega(p, fn){
   if (fn(p)) return p;
   var ms = megaLine(p);
-  for (var i = 0; i < ms.length; i++) if (fn(ms[i])) return ms[i];
+  for (const m of ms) if (fn(m)) return m;
   return null;
 }
 /* bst is not a base stat but it filters and sorts exactly like one, so it
@@ -285,8 +285,8 @@ function findRun(){
         if (here) {
           /* say WHICH copy and how elastic it is, not the retired word
              "permanent" */
-          var rec = boxRows("champions").filter(function(x){
-            return x.name === p.name || x.name === p.species; })[0];
+          var rec = boxRows("champions").find(function(x){
+            return x.name === p.name || x.name === p.species; });
           var o = rec ? originOf(rec) : null;
           h.appendChild(el("span", "tag " + (o === "home" ? "ok" : ""),
             rec?.status === "rental" ? "rental in your box"
@@ -1172,7 +1172,8 @@ function moveFilters(body, pool, onChange, placeholder, opts){
     var t = el("button", "tog", text);
     t.setAttribute("aria-pressed", "false");
     if (type) typeSkin(t, type, false);
-    (EXCL[group] = EXCL[group] || {})[key] = t;
+    EXCL[group] ||= {};
+    EXCL[group][key] = t;
     function paint(v){
       t.setAttribute("aria-pressed", v === 1 ? "true" : "false");
       t.classList.toggle("no", v === -1);
@@ -1653,7 +1654,7 @@ function findInit(){
   var mrow = $("findMode");
   Array.prototype.forEach.call(mrow.children, function(b){
     b.onclick = function(){
-      var m = b.getAttribute("data-mode");
+      var m = b.dataset.mode;
       Array.prototype.forEach.call(mrow.children, function(x){
         x.setAttribute("aria-pressed", x === b ? "true" : "false");
       });
@@ -1771,7 +1772,7 @@ function worldDraw(){
   var out = $("worldOut");
   if (!out) return;
   out.innerHTML = "";
-  var yr = (C.WORLDS || []).filter(function(r){ return r.y === WORLD.year; })[0];
+  var yr = (C.WORLDS || []).find(function(r){ return r.y === WORLD.year; });
   var d = yr?.d[WORLD.div];
   if (!d) {
     out.appendChild(el("div", "empty",
@@ -1893,7 +1894,7 @@ function checkLatest(){
     .then(function(r){ return r.ok ? r.text() : null; })
     .then(function(t){
       if (!t) { DIAG_LATEST = "could not check"; return; }
-      var m = t.match(/CHAMP_BUILD\s*=\s*['"]([^'"]+)['"]/);
+      var m = /CHAMP_BUILD\s*=\s*['"]([^'"]+)['"]/.exec(t);
       var live = m ? m[1] : null;
       var mine = window.CHAMP_BUILD || "";
       DIAG_LATEST = !live ? "could not check"
@@ -1977,10 +1978,9 @@ function drawDiag(){
   b.style.marginTop = "10px";
   b.onclick = function(){
     var txt = diagLines().map(function(r){ return r[0] + ": " + r[1]; }).join("\n");
-    try {
-      navigator.clipboard.writeText(txt).then(function(){ toast("Copied"); },
-        function(){ diagFallback(txt); });
-    } catch (e) { diagFallback(txt); }
+    if (!navigator.clipboard) { diagFallback(txt); return; }
+    navigator.clipboard.writeText(txt).then(function(){ toast("Copied"); },
+      function(){ diagFallback(txt); });
   };
   host.appendChild(b);
 
@@ -2009,8 +2009,8 @@ function drawDiag(){
 
 function overlapSweep(view){
   var boxes = [], all = view.querySelectorAll("*");
-  for (var i = 0; i < all.length; i++) {
-    var e = all[i], tag = e.tagName;
+  for (var e of all) {
+    var tag = e.tagName;
     /* An ICON paints without carrying a word, and an icon on top of text is
        the exact bug this exists for - so svg and img count as painted even
        though their textContent is empty. Anything else has to say something
@@ -2092,7 +2092,7 @@ function overlapSweep(view){
      content box. */
   function contentBox(e, r){
     var cs = window.getComputedStyle(e);
-    function n(v){ return parseFloat(v) || 0; }
+    function n(v){ return Number.parseFloat(v) || 0; }
     var l = r.left + n(cs.borderLeftWidth) + n(cs.paddingLeft);
     var t = r.top + n(cs.borderTopWidth) + n(cs.paddingTop);
     var rt = r.right - n(cs.borderRightWidth) - n(cs.paddingRight);
@@ -2122,7 +2122,7 @@ function overlapReport(host){
      check_app asserts exactly that - a lookup for something no markup
      contains is usually a typo, which is a check worth keeping sharp. */
   var old = host.querySelector(".overlapout");
-  if (old) old.parentNode.removeChild(old);
+  if (old) old.remove();
   var out = el("div", "note overlapout");
   out.style.marginTop = "10px";
   /* EVERY VIEW, not just the one you are standing on. The diagnostics panel
@@ -2133,7 +2133,7 @@ function overlapReport(host){
      the length of a measurement and put straight back. The flicker is the
      price of measuring the real layout instead of guessing at it. */
   var open = document.querySelector(".view:not([hidden])");
-  var views = [].slice.call(document.querySelectorAll(".view"));
+  var views = Array.from(document.querySelectorAll(".view"));
   var total = 0, bad = [], over = [];
   views.forEach(function(v){
     var was = v.hidden;
@@ -2207,7 +2207,8 @@ function dupeReport(){
   boxRows("home").forEach(function(r){
     homeNames[r.name] = (homeNames[r.name] || 0) + 1;
     var sp = byName[r.name]?.species || r.name;
-    (homeSpecies[sp] = homeSpecies[sp] || []).push(r.name);
+    homeSpecies[sp] ||= [];
+    homeSpecies[sp].push(r.name);
   });
   var hits = [], formOnly = [];
   boxRows("champions").forEach(function(r){
