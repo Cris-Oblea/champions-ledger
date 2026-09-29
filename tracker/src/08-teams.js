@@ -636,9 +636,9 @@ function teamPickBuild(draft, idx, onPick){
       var q = inp.q();
       var ro = Object.keys(F.role), ty = Object.keys(F.type);
       var hits = rows.filter(function(r){
-        if (q && r.hay.indexOf(q) < 0) return false;
-        if (ro.length && ro.indexOf(r.role.toLowerCase()) < 0) return false;
-        if (ty.length && !r.types.some(function(t){ return ty.indexOf(t) >= 0; }))
+        if (q && !r.hay.includes(q)) return false;
+        if (ro.length && !ro.includes(r.role.toLowerCase())) return false;
+        if (ty.length && !r.types.some(function(t){ return ty.includes(t); }))
           return false;
         return true;
       });
@@ -859,12 +859,12 @@ function teamPickItem(draft, i, redraw){
          so with an empty box half the pool was invisible and nothing said
          so - the worst shape for a list you are choosing FROM. */
       var pool = POOL.filter(function(x){
-        if (cats.length && cats.indexOf(x.cat) < 0) return false;
+        if (cats.length && !cats.includes(x.cat)) return false;
         /* a stone is owned when the STONE ledger says so, not the item one -
            they are two different tables and always have been */
         if (F.own && !(x.stone ? hasStone(x.name) : hasItem(x.name))) return false;
-        return !q || x.name.toLowerCase().indexOf(q) >= 0 ||
-               x.text.toLowerCase().indexOf(q) >= 0;
+        return !q || x.name.toLowerCase().includes(q) ||
+               x.text.toLowerCase().includes(q);
       });
       count.textContent = pool.length === POOL.length
         ? POOL.length + " holdable items"
@@ -950,7 +950,7 @@ function drawTeams(){
       var b = sl?.build_id && S.builds[sl.build_id];
       if (b) hay.push(b.pokemon, b.mega, b.role);
     });
-    return hay.filter(Boolean).join(" ").toLowerCase().indexOf(q) >= 0;
+    return hay.filter(Boolean).join(" ").toLowerCase().includes(q);
   });
   if (!ids.length) {
     host.appendChild(el("div", "empty", "No team matches"));

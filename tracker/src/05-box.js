@@ -401,12 +401,12 @@ function addSheet(loc){
       inp.disabled = false;
       inp.placeholder = "Species or form";
       var pool = FORMS.filter(function(p){
-        return !q || p.name.toLowerCase().indexOf(q) >= 0;
+        return !q || p.name.toLowerCase().includes(q);
       });
       var hits = pool.slice(0, 120);
       if (loc === "home") {
         var homeAll = (C.HOME_ONLY || []).filter(function(n){
-          return q && n.toLowerCase().indexOf(q) >= 0;
+          return q && n.toLowerCase().includes(q);
         });
         var extra = homeAll.slice(0, 40);
         extra.forEach(function(n){
@@ -844,9 +844,9 @@ function drawDexPane(){
   var c = dexChecklist();
   var q = ($("dexFilter")?.value || "").trim().toLowerCase();
   var miss = c.missing.filter(function(p){
-    return !q || p.name.toLowerCase().indexOf(q) >= 0 ||
-           String(dexLabel(p.name)).toLowerCase().indexOf(q) >= 0 ||
-           p.types.join(" ").toLowerCase().indexOf(q) >= 0;
+    return !q || p.name.toLowerCase().includes(q) ||
+           String(dexLabel(p.name)).toLowerCase().includes(q) ||
+           p.types.join(" ").toLowerCase().includes(q);
   });
 
   $("dexDone").innerHTML = "";

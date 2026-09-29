@@ -174,11 +174,11 @@ function findRun(){
        number, and it matches a Mega's name too, because typing "mega absol"
        should find the card that carries it. */
     if (q) {
-      var named = p.name.toLowerCase().indexOf(q) >= 0 ||
-                  (p.species || "").toLowerCase().indexOf(q) >= 0 ||
-                  String(dexNo(p.name)).indexOf(q) >= 0 ||
+      var named = p.name.toLowerCase().includes(q) ||
+                  (p.species || "").toLowerCase().includes(q) ||
+                  String(dexNo(p.name)).includes(q) ||
                   megaLine(p).some(function(m){
-                    return m.name.toLowerCase().indexOf(q) >= 0; });
+                    return m.name.toLowerCase().includes(q); });
       if (!named) return false;
     }
     if (FIND.inChamp || FIND.inHome) {
@@ -194,20 +194,20 @@ function findRun(){
        question being asked - "nothing Psychic on this team" - is about what
        walks on. */
     if (FIND.notTypes.length &&
-        FIND.notTypes.some(function(t){ return p.types.indexOf(t) >= 0; }))
+        FIND.notTypes.some(function(t){ return p.types.includes(t); }))
       return false;
     if (FIND.types.length) {
       var hit = orMega(p, function(f){
         return FIND.typeMode === "or"
-          ? FIND.types.some(function(t){ return f.types.indexOf(t) >= 0; })
-          : FIND.types.every(function(t){ return f.types.indexOf(t) >= 0; });
+          ? FIND.types.some(function(t){ return f.types.includes(t); })
+          : FIND.types.every(function(t){ return f.types.includes(t); });
       });
       if (!hit) return false;
       if (hit !== p) via = hit;
     }
     if (FIND.ability) {
       var ah = orMega(p, function(f){
-        return (f.ab || []).indexOf(FIND.ability) >= 0; });
+        return (f.ab || []).includes(FIND.ability); });
       if (!ah) return false;
       if (ah !== p) via = ah;
     }
@@ -1067,14 +1067,14 @@ function blockerTags(m, host){
   var AB = C.AB_MOVES || {};
   Object.keys(AB).forEach(function(a){
     var st = AB[a].stop;
-    if (!st || st.indexOf(m.i) < 0) return;
+    if (!st?.includes(m.i)) return;
     var t = el("span", "tag bad", a);
     t.title = "On an opponent, " + a + ": " + AB[a].why;
     host.appendChild(t);
   });
   Object.keys(AB).forEach(function(a){
     var al = AB[a].ally;
-    if (!al || al.indexOf(m.i) < 0) return;
+    if (!al?.includes(m.i)) return;
     var t = el("span", "tag ok", a);
     t.title = "On your partner, " + a + " keeps this move off it: " +
               AB[a].why;
@@ -1231,7 +1231,7 @@ function moveFilters(body, pool, onChange, placeholder, opts){
   body.appendChild(mrow);
 
   var types = [];
-  pool.forEach(function(m){ if (types.indexOf(m.type) < 0) types.push(m.type); });
+  pool.forEach(function(m){ if (!types.includes(m.type)) types.push(m.type); });
   types.sort();
   if (types.length > 1) {
     var trow = el("div", "toggles"); trow.style.marginBottom = "10px";
@@ -1250,9 +1250,9 @@ function moveFilters(body, pool, onChange, placeholder, opts){
     var hits = pool.filter(function(m){
       /* the text is searched as well as the name, because "which of these
          burns" and "which crit" are the questions a move list is opened for */
-      if (q && m.name.toLowerCase().indexOf(q) < 0 &&
-          m.type.toLowerCase().indexOf(q) < 0 &&
-          (m.text || "").toLowerCase().indexOf(q) < 0) return false;
+      if (q && !m.name.toLowerCase().includes(q) &&
+          !m.type.toLowerCase().includes(q) &&
+          !(m.text || "").toLowerCase().includes(q)) return false;
       /* An EXCLUDE is checked before an include, and on its own: "no Psychic"
          has to work with nothing else picked, which it cannot do if an empty
          include list is read as "everything is rejected". */
@@ -1260,8 +1260,8 @@ function moveFilters(body, pool, onChange, placeholder, opts){
       if (F.type[m.type] === -1) return false;
       var inCat = cats.filter(function(k){ return F.cat[k] === 1; });
       var inTy = tys.filter(function(k){ return F.type[k] === 1; });
-      if (inCat.length && inCat.indexOf(m.cat) < 0) return false;
-      if (inTy.length && inTy.indexOf(m.type) < 0) return false;
+      if (inCat.length && !inCat.includes(m.cat)) return false;
+      if (inTy.length && !inTy.includes(m.type)) return false;
       var has = function(k){
         return k === "spread" ? !!m.spread
              : k === "ally" ? !!m.hitsAlly
@@ -1429,7 +1429,7 @@ function findInit(){
       /* the same controls the build editor has - one implementation, so
          "which special Electric move" is asked the same way in both places */
       var pool = MOVES.filter(function(m){
-        return FIND.moves.indexOf(m.name) < 0;
+        return !FIND.moves.includes(m.name);
       });
       var ui = moveFilters(body, pool, function(){ draw(); },
                            "Any of " + pool.length + " moves");
@@ -1525,8 +1525,8 @@ function findInit(){
       });
       function paint(){
         Object.keys(chips).forEach(function(ty){
-          var on = FIND.types.indexOf(ty) >= 0;
-          var no = FIND.notTypes.indexOf(ty) >= 0;
+          var on = FIND.types.includes(ty);
+          var no = FIND.notTypes.includes(ty);
           var b = chips[ty];
           b.setAttribute("aria-pressed", on ? "true" : "false");
           b.classList.toggle("no", no);
@@ -1595,9 +1595,9 @@ function findInit(){
         var q = inp.q();
         var ks = Object.keys(pick);
         var hits = all.filter(function(a){
-          if (q && a.toLowerCase().indexOf(q) < 0 &&
-              (C.ABIL[a] || "").toLowerCase().indexOf(q) < 0) return false;
-          if (ks.length && ks.indexOf(CLS[a] || "other") < 0) return false;
+          if (q && !a.toLowerCase().includes(q) &&
+              !(C.ABIL[a] || "").toLowerCase().includes(q)) return false;
+          if (ks.length && !ks.includes(CLS[a] || "other")) return false;
           return true;
         });
         /* It said "215 abilities" while drawing 80 of them, which is a
