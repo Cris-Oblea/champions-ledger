@@ -26,9 +26,11 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
-    # jsdom is the only dependency, and the seventeen browser tests in the gate
-    # all run under it. A jsdom that moves unannounced is a gate that fails one
-    # morning for a reason nobody changed.
+    # Two kinds of package live here. jsdom (with esbuild and acorn) is tooling:
+    # the browser tests in the gate all run under it, and a jsdom that moves
+    # unannounced is a gate that fails one morning for a reason nobody changed.
+    # supabase-js is not tooling - build_tracker_page.py inlines it from
+    # node_modules into the page, so merging its bump deploys it.
     groups:
       npm:
         patterns: ["*"]
