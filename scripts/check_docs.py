@@ -195,16 +195,36 @@ def repo_files():
     return out
 
 
-def ignored(names):
-    """The subset of names git ignores - generated files, which may be absent."""
-    if not names:
+def git_ignored(paths):
+    """The subset of paths git ignores."""
+    if not paths:
         return set()
+    # bytes, not text=True: on Windows text mode writes \r\n, and git then
+    # asks about "name\r", which nothing ignores
     try:
-        r = subprocess.run(["git", "check-ignore", "--"] + sorted(names),
-                           cwd=ROOT, capture_output=True, text=True)
+        r = subprocess.run(["git", "check-ignore", "--stdin"], cwd=ROOT,
+                           input=("\n".join(paths) + "\n").encode(),
+                           capture_output=True)
     except OSError:
         return set()
-    return set(r.stdout.split())
+    return set(r.stdout.decode().split())
+
+
+def ignored(names, dirs):
+    """The subset of names git ignores - generated or per-machine files, which
+    exist on one machine and not in CI. A bare name is tried in every
+    directory, because .gitignore anchors most entries to one
+    (`tracker/config.local.json`), and asking about `config.local.json` at the
+    root answers no - which is how this first failed, in CI only. Only
+    directories git keeps are tried: inside `data/raw/` EVERY name is ignored,
+    and trying it there excused the deleted inventory.json."""
+    gone = git_ignored([d + "/" for d in dirs])
+    kept = [d for d in dirs if d + "/" not in gone]
+    cand = {}   # one path can stand for several names: `a.json`, `x/a.json`
+    for n in names:
+        for c in [n] + ([d + "/" + n for d in kept] if "/" not in n else []):
+            cand.setdefault(c, set()).add(n)
+    return {n for c in git_ignored(list(cand)) for n in cand.get(c, ())}
 
 
 def check_named_files():
@@ -226,7 +246,8 @@ def check_named_files():
                 if ACKNOWLEDGED.search(near) or GONE.search(near):
                     continue
                 found.append((rel, i + 1, name))
-    gen = ignored({n for _, _, n in found})
+    dirs = {f.rsplit("/", 1)[0] for f in files if "/" in f}
+    gen = ignored({n for _, _, n in found}, dirs)
     problems = 0
     for rel, n, name in found:
         if name in gen:
