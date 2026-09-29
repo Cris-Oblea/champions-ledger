@@ -281,4 +281,18 @@ function setItem(name, own){
     });
 }
 
-export { drawItems, drawStatuses, drawStones };
+/* The status reference, drawn once, when its fold is first opened - not on
+   every redraw of a screen whose whole point is the number at the top. */
+function wireStatusFold(){
+  var sf = $("statusFold"), sb = $("statusBody");
+  if (!sf || !sb || sf._wired) return;
+  sf._wired = 1;
+  sf.onclick = function(){
+    var open = sb.hidden;
+    sb.hidden = !open;
+    sf.setAttribute("aria-expanded", open ? "true" : "false");
+    if (open && !sb._drawn) { sb._drawn = 1; drawStatuses(); }
+  };
+}
+
+export { drawItems, drawStatuses, drawStones, wireStatusFold };

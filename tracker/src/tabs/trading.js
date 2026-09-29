@@ -94,21 +94,49 @@ function setWantFilter(v){
   });
   drawGtsWanted();
 }
+/* THE "WORTH TRADING" LIST: one card per spare species, each with what it
+   could ask for, the cheapest currency first. Six to start with, the rest one
+   tap away. */
 function drawGtsWanted(){
   var host = $("listGtsWant"), more = $("gtsWantMore");
   if (!host) return;
-  var seg = $("gtsWantFilter");
-  if (seg && !seg._wired) {
-    seg._wired = 1;
-    Array.prototype.forEach.call(seg.children, function(b){
-      b.onclick = function(){ setWantFilter(b.dataset.want); };
-    });
-  }
-  var chips = gtsChips(), rec = gtsRecord(null);
-  /* The segment answers "which KIND of chip"; this answers "that one". With
-     44 chips the two are different questions and the segment cannot do both. */
+  wireWantFilter($("gtsWantFilter"));
+  /* The segment answers "which KIND of chip"; the search box answers "that
+     one". With 44 chips the two are different questions. */
   var wq = ($("gtsWantSearch")?.value || "")
     .trim().toLowerCase();
+  var ideas = tradeIdeas(filteredChips(wq));
+  $("nGtsWant").textContent = ideas.length;
+  $("gtsWantSub").innerHTML = wantSubtitle(ideas.length, gtsRecord(null));
+  host.innerHTML = "";
+  if (!ideas.length) {
+    host.appendChild(el("div", "empty",
+      wq ? "Nothing in HOME matches that" : EMPTY_WANT[WANT_FILTER] || "Nothing to offer"));
+  }
+  var cap = tradeAll ? ideas.length : TRADE_CAP;
+  ideas.slice(0, cap).forEach(function(i){ host.appendChild(ideaCard(i)); });
+  more.innerHTML = "";
+  if (ideas.length > cap) {
+    more.appendChild(fbtn("Show the other " + (ideas.length - cap), "sm",
+      function(){ tradeAll = true; drawGtsWanted(); }));
+  } else if (tradeAll && ideas.length > TRADE_CAP) {
+    more.appendChild(fbtn("Show fewer", "sm",
+      function(){ tradeAll = false; drawGtsWanted(); }));
+  }
+}
+
+/* The All / Not in Champions / Duplicates segment, wired once. */
+function wireWantFilter(seg){
+  if (!seg || seg._wired) return;
+  seg._wired = 1;
+  Array.prototype.forEach.call(seg.children, function(b){
+    b.onclick = function(){ setWantFilter(b.dataset.want); };
+  });
+}
+
+/* The chips, narrowed by the search box (name or type) and the segment. */
+function filteredChips(wq){
+  var chips = gtsChips();
   if (wq) {
     chips = chips.filter(function(c){
       var p = byName[c.name];
@@ -121,21 +149,21 @@ function drawGtsWanted(){
   } else if (WANT_FILTER === "dupes") {
     chips = chips.filter(function(c){ return !!byName[c.name]; });
   }
-  /* ONE CARD PER SPECIES, COUNTED. Three spare Garchomp are three chips and
-     one recommendation - they price identically and fetch identically, so
-     three identical cards is the top of the list saying one thing three
-     times (seen live, 2026-09-21). Which COPY goes up is a decision for the
-     deposit screen, which knows about shininess and training; a shiny prices
-     differently, so it keeps a card of its own. */
+  return chips;
+}
+
+/* ONE CARD PER SPECIES, COUNTED. Three spare Garchomp are three chips and one
+   recommendation - they price and fetch identically (seen live, 2026-09-21).
+   Which COPY goes up is the deposit screen's decision; a shiny prices
+   differently, so it keeps a card of its own. THE ASKS ARE PLAYABLE ONLY
+   (player, 2026-09-21: "no quiero cambiar por pokemones que no pueda usar"):
+   a trade that brings back something Champions cannot play has bought a HOME
+   row and nothing else. */
+function tradeIdeas(chips){
   var group = {}, ideas = [];
   chips.forEach(function(c){
     var k = c.name + (c.shiny ? "|shiny" : "");
     if (group[k]) { group[k].n++; return; }
-    /* THE ASKS ARE PLAYABLE ONLY, and that was never the thing to widen
-       (player, 2026-09-21: "eso estaba bien, no quiero cambiar por pokemones
-       que no pueda usar"). A trade that comes back with something Champions
-       cannot play has bought a HOME row and nothing else. It is the CHIP
-       side he meant - see the filter below. */
     var asks = gtsSuggest(c.name, 24, !!c.shiny);
     if (!asks.length) return;
     group[k] = {rec:c, n:1, asks:asks,
@@ -143,22 +171,28 @@ function drawGtsWanted(){
                 stones:asks.filter(function(a){ return a.stone; })};
     ideas.push(group[k]);
   });
-  /* THE CHEAPEST CURRENCY FIRST, which is his own reasoning: "de esos que no
-     puedo usar cambiarlos por pokemones usables en champions". A duplicate of
-     a playable species is still a Pokemon he could bring to a game; one
-     Champions cannot use costs him nothing at all to give away, so it is what
-     to spend before anything else. Then the best outcome - a chip that can
-     buy back a welded slot, then one that turns on a dead stone - and then
-     whatever reaches furthest. */
-  ideas.sort(function(a, b){
-    return (gtsBlocked(a.rec.name) ? 1 : 0) - (gtsBlocked(b.rec.name) ? 1 : 0) ||
-           (byName[a.rec.name] ? 1 : 0) - (byName[b.rec.name] ? 1 : 0) ||
-           (b.frees.length ? 1 : 0) - (a.frees.length ? 1 : 0) ||
-           (b.stones.length ? 1 : 0) - (a.stones.length ? 1 : 0) ||
-           (b.asks[0] ? b.asks[0].bst : 0) - (a.asks[0] ? a.asks[0].bst : 0);
-  });
-  $("nGtsWant").textContent = ideas.length;
-  $("gtsWantSub").innerHTML = ideas.length
+  ideas.sort(ideaOrder);
+  return ideas;
+}
+
+/* THE CHEAPEST CURRENCY FIRST, his own reasoning: "de esos que no puedo usar
+   cambiarlos por pokemones usables en champions". A species Champions cannot
+   use costs him nothing to give away, so it is spent before a duplicate of a
+   playable one. Then the best outcome - a chip that can buy back a welded
+   slot, then one that turns on a dead stone - then whatever reaches
+   furthest. What the GTS may refuse goes last. */
+function ideaOrder(a, b){
+  return (gtsBlocked(a.rec.name) ? 1 : 0) - (gtsBlocked(b.rec.name) ? 1 : 0) ||
+         (byName[a.rec.name] ? 1 : 0) - (byName[b.rec.name] ? 1 : 0) ||
+         (b.frees.length ? 1 : 0) - (a.frees.length ? 1 : 0) ||
+         (b.stones.length ? 1 : 0) - (a.stones.length ? 1 : 0) ||
+         (b.asks[0] ? b.asks[0].bst : 0) - (a.asks[0] ? a.asks[0].bst : 0);
+}
+
+/* What the list is read off and why, with his own closed-trade record - and
+   NOTHING HIDDEN SILENTLY: a name dropped for being impossible is named. */
+function wantSubtitle(n, rec){
+  var sub = n
     ? "Read off your <strong>HOME box</strong>: everything your own rule lets "
       + "you put up — a duplicate past the first copy, or a species "
       + "Champions cannot use — with what it could realistically fetch. "
@@ -168,120 +202,109 @@ function drawGtsWanted(){
     : "Nothing in HOME can go up right now. Your rule allows a duplicate past "
       + "the first copy, or a species Champions cannot use — a singleton "
       + "of a legal species would be lost for good.";
-  /* NOTHING IS HIDDEN SILENTLY. One name is dropped for being impossible, so
-     the count says which and why rather than leaving a gap in a list. */
   var dropped = boxRows("home").filter(function(r){
     return gtsBlocked(r.name) === "confirmed";
   }).map(function(r){ return r.name; });
   if (dropped.length) {
-    $("gtsWantSub").innerHTML += " Not shown: <strong>"
+    sub += " Not shown: <strong>"
       + dropped.join(", ") + "</strong> — HOME’s GTS will not hold "
       + (dropped.length === 1 ? "it" : "them") + " at all.";
   }
-  host.innerHTML = "";
-  if (!ideas.length) {
-    host.appendChild(el("div", "empty",
-      wq ? "Nothing in HOME matches that" : EMPTY_WANT[WANT_FILTER] || "Nothing to offer"));
-  }
-  var cap = tradeAll ? ideas.length : TRADE_CAP;
-  ideas.slice(0, cap).forEach(function(i){
-    var p = anyRow(i.rec.name);
-    var mine = gtsRecord(i.rec.name);
-    host.appendChild(pokeCard(p, {
-      name: i.rec.name,
-      shiny: !!i.rec.shiny,
-      badges: function(nm){
-        /* A SHINY IS ITS OWN CARD AND HAS TO SAY SO. It prices differently -
-           the shiny premium is part of what the chip is worth - so it does
-           not group with the plain copies, and two Garchomp cards side by
-           side with nothing to tell them apart read as a bug (seen live,
-           2026-09-21). The sprite is the shiny one; at card size that is not
-           a difference you can rely on. */
-        if (gtsBlocked(i.rec.name) === "inferred") {
-          var mb = el("span", "tag bad", "GTS may refuse it");
-          mb.title = "It is a Mythical, and the one Mythical you have tried - "
-            + "Melmetal - the GTS would not hold. That is one data point, not "
-            + "a rule, so it is still listed. If this one is refused too, say "
-            + "so and it stops being a guess.";
-          nm.appendChild(mb);
-        }
-        if (!byName[i.rec.name]) {
-          var ox = el("span", "tag", "not in Champions");
-          ox.title = "It can live in HOME for ever and can never enter a "
-            + "game, so giving it away costs you nothing playable. This is "
-            + "the currency to spend first.";
-          nm.appendChild(ox);
-        }
-        if (i.rec.shiny) nm.appendChild(el("span", "tag warn", "shiny"));
-        if (i.n > 1) {
-          var c = el("span", "tag", i.n + " spare");
-          c.title = "You hold " + i.n + " of these that your rule lets you "
-            + "trade. They price the same, so this is one recommendation.";
-          nm.appendChild(c);
-        }
-        if (i.frees.length) nm.appendChild(el("span", "tag ok", "frees a slot"));
-        if (mine.mine) {
-          var t = el("span", "tag", mine.mine + " traded · "
-            + (elapsedText(mine.myMedian) || "?"));
-          t.title = "You have closed " + mine.mine + " trade"
-            + (mine.mine === 1 ? "" : "s") + " offering this species. Half of "
-            + "them cleared inside "
-            + (elapsedText(mine.myMedian) || "an unknown time") + ".";
-          nm.appendChild(t);
-        }
-      },
-      notes: function(m){
-        var line = el("div", "st");
-        /* THE WHOLE LIST OPENS. It showed six and said "+16 more", which is
-           the app knowing something and not saying it (player, 2026-09-21:
-           "solo pones algunos pokemones, me gustaria tener una vision mas
-           amplia"). Six is still what it opens with, because a card is read
-           at a glance and 24 tags is not a glance - but the rest is one tap
-           away and nothing is behind a scroll you cannot reach. */
-        function askTag(a){
-          var tone = "";
-          if (a.frees) tone = " ok";
-          else if (a.stone) tone = " warn";
-          var tag = el("span", "tag" + tone, a.name);
-          tag.title = a.bst + " BST"
-            + (a.frees ? " — you hold it only in the Champions box, so a "
-                + "HOME copy frees that slot" : "")
-            + (a.stone ? " — turns on " + a.stone + ", already bought" : "")
-            + (a.band === "base" ? " — under what this chip is worth, "
-                + "which is the ask that clears fastest"
-              : " — at or above what this chip is worth");
-          return tag;
-        }
-        function paintAsks(n){
-          line.innerHTML = "";
-          line.appendChild(document.createTextNode("Ask for: "));
-          i.asks.slice(0, n).forEach(function(a, k){
-            if (k) line.appendChild(document.createTextNode(" "));
-            line.appendChild(askTag(a));
-          });
-          if (i.asks.length > n) {
-            line.appendChild(document.createTextNode(" "));
-            line.appendChild(fbtn("+" + (i.asks.length - n) + " more", "sm quiet",
-              function(ev){
-                if (ev?.stopPropagation) ev.stopPropagation();
-                paintAsks(i.asks.length);
-              }));
-          }
-        }
-        paintAsks(6);
-        m.appendChild(line);
-      },
-      onclick: function(){ findDetail(p); }
-    }));
+  return sub;
+}
+
+/* One spare species, as its card, with what it could ask for underneath. */
+function ideaCard(i){
+  var p = anyRow(i.rec.name);
+  var mine = gtsRecord(i.rec.name);
+  return pokeCard(p, {
+    name: i.rec.name,
+    shiny: !!i.rec.shiny,
+    badges: function(nm){ ideaBadges(nm, i, mine); },
+    notes: function(m){ m.appendChild(askLine(i)); },
+    onclick: function(){ findDetail(p); }
   });
-  more.innerHTML = "";
-  if (ideas.length > cap) {
-    more.appendChild(fbtn("Show the other " + (ideas.length - cap), "sm",
-      function(){ tradeAll = true; drawGtsWanted(); }));
-  } else if (tradeAll && ideas.length > TRADE_CAP) {
-    more.appendChild(fbtn("Show fewer", "sm",
-      function(){ tradeAll = false; drawGtsWanted(); }));
+}
+
+/* Whether the GTS may refuse it, whether Champions can use it, shiny (a shiny
+   is its own card and has to say so - at card size the sprite alone is not a
+   difference you can rely on), how many spare, whether an ask frees a slot,
+   and his own record trading this species. */
+function ideaBadges(nm, i, mine){
+  if (gtsBlocked(i.rec.name) === "inferred") {
+    var mb = el("span", "tag bad", "GTS may refuse it");
+    mb.title = "It is a Mythical, and the one Mythical you have tried - "
+      + "Melmetal - the GTS would not hold. That is one data point, not "
+      + "a rule, so it is still listed. If this one is refused too, say "
+      + "so and it stops being a guess.";
+    nm.appendChild(mb);
   }
+  if (!byName[i.rec.name]) {
+    var ox = el("span", "tag", "not in Champions");
+    ox.title = "It can live in HOME for ever and can never enter a "
+      + "game, so giving it away costs you nothing playable. This is "
+      + "the currency to spend first.";
+    nm.appendChild(ox);
+  }
+  if (i.rec.shiny) nm.appendChild(el("span", "tag warn", "shiny"));
+  if (i.n > 1) {
+    var c = el("span", "tag", i.n + " spare");
+    c.title = "You hold " + i.n + " of these that your rule lets you "
+      + "trade. They price the same, so this is one recommendation.";
+    nm.appendChild(c);
+  }
+  if (i.frees.length) nm.appendChild(el("span", "tag ok", "frees a slot"));
+  if (mine.mine) {
+    var t = el("span", "tag", mine.mine + " traded · "
+      + (elapsedText(mine.myMedian) || "?"));
+    t.title = "You have closed " + mine.mine + " trade"
+      + (mine.mine === 1 ? "" : "s") + " offering this species. Half of "
+      + "them cleared inside "
+      + (elapsedText(mine.myMedian) || "an unknown time") + ".";
+    nm.appendChild(t);
+  }
+}
+
+/* "Ask for: ..." - THE WHOLE LIST OPENS (player, 2026-09-21: "me gustaria
+   tener una vision mas amplia"). Six to start, because a card is read at a
+   glance and 24 tags is not a glance, and the rest one tap away. */
+function askLine(i){
+  var line = el("div", "st");
+  function paintAsks(n){
+    line.innerHTML = "";
+    line.appendChild(document.createTextNode("Ask for: "));
+    i.asks.slice(0, n).forEach(function(a, k){
+      if (k) line.appendChild(document.createTextNode(" "));
+      line.appendChild(askTag(a));
+    });
+    if (i.asks.length > n) {
+      line.appendChild(document.createTextNode(" "));
+      line.appendChild(fbtn("+" + (i.asks.length - n) + " more", "sm quiet",
+        function(ev){
+          if (ev?.stopPropagation) ev.stopPropagation();
+          paintAsks(i.asks.length);
+        }));
+    }
+  }
+  paintAsks(6);
+  return line;
+}
+
+/* One ask, coloured by what it buys: a freed slot, a stone turned on, or
+   simply a price - with the reason on hover. */
+function askTag(a){
+  var tone = "";
+  if (a.frees) tone = " ok";
+  else if (a.stone) tone = " warn";
+  var tag = el("span", "tag" + tone, a.name);
+  tag.title = a.bst + " BST"
+    + (a.frees ? " — you hold it only in the Champions box, so a "
+        + "HOME copy frees that slot" : "")
+    + (a.stone ? " — turns on " + a.stone + ", already bought" : "")
+    + (a.band === "base" ? " — under what this chip is worth, "
+        + "which is the ask that clears fastest"
+      : " — at or above what this chip is worth");
+  return tag;
 }
 
 export { drawGtsWanted };

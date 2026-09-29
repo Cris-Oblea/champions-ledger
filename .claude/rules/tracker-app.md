@@ -82,9 +82,12 @@ each file owns; `tracker/README.md` has the full write-up.
 
 ESLint runs inside the gate (`eslint.config.mjs`): `no-undef` is the check the
 split needs, because a name one part uses without importing is invisible in
-either file alone and links as a global. A rule with findings left sits in the
-config's ratchet list as a warning; it leaves the list in the PR that takes it
-to zero. `node scripts/check_app.js` keeps the checks no linter can make: ids
+either file alone and links as a global. **In tracker/src every rule is an
+error, and so is a function over 80 lines of code** (2026-09-29: the app went to
+zero, the build editor was one 686-line function) - a section that outgrows it
+gets its own named function taking the state as an argument. In tests/, scripts/
+and cron/ a rule with findings left sits in the ratchet list as a warning; it
+leaves the list in the PR that takes it to zero. `node scripts/check_app.js` keeps the checks no linter can make: ids
 against the markup, CALC switches against the engine.
 
 **The tracker's damage tab runs Smogon's engine itself** (bundled by

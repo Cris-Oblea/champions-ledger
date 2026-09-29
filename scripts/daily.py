@@ -131,6 +131,7 @@ BROWSER_TESTS = [
     ("gtstest.js",        "a trade removes what you gave away"),
     ("buildlinktest.js",  "a build follows its Pokemon"),
     ("releasetest.js",    "only what the game can release"),
+    ("homelisttest.js",   "HOME shows twelve, then the rest"),
     ("installtest.js",    "which copy a build goes on, and its trained tag"),
     # Waterfox/Firefox cut an exactly vertical gradient into pieces and paint
     # the seam twice: a bright line across every retyping card, never seen in

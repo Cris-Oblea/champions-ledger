@@ -140,147 +140,149 @@ function rowFromDoc(coll, id, uid, d){
     rationale:d.rationale || "", extra:d.extra || {}};
 }
 
+/* THE STORE BEHIND put/patch/drop: one Supabase client, a cache of every
+   table, and the listeners the app registered. `st` carries all of it:
+   st.cache[coll][id] is a row as the database holds it; st.emit(coll) tells
+   every listener of that table what it holds now. */
 function supabaseStore(sb, uid){
-  var listeners = {};                 // collection -> [callback]
-  var cache = {};                     // collection -> {id: row}
-
-  function emit(coll){
-    var rows = cache[coll] || {};
-    var docs = Object.keys(rows).sort(byText).map(function(id){
-      return {id:id, exists:true, data:function(){
-        return docFromRow(coll, rows[id]); }, metadata:{}};
-    });
-    (listeners[coll] || []).forEach(function(fn){
-      fn({docs:docs, size:docs.length, empty:!docs.length,
-          docChanges:function(){ return []; }, metadata:{}});
-    });
-  }
-
-  function load(coll){
-    return sb.from(coll).select("*").then(function(r){
-      if (r.error) throw r.error;
-      var m = {};
-      (r.data || []).forEach(function(row){ m[row.id] = row; });
-      cache[coll] = m;
-      emit(coll);
-    });
-  }
-
-  /* stones and items are tables of their own since migration 6 - a row
-     per owned thing, so two devices toggling different ones cannot
-     overwrite each other. They load exactly like the rest. */
-  var COLLS = ["box", "builds", "teams", "stones", "items", "gts", "meta"];
+  var st = {sb: sb, uid: uid, listeners: {}, cache: {}};
+  st.emit = function(coll){ emitSnapshot(st, coll); };
+  st.load = function(coll){ return loadTable(st, coll); };
+  /* stones and items are tables of their own since migration 6 - a row per
+     owned thing, so two devices toggling different ones cannot overwrite
+     each other. They load exactly like the rest. */
   COLLS.forEach(function(coll){
-    load(coll).catch(function(e){
+    st.load(coll).catch(function(e){
       console.error("[ledger] load " + coll, e);
       toast("Could not load " + coll);
     });
   });
-
-  // one channel for the lot: a change made on the phone lands on the PC
-  sb.channel("ledger")
-    .on("postgres_changes", {event:"*", schema:"public", table:"box"},
-        function(){ load("box"); })
-    .on("postgres_changes", {event:"*", schema:"public", table:"builds"},
-        function(){ load("builds"); })
-    /* teams was added after this channel was written and was left out of it,
-       so a team saved on the phone never reached the laptop until a reload -
-       and that stale view is exactly what makes two devices compute the same
-       new id. */
-    .on("postgres_changes", {event:"*", schema:"public", table:"teams"},
-        function(){ load("teams"); })
-    .on("postgres_changes", {event:"*", schema:"public", table:"stones"},
-        function(){ load("stones"); })
-    .on("postgres_changes", {event:"*", schema:"public", table:"items"},
-        function(){ load("items"); })
-    .on("postgres_changes", {event:"*", schema:"public", table:"gts"},
-        function(){ load("gts"); })
-    .on("postgres_changes", {event:"*", schema:"public", table:"meta"},
-        function(){ load("meta"); })
-    .subscribe();
-
-  function split(path){
-    var i = path.indexOf("/");
-    return [path.slice(0, i), path.slice(i + 1)];
-  }
-
+  /* ONE CHANNEL FOR THE LOT, so a change made on the phone lands on the PC.
+     Subscribed from the same list the tables load from: teams was once left
+     out of a hand-written list, so a team saved on the phone never reached
+     the laptop - and that stale view is exactly what makes two devices
+     compute the same new id. */
+  var ch = sb.channel("ledger");
+  COLLS.forEach(function(coll){
+    ch = ch.on("postgres_changes", {event:"*", schema:"public", table:coll},
+               function(){ st.load(coll); });
+  });
+  ch.subscribe();
   return {
-    doc: function(path){
-      var p = split(path), coll = p[0], id = p[1];
-      return {
-        get: function(){
-          var row = cache[coll]?.[id];
-          return Promise.resolve({id:id, exists:!!row,
-            data:function(){ return row ? docFromRow(coll, row) : undefined; },
-            metadata:{}});
-        },
-        /* INSERT, not upsert: the point is that it FAILS when the id is
-           taken. Creating a record computes its id from what this device can
-           see - farigiraf, farigiraf-2 - so two devices creating at the same
-           moment both pick the same one, and an upsert would let the second
-           silently replace the first. The primary key (user_id, id) already
-           knows better; this just stops asking it to look the other way. */
-        create: function(d){
-          var row = rowFromDoc(coll, id, uid, d);
-          return sb.from(coll).insert(row).then(function(r){
-            if (r.error) throw r.error;
-            if (!cache[coll]) cache[coll] = {};
-            cache[coll][id] = row;
-            emit(coll);
-          });
-        },
-        set: function(d){
-          var row = rowFromDoc(coll, id, uid, d);
-          return sb.from(coll).upsert(row, {onConflict:"user_id,id"})
-            .then(function(r){
-              if (r.error) throw r.error;
-              cache[coll] ||= {};
-              cache[coll][id] = {...cache[coll][id], ...row};
-              emit(coll);
-            });
-        },
-        update: function(d){
-          // meta bodies merge inside the jsonb; the other tables merge columns
-          var cur = cache[coll]?.[id];
-          if (coll === "meta") {
-            var merged = {...cur?.data};
-            Object.keys(d).forEach(function(k){
-              if (k !== "updated") merged[k] = d[k]; });
-            return this.set(merged);
-          }
-          var full = {...(cur && docFromRow(coll, cur)), ...d};
-          return this.set(full);
-        },
-        delete: function(){
-          return sb.from(coll).delete().eq("id", id).then(function(r){
-            if (r.error) throw r.error;
-            if (cache[coll]) delete cache[coll][id];
-            emit(coll);
-          });
-        },
-        onSnapshot: function(next){
-          listeners[coll] ||= [];
-          listeners[coll].push(function(snap){
-            var hit = null;
-            snap.docs.forEach(function(x){ if (x.id === id) hit = x; });
-            next(hit || {id:id, exists:false,
-                         data:function(){ return undefined; }, metadata:{}});
-          });
-          var rows = cache[coll];
-          if (rows) setTimeout(function(){ emit(coll); }, 0);
-          return function(){};
-        }
-      };
-    },
+    doc: function(path){ return docHandle(st, path); },
     collection: function(name){
       return {
         onSnapshot: function(next){
-          listeners[name] ||= [];
-          listeners[name].push(next);
-          if (cache[name]) setTimeout(function(){ emit(name); }, 0);
+          st.listeners[name] ||= [];
+          st.listeners[name].push(next);
+          if (st.cache[name]) setTimeout(function(){ st.emit(name); }, 0);
           return function(){};
         }
       };
+    }
+  };
+}
+
+var COLLS = ["box", "builds", "teams", "stones", "items", "gts", "meta"];
+
+/* Hand every listener of a table its rows, sorted by id, in the snapshot
+   shape the app reads. */
+function emitSnapshot(st, coll){
+  var rows = st.cache[coll] || {};
+  var docs = Object.keys(rows).sort(byText).map(function(id){
+    return {id:id, exists:true, data:function(){
+      return docFromRow(coll, rows[id]); }, metadata:{}};
+  });
+  (st.listeners[coll] || []).forEach(function(fn){
+    fn({docs:docs, size:docs.length, empty:!docs.length,
+        docChanges:function(){ return []; }, metadata:{}});
+  });
+}
+
+/* Read a whole table into the cache, then tell its listeners. */
+function loadTable(st, coll){
+  return st.sb.from(coll).select("*").then(function(r){
+    if (r.error) throw r.error;
+    var m = {};
+    (r.data || []).forEach(function(row){ m[row.id] = row; });
+    st.cache[coll] = m;
+    st.emit(coll);
+  });
+}
+
+/* "builds/farigiraf" -> ["builds", "farigiraf"] */
+function splitPath(path){
+  var i = path.indexOf("/");
+  return [path.slice(0, i), path.slice(i + 1)];
+}
+
+/* One document: read it, create it, overwrite it, merge into it, delete it,
+   or listen to it. Every write goes to the database first and only then into
+   the cache, so a failed write never shows as saved. */
+function docHandle(st, path){
+  var p = splitPath(path), coll = p[0], id = p[1];
+  var sb = st.sb, cache = st.cache;
+  return {
+    get: function(){
+      var row = cache[coll]?.[id];
+      return Promise.resolve({id:id, exists:!!row,
+        data:function(){ return row ? docFromRow(coll, row) : undefined; },
+        metadata:{}});
+    },
+    /* INSERT, not upsert: the point is that it FAILS when the id is taken.
+       Creating a record computes its id from what this device can see -
+       farigiraf, farigiraf-2 - so two devices creating at the same moment
+       both pick the same one, and an upsert would let the second silently
+       replace the first. The primary key (user_id, id) already knows better;
+       this just stops asking it to look the other way. */
+    create: function(d){
+      var row = rowFromDoc(coll, id, st.uid, d);
+      return sb.from(coll).insert(row).then(function(r){
+        if (r.error) throw r.error;
+        if (!cache[coll]) cache[coll] = {};
+        cache[coll][id] = row;
+        st.emit(coll);
+      });
+    },
+    set: function(d){
+      var row = rowFromDoc(coll, id, st.uid, d);
+      return sb.from(coll).upsert(row, {onConflict:"user_id,id"})
+        .then(function(r){
+          if (r.error) throw r.error;
+          cache[coll] ||= {};
+          cache[coll][id] = {...cache[coll][id], ...row};
+          st.emit(coll);
+        });
+    },
+    update: function(d){
+      // meta bodies merge inside the jsonb; the other tables merge columns
+      var cur = cache[coll]?.[id];
+      if (coll === "meta") {
+        var merged = {...cur?.data};
+        Object.keys(d).forEach(function(k){
+          if (k !== "updated") merged[k] = d[k]; });
+        return this.set(merged);
+      }
+      var full = {...(cur && docFromRow(coll, cur)), ...d};
+      return this.set(full);
+    },
+    delete: function(){
+      return sb.from(coll).delete().eq("id", id).then(function(r){
+        if (r.error) throw r.error;
+        if (cache[coll]) delete cache[coll][id];
+        st.emit(coll);
+      });
+    },
+    onSnapshot: function(next){
+      st.listeners[coll] ||= [];
+      st.listeners[coll].push(function(snap){
+        var hit = null;
+        snap.docs.forEach(function(x){ if (x.id === id) hit = x; });
+        next(hit || {id:id, exists:false,
+                     data:function(){ return undefined; }, metadata:{}});
+      });
+      if (cache[coll]) setTimeout(function(){ st.emit(coll); }, 0);
+      return function(){};
     }
   };
 }

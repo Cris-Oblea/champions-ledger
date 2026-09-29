@@ -197,74 +197,12 @@ function chipBand(v, b){
 function gtsSuggest(chipName, limit, shiny){
   var v = chipValue(chipName, shiny);
   if (!v) return [];
-  /* OWNED IN HOME IS DONE; OWNED ONLY IN CHAMPIONS IS STILL A TARGET.
-     Both used to count as owned, which quietly removed the best asks on the
-     board: an Encounter Pokemon can never leave the box, so a second copy
-     arriving through HOME is worth a whole slot. They are suggested now,
-     and marked. */
-  var owned = {}, frees = {};
-  function mark(into, r){
-    into[r.name] = 1;
-    var p = byName[r.name];
-    if (p?.species) into[p.species] = 1;
-  }
-  boxRows("home").forEach(function(r){ mark(owned, r); });
-  boxRows("champions").forEach(function(r){
-    mark(originOf(r) === "home" ? owned : frees, r);
-  });
-  var dead = {};
-  Object.keys(MEGAS_OF).forEach(function(sp){
-    if (owned[sp] || frees[sp]) return;
-    MEGAS_OF[sp].forEach(function(m){
-      var st = STONE_OF[m.name];
-      if (st && hasStone(st)) dead[sp] = st;
-    });
-  });
-  /* TWO bands, not one window (player, 2026-09-13): he wants the Mega reach
-     kept AND recommendations around the base row, and a longer list of both.
-
-     One window was the bug. A Mega-capable chip prices at its Mega, so
-     [value - 70, reach + 20] moves UP bodily and cuts the base neighbourhood
-     out: Beedrill's base is 395 and its window started at 425, so the asks most
-     likely to be TAKEN - the ones near what the chip looks like on paper - were
-     the ones that could never be suggested.
-
-       reach band - at or above the chip's full price, which is the Mega's BST
-                    plus the estimated premiums. What it can aim at.
-       base  band - under it, down to 70 below the base row. Asking for less
-                    than you could is how an offer clears the same day.
-
-     The two are filled alternately below so a chip with a big Mega cannot bury
-     the safer half under thirty reach-band targets. */
-  var bands = {reach:[], base:[]};
-  FORMS.forEach(function(p){
-    if (owned[p.name] || owned[p.species]) return;
-    var b = bst(p);
-    var band = chipBand(v, b);
-    if (!band) return;
-    var d = gtsDiff(p.name);
-    /* demand 4+ is a Pokemon people are running; it will not be handed over.
-       An unknown demand is NOT a low one, so it is allowed through but never
-       ranked as if it were cheap. */
-    if (d?.demand != null && d.demand >= 4) return;
-    var stone = dead[p.species];
-    /* Each band is ranked against its OWN anchor, or the base band would be
-       nothing but a list of near-misses sorted by how badly they miss. */
-    var anchor = band === "reach" ? v.reach : v.base;
-    /* A SLOT IS WORTH MORE THAN A STONE. A dead stone is 2000 VP already
-       spent; a welded Champions slot is the only thing in this game that
-       cannot be bought back at all. */
-    var free = !!(frees[p.name] || frees[p.species]);
-    bands[band].push({name:p.name, bst:b, spe:p.b[5], stone:stone || null,
-              rank:d?.rank, demand:d?.demand, band:band, frees:free,
-              stretch:b > v.value,
-              score:(free ? 150 : 0) + (stone ? 100 : 0) +
-                    (d?.demand != null ? (5 - d.demand) * 6 : 8) +
-                    Math.max(0, 20 - Math.abs(anchor - b) / 3)});
-  });
-  function byScore(a, b){ return b.score - a.score || b.bst - a.bst; }
-  bands.reach.sort(byScore);
-  bands.base.sort(byScore);
+  var own = ownership();
+  var bands = askBands(v, own, deadStonesBySpecies(own));
+  bands.reach.sort(bySuggestScore);
+  bands.base.sort(bySuggestScore);
+  /* filled alternately, so a chip with a big Mega cannot bury the safer half
+     under thirty reach-band targets */
   var want = limit || 14;
   var out = [];
   while (out.length < want && (bands.reach.length || bands.base.length)) {
@@ -273,6 +211,81 @@ function gtsSuggest(chipName, limit, shiny){
   }
   return out;
 }
+
+/* OWNED IN HOME IS DONE; OWNED ONLY IN CHAMPIONS IS STILL A TARGET. Both used
+   to count as owned, which quietly removed the best asks on the board: an
+   Encounter Pokemon can never leave the box, so a second copy arriving through
+   HOME is worth a whole slot. `owned` is what he has for keeps (HOME, or
+   HOME-origin in the box); `frees` is what a HOME copy would free a slot for.
+   Both are keyed by form and by species. */
+function ownership(){
+  var owned = {}, frees = {};
+  boxRows("home").forEach(function(r){ markOwned(owned, r); });
+  boxRows("champions").forEach(function(r){
+    markOwned(originOf(r) === "home" ? owned : frees, r);
+  });
+  return {owned: owned, frees: frees};
+}
+
+function markOwned(into, r){
+  into[r.name] = 1;
+  var p = byName[r.name];
+  if (p?.species) into[p.species] = 1;
+}
+
+/* Species with a Mega Stone already bought and nothing to hold it: trading
+   for one turns 2000 VP back on. */
+function deadStonesBySpecies(own){
+  var dead = {};
+  Object.keys(MEGAS_OF).forEach(function(sp){
+    if (own.owned[sp] || own.frees[sp]) return;
+    MEGAS_OF[sp].forEach(function(m){
+      var st = STONE_OF[m.name];
+      if (st && hasStone(st)) dead[sp] = st;
+    });
+  });
+  return dead;
+}
+
+/* TWO BANDS, NOT ONE WINDOW (player, 2026-09-13): the Mega reach kept AND
+   asks around the base row. One window was the bug: a Mega-capable chip
+   prices at its Mega, so the window moved up bodily and cut the base
+   neighbourhood out - Beedrill's base is 395 and its window started at 425,
+   so the asks most likely to be TAKEN could never be suggested.
+
+     reach - at or above the chip's full price (the Mega's BST plus the
+             estimated premiums): what it can aim at.
+     base  - under it, down to 70 below the base row: asking for less than
+             you could is how an offer clears the same day.
+
+   Anything people are running (ladder demand 4+) will not be handed over and
+   is left out; an UNKNOWN demand is not a low one, so it stays in but is
+   never ranked as if it were cheap. Each band is scored against its OWN
+   anchor, and A SLOT IS WORTH MORE THAN A STONE: a dead stone is 2000 VP
+   already spent, a welded slot cannot be bought back at all. */
+function askBands(v, own, dead){
+  var bands = {reach:[], base:[]};
+  FORMS.forEach(function(p){
+    if (own.owned[p.name] || own.owned[p.species]) return;
+    var b = bst(p);
+    var band = chipBand(v, b);
+    if (!band) return;
+    var d = gtsDiff(p.name);
+    if (d?.demand != null && d.demand >= 4) return;
+    var stone = dead[p.species];
+    var anchor = band === "reach" ? v.reach : v.base;
+    var free = !!(own.frees[p.name] || own.frees[p.species]);
+    bands[band].push({name:p.name, bst:b, spe:p.b[5], stone:stone || null,
+              rank:d?.rank, demand:d?.demand, band:band, frees:free,
+              stretch:b > v.value,
+              score:(free ? 150 : 0) + (stone ? 100 : 0) +
+                    (d?.demand != null ? (5 - d.demand) * 6 : 8) +
+                    Math.max(0, 20 - Math.abs(anchor - b) / 3)});
+  });
+  return bands;
+}
+
+function bySuggestScore(a, b){ return b.score - a.score || b.bst - a.bst; }
 
 /* How long an offer has been sitting. `deposited` was stored and never read;
    an offer nobody has taken in nine days is telling you the price is wrong. */
