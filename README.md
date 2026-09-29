@@ -635,7 +635,7 @@ it. A source that quietly changes a denominator is the failure this catches.
 ```
 
 <!-- GATE:START -->
-**The gate** is 37 checks, and nothing reaches the phone without
+**The gate** is 38 checks, and nothing reaches the phone without
 passing all of them:
 
 - a **shrink guard** — if a rebuild comes back with fewer forms, moves or
@@ -644,9 +644,10 @@ passing all of them:
   matching across all five sources, every derived index resolving, every form
   still accounted for, the README's own numbers, and that no SQL migration is
   still waiting to be applied
-- **one source check** — the app is linked from twelve ES modules, so a name
-  two of them both declare, or one of them uses without importing,
-  is read for once rather than clicked
+- **two source checks** — ESLint, with the rules SonarQube shows in VS Code,
+  over every file (a name one of the twelve ES modules uses without
+  importing it links fine and throws on the phone), and the app read
+  against its own markup and engine
 - **twenty-six browser tests** — run against the built page, because no Python
   check can see a template regression
 <!-- GATE:END -->

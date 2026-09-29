@@ -113,6 +113,16 @@ DECISIONS = [
      "edit tracker/src/<part>; index.template.html is a shell of markers",
      DOCS),
 
+    # check_app.js used to hunt undeclared and doubly declared names by hand,
+    # and two ReferenceErrors got past it (2026-09-29). ESLint's no-undef and
+    # no-redeclare make those checks now; check_app.js keeps only what no
+    # linter can see.
+    ("names-are-eslints-job",
+     r"check_app\.js`?\*{0,2}:? (reads|reports|catches)[^.]{0,120}(import|declare)",
+     "ESLint (no-undef, no-redeclare) checks names; check_app.js checks ids "
+     "and CALC switches",
+     DOCS),
+
     # Items are a team-level decision under the Item Clause, and the player
     # ruled them out of builds entirely on 2026-08-29.
     ("items-are-not-in-builds",

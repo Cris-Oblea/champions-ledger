@@ -76,6 +76,10 @@ const CATEGORY = {P: "Physical", S: "Special"};
 function catName(c){ return CATEGORY[c] || "Status"; }
 const MOVE_BY = {}; MOVES.forEach(function(m){ MOVE_BY[m.name] = m; });
 const STAT_KEYS = ["hp","atk","def","spa","spd","spe"];
+/* The Stat Points a spread spends, out of the 66 a build may. */
+function spTotal(sp){
+  return STAT_KEYS.reduce(function(a,k){ return a + (Number(sp[k]) || 0); }, 0);
+}
 const STAT_LABEL = {hp:"HP", atk:"Atk", def:"Def", spa:"SpA", spd:"SpD", spe:"Spe"};
 /* THE REAL TYPE COLOURS, NOT AN APPROXIMATION.
 
@@ -1421,5 +1425,5 @@ export {
   formSprite, spriteFor, statGrid, wireClears, typeSkin, effectLine, numText,
   podiumChip, podiumFor, splitPct, splitsFor, splitsReg, usageTag, megaLine,
   pokeCard, megasFor, natMult, rowMatches, sortRows, statAt, toast, typeChip,
-  VIEW, byText, ordinal, plural,
+  VIEW, byText, ordinal, plural, spTotal,
 };

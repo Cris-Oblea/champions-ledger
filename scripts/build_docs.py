@@ -198,9 +198,10 @@ def gate():
         "engine, name\n  matching across all five sources, every derived index "
         "resolving, every form\n  still accounted for, the README's own "
         "numbers, and that no SQL migration is\n  still waiting to be applied\n"
-        "- **%s source check** — the app is linked from %s ES modules, so a "
-        "name\n  two of them both declare, or one of them uses without "
-        "importing,\n  is read for once rather than clicked\n"
+        "- **%s source checks** — ESLint, with the rules SonarQube shows in "
+        "VS Code,\n  over every file (a name one of the %s ES modules uses "
+        "without\n  importing it links fine and throws on the phone), and the "
+        "app read\n  against its own markup and engine\n"
         "- **%s browser tests** — run against the built page, because no "
         "Python\n  check can see a template regression"
         % (word(1 + py + node + browser), word(py), word(node),

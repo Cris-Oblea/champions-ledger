@@ -53,7 +53,7 @@ public because it carries no personal row.
 | Scheduler | A second **Cloudflare Worker** (JavaScript, Web Crypto) | `cron/src/cron.js` | Starts the nightly GitHub workflow on time; GitHub's own schedule ran hours late |
 | Data pipeline | **Python 3**, standard library only (`urllib`, `json`, `re`, `argparse`, `html`) | `scripts/` | No `pip install` needed anywhere |
 | Damage maths | **Smogon's damage-calc** (TypeScript, copied from upstream, bundled with esbuild), plus our own Python port | `scripts/build_engine_bundle.py` → `tracker/engine.bundle.js`; `scripts/damage.py` | The page runs Smogon's real engine; the Python port is checked against it |
-| Tests | **Node + jsdom** browser tests; **acorn** + **acorn-walk** for a static check of the modules; Python audits | `tests/`, `scripts/check_app.js`, `scripts/audit_*.py` | Tests run against the *built* page, which is the thing that ships |
+| Tests | **Node + jsdom** browser tests; **ESLint** with **globals**, **eslint-plugin-sonarjs** and **eslint-plugin-unicorn** for the source; Python audits | `tests/`, `eslint.config.mjs`, `scripts/check_app.js`, `scripts/audit_*.py` | Tests run against the *built* page, which is the thing that ships |
 | CI/CD | **GitHub Actions**, a GitHub App bot, **Dependabot**, a git `pre-push` hook | `.github/`, `scripts/hooks/pre-push` | Nothing reaches the phone without passing the gate |
 | Fonts / sprites | Google Fonts (IBM Plex), Pokemon sprites from a CDN at a pinned commit | `tracker/index.template.html`, `spriteFor()` in `tracker/src/01-data.js` | Sprites are Nintendo's images, so the repo ships only their ids |
 | Dev tools | Supabase CLI, `npx wrangler`, `gh`, graphify | your machine | Reading the DB, deploying the cron, PRs, the code map |
@@ -270,8 +270,15 @@ runs in four places: the `pre-push` hook, every pull request, every push to
 - **Python checks**: the damage selftest, name matching, lookups, forms, the
   README's counts (`build_docs.py --check`), pending migrations, the backup's
   age, whether restore still works, and the doc rules (`check_docs.py`).
-- **`node scripts/check_app.js`**: reads all the modules as one program, to
-  catch a name that two of them declare or that one uses without importing.
+- **ESLint** (`eslint.config.mjs`): the rules SonarQube for IDE shows in VS
+  Code, run over every file. `no-undef` catches a name a module uses without
+  declaring or importing it, which the bundler would link as a global and the
+  phone would throw on. Rules that still have findings sit in the config's
+  ratchet list as warnings; a rule leaves the list when it reaches zero, and
+  from then on a new finding fails the push.
+- **`node scripts/check_app.js`**: what no linter can see - every element id
+  the app reaches for exists in the markup, and every `CALC` switch the
+  calculator screen sets reaches the engine.
 - **The browser tests** in `tests/`: each loads the **built**
   `dist/index.html` into jsdom through `tests/harness.js`, with a fake
   Supabase (`tests/fixture.js`), and clicks through the real UI.
