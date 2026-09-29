@@ -137,7 +137,6 @@ function openEditor(view, title, build, foot){
 }
 
 /* ===================================================================== sheet */
-var sheetSave = null;
 /* ---------- body scroll lock -------------------------------------------
    With a sheet open, dragging it to its end used to start scrolling the page
    underneath - the single clearest "this is a web page" tell on a phone.
@@ -188,7 +187,6 @@ function openSheet(title, build, foot){
 function closeSheet(){
   var wasOpen = !$("scrim").hidden;
   $("scrim").hidden = true;
-  sheetSave = null;
   if (wasOpen) { lockScroll(false); layerClosed(); }
 }
 $("sheetClose").onclick = closeSheet;
@@ -268,7 +266,7 @@ function fbtn(label, cls, fn){
 
    What stays private is the furniture - TABS and EXTRA_VIEWS (the tab bar's
    own data), lockScroll and _lockY (the iOS scroll lock behind a sheet),
-   syncNavHeight, sheetSave and EDITOR_HOME. Before the module pass any of the
+   syncNavHeight and EDITOR_HOME. Before the module pass any of the
    other twelve parts could have reached in and set _lockY. */
 
 /* ================================================= THE PHONE'S BACK BUTTON ==

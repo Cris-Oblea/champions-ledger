@@ -1,9 +1,9 @@
 /* 09-gts.js - GTS: what may be offered, what it is worth, and the export.
    Part of the app; linked into one script by scripts/build_tracker_page.py. */
-import { $, C, FORMS, MEGAS_OF, STONE_OF, anyRow, bst, byName, capNote,
- cardLine, dexLabel, dexNo, el, freeSlug, labelBox, megasFor, pokeCard,
- searchField, spriteFor, statGrid, toast, typeCard, typeChip }
-  from "./01-data.js";
+import {
+  $, C, FORMS, MEGAS_OF, STONE_OF, anyRow, bst, byName, capNote, dexLabel,
+  dexNo, el, freeSlug, megasFor, pokeCard, searchField, toast,
+} from "./01-data.js";
 import { ORIGIN_LABEL, S, baseAbility, boxRows, hasStone, originOf }
   from "./02-state.js";
 import { drop, put, putNew } from "./03-store.js";
@@ -103,7 +103,6 @@ function drawGtsHistory(){
   /* the number that turns this into pricing data rather than a diary: what
      the chips actually fetched, against what their rows said they were worth */
   var paid = h.filter(function(r){ return r.gaveValue && r.gotBst; });
-  var over = paid.filter(function(r){ return r.gotBst > r.gaveBst + 20; });
   /* Collapsed, this line IS the feature - so it carries the finding rather
      than a description. Measured over every closed trade: how often a chip
      reached the ceiling its Mega line sets. 21 trades say that ceiling is

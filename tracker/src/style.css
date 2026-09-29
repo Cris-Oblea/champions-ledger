@@ -1,6 +1,6 @@
 /* ---------- tokens: light is the base, both dark paths redefine only these */
 :root{
-  --ground:#EFF3F2; --surface:#FFFFFF; --sunk:#E5EBE9;
+  --ground:#EFF3F2; --surface:#FFFFFF; --sunk:#E5EBE9; --gold-ink:#7D5F0E;
   --line:#D2DCDA; --line-hard:#B2C0BD;
   --text:#111819; --muted:#5A6A6B; --faint:#849695;
   --accent:#0A8A7C; --accent-ink:#FFFFFF; --accent-soft:#D9EFEC;
@@ -42,7 +42,7 @@
 }
 @media (prefers-color-scheme:dark){
   :root:not([data-theme="light"]){
-    --ground:#0A1012; --surface:#121A1C; --sunk:#0E1618;
+    --ground:#0A1012; --surface:#121A1C; --sunk:#0E1618; --gold-ink:#C79A2E;
     --line:#222F31; --line-hard:#35494B;
     --text:#E3EBE9; --muted:#8DA09F; --faint:#6C7F7E;
     --accent:#33C0AD; --accent-ink:#04211D; --accent-soft:#0D2E2A;
@@ -56,7 +56,7 @@
   }
 }
 :root[data-theme="dark"]{
-  --ground:#0A1012; --surface:#121A1C; --sunk:#0E1618;
+  --ground:#0A1012; --surface:#121A1C; --sunk:#0E1618; --gold-ink:#C79A2E;
   --line:#222F31; --line-hard:#35494B;
   --text:#E3EBE9; --muted:#8DA09F; --faint:#6C7F7E;
   --accent:#33C0AD; --accent-ink:#04211D; --accent-soft:#0D2E2A;
@@ -1131,7 +1131,7 @@ h2 .n{font-family:var(--mono);color:var(--faint);font-weight:500;letter-spacing:
 /* A podium finish is not "good" or "bad", it is a medal - so it gets its own
    colour rather than borrowing the accent that already means something else
    on the same row. */
-.tag.gold{background:rgba(190,150,40,.16);border-color:#b8912c;color:#c79a2e}
+.tag.gold{background:rgba(190,150,40,.16);border-color:#b8912c;color:var(--gold-ink)}
 
 /* ---------- buttons ------------------------------------------------------ */
 .btn{background:var(--surface);border:1px solid var(--line-hard);border-radius:8px;
@@ -1538,7 +1538,7 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border:2px solid var(
 /* a note can be a paragraph of reasoning; three lines is enough to recognise
    it by, and the whole thing is there when the offer is opened */
 .gtsnote{font-size:12px;color:var(--muted);margin-top:6px;line-height:1.4;
-  display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;
+  display:-webkit-box;-webkit-line-clamp:3;line-clamp:3;-webkit-box-orient:vertical;
   overflow:hidden}
 @media (max-width:560px){
   .gtspair{grid-template-columns:1fr}

@@ -1,12 +1,12 @@
 /* 12-find.js - Find: moves, abilities, items, and one Pokemon's whole sheet.
    Part of the app; linked into one script by scripts/build_tracker_page.py. */
-import { $, C, DEX, MOVES, MOVE_BY, SORT, STAT_KEYS, STAT_LABEL, STONE_OF,
- TYPE_COLOR, anyRow, bst, byName, capNote, cardLine, catName, defence,
- battleFormsOf, dexNo, effectLine, el, formInk, formMoves, formSprite,
- labelBox, learnset, megaLine, megaSuffix, megasFor, numText,
- podiumChip, pokeFacts, podiumFor, pokeCard, searchField, splitPct, spriteFor,
- statGrid, toast,
- typeCard, typeChip, typeSkin, usageTag } from "./01-data.js";
+import {
+  $, C, DEX, MOVES, MOVE_BY, SORT, STAT_KEYS, STAT_LABEL, STONE_OF, anyRow,
+  bst, byName, cardLine, catName, defence, battleFormsOf, dexNo, effectLine,
+  el, formInk, formMoves, formSprite, labelBox, learnset, megaLine, numText,
+  podiumChip, pokeFacts, podiumFor, pokeCard, searchField, splitPct,
+  spriteFor, statGrid, toast, typeChip, typeSkin, usageTag,
+} from "./01-data.js";
 import { RELEASE_FLOOR, S, boxRows, originOf, ownedNames, releaseBlock }
   from "./02-state.js";
 import { closeSheet, fbtn, openSheet } from "./04-nav.js";
@@ -537,8 +537,7 @@ function damageTable(types){
   return dl;
 }
 
-function pokeBody(body, p, opts){
-  opts = opts || {};
+function pokeBody(body, p){
 
   /* THE ORDER IS THE ORDER A POKEMON IS READ IN (player, 2026-09-19): "estan
      los datos como el tipo, stats y la habilidad deberia seguirle, luego la
@@ -871,14 +870,14 @@ function pokeBody(body, p, opts){
        are main-series moves on a main-series Pokemon and must never read as
        Champions data. */
     body.appendChild(el("h2", null, "Movepool"));
-    var host = el("div");
-    body.appendChild(host);
-    host.appendChild(el("div", "st", "Loading what it knows..."));
+    var outsideHost = el("div");
+    body.appendChild(outsideHost);
+    outsideHost.appendChild(el("div", "st", "Loading what it knows..."));
     loadOutside(function(){
-      host.innerHTML = "";
+      outsideHost.innerHTML = "";
       var got = outsideMovesFor(p.name);
       if (!got) {
-        host.appendChild(el("div", "st",
+        outsideHost.appendChild(el("div", "st",
           "No movepool on record for " + p.name + " — there is no "
           + "Champions page for it and nothing upstream either."));
         return;
@@ -897,17 +896,17 @@ function pokeBody(body, p, opts){
         if (o) off++;
         return o;
       }).filter(Boolean);
-      host.appendChild(el("p", "sub",
+      outsideHost.appendChild(el("p", "sub",
         "Which moves it learns is main-series — Champions publishes no "
         + "page for a species it does not have. What each one DOES is "
         + "Champions' own row for that move."
         + (off ? " " + off + " of them are moves Champions has in its database "
            + "but has not enabled; they are marked." : "")));
-      var ui2 = moveFilters(host, pool, function(){ drawOut(); },
+      var ui2 = moveFilters(outsideHost, pool, function(){ drawOut(); },
                             "Filter " + pool.length + " moves it learns",
                             {cap: 200});
       var list2 = el("div", "list");
-      host.appendChild(list2);
+      outsideHost.appendChild(list2);
       function drawOut(){
         var hits = ui2.apply();
         list2.innerHTML = "";
@@ -948,7 +947,7 @@ function pokeBody(body, p, opts){
 function findDetail(p){
   openSheet(p.name, function(body){
     pokeHead(body, p, {});
-    pokeBody(body, p, {});
+    pokeBody(body, p);
   }, []);
 }
 
@@ -1363,7 +1362,7 @@ function moveRowFor(m, ability, poke){
   blockerTags(m, h);
   var hits = [];
   abils.forEach(function(a){
-    var hit = abilityHit(a, m, poke);
+    var hit = abilityHit(a, m);
     if (!hit) return;
     var tag = abilityTag(a, m, poke);          // keeps the Adaptability filter
     if (!tag) return;
@@ -2294,5 +2293,4 @@ export {
   blockerTags,
   findInit, findRun, itemTags, moveFilters, moveRowFor, moveScore, pokeBody,
   pokeHead, priorityTag,
-  factLine, overlapSweep, spreadNote, spreadTags, worldDraw,
-};
+  factLine, overlapSweep, spreadNote, spreadTags, };

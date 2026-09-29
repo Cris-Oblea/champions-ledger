@@ -1,9 +1,10 @@
 /* 08-teams.js - Six slots, the clauses checked, and what is still to get.
    Part of the app; linked into one script by scripts/build_tracker_page.py. */
-import { $, C, COSTS, MOVE_BY, STAT_KEYS, STONE_OF, bst, byName, capNote,
- cardLine, dexNo, el, labelBox, megasFor, natMult, numText, pokeCard, searchField,
- splitPct, statAt, toast, typeCard, typeChip, typeSkin, usageTag }
-  from "./01-data.js";
+import {
+  $, C, COSTS, MOVE_BY, STAT_KEYS, STONE_OF, bst, byName, dexNo, el,
+  labelBox, megasFor, natMult, numText, pokeCard, searchField, splitPct,
+  statAt, toast, typeChip, typeSkin, usageTag,
+} from "./01-data.js";
 import { S, activeAbility, baseAbility, buildLink, buildsFor, hasItem,
   hasStone } from "./02-state.js";
 import { drop, put, putNew } from "./03-store.js";

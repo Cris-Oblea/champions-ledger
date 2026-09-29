@@ -146,7 +146,6 @@ function tintOf(h, alpha){
                    parseInt(h.slice(3, 5), 16) + "," +
                    parseInt(h.slice(5, 7), 16) + "," + alpha + ")";
 }
-function typeTint(t, alpha){ return tintOf(TYPE_COLOR[t], alpha); }
 /* Dress a row as a CARD wearing its Pokemon's type: the band across the top
    and the tint behind it. Used by every list that shows Pokemon, so the four
    of them cannot drift apart.
@@ -618,7 +617,6 @@ function pokeFacts(m, p, ms, o){
      tied together by colour rather than by reading. The title is where the
      stone went: which one it needs, and whether it is owned. */
   var megasOnly = ms.filter(function(mm){ return !mm.battle; });
-  var battleOnly = ms.filter(function(mm){ return mm.battle; });
   /* NO BOX FOR THE BATTLE FORMS, and that is not an omission.
 
      A Mega gets one because the stone REPLACES its ability, so the card is
@@ -1019,21 +1017,6 @@ function spriteImg(id, big, shiny){
   return img;
 }
 
-/* The compact rows printed Atk / SpA / Spe and silently dropped HP, Def and
-   SpD - the same three missing in all three copies of the line, which is what
-   duplicated logic does every time. One helper now, so a stat cannot go missing
-   in one place only. STAT_LABEL is the display casing of STAT_KEYS. */
-/* STAT_LABEL is declared ONCE, above, keyed by stat name. It used to be
-   declared a second time here as a plain array, and the second declaration won
-   at runtime - so every caller that asked for STAT_LABEL["hp"] got undefined.
-   That is why a Pokemon's sheet printed six numbers with no label under them,
-   and why the SP rows in a build had blank captions. Found by the player. */
-function statLine(p){
-  return p.b.map(function(v, i){
-    return v + " " + STAT_LABEL[STAT_KEYS[i]];
-  }).join(" / ");
-}
-
 /* level-50 stat, the formula the repo verified against 504 speed tiers */
 function statAt(base, sp, isHp, mult){
   var v = base + Math.max(0, Math.min(32, sp || 0)) + (isHp ? 75 : 20);
@@ -1390,6 +1373,7 @@ function searchField(host, placeholder, onInput){
   var inp = el("input");
   inp.type = "text";
   inp.placeholder = placeholder || "Search";
+  inp.setAttribute("aria-label", inp.placeholder);
   /* a filter box is not a name being typed for the first time - autocorrect
      and a capital letter on a phone both fight what is being typed here */
   inp.setAttribute("autocomplete", "off");
@@ -1415,19 +1399,11 @@ function searchField(host, placeholder, onInput){
    or overwrite. */
 export {
   $, C, COSTS, DEX, FORMS, HOME_ALL, MEGAS_OF, MOVES, MOVE_BY, SORT,
-  STAT_KEYS, STAT_LABEL, STONE_OF, TYPE_COLOR, TYPE_COLOR2, TYPE_INK,
-  bst, byName, capNote, catName, defence, dexLabel, dexNo, el, freeSlug,
-  anyRow, battleFormsOf, cardLine, formInk, formKey, formMoves, labelBox,
-  learnset,
-  megaSuffix,
-  pokeFacts,
-  outsideRow,
-  retypeLayer,
-  searchField, formSprite, spriteFor, statGrid, wireClears,
-  typeCard, typeSkin, typeTint,
-  effectChips, effectLine, effectOf, numText, podiumChip, podiumFor, splitMax, splitPct,
-  splitsFor, splitsReg, usageTag,
-  megaLine, pokeCard,
-  megasFor, natMult, rowMatches, setHomeAll, setSort, sortRows, statAt,
-  statLine, toast, typeChip,
+  STAT_KEYS, STAT_LABEL, STONE_OF, TYPE_COLOR, TYPE_COLOR2, TYPE_INK, bst,
+  byName, capNote, catName, defence, dexLabel, dexNo, el, freeSlug, anyRow,
+  battleFormsOf, cardLine, formInk, formMoves, labelBox, learnset, pokeFacts,
+  outsideRow, searchField, formSprite, spriteFor, statGrid, wireClears,
+  typeSkin, effectLine, numText, podiumChip, podiumFor, splitPct, splitsFor,
+  splitsReg, usageTag, megaLine, pokeCard, megasFor, natMult, rowMatches,
+  setHomeAll, setSort, sortRows, statAt, toast, typeChip,
 };

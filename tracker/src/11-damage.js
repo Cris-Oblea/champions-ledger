@@ -1,8 +1,10 @@
 /* 11-damage.js - Smogon's engine, and the calculator screen around it.
    Part of the app; linked into one script by scripts/build_tracker_page.py. */
-import { $, C, DEX, MOVE_BY, STAT_KEYS, STAT_LABEL, anyRow, byName, capNote,
- catName, el, labelBox, learnset, natMult, pokeCard, searchField, statAt,
- statGrid, toast, typeCard, typeChip } from "./01-data.js";
+import {
+  $, C, DEX, MOVE_BY, STAT_KEYS, STAT_LABEL, anyRow, byName, capNote,
+  catName, el, labelBox, learnset, natMult, pokeCard, searchField, statAt,
+  statGrid, toast, typeChip,
+} from "./01-data.js";
 import { closeSheet, openSheet } from "./04-nav.js";
 import { S, activeAbility, baseAbility } from "./02-state.js";
 /* One label: whether a move hits both opponents. 12-find imports this file
@@ -459,7 +461,7 @@ function engName(name, attacking){
 }
 
 /* our SP object -> the engine's evs, and our boost object -> its boosts */
-function engSide(side, P){
+function engSide(side){
   var evs = {}, boosts = {};
   STAT_KEYS.forEach(function(k){
     if (side.sp[k]) evs[k] = side.sp[k];
@@ -490,8 +492,8 @@ function engineCalc(){
     throw new Error(d.name + " is not in Smogon's Champions roster, so the " +
       "engine has no stats for it.");
   a._plusOne = CALC.plusOneAtk; d._plusOne = CALC.plusOneDef;
-  var A = new S.Pokemon(S.gen, an, engSide(a, byName[a.name]));
-  var D = new S.Pokemon(S.gen, dn, engSide(d, byName[d.name]));
+  var A = new S.Pokemon(S.gen, an, engSide(a));
+  var D = new S.Pokemon(S.gen, dn, engSide(d));
   var M = new S.Move(S.gen, m.name, {isCrit: !!CALC.crit});
   /* Champions is doubles. The engine takes the x0.75 off the move's target and
      the game type, and has no idea how many Pokemon are actually out - so a
@@ -576,8 +578,7 @@ var CALC = {
   nightmare:false, switching:false, tailwindAtk:false, powerTrickAtk:false,
   powerTrickDef:false, plusOneAtk:false, plusOneDef:false,
   gravity:false, wonderRoom:false, magicRoom:false, protected:false,
-  atkStatus:null,
-  spikes: 0
+  atkStatus:null
 };
 
 /* One side of the calculator: the FULL spread, six stats, the way a real
@@ -1291,7 +1292,7 @@ Object.keys(AB).forEach(function(name){
   AB_SET[name] = s;
 });
 
-function abilityHit(ability, move, poke){
+function abilityHit(ability, move){
   var r = AB_SET[ability];
   if (!r || r.side !== "off") return null;      // defensive rules badge nothing
   // An ability that covers a whole CATEGORY selects nothing, so a badge on
@@ -1311,7 +1312,7 @@ function abilityHit(ability, move, poke){
 }
 /* the badge that goes on a move row when the chosen ability touches it */
 function abilityTag(ability, move, poke){
-  var hit = abilityHit(ability, move, poke);
+  var hit = abilityHit(ability, move);
   if (!hit) return null;
   // STAB needs the user's own type; the move table cannot know it
   if (ability === "Adaptability" &&
