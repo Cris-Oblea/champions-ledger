@@ -49,8 +49,8 @@ function megaOf(b, slot){
   if (b.mega && byName[b.mega]) return byName[b.mega];
   if (slot?.item) {
     var ms = megasFor(b.pokemon) || [];
-    for (var i = 0; i < ms.length; i++) {
-      if (ms[i] && STONE_OF[ms[i].name] === slot.item) return ms[i];
+    for (const m of ms) {
+      if (m && STONE_OF[m.name] === slot.item) return m;
     }
   }
   return null;
@@ -1097,7 +1097,7 @@ function teamSheet(id, t){
        is what keeps the Speed order and the weaknesses from ever telling two
        different stories about the same battle. */
     function paintScenario(){
-      var cur = SCEN.filter(function(x){ return x.at === scenAt.v; })[0]
+      var cur = SCEN.find(function(x){ return x.at === scenAt.v; })
                 || SCEN[0];
       if (scenWhy) scenWhy.textContent = cur.why;
       if (speedBox) paintSpeeds(speedBox, teamSpeeds(r, cur.at));

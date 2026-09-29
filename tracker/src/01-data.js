@@ -58,7 +58,8 @@ var FORMS = DEX.filter(function(p){ return !p.mega; })
 var MEGAS_OF = {};
 DEX.forEach(function(p){
   if (!p.mega) return;
-  (MEGAS_OF[p.species] = MEGAS_OF[p.species] || []).push(p);
+  MEGAS_OF[p.species] ||= [];
+  MEGAS_OF[p.species].push(p);
 });
 var STONE_OF = {};                       // mega name -> stone name
 C.STONES.forEach(function(r){ STONE_OF[r[1]] = r[0]; });
@@ -142,9 +143,9 @@ function toast(msg){
    this page relies on. Returns the hex untouched when it is not one. */
 function tintOf(h, alpha){
   if (h?.charAt(0) !== "#" || h.length !== 7) return null;
-  return "rgba(" + parseInt(h.slice(1, 3), 16) + "," +
-                   parseInt(h.slice(3, 5), 16) + "," +
-                   parseInt(h.slice(5, 7), 16) + "," + alpha + ")";
+  return "rgba(" + Number.parseInt(h.slice(1, 3), 16) + "," +
+                   Number.parseInt(h.slice(3, 5), 16) + "," +
+                   Number.parseInt(h.slice(5, 7), 16) + "," + alpha + ")";
 }
 /* Dress a row as a CARD wearing its Pokemon's type: the band across the top
    and the tint behind it. Used by every list that shows Pokemon, so the four
@@ -1210,8 +1211,8 @@ function splitPct(name, kind, what){
   var s = splitsFor(name);
   var rows = s?.[kind];
   if (!rows?.length) return null;
-  for (var i = 0; i < rows.length; i++) {
-    if (rows[i][0] === what) return rows[i][1];
+  for (const row of rows) {
+    if (row[0] === what) return row[1];
   }
   return 0;
 }
@@ -1350,7 +1351,7 @@ function addClear(wrap, inp){
     inp.value = "";
     /* through the field's own handler, so the list redraws exactly as it does
        for a keystroke - there is no second code path to keep in step */
-    if (inp.oninput) inp.oninput.call(inp, e);
+    if (inp.oninput) inp.oninput(e);
     inp.focus();
   };
   paint();

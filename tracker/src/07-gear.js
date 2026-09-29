@@ -57,7 +57,7 @@ function drawStones(){
   $("nStonesNot").textContent = cn;
   if (!co) o.appendChild(el("div", "empty", "No stones owned"));
   var dead = ownedStones().filter(function(s){
-    var row = C.STONES.filter(function(r){ return r[0] === s; })[0];
+    var row = C.STONES.find(function(r){ return r[0] === s; });
     return row && !(row[2] in own);
   });
   $("stoneNote").innerHTML = "<strong>" + ownedStones().length + " of " +
@@ -304,7 +304,7 @@ function drawTrainer(){
   cu.innerHTML = "";
   cu.appendChild(el("span", "dot"));
   cu.appendChild(document.createTextNode(
-    used + " of " + cap + " used · " + (free < 0 ? 0 : free) + " free"));
+    used + " of " + cap + " used · " + Math.max(free, 0) + " free"));
   cu.style.color = free <= 0 ? "var(--bad)" : free <= 3 ? "var(--warn)" : "";
 
   var rent = boxRows("champions", "rental").length;

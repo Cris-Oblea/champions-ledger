@@ -649,11 +649,11 @@ function offerAge(o){
 function offerStart(o){
   if (o.depositedAt) {
     var p = Date.parse(o.depositedAt);
-    if (!isNaN(p)) return p;
+    if (!Number.isNaN(p)) return p;
   }
   if (!o.deposited) return null;
   var t = Date.parse(o.deposited + "T00:00:00");
-  return isNaN(t) ? null : t;
+  return Number.isNaN(t) ? null : t;
 }
 /* Hours matter here in a way they do not elsewhere. Indeedee is BST 475 and
    cleared in hours; Beedrill is worth 495 by the Mega rule and sat for days.
@@ -911,7 +911,7 @@ function gtsPickMine(onPick, exceptId){
       t.setAttribute("aria-pressed", PICK.sort === o[0] ? "true" : "false");
       t.onclick = function(){
         PICK.sort = o[0];
-        [].forEach.call(sortWrap.children, function(c){
+        Array.prototype.forEach.call(sortWrap.children, function(c){
           c.setAttribute("aria-pressed", c === t ? "true" : "false");
         });
         draw();
@@ -1387,8 +1387,7 @@ function gtsSheet(id, o){
       var offRec = d.offeredId ? S.box[d.offeredId] : null;
       var wasShiny = !!offRec?.shiny;
       var vOff = chipValue(d.offered, wasShiny), vGot = chipValue(d.requested);
-      var done = Object.assign({}, d, {
-        closed:new Date().toISOString().slice(0, 10),
+      var done = {...d, closed:new Date().toISOString().slice(0, 10),
         closedAt:new Date().toISOString(),
         days:offerAge(d),
         /* the number that ranks demand better than BST does */
@@ -1396,7 +1395,7 @@ function gtsSheet(id, o){
         gaveShiny:wasShiny,
         gaveBst:vOff?.base, gaveValue:vOff?.value,
         gotBst:vGot?.base,
-        rankAtDeposit:d.rankAtDeposit != null ? d.rankAtDeposit : null});
+        rankAtDeposit:d.rankAtDeposit != null ? d.rankAtDeposit : null};
       /* `history.slice(0, 60)` used to live on this line, so the 61st closed
          trade deleted the oldest. A closed trade is the only hard evidence of
          what the market pays and the pricing rule is derived from them, so the
@@ -1496,14 +1495,14 @@ function csv(rows){
   return rows.map(function(r){
     return r.map(function(v){
       v = v == null ? "" : String(v);
-      return /[",\n]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v;
+      return /[",\n]/.test(v) ? '"' + v.replaceAll('"', '""') + '"' : v;
     }).join(",");
   }).join("\r\n");
 }
 /* Hand the viewer a file: a Blob behind a temporary <a download>, which is
    how every browser saves generated data without a server round trip. */
 function offer(filename, text){
-  var type = /\.json$/.test(filename) ? "application/json" : "text/csv";
+  var type = filename.endsWith(".json") ? "application/json" : "text/csv";
   var url = URL.createObjectURL(new Blob([text], {type: type + ";charset=utf-8"}));
   var a = el("a");
   a.href = url; a.download = filename;
@@ -1647,8 +1646,8 @@ function closeMs(o){
   if (start == null) return null;
   var end = o.closedAt ? Date.parse(o.closedAt)
           : (o.closed && o.closed !== true) ? Date.parse(o.closed + "T00:00:00")
-          : NaN;
-  if (isNaN(end)) return null;
+          : Number.NaN;
+  if (Number.isNaN(end)) return null;
   var ms = end - start;
   return ms >= 0 ? ms : null;
 }

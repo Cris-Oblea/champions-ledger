@@ -114,7 +114,8 @@ function renderAll(){
   var dupes = {};
   perm.concat(rent).forEach(function(r){
     var sp = byName[r.name]?.species || r.name;
-    (dupes[sp] = dupes[sp] || []).push(r);
+    dupes[sp] ||= [];
+    dupes[sp].push(r);
   });
   var rep = Object.keys(dupes).filter(function(k){
     return dupes[k].length > 1 &&
@@ -198,7 +199,7 @@ function drawBuilds(){
    ever grows, and so the markup keeps reading as prose. */
 function foldIntros(){
   var LONG = 16;                       /* words before it is worth folding */
-  [].forEach.call(document.querySelectorAll(".view .lede, .view > .sub"),
+  Array.prototype.forEach.call(document.querySelectorAll(".view .lede, .view > .sub"),
     function(p){
       if (p.dataset.folded) return;
       /* COLLAPSE THE WHITESPACE FIRST. The markup indents these paragraphs
@@ -366,16 +367,16 @@ $("railBtn").onclick = function(){
 try { if (localStorage.getItem("champ-rail")) document.querySelector(".shell").classList.add("narrow"); } catch (e) {}
 $("themeBtn").onclick = function(){
   var r = document.documentElement;
-  var now = r.getAttribute("data-theme");
+  var now = r.dataset.theme;
   if (!now) {
     now = mq("(prefers-color-scheme: dark)") ? "dark" : "light";
   }
-  r.setAttribute("data-theme", now === "dark" ? "light" : "dark");
-  try { localStorage.setItem("champ-theme", r.getAttribute("data-theme")); } catch (e) {}
+  r.dataset.theme = now === "dark" ? "light" : "dark";
+  try { localStorage.setItem("champ-theme", r.dataset.theme); } catch (e) {}
 };
 try {
   var saved = localStorage.getItem("champ-theme");
-  if (saved) document.documentElement.setAttribute("data-theme", saved);
+  if (saved) document.documentElement.dataset.theme = saved;
 } catch (e) {
   /* Storage throws in private browsing; the system theme stands. */
 }

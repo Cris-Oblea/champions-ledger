@@ -122,14 +122,14 @@ function weightPower(move, atk, def){
   if (n === "Low Kick" || n === "Grass Knot") {
     if (tw == null) return null;
     var t = [[10,20],[25,40],[50,60],[100,80],[200,100]];
-    for (var i = 0; i < t.length; i++) if (tw < t[i][0]) return t[i][1];
+    for (const [below, bp] of t) if (tw < below) return bp;
     return 120;
   }
   if (n === "Heavy Slam" || n === "Heat Crash") {
     var aw = weightOf(atk.name);
     if (tw == null || aw == null || tw <= 0) return null;
     var r = aw / tw, u = [[5,120],[4,100],[3,80],[2,60]];
-    for (var j = 0; j < u.length; j++) if (r >= u[j][0]) return u[j][1];
+    for (const [atLeast, bp] of u) if (r >= atLeast) return bp;
     return 40;
   }
   return null;
@@ -711,7 +711,8 @@ function calcSideCtl(which){
   if (which === "def") pool = pool.concat(Object.keys(BERRY_TYPE));
   if (which === "atk") pool = pool.concat(Object.keys(TYPE_ITEM));
   var done = {};
-  pool.sort().forEach(function(x){
+  pool.sort();
+  pool.forEach(function(x){
     if (done[x]) return;
     done[x] = 1;
     si.appendChild(new Option(x, x));

@@ -95,7 +95,7 @@ function speciesSheet(onPick){
       t.setAttribute("aria-pressed", PS.sort === o[0] ? "true" : "false");
       t.onclick = function(){
         PS.sort = o[0];
-        [].forEach.call(sortWrap.children, function(c){
+        Array.prototype.forEach.call(sortWrap.children, function(c){
           c.setAttribute("aria-pressed", c === t ? "true" : "false");
         });
         draw();
@@ -412,7 +412,7 @@ function buildSheet(id, b, keepOriginal){
       copyCard.style.marginTop = "8px";
       var paintCopy = function(){
         copyCard.innerHTML = "";
-        var r = copies.filter(function(c){ return c._id === draft._boxId; })[0];
+        var r = copies.find(function(c){ return c._id === draft._boxId; });
         if (!r) return;
         var others = carries(r);
         var pr = byName[r.name];
@@ -769,7 +769,7 @@ function buildSheet(id, b, keepOriginal){
       num.inputMode = "numeric";
       num.setAttribute("aria-label", STAT_LABEL[k] + " stat points, 0 to 32");
       num.oninput = function(){
-        var clean = num.value.replace(/[^0-9]/g, "").slice(0, 2);
+        var clean = num.value.replace(/\D/g, "").slice(0, 2);
         if (clean !== num.value) num.value = clean;
         if (clean === "") return;     // let the box be emptied and retyped
         /* 40 is not a number this box can hold, so correct it on screen too.
