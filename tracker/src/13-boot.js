@@ -38,7 +38,7 @@ function renderAll(){
   /* ONE FILTER, THREE SECTIONS. Which origin a Pokemon has is not part of
      "where is my Chesnaught", so the box's filter runs across all three and
      each heading says how much of itself is showing. */
-  var bq = ($("boxFilter") && $("boxFilter").value || "").trim().toLowerCase();
+  var bq = ($("boxFilter")?.value || "").trim().toLowerCase();
   function boxFill(node, rows, empty){
     var hits = rows.filter(function(r){ return rowMatches(r, bq); });
     fill(node, hits, bq ? "Nothing here matches that" : empty);
@@ -49,7 +49,7 @@ function renderAll(){
   var nCO = boxFill($("listChampOrigin"), sortRows(oChamp.concat(oUnk)),
                     "Nothing marked as Encounter-bought");
   var nRe = boxFill($("listRent"), sortRows(rent), "No rentals");
-  var hq = ($("homeFilter") && $("homeFilter").value || "").trim().toLowerCase();
+  var hq = ($("homeFilter")?.value || "").trim().toLowerCase();
   var homeShown = sortRows(home).filter(function(r){ return rowMatches(r, hq); });
   /* NOT `cap` - that is the box capacity, ten lines up, and reusing the name
      here made the full-box check read 48 >= 12. `var` is function-scoped, so
@@ -113,7 +113,7 @@ function renderAll(){
      2026-09-27) - calling either "trade material" asks for the impossible. */
   var dupes = {};
   perm.concat(rent).forEach(function(r){
-    var sp = (byName[r.name] || {}).species || r.name;
+    var sp = byName[r.name]?.species || r.name;
     (dupes[sp] = dupes[sp] || []).push(r);
   });
   var rep = Object.keys(dupes).filter(function(k){

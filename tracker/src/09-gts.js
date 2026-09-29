@@ -122,7 +122,7 @@ function drawGtsHistory(){
   /* BOTH SIDES OF THE TRADE, because the question this list answers is "what
      did a Chesnaught fetch last time" - and a Chesnaught can be either half
      of it. 21 closed trades today and it only grows. */
-  var hq = ($("gtsHistSearch") && $("gtsHistSearch").value || "")
+  var hq = ($("gtsHistSearch")?.value || "")
     .trim().toLowerCase();
   var shown = h.filter(function(r){
     return !hq || (r.offered + " " + r.requested + " " + (r.note || ""))
@@ -191,7 +191,7 @@ function drawGtsHistory(){
    kill a trade; when both are hard it goes to 5. */
 var DIFF_LABEL = ["", "easy", "doable", "hard", "very hard", "near impossible"];
 function gtsDiff(name){
-  var d = (C.GTSDIFF || {})[name];
+  var d = C.GTSDIFF?.[name];
   if (!d) return null;
   return {score:d[0], demand:d[1], supply:d[2], rank:d[3], how:d[4] || "",
           usage:d[5], size:d[6] || 0};
@@ -264,7 +264,7 @@ function gtsRow(i, o){
     var card = pokeCard(p, {
       tag: "div",
       name: name,
-      shiny: !!(rec && rec.shiny),
+      shiny: !!rec?.shiny,
       badges: function(nm){ if (rec) boxBadges(nm, rec); },
       meta: function(meta){
         /* Both sides (player, 2026-09-11: "beedrill en que posicion esta?").
@@ -276,7 +276,7 @@ function gtsRow(i, o){
         }
         /* a shiny chip is a more expensive coin than its species - say so on
            the side you are giving, where it changes what you can ask for */
-        if (rec && rec.shiny && label.indexOf("asked") < 0) {
+        if (rec?.shiny && label.indexOf("asked") < 0) {
           var cvs = chipValueOf(rec);
           if (cvs) meta.appendChild(el("span", "tag mega",
             "shiny — reaches ~" + cvs.reach));
@@ -304,7 +304,7 @@ function gtsRow(i, o){
      for a Beedrill is 495, its Mega's BST - a 15-point stretch, not 115. The
      verdict now prices the chip the way his closed trades did. */
   var aRec = o.offeredId ? S.box[o.offeredId] : null;
-  var cv = chipValue(o.offered, !!(aRec && aRec.shiny));
+  var cv = chipValue(o.offered, !!aRec?.shiny);
   var bP = anyRow(o.requested);
   if (cv && bP) {
     var target = bst(bP);
@@ -403,7 +403,7 @@ function gtsRow(i, o){
   }
   /* the ladder moves under a standing offer: Sneasler went 23% -> 50% while
      an offer for it was sitting there. Recorded at deposit, compared now. */
-  if (o.rankAtDeposit != null && rd && rd.rank != null &&
+  if (o.rankAtDeposit != null && rd?.rank != null &&
       Math.abs(o.rankAtDeposit - rd.rank) >= 8) {
     var moved = o.rankAtDeposit - rd.rank;      // + means it climbed
     var mr = el("div", "rmeta");
@@ -468,7 +468,7 @@ var SHINY_REACH = 60;    // ESTIMATE: about one BST tier. Not measured.
    history records both, so it becomes measurable. */
 function demandReach(name){
   var d = gtsDiff(name);
-  if (!d || d.rank == null) return 0;
+  if (d?.rank == null) return 0;
   if (d.demand >= 5) return 90;      // top of the ladder: people come to you
   if (d.demand >= 4) return 60;
   if (d.demand >= 3) return 35;
@@ -512,7 +512,7 @@ function deadStones(){
   boxRows("home").concat(boxRows("champions")).forEach(function(r){
     have[r.name] = 1;
     var p = byName[r.name];
-    if (p && p.species) have[p.species] = 1;
+    if (p?.species) have[p.species] = 1;
   });
   var out = [];
   /* walk the Megas, not the stones: STONE_OF is keyed by Mega name, and a
@@ -574,7 +574,7 @@ function gtsSuggest(chipName, limit, shiny){
   function mark(into, r){
     into[r.name] = 1;
     var p = byName[r.name];
-    if (p && p.species) into[p.species] = 1;
+    if (p?.species) into[p.species] = 1;
   }
   boxRows("home").forEach(function(r){ mark(owned, r); });
   boxRows("champions").forEach(function(r){
@@ -614,7 +614,7 @@ function gtsSuggest(chipName, limit, shiny){
     /* demand 4+ is a Pokemon people are running; it will not be handed over.
        An unknown demand is NOT a low one, so it is allowed through but never
        ranked as if it were cheap. */
-    if (d && d.demand != null && d.demand >= 4) return;
+    if (d?.demand != null && d.demand >= 4) return;
     var stone = dead[p.species];
     /* Each band is ranked against its OWN anchor, or the base band would be
        nothing but a list of near-misses sorted by how badly they miss. */
@@ -624,10 +624,10 @@ function gtsSuggest(chipName, limit, shiny){
        cannot be bought back at all. */
     var free = !!(frees[p.name] || frees[p.species]);
     bands[band].push({name:p.name, bst:b, spe:p.b[5], stone:stone || null,
-              rank:d && d.rank, demand:d && d.demand, band:band, frees:free,
+              rank:d?.rank, demand:d?.demand, band:band, frees:free,
               stretch:b > v.value,
               score:(free ? 150 : 0) + (stone ? 100 : 0) +
-                    (d && d.demand != null ? (5 - d.demand) * 6 : 8) +
+                    (d?.demand != null ? (5 - d.demand) * 6 : 8) +
                     Math.max(0, 20 - Math.abs(anchor - b) / 3)});
   });
   function byScore(a, b){ return b.score - a.score || b.bst - a.bst; }
@@ -752,7 +752,7 @@ function lastCopyOf(rec){
    forms, so the message can name them. */
 function otherFormsOf(rec){
   var p = byName[rec.name];
-  if (!p || !p.species) return [];
+  if (!p?.species) return [];
   var out = {};
   boxRows("home").concat(boxRows("champions")).forEach(function(r){
     if (r.name === rec.name) return;
@@ -827,7 +827,7 @@ function pickField(label, current, subtitle, opener, rec){
     b = pokeCard(p, {
       cls: rec ? (rec.location === "home" ? "home" : "perm") : "",
       name: current,
-      shiny: !!(rec && rec.shiny),
+      shiny: !!rec?.shiny,
       badges: function(h){ if (rec) boxBadges(h, rec); },
       onclick: opener
     });
@@ -1320,7 +1320,7 @@ function gtsSheet(id, o){
           d.requested = name;
           closeSheet(); gtsSheet(id, d);
         }, d.offered || null,
-           !!(d.offeredId && S.box[d.offeredId] && S.box[d.offeredId].shiny));
+           !!(d.offeredId && S.box[d.offeredId]?.shiny));
       }, null));
     var wd = el("div", "field");
     wd.appendChild(el("label", "f", "Date"));
@@ -1388,7 +1388,7 @@ function gtsSheet(id, o){
          chip fetches its MEGA's BST, not its base - came from remembering
          five of these. Kept, they become data. */
       var offRec = d.offeredId ? S.box[d.offeredId] : null;
-      var wasShiny = !!(offRec && offRec.shiny);
+      var wasShiny = !!offRec?.shiny;
       var vOff = chipValue(d.offered, wasShiny), vGot = chipValue(d.requested);
       var done = Object.assign({}, d, {
         closed:new Date().toISOString().slice(0, 10),
@@ -1397,8 +1397,8 @@ function gtsSheet(id, o){
         /* the number that ranks demand better than BST does */
         tookMs:(d.depositedAt ? (Date.now() - Date.parse(d.depositedAt)) : null),
         gaveShiny:wasShiny,
-        gaveBst:vOff && vOff.base, gaveValue:vOff && vOff.value,
-        gotBst:vGot && vGot.base,
+        gaveBst:vOff?.base, gaveValue:vOff?.value,
+        gotBst:vGot?.base,
         rankAtDeposit:d.rankAtDeposit != null ? d.rankAtDeposit : null});
       /* `history.slice(0, 60)` used to live on this line, so the 61st closed
          trade deleted the oldest. A closed trade is the only hard evidence of
@@ -1454,7 +1454,7 @@ function gtsSheet(id, o){
       /* stamp what the ladder said TODAY, so a later reading can tell you the
          target moved rather than silently comparing against nothing */
       var rdNow = gtsDiff(d.requested);
-      if (rdNow && rdNow.rank != null) d.rankAtDeposit = rdNow.rank;
+      if (rdNow?.rank != null) d.rankAtDeposit = rdNow.rank;
       /* an offer edited before logging keeps the moment it is actually posted */
       if (!d.depositedAt) d.depositedAt = new Date().toISOString();
       var cl2 = gtsClash(d, null);
@@ -1634,7 +1634,7 @@ function gtsChips(){
    caught in GO. */
 var MYTH_SET = null;
 function gtsBlocked(name){
-  if ((C.GTSBLOCK || {})[name]) return "confirmed";
+  if (C.GTSBLOCK?.[name]) return "confirmed";
   if (!MYTH_SET) {
     MYTH_SET = {};
     (C.MYTHICAL || []).forEach(function(n){ MYTH_SET[n] = 1; });
@@ -1696,7 +1696,7 @@ function drawGtsWanted(){
   var chips = gtsChips(), rec = gtsRecord(null);
   /* The segment answers "which KIND of chip"; this answers "that one". With
      44 chips the two are different questions and the segment cannot do both. */
-  var wq = ($("gtsWantSearch") && $("gtsWantSearch").value || "")
+  var wq = ($("gtsWantSearch")?.value || "")
     .trim().toLowerCase();
   if (wq) {
     chips = chips.filter(function(c){
@@ -1859,7 +1859,7 @@ function drawGtsWanted(){
             line.appendChild(document.createTextNode(" "));
             line.appendChild(fbtn("+" + (i.asks.length - n) + " more", "sm quiet",
               function(ev){
-                if (ev && ev.stopPropagation) ev.stopPropagation();
+                if (ev?.stopPropagation) ev.stopPropagation();
                 paintAsks(i.asks.length);
               }));
           }

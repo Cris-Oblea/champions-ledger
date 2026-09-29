@@ -138,7 +138,7 @@ function typeMult(mt, defTypes){
   var m = 1;
   defTypes.forEach(function(t){
     var row = C.CHART[mt];
-    if (row && row[t] != null) m *= row[t];
+    if (row?.[t] != null) m *= row[t];
   });
   return m;
 }
@@ -173,7 +173,7 @@ function calcDamage(o){
   }
 
   var mtype = M.type;
-  var ft = (C.FORM_TYPED[M.name] || {})[A.name];
+  var ft = C.FORM_TYPED[M.name]?.[A.name];
   if (ft) {
     mtype = ft;
     notes.push(["warn", M.name + " takes " + A.name + "'s form: " + ft +
@@ -315,21 +315,21 @@ function calcDamage(o){
      the measured table also lists Chople and Colbur, and letting both fire
      quartered the damage instead of halving it. */
   if (o.defItem && BERRY_TYPE[o.defItem] === mtype && te > 1 &&
-      !(MODS.def_item || {})[o.defItem]) {
+      !MODS.def_item?.[o.defItem]) {
     extra *= 2048 / 4096;
     notes.push(["warn", o.defItem + " halves this: x0.5"]);
   }
   /* a type-boosting item raises base power, so it is folded in above, not here */
   if (o.weather) {
-    var wk = (WEATHER_MOVE[o.weather] || {})[mtype];
-    var wx = wk && (MODS.weather || {})[wk];
+    var wk = WEATHER_MOVE[o.weather]?.[mtype];
+    var wx = wk && MODS.weather?.[wk];
     if (wx) { extra *= wx;
       notes.push([wx > 1 ? "" : "warn", o.weather + " on a " + mtype +
         " move: x" + wx]); }
   }
   if (o.terrain) {
-    var tk = (TERRAIN_MOVE[o.terrain] || {})[mtype];
-    var tx = tk && (MODS.terrain || {})[tk];
+    var tk = TERRAIN_MOVE[o.terrain]?.[mtype];
+    var tx = tk && MODS.terrain?.[tk];
     if (tx) { power = pokeRound(power * tx);
       notes.push([tx > 1 ? "" : "warn", o.terrain + " Terrain on a " + mtype +
         " move: base power x" + tx + " -> " + power]); }
@@ -443,7 +443,7 @@ function koCount(lo, hi, hp){
    4096-space with its own rounding step. One point can turn a 2HKO into a
    3HKO, and the KO count is the only thing that counts. */
 function engineReady(){
-  return !!(window.SMOGON && window.SMOGON.calculate);
+  return !!window.SMOGON?.calculate;
 }
 
 /* Our spelling is Serebii's ("Mega Glalie"); the engine answers to its own
@@ -454,10 +454,10 @@ function engineReady(){
 function engName(name, attacking){
   if (name === "Aegislash" || name === "Aegislash-Shield" ||
       name === "Aegislash-Blade") {
-    return (C.AEGIS || {})[attacking ? "attacking" : "defending"] ||
+    return C.AEGIS?.[attacking ? "attacking" : "defending"] ||
            "Aegislash-Shield";
   }
-  return (C.SMOGON_NAME || {})[name] || name;
+  return C.SMOGON_NAME?.[name] || name;
 }
 
 /* our SP object -> the engine's evs, and our boost object -> its boosts */
@@ -485,10 +485,10 @@ function engineCalc(){
   var S = window.SMOGON;
   var a = CALC.atk, d = CALC.def, m = CALC.move;
   var an = engName(a.name, true), dn = engName(d.name, false);
-  if (!(C.SMOGON_NAME || {})[a.name] && a.name !== "Aegislash")
+  if (!C.SMOGON_NAME?.[a.name] && a.name !== "Aegislash")
     throw new Error(a.name + " is not in Smogon's Champions roster, so the " +
       "engine has no stats for it.");
-  if (!(C.SMOGON_NAME || {})[d.name] && d.name !== "Aegislash")
+  if (!C.SMOGON_NAME?.[d.name] && d.name !== "Aegislash")
     throw new Error(d.name + " is not in Smogon's Champions roster, so the " +
       "engine has no stats for it.");
   a._plusOne = CALC.plusOneAtk; d._plusOne = CALC.plusOneDef;
@@ -636,8 +636,8 @@ function calcSideCtl(which){
        Aegislash-Blade when it attacks and -Shield when it is hit - so this is
        the display catching up with the arithmetic. Both rows are shown, and
        the one that governs THIS side is marked. */
-    var bf = p && (C.BFORMS || {})[p.name];
-    if (bf && bf.f) {
+    var bf = p && C.BFORMS?.[p.name];
+    if (bf?.f) {
       Object.keys(bf.f).forEach(function(fname){
         var alt = bf.f[fname].b;
         if (!alt) return;
@@ -899,7 +899,7 @@ function calcPickSheet(which){
           cells: [
             labelBox(b.nature || "—", "Nature", "wide"),
             labelBox(STAT_KEYS.map(function(k){
-              return (b.stat_points || {})[k] || 0;
+              return b.stat_points?.[k] || 0;
             }).join("/"), "SP")
           ],
           onclick: function(){ calcLoadBuild(which, id, b); }
@@ -1156,7 +1156,7 @@ function calcRun(){
   try { r = engineCalc(); }
   catch (e) {
     out.appendChild(el("div", "note bad",
-      "The engine could not calculate this: " + (e && e.message || e)));
+      "The engine could not calculate this: " + (e?.message || e)));
     return;
   }
 
@@ -1294,7 +1294,7 @@ Object.keys(AB).forEach(function(name){
 
 function abilityHit(ability, move){
   var r = AB_SET[ability];
-  if (!r || r.side !== "off") return null;      // defensive rules badge nothing
+  if (r?.side !== "off") return null;      // defensive rules badge nothing
   // An ability that covers a whole CATEGORY selects nothing, so a badge on
   // every row is noise that buries the abilities that do select. Guts is the
   // case the player named: it multiplies the Attack STAT while statused, so
@@ -1306,8 +1306,8 @@ function abilityHit(ability, move){
   if (!r.m[move.i]) return null;
   // Contrary is the one that needs the SIGN, because that is the whole ability:
   // a boosting move becomes a self-debuff and a self-debuff becomes a boost.
-  if (r.up && r.up[move.i]) return {x:r.x, why:r.why_up};
-  if (r.down && r.down[move.i]) return {x:r.x, why:r.why_down};
+  if (r.up?.[move.i]) return {x:r.x, why:r.why_up};
+  if (r.down?.[move.i]) return {x:r.x, why:r.why_down};
   return r;
 }
 /* the badge that goes on a move row when the chosen ability touches it */

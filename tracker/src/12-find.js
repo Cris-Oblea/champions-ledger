@@ -289,7 +289,7 @@ function findRun(){
             return x.name === p.name || x.name === p.species; })[0];
           var o = rec ? originOf(rec) : null;
           h.appendChild(el("span", "tag " + (o === "home" ? "ok" : ""),
-            rec && rec.status === "rental" ? "rental in your box"
+            rec?.status === "rental" ? "rental in your box"
             : o === "home" ? "yours, HOME origin"
             : o === "champions" ? "yours, Champions origin"
             : "yours, origin?"));
@@ -411,8 +411,8 @@ function pokeHead(body, p, opts){
      "also written", not "changes nothing", because a few of these do change
      something in battle (Palafin-Hero, Castform's weather forms); what they
      share is one dex entry. */
-  var also = (C.COSMETIC || {})[p.name];
-  if (also && also.length) {
+  var also = C.COSMETIC?.[p.name];
+  if (also?.length) {
     var an = el("div", "note");
     an.style.marginBottom = "10px";
     an.innerHTML = "<strong>Also written:</strong> " + also.join(", ") +
@@ -473,7 +473,7 @@ function abilityNote(a, form, badge, ls){
   if (!C.ABIL[a]) {
     say.textContent = "Loading…";
     loadOutside(function(){
-      var t = (outsideDex().ab || {})[a];
+      var t = outsideDex().ab?.[a];
       say.textContent = "";
       say.appendChild(numText(t || "No description on record for " + a + "."));
       if (t) {
@@ -500,11 +500,11 @@ function abilityNote(a, form, badge, ls){
      thing a second time (player, 2026-09-27: "en algunas abilities habian
      descripciones duplicadas y eran obvias"). What stays is only what the
      description cannot say: how it meets THIS movepool. */
-  if (r && r.side === "off" && r.scope) {
+  if (r?.side === "off" && r.scope) {
     sc.textContent = "Affects " + r.scope + " it knows. No per-move tag: " +
                      "it picks out nothing.";
     n.appendChild(sc);
-  } else if (r && r.side === "off" && ls) {
+  } else if (r?.side === "off" && ls) {
     var k = ls.filter(function(mn){
       var mv = MOVE_BY[mn];
       return mv && abilityTag(a, mv, form);
@@ -513,7 +513,7 @@ function abilityNote(a, form, badge, ls){
       ? "Tags " + k + " of the " + ls.length + " moves it learns."
       : "Touches none of the moves it learns.";
     n.appendChild(sc);
-  } else if (r && r.side === "def") {
+  } else if (r?.side === "def") {
     sc.textContent = "Changes what lands on it, not its own moves.";
     n.appendChild(sc);
   }
@@ -986,7 +986,7 @@ function spreadTags(m, host){
                makes the 1 a miss rather than a hit count */
 function multiHitTag(m, host){
   var h = m.hits;
-  if (!h || !h.length) return;
+  if (!h?.length) return;
   var lo = h[0], hi = h.length > 1 ? h[1] : h[0];
   var fixed = lo === hi;
   var typical = fixed ? lo : (lo === 2 && hi === 5 ? 3 : lo);
@@ -1025,7 +1025,7 @@ function priorityTag(m, host){
    so a tag here means "this item was made for this move": Heat Rock on Sunny
    Day, Light Clay on Reflect, Big Root on Giga Drain. */
 function itemTags(m, host){
-  ((C.ITEM_FOR_MOVE || {})[m.name] || []).forEach(function(p){
+  (C.ITEM_FOR_MOVE?.[m.name] || []).forEach(function(p){
     /* WHICH WAY THE TAG POINTS. Heat Rock on Sunny Day is a reason to run the
        move; Aspear Berry on Ice Beam is the reason it will not work, because
        the target thaws and the freeze was the whole point. Both read as the
@@ -1108,7 +1108,7 @@ function moveFilters(body, pool, onChange, placeholder, opts){
      does, usage is the DEFAULT sort, because that is the first question asked
      of a movepool (player, 2026-09-15: "seria bueno poner filtro a los
      movimientos de mayor a menor uso por el %"). */
-  var usageOf = (opts || {}).usageOf || null;
+  var usageOf = opts?.usageOf || null;
   /* THE CAP LIVES HERE, WITH THE COUNT THAT REPORTS IT. Every caller used to
      slice the result itself and this told the user a different number: the
      count line said "first 80 shown" while a Pokemon's own sheet was slicing
@@ -1120,7 +1120,7 @@ function moveFilters(body, pool, onChange, placeholder, opts){
      A single Pokemon's movepool is not capped in practice: the longest in
      Champions is Gallade at 106. The default 80 is for the whole move table,
      where 512 rows really is too many to draw. */
-  var cap = (opts || {}).cap || 80;
+  var cap = opts?.cap || 80;
   var sorter = {v: usageOf ? "usage" : "bp"};
   var F = {cat:{}, trait:{}, type:{}};
   function label(t){
@@ -1373,7 +1373,7 @@ function moveRowFor(m, ability, poke){
      shows, on the same terms. Only where there IS a Pokemon: the "+ Move"
      sheet searches the whole table with nobody in hand, and a share needs
      something to be a share of. */
-  if (poke && poke.name) {
+  if (poke?.name) {
     var utag = usageTag(splitPct(poke.name, "m", m.name), poke.name, "m");
     if (utag) h.appendChild(utag);
   }
@@ -1616,7 +1616,7 @@ function findInit(){
           h.appendChild(el("span",
             "tag " + (k === "moves-off" ? "ok" : k === "moves-def" ? "warn" : ""),
             CLSL[k] || k));
-          ((C.ITEM_FOR_ABILITY || {})[a] || []).forEach(function(it){
+          (C.ITEM_FOR_ABILITY?.[a] || []).forEach(function(it){
             h.appendChild(el("span", "tag", it));
           });
           mm.appendChild(h);
@@ -1772,7 +1772,7 @@ function worldDraw(){
   if (!out) return;
   out.innerHTML = "";
   var yr = (C.WORLDS || []).filter(function(r){ return r.y === WORLD.year; })[0];
-  var d = yr && yr.d[WORLD.div];
+  var d = yr?.d[WORLD.div];
   if (!d) {
     out.appendChild(el("div", "empty",
       "pokedata published no " + WORLD.div + " teamlists for " + WORLD.year +
@@ -1853,7 +1853,7 @@ window.addEventListener("error", function(e){
   showBootError();
 });
 window.addEventListener("unhandledrejection", function(e){
-  BOOT_ERRORS.push("unhandled: " + ((e.reason && e.reason.message) || e.reason));
+  BOOT_ERRORS.push("unhandled: " + (e.reason?.message || e.reason));
   showBootError();
 });
 
@@ -1901,7 +1901,7 @@ function checkLatest(){
         : "NO - the server has " + live + ", reload to get it";
     })
     .catch(function(){ DIAG_LATEST = "could not check (offline?)"; })
-    .then(function(){ if ($("diagOut") && $("diagOut").children.length) drawDiag(); });
+    .then(function(){ if ($("diagOut")?.children.length) drawDiag(); });
 }
 
 function diagLines(){
@@ -1915,9 +1915,9 @@ function diagLines(){
   add("Latest deployed", DIAG_LATEST);
   /* What the reference data describes, so a wrong number can be traced to the
      refresh rather than to the page. */
-  add("Regulation", (C && C.REG ? C.REG : "unknown") +
-      (C && C.REG_STARTED ? " since " + C.REG_STARTED : ""));
-  add("Ladder usage fetched", (C && C.USAGE_AT) || "unknown");
+  add("Regulation", (C?.REG ? C.REG : "unknown") +
+      (C?.REG_STARTED ? " since " + C.REG_STARTED : ""));
+  add("Ladder usage fetched", C?.USAGE_AT || "unknown");
   add("Per-Pokemon splits", (function(){
     var S = window.CHAMP_SPLITS || {};
     var n = Object.keys(S.p || {}).length;
@@ -1927,22 +1927,22 @@ function diagLines(){
   /* A truncated download looks like a working page with things missing, so the
      counts are stated and anything at zero is called out. */
   add("Blob integrity", [
-        [(C && C.DEX || []).length, "forms"],
-        [(C && C.MOVES || []).length, "moves"],
-        [Object.keys((C && C.AB_MOVES) || {}).length, "ability rules"],
-        [(C && C.STONES || []).length, "stones"],
-        [(C && C.ITEMS || []).length, "items"]
+        [(C?.DEX || []).length, "forms"],
+        [(C?.MOVES || []).length, "moves"],
+        [Object.keys(C?.AB_MOVES || {}).length, "ability rules"],
+        [(C?.STONES || []).length, "stones"],
+        [(C?.ITEMS || []).length, "items"]
       ].map(function(p){ return p[0] + " " + p[1]; }).join(", ") +
-      ([(C && C.DEX || []).length, (C && C.MOVES || []).length,
-        Object.keys((C && C.AB_MOVES) || {}).length].some(function(n){ return !n; })
+      ([(C?.DEX || []).length, (C?.MOVES || []).length,
+        Object.keys(C?.AB_MOVES || {}).length].some(function(n){ return !n; })
         ? "  MISSING" : ""));
   add("Last ledger write", lastWrite());
   add("Browser", navigator.userAgent);
   add("Screen", window.innerWidth + " x " + window.innerHeight +
       " @" + (window.devicePixelRatio || 1) + "x");
-  add("Reference data", C && C.DEX ? C.DEX.length + " forms, " +
+  add("Reference data", C?.DEX ? C.DEX.length + " forms, " +
       (C.MOVES || []).length + " moves" : "MISSING");
-  add("Dex numbers", C && C.DEXNO ? Object.keys(C.DEXNO).length : "MISSING");
+  add("Dex numbers", C?.DEXNO ? Object.keys(C.DEXNO).length : "MISSING");
   add("Smogon engine", engineReady() ? "loaded" : "NOT LOADED");
   add("Supabase client", window.supabase ? "loaded" : "NOT LOADED");
   add("Signed in", S.db ? "yes" : "no");
@@ -2077,7 +2077,7 @@ function overlapSweep(view){
      past its own 150ms budget - the linear-time test caught it on the first
      run. Collisions are rare, so this runs a handful of times. */
   function floatingLayer(e){
-    for (var n = e; n && n.nodeType === 1 && n !== view; n = n.parentNode) {
+    for (var n = e; n?.nodeType === 1 && n !== view; n = n.parentNode) {
       var pos = window.getComputedStyle(n).position;
       if (pos === "fixed" || pos === "sticky" || pos === "absolute") return true;
     }
@@ -2110,7 +2110,7 @@ function overlapSweep(view){
   function label(e){
     /* An SVG's className is an SVGAnimatedString, so String() on it reads
        "[object SVGAnimatedString]" - which is what the first report said. */
-    var c = (e.getAttribute && e.getAttribute("class") || "").split(" ")[0];
+    var c = (e.getAttribute?.("class") || "").split(" ")[0];
     var t = (e.value || e.textContent || "").trim().slice(0, 14);
     return e.tagName.toLowerCase() + (c ? "." + c : "") +
            (t ? " “" + t + "”" : "");
@@ -2206,14 +2206,14 @@ function dupeReport(){
   var homeNames = {}, homeSpecies = {};
   boxRows("home").forEach(function(r){
     homeNames[r.name] = (homeNames[r.name] || 0) + 1;
-    var sp = (byName[r.name] || {}).species || r.name;
+    var sp = byName[r.name]?.species || r.name;
     (homeSpecies[sp] = homeSpecies[sp] || []).push(r.name);
   });
   var hits = [], formOnly = [];
   boxRows("champions").forEach(function(r){
     if (releaseBlock(r)) return;
     if (homeNames[r.name]) { hits.push(r); return; }
-    var sp = (byName[r.name] || {}).species || r.name;
+    var sp = byName[r.name]?.species || r.name;
     if (homeSpecies[sp]) {
       formOnly.push({name:r.name, others:homeSpecies[sp].filter(function(n){
         return n !== r.name; })});

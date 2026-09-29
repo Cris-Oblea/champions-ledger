@@ -388,7 +388,7 @@ function addSheet(loc){
       list.innerHTML = "";
       /* nothing can be added to the Champions Box until it is said where it
          came from - that answer is what decides whether the slot is elastic */
-      if (loc === "champions" && !(body._mode && body._mode.v)) {
+      if (loc === "champions" && !body._mode?.v) {
         var g = el("div", "note warn");
         g.innerHTML = "<strong>Say whether it is bought or a rental first</strong>, " +
           "at the top of this sheet. A rental cannot be trained, and buying " +
@@ -473,7 +473,7 @@ function addSheet(loc){
              answer: everything in HOME is permanent and HOME origin by
              definition. Only the Champions sheet builds a mode, and only the
              Champions branch is allowed to consult it. */
-          var mode = loc === "home" ? "home" : (body._mode && body._mode.v);
+          var mode = loc === "home" ? "home" : body._mode?.v;
           if (!mode) { toast("Bought or rental?"); return; }
           var status = (loc === "champions" && mode === "rental")
                      ? "rental" : "permanent";
@@ -531,7 +531,7 @@ function analysisFor(name){
      species, whose analysis is the one that discusses the stone. */
   if (all[name]) return all[name];
   var p = byName[name];
-  if (p && p.species && all[p.species]) return all[p.species];
+  if (p?.species && all[p.species]) return all[p.species];
   return null;
 }
 
@@ -605,13 +605,13 @@ function flushOutside(){
 }
 
 function outsideDex(){ return window.CHAMP_OUTSIDE || {}; }
-function outsideMovesFor(name){ return (outsideDex().m || {})[name] || null; }
+function outsideMovesFor(name){ return outsideDex().m?.[name] || null; }
 /* A move the app does not ship, dressed as one it does, so the same row
    renderer draws it. `i` is -1 on purpose: the ability badges and the blocker
    tags index by it, and a move with no index must match none of them rather
    than match move 0. */
 function outsideMove(name){
-  var r = (outsideDex().mv || {})[name];
+  var r = outsideDex().mv?.[name];
   if (!r) return null;
   return {i:-1, name:name, type:r[0], cat:r[1], bp:r[2], acc:r[3], pp:r[4],
           pri:0, target:"Selected Target", spread:false, hitsAlly:false,
@@ -737,7 +737,7 @@ function analysisPanel(name, host){
     clearTimeout(gaveUp);
     if (wait.parentNode) wait.parentNode.removeChild(wait);
     var got = analysisFor(name);
-    if (!got || !got.length) {
+    if (!got?.length) {
       host.appendChild(el("div", "st", ANALYSIS_STATE === "absent"
         ? "Smogon's analyses are not in this build."
         : "Smogon has not written one for " + name + " - 54 Pokemon have one."));
@@ -820,7 +820,7 @@ function dexChecklist(){
      is the Gimmighoul grind. */
   missing.sort(function(a, b){
     var da = gtsDiff(a.name), db = gtsDiff(b.name);
-    return ((da && da.supply) || 3) - ((db && db.supply) || 3) ||
+    return (da?.supply || 3) - (db?.supply || 3) ||
            a.name.localeCompare(b.name);
   });
   return {missing:missing, have:have, total:FORMS.length};
@@ -842,7 +842,7 @@ function dexCard(p, why){
 var DEX_CAP = 12, dexAll = {missing:false};
 function drawDexPane(){
   var c = dexChecklist();
-  var q = ($("dexFilter") && $("dexFilter").value || "").trim().toLowerCase();
+  var q = ($("dexFilter")?.value || "").trim().toLowerCase();
   var miss = c.missing.filter(function(p){
     return !q || p.name.toLowerCase().indexOf(q) >= 0 ||
            String(dexLabel(p.name)).toLowerCase().indexOf(q) >= 0 ||
@@ -870,7 +870,7 @@ function drawDexPane(){
   } else {
     miss.slice(0, cap).forEach(function(p){
       var d = gtsDiff(p.name);
-      host.appendChild(dexCard(p, d && d.how ? d.how : ""));
+      host.appendChild(dexCard(p, d?.how ? d.how : ""));
     });
   }
   more.innerHTML = "";

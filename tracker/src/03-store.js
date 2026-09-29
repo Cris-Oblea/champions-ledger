@@ -16,7 +16,7 @@ function put(path, body){
   if (!S.db) { toast("Not connected to the store"); return Promise.resolve(); }
   body.updated = new Date().toISOString().slice(0,10);
   return S.db.doc(path).set(body).catch(function(e){
-    toast("Could not save: " + (e && e.code || "error"));
+    toast("Could not save: " + (e?.code || "error"));
     throw e;
   });
 }
@@ -40,7 +40,7 @@ function putNew(coll, stem, body, cap){
            or another one. Anything else is a real failure and must surface. */
         var taken = e && (e.code === "23505" ||
                           /duplicate key|already exists/i.test(e.message || ""));
-        if (!taken) { toast("Could not save: " + (e && e.code || "error")); throw e; }
+        if (!taken) { toast("Could not save: " + (e?.code || "error")); throw e; }
         if (++n > (cap || 30)) {
           toast("Could not find a free id after " + tried.length + " tries");
           throw e;
@@ -55,8 +55,8 @@ function patch(path, body){
   if (!S.db) { toast("Not connected to the store"); return Promise.resolve(); }
   body.updated = new Date().toISOString().slice(0,10);
   return S.db.doc(path).update(body).catch(function(e){
-    if (e && e.code === "invalid_argument") return S.db.doc(path).set(body);
-    toast("Could not save: " + (e && e.code || "error"));
+    if (e?.code === "invalid_argument") return S.db.doc(path).set(body);
+    toast("Could not save: " + (e?.code || "error"));
     throw e;
   });
 }
@@ -215,7 +215,7 @@ function supabaseStore(sb, uid){
       var p = split(path), coll = p[0], id = p[1];
       return {
         get: function(){
-          var row = (cache[coll] || {})[id];
+          var row = cache[coll]?.[id];
           return Promise.resolve({id:id, exists:!!row,
             data:function(){ return row ? docFromRow(coll, row) : undefined; },
             metadata:{}});
@@ -247,9 +247,9 @@ function supabaseStore(sb, uid){
         },
         update: function(d){
           // meta bodies merge inside the jsonb; the other tables merge columns
-          var cur = (cache[coll] || {})[id];
+          var cur = cache[coll]?.[id];
           if (coll === "meta") {
-            var merged = Object.assign({}, (cur && cur.data) || {});
+            var merged = Object.assign({}, cur?.data || {});
             Object.keys(d).forEach(function(k){
               if (k !== "updated") merged[k] = d[k]; });
             return this.set(merged);
@@ -341,7 +341,7 @@ function connectSupabase(cfg){
     "Nothing is stored in this page - your box lives in the database, and "
     + "only this password reaches it.";
   SB.auth.getSession().then(function(r){
-    var s = r.data && r.data.session;
+    var s = r.data?.session;
     if (s) { start(s); } else { showGate(); }
   }, function(){ showGate("Could not reach the database."); });
 

@@ -37,7 +37,7 @@ var TABS = [
    empty. Real browsers all have it; the environment the page is TESTED in does
    not, which is why five DOM tests had been finding an empty page. */
 function mq(q){
-  try { return !!(window.matchMedia && window.matchMedia(q).matches); }
+  try { return !!(window.matchMedia?.(q).matches); }
   catch (e) { return false; }
 }
 function syncNavHeight(){
@@ -219,7 +219,7 @@ function ask(title, body, okLabel, danger){
        already written for confirm(). */
     var host = $("askBody");
     host.innerHTML = "";
-    if (body && body.nodeType) host.appendChild(body);
+    if (body?.nodeType) host.appendChild(body);
     else String(body || "").split(/\n\s*\n/).forEach(function(par){
       if (par.trim()) host.appendChild(el("p", null, par.trim()));
     });
@@ -332,7 +332,7 @@ window.addEventListener("popstate", function(){
       if (!$("askScrim").hidden) {
         /* the dialog resolves false on its own Cancel path */
         var no = $("askNo");
-        if (no && no.onclick) no.onclick();
+        if (no?.onclick) no.onclick();
       } else if (!$("scrim").hidden) {
         closeSheet();
       } else if (inEditor()) {
