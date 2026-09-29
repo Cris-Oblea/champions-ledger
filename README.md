@@ -279,10 +279,14 @@ number**, the app's usual sorts, and the same card as everywhere else. The
 whole dex stays on offer — a set for a Pokemon that has not arrived yet is an
 idea worth keeping — so "in your boxes" is a filter and never a limit.
 
-**Which copy it goes on is shown copy by copy.** Every copy of the species, in
-either box, is drawn as the card the box draws for it — shiny, trained, origin,
-where it lives, the builds it already carries and its note — so two Garchomp
-are told apart by what they are, not by "copy 2 of 3". And the **trained** tag
+**Which copy it goes on is a dropdown, and the copy's card sits under it.**
+Closed, the dropdown says where the build is installed — or "not installed",
+only when that is true — and it is where the build is moved to another copy or
+taken off altogether. Each option names the copy by what it is — where it
+lives, shiny, trained, origin, the builds it already carries, its note — so two
+Garchomp are told apart by what they are, not by "copy 2 of 3"; two copies
+identical in all of that are labelled as identical. Underneath, the chosen
+copy is drawn as the card the box draws for it. And the **trained** tag
 follows the build: installing one on a copy tags it, and moving the build off,
 unbinding it or deleting it clears the tag from the copy it left, unless
 another build still sits there. A build's card, in the list and in a team slot,
@@ -719,7 +723,9 @@ tracker/     the app: a shell, its ES modules under src/, and a generated data b
 tests/       twenty-six browser tests, run against the BUILT page
 <!-- TESTS:END -->
 analysis/    write-ups: the Smogon engine, regulation M-C, GTS pricing, the roadmap
-CLAUDE.md    the rules this project works by, including everything learned the hard way
+CLAUDE.md    the rules every Claude Code session needs, kept small on purpose
+.claude/     the rest of those rules, loaded only when needed: rules/ per part of
+             the code, skills/champions-rules/ for the game itself
 ```
 
 ---
