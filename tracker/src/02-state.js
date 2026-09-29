@@ -128,9 +128,6 @@ function originRows(o){
     return originOf(r) === o;
   });
 }
-function boxUsed(){
-  return boxRows("champions").length;
-}
 function capacity(){ return (S.meta.trainer && S.meta.trainer.box_capacity) || 50; }
 /* A ROW PER STONE, not a list inside one document (migration 6).
    Owning a stone is the existence of its row, so marking one on the phone
@@ -150,10 +147,6 @@ function ownedNames(){
 }
 
 /* ------------------------------------------------------- what leaves here --
-   `boxUsed` stays private: capacity warnings are drawn in 13-boot from
-   boxRows("champions").length, and a second way to ask the same question is
-   how two counters end up disagreeing.
-
    S itself is exported, and it is the one mutable thing in the app that every
    part touches. Exporting the OBJECT is deliberate - parts write S.box, S.tab,
    S.ready, and a module binding may only be reassigned by its own module, so

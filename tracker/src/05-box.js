@@ -1,11 +1,12 @@
 /* 05-box.js - The box and HOME: every row, and every way one gets added.
    Part of the app; linked into one script by scripts/build_tracker_page.py. */
-import { $, C, FORMS, SORT, STAT_KEYS, STAT_LABEL, STONE_OF, anyRow, bst,
- byName, capNote, cardLine, dexLabel, el, freeSlug, labelBox, megasFor,
- outsideRow, pokeCard, searchField, spriteFor, statGrid, toast, typeCard,
- typeChip } from "./01-data.js";
-import { RELEASE_FLOOR, S, boxRows, hasStone, originOf, releaseBlock }
-  from "./02-state.js";
+import {
+  $, C, FORMS, SORT, STAT_KEYS, STAT_LABEL, anyRow, byName, capNote,
+  dexLabel, el, freeSlug, outsideRow, pokeCard, searchField, toast,
+} from "./01-data.js";
+import {
+  RELEASE_FLOOR, S, boxRows, originOf, releaseBlock,
+} from "./02-state.js";
 import { drop, put } from "./03-store.js";
 import { ask, closeSheet, fbtn, openSheet } from "./04-nav.js";
 /* The badges on a box row - in the GTS, a duplicate, the last copy - are the
@@ -199,7 +200,7 @@ function pokeSheet(rec){
        its whole movepool and what Smogon wrote. Below the editable half,
        because origin, training and the note are what this door is FOR and an
        edit does not belong under two hundred rows of movepool. */
-    if (show) pokeBody(body, show, {shiny: !!rec.shiny, rec: rec});
+    if (show) pokeBody(body, show);
   }, moveButtons(rec, isHome));
 }
 

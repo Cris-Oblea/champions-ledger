@@ -1,10 +1,10 @@
 /* 06-builds.js - The build editor - species, Mega, ability, nature, SP, moves.
    Part of the app; linked into one script by scripts/build_tracker_page.py. */
 import {
-  $, C, COSTS, FORMS, MOVE_BY, STAT_KEYS, STAT_LABEL, STONE_OF, bst, byName,
-  capNote, cardLine, catName, dexLabel, dexNo, effectLine, el, labelBox,
-  learnset, megasFor, natMult, numText, pokeCard, searchField, splitPct, splitsFor,
-  splitsReg, statAt, statGrid, toast, typeCard, typeChip, usageTag,
+  C, COSTS, FORMS, MOVE_BY, STAT_KEYS, STAT_LABEL, bst, byName, capNote,
+  catName, dexNo, effectLine, el, labelBox, learnset, megasFor, natMult,
+  numText, pokeCard, searchField, splitPct, splitsFor, splitsReg, statAt,
+  toast, typeChip, usageTag,
 } from "./01-data.js";
 import { ORIGIN_LABEL, S, activeAbility, baseAbility, boxRows, buildLink,
   megaAbility, originOf, ownedNames, soleAbility } from "./02-state.js";
@@ -965,7 +965,6 @@ function checks(d, p){
   });
   var basep = byName[d.mega || d.pokemon] || p;
   if (basep) {
-    var natUp = C.NATURES[d.nature] && C.NATURES[d.nature][0];
     var atk = statAt(basep.b[1], d.stat_points.atk, false, natMult(d.nature, "atk"));
     var spa = statAt(basep.b[3], d.stat_points.spa, false, natMult(d.nature, "spa"));
     var main = atk >= spa ? "P" : "S";
@@ -1022,9 +1021,6 @@ function checks(d, p){
 function retuneCost(a, b){
   var parts = [], vp = 0;
   var sa = a.stat_points || {}, sb = b.stat_points || {};
-  var spChanged = STAT_KEYS.reduce(function(n, k){
-    return n + ((Number(sa[k]) || 0) !== (Number(sb[k]) || 0) ? 1 : 0);
-  }, 0);
   var spDelta = STAT_KEYS.reduce(function(n, k){
     return n + Math.abs((Number(sa[k]) || 0) - (Number(sb[k]) || 0));
   }, 0);
@@ -1107,7 +1103,7 @@ function movePicker(draft, idx, ls, done){
         /* One span per fact, so a phone breaks the line between them and
            never inside one - see factLine. Nine badges and five numbers on a
            360px row is what made that matter. */
-        var hh = abil ? abilityHit(abil, m, apoke) : null;
+        var hh = abil ? abilityHit(abil, m) : null;
         mm.appendChild(factLine([
           catName(m.cat),
           m.bp ? m.bp + " BP" : "— BP",

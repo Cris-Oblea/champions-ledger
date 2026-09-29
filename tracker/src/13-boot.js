@@ -1,11 +1,12 @@
 /* 13-boot.js - renderAll(), go(), and everything that runs on load.
    Part of the app; linked into one script by scripts/build_tracker_page.py. */
 import {
-  $, HOME_ALL, MOVE_BY, SORT, byName, el, rowMatches, setHomeAll, setSort,
-  sortRows, wireClears,
+  $, HOME_ALL, SORT, byName, el, rowMatches, setHomeAll, setSort, sortRows,
+  wireClears,
 } from "./01-data.js";
-import { RELEASE_FLOOR, S, activeAbility, boxRows, buildLink, capacity,
-  originRows, releaseBlock } from "./02-state.js";
+import {
+  RELEASE_FLOOR, S, boxRows, capacity, originRows, releaseBlock,
+} from "./02-state.js";
 import { connect } from "./03-store.js";
 import { buildTabs, fbtn, go, leaveEditor, mq } from "./04-nav.js";
 import { addSheet, drawDexPane, pokeRow } from "./05-box.js";
@@ -13,10 +14,9 @@ import { buildRow, buildSheet } from "./06-builds.js";
 import { drawItems, drawStatuses, drawStones, drawTrainer } from "./07-gear.js";
 import { drawTeams } from "./08-teams.js";
 import { drawGts, drawGtsWanted } from "./09-gts.js";
-import { AB_SET, CALC, abilityHit, abilityTag, calcDamage, calcDraw, koCount }
-  from "./11-damage.js";
+import { CALC, calcDraw } from "./11-damage.js";
 import {
-  DIAG_LATEST, FIND, checkLatest, drawDiag, drawDupeHome, findInit, findRun,
+  DIAG_LATEST, checkLatest, drawDiag, drawDupeHome, findInit,
 } from "./12-find.js";
 /* ==================================================================== render */
 function renderAll(){
@@ -279,7 +279,9 @@ try {
       });
     });
   }
-} catch (e) {}
+} catch (e) {
+  /* Storage throws in private browsing; the default sort stands. */
+}
 $("buildAdd").onclick = function(){ buildSheet(null, {}); };
 $("buildEditBack").onclick = function(){ leaveEditor(); };
 $("teamEditBack").onclick  = function(){ leaveEditor("teams"); };
@@ -374,13 +376,10 @@ $("themeBtn").onclick = function(){
 try {
   var saved = localStorage.getItem("champ-theme");
   if (saved) document.documentElement.setAttribute("data-theme", saved);
-} catch (e) {}
+} catch (e) {
+  /* Storage throws in private browsing; the system theme stands. */
+}
 
-window.calcDamage=calcDamage; window.koCount=koCount; window.byName=byName;
-window.MOVE_BY=MOVE_BY; window.AB_SET=AB_SET; window.abilityTag=abilityTag; window.abilityHit=abilityHit;
-window.buildLink=buildLink;   /* tests/buildlinktest.js */
-window.activeAbility=activeAbility;  /* tests/buildabilitytest.js */
-window.FIND=FIND; window.findRun=findRun;
 renderAll();
 foldIntros();
 connect();

@@ -42,7 +42,7 @@
            at once, because "where is my Chesnaught" is not a question about
            which origin it has. -->
       <div class="search field"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-        <input type="text" id="boxFilter" placeholder="Filter by name, type, number, shiny, trained">
+        <input type="text" id="boxFilter" aria-label="Filter the Champions box" placeholder="Filter by name, type, number, shiny, trained">
       </div>
 
       <h2>HOME origin <span class="n" id="nHomeOrigin"></span></h2>
@@ -114,7 +114,7 @@
         <button data-want="dupes" aria-pressed="false">Duplicates</button>
       </div>
       <div class="search field"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-        <input type="text" id="gtsWantSearch" placeholder="Filter by the chip&rsquo;s name or type">
+        <input type="text" id="gtsWantSearch" aria-label="Filter the chips" placeholder="Filter by the chip&rsquo;s name or type">
       </div>
       <div class="list cards" id="listGtsWant"></div>
       <div class="btnrow" id="gtsWantMore"></div>
@@ -134,7 +134,7 @@
         <p class="sub" id="gtsHistSub"></p>
         <div id="gtsHistBody" hidden>
           <div class="search field"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-            <input type="text" id="gtsHistSearch" placeholder="Filter by either side of the trade">
+            <input type="text" id="gtsHistSearch" aria-label="Filter closed trades" placeholder="Filter by either side of the trade">
           </div>
           <div class="list" id="listGtsHist"></div>
         </div>
@@ -150,7 +150,7 @@
       <h2>In HOME <span class="n" id="nHome"></span></h2>
       <div class="search field">
         <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-        <input type="text" id="homeFilter" placeholder="Filter by name, type, number, shiny, trained">
+        <input type="text" id="homeFilter" aria-label="Filter HOME" placeholder="Filter by name, type, number, shiny, trained">
       </div>
       <div class="list cards" id="listHome"></div>
       <div class="btnrow" id="homeMore"></div>
@@ -168,7 +168,7 @@
           on the GTS where it does not.</p>
         <div class="search field">
           <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-          <input type="text" id="dexFilter" placeholder="Filter by name, type or number">
+          <input type="text" id="dexFilter" aria-label="Filter the dex checklist" placeholder="Filter by name, type or number">
         </div>
         <div id="dexDone"></div>
 
@@ -206,7 +206,7 @@
       </div>
       <div id="buildsPane">
         <div class="search field"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-          <input type="text" id="buildSearch" placeholder="Filter builds"></div>
+          <input type="text" id="buildSearch" aria-label="Filter builds" placeholder="Filter builds"></div>
         <div class="list cards" id="listBuilds"></div>
       </div>
       <div id="teamsPane" hidden>
@@ -219,7 +219,7 @@
         <!-- It searches the members too, so "which team is my Farigiraf in"
              is one question rather than six teams opened one at a time. -->
         <div class="search field"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-          <input type="text" id="teamSearch" placeholder="Filter teams &mdash; name or a Pokemon on it">
+          <input type="text" id="teamSearch" aria-label="Filter teams" placeholder="Filter teams &mdash; name or a Pokemon on it">
         </div>
         <div class="list cards" id="listTeams"></div>
       </div>
@@ -264,7 +264,7 @@
       </div>
       <div id="gearStonePane">
         <div class="search field"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-          <input type="text" id="stoneSearch" placeholder="Filter stones"></div>
+          <input type="text" id="stoneSearch" aria-label="Filter stones" placeholder="Filter stones"></div>
         <div class="note" id="stoneNote" style="margin-bottom:12px"></div>
         <h2>Owned <span class="n" id="nStones"></span></h2>
         <div class="list cards" id="listStonesOwned"></div>
@@ -273,7 +273,7 @@
       </div>
       <div id="gearItemPane" hidden>
         <div class="search field"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-          <input type="text" id="itemSearch" placeholder="Filter items"></div>
+          <input type="text" id="itemSearch" aria-label="Filter items" placeholder="Filter items"></div>
         <div class="note" id="itemNote" style="margin-bottom:12px"></div>
         <div id="itemCats"></div>
       </div>
@@ -371,7 +371,7 @@
           <div class="search field" style="margin-bottom:10px">
             <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/>
               <path d="m20 20-3.5-3.5"/></svg>
-            <input type="text" id="findName" autocomplete="off"
+            <input type="text" id="findName" aria-label="Search by name" autocomplete="off"
               placeholder="Name or dex number">
           </div>
           <div class="panel" style="margin-bottom:10px">

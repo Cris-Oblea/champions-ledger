@@ -345,7 +345,7 @@ function connectSupabase(cfg){
     if (s) { start(s); } else { showGate(); }
   }, function(){ showGate("Could not reach the database."); });
 
-  SB.auth.onAuthStateChange(function(evt, session){
+  SB.auth.onAuthStateChange(function(evt){
     if (evt === "SIGNED_OUT") location.reload();
   });
 }

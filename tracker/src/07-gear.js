@@ -1,7 +1,8 @@
 /* 07-gear.js - Items, stones, statuses, and the Settings tab.
    Part of the app; linked into one script by scripts/build_tracker_page.py. */
-import { $, C, COSTS, bst, byName, cardLine, effectLine, el, labelBox, numText, pokeFacts, toast,
-  typeChip } from "./01-data.js";
+import {
+  $, C, COSTS, byName, effectLine, el, numText, pokeFacts, toast,
+} from "./01-data.js";
 import { S, boxRows, capacity, hasStone, ownedItems, ownedNames,
          ownedStones } from "./02-state.js";
 import { drop, patch, put } from "./03-store.js";
