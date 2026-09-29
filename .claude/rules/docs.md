@@ -41,6 +41,15 @@ state only: when a session's account stops being current, it moves to
 `check_docs.py` watches every file in the table, so a superseded decision is
 caught wherever it moved to.
 
+**It also runs the moment a doc is edited**, not only at push: a PostToolUse
+hook in `.claude/settings.json` calls `check_docs.py --hook` after every Edit or
+Write of a `.md` file. It prints nothing, and so costs no tokens, while
+everything passes. A problem comes back as exit 2, which Claude Code shows to
+Claude straight away. The same hook guards the auto-memory index, which the gate
+never sees: every link resolves, every memory is linked, and `MEMORY.md` stays
+under `MEMORY_BUDGET`. Edits made through Bash skip the hook, and the pre-push
+gate still catches those.
+
 ## The README is the front door, and it is checked
 
 **Every change that alters what the app IS goes into `README.md` in the same
