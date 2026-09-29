@@ -8,7 +8,8 @@ import {
 } from "../core/data.js";
 import { $, capNote, el, fbtn, note, searchField, toast } from "../core/dom.js";
 import {
-  boxRows, originOf, RELEASE_FLOOR, releaseBlock, S, VIEW,
+  boxRows, capacity, originOf, originRows, RELEASE_FLOOR, releaseBlock,
+  rowMatches, S, sortRows, VIEW,
 } from "../core/state.js";
 import { drop, put } from "../core/store.js";
 import { gtsDiff } from "../core/trade.js";
@@ -16,6 +17,7 @@ import { boxBadges, pokeCard } from "../ui/card.js";
 import { ask, closeSheet, openSheet } from "../ui/nav.js";
 import { findDetail, pokeBody, pokeHead } from "../ui/pokemon.js";
 import { diffChip } from "./gts.js";
+import { drawGtsWanted } from "./trading.js";
 
 /* ===================================================================== rows */
 /* The row's left stripe, by origin, for a permanent Champions-box Pokemon. */
@@ -513,6 +515,134 @@ function addCard(p, loc, body){
   }});
 }
 
+/* ============================================================ the two boxes
+   The Champions box - its counter, its three sections by origin, the
+   warnings that matter for managing it - and the HOME box list. Called by
+   renderAll on every change. */
+function drawBoxes(){
+  var perm = boxRows("champions", "permanent");
+  var rent = boxRows("champions", "rental");
+  var home = boxRows("home");
+  var oHome = originRows("home"), oChamp = originRows("champions"),
+      oUnk = originRows("unknown");
+  var cap = capacity(), used = perm.length + rent.length;
+  boxCounter(used, cap);
+  /* ONE FILTER, THREE SECTIONS. Which origin a Pokemon has is not part of
+     "where is my Chesnaught", so the box's filter runs across all three and
+     each heading says how much of itself is showing. */
+  var bq = ($("boxFilter")?.value || "").trim().toLowerCase();
+  var nHO = boxSection($("listHomeOrigin"), sortRows(oHome), bq,
+                       "Nothing routed in from HOME yet");
+  var nCO = boxSection($("listChampOrigin"), sortRows(oChamp.concat(oUnk)), bq,
+                       "Nothing marked as Encounter-bought");
+  var nRe = boxSection($("listRent"), sortRows(rent), bq, "No rentals");
+  drawHomeList(home);
+  /* the checklist and the trade ideas are derived from the box and HOME, so
+     they go stale the moment either does - but only the visible pane is
+     worth the work */
+  if (!$("homePaneDex").hidden) drawDexPane();
+  if (!$("homePaneGts").hidden) drawGtsWanted();
+  sectionCount("nHomeOrigin", bq, nHO, oHome.length);
+  sectionCount("nChampOrigin", bq, nCO, oChamp.length + oUnk.length);
+  sectionCount("nRent", bq, nRe, rent.length);
+  $("nHome").textContent = home.length;
+  boxWarnings({used: used, cap: cap, oHome: oHome, oUnk: oUnk,
+               copies: perm.concat(rent)});
+}
+
+/* "box 44/50", amber within three of full and red at full. */
+function boxCounter(used, cap){
+  var bc = $("boxCount");
+  bc.textContent = "box " + used + "/" + cap;
+  bc.className = "counter";
+  if (used >= cap) bc.className += " full";
+  else if (used >= cap - 3) bc.className += " tight";
+}
+
+/* One section of the Champions box, filtered. Returns how many it shows. */
+function boxSection(node, rows, bq, empty){
+  var hits = rows.filter(function(r){ return rowMatches(r, bq); });
+  fill(node, hits, bq ? "Nothing here matches that" : empty);
+  return hits.length;
+}
+
+/* "3 of 18" while a filter is on, because a bare 3 under a heading reads as
+   the section having shrunk rather than as the filter working. */
+function sectionCount(id, bq, shown, total){
+  $(id).textContent = bq && shown !== total ? shown + " of " + total : total;
+}
+
+/* The HOME box: twelve rows until he asks for the rest. */
+function drawHomeList(home){
+  var hq = ($("homeFilter")?.value || "").trim().toLowerCase();
+  var homeShown = sortRows(home).filter(function(r){ return rowMatches(r, hq); });
+  var homeCap = VIEW.homeAll ? homeShown.length : 12;
+  fill($("listHome"), homeShown.slice(0, homeCap),
+       hq ? "Nothing in HOME matches that" : "HOME is empty");
+  var more = $("homeMore");
+  more.innerHTML = "";
+  if (homeShown.length > homeCap) {
+    more.appendChild(fbtn("Show the other " + (homeShown.length - homeCap), "sm",
+      function(){ VIEW.homeAll = true; drawBoxes(); }));
+  } else if (VIEW.homeAll && homeShown.length > 12) {
+    more.appendChild(fbtn("Show fewer", "sm",
+      function(){ VIEW.homeAll = false; drawBoxes(); }));
+  }
+}
+
+/* What matters for managing the box, in order: how many slots are elastic
+   (the ones that can be freed without destroying anything), how full it is,
+   any row without a recorded origin (a row with nowhere to appear is a row
+   silently lost), and a species held twice where one copy can actually go.
+   HOME-origin copies may stay duplicated for good, and a Champions-origin
+   one at the release floor cannot leave (player, 2026-09-27), so neither is
+   called trade material. */
+function boxWarnings(b){
+  var warn = $("boxWarn");
+  warn.innerHTML = "";
+  warn.appendChild(note(b.oHome.length ? "" : "warn",
+    "<strong>" + b.oHome.length + " of " + b.used + " slots are elastic.</strong> " +
+    "The other " + (b.used - b.oHome.length) + " can only be freed by releasing " +
+    "the Pokemon, and the game stops releases at " + RELEASE_FLOOR + ", so the " +
+    "last " + RELEASE_FLOOR + " Champions-origin ones stay for good. Replacing " +
+    "the rest with your own GO catches through HOME is the standing plan."));
+  if (b.used >= b.cap) {
+    warn.appendChild(note("bad", "<strong>The box is full at " + b.used + "/" + b.cap +
+      ".</strong> Nothing new fits until something leaves."));
+  } else if (b.used >= b.cap - 3) {
+    warn.appendChild(note("warn", "<strong>" + (b.cap - b.used) + " slot" +
+      (b.cap - b.used === 1 ? "" : "s") + " left.</strong>"));
+  }
+  if (b.oUnk.length) {
+    warn.appendChild(note("warn", "<strong>" + b.oUnk.length + " without a recorded " +
+      "origin.</strong> They are being counted as Champions origin, which is " +
+      "the cautious read. Tap one to say where it really came from: " +
+      b.oUnk.map(function(r){ return r.name; }).join(", ")));
+  }
+  var rep = releasableRepeats(b.copies);
+  if (rep.length) {
+    warn.appendChild(note("warn", "<strong>Species Clause.</strong> " +
+      rep.join(", ") + " appear" + (rep.length === 1 ? "s" : "") +
+      " more than once, so those copies can never share a team, and at " +
+      "least one of them can be released."));
+  }
+}
+
+/* Species held more than once in the Champions box where at least one copy
+   can be released. */
+function releasableRepeats(copies){
+  var dupes = {};
+  copies.forEach(function(r){
+    var sp = byName[r.name]?.species || r.name;
+    dupes[sp] ||= [];
+    dupes[sp].push(r);
+  });
+  return Object.keys(dupes).filter(function(k){
+    return dupes[k].length > 1 &&
+           dupes[k].some(function(r){ return !releaseBlock(r); });
+  });
+}
+
 /* ====================================================== what is still missing
 
    THE DEX IS THE POINT OF THE HOME BOX. Champions' own route in is a gacha -
@@ -717,4 +847,4 @@ function fill(node, rows, emptyMsg){
   rows.forEach(function(r){ node.appendChild(pokeRow(r)); });
 }
 
-export { addSheet, drawDexPane, drawDupeHome, fill, pokeSheet };
+export { addSheet, drawBoxes, drawDexPane, drawDupeHome, fill, pokeSheet };

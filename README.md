@@ -636,7 +636,7 @@ it. A source that quietly changes a denominator is the failure this catches.
 ```
 
 <!-- GATE:START -->
-**The gate** is 38 checks, and nothing reaches the phone without
+**The gate** is 39 checks, and nothing reaches the phone without
 passing all of them:
 
 - a **shrink guard** — if a rebuild comes back with fewer forms, moves or
@@ -649,7 +649,7 @@ passing all of them:
   over every file (a name one of the twenty-five ES modules uses without
   importing it links fine and throws on the phone), and the app read
   against its own markup and engine
-- **twenty-six browser tests** — run against the built page, because no Python
+- **twenty-seven browser tests** — run against the built page, because no Python
   check can see a template regression
 <!-- GATE:END -->
 
@@ -723,7 +723,7 @@ data/db/     the built database - the thing everything else reads
 data/meta/   usage, tournaments, speed tiers, written analyses
 tracker/     the app: a shell, its ES modules under src/, and a generated data blob
 <!-- TESTS:START -->
-tests/       twenty-six browser tests, run against the BUILT page
+tests/       twenty-seven browser tests, run against the BUILT page
 <!-- TESTS:END -->
 analysis/    write-ups: the Smogon engine, regulation M-C, GTS pricing, the roadmap
 CLAUDE.md    the rules every Claude Code session needs, kept small on purpose

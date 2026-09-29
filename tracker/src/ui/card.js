@@ -103,6 +103,27 @@ function typeCard(row, p, shiny){
    over the whole dex - so this is always a two-state fade rather than a
    cycle. If a regulation ever adds one, the first differing Mega wins and the
    second is still spelled out in the chips and the arrows. */
+/* One retyping layer, carrying the new typing's colours as the --m* custom
+   properties: both halves of the band, and the soft tints behind them. */
+function paintRetype(node, f){
+  var t = f.types || [], c1 = TYPE_COLOR[t[0]], mono = !t[1];
+  var top1 = c1, bot1 = TYPE_COLOR2[t[0]] || c1;
+  var top2 = mono ? top1 : TYPE_COLOR[t[1]];
+  var bot2 = mono ? bot1 : (TYPE_COLOR2[t[1]] || top2);
+  node.style.setProperty("--mcol", c1);
+  node.style.setProperty("--mcolb", bot1);
+  node.style.setProperty("--mcol2", top2);
+  node.style.setProperty("--mcol2b", bot2);
+  var s1 = tintOf(top1, 0.14), s1b = tintOf(bot1, 0.14) || s1;
+  var s2 = tintOf(top2, 0.14) || s1, s2b = tintOf(bot2, 0.14) || s2;
+  if (s1) node.style.setProperty("--msoft", s1);
+  if (s1b) node.style.setProperty("--msoftb", s1b);
+  if (s2) node.style.setProperty("--msoft2", s2);
+  if (s2b) node.style.setProperty("--msoft2b", s2b);
+  node.setAttribute("aria-hidden", "true");
+  return node;
+}
+
 function retypeLayer(row, base, forms){
   var bt = (base.types || []).join("/");
   /* EVERY TYPING IT REACHES, not the first one. Castform reaches three and
@@ -123,31 +144,13 @@ function retypeLayer(row, base, forms){
      has always done rather than running a cycle with no keyframes. */
   if (list.length > 3) list = list.slice(0, 1);
 
-  function paint(node, f){
-    var t = f.types || [], c1 = TYPE_COLOR[t[0]], mono = !t[1];
-    var top1 = c1, bot1 = TYPE_COLOR2[t[0]] || c1;
-    var top2 = mono ? top1 : TYPE_COLOR[t[1]];
-    var bot2 = mono ? bot1 : (TYPE_COLOR2[t[1]] || top2);
-    node.style.setProperty("--mcol", c1);
-    node.style.setProperty("--mcolb", bot1);
-    node.style.setProperty("--mcol2", top2);
-    node.style.setProperty("--mcol2b", bot2);
-    var s1 = tintOf(top1, 0.14), s1b = tintOf(bot1, 0.14) || s1;
-    var s2 = tintOf(top2, 0.14) || s1, s2b = tintOf(bot2, 0.14) || s2;
-    if (s1) node.style.setProperty("--msoft", s1);
-    if (s1b) node.style.setProperty("--msoftb", s1b);
-    if (s2) node.style.setProperty("--msoft2", s2);
-    if (s2b) node.style.setProperty("--msoft2b", s2b);
-    node.setAttribute("aria-hidden", "true");
-    return node;
-  }
   /* THE COLOURS LIVE ON THE LAYER NOW, not on the card. With one alternate
      typing the card could carry them, because there was one; with three the
      card would be carrying whichever was written last. The band reads them
      off its own parent either way. */
   var tints = document.createDocumentFragment();
   list.forEach(function(f, i){
-    tints.appendChild(paint(el("i", "retype i" + (i + 1)), f));
+    tints.appendChild(paintRetype(el("i", "retype i" + (i + 1)), f));
   });
   /* the tints go FIRST, over the card's own background and under everything
      the card is made of - the content sets its own stacking in the CSS */
@@ -177,7 +180,7 @@ function retypeLayer(row, base, forms){
      fades OUT, over the base, with the others already at zero. Every
      transition is therefore one moving layer over something solid. */
   list.forEach(function(f, i){
-    row.appendChild(paint(el("i", "retyperim i" + (i + 1)), f));
+    row.appendChild(paintRetype(el("i", "retyperim i" + (i + 1)), f));
   });
   row.classList.add("retyping");
   if (list.length > 1) row.classList.add("n" + list.length);

@@ -23,6 +23,7 @@ node consistencytest.js    # the same class of bug, hunted across every table
 node profiletest.js        # Profile: one editable field, the rest derived
 node teamtest.js           # teams: six slots, Item and Species Clause
 node createtest.js         # creating a record never overwrites another device's
+node homelisttest.js       # HOME opens on twelve rows, then the rest
 ```
 
 ## What each one is for
@@ -122,3 +123,8 @@ from the hand-written engine was setting state the real engine never read.
 Every one of these was written *after* a bug reached the player. A sample of
 hand-picked cases keeps missing the thing nobody thought of, so where a full
 sweep is cheap — 680 calls take seconds — sweep instead of sampling.
+
+**`homelisttest.js`** — the HOME box opens on twelve rows and a button offers
+the rest, then folds them again. The shared fixture holds five HOME rows, so
+nothing else ever showed that button; it is also the one control whose redraw
+moved when the box drawing left `boot.js` for `tabs/box.js`.

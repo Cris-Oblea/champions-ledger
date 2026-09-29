@@ -2,154 +2,33 @@
    store. renderAll() is the one redraw every change ends in. */
 /* FIRST, so a script error anywhere after this line is caught and shown. */
 import "./core/errors.js";
-import { byName } from "./core/data.js";
-import { $, el, fbtn, note, wireClears } from "./core/dom.js";
-import {
-  boxRows, capacity, originRows, RELEASE_FLOOR, releaseBlock, rowMatches,
-  sortRows, VIEW,
-} from "./core/state.js";
+import { $, el, wireClears } from "./core/dom.js";
+import { VIEW } from "./core/state.js";
 import { whenChanged } from "./core/store.js";
 import {
   buildsPane, buildTabs, go, leaveEditor, mq, onShow,
 } from "./ui/nav.js";
 import { connect } from "./ui/signin.js";
-import { addSheet, drawDexPane, drawDupeHome, fill } from "./tabs/box.js";
+import { addSheet, drawBoxes, drawDexPane, drawDupeHome } from "./tabs/box.js";
 import { buildSheet, drawBuilds } from "./tabs/builds.js";
 import { CALC, calcDraw } from "./tabs/damage.js";
 import { findDraw, findInit } from "./tabs/find.js";
-import { drawItems, drawStatuses, drawStones } from "./tabs/gear.js";
+import { drawItems, drawStones, wireStatusFold } from "./tabs/gear.js";
 import { drawGts } from "./tabs/gts.js";
 import { checkLatest, drawDiag, drawTrainer } from "./tabs/settings.js";
 import { drawTeams } from "./tabs/teams.js";
 import { drawGtsWanted } from "./tabs/trading.js";
 
-/* ==================================================================== render */
+/* ==================================================================== render
+   THE ONE REDRAW. Every snapshot from the store ends here (whenChanged, below),
+   and so does every control that changes what a list shows. Each screen draws
+   itself from S; this only says which. */
 function renderAll(){
-  var perm = boxRows("champions", "permanent");
-  var rent = boxRows("champions", "rental");
-  var home = boxRows("home");
-  var oHome = originRows("home"), oChamp = originRows("champions"),
-      oUnk = originRows("unknown");
-  /* Origin is settled at registration now - every route in decides it, so
-     there is no "not recorded" section any more. But an old row could still
-     carry one, and a row with nowhere to appear is a row you have silently
-     lost, so it gets called out instead. */
-  var cap = capacity(), used = perm.length + rent.length;
-
-  var bc = $("boxCount");
-  bc.textContent = "box " + used + "/" + cap;
-  bc.className = "counter";
-  if (used >= cap) bc.className += " full";
-  else if (used >= cap - 3) bc.className += " tight";
-
-  /* ONE FILTER, THREE SECTIONS. Which origin a Pokemon has is not part of
-     "where is my Chesnaught", so the box's filter runs across all three and
-     each heading says how much of itself is showing. */
-  var bq = ($("boxFilter")?.value || "").trim().toLowerCase();
-  function boxFill(node, rows, empty){
-    var hits = rows.filter(function(r){ return rowMatches(r, bq); });
-    fill(node, hits, bq ? "Nothing here matches that" : empty);
-    return hits.length;
-  }
-  var nHO = boxFill($("listHomeOrigin"), sortRows(oHome),
-                    "Nothing routed in from HOME yet");
-  var nCO = boxFill($("listChampOrigin"), sortRows(oChamp.concat(oUnk)),
-                    "Nothing marked as Encounter-bought");
-  var nRe = boxFill($("listRent"), sortRows(rent), "No rentals");
-  var hq = ($("homeFilter")?.value || "").trim().toLowerCase();
-  var homeShown = sortRows(home).filter(function(r){ return rowMatches(r, hq); });
-  /* NOT `cap` - that is the box capacity, ten lines up, and reusing the name
-     here made the full-box check read 48 >= 12. `var` is function-scoped, so
-     the second declaration simply overwrote the first. */
-  var homeCap = VIEW.homeAll ? homeShown.length : 12;
-  fill($("listHome"), homeShown.slice(0, homeCap),
-       hq ? "Nothing in HOME matches that" : "HOME is empty");
-  var more = $("homeMore");
-  more.innerHTML = "";
-  if (homeShown.length > homeCap) {
-    more.appendChild(fbtn("Show the other " + (homeShown.length - homeCap), "sm",
-      function(){ VIEW.homeAll = true; renderAll(); }));
-  } else if (VIEW.homeAll && homeShown.length > 12) {
-    more.appendChild(fbtn("Show fewer", "sm",
-      function(){ VIEW.homeAll = false; renderAll(); }));
-  }
-  /* the checklist is derived from the box and HOME, so it goes stale the
-     moment either does - but only the visible pane is worth the work */
-  if (!$("homePaneDex").hidden) drawDexPane();
-  /* the recommendations are derived from the box and from HOME, so they go
-     stale the moment either does - and from the open offers, since a chip
-     already sitting in a GTS slot is not a chip */
-  if (!$("homePaneGts").hidden) drawGtsWanted();
-  /* "3 of 18" while a filter is on, because a bare 3 under a heading reads
-     as the section having shrunk rather than as the filter working. */
-  function nOf(id, shown, total){
-    $(id).textContent = bq && shown !== total ? shown + " of " + total : total;
-  }
-  nOf("nHomeOrigin", nHO, oHome.length);
-  nOf("nChampOrigin", nCO, oChamp.length + oUnk.length);
-  nOf("nRent", nRe, rent.length);
-  $("nHome").textContent = home.length;
-
-  var warn = $("boxWarn");
-  warn.innerHTML = "";
-  /* the number that actually matters for box management: slots you can free
-     without destroying anything */
-  warn.appendChild(note(oHome.length ? "" : "warn",
-    "<strong>" + oHome.length + " of " + used + " slots are elastic.</strong> " +
-    "The other " + (used - oHome.length) + " can only be freed by releasing " +
-    "the Pokemon, and the game stops releases at " + RELEASE_FLOOR + ", so the " +
-    "last " + RELEASE_FLOOR + " Champions-origin ones stay for good. Replacing " +
-    "the rest with your own GO catches through HOME is the standing plan."));
-  if (used >= cap) {
-    warn.appendChild(note("bad", "<strong>The box is full at " + used + "/" + cap +
-      ".</strong> Nothing new fits until something leaves."));
-  } else if (used >= cap - 3) {
-    warn.appendChild(note("warn", "<strong>" + (cap - used) + " slot" +
-      (cap - used === 1 ? "" : "s") + " left.</strong>"));
-  }
-  if (oUnk.length) {
-    var w = note("warn", "<strong>" + oUnk.length + " without a recorded " +
-      "origin.</strong> They are being counted as Champions origin, which is " +
-      "the cautious read. Tap one to say where it really came from: " +
-      oUnk.map(function(r){ return r.name; }).join(", "));
-    warn.appendChild(w);
-  }
-  /* A repeat is only worth a warning when one of the copies can actually go.
-     HOME-origin copies are real Pokemon and may stay duplicated for good, and
-     a Champions-origin one at the release floor cannot leave (player,
-     2026-09-27) - calling either "trade material" asks for the impossible. */
-  var dupes = {};
-  perm.concat(rent).forEach(function(r){
-    var sp = byName[r.name]?.species || r.name;
-    dupes[sp] ||= [];
-    dupes[sp].push(r);
-  });
-  var rep = Object.keys(dupes).filter(function(k){
-    return dupes[k].length > 1 &&
-           dupes[k].some(function(r){ return !releaseBlock(r); });
-  });
-  if (rep.length) {
-    warn.appendChild(note("warn", "<strong>Species Clause.</strong> " +
-      rep.join(", ") + " appear" + (rep.length === 1 ? "s" : "") +
-      " more than once, so those copies can never share a team, and at " +
-      "least one of them can be released."));
-  }
-
+  drawBoxes();
   drawDupeHome();
   drawBuilds();
   drawStones();
-  /* Drawn once, when the fold is first opened - not on every redraw of a
-     screen whose whole point is the number at the top. */
-  var sf = $("statusFold"), sb = $("statusBody");
-  if (sf && sb && !sf._wired) {
-    sf._wired = 1;
-    sf.onclick = function(){
-      var open = sb.hidden;
-      sb.hidden = !open;
-      sf.setAttribute("aria-expanded", open ? "true" : "false");
-      if (open && !sb._drawn) { sb._drawn = 1; drawStatuses(); }
-    };
-  }
+  wireStatusFold();
   drawItems();
   drawTrainer();
   drawGts();

@@ -313,9 +313,11 @@ runs in four places: the `pre-push` hook, every pull request, every push to
 - **ESLint** (`eslint.config.mjs`): the rules SonarQube for IDE shows in VS
   Code, run over every file. `no-undef` catches a name a module uses without
   declaring or importing it, which the bundler would link as a global and the
-  phone would throw on. Rules that still have findings sit in the config's
-  ratchet list as warnings; a rule leaves the list when it reaches zero, and
-  from then on a new finding fails the push.
+  phone would throw on. In `tracker/src` every rule is an error, and so is a
+  function longer than 80 lines of code: the app is at zero and a push that
+  breaks that fails. In `tests/`, `scripts/` and `cron/` the rules that still
+  have findings sit in the config's ratchet list as warnings; a rule leaves the
+  list when it reaches zero there, and from then on it is an error too.
 - **`node scripts/check_app.js`**: what no linter can see - every element id
   the app reaches for exists in the markup, and every `CALC` switch the
   calculator screen sets reaches the engine.

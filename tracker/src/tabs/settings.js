@@ -301,19 +301,28 @@ function drawDiag(){
 }
 
 function overlapSweep(view){
-  var boxes = [], all = view.querySelectorAll("*");
-  for (var e of all) {
+  var boxes = paintedBoxes(view);
+  boxes.sort(function(a, b){ return a.r.top - b.r.top; });
+  var hits = [], floats = [];
+  for (var i2 = 0; i2 < boxes.length && hits.length < 12; i2++) {
+    var hit = firstCollision(boxes, i2, view, floats);
+    if (hit) hits.push(hit);
+  }
+  return {boxes: boxes.length, hits: hits, floating: floats};
+}
+
+/* Every leaf that paints something, with its rectangle. An ICON paints
+   without carrying a word, and an icon on top of text is the exact bug this
+   exists for, so svg and img count even though their text is empty. A FIELD
+   PAINTS ITS VALUE, which is not its textContent - without that an <input>
+   was never a box at all, and the sweep could not see the one bug it was
+   written for (caught by planting the bug back and watching the tool miss
+   it). Anything else has to say something to be worth colliding with. */
+function paintedBoxes(view){
+  var boxes = [];
+  for (var e of view.querySelectorAll("*")) {
     var tag = e.tagName;
-    /* An ICON paints without carrying a word, and an icon on top of text is
-       the exact bug this exists for - so svg and img count as painted even
-       though their textContent is empty. Anything else has to say something
-       to be worth colliding with. */
     var isIcon = /^(svg|img)$/i.test(tag);
-    /* A FIELD PAINTS ITS VALUE, and `value` is not `textContent`. Without
-       this line an <input> was never a box at all - so the sweep could not
-       see the one bug it was written for, and said "nothing overlaps" with
-       the icon sitting on the text. Caught by planting the bug back and
-       watching the tool miss it. */
     var isField = /^(input|textarea|select)$/i.test(tag);
     if (e.children.length && !isIcon) continue;
     if (!isIcon && !isField && !e.textContent.trim()) continue;
@@ -322,92 +331,79 @@ function overlapSweep(view){
     if (r.width < 4 || r.height < 4) continue;
     boxes.push({e: e, r: r});
   }
-  boxes.sort(function(a, b){ return a.r.top - b.r.top; });
-  var hits = [], floats = [];
-  for (var i2 = 0; i2 < boxes.length && hits.length < 12; i2++) {
-    var A = boxes[i2];
-    for (var j = i2 + 1; j < boxes.length; j++) {
-      var B = boxes[j];
-      if (B.r.top >= A.r.bottom - 1) break;         /* the sweep's whole point */
-      if (A.e.contains(B.e) || B.e.contains(A.e)) continue;
-      var ox = Math.min(A.r.right, B.r.right) - Math.max(A.r.left, B.r.left);
-      var oy = Math.min(A.r.bottom, B.r.bottom) - Math.max(A.r.top, B.r.top);
-      /* a two-pixel kiss is layout, not a collision */
-      if (ox <= 1 || oy <= 1 || ox * oy < 30) continue;
-      var line = label(A.e) + "  over  " + label(B.e) +
-                 "  (" + Math.round(ox * oy) + "px²)";
-      /* A FLOATING LAYER IS NOT A COLLISION, AND IS NOT HIDDEN EITHER.
+  return boxes;
+}
 
-         Exactly one of the two is out of the flow - the "+" button that floats
-         over the list below 900px, a sheet, a toast - so it is MEANT to be on
-         top and the page scrolls out from under it. Counting that as a fault
-         put a permanent "1 overlap" on HOME and Builds, and a check that cries
-         wolf is a check that gets turned off.
+/* SWEPT, NOT COMPARED PAIRWISE: boxes are sorted by top edge, so box i is
+   only measured against the ones that start before it ends. Returns the
+   first real collision as a line of text. A two-pixel kiss is layout, not a
+   collision.
 
-         But it is NOT dropped, because that is how a check goes blind - the
-         last time something was quietly excluded here the sweep stopped seeing
-         the bug it was written for. It is reported in its own list, so a
-         floating layer that really is swallowing something is still visible.
-
-         BOTH out of the flow is a genuine fault: two floating layers fighting
-         over the same corner is nobody's design. */
-      if (floatingLayer(A.e) !== floatingLayer(B.e)) {
-        if (floats.length < 8) floats.push(line);
-        continue;
-      }
-      hits.push(line);
-      break;
+   A FLOATING LAYER IS NOT A COLLISION, AND IS NOT HIDDEN EITHER. When exactly
+   one of the two is out of the flow - the "+" button over a list, a sheet, a
+   toast - it is MEANT to be on top, so counting it would cry wolf; it goes
+   into `floats` instead, so a layer really swallowing something still shows.
+   BOTH out of the flow is a genuine fault: two floating layers fighting over
+   one corner is nobody's design. */
+function firstCollision(boxes, i, view, floats){
+  var A = boxes[i];
+  for (var j = i + 1; j < boxes.length; j++) {
+    var B = boxes[j];
+    if (B.r.top >= A.r.bottom - 1) break;         /* the sweep's whole point */
+    if (A.e.contains(B.e) || B.e.contains(A.e)) continue;
+    var ox = Math.min(A.r.right, B.r.right) - Math.max(A.r.left, B.r.left);
+    var oy = Math.min(A.r.bottom, B.r.bottom) - Math.max(A.r.top, B.r.top);
+    if (ox <= 1 || oy <= 1 || ox * oy < 30) continue;
+    var line = overlapLabel(A.e) + "  over  " + overlapLabel(B.e) +
+               "  (" + Math.round(ox * oy) + "px²)";
+    if (floatingLayer(A.e, view) !== floatingLayer(B.e, view)) {
+      if (floats.length < 8) floats.push(line);
+      continue;
     }
+    return line;
   }
-  return {boxes: boxes.length, hits: hits, floating: floats};
+  return null;
+}
 
-  /* Out of the flow: its own layer, by declaration. Read off the ancestors
-     because the painted leaf inherits the positioning of the box that floats -
-     the "+" glyph is a plain span inside a fixed button.
+/* Out of the flow: its own layer, by declaration. Read off the ancestors
+   because the painted leaf inherits the positioning of the box that floats -
+   the "+" glyph is a plain span inside a fixed button. ASKED ONLY WHEN TWO
+   BOXES ACTUALLY TOUCH: asking for every box cost a getComputedStyle per
+   ancestor of 200 boxes and broke the sweep's own 150ms budget. */
+function floatingLayer(e, view){
+  for (var n = e; n?.nodeType === 1 && n !== view; n = n.parentNode) {
+    var pos = window.getComputedStyle(n).position;
+    if (pos === "fixed" || pos === "sticky" || pos === "absolute") return true;
+  }
+  return false;
+}
 
-     ASKED ONLY WHEN TWO BOXES ACTUALLY TOUCH, never per box. Asking up front
-     cost a getComputedStyle per ancestor of all 200 boxes and pushed the sweep
-     past its own 150ms budget - the linear-time test caught it on the first
-     run. Collisions are rare, so this runs a handful of times. */
-  function floatingLayer(e){
-    for (var n = e; n?.nodeType === 1 && n !== view; n = n.parentNode) {
-      var pos = window.getComputedStyle(n).position;
-      if (pos === "fixed" || pos === "sticky" || pos === "absolute") return true;
-    }
-    return false;
-  }
+/* A FIELD'S BOX INCLUDES ITS PADDING, and the search icon lives in that
+   padding ON PURPOSE. What matters is whether something covers the field's
+   TEXT, so a field is measured by its content box. A NONSENSE COMPUTED STYLE
+   MUST NOT BLIND THE SWEEP: if the insets come back bigger than the box
+   (jsdom resolves a border to 16px here), the border box is used instead -
+   a generous rectangle reports a false positive, which someone reads; a
+   collapsed one reports nothing, which nobody does. */
+function contentBox(e, r){
+  var cs = window.getComputedStyle(e);
+  var l = r.left + px(cs.borderLeftWidth) + px(cs.paddingLeft);
+  var t = r.top + px(cs.borderTopWidth) + px(cs.paddingTop);
+  var rt = r.right - px(cs.borderRightWidth) - px(cs.paddingRight);
+  var b = r.bottom - px(cs.borderBottomWidth) - px(cs.paddingBottom);
+  if (rt - l < 4 || b - t < 4) return r;
+  return {left:l, top:t, right:rt, bottom:b, width:rt - l, height:b - t};
+}
 
-  /* A FIELD'S BOX INCLUDES ITS PADDING, and the icon lives in that padding ON
-     PURPOSE - that is the whole point of the 34px. Compared as border boxes
-     the two always intersect, so the sweep called a correct search box broken
-     and would have gone on calling it broken after any fix. What matters is
-     whether something covers the field's TEXT, so a field is measured by its
-     content box. */
-  function contentBox(e, r){
-    var cs = window.getComputedStyle(e);
-    function n(v){ return Number.parseFloat(v) || 0; }
-    var l = r.left + n(cs.borderLeftWidth) + n(cs.paddingLeft);
-    var t = r.top + n(cs.borderTopWidth) + n(cs.paddingTop);
-    var rt = r.right - n(cs.borderRightWidth) - n(cs.paddingRight);
-    var b = r.bottom - n(cs.borderBottomWidth) - n(cs.paddingBottom);
-    /* A NONSENSE COMPUTED STYLE MUST NOT BLIND THE SWEEP. If the insets come
-       back bigger than the box - jsdom resolves a border to 16px here, and a
-       real browser could do something odd with a shorthand - the content box
-       collapses, the element falls under the 4px floor and quietly stops
-       being checked at all. Falling back to the border box keeps it visible:
-       a slightly generous rectangle reports a false positive, which someone
-       reads, and missing one reports nothing, which nobody does. */
-    if (rt - l < 4 || b - t < 4) return r;
-    return {left:l, top:t, right:rt, bottom:b, width:rt - l, height:b - t};
-  }
-  function label(e){
-    /* An SVG's className is an SVGAnimatedString, so String() on it reads
-       "[object SVGAnimatedString]" - which is what the first report said. */
-    var c = (e.getAttribute?.("class") || "").split(" ")[0];
-    var t = (e.value || e.textContent || "").trim().slice(0, 14);
-    return e.tagName.toLowerCase() + (c ? "." + c : "") +
-           (t ? " “" + t + "”" : "");
-  }
+function px(v){ return Number.parseFloat(v) || 0; }
+
+/* "span.tag “Fire”" - an element as a person can find it. An SVG's className
+   is an SVGAnimatedString, so the class is read as an attribute. */
+function overlapLabel(e){
+  var c = (e.getAttribute?.("class") || "").split(" ")[0];
+  var t = (e.value || e.textContent || "").trim().slice(0, 14);
+  return e.tagName.toLowerCase() + (c ? "." + c : "") +
+         (t ? " “" + t + "”" : "");
 }
 
 function overlapReport(host){
