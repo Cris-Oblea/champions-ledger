@@ -26,7 +26,7 @@ updates:
     directory: "/"
     schedule:
       interval: "weekly"
-    # Two kinds of package live here. jsdom (with esbuild and acorn) is tooling:
+    # Two kinds of package live here. jsdom (with esbuild and ESLint) is tooling:
     # the browser tests in the gate all run under it, and a jsdom that moves
     # unannounced is a gate that fails one morning for a reason nobody changed.
     # supabase-js is not tooling - build_tracker_page.py inlines it from

@@ -2,7 +2,7 @@
    Part of the app; linked into one script by scripts/build_tracker_page.py. */
 import {
   $, C, FORMS, MEGAS_OF, STONE_OF, anyRow, bst, byName, capNote, dexLabel,
-  dexNo, el, freeSlug, megasFor, pokeCard, searchField, toast,
+  dexNo, el, freeSlug, megasFor, pokeCard, searchField, spTotal, toast,
   byText,
 } from "./01-data.js";
 import { ORIGIN_LABEL, S, baseAbility, boxRows, hasStone, originOf }

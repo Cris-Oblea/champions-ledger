@@ -264,7 +264,7 @@ document.querySelectorAll(".sortseg").forEach(function(seg){
           x.setAttribute("aria-pressed", x.dataset.sort === VIEW.sort ? "true" : "false");
         });
       });
-      try { localStorage.setItem("champ-sort", SORT); } catch (e) {}
+      try { localStorage.setItem("champ-sort", VIEW.sort); } catch (e) {}
       renderAll();
     };
   });

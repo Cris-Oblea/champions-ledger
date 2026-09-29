@@ -95,14 +95,22 @@ GATE_CHECKS = [
      "no document contradicts a decision, names a missing file or outgrows its budget"),
 ]
 
-# Read the app's SOURCE, which is the one thing the browser tests cannot: they
-# exercise the paths they know about, and a `var` shadowing another in the same
-# scope is legal JavaScript that simply does the wrong thing on a path nobody
-# clicked. It shipped once - "48/12" on the box counter - and now that the app
-# is twelve files instead of one, a name colliding across parts is exactly
-# the mistake the split makes easier.
+# Read the SOURCE, which is the one thing the browser tests cannot: they
+# exercise the paths they know about, and a bug on a path nobody clicked is
+# legal JavaScript that simply does the wrong thing there. Two shipped that
+# way: a sort preference saved under a name that no longer existed, and a CSV
+# export calling a function another file kept private - both ReferenceErrors,
+# both silent until the button was pressed (2026-09-29).
+#
+# ESLint runs the same rules SonarQube for IDE shows in VS Code, over every
+# file, with `--quiet` so a failure prints the errors rather than the warnings
+# the ratchet in eslint.config.mjs still allows. check_app.js keeps the two
+# checks no linter can make: they read the app against its own markup and its
+# own engine.
 SOURCE_CHECKS = [
-    ("scripts/check_app.js", "the app's source reads as one program"),
+    (["node_modules/eslint/bin/eslint.js", "--quiet"],
+     "no lint finding comes back once it is fixed"),
+    (["scripts/check_app.js"], "the app's source agrees with its markup and its engine"),
 ]
 
 # The browser tests, run against the BUILT page. Nothing gated on these until
@@ -606,8 +614,8 @@ def main():
         else:
             out.append("ok: %s" % what)
 
-    for script, what in SOURCE_CHECKS:
-        g, gout = sh(["node", script])
+    for argv, what in SOURCE_CHECKS:
+        g, gout = sh(["node"] + argv)
         if g != 0:
             gate_ok = False
             out.append("BLOCKED: %s failed" % what)

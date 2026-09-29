@@ -4,7 +4,7 @@ import {
   C, COSTS, FORMS, MOVE_BY, STAT_KEYS, STAT_LABEL, bst, byName, capNote,
   catName, dexNo, effectLine, el, labelBox, learnset, megasFor, natMult,
   numText, pokeCard, searchField, splitPct, splitsFor, splitsReg, statAt,
-  toast, typeChip, usageTag,
+  spTotal, toast, typeChip, usageTag,
   byText,
 } from "./01-data.js";
 import { ORIGIN_LABEL, S, activeAbility, baseAbility, boxRows, buildLink,
@@ -164,9 +164,6 @@ function speciesSheet(onPick){
   }, []);
 }
 
-function spTotal(sp){
-  return STAT_KEYS.reduce(function(a,k){ return a + (Number(sp[k]) || 0); }, 0);
-}
 function buildRow(id, b){
   var p = byName[b.mega || b.pokemon] || byName[b.pokemon];
   var lk = buildLink(id);

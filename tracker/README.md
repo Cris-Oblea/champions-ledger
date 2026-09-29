@@ -507,15 +507,18 @@ gts/{id}      {offered, requested, offered_id, deposited, deposited_at,
   Nothing relies on the old file order any more - the only top-level statements
   left in the parts attach handlers to their own elements.
 
-  **`node scripts/check_app.js` is what keeps that honest**, and it is a real
-  parse: acorn, with the scope chain built properly, reporting any name a part
-  uses that another part exports and it never imported. esbuild links such a
-  name happily - by the rules of the language it is a global - and it throws on
-  the phone. The first version of the check scanned with a regex and skipped
-  any name the file bound anywhere, so one `var note` inside one function in
+  **ESLint's `no-undef` is what keeps that honest**: any name a part uses
+  without declaring or importing it fails the gate. esbuild links such a name
+  happily - by the rules of the language it is a global - and it throws on the
+  phone. It replaced a hand-rolled check in `scripts/check_app.js` that had
+  two holes in turn. The first version scanned with a regex and skipped any
+  name the file bound anywhere, so one `var note` inside one function in
   09-gts hid every other use of `note` in that file, and the missing import
-  reached production. The browser tests did not see it either: their Supabase
-  stub returns no rows, so the branch that draws that note never ran.
+  reached production. The second only reported names another part EXPORTED,
+  so a private function called across files (the builds CSV export) and a name
+  that no longer existed anywhere (the saved sort order) both shipped as
+  ReferenceErrors. The browser tests did not see any of them: their Supabase
+  stub returns no rows, and no test presses those buttons.
 
   **What a part keeps to itself is now the interesting half.** The Item Clause
   is `teamPickItem` in `08-teams`, the only way an item can be set. What a GTS

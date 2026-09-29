@@ -73,9 +73,12 @@ Load order is whatever the imports say, with one fixed point: the generated
 build. The file-number order that concatenation used to impose no longer
 matters. `tracker/README.md` has the full write-up.
 
-`node scripts/check_app.js` reads the parts back as one program, which is the
-check the split needs: a name two parts each declare, or one uses without
-importing, is invisible in either file alone. It runs inside the gate.
+ESLint runs inside the gate (`eslint.config.mjs`): `no-undef` is the check the
+split needs, because a name one part uses without importing is invisible in
+either file alone and links as a global. A rule with findings left sits in the
+config's ratchet list as a warning; it leaves the list in the PR that takes it
+to zero. `node scripts/check_app.js` keeps the checks no linter can make: ids
+against the markup, CALC switches against the engine.
 
 **The tracker's damage tab runs Smogon's engine itself** (bundled by
 `scripts/build_engine_bundle.py`), so it is exact rather than close. Do not
