@@ -1408,9 +1408,17 @@ function gtsSheet(id, o){
       put("gts/" + id, done).then(function(){
         var id = freeSlug(d.requested, S.box);
         // it came in by trade, so it is HOME origin and the slot stays elastic
+        /* NO NOTE. It used to arrive saying "GTS for Houndoom, 2026-09-14",
+           which was the only record of the trade before the history existed
+           - the trades closed before 2026-09-12 were recovered from exactly
+           those notes. The row closed above carries the same chip, the same
+           Pokemon and the same date, so the note repeated it on the box card
+           for good. All 92 were checked against the history and cleared
+           (player,
+           2026-09-28: "como ya tengo un historial de trades gts, creo que
+           eso quedó sobrando"). The note is his, for what he writes. */
         return put("box/" + id, {name:d.requested, location:"home",
-          status:"permanent", origin:"home",
-          note:"GTS for " + d.offered + ", " + (d.deposited || ""),
+          status:"permanent", origin:"home", note:"",
           order:Object.keys(S.box).length});
       }).then(function(){
         return going ? drop("box/" + going._id) : null;
