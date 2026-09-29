@@ -5,6 +5,7 @@ import {
   catName, dexNo, effectLine, el, labelBox, learnset, megasFor, natMult,
   numText, pokeCard, searchField, splitPct, splitsFor, splitsReg, statAt,
   toast, typeChip, usageTag,
+  byText,
 } from "./01-data.js";
 import { ORIGIN_LABEL, S, activeAbility, baseAbility, boxRows, buildLink,
   megaAbility, originOf, ownedNames, soleAbility } from "./02-state.js";
@@ -270,7 +271,7 @@ function orderByUsage(sel, pokemon, kind){
 }
 
 function buildSheet(id, b, keepOriginal){
-  var draft = JSON.parse(JSON.stringify(b || {}));
+  var draft = structuredClone(b || {});
   /* the link is stored as box_id and edited as _boxId - seed one from the
      other, or editing a build would silently unbind it on save */
   draft._boxId = draft.box_id || null;
@@ -286,7 +287,7 @@ function buildSheet(id, b, keepOriginal){
   if (!draft.ability) draft.ability = soleAbility(draft.pokemon);
   if (draft.mega && !draft.mega_ability)
     draft.mega_ability = soleAbility(draft.mega);
-  var original = keepOriginal || JSON.parse(JSON.stringify(draft));
+  var original = keepOriginal || structuredClone(draft);
   /* built here, filled in place by paintChecks/paintCost below - they live at
      this scope because the sliders repaint them without rebuilding the sheet */
   var checkBox = el("div"), costBox = el("div");
@@ -498,7 +499,7 @@ function buildSheet(id, b, keepOriginal){
              delete the old one, because the id WAS the box row - so relinking
              meant rewriting the build's identity, and anything referring to it
              broke. box_id is a field now; the build keeps its name. */
-          var doc = JSON.parse(JSON.stringify(b));
+          var doc = structuredClone(b);
           delete doc._boxId;
           doc.box_id = selr.value;
           put("builds/" + id, doc).then(function(){
@@ -605,7 +606,7 @@ function buildSheet(id, b, keepOriginal){
     var fn = el("div", "field");
     fn.appendChild(el("label", "f", "Nature"));
     var sn = el("select");
-    Object.keys(C.NATURES).sort().forEach(function(n){
+    Object.keys(C.NATURES).sort(byText).forEach(function(n){
       sn.appendChild(new Option(n + " — " + C.NATURES[n][2], n));
     });
     /* and the same on natures - 90.3% Adamant on Kingambit is the answer to

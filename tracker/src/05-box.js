@@ -319,7 +319,7 @@ function moveButtons(rec, isHome){
     function release(){
     drop(path).then(function(){
       return Promise.all(mine.map(function(k){
-        var doc = JSON.parse(JSON.stringify(S.builds[k]));
+        var doc = structuredClone(S.builds[k]);
         delete doc._boxId;
         doc.box_id = null;
         return put("builds/" + k, doc);

@@ -16,5 +16,12 @@
     "tracker/src/_*.js": true,
     "tracker/index.html": true
   },
+  // Rules switched off here, each with the reason. S1135 flags the word
+  // "todo" - and the only one in the code is Spanish ("everything") inside a
+  // quote. This project marks deliberate deferrals with `ponytail:` comments,
+  // which /ponytail-debt collects, so a TODO rule has nothing to guard.
+  "sonarlint.rules": {
+    "javascript:S1135": { "level": "off" }
+  },
   "sonarlint.analysisExcludesStandalone": "data/**,graphify-out/**,node_modules/**,tracker/dist/**,tracker/build/**,tracker/*.js,tracker/src/_*.js"
 }

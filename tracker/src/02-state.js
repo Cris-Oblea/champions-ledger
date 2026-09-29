@@ -1,6 +1,6 @@
 /* 02-state.js - S: the ledger as this device sees it, and what a build is bound to.
    Part of the app; assembled into one script by scripts/build_tracker_page.py. */
-import { byName } from "./01-data.js";
+import { byName, byText } from "./01-data.js";
 /* ===================================================================== state */
 const S = {box:{}, builds:{}, teams:{}, stones:{}, items:{}, gts:{},
          meta:{}, db:null, ready:false, tab:"box"};
@@ -135,7 +135,7 @@ function capacity(){ return S.meta.trainer?.box_capacity || 50; }
    erase the other. As a list they rewrote the whole document from
    whatever copy that device last loaded, and a device that had been
    asleep silently dropped what it never saw. */
-function ownedStones(){ return Object.keys(S.stones).sort(); }
+function ownedStones(){ return Object.keys(S.stones).sort(byText); }
 function hasStone(n){ return !!S.stones[n]; }
 /* Same shape, same reason. The categories the old document carried are
    the game's own and come from the dex. */

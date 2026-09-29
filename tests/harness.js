@@ -37,6 +37,13 @@ function page(root) {
   html = html.replace("window.CHAMP_CONFIG = {};",
     'window.CHAMP_CONFIG = {"supabase": {"url": "https://ledger.test.invalid", ' +
     '"key": "test", "email": ""}};');
+  /* jsdom has no structuredClone, which every browser the app targets does.
+     A JSON round trip is the same thing for the plain rows the app clones -
+     it is what the app itself used before - and it lives only in the string
+     the tests load. */
+  html = html.replace("<head>", "<head><script>window.structuredClone = " +
+    "window.structuredClone || function(v){ return JSON.parse(JSON.stringify(v)); };" +
+    "<\/script>");
   /* The real library would load over each harness's stub and every test would
      read an empty ledger. */
   return html.replace(/<script id="vendor-supabase">[\s\S]*?<\/script>/, "");
