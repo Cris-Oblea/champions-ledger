@@ -15,25 +15,20 @@ code disagree, the code wins; fix this file in the same PR.
 Two halves share one database of Champions facts:
 
 ```mermaid
-flowchart LR
-  subgraph Sources["Five public sources"]
-    SE[Serebii] & PB[pokebase] & SM[Smogon] & PD[pokedata.ovh] & PA[PokeAPI]
-  end
-  subgraph Pipeline["Python pipeline (scripts/)"]
-    F[fetch_*.py] --> RAW[(data/raw/<br/>cache, not in git)]
-    RAW --> B[build_*.py] --> DB[(data/db/ + data/meta/<br/>JSON, in git)]
-    DB --> A[audit_*.py]
-  end
-  subgraph Build["Page build"]
-    DB --> TD[build_tracker_data.py] --> DJS[tracker/data.js]
-    SRC[tracker/src/*.js] --> ESB[esbuild]
-    DJS & ESB --> TP[build_tracker_page.py] --> DIST[tracker/dist/]
-  end
-  Sources --> F
-  DIST -->|wrangler deploy| CF[Cloudflare]
-  CF -->|HTML + JS| PHONE[Phone / browser]
-  PHONE <-->|supabase-js, login + RLS| SB[(Supabase Postgres<br/>his box, builds, teams)]
-  DB --> CLI[query.py / damage.py<br/>command line]
+flowchart TB
+  SRC["Five public sources<br/>Serebii · pokebase · Smogon · pokedata · PokeAPI"]
+  SRC --> F["fetch_*.py<br/>download"]
+  F --> RAW[("data/raw/<br/>cache, not in git")]
+  RAW --> B["build_*.py + audit_*.py<br/>parse and cross-check"]
+  B --> DB[("data/db/ + data/meta/<br/>JSON, in git")]
+  DB --> CLI["query.py / damage.py<br/>command line"]
+  DB --> TD["build_tracker_data.py"] --> DJS["tracker/data.js"]
+  APP["tracker/src/*.js<br/>the app"] --> TP
+  DJS --> TP["build_tracker_page.py<br/>esbuild + split"]
+  TP --> DIST["tracker/dist/"]
+  DIST -->|"wrangler deploy<br/>(on merge)"| CF["Cloudflare"]
+  CF -->|"HTML + JS"| PHONE["Phone / browser"]
+  PHONE <-->|"login + RLS"| SB[("Supabase<br/>his box, builds, teams")]
 ```
 
 - **Game facts** (species, moves, usage) are public, scraped, rebuilt nightly,
