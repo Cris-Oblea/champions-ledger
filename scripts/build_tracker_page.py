@@ -96,11 +96,54 @@ def assemble(tpl):
     for m in (SMARK, KMARK, AMARK):
         if m not in tpl:
             sys.exit("the shell lost its %s marker" % m)
-    css = open(os.path.join(SRC, "style.css"), encoding="utf-8").read()
-    markup = open(os.path.join(SRC, "markup.html"), encoding="utf-8").read()
-    tpl = tpl.replace(SMARK, css.rstrip(chr(10)))
-    tpl = tpl.replace(KMARK, markup.rstrip(chr(10)))
+    tpl = tpl.replace(SMARK, styles().rstrip(chr(10)))
+    tpl = tpl.replace(KMARK, markup().rstrip(chr(10)))
     return tpl.replace(AMARK, link())
+
+
+def read_src(*path):
+    """A source file exactly as written - newline="" so no line ending is
+    translated on the way through, which would change the page's hash."""
+    return open(os.path.join(SRC, *path), encoding="utf-8", newline="").read()
+
+
+def styles():
+    """tracker/src/styles/, joined in the order styles/index.css lists them.
+
+    The order IS the cascade - at equal specificity a later rule wins - so it
+    is written down once, in the one file a person reads to learn it, as the
+    @import lines CSS itself would use. They are resolved here rather than by
+    the browser: the page stays one inline <style> with no extra request.
+    A file on disk that the index does not list is an error, not a file
+    quietly left out of the page.
+    """
+    names = re.findall(r'^@import "([\w.-]+)";$', read_src("styles", "index.css"), re.M)
+    on_disk = sorted(f for f in os.listdir(os.path.join(SRC, "styles"))
+                     if f.endswith(".css") and f != "index.css")
+    if sorted(names) != on_disk:
+        sys.exit("styles/index.css lists %s but styles/ holds %s"
+                 % (sorted(names), on_disk))
+    return "".join(read_src("styles", n) for n in names)
+
+
+def markup():
+    """tracker/src/markup/index.html with each <!--#include x.html --> line
+    replaced by that file: the page's skeleton in one place, one file per tab.
+
+    Still ONE document in the browser, which is the point of it: a tab change
+    only toggles `hidden`, the session and the loaded ledger are never thrown
+    away, and nothing is fetched. The split is for the person reading it.
+    Every fragment must be included exactly once.
+    """
+    index = read_src("markup", "index.html")
+    inc = re.compile(r"^[ \t]*<!--#include ([\w.-]+) -->\n", re.M)
+    names = inc.findall(index)
+    on_disk = sorted(f for f in os.listdir(os.path.join(SRC, "markup"))
+                     if f.endswith(".html") and f != "index.html")
+    if sorted(names) != on_disk:
+        sys.exit("markup/index.html includes %s but markup/ holds %s"
+                 % (sorted(names), on_disk))
+    return inc.sub(lambda m: read_src("markup", m.group(1)), index)
 
 
 # THE APP'S PUBLIC SURFACE - the names that leave the bundle.

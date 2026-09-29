@@ -1,0 +1,92 @@
+    <!-- =========================================================== FIND -->
+    <section class="view" id="v-find" role="tabpanel" hidden>
+      <div class="viewhead"><div><h1>Find</h1>
+        <p class="lede">Every filter has to be true at once. <em>Learns Imprison
+           and Wide Guard and Protect</em> is one query, not three.</p></div></div>
+
+      <!-- TWO QUESTIONS, NOT ONE SCROLL. "Who matches this" and "what won that
+           August" are different questions, and Worlds used to sit BELOW 345
+           result rows - nineteen screens down, which is the same as not being
+           there. One tap now.
+
+           A segmented control rather than another tab in the rail: it belongs
+           to Find, it is not a seventh place to be. -->
+      <fieldset class="seg" id="findMode" aria-label="What to look at">
+        <button data-mode="search" aria-pressed="true">Search</button>
+        <button data-mode="worlds" aria-pressed="false">Worlds</button>
+      </fieldset>
+
+      <!-- CONTROLS BESIDE THE ANSWER. They were stacked above it, so the
+           answer started below the fold and scrolling to read it took the
+           controls off screen. On a phone this stacks exactly as before. -->
+      <div class="workspace" id="findSearch">
+        <div class="wside">
+          <!-- BY NAME, FIRST. Every other control here narrows a field
+               of 264; this one is for when you already know which
+               Pokemon you want and only came to open its sheet (player,
+               2026-09-19: "cuando quiero ver la ficha rapidamente de uno
+               sin tener que filtrar"). It matches the name, the species,
+               the dex number and a Mega's name. -->
+          <div class="search field" style="margin-bottom:10px">
+            <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/>
+              <path d="m20 20-3.5-3.5"/></svg>
+            <input type="text" id="findName" aria-label="Search by name" autocomplete="off"
+              placeholder="Name or dex number">
+          </div>
+          <div class="panel" style="margin-bottom:10px">
+            <div class="toggles" id="findChips"></div>
+          </div>
+          <div class="btnrow" style="margin-bottom:10px">
+            <button class="btn sm" id="findAddMove">+ Move</button>
+            <button class="btn sm" id="findAddType">+ Type</button>
+            <button class="btn sm" id="findAddAbility">+ Ability</button>
+            <button class="btn sm" id="findInChamp" aria-pressed="false">In Champions</button>
+            <button class="btn sm" id="findInHome" aria-pressed="false">In HOME</button>
+            <button class="btn sm quiet" id="findClear">Clear</button>
+          </div>
+          <!-- ONE TABLE, NOT SEVEN. This began as a separate "Tiers" block
+               with a tab per stat and the player replaced the idea with a
+               better one: a tier list IS this list sorted by one column, so
+               keeping it apart meant a speed tier could never also be "and it
+               learns Fake Out and I own one". -->
+          <div class="panel">
+            <p class="sub" style="margin:0 0 6px">Sort — pick a stat and the
+              list becomes that stat's tier order. Tap it again to flip:
+              highest first is the speed tier, lowest first is the Trick Room
+              one.</p>
+            <div class="toggles" id="findSort"></div>
+          </div>
+        </div>
+        <div class="wmain">
+          <div id="findOut"></div>
+        </div>
+      </div>
+
+      <!-- ==================================================== WORLDS ====
+           HISTORY, and labelled as history. A World Championship is played
+           once under one regulation and then frozen, so these numbers say what
+           the field brought that August - never what is current.
+
+           The three divisions are three metagames off one roster and are never
+           pooled, so they are tabs. -->
+      <div id="findWorlds" hidden>
+        <p class="lede">What the field actually brought, per World
+          Championship. Counted per TEAM — the Species Clause means a team
+          holds a species at most once — so the percentage is the share of
+          teams that carried it. Frozen history: each event keeps the
+          regulation it was played in.</p>
+        <div class="workspace">
+          <div class="wside">
+            <div class="panel">
+              <p class="sub" style="margin:0 0 6px">Championship</p>
+              <div class="toggles" id="worldYear" style="margin-bottom:12px"></div>
+              <p class="sub" style="margin:0 0 6px">Division — three separate
+                metagames off one roster, never pooled</p>
+              <div class="toggles" id="worldDiv"></div>
+            </div>
+          </div>
+          <div class="wmain"><div id="worldOut"></div></div>
+        </div>
+      </div>
+    </section>
+

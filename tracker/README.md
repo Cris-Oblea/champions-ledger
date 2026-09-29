@@ -474,7 +474,9 @@ gts/{id}      {offered, requested, offered_id, deposited, deposited_at,
   starts them - `core/` (the data, his state, the rules, the DOM helpers, the
   store), `ui/` (what several tabs share: navigation, the card, a Pokemon's
   sheet, the move vocabulary, sign-in), `tabs/` (one file per screen) and
-  `boot.js` - with `style.css` and `markup.html`. They are ES modules: each one
+  `boot.js` - with `styles/` (the CSS, in the cascade order `styles/index.css`
+  lists) and `markup/` (the page skeleton plus one file per tab). The scripts
+  are ES modules: each one
   declares what it exports and imports what it needs, and the build LINKS them
   with esbuild into the one script the page carries. `docs/ARCHITECTURE.md`
   §4.2 says what each file owns.

@@ -1,0 +1,50 @@
+/* ---------- a GTS offer, as two sides rather than a sentence ------------- */
+.gtsrow{align-items:stretch}
+.gtspair{display:grid;grid-template-columns:1fr auto 1fr;align-items:center;
+  gap:10px;margin-top:8px}
+.gtsside{min-width:0;background:var(--sunk);border:1px solid var(--line);
+  border-radius:8px;padding:8px 10px}
+/* THE CARD LIVES INSIDE THE SIDE, so it gets the card skin the rest of the
+   app has - the type band, the tint and the sprite strip - without the
+   side box drawing a second border around a second background. */
+.gtsside > .row{background:transparent;border:0;padding:0;width:100%;
+  text-align:left}
+.gtsside .rname{font-size:13.5px}
+.gtsside .rmeta{margin-top:3px}
+/* FLOATED, not absolute. A card's sprite is pinned to its top-right corner
+   and the text is narrowed to clear it; a GTS side is a third of that width,
+   so the same trick would put the picture on the name. Floating it makes the
+   text flow around it instead, and it stays inside the layout - which is also
+   what keeps the overlap sweep honest, since a float is a box it can measure. */
+/* 96, THE SIZE THE FILE IS. It was set to 56 to fit a narrow side, which
+   is the one thing a pixel sprite must never be: 96 scaled to 56 is a
+   resample, and `image-rendering:pixelated` on a DOWNscale makes it worse
+   rather than better - it drops pixels instead of blending them (player,
+   2026-09-19: "los sprites se ven mas chicos y no de tamano nativo").
+   Native or nothing; the float still keeps the text clear of it. */
+.gtsside .gtspic{float:right;width:96px;height:96px;margin:-2px -2px 2px 8px}
+.gtsside .statline{margin-top:6px;clear:both}
+.gtslabel{font-family:var(--cond);text-transform:uppercase;letter-spacing:.07em;
+  font-size:9.5px;font-weight:600;color:var(--faint);margin-bottom:3px}
+.gtsarrow{font-family:var(--mono);font-size:17px;color:var(--muted);
+  text-align:center}
+/* a note can be a paragraph of reasoning; three lines is enough to recognise
+   it by, and the whole thing is there when the offer is opened */
+.gtsnote{font-size:12px;color:var(--muted);margin-top:6px;line-height:1.4;
+  display:-webkit-box;-webkit-line-clamp:3;line-clamp:3;-webkit-box-orient:vertical;
+  overflow:hidden}
+@media (max-width:560px){
+  .gtspair{grid-template-columns:1fr}
+  .gtsarrow{transform:rotate(90deg);line-height:1}
+}
+
+.calcflags{display:grid;gap:6px;margin-top:8px}
+.calcflags .note{font-size:12px;padding:7px 10px}
+details.rolls{margin-top:8px}
+details.rolls summary{font-family:var(--cond);text-transform:uppercase;
+  letter-spacing:.07em;font-size:11px;font-weight:600;color:var(--muted);
+  cursor:pointer;list-style:none}
+details.rolls summary::-webkit-details-marker{display:none}
+details.rolls summary::before{content:"+ ";color:var(--faint)}
+details.rolls[open] summary::before{content:"2 "}
+

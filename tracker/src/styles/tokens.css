@@ -1,0 +1,73 @@
+/* ---------- tokens: light is the base, both dark paths redefine only these */
+:root{
+  --ground:#EFF3F2; --surface:#FFFFFF; --sunk:#E5EBE9; --gold-ink:#7D5F0E;
+  --line:#D2DCDA; --line-hard:#B2C0BD;
+  --text:#111819; --muted:#5A6A6B; --faint:#849695;
+  --accent:#0A8A7C; --accent-ink:#FFFFFF; --accent-soft:#D9EFEC;
+  --mega:#6743C6; --mega-soft:#E9E2FA;
+  /* ONE INK PER MEGA, AND THE LETTERS TAKE THE GAMES' OWN COLOURS. The
+     player pointed at where they come from (2026-09-20: "vi la portada de
+     pokemon x e y, y los del anime, X es azul, Y es rojo y Z es verde"),
+     which beats the first guess here - it had Y orange off Charizard Y.
+
+     Nobody publishes a hex for those wordmarks: the documented Pokemon
+     palette is the franchise logo's yellow #FFCB05, blue #3D7DCA and navy
+     #003A70, and the rest is box art. So these are the right HUES - Xerneas
+     blue, Yveltal red, Zygarde green - tuned to sit legibly on this app's
+     surfaces, one value per theme.
+
+     PLAIN MEGA KEEPS THE PURPLE. Mega Evolution's own mark has no single
+     colour - it is drawn as a spectrum - and purple is already what this app
+     means by Mega everywhere else. It also only ever shares a card with Z,
+     since a species carries EITHER an X/Y pair OR a plain Mega with a Z, so
+     the only pairs that must be told apart are purple against green and blue
+     against red. */
+  --mega-x:#2C6FC4; --mega-y:#C63A2E; --mega-z:#2F8F4E;
+  /* AND ONE FOR A FORM THAT IS NOT A MEGA AT ALL. Aegislash's Blade,
+     Palafin's Hero and Castform's three weather forms are reached by an
+     ability in the middle of the battle, not by a stone, so they must not
+     wear any of the four Mega inks - a card carrying both has to say which
+     is which without a word. Teal is the app's accent and green is Z, so
+     this is the one warm hue left that neither the types nor the Megas are
+     already using. */
+  --battle:#9A5B00; --battle-soft:#F7ECD9;
+  --warn:#A9640F; --warn-soft:#F7EBD8;
+  --bad:#B5372E; --bad-soft:#FAE3E0;
+  --good:#2A7442;
+  --shadow:0 1px 2px rgba(16,32,32,.06), 0 8px 24px -12px rgba(16,32,32,.22);
+  --r:10px;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,Segoe UI,sans-serif;
+  --cond:"IBM Plex Sans Condensed","IBM Plex Sans",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --tint-dir:179.9deg;
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --ground:#0A1012; --surface:#121A1C; --sunk:#0E1618; --gold-ink:#C79A2E;
+    --line:#222F31; --line-hard:#35494B;
+    --text:#E3EBE9; --muted:#8DA09F; --faint:#6C7F7E;
+    --accent:#33C0AD; --accent-ink:#04211D; --accent-soft:#0D2E2A;
+    --mega:#A78BF2; --mega-soft:#20193A;
+    --mega-x:#6FAEF0; --mega-y:#F0837A; --mega-z:#5FC77E;
+    --battle:#E3A552; --battle-soft:#2E2412;
+    --warn:#E0A44C; --warn-soft:#31250F;
+    --bad:#E4756A; --bad-soft:#361714;
+    --good:#5CBE7C;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.7);
+  }
+}
+:root[data-theme="dark"]{
+  --ground:#0A1012; --surface:#121A1C; --sunk:#0E1618; --gold-ink:#C79A2E;
+  --line:#222F31; --line-hard:#35494B;
+  --text:#E3EBE9; --muted:#8DA09F; --faint:#6C7F7E;
+  --accent:#33C0AD; --accent-ink:#04211D; --accent-soft:#0D2E2A;
+  --mega:#A78BF2; --mega-soft:#20193A;
+  --mega-x:#6FAEF0; --mega-y:#F0837A; --mega-z:#5FC77E;
+  --battle:#E3A552; --battle-soft:#2E2412;
+  --warn:#E0A44C; --warn-soft:#31250F;
+  --bad:#E4756A; --bad-soft:#361714;
+  --good:#5CBE7C;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.7);
+}
+
+*{box-sizing:border-box}

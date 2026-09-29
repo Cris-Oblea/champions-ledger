@@ -91,8 +91,11 @@ analysis/          Write-ups and investigations; history.md = session log
 
 ### 4.1 How a page with no framework is organised
 
-- **`markup.html`** holds every screen as a static `<section>`. Changing tabs
-  only toggles `hidden`; the page never navigates.
+- **`markup/`** holds every screen as a static `<section>`, one file per tab,
+  joined into ONE page at build time. Changing tabs only toggles `hidden`;
+  the page never navigates, so the session and the loaded ledger are never
+  thrown away and a tab opens instantly. The files are split for reading,
+  not for the browser.
 - **`S`** (in `core/state.js`) is the one state object: `S.box`, `S.builds`,
   `S.teams`, `S.stones`, `S.items`, `S.gts`, `S.meta`. Each is a map from id
   to row, exactly as the database holds it.
@@ -119,6 +122,8 @@ ui/       the pieces several tabs share: navigation, the card, a Pokemon's
 tabs/     one file per screen, or per pane of one.
 boot.js   starts the app: wires the controls, draws the first screen,
           connects the store. Nothing imports it.
+styles/   the CSS, one file per area, in the order styles/index.css gives
+markup/   the HTML: index.html is the skeleton, one file per tab
 ```
 
 ESLint (`no-restricted-imports` in `eslint.config.mjs`) flags an import that
@@ -158,8 +163,8 @@ Each file opens with a comment saying what it is for.
 | `tabs/worlds.js` | The Worlds view inside Find | `worldInit` |
 | `tabs/settings.js` | Settings: box capacity, export, diagnostics | `drawTrainer`, `drawDiag` |
 | `boot.js` | `renderAll()`, the controls' wiring, what runs on load | `renderAll` |
-| `style.css` | All the styles. CSS custom properties for the theme | none |
-| `markup.html` | All the screens | none |
+| `styles/` | The styles, one file per area (`tokens`, `shell`, `card`, `lists`, `controls`, `sheet`, `density`...). `styles/index.css` lists them in cascade order, and that order is the one the build uses | none |
+| `markup/` | The screens: `markup/index.html` is the page's skeleton (header, tab bar, sheet, dialogs, sign-in), and each tab is its own file, included by a `<!--#include tab.html -->` line | none |
 
 To see who depends on whom, press F12 on any imported name in VS Code, or run
 `graphify query "what depends on core/store.js"`.

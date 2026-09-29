@@ -1,0 +1,27 @@
+    <!-- =========================================================== GEAR -->
+    <section class="view" id="v-gear" role="tabpanel" hidden>
+      <div class="viewhead"><div><h1>Items</h1>
+        <p class="lede">Every item in the game, in the four groups Champions
+           uses. Tap one to record that you own it.</p></div></div>
+      <div class="btnrow" style="margin-bottom:12px">
+        <button class="btn sm" id="gearStones" aria-pressed="true">Mega Stones</button>
+        <button class="btn sm" id="gearItems" aria-pressed="false">Items</button>
+      </div>
+      <div id="gearStonePane">
+        <div class="search field"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <input type="text" id="stoneSearch" aria-label="Filter stones" placeholder="Filter stones"></div>
+        <div class="note" id="stoneNote" style="margin-bottom:12px"></div>
+        <h2>Owned <span class="n" id="nStones"></span></h2>
+        <div class="list cards" id="listStonesOwned"></div>
+        <h2>Not owned <span class="n" id="nStonesNot"></span></h2>
+        <div class="list cards" id="listStonesNot"></div>
+      </div>
+      <div id="gearItemPane" hidden>
+        <div class="search field"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+          <input type="text" id="itemSearch" aria-label="Filter items" placeholder="Filter items"></div>
+        <div class="note" id="itemNote" style="margin-bottom:12px"></div>
+        <div id="itemCats"></div>
+      </div>
+    </section>
+
+

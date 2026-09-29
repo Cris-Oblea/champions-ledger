@@ -1,0 +1,247 @@
+/* ---------- chips -------------------------------------------------------- */
+/* The ink is set per chip now, from pokemon.com's own choice for that type -
+   eight of the eighteen are written in black there, which is why this can keep
+   the true colour instead of darkening it until white works. #fff stays as the
+   fallback for a type with no row. */
+.t{font-family:var(--cond);font-size:10.5px;font-weight:600;letter-spacing:.06em;
+  text-transform:uppercase;padding:2px 6px;border-radius:4px;color:#fff;
+  white-space:nowrap}
+.tag{font-family:var(--cond);font-size:10.5px;font-weight:600;letter-spacing:.06em;
+  text-transform:uppercase;padding:2px 6px;border-radius:4px;white-space:nowrap;
+  border:1px solid var(--line);color:var(--muted);background:var(--sunk)}
+.tag.mega{background:var(--mega-soft);border-color:var(--mega);color:var(--mega)}
+/* the ability that flips a battle form, on that form's own block - the
+   same shape as the Mega's stone tag and deliberately not the same ink,
+   because one is an item you bring and the other just happens */
+.tag.bf{background:var(--battle-soft);border-color:var(--battle);
+  color:var(--battle)}
+.tag.warn{background:var(--warn-soft);border-color:var(--warn);color:var(--warn)}
+.tag.bad{background:var(--bad-soft);border-color:var(--bad);color:var(--bad)}
+.tag.ok{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
+/* A podium finish is not "good" or "bad", it is a medal - so it gets its own
+   colour rather than borrowing the accent that already means something else
+   on the same row. */
+.tag.gold{background:rgba(190,150,40,.16);border-color:#b8912c;color:var(--gold-ink)}
+
+/* ---------- buttons ------------------------------------------------------ */
+.btn{background:var(--surface);border:1px solid var(--line-hard);border-radius:8px;
+  padding:8px 13px;font-size:13.5px;font-weight:500}
+.btn:hover{background:var(--sunk)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary:hover{filter:brightness(1.07)}
+.btn.danger{color:var(--bad);border-color:var(--bad)}
+.btn.sm{padding:5px 9px;font-size:12.5px}
+/* a .btn that is really a toggle has to look held-down, the same way .tog does */
+.btn[aria-pressed="true"]{background:var(--accent-soft);border-color:var(--accent);
+  color:var(--accent);font-weight:600}
+/* "Clear" wipes the query; it sat in the same row looking like "+ Move" */
+.btn.quiet{border-style:dashed;color:var(--muted)}
+/* An ask the GTS can fetch but Champions cannot play. It is a real
+   target - the HOME dex is being completed on purpose, and a species
+   Champions cannot use is the one thing his rule always lets him offer
+   again - but it must not read like something you could bring to a
+   game, so it is the only ask tag drawn without a colour. */
+.tag.quiet{color:var(--muted);border-color:var(--line-hard);
+  border-style:dashed}
+/* the '+N more' inside a card's ask line: a button, not a sentence */
+.st .btn.sm.quiet{padding:0 6px;min-height:0;font-size:10px;
+  line-height:1.5;vertical-align:baseline}
+/* a fold header: full width, reads as a heading, behaves as a button */
+.btn.fold{width:100%;justify-content:flex-start;display:flex;align-items:center;
+  gap:8px;font-family:var(--cond);text-transform:uppercase;letter-spacing:.08em;
+  font-size:12px;color:var(--muted);background:none;border:0;border-top:1px solid var(--line);
+  border-radius:0;padding:12px 2px;margin-top:16px}
+.btn.fold:hover{color:var(--text)}
+.btn.fold .n{font-family:var(--mono);color:var(--faint);letter-spacing:0;
+  margin-left:auto}
+.foldcaret{font-size:10px;display:inline-block;width:10px}
+/* THE SAME FOLD, INSIDE A SHEET. `.btn.fold` is a section divider - a rule
+   above it and 16px of air - which is right between two blocks of a tab and
+   far too heavy for a control sitting between two rows of chips. Same
+   affordance, none of the furniture. */
+.btn.fold.inline{margin-top:0;padding:6px 2px;border-top:0;font-size:11px}
+.btnrow{display:flex;gap:8px;flex-wrap:wrap}
+
+/* ---------- panels ------------------------------------------------------- */
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:var(--r);
+  padding:13px}
+.note{background:var(--sunk);border:1px solid var(--line);border-radius:var(--r);
+  padding:10px 12px;font-size:12.5px;color:var(--muted)}
+.note strong{color:var(--text);font-weight:600}
+.note.warn{background:var(--warn-soft);border-color:var(--warn);color:var(--warn)}
+.note.bad{background:var(--bad-soft);border-color:var(--bad);color:var(--bad)}
+.note.warn strong,.note.bad strong{color:inherit}
+.empty{color:var(--faint);font-size:13px;padding:14px;text-align:center;
+  border:1px dashed var(--line);border-radius:var(--r)}
+
+/* THE WHOLE TYPE READ AS ONE BLOCK (player, 2026-09-21: "la idea es
+   presentar en un bloque rapido TODOS los weak y resist del team").
+
+   Removing the six-type cap made the honest version of this list a long thin
+   ribbon - up to 17 entries, three screens on a phone. auto-fill rather than
+   a fixed two, so the column count follows the width instead of a breakpoint
+   guessing at it: one column on a narrow phone, two on his screen, three when
+   there is genuinely room.
+
+   `min(100%, 400px)`, never a bare 400px: a grid track's minimum is a
+   minimum, so on a 360px phone `minmax(400px,1fr)` lays a 400px track and
+   the page scrolls sideways. The min() clamps the track to the container on
+   anything narrower than one column. 400 rather than the cards' 300 because
+   an entry is two sentences, not a title - a weak line can name six Pokemon
+   with a multiplier each - and 400 is what keeps his own screen at the two
+   columns he asked for.
+
+   Each entry gets the sunk background because in two columns the eye has to
+   know where one type ends and the next begins; as loose text the columns
+   read as one paragraph. */
+.typegrid{display:grid;gap:8px;
+  grid-template-columns:repeat(auto-fill,minmax(min(100%,400px),1fr))}
+.typegrid>div{background:var(--sunk);border:1px solid var(--line);
+  border-radius:var(--r);padding:8px 10px}
+
+/* ---------- forms -------------------------------------------------------- */
+label.f{display:block;font-family:var(--cond);text-transform:uppercase;
+  letter-spacing:.07em;font-size:11px;font-weight:600;color:var(--muted);
+  margin-bottom:4px}
+/* `:where()` RATHER THAN A BARE `:not()` CHAIN, and it is not a style choice.
+   `:not()` takes the specificity of its argument, so this selector used to
+   weigh (0,4,1) - heavier than any sane rule written against a field. Three
+   rules elsewhere in this file were losing to it in silence and had been for
+   as long as they existed:
+
+     .search input     padding-left  the icon sat on top of the text, in all
+                                     eight search boxes
+     .sp .spnum        padding       9px 11px in a 42px column, instead of the
+                                     6px 2px it was drawn for
+     .sp.over .spnum   color         the RED that says a stat is over the 32
+                                     cap never appeared on the number itself
+
+   `:where()` weighs zero, so the selector is (0,0,1) and anything aimed at a
+   specific field wins, which is what every one of those rules was written
+   expecting. Supported since Chrome 88 / Safari 14 - below the floor this page
+   already sits on, since it relies on `dvh`. */
+input:where(:not([type=range]):not([type=file]):not([type=checkbox]):not([type=radio])),
+select,textarea{width:100%;
+  background:var(--surface);border:1px solid var(--line-hard);border-radius:8px;
+  padding:9px 11px;font-size:14px;color:var(--text);min-height:42px}
+/* THE BROWSER DRAWS ITS OWN EYE IN A PASSWORD FIELD, inside our 11px of right
+   padding, so a long password runs underneath it. Give that side room. Edge
+   adds a second one of its own next to it, which is why ::-ms-reveal goes. */
+input[type=password]{padding-right:38px}
+input[type=password]::-ms-reveal,input[type=password]::-ms-clear{display:none}
+/* Safari zooms the whole page when a field under 16px takes focus, and never
+   zooms back out. Coarse pointer = a touch device, so it costs desktop
+   nothing. */
+@media (pointer:coarse){
+  input:where(:not([type=range]):not([type=file]):not([type=checkbox]):not([type=radio])),
+  select,textarea{font-size:16px}
+  /* Named on purpose. Now that the rule above weighs nothing, a field styled
+     by class would out-rank it and take its own smaller size back - which is
+     exactly the Safari zoom this guard exists to stop. */
+  .sp .spnum{font-size:16px}
+}
+input::placeholder{color:var(--faint)}
+/* Chrome paints its own background over autofilled fields */
+input:-webkit-autofill,input:-webkit-autofill:focus{
+  -webkit-text-fill-color:var(--text);
+  -webkit-box-shadow:0 0 0 40px var(--surface) inset;
+  caret-color:var(--text)}
+textarea{resize:vertical;min-height:64px;line-height:1.45}
+.field{margin-bottom:12px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+/* TWO COLUMNS NEED THE WIDTH FOR TWO COLUMNS. At 360px each half of a .grid2
+   is about 165px, and what goes in them is not 165px wide: "Nature - 500 VP"
+   over a <select> reading "Adamant - +Atk, -SpA   ·   90.3%", and the build
+   editor puts Ability beside it. A native select truncates with no ellipsis
+   and no way to widen it, so the half that matters - the percentage - was the
+   half being cut off. Below 430px they stack, which costs one scroll and
+   makes both readable.
+   430 rather than 400: a 412px phone (Pixel) is the common case that was
+   still splitting. */
+@media (max-width:430px){ .grid2{grid-template-columns:1fr;gap:0} }
+/* THE ICON AND THE TEXT SAT ON TOP OF EACH OTHER, in every search box in the
+   app, and the reason is a specificity trap worth writing down.
+
+   The field rule above used a bare `:not()` chain, and `:not()` takes the
+   specificity of its ARGUMENT - four attribute selectors plus the type, so
+   (0,4,1) against this rule's (0,1,1). Being later in the file does not help:
+   specificity is decided first. The generic `padding:9px 11px` won and the
+   room reserved for the icon was never applied - measured at 2px of text
+   inset, underneath a 16px icon sitting at 9px.
+
+   The chain is wrapped in `:where()` now, so this plain selector wins on its
+   own and the next person to style a field does not fall in. 34px rather than
+   32: the icon ends at 25px, so this leaves a clear gap instead of the text
+   touching it. */
+.search{position:relative}
+.search input{padding-left:34px}
+.search svg{position:absolute;left:9px;top:50%;transform:translateY(-50%);
+  width:16px;height:16px;stroke:var(--faint);fill:none;stroke-width:1.8;
+  pointer-events:none}
+/* THE CLEAR BUTTON, on every search box in the app. It appears only once
+   there is something to clear, so an empty field is the same box it always
+   was; `.has` is set by addClear in 01-data. Not the browser's own: a
+   restyled search field loses it in Safari, and it is drawn inside our border
+   in Chrome. 30px of right padding only while it is showing, so nothing
+   reflows a field that is empty. */
+.search .clr{position:absolute;right:5px;top:50%;transform:translateY(-50%);
+  display:none;width:28px;height:28px;min-height:0;padding:0;border:0;
+  border-radius:7px;background:transparent;color:var(--muted);
+  font-size:18px;line-height:1;cursor:pointer}
+.search .clr:hover{background:var(--line);color:var(--text)}
+.search.has .clr{display:block}
+.search.has input{padding-right:36px}
+
+/* ---------- SP editor ---------------------------------------------------- */
+.sp{display:grid;grid-template-columns:34px 1fr 40px 52px;align-items:center;
+  gap:9px;padding:3px 0}
+.sp .k{font-family:var(--cond);font-size:11px;font-weight:600;
+  text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.sp .v{font-family:var(--mono);font-size:13px;font-variant-numeric:tabular-nums;
+  text-align:right}
+.sp .calc{font-family:var(--mono);font-size:12px;color:var(--faint);
+  text-align:right;font-variant-numeric:tabular-nums}
+.sp.over .v{color:var(--bad);font-weight:600}
+/* The build sheet's row carries three ways to set the same number - drag,
+   arrows, typing - so it needs two more columns than the calculator's. */
+.sp.spedit{grid-template-columns:34px 1fr 32px 46px 32px 52px;gap:7px}
+.sp .step{width:32px;height:32px;padding:0;border-radius:8px;
+  border:1px solid var(--line-hard);background:var(--surface);color:var(--text);
+  font-family:var(--mono);font-size:16px;line-height:1;
+  display:flex;align-items:center;justify-content:center}
+.sp .step:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+.sp .step:disabled{opacity:.3;cursor:default}
+.sp .spnum{text-align:center;padding:6px 2px;font-family:var(--mono);
+  font-size:13px;font-variant-numeric:tabular-nums}
+.sp.over .spnum{color:var(--bad);font-weight:600;border-color:var(--bad)}
+@media (max-width:380px){
+  .sp.spedit{grid-template-columns:30px 1fr 30px 42px 30px 44px;gap:5px}
+  .sp .step{width:30px;height:30px}
+}
+input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:22px;
+  background:none}
+input[type=range]::-webkit-slider-runnable-track{height:4px;border-radius:2px;
+  background:var(--sunk);border:1px solid var(--line)}
+input[type=range]::-moz-range-track{height:4px;border-radius:2px;
+  background:var(--sunk);border:1px solid var(--line)}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;
+  height:16px;border-radius:50%;background:var(--accent);margin-top:-7px;
+  border:2px solid var(--surface)}
+input[type=range]::-moz-range-thumb{width:14px;height:14px;border:2px solid var(--surface);
+  border-radius:50%;background:var(--accent)}
+.meter{height:6px;border-radius:3px;background:var(--sunk);overflow:hidden;
+  border:1px solid var(--line);margin:6px 0 3px}
+.meter i{display:block;height:100%;background:var(--accent);transition:width .12s}
+.meter.over i{background:var(--bad)}
+.budget{display:flex;justify-content:space-between;font-family:var(--mono);
+  font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+
+/* ---------- move slots --------------------------------------------------- */
+.slot{display:flex;align-items:center;gap:9px;background:var(--surface);
+  border:1px solid var(--line);border-radius:8px;padding:8px 10px;width:100%;
+  text-align:left;min-height:46px}
+.slot.blank{border-style:dashed;color:var(--faint)}
+.slot .nm{font-weight:500;font-size:14px}
+.slot .st{font-family:var(--mono);font-size:11.5px;color:var(--muted);
+  font-variant-numeric:tabular-nums;margin-top:1px}
+
