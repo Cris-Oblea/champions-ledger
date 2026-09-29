@@ -423,7 +423,7 @@ def headers(supabase_url, assets=()):
     """What the page may load, and above all where it may SEND.
 
     Derived from the page's measured surface, not guessed:
-      - one external script, supabase-js from jsDelivr
+      - no external script: supabase-js is inlined from node_modules
       - the IBM Plex stylesheet from fonts.googleapis.com, its files from
         fonts.gstatic.com
       - Supabase over https for REST and auth, and over wss for realtime
@@ -444,9 +444,9 @@ def headers(supabase_url, assets=()):
 
     That trade is fair because the attack this closes is not inline script, it is
     exfiltration. The page holds the entire ledger behind a login, and the one
-    piece of code on it that nobody here wrote is fetched from a CDN. `connect-src`
-    means a tampered supabase.js can read the ledger and has nowhere to send it:
-    one Supabase project, and the page's own origin.
+    piece of code on it that nobody here wrote is supabase.js, inlined from
+    node_modules. `connect-src` means a tampered copy can read the ledger and
+    has nowhere to send it: one Supabase project, and the page's own origin.
     """
     csp = [
         "default-src 'self'",
