@@ -99,7 +99,7 @@ GATE_CHECKS = [
 # exercise the paths they know about, and a `var` shadowing another in the same
 # scope is legal JavaScript that simply does the wrong thing on a path nobody
 # clicked. It shipped once - "48/12" on the box counter - and now that the app
-# is thirteen files instead of one, a name colliding across parts is exactly
+# is twelve files instead of one, a name colliding across parts is exactly
 # the mistake the split makes easier.
 SOURCE_CHECKS = [
     ("scripts/check_app.js", "the app's source reads as one program"),

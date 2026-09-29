@@ -496,7 +496,7 @@ gts/{id}      {offered, requested, offered_id, deposited, deposited_at,
   pinned in `package-lock.json` and installed by `npm ci` - never `npx`, which
   fetches whatever is newest at the moment it runs.
 
-  **All thirteen are modules**, finished on 2026-09-14, and a part that
+  **All twelve are modules**, finished on 2026-09-14, and a part that
   declares no imports or exports is a build error - so "every part says what it
   takes and what it offers" is enforced, not just true today. Only `_entry.js`
   is generated now: it imports the PUBLIC names and is the app's one deliberate
@@ -564,10 +564,4 @@ There is no API. Champions, Pokemon HOME and Pokemon GO all speak private,
 certificate-pinned protocols to their own servers; the only way in is
 reverse-engineering a client and signing in with your own credentials, which
 every one of those terms of service forbids and which Niantic in particular
-bans accounts for. Not worth your account.
-
-The closest honest thing is in the Trainer tab: photograph the box, and the page
-asks Claude to read the names off the screenshot against the real dex list. You
-confirm each name before it is added. It costs a request per scan and it is the
-only automation here that can be wrong, which is why nothing is added without a
-tap.
+bans accounts for. Not worth your account. The box is entered by hand.

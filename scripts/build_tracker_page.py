@@ -87,7 +87,7 @@ def assemble(tpl):
     the split bought readability and no safety at all. They are ES modules now
     and link() resolves the imports at build time. What arrives here is one
     script either way: the browser is handed the same single <script> it always
-    was, because that is the artifact the browser tests load.
+    was, because that is what the browser tests load.
     """
     for m in (SMARK, KMARK, AMARK):
         if m not in tpl:
@@ -175,7 +175,7 @@ def surface(text):
 
 
 def link():
-    """Resolve the thirteen parts into the one script the page carries.
+    """Resolve the twelve parts into the one script the page carries.
 
     Each part says what it exports and imports what it needs; esbuild follows
     those and emits a single IIFE. One file is generated to do it, into
@@ -385,7 +385,7 @@ def config_js():
              "loginEmail": os.environ.get("SUPABASE_LOGIN_EMAIL", "")}
         print("  Supabase: from the environment")
     elif not os.path.exists(CFG):
-        print("  no tracker/config.local.json - building the Claude-db version")
+        print("  no Supabase config - building a page with no store")
         return lazy + "window.CHAMP_CONFIG = {};"
     else:
         c = json.load(open(CFG, encoding="utf-8"))
@@ -422,7 +422,6 @@ def headers(supabase_url, assets=()):
       - Supabase over https for REST and auth, and over wss for realtime
       - a same-origin fetch of the page itself, which is how the search view
         probes whether it is online
-      - photographs held as data:/blob: while a box scan is confirmed
       - the Pokemon sprites, from the CDN the app names - and that host is READ
         OFF the linked app by image_hosts() rather than typed here, because the
         two were typed separately once and production spent two days with no
@@ -448,7 +447,7 @@ def headers(supabase_url, assets=()):
         "script-src 'self' 'unsafe-inline'",
         "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com",
         "font-src https://fonts.gstatic.com",
-        " ".join(["img-src 'self' data: blob:"] + BUILT.get("img_hosts", [])),
+        " ".join(["img-src 'self'"] + BUILT.get("img_hosts", [])),
         "object-src 'none'",
         "base-uri 'none'",
         # there is exactly one real <form> on the page, the login
@@ -460,8 +459,8 @@ def headers(supabase_url, assets=()):
         host = supabase_url.rstrip("/")
         send += [host, "wss://" + host.split("://", 1)[-1]]
     else:
-        # the Claude-db build has no Supabase host to allow, and saying so beats
-        # shipping a policy that quietly permits nothing
+        # a build with no Supabase config (a Dependabot PR) has no host to
+        # allow, and saying so beats a policy that quietly permits nothing
         print("  CSP: no Supabase host - connect-src is same-origin only")
     csp.insert(1, "connect-src " + " ".join(send))
     # A hashed name can never mean anything else, so it is cached for a year
@@ -527,12 +526,10 @@ def main():
 
 
 def standalone(html):
-    """Wrap the artifact-shaped fragment into a real HTML document.
+    """Wrap the assembled fragment into a real HTML document.
 
-    The Claude artifact viewer supplies the skeleton - doctype, charset,
-    viewport and a small reset - so the published file is written without one.
-    Served from anywhere else that skeleton is simply absent, and three things
-    break at once:
+    The template is a fragment with no skeleton, so this adds the doctype,
+    charset, viewport and a small reset. Without them three things break:
 
       * no <meta charset>: the browser guesses, and every em dash, ×, ·, → and
         the ellipsis in "Signing in..." renders as mojibake
@@ -628,7 +625,7 @@ def build_dist(html):
         print("  asset %-30s %6.0f KB" % (name, len(text) / 1024))
     open(os.path.join(DIST, "index.html"), "w", encoding="utf-8",
          newline="").write(page)
-    # The app is LINKED from thirteen files now, so the deployed bytes are no
+    # The app is LINKED from twelve files now, so the deployed bytes are no
     # longer the bytes anyone wrote: esbuild reprints them and drops the
     # comments. The map is how a stack trace on the phone still points at
     # tracker/src/09-gts.js and a line a person can read. It is named after the

@@ -62,8 +62,8 @@ with the model: an idea is a first-class state now.
 Farigiraf gets the id `farigiraf`, and a fallback would silently marry it to a
 box row of the same name.
 
-**The app is thirteen ES modules, not one file.** `tracker/src/` holds
-`01-data.js` through `13-boot.js`, plus `style.css` and `markup.html`, and
+**The app is twelve ES modules, not one file.** `tracker/src/` holds
+`01-data.js` through `13-boot.js` (there is no `10`), plus `style.css` and `markup.html`, and
 `scripts/build_tracker_page.py` links them with esbuild at build time into
 `tracker/index.template.html`'s shell, then splits the result into
 `tracker/dist/`. **Edit the part, never `index.template.html` (a 23-line shell

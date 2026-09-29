@@ -292,13 +292,7 @@ function supabaseStore(sb, uid){
 function connect(){
   var cfg = window.CHAMP_CONFIG || {};
   if (cfg.supabase && window.supabase) return connectSupabase(cfg.supabase);
-  if (!window.claude || !window.claude.use) { dbState(false, "no backend configured"); return; }
-  window.claude.use("db").then(function(db){
-    if (!db) { dbState(false, "not available in this view"); return; }
-    S.db = db;
-    dbState(true, "live");
-    wire(db);
-  }, function(){ dbState(false, "failed to load"); });
+  dbState(false, "no backend configured");
 }
 
 /* attach the app to whichever store it was handed */

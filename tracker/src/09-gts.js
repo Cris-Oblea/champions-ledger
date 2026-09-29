@@ -1504,24 +1504,16 @@ function csv(rows){
     }).join(",");
   }).join("\r\n");
 }
+/* Hand the viewer a file: a Blob behind a temporary <a download>, which is
+   how every browser saves generated data without a server round trip. */
 function offer(filename, text){
-  if (!window.__dl) {
-    // no download capability: show it so nothing is trapped
-    openSheet(filename, function(body){
-      var ta = el("textarea");
-      ta.value = text; ta.style.minHeight = "48vh";
-      ta.readOnly = true;
-      body.appendChild(el("p", "sub", "Copy this out — saving files is not available in this view."));
-      body.appendChild(ta);
-      setTimeout(function(){ ta.select(); }, 60);
-    }, [fbtn("Done", "primary", closeSheet)]);
-    return;
-  }
-  window.__dl.save({filename:filename, data:text}).then(function(){
-    toast("Saved " + filename);
-  }, function(e){
-    if (e && e.code !== "cancelled") toast("Could not save the file");
-  });
+  var type = /\.json$/.test(filename) ? "application/json" : "text/csv";
+  var url = URL.createObjectURL(new Blob([text], {type: type + ";charset=utf-8"}));
+  var a = el("a");
+  a.href = url; a.download = filename;
+  document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(function(){ URL.revokeObjectURL(url); }, 0);
+  toast("Saved " + filename);
 }
 document.querySelectorAll("[data-export]").forEach(function(b){
   b.onclick = function(){

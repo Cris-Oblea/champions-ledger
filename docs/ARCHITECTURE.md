@@ -51,7 +51,7 @@ public because it carries no personal row.
 | Layer | Technology | Where | Why this and not something else |
 |---|---|---|---|
 | UI | **Vanilla JavaScript** (ES modules), HTML, CSS. No framework | `tracker/src/` | One user, one page. The DOM API is enough, and there is no framework version to keep up with |
-| Module linking | **esbuild** (pinned in `package-lock.json`) | `scripts/build_tracker_page.py` | Turns thirteen modules into one script plus a sourcemap. The browser tests run in jsdom, which cannot load module scripts |
+| Module linking | **esbuild** (pinned in `package-lock.json`) | `scripts/build_tracker_page.py` | Turns twelve modules into one script plus a sourcemap. The browser tests run in jsdom, which cannot load module scripts |
 | Database | **Supabase**: PostgreSQL, with PostgREST as the HTTP API, Auth for the login and Realtime for live updates | `tracker/supabase_schema.sql`, `supabase_migrate_*.sql` | Free hosted Postgres with login and row-level security built in |
 | DB client | **supabase-js**, inlined from `node_modules` (not a CDN) | `package.json` | A CDN would be a third party inside a page that holds the ledger |
 | Hosting | **Cloudflare Workers**, static assets only | `tracker/wrangler.toml` → `tracker/dist/` | Free, fast, and the served folder is only `dist/`, so nothing private can leak |
@@ -113,7 +113,9 @@ analysis/          Write-ups and investigations; history.md = session log
 ### 4.2 The modules
 
 Each file starts with a one-line comment that says what it is. The number
-prefix is only a reading order; the real order comes from the imports.
+prefix is only a reading order; the real order comes from the imports. There
+is no `10`: that was the screenshot scanner, which only worked inside a Claude
+artifact and was removed.
 
 | File | What it owns | Main exports |
 |---|---|---|
@@ -126,8 +128,7 @@ prefix is only a reading order; the real order comes from the imports.
 | `07-gear.js` | Items, stones, statuses, Settings | `drawItems`, `drawStones` |
 | `08-teams.js` | Six slots, Species/Item Clause, team report | `drawTeams`, `teamReport` |
 | `09-gts.js` | Trades: what may be offered, what a chip is worth | `drawGts`, `chipValue` (internal) |
-| `10-scan.js` | Reading a box screenshot (works only inside a Claude artifact, see §10) | `initScan` |
-| `11-damage.js` | Smogon's engine wired to the calculator screen | `calcDraw`, `engineCalc` |
+| `11-damage.js` | Smogon's engine wired to the calculator screen, and the modifier tables (which item, weather, terrain and berry touch which type) | `calcDraw`, `engineCalc` |
 | `12-find.js` | The Find tab: filters, sorts, Worlds data, a Pokemon's full sheet | `findRun`, `findDetail` |
 | `13-boot.js` | `renderAll()`, the controls' wiring, and what runs on load | `renderAll` |
 | `style.css` | All the styles. CSS custom properties for the theme | none |
@@ -308,14 +309,11 @@ gates and publishes. You never deploy by hand.
 
 ## 10. Known leftovers
 
-- **The Claude-artifact runtime.** The app began as a Claude artifact. Three
-  places still check for `window.claude`: the storage fallback in `connect()`,
-  the screenshot scan in `10-scan.js`, and the downloads hook at the end of
-  `13-boot.js`. On Cloudflare that object does not exist, so the three do
-  nothing there. Removing them is a product decision, because the scan
-  feature goes with them.
-- **The Firestore-shaped adapter** in `03-store.js` has had only one backend
-  since then. It works; it is just one layer more than Supabase needs.
+- **The Firestore-shaped adapter** in `03-store.js`. The app began as a Claude
+  artifact, whose storage had that shape. It runs on Cloudflare and Supabase
+  now, and everything else from the artifact era is gone (the storage
+  fallback, the screenshot scanner, the download hook). The adapter works, but
+  with a single backend it is one layer more than Supabase needs.
 
 ---
 
@@ -350,8 +348,12 @@ gh pr create                          # CI gates it; merge = deploy
   own lines.
 - **Debugging a test:** `node --inspect-brk tests/teamtest.js`, then use
   VS Code's "Attach to Node Process".
-- **Markdown preview:** Ctrl+Shift+V. For the diagram in §1, install
-  "Markdown Preview Mermaid Support" (GitHub renders it without anything).
+- **Markdown preview:** Ctrl+Shift+V, or Ctrl+K V to open it beside the
+  source. The diagram in §1 needs the Mermaid extension; GitHub renders it
+  without anything.
+- **Recommended extensions** are listed in `.vscode/extensions.json`, so
+  VS Code offers to install them when the repo opens (or: Extensions panel,
+  filter `@recommended`).
 - **Code Spell Checker** reads `cspell.json`, whose word list is
   `.cspell-words.txt` (Pokemon names, sources, tools, and the Spanish quotes).
   For a new name, use the Quick Fix (Ctrl+.) "Add to dictionary: project".
