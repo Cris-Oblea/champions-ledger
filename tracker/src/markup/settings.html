@@ -1,0 +1,55 @@
+    <!-- ======================================================== TRAINER -->
+    <section class="view" id="v-trainer" role="tabpanel" hidden>
+      <div class="viewhead"><div><h1>Settings</h1>
+        <p class="lede">One number only you can know. Everything else here is
+          derived, so it cannot go stale behind your back.</p></div></div>
+
+      <!-- Box capacity is the ONE field left. It earns its place because the
+           app really uses it - capacity() drives the box-full warning - and
+           because it changes only when Champions raises the limit.
+           Rank, VP, regulation, season and the two ticket counts were removed
+           on 2026-09-12: nothing read them, they were hand-typed, and they had
+           drifted (the stored regulation still said M-B three days into M-C).
+           Their values are NOT deleted - meta updates merge into the jsonb, so
+           the old keys stay in the ledger untouched. -->
+      <div class="panel" style="margin-bottom:12px">
+        <div class="grid2">
+          <div class="field"><label class="f" for="tCap">Box capacity</label>
+            <input type="number" id="tCap"></div>
+        </div>
+        <div class="note" id="capUse"><span class="dot"></span>&hellip;</div>
+        <button class="btn primary" id="tSave">Save</button>
+      </div>
+
+      <h2>What you hold</h2>
+      <div class="panel"><dl class="kv" id="profCounts"></dl></div>
+
+      <h2>What this data is</h2>
+      <p class="sub">Read off the data itself, never typed. If a number here
+        looks wrong, the refresh is what is wrong, not this page.</p>
+      <div class="panel"><dl class="kv" id="profData"></dl></div>
+
+      <h2>What a change costs</h2>
+      <p class="sub">Observed in game. Reference only — the ledger does not
+        track your VP balance, because nothing can keep it honest.</p>
+      <div class="panel"><dl class="kv" id="costs"></dl></div>
+
+      <h2>Take it with you</h2>
+      <div class="panel">
+        <p class="sub">The ledger is yours in plain files, not locked in here.
+          CSV opens in Excel or Sheets; JSON is what the repo scripts read.</p>
+        <div class="btnrow">
+          <button class="btn" data-export="box-csv">Box CSV</button>
+          <button class="btn" data-export="builds-csv">Builds CSV</button>
+          <button class="btn" data-export="json">Everything JSON</button>
+        </div>
+      </div>
+
+      <h2>Store</h2>
+      <div class="note" id="dbNote"><span class="dot"></span> connecting&hellip;</div>
+
+      <h2>Diagnostics</h2>
+      <p class="sub">What this page can see, on this device. If something works
+        in one browser and not another, this is the difference.</p>
+      <div class="panel" id="diagOut"></div>
+    </section>

@@ -1,0 +1,49 @@
+/* ---------- sheet / modal ------------------------------------------------ */
+.scrim{position:fixed;inset:0;background:rgba(8,16,16,.5);z-index:60;
+  display:flex;align-items:flex-end;justify-content:center;
+  -webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px)}
+.scrim[hidden]{display:none}
+/* 92vh counted browser chrome that is not there, which pushed the footer
+   buttons off the bottom of a phone. dvh is the live height. */
+.sheet{background:var(--ground);width:100%;max-width:620px;max-height:92vh;
+  max-height:92dvh;border-radius:16px 16px 0 0;display:flex;
+  flex-direction:column;box-shadow:var(--shadow);
+  animation:sheetUp .22s cubic-bezier(.22,1,.36,1);position:relative}
+@keyframes sheetUp{from{transform:translateY(14px);opacity:.6}to{transform:none;opacity:1}}
+/* the grab bar: a bottom sheet with no handle reads as a stuck panel, and
+   this is also the hit area for tap-to-close at the top of the sheet */
+.sheet::before{content:"";position:absolute;top:6px;left:50%;
+  transform:translateX(-50%);width:36px;height:4px;border-radius:2px;
+  background:var(--line-hard);opacity:.9}
+.sheethead h3{margin:0;font-size:17px;font-weight:600;flex:1;min-width:0}
+/* contain the scroll: dragging past the end of a sheet must not start
+   scrolling the page behind it, which is the classic "it is a web page"
+   giveaway. The side padding clears a curved screen. */
+.sheetbody{overflow-y:auto;overscroll-behavior:contain;
+  -webkit-overflow-scrolling:touch;
+  padding:14px calc(16px + env(safe-area-inset-right)) 22px
+          calc(16px + env(safe-area-inset-left))}
+.sheetfoot{display:flex;flex-wrap:wrap;gap:8px;
+  padding:11px calc(16px + env(safe-area-inset-right))
+          calc(11px + env(safe-area-inset-bottom))
+          calc(16px + env(safe-area-inset-left));
+  border-top:1px solid var(--line);background:var(--surface)}
+/* 120px x 3 does not fit a 320px phone, so the buttons wrapped one per row.
+   They only need to be big enough to hit. */
+.sheetfoot .btn{flex:1 1 96px;min-width:96px;text-align:center;min-height:44px}
+@media (min-width:480px){ .sheetfoot .btn{flex:1 1 120px;min-width:120px} }
+/* With three buttons on a narrow screen the last one wrapped alone and
+   stretched to the full width, which handed the biggest target on the sheet
+   to whatever happened to be last in the array. Giving the PRIMARY its own
+   full row makes the break deterministic: the main action on top, the two
+   secondaries sharing the row below, and nothing gets emphasis by accident. */
+@media (max-width:420px){
+  .sheetfoot:has(.btn:nth-child(3)) .btn.primary{flex-basis:100%}
+}
+@media (min-width:700px){
+  .scrim{align-items:center}
+  .sheet{border-radius:14px;max-height:86vh;max-height:86dvh}
+  .sheet::before{display:none}
+  .sheethead{border-radius:14px 14px 0 0;padding-top:14px}
+}
+

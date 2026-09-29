@@ -17,14 +17,14 @@
  * EXPORTED, so a private function called across files, and a name that no
  * longer existed anywhere, both went to production (2026-09-29).
  */
-const fs = require("fs");
 const path = require("path");
 
 /* The app's parts, read as one text, and the markup beside them - which is
    where the element ids live. */
 const ROOT = path.dirname(__dirname);
-const src = fs.readFileSync(path.join(ROOT, "tracker", "src", "markup.html"), "utf8");
-const app = require(path.join(ROOT, "tests", "harness.js")).source(ROOT);
+const harness = require(path.join(ROOT, "tests", "harness.js"));
+const src = harness.markup(ROOT);
+const app = harness.source(ROOT);
 
 let problems = 0;
 function fail(msg) { problems++; console.log("  " + msg); }

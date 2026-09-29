@@ -1,0 +1,63 @@
+/* ---------- type scale & headings --------------------------------------- */
+h1{font-size:21px;margin:0;font-weight:600;letter-spacing:-.01em}
+h2{font-family:var(--cond);text-transform:uppercase;letter-spacing:.08em;
+   font-size:12px;font-weight:600;color:var(--muted);margin:22px 0 8px}
+h2:first-of-type{margin-top:4px}
+/* A SECTION SHOULD LOOK LIKE ONE. The title was 21px, the section headings
+   12px, and the body 15px - so a view read as one flat run of text at three
+   sizes that are nearly the same size, and "where does this part end" had no
+   answer. A rule above each heading answers it, and costs nothing.
+
+   `main h2` on purpose: the sheets and the confirm dialog live outside main
+   and are one thought each, where a rule would only add furniture. */
+main h2{padding-top:11px;border-top:1px solid var(--line)}
+main h2:first-of-type{border-top:0;padding-top:0}
+/* On a desktop the title can be a title. It stays 21px on a phone, where the
+   screen is the constraint and a 28px heading is a wasted band. */
+@media (min-width:900px){
+  h1{font-size:28px;letter-spacing:-.02em}
+  .lede{font-size:14.5px}
+  .viewhead{padding-bottom:15px;border-bottom:1px solid var(--line);
+    margin-bottom:20px}
+}
+h2 .n{font-family:var(--mono);color:var(--faint);font-weight:500;letter-spacing:0}
+.lede{color:var(--muted);font-size:13.5px;margin:2px 0 0;max-width:60ch}
+/* The action used to be a flex item after a spacer, so as soon as the lede
+   filled the line it wrapped onto a row of its own - a whole empty band above
+   the content on every phone (seen 2026-09-11). As a grid, the title block
+   takes column 1 and the action sits in column 2 beside the H1, where it
+   belongs, and the lede flows full width underneath it. */
+.viewhead{display:grid;grid-template-columns:minmax(0,1fr) auto;
+  align-items:start;gap:4px 12px;margin-bottom:14px}
+.viewhead>div{grid-column:1;grid-row:1;min-width:0}
+.viewhead>.spacer{display:none}
+.viewhead>.btn{grid-column:2;grid-row:1;align-self:start;white-space:nowrap}
+/* ---------- the primary action, where the thumb actually is -------------
+   "Add" alone never said what it added, and the top-right corner of a 6.7"
+   phone is the furthest point from a thumb holding it. Worse, these are long
+   scrolling lists: parked in the header, the button is gone the moment you
+   start reading, so adding meant scrolling back to the top.
+
+   Below the rail breakpoint it becomes a pill floating above the tab bar -
+   reachable, permanently visible, and still carrying its own label rather
+   than being a bare + the user has to guess at. On desktop, where the pointer
+   reaches everywhere and the header is conventional, it stays put. */
+@media (max-width:899px){
+  .viewhead>.btn.fab{
+    position:fixed;z-index:29;
+    right:calc(14px + env(safe-area-inset-right));
+    bottom:calc(var(--navh,68px) + env(safe-area-inset-bottom) + 14px);
+    border-radius:26px;padding:0 18px;min-height:48px;
+    display:inline-flex;align-items:center;gap:7px;
+    box-shadow:0 6px 18px -6px rgba(0,0,0,.55), 0 2px 6px rgba(0,0,0,.35);
+    font-weight:600}
+  .fabplus{font-size:19px;line-height:1;margin-top:-2px;font-weight:400}
+  /* it floats, so it must not also reserve a grid cell */
+  .viewhead{grid-template-columns:minmax(0,1fr)}
+  /* and the last row of a list must be able to clear it */
+  main{padding-bottom:calc(140px + env(safe-area-inset-bottom))}
+}
+@media (min-width:900px){
+  .fabplus{display:none}
+}
+
