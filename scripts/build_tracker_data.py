@@ -404,18 +404,10 @@ def main():
         # abilities with the most exceptions, and those are the ones to read
         ABIL[a["name"]] = " ".join(pick.replace("�", "'").split())
 
-    # Heavy Slam, Heat Crash, Low Kick and Grass Knot take their base power
-    # from weight, which moves.json stores as 1. Only the forms in the
-    # Champions dex are carried; the rest of pokebase's table is dead weight.
+    # pokebase's weight table, read for its KEYS: it names every species and
+    # form pokebase knows, which is the list HOME_ONLY and the cosmetic forms
+    # below are cut from. The weights themselves are Smogon's engine's business.
     wt = (Q.db("weights") or {}).get("weights", {})
-    names = {p["name"] for p in mons} | {p.get("species") for p in mons}
-    WEIGHT = {k: v for k, v in wt.items() if k in names}
-    # a handful of names differ between the weight table and our dex
-    for p in mons:
-        if p["name"] not in WEIGHT:
-            alt = p["name"].replace("Mega ", "") + "-Mega" if p.get("is_mega") else None
-            if alt and alt in wt:
-                WEIGHT[p["name"]] = wt[alt]
 
     # These two take their type from the USER'S FORM, not the move row
     FORM_TYPED = {
@@ -526,8 +518,7 @@ def main():
         if tgt:
             LEARN_ALIAS[n] = tgt
 
-    # Multipliers measured against Smogon's engine, plus the two named move
-    # families the flag table cannot express.
+    # Multipliers measured against Smogon's engine.
     # The engine works in 4096ths, so a measured 1.31 is really 5325/4096 and a
     # measured 0.51 is really 2048/4096. Carrying the rounded reading instead
     # costs a point or two per roll, which is exactly the margin a survival
@@ -547,10 +538,6 @@ def main():
     # Adaptability is applied through the STAB multiplier, exactly, so it must
     # not also come through here - that would square it.
     MODS.get("atk_ability", {}).pop("Adaptability", None)
-    amv = (Q.db("ability_moves") or {}).get("moves") or {}
-    RECOIL = sorted(n for n, p in amv.items() if p.get("recoil"))
-    PULSE = sorted(n for n, p in amv.items()
-                   if p.get("pulse") or p.get("pulse_smogon"))
 
     # Our spelling -> the one Smogon's engine answers to. norm() does the work
     # (Mega Glalie <-> Glalie-Mega) and it lives in Python with 44 locked test
@@ -753,10 +740,9 @@ def main():
             "DEXNO": DEXNO, "BFORMS": BFORMS,
             "REG": REG, "REG_STARTED": REG_STARTED, "USAGE_AT": USAGE_AT,
             "SMOGON_NAME": SMOGON_NAME, "AEGIS": AEGIS,
-            "RECOIL": RECOIL, "PULSE": PULSE,
             "MOVES": MOVES, "LEARN": LEARN, "STONES": STONES,
             "ITEMS": ITEMS, "NATURES": NAT, "CHART": chart, "ABIL": ABIL,
-            "WEIGHT": WEIGHT, "FORM_TYPED": FORM_TYPED, "AB_MOVES": AB_MOVES,
+            "FORM_TYPED": FORM_TYPED, "AB_MOVES": AB_MOVES,
             # what KIND of ability each one is, for the search filters. The two
             # "moves-*" buckets are the RULES table itself, not a re-reading of
             # the text, so the classification already made cannot drift.
@@ -843,9 +829,9 @@ def main():
 
     print("wrote %s  (%.0f KB)" % (OUT, os.path.getsize(OUT) / 1024))
     print("  %d forms, %d moves, %d learnsets, %d stones, %d items, "
-          "%d abilities, %d weights, %d ability rules, %d HOME-only"
+          "%d abilities, %d ability rules, %d HOME-only"
           % (len(DEX), len(MOVES), len(LEARN), len(STONES), len(ITEMS),
-             len(ABIL), len(WEIGHT), len(AB_MOVES), len(HOME_ONLY)))
+             len(ABIL), len(AB_MOVES), len(HOME_ONLY)))
 
 
 if __name__ == "__main__":

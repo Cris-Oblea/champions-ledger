@@ -310,29 +310,16 @@ Locked in by `tests/buildlinktest.js`.
   permanent.
 
 
-## The Damage tab
-
-A port of `scripts/damage.py`, checked against it: on the three reference cases
-it agrees to the digit, and every correction the Python engine carries survives
-the port - the spread x0.75 and the reminder that it goes back to full power
-with one target left, Psyshock hitting the physical Defense, a 2-5 move quoted
-at three hits, Population Bomb at ten, Triple Axel at 20/40/60 BP, always-crit
-moves, Heavy Slam and Low Kick resolved from weight, and an immunity that
-returns zero rather than one.
-
-Either side loads from a saved build or is set by hand, because the question is
-usually asymmetric: your own Pokemon is built, the opponent's is whatever the
-ladder brings. What it cannot model - abilities, held items on Acrobatics and
-Poltergeist, Payback's turn order - it says so under "Not modelled" instead of
-quietly guessing.
-
-
 ## The Damage tab is Smogon's engine, not a port of it
 
 `scripts/build_engine_bundle.py` compiles the vendored `data/raw/smogon_calc/`
 with esbuild and `build_tracker_page.py` inlines it. The page carries the real
 `calculateChampions`, so the number it gives is the number
 calc.pokemonshowdown.com gives - by construction, not by agreement.
+
+Either side loads from a saved build or is set by hand, because the question is
+usually asymmetric: your own Pokemon is built, the opponent's is whatever the
+ladder brings.
 
 It started as a hand port. The port matched on plain cases and drifted by a
 point or two once modifiers stacked, because the real chain runs in four
