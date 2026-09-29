@@ -192,8 +192,9 @@ function buildRow(id, b){
                                            : "an idea — you have none yet"));
     }
   };
-  var cls = lk.state === "orphan" ? "illegal"
-          : lk.state === "parked" || isRental ? "rental" : "perm";
+  var cls = "perm";
+  if (lk.state === "orphan") cls = "illegal";
+  else if (lk.state === "parked" || isRental) cls = "rental";
   if (!p) {
     /* a set for a species the dex does not carry - still a build, still
        openable */

@@ -20,8 +20,8 @@ function boxRows(loc, st){
    rental is an Encounter loan, so it is Champions origin by definition. */
 function originOf(r){
   if (r.status === "rental") return "champions";
-  return r.origin === "home" ? "home"
-       : r.origin === "champions" ? "champions" : "unknown";
+  if (r.origin === "home" || r.origin === "champions") return r.origin;
+  return "unknown";
 }
 const ORIGIN_LABEL = {home:"HOME origin", champions:"Champions origin",
                     unknown:"origin?"};

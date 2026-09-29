@@ -170,7 +170,7 @@ function itemRow(r, have){
   row.appendChild(m);
   var side = el("div", "rside");
   var tag = el("span", "tag " + (have ? "mega" : "warn"),
-    have ? "owned" : vp ? vp + " VP" : priceless(src));
+    have ? "owned" : priceLabel(vp, src));
   /* where the number came from, because Serebii has no price for 20 of these
      and pokebase's own table is what filled them in */
   if (vp) tag.title = from === "pokebase"
@@ -187,6 +187,7 @@ function itemRow(r, have){
 /* Only reached when neither source has a price, which now means the item is
    not sold at all: a reward, a ticket, or something the account starts with.
    The slot says which, rather than pretending there is a number. */
+function priceLabel(vp, src){ return vp ? vp + " VP" : priceless(src); }
 function priceless(src){
   var s = (src || "").replace(/^Shop\s*/, "").replace(/\?\?\?\s*VP/, "").trim();
   if (!s || s === "-") return "not sold";
@@ -217,6 +218,12 @@ function pct(v){
   var p = v * 100;
   return (Math.round(p * 10) / 10) + "%";
 }
+/* Where a status multiplier came from, in the order they are trusted. */
+const SOURCE_NOTE = {
+  serebii: "From Champions' own rebalance page",
+  measured: "Measured against Smogon's Champions engine",
+  mainline: "The main-series value - no Champions source states this one",
+};
 function drawStatuses(){
   var host = $("statusList");
   if (!host) return;
@@ -242,9 +249,7 @@ function drawStatuses(){
       if (!v || typeof v !== "object" || v.value == null) return;
       var t = el("span", "tag " + (v.source === "main_series" ? "warn" : "ok"),
                  (STAT_LABELS[k] || k) + " " + pct(v.value));
-      t.title = v.source === "serebii" ? "From Champions' own rebalance page"
-              : v.source === "measured" ? "Measured against Smogon's Champions engine"
-              : "The main-series value - no Champions source states this one";
+      t.title = SOURCE_NOTE[v.source] || SOURCE_NOTE.mainline;
       if (v.was) t.textContent += " (was " + pct(v.was) + ")";
       line.appendChild(t);
     });
@@ -305,7 +310,9 @@ function drawTrainer(){
   cu.appendChild(el("span", "dot"));
   cu.appendChild(document.createTextNode(
     used + " of " + cap + " used · " + Math.max(free, 0) + " free"));
-  cu.style.color = free <= 0 ? "var(--bad)" : free <= 3 ? "var(--warn)" : "";
+  cu.style.color = "";
+  if (free <= 0) cu.style.color = "var(--bad)";
+  else if (free <= 3) cu.style.color = "var(--warn)";
 
   var rent = boxRows("champions", "rental").length;
   var home = boxRows("home").length;

@@ -23,6 +23,30 @@ import { findDetail, pokeBody, pokeHead } from "./12-find.js";
    the three redraws in 04-nav.js already use. */
 import { note } from "./13-boot.js";
 /* ===================================================================== rows */
+/* The row's left stripe, by origin, for a permanent Champions-box Pokemon. */
+const ORIGIN_CLASS = {home: "perm", champions: "locked"};
+/* What the sheet says about a slot, by where the Pokemon came from. */
+function originNote(o, rec){
+  if (o === "home")
+    return "<strong>This slot is elastic.</strong> Park it to HOME whenever you " +
+      "need the room; HOME keeps the Champions training, so it comes back " +
+      "whole. The round trip costs nothing.";
+  if (o === "champions" && releaseBlock(rec) === "floor")
+    return "<strong>This slot is permanent.</strong> The game will not release " +
+      "a Pokemon while " + RELEASE_FLOOR + " or fewer are left to battle " +
+      "with, and HOME-origin ones can always be parked out - so the last " +
+      RELEASE_FLOOR + " Champions-origin Pokemon hold their slots for good.";
+  if (o === "champions")
+    return "<strong>This slot is welded.</strong> Training VP spent here can " +
+      "never be parked — it plays fine, but it is not an argument for " +
+      "keeping the slot. Replacing it with a GO catch routed through HOME " +
+      "is a one-time cost that buys a reusable slot.";
+  return "<strong>Not recorded yet.</strong> It is being counted as Champions " +
+    "origin, which is the cautious read rather than a known fact.";
+}
+function keptAs(n){
+  return (n > 1 ? "its builds are" : "its build is") + " kept as an idea";
+}
 function pokeRow(rec){
   var p = byName[rec.name];
   /* WHAT TO DRAW vs WHAT IT CAN DO. `p` stays the Champions dex row and every
@@ -31,9 +55,10 @@ function pokeRow(rec){
      from PokeAPI so the card is a card instead of a name and a tag. */
   var d = p || outsideRow(rec.name);
   var o = originOf(rec);
-  var cls = rec.location === "home" ? (p ? "home" : "illegal")
-          : rec.status === "rental" ? "rental"
-          : o === "home" ? "perm" : o === "champions" ? "locked" : "unknown";
+  var cls;
+  if (rec.location === "home") cls = p ? "home" : "illegal";
+  else if (rec.status === "rental") cls = "rental";
+  else cls = ORIGIN_CLASS[o] || "unknown";
   if (!d) {
     /* no row anywhere: a name typed by hand into HOME. It still has to be
        tappable, so it keeps the one shape that needs no data. */
@@ -143,24 +168,9 @@ function pokeSheet(rec){
         togs.appendChild(t);
       });
       body.appendChild(togs);
-      var on = el("div", "note" + (o === "home" ? "" : o === "unknown" ? " warn" : ""));
+      var on = el("div", o === "unknown" ? "note warn" : "note");
       on.style.marginTop = "10px";
-      on.innerHTML = o === "home"
-        ? "<strong>This slot is elastic.</strong> Park it to HOME whenever you " +
-          "need the room; HOME keeps the Champions training, so it comes back " +
-          "whole. The round trip costs nothing."
-        : o === "champions" && releaseBlock(rec) === "floor"
-        ? "<strong>This slot is permanent.</strong> The game will not release " +
-          "a Pokemon while " + RELEASE_FLOOR + " or fewer are left to battle " +
-          "with, and HOME-origin ones can always be parked out - so the last " +
-          RELEASE_FLOOR + " Champions-origin Pokemon hold their slots for good."
-        : o === "champions"
-        ? "<strong>This slot is welded.</strong> Training VP spent here can " +
-          "never be parked — it plays fine, but it is not an argument for " +
-          "keeping the slot. Replacing it with a GO catch routed through HOME " +
-          "is a one-time cost that buys a reusable slot."
-        : "<strong>Not recorded yet.</strong> It is being counted as Champions " +
-          "origin, which is the cautious read rather than a known fact.";
+      on.innerHTML = originNote(o, rec);
       body.appendChild(on);
     }
 
@@ -317,8 +327,7 @@ function moveButtons(rec, isHome){
     }).then(function(){
       closeSheet();
       toast(rec.name + " removed" +
-            (mine.length ? "; its " + (mine.length > 1 ? "builds are" : "build is") +
-                           " kept as an idea" : ""));
+            (mine.length ? "; " + keptAs(mine.length) : ""));
     });
     }
   }));
@@ -491,9 +500,10 @@ function addSheet(loc){
                             order:Object.keys(S.box).length})
             .then(function(){
               closeSheet();
-              toast(p.name + (loc === "home" ? " added to HOME"
-                    : mode === "rental" ? " added as a rental"
-                    : " added, Champions origin"));
+              var where = " added, Champions origin";
+              if (loc === "home") where = " added to HOME";
+              else if (mode === "rental") where = " added as a rental";
+              toast(p.name + where);
             });
         }});
         list.appendChild(r);

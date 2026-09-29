@@ -4,6 +4,7 @@ import {
   $, C, COSTS, MOVE_BY, STAT_KEYS, STONE_OF, bst, byName, dexNo, el,
   labelBox, megasFor, natMult, numText, pokeCard, searchField, splitPct,
   statAt, toast, typeChip, typeSkin, usageTag,
+  plural,
 } from "./01-data.js";
 import { S, activeAbility, baseAbility, buildLink, buildsFor, hasItem,
   hasStone } from "./02-state.js";
@@ -664,7 +665,7 @@ function teamPickBuild(draft, idx, onPick){
       hits.sort(function(a, b){ return (a.dupe ? 1 : 0) - (b.dupe ? 1 : 0); });
 
       count.textContent = hits.length === rows.length
-        ? rows.length + " build" + (rows.length === 1 ? "" : "s")
+        ? plural(rows.length, "build")
         : hits.length + " of " + rows.length + " builds";
       list.innerHTML = "";
       hits.forEach(function(r){ list.appendChild(buildPickRow(r, onPick)); });
