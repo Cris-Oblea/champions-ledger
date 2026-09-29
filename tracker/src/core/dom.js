@@ -138,4 +138,13 @@ function note(kind, html){
   return n;
 }
 
-export { $, capNote, el, fbtn, note, searchField, toast, wireClears };
+/* The small label above a row of filter chips or a sort row - the pickers
+   all use the same one. */
+function filterLabel(t){
+  var d = el("div", "sub"); d.style.margin = "0 0 4px"; d.textContent = t;
+  return d;
+}
+
+export {
+  $, capNote, el, fbtn, filterLabel, note, searchField, toast, wireClears,
+};

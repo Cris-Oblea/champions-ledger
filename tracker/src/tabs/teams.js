@@ -4,7 +4,9 @@
 import {
   bst, byName, byText, dexNo, MOVE_BY, natMult, plural, splitPct, STAT_KEYS,
 } from "../core/data.js";
-import { $, el, fbtn, note, searchField, toast } from "../core/dom.js";
+import {
+  $, el, fbtn, filterLabel, note, searchField, toast,
+} from "../core/dom.js";
 import {
   activeAbility, baseAbility, buildLink, buildsFor, hasItem, hasStone, S,
 } from "../core/state.js";
@@ -665,12 +667,6 @@ function typeChips(body, rows, F, draw){
   tKeys.forEach(function(t){ filterChip(trow, F, draw, "type", t, t + " · " + tN[t], t); });
   body.appendChild(filterLabel("Type — any of these, the form it plays as"));
   body.appendChild(trow);
-}
-
-/* The small label above a row of filter chips. */
-function filterLabel(t){
-  var d = el("div", "sub"); d.style.margin = "0 0 4px"; d.textContent = t;
-  return d;
 }
 
 /* One filter chip, on or off - a slot is being FILLED here, not queried, so

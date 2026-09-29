@@ -93,147 +93,157 @@ function pokeRow(rec){
   });
 }
 
+/* ONE COPY'S SHEET: the same sheet the search view draws, with this copy's
+   own facts wedged into the middle - where it came from, shiny, trained, its
+   note - and the buttons that move it. It used to be a second, smaller sheet,
+   so which door you came through decided what you were allowed to know about
+   the same Pokemon (player, 2026-09-18: "las fichas... deben ser todas
+   iguales"). `anyRow`, so a species Champions lacks still draws its
+   main-series row. */
 function pokeSheet(rec){
-  /* THE SAME SHEET THE SEARCH VIEW DRAWS, with this copy's own facts wedged
-     into the middle of it. It used to be a second, smaller sheet: it had the
-     Mega line, the type chart and Smogon's write-up, and it had no abilities,
-     no Worlds sets and no movepool at all - so which door you came through
-     decided what you were allowed to know about the same Pokemon (player,
-     2026-09-18: "las fichas... deben ser todas iguales").
-
-     The row to DRAW, which for a species Champions does not have is the
-     main-series one. NOT CALLED `d`: the damage table used to declare
-     `var d = defence(...)` inside this same callback and `var` hoists to the
-     top of it, so a row named `d` was already undefined by the time `if (d)`
-     ran and the whole sheet fell into the "not in the dex" branch - for
-     Aegislash, which very much is. */
-  /* `anyRow`, not the two halves of it by hand. It is the same question with
-     one more step - the OTHER SPELLING of the same Pokemon - and asking it
-     the short way here is what left Floette without a sheet once already. */
   var show = anyRow(rec.name);
   var isHome = rec.location === "home";
   openSheet(rec.name, function(body){
-    /* AND A ROW THAT EXISTS NOWHERE MUST NOT TAKE THE SHEET DOWN WITH IT.
-       `pokeHead` reads `p.name` on its first line, so a null walked straight
-       into a TypeError and the sheet opened empty with the console throwing
-       (player, 2026-09-21: "la card y la ficha de Oinkolgne-f tira error de
-       script"). The card had handled it since it was written; the sheet never
-       did, and the two doors disagreed about the same Pokemon.
-
-       The name itself came back with the HOME dex fix below, but the guard
-       stays: HOME can hold anything, including a name no table has heard of,
-       and the honest answer is to say so rather than to fall over. */
-    if (!show) {
-      var gone = el("div", "note warn");
-      gone.innerHTML = "<strong>" + rec.name + "</strong> is not in any dex " +
-        "this app carries — not Champions', and not the main series' " +
-        "either. It can sit in HOME, but there is nothing to show about it. " +
-        "If the spelling is off, renaming it is what fixes this.";
-      body.appendChild(gone);
-    } else {
-    pokeHead(body, show, {shiny: !!rec.shiny, rec: rec});
-    }
-
-    if (rec.status === "rental") {
-      var w = el("div", "note warn");
-      w.style.marginTop = "12px";
-      w.innerHTML = "<strong>Rental.</strong> It cannot be trained — no move, " +
-        "nature, ability or SP change — so it is locked to the set it ships " +
-        "with. It can still hold a Mega Stone. Buying it for 2500 VP does not " +
-        "make it a real permanent: it becomes Champions origin, welded to this " +
-        "slot until you release it.";
-      body.appendChild(w);
-    } else if (rec.location === "champions") {
-      body.appendChild(el("h2", null, "Where did it come from?"));
-      var o = originOf(rec);
-      var togs = el("div", "toggles");
-      [["home", "HOME origin", "Caught in GO, or traded in. Can go back out."],
-       ["champions", "Champions origin", "From an Encounter. Stuck here."]
-      ].forEach(function(opt){
-        var t = el("button", "tog", opt[1]);
-        t.setAttribute("aria-pressed", o === opt[0] ? "true" : "false");
-        t.title = opt[2];
-        t.onclick = function(){
-          put("box/" + rec._id, {name:rec.name, location:rec.location,
-            status:rec.status, note:rec.note || "", order:rec.order || 0,
-            origin:opt[0]}).then(function(){
-              closeSheet(); toast(rec.name + ": " + opt[1]);
-            });
-        };
-        togs.appendChild(t);
-      });
-      body.appendChild(togs);
-      var on = el("div", o === "unknown" ? "note warn" : "note");
-      on.style.marginTop = "10px";
-      on.innerHTML = originNote(o, rec);
-      body.appendChild(on);
-    }
-
-    body.appendChild(el("h2", null, "This copy"));
-    var flags = el("div", "toggles");
-    var shiny = el("button", "tog", "Shiny");
-    shiny.setAttribute("aria-pressed", rec.shiny ? "true" : "false");
-    shiny.onclick = function(){
-      rec.shiny = !rec.shiny;
-      shiny.setAttribute("aria-pressed", rec.shiny ? "true" : "false");
-    };
-    flags.appendChild(shiny);
-    var trained = el("button", "tog", "Trained in Champions");
-    trained.setAttribute("aria-pressed", rec.trained ? "true" : "false");
-    trained.onclick = function(){
-      rec.trained = !rec.trained;
-      trained.setAttribute("aria-pressed", rec.trained ? "true" : "false");
-    };
-    flags.appendChild(trained);
-    body.appendChild(flags);
-    body.appendChild(el("p", "sub",
-      "A HOME-origin Pokemon trained inside Champions keeps that training " +
-      "forever - HOME stores it, so it comes back with its moves, nature, " +
-      "ability and SP intact, for no VP. That is what makes an already-trained " +
-      "one worth parking rather than rebuilding."));
-    body.appendChild(el("p", "sub",
-      "Tap Save below to keep these."));
-
+    if (show) pokeHead(body, show, {shiny: !!rec.shiny, rec: rec});
+    else body.appendChild(unknownNote(rec));
+    originBlock(body, rec);
+    copyFlags(body, rec);
     body.appendChild(el("h2", null, "Note"));
     var ta = el("textarea");
     ta.value = rec.note || "";
     ta.id = "pkNote";
     body.appendChild(ta);
-
-    /* AND THEN EVERYTHING IT IS, the same as the search view draws it: the
-       Mega line, what damages it, its abilities, the Worlds sets it won with,
-       its whole movepool and what Smogon wrote. Below the editable half,
-       because origin, training and the note are what this door is FOR and an
-       edit does not belong under two hundred rows of movepool. */
+    /* AND THEN EVERYTHING IT IS, as the search view draws it - below the
+       editable half, because origin, training and the note are what this
+       door is FOR, and an edit does not belong under two hundred rows of
+       movepool. */
     if (show) pokeBody(body, show);
   }, moveButtons(rec, isHome));
 }
 
-function moveButtons(rec, isHome){
-  var out = [];
-  var path = "box/" + rec._id;
-  function saveNote(extra){
-    var n = $("pkNote");
-    var body = {name:rec.name, location:rec.location, status:rec.status,
-                note:n ? n.value : (rec.note || ""), order:rec.order || 0,
-                origin:rec.origin || "unknown",
-                shiny:!!rec.shiny, trained:!!rec.trained};
-    Object.keys(extra || {}).forEach(function(k){ body[k] = extra[k]; });
-    /* The HOME invariant, held here as well as by the database CHECK: a record
-       that lives in HOME is permanent and HOME origin whatever the row used to
-       say. This is also the repair path - re-saving a bad legacy row fixes it,
-       which the sheet previously had no way to do. */
-    if (body.location === "home") { body.status = "permanent"; body.origin = "home"; }
-    return put(path, body);
+/* A ROW THAT EXISTS NOWHERE MUST NOT TAKE THE SHEET DOWN WITH IT (player,
+   2026-09-21: "la card y la ficha de Oinkolgne-f tira error de script"). HOME
+   can hold anything, including a name no table has heard of, and the honest
+   answer is to say so. */
+function unknownNote(rec){
+  var gone = el("div", "note warn");
+  gone.innerHTML = "<strong>" + rec.name + "</strong> is not in any dex " +
+    "this app carries — not Champions', and not the main series' " +
+    "either. It can sit in HOME, but there is nothing to show about it. " +
+    "If the spelling is off, renaming it is what fixes this.";
+  return gone;
+}
+
+/* A rental says what renting means. A Champions-box Pokemon asks where it
+   came from - HOME or an Encounter - and says what that makes its slot. */
+function originBlock(body, rec){
+  if (rec.status === "rental") {
+    var w = el("div", "note warn");
+    w.style.marginTop = "12px";
+    w.innerHTML = "<strong>Rental.</strong> It cannot be trained — no move, " +
+      "nature, ability or SP change — so it is locked to the set it ships " +
+      "with. It can still hold a Mega Stone. Buying it for 2500 VP does not " +
+      "make it a real permanent: it becomes Champions origin, welded to this " +
+      "slot until you release it.";
+    body.appendChild(w);
+    return;
   }
+  if (rec.location !== "champions") return;
+  body.appendChild(el("h2", null, "Where did it come from?"));
+  var o = originOf(rec);
+  var togs = el("div", "toggles");
+  [["home", "HOME origin", "Caught in GO, or traded in. Can go back out."],
+   ["champions", "Champions origin", "From an Encounter. Stuck here."]
+  ].forEach(function(opt){ togs.appendChild(originButton(rec, o, opt)); });
+  body.appendChild(togs);
+  var on = el("div", o === "unknown" ? "note warn" : "note");
+  on.style.marginTop = "10px";
+  on.innerHTML = originNote(o, rec);
+  body.appendChild(on);
+}
+
+/* One origin choice: saving it writes the row and closes the sheet. */
+function originButton(rec, o, opt){
+  var t = el("button", "tog", opt[1]);
+  t.setAttribute("aria-pressed", o === opt[0] ? "true" : "false");
+  t.title = opt[2];
+  t.onclick = function(){
+    put("box/" + rec._id, {name:rec.name, location:rec.location,
+      status:rec.status, note:rec.note || "", order:rec.order || 0,
+      origin:opt[0]}).then(function(){
+        closeSheet(); toast(rec.name + ": " + opt[1]);
+      });
+  };
+  return t;
+}
+
+/* Shiny and trained, toggled here and written by Save below. */
+function copyFlags(body, rec){
+  body.appendChild(el("h2", null, "This copy"));
+  var flags = el("div", "toggles");
+  flags.appendChild(flagButton(rec, "shiny", "Shiny"));
+  flags.appendChild(flagButton(rec, "trained", "Trained in Champions"));
+  body.appendChild(flags);
+  body.appendChild(el("p", "sub",
+    "A HOME-origin Pokemon trained inside Champions keeps that training " +
+    "forever - HOME stores it, so it comes back with its moves, nature, " +
+    "ability and SP intact, for no VP. That is what makes an already-trained " +
+    "one worth parking rather than rebuilding."));
+  body.appendChild(el("p", "sub",
+    "Tap Save below to keep these."));
+}
+
+function flagButton(rec, key, label){
+  var b = el("button", "tog", label);
+  b.setAttribute("aria-pressed", rec[key] ? "true" : "false");
+  b.onclick = function(){
+    rec[key] = !rec[key];
+    b.setAttribute("aria-pressed", rec[key] ? "true" : "false");
+  };
+  return b;
+}
+
+/* Write the row back whole - the note from the sheet, the marks, and any
+   change passed in `extra`. The HOME invariant is held here as well as by the
+   database CHECK: a record that lives in HOME is permanent and HOME origin
+   whatever the row used to say, which also makes re-saving a bad legacy row
+   the repair for it. */
+function saveCopy(rec, extra){
+  var n = $("pkNote");
+  var body = {name:rec.name, location:rec.location, status:rec.status,
+              note:n ? n.value : (rec.note || ""), order:rec.order || 0,
+              origin:rec.origin || "unknown",
+              shiny:!!rec.shiny, trained:!!rec.trained};
+  Object.keys(extra || {}).forEach(function(k){ body[k] = extra[k]; });
+  if (body.location === "home") { body.status = "permanent"; body.origin = "home"; }
+  return put("box/" + rec._id, body);
+}
+
+/* The sheet's buttons: where this copy can go from here, then Release where
+   the game allows it. */
+function moveButtons(rec, isHome){
+  var out = stayButtons(rec, isHome);
+  if (!releaseBlock(rec)) out.push(releaseButton(rec, isHome));
+  return out;
+}
+
+function saveButton(rec, cls){
+  return fbtn("Save", cls, function(){
+    saveCopy(rec).then(function(){ closeSheet(); toast("Saved"); });
+  });
+}
+
+/* In HOME: Save, and Send to Champions for a species the game has - arriving
+   from HOME is what makes it HOME origin, never a guess. A rental: Buy, NOT
+   primary, because buying welds it into the box for good and his own plan is
+   to sit on rentals so the VP keeps rolling the Encounter. HOME origin in the
+   box: Park back to HOME first. Anything else: Save. */
+function stayButtons(rec, isHome){
   if (isHome) {
-    out.push(fbtn("Save", "primary", function(){
-      saveNote().then(function(){ closeSheet(); toast("Saved"); });
-    }));
+    var out = [saveButton(rec, "primary")];
     if (byName[rec.name]) {
-      // arriving from HOME is what makes it HOME origin - never guess this
       out.push(fbtn("Send to Champions", "", function(){
-        saveNote({location:"champions", status:"permanent", origin:"home"})
+        saveCopy(rec, {location:"champions", status:"permanent", origin:"home"})
           .then(function(){
             closeSheet();
             toast(rec.name + " is in the box, HOME origin" +
@@ -241,61 +251,47 @@ function moveButtons(rec, isHome){
           });
       }));
     }
-  } else if (rec.status === "rental") {
-    /* NOT primary. Buying spends 2500 VP and makes the Pokemon Champions
-       origin, which welds it into the box for good - and the player's own
-       plan is to sit on rentals so the VP keeps rolling the Encounter. A
-       primary button here reads as "this is what you came to do", which is
-       the app arguing against its owner's strategy. */
-    out.push(fbtn("Buy it · 2500 VP", "", function(){
-      ask("Buy " + rec.name + " for 2500 VP?",
-          "It becomes Champions origin: it can never be sent to HOME, and the " +
-          "slot only frees by releasing it.", "Buy · 2500 VP")
-        .then(function(ok){
-      if (!ok) return;
-      /* The 2500 VP is NOT deducted from a stored balance any more. The
-         ledger tracked one number that only ever went down - buying a rental -
-         while ranked wins, which are the other half, went unrecorded, so it
-         drifted from the first battle onwards. Nothing can keep it honest, so
-         the app does not pretend to (player, 2026-09-12). */
-      saveNote({status:"permanent", origin:"champions"})
-        .then(function(){ closeSheet(); toast("Champions origin. Costs 2500 VP"); });
-      });
-    }));
-  } else if (originOf(rec) === "home") {
-    out.push(fbtn("Park back to HOME", "primary", function(){
-      saveNote({location:"home", status:"permanent", origin:"home"})
+    return out;
+  }
+  if (rec.status === "rental") return [buyButton(rec)];
+  if (originOf(rec) === "home") {
+    return [fbtn("Park back to HOME", "primary", function(){
+      saveCopy(rec, {location:"home", status:"permanent", origin:"home"})
         .then(function(){
           closeSheet();
           toast(rec.name + " parked. " + (S.builds[rec._id]
             ? "Its build is kept, inactive until it comes back."
             : "The training is kept — recall it any time."));
         });
-    }), fbtn("Save", "", function(){
-      saveNote().then(function(){ closeSheet(); toast("Saved"); });
-    }));
-  } else {
-    out.push(fbtn("Save", "primary", function(){
-      saveNote().then(function(){ closeSheet(); toast("Saved"); });
-    }));
+    }), saveButton(rec, "")];
   }
-  /* Releasing ENDS a Pokemon, and its build used to be deleted with it, on the
-     reasoning that the ledger would otherwise fill with sets for Pokemon that
-     no longer exist. That reason is gone: a build with no Pokemon is a
-     first-class state now - an idea - and the player's whole reason for
-     unbinding builds was that an idea should not be lost for want of a row to
-     hang it on (2026-09-13). So a release UNBINDS rather than deletes, and the
-     set survives for the next copy. Parking back to HOME remains the door that
-     keeps the Pokemon itself.
+  return [saveButton(rec, "primary")];
+}
 
-     AND ONLY WHERE THE GAME ALLOWS IT (player, 2026-09-27): never on a
-     HOME-origin row in the Champions box - Park is its exit - and never on a
-     Champions-origin one once the floor of six is reached. `releaseBlock`
-     holds both rules. */
-  if (releaseBlock(rec)) return out;
-  out.push(fbtn("Release", "danger", function(){
-    /* There can be more than one now, and they are found by their LINK - the
-       box row's id is not a build id any more. */
+/* Buying a rental, after asking. The 2500 VP is not deducted from a stored
+   balance: the ledger once tracked one number that only went down, while
+   ranked wins went unrecorded, so it drifted from the first battle (player,
+   2026-09-12). */
+function buyButton(rec){
+  return fbtn("Buy it · 2500 VP", "", function(){
+    ask("Buy " + rec.name + " for 2500 VP?",
+        "It becomes Champions origin: it can never be sent to HOME, and the " +
+        "slot only frees by releasing it.", "Buy · 2500 VP")
+      .then(function(ok){
+        if (!ok) return;
+        saveCopy(rec, {status:"permanent", origin:"champions"})
+          .then(function(){ closeSheet(); toast("Champions origin. Costs 2500 VP"); });
+      });
+  });
+}
+
+/* RELEASE ENDS A POKEMON, AND UNBINDS ITS BUILDS rather than deleting them: a
+   build with no Pokemon is a first-class state now - an idea - and an idea
+   should not be lost for want of a row to hang it on (player, 2026-09-13).
+   Only offered where the game allows it - see releaseBlock. */
+function releaseButton(rec, isHome){
+  return fbtn("Release", "danger", function(){
+    /* found by their LINK - the box row's id is not a build id any more */
     var mine = Object.keys(S.builds).filter(function(k){
       return S.builds[k].box_id === rec._id;
     });
@@ -308,208 +304,213 @@ function moveButtons(rec, isHome){
     if (!isHome) msg.push("This one is Champions origin, so it cannot come back.");
     ask("Remove " + rec.name + " from the ledger?", msg.join("\n\n"),
         "Remove", true).then(function(ok){
-      if (!ok) return;
-      release();
+      if (ok) releaseCopy(rec, mine);
     });
-    function release(){
-    drop(path).then(function(){
-      return Promise.all(mine.map(function(k){
-        var doc = structuredClone(S.builds[k]);
-        delete doc._boxId;
-        doc.box_id = null;
-        return put("builds/" + k, doc);
-      }));
-    }).then(function(){
-      closeSheet();
-      toast(rec.name + " removed" +
-            (mine.length ? "; " + keptAs(mine.length) : ""));
-    });
-    }
-  }));
-  return out;
+  });
 }
 
-/* ==================================================================== adding */
+function releaseCopy(rec, mine){
+  drop("box/" + rec._id).then(function(){
+    return Promise.all(mine.map(function(k){
+      var doc = structuredClone(S.builds[k]);
+      delete doc._boxId;
+      doc.box_id = null;
+      return put("builds/" + k, doc);
+    }));
+  }).then(function(){
+    closeSheet();
+    toast(rec.name + " removed" +
+          (mine.length ? "; " + keptAs(mine.length) : ""));
+  });
+}
+
+/* ==================================================================== adding
+   Add a Pokemon to either box. The Champions Box can only hold what the game
+   allows, and asks first whether it was bought or rented - that answer is
+   what decides whether the slot is elastic. The HOME Box can hold anything,
+   so it also offers every species Champions has never heard of, and takes a
+   typed name on top, because no list here is guaranteed to be complete. */
 function addSheet(loc){
   openSheet(loc === "home" ? "Add to the HOME Box" : "Add to the Champions Box", function(body){
     var marks = {shiny:false, trained:false};
-    var mrow = el("div", "toggles");
-    mrow.style.marginBottom = "12px";
-    [["shiny", "Shiny"], ["trained", "Trained in Champions"]].forEach(function(o){
-      var t = el("button", "tog", o[1]);
-      t.setAttribute("aria-pressed", "false");
-      t.onclick = function(){
-        marks[o[0]] = !marks[o[0]];
-        t.setAttribute("aria-pressed", marks[o[0]] ? "true" : "false");
-      };
-      mrow.appendChild(t);
-    });
+    var mrow = markToggles(marks);
     body._marks = marks;
-
-    if (loc === "champions") {
-      body.appendChild(el("div", "note")).innerHTML =
-        "<strong>Everything added here came out of an Encounter</strong>, so " +
-        "it is Champions origin and can never be sent to HOME. Bringing one " +
-        "IN from HOME is a move, not an entry: open it in the HOME Box and " +
-        "tap <strong>Send to Champions</strong>, so the record travels " +
-        "instead of being written twice.";
-      body.appendChild(el("label", "f", "Which one is it? (required)"));
-      var st = el("div", "btnrow"); st.style.marginBottom = "12px";
-      var mode = {v:null};
-      [["champions","Bought · 2500 VP or a ticket"],
-       ["rental","Rental · 0 VP"]].forEach(function(o){
-        var b = el("button", "tog", o[1]);
-        b.setAttribute("aria-pressed", "false");
-        b.onclick = function(){
-          mode.v = o[0];
-          Array.prototype.forEach.call(st.children, function(x){
-            x.setAttribute("aria-pressed", x === b ? "true" : "false");
-          });
-          draw();
-        };
-        st.appendChild(b);
-      });
-      body.appendChild(st);
-      body._mode = mode;
-    }
+    if (loc === "champions") body._mode = boughtOrRental(body, function(){ draw(); });
     body.appendChild(el("p", "sub",
       loc === "home" ? "Anything about this copy, before you pick it:"
                      : "Anything about this copy:"));
     body.appendChild(mrow);
-
-    /* asked first, because until it is answered there is nothing to search */
     var inp = searchField(body, "Species or form", function(){ draw(); });
-
     var list = el("div", "list cards");
     body.appendChild(list);
-    /* The Champions Box can only hold what the game allows. The HOME Box can
-       hold anything, so it also offers everything the Champions dex has never
-       heard of - Melmetal and Oricorio are already in it - and takes a typed
-       name on top, because no list here is guaranteed to be complete. */
-    function draw(){
-      var q = inp.q();
-      list.innerHTML = "";
-      /* nothing can be added to the Champions Box until it is said where it
-         came from - that answer is what decides whether the slot is elastic */
-      if (loc === "champions" && !body._mode?.v) {
-        var g = el("div", "note warn");
-        g.innerHTML = "<strong>Say whether it is bought or a rental first</strong>, " +
-          "at the top of this sheet. A rental cannot be trained, and buying " +
-          "one later costs 2500 VP without making it any less stuck here.";
-        list.appendChild(g);
-        inp.disabled = true;
-        inp.placeholder = "Choose bought or rental above first";
-        return;
-      }
-      inp.disabled = false;
-      inp.placeholder = "Species or form";
-      var pool = FORMS.filter(function(p){
-        return !q || p.name.toLowerCase().includes(q);
-      });
-      var hits = pool.slice(0, 120);
-      /* HOME can also hold species Champions does not have; only its list
-         searches those. */
-      var homeAll = null, extra = [];
-      if (loc === "home") {
-        homeAll = (C.HOME_ONLY || []).filter(function(n){
-          return q && n.toLowerCase().includes(q);
-        });
-        extra = homeAll.slice(0, 40);
-        extra.forEach(function(n){
-          /* THE SAME CARD, even here. These are the species Champions does not
-             have, and they still have a picture, a typing and six stats from
-             PokeAPI - which is the whole reason the HOME shelf can be planned
-             at all. Drawn as a name and one tag, this was the poorest row in
-             the app and it sat on the screen where a Pokemon is chosen. */
-          var op = anyRow(n);
-          var add = function(){
-            var id = freeSlug(n, S.box);
-            put("box/" + id, {name:n, location:"home", status:"permanent",
-                origin:"home", note:"", order:Object.keys(S.box).length})
-              .then(function(){ closeSheet(); toast(n + " added to HOME"); });
-          };
-          var badge = function(h){
-            h.appendChild(el("span", "tag bad", "not in the Champions dex"));
-          };
-          var why = function(m){
-            m.appendChild(el("div", "st",
-              "It can live in HOME, but it can never be sent into the game."));
-          };
-          var r;
-          if (op) {
-            r = pokeCard(op, {cls:"illegal", name:n, badges:badge, notes:why,
-                              onclick:add});
-          } else {
-            r = el("button", "row illegal");
-            var m2 = el("div", "rmain");
-            var h2 = el("div", "rname");
-            h2.appendChild(document.createTextNode(n));
-            badge(h2);
-            m2.appendChild(h2);
-            why(m2);
-            r.appendChild(m2);
-            r.onclick = add;
-          }
-          list.appendChild(r);
-        });
-      }
-      if (!hits.length && !list.children.length) {
-        list.appendChild(el("div", "empty", "Nothing matches"));
-        if (loc === "home" && q) {
-          var add = el("button", "btn primary", "Add “" + inp.value.trim() + "” anyway");
-          add.style.marginTop = "10px";
-          add.onclick = function(){
-            var nm = inp.value.trim();
-            var id = freeSlug(nm, S.box);
-            put("box/" + id, {name:nm, location:"home", status:"permanent",
-                origin:"home", note:"typed by hand", order:Object.keys(S.box).length})
-              .then(function(){ closeSheet(); toast(nm + " added to HOME"); });
-          };
-          list.appendChild(add);
-        }
-        return;
-      }
-      hits.forEach(function(p){
-        /* ONE CARD, THE SAME ONE. Choosing what to add is exactly the moment
-           the six stats and the Mega line matter, and this list had a name, a
-           typing and a BST (player, 2026-09-20: "lo mismo pasa en otras cards
-           que estan en submenus"). */
-        var r = pokeCard(p, {onclick: function(){
-          /* HOME never asks bought-or-rental, so it must never read an
-             answer: everything in HOME is permanent and HOME origin by
-             definition. Only the Champions sheet builds a mode, and only the
-             Champions branch is allowed to consult it. */
-          var mode = loc === "home" ? "home" : body._mode?.v;
-          if (!mode) { toast("Bought or rental?"); return; }
-          var status = (loc === "champions" && mode === "rental")
-                     ? "rental" : "permanent";
-          /* every route into the Champions Box that goes through this sheet is
-             an Encounter, and buying a rental with VP or a ticket does not
-             change that - it stays Champions origin */
-          var origin = loc === "home" ? "home" : "champions";
-          var id = freeSlug(p.name, S.box);
-          var mk = body._marks || {};
-          put("box/" + id, {name:p.name, location:loc, status:status,
-                            origin:origin, note:"",
-                            shiny:!!mk.shiny, trained:!!mk.trained,
-                            order:Object.keys(S.box).length})
-            .then(function(){
-              closeSheet();
-              var where = " added, Champions origin";
-              if (loc === "home") where = " added to HOME";
-              else if (mode === "rental") where = " added as a rental";
-              toast(p.name + where);
-            });
-        }});
-        list.appendChild(r);
-      });
-      capNote(list, hits.length, pool.length, "forms");
-      if (homeAll)
-        capNote(list, extra.length, homeAll.length, "HOME-only names");
-    }
+    function draw(){ drawAddList(list, inp, loc, body); }
     draw();
     if (loc === "home") setTimeout(function(){ inp.focus(); }, 60);
   }, []);
+}
+
+/* Shiny and trained, set before the Pokemon is picked. */
+function markToggles(marks){
+  var mrow = el("div", "toggles");
+  mrow.style.marginBottom = "12px";
+  [["shiny", "Shiny"], ["trained", "Trained in Champions"]].forEach(function(o){
+    var t = el("button", "tog", o[1]);
+    t.setAttribute("aria-pressed", "false");
+    t.onclick = function(){
+      marks[o[0]] = !marks[o[0]];
+      t.setAttribute("aria-pressed", marks[o[0]] ? "true" : "false");
+    };
+    mrow.appendChild(t);
+  });
+  return mrow;
+}
+
+/* The Champions Box's required question, and why: everything added here came
+   out of an Encounter, so it is Champions origin. Bringing one IN from HOME is
+   a move, not an entry - Send to Champions, from the HOME Box. */
+function boughtOrRental(body, draw){
+  body.appendChild(el("div", "note")).innerHTML =
+    "<strong>Everything added here came out of an Encounter</strong>, so " +
+    "it is Champions origin and can never be sent to HOME. Bringing one " +
+    "IN from HOME is a move, not an entry: open it in the HOME Box and " +
+    "tap <strong>Send to Champions</strong>, so the record travels " +
+    "instead of being written twice.";
+  body.appendChild(el("label", "f", "Which one is it? (required)"));
+  var st = el("div", "btnrow"); st.style.marginBottom = "12px";
+  var mode = {v:null};
+  [["champions","Bought · 2500 VP or a ticket"],
+   ["rental","Rental · 0 VP"]].forEach(function(o){
+    var b = el("button", "tog", o[1]);
+    b.setAttribute("aria-pressed", "false");
+    b.onclick = function(){
+      mode.v = o[0];
+      Array.prototype.forEach.call(st.children, function(x){
+        x.setAttribute("aria-pressed", x === b ? "true" : "false");
+      });
+      draw();
+    };
+    st.appendChild(b);
+  });
+  body.appendChild(st);
+  return mode;
+}
+
+/* The list to add from. The Champions Box waits for bought-or-rental, with
+   the search box off until it is answered. */
+function drawAddList(list, inp, loc, body){
+  var q = inp.q();
+  list.innerHTML = "";
+  if (loc === "champions" && !body._mode?.v) {
+    var g = el("div", "note warn");
+    g.innerHTML = "<strong>Say whether it is bought or a rental first</strong>, " +
+      "at the top of this sheet. A rental cannot be trained, and buying " +
+      "one later costs 2500 VP without making it any less stuck here.";
+    list.appendChild(g);
+    inp.disabled = true;
+    inp.placeholder = "Choose bought or rental above first";
+    return;
+  }
+  inp.disabled = false;
+  inp.placeholder = "Species or form";
+  var pool = FORMS.filter(function(p){
+    return !q || p.name.toLowerCase().includes(q);
+  });
+  var hits = pool.slice(0, 120);
+  var homeAll = null, extra = [];
+  if (loc === "home") {
+    homeAll = (C.HOME_ONLY || []).filter(function(n){
+      return q && n.toLowerCase().includes(q);
+    });
+    extra = homeAll.slice(0, 40);
+    extra.forEach(function(n){ list.appendChild(homeOnlyAdd(n)); });
+  }
+  if (!hits.length && !list.children.length) {
+    list.appendChild(el("div", "empty", "Nothing matches"));
+    if (loc === "home" && q) list.appendChild(typedAdd(inp.value.trim()));
+    return;
+  }
+  hits.forEach(function(p){ list.appendChild(addCard(p, loc, body)); });
+  capNote(list, hits.length, pool.length, "forms");
+  if (homeAll)
+    capNote(list, extra.length, homeAll.length, "HOME-only names");
+}
+
+/* A species Champions does not have, on THE SAME CARD, with its picture,
+   typing and six stats from PokeAPI - which is the whole reason the HOME
+   shelf can be planned at all. A name with no numbers keeps a plain row. */
+function homeOnlyAdd(n){
+  var op = anyRow(n);
+  var add = function(){
+    var id = freeSlug(n, S.box);
+    put("box/" + id, {name:n, location:"home", status:"permanent",
+        origin:"home", note:"", order:Object.keys(S.box).length})
+      .then(function(){ closeSheet(); toast(n + " added to HOME"); });
+  };
+  if (op) {
+    return pokeCard(op, {cls:"illegal", name:n, badges:notInDexBadge,
+                         notes:neverInGame, onclick:add});
+  }
+  var r = el("button", "row illegal");
+  var m2 = el("div", "rmain");
+  var h2 = el("div", "rname");
+  h2.appendChild(document.createTextNode(n));
+  notInDexBadge(h2);
+  m2.appendChild(h2);
+  neverInGame(m2);
+  r.appendChild(m2);
+  r.onclick = add;
+  return r;
+}
+
+function notInDexBadge(h){
+  h.appendChild(el("span", "tag bad", "not in the Champions dex"));
+}
+
+function neverInGame(m){
+  m.appendChild(el("div", "st",
+    "It can live in HOME, but it can never be sent into the game."));
+}
+
+/* A name no list carries, added to HOME exactly as typed. */
+function typedAdd(nm){
+  var add = el("button", "btn primary", "Add “" + nm + "” anyway");
+  add.style.marginTop = "10px";
+  add.onclick = function(){
+    var id = freeSlug(nm, S.box);
+    put("box/" + id, {name:nm, location:"home", status:"permanent",
+        origin:"home", note:"typed by hand", order:Object.keys(S.box).length})
+      .then(function(){ closeSheet(); toast(nm + " added to HOME"); });
+  };
+  return add;
+}
+
+/* ONE CARD, THE SAME ONE: choosing what to add is exactly the moment the six
+   stats and the Mega line matter (player, 2026-09-20). Picking it writes the
+   row. HOME never asks bought-or-rental, so it never reads an answer:
+   everything in HOME is permanent and HOME origin by definition. Every route
+   into the Champions Box through this sheet is an Encounter - buying a rental
+   does not change that - so it is Champions origin. */
+function addCard(p, loc, body){
+  return pokeCard(p, {onclick: function(){
+    var mode = loc === "home" ? "home" : body._mode?.v;
+    if (!mode) { toast("Bought or rental?"); return; }
+    var status = (loc === "champions" && mode === "rental")
+               ? "rental" : "permanent";
+    var origin = loc === "home" ? "home" : "champions";
+    var id = freeSlug(p.name, S.box);
+    var mk = body._marks || {};
+    put("box/" + id, {name:p.name, location:loc, status:status,
+                      origin:origin, note:"",
+                      shiny:!!mk.shiny, trained:!!mk.trained,
+                      order:Object.keys(S.box).length})
+      .then(function(){
+        closeSheet();
+        var where = " added, Champions origin";
+        if (loc === "home") where = " added to HOME";
+        else if (mode === "rental") where = " added as a rental";
+        toast(p.name + where);
+      });
+  }});
 }
 
 /* ====================================================== what is still missing

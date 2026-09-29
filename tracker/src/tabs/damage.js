@@ -49,18 +49,18 @@ var TYPE_ITEM = {
 function koCount(lo, hi, hp){
   if (hi <= 0) return {text:"it does nothing", n:Infinity};
   var best = Math.ceil(hp / hi), worst = Math.ceil(hp / lo);
-  function label(n){ return n + "HKO"; }
-  if (best === worst) return {text:"guaranteed " + label(best), n:best};
-  return {text:label(best) + " on a high roll, " + label(worst) + " otherwise",
+  if (best === worst) return {text:"guaranteed " + hko(best), n:best};
+  return {text:hko(best) + " on a high roll, " + hko(worst) + " otherwise",
           n:best};
 }
+function hko(n){ return n + "HKO"; }
 
 /* ============================================ the calculator, for real =====
    This does not approximate Smogon's engine - it runs it. The bundle is the
    vendored calc/ compiled for the browser by scripts/build_engine_bundle.py.
 
-   The port that used to live here agreed on the plain cases and drifted by a
-   point or two once modifiers stacked, because the real chain runs in four
+   A hand port used to live here. It agreed on the plain cases and drifted by
+   a point or two once modifiers stacked, because the real chain runs in four
    separate buckets - base power, attack, defence, final - each chained in
    4096-space with its own rounding step. One point can turn a 2HKO into a
    3HKO, and the KO count is the only thing that counts. */
@@ -103,6 +103,9 @@ function engSide(side){
   return o;
 }
 
+/* Ask the engine about CALC as it stands. Returns the damage range, the HP it
+   is out of, every roll, the engine's own sentence and KO text, and how many
+   hits. Throws for a Pokemon the engine has no stats for. */
 function engineCalc(){
   var S = window.SMOGON;
   var a = CALC.atk, d = CALC.def, m = CALC.move;
@@ -117,12 +120,25 @@ function engineCalc(){
   var A = new S.Pokemon(S.gen, an, engSide(a));
   var D = new S.Pokemon(S.gen, dn, engSide(d));
   var M = new S.Move(S.gen, m.name, {isCrit: !!CALC.crit});
-  /* Champions is doubles. The engine takes the x0.75 off the move's target and
-     the game type, and has no idea how many Pokemon are actually out - so a
-     1-vs-1 endgame is expressed by switching to Singles, exactly as
-     scripts/damage.py does with --single-target. */
-  var singleTarget = CALC.gameType === "Singles";
-  var F = new S.Field({
+  var r = S.calculate(S.gen, A, D, M, engineField(S, a, d));
+  var range = damageRange(r.damage);
+  var desc = "";
+  try { desc = r.desc(); } catch (e) { desc = ""; }
+  var ko = "";
+  try { ko = r.koChanceText ? r.koChanceText() : ""; } catch (e) { ko = ""; }
+  return {lo:range.lo, hi:range.hi, hp:D.maxHP(), curHP:D.curHP(),
+          rolls:range.rolls, desc:desc, koText:ko,
+          /* Champions is doubles. The engine takes the x0.75 off the move's
+             target and the game type, and has no idea how many Pokemon are
+             actually out - so a 1-vs-1 endgame is expressed by switching to
+             Singles, exactly as scripts/damage.py does with --single-target. */
+          singleTarget:CALC.gameType === "Singles",
+          hits:(Array.isArray(r.damage[0]) ? r.damage.length : 1)};
+}
+
+/* Every switch on the Field panel, as the engine's Field. */
+function engineField(S, a, d){
+  return new S.Field({
     gameType: CALC.gameType || "Doubles",
     weather: CALC.weather || undefined,
     terrain: CALC.terrain || undefined,
@@ -156,30 +172,21 @@ function engineCalc(){
       isSwitching: CALC.switching ? "out" : undefined
     }
   });
-  var r = S.calculate(S.gen, A, D, M, F);
+}
+
+/* For a multi-hit the engine gives one array PER HIT, so what the target
+   takes is the per-hit minimum summed to the per-hit maximum summed - never
+   the min and max of the flattened list. */
+function damageRange(damage){
+  var multi = Array.isArray(damage[0]);
   var flat = [];
-  (Array.isArray(r.damage[0]) ? r.damage : [r.damage]).forEach(function(x){
-    flat = flat.concat(x);
+  (multi ? damage : [damage]).forEach(function(x){ flat = flat.concat(x); });
+  if (!multi) return {lo:Math.min.apply(null, flat), hi:Math.max.apply(null, flat), rolls:flat};
+  var lo = 0, hi = 0;
+  damage.forEach(function(x){
+    lo += Math.min.apply(null, x); hi += Math.max.apply(null, x);
   });
-  /* For a multi-hit the engine gives one array PER HIT, so what the target
-     takes is the per-hit minimum summed to the per-hit maximum summed - never
-     the min and max of the flattened list. */
-  var lo, hi;
-  if (Array.isArray(r.damage[0])) {
-    lo = 0; hi = 0;
-    r.damage.forEach(function(x){
-      lo += Math.min.apply(null, x); hi += Math.max.apply(null, x);
-    });
-  } else {
-    lo = Math.min.apply(null, flat); hi = Math.max.apply(null, flat);
-  }
-  var desc = "";
-  try { desc = r.desc(); } catch (e) { desc = ""; }
-  var ko = "";
-  try { ko = r.koChanceText ? r.koChanceText() : ""; } catch (e) { ko = ""; }
-  return {lo:lo, hi:hi, hp:D.maxHP(), curHP:D.curHP(), rolls:flat, desc:desc,
-          koText:ko, singleTarget:singleTarget,
-          hits:(Array.isArray(r.damage[0]) ? r.damage.length : 1)};
+  return {lo:lo, hi:hi, rolls:flat};
 }
 
 /* ------------------------------------------------- the calculator's screen --
@@ -203,131 +210,144 @@ const CALC = {
   atkStatus:null
 };
 
-/* One side of the calculator: the FULL spread, six stats, the way a real
-   calculator does it. The earlier version had a single "SP in the attacking
-   stat" box that guessed which stat from the move's category - which is wrong
-   the moment you want Sp. Atk and Sp. Def, and wrong again for Body Press and
-   Psyshock, where the move does not attack the stat its category implies.
-
-   The Champions budget is enforced here and nowhere else has to: 66 points
-   total, 32 in any one stat. */
-/* ONE STAT LINE, WITH THE LABELS ON THE NUMBERS.
-
-   Two things this has to get right, and it only ever got the first.
-
-   WHICH FORME. "60 / 50 / 140 / 50 / 140 / 60" means nothing until you know
-   whether it is the Blade or the Shield, so every line names itself.
-
-   WHICH STAT. The labels used to live in the span's `title`, which is a hover,
-   and a phone has no hover - so on the device this tab is actually used on,
-   six bare numbers were being read in the hope that the reader remembered the
-   order. They are written out now, one span per stat so the line wraps between
-   stats and never inside one, which is what makes that affordable on a 360px
-   screen. It also retires the separate "HP / Atk / Def / SpA / SpD / Spe"
-   legend row: a legend is what you need when the data is not labelled. */
+/* ONE SIDE OF THE CALCULATOR: the Pokemon, its ability, item, nature and
+   status, the FULL spread - six stats, the way a real calculator does it -
+   and, on the defender, the HP it is on. A single "SP in the attacking stat"
+   box guessed which stat from the move's category, which is wrong for Sp. Atk
+   and Sp. Def together and wrong again for Body Press and Psyshock. The
+   Champions budget - 66 in all, 32 in one - is shown here too. */
 function calcSideCtl(which){
   var side = CALC[which], host = $(which === "atk" ? "calcAtk" : "calcDef");
   host.innerHTML = "";
+  host.appendChild(sidePick(which, side));
+  if (!side.name) return;
+  var P = byName[side.name];
+  host.appendChild(sideSelects(which, side, P));
+  /* which stat does the chosen move actually read on this side? Body Press
+     attacks off Defense and Psyshock hits it, so this is not the category. */
+  var live = calcLiveStats();
+  host.appendChild(statsHeader());
+  STAT_KEYS.forEach(function(k, i){
+    host.appendChild(statRow(which, side, P, k, i, live));
+  });
+  if (which === "def") host.appendChild(curHPField(side));
+  var b = el("div", "budget");
+  b.id = which + "Budget";
+  host.appendChild(b);
+  calcBudget(which);
+}
 
-  /* THE CARD, WITH ITS POKEMON ON IT. This was the one list in the app still
-     drawing a bare row: the calculator's two sides had the name, the types and
-     the stats and no picture, while the box, HOME, the search, the builds, the
-     teams and the GTS all wear one (player, 2026-09-19: "a la calculadora
-     tambien le faltan los sprites"). typeCard puts the band and the sprite on
-     from one place, which is why it is the same call here as everywhere. */
+/* THE CARD, WITH ITS POKEMON ON IT - the same one the pickers draw, so the
+   Pokemon you chose looks like the Pokemon you chose it from (player,
+   2026-09-19: "a la calculadora tambien le faltan los sprites"). Nothing
+   chosen yet, or a name with no row anywhere, gets the one shape that needs
+   no data. Either way, tapping it opens the picker. */
+function sidePick(which, side){
   var p0 = side.name ? anyRow(side.name) : null;
-  var pick, m;
   if (side.name && p0) {
-    var p = byName[side.name];
-    /* THE CARD, the same one the pickers now draw, so the Pokemon you chose
-       looks like the Pokemon you chose it from. */
-    pick = pokeCard(p0, {
+    var m = null;
+    var pick = pokeCard(p0, {
       badges: function(h){
         if (side.buildId) h.appendChild(el("span", "tag ok", "your build"));
       },
       notes: function(body){ m = body; },
       onclick: function(){ calcPickSheet(which); }
     });
-    /* THE OTHER SPREAD, WRITTEN OUT. A Pokemon that changes stats mid-battle
-       has two, and printing one of them plus a sentence about the other is
-       what this used to do: "Aegislash attacks as Blade Forme - 140 Attack,
-       not the Shield spread's 50." The player's answer (2026-09-15): "yo
-       tambien necesito ver las estadisticas fisicas y especiales, no me sirve
-       asi."
-       The CALCULATION was already right - engName() asks the engine for
-       Aegislash-Blade when it attacks and -Shield when it is hit - so this is
-       the display catching up with the arithmetic. Both rows are shown, and
-       the one that governs THIS side is marked. */
-    var bf = p && C.BFORMS?.[p.name];
-    if (bf?.f) {
-      Object.keys(bf.f).forEach(function(fname){
-        var alt = bf.f[fname].b;
-        if (!alt) return;
-        var row = el("div", "rmeta");
-        /* Aegislash is the one the app switches by itself, and only on the
-           attacking side. Anything else is shown as what it WOULD be, because
-           claiming it is in play would be a guess about the battle. */
-        var mine = p.name === "Aegislash" && which === "atk";
-        var tag = el("span", "tag" + (mine ? " ok" : ""),
-                     mine ? "in play attacking" : "when " + (bf.by || "it")
-                            + " flips it");
-        row.appendChild(el("span", null, fname));
-        row.appendChild(tag);
-        m.appendChild(row);
-        m.appendChild(statGrid(alt));
-      });
-    }
-  } else {
-    /* nothing chosen yet, or a name with no row anywhere: the one shape that
-       needs no data */
-    pick = el("button", "row unknown");
-    m = el("div", "rmain");
-    var pickWhat = which === "atk" ? "Pick the attacker" : "Pick the defender";
-    m.appendChild(el("div", "rname", side.name || pickWhat));
-    m.appendChild(el("div", "rmeta")).appendChild(
-      el("span", null, "From a build, or any Pokemon in the dex"));
-    pick.appendChild(m);
-    pick.onclick = function(){ calcPickSheet(which); };
+    otherSpreads(m, byName[side.name], which);
+    return pick;
   }
-  host.appendChild(pick);
-  if (!side.name) return;
+  var blank = el("button", "row unknown");
+  var bm = el("div", "rmain");
+  var pickWhat = which === "atk" ? "Pick the attacker" : "Pick the defender";
+  bm.appendChild(el("div", "rname", side.name || pickWhat));
+  bm.appendChild(el("div", "rmeta")).appendChild(
+    el("span", null, "From a build, or any Pokemon in the dex"));
+  blank.appendChild(bm);
+  blank.onclick = function(){ calcPickSheet(which); };
+  return blank;
+}
 
-  var P = byName[side.name];
+/* THE OTHER SPREAD, WRITTEN OUT. A Pokemon that changes stats mid-battle has
+   two, and a sentence about the second was not enough (player, 2026-09-15:
+   "yo tambien necesito ver las estadisticas fisicas y especiales, no me sirve
+   asi"). The CALCULATION was already right - engName() asks for
+   Aegislash-Blade when it attacks - so this is the display catching up with
+   the arithmetic: both rows shown, the one in play marked. Aegislash is the
+   one the app switches by itself, and only when attacking; anything else is
+   shown as what it WOULD be, because claiming it is in play would be a guess
+   about the battle. */
+function otherSpreads(m, p, which){
+  var bf = p && C.BFORMS?.[p.name];
+  if (!bf?.f) return;
+  Object.keys(bf.f).forEach(function(fname){
+    var alt = bf.f[fname].b;
+    if (!alt) return;
+    var row = el("div", "rmeta");
+    var mine = p.name === "Aegislash" && which === "atk";
+    var tag = el("span", "tag" + (mine ? " ok" : ""),
+                 mine ? "in play attacking" : "when " + (bf.by || "it")
+                        + " flips it");
+    row.appendChild(el("span", null, fname));
+    row.appendChild(tag);
+    m.appendChild(row);
+    m.appendChild(statGrid(alt));
+  });
+}
 
-  /* WHO has the ability matters, so each side owns its own picker. The list
-     leads with this Pokemon's real abilities and then every ability that has a
-     measured effect, because the opponent's is often the unknown. */
-  /* ONE COMPACT BLOCK, NOT FOUR STACKED ONES. Ability, Item and Nature each
-     had a full-width field of their own and Status a fifth further down, so a
-     side spent about 200px on four dropdowns before the stats began - and the
-     screen carries two sides (player, 2026-09-19: "ocupa demasiado espacio en
-     pantalla... tenemos botones grandes, un espaciado enorme entre lineas y
-     secciones"). They belong together: they are the four things you set on a
-     Pokemon before you read the number. */
+/* ONE COMPACT BLOCK, NOT FOUR STACKED ONES: ability, item, nature and status
+   are the four things you set on a Pokemon before you read the number, and
+   the screen carries two sides (player, 2026-09-19: "ocupa demasiado espacio
+   en pantalla"). The two halves stay stacked above the stats: side by side
+   the SP boxes came out 22px wide. */
+function sideSelects(which, side, P){
   var g2 = el("div", "grid2 tight");
   g2.style.marginTop = "8px";
-  var fa = el("div", "field");
-  fa.appendChild(el("label", "f", "Ability"));
-  var sa = el("select");
-  sa.appendChild(new Option("none", ""));
+  g2.appendChild(sideField("Ability", abilityOptions(which, P), side, "ability"));
+  g2.appendChild(sideField("Item", itemOptions(which), side, "item"));
+  var natures = Object.keys(C.NATURES).sort(byText).map(function(n){
+    return [n + " (" + C.NATURES[n][2] + ")", n];
+  });
+  g2.appendChild(sideField("Nature", [["none", ""]].concat(natures), side, "nature"));
+  g2.appendChild(sideField("Status", [["healthy", ""], ["burned", "brn"],
+    ["poisoned", "psn"], ["badly poisoned", "tox"], ["paralysed", "par"],
+    ["asleep", "slp"], ["frozen", "frz"]], side, "status"));
+  return g2;
+}
+
+/* A labelled <select> of [text, value] options that writes side[key] and
+   redraws the calculator. */
+function sideField(label, options, side, key){
+  var f = el("div", "field");
+  f.appendChild(el("label", "f", label));
+  var s = el("select");
+  options.forEach(function(o){ s.appendChild(new Option(o[0], o[1])); });
+  s.value = side[key] || "";
+  s.onchange = function(){ side[key] = s.value || null; calcDraw(); };
+  f.appendChild(s);
+  return f;
+}
+
+/* WHO has the ability matters, so each side owns its own list: this
+   Pokemon's real abilities first, then every one with a measured effect on
+   this side, because the opponent's is often the unknown. */
+function abilityOptions(which, P){
+  var opts = [["none", ""]];
   var own = (P.ab || []), seen = {};
   own.forEach(function(x){
     seen[x] = 1;
-    sa.appendChild(new Option(x + "  (its own)", x));
+    opts.push([x + "  (its own)", x]);
   });
   Object.keys(MODS[which === "atk" ? "atk_ability" : "def_ability"] || {})
     .sort(byText).forEach(function(x){
-      if (!seen[x]) sa.appendChild(new Option(x, x));
+      if (!seen[x]) opts.push([x, x]);
     });
-  sa.value = side.ability || "";
-  sa.onchange = function(){ side.ability = sa.value || null; calcDraw(); };
-  fa.appendChild(sa);
-  g2.appendChild(fa);
+  return opts;
+}
 
-  var fi = el("div", "field");
-  fi.appendChild(el("label", "f", "Item"));
-  var si = el("select");
-  si.appendChild(new Option("none", ""));
+/* The measured items for this side, plus the type-boosting items for the
+   attacker and the resist berries for the defender - each once. */
+function itemOptions(which){
+  var opts = [["none", ""]];
   var pool = Object.keys(MODS[which === "atk" ? "atk_item" : "def_item"] || {});
   if (which === "def") pool = pool.concat(Object.keys(BERRY_TYPE));
   if (which === "atk") pool = pool.concat(Object.keys(TYPE_ITEM));
@@ -336,120 +356,81 @@ function calcSideCtl(which){
   pool.forEach(function(x){
     if (done[x]) return;
     done[x] = 1;
-    si.appendChild(new Option(x, x));
+    opts.push([x, x]);
   });
-  si.value = side.item || "";
-  si.onchange = function(){ side.item = si.value || null; calcDraw(); };
-  fi.appendChild(si);
-  g2.appendChild(fi);
+  return opts;
+}
 
-  var fn = el("div", "field");
-  fn.appendChild(el("label", "f", "Nature"));
-  var sn = el("select");
-  sn.appendChild(new Option("none", ""));
-  Object.keys(C.NATURES).sort(byText).forEach(function(n){
-    sn.appendChild(new Option(n + " (" + C.NATURES[n][2] + ")", n));
-  });
-  sn.value = side.nature || "";
-  sn.onchange = function(){ side.nature = sn.value || null; calcDraw(); };
-  fn.appendChild(sn);
-  g2.appendChild(fn);
-
-  var fs0 = el("div", "field");
-  fs0.appendChild(el("label", "f", "Status"));
-  var ss0 = el("select");
-  [["", "healthy"], ["brn", "burned"], ["psn", "poisoned"],
-   ["tox", "badly poisoned"], ["par", "paralysed"], ["slp", "asleep"],
-   ["frz", "frozen"]].forEach(function(o){
-    ss0.appendChild(new Option(o[1], o[0]));
-  });
-  ss0.value = side.status || "";
-  ss0.onchange = function(){ side.status = ss0.value || null; calcDraw(); };
-  fs0.appendChild(ss0);
-  g2.appendChild(fs0);
-  /* THE TWO HALVES STAY STACKED, and that was measured twice. Running the
-     dropdowns beside the stats saves 107px - 950 down to 843 - and it was in
-     for about an hour until the screen was actually LOOKED at: a side is 360px
-     wide at three columns, so each half is 169, and the SP number box came out
-     TWENTY-TWO PIXELS wide. A stat editor you cannot read is not worth 107px,
-     and no viewport makes those halves wide enough - even at 1920 they are
-     about 220. The height that mattered was the field's, and that is fixed
-     where it was broken. */
-  host.appendChild(g2);
-
-  /* which stat does the chosen move actually read on this side? Body Press
-     attacks off Defense and Psyshock hits it, so this is not the category. */
-  var live = calcLiveStats();
-
+/* The column heads over the six stat rows. */
+function statsHeader(){
   var head = el("div", "sp");
   head.style.color = "var(--faint)";
   ["", "SP 0-32", "stage", "="].forEach(function(t, i){
     var s = el("span", ["k", "v", "v", "calc"][i], t);
     head.appendChild(s);
   });
-  host.appendChild(head);
+  return head;
+}
 
-  STAT_KEYS.forEach(function(k, i){
-    var used = (which === "atk" && k === live.aKey) ||
-               (which === "def" && (k === live.dKey || k === "hp"));
-    var row = el("div", "sp" + ((side.sp[k] || 0) > 32 ? " over" : ""));
-    var lab = el("span", "k", STAT_LABEL[k]);
-    if (used) lab.style.color = "var(--accent)";
-    row.appendChild(lab);
+/* One stat: its SP, its stage (HP takes none) and the stat it makes, the
+   one the move actually reads marked in the accent colour. */
+function statRow(which, side, P, k, i, live){
+  var used = (which === "atk" && k === live.aKey) ||
+             (which === "def" && (k === live.dKey || k === "hp"));
+  var row = el("div", "sp" + ((side.sp[k] || 0) > 32 ? " over" : ""));
+  var lab = el("span", "k", STAT_LABEL[k]);
+  if (used) lab.style.color = "var(--accent)";
+  row.appendChild(lab);
 
-    var inp = el("input");
-    inp.type = "number"; inp.min = 0; inp.max = 32;
-    inp.value = side.sp[k] || 0;
-    inp.setAttribute("aria-label", STAT_LABEL[k] + " stat points");
-    inp.oninput = function(){
-      side.sp[k] = Math.max(0, Math.min(32, Number(inp.value) || 0));
-      calcRun(); calcBudget(which);
-    };
-    row.appendChild(inp);
+  var inp = el("input");
+  inp.type = "number"; inp.min = 0; inp.max = 32;
+  inp.value = side.sp[k] || 0;
+  inp.setAttribute("aria-label", STAT_LABEL[k] + " stat points");
+  inp.oninput = function(){
+    side.sp[k] = Math.max(0, Math.min(32, Number(inp.value) || 0));
+    calcRun(); calcBudget(which);
+  };
+  row.appendChild(inp);
 
-    if (k === "hp") {
-      row.appendChild(el("span", "v", "—"));      // HP takes no stage
-    } else {
-      var sb = el("select");
-      [-6,-5,-4,-3,-2,-1,0,1,2,3,4,5,6].forEach(function(v){
-        sb.appendChild(new Option(v > 0 ? "+" + v : String(v), String(v)));
-      });
-      sb.value = String(side.boost[k] || 0);
-      sb.onchange = function(){ side.boost[k] = Number(sb.value); calcRun(); };
-      row.appendChild(sb);
-    }
+  if (k === "hp") row.appendChild(el("span", "v", "—"));
+  else row.appendChild(stageSelect(side, k));
 
-    var val = statAt(P.b[i], side.sp[k] || 0, k === "hp",
-                     natMult(side.nature, k));
-    var vs = el("span", "calc", String(val));
-    if (used) { vs.style.color = "var(--accent)"; vs.style.fontWeight = "600"; }
-    row.appendChild(vs);
-    host.appendChild(row);
+  var val = statAt(P.b[i], side.sp[k] || 0, k === "hp",
+                   natMult(side.nature, k));
+  var vs = el("span", "calc", String(val));
+  if (used) { vs.style.color = "var(--accent)"; vs.style.fontWeight = "600"; }
+  row.appendChild(vs);
+  return row;
+}
+
+/* -6 to +6. */
+function stageSelect(side, k){
+  var sb = el("select");
+  [-6,-5,-4,-3,-2,-1,0,1,2,3,4,5,6].forEach(function(v){
+    sb.appendChild(new Option(v > 0 ? "+" + v : String(v), String(v)));
   });
+  sb.value = String(side.boost[k] || 0);
+  sb.onchange = function(){ side.boost[k] = Number(sb.value); calcRun(); };
+  return sb;
+}
 
+/* The HP it is ON, not its maximum - after a switch, after chip, after the
+   first attack. This is what turns a percentage into a KO answer. */
+function curHPField(side){
   var g3 = el("div", "grid2 tight");
-  if (which === "def") {
-    /* the HP it is ON, not its maximum - after a switch, after chip, after the
-       first attack. This is what turns a percentage into a KO answer. */
-    var fh = el("div", "field");
-    fh.appendChild(el("label", "f", "Current HP"));
-    var ih = el("input");
-    ih.type = "number"; ih.min = 1;
-    ih.placeholder = "full";
-    ih.value = side.curHP == null ? "" : side.curHP;
-    ih.oninput = function(){
-      side.curHP = ih.value === "" ? null : Math.max(1, Number(ih.value) || 1);
-      calcRun();
-    };
-    fh.appendChild(ih);
-    g3.appendChild(fh);
-    host.appendChild(g3);
-  }
-
-  var b = el("div", "budget");
-  b.id = which + "Budget";
-  host.appendChild(b);
-  calcBudget(which);
+  var fh = el("div", "field");
+  fh.appendChild(el("label", "f", "Current HP"));
+  var ih = el("input");
+  ih.type = "number"; ih.min = 1;
+  ih.placeholder = "full";
+  ih.value = side.curHP == null ? "" : side.curHP;
+  ih.oninput = function(){
+    side.curHP = ih.value === "" ? null : Math.max(1, Number(ih.value) || 1);
+    calcRun();
+  };
+  fh.appendChild(ih);
+  g3.appendChild(fh);
+  return g3;
 }
 
 /* 66 total, 32 max in one - the same limits the build editor enforces */
@@ -480,96 +461,100 @@ function calcLiveStats(){
   return {aKey:aKey, dKey:dKey};
 }
 
+/* PICK A SIDE: from his builds (searchable - a hundred builds is a hundred
+   cards to scroll past), or any form in the dex. */
 function calcPickSheet(which){
   var side = CALC[which];
   openSheet(which === "atk" ? "Attacker" : "Defender", function(body){
-    var builds = Object.keys(S.builds).sort(function(a, b){
-      return String(S.builds[a].pokemon).localeCompare(String(S.builds[b].pokemon));
-    });
-    if (builds.length) {
-      body.appendChild(el("h2", null, "From your builds"));
-      /* THE SAME FAULT AS THE TEAM SLOT PICKER, on the same data: every build
-         in the ledger in one alphabetical run, with nothing to narrow it. A
-         hundred builds is a hundred cards to scroll past before the dex list
-         underneath even starts. */
-      var bq = searchField(body, "Filter " + builds.length + " build" +
-        (builds.length === 1 ? "" : "s"), function(){ drawBuilds(); });
-      var bl = el("div", "list cards");
-      var bcount = el("div", "sub"); bcount.style.margin = "0 0 6px";
-      body.appendChild(bcount);
-      function drawBuilds(){
-      var q = bq.q();
-      bl.innerHTML = "";
-      var shown = 0;
-      builds.forEach(function(id){
-        var b = S.builds[id];
-        var nm = b.mega || b.pokemon;
-        var p = byName[nm] || byName[b.pokemon];
-        if (!p) return;
-        var hay = [id, b.pokemon, b.mega, b.role, b.nature, baseAbility(b),
-                   (b.moves || []).join(" "), p.types.join(" ")]
-          .filter(Boolean).join(" ").toLowerCase();
-        if (q && !hay.includes(q)) return;
-        shown++;
-        /* THE SAME CARD AS THE BOX AND FIND. Picking who is attacking is a
-           comparison between Pokemon, so it needs the numbers being compared -
-           this was a name, a typing and the spread as prose. The build's own
-           two facts ride along as cells, where the card already puts BST. */
-        var r = pokeCard(p, {
-          cls: "perm",
-          abLabel: "Ability",
-          cells: [
-            labelBox(b.nature || "—", "Nature", "wide"),
-            labelBox(STAT_KEYS.map(function(k){
-              return b.stat_points?.[k] || 0;
-            }).join("/"), "SP")
-          ],
-          onclick: function(){ calcLoadBuild(which, id, b); }
-        });
-        bl.appendChild(r);
-      });
-      bcount.textContent = shown === builds.length
-        ? plural(builds.length, "build")
-        : shown + " of " + builds.length + " builds";
-      if (!shown) bl.appendChild(el("div", "empty", "No build matches"));
-      }
-      body.appendChild(bl);
-      drawBuilds();
-    }
-
+    buildPicks(body, which);
     body.appendChild(el("h2", null, "Or any Pokemon"));
     var inp = searchField(body, "Search " + DEX.length +
       " forms, Megas included", function(){ draw(); });
     var list = el("div", "list cards");
     body.appendChild(list);
-    function draw(){
-      var q = inp.q();
-      list.innerHTML = "";
-      /* 120, not 50. Picking the attacker used to draw a sixth of the dex
-         with nothing on screen saying so, so a Pokemon that was merely past
-         the cut looked like one the calculator did not know about. */
-      var all = DEX.filter(function(p){
-        return !q || p.name.toLowerCase().includes(q);
-      });
-      all.slice(0, 120).forEach(function(p){
-        /* and the same one again for the whole dex - the stat line was
-           `p.b.join(" / ")`, six numbers as prose, which is the exact fault
-           the stat table was built to remove */
-        list.appendChild(pokeCard(p, {
-          onclick: function(){
-            side.name = p.name; side.buildId = null;
-            if (which === "atk") CALC.move = null;
-            closeSheet(); calcDraw();
-          }
-        }));
-      });
-      capNote(list, Math.min(120, all.length), all.length, "forms");
-      if (!list.children.length) list.appendChild(el("div", "empty", "Nothing matches"));
-    }
+    function draw(){ drawDexPicks(list, inp.q(), which, side); }
     draw();
   }, []);
 }
 
+/* "From your builds", with its own filter and count. */
+function buildPicks(body, which){
+  var builds = Object.keys(S.builds).sort(function(a, b){
+    return String(S.builds[a].pokemon).localeCompare(String(S.builds[b].pokemon));
+  });
+  if (!builds.length) return;
+  body.appendChild(el("h2", null, "From your builds"));
+  var bq = searchField(body, "Filter " + builds.length + " build" +
+    (builds.length === 1 ? "" : "s"), function(){ drawBuilds(); });
+  var bl = el("div", "list cards");
+  var bcount = el("div", "sub"); bcount.style.margin = "0 0 6px";
+  body.appendChild(bcount);
+  function drawBuilds(){
+    var q = bq.q();
+    bl.innerHTML = "";
+    var shown = 0;
+    builds.forEach(function(id){
+      var card = buildPickCard(which, id, q);
+      if (!card) return;
+      shown++;
+      bl.appendChild(card);
+    });
+    bcount.textContent = shown === builds.length
+      ? plural(builds.length, "build")
+      : shown + " of " + builds.length + " builds";
+    if (!shown) bl.appendChild(el("div", "empty", "No build matches"));
+  }
+  body.appendChild(bl);
+  drawBuilds();
+}
+
+/* One build as THE SAME CARD AS THE BOX AND FIND - picking who is attacking
+   is a comparison between Pokemon, so it needs the numbers being compared -
+   with its nature and spread as cells. Null when it does not match the filter
+   or has no dex row. */
+function buildPickCard(which, id, q){
+  var b = S.builds[id];
+  var p = byName[b.mega || b.pokemon] || byName[b.pokemon];
+  if (!p) return null;
+  var hay = [id, b.pokemon, b.mega, b.role, b.nature, baseAbility(b),
+             (b.moves || []).join(" "), p.types.join(" ")]
+    .filter(Boolean).join(" ").toLowerCase();
+  if (q && !hay.includes(q)) return null;
+  return pokeCard(p, {
+    cls: "perm",
+    abLabel: "Ability",
+    cells: [
+      labelBox(b.nature || "—", "Nature", "wide"),
+      labelBox(STAT_KEYS.map(function(k){
+        return b.stat_points?.[k] || 0;
+      }).join("/"), "SP")
+    ],
+    onclick: function(){ calcLoadBuild(which, id, b); }
+  });
+}
+
+/* Up to 120 forms, and it says so: a Pokemon merely past the cut used to look
+   like one the calculator did not know about. */
+function drawDexPicks(list, q, which, side){
+  list.innerHTML = "";
+  var all = DEX.filter(function(p){
+    return !q || p.name.toLowerCase().includes(q);
+  });
+  all.slice(0, 120).forEach(function(p){
+    list.appendChild(pokeCard(p, {
+      onclick: function(){
+        side.name = p.name; side.buildId = null;
+        if (which === "atk") CALC.move = null;
+        closeSheet(); calcDraw();
+      }
+    }));
+  });
+  capNote(list, Math.min(120, all.length), all.length, "forms");
+  if (!list.children.length) list.appendChild(el("div", "empty", "Nothing matches"));
+}
+
+/* Load a saved build onto a side: its form, nature, ability and spread, and
+   no stat stages. A new attacker drops the move it had. */
 function calcLoadBuild(which, id, b){
   var side = CALC[which];
   side.name = b.mega || b.pokemon;
@@ -584,6 +569,10 @@ function calcLoadBuild(which, id, b){
   calcDraw();
 }
 
+/* PICK THE MOVE: the build's own moves first when the attacker came from a
+   build, then everything it learns - ALL of it, damaging moves ranked by
+   power times accuracy. The longest movepool is 106, and a cut at 60 took
+   moves off half the dex with nothing saying so. */
 function calcMoveSheet(){
   var a = CALC.atk;
   if (!a.name) { toast("Pick the attacker first"); return; }
@@ -613,9 +602,6 @@ function calcMoveSheet(){
     function draw(){
       var q = inp.q();
       list.innerHTML = "";
-      /* ALL of a movepool, not 60 of it. The longest in Champions is 106,
-         and 131 of the 264 learnsets are longer than 60 - so this was cutting
-         moves off half the dex with nothing saying so. */
       pool.filter(function(m){
         return !q || m.name.toLowerCase().includes(q) ||
                m.type.toLowerCase().includes(q);
@@ -648,119 +634,138 @@ function calcMoveRow(m, fromBuild){
   return r;
 }
 
+/* THE FIELD PANEL: every switch the engine reads, in labelled rows. A GROUP'S
+   LABEL SITS ON THE SAME LINE AS ITS BUTTONS - eight full-width headings cost
+   eight lines of nothing (player, 2026-09-19: "sigo pensando que ocupan
+   espacio innecesario"). Each switch is written out as its own assignment to
+   CALC, which is what lets check_app.js prove every one reaches the engine. */
 function calcFieldCtl(){
   var host = $("calcField");
   host.innerHTML = "";
-  /* A GROUP'S LABEL SITS ON THE SAME LINE AS ITS BUTTONS. Every `group()` used
-     to emit a full-width heading which forced a line break, so eight groups
-     cost eight lines of nothing but their own titles before a single toggle -
-     747px of a column that then set the height of the attacker and the
-     defender beside it, both of which are 368 (player, 2026-09-19: "sigo
-     pensando que ocupan espacio innecesario", pointing at how close together
-     pokebase and Smogon put theirs).
+  var f = fieldRows(host);
+  f.group("The hit", "What happens on this particular hit");
+  f.tog("Critical hit", CALC.crit, function(){ CALC.crit = !CALC.crit; calcDraw(); });
+  weatherAndTerrain(f);
+  attackerSwitches(f);
+  targetSwitches(f);
+  screenSwitches(f, CALC.move);
+  f.group("Field", "Conditions that apply to both sides at once");
+  f.tog("Gravity", CALC.gravity, function(){
+    CALC.gravity = !CALC.gravity; calcDraw(); });
+  f.tog("Wonder Room", CALC.wonderRoom, function(){
+    CALC.wonderRoom = !CALC.wonderRoom; calcDraw(); });
+  f.tog("Magic Room", CALC.magicRoom, function(){
+    CALC.magicRoom = !CALC.magicRoom; calcDraw(); });
+}
 
-     Same labels, same toggles, same order. The label is a cell in the row now
-     instead of a line above it. */
+/* The two builders the Field panel is made of: group() starts a labelled row
+   (its label a cell in the row, the reason on hover), tog() adds a toggle to
+   the current row. */
+function fieldRows(host){
   var cur = null;
-  function tog(label, on, fn, cls){
-    var t = el("button", "tog " + (cls || ""), label);
-    t.setAttribute("aria-pressed", on ? "true" : "false");
-    t.onclick = fn;
-    (cur || host).appendChild(t);
-    return t;
-  }
-  var m = CALC.move;
-  group("The hit", "What happens on this particular hit");
-  tog("Critical hit", CALC.crit, function(){ CALC.crit = !CALC.crit; calcDraw(); });
-  function group(label, why){
-    cur = el("div", "fieldrow");
-    var h = el("span", "fieldgroup");
-    h.textContent = label;
-    if (why) h.title = why;
-    cur.appendChild(h);
-    host.appendChild(cur);
-  }
-  group("Weather");
+  return {
+    group: function(label, why){
+      cur = el("div", "fieldrow");
+      var h = el("span", "fieldgroup");
+      h.textContent = label;
+      if (why) h.title = why;
+      cur.appendChild(h);
+      host.appendChild(cur);
+    },
+    tog: function(label, on, fn, cls){
+      var t = el("button", "tog " + (cls || ""), label);
+      t.setAttribute("aria-pressed", on ? "true" : "false");
+      t.onclick = fn;
+      (cur || host).appendChild(t);
+      return t;
+    }
+  };
+}
+
+/* One weather and one terrain at most; tapping the one that is on turns it
+   off. */
+function weatherAndTerrain(f){
+  f.group("Weather");
   ["Sun", "Rain", "Sand", "Snow"].forEach(function(w){
-    tog(w, CALC.weather === w, function(){
+    f.tog(w, CALC.weather === w, function(){
       CALC.weather = CALC.weather === w ? null : w; calcDraw();
     });
   });
-  group("Terrain");
+  f.group("Terrain");
   ["Electric", "Grassy", "Psychic", "Misty"].forEach(function(t){
-    tog(t, CALC.terrain === t, function(){
+    f.tog(t, CALC.terrain === t, function(){
       CALC.terrain = CALC.terrain === t ? null : t; calcDraw();
     });
   });
-  group("Attacker", "On the attacking Pokemon's side of the field");
-  tog("Helping Hand", CALC.helpingHand, function(){
+}
+
+function attackerSwitches(f){
+  f.group("Attacker", "On the attacking Pokemon's side of the field");
+  f.tog("Helping Hand", CALC.helpingHand, function(){
     CALC.helpingHand = !CALC.helpingHand; calcDraw(); });
-  tog("Charge", CALC.charge, function(){
+  f.tog("Charge", CALC.charge, function(){
     CALC.charge = !CALC.charge; calcDraw(); });
-  tog("Tailwind", CALC.tailwindAtk, function(){
+  f.tog("Tailwind", CALC.tailwindAtk, function(){
     CALC.tailwindAtk = !CALC.tailwindAtk; calcDraw(); });
-  tog("Power Trick", CALC.powerTrickAtk, function(){
+  f.tog("Power Trick", CALC.powerTrickAtk, function(){
     CALC.powerTrickAtk = !CALC.powerTrickAtk; calcDraw(); });
-  tog("+1 All Stats", CALC.plusOneAtk, function(){
+  f.tog("+1 All Stats", CALC.plusOneAtk, function(){
     CALC.plusOneAtk = !CALC.plusOneAtk; calcDraw(); });
-  group("Target", "On the target's side of the field");
-  tog("Friend Guard", CALC.friendGuard, function(){
+}
+
+/* The target's side, and then what changes the HP it is ON rather than one
+   hit - which is what decides whether the NEXT hit KOes (the player's point:
+   you calculate after a switch, after chip, after an attack). */
+function targetSwitches(f){
+  f.group("Target", "On the target's side of the field");
+  f.tog("Friend Guard", CALC.friendGuard, function(){
     CALC.friendGuard = !CALC.friendGuard; calcDraw(); });
-  tog("Protecting", CALC.protected, function(){
+  f.tog("Protecting", CALC.protected, function(){
     CALC.protected = !CALC.protected; calcDraw(); });
-  tog("Power Trick", CALC.powerTrickDef, function(){
+  f.tog("Power Trick", CALC.powerTrickDef, function(){
     CALC.powerTrickDef = !CALC.powerTrickDef; calcDraw(); });
-  tog("+1 All Stats", CALC.plusOneDef, function(){
+  f.tog("+1 All Stats", CALC.plusOneDef, function(){
     CALC.plusOneDef = !CALC.plusOneDef; calcDraw(); });
-  tog("Switching out", CALC.switching, function(){
+  f.tog("Switching out", CALC.switching, function(){
     CALC.switching = !CALC.switching; calcDraw(); });
-  /* These do not change one hit - they change the HP the target is ON, which
-     is what decides whether the NEXT hit KOes. The player's point: you
-     calculate after a switch, after chip, after an attack. */
-  /* the parenthesis used to be part of the label, and in a row that is now
-     label-plus-buttons it pushed seven toggles onto a third line all by
-     itself. It is a tooltip: the same sentence, none of the height. */
-  group("On the target", "These change the KO count rather than the roll");
-  tog("Stealth Rock", CALC.stealthRock, function(){
+  f.group("On the target", "These change the KO count rather than the roll");
+  f.tog("Stealth Rock", CALC.stealthRock, function(){
     CALC.stealthRock = !CALC.stealthRock; calcDraw(); });
+  /* layers of Spikes; the group already says what they are */
   [1, 2, 3].forEach(function(n){
-    /* "1 Spikes  2 Spikes  3 Spikes" spent the word three times and
-       wrapped the row. The group already says what it is - these are
-       layers, and the tooltip says so. */
-    tog("Spikes ×" + n, CALC.spikes === n, function(){
+    f.tog("Spikes ×" + n, CALC.spikes === n, function(){
       CALC.spikes = CALC.spikes === n ? 0 : n; calcDraw(); });
   });
-  tog("Leech Seed", CALC.leechSeed, function(){
+  f.tog("Leech Seed", CALC.leechSeed, function(){
     CALC.leechSeed = !CALC.leechSeed; calcDraw(); });
-  tog("Salt Cure", CALC.saltCure, function(){
+  f.tog("Salt Cure", CALC.saltCure, function(){
     CALC.saltCure = !CALC.saltCure; calcDraw(); });
-  tog("Nightmare", CALC.nightmare, function(){
+  f.tog("Nightmare", CALC.nightmare, function(){
     CALC.nightmare = !CALC.nightmare; calcDraw(); });
-  group("Screens", "Reflect, Light Screen and Aurora Veil on the target's side");
+}
+
+/* One screen at most. A screen that cannot touch the chosen move is dimmed
+   rather than hidden, so it is obvious WHY it changes nothing. */
+function screenSwitches(f, m){
+  f.group("Screens", "Reflect, Light Screen and Aurora Veil on the target's side");
   [["Reflect", "physical", "P"], ["Light Screen", "special", "S"],
    ["Aurora Veil", "both", null]].forEach(function(r){
     var sc = r[0], relevant = !m || !r[2] || m.cat === r[2];
-    var t = tog(sc + " (" + r[1] + ")", CALC.screen === sc, function(){
+    var t = f.tog(sc + " (" + r[1] + ")", CALC.screen === sc, function(){
       CALC.screen = CALC.screen === sc ? null : sc; calcDraw();
     });
-    /* dimmed rather than hidden, so it is obvious WHY it changes nothing */
     if (!relevant) { t.style.opacity = ".45";
       t.title = sc + " only stops " + r[1] + " moves"; }
   });
-  group("Field", "Conditions that apply to both sides at once");
-  tog("Gravity", CALC.gravity, function(){
-    CALC.gravity = !CALC.gravity; calcDraw(); });
-  tog("Wonder Room", CALC.wonderRoom, function(){
-    CALC.wonderRoom = !CALC.wonderRoom; calcDraw(); });
-  tog("Magic Room", CALC.magicRoom, function(){
-    CALC.magicRoom = !CALC.magicRoom; calcDraw(); });
-
-
 }
 
 /* The verdict's colour by hits to KO: one, two, or three and more. */
 const KO_CLASS = {1: "k1", 2: "k2"};
 const KO_FILL = {1: "var(--bad)", 2: "var(--warn)"};
+
+/* THE ANSWER: the range, the percentage and the KO verdict on one line, a
+   bar, the engine's own sentence - it names every modifier that actually
+   fired - the notes a number cannot carry, and every roll. */
 function calcRun(){
   var out = $("calcOut");
   out.innerHTML = "";
@@ -783,40 +788,57 @@ function calcRun(){
       "The engine could not calculate this: " + (e?.message || e)));
     return;
   }
-
   var hp = r.curHP != null ? r.curHP : r.hp;
-  var pctLo = r.lo / r.hp * 100, pctHi = r.hi / r.hp * 100;
   var ko = koCount(r.lo, r.hi, hp);
-  var kls = KO_CLASS[ko.n] || "k3";
-
-  /* the number, the percentage and the verdict on one line - this is the
-     answer, and it stays on screen while the inputs below it change */
-  var v = el("div", "verdict");
-  v.appendChild(el("span", "num", r.lo + " - " + r.hi));
-  v.appendChild(el("span", "pct", "of " + r.hp + " HP  ·  " +
-    pctLo.toFixed(1) + "-" + pctHi.toFixed(1) + "%" +
-    (r.hits > 1 ? "  ·  " + r.hits + " hits" : "") +
-    (r.curHP != null && r.curHP !== r.hp ? "  ·  on " + r.curHP + " HP" : "")));
-  v.appendChild(el("span", "kotag " + kls, r.koText || ko.text));
-  out.appendChild(v);
-
-  var bar = el("div", "meter");
-  bar.style.height = "8px";
-  var fill = el("i");
-  fill.style.width = Math.min(100, r.hi / hp * 100) + "%";
-  fill.style.background = KO_FILL[ko.n] || "var(--accent)";
-  bar.appendChild(fill);
-  out.appendChild(bar);
-
-  /* the engine's own sentence: it names every modifier that actually fired,
-     which beats anything this page could narrate */
+  out.appendChild(verdictLine(r, ko));
+  out.appendChild(koBar(r, hp, ko));
   if (r.desc) {
     var dsc = el("p", "sub");
     dsc.style.margin = "6px 0 0";
     dsc.textContent = r.desc;
     out.appendChild(dsc);
   }
+  var flags = calcFlags(m);
+  if (flags.length) {
+    var fl = el("div", "calcflags");
+    flags.forEach(function(t){
+      var x = el("div", "note " + (t[0] || ""));
+      x.textContent = t[1];
+      fl.appendChild(x);
+    });
+    out.appendChild(fl);
+  }
+  out.appendChild(rollsDetails(r));
+}
 
+/* The number, the percentage and the verdict on one line - this is the
+   answer, and it stays on screen while the inputs below it change. */
+function verdictLine(r, ko){
+  var pctLo = r.lo / r.hp * 100, pctHi = r.hi / r.hp * 100;
+  var v = el("div", "verdict");
+  v.appendChild(el("span", "num", r.lo + " - " + r.hi));
+  v.appendChild(el("span", "pct", "of " + r.hp + " HP  ·  " +
+    pctLo.toFixed(1) + "-" + pctHi.toFixed(1) + "%" +
+    (r.hits > 1 ? "  ·  " + r.hits + " hits" : "") +
+    (r.curHP != null && r.curHP !== r.hp ? "  ·  on " + r.curHP + " HP" : "")));
+  v.appendChild(el("span", "kotag " + (KO_CLASS[ko.n] || "k3"), r.koText || ko.text));
+  return v;
+}
+
+function koBar(r, hp, ko){
+  var bar = el("div", "meter");
+  bar.style.height = "8px";
+  var fill = el("i");
+  fill.style.width = Math.min(100, r.hi / hp * 100) + "%";
+  fill.style.background = KO_FILL[ko.n] || "var(--accent)";
+  bar.appendChild(fill);
+  return bar;
+}
+
+/* What the number cannot say by itself: Singles vs a spread move's x0.75, a
+   move that hits the ally, and the moves whose power depends on something
+   the calculator was not told. */
+function calcFlags(m){
   var flags = [];
   if (CALC.gameType === "Singles") {
     flags.push(["", "Singles: no spread reduction, and a screen is x0.5 " +
@@ -834,19 +856,10 @@ function calcRun(){
       "sides, or this is the empty-handed number."]);
   if (m.name === "Payback")
     flags.push(["warn", "Payback doubles only if it moves last."]);
-  /* No note for Aegislash any more: both spreads are printed on the side
-     control with the governing one marked, which is what a note about numbers
-     should have been in the first place. */
-  if (flags.length) {
-    var fl = el("div", "calcflags");
-    flags.forEach(function(t){
-      var x = el("div", "note " + (t[0] || ""));
-      x.textContent = t[1];
-      fl.appendChild(x);
-    });
-    out.appendChild(fl);
-  }
+  return flags;
+}
 
+function rollsDetails(r){
   var det = el("details", "rolls");
   var sum = el("summary", null, "Every roll, and where the number came from");
   det.appendChild(sum);
@@ -858,9 +871,11 @@ function calcRun(){
   det.appendChild(el("p", "sub",
     "Calculated by Smogon's own Champions engine, bundled into this page - " +
     "not an approximation of it."));
-  out.appendChild(det);
+  return det;
 }
 
+/* The whole Damage tab, from CALC: both sides, the move slot, the field and
+   the answer. */
 function calcDraw(){
   calcSideCtl("atk");
   calcSideCtl("def");

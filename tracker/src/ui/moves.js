@@ -4,7 +4,7 @@
    Shared rather than copied: a move ranked one way in the build picker and
    another way in search is the bug this file exists to prevent. */
 import { byText, C, catName, splitPct } from "../core/data.js";
-import { el, searchField } from "../core/dom.js";
+import { el, filterLabel, searchField } from "../core/dom.js";
 import { numText, typeChip, typeSkin, usageTag } from "./card.js";
 
 /* ------------------------------------------- which ability boosts what -----
@@ -221,133 +221,39 @@ function moveScore(m){ return (m.bp || 0) * Math.min(100, m.acc || 100) / 100; }
 function moveFilters(body, pool, onChange, placeholder, opts){
   /* `usageOf` is a Pokemon name, and it is what turns this from "rank the
      movepool by raw power" into "rank it by what its players actually bring".
-     Only the build editor passes one - the Find tab lists moves with no
-     Pokemon in hand, so there is nothing to be a share OF there - and when it
-     does, usage is the DEFAULT sort, because that is the first question asked
-     of a movepool (player, 2026-09-15: "seria bueno poner filtro a los
-     movimientos de mayor a menor uso por el %"). */
+     Only a caller with one Pokemon in hand passes it, and then usage is the
+     DEFAULT sort, because that is the first question asked of a movepool
+     (player, 2026-09-15: "seria bueno poner filtro a los movimientos de mayor
+     a menor uso por el %"). */
   var usageOf = opts?.usageOf || null;
-  /* THE CAP LIVES HERE, WITH THE COUNT THAT REPORTS IT. Every caller used to
-     slice the result itself and this told the user a different number: the
-     count line said "first 80 shown" while a Pokemon's own sheet was slicing
-     at 60. Half the dex - 131 of the 264 learnsets are longer than 60 - had
-     its movepool quietly truncated with nothing on screen saying so, which is
-     what the player hit on Rillaboom (67 moves, 60 shown). `apply()` returns
-     the list already capped, so the two cannot disagree again.
-
-     A single Pokemon's movepool is not capped in practice: the longest in
-     Champions is Gallade at 106. The default 80 is for the whole move table,
-     where 512 rows really is too many to draw. */
+  /* THE CAP LIVES HERE, WITH THE COUNT THAT REPORTS IT. Callers used to slice
+     the result themselves while the count said a different number, and half
+     the dex had its movepool quietly truncated (Rillaboom: 67 moves, 60
+     shown). apply() returns the list already capped, so the two cannot
+     disagree. A single movepool is never capped in practice - the longest is
+     Gallade at 106; the default 80 is for the whole move table. */
   var cap = opts?.cap || 80;
-  var sorter = {v: usageOf ? "usage" : "bp"};
-  var F = {cat:{}, trait:{}, type:{}};
-  function label(t){
-    var d = el("div", "sub"); d.style.margin = "0 0 4px"; d.textContent = t;
-    return d;
-  }
+  var st = {F: {cat:{}, trait:{}, type:{}}, EXCL: {}, onChange: onChange,
+            sort: usageOf ? "usage" : "bp"};
   var inp = searchField(body, placeholder || ("Filter " + pool.length +
     " moves"), function(){ onChange(); });
-
-  var srow = el("div", "toggles"); srow.style.marginBottom = "8px";
-  var sorts = [["bp","BP × acc"],["name","A–Z"],["pp","PP"],["type","Type"]];
-  if (usageOf) sorts.unshift(["usage","Usage %"]);
-  sorts.forEach(function(o){
-    var t = el("button", "tog", o[1]);
-    t.setAttribute("aria-pressed", o[0] === sorter.v ? "true" : "false");
-    t.onclick = function(){
-      sorter.v = o[0];
-      Array.prototype.forEach.call(srow.children, function(x){
-        x.setAttribute("aria-pressed", x === t ? "true" : "false");
-      });
-      onChange();
-    };
-    srow.appendChild(t);
-  });
-  body.appendChild(label("Sort"));
-  body.appendChild(srow);
-
-  /* one filter chip. A type chip carries its own type colour, because that is
-     how the rest of the page names a type. */
-  /* `type` is a TYPE NAME, not a colour: the fill and the ink both come from
-     typeSkin, which is the only thing that knows a type is two-toned and which
-     of the eighteen are written in black. Passing a bare colour here is what
-     let this one write #fff next to it. */
-  /* THREE STATES, NOT TWO: off, include, EXCLUDE.
-
-       "en el filtro de tipo esta el operador logico and y or, pero falta algo
-        que diga no, por ejemplo, si pongo en move trick room, pero en type
-        quiero colocar que no me muestre ningun pokemon de tipo psyquico, no
-        existe esa opcion."  (player, 2026-09-19)
-
-     A tap cycles off -> include -> exclude -> off, and an excluded chip is
-     drawn struck through with a minus, because it has to read as the opposite
-     of the chip beside it rather than as a second shade of on.
-
-     It also answers the one thing the category group loses by going exclusive
-     below: "physical or special" is "NOT status". */
-  var EXCL = {};                       // group -> key -> the chip node
-  function chip(row, group, key, text, type){
-    var t = el("button", "tog", text);
-    t.setAttribute("aria-pressed", "false");
-    if (type) typeSkin(t, type, false);
-    EXCL[group] ||= {};
-    EXCL[group][key] = t;
-    function paint(v){
-      t.setAttribute("aria-pressed", v === 1 ? "true" : "false");
-      t.classList.toggle("no", v === -1);
-      t.textContent = (v === -1 ? "− " : "") + text;
-      if (type) {
-        typeSkin(t, type, v === 1);
-        /* typeSkin keeps the type's colour on the border even when it is off,
-           which is right for an unpicked chip and wrong for a ruled-out one:
-           the border is the only thing left saying "this is a Psychic chip"
-           when the whole point is that Psychic is being refused. */
-        if (v === -1) t.style.borderColor = "";
-      }
-    }
-    t._paint = paint;
-    t.onclick = function(){
-      var was = F[group][key] || 0;
-      /* three states in a cycle: off -> include -> exclude -> off */
-      var now = ({0: 1, 1: -1})[was] || 0;
-      if (now) F[group][key] = now; else delete F[group][key];
-      /* A MOVE HAS EXACTLY ONE CATEGORY, so two of them included at once can
-         only ever mean "either", and the player read the group as an AND and
-         expected picking one to drop the other (2026-09-19: "seleccionar una
-         desactiva la otra... un move solo puede tener 1 de las 3 categorias").
-         Includes are exclusive here; excludes still stack, which is what keeps
-         "not status" and "neither status nor physical" sayable. */
-      if (group === "cat" && now === 1) {
-        Object.keys(EXCL.cat).forEach(function(k){
-          if (k !== key && F.cat[k] === 1) {
-            delete F.cat[k];
-            EXCL.cat[k]._paint(0);
-          }
-        });
-      }
-      paint(now);
-      onChange();
-    };
-    row.appendChild(t);
-  }
-  /* Two groups, two meanings, and the headers say which. A move cannot be
-     Physical AND Special, or Fire AND Water, so those chips can only ever mean
-     "any of these". A move CAN be spread and hit your ally at once, so those
-     mean "all of these" - picking Spread and Priority asks for a move that is
-     both, and being told there is no such move (0 of 514) is the answer to
-     that question, not a filter that failed. */
+  sortRow(body, st, usageOf);
+  /* Two kinds of group, and the labels say which. A move cannot be Physical
+     AND Special, or Fire AND Water, so those chips can only ever mean "any of
+     these". A move CAN be spread and hit its ally at once, so those mean "all
+     of these" - and "no such move" is then an answer, not a failed filter. */
   var crow = el("div", "toggles"); crow.style.marginBottom = "8px";
-  chip(crow, "cat", "P", "Physical");
-  chip(crow, "cat", "S", "Special");
-  chip(crow, "cat", "T", "Status");
-  body.appendChild(label("Category — one at a time, or − to rule out"));
+  triChip(crow, st, "cat", "P", "Physical");
+  triChip(crow, st, "cat", "S", "Special");
+  triChip(crow, st, "cat", "T", "Status");
+  body.appendChild(filterLabel("Category — one at a time, or − to rule out"));
   body.appendChild(crow);
 
   var mrow = el("div", "toggles"); mrow.style.marginBottom = "8px";
-  chip(mrow, "trait", "spread", "Spread");
-  chip(mrow, "trait", "ally", "Hits ally");
-  chip(mrow, "trait", "pri", "Priority");
-  body.appendChild(label("Must have — all of these, or − to rule out"));
+  triChip(mrow, st, "trait", "spread", "Spread");
+  triChip(mrow, st, "trait", "ally", "Hits ally");
+  triChip(mrow, st, "trait", "pri", "Priority");
+  body.appendChild(filterLabel("Must have — all of these, or − to rule out"));
   body.appendChild(mrow);
 
   var types = [];
@@ -355,64 +261,18 @@ function moveFilters(body, pool, onChange, placeholder, opts){
   types.sort(byText);
   if (types.length > 1) {
     var trow = el("div", "toggles"); trow.style.marginBottom = "10px";
-    types.forEach(function(ty){ chip(trow, "type", ty, ty, ty); });
-    body.appendChild(label("Type — any of these, or − to rule out"));
+    types.forEach(function(ty){ triChip(trow, st, "type", ty, ty, ty); });
+    body.appendChild(filterLabel("Type — any of these, or − to rule out"));
     body.appendChild(trow);
   }
-  var count = label("");
+  var count = filterLabel("");
   count.style.margin = "0 0 6px";
   body.appendChild(count);
 
   function apply(){
     var q = inp.q();
-    var cats = Object.keys(F.cat), tys = Object.keys(F.type),
-        trs = Object.keys(F.trait);
-    var hits = pool.filter(function(m){
-      /* the text is searched as well as the name, because "which of these
-         burns" and "which crit" are the questions a move list is opened for */
-      if (q && !m.name.toLowerCase().includes(q) &&
-          !m.type.toLowerCase().includes(q) &&
-          !(m.text || "").toLowerCase().includes(q)) return false;
-      /* An EXCLUDE is checked before an include, and on its own: "no Psychic"
-         has to work with nothing else picked, which it cannot do if an empty
-         include list is read as "everything is rejected". */
-      if (F.cat[m.cat] === -1) return false;
-      if (F.type[m.type] === -1) return false;
-      var inCat = cats.filter(function(k){ return F.cat[k] === 1; });
-      var inTy = tys.filter(function(k){ return F.type[k] === 1; });
-      if (inCat.length && !inCat.includes(m.cat)) return false;
-      if (inTy.length && !inTy.includes(m.type)) return false;
-      var has = function(k){
-        if (k === "spread") return !!m.spread;
-        if (k === "ally") return !!m.hitsAlly;
-        return (m.pri || 0) > 0;
-      };
-      if (trs.some(function(k){ return F.trait[k] === -1 && has(k); }))
-        return false;
-      var inTr = trs.filter(function(k){ return F.trait[k] === 1; });
-      if (inTr.length && !inTr.every(has)) return false;
-      return true;
-    });
-    hits.sort(function(a, b){
-      if (sorter.v === "usage") {
-        /* A move nobody brought sorts below one at 0.1%, and both sort below
-           silence - a Pokemon with no table at all gets -1 for everything, so
-           the list falls back to power rather than to alphabetical noise. */
-        var ua = splitPct(usageOf, "m", a.name);
-        var ub = splitPct(usageOf, "m", b.name);
-        if (ua == null && ub == null) return moveScore(b) - moveScore(a) ||
-                                             a.name.localeCompare(b.name);
-        return (ub == null ? -1 : ub) - (ua == null ? -1 : ua) ||
-               moveScore(b) - moveScore(a) || a.name.localeCompare(b.name);
-      }
-      if (sorter.v === "name") return a.name.localeCompare(b.name);
-      if (sorter.v === "pp")
-        return (b.pp || 0) - (a.pp || 0) || a.name.localeCompare(b.name);
-      if (sorter.v === "type")
-        return a.type.localeCompare(b.type) || moveScore(b) - moveScore(a) ||
-               a.name.localeCompare(b.name);
-      return moveScore(b) - moveScore(a) || a.name.localeCompare(b.name);
-    });
+    var hits = pool.filter(function(m){ return movePasses(m, q, st.F); });
+    hits.sort(moveOrder(st.sort, usageOf));
     count.textContent = hits.length === pool.length
       ? pool.length + " moves"
       : hits.length + " of " + pool.length + " moves";
@@ -422,6 +282,129 @@ function moveFilters(body, pool, onChange, placeholder, opts){
   }
   return {apply:apply, input:inp};
 }
+
+/* The sort choices: usage first when there is a Pokemon to be a share of. */
+function sortRow(body, st, usageOf){
+  var srow = el("div", "toggles"); srow.style.marginBottom = "8px";
+  var sorts = [["bp","BP × acc"],["name","A–Z"],["pp","PP"],["type","Type"]];
+  if (usageOf) sorts.unshift(["usage","Usage %"]);
+  sorts.forEach(function(o){
+    var t = el("button", "tog", o[1]);
+    t.setAttribute("aria-pressed", o[0] === st.sort ? "true" : "false");
+    t.onclick = function(){
+      st.sort = o[0];
+      Array.prototype.forEach.call(srow.children, function(x){
+        x.setAttribute("aria-pressed", x === t ? "true" : "false");
+      });
+      st.onChange();
+    };
+    srow.appendChild(t);
+  });
+  body.appendChild(filterLabel("Sort"));
+  body.appendChild(srow);
+}
+
+/* ONE FILTER CHIP, WITH THREE STATES: off, include, EXCLUDE (player,
+   2026-09-19: "falta algo que diga no... que no me muestre ningun pokemon de
+   tipo psyquico"). A tap cycles off -> include -> exclude -> off, and an
+   excluded chip is drawn with a minus, struck through, because it has to read
+   as the opposite of the chip beside it. A type chip wears the type's own
+   colours (typeSkin knows which are written in black). */
+function triChip(row, st, group, key, text, type){
+  var t = el("button", "tog", text);
+  t.setAttribute("aria-pressed", "false");
+  if (type) typeSkin(t, type, false);
+  st.EXCL[group] ||= {};
+  st.EXCL[group][key] = t;
+  t._paint = function(v){ paintTriChip(t, text, type, v); };
+  t.onclick = function(){
+    var F = st.F;
+    var was = F[group][key] || 0;
+    var now = ({0: 1, 1: -1})[was] || 0;
+    if (now) F[group][key] = now; else delete F[group][key];
+    /* A MOVE HAS EXACTLY ONE CATEGORY, so including one drops the other
+       (player, 2026-09-19: "seleccionar una desactiva la otra"). Excludes
+       still stack, which keeps "not status" sayable. */
+    if (group === "cat" && now === 1) {
+      Object.keys(st.EXCL.cat).forEach(function(k){
+        if (k !== key && F.cat[k] === 1) {
+          delete F.cat[k];
+          st.EXCL.cat[k]._paint(0);
+        }
+      });
+    }
+    t._paint(now);
+    st.onChange();
+  };
+  row.appendChild(t);
+}
+
+/* A chip in one of its three states. A ruled-out type chip drops the type's
+   border as well: the border is the last thing still saying "this is a
+   Psychic chip" when the whole point is that Psychic is being refused. */
+function paintTriChip(t, text, type, v){
+  t.setAttribute("aria-pressed", v === 1 ? "true" : "false");
+  t.classList.toggle("no", v === -1);
+  t.textContent = (v === -1 ? "− " : "") + text;
+  if (type) {
+    typeSkin(t, type, v === 1);
+    if (v === -1) t.style.borderColor = "";
+  }
+}
+
+/* Does a move pass the search box and every chip? The text is searched as
+   well as the name, because "which of these burns" is what a move list is
+   opened for. An EXCLUDE is checked first and on its own, so "no Psychic"
+   works with nothing else picked. */
+function movePasses(m, q, F){
+  if (q && !m.name.toLowerCase().includes(q) &&
+      !m.type.toLowerCase().includes(q) &&
+      !(m.text || "").toLowerCase().includes(q)) return false;
+  if (F.cat[m.cat] === -1) return false;
+  if (F.type[m.type] === -1) return false;
+  if (!includedOrNone(F.cat, m.cat) || !includedOrNone(F.type, m.type)) return false;
+  var trs = Object.keys(F.trait);
+  if (trs.some(function(k){ return F.trait[k] === -1 && hasTrait(m, k); }))
+    return false;
+  var inTr = trs.filter(function(k){ return F.trait[k] === 1; });
+  return !inTr.length || inTr.every(function(k){ return hasTrait(m, k); });
+}
+
+/* Nothing included in the group, or this value is one of the included. */
+function includedOrNone(group, value){
+  var inc = Object.keys(group).filter(function(k){ return group[k] === 1; });
+  return !inc.length || inc.includes(value);
+}
+
+function hasTrait(m, k){
+  if (k === "spread") return !!m.spread;
+  if (k === "ally") return !!m.hitsAlly;
+  return (m.pri || 0) > 0;
+}
+
+/* The comparator for a sort key. By usage, a move nobody brought sorts below
+   one at 0.1%, and both below silence - a Pokemon with no table at all falls
+   back to power rather than to alphabetical noise. */
+function moveOrder(sort, usageOf){
+  return function(a, b){
+    if (sort === "usage") {
+      var ua = splitPct(usageOf, "m", a.name);
+      var ub = splitPct(usageOf, "m", b.name);
+      if (ua == null && ub == null) return moveScore(b) - moveScore(a) ||
+                                           a.name.localeCompare(b.name);
+      return (ub == null ? -1 : ub) - (ua == null ? -1 : ua) ||
+             moveScore(b) - moveScore(a) || a.name.localeCompare(b.name);
+    }
+    if (sort === "name") return a.name.localeCompare(b.name);
+    if (sort === "pp")
+      return (b.pp || 0) - (a.pp || 0) || a.name.localeCompare(b.name);
+    if (sort === "type")
+      return a.type.localeCompare(b.type) || moveScore(b) - moveScore(a) ||
+             a.name.localeCompare(b.name);
+    return moveScore(b) - moveScore(a) || a.name.localeCompare(b.name);
+  };
+}
+
 
 /* A META LINE THAT BREAKS BETWEEN FACTS AND NEVER INSIDE ONE.
 
