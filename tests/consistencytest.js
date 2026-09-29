@@ -95,7 +95,9 @@ setTimeout(() => {
      only thing this file can hold on to. */
   console.log(String.fromCharCode(10) + "  la tarjeta");
   const css = (src.match(/<style>([^]*?)<\/style>/g) || []).join(" ");
-  const cardRule = (css.match(/\.row\.card\{[^}]*\}/) || [""])[0];
+  /* the top-level rule, at the start of a line - not one indented inside a
+     media query, which can come earlier in the file */
+  const cardRule = (css.match(/(?:^|\n)\.row\.card\{[^}]*\}/) || [""])[0];
   ok("existe la regla .row.card", !!cardRule, true);
   ok("dice hacia donde apila", /flex-direction:\s*column/.test(cardRule), true);
   ok("y donde empieza el contenido",
