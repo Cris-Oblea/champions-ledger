@@ -31,7 +31,7 @@ ADDING ONE. When a decision reverses, add an entry here in the same commit that
 makes the change. It costs three lines and it is the only thing that stops the
 next contradiction.
 """
-import argparse, glob, io, os, re, subprocess, sys
+import argparse, contextlib, glob, io, json, os, re, subprocess, sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -277,20 +277,80 @@ def read(rel):
     return io.open(p, encoding="utf-8").read().split("\n")
 
 
+# The memory index is outside the repo, so the gate never sees it; the hook
+# does, because the hook is told which file was just written. Claude Code's own
+# limit is 25 KB, but every byte of it is loaded into every session.
+MEMORY_BUDGET = 8000
+
+
+def check_memory(folder):
+    """The auto-memory index: every link resolves, every memory is linked (an
+    unlinked one is never found again), and the index stays small."""
+    idx = os.path.join(folder, "MEMORY.md")
+    if not os.path.exists(idx):
+        return 0
+    text = io.open(idx, encoding="utf-8").read()
+    linked = set(re.findall(r"\]\(([^)]+\.md)\)", text))
+    files = {f for f in os.listdir(folder)
+             if f.endswith(".md") and f != "MEMORY.md"}
+    problems = ["MEMORY.md links %s, which does not exist" % f
+                for f in sorted(linked - files)]
+    problems += ["%s is not in MEMORY.md, so no session will find it" % f
+                 for f in sorted(files - linked)]
+    size = len(text.encode("utf-8"))
+    if size > MEMORY_BUDGET:
+        problems.append("MEMORY.md is %d bytes, over its budget of %d - one "
+                        "short line per memory" % (size, MEMORY_BUDGET))
+    for line in problems:
+        print(line)
+    return len(problems)
+
+
+def hook():
+    """PostToolUse hook for Edit|Write (.claude/settings.json). Silent, and so
+    free in tokens, unless the markdown file just written broke something -
+    then exit 2 hands the report to Claude while the edit is still fresh,
+    instead of three minutes later in the pre-push gate."""
+    try:
+        path = json.load(sys.stdin).get("tool_input", {}).get("file_path", "")
+    except ValueError:
+        return 0
+    path = path.replace("\\", "/")
+    if not path.endswith(".md"):
+        return 0
+    out = io.StringIO()
+    with contextlib.redirect_stdout(out):
+        if "/memory/" in path:
+            bad = check_memory(os.path.dirname(path))
+        else:
+            bad = check_repo()
+    if bad:
+        sys.stderr.write(out.getvalue())
+        return 2
+    return 0
+
+
 def main():
     ap = argparse.ArgumentParser(
         description=__doc__,
         formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--list", action="store_true")
+    ap.add_argument("--hook", action="store_true",
+                    help="read a PostToolUse event on stdin (see hook())")
     a = ap.parse_args()
 
+    if a.hook:
+        return hook()
     if a.list:
         for did, stale, now, files in DECISIONS:
             print("  %-32s %s" % (did, now))
         print("\n%d decision(s) watched across %d file(s)"
               % (len(DECISIONS), len(DOCS)))
         return 0
+    return check_repo()
 
+
+def check_repo():
     missing = [d for d in DOCS if read(d) is None]
     if missing:
         print("these documents are listed but do not exist: %s"
