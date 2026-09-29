@@ -7,6 +7,7 @@
     "eamodio.gitlens",
     "usernamehw.errorlens",
     "sonarsource.sonarlint-vscode",
+    "dbaeumer.vscode-eslint",
     "ms-python.python",
     "mtxr.sqltools",
     "mtxr.sqltools-driver-pg"
