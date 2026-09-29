@@ -276,10 +276,6 @@ def move_usage_index():
     return {key(r["name"]): r["usage_percent"] for r in rows}
 
 
-def pokemon_index():
-    return {p["name"]: p for p in db("pokemon")}
-
-
 def find_pokemon(term):
     """Match by exact name, then normalised name, then substring."""
     mons = db("pokemon")

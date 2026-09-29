@@ -16,14 +16,9 @@ Three jobs, in this order:
 
   build_dist()    splits the result back out into the files Cloudflare serves.
 
-Two shapes come out of it, and the difference is delivery, not code.
-
-`tracker/index.html` is the single page, everything inlined. That was the
-original constraint - an artifact serves exactly one file - and it is still the
-right answer anywhere nothing else can be served alongside it.
-
-`tracker/dist/` is what Cloudflare gets: a 51 KB shell pointing at four hashed
-assets, plus the app's sourcemap. Same program, cached in pieces that change at
+The page is assembled in memory with everything inlined, then split: what
+lands on disk is `tracker/dist/`, the only thing Cloudflare serves - a 51 KB
+shell pointing at hashed assets, plus the app's sourcemap. The pieces change at
 different rates, so a nightly dex refresh costs 347 KB instead of 1,314. See
 split_assets().
 """
@@ -33,7 +28,6 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TPL = os.path.join(ROOT, "tracker", "index.template.html")
 DATA = os.path.join(ROOT, "tracker", "data.js")
 CFG = os.path.join(ROOT, "tracker", "config.local.json")
-OUT = os.path.join(ROOT, "tracker", "index.html")
 DIST = os.path.join(ROOT, "tracker", "dist")
 SRC = os.path.join(ROOT, "tracker", "src")
 # Where the module link is done and its result can be read. Gitignored: every
@@ -409,10 +403,9 @@ def config_js():
     # would drift: the day the project URL moves, a second copy keeps pointing at
     # the old one and the app looks broken with no error, just a blocked request.
     BUILT["supabase"] = c["url"]
-    # `lazy` stays empty in tracker/index.html, the single-file shape, and the
-    # app hides the panel rather than pretending: 407 KB inlined into a page
-    # that is already 1.3 MB would be paid by everyone for something opened
-    # occasionally.
+    # `lazy` holds empty placeholders; build_dist() fills in the hashed asset
+    # names. Where one is missing the app hides the panel rather than
+    # inlining 407 KB that everyone would pay for something opened occasionally.
     return lazy + "window.CHAMP_CONFIG = " + json.dumps(
         {"supabase": {"url": c["url"], "key": c["publishableKey"],
                       "email": c.get("loginEmail", "")}},
@@ -530,8 +523,6 @@ def main():
     else:
         print("  no tracker/splits.js - run build_splits_data.py")
     out = out.replace(SPMARK, splits.replace("</", r"<\/"))
-    open(OUT, "w", encoding="utf-8").write(out)
-    print("wrote %s  (%.0f KB)" % (OUT, os.path.getsize(OUT) / 1024))
     build_dist(out)
 
 
@@ -716,8 +707,8 @@ def build_dist(html):
     icons()
 
     # belt and braces: nothing may reach dist/ that was not written above
-    allowed = ({"index.html", "manifest.webmanifest", "icon-192.png",
-                "icon-512.png", "apple-touch-icon.png", "_headers",
+    allowed = ({"index.html", "manifest.webmanifest", "_headers",
+                *ICON_FILES,
                 BUILT["app_asset"] + ".map"} | set(assets))
     # Every asset the page names must exist, or the deploy is a page that loads
     # nothing. That is the failure this split introduces, so it is checked here
@@ -743,63 +734,20 @@ def build_dist(html):
           % (DIST, len(os.listdir(DIST)), total / 1024))
 
 
-TEAL = (51, 192, 173, 255)
-INK = (8, 22, 24, 255)
-AMBER = (224, 164, 76, 255)
+ICONS = os.path.join(ROOT, "tracker", "icons")
+ICON_FILES = ("icon-192.png", "icon-512.png", "apple-touch-icon.png")
 
 
 def icons():
-    """The mark: a dark C-ring on full teal, with one amber slot in its gap.
+    """Copy the home-screen icons into dist/.
 
-    History, so neither mistake comes back. v1 drew a dark frame on the app's
-    near-black ground: on a phone home screen that is an invisible black
-    square, and the player reported the app as having "no icon". v2 went full
-    bleed and readable, but the mark was three plain rounded rectangles, which
-    he then called "un icono generico feo" (2026-09-11) - correct, it looked
-    like any storage app.
-
-    Three rules it follows now:
-
-      * FULL BLEED and light. Teal ground, dark ink, so it reads against any
-        wallpaper at launcher size.
-      * The mark lives in the central 80%, the maskable safe zone. Android
-        crops a maskable icon to a circle, squircle or teardrop, and anything
-        on that line gets eaten.
-      * It is a GLYPH, not a diagram. A C-ring is one shape the eye resolves
-        at 48px; the amber slot in the gap is the app's own accent for "open",
-        the same colour the box list uses for a slot that is not yours yet.
+    They are committed PNGs in tracker/icons/, not drawn at build time: the
+    mark changes about never, and drawing it each build was the only reason
+    the repo needed Pillow. The design rules and the code that drew them are in
+    git history (build_tracker_page.py, before 2026-09-29).
     """
-    try:
-        from PIL import Image, ImageDraw
-    except ImportError:
-        print("  (no PIL - skipping icons; the manifest will 404 on them)")
-        return
-    # drawn at 4x and downsampled: PIL has no antialiasing on arcs or
-    # rounded rectangles, and at 192px the jaggies are plainly visible
-    SS = 4
-    for size in (192, 512, 180):
-        S = size * SS
-        img = Image.new("RGBA", (S, S), TEAL)
-        d = ImageDraw.Draw(img)
-        safe = S * 0.8
-        cx = cy = S / 2
-        r = safe * 0.40                    # ring radius, centre of the stroke
-        t = safe * 0.17                    # stroke thickness
-        box = [cx - r, cy - r, cx + r, cy + r]
-        # open to the RIGHT, which is what makes it read as a C rather than an
-        # O; the gap is wide enough to survive the downsample
-        d.arc(box, start=38, end=322, fill=INK, width=int(t))
-        # the open slot, sitting in the gap on the ring's own centre line
-        sq = safe * 0.215
-        sx, sy = cx + r, cy
-        d.rounded_rectangle([sx - sq / 2, sy - sq / 2, sx + sq / 2, sy + sq / 2],
-                            radius=sq * 0.28, fill=AMBER)
-        img = img.resize((size, size), Image.LANCZOS)
-        name = "apple-touch-icon.png" if size == 180 else "icon-%d.png" % size
-        if size == 180:
-            img = img.convert("RGB")       # iOS wants no alpha channel
-        img.save(os.path.join(DIST, name))
-
+    for name in ICON_FILES:
+        shutil.copyfile(os.path.join(ICONS, name), os.path.join(DIST, name))
 
 if __name__ == "__main__":
     main()

@@ -100,8 +100,8 @@ which regulation, a number came from.
   are generated (`scripts/build_docs.py`), never typed.
 - When a decision reverses, add it to `DECISIONS` in `scripts/check_docs.py` in
   the same commit, so no document can go on stating the old one.
-- Edit the parts in `tracker/src/`, never `tracker/index.html` or
-  `index.template.html` (both generated).
+- Edit the parts in `tracker/src/`, never `tracker/dist/` (generated) or
+  `index.template.html` (a shell of markers).
 - Never commit a ledger snapshot, and never put a `service_role` /
   `sb_secret_` key near the page. The repo is public.
 - **This file has a size budget** that the gate enforces. A new rule goes to

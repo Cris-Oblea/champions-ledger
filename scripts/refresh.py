@@ -191,7 +191,7 @@ def stages(reg, deep=False):
               ["scripts/build_engine_bundle.py"]),
         Stage("readme", "regenerate the README's counts",
               ["scripts/build_docs.py"]),
-        Stage("page", "rebuild tracker/index.html",
+        Stage("page", "rebuild tracker/dist/",
               ["scripts/build_tracker_page.py"]),
     ]
 
@@ -228,7 +228,7 @@ def main():
                        ["scripts/build_tracker_data.py"])) and ok
         ok = run(Stage("engine", "bundle Smogon's engine",
                        ["scripts/build_engine_bundle.py"])) and ok
-        ok = run(Stage("page", "rebuild tracker/index.html",
+        ok = run(Stage("page", "rebuild tracker/dist/",
                        ["scripts/build_tracker_page.py"])) and ok
         sys.exit(0 if ok else 1)
 

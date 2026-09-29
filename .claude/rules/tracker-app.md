@@ -65,9 +65,9 @@ box row of the same name.
 **The app is thirteen ES modules, not one file.** `tracker/src/` holds
 `01-data.js` through `13-boot.js`, plus `style.css` and `markup.html`, and
 `scripts/build_tracker_page.py` links them with esbuild at build time into
-`tracker/index.template.html`'s shell, then `tracker/index.html` and
+`tracker/index.template.html`'s shell, then splits the result into
 `tracker/dist/`. **Edit the part, never `index.template.html` (a 23-line shell
-of markers), never `index.html` and never `tracker/src/_*.js` (all generated).**
+of markers), never `dist/` and never `tracker/src/_*.js` (all generated).**
 Load order is whatever the imports say, with one fixed point: the generated
 `_entry.js` imports `13-boot.js` FIRST, and `check_order()` asserts it on every
 build. The file-number order that concatenation used to impose no longer

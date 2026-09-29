@@ -26,6 +26,7 @@ file below costs nothing until it is needed:
 | Where docs go, and the doc gate | this file | when a doc is opened |
 | Where the project stands | `STATUS.md` | when read |
 | What happened, session by session | `analysis/history.md` | when read |
+| How the code fits together, for a person learning it | `docs/ARCHITECTURE.md` | when read |
 
 A new rule goes to the narrowest place that will still be loaded when it
 matters. A new game rule gets its full text in the matching skill file AND one

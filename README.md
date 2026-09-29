@@ -529,7 +529,8 @@ Its source is thirteen ES modules under `tracker/src/`, each one a tab or the
 thing the tabs share, saying what it exports and importing what it needs. The
 build links them into the single script the browser is handed, plus a sourcemap
 so a stack trace still names the file a person edits. **Edit a part, never
-`tracker/index.html`** - that file is generated.
+`tracker/dist/`** - it is generated. How the pieces fit is in
+[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
 ---
 
