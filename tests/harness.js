@@ -49,8 +49,8 @@ function page(root) {
   return html.replace(/<script id="vendor-supabase">[\s\S]*?<\/script>/, "");
 }
 
-/* The app's own SOURCE, as a person edits it: the numbered parts under
- * tracker/src/, in the order the build reads them.
+/* The app's own SOURCE, as a person edits it: every part under tracker/src/
+ * (core/, ui/, tabs/ and boot.js), in the order the build reads them.
  *
  * Three assertions in these tests are about the source and not about
  * behaviour - a `var` declared twice, a table read behind the back of its one
@@ -61,13 +61,15 @@ function page(root) {
  * have gone quietly wrong rather than failed. They read this instead, which is
  * the text the fault would actually be written in.
  *
- * The generated `_legacy.js` and `_entry.js` are deliberately not included:
- * they are output, and a smell found in one of them was written elsewhere.
+ * The generated `_entry.js` is deliberately not included: it is output, and a
+ * smell found in it was written elsewhere.
  */
 function source(root) {
   const src = path.join(root, "tracker", "src");
-  return fs.readdirSync(src)
-    .filter(f => /^\d/.test(f) && f.endsWith(".js")).sort()
+  return fs.readdirSync(src, { recursive: true })
+    .map(f => f.split(path.sep).join("/"))
+    .filter(f => f.endsWith(".js") && !path.posix.basename(f).startsWith("_"))
+    .sort()
     .map(f => fs.readFileSync(path.join(src, f), "utf8")).join("");
 }
 

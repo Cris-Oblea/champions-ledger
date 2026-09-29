@@ -79,7 +79,7 @@
   to HOME instead). So the last **six Champions-origin** Pokemon hold their
   slots permanently, and a HOME-origin copy is never "a duplicate to release" -
   every HOME-origin Pokemon may stay duplicated. `releaseBlock()` in
-  `tracker/src/02-state.js` is the one place both rules live.
+  `tracker/src/core/state.js` is the one place both rules live.
 - **Light Clay extends Aurora Veil**, not only Light Screen and Reflect, despite
   the item text naming only those two.
 - **Freeze-Dry does not freeze in Champions (player, 2026-09-27).** Serebii's

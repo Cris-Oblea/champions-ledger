@@ -1,6 +1,40 @@
-/* 02-state.js - S: the ledger as this device sees it, and what a build is bound to.
-   Part of the app; assembled into one script by scripts/build_tracker_page.py. */
-import { byName, byText } from "./01-data.js";
+/* His state (S), loaded from the ledger, and the rules about his box that
+   every screen asks the same way: origin, the release floor, what a build is
+   bound to, and the lists' sort and search state (VIEW, FIND).
+
+   S is exported as an OBJECT on purpose: another module may set S.box or
+   S.tab, but `S = ...` anywhere but here is a build error rather than a
+   silent second ledger. */
+import { byName, byText, dexNo } from "./data.js";
+
+/* VIEW state, read all over the app and written by the controls in boot.js:
+   the box sort, and whether HOME shows every row. One exported object rather
+   than two exported variables, because an importer may change an object's
+   properties but may never reassign another module's binding. */
+const VIEW = {sort: "dex", homeAll: false};
+function rowMatches(r, q){
+  if (!q) return true;
+  if (r.name.toLowerCase().includes(q)) return true;
+  if (String(dexNo(r.name)).includes(q)) return true;
+  var p = byName[r.name];
+  if (p?.types.join(" ").toLowerCase().includes(q)) return true;
+  if (q === "shiny" && r.shiny) return true;
+  if (q === "trained" && r.trained) return true;
+  if (r.note && String(r.note).toLowerCase().includes(q)) return true;
+  return false;
+}
+function sortRows(rows){
+  var r = rows.slice();
+  if (VIEW.sort === "az") {
+    r.sort(function(a, b){ return a.name.localeCompare(b.name); });
+  } else {
+    r.sort(function(a, b){
+      return dexNo(a.name) - dexNo(b.name) || a.name.localeCompare(b.name);
+    });
+  }
+  return r;
+}
+
 /* ===================================================================== state */
 const S = {box:{}, builds:{}, teams:{}, stones:{}, items:{}, gts:{},
          meta:{}, db:null, ready:false, tab:"box"};
@@ -146,15 +180,43 @@ function ownedNames(){
   return m;
 }
 
-/* ------------------------------------------------------- what leaves here --
-   S itself is exported, and it is the one mutable thing in the app that every
-   part touches. Exporting the OBJECT is deliberate - parts write S.box, S.tab,
-   S.ready, and a module binding may only be reassigned by its own module, so
-   `S = ...` anywhere else is now a build error rather than a silent second
-   ledger. */
+/* --------------------------------------------------------- the search view --
+   The question this exists for is "who learns Imprison AND Wide Guard AND
+   Protect" - a chain that used to mean asking Claude. Filters are ANDed. */
+/* "in my box" was one flag over two different boxes, which cannot answer
+   "do I have this in Champions right now" - the question that decides whether
+   a Pokemon is playable today - separately from "can I bring it in from
+   HOME". Two flags, and both on means either box. */
+/* STATS ARE A FILTER LIKE ANY OTHER NOW, and the sort is what makes this the
+   tier list. It used to be two fixed boxes - "Speed at least", "Speed at
+   most" - which answered one stat and only by filtering, so "where does this
+   sit in the Speed order" had no answer here at all and lived in a separate
+   block with a tab per stat. The player collapsed the two ideas (2026-09-15):
+   one table, per-stat filters, and Find's existing type / ability / move
+   filters compose with them. A speed tier that is also "learns Fake Out and I
+   own one" is a question the old shape could not ask.
+
+   A DIRECTION, NOT A PAIR OF BOUNDS. The first go at this gave every stat a
+   min and a max, and the player cut it the same hour (2026-09-15): "creo que
+   poner el maximo y el minimo esta demas, es mejor un orden ascendente y
+   descendente como opciones, asi veo como se ordena por ese stat de mayor a
+   menor o viceversa."
+
+   He is right, and it also subsumes the thing the old fixed boxes were for.
+   "Speed at most" was labelled the Trick Room filter; sorting Speed ASCENDING
+   answers that better, because it ranks the slow rather than making you guess
+   a threshold first. Two controls became one, and nothing was lost.
+
+   `sort` is a stat key, "bst" or "dex". `dir` is "desc" or "asc"; tapping the
+   stat you are already on flips it. */
+const FIND = {q: "", moves: [], types: [], notTypes: [], typeMode: "and",
+            ability: "",
+            inChamp: false, inHome: false,
+            sort: "bst", dir: "desc", cat: ""};
+
 export {
-  ORIGIN_LABEL, RELEASE_FLOOR, S,
-  activeAbility, baseAbility, boxRows, buildLink, buildsFor, capacity,
-  hasStone, megaAbility, originOf, originRows, releaseBlock,
-  hasItem, ownedItems, ownedNames, ownedStones, soleAbility,
+  activeAbility, baseAbility, boxRows, buildLink, buildsFor, capacity, FIND,
+  hasItem, hasStone, megaAbility, ORIGIN_LABEL, originOf, originRows,
+  ownedItems, ownedNames, ownedStones, RELEASE_FLOOR, releaseBlock,
+  rowMatches, S, soleAbility, sortRows, VIEW,
 };

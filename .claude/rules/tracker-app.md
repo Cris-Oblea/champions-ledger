@@ -62,16 +62,21 @@ with the model: an idea is a first-class state now.
 Farigiraf gets the id `farigiraf`, and a fallback would silently marry it to a
 box row of the same name.
 
-**The app is twelve ES modules, not one file.** `tracker/src/` holds
-`01-data.js` through `13-boot.js` (there is no `10`), plus `style.css` and `markup.html`, and
-`scripts/build_tracker_page.py` links them with esbuild at build time into
-`tracker/index.template.html`'s shell, then splits the result into
-`tracker/dist/`. **Edit the part, never `index.template.html` (a 23-line shell
-of markers), never `dist/` and never `tracker/src/_*.js` (all generated).**
-Load order is whatever the imports say, with one fixed point: the generated
-`_entry.js` imports `13-boot.js` FIRST, and `check_order()` asserts it on every
-build. The file-number order that concatenation used to impose no longer
-matters. `tracker/README.md` has the full write-up.
+**The app is ES modules in three layers (player, 2026-09-29: "carpetas por
+capa").** `tracker/src/core/` (data, state, rules, DOM helpers, store),
+`tracker/src/ui/` (what several tabs share), `tracker/src/tabs/` (one file per
+screen) and `tracker/src/boot.js`, plus `style.css` and `markup.html`.
+**A part imports from its own layer or a lower one, and no import cycle is
+allowed**: ESLint flags it on the line, `check_graph()` in
+`scripts/build_tracker_page.py` fails the build. When a lower layer needs a
+higher one, the higher one registers itself (`whenChanged(renderAll)`,
+`onShow(tab, draw)`) instead of being imported. A rule with no screen in it
+(GTS value, team report, build cost) goes to `core/`, never into a tab file.
+The build links the parts with esbuild into `tracker/index.template.html`'s
+shell, then splits the result into `tracker/dist/`. **Edit the part, never
+`index.template.html` (a 23-line shell of markers), never `dist/` and never
+`tracker/src/_*.js` (all generated).** `docs/ARCHITECTURE.md` §4.2 says what
+each file owns; `tracker/README.md` has the full write-up.
 
 ESLint runs inside the gate (`eslint.config.mjs`): `no-undef` is the check the
 split needs, because a name one part uses without importing is invisible in

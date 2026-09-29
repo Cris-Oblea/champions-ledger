@@ -182,12 +182,11 @@ def gate():
     import daily
     py, node, browser = (len(daily.GATE_CHECKS), len(daily.SOURCE_CHECKS),
                          len(daily.BROWSER_TESTS))
-    # the NUMBERED parts: what a person edits. tracker/src/ also holds the
-    # bridge and the entry that build_tracker_page.py generates, and counting
-    # those made the README claim fifteen files the first time this ran after
-    # the module pass.
-    parts = len([f for f in os.listdir(os.path.join(ROOT, "tracker", "src"))
-                 if f.endswith(".js") and f[0].isdigit()])
+    # the parts a person edits, counted by the one function that decides what
+    # a part is - tracker/src/ also holds the entry the build generates, and
+    # counting that made the README claim fifteen files once
+    import build_tracker_page
+    parts = len(build_tracker_page.parts())
     return (
         "**The gate** is %s checks, and nothing reaches the phone without\n"
         "passing all of them:\n\n"

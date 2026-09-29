@@ -47,6 +47,22 @@ export default [
   },
   { files: ["tracker/src/**/*.js"],
     languageOptions: { sourceType: "module", globals: globals.browser } },
+  /* THE LAYERS: core <- ui <- tabs <- boot.js. A part imports from its own
+     layer or a lower one, never a higher one. build_tracker_page.py checks the
+     same rule and also refuses any import cycle; this says it in the editor,
+     on the line that breaks it. */
+  { files: ["tracker/src/core/**/*.js"],
+    rules: { "no-restricted-imports": ["error", { patterns: [{
+      group: ["../ui/*", "../tabs/*", "../boot.js"],
+      message: "core/ is the bottom layer: it imports only from core/." }] }] } },
+  { files: ["tracker/src/ui/**/*.js"],
+    rules: { "no-restricted-imports": ["error", { patterns: [{
+      group: ["../tabs/*", "../boot.js"],
+      message: "ui/ imports from core/ and ui/ only - a shared piece never knows which tab it is in." }] }] } },
+  { files: ["tracker/src/tabs/**/*.js"],
+    rules: { "no-restricted-imports": ["error", { patterns: [{
+      group: ["../boot.js"],
+      message: "Nothing imports boot.js: it starts the app." }] }] } },
   { files: ["tests/**/*.js", "scripts/**/*.js"],
     languageOptions: { sourceType: "commonjs", globals: globals.node } },
   { files: ["cron/**/*.js"],

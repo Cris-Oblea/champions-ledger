@@ -1,22 +1,28 @@
-/* 13-boot.js - renderAll(), go(), and everything that runs on load.
-   Part of the app; linked into one script by scripts/build_tracker_page.py. */
+/* Starts the app: wires the controls, draws the first screen, connects the
+   store. renderAll() is the one redraw every change ends in. */
+/* FIRST, so a script error anywhere after this line is caught and shown. */
+import "./core/errors.js";
+import { byName } from "./core/data.js";
+import { $, el, fbtn, note, wireClears } from "./core/dom.js";
 import {
-  $, byName, el, rowMatches, sortRows, wireClears, VIEW,
-} from "./01-data.js";
+  boxRows, capacity, originRows, RELEASE_FLOOR, releaseBlock, rowMatches,
+  sortRows, VIEW,
+} from "./core/state.js";
+import { whenChanged } from "./core/store.js";
 import {
-  RELEASE_FLOOR, S, boxRows, capacity, originRows, releaseBlock,
-} from "./02-state.js";
-import { connect } from "./03-store.js";
-import { buildTabs, fbtn, go, leaveEditor, mq } from "./04-nav.js";
-import { addSheet, drawDexPane, pokeRow } from "./05-box.js";
-import { buildRow, buildSheet } from "./06-builds.js";
-import { drawItems, drawStatuses, drawStones, drawTrainer } from "./07-gear.js";
-import { drawTeams } from "./08-teams.js";
-import { drawGts, drawGtsWanted } from "./09-gts.js";
-import { CALC, calcDraw } from "./11-damage.js";
-import {
-  checkLatest, drawDiag, drawDupeHome, findInit,
-} from "./12-find.js";
+  buildsPane, buildTabs, go, leaveEditor, mq, onShow,
+} from "./ui/nav.js";
+import { connect } from "./ui/signin.js";
+import { addSheet, drawDexPane, drawDupeHome, fill } from "./tabs/box.js";
+import { buildSheet, drawBuilds } from "./tabs/builds.js";
+import { CALC, calcDraw } from "./tabs/damage.js";
+import { findDraw, findInit } from "./tabs/find.js";
+import { drawItems, drawStatuses, drawStones } from "./tabs/gear.js";
+import { drawGts } from "./tabs/gts.js";
+import { checkLatest, drawDiag, drawTrainer } from "./tabs/settings.js";
+import { drawTeams } from "./tabs/teams.js";
+import { drawGtsWanted } from "./tabs/trading.js";
+
 /* ==================================================================== render */
 function renderAll(){
   var perm = boxRows("champions", "permanent");
@@ -151,35 +157,6 @@ function renderAll(){
   drawDiag();
   checkLatest();
 }
-function note(kind, html){
-  var n = el("div", "note " + kind);
-  n.style.marginBottom = "10px";
-  n.innerHTML = html;
-  return n;
-}
-function fill(node, rows, emptyMsg){
-  node.innerHTML = "";
-  if (!rows.length) { node.appendChild(el("div", "empty", emptyMsg)); return; }
-  rows.forEach(function(r){ node.appendChild(pokeRow(r)); });
-}
-function drawBuilds(){
-  var q = ($("buildSearch").value || "").trim().toLowerCase();
-  var node = $("listBuilds");
-  node.innerHTML = "";
-  var ids = Object.keys(S.builds).sort(function(a, b){
-    return String(S.builds[a].pokemon).localeCompare(String(S.builds[b].pokemon));
-  }).filter(function(id){
-    var b = S.builds[id];
-    return !q || (b.pokemon + " " + (b.role || "") + " " +
-                  (b.moves || []).join(" ")).toLowerCase().includes(q);
-  });
-  if (!ids.length) {
-    node.appendChild(el("div", "empty",
-      Object.keys(S.builds).length ? "Nothing matches" : "No builds yet"));
-    return;
-  }
-  ids.forEach(function(id){ node.appendChild(buildRow(id, S.builds[id])); });
-}
 
 /* ======================================================================= go */
 /* THE EXPLANATION STOPS STANDING IN FRONT OF THE ANSWER.
@@ -238,6 +215,9 @@ function foldIntros(){
       p.appendChild(more);
     });
 }
+onShow("calc", calcDraw);
+onShow("find", findDraw);
+whenChanged(renderAll);
 buildTabs();
 findInit();
 go("box");
@@ -341,22 +321,6 @@ function gearPane(which){
 }
 $("gearStones").onclick = function(){ gearPane("stones"); };
 $("gearItems").onclick  = function(){ gearPane("items"); };
-
-/* Builds and Teams share one tab, by the same switcher. An eighth tab wrapped
-   the phone's bar onto two rows, which cost more than the tab was worth
-   (player, 2026-09-13) - and they belong together anyway, since a team IS six
-   builds. */
-function buildsPane(which){
-  var panes = {builds:"buildsPane", teams:"teamsPane"};
-  var btns = {builds:"bldPaneBuilds", teams:"bldPaneTeams"};
-  Object.keys(panes).forEach(function(k){
-    $(panes[k]).hidden = k !== which;
-    $(btns[k]).setAttribute("aria-pressed", k === which ? "true" : "false");
-  });
-  /* the "New build" button in the header belongs to the Builds pane only */
-  var add = $("buildAdd");
-  if (add) add.hidden = which !== "builds";
-}
 $("bldPaneBuilds").onclick = function(){ buildsPane("builds"); };
 $("bldPaneTeams").onclick  = function(){ buildsPane("teams"); };
 $("railBtn").onclick = function(){
@@ -384,15 +348,3 @@ try {
 renderAll();
 foldIntros();
 connect();
-
-/* ------------------------------------------------------- what leaves here --
-   This file STARTS the app - the statements at the bottom build the tab bar,
-   draw the first screen and connect to the store - which is why the entry
-   imports it first: everything it touches is built by the time it runs.
-
-   It is also the only part that imports every other one, and that is the
-   shape it should have. `renderAll` is the one redraw, called from the store
-   whenever a row changes; `fill`, `note` and `buildsPane` are the three small
-   pieces other views ask it for. `drawBuilds` and `gearPane` are private.
-*/
-export { buildsPane, fill, note, renderAll };

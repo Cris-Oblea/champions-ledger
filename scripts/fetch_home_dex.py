@@ -74,7 +74,7 @@ GAPS = os.path.join(ROOT, "data", "db", "sprite_gaps.json")
 # The sprite commit is pinned in the APP, which is what builds the URLs, and
 # read from there - one pin, so the ids written here can never be checked
 # against a different commit than the one the phone fetches from.
-APP_DATA = os.path.join(ROOT, "tracker", "src", "01-data.js")
+APP_DATA = os.path.join(ROOT, "tracker", "src", "core", "data.js")
 SPRITE_RAW = os.path.join(ROOT, "data", "raw", "pokeapi_sprites")
 FLAGS = os.path.join(ROOT, "data", "db", "species_flags.json")
 # PokeAPI/pokeapi, BSD-3-Clause, pinned. Bump deliberately and read the diff.

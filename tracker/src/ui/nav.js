@@ -1,15 +1,12 @@
-/* 04-nav.js - Tabs, editor views, and the modal sheet they used to be.
-   Part of the app; linked into one script by scripts/build_tracker_page.py. */
-import { $, el } from "./01-data.js";
-import { S } from "./02-state.js";
-/* Three redraws, one per tab that has to rebuild itself when it is shown.
-   Each is only ever CALLED - two of them from a setTimeout - so the cycles
-   they form with this file (all three import `go` back) cost nothing:
-   function declarations are hoisted, and nothing runs while the modules are
-   still loading. */
-import { calcDraw } from "./11-damage.js";
-import { findDraw } from "./12-find.js";
-import { buildsPane } from "./13-boot.js";
+/* Tabs, the two editor views, the modal sheet, the app's own confirm, and
+   the phone's Back button.
+
+   A small surface on purpose: go() changes tab, openSheet() shows a sheet,
+   ask() asks. The tab bar's own data, the scroll lock behind a sheet and the
+   history counters stay private. */
+import { $, el } from "../core/dom.js";
+import { S } from "../core/state.js";
+
 /* ===================================================================== tabs */
 var TABS = [
   /* One word each. "Champs Box" was the only label that wrapped to two lines
@@ -72,6 +69,12 @@ var EXTRA_VIEWS = ["buildedit", "teamedit"];
 /* which tab stays lit while an editor is open - both belong to Builds */
 var EDITOR_HOME = {buildedit: "builds", teamedit: "builds"};
 
+/* A tab that rebuilds itself every time it is shown registers its redraw
+   here - boot.js: onShow("calc", calcDraw) - so navigation never imports
+   the tabs it switches between. */
+const ON_SHOW = {};
+function onShow(tab, fn){ ON_SHOW[tab] = fn; }
+
 function go(tab){
   /* ONE HISTORY ENTRY PER TAB CHANGE, so Back walks them one at a time.
 
@@ -95,8 +98,7 @@ function go(tab){
     try { history.pushState({champTab: TABHIST.length}, ""); } catch (e) {}
   }
   S.tab = tab;
-  if (tab === "calc") setTimeout(calcDraw, 0);
-  if (tab === "find") setTimeout(findDraw, 0);
+  if (ON_SHOW[tab]) setTimeout(ON_SHOW[tab], 0);
   TABS.forEach(function(t){
     $("v-" + t[0]).hidden = t[0] !== tab;
   });
@@ -254,21 +256,6 @@ function ask(title, body, okLabel, danger){
   });
 }
 
-function fbtn(label, cls, fn){
-  var b = el("button", "btn " + (cls || ""), label);
-  b.onclick = fn;
-  return b;
-}
-
-/* ------------------------------------------------------- what leaves here --
-   Navigation is a small surface on purpose: everything else asks `go` to
-   change tab, `openSheet` to show a sheet and `fbtn` for a footer button.
-
-   What stays private is the furniture - TABS and EXTRA_VIEWS (the tab bar's
-   own data), lockScroll and _lockY (the iOS scroll lock behind a sheet),
-   syncNavHeight and EDITOR_HOME. Before the module pass any of the
-   other twelve parts could have reached in and set _lockY. */
-
 /* ================================================= THE PHONE'S BACK BUTTON ==
    On Android, Back minimised the app.
 
@@ -350,6 +337,23 @@ window.addEventListener("popstate", function(){
   } finally { NAV_BACK = false; }
 });
 
+/* Builds and Teams share one tab, by the same switcher. An eighth tab wrapped
+   the phone's bar onto two rows, which cost more than the tab was worth
+   (player, 2026-09-13) - and they belong together anyway, since a team IS six
+   builds. */
+function buildsPane(which){
+  var panes = {builds:"buildsPane", teams:"teamsPane"};
+  var btns = {builds:"bldPaneBuilds", teams:"bldPaneTeams"};
+  Object.keys(panes).forEach(function(k){
+    $(panes[k]).hidden = k !== which;
+    $(btns[k]).setAttribute("aria-pressed", k === which ? "true" : "false");
+  });
+  /* the "New build" button in the header belongs to the Builds pane only */
+  var add = $("buildAdd");
+  if (add) add.hidden = which !== "builds";
+}
+
 export {
-  ask, buildTabs, closeSheet, fbtn, go, leaveEditor, mq, openEditor, openSheet,
+  ask, buildsPane, buildTabs, closeSheet, go, leaveEditor, mq, onShow,
+  openEditor, openSheet,
 };

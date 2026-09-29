@@ -1150,7 +1150,7 @@ improved it was improved **by copying the best one of the moment into that one
 place**. Copying is what spreads a fix and guarantees the next one is missed.
 
 So there is now exactly one implementation - `pokeCard()` in
-`tracker/src/01-data.js` - and every list in the app calls it. It draws the
+`tracker/src/01-data.js` (replaced by `tracker/src/ui/card.js` on 2026-09-29) - and every list in the app calls it. It draws the
 type band and the tint, the sprite (his copy's shiny palette when the row is
 shiny), the Mega chips with the stone each needs, BST and the abilities with
 what the Mega turns them into, the six stats with the Mega's deltas, and the
@@ -1254,7 +1254,7 @@ marked nothing.
 a box, a tooltip, a sheet tag, a picker button and a build badge. A stone is an
 item and the Items tab tracks items; a Mega has its ability whether or not the
 stone is in the bag. `01-data.js` stopped importing anything at all as a
-result.
+result (the file was replaced by the `core/` and `ui/` layers on 2026-09-29).
 
 **And the sheet became a stack of Pokemon.** First its head stopped repeating
 the Mega line that the Mega blocks already carry; then the Mega's ability got
