@@ -97,7 +97,9 @@ which regulation, a number came from.
 - `main` is protected: branch, open a PR, and the gate must pass
   (`python scripts/daily.py`). A merge deploys the app.
 - A change to what the app IS goes into `README.md` in the same PR. Its counts
-  are generated (`scripts/build_docs.py`), never typed.
+  are generated (`scripts/build_docs.py`), never typed. A change to how it is
+  BUILT goes into `docs/ARCHITECTURE.md`; the gate fails on any module,
+  workflow, pipeline script, table or npm package the map does not name.
 - When a decision reverses, add it to `DECISIONS` in `scripts/check_docs.py` in
   the same commit, so no document can go on stating the old one.
 - Edit the parts in `tracker/src/`, never `tracker/dist/` (generated) or

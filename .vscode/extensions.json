@@ -3,7 +3,12 @@
     "bierner.markdown-mermaid",
     "streetsidesoftware.code-spell-checker",
     "github.vscode-pull-request-github",
+    "github.vscode-github-actions",
     "eamodio.gitlens",
-    "ms-python.python"
+    "usernamehw.errorlens",
+    "sonarsource.sonarlint-vscode",
+    "ms-python.python",
+    "mtxr.sqltools",
+    "mtxr.sqltools-driver-pg"
   ]
 }

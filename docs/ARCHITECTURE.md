@@ -48,12 +48,12 @@ public because it carries no personal row.
 | UI | **Vanilla JavaScript** (ES modules), HTML, CSS. No framework | `tracker/src/` | One user, one page. The DOM API is enough, and there is no framework version to keep up with |
 | Module linking | **esbuild** (pinned in `package-lock.json`) | `scripts/build_tracker_page.py` | Turns twelve modules into one script plus a sourcemap. The browser tests run in jsdom, which cannot load module scripts |
 | Database | **Supabase**: PostgreSQL, with PostgREST as the HTTP API, Auth for the login and Realtime for live updates | `tracker/supabase_schema.sql`, `supabase_migrate_*.sql` | Free hosted Postgres with login and row-level security built in |
-| DB client | **supabase-js**, inlined from `node_modules` (not a CDN) | `package.json` | A CDN would be a third party inside a page that holds the ledger |
+| DB client | **supabase-js** (`@supabase/supabase-js`), inlined from `node_modules` (not a CDN) | `package.json` | A CDN would be a third party inside a page that holds the ledger |
 | Hosting | **Cloudflare Workers**, static assets only | `tracker/wrangler.toml` → `tracker/dist/` | Free, fast, and the served folder is only `dist/`, so nothing private can leak |
 | Scheduler | A second **Cloudflare Worker** (JavaScript, Web Crypto) | `cron/src/cron.js` | Starts the nightly GitHub workflow on time; GitHub's own schedule ran hours late |
 | Data pipeline | **Python 3**, standard library only (`urllib`, `json`, `re`, `argparse`, `html`) | `scripts/` | No `pip install` needed anywhere |
 | Damage maths | **Smogon's damage-calc** (TypeScript, copied from upstream, bundled with esbuild), plus our own Python port | `scripts/build_engine_bundle.py` → `tracker/engine.bundle.js`; `scripts/damage.py` | The page runs Smogon's real engine; the Python port is checked against it |
-| Tests | **Node + jsdom** browser tests; **acorn** for a static check of the modules; Python audits | `tests/`, `scripts/check_app.js`, `scripts/audit_*.py` | Tests run against the *built* page, which is the thing that ships |
+| Tests | **Node + jsdom** browser tests; **acorn** + **acorn-walk** for a static check of the modules; Python audits | `tests/`, `scripts/check_app.js`, `scripts/audit_*.py` | Tests run against the *built* page, which is the thing that ships |
 | CI/CD | **GitHub Actions**, a GitHub App bot, **Dependabot**, a git `pre-push` hook | `.github/`, `scripts/hooks/pre-push` | Nothing reaches the phone without passing the gate |
 | Fonts / sprites | Google Fonts (IBM Plex), Pokemon sprites from a CDN at a pinned commit | `tracker/index.template.html`, `spriteFor()` in `tracker/src/01-data.js` | Sprites are Nintendo's images, so the repo ships only their ids |
 | Dev tools | Supabase CLI, `npx wrangler`, `gh`, graphify | your machine | Reading the DB, deploying the cron, PRs, the code map |
@@ -195,7 +195,7 @@ than UUIDs, because the pickers show them.
 | `schema_migrations` | A migration already applied | the file name |
 
 The column list above is a summary; `tracker/supabase_schema.sql` plus the
-`supabase_migrate_N.sql` files, applied in order, are the truth.
+`supabase_migrate_<N>.sql` files, applied in order, are the truth.
 
 **Security, in three layers:**
 
@@ -206,7 +206,7 @@ The column list above is a summary; `tracker/supabase_schema.sql` plus the
 3. **The secret key** (`service_role` / `sb_secret_`) bypasses RLS, so
    `build_tracker_page.py` refuses to build if it finds one.
 
-**Migrations:** add `tracker/supabase_migrate_N.sql`, written so it is safe
+**Migrations:** add `tracker/supabase_migrate_<N>.sql`, written so it is safe
 to run twice, then run `python scripts/migrate.py`. The gate fails while any
 migration is still pending (`--check`).
 
@@ -254,7 +254,7 @@ compares the live one with `data/db/regulation.json`, and
    together with the engine, supabase-js, the config and the game DB.
 3. **`build_dist()`**: splits that page into `dist/`: a small `index.html`
    plus one file per block, named by a hash of its content
-   (`dex.3f2a91c0.js`). A file that did not change keeps its name, and the
+   (`dex.<hash>.js`). A file that did not change keeps its name, and the
    browser never downloads it again. It also writes `_headers` (the
    Content-Security-Policy and the caching rules), the PWA manifest and the
    icons, and it refuses to finish if anything unexpected is in `dist/`.
@@ -346,6 +346,9 @@ gh pr create                          # CI gates it; merge = deploy
 - **Markdown preview:** Ctrl+Shift+V, or Ctrl+K V to open it beside the
   source. The diagram in §1 needs the Mermaid extension; GitHub renders it
   without anything.
+- **`.vscode/settings.json`** makes the generated files read-only, keeps
+  them and the 195 MB source cache out of search, and keeps SonarQube off
+  them, so what it reports is code a person wrote.
 - **Recommended extensions** are listed in `.vscode/extensions.json`, so
   VS Code offers to install them when the repo opens (or: Extensions panel,
   filter `@recommended`).

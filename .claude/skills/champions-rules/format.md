@@ -59,9 +59,7 @@ a `build_constraint`, which is a fact about the build, not an item preference.
 
 **An item lives on a TEAM SLOT**, in the app, with the one-line reason it got
 that item. The picker greys out anything another slot holds, so the Item Clause
-is enforced where the choice is made. Five older teams' reasoning - why each
-Pokemon is there, the shared type holes, what was measured and rejected - is
-kept as a write-up in `analysis/team_plans.json`; it is planning, not state.
+is enforced where the choice is made.
 
 The most contested items are Focus Sash (339 Worlds teams), Sitrus Berry (309)
 and Life Orb (273).
