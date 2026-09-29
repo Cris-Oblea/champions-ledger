@@ -1,15 +1,16 @@
-/* 07-gear.js - Items, stones, statuses, and the Settings tab.
-   Part of the app; linked into one script by scripts/build_tracker_page.py. */
+/* The Items tab: Mega Stones, held items and the status reference.
+
+   setItem is the only write for an item, which is what keeps the Item
+   Clause honest: the team picker greys out what another slot holds, and
+   that is only true if nothing else can set one. */
+import { byName, C } from "../core/data.js";
+import { $, el, toast } from "../core/dom.js";
 import {
-  $, C, COSTS, byName, effectLine, el, numText, pokeFacts, toast,
-} from "./01-data.js";
-import { S, boxRows, capacity, hasStone, ownedItems, ownedNames,
-         ownedStones } from "./02-state.js";
-import { drop, patch, put } from "./03-store.js";
-/* One button on the Settings tab opens the team sheet. Called from a click
-   handler, never while loading, so the cycle it forms with 08-teams - which
-   reaches back here for nothing, but might - would cost nothing either. */
-import { teamSheet } from "./08-teams.js";
+  hasStone, ownedItems, ownedNames, ownedStones,
+} from "../core/state.js";
+import { drop, put } from "../core/store.js";
+import { effectLine, numText, pokeFacts } from "../ui/card.js";
+
 /* ====================================================================== gear */
 function drawStones(){
   var q = ($("stoneSearch").value || "").trim().toLowerCase();
@@ -280,107 +281,4 @@ function setItem(name, own){
     });
 }
 
-/* =================================================================== profile
-   One editable number and three derived panels. The editable one is box
-   capacity, because the app acts on it and only Champions can change it; every
-   other field that used to live here was hand-typed, unread, and wrong by the
-   time anyone looked (player, 2026-09-12). */
-function kv(host, rows){
-  host.innerHTML = "";
-  rows.forEach(function(r){
-    if (r == null) return;
-    host.appendChild(el("dt", null, r[0]));
-    var d = el("dd", null, String(r[1]));
-    if (r[2]) { d.style.color = "var(--" + r[2] + ")"; }
-    if (r[3]) d.title = r[3];
-    host.appendChild(d);
-  });
-}
-
-function drawTrainer(){
-  var t = S.meta.trainer || {};
-  if (document.activeElement?.closest?.("#v-trainer")) return;
-  $("tCap").value = t.box_capacity != null ? t.box_capacity : 50;
-
-  /* the capacity number means nothing without the usage beside it */
-  var inChamp = boxRows("champions");
-  var cap = capacity(), used = inChamp.length, free = cap - used;
-  var cu = $("capUse");
-  cu.innerHTML = "";
-  cu.appendChild(el("span", "dot"));
-  cu.appendChild(document.createTextNode(
-    used + " of " + cap + " used · " + Math.max(free, 0) + " free"));
-  cu.style.color = "";
-  if (free <= 0) cu.style.color = "var(--bad)";
-  else if (free <= 3) cu.style.color = "var(--warn)";
-
-  var rent = boxRows("champions", "rental").length;
-  var home = boxRows("home").length;
-  var stones = ownedStones().length;
-  kv($("profCounts"), [
-    ["In the Champions box", used + " (" + (used - rent) + " bought, " +
-                             rent + " rental" + (rent === 1 ? "" : "s") + ")"],
-    ["In HOME", home],
-    ["Builds written", Object.keys(S.builds).length],
-    ["Mega Stones owned", stones + " of " + (C.STONES || []).length]
-  ]);
-
-  /* Vintage, read off the blob rather than typed. The stored `regulation` key
-     said M-B three days into M-C, which is exactly the failure this replaces. */
-  kv($("profData"), [
-    ["Regulation", (C.REG || "unknown") +
-       (C.REG_STARTED ? " · since " + C.REG_STARTED : "")],
-    ["Dex", (C.DEX || []).length + " forms, " + (C.STONES || []).length +
-            " Mega Stones"],
-    ["Moves", (C.MOVES || []).length + " useable, " +
-              Object.keys(C.AB_MOVES || {}).length + " ability rules"],
-    ["Ladder usage", C.USAGE_AT
-       ? "fetched " + C.USAGE_AT + ", " + (C.REG || "?") + " ladder"
-       : "unknown"],
-    /* The per-Pokemon splits are a SEPARATE asset on a separate clock - the
-       dex is rebuilt nightly, these weekly - so their date is its own line.
-       Two numbers from two fetches shown under one date is how a stale one
-       hides. */
-    ["What each Pokemon runs", (function(){
-      var S = window.CHAMP_SPLITS || {};
-      var n = Object.keys(S.p || {}).length;
-      return n ? n + " Pokemon, " + (S.r || "?") +
-                 " tournaments, fetched " + (S.f || "?") + " · weekly"
-               : "not in this build";
-    })(), null,
-      "Refreshed by the Monday deep run. Moves are a share of move slots, " +
-      "everything else a share of sets."],
-    ["Tournament data", "Worlds 2026, played under M-B — history, not current",
-       null, "A finished event keeps the format it was played in"],
-    ["Page built", window.CHAMP_BUILD || "unknown"]
-  ]);
-
-  var c = $("costs");
-  /* No affordability colouring any more: it read the hand-typed VP balance,
-     and colouring against a stale number is worse than not colouring. */
-  kv(c, [["A ranked win pays", "+" + COSTS.ranked_win + " VP"],
-         ["Stat Point", COSTS.training_stat_point + " VP"],
-         ["Move", COSTS.training_move + " VP"],
-         ["Nature", COSTS.training_nature + " VP"],
-         ["Ability", COSTS.training_ability + " VP"],
-         ["Mega Stone", COSTS.mega_stone_shop + " VP"],
-         ["Keep a rental", COSTS.keep_rental_pokemon + " VP"],
-         ["Full four-move retune", (COSTS.training_move * 4) + " VP"],
-         ["Ranked wins that pays for",
-          Math.ceil(COSTS.training_move * 4 / COSTS.ranked_win)]]);
-}
-$("teamAdd").onclick = function(){ teamSheet(null, null); };
-$("tSave").onclick = function(){
-  patch("meta/trainer", {
-    box_capacity:Number($("tCap").value) || 50
-  }).then(function(){ toast("Box capacity saved"); });
-};
-
-/* ------------------------------------------------------- what leaves here --
-   Four drawings, one per panel. Everything they are built from is private:
-   ITEM_CATS and the item row, the stone toggle, the price helpers, and `kv`.
-
-   `setItem` in particular: the Item Clause is enforced by the picker greying
-   out what another slot holds, and that rule is only correct if every write
-   goes through here. It is now unreachable from anywhere else. */
-export { drawItems, drawStatuses, drawStones, drawTrainer };
+export { drawItems, drawStatuses, drawStones };

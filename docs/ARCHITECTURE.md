@@ -23,7 +23,7 @@ flowchart TB
   B --> DB[("data/db/ + data/meta/<br/>JSON, in git")]
   DB --> CLI["query.py / damage.py<br/>command line"]
   DB --> TD["build_tracker_data.py"] --> DJS["tracker/data.js"]
-  APP["tracker/src/*.js<br/>the app"] --> TP
+  APP["tracker/src/**/*.js<br/>the app"] --> TP
   DJS --> TP["build_tracker_page.py<br/>esbuild + split"]
   TP --> DIST["tracker/dist/"]
   DIST -->|"wrangler deploy<br/>(on merge)"| CF["Cloudflare"]
@@ -55,7 +55,7 @@ public because it carries no personal row.
 | Damage maths | **Smogon's damage-calc** (TypeScript, copied from upstream, bundled with esbuild), plus our own Python port | `scripts/build_engine_bundle.py` → `tracker/engine.bundle.js`; `scripts/damage.py` | The page runs Smogon's real engine; the Python port is checked against it |
 | Tests | **Node + jsdom** browser tests; **ESLint** with **globals**, **eslint-plugin-sonarjs** and **eslint-plugin-unicorn** for the source; Python audits | `tests/`, `eslint.config.mjs`, `scripts/check_app.js`, `scripts/audit_*.py` | Tests run against the *built* page, which is the thing that ships |
 | CI/CD | **GitHub Actions**, a GitHub App bot, **Dependabot**, a git `pre-push` hook | `.github/`, `scripts/hooks/pre-push` | Nothing reaches the phone without passing the gate |
-| Fonts / sprites | Google Fonts (IBM Plex), Pokemon sprites from a CDN at a pinned commit | `tracker/index.template.html`, `spriteFor()` in `tracker/src/01-data.js` | Sprites are Nintendo's images, so the repo ships only their ids |
+| Fonts / sprites | Google Fonts (IBM Plex), Pokemon sprites from a CDN at a pinned commit | `tracker/index.template.html`, `spriteFor()` in `tracker/src/ui/card.js` | Sprites are Nintendo's images, so the repo ships only their ids |
 | Dev tools | Supabase CLI, `npx wrangler`, `gh`, graphify | your machine | Reading the DB, deploying the cron, PRs, the code map |
 
 **Languages, in order of how much of the repo they are:** JavaScript, Python,
@@ -93,13 +93,14 @@ analysis/          Write-ups and investigations; history.md = session log
 
 - **`markup.html`** holds every screen as a static `<section>`. Changing tabs
   only toggles `hidden`; the page never navigates.
-- **`S`** (in `02-state.js`) is the one state object: `S.box`, `S.builds`,
+- **`S`** (in `core/state.js`) is the one state object: `S.box`, `S.builds`,
   `S.teams`, `S.stones`, `S.items`, `S.gts`, `S.meta`. Each is a map from id
   to row, exactly as the database holds it.
-- **`renderAll()`** (in `13-boot.js`) redraws the screens from `S`. Every change
-  that arrives from the database ends in a call to it. It is the React idea of
+- **`renderAll()`** (in `boot.js`) redraws the screens from `S`. Every change
+  that arrives from the database ends in a call to it: the store is handed it
+  once, with `whenChanged(renderAll)`, so it never imports the screen. It is the React idea of
   "UI = f(state)", done by hand.
-- **`el(tag, cls, text)`** (in `01-data.js`) is how every piece of DOM is made.
+- **`el(tag, cls, text)`** (in `core/dom.js`) is how every piece of DOM is made.
   Search for `el("` and you will find the whole UI being drawn.
 - **`window.CHAMP`** is the game database, loaded before the app runs from
   `data.js`. In the app it is `C`. `DEX`, `MOVE_BY` and `byName` are indexes
@@ -107,53 +108,87 @@ analysis/          Write-ups and investigations; history.md = session log
 
 ### 4.2 The modules
 
-Each file starts with a one-line comment that says what it is. The number
-prefix is only a reading order; the real order comes from the imports. There
-is no `10`: that was the screenshot scanner, which only worked inside a Claude
-artifact and was removed.
+`tracker/src/` is three layers and one file that starts them, and **a part may
+only import from its own layer or a lower one**:
+
+```
+core/     the foundations: the game data, his state, the rules, the DOM
+          helpers, the store. Nothing here knows a screen exists.
+ui/       the pieces several tabs share: navigation, the card, a Pokemon's
+          sheet, the move vocabulary, sign-in. Nothing here knows its tab.
+tabs/     one file per screen, or per pane of one.
+boot.js   starts the app: wires the controls, draws the first screen,
+          connects the store. Nothing imports it.
+```
+
+ESLint (`no-restricted-imports` in `eslint.config.mjs`) flags an import that
+climbs a layer, on the line that writes it; `build_tracker_page.py` refuses the
+same and any import cycle (`check_graph()`). A module runs after everything it
+imports, so `core/` always runs first and `boot.js` last. When a lower layer
+has to reach a higher one, the higher one registers itself instead: the store
+is told how to redraw (`whenChanged(renderAll)`), and navigation is told which
+tabs redraw when shown (`onShow("calc", calcDraw)`).
+
+Each file opens with a comment saying what it is for.
 
 | File | What it owns | Main exports |
 |---|---|---|
-| `01-data.js` | The game DB unpacked, DOM helpers, `pokeCard()` (the one Pokemon card), sprites, text formatting | `C`, `DEX`, `byName`, `el`, `$`, `toast`, `pokeCard` |
-| `02-state.js` | `S`, and the rules about his box: origin, release floor, what a build is bound to | `S`, `boxRows`, `buildLink`, `capacity` |
-| `03-store.js` | Every write (`put`, `putNew`, `patch`, `drop`), the Supabase adapter, sign-in | `connect`, `put`, `putNew` |
-| `04-nav.js` | Tabs, editors, sheets, the confirm dialog, the Back button | `go`, `ask`, `closeSheet` |
-| `05-box.js` | Champions box and HOME: rows, adding, the Pokemon sheet | `pokeSheet`, `addSheet` |
-| `06-builds.js` | Build editor: species, Mega, ability, nature, SP, moves, VP cost | `buildSheet`, `buildRow` |
-| `07-gear.js` | Items, stones, statuses, Settings | `drawItems`, `drawStones` |
-| `08-teams.js` | Six slots, Species/Item Clause, team report | `drawTeams`, `teamReport` |
-| `09-gts.js` | Trades: what may be offered, what a chip is worth | `drawGts`, `chipValue` (internal) |
-| `11-damage.js` | Smogon's engine wired to the calculator screen, and which abilities and items its menus offer | `calcDraw`, `engineCalc` |
-| `12-find.js` | The Find tab: filters, sorts, Worlds data, a Pokemon's full sheet | `findRun`, `findDetail` |
-| `13-boot.js` | `renderAll()`, the controls' wiring, and what runs on load | `renderAll` |
+| `core/data.js` | The game DB (`window.CHAMP`) unpacked into lookups, and the pure rules read off it: stats, natures, learnsets, Megas, usage | `C`, `DEX`, `byName`, `MOVE_BY`, `learnset`, `statAt` |
+| `core/state.js` | `S`, the rules about his box (origin, release floor, what a build is bound to), and the lists' sort and search state | `S`, `boxRows`, `buildLink`, `VIEW`, `FIND` |
+| `core/dom.js` | `$`, `el`, the toast, a note, a footer button, the search box | `$`, `el`, `toast`, `note`, `fbtn` |
+| `core/store.js` | Every write, and the Supabase adapter behind them | `put`, `putNew`, `patch`, `drop`, `whenChanged` |
+| `core/assets.js` | The two payloads fetched only on demand: Smogon's analyses, the rest of the dex | `loadAnalysis`, `loadOutside` |
+| `core/errors.js` | Script errors, caught from the first moment, for the diagnostics | `BOOT_ERRORS` |
+| `core/build.js` | What a build may be (the SP budget, the moveset rules) and what a change costs in VP | `checks`, `retuneCost` |
+| `core/team.js` | A team without drawing it: slots, Mega outcomes, the clause report, Speed order, weaknesses | `teamReport`, `teamSpeeds`, `teamTypes` |
+| `core/trade.js` | The GTS rules: keep one per form, what a chip is worth, difficulty, the three slots | `chipValue`, `gtsSuggest`, `keepableCopies` |
+| `ui/nav.js` | Tabs, editors, the sheet, the app's own confirm, the Back button | `go`, `openSheet`, `ask`, `onShow` |
+| `ui/card.js` | `pokeCard()`, the one Pokemon card, and what it is made of: type colours, the stat table, sprites, facts, badges | `pokeCard`, `statGrid`, `typeChip` |
+| `ui/pokemon.js` | One Pokemon's full sheet, with Smogon's analysis panel inside | `pokeHead`, `pokeBody`, `findDetail` |
+| `ui/moves.js` | The move vocabulary: how a move is scored, its tags, which abilities touch it, the movepool filters | `moveFilters`, `moveRowFor`, `abilityTag` |
+| `ui/signin.js` | The sign-in gate and the connection | `connect` |
+| `tabs/box.js` | Champions box and HOME box: rows, adding, a row's sheet, duplicates, the dex checklist | `pokeRow`, `pokeSheet`, `addSheet` |
+| `tabs/builds.js` | The builds list and the build editor | `buildSheet`, `buildRow` |
+| `tabs/teams.js` | The teams list and the team editor; the Item Clause | `drawTeams`, `teamSheet` |
+| `tabs/gear.js` | The Items tab: stones, held items, statuses | `drawStones`, `drawItems` |
+| `tabs/gts.js` | GTS offers: the slots, their history, the deposit and close sheet | `drawGts`, `gtsPickMine` |
+| `tabs/trading.js` | "Worth trading": what each Pokemon you could let go can fetch | `drawGtsWanted` |
+| `tabs/damage.js` | The Damage tab: Smogon's engine and the calculator around it | `calcDraw`, `engineCalc` |
+| `tabs/find.js` | The Find tab: search by type, ability, move and stat | `findRun`, `findDraw` |
+| `tabs/worlds.js` | The Worlds view inside Find | `worldInit` |
+| `tabs/settings.js` | Settings: box capacity, export, diagnostics | `drawTrainer`, `drawDiag` |
+| `boot.js` | `renderAll()`, the controls' wiring, what runs on load | `renderAll` |
 | `style.css` | All the styles. CSS custom properties for the theme | none |
 | `markup.html` | All the screens | none |
 
 To see who depends on whom, press F12 on any imported name in VS Code, or run
-`graphify query "what depends on 03-store.js"`.
+`graphify query "what depends on core/store.js"`.
 
 ### 4.3 Walkthrough: opening the app
 
 1. The browser loads `dist/index.html`, a small shell, and then its hashed
    scripts in this order: supabase-js, Smogon's engine, the config, the game DB
    (`window.CHAMP`), the per-Pokemon splits, and the app.
-2. The app's entry (`tracker/src/_entry.js`, generated) imports `13-boot.js`,
-   which imports everything else. The modules evaluate top to bottom.
-3. The end of `13-boot.js` wires the controls and calls `connect()`
-   (`03-store.js`).
+2. The app's entry (`tracker/src/_entry.js`, generated) imports `boot.js`,
+   which imports everything else. Each module runs after the ones it imports:
+   `core/errors.js` first, so a script error anywhere is caught, and `boot.js`
+   last.
+3. The end of `boot.js` registers the redraws (`whenChanged(renderAll)`,
+   `onShow(...)`), wires the controls and calls `connect()` (`ui/signin.js`).
 4. `connect()` sees `window.CHAMP_CONFIG.supabase` and calls
    `connectSupabase()`, which creates the client and waits for the session.
    With no session it shows the login form; `signInWithPassword` sends the
    email and password.
 5. Once signed in, it loads each table (`box`, `builds`, `teams`, `stones`,
    `items`, `gts`, `meta`) and subscribes to one Realtime channel for all of them.
-6. Each load fills its slice of `S` and calls `renderAll()`. The screen appears.
+6. Each load fills its slice of `S` and calls the redraw the store was
+   handed: `renderAll()`. The screen appears.
 
 ### 4.4 Walkthrough: saving a build
 
-1. You tap Save in the build editor (`06-builds.js`), which calls
+1. You tap Save in the build editor (`tabs/builds.js`), which calls
    `put("builds/<id>", body)` or, for a new build, `putNew("builds", stem, body)`.
-2. `put()` (`03-store.js`) stamps `updated` and calls
+2. `put()` (`core/store.js`) stamps `updated` and calls
    `S.db.doc(path).set(body)`.
 3. The adapter turns the document into a table row and sends an **upsert** to
    PostgREST. A new build uses `create()`, a plain **insert**, so two devices
@@ -248,7 +283,7 @@ compares the live one with `data/db/regulation.json`, and
 
 1. **`link()`**: esbuild bundles `tracker/src/` from the generated
    `_entry.js` into one script plus a **sourcemap**, so an error on the phone
-   still names `09-gts.js` and a line you can read.
+   still names `tabs/gts.js` and a line you can read.
 2. **`assemble()`**: pours the CSS, the markup and the script into
    `tracker/index.template.html`, a shell made of `/*__CHAMP_...__*/` markers,
    together with the engine, supabase-js, the config and the game DB.
@@ -311,7 +346,7 @@ gates and publishes. You never deploy by hand.
 
 ## 10. Known leftovers
 
-- **The Firestore-shaped adapter** in `03-store.js`. The app began as a Claude
+- **The Firestore-shaped adapter** in `core/store.js`. The app began as a Claude
   artifact, whose storage had that shape. It runs on Cloudflare and Supabase
   now, and everything else from the artifact era is gone (the storage
   fallback, the screenshot scanner, the download hook). The adapter works, but
@@ -324,7 +359,7 @@ gates and publishes. You never deploy by hand.
 ```bash
 git switch main && git pull
 git switch -c my-change               # main is protected: always a branch
-# edit tracker/src/*.js or scripts/*.py
+# edit tracker/src/**/*.js or scripts/*.py
 # careful: `daily.py --no-refresh` WITHOUT --skip-deploy publishes. Leave that to CI
 python scripts/build_tracker_page.py  # rebuild dist/
 python scripts/preview.py             # phone, laptop and desktop side by side
@@ -395,7 +430,7 @@ Do each one on a branch, and throw the branch away afterwards.
 1. **Trace a render.** Put a `console.log("render", Object.keys(S.box).length)`
    at the top of `renderAll()`, rebuild, open the page, and edit a note on the
    phone. Watch the PC log it: that is Realtime at work.
-2. **Break the Item Clause.** In `08-teams.js`, find `teamPickItem` and remove
+2. **Break the Item Clause.** In `tabs/teams.js`, find `teamPickItem` and remove
    the check that greys out an item another slot holds. Run
    `node tests/teamtest.js` and read what fails.
 3. **Break a name.** In `norm()` (`scripts/query.py`), stop it removing

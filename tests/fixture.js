@@ -174,9 +174,9 @@ function offer(id, offered, requested, deposited, extra) {
 
 const ROWS = { box, builds, teams, stones, items, gts, meta };
 
-/* The stub. It is the same shape supabase-js presents to 03-store.js and
-   nothing more: a session, a select per table, and a channel that never
-   fires. Written as a <script> because the app reads window.supabase at load. */
+/* The stub. It is the same shape supabase-js presents to the app
+   (ui/signin.js and core/store.js) and nothing more: a session, a select per
+   table, and a channel that never fires. Written as a <script> because the app reads window.supabase at load. */
 function stub() {
   return "<script>window.supabase={createClient:function(){return{" +
     "auth:{getSession:function(){return Promise.resolve({data:{session:{user:{" +

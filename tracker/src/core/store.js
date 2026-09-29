@@ -1,16 +1,10 @@
-/* 03-store.js - put/putNew/patch/drop, the Supabase adapter behind them, and sign-in.
-   Part of the app; assembled into one script by scripts/build_tracker_page.py. */
-import { $, el, toast, byText } from "./01-data.js";
-import { S } from "./02-state.js";
-/* The app's own confirm, rather than the operating system's. 04-nav does not
-   import this file, so the edge adds no cycle. */
-import { ask } from "./04-nav.js";
-/* The one redraw. Every snapshot from the store ends in a call to it, and it
-   is the only thing this file knows about the screen. The cycle it makes with
-   13-boot (which imports put/patch/drop from here) is resolved by the language:
-   both sides are function declarations, and neither is called while the modules
-   are still loading. */
-import { renderAll } from "./13-boot.js";
+/* Every write (put, putNew, patch, drop) and the Supabase adapter behind
+   them. The rest of the app asks for these four and never learns what is
+   behind them. */
+import { byText } from "./data.js";
+import { $, el, toast } from "./dom.js";
+import { S } from "./state.js";
+
 /* ===================================================================== db */
 function put(path, body){
   if (!S.db) { toast("Not connected to the store"); return Promise.resolve(); }
@@ -291,27 +285,27 @@ function supabaseStore(sb, uid){
   };
 }
 
-function connect(){
-  var cfg = window.CHAMP_CONFIG || {};
-  if (cfg.supabase && window.supabase) return connectSupabase(cfg.supabase);
-  dbState(false, "no backend configured");
-}
+/* The one thing this file knows about the screen: every snapshot has to
+   end in a redraw. boot.js says which, with whenChanged(renderAll), so the
+   store never imports the screen it serves. */
+var redraw = function(){};
+function whenChanged(fn){ redraw = fn; }
 
 /* attach the app to whichever store it was handed */
 function wire(db){
   db.collection("box").onSnapshot(function(snap){
     var m = {};
     snap.docs.forEach(function(d){ m[d.id] = d.data() || {}; });
-    S.box = m; S.ready = true; renderAll();
+    S.box = m; S.ready = true; redraw();
   }, function(e){ dbState(false, e.code); });
   db.collection("builds").onSnapshot(function(snap){
     var m = {};
     snap.docs.forEach(function(d){ m[d.id] = d.data() || {}; });
-    S.builds = m; renderAll();
+    S.builds = m; redraw();
   }, function(e){ dbState(false, e.code); });
   db.collection("teams").onSnapshot(function(snap){
     var m = {}; snap.docs.forEach(function(doc){ m[doc.id] = doc.data(); });
-    S.teams = m; renderAll();
+    S.teams = m; redraw();
   }, function(e){ dbState(false, e.code); });
   /* The two set tables. Their ids ARE the names - "Charizardite Y",
      "Focus Sash" - so the map is the answer to "do I own this". */
@@ -319,7 +313,7 @@ function wire(db){
     db.collection(coll).onSnapshot(function(snap){
       var m = {};
       snap.docs.forEach(function(doc){ m[doc.id] = doc.data() || {}; });
-      S[coll] = m; renderAll();
+      S[coll] = m; redraw();
     }, function(e){ dbState(false, e.code); });
   });
   /* stones and items left this list with migration 6, the GTS with 7. What
@@ -327,87 +321,9 @@ function wire(db){
   ["trainer"].forEach(function(k){
     db.doc("meta/" + k).onSnapshot(function(d){
       S.meta[k] = d.exists ? (d.data() || {}) : {};
-      renderAll();
+      redraw();
     }, function(e){ dbState(false, e.code); });
   });
-}
-
-/* ------------------------------------------------------- Supabase + auth --
-   The gate is not decoration: until there is a session the app has no rows to
-   show, because the server refuses to send any. */
-var SB = null;
-function connectSupabase(cfg){
-  SB = window.supabase.createClient(cfg.url, cfg.key);
-  $("gateEmail").value = cfg.email || "";
-  $("gateFoot").textContent =
-    "Nothing is stored in this page - your box lives in the database, and "
-    + "only this password reaches it.";
-  SB.auth.getSession().then(function(r){
-    var s = r.data?.session;
-    if (s) { start(s); } else { showGate(); }
-  }, function(){ showGate("Could not reach the database."); });
-
-  SB.auth.onAuthStateChange(function(evt){
-    if (evt === "SIGNED_OUT") location.reload();
-  });
-}
-function showGate(msg){
-  $("gate").hidden = false;
-  if (msg) { $("gateErr").textContent = msg; $("gateErr").hidden = false; }
-  setTimeout(function(){
-    ($("gateEmail").value ? $("gatePass") : $("gateEmail")).focus();
-  }, 80);
-}
-function start(session){
-  $("gate").hidden = true;
-  S.db = supabaseStore(SB, session.user.id);
-  dbState(true, "live");
-  signedInChip(session.user.email);
-  wire(S.db);
-}
-function signedInChip(email){
-  var bar = $("themeBtn").parentNode;
-  if ($("whoBtn")) return;
-  var b = el("button", "iconbtn", null);
-  b.id = "whoBtn";
-  b.title = "Signed in as " + email + " - tap to sign out";
-  b.setAttribute("aria-label", "Sign out");
-  b.innerHTML = '<svg viewBox="0 0 24 24" width="16" height="16" fill="none" ' +
-    'stroke="currentColor" stroke-width="1.7" stroke-linecap="round">' +
-    '<path d="M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3M10 16l-4-4 4-4M6 12h11"/></svg>';
-  b.onclick = function(){
-    ask("Sign out?", "You are signed in as " + email + ".", "Sign out")
-      .then(function(ok){ if (ok) SB.auth.signOut(); });
-  };
-  bar.insertBefore(b, $("themeBtn"));
-}
-if ($("gateForm")) {
-  $("gateForm").onsubmit = function(e){
-    e.preventDefault();
-    if (!SB) return;
-    var btn = $("gateBtn");
-    btn.disabled = true; btn.textContent = "Signing in…";
-    $("gateErr").hidden = true;
-    SB.auth.signInWithPassword({
-      email: $("gateEmail").value.trim(), password: $("gatePass").value
-    }).then(function(r){
-      btn.disabled = false; btn.textContent = "Sign in";
-      if (r.error) {
-        $("gateErr").textContent = /invalid/i.test(r.error.message || "")
-          ? "That email and password do not match an account."
-          : r.error.message;
-        $("gateErr").hidden = false;
-        $("gatePass").select();
-        return;
-      }
-      $("gatePass").value = "";
-      start(r.data.session);
-    }, function(){
-      btn.disabled = false; btn.textContent = "Sign in";
-      $("gateErr").textContent = "Could not reach the database.";
-      $("gateErr").hidden = false;
-    });
-  };
 }
 function dbState(ok, why){
   var n = $("dbNote");
@@ -419,9 +335,4 @@ function dbState(ok, why){
     : " Not connected (" + why + "). The reference tabs still work; edits will not save."));
 }
 
-/* ------------------------------------------------------- what leaves here --
-   Four writes and the connection. Everything else - the Supabase adapter, the
-   row/document translation, the sign-in gate - is private to this file, which
-   is the whole point of the part: the rest of the app asks for put/patch/drop
-   and never learns what is behind them. */
-export { connect, drop, patch, put, putNew };
+export { dbState, drop, patch, put, putNew, supabaseStore, whenChanged, wire };

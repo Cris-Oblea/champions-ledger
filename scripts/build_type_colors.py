@@ -61,7 +61,7 @@ INK = re.compile(r"(?<![-a-z])color\s*:\s*(#[0-9a-fA-F]{3,6})")
 # player settled it (2026-09-16): "stellar no existe, eso es una invencion de
 # smogon". It reaches the chart because that file is built from Smogon's
 # dump-basics, which inherits from Scarlet/Violet - Champions has no
-# Terastallization at all, no Pokemon carries the type, and `08-teams.js` was
+# Terastallization at all, no Pokemon carries the type, and `core/team.js` was
 # already filtering it out of the weakness table by name.
 #
 # So the palette is exactly the eighteen pokemon.com publishes. Anything asking

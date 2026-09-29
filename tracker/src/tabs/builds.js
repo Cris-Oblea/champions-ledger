@@ -1,31 +1,29 @@
-/* 06-builds.js - The build editor - species, Mega, ability, nature, SP, moves.
-   Part of the app; linked into one script by scripts/build_tracker_page.py. */
+/* The Builds tab: the list, and the build editor - species, Mega, ability,
+   nature, Stat Points, moves, and what a change costs in VP. */
+import { checks, retuneCost } from "../core/build.js";
 import {
-  C, COSTS, FORMS, MOVE_BY, STAT_KEYS, STAT_LABEL, bst, byName, capNote,
-  catName, dexNo, effectLine, el, labelBox, learnset, megasFor, natMult,
-  numText, pokeCard, searchField, splitPct, splitsFor, splitsReg, statAt,
-  spTotal, toast, typeChip, usageTag,
-  byText,
-} from "./01-data.js";
-import { ORIGIN_LABEL, S, activeAbility, baseAbility, boxRows, buildLink,
-  megaAbility, originOf, ownedNames, soleAbility } from "./02-state.js";
-import { drop, put, putNew } from "./03-store.js";
-import { ask, closeSheet, fbtn, leaveEditor, openEditor, openSheet }
-  from "./04-nav.js";
-/* The analysis panel is the box sheet's, deliberately - one renderer, so the
-   guide reads the same wherever it is opened. */
-import { analysisPanel } from "./05-box.js";
-/* the badges a box row wears - shiny, trained, origin - asked for rather
-   than redrawn, so the copy picker says what the box says */
-import { boxBadges } from "./09-gts.js";
-/* The move picker badges each move with what the build's own ability does to
-   it, and ranks the list - both are the damage screen's and the search view's
-   rules, asked for rather than copied. A build is where an ability meets a
-   movepool, so this file is the one place those two have to meet. */
-import { AB_SET, abilityHit, abilityTag } from "./11-damage.js";
-import { blockerTags, factLine, itemTags, moveFilters, moveScore,
-  priorityTag, spreadNote,
-  spreadTags } from "./12-find.js";
+  bst, byName, byText, C, catName, dexNo, FORMS, learnset, megasFor, MOVE_BY,
+  natMult, splitPct, splitsFor, splitsReg, spTotal, STAT_KEYS, STAT_LABEL,
+  statAt,
+} from "../core/data.js";
+import { $, capNote, el, fbtn, searchField, toast } from "../core/dom.js";
+import {
+  activeAbility, boxRows, buildLink, megaAbility, ORIGIN_LABEL, originOf,
+  ownedNames, S, soleAbility,
+} from "../core/state.js";
+import { drop, put, putNew } from "../core/store.js";
+import {
+  boxBadges, effectLine, labelBox, numText, pokeCard, typeChip, usageTag,
+} from "../ui/card.js";
+import {
+  AB_SET, abilityHit, abilityTag, blockerTags, factLine, itemTags,
+  moveFilters, moveScore, priorityTag, spreadNote, spreadTags,
+} from "../ui/moves.js";
+import {
+  ask, closeSheet, leaveEditor, openEditor, openSheet,
+} from "../ui/nav.js";
+import { analysisPanel } from "../ui/pokemon.js";
+
 /* ==================================================================== builds */
 /* THE "TRAINED" TAG FOLLOWS THE BUILD, both ways (player, 2026-09-27):
    "si la coloco sobre un pokemon, ese pokemon se considere entrenado, así no
@@ -954,92 +952,6 @@ function buildSheet(id, b, keepOriginal){
   }
 }
 
-function checks(d, p){
-  var out = [];
-  var tot = spTotal(d.stat_points);
-  if (tot > 66) out.push(["bad", "<strong>" + tot + " Stat Points.</strong> The budget is 66."]);
-  STAT_KEYS.forEach(function(k){
-    if ((Number(d.stat_points[k]) || 0) > 32)
-      out.push(["bad", "<strong>" + STAT_LABEL[k] + " is over 32.</strong> No single stat may pass 32."]);
-  });
-  var basep = byName[d.mega || d.pokemon] || p;
-  if (basep) {
-    var atk = statAt(basep.b[1], d.stat_points.atk, false, natMult(d.nature, "atk"));
-    var spa = statAt(basep.b[3], d.stat_points.spa, false, natMult(d.nature, "spa"));
-    var main = atk >= spa ? "P" : "S";
-    (d.moves || []).forEach(function(n){
-      var m = MOVE_BY[n];
-      if (!m) return;
-      if (m.pri > 0 && m.cat !== "T" && m.cat !== main) {
-        out.push(["warn", "<strong>" + m.name + " is priority, but " +
-          (m.cat === "P" ? "physical" : "special") + ".</strong> This set hits " +
-          "harder on " + (main === "P" ? "Attack" : "Sp. Atk") +
-          " (" + Math.max(atk, spa) + " vs " + Math.min(atk, spa) +
-          "), so the priority slot buys little."]);
-      }
-      if (m.hitsAlly) {
-        out.push(["warn", "<strong>" + m.name + " hits your own ally too.</strong> " +
-          "Only run it if the partner absorbs it or is immune."]);
-      }
-    });
-    var abil = megaAbility(d) || "";
-    if (abil === "Intimidate" || baseAbility(d) === "Intimidate") {
-      out.push(["warn", "<strong>Intimidate on your own side.</strong> Defiant, " +
-        "Competitive, Contrary, Guard Dog and Rattled all turn it into a free " +
-        "boost for the opponent."]);
-    }
-    if ((d.moves || []).includes("Weather Ball")) {
-      out.push(["warn", "<strong>Weather Ball is never Normal in play.</strong> " +
-        "Resolve it to this team's own weather before quoting any number."]);
-    }
-    var ls = learnset(d.pokemon);
-    if (ls) {
-      var legal = {};
-      ls.forEach(function(m){ legal[m.name] = 1; });
-      (d.moves || []).forEach(function(n){
-        if (n && !legal[n])
-          out.push(["bad", "<strong>" + n + "</strong> is not in " + d.pokemon +
-            "'s learnset."]);
-      });
-    }
-  }
-  /* AND SAY SO WHEN THE CHOICE IS STILL OPEN. The blank row in the select is
-     honest but quiet, and an unset ability is not free: the move badges and
-     the damage screen both run without it. Printing the options is an
-     indicator, not a pick. */
-  if (p && (p.ab || []).length > 1 && !d.ability)
-    out.push(["warn", "<strong>No ability chosen.</strong> " + d.pokemon +
-      " can have " + p.ab.join(", ") + ". Until one is picked the move badges " +
-      "and the calculator run without it."]);
-  var own = ownedNames();
-  if (d.pokemon && !(d.pokemon in own))
-    out.push(["bad", "<strong>" + d.pokemon + " is not in the Champions Box.</strong>"]);
-  return out;
-}
-
-function retuneCost(a, b){
-  var parts = [], vp = 0;
-  var sa = a.stat_points || {}, sb = b.stat_points || {};
-  var spDelta = STAT_KEYS.reduce(function(n, k){
-    return n + Math.abs((Number(sa[k]) || 0) - (Number(sb[k]) || 0));
-  }, 0);
-  if (spDelta) { vp += spDelta * COSTS.training_stat_point;
-                 parts.push(spDelta + " SP × 5"); }
-  var ma = (a.moves || []).join("|"), mb = (b.moves || []).join("|");
-  if (ma !== mb) {
-    var n = (b.moves || []).filter(function(m, i){ return m !== (a.moves || [])[i]; }).length;
-    vp += n * COSTS.training_move;
-    parts.push(n + " move" + (n === 1 ? "" : "s") + " × 250");
-  }
-  if ((a.nature || "") !== (b.nature || "")) { vp += 500; parts.push("nature 500"); }
-  /* RESOLVED on both sides: writing down the ability a single-ability species
-     always had is not a retune, and must not print 500 VP. */
-  if ((baseAbility(a) || "") !== (baseAbility(b) || "")) {
-    vp += 500; parts.push("ability 500");
-  }
-  return vp ? {vp:vp, parts:parts} : null;
-}
-
 function movePicker(draft, idx, ls, done){
   var abil = activeAbility(draft);
   var apoke = byName[draft.mega || draft.pokemon];
@@ -1130,11 +1042,23 @@ function movePicker(draft, idx, ls, done){
   ]);
 }
 
-/* ------------------------------------------------------- what leaves here --
-   A row and the sheet behind it. `checks` - the SP budget, the 32 cap, the
-   moveset rules - is private, and so is `retuneCost`, so what a build COSTS
-   is computed in one place. `movePicker` too: every move that enters a build
-   goes through it, which is what makes the badges and the ranking consistent
-   wherever a move is offered.
-*/
-export { buildRow, buildSheet };
+function drawBuilds(){
+  var q = ($("buildSearch").value || "").trim().toLowerCase();
+  var node = $("listBuilds");
+  node.innerHTML = "";
+  var ids = Object.keys(S.builds).sort(function(a, b){
+    return String(S.builds[a].pokemon).localeCompare(String(S.builds[b].pokemon));
+  }).filter(function(id){
+    var b = S.builds[id];
+    return !q || (b.pokemon + " " + (b.role || "") + " " +
+                  (b.moves || []).join(" ")).toLowerCase().includes(q);
+  });
+  if (!ids.length) {
+    node.appendChild(el("div", "empty",
+      Object.keys(S.builds).length ? "Nothing matches" : "No builds yet"));
+    return;
+  }
+  ids.forEach(function(id){ node.appendChild(buildRow(id, S.builds[id])); });
+}
+
+export { buildSheet, drawBuilds };

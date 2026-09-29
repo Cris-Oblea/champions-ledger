@@ -525,9 +525,10 @@ only ever drawn as a HOME render; the page asks for whichever exists.
 desktop, laptop and phone - each in its own iframe so the media queries are
 real, with the cache cleared first and the app's own overlap check on a button.
 
-Its source is twelve ES modules under `tracker/src/`, each one a tab or the
-thing the tabs share, saying what it exports and importing what it needs. The
-build links them into the single script the browser is handed, plus a sourcemap
+Its source is ES modules under `tracker/src/` in three layers - `core/` (the
+data, the rules, the store), `ui/` (what the tabs share) and `tabs/` (one per
+screen) - each saying what it exports and importing only from its own layer or
+a lower one. The build links them into the single script the browser is handed, plus a sourcemap
 so a stack trace still names the file a person edits. **Edit a part, never
 `tracker/dist/`** - it is generated. How the pieces fit is in
 [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
@@ -645,7 +646,7 @@ passing all of them:
   still accounted for, the README's own numbers, and that no SQL migration is
   still waiting to be applied
 - **two source checks** — ESLint, with the rules SonarQube shows in VS Code,
-  over every file (a name one of the twelve ES modules uses without
+  over every file (a name one of the twenty-five ES modules uses without
   importing it links fine and throws on the phone), and the app read
   against its own markup and engine
 - **twenty-six browser tests** — run against the built page, because no Python

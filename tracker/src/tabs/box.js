@@ -1,27 +1,22 @@
-/* 05-box.js - The box and HOME: every row, and every way one gets added.
-   Part of the app; linked into one script by scripts/build_tracker_page.py. */
+/* The Champions box and the HOME box: rows, adding a Pokemon, a row's
+   sheet, duplicates, and the dex checklist.
+
+   pokeSheet is exported for the browser tests alone (PUBLIC): they open a
+   sheet for every form in the dex and assert what it shows. */
 import {
-  $, C, FORMS, STAT_KEYS, STAT_LABEL, anyRow, byName, capNote, dexLabel, el,
-  freeSlug, outsideRow, pokeCard, searchField, toast, VIEW,
-} from "./01-data.js";
+  anyRow, byName, C, dexLabel, FORMS, freeSlug, outsideRow,
+} from "../core/data.js";
+import { $, capNote, el, fbtn, note, searchField, toast } from "../core/dom.js";
 import {
-  RELEASE_FLOOR, S, boxRows, originOf, releaseBlock,
-} from "./02-state.js";
-import { drop, put } from "./03-store.js";
-import { ask, closeSheet, fbtn, openSheet } from "./04-nav.js";
-/* The badges on a box row - in the GTS, a duplicate, the last copy - are the
-   GTS view's own answer about that Pokemon, so they are asked for rather than
-   recomputed here. This is why the link order is no longer numeric: 09-gts
-   runs before this file because this file imports it. */
-import { boxBadges, diffChip, gtsDiff } from "./09-gts.js";
-/* ONE sheet, three doors. pokeHead and pokeBody are the whole of a
-   Pokemon's sheet; this file supplies only what owning a copy adds -
-   origin, shiny, trained, the note and the buttons. */
-import { findDetail, pokeBody, pokeHead } from "./12-find.js";
-/* `note` draws the app's one grey/amber callout box. Only ever CALLED,
-   so the cycle it forms with 13-boot costs nothing - the same arrangement
-   the three redraws in 04-nav.js already use. */
-import { note } from "./13-boot.js";
+  boxRows, originOf, RELEASE_FLOOR, releaseBlock, S, VIEW,
+} from "../core/state.js";
+import { drop, put } from "../core/store.js";
+import { gtsDiff } from "../core/trade.js";
+import { boxBadges, pokeCard } from "../ui/card.js";
+import { ask, closeSheet, openSheet } from "../ui/nav.js";
+import { findDetail, pokeBody, pokeHead } from "../ui/pokemon.js";
+import { diffChip } from "./gts.js";
+
 /* ===================================================================== rows */
 /* The row's left stripe, by origin, for a permanent Champions-box Pokemon. */
 const ORIGIN_CLASS = {home: "perm", champions: "locked"};
@@ -517,281 +512,6 @@ function addSheet(loc){
   }, []);
 }
 
-/* ------------------------------------------------ what Smogon wrote ------
-   The only source in this project with REASONING in it, and until now the
-   only one the phone never saw. 54 Pokemon have a written VGC analysis: the
-   sets people actually run, the SP spread and what each point of it survives,
-   which Pokemon check it, which partners cover its holes. It was downloaded
-   every night and read only through `query.py pokemon` on the laptop.
-
-   LOADED ON DEMAND. 407 KB against a dex payload of 419 - paying that on every
-   visit for a panel opened while arguing about a build is the wrong trade. The
-   script tag is added the first time a sheet asks, and the file is immutable
-   by its content hash, so it is fetched once ever.
-
-   A tag rather than fetch(): the CSP allows same-origin scripts and the file
-   is one assignment, so there is nothing to parse by hand and nothing to get
-   wrong about encoding. */
-var ANALYSIS_STATE = null;          // null | "loading" | "ready" | "absent"
-var ANALYSIS_WAITING = [];
-
-function analysisFor(name){
-  var all = window.CHAMP_ANALYSIS;
-  if (!all) return null;
-  /* Smogon files a Mega under its own name and the box knows it as one too,
-     so a direct hit comes first; failing that, a Mega falls back to the base
-     species, whose analysis is the one that discusses the stone. */
-  if (all[name]) return all[name];
-  var p = byName[name];
-  if (p?.species && all[p.species]) return all[p.species];
-  return null;
-}
-
-function loadAnalysis(then){
-  /* Already here? Then there is nothing to load. The asset is a plain
-     assignment to window, so anything that has run it - a second panel, a
-     future view, a test - counts, and asking again would sit on a script tag
-     that resolves nothing. */
-  if (window.CHAMP_ANALYSIS) { ANALYSIS_STATE = "ready"; return then(); }
-  if (ANALYSIS_STATE === "ready" || ANALYSIS_STATE === "absent") return then();
-  ANALYSIS_WAITING.push(then);
-  if (ANALYSIS_STATE === "loading") return;
-  var url = window.CHAMP_ANALYSIS_URL;
-  if (!url) {                       // the single-file build carries no asset
-    ANALYSIS_STATE = "absent";
-    return flushAnalysis();
-  }
-  ANALYSIS_STATE = "loading";
-  var sc = document.createElement("script");
-  sc.src = url;
-  sc.onload = function(){ ANALYSIS_STATE = "ready"; flushAnalysis(); };
-  sc.onerror = function(){ ANALYSIS_STATE = "absent"; flushAnalysis(); };
-  document.head.appendChild(sc);
-}
-
-function flushAnalysis(){
-  var q = ANALYSIS_WAITING;
-  ANALYSIS_WAITING = [];
-  q.forEach(function(fn){ try { fn(); } catch (e) {} });
-}
-
-/* ------------------------------- THE REST OF THE DEX, ON DEMAND ----------
-   The same shape as the analysis loader, for a different 503 KB.
-
-     "La idea es tener la DEX COMPLETA... necesito tener la database de todas
-      las abilities, todos los moves, todos los pokemones. asi cuando se
-      consulta por algo se sabe todo y el tag not in champions indica si es
-      posible usarlo o no."  (player, 2026-09-19)
-
-   So this carries three things for the 933 species the game has not added:
-   every movepool, the move rows the app does not ship to the phone, and the
-   ability text Champions has no entry for - Protosynthesis had a name on the
-   sheet and nothing to say about it.
-
-   Fetched when one of those sheets is opened and never otherwise, because most
-   sessions never open one. What is in it and where each part comes from is
-   argued in scripts/build_outside_dex.py - the short version being that the
-   MOVES are Champions' own data all along, and only the ability text is
-   main-series. */
-var OUT_STATE = "idle", OUT_WAITING = [];
-
-function loadOutside(then){
-  if (window.CHAMP_OUTSIDE) { OUT_STATE = "ready"; return then(); }
-  if (OUT_STATE === "ready" || OUT_STATE === "absent") return then();
-  OUT_WAITING.push(then);
-  if (OUT_STATE === "loading") return;
-  var url = window.CHAMP_OUTSIDE_URL;
-  if (!url) { OUT_STATE = "absent"; return flushOutside(); }
-  OUT_STATE = "loading";
-  var sc = document.createElement("script");
-  sc.src = url;
-  sc.onload = function(){ OUT_STATE = "ready"; flushOutside(); };
-  sc.onerror = function(){ OUT_STATE = "absent"; flushOutside(); };
-  document.head.appendChild(sc);
-}
-
-function flushOutside(){
-  var q = OUT_WAITING;
-  OUT_WAITING = [];
-  q.forEach(function(fn){ try { fn(); } catch (e) {} });
-}
-
-function outsideDex(){ return window.CHAMP_OUTSIDE || {}; }
-function outsideMovesFor(name){ return outsideDex().m?.[name] || null; }
-/* A move the app does not ship, dressed as one it does, so the same row
-   renderer draws it. `i` is -1 on purpose: the ability badges and the blocker
-   tags index by it, and a move with no index must match none of them rather
-   than match move 0. */
-function outsideMove(name){
-  var r = outsideDex().mv?.[name];
-  if (!r) return null;
-  return {i:-1, name:name, type:r[0], cat:r[1], bp:r[2], acc:r[3], pp:r[4],
-          pri:0, target:"Selected Target", spread:false, hitsAlly:false,
-          hits:null, crit:false, f:"", sec:false, text:r[5] || "",
-          notInChampions:true};
-}
-
-/* One set, as the thing you would actually build: the four slots, the spread,
-   and the reasoning underneath. */
-function analysisSet(st){
-  var box = el("div", "note");
-  box.style.marginBottom = "8px";
-  var head = el("div", "rname");
-  head.appendChild(el("span", null, st.name || "Set"));
-  (st.ability || []).slice(0, 1).forEach(function(a){
-    head.appendChild(el("span", "tag", a));
-  });
-  (st.nature || []).slice(0, 1).forEach(function(n){
-    head.appendChild(el("span", "tag", n));
-  });
-  box.appendChild(head);
-
-  /* The items are a LIST on purpose - Smogon offers alternatives and the Item
-     Clause means a team of six fields exactly one of each, so which one is a
-     team decision rather than part of the set. */
-  if ((st.item || []).length) {
-    box.appendChild(el("div", "st", "Items: " + st.item.join(" / ")));
-  }
-  var mv = (st.moves || []).map(function(slot){
-    return Array.isArray(slot) ? slot.join(" / ") : String(slot);
-  }).filter(Boolean);
-  if (mv.length) {
-    var row = el("div", "st");
-    row.style.marginTop = "2px";
-    mv.forEach(function(m){
-      var t = el("span", "tag ok", m);
-      t.style.marginRight = "4px";
-      row.appendChild(t);
-    });
-    box.appendChild(row);
-  }
-  (st.sp || []).forEach(function(sp){
-    var bits = STAT_KEYS.map(function(k){
-      return sp[k] ? sp[k] + " " + STAT_LABEL[k] : null;
-    }).filter(Boolean);
-    if (!bits.length) return;
-    var total = STAT_KEYS.reduce(function(a, k){ return a + (sp[k] || 0); }, 0);
-    var line = el("div", "st", bits.join(" / ") + "   ·   " + total + "/66 SP");
-    line.style.color = "var(--accent)";
-    box.appendChild(line);
-  });
-  if (st.why) box.appendChild(prose(st.why));
-  return box;
-}
-
-/* Smogon's prose, laid out the way their page lays it out.
- *
- * It arrives as one block of lines and reads as a wall - the player's words:
- * "me parece muy dificil de leer". It is not shapeless, though. Three kinds of
- * line, and telling them apart is what makes it skimmable:
- *
- *   Other Options            a section heading - short, no colon
- *   Make It Rain: it hits    a labelled paragraph - the label is the subject
- *   32 HP / 8 Def ... with Timid: the given spread outspeeds ...
- *   Gholdengo, thanks to     plain prose
- *
- * The labelled form is the useful one: the label says what the paragraph is
- * ABOUT, so a reader looking for why an item was chosen can find it without
- * reading the rest. The spread lines use the same shape, with the spread
- * itself as the label, which is exactly how they should be read.
- */
-function prose(text){
-  var wrap = el("div");
-  wrap.style.marginTop = "6px";
-  String(text).split(/\n+/).forEach(function(line){
-    line = line.trim();
-    if (!line) return;
-    var cut = line.indexOf(":");
-    var label = cut > 0 ? line.slice(0, cut).trim() : "";
-    /* A heading is short and has no colon. A label is short and does. Both
-       tests are on LENGTH rather than on a list of known words, because
-       Smogon's headings differ per Pokemon and a list would go stale. */
-    /* ...and does not end in a full stop. "Other Options" is a heading; "Un
-       atacante especial." is a short sentence, and the first version drew it
-       as one. */
-    if (!label && line.split(" ").length <= 5 && !/[.!?]$/.test(line)) {
-      var h = el("div", "rname", line);
-      h.style.marginTop = "8px";
-      wrap.appendChild(h);
-      return;
-    }
-    var para = el("div", "st");
-    para.style.marginTop = "4px";
-    if (label && label.length <= 70 && cut < line.length - 1) {
-      var b = el("strong", null, label);
-      b.style.color = "var(--accent)";
-      para.appendChild(b);
-      para.appendChild(document.createTextNode(" " + line.slice(cut + 1).trim()));
-    } else {
-      para.textContent = line;
-    }
-    wrap.appendChild(para);
-  });
-  return wrap;
-}
-
-/* The panel: a fold, because the prose is long and the sheet has a job to do
-   before it. */
-function analysisPanel(name, host){
-  host.innerHTML = "";
-  /* Something on screen from the first frame. A panel that is empty while a
-     407 KB script loads is indistinguishable from a panel that is broken, and
-     on a phone on mobile data that wait is real. */
-  var wait = el("div", "st", "Loading Smogon's analysis...");
-  host.appendChild(wait);
-  var gaveUp = setTimeout(function(){
-    if (host.contains(wait)) {
-      wait.textContent = "Smogon's analysis did not load. It is a separate "
-        + "file, fetched only when this is opened - try again in a moment.";
-    }
-  }, 8000);
-  loadAnalysis(function(){
-    clearTimeout(gaveUp);
-    if (wait.parentNode) wait.remove();
-    var got = analysisFor(name);
-    if (!got?.length) {
-      host.appendChild(el("div", "st", ANALYSIS_STATE === "absent"
-        ? "Smogon's analyses are not in this build."
-        : "Smogon has not written one for " + name + " - 54 Pokemon have one."));
-      return;
-    }
-    /* EVERY VGC FORMAT SMOGON HAS, NEWEST FIRST, and the panel says so out
-       loud. Nothing here has ever filtered by regulation - Garchomp carries
-       both an M-A and an M-B analysis and both were always drawn - but the
-       panel gave no way to tell "this is all of it" from "this is the one we
-       kept", which is what the player was asking about (2026-09-15: "necesito
-       ver todas las opciones de smogon en formato vgc sea de la regulacion
-       que sea"). A regulation missing from this line is missing UPSTREAM:
-       Smogon writes an analysis per regulation and had published none for the
-       current one at the time of the last fetch.
-
-       Sorted by the regulation letter rather than by arrival, so the newest
-       reading is the one at the top. Singles stays out - see
-       scripts/fetch_smogon.py, that call is settled. */
-    var order = got.slice().sort(function(a, b){
-      return String(b.format).localeCompare(String(a.format));
-    });
-    if (order.length > 1) {
-      host.appendChild(el("div", "st",
-        "Smogon has " + order.length + " VGC analyses for " + name + ": " +
-        order.map(function(x){ return x.format; }).join(", ") +
-        ". All of them are below."));
-    }
-    order.forEach(function(st){
-      var head = el("div", "st");
-      head.style.marginBottom = "4px";
-      head.appendChild(el("span", "tag" + (st.outdated ? " warn" : ""),
-                          st.format + (st.outdated ? " · outdated" : "")));
-      if ((st.credits || []).length) {
-        head.appendChild(el("span", null, "  by " + st.credits.join(", ")));
-      }
-      host.appendChild(head);
-      if (st.overview) host.appendChild(prose(st.overview));
-      (st.sets || []).forEach(function(x){ host.appendChild(analysisSet(x)); });
-    });
-  });
-}
-
 /* ====================================================== what is still missing
 
    THE DEX IS THE POINT OF THE HOME BOX. Champions' own route in is a gacha -
@@ -895,17 +615,105 @@ function drawDexPane(){
   }
 }
 
-/* ------------------------------------------------------- what leaves here --
-   `pokeRow` is the row both box views draw and `addSheet` the one way a
-   Pokemon enters the box. `battleFormNote` used to live here too - one grey
-   line saying what a Pokemon turns into mid-battle - and it is gone: the
-   sheet draws those forms the way it draws a Mega now, and the card draws
-   them too, so the line was saying a third time what two pictures say.
+/* ------------------------------------------- duplicates against HOME ----
+   The sweep this answers (player, 2026-09-11): which Champions slots am I
+   holding for a species I already have safe in HOME? Those are the ones to
+   free first, because the species is not lost when the slot goes.
 
-   `pokeSheet` is exported for a different reason and it is worth naming: no
-   other part calls it. It is in PUBLIC, so the browser tests drive it through
-   `window` - they open a sheet for every form in the dex and assert what it
-   shows. `moveButtons` stays private.
-*/
-export { addSheet, analysisPanel, drawDexPane, loadOutside,
-  outsideDex, outsideMove, outsideMovesFor, pokeRow, pokeSheet };
+   ONLY WHAT CAN ACTUALLY GO (player, 2026-09-27). It used to list every
+   match and sort it by origin, which put two kinds of row in front of him
+   that the game will not let him act on:
+     - HOME origin. Never a duplicate: it is a real Pokemon, a second copy of
+       it has value, and it cannot be released from the Champions box anyway.
+     - Champions origin at the floor. The game refuses a release that leaves
+       fewer than six to battle with, so with six or fewer left (Sinistcha,
+       with another in HOME) the "free this one" advice was impossible.
+   `releaseBlock` answers both, so what is left is exactly the releasable set:
+   Champions origin above the floor, and rentals.
+   Matching is on the exact form name, because Ninetales-Alola in HOME does
+   not cover a plain Ninetales. Same-species-different-form pairs are real but
+   are NOT interchangeable, so they get a footnote instead of a row. */
+function dupeReport(){
+  var homeNames = {}, homeSpecies = {};
+  boxRows("home").forEach(function(r){
+    homeNames[r.name] = (homeNames[r.name] || 0) + 1;
+    var sp = byName[r.name]?.species || r.name;
+    homeSpecies[sp] ||= [];
+    homeSpecies[sp].push(r.name);
+  });
+  var hits = [], formOnly = [];
+  boxRows("champions").forEach(function(r){
+    if (releaseBlock(r)) return;
+    if (homeNames[r.name]) { hits.push(r); return; }
+    var sp = byName[r.name]?.species || r.name;
+    if (homeSpecies[sp]) {
+      formOnly.push({name:r.name, others:homeSpecies[sp].filter(function(n){
+        return n !== r.name; })});
+    }
+  });
+  var by = {champions:[], rental:[]};
+  hits.forEach(function(r){
+    by[r.status === "rental" ? "rental" : "champions"].push(r);
+  });
+  return {hits:hits, formOnly:formOnly, by:by};
+}
+function drawDupeHome(){
+  var blk = $("dupeBlock");
+  var d = dupeReport();
+  if (!d.hits.length && !d.formOnly.length) { blk.hidden = true; return; }
+  blk.hidden = false;
+  $("nDupeHome").textContent = d.hits.length;
+
+  var rent = d.by.rental.length, lock = d.by.champions.length;
+  $("dupeSub").textContent = d.hits.length
+    ? "Champions-origin slots whose species you also hold in HOME, and that " +
+      "the game will let you release. Freeing one does not lose the species - " +
+      "the HOME copy goes in when you want it, and that copy is HOME origin, " +
+      "so the slot stays elastic from then on."
+    : "Nothing releasable in the box is duplicated in HOME.";
+
+  var n = $("dupeNote");
+  n.innerHTML = "";
+  if (rent) {
+    n.appendChild(note("", "<strong>" + rent + " rental.</strong> " +
+      "Releasing is the only exit - but a rental cannot be trained, so it " +
+      "carries no build and costs nothing to drop."));
+  }
+  if (lock) {
+    /* found by the LINK: a build's own id is not the box row's any more */
+    var withBuild = d.by.champions.filter(function(r){
+      return Object.keys(S.builds).some(function(k){
+        return S.builds[k].box_id === r._id;
+      });
+    });
+    n.appendChild(note("warn", "<strong>" + lock + " Champions origin.</strong> " +
+      "Releasing destroys the Pokemon, and only works while more than " +
+      RELEASE_FLOOR + " Champions-origin Pokemon are left. " + (withBuild.length
+        ? withBuild.length + " of them carry a build, which is kept as an idea (" +
+          withBuild.map(function(r){ return r.name; }).join(", ") + ")."
+        : "None of them carries a build.")));
+  }
+  /* an empty list under a heading that already reads "0" is a fourth way of
+     saying nothing; the form-only note below is the only real content then */
+  var host = $("listDupeHome");
+  host.innerHTML = "";
+  host.hidden = !d.hits.length;
+  if (d.hits.length) {
+    fill(host, d.by.rental.concat(d.by.champions), "");
+  }
+  if (d.formOnly.length) {
+    n.appendChild(note("", "<strong>Same species, different form:</strong> " +
+      d.formOnly.map(function(f){
+        return f.name + " (HOME has " + f.others.join(", ") + ")";
+      }).join("; ") + ". Not interchangeable - different stats, typing or " +
+      "ability - so these are NOT counted above."));
+  }
+}
+
+function fill(node, rows, emptyMsg){
+  node.innerHTML = "";
+  if (!rows.length) { node.appendChild(el("div", "empty", emptyMsg)); return; }
+  rows.forEach(function(r){ node.appendChild(pokeRow(r)); });
+}
+
+export { addSheet, drawDexPane, drawDupeHome, fill, pokeSheet };

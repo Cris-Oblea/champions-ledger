@@ -1,18 +1,18 @@
-/* 11-damage.js - Smogon's engine, and the calculator screen around it.
-   Part of the app; linked into one script by scripts/build_tracker_page.py. */
+/* The Damage tab: Smogon's engine and the calculator screen around it.
+
+   How a Pokemon is handed to the engine (engSide, engName) stays private, so
+   there is one way to ask it. CALC and engineCalc are exported for the
+   browser tests (PUBLIC), which compare the page's roll against Node's. */
 import {
-  $, C, DEX, MOVE_BY, STAT_KEYS, STAT_LABEL, anyRow, byName, capNote,
-  catName, el, labelBox, learnset, natMult, pokeCard, searchField, statAt,
-  statGrid, toast, typeChip,
-  plural,
-  byText,
-} from "./01-data.js";
-import { closeSheet, openSheet } from "./04-nav.js";
-import { S, activeAbility, baseAbility } from "./02-state.js";
-/* One label: whether a move hits both opponents. 12-find imports this file
-   back for the ability set, and the cycle costs nothing - both sides are
-   function declarations, called from a click, never while loading. */
-import { spreadTags } from "./12-find.js";
+  anyRow, byName, byText, C, catName, DEX, learnset, MOVE_BY, natMult, plural,
+  STAT_KEYS, STAT_LABEL, statAt,
+} from "../core/data.js";
+import { $, capNote, el, searchField, toast } from "../core/dom.js";
+import { activeAbility, baseAbility, S } from "../core/state.js";
+import { labelBox, pokeCard, statGrid, typeChip } from "../ui/card.js";
+import { spreadTags } from "../ui/moves.js";
+import { closeSheet, openSheet } from "../ui/nav.js";
+
 /* ----------------------------------- what the calculator lets you pick ----
    The Ability and Item menus offer only what can change the number, and that
    list is MEASURED rather than written: scripts/measure_modifiers.py runs
@@ -648,7 +648,6 @@ function calcMoveRow(m, fromBuild){
   return r;
 }
 
-
 function calcFieldCtl(){
   var host = $("calcField");
   host.innerHTML = "";
@@ -886,75 +885,4 @@ function calcDraw(){
   calcRun();
 }
 
-/* ------------------------------------------- which ability boosts what -----
-   Each entry answers one question: given this Pokemon's chosen ability, which
-   of the moves it actually learns are changed by it? The test runs against the
-   move's own flags, so a new move added by a regulation is covered the day the
-   data refreshes - nothing here is a hand-written move list.
-
-   `sec` marks a move with a SECONDARY effect, which is what Sheer Force trades
-   away for 30% power. */
-/* Derived by scripts/build_ability_moves.py from Serebii's move text, cross-
-   checked against Smogon's engine, and shipped as move-index lists. Nothing
-   here is written by hand, which is the point: three bugs came from hand rules.
-
-     - a power multiplier can never apply to a move that deals no damage
-       (Adaptability was badging Basculegion's Rain Dance)
-     - "1-stage Critical-Hit Ratio Boost" is not a stat stage
-       (Contrary was badging Protect and Roost)
-     - an ability that changes what comes IN never badges its own movepool
-       (Bulletproof, Filter, Thick Fat are "def" and stay out of it) */
-var AB = C.AB_MOVES || {};
-const AB_SET = {};
-Object.keys(AB).forEach(function(name){
-  var e = AB[name], s = {all:!!e.all, side:e.side, x:e.x, why:e.why,
-                         scope:e.scope};
-  s.m = {}; (e.m || []).forEach(function(i){ s.m[i] = 1; });
-  if (e.up)   { s.up = {};   e.up.forEach(function(i){ s.up[i] = 1; }); }
-  if (e.down) { s.down = {}; e.down.forEach(function(i){ s.down[i] = 1; }); }
-  s.why_up = e.why_up; s.why_down = e.why_down;
-  AB_SET[name] = s;
-});
-
-function abilityHit(ability, move){
-  var r = AB_SET[ability];
-  if (r?.side !== "off") return null;      // defensive rules badge nothing
-  // An ability that covers a whole CATEGORY selects nothing, so a badge on
-  // every row is noise that buries the abilities that do select. Guts is the
-  // case the player named: it multiplies the Attack STAT while statused, so
-  // "the moves it affects" is just "every physical move" - which the row's own
-  // category already says. Those are stated once, on the ability itself; see
-  // abilityScope(). Measured in build_ability_moves.py, never listed by hand.
-  if (r.scope) return null;
-  if (r.all) return r;
-  if (!r.m[move.i]) return null;
-  // Contrary is the one that needs the SIGN, because that is the whole ability:
-  // a boosting move becomes a self-debuff and a self-debuff becomes a boost.
-  if (r.up?.[move.i]) return {x:r.x, why:r.why_up};
-  if (r.down?.[move.i]) return {x:r.x, why:r.why_down};
-  return r;
-}
-/* the badge that goes on a move row when the chosen ability touches it */
-function abilityTag(ability, move, poke){
-  var hit = abilityHit(ability, move);
-  if (!hit) return null;
-  // STAB needs the user's own type; the move table cannot know it
-  if (ability === "Adaptability" &&
-      !poke?.types.includes(move.type)) return null;
-  var t = el("span", "tag ok", ability);
-  t.title = hit.why;
-  return t;
-}
-
-/* ------------------------------------------------------- what leaves here --
-   The engine's answer and the screen that asks for it. What stays private is
-   how a Pokemon is handed to Smogon's engine (engSide, engName), so there is
-   one way to ask it and no second caller can ask it differently.
-
-   `CALC` is the screen's own state and is exported for PUBLIC - the browser
-   tests set an attacker, a move and a defender on it and compare the page's
-   roll against Node's. `engineCalc` is exported for the same reason.
-*/
-export {
-  AB_SET, CALC, abilityHit, abilityTag, calcDraw, engineCalc, engineReady,
-};
+export { CALC, calcDraw, engineCalc, engineReady };

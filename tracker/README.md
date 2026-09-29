@@ -127,7 +127,7 @@ one:
 > de busqueda de cualquier cosa puedan tener un search y/o filtros asi puedo ir
 > viendo rapidamente como armar el team!"  (player, 2026-09-21)
 
-`searchField()` in `01-data.js` is the one implementation now, and
+`searchField()` in `core/dom.js` is the one implementation now, and
 `wireClears()` upgrades the boxes written straight into the markup, so both
 ways a field can be born look the same. **Every box has a clear button** - a
 filter you cannot empty in one tap is a filter you stop using - and it is ours
@@ -470,10 +470,14 @@ gts/{id}      {offered, requested, offered_id, deposited, deposited_at,
 
 ## Files
 
-- `tracker/src/` - **the app. Edit these.** `01-data.js` .. `13-boot.js`,
-  with `style.css` and `markup.html`. They are ES modules: each one declares
-  what it exports and imports what it needs, and the build LINKS them with
-  esbuild into the one script the page carries.
+- `tracker/src/` - **the app. Edit these.** Three layers and the file that
+  starts them - `core/` (the data, his state, the rules, the DOM helpers, the
+  store), `ui/` (what several tabs share: navigation, the card, a Pokemon's
+  sheet, the move vocabulary, sign-in), `tabs/` (one file per screen) and
+  `boot.js` - with `style.css` and `markup.html`. They are ES modules: each one
+  declares what it exports and imports what it needs, and the build LINKS them
+  with esbuild into the one script the page carries. `docs/ARCHITECTURE.md`
+  §4.2 says what each file owns.
 
   Why a bundler when the browser can load modules itself: jsdom cannot execute
   `<script type="module">`, and the browser half of the gate loads the built
@@ -483,50 +487,48 @@ gts/{id}      {offered, requested, offered_id, deposited, deposited_at,
   pinned in `package-lock.json` and installed by `npm ci` - never `npx`, which
   fetches whatever is newest at the moment it runs.
 
-  **All twelve are modules**, finished on 2026-09-14, and a part that
-  declares no imports or exports is a build error - so "every part says what it
-  takes and what it offers" is enforced, not just true today. Only `_entry.js`
-  is generated now: it imports the PUBLIC names and is the app's one deliberate
-  contact with `window`. It is not committed, and neither is the linked bundle.
+  A part that declares no imports or exports is a build error, so "every part
+  says what it takes and what it offers" is enforced, not just true today. Only
+  `_entry.js` is generated: it imports the PUBLIC names and is the app's one
+  deliberate contact with `window`. It is not committed, and neither is the
+  linked bundle.
 
-  **`_entry.js` imports `13-boot.js` FIRST, and that is load-bearing.** A
-  module's body runs when the import graph reaches it, depth first, in the
-  order the imports are written. Import any other part first and the walk
-  reaches `13-boot` THROUGH it, so `13-boot`'s body - which builds the tab bar
-  and draws the first screen - runs before that part has built anything. It
-  happened: `buildTabs()` ran before `04-nav` had built `TABS` and sixteen
-  browser tests went red at once with a message that named neither file.
-  Entering through `13-boot` fixes it by construction, since it imports every
-  other part. `check_order()` asserts exactly that on every build and prints
-  the order it found. This is not a bundler quirk; it is what the language does
-  with a cycle, and native modules would do the same.
+  **The layers are an order, not a filing system.** A part imports from its own
+  layer or a lower one, never a higher one, and no chain of imports comes back
+  to where it started: ESLint says so on the offending line, and
+  `check_graph()` in `build_tracker_page.py` refuses to build. It was not
+  always so. The numbered files that came before had 25 import cycles - the
+  store imported the redraw from the boot file, navigation imported three tabs
+  - each one harmless on its own because the calls only happened after
+  loading, and together the reason the order parts ran in meant nothing and no
+  part could be read without the one above it. Where a lower layer must reach
+  a higher one now, the higher one registers itself: boot.js hands the store
+  its redraw (`whenChanged(renderAll)`) and tells navigation which tabs redraw
+  when shown (`onShow("calc", calcDraw)`). So a part runs after everything it
+  imports, `core/errors.js` runs first (and catches any script error after it),
+  and `boot.js` runs last; `check_order()` asserts that on every build and
+  prints the order it found.
 
-  Among the rest the order is whatever the imports say, and that is the
-  improvement over concatenation: `09-gts` runs before `05-box` because the box
-  row asks the GTS view for its badges, not because of a number in a filename.
-  Nothing relies on the old file order any more - the only top-level statements
-  left in the parts attach handlers to their own elements.
-
-  **ESLint's `no-undef` is what keeps that honest**: any name a part uses
-  without declaring or importing it fails the gate. esbuild links such a name
-  happily - by the rules of the language it is a global - and it throws on the
-  phone. It replaced a hand-rolled check in `scripts/check_app.js` that had
+  **ESLint's `no-undef` is what keeps the imports honest**: any name a part
+  uses without declaring or importing it fails the gate. esbuild links such a
+  name happily - by the rules of the language it is a global - and it throws on
+  the phone. It replaced a hand-rolled check in `scripts/check_app.js` that had
   two holes in turn. The first version scanned with a regex and skipped any
-  name the file bound anywhere, so one `var note` inside one function in
-  09-gts hid every other use of `note` in that file, and the missing import
-  reached production. The second only reported names another part EXPORTED,
-  so a private function called across files (the builds CSV export) and a name
-  that no longer existed anywhere (the saved sort order) both shipped as
+  name the file bound anywhere, so one `var note` inside one function of the
+  GTS file hid every other use of `note` in it, and the missing import reached
+  production. The second only reported names another part EXPORTED, so a
+  private function called across files (the builds CSV export) and a name that
+  no longer existed anywhere (the saved sort order) both shipped as
   ReferenceErrors. The browser tests did not see any of them: their Supabase
   stub returns no rows, and no test presses those buttons.
 
-  **What a part keeps to itself is now the interesting half.** The Item Clause
-  is `teamPickItem` in `08-teams`, the only way an item can be set. What a GTS
-  chip is worth is `chipValue` and its three axes in `09-gts`. What a build
-  COSTS is `retuneCost` in `06-builds`, and every move that enters a build goes
-  through one `movePicker`. How a Pokemon is handed to Smogon's engine is
-  `engSide` in `11-damage`. None of those can be reimplemented slightly
-  differently somewhere else any more, because none of them can be reached.
+  **Every rule has one home.** The Item Clause is `teamPickItem` in
+  `tabs/teams.js`, the only way an item can be set. What a GTS chip is worth is
+  `chipValue` in `core/trade.js`, the one file that argues it, which both GTS
+  panes ask. What a build COSTS is `retuneCost` in `core/build.js`, and every
+  move that enters a build goes through one `movePicker`. How a Pokemon is
+  handed to Smogon's engine is `engSide` in `tabs/damage.js`, private. None of
+  those can be reimplemented slightly differently somewhere else.
 - `tracker/index.template.html` — the shell they are poured into. Markers only.
 - `tracker/data.js` — generated. Never edit.
 - `tracker/dist/` — generated: the page split into hashed assets. This is what gets published.

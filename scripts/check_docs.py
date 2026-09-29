@@ -123,6 +123,16 @@ DECISIONS = [
      "and CALC switches",
      DOCS),
 
+    # The app was twelve numbered files, 01-data.js to 13-boot.js, with 25
+    # import cycles, until 2026-09-29. It is three layers now (player: "carpetas
+    # por capa"), and an import may only point down one.
+    ("app-is-layered",
+     r"`?0\d-[a-z]+\.js`? (through|to|\.\.) `?1\d-[a-z]+\.js|"
+     r"imports `13-boot\.js` FIRST|twelve ES modules",
+     "tracker/src is core/, ui/, tabs/ and boot.js; an import only points down "
+     "a layer, and no cycle is allowed",
+     DOCS),
+
     # Items are a team-level decision under the Item Clause, and the player
     # ruled them out of builds entirely on 2026-08-29.
     ("items-are-not-in-builds",
@@ -277,6 +287,8 @@ ARCH = "docs/ARCHITECTURE.md"
 
 
 def architecture_parts():
+    import build_tracker_page       # the one definition of what a part is
+
     def names(pattern, strip=""):
         return sorted(os.path.basename(f)[:len(os.path.basename(f)) - len(strip)]
                       for f in glob.glob(os.path.join(ROOT, pattern)))
@@ -287,7 +299,9 @@ def architecture_parts():
     pkg = json.load(io.open(os.path.join(ROOT, "package.json"),
                             encoding="utf-8"))
     return [
-        ("app module", names("tracker/src/[0-9]*.js")),
+        # by path, because a bare name would be found in the wrong place:
+        # "data.js" is also tracker/data.js, a different file entirely
+        ("app module", build_tracker_page.parts()),
         ("workflow", names(".github/workflows/*.yml")),
         ("pipeline script", names("scripts/fetch_*.py", ".py")
          + names("scripts/build_*.py", ".py")
