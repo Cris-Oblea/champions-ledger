@@ -13,6 +13,48 @@ import { note } from "./13-boot.js";
    whole point of a recommendation */
 import { findDetail } from "./12-find.js";
 /* ======================================================================= gts */
+/* +12, -3, 0 */
+function signed(n){ return (n > 0 ? "+" : "") + n; }
+/* a box row's card stripe: HOME, or the Champions box */
+function locClass(r){ return r.location === "home" ? "home" : "perm"; }
+/* How far apart the two sides of a trade are on ladder demand, as
+   [tag tone, sentence]. gap > 0 means asking for the more wanted one. */
+function demandFit(gap){
+  if (gap >= 120)
+    return ["bad", "a long way up — the other side wants theirs far more than yours"];
+  if (gap >= 60) return ["warn", "asking up; it can still land, but slowly"];
+  if (gap <= -40) return ["", "you are giving up the more wanted one"];
+  return ["ok", "well matched on demand"];
+}
+/* The deposit picker's empty state, naming whichever filters are on. */
+function emptyPick(pick, q){
+  var match = q ? " and matches “" + q + "”" : "";
+  if (pick.dupes && pick.outside)
+    return "Nothing you can deposit is both a duplicate and outside the " +
+      "Champions dex" + match;
+  if (pick.dupes) return "Nothing you can deposit is a duplicate" + match;
+  if (pick.outside)
+    return "Nothing you can deposit is outside the Champions dex" + match;
+  return "Nothing you can deposit matches “" + q + "”";
+}
+/* The closed-trade record behind the suggestions, as one sentence. */
+function ownRecord(rec){
+  if (!rec.n) return "";
+  var gap = "";
+  if (rec.gap != null) {
+    gap = ", and what came back ran " + (rec.gap >= 0 ? "+" : "") + rec.gap +
+      " BST on the median";
+    if (rec.gapMax != null) gap += " and +" + rec.gapMax + " at best";
+  }
+  return " Your own record: <strong>" + rec.n + "</strong> closed trades, " +
+    "half of them inside " + (elapsedText(rec.median) || "an unknown time") +
+    gap + ".";
+}
+/* The trade suggestions' empty state, by the filter that emptied them. */
+const EMPTY_WANT = {
+  outside: "Nothing in HOME that Champions cannot use can go up right now",
+  dupes: "No duplicates to spare",
+};
 function drawGts(){
   var list = $("listGts");
   list.innerHTML = "";
@@ -23,9 +65,9 @@ function drawGts(){
   var add = $("gtsAdd");
   var full = offers.length >= GTS_SLOTS;
   add.disabled = full;
-  add.textContent = full ? "All " + GTS_SLOTS + " slots taken"
-                         : "Log an offer" +
-                           (offers.length ? "  ·  " + gtsFree() + " free" : "");
+  if (full) add.textContent = "All " + GTS_SLOTS + " slots taken";
+  else add.textContent = "Log an offer" +
+    (offers.length ? "  ·  " + gtsFree() + " free" : "");
   if (offers.length >= GTS_SLOTS) {
     list.appendChild(note("warn", "<strong>All " + GTS_SLOTS +
       " GTS slots are in use.</strong> A deposit holds its slot until someone " +
@@ -108,13 +150,15 @@ function drawGtsHistory(){
   var ceil = h.filter(function(r){ return r.gaveValue && r.gotBst; });
   var hit = ceil.filter(function(r){ return r.gotBst >= r.gaveValue - 10; });
   var mega = ceil.filter(function(r){ return r.gaveValue > r.gaveBst; });
-  $("gtsHistSub").textContent = ceil.length
-    ? "What the market actually paid, over " + ceil.length + " priced trades. " +
-      hit.length + " reached the ceiling their Mega line sets" +
-      (mega.length ? ", " + (mega.length - hit.length) + " settled at base parity instead"
-                   : "") +
-      " — so that ceiling is reachable, not automatic."
-    : "What the market actually paid.";
+  var paid = "What the market actually paid.";
+  if (ceil.length) {
+    var parity = mega.length
+      ? ", " + (mega.length - hit.length) + " settled at base parity instead" : "";
+    paid = "What the market actually paid, over " + ceil.length + " priced trades. " +
+      hit.length + " reached the ceiling their Mega line sets" + parity +
+      " — so that ceiling is reachable, not automatic.";
+  }
+  $("gtsHistSub").textContent = paid;
   host.innerHTML = "";
   /* BOTH SIDES OF THE TRADE, because the question this list answers is "what
      did a Chesnaught fetch last time" - and a Chesnaught can be either half
@@ -157,10 +201,11 @@ function drawGtsHistory(){
       var prem = (r.gotBst != null && r.gaveValue != null)
         ? r.gotBst - r.gaveValue : null;
       meta.appendChild(el("span", "tag mega", "shiny chip" +
-        (prem != null ? " · " + (prem > 0 ? "+" : "") + prem + " over plain" : "")));
+        (prem != null ? " · " + signed(prem) + " over plain" : "")));
     }
-    var took = r.tookMs != null ? elapsedText(r.tookMs)
-             : (r.days != null ? r.days + " days" : null);
+    var took = null;
+    if (r.tookMs != null) took = elapsedText(r.tookMs);
+    else if (r.days != null) took = r.days + " days";
     if (took) {
       var fast = r.tookMs != null && r.tookMs < 6 * 3600000;
       meta.appendChild(el("span", "tag " + (fast ? "ok" : ""),
@@ -212,7 +257,10 @@ function gtsSelfServe(d){ return d && d.supply <= 2 && d.demand >= 3; }
 function diffChip(name, node){
   var d = gtsDiff(name);
   if (!d) return;
-  var cls = d.score >= 5 ? "bad" : d.score >= 4 ? "warn" : d.score <= 2 ? "ok" : "";
+  var cls = "";
+  if (d.score >= 5) cls = "bad";
+  else if (d.score >= 4) cls = "warn";
+  else if (d.score <= 2) cls = "ok";
   node.appendChild(el("span", "tag " + cls,
     DIFF_LABEL[d.score] + " to get · " + ladderText(d)));
 }
@@ -307,16 +355,20 @@ function gtsRow(i, o){
     var target = bst(bP);
     var diff = target - cv.reach;
     var verdict = el("div", "rmeta");
-    verdict.appendChild(el("span",
-      "tag " + (diff <= 20 ? "ok" : diff > 60 ? "bad" : "warn"),
-      diff <= 0 ? "within its price"
-        : "+" + diff + " over" + (diff <= 20 ? ", a fair stretch" : "")));
-    var how = (cv.viaMega || cv.shiny || cv.demandBonus)
-      ? " (" + cv.base + " base"
-        + (cv.viaMega ? ", " + cv.value + " via its Mega" : "")
-        + (cv.shiny ? ", +" + cv.shinyBonus + " est. shiny" : "")
-        + (cv.demandBonus ? ", +" + cv.demandBonus + " est. demand" : "") + ")"
-      : "";
+    var stretch = "warn";
+    if (diff <= 20) stretch = "ok";
+    else if (diff > 60) stretch = "bad";
+    var over = "+" + diff + " over" + (diff <= 20 ? ", a fair stretch" : "");
+    verdict.appendChild(el("span", "tag " + stretch,
+      diff <= 0 ? "within its price" : over));
+    var how = "";
+    if (cv.viaMega || cv.shiny || cv.demandBonus) {
+      var parts = [cv.base + " base"];
+      if (cv.viaMega) parts.push(cv.value + " via its Mega");
+      if (cv.shiny) parts.push("+" + cv.shinyBonus + " est. shiny");
+      if (cv.demandBonus) parts.push("+" + cv.demandBonus + " est. demand");
+      how = " (" + parts.join(", ") + ")";
+    }
     verdict.appendChild(el("span", null,
       "chip is worth ~" + cv.reach + how + ", asking " + target));
     if (diff > 60) {
@@ -334,14 +386,10 @@ function gtsRow(i, o){
   if (od && rd && od.rank != null && rd.rank != null) {
     var gap = od.rank - rd.rank;   // + means you are asking for the rarer one
     var mv = el("div", "rmeta");
-    var cls2 = gap >= 120 ? "bad" : gap >= 60 ? "warn" : gap <= -40 ? "" : "ok";
-    mv.appendChild(el("span", "tag " + cls2,
+    var fit = demandFit(gap);
+    mv.appendChild(el("span", "tag " + fit[0],
       "offering #" + od.rank + ", asking #" + rd.rank));
-    mv.appendChild(el("span", null,
-      gap >= 120 ? "a long way up — the other side wants theirs far more than yours"
-      : gap >= 60 ? "asking up; it can still land, but slowly"
-      : gap <= -40 ? "you are giving up the more wanted one"
-      : "well matched on demand"));
+    mv.appendChild(el("span", null, fit[1]));
     m.appendChild(mv);
   } else if (od && rd && (od.rank == null || rd.rank == null)) {
     var mv2 = el("div", "rmeta");
@@ -388,8 +436,10 @@ function gtsRow(i, o){
   if (age != null) {
     var ar = el("div", "rmeta");
     var waited = elapsedText(Date.now() - offerStart(o));
-    ar.appendChild(el("span",
-      "tag " + (age >= 14 ? "bad" : age >= 7 ? "warn" : ""),
+    var stale = "";
+    if (age >= 14) stale = "bad";
+    else if (age >= 7) stale = "warn";
+    ar.appendChild(el("span", "tag " + stale,
       (waited || (age + " days")) + " waiting"));
     if (age >= 7) {
       ar.appendChild(el("span", null, age >= 14
@@ -822,7 +872,7 @@ function pickField(label, current, subtitle, opener, rec){
   var b;
   if (p) {
     b = pokeCard(p, {
-      cls: rec ? (rec.location === "home" ? "home" : "perm") : "",
+      cls: rec ? locClass(rec) : "",
       name: current,
       shiny: !!rec?.shiny,
       badges: function(h){ if (rec) boxBadges(h, rec); },
@@ -977,7 +1027,10 @@ function gtsPickMine(onPick, exceptId){
       if (!rows.length) return 0;
       rows.sort(function(a, b){
         var x = orderOf(a), y = orderOf(b);
-        return x < y ? -1 : x > y ? 1 : a.name.localeCompare(b.name);
+        /* x and y are numbers, or names when sorting A-Z */
+        if (x < y) return -1;
+        if (x > y) return 1;
+        return a.name.localeCompare(b.name);
       });
       out.appendChild(el("h2", null, title));
       if (note) out.appendChild(el("p", "sub", note));
@@ -1004,7 +1057,7 @@ function gtsPickMine(onPick, exceptId){
            to choose what to give away (player, 2026-09-18: "solo muestra bst
            y speed, pero falta todo lo demas"). */
         var b = pokeCard(p || anyRow(r.name) || {name:r.name, types:[], b:[0,0,0,0,0,0], ab:[]}, {
-          cls: held ? "illegal" : r.location === "home" ? "home" : "perm",
+          cls: held ? "illegal" : locClass(r),
           name: r.name,
           shiny: !!r.shiny,
           badges: function(h){
@@ -1076,15 +1129,7 @@ function gtsPickMine(onPick, exceptId){
         "HOME first, then deposit it. Its training comes back with it.", q);
       if (!n) {
         out.appendChild(el("div", "empty",
-          PICK.dupes || PICK.outside
-            ? "Nothing you can deposit is " +
-              (PICK.dupes && PICK.outside
-                ? "both a duplicate and outside the Champions dex"
-                : PICK.dupes ? "a duplicate" : "outside the Champions dex") +
-              (inp.value.trim() ? " and matches “" +
-                inp.value.trim() + "”" : "")
-            : "Nothing you can deposit matches “" +
-              inp.value.trim() + "”"));
+          emptyPick(PICK, inp.value.trim())));
       }
       /* Said, not silently hidden: a row that vanishes with no explanation is
          a row you think you have lost. */
@@ -1365,14 +1410,15 @@ function gtsSheet(id, o){
       var mine = boxRows("home").concat(boxRows("champions"))
         .filter(function(r){ return r.name === d.offered; });
       if (!going) going = mine[0];
-      var msg = going
-        ? "Trade done: " + d.offered + " leaves the box and " + d.requested +
-          " arrives in HOME." +
-          (mine.length > 1 && !d.offeredId
-            ? "  You have " + mine.length + " " + d.offered +
-              " - the first one is the one being removed." : "")
-        : d.offered + " is not in the box any more, so only " + d.requested +
-          " will be added.";
+      var msg = d.offered + " is not in the box any more, so only " +
+        d.requested + " will be added.";
+      if (going) {
+        msg = "Trade done: " + d.offered + " leaves the box and " + d.requested +
+          " arrives in HOME.";
+        if (mine.length > 1 && !d.offeredId)
+          msg += "  You have " + mine.length + " " + d.offered +
+            " - the first one is the one being removed.";
+      }
       ask("Close this trade?", msg, "Trade done").then(function(ok){
         if (ok) closeTrade();
       });
@@ -1644,9 +1690,9 @@ function gtsBlocked(name){
 function closeMs(o){
   var start = offerStart(o);
   if (start == null) return null;
-  var end = o.closedAt ? Date.parse(o.closedAt)
-          : (o.closed && o.closed !== true) ? Date.parse(o.closed + "T00:00:00")
-          : Number.NaN;
+  var end = Number.NaN;
+  if (o.closedAt) end = Date.parse(o.closedAt);
+  else if (o.closed && o.closed !== true) end = Date.parse(o.closed + "T00:00:00");
   if (Number.isNaN(end)) return null;
   var ms = end - start;
   return ms >= 0 ? ms : null;
@@ -1749,13 +1795,7 @@ function drawGtsWanted(){
       + "Champions cannot use — with what it could realistically fetch. "
       + "An ask marked <em>frees a slot</em> is a species you hold only in the "
       + "Champions box, where it is welded: a HOME copy is worth the whole slot."
-      + (rec.n ? " Your own record: <strong>" + rec.n + "</strong> closed "
-          + "trades, half of them inside "
-          + (elapsedText(rec.median) || "an unknown time")
-          + (rec.gap != null ? ", and what came back ran "
-              + (rec.gap >= 0 ? "+" : "") + rec.gap + " BST on the median"
-              + (rec.gapMax != null ? " and +" + rec.gapMax + " at best" : "")
-              : "") + "." : "")
+      + ownRecord(rec)
     : "Nothing in HOME can go up right now. Your rule allows a duplicate past "
       + "the first copy, or a species Champions cannot use — a singleton "
       + "of a legal species would be lost for good.";
@@ -1771,11 +1811,8 @@ function drawGtsWanted(){
   }
   host.innerHTML = "";
   if (!ideas.length) {
-    host.appendChild(el("div", "empty", wq
-      ? "Nothing in HOME matches that"
-      : WANT_FILTER === "outside"
-      ? "Nothing in HOME that Champions cannot use can go up right now"
-      : WANT_FILTER === "dupes" ? "No duplicates to spare" : "Nothing to offer"));
+    host.appendChild(el("div", "empty",
+      wq ? "Nothing in HOME matches that" : EMPTY_WANT[WANT_FILTER] || "Nothing to offer"));
   }
   var cap = tradeAll ? ideas.length : TRADE_CAP;
   ideas.slice(0, cap).forEach(function(i){
@@ -1833,8 +1870,10 @@ function drawGtsWanted(){
            at a glance and 24 tags is not a glance - but the rest is one tap
            away and nothing is behind a scroll you cannot reach. */
         function askTag(a){
-          var tag = el("span", "tag" + (a.frees ? " ok" : a.stone ? " warn" : ""),
-                       a.name);
+          var tone = "";
+          if (a.frees) tone = " ok";
+          else if (a.stone) tone = " warn";
+          var tag = el("span", "tag" + tone, a.name);
           tag.title = a.bst + " BST"
             + (a.frees ? " — you hold it only in the Champions box, so a "
                 + "HOME copy frees that slot" : "")

@@ -65,7 +65,12 @@ const MOVES = C.MOVES.map(function(r,i){
           text:r[14] || ""};
 });
 /* P physical, S special, T status - three codes, never two */
-function catName(c){ return c === "P" ? "Physical" : c === "S" ? "Special" : "Status"; }
+/* 1 -> "1st", 4 -> "4th": a finishing place. Worlds ranks stop at 8. */
+function ordinal(n){ return ({1: "1st", 2: "2nd", 3: "3rd"})[n] || n + "th"; }
+/* "1 build", "3 builds" */
+function plural(n, word){ return n + " " + word + (n === 1 ? "" : "s"); }
+const CATEGORY = {P: "Physical", S: "Special"};
+function catName(c){ return CATEGORY[c] || "Status"; }
 const MOVE_BY = {}; MOVES.forEach(function(m){ MOVE_BY[m.name] = m; });
 const STAT_KEYS = ["hp","atk","def","spa","spd","spe"];
 const STAT_LABEL = {hp:"HP", atk:"Atk", def:"Def", spa:"SpA", spd:"SpD", spe:"Spe"};
@@ -758,9 +763,10 @@ function pokeCard(p, o){
        Blade, Hero, Sunny - the caption has to be readable as the thing the
        sprite shows, and calling any of them a Mega would be a lie about how
        it is reached. */
-    cell.appendChild(el("span", "megapickey " + formInk(mm, p),
-      mm.battle ? mm.battle.toLowerCase()
-                : (megaSuffix(mm, p) ? "mega " + megaSuffix(mm, p) : "mega")));
+    var key = "mega";
+    if (mm.battle) key = mm.battle.toLowerCase();
+    else if (megaSuffix(mm, p)) key = "mega " + megaSuffix(mm, p);
+    cell.appendChild(el("span", "megapickey " + formInk(mm, p), key));
     strip.appendChild(cell);
   });
   if (strip.children.length) {
@@ -994,8 +1000,14 @@ function spriteImg(id, big, shiny){
   if (!id) return null;
   var g = C.SPRITE_GAPS || {};
   var gone = function(k){ return (g[k] || []).includes(id); };
-  var home = big ? !gone(shiny ? "s" : "n") : gone(shiny ? "ps" : "p");
-  var img = el("img", big ? "sprite big" + (home ? "" : " native") : "sprite");
+  /* The big picture prefers the HOME render and falls back to the pixel
+     sprite; the small one is the pixel sprite unless that one is missing. */
+  var home;
+  if (big) home = !gone(shiny ? "s" : "n");
+  else home = gone(shiny ? "ps" : "p");
+  var cls = "sprite";
+  if (big) cls = home ? "sprite big" : "sprite big native";
+  var img = el("img", cls);
   img.src = SPRITE_BASE + (home ? "other/home/" : "") + (shiny ? "shiny/" : "")
             + id + ".png";
   img.alt = "";                       /* the name is right beside it */
@@ -1220,15 +1232,17 @@ function splitMax(name, kind){
 }
 /* A chip, emphasised RELATIVE to that Pokemon's own maximum - see above for
    why a fixed threshold cannot work across sections. */
+/* What a usage share is a share OF, by the kind of column it came from. */
+const SHARE_OF = {m: "of this Pokemon's move slots", t: "of its teams also carried this"};
 function usageTag(pct, name, kind){
   if (pct == null) return null;
   var top = splitMax(name, kind) || 100;
   var share = pct / top;
-  var t = el("span", "tag" + (share >= 0.5 ? " ok" : pct === 0 ? " warn" : ""),
-             (pct === 0 ? "0%" : pct + "%"));
-  var of = kind === "m" ? "of this Pokemon's move slots"
-         : kind === "t" ? "of its teams also carried this"
-         : "of its sets";
+  var tone = "";
+  if (share >= 0.5) tone = " ok";
+  else if (pct === 0) tone = " warn";
+  var t = el("span", "tag" + tone, pct + "%");
+  var of = SHARE_OF[kind] || "of its sets";
   t.title = (pct === 0
         ? "In the table and at 0% — nobody brought this"
         : pct + "% " + of)
@@ -1272,8 +1286,7 @@ function podiumChip(name){
   all.forEach(function(e){
     if (e.r < best.r || (e.r === best.r && e.y > best.y)) best = e;
   });
-  var place = best.r === 1 ? "1st" : best.r === 2 ? "2nd"
-            : best.r === 3 ? "3rd" : best.r + "th";
+  var place = ordinal(best.r);
   var t = el("span", "tag" + (best.r <= 3 ? " gold" : ""),
              "Worlds " + best.y + " · " + place);
   t.title = "Top 8 at " + all.length + " World Championship" +
@@ -1401,5 +1414,5 @@ export {
   formSprite, spriteFor, statGrid, wireClears, typeSkin, effectLine, numText,
   podiumChip, podiumFor, splitPct, splitsFor, splitsReg, usageTag, megaLine,
   pokeCard, megasFor, natMult, rowMatches, sortRows, statAt, toast, typeChip,
-  VIEW,
+  VIEW, ordinal, plural,
 };

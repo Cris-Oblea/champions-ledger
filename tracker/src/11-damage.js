@@ -4,6 +4,7 @@ import {
   $, C, DEX, MOVE_BY, STAT_KEYS, STAT_LABEL, anyRow, byName, capNote,
   catName, el, labelBox, learnset, natMult, pokeCard, searchField, statAt,
   statGrid, toast, typeChip,
+  plural,
 } from "./01-data.js";
 import { closeSheet, openSheet } from "./04-nav.js";
 import { S, activeAbility, baseAbility } from "./02-state.js";
@@ -264,7 +265,10 @@ function calcDamage(o){
       "half does not apply"]);
   }
   var te = typeMult(mtype, defTypes);
-  notes.push([te > 1 ? "ok" : te < 1 ? "warn" : "",
+  var teCls = "";
+  if (te > 1) teCls = "ok";
+  else if (te < 1) teCls = "warn";
+  notes.push([teCls,
     mtype + " vs " + defTypes.join("/") + ": x" + te]);
 
 
@@ -660,9 +664,8 @@ function calcSideCtl(which){
        needs no data */
     pick = el("button", "row unknown");
     m = el("div", "rmain");
-    m.appendChild(el("div", "rname", side.name
-      ? side.name
-      : which === "atk" ? "Pick the attacker" : "Pick the defender"));
+    var pickWhat = which === "atk" ? "Pick the attacker" : "Pick the defender";
+    m.appendChild(el("div", "rname", side.name || pickWhat));
     m.appendChild(el("div", "rmeta")).appendChild(
       el("span", null, "From a build, or any Pokemon in the dex"));
     pick.appendChild(m);
@@ -763,7 +766,7 @@ function calcSideCtl(which){
   var head = el("div", "sp");
   head.style.color = "var(--faint)";
   ["", "SP 0-32", "stage", "="].forEach(function(t, i){
-    var s = el("span", i === 0 ? "k" : i === 3 ? "calc" : "v", t);
+    var s = el("span", ["k", "v", "v", "calc"][i], t);
     head.appendChild(s);
   });
   host.appendChild(head);
@@ -839,9 +842,9 @@ function calcBudget(which){
   node.innerHTML = "";
   node.appendChild(el("span", null, tot + " of 66 SP"));
   var over = STAT_KEYS.filter(function(k){ return (side.sp[k] || 0) > 32; });
-  var msg = tot > 66 ? (tot - 66) + " over the budget"
-          : over.length ? over.map(function(k){ return STAT_LABEL[k]; }).join(", ") + " over 32"
-          : (66 - tot) + " left";
+  var msg = (66 - tot) + " left";
+  if (tot > 66) msg = (tot - 66) + " over the budget";
+  else if (over.length) msg = over.map(function(k){ return STAT_LABEL[k]; }).join(", ") + " over 32";
   var s = el("span", null, msg);
   if (tot > 66 || over.length) s.style.color = "var(--bad)";
   node.appendChild(s);
@@ -908,7 +911,7 @@ function calcPickSheet(which){
         bl.appendChild(r);
       });
       bcount.textContent = shown === builds.length
-        ? builds.length + " build" + (builds.length === 1 ? "" : "s")
+        ? plural(builds.length, "build")
         : shown + " of " + builds.length + " builds";
       if (!shown) bl.appendChild(el("div", "empty", "No build matches"));
       }
@@ -1138,6 +1141,9 @@ function calcFieldCtl(){
 
 }
 
+/* The verdict's colour by hits to KO: one, two, or three and more. */
+const KO_CLASS = {1: "k1", 2: "k2"};
+const KO_FILL = {1: "var(--bad)", 2: "var(--warn)"};
 function calcRun(){
   var out = $("calcOut");
   out.innerHTML = "";
@@ -1164,7 +1170,7 @@ function calcRun(){
   var hp = r.curHP != null ? r.curHP : r.hp;
   var pctLo = r.lo / r.hp * 100, pctHi = r.hi / r.hp * 100;
   var ko = koCount(r.lo, r.hi, hp);
-  var kls = ko.n === 1 ? "k1" : ko.n === 2 ? "k2" : "k3";
+  var kls = KO_CLASS[ko.n] || "k3";
 
   /* the number, the percentage and the verdict on one line - this is the
      answer, and it stays on screen while the inputs below it change */
@@ -1181,8 +1187,7 @@ function calcRun(){
   bar.style.height = "8px";
   var fill = el("i");
   fill.style.width = Math.min(100, r.hi / hp * 100) + "%";
-  fill.style.background = ko.n === 1 ? "var(--bad)"
-                        : ko.n === 2 ? "var(--warn)" : "var(--accent)";
+  fill.style.background = KO_FILL[ko.n] || "var(--accent)";
   bar.appendChild(fill);
   out.appendChild(bar);
 

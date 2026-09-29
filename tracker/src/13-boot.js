@@ -32,7 +32,9 @@ function renderAll(){
 
   var bc = $("boxCount");
   bc.textContent = "box " + used + "/" + cap;
-  bc.className = "counter" + (used >= cap ? " full" : used >= cap - 3 ? " tight" : "");
+  bc.className = "counter";
+  if (used >= cap) bc.className += " full";
+  else if (used >= cap - 3) bc.className += " tight";
 
   /* ONE FILTER, THREE SECTIONS. Which origin a Pokemon has is not part of
      "where is my Chesnaught", so the box's filter runs across all three and

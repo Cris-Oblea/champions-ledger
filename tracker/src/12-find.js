@@ -5,7 +5,7 @@ import {
   byName, cardLine, catName, defence, battleFormsOf, dexNo, effectLine, el,
   formInk, formMoves, formSprite, labelBox, learnset, megaLine, numText,
   podiumChip, pokeFacts, podiumFor, pokeCard, searchField, splitPct,
-  spriteFor, statGrid, toast, typeChip, typeSkin, usageTag, VIEW,
+  spriteFor, statGrid, toast, typeChip, typeSkin, usageTag, VIEW, ordinal,
 } from "./01-data.js";
 import { RELEASE_FLOOR, S, boxRows, originOf, ownedNames, releaseBlock }
   from "./02-state.js";
@@ -158,6 +158,11 @@ function findDraw(){
   findRun();
 }
 
+/* ", highest first" / ", lowest first", after the prefix given */
+function dirLabel(prefix){
+  return prefix + (FIND.dir === "asc" ? "lowest first" : "highest first");
+}
+const OWNED_ORIGIN = {home: "HOME origin", champions: "Champions origin"};
 function findRun(){
   var out = $("findOut");
   out.innerHTML = "";
@@ -230,8 +235,7 @@ function findRun(){
     (FIND.moves.length > 1
       ? " - all " + FIND.moves.length + " moves on the same Pokemon" : "") +
     (FIND.sort === "dex" ? ", in dex order"
-     : ", by " + statLabel(FIND.sort) +
-       (FIND.dir === "asc" ? ", lowest first" : ", highest first"));
+     : ", by " + statLabel(FIND.sort) + dirLabel(", "));
   out.appendChild(head);
 
   if (!hits.length) {
@@ -288,11 +292,9 @@ function findRun(){
           var rec = boxRows("champions").find(function(x){
             return x.name === p.name || x.name === p.species; });
           var o = rec ? originOf(rec) : null;
-          h.appendChild(el("span", "tag " + (o === "home" ? "ok" : ""),
-            rec?.status === "rental" ? "rental in your box"
-            : o === "home" ? "yours, HOME origin"
-            : o === "champions" ? "yours, Champions origin"
-            : "yours, origin?"));
+          var ownTag = rec?.status === "rental" ? "rental in your box"
+            : "yours, " + (OWNED_ORIGIN[o] || "origin?");
+          h.appendChild(el("span", "tag " + (o === "home" ? "ok" : ""), ownTag));
         }
         /* WHEN A MEGA IS THE REASON THIS POKEMON MATCHED AT ALL, say so.
            Searching Fighting finds Staraptor because its Mega is
@@ -520,6 +522,12 @@ function abilityNote(a, form, badge, ls){
   return n;
 }
 
+/* a damage multiplier's tone: taking more is bad, taking less is good */
+function multTone(x){
+  if (x > 1) return " bad";
+  if (x < 1) return " ok";
+  return "";
+}
 function damageTable(types){
   var dfc = defence(types);
   var dl = el("div");
@@ -530,13 +538,19 @@ function damageTable(types){
     var line = el("div", "rmeta");
     line.style.marginBottom = "5px";
     line.appendChild(el("span",
-      "tag" + (g[0] > 1 ? " bad" : g[0] < 1 ? " ok" : ""), g[1]));
+      "tag" + multTone(g[0]), g[1]));
     hits.forEach(function(t){ line.appendChild(typeChip(t)); });
     dl.appendChild(line);
   });
   return dl;
 }
 
+/* what a battle form changes, as the end of "<ability> ..." */
+function formChange(moved, retype){
+  if (moved.length) return " moves " + moved.join(", ") + ".";
+  if (retype) return " changes the typing, not the spread.";
+  return " moves no stat and keeps the typing.";
+}
 function pokeBody(body, p){
 
   /* THE ORDER IS THE ORDER A POKEMON IS READ IN (player, 2026-09-19): "estan
@@ -729,9 +743,7 @@ function pokeBody(body, p){
              : STAT_LABEL[k] + " " + p.b[i] + " → " + f.b[i];
       }).filter(Boolean);
       pn.appendChild(el("div", "st",
-        moved.length ? f.by + " moves " + moved.join(", ") + "."
-        : retype ? f.by + " changes the typing, not the spread."
-        : f.by + " moves no stat and keeps the typing."));
+        f.by + formChange(moved, retype)));
       /* WHAT IT DOES TO ITS MOVES, which for a form that moves no number is
          the whole reason it matters (player, 2026-09-27: "algunas formas
          determinan algunas habilidades o ataques, como aura wheel de morpeko
@@ -788,8 +800,7 @@ function pokeBody(body, p){
       var card = el("div", "note");
       card.style.marginBottom = "6px";
       var head = el("div", "rname");
-      var place = e.r === 1 ? "1st" : e.r === 2 ? "2nd"
-                : e.r === 3 ? "3rd" : e.r + "th";
+      var place = ordinal(e.r);
       head.appendChild(el("span", "tag" + (e.r <= 3 ? " gold" : ""),
                           "Worlds " + e.y + " · " + e.d + " · " + place));
       if (e.who) head.appendChild(document.createTextNode(e.who));
@@ -989,7 +1000,8 @@ function multiHitTag(m, host){
   if (!h?.length) return;
   var lo = h[0], hi = h.length > 1 ? h[1] : h[0];
   var fixed = lo === hi;
-  var typical = fixed ? lo : (lo === 2 && hi === 5 ? 3 : lo);
+  /* 2-5 hit moves land 3 times on average; any other range is read at its floor */
+  var typical = !fixed && lo === 2 && hi === 5 ? 3 : lo;
   var t = el("span", "tag ok",
               fixed ? "×" + lo + " hits" : lo + "–" + hi + " hits");
   var bits = [];
@@ -1082,10 +1094,11 @@ function blockerTags(m, host){
   });
 }
 function spreadNote(m){
-  return (m.spread ? "  ·  " + (m.cat === "T" ? "hits both opponents"
-            : "spread ×0.75 while both targets are up, full power with one")
-          : "") +
-         (m.hitsAlly ? "  ·  lands on your own ally too" : "");
+  var note = "";
+  if (m.spread) note += "  ·  " + (m.cat === "T" ? "hits both opponents"
+    : "spread ×0.75 while both targets are up, full power with one");
+  if (m.hitsAlly) note += "  ·  lands on your own ally too";
+  return note;
 }
 
 /* ------------------------------------------------ finding one move fast ---
@@ -1190,7 +1203,8 @@ function moveFilters(body, pool, onChange, placeholder, opts){
     t._paint = paint;
     t.onclick = function(){
       var was = F[group][key] || 0;
-      var now = was === 0 ? 1 : was === 1 ? -1 : 0;
+      /* three states in a cycle: off -> include -> exclude -> off */
+      var now = ({0: 1, 1: -1})[was] || 0;
       if (now) F[group][key] = now; else delete F[group][key];
       /* A MOVE HAS EXACTLY ONE CATEGORY, so two of them included at once can
          only ever mean "either", and the player read the group as an AND and
@@ -1264,9 +1278,9 @@ function moveFilters(body, pool, onChange, placeholder, opts){
       if (inCat.length && !inCat.includes(m.cat)) return false;
       if (inTy.length && !inTy.includes(m.type)) return false;
       var has = function(k){
-        return k === "spread" ? !!m.spread
-             : k === "ally" ? !!m.hitsAlly
-             : (m.pri || 0) > 0;
+        if (k === "spread") return !!m.spread;
+        if (k === "ally") return !!m.hitsAlly;
+        return (m.pri || 0) > 0;
       };
       if (trs.some(function(k){ return F.trait[k] === -1 && has(k); }))
         return false;
@@ -1342,8 +1356,9 @@ function factLine(parts){
    mismos cambios para que se entienda de la misma forma en ambas partes").
    Anything added to one belongs in the other. */
 function moveRowFor(m, ability, poke){
-  var abils = ability == null ? []
-            : (typeof ability === "string" ? [ability] : ability.slice());
+  var abils = [];
+  if (typeof ability === "string") abils = [ability];
+  else if (ability != null) abils = ability.slice();
   var r = el("div", "row");
   var mm = el("div", "rmain");
   var h = el("div", "rname");
@@ -1416,6 +1431,7 @@ function moveRowFor(m, ability, poke){
   return r;
 }
 
+const CLS_TONE = {"moves-off": "ok", "moves-def": "warn"};
 function findInit(){
   /* Typed, not tapped: this one narrows as you go rather than adding a chip,
      because it is the control for "open Garchomp" and not for building a
@@ -1615,7 +1631,7 @@ function findInit(){
           h.appendChild(document.createTextNode(a));
           var k = CLS[a] || "other";
           h.appendChild(el("span",
-            "tag " + (k === "moves-off" ? "ok" : k === "moves-def" ? "warn" : ""),
+            "tag " + (CLS_TONE[k] || ""),
             CLSL[k] || k));
           (C.ITEM_FOR_ABILITY?.[a] || []).forEach(function(it){
             h.appendChild(el("span", "tag", it));
@@ -1691,14 +1707,14 @@ function paintSort(){
   row.innerHTML = "";
   [["dex","Dex #"]].concat(FIND_STATS).forEach(function(o){
     var on = o[0] === FIND.sort;
-    var arrow = o[0] === "dex" ? ""
-              : FIND.dir === "asc" ? " ↑" : " ↓";
+    var arrow = "";
+    if (o[0] !== "dex") arrow = FIND.dir === "asc" ? " ↑" : " ↓";
     var t = el("button", "tog", o[1] + (on ? arrow : ""));
     t.setAttribute("aria-pressed", on ? "true" : "false");
-    t.title = o[0] === "dex" ? "Dex order"
-      : on ? "Tap again for " +
-             (FIND.dir === "asc" ? "highest first" : "lowest first")
-      : "Rank by " + o[1] + ", highest first";
+    if (o[0] === "dex") t.title = "Dex order";
+    else if (on) t.title = "Tap again for " +
+      (FIND.dir === "asc" ? "highest first" : "lowest first");
+    else t.title = "Rank by " + o[1] + ", highest first";
     t.onclick = function(){
       /* already here: flip. Somewhere else: go there, highest first, which is
          what you mean nine times out of ten. */
@@ -1899,9 +1915,9 @@ function checkLatest(){
       var m = /CHAMP_BUILD\s*=\s*['"]([^'"]+)['"]/.exec(t);
       var live = m ? m[1] : null;
       var mine = window.CHAMP_BUILD || "";
-      DIAG_LATEST = !live ? "could not check"
-        : live === mine ? "yes, this is the current build"
-        : "NO - the server has " + live + ", reload to get it";
+      if (!live) DIAG_LATEST = "could not check";
+      else if (live === mine) DIAG_LATEST = "yes, this is the current build";
+      else DIAG_LATEST = "NO - the server has " + live + ", reload to get it";
     })
     .catch(function(){ DIAG_LATEST = "could not check (offline?)"; })
     .then(function(){ if ($("diagOut")?.children.length) drawDiag(); });
