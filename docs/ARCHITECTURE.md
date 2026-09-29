@@ -352,6 +352,9 @@ gh pr create                          # CI gates it; merge = deploy
   VS Code's "Attach to Node Process".
 - **Markdown preview:** Ctrl+Shift+V. For the diagram in §1, install
   "Markdown Preview Mermaid Support" (GitHub renders it without anything).
+- **Code Spell Checker** reads `cspell.json`, whose word list is
+  `.cspell-words.txt` (Pokemon names, sources, tools, and the Spanish quotes).
+  For a new name, use the Quick Fix (Ctrl+.) "Add to dictionary: project".
 - Useful extensions: **GitLens** (who changed a line and why), **GitHub Pull
   Requests** (review PRs inside VS Code), **Python**, **ESLint** (optional).
 
