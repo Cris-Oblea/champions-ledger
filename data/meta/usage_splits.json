@@ -1,6 +1,6 @@
 {
- "count": 337,
- "fetched": "2026-09-28",
+ "count": 341,
+ "fetched": "2026-09-29",
  "note": "What each Pokemon's own players run. TWO datasets, kept apart because their percentages are not the same measure: `tournament` is teamlists for one regulation and exists for every Pokemon; `season` is the ladder and only exists for a Pokemon ranked that season. Read from the Next.js payload, which carries every page of every section - the rendered HTML only ever holds page 1.",
  "pokemon": {
   "Abomasnow": {
@@ -3941,6 +3941,83 @@
      {
       "name": "Salamence",
       "percent": 18.1
+     }
+    ]
+   }
+  },
+  "Aromatisse": {
+   "season": {
+    "abilities": [],
+    "dates": "Aug 5 – Sep 9, 2026",
+    "items": [],
+    "moves": [],
+    "name": "Season M-5",
+    "natures": [],
+    "of": 235,
+    "rank": 127,
+    "spreads": [],
+    "teammates": []
+   },
+   "tournament": {
+    "abilities": [
+     {
+      "name": "Aroma Veil",
+      "percent": 100.0
+     }
+    ],
+    "items": [],
+    "moves": [
+     {
+      "name": "Focus Sash",
+      "percent": 100
+     }
+    ],
+    "natures": [
+     {
+      "effect": "+SpA / -Spe",
+      "name": "Quiet",
+      "percent": 100
+     }
+    ],
+    "regulation": "M-C",
+    "spreads": [
+     {
+      "percent": 100,
+      "sp": {
+       "hp": 32,
+       "spa": 32,
+       "spd": 2
+      }
+     }
+    ],
+    "teammates": [
+     {
+      "name": "Glimmora",
+      "percent": 100
+     },
+     {
+      "name": "Mega Glimmora",
+      "percent": 100
+     },
+     {
+      "name": "Rillaboom",
+      "percent": 100
+     },
+     {
+      "name": "Charizard",
+      "percent": 100
+     },
+     {
+      "name": "Mega Charizard Y",
+      "percent": 100
+     },
+     {
+      "name": "Mudsdale",
+      "percent": 100
+     },
+     {
+      "name": "Pelipper",
+      "percent": 100
      }
     ]
    }
@@ -11084,6 +11161,74 @@
      {
       "name": "Golisopod",
       "percent": 50
+     }
+    ]
+   }
+  },
+  "Emolga": {
+   "season": {
+    "abilities": [],
+    "dates": "Aug 5 – Sep 9, 2026",
+    "items": [],
+    "moves": [],
+    "name": "Season M-5",
+    "natures": [],
+    "of": 235,
+    "rank": 200,
+    "spreads": [],
+    "teammates": []
+   },
+   "tournament": {
+    "abilities": [
+     {
+      "name": "Motor Drive",
+      "percent": 100.0
+     }
+    ],
+    "items": [],
+    "moves": [
+     {
+      "name": "Bright Powder",
+      "percent": 100
+     }
+    ],
+    "natures": [
+     {
+      "effect": "+Spe / -Atk",
+      "name": "Timid",
+      "percent": 100
+     }
+    ],
+    "regulation": "M-C",
+    "spreads": [],
+    "teammates": [
+     {
+      "name": "Sableye",
+      "percent": 100
+     },
+     {
+      "name": "Mega Sableye",
+      "percent": 100
+     },
+     {
+      "name": "Morpeko",
+      "percent": 100
+     },
+     {
+      "name": "Raichu",
+      "percent": 100
+     },
+     {
+      "name": "Mega Raichu Y",
+      "percent": 100
+     },
+     {
+      "name": "Mimikyu",
+      "percent": 100
+     },
+     {
+      "name": "Maushold (Family Of Four)",
+      "percent": 100
      }
     ]
    }
@@ -19250,6 +19395,79 @@
      {
       "name": "Mega Staraptor",
       "percent": 25.5
+     }
+    ]
+   }
+  },
+  "Hisuian Avalugg": {
+   "season": {
+    "abilities": [],
+    "dates": "Aug 5 – Sep 9, 2026",
+    "items": [],
+    "moves": [],
+    "name": "Season M-5",
+    "natures": [],
+    "of": 235,
+    "rank": 178,
+    "spreads": [],
+    "teammates": []
+   },
+   "tournament": {
+    "abilities": [
+     {
+      "name": "Sturdy",
+      "percent": 100.0
+     }
+    ],
+    "items": [],
+    "moves": [
+     {
+      "name": "Quick Claw",
+      "percent": 100
+     }
+    ],
+    "natures": [
+     {
+      "effect": "+Atk / -Spe",
+      "name": "Brave",
+      "percent": 100
+     }
+    ],
+    "regulation": "M-C",
+    "spreads": [
+     {
+      "percent": 100,
+      "sp": {
+       "atk": 32,
+       "def": 32,
+       "hp": 2
+      }
+     }
+    ],
+    "teammates": [
+     {
+      "name": "Froslass",
+      "percent": 100
+     },
+     {
+      "name": "Mega Froslass",
+      "percent": 100
+     },
+     {
+      "name": "Weavile",
+      "percent": 100
+     },
+     {
+      "name": "Crabominable",
+      "percent": 100
+     },
+     {
+      "name": "Milotic",
+      "percent": 100
+     },
+     {
+      "name": "Beartic",
+      "percent": 100
      }
     ]
    }
@@ -36166,6 +36384,63 @@
      {
       "name": "Armarouge",
       "percent": 11.4
+     }
+    ]
+   }
+  },
+  "Mega Medicham": {
+   "tournament": {
+    "abilities": [
+     {
+      "name": "Pure Power",
+      "percent": 100.0
+     }
+    ],
+    "items": [],
+    "moves": [
+     {
+      "name": "Medichamite",
+      "percent": 100
+     }
+    ],
+    "natures": [
+     {
+      "effect": "+Atk / -SpA",
+      "name": "Adamant",
+      "percent": 100
+     }
+    ],
+    "regulation": "M-C",
+    "spreads": [
+     {
+      "percent": 100,
+      "sp": {
+       "atk": 32,
+       "def": 2,
+       "hp": 32
+      }
+     }
+    ],
+    "teammates": [
+     {
+      "name": "Talonflame",
+      "percent": 100
+     },
+     {
+      "name": "Lycanroc (Dusk)",
+      "percent": 100
+     },
+     {
+      "name": "Aegislash",
+      "percent": 100
+     },
+     {
+      "name": "Tsareena",
+      "percent": 100
+     },
+     {
+      "name": "Hydreigon",
+      "percent": 100
      }
     ]
    }
