@@ -2,7 +2,7 @@
    Part of the app; assembled into one script by scripts/build_tracker_page.py. */
 import { byName } from "./01-data.js";
 /* ===================================================================== state */
-var S = {box:{}, builds:{}, teams:{}, stones:{}, items:{}, gts:{},
+const S = {box:{}, builds:{}, teams:{}, stones:{}, items:{}, gts:{},
          meta:{}, db:null, ready:false, tab:"box"};
 
 function boxRows(loc, st){
@@ -23,7 +23,7 @@ function originOf(r){
   return r.origin === "home" ? "home"
        : r.origin === "champions" ? "champions" : "unknown";
 }
-var ORIGIN_LABEL = {home:"HOME origin", champions:"Champions origin",
+const ORIGIN_LABEL = {home:"HOME origin", champions:"Champions origin",
                     unknown:"origin?"};
 
 /* ------------------------------------------------ who can be RELEASED ----
@@ -42,7 +42,7 @@ var ORIGIN_LABEL = {home:"HOME origin", champions:"Champions origin",
    Returns null when the row can be released, or the reason it cannot. A row
    in the HOME box is only a ledger entry leaving (a trade, a transfer), so it
    is not asked about here. */
-var RELEASE_FLOOR = 6;
+const RELEASE_FLOOR = 6;
 function releaseBlock(r){
   if (r?.location !== "champions") return null;
   if (originOf(r) === "home") return "home";

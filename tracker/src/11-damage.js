@@ -564,7 +564,7 @@ function engineCalc(){
    Either side can be loaded from a saved build or set by hand, because the
    question is usually asymmetric: your own Pokemon is built, the opponent's is
    whatever the ladder brings. */
-var CALC = {
+const CALC = {
   atk: {name:null, buildId:null, sp:{hp:0,atk:0,def:0,spa:0,spd:0,spe:0},
         boost:{atk:0,def:0,spa:0,spd:0,spe:0}, nature:null,
         ability:null, item:null, status:null, curHP:null},
@@ -1282,7 +1282,7 @@ function calcDraw(){
      - an ability that changes what comes IN never badges its own movepool
        (Bulletproof, Filter, Thick Fat are "def" and stay out of it) */
 var AB = C.AB_MOVES || {};
-var AB_SET = {};
+const AB_SET = {};
 Object.keys(AB).forEach(function(name){
   var e = AB[name], s = {all:!!e.all, side:e.side, x:e.x, why:e.why,
                          scope:e.scope};

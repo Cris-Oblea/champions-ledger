@@ -1,8 +1,8 @@
 /* 01-data.js - The dex blob unpacked, and the small helpers everything else calls.
    Part of the app; assembled into one script by scripts/build_tracker_page.py. */
 /* ===================================================================== data */
-var C = window.CHAMP;
-var DEX = C.DEX.map(function(r){
+const C = window.CHAMP;
+const DEX = C.DEX.map(function(r){
   return {name:r[0], species:r[1], types:r[2], b:r[3], mega:!!r[4], ab:r[5],
           dex:r[6] || 0};
 });
@@ -20,16 +20,11 @@ function dexLabel(name){
   var n = dexNo(name);
   return n === 99999 ? "#----" : "#" + String(n).padStart(4, "0");
 }
-/* Two pieces of VIEW state, read all over the app and written by the controls
-   in 13-boot. They live here because sortRows() and rowMatches() below are what
-   read them, but a module's binding may only be assigned by the module that
-   declares it - so the writers call these instead of assigning across the
-   boundary. That restriction is the point: before, any of thirteen files could
-   have written either one and nothing said so. */
-var SORT = "dex";
-var HOME_ALL = false;
-function setSort(v){ SORT = v; }
-function setHomeAll(v){ HOME_ALL = v; }
+/* VIEW state, read all over the app and written by the controls in 13-boot:
+   the box sort, and whether HOME shows every row. One exported object rather
+   than two exported variables, because an importer may change an object's
+   properties but may never reassign another module's binding. */
+const VIEW = {sort: "dex", homeAll: false};
 function rowMatches(r, q){
   if (!q) return true;
   if (r.name.toLowerCase().includes(q)) return true;
@@ -43,7 +38,7 @@ function rowMatches(r, q){
 }
 function sortRows(rows){
   var r = rows.slice();
-  if (SORT === "az") {
+  if (VIEW.sort === "az") {
     r.sort(function(a, b){ return a.name.localeCompare(b.name); });
   } else {
     r.sort(function(a, b){
@@ -52,18 +47,18 @@ function sortRows(rows){
   }
   return r;
 }
-var byName = {}; DEX.forEach(function(p){ byName[p.name] = p; });
-var FORMS = DEX.filter(function(p){ return !p.mega; })
+const byName = {}; DEX.forEach(function(p){ byName[p.name] = p; });
+const FORMS = DEX.filter(function(p){ return !p.mega; })
                .sort(function(a,b){ return a.name.localeCompare(b.name); });
-var MEGAS_OF = {};
+const MEGAS_OF = {};
 DEX.forEach(function(p){
   if (!p.mega) return;
   MEGAS_OF[p.species] ||= [];
   MEGAS_OF[p.species].push(p);
 });
-var STONE_OF = {};                       // mega name -> stone name
+const STONE_OF = {};                       // mega name -> stone name
 C.STONES.forEach(function(r){ STONE_OF[r[1]] = r[0]; });
-var MOVES = C.MOVES.map(function(r,i){
+const MOVES = C.MOVES.map(function(r,i){
   return {i:i, name:r[0], type:r[1], cat:r[2], bp:r[3], acc:r[4], pp:r[5],
           pri:r[6], target:r[7], spread:!!r[8], hitsAlly:!!r[9],
           hits:r[10] || null, crit:!!r[11], f:r[12] || "", sec:!!r[13],
@@ -71,9 +66,9 @@ var MOVES = C.MOVES.map(function(r,i){
 });
 /* P physical, S special, T status - three codes, never two */
 function catName(c){ return c === "P" ? "Physical" : c === "S" ? "Special" : "Status"; }
-var MOVE_BY = {}; MOVES.forEach(function(m){ MOVE_BY[m.name] = m; });
-var STAT_KEYS = ["hp","atk","def","spa","spd","spe"];
-var STAT_LABEL = {hp:"HP", atk:"Atk", def:"Def", spa:"SpA", spd:"SpD", spe:"Spe"};
+const MOVE_BY = {}; MOVES.forEach(function(m){ MOVE_BY[m.name] = m; });
+const STAT_KEYS = ["hp","atk","def","spa","spd","spe"];
+const STAT_LABEL = {hp:"HP", atk:"Atk", def:"Def", spa:"SpA", spd:"SpD", spe:"Spe"};
 /* THE REAL TYPE COLOURS, NOT AN APPROXIMATION.
 
    These were eighteen hand-written hexes with no source beside them, darkened
@@ -98,13 +93,13 @@ var STAT_LABEL = {hp:"HP", atk:"Atk", def:"Def", spa:"SpA", spd:"SpD", spe:"Spe"
    The three tables below are views onto that one source. They are built rather
    than written so nothing can drift from it. */
 var TYPE_COLORS = window.CHAMP?.TYPE_COLORS || {};
-var TYPE_COLOR = {}, TYPE_COLOR2 = {}, TYPE_INK = {};
+const TYPE_COLOR = {}, TYPE_COLOR2 = {}, TYPE_INK = {};
 Object.keys(TYPE_COLORS).forEach(function(t){
   TYPE_COLOR[t] = TYPE_COLORS[t].top;
   TYPE_COLOR2[t] = TYPE_COLORS[t].bottom || TYPE_COLORS[t].top;
   TYPE_INK[t] = TYPE_COLORS[t].ink || "#FFFFFF";
 });
-var COSTS = {ranked_win:300, mega_stone_shop:2000, keep_rental_pokemon:2500,
+const COSTS = {ranked_win:300, mega_stone_shop:2000, keep_rental_pokemon:2500,
              training_move:250, training_nature:500, training_ability:500,
              training_stat_point:5};
 
@@ -1399,12 +1394,12 @@ function searchField(host, placeholder, onInput){
    the two private ones, was a global that any of the thirteen parts could read
    or overwrite. */
 export {
-  $, C, COSTS, DEX, FORMS, HOME_ALL, MEGAS_OF, MOVES, MOVE_BY, SORT,
-  STAT_KEYS, STAT_LABEL, STONE_OF, TYPE_COLOR, TYPE_COLOR2, TYPE_INK, bst,
-  byName, capNote, catName, defence, dexLabel, dexNo, el, freeSlug, anyRow,
-  battleFormsOf, cardLine, formInk, formMoves, labelBox, learnset, pokeFacts,
-  outsideRow, searchField, formSprite, spriteFor, statGrid, wireClears,
-  typeSkin, effectLine, numText, podiumChip, podiumFor, splitPct, splitsFor,
-  splitsReg, usageTag, megaLine, pokeCard, megasFor, natMult, rowMatches,
-  setHomeAll, setSort, sortRows, statAt, toast, typeChip,
+  $, C, COSTS, DEX, FORMS, MEGAS_OF, MOVES, MOVE_BY, STAT_KEYS, STAT_LABEL,
+  STONE_OF, TYPE_COLOR, TYPE_COLOR2, TYPE_INK, bst, byName, capNote, catName,
+  defence, dexLabel, dexNo, el, freeSlug, anyRow, battleFormsOf, cardLine,
+  formInk, formMoves, labelBox, learnset, pokeFacts, outsideRow, searchField,
+  formSprite, spriteFor, statGrid, wireClears, typeSkin, effectLine, numText,
+  podiumChip, podiumFor, splitPct, splitsFor, splitsReg, usageTag, megaLine,
+  pokeCard, megasFor, natMult, rowMatches, sortRows, statAt, toast, typeChip,
+  VIEW,
 };
