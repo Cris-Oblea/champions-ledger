@@ -1,0 +1,14 @@
+{
+  "version": "0.2",
+  "language": "en,en-GB",
+  "ignorePaths": [
+    "data/**", "node_modules/**", "graphify-out/**",
+    "tracker/dist/**", "tracker/build/**", "tracker/src/_*.js",
+    "tracker/{data,splits,analysis,outsidedex,engine.bundle}.js",
+    "package-lock.json"
+  ],
+  "dictionaryDefinitions": [
+    { "name": "project", "path": "./.cspell-words.txt", "addWords": true }
+  ],
+  "dictionaries": ["project"]
+}

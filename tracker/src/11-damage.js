@@ -5,15 +5,96 @@ import { $, C, DEX, MOVE_BY, STAT_KEYS, STAT_LABEL, anyRow, byName, capNote,
  statGrid, toast, typeCard, typeChip } from "./01-data.js";
 import { closeSheet, openSheet } from "./04-nav.js";
 import { S, activeAbility, baseAbility } from "./02-state.js";
-/* The modifier tables - which item, weather, terrain and berry touch which
-   type. They live in 10-scan for a historical reason and not a good one; this
-   import is what finally says so out loud. */
-import { BERRY_TYPE, MODS, TERRAIN_MOVE, TYPE_ITEM, WEATHER_MOVE, modFor }
-  from "./10-scan.js";
 /* One label: whether a move hits both opponents. 12-find imports this file
    back for the ability set, and the cycle costs nothing - both sides are
    function declarations, called from a click, never while loading. */
 import { spreadTags } from "./12-find.js";
+/* ------------------------------------------- abilities, items, weather ----
+   Every multiplier here was MEASURED against Smogon's own Champions engine by
+   scripts/measure_modifiers.py - run the case with the modifier and without it
+   and read the ratio - because Serebii's item text says "slightly boosts the
+   power", which is not a number, and reciting one from memory is the thing
+   this project forbids.
+
+   Anything measured at x1.00 was then checked against the format: Choice Band,
+   Choice Specs, Assault Vest, Eviolite, Transistor, Steelworker, Ice Scales and
+   Storm Drain are not in Champions at all, which is why they moved nothing. */
+var MODS = C.MODS || {};
+
+/* which types each modifier cares about - the measurement gives the number,
+   this says when it applies */
+var TYPE_ABIL = {
+  "Water Bubble": ["Water"], "Fire Mane": ["Fire"],
+  "Thick Fat": ["Fire", "Ice"], "Heatproof": ["Fire"],
+  "Flash Fire": ["Fire"], "Water Absorb": ["Water"], "Levitate": ["Ground"],
+  "Earth Eater": ["Ground"], "Volt Absorb": ["Electric"],
+  "Lightning Rod": ["Electric"], "Sap Sipper": ["Grass"],
+  "Motor Drive": ["Electric"], "Well-Baked Body": ["Fire"],
+  "Dry Skin": ["Water", "Fire"]
+};
+var FLAG_ABIL = {           // ability -> the move flag it keys off
+  "Tough Claws": "c", "Fluffy": "c", "Aura Guard": "c", "Unseen Fist": "c",
+  "Iron Fist": "p", "Strong Jaw": "b", "Sharpness": "l", "Punk Rock": "s",
+  "Soundproof": "s", "Bulletproof": "u", "Overcoat": "d"
+};
+var WEATHER_MOVE = {
+  "Sun":  {Fire: "Sun|Fire",  Water: "Sun|Water"},
+  "Rain": {Water: "Rain|Water", Fire: "Rain|Fire"},
+  "Sand": {}, "Snow": {}
+};
+var TERRAIN_MOVE = {
+  "Electric": {Electric: "Electric|Electric"},
+  "Grassy":   {Grass: "Grassy|Grass"},
+  "Psychic":  {Psychic: "Psychic|Psychic"},
+  "Misty":    {Dragon: "Misty|Dragon"}
+};
+
+/* does this ability touch THIS move? returns the measured multiplier, 0 for an
+   immunity, or null when it does not apply */
+function modFor(group, name, move, mtype, te, atkTypes){
+  if (!name) return null;
+  var tbl = MODS[group] || {};
+  if (!(name in tbl)) return null;
+  var x = tbl[name];
+  var types = TYPE_ABIL[name];
+  if (types && types.indexOf(mtype) < 0) return null;
+  var flag = FLAG_ABIL[name];
+  if (flag && move.f.indexOf(flag) < 0) return null;
+  if (name === "Sheer Force" && !move.sec) return null;
+  if (name === "Technician" && !(move.bp && move.bp <= 60)) return null;
+  if (name === "Reckless" && !MOVE_RECOIL[move.name]) return null;
+  if (name === "Mega Launcher" && !MOVE_PULSE[move.name]) return null;
+  if (name === "Hustle" && move.cat !== "P") return null;
+  if ((name === "Filter" || name === "Solid Rock" || name === "Expert Belt")
+      && te <= 1) return null;
+  if (name === "Adaptability" && atkTypes.indexOf(mtype) < 0) return null;
+  if (name === "Huge Power" && move.cat !== "P") return null;
+  if (name === "Guts" && move.cat !== "P") return null;
+  return x;
+}
+/* the two named families the flags cannot express */
+var MOVE_RECOIL = {}, MOVE_PULSE = {};
+(C.RECOIL || []).forEach(function(n){ MOVE_RECOIL[n] = 1; });
+(C.PULSE || []).forEach(function(n){ MOVE_PULSE[n] = 1; });
+
+/* the resist berries, keyed by the type they halve */
+var BERRY_TYPE = {
+  "Chople Berry": "Fighting", "Colbur Berry": "Dark", "Occa Berry": "Fire",
+  "Passho Berry": "Water", "Wacan Berry": "Electric", "Rindo Berry": "Grass",
+  "Yache Berry": "Ice", "Shuca Berry": "Ground", "Coba Berry": "Flying",
+  "Payapa Berry": "Psychic", "Tanga Berry": "Bug", "Charti Berry": "Rock",
+  "Kasib Berry": "Ghost", "Haban Berry": "Dragon", "Babiri Berry": "Steel",
+  "Kebia Berry": "Poison", "Roseli Berry": "Fairy", "Chilan Berry": "Normal"
+};
+var TYPE_ITEM = {
+  "Black Glasses": "Dark", "Mystic Water": "Water", "Metal Coat": "Steel",
+  "Fairy Feather": "Fairy", "Charcoal": "Fire", "Magnet": "Electric",
+  "Miracle Seed": "Grass", "Hard Stone": "Rock", "Black Belt": "Fighting",
+  "Dragon Fang": "Dragon", "Never-Melt Ice": "Ice", "Poison Barb": "Poison",
+  "Sharp Beak": "Flying", "Silk Scarf": "Normal", "Silver Powder": "Bug",
+  "Soft Sand": "Ground", "Spell Tag": "Ghost", "Twisted Spoon": "Psychic"
+};
+
 /* ================================================== the damage calculator ==
    A port of scripts/damage.py, which reproduces all 504 numbers in
    data/meta/speed_tiers.json and agrees with Smogon's own Champions engine on

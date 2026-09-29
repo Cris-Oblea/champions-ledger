@@ -13,7 +13,6 @@ import { buildRow, buildSheet } from "./06-builds.js";
 import { drawItems, drawStatuses, drawStones, drawTrainer } from "./07-gear.js";
 import { drawTeams } from "./08-teams.js";
 import { drawGts, drawGtsWanted } from "./09-gts.js";
-import { initScan } from "./10-scan.js";
 import { AB_SET, CALC, abilityHit, abilityTag, calcDamage, calcDraw, koCount }
   from "./11-damage.js";
 import {
@@ -385,11 +384,6 @@ window.FIND=FIND; window.findRun=findRun;
 renderAll();
 foldIntros();
 connect();
-initScan();
-if (window.claude && window.claude.use) {
-  window.claude.use("downloads").then(function(d){ if (d) window.__dl = d; },
-                                      function(){});
-}
 
 /* ------------------------------------------------------- what leaves here --
    This file STARTS the app - the statements at the bottom build the tab bar,

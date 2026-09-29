@@ -19,7 +19,7 @@
 const fs = require("fs");
 const path = require("path");
 
-/* The app is thirteen files under tracker/src/ that the build links into one
+/* The app is twelve files under tracker/src/ that the build links into one
    script, so the thing to check is what that LINK cannot: a name that two
    parts each declare, and - since the module pass started - a converted module
    reaching for a name it never imported. Read them in the same order the build

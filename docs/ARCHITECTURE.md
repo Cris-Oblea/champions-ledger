@@ -1,0 +1,401 @@
+# How Champions Ledger works
+
+This is the engineer's map of the repo. `README.md` says **what** the app is;
+this file says **how** it is built, so you can open any file in VS Code and
+know where it sits in the whole. Read it top to bottom once, then use it as an
+index.
+
+Every path below is clickable in VS Code (Ctrl+click). When this file and the
+code disagree, the code wins; fix this file in the same PR.
+
+---
+
+## 1. The big picture
+
+Two halves share one database of Champions facts:
+
+```mermaid
+flowchart TB
+  SRC["Five public sources<br/>Serebii · pokebase · Smogon · pokedata · PokeAPI"]
+  SRC --> F["fetch_*.py<br/>download"]
+  F --> RAW[("data/raw/<br/>cache, not in git")]
+  RAW --> B["build_*.py + audit_*.py<br/>parse and cross-check"]
+  B --> DB[("data/db/ + data/meta/<br/>JSON, in git")]
+  DB --> CLI["query.py / damage.py<br/>command line"]
+  DB --> TD["build_tracker_data.py"] --> DJS["tracker/data.js"]
+  APP["tracker/src/*.js<br/>the app"] --> TP
+  DJS --> TP["build_tracker_page.py<br/>esbuild + split"]
+  TP --> DIST["tracker/dist/"]
+  DIST -->|"wrangler deploy<br/>(on merge)"| CF["Cloudflare"]
+  CF -->|"HTML + JS"| PHONE["Phone / browser"]
+  PHONE <-->|"login + RLS"| SB[("Supabase<br/>his box, builds, teams")]
+```
+
+- **Game facts** (species, moves, usage) are public, scraped, rebuilt nightly,
+  committed as JSON in `data/`, and shipped *inside* the page.
+- **His state** (box, builds, teams, GTS) is private, lives only in Supabase,
+  and is read by the page after he signs in. The repo holds no copy.
+
+That split is the single most important idea in the project: the page can be
+public because it carries no personal row.
+
+---
+
+## 2. The stack
+
+| Layer | Technology | Where | Why this and not something else |
+|---|---|---|---|
+| UI | **Vanilla JavaScript** (ES modules), HTML, CSS. No framework | `tracker/src/` | One user, one page. The DOM API is enough, and there is no framework version to keep up with |
+| Module linking | **esbuild** (pinned in `package-lock.json`) | `scripts/build_tracker_page.py` | Turns twelve modules into one script plus a sourcemap. The browser tests run in jsdom, which cannot load module scripts |
+| Database | **Supabase**: PostgreSQL, with PostgREST as the HTTP API, Auth for the login and Realtime for live updates | `tracker/supabase_schema.sql`, `supabase_migrate_*.sql` | Free hosted Postgres with login and row-level security built in |
+| DB client | **supabase-js** (`@supabase/supabase-js`), inlined from `node_modules` (not a CDN) | `package.json` | A CDN would be a third party inside a page that holds the ledger |
+| Hosting | **Cloudflare Workers**, static assets only | `tracker/wrangler.toml` → `tracker/dist/` | Free, fast, and the served folder is only `dist/`, so nothing private can leak |
+| Scheduler | A second **Cloudflare Worker** (JavaScript, Web Crypto) | `cron/src/cron.js` | Starts the nightly GitHub workflow on time; GitHub's own schedule ran hours late |
+| Data pipeline | **Python 3**, standard library only (`urllib`, `json`, `re`, `argparse`, `html`) | `scripts/` | No `pip install` needed anywhere |
+| Damage maths | **Smogon's damage-calc** (TypeScript, copied from upstream, bundled with esbuild), plus our own Python port | `scripts/build_engine_bundle.py` → `tracker/engine.bundle.js`; `scripts/damage.py` | The page runs Smogon's real engine; the Python port is checked against it |
+| Tests | **Node + jsdom** browser tests; **acorn** + **acorn-walk** for a static check of the modules; Python audits | `tests/`, `scripts/check_app.js`, `scripts/audit_*.py` | Tests run against the *built* page, which is the thing that ships |
+| CI/CD | **GitHub Actions**, a GitHub App bot, **Dependabot**, a git `pre-push` hook | `.github/`, `scripts/hooks/pre-push` | Nothing reaches the phone without passing the gate |
+| Fonts / sprites | Google Fonts (IBM Plex), Pokemon sprites from a CDN at a pinned commit | `tracker/index.template.html`, `spriteFor()` in `tracker/src/01-data.js` | Sprites are Nintendo's images, so the repo ships only their ids |
+| Dev tools | Supabase CLI, `npx wrangler`, `gh`, graphify | your machine | Reading the DB, deploying the cron, PRs, the code map |
+
+**Languages, in order of how much of the repo they are:** JavaScript, Python,
+CSS, SQL, HTML, YAML (workflows), TOML (Cloudflare config), Markdown.
+
+---
+
+## 3. The repository, folder by folder
+
+```
+tracker/src/       THE APP. The only frontend code you edit.
+tracker/           Its shell, generated payloads, SQL schema + migrations, icons
+tracker/dist/      Generated deploy folder (gitignored). Never edit.
+scripts/           Python pipeline, build scripts, the gate, the CLIs
+data/db/           The built database (JSON). Everything reads this
+data/meta/         Usage, tournaments, speed tiers, Smogon analyses
+data/raw/          Fetched HTML/JSON cache, 195 MB, gitignored
+tests/             Browser tests (Node + jsdom) against the built page
+cron/              The Cloudflare cron Worker
+.github/           Workflows and Dependabot
+analysis/          Write-ups and investigations; history.md = session log
+.claude/           Rules and the game skill for Claude Code sessions
+```
+
+**Generated files**, which you should never edit by hand: `tracker/dist/`,
+`tracker/data.js`, `tracker/splits.js`, `tracker/analysis.js`,
+`tracker/outsidedex.js`, `tracker/engine.bundle.js`, `tracker/src/_*.js`,
+`tracker/build/`. Each one says at its top which script writes it.
+
+---
+
+## 4. The app (frontend)
+
+### 4.1 How a page with no framework is organised
+
+- **`markup.html`** holds every screen as a static `<section>`. Changing tabs
+  only toggles `hidden`; the page never navigates.
+- **`S`** (in `02-state.js`) is the one state object: `S.box`, `S.builds`,
+  `S.teams`, `S.stones`, `S.items`, `S.gts`, `S.meta`. Each is a map from id
+  to row, exactly as the database holds it.
+- **`renderAll()`** (in `13-boot.js`) redraws the screens from `S`. Every change
+  that arrives from the database ends in a call to it. It is the React idea of
+  "UI = f(state)", done by hand.
+- **`el(tag, cls, text)`** (in `01-data.js`) is how every piece of DOM is made.
+  Search for `el("` and you will find the whole UI being drawn.
+- **`window.CHAMP`** is the game database, loaded before the app runs from
+  `data.js`. In the app it is `C`. `DEX`, `MOVE_BY` and `byName` are indexes
+  built over it.
+
+### 4.2 The modules
+
+Each file starts with a one-line comment that says what it is. The number
+prefix is only a reading order; the real order comes from the imports. There
+is no `10`: that was the screenshot scanner, which only worked inside a Claude
+artifact and was removed.
+
+| File | What it owns | Main exports |
+|---|---|---|
+| `01-data.js` | The game DB unpacked, DOM helpers, `pokeCard()` (the one Pokemon card), sprites, text formatting | `C`, `DEX`, `byName`, `el`, `$`, `toast`, `pokeCard` |
+| `02-state.js` | `S`, and the rules about his box: origin, release floor, what a build is bound to | `S`, `boxRows`, `buildLink`, `capacity` |
+| `03-store.js` | Every write (`put`, `putNew`, `patch`, `drop`), the Supabase adapter, sign-in | `connect`, `put`, `putNew` |
+| `04-nav.js` | Tabs, editors, sheets, the confirm dialog, the Back button | `go`, `ask`, `closeSheet` |
+| `05-box.js` | Champions box and HOME: rows, adding, the Pokemon sheet | `pokeSheet`, `addSheet` |
+| `06-builds.js` | Build editor: species, Mega, ability, nature, SP, moves, VP cost | `buildSheet`, `buildRow` |
+| `07-gear.js` | Items, stones, statuses, Settings | `drawItems`, `drawStones` |
+| `08-teams.js` | Six slots, Species/Item Clause, team report | `drawTeams`, `teamReport` |
+| `09-gts.js` | Trades: what may be offered, what a chip is worth | `drawGts`, `chipValue` (internal) |
+| `11-damage.js` | Smogon's engine wired to the calculator screen, and the modifier tables (which item, weather, terrain and berry touch which type) | `calcDraw`, `engineCalc` |
+| `12-find.js` | The Find tab: filters, sorts, Worlds data, a Pokemon's full sheet | `findRun`, `findDetail` |
+| `13-boot.js` | `renderAll()`, the controls' wiring, and what runs on load | `renderAll` |
+| `style.css` | All the styles. CSS custom properties for the theme | none |
+| `markup.html` | All the screens | none |
+
+To see who depends on whom, press F12 on any imported name in VS Code, or run
+`graphify query "what depends on 03-store.js"`.
+
+### 4.3 Walkthrough: opening the app
+
+1. The browser loads `dist/index.html`, a small shell, and then its hashed
+   scripts in this order: supabase-js, Smogon's engine, the config, the game DB
+   (`window.CHAMP`), the per-Pokemon splits, and the app.
+2. The app's entry (`tracker/src/_entry.js`, generated) imports `13-boot.js`,
+   which imports everything else. The modules evaluate top to bottom.
+3. The end of `13-boot.js` wires the controls and calls `connect()`
+   (`03-store.js`).
+4. `connect()` sees `window.CHAMP_CONFIG.supabase` and calls
+   `connectSupabase()`, which creates the client and waits for the session.
+   With no session it shows the login form; `signInWithPassword` sends the
+   email and password.
+5. Once signed in, it loads each table (`box`, `builds`, `teams`, `stones`,
+   `items`, `gts`, `meta`) and subscribes to one Realtime channel for all of them.
+6. Each load fills its slice of `S` and calls `renderAll()`. The screen appears.
+
+### 4.4 Walkthrough: saving a build
+
+1. You tap Save in the build editor (`06-builds.js`), which calls
+   `put("builds/<id>", body)` or, for a new build, `putNew("builds", stem, body)`.
+2. `put()` (`03-store.js`) stamps `updated` and calls
+   `S.db.doc(path).set(body)`.
+3. The adapter turns the document into a table row and sends an **upsert** to
+   PostgREST. A new build uses `create()`, a plain **insert**, so two devices
+   picking the same id get a `23505` error instead of overwriting each other,
+   and `putNew` tries `farigiraf-2`, then `-3`.
+4. Postgres checks RLS (`auth.uid() = user_id`), writes the row, and the
+   trigger `touch_updated_at` sets `updated_at`.
+5. Realtime tells every open device that `builds` changed. Each one reloads
+   the table, updates `S.builds` and calls `renderAll()`. The PC shows what
+   the phone just saved.
+
+**Why the adapter looks like Firestore** (`doc().set()`,
+`collection().onSnapshot()`): the app first ran inside a Claude artifact
+whose storage had that shape. Supabase was put behind the same interface so
+none of the screens had to change. See §10.
+
+### 4.5 The public surface
+
+The modules keep their names private. The only names on `window` are the
+ones the browser tests reach for, and they are listed in `PUBLIC` in
+`scripts/build_tracker_page.py`. `_entry.js` is generated from that list.
+
+---
+
+## 5. The data model (Supabase)
+
+Every table has `user_id uuid` (the owner) and `id text`, and the primary key
+is `(user_id, id)`. Ids are readable (`farigiraf-2`, `Focus Sash`) rather
+than UUIDs, because the pickers show them.
+
+| Table | One row is | Notable columns |
+|---|---|---|
+| `box` | A Pokemon he holds | `location` (champions/home), `status` (permanent/rental), `origin`, `note`, `ord` |
+| `builds` | A set | `pokemon`, `mega`, `ability`, `nature`, `stat_points jsonb`, `moves text[]`, `box_id` (nullable link to a box row), `extra jsonb` |
+| `teams` | Six slots | the slots, each with a build and the item it holds |
+| `stones`, `items` | Something he owns | the id is the name |
+| `gts` | An open or closed trade | what was given and what was asked for |
+| `meta` | Loose documents | `data jsonb`; today only `trainer` |
+| `schema_migrations` | A migration already applied | the file name |
+
+The column list above is a summary; `tracker/supabase_schema.sql` plus the
+`supabase_migrate_<N>.sql` files, applied in order, are the truth.
+
+**Security, in three layers:**
+
+1. **Row Level Security**: every policy is `auth.uid() = user_id`. An
+   anonymous request, or one from another account, gets zero rows.
+2. **The publishable key** is in the page on purpose, since the browser needs
+   it to talk to PostgREST. It grants nothing without RLS.
+3. **The secret key** (`service_role` / `sb_secret_`) bypasses RLS, so
+   `build_tracker_page.py` refuses to build if it finds one.
+
+**Migrations:** add `tracker/supabase_migrate_<N>.sql`, written so it is safe
+to run twice, then run `python scripts/migrate.py`. The gate fails while any
+migration is still pending (`--check`).
+
+**Reading it from the terminal:** `python scripts/ledger.py` prints a summary,
+and `supabase db query "select ..." --linked` runs any query.
+
+---
+
+## 6. The data pipeline
+
+`python scripts/refresh.py` runs every stage in order. Each stage is one
+script, so a stage can also run on its own. They fall into four families:
+
+| Family | Scripts | What they do |
+|---|---|---|
+| **fetch_** | `fetch_serebii`, `fetch_pokebase`, `fetch_pokebase_splits`, `fetch_smogon`, `fetch_smogon_calc`, `fetch_tournament`, `fetch_worlds_archive`, `fetch_home_dex`, `fetch_dex_numbers` | Download one source into `data/raw/` (a cache: a page already there is not fetched again) |
+| **build_** | `build_db` (the core: species, moves, abilities, items), `build_typechart`, `build_effects`, `build_text_facts`, `build_statuses`, `build_ability_moves`, `build_item_facts`, `build_item_links`, `build_gts_difficulty`, `build_type_colors` | Parse the raw pages into the JSON in `data/db/` and `data/meta/` |
+| **audit_ / test_** | `audit_forms`, `audit_sources`, `audit_lookups`, `audit_learnsets`, `audit_abilities`, `test_norm`, `damage.py --selftest` | Cross-check sources against each other. A failure stops the run |
+| **build_ for the page** | `build_tracker_data`, `build_splits_data`, `build_analysis_data`, `build_outside_dex`, `build_engine_bundle`, `build_docs`, `build_tracker_page` | Turn `data/` into what the phone downloads, then build the page |
+
+**Name matching** is the hard part of joining five sources ("Mr. Mime",
+`mr-mime`, "Mr Mime"). Everything goes through `norm()` in `scripts/query.py`,
+and `test_norm.py` locks the spellings in. `.claude/rules/data-pipeline.md` lists
+every name gotcha already solved.
+
+**A new regulation** is detected, not remembered: `check_regulation.py`
+compares the live one with `data/db/regulation.json`, and
+`refresh.py --regulation` re-fetches every Serebii page.
+
+**The CLIs** read the same JSON:
+`python scripts/query.py brief <pokemon>` and
+`python scripts/damage.py <atk> "<move>" <def>`. Every command takes `-h`.
+
+---
+
+## 7. The build
+
+`python scripts/build_tracker_page.py` does three things:
+
+1. **`link()`**: esbuild bundles `tracker/src/` from the generated
+   `_entry.js` into one script plus a **sourcemap**, so an error on the phone
+   still names `09-gts.js` and a line you can read.
+2. **`assemble()`**: pours the CSS, the markup and the script into
+   `tracker/index.template.html`, a shell made of `/*__CHAMP_...__*/` markers,
+   together with the engine, supabase-js, the config and the game DB.
+3. **`build_dist()`**: splits that page into `dist/`: a small `index.html`
+   plus one file per block, named by a hash of its content
+   (`dex.<hash>.js`). A file that did not change keeps its name, and the
+   browser never downloads it again. It also writes `_headers` (the
+   Content-Security-Policy and the caching rules), the PWA manifest and the
+   icons, and it refuses to finish if anything unexpected is in `dist/`.
+
+---
+
+## 8. The gate, and the tests
+
+**The gate** is `python scripts/daily.py`. Nothing deploys without it, and it
+runs in four places: the `pre-push` hook, every pull request, every push to
+`main`, and the nightly refresh. It runs:
+
+- **Python checks**: the damage selftest, name matching, lookups, forms, the
+  README's counts (`build_docs.py --check`), pending migrations, the backup's
+  age, whether restore still works, and the doc rules (`check_docs.py`).
+- **`node scripts/check_app.js`**: reads all the modules as one program, to
+  catch a name that two of them declare or that one uses without importing.
+- **The browser tests** in `tests/`: each loads the **built**
+  `dist/index.html` into jsdom through `tests/harness.js`, with a fake
+  Supabase (`tests/fixture.js`), and clicks through the real UI.
+
+Running one test by hand:
+
+```bash
+python scripts/build_tracker_page.py   # tests read dist/, so build first
+node tests/teamtest.js
+```
+
+`tests/README.md` says what each test covers.
+
+---
+
+## 9. Automation
+
+| What | Where | When | Does |
+|---|---|---|---|
+| Nightly refresh | `.github/workflows/daily.yml` | 05:07 Chile, with retries; started on time by the cron Worker | Refreshes every source and runs the gate. If anything moved, it opens a PR as the bot, and the PR merges itself once green |
+| Gate and publish | `.github/workflows/push.yml` | Every PR and every push to `main` | Runs `daily.py --no-refresh`: the gate on a PR, the gate followed by `wrangler deploy` on `main` |
+| Backup | `.github/workflows/backup.yml` | Nightly | Snapshots every table to a separate private repo |
+| Cron Worker | `cron/src/cron.js` | 08:07 UTC | Signs a JWT as the GitHub App, gets a token, and dispatches the daily workflow |
+| Dependabot | `.github/dependabot.yml` | Weekly | Opens PRs for the pinned actions and the npm packages |
+
+**So "merge = deploy"**: merging a PR into `main` triggers `push.yml`, which
+gates and publishes. You never deploy by hand.
+
+---
+
+## 10. Known leftovers
+
+- **The Firestore-shaped adapter** in `03-store.js`. The app began as a Claude
+  artifact, whose storage had that shape. It runs on Cloudflare and Supabase
+  now, and everything else from the artifact era is gone (the storage
+  fallback, the screenshot scanner, the download hook). The adapter works, but
+  with a single backend it is one layer more than Supabase needs.
+
+---
+
+## 11. A normal day of work
+
+```bash
+git switch main && git pull
+git switch -c my-change               # main is protected: always a branch
+# edit tracker/src/*.js or scripts/*.py
+# careful: `daily.py --no-refresh` WITHOUT --skip-deploy publishes. Leave that to CI
+python scripts/build_tracker_page.py  # rebuild dist/
+python scripts/preview.py             # phone, laptop and desktop side by side
+node tests/<the test>.js              # the test closest to your change
+python scripts/daily.py --no-refresh --skip-deploy   # the whole gate
+git add -p && git commit              # -p: review every hunk as you stage it
+git push -u origin my-change          # pre-push runs the gate again
+gh pr create                          # CI gates it; merge = deploy
+```
+
+**In VS Code:**
+
+- **F12** (Go to Definition) and **Shift+F12** (Find All References) work
+  across the modules because they are real imports. Use them rather than
+  searching.
+- **Ctrl+P**, then a file name, opens it. **Ctrl+Shift+O** lists a file's
+  functions. **Ctrl+Shift+F** searches the whole repo.
+- **The Source Control panel** (Ctrl+Shift+G) shows every changed file.
+  Clicking one opens a side-by-side diff, which is the best way to read a
+  change Claude made before you commit it.
+- **Debugging the page:** open the site with DevTools open. Thanks to the
+  sourcemap, the Sources panel shows `tracker/src/`, and breakpoints go on your
+  own lines.
+- **Debugging a test:** `node --inspect-brk tests/teamtest.js`, then use
+  VS Code's "Attach to Node Process".
+- **Markdown preview:** Ctrl+Shift+V, or Ctrl+K V to open it beside the
+  source. The diagram in §1 needs the Mermaid extension; GitHub renders it
+  without anything.
+- **`.vscode/settings.json`** makes the generated files read-only, keeps
+  them and the 195 MB source cache out of search, and keeps SonarQube off
+  them, so what it reports is code a person wrote.
+- **Recommended extensions** are listed in `.vscode/extensions.json`, so
+  VS Code offers to install them when the repo opens (or: Extensions panel,
+  filter `@recommended`).
+- **Code Spell Checker** reads `cspell.json`, whose word list is
+  `.cspell-words.txt` (Pokemon names, sources, tools, and the Spanish quotes).
+  For a new name, use the Quick Fix (Ctrl+.) "Add to dictionary: project".
+- Useful extensions: **GitLens** (who changed a line and why), **GitHub Pull
+  Requests** (review PRs inside VS Code), **Python**, **ESLint** (optional).
+
+---
+
+## 12. Glossary
+
+| Term | Meaning here |
+|---|---|
+| **SP** | Stat Points: Champions' EVs. 66 in total, at most 32 in one stat |
+| **VP** | The in-game currency that training costs. Prices are in `scripts/ledger.py` |
+| **Build** | One set: species, Mega, ability, nature, SP, moves. It never records an item |
+| **Bound / active / parked / orphan / unbound** | Where a build's `box_id` points: a Champions box row, a HOME row, a row that is gone, or nothing (an idea) |
+| **Origin** | Where a box Pokemon came from. HOME-origin can go back to HOME; Champions-origin can only be released |
+| **Rental** | A borrowed Pokemon. It cannot be trained |
+| **Regulation** | The ruleset in force (M-C now). A new one can change the roster and the moves |
+| **Splits** | What the players of one Pokemon run (items, natures, spreads), from pokebase |
+| **The gate** | `daily.py`: every check that must pass before a deploy |
+| **RLS** | Row Level Security: Postgres policies that filter every query by owner |
+| **PostgREST** | The HTTP API that Supabase generates from the tables |
+| **Hashed asset** | A file named after a hash of its content, so it can be cached forever |
+| **Sourcemap** | The file that maps bundled code back to the source files you edit |
+| **jsdom** | A browser implemented in Node, used to run the UI tests with no real browser |
+
+---
+
+## 13. Exercises, to learn by breaking things
+
+Do each one on a branch, and throw the branch away afterwards.
+
+1. **Trace a render.** Put a `console.log("render", Object.keys(S.box).length)`
+   at the top of `renderAll()`, rebuild, open the page, and edit a note on the
+   phone. Watch the PC log it: that is Realtime at work.
+2. **Break the Item Clause.** In `08-teams.js`, find `teamPickItem` and remove
+   the check that greys out an item another slot holds. Run
+   `node tests/teamtest.js` and read what fails.
+3. **Break a name.** In `norm()` (`scripts/query.py`), stop it removing
+   punctuation, then run `python scripts/test_norm.py` and see which spellings
+   stop matching.
+4. **Read a PR the way a reviewer does.** Open any merged PR with
+   `gh pr view <n> --web`, read the diff before the description, and write down
+   what you think it changes. Then compare with the description.
+5. **Follow a build down to the row.** Save a build, then run
+   `supabase db query "select id, pokemon, moves from builds order by updated_at desc limit 1" --linked`.

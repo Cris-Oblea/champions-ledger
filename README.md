@@ -525,11 +525,12 @@ only ever drawn as a HOME render; the page asks for whichever exists.
 desktop, laptop and phone - each in its own iframe so the media queries are
 real, with the cache cleared first and the app's own overlap check on a button.
 
-Its source is thirteen ES modules under `tracker/src/`, each one a tab or the
+Its source is twelve ES modules under `tracker/src/`, each one a tab or the
 thing the tabs share, saying what it exports and importing what it needs. The
 build links them into the single script the browser is handed, plus a sourcemap
 so a stack trace still names the file a person edits. **Edit a part, never
-`tracker/index.html`** - that file is generated.
+`tracker/dist/`** - it is generated. How the pieces fit is in
+[docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
 ---
 
@@ -643,7 +644,7 @@ passing all of them:
   matching across all five sources, every derived index resolving, every form
   still accounted for, the README's own numbers, and that no SQL migration is
   still waiting to be applied
-- **one source check** — the app is linked from thirteen ES modules, so a name
+- **one source check** — the app is linked from twelve ES modules, so a name
   two of them both declare, or one of them uses without importing,
   is read for once rather than clicked
 - **twenty-six browser tests** — run against the built page, because no Python

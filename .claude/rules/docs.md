@@ -26,6 +26,7 @@ file below costs nothing until it is needed:
 | Where docs go, and the doc gate | this file | when a doc is opened |
 | Where the project stands | `STATUS.md` | when read |
 | What happened, session by session | `analysis/history.md` | when read |
+| How the code fits together, for a person learning it | `docs/ARCHITECTURE.md` | when read |
 
 A new rule goes to the narrowest place that will still be loaded when it
 matters. A new game rule gets its full text in the matching skill file AND one
@@ -49,6 +50,16 @@ Claude straight away. The same hook guards the auto-memory index, which the gate
 never sees (it lives in the user's Claude folder, not the repo): every link
 resolves, every memory is linked, and the index stays under `MEMORY_BUDGET`. Edits made through Bash skip the hook, and the pre-push
 gate still catches those.
+
+## The architecture map is checked too (player, 2026-09-29)
+
+`docs/ARCHITECTURE.md` is how a person learns the code, so it must never fall
+behind it. It is in `DOCS` (named files must exist, decisions apply), and
+`check_architecture()` lists what the repo HAS - every `tracker/src/` module,
+workflow, `fetch_`/`build_`/`audit_` script, Supabase table and npm package -
+and fails for any the map does not name. Coverage is what a machine can check;
+whether the prose around a name is still TRUE is on whoever changes the code,
+in the same PR.
 
 ## The README is the front door, and it is checked
 

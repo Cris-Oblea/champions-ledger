@@ -42,7 +42,8 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # loads only when needed (.claude/rules/, the champions-rules skill), and every
 # one of them states rules, so every one of them is watched.
 DOCS = ["CLAUDE.md", "README.md", "STATUS.md", "tracker/README.md",
-        "tests/README.md", "analysis/app_plan.md", "analysis/history.md"] + \
+        "tests/README.md", "analysis/app_plan.md", "analysis/history.md",
+        "docs/ARCHITECTURE.md"] + \
     sorted(os.path.relpath(p, ROOT).replace(os.sep, "/") for p in
            glob.glob(os.path.join(ROOT, ".claude", "**", "*.md"), recursive=True))
 
@@ -258,6 +259,47 @@ def check_named_files():
     return problems
 
 
+# docs/ARCHITECTURE.md is the map of the code, so what the code HAS must be on
+# it (player, 2026-09-29: "todo lo que es escritura para entender, saber,
+# siempre este actualizado"). A new module, workflow, pipeline script, table or
+# package the map does not name fails the gate until it is written in.
+ARCH = "docs/ARCHITECTURE.md"
+
+
+def architecture_parts():
+    def names(pattern, strip=""):
+        return sorted(os.path.basename(f)[:len(os.path.basename(f)) - len(strip)]
+                      for f in glob.glob(os.path.join(ROOT, pattern)))
+    tables = set()
+    for f in glob.glob(os.path.join(ROOT, "tracker", "*.sql")):
+        tables |= set(re.findall(r"create table if not exists public\.(\w+)",
+                                 io.open(f, encoding="utf-8").read(), re.I))
+    pkg = json.load(io.open(os.path.join(ROOT, "package.json"),
+                            encoding="utf-8"))
+    return [
+        ("app module", names("tracker/src/[0-9]*.js")),
+        ("workflow", names(".github/workflows/*.yml")),
+        ("pipeline script", names("scripts/fetch_*.py", ".py")
+         + names("scripts/build_*.py", ".py")
+         + names("scripts/audit_*.py", ".py")),
+        ("Supabase table", sorted(tables)),
+        ("npm package", sorted(list(pkg.get("dependencies", {}))
+                               + list(pkg.get("devDependencies", {})))),
+    ]
+
+
+def check_architecture():
+    text = "\n".join(read(ARCH) or [])
+    problems = 0
+    for kind, found in architecture_parts():
+        for name in found:
+            if not re.search(r"(?<![\w-])%s(?![\w-])" % re.escape(name), text):
+                problems += 1
+                print("%s never names the %s %s - add it where it belongs"
+                      % (ARCH, kind, name))
+    return problems
+
+
 def check_budgets():
     problems = 0
     for rel, limit in BUDGETS.items():
@@ -380,7 +422,7 @@ def check_repo():
                 print("      (say it changed - REVERSED, 'no longer', 'used "
                       "to' - and it passes)")
 
-    problems += check_named_files() + check_budgets()
+    problems += check_named_files() + check_budgets() + check_architecture()
     if problems:
         print("\n%d problem(s). Fix the sentence or mark it as history."
               % problems)

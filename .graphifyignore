@@ -6,5 +6,4 @@ tracker/outsidedex.js
 tracker/analysis.js
 tracker/splits.js
 tracker/engine.bundle.js
-tracker/index.html
 tracker/index.template.html

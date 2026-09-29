@@ -1,0 +1,20 @@
+{
+  // Generated or scraped: never searched, never hand-edited, never linted.
+  // The same list as "Generated files" in docs/ARCHITECTURE.md section 3.
+  "search.exclude": {
+    "data/raw/**": true,
+    "graphify-out/**": true,
+    "tracker/dist/**": true,
+    "tracker/build/**": true,
+    "tracker/*.js": true,
+    "tracker/src/_*.js": true
+  },
+  "files.readonlyInclude": {
+    "tracker/dist/**": true,
+    "tracker/build/**": true,
+    "tracker/*.js": true,
+    "tracker/src/_*.js": true,
+    "tracker/index.html": true
+  },
+  "sonarlint.analysisExcludesStandalone": "data/**,graphify-out/**,node_modules/**,tracker/dist/**,tracker/build/**,tracker/*.js,tracker/src/_*.js"
+}
