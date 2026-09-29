@@ -59,9 +59,9 @@ function modFor(group, name, move, mtype, te, atkTypes){
   if (!(name in tbl)) return null;
   var x = tbl[name];
   var types = TYPE_ABIL[name];
-  if (types && types.indexOf(mtype) < 0) return null;
+  if (types && !types.includes(mtype)) return null;
   var flag = FLAG_ABIL[name];
-  if (flag && move.f.indexOf(flag) < 0) return null;
+  if (flag && !move.f.includes(flag)) return null;
   if (name === "Sheer Force" && !move.sec) return null;
   if (name === "Technician" && !(move.bp && move.bp <= 60)) return null;
   if (name === "Reckless" && !MOVE_RECOIL[move.name]) return null;
@@ -69,7 +69,7 @@ function modFor(group, name, move, mtype, te, atkTypes){
   if (name === "Hustle" && move.cat !== "P") return null;
   if ((name === "Filter" || name === "Solid Rock" || name === "Expert Belt")
       && te <= 1) return null;
-  if (name === "Adaptability" && atkTypes.indexOf(mtype) < 0) return null;
+  if (name === "Adaptability" && !atkTypes.includes(mtype)) return null;
   if (name === "Huge Power" && move.cat !== "P") return null;
   if (name === "Guts" && move.cat !== "P") return null;
   return x;
@@ -241,21 +241,21 @@ function calcDamage(o){
      Rock type +50% Sp. Def, Snow gives an Ice type +50% Defense. Measured
      against the engine as x0.667 on the damage, which is the same thing from
      the other side. Player, 2026-09-09. */
-  if (o.weather === "Sand" && D.types.indexOf("Rock") >= 0 && dKey === "spd") {
+  if (o.weather === "Sand" && D.types.includes("Rock") && dKey === "spd") {
     Ddef = Math.floor(Ddef * 1.5);
     notes.push(["warn", "Sand: " + D.name + " is Rock, so its Sp. Def is x1.5"]);
   }
-  if (o.weather === "Snow" && D.types.indexOf("Ice") >= 0 && dKey === "def") {
+  if (o.weather === "Snow" && D.types.includes("Ice") && dKey === "def") {
     Ddef = Math.floor(Ddef * 1.5);
     notes.push(["warn", "Snow: " + D.name + " is Ice, so its Defense is x1.5"]);
   }
 
-  var stab = A.types.indexOf(mtype) >= 0;
+  var stab = A.types.includes(mtype);
   var stabMult = o.adaptability ? 8192 : 6144;   /* 2.0 vs 1.5, in 4096ths */
   if (stab) notes.push(["ok", o.adaptability
     ? "STAB x2.0 (Adaptability)" : "STAB x1.5"]);
   var defTypes = D.types;
-  if (o.gravity && defTypes.indexOf("Flying") >= 0) {
+  if (o.gravity && defTypes.includes("Flying")) {
     /* Gravity grounds a Flying type: the Ground immunity simply stops
        existing, which is a change to the type chart, not a multiplier. */
     defTypes = defTypes.filter(function(t){ return t !== "Flying"; });
@@ -337,7 +337,7 @@ function calcDamage(o){
        why the engine's range comes out WIDER than a halved one, and how this
        was caught. Bulldoze and Magnitude go the same way. */
     if (o.terrain === "Grassy" &&
-        ["Earthquake", "Bulldoze", "Magnitude"].indexOf(M.name) >= 0) {
+        ["Earthquake", "Bulldoze", "Magnitude"].includes(M.name)) {
       power = pokeRound(power * 2048 / 4096);
       notes.push(["warn", "Grassy Terrain halves " + M.name +
         "'s base power -> " + power]);
@@ -362,7 +362,7 @@ function calcDamage(o){
      the wrong attacks - a Reflect was cutting Flamethrower. A critical hit
      goes through a screen outright. */
   var COVERS = {"Reflect":["P"], "Light Screen":["S"], "Aurora Veil":["P","S"]};
-  var covered = o.screen && (COVERS[o.screen] || []).indexOf(M.cat) >= 0;
+  var covered = o.screen && (COVERS[o.screen] || []).includes(M.cat);
   var critting = M.crit || o.crit;
   var screenOn = covered && !critting;
   var screenMult = screenOn ? 2732 / 4096 : 1;
@@ -887,7 +887,7 @@ function calcPickSheet(which){
         var hay = [id, b.pokemon, b.mega, b.role, b.nature, baseAbility(b),
                    (b.moves || []).join(" "), p.types.join(" ")]
           .filter(Boolean).join(" ").toLowerCase();
-        if (q && hay.indexOf(q) < 0) return;
+        if (q && !hay.includes(q)) return;
         shown++;
         /* THE SAME CARD AS THE BOX AND FIND. Picking who is attacking is a
            comparison between Pokemon, so it needs the numbers being compared -
@@ -927,7 +927,7 @@ function calcPickSheet(which){
          with nothing on screen saying so, so a Pokemon that was merely past
          the cut looked like one the calculator did not know about. */
       var all = DEX.filter(function(p){
-        return !q || p.name.toLowerCase().indexOf(q) >= 0;
+        return !q || p.name.toLowerCase().includes(q);
       });
       all.slice(0, 120).forEach(function(p){
         /* and the same one again for the whole dex - the stat line was
@@ -995,8 +995,8 @@ function calcMoveSheet(){
          and 131 of the 264 learnsets are longer than 60 - so this was cutting
          moves off half the dex with nothing saying so. */
       pool.filter(function(m){
-        return !q || m.name.toLowerCase().indexOf(q) >= 0 ||
-               m.type.toLowerCase().indexOf(q) >= 0;
+        return !q || m.name.toLowerCase().includes(q) ||
+               m.type.toLowerCase().includes(q);
       }).sort(function(x, y){
         return (y.bp || 0) * Math.min(100, y.acc || 100) -
                (x.bp || 0) * Math.min(100, x.acc || 100);
@@ -1316,7 +1316,7 @@ function abilityTag(ability, move, poke){
   if (!hit) return null;
   // STAB needs the user's own type; the move table cannot know it
   if (ability === "Adaptability" &&
-      !(poke && poke.types.indexOf(move.type) >= 0)) return null;
+      !poke?.types.includes(move.type)) return null;
   var t = el("span", "tag ok", ability);
   t.title = hit.why;
   return t;

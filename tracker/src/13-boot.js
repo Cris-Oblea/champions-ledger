@@ -170,7 +170,7 @@ function drawBuilds(){
   }).filter(function(id){
     var b = S.builds[id];
     return !q || (b.pokemon + " " + (b.role || "") + " " +
-                  (b.moves || []).join(" ")).toLowerCase().indexOf(q) >= 0;
+                  (b.moves || []).join(" ")).toLowerCase().includes(q);
   });
   if (!ids.length) {
     node.appendChild(el("div", "empty",

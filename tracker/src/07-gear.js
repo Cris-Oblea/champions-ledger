@@ -19,7 +19,7 @@ function drawStones(){
   var co = 0, cn = 0;
   C.STONES.forEach(function(r){
     var stone = r[0], mega = r[1], species = r[2];
-    if (q && (stone + " " + mega).toLowerCase().indexOf(q) < 0) return;
+    if (q && !(stone + " " + mega).toLowerCase().includes(q)) return;
     var have = hasStone(stone);
     var inBox = species in own;
     var row = el("button", "row " + (have ? "perm" : ""));
@@ -110,7 +110,7 @@ function drawItems(){
     nTot += rows.length;
     rows.forEach(function(r){ if (own[r[0]]) nOwn++; });
     var hits = rows.filter(function(r){
-      return !q || (r[0] + " " + (r[3] || "")).toLowerCase().indexOf(q) >= 0;
+      return !q || (r[0] + " " + (r[3] || "")).toLowerCase().includes(q);
     });
     if (!hits.length) return;
     var have = hits.filter(function(r){ return own[r[0]]; }).length;

@@ -89,7 +89,7 @@ function go(tab){
      returns through go("builds") and is already paying for itself in
      leaveEditor(). */
   if (!NAV_BACK && S.tab !== tab &&
-      EXTRA_VIEWS.indexOf(tab) < 0 && EXTRA_VIEWS.indexOf(S.tab) < 0) {
+      !EXTRA_VIEWS.includes(tab) && !EXTRA_VIEWS.includes(S.tab)) {
     if (!TABHIST.length) TABHIST.push(S.tab || tab);
     TABHIST.push(tab);
     try { history.pushState({champTab: TABHIST.length}, ""); } catch (e) {}

@@ -126,9 +126,9 @@ function speciesSheet(onPick){
       var hits = FORMS.filter(function(p){
         if (PS.mine && !ownedNow[p.name]) return false;
         if (!q) return true;
-        return p.name.toLowerCase().indexOf(q) >= 0
-            || p.types.join(" ").toLowerCase().indexOf(q) >= 0
-            || String(dexNo(p.name)).indexOf(q) >= 0;
+        return p.name.toLowerCase().includes(q)
+            || p.types.join(" ").toLowerCase().includes(q)
+            || String(dexNo(p.name)).includes(q);
       });
       hits.sort(function(a, b){
         if (PS.sort === "az") return a.name.localeCompare(b.name);
@@ -169,7 +169,7 @@ function spTotal(sp){
 function buildRow(id, b){
   var p = byName[b.mega || b.pokemon] || byName[b.pokemon];
   var lk = buildLink(id);
-  var isRental = !!(lk.row?.status === "rental");
+  var isRental = lk.row?.status === "rental";
   var badges = function(nm){
     /* the form the set runs, named. NO "stone missing" badge: that was an
        audit of what he owns on a card about a SET, and a stone's status
@@ -567,7 +567,7 @@ function buildSheet(id, b, keepOriginal){
     fa.appendChild(el("label", "f", "Ability (base form)"));
     var sa = el("select");
     (p?.ab || []).forEach(function(a){ sa.appendChild(new Option(a, a)); });
-    if (draft.ability && (!p || p.ab.indexOf(draft.ability) < 0))
+    if (draft.ability && !p?.ab.includes(draft.ability))
       sa.appendChild(new Option(draft.ability, draft.ability));
     /* The same question as the moves: of the people running this Pokemon,
        which ability do they pick? Kingambit is 98.6% Defiant, and a list of
@@ -989,7 +989,7 @@ function checks(d, p){
         "Competitive, Contrary, Guard Dog and Rattled all turn it into a free " +
         "boost for the opponent."]);
     }
-    if ((d.moves || []).some(function(n){ return n === "Weather Ball"; })) {
+    if ((d.moves || []).includes("Weather Ball")) {
       out.push(["warn", "<strong>Weather Ball is never Normal in play.</strong> " +
         "Resolve it to this team's own weather before quoting any number."]);
     }

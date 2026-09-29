@@ -32,13 +32,13 @@ function setSort(v){ SORT = v; }
 function setHomeAll(v){ HOME_ALL = v; }
 function rowMatches(r, q){
   if (!q) return true;
-  if (r.name.toLowerCase().indexOf(q) >= 0) return true;
-  if (String(dexNo(r.name)).indexOf(q) >= 0) return true;
+  if (r.name.toLowerCase().includes(q)) return true;
+  if (String(dexNo(r.name)).includes(q)) return true;
   var p = byName[r.name];
-  if (p && p.types.join(" ").toLowerCase().indexOf(q) >= 0) return true;
+  if (p?.types.join(" ").toLowerCase().includes(q)) return true;
   if (q === "shiny" && r.shiny) return true;
   if (q === "trained" && r.trained) return true;
-  if (r.note && String(r.note).toLowerCase().indexOf(q) >= 0) return true;
+  if (r.note && String(r.note).toLowerCase().includes(q)) return true;
   return false;
 }
 function sortRows(rows){
@@ -997,7 +997,7 @@ function formSprite(form, base, big, shiny){
 function spriteImg(id, big, shiny){
   if (!id) return null;
   var g = C.SPRITE_GAPS || {};
-  var gone = function(k){ return (g[k] || []).indexOf(id) >= 0; };
+  var gone = function(k){ return (g[k] || []).includes(id); };
   var home = big ? !gone(shiny ? "s" : "n") : gone(shiny ? "ps" : "p");
   var img = el("img", big ? "sprite big" + (home ? "" : " native") : "sprite");
   img.src = SPRITE_BASE + (home ? "other/home/" : "") + (shiny ? "shiny/" : "")

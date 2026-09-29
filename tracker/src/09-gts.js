@@ -100,9 +100,6 @@ function drawGtsHistory(){
       if (localStorage.getItem("champ-gtshist")) tog.onclick();
     } catch (e) {}
   }
-  /* the number that turns this into pricing data rather than a diary: what
-     the chips actually fetched, against what their rows said they were worth */
-  var paid = h.filter(function(r){ return r.gaveValue && r.gotBst; });
   /* Collapsed, this line IS the feature - so it carries the finding rather
      than a description. Measured over every closed trade: how often a chip
      reached the ceiling its Mega line sets. 21 trades say that ceiling is
@@ -126,7 +123,7 @@ function drawGtsHistory(){
     .trim().toLowerCase();
   var shown = h.filter(function(r){
     return !hq || (r.offered + " " + r.requested + " " + (r.note || ""))
-      .toLowerCase().indexOf(hq) >= 0;
+      .toLowerCase().includes(hq);
   });
   $("nGtsHist").textContent = hq && shown.length !== h.length
     ? shown.length + " of " + h.length : h.length;
@@ -271,12 +268,12 @@ function gtsRow(i, o){
            The ask decides whether anyone CAN give it; the chip decides whether
            anyone WANTS to. An offer needs both, so both are on screen. */
         if (sd) {
-          if (label.indexOf("asked") >= 0) diffChip(name, meta);
+          if (label.includes("asked")) diffChip(name, meta);
           else meta.appendChild(el("span", "tag", "ladder " + ladderText(sd)));
         }
         /* a shiny chip is a more expensive coin than its species - say so on
            the side you are giving, where it changes what you can ask for */
-        if (rec?.shiny && label.indexOf("asked") < 0) {
+        if (rec?.shiny && !label.includes("asked")) {
           var cvs = chipValueOf(rec);
           if (cvs) meta.appendChild(el("span", "tag mega",
             "shiny — reaches ~" + cvs.reach));
@@ -956,10 +953,10 @@ function gtsPickMine(onPick, exceptId){
       if (PICK.dupes && (copies[r.name] || 0) < 2) return false;
       if (PICK.outside && byName[r.name]) return false;
       if (!q) return true;
-      if (r.name.toLowerCase().indexOf(q) >= 0) return true;
-      if (String(dexNo(r.name)).indexOf(q) >= 0) return true;
+      if (r.name.toLowerCase().includes(q)) return true;
+      if (String(dexNo(r.name)).includes(q)) return true;
       var p = anyRow(r.name);
-      if (p && p.types.join(" ").toLowerCase().indexOf(q) >= 0) return true;
+      if (p?.types.join(" ").toLowerCase().includes(q)) return true;
       if (q === "shiny" && r.shiny) return true;
       if (q === "trained" && r.trained) return true;
       return false;
@@ -1224,7 +1221,7 @@ function gtsPickWanted(onPick, chipName, chipShiny){
       var q = inp.q();
       list.innerHTML = "";
       var pool = FORMS.filter(function(p){
-        return !q || p.name.toLowerCase().indexOf(q) >= 0;
+        return !q || p.name.toLowerCase().includes(q);
       });
       var hits = pool.slice(0, 120);
       hits.forEach(function(p){
@@ -1246,7 +1243,7 @@ function gtsPickWanted(onPick, chipName, chipShiny){
       });
       if (q) {
         var homeAll = (C.HOME_ONLY || []).filter(function(n){
-          return n.toLowerCase().indexOf(q) >= 0;
+          return n.toLowerCase().includes(q);
         });
         homeAll.slice(0, 40).forEach(function(n){
           /* A species Champions has never heard of still gets a card: the
@@ -1701,8 +1698,8 @@ function drawGtsWanted(){
   if (wq) {
     chips = chips.filter(function(c){
       var p = byName[c.name];
-      return c.name.toLowerCase().indexOf(wq) >= 0 ||
-             (p && p.types.join(" ").toLowerCase().indexOf(wq) >= 0);
+      return c.name.toLowerCase().includes(wq) ||
+             (p?.types.join(" ").toLowerCase().includes(wq));
     });
   }
   if (WANT_FILTER === "outside") {
