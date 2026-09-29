@@ -1,11 +1,11 @@
 /* 12-find.js - Find: moves, abilities, items, and one Pokemon's whole sheet.
    Part of the app; linked into one script by scripts/build_tracker_page.py. */
 import {
-  $, C, DEX, MOVES, MOVE_BY, SORT, STAT_KEYS, STAT_LABEL, STONE_OF, anyRow,
-  bst, byName, cardLine, catName, defence, battleFormsOf, dexNo, effectLine,
-  el, formInk, formMoves, formSprite, labelBox, learnset, megaLine, numText,
+  $, C, DEX, MOVES, MOVE_BY, STAT_KEYS, STAT_LABEL, STONE_OF, anyRow, bst,
+  byName, cardLine, catName, defence, battleFormsOf, dexNo, effectLine, el,
+  formInk, formMoves, formSprite, labelBox, learnset, megaLine, numText,
   podiumChip, pokeFacts, podiumFor, pokeCard, searchField, splitPct,
-  spriteFor, statGrid, toast, typeChip, typeSkin, usageTag,
+  spriteFor, statGrid, toast, typeChip, typeSkin, usageTag, VIEW,
 } from "./01-data.js";
 import { RELEASE_FLOOR, S, boxRows, originOf, ownedNames, releaseBlock }
   from "./02-state.js";
@@ -43,7 +43,7 @@ import { fill, note } from "./13-boot.js";
 
    `sort` is a stat key, "bst" or "dex". `dir` is "desc" or "asc"; tapping the
    stat you are already on flips it. */
-var FIND = {q: "", moves: [], types: [], notTypes: [], typeMode: "and",
+const FIND = {q: "", moves: [], types: [], notTypes: [], typeMode: "and",
             ability: "",
             inChamp: false, inHome: false,
             sort: "bst", dir: "desc", cat: ""};
@@ -1885,6 +1885,8 @@ function lastWrite(){
    know - and a diagnostic that guesses is worse than one that says so. */
 var DIAG_LATEST = "checking…";
 function checkLatest(){
+  /* asked once per load, not on every redraw - it is a network round trip */
+  if (DIAG_LATEST !== "checking…") return;
   /* Guarded for the same reason matchMedia is: this runs inside the startup
      redraw, and an optional capability that is missing must degrade, never
      throw. An unguarded fetch() here reproduced the exact bug fixed hours
@@ -1953,7 +1955,7 @@ function diagLines(){
     localStorage.setItem("__t", "1"); localStorage.removeItem("__t");
     add("Local storage", "works");
   } catch (e) { add("Local storage", "BLOCKED - " + e.name); }
-  add("Sort", SORT);
+  add("Sort", VIEW.sort);
   add("Script errors", BOOT_ERRORS.length ? BOOT_ERRORS.join(" | ") : "none");
   return L;
 }
@@ -2290,7 +2292,7 @@ function drawDupeHome(){
    stack the filters and read the rows back off window.
 */
 export {
-  DIAG_LATEST, FIND, checkLatest, drawDiag, drawDupeHome, findDetail, findDraw,
+  FIND, checkLatest, drawDiag, drawDupeHome, findDetail, findDraw,
   blockerTags,
   findInit, findRun, itemTags, moveFilters, moveRowFor, moveScore, pokeBody,
   pokeHead, priorityTag,

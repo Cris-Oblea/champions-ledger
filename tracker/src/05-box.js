@@ -1,8 +1,8 @@
 /* 05-box.js - The box and HOME: every row, and every way one gets added.
    Part of the app; linked into one script by scripts/build_tracker_page.py. */
 import {
-  $, C, FORMS, SORT, STAT_KEYS, STAT_LABEL, anyRow, byName, capNote,
-  dexLabel, el, freeSlug, outsideRow, pokeCard, searchField, toast,
+  $, C, FORMS, STAT_KEYS, STAT_LABEL, anyRow, byName, capNote, dexLabel, el,
+  freeSlug, outsideRow, pokeCard, searchField, toast, VIEW,
 } from "./01-data.js";
 import {
   RELEASE_FLOOR, S, boxRows, originOf, releaseBlock,
@@ -56,7 +56,7 @@ function pokeRow(rec){
     cls: cls,
     name: rec.name,
     shiny: !!rec.shiny,
-    dex: SORT === "dex",
+    dex: VIEW.sort === "dex",
     /* The ability cell says what this one CAN have, not what it has: a box
        row records no ability - only a build does. */
     badges: function(nm){
@@ -831,7 +831,7 @@ function dexChecklist(){
    list is for: how hard it is to get, and what getting it would buy. */
 function dexCard(p, why){
   return pokeCard(p, {
-    dex: SORT === "dex",
+    dex: VIEW.sort === "dex",
     badges: function(nm){ diffChip(p.name, nm); },
     notes: function(m){
       if (why) m.appendChild(el("div", "st", why));

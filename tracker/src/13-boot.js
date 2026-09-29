@@ -1,8 +1,7 @@
 /* 13-boot.js - renderAll(), go(), and everything that runs on load.
    Part of the app; linked into one script by scripts/build_tracker_page.py. */
 import {
-  $, HOME_ALL, SORT, byName, el, rowMatches, setHomeAll, setSort, sortRows,
-  wireClears,
+  $, byName, el, rowMatches, sortRows, wireClears, VIEW,
 } from "./01-data.js";
 import {
   RELEASE_FLOOR, S, boxRows, capacity, originRows, releaseBlock,
@@ -16,7 +15,7 @@ import { drawTeams } from "./08-teams.js";
 import { drawGts, drawGtsWanted } from "./09-gts.js";
 import { CALC, calcDraw } from "./11-damage.js";
 import {
-  DIAG_LATEST, checkLatest, drawDiag, drawDupeHome, findInit,
+  checkLatest, drawDiag, drawDupeHome, findInit,
 } from "./12-find.js";
 /* ==================================================================== render */
 function renderAll(){
@@ -54,17 +53,17 @@ function renderAll(){
   /* NOT `cap` - that is the box capacity, ten lines up, and reusing the name
      here made the full-box check read 48 >= 12. `var` is function-scoped, so
      the second declaration simply overwrote the first. */
-  var homeCap = HOME_ALL ? homeShown.length : 12;
+  var homeCap = VIEW.homeAll ? homeShown.length : 12;
   fill($("listHome"), homeShown.slice(0, homeCap),
        hq ? "Nothing in HOME matches that" : "HOME is empty");
   var more = $("homeMore");
   more.innerHTML = "";
   if (homeShown.length > homeCap) {
     more.appendChild(fbtn("Show the other " + (homeShown.length - homeCap), "sm",
-      function(){ setHomeAll(true); renderAll(); }));
-  } else if (HOME_ALL && homeShown.length > 12) {
+      function(){ VIEW.homeAll = true; renderAll(); }));
+  } else if (VIEW.homeAll && homeShown.length > 12) {
     more.appendChild(fbtn("Show fewer", "sm",
-      function(){ setHomeAll(false); renderAll(); }));
+      function(){ VIEW.homeAll = false; renderAll(); }));
   }
   /* the checklist is derived from the box and HOME, so it goes stale the
      moment either does - but only the visible pane is worth the work */
@@ -148,8 +147,7 @@ function renderAll(){
   drawGts();
   drawTeams();
   drawDiag();
-  /* asked once per load, not on every redraw - it is a network round trip */
-  if (DIAG_LATEST === "checking…") checkLatest();
+  checkLatest();
 }
 function note(kind, html){
   var n = el("div", "note " + kind);
@@ -258,10 +256,10 @@ Array.prototype.forEach.call($("calcMode").children, function(b){
 document.querySelectorAll(".sortseg").forEach(function(seg){
   Array.prototype.forEach.call(seg.children, function(b){
     b.onclick = function(){
-      setSort(b.dataset.sort);
+      VIEW.sort = b.dataset.sort;
       document.querySelectorAll(".sortseg").forEach(function(g){
         Array.prototype.forEach.call(g.children, function(x){
-          x.setAttribute("aria-pressed", x.dataset.sort === SORT ? "true" : "false");
+          x.setAttribute("aria-pressed", x.dataset.sort === VIEW.sort ? "true" : "false");
         });
       });
       try { localStorage.setItem("champ-sort", SORT); } catch (e) {}
@@ -273,10 +271,10 @@ try {
   var savedSort = localStorage.getItem("champ-sort");
   if (savedSort === "order") savedSort = "dex";   // the option that went away
   if (savedSort) {
-    setSort(savedSort);
+    VIEW.sort = savedSort;
     document.querySelectorAll(".sortseg").forEach(function(g){
       Array.prototype.forEach.call(g.children, function(x){
-        x.setAttribute("aria-pressed", x.dataset.sort === SORT ? "true" : "false");
+        x.setAttribute("aria-pressed", x.dataset.sort === VIEW.sort ? "true" : "false");
       });
     });
   }
@@ -290,7 +288,7 @@ $("buildSearch").oninput = drawBuilds;
 $("teamSearch").oninput = drawTeams;
 $("stoneSearch").oninput = drawStones;
 $("itemSearch").oninput = drawItems;
-$("homeFilter").oninput = function(){ setHomeAll(false); renderAll(); };
+$("homeFilter").oninput = function(){ VIEW.homeAll = false; renderAll(); };
 /* The whole of renderAll, like homeFilter above it: the three box sections
    are filled from there and the field itself lives outside every container
    that gets rebuilt, so nothing steals focus mid-keystroke. */
