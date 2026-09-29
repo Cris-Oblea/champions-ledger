@@ -123,7 +123,7 @@ artifact and was removed.
 | `07-gear.js` | Items, stones, statuses, Settings | `drawItems`, `drawStones` |
 | `08-teams.js` | Six slots, Species/Item Clause, team report | `drawTeams`, `teamReport` |
 | `09-gts.js` | Trades: what may be offered, what a chip is worth | `drawGts`, `chipValue` (internal) |
-| `11-damage.js` | Smogon's engine wired to the calculator screen, and the modifier tables (which item, weather, terrain and berry touch which type) | `calcDraw`, `engineCalc` |
+| `11-damage.js` | Smogon's engine wired to the calculator screen, and which abilities and items its menus offer | `calcDraw`, `engineCalc` |
 | `12-find.js` | The Find tab: filters, sorts, Worlds data, a Pokemon's full sheet | `findRun`, `findDetail` |
 | `13-boot.js` | `renderAll()`, the controls' wiring, and what runs on load | `renderAll` |
 | `style.css` | All the styles. CSS custom properties for the theme | none |
