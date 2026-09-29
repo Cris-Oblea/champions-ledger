@@ -393,9 +393,16 @@ gh pr create                          # CI gates it; merge = deploy
 - **Markdown preview:** Ctrl+Shift+V, or Ctrl+K V to open it beside the
   source. The diagram in §1 needs the Mermaid extension; GitHub renders it
   without anything.
+- **Reading a long file:** the Outline view (bottom of the Explorer) lists
+  its functions, and clicking one jumps there. Sticky Scroll keeps the
+  function you are inside pinned to the top while you scroll. **Ctrl+K
+  Ctrl+0** folds everything to its outline, **Ctrl+K Ctrl+J** unfolds it.
 - **`.vscode/settings.json`** makes the generated files read-only, keeps
-  them and the 195 MB source cache out of search, and keeps SonarQube off
-  them, so what it reports is code a person wrote.
+  them and the 195 MB source cache out of search, and gives each language ONE
+  reporter in the Problems panel (Ctrl+Shift+M): **ESLint** for JavaScript -
+  the same rules, and the same check, the gate runs, so a red error there
+  would block the push and a yellow warning is one the ratchet still allows -
+  and **SonarQube for IDE** for CSS, HTML and Python.
 - **Recommended extensions** are listed in `.vscode/extensions.json`, so
   VS Code offers to install them when the repo opens (or: Extensions panel,
   filter `@recommended`).
