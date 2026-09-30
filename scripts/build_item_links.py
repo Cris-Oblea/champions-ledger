@@ -120,6 +120,162 @@ STATUS = {k: (v.get("moves") or [])
           for k, v in ((Q.db("statuses") or {}).get("statuses") or {}).items()}
 
 
+def _has(t, pat):
+    return re.search(pat, t, re.I)
+
+
+def _field_rule(t, setters):
+    """The field-effect bridge: the move AND the ability, together."""
+    hits = [eff for eff, (ms, abs_) in setters.items()
+            if _has(t, FIELD[eff]) and (ms or abs_)]
+    if len(hits) == 1 or (hits and not all("Terrain" in e for e in hits)):
+        ms, abs_ = setters[hits[0]]
+        return ms, abs_, ("extends " + hits[0] + " however it was set - "
+                          "by the move or by the ability")
+    if _has(t, r"\bterrain\b"):
+        ms, abs_ = [], []
+        for eff, (a, b) in setters.items():
+            if "Terrain" in eff:
+                ms += a
+                abs_ += b
+        return sorted(set(ms)), sorted(set(abs_)), "extends any terrain it sets"
+    return None
+
+
+# One type, going out, then coming in. {} is the type the text names; a text
+# that names something that is not a type falls through to the next rule.
+TYPE_RULES = [
+    ((r"boosts? the power of (?:the holder's|a) ([A-Za-z]+)[\s-]*type "
+      r"(?:moves|move|attacks)"), "boosts every {} move it uses"),
+    (r"immune to ([A-Za-z]+)[\s-]*type moves",
+     "nothing {}-type can touch it while it holds this"),
+    (r"vulnerable to ([A-Za-z]+)[\s-]*type moves",
+     "an incoming {} move hits it even through Flying"),
+    ((r"(?:halves damage from the first supereffective|hit with a "
+      r"supereffective|hit with a) ([A-Za-z]+)[\s-]*type (?:move|attack)"),
+     "weakens an incoming {} move"),
+]
+
+
+def _type_rule(t, props, dmg):
+    for pat, why in TYPE_RULES:
+        m = _has(t, pat)
+        if m and m.group(1).capitalize() in TYPES:
+            ty = m.group(1).capitalize()
+            return [n for n in dmg if props[n]["type"] == ty], [], why.format(ty)
+    return None
+
+
+def _attacks_where(key, value):
+    return lambda props, dmg: [n for n in dmg if props[n][key] == value]
+
+
+def _moves_where(key):
+    return lambda props, _dmg: [n for n, p in props.items() if p[key]]
+
+
+def _can_miss(props, _dmg):
+    return [n for n, p in props.items() if p["acc"] is not None and p["acc"] < 100]
+
+
+def _every_move(props, _dmg):
+    return sorted(props)
+
+
+def _every_attack(_props, dmg):
+    return dmg
+
+
+# One category, then a property of the move: (what the text says, which moves
+# that picks out, the reason). The first that matches wins, so the order is
+# the priority.
+MOVE_RULES = [
+    (r"holder's physical moves", _attacks_where("cat", "Physical"),
+     "boosts its physical moves"),
+    (r"holder's special moves", _attacks_where("cat", "Special"),
+     "boosts its special moves"),
+    (r"binding moves", _moves_where("binds"), "boosts its binding moves"),
+    (r"HP-stealing moves|draining moves|HP-draining", _moves_where("heals"),
+     "gives back more from its draining moves"),
+    (r"contact move|makes direct contact with the holder",
+     _moves_where("contact"), "punishes an incoming contact move"),
+    ((r"only use the first move it selects|only allows the use of a "
+      r"single move"), _every_move, "locks it into the first move it picks"),
+    (r"move-binding effects|prevent(?:s)? .*choosing|choice",
+     _moves_where("locks"), "shakes off what would lock its moves"),
+    (r"lowered stat", _moves_where("down_stats"),
+     "restores what an incoming move lowered"),
+    ((r"accuracy of (?:the holder's|moves targeting the holder)|"
+      r"more accurate"), _can_miss,
+     "changes the odds on everything that can miss"),
+    (r"critical-hit ratio", _every_attack,
+     "raises the critical-hit ratio of its attacks"),
+    (r"supereffective moves", _every_attack,
+     "boosts whatever it uses that is supereffective"),
+    ((r"boosts the power of the holder's moves|"
+      r"boosts the power of consecutive uses|"
+      r"flinch whenever the holder|restores? .* when it inflicts damage|"
+      r"every time it inflicts damage|boosts.*Attack and Sp\. Atk"),
+     _every_attack, "rides on every attack it lands"),
+]
+
+
+def _move_rule(t, props, dmg):
+    for pat, pick, why in MOVE_RULES:
+        if _has(t, pat):
+            return pick(props, dmg), [], why
+    return None
+
+
+def _named_rule(t, props, name):
+    """Moves the text names outright."""
+    named = sorted(n for n in props
+                   if len(n) > 4 and re.search(r"\b" + re.escape(n) + r"\b", t))
+    if not named:
+        return None
+    # Light Clay reads "Light Screen or Reflect" and the player has
+    # confirmed in game that it extends Aurora Veil too, which the text
+    # does not say. CLAUDE.md carries that as a rule; it is applied here
+    # rather than left wrong.
+    if name == "Light Clay" and "Aurora Veil" in props:
+        named = sorted(set(named) | {"Aurora Veil"})
+    return named, [], "changes what these moves do"
+
+
+# The status berries, unblocked 2026-09-10. These had no link while nothing
+# said which move causes which status. data/db/statuses.json has that column
+# now, so a Cheri Berry can point at the fifteen moves that paralyse.
+CURES = [("Paralysis", r"paralysis|paraly[sz]ed"),
+         ("Freeze", r"thaw|frozen|freez"),
+         ("Sleep", r"drowsiness|asleep|\bsleep\b"),
+         ("Poison", r"poisoned|poisoning"),
+         ("Badly Poisoned", r"badly poisoned"),
+         ("Burn", r"\bburn\b|burned"),
+         ("Confusion", r"confusion|confused")]
+
+
+def _status_rule(t):
+    if not _has(t, r"cure|thaw|free itself|shake off|lift the effects|status condition"):
+        return None
+    if _has(t, r"any status condition"):
+        got = sorted({n for s in STATUS for n in STATUS[s]})
+        return got, [], "cures whatever status just landed on it"
+    for st, pat in CURES:
+        if _has(t, pat) and STATUS.get(st):
+            return (sorted(STATUS[st]), [],
+                    "cures the " + st.lower() + " this inflicts")
+    return None
+
+
+def _no_link(t):
+    """Nothing links, and the reason is worth keeping: an item with no rule
+    reads as one nobody looked at."""
+    if _has(t, r"restores?|endure with 1 HP|switched out|remove the attacker|"
+               r"switch out of battle|moving first|PP"):
+        return None, None, "about HP, PP or switching, not about any move"
+    return None, None, "nothing in its text names a move, a type or a field effect"
+
+
 def item_links(item, props, setters, facts):
     """(moves, abilities, why) for one item, or (None, None, reason).
 
@@ -143,133 +299,38 @@ def item_links(item, props, setters, facts):
     t = " || ".join(clean(x) for x in (
         f.get("text"), f.get("pokebase_text"),
         f.get("serebii_text") or item.get("effect")) if x)
-    name = item["name"]
-    dmg = [n for n, p in props.items() if p["bp"] > 0 and p["cat"] != "Status"]
-    def has(pat):
-        return re.search(pat, t, re.I)
-
-    # --- the field-effect bridge: the move AND the ability, together --------
     # Smogon writes a list with slashes - "Electric/Grassy/Misty/Psychic
     # Terrain" - which only the last name matched, so Terrain Extender came
     # out as a Psychic Terrain item. Spelled out first, and more than one
-    # terrain named is the "any terrain" case below.
+    # terrain named is the "any terrain" case of the field rule.
     t = re.sub(r"((?:[A-Z][a-z]+/)+[A-Z][a-z]+) Terrain",
                lambda m: ", ".join(w + " Terrain" for w in m.group(1).split("/")),
                t)
-    hits = [eff for eff, (ms, abs_) in setters.items()
-            if has(FIELD[eff]) and (ms or abs_)]
-    if len(hits) == 1 or (hits and not all("Terrain" in e for e in hits)):
-        ms, abs_ = setters[hits[0]]
-        return ms, abs_, ("extends " + hits[0] + " however it was set - "
-                          "by the move or by the ability")
-    if has(r"\bterrain\b"):
-        ms, abs_ = [], []
-        for eff, (a, b) in setters.items():
-            if "Terrain" in eff:
-                ms += a
-                abs_ += b
-        return sorted(set(ms)), sorted(set(abs_)), "extends any terrain it sets"
+    dmg = [n for n, p in props.items() if p["bp"] > 0 and p["cat"] != "Status"]
+    return (_field_rule(t, setters)
+            or _type_rule(t, props, dmg)
+            or _move_rule(t, props, dmg)
+            or _named_rule(t, props, item["name"])
+            or _status_rule(t)
+            or _no_link(t))
 
-    # --- one type, going out ----------------------------------------------
-    m = has(r"boosts? the power of (?:the holder's|a) ([A-Za-z]+)[\s-]*type "
-            r"(?:moves|move|attacks)")
-    if m and m.group(1).capitalize() in TYPES:
-        ty = m.group(1).capitalize()
-        return ([n for n in dmg if props[n]["type"] == ty], [],
-                "boosts every " + ty + " move it uses")
-    # --- one type, coming in ----------------------------------------------
-    m = has(r"immune to ([A-Za-z]+)[\s-]*type moves")
-    if m and m.group(1).capitalize() in TYPES:
-        ty = m.group(1).capitalize()
-        return ([n for n in dmg if props[n]["type"] == ty], [],
-                "nothing " + ty + "-type can touch it while it holds this")
-    m = has(r"vulnerable to ([A-Za-z]+)[\s-]*type moves")
-    if m and m.group(1).capitalize() in TYPES:
-        ty = m.group(1).capitalize()
-        return ([n for n in dmg if props[n]["type"] == ty], [],
-                "an incoming " + ty + " move hits it even through Flying")
-    m = has(r"(?:halves damage from the first supereffective|hit with a "
-            r"supereffective|hit with a) ([A-Za-z]+)[\s-]*type (?:move|attack)")
-    if m and m.group(1).capitalize() in TYPES:
-        ty = m.group(1).capitalize()
-        return ([n for n in dmg if props[n]["type"] == ty], [],
-                "weakens an incoming " + ty + " move")
-    # --- one category ------------------------------------------------------
-    if has(r"holder's physical moves"):
-        return ([n for n in dmg if props[n]["cat"] == "Physical"], [],
-                "boosts its physical moves")
-    if has(r"holder's special moves"):
-        return ([n for n in dmg if props[n]["cat"] == "Special"], [],
-                "boosts its special moves")
-    # --- a property of the move -------------------------------------------
-    if has(r"binding moves"):
-        return ([n for n, p in props.items() if p["binds"]], [],
-                "boosts its binding moves")
-    if has(r"HP-stealing moves|draining moves|HP-draining"):
-        return ([n for n, p in props.items() if p["heals"]], [],
-                "gives back more from its draining moves")
-    if has(r"contact move|makes direct contact with the holder"):
-        return ([n for n, p in props.items() if p["contact"]], [],
-                "punishes an incoming contact move")
-    if has(r"only use the first move it selects|only allows the use of a "
-           r"single move"):
-        return (sorted(props), [], "locks it into the first move it picks")
-    if has(r"move-binding effects|prevent(?:s)? .*choosing|choice"):
-        return ([n for n, p in props.items() if p["locks"]], [],
-                "shakes off what would lock its moves")
-    if has(r"lowered stat"):
-        return ([n for n, p in props.items() if p["down_stats"]], [],
-                "restores what an incoming move lowered")
-    if has(r"accuracy of (?:the holder's|moves targeting the holder)|"
-           r"more accurate"):
-        return ([n for n, p in props.items()
-                 if p["acc"] is not None and p["acc"] < 100], [],
-                "changes the odds on everything that can miss")
-    if has(r"critical-hit ratio"):
-        return (dmg, [], "raises the critical-hit ratio of its attacks")
-    if has(r"supereffective moves"):
-        return (dmg, [], "boosts whatever it uses that is supereffective")
-    if has(r"boosts the power of the holder's moves|"
-           r"boosts the power of consecutive uses|"
-           r"flinch whenever the holder|restores? .* when it inflicts damage|"
-           r"every time it inflicts damage|boosts.*Attack and Sp\. Atk"):
-        return (dmg, [], "rides on every attack it lands")
-    # --- named outright ----------------------------------------------------
-    named = sorted(n for n in props
-                   if len(n) > 4 and re.search(r"\b" + re.escape(n) + r"\b", t))
-    if named:
-        # Light Clay reads "Light Screen or Reflect" and the player has
-        # confirmed in game that it extends Aurora Veil too, which the text
-        # does not say. CLAUDE.md carries that as a rule; it is applied here
-        # rather than left wrong.
-        if name == "Light Clay" and "Aurora Veil" in props:
-            named = sorted(set(named) | {"Aurora Veil"})
-        return named, [], "changes what these moves do"
-    # --- the status berries, unblocked 2026-09-10 --------------------------
-    # These had no link while nothing said which move causes which status.
-    # data/db/statuses.json has that column now, so a Cheri Berry can point at
-    # the fifteen moves that paralyse.
-    cures = [("Paralysis", r"paralysis|paraly[sz]ed"),
-             ("Freeze", r"thaw|frozen|freez"),
-             ("Sleep", r"drowsiness|asleep|\bsleep\b"),
-             ("Poison", r"poisoned|poisoning"),
-             ("Badly Poisoned", r"badly poisoned"),
-             ("Burn", r"\bburn\b|burned"),
-             ("Confusion", r"confusion|confused")]
-    if has(r"cure|thaw|free itself|shake off|lift the effects|status condition"):
-        if has(r"any status condition"):
-            got = sorted({n for s in STATUS for n in STATUS[s]})
-            return got, [], "cures whatever status just landed on it"
-        for st, pat in cures:
-            if has(pat) and STATUS.get(st):
-                return (sorted(STATUS[st]), [],
-                        "cures the " + st.lower() + " this inflicts")
-    # Nothing links, and the reason is worth keeping: an item with no rule
-    # reads as one nobody looked at.
-    if has(r"restores?|endure with 1 HP|switched out|remove the attacker|"
-           r"switch out of battle|moving first|PP"):
-        return None, None, "about HP, PP or switching, not about any move"
-    return None, None, "nothing in its text names a move, a type or a field effect"
+
+def _mark_binding(props, moves):
+    """One property this file needs that the ability table does not carry:
+    a binding move is one that gives the Bound status."""
+    for n, p in props.items():
+        mv = next((m for m in moves if m["name"] == n), None)
+        p["binds"] = bool(re.search(r"\bBound status\b",
+                                    clean(mv.get("effect")) if mv else ""))
+
+
+def _reverse_index(items, key):
+    """move (or ability) -> the items that serve it, sorted."""
+    out = {}
+    for it, r in items.items():
+        for n in r[key]:
+            out.setdefault(n, []).append(it)
+    return {k: sorted(v) for k, v in out.items()}
 
 
 def build():
@@ -279,12 +340,7 @@ def build():
     if not props:
         sys.exit("run scripts/build_ability_moves.py first - this needs its "
                  "derived move properties")
-    # one property this file needs that the ability table does not carry:
-    # a binding move is one that gives the Bound status
-    for n, p in props.items():
-        mv = next((m for m in moves if m["name"] == n), None)
-        p["binds"] = bool(re.search(r"\bBound status\b",
-                                    clean(mv.get("effect")) if mv else ""))
+    _mark_binding(props, moves)
 
     setters = field_setters(moves, abils)
     for eff, (ms, abs_) in setters.items():
@@ -303,17 +359,8 @@ def build():
             continue
         items[it["name"]] = {"moves": ms, "abilities": abs_,
                              "why": why, "side": side_of(why)}
-
-    by_move, by_abil = {}, {}
-    for it, r in items.items():
-        for n in r["moves"]:
-            by_move.setdefault(n, []).append(it)
-        for n in r["abilities"]:
-            by_abil.setdefault(n, []).append(it)
-    for d in (by_move, by_abil):
-        for k in d:
-            d[k] = sorted(d[k])
-    return items, by_move, by_abil, unlinked, setters
+    return (items, _reverse_index(items, "moves"),
+            _reverse_index(items, "abilities"), unlinked, setters)
 
 
 def main():
