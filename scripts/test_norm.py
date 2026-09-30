@@ -126,15 +126,12 @@ DIFFERENT = [
 ]
 
 
-def main():
-    verbose = "-v" in sys.argv
-    failed = 0
-
+def _check_same(verbose):
     print("--- groups that must share one key ---")
+    failed = 0
     for group in SAME:
         keys = {norm(n) for n in group}
-        ok = len(keys) == 1
-        if not ok:
+        if len(keys) != 1:
             failed += 1
             print("  FAIL  %s" % group[0])
             for n in group:
@@ -143,7 +140,10 @@ def main():
             print("  ok    %-24s -> %s" % (group[0], keys.pop()))
     if not verbose:
         print("  %d/%d groups collapse correctly" % (len(SAME) - failed, len(SAME)))
+    return failed
 
+
+def _check_different(verbose):
     print("\n--- pairs that must stay distinct ---")
     bad = 0
     for a, b in DIFFERENT:
@@ -154,26 +154,33 @@ def main():
             print("  ok    %-22s != %-22s" % (norm(a), norm(b)))
     if not verbose:
         print("  %d/%d pairs stay distinct" % (len(DIFFERENT) - bad, len(DIFFERENT)))
+    return bad
 
+
+# species_norm() strips the form qualifier: (a form, its base species)
+SPECIES = [("Ninetales-Alola", "ninetales"),
+           ("Mega Charizard Y", "charizard"),
+           ("Basculegion-Female", "basculegion"),
+           ("Rotom-Wash", "rotom"),
+           ("Tauros-Paldea Blaze", "tauros"),
+           ("Mega Raichu X", "raichu"),
+           # M-C's second-Mega suffix. "z" was missing from the
+           # form list beside x and y, so these three kept it,
+           # matched no base species, and came back with no
+           # movepool at all in query.py.
+           ("Mega Garchomp Z", "garchomp"),
+           ("Mega Absol Z", "absol"),
+           ("Mega Lucario Z", "lucario"),
+           # kept as identity by norm(), still a qualifier here:
+           # both share the species movepool
+           ("Squawkabilly-Yellow", "squawkabilly"),
+           ("Gourgeist-Jumbo", "gourgeist")]
+
+
+def _check_species(verbose):
     print("\n--- species_norm strips form qualifiers ---")
     sp = 0
-    for name, want in [("Ninetales-Alola", "ninetales"),
-                       ("Mega Charizard Y", "charizard"),
-                       ("Basculegion-Female", "basculegion"),
-                       ("Rotom-Wash", "rotom"),
-                       ("Tauros-Paldea Blaze", "tauros"),
-                       ("Mega Raichu X", "raichu"),
-                       # M-C's second-Mega suffix. "z" was missing from the
-                       # form list beside x and y, so these three kept it,
-                       # matched no base species, and came back with no
-                       # movepool at all in query.py.
-                       ("Mega Garchomp Z", "garchomp"),
-                       ("Mega Absol Z", "absol"),
-                       ("Mega Lucario Z", "lucario"),
-                       # kept as identity by norm(), still a qualifier here:
-                       # both share the species movepool
-                       ("Squawkabilly-Yellow", "squawkabilly"),
-                       ("Gourgeist-Jumbo", "gourgeist")]:
+    for name, want in SPECIES:
         got = species_norm(name)
         if got != want:
             sp += 1
@@ -182,8 +189,12 @@ def main():
             print("  ok    %-22s -> %s" % (name, got))
     if not sp and not verbose:
         print("  all 11 resolve to their base species")
+    return sp
 
-    total = failed + bad + sp
+
+def main():
+    verbose = "-v" in sys.argv
+    total = _check_same(verbose) + _check_different(verbose) + _check_species(verbose)
     print("\n%s" % ("ALL PASS" if not total else "%d FAILURES" % total))
     return 1 if total else 0
 

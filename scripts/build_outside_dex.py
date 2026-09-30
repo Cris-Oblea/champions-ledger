@@ -88,6 +88,51 @@ def clean(s):
     return " ".join(s.split())
 
 
+def _upstream_names():
+    """(move id -> upstream's English name, ability id -> name, ability id ->
+    its short effect). Upstream's move table is used for ONE thing: turning a
+    learn row's move id into a name we can look up in ours. Every number
+    comes from our row."""
+    dmg = {r["id"]: r["identifier"] for r in table("move_damage_classes.csv")}
+    unknown = sorted(set(dmg.values()) - set(CLASS))
+    if unknown:
+        sys.exit("move_damage_classes.csv has a class this script has no code "
+                 "for: %s - add it to CLASS rather than guessing" % unknown)
+    mname = {r["move_id"]: r["name"] for r in table("move_names.csv")
+             if r["local_language_id"] == ENGLISH}
+    aname = {r["ability_id"]: r["name"] for r in table("ability_names.csv")
+             if r["local_language_id"] == ENGLISH}
+    aprose = {r["ability_id"]: clean(r["short_effect"] or r["effect"])
+              for r in table("ability_prose.csv")
+              if r["local_language_id"] == ENGLISH}
+    upstream_name = {r["id"]: mname.get(r["id"]) for r in table("moves.csv")}
+    return upstream_name, aname, aprose
+
+
+def _pool(move_ids, upstream_name, champ_by_key, smogon, mv, nomatch):
+    """One species' movepool in OUR spelling; a move Champions cannot use goes
+    into `mv` with its numbers, an upstream move we have no row for into
+    `nomatch`."""
+    names = []
+    for mid in sorted(move_ids, key=int):
+        up = upstream_name.get(mid)
+        row = champ_by_key.get(key(up)) if up else None
+        if not row:
+            # measured at zero: every move any of these species learns is
+            # already in moves.json. Counted rather than assumed, so the
+            # day one is not, the report says so instead of it vanishing.
+            if up:
+                nomatch.add(up)
+            continue
+        nm = row["name"]                       # OUR spelling, always
+        names.append(nm)
+        if not row.get("useable") and nm not in mv:
+            mv[nm] = [row.get("type"), CAT.get(row.get("category"), "T"),
+                      row.get("power"), row.get("accuracy"), row.get("pp"),
+                      smogon.get(nm) or clean(row.get("effect") or "")]
+    return names
+
+
 def build():
     # --- what Champions already has; these are never overridden -----------
     # Keyed, because upstream writes "Will-O-Wisp" and "will-o-wisp" and our
@@ -103,32 +148,11 @@ def build():
     smogon = (Q.db("smogon_text") or {}).get("moves") or {}
     champ_abils = {key(a["name"]) for a in Q.db("abilities")}
     home = json.loads(Path(ROOT, "data", "db", "home_dex.json").read_text(encoding="utf-8"))
-
-    # --- the upstream tables ----------------------------------------------
-    dmg = {r["id"]: r["identifier"] for r in table("move_damage_classes.csv")}
-    unknown = sorted(set(dmg.values()) - set(CLASS))
-    if unknown:
-        sys.exit("move_damage_classes.csv has a class this script has no code "
-                 "for: %s - add it to CLASS rather than guessing" % unknown)
-    mname = {r["move_id"]: r["name"] for r in table("move_names.csv")
-             if r["local_language_id"] == ENGLISH}
-    aname = {r["ability_id"]: r["name"] for r in table("ability_names.csv")
-             if r["local_language_id"] == ENGLISH}
-    aprose = {r["ability_id"]: clean(r["short_effect"] or r["effect"])
-              for r in table("ability_prose.csv")
-              if r["local_language_id"] == ENGLISH}
-    # Upstream's move table is used for ONE thing: turning a learn row's move
-    # id into a name we can look up in ours. Every number comes from our row.
-    upstream_name = {r["id"]: mname.get(r["id"]) for r in table("moves.csv")}
+    upstream_name, aname, aprose = _upstream_names()
 
     # --- the abilities Champions has no row for ---------------------------
-    ab = {}
-    for aid, n in aname.items():
-        if key(n) in champ_abils:
-            continue
-        txt = aprose.get(aid)
-        if txt:
-            ab[n] = txt
+    ab = {n: aprose[aid] for aid, n in aname.items()
+          if key(n) not in champ_abils and aprose.get(aid)}
 
     # --- movepools, complete, plus rows for what Champions lacks ----------
     # THE SAME RESOLVER THE STATS USE, and for the same reason: PokeAPI files
@@ -157,23 +181,7 @@ def build():
             continue
         g = (CHAMPIONS_VG if groups.get(CHAMPIONS_VG)
              else max(groups, key=int))
-        names = []
-        for mid in sorted(groups[g], key=int):
-            up = upstream_name.get(mid)
-            row = champ_by_key.get(key(up)) if up else None
-            if not row:
-                # measured at zero: every move any of these species learns is
-                # already in moves.json. Counted rather than assumed, so the
-                # day one is not, the report says so instead of it vanishing.
-                if up:
-                    nomatch.add(up)
-                continue
-            nm = row["name"]                       # OUR spelling, always
-            names.append(nm)
-            if not row.get("useable") and nm not in mv:
-                mv[nm] = [row.get("type"), CAT.get(row.get("category"), "T"),
-                          row.get("power"), row.get("accuracy"), row.get("pp"),
-                          smogon.get(nm) or clean(row.get("effect") or "")]
+        names = _pool(groups[g], upstream_name, champ_by_key, smogon, mv, nomatch)
         if names:
             pools[name] = sorted(set(names))
         else:

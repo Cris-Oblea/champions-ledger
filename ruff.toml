@@ -35,15 +35,8 @@ ignore = [
     "PLW0603", # `global` for a module's lazily loaded cache is what it is for
     "SIM905",  # a word list written as one "...".split() reads better
 ]
-
-# THE RATCHET. These rules still have findings, so they are off for now - ruff
-# has no "warn" level to keep them visible without failing the push. Each one
-# leaves this list in the pull request that takes it to zero, and from then on
-# it blocks like every other rule, so the count can only go down. The goal is
-# an empty list. `python -m ruff check --extend-select <RULE>` shows one.
-extend-ignore = [
-    "C901", "PLR0913",  # functions too complex, or taking too much
-]
+# Nothing else is ignored: every rule above blocks a push. The ratchet that
+# let the rules with findings through one at a time emptied on 2026-09-30.
 
 [lint.mccabe]
 max-complexity = 10

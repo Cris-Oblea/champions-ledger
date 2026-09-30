@@ -316,31 +316,24 @@ def fetch(slug, timeout=60):
     return None
 
 
-def main():
-    ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    ap.add_argument("--limit", type=int, default=0)
-    ap.add_argument("--force", action="store_true")
-    a = ap.parse_args()
+def _stored(force):
+    """What an earlier run already wrote, so an ordinary run only fetches the
+    Pokemon it has not seen; nothing under --force."""
+    if not os.path.exists(OUT) or force:
+        return {}
+    try:
+        return json.loads(Path(OUT).read_text(encoding="utf-8")).get("pokemon") or {}
+    except (OSError, ValueError):
+        return {}
 
-    usage = json.loads(Path(META, "usage_pokemon.json").read_text(encoding="utf-8"))
-    rows = usage.get("rows") or []
-    if a.limit:
-        rows = rows[:a.limit]
 
-    have = {}
-    if os.path.exists(OUT) and not a.force:
-        try:
-            have = (json.loads(Path(OUT).read_text(encoding="utf-8"))
-                    .get("pokemon") or {})
-        except (OSError, ValueError):
-            have = {}
-
-    out, n, empty = dict(have), 0, []
+def _fetch_missing(rows, out, force):
+    """Fetch each ladder row not in `out` yet into it; (how many were fetched,
+    the names whose page had no usage block)."""
+    n, empty = 0, []
     for r in rows:
         slug, name = r.get("slug"), r.get("name")
-        if not slug or not name:
-            continue
-        if name in out and not a.force:
+        if not slug or not name or (name in out and not force):
             continue
         html = fetch(slug)
         if not html:
@@ -355,6 +348,22 @@ def main():
         if n % 25 == 0:
             print("  %d fetched" % n, flush=True)
         time.sleep(0.25)
+    return n, empty
+
+
+def main():
+    ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    ap.add_argument("--limit", type=int, default=0)
+    ap.add_argument("--force", action="store_true")
+    a = ap.parse_args()
+
+    usage = json.loads(Path(META, "usage_pokemon.json").read_text(encoding="utf-8"))
+    rows = usage.get("rows") or []
+    if a.limit:
+        rows = rows[:a.limit]
+
+    out = dict(_stored(a.force))
+    n, empty = _fetch_missing(rows, out, a.force)
 
     regs = sorted({(v.get("tournament") or {}).get("regulation")
                    for v in out.values()} - {None})

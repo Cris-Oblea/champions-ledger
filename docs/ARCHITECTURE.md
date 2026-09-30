@@ -312,9 +312,9 @@ runs in four places: the `pre-push` hook, every pull request, every push to
   age, whether restore still works, and the doc rules (`check_docs.py`).
 - **ruff** (`ruff.toml`, `python -m ruff check`): the Python twin of ESLint -
   bugbear, pyflakes, complexity, naming, swallowed exceptions, the rules
-  SonarQube for IDE used to show on the scripts. `ruff.toml` has a ratchet
-  like the one ESLint had: rules that still have findings are listed, off,
-  and each leaves the list in the PR that takes it to zero. Installed with
+  SonarQube for IDE used to show on the scripts. Every Python file is at zero
+  and every selected rule blocks the push, complexity included (no function
+  over 10). Installed with
   `python -m pip install -r requirements.txt`, which pins the version.
 - **ESLint** (`eslint.config.mjs`): the rules SonarQube for IDE shows in VS
   Code, run over every file. `no-undef` catches a name a module uses without

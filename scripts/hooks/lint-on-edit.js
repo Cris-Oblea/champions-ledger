@@ -3,9 +3,8 @@
  *
  * The gate finds a lint problem three minutes after the push; this finds it
  * while the edit is still on screen. Silent - and so free in tokens - when the
- * file is clean. Otherwise exit 2 hands the findings to Claude, warnings
- * included: the ratchet in eslint.config.mjs lets a warning through the gate,
- * but the goal is zero, so a file being edited is a file being cleaned.
+ * file is clean. Otherwise exit 2 hands the findings to Claude - the same
+ * findings that would fail the push, since both linters run at zero.
  */
 const path = require("path");
 const { spawnSync } = require("child_process");

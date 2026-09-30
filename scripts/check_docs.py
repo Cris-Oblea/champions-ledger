@@ -220,6 +220,15 @@ DECISIONS = [
      r"SonarQube for IDE[^.]*\bPython\b|No `pip install` needed",
      "ruff lints the Python, in the gate and in VS Code; Sonar keeps CSS and HTML",
      DOCS),
+
+    # ruff.toml switched rules on one pull request at a time, keeping the ones
+    # with findings in an extend-ignore list, until that list emptied on
+    # 2026-09-30. A document that still describes the list would tell a reader
+    # some rules are optional.
+    ("ruff-ignores-nothing",
+     r"`ruff\.toml` has a ratchet|rules that still have findings are listed",
+     "ruff.toml ignores nothing past its three idiom rules; every rule blocks",
+     DOCS),
 ]
 
 

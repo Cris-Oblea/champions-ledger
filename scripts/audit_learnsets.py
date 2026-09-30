@@ -108,6 +108,29 @@ def upstream(force=False):
     return out
 
 
+def _load_fetch_home_dex():
+    import importlib.util
+    spec = importlib.util.spec_from_file_location(
+        "fhd", os.path.join(ROOT, "scripts", "fetch_home_dex.py"))
+    fhd = importlib.util.module_from_spec(spec)
+    spec.loader.exec_module(fhd)
+    return fhd
+
+
+def _sort_out(name, moves, known_map, side, show):
+    """(the moves that are NEW disagreements, how many were known ones);
+    `show` prints the known ones too."""
+    new, known = [], 0
+    for m in sorted(moves):
+        if m in known_map:
+            known += 1
+            if show:
+                print("  known  %-16s %s %-18s (%s)" % (name, side, m, known_map[m]))
+        else:
+            new.append((name, m))
+    return new, known
+
+
 def main():
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--force", action="store_true")
@@ -115,12 +138,7 @@ def main():
                     help="print every disagreement, known ones included")
     args = ap.parse_args()
 
-    import importlib.util
-    spec = importlib.util.spec_from_file_location(
-        "fhd", os.path.join(ROOT, "scripts", "fetch_home_dex.py"))
-    fhd = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(fhd)
-
+    fhd = _load_fetch_home_dex()
     up = upstream(args.force)
     ours = Q.db("learnsets")
     paired = 0
@@ -131,22 +149,12 @@ def main():
             continue
         paired += 1
         mine = {mkey(m) for m in ours[name]}
-        for m in sorted(u - mine):
-            if m in KNOWN_UPSTREAM:
-                known += 1
-                if args.list:
-                    print("  known  %-16s upstream-only %-18s (%s)"
-                          % (name, m, KNOWN_UPSTREAM[m]))
-            else:
-                new_up.append((name, m))
-        for m in sorted(mine - u):
-            if m in KNOWN_OURS:
-                known += 1
-                if args.list:
-                    print("  known  %-16s ours-only     %-18s (%s)"
-                          % (name, m, KNOWN_OURS[m]))
-            else:
-                new_ours.append((name, m))
+        n, k = _sort_out(name, u - mine, KNOWN_UPSTREAM, "upstream-only", args.list)
+        new_up += n
+        known += k
+        n, k = _sort_out(name, mine - u, KNOWN_OURS, "ours-only    ", args.list)
+        new_ours += n
+        known += k
 
     print("paired %d of our %d movepools against PokeAPI's Champions group "
           "(%d species there)" % (paired, len(ours), len(up)))

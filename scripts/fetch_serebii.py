@@ -86,6 +86,30 @@ def get(url, dest, force=False):
     return False, False
 
 
+def _tally(stats, ok, cached):
+    """Count one page; returns how many are done."""
+    stats["fail" if not ok else "cached" if cached else "ok"] += 1
+    return stats["ok"] + stats["cached"] + stats["fail"]
+
+
+def _worker(q, stats, lock, total, pause, force):
+    while True:
+        try:
+            url, dest = q.get_nowait()
+        except queue.Empty:
+            return
+        ok, cached = get(url, dest, force=force)
+        with lock:
+            done = _tally(stats, ok, cached)
+            if done % 25 == 0 or done == total:
+                print("  %d/%d (new=%d cached=%d failed=%d)"
+                      % (done, total, stats["ok"], stats["cached"], stats["fail"]),
+                      flush=True)
+        if not cached:
+            time.sleep(pause)
+        q.task_done()
+
+
 def fetch_many(items, workers=5, pause=0.12, force=False):
     """items: list of (url, dest). Fetches with modest concurrency."""
     q = queue.Queue()
@@ -93,31 +117,9 @@ def fetch_many(items, workers=5, pause=0.12, force=False):
         q.put(it)
     stats = {"ok": 0, "cached": 0, "fail": 0}
     lock = threading.Lock()
-    total = len(items)
-
-    def worker():
-        while True:
-            try:
-                url, dest = q.get_nowait()
-            except queue.Empty:
-                return
-            ok, cached = get(url, dest, force=force)
-            with lock:
-                if not ok:
-                    stats["fail"] += 1
-                elif cached:
-                    stats["cached"] += 1
-                else:
-                    stats["ok"] += 1
-                done = stats["ok"] + stats["cached"] + stats["fail"]
-                if done % 25 == 0 or done == total:
-                    print("  %d/%d (new=%d cached=%d failed=%d)"
-                          % (done, total, stats["ok"], stats["cached"], stats["fail"]), flush=True)
-            if not cached:
-                time.sleep(pause)
-            q.task_done()
-
-    threads = [threading.Thread(target=worker, daemon=True) for _ in range(workers)]
+    threads = [threading.Thread(target=_worker, daemon=True,
+                                args=(q, stats, lock, len(items), pause, force))
+               for _ in range(workers)]
     for t in threads:
         t.start()
     for t in threads:

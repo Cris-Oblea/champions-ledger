@@ -230,28 +230,21 @@ def parse_moveset(ms):
     }
 
 
-def main():
-    force = "--force" in sys.argv
-    os.makedirs(RAW, exist_ok=True)
-    os.makedirs(META, exist_ok=True)
-    os.makedirs(DB, exist_ok=True)
-
+def _basics(force):
+    """Smogon's Champions dex basics, from the cache unless --force."""
     basics_path = os.path.join(RAW, "basics.json")
     if os.path.exists(basics_path) and not force:
-        basics = json.loads(Path(basics_path).read_text(encoding="utf-8"))
-    else:
-        print("Fetching dump-basics ...")
-        basics = rpc("dump-basics", {"gen": "champions"})
-        if not basics:
-            sys.exit("could not load Smogon basics")
-        Path(basics_path).write_text(
-            json.dumps(basics, ensure_ascii=False, indent=1), encoding="utf-8")
+        return json.loads(Path(basics_path).read_text(encoding="utf-8"))
+    print("Fetching dump-basics ...")
+    basics = rpc("dump-basics", {"gen": "champions"})
+    if not basics:
+        sys.exit("could not load Smogon basics")
+    Path(basics_path).write_text(
+        json.dumps(basics, ensure_ascii=False, indent=1), encoding="utf-8")
+    return basics
 
-    mons = basics.get("pokemon") or []
-    print("  %d Pokemon, %d moves, %d items, %d abilities"
-          % (len(mons), len(basics.get("moves") or []),
-             len(basics.get("items") or []), len(basics.get("abilities") or [])))
 
+def _write_basics(basics):
     Path(DB, "smogon_basics.json").write_text(json.dumps({
         "source": "smogon.com/dex/champions",
         "fetched": time.strftime("%Y-%m-%d"),
@@ -263,6 +256,59 @@ def main():
         "moves": basics.get("moves") or [],
     }, ensure_ascii=False, indent=1), encoding="utf-8")
 
+
+def _pokemon_dump(alias, force):
+    """One Pokemon's dump, cached; None when Smogon did not answer."""
+    cache = os.path.join(RAW, alias + ".json")
+    if os.path.exists(cache) and not force:
+        return json.loads(Path(cache).read_text(encoding="utf-8"))
+    data = rpc("dump-pokemon", {"alias": alias, "gen": "champions", "language": "en"})
+    if data is not None:
+        Path(cache).write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
+        time.sleep(0.15)
+    return data
+
+
+def _credits(st):
+    if not st.get("credits"):
+        return []
+    members = ((st.get("credits") or {}).get("teams") or [{}])[0].get("members", [])
+    return [c.get("username") for c in members if isinstance(c, dict)]
+
+
+def _vgc_strategies(data):
+    """The VGC analyses in a dump that say anything; singles are dropped."""
+    strategies = []
+    for st in data.get("strategies") or []:
+        if not is_vgc(st.get("format")):
+            continue
+        movesets = [parse_moveset(m) for m in st.get("movesets") or []]
+        if not (movesets or st.get("overview") or st.get("comments")):
+            continue
+        strategies.append({
+            "format": st.get("format"),
+            "outdated": st.get("outdated"),
+            "overview": strip_html(st.get("overview")),
+            "comments": strip_html(st.get("comments")),
+            "movesets": movesets,
+            "credits": _credits(st),
+        })
+    return strategies
+
+
+def main():
+    force = "--force" in sys.argv
+    os.makedirs(RAW, exist_ok=True)
+    os.makedirs(META, exist_ok=True)
+    os.makedirs(DB, exist_ok=True)
+
+    basics = _basics(force)
+    mons = basics.get("pokemon") or []
+    print("  %d Pokemon, %d moves, %d items, %d abilities"
+          % (len(mons), len(basics.get("moves") or []),
+             len(basics.get("items") or []), len(basics.get("abilities") or [])))
+    _write_basics(basics)
+
     print("Fetching every move, ability and item's full description ...")
     dex_texts(force)
 
@@ -271,36 +317,11 @@ def main():
     for i, mon in enumerate(mons, 1):
         alias = mon.get("alias") or re.sub(r"[^a-z0-9-]", "",
                                            (mon.get("name") or "").lower().replace(" ", "-"))
-        cache = os.path.join(RAW, alias + ".json")
-        if os.path.exists(cache) and not force:
-            data = json.loads(Path(cache).read_text(encoding="utf-8"))
-        else:
-            data = rpc("dump-pokemon",
-                       {"alias": alias, "gen": "champions", "language": "en"})
-            if data is None:
-                continue
-            Path(cache).write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
-            time.sleep(0.15)
-
-        strategies = []
-        for st in data.get("strategies") or []:
-            if not is_vgc(st.get("format")):
-                continue
-            movesets = [parse_moveset(m) for m in st.get("movesets") or []]
-            if not (movesets or st.get("overview") or st.get("comments")):
-                continue
-            strategies.append({
-                "format": st.get("format"),
-                "outdated": st.get("outdated"),
-                "overview": strip_html(st.get("overview")),
-                "comments": strip_html(st.get("comments")),
-                "movesets": movesets,
-                "credits": [c.get("username") for c in
-                            ((st.get("credits") or {}).get("teams") or [{}])[0].get("members", [])
-                            if isinstance(c, dict)] if st.get("credits") else [],
-            })
-        if strategies:
-            with_analysis += 1
+        data = _pokemon_dump(alias, force)
+        if data is None:
+            continue
+        strategies = _vgc_strategies(data)
+        with_analysis += bool(strategies)
         out.append({
             "name": mon.get("name"),
             "alias": alias,

@@ -91,6 +91,46 @@ def run(cases, chunk=120):
     return got
 
 
+def _attacker(cat):
+    return ATK_PHYS if cat == "Physical" else ATK_SPEC
+
+
+def _vehicle_candidates(moves):
+    """The six most powerful single-hit attacks per (type, category)."""
+    cands = {}
+    for m in moves:
+        if not m.get("useable") or m.get("category") == "Status":
+            continue
+        if not m.get("power") or m.get("hits"):
+            continue
+        key = (m.get("type"), m.get("category"))
+        if key[0] and key[1]:
+            cands.setdefault(key, []).append(m)
+    return {k: sorted(v, key=lambda m: -m["power"])[:6] for k, v in cands.items()}
+
+
+def _verified_vehicles(cands):
+    """{(type, category): the first candidate the engine confirms}."""
+    probes, want = [], {}
+    for (t, cat), ms in cands.items():
+        for m in ms:
+            cid = "vehicle|%s %s|%s" % (t, cat, m["name"])
+            want[cid] = ((t, cat), m["name"], m["power"])
+            probes.append({"id": cid, "move": m["name"],
+                           "atk": {"name": _attacker(cat)},
+                           "def": {"name": DEF}})
+    out = {}
+    for r in run(probes, chunk=250):
+        if r.get("error"):
+            continue
+        key, name, power = want[r["id"]]
+        w = ((r.get("raw") or {}).get("without") or {})
+        if w.get("basePower") == power and (w.get("damage") or 0) > 0 \
+                and w.get("category") == key[1] and key not in out:
+            out[key] = name
+    return out
+
+
 def vehicles(moves):
     """A move to probe with, per type AND per category, verified by the engine.
 
@@ -113,37 +153,7 @@ def vehicles(moves):
     Returns {(type, category): move name} plus ("any", category) for the
     generic probes.
     """
-    cands = {}
-    for m in moves:
-        if not m.get("useable") or m.get("category") == "Status":
-            continue
-        if not m.get("power") or m.get("hits"):
-            continue
-        key = (m.get("type"), m.get("category"))
-        if key[0] and key[1]:
-            cands.setdefault(key, []).append(m)
-    for k in cands:
-        cands[k].sort(key=lambda m: -m["power"])
-        cands[k] = cands[k][:6]
-
-    probes, want = [], {}
-    for (t, cat), ms in cands.items():
-        for m in ms:
-            cid = "vehicle|%s %s|%s" % (t, cat, m["name"])
-            want[cid] = ((t, cat), m["name"], m["power"])
-            probes.append({"id": cid, "move": m["name"],
-                           "atk": {"name": ATK_PHYS if cat == "Physical"
-                                   else ATK_SPEC},
-                           "def": {"name": DEF}})
-    out = {}
-    for r in run(probes, chunk=250):
-        if r.get("error"):
-            continue
-        key, name, power = want[r["id"]]
-        w = ((r.get("raw") or {}).get("without") or {})
-        if w.get("basePower") == power and (w.get("damage") or 0) > 0 \
-                and w.get("category") == key[1] and key not in out:
-            out[key] = name
+    out = _verified_vehicles(_vehicle_candidates(moves))
     # The generic pair, and WHICH ONE MATTERS. A type-keyed ability is
     # measured through whatever move the generic probe happens to use, so
     # Fluffy came back as "as defender, special move x2" when the vehicle was
@@ -170,6 +180,61 @@ def generic_label(veh, cat):
     return "%s %s move" % (veh.get(("anytype", cat), "?"), cat.lower())
 
 
+def _boost_cases(name, boost, veh):
+    """An item that boosts a type boosts it in EITHER category, so both are
+    probed - and the label says which, because that is the fact."""
+    out = []
+    for cat in ("Physical", "Special"):
+        mv = a_move(veh, boost, cat)
+        if mv:
+            out.append({"id": "item|%s|as attacker, %s %s move"
+                              % (name, boost, cat.lower()),
+                        "move": mv,
+                        "atk": {"name": _attacker(cat), "item": name},
+                        "atkBase": {"name": _attacker(cat)},
+                        "def": {"name": DEF}})
+    return out
+
+
+def _berry_cases(name, berry, veh):
+    out = []
+    for cat in ("Physical", "Special"):
+        mv = a_move(veh, berry, cat)
+        if mv:
+            out.append({"id": "item|%s|as defender, super-effective %s %s"
+                              % (name, berry, cat.lower()),
+                        "move": mv, "typeEff": 2,
+                        "atk": {"name": _attacker(cat)},
+                        "def": {"name": DEF, "item": name},
+                        "defBase": {"name": DEF}})
+    return out
+
+
+def _generic_item_cases(name, veh):
+    """Held by either side, through a generic move of each category."""
+    out = []
+    for side in ("atk", "def"):
+        for cat in ("Physical", "Special"):
+            mv = a_move(veh, "any", cat)
+            if not mv:
+                continue
+            who = _attacker(cat)
+            label = ("as attacker" if side == "atk" else "as defender")
+            c = {"id": "item|%s|%s, %s"
+                       % (name, label, generic_label(veh, cat)),
+                 "move": mv, "typeEff": 2}
+            if side == "atk":
+                c["atk"] = {"name": who, "item": name}
+                c["atkBase"] = {"name": who}
+                c["def"] = {"name": DEF}
+            else:
+                c["atk"] = {"name": who}
+                c["def"] = {"name": DEF, "item": name}
+                c["defBase"] = {"name": DEF}
+            out.append(c)
+    return out
+
+
 def cases_for_items(items, emap, veh):
     out = []
     for it in items:
@@ -179,53 +244,11 @@ def cases_for_items(items, emap, veh):
         boost = emap["boost"].get(name)
         berry = emap["berry"].get(name)
         if boost:
-            # an item that boosts a type boosts it in EITHER category, so both
-            # are probed - and the label says which, because that is the fact
-            for cat in ("Physical", "Special"):
-                mv = a_move(veh, boost, cat)
-                if not mv:
-                    continue
-                out.append({"id": "item|%s|as attacker, %s %s move"
-                                  % (name, boost, cat.lower()),
-                            "move": mv,
-                            "atk": {"name": ATK_PHYS if cat == "Physical"
-                                    else ATK_SPEC, "item": name},
-                            "atkBase": {"name": ATK_PHYS if cat == "Physical"
-                                        else ATK_SPEC},
-                            "def": {"name": DEF}})
-            continue
-        if berry:
-            for cat in ("Physical", "Special"):
-                mv = a_move(veh, berry, cat)
-                if not mv:
-                    continue
-                out.append({"id": "item|%s|as defender, super-effective %s %s"
-                                  % (name, berry, cat.lower()),
-                            "move": mv, "typeEff": 2,
-                            "atk": {"name": ATK_PHYS if cat == "Physical"
-                                    else ATK_SPEC},
-                            "def": {"name": DEF, "item": name},
-                            "defBase": {"name": DEF}})
-            continue
-        for side in ("atk", "def"):
-            for cat in ("Physical", "Special"):
-                mv = a_move(veh, "any", cat)
-                if not mv:
-                    continue
-                who = ATK_PHYS if cat == "Physical" else ATK_SPEC
-                label = ("as attacker" if side == "atk" else "as defender")
-                c = {"id": "item|%s|%s, %s"
-                           % (name, label, generic_label(veh, cat)),
-                     "move": mv, "typeEff": 2}
-                if side == "atk":
-                    c["atk"] = {"name": who, "item": name}
-                    c["atkBase"] = {"name": who}
-                    c["def"] = {"name": DEF}
-                else:
-                    c["atk"] = {"name": who}
-                    c["def"] = {"name": DEF, "item": name}
-                    c["defBase"] = {"name": DEF}
-                out.append(c)
+            out += _boost_cases(name, boost, veh)
+        elif berry:
+            out += _berry_cases(name, berry, veh)
+        else:
+            out += _generic_item_cases(name, veh)
     return out
 
 
@@ -406,14 +429,8 @@ def collect(results):
     return out
 
 
-def main():
-    ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    ap.add_argument("--audit", action="store_true")
-    a = ap.parse_args()
-
-    items = rows(load("items.json"), "items")
-    abilities = rows(load("abilities.json"), "abilities")
-    moves = rows(load("moves.json"), "moves")
+def _touches():
+    """ability -> the moves ability_moves.json says it touches."""
     try:
         touches = load("ability_moves.json")
         touches = touches.get("abilities", touches)
@@ -422,39 +439,32 @@ def main():
     if isinstance(touches, dict):
         touches = {k: (v.get("moves") if isinstance(v, dict) else v) or []
                    for k, v in touches.items()}
+    return touches
 
-    emap = engine_map()
-    veh = vehicles(moves)
-    print("verified probe moves: %d type/category pairs" % len(veh))
 
-    cases = (cases_for_items(items, emap, veh)
-             + cases_for_abilities(abilities, veh, touches))
-    print("%d cases (%d items, %d abilities)"
-          % (len(cases), len(items), len(abilities)))
-    got = collect(run(cases))
-
-    # One fact, said once. An ability is probed through a generic move of each
-    # category AND through whatever ability_moves.json says it touches, so the
-    # same x1.5 comes back three times with three labels. The generic label is
-    # the true one - "physical move" rather than "using Accelerock", which is
-    # just the vehicle - so a specific label is dropped whenever a generic one
-    # already carries that exact multiplier at that exact stage.
+def _drop_repeats(got):
+    """One fact, said once. An ability is probed through a generic move of each
+    category AND through whatever ability_moves.json says it touches, so the
+    same x1.5 comes back three times with three labels. The generic label is
+    the true one - "physical move" rather than "using Accelerock", which is
+    just the vehicle - so a specific label is dropped whenever a generic one
+    already carries that exact multiplier at that exact stage."""
     for v in got.values():
         generic = {(e["stage"], e.get("x4096")) for e in v["effects"]
                    if ", using " not in e["when"]}
         v["effects"] = [e for e in v["effects"]
                         if ", using " not in e["when"]
                         or (e["stage"], e.get("x4096")) not in generic]
-    # The text numbers, beside the engine's. Provenance is per number: an
-    # "engine" multiplier is what the engine actually applies, a "smogon text"
-    # one is what Smogon says it applies. Where both exist they are compared,
-    # and a disagreement is reported rather than resolved - if the two sources
-    # of truth disagree, that is the finding.
-    text = smogon_text()
-    for (kind, name), desc in text.items():
-        if not desc:
-            continue
-        nums = numbers_from(desc)
+
+
+def _add_text_numbers(got):
+    """The text numbers, beside the engine's. Provenance is per number: an
+    "engine" multiplier is what the engine actually applies, a "smogon text"
+    one is what Smogon says it applies. Where both exist they are compared,
+    and a disagreement is reported rather than resolved - if the two sources
+    of truth disagree, that is the finding."""
+    for (kind, name), desc in smogon_text().items():
+        nums = numbers_from(desc) if desc else None
         if not nums:
             continue
         e = got.setdefault(name, {"kind": kind, "effects": [], "notes": []})
@@ -473,6 +483,50 @@ def main():
                 e["notes"].append(
                     "engine says x%s, Smogon's text says %s"
                     % (x, " and ".join("x%g" % y for y in said_x)))
+
+
+def _print_disagreements(known):
+    disagree = [(n, v["notes"]) for n, v in known.items()
+                if any("engine says" in x for x in v["notes"])]
+    if disagree:
+        print("\nthe two sources disagree - worth reading:")
+        for n, notes in disagree:
+            for x in notes:
+                if "engine says" in x:
+                    print("  %-20s %s" % (n, x))
+
+
+def _print_audit(got):
+    print("\nno number, and why:")
+    for n in sorted(got):
+        if got[n]["effects"] or got[n].get("text_numbers"):
+            continue
+        why = "; ".join(got[n]["notes"]) or \
+              "nothing changed in any probe - not a damage modifier"
+        print("  %-12s %-24s %s" % (got[n]["kind"], n, why[:60]))
+
+
+def main():
+    ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    ap.add_argument("--audit", action="store_true")
+    a = ap.parse_args()
+
+    items = rows(load("items.json"), "items")
+    abilities = rows(load("abilities.json"), "abilities")
+    moves = rows(load("moves.json"), "moves")
+    touches = _touches()
+
+    emap = engine_map()
+    veh = vehicles(moves)
+    print("verified probe moves: %d type/category pairs" % len(veh))
+
+    cases = (cases_for_items(items, emap, veh)
+             + cases_for_abilities(abilities, veh, touches))
+    print("%d cases (%d items, %d abilities)"
+          % (len(cases), len(items), len(abilities)))
+    got = collect(run(cases))
+    _drop_repeats(got)
+    _add_text_numbers(got)
     known = {n: v for n, v in got.items()
              if v["effects"] or v.get("text_numbers")}
     blob = {"_comment": ("Exact multipliers read out of Smogon's Champions "
@@ -484,24 +538,9 @@ def main():
         json.dump(blob, f, ensure_ascii=False, indent=1, sort_keys=True)
         f.write("\n")
     print("wrote %s: %d with a number" % (OUT, len(known)))
-
-    disagree = [(n, v["notes"]) for n, v in known.items()
-                if any("engine says" in x for x in v["notes"])]
-    if disagree:
-        print("\nthe two sources disagree - worth reading:")
-        for n, notes in disagree:
-            for x in notes:
-                if "engine says" in x:
-                    print("  %-20s %s" % (n, x))
-
+    _print_disagreements(known)
     if a.audit:
-        print("\nno number, and why:")
-        for n in sorted(got):
-            if got[n]["effects"] or got[n].get("text_numbers"):
-                continue
-            why = "; ".join(got[n]["notes"]) or \
-                  "nothing changed in any probe - not a damage modifier"
-            print("  %-12s %-24s %s" % (got[n]["kind"], n, why[:60]))
+        _print_audit(got)
     return 0
 
 

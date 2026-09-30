@@ -110,34 +110,35 @@ def names(v):
     return set(v) if isinstance(v, list) else set()
 
 
+def _list_change(ra, rb, listfield):
+    """A movepool growing or shrinking, or None. The names are what is worth
+    saying: "Slash: +29" is the M-C change the counts could not see."""
+    gone = names(ra.get(listfield)) - names(rb.get(listfield))
+    came = names(rb.get(listfield)) - names(ra.get(listfield))
+    bits = []
+    if came:
+        bits.append("+%d (%s)" % (len(came), ", ".join(sorted(came)[:8])))
+    if gone:
+        bits.append("-%d (%s)" % (len(gone), ", ".join(sorted(gone)[:8])))
+    return "  ".join(bits) or None
+
+
 def table_diff(rel, holder, key, fields, listfield):
     old, new = committed(rel), current(rel)
     if old is None or new is None:
         return {"file": rel, "unknown": True, "lines": []}
     a = by_key(rows(old, holder), key)
     b = by_key(rows(new, holder), key)
-    lines = []
-    for k in sorted(set(b) - set(a)):
-        lines.append(("added", k, "", ""))
-    for k in sorted(set(a) - set(b)):
-        lines.append(("removed", k, "", ""))
+    lines = [("added", k, "", "") for k in sorted(set(b) - set(a))]
+    lines += [("removed", k, "", "") for k in sorted(set(a) - set(b))]
     for k in sorted(set(a) & set(b)):
         for f in fields:
             x, y = a[k].get(f), b[k].get(f)
             if show(x) != show(y):
                 lines.append(("changed", k, f, "%s -> %s" % (show(x), show(y))))
-        if listfield:
-            # A movepool growing or shrinking. The names are what is worth
-            # saying: "Slash: +29" is the M-C change the counts could not see.
-            gone = names(a[k].get(listfield)) - names(b[k].get(listfield))
-            came = names(b[k].get(listfield)) - names(a[k].get(listfield))
-            if gone or came:
-                bits = []
-                if came:
-                    bits.append("+%d (%s)" % (len(came), ", ".join(sorted(came)[:8])))
-                if gone:
-                    bits.append("-%d (%s)" % (len(gone), ", ".join(sorted(gone)[:8])))
-                lines.append(("changed", k, listfield, "  ".join(bits)))
+        change = _list_change(a[k], b[k], listfield) if listfield else None
+        if change:
+            lines.append(("changed", k, listfield, change))
     return {"file": rel, "unknown": False, "lines": lines}
 
 
