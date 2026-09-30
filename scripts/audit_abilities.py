@@ -62,6 +62,7 @@ import html
 import os
 import re
 import sys
+from pathlib import Path
 
 import query as Q
 from fetch_home_dex import key as hkey
@@ -170,7 +171,7 @@ def serebii(forms):
         have = rows.get(Q.norm(slug))
         if have is None:
             continue
-        s = open(path, encoding="cp1252", errors="replace").read()
+        s = Path(path).read_text(encoding="cp1252", errors="replace")
         pages += 1
         for cell in re.findall(r"<b>Abilities</b>\s*:(.*?)</td>", s, re.S):
             for raw in re.findall(r"<b>([^<]+)</b>", cell):

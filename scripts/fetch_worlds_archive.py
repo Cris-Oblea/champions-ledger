@@ -34,6 +34,7 @@ import re
 import subprocess
 import sys
 import urllib.request
+from pathlib import Path
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 META = os.path.join(ROOT, "data", "meta")
@@ -98,7 +99,7 @@ def species_table(path):
     team holds a species at most once - so a count IS a team count.
     """
     try:
-        d = json.load(open(path, encoding="utf-8"))
+        d = json.loads(Path(path).read_text(encoding="utf-8"))
     except Exception:
         return None
     players = d.get("players") or []
@@ -196,8 +197,8 @@ def main():
         "event each division was taken from. 2022 has no teamlists on any "
         "day or division - standings only, upstream.")
 
-    open(OUT, "w", encoding="utf-8").write(
-        json.dumps(archive, ensure_ascii=False, indent=1))
+    Path(OUT).write_text(
+        json.dumps(archive, ensure_ascii=False, indent=1), encoding="utf-8")
     tot = sum(d["teams"] for e in archive["events"]
               for d in e["divisions"].values())
     print("\nwrote %s" % OUT)

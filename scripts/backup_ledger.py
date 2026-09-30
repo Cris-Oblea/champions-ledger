@@ -43,6 +43,7 @@ import os
 import re
 import subprocess
 import sys
+from pathlib import Path
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DEFAULT_DIR = os.environ.get(
@@ -143,7 +144,7 @@ def digest(tables):
 
 
 def read_snapshot(path):
-    d = json.load(open(path, encoding="utf-8"))
+    d = json.loads(Path(path).read_text(encoding="utf-8"))
     got = digest(d["tables"])
     if got != d.get("_sha256"):
         sys.exit("%s is CORRUPT: checksum %s, expected %s"
@@ -189,7 +190,7 @@ def take(a):
 
     prev = snapshots(a.dir)
     if prev:
-        last = json.load(open(prev[-1], encoding="utf-8"))
+        last = json.loads(Path(prev[-1]).read_text(encoding="utf-8"))
         if last.get("_sha256") == body["_sha256"]:
             print("identical to %s - nothing changed, no new file"
                   % os.path.basename(prev[-1]))
@@ -482,7 +483,7 @@ def main():
             print("no snapshots in %s" % a.dir)
             return 1
         for p in files:
-            d = json.load(open(p, encoding="utf-8"))
+            d = json.loads(Path(p).read_text(encoding="utf-8"))
             print("  %-28s %s  %s" % (
                 os.path.basename(p), d.get("_taken_at", "?"),
                 " ".join("%s=%d" % (k, v)

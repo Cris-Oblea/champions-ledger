@@ -23,6 +23,7 @@ import json
 import os
 import re
 import sys
+from pathlib import Path
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 README = os.path.join(ROOT, "README.md")
@@ -33,7 +34,7 @@ def load(rel, key=None):
     p = os.path.join(ROOT, rel)
     if not os.path.exists(p):
         return None
-    d = json.load(open(p, encoding="utf-8"))
+    d = json.loads(Path(p).read_text(encoding="utf-8"))
     return d[key] if key else d
 
 
@@ -153,7 +154,7 @@ def vintage():
     reg = "unknown"
     raw = os.path.join(ROOT, "data", "raw", "pokebase", "pokemon.html")
     if os.path.exists(raw):
-        s = open(raw, encoding="utf-8", errors="replace").read()
+        s = Path(raw).read_text(encoding="utf-8", errors="replace")
         m = re.search(r'defaultLatestRegulationSetSlug\\?":\\?"([a-z\-]+)', s)
         if m:
             reg = m.group(1).upper()
@@ -258,7 +259,7 @@ def main():
     stale = []
     for path, blocks in DOCS.items():
         what = os.path.basename(path)
-        cur = open(path, encoding="utf-8").read()
+        cur = Path(path).read_text(encoding="utf-8")
         new = render(cur, blocks, what)
         if cur == new:
             print("%s is current" % what)
@@ -266,7 +267,7 @@ def main():
         if a.check:
             stale.append(what)
             continue
-        open(path, "w", encoding="utf-8").write(new)
+        Path(path).write_text(new, encoding="utf-8")
         print("%s updated" % what)
     if stale:
         print("%s OUT OF DATE - run: python scripts/build_docs.py"

@@ -59,6 +59,7 @@ import os
 import re
 import sys
 import urllib.request
+from pathlib import Path
 
 import query as Q
 
@@ -177,7 +178,7 @@ def table(name, force=False):
         req = urllib.request.Request(BASE + name,
                                      headers={"User-Agent": "champions-ledger"})
         with urllib.request.urlopen(req, timeout=60) as r:
-            open(path, "wb").write(r.read())
+            Path(path).write_bytes(r.read())
     return list(csv.DictReader(open(path, encoding="utf-8")))
 
 
@@ -238,7 +239,7 @@ def worlds_names():
 
     for f in files:
         try:
-            walk(json.load(open(os.path.join(META, f), encoding="utf-8")))
+            walk(json.loads(Path(META, f).read_text(encoding="utf-8")))
         except (OSError, ValueError):
             continue
     return out
@@ -426,7 +427,7 @@ def species_flags(force=False):
 
 def sprite_pin():
     m = re.search(r'var SPRITE_PIN = "([0-9a-f]{40})"',
-                  open(APP_DATA, encoding="utf-8").read())
+                  Path(APP_DATA).read_text(encoding="utf-8"))
     if not m:
         sys.exit("SPRITE_PIN not found in %s" % os.path.relpath(APP_DATA, ROOT))
     return m.group(1)
@@ -459,7 +460,7 @@ def sprite_files(force=False):
     path = os.path.join(SPRITE_RAW, pin + ".json")
     if os.path.exists(path) and not force:
         return {k: set(v)
-                for k, v in json.load(open(path, encoding="utf-8")).items()}
+                for k, v in json.loads(Path(path).read_text(encoding="utf-8")).items()}
     api = "https://api.github.com/repos/PokeAPI/sprites/"
     head = {"User-Agent": "champions-ledger",
             "Accept": "application/vnd.github+json"}
@@ -488,7 +489,7 @@ def sprite_files(force=False):
         out[label] = sorted(e["path"][:-4] for e in tree["tree"]
                             if e["type"] == "blob" and e["path"].endswith(".png"))
     os.makedirs(SPRITE_RAW, exist_ok=True)
-    json.dump(out, open(path, "w", encoding="utf-8"), separators=(",", ":"))
+    Path(path).write_text(json.dumps(out, separators=(",", ":")), encoding="utf-8")
     return {k: set(v) for k, v in out.items()}
 
 
@@ -785,7 +786,7 @@ def main():
     if args.check:
         if not os.path.exists(OUT):
             sys.exit("no stored table yet - run without --check")
-        old = json.load(open(OUT, encoding="utf-8"))
+        old = json.loads(Path(OUT).read_text(encoding="utf-8"))
         moved = sorted(k for k in set(old) | set(out) if old.get(k) != out.get(k))
         if moved:
             sys.exit("the pinned data no longer matches for %d: %s"
@@ -793,17 +794,17 @@ def main():
         print("home dex matches the pin (%d species)" % len(out))
         return
 
-    json.dump(out, open(OUT, "w", encoding="utf-8"),
-              ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+    Path(OUT).write_text(json.dumps(
+        out, ensure_ascii=False, sort_keys=True, separators=(",", ":")), encoding="utf-8")
     sid, _snot = sprite_ids(args.force)
-    json.dump(sid, open(SPRITES, "w", encoding="utf-8"),
-              ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+    Path(SPRITES).write_text(json.dumps(
+        sid, ensure_ascii=False, sort_keys=True, separators=(",", ":")), encoding="utf-8")
     print("wrote %s  (%d names, %.0f KB)"
           % (os.path.relpath(SPRITES, ROOT), len(sid),
              os.path.getsize(SPRITES) / 1024.0))
     fl, orphan = form_line(args.force)
-    json.dump(fl, open(FORMS, "w", encoding="utf-8"),
-              ensure_ascii=False, sort_keys=True, separators=(",", ":"))
+    Path(FORMS).write_text(json.dumps(
+        fl, ensure_ascii=False, sort_keys=True, separators=(",", ":")), encoding="utf-8")
     print("wrote %s  (%d forms on %d cards)"
           % (os.path.relpath(FORMS, ROOT), sum(len(v) for v in fl.values()),
              len(fl)))
@@ -815,13 +816,13 @@ def main():
               % (len(orphan), ", ".join(orphan)))
     gaps = sprite_gaps(list(sid.values()) +
                     [f["sp"] for fs in fl.values() for f in fs], args.force)
-    json.dump(gaps, open(GAPS, "w", encoding="utf-8"),
-              ensure_ascii=False, separators=(",", ":"))
+    Path(GAPS).write_text(json.dumps(
+        gaps, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     print("wrote %s  (%d with no HOME render, %d with no pixel sprite)"
           % (os.path.relpath(GAPS, ROOT), len(gaps["n"]), len(gaps["p"])))
     flags = species_flags(args.force)
-    json.dump(flags, open(FLAGS, "w", encoding="utf-8"),
-              ensure_ascii=False, sort_keys=True, indent=1)
+    Path(FLAGS).write_text(json.dumps(
+        flags, ensure_ascii=False, sort_keys=True, indent=1), encoding="utf-8")
     print("wrote %s  (%d mythical, %d legendary)"
           % (os.path.relpath(FLAGS, ROOT), len(flags["mythical"]),
              len(flags["legendary"])))

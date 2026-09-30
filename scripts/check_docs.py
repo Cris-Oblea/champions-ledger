@@ -40,6 +40,7 @@ import os
 import re
 import subprocess
 import sys
+from pathlib import Path
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -311,12 +312,11 @@ def architecture_parts():
     tables = set()
     for f in glob.glob(os.path.join(ROOT, "tracker", "*.sql")):
         tables |= set(re.findall(r"create table if not exists public\.(\w+)",
-                                 open(f, encoding="utf-8").read(), re.I))
+                                 Path(f).read_text(encoding="utf-8"), re.I))
     with open(os.path.join(ROOT, "requirements.txt"), encoding="utf-8") as f:
         pips = [re.split(r"[=<>~!\[ ]", line.strip())[0] for line in f
                 if line.strip() and not line.startswith("#")]
-    pkg = json.load(open(os.path.join(ROOT, "package.json"),
-                            encoding="utf-8"))
+    pkg = json.loads(Path(ROOT, "package.json").read_text(encoding="utf-8"))
     return [
         # by path, because a bare name would be found in the wrong place:
         # "data.js" is also tracker/data.js, a different file entirely
@@ -360,7 +360,7 @@ def read(rel):
     p = os.path.join(ROOT, rel)
     if not os.path.exists(p):
         return None
-    return open(p, encoding="utf-8").read().split("\n")
+    return Path(p).read_text(encoding="utf-8").split("\n")
 
 
 # The memory index is outside the repo, so the gate never sees it; the hook
@@ -375,7 +375,7 @@ def check_memory(folder):
     idx = os.path.join(folder, "MEMORY.md")
     if not os.path.exists(idx):
         return 0
-    text = open(idx, encoding="utf-8").read()
+    text = Path(idx).read_text(encoding="utf-8")
     linked = set(re.findall(r"\]\(([^)]+\.md)\)", text))
     files = {f for f in os.listdir(folder)
              if f.endswith(".md") and f != "MEMORY.md"}

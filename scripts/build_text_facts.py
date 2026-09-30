@@ -31,6 +31,7 @@ import glob
 import json
 import os
 import re
+from pathlib import Path
 
 import query as Q
 
@@ -52,7 +53,7 @@ def pokebase(kind):
     """kind: "moves" or "abilities" - pokebase paginates both."""
     out = {}
     for f in sorted(glob.glob(os.path.join(RAW, kind + "*.html"))):
-        h = open(f, encoding="utf-8", errors="replace").read()
+        h = Path(f).read_text(encoding="utf-8", errors="replace")
         for m in DESC.finditer(h):
             t = m.group(3)
             t = t.replace("\\u2019", "'").replace("�", "'")

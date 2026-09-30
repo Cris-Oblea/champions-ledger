@@ -56,6 +56,7 @@ import argparse
 import json
 import os
 import re
+from pathlib import Path
 
 import query as Q
 
@@ -869,7 +870,7 @@ def smogon_name(name, attacking=False):
         raise SystemExit(
             "Smogon's engine is not vendored - expected %s\n"
             "Fetch it with: python scripts/fetch_smogon_calc.py" % path)
-    roster = json.load(open(path, encoding="utf-8"))
+    roster = json.loads(Path(path).read_text(encoding="utf-8"))
     hit = next((k for k in roster if Q.norm(k) == Q.norm(name)), None)
     if not hit:
         raise SystemExit("Smogon's Champions roster has no %r" % name)

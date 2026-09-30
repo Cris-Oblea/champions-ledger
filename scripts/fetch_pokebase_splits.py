@@ -62,6 +62,7 @@ import re
 import sys
 import time
 import urllib.request
+from pathlib import Path
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 META = os.path.join(ROOT, "data", "meta")
@@ -320,8 +321,7 @@ def main():
     ap.add_argument("--force", action="store_true")
     a = ap.parse_args()
 
-    usage = json.load(open(os.path.join(META, "usage_pokemon.json"),
-                              encoding="utf-8"))
+    usage = json.loads(Path(META, "usage_pokemon.json").read_text(encoding="utf-8"))
     rows = usage.get("rows") or []
     if a.limit:
         rows = rows[:a.limit]
@@ -329,7 +329,7 @@ def main():
     have = {}
     if os.path.exists(OUT) and not a.force:
         try:
-            have = (json.load(open(OUT, encoding="utf-8"))
+            have = (json.loads(Path(OUT).read_text(encoding="utf-8"))
                     .get("pokemon") or {})
         except (OSError, ValueError):
             have = {}

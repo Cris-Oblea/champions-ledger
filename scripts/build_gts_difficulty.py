@@ -22,6 +22,7 @@ can just evolve it himself in GO, he should not be spending a chip on it.
 import json
 import os
 import sys
+from pathlib import Path
 
 import query as Q
 
@@ -49,7 +50,7 @@ DEMAND_WHY = {
 
 def main():
     show = "--show" in sys.argv
-    src = json.load(open(SRC, encoding="utf-8"))
+    src = json.loads(Path(SRC).read_text(encoding="utf-8"))
     seeded = src.get("species") or {}
     default_supply = 2
 
@@ -108,8 +109,7 @@ def main():
                      "in data/meta/go_sourcing.json and is an ESTIMATE.",
             "_scale": src.get("_scale"),
             "count": len(out), "species": out}
-    open(OUT, "w", encoding="utf-8").write(
-        json.dumps(blob, ensure_ascii=False, indent=1))
+    Path(OUT).write_text(json.dumps(blob, ensure_ascii=False, indent=1), encoding="utf-8")
     print("wrote %s (%d species, %d with researched sourcing)"
           % (OUT, len(out), sum(1 for v in out.values() if v["seeded"])))
 

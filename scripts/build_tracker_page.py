@@ -29,6 +29,7 @@ import re
 import shutil
 import subprocess
 import sys
+from pathlib import Path
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TPL = os.path.join(ROOT, "tracker", "index.template.html")
@@ -249,7 +250,7 @@ def check_graph(files):
         return LAYERS.index(f.split("/")[0]) if "/" in f else len(LAYERS)
     graph, bad = {}, []
     for f in files:
-        text = open(os.path.join(SRC, f), encoding="utf-8").read()
+        text = Path(SRC, f).read_text(encoding="utf-8")
         deps = []
         for spec in re.findall(r"""^import\b[^;]*?['"]([^'"]+)['"];""", text, re.M | re.S):
             dep = os.path.normpath(os.path.join(os.path.dirname(f), spec)).replace(os.sep, "/")
@@ -302,7 +303,7 @@ def link():
     check_graph(parts())
     owner = {}                      # exported name -> the file that exports it
     for f in parts():
-        text = open(os.path.join(SRC, f), encoding="utf-8").read()
+        text = Path(SRC, f).read_text(encoding="utf-8")
         if not re.search(r"^(?:import|export)\s", text, re.M):
             sys.exit("tracker/src/%s declares no imports or exports. Every "
                      "part is an ES module: say what it takes from the others "
@@ -357,10 +358,10 @@ def link():
     if r.returncode != 0:
         sys.exit("esbuild could not link the app:" + chr(10)
                  + (r.stderr or r.stdout))
-    js = open(out_js, encoding="utf-8").read()
+    js = Path(out_js).read_text(encoding="utf-8")
     check_order(js, parts())
     BUILT["img_hosts"] = image_hosts(js)
-    BUILT["app_map"] = open(out_js + ".map", encoding="utf-8").read()
+    BUILT["app_map"] = Path(out_js + ".map").read_text(encoding="utf-8")
     print("  app: %d modules linked, %.0f KB" % (len(parts()), len(js) / 1024))
     return js.rstrip(chr(10))
 
@@ -433,7 +434,7 @@ def check_order(js, linked):
 def write(path, text):
     """LF, always. A generated file whose line endings differ between this
     machine and CI changes the bundle, and the bundle's name is its hash."""
-    open(path, "w", encoding="utf-8", newline="").write(text)
+    Path(path).write_text(text, encoding="utf-8", newline="")
 
 
 def config_js():
@@ -477,7 +478,7 @@ def config_js():
         print("  no Supabase config - building a page with no store")
         return lazy + "window.CHAMP_CONFIG = {};"
     else:
-        c = json.load(open(CFG, encoding="utf-8"))
+        c = json.loads(Path(CFG).read_text(encoding="utf-8"))
     for k in ("url", "publishableKey"):
         if not c.get(k):
             sys.exit("config.local.json is missing %s" % k)
@@ -568,22 +569,22 @@ def headers(supabase_url, assets=()):
         rules += "\n"
     rules += "/%s.map\n  Cache-Control: public, max-age=31536000, immutable\n\n" % BUILT["app_asset"]
     rules += "/index.html\n  Cache-Control: no-cache\n\n/\n  Cache-Control: no-cache\n\n"
-    open(os.path.join(DIST, "_headers"), "w", encoding="utf-8").write(rules +
+    Path(DIST, "_headers").write_text(rules +
         "/*\n"
         "  X-Content-Type-Options: nosniff\n"
         "  Referrer-Policy: no-referrer\n"
         "  X-Frame-Options: DENY\n"
-        "  Content-Security-Policy: " + "; ".join(csp) + "\n")
+        "  Content-Security-Policy: " + "; ".join(csp) + "\n", encoding="utf-8")
 
 
 def main():
     if not os.path.exists(DATA):
         sys.exit("tracker/data.js is missing - run scripts/build_tracker_data.py")
-    tpl = assemble(open(TPL, encoding="utf-8").read())
+    tpl = assemble(Path(TPL).read_text(encoding="utf-8"))
     for m in (MARK, CMARK, EMARK, SBMARK, SPMARK):
         if m not in tpl:
             sys.exit("the template lost its %s marker" % m)
-    data = open(DATA, encoding="utf-8").read()
+    data = Path(DATA).read_text(encoding="utf-8")
     # a literal </script> inside either blob would end the tag early
     if not os.path.exists(SBJS):
         # Never fall back to the CDN: a page that silently reaches out again is
@@ -593,20 +594,20 @@ def main():
     if not os.path.exists(ENGINE):
         sys.exit("tracker/engine.bundle.js is missing - run "
                  "scripts/build_engine_bundle.py")
-    engine = open(ENGINE, encoding="utf-8").read()
+    engine = Path(ENGINE).read_text(encoding="utf-8")
     print("  engine bundle: %.0f KB" % (len(engine) / 1024))
     import datetime
     stamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M")
     tpl = tpl.replace("/*__CHAMP_BUILD__*/",
                       "window.CHAMP_BUILD = %r;" % stamp)
     out = tpl.replace(EMARK, engine.replace("</", r"<\/"))
-    sbjs = open(SBJS, encoding="utf-8").read()
+    sbjs = Path(SBJS).read_text(encoding="utf-8")
     out = out.replace(SBMARK, sbjs.replace("</", r"<\/"))
     out = out.replace(CMARK, config_js().replace("</", r"<\/"))
     out = out.replace(MARK, data.replace("</", r"<\/"))
     splits = ""
     if os.path.exists(SPLITS_JS):
-        splits = open(SPLITS_JS, encoding="utf-8").read()
+        splits = Path(SPLITS_JS).read_text(encoding="utf-8")
         print("  splits: %.0f KB" % (len(splits) / 1024))
     else:
         print("  no tracker/splits.js - run build_splits_data.py")
@@ -709,11 +710,9 @@ def build_dist(html):
     # hash to <hash> - locally only, because CI is Linux. A name that is a
     # promise about the bytes has to be kept on both.
     for name, text in sorted(assets.items()):
-        open(os.path.join(DIST, name), "w", encoding="utf-8",
-             newline="").write(text)
+        Path(DIST, name).write_text(text, encoding="utf-8", newline="")
         print("  asset %-30s %6.0f KB" % (name, len(text) / 1024))
-    open(os.path.join(DIST, "index.html"), "w", encoding="utf-8",
-         newline="").write(page)
+    Path(DIST, "index.html").write_text(page, encoding="utf-8", newline="")
     # The app is LINKED from many files, so the deployed bytes are no longer
     # the bytes anyone wrote: esbuild reprints them and drops the comments.
     # The map is how a stack trace on the phone still points at
@@ -724,8 +723,7 @@ def build_dist(html):
     if len(app) != 1:
         sys.exit("expected exactly one app asset, got %s" % sorted(app))
     BUILT["app_asset"] = app[0]
-    open(os.path.join(DIST, app[0] + ".map"), "w", encoding="utf-8",
-         newline="").write(BUILT["app_map"])
+    Path(DIST, app[0] + ".map").write_text(BUILT["app_map"], encoding="utf-8", newline="")
 
     # SMOGON'S WRITTEN ANALYSES, as an asset nobody downloads until they ask.
     #
@@ -746,7 +744,7 @@ def build_dist(html):
         if not os.path.exists(src):
             print("  no tracker/%s - run %s" % (src_name, made_by))
             continue
-        text = open(src, encoding="utf-8").read()
+        text = Path(src).read_text(encoding="utf-8")
         name = "%s.%s.js" % (src_name[:-3], hashlib.sha256(
             text.encode("utf-8")).hexdigest()[:8])
         # SAY WHAT ACTUALLY WENT WRONG. The substitution below is silent when
@@ -761,13 +759,11 @@ def build_dist(html):
                      "asset has nowhere to be named. Add it to `lazy` - it "
                      "has to be emitted on EVERY path through that function, "
                      "including the one with no Supabase config." % var)
-        open(os.path.join(DIST, name), "w", encoding="utf-8",
-             newline="").write(text)
+        Path(DIST, name).write_text(text, encoding="utf-8", newline="")
         page = page.replace(slot, "window.%s = %r;" % (var, name))
         assets[name] = text
         print("  asset %-30s %6.0f KB  (on demand)" % (name, len(text) / 1024))
-    open(os.path.join(DIST, "index.html"), "w", encoding="utf-8",
-         newline="").write(page)
+    Path(DIST, "index.html").write_text(page, encoding="utf-8", newline="")
 
     manifest = {
         "name": "Champions Ledger",

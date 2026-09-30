@@ -27,6 +27,7 @@ import glob
 import json
 import os
 import sys
+from pathlib import Path
 
 import damage as Dm
 import query as Q
@@ -56,7 +57,7 @@ def main():
     dups = []
     for f in sorted(glob.glob(os.path.join(ROOT, "scripts", "*.py"))):
         try:
-            tree = ast.parse(open(f, encoding="utf-8").read())
+            tree = ast.parse(Path(f).read_text(encoding="utf-8"))
         except SyntaxError as e:
             dups.append("%s no parsea: %s" % (os.path.basename(f), e))
             continue
@@ -139,7 +140,7 @@ def main():
                     dup.append(k)
             return dict(pairs)
         try:
-            json.loads(open(f, encoding="utf-8").read(), object_pairs_hook=hook)
+            json.loads(Path(f).read_text(encoding="utf-8"), object_pairs_hook=hook)
             ok("%s carga y no repite claves" % name, lst(dup))
         except Exception as e:
             ok("%s carga" % name, str(e)[:40])

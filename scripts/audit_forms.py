@@ -15,6 +15,7 @@ import os
 import re
 import sys
 from collections import defaultdict
+from pathlib import Path
 
 from query import meta, norm, species_norm
 from serebii_text import read
@@ -175,7 +176,7 @@ def main():
     """
     problems = 0
     verbose = "--verbose" in sys.argv
-    dex = json.load(open(os.path.join(DB, "pokemon.json"), encoding="utf-8"))
+    dex = json.loads(Path(DB, "pokemon.json").read_text(encoding="utf-8"))
     master = master_list()
 
     print("Serebii master list : %d rows" % len(master))
@@ -250,7 +251,7 @@ def main():
     print("\n--- 5. Gender-split species present in Champions ---")
     gender = ["Basculegion", "Meowstic", "Indeedee", "Oinkologne", "Unfezant",
               "Frillish", "Jellicent", "Pyroar", "Hippowdon"]
-    learn = json.load(open(os.path.join(DB, "learnsets.json"), encoding="utf-8"))
+    learn = json.loads(Path(DB, "learnsets.json").read_text(encoding="utf-8"))
     for g in gender:
         forms = [p["name"] for p in dex if species_norm(p["name"]) == norm(g)]
         keys = [k for k in learn if species_norm(k) == norm(g)]

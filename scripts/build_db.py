@@ -14,6 +14,7 @@ import json
 import os
 import re
 from collections import defaultdict
+from pathlib import Path
 
 from serebii_text import read, unmojibake
 
@@ -660,7 +661,7 @@ def abilities_by_form(path):
     right everywhere else. Returns {form label: [abilities]}.
     """
     try:
-        s = open(path, encoding="cp1252", errors="replace").read()
+        s = Path(path).read_text(encoding="cp1252", errors="replace")
     except OSError:
         return {}
     m = re.search(r"<b>Abilities</b>\s*:(.*?)</td>", s, re.S)
@@ -843,8 +844,8 @@ def main():
         base["battle_forms"] = bf
 
     pokemon = sorted(forms.values(), key=lambda x: (x["dex"] or 0, x["name"]))
-    json.dump(pokemon, open(os.path.join(DB, "pokemon.json"), "w", encoding="utf-8"),
-              ensure_ascii=False, indent=1)
+    Path(DB, "pokemon.json").write_text(
+        json.dumps(pokemon, ensure_ascii=False, indent=1), encoding="utf-8")
     print("  %d forms (%d mega)" % (len(pokemon), sum(1 for p in pokemon if p["is_mega"])))
 
     print("Moves...", flush=True)
@@ -858,8 +859,8 @@ def main():
             print("  %d/%d" % (i + 1, len(files)), flush=True)
     for line in apply_move_rulings(moves):
         print("  " + line)
-    json.dump(moves, open(os.path.join(DB, "moves.json"), "w", encoding="utf-8"),
-              ensure_ascii=False, indent=1)
+    Path(DB, "moves.json").write_text(
+        json.dumps(moves, ensure_ascii=False, indent=1), encoding="utf-8")
     print("  %d moves (%d useable in Champions)"
           % (len(moves), sum(1 for m in moves if m.get("useable"))))
 
@@ -883,21 +884,21 @@ def main():
             learn[p["name"]] = list(src)
             inherited += 1
     learn = dict(sorted(learn.items()))
-    json.dump(learn, open(os.path.join(DB, "learnsets.json"), "w", encoding="utf-8"),
-              ensure_ascii=False, indent=1)
+    Path(DB, "learnsets.json").write_text(
+        json.dumps(learn, ensure_ascii=False, indent=1), encoding="utf-8")
     print("  %d Pokemon with a movepool (%d inherited from the base form)"
           % (len(learn), inherited))
 
     print("Items...", flush=True)
     items = parse_items()
-    json.dump(items, open(os.path.join(DB, "items.json"), "w", encoding="utf-8"),
-              ensure_ascii=False, indent=1)
+    Path(DB, "items.json").write_text(
+        json.dumps(items, ensure_ascii=False, indent=1), encoding="utf-8")
     print("  %d items" % len(items))
 
     print("Abilities...", flush=True)
     ab = parse_champions_abilities(pokemon)
-    json.dump(ab, open(os.path.join(DB, "abilities.json"), "w", encoding="utf-8"),
-              ensure_ascii=False, indent=1)
+    Path(DB, "abilities.json").write_text(
+        json.dumps(ab, ensure_ascii=False, indent=1), encoding="utf-8")
     print("  %d abilities" % len(ab))
 
 

@@ -33,6 +33,7 @@ import json
 import os
 import sys
 import urllib.request
+from pathlib import Path
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "data", "raw", "smogon_calc")
@@ -106,13 +107,13 @@ def main():
         except Exception as e:
             failed.append((rel, str(e)))
             continue
-        old = open(dest, "rb").read() if os.path.exists(dest) else None
+        old = Path(dest).read_bytes() if os.path.exists(dest) else None
         if old == body:
             same += 1
             continue
         changed.append((rel, digest(old) if old else "-", digest(body)))
         if not a.check:
-            open(dest, "wb").write(body)
+            Path(dest).write_bytes(body)
 
     print("%s: %d unchanged, %d changed, %d failed"
           % ("CHECK" if a.check else "fetched", same, len(changed), len(failed)))

@@ -30,6 +30,7 @@ import argparse
 import json
 import os
 import re
+from pathlib import Path
 
 import query as Q
 
@@ -53,7 +54,7 @@ def pokebase_pages():
     for fn in ("items.html", "items_p2.html"):
         p = os.path.join(RAW, fn)
         if os.path.exists(p):
-            yield open(p, encoding="utf-8", errors="replace").read()
+            yield Path(p).read_text(encoding="utf-8", errors="replace")
 
 
 def pokebase_unlocks():
