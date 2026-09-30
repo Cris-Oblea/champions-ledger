@@ -36,7 +36,10 @@ never an older game's text.
 - **The Attackdex flag table alternates header/value rows.** Start the parse at
   the `<tr>` that opens the "Physical Contact" row or every flag shifts by one.
 - **pokebase's GLOBAL tables render only 100 rows per page** and the usage %
-  exists only in that rendered HTML — walk `?page=N`.
+  exists only in that rendered HTML — walk `?page=N`. **The usage is the first
+  cell after the name and nothing else**: a move nobody runs shows "—" there,
+  and searching on for the next "N%" read its accuracy (294 moves "used" at
+  75-100% until 2026-09-30).
 - **A pokebase PER-POKEMON page paginates the other way, and `?page=N` does not
   exist there** (found 2026-09-15, player: "TIENE PAGES!"). Those sections are
   client components: the server sends every row as props and the buttons slice
