@@ -142,7 +142,7 @@ def main():
         try:
             json.loads(Path(f).read_text(encoding="utf-8"), object_pairs_hook=hook)
             ok("%s carga y no repite claves" % name, lst(dup))
-        except Exception as e:
+        except (OSError, ValueError) as e:
             ok("%s carga" % name, str(e)[:40])
 
     print("\n  las tablas derivadas apuntan a cosas que existen")

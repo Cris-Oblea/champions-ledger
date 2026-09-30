@@ -44,7 +44,6 @@ ignore = [
 extend-ignore = [
     "N806", "N803",  # UPPERCASE locals and arguments
     "C901", "PLR0913",  # functions too complex, or taking too much
-    "BLE001", "S110", "S112",  # an exception swallowed whole
 ]
 
 [lint.mccabe]

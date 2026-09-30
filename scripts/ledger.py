@@ -94,7 +94,7 @@ def _from_snapshot():
             return None, None
         d = json.loads(Path(files[-1]).read_text(encoding="utf-8"))
         return d.get("tables"), d.get("_taken_at")
-    except Exception:
+    except (ImportError, OSError, ValueError):
         return None, None
 
 

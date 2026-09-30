@@ -37,6 +37,7 @@ Usage:
 import contextlib
 import hashlib
 import html
+import http.client
 import json
 import os
 import re
@@ -63,7 +64,7 @@ def get(url, timeout=60):
         try:
             with urllib.request.urlopen(req, timeout=timeout) as r:
                 return r.read().decode("utf-8", "replace")
-        except Exception:
+        except (OSError, http.client.HTTPException):
             if attempt == 2:
                 return None
             time.sleep(1.5 * (attempt + 1))

@@ -4,6 +4,7 @@
 Everything here is DERIVED from data/db/. Re-run it after build_db.py so the
 tracker sees a new regulation's species, moves and stones.
 """
+import contextlib
 import json
 import os
 import re
@@ -160,7 +161,7 @@ def main():
     try:
         sroster = json.loads(Path(ROOT, "data", "raw", "smogon_calc",
                                   "raw_species.json").read_text(encoding="utf-8"))
-    except Exception:
+    except (OSError, ValueError):
         sroster = {}
     smog_base = {}
     for k, v in sroster.items():
@@ -173,7 +174,7 @@ def main():
         owner = p.get("species") or p["name"]
         try:
             sname = _Dm.smogon_name(p["name"])
-        except Exception:
+        except (OSError, ValueError):
             sname = None
         base = smog_base.get(sname or "")
         # Smogon carries a Mega per GENDER form where one exists -
@@ -569,7 +570,7 @@ def main():
     # requests no regulation and therefore gets the default - which is the one
     # pokebase calls `defaultLatestRegulationSetSlug`.
     REG, REG_STARTED = None, None
-    try:
+    with contextlib.suppress(OSError):   # no page cached: no regulation shown
         raw = Path(ROOT, "data", "raw", "pokebase", "pokemon.html").read_text(
             encoding="utf-8", errors="replace")
         cur = re.search(r'defaultLatestRegulationSetSlug\\?":\\?"([a-z\-]+)', raw)
@@ -581,8 +582,6 @@ def main():
                            % re.escape(slug), raw)
             if st:
                 REG_STARTED = st.group(1)
-    except Exception:
-        pass
     USAGE_AT = ((Q.meta("usage_pokemon") or {}).get("fetched"))
 
     # Trimmed to what a screen needs: the quantified sentence and the chips.

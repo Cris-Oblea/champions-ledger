@@ -56,6 +56,7 @@ refresh.py --deep pulls it.
 """
 import argparse
 import contextlib
+import http.client
 import json
 import os
 import re
@@ -307,7 +308,7 @@ def fetch(slug, timeout=60):
         try:
             with urllib.request.urlopen(req, timeout=timeout) as r:
                 return r.read().decode("utf-8", "replace")
-        except Exception as e:
+        except (OSError, http.client.HTTPException) as e:
             if attempt == 2:
                 print("  FAILED %s -> %s" % (slug, e))
                 return None

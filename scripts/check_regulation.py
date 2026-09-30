@@ -37,6 +37,7 @@ Exit codes, so a caller can branch without parsing prose:
     2   could not tell (no network, a page that changed shape)
 """
 import argparse
+import http.client
 import json
 import os
 import re
@@ -114,7 +115,7 @@ def look():
     """(status, live slug, ours, what Serebii knows)."""
     try:
         live = live_slug(get(POKEBASE))
-    except Exception as e:
+    except (OSError, http.client.HTTPException) as e:
         return "unknown", None, recorded().get("slug"), ("pokebase: %s" % e)
     if not live:
         return "unknown", None, recorded().get("slug"), "pokebase page changed shape"
@@ -123,7 +124,7 @@ def look():
         return "current", live, ours, ""
     try:
         known = serebii_regulations(get(SEREBII))
-    except Exception as e:
+    except (OSError, http.client.HTTPException) as e:
         return "waiting", live, ours, ("serebii: %s" % e)
     # FAIL TOWARDS ACTING. If Serebii names no regulation at all - the page
     # changed shape, or they write it some way this does not recognise - that
