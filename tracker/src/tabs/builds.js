@@ -8,8 +8,8 @@ import {
 } from "../core/data.js";
 import { $, capNote, el, fbtn, searchField, toast } from "../core/dom.js";
 import {
-  activeAbility, boxRows, buildLink, megaAbility, ORIGIN_LABEL, originOf,
-  ownedNames, S, soleAbility,
+  activeAbility, boxRows, buildLink, buildsOn, megaAbility, ORIGIN_LABEL,
+  originOf, ownedNames, S, soleAbility,
 } from "../core/state.js";
 import { drop, put, putNew } from "../core/store.js";
 import {
@@ -49,9 +49,7 @@ function setTrained(boxId, on){
 }
 function syncTrained(fromId, toId, buildId){
   if ((fromId || null) === (toId || null)) return setTrained(toId, true);
-  var stillCarried = fromId && Object.keys(S.builds).some(function(k){
-    return k !== buildId && S.builds[k].box_id === fromId;
-  });
+  var stillCarried = fromId && buildsOn(fromId, buildId).length;
   return Promise.all([
     stillCarried ? null : setTrained(fromId, false),
     setTrained(toId, true)
@@ -433,16 +431,10 @@ function copyField(body, ed){
   return copies;
 }
 
-/* The other builds already sitting on a box row. */
-function buildsOn(r, exceptId){
-  return Object.keys(S.builds).filter(function(k){
-    return k !== exceptId && S.builds[k].box_id === r._id; });
-}
-
 /* One copy, as the dropdown names it: where, shiny, trained, origin, what it
    already carries, its note. */
 function copyLabel(r, exceptId){
-  var others = buildsOn(r, exceptId);
+  var others = buildsOn(r._id, exceptId);
   var note = r.note && r.note.length > 40
     ? r.note.slice(0, 39) + "…" : r.note;
   return [
@@ -462,7 +454,7 @@ function paintCopy(copyCard, copies, ed){
   copyCard.innerHTML = "";
   var r = copies.find(function(c){ return c._id === ed.draft._boxId; });
   if (!r) return;
-  var others = buildsOn(r, ed.id);
+  var others = buildsOn(r._id, ed.id);
   var pr = byName[r.name];
   copyCard.appendChild(pr ? pokeCard(pr, {
     tag: "div",
