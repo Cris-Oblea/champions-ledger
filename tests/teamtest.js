@@ -19,7 +19,6 @@
      what he has, where it is, and what is still to get.
 
    The fixture breaks both clauses on purpose. */
-const fs = require("fs");
 const { JSDOM, VirtualConsole } = require("jsdom");
 const ROOT = require("path").join(__dirname, "..") + "/";
 const UID = "u1";

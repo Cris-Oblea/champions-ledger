@@ -13,7 +13,6 @@
    Released now UNBINDS rather than deletes. The fixtures below cover all four
    states, including two builds on one Pokemon - the case the old model could
    not represent. */
-const fs = require("fs");
 const { JSDOM, VirtualConsole } = require("jsdom");
 /* the repo, found from this file - NOT a hardcoded path. Every test in
    here carried an absolute Windows path, so none of them had ever run

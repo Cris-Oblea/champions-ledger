@@ -4,7 +4,6 @@
    discrete event. This test drives a drag as a browser does: several `input`
    events on the SAME node, checking it survives every one of them. It also
    covers the two new ways in, the arrows and the typed box. */
-const fs = require("fs");
 /* the repo, found from this file - NOT a hardcoded path. Every test in
    here carried an absolute Windows path, so none of them had ever run
    anywhere but one laptop, and all fifteen died instantly the first time

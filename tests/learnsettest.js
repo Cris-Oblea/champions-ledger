@@ -12,7 +12,6 @@
 
    The species fallback has to stay, though: a Mega has no learnset of its own,
    so Mega Garchomp reads Garchomp's. Both halves are asserted here. */
-const fs = require("fs");
 const { JSDOM, VirtualConsole } = require("jsdom");
 /* the repo, found from this file - NOT a hardcoded path. Every test in
    here carried an absolute Windows path, so none of them had ever run

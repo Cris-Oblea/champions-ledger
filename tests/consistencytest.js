@@ -15,7 +15,6 @@
    every key it will be asked for is there, and re-checks the two code smells
    in the built file. It is a sweep, not a sample, because a sample missed 24
    of those 25 forms. */
-const fs = require("fs");
 const { JSDOM, VirtualConsole } = require("jsdom");
 /* the repo, found from this file - NOT a hardcoded path. Every test in
    here carried an absolute Windows path, so none of them had ever run

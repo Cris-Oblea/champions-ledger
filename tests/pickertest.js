@@ -7,7 +7,6 @@
 
    Garchomp is the fixture because its pool covers all three categories, both
    spread kinds (Earthquake hits the ally, Rock Slide does not) and priority. */
-const fs = require("fs");
 const { JSDOM, VirtualConsole } = require("jsdom");
 /* the repo, found from this file - NOT a hardcoded path. Every test in
    here carried an absolute Windows path, so none of them had ever run
@@ -54,6 +53,25 @@ const dom = new JSDOM(body.replace("<head>", "<head>" + stub),
   {runScripts:"dangerously", pretendToBeVisual:true, virtualConsole:vc});
 const w = dom.window, d = w.document;
 const click = n => n.dispatchEvent(new w.MouseEvent("click", {bubbles:true}));
+/* UN CHIP TIENE TRES ESTADOS y escribe un menos en su propia etiqueta
+   cuando excluye, asi que buscarlo por texto exacto deja de encontrarlo
+   en cuanto se usa. Se busca por el texto sin el signo. */
+const chip = t => [...d.querySelectorAll(".sheet .tog")]
+  .find(b => b.textContent.replace(/^−\s*/, "").trim() === t);
+const state = t => {
+  const b = chip(t);
+  if (b.classList.contains("no")) return "no";
+  return b.getAttribute("aria-pressed") === "true" ? "si" : "off";
+};
+/* off -> incluir -> excluir -> off, asi que "apagar" puede ser mas de
+   un toque */
+const off = t => { while (state(t) !== "off") click(chip(t)); };
+const rows = () => [...d.querySelectorAll(".sheet .list .row")];
+const names = () => rows().map(r => r.querySelector(".rname").textContent
+  .replace(/priority \+\d| ?spread| ?hits ally|Rough Skin/g, "").trim());
+const meta = () => rows().map(r => r.querySelector(".rmeta .mono").textContent);
+const countLine = () => [...d.querySelectorAll(".sheet .sub")]
+  .map(x => x.textContent).find(t => / moves$| of \d+ moves/.test(t)) || "";
 
 setTimeout(() => {
   w.go("builds");
@@ -62,25 +80,6 @@ setTimeout(() => {
     const slot = [...d.querySelectorAll(".slot")].find(s => /Earthquake/.test(s.textContent));
     click(slot);
     setTimeout(() => {
-      /* UN CHIP TIENE TRES ESTADOS y escribe un menos en su propia etiqueta
-         cuando excluye, asi que buscarlo por texto exacto deja de encontrarlo
-         en cuanto se usa. Se busca por el texto sin el signo. */
-      const chip = t => [...d.querySelectorAll(".sheet .tog")]
-        .find(b => b.textContent.replace(/^−\s*/, "").trim() === t);
-      const state = t => {
-        const b = chip(t);
-        return b.classList.contains("no") ? "no"
-             : b.getAttribute("aria-pressed") === "true" ? "si" : "off";
-      };
-      /* off -> incluir -> excluir -> off, asi que "apagar" puede ser mas de
-         un toque */
-      const off = t => { while (state(t) !== "off") click(chip(t)); };
-      const rows = () => [...d.querySelectorAll(".sheet .list .row")];
-      const names = () => rows().map(r => r.querySelector(".rname").textContent
-        .replace(/priority \+\d| ?spread| ?hits ally|Rough Skin/g, "").trim());
-      const meta = () => rows().map(r => r.querySelector(".rmeta .mono").textContent);
-      const countLine = () => [...d.querySelectorAll(".sheet .sub")]
-        .map(x => x.textContent).find(t => / moves$| of \d+ moves/.test(t)) || "";
 
       console.log("\n  los controles estan");
       ["BP × acc", "A–Z", "PP", "Type"].forEach(function(t){

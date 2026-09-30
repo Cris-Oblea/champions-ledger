@@ -93,10 +93,12 @@ const editor = () => d.getElementById("buildEditBody");
 const saveBtn = () =>
   [...d.getElementById("buildEditFoot").querySelectorAll("button")]
     .find(b => b.textContent === "Save");
+const tick = ms => new Promise(r => setTimeout(r, ms));
 const cardFor = n => [...d.querySelectorAll("#listBuilds .row")]
   .find(r => ((r.querySelector(".rname") || r).textContent.trim().indexOf(n) === 0));
 
-setTimeout(() => {
+(async () => {
+  await tick(900);
   console.log("\n  la habilidad que corre una build");
   ok("Aegislash: una sola, o sea es un hecho",
      w.activeAbility({pokemon:"Aegislash"}), "Stance Change");
@@ -120,80 +122,75 @@ setTimeout(() => {
      /Sand Veil|Rough Skin/.test(cardFor("Garchomp").textContent), false);
 
   click(cardFor("Clawitzer"));
-  setTimeout(() => {
-    const ab = [...editor().querySelectorAll("select")]
-      .find(s => [...s.options].some(o => o.value === "Mega Launcher"));
-    console.log("\n  abierta la build de Clawitzer");
-    ok("el selector trae la unica que hay", ab.value, "Mega Launcher");
-    ok("y no ofrece una fila en blanco",
-       [...ab.options].some(o => o.value === ""), false);
-    const slot = [...editor().querySelectorAll(".slot")]
-      .find(s => /Water Pulse/.test(s.textContent));
-    ok("Water Pulse lleva el bono de Mega Launcher",
-       /Mega Launcher/.test(slot.textContent), true);
-    /* escribirla NO es retunear: es la habilidad que siempre tuvo */
-    ok("no cobra 500 VP por anotarla",
-       /ability 500/.test(editor().textContent), false);
+  await tick(60);
+  const ab = [...editor().querySelectorAll("select")]
+    .find(s => [...s.options].some(o => o.value === "Mega Launcher"));
+  console.log("\n  abierta la build de Clawitzer");
+  ok("el selector trae la unica que hay", ab.value, "Mega Launcher");
+  ok("y no ofrece una fila en blanco",
+     [...ab.options].some(o => o.value === ""), false);
+  const slot = [...editor().querySelectorAll(".slot")]
+    .find(s => /Water Pulse/.test(s.textContent));
+  ok("Water Pulse lleva el bono de Mega Launcher",
+     /Mega Launcher/.test(slot.textContent), true);
+  /* escribirla NO es retunear: es la habilidad que siempre tuvo */
+  ok("no cobra 500 VP por anotarla",
+     /ability 500/.test(editor().textContent), false);
 
-    click(saveBtn());
-    setTimeout(() => {
-      const wrote = w.__WROTE.filter(x => x.table === "builds").pop();
-      console.log("\n  al guardar");
-      ok("guarda la habilidad", wrote.row.ability, "Mega Launcher");
-      ok("en la fila de esta build", wrote.row.id, "clawitzer");
+  click(saveBtn());
+  await tick(60);
+  const wrote = w.__WROTE.filter(x => x.table === "builds").pop();
+  console.log("\n  al guardar");
+  ok("guarda la habilidad", wrote.row.ability, "Mega Launcher");
+  ok("en la fila de esta build", wrote.row.id, "clawitzer");
 
-      w.go("builds");
-      click(cardFor("Garchomp"));
-      setTimeout(() => {
-        const ab2 = [...editor().querySelectorAll("select")]
-          .find(s => [...s.options].some(o => o.value === "Rough Skin"));
-        console.log("\n  y con dos habilidades no elige por el");
-        ok("el selector abre sin elegir", ab2.value, "");
-        ok("y lo dice en la primera fila",
-           /not chosen/.test(ab2.options[0].textContent), true);
-        ok("los checks avisan de que falta",
-           /No ability chosen/.test(editor().textContent), true);
-        click(saveBtn());
-        setTimeout(() => {
-          const w2 = w.__WROTE.filter(x => x.table === "builds").pop();
-          ok("y guarda null, no la primera de la lista", w2.row.ability, "null");
+  w.go("builds");
+  click(cardFor("Garchomp"));
+  await tick(60);
+  const ab2 = [...editor().querySelectorAll("select")]
+    .find(s => [...s.options].some(o => o.value === "Rough Skin"));
+  console.log("\n  y con dos habilidades no elige por el");
+  ok("el selector abre sin elegir", ab2.value, "");
+  ok("y lo dice en la primera fila",
+     /not chosen/.test(ab2.options[0].textContent), true);
+  ok("los checks avisan de que falta",
+     /No ability chosen/.test(editor().textContent), true);
+  click(saveBtn());
+  await tick(60);
+  const w2 = w.__WROTE.filter(x => x.table === "builds").pop();
+  ok("y guarda null, no la primera de la lista", w2.row.ability, "null");
 
-          /* the list the choice is made from - his sentence is the case */
-          const possible = n => {
-            w.findDetail(w.byName[n]);
-            const l = [...d.querySelectorAll("#sheetBody .lbl")]
-              .find(x => x.textContent === "Possible ability");
-            const v = l ? l.previousElementSibling.textContent : "";
-            w.closeSheet();
-            return v;
-          };
-          console.log("\n  ninguna habilidad se pierde por el camino");
-          ok("Greninja: tres en su ficha", possible("Greninja"),
-             "Torrent / Protean / Battle Bond");
-          ok("Lycanroc-Midnight sigue con No Guard",
-             /No Guard/.test(possible("Lycanroc-Midnight")), true);
-          ok("Greninja-Bond de HOME: la suya, no las del base",
-             (w.anyRow("Greninja-Bond").ab || []).join(" / "), "Battle Bond");
-          ok("Rockruff-Dusk de HOME: Own Tempo",
-             (w.anyRow("Rockruff-Dusk").ab || []).join(" / "), "Own Tempo");
+  /* the list the choice is made from - his sentence is the case */
+  const possible = n => {
+    w.findDetail(w.byName[n]);
+    const l = [...d.querySelectorAll("#sheetBody .lbl")]
+      .find(x => x.textContent === "Possible ability");
+    const v = l ? l.previousElementSibling.textContent : "";
+    w.closeSheet();
+    return v;
+  };
+  console.log("\n  ninguna habilidad se pierde por el camino");
+  ok("Greninja: tres en su ficha", possible("Greninja"),
+     "Torrent / Protean / Battle Bond");
+  ok("Lycanroc-Midnight sigue con No Guard",
+     /No Guard/.test(possible("Lycanroc-Midnight")), true);
+  ok("Greninja-Bond de HOME: la suya, no las del base",
+     (w.anyRow("Greninja-Bond").ab || []).join(" / "), "Battle Bond");
+  ok("Rockruff-Dusk de HOME: Own Tempo",
+     (w.anyRow("Rockruff-Dusk").ab || []).join(" / "), "Own Tempo");
 
-          w.go("builds");
-          click(cardFor("Greninja"));
-          setTimeout(() => {
-            const ab3 = [...editor().querySelectorAll("select")]
-              .find(s => [...s.options].some(o => o.value === "Protean"));
-            /* the set, not the order: the picker ranks by what is run */
-            ok("y el selector de su build ofrece las tres",
-               [...ab3.options].map(o => o.value).filter(Boolean).sort()
-                 .join(" / "), "Battle Bond / Protean / Torrent");
+  w.go("builds");
+  click(cardFor("Greninja"));
+  await tick(60);
+  const ab3 = [...editor().querySelectorAll("select")]
+    .find(s => [...s.options].some(o => o.value === "Protean"));
+  /* the set, not the order: the picker ranks by what is run */
+  ok("y el selector de su build ofrece las tres",
+     [...ab3.options].map(o => o.value).filter(Boolean).sort()
+       .join(" / "), "Battle Bond / Protean / Torrent");
 
-            console.log("\n  sin errores de JS");
-            ok("jsdom no reporta errores", errs.join(" | ") || "ninguno", "ninguno");
-            console.log(bad ? "\n  " + bad + " FALLOS\n" : "\n  todo bien\n");
-            process.exit(bad ? 1 : 0);
-          }, 60);
-        }, 60);
-      }, 60);
-    }, 60);
-  }, 60);
-}, 900);
+  console.log("\n  sin errores de JS");
+  ok("jsdom no reporta errores", errs.join(" | ") || "ninguno", "ninguno");
+  console.log(bad ? "\n  " + bad + " FALLOS\n" : "\n  todo bien\n");
+  process.exit(bad ? 1 : 0);
+})();

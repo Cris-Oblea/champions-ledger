@@ -24,8 +24,6 @@
  * in 7 - a row per owned thing, a row per trade - so meta is down to the one
  * document that really is a document.
  */
-const fs = require("fs");
-const path = require("path");
 const { JSDOM, VirtualConsole } = require("jsdom");
 
 const UID = "00000000-0000-4000-8000-00000000fixt";

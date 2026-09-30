@@ -9,7 +9,6 @@
      - "in my box" was one flag over two boxes. It is now two: the Champions
        box answers "can I play this today", HOME answers "can I bring it in".
 */
-const fs = require("fs");
 const { JSDOM, VirtualConsole } = require("jsdom");
 /* the repo, found from this file - NOT a hardcoded path. Every test in
    here carried an absolute Windows path, so none of them had ever run
@@ -57,6 +56,12 @@ const sheetChip = t => [...d.querySelectorAll(".sheet .tog")]
   .find(b => b.textContent.trim() === t);
 const sheetRows = () => [...d.querySelectorAll(".sheet .list .row")];
 const results = () => [...d.querySelectorAll("#findOut .row")];
+const countLine = () => [...d.querySelectorAll(".sheet .sub")]
+  .map(x => x.textContent).find(t => /abilities$|moves$| of \d+ moves/.test(t)) || "";
+/* The AND/OR chip lives in the filter bar, so it can be flipped without
+   reopening the sheet. */
+const modeChip = () => [...d.querySelectorAll("#findChips .tog")]
+  .find(b => /of those types/.test(b.textContent));
 
 setTimeout(() => {
   w.go("find");
@@ -69,8 +74,6 @@ setTimeout(() => {
     });
     ["Physical", "Special", "Status", "Spread", "Hits ally", "Priority"]
       .forEach(function(t){ ok("filtro: " + t, !!sheetChip(t), true); });
-    const countLine = () => [...d.querySelectorAll(".sheet .sub")]
-      .map(x => x.textContent).find(t => /abilities$|moves$| of \d+ moves/.test(t)) || "";
     click(sheetChip("Status"));
     const statusOnly = sheetRows();
     ok("filtra a status", statusOnly.every(r => /Status/.test(r.textContent)), true);
@@ -80,8 +83,6 @@ setTimeout(() => {
     ok("acumula tipo + categoria",
        sheetRows().every(r => /Ground/.test(r.querySelector(".t").textContent) &&
                               /Status/.test(r.textContent)), true);
-    const pickName = sheetRows()[0].querySelector(".rname").textContent
-      .replace(/priority \+\d| ?spread| ?hits ally/g, "").trim();
     click(sheetRows()[0]);
 
     setTimeout(() => {
@@ -112,7 +113,7 @@ setTimeout(() => {
            build_text_facts.py takes pokebase's line for those. */
         inp.value = "taunt";
         inp.dispatchEvent(new w.Event("input", {bubbles:true}));
-        const tt = sheetRows().find(r => /^PsychicTaunt|Taunt/.test(
+        const tt = sheetRows().find(r => /Taunt/.test(
           r.querySelector(".rname").textContent));
         ok("Taunt explica el mecanismo, no el nombre del estado",
            /three turns|3 turns/.test(tt.textContent), true);
@@ -168,46 +169,40 @@ setTimeout(() => {
         click(d.querySelector(".sheet .fbtn") || d.body);
         w.closeSheet();
 
-        console.log("\n  tipos: Y frente a O");
-        click(d.getElementById("findAddType"));
-        setTimeout(function(){
-          var tchip = function(t){
-            return [...d.querySelectorAll(".sheet .tog")]
-              .find(function(b){ return b.textContent.trim() === t; });
-          };
-          click(tchip("Rock")); click(tchip("Steel"));
-          w.closeSheet();
-          var andHits = results().length;
-          ok("Roca Y Acero: solo los dobles",
-             results().every(function(r){ return /Steel|Rock/.test(r.textContent); }),
-             true);
-          /* the mode chip lives in the filter bar, so it can be flipped
-             without reopening the sheet */
-          var mode = [...d.querySelectorAll("#findChips .tog")]
-            .find(function(b){ return /of those types/.test(b.textContent); });
-          ok("hay chip de modo", !!mode, true);
-          click(mode);
-          ok("Roca O Acero: son mas", results().length > andHits, true);
-          ok("y el chip lo dice",
-             /any of those types/.test(d.getElementById("findChips").textContent),
-             true);
-          click(d.getElementById("findAddType"));
-          setTimeout(function(){
-            var g = [...d.querySelectorAll(".sheet .tog")]
-              .find(function(b){ return b.textContent.trim() === "Ground"; });
-            click(g); w.closeSheet();
-            ok("tres tipos en O siguen dando resultados", results().length > 0, true);
-            var mode2 = [...d.querySelectorAll("#findChips .tog")]
-              .find(function(b){ return /of those types/.test(b.textContent); });
-            click(mode2);
-            ok("en Y con tres tipos no hay nada", results().length, 0);
-            ok("y avisa por que",
-               /three types/.test(d.getElementById("findOut").textContent), true);
-            click(d.getElementById("findClear"));
-            pokemonSheet();
-          }, 300);
-        }, 300);
+        typesAndOr();
       }, 400);
+  }
+
+  function typesAndOr(){
+    console.log("\n  tipos: Y frente a O");
+    click(d.getElementById("findAddType"));
+    setTimeout(() => {
+      click(sheetChip("Rock")); click(sheetChip("Steel"));
+      w.closeSheet();
+      const andHits = results().length;
+      ok("Roca Y Acero: solo los dobles",
+         results().every(r => /Steel|Rock/.test(r.textContent)), true);
+      const mode = modeChip();
+      ok("hay chip de modo", !!mode, true);
+      click(mode);
+      ok("Roca O Acero: son mas", results().length > andHits, true);
+      ok("y el chip lo dice",
+         /any of those types/.test(d.getElementById("findChips").textContent),
+         true);
+      click(d.getElementById("findAddType"));
+      setTimeout(threeTypes, 300);
+    }, 300);
+  }
+
+  function threeTypes(){
+    click(sheetChip("Ground")); w.closeSheet();
+    ok("tres tipos en O siguen dando resultados", results().length > 0, true);
+    click(modeChip());
+    ok("en Y con tres tipos no hay nada", results().length, 0);
+    ok("y avisa por que",
+       /three types/.test(d.getElementById("findOut").textContent), true);
+    click(d.getElementById("findClear"));
+    pokemonSheet();
   }
 
   /* the sheet you land on after tapping a result. Two things the player

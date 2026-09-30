@@ -9,7 +9,6 @@
    groups Champions itself uses - Hold Items, Berries, Miscellaneous, and
    stones in their own pane - each row carrying what the item does, what it
    costs in VP, and whether it is owned. */
-const fs = require("fs");
 const { JSDOM, VirtualConsole } = require("jsdom");
 /* the repo, found from this file - NOT a hardcoded path. Every test in
    here carried an absolute Windows path, so none of them had ever run

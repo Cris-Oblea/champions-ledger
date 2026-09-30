@@ -14,7 +14,6 @@
 
    And the ones that CAN go: anything in HOME, plus a HOME-origin Pokemon
    sitting in the Champions box, which can be parked back and deposited. */
-const fs = require("fs");
 const { JSDOM, VirtualConsole } = require("jsdom");
 /* the repo, found from this file - NOT a hardcoded path. Every test in
    here carried an absolute Windows path, so none of them had ever run

@@ -18,7 +18,6 @@
    The fixture makes the race real. The device has loaded `farigiraf` only,
    while the table also holds a `farigiraf-2` that another device wrote a
    second ago. A correct create walks past both. */
-const fs = require("fs");
 const { JSDOM, VirtualConsole } = require("jsdom");
 const ROOT = require("path").join(__dirname, "..") + "/";
 const UID = "u1";
