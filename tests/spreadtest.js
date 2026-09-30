@@ -26,9 +26,11 @@ const ok = (label, got, want) => {
 };
 
 /* ---------------------------------------------------------- the sweep --- */
-global.window = {};
-eval(fs.readFileSync(ROOT + "tracker/data.js", "utf8"));
-const MOVES = global.window.CHAMP.MOVES;
+/* data.js is one assignment, `window.CHAMP = {...};` - read it as the JSON
+   it is rather than running it */
+const data = fs.readFileSync(ROOT + "tracker/data.js", "utf8").trimEnd();
+const MOVES = JSON.parse(
+  data.slice(data.indexOf("=") + 1, -1)).MOVES;
 const raw = JSON.parse(fs.readFileSync(
   ROOT + "data/raw/smogon_calc/raw_moves.json", "utf8"));
 const key = s => s.toLowerCase().replace(/[^a-z0-9]/g, "");
@@ -102,6 +104,9 @@ const w = dom.window, d = w.document;
 const click = n => n.dispatchEvent(new w.MouseEvent("click", {bubbles:true}));
 const tags = n => [...n.querySelectorAll(".tag")].map(t => t.textContent);
 
+const tagsOf = m => [...w.moveRowFor(w.MOVE_BY[m], [], null)
+  .querySelectorAll(".tag")].map(t => t.textContent);
+
 setTimeout(() => {
   w.go("builds");
   click(d.querySelectorAll("#listBuilds .row")[0]);
@@ -117,8 +122,6 @@ setTimeout(() => {
        (2026-09-12) - and the two renderers that did show it only handled +N,
        so nothing ever said that Dragon Tail moves LAST. One priorityTag() now,
        shared by all three. */
-    const tagsOf = m => [...w.moveRowFor(w.MOVE_BY[m], [], null)
-      .querySelectorAll(".tag")].map(t => t.textContent);
     console.log("\n  la prioridad, con su numero");
     ok("Fake Out dice +3", tagsOf("Fake Out").indexOf("priority +3") >= 0, true);
     ok("Aqua Jet dice +1", tagsOf("Aqua Jet").indexOf("priority +1") >= 0, true);

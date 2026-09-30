@@ -65,7 +65,9 @@ function mods(atkSpec, defSpec, moveName, fieldSpec, typeEff) {
     const flat = [].concat.apply([], [].concat.apply([], [res.damage])).flat(2);
     const nums = flat.filter((x) => typeof x === "number");
     dmg = nums.length ? Math.max.apply(null, nums) : 0;
-  } catch (e) { dmg = 0; }
+  } catch {
+    /* a combination the engine refuses deals no damage: dmg stays 0 */
+  }
   return {
     basePower: basePower,
     damage: dmg,

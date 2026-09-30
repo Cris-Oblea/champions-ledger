@@ -24,36 +24,13 @@ export default [
       "sonarjs/todo-tag": "off",
     },
   },
-  /* THE APP IS CLEAN, AND STAYS CLEAN: every rule is an error in tracker/src,
-     and so is a function longer than 80 lines of code. A screen that grows
-     past that is a screen with a section that wants its own name - the build
-     editor was one 686-line function until 2026-09-29. */
+  /* THE REPO IS CLEAN, AND STAYS CLEAN: every rule is an error everywhere,
+     and in tracker/src so is a function longer than 80 lines of code. A
+     screen that grows past that is a screen with a section that wants its own
+     name - the build editor was one 686-line function until 2026-09-29. */
   { files: ["tracker/src/**/*.js"],
     rules: { "max-lines-per-function": ["error",
       {max: 80, skipComments: true, skipBlankLines: true}] } },
-  /* THE RATCHET, for what is not the app yet: the tests, the scripts and the
-     cron Worker. These rules still have findings there, so they warn instead
-     of failing the push. Each one leaves this list in the pull request that
-     takes it to zero, and from then on it is an error like every other rule -
-     so the count can only go down. The goal is an empty list. */
-  {
-    files: ["tests/**/*.js", "scripts/**/*.js", "cron/**/*.js"],
-    rules: {
-      "unicorn/consistent-function-scoping": "warn",
-      "sonarjs/anchor-precedence": "warn",
-      "sonarjs/code-eval": "warn",
-      "sonarjs/cognitive-complexity": "warn",
-      "sonarjs/concise-regex": "warn",
-      "sonarjs/no-dead-store": "warn",
-      "sonarjs/no-ignored-exceptions": "warn",
-      "sonarjs/no-nested-assignment": "warn",
-      "sonarjs/no-nested-conditional": "warn",
-      "sonarjs/no-nested-functions": "warn",
-      "sonarjs/no-unused-vars": "warn",
-      "sonarjs/single-character-alternation": "warn",
-      "sonarjs/super-linear-regex": "warn",
-    },
-  },
   { files: ["tracker/src/**/*.js"],
     languageOptions: { sourceType: "module", globals: globals.browser } },
   /* THE LAYERS: core <- ui <- tabs <- boot.js. A part imports from its own

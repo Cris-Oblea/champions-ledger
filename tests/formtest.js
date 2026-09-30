@@ -59,6 +59,10 @@ function card(name){
     .find(r => r.querySelector(".rname").textContent.indexOf(name) === 0);
 }
 
+const src = (img) => img ? img.getAttribute("src") : "";
+const keys = (c) => [...c.querySelectorAll(".megapickey")]
+  .map(x => x.textContent).join(" ");
+
 setTimeout(() => {
   console.log("\n  cuantas formas de batalla tiene Champions");
   const bf = w.CHAMP.BFORMS;
@@ -113,9 +117,6 @@ setTimeout(() => {
   ok("y un marco por tipo", ca.querySelectorAll(".retyperim").length, 3);
   ok("la card pide el ciclo de cuatro", ca.classList.contains("n3"), true);
 
-  const src = (img) => img ? img.getAttribute("src") : "";
-  const keys = (c) => [...c.querySelectorAll(".megapickey")]
-    .map(x => x.textContent).join(" ");
 
   console.log("\n  Morpeko: Hunger Switch no mueve ningun numero, y es otra forma");
   const mo = card("Morpeko");

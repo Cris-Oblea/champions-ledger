@@ -191,6 +191,8 @@ function stub() {
     "return c;}};}};<\/script>";
 }
 
+const tick = ms => new Promise(r => setTimeout(r, ms || 400));
+
 /* Boot the built page with the ledger above in place.
  *
  * Returns { window, errors, tick } - `errors` collects every uncaught
@@ -217,7 +219,6 @@ function boot(root) {
     errors.push([...arguments].map(x => (x && x.stack) || String(x)).join(" "));
     if (realError) realError.apply(this, arguments);
   };
-  const tick = ms => new Promise(r => setTimeout(r, ms || 400));
   return { window: dom.window, errors, tick, ROWS, UID };
 }
 

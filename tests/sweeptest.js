@@ -19,12 +19,13 @@ const vc = new VirtualConsole()
 const w = new JSDOM(body.replace("<head>", "<head>" + stub),
   { runScripts: "dangerously", pretendToBeVisual: true, virtualConsole: vc }).window;
 
+const blank = () => ({sp:{hp:0,atk:0,def:0,spa:0,spd:0,spe:0},
+                      boost:{atk:0,def:0,spa:0,spd:0,spe:0},
+                      nature:null, ability:null, item:null, status:null,
+                      curHP:null, buildId:null});
+
 setTimeout(() => {
   const DEX = w.DEX, MOVE_BY = w.MOVE_BY;
-  const blank = () => ({sp:{hp:0,atk:0,def:0,spa:0,spd:0,spe:0},
-                        boost:{atk:0,def:0,spa:0,spd:0,spe:0},
-                        nature:null, ability:null, item:null, status:null,
-                        curHP:null, buildId:null});
   function tryOne(atkName, defName, moveName) {
     Object.assign(w.CALC, {
       atk: Object.assign(blank(), {name: atkName}),

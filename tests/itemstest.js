@@ -76,7 +76,7 @@ setTimeout(() => {
     ["Hold Items", "Berries", "Miscellaneous"].forEach(function(c, i){
       ok(c, hs[i] && hs[i].indexOf(c) === 0, true);
     });
-    ok("cada una lleva tengo/total", /\d+\/\d+$/.test(hs[0]), true);
+    ok("cada una lleva tengo/total", /\d\/\d+$/.test(hs[0]), true);
 
     console.log("\n  el listado");
     const all = rows();
@@ -109,7 +109,7 @@ setTimeout(() => {
        that is printed by build_item_facts.py for a human to settle - which is
        exactly why every figure on screen has to say who said it. */
     ok("todo precio dice su fuente",
-       all.filter(r => /\d+ VP/.test(r.querySelector(".rside").textContent))
+       all.filter(r => /\d VP/.test(r.querySelector(".rside").textContent))
           .every(r => /serebii|pokebase/i
             .test(r.querySelector(".rside span").title || "")), true);
     ok("ningun item se queda con 'price ?'",
@@ -117,7 +117,7 @@ setTimeout(() => {
        true);
     const scarf = all.find(r => r.textContent.indexOf("Muscle Band") === 0);
     ok("Muscle Band trae su precio en VP",
-       /\d+ VP/.test(scarf.querySelector(".rside").textContent), true);
+       /\d VP/.test(scarf.querySelector(".rside").textContent), true);
 
     /* the player's own example: an item that extends a field effect serves
        the MOVE and the ABILITY that set it, and naming only the move misses

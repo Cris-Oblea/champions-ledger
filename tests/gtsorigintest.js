@@ -70,6 +70,8 @@ const dom = new JSDOM(body.replace("<head>", "<head>" + stub),
   {runScripts:"dangerously", pretendToBeVisual:true, virtualConsole:vc});
 const w = dom.window, d = w.document;
 
+const nameOf = b => b.querySelector(".rname").firstChild.textContent.trim();
+
 setTimeout(() => {
   w.gtsPickMine(function(){}, null);
   const sheet = d.getElementById("sheetBody");
@@ -102,7 +104,6 @@ setTimeout(() => {
      demas"). Ahora es la misma card que el resto de la app. */
   console.log("\n  la misma card que en todas partes");
   const cards = () => [...sheet.querySelectorAll(".list .row")];
-  const nameOf = b => b.querySelector(".rname").firstChild.textContent.trim();
   ok("cada fila es una card",
      cards().every(b => / card\b/.test(b.className)), true);
   ok("con sus seis stats",
