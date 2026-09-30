@@ -117,8 +117,8 @@ DECISIONS = [
     # it now sends them to a 23-line shell of markers, and their change would
     # be silently overwritten by the next build.
     ("edit-the-part-not-the-template",
-     r"Edit `?tracker/index\.template\.html`?,? never|"
-     r"`tracker/index\.template\.html` [-—] the app",
+     (r"Edit `?tracker/index\.template\.html`?,? never|"
+      r"`tracker/index\.template\.html` [-—] the app"),
      "edit tracker/src/<part>; index.template.html is a shell of markers",
      DOCS),
 
@@ -128,25 +128,25 @@ DECISIONS = [
     # linter can see.
     ("names-are-eslints-job",
      r"check_app\.js`?\*{0,2}:? (reads|reports|catches)[^.]{0,120}(import|declare)",
-     "ESLint (no-undef, no-redeclare) checks names; check_app.js checks ids "
-     "and CALC switches",
+     ("ESLint (no-undef, no-redeclare) checks names; check_app.js checks ids "
+      "and CALC switches"),
      DOCS),
 
     # The app was twelve numbered files, 01-data.js to 13-boot.js, with 25
     # import cycles, until 2026-09-29. It is three layers now (player: "carpetas
     # por capa"), and an import may only point down one.
     ("app-is-layered",
-     r"`?0\d-[a-z]+\.js`? (through|to|\.\.) `?1\d-[a-z]+\.js|"
-     r"imports `13-boot\.js` FIRST|twelve ES modules",
-     "tracker/src is core/, ui/, tabs/ and boot.js; an import only points down "
-     "a layer, and no cycle is allowed",
+     (r"`?0\d-[a-z]+\.js`? (through|to|\.\.) `?1\d-[a-z]+\.js|"
+      r"imports `13-boot\.js` FIRST|twelve ES modules"),
+     ("tracker/src is core/, ui/, tabs/ and boot.js; an import only points down "
+      "a layer, and no cycle is allowed"),
      DOCS),
 
     # Items are a team-level decision under the Item Clause, and the player
     # ruled them out of builds entirely on 2026-08-29.
     ("items-are-not-in-builds",
-     r"item.{0,30}(field|key) (of|in|on) (a |the )?build|"
-     r"record (the )?items? in .{0,20}builds\.json",
+     (r"item.{0,30}(field|key) (of|in|on) (a |the )?build|"
+      r"record (the )?items? in .{0,20}builds\.json"),
      "an item lives on a TEAM SLOT; only a Mega Stone is part of a build",
      DOCS),
 
@@ -188,18 +188,18 @@ DECISIONS = [
     # those numbers was stale, because the app is where they change. A count
     # typed into prose cannot be regenerated and nobody retypes it.
     ("the-app-owns-his-state",
-     r"^#+ *(player state|builds recorded|untrained permanents)|"
-     r"\*\*Builds recorded|"
-     r"[Bb]ox \*{0,2}\d+ ?/ ?\d+|"
-     r"(he|you) (own|owns|holds?) \d+ (Pokemon|builds|stones|rentals)",
-     "the box, the builds, the stones and the teams live in the app; "
-     "query the ledger and never restate it",
+     (r"^#+ *(player state|builds recorded|untrained permanents)|"
+      r"\*\*Builds recorded|"
+      r"[Bb]ox \*{0,2}\d+ ?/ ?\d+|"
+      r"(he|you) (own|owns|holds?) \d+ (Pokemon|builds|stones|rentals)"),
+     ("the box, the builds, the stones and the teams live in the app; "
+      "query the ledger and never restate it"),
      DOCS),
 
     # A snapshot is the whole ledger in plaintext and this repo is public.
     ("no-ledger-data-in-the-repo",
-     r"commit (the )?(snapshot|seed|backup)|"
-     r"supabase_seed\.sql (is|should be) (versioned|committed)",
+     (r"commit (the )?(snapshot|seed|backup)|"
+      r"supabase_seed\.sql (is|should be) (versioned|committed)"),
      "snapshots and seeds live outside the repo; the repo is public",
      DOCS),
 
@@ -208,8 +208,8 @@ DECISIONS = [
     # numbers. CLAUDE.md went on saying "concatenates them" for two weeks,
     # because nobody registered the change here.
     ("the-app-is-es-modules",
-     r"concatenates them|pure concatenation|"
-     r"in the order the number\s+prefixes give",
+     (r"concatenates them|pure concatenation|"
+      r"in the order the number\s+prefixes give"),
      "tracker/src parts are ES modules linked by esbuild; imports set the order",
      DOCS),
 
@@ -242,7 +242,7 @@ def git_ignored(paths):
     try:
         r = subprocess.run(["git", "check-ignore", "--stdin"], cwd=ROOT,
                            input=("\n".join(paths) + "\n").encode(),
-                           capture_output=True)
+                           capture_output=True, check=False)
     except OSError:
         return set()
     return set(r.stdout.decode().split())

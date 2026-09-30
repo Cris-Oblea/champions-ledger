@@ -373,8 +373,8 @@ RULES = {
  "Competitive":   ("def", None, None,
                    "+2 Sp. Atk whenever one of ITS OWN stats is dropped"),
  "Mega Sol":      ("off", lambda m: dmg(m) and m["type"] in ("Fire", "Water"),
-                   None, "the user's moves are treated as being in sun: Fire "
-                   "boosted, Water weakened, and no rain penalty"),
+                   None, ("the user's moves are treated as being in sun: Fire "
+                    "boosted, Water weakened, and no rain penalty")),
 
  # ======================================================================
  # Everything below was added 2026-09-10, after the player found that an
@@ -408,8 +408,8 @@ RULES = {
  "Pure Power":    ("off", lambda m: dmg(m) and m["cat"] == "Physical", None,
                    "Attack doubled - a stat, so the BP does not change"),
  "Guts":          ("off", lambda m: dmg(m) and m["cat"] == "Physical", None,
-                   "Attack +50% while statused, and burn's own Attack drop is "
-                   "ignored"),
+                   ("Attack +50% while statused, and burn's own Attack drop is "
+                    "ignored")),
  "Solar Power":   ("off", lambda m: dmg(m) and m["cat"] == "Special", None,
                    "Sp. Atk x1.5 in sun, at 1/8 max HP a turn"),
  "Plus":          ("off", lambda m: dmg(m) and m["cat"] == "Special", None,
@@ -430,21 +430,21 @@ RULES = {
  "Gale Wings":    ("off", lambda m: m["type"] == "Flying", None,
                    "+1 priority at full HP - Tailwind and Roost included"),
  "Protean":       ("off", None, None,
-                   "the user becomes this move's type before it goes off, "
-                   "once per switch-in - so everything gets STAB"),
+                   ("the user becomes this move's type before it goes off, "
+                    "once per switch-in - so everything gets STAB")),
  "Libero":        ("off", None, None,
-                   "the user becomes this move's type before it goes off, "
-                   "once per switch-in - so everything gets STAB"),
+                   ("the user becomes this move's type before it goes off, "
+                    "once per switch-in - so everything gets STAB")),
  "Mold Breaker":  ("off", None, None, "ignores the target's ability"),
  "Stalwart":      ("off", None, None,
-                   "ignores opposing abilities and redirection - Lightning "
-                   "Rod and Follow Me do not pull it"),
+                   ("ignores opposing abilities and redirection - Lightning "
+                    "Rod and Follow Me do not pull it")),
  "Infiltrator":   ("off", None, None,
-                   "goes through Substitute, Reflect, Light Screen and "
-                   "Safeguard"),
+                   ("goes through Substitute, Reflect, Light Screen and "
+                    "Safeguard")),
  "Long Reach":    ("off", lambda m: m["contact"], None,
-                   "no contact is made: Rough Skin, Static and Rocky Helmet "
-                   "never fire"),
+                   ("no contact is made: Rough Skin, Static and Rocky Helmet "
+                    "never fire")),
  "Piercing Drill": ("off", lambda m: m["contact"], None,
                    "hits through Protect, for a quarter of the damage"),
  "Poison Touch":  ("off", lambda m: dmg(m) and m["contact"], None,
@@ -453,8 +453,8 @@ RULES = {
                    "no recoil - the drawback is simply gone"),
  "Magician":      ("off", dmg, None, "it takes the target's held item"),
  "Stance Change": ("off", dmg, None,
-                   "attacking flips it to Blade Forme first - 140 Attack, not "
-                   "the Shield spread's 50"),
+                   ("attacking flips it to Blade Forme first - 140 Attack, not "
+                    "the Shield spread's 50")),
 
  # ---- defensive: about what lands on it, never about its own moves -------
  # a whole category or type taken differently
@@ -469,8 +469,8 @@ RULES = {
  "Purifying Salt": ("def", lambda m: m["type"] == "Ghost", None,
                    "Ghost damage halved, and no status at all"),
  "Fluffy":        ("def", lambda m: m["contact"] or m["type"] == "Fire", None,
-                   "contact halved - but Fire doubled, both at once on a "
-                   "Fire contact move"),
+                   ("contact halved - but Fire doubled, both at once on a "
+                    "Fire contact move")),
  # healed BY Water moves, weak TO Fire ones - both are about damage dealt,
  # so Soak and Will-O-Wisp do not belong here either.
  "Dry Skin":      ("def",
@@ -528,8 +528,8 @@ RULES = {
  "Battle Armor":  ("def", None, None, "cannot be hit critically"),
  "Shell Armor":   ("def", None, None, "cannot be hit critically"),
  "Magic Guard":   ("def", None, None,
-                   "only a direct attack hurts it - no hazards, weather, "
-                   "burn, poison or Leech Seed"),
+                   ("only a direct attack hurts it - no hazards, weather, "
+                    "burn, poison or Leech Seed")),
  "Telepathy":     ("def", lambda m: m["hits_ally"], None,
                    "an ALLY's spread move does nothing to it"),
  # stat drops arriving from the other side
@@ -551,8 +551,8 @@ RULES = {
  "Rough Skin":    ("def", lambda m: m["contact"], None,
                    "1/8 of the attacker's max HP back at it"),
  "Aftermath":     ("def", lambda m: m["contact"], None,
-                   "if this is the finishing hit, the attacker loses 1/4 of "
-                   "its max HP"),
+                   ("if this is the finishing hit, the attacker loses 1/4 of "
+                    "its max HP")),
  "Static":        ("def", lambda m: m["contact"], None,
                    "30% chance the attacker is paralysed"),
  "Flame Body":    ("def", lambda m: m["contact"], None,
@@ -572,8 +572,8 @@ RULES = {
  "Pickpocket":    ("def", lambda m: m["contact"], None,
                    "it steals the attacker's item"),
  "Innards Out":   ("def", dmg, None,
-                   "if this is the finishing hit, the attacker loses whatever "
-                   "HP was left"),
+                   ("if this is the finishing hit, the attacker loses whatever "
+                    "HP was left")),
  "Spicy Spray":   ("def", dmg, None, "the attacker is burned"),
  "Toxic Debris":  ("def", lambda m: dmg(m) and m["cat"] == "Physical", None,
                    "poison spikes are scattered on the attacker's side"),
@@ -789,7 +789,7 @@ def build(props):
                       if pred(p) and (side != "def" or incoming(p)))
         entry = {"side": side, "x": mult, "why": why, "moves": hits}
         if side == "off" and ab not in SCOPE_EXEMPT:
-            lab = next((l for l, s in scopes if set(hits) == s), None)
+            lab = next((label for label, s in scopes if set(hits) == s), None)
             if lab:
                 entry["scope"] = lab
         if ab == "Contrary":
@@ -823,18 +823,18 @@ def build(props):
 CLASS_ORDER = [
     # terrain BEFORE weather, because "Terrain" contains "rain" and matched it
     ("terrain", r"\bterrain\b"),
-    ("weather", r"\bweather\b|\brain(?:ing|y)?\b|\bsunshine\b|\bsunlight\b|"
-                r"\bsunny\b|\bsandstorm\b|\bsnow(?:ing|storm)?\b|\bhail\b"),
-    ("speed",   r"\bspeed\b[^.]{0,30}(?:doubl|rais|increas)|"
-                r"(?:doubl|rais|increas)[^.]{0,30}\bspeed\b|"
-                r"moving first|attacks last|speed priority bracket"),
-    ("status",  r"\bburn|paraly|poison|asleep|\bsleep\b|frozen|freez|confus|"
-                r"status condition|attract"),
-    ("stats",   r"\battack\b|\bdefen[cs]e\b|sp\. ?atk|sp\. ?def|"
-                r"special attack|special defense|\bstats?\b|evasion"),
+    ("weather", (r"\bweather\b|\brain(?:ing|y)?\b|\bsunshine\b|\bsunlight\b|"
+                 r"\bsunny\b|\bsandstorm\b|\bsnow(?:ing|storm)?\b|\bhail\b")),
+    ("speed",   (r"\bspeed\b[^.]{0,30}(?:doubl|rais|increas)|"
+                 r"(?:doubl|rais|increas)[^.]{0,30}\bspeed\b|"
+                 r"moving first|attacks last|speed priority bracket")),
+    ("status",  (r"\bburn|paraly|poison|asleep|\bsleep\b|frozen|freez|confus|"
+                 r"status condition|attract")),
+    ("stats",   (r"\battack\b|\bdefen[cs]e\b|sp\. ?atk|sp\. ?def|"
+                 r"special attack|special defense|\bstats?\b|evasion")),
     ("item",    r"berry|berries|\bitems?\b"),
-    ("switch",  r"switch|enters? (?:the )?battle|sent (?:out )?into battle|"
-                r"knocks out|copies the|transforms"),
+    ("switch",  (r"switch|enters? (?:the )?battle|sent (?:out )?into battle|"
+                 r"knocks out|copies the|transforms")),
 ]
 # The text mentions a bucket's words in passing, so the regex files it wrong.
 # Each of these was read and placed by hand; the audit prints every bucket, so

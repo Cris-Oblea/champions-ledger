@@ -71,7 +71,7 @@ def rows(blob, key):
 
 def engine_map():
     r = subprocess.run(["node", PROBE, "--map"], cwd=ROOT,
-                       capture_output=True, text=True)
+                       capture_output=True, text=True, check=False)
     if r.returncode != 0:
         sys.exit("the probe could not answer: " + (r.stderr or r.stdout))
     return json.loads(r.stdout)
@@ -82,7 +82,7 @@ def run(cases, chunk=120):
     for i in range(0, len(cases), chunk):
         part = cases[i:i + chunk]
         r = subprocess.run(["node", PROBE, json.dumps(part)], cwd=ROOT,
-                           capture_output=True, text=True)
+                           capture_output=True, text=True, check=False)
         if r.returncode != 0:
             sys.exit("probe failed: " + (r.stderr or r.stdout)[:400])
         got += json.loads(r.stdout)

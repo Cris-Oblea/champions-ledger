@@ -354,7 +354,7 @@ def link():
          # has to hash to the name it is served under. _headers points at the
          # map with a SourceMap: header instead.
          "--sourcemap=external", "--outfile=" + out_js],
-        capture_output=True, text=True, cwd=ROOT)
+        capture_output=True, text=True, cwd=ROOT, check=False)
     if r.returncode != 0:
         sys.exit("esbuild could not link the app:" + chr(10)
                  + (r.stderr or r.stdout))

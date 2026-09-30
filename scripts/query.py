@@ -431,8 +431,9 @@ def cmd_move(a):
                       for d, (n, m) in counts.items()))
 
     perm, temp, _, _ = owned_sets()
-    mine = [(l, own_tag(l, perm, temp)) for l in mv.get("learners", [])
-            if own_tag(l, perm, temp)]
+    mine = [(learner, own_tag(learner, perm, temp))
+            for learner in mv.get("learners", [])
+            if own_tag(learner, perm, temp)]
     print("\nLearners: %d in the format." % (mv.get("learner_count") or 0))
     if mine:
         print("In your box (%d): %s" % (len(mine), ", ".join(
@@ -475,7 +476,7 @@ def cmd_moves(a):
             if a.priority not in ("+", "-") and p != int(a.priority):
                 continue
         if a.learner and a.learner.lower() not in [
-                l.lower() for l in m.get("learners", [])]:
+                learner.lower() for learner in m.get("learners", [])]:
             continue
         res.append(m)
 
@@ -509,8 +510,8 @@ def cmd_moves(a):
             pct(mu.get(key(m["name"]))),
         ]
         if box:
-            mine = sorted({box[norm(l)] for l in m.get("learners", [])
-                           if norm(l) in box},
+            mine = sorted({box[norm(learner)] for learner in m.get("learners", [])
+                           if norm(learner) in box},
                           key=lambda x: (not x.startswith("*"), x))
             # A move half the box learns says nothing useful and wrecks the
             # table width; the count still carries the fact.
@@ -535,8 +536,8 @@ def cmd_moves(a):
         print("\nPokemon that learn these moves (Champions legal):")
         counts = Counter()
         for m in res:
-            for l in m.get("learners", []):
-                counts[l] += 1
+            for learner in m.get("learners", []):
+                counts[learner] += 1
         rows = []
         for name, c in counts.most_common(a.limit):
             rows.append([name, c, pct(usage_of(name, ui)), own_tag(name, perm, temp)])

@@ -48,11 +48,11 @@ def sql(text):
     it on the way through the shell, so comments are stripped and the whole
     file is sent as one line.
     """
-    body = " ".join(l for l in text.splitlines()
-                    if not l.strip().startswith("--"))
+    body = " ".join(line for line in text.splitlines()
+                    if not line.strip().startswith("--"))
     try:
         r = subprocess.run(["supabase", "db", "query", body, "--linked"],
-                           cwd=ROOT, capture_output=True, text=True, timeout=180)
+                           cwd=ROOT, capture_output=True, text=True, timeout=180, check=False)
     except (OSError, subprocess.TimeoutExpired) as e:
         return False, "could not run the Supabase CLI: %s" % e
     out = (r.stdout or "") + (r.stderr or "")

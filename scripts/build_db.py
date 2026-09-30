@@ -149,11 +149,11 @@ TYPE_PAGES = {"normal", "fire", "water", "electric", "grass", "ice", "fighting",
 # weight and should go, rather than silently pinning a value upstream fixed.
 MOVE_RULINGS = {
     ("Night Slash", "pp"): (16,
-        "pokebase 16 against Serebii 20. Main series 15 PP, and 101 of the 103 "
-        "useable 15-PP moves are 16 here - Night Slash was the only one at 20."),
+        ("pokebase 16 against Serebii 20. Main series 15 PP, and 101 of the 103 "
+         "useable 15-PP moves are 16 here - Night Slash was the only one at 20.")),
     ("Double Shock", "accuracy"): (100,
-        "Serebii leaves the cell empty; pokebase and the main series both say "
-        "100, and no Champions rebalance of it has been seen."),
+        ("Serebii leaves the cell empty; pokebase and the main series both say "
+         "100, and no Champions rebalance of it has been seen.")),
     # NO SECONDARY AT ALL. Serebii's Champions page carries a stray "10 %" in
     # its Effect Rate cell while its Battle Effect names no freeze - every
     # other move with a rate states that rate in its Battle Effect ("Has a 10%
@@ -162,9 +162,9 @@ MOVE_RULINGS = {
     # text names none, and the player confirmed it in game (2026-09-27: "ojo
     # que freeze-dry ya no congela en champions").
     ("Freeze-Dry", "effect_rate"): (None,
-        "No freeze in Champions: Serebii's Battle Effect names none (the 10% "
-        "sits alone in its rate cell), Smogon's engine deletes the secondary, "
-        "and the player confirmed it in game."),
+        ("No freeze in Champions: Serebii's Battle Effect names none (the 10% "
+         "sits alone in its rate cell), Smogon's engine deletes the secondary, "
+         "and the player confirmed it in game.")),
 }
 
 
@@ -345,10 +345,10 @@ def parse_move(path, useable=None):
             form = sprite_form(r.group(2), nm)
             learners.append(nm + ("-" + form if form else ""))
     seen, uniq = set(), []
-    for l in learners:
-        if l not in seen:
-            seen.add(l)
-            uniq.append(l)
+    for learner in learners:
+        if learner not in seen:
+            seen.add(learner)
+            uniq.append(learner)
 
     return {
         "slug": slug, "name": name, "type": mtype, "category": cat,
@@ -867,8 +867,8 @@ def main():
     print("Learnsets...", flush=True)
     learn = defaultdict(list)
     for mv in moves:
-        for l in mv["learners"]:
-            learn[l].append(mv["name"])
+        for learner in mv["learners"]:
+            learn[learner].append(mv["name"])
     learn = {k: sorted(v) for k, v in sorted(learn.items())}
     # A form with no learner table of its own inherits the base form's, which
     # is what the game does: Serebii lists no move for Basculegion-Female or

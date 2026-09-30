@@ -84,10 +84,10 @@ BATTLE_FORM_OK = {
     "aegislash": ("stats", "Stance Change: Blade 140 Atk / Shield 140 Def"),
     "palafin": ("stats", "Zero to Hero on switch-out: Attack 70 -> 160"),
     "castform": ("type", "Forecast: Fire in sun, Water in rain, Ice in snow"),
-    "morpeko": ("neither", "Hunger Switch retypes Aura Wheel Electric -> Dark; "
-                           "the Pokemon's own numbers do not move"),
-    "mimikyu": ("neither", "Disguise eats one hit and costs 1/8 max HP when it "
-                           "breaks; the Pokemon's own numbers do not move"),
+    "morpeko": ("neither", ("Hunger Switch retypes Aura Wheel Electric -> Dark; "
+                            "the Pokemon's own numbers do not move")),
+    "mimikyu": ("neither", ("Disguise eats one hit and costs 1/8 max HP when it "
+                            "breaks; the Pokemon's own numbers do not move")),
 }
 
 # Species whose forms are already separate dex rows, so a split page is expected.

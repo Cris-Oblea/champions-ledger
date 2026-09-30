@@ -377,7 +377,7 @@ def main():
     if info.get("swiss_rounds"):
         print("  %d swiss rounds, then the cut: %s"
               % (info["swiss_rounds"],
-                 ", ".join("%d=%s" % (n, l) for n, l in
+                 ", ".join("%d=%s" % (n, name) for n, name in
                            sorted((info.get("round_labels") or {}).items())
                            if n > info["swiss_rounds"]) or "none yet"))
     print("  %s - %d players, %d teamlists, %d complete natures"

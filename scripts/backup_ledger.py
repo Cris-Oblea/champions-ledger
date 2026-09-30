@@ -99,7 +99,7 @@ def sql(text, timeout=300):
         r = subprocess.run(["supabase", "db", "query", text] + door
                            + ["-o", "json"],
                            cwd=ROOT, capture_output=True, text=True,
-                           encoding="utf-8", errors="replace", timeout=timeout)
+                           encoding="utf-8", errors="replace", timeout=timeout, check=False)
     except (OSError, subprocess.TimeoutExpired) as e:
         return False, "could not run the Supabase CLI: %s" % e
     out = (r.stdout or "") + (r.stderr or "")
@@ -273,12 +273,12 @@ def canonical(row):
 
 def diff(table, want, live):
     """What would have to happen to make `live` equal `want`."""
-    w = {key_of(table, r): r for r in want}
-    l = {key_of(table, r): r for r in live}
-    add = [w[k] for k in w if k not in l]
-    gone = [l[k] for k in l if k not in w]
-    changed = [w[k] for k in w if k in l
-               and canonical(w[k]) != canonical(l[k])]
+    wanted = {key_of(table, r): r for r in want}
+    have = {key_of(table, r): r for r in live}
+    add = [wanted[k] for k in wanted if k not in have]
+    gone = [have[k] for k in have if k not in wanted]
+    changed = [wanted[k] for k in wanted if k in have
+               and canonical(wanted[k]) != canonical(have[k])]
     return add, changed, gone
 
 
