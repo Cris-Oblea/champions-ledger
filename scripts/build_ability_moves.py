@@ -33,11 +33,16 @@ Two more the sentence splitter got wrong, found 2026-09-10:
     have their Attack lowered" was credited to the user instead of the
     attacker. A real stat change always says "stage" - or maximises one.
 """
-import argparse, json, os, re, sys, unicodedata
+import argparse
+import json
+import os
+import re
+import sys
+import unicodedata
+
+import query as Q
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.insert(0, os.path.join(ROOT, "scripts"))
-import query as Q
 
 OUT = os.path.join(ROOT, "data", "db", "ability_moves.json")
 
@@ -311,9 +316,9 @@ RULES = {
  "Reckless":      ("off", lambda m: dmg(m) and m["recoil"], 1.2, "recoil move, +20%"),
  "Hustle":        ("off", lambda m: dmg(m) and m["cat"] == "Physical", 1.5,
                    "+50% physical damage, but accuracy drops to 80%"),
- "Analytic":      ("off", lambda m: dmg(m), 1.3, "+30% when moving last"),
- "Sniper":        ("off", lambda m: dmg(m), None, "a crit does 225%, not 150%"),
- "Parental Bond": ("off", lambda m: dmg(m), None, "hits twice, the second at 25%"),
+ "Analytic":      ("off", dmg, 1.3, "+30% when moving last"),
+ "Sniper":        ("off", dmg, None, "a crit does 225%, not 150%"),
+ "Parental Bond": ("off", dmg, None, "hits twice, the second at 25%"),
  "Fire Mane":     ("off", lambda m: dmg(m) and m["type"] == "Fire", 1.5, "Fire, +50%"),
  "Steely Spirit": ("off", lambda m: dmg(m) and m["type"] == "Steel", 1.5, "Steel, +50%"),
  "Blaze":         ("off", lambda m: dmg(m) and m["type"] == "Fire", 1.5,
@@ -339,7 +344,7 @@ RULES = {
                    "becomes Dragon, +20%"),
  # ---- not a multiplier, but it changes the move ---------------------------
  # a damaging move only - Rain Dance is Water and has no STAB to double
- "Adaptability":  ("off", lambda m: dmg(m), None,
+ "Adaptability":  ("off", dmg, None,
                    "STAB x2.0 instead of x1.5, on a move of the user's own type"),
  "Skill Link":    ("off", lambda m: m["multi"], None,
                    "always 5 hits - accuracy is rolled once for the lot"),
@@ -672,7 +677,8 @@ def incoming(p):
 # category sets below, so a rule that stops covering a category starts badging
 # again on the next build with no edit here.
 def _scopes(props):
-    cat = lambda c: {n for n, p in props.items() if p["cat"] == c}
+    def cat(c):
+        return {n for n, p in props.items() if p["cat"] == c}
     dmgset = {n for n, p in props.items() if dmg(p)}
     return [("every move", set(props)),
             ("every damaging move", dmgset),
@@ -900,7 +906,7 @@ CLASS_LABEL = {
 }
 
 
-def audit(props, table):
+def audit(table):
     """Every ability in the format, and what we decided about it."""
     abil = Q.db("abilities")
     KEY = re.compile(r"\bmoves?\b|\bpower\b|\bdamage\b|STAB|priority|contact|"
@@ -977,18 +983,17 @@ def main():
               % (ab, side, n, ", ".join((hits or [])[:4]) +
                  (" ..." if hits and len(hits) > 4 else "")))
 
-    if a.audit:
-        # A rule for an ability that does not exist ships a phantom entry, and
-        # printing it was not enough: two survived a scroll today. It ends the
-        # run now.
-        if audit(props, table):
-            sys.exit(1)
+    # A rule for an ability that does not exist ships a phantom entry, and
+    # printing it was not enough: two survived a scroll today. It ends the
+    # run now.
+    if a.audit and audit(table):
+        sys.exit(1)
 
     if not a.report and not a.audit:
         with open(OUT, "w", encoding="utf-8") as f:
-            classes = dict((a["name"], classify(a["name"], table,
-                                                ability_text(a)))
-                           for a in Q.db("abilities"))
+            classes = {a["name"]: classify(a["name"], table,
+                                           ability_text(a))
+                       for a in Q.db("abilities")}
             json.dump({"_comment":
                        "Derived by scripts/build_ability_moves.py from the move "
                        "and ability text. Do not hand-edit; re-run it instead.",

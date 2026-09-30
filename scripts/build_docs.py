@@ -18,7 +18,11 @@ follows: derive what can be derived, and check what cannot.
 The PROSE is still written by hand. Only facts that have a single source of
 truth belong in here.
 """
-import argparse, io, json, os, re, sys
+import argparse
+import json
+import os
+import re
+import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 README = os.path.join(ROOT, "README.md")
@@ -29,7 +33,7 @@ def load(rel, key=None):
     p = os.path.join(ROOT, rel)
     if not os.path.exists(p):
         return None
-    d = json.load(io.open(p, encoding="utf-8"))
+    d = json.load(open(p, encoding="utf-8"))
     return d[key] if key else d
 
 
@@ -149,7 +153,7 @@ def vintage():
     reg = "unknown"
     raw = os.path.join(ROOT, "data", "raw", "pokebase", "pokemon.html")
     if os.path.exists(raw):
-        s = io.open(raw, encoding="utf-8", errors="replace").read()
+        s = open(raw, encoding="utf-8", errors="replace").read()
         m = re.search(r'defaultLatestRegulationSetSlug\\?":\\?"([a-z\-]+)', s)
         if m:
             reg = m.group(1).upper()
@@ -178,7 +182,6 @@ def gate():
     its own lists are imported rather than parsed - a regex over the file would
     be a second, quieter way to be wrong.
     """
-    sys.path.insert(0, os.path.join(ROOT, "scripts"))
     import daily
     py, node, browser = (len(daily.GATE_CHECKS), len(daily.SOURCE_CHECKS),
                          len(daily.BROWSER_TESTS))
@@ -196,9 +199,10 @@ def gate():
         "- **%s Python audits** — the damage formula against Smogon's "
         "engine, name\n  matching across all five sources, every derived index "
         "resolving, every form\n  still accounted for, the README's own "
-        "numbers, and that no SQL migration is\n  still waiting to be applied\n"
-        "- **%s source checks** — ESLint, with the rules SonarQube shows in "
-        "VS Code,\n  over every file (a name one of the %s ES modules uses "
+        "numbers, that no SQL migration is\n  still waiting to be applied, "
+        "and ruff's lint over every script\n"
+        "- **%s source checks** — ESLint, with SonarSource's own rules,\n"
+        "  over every file (a name one of the %s ES modules uses "
         "without\n  importing it links fine and throws on the phone), and the "
         "app read\n  against its own markup and engine\n"
         "- **%s browser tests** — run against the built page, because no "
@@ -240,7 +244,8 @@ def render(text, blocks, what):
         if not pat.search(text):
             sys.exit("%s has no %s block - add the markers back"
                      % (what, name))
-        text = pat.sub(lambda m: m.group(1) + fn() + m.group(2), text)
+        body = fn()
+        text = pat.sub(lambda m, body=body: m.group(1) + body + m.group(2), text)
     return text
 
 
@@ -253,7 +258,7 @@ def main():
     stale = []
     for path, blocks in DOCS.items():
         what = os.path.basename(path)
-        cur = io.open(path, encoding="utf-8").read()
+        cur = open(path, encoding="utf-8").read()
         new = render(cur, blocks, what)
         if cur == new:
             print("%s is current" % what)
@@ -261,7 +266,7 @@ def main():
         if a.check:
             stale.append(what)
             continue
-        io.open(path, "w", encoding="utf-8").write(new)
+        open(path, "w", encoding="utf-8").write(new)
         print("%s updated" % what)
     if stale:
         print("%s OUT OF DATE - run: python scripts/build_docs.py"

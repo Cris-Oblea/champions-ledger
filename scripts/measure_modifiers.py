@@ -13,7 +13,12 @@ The output is data/db/modifiers.json, and the printed table is the evidence.
 Anything the engine does not model shows as x1.00 and is dropped rather than
 carried as a guess.
 """
-import argparse, json, os, re, subprocess, sys
+import argparse
+import json
+import os
+import re
+import subprocess
+import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "data", "db", "modifiers.json")
@@ -122,7 +127,7 @@ CASES = [
                                    "--atk-sp", "32"],
      ["--atk-item", "Fairy Feather"]),
     # ---- defender items -------------------------------------------------
-    
+
     ("def_item", "Chople Berry", ["Machamp", "Close Combat", "Kingambit",
                                   "--atk-sp", "32"],
      ["--def-item", "Chople Berry"]),

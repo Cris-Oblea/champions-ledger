@@ -36,7 +36,12 @@ Exit codes, so a caller can branch without parsing prose:
     11  a new regulation, but Serebii has not caught up - wait, do not clear
     2   could not tell (no network, a page that changed shape)
 """
-import argparse, io, json, os, re, sys, urllib.request
+import argparse
+import json
+import os
+import re
+import sys
+import urllib.request
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RECORD = os.path.join(ROOT, "data", "db", "regulation.json")
@@ -74,15 +79,15 @@ def serebii_regulations(html):
     it. This takes a short token of letters, digits and hyphens after the word,
     and normalises it the way the pokebase slug is written.
     """
-    return set(m.strip().lower().replace(" ", "-")
-               for m in re.findall(
-                   r"Regulation\s+([A-Za-z0-9]{1,8}(?:-[A-Za-z0-9]{1,8})?)",
-                   html))
+    return {m.strip().lower().replace(" ", "-")
+            for m in re.findall(
+                r"Regulation\s+([A-Za-z0-9]{1,8}(?:-[A-Za-z0-9]{1,8})?)",
+                html)}
 
 
 def recorded():
     try:
-        return json.load(io.open(RECORD, encoding="utf-8"))
+        return json.load(open(RECORD, encoding="utf-8"))
     except (OSError, ValueError):
         return {}
 
@@ -99,7 +104,7 @@ def record(slug, note=""):
     os.makedirs(os.path.dirname(RECORD), exist_ok=True)
     body = {"slug": slug, "label": slug.upper(),
             "source": "pokebase defaultLatestRegulationSetSlug", "note": note}
-    with io.open(RECORD, "w", encoding="utf-8", newline="\n") as f:
+    with open(RECORD, "w", encoding="utf-8", newline="\n") as f:
         json.dump(body, f, ensure_ascii=False, indent=2)
         f.write("\n")
     return body

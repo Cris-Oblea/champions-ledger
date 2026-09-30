@@ -9,7 +9,10 @@ Writes to data/db/:
 
 Everything comes from the Champions sections of Serebii. No other Pokemon game.
 """
-import io, os, re, json, html
+import html
+import json
+import os
+import re
 from collections import defaultdict
 
 from serebii_text import read, unmojibake
@@ -27,6 +30,9 @@ DB = os.path.join(ROOT, "data", "db")
 # broken slug among the 1,389 ability links on the Pokedex pages was enough to
 # lose an ability.
 ABIL_LINK = r'/abilitydex/[^"]*"[^>]*>\s*<b>([^<]+)</b>'
+
+# The six base stats in the order every stat table on Serebii lists them.
+STAT_KEYS = ["hp", "atk", "def", "spa", "spd", "spe"]
 
 # Sprite suffix -> form. The meaning is species-dependent: "-m" is Mow on
 # Rotom but Midnight on Lycanroc, so the per-species map wins.
@@ -314,8 +320,10 @@ def parse_move(path, useable=None):
                 headers.append([txt(c) for c in cells_h])
             elif cells_v:
                 values.append([txt(c) for c in cells_v])
-        for hrow, vrow in zip(headers, values):
-            for h, v in zip(hrow, vrow):
+        # A header row with no value row (or the reverse) is a page quirk,
+        # not an error: pair what lines up and read on.
+        for hrow, vrow in zip(headers, values, strict=False):
+            for h, v in zip(hrow, vrow, strict=False):
                 for label, key in FLAG_LABELS:
                     if h.startswith(label):
                         flags[key] = (v.strip().lower() == "yes")
@@ -417,8 +425,8 @@ def parse_pokemon(path, mega_names=None):
         if not raw_types:
             raw_types = re.findall(r"/pokedex-bw/type/(\w+)\.gif", blk)[:2]
         types = []
-        for t in raw_types:                      # a block can repeat its own type
-            t = t.capitalize()
+        for raw in raw_types:                    # a block can repeat its own type
+            t = raw.capitalize()
             if t not in types:
                 types.append(t)
 
@@ -438,7 +446,7 @@ def parse_pokemon(path, mega_names=None):
             if hstart <= pos < hend:
                 nums = re.findall(r'<td[^>]*>\s*(\d{1,3})\s*</td>', tailblk)[:6]
                 if len(nums) == 6:
-                    stats = dict(zip(["hp", "atk", "def", "spa", "spd", "spe"], map(int, nums)))
+                    stats = dict(zip(STAT_KEYS, map(int, nums), strict=True))
                     stats["total"] = total
                 break
 
@@ -459,7 +467,7 @@ def parse_pokemon(path, mega_names=None):
             nums = re.findall(r'<td[^>]*>\s*(\d{1,3})\s*</td>', mb.group(2))[:6]
             if len(nums) != 6:
                 continue
-            st = dict(zip(["hp", "atk", "def", "spa", "spd", "spe"], map(int, nums)))
+            st = dict(zip(STAT_KEYS, map(int, nums), strict=True))
             st["total"] = int(mb.group(1))
             out.append({"slug": slug, "name": "%s-%s" % (base["name"], m.group(1)),
                         "species": base["name"], "form": m.group(1),
@@ -488,7 +496,7 @@ def parse_pokemon(path, mega_names=None):
             nums = re.findall(r'<td[^>]*>\s*(\d{1,3})\s*</td>', mb.group(2))[:6]
             if len(nums) != 6:
                 continue
-            st = dict(zip(["hp", "atk", "def", "spa", "spd", "spe"], map(int, nums)))
+            st = dict(zip(STAT_KEYS, map(int, nums), strict=True))
             st["total"] = int(mb.group(1))
             # "Blade Forme" -> "Blade", "Jumbo Variety" -> "Jumbo"
             short = re.sub(r"\s+(Forme?|Form|Variety|Mode|Size)$", "", label).strip()
@@ -532,7 +540,7 @@ def forms_from_attackdex():
             nums = [int(n) for n in re.findall(r">\s*(\d{1,3})\s*<", m.group(6))][:6]
             if len(nums) != 6:
                 continue
-            stats = dict(zip(["hp", "atk", "def", "spa", "spd", "spe"], nums))
+            stats = dict(zip(STAT_KEYS, nums, strict=True))
             stats["total"] = sum(nums)
             # Indeedee's female row carries "#0" instead of "#0876". The
             # sprite filename always has the real number, so read it from
@@ -652,7 +660,7 @@ def abilities_by_form(path):
     right everywhere else. Returns {form label: [abilities]}.
     """
     try:
-        s = io.open(path, encoding="cp1252", errors="replace").read()
+        s = open(path, encoding="cp1252", errors="replace").read()
     except OSError:
         return {}
     m = re.search(r"<b>Abilities</b>\s*:(.*?)</td>", s, re.S)
@@ -874,7 +882,7 @@ def main():
         if src:
             learn[p["name"]] = list(src)
             inherited += 1
-    learn = {k: v for k, v in sorted(learn.items())}
+    learn = dict(sorted(learn.items()))
     json.dump(learn, open(os.path.join(DB, "learnsets.json"), "w", encoding="utf-8"),
               ensure_ascii=False, indent=1)
     print("  %d Pokemon with a movepool (%d inherited from the base form)"

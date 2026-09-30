@@ -21,7 +21,12 @@ Every migration is written to be safe to re-run, and this only adds a memory of
 which have been. Where the database cannot be reached - CI has no credentials -
 `--check` says so and does not pretend to have verified anything.
 """
-import argparse, glob, os, re, subprocess, sys
+import argparse
+import glob
+import os
+import re
+import subprocess
+import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SQLDIR = os.path.join(ROOT, "tracker")

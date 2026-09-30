@@ -54,7 +54,14 @@ IT RUNS WEEKLY, not nightly, for the same reason the Smogon analyses do: six
 minutes and 427 MB of someone else's bandwidth for numbers that drift slowly.
 refresh.py --deep pulls it.
 """
-import argparse, io, json, os, re, sys, time, urllib.request
+import argparse
+import contextlib
+import json
+import os
+import re
+import sys
+import time
+import urllib.request
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 META = os.path.join(ROOT, "data", "meta")
@@ -86,10 +93,8 @@ def flight(html):
                         flags=re.S)
     out = []
     for c in chunks:
-        try:
+        with contextlib.suppress(ValueError):
             out.append(json.loads('"' + c + '"'))
-        except ValueError:
-            pass
     return "".join(out)
 
 
@@ -122,10 +127,8 @@ def _json_after(flow, key):
         raw = _span(flow, m.end(), "[", "]")
         if not raw:
             continue
-        try:
+        with contextlib.suppress(ValueError):
             out.append(json.loads(raw))
-        except ValueError:
-            pass
     return out
 
 
@@ -317,7 +320,7 @@ def main():
     ap.add_argument("--force", action="store_true")
     a = ap.parse_args()
 
-    usage = json.load(io.open(os.path.join(META, "usage_pokemon.json"),
+    usage = json.load(open(os.path.join(META, "usage_pokemon.json"),
                               encoding="utf-8"))
     rows = usage.get("rows") or []
     if a.limit:
@@ -326,7 +329,7 @@ def main():
     have = {}
     if os.path.exists(OUT) and not a.force:
         try:
-            have = (json.load(io.open(OUT, encoding="utf-8"))
+            have = (json.load(open(OUT, encoding="utf-8"))
                     .get("pokemon") or {})
         except (OSError, ValueError):
             have = {}
@@ -366,7 +369,7 @@ def main():
             "regulations": regs,
             "fetched": time.strftime("%Y-%m-%d"),
             "count": len(out), "pokemon": out}
-    with io.open(OUT, "w", encoding="utf-8", newline="\n") as f:
+    with open(OUT, "w", encoding="utf-8", newline="\n") as f:
         json.dump(blob, f, ensure_ascii=False, indent=1, sort_keys=True)
         f.write("\n")
     print("wrote %s  (%d Pokemon, %d new, regulation %s)"

@@ -1,0 +1,4 @@
+# The scripts themselves need only the standard library. This is the linter the
+# gate runs (python -m ruff check), pinned so the rules cannot change under a
+# push: a new ruff release adds findings, and it should arrive in a PR.
+ruff==0.16.9

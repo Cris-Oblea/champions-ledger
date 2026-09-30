@@ -25,11 +25,15 @@ Sunshine", Snow Warning says "Snowstorm blows". The script fails loudly if a
 field effect stops matching a move or an ability, which is what would happen if
 a regulation reworded one.
 """
-import argparse, json, os, re, sys
+import argparse
+import json
+import os
+import re
+import sys
+
+import query as Q
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.insert(0, os.path.join(ROOT, "scripts"))
-import query as Q
 
 OUT = os.path.join(ROOT, "data", "db", "item_links.json")
 
@@ -162,7 +166,8 @@ def item_links(item, props, setters, facts):
         ms, abs_ = [], []
         for eff, (a, b) in setters.items():
             if "Terrain" in eff:
-                ms += a; abs_ += b
+                ms += a
+                abs_ += b
         return sorted(set(ms)), sorted(set(abs_)), "extends any terrain it sets"
 
     # --- one type, going out ----------------------------------------------

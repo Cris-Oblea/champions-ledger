@@ -34,7 +34,15 @@ otherwise: it prints what it would add, change and remove, per table, and only
 --confirm applies it. --verify re-reads the newest snapshot and says both
 whether the FILE is intact and whether the DATABASE has moved since.
 """
-import argparse, datetime, hashlib, io, json, os, re, subprocess, sys
+import argparse
+import contextlib
+import datetime
+import hashlib
+import json
+import os
+import re
+import subprocess
+import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DEFAULT_DIR = os.environ.get(
@@ -135,7 +143,7 @@ def digest(tables):
 
 
 def read_snapshot(path):
-    d = json.load(io.open(path, encoding="utf-8"))
+    d = json.load(open(path, encoding="utf-8"))
     got = digest(d["tables"])
     if got != d.get("_sha256"):
         sys.exit("%s is CORRUPT: checksum %s, expected %s"
@@ -181,13 +189,13 @@ def take(a):
 
     prev = snapshots(a.dir)
     if prev:
-        last = json.load(io.open(prev[-1], encoding="utf-8"))
+        last = json.load(open(prev[-1], encoding="utf-8"))
         if last.get("_sha256") == body["_sha256"]:
             print("identical to %s - nothing changed, no new file"
                   % os.path.basename(prev[-1]))
             return 0
 
-    with io.open(path, "w", encoding="utf-8") as f:
+    with open(path, "w", encoding="utf-8") as f:
         json.dump(body, f, ensure_ascii=False, indent=1, sort_keys=True)
         f.write("\n")
     print("wrote %s  (%.0f KB)" % (path, os.path.getsize(path) / 1024))
@@ -254,13 +262,11 @@ def canonical(row):
     """One spelling per value, so two doors can be compared at all."""
     out = {}
     for k, v in row.items():
-        if isinstance(v, str) and _TIMESTAMP.match(v):
-            try:
-                v = datetime.datetime.fromisoformat(
-                    v.replace("Z", "+00:00")).isoformat()
-            except ValueError:
-                pass
         out[k] = v
+        if isinstance(v, str) and _TIMESTAMP.match(v):
+            with contextlib.suppress(ValueError):
+                out[k] = datetime.datetime.fromisoformat(
+                    v.replace("Z", "+00:00")).isoformat()
     return json.dumps(out, sort_keys=True, default=str)
 
 
@@ -476,7 +482,7 @@ def main():
             print("no snapshots in %s" % a.dir)
             return 1
         for p in files:
-            d = json.load(io.open(p, encoding="utf-8"))
+            d = json.load(open(p, encoding="utf-8"))
             print("  %-28s %s  %s" % (
                 os.path.basename(p), d.get("_taken_at", "?"),
                 " ".join("%s=%d" % (k, v)

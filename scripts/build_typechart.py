@@ -13,11 +13,14 @@ Writes:
 Run after fetch_smogon.py and fetch_serebii.py:
     python scripts/build_typechart.py
 """
-import os, re, sys, json
+import json
+import os
+import re
+import sys
+
+from serebii_text import read
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.insert(0, os.path.join(ROOT, "scripts"))
-from serebii_text import read  # noqa: E402
 
 DB = os.path.join(ROOT, "data", "db")
 RAW = os.path.join(ROOT, "data", "raw")
@@ -41,7 +44,7 @@ def build_chart(basics):
     for t in basics.get("types") or []:
         if "Champions" not in (t.get("genfamily") or []):
             continue
-        chart[t["name"]] = {d: m for d, m in t.get("atk_effectives") or []}
+        chart[t["name"]] = dict(t.get("atk_effectives") or [])
     return chart
 
 
@@ -85,7 +88,7 @@ def serebii_weaknesses():
             if len(vals) >= 18:
                 blocks.append([float(v) for v in vals[:18]])
         if len(blocks) == 1:
-            out[fn[:-5]] = dict(zip(SEREBII_ORDER, blocks[0]))
+            out[fn[:-5]] = dict(zip(SEREBII_ORDER, blocks[0], strict=True))
     return out
 
 

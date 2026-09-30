@@ -19,11 +19,13 @@ can just evolve it himself in GO, he should not be spending a chip on it.
     python scripts/build_gts_difficulty.py            # write the json
     python scripts/build_gts_difficulty.py --show     # print the table
 """
-import json, io, os, sys
+import json
+import os
+import sys
+
+import query as Q
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.insert(0, os.path.join(ROOT, "scripts"))
-import query as Q
 
 OUT = os.path.join(ROOT, "data", "meta", "gts_difficulty.json")
 SRC = os.path.join(ROOT, "data", "meta", "go_sourcing.json")
@@ -31,10 +33,9 @@ SRC = os.path.join(ROOT, "data", "meta", "go_sourcing.json")
 # Ladder usage -> demand 1-5. The cuts are where the ladder actually steps:
 # a top-25 Pokemon is a different negotiation from a rank-150 one.
 def demand_of(pct):
-    if pct >= 15: return 5
-    if pct >= 7:  return 4
-    if pct >= 3:  return 3
-    if pct >= 1:  return 2
+    for floor, level in ((15, 5), (7, 4), (3, 3), (1, 2)):
+        if pct >= floor:
+            return level
     return 1
 
 DEMAND_WHY = {
@@ -48,7 +49,7 @@ DEMAND_WHY = {
 
 def main():
     show = "--show" in sys.argv
-    src = json.load(io.open(SRC, encoding="utf-8"))
+    src = json.load(open(SRC, encoding="utf-8"))
     seeded = src.get("species") or {}
     default_supply = 2
 
@@ -107,7 +108,7 @@ def main():
                      "in data/meta/go_sourcing.json and is an ESTIMATE.",
             "_scale": src.get("_scale"),
             "count": len(out), "species": out}
-    io.open(OUT, "w", encoding="utf-8").write(
+    open(OUT, "w", encoding="utf-8").write(
         json.dumps(blob, ensure_ascii=False, indent=1))
     print("wrote %s (%d species, %d with researched sourcing)"
           % (OUT, len(out), sum(1 for v in out.values() if v["seeded"])))

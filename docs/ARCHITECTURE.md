@@ -51,9 +51,9 @@ public because it carries no personal row.
 | DB client | **supabase-js** (`@supabase/supabase-js`), inlined from `node_modules` (not a CDN) | `package.json` | A CDN would be a third party inside a page that holds the ledger |
 | Hosting | **Cloudflare Workers**, static assets only | `tracker/wrangler.toml` → `tracker/dist/` | Free, fast, and the served folder is only `dist/`, so nothing private can leak |
 | Scheduler | A second **Cloudflare Worker** (JavaScript, Web Crypto) | `cron/src/cron.js` | Starts the nightly GitHub workflow on time; GitHub's own schedule ran hours late |
-| Data pipeline | **Python 3**, standard library only (`urllib`, `json`, `re`, `argparse`, `html`) | `scripts/` | No `pip install` needed anywhere |
+| Data pipeline | **Python 3**, standard library only (`urllib`, `json`, `re`, `argparse`, `html`) | `scripts/` | The scripts need no `pip install`; the gate's linter does (`requirements.txt`) |
 | Damage maths | **Smogon's damage-calc** (TypeScript, copied from upstream, bundled with esbuild), plus our own Python port | `scripts/build_engine_bundle.py` → `tracker/engine.bundle.js`; `scripts/damage.py` | The page runs Smogon's real engine; the Python port is checked against it |
-| Tests | **Node + jsdom** browser tests; **ESLint** with **globals**, **eslint-plugin-sonarjs** and **eslint-plugin-unicorn** for the source; Python audits | `tests/`, `eslint.config.mjs`, `scripts/check_app.js`, `scripts/audit_*.py` | Tests run against the *built* page, which is the thing that ships |
+| Tests | **Node + jsdom** browser tests; **ESLint** with **globals**, **eslint-plugin-sonarjs** and **eslint-plugin-unicorn** for the JavaScript; **ruff** for the Python; Python audits | `tests/`, `eslint.config.mjs`, `ruff.toml`, `scripts/check_app.js`, `scripts/audit_*.py` | Tests run against the *built* page, which is the thing that ships |
 | CI/CD | **GitHub Actions**, a GitHub App bot, **Dependabot**, a git `pre-push` hook | `.github/`, `scripts/hooks/pre-push` | Nothing reaches the phone without passing the gate |
 | Fonts / sprites | Google Fonts (IBM Plex), Pokemon sprites from a CDN at a pinned commit | `tracker/index.template.html`, `spriteFor()` in `tracker/src/ui/card.js` | Sprites are Nintendo's images, so the repo ships only their ids |
 | Dev tools | Supabase CLI, `npx wrangler`, `gh`, graphify | your machine | Reading the DB, deploying the cron, PRs, the code map |
@@ -310,6 +310,12 @@ runs in four places: the `pre-push` hook, every pull request, every push to
 - **Python checks**: the damage selftest, name matching, lookups, forms, the
   README's counts (`build_docs.py --check`), pending migrations, the backup's
   age, whether restore still works, and the doc rules (`check_docs.py`).
+- **ruff** (`ruff.toml`, `python -m ruff check`): the Python twin of ESLint -
+  bugbear, pyflakes, complexity, naming, swallowed exceptions, the rules
+  SonarQube for IDE used to show on the scripts. `ruff.toml` has a ratchet
+  like the one ESLint had: rules that still have findings are listed, off,
+  and each leaves the list in the PR that takes it to zero. Installed with
+  `python -m pip install -r requirements.txt`, which pins the version.
 - **ESLint** (`eslint.config.mjs`): the rules SonarQube for IDE shows in VS
   Code, run over every file. `no-undef` catches a name a module uses without
   declaring or importing it, which the bundler would link as a global and the
@@ -319,7 +325,7 @@ runs in four places: the `pre-push` hook, every pull request, every push to
   `--max-warnings 0`, so a push that adds any finding fails.
   `scripts/hooks/lint-on-edit.js` runs the same rules earlier: a Claude Code
   PostToolUse hook (`.claude/settings.json`) that lints each `.js` file Claude
-  writes, silent when it is clean, so a finding shows up while the edit is
+  writes (and each `.py` file, with ruff), silent when it is clean, so a finding shows up while the edit is
   still on screen instead of at the push.
 - **`node scripts/check_app.js`**: what no linter can see - every element id
   the app reaches for exists in the markup, and every `CALC` switch the
@@ -369,6 +375,7 @@ gates and publishes. You never deploy by hand.
 ```bash
 git switch main && git pull
 git switch -c my-change               # main is protected: always a branch
+python -m pip install -r requirements.txt  # once: the linter the gate runs
 # edit tracker/src/**/*.js or scripts/*.py
 # careful: `daily.py --no-refresh` WITHOUT --skip-deploy publishes. Leave that to CI
 python scripts/build_tracker_page.py  # rebuild dist/
@@ -407,7 +414,8 @@ gh pr create                          # CI gates it; merge = deploy
   reporter in the Problems panel (Ctrl+Shift+M): **ESLint** for JavaScript -
   the same rules, and the same check, the gate runs, so a red error there
   would block the push, and so would a yellow warning -
-  and **SonarQube for IDE** for CSS, HTML and Python.
+  **Ruff** for Python, the same way (`ruff.toml`, the gate's own check), and
+  **SonarQube for IDE** for CSS and HTML.
 - **Recommended extensions** are listed in `.vscode/extensions.json`, so
   VS Code offers to install them when the repo opens (or: Extensions panel,
   filter `@recommended`).
@@ -415,7 +423,7 @@ gh pr create                          # CI gates it; merge = deploy
   `.cspell-words.txt` (Pokemon names, sources, tools, and the Spanish quotes).
   For a new name, use the Quick Fix (Ctrl+.) "Add to dictionary: project".
 - Useful extensions: **GitLens** (who changed a line and why), **GitHub Pull
-  Requests** (review PRs inside VS Code), **Python**, **ESLint** (optional).
+  Requests** (review PRs inside VS Code), **Python**, **ESLint** and **Ruff**.
 
 ---
 

@@ -28,7 +28,12 @@ probe on both sides. An item that moves nothing in any of them is reported as
 unmodelled rather than recorded as x1.00, because "the engine does not simulate
 this" and "this does nothing" are different facts.
 """
-import argparse, io, json, os, re, subprocess, sys
+import argparse
+import json
+import os
+import re
+import subprocess
+import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DB = os.path.join(ROOT, "data", "db")
@@ -56,7 +61,7 @@ NEEDS = {
 
 
 def load(name):
-    with io.open(os.path.join(DB, name), encoding="utf-8") as f:
+    with open(os.path.join(DB, name), encoding="utf-8") as f:
         return json.load(f)
 
 
@@ -475,7 +480,7 @@ def main():
                          "engine itself pushes, in 4096ths, never measured "
                          "from a damage ratio and never recited."),
             "effects": known}
-    with io.open(OUT, "w", encoding="utf-8", newline="\n") as f:
+    with open(OUT, "w", encoding="utf-8", newline="\n") as f:
         json.dump(blob, f, ensure_ascii=False, indent=1, sort_keys=True)
         f.write("\n")
     print("wrote %s: %d with a number" % (OUT, len(known)))

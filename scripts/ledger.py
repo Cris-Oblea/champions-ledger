@@ -42,7 +42,11 @@ quoted as current - vp_balance had sat at 8000 since 2026-09-12, and the
 permanence-ticket count with it. So the costs stay and the balance is gone: say
 what something COSTS, and ask him what he has if it ever decides anything.
 """
-import argparse, io, json, os, sys, time
+import argparse
+import json
+import os
+import sys
+import time
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CACHE = os.path.join(ROOT, "data", "raw", "ledger_cache.json")
@@ -68,7 +72,6 @@ def _note(msg):
 
 
 def _from_db():
-    sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
     try:
         import backup_ledger
     except ImportError:
@@ -84,12 +87,11 @@ def _from_db():
 
 def _from_snapshot():
     try:
-        sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
         import backup_ledger
         files = backup_ledger.snapshots(backup_ledger.DEFAULT_DIR)
         if not files:
             return None, None
-        d = json.load(io.open(files[-1], encoding="utf-8"))
+        d = json.load(open(files[-1], encoding="utf-8"))
         return d.get("tables"), d.get("_taken_at")
     except Exception:
         return None, None
@@ -103,7 +105,7 @@ def tables(refresh=False):
     if not refresh and os.path.exists(CACHE):
         try:
             if time.time() - os.path.getmtime(CACHE) < TTL:
-                _CACHED = json.load(io.open(CACHE, encoding="utf-8"))
+                _CACHED = json.load(open(CACHE, encoding="utf-8"))
                 return _CACHED
         except (OSError, ValueError):
             pass
@@ -112,7 +114,7 @@ def tables(refresh=False):
     if live is not None:
         try:
             os.makedirs(os.path.dirname(CACHE), exist_ok=True)
-            with io.open(CACHE, "w", encoding="utf-8") as f:
+            with open(CACHE, "w", encoding="utf-8") as f:
                 json.dump(live, f, ensure_ascii=False, default=str)
         except OSError:
             pass
@@ -155,7 +157,7 @@ def _item_categories():
     """
     path = os.path.join(ROOT, "data", "db", "items.json")
     try:
-        rows = json.load(io.open(path, encoding="utf-8"))
+        rows = json.load(open(path, encoding="utf-8"))
     except (OSError, ValueError):
         return {}
     if isinstance(rows, dict):

@@ -8,6 +8,7 @@
     "usernamehw.errorlens",
     "sonarsource.sonarlint-vscode",
     "dbaeumer.vscode-eslint",
+    "charliermarsh.ruff",
     "ms-python.python",
     "mtxr.sqltools",
     "mtxr.sqltools-driver-pg"

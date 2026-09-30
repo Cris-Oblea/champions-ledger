@@ -22,7 +22,13 @@ shell pointing at hashed assets, plus the app's sourcemap. The pieces change at
 different rates, so a nightly dex refresh costs 347 KB instead of 1,314. See
 split_assets().
 """
-import hashlib, io, json, os, re, shutil, subprocess, sys
+import hashlib
+import json
+import os
+import re
+import shutil
+import subprocess
+import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TPL = os.path.join(ROOT, "tracker", "index.template.html")
@@ -239,7 +245,8 @@ def check_graph(files):
     order modules run in stopped meaning anything, and how a part could no
     longer be read without the one above it. Now a cycle fails the build.
     """
-    layer = lambda f: LAYERS.index(f.split("/")[0]) if "/" in f else len(LAYERS)
+    def layer(f):
+        return LAYERS.index(f.split("/")[0]) if "/" in f else len(LAYERS)
     graph, bad = {}, []
     for f in files:
         text = open(os.path.join(SRC, f), encoding="utf-8").read()
@@ -599,7 +606,7 @@ def main():
     out = out.replace(MARK, data.replace("</", r"<\/"))
     splits = ""
     if os.path.exists(SPLITS_JS):
-        splits = io.open(SPLITS_JS, encoding="utf-8").read()
+        splits = open(SPLITS_JS, encoding="utf-8").read()
         print("  splits: %.0f KB" % (len(splits) / 1024))
     else:
         print("  no tracker/splits.js - run build_splits_data.py")
@@ -739,7 +746,7 @@ def build_dist(html):
         if not os.path.exists(src):
             print("  no tracker/%s - run %s" % (src_name, made_by))
             continue
-        text = io.open(src, encoding="utf-8").read()
+        text = open(src, encoding="utf-8").read()
         name = "%s.%s.js" % (src_name[:-3], hashlib.sha256(
             text.encode("utf-8")).hexdigest()[:8])
         # SAY WHAT ACTUALLY WENT WRONG. The substitution below is silent when

@@ -55,7 +55,6 @@ below. A number whose subject is not in the tables keeps the bare figure and
 --audit lists it, so the gaps are counted rather than quietly wrong.
 """
 import argparse
-import io
 import json
 import os
 import re
@@ -118,7 +117,7 @@ AFTER = [
                 "frz": "freeze"}.get(m.group(1), m.group(1)) + " chance"),
     (r"^\s*%\s*dmg dealt", lambda m: "of damage dealt"),
     # Rivalry: "attacks do 1.25x on same gender; 0.75x on opposite"
-    (r"^\s*(?:%|" + TIMES + r"|x)\s*on", lambda m: "damage"),
+    (r"^\s*(?:%|" + TIMES + r"|x)\s*on\b", lambda m: "damage"),
     (r"^\s*%\s*-\d", lambda m: "chance"),
 ]
 BEFORE = [
@@ -319,7 +318,7 @@ def main():
     ap.add_argument("--audit", action="store_true",
                     help="only the numbers whose subject is not in the tables")
     a = ap.parse_args()
-    blob = json.load(io.open(EFFECTS, encoding="utf-8"))["effects"]
+    blob = json.load(open(EFFECTS, encoding="utf-8"))["effects"]
     bare, total = [], 0
     for name in sorted(blob):
         cs = chips(blob[name])

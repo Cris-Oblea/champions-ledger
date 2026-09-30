@@ -34,7 +34,16 @@ Usage:
     python scripts/fetch_tournament.py --scrape              # ignore the export
     python scripts/fetch_tournament.py --no-teamlists        # standings only
 """
-import os, re, sys, json, time, html, hashlib, urllib.parse, urllib.request
+import contextlib
+import hashlib
+import html
+import json
+import os
+import re
+import sys
+import time
+import urllib.parse
+import urllib.request
 
 BASE = "https://www.pokedata.ovh/standingsVGC"
 UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
@@ -58,6 +67,7 @@ def get(url, timeout=60):
             if attempt == 2:
                 return None
             time.sleep(1.5 * (attempt + 1))
+    return None
 
 
 def round_info(tid, division):
@@ -205,11 +215,9 @@ def parse_standings(body):
             entry = {"pokemon": parts[0], "ability": None, "item": None, "moves": []}
             for p in parts[1:]:
                 if p.startswith("["):
-                    try:
+                    with contextlib.suppress(Exception):
                         entry["moves"] = [m.strip(" '\"") for m in
                                           p.strip("[]").split(",") if m.strip(" '\"")]
-                    except Exception:
-                        pass
                 elif entry["ability"] is None:
                     entry["ability"] = p
                 elif entry["item"] is None:

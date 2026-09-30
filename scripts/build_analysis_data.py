@@ -20,7 +20,9 @@ What is dropped: the learnset (the app has its own), the base stats (same), and
 Smogon's own name for the Pokemon where it matches ours. What is kept is the
 prose, because the prose is the thing that cannot be derived.
 """
-import io, json, os, sys
+import json
+import os
+import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SRC = os.path.join(ROOT, "data", "meta", "smogon_analyses.json")
@@ -30,7 +32,7 @@ OUT = os.path.join(ROOT, "tracker", "analysis.js")
 def main():
     if not os.path.exists(SRC):
         sys.exit("no analyses yet - run scripts/fetch_smogon.py")
-    blob = json.load(io.open(SRC, encoding="utf-8"))
+    blob = json.load(open(SRC, encoding="utf-8"))
     out = {}
     for mon in blob.get("pokemon") or []:
         strategies = mon.get("vgc_strategies") or []
@@ -71,7 +73,7 @@ def main():
             "window.CHAMP_ANALYSIS = "
             + json.dumps(out, ensure_ascii=False, separators=(",", ":"))
             + ";\n")
-    with io.open(OUT, "w", encoding="utf-8", newline="\n") as f:
+    with open(OUT, "w", encoding="utf-8", newline="\n") as f:
         f.write(body)
     sets = sum(len(s["sets"]) for v in out.values() for s in v)
     print("wrote %s  (%d KB, %d Pokemon, %d sets)"

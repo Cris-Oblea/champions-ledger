@@ -29,7 +29,11 @@ is about damage rather than change.
 The nightly prints it and the pull request carries it, so the diff of a
 regulation night is readable without opening a single JSON file.
 """
-import argparse, io, json, os, subprocess, sys
+import argparse
+import json
+import os
+import subprocess
+import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -72,7 +76,7 @@ def committed(rel):
 
 def current(rel):
     try:
-        return json.load(io.open(os.path.join(ROOT, rel), encoding="utf-8"))
+        return json.load(open(os.path.join(ROOT, rel), encoding="utf-8"))
     except (OSError, ValueError):
         return None
 

@@ -11,7 +11,13 @@ Usage:
     python scripts/fetch_serebii.py attackdex # one page per move
     python scripts/fetch_serebii.py all
 """
-import hashlib, os, re, sys, time, threading, queue
+import hashlib
+import os
+import queue
+import re
+import sys
+import threading
+import time
 
 from serebii_text import read
 

@@ -37,7 +37,10 @@ because 321 pages at 1.3 MB is six minutes of someone else's bandwidth.
 Grouped by how often they change, they are fetched once a week and cached for
 a year.
 """
-import argparse, io, json, os, sys
+import argparse
+import json
+import os
+import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SRC = os.path.join(ROOT, "data", "meta", "usage_splits.json")
@@ -171,7 +174,7 @@ def main():
 
     if not os.path.exists(SRC):
         sys.exit("no splits yet - run scripts/fetch_pokebase_splits.py")
-    blob = json.load(io.open(SRC, encoding="utf-8"))
+    blob = json.load(open(SRC, encoding="utf-8"))
     mons = blob.get("pokemon") or {}
     if a.check:
         return check(mons)
@@ -207,7 +210,7 @@ def main():
             "window.CHAMP_SPLITS = "
             + json.dumps(payload, ensure_ascii=False, separators=(",", ":"))
             + ";\n")
-    with io.open(OUT, "w", encoding="utf-8", newline="\n") as f:
+    with open(OUT, "w", encoding="utf-8", newline="\n") as f:
         f.write(body)
     moves = sum(len(r["m"]) for r in out.values())
     print("wrote %s  (%d KB, %d Pokemon, %d moves priced, %s, fetched %s)"

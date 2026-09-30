@@ -9,14 +9,18 @@ Usage:
     python scripts/audit_forms.py
     python scripts/audit_forms.py --verbose
 """
-import os, re, sys, json, html
+import html
+import json
+import os
+import re
+import sys
 from collections import defaultdict
 
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.insert(0, os.path.join(ROOT, "scripts"))
-from query import norm, species_norm, meta  # noqa: E402
-
+from query import meta, norm, species_norm
 from serebii_text import read
+
+ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
 
 RAW = os.path.join(ROOT, "data", "raw")
 DB = os.path.join(ROOT, "data", "db")
@@ -36,8 +40,8 @@ def master_list():
         sprite = m.group(2).rsplit(".", 1)[0]
         suffix = sprite.split("-", 1)[1] if "-" in sprite else ""
         types = []
-        for t in re.findall(r"/pokedex-bw/type/(\w+)\.gif", m.group(5)):
-            t = t.capitalize()
+        for raw in re.findall(r"/pokedex-bw/type/(\w+)\.gif", m.group(5)):
+            t = raw.capitalize()
             if t not in types:
                 types.append(t)
         rows.append({"dex": int(m.group(1)), "slug": m.group(3), "name": name,
@@ -140,7 +144,7 @@ def alternate_form_watch(dex):
 
     # An in-battle form that moves a stat or a type must actually carry it.
     bad = []
-    for slug, (what, why) in sorted(BATTLE_FORM_OK.items()):
+    for slug, (what, _why) in sorted(BATTLE_FORM_OK.items()):
         row = next((p for p in dex if norm(p["name"]) == norm(slug)), None)
         if not row:
             continue

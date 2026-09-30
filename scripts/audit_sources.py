@@ -1,8 +1,7 @@
 #!/usr/bin/env python3
 """Do the sources agree on the NUMBERS? Every move, every item, side by side.
 
-    python scripts/audit_sources.py            # the disagreements
-    python scripts/audit_sources.py --all      # plus what agrees, counted
+    python scripts/audit_sources.py      # the disagreements, and how many agree
 
 Prose can be argued about; numbers cannot. This checks the quantitative fields
 of every move and item against each source that states them, and prints every
@@ -23,11 +22,14 @@ accuracy. Reading a number off either one would import a value from a different
 game; CLAUDE.md allows them for a MECHANIC only, after checking Champions did
 not change it.
 """
-import argparse, glob, io, json, os, re, sys
+import glob
+import json
+import os
+import re
+
+import query as Q
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.insert(0, os.path.join(ROOT, "scripts"))
-import query as Q
 
 PB = os.path.join(ROOT, "data", "raw", "pokebase")
 SMOG = os.path.join(ROOT, "data", "raw", "smogon_calc", "raw_moves.json")
@@ -48,7 +50,7 @@ def num(x):
 def pokebase_moves():
     out = {}
     for f in sorted(glob.glob(os.path.join(PB, "moves*.html"))):
-        h = io.open(f, encoding="utf-8", errors="replace").read()
+        h = open(f, encoding="utf-8", errors="replace").read()
         for m in PB_MOVE.finditer(h):
             out.setdefault(m.group(1), {
                 "cat": CAT.get(m.group(2)), "bp": num(m.group(3)),
@@ -73,8 +75,9 @@ def rescaled_pp(ours):
     import csv
     from collections import Counter, defaultdict
     main = {r["identifier"]: r["pp"] for r in
-            csv.DictReader(io.open(API, encoding="utf-8"))}
-    ident = lambda n: re.sub(r"[^a-z0-9-]", "", n.lower().replace(" ", "-"))
+            csv.DictReader(open(API, encoding="utf-8"))}
+    def ident(n):
+        return re.sub(r"[^a-z0-9-]", "", n.lower().replace(" ", "-"))
     buckets = defaultdict(Counter)
     for m in ours:
         k = main.get(ident(m["name"]))
@@ -89,7 +92,7 @@ def rescaled_pp(ours):
     return out
 
 
-def check_moves(show_all):
+def check_moves():
     ours = [m for m in Q.db("moves") if m.get("useable")]
     pb = pokebase_moves()
     sm = json.load(open(SMOG, encoding="utf-8")) if os.path.exists(SMOG) else {}
@@ -118,8 +121,6 @@ def check_moves(show_all):
             pairs.append(("accuracy", m.get("accuracy"), p["acc"], "pokebase"))
         if s and s.get("bp") is not None:
             pairs.append(("BP", m.get("power") or 0, s["bp"], "smogon calc"))
-        for field, mine, theirs in [(a, b, c) for a, b, c, _ in pairs]:
-            pass
         for field, mine, theirs, who in pairs:
             if mine is None or theirs is None:
                 continue
@@ -135,7 +136,7 @@ def check_moves(show_all):
     for n, f, a, b, who in sorted(rows):
         print("     %-16s %-9s serebii %-6s vs %s %s" % (n, f, a, who, b))
     vote = rescaled_pp(ours)
-    for n, f, a, b, who in sorted(rows):
+    for n, f, *_ in sorted(rows):
         if f == "PP" and n in vote:
             k, pp, share = vote[n]
             print("     %-16s %-9s rescale vote %s (main series %s -> %s in %s)"
@@ -153,11 +154,11 @@ def check_moves(show_all):
     return rows, gaps
 
 
-def check_items(show_all):
+def check_items():
     facts = (Q.db("item_facts") or {}).get("prices") or {}
     both = [(n, r) for n, r in facts.items() if r.get("vp")]
     src = {}
-    for n, r in both:
+    for _n, r in both:
         src[r["source"]] = src.get(r["source"], 0) + 1
     print("\nITEMS - %d priced" % len(both))
     for k, v in sorted(src.items()):
@@ -167,11 +168,8 @@ def check_items(show_all):
 
 
 def main():
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--all", action="store_true")
-    a = ap.parse_args()
-    check_moves(a.all)
-    check_items(a.all)
+    check_moves()
+    check_items()
     print("\nAbilities carry no numbers to cross-check - what they carry is "
           "prose, and scripts/build_text_facts.py picks the more concrete of "
           "the two texts per ability.")

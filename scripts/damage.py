@@ -52,11 +52,14 @@ Usage:
     python scripts/damage.py Basculegion "Wave Crash" Kingambit \\
         --engine smogon --atk-ability Adaptability
 """
-import os, sys, re, json, argparse
+import argparse
+import json
+import os
+import re
+
+import query as Q
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.insert(0, os.path.join(ROOT, "scripts"))
-import query as Q
 
 LEVEL = 50
 SPREAD = 0.75          # any move with more than one target, in doubles
@@ -86,7 +89,7 @@ def stat(base, sp, nature_mult=1.0, is_hp=False):
 
 def nature_mults(name):
     """Per-stat multipliers for a nature; data/db/natures.json already has them."""
-    flat = {k: 1.0 for k in ("hp", "atk", "def", "spa", "spd", "spe")}
+    flat = dict.fromkeys(("hp", "atk", "def", "spa", "spd", "spe"), 1.0)
     if not name:
         return flat
     nats = Q.db("natures") or {}
@@ -269,9 +272,7 @@ def _ability_applies(k, M, mtype, A, D):
         return False
     if k in ("filter", "solid rock") and type_mult(mtype, D.get("types") or []) <= 1:
         return False
-    if k == "sniper" and not M.get("always_crit"):
-        return False
-    return True
+    return not (k == "sniper" and not M.get("always_crit"))
 
 
 def caveats(A, D, M, moves_last=None):
@@ -678,7 +679,7 @@ def selftest():
 
     # "30 HP / 24 Def / 12 SpD with Bold or Relaxed: ... survive Black Glasses
     #  Kingambit's Kowtow Cleave"  (Black Glasses = x1.2 Dark)
-    lo, hi, hp, notes = calc("Kingambit", "Kowtow Cleave", "Farigiraf",
+    lo, hi, hp, _notes = calc("Kingambit", "Kowtow Cleave", "Farigiraf",
                              atk_sp=32, atk_nature="Adamant",
                              def_hp_sp=30, def_sp=24, def_nature="Relaxed",
                              power_mult=4915 / 4096.0)
@@ -812,7 +813,7 @@ def parity_block():
         return True
 
     ok = True
-    for row, r in zip(PARITY, got):
+    for row, r in zip(PARITY, got, strict=True):
         atk, mv, dfn, nat, why = row[0], row[1], row[2], row[3], row[4]
         extra = row[5] if len(row) > 5 else {}
         if r.get("error"):
@@ -831,7 +832,7 @@ def parity_block():
             print("        HP disagrees: %d vs %d - the STAT formula is wrong"
                   % (hp, r["maxHP"]))
     agree = 0
-    for row, r in zip(PARITY, got):
+    for row, r in zip(PARITY, got, strict=True):
         if r.get("error"):
             continue
         ex = row[5] if len(row) > 5 else {}
@@ -883,7 +884,7 @@ def run_smogon(cases):
         p = subprocess.run(["node", js, "-"], input=json.dumps(cases),
                            capture_output=True, text=True)
     except FileNotFoundError:
-        raise SystemExit("--engine smogon needs Node on PATH (node --version)")
+        raise SystemExit("--engine smogon needs Node on PATH (node --version)") from None
     if p.returncode != 0:
         raise SystemExit("smogon_engine.js failed:\n%s" % (p.stderr or "").strip())
     return json.loads(p.stdout)

@@ -20,6 +20,13 @@
   // JavaScript belongs to ESLint: eslint.config.mjs runs SonarSource's own
   // rules (eslint-plugin-sonarjs) plus no-undef and the layer rule, and it is
   // the exact check the gate runs - what the panel shows is what blocks a
-  // push. SonarQube for IDE keeps everything else: CSS, HTML, Python.
-  "sonarlint.analysisExcludesStandalone": "**/*.js,**/*.mjs,data/**,graphify-out/**,node_modules/**,tracker/dist/**,tracker/build/**"
+  // push. Python belongs to Ruff the same way: ruff.toml, and the ruff that
+  // requirements.txt pins rather than the one bundled with the extension.
+  // SonarQube for IDE keeps what is left: CSS and HTML.
+  "sonarlint.analysisExcludesStandalone": "**/*.js,**/*.mjs,**/*.py,data/**,graphify-out/**,node_modules/**,tracker/dist/**,tracker/build/**",
+  "ruff.importStrategy": "fromEnvironment",
+  // The scripts import each other by bare name (`import query as Q`), which
+  // works because Python puts the script's own folder on the path. Pylance
+  // has to be told, or every such import reads as unresolved.
+  "python.analysis.extraPaths": ["scripts"]
 }

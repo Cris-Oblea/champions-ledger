@@ -21,12 +21,17 @@ It found one here too: `species_norm` stripped the Mega suffixes x and y but
 not **z**, so Regulation M-C's three Z Megas matched no base species and
 `query.py pokemon "Mega Garchomp Z"` listed no moves at all.
 """
-import ast, collections, glob, json, os, sys
+import ast
+import collections
+import glob
+import json
+import os
+import sys
+
+import damage as Dm
+import query as Q
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.insert(0, os.path.join(ROOT, "scripts"))
-import query as Q
-import damage as Dm
 
 bad = 0
 

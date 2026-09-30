@@ -29,11 +29,13 @@ Anything that is neither measured nor stated by a Champions source is left with
 app can show it as what it is - a number from another game, waiting for the
 player to confirm it in this one. Nothing here is invented.
 """
-import io, json, os, re, sys
+import json
+import os
+import re
+
+import query as Q
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.insert(0, os.path.join(ROOT, "scripts"))
-import query as Q
 
 PAGE = os.path.join(ROOT, "data", "raw", "pages", "statusconditions.html")
 OUT = os.path.join(ROOT, "data", "db", "statuses.json")
@@ -48,7 +50,7 @@ def serebii_changes():
     """(condition -> {prior, new}) from Serebii's Champions rebalance table."""
     if not os.path.exists(PAGE):
         return {}
-    h = io.open(PAGE, encoding="cp1252", errors="replace").read()
+    h = open(PAGE, encoding="cp1252", errors="replace").read()
     out = {}
     for r in re.findall(r"<tr.*?</tr>", h, re.S):
         cells = [txt(c) for c in re.findall(r"<t[dh].*?</t[dh]>", r, re.S)]

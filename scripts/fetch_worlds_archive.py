@@ -26,7 +26,14 @@ Writes data/meta/tournament_<tid>_<division>.json per event (the same shape
 fetch_tournament.py produces) plus data/meta/worlds_archive.json, which is the
 per-year, per-division species table - the thing actually worth reading.
 """
-import argparse, collections, io, json, os, re, subprocess, sys, urllib.request
+import argparse
+import collections
+import json
+import os
+import re
+import subprocess
+import sys
+import urllib.request
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 META = os.path.join(ROOT, "data", "meta")
@@ -49,8 +56,8 @@ def discover():
                                                                 "replace")
     rows = re.findall(r"location\.href='(\d+)/'[^>]*>([^<]+)", body)
     out = []
-    for tid, label in rows:
-        label = " ".join(label.split())
+    for tid, raw in rows:
+        label = " ".join(raw.split())
         if not re.search(r"world championship", label, re.I):
             continue
         y = re.search(r"(20\d\d)", label)
@@ -91,7 +98,7 @@ def species_table(path):
     team holds a species at most once - so a count IS a team count.
     """
     try:
-        d = json.load(io.open(path, encoding="utf-8"))
+        d = json.load(open(path, encoding="utf-8"))
     except Exception:
         return None
     players = d.get("players") or []
@@ -189,7 +196,7 @@ def main():
         "event each division was taken from. 2022 has no teamlists on any "
         "day or division - standings only, upstream.")
 
-    io.open(OUT, "w", encoding="utf-8").write(
+    open(OUT, "w", encoding="utf-8").write(
         json.dumps(archive, ensure_ascii=False, indent=1))
     tot = sum(d["teams"] for e in archive["events"]
               for d in e["divisions"].values())
