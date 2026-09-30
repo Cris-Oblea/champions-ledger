@@ -15,7 +15,6 @@
      - A team slot holding a BASE build with no stone draws the base form
        alone. The flag read `megas: !build.mega`, which switched the Mega line
        ON for exactly the builds that have no Mega. */
-const { JSDOM, VirtualConsole } = require("jsdom");
 const ROOT = require("path").join(__dirname, "..") + "/";
 const UID = "u1";
 
@@ -58,27 +57,7 @@ const BUILDS = [
 const TEAMS = [{user_id:UID, id:"t1", name:"Base", slots:[
   {build_id:"charizard", item:"", why:""}], notes:{}, updated_at:"2026-09-27"}];
 
-const body = require("./harness.js").page(ROOT);
-const stub = `<script>
-window.__ROWS=${JSON.stringify(ROWS)}; window.__BUILDS=${JSON.stringify(BUILDS)};
-window.__TEAMS=${JSON.stringify(TEAMS)}; window.__WROTE=[];
-window.supabase={createClient:function(){return{
- auth:{getSession:function(){return Promise.resolve({data:{session:{user:{id:"u1",email:"t@t"}}}});},
-       onAuthStateChange:function(){},signInWithPassword:function(){},signOut:function(){}},
- from:function(t){return{
-   select:function(){return Promise.resolve({data:t==="box"?window.__ROWS:(t==="builds"?window.__BUILDS:(t==="teams"?window.__TEAMS:[])),error:null});},
-   upsert:function(r){ window.__WROTE.push({table:t, row:r}); return Promise.resolve({error:null});},
-   delete:function(){return {eq:function(){ return {eq:function(){ return Promise.resolve({error:null}); },
-     then:function(f){ return Promise.resolve({error:null}).then(f); }}; }};}
- };},
- channel:function(){var c={on:function(){return c;},subscribe:function(){return c;}};return c;}
-};}};
-<\/script>`;
-const errs = [];
-const vc = new VirtualConsole().on("jsdomError",
-  e => { if (!/scrollTo/.test(e.message)) errs.push(e.message); });
-const dom = new JSDOM(body.replace("<head>", "<head>" + stub),
-  {runScripts:"dangerously", pretendToBeVisual:true, virtualConsole:vc});
+const { dom, errs } = require("./harness.js").open(ROOT, { box: ROWS, builds: BUILDS, teams: TEAMS });
 const w = dom.window, d = w.document;
 const tick = ms => new Promise(r => setTimeout(r, ms));
 const boxWrites = () => w.__WROTE.filter(x => x.table === "box")

@@ -20,7 +20,6 @@
  *   that knows what a real browser did, and it is one tap on the phone where
  *   the bug was found.
  */
-const { JSDOM } = require("jsdom");
 const ROOT = require("path").join(__dirname, "..") + "/";
 
 let bad = 0;
@@ -31,17 +30,8 @@ const ok = (label, got, want) => {
               got + (good ? "" : "   (esperado " + want + ")"));
 };
 
-const body = require("./harness.js").page(ROOT);
-/* No ledger and no Supabase: this exercises one pure function. */
-const stub = `<script>window.supabase={createClient:function(){return{
- auth:{getSession:function(){return Promise.resolve({data:{session:null}});},
-       onAuthStateChange:function(){},signInWithPassword:function(){},signOut:function(){}},
- from:function(){return{select:function(){return Promise.resolve({data:[],error:null});}};},
- channel:function(){var c={on:function(){return c;},subscribe:function(){return c;}};return c;}
-};}};<\/script>`;
-const errs = [];
-const dom = new JSDOM(body.replace("<head>", "<head>" + stub),
-  {runScripts:"dangerously", pretendToBeVisual:true});
+/* No ledger: this exercises one pure function. */
+const { dom, errs } = require("./harness.js").open(ROOT);
 const w = dom.window, d = w.document;
 
 /* A fake view whose boxes report exactly the rectangles we say they do. */

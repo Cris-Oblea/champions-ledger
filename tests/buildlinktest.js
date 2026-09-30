@@ -13,7 +13,6 @@
    Released now UNBINDS rather than deletes. The fixtures below cover all four
    states, including two builds on one Pokemon - the case the old model could
    not represent. */
-const { JSDOM, VirtualConsole } = require("jsdom");
 /* the repo, found from this file - NOT a hardcoded path. Every test in
    here carried an absolute Windows path, so none of them had ever run
    anywhere but one laptop, and all fifteen died instantly the first time
@@ -62,33 +61,12 @@ const BUILDS = [build("garchomp","Garchomp"), build("dragonite","Dragonite"),
                 build("garchomp-2","Garchomp", "garchomp"),
                 build("kingambit-idea","Kingambit", null)];
 
-const body = require("./harness.js").page(ROOT);
-const stub = `<script>
-window.__ROWS=${JSON.stringify(ROWS)}; window.__BUILDS=${JSON.stringify(BUILDS)};
-window.__DELETED=[]; window.__WROTE=[];
+const { dom, errs } = require("./harness.js").open(ROOT, { box: ROWS, builds: BUILDS });
 /* The app asks with its OWN dialog now, not the operating system's, so there
    is nothing to stub: the question is in the DOM and the test answers it by
    clicking, which is what a person does too. A confirm() stub left here would
    keep passing while the real dialog was broken. */
-window.confirm=function(){ throw new Error("native confirm() must not be used"); };
-window.supabase={createClient:function(){return{
- auth:{getSession:function(){return Promise.resolve({data:{session:{user:{id:"u1",email:"t@t"}}}});},
-       onAuthStateChange:function(){},signInWithPassword:function(){},signOut:function(){}},
- from:function(t){return{
-   select:function(){return Promise.resolve({data:t==="box"?window.__ROWS:(t==="builds"?window.__BUILDS:[]),error:null});},
-   upsert:function(r){ window.__WROTE.push({table:t, row:r}); return Promise.resolve({error:null});},
-   delete:function(){return {eq:function(c,v){ if(c==="id") window.__DELETED.push(t+"/"+v);
-     return {eq:function(){ return Promise.resolve({error:null}); },
-             then:function(f){ return Promise.resolve({error:null}).then(f); }};}};}
- };},
- channel:function(){var c={on:function(){return c;},subscribe:function(){return c;}};return c;}
-};}};
-<\/script>`;
-const errs = [];
-const vc = new VirtualConsole().on("jsdomError",
-  e => { if (!/scrollTo/.test(e.message)) errs.push(e.message); });
-const dom = new JSDOM(body.replace("<head>", "<head>" + stub),
-  {runScripts:"dangerously", pretendToBeVisual:true, virtualConsole:vc});
+dom.window.confirm = function () { throw new Error("native confirm() must not be used"); };
 const w = dom.window, d = w.document;
 const click = n => n.dispatchEvent(new w.MouseEvent("click", {bubbles:true}));
 const tags = n => [...n.querySelectorAll(".tag")].map(t => t.textContent);
@@ -160,9 +138,9 @@ setTimeout(() => {
          assertions could follow it straight away. */
       setTimeout(() => {
         ok("borra la fila de la caja",
-           w.__DELETED.indexOf("box/garchomp") >= 0, true);
+           w.__DELETED.some(x => x.table === "box" && x.col === "id" && x.id === "garchomp"), true);
         ok("NO borra ninguna build",
-           w.__DELETED.filter(x => x.indexOf("builds/") === 0).length, 0);
+           w.__DELETED.filter(x => x.table === "builds" && x.col === "id").length, 0);
         const wroteBuilds = w.__WROTE.filter(x => x.table === "builds");
         const unbound = wroteBuilds.filter(x => x.row.box_id === null)
           .map(x => x.row.id).sort();

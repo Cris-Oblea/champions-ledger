@@ -5,19 +5,7 @@
    anywhere but one laptop, and all fifteen died instantly the first time
    CI tried (2026-09-13). */
 const ROOT = require("path").join(__dirname, "..") + "/";
-const { JSDOM, VirtualConsole } = require("jsdom");
-const body = require("./harness.js").page(ROOT);
-const stub = `<script>window.supabase={createClient:function(){return{
-  auth:{getSession:function(){return Promise.resolve({data:{session:null}});},
-        onAuthStateChange:function(){},signInWithPassword:function(){},signOut:function(){}},
-  from:function(){return{select:function(){return Promise.resolve({data:[],error:null});}};},
-  channel:function(){var c={on:function(){return c;},subscribe:function(){return c;}};return c;}
-};}};<\/script>`;
-const errs = [];
-const vc = new VirtualConsole()
-  .on("jsdomError", e => { if (!/scrollTo/.test(e.message)) errs.push(e.message); });
-const w = new JSDOM(body.replace("<head>", "<head>" + stub),
-  { runScripts: "dangerously", pretendToBeVisual: true, virtualConsole: vc }).window;
+const { w, errs } = require("./harness.js").open(ROOT);
 
 const blank = () => ({sp:{hp:0,atk:0,def:0,spa:0,spd:0,spe:0},
                       boost:{atk:0,def:0,spa:0,spd:0,spe:0},

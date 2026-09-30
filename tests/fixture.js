@@ -24,8 +24,6 @@
  * in 7 - a row per owned thing, a row per trade - so meta is down to the one
  * document that really is a document.
  */
-const { JSDOM, VirtualConsole } = require("jsdom");
-
 const UID = "00000000-0000-4000-8000-00000000fixt";
 const DAY = "2026-09-14";
 
@@ -172,25 +170,6 @@ function offer(id, offered, requested, deposited, extra) {
 
 const ROWS = { box, builds, teams, stones, items, gts, meta };
 
-/* The stub. It is the same shape supabase-js presents to the app
-   (ui/signin.js and core/store.js) and nothing more: a session, a select per
-   table, and a channel that never fires. Written as a <script> because the app reads window.supabase at load. */
-function stub() {
-  return "<script>window.supabase={createClient:function(){return{" +
-    "auth:{getSession:function(){return Promise.resolve({data:{session:{user:{" +
-    "id:" + JSON.stringify(UID) + ",email:'fixture@example.com'}}}});}," +
-    "onAuthStateChange:function(){},signInWithPassword:function(){}," +
-    "signOut:function(){}}," +
-    "from:function(t){return{select:function(){return Promise.resolve({" +
-    "data:(window.__FIXTURE__[t]||[]).map(function(r){return r;}),error:null});}," +
-    "insert:function(){return Promise.resolve({error:null});}," +
-    "upsert:function(){return Promise.resolve({error:null});}," +
-    "delete:function(){return{eq:function(){return Promise.resolve({error:null});}};}" +
-    "};}," +
-    "channel:function(){var c={on:function(){return c;},subscribe:function(){return c;}};" +
-    "return c;}};}};<\/script>";
-}
-
 const tick = ms => new Promise(r => setTimeout(r, ms || 400));
 
 /* Boot the built page with the ledger above in place.
@@ -200,15 +179,8 @@ const tick = ms => new Promise(r => setTimeout(r, ms || 400));
  * a ReferenceError on a data-dependent path is invisible unless something
  * is watching for it. */
 function boot(root) {
-  const html = require("./harness.js").page(root);
-  const errors = [];
-  const vc = new VirtualConsole()
-    .on("jsdomError", e => { if (!/scrollTo/.test(e.message)) errors.push(e.message); })
-    .on("error", (...a) => errors.push(a.join(" ")));
-  const seeded = "<script>window.__FIXTURE__=" + JSON.stringify(ROWS) + ";<\/script>";
-  const dom = new JSDOM(
-    html.replace("<head>", "<head>" + seeded + stub()),
-    { runScripts: "dangerously", pretendToBeVisual: true, virtualConsole: vc });
+  const { dom, errs: errors } = require("./harness.js").open(root, ROWS,
+    { uid: UID, email: "fixture@example.com", consoleErrors: true });
   dom.window.addEventListener("error", e => {
     errors.push(e.error && e.error.stack ? e.error.stack.split("\n").slice(0, 3).join(" | ")
                                          : e.message);
@@ -222,4 +194,4 @@ function boot(root) {
   return { window: dom.window, errors, tick, ROWS, UID };
 }
 
-module.exports = { boot, stub, ROWS, UID };
+module.exports = { boot, ROWS, UID };

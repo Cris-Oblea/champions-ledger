@@ -93,4 +93,63 @@ function markup(root) {
              (m, name) => fs.readFileSync(path.join(dir, name), "utf8"));
 }
 
-module.exports = { page, source, styles, markup };
+/* The stub: the shape supabase-js presents to the app (ui/signin.js and
+ * core/store.js) and nothing more. A <script>, because the app reads
+ * window.supabase at load.
+ *
+ * Every write lands in window.__WROTE as {op, table, row} and every delete in
+ * window.__DELETED as {table, col, id}, for the tests that assert what the app
+ * sent. window.__TAKEN[table] is ids the TABLE holds that the device never
+ * loaded - written from another phone - and an insert on one fails the way
+ * Postgres does, which is the race createtest.js is about.
+ */
+function stub(tables, uid, email, taken) {
+  const user = tables ? JSON.stringify({ user: { id: uid, email } }) : "null";
+  return "<script>" +
+    "window.__DB=" + JSON.stringify(tables || {}) + ";window.__WROTE=[];window.__DELETED=[];" +
+    "window.__TAKEN=" + JSON.stringify(taken || {}) + ";" +
+    `window.supabase={createClient:function(){
+      function done(){return Promise.resolve({error:null});}
+      function write(op,t){return function(r){
+        window.__WROTE.push({op:op,table:t,row:r});
+        if(op!=="insert") return done();
+        var k=window.__TAKEN[t]||[];
+        if(k.indexOf(r.id)>=0) return Promise.resolve({error:{code:"23505",
+          message:'duplicate key value violates unique constraint "'+t+'_pkey"'}});
+        (window.__TAKEN[t]=k).push(r.id);
+        return done();};}
+      function eq(t){return function(c,v){
+        window.__DELETED.push({table:t,col:c,id:v});
+        var p=done(); p.eq=eq(t); return p;};}
+      return{
+        auth:{getSession:function(){return Promise.resolve({data:{session:${user}}});},
+              onAuthStateChange:function(){},signInWithPassword:function(){},signOut:function(){}},
+        from:function(t){return{
+          select:function(){return Promise.resolve({data:(window.__DB[t]||[]).slice(),error:null});},
+          insert:write("insert",t), upsert:write("upsert",t),
+          delete:function(){return{eq:eq(t)};}};},
+        channel:function(){var c={on:function(){return c;},subscribe:function(){return c;}};return c;}};
+    }};<\/script>`;
+}
+
+/* The built page, booted under jsdom on a stubbed ledger.
+ *
+ * `tables` maps a table name to its rows and signs the page in; left out, the
+ * page boots signed out with every table empty. `errs` collects every error
+ * jsdom reports, bar the scrollTo it does not implement, and with
+ * `consoleErrors` every console.error the page writes as well.
+ */
+function open(root, tables, opts) {
+  const { JSDOM, VirtualConsole } = require("jsdom");
+  const o = Object.assign({ uid: "u1", email: "t@t" }, opts);
+  const errs = [];
+  const vc = new VirtualConsole().on("jsdomError",
+    e => { if (!/scrollTo/.test(e.message)) errs.push(e.message); });
+  if (o.consoleErrors) vc.on("error", (...a) => errs.push(a.join(" ")));
+  const dom = new JSDOM(
+    page(root).replace("<head>", "<head>" + stub(tables, o.uid, o.email, o.taken)),
+    { runScripts: "dangerously", pretendToBeVisual: true, virtualConsole: vc });
+  return { dom, w: dom.window, d: dom.window.document, errs };
+}
+
+module.exports = { page, source, styles, markup, open };

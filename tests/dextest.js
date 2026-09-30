@@ -11,7 +11,6 @@
    The rule this pins down is the one that is easy to get backwards: a species
    already in HOME is DONE even when a copy is also welded into the Champions
    box, because the HOME copy is the one that makes the slot elastic. */
-const { JSDOM, VirtualConsole } = require("jsdom");
 const ROOT = require("path").join(__dirname, "..") + "/";
 const UID = "u1";
 
@@ -43,24 +42,7 @@ const ROWS = [
   row("celebi",   "Celebi",    "home",      "permanent", "home"),
 ];
 
-const body = require("./harness.js").page(ROOT);
-const stub = `<script>
-window.__ROWS=${JSON.stringify(ROWS)};
-window.supabase={createClient:function(){return{
- auth:{getSession:function(){return Promise.resolve({data:{session:{user:{id:"u1",email:"t@t"}}}});},
-       onAuthStateChange:function(){},signInWithPassword:function(){},signOut:function(){}},
- from:function(t){return{
-   select:function(){return Promise.resolve({data:t==="box"?window.__ROWS:[],error:null});},
-   upsert:function(){return Promise.resolve({error:null});},
-   delete:function(){return {eq:function(){return Promise.resolve({error:null});}};}
- };},
- channel:function(){var c={on:function(){return c;},subscribe:function(){return c;}};return c;}
-};}};
-<\/script>`;
-const vc = new VirtualConsole().on("jsdomError",
-  e => { if (!/scrollTo/.test(e.message)) console.log("  jsdom: " + e.message); });
-const dom = new JSDOM(body.replace("<head>", "<head>" + stub),
-  {runScripts:"dangerously", pretendToBeVisual:true, virtualConsole:vc});
+const { dom, errs } = require("./harness.js").open(ROOT, { box: ROWS });
 const w = dom.window, d = w.document;
 const pane = k => [...d.querySelectorAll(".homeseg button")]
   .find(b => b.dataset.home === k);
@@ -203,6 +185,7 @@ setTimeout(() => {
      d.getElementById("sheetBody").textContent), true);
   w.closeSheet();
 
+  errs.forEach(e => console.log("  jsdom: " + e));
   console.log(bad ? "\n  " + bad + " FALLAN\n" : "\n  todo bien\n");
   process.exit(bad ? 1 : 0);
 }, 1200);

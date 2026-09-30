@@ -9,7 +9,6 @@
      - "in my box" was one flag over two boxes. It is now two: the Champions
        box answers "can I play this today", HOME answers "can I bring it in".
 */
-const { JSDOM, VirtualConsole } = require("jsdom");
 /* the repo, found from this file - NOT a hardcoded path. Every test in
    here carried an absolute Windows path, so none of them had ever run
    anywhere but one laptop, and all fifteen died instantly the first time
@@ -31,25 +30,7 @@ const row = (id, name, location, origin) => ({user_id:UID, id, name, location,
 const ROWS = [row("garchomp","Garchomp","champions","champions"),
               row("dragonite","Dragonite","home","home")];
 
-const body = require("./harness.js").page(ROOT);
-const stub = `<script>
-window.__ROWS=${JSON.stringify(ROWS)};
-window.supabase={createClient:function(){return{
- auth:{getSession:function(){return Promise.resolve({data:{session:{user:{id:"u1",email:"t@t"}}}});},
-       onAuthStateChange:function(){},signInWithPassword:function(){},signOut:function(){}},
- from:function(t){return{
-   select:function(){return Promise.resolve({data:t==="box"?window.__ROWS:[],error:null});},
-   upsert:function(){return Promise.resolve({error:null});},
-   delete:function(){return {eq:function(){return Promise.resolve({error:null});}};}
- };},
- channel:function(){var c={on:function(){return c;},subscribe:function(){return c;}};return c;}
-};}};
-<\/script>`;
-const errs = [];
-const vc = new VirtualConsole().on("jsdomError",
-  e => { if (!/scrollTo/.test(e.message)) errs.push(e.message); });
-const dom = new JSDOM(body.replace("<head>", "<head>" + stub),
-  {runScripts:"dangerously", pretendToBeVisual:true, virtualConsole:vc});
+const { dom, errs } = require("./harness.js").open(ROOT, { box: ROWS });
 const w = dom.window, d = w.document;
 const click = n => n.dispatchEvent(new w.MouseEvent("click", {bubbles:true}));
 const sheetChip = t => [...d.querySelectorAll(".sheet .tog")]

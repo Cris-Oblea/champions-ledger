@@ -30,7 +30,6 @@
      Lycanroc-Midnight                      -> still has No Guard (2026-09-19)
      Greninja-Bond / Rockruff-Dusk in HOME  -> their own ability, not the
                                                base species' three */
-const { JSDOM, VirtualConsole } = require("jsdom");
 const ROOT = require("path").join(__dirname, "..") + "/";
 const UID = "u1";
 
@@ -67,26 +66,7 @@ const BUILDS = [
         {box_id:null, moves:["Dark Pulse", null, null, null]}),
 ];
 
-const body = require("./harness.js").page(ROOT);
-const stub = `<script>
-window.__ROWS=${JSON.stringify(ROWS)}; window.__BUILDS=${JSON.stringify(BUILDS)};
-window.__WROTE=[];
-window.supabase={createClient:function(){return{
- auth:{getSession:function(){return Promise.resolve({data:{session:{user:{id:"u1",email:"t@t"}}}});},
-       onAuthStateChange:function(){},signInWithPassword:function(){},signOut:function(){}},
- from:function(t){return{
-   select:function(){return Promise.resolve({data:t==="box"?window.__ROWS:(t==="builds"?window.__BUILDS:[]),error:null});},
-   upsert:function(r){ window.__WROTE.push({table:t, row:r}); return Promise.resolve({error:null});},
-   delete:function(){return {eq:function(){return Promise.resolve({error:null});}};}
- };},
- channel:function(){var c={on:function(){return c;},subscribe:function(){return c;}};return c;}
-};}};
-<\/script>`;
-const errs = [];
-const vc = new VirtualConsole().on("jsdomError",
-  e => { if (!/scrollTo/.test(e.message)) errs.push(e.message); });
-const dom = new JSDOM(body.replace("<head>", "<head>" + stub),
-  {runScripts:"dangerously", pretendToBeVisual:true, virtualConsole:vc});
+const { dom, errs } = require("./harness.js").open(ROOT, { box: ROWS, builds: BUILDS });
 const w = dom.window, d = w.document;
 const click = n => n.dispatchEvent(new w.MouseEvent("click", {bubbles:true}));
 const editor = () => d.getElementById("buildEditBody");

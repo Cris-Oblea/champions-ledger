@@ -19,7 +19,6 @@
    four pages, 26 spreads over six, and no Season block at all - the case that
    proved the old parser had been mixing two different measurements.
 */
-const { JSDOM, VirtualConsole } = require("jsdom");
 const ROOT = require("path").join(__dirname, "..") + "/";
 const UID = "u1";
 
@@ -40,25 +39,7 @@ const BUILDS = [{user_id:UID, id:"rillaboom", pokemon:"Rillaboom", mega:null,
   moves:["Fake Out",null,null,null], role:"", rationale:"", extra:{},
   updated_at:"2026-09-15"}];
 
-const body = require("./harness.js").page(ROOT);
-const stub = `<script>
-window.__ROWS=${JSON.stringify(ROWS)}; window.__BUILDS=${JSON.stringify(BUILDS)};
-window.supabase={createClient:function(){return{
- auth:{getSession:function(){return Promise.resolve({data:{session:{user:{id:"u1",email:"t@t"}}}});},
-       onAuthStateChange:function(){},signInWithPassword:function(){},signOut:function(){}},
- from:function(t){return{
-   select:function(){return Promise.resolve({data:t==="box"?window.__ROWS:(t==="builds"?window.__BUILDS:[]),error:null});},
-   upsert:function(){return Promise.resolve({error:null});},
-   delete:function(){return {eq:function(){return Promise.resolve({error:null});}};}
- };},
- channel:function(){var c={on:function(){return c;},subscribe:function(){return c;}};return c;}
-};}};
-<\/script>`;
-const errs = [];
-const vc = new VirtualConsole().on("jsdomError",
-  e => { if (!/scrollTo/.test(e.message)) errs.push(e.message); });
-const dom = new JSDOM(body.replace("<head>", "<head>" + stub),
-  {runScripts:"dangerously", pretendToBeVisual:true, virtualConsole:vc});
+const { dom, errs } = require("./harness.js").open(ROOT, { box: ROWS, builds: BUILDS });
 const w = dom.window, d = w.document;
 const click = n => n.dispatchEvent(new w.MouseEvent("click", {bubbles:true}));
 const sum = a => a.reduce((n, r) => n + r[1], 0);

@@ -12,7 +12,6 @@
 
    The species fallback has to stay, though: a Mega has no learnset of its own,
    so Mega Garchomp reads Garchomp's. Both halves are asserted here. */
-const { JSDOM, VirtualConsole } = require("jsdom");
 /* the repo, found from this file - NOT a hardcoded path. Every test in
    here carried an absolute Windows path, so none of them had ever run
    anywhere but one laptop, and all fifteen died instantly the first time
@@ -27,18 +26,7 @@ const ok = (label, got, want) => {
               got + (good ? "" : "   (esperado " + want + ")"));
 };
 
-const body = require("./harness.js").page(ROOT);
-const stub = `<script>window.supabase={createClient:function(){return{
- auth:{getSession:function(){return Promise.resolve({data:{session:null}});},
-       onAuthStateChange:function(){},signInWithPassword:function(){},signOut:function(){}},
- from:function(){return{select:function(){return Promise.resolve({data:[],error:null});}};},
- channel:function(){var c={on:function(){return c;},subscribe:function(){return c;}};return c;}
-};}};<\/script>`;
-const errs = [];
-const vc = new VirtualConsole().on("jsdomError",
-  e => { if (!/scrollTo/.test(e.message)) errs.push(e.message); });
-const dom = new JSDOM(body.replace("<head>", "<head>" + stub),
-  {runScripts:"dangerously", pretendToBeVisual:true, virtualConsole:vc});
+const { dom, errs } = require("./harness.js").open(ROOT);
 const w = dom.window;
 
 setTimeout(() => {

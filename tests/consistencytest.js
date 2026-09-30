@@ -15,7 +15,6 @@
    every key it will be asked for is there, and re-checks the two code smells
    in the built file. It is a sweep, not a sample, because a sample missed 24
    of those 25 forms. */
-const { JSDOM, VirtualConsole } = require("jsdom");
 /* the repo, found from this file - NOT a hardcoded path. Every test in
    here carried an absolute Windows path, so none of them had ever run
    anywhere but one laptop, and all fifteen died instantly the first time
@@ -38,18 +37,7 @@ const list = (a, n = 6) => {
 const src = require("./harness.js").page(ROOT);
 /* the code smells below are about the SOURCE, so they read the source */
 const code = require("./harness.js").source(ROOT);
-const body = src;
-const stub = `<script>window.supabase={createClient:function(){return{
- auth:{getSession:function(){return Promise.resolve({data:{session:null}});},
-       onAuthStateChange:function(){},signInWithPassword:function(){},signOut:function(){}},
- from:function(){return{select:function(){return Promise.resolve({data:[],error:null});}};},
- channel:function(){var c={on:function(){return c;},subscribe:function(){return c;}};return c;}
-};}};<\/script>`;
-const errs = [];
-const vc = new VirtualConsole().on("jsdomError",
-  e => { if (!/scrollTo/.test(e.message)) errs.push(e.message); });
-const dom = new JSDOM(body.replace("<head>", "<head>" + stub),
-  {runScripts:"dangerously", pretendToBeVisual:true, virtualConsole:vc});
+const { dom, errs } = require("./harness.js").open(ROOT);
 const w = dom.window;
 
 setTimeout(() => {

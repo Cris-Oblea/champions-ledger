@@ -9,7 +9,6 @@
    groups Champions itself uses - Hold Items, Berries, Miscellaneous, and
    stones in their own pane - each row carrying what the item does, what it
    costs in VP, and whether it is owned. */
-const { JSDOM, VirtualConsole } = require("jsdom");
 /* the repo, found from this file - NOT a hardcoded path. Every test in
    here carried an absolute Windows path, so none of them had ever run
    anywhere but one laptop, and all fifteen died instantly the first time
@@ -33,30 +32,7 @@ const ITEMS = [{user_id:UID, id:"Life Orb", updated_at:"2026-09-10"},
                {user_id:UID, id:"Sitrus Berry", updated_at:"2026-09-10"}];
 const STONES = [{user_id:UID, id:"Garchompite", updated_at:"2026-09-10"}];
 
-const body = require("./harness.js").page(ROOT);
-const stub = `<script>
-window.__META=${JSON.stringify(META)}; window.__ITEMS=${JSON.stringify(ITEMS)};
-window.__STONES=${JSON.stringify(STONES)}; window.__WROTE=[]; window.__DELETED=[];
-window.supabase={createClient:function(){return{
- auth:{getSession:function(){return Promise.resolve({data:{session:{user:{id:"u1",email:"t@t"}}}});},
-       onAuthStateChange:function(){},signInWithPassword:function(){},signOut:function(){}},
- from:function(t){return{
-   select:function(){return Promise.resolve({data:
-     t==="meta"?window.__META:t==="items"?window.__ITEMS:
-     t==="stones"?window.__STONES:[],error:null});},
-   insert:function(r){ window.__WROTE.push({table:t,row:r}); return Promise.resolve({error:null}); },
-   upsert:function(r){ window.__WROTE.push({table:t,row:r}); return Promise.resolve({error:null}); },
-   delete:function(){return {eq:function(col,val){ window.__DELETED.push({table:t,id:val});
-     return Promise.resolve({error:null}); }};}
- };},
- channel:function(){var c={on:function(){return c;},subscribe:function(){return c;}};return c;}
-};}};
-<\/script>`;
-const errs = [];
-const vc = new VirtualConsole().on("jsdomError",
-  e => { if (!/scrollTo/.test(e.message)) errs.push(e.message); });
-const dom = new JSDOM(body.replace("<head>", "<head>" + stub),
-  {runScripts:"dangerously", pretendToBeVisual:true, virtualConsole:vc});
+const { dom, errs } = require("./harness.js").open(ROOT, { meta: META, items: ITEMS, stones: STONES });
 const w = dom.window, d = w.document;
 const click = n => n.dispatchEvent(new w.MouseEvent("click", {bubbles:true}));
 const rows = () => [...d.querySelectorAll("#itemCats .row")];
