@@ -570,7 +570,7 @@ def parse_items():
     grouping away, which is why the app could only ever show one flat list.
     """
     s = read(os.path.join(RAW, "pages", "items.html"))
-    HEADS = {"hold items": "Hold Items", "mega stone": "Mega Stones",
+    heads = {"hold items": "Hold Items", "mega stone": "Mega Stones",
              "berries": "Berries", "miscellaneous items": "Miscellaneous"}
     items, seen = [], set()
     group = None
@@ -579,8 +579,8 @@ def parse_items():
     for tok in re.finditer(r"<b>(.*?)</b>|<tr[^>]*>(.*?)</tr>", s, re.S):
         if tok.group(1) is not None:
             head = txt(tok.group(1)).strip().lower()
-            if head in HEADS:
-                group = HEADS[head]
+            if head in heads:
+                group = heads[head]
             continue
         r = tok
         cells = re.findall(r'<td[^>]*class="fooinfo"[^>]*>(.*?)</td>', r.group(2), re.S)

@@ -550,17 +550,17 @@ def cmd_counter_priority(a):
 
     # "priority" plus any word that negates it. Kept broad on purpose: missing a
     # blocker is worse than showing one extra row.
-    DENY = ("unable", "cannot", "can't", "prevent", "protect", "block", "fail",
+    deny = ("unable", "cannot", "can't", "prevent", "protect", "block", "fail",
             "immune", "deny", "denies", "stop", "nullif", "negat")
     blockers = []
     for ab in abilities:
         e = (ab.get("effect") or "").lower()
-        if "priority" in e and any(d in e for d in DENY):
+        if "priority" in e and any(d in e for d in deny):
             blockers.append(("ability", ab["name"], ab.get("effect", ""),
                              ", ".join(ab.get("pokemon", [])[:6])))
     for m in moves:
         e = ((m.get("effect") or "") + " " + (m.get("in_depth") or "")).lower()
-        if "priority" in e and any(d in e for d in DENY):
+        if "priority" in e and any(d in e for d in deny):
             blockers.append(("move", m["name"], m.get("effect", ""),
                              "%d users" % m.get("learner_count", 0)))
     print("Priority denial (abilities and moves):")

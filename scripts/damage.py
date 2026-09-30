@@ -250,33 +250,33 @@ _ABILITY_FLAG = {          # ability -> the move flag it keys off
 }
 
 
-def _ability_applies(k, M, mtype, A, D):
+def _ability_applies(k, move_row, mtype, atk_mon, def_mon):
     """Would this ability change THIS move's number?"""
     types = _ABILITY_SCOPE.get(k)
     if types is not None and mtype not in types:
         return False
     flag = _ABILITY_FLAG.get(k)
-    if flag is not None and not (M.get("flags") or {}).get(flag):
+    if flag is not None and not (move_row.get("flags") or {}).get(flag):
         return False
     if k in ("huge power", "pure power", "hustle", "guts", "fur coat",
-             "marvel scale", "reckless") and M.get("category") != "Physical":
+             "marvel scale", "reckless") and move_row.get("category") != "Physical":
         return False
     if k == "reckless" and not re.search(r"recoil|recharge",
-                                         (M.get("effect") or ""), re.I):
+                                         (move_row.get("effect") or ""), re.I):
         return False
-    if k == "technician" and (M.get("power") or 0) > 60:
+    if k == "technician" and (move_row.get("power") or 0) > 60:
         return False
-    if k in ("adaptability", "protean", "libero") and mtype in (A.get("types") or []):
+    if k in ("adaptability", "protean", "libero") and mtype in (atk_mon.get("types") or []):
         # Adaptability only adds on top of a STAB it already has
         return k == "adaptability"
-    if k in ("armor tail", "queenly majesty") and (M.get("priority") or 0) <= 0:
+    if k in ("armor tail", "queenly majesty") and (move_row.get("priority") or 0) <= 0:
         return False
-    if k in ("filter", "solid rock") and type_mult(mtype, D.get("types") or []) <= 1:
+    if k in ("filter", "solid rock") and type_mult(mtype, def_mon.get("types") or []) <= 1:
         return False
-    return not (k == "sniper" and not M.get("always_crit"))
+    return not (k == "sniper" and not move_row.get("always_crit"))
 
 
-def caveats(A, D, M, moves_last=None):
+def caveats(atk_mon, def_mon, move_row, moves_last=None):
     """Everything this calculator cannot model, named out loud.
 
     The point is that a number is never silently wrong. `damage.py` implements
@@ -322,21 +322,21 @@ def caveats(A, D, M, moves_last=None):
                         "the weather's type, never the Normal 50 printed here",
         "terrain pulse": "type and base power depend on the terrain",
     }
-    c = cond.get(Q.key(M["name"]))
-    if c and not (Q.key(M["name"]) == Q.key("Payback") and moves_last is not None):
-        out.append("CONDITIONAL: %s - %s" % (M["name"], c))
+    c = cond.get(Q.key(move_row["name"]))
+    if c and not (Q.key(move_row["name"]) == Q.key("Payback") and moves_last is not None):
+        out.append("CONDITIONAL: %s - %s" % (move_row["name"], c))
 
     # Abilities that change a damage number and are not implemented here - but
     # only the ones that could touch THIS move. Warning about Heatproof on a
     # Ghost attack is noise, and noise is how a warning stops being read.
     known = {"refrigerate", "sheer force", "sharpness"}
-    mtype = M.get("type")
-    for mon in (A, D):
+    mtype = move_row.get("type")
+    for mon in (atk_mon, def_mon):
         for ab in (mon.get("abilities") or []):
             k = Q.key(ab)
             if k in known or k not in _DAMAGE_ABILITIES:
                 continue
-            if not _ability_applies(k, M, mtype, A, D):
+            if not _ability_applies(k, move_row, mtype, atk_mon, def_mon):
                 continue
             out.append("ABILITY not modelled: %s %s - %s"
                        % (mon["name"], ab, _DAMAGE_ABILITIES[k]))
@@ -454,44 +454,44 @@ def calc(attacker, move, defender, atk_sp=0, atk_nature=None, def_hp_sp=0,
          target_atk_sp=0, target_atk_nature=None, moves_last=None,
          detail=None):
     """Returns (min_damage, max_damage, defender_max_hp, notes)."""
-    A = find_mon(attacker, attacking=True) if isinstance(attacker, str) else attacker
-    D = find_mon(defender) if isinstance(defender, str) else defender
-    M = find_move(move) if isinstance(move, str) else move
+    atk_mon = find_mon(attacker, attacking=True) if isinstance(attacker, str) else attacker
+    def_mon = find_mon(defender) if isinstance(defender, str) else defender
+    move_row = find_move(move) if isinstance(move, str) else move
     notes = []
-    if A.get("_form_note"):
-        notes.append(A["_form_note"])
-    if D.get("_form_note"):
-        notes.append("target: %s" % D["_form_note"])
-    notes.extend(caveats(A, D, M, moves_last))
+    if atk_mon.get("_form_note"):
+        notes.append(atk_mon["_form_note"])
+    if def_mon.get("_form_note"):
+        notes.append("target: %s" % def_mon["_form_note"])
+    notes.extend(caveats(atk_mon, def_mon, move_row, moves_last))
 
-    power = override_power if override_power is not None else (M.get("power") or 0)
+    power = override_power if override_power is not None else (move_row.get("power") or 0)
     if override_power is None:
-        wp = weight_power(M["name"], A, D)
+        wp = weight_power(move_row["name"], atk_mon, def_mon)
         if wp is not None:
             power = wp
             notes.append("weight-derived power: %d BP (%s %skg vs %s %skg)"
-                         % (wp, A["name"], weight_of(A["name"]),
-                            D["name"], weight_of(D["name"])))
+                         % (wp, atk_mon["name"], weight_of(atk_mon["name"]),
+                            def_mon["name"], weight_of(def_mon["name"])))
     # Payback doubles when the user moves after the target. That is not a
     # species fact - Tailwind, Trick Room, a Choice Scarf and any Speed boost
     # or drop all decide it - so it is never guessed, only answered when the
     # caller says which way round the turn went.
-    if Q.key(M["name"]) == Q.key("Payback") and moves_last is not None:
+    if Q.key(move_row["name"]) == Q.key("Payback") and moves_last is not None:
         if moves_last:
             power *= 2
             notes.append("Payback: the attacker moves last, so x2 -> %d BP" % power)
         else:
             notes.append("Payback: the attacker moves first, so no doubling")
 
-    mtype = M.get("type")
-    ft = form_type(M, A)
+    mtype = move_row.get("type")
+    ft = form_type(move_row, atk_mon)
     if ft:
         notes.append("%s takes %s's form: %s, not the Normal in the move row"
-                     % (M["name"], A["name"], ft))
+                     % (move_row["name"], atk_mon["name"], ft))
         mtype = ft
-    phys = M.get("category") == "Physical"
+    phys = move_row.get("category") == "Physical"
 
-    ab = atk_ability if atk_ability is not None else (A.get("abilities") or [None])[0]
+    ab = atk_ability if atk_ability is not None else (atk_mon.get("abilities") or [None])[0]
     if ab == "Refrigerate" and mtype == "Normal":
         power = poke_round(power * 4915 / 4096.0)
         mtype = "Ice"
@@ -509,45 +509,45 @@ def calc(attacker, move, defender, atk_sp=0, atk_nature=None, def_hp_sp=0,
     # Psyshock is Special but hits the physical Defense - the only move in
     # Champions that splits the two, and it is exactly the move people aim at
     # special walls, so getting it wrong is expensive.
-    dov = _DEFENCE_OVERRIDE.get(Q.key(M["name"]))
+    dov = _DEFENCE_OVERRIDE.get(Q.key(move_row["name"]))
     if dov:
         d_key = dov
-        notes.append("%s is Special but attacks the target's Defense" % M["name"])
+        notes.append("%s is Special but attacks the target's Defense" % move_row["name"])
     # A few moves attack off a stat that is not the category's usual one.
     # Body Press uses the user's Defense; Foul Play uses the TARGET's Attack.
-    if Q.key(M["name"]) == Q.key("Body Press"):
+    if Q.key(move_row["name"]) == Q.key("Body Press"):
         a_key = "def"
         notes.append("Body Press attacks off the user's Defense")
-    Aatk = stat(A["base_stats"][a_key], atk_sp, an[a_key])
-    if Q.key(M["name"]) == Q.key("Foul Play"):
+    atk_stat = stat(atk_mon["base_stats"][a_key], atk_sp, an[a_key])
+    if Q.key(move_row["name"]) == Q.key("Foul Play"):
         # Off the TARGET's Attack. This used to assume the target was a
         # max-Attack, Adamant Pokemon, which overstated it by about a third
         # against anything uninvested - and Foul Play is aimed at exactly the
         # bulky, uninvested targets that assumption is wrong about. The target's
         # real investment is a parameter now, defaulting to none.
-        Aatk = stat(D["base_stats"]["atk"], target_atk_sp,
-                    nature_mults(target_atk_nature)["atk"])
+        atk_stat = stat(def_mon["base_stats"]["atk"], target_atk_sp,
+                        nature_mults(target_atk_nature)["atk"])
         notes.append("Foul Play attacks off the TARGET's Attack "
                      "(%d SP%s -> %d)"
                      % (target_atk_sp,
                         ", %s" % target_atk_nature if target_atk_nature else "",
-                        Aatk))
-    Ddef = stat(D["base_stats"][d_key], def_sp, dn[d_key])
+                        atk_stat))
+    def_stat = stat(def_mon["base_stats"][d_key], def_sp, dn[d_key])
     # Meteor Beam and Electro Shot raise the user's Sp. Atk by one stage on the
     # charging turn, so by the time they land the boost is ALWAYS there - it is
     # part of the move, not a condition. Contrary inverts it to -1 instead, and
     # that is the one case this cannot see, so it says so rather than guessing.
-    if Q.key(M["name"]) in (Q.key("Meteor Beam"), Q.key("Electro Shot")):
-        if "Contrary" in (A.get("abilities") or []):
+    if Q.key(move_row["name"]) in (Q.key("Meteor Beam"), Q.key("Electro Shot")):
+        if "Contrary" in (atk_mon.get("abilities") or []):
             notes.append("%s charges for +1 Sp. Atk, but Contrary would invert "
                          "it to -1 - run --engine smogon with the real ability"
-                         % M["name"])
+                         % move_row["name"])
         else:
             boosts += 1
             notes.append("%s charges first: +1 Sp. Atk (x1.5) is already "
-                         "applied" % M["name"])
+                         "applied" % move_row["name"])
     if boosts:
-        Aatk = int(Aatk * ((2 + boosts) / 2.0 if boosts > 0 else 2.0 / (2 - boosts)))
+        atk_stat = int(atk_stat * ((2 + boosts) / 2.0 if boosts > 0 else 2.0 / (2 - boosts)))
     # A defensive boost only protects the side it sits on: Calm Mind raises
     # Sp. Def and does nothing against a physical hit, Bulk Up the reverse.
     # def_boosts is (stat, stages) e.g. ("spd", 1); a bare int is read as the
@@ -555,18 +555,18 @@ def calc(attacker, move, defender, atk_sp=0, atk_nature=None, def_hp_sp=0,
     if def_boosts:
         bstat, bstage = def_boosts if isinstance(def_boosts, (tuple, list))                         else (d_key, def_boosts)
         if bstat == d_key and bstage:
-            Ddef = int(Ddef * ((2 + bstage) / 2.0 if bstage > 0
-                               else 2.0 / (2 - bstage)))
+            def_stat = int(def_stat * ((2 + bstage) / 2.0 if bstage > 0
+                                       else 2.0 / (2 - bstage)))
             notes.append("target is at %+d %s" % (bstage, bstat))
-    Dhp = stat(D["base_stats"]["hp"], def_hp_sp, 1.0, is_hp=True)
+    def_hp = stat(def_mon["base_stats"]["hp"], def_hp_sp, 1.0, is_hp=True)
 
-    base = int(int(int(2 * LEVEL / 5 + 2) * power * Aatk / Ddef) / 50) + 2
+    base = int(int(int(2 * LEVEL / 5 + 2) * power * atk_stat / def_stat) / 50) + 2
 
     # @smogon/calc applies these in a fixed order with a rounding step between
     # each one; collapsing them into a single multiply is off by a point or two,
     # which is exactly the margin a survival benchmark turns on.
     if spread is None:
-        spread = is_spread(M)
+        spread = is_spread(move_row)
     if spread:
         base = poke_round(base * 3072 / 4096.0)
         notes.append("spread move in doubles: x0.75")
@@ -576,15 +576,15 @@ def calc(attacker, move, defender, atk_sp=0, atk_nature=None, def_hp_sp=0,
 
     # Flower Trick, Frost Breath and Storm Throw always crit, which is a flat
     # x1.5 on the base damage - enough to move a roll across a KO boundary.
-    if M.get("always_crit"):
+    if move_row.get("always_crit"):
         base = int(base * 1.5)
         notes.append("always a critical hit: x1.5")
 
-    stab = mtype in A["types"]
+    stab = mtype in atk_mon["types"]
     if stab:
         notes.append("STAB x1.5")
-    te = type_mult(mtype, D["types"])
-    notes.append("%s vs %s: x%s" % (mtype, "/".join(D["types"]), te))
+    te = type_mult(mtype, def_mon["types"])
+    notes.append("%s vs %s: x%s" % (mtype, "/".join(def_mon["types"]), te))
 
     # Reflect / Light Screen / Aurora Veil are 2732/4096 in DOUBLES, not the
     # 0.5 they are in singles - and each one only covers ITS OWN category.
@@ -594,16 +594,16 @@ def calc(attacker, move, defender, atk_sp=0, atk_nature=None, def_hp_sp=0,
     # Player, 2026-09-09.
     covers = {"Reflect": ("Physical",), "Light Screen": ("Special",),
               "Aurora Veil": ("Physical", "Special")}
-    screen_applies = bool(screen) and M.get("category") in covers.get(screen, ())
+    screen_applies = bool(screen) and move_row.get("category") in covers.get(screen, ())
     # a critical hit ignores screens outright
-    if screen_applies and M.get("always_crit"):
+    if screen_applies and move_row.get("always_crit"):
         screen_applies = False
         notes.append("%s is ignored: a critical hit goes through a screen"
                      % screen)
     base_mult = 2732 / 4096.0 if screen_applies else 1.0
-    if screen and not screen_applies and not M.get("always_crit"):
+    if screen and not screen_applies and not move_row.get("always_crit"):
         notes.append("%s does not cover %s moves - no reduction"
-                     % (screen, (M.get("category") or "").lower()))
+                     % (screen, (move_row.get("category") or "").lower()))
 
     rolls = []
     for i in range(16):                       # the 85%..100% damage roll
@@ -626,14 +626,14 @@ def calc(attacker, move, defender, atk_sp=0, atk_nature=None, def_hp_sp=0,
     # A multi-hit move lands 2-5 times (or 2, 3 or 10). Returning one hit's
     # damage understates Rock Blast and Pin Missile by up to 5x and Dual
     # Wingbeat by 2x - the single largest error this calculator used to make.
-    hits = M.get("hits")
+    hits = move_row.get("hits")
     if hits and not override_power:
         lo_n, hi_n = hits
-        if Q.key(M["name"]) == Q.key("Triple Axel"):
+        if Q.key(move_row["name"]) == Q.key("Triple Axel"):
             # Three hits, but not three equal ones: 20 then 40 then 60 BP. The
             # rounding steps make a hit at 40 BP more than twice a hit at 20,
             # so each one is calculated at its own power rather than scaled.
-            per = [calc(A, M, D, atk_sp=atk_sp, atk_nature=atk_nature,
+            per = [calc(atk_mon, move_row, def_mon, atk_sp=atk_sp, atk_nature=atk_nature,
                         def_hp_sp=def_hp_sp, def_sp=def_sp,
                         def_nature=def_nature, atk_ability=atk_ability,
                         def_ability=def_ability, power_mult=power_mult,
@@ -659,7 +659,7 @@ def calc(attacker, move, defender, atk_sp=0, atk_nature=None, def_hp_sp=0,
             n = lo_n + 1 if lo_n != hi_n else lo_n
             lo, hi = lo * n, hi * n
             notes.append("%s: %d hits of %d-%d%s"
-                         % (M["name"], n, rolls[0], rolls[-1],
+                         % (move_row["name"], n, rolls[0], rolls[-1],
                             "" if lo_n == hi_n else " (the %d-%d average)" % (lo_n, hi_n)))
             if lo_n != hi_n:
                 notes.append("  worst case %d hits: %d-%d   |   Skill Link is "
@@ -670,7 +670,7 @@ def calc(attacker, move, defender, atk_sp=0, atk_nature=None, def_hp_sp=0,
         detail["rolls"] = rolls
         detail["hits"] = (hits[0] + 1 if hits and hits[0] != hits[1]
                           else (hits[0] if hits else 1))
-    return lo, hi, Dhp, notes
+    return lo, hi, def_hp, notes
 
 
 def selftest():
@@ -780,16 +780,16 @@ def engine_case(attacker, move, defender, atk_sp, atk_nature,
     though it is Special. Deciding that in one place is what keeps the two
     engines answering the SAME question - it was the last parity failure.
     """
-    M = find_move(move)
-    phys = M.get("category") == "Physical"
+    move_row = find_move(move)
+    phys = move_row.get("category") == "Physical"
     a_key = "atk" if phys else "spa"
-    if Q.key(M["name"]) == Q.key("Body Press"):
+    if Q.key(move_row["name"]) == Q.key("Body Press"):
         a_key = "def"
-    d_key = _DEFENCE_OVERRIDE.get(Q.key(M["name"])) or ("def" if phys else "spd")
+    d_key = _DEFENCE_OVERRIDE.get(Q.key(move_row["name"])) or ("def" if phys else "spd")
     return {
         "attacker": smogon_name(attacker, attacking=True),
         "defender": smogon_name(defender),
-        "move": M["name"],
+        "move": move_row["name"],
         "anature": atk_nature or "Serious",
         "aevs": {a_key: max(0, min(32, atk_sp))},
         "dnature": def_nature or "Serious",

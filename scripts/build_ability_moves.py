@@ -182,12 +182,12 @@ def fold(t):
                    if not unicodedata.combining(c)).lower()
 
 
-def targeting(m, S):
+def targeting(m, smogon):
     """(spread, hits_ally) - more than one target, and is the ally one of them?"""
-    t = S.get("target") if S else None
+    t = smogon.get("target") if smogon else None
     if t in ("allAdjacent", "allAdjacentFoes"):
         return True, t == "allAdjacent"
-    if S:                     # Smogon knows the move and says single-target
+    if smogon:                     # Smogon knows the move and says single-target
         return False, False
     k = fold(m.get("target"))
     return k in _SERB_SPREAD, k == "all adjacent pokemon"
@@ -203,7 +203,7 @@ def derive(moves):
         f = m.get("flags") or {}
         body = clean(m.get("effect")) + " " + clean(m.get("in_depth"))
         name = m["name"]
-        S = sm.get(Q.key(name), {})
+        smogon = sm.get(Q.key(name), {})
         # Serebii owns what a move IS; Smogon's engine owns how an ability
         # treats it. Where the two flag tables disagree the difference is
         # recorded rather than silently resolved.
@@ -211,10 +211,10 @@ def derive(moves):
                              ("punch", "isPunch"), ("biting", "isBite"),
                              ("slicing", "isSlicing"), ("bullet", "isBullet"),
                              ("wind", "isWind")):
-            if S and bool(f.get(ours)) != bool(S.get(theirs)):
+            if smogon and bool(f.get(ours)) != bool(smogon.get(theirs)):
                 conflicts.append((name, ours, bool(f.get(ours)),
-                                  bool(S.get(theirs))))
-        spread, hits_ally = targeting(m, S)
+                                  bool(smogon.get(theirs))))
+        spread, hits_ally = targeting(m, smogon)
         if spread != (fold(m.get("target")) in _SERB_SPREAD):
             conflicts.append((name, "spread",
                               fold(m.get("target")) in _SERB_SPREAD, spread))
@@ -231,17 +231,17 @@ def derive(moves):
             "hits_ally": hits_ally,
             "down_stats": down_stats(m),
             # Smogon's list, verified against ours move by move
-            "sec": bool(S.get("secondaries")) if S else secondary(m),
+            "sec": bool(smogon.get("secondaries")) if smogon else secondary(m),
             "sec_serebii": secondary(m),
             "self_up": su, "self_down": sd, "target_up": tu, "target_down": td,
             "contact": bool(f.get("contact")), "sound": bool(f.get("sound")),
             "punch": bool(f.get("punch")), "biting": bool(f.get("biting")),
             "slicing": bool(f.get("slicing")), "bullet": bool(f.get("bullet")),
             "wind": bool(f.get("wind")), "powder": bool(f.get("powder")),
-            "multi": bool(S.get("multihit") and isinstance(S["multihit"], list)
-                          and S["multihit"][0] != S["multihit"][1])
-                     if S else bool(m.get("hits") and m["hits"][0] != m["hits"][1]),
-            "recoil": bool(S.get("recoil")) if S else bool(RECOIL.search(body)),
+            "multi": bool(smogon.get("multihit") and isinstance(smogon["multihit"], list)
+                          and smogon["multihit"][0] != smogon["multihit"][1])
+                     if smogon else bool(m.get("hits") and m["hits"][0] != m["hits"][1]),
+            "recoil": bool(smogon.get("recoil")) if smogon else bool(RECOIL.search(body)),
             # three families Serebii writes in prose and Smogon's table, which
             # only carries what changes damage, does not have at all
             "flinch": bool(re.search(r"flinch", body, re.I)),
@@ -250,11 +250,11 @@ def derive(moves):
             "locks": bool(re.search(
                 r"the (?:Taunted|Encore|Move Disabled|Unable to Repeat|"
                 r"Healing Prevented) status", body)),
-            "pulse_smogon": bool(S.get("isPulse")),
+            "pulse_smogon": bool(smogon.get("isPulse")),
             # Mega Launcher's "Aura and Pulse moves" is a named family, not a
             # flag. Aura Wheel is Morpeko's move and is NOT one of them.
             "pulse": "Pulse" in name or name == "Aura Sphere",
-            "heals": bool(S.get("drain")) if S else
+            "heals": bool(smogon.get("drain")) if smogon else
                      bool(re.search(r"[Rr]estores? .*HP|[Dd]rain", body)),
         }
     derive.conflicts = conflicts
@@ -910,9 +910,9 @@ CLASS_LABEL = {
 def audit(table):
     """Every ability in the format, and what we decided about it."""
     abil = Q.db("abilities")
-    KEY = re.compile(r"\bmoves?\b|\bpower\b|\bdamage\b|STAB|priority|contact|"
-                     r"sound|punch|bit(?:e|ing)|slicing|bullet|pulse|powder|"
-                     r"recoil|immune|absorb", re.I)
+    mentions_move = re.compile(r"\bmoves?\b|\bpower\b|\bdamage\b|STAB|priority|contact|"
+                               r"sound|punch|bit(?:e|ing)|slicing|bullet|pulse|powder|"
+                               r"recoil|immune|absorb", re.I)
     covered, mentions, quiet, decided = [], [], [], []
     for a in abil:
         n, e = a["name"], clean(a.get("effect"))
@@ -920,7 +920,7 @@ def audit(table):
             covered.append(n)
         elif n in NO_RULE:
             decided.append((n, NO_RULE[n]))
-        elif KEY.search(e):
+        elif mentions_move.search(e):
             mentions.append((n, e))
         else:
             quiet.append(n)
