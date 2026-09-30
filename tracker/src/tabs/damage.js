@@ -17,8 +17,8 @@ import { closeSheet, openSheet } from "../ui/nav.js";
    The Ability and Item menus offer only what can change the number, and that
    list is MEASURED rather than written: scripts/measure_modifiers.py runs
    Smogon's Champions engine with and without each ability and item, and every
-   one that moves the damage lands in C.MODS. The engine applies them itself;
-   this screen only reads the names.
+   one that moves the damage is named in C.MODS, a list per menu. The engine
+   applies them itself; this screen only offers the names.
 
    Anything measured at x1.00 was then checked against the format: Choice Band,
    Choice Specs, Assault Vest, Eviolite, Transistor, Steelworker, Ice Scales and
@@ -336,7 +336,7 @@ function abilityOptions(which, P){
     seen[x] = 1;
     opts.push([x + "  (its own)", x]);
   });
-  Object.keys(MODS[which === "atk" ? "atk_ability" : "def_ability"] || {})
+  (MODS[which === "atk" ? "atk_ability" : "def_ability"] || []).slice()
     .sort(byText).forEach(function(x){
       if (!seen[x]) opts.push([x, x]);
     });
@@ -347,7 +347,7 @@ function abilityOptions(which, P){
    attacker and the resist berries for the defender - each once. */
 function itemOptions(which){
   var opts = [["none", ""]];
-  var pool = Object.keys(MODS[which === "atk" ? "atk_item" : "def_item"] || {});
+  var pool = (MODS[which === "atk" ? "atk_item" : "def_item"] || []).slice();
   if (which === "def") pool = pool.concat(Object.keys(BERRY_TYPE));
   if (which === "atk") pool = pool.concat(Object.keys(TYPE_ITEM));
   var done = {};
