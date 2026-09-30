@@ -172,63 +172,66 @@ def latest_round(tid, division, start=20):
     return None, None
 
 
+def _row_record(row):
+    """(record, dropped) from a standings row.
+
+    The record cell has three shapes: "12-2-0", "12-2-0*" (still alive)
+    and "5-3-0&nbsp;&nbsp;<i>dropped</i>". Drop the match-history and
+    team cells first, or an opponent's record matches instead.
+    """
+    stripped = re.sub(r'<div id="d\d+" class="run".*?</div>', "", row, flags=re.S)
+    stripped = re.sub(r'<div class="dl".*?</div></td>', "", stripped, flags=re.S)
+    for cell in re.findall(r"<td>(.*?)</td>", stripped, flags=re.S):
+        mrec = re.search(r"\d+-\d+-\d+", cell)
+        if mrec:
+            return mrec.group(0), "dropped" in cell.lower()
+    return None, False
+
+
+def _row_teamfile(row):
+    """showTeam() escapes a quote inside the name: a player called
+    Cary D'Ortona arrives as Masters_Cary D\\'Ortona.json, so stop the
+    match at ".json'" rather than at the first quote, then unescape."""
+    mf = re.search(r"showTeam\('(.+?\.json)'\)", row)
+    return mf.group(1).replace(chr(92) + "'", "'") if mf else None
+
+
+def _tooltip_slot(t):
+    """One sprite tooltip: the Pokemon, then its ability, item and moves."""
+    parts = [p.strip() for p in html.unescape(t).replace("&#10", "\n").split("\n")]
+    parts = [p for p in parts if p]
+    if not parts:
+        return None
+    entry = {"pokemon": parts[0], "ability": None, "item": None, "moves": []}
+    for p in parts[1:]:
+        if p.startswith("["):
+            with contextlib.suppress(Exception):
+                entry["moves"] = [m.strip(" '\"") for m in
+                                  p.strip("[]").split(",") if m.strip(" '\"")]
+        elif entry["ability"] is None:
+            entry["ability"] = p
+        elif entry["item"] is None:
+            entry["item"] = p
+    return entry
+
+
 def parse_standings(body):
     """One row per player: placement, record, and the team from the sprite tooltips."""
     players = []
     for row in re.split(r'<tr class="trow"', body)[1:]:
-        country = None
         mc = re.search(r'id="([a-z]{2})"', row)
-        if mc:
-            country = mc.group(1).upper()
         mrank = re.search(r"<td><div id=\"\d+\">(\d+)</div></td>", row)
         mname = re.search(r'<button class="nb"[^>]*>([^<]+)</button>', row)
         if not (mrank and mname):
             continue
-        name = html.unescape(mname.group(1)).strip()
-
-        # The record cell has three shapes: "12-2-0", "12-2-0*" (still alive)
-        # and "5-3-0&nbsp;&nbsp;<i>dropped</i>". Drop the match-history and
-        # team cells first, or an opponent's record matches instead.
-        stripped = re.sub(r'<div id="d\d+" class="run".*?</div>', "", row, flags=re.S)
-        stripped = re.sub(r'<div class="dl".*?</div></td>', "", stripped, flags=re.S)
-        record, dropped = None, False
-        for cell in re.findall(r"<td>(.*?)</td>", stripped, flags=re.S):
-            mrec = re.search(r"\d+-\d+-\d+", cell)
-            if mrec:
-                record = mrec.group(0)
-                dropped = "dropped" in cell.lower()
-                break
-
-        teamfile = None
-        # showTeam() escapes a quote inside the name: a player called
-        # Cary D'Ortona arrives as Masters_Cary D\'Ortona.json, so stop the
-        # match at ".json'" rather than at the first quote, then unescape.
-        mf = re.search(r"showTeam\('(.+?\.json)'\)", row)
-        if mf:
-            teamfile = mf.group(1).replace(chr(92) + "'", "'")
-
-        team = []
-        for t in re.findall(r'<img[^>]*title="([^"]*)"', row):
-            parts = [p.strip() for p in html.unescape(t).replace("&#10", "\n").split("\n")]
-            parts = [p for p in parts if p]
-            if not parts:
-                continue
-            entry = {"pokemon": parts[0], "ability": None, "item": None, "moves": []}
-            for p in parts[1:]:
-                if p.startswith("["):
-                    with contextlib.suppress(Exception):
-                        entry["moves"] = [m.strip(" '\"") for m in
-                                          p.strip("[]").split(",") if m.strip(" '\"")]
-                elif entry["ability"] is None:
-                    entry["ability"] = p
-                elif entry["item"] is None:
-                    entry["item"] = p
-            team.append(entry)
-
-        players.append({"rank": int(mrank.group(1)), "player": name,
-                        "country": country, "record": record,
-                        "dropped": dropped,
-                        "team": team, "_teamfile": teamfile})
+        record, dropped = _row_record(row)
+        team = [e for e in map(_tooltip_slot, re.findall(r'<img[^>]*title="([^"]*)"', row))
+                if e]
+        players.append({"rank": int(mrank.group(1)),
+                        "player": html.unescape(mname.group(1)).strip(),
+                        "country": mc.group(1).upper() if mc else None,
+                        "record": record, "dropped": dropped,
+                        "team": team, "_teamfile": _row_teamfile(row)})
     players.sort(key=lambda p: p["rank"])
     return players
 
@@ -284,6 +287,32 @@ def parse_team_html(body):
     return out
 
 
+def _team_from_json(body):
+    try:
+        rows = json.loads(body)
+    except ValueError:
+        rows = []
+    return [{
+        "pokemon": r.get("name"),
+        "ability": r.get("ability"),
+        "item": r.get("item"),
+        "nature": r.get("stat_alignment"),
+        "moves": r.get("badges") or [],
+    } for r in rows]
+
+
+def _player_team(path):
+    """(the teamlist, whether it came from team.php) for one player's file."""
+    stem = cache_stem(path)
+    body = cached(stem, "https://www.pokedata.ovh/" + urllib.parse.quote(path, safe="/"))
+    merged = _team_from_json(body) if body else []
+    if merged:
+        return merged, False
+    hbody = cached(stem + ".html", TEAM_PHP + urllib.parse.quote(path, safe=""))
+    merged = parse_team_html(hbody) if hbody else []
+    return merged, bool(merged)
+
+
 def enrich_with_teamlists(players, limit=None):
     """The per-player teamlist adds the nature, which the tooltip does not carry.
 
@@ -297,31 +326,8 @@ def enrich_with_teamlists(players, limit=None):
     os.makedirs(RAW, exist_ok=True)
     done = fell_back = 0
     for p in todo:
-        path = p["_teamfile"]
-        stem = cache_stem(path)
-        merged = []
-
-        body = cached(stem, "https://www.pokedata.ovh/" + urllib.parse.quote(path, safe="/"))
-        if body:
-            try:
-                rows = json.loads(body)
-            except ValueError:
-                rows = []
-            merged = [{
-                "pokemon": r.get("name"),
-                "ability": r.get("ability"),
-                "item": r.get("item"),
-                "nature": r.get("stat_alignment"),
-                "moves": r.get("badges") or [],
-            } for r in rows]
-
-        if not merged:
-            hbody = cached(stem + ".html", TEAM_PHP + urllib.parse.quote(path, safe=""))
-            if hbody:
-                merged = parse_team_html(hbody)
-                if merged:
-                    fell_back += 1
-
+        merged, via_php = _player_team(p["_teamfile"])
+        fell_back += via_php
         if merged:
             p["team"] = merged
             done += 1
@@ -330,6 +336,45 @@ def enrich_with_teamlists(players, limit=None):
     if fell_back:
         print("  %d of them via team.php (non-ASCII player name)" % fell_back)
     return done
+
+
+def _scrape(tid, division, rnd, pinned, args):
+    """(players, the round) from the per-round standings pages - the route for
+    the older events that publish no JSON export."""
+    if pinned or not rnd:
+        body = get("%s/%s/%s/R%s.php" % (BASE, tid, division, rnd or 1),
+                   timeout=90) if rnd else None
+        if not body:
+            rnd, body = latest_round(tid, division)
+    else:
+        body = get("%s/%s/%s/R%d.php" % (BASE, tid, division, rnd), timeout=90)
+    if not body:
+        sys.exit("No standings found for tid=%s division=%s" % (tid, division))
+    players = parse_standings(body)
+    print("  %d players parsed" % len(players))
+    if "--no-teamlists" not in args:
+        n = enrich_with_teamlists(players)
+        print("  %d teamlists merged (adds nature)" % n)
+    for p in players:
+        p.pop("_teamfile", None)
+    return players, rnd
+
+
+def _print_summary(tid, division, rnd, info, origin, players):
+    label = info.get("round_label")
+    print("Tournament %s / %s - round %s%s  [%s]"
+          % (tid, division, rnd, " (%s)" % label if label else "", origin))
+    if info.get("swiss_rounds"):
+        print("  %d swiss rounds, then the cut: %s"
+              % (info["swiss_rounds"],
+                 ", ".join("%d=%s" % (n, name) for n, name in
+                           sorted((info.get("round_labels") or {}).items())
+                           if n > info["swiss_rounds"]) or "none yet"))
+    print("  %s - %d players, %d teamlists, %d complete natures"
+          % ("EVENT COMPLETE" if info.get("complete") else "still running",
+             len(players), sum(1 for p in players if p["team"]),
+             sum(1 for p in players if p["team"]
+                 and all(s.get("nature") for s in p["team"]))))
 
 
 def main():
@@ -352,41 +397,11 @@ def main():
         if rows:
             players = players_from_event(rows)
             origin = "event JSON export"
-
     if not players:                      # older events publish no export
-        if pinned or not rnd:
-            body = get("%s/%s/%s/R%s.php" % (BASE, tid, division, rnd or 1),
-                       timeout=90) if rnd else None
-            if not body:
-                rnd, body = latest_round(tid, division)
-        else:
-            body = get("%s/%s/%s/R%d.php" % (BASE, tid, division, rnd), timeout=90)
-        if not body:
-            sys.exit("No standings found for tid=%s division=%s" % (tid, division))
-        players = parse_standings(body)
+        players, rnd = _scrape(tid, division, rnd, pinned, args)
         origin = "per-round standings scrape"
-        print("  %d players parsed" % len(players))
-        if "--no-teamlists" not in args:
-            n = enrich_with_teamlists(players)
-            print("  %d teamlists merged (adds nature)" % n)
-        for p in players:
-            p.pop("_teamfile", None)
 
-    label = info.get("round_label")
-    print("Tournament %s / %s - round %s%s  [%s]"
-          % (tid, division, rnd, " (%s)" % label if label else "", origin))
-    if info.get("swiss_rounds"):
-        print("  %d swiss rounds, then the cut: %s"
-              % (info["swiss_rounds"],
-                 ", ".join("%d=%s" % (n, name) for n, name in
-                           sorted((info.get("round_labels") or {}).items())
-                           if n > info["swiss_rounds"]) or "none yet"))
-    print("  %s - %d players, %d teamlists, %d complete natures"
-          % ("EVENT COMPLETE" if info.get("complete") else "still running",
-             len(players), sum(1 for p in players if p["team"]),
-             sum(1 for p in players if p["team"]
-                 and all(s.get("nature") for s in p["team"]))))
-
+    _print_summary(tid, division, rnd, info, origin, players)
     if "--no-teamlists" in args:
         for p in players:
             p["team"] = []
@@ -400,7 +415,7 @@ def main():
         "round": rnd,
         # The top cut keeps counting up from the last swiss round, so the number
         # alone cannot say whether the event is over. These two can.
-        "round_label": label,
+        "round_label": info.get("round_label"),
         "swiss_rounds": info.get("swiss_rounds"),
         "round_labels": info.get("round_labels"),
         "complete": info.get("complete"),
