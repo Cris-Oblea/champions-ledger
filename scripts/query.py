@@ -26,20 +26,23 @@ Examples:
     python scripts/query.py worlds --usage --division all   # divisions compared
     python scripts/query.py owned
 """
-import os, re, sys, json, argparse, textwrap
+import argparse
+import contextlib
+import json
+import os
+import re
+import sys
+import textwrap
 from collections import Counter, defaultdict
 
-sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-import ledger                                  # noqa: E402
+import ledger
 
 # Windows consoles default to cp1252, which cannot encode the Korean and
 # Japanese player names in the Worlds standings. Replace them instead of
 # dying halfway through a dossier.
 for _s in (sys.stdout, sys.stderr):
-    try:
+    with contextlib.suppress(AttributeError, ValueError):
         _s.reconfigure(errors="replace")
-    except (AttributeError, ValueError):
-        pass
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DB = os.path.join(ROOT, "data", "db")
@@ -314,7 +317,7 @@ def table(rows, headers):
         print("  (no results)")
         return
     rows = [[("" if c is None else str(c)) for c in r] for r in rows]
-    widths = [max(len(headers[i]), max(len(r[i]) for r in rows))
+    widths = [max(len(headers[i]), *(len(r[i]) for r in rows))
               for i in range(len(headers))]
     line = "  ".join(h.ljust(widths[i]) for i, h in enumerate(headers))
     print(line)
@@ -471,9 +474,9 @@ def cmd_moves(a):
                 continue
             if a.priority not in ("+", "-") and p != int(a.priority):
                 continue
-        if a.learner:
-            if a.learner.lower() not in [l.lower() for l in m.get("learners", [])]:
-                continue
+        if a.learner and a.learner.lower() not in [
+                l.lower() for l in m.get("learners", [])]:
+            continue
         res.append(m)
 
     if a.used:
@@ -543,8 +546,6 @@ def cmd_moves(a):
 def cmd_counter_priority(a):
     """Everything that turns priority moves off, plus the priority moves themselves."""
     moves, abilities = db("moves"), db("abilities")
-    ui = usage_index()
-    perm, temp, _, _ = owned_sets()
 
     # "priority" plus any word that negates it. Kept broad on purpose: missing a
     # blocker is worse than showing one extra row.
@@ -875,8 +876,7 @@ def worlds_mega_counts():
     tour = tournament("masters")
     if not tour:
         return {}, 0
-    stones = {norm_item for norm_item in
-              (key(i["name"]) for i in db("items") if i.get("is_mega_stone"))}
+    stones = {key(i["name"]) for i in db("items") if i.get("is_mega_stone")}
     counts = Counter()
     players = tour.get("players", [])
     for pl in players:
@@ -939,7 +939,7 @@ def mega_profile(m):
     return role, stat_txt, bulk, "%d %s" % (spe, tempo)
 
 
-def cmd_megas(a):
+def cmd_megas(_a):
     inv = ledger.inv()
     perm = inv.get("permanent_pokemon", [])
     rentinfo = inv.get("rental_pokemon", {}) or {}
@@ -949,7 +949,6 @@ def cmd_megas(a):
     stone_vp = econ.get("mega_stone_shop", 2000)
     keep_vp = econ.get("keep_rental_pokemon", 2500)
     owner = stone_owner_map()
-    ui = usage_index()
     wcounts, wtotal = worlds_mega_counts()
     builds = {norm(str(b.get("pokemon"))) for b in ledger.builds()}
     bases = {norm(p["name"]): p for p in db("pokemon") if not p["is_mega"]}
@@ -970,21 +969,18 @@ def cmd_megas(a):
         has_stone = stone in stones
 
         if is_perm:
-            bucket = "ready" if has_stone else "stone"
             cost = "-" if has_stone else "%d VP" % stone_vp
         elif is_rent:
             # A rental can already Mega Evolve; the ticket buys the right to TRAIN it.
-            bucket = "both"
             need = 0 if has_stone else stone_vp
             cost = ("%d VP + 1 ticket  (or %d VP)" % (need, need + keep_vp)
                     if need else "1 ticket  (or %d VP)" % keep_vp)
         else:
             if not has_stone:
                 continue
-            bucket, cost = "orphan", "Encounter only"
+            cost = "Encounter only"
 
-        bs, base = m["base_stats"], bases.get(norm(sp))
-        bbs = (base or {}).get("base_stats") or {}
+        base = bases.get(norm(sp))
         bty, mty = "/".join((base or {}).get("types") or []), "/".join(m["types"])
         gained = ", ".join(m["abilities"])
         lost = [x for x in ((base or {}).get("abilities") or []) if x not in m["abilities"]]
@@ -1033,7 +1029,6 @@ def cmd_build(a):
 
     learn = load(os.path.join(DB, "learnsets.json"), {}) or {}
     moves_by = {m["name"]: m for m in db("moves")}
-    ui = usage_index()
 
     for b in builds:
         p = find_pokemon(b["pokemon"])
@@ -1232,7 +1227,9 @@ def cmd_types(a):
         label = "%s  (%s)%s" % (p["name"], "/".join(p["types"]),
                                 "  [%s]" % chosen if chosen else "")
         d = defence(types, None, ab)
-        print("=" * 62); print(label); print("=" * 62)
+        print("=" * 62)
+        print(label)
+        print("=" * 62)
         _show_defence(d)
         return
     d = defence(types)
@@ -1677,8 +1674,8 @@ def mega_line(name, mons, stones):
     return ("  |  ".join(stats), "  |  ".join(abils), "  |  ".join(stone_bits))
 
 
-def cmd_owned(a):
-    perm, temp, stones, items = owned_sets()
+def cmd_owned(_a):
+    stones = owned_sets()[2]
     inv = ledger.inv()
     ui = usage_index()
     mons = db("pokemon")

@@ -26,11 +26,19 @@ and the higher score wins. A tie goes to Serebii, which is this project's
 ground truth for rules. Both texts are kept either way, and the report prints
 every entry where the two disagree, so the choice can be argued with.
 """
-import argparse, glob, json, os, re, sys
+import argparse
+import glob
+import json
+import os
+import re
+
+import query as Q
+
+# The number reader the effect chips use to decide what a description already
+# says - one reader, so "the text states it" means the same thing in both.
+from effect_chips import same_number, values
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.insert(0, os.path.join(ROOT, "scripts"))
-import query as Q
 
 RAW = os.path.join(ROOT, "data", "raw", "pokebase")
 OUT = os.path.join(ROOT, "data", "db", "text_facts.json")
@@ -185,10 +193,6 @@ def smogon_first(moves, mv):
               "Smogon's Champions text states none" % (n, r))
     return mv
 
-
-# The number reader the effect chips use to decide what a description already
-# says - one reader, so "the text states it" means the same thing in both.
-from effect_chips import values, same_number              # noqa: E402
 
 
 def smogon_abilities(ab):

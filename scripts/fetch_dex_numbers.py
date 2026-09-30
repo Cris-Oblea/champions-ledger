@@ -19,7 +19,10 @@ numbers, fetched once and cached like every other raw source.
 Regional forms share their base species number, which is right: Alolan
 Ninetales is #38 in HOME, same as Ninetales.
 """
-import argparse, json, os, sys, time, urllib.request
+import argparse
+import json
+import os
+import urllib.request
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RAW = os.path.join(ROOT, "data", "raw", "pokeapi_species.json")

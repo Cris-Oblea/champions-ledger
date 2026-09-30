@@ -26,11 +26,14 @@ less. So pokebase's description wins where it has one, Serebii fills the rest,
 and `text_source` records which - it is the text the app shows AND the text the
 item/move/ability links are derived from.
 """
-import argparse, json, os, re, sys
+import argparse
+import json
+import os
+import re
+
+import query as Q
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.insert(0, os.path.join(ROOT, "scripts"))
-import query as Q
 
 RAW = os.path.join(ROOT, "data", "raw", "pokebase")
 OUT = os.path.join(ROOT, "data", "db", "item_facts.json")

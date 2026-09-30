@@ -44,16 +44,14 @@ incomplete. Anything NEW is what this is for.
 """
 import argparse
 import csv
-import io
-import json
 import os
 import re
 import sys
 import urllib.request
 
+import query as Q
+
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.insert(0, os.path.join(ROOT, "scripts"))
-import query as Q                                             # noqa: E402
 
 RAW = os.path.join(ROOT, "data", "raw", "pokeapi_csv")
 PIN = "4b82c204ddd19ecb8eda2ea044ccb59e222b721c"
@@ -96,12 +94,12 @@ def mkey(n):
 
 def upstream(force=False):
     by_id, mv = {}, {}
-    for r in csv.DictReader(io.open(table("pokemon.csv", force), encoding="utf-8")):
+    for r in csv.DictReader(open(table("pokemon.csv", force), encoding="utf-8")):
         by_id[r["id"]] = r["identifier"]
-    for r in csv.DictReader(io.open(table("moves.csv", force), encoding="utf-8")):
+    for r in csv.DictReader(open(table("moves.csv", force), encoding="utf-8")):
         mv[r["id"]] = r["identifier"]
     out = {}
-    with io.open(table("pokemon_moves.csv", force), encoding="utf-8") as fh:
+    with open(table("pokemon_moves.csv", force), encoding="utf-8") as fh:
         for r in csv.DictReader(fh):
             if r["version_group_id"] != CHAMPIONS_VG:
                 continue
@@ -132,7 +130,7 @@ def main():
         if not u:
             continue
         paired += 1
-        mine = set(mkey(m) for m in ours[name])
+        mine = {mkey(m) for m in ours[name]}
         for m in sorted(u - mine):
             if m in KNOWN_UPSTREAM:
                 known += 1

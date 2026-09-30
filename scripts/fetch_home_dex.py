@@ -54,16 +54,15 @@ Moving the pin is a deliberate edit, with the diff to read.
 """
 import argparse
 import csv
-import io
 import json
 import os
 import re
 import sys
 import urllib.request
 
+import query as Q
+
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.insert(0, os.path.join(ROOT, "scripts"))
-import query as Q                                             # noqa: E402
 
 RAW = os.path.join(ROOT, "data", "raw", "pokeapi_csv")
 META = os.path.join(ROOT, "data", "meta")
@@ -179,7 +178,7 @@ def table(name, force=False):
                                      headers={"User-Agent": "champions-ledger"})
         with urllib.request.urlopen(req, timeout=60) as r:
             open(path, "wb").write(r.read())
-    return list(csv.DictReader(io.open(path, encoding="utf-8")))
+    return list(csv.DictReader(open(path, encoding="utf-8")))
 
 
 def key(name):
@@ -239,7 +238,7 @@ def worlds_names():
 
     for f in files:
         try:
-            walk(json.load(io.open(os.path.join(META, f), encoding="utf-8")))
+            walk(json.load(open(os.path.join(META, f), encoding="utf-8")))
         except (OSError, ValueError):
             continue
     return out
@@ -346,11 +345,11 @@ def build(force=False):
     stats = table("pokemon_stats.csv", force)
     ptypes = table("pokemon_types.csv", force)
     pabil = table("pokemon_abilities.csv", force)
-    types = dict((r["id"], r["identifier"].capitalize())
-                 for r in table("types.csv", force))
-    abil = dict((r["ability_id"], r["name"])
-                for r in table("ability_names.csv", force)
-                if r.get("local_language_id") == ENGLISH)
+    types = {r["id"]: r["identifier"].capitalize()
+             for r in table("types.csv", force)}
+    abil = {r["ability_id"]: r["name"]
+            for r in table("ability_names.csv", force)
+            if r.get("local_language_id") == ENGLISH}
 
     resolve = resolver(pokemon)
 
@@ -427,7 +426,7 @@ def species_flags(force=False):
 
 def sprite_pin():
     m = re.search(r'var SPRITE_PIN = "([0-9a-f]{40})"',
-                  io.open(APP_DATA, encoding="utf-8").read())
+                  open(APP_DATA, encoding="utf-8").read())
     if not m:
         sys.exit("SPRITE_PIN not found in %s" % os.path.relpath(APP_DATA, ROOT))
     return m.group(1)
@@ -460,7 +459,7 @@ def sprite_files(force=False):
     path = os.path.join(SPRITE_RAW, pin + ".json")
     if os.path.exists(path) and not force:
         return {k: set(v)
-                for k, v in json.load(io.open(path, encoding="utf-8")).items()}
+                for k, v in json.load(open(path, encoding="utf-8")).items()}
     api = "https://api.github.com/repos/PokeAPI/sprites/"
     head = {"User-Agent": "champions-ledger",
             "Accept": "application/vnd.github+json"}
@@ -489,7 +488,7 @@ def sprite_files(force=False):
         out[label] = sorted(e["path"][:-4] for e in tree["tree"]
                             if e["type"] == "blob" and e["path"].endswith(".png"))
     os.makedirs(SPRITE_RAW, exist_ok=True)
-    json.dump(out, io.open(path, "w", encoding="utf-8"), separators=(",", ":"))
+    json.dump(out, open(path, "w", encoding="utf-8"), separators=(",", ":"))
     return {k: set(v) for k, v in out.items()}
 
 
@@ -513,8 +512,8 @@ def form_rows(force=False):
 
     Looked up with the hyphens removed as well, because the weight table
     writes Vivillon-Pokeball where upstream writes vivillon-poke-ball."""
-    types = dict((r["id"], r["identifier"].capitalize())
-                 for r in table("types.csv", force))
+    types = {r["id"]: r["identifier"].capitalize()
+             for r in table("types.csv", force)}
     ftypes = {}
     for r in table("pokemon_form_types.csv", force):
         ftypes.setdefault(r["pokemon_form_id"], []).append(
@@ -670,17 +669,17 @@ def form_line(force=False):
     stats = table("pokemon_stats.csv", force)
     ptypes = table("pokemon_types.csv", force)
     pabil = table("pokemon_abilities.csv", force)
-    types = dict((r["id"], r["identifier"].capitalize())
-                 for r in table("types.csv", force))
-    abil = dict((r["ability_id"], r["name"])
-                for r in table("ability_names.csv", force)
-                if r.get("local_language_id") == ENGLISH)
+    types = {r["id"]: r["identifier"].capitalize()
+             for r in table("types.csv", force)}
+    abil = {r["ability_id"]: r["name"]
+            for r in table("ability_names.csv", force)
+            if r.get("local_language_id") == ENGLISH}
     files = sprite_files(force)
     resolve = resolver(pokemon)
-    pid_of = dict((r["identifier"], r["id"]) for r in pokemon)
-    species_ident = dict((r["id"], r["identifier"])
-                         for r in table("pokemon_species.csv", force))
-    species_of = dict((r["id"], r["species_id"]) for r in pokemon)
+    pid_of = {r["identifier"]: r["id"] for r in pokemon}
+    species_ident = {r["id"]: r["identifier"]
+                     for r in table("pokemon_species.csv", force)}
+    species_of = {r["id"]: r["species_id"] for r in pokemon}
 
     st, ty, ab = {}, {}, {}
     for r in stats:
@@ -786,7 +785,7 @@ def main():
     if args.check:
         if not os.path.exists(OUT):
             sys.exit("no stored table yet - run without --check")
-        old = json.load(io.open(OUT, encoding="utf-8"))
+        old = json.load(open(OUT, encoding="utf-8"))
         moved = sorted(k for k in set(old) | set(out) if old.get(k) != out.get(k))
         if moved:
             sys.exit("the pinned data no longer matches for %d: %s"
@@ -794,16 +793,16 @@ def main():
         print("home dex matches the pin (%d species)" % len(out))
         return
 
-    json.dump(out, io.open(OUT, "w", encoding="utf-8"),
+    json.dump(out, open(OUT, "w", encoding="utf-8"),
               ensure_ascii=False, sort_keys=True, separators=(",", ":"))
-    sid, snot = sprite_ids(args.force)
-    json.dump(sid, io.open(SPRITES, "w", encoding="utf-8"),
+    sid, _snot = sprite_ids(args.force)
+    json.dump(sid, open(SPRITES, "w", encoding="utf-8"),
               ensure_ascii=False, sort_keys=True, separators=(",", ":"))
     print("wrote %s  (%d names, %.0f KB)"
           % (os.path.relpath(SPRITES, ROOT), len(sid),
              os.path.getsize(SPRITES) / 1024.0))
     fl, orphan = form_line(args.force)
-    json.dump(fl, io.open(FORMS, "w", encoding="utf-8"),
+    json.dump(fl, open(FORMS, "w", encoding="utf-8"),
               ensure_ascii=False, sort_keys=True, separators=(",", ":"))
     print("wrote %s  (%d forms on %d cards)"
           % (os.path.relpath(FORMS, ROOT), sum(len(v) for v in fl.values()),
@@ -816,12 +815,12 @@ def main():
               % (len(orphan), ", ".join(orphan)))
     gaps = sprite_gaps(list(sid.values()) +
                     [f["sp"] for fs in fl.values() for f in fs], args.force)
-    json.dump(gaps, io.open(GAPS, "w", encoding="utf-8"),
+    json.dump(gaps, open(GAPS, "w", encoding="utf-8"),
               ensure_ascii=False, separators=(",", ":"))
     print("wrote %s  (%d with no HOME render, %d with no pixel sprite)"
           % (os.path.relpath(GAPS, ROOT), len(gaps["n"]), len(gaps["p"])))
     flags = species_flags(args.force)
-    json.dump(flags, io.open(FLAGS, "w", encoding="utf-8"),
+    json.dump(flags, open(FLAGS, "w", encoding="utf-8"),
               ensure_ascii=False, sort_keys=True, indent=1)
     print("wrote %s  (%d mythical, %d legendary)"
           % (os.path.relpath(FLAGS, ROOT), len(flags["mythical"]),

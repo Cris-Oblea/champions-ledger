@@ -21,7 +21,13 @@ Usage:
     python scripts/fetch_smogon.py
     python scripts/fetch_smogon.py --force
 """
-import os, re, sys, json, time, html, urllib.request
+import html
+import json
+import os
+import re
+import sys
+import time
+import urllib.request
 
 RPC = "https://www.smogon.com/dex/_rpc/"
 UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
@@ -59,6 +65,7 @@ def rpc(method, params, timeout=60):
                 print("  RPC failed %s %s -> %s" % (method, params, e))
                 return None
             time.sleep(1.5 * (attempt + 1))
+    return None
 
 
 def strip_html(s):

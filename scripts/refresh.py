@@ -20,7 +20,11 @@ Serebii page ON TOP of the cache and reports which ones came back different,
 which is the patch note for that regulation.  It is not usually typed: the
 run asks the sources which regulation is live and turns it on by itself.
 """
-import argparse, os, subprocess, sys, time
+import argparse
+import os
+import subprocess
+import sys
+import time
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RAW = os.path.join(ROOT, "data", "raw")
@@ -247,7 +251,6 @@ def main():
     # reached, the refresh goes ahead as an ordinary one.
     record_after = False
     if not a.regulation and not a.no_regulation_check:
-        sys.path.insert(0, os.path.join(ROOT, "scripts"))
         try:
             import check_regulation
             status, live, ours, why = check_regulation.look()

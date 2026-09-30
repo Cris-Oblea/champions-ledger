@@ -33,16 +33,21 @@ changes daily - and the one whose cache made a plain refresh a no-op until
 moves when Smogon ships. All three are checked every run anyway; checking is
 cheap and missing a regulation is not.
 """
-import argparse, datetime, hashlib, io, json, os, subprocess, sys
+import argparse
+import contextlib
+import datetime
+import hashlib
+import json
+import os
+import subprocess
+import sys
 
 # Windows consoles default to cp1252, and the summary quotes what the sources
 # printed - a U+FFFD in one of them killed the run at its very last line,
 # after the deploy. Replace what cp1252 cannot show instead of dying.
 for _s in (sys.stdout, sys.stderr):
-    try:
+    with contextlib.suppress(AttributeError, ValueError):
         _s.reconfigure(errors="replace")
-    except (AttributeError, ValueError):
-        pass
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PY = sys.executable
@@ -102,6 +107,12 @@ GATE_CHECKS = [
     # nothing noticed. This is what notices (player, 2026-09-13).
     (["scripts/check_docs.py"],
      "no document contradicts a decision, names a missing file or outgrows its budget"),
+    # The Python half of the lint gate, and the twin of ESLint below: ruff.toml
+    # holds the rules, the same file VS Code's Ruff extension reads. It found
+    # two regexes whose  had been typed as a literal backspace, so one of
+    # check_docs' watched decisions had never matched anything (2026-09-30).
+    (["-m", "ruff", "check", "--quiet", "--output-format", "concise"],
+     "no Python lint finding comes back once it is fixed"),
 ]
 
 # Read the SOURCE, which is the one thing the browser tests cannot: they
@@ -262,7 +273,7 @@ def shrink_check():
             bad.append("BLOCKED: %s is missing entirely" % rel)
             continue
         try:
-            now = _count(json.load(io.open(path, encoding="utf-8")), how)
+            now = _count(json.load(open(path, encoding="utf-8")), how)
         except Exception as e:
             bad.append("BLOCKED: %s will not parse (%s)" % (rel, e))
             continue
@@ -300,7 +311,7 @@ def ladder_summary():
     """The one source whose *content* is worth summarising, not just hashing."""
     p = os.path.join(ROOT, "data", "meta", "usage_pokemon.json")
     try:
-        d = json.load(io.open(p, encoding="utf-8"))
+        d = json.load(open(p, encoding="utf-8"))
     except Exception:
         return None
     rows = d.get("rows") or []
@@ -311,17 +322,15 @@ def ladder_summary():
 def log(lines):
     os.makedirs(LOGDIR, exist_ok=True)
     stamp = datetime.datetime.now().strftime("%Y-%m-%d")
-    with io.open(os.path.join(LOGDIR, stamp + ".log"), "a", encoding="utf-8") as f:
+    with open(os.path.join(LOGDIR, stamp + ".log"), "a", encoding="utf-8") as f:
         for ln in lines:
             f.write(ln + "\n")
     # keep a month, no more
     keep = sorted(os.listdir(LOGDIR))[-31:]
     for old in os.listdir(LOGDIR):
         if old not in keep:
-            try:
+            with contextlib.suppress(OSError):
                 os.remove(os.path.join(LOGDIR, old))
-            except OSError:
-                pass
 
 
 # ------------------------------------------------- the stale-cache guard --
@@ -683,7 +692,7 @@ def main():
     # and this was the first line to touch it
     os.makedirs(os.path.dirname(STATE), exist_ok=True)
     json.dump({"last_run": started.isoformat(), "changed": changed,
-               "deployed": deployed}, io.open(STATE, "w", encoding="utf-8"))
+               "deployed": deployed}, open(STATE, "w", encoding="utf-8"))
     log(out)
     print("\n".join(out))
     # green means "the app on Cloudflare matches this data". A

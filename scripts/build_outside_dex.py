@@ -54,18 +54,17 @@ fetch_home_dex.py for why that pin exists and what it protects.
 """
 import argparse
 import collections
-import csv
-import io
 import json
 import os
 import re
 import sys
 
+import query as Q
+from audit_learnsets import CHAMPIONS_VG
+from fetch_home_dex import key as hkey
+from fetch_home_dex import resolver, table
+
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.insert(0, os.path.join(ROOT, "scripts"))
-import query as Q                                             # noqa: E402
-from audit_learnsets import CHAMPIONS_VG                      # noqa: E402
-from fetch_home_dex import key as hkey, resolver, table       # noqa: E402
 
 OUT = os.path.join(ROOT, "tracker", "outsidedex.js")
 ENGLISH = "9"
@@ -102,11 +101,10 @@ def build():
     # older game's page, which can describe a different move.
     smogon = (Q.db("smogon_text") or {}).get("moves") or {}
     champ_abils = {key(a["name"]) for a in Q.db("abilities")}
-    home = json.load(io.open(os.path.join(ROOT, "data", "db", "home_dex.json"),
+    home = json.load(open(os.path.join(ROOT, "data", "db", "home_dex.json"),
                              encoding="utf-8"))
 
     # --- the upstream tables ----------------------------------------------
-    types = {r["id"]: r["identifier"].capitalize() for r in table("types.csv")}
     dmg = {r["id"]: r["identifier"] for r in table("move_damage_classes.csv")}
     unknown = sorted(set(dmg.values()) - set(CLASS))
     if unknown:
@@ -158,9 +156,9 @@ def build():
             missing.append(name)
             continue
         g = (CHAMPIONS_VG if groups.get(CHAMPIONS_VG)
-             else max(groups, key=lambda k: int(k)))
+             else max(groups, key=int))
         names = []
-        for mid in sorted(groups[g], key=lambda x: int(x)):
+        for mid in sorted(groups[g], key=int):
             up = upstream_name.get(mid)
             row = champ_by_key.get(key(up)) if up else None
             if not row:
@@ -207,7 +205,7 @@ def main():
             "window.CHAMP_OUTSIDE = "
             + json.dumps(blob, ensure_ascii=False, separators=(",", ":"))
             + ";\n")
-    io.open(OUT, "w", encoding="utf-8", newline="\n").write(body)
+    open(OUT, "w", encoding="utf-8", newline="\n").write(body)
     print("wrote %s  (%.0f KB)" % (OUT, os.path.getsize(OUT) / 1024))
 
 

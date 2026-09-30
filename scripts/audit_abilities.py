@@ -59,15 +59,14 @@ import collections
 import csv
 import glob
 import html
-import io
 import os
 import re
 import sys
 
+import query as Q
+from fetch_home_dex import key as hkey
+
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.insert(0, os.path.join(ROOT, "scripts"))
-import query as Q                                             # noqa: E402
-from fetch_home_dex import key as hkey                        # noqa: E402
 
 RAW = os.path.join(ROOT, "data", "raw", "pokeapi_csv")
 PAGES = os.path.join(ROOT, "data", "raw", "pokedex")
@@ -82,7 +81,7 @@ def table(name):
     path = os.path.join(RAW, name)
     if not os.path.exists(path):
         return None
-    return list(csv.DictReader(io.open(path, encoding="utf-8")))
+    return list(csv.DictReader(open(path, encoding="utf-8")))
 
 
 def upstream(forms):
@@ -171,11 +170,11 @@ def serebii(forms):
         have = rows.get(Q.norm(slug))
         if have is None:
             continue
-        s = io.open(path, encoding="cp1252", errors="replace").read()
+        s = open(path, encoding="cp1252", errors="replace").read()
         pages += 1
         for cell in re.findall(r"<b>Abilities</b>\s*:(.*?)</td>", s, re.S):
-            for n in re.findall(r"<b>([^<]+)</b>", cell):
-                n = re.sub(r"\s+", " ", html.unescape(n)).strip()
+            for raw in re.findall(r"<b>([^<]+)</b>", cell):
+                n = re.sub(r"\s+", " ", html.unescape(raw)).strip()
                 if n and n not in have and n not in KNOWN:
                     gaps.append((slug, n, ", ".join(sorted(have))))
     print("%d Serebii Pokedex pages read back by ability name" % pages)

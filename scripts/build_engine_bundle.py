@@ -16,7 +16,10 @@ and the page picks up the same fix Smogon shipped.
 calc.js is deliberately not the entry point: it requires every generation's
 mechanics, and the vendored copy only carries champions.js.
 """
-import json, os, subprocess, sys
+import json
+import os
+import subprocess
+import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CALC = os.path.join(ROOT, "data", "raw", "smogon_calc", "calc")

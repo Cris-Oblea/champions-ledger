@@ -19,7 +19,12 @@ Usage:
     python scripts/fetch_pokebase.py          # fetch + parse everything
     python scripts/fetch_pokebase.py --parse  # re-parse cached HTML only
 """
-import os, re, sys, json, time, urllib.request
+import json
+import os
+import re
+import sys
+import time
+import urllib.request
 
 BASE = "https://pokebase.app/pokemon-champions"
 UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
@@ -57,6 +62,7 @@ def fetch(page, force=False, num=None):
                 print("  FAILED %s -> %s" % (name, e))
                 return None
             time.sleep(2 * (attempt + 1))
+    return None
 
 
 def read(page):
@@ -273,10 +279,10 @@ def parse_teams():
     for bucket in find_key(lines, "community") + find_key(lines, "tournament"):
         if not isinstance(bucket, list):
             continue
-        for t in bucket:
-            if not isinstance(t, dict) or "team" not in t:
+        for raw in bucket:
+            if not isinstance(raw, dict) or "team" not in raw:
                 continue
-            t = resolve(t, lines)
+            t = resolve(raw, lines)
             tid = t.get("id")
             if tid in seen:
                 continue

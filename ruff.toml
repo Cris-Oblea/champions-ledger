@@ -1,0 +1,59 @@
+# The Python half of the lint gate: the same file drives the gate
+# (python -m ruff check) and the Ruff extension in VS Code, so what the Problems
+# panel shows is what blocks a push - the rule eslint.config.mjs follows for
+# JavaScript.
+#
+# The rules are chosen to cover what SonarQube for IDE reported on this code,
+# plus what Sonar has no rule for. Style-only families (quote style, printf
+# formatting, line length) are left out: they would add hundreds of findings
+# and make no file easier to read.
+target-version = "py312"                # what CI runs; the laptop runs newer
+extend-exclude = ["data", "graphify-out", "node_modules"]
+
+[lint]
+select = [
+    "F",       # pyflakes: undefined names, unused imports and variables
+    "E4", "E7", "E9", "W",  # pycodestyle: statements, imports, syntax
+    "B",       # bugbear: the bugs that look like working code
+    "C4",      # comprehensions that say the same thing twice
+    "I",       # imports sorted, so a new one has one place to go
+    "C901",    # complexity (Sonar S3776 is cognitive; this is cyclomatic)
+    "N",       # naming (Sonar S117, S1542)
+    "A",       # a name that shadows a builtin
+    "ARG",     # unused arguments (Sonar S1172)
+    "BLE",     # `except Exception` that hides the real error
+    "S110", "S112",  # try/except/pass and try/except/continue
+    "ISC",     # implicit string concatenation - a missing comma in a list
+    "PIE", "RET", "SIM",  # redundant code, and the simpler form of it
+    "PLE", "PLW",  # pylint's errors and warnings
+    "PLR0913", # too many parameters (Sonar S107)
+    "UP020",   # io.open is open
+    "RUF010", "RUF012", "RUF015", "RUF019", "RUF059", "RUF100",
+]
+ignore = [
+    "N812",    # `import query as Q` is the project's idiom, used everywhere
+    "PLW0603", # `global` for a module's lazily loaded cache is what it is for
+    "SIM905",  # a word list written as one "...".split() reads better
+]
+
+# THE RATCHET. These rules still have findings, so they are off for now - ruff
+# has no "warn" level to keep them visible without failing the push. Each one
+# leaves this list in the pull request that takes it to zero, and from then on
+# it blocks like every other rule, so the count can only go down. The goal is
+# an empty list. `python -m ruff check --extend-select <RULE>` shows one.
+extend-ignore = [
+    "SIM115",  # a file opened without `with`
+    "N806", "N803",  # UPPERCASE locals and arguments
+    "C901", "PLR0913",  # functions too complex, or taking too much
+    "ISC004",  # implicit concatenation inside a list
+    "E741",    # `l` for a variable
+    "BLE001", "S110", "S112",  # an exception swallowed whole
+    "ARG005",  # a lambda that ignores its argument
+    "PLW1510", # subprocess.run without check=
+]
+
+[lint.mccabe]
+max-complexity = 10
+
+[lint.pylint]
+max-args = 13                           # Sonar S107's threshold

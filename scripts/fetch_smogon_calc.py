@@ -27,7 +27,11 @@ analysis/smogon_calc.md for where the two disagree and who wins.
     python scripts/fetch_smogon_calc.py
     python scripts/fetch_smogon_calc.py --check     # report drift, write nothing
 """
-import os, sys, json, argparse, hashlib
+import argparse
+import hashlib
+import json
+import os
+import sys
 import urllib.request
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))

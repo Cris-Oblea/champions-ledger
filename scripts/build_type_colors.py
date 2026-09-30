@@ -117,7 +117,7 @@ def main():
                  "restructured, do not overwrite the stored table" % (len(got), CSS))
     got.update(EXTRA)
 
-    for name, row in sorted(got.items()):
+    for _name, row in sorted(got.items()):
         row["contrast"] = round(contrast(row["top"], row["ink"]), 2)
         row["two_tone"] = row["top"] != row["bottom"]
 

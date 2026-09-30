@@ -31,7 +31,15 @@ ADDING ONE. When a decision reverses, add an entry here in the same commit that
 makes the change. It costs three lines and it is the only thing that stops the
 next contradiction.
 """
-import argparse, contextlib, glob, io, json, os, re, subprocess, sys
+import argparse
+import contextlib
+import glob
+import io
+import json
+import os
+import re
+import subprocess
+import sys
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -167,7 +175,7 @@ DECISIONS = [
     # a BALANCE nobody can edit goes stale and then gets quoted as current,
     # which vp_balance did for a day at 8000.
     ("vp-balance-is-not-tracked",
-     r"you have \d+ VP|VP balance (is|of|:)|vp_balance (is|=) \d",
+     r"you have \d+ VP|VP balance (is|of|:)|\bvp_balance\b (is|=) \d",
      "VP costs are rules and stay; the balance is not tracked - ask him",
      DOCS),
 
@@ -202,6 +210,14 @@ DECISIONS = [
      r"concatenates them|pure concatenation|"
      r"in the order the number\s+prefixes give",
      "tracker/src parts are ES modules linked by esbuild; imports set the order",
+     DOCS),
+
+    # Python was SonarQube for IDE's until 2026-09-30, when ruff took it over
+    # for the same reason ESLint took JavaScript: Sonar has no check the gate
+    # can run, so what the editor showed could never block a push.
+    ("python-lint-is-ruff",
+     r"SonarQube for IDE[^.]*\bPython\b|No `pip install` needed",
+     "ruff lints the Python, in the gate and in VS Code; Sonar keeps CSS and HTML",
      DOCS),
 ]
 
@@ -287,7 +303,7 @@ ARCH = "docs/ARCHITECTURE.md"
 
 
 def architecture_parts():
-    import build_tracker_page       # the one definition of what a part is
+    import build_tracker_page  # the one definition of what a part is
 
     def names(pattern, strip=""):
         return sorted(os.path.basename(f)[:len(os.path.basename(f)) - len(strip)]
@@ -295,8 +311,11 @@ def architecture_parts():
     tables = set()
     for f in glob.glob(os.path.join(ROOT, "tracker", "*.sql")):
         tables |= set(re.findall(r"create table if not exists public\.(\w+)",
-                                 io.open(f, encoding="utf-8").read(), re.I))
-    pkg = json.load(io.open(os.path.join(ROOT, "package.json"),
+                                 open(f, encoding="utf-8").read(), re.I))
+    with open(os.path.join(ROOT, "requirements.txt"), encoding="utf-8") as f:
+        pips = [re.split(r"[=<>~!\[ ]", line.strip())[0] for line in f
+                if line.strip() and not line.startswith("#")]
+    pkg = json.load(open(os.path.join(ROOT, "package.json"),
                             encoding="utf-8"))
     return [
         # by path, because a bare name would be found in the wrong place:
@@ -309,6 +328,7 @@ def architecture_parts():
         ("Supabase table", sorted(tables)),
         ("npm package", sorted(list(pkg.get("dependencies", {}))
                                + list(pkg.get("devDependencies", {})))),
+        ("pip package", sorted(pips)),
     ]
 
 
@@ -340,7 +360,7 @@ def read(rel):
     p = os.path.join(ROOT, rel)
     if not os.path.exists(p):
         return None
-    return io.open(p, encoding="utf-8").read().split("\n")
+    return open(p, encoding="utf-8").read().split("\n")
 
 
 # The memory index is outside the repo, so the gate never sees it; the hook
@@ -355,7 +375,7 @@ def check_memory(folder):
     idx = os.path.join(folder, "MEMORY.md")
     if not os.path.exists(idx):
         return 0
-    text = io.open(idx, encoding="utf-8").read()
+    text = open(idx, encoding="utf-8").read()
     linked = set(re.findall(r"\]\(([^)]+\.md)\)", text))
     files = {f for f in os.listdir(folder)
              if f.endswith(".md") and f != "MEMORY.md"}
@@ -408,7 +428,7 @@ def main():
     if a.hook:
         return hook()
     if a.list:
-        for did, stale, now, files in DECISIONS:
+        for did, _stale, now, _files in DECISIONS:
             print("  %-32s %s" % (did, now))
         print("\n%d decision(s) watched across %d file(s)"
               % (len(DECISIONS), len(DOCS)))

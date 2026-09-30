@@ -4,12 +4,15 @@
 Everything here is DERIVED from data/db/. Re-run it after build_db.py so the
 tracker sees a new regulation's species, moves and stones.
 """
-import json, os, re, sys, unicodedata
+import json
+import os
+import re
+import unicodedata
+
+import effect_chips
+import query as Q
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.insert(0, os.path.join(ROOT, "scripts"))
-import query as Q
-import effect_chips
 
 OUT = os.path.join(ROOT, "tracker", "data.js")
 
@@ -545,9 +548,6 @@ def main():
     # Aegislash is the one form that depends on which side it is on: it attacks
     # as Blade and is hit as Shield.
     import damage as Dm
-    roster = json.load(open(os.path.join(
-        ROOT, "data", "raw", "smogon_calc", "raw_species.json"),
-        encoding="utf-8"))
     SMOGON_NAME, missing = {}, []
     for p_ in mons:
         n = p_["name"]
