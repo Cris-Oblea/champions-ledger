@@ -304,10 +304,9 @@ def upsert(table, batch):
                      s=sets)
 
 
-def restore(a):
-    snap = read_snapshot(a.restore)
-    print("snapshot %s, taken %s"
-          % (os.path.basename(a.restore), snap.get("_taken_at", "?")))
+def _restore_plan(snap):
+    """[(table, rows to add, rows to change, rows to delete)] and how many rows
+    that is in all, printing what each table would do."""
     plans, total = [], 0
     for t in TABLES:
         if t in NO_RESTORE:
@@ -325,7 +324,34 @@ def restore(a):
             print("       would DELETE %s" % (key_of(t, r)[1],))
         if len(gone) > 6:
             print("       ...and %d more" % (len(gone) - 6))
+    return plans, total
 
+
+def _run_or_stop(statement, failure):
+    ok, out = sql(statement)
+    if not ok:
+        print(out.strip()[-500:])
+        sys.exit(failure)
+
+
+def _restore_table(t, work, gone):
+    """Upsert `work`, then delete `gone` (empty to keep the extra rows)."""
+    for i in range(0, len(work), CHUNK):
+        _run_or_stop(upsert(t, work[i:i + CHUNK]),
+                     "FAILED writing %s - stopped part way." % t)
+    for i in range(0, len(gone), CHUNK):
+        ids = ", ".join(quote(r["id"]) for r in gone[i:i + CHUNK])
+        uid = quote(gone[i]["user_id"])
+        _run_or_stop("delete from public.%s where user_id=%s and "
+                     "id in (%s);" % (t, uid, ids),
+                     "FAILED deleting from %s - stopped part way." % t)
+
+
+def restore(a):
+    snap = read_snapshot(a.restore)
+    print("snapshot %s, taken %s"
+          % (os.path.basename(a.restore), snap.get("_taken_at", "?")))
+    plans, total = _restore_plan(snap)
     if not total:
         print("\nthe database already matches this snapshot")
         return 0
@@ -333,23 +359,8 @@ def restore(a):
         print("\n%d row(s) would change. Nothing was written - add --confirm."
               % total)
         return 0
-
     for t, add, changed, gone in plans:
-        work = add + changed
-        for i in range(0, len(work), CHUNK):
-            ok, out = sql(upsert(t, work[i:i + CHUNK]))
-            if not ok:
-                print(out.strip()[-500:])
-                sys.exit("FAILED writing %s - stopped part way." % t)
-        if gone and not a.keep_extra:
-            for i in range(0, len(gone), CHUNK):
-                ids = ", ".join(quote(r["id"]) for r in gone[i:i + CHUNK])
-                uid = quote(gone[i]["user_id"])
-                ok, out = sql("delete from public.%s where user_id=%s and "
-                              "id in (%s);" % (t, uid, ids))
-                if not ok:
-                    print(out.strip()[-500:])
-                    sys.exit("FAILED deleting from %s - stopped part way." % t)
+        _restore_table(t, add + changed, [] if a.keep_extra else gone)
         print("  %-8s restored" % t)
     print("\ndone - %d row(s)" % total)
     return 0
