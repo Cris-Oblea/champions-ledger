@@ -217,7 +217,7 @@ python scripts/fetch_tournament.py --division seniors
 python scripts/fetch_tournament.py --division juniors
 python scripts/fetch_smogon_calc.py                   # Smogon's Champions engine
 python scripts/audit_forms.py && python scripts/test_norm.py
-python scripts/damage.py --selftest                   # incl. parity vs the engine
+python scripts/damage.py --selftest                   # the engine vs Smogon's prose
 ```
 
 Raw responses cache under `data/raw/`, so re-runs are cheap. During a live event

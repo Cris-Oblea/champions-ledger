@@ -34,26 +34,39 @@ character, and it is the fifth source. Full write-up in
 `analysis/smogon_calc.md`; bundle in `data/raw/smogon_calc/`.
 
 ```bash
-python scripts/damage.py --selftest        # 3 prose benchmarks + 16 vs the engine
-python scripts/damage.py Basculegion "Wave Crash" Kingambit \
-    --engine smogon --atk-ability Adaptability     # the real engine, via Node
+python scripts/damage.py --selftest        # Smogon's prose benchmarks + one guard per rule
+python scripts/damage.py Basculegion "Wave Crash" Kingambit --atk-ability Adaptability
 python scripts/fetch_smogon_calc.py --check        # has upstream moved?
 ```
 
-**`damage.py` never disagrees with that engine silently.** Over 909 cases the two
-agree on 895 (98.5%); the other 14 are just **four** moves that need a fact
-nobody supplied — **Acrobatics** (does the user hold an item?), **Poltergeist**
-(does the target?), **Steel Roller** (is there terrain?) and **Payback** (who
-moves first?) — and each prints a `CONDITIONAL:` line naming the condition. Note
-that Smogon's web calculator **doubles Acrobatics and zeroes Poltergeist by
-default**, because an empty item box means "holds nothing" to it; under the Item
-Clause every Pokemon holds something, so fill the item in before trusting either. It does NOT model
-abilities - the engine has 46 attacker-side and 65 defender-side - so when one is
-in play it prints `ABILITY not modelled:` and points at `--engine smogon`. **If
-you see either line, the number in front of you is not the final answer.** The
-ones that bite hardest in this box: Basculegion's **Adaptability** (STAB 2.0, not
-1.5), Mega Aerodactyl's **Tough Claws**, Dragonite's **Multiscale**, Maushold's
-**Technician**, Mega Aggron's **Filter**.
+**`damage.py` is that engine, and nothing else** (player, 2026-09-30: "deja
+solo smogon"). It used to carry a Python port of the formula too, checked
+against the engine case by case, and the port was the default. It modelled no
+abilities, and it calculated every move whose power is not a number as a 1 BP
+hit - Serebii writes "1" for all of them - so Seismic Toss read "1-2 damage, no
+OHKO" with no warning (it is 50). The app and the terminal now run the same
+code, so they cannot disagree.
+
+**A move that needs a fact beyond the two Pokemon is never guessed** (player,
+2026-09-30: "para calcular cada uno de ellos debería haber datos adicionales").
+`NEEDS` in `damage.py` refuses these until the flag is given:
+
+| Move | Needs | Why |
+|---|---|---|
+| Fling | `--atk-item` | its power is the held item's Fling power |
+| Acrobatics | `--atk-item` (or `none`) | doubles only with no item, and the Item Clause means everyone holds one |
+| Poltergeist | `--def-item` (or `none`) | fails if the target holds nothing |
+| Steel Roller | `--terrain` | fails without terrain |
+| Gyro Ball, Electro Ball | `--atk-spe-sp`, `--def-spe-sp` | power from the two Speed stats |
+| Payback | `--atk-spe-sp`, `--def-spe-sp` | doubles when moving last, read off Speed - Trick Room, Tailwind and priority are invisible to the engine |
+
+`NOT_A_CALC` refuses outright, with a sentence saying what the move does:
+**Super Fang** (half the target's CURRENT HP, whatever the stats), **Beat Up**
+(one hit per healthy party member - the engine has no party), **Counter,
+Mirror Coat, Metal Burst, Comeuppance** (return damage taken), **Endeavor**,
+**Spit Up** and the four **OHKO** moves. Seismic Toss and Night Shade are the
+user's level (50), and the engine answers them. Reversal, Flail, Eruption and
+Hard Press read current HP: `--atk-hp` / `--target-hp`, full HP if not given.
 
 Three things that used to be silently wrong and are now handled, worth knowing
 because they change KO counts rather than percentages:
@@ -92,24 +105,13 @@ and Froslass into 2HKOs. Steel still walls it — Kingambit and Gholdengo are
 4HKOs. So never pad a moveset to four for the sake of it, and never call a
 two-move set unfinished. `query.py build` does not assume four either.
 
-**`damage.py` never accepts a flag it cannot honour.** Ask for weather, terrain,
-an ability, an item, a status, a stat boost, a crit, allies fainted or the
-target's current HP, and it routes the question to Smogon's engine and says so on
-the line above the answer. `--engine local` refuses instead of silently dropping
-it.
-
 **Between-turn chip is modelled, but only once you supply it.** Pass
 `--def-item Leftovers --def-status brn` and the KO count comes back as
 "guaranteed 2HKO after Leftovers recovery and burn damage". Weather chip, Leech
 Seed, poison and its toxic counter and Grassy Terrain all feed the same line. A
 bare "2HKO" assumed none of it.
 
-**Payback and Acrobatics are never guessed.** Payback doubles only with
-`--moves-last`, because Tailwind, Trick Room, a Choice Scarf and any Speed change
-all decide turn order — it is not a species fact. Acrobatics and Poltergeist
-depend on items, which by the player's own rule live in `teams.json` and not in a
-build, so the calculator states which way it read them instead of picking
-silently. **Focus Sash and Sturdy are deliberately NOT modelled** (player,
+**Focus Sash and Sturdy are deliberately NOT modelled** (player,
 2026-09-04): they change no damage number, only whether the target ends at 1 HP,
 so they have no place in a damage figure — unlike a resist Berry, which really
 does halve it.

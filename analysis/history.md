@@ -563,10 +563,13 @@ python scripts/damage.py <a> <move> <d> --engine smogon
 python scripts/fetch_smogon_calc.py --check      # has upstream moved?
 ```
 
+> REVERSED 2026-09-30: `damage.py` is Smogon's engine alone - `--engine`,
+> the parity table and the `CONDITIONAL:` / `ABILITY not modelled:` lines are gone.
+
 **What it changed here.** A 909-case diff between the two engines found seven
 real errors in `damage.py`, all now fixed — parity went from 872/909 (96.0%) to
 **895/909 (98.5%)**, and every one of the 14 remaining differences prints a
-`CONDITIONAL:` warning naming why. Only four moves ever diverge, and each needs
+`CONDITIONAL:` warning naming why (REVERSED 2026-09-30, see above). Only four moves ever diverge, and each needs
 a fact nobody supplied: Acrobatics and Poltergeist (who holds an item), Steel
 Roller (terrain) and Payback (turn order). The errors that mattered:
 
@@ -591,7 +594,7 @@ Roller (terrain) and Payback (turn order). The errors that mattered:
 **What it deliberately does NOT do:** implement abilities. The engine models 46
 attacker-side and 65 defender-side; copying those into Python would drift the
 moment Smogon updates. `damage.py` names any ability in play instead and points
-at `--engine smogon`. Biggest one in the box: Basculegion's **Adaptability**
+at `--engine smogon` (REVERSED 2026-09-30: no local formula any more). Biggest one in the box: Basculegion's **Adaptability**
 makes Wave Crash on Kingambit 108-128, not 81-96.
 
 ---
@@ -715,7 +718,7 @@ python scripts/fetch_smogon.py --force        # dump-basics still 323/500/151/20
 python scripts/fetch_pikalytics.py --force    # still stamped 2026-05
 ```
 
-Until then: **`--engine smogon` fails on Baxcalibur, Salamence, Golisopod and
+Until then (no longer true: the roster caught up, and `damage.py` is the engine alone since 2026-09-30): **`--engine smogon` fails on Baxcalibur, Salamence, Golisopod and
 Rillaboom** ("Smogon's Champions roster has no ..."), because its roster only
 gained the three Z Megas. Our own `damage.py` handles them from our database, so
 use the local engine for the new species and say which one produced the number.
@@ -828,7 +831,7 @@ done:
 
 **Smogon's calculator has not moved upstream** (`fetch_smogon_calc.py --check`:
 23 files unchanged since 2026-09-09), so its roster still lacks the four M-C
-species and `--engine smogon` still fails on Baxcalibur, Salamence, Golisopod
+species and `--engine smogon` (a flag that no longer exists) still fails on Baxcalibur, Salamence, Golisopod
 and Rillaboom.
 
 ### One class of bug, hunted across the project (2026-09-10)

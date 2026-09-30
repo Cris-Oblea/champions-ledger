@@ -46,9 +46,9 @@ outrank Serebii, Smogon and everything else.
 
 ## damage.md - the calculator
 - Never assert survives/dies without `damage.py`. A type multiplier alone is not an answer.
-- A `CONDITIONAL:` or `ABILITY not modelled:` line means the number is not final: use `--engine smogon`, which models abilities (Adaptability, Tough Claws, Multiscale, Technician, Filter...).
+- `damage.py` IS Smogon's Champions engine (abilities, items, field). A move that needs a fact beyond the two Pokemon is refused until its flag is given; Super Fang, Beat Up, Counter and the OHKO moves are refused as not a damage calculation.
 - 2-5 hit moves are quoted at 3 hits, Skill Link at 5, Population Bomb at 10. Aegislash attacks as Blade. Psyshock hits Defense. Raging Bull and Aura Wheel take the user's FORM type. Meteor Beam and Electro Shot land at +1.
-- No Terastallization in Champions. Focus Sash and Sturdy are deliberately not modelled. Payback needs `--moves-last`, and Acrobatics and Poltergeist need the items stated.
+- No Terastallization in Champions. Focus Sash and Sturdy are deliberately not modelled. Payback, Gyro Ball and Electro Ball need both Speed SPs; Fling, Acrobatics and Poltergeist need the items stated.
 - A set may hold fewer than four moves (Kangaskhan Fake Out + Last Resort, base with Scrappy).
 
 ## traps.md - analysis mistakes already made once
