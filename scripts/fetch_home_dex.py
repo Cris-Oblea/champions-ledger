@@ -54,12 +54,14 @@ Moving the pin is a deliberate edit, with the diff to read.
 """
 import argparse
 import csv
+import functools
 import json
 import os
 import re
 import sys
 import urllib.request
 from pathlib import Path
+from types import SimpleNamespace
 
 import query as Q
 
@@ -264,6 +266,43 @@ def home_only_names():
                   and "-Totem" not in n and "-Starter" not in n)
 
 
+def _short_suffix(kt, it):
+    """`oinkologne-f` is `oinkologne-female`: every earlier token matches and
+    the last one starts the other's. It needs an earlier token, which is what
+    stops `mew` from resolving to `mewtwo`."""
+    return (len(kt) > 1 and len(it) == len(kt) and kt[:-1] == it[:-1]
+            and it[-1].startswith(kt[-1]))
+
+
+def _near(k, order, is_def):
+    """Rows that ARE k: a form of it, or its suffix written short."""
+    kt = k.split("-")
+    out = [i for i in order if i != k
+           and (i.startswith(k + "-") or _short_suffix(kt, i.split("-")))]
+    # the default form first, then the shortest name, then alphabetical -
+    # a total order, so the same input always gives the same row
+    out.sort(key=lambda i: (not is_def[i], len(i), i))
+    return out
+
+
+def _resolve(k, by_key, order, is_def):
+    if k in by_key:
+        return by_key[k], None
+    n = _near(k, order, is_def)
+    if n:
+        return by_key[n[0]], None
+    parts = k.split("-")
+    while len(parts) > 1:
+        parts.pop()
+        base = "-".join(parts)
+        if base in by_key:
+            return by_key[base], base
+        nb = _near(base, order, is_def)
+        if nb:
+            return by_key[nb[0]], base
+    return None, None
+
+
 def resolver(pokemon):
     """PokeAPI's id for a name, or the closest honest stand-in.
 
@@ -293,6 +332,8 @@ def resolver(pokemon):
        row is the honest answer and the card says whose numbers it is showing.
        Dropping one token rather than all of them is what lets
        `necrozma-dusk-mane` land on `necrozma-dusk` instead of on Necrozma.
+
+    Returns resolve(name) -> (id, the base it fell back to or None).
     """
     by_key, is_def, order = {}, {}, []
     for r in pokemon:
@@ -302,43 +343,7 @@ def resolver(pokemon):
         by_key[i] = r["id"]
         is_def[i] = str(r.get("is_default") or "") in ("1", "True", "true")
         order.append(i)
-
-    def near(k):
-        """Rows that ARE k: a form of it, or its suffix written short."""
-        kt = k.split("-")
-        out = []
-        for i in order:
-            if i == k:
-                continue
-            if i.startswith(k + "-"):
-                out.append(i)
-                continue
-            it = i.split("-")
-            if len(kt) > 1 and len(it) == len(kt) and kt[:-1] == it[:-1]                and it[-1].startswith(kt[-1]):
-                out.append(i)
-        # the default form first, then the shortest name, then alphabetical -
-        # a total order, so the same input always gives the same row
-        out.sort(key=lambda i: (not is_def[i], len(i), i))
-        return out
-
-    def resolve(k):
-        if k in by_key:
-            return by_key[k], None
-        n = near(k)
-        if n:
-            return by_key[n[0]], None
-        parts = k.split("-")
-        while len(parts) > 1:
-            parts.pop()
-            base = "-".join(parts)
-            if base in by_key:
-                return by_key[base], base
-            nb = near(base)
-            if nb:
-                return by_key[nb[0]], base
-        return None, None
-
-    return resolve
+    return functools.partial(_resolve, by_key=by_key, order=order, is_def=is_def)
 
 
 def build(force=False):
@@ -644,6 +649,96 @@ NOT_DRAWN = {
 MEGA_FORM = re.compile(r"^(.+)-mega(?:-([xyz]))?$")
 
 
+def _numbers_reader(force):
+    """numbers(pokemon id) -> its types, spread and abilities, upstream's."""
+    stats = table("pokemon_stats.csv", force)
+    ptypes = table("pokemon_types.csv", force)
+    pabil = table("pokemon_abilities.csv", force)
+    types = {r["id"]: r["identifier"].capitalize()
+             for r in table("types.csv", force)}
+    abil = {r["ability_id"]: r["name"]
+            for r in table("ability_names.csv", force)
+            if r.get("local_language_id") == ENGLISH}
+    st, ty, ab = {}, {}, {}
+    for r in stats:
+        if int(r["stat_id"]) in STAT_ORDER:
+            st.setdefault(r["pokemon_id"], {})[int(r["stat_id"])] = int(r["base_stat"])
+    for r in ptypes:
+        ty.setdefault(r["pokemon_id"], []).append((int(r["slot"]), r["type_id"]))
+    for r in pabil:
+        ab.setdefault(r["pokemon_id"], []).append((int(r["slot"]),
+                                                   r["ability_id"]))
+
+    def numbers(pid):
+        return {"t": [types[t] for _, t in sorted(ty.get(pid, []))],
+                "b": [st[pid].get(i, 0) for i in STAT_ORDER],
+                "ab": [abil.get(a, a) for _, a in sorted(ab.get(pid, []))]}
+    return numbers
+
+
+def _card_owners(resolve):
+    """Which cards each upstream row IS - exact resolutions only, the same
+    standard the pictures are held to."""
+    cards = {}
+    for name in [p["name"] for p in Q.db("pokemon")
+                 if not p.get("is_mega")] + home_only_names():
+        pid, approx = resolve(key(name))
+        if pid and not approx:
+            cards.setdefault(pid, []).append(name)
+    return cards
+
+
+def _title(ident):
+    return " ".join(w.capitalize() for w in ident.split("-"))
+
+
+def _not_drawn(fid):
+    """"-gmax" is a token anywhere in the name: Mimikyu's Totem is
+    mimikyu-totem-busted, not something ending in -totem."""
+    return any(fid == k or (k.startswith("-") and k + "-" in fid + "-")
+               for k in NOT_DRAWN)
+
+
+def _classify(r, up, unknown, orphan):
+    """(the entry so far, the base row's id) for a form the cards draw, or
+    None. `up` carries resolve, pid_of, species_ident and species_of."""
+    fid = r["identifier"]
+    mega = MEGA_FORM.match(fid) if r.get("is_mega") == "1" else None
+    if mega:
+        base, _ = up.resolve(mega.group(1))
+        if not base:
+            orphan.append(fid)
+            return None
+        sfx = (mega.group(2) or "").upper()
+        # our name for a Mega is the SPECIES and the stone's letter: "Mega
+        # Tatsugiri" for all three Tatsugiri, told apart by their own
+        # picture, exactly as the games name them
+        sp = up.species_ident[up.species_of[base]]
+        return {"n": "Mega " + _title(sp) + (" " + sfx if sfx else ""),
+                "mega": sfx}, base
+    if fid in IN_BATTLE:
+        b_ident, label, how = IN_BATTLE[fid]
+        base = up.pid_of.get(b_ident)
+        if not base:
+            sys.exit("IN_BATTLE names %s as the form %s turns from, and "
+                     "upstream has no such row" % (b_ident, fid))
+        return {"k": label, "by": how}, base
+    if r.get("is_battle_only") == "1" and not _not_drawn(fid):
+        unknown.append(fid)
+    return None
+
+
+def _picture(r, base, files):
+    """The picture: the form's own row where it has one, else its file."""
+    form_pid = r["pokemon_id"]
+    stem = (form_pid if form_pid != base
+            else "%s-%s" % (form_pid, r["form_identifier"]))
+    if stem not in files["pixel"] and stem not in files["home"]:
+        sys.exit("no picture for %s at the pinned sprites commit (%s.png)"
+                 % (r["identifier"], stem))
+    return stem_value(stem)
+
+
 def form_line(force=False):
     """What every card's Pokemon can TURN INTO mid-battle: its Megas and its
     in-battle forms, with the picture and the main-series numbers of each.
@@ -667,90 +762,24 @@ def form_line(force=False):
     numbers move while ours carry none."""
     pokemon = table("pokemon.csv", force)
     forms = table("pokemon_forms.csv", force)
-    stats = table("pokemon_stats.csv", force)
-    ptypes = table("pokemon_types.csv", force)
-    pabil = table("pokemon_abilities.csv", force)
-    types = {r["id"]: r["identifier"].capitalize()
-             for r in table("types.csv", force)}
-    abil = {r["ability_id"]: r["name"]
-            for r in table("ability_names.csv", force)
-            if r.get("local_language_id") == ENGLISH}
+    numbers = _numbers_reader(force)
     files = sprite_files(force)
-    resolve = resolver(pokemon)
-    pid_of = {r["identifier"]: r["id"] for r in pokemon}
-    species_ident = {r["id"]: r["identifier"]
-                     for r in table("pokemon_species.csv", force)}
-    species_of = {r["id"]: r["species_id"] for r in pokemon}
-
-    st, ty, ab = {}, {}, {}
-    for r in stats:
-        if int(r["stat_id"]) in STAT_ORDER:
-            st.setdefault(r["pokemon_id"], {})[int(r["stat_id"])] = \
-                int(r["base_stat"])
-    for r in ptypes:
-        ty.setdefault(r["pokemon_id"], []).append((int(r["slot"]), r["type_id"]))
-    for r in pabil:
-        ab.setdefault(r["pokemon_id"], []).append((int(r["slot"]),
-                                                   r["ability_id"]))
-
-    def numbers(pid):
-        return {"t": [types[t] for _, t in sorted(ty.get(pid, []))],
-                "b": [st[pid].get(i, 0) for i in STAT_ORDER],
-                "ab": [abil.get(a, a) for _, a in sorted(ab.get(pid, []))]}
-
-    # which cards each upstream row IS - exact resolutions only, the same
-    # standard the pictures are held to
-    cards = {}
-    for name in [p["name"] for p in Q.db("pokemon")
-                 if not p.get("is_mega")] + home_only_names():
-        pid, approx = resolve(key(name))
-        if pid and not approx:
-            cards.setdefault(pid, []).append(name)
-
-    def title(ident):
-        return " ".join(w.capitalize() for w in ident.split("-"))
+    up = SimpleNamespace(
+        resolve=resolver(pokemon),
+        pid_of={r["identifier"]: r["id"] for r in pokemon},
+        species_ident={r["id"]: r["identifier"]
+                       for r in table("pokemon_species.csv", force)},
+        species_of={r["id"]: r["species_id"] for r in pokemon})
+    cards = _card_owners(up.resolve)
 
     out, unknown, orphan = {}, [], []
     for r in forms:
-        fid = r["identifier"]
-        mega = MEGA_FORM.match(fid) if r.get("is_mega") == "1" else None
-        if mega:
-            base, _ = resolve(mega.group(1))
-            if not base:
-                orphan.append(fid)
-                continue
-            sfx = (mega.group(2) or "").upper()
-            # our name for a Mega is the SPECIES and the stone's letter: "Mega
-            # Tatsugiri" for all three Tatsugiri, told apart by their own
-            # picture, exactly as the games name them
-            sp = species_ident[species_of[base]]
-            entry = {"n": "Mega " + title(sp) + (" " + sfx if sfx else ""),
-                     "mega": sfx}
-        elif fid in IN_BATTLE:
-            b_ident, label, how = IN_BATTLE[fid]
-            base = pid_of.get(b_ident)
-            if not base:
-                sys.exit("IN_BATTLE names %s as the form %s turns from, and "
-                         "upstream has no such row" % (b_ident, fid))
-            entry = {"k": label, "by": how}
-        elif r.get("is_battle_only") == "1":
-            # "-gmax" is a token anywhere in the name: Mimikyu's Totem is
-            # mimikyu-totem-busted, not something ending in -totem
-            if not any(fid == k or (k.startswith("-") and k + "-" in fid + "-")
-                       for k in NOT_DRAWN):
-                unknown.append(fid)
+        got = _classify(r, up, unknown, orphan)
+        if not got:
             continue
-        else:
-            continue
-        # the picture: the form's own row where it has one, else its file
-        form_pid = r["pokemon_id"]
-        stem = (form_pid if form_pid != base
-                else "%s-%s" % (form_pid, r["form_identifier"]))
-        if stem not in files["pixel"] and stem not in files["home"]:
-            sys.exit("no picture for %s at the pinned sprites commit (%s.png)"
-                     % (fid, stem))
-        entry["sp"] = stem_value(stem)
-        entry.update(numbers(form_pid))
+        entry, base = got
+        entry["sp"] = _picture(r, base, files)
+        entry.update(numbers(r["pokemon_id"]))
         # MOVES NO NUMBER: the typing and the spread are the base's own. What
         # lets a Champions species take this form without a Serebii row for
         # it - Hangry Morpeko is Morpeko's spread in every game
@@ -759,7 +788,7 @@ def form_line(force=False):
             entry["flat"] = 1
         owners = cards.get(base)
         if not owners:
-            orphan.append(fid)
+            orphan.append(r["identifier"])
             continue
         # ONE NAME FOR THE FORM, however the card is spelled. Minior and
         # Minior-Meteor are the same row, and its core is Minior-Core from
