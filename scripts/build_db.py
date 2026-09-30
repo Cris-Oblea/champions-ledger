@@ -165,6 +165,12 @@ MOVE_RULINGS = {
         ("No freeze in Champions: Serebii's Battle Effect names none (the 10% "
          "sits alone in its rate cell), Smogon's engine deletes the secondary, "
          "and the player confirmed it in game.")),
+    # The rate cell repeats the guaranteed crit as "100 %". A crit is not a
+    # secondary: Sheer Force does not boost the move, and Smogon's engine
+    # gives it willCrit and no secondaries.
+    ("Frost Breath", "effect_rate"): (None,
+        ("No secondary: Serebii's 100% rate is the guaranteed crit, which "
+         "Smogon's engine models as willCrit, not as a secondary.")),
 }
 
 
@@ -356,14 +362,20 @@ def parse_move(path, useable=None):
     pp, power, acc = _move_numbers(s)
     effect = _move_section(s, "Battle Effect:")
     indepth = _move_section(s, "In-Depth Effect:")
-    mrate = re.search(r'Effect Rate:.*?</tr>.*?<td class="cen">\s*([\d.]+)\s*%', s, re.S)
+    # The FIRST cell after the heading, whatever it holds. A move with no
+    # secondary writes "-- %" there, and a pattern that insisted on digits
+    # walked on into the next cell, the crit rate: 456 moves came out with a
+    # "secondary" as likely as their crit. A GUARANTEED secondary (Lunge, Icy
+    # Wind) also writes "--", so this is a chance, never a has-a-secondary flag.
+    mrate = re.search(r'Effect Rate:.*?</tr>.*?<td class="cen">\s*([\d.]+)?[^<]*</td>',
+                      s, re.S)
     crit, prio, target = _move_crit_priority_target(s)
     learners = _move_learners(s)
     return {
         "slug": slug, "name": _move_name(s, slug), "type": mtype, "category": cat,
         "power": power, "accuracy": acc, "pp": pp,
         "effect": effect, "in_depth": indepth,
-        "effect_rate": float(mrate.group(1)) if mrate else None,
+        "effect_rate": float(mrate.group(1)) if mrate and mrate.group(1) else None,
         "crit_rate": crit, "priority": prio, "target": target,
         "hits": hit_count(effect), "always_crit": always_crit(effect, indepth),
         "flags": _move_flags(s), "learners": learners,

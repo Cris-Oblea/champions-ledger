@@ -147,18 +147,6 @@ def augment(m, text, base_crit):
     return text
 
 
-def secondary_rate(m):
-    """The chance of a secondary effect, when effect_rate is one - moves.json
-    puts the crit rate there when the move has none."""
-    er, cr = m.get("effect_rate"), (m.get("crit_rate") or "").rstrip("%")
-    if er in (None, 0):
-        return None
-    try:
-        return None if float(er) == float(cr) else float(er)
-    except ValueError:
-        return float(er)
-
-
 def smogon_first(moves, mv):
     """Put Smogon's description in front, and report what it leaves out."""
     long = (Q.db("smogon_text") or {}).get("moves") or {}
@@ -185,7 +173,7 @@ def smogon_first(moves, mv):
         # 10 while its own text named no freeze, Smogon's engine deletes the
         # secondary for Champions, and the player confirmed it in game. It is
         # settled in build_db.MOVE_RULINGS now; a new line here is a new one.
-        r = secondary_rate(m)
+        r = m.get("effect_rate")
         if r and r < 100 and ("%d%%" % r) not in s:
             gaps.append((n, r))
     print("\nsmogon's full description: %d of %d moves" % (used, len(moves)))

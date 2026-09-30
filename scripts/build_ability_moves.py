@@ -130,22 +130,6 @@ _STAT_NAME = {"Sp.Atk": "Sp. Atk", "Sp.Def": "Sp. Def", "Defence": "Defense",
               "Special Attack": "Sp. Atk", "Special Defense": "Sp. Def"}
 
 
-def secondary(m):
-    """A SECONDARY effect - what Sheer Force trades for 30% power.
-
-    moves.json puts the crit rate in effect_rate when there is no secondary, so
-    "effect_rate > 0" marks Earthquake and Close Combat as having one.
-    """
-    er = m.get("effect_rate")
-    if er in (None, 0):
-        return False
-    cr = clean(m.get("crit_rate")).rstrip("%")
-    try:
-        return er != float(cr)
-    except ValueError:
-        return True
-
-
 SMOG = os.path.join(ROOT, "data", "raw", "smogon_calc", "raw_moves.json")
 
 
@@ -231,8 +215,8 @@ def derive(moves):
             "hits_ally": hits_ally,
             "down_stats": down_stats(m),
             # Smogon's list, verified against ours move by move
-            "sec": bool(smogon.get("secondaries")) if smogon else secondary(m),
-            "sec_serebii": secondary(m),
+            "sec": bool(smogon.get("secondaries")) if smogon
+                   else bool(m.get("effect_rate")),
             "self_up": su, "self_down": sd, "target_up": tu, "target_down": td,
             "contact": bool(f.get("contact")), "sound": bool(f.get("sound")),
             "punch": bool(f.get("punch")), "biting": bool(f.get("biting")),
