@@ -595,30 +595,15 @@ def alias_every_spelling(wt, canon, app_learn, learn_alias):
             learn_alias[n] = tgt
 
 
-# Multipliers measured against Smogon's engine.
-# The engine works in 4096ths, so a measured 1.31 is really 5325/4096 and a
-# measured 0.51 is really 2048/4096. Carrying the rounded reading instead
-# costs a point or two per roll, which is exactly the margin a survival
-# benchmark turns on - so each measurement is snapped to the fraction it is
-# clearly reporting, and anything that does not snap cleanly is kept as-is.
-FRACS = [2048, 2732, 3072, 4096, 4505, 4915, 5325, 6144, 8192]
-
-
-def _snap(v):
-    best = min(FRACS, key=lambda f: abs(f / 4096.0 - v))
-    return best / 4096.0 if abs(best / 4096.0 - v) <= 0.02 else v
+# The damage tab's Ability and Item menus, per side: every ability and item
+# that scripts/measure_modifiers.py saw move the damage in Smogon's engine.
+# Names only - the page runs that same engine, which applies each one itself.
+MENUS = ("atk_ability", "def_ability", "atk_item", "def_item")
 
 
 def build_mods():
-    mods = {}
-    for k, v in (Q.db("modifiers") or {}).items():
-        if k.startswith("_"):
-            continue
-        mods[k] = {n: (0 if x == 0 else _snap(x)) for n, x in v.items()}
-    # Adaptability is applied through the STAB multiplier, exactly, so it must
-    # not also come through here - that would square it.
-    mods.get("atk_ability", {}).pop("Adaptability", None)
-    return mods
+    measured = Q.db("modifiers") or {}
+    return {k: sorted(measured.get(k) or {}) for k in MENUS}
 
 
 # Aegislash is the one form that depends on which side it is on: it attacks
