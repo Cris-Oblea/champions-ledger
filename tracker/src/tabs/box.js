@@ -8,8 +8,8 @@ import {
 } from "../core/data.js";
 import { $, capNote, el, fbtn, note, searchField, toast } from "../core/dom.js";
 import {
-  boxRows, capacity, originOf, originRows, RELEASE_FLOOR, releaseBlock,
-  rowMatches, S, sortRows, VIEW,
+  boxRows, buildsOn, capacity, originOf, originRows, RELEASE_FLOOR,
+  releaseBlock, rowMatches, S, sortRows, VIEW,
 } from "../core/state.js";
 import { drop, put } from "../core/store.js";
 import { gtsDiff } from "../core/trade.js";
@@ -247,7 +247,7 @@ function stayButtons(rec, isHome){
           .then(function(){
             closeSheet();
             toast(rec.name + " is in the box, HOME origin" +
-                  (S.builds[rec._id] ? " — its build is active again" : ""));
+                  (buildsOn(rec._id).length ? " — its build is active again" : ""));
           });
       }));
     }
@@ -259,7 +259,7 @@ function stayButtons(rec, isHome){
       saveCopy(rec, {location:"home", status:"permanent", origin:"home"})
         .then(function(){
           closeSheet();
-          toast(rec.name + " parked. " + (S.builds[rec._id]
+          toast(rec.name + " parked. " + (buildsOn(rec._id).length
             ? "Its build is kept, inactive until it comes back."
             : "The training is kept — recall it any time."));
         });
@@ -291,10 +291,7 @@ function buyButton(rec){
    Only offered where the game allows it - see releaseBlock. */
 function releaseButton(rec, isHome){
   return fbtn("Release", "danger", function(){
-    /* found by their LINK - the box row's id is not a build id any more */
-    var mine = Object.keys(S.builds).filter(function(k){
-      return S.builds[k].box_id === rec._id;
-    });
+    var mine = buildsOn(rec._id);
     var msg = [];
     if (mine.length) {
       msg.push(mine.length + " build" + (mine.length > 1 ? "s" : "") +
@@ -807,11 +804,8 @@ function drawDupeHome(){
       "carries no build and costs nothing to drop."));
   }
   if (lock) {
-    /* found by the LINK: a build's own id is not the box row's any more */
     var withBuild = d.by.champions.filter(function(r){
-      return Object.keys(S.builds).some(function(k){
-        return S.builds[k].box_id === r._id;
-      });
+      return buildsOn(r._id).length;
     });
     n.appendChild(note("warn", "<strong>" + lock + " Champions origin.</strong> " +
       "Releasing destroys the Pokemon, and only works while more than " +
