@@ -9,7 +9,6 @@
    anywhere but one laptop, and all fifteen died instantly the first time
    CI tried (2026-09-13). */
 const ROOT = require("path").join(__dirname, "..") + "/";
-const { JSDOM, VirtualConsole } = require("jsdom");
 const UID = "u1";
 const ROWS = [{user_id:UID,id:"primarina",name:"Primarina",location:"champions",
                status:"permanent",origin:"home",note:"",ord:0,
@@ -20,23 +19,7 @@ const BUILDS = [{user_id:UID,id:"primarina",pokemon:"Primarina",mega:null,
   ability:"Torrent",mega_ability:null,nature:"Modest",
   stat_points:{hp:4,atk:0,def:0,spa:32,spd:8,spe:22},
   moves:["Hyper Voice"],role:"",rationale:"",extra:{},updated_at:"2026-09-10"}];
-const body = require("./harness.js").page(ROOT);
-const stub = `<script>
-window.__ROWS=${JSON.stringify(ROWS)}; window.__BUILDS=${JSON.stringify(BUILDS)};
-window.supabase={createClient:function(){return{
- auth:{getSession:function(){return Promise.resolve({data:{session:{user:{id:"u1",email:"t@t"}}}});},
-       onAuthStateChange:function(){},signInWithPassword:function(){},signOut:function(){}},
- from:function(t){return{
-   select:function(){return Promise.resolve({data:t==="box"?window.__ROWS:(t==="builds"?window.__BUILDS:[]),error:null});},
-   upsert:function(){return Promise.resolve({error:null});},
-   delete:function(){return {eq:function(){return Promise.resolve({error:null});}};}
- };},
- channel:function(){var c={on:function(){return c;},subscribe:function(){return c;}};return c;}
-};}};
-<\/script>`;
-const errs=[]; const vc=new VirtualConsole().on("jsdomError",e=>{if(!/scrollTo/.test(e.message))errs.push(e.message);});
-const dom = new JSDOM(body.replace("<head>","<head>"+stub),
-  {runScripts:"dangerously",pretendToBeVisual:true,virtualConsole:vc});
+const { dom, errs } = require("./harness.js").open(ROOT, { box: ROWS, builds: BUILDS });
 const w = dom.window, d = w.document;
 const fire = (n,t)=>n.dispatchEvent(new w.Event(t,{bubbles:true}));
 const click = n=>n.dispatchEvent(new w.MouseEvent("click",{bubbles:true}));

@@ -11,7 +11,6 @@
    Pokemon, with a second copy in HOME. The "Already in HOME" panel told him to
    release it, and the game would not. Same for a HOME-origin Garchomp sent in
    while another Garchomp stayed in HOME. */
-const { JSDOM, VirtualConsole } = require("jsdom");
 const ROOT = require("path").join(__dirname, "..") + "/";
 const UID = "u1";
 
@@ -35,25 +34,7 @@ const ROWS = [
   row("sinistcha-h", "Sinistcha", "home", "home"),
 ];
 
-const body = require("./harness.js").page(ROOT);
-const stub = `<script>
-window.__ROWS=${JSON.stringify(ROWS)};
-window.supabase={createClient:function(){return{
- auth:{getSession:function(){return Promise.resolve({data:{session:{user:{id:"u1",email:"t@t"}}}});},
-       onAuthStateChange:function(){},signInWithPassword:function(){},signOut:function(){}},
- from:function(t){return{
-   select:function(){return Promise.resolve({data:t==="box"?window.__ROWS:[],error:null});},
-   upsert:function(){ return Promise.resolve({error:null});},
-   delete:function(){return {eq:function(){ return {eq:function(){ return Promise.resolve({error:null}); }}; }};}
- };},
- channel:function(){var c={on:function(){return c;},subscribe:function(){return c;}};return c;}
-};}};
-<\/script>`;
-const errs = [];
-const vc = new VirtualConsole().on("jsdomError",
-  e => { if (!/scrollTo/.test(e.message)) errs.push(e.message); });
-const dom = new JSDOM(body.replace("<head>", "<head>" + stub),
-  {runScripts:"dangerously", pretendToBeVisual:true, virtualConsole:vc});
+const { dom, errs } = require("./harness.js").open(ROOT, { box: ROWS });
 const w = dom.window, d = w.document;
 const click = n => n.dispatchEvent(new w.MouseEvent("click", {bubbles:true}));
 const boxRow = name => [...d.querySelectorAll(

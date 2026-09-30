@@ -26,6 +26,17 @@ node createtest.js         # creating a record never overwrites another device's
 node homelisttest.js       # HOME opens on twelve rows, then the rest
 ```
 
+A new test boots the page with one line, and never writes its own Supabase
+stub:
+
+```js
+const { dom, errs } = require("./harness.js").open(ROOT, { box: ROWS, builds: BUILDS });
+```
+
+The tables passed are what the ledger holds, and passing any signs the page
+in. What the app sends back lands in `window.__WROTE` (`{op, table, row}`) and
+`window.__DELETED` (`{table, col, id}`).
+
 ## What each one is for
 
 **`pagetest.js`** — 16 cases covering an item, an ability on each side, weather,

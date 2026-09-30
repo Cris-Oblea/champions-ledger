@@ -20,7 +20,6 @@
    left off for that - which took their picture with them, and with it the
    one thing Hangry Mode really changes: "aura wheel de morpeko cambia de tipo
    el move segun su forma". */
-const { JSDOM, VirtualConsole } = require("jsdom");
 const ROOT = require("path").join(__dirname, "..") + "/";
 
 let bad = 0;
@@ -31,23 +30,7 @@ const ok = (label, got, want) => {
               got + (good ? "" : "   (esperado " + want + ")"));
 };
 
-const body = require("./harness.js").page(ROOT);
-const stub = `<script>
-window.supabase={createClient:function(){return{
- auth:{getSession:function(){return Promise.resolve({data:{session:null}});},
-       onAuthStateChange:function(){},signInWithPassword:function(){},signOut:function(){}},
- from:function(){return{
-   select:function(){return Promise.resolve({data:[],error:null});},
-   upsert:function(){return Promise.resolve({error:null});},
-   delete:function(){return {eq:function(){return Promise.resolve({error:null});}};}
- };},
- channel:function(){var c={on:function(){return c;},subscribe:function(){return c;}};return c;}
-};}};
-<\/script>`;
-const vc = new VirtualConsole().on("jsdomError",
-  e => { if (!/scrollTo/.test(e.message)) console.log("  jsdom: " + e.message); });
-const dom = new JSDOM(body.replace("<head>", "<head>" + stub),
-  {runScripts:"dangerously", pretendToBeVisual:true, virtualConsole:vc});
+const { dom, errs } = require("./harness.js").open(ROOT);
 const w = dom.window, d = w.document;
 
 function card(name){
@@ -190,6 +173,7 @@ setTimeout(() => {
      ga.className.indexOf("n3") < 0 && /retyping/.test(ga.className), true);
   ok("con una sola capa", ga.querySelectorAll(".retype").length, 1);
 
+  errs.forEach(e => console.log("  jsdom: " + e));
   console.log(bad ? "\n  " + bad + " FALLAN\n" : "\n  todo bien\n");
   process.exit(bad ? 1 : 0);
 }, 900);

@@ -339,8 +339,10 @@ runs in four places: the `pre-push` hook, every pull request, every push to
   the app reaches for exists in the markup, and every `CALC` switch the
   calculator screen sets reaches the engine.
 - **The browser tests** in `tests/`: each loads the **built**
-  `dist/index.html` into jsdom through `tests/harness.js`, with a fake
-  Supabase (`tests/fixture.js`), and clicks through the real UI.
+  `dist/index.html` into jsdom through `open()` in `tests/harness.js`, with a
+  fake Supabase that records every write, and clicks through the real UI.
+  `tests/fixture.js` is the awkward, fully stocked ledger the widest one boots
+  on.
 
 Running one test by hand:
 

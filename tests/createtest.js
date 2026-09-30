@@ -18,7 +18,6 @@
    The fixture makes the race real. The device has loaded `farigiraf` only,
    while the table also holds a `farigiraf-2` that another device wrote a
    second ago. A correct create walks past both. */
-const { JSDOM, VirtualConsole } = require("jsdom");
 const ROOT = require("path").join(__dirname, "..") + "/";
 const UID = "u1";
 
@@ -41,37 +40,13 @@ const BUILDS = [{user_id:UID, id:"farigiraf", pokemon:"Farigiraf",
 const TEAMS = [{user_id:UID, id:"t1", name:"Otro", slots:[], notes:{},
   updated_at:"2026-09-13"}];
 
-const body = require("./harness.js").page(ROOT);
 /* TAKEN is what the TABLE holds, which is not what the device has loaded:
    builds/farigiraf-2 and teams/prueba were written elsewhere. */
-const stub = `<script>
-window.__ROWS=${JSON.stringify(ROWS)}; window.__BUILDS=${JSON.stringify(BUILDS)};
-window.__TEAMS=${JSON.stringify(TEAMS)};
-window.__TAKEN={"builds":["farigiraf","farigiraf-2"],"teams":["otro","prueba"]};
-window.__INSERT=[]; window.__UPSERT=[];
-window.supabase={createClient:function(){return{
- auth:{getSession:function(){return Promise.resolve({data:{session:{user:{id:"u1",email:"t@t"}}}});},
-       onAuthStateChange:function(){},signInWithPassword:function(){},signOut:function(){}},
- from:function(t){return{
-   select:function(){return Promise.resolve({data:t==="box"?window.__ROWS:(t==="builds"?window.__BUILDS:(t==="teams"?window.__TEAMS:[])),error:null});},
-   insert:function(r){
-     window.__INSERT.push(t+"/"+r.id);
-     var taken=(window.__TAKEN[t]||[]).indexOf(r.id)>=0;
-     if(taken) return Promise.resolve({error:{code:"23505",
-       message:'duplicate key value violates unique constraint "'+t+'_pkey"'}});
-     (window.__TAKEN[t]=window.__TAKEN[t]||[]).push(r.id);
-     return Promise.resolve({error:null});
-   },
-   upsert:function(r){ window.__UPSERT.push(t+"/"+r.id); return Promise.resolve({error:null});},
-   delete:function(){return {eq:function(){return Promise.resolve({error:null});}};}
- };},
- channel:function(){var c={on:function(){return c;},subscribe:function(){return c;}};return c;}
-};}};<\/script>`;
-const errs = [];
-const vc = new VirtualConsole().on("jsdomError",
-  e => { if (!/scrollTo/.test(e.message)) errs.push(e.message.split("\n")[0]); });
-const dom = new JSDOM(body.replace("<head>", "<head>" + stub),
-  {runScripts:"dangerously", pretendToBeVisual:true, virtualConsole:vc});
+const TAKEN = { builds: ["farigiraf", "farigiraf-2"], teams: ["otro", "prueba"] };
+const { dom, errs } = require("./harness.js").open(ROOT,
+  { box: ROWS, builds: BUILDS, teams: TEAMS }, { taken: TAKEN });
+/* what the app sent, as "table/id", one list per kind of write */
+const sent = op => dom.window.__WROTE.filter(x => x.op === op).map(x => x.table + "/" + x.row.id);
 const w = dom.window, d = w.document;
 const click = n => n.dispatchEvent(new w.MouseEvent("click", {bubbles:true}));
 const save = which => click([...d.querySelectorAll("#" + which + "Foot button")]
@@ -85,27 +60,27 @@ setTimeout(() => {
   save("buildEdit");
   setTimeout(() => {
     ok("prueba farigiraf, luego -2, luego -3",
-       w.__INSERT.join(","), "builds/farigiraf,builds/farigiraf-2,builds/farigiraf-3");
+       sent("insert").join(","), "builds/farigiraf,builds/farigiraf-2,builds/farigiraf-3");
     /* the whole point: the id it could not see was NOT overwritten */
-    ok("no sobrescribe nada por el camino", w.__UPSERT.length, 0);
+    ok("no sobrescribe nada por el camino", sent("upsert").length, 0);
     ok("y el id sigue siendo legible",
-       /^builds\/farigiraf-3$/.test(w.__INSERT[2]), true);
+       /^builds\/farigiraf-3$/.test(sent("insert")[2]), true);
 
     console.log("\n  editar una build existente no crea otra");
-    w.__INSERT = []; w.__UPSERT = [];
+    w.__WROTE.length = 0;
     w.buildSheet("farigiraf", w.S.builds.farigiraf);
     save("buildEdit");
     setTimeout(() => {
-      ok("escribe sobre su propio id", w.__UPSERT.join(","), "builds/farigiraf");
-      ok("y no intenta crear nada", w.__INSERT.length, 0);
+      ok("escribe sobre su propio id", sent("upsert").join(","), "builds/farigiraf");
+      ok("y no intenta crear nada", sent("insert").length, 0);
 
       console.log("\n  lo mismo para los equipos");
-      w.__INSERT = []; w.__UPSERT = [];
+      w.__WROTE.length = 0;
       w.teamSheet(null, {name:"Prueba", slots:[], notes:{}});
       save("teamEdit");
       setTimeout(() => {
-        ok("prueba y prueba-2", w.__INSERT.join(","), "teams/prueba,teams/prueba-2");
-        ok("sin sobrescribir el equipo del otro aparato", w.__UPSERT.length, 0);
+        ok("prueba y prueba-2", sent("insert").join(","), "teams/prueba,teams/prueba-2");
+        ok("sin sobrescribir el equipo del otro aparato", sent("upsert").length, 0);
 
         console.log("\n  ERRORES JS: " + (errs.length ? errs.join(" | ") : "ninguno"));
         console.log(bad ? "\n  " + bad + " FALLOS\n" : "\n  todo bien\n");
