@@ -26,12 +26,13 @@ const path = require('path');
 const fs = require('fs');
 const BUNDLE = path.join(__dirname, '..', 'data', 'raw', 'smogon_calc', 'calc');
 
-let Generations, Pokemon, Move, Field, calculateChampions;
+let Generations, Pokemon, Move, Field, calculateChampions, toID;
 try {
   ({Generations} = require(path.join(BUNDLE, 'data', 'index.js')));
   ({Pokemon} = require(path.join(BUNDLE, 'pokemon.js')));
   ({Move} = require(path.join(BUNDLE, 'move.js')));
   ({Field} = require(path.join(BUNDLE, 'field.js')));
+  ({toID} = require(path.join(BUNDLE, 'util.js')));
   ({calculateChampions} = require(path.join(BUNDLE, 'mechanics', 'champions.js')));
 } catch (e) {
   console.error('Cannot load the Champions engine from ' + BUNDLE + ': ' + e.message);
@@ -113,6 +114,12 @@ for (const c of cases) {
       },
     });
     if (c.charge) field.attackerSide.isCharge = true;
+    // A move the Champions roster lacks comes back as a nameless Status move
+    // and computes 0 damage. Return and Frustration do exactly that: Serebii's
+    // attackdex has them, nothing in the format learns them. Refuse instead.
+    if (!gen.moves.get(toID(c.move))) {
+      throw new Error(c.move + " is not in Champions: Smogon's roster has no such move");
+    }
     const move = new Move(gen, c.move, {isCrit: !!c.isCrit});
     const result = calculateChampions(gen, attacker, defender, move, field);
 
