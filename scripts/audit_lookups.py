@@ -52,7 +52,7 @@ def lst(xs, n=6):
             (" (+%d)" % (len(xs) - n) if len(xs) > n else "")) if xs else "0"
 
 
-def main():
+def _check_code():
     print("\n  el codigo")
     dups = []
     for f in sorted(glob.glob(os.path.join(ROOT, "scripts", "*.py"))):
@@ -67,16 +67,26 @@ def main():
                                  ast.ClassDef)):
                 seen[node.name] += 1
             elif isinstance(node, ast.Assign):
-                for t in node.targets:
-                    if isinstance(t, ast.Name):
-                        seen[t.id] += 1
+                seen.update(t.id for t in node.targets if isinstance(t, ast.Name))
         dups += ["%s: %s" % (os.path.basename(f), k)
                  for k, v in seen.items() if v > 1]
     ok("ningun nombre definido dos veces en un modulo", lst(dups))
 
+
+def _resolve(p, learn):
+    """The order query.py uses: the form, then norm(), then the species."""
+    mv = learn.get(p["name"]) or []
+    if not mv:
+        mv = next((learn[k] for k in learn
+                   if Q.norm(k) == Q.norm(p["name"])), [])
+    if not mv:
+        mv = next((learn[k] for k in learn
+                   if Q.species_norm(k) == Q.species_norm(p["name"])), [])
+    return mv
+
+
+def _check_forms(mons, learn):
     print("\n  las formas, una por una")
-    mons = Q.db("pokemon")
-    learn = Q.db("learnsets")
     ok("formas en el dex", len(mons), len(mons))
 
     wrong = [p["name"] for p in mons
@@ -89,24 +99,15 @@ def main():
     ok("ninguna colision bajo norm()",
        lst(["/".join(v) for v in by.values() if len(v) > 1]))
 
-    def resolve(p):
-        """The order query.py uses: the form, then norm(), then the species."""
-        mv = learn.get(p["name"]) or []
-        if not mv:
-            mv = next((learn[k] for k in learn
-                       if Q.norm(k) == Q.norm(p["name"])), [])
-        if not mv:
-            mv = next((learn[k] for k in learn
-                       if Q.species_norm(k) == Q.species_norm(p["name"])), [])
-        return mv
-
     ok("cada forma resuelve un movepool",
-       lst([p["name"] for p in mons if not resolve(p)]))
+       lst([p["name"] for p in mons if not _resolve(p, learn)]))
     ok("y la forma gana a su especie cuando tiene pool propio",
        lst([p["name"] for p in mons
             if learn.get(p["name"]) and
-            len(resolve(p)) != len(learn[p["name"]])]))
+            len(_resolve(p, learn)) != len(learn[p["name"]])]))
 
+
+def _check_megas(mons):
     megas = [p for p in mons if p.get("is_mega")]
     stones = collections.defaultdict(list)
     for p in megas:
@@ -128,23 +129,33 @@ def main():
             miss.append(p["name"])
     ok("cada forma tiene nombre en el motor de Smogon", lst(miss))
 
+
+def _duplicate_keys(text):
+    """Every key some JSON object in `text` repeats, in the order met."""
+    dup = []
+
+    def hook(pairs):
+        ks = [k for k, _ in pairs]
+        for k in ks:
+            if ks.count(k) > 1 and k not in dup:
+                dup.append(k)
+        return dict(pairs)
+    json.loads(text, object_pairs_hook=hook)
+    return dup
+
+
+def _check_db_files():
     print("\n  los ficheros que todo lo demas lee")
     for f in sorted(glob.glob(os.path.join(ROOT, "data", "db", "*.json"))):
         name = os.path.basename(f)
-        dup = []
-
-        def hook(pairs, dup=dup):
-            ks = [k for k, _ in pairs]
-            for k in ks:
-                if ks.count(k) > 1 and k not in dup:
-                    dup.append(k)
-            return dict(pairs)
         try:
-            json.loads(Path(f).read_text(encoding="utf-8"), object_pairs_hook=hook)
+            dup = _duplicate_keys(Path(f).read_text(encoding="utf-8"))
             ok("%s carga y no repite claves" % name, lst(dup))
         except (OSError, ValueError) as e:
             ok("%s carga" % name, str(e)[:40])
 
+
+def _check_references(learn):
     print("\n  las tablas derivadas apuntan a cosas que existen")
     moves = {m["name"] for m in Q.db("moves")}
     abil = {a["name"] for a in Q.db("abilities")}
@@ -171,6 +182,15 @@ def main():
     ok("cada texto de habilidad corresponde a una habilidad",
        lst([a for a in (tf.get("abilities") or {}) if a not in abil]))
 
+
+def main():
+    _check_code()
+    mons = Q.db("pokemon")
+    learn = Q.db("learnsets")
+    _check_forms(mons, learn)
+    _check_megas(mons)
+    _check_db_files()
+    _check_references(learn)
     print("\n%s" % ("TODO BIEN" if not bad else "%d FALLOS" % bad))
     return 1 if bad else 0
 

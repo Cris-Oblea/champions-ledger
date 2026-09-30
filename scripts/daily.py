@@ -436,7 +436,7 @@ def install_task():
     return rc
 
 
-def main():
+def _parser():
     ap = argparse.ArgumentParser()
     ap.add_argument("--dry-run", action="store_true")
     ap.add_argument("--install", action="store_true")
@@ -450,8 +450,12 @@ def main():
                          "deploy. The safe way to publish a hand edit.")
     ap.add_argument("--deep", action="store_true",
                     help="force the slow-moving sources today, whatever day it is")
-    a = ap.parse_args()
+    return ap
 
+
+def _setup(a):
+    """--install-hooks, --install, --uninstall: the exit code, or None when
+    none of them was asked for."""
     if a.install_hooks:
         # The hook lives in scripts/hooks rather than .git/hooks so that it is
         # versioned, reviewable, and arrives with a fresh clone. core.hooksPath
@@ -460,12 +464,231 @@ def main():
         print(o.strip() or ("hooks installed: scripts/hooks"
                             if rc == 0 else "could not set core.hooksPath"))
         return rc
-
     if a.install:
         return install_task()
     if a.uninstall:
         rc, out = sh(["schtasks", "/Delete", "/TN", TASK, "/F"])
         print(out.strip())
+        return rc
+    return None
+
+
+def _build(steps, out):
+    """Run each (argv, what); False, with the reason in `out`, at the first
+    that fails."""
+    for argv, what in steps:
+        rc, bout = sh(argv)
+        if rc != 0:
+            out.append("BLOCKED: could not rebuild %s" % what)
+            out += ["  " + line for line in bout.splitlines()[-6:]]
+            return False
+    return True
+
+
+def _rebuild_from_repo(out):
+    """--no-refresh: rebuild from the repo, never from the network. False when
+    a step failed.
+
+    REBUILD, do not trust what is lying around. The browser tests read
+    tracker/dist/index.html, which is generated and never committed: on a
+    fresh checkout there is none, and on a laptop there is whatever the
+    last build left. Gating a page that is not the page about to be
+    published is the exact failure this whole gate exists to prevent, and
+    it passed locally only because a build happened to be minutes old.
+    None of this touches the network. What it CAN rebuild depends on
+    where it runs, and the difference is stated rather than hidden:
+    data.js and the engine bundle are built from data/raw/smogon_calc,
+    which is the 195 MB source cache and deliberately not in git. On a
+    laptop it is there, so they are rebuilt and a stale data/db is caught
+    - and then pin_generated() puts back any of the two the stale cache
+    made OLDER than the commit, which is the trap that cost two hours.
+    On a fresh CI checkout it is not - but both artifacts are COMMITTED,
+    and committed is by definition what the nightly job already gated.
+    The page is rebuilt either way, because the page is what gets
+    published and must never be a leftover.
+    """
+    out.append("mode: no refresh - rebuild from the repo, then gate")
+    vendored = os.path.exists(os.path.join(
+        ROOT, "data", "raw", "smogon_calc", "raw_species.json"))
+    steps = []
+    if vendored:
+        steps = [([PY, "scripts/build_tracker_data.py"], "data.js"),
+                 ([PY, "scripts/build_analysis_data.py"], "the analyses"),
+                 ([PY, "scripts/build_splits_data.py", "--check"],
+                  "what the splits percentages are a share of"),
+                 ([PY, "scripts/build_splits_data.py"], "the ladder splits"),
+                 ([PY, "scripts/build_outside_dex.py"],
+                  "the rest of the dex"),
+                 ([PY, "scripts/build_engine_bundle.py"], "engine bundle")]
+    else:
+        out.append("no source cache here: using the committed data.js, "
+                   "analyses, the outside dex and engine bundle, "
+                   "rebuilding the page from them")
+    if not _build(steps, out):
+        return False
+    # THE GUARD SITS BETWEEN THE TWO, because the page embeds whichever
+    # copy of these it finds, and what is embedded is what gets gated and
+    # published.
+    if vendored:
+        out += pin_generated()
+    if not _build([([PY, "scripts/build_tracker_page.py"], "the page")], out):
+        return False
+    out.append("rebuilt %s" % ("data.js, the bundle and the page"
+                               if vendored else "the page"))
+    return True
+
+
+def _refresh(a, out):
+    deep = a.deep or datetime.date.today().weekday() == 0
+    argv = [PY, "scripts/refresh.py"] + (["--deep"] if deep else [])
+    out.append("mode: " + ("deep (Smogon analyses + pokebase splits forced)"
+                           if deep else "daily (ladder + engine)"))
+    rc, refresh_out = sh(argv)
+    tail = [line for line in refresh_out.splitlines() if line.strip()][-4:]
+    out.append("refresh.py exit %d" % rc)
+    out += ["  " + line for line in tail]
+
+
+def _report_changes(before, before_ladder, out):
+    """What moved since `before`, into `out`; returns the WATCH labels that
+    changed."""
+    after = snapshot()
+    after_ladder = ladder_summary()
+    changed = [label for key, rel, label in WATCH
+               if before.get(key) != after.get(key)]
+    out.append("CHANGED: " + ", ".join(changed) if changed else "nothing moved")
+
+    # WHICH FIELDS MOVED, not just which files. "CHANGED: move table" says a
+    # file's hash differs; it does not say that Rock Slide went from 75 to 70
+    # power and from a 30% flinch to 20%, which is the only part that changes
+    # how a battle goes. Every number is already in the database - effect_rate
+    # is 30.0, not a sentence - they simply were not being compared.
+    #
+    # A REPORT, never a gate: a regulation is meant to change things. What
+    # blocks is the shrink guard, which is about damage rather than change.
+    d, dout = sh([PY, "scripts/diff_db.py", "--limit", "30"])
+    if d == 0 and dout.strip() and "no field changed" not in dout:
+        out.append("WHAT CHANGED, field by field:")
+        out += ["  " + line for line in dout.splitlines()[:60]]
+
+    if before_ladder and after_ladder and before_ladder != after_ladder:
+        out.append("  ladder %s (%d rows) -> %s (%d rows)"
+                   % (before_ladder["fetched"], before_ladder["rows"],
+                      after_ladder["fetched"], after_ladder["rows"]))
+        out.append("  top now: " + ", ".join(
+            "%s %s%%" % (n, p) for n, p in (after_ladder["top"] or [])))
+    return changed
+
+
+def _check_backup_and_shrink(out):
+    ok = True
+    # ---- back the ledger up BEFORE anything else --------------------------
+    # Supabase holds the whole ledger now and the free plan takes no backups of
+    # its own, so every run that can reach the database leaves a snapshot. It
+    # costs one query per table and it is the cheapest insurance in the repo.
+    # Deliberately ahead of the gate: a run that is about to fail is exactly
+    # when a snapshot of the last good state is worth having. Where there is no
+    # database - CI - it says so and moves on.
+    b, bout = sh([PY, "scripts/backup_ledger.py", "--skip-if-offline"])
+    out += [line for line in bout.splitlines() if line.strip()][:3]
+    if b != 0:
+        ok = False
+        out.append("BLOCKED: the ledger could not be backed up")
+
+    # ---- does this refresh LOSE anything? -------------------------------
+    # The formula tests pass on a dex of ten Pokemon; they check arithmetic and
+    # name matching, not volume. So a source that answers with half a page - or
+    # a parser that stops matching after an upstream redesign - sails straight
+    # through them and quietly deletes most of the database. Everything already
+    # committed is known good, so the honest test is "did the rebuild come back
+    # with less than we already had". A regulation only ever ADDS.
+    for line in shrink_check():
+        ok = False
+        out.append(line)
+    if ok:
+        out.append("ok: nothing shrank against the committed data")
+    return ok
+
+
+def _browser_failure(gout):
+    """A test that ASSERTS wrong prints FAIL lines; a test that CRASHES
+    prints none, and reporting only the former made fifteen failures
+    read as fifteen blank lines - the cause (a hardcoded Windows path
+    in every test file) was invisible in the CI log. Fall back to the
+    tail of whatever it did say."""
+    detail = [line for line in gout.splitlines() if line.strip().startswith("FAIL")]
+    if not detail:
+        detail = [line for line in gout.splitlines() if line.strip()][-5:]
+    return detail[:6]
+
+
+def _run_checks(checks, out):
+    """checks: (argv, what, the lines of a failure worth showing). False if
+    any failed; every result goes into `out`."""
+    ok = True
+    for argv, what, why in checks:
+        g, gout = sh(argv)
+        if g != 0:
+            ok = False
+            out.append("BLOCKED: %s failed" % what)
+            out += ["  " + line for line in why(gout)]
+        else:
+            out.append("ok: %s" % what)
+    return ok
+
+
+def _gate(out):
+    """Correctness gate. A stale app beats a wrong one, so a failing check stops
+    the deploy rather than shipping numbers nobody looked at - and because
+    daily.py returns non-zero, the workflow's commit step is skipped too, so
+    a bad refresh cannot reach main either."""
+    ok = _check_backup_and_shrink(out)
+    # ---- and the page itself -------------------------------------------
+    # The browser tests run against tracker/dist/index.html, so they catch
+    # what the Python checks cannot: a template edit that breaks the sheet, a
+    # blob field the page reads under another name, a startup error that
+    # empties every list. Four of them had drifted unnoticed for weeks
+    # precisely because nothing ran them (2026-09-12).
+    checks = ([([PY] + argv, what, lambda o: o.splitlines()[-6:])
+               for argv, what in GATE_CHECKS]
+              + [(["node"] + argv, what,
+                  lambda o: [line for line in o.splitlines() if line.strip()][-6:])
+                 for argv, what in SOURCE_CHECKS]
+              + [(["node", os.path.join("tests", t)], what, _browser_failure)
+                 for t, what in BROWSER_TESTS])
+    return _run_checks(checks, out) and ok
+
+
+def _deploy(a, gate_ok, changed, out):
+    """True when a deploy was attempted and landed."""
+    if a.dry_run or a.skip_deploy:
+        out.append("deploy skipped (flag)")
+        return False
+    if not gate_ok:
+        out.append("deploy skipped: a check failed")
+        return False
+    if not changed and not a.no_refresh:
+        out.append("deploy skipped: identical build")
+        return False
+    d, dout = sh(["npx", "wrangler", "deploy"],
+                 cwd=os.path.join(ROOT, "tracker"))
+    ver = [line.strip() for line in dout.splitlines() if "Version ID" in line]
+    out.append("deploy exit %d  %s" % (d, ver[0] if ver else ""))
+    if d != 0:
+        # A failed deploy has to fail the JOB. Logging it and
+        # exiting 0 leaves an unattended run green while the
+        # phone quietly keeps yesterday's build - exactly what
+        # a bad CLOUDFLARE_API_TOKEN looks like, and nobody
+        # would ever notice.
+        out.append("FAILED: built fine, but was not published")
+        out += ["  " + x for x in dout.splitlines()[-8:] if x.strip()]
+    return d == 0
+
+
+def main():
+    a = _parser().parse_args()
+    rc = _setup(a)
+    if rc is not None:
         return rc
 
     started = datetime.datetime.now()
@@ -494,199 +717,16 @@ def main():
     # nightly job has to pass. That is backwards, and it is the path taken most
     # often. `python scripts/daily.py --no-refresh` gates what is already built
     # and then publishes it - same checks, same refusal to deploy.
-    if a.no_refresh:
-        out.append("mode: no refresh - rebuild from the repo, then gate")
-        # REBUILD, do not trust what is lying around. The browser tests read
-        # tracker/dist/index.html, which is generated and never committed: on a
-        # fresh checkout there is none, and on a laptop there is whatever the
-        # last build left. Gating a page that is not the page about to be
-        # published is the exact failure this whole gate exists to prevent, and
-        # it passed locally only because a build happened to be minutes old.
-        # None of this touches the network. What it CAN rebuild depends on
-        # where it runs, and the difference is stated rather than hidden:
-        # data.js and the engine bundle are built from data/raw/smogon_calc,
-        # which is the 195 MB source cache and deliberately not in git. On a
-        # laptop it is there, so they are rebuilt and a stale data/db is caught
-        # - and then pin_generated() puts back any of the two the stale cache
-        # made OLDER than the commit, which is the trap that cost two hours.
-        # On a fresh CI checkout it is not - but both artifacts are COMMITTED,
-        # and committed is by definition what the nightly job already gated.
-        # The page is rebuilt either way, because the page is what gets
-        # published and must never be a leftover.
-        vendored = os.path.exists(os.path.join(
-            ROOT, "data", "raw", "smogon_calc", "raw_species.json"))
-        page = [([PY, "scripts/build_tracker_page.py"], "the page")]
-        steps = []
-        if vendored:
-            steps = [([PY, "scripts/build_tracker_data.py"], "data.js"),
-                     ([PY, "scripts/build_analysis_data.py"], "the analyses"),
-                     ([PY, "scripts/build_splits_data.py", "--check"],
-                      "what the splits percentages are a share of"),
-                     ([PY, "scripts/build_splits_data.py"], "the ladder splits"),
-                     ([PY, "scripts/build_outside_dex.py"],
-                      "the rest of the dex"),
-                     ([PY, "scripts/build_engine_bundle.py"], "engine bundle")]
-        else:
-            out.append("no source cache here: using the committed data.js, "
-                       "analyses, the outside dex and engine bundle, "
-                       "rebuilding the page from them")
-        for argv, what in steps:
-            rc, bout = sh(argv)
-            if rc != 0:
-                out.append("BLOCKED: could not rebuild %s" % what)
-                out += ["  " + line for line in bout.splitlines()[-6:]]
-                log(out)
-                print("\n".join(out))
-                return 1
-        # THE GUARD SITS BETWEEN THE TWO, because the page embeds whichever
-        # copy of these it finds, and what is embedded is what gets gated and
-        # published.
-        if vendored:
-            out += pin_generated()
-        for argv, what in page:
-            rc, bout = sh(argv)
-            if rc != 0:
-                out.append("BLOCKED: could not rebuild %s" % what)
-                out += ["  " + line for line in bout.splitlines()[-6:]]
-                log(out)
-                print("\n".join(out))
-                return 1
-        out.append("rebuilt %s" % ("data.js, the bundle and the page"
-                                   if vendored else "the page"))
-    else:
-        deep = a.deep or datetime.date.today().weekday() == 0
-        argv = [PY, "scripts/refresh.py"] + (["--deep"] if deep else [])
-        out.append("mode: " + ("deep (Smogon analyses + pokebase splits forced)"
-                               if deep else "daily (ladder + engine)"))
-        rc, refresh_out = sh(argv)
-        tail = [line for line in refresh_out.splitlines() if line.strip()][-4:]
-        out.append("refresh.py exit %d" % rc)
-        out += ["  " + line for line in tail]
+    if not a.no_refresh:
+        _refresh(a, out)
+    elif not _rebuild_from_repo(out):
+        log(out)
+        print("\n".join(out))
+        return 1
 
-    after = snapshot()
-    after_ladder = ladder_summary()
-
-    changed = [label for key, rel, label in WATCH
-               if before.get(key) != after.get(key)]
-    if changed:
-        out.append("CHANGED: " + ", ".join(changed))
-    else:
-        out.append("nothing moved")
-
-    # WHICH FIELDS MOVED, not just which files. "CHANGED: move table" says a
-    # file's hash differs; it does not say that Rock Slide went from 75 to 70
-    # power and from a 30% flinch to 20%, which is the only part that changes
-    # how a battle goes. Every number is already in the database - effect_rate
-    # is 30.0, not a sentence - they simply were not being compared.
-    #
-    # A REPORT, never a gate: a regulation is meant to change things. What
-    # blocks is the shrink guard, which is about damage rather than change.
-    d, dout = sh([PY, "scripts/diff_db.py", "--limit", "30"])
-    if d == 0 and dout.strip() and "no field changed" not in dout:
-        out.append("WHAT CHANGED, field by field:")
-        out += ["  " + line for line in dout.splitlines()[:60]]
-
-    if before_ladder and after_ladder and before_ladder != after_ladder:
-        out.append("  ladder %s (%d rows) -> %s (%d rows)"
-                   % (before_ladder["fetched"], before_ladder["rows"],
-                      after_ladder["fetched"], after_ladder["rows"]))
-        out.append("  top now: " + ", ".join(
-            "%s %s%%" % (n, p) for n, p in (after_ladder["top"] or [])))
-
-    # Correctness gate. A stale app beats a wrong one, so a failing check stops
-    # the deploy rather than shipping numbers nobody looked at - and because
-    # daily.py returns non-zero, the workflow's commit step is skipped too, so
-    # a bad refresh cannot reach main either.
-    gate_ok = True
-
-    # ---- back the ledger up BEFORE anything else --------------------------
-    # Supabase holds the whole ledger now and the free plan takes no backups of
-    # its own, so every run that can reach the database leaves a snapshot. It
-    # costs one query per table and it is the cheapest insurance in the repo.
-    # Deliberately ahead of the gate: a run that is about to fail is exactly
-    # when a snapshot of the last good state is worth having. Where there is no
-    # database - CI - it says so and moves on.
-    b, bout = sh([PY, "scripts/backup_ledger.py", "--skip-if-offline"])
-    out += [line for line in bout.splitlines() if line.strip()][:3]
-    if b != 0:
-        gate_ok = False
-        out.append("BLOCKED: the ledger could not be backed up")
-
-    # ---- does this refresh LOSE anything? -------------------------------
-    # The formula tests pass on a dex of ten Pokemon; they check arithmetic and
-    # name matching, not volume. So a source that answers with half a page - or
-    # a parser that stops matching after an upstream redesign - sails straight
-    # through them and quietly deletes most of the database. Everything already
-    # committed is known good, so the honest test is "did the rebuild come back
-    # with less than we already had". A regulation only ever ADDS.
-    for line in shrink_check():
-        gate_ok = False
-        out.append(line)
-    if gate_ok:
-        out.append("ok: nothing shrank against the committed data")
-
-    for argv, what in GATE_CHECKS:
-        g, gout = sh([PY] + argv)
-        if g != 0:
-            gate_ok = False
-            out.append("BLOCKED: %s failed" % what)
-            out += ["  " + line for line in gout.splitlines()[-6:]]
-        else:
-            out.append("ok: %s" % what)
-
-    for argv, what in SOURCE_CHECKS:
-        g, gout = sh(["node"] + argv)
-        if g != 0:
-            gate_ok = False
-            out.append("BLOCKED: %s failed" % what)
-            out += ["  " + line for line in gout.splitlines() if line.strip()][-6:]
-        else:
-            out.append("ok: %s" % what)
-
-    # ---- and the page itself -------------------------------------------
-    # These run against tracker/dist/index.html, so they catch what the Python
-    # checks cannot: a template edit that breaks the sheet, a blob field the
-    # page reads under another name, a startup error that empties every list.
-    # Four of them had drifted unnoticed for weeks precisely because nothing
-    # ran them (2026-09-12).
-    for t, what in BROWSER_TESTS:
-        g, gout = sh(["node", os.path.join("tests", t)])
-        if g != 0:
-            gate_ok = False
-            out.append("BLOCKED: %s failed" % what)
-            # A test that ASSERTS wrong prints FAIL lines; a test that CRASHES
-            # prints none, and reporting only the former made fifteen failures
-            # read as fifteen blank lines - the cause (a hardcoded Windows path
-            # in every test file) was invisible in the CI log. Fall back to the
-            # tail of whatever it did say.
-            detail = [line for line in gout.splitlines() if line.strip().startswith("FAIL")]
-            if not detail:
-                detail = [line for line in gout.splitlines() if line.strip()][-5:]
-            out += ["  " + line for line in detail[:6]]
-        else:
-            out.append("ok: %s" % what)
-
-    deployed = False
-    if a.dry_run or a.skip_deploy:
-        out.append("deploy skipped (flag)")
-    elif not gate_ok:
-        out.append("deploy skipped: a check failed")
-    elif not changed and not a.no_refresh:
-        out.append("deploy skipped: identical build")
-    else:
-        d, dout = sh(["npx", "wrangler", "deploy"],
-                     cwd=os.path.join(ROOT, "tracker"))
-        ver = [line.strip() for line in dout.splitlines() if "Version ID" in line]
-        out.append("deploy exit %d  %s" % (d, ver[0] if ver else ""))
-        deployed = d == 0
-        if not deployed:
-            # A failed deploy has to fail the JOB. Logging it and
-            # exiting 0 leaves an unattended run green while the
-            # phone quietly keeps yesterday's build - exactly what
-            # a bad CLOUDFLARE_API_TOKEN looks like, and nobody
-            # would ever notice.
-            out.append("FAILED: built fine, but was not published")
-            out += ["  " + x for x in dout.splitlines()[-8:] if x.strip()]
+    changed = _report_changes(before, before_ladder, out)
+    gate_ok = _gate(out)
+    deployed = _deploy(a, gate_ok, changed, out)
 
     out.append("took %ds" % int((datetime.datetime.now() - started).total_seconds()))
     # data/raw is not in git, so on a fresh CI checkout it does not exist yet
@@ -699,7 +739,8 @@ def main():
     print("\n".join(out))
     # green means "the app on Cloudflare matches this data". A
     # failed check, or a deploy attempted and not landed, is red.
-    wanted = (bool(changed) or a.no_refresh) and gate_ok         and not (a.dry_run or a.skip_deploy)
+    wanted = ((bool(changed) or a.no_refresh) and gate_ok
+              and not (a.dry_run or a.skip_deploy))
     return 0 if (gate_ok and (deployed or not wanted)) else 1
 
 
