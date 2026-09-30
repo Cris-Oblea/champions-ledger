@@ -248,115 +248,126 @@ def always_crit(effect, indepth):
     return False
 
 
-def parse_move(path, useable=None):
-    s = read(path)
-    slug = os.path.basename(path)[:-5]
-
-    name = None
+def _move_name(s, slug):
     m = re.search(r"<title>(.*?)</title>", s, re.S | re.I)
-    if m:
-        name = html.unescape(m.group(1)).split(" - ")[0].strip()
-    if not name:
-        name = slug
+    name = html.unescape(m.group(1)).split(" - ")[0].strip() if m else None
+    return name or slug
 
-    mtype = None
+
+def _move_type_and_category(s):
+    mtype = cat = None
     mt = re.search(r'/attackdex-champions/\w+\.shtml"><img src="/pokedex-bw/type/(\w+)\.gif', s)
     if mt:
         mtype = mt.group(1).capitalize()
-    cat = None
     mc = re.search(r"/pokedex-bw/type/(physical|special|other)\.png", s)
     if mc:
         cat = {"physical": "Physical", "special": "Special", "other": "Status"}[mc.group(1)]
+    return mtype, cat
 
-    pp = power = acc = None
+
+def _cell_number(v):
+    v = v.strip().replace("--", "")
+    return int(v) if v.isdigit() else None
+
+
+def _move_numbers(s):
+    """(PP, base power, accuracy); None where the cell is empty."""
     mb = re.search(
         r"Power Points.*?Base Power.*?Accuracy.*?</tr>\s*<tr>\s*"
         r'<td class="cen">\s*([^<]*?)</td>\s*<td class="cen">\s*([^<]*?)</td>\s*'
         r'<td class="cen">\s*([^<]*?)</td>', s, re.S)
-    if mb:
-        def num(v):
-            v = v.strip().replace("--", "")
-            return int(v) if v.isdigit() else None
-        pp, power, acc = num(mb.group(1)), num(mb.group(2)), num(mb.group(3))
+    if not mb:
+        return None, None, None
+    return _cell_number(mb.group(1)), _cell_number(mb.group(2)), _cell_number(mb.group(3))
 
-    def section(label):
-        mm = re.search(re.escape(label) + r".*?</tr>\s*<tr>(.*?)</tr>", s, re.S)
-        return txt(mm.group(1)) if mm else ""
 
-    effect = section("Battle Effect:")
-    indepth = section("In-Depth Effect:")
+def _move_section(s, label):
+    mm = re.search(re.escape(label) + r".*?</tr>\s*<tr>(.*?)</tr>", s, re.S)
+    return txt(mm.group(1)) if mm else ""
 
-    mrate = re.search(r'Effect Rate:.*?</tr>.*?<td class="cen">\s*([\d.]+)\s*%', s, re.S)
-    effect_rate = float(mrate.group(1)) if mrate else None
 
-    crit = prio = target = None
+def _move_crit_priority_target(s):
     mx = re.search(
         r"Base Critical Hit Rate.*?Speed Priority.*?Hit in Battle.*?</tr>\s*<tr>\s*"
         r'<td class="cen">\s*([^<]*?)</td>\s*<td class="cen">\s*([^<]*?)</td>\s*'
         r'<td class="cen">\s*([^<]*?)</td>', s, re.S)
-    if mx:
-        # txt() rather than .strip(): these cells carry HTML entities, and
-        # "All Adjacent Pok&eacute;mon" must come out as a readable target.
-        crit = txt(mx.group(1))
-        try:
-            prio = int(mx.group(2).strip())
-        except ValueError:
-            prio = None
-        target = txt(mx.group(3))
+    if not mx:
+        return None, None, None
+    # txt() rather than .strip(): these cells carry HTML entities, and
+    # "All Adjacent Pok&eacute;mon" must come out as a readable target.
+    try:
+        prio = int(mx.group(2).strip())
+    except ValueError:
+        prio = None
+    return txt(mx.group(1)), prio, txt(mx.group(3))
 
-    # The property table alternates header rows and value rows. Start at the
-    # <tr> that OPENS the "Physical Contact" row: starting at the text itself
-    # loses the first header and shifts every flag by one row.
+
+def _move_flags(s):
+    """The property table alternates header rows and value rows. Start at the
+    <tr> that OPENS the "Physical Contact" row: starting at the text itself
+    loses the first header and shifts every flag by one row."""
     flags = {}
     fi = s.find("Physical Contact")
-    if fi > 0:
-        start = s.rfind("<tr", 0, fi)
-        end = s.find("</table>", fi)
-        rows = re.findall(r"<tr[^>]*>(.*?)</tr>", s[start:end], re.S)
-        headers, values = [], []
-        for r in rows:
-            cells_h = re.findall(r'<td class="fooevo"[^>]*>(.*?)</td>', r, re.S)
-            cells_v = re.findall(r'<td class="cen"[^>]*>(.*?)</td>', r, re.S)
-            if cells_h:
-                headers.append([txt(c) for c in cells_h])
-            elif cells_v:
-                values.append([txt(c) for c in cells_v])
-        # A header row with no value row (or the reverse) is a page quirk,
-        # not an error: pair what lines up and read on.
-        for hrow, vrow in zip(headers, values, strict=False):
-            for h, v in zip(hrow, vrow, strict=False):
-                for label, key in FLAG_LABELS:
-                    if h.startswith(label):
-                        flags[key] = (v.strip().lower() == "yes")
-                        break
+    if fi <= 0:
+        return flags
+    start = s.rfind("<tr", 0, fi)
+    end = s.find("</table>", fi)
+    headers, values = [], []
+    for r in re.findall(r"<tr[^>]*>(.*?)</tr>", s[start:end], re.S):
+        cells_h = re.findall(r'<td class="fooevo"[^>]*>(.*?)</td>', r, re.S)
+        cells_v = re.findall(r'<td class="cen"[^>]*>(.*?)</td>', r, re.S)
+        if cells_h:
+            headers.append([txt(c) for c in cells_h])
+        elif cells_v:
+            values.append([txt(c) for c in cells_v])
+    # A header row with no value row (or the reverse) is a page quirk,
+    # not an error: pair what lines up and read on.
+    for hrow, vrow in zip(headers, values, strict=False):
+        for h, v in zip(hrow, vrow, strict=False):
+            key = next((k for label, k in FLAG_LABELS if h.startswith(label)), None)
+            if key:
+                flags[key] = (v.strip().lower() == "yes")
+    return flags
 
-    learners = []
+
+def _move_learners(s):
+    """Every form in the "Pokemon That Learn" table, once, in page order."""
     li = s.find("That Learn")
-    if li > 0:
-        tail = s[li:]
-        # "#0", not "#0876": Serebii leaves the dex cell blank on Indeedee's
-        # female row. A four-digit-only pattern dropped it from all 45
-        # movepools it appears in, so the form ended up with no moves at all.
-        for r in re.finditer(
-                r'class="fooinfo">#(\d{1,4})</td>.*?'
-                r'<img src="(/pokedex-sv/icon/[^"]+)".*?'
-                r'<a href="/pokedex-champions/[^"]+">([^<]+)</a>', tail, re.S):
-            nm = html.unescape(r.group(3)).strip()
-            form = sprite_form(r.group(2), nm)
-            learners.append(nm + ("-" + form if form else ""))
-    seen, uniq = set(), []
-    for learner in learners:
-        if learner not in seen:
-            seen.add(learner)
-            uniq.append(learner)
+    if li <= 0:
+        return []
+    learners = []
+    # "#0", not "#0876": Serebii leaves the dex cell blank on Indeedee's
+    # female row. A four-digit-only pattern dropped it from all 45
+    # movepools it appears in, so the form ended up with no moves at all.
+    for r in re.finditer(
+            r'class="fooinfo">#(\d{1,4})</td>.*?'
+            r'<img src="(/pokedex-sv/icon/[^"]+)".*?'
+            r'<a href="/pokedex-champions/[^"]+">([^<]+)</a>', s[li:], re.S):
+        nm = html.unescape(r.group(3)).strip()
+        form = sprite_form(r.group(2), nm)
+        learners.append(nm + ("-" + form if form else ""))
+    return list(dict.fromkeys(learners))
 
+
+def parse_move(path, useable=None):
+    s = read(path)
+    slug = os.path.basename(path)[:-5]
+    mtype, cat = _move_type_and_category(s)
+    pp, power, acc = _move_numbers(s)
+    effect = _move_section(s, "Battle Effect:")
+    indepth = _move_section(s, "In-Depth Effect:")
+    mrate = re.search(r'Effect Rate:.*?</tr>.*?<td class="cen">\s*([\d.]+)\s*%', s, re.S)
+    crit, prio, target = _move_crit_priority_target(s)
+    learners = _move_learners(s)
     return {
-        "slug": slug, "name": name, "type": mtype, "category": cat,
+        "slug": slug, "name": _move_name(s, slug), "type": mtype, "category": cat,
         "power": power, "accuracy": acc, "pp": pp,
-        "effect": effect, "in_depth": indepth, "effect_rate": effect_rate,
+        "effect": effect, "in_depth": indepth,
+        "effect_rate": float(mrate.group(1)) if mrate else None,
         "crit_rate": crit, "priority": prio, "target": target,
         "hits": hit_count(effect), "always_crit": always_crit(effect, indepth),
-        "flags": flags, "learners": uniq, "learner_count": len(uniq),
+        "flags": _move_flags(s), "learners": learners,
+        "learner_count": len(learners),
         "useable": (slug in useable) if useable else None,
     }
 
@@ -388,11 +399,102 @@ def master_mega_names():
     return out
 
 
+def _block_name(blk, slug):
+    """The name is the first data cell after the "Name" header."""
+    mn = re.search(r'>\s*Name\s*</td>.*?</tr>\s*<tr>\s*'
+                   r'<td[^>]*class="fooinfo"[^>]*>\s*([^<]+?)\s*</td>', blk, re.S)
+    name = re.sub(r"\s+", " ", html.unescape(mn.group(1))).strip() if mn else None
+    return name or slug.capitalize()
+
+
+def _block_types(blk):
+    raw_types = re.findall(
+        r'/pokedex-champions/\w+\.shtml"><img src="/pokedex-bw/type/(\w+)\.gif', blk)
+    if not raw_types:
+        raw_types = re.findall(r"/pokedex-bw/type/(\w+)\.gif", blk)[:2]
+    # a block can repeat its own type
+    return list(dict.fromkeys(raw.capitalize() for raw in raw_types))
+
+
+def _block_abilities(blk):
+    ab = re.search(r"<b>Abilities</b>\s*:(.*?)</td>", blk, re.S)
+    abils = [re.sub(r"\s+", " ", html.unescape(a.group(1))).strip()
+             for a in re.finditer(ABIL_LINK, ab.group(1))] if ab else []
+    return list(dict.fromkeys(a for a in abils
+                              if len(a) > 1 and a.lower() != "details"))
+
+
+def _six_stats(chunk):
+    """The six numbers of a stats table, as a spread, or None."""
+    nums = re.findall(r'<td[^>]*>\s*(\d{1,3})\s*</td>', chunk)[:6]
+    if len(nums) != 6:
+        return None
+    return dict(zip(STAT_KEYS, map(int, nums), strict=True))
+
+
+def _block_stats(stat_blocks, hstart, hend):
+    """The stats table that sits inside this header block, if any."""
+    pos, total, tailblk = next(((pos, total, tail) for pos, total, tail in stat_blocks
+                                if hstart <= pos < hend), (None, None, None))
+    if pos is None:
+        return None
+    stats = _six_stats(tailblk)
+    if stats:
+        stats["total"] = total
+    return stats
+
+
+def _stats_heading_blocks(s, label=r"[^<]+"):
+    """(label, spread) for every "<h2>Stats - <label></h2>" table on the page
+    that carries a full spread. Each heading swallows the 1200 characters after
+    it, so the label pattern decides which headings can hide the next one - a
+    caller keeps the pattern it was written with."""
+    for m in re.finditer(r"<h2>Stats - (%s)</h2>(.{0,1200})" % label, s, re.S):
+        mb = re.search(r"Base Stats - Total: (\d+)(.{0,900})", m.group(2), re.S)
+        st = _six_stats(mb.group(2)) if mb else None
+        if st:
+            st["total"] = int(mb.group(1))
+            yield m.group(1), st
+
+
+def _gender_forms(s, slug, base):
+    """Gender forms get no header block of their own - Basculegion's female
+    form exists only as an "<h2>Stats - Female</h2>" table further down the
+    page, and it is a real form with its own spread (120/92/65/100/75/78 vs
+    the male's physical split). Type and abilities carry over from the base
+    form."""
+    return [{"slug": slug, "name": "%s-%s" % (base["name"], label),
+             "species": base["name"], "form": label,
+             "dex": base["dex"], "types": list(base["types"]),
+             "abilities": list(base["abilities"]), "base_stats": st,
+             "is_mega": False}
+            for label, st in _stats_heading_blocks(s, "Female|Male")]
+
+
+def _in_battle_forms(s):
+    """In-battle and size forms live in the same kind of block ("<h2>Stats -
+    Blade Forme</h2>", "Stats - Hero Form", "Stats - Jumbo Variety") but they
+    are NOT separate rows. Every usage source calls them by the base name -
+    pokebase writes "Aegislash (Blade)" for the thing a teamlist just calls
+    "Aegislash" - so query.norm() collapses them on purpose, and adding rows
+    would make every join ambiguous. They go on the base row instead, because
+    the damage calculator still needs the real numbers: Stance Change flips
+    Aegislash to Blade the moment it attacks, so its Attack is 140, not 50."""
+    bf = {}
+    for heading, st in _stats_heading_blocks(s):
+        label = heading.strip()
+        if re.match(r"(Female|Male)$", label):
+            continue
+        # "Blade Forme" -> "Blade", "Jumbo Variety" -> "Jumbo"
+        short = re.sub(r"\s+(Forme?|Form|Variety|Mode|Size)$", "", label).strip()
+        bf[short] = st
+    return bf
+
+
 def parse_pokemon(path, mega_names=None):
     s = read(path)
     slug = os.path.basename(path)[:-5]
-    megas_here = list((mega_names or {}).get(slug, []))
-    mega_seen = 0
+    megas_here = iter((mega_names or {}).get(slug, []))
     out = []
 
     heads = [m.start() for m in re.finditer(r'<td[^>]*class="fooevo"[^>]*>\s*Picture', s)]
@@ -402,106 +504,23 @@ def parse_pokemon(path, mega_names=None):
     for idx, hstart in enumerate(heads):
         hend = heads[idx + 1] if idx + 1 < len(heads) else len(s)
         blk = s[hstart:hend]
-
-        # the name is the first data cell after the "Name" header
-        name = None
-        mn = re.search(r'>\s*Name\s*</td>.*?</tr>\s*<tr>\s*'
-                       r'<td[^>]*class="fooinfo"[^>]*>\s*([^<]+?)\s*</td>', blk, re.S)
-        if mn:
-            name = re.sub(r"\s+", " ", html.unescape(mn.group(1))).strip()
-        if not name:
-            name = slug.capitalize()
-
+        name = _block_name(blk, slug)
         # a page calls both Mega blocks "Mega Charizard"; take the real name
         # (with its X/Y suffix) from the master list, in block order
-        if name.lower().startswith("mega ") and mega_seen < len(megas_here):
-            name = megas_here[mega_seen]
-            mega_seen += 1
-
+        if name.lower().startswith("mega "):
+            name = next(megas_here, name)
         mdex = re.search(r"National</b>\s*:\s*</td>\s*<td>#(\d+)", blk)
-        dex = int(mdex.group(1)) if mdex else None
-
-        raw_types = re.findall(
-            r'/pokedex-champions/\w+\.shtml"><img src="/pokedex-bw/type/(\w+)\.gif', blk)
-        if not raw_types:
-            raw_types = re.findall(r"/pokedex-bw/type/(\w+)\.gif", blk)[:2]
-        types = []
-        for raw in raw_types:                    # a block can repeat its own type
-            t = raw.capitalize()
-            if t not in types:
-                types.append(t)
-
-        abils = []
-        ab = re.search(r"<b>Abilities</b>\s*:(.*?)</td>", blk, re.S)
-        if ab:
-            for a in re.finditer(ABIL_LINK, ab.group(1)):
-                abils.append(re.sub(r"\s+", " ", html.unescape(a.group(1))).strip())
-        seen, ab2 = set(), []
-        for a in abils:
-            if a not in seen and len(a) > 1 and a.lower() != "details":
-                seen.add(a)
-                ab2.append(a)
-
-        stats = None
-        for pos, total, tailblk in stat_blocks:
-            if hstart <= pos < hend:
-                nums = re.findall(r'<td[^>]*>\s*(\d{1,3})\s*</td>', tailblk)[:6]
-                if len(nums) == 6:
-                    stats = dict(zip(STAT_KEYS, map(int, nums), strict=True))
-                    stats["total"] = total
-                break
-
-        out.append({"slug": slug, "name": name, "dex": dex, "types": types,
-                    "abilities": ab2, "base_stats": stats,
+        out.append({"slug": slug, "name": name,
+                    "dex": int(mdex.group(1)) if mdex else None,
+                    "types": _block_types(blk),
+                    "abilities": _block_abilities(blk),
+                    "base_stats": _block_stats(stat_blocks, hstart, hend),
                     "is_mega": name.lower().startswith("mega ")})
 
-    # Gender forms get no header block of their own - Basculegion's female form
-    # exists only as an "<h2>Stats - Female</h2>" table further down the page,
-    # and it is a real form with its own spread (120/92/65/100/75/78 vs the
-    # male's physical split). Type and abilities carry over from the base form.
     if out:
         base = out[0]
-        for m in re.finditer(r"<h2>Stats - (Female|Male)</h2>(.{0,1200})", s, re.S):
-            mb = re.search(r"Base Stats - Total: (\d+)(.{0,900})", m.group(2), re.S)
-            if not mb:
-                continue
-            nums = re.findall(r'<td[^>]*>\s*(\d{1,3})\s*</td>', mb.group(2))[:6]
-            if len(nums) != 6:
-                continue
-            st = dict(zip(STAT_KEYS, map(int, nums), strict=True))
-            st["total"] = int(mb.group(1))
-            out.append({"slug": slug, "name": "%s-%s" % (base["name"], m.group(1)),
-                        "species": base["name"], "form": m.group(1),
-                        "dex": base["dex"], "types": list(base["types"]),
-                        "abilities": list(base["abilities"]), "base_stats": st,
-                        "is_mega": False})
-
-    # In-battle and size forms live in the same kind of block ("<h2>Stats -
-    # Blade Forme</h2>", "Stats - Hero Form", "Stats - Jumbo Variety") but they
-    # are NOT separate rows. Every usage source calls them by the base name -
-    # pokebase writes "Aegislash (Blade)" for the thing a teamlist just calls
-    # "Aegislash" - so query.norm() collapses them on purpose, and adding rows
-    # would make every join ambiguous. They go on the base row instead, because
-    # the damage calculator still needs the real numbers: Stance Change flips
-    # Aegislash to Blade the moment it attacks, so its Attack is 140, not 50.
-    if out:
-        base = out[0]
-        bf = {}
-        for m in re.finditer(r"<h2>Stats - ([^<]+)</h2>(.{0,1200})", s, re.S):
-            label = m.group(1).strip()
-            if re.match(r"(Female|Male)$", label):
-                continue
-            mb = re.search(r"Base Stats - Total: (\d+)(.{0,900})", m.group(2), re.S)
-            if not mb:
-                continue
-            nums = re.findall(r'<td[^>]*>\s*(\d{1,3})\s*</td>', mb.group(2))[:6]
-            if len(nums) != 6:
-                continue
-            st = dict(zip(STAT_KEYS, map(int, nums), strict=True))
-            st["total"] = int(mb.group(1))
-            # "Blade Forme" -> "Blade", "Jumbo Variety" -> "Jumbo"
-            short = re.sub(r"\s+(Forme?|Form|Variety|Mode|Size)$", "", label).strip()
-            bf[short] = st
+        out += _gender_forms(s, slug, base)
+        bf = _in_battle_forms(s)
         if bf:
             base["battle_forms"] = bf
     return out
@@ -679,6 +698,17 @@ def abilities_by_form(path):
     return out
 
 
+def _add_abilities(p, abs_, added, note=None):
+    have = p.get("abilities") or []
+    new = [a for a in abs_ if a not in have]
+    if new:
+        p["abilities"] = have + new
+        added.append((p["name"], new, note))
+    if note:                       # true whether or not it was already there
+        for a in abs_:
+            p.setdefault("ability_notes", {})[a] = note
+
+
 def complete_form_abilities(forms):
     """Add anything the Pokedex page lists for a form that its row is missing.
 
@@ -710,17 +740,6 @@ def complete_form_abilities(forms):
         by_norm.setdefault(_Q.norm(name), []).append(p)
         by_species[_Q.norm(p.get("species") or name)].append(p)
     added = []
-
-    def add(p, abs_, note=None):
-        have = p.get("abilities") or []
-        new = [a for a in abs_ if a not in have]
-        if new:
-            p["abilities"] = have + new
-            added.append((p["name"], new, note))
-        if note:                       # true whether or not it was already there
-            for a in abs_:
-                p.setdefault("ability_notes", {})[a] = note
-
     for fn in sorted(os.listdir(os.path.join(RAW, "pokedex"))):
         species = os.path.splitext(fn)[0]
         rows = by_species.get(_Q.norm(species), [])
@@ -728,90 +747,85 @@ def complete_form_abilities(forms):
                 os.path.join(RAW, "pokedex", fn)).items():
             hits = by_norm.get(_Q.norm(species + " " + label), [])
             for p in hits:
-                add(p, abs_)
+                _add_abilities(p, abs_, added)
             if (not hits and len(rows) == 1
                     and rows[0].get("species") not in FIXED_FORMS):
-                add(rows[0], abs_, label)
+                _add_abilities(rows[0], abs_, added, label)
     for name, new, note in added:
         print("  +ability  %-22s %s  (from its Pokedex page%s)"
               % (name, ", ".join(new), ": " + note if note else ""))
     return len(added)
 
 
-def main():
-    os.makedirs(DB, exist_ok=True)
+def _mega_species(p):
+    """"Mega Charizard X" -> species "Charizard", form "Mega X", so the
+    Mega still links back to the base form it evolves from.
+    Regulation M-C added a third suffix: Z marks a SECOND Mega on a
+    species that already had one (Garchomp, Absol, Lucario), the same
+    pattern as Charizard X/Y and needing its own stone. Miss it and
+    the Z Mega parses as its own species, so mega_line() stops
+    offering it on the base Pokemon."""
+    base = p["name"].replace("Mega ", "", 1).strip()
+    mx = re.match(r"^(.*?)\s+([XYZ])$", base)
+    p["species"] = mx.group(1) if mx else base
+    p["form"] = "Mega %s" % mx.group(2) if mx else "Mega"
 
-    print("Pokemon...", flush=True)
-    # base and regional forms from the attackdex (one row per form)
-    forms = forms_from_attackdex()
-    complete_form_abilities(forms)
-    # Megas only exist on the Pokedex page
-    mega_names = master_mega_names()
-    dex_rows = []
-    for fn in sorted(os.listdir(os.path.join(RAW, "pokedex"))):
-        dex_rows.extend(parse_pokemon(os.path.join(RAW, "pokedex", fn), mega_names))
-    for p in dex_rows:
-        if not p["base_stats"]:
-            continue
-        if p["is_mega"]:
-            # "Mega Charizard X" -> species "Charizard", form "Mega X", so the
-            # Mega still links back to the base form it evolves from.
-            # Regulation M-C added a third suffix: Z marks a SECOND Mega on a
-            # species that already had one (Garchomp, Absol, Lucario), the same
-            # pattern as Charizard X/Y and needing its own stone. Miss it and
-            # the Z Mega parses as its own species, so mega_line() stops
-            # offering it on the base Pokemon.
-            base = p["name"].replace("Mega ", "", 1).strip()
-            mx = re.match(r"^(.*?)\s+([XYZ])$", base)
-            p["species"] = mx.group(1) if mx else base
-            p["form"] = "Mega %s" % mx.group(2) if mx else "Mega"
-            forms[p["name"]] = p
-        elif p["name"] not in forms:
-            # A Pokedex block that repeats a form the attackdex already gave
-            # us under its full name is not a second Pokemon. Floette is the
-            # case: only the Eternal Flower form is in Champions, so its page
-            # block is headed plainly "Floette" and used to land as a species
-            # of its own - same types, same abilities, same 551 spread as
-            # Floette-Eternal, and no movepool, because no learner table ever
-            # says "Floette". Matched on the spread, which needs no name
-            # vocabulary.
-            twin = next((f for f in forms.values()
-                         if f["dex"] == p["dex"] and not f["is_mega"]
-                         and f.get("base_stats") == p["base_stats"]), None)
-            if twin:
-                continue
-            p.setdefault("species", p["name"])
-            p.setdefault("form", None)
-            forms[p["name"]] = p
-        elif p.get("battle_forms"):
-            # The attackdex row wins on types and abilities, but only the
-            # Pokedex page carries the in-battle stat blocks - carry them over
-            # rather than dropping the row wholesale.
-            forms[p["name"]]["battle_forms"] = p["battle_forms"]
-    # The Pokedex repeats the regional forms in the same "<h2>Stats - X</h2>"
-    # block shape as the in-battle ones ("Stats - Alolan Raichu", "Stats -
-    # Hisuian Arcanine"), and those already arrived from the attackdex with
-    # their own types and abilities. Keep only the blocks that are nobody's
-    # row - matched on the spread itself, which is exact and needs no name
-    # vocabulary. What survives is the real in-battle set: Aegislash-Blade,
-    # Palafin-Hero and the three Gourgeist sizes.
+
+def _merge_dex_row(forms, p):
+    """One Pokedex-page row into the attackdex's forms."""
+    if p["is_mega"]:
+        _mega_species(p)
+        forms[p["name"]] = p
+    elif p["name"] not in forms:
+        # A Pokedex block that repeats a form the attackdex already gave
+        # us under its full name is not a second Pokemon. Floette is the
+        # case: only the Eternal Flower form is in Champions, so its page
+        # block is headed plainly "Floette" and used to land as a species
+        # of its own - same types, same abilities, same 551 spread as
+        # Floette-Eternal, and no movepool, because no learner table ever
+        # says "Floette". Matched on the spread, which needs no name
+        # vocabulary.
+        twin = next((f for f in forms.values()
+                     if f["dex"] == p["dex"] and not f["is_mega"]
+                     and f.get("base_stats") == p["base_stats"]), None)
+        if twin:
+            return
+        p.setdefault("species", p["name"])
+        p.setdefault("form", None)
+        forms[p["name"]] = p
+    elif p.get("battle_forms"):
+        # The attackdex row wins on types and abilities, but only the
+        # Pokedex page carries the in-battle stat blocks - carry them over
+        # rather than dropping the row wholesale.
+        forms[p["name"]]["battle_forms"] = p["battle_forms"]
+
+
+def _drop_regional_battle_forms(forms):
+    """The Pokedex repeats the regional forms in the same "<h2>Stats - X</h2>"
+    block shape as the in-battle ones ("Stats - Alolan Raichu", "Stats -
+    Hisuian Arcanine"), and those already arrived from the attackdex with
+    their own types and abilities. Keep only the blocks that are nobody's
+    row - matched on the spread itself, which is exact and needs no name
+    vocabulary. What survives is the real in-battle set: Aegislash-Blade,
+    Palafin-Hero and the three Gourgeist sizes."""
     known = {tuple(sorted(p["base_stats"].items()))
              for p in forms.values() if p.get("base_stats")}
     for p in forms.values():
-        bf = p.get("battle_forms")
-        if not bf:
+        if not p.get("battle_forms"):
             continue
-        bf = {k: v for k, v in bf.items()
+        bf = {k: v for k, v in p["battle_forms"].items()
               if tuple(sorted(v.items())) not in known}
         if bf:
             p["battle_forms"] = bf
         else:
             del p["battle_forms"]
 
-    # Forms fixed at capture are their own Pokemon, so they get their own row.
-    # Gourgeist's sizes arrived above as `battle_forms` because the page writes
-    # them in the same block shape as Aegislash's stance - they are not a
-    # stance, the size is decided when you meet it and never changes.
+
+def _add_fixed_forms(forms):
+    """Forms fixed at capture are their own Pokemon, so they get their own row.
+    Gourgeist's sizes arrived above as `battle_forms` because the page writes
+    them in the same block shape as Aegislash's stance - they are not a
+    stance, the size is decided when you meet it and never changes."""
     for species, variants in FIXED_FORMS.items():
         base = forms.get(species)
         if not base:
@@ -830,9 +844,11 @@ def main():
                 "base_stats": dict(st), "is_mega": False,
             }
 
-    # Typing a Pokemon only has mid-battle. Stored beside the spread-changing
-    # stances rather than as rows, because it is one creature: pokebase's
-    # "Castform-Sunny" and a teamlist's "Castform" are the same registration.
+
+def _add_typed_battle_forms(forms):
+    """Typing a Pokemon only has mid-battle. Stored beside the spread-changing
+    stances rather than as rows, because it is one creature: pokebase's
+    "Castform-Sunny" and a teamlist's "Castform" are the same registration."""
     for species, variants in TYPED_BATTLE_FORMS.items():
         base = forms.get(species)
         if not base:
@@ -843,12 +859,29 @@ def main():
             bf[label] = dict(bf[label], types=list(types))
         base["battle_forms"] = bf
 
-    pokemon = sorted(forms.values(), key=lambda x: (x["dex"] or 0, x["name"]))
-    Path(DB, "pokemon.json").write_text(
-        json.dumps(pokemon, ensure_ascii=False, indent=1), encoding="utf-8")
-    print("  %d forms (%d mega)" % (len(pokemon), sum(1 for p in pokemon if p["is_mega"])))
 
-    print("Moves...", flush=True)
+def _write(name, rows):
+    Path(DB, name).write_text(
+        json.dumps(rows, ensure_ascii=False, indent=1), encoding="utf-8")
+
+
+def build_pokemon():
+    # base and regional forms from the attackdex (one row per form)
+    forms = forms_from_attackdex()
+    complete_form_abilities(forms)
+    # Megas only exist on the Pokedex page
+    mega_names = master_mega_names()
+    for fn in sorted(os.listdir(os.path.join(RAW, "pokedex"))):
+        for p in parse_pokemon(os.path.join(RAW, "pokedex", fn), mega_names):
+            if p["base_stats"]:
+                _merge_dex_row(forms, p)
+    _drop_regional_battle_forms(forms)
+    _add_fixed_forms(forms)
+    _add_typed_battle_forms(forms)
+    return sorted(forms.values(), key=lambda x: (x["dex"] or 0, x["name"]))
+
+
+def build_moves():
     adir = os.path.join(RAW, "attackdex")
     useable = useable_moves()
     moves = []
@@ -859,12 +892,11 @@ def main():
             print("  %d/%d" % (i + 1, len(files)), flush=True)
     for line in apply_move_rulings(moves):
         print("  " + line)
-    Path(DB, "moves.json").write_text(
-        json.dumps(moves, ensure_ascii=False, indent=1), encoding="utf-8")
-    print("  %d moves (%d useable in Champions)"
-          % (len(moves), sum(1 for m in moves if m.get("useable"))))
+    return moves
 
-    print("Learnsets...", flush=True)
+
+def build_learnsets(moves, pokemon):
+    """(form -> sorted move names, how many forms inherited the base's)."""
     learn = defaultdict(list)
     for mv in moves:
         for learner in mv["learners"]:
@@ -883,22 +915,37 @@ def main():
         if src:
             learn[p["name"]] = list(src)
             inherited += 1
-    learn = dict(sorted(learn.items()))
-    Path(DB, "learnsets.json").write_text(
-        json.dumps(learn, ensure_ascii=False, indent=1), encoding="utf-8")
+    return dict(sorted(learn.items())), inherited
+
+
+def main():
+    os.makedirs(DB, exist_ok=True)
+
+    print("Pokemon...", flush=True)
+    pokemon = build_pokemon()
+    _write("pokemon.json", pokemon)
+    print("  %d forms (%d mega)" % (len(pokemon), sum(1 for p in pokemon if p["is_mega"])))
+
+    print("Moves...", flush=True)
+    moves = build_moves()
+    _write("moves.json", moves)
+    print("  %d moves (%d useable in Champions)"
+          % (len(moves), sum(1 for m in moves if m.get("useable"))))
+
+    print("Learnsets...", flush=True)
+    learn, inherited = build_learnsets(moves, pokemon)
+    _write("learnsets.json", learn)
     print("  %d Pokemon with a movepool (%d inherited from the base form)"
           % (len(learn), inherited))
 
     print("Items...", flush=True)
     items = parse_items()
-    Path(DB, "items.json").write_text(
-        json.dumps(items, ensure_ascii=False, indent=1), encoding="utf-8")
+    _write("items.json", items)
     print("  %d items" % len(items))
 
     print("Abilities...", flush=True)
     ab = parse_champions_abilities(pokemon)
-    Path(DB, "abilities.json").write_text(
-        json.dumps(ab, ensure_ascii=False, indent=1), encoding="utf-8")
+    _write("abilities.json", ab)
     print("  %d abilities" % len(ab))
 
 
