@@ -85,15 +85,9 @@ def table(name):
     return list(csv.DictReader(open(path, encoding="utf-8")))
 
 
-def upstream(forms):
-    """Checks 1 and 2: what PokeAPI lists that a form of ours does not."""
-    pokemon = table("pokemon.csv")
-    if pokemon is None:
-        print("no PokeAPI tables cached - run scripts/fetch_home_dex.py first")
-        return None
-    pk = {}
-    for r in pokemon:
-        pk.setdefault(r["identifier"], r)
+def _upstream_tables():
+    """(abilities by pokemon id as (slot, name), shape(pokemon id)) - a shape
+    is the spread and typing, which is what tells a variant from a form."""
     aname = {r["ability_id"]: r["name"] for r in table("ability_names.csv")
              if r["local_language_id"] == ENGLISH}
     by_pid = collections.defaultdict(list)
@@ -110,7 +104,34 @@ def upstream(forms):
     def shape(pid):
         return (tuple(sorted(stats[pid].items())),
                 tuple(sorted(types[pid].items())))
+    return by_pid, shape
 
+
+def _missing_abilities(p, sources, by_pid):
+    """(gaps, how many were known spelling differences) for one form."""
+    ours = p.get("abilities") or []
+    gaps, known = [], 0
+    for ident, pid in sources:
+        for _, n in sorted(by_pid[pid]):
+            if not n or n in ours:
+                continue
+            if n in KNOWN:
+                known += 1
+                continue
+            gaps.append((p["name"], n, ident, ", ".join(ours) or "none"))
+    return gaps, known
+
+
+def upstream(forms):
+    """Checks 1 and 2: what PokeAPI lists that a form of ours does not."""
+    pokemon = table("pokemon.csv")
+    if pokemon is None:
+        print("no PokeAPI tables cached - run scripts/fetch_home_dex.py first")
+        return None
+    pk = {}
+    for r in pokemon:
+        pk.setdefault(r["identifier"], r)
+    by_pid, shape = _upstream_tables()
     by_species = collections.defaultdict(list)
     for r in pokemon:
         by_species[r["species_id"]].append(r)
@@ -126,27 +147,19 @@ def upstream(forms):
     alike = collections.Counter((me["species_id"], shape(me["id"]))
                                 for _, me in mine)
 
-    checked, variants, gaps, known = 0, 0, [], 0
+    variants, gaps, known = 0, [], 0
     for p, me in mine:
-        checked += 1
         # the entry itself, then every same-shaped sibling of it
         sources = [(me["identifier"], me["id"])]
         if alike[(me["species_id"], shape(me["id"]))] == 1:
-            for r in by_species[me["species_id"]]:
-                if (r["id"] not in mapped
-                        and shape(r["id"]) == shape(me["id"])):
-                    sources.append((r["identifier"], r["id"]))
-                    variants += 1
-        ours = p.get("abilities") or []
-        for ident, pid in sources:
-            for _, n in sorted(by_pid[pid]):
-                if not n or n in ours:
-                    continue
-                if n in KNOWN:
-                    known += 1
-                    continue
-                gaps.append((p["name"], n, ident, ", ".join(ours) or "none"))
-    print("%d forms crossed against PokeAPI at the pin" % checked)
+            sib = [(r["identifier"], r["id"]) for r in by_species[me["species_id"]]
+                   if r["id"] not in mapped and shape(r["id"]) == shape(me["id"])]
+            sources += sib
+            variants += len(sib)
+        g, k = _missing_abilities(p, sources, by_pid)
+        gaps += g
+        known += k
+    print("%d forms crossed against PokeAPI at the pin" % len(mine))
     print("  %d same-shaped ability variants crossed with them" % variants)
     print("  %d known spelling differences, skipped" % known)
     return gaps

@@ -93,44 +93,25 @@ def rescaled_pp(ours):
     return out
 
 
-def check_moves():
-    ours = [m for m in Q.db("moves") if m.get("useable")]
-    pb = pokebase_moves()
-    sm = json.loads(Path(SMOG).read_text(encoding="utf-8")) if os.path.exists(SMOG) else {}
-    rows, gaps, agree = [], [], 0
-    for m in ours:
-        n = m["name"]
-        p, s = pb.get(n), sm.get(n)
-        s = s if isinstance(s, dict) else None
-        # Serebii left the cell empty - a documented gap, and another source
-        # may simply have it
-        for field, mine, theirs in (("accuracy", m.get("accuracy"),
-                                     p and p["acc"]),
-                                    ("PP", m.get("pp"), p and p["pp"])):
-            if mine is None and theirs is not None:
-                gaps.append((n, field, theirs))
-        if not p:
-            continue
-        # power 1 is this project's marker for "derived from weight or damage
-        # taken", not a real base power, so it is not a disagreement
-        derived = (m.get("power") or 0) == 1
-        pairs = [("BP", m.get("power") or 0, p["bp"] or 0, "pokebase"),
-                 ("PP", m.get("pp"), p["pp"], "pokebase"),
-                 ("category", m.get("category"), p["cat"], "pokebase")]
-        # accuracy: 101 is this database's "never misses"; pokebase writes 0
-        if not (m.get("accuracy") == 101 and (p["acc"] or 0) == 0):
-            pairs.append(("accuracy", m.get("accuracy"), p["acc"], "pokebase"))
-        if s and s.get("bp") is not None:
-            pairs.append(("BP", m.get("power") or 0, s["bp"], "smogon calc"))
-        for field, mine, theirs, who in pairs:
-            if mine is None or theirs is None:
-                continue
-            if field == "BP" and derived:
-                continue
-            if mine != theirs:
-                rows.append((n, field, mine, theirs, who))
-            else:
-                agree += 1
+def _move_pairs(m, p, s):
+    """(field, ours, theirs, whose) for every number the sources both state."""
+    pairs = [("BP", m.get("power") or 0, p["bp"] or 0, "pokebase"),
+             ("PP", m.get("pp"), p["pp"], "pokebase"),
+             ("category", m.get("category"), p["cat"], "pokebase")]
+    # accuracy: 101 is this database's "never misses"; pokebase writes 0
+    if not (m.get("accuracy") == 101 and (p["acc"] or 0) == 0):
+        pairs.append(("accuracy", m.get("accuracy"), p["acc"], "pokebase"))
+    if s and s.get("bp") is not None:
+        pairs.append(("BP", m.get("power") or 0, s["bp"], "smogon calc"))
+    # power 1 is this project's marker for "derived from weight or damage
+    # taken", not a real base power, so it is not a disagreement
+    derived = (m.get("power") or 0) == 1
+    return [(f, mine, theirs, who) for f, mine, theirs, who in pairs
+            if mine is not None and theirs is not None
+            and not (f == "BP" and derived)]
+
+
+def _print_move_report(ours, rows, gaps, agree):
     print("MOVES - %d checked" % len(ours))
     print("  %d numbers agree across the sources" % agree)
     print("  %d disagree:" % len(rows))
@@ -152,6 +133,31 @@ def check_moves():
     print("  %d settled by a ruling in build_db.MOVE_RULINGS:" % len(ruled))
     for n, f, v, why in sorted(ruled):
         print("     %-16s %-9s %-4s %s" % (n, f, v, why))
+
+
+def check_moves():
+    ours = [m for m in Q.db("moves") if m.get("useable")]
+    pb = pokebase_moves()
+    sm = json.loads(Path(SMOG).read_text(encoding="utf-8")) if os.path.exists(SMOG) else {}
+    rows, gaps, agree = [], [], 0
+    for m in ours:
+        n = m["name"]
+        p, s = pb.get(n), sm.get(n)
+        # Serebii left the cell empty - a documented gap, and another source
+        # may simply have it
+        for field, mine, theirs in (("accuracy", m.get("accuracy"),
+                                     p and p["acc"]),
+                                    ("PP", m.get("pp"), p and p["pp"])):
+            if mine is None and theirs is not None:
+                gaps.append((n, field, theirs))
+        if not p:
+            continue
+        for field, mine, theirs, who in _move_pairs(m, p, s if isinstance(s, dict) else None):
+            if mine != theirs:
+                rows.append((n, field, mine, theirs, who))
+            else:
+                agree += 1
+    _print_move_report(ours, rows, gaps, agree)
     return rows, gaps
 
 
