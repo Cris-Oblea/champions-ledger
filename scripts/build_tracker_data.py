@@ -104,9 +104,9 @@ def main():
     # move sheet does not print "Ally" under a single-target attack.
     props = (Q.db("ability_moves") or {}).get("moves") or {}
     target_label = {(1, 1): "All Adjacent Pokémon", (1, 0): "All Adjacent Foes",
-             (0, 0): "Selected Target"}
+                    (0, 0): "Selected Target"}
     spread_targets = {"all adjacent foes", "all adjacent opponents",
-              "all adjacent pokemon", "all opponents"}
+                      "all adjacent pokemon", "all opponents"}
     app_moves = []
     for m in use:
         tgt = m.get("target") or ""
@@ -124,23 +124,23 @@ def main():
                 and (m.get("power") or 0) > 0:
             tgt = "Selected Target"
         app_moves.append([m["name"], m["type"], cat.get(m.get("category"), "T"),
-                      m.get("power"), m.get("accuracy"), m.get("pp"),
-                      m.get("priority") or 0, tgt,
-                      spread,
-                      # of the spread moves, these also land on your own ally
-                      ally,
-                      # the damage calculator needs these two: a 2-5 move is
-                      # quoted at three hits, and an always-crit move is a flat
-                      # x1.5 on the base damage
-                      m.get("hits") or None,
-                      1 if m.get("always_crit") else 0,
-                      flag_str(m), secondary(m),
-                      # what the move DOES. It was not in the blob at all, so
-                      # the app could show every number about a move and not
-                      # one word about its effect - and "which of these burns"
-                      # had no answer on the phone. Serebii's short line,
-                      # falling back to the long one.
-                      movetext(m)])
+                          m.get("power"), m.get("accuracy"), m.get("pp"),
+                          m.get("priority") or 0, tgt,
+                          spread,
+                          # of the spread moves, these also land on your own ally
+                          ally,
+                          # the damage calculator needs these two: a 2-5 move is
+                          # quoted at three hits, and an always-crit move is a flat
+                          # x1.5 on the base damage
+                          m.get("hits") or None,
+                          1 if m.get("always_crit") else 0,
+                          flag_str(m), secondary(m),
+                          # what the move DOES. It was not in the blob at all, so
+                          # the app could show every number about a move and not
+                          # one word about its effect - and "which of these burns"
+                          # had no answer on the phone. Serebii's short line,
+                          # falling back to the long one.
+                          movetext(m)])
 
     # --- learnsets as index lists ---------------------------------------
     app_learn = {}
@@ -378,25 +378,25 @@ def main():
             continue
         pr = prices.get(i["name"]) or {}
         app_items.append([i["name"], pr.get("vp") or i.get("price_vp"),
-                      i.get("category") or "Miscellaneous",
-                      # the item's ONE description - Smogon's Champions dex
-                      # first (build_item_facts.py), Serebii's line only where
-                      # neither of the others has the item
-                      " ".join((pr.get("text") or i.get("effect") or "")
-                               .replace("�", "'").split()),
-                      pr.get("note") or i.get("source") or "",
-                      pr.get("source") or "",
-                      # what this item serves: the sentence, the abilities it
-                      # works with, and the moves when there are few enough to
-                      # name. Heat Rock -> Sunny Day AND Drought.
-                      (links.get("items", {}).get(i["name"]) or {}).get("why") or "",
-                      (links.get("items", {}).get(i["name"]) or {}).get("abilities") or [],
-                      ((links.get("items", {}).get(i["name"]) or {}).get("moves") or [])
-                      if len((links.get("items", {}).get(i["name"]) or {}).get("moves") or []) <= 6 else []])
+                          i.get("category") or "Miscellaneous",
+                          # the item's ONE description - Smogon's Champions dex
+                          # first (build_item_facts.py), Serebii's line only where
+                          # neither of the others has the item
+                          " ".join((pr.get("text") or i.get("effect") or "")
+                                   .replace("�", "'").split()),
+                          pr.get("note") or i.get("source") or "",
+                          pr.get("source") or "",
+                          # what this item serves: the sentence, the abilities it
+                          # works with, and the moves when there are few enough to
+                          # name. Heat Rock -> Sunny Day AND Drought.
+                          (links.get("items", {}).get(i["name"]) or {}).get("why") or "",
+                          (links.get("items", {}).get(i["name"]) or {}).get("abilities") or [],
+                          ((links.get("items", {}).get(i["name"]) or {}).get("moves") or [])
+                          if len((links.get("items", {}).get(i["name"]) or {}).get("moves") or []) <= 6 else []])
     app_items.sort()
 
     app_natures = {k: [v.get("raises"), v.get("lowers"), v.get("summary")]
-           for k, v in nat.items()}
+                   for k, v in nat.items()}
 
     # same merge for abilities: pokebase wins the nine where it states a
     # number Serebii leaves out (Guard Dog's +1 stage, Sand Veil's 25%)

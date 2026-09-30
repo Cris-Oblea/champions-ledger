@@ -911,8 +911,8 @@ def audit(table):
     """Every ability in the format, and what we decided about it."""
     abil = Q.db("abilities")
     mentions_move = re.compile(r"\bmoves?\b|\bpower\b|\bdamage\b|STAB|priority|contact|"
-                     r"sound|punch|bit(?:e|ing)|slicing|bullet|pulse|powder|"
-                     r"recoil|immune|absorb", re.I)
+                               r"sound|punch|bit(?:e|ing)|slicing|bullet|pulse|powder|"
+                               r"recoil|immune|absorb", re.I)
     covered, mentions, quiet, decided = [], [], [], []
     for a in abil:
         n, e = a["name"], clean(a.get("effect"))

@@ -526,7 +526,7 @@ def calc(attacker, move, defender, atk_sp=0, atk_nature=None, def_hp_sp=0,
         # bulky, uninvested targets that assumption is wrong about. The target's
         # real investment is a parameter now, defaulting to none.
         atk_stat = stat(def_mon["base_stats"]["atk"], target_atk_sp,
-                    nature_mults(target_atk_nature)["atk"])
+                        nature_mults(target_atk_nature)["atk"])
         notes.append("Foul Play attacks off the TARGET's Attack "
                      "(%d SP%s -> %d)"
                      % (target_atk_sp,
@@ -556,7 +556,7 @@ def calc(attacker, move, defender, atk_sp=0, atk_nature=None, def_hp_sp=0,
         bstat, bstage = def_boosts if isinstance(def_boosts, (tuple, list))                         else (d_key, def_boosts)
         if bstat == d_key and bstage:
             def_stat = int(def_stat * ((2 + bstage) / 2.0 if bstage > 0
-                               else 2.0 / (2 - bstage)))
+                                       else 2.0 / (2 - bstage)))
             notes.append("target is at %+d %s" % (bstage, bstat))
     def_hp = stat(def_mon["base_stats"]["hp"], def_hp_sp, 1.0, is_hp=True)
 
