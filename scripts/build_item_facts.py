@@ -88,64 +88,58 @@ UNLOCK_LABEL = {
 }
 
 
-def main():
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--report", action="store_true")
-    a = ap.parse_args()
+def _price(it, pb):
+    """(VP, who priced it, unlock, and 'agree', 'clash', 'filled' or None)."""
+    serebii = it.get("price_vp")
+    unlock = pb.get(it["name"])
+    pbvp = vp_of(unlock)
+    status = None
+    if serebii and pbvp:
+        status = "agree" if serebii == pbvp else "clash"
+        if status == "clash":
+            # SETTLED by the player, 2026-09-13: "los precios son los que
+            # dice serebii". Serebii's item page IS the shop listing, item
+            # by item; pokebase buckets everything it is unsure of into
+            # shop-2000-vp, which is why all twelve disagreements run the
+            # same way. Keeping pokebase's bucket alongside Serebii's price
+            # left the record contradicting itself - Rocky Helmet read
+            # "vp 1000, unlock shop-2000-vp" - so the bucket is rewritten
+            # to match the price that won.
+            unlock = "shop-%d-vp" % serebii
+    elif pbvp:
+        status = "filled"
+    src = "serebii" if serebii else "pokebase" if pbvp else None
+    return serebii or pbvp, src, unlock, status
 
-    items = Q.db("items")
-    pb = pokebase_unlocks()
-    pbtext = pokebase_text()
-    smogon = (Q.db("smogon_text") or {}).get("items") or {}
-    rows, filled, agree, clash, nothing = {}, [], 0, [], []
-    for it in items:
-        name = it["name"]
-        serebii = it.get("price_vp")
-        unlock = pb.get(name)
-        pbvp = vp_of(unlock)
-        if serebii and pbvp:
-            if serebii == pbvp:
-                agree += 1
-            else:
-                clash.append((name, serebii, pbvp))
-                # SETTLED by the player, 2026-09-13: "los precios son los que
-                # dice serebii". Serebii's item page IS the shop listing, item
-                # by item; pokebase buckets everything it is unsure of into
-                # shop-2000-vp, which is why all twelve disagreements run the
-                # same way. Keeping pokebase's bucket alongside Serebii's price
-                # left the record contradicting itself - Rocky Helmet read
-                # "vp 1000, unlock shop-2000-vp" - so the bucket is rewritten
-                # to match the price that won.
-                unlock = "shop-%d-vp" % serebii
-        vp = serebii or pbvp
-        src = ("serebii" if serebii else "pokebase" if pbvp else None)
-        if not serebii and pbvp:
-            filled.append((name, pbvp))
-        note = ""
-        if not vp:
-            note = UNLOCK_LABEL.get(unlock or "", "")
-            if not note:
-                s = (it.get("source") or "").strip()
-                note = "" if s in ("", "-") else s
-            if not note:
-                nothing.append(name)
-        ser = " ".join((it.get("effect") or "").replace("�", "'").split())
-        # SMOGON'S CHAMPIONS DEX FIRST (player, 2026-09-27: "haz lo mismo con
-        # las abilities e items, smogon casi siempre los tiene mejor descritos
-        # y con numeros"). Sitrus Berry is "Restores 1/4 max HP when at 1/2
-        # max HP or less. Single use." there; Light Clay names Aurora Veil,
-        # which the player confirmed in game and Serebii's line leaves out.
-        # pokebase's mechanics and Serebii's flavour stay behind it, and both
-        # are kept, because the item links read them too.
-        smo = smogon.get(name)
-        pbt = pbtext.get(name)
-        rows[name] = {"vp": vp, "source": src, "unlock": unlock, "note": note,
-                      "text": smo or pbt or ser,
-                      "text_source": ("smogon" if smo else
-                                      "pokebase" if pbt else "serebii"),
-                      "pokebase_text": pbt or "",
-                      "serebii_text": ser}
 
+def _unpriced_note(it, unlock):
+    """Where an item with no price comes from, or "" when nothing says."""
+    note = UNLOCK_LABEL.get(unlock or "", "")
+    if not note:
+        s = (it.get("source") or "").strip()
+        note = "" if s in ("", "-") else s
+    return note
+
+
+def _texts(it, smogon, pbtext):
+    """SMOGON'S CHAMPIONS DEX FIRST (player, 2026-09-27: "haz lo mismo con
+    las abilities e items, smogon casi siempre los tiene mejor descritos
+    y con numeros"). Sitrus Berry is "Restores 1/4 max HP when at 1/2
+    max HP or less. Single use." there; Light Clay names Aurora Veil,
+    which the player confirmed in game and Serebii's line leaves out.
+    pokebase's mechanics and Serebii's flavour stay behind it, and both
+    are kept, because the item links read them too."""
+    ser = " ".join((it.get("effect") or "").replace("�", "'").split())
+    smo = smogon.get(it["name"])
+    pbt = pbtext.get(it["name"])
+    return {"text": smo or pbt or ser,
+            "text_source": ("smogon" if smo else
+                            "pokebase" if pbt else "serebii"),
+            "pokebase_text": pbt or "",
+            "serebii_text": ser}
+
+
+def _print_summary(rows, filled, agree, nothing, clash):
     print("%d items" % len(rows))
     print("  %3d priced by Serebii" % sum(1 for r in rows.values()
                                           if r["source"] == "serebii"))
@@ -171,6 +165,31 @@ def main():
         print("\n  filled in (Serebii prints these as '??? VP'):")
         for n, v in sorted(filled)[:40]:
             print("     %-24s %d VP" % (n, v))
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--report", action="store_true")
+    a = ap.parse_args()
+
+    pb = pokebase_unlocks()
+    pbtext = pokebase_text()
+    smogon = (Q.db("smogon_text") or {}).get("items") or {}
+    rows, filled, agree, clash, nothing = {}, [], 0, [], []
+    for it in Q.db("items"):
+        name = it["name"]
+        vp, src, unlock, status = _price(it, pb)
+        agree += status == "agree"
+        if status == "clash":
+            clash.append((name, it.get("price_vp"), vp_of(pb.get(name))))
+        if status == "filled":
+            filled.append((name, vp))
+        note = "" if vp else _unpriced_note(it, unlock)
+        if not vp and not note:
+            nothing.append(name)
+        rows[name] = {"vp": vp, "source": src, "unlock": unlock, "note": note,
+                      **_texts(it, smogon, pbtext)}
+    _print_summary(rows, filled, agree, nothing, clash)
 
     if not a.report:
         with open(OUT, "w", encoding="utf-8") as f:
