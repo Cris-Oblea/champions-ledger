@@ -736,4 +736,4 @@ function findDetail(p){
   }, []);
 }
 
-export { analysisFold, analysisPanel, findDetail, pokeBody, pokeHead };
+export { analysisFold, findDetail, pokeBody, pokeHead };

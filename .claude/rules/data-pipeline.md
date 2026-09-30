@@ -255,6 +255,6 @@ was over. The tournament files carry `round_label` and `complete`, and
 **The app is regenerated from `data/db/`, so a source refresh must reach it.**
 `python scripts/refresh.py` walks Serebii → build_db → pokebase →
 Smogon → the calculator → pokedata → the audits → `tracker/data.js` →
-`tracker/dist/`, and `--regulation` clears the Serebii page cache first
-(the trap documented above). The phone gets the new dex when the change is
+`tracker/dist/`. When a new regulation is live it re-fetches every Serebii page on top of the cache and reports which came back different
+(the trap documented above), by itself. The phone gets the new dex when the change is
 merged, because the merge is what deploys.
