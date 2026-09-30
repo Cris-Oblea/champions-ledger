@@ -242,14 +242,14 @@ function moveFilters(body, pool, onChange, placeholder, opts){
      AND Special, or Fire AND Water, so those chips can only ever mean "any of
      these". A move CAN be spread and hit its ally at once, so those mean "all
      of these" - and "no such move" is then an answer, not a failed filter. */
-  var crow = el("div", "toggles"); crow.style.marginBottom = "8px";
+  var crow = el("div", "toggles mb8");
   triChip(crow, st, "cat", "P", "Physical");
   triChip(crow, st, "cat", "S", "Special");
   triChip(crow, st, "cat", "T", "Status");
   body.appendChild(filterLabel("Category — one at a time, or − to rule out"));
   body.appendChild(crow);
 
-  var mrow = el("div", "toggles"); mrow.style.marginBottom = "8px";
+  var mrow = el("div", "toggles mb8");
   triChip(mrow, st, "trait", "spread", "Spread");
   triChip(mrow, st, "trait", "ally", "Hits ally");
   triChip(mrow, st, "trait", "pri", "Priority");
@@ -260,13 +260,13 @@ function moveFilters(body, pool, onChange, placeholder, opts){
   pool.forEach(function(m){ if (!types.includes(m.type)) types.push(m.type); });
   types.sort(byText);
   if (types.length > 1) {
-    var trow = el("div", "toggles"); trow.style.marginBottom = "10px";
+    var trow = el("div", "toggles mb10");
     types.forEach(function(ty){ triChip(trow, st, "type", ty, ty, ty); });
     body.appendChild(filterLabel("Type — any of these, or − to rule out"));
     body.appendChild(trow);
   }
   var count = filterLabel("");
-  count.style.margin = "0 0 6px";
+  count.classList.add("mb6");
   body.appendChild(count);
 
   function apply(){
@@ -285,7 +285,7 @@ function moveFilters(body, pool, onChange, placeholder, opts){
 
 /* The sort choices: usage first when there is a Pokemon to be a share of. */
 function sortRow(body, st, usageOf){
-  var srow = el("div", "toggles"); srow.style.marginBottom = "8px";
+  var srow = el("div", "toggles mb8");
   var sorts = [["bp","BP × acc"],["name","A–Z"],["pp","PP"],["type","Type"]];
   if (usageOf) sorts.unshift(["usage","Usage %"]);
   sorts.forEach(function(o){
@@ -506,13 +506,12 @@ function moveRowFor(m, ability, poke){
     var sp = el("div", "st", spread.split("·").map(function(s){
       return s.trim();
     }).join(" · "));
-    sp.style.color = "var(--warn)";
+    sp.classList.add("c-warn");
     mm.appendChild(sp);
   }
   if (m.text) mm.appendChild(numText(m.text, "div", "st"));
   hits.forEach(function(x){
-    var w = el("div", "st");
-    w.style.color = "var(--accent)";
+    var w = el("div", "st c-accent");
     // name it when there is more than one, or the two reasons run together
     w.textContent = (hits.length > 1 ? x.ability + ": " : "") + x.hit.why;
     mm.appendChild(w);

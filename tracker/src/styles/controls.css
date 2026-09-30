@@ -16,6 +16,7 @@
 .tag.bf{background:var(--battle-soft);border-color:var(--battle);
   color:var(--battle)}
 .tag.warn{background:var(--warn-soft);border-color:var(--warn);color:var(--warn)}
+.tag.shiny{border-color:var(--warn);color:var(--warn)}
 .tag.bad{background:var(--bad-soft);border-color:var(--bad);color:var(--bad)}
 .tag.ok{background:var(--accent-soft);border-color:var(--accent);color:var(--accent)}
 /* A podium finish is not "good" or "bad", it is a medal - so it gets its own
@@ -147,6 +148,10 @@ input:-webkit-autofill,input:-webkit-autofill:focus{
   box-shadow:0 0 0 40px var(--surface) inset;
   caret-color:var(--text)}
 textarea{resize:vertical;min-height:64px;line-height:1.45}
+/* a long GTS note opens tall enough to read; the diagnostics dump fills the
+   sheet, because it is there to be selected whole and copied */
+textarea.long{min-height:180px}
+textarea.diagdump{min-height:40vh}
 .field{margin-bottom:12px}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 /* TWO COLUMNS NEED THE WIDTH FOR TWO COLUMNS. At 360px each half of a .grid2
@@ -201,6 +206,8 @@ textarea{resize:vertical;min-height:64px;line-height:1.45}
   text-align:right}
 .sp .calc{font-family:var(--mono);font-size:12px;color:var(--faint);
   text-align:right;font-variant-numeric:tabular-nums}
+/* the stat the move actually reads */
+.sp .calc.used{color:var(--accent);font-weight:600}
 .sp.over .v{color:var(--bad);font-weight:600}
 /* The build sheet's row carries three ways to set the same number - drag,
    arrows, typing - so it needs two more columns than the calculator's. */
@@ -233,6 +240,8 @@ input[type="range"]::-moz-range-thumb{width:14px;height:14px;border:2px solid va
   border:1px solid var(--line);margin:6px 0 3px}
 .meter i{display:block;height:100%;background:var(--accent);transition:width .12s}
 .meter.over i{background:var(--bad)}
+/* the damage result's KO bar is the answer, so it is thicker */
+.meter.ko{height:8px}
 .budget{display:flex;justify-content:space-between;font-family:var(--mono);
   font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
 

@@ -706,3 +706,5 @@
   .cards,.list.cards{grid-template-columns:repeat(auto-fill,minmax(300px,1fr))}
 }
 
+/* an effect's own sentence, after its chips: read second, so a shade lighter */
+.fxdesc{opacity:.85}

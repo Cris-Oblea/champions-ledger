@@ -3,6 +3,8 @@
 .kv dt{color:var(--muted)}
 .kv dd{margin:0;font-family:var(--mono);font-variant-numeric:tabular-nums;
   text-align:right}
+/* diagnostics values are long strings (URLs, errors), not numbers */
+.kv.diag dd{text-align:left;overflow-wrap:anywhere;font-size:11.5px}
 /* SIX COLUMNS, because there are six stats. It said seven, so every stat grid
    in the app has been drawing an empty seventh cell and squeezing the real
    ones to fit. */

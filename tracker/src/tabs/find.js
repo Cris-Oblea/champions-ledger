@@ -416,7 +416,7 @@ function typeFilterSheet(){
   openSheet("Type filter", function(body){
     var note = el("p", "sub");
     body.appendChild(note);
-    var mrow = el("div", "toggles"); mrow.style.margin = "0 0 10px";
+    var mrow = el("div", "toggles mb10");
     var chips = {};
     function paint(){ paintTypeFilter(chips, note); }
     [["and", "has ALL of these"], ["or", "has ANY of these"]].forEach(function(o){
@@ -515,7 +515,7 @@ function abilityFilterSheet(){
       " abilities — name or effect", function(){ draw(); });
     var pick = {};
     body.appendChild(abilityKindChips(pick, function(){ draw(); }));
-    var count = el("div", "sub"); count.style.margin = "0 0 6px";
+    var count = el("div", "sub mb6");
     body.appendChild(count);
     var list = el("div", "list");
     body.appendChild(list);
@@ -531,7 +531,7 @@ function abilityKindChips(pick, draw){
   var CLS = C.AB_CLASS || {}, CLSL = C.AB_CLASS_LABEL || {};
   var ORDER = ["moves-off","moves-def","weather","terrain","speed",
                "status","stats","item","switch","other"];
-  var frow = el("div", "toggles"); frow.style.margin = "8px 0 10px";
+  var frow = el("div", "toggles mt8 mb10");
   ORDER.forEach(function(k){
     var n = 0;
     Object.keys(C.ABIL).forEach(function(a){ if (CLS[a] === k) n++; });

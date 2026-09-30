@@ -27,8 +27,7 @@ function kv(host, rows){
     if (r == null) return;
     host.appendChild(el("dt", null, r[0]));
     var d = el("dd", null, String(r[1]));
-    if (r[2]) { d.style.color = "var(--" + r[2] + ")"; }
-    if (r[3]) d.title = r[3];
+    if (r[2]) d.title = r[2];
     host.appendChild(d);
   });
 }
@@ -46,9 +45,8 @@ function drawTrainer(){
   cu.appendChild(el("span", "dot"));
   cu.appendChild(document.createTextNode(
     used + " of " + cap + " used · " + Math.max(free, 0) + " free"));
-  cu.style.color = "";
-  if (free <= 0) cu.style.color = "var(--bad)";
-  else if (free <= 3) cu.style.color = "var(--warn)";
+  cu.classList.toggle("c-bad", free <= 0);
+  cu.classList.toggle("c-warn", free > 0 && free <= 3);
 
   var rent = boxRows("champions", "rental").length;
   var home = boxRows("home").length;
@@ -83,11 +81,11 @@ function drawTrainer(){
       return n ? n + " Pokemon, " + (S.r || "?") +
                  " tournaments, fetched " + (S.f || "?") + " · weekly"
                : "not in this build";
-    })(), null,
+    })(),
       "Refreshed by the Monday deep run. Moves are a share of move slots, " +
       "everything else a share of sets."],
     ["Tournament data", "Worlds 2026, played under M-B — history, not current",
-       null, "A finished event keeps the format it was played in"],
+       "A finished event keeps the format it was played in"],
     ["Page built", window.CHAMP_BUILD || "unknown"]
   ]);
 
@@ -255,20 +253,16 @@ function drawDiag(){
   var host = $("diagOut");
   if (!host) return;
   host.innerHTML = "";
-  var dl = el("dl", "kv");
+  var dl = el("dl", "kv diag");
   diagLines().forEach(function(r){
     dl.appendChild(el("dt", null, r[0]));
     var dd = el("dd", null, String(r[1]));
-    dd.style.textAlign = "left";
-    dd.style.wordBreak = "break-word";
-    dd.style.fontSize = "11.5px";
-    if (/MISSING|NOT LOADED|BLOCKED/.test(String(r[1]))) dd.style.color = "var(--bad)";
+    if (/MISSING|NOT LOADED|BLOCKED/.test(String(r[1]))) dd.classList.add("c-bad");
     dl.appendChild(dd);
   });
   host.appendChild(dl);
 
-  var b = el("button", "btn sm", "Copy this");
-  b.style.marginTop = "10px";
+  var b = el("button", "btn sm mt10", "Copy this");
   b.onclick = function(){
     var txt = diagLines().map(function(r){ return r[0] + ": " + r[1]; }).join("\n");
     if (!navigator.clipboard) { diagFallback(txt); return; }
@@ -293,9 +287,7 @@ function drawDiag(){
      SWEPT, NOT COMPARED PAIRWISE. Find lays out thousands of boxes and the
      obvious double loop froze the renderer outright. Sorted by top edge, each
      box is only measured against the ones that start before it ends. */
-  var ob = el("button", "btn sm", "Check every screen for overlaps");
-  ob.style.marginTop = "8px";
-  ob.style.marginLeft = "8px";
+  var ob = el("button", "btn sm mt8 ml8", "Check every screen for overlaps");
   ob.onclick = function(){ overlapReport(host); };
   host.appendChild(ob);
 }
@@ -412,8 +404,7 @@ function overlapReport(host){
      contains is usually a typo, which is a check worth keeping sharp. */
   var old = host.querySelector(".overlapout");
   if (old) old.remove();
-  var out = el("div", "note overlapout");
-  out.style.marginTop = "10px";
+  var out = el("div", "note overlapout mt10");
   /* EVERY VIEW, not just the one you are standing on. The diagnostics panel
      lives in Settings, so a sweep of "the current screen" could only ever
      sweep Settings - the one screen nobody was worried about.
@@ -452,8 +443,7 @@ function overlapReport(host){
      would otherwise be invisible, which is how this tool went blind once
      before. */
   if (over.length) {
-    var fl = el("div", "st");
-    fl.style.marginTop = "8px";
+    var fl = el("div", "st mt8");
     fl.innerHTML = "<strong>" + over.length + " floating layer" +
       (over.length === 1 ? "" : "s") + " over content</strong> — by " +
       "design (the + button, a sheet, a toast). Listed so it cannot hide:";
@@ -466,8 +456,8 @@ function overlapReport(host){
 function diagFallback(txt){
   openSheet("Diagnostics", function(body){
     body.appendChild(el("p", "sub", "Select it all and copy."));
-    var ta = el("textarea");
-    ta.value = txt; ta.readOnly = true; ta.style.minHeight = "40vh";
+    var ta = el("textarea", "diagdump");
+    ta.value = txt; ta.readOnly = true;
     body.appendChild(ta);
     setTimeout(function(){ ta.select(); }, 60);
   }, [fbtn("Done", "primary", closeSheet)]);

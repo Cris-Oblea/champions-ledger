@@ -140,8 +140,7 @@ function unknownNote(rec){
    came from - HOME or an Encounter - and says what that makes its slot. */
 function originBlock(body, rec){
   if (rec.status === "rental") {
-    var w = el("div", "note warn");
-    w.style.marginTop = "12px";
+    var w = el("div", "note warn mt12");
     w.innerHTML = "<strong>Rental.</strong> It cannot be trained — no move, " +
       "nature, ability or SP change — so it is locked to the set it ships " +
       "with. It can still hold a Mega Stone. Buying it for 2500 VP does not " +
@@ -158,8 +157,7 @@ function originBlock(body, rec){
    ["champions", "Champions origin", "From an Encounter. Stuck here."]
   ].forEach(function(opt){ togs.appendChild(originButton(rec, o, opt)); });
   body.appendChild(togs);
-  var on = el("div", o === "unknown" ? "note warn" : "note");
-  on.style.marginTop = "10px";
+  var on = el("div", o === "unknown" ? "note warn mt10" : "note mt10");
   on.innerHTML = originNote(o, rec);
   body.appendChild(on);
 }
@@ -353,8 +351,7 @@ function addSheet(loc){
 
 /* Shiny and trained, set before the Pokemon is picked. */
 function markToggles(marks){
-  var mrow = el("div", "toggles");
-  mrow.style.marginBottom = "12px";
+  var mrow = el("div", "toggles mb12");
   [["shiny", "Shiny"], ["trained", "Trained in Champions"]].forEach(function(o){
     var t = el("button", "tog", o[1]);
     t.setAttribute("aria-pressed", "false");
@@ -378,7 +375,7 @@ function boughtOrRental(body, draw){
     "tap <strong>Send to Champions</strong>, so the record travels " +
     "instead of being written twice.";
   body.appendChild(el("label", "f", "Which one is it? (required)"));
-  var st = el("div", "btnrow"); st.style.marginBottom = "12px";
+  var st = el("div", "btnrow mb12");
   var mode = {v:null};
   [["champions","Bought · 2500 VP or a ticket"],
    ["rental","Rental · 0 VP"]].forEach(function(o){
@@ -475,8 +472,7 @@ function neverInGame(m){
 
 /* A name no list carries, added to HOME exactly as typed. */
 function typedAdd(nm){
-  var add = el("button", "btn primary", "Add “" + nm + "” anyway");
-  add.style.marginTop = "10px";
+  var add = el("button", "btn primary mt10", "Add “" + nm + "” anyway");
   add.onclick = function(){
     var id = freeSlug(nm, S.box);
     put("box/" + id, {name:nm, location:"home", status:"permanent",

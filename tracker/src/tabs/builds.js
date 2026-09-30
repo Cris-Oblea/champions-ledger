@@ -418,8 +418,7 @@ function copyField(body, ed){
         (alike > 1 ? " · one of " + alike + " identical" : ""), r._id));
     });
     sel1.value = draft._boxId || "";
-    var copyCard = el("div");
-    copyCard.style.marginTop = "8px";
+    var copyCard = el("div", "mt8");
     sel1.onchange = function(){
       draft._boxId = sel1.value || null;
       paintCopy(copyCard, copies, ed);
@@ -700,8 +699,7 @@ function spreadRows(spreads){
       return row[i] ? row[i] + " " + STAT_LABEL[k] : null;
     }).filter(Boolean).join(" / ");
     var line = el("div", "st");
-    var t = el("span", "tag", row[6] + "%");
-    t.style.marginRight = "6px";
+    var t = el("span", "tag mr6", row[6] + "%");
     line.appendChild(t);
     line.appendChild(document.createTextNode(bits));
     sprow.appendChild(line);
@@ -771,7 +769,7 @@ function statPoints(body, ed){
     budSpent.textContent = t + " of 66 spent";
     budLeft.textContent = t > 66 ? (t - 66) + " over budget"
                                  : (66 - t) + " left";
-    bud.style.color = t > 66 ? "var(--bad)" : "";
+    bud.classList.toggle("c-bad", t > 66);
     spRepaint.forEach(function(f){ f(typing); });
     paintChecks(ed);
     paintCost(ed);
@@ -951,8 +949,7 @@ function paintChecks(ed){
   if (!probs.length) return;
   checkBox.appendChild(el("h2", null, "Worth a look"));
   probs.forEach(function(t){
-    var n = el("div", "note " + t[0]);
-    n.style.marginBottom = "6px";
+    var n = el("div", "note mb6 " + t[0]);
     n.innerHTML = t[1];
     checkBox.appendChild(n);
   });
@@ -965,8 +962,7 @@ function paintCost(ed){
   costBox.innerHTML = "";
   var cost = retuneCost(ed.original, ed.draft);
   if (!cost) return;
-  var cn = el("div", "note");
-  cn.style.marginTop = "12px";
+  var cn = el("div", "note mt12");
   cn.innerHTML = "<strong>" + cost.vp + " VP</strong> to apply this in game: " +
     cost.parts.join(", ") + ".";
   costBox.appendChild(cn);
@@ -1037,8 +1033,7 @@ function movePicker(draft, idx, ls, done){
       return;
     }
     if (abil && AB_SET[abil]?.side === "off") {
-      var n = el("div", "note");
-      n.style.marginBottom = "10px";
+      var n = el("div", "note mb10");
       n.innerHTML = "<strong>" + abil + ".</strong> " + (AB_SET[abil].why || "") +
         " Moves it touches are marked below.";
       body.appendChild(n);

@@ -47,3 +47,6 @@
   .sheethead{border-radius:14px 14px 0 0;padding-top:14px}
 }
 
+/* the page under an open sheet is pinned where it was; lockScroll() in
+   ui/nav.js adds this and sets the one computed part, top */
+body.scrolllock{position:fixed;left:0;right:0}

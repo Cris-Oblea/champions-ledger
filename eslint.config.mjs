@@ -31,6 +31,17 @@ export default [
   { files: ["tracker/src/**/*.js"],
     rules: { "max-lines-per-function": ["error",
       {max: 80, skipComments: true, skipBlankLines: true}] } },
+  /* A FIXED LOOK LIVES IN CSS. `el.style.marginTop = "8px"` was written ~100
+     times, in a dozen spellings of the same few gaps, until 2026-09-30; now
+     a gap or a tone is a class (styles/utils.css, or the component's own
+     rule). el.style keeps what only run time knows - a meter's width, a
+     type's colours, the scroll position - and "" to clear one of those. */
+  { files: ["tracker/src/**/*.js"],
+    rules: { "no-restricted-syntax": ["error", {
+      selector: "AssignmentExpression[left.object.property.name='style']" +
+                "[right.type='Literal']:not([right.value=''])",
+      message: "A fixed style belongs in CSS: use a class (styles/utils.css " +
+               "for a one-off margin or tone)." }] } },
   { files: ["tracker/src/**/*.js"],
     languageOptions: { sourceType: "module", globals: globals.browser } },
   /* THE LAYERS: core <- ui <- tabs <- boot.js. A part imports from its own

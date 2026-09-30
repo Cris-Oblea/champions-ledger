@@ -22,8 +22,7 @@ import { openSheet } from "./nav.js";
 /* One set, as the thing you would actually build: the four slots, the spread,
    and the reasoning underneath. */
 function analysisSet(st){
-  var box = el("div", "note");
-  box.style.marginBottom = "8px";
+  var box = el("div", "note mb8");
   var head = el("div", "rname");
   head.appendChild(el("span", null, st.name || "Set"));
   (st.ability || []).slice(0, 1).forEach(function(a){
@@ -44,11 +43,9 @@ function analysisSet(st){
     return Array.isArray(slot) ? slot.join(" / ") : String(slot);
   }).filter(Boolean);
   if (mv.length) {
-    var row = el("div", "st");
-    row.style.marginTop = "2px";
+    var row = el("div", "st mt2");
     mv.forEach(function(m){
-      var t = el("span", "tag ok", m);
-      t.style.marginRight = "4px";
+      var t = el("span", "tag ok mr4", m);
       row.appendChild(t);
     });
     box.appendChild(row);
@@ -59,8 +56,7 @@ function analysisSet(st){
     }).filter(Boolean);
     if (!bits.length) return;
     var total = STAT_KEYS.reduce(function(a, k){ return a + (sp[k] || 0); }, 0);
-    var line = el("div", "st", bits.join(" / ") + "   ·   " + total + "/66 SP");
-    line.style.color = "var(--accent)";
+    var line = el("div", "st c-accent", bits.join(" / ") + "   ·   " + total + "/66 SP");
     box.appendChild(line);
   });
   if (st.why) box.appendChild(prose(st.why));
@@ -84,8 +80,7 @@ function analysisSet(st){
  * itself as the label, which is exactly how they should be read.
  */
 function prose(text){
-  var wrap = el("div");
-  wrap.style.marginTop = "6px";
+  var wrap = el("div", "mt6");
   String(text).split(/\n+/).forEach(function(line){
     line = line.trim();
     if (!line) return;
@@ -98,16 +93,13 @@ function prose(text){
        atacante especial." is a short sentence, and the first version drew it
        as one. */
     if (!label && line.split(" ").length <= 5 && !/[.!?]$/.test(line)) {
-      var h = el("div", "rname", line);
-      h.style.marginTop = "8px";
+      var h = el("div", "rname mt8", line);
       wrap.appendChild(h);
       return;
     }
-    var para = el("div", "st");
-    para.style.marginTop = "4px";
+    var para = el("div", "st mt4");
     if (label && label.length <= 70 && cut < line.length - 1) {
-      var b = el("strong", null, label);
-      b.style.color = "var(--accent)";
+      var b = el("strong", "c-accent", label);
       para.appendChild(b);
       para.appendChild(document.createTextNode(" " + line.slice(cut + 1).trim()));
     } else {
@@ -166,8 +158,7 @@ function analysisPanel(name, host){
         ". All of them are below."));
     }
     order.forEach(function(st){
-      var head = el("div", "st");
-      head.style.marginBottom = "4px";
+      var head = el("div", "st mb4");
       head.appendChild(el("span", "tag" + (st.outdated ? " warn" : ""),
                           st.format + (st.outdated ? " · outdated" : "")));
       if ((st.credits || []).length) {
@@ -262,8 +253,7 @@ function pokeHead(body, p, opts){
      stats full width, the abilities explained, what damages it. Two forms,
      one shape, and the sheet is a stack of Pokemon rather than a stack of
      topics. */
-  var panel = el("div", "panel megablock");
-  panel.style.marginBottom = "10px";
+  var panel = el("div", "panel megablock mb10");
   panel.appendChild(head);
   panel.appendChild(statGrid(p));
   body.appendChild(panel);
@@ -278,8 +268,7 @@ function pokeHead(body, p, opts){
      share is one dex entry. */
   var also = C.COSMETIC?.[p.name];
   if (also?.length) {
-    var an = el("div", "note");
-    an.style.marginBottom = "10px";
+    var an = el("div", "note mb10");
     an.innerHTML = "<strong>Also written:</strong> " + also.join(", ") +
       ". Same Pokemon — the dex keeps one entry" +
       (also.length > 1 ? " for all of them." : ".");
@@ -291,8 +280,7 @@ function pokeHead(body, p, opts){
      main-series ones because Champions publishes none - which the sheet has
      to say plainly rather than let them read as ours. */
   if (p.outside) {
-    var osrc = el("div", "note");
-    osrc.style.marginBottom = "10px";
+    var osrc = el("div", "note mb10");
     osrc.innerHTML = "<strong>Not in the Champions dex.</strong> It can live "
       + "in HOME but never enter the game"
       + (p.approx ? ". No row for this exact form either — the numbers "
@@ -320,8 +308,7 @@ function pokeHead(body, p, opts){
    the moves it learns" has to be counted against the form that HAS the
    ability. */
 function abilityNote(a, form, badge, ls){
-  var n = el("div", "note");
-  n.style.marginBottom = "6px";
+  var n = el("div", "note mb6");
   /* CHAMPIONS' OWN TEXT FIRST, ALWAYS. 95 of the abilities carried by
      species the game has not added have no row here at all - Protosynthesis
      was a name on the sheet with nothing to say about it - so those fall
@@ -357,7 +344,7 @@ function abilityNote(a, form, badge, ls){
      really selects says how many of THIS movepool it hits, so the badges
      below have a number to be checked against. */
   var r = AB_SET[a], sc = el("div", "st");
-  sc.style.marginTop = "2px";
+  sc.classList.add("mt2");
   /* NOT r.why HERE. It is the rule's one-line summary - "no damage - it heals
      25% instead" - written for the tooltip on a move's tag, where the
      description is not on screen. Under the description it said the same
@@ -397,8 +384,7 @@ function damageTable(types){
    [0, "immune"]].forEach(function(g){
     var hits = Object.keys(dfc).filter(function(t){ return dfc[t] === g[0]; });
     if (!hits.length) return;
-    var line = el("div", "rmeta");
-    line.style.marginBottom = "5px";
+    var line = el("div", "rmeta mb5");
     line.appendChild(el("span",
       "tag" + multTone(g[0]), g[1]));
     hits.forEach(function(t){ line.appendChild(typeChip(t)); });
@@ -434,7 +420,7 @@ function pokeBody(body, p){
   /* WHAT SMOGON WROTE. Last, and folded, because it is long and the payload
      behind it is not fetched until it is opened. */
   var aw = analysisFold(p.name, "What Smogon says about " + p.name);
-  aw.style.marginTop = "10px";
+  aw.classList.add("mt10");
   body.appendChild(aw);
 }
 
@@ -481,7 +467,7 @@ function megaSection(body, p, ls){
        Froslass trades Cursed Body for Snow Warning. */
     (m.ab || []).forEach(function(ab){
       var note = abilityNote(ab, m, null, ls);
-      note.style.marginTop = "8px";
+      note.classList.add("mt8");
       pn.appendChild(note);
     });
     pn.appendChild(statGrid(m));
@@ -525,8 +511,7 @@ function battleFormSection(body, p){
 /* The head of a Mega's or a battle form's block: its picture, its name with
    one tag, its types, and a strip of cells. */
 function formPanel(p, f, nameText, tag, cells){
-  var pn = el("div", "panel megablock");
-  pn.style.marginBottom = "10px";
+  var pn = el("div", "panel megablock mb10");
   var head = el("div", "sheethead");
   var pic = formSprite(f, p, true);
   if (pic) head.appendChild(pic);
@@ -566,8 +551,7 @@ function retypedTable(pn, p, f){
    cambia de tipo el move segun su forma"). `c` is [move, type before, type in
    this form]. */
 function formMoveLine(c, f, p){
-  var line = el("div", "rmeta");
-  line.style.marginTop = "6px";
+  var line = el("div", "rmeta mt6");
   line.appendChild(el("span", null, c[0] + ":"));
   if (c[1]) line.appendChild(typeChip(c[1]));
   line.appendChild(el("span", "megato " + formInk(f, p), "→"));
@@ -584,8 +568,7 @@ function formMoveLine(c, f, p){
 function worldsFold(body, p){
   var pod = podiumFor(p.name);
   if (!pod.length) return;
-  var wrap = el("div");
-  wrap.style.marginBottom = "10px";
+  var wrap = el("div", "mb10");
   var tog = el("button", "btn sm fold");
   tog.setAttribute("aria-expanded", "false");
   tog.textContent = "Worlds — " + pod.length + " top-8 set" +
@@ -612,8 +595,7 @@ function worldsFold(body, p){
    BASE one - what a teamlist records - and the stone settles what the Mega
    became (player, 2026-09-15: "esa se sabe por descarte"). */
 function worldsSet(e){
-  var card = el("div", "note");
-  card.style.marginBottom = "6px";
+  var card = el("div", "note mb6");
   var head = el("div", "rname");
   var place = ordinal(e.r);
   head.appendChild(el("span", "tag" + (e.r <= 3 ? " gold" : ""),
@@ -626,8 +608,7 @@ function worldsSet(e){
     e.ab ? e.ab : null,
     e.na ? e.na : null]));
   if (e.mg) {
-    var mg = el("div", "st");
-    mg.style.color = "var(--mega)";
+    var mg = el("div", "st c-mega");
     mg.textContent = "Mega Evolves into " + e.mg +
       (e.mgab ? " — ability becomes " + e.mgab : "");
     card.appendChild(mg);

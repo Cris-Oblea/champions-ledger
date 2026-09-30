@@ -273,17 +273,14 @@ function scenarioButtons(SCEN, scenAt, paint){
 function paintSpeeds(host, rows){
   host.innerHTML = "";
   rows.forEach(function(x){
-    var line = el("div");
-    line.style.marginBottom = "3px";
+    var line = el("div", "mb3");
     var nm = el("strong", null, x.form);
-    if (x.mega) nm.style.color = "var(--mega)";
+    if (x.mega) nm.classList.add("c-mega");
     line.appendChild(nm);
-    var num = el("span", "mono");
-    num.style.margin = "0 6px";
+    var num = el("span", "mono mx6");
     num.textContent = String(x.spe);
     line.appendChild(num);
-    var how = el("span");
-    how.style.color = "var(--faint)";
+    var how = el("span", "c-faint");
     how.textContent = x.base + " base"
       + (x.sp ? " + " + x.sp + " SP" : "")
       + (natMult(x.nature, "spe") !== 1
@@ -291,8 +288,7 @@ function paintSpeeds(host, rows){
     line.appendChild(how);
     host.appendChild(line);
   });
-  var sfoot = el("div", "st");
-  sfoot.style.marginTop = "6px";
+  var sfoot = el("div", "st mt6");
   sfoot.textContent = "At level 50, with each build's own SP and nature. "
     + "Fastest first — so the bottom of the list is what moves first "
     + "under Trick Room.";
@@ -322,14 +318,12 @@ function paintTypes(host, all){
     if (x.weak >= 3) head.appendChild(el("span", "tag bad",
       x.weak + " of the six"));
     d.appendChild(head);
-    var wk = el("div");
-    wk.style.color = "var(--bad)";
+    var wk = el("div", "c-bad");
     wk.textContent = "weak: " + withMultipliers(x.weakOf);
     d.appendChild(wk);
     /* the other half of the answer, and the one that decides whether a
        shared weakness is actually a problem: who can take the hit */
-    var rs = el("div");
-    rs.style.color = x.resistOf.length ? "var(--ok)" : "var(--faint)";
+    var rs = el("div", x.resistOf.length ? "c-good" : "c-faint");
     rs.textContent = x.resistOf.length
       ? "resists: " + withMultipliers(x.resistOf)
       : "nothing on the team resists it";
@@ -427,8 +421,7 @@ function slotBadges(h, x){
    names are what you read a team off. Each is its own chip so a phone breaks
    between them and never inside one. Then why the slot holds its item. */
 function slotMoves(body, x){
-  var mv = el("div", "rmeta");
-  mv.style.marginTop = "4px";
+  var mv = el("div", "rmeta mt4");
   if ((x.build.moves || []).length) {
     x.build.moves.forEach(function(n){
       var mrow = MOVE_BY[n];
@@ -536,7 +529,7 @@ function teamPickBuild(draft, idx, onPick){
     sortControls(body, F, draw);
     roleChips(body, rows, F, draw);
     typeChips(body, rows, F, draw);
-    var count = el("div", "sub"); count.style.margin = "0 0 6px";
+    var count = el("div", "sub mb6");
     body.appendChild(count);
     var list = el("div", "list cards");
     body.appendChild(list);
@@ -591,9 +584,8 @@ function sortControls(body, F, draw){
   var STATSORTS = [["bst", "BST"], ["hp", "HP"], ["atk", "Atk"],
                    ["def", "Def"], ["spa", "SpA"], ["spd", "SpD"],
                    ["spe", "Spe"]];
-  var srow = el("div", "toggles"); srow.style.marginBottom = "8px";
-  var strow2 = el("div", "toggles");
-  strow2.style.margin = "0 0 8px";
+  var srow = el("div", "toggles mb8");
+  var strow2 = el("div", "toggles mb8");
   strow2.hidden = true;
   var groups = [srow, strow2];
   SORTS.forEach(function(o){ sortButton(srow, groups, F, o[0], o[1], draw); });
@@ -640,8 +632,7 @@ function roleChips(body, rows, F, draw){
   roleKeys.sort(function(a, b){
     return roleN[b] - roleN[a] || a.localeCompare(b); });
   if (roleKeys.length < 2) return;
-  var rrow = el("div", "toggles");
-  rrow.style.margin = "0 0 8px";
+  var rrow = el("div", "toggles mb8");
   rrow.hidden = true;
   roleKeys.forEach(function(k){
     filterChip(rrow, F, draw, "role", k, roleText[k] + " · " + roleN[k]);
@@ -663,7 +654,7 @@ function typeChips(body, rows, F, draw){
   });
   tKeys.sort(byText);
   if (tKeys.length < 2) return;
-  var trow = el("div", "toggles"); trow.style.marginBottom = "10px";
+  var trow = el("div", "toggles mb10");
   tKeys.forEach(function(t){ filterChip(trow, F, draw, "type", t, t + " · " + tN[t], t); });
   body.appendChild(filterLabel("Type — any of these, the form it plays as"));
   body.appendChild(trow);
@@ -837,7 +828,7 @@ function teamPickItem(draft, i, redraw){
       " holdable items — name or effect", function(){ draw(); });
     var F = {cat:{}, own:false};
     itemFilters(body, POOL, F, draw);
-    var count = el("div", "sub"); count.style.margin = "0 0 6px";
+    var count = el("div", "sub mb6");
     body.appendChild(count);
     var list = el("div", "list");
     body.appendChild(list);
@@ -854,7 +845,7 @@ function teamPickItem(draft, i, redraw){
 function itemFilters(body, POOL, F, draw){
   var nCat = {};
   POOL.forEach(function(x){ nCat[x.cat] = (nCat[x.cat] || 0) + 1; });
-  var crow = el("div", "toggles"); crow.style.marginBottom = "8px";
+  var crow = el("div", "toggles mb8");
   ["Hold Items", "Berries", "Mega Stones"].forEach(function(k){
     if (!nCat[k]) return;
     var t = el("button", "tog", k + " · " + nCat[k]);
@@ -923,7 +914,7 @@ function drawItemPicks(list, count, POOL, F, q, slot){
 function itemPickRow(x, slot){
   var draft = slot.draft, i = slot.i, taken = slot.taken;
   var btn = el("button", "row" + (taken[x.name] ? " illegal" : ""));
-  if (taken[x.name]) { btn.disabled = true; btn.style.opacity = "0.5"; }
+  if (taken[x.name]) { btn.disabled = true; btn.classList.add("dim"); }
   var m = el("div", "rmain");
   var h = el("div", "rname");
   h.appendChild(document.createTextNode(x.name));

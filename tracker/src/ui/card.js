@@ -582,8 +582,7 @@ function pokeCard(p, o){
   /* NO ROW FOR THIS EXACT FORM. A caveat about the numbers themselves, which
      no tag can say for the caller. */
   if (p.approx) {
-    var src = el("div", "st");
-    src.style.marginTop = "6px";
+    var src = el("div", "st mt6");
     src.textContent = "No row for this exact form — showing " + p.approx + ".";
     m.appendChild(src);
   }
@@ -680,11 +679,8 @@ function megaLine(p){
    `on` false leaves the fill off and keeps only the edge, which is what an
    unselected filter is. */
 function typeSkin(node, t, on){
-  var a = TYPE_COLOR[t], b = TYPE_COLOR2[t];
-  if (!a) {
-    if (on !== false) { node.style.background = "#777"; node.style.color = "#fff"; }
-    return node;
-  }
+  /* a type the palette does not know still reads as a chip: plain grey */
+  var a = TYPE_COLOR[t] || "#777", b = TYPE_COLOR2[t];
   node.style.borderColor = a;
   if (on === false) { node.style.background = ""; node.style.color = ""; return node; }
   /* halved the way pokemon.com halves it, which shows on the three types that
@@ -843,17 +839,15 @@ function effectLine(name){
   if (!e) return null;
   var chips = effectChips(e);
   if (!chips.length && !e.desc) return null;
-  var box = el("div", "st");
-  box.style.marginTop = "2px";
+  var box = el("div", "st mt2");
   chips.forEach(function(c){
     var t = el("span", "tag ok", c.text);
     t.title = c.why;
-    t.style.marginRight = "4px";
+    t.classList.add("mr4");
     box.appendChild(t);
   });
   if (e.desc) {
-    var d = el("span", null, e.desc);
-    d.style.opacity = ".85";
+    var d = el("span", "fxdesc", e.desc);
     box.appendChild(d);
   }
   return box;
@@ -902,9 +896,7 @@ function podiumChip(name){
    list and the GTS picker both call it, so a mark added here shows up in both. */
 function boxBadges(node, rec){
   if (rec.shiny) {
-    var sh = el("span", "tag", "shiny");
-    sh.style.borderColor = "var(--warn)";
-    sh.style.color = "var(--warn)";
+    var sh = el("span", "tag shiny", "shiny");
     node.appendChild(sh);
   }
   if (rec.trained) node.appendChild(el("span", "tag ok", "trained"));

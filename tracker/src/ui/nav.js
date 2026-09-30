@@ -151,13 +151,12 @@ function lockScroll(on){
   if (on) {
     if (_lockN++ === 0) {
       _lockY = window.scrollY || 0;
-      b.style.position = "fixed";
+      b.classList.add("scrolllock");
       b.style.top = (-_lockY) + "px";
-      b.style.left = "0";
-      b.style.right = "0";
     }
   } else if (_lockN > 0 && --_lockN === 0) {
-    b.style.position = b.style.top = b.style.left = b.style.right = "";
+    b.classList.remove("scrolllock");
+    b.style.top = "";
     window.scrollTo(0, _lockY);
   }
 }

@@ -300,8 +300,7 @@ function otherSpreads(m, p, which){
    en pantalla"). The two halves stay stacked above the stats: side by side
    the SP boxes came out 22px wide. */
 function sideSelects(which, side, P){
-  var g2 = el("div", "grid2 tight");
-  g2.style.marginTop = "8px";
+  var g2 = el("div", "grid2 tight mt8");
   g2.appendChild(sideField("Ability", abilityOptions(which, P), side, "ability"));
   g2.appendChild(sideField("Item", itemOptions(which), side, "item"));
   var natures = Object.keys(C.NATURES).sort(byText).map(function(n){
@@ -363,8 +362,7 @@ function itemOptions(which){
 
 /* The column heads over the six stat rows. */
 function statsHeader(){
-  var head = el("div", "sp");
-  head.style.color = "var(--faint)";
+  var head = el("div", "sp c-faint");
   ["", "SP 0-32", "stage", "="].forEach(function(t, i){
     var s = el("span", ["k", "v", "v", "calc"][i], t);
     head.appendChild(s);
@@ -379,7 +377,7 @@ function statRow(which, side, P, k, i, live){
              (which === "def" && (k === live.dKey || k === "hp"));
   var row = el("div", "sp" + ((side.sp[k] || 0) > 32 ? " over" : ""));
   var lab = el("span", "k", STAT_LABEL[k]);
-  if (used) lab.style.color = "var(--accent)";
+  if (used) lab.classList.add("c-accent");
   row.appendChild(lab);
 
   var inp = el("input");
@@ -398,7 +396,7 @@ function statRow(which, side, P, k, i, live){
   var val = statAt(P.b[i], side.sp[k] || 0, k === "hp",
                    natMult(side.nature, k));
   var vs = el("span", "calc", String(val));
-  if (used) { vs.style.color = "var(--accent)"; vs.style.fontWeight = "600"; }
+  if (used) vs.classList.add("used");
   row.appendChild(vs);
   return row;
 }
@@ -445,7 +443,7 @@ function calcBudget(which){
   if (tot > 66) msg = (tot - 66) + " over the budget";
   else if (over.length) msg = over.map(function(k){ return STAT_LABEL[k]; }).join(", ") + " over 32";
   var s = el("span", null, msg);
-  if (tot > 66 || over.length) s.style.color = "var(--bad)";
+  if (tot > 66 || over.length) s.classList.add("c-bad");
   node.appendChild(s);
 }
 
@@ -487,7 +485,7 @@ function buildPicks(body, which){
   var bq = searchField(body, "Filter " + builds.length + " build" +
     (builds.length === 1 ? "" : "s"), function(){ drawBuilds(); });
   var bl = el("div", "list cards");
-  var bcount = el("div", "sub"); bcount.style.margin = "0 0 6px";
+  var bcount = el("div", "sub mb6");
   body.appendChild(bcount);
   function drawBuilds(){
     var q = bq.q();
@@ -754,7 +752,7 @@ function screenSwitches(f, m){
     var t = f.tog(sc + " (" + r[1] + ")", CALC.screen === sc, function(){
       CALC.screen = CALC.screen === sc ? null : sc; calcDraw();
     });
-    if (!relevant) { t.style.opacity = ".45";
+    if (!relevant) { t.classList.add("dim");
       t.title = sc + " only stops " + r[1] + " moves"; }
   });
 }
@@ -793,8 +791,7 @@ function calcRun(){
   out.appendChild(verdictLine(r, ko));
   out.appendChild(koBar(r, hp, ko));
   if (r.desc) {
-    var dsc = el("p", "sub");
-    dsc.style.margin = "6px 0 0";
+    var dsc = el("p", "sub mt6 mb0");
     dsc.textContent = r.desc;
     out.appendChild(dsc);
   }
@@ -826,8 +823,7 @@ function verdictLine(r, ko){
 }
 
 function koBar(r, hp, ko){
-  var bar = el("div", "meter");
-  bar.style.height = "8px";
+  var bar = el("div", "meter ko");
   var fill = el("i");
   fill.style.width = Math.min(100, r.hi / hp * 100) + "%";
   fill.style.background = KO_FILL[ko.n] || "var(--accent)";
@@ -864,8 +860,6 @@ function rollsDetails(r){
   var sum = el("summary", null, "Every roll, and where the number came from");
   det.appendChild(sum);
   var rl = el("div", "rmeta");
-  rl.style.fontFamily = "var(--mono)";
-  rl.style.marginTop = "8px";
   r.rolls.forEach(function(x){ rl.appendChild(el("span", "tag", String(x))); });
   det.appendChild(rl);
   det.appendChild(el("p", "sub",
