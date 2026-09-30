@@ -59,10 +59,10 @@ import json
 import os
 import re
 import sys
-import urllib.request
 from pathlib import Path
 from types import SimpleNamespace
 
+import net
 import query as Q
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -177,10 +177,7 @@ def table(name, force=False):
     os.makedirs(RAW, exist_ok=True)
     path = os.path.join(RAW, name)
     if not os.path.exists(path) or force:
-        req = urllib.request.Request(BASE + name,
-                                     headers={"User-Agent": "champions-ledger"})
-        with urllib.request.urlopen(req, timeout=60) as r:
-            Path(path).write_bytes(r.read())
+        Path(path).write_bytes(net.get(BASE + name))
     return list(csv.DictReader(open(path, encoding="utf-8")))
 
 
@@ -467,8 +464,7 @@ def sprite_files(force=False):
         return {k: set(v)
                 for k, v in json.loads(Path(path).read_text(encoding="utf-8")).items()}
     api = "https://api.github.com/repos/PokeAPI/sprites/"
-    head = {"User-Agent": "champions-ledger",
-            "Accept": "application/vnd.github+json"}
+    head = {"Accept": "application/vnd.github+json"}
     tok = os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN")
     if tok:
         head["Authorization"] = "Bearer " + tok
@@ -476,9 +472,7 @@ def sprite_files(force=False):
 
     def get(url):
         if url not in seen:
-            req = urllib.request.Request(url, headers=head)
-            with urllib.request.urlopen(req, timeout=60) as r:
-                seen[url] = json.loads(r.read().decode("utf-8"))
+            seen[url] = json.loads(net.get(url, headers=head).decode("utf-8"))
         return seen[url]
 
     root = get(api + "commits/" + pin)["commit"]["tree"]["sha"]

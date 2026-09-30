@@ -56,21 +56,19 @@ refresh.py --deep pulls it.
 """
 import argparse
 import contextlib
-import http.client
 import json
 import os
 import re
 import sys
 import time
-import urllib.request
 from pathlib import Path
+
+import net
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 META = os.path.join(ROOT, "data", "meta")
 OUT = os.path.join(META, "usage_splits.json")
 BASE = "https://pokebase.app/pokemon-champions/pokemon/"
-UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
-      "(KHTML, like Gecko) Chrome/128.0 Safari/537.36")
 
 # pokebase's stat keys, and what this project calls them
 SP_KEYS = [("hp", "hp"), ("attack", "atk"), ("defense", "def"),
@@ -303,17 +301,11 @@ def parse(html):
 
 
 def fetch(slug, timeout=60):
-    req = urllib.request.Request(BASE + slug, headers={"User-Agent": UA})
-    for attempt in range(3):
-        try:
-            with urllib.request.urlopen(req, timeout=timeout) as r:
-                return r.read().decode("utf-8", "replace")
-        except (OSError, http.client.HTTPException) as e:
-            if attempt == 2:
-                print("  FAILED %s -> %s" % (slug, e))
-                return None
-            time.sleep(1.5 * (attempt + 1))
-    return None
+    try:
+        return net.get(BASE + slug, timeout=timeout).decode("utf-8", "replace")
+    except net.ERRORS as e:
+        print("  FAILED %s -> %s" % (slug, e))
+        return None
 
 
 def _stored(force):

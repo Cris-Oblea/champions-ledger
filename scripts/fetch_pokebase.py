@@ -19,17 +19,15 @@ Usage:
     python scripts/fetch_pokebase.py          # fetch + parse everything
     python scripts/fetch_pokebase.py --parse  # re-parse cached HTML only
 """
-import http.client
 import json
 import os
 import re
 import sys
 import time
-import urllib.request
+
+import net
 
 BASE = "https://pokebase.app/pokemon-champions"
-UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
-      "(KHTML, like Gecko) Chrome/128.0 Safari/537.36")
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RAW = os.path.join(ROOT, "data", "raw", "pokebase")
 META = os.path.join(ROOT, "data", "meta")
@@ -48,22 +46,16 @@ def fetch(page, force=False, num=None):
         return dest
     os.makedirs(RAW, exist_ok=True)
     url = BASE + "/" + page + ("" if num in (None, 1) else "?page=%d" % num)
-    req = urllib.request.Request(url, headers={"User-Agent": UA})
-    for attempt in range(3):
-        try:
-            with urllib.request.urlopen(req, timeout=90) as r:
-                body = r.read()
-            with open(dest, "wb") as f:
-                f.write(body)
-            print("  %-14s %d KB" % (name, len(body) // 1024), flush=True)
-            time.sleep(0.4)
-            return dest
-        except (OSError, http.client.HTTPException) as e:
-            if attempt == 2:
-                print("  FAILED %s -> %s" % (name, e))
-                return None
-            time.sleep(2 * (attempt + 1))
-    return None
+    try:
+        body = net.get(url, timeout=90)
+    except net.ERRORS as e:
+        print("  FAILED %s -> %s" % (name, e))
+        return None
+    with open(dest, "wb") as f:
+        f.write(body)
+    print("  %-14s %d KB" % (name, len(body) // 1024), flush=True)
+    time.sleep(0.4)
+    return dest
 
 
 def read(page):

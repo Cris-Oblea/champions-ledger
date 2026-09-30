@@ -33,8 +33,9 @@ import os
 import re
 import subprocess
 import sys
-import urllib.request
 from pathlib import Path
+
+import net
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 META = os.path.join(ROOT, "data", "meta")
@@ -42,8 +43,6 @@ RAW = os.path.join(ROOT, "data", "raw", "tournaments")
 OUT = os.path.join(META, "worlds_archive.json")
 INDEX = "https://www.pokedata.ovh/standingsVGC/"
 DIVISIONS = ("masters", "seniors", "juniors")
-UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
-      "(KHTML, like Gecko) Chrome/124.0 Safari/537.36")
 
 
 def discover():
@@ -52,9 +51,7 @@ def discover():
     Always fetched fresh: this is precisely the call that has to notice a
     Worlds that did not exist last time it ran.
     """
-    req = urllib.request.Request(INDEX, headers={"User-Agent": UA})
-    body = urllib.request.urlopen(req, timeout=45).read().decode("cp1252",
-                                                                "replace")
+    body = net.get(INDEX, timeout=45).decode("cp1252", "replace")
     rows = re.findall(r"location\.href='(\d+)/'[^>]*>([^<]+)", body)
     out = []
     for tid, raw in rows:

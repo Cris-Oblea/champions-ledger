@@ -29,12 +29,12 @@ analysis/smogon_calc.md for where the two disagree and who wins.
 """
 import argparse
 import hashlib
-import http.client
 import json
 import os
 import sys
-import urllib.request
 from pathlib import Path
+
+import net
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "data", "raw", "smogon_calc")
@@ -52,13 +52,6 @@ FILES = [
     "calc/mechanics/util.js", "calc/mechanics/champions.js",
     "js/shared_controls.js", "js/data/sets/champions.js",
 ]
-
-
-def fetch(rel):
-    req = urllib.request.Request(BASE + "/" + rel,
-                                 headers={"User-Agent": "pokemon-champions-db"})
-    with urllib.request.urlopen(req, timeout=60) as r:
-        return r.read()
 
 
 def digest(b):
@@ -104,8 +97,8 @@ def main():
         dest = os.path.join(OUT, rel.replace("/", os.sep))
         os.makedirs(os.path.dirname(dest), exist_ok=True)
         try:
-            body = fetch(rel)
-        except (OSError, http.client.HTTPException) as e:
+            body = net.get(BASE + "/" + rel)
+        except net.ERRORS as e:
             failed.append((rel, str(e)))
             continue
         old = Path(dest).read_bytes() if os.path.exists(dest) else None
