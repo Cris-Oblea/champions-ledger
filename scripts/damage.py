@@ -53,6 +53,7 @@ Usage:
         --engine smogon --atk-ability Adaptability
 """
 import argparse
+import dataclasses
 import json
 import os
 import re
@@ -447,25 +448,39 @@ def type_mult(move_type, def_types):
     return m
 
 
-def calc(attacker, move, defender, atk_sp=0, atk_nature=None, def_hp_sp=0,
-         def_sp=0, def_nature=None, atk_ability=None, def_ability=None,
-         power_mult=1.0, item_mult=1.0, boosts=0, def_boosts=0,
-         override_power=None, spread=None, screen=None,
-         target_atk_sp=0, target_atk_nature=None, moves_last=None,
-         detail=None):
-    """Returns (min_damage, max_damage, defender_max_hp, notes)."""
-    atk_mon = find_mon(attacker, attacking=True) if isinstance(attacker, str) else attacker
-    def_mon = find_mon(defender) if isinstance(defender, str) else defender
-    move_row = find_move(move) if isinstance(move, str) else move
-    notes = []
-    if atk_mon.get("_form_note"):
-        notes.append(atk_mon["_form_note"])
-    if def_mon.get("_form_note"):
-        notes.append("target: %s" % def_mon["_form_note"])
-    notes.extend(caveats(atk_mon, def_mon, move_row, moves_last))
+@dataclasses.dataclass(frozen=True)
+class Conditions:
+    """Everything about one hit beyond who attacks whom with which move.
 
-    power = override_power if override_power is not None else (move_row.get("power") or 0)
-    if override_power is None:
+    The defaults are an uninvested attacker and target with neutral natures,
+    no item, no screen, and the spread modifier decided by the move itself.
+    """
+    atk_sp: int = 0
+    atk_nature: str | None = None
+    def_hp_sp: int = 0
+    def_sp: int = 0
+    def_nature: str | None = None
+    # None means the species' first ability
+    atk_ability: str | None = None
+    # a type-boosting item raises BASE POWER; any other item is a final-damage
+    # multiplier (item_mult)
+    power_mult: float = 1.0
+    item_mult: float = 1.0
+    override_power: int | None = None
+    # None: decided by the move's target; False: only one Pokemon is out
+    spread: bool | None = None
+    screen: str | None = None
+    # Foul Play attacks off the TARGET's Attack, so it needs its investment
+    target_atk_sp: int = 0
+    target_atk_nature: str | None = None
+    # Payback: True/False once the caller says which way round the turn went
+    moves_last: bool | None = None
+
+
+def _power(move_row, atk_mon, def_mon, c, notes):
+    """The move's base power before any type or item change."""
+    power = c.override_power if c.override_power is not None else (move_row.get("power") or 0)
+    if c.override_power is None:
         wp = weight_power(move_row["name"], atk_mon, def_mon)
         if wp is not None:
             power = wp
@@ -476,22 +491,25 @@ def calc(attacker, move, defender, atk_sp=0, atk_nature=None, def_hp_sp=0,
     # species fact - Tailwind, Trick Room, a Choice Scarf and any Speed boost
     # or drop all decide it - so it is never guessed, only answered when the
     # caller says which way round the turn went.
-    if Q.key(move_row["name"]) == Q.key("Payback") and moves_last is not None:
-        if moves_last:
+    if Q.key(move_row["name"]) == Q.key("Payback") and c.moves_last is not None:
+        if c.moves_last:
             power *= 2
             notes.append("Payback: the attacker moves last, so x2 -> %d BP" % power)
         else:
             notes.append("Payback: the attacker moves first, so no doubling")
+    return power
 
+
+def _type_and_power(move_row, atk_mon, power, c, notes):
+    """The type the move actually hits with, and the power after the changes
+    that come with it (Refrigerate, a type-boosting item)."""
     mtype = move_row.get("type")
     ft = form_type(move_row, atk_mon)
     if ft:
         notes.append("%s takes %s's form: %s, not the Normal in the move row"
                      % (move_row["name"], atk_mon["name"], ft))
         mtype = ft
-    phys = move_row.get("category") == "Physical"
-
-    ab = atk_ability if atk_ability is not None else (atk_mon.get("abilities") or [None])[0]
+    ab = c.atk_ability if c.atk_ability is not None else (atk_mon.get("abilities") or [None])[0]
     if ab == "Refrigerate" and mtype == "Normal":
         power = poke_round(power * 4915 / 4096.0)
         mtype = "Ice"
@@ -499,12 +517,15 @@ def calc(attacker, move, defender, atk_sp=0, atk_nature=None, def_hp_sp=0,
     # Type-boosting items (Black Glasses, Mystic Water, Metal Coat, Fairy
     # Feather) raise BASE POWER. Applying them to the final damage instead is
     # off by a point, which is the whole margin on a survival benchmark.
-    if power_mult != 1.0:
-        power = poke_round(power * power_mult)
-        notes.append("item: base power x%.2f -> %d" % (power_mult, power))
+    if c.power_mult != 1.0:
+        power = poke_round(power * c.power_mult)
+        notes.append("item: base power x%.2f -> %d" % (c.power_mult, power))
+    return mtype, power
 
-    an = nature_mults(atk_nature)
-    dn = nature_mults(def_nature)
+
+def _stat_keys(move_row, notes):
+    """(the attacker's stat, the target's stat) this move uses."""
+    phys = move_row.get("category") == "Physical"
     a_key, d_key = ("atk", "def") if phys else ("spa", "spd")
     # Psyshock is Special but hits the physical Defense - the only move in
     # Champions that splits the two, and it is exactly the move people aim at
@@ -518,95 +539,94 @@ def calc(attacker, move, defender, atk_sp=0, atk_nature=None, def_hp_sp=0,
     if Q.key(move_row["name"]) == Q.key("Body Press"):
         a_key = "def"
         notes.append("Body Press attacks off the user's Defense")
-    atk_stat = stat(atk_mon["base_stats"][a_key], atk_sp, an[a_key])
+    return a_key, d_key
+
+
+def _charge_stage(move_row, atk_mon, notes):
+    """Meteor Beam and Electro Shot raise the user's Sp. Atk by one stage on the
+    charging turn, so by the time they land the boost is ALWAYS there - it is
+    part of the move, not a condition. Contrary inverts it to -1 instead, and
+    that is the one case this cannot see, so it says so rather than guessing."""
+    if Q.key(move_row["name"]) not in (Q.key("Meteor Beam"), Q.key("Electro Shot")):
+        return 0
+    if "Contrary" in (atk_mon.get("abilities") or []):
+        notes.append("%s charges for +1 Sp. Atk, but Contrary would invert "
+                     "it to -1 - run --engine smogon with the real ability"
+                     % move_row["name"])
+        return 0
+    notes.append("%s charges first: +1 Sp. Atk (x1.5) is already "
+                 "applied" % move_row["name"])
+    return 1
+
+
+def _attack_stat(atk_mon, def_mon, move_row, a_key, c, notes):
+    atk_stat = stat(atk_mon["base_stats"][a_key], c.atk_sp,
+                    nature_mults(c.atk_nature)[a_key])
     if Q.key(move_row["name"]) == Q.key("Foul Play"):
         # Off the TARGET's Attack. This used to assume the target was a
         # max-Attack, Adamant Pokemon, which overstated it by about a third
         # against anything uninvested - and Foul Play is aimed at exactly the
         # bulky, uninvested targets that assumption is wrong about. The target's
         # real investment is a parameter now, defaulting to none.
-        atk_stat = stat(def_mon["base_stats"]["atk"], target_atk_sp,
-                        nature_mults(target_atk_nature)["atk"])
+        atk_stat = stat(def_mon["base_stats"]["atk"], c.target_atk_sp,
+                        nature_mults(c.target_atk_nature)["atk"])
         notes.append("Foul Play attacks off the TARGET's Attack "
                      "(%d SP%s -> %d)"
-                     % (target_atk_sp,
-                        ", %s" % target_atk_nature if target_atk_nature else "",
+                     % (c.target_atk_sp,
+                        ", %s" % c.target_atk_nature if c.target_atk_nature else "",
                         atk_stat))
-    def_stat = stat(def_mon["base_stats"][d_key], def_sp, dn[d_key])
-    # Meteor Beam and Electro Shot raise the user's Sp. Atk by one stage on the
-    # charging turn, so by the time they land the boost is ALWAYS there - it is
-    # part of the move, not a condition. Contrary inverts it to -1 instead, and
-    # that is the one case this cannot see, so it says so rather than guessing.
-    if Q.key(move_row["name"]) in (Q.key("Meteor Beam"), Q.key("Electro Shot")):
-        if "Contrary" in (atk_mon.get("abilities") or []):
-            notes.append("%s charges for +1 Sp. Atk, but Contrary would invert "
-                         "it to -1 - run --engine smogon with the real ability"
-                         % move_row["name"])
-        else:
-            boosts += 1
-            notes.append("%s charges first: +1 Sp. Atk (x1.5) is already "
-                         "applied" % move_row["name"])
-    if boosts:
-        atk_stat = int(atk_stat * ((2 + boosts) / 2.0 if boosts > 0 else 2.0 / (2 - boosts)))
-    # A defensive boost only protects the side it sits on: Calm Mind raises
-    # Sp. Def and does nothing against a physical hit, Bulk Up the reverse.
-    # def_boosts is (stat, stages) e.g. ("spd", 1); a bare int is read as the
-    # stat this move actually attacks.
-    if def_boosts:
-        bstat, bstage = def_boosts if isinstance(def_boosts, (tuple, list))                         else (d_key, def_boosts)
-        if bstat == d_key and bstage:
-            def_stat = int(def_stat * ((2 + bstage) / 2.0 if bstage > 0
-                                       else 2.0 / (2 - bstage)))
-            notes.append("target is at %+d %s" % (bstage, bstat))
-    def_hp = stat(def_mon["base_stats"]["hp"], def_hp_sp, 1.0, is_hp=True)
+    stage = _charge_stage(move_row, atk_mon, notes)
+    if stage:
+        atk_stat = int(atk_stat * ((2 + stage) / 2.0))
+    return atk_stat
 
-    base = int(int(int(2 * LEVEL / 5 + 2) * power * atk_stat / def_stat) / 50) + 2
 
-    # @smogon/calc applies these in a fixed order with a rounding step between
-    # each one; collapsing them into a single multiply is off by a point or two,
-    # which is exactly the margin a survival benchmark turns on.
-    if spread is None:
-        spread = is_spread(move_row)
+def _spread_and_crit(base, move_row, spread, notes):
+    """@smogon/calc applies these in a fixed order with a rounding step between
+    each one; collapsing them into a single multiply is off by a point or two,
+    which is exactly the margin a survival benchmark turns on."""
     if spread:
         base = poke_round(base * 3072 / 4096.0)
         notes.append("spread move in doubles: x0.75")
         notes.append("  ...unless the opponent had ONE Pokemon out when the "
                      "move was chosen - then it is full power: re-run with "
                      "--single-target")
-
     # Flower Trick, Frost Breath and Storm Throw always crit, which is a flat
     # x1.5 on the base damage - enough to move a roll across a KO boundary.
     if move_row.get("always_crit"):
         base = int(base * 1.5)
         notes.append("always a critical hit: x1.5")
+    return base
 
-    stab = mtype in atk_mon["types"]
-    if stab:
-        notes.append("STAB x1.5")
-    te = type_mult(mtype, def_mon["types"])
-    notes.append("%s vs %s: x%s" % (mtype, "/".join(def_mon["types"]), te))
 
-    # Reflect / Light Screen / Aurora Veil are 2732/4096 in DOUBLES, not the
-    # 0.5 they are in singles - and each one only covers ITS OWN category.
-    # Reflect stops physical, Light Screen stops special, Aurora Veil both.
-    # Applying any of them to any move (which this used to do) halved the wrong
-    # attacks: a Reflect was cutting Flamethrower and a Light Screen Earthquake.
-    # Player, 2026-09-09.
-    covers = {"Reflect": ("Physical",), "Light Screen": ("Special",),
-              "Aurora Veil": ("Physical", "Special")}
-    screen_applies = bool(screen) and move_row.get("category") in covers.get(screen, ())
+# Reflect / Light Screen / Aurora Veil are 2732/4096 in DOUBLES, not the
+# 0.5 they are in singles - and each one only covers ITS OWN category.
+# Reflect stops physical, Light Screen stops special, Aurora Veil both.
+# Applying any of them to any move (which this used to do) halved the wrong
+# attacks: a Reflect was cutting Flamethrower and a Light Screen Earthquake.
+# Player, 2026-09-09.
+SCREEN_COVERS = {"Reflect": ("Physical",), "Light Screen": ("Special",),
+                 "Aurora Veil": ("Physical", "Special")}
+
+
+def _screen_applies(screen, move_row, notes):
+    applies = bool(screen) and move_row.get("category") in SCREEN_COVERS.get(screen, ())
     # a critical hit ignores screens outright
-    if screen_applies and move_row.get("always_crit"):
-        screen_applies = False
+    if applies and move_row.get("always_crit"):
+        applies = False
         notes.append("%s is ignored: a critical hit goes through a screen"
                      % screen)
-    base_mult = 2732 / 4096.0 if screen_applies else 1.0
-    if screen and not screen_applies and not move_row.get("always_crit"):
+    if screen and not applies and not move_row.get("always_crit"):
         notes.append("%s does not cover %s moves - no reduction"
                      % (screen, (move_row.get("category") or "").lower()))
+    return applies
 
+
+def _rolls(base, stab, te, item_mult, screened):
+    """The sixteen damage rolls, 85%..100%, in the engine's order of steps."""
+    base_mult = 2732 / 4096.0 if screened else 1.0
     rolls = []
-    for i in range(16):                       # the 85%..100% damage roll
+    for i in range(16):
         d = int(base * (85 + i) / 100)
         if stab:
             d = int(d * 6144 / 4096)
@@ -618,54 +638,94 @@ def calc(attacker, move, defender, atk_sp=0, atk_nature=None, def_hp_sp=0,
         # An immunity is ZERO, not one. The minimum-1 floor only applies to a
         # move that actually connects; a x0 type matchup does not connect at all.
         rolls.append(0 if te == 0 else max(1, int(d)))
-    if screen_applies:
-        notes.append("%s in doubles: x0.667" % screen)
+    return rolls
 
-    lo, hi = rolls[0], rolls[-1]
+
+def _triple_axel(atk_mon, move_row, def_mon, c, notes):
+    """Three hits, but not three equal ones: 20 then 40 then 60 BP. The
+    rounding steps make a hit at 40 BP more than twice a hit at 20, so each
+    one is calculated at its own power rather than scaled."""
+    per = [calc(atk_mon, move_row, def_mon,
+                dataclasses.replace(c, override_power=bp))[:2]
+           for bp in (20, 40, 60)]
+    notes.append("Triple Axel: 3 hits at 20/40/60 BP -> %s"
+                 % " + ".join("%d-%d" % x for x in per))
+    notes.append("  it ends early on a miss, so 1 or 2 hits are the "
+                 "%d-%d and %d-%d cases"
+                 % (per[0][0], per[0][1],
+                    per[0][0] + per[1][0], per[0][1] + per[1][1]))
+    return sum(x[0] for x in per), sum(x[1] for x in per)
+
+
+def _multi_hit(rolls, move_row, notes):
+    """A 2-5 move is quoted at min+1 hits - three for the whole 2-5
+    family - which is what the engine uses and what the in-game
+    distribution averages out to. The tails matter too, so both are
+    printed rather than hidden behind the headline number."""
+    lo_n, hi_n = move_row["hits"]
+    n = lo_n + 1 if lo_n != hi_n else lo_n
+    notes.append("%s: %d hits of %d-%d%s"
+                 % (move_row["name"], n, rolls[0], rolls[-1],
+                    "" if lo_n == hi_n else " (the %d-%d average)" % (lo_n, hi_n)))
+    if lo_n != hi_n:
+        notes.append("  worst case %d hits: %d-%d   |   Skill Link is "
+                     "always %d hits: %d-%d"
+                     % (lo_n, rolls[0] * lo_n, rolls[-1] * lo_n,
+                        hi_n, rolls[0] * hi_n, rolls[-1] * hi_n))
+    return rolls[0] * n, rolls[-1] * n
+
+
+def calc(attacker, move, defender, c=None, detail=None):
+    """Returns (min_damage, max_damage, defender_max_hp, notes).
+
+    `attacker` and `defender` are names or dex rows, `move` a name or a move
+    row. `detail`, when given, receives the sixteen rolls and the hit count.
+    """
+    c = c or Conditions()
+    atk_mon = find_mon(attacker, attacking=True) if isinstance(attacker, str) else attacker
+    def_mon = find_mon(defender) if isinstance(defender, str) else defender
+    move_row = find_move(move) if isinstance(move, str) else move
+    notes = []
+    if atk_mon.get("_form_note"):
+        notes.append(atk_mon["_form_note"])
+    if def_mon.get("_form_note"):
+        notes.append("target: %s" % def_mon["_form_note"])
+    notes.extend(caveats(atk_mon, def_mon, move_row, c.moves_last))
+
+    power = _power(move_row, atk_mon, def_mon, c, notes)
+    mtype, power = _type_and_power(move_row, atk_mon, power, c, notes)
+    a_key, d_key = _stat_keys(move_row, notes)
+    atk_stat = _attack_stat(atk_mon, def_mon, move_row, a_key, c, notes)
+    def_stat = stat(def_mon["base_stats"][d_key], c.def_sp,
+                    nature_mults(c.def_nature)[d_key])
+    def_hp = stat(def_mon["base_stats"]["hp"], c.def_hp_sp, 1.0, is_hp=True)
+
+    base = int(int(int(2 * LEVEL / 5 + 2) * power * atk_stat / def_stat) / 50) + 2
+    spread = is_spread(move_row) if c.spread is None else c.spread
+    base = _spread_and_crit(base, move_row, spread, notes)
+
+    stab = mtype in atk_mon["types"]
+    if stab:
+        notes.append("STAB x1.5")
+    te = type_mult(mtype, def_mon["types"])
+    notes.append("%s vs %s: x%s" % (mtype, "/".join(def_mon["types"]), te))
+
+    screened = _screen_applies(c.screen, move_row, notes)
+    rolls = _rolls(base, stab, te, c.item_mult, screened)
+    if screened:
+        notes.append("%s in doubles: x0.667" % c.screen)
 
     # A multi-hit move lands 2-5 times (or 2, 3 or 10). Returning one hit's
     # damage understates Rock Blast and Pin Missile by up to 5x and Dual
     # Wingbeat by 2x - the single largest error this calculator used to make.
+    lo, hi = rolls[0], rolls[-1]
     hits = move_row.get("hits")
-    if hits and not override_power:
-        lo_n, hi_n = hits
+    if hits and not c.override_power:
         if Q.key(move_row["name"]) == Q.key("Triple Axel"):
-            # Three hits, but not three equal ones: 20 then 40 then 60 BP. The
-            # rounding steps make a hit at 40 BP more than twice a hit at 20,
-            # so each one is calculated at its own power rather than scaled.
-            per = [calc(atk_mon, move_row, def_mon, atk_sp=atk_sp, atk_nature=atk_nature,
-                        def_hp_sp=def_hp_sp, def_sp=def_sp,
-                        def_nature=def_nature, atk_ability=atk_ability,
-                        def_ability=def_ability, power_mult=power_mult,
-                        item_mult=item_mult, boosts=boosts,
-                        def_boosts=def_boosts, override_power=bp, spread=spread,
-                        screen=screen, target_atk_sp=target_atk_sp,
-                        target_atk_nature=target_atk_nature,
-                        moves_last=moves_last)[:2]
-                   for bp in (20, 40, 60)]
-            lo = sum(x[0] for x in per)
-            hi = sum(x[1] for x in per)
-            notes.append("Triple Axel: 3 hits at 20/40/60 BP -> %s"
-                         % " + ".join("%d-%d" % x for x in per))
-            notes.append("  it ends early on a miss, so 1 or 2 hits are the "
-                         "%d-%d and %d-%d cases"
-                         % (per[0][0], per[0][1],
-                            per[0][0] + per[1][0], per[0][1] + per[1][1]))
+            lo, hi = _triple_axel(atk_mon, move_row, def_mon,
+                                  dataclasses.replace(c, spread=spread), notes)
         else:
-            # A 2-5 move is quoted at min+1 hits - three for the whole 2-5
-            # family - which is what the engine uses and what the in-game
-            # distribution averages out to. The tails matter too, so both are
-            # printed rather than hidden behind the headline number.
-            n = lo_n + 1 if lo_n != hi_n else lo_n
-            lo, hi = lo * n, hi * n
-            notes.append("%s: %d hits of %d-%d%s"
-                         % (move_row["name"], n, rolls[0], rolls[-1],
-                            "" if lo_n == hi_n else " (the %d-%d average)" % (lo_n, hi_n)))
-            if lo_n != hi_n:
-                notes.append("  worst case %d hits: %d-%d   |   Skill Link is "
-                             "always %d hits: %d-%d"
-                             % (lo_n, rolls[0] * lo_n, rolls[-1] * lo_n,
-                                hi_n, rolls[0] * hi_n, rolls[-1] * hi_n))
+            lo, hi = _multi_hit(rolls, move_row, notes)
     if detail is not None:
         detail["rolls"] = rolls
         detail["hits"] = (hits[0] + 1 if hits and hits[0] != hits[1]
@@ -680,10 +740,10 @@ def selftest():
 
     # "30 HP / 24 Def / 12 SpD with Bold or Relaxed: ... survive Black Glasses
     #  Kingambit's Kowtow Cleave"  (Black Glasses = x1.2 Dark)
-    lo, hi, hp, _notes = calc("Kingambit", "Kowtow Cleave", "Farigiraf",
-                             atk_sp=32, atk_nature="Adamant",
-                             def_hp_sp=30, def_sp=24, def_nature="Relaxed",
-                             power_mult=4915 / 4096.0)
+    lo, hi, hp, _notes = calc("Kingambit", "Kowtow Cleave", "Farigiraf", Conditions(
+        atk_sp=32, atk_nature="Adamant",
+        def_hp_sp=30, def_sp=24, def_nature="Relaxed",
+        power_mult=4915 / 4096.0))
     surv = hi < hp
     print("Black Glasses Kingambit Kowtow Cleave -> Farigiraf 30HP/24Def Relaxed")
     print("   %d-%d of %d HP  (%.0f%%-%.0f%%)   survives=%s  [Smogon: survives]"
@@ -692,9 +752,9 @@ def selftest():
 
     # "12 HP / 24 Def / 27 SpA / 3 SpD ... avoid the OHKO from non-Black Glasses
     #  Kingambit's Kowtow Cleave"
-    lo2, hi2, hp2, _ = calc("Kingambit", "Kowtow Cleave", "Farigiraf",
-                            atk_sp=32, atk_nature="Adamant",
-                            def_hp_sp=12, def_sp=24, def_nature="Modest")
+    lo2, hi2, hp2, _ = calc("Kingambit", "Kowtow Cleave", "Farigiraf", Conditions(
+        atk_sp=32, atk_nature="Adamant",
+        def_hp_sp=12, def_sp=24, def_nature="Modest"))
     surv2 = hi2 < hp2
     print("Plain Kingambit Kowtow Cleave -> Farigiraf 12HP/24Def Modest")
     print("   %d-%d of %d HP  (%.0f%%-%.0f%%)   survives=%s  [Smogon: survives]"
@@ -703,9 +763,9 @@ def selftest():
 
     # "32 HP / 11 Def / 23 SpD with Calm or Sassy: cannot be OHKOed by Mega
     #  Floette's Light of Ruin"
-    lo3, hi3, hp3, _ = calc("Mega Floette", "Light of Ruin", "Farigiraf",
-                            atk_sp=32, atk_nature="Modest",
-                            def_hp_sp=32, def_sp=23, def_nature="Calm")
+    lo3, hi3, hp3, _ = calc("Mega Floette", "Light of Ruin", "Farigiraf", Conditions(
+        atk_sp=32, atk_nature="Modest",
+        def_hp_sp=32, def_sp=23, def_nature="Calm"))
     surv3 = hi3 < hp3
     print("Mega Floette Light of Ruin -> Farigiraf 32HP/23SpD Calm")
     print("   %d-%d of %d HP  (%.0f%%-%.0f%%)   survives=%s  [Smogon: cannot be OHKOed]"
@@ -821,9 +881,9 @@ def parity_block():
             print("  ERROR  %-14s %-17s %s" % (atk, mv, r["error"]))
             ok = False
             continue
-        lo, hi, hp, _ = calc(atk, mv, dfn, atk_sp=32, atk_nature=nat,
-                             def_hp_sp=20, def_sp=12, def_nature="Serious",
-                             atk_ability="Illuminate", **extra)
+        lo, hi, hp, _ = calc(atk, mv, dfn, Conditions(
+            atk_sp=32, atk_nature=nat, def_hp_sp=20, def_sp=12,
+            def_nature="Serious", atk_ability="Illuminate", **extra))
         match = (lo, hi, hp) == (r["lo"], r["hi"], r["maxHP"])
         ok &= match
         print("  %s %-14s %-17s -> %-12s ours %4d-%-4d  engine %4d-%-4d   %s"
@@ -837,9 +897,10 @@ def parity_block():
         if r.get("error"):
             continue
         ex = row[5] if len(row) > 5 else {}
-        if calc(row[0], row[1], row[2], atk_sp=32, atk_nature=row[3],
-                def_hp_sp=20, def_sp=12, def_nature="Serious",
-                atk_ability="Illuminate", **ex)[:2] == (r["lo"], r["hi"]):
+        ours = calc(row[0], row[1], row[2], Conditions(
+            atk_sp=32, atk_nature=row[3], def_hp_sp=20, def_sp=12,
+            def_nature="Serious", atk_ability="Illuminate", **ex))
+        if ours[:2] == (r["lo"], r["hi"]):
             agree += 1
     print("\n  %d/%d mechanics agree with the engine" % (agree, len(PARITY)))
     return ok
@@ -891,7 +952,38 @@ def run_smogon(cases):
     return json.loads(p.stdout)
 
 
-def main():
+# (the flag, its help): each is a switch on the engine's Field; the flag's
+# camelCase is the key Smogon's engine reads it under.
+FIELD_FLAGS = (("helping-hand", "an ally used Helping Hand (doubles)"),
+               ("friend-guard", "an ally of the TARGET has Friend Guard"),
+               ("charge", "the attacker used Charge (Electric x2)"),
+               ("gravity", "Gravity is up: Flying types are grounded"),
+               ("magic-room", "Magic Room: held items do nothing"),
+               ("wonder-room", "Wonder Room: Defense and Sp. Def swapped"),
+               ("power-trick-atk", "the attacker used Power Trick"),
+               ("power-trick-def", "the target used Power Trick"),
+               ("protected", "the target is protecting"),
+               ("foresight", "the target is Foresighted"),
+               ("battery", "an ally has Battery (special x1.3)"),
+               ("power-spot", "an ally has Power Spot"),
+               ("steely-spirit", "an ally has Steely Spirit"),
+               ("flower-gift-atk", "Flower Gift on the attacker's side"),
+               ("flower-gift-def", "Flower Gift on the target's side"),
+               ("dark-aura", "Dark Aura is up"),
+               ("fairy-aura", "Fairy Aura is up"),
+               ("aura-break", "Aura Break is up"),
+               ("beads-of-ruin", "Beads of Ruin: Sp. Def -25%%"),
+               ("sword-of-ruin", "Sword of Ruin: Defense -25%%"),
+               ("tablets-of-ruin", "Tablets of Ruin: Attack -25%%"),
+               ("vessel-of-ruin", "Vessel of Ruin: Sp. Atk -25%%"))
+
+
+def _camel(flag):
+    head, *rest = flag.split("-")
+    return head + "".join(w.capitalize() for w in rest)
+
+
+def _parser():
     ap = argparse.ArgumentParser()
     ap.add_argument("attacker", nargs="?")
     ap.add_argument("move", nargs="?")
@@ -940,40 +1032,19 @@ def main():
                     help="also feeds the between-turns chip in the KO count")
     # Every switch calc.pokemonshowdown.com's Field panel exposes, so a number
     # here can be checked against the real calculator instead of argued about.
-    for f, h in (("helping-hand", "an ally used Helping Hand (doubles)"),
-                 ("friend-guard", "an ally of the TARGET has Friend Guard"),
-                 ("charge", "the attacker used Charge (Electric x2)"),
-                 ("gravity", "Gravity is up: Flying types are grounded"),
-                 ("magic-room", "Magic Room: held items do nothing"),
-                 ("wonder-room", "Wonder Room: Defense and Sp. Def swapped"),
-                 ("power-trick-atk", "the attacker used Power Trick"),
-                 ("power-trick-def", "the target used Power Trick"),
-                 ("protected", "the target is protecting"),
-                 ("foresight", "the target is Foresighted"),
-                 ("battery", "an ally has Battery (special x1.3)"),
-                 ("power-spot", "an ally has Power Spot"),
-                 ("steely-spirit", "an ally has Steely Spirit"),
-                 ("flower-gift-atk", "Flower Gift on the attacker's side"),
-                 ("flower-gift-def", "Flower Gift on the target's side"),
-                 ("dark-aura", "Dark Aura is up"),
-                 ("fairy-aura", "Fairy Aura is up"),
-                 ("aura-break", "Aura Break is up"),
-                 ("beads-of-ruin", "Beads of Ruin: Sp. Def -25%%"),
-                 ("sword-of-ruin", "Sword of Ruin: Defense -25%%"),
-                 ("tablets-of-ruin", "Tablets of Ruin: Attack -25%%"),
-                 ("vessel-of-ruin", "Vessel of Ruin: Sp. Atk -25%%")):
+    for f, h in FIELD_FLAGS:
         ap.add_argument("--" + f, action="store_true", help=h)
     ap.add_argument("--moves-last", action="store_true",
                     help="Payback: the attacker moves after the target")
     ap.add_argument("--selftest", action="store_true")
-    a = ap.parse_args()
-    if a.selftest or not a.attacker:
-        selftest()
-        return
+    return ap
 
-    # Flags the local formula cannot honour. Accepting one and quietly ignoring
-    # it is the exact failure this calculator is built to not have, so the
-    # default routes the question to the engine that CAN answer it, out loud.
+
+def _choose_engine(a):
+    """Flags the local formula cannot honour. Accepting one and quietly
+    ignoring it is the exact failure this calculator is built to not have, so
+    the default routes the question to the engine that CAN answer it, out
+    loud."""
     engine_only = [n for n, v in (
         ("--weather", a.weather), ("--terrain", a.terrain),
         ("--atk-ability", a.atk_ability), ("--def-ability", a.def_ability),
@@ -988,107 +1059,109 @@ def main():
         print("   (%s: only Smogon's engine models %s, switching to it)"
               % (", ".join(engine_only),
                  "that" if len(engine_only) == 1 else "those"))
-        a.engine = "smogon"
-    elif engine_only and a.engine == "local":
+        return "smogon"
+    if engine_only and a.engine == "local":
         raise SystemExit(
             "The local formula cannot honour %s. Drop the flag, or use "
             "--engine smogon." % ", ".join(engine_only))
+    return a.engine
 
-    if a.engine == "smogon":
-        case = engine_case(a.attacker, a.move, a.defender, a.atk_sp, a.nature,
-                           a.def_hp_sp, a.def_sp, a.def_nature)
-        case.update({"aability": a.atk_ability, "dability": a.def_ability,
-                     "aitem": a.atk_item, "ditem": a.def_item,
-                     "weather": a.weather, "terrain": a.terrain,
-                     "screen": a.screen, "isCrit": a.crit,
-                     "alliesFainted": a.allies_fainted or None,
-                     "dcurHP": a.target_hp,
-                     "astatus": a.atk_status, "dstatus": a.def_status,
-                     "helpingHand": a.helping_hand, "friendGuard": a.friend_guard,
-                     "charge": a.charge, "gravity": a.gravity,
-                     "magicRoom": a.magic_room, "wonderRoom": a.wonder_room,
-                     "powerTrickAtk": a.power_trick_atk,
-                     "powerTrickDef": a.power_trick_def,
-                     "protected": a.protected, "foresight": a.foresight,
-                     "battery": a.battery, "powerSpot": a.power_spot,
-                     "steelySpirit": a.steely_spirit,
-                     "flowerGiftAtk": a.flower_gift_atk,
-                     "flowerGiftDef": a.flower_gift_def,
-                     "darkAura": a.dark_aura, "fairyAura": a.fairy_aura,
-                     "auraBreak": a.aura_break,
-                     "beadsOfRuin": a.beads_of_ruin,
-                     "swordOfRuin": a.sword_of_ruin,
-                     "tabletsOfRuin": a.tablets_of_ruin,
-                     "vesselOfRuin": a.vessel_of_ruin})
-        if a.single_target:
-            # The engine decides the x0.75 from the MOVE's target type and has
-            # no idea how many Pokemon are actually out, so the only lever is
-            # gameType. Singles also halves screens instead of the doubles
-            # 0.667, which is the one case the two cannot be separated.
-            if a.screen:
-                raise SystemExit(
-                    "--single-target and --screen cannot be combined on the "
-                    "engine: its only lever for the spread modifier is the "
-                    "game type, which would also switch screens to their "
-                    "singles value. Run them separately.")
-            case["gameType"] = "Singles"
-        if a.boost:
-            phys = find_move(a.move).get("category") == "Physical"
-            case["aboosts"] = {("atk" if phys else "spa"): a.boost}
-        if a.def_boost:
-            d_key = _DEFENCE_OVERRIDE.get(Q.key(find_move(a.move)["name"])) or (
-                "def" if find_move(a.move).get("category") == "Physical" else "spd")
-            case["dboosts"] = {d_key: a.def_boost}
-        r = run_smogon([case])[0]
-        if r.get("error"):
-            raise SystemExit("Smogon engine: %s" % r["error"])
-        # The engine falls back to the FIRST ability in the species row when
-        # none is given, and Kingambit's first is Defiant, not Supreme Overlord.
-        # So a bare --allies-fainted quietly buys nothing; say so.
-        if a.allies_fainted and Q.key(r.get("ability") or "") != Q.key("Supreme Overlord"):
-            print("   NOTE: --allies-fainted does nothing here - %s is using %s, "
-                  "not Supreme Overlord. Add --atk-ability \"Supreme Overlord\"."
-                  % (r["attacker"], r.get("ability")))
-        print("%s %s -> %s   [Smogon's own engine]"
-              % (r["attacker"], r["move"], r["defender"]))
-        print("   %s" % r["desc"])
-        print("   %d-%d damage of %d HP  =  %.1f%% - %.1f%%"
-              % (r["lo"], r["hi"], r["maxHP"], r["pct_lo"], r["pct_hi"]))
-        if r.get("ko_text"):
-            print("   %s" % r["ko_text"])
-        return
 
+def _smogon_case(a):
+    case = engine_case(a.attacker, a.move, a.defender, a.atk_sp, a.nature,
+                       a.def_hp_sp, a.def_sp, a.def_nature)
+    case.update({"aability": a.atk_ability, "dability": a.def_ability,
+                 "aitem": a.atk_item, "ditem": a.def_item,
+                 "weather": a.weather, "terrain": a.terrain,
+                 "screen": a.screen, "isCrit": a.crit,
+                 "alliesFainted": a.allies_fainted or None,
+                 "dcurHP": a.target_hp,
+                 "astatus": a.atk_status, "dstatus": a.def_status})
+    case.update({_camel(f): getattr(a, f.replace("-", "_")) for f, _h in FIELD_FLAGS})
+    if a.single_target:
+        # The engine decides the x0.75 from the MOVE's target type and has
+        # no idea how many Pokemon are actually out, so the only lever is
+        # gameType. Singles also halves screens instead of the doubles
+        # 0.667, which is the one case the two cannot be separated.
+        if a.screen:
+            raise SystemExit(
+                "--single-target and --screen cannot be combined on the "
+                "engine: its only lever for the spread modifier is the "
+                "game type, which would also switch screens to their "
+                "singles value. Run them separately.")
+        case["gameType"] = "Singles"
+    phys = find_move(a.move).get("category") == "Physical"
+    if a.boost:
+        case["aboosts"] = {("atk" if phys else "spa"): a.boost}
+    if a.def_boost:
+        d_key = _DEFENCE_OVERRIDE.get(Q.key(find_move(a.move)["name"])) or (
+            "def" if phys else "spd")
+        case["dboosts"] = {d_key: a.def_boost}
+    return case
+
+
+def _answer_with_smogon(a):
+    r = run_smogon([_smogon_case(a)])[0]
+    if r.get("error"):
+        raise SystemExit("Smogon engine: %s" % r["error"])
+    # The engine falls back to the FIRST ability in the species row when
+    # none is given, and Kingambit's first is Defiant, not Supreme Overlord.
+    # So a bare --allies-fainted quietly buys nothing; say so.
+    if a.allies_fainted and Q.key(r.get("ability") or "") != Q.key("Supreme Overlord"):
+        print("   NOTE: --allies-fainted does nothing here - %s is using %s, "
+              "not Supreme Overlord. Add --atk-ability \"Supreme Overlord\"."
+              % (r["attacker"], r.get("ability")))
+    print("%s %s -> %s   [Smogon's own engine]"
+          % (r["attacker"], r["move"], r["defender"]))
+    print("   %s" % r["desc"])
+    print("   %d-%d damage of %d HP  =  %.1f%% - %.1f%%"
+          % (r["lo"], r["hi"], r["maxHP"], r["pct_lo"], r["pct_hi"]))
+    if r.get("ko_text"):
+        print("   %s" % r["ko_text"])
+
+
+def _verdict(lo, hi, hp, detail):
+    if lo >= hp:
+        return "   GUARANTEED OHKO"
+    if hi < hp:
+        return "   no OHKO"
+    # The 16 rolls are the 85%..100% spread. For a single hit the share of
+    # them that reaches the target's HP IS the OHKO chance. For a multi-hit
+    # the hits roll independently, so counting this way would be wrong -
+    # say "possible" and leave the exact odds to --engine smogon, which
+    # convolves them properly.
+    rolls = detail.get("rolls") or []
+    if detail.get("hits", 1) == 1 and rolls:
+        pct = 100.0 * sum(1 for r in rolls if r >= hp) / len(rolls)
+        return "   possible OHKO (%.0f%% of rolls)" % pct
+    return "   possible OHKO (odds need --engine smogon)"
+
+
+def _answer_locally(a):
     detail = {}
-    lo, hi, hp, notes = calc(a.attacker, a.move, a.defender, atk_sp=a.atk_sp,
-                             atk_nature=a.nature, def_hp_sp=a.def_hp_sp,
-                             def_sp=a.def_sp, def_nature=a.def_nature,
-                             item_mult=a.item_mult, screen=a.screen,
-                             spread=False if a.single_target else None,
-                             moves_last=a.moves_last,
-                             target_atk_sp=a.target_atk_sp,
-                             target_atk_nature=a.target_atk_nature,
-                             detail=detail)
+    lo, hi, hp, notes = calc(a.attacker, a.move, a.defender, Conditions(
+        atk_sp=a.atk_sp, atk_nature=a.nature, def_hp_sp=a.def_hp_sp,
+        def_sp=a.def_sp, def_nature=a.def_nature,
+        item_mult=a.item_mult, screen=a.screen,
+        spread=False if a.single_target else None,
+        moves_last=a.moves_last,
+        target_atk_sp=a.target_atk_sp,
+        target_atk_nature=a.target_atk_nature), detail=detail)
     print("%s %s -> %s" % (a.attacker, a.move, a.defender))
     for n in notes:
         print("   %s" % n)
-    if lo >= hp:
-        verdict = "   GUARANTEED OHKO"
-    elif hi >= hp:
-        # The 16 rolls are the 85%..100% spread. For a single hit the share of
-        # them that reaches the target's HP IS the OHKO chance. For a multi-hit
-        # the hits roll independently, so counting this way would be wrong -
-        # say "possible" and leave the exact odds to --engine smogon, which
-        # convolves them properly.
-        rolls = detail.get("rolls") or []
-        if detail.get("hits", 1) == 1 and rolls:
-            pct = 100.0 * sum(1 for r in rolls if r >= hp) / len(rolls)
-            verdict = "   possible OHKO (%.0f%% of rolls)" % pct
-        else:
-            verdict = "   possible OHKO (odds need --engine smogon)"
-    else:
-        verdict = "   no OHKO"
     print("   %d-%d damage of %d HP  =  %.1f%% - %.1f%%%s"
-          % (lo, hi, hp, 100.0*lo/hp, 100.0*hi/hp, verdict))
+          % (lo, hi, hp, 100.0*lo/hp, 100.0*hi/hp, _verdict(lo, hi, hp, detail)))
+
+
+def main():
+    a = _parser().parse_args()
+    if a.selftest or not a.attacker:
+        selftest()
+    elif _choose_engine(a) == "smogon":
+        _answer_with_smogon(a)
+    else:
+        _answer_locally(a)
 
 
 if __name__ == "__main__":
