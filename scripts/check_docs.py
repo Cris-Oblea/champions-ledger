@@ -218,7 +218,15 @@ DECISIONS = [
     # can run, so what the editor showed could never block a push.
     ("python-lint-is-ruff",
      r"SonarQube for IDE[^.]*\bPython\b|No `pip install` needed",
-     "ruff lints the Python, in the gate and in VS Code; Sonar keeps CSS and HTML",
+     "ruff lints the Python, in the gate and in VS Code",
+     DOCS),
+
+    # CSS and HTML were SonarQube for IDE's until 2026-09-30, and so could
+    # drift without failing anything. stylelint and html-validate took them
+    # into the gate, and Sonar was left with no language at all.
+    ("css-html-lint-in-the-gate",
+     r"Sonar(Qube for IDE)?\*{0,2} (for|keeps) CSS and HTML",
+     "stylelint lints the CSS and html-validate the markup, both in the gate",
      DOCS),
 
     # ruff.toml switched rules on one pull request at a time, keeping the ones

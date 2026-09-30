@@ -28,7 +28,7 @@
                     var(--tsoft2b, var(--tsoft2, var(--tsoft, transparent))) 34px,
                     transparent 76px) right top / 50% 100% no-repeat,
     var(--surface);
-  border-left-width:1px;border-left-color:var(--line);border-left-style:solid}
+  border-left:1px solid var(--line)}
 .rmain{flex:1;min-width:0}
 .rname{font-weight:600;font-size:14.5px;display:flex;align-items:center;
   gap:6px;flex-wrap:wrap}

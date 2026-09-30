@@ -132,6 +132,14 @@ SOURCE_CHECKS = [
     (["node_modules/eslint/bin/eslint.js", "--max-warnings", "0"],
      "no lint finding comes back once it is fixed"),
     (["scripts/check_app.js"], "the app's source agrees with its markup and its engine"),
+    # The same treatment for the other two languages of the page, so nothing
+    # in tracker/src/ is linted only by an editor. stylelint.config.mjs and
+    # .htmlvalidate.mjs say what each switches off and why; both linters
+    # expand their own globs, so no shell is involved.
+    (["node_modules/stylelint/bin/stylelint.mjs", "tracker/src/styles/*.css"],
+     "no CSS lint finding comes back once it is fixed"),
+    (["node_modules/html-validate/bin/html-validate.mjs", "tracker/src/markup/*.html"],
+     "no HTML lint finding comes back once it is fixed"),
 ]
 
 # The browser tests, run against the BUILT page. Nothing gated on these until

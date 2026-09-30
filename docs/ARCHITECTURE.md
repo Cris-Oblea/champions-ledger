@@ -53,7 +53,7 @@ public because it carries no personal row.
 | Scheduler | A second **Cloudflare Worker** (JavaScript, Web Crypto) | `cron/src/cron.js` | Starts the nightly GitHub workflow on time; GitHub's own schedule ran hours late |
 | Data pipeline | **Python 3**, standard library only (`urllib`, `json`, `re`, `argparse`, `html`) | `scripts/` | The scripts need no `pip install`; the gate's linter does (`requirements.txt`) |
 | Damage maths | **Smogon's damage-calc** (TypeScript, copied from upstream, bundled with esbuild), plus our own Python port | `scripts/build_engine_bundle.py` → `tracker/engine.bundle.js`; `scripts/damage.py` | The page runs Smogon's real engine; the Python port is checked against it |
-| Tests | **Node + jsdom** browser tests; **ESLint** with **globals**, **eslint-plugin-sonarjs** and **eslint-plugin-unicorn** for the JavaScript; **ruff** for the Python; Python audits | `tests/`, `eslint.config.mjs`, `ruff.toml`, `scripts/check_app.js`, `scripts/audit_*.py` | Tests run against the *built* page, which is the thing that ships |
+| Tests | **Node + jsdom** browser tests; **ESLint** with **globals**, **eslint-plugin-sonarjs** and **eslint-plugin-unicorn** for the JavaScript; **stylelint** with **stylelint-config-standard** for the CSS; **html-validate** for the markup; **ruff** for the Python; Python audits | `tests/`, `eslint.config.mjs`, `stylelint.config.mjs`, `.htmlvalidate.mjs`, `ruff.toml`, `scripts/check_app.js`, `scripts/audit_*.py` | Tests run against the *built* page, which is the thing that ships |
 | CI/CD | **GitHub Actions**, a GitHub App bot, **Dependabot**, a git `pre-push` hook | `.github/`, `scripts/hooks/pre-push` | Nothing reaches the phone without passing the gate |
 | Fonts / sprites | Google Fonts (IBM Plex), Pokemon sprites from a CDN at a pinned commit | `tracker/index.template.html`, `spriteFor()` in `tracker/src/ui/card.js` | Sprites are Nintendo's images, so the repo ships only their ids |
 | Dev tools | Supabase CLI, `npx wrangler`, `gh`, graphify | your machine | Reading the DB, deploying the cron, PRs, the code map |
@@ -327,6 +327,11 @@ runs in four places: the `pre-push` hook, every pull request, every push to
   PostToolUse hook (`.claude/settings.json`) that lints each `.js` file Claude
   writes (and each `.py` file, with ruff), silent when it is clean, so a finding shows up while the edit is
   still on screen instead of at the push.
+- **stylelint** (`stylelint.config.mjs`) over `tracker/src/styles/` and
+  **html-validate** (`.htmlvalidate.mjs`) over `tracker/src/markup/`: the
+  standard rule sets, every rule an error, the few switched off each with its
+  reason in the config. The markup holds no `style=""`; a one-off gap is a
+  class from `styles/space.css`.
 - **`node scripts/check_app.js`**: what no linter can see - every element id
   the app reaches for exists in the markup, and every `CALC` switch the
   calculator screen sets reaches the engine.
@@ -414,8 +419,10 @@ gh pr create                          # CI gates it; merge = deploy
   reporter in the Problems panel (Ctrl+Shift+M): **ESLint** for JavaScript -
   the same rules, and the same check, the gate runs, so a red error there
   would block the push, and so would a yellow warning -
-  **Ruff** for Python, the same way (`ruff.toml`, the gate's own check), and
-  **SonarQube for IDE** for CSS and HTML.
+  **Ruff** for Python, the same way (`ruff.toml`, the gate's own check),
+  **Stylelint** for CSS and **html-validate** for HTML, again the gate's own
+  checks. SonarQube for IDE is no longer needed; if installed, it is told to
+  analyse nothing.
 - **Recommended extensions** are listed in `.vscode/extensions.json`, so
   VS Code offers to install them when the repo opens (or: Extensions panel,
   filter `@recommended`).

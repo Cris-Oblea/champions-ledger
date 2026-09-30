@@ -71,7 +71,7 @@ div.tabs button{background:none;border:0;padding:8px 1px 9px;display:grid;
   gap:3px;justify-items:center;color:var(--muted);font-family:var(--cond);
   font-size:10px;font-weight:600;letter-spacing:.02em;text-transform:uppercase;
   border-top:2px solid transparent;margin-top:-1px;overflow:hidden}
-div.tabs button svg{width:18px;height:18px;stroke:currentColor;fill:none;
+div.tabs button svg{width:18px;height:18px;stroke:currentcolor;fill:none;
   stroke-width:1.7;stroke-linecap:round;stroke-linejoin:round}
 /* a label that wraps makes its tab taller than the rest; keep them on one
    line and let the ellipsis be the visible failure instead of a ragged bar */
