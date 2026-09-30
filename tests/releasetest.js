@@ -34,7 +34,14 @@ const ROWS = [
   row("sinistcha-h", "Sinistcha", "home", "home"),
 ];
 
-const { dom, errs } = require("./harness.js").open(ROOT, { box: ROWS });
+/* The Garchomp in the box carries a build. Its id is NOT the box row's: the
+   Park toast used to look the build up by the row's id and so never saw it. */
+const BUILDS = [{user_id:UID, id:"b-chomp", pokemon:"Garchomp", box_id:"garchomp",
+  mega:null, ability:null, mega_ability:null, nature:"Jolly",
+  stat_points:{hp:2,atk:32,def:0,spa:0,spd:0,spe:32}, moves:["Protect"],
+  role:"", rationale:"", extra:{}, updated_at:"2026-09-27"}];
+
+const { dom, errs } = require("./harness.js").open(ROOT, { box: ROWS, builds: BUILDS });
 const w = dom.window, d = w.document;
 const click = n => n.dispatchEvent(new w.MouseEvent("click", {bubbles:true}));
 const boxRow = name => [...d.querySelectorAll(
@@ -65,10 +72,16 @@ setTimeout(() => {
       const b = buttons();
       ok("Garchomp (HOME origin, en la caja): sin Release", b.indexOf("Release"), -1);
       ok("...pero si Park back to HOME", b.indexOf("Park back to HOME") >= 0, true);
+      click([...d.querySelectorAll(".sheet button")]
+        .find(x => x.textContent === "Park back to HOME"));
+      setTimeout(() => {
+        ok("el aviso de Park nombra su build (hallada por box_id)",
+           /Its build is kept/.test(d.getElementById("toast").textContent), true);
 
-      console.log("\n  ERRORES JS: " + (errs.length ? errs.join(" | ") : "ninguno"));
-      console.log(bad ? "\n  " + bad + " FALLOS\n" : "\n  todo bien\n");
-      process.exit(bad || errs.length ? 1 : 0);
+        console.log("\n  ERRORES JS: " + (errs.length ? errs.join(" | ") : "ninguno"));
+        console.log(bad ? "\n  " + bad + " FALLOS\n" : "\n  todo bien\n");
+        process.exit(bad || errs.length ? 1 : 0);
+      }, 400);
     }, 400);
   }, 400);
 }, 1200);

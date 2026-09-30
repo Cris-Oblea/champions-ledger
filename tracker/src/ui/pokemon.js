@@ -1,7 +1,7 @@
 /* One Pokemon's full sheet - stats, abilities, damage taken, forms,
    movepool - and Smogon's analysis panel inside it. */
 import {
-  ANALYSIS_STATE, analysisFor, loadAnalysis, loadOutside, outsideDex,
+  analysisFor, loadAnalysis, loadOutside, outsideDex,
   outsideMove, outsideMovesFor,
 } from "../core/assets.js";
 import {
@@ -125,12 +125,12 @@ function analysisPanel(name, host){
         + "file, fetched only when this is opened - try again in a moment.";
     }
   }, 8000);
-  loadAnalysis(function(){
+  loadAnalysis(function(ready){
     clearTimeout(gaveUp);
     if (wait.parentNode) wait.remove();
     var got = analysisFor(name);
     if (!got?.length) {
-      host.appendChild(el("div", "st", ANALYSIS_STATE === "absent"
+      host.appendChild(el("div", "st", !ready
         ? "Smogon's analyses are not in this build."
         : "Smogon has not written one for " + name + " - 54 Pokemon have one."));
       return;

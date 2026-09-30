@@ -124,6 +124,14 @@ function buildsFor(name){
     return S.builds[k].pokemon === name;
   });
 }
+/* The builds installed on one box row, found by their LINK (box_id): a
+   build's own id stopped being its Pokemon's id when builds became many per
+   species. `exceptId` leaves out the build being edited. */
+function buildsOn(boxId, exceptId){
+  return Object.keys(S.builds).filter(function(k){
+    return k !== exceptId && S.builds[k].box_id === boxId;
+  });
+}
 /* ------------------------------------------- the ability a build RUNS ------
    A SPECIES WITH ONE ABILITY NEVER MADE A CHOICE, so an empty `ability` on
    such a build is not a blank to be drawn as an em dash - it is the only
@@ -215,7 +223,8 @@ const FIND = {q: "", moves: [], types: [], notTypes: [], typeMode: "and",
             sort: "bst", dir: "desc", cat: ""};
 
 export {
-  activeAbility, baseAbility, boxRows, buildLink, buildsFor, capacity, FIND,
+  activeAbility, baseAbility, boxRows, buildLink, buildsFor, buildsOn,
+  capacity, FIND,
   hasItem, hasStone, megaAbility, ORIGIN_LABEL, originOf, originRows,
   ownedItems, ownedNames, ownedStones, RELEASE_FLOOR, releaseBlock,
   rowMatches, S, soleAbility, sortRows, VIEW,
