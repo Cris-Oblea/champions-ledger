@@ -10,8 +10,8 @@ database. `fetch_serebii.py` skips any page already cached, and the attackdex
 is where forms and LEARNSETS come from - so a plain nightly run picks up the
 new Pokedex pages and silently keeps every stale attackdex one, leaving the new
 species with no movepool and no way to be found by `--learner`. The recipe for
-doing it properly is `refresh.py --regulation`, which clears those caches
-first, and until now a human had to know to type it.
+doing it properly is `refresh.py --regulation`, which re-fetches every Serebii
+page on top of the cache, and until this check a human had to know to type it.
 
 Nothing about that was automatic, which meant "the database is always current"
 was true on every day except the one day it mattered.

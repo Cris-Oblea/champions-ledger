@@ -38,9 +38,9 @@ def _handler(err):
 codecs.register_error(_NAME, _handler)
 
 
-def unmojibake(s, rounds=3):
-    """Undo cp1252/UTF-8 round-trips, however many times they were applied."""
-    for _ in range(rounds):
+def unmojibake(s):
+    """Undo cp1252/UTF-8 round-trips, up to three deep (the most seen)."""
+    for _ in range(3):
         try:
             t = s.encode("cp1252", _NAME).decode("utf-8")
         except (UnicodeEncodeError, UnicodeDecodeError):
