@@ -8,6 +8,7 @@ import json
 import os
 import re
 import unicodedata
+from pathlib import Path
 
 import effect_chips
 import query as Q
@@ -157,9 +158,8 @@ def main():
     # form": Floette-Mega's baseSpecies is Floette-ETERNAL.
     MEGA_OWNER = {}
     try:
-        sroster = json.load(open(os.path.join(
-            ROOT, "data", "raw", "smogon_calc", "raw_species.json"),
-            encoding="utf-8"))
+        sroster = json.loads(Path(ROOT, "data", "raw", "smogon_calc",
+                                  "raw_species.json").read_text(encoding="utf-8"))
     except Exception:
         sroster = {}
     smog_base = {}
@@ -570,8 +570,8 @@ def main():
     # pokebase calls `defaultLatestRegulationSetSlug`.
     REG, REG_STARTED = None, None
     try:
-        raw = open(os.path.join(ROOT, "data", "raw", "pokebase", "pokemon.html"),
-                   encoding="utf-8", errors="replace").read()
+        raw = Path(ROOT, "data", "raw", "pokebase", "pokemon.html").read_text(
+            encoding="utf-8", errors="replace")
         cur = re.search(r'defaultLatestRegulationSetSlug\\?":\\?"([a-z\-]+)', raw)
         if cur:
             slug = cur.group(1)

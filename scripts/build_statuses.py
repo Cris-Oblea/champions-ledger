@@ -32,6 +32,7 @@ player to confirm it in this one. Nothing here is invented.
 import json
 import os
 import re
+from pathlib import Path
 
 import query as Q
 
@@ -50,7 +51,7 @@ def serebii_changes():
     """(condition -> {prior, new}) from Serebii's Champions rebalance table."""
     if not os.path.exists(PAGE):
         return {}
-    h = open(PAGE, encoding="cp1252", errors="replace").read()
+    h = Path(PAGE).read_text(encoding="cp1252", errors="replace")
     out = {}
     for r in re.findall(r"<tr.*?</tr>", h, re.S):
         cells = [txt(c) for c in re.findall(r"<t[dh].*?</t[dh]>", r, re.S)]

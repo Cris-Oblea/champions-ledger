@@ -48,6 +48,7 @@ import os
 import re
 import sys
 import urllib.request
+from pathlib import Path
 
 import query as Q
 
@@ -83,7 +84,7 @@ def table(name, force=False):
         req = urllib.request.Request(BASE + name,
                                      headers={"User-Agent": "champions-ledger"})
         with urllib.request.urlopen(req, timeout=180) as r:
-            open(path, "wb").write(r.read())
+            Path(path).write_bytes(r.read())
     return path
 
 
@@ -93,11 +94,10 @@ def mkey(n):
 
 
 def upstream(force=False):
-    by_id, mv = {}, {}
-    for r in csv.DictReader(open(table("pokemon.csv", force), encoding="utf-8")):
-        by_id[r["id"]] = r["identifier"]
-    for r in csv.DictReader(open(table("moves.csv", force), encoding="utf-8")):
-        mv[r["id"]] = r["identifier"]
+    with open(table("pokemon.csv", force), encoding="utf-8") as fh:
+        by_id = {r["id"]: r["identifier"] for r in csv.DictReader(fh)}
+    with open(table("moves.csv", force), encoding="utf-8") as fh:
+        mv = {r["id"]: r["identifier"] for r in csv.DictReader(fh)}
     out = {}
     with open(table("pokemon_moves.csv", force), encoding="utf-8") as fh:
         for r in csv.DictReader(fh):

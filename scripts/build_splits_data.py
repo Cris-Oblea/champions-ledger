@@ -41,6 +41,7 @@ import argparse
 import json
 import os
 import sys
+from pathlib import Path
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SRC = os.path.join(ROOT, "data", "meta", "usage_splits.json")
@@ -174,7 +175,7 @@ def main():
 
     if not os.path.exists(SRC):
         sys.exit("no splits yet - run scripts/fetch_pokebase_splits.py")
-    blob = json.load(open(SRC, encoding="utf-8"))
+    blob = json.loads(Path(SRC).read_text(encoding="utf-8"))
     mons = blob.get("pokemon") or {}
     if a.check:
         return check(mons)

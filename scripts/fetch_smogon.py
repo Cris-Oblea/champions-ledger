@@ -28,6 +28,7 @@ import re
 import sys
 import time
 import urllib.request
+from pathlib import Path
 
 RPC = "https://www.smogon.com/dex/_rpc/"
 UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
@@ -159,7 +160,7 @@ def dex_texts(force=False):
     for bucket, rpc_kind, source in DEX_KINDS:
         cache_dir = os.path.join(RAW, bucket)
         os.makedirs(cache_dir, exist_ok=True)
-        rows = json.load(open(os.path.join(DB, source), encoding="utf-8"))
+        rows = json.loads(Path(DB, source).read_text(encoding="utf-8"))
         rows = rows if isinstance(rows, list) else list(rows.values())
         got_all = {}
         for r in rows:
@@ -167,7 +168,7 @@ def dex_texts(force=False):
             path = os.path.join(cache_dir, alias + ".json")
             got = None
             if os.path.exists(path) and not force:
-                got = json.load(open(path, encoding="utf-8"))
+                got = json.loads(Path(path).read_text(encoding="utf-8"))
                 if got.get("gen") != "champions":
                     got = None                  # another game's: ask again
             if got is None:
@@ -178,25 +179,25 @@ def dex_texts(force=False):
                     failed.append(r["name"])
                     continue
                 got = {"gen": "champions", "text": t}
-                json.dump(got, open(path, "w", encoding="utf-8"),
-                          ensure_ascii=False)
+                Path(path).write_text(
+                    json.dumps(got, ensure_ascii=False), encoding="utf-8")
             if got.get("text"):
                 got_all[r["name"]] = got["text"]
         out[bucket] = got_all
         print("  %-9s %d described by Champions' dex, of %d"
               % (bucket, len(got_all), len(rows)))
-    json.dump(dict({
+    Path(DB, "smogon_text.json").write_text(json.dumps(dict({
         "source": "smogon.com/dex/champions (dump-move, dump-ability, dump-item)",
         "fetched": time.strftime("%Y-%m-%d"),
         "note": "Champions' own dex only. An entry it does not describe is "
                 "absent, never filled from another game.",
-    }, **out), open(os.path.join(DB, "smogon_text.json"), "w", encoding="utf-8"),
-        ensure_ascii=False, indent=1, sort_keys=True)
+    }, **out), ensure_ascii=False, indent=1, sort_keys=True),
+        encoding="utf-8")
     print("  %d requests" % asked)
     if failed:
         print("  !! %d requests failed and will be asked again: %s"
               % (len(failed), ", ".join(failed[:10])))
-    moves = json.load(open(os.path.join(DB, "moves.json"), encoding="utf-8"))
+    moves = json.loads(Path(DB, "moves.json").read_text(encoding="utf-8"))
     missing = [m["name"] for m in moves
                if m.get("useable") and m["name"] not in out["moves"]]
     if missing:
@@ -236,21 +237,21 @@ def main():
 
     basics_path = os.path.join(RAW, "basics.json")
     if os.path.exists(basics_path) and not force:
-        basics = json.load(open(basics_path, encoding="utf-8"))
+        basics = json.loads(Path(basics_path).read_text(encoding="utf-8"))
     else:
         print("Fetching dump-basics ...")
         basics = rpc("dump-basics", {"gen": "champions"})
         if not basics:
             sys.exit("could not load Smogon basics")
-        json.dump(basics, open(basics_path, "w", encoding="utf-8"),
-                  ensure_ascii=False, indent=1)
+        Path(basics_path).write_text(
+            json.dumps(basics, ensure_ascii=False, indent=1), encoding="utf-8")
 
     mons = basics.get("pokemon") or []
     print("  %d Pokemon, %d moves, %d items, %d abilities"
           % (len(mons), len(basics.get("moves") or []),
              len(basics.get("items") or []), len(basics.get("abilities") or [])))
 
-    json.dump({
+    Path(DB, "smogon_basics.json").write_text(json.dumps({
         "source": "smogon.com/dex/champions",
         "fetched": time.strftime("%Y-%m-%d"),
         "moveflags": basics.get("moveflags") or [],
@@ -259,8 +260,7 @@ def main():
         "items": basics.get("items") or [],
         "abilities": basics.get("abilities") or [],
         "moves": basics.get("moves") or [],
-    }, open(os.path.join(DB, "smogon_basics.json"), "w", encoding="utf-8"),
-        ensure_ascii=False, indent=1)
+    }, ensure_ascii=False, indent=1), encoding="utf-8")
 
     print("Fetching every move, ability and item's full description ...")
     dex_texts(force)
@@ -272,13 +272,13 @@ def main():
                                            (mon.get("name") or "").lower().replace(" ", "-"))
         cache = os.path.join(RAW, alias + ".json")
         if os.path.exists(cache) and not force:
-            data = json.load(open(cache, encoding="utf-8"))
+            data = json.loads(Path(cache).read_text(encoding="utf-8"))
         else:
             data = rpc("dump-pokemon",
                        {"alias": alias, "gen": "champions", "language": "en"})
             if data is None:
                 continue
-            json.dump(data, open(cache, "w", encoding="utf-8"), ensure_ascii=False)
+            Path(cache).write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
             time.sleep(0.15)
 
         strategies = []
@@ -313,7 +313,7 @@ def main():
             print("  %d/%d (%d with VGC analysis)" % (i, len(mons), with_analysis),
                   flush=True)
 
-    json.dump({
+    Path(META, "smogon_analyses.json").write_text(json.dumps({
         "source": "smogon.com/dex/champions",
         "game": "Pokemon Champions",
         "note": "VGC formats only (doubles, bring 6 pick 4). Singles dropped.",
@@ -321,8 +321,7 @@ def main():
         "count": len(out),
         "with_vgc_analysis": with_analysis,
         "pokemon": out,
-    }, open(os.path.join(META, "smogon_analyses.json"), "w", encoding="utf-8"),
-        ensure_ascii=False, indent=1)
+    }, ensure_ascii=False, indent=1), encoding="utf-8")
     print("  %d Pokemon, %d with a written VGC analysis" % (len(out), with_analysis))
 
 

@@ -27,6 +27,7 @@ import os
 import re
 import subprocess
 import sys
+from pathlib import Path
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SQLDIR = os.path.join(ROOT, "tracker")
@@ -111,7 +112,7 @@ def main():
 
     for f in pending:
         print("\napplying %s..." % f)
-        text = open(os.path.join(SQLDIR, f), encoding="utf-8").read()
+        text = Path(SQLDIR, f).read_text(encoding="utf-8")
         ok, out = sql(text)
         if not ok:
             print(out.strip()[-600:])

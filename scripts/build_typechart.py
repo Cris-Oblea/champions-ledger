@@ -17,6 +17,7 @@ import json
 import os
 import re
 import sys
+from pathlib import Path
 
 from serebii_text import read
 
@@ -35,7 +36,7 @@ def load_basics():
     p = os.path.join(DB, "smogon_basics.json")
     if not os.path.exists(p):
         sys.exit("missing %s - run scripts/fetch_smogon.py first" % p)
-    return json.load(open(p, encoding="utf-8"))
+    return json.loads(Path(p).read_text(encoding="utf-8"))
 
 
 def build_chart(basics):
@@ -94,7 +95,7 @@ def serebii_weaknesses():
 
 def verify(chart, weak):
     """Check Smogon's chart reproduces Serebii's per-Pokemon weakness rows."""
-    mons = json.load(open(os.path.join(DB, "pokemon.json"), encoding="utf-8"))
+    mons = json.loads(Path(DB, "pokemon.json").read_text(encoding="utf-8"))
     mons = mons["rows"] if isinstance(mons, dict) and "rows" in mons else mons
     # pokemon.json only carries a slug on Mega entries, so index by species
     # reduced to the same shape as a Serebii page filename.
@@ -132,10 +133,10 @@ def main():
     chart = build_chart(basics)
     natures = build_natures(basics)
 
-    json.dump(chart, open(os.path.join(DB, "typechart.json"), "w", encoding="utf-8"),
-              ensure_ascii=False, indent=1, sort_keys=True)
-    json.dump(natures, open(os.path.join(DB, "natures.json"), "w", encoding="utf-8"),
-              ensure_ascii=False, indent=1, sort_keys=True)
+    Path(DB, "typechart.json").write_text(json.dumps(
+        chart, ensure_ascii=False, indent=1, sort_keys=True), encoding="utf-8")
+    Path(DB, "natures.json").write_text(json.dumps(
+        natures, ensure_ascii=False, indent=1, sort_keys=True), encoding="utf-8")
     print("Type chart: %d attacking types (source: Smogon dump-basics)" % len(chart))
     print("Natures:    %d (%d that change a stat)"
           % (len(natures), sum(1 for v in natures.values() if v["raises"])))

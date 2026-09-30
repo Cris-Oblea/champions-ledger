@@ -58,6 +58,7 @@ import argparse
 import json
 import os
 import re
+from pathlib import Path
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 EFFECTS = os.path.join(ROOT, "data", "db", "effects.json")
@@ -318,7 +319,7 @@ def main():
     ap.add_argument("--audit", action="store_true",
                     help="only the numbers whose subject is not in the tables")
     a = ap.parse_args()
-    blob = json.load(open(EFFECTS, encoding="utf-8"))["effects"]
+    blob = json.loads(Path(EFFECTS).read_text(encoding="utf-8"))["effects"]
     bare, total = [], 0
     for name in sorted(blob):
         cs = chips(blob[name])

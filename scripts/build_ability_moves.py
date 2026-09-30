@@ -39,6 +39,7 @@ import os
 import re
 import sys
 import unicodedata
+from pathlib import Path
 
 import query as Q
 
@@ -161,7 +162,7 @@ def smogon_moves():
     """
     if not os.path.exists(SMOG):
         return {}
-    raw = json.load(open(SMOG, encoding="utf-8"))
+    raw = json.loads(Path(SMOG).read_text(encoding="utf-8"))
     return {Q.key(n): v for n, v in raw.items() if isinstance(v, dict)}
 
 

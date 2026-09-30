@@ -26,6 +26,7 @@ import glob
 import json
 import os
 import re
+from pathlib import Path
 
 import query as Q
 
@@ -50,7 +51,7 @@ def num(x):
 def pokebase_moves():
     out = {}
     for f in sorted(glob.glob(os.path.join(PB, "moves*.html"))):
-        h = open(f, encoding="utf-8", errors="replace").read()
+        h = Path(f).read_text(encoding="utf-8", errors="replace")
         for m in PB_MOVE.finditer(h):
             out.setdefault(m.group(1), {
                 "cat": CAT.get(m.group(2)), "bp": num(m.group(3)),
@@ -74,8 +75,8 @@ def rescaled_pp(ours):
         return {}
     import csv
     from collections import Counter, defaultdict
-    main = {r["identifier"]: r["pp"] for r in
-            csv.DictReader(open(API, encoding="utf-8"))}
+    with open(API, encoding="utf-8") as f:
+        main = {r["identifier"]: r["pp"] for r in csv.DictReader(f)}
     def ident(n):
         return re.sub(r"[^a-z0-9-]", "", n.lower().replace(" ", "-"))
     buckets = defaultdict(Counter)
@@ -95,7 +96,7 @@ def rescaled_pp(ours):
 def check_moves():
     ours = [m for m in Q.db("moves") if m.get("useable")]
     pb = pokebase_moves()
-    sm = json.load(open(SMOG, encoding="utf-8")) if os.path.exists(SMOG) else {}
+    sm = json.loads(Path(SMOG).read_text(encoding="utf-8")) if os.path.exists(SMOG) else {}
     rows, gaps, agree = [], [], 0
     for m in ours:
         n = m["name"]

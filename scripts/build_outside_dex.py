@@ -58,6 +58,7 @@ import json
 import os
 import re
 import sys
+from pathlib import Path
 
 import query as Q
 from audit_learnsets import CHAMPIONS_VG
@@ -101,8 +102,7 @@ def build():
     # older game's page, which can describe a different move.
     smogon = (Q.db("smogon_text") or {}).get("moves") or {}
     champ_abils = {key(a["name"]) for a in Q.db("abilities")}
-    home = json.load(open(os.path.join(ROOT, "data", "db", "home_dex.json"),
-                             encoding="utf-8"))
+    home = json.loads(Path(ROOT, "data", "db", "home_dex.json").read_text(encoding="utf-8"))
 
     # --- the upstream tables ----------------------------------------------
     dmg = {r["id"]: r["identifier"] for r in table("move_damage_classes.csv")}
@@ -205,7 +205,7 @@ def main():
             "window.CHAMP_OUTSIDE = "
             + json.dumps(blob, ensure_ascii=False, separators=(",", ":"))
             + ";\n")
-    open(OUT, "w", encoding="utf-8", newline="\n").write(body)
+    Path(OUT).write_text(body, encoding="utf-8", newline="\n")
     print("wrote %s  (%.0f KB)" % (OUT, os.path.getsize(OUT) / 1024))
 
 

@@ -41,6 +41,7 @@ import json
 import os
 import subprocess
 import sys
+from pathlib import Path
 
 # Windows consoles default to cp1252, and the summary quotes what the sources
 # printed - a U+FFFD in one of them killed the run at its very last line,
@@ -273,7 +274,7 @@ def shrink_check():
             bad.append("BLOCKED: %s is missing entirely" % rel)
             continue
         try:
-            now = _count(json.load(open(path, encoding="utf-8")), how)
+            now = _count(json.loads(Path(path).read_text(encoding="utf-8")), how)
         except Exception as e:
             bad.append("BLOCKED: %s will not parse (%s)" % (rel, e))
             continue
@@ -311,7 +312,7 @@ def ladder_summary():
     """The one source whose *content* is worth summarising, not just hashing."""
     p = os.path.join(ROOT, "data", "meta", "usage_pokemon.json")
     try:
-        d = json.load(open(p, encoding="utf-8"))
+        d = json.loads(Path(p).read_text(encoding="utf-8"))
     except Exception:
         return None
     rows = d.get("rows") or []
@@ -691,8 +692,9 @@ def main():
     # data/raw is not in git, so on a fresh CI checkout it does not exist yet
     # and this was the first line to touch it
     os.makedirs(os.path.dirname(STATE), exist_ok=True)
-    json.dump({"last_run": started.isoformat(), "changed": changed,
-               "deployed": deployed}, open(STATE, "w", encoding="utf-8"))
+    Path(STATE).write_text(json.dumps({"last_run": started.isoformat(),
+                                       "changed": changed, "deployed": deployed}),
+                           encoding="utf-8")
     log(out)
     print("\n".join(out))
     # green means "the app on Cloudflare matches this data". A

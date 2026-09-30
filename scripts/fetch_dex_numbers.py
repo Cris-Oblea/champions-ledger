@@ -23,6 +23,7 @@ import argparse
 import json
 import os
 import urllib.request
+from pathlib import Path
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RAW = os.path.join(ROOT, "data", "raw", "pokeapi_species.json")
@@ -32,12 +33,12 @@ URL = "https://pokeapi.co/api/v2/pokemon-species?limit=2000"
 
 def fetch(force=False):
     if os.path.exists(RAW) and not force:
-        return json.load(open(RAW, encoding="utf-8"))
+        return json.loads(Path(RAW).read_text(encoding="utf-8"))
     req = urllib.request.Request(URL, headers={"User-Agent": "champions-ledger"})
     with urllib.request.urlopen(req, timeout=60) as r:
         data = json.load(r)
     os.makedirs(os.path.dirname(RAW), exist_ok=True)
-    json.dump(data, open(RAW, "w", encoding="utf-8"), ensure_ascii=False)
+    Path(RAW).write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
     return data
 
 
@@ -90,10 +91,9 @@ def main():
         return base
 
     resolved, missing = {}, []
-    mons = json.load(open(os.path.join(ROOT, "data", "db", "pokemon.json"),
-                          encoding="utf-8"))
-    wt = json.load(open(os.path.join(ROOT, "data", "db", "weights.json"),
-                        encoding="utf-8"))["weights"]
+    db = Path(ROOT, "data", "db")
+    mons = json.loads((db / "pokemon.json").read_text(encoding="utf-8"))
+    wt = json.loads((db / "weights.json").read_text(encoding="utf-8"))["weights"]
     every = sorted({p["name"] for p in mons} |
                    {p.get("species") for p in mons if p.get("species")} |
                    set(wt))
@@ -106,13 +106,12 @@ def main():
         else:
             missing.append(n)
 
-    json.dump({"_comment":
+    Path(OUT).write_text(json.dumps({"_comment":
                "National Dex numbers, the order Pokemon HOME lists in. Source: "
                "PokeAPI, used for this one fact only - see the module docstring "
                "in scripts/fetch_dex_numbers.py. Regional forms share their "
                "base species number, which is how HOME shows them.",
-               "numbers": dict(sorted(resolved.items()))},
-              open(OUT, "w", encoding="utf-8"), ensure_ascii=False, indent=1)
+               "numbers": dict(sorted(resolved.items()))}, ensure_ascii=False, indent=1), encoding="utf-8")
 
     print("%d species from PokeAPI" % len(nums))
     print("wrote %s  -  %d names resolved, %d without a number"

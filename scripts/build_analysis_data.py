@@ -23,6 +23,7 @@ prose, because the prose is the thing that cannot be derived.
 import json
 import os
 import sys
+from pathlib import Path
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SRC = os.path.join(ROOT, "data", "meta", "smogon_analyses.json")
@@ -32,7 +33,7 @@ OUT = os.path.join(ROOT, "tracker", "analysis.js")
 def main():
     if not os.path.exists(SRC):
         sys.exit("no analyses yet - run scripts/fetch_smogon.py")
-    blob = json.load(open(SRC, encoding="utf-8"))
+    blob = json.loads(Path(SRC).read_text(encoding="utf-8"))
     out = {}
     for mon in blob.get("pokemon") or []:
         strategies = mon.get("vgc_strategies") or []
