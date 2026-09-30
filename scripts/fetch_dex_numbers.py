@@ -42,77 +42,36 @@ def fetch(force=False):
     return data
 
 
-def main():
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--force", action="store_true")
-    a = ap.parse_args()
+def _key(name):
+    """Our spelling is Serebii's; PokeAPI's is lowercase and hyphenated, and it
+    keys on the BASE species, so a regional form resolves to its base number."""
+    s = name.lower()
+    for a_, b_ in (("é", "e"), ("'", ""), (".", ""), (" ", "-"),
+                   ("_", "-"), (":", "")):
+        s = s.replace(a_, b_)
+    return s
 
-    data = fetch(a.force)
-    nums = {}
-    for row in data.get("results", []):
-        num = int(row["url"].rstrip("/").rsplit("/", 1)[-1])
-        nums[row["name"]] = num
 
-    # our spelling is Serebii's; PokeAPI's is lowercase and hyphenated, and it
-    # keys on the BASE species, so a regional form resolves to its base number
-    def key(name):
-        s = name.lower()
-        for a_, b_ in (("é", "e"), ("'", ""), (".", ""), (" ", "-"),
-                       ("_", "-"), (":", "")):
-            s = s.replace(a_, b_)
-        return s
+def _strip_form(name):
+    """Alolan Ninetales is #38, the same as Ninetales.
 
-    lookup = {key(k): v for k, v in nums.items()}
-    # a few the two spell differently
-    alias = {"mr-mime": "mr-mime", "mime-jr": "mime-jr", "type-null": "type-null",
-             "nidoran-f": "nidoran-f", "nidoran-m": "nidoran-m",
-             "farfetchd": "farfetchd", "sirfetchd": "sirfetchd",
-             "ho-oh": "ho-oh", "porygon-z": "porygon-z",
-             "jangmo-o": "jangmo-o", "hakamo-o": "hakamo-o", "kommo-o": "kommo-o",
-             "tapu-koko": "tapu-koko", "tapu-lele": "tapu-lele",
-             "tapu-bulu": "tapu-bulu", "tapu-fini": "tapu-fini",
-             "great-tusk": "great-tusk", "iron-treads": "iron-treads",
-             "wo-chien": "wo-chien", "chien-pao": "chien-pao",
-             "ting-lu": "ting-lu", "chi-yu": "chi-yu"}
-    for k, v in alias.items():
-        if v in lookup:
-            lookup.setdefault(k, lookup[v])
+    The Mega suffixes are a space, not a hyphen - "Mega Charizard X" -
+    so splitting on the hyphen alone left the seven X/Y/Z Megas unresolved.
+    """
+    base = name.split("-")[0].strip()
+    parts = base.split(" ")
+    if len(parts) > 1 and parts[-1] in ("X", "Y", "Z"):
+        base = " ".join(parts[:-1])
+    return base
 
-    def strip_form(name):
-        """Alolan Ninetales is #38, the same as Ninetales.
 
-        The Mega suffixes are a space, not a hyphen - "Mega Charizard X" -
-        so splitting on the hyphen alone left the seven X/Y/Z Megas unresolved.
-        """
-        base = name.split("-")[0].strip()
-        parts = base.split(" ")
-        if len(parts) > 1 and parts[-1] in ("X", "Y", "Z"):
-            base = " ".join(parts[:-1])
-        return base
+def _number_of(name, lookup):
+    clean = name.replace("Mega ", "")
+    return next((lookup[p] for p in (_key(clean), _key(_strip_form(clean)))
+                 if p in lookup), None)
 
-    resolved, missing = {}, []
-    db = Path(ROOT, "data", "db")
-    mons = json.loads((db / "pokemon.json").read_text(encoding="utf-8"))
-    wt = json.loads((db / "weights.json").read_text(encoding="utf-8"))["weights"]
-    every = sorted({p["name"] for p in mons} |
-                   {p.get("species") for p in mons if p.get("species")} |
-                   set(wt))
-    for n in every:
-        clean = n.replace("Mega ", "")
-        for probe in (key(clean), key(strip_form(clean))):
-            if probe in lookup:
-                resolved[n] = lookup[probe]
-                break
-        else:
-            missing.append(n)
 
-    Path(OUT).write_text(json.dumps({"_comment":
-               "National Dex numbers, the order Pokemon HOME lists in. Source: "
-               "PokeAPI, used for this one fact only - see the module docstring "
-               "in scripts/fetch_dex_numbers.py. Regional forms share their "
-               "base species number, which is how HOME shows them.",
-               "numbers": dict(sorted(resolved.items()))}, ensure_ascii=False, indent=1), encoding="utf-8")
-
+def _report(nums, resolved, missing, mons):
     print("%d species from PokeAPI" % len(nums))
     print("wrote %s  -  %d names resolved, %d without a number"
           % (OUT, len(resolved), len(missing)))
@@ -122,6 +81,38 @@ def main():
             print("  IN THE CHAMPIONS DEX and unresolved: %s" % ", ".join(real))
         print("  (the rest are Smogon's fan-made CAP entries and cosmetic "
               "forms: %s ...)" % ", ".join(missing[:6]))
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("--force", action="store_true")
+    a = ap.parse_args()
+
+    nums = {row["name"]: int(row["url"].rstrip("/").rsplit("/", 1)[-1])
+            for row in fetch(a.force).get("results", [])}
+    lookup = {_key(k): v for k, v in nums.items()}
+
+    db = Path(ROOT, "data", "db")
+    mons = json.loads((db / "pokemon.json").read_text(encoding="utf-8"))
+    wt = json.loads((db / "weights.json").read_text(encoding="utf-8"))["weights"]
+    every = sorted({p["name"] for p in mons} |
+                   {p.get("species") for p in mons if p.get("species")} |
+                   set(wt))
+    resolved, missing = {}, []
+    for n in every:
+        num = _number_of(n, lookup)
+        if num is None:
+            missing.append(n)
+        else:
+            resolved[n] = num
+
+    Path(OUT).write_text(json.dumps({"_comment":
+               "National Dex numbers, the order Pokemon HOME lists in. Source: "
+               "PokeAPI, used for this one fact only - see the module docstring "
+               "in scripts/fetch_dex_numbers.py. Regional forms share their "
+               "base species number, which is how HOME shows them.",
+               "numbers": dict(sorted(resolved.items()))}, ensure_ascii=False, indent=1), encoding="utf-8")
+    _report(nums, resolved, missing, mons)
 
 
 if __name__ == "__main__":
