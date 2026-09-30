@@ -1,9 +1,9 @@
 /* ---------- tokens: light is the base, both dark paths redefine only these */
 :root{
-  --ground:#EFF3F2; --surface:#FFFFFF; --sunk:#E5EBE9; --gold-ink:#7D5F0E;
+  --ground:#EFF3F2; --surface:#FFF; --sunk:#E5EBE9; --gold-ink:#7D5F0E;
   --line:#D2DCDA; --line-hard:#B2C0BD;
   --text:#111819; --muted:#5A6A6B; --faint:#849695;
-  --accent:#0A8A7C; --accent-ink:#FFFFFF; --accent-soft:#D9EFEC;
+  --accent:#0A8A7C; --accent-ink:#FFF; --accent-soft:#D9EFEC;
   --mega:#6743C6; --mega-soft:#E9E2FA;
   /* ONE INK PER MEGA, AND THE LETTERS TAKE THE GAMES' OWN COLOURS. The
      player pointed at where they come from (2026-09-20: "vi la portada de
@@ -34,11 +34,11 @@
   --warn:#A9640F; --warn-soft:#F7EBD8;
   --bad:#B5372E; --bad-soft:#FAE3E0;
   --good:#2A7442;
-  --shadow:0 1px 2px rgba(16,32,32,.06), 0 8px 24px -12px rgba(16,32,32,.22);
+  --shadow:0 1px 2px rgb(16 32 32 / 6%), 0 8px 24px -12px rgb(16 32 32 / 22%);
   --r:10px;
-  --sans:"IBM Plex Sans",system-ui,-apple-system,Segoe UI,sans-serif;
+  --sans:"IBM Plex Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
   --cond:"IBM Plex Sans Condensed","IBM Plex Sans",system-ui,sans-serif;
-  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular","Menlo",monospace;
   --tint-dir:179.9deg;
 }
 @media (prefers-color-scheme:dark){
@@ -53,7 +53,7 @@
     --warn:#E0A44C; --warn-soft:#31250F;
     --bad:#E4756A; --bad-soft:#361714;
     --good:#5CBE7C;
-    --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.7);
+    --shadow:0 1px 2px rgb(0 0 0 / 40%), 0 8px 24px -12px rgb(0 0 0 / 70%);
   }
 }
 :root[data-theme="dark"]{
@@ -67,7 +67,7 @@
   --warn:#E0A44C; --warn-soft:#31250F;
   --bad:#E4756A; --bad-soft:#361714;
   --good:#5CBE7C;
-  --shadow:0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.7);
+  --shadow:0 1px 2px rgb(0 0 0 / 40%), 0 8px 24px -12px rgb(0 0 0 / 70%);
 }
 
 *{box-sizing:border-box}

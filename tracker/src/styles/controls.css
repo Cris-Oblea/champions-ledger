@@ -21,7 +21,7 @@
 /* A podium finish is not "good" or "bad", it is a medal - so it gets its own
    colour rather than borrowing the accent that already means something else
    on the same row. */
-.tag.gold{background:rgba(190,150,40,.16);border-color:#b8912c;color:var(--gold-ink)}
+.tag.gold{background:rgb(190 150 40 / 16%);border-color:#b8912c;color:var(--gold-ink)}
 
 /* ---------- buttons ------------------------------------------------------ */
 .btn{background:var(--surface);border:1px solid var(--line-hard);border-radius:8px;
@@ -120,20 +120,20 @@ label.f{display:block;font-family:var(--cond);text-transform:uppercase;
    specific field wins, which is what every one of those rules was written
    expecting. Supported since Chrome 88 / Safari 14 - below the floor this page
    already sits on, since it relies on `dvh`. */
-input:where(:not([type=range]):not([type=file]):not([type=checkbox]):not([type=radio])),
+input:where(:not([type="range"], [type="file"], [type="checkbox"], [type="radio"])),
 select,textarea{width:100%;
   background:var(--surface);border:1px solid var(--line-hard);border-radius:8px;
   padding:9px 11px;font-size:14px;color:var(--text);min-height:42px}
 /* THE BROWSER DRAWS ITS OWN EYE IN A PASSWORD FIELD, inside our 11px of right
    padding, so a long password runs underneath it. Give that side room. Edge
    adds a second one of its own next to it, which is why ::-ms-reveal goes. */
-input[type=password]{padding-right:38px}
-input[type=password]::-ms-reveal,input[type=password]::-ms-clear{display:none}
+input[type="password"]{padding-right:38px}
+input[type="password"]::-ms-reveal,input[type="password"]::-ms-clear{display:none}
 /* Safari zooms the whole page when a field under 16px takes focus, and never
    zooms back out. Coarse pointer = a touch device, so it costs desktop
    nothing. */
 @media (pointer:coarse){
-  input:where(:not([type=range]):not([type=file]):not([type=checkbox]):not([type=radio])),
+  input:where(:not([type="range"], [type="file"], [type="checkbox"], [type="radio"])),
   select,textarea{font-size:16px}
   /* Named on purpose. Now that the rule above weighs nothing, a field styled
      by class would out-rank it and take its own smaller size back - which is
@@ -144,7 +144,7 @@ input::placeholder{color:var(--faint)}
 /* Chrome paints its own background over autofilled fields */
 input:-webkit-autofill,input:-webkit-autofill:focus{
   -webkit-text-fill-color:var(--text);
-  -webkit-box-shadow:0 0 0 40px var(--surface) inset;
+  box-shadow:0 0 0 40px var(--surface) inset;
   caret-color:var(--text)}
 textarea{resize:vertical;min-height:64px;line-height:1.45}
 .field{margin-bottom:12px}
@@ -218,16 +218,16 @@ textarea{resize:vertical;min-height:64px;line-height:1.45}
   .sp.spedit{grid-template-columns:30px 1fr 30px 42px 30px 44px;gap:5px}
   .sp .step{width:30px;height:30px}
 }
-input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:22px;
+input[type="range"]{-webkit-appearance:none;appearance:none;width:100%;height:22px;
   background:none}
-input[type=range]::-webkit-slider-runnable-track{height:4px;border-radius:2px;
+input[type="range"]::-webkit-slider-runnable-track{height:4px;border-radius:2px;
   background:var(--sunk);border:1px solid var(--line)}
-input[type=range]::-moz-range-track{height:4px;border-radius:2px;
+input[type="range"]::-moz-range-track{height:4px;border-radius:2px;
   background:var(--sunk);border:1px solid var(--line)}
-input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;
+input[type="range"]::-webkit-slider-thumb{-webkit-appearance:none;width:16px;
   height:16px;border-radius:50%;background:var(--accent);margin-top:-7px;
   border:2px solid var(--surface)}
-input[type=range]::-moz-range-thumb{width:14px;height:14px;border:2px solid var(--surface);
+input[type="range"]::-moz-range-thumb{width:14px;height:14px;border:2px solid var(--surface);
   border-radius:50%;background:var(--accent)}
 .meter{height:6px;border-radius:3px;background:var(--sunk);overflow:hidden;
   border:1px solid var(--line);margin:6px 0 3px}

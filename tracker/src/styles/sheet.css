@@ -1,5 +1,5 @@
 /* ---------- sheet / modal ------------------------------------------------ */
-.scrim{position:fixed;inset:0;background:rgba(8,16,16,.5);z-index:60;
+.scrim{position:fixed;inset:0;background:rgb(8 16 16 / 50%);z-index:60;
   display:flex;align-items:flex-end;justify-content:center;
   -webkit-backdrop-filter:blur(2px);backdrop-filter:blur(2px)}
 .scrim[hidden]{display:none}
@@ -8,8 +8,8 @@
 .sheet{background:var(--ground);width:100%;max-width:620px;max-height:92vh;
   max-height:92dvh;border-radius:16px 16px 0 0;display:flex;
   flex-direction:column;box-shadow:var(--shadow);
-  animation:sheetUp .22s cubic-bezier(.22,1,.36,1);position:relative}
-@keyframes sheetUp{from{transform:translateY(14px);opacity:.6}to{transform:none;opacity:1}}
+  animation:sheet-up .22s cubic-bezier(.22,1,.36,1);position:relative}
+@keyframes sheet-up{from{transform:translateY(14px);opacity:.6}to{transform:none;opacity:1}}
 /* the grab bar: a bottom sheet with no handle reads as a stuck panel, and
    this is also the hit area for tap-to-close at the top of the sheet */
 .sheet::before{content:"";position:absolute;top:6px;left:50%;

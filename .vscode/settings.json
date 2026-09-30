@@ -22,8 +22,13 @@
   // the exact check the gate runs - what the panel shows is what blocks a
   // push. Python belongs to Ruff the same way: ruff.toml, and the ruff that
   // requirements.txt pins rather than the one bundled with the extension.
-  // SonarQube for IDE keeps what is left: CSS and HTML.
-  "sonarlint.analysisExcludesStandalone": "**/*.js,**/*.mjs,**/*.py,data/**,graphify-out/**,node_modules/**,tracker/dist/**,tracker/build/**",
+  // CSS belongs to Stylelint (stylelint.config.mjs) and HTML to html-validate
+  // (.htmlvalidate.mjs), both gate checks too. That leaves SonarQube for IDE
+  // nothing, so if it is installed it is told to stay out of every file, and
+  // VS Code's built-in CSS check is off so a finding is not reported twice.
+  "sonarlint.analysisExcludesStandalone": "**/*",
+  "css.validate": false,
+  "stylelint.validate": ["css"],
   "ruff.importStrategy": "fromEnvironment",
   // The scripts import each other by bare name (`import query as Q`), which
   // works because Python puts the script's own folder on the path. Pylance

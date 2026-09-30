@@ -204,8 +204,9 @@ def gate():
         "and ruff's lint over every script\n"
         "- **%s source checks** — ESLint, with SonarSource's own rules,\n"
         "  over every file (a name one of the %s ES modules uses "
-        "without\n  importing it links fine and throws on the phone), and the "
-        "app read\n  against its own markup and engine\n"
+        "without\n  importing it links fine and throws on the phone), "
+        "stylelint over the CSS,\n  html-validate over the markup, and the "
+        "app read against its own markup\n  and engine\n"
         "- **%s browser tests** — run against the built page, because no "
         "Python\n  check can see a template regression"
         % (word(1 + py + node + browser), word(py), word(node),

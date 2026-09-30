@@ -25,8 +25,8 @@
   font-size:13.5px;box-shadow:var(--shadow);
   max-width:min(88vw, 420px);text-align:center;
   transform:translateX(-50%);
-  animation:toastIn .18s ease-out}
-@keyframes toastIn{from{transform:translate(-50%,8px);opacity:0}
+  animation:toast-in .18s ease-out}
+@keyframes toast-in{from{transform:translate(-50%,8px);opacity:0}
                    to{transform:translateX(-50%);opacity:1}}
 .toast[hidden]{display:none}
 .booterr{position:fixed;left:0;right:0;top:0;z-index:95;background:var(--bad);
