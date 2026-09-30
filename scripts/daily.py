@@ -716,9 +716,8 @@ def main():
     #           cache for ever otherwise, so without this they freeze. Neither
     #           changes daily, and 324 requests a night for nothing is rude.
     #           Mondays, or --deep.
-    # A regulation still needs `refresh.py --regulation` by hand: it clears the
-    # Serebii page caches, and getting that wrong leaves new species with no
-    # movepool. Deliberately not automatic - see analysis/regulation_m_c.md.
+    # A regulation needs nothing from here: refresh.py asks check_regulation
+    # first and, when a new one is live, re-fetches every Serebii page itself.
     # --no-refresh exists because the AUTOMATION had become safer than the
     # human. Every hand deploy went straight out with `npx wrangler deploy`,
     # past the shrink guard, the audits and all fifteen browser tests that the

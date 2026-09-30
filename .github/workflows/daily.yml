@@ -26,9 +26,8 @@
 #    moves, ability, nature como algo actualizable como se hace con el ladder
 #    en gts").
 #
-# A REGULATION still needs a human: `refresh.py --regulation` clears the
-# Serebii page caches, and getting that wrong leaves new species with no
-# movepool. Run it by hand, then let this take over again.
+# A REGULATION needs no human: refresh.py asks check_regulation first and,
+# when a new one is live, re-fetches every Serebii page on top of the cache and reports which came back different.
 
 name: daily refresh
 

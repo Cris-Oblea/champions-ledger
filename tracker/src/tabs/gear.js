@@ -293,4 +293,4 @@ function wireStatusFold(){
   };
 }
 
-export { drawItems, drawStatuses, drawStones, wireStatusFold };
+export { drawItems, drawStones, wireStatusFold };

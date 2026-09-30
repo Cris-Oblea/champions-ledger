@@ -49,6 +49,8 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DEFAULT_DIR = os.environ.get(
     "CHAMPIONS_BACKUP_DIR",
     os.path.join(os.path.expanduser("~"), "ChampionsLedgerBackups"))
+KEEP = 20            # prune() thins the folder only past this many snapshots
+MAX_AGE_DAYS = 3     # --check fails when the newest snapshot is older than this
 
 # Every table the ledger owns. schema_migrations is captured because a
 # snapshot should describe the whole database, but it is never restored -
@@ -201,7 +203,7 @@ def take(a):
         f.write("\n")
     print("wrote %s  (%.0f KB)" % (path, os.path.getsize(path) / 1024))
     print("  " + ", ".join("%s %d" % (t, counts[t]) for t in TABLES))
-    prune(a.dir, a.keep)
+    prune(a.dir, KEEP)
     return 0
 
 
@@ -435,7 +437,7 @@ def check(a):
     A backup system fails silently by definition - the job stops running, the
     token expires, the folder moves, and nothing looks wrong until the day it
     is needed. This is the alarm: the newest snapshot has to be younger than
-    --max-age-days. Where there is no database and no snapshot folder - CI -
+    MAX_AGE_DAYS. Where there is no database and no snapshot folder - CI -
     it says so and verifies nothing, the same way migrate.py --check does,
     because a green tick that checked nothing is worse than no tick.
     """
@@ -454,9 +456,9 @@ def check(a):
     except SystemExit as e:
         print(str(e))
         return 1
-    if age > a.max_age_days:
+    if age > MAX_AGE_DAYS:
         print("the newest snapshot is %d days old (%s) - limit is %d"
-              % (age, os.path.basename(newest), a.max_age_days))
+              % (age, os.path.basename(newest), MAX_AGE_DAYS))
         return 1
     print("backup ok: %s, %d day(s) old, checksum verified"
           % (os.path.basename(newest), age))
@@ -469,15 +471,12 @@ def main():
         formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--dir", default=DEFAULT_DIR,
                     help="where snapshots live (default: %s)" % DEFAULT_DIR)
-    ap.add_argument("--keep", type=int, default=20,
-                    help="prune only once there are more than this many")
     ap.add_argument("--list", action="store_true")
     ap.add_argument("--selftest", action="store_true",
                     help="check the comparison, without a database")
     ap.add_argument("--verify", action="store_true")
     ap.add_argument("--check", action="store_true",
                     help="gate check: is there a recent, intact snapshot?")
-    ap.add_argument("--max-age-days", type=int, default=3)
     ap.add_argument("--skip-if-offline", action="store_true",
                     help="exit 0 instead of failing when there is no database")
     ap.add_argument("--restore", metavar="FILE")

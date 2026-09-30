@@ -4,7 +4,6 @@
     python scripts/refresh.py                # normal refresh
     python scripts/refresh.py --regulation   # a new regulation just dropped
     python scripts/refresh.py --tracker-only # only rebuild tracker/data.js
-    python scripts/refresh.py --skip smogon_calc tournament
 
 Order matters.  Serebii is fetched and the database rebuilt BEFORE the usage
 sources, because pokebase and pokedata are joined onto the dex by name and a
@@ -25,14 +24,18 @@ import os
 import subprocess
 import sys
 import time
+from typing import NamedTuple
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RAW = os.path.join(ROOT, "data", "raw")
 PY = sys.executable
 
-class Stage:
-    def __init__(self, key, label, argv, required=True):
-        self.key, self.label, self.argv, self.required = key, label, argv, required
+
+class Stage(NamedTuple):
+    key: str           # the name in the "failed:" line
+    label: str         # the heading printed before it runs
+    argv: list         # the script and its arguments, run from the repo root
+    required: bool = True   # a failure stops the run here
 
 def stages(reg, deep=False):
     """`deep` re-downloads the slow-moving sources without clearing any cache.
@@ -46,8 +49,9 @@ def stages(reg, deep=False):
                    splits. Both skip cached files, so without this they are
                    frozen for good. Neither changes daily and Smogon is 324 files, so hammering it every
                    night would be rude and slow for nothing.
-      --regulation - the destructive one: clears the Serebii page caches,
-                   which is the only way new species get movepools.
+      --regulation - re-fetches every Serebii page on top of the cache,
+                   which is the only way new species get movepools. It turns
+                   itself on when check_regulation sees a new regulation.
     """
     # A REGULATION IS A PATCH, NOT A REBUILD. This used to DELETE the three
     # Serebii caches and download all 1,148 pages into the hole. Two things
@@ -214,15 +218,13 @@ def _parser():
         description=__doc__,
         formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--regulation", action="store_true",
-                    help="clear the Serebii cache and force every re-parse")
+                    help="re-fetch every Serebii page and report what changed "
+                         "(automatic when a new regulation is detected)")
     ap.add_argument("--tracker-only", action="store_true",
                     help="skip the network, only rebuild tracker/data.js")
     ap.add_argument("--deep", action="store_true",
                     help="also re-download Smogon's analyses and the pokebase splits, "
                          "which otherwise serve from cache for ever")
-    ap.add_argument("--skip", nargs="*", default=[], metavar="STAGE")
-    ap.add_argument("--no-regulation-check", action="store_true",
-                    help="do not ask the sources which regulation is live")
     return ap
 
 
@@ -317,7 +319,7 @@ def main():
         sys.exit(0 if ok else 1)
 
     record_after = False
-    if not a.regulation and not a.no_regulation_check and _regulation_moved():
+    if not a.regulation and _regulation_moved():
         a.regulation = True
         record_after = True
 
@@ -325,7 +327,7 @@ def main():
         print("=== new regulation: re-fetching every Serebii page in place",
               flush=True)
 
-    todo = [s for s in stages(a.regulation, a.deep) if s.key not in a.skip]
+    todo = stages(a.regulation, a.deep)
     failed, hard = _run_stages(todo)
 
     print("\n" + "=" * 60)
@@ -335,8 +337,8 @@ def main():
     if record_after and not hard and not failed:
         _record_regulation()
     if not hard:
-        print("\ntracker/data.js is current. Ask Claude to republish the tracker")
-        print("so the phone picks up the new dex, moves and stones.")
+        print("\ntracker/dist/ is rebuilt. The phone gets it when this is "
+              "merged: the merge deploys.")
     sys.exit(1 if hard else 0)
 
 

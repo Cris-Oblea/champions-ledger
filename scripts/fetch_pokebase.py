@@ -212,24 +212,33 @@ def parse_pokemon_usage():
 
 
 def parse_table_usage(page):
-    """Moves / abilities / items list pages: name + usage % straight from the HTML."""
+    """Moves / abilities / items list pages: name + usage % straight from the HTML.
+
+    The usage is the FIRST cell after the name, and only that cell. A move
+    nobody runs has "—" there, and a pattern that searched onward for the
+    next "N%" found its accuracy instead: Return, Absorb and 199 more were
+    recorded at 100% usage. A move with no usage is left out."""
     rows, seen = [], set()
-    pat = re.compile(
-        r'href="/pokemon-champions/%s/([a-z0-9\-\.]+)">([^<]+)</a>(.{0,1200}?)'
-        r'tabular-nums[^>]*>([\d.]+)(?:<!-- -->)?%%' % re.escape(page), re.S)
+    name = re.compile(r'href="/pokemon-champions/%s/([a-z0-9\-\.]+)">([^<]+)</a>'
+                      % re.escape(page))
+    first_cell = re.compile(r"</td><td[^>]*><span[^>]*>([\d.]+)?")
     for s in read_all_pages(page):
-        for m in pat.finditer(s):
+        for m in name.finditer(s):
             slug = m.group(1)
             if slug in seen:
                 continue
             seen.add(slug)
+            cell = first_cell.search(s, m.end())
+            if not (cell and cell.group(1)):
+                continue
             desc = ""
-            d = re.search(r"whitespace-pre-wrap[^>]*>([^<]{10,400})<", m.group(3))
+            d = re.search(r"whitespace-pre-wrap[^>]*>([^<]{10,400})<",
+                          s[m.end():cell.start()])
             if d:
                 desc = re.sub(r"\s+", " ", d.group(1)).strip()
             rows.append({"rank": len(rows) + 1, "slug": slug,
                          "name": m.group(2).strip(),
-                         "usage_percent": float(m.group(4)),
+                         "usage_percent": float(cell.group(1)),
                          "description": desc})
     return rows
 
