@@ -237,6 +237,16 @@ DECISIONS = [
      r"`ruff\.toml` has a ratchet|rules that still have findings are listed",
      "ruff.toml ignores nothing past its three idiom rules; every rule blocks",
      DOCS),
+
+    # damage.py carried a Python port of the formula as its default engine,
+    # and Smogon's engine behind --engine smogon. The port read every move
+    # whose power is not a number as 1 BP, Seismic Toss included, and said
+    # nothing. Since 2026-09-30 damage.py is the engine alone (player: "deja
+    # solo smogon"), so its flags and warning lines no longer exist.
+    ("damage-py-is-smogon-only",
+     r"--engine (smogon|local)|ABILITY not modelled|CONDITIONAL:|--moves-last",
+     "damage.py runs only Smogon's engine and refuses a move it lacks a fact for",
+     DOCS),
 ]
 
 

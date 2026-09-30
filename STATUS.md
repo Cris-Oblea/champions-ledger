@@ -44,7 +44,7 @@ the code in `.claude/rules/` (`.claude/rules/docs.md` has the map).
 | `fetch_pokebase_splits.py` | Per-Pokemon moves, items, spreads, teammates |
 | `fetch_smogon.py` | Written VGC analyses (VGC formats only) |
 | `fetch_smogon_calc.py` | Smogon's Champions damage engine (`--check` for drift) |
-| `smogon_engine.js` | Runs that engine locally; `damage.py --engine smogon` |
+| `smogon_engine.js` | Runs that engine locally; `damage.py` asks it |
 | `fetch_tournament.py` | Worlds standings + full teamlists |
 | `query.py` | Every lookup — the only thing you normally run |
 | `damage.py` | The damage calculator, local or through Smogon's engine |

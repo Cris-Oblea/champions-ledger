@@ -219,7 +219,9 @@ The player called this correctly before the data did.
 Consequence for damage work: `--engine smogon` works for the Z Megas but
 **fails on Baxcalibur, Salamence, Golisopod, Rillaboom and the rest**
 ("Smogon's Champions roster has no ..."). Our own `damage.py` handles them from
-our database, which is why the local engine matters. Re-run
+our database, which is why the local engine matters. (2026-09-30: the roster
+caught up - `audit_lookups.py` checks every form resolves, and `damage.py` is
+the engine alone now.) Re-run
 `python scripts/fetch_smogon_calc.py --check` in a few days.
 
 **Cross-validation done:** all **340** of our dex forms match a pokebase entry,

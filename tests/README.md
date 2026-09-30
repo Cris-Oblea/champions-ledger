@@ -31,7 +31,7 @@ node homelisttest.js       # HOME opens on twelve rows, then the rest
 **`pagetest.js`** — 16 cases covering an item, an ability on each side, weather,
 terrain, gravity, a screen, a status, a room, a multi-hit and a resist berry.
 The expected values in `enginecases.json` were produced by
-`scripts/damage.py --engine smogon`, so this compares the engine bundled in the
+`scripts/damage.py`, so this compares the engine bundled in the
 page against the same engine run under Node. They should never disagree: it is
 the same code. If they do, the bundle is stale — re-run
 `scripts/build_engine_bundle.py`.

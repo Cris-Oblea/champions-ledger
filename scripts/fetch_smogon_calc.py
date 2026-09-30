@@ -8,7 +8,7 @@ sixth source, and the only executable one.
 
 Why vendor it rather than hit the site:
 
-  * scripts/smogon_engine.js runs it locally, so `damage.py --engine smogon`
+  * scripts/smogon_engine.js runs it locally, so `damage.py`
     needs no network and no npm install - the bundle is plain CommonJS.
   * It is a moving target. Twelve moves (Anchor Shot, Blood Moon, Bolt Beak,
     Fishious Rend and friends) are recorded as base power ONLY, because no

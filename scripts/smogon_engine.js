@@ -1,11 +1,11 @@
 // Runs Smogon's own Champions damage engine over a batch of questions.
 //
-// Why this exists: scripts/damage.py implements the Champions formula exactly -
-// 872 of 909 cases match this engine to the last HP - but it models four
-// modifiers, while this engine models 46 attacker-side abilities, 65
-// defender-side ones, a dozen conditional base powers and every multi-hit.
-// Reimplementing those in Python would drift the moment Smogon updates them, so
-// anything ability-dependent is asked here instead.
+// Why this exists: scripts/damage.py is the terminal's damage calculator, and
+// it answers every question here - the same engine the app bundles, so the two
+// cannot disagree. It models 46 attacker-side abilities, 65 defender-side
+// ones, the conditional base powers and every multi-hit; a Python copy of the
+// formula would drift the moment Smogon updates them (one did, until
+// 2026-09-30, and read Seismic Toss as a 1 BP hit).
 //
 // The bundle is vendored under data/raw/smogon_calc/ and is plain CommonJS, so
 // this needs Node and nothing else - no npm install.

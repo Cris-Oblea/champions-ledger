@@ -78,12 +78,13 @@ python scripts/query.py brief <pokemon>      # every source at once
 python scripts/query.py move <move>          # Serebii + Smogon text, side by side
 python scripts/query.py owned                # the box, with both Mega lines
 python scripts/query.py types <pokemon|types> / resist <types> --owned
-python scripts/damage.py <atk> "<move>" <def> [--engine smogon] [--single-target]
+python scripts/damage.py <atk> "<move>" <def> [--atk-ability X] [--single-target]
 python scripts/damage.py --selftest          # after touching the calculator
 ```
 
-A `CONDITIONAL:` or `ABILITY not modelled:` line means the number is not final:
-rerun with `--engine smogon`. Spread moves take x0.75 unless `--single-target`.
+It runs Smogon's own Champions engine, abilities included. A move that needs a
+fact beyond the two Pokemon (an item, Speed, terrain) is refused until the flag
+is given. Spread moves take x0.75 unless `--single-target`.
 
 **Source hierarchy**: Serebii (rules), then pokedata.ovh (tournaments, three
 divisions never pooled, Masters by default), then pokebase (live ladder), then

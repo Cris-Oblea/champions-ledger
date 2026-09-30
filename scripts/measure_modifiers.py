@@ -30,7 +30,7 @@ NUM = re.compile(r"^\s*(\d+)-(\d+) damage of", re.M)
 
 def run(args, timeout=90):
     """One engine call -> (lo, hi), or None if it could not be measured."""
-    cmd = [PY, DMG] + args + ["--engine", "smogon", "--single-target"]
+    cmd = [PY, DMG] + args + ["--single-target"]
     try:
         p = subprocess.run(cmd, capture_output=True, text=True,
                            timeout=timeout, cwd=ROOT, check=False)
