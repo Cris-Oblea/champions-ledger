@@ -19,7 +19,6 @@
    four pages, 26 spreads over six, and no Season block at all - the case that
    proved the old parser had been mixing two different measurements.
 */
-const fs = require("fs");
 const { JSDOM, VirtualConsole } = require("jsdom");
 const ROOT = require("path").join(__dirname, "..") + "/";
 const UID = "u1";
@@ -62,6 +61,50 @@ const dom = new JSDOM(body.replace("<head>", "<head>" + stub),
   {runScripts:"dangerously", pretendToBeVisual:true, virtualConsole:vc});
 const w = dom.window, d = w.document;
 const click = n => n.dispatchEvent(new w.MouseEvent("click", {bubbles:true}));
+const sum = a => a.reduce((n, r) => n + r[1], 0);
+const foot = t => [...d.querySelectorAll("#sheetFoot .btn")]
+  .find(b => b.textContent.trim() === t);
+const slotWith = re => [...d.querySelectorAll(".slot")].find(s => re.test(s.textContent));
+/* The usage chip is its OWN element, and has to be read as one. Taken off the
+   row's text it runs into the tag before it - "priority +4" followed by "2.2%"
+   reads as "42.2%" - which is a measurement error in the test, not in the app. */
+const usageOf = r => {
+  const t = [...r.querySelectorAll(".rname .tag")]
+    .find(x => /^\d+(\.\d+)?%$/.test(x.textContent.trim()));
+  return t ? Number(t.textContent.replace("%", "")) : null;
+};
+/* EVERY NUMBER ON A CARD IS A CELL: a <b> with the value and a <span> with the
+   label under it. It used to be one prose line of ".fact" spans, read by
+   matching the text - so when the stats became a table the selector found
+   nothing and the test died on a null instead of failing an assertion. Reading
+   the label and the value as the two elements they are cannot go stale that way. */
+const cells = r => [...r.querySelectorAll(".statline > div, .cardline > div")];
+/* ".lbl", not the first span: a cell whose value is a LIST holds one
+   unbreakable span per item inside its <b>, so the first span in the cell is
+   an ability name and not the caption. */
+const cellOf = (r, lab) => cells(r).find(c =>
+  (c.querySelector("span.lbl") || c.querySelector("span"))
+    .textContent.trim() === lab);
+/* Every number the cell draws: the base and what each Mega moves it to. BST
+   writes them as "465 -> 565" and the stats as separate lines, so they are
+   read from the whole cell, not from one label. */
+const cellNums = (r, lab) => (cellOf(r, lab).textContent.match(/\d+/g) || []).map(Number);
+/* WHAT THE POKEMON REACHES, not what its base row says: the whole Mega line
+   decides the order (player, 2026-09-19: "absol, garchomp y lucario deberian
+   aparecer primero en el filtro de speed de mayor a menor"). Descending sorts
+   on the highest number of the line... */
+const reachOf = (r, lab) => {
+  const ns = cellNums(r, lab);
+  return ns.length ? Math.max(...ns) : 0;
+};
+/* ...and ascending, which is the Trick Room list, on the LOWEST: a Mega that
+   raises Speed does not help anyone go slow. */
+const lowOf = (r, lab) => {
+  const ns = cellNums(r, lab);
+  return ns.length ? Math.min(...ns) : 0;
+};
+const shareOf = r => Number(cellOf(r, "of teams")
+  .querySelector("b").textContent.replace("%", ""));
 
 setTimeout(() => {
   /* ---------------------------------------------------- the asset itself */
@@ -78,7 +121,6 @@ setTimeout(() => {
   /* The measurement that decides how the chip may be coloured. If pokebase
      ever switches this column back to a share of SETS it sums to ~400 and
      every number in the app silently changes meaning. */
-  const sum = a => a.reduce((n, r) => n + r[1], 0);
   ok("moves suman ~100 (share de SLOTS)", Math.abs(sum(rilla.m) - 100) < 12, true);
   ok("items suman ~100 (share de SETS)", Math.abs(sum(rilla.i) - 100) < 12, true);
   ok("ningun move pasa de 30%", rilla.m.every(r => r[1] <= 30), true);
@@ -164,30 +206,19 @@ setTimeout(() => {
     ok("Sneasler entre ellos", /Sneasler/.test(txt), true);
 
     /* ------------------------------------------------------ el move picker */
-    const slot = [...d.querySelectorAll(".slot")]
-      .find(s => /Fake Out/.test(s.textContent));
-    click(slot);
+    click(slotWith(/Fake Out/));
     setTimeout(() => {
       console.log("\n  el picker marca TODOS los movimientos");
       const chip = t => [...d.querySelectorAll(".sheet .tog")]
         .find(b => b.textContent.trim() === t);
       const rows = () => [...d.querySelectorAll(".sheet .list .row")];
-      /* The usage chip is its OWN element, and has to be read as one. Taken
-         off the row's text it runs into the tag before it - "priority +4"
-         followed by "2.2%" reads as "42.2%" - which is a measurement error in
-         the test, not in the app. */
-      const pct = r => {
-        const t = [...r.querySelectorAll(".rname .tag")]
-          .find(x => /^\d+(\.\d+)?%$/.test(x.textContent.trim()));
-        return t ? Number(t.textContent.replace("%", "")) : null;
-      };
       ok("existe el orden por uso", !!chip("Usage %"), true);
       ok("y es el que viene puesto",
          chip("Usage %").getAttribute("aria-pressed"), "true");
       const rr = rows();
       ok("hay filas", rr.length > 10, true);
-      ok("todas llevan %", rr.every(r => pct(r) !== null), true);
-      const ps = rr.map(pct);
+      ok("todas llevan %", rr.every(r => usageOf(r) !== null), true);
+      const ps = rr.map(usageOf);
       ok("y van de mayor a menor",
          ps.every((v, i) => i === 0 || ps[i - 1] >= v), true);
       ok("el primero es el mas usado", ps[0] >= 20, true);
@@ -209,30 +240,27 @@ setTimeout(() => {
 
       /* ----------------------------------------- los botones del pie ---- */
       console.log("\n  Clear slot y Back cierran la ventana");
-      const foot = t => [...d.querySelectorAll("#sheetFoot .btn")]
-        .find(b => b.textContent.trim() === t);
       ok("estan los dos", !!foot("Clear slot") && !!foot("Back"), true);
       click(foot("Back"));
       setTimeout(() => {
         ok("Back cierra el sheet", d.getElementById("scrim").hidden, true);
         ok("y no toca el movimiento",
            /Fake Out/.test(d.getElementById("v-buildedit").textContent), true);
-        click([...d.querySelectorAll(".slot")]
-          .find(s => /Fake Out/.test(s.textContent)));
-        setTimeout(() => {
-          click(foot("Clear slot"));
-          setTimeout(() => {
-            ok("Clear slot cierra el sheet",
-               d.getElementById("scrim").hidden, true);
-            ok("y vacia la ranura",
-               /Empty slot 1/.test(d.getElementById("v-buildedit").textContent),
-               true);
-            tiers();
-          }, 200);
-        }, 300);
+        click(slotWith(/Fake Out/));
+        setTimeout(clearSlot, 300);
       }, 200);
     }, 450);
   }, 400);
+
+  function clearSlot(){
+    click(foot("Clear slot"));
+    setTimeout(() => {
+      ok("Clear slot cierra el sheet", d.getElementById("scrim").hidden, true);
+      ok("y vacia la ranura",
+         /Empty slot 1/.test(d.getElementById("v-buildedit").textContent), true);
+      tiers();
+    }, 200);
+  }
 
   function tiers(){
     console.log("\n  una sola tabla, con filtros y orden por stat");
@@ -245,9 +273,8 @@ setTimeout(() => {
     setTimeout(() => {
       /* The active tab's label carries an arrow, so an exact match would
          stop finding it the moment it is selected. */
-      const sortTab2 = t => [...d.querySelectorAll("#findSort .tog")]
+      const sortTab = t => [...d.querySelectorAll("#findSort .tog")]
         .find(b => b.textContent.trim().replace(/[↑↓]/, "").trim() === t);
-      const sortTab = sortTab2;
       ["Dex #","BST","HP","Atk","Def","SpA","SpD","Spe"].forEach(t =>
         ok("orden por " + t, !!sortTab(t), true));
       ok("las cajas fijas de Speed ya no existen",
@@ -261,40 +288,6 @@ setTimeout(() => {
          sortTab("BST").getAttribute("aria-pressed"), "true");
 
       const rows = () => [...d.querySelectorAll("#findOut .row")];
-      /* EVERY NUMBER ON A CARD IS A CELL NOW: a <b> with the value and a
-         <span> with the label under it. It used to be one prose line of
-         ".fact" spans inside a ".statrow", and this read it by matching the
-         text - so when the stats became a table and BST a box of its own, the
-         selector found nothing and the test died on a null instead of failing
-         an assertion. Reading the label and the value as the two elements
-         they are cannot go stale the same way. */
-      const cells = r => [...r.querySelectorAll(".statline > div, .cardline > div")];
-      /* ".lbl", not the first span: a cell whose value is a LIST holds one
-         unbreakable span per item inside its <b>, so the first span in the
-         cell is an ability name and not the caption. */
-      const cellOf = (r, lab) => cells(r).find(c =>
-        (c.querySelector("span.lbl") || c.querySelector("span"))
-          .textContent.trim() === lab);
-      const statOf = (r, lab) => {
-        const c = cellOf(r, lab);
-        if (!c) throw new Error("no hay celda '" + lab + "' en la tarjeta: " +
-          cells(r).map(x => x.querySelector("span").textContent).join("/"));
-        return Number(c.querySelector("b").textContent.replace(/[^\d]/g, ""));
-      };
-      /* LO QUE EL POKEMON ALCANZA, no lo que dice su fila base. El orden lo
-         decide la linea Mega entera: "absol, garchomp y lucario deberian
-         aparecer primero en el filtro de speed de mayor a menor, porque sus
-         formas base tienen una velocidad diferente a la mega, pero igualmente
-         los stats de la mega afectan al rank" (2026-09-19). La celda dibuja la
-         base y, debajo, lo que cada Mega mueve; el maximo de las dos es la
-         clave con la que se ordena. */
-      const reachOf = (r, lab) => {
-        /* cada numero que la celda dibuja: la base y lo que cada Mega mueve.
-           BST los escribe como "465 -> 565" y las stats como lineas aparte,
-           asi que se leen del texto entero y no de una etiqueta concreta. */
-        const ns = (cellOf(r, lab).textContent.match(/\d+/g) || []).map(Number);
-        return ns.length ? Math.max.apply(null, ns) : 0;
-      };
       const vr = rows().map(r => reachOf(r, "BST"));
       ok("hay filas", vr.length > 20, true);
       ok("ordenado por BST", vr.every((x,i) => i===0 || vr[i-1] >= x), true);
@@ -332,18 +325,11 @@ setTimeout(() => {
          /by Spe, highest first/.test(
            d.querySelector("#findOut .sub").textContent), true);
       ok("y la pestana activa lleva la flecha",
-         /↓/.test(sortTab2("Spe").textContent), true);
+         /↓/.test(sortTab("Spe").textContent), true);
 
       /* Tapping the active stat flips the direction - and ascending Speed IS
          the Trick Room list, which is why there is no "Speed at most" box. */
-      click(sortTab2("Spe"));
-      /* ascendente = Trick Room, y ahi lo que manda es lo MAS LENTO que el
-         Pokemon puede ser: una Mega que sube la Speed no ayuda a ir lento, asi
-         que la clave es el minimo de la linea y no el maximo. */
-      const lowOf = (r, lab) => {
-        const ns = (cellOf(r, lab).textContent.match(/\d+/g) || []).map(Number);
-        return ns.length ? Math.min.apply(null, ns) : 0;
-      };
+      click(sortTab("Spe"));
       const asc = rows().map(r => lowOf(r, "Spe"));
       ok("tocarla de nuevo invierte el orden",
          asc.every((x,i) => i===0 || asc[i-1] <= x), true);
@@ -351,8 +337,8 @@ setTimeout(() => {
          /by Spe, lowest first/.test(
            d.querySelector("#findOut .sub").textContent), true);
       ok("con la flecha al reves",
-         /↑/.test(sortTab2("Spe").textContent), true);
-      click(sortTab2("Spe"));   // back to descending
+         /↑/.test(sortTab("Spe").textContent), true);
+      click(sortTab("Spe"));   // back to descending
 
       /* The M-C scope toggle is GONE. It was added, renamed because he could
          not tell what it meant, and then cut outright - "no me sirve en find,
@@ -395,18 +381,13 @@ setTimeout(() => {
     /* The share and the count are two cells now, not one sentence - "24.6% ·
        97 of 394 teams" was prose in a ranking, which is the one place numbers
        have to be scannable down the column. */
-    const wcell = (r, lab) => [...r.querySelectorAll(".cardline > div")]
-      .find(c => (c.querySelector("span.lbl") || c.querySelector("span"))
-        .textContent.trim() === lab);
     ok("con su cuenta de equipos",
-       /^\d+ \/ \d+$/.test(wcell(rr[0], "brought it")
+       /^\d+ \/ \d+$/.test(cellOf(rr[0], "brought it")
          .querySelector("b").textContent.trim()), true);
-    const pct = r => Number(wcell(r, "of teams")
-      .querySelector("b").textContent.replace("%", ""));
-    const ps = rr.map(pct);
+    const ps = rr.map(shareOf);
     ok("de mayor a menor", ps.every((v, i) => i === 0 || ps[i - 1] >= v), true);
     click(dv("Juniors"));
-    ok("Juniors es otra lista", rows().map(pct)[0] !== ps[0] ||
+    ok("Juniors es otra lista", rows().map(shareOf)[0] !== ps[0] ||
        rows()[0].textContent !== rr[0].textContent, true);
     ok("y el encabezado lo dice",
        /juniors/.test(d.querySelector("#worldOut .sub").textContent), true);

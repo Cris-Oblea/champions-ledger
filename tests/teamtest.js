@@ -19,7 +19,6 @@
      what he has, where it is, and what is still to get.
 
    The fixture breaks both clauses on purpose. */
-const fs = require("fs");
 const { JSDOM, VirtualConsole } = require("jsdom");
 const ROOT = require("path").join(__dirname, "..") + "/";
 const UID = "u1";
@@ -88,6 +87,9 @@ const vc = new VirtualConsole().on("jsdomError",
 const dom = new JSDOM(body.replace("<head>", "<head>" + stub),
   {runScripts:"dangerously", pretendToBeVisual:true, virtualConsole:vc});
 const w = dom.window, d = w.document;
+
+const find = (rows, n) => rows.find(x => new RegExp(n).test(x.form));
+const byType = (t, rows) => rows.find(x => x.type === t);
 
 setTimeout(async () => {
   const r = w.teamReport(w.S.teams.t1);
@@ -270,7 +272,7 @@ setTimeout(async () => {
   /* Las debilidades dicen QUIEN y POR CUANTO. */
   const weak = d.getElementById("teamEditBody").textContent;
   ok("nombra quien es debil", /weak: [A-Z]/.test(weak), true);
-  ok("con su multiplicador", /weak: [^\n]*×[0-9]/.test(weak), true);
+  ok("con su multiplicador", /weak: [^\n]*×\d/.test(weak), true);
   ok("y quien resiste", /resists: |nothing on the team resists it/.test(weak),
      true);
   const tt = w.teamTypes(w.teamReport(w.S.teams.t1));
@@ -339,7 +341,6 @@ setTimeout(async () => {
   /* LA VELOCIDAD SIGUE AL SELECTOR. Sin evolucionar, la piedra no hace nada. */
   const spBase = w.teamSpeeds(r2, null);
   const spCam  = w.teamSpeeds(r2, caso("Camerupt").i);
-  const find = (rows, n) => rows.find(x => new RegExp(n).test(x.form));
   ok("sin evolucionar, Camerupt corre a su base", find(spBase, "Camerupt").base, 40);
   ok("y no se llama Mega", /^Camerupt$/.test(find(spBase, "Camerupt").form), true);
   ok("al evolucionarla, cae a la base de la Mega",
@@ -353,7 +354,6 @@ setTimeout(async () => {
   /* LOS TIPOS SIGUEN EL MISMO SELECTOR. */
   const base = w.teamTypes(r2, null);
   const mega = w.teamTypes(r2, caso("Ampharos").i);
-  const byType = (t, rows) => rows.find(x => x.type === t);
   ok("antes de evolucionar no es debil a Hielo",
      byType("Ice", base).weakOf.some(x => /Ampharos/.test(x.name)), false);
   ok("despues si lo es",

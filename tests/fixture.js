@@ -24,8 +24,6 @@
  * in 7 - a row per owned thing, a row per trade - so meta is down to the one
  * document that really is a document.
  */
-const fs = require("fs");
-const path = require("path");
 const { JSDOM, VirtualConsole } = require("jsdom");
 
 const UID = "00000000-0000-4000-8000-00000000fixt";
@@ -193,6 +191,8 @@ function stub() {
     "return c;}};}};<\/script>";
 }
 
+const tick = ms => new Promise(r => setTimeout(r, ms || 400));
+
 /* Boot the built page with the ledger above in place.
  *
  * Returns { window, errors, tick } - `errors` collects every uncaught
@@ -219,7 +219,6 @@ function boot(root) {
     errors.push([...arguments].map(x => (x && x.stack) || String(x)).join(" "));
     if (realError) realError.apply(this, arguments);
   };
-  const tick = ms => new Promise(r => setTimeout(r, ms || 400));
   return { window: dom.window, errors, tick, ROWS, UID };
 }
 

@@ -1,5 +1,4 @@
 /* A GTS trade must be an EXCHANGE: what you gave leaves, what you got arrives. */
-const fs = require("fs");
 /* the repo, found from this file - NOT a hardcoded path. Every test in
    here carried an absolute Windows path, so none of them had ever run
    anywhere but one laptop, and all fifteen died instantly the first time

@@ -14,7 +14,6 @@
 
    And the ones that CAN go: anything in HOME, plus a HOME-origin Pokemon
    sitting in the Champions box, which can be parked back and deposited. */
-const fs = require("fs");
 const { JSDOM, VirtualConsole } = require("jsdom");
 /* the repo, found from this file - NOT a hardcoded path. Every test in
    here carried an absolute Windows path, so none of them had ever run
@@ -71,6 +70,8 @@ const dom = new JSDOM(body.replace("<head>", "<head>" + stub),
   {runScripts:"dangerously", pretendToBeVisual:true, virtualConsole:vc});
 const w = dom.window, d = w.document;
 
+const nameOf = b => b.querySelector(".rname").firstChild.textContent.trim();
+
 setTimeout(() => {
   w.gtsPickMine(function(){}, null);
   const sheet = d.getElementById("sheetBody");
@@ -103,7 +104,6 @@ setTimeout(() => {
      demas"). Ahora es la misma card que el resto de la app. */
   console.log("\n  la misma card que en todas partes");
   const cards = () => [...sheet.querySelectorAll(".list .row")];
-  const nameOf = b => b.querySelector(".rname").firstChild.textContent.trim();
   ok("cada fila es una card",
      cards().every(b => / card\b/.test(b.className)), true);
   ok("con sus seis stats",

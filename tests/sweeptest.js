@@ -1,6 +1,5 @@
 /* Every form in the dex, attacking and defending, through the page's engine.
    A sample would have missed the naming bug the player hit. */
-const fs = require("fs");
 /* the repo, found from this file - NOT a hardcoded path. Every test in
    here carried an absolute Windows path, so none of them had ever run
    anywhere but one laptop, and all fifteen died instantly the first time
@@ -20,12 +19,13 @@ const vc = new VirtualConsole()
 const w = new JSDOM(body.replace("<head>", "<head>" + stub),
   { runScripts: "dangerously", pretendToBeVisual: true, virtualConsole: vc }).window;
 
+const blank = () => ({sp:{hp:0,atk:0,def:0,spa:0,spd:0,spe:0},
+                      boost:{atk:0,def:0,spa:0,spd:0,spe:0},
+                      nature:null, ability:null, item:null, status:null,
+                      curHP:null, buildId:null});
+
 setTimeout(() => {
   const DEX = w.DEX, MOVE_BY = w.MOVE_BY;
-  const blank = () => ({sp:{hp:0,atk:0,def:0,spa:0,spd:0,spe:0},
-                        boost:{atk:0,def:0,spa:0,spd:0,spe:0},
-                        nature:null, ability:null, item:null, status:null,
-                        curHP:null, buildId:null});
   function tryOne(atkName, defName, moveName) {
     Object.assign(w.CALC, {
       atk: Object.assign(blank(), {name: atkName}),

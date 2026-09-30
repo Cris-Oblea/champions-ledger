@@ -314,10 +314,9 @@ runs in four places: the `pre-push` hook, every pull request, every push to
   Code, run over every file. `no-undef` catches a name a module uses without
   declaring or importing it, which the bundler would link as a global and the
   phone would throw on. In `tracker/src` every rule is an error, and so is a
-  function longer than 80 lines of code: the app is at zero and a push that
-  breaks that fails. In `tests/`, `scripts/` and `cron/` the rules that still
-  have findings sit in the config's ratchet list as warnings; a rule leaves the
-  list when it reaches zero there, and from then on it is an error too.
+  function longer than 80 lines of code. `tests/`, `scripts/` and `cron/` run
+  the same rules as errors. The whole repo is at zero, and the gate runs with
+  `--max-warnings 0`, so a push that adds any finding fails.
 - **`node scripts/check_app.js`**: what no linter can see - every element id
   the app reaches for exists in the markup, and every `CALC` switch the
   calculator screen sets reaches the engine.
@@ -403,7 +402,7 @@ gh pr create                          # CI gates it; merge = deploy
   them and the 195 MB source cache out of search, and gives each language ONE
   reporter in the Problems panel (Ctrl+Shift+M): **ESLint** for JavaScript -
   the same rules, and the same check, the gate runs, so a red error there
-  would block the push and a yellow warning is one the ratchet still allows -
+  would block the push, and so would a yellow warning -
   and **SonarQube for IDE** for CSS, HTML and Python.
 - **Recommended extensions** are listed in `.vscode/extensions.json`, so
   VS Code offers to install them when the repo opens (or: Extensions panel,

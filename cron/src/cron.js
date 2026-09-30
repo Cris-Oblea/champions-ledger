@@ -35,7 +35,7 @@ function b64url(bytes) {
   let s = "";
   const a = bytes instanceof Uint8Array ? bytes : new Uint8Array(bytes);
   for (const b of a) s += String.fromCharCode(b);
-  return btoa(s).replace(/\+/g, "-").replace(/\//g, "_").replace(/=+$/, "");
+  return btoa(s).replace(/\+/g, "-").replace(/\//g, "_").replace(/=/g, "");
 }
 
 /* The PEM's base64 body as bytes. The key must be PKCS#8 ("BEGIN PRIVATE

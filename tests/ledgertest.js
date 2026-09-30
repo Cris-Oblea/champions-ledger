@@ -28,11 +28,12 @@ const { window: w, errors, tick } = boot(ROOT);
    is what runs the code; a tab nobody visits is a tab nobody tests. */
 const TABS = ["box", "home", "builds", "calc", "find", "gear", "trainer"];
 
-(async function () {
-  await tick(700);
+const d = w.document;
+/* the page's last error since `before`, or "ok" if it threw nothing */
+const newError = before => errors.length === before ? "ok" : errors[errors.length - 1];
 
+async function loads() {
   console.log("\n  el ledger carga");
-  const d = w.document;
   ok("la puerta de acceso se cerro (hay sesion)", d.getElementById("gate").hidden, true);
   /* the box is drawn in three lists by origin, which is the app's own answer
      to "what can leave the game" - so the count is across all three */
@@ -41,7 +42,9 @@ const TABS = ["box", "home", "builds", "calc", "find", "gear", "trainer"];
   ok("las tres listas del box tienen filas", boxRows, 10);
   ok("y HOME tambien", d.getElementById("listHome").children.length > 0, true);
   ok("sin errores al cargar", errors.length ? errors[0] : "ninguno", "ninguno");
+}
 
+async function everyTab() {
   console.log("\n  cada pestana se dibuja");
   for (const t of TABS) {
     const before = errors.length;
@@ -52,7 +55,9 @@ const TABS = ["box", "home", "builds", "calc", "find", "gear", "trainer"];
        (view && !view.hidden ? "" : "no se mostro ") +
        (errors.length === before ? "" : errors[errors.length - 1]) || "ok", "ok");
   }
+}
 
+async function dataBranches() {
   /* ---- the branches this fixture exists for -------------------------------
      Each of these only runs because the ledger is awkward. If one stops
      drawing, the fixture has stopped protecting the code that threw. */
@@ -81,7 +86,9 @@ const TABS = ["box", "home", "builds", "calc", "find", "gear", "trainer"];
      /Garchomp/.test(d.getElementById("listDupeHome").textContent), false);
   ok("y nombra el build que se conserva como idea",
      /Kingambit/.test(dnote ? dnote.innerHTML : ""), true);
+}
 
+async function ownedRows() {
   /* stones and items are rows now (migration 6), and the Items tab is where
      that is visible - a stone owned for a species that is not in the box is
      the "dead weight until it arrives" line. */
@@ -97,21 +104,26 @@ const TABS = ["box", "home", "builds", "calc", "find", "gear", "trainer"];
      w.S && Object.keys(w.S.items).length, 4);
   w.go("box");
   await tick(150);
+}
 
+const link = id => w.buildLink(id).state;
+
+async function buildStates() {
   /* the four build states: active, parked, orphan, unbound */
   console.log("\n  los cuatro estados de un build");
-  const link = id => w.buildLink(id).state;
   ok("kingambit -> active", link("kingambit"), "active");
   ok("iron-hands -> unbound (una idea, no un fallo)", link("iron-hands"), "unbound");
   ok("camerupt -> orphan (la fila ya no existe)", link("camerupt"), "orphan");
+}
 
+async function sheetsOnData() {
   /* a sheet is where most of the app's drawing actually happens */
   console.log("\n  las hojas se abren sobre datos reales");
   let before = errors.length;
   w.pokeSheet({ _id: "kingambit", name: "Kingambit", location: "champions",
                 status: "permanent", origin: "champions" });
   await tick(150);
-  ok("la hoja de un Pokemon", errors.length === before ? "ok" : errors[errors.length - 1], "ok");
+  ok("la hoja de un Pokemon", newError(before), "ok");
   w.closeSheet();
 
   /* THE ONE CHAMPIONS HAS NEVER HEARD OF. Its card already carried the types,
@@ -125,7 +137,7 @@ const TABS = ["box", "home", "builds", "calc", "find", "gear", "trainer"];
                 status: "permanent", origin: "home" });
   await tick(150);
   ok("la hoja de uno que no esta en Champions",
-     errors.length === before ? "ok" : errors[errors.length - 1], "ok");
+     newError(before), "ok");
   const osheet = d.getElementById("sheetBody").textContent.replace(/\s+/g, " ");
   ok("...dice que no esta en el dex", /Not in the Champions dex/.test(osheet), true);
   ok("...y aun asi lista sus tipos", /Grass/.test(osheet) && /Poison/.test(osheet), true);
@@ -134,7 +146,28 @@ const TABS = ["box", "home", "builds", "calc", "find", "gear", "trainer"];
   ok("...y lo que le hace dano, que es del tipo y no del juego",
      /Takes damage/.test(osheet) && /Fire/.test(osheet), true);
   w.closeSheet();
+}
 
+const heads = () => [...d.getElementById("sheetBody").querySelectorAll("h2")]
+  .map(h => h.textContent.trim());
+/* EL CUADRO DE LA FORMA BASE. Las habilidades y la tabla de dano dejaron
+   de ser secciones sueltas el 2026-09-20 y viven dentro del cuadro de la
+   forma base, igual que las de cada Mega viven dentro del suyo ("mega line
+   tiene todo dentro de un mismo cuadro, pero la forma base no"). Siguen
+   teniendo que estar en las tres puertas - eso es lo que este test mide -
+   asi que se buscan donde ahora estan. */
+const base = () => {
+  const pn = d.getElementById("sheetBody").querySelector(".panel");
+  if (!pn) return {abilities: 0, dano: false, stats: false};
+  return {abilities: pn.querySelectorAll(".note strong").length,
+          dano: /Takes damage/.test(pn.textContent),
+          stats: !!pn.querySelector(".statline")};
+};
+const folds = () => [...d.getElementById("sheetBody").querySelectorAll(".fold")]
+  .map(b => b.textContent.trim());
+const hasHead = (list, h) => list.some(x => x.indexOf(h) === 0);
+
+async function threeDoors() {
   /* LAS TRES PUERTAS DAN LA MISMA FICHA. Find tenia las habilidades, los sets
      de Worlds y el movepool entero; la caja tenia la linea Mega, el "takes
      damage" y lo que escribio Smogon. Ninguna tenia la mitad de la otra, asi
@@ -142,23 +175,6 @@ const TABS = ["box", "home", "builds", "calc", "find", "gear", "trainer"];
      Pokemon. Lo unico que puede diferenciarlas es lo que se POSEE: origen,
      shiny, entrenado y la nota. */
   console.log("\n  la misma ficha por las tres puertas");
-  const heads = () => [...d.getElementById("sheetBody").querySelectorAll("h2")]
-    .map(h => h.textContent.trim());
-  /* EL CUADRO DE LA FORMA BASE. Las habilidades y la tabla de dano dejaron
-     de ser secciones sueltas el 2026-09-20 y viven dentro del cuadro de la
-     forma base, igual que las de cada Mega viven dentro del suyo ("mega line
-     tiene todo dentro de un mismo cuadro, pero la forma base no"). Siguen
-     teniendo que estar en las tres puertas - eso es lo que este test mide -
-     asi que se buscan donde ahora estan. */
-  const base = () => {
-    const pn = d.getElementById("sheetBody").querySelector(".panel");
-    if (!pn) return {abilities: 0, dano: false, stats: false};
-    return {abilities: pn.querySelectorAll(".note strong").length,
-            dano: /Takes damage/.test(pn.textContent),
-            stats: !!pn.querySelector(".statline")};
-  };
-  const folds = () => [...d.getElementById("sheetBody").querySelectorAll(".fold")]
-    .map(b => b.textContent.trim());
 
   w.findDetail(w.byName["Garchomp"]);
   await tick(150);
@@ -181,7 +197,6 @@ const TABS = ["box", "home", "builds", "calc", "find", "gear", "trainer"];
      encabezado avisa de que solo una puede evolucionar por combate - asi que
      se compara por prefijo y no por igualdad. */
   const REF = ["Mega line", "Movepool"];
-  const hasHead = (list, h) => list.some(x => x.indexOf(h) === 0);
   REF.forEach(h => {
     ok("Find trae " + h, hasHead(findHeads, h), true);
     ok("...la caja Champions tambien", hasHead(boxHeads, h), true);
@@ -211,8 +226,9 @@ const TABS = ["box", "home", "builds", "calc", "find", "gear", "trainer"];
      findHeads.indexOf("Where did it come from?") < 0, true);
   ok("y solo la caja guarda una nota",
      homeHeads.indexOf("Note") >= 0 && findHeads.indexOf("Note") < 0, true);
+}
 
-
+async function speciesPicker() {
   /* ----------------------------------------- el selector de especie -------- */
   /* Era un <select> con las 264 formas en una sola tirada alfabetica y ninguna
      forma de buscar dentro:
@@ -275,8 +291,9 @@ const TABS = ["box", "home", "builds", "calc", "find", "gear", "trainer"];
      /Sneasler/.test(d.getElementById("v-buildedit").textContent), true);
   w.leaveEditor();
   await tick(100);
+}
 
-
+async function worldsRows() {
   /* ------------------------------------- Worlds: todos tienen ficha ------- */
   /* 53 de los nombres de las cuatro finales no estan en el dex de Champions -
      el campo de 2025 iba lleno de Calyrex y Koraidon - y cada uno se dibujaba
@@ -316,7 +333,9 @@ const TABS = ["box", "home", "builds", "calc", "find", "gear", "trainer"];
       ok(n + " trae tipos y stats",
          !!(r && r.types.length && r.b.length === 6), true);
     });
+}
 
+async function outsideMovepool() {
   /* ------------------------------ y lo que sabe el que no esta en el juego */
   /* 425 KB, mas que el motor, para una lista que se lee al abrir una de estas
      fichas y nunca en otro momento - asi que es su propio asset y se pide solo
@@ -351,7 +370,9 @@ const TABS = ["box", "home", "builds", "calc", "find", "gear", "trainer"];
   ok("...y lo dice en la cabecera",
      /1 of them are moves Champions has in its database/.test(sheet2), true);
   w.closeSheet();
+}
 
+async function backButton() {
   /* ------------------------------------- el boton atras del telefono ----- */
   /* En Android, Atras minimizaba la app: la pagina carga una vez y todo lo
      demas es una <section> que se muestra o se esconde, asi que la unica
@@ -381,26 +402,37 @@ const TABS = ["box", "home", "builds", "calc", "find", "gear", "trainer"];
   await back();
   ok("el tercero sigue retrocediendo", w.S.tab !== before3, true);
   ok("...y nunca sale de la app", !!d.getElementById("v-" + w.S.tab), true);
+}
 
-  before = errors.length;
+async function otherSheets() {
+  let before = errors.length;
   w.buildSheet("charizard");
   await tick(150);
   ok("la hoja de un build con Mega",
-     errors.length === before ? "ok" : errors[errors.length - 1], "ok");
+     newError(before), "ok");
   w.closeSheet();
 
   before = errors.length;
   w.teamSheet("rain-ish", null);
   await tick(150);
   ok("la hoja de un equipo de seis slots",
-     errors.length === before ? "ok" : errors[errors.length - 1], "ok");
+     newError(before), "ok");
   w.closeSheet();
 
   before = errors.length;
   w.gtsPickMine(function () {});
   await tick(150);
-  ok("el selector del GTS", errors.length === before ? "ok" : errors[errors.length - 1], "ok");
+  ok("el selector del GTS", newError(before), "ok");
   w.closeSheet();
+
+}
+
+(async function () {
+  await tick(700);
+  for (const section of [loads, everyTab, dataBranches, ownedRows, buildStates,
+                         sheetsOnData, threeDoors, speciesPicker, worldsRows,
+                         outsideMovepool, backButton, otherSheets])
+    await section();
 
   console.log("\n  ERRORES JS: " + (errors.length ? errors.join(" | ") : "ninguno"));
   ok("cero errores en toda la sesion", errors.length, 0);

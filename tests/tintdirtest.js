@@ -29,7 +29,7 @@ const ok = (label, got, want) => {
 };
 
 /* every linear-gradient( ... ) whose first colour is a tint variable */
-const grads = [...css.matchAll(/linear-gradient\(\s*([^,]+),\s*var\(--(t|m)soft/g)];
+const grads = [...css.matchAll(/linear-gradient\(([^,]+),\s*var\(--[tm]soft/g)];
 ok("hay tintes que revisar", grads.length >= 4, true);
 const literal = grads.filter(m => m[1].trim() !== "var(--tint-dir)");
 ok("todos toman la direccion de --tint-dir",

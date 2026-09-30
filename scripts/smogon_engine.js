@@ -34,7 +34,7 @@ try {
   ({Field} = require(path.join(BUNDLE, 'field.js')));
   ({calculateChampions} = require(path.join(BUNDLE, 'mechanics', 'champions.js')));
 } catch (e) {
-  console.error('Cannot load the Champions engine from ' + BUNDLE);
+  console.error('Cannot load the Champions engine from ' + BUNDLE + ': ' + e.message);
   console.error('Re-fetch it with: python scripts/fetch_smogon_calc.py');
   process.exit(2);
 }

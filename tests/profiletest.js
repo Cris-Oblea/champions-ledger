@@ -8,7 +8,6 @@
 
    So this asserts the SHAPE, not the values: one input, no VP anywhere, and
    every derived line present and non-empty. */
-const fs = require("fs");
 const { JSDOM, VirtualConsole } = require("jsdom");
 /* the repo, found from this file - NOT a hardcoded path. Every test in
    here carried an absolute Windows path, so none of them had ever run

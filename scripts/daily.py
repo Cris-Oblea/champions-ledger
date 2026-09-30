@@ -103,12 +103,12 @@ GATE_CHECKS = [
 # both silent until the button was pressed (2026-09-29).
 #
 # ESLint runs the same rules SonarQube for IDE shows in VS Code, over every
-# file, with `--quiet` so a failure prints the errors rather than the warnings
-# the ratchet in eslint.config.mjs still allows. check_app.js keeps the two
+# file, with `--max-warnings 0`: the repo is at zero, so a warning fails the
+# gate like an error. check_app.js keeps the two
 # checks no linter can make: they read the app against its own markup and its
 # own engine.
 SOURCE_CHECKS = [
-    (["node_modules/eslint/bin/eslint.js", "--quiet"],
+    (["node_modules/eslint/bin/eslint.js", "--max-warnings", "0"],
      "no lint finding comes back once it is fixed"),
     (["scripts/check_app.js"], "the app's source agrees with its markup and its engine"),
 ]

@@ -15,7 +15,6 @@
    every key it will be asked for is there, and re-checks the two code smells
    in the built file. It is a sweep, not a sample, because a sample missed 24
    of those 25 forms. */
-const fs = require("fs");
 const { JSDOM, VirtualConsole } = require("jsdom");
 /* the repo, found from this file - NOT a hardcoded path. Every test in
    here carried an absolute Windows path, so none of them had ever run
@@ -30,8 +29,11 @@ const ok = (label, got, want) => {
   console.log("  " + (good ? "OK  " : "FAIL") + "  " + label.padEnd(52) +
               got + (good ? "" : "   (esperado " + want + ")"));
 };
-const list = (a, n) => a.length ? a.slice(0, n || 6).join(", ") +
-  (a.length > (n || 6) ? " (+" + (a.length - (n || 6)) + ")" : "") : "0";
+const list = (a, n = 6) => {
+  if (!a.length) return "0";
+  const more = a.length > n ? " (+" + (a.length - n) + ")" : "";
+  return a.slice(0, n).join(", ") + more;
+};
 
 const src = require("./harness.js").page(ROOT);
 /* the code smells below are about the SOURCE, so they read the source */
@@ -55,14 +57,15 @@ setTimeout(() => {
 
   /* ---- the two code smells, so neither can come back ------------------ */
   console.log("\n  el codigo");
-  const decl = {}, fdecl = {};
-  let m, re = /^var ([A-Za-z_$][\w$]*)\s*=/gm, fre = /^function ([A-Za-z_$][\w$]*)\s*\(/gm;
-  while ((m = re.exec(code))) (decl[m[1]] = decl[m[1]] || []).push(1);
-  while ((m = fre.exec(code))) (fdecl[m[1]] = fdecl[m[1]] || []).push(1);
+  const twice = re => {
+    const seen = new Set(), dup = new Set();
+    for (const [, name] of code.matchAll(re)) (seen.has(name) ? dup : seen).add(name);
+    return [...dup];
+  };
   ok("ningun var declarado dos veces",
-     list(Object.keys(decl).filter(k => decl[k].length > 1)), "0");
+     list(twice(/^var ([A-Za-z_$][\w$]*)\s*=/gm)), "0");
   ok("ninguna funcion declarada dos veces",
-     list(Object.keys(fdecl).filter(k => fdecl[k].length > 1)), "0");
+     list(twice(/^function ([A-Za-z_$][\w$]*)\s*\(/gm)), "0");
   /* the drawItems bug: a guard that skips the redraw when focus is inside the
      container it is about to rebuild. Legitimate for a form of text inputs
      (the Trainer tab), wrong for a list of buttons. */
