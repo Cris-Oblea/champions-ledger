@@ -2,6 +2,41 @@
    analyses, and the part of the dex Champions does not have. */
 import { byName } from "./data.js";
 
+/* ------------------------------------------------ the loader, once -------
+   lazyScript(global, urlGlobal) returns load(then). The first call adds a
+   <script> for window[urlGlobal]; every call, however many sheets ask while it
+   is in flight, gets then(ready) once the answer is known. `ready` is false
+   when the file failed or this build carries none (the single-file build sets
+   the URL to ''), and the callers say which.
+
+   A tag rather than fetch(): the CSP allows same-origin scripts and each file
+   is one assignment to window, so there is nothing to parse by hand and
+   nothing to get wrong about encoding. And because it IS an assignment,
+   anything that already ran it - a second panel, a test - counts as loaded. */
+function lazyScript(global, urlGlobal){
+  var state = "idle", waiting = [];      // idle | loading | ready | absent
+  function settle(to){
+    state = to;
+    var q = waiting;
+    waiting = [];
+    q.forEach(function(fn){ try { fn(to === "ready"); } catch (e) {} });
+  }
+  return function load(then){
+    if (window[global]) { state = "ready"; return then(true); }
+    if (state === "ready" || state === "absent") return then(state === "ready");
+    waiting.push(then);
+    if (state === "loading") return;
+    var url = window[urlGlobal];
+    if (!url) return settle("absent");
+    state = "loading";
+    var sc = document.createElement("script");
+    sc.src = url;
+    sc.onload = function(){ settle("ready"); };
+    sc.onerror = function(){ settle("absent"); };
+    document.head.appendChild(sc);
+  };
+}
+
 /* ------------------------------------------------ what Smogon wrote ------
    The only source in this project with REASONING in it, and until now the
    only one the phone never saw. 54 Pokemon have a written VGC analysis: the
@@ -12,13 +47,8 @@ import { byName } from "./data.js";
    LOADED ON DEMAND. 407 KB against a dex payload of 419 - paying that on every
    visit for a panel opened while arguing about a build is the wrong trade. The
    script tag is added the first time a sheet asks, and the file is immutable
-   by its content hash, so it is fetched once ever.
-
-   A tag rather than fetch(): the CSP allows same-origin scripts and the file
-   is one assignment, so there is nothing to parse by hand and nothing to get
-   wrong about encoding. */
-var ANALYSIS_STATE = null;          // null | "loading" | "ready" | "absent"
-var ANALYSIS_WAITING = [];
+   by its content hash, so it is fetched once ever. */
+var loadAnalysis = lazyScript("CHAMP_ANALYSIS", "CHAMP_ANALYSIS_URL");
 
 function analysisFor(name){
   var all = window.CHAMP_ANALYSIS;
@@ -32,36 +62,8 @@ function analysisFor(name){
   return null;
 }
 
-function loadAnalysis(then){
-  /* Already here? Then there is nothing to load. The asset is a plain
-     assignment to window, so anything that has run it - a second panel, a
-     future view, a test - counts, and asking again would sit on a script tag
-     that resolves nothing. */
-  if (window.CHAMP_ANALYSIS) { ANALYSIS_STATE = "ready"; return then(); }
-  if (ANALYSIS_STATE === "ready" || ANALYSIS_STATE === "absent") return then();
-  ANALYSIS_WAITING.push(then);
-  if (ANALYSIS_STATE === "loading") return;
-  var url = window.CHAMP_ANALYSIS_URL;
-  if (!url) {                       // the single-file build carries no asset
-    ANALYSIS_STATE = "absent";
-    return flushAnalysis();
-  }
-  ANALYSIS_STATE = "loading";
-  var sc = document.createElement("script");
-  sc.src = url;
-  sc.onload = function(){ ANALYSIS_STATE = "ready"; flushAnalysis(); };
-  sc.onerror = function(){ ANALYSIS_STATE = "absent"; flushAnalysis(); };
-  document.head.appendChild(sc);
-}
-
-function flushAnalysis(){
-  var q = ANALYSIS_WAITING;
-  ANALYSIS_WAITING = [];
-  q.forEach(function(fn){ try { fn(); } catch (e) {} });
-}
-
 /* ------------------------------- THE REST OF THE DEX, ON DEMAND ----------
-   The same shape as the analysis loader, for a different 503 KB.
+   The same loader, for a different 503 KB.
 
      "La idea es tener la DEX COMPLETA... necesito tener la database de todas
       las abilities, todos los moves, todos los pokemones. asi cuando se
@@ -78,28 +80,7 @@ function flushAnalysis(){
    argued in scripts/build_outside_dex.py - the short version being that the
    MOVES are Champions' own data all along, and only the ability text is
    main-series. */
-var OUT_STATE = "idle", OUT_WAITING = [];
-
-function loadOutside(then){
-  if (window.CHAMP_OUTSIDE) { OUT_STATE = "ready"; return then(); }
-  if (OUT_STATE === "ready" || OUT_STATE === "absent") return then();
-  OUT_WAITING.push(then);
-  if (OUT_STATE === "loading") return;
-  var url = window.CHAMP_OUTSIDE_URL;
-  if (!url) { OUT_STATE = "absent"; return flushOutside(); }
-  OUT_STATE = "loading";
-  var sc = document.createElement("script");
-  sc.src = url;
-  sc.onload = function(){ OUT_STATE = "ready"; flushOutside(); };
-  sc.onerror = function(){ OUT_STATE = "absent"; flushOutside(); };
-  document.head.appendChild(sc);
-}
-
-function flushOutside(){
-  var q = OUT_WAITING;
-  OUT_WAITING = [];
-  q.forEach(function(fn){ try { fn(); } catch (e) {} });
-}
+var loadOutside = lazyScript("CHAMP_OUTSIDE", "CHAMP_OUTSIDE_URL");
 
 function outsideDex(){ return window.CHAMP_OUTSIDE || {}; }
 function outsideMovesFor(name){ return outsideDex().m?.[name] || null; }
@@ -117,6 +98,6 @@ function outsideMove(name){
 }
 
 export {
-  ANALYSIS_STATE, analysisFor, loadAnalysis, loadOutside, outsideDex,
-  outsideMove, outsideMovesFor,
+  analysisFor, loadAnalysis, loadOutside, outsideDex, outsideMove,
+  outsideMovesFor,
 };
