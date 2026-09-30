@@ -275,7 +275,7 @@ def shrink_check():
             continue
         try:
             now = _count(json.loads(Path(path).read_text(encoding="utf-8")), how)
-        except Exception as e:
+        except (OSError, ValueError, AttributeError, TypeError) as e:
             bad.append("BLOCKED: %s will not parse (%s)" % (rel, e))
             continue
         r, prev = sh(["git", "show", "HEAD:" + rel])
@@ -283,7 +283,7 @@ def shrink_check():
             continue                      # not committed yet: nothing to compare
         try:
             was = _count(json.loads(prev), how)
-        except Exception:
+        except (ValueError, AttributeError, TypeError):
             continue
         if not was:
             continue
@@ -313,7 +313,7 @@ def ladder_summary():
     p = os.path.join(ROOT, "data", "meta", "usage_pokemon.json")
     try:
         d = json.loads(Path(p).read_text(encoding="utf-8"))
-    except Exception:
+    except (OSError, ValueError):
         return None
     rows = d.get("rows") or []
     top = [(r.get("name"), r.get("usage_percent")) for r in rows[:5]]

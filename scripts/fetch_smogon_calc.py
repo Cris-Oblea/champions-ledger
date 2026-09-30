@@ -29,6 +29,7 @@ analysis/smogon_calc.md for where the two disagree and who wins.
 """
 import argparse
 import hashlib
+import http.client
 import json
 import os
 import sys
@@ -104,7 +105,7 @@ def main():
         os.makedirs(os.path.dirname(dest), exist_ok=True)
         try:
             body = fetch(rel)
-        except Exception as e:
+        except (OSError, http.client.HTTPException) as e:
             failed.append((rel, str(e)))
             continue
         old = Path(dest).read_bytes() if os.path.exists(dest) else None

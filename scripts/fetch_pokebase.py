@@ -19,6 +19,7 @@ Usage:
     python scripts/fetch_pokebase.py          # fetch + parse everything
     python scripts/fetch_pokebase.py --parse  # re-parse cached HTML only
 """
+import http.client
 import json
 import os
 import re
@@ -57,7 +58,7 @@ def fetch(page, force=False, num=None):
             print("  %-14s %d KB" % (name, len(body) // 1024), flush=True)
             time.sleep(0.4)
             return dest
-        except Exception as e:
+        except (OSError, http.client.HTTPException) as e:
             if attempt == 2:
                 print("  FAILED %s -> %s" % (name, e))
                 return None
@@ -345,7 +346,7 @@ def main():
     for name, fn in jobs:
         try:
             rows = fn()
-        except Exception as e:
+        except Exception as e:  # noqa: BLE001 - one broken parser never stops the rest
             print("  %-18s FAILED: %s" % (name, e))
             continue
         payload = {"source": "pokebase.app/pokemon-champions",

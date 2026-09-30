@@ -100,7 +100,7 @@ def species_table(path):
     """
     try:
         d = json.loads(Path(path).read_text(encoding="utf-8"))
-    except Exception:
+    except (OSError, ValueError):
         return None
     players = d.get("players") or []
     with_team = [p for p in players if p.get("team")]

@@ -12,6 +12,7 @@ Usage:
     python scripts/fetch_serebii.py all
 """
 import hashlib
+import http.client
 import os
 import queue
 import re
@@ -77,7 +78,7 @@ def get(url, dest, force=False):
                     hashlib.sha256(body).hexdigest() != before:
                 CHANGED.append(os.path.basename(dest))
             return True, False
-        except Exception as e:
+        except (OSError, http.client.HTTPException, ValueError) as e:
             if attempt == 2:
                 print("  FAILED %s -> %s" % (url, e))
                 return False, False

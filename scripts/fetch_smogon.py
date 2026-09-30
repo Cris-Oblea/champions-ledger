@@ -22,6 +22,7 @@ Usage:
     python scripts/fetch_smogon.py --force
 """
 import html
+import http.client
 import json
 import os
 import re
@@ -61,7 +62,7 @@ def rpc(method, params, timeout=60):
                 except (UnicodeDecodeError, ValueError):
                     continue
             return json.loads(raw.decode("utf-8", "replace"))
-        except Exception as e:
+        except (OSError, http.client.HTTPException, ValueError) as e:
             if attempt == 2:
                 print("  RPC failed %s %s -> %s" % (method, params, e))
                 return None
@@ -116,7 +117,7 @@ def ask_dex(kind, alias):
                 except (UnicodeDecodeError, ValueError):
                     d = None
             return (d or {}).get("description") or None
-        except Exception:
+        except (OSError, http.client.HTTPException):
             time.sleep(1.5 * (attempt + 1))
     return "failed"
 

@@ -254,7 +254,7 @@ def main():
         try:
             import check_regulation
             status, live, ours, why = check_regulation.look()
-        except Exception as e:                       # never block a refresh
+        except Exception as e:  # noqa: BLE001 - a broken regulation check never blocks a refresh
             status, live, ours, why = "unknown", None, None, str(e)
         if status == "ready":
             print("=" * 60)
