@@ -883,7 +883,7 @@ def run_smogon(cases):
     js = os.path.join(ROOT, "scripts", "smogon_engine.js")
     try:
         p = subprocess.run(["node", js, "-"], input=json.dumps(cases),
-                           capture_output=True, text=True)
+                           capture_output=True, text=True, check=False)
     except FileNotFoundError:
         raise SystemExit("--engine smogon needs Node on PATH (node --version)") from None
     if p.returncode != 0:

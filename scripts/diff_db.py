@@ -65,7 +65,7 @@ def committed(rel):
     # changed on a clean working tree. A differ that cries wolf is worse than
     # none: the one night it matters, nobody reads it.
     r = subprocess.run(["git", "show", "HEAD:" + rel], cwd=ROOT,
-                       capture_output=True)
+                       capture_output=True, check=False)
     if r.returncode != 0 or not r.stdout.strip():
         return None
     try:

@@ -33,7 +33,7 @@ def run(args, timeout=90):
     cmd = [PY, DMG] + args + ["--engine", "smogon", "--single-target"]
     try:
         p = subprocess.run(cmd, capture_output=True, text=True,
-                           timeout=timeout, cwd=ROOT)
+                           timeout=timeout, cwd=ROOT, check=False)
     except subprocess.TimeoutExpired:
         return None
     m = NUM.search(p.stdout)

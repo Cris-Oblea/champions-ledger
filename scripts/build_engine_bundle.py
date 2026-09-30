@@ -57,7 +57,7 @@ def main():
         sys.exit("esbuild is not installed - run `npm ci`. Looked in %s" % esb)
     r = subprocess.run([esb, ENTRY, "--bundle", "--format=iife",
                         "--minify", "--outfile=" + OUT],
-                       capture_output=True, text=True, cwd=ROOT)
+                       capture_output=True, text=True, cwd=ROOT, check=False)
     if r.returncode != 0:
         sys.exit("esbuild failed:\n" + (r.stderr or r.stdout))
     size = os.path.getsize(OUT)
@@ -75,7 +75,7 @@ def main():
          "const x=[].concat.apply([],r.damage);"
          "console.log(Math.min.apply(null,x)+'-'+Math.max.apply(null,x));"
          % json.dumps(OUT.replace("\\", "/"))],
-        capture_output=True, text=True, cwd=ROOT)
+        capture_output=True, text=True, cwd=ROOT, check=False)
     got = (check.stdout or "").strip()
     if check.returncode != 0 or not got:
         sys.exit("the bundle does not run:\n" + (check.stderr or ""))

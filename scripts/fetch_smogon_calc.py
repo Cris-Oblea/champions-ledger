@@ -84,7 +84,7 @@ fs.writeFileSync(path.join(B,'champions_sets.json'),JSON.stringify(d,null,1));
 console.log(Object.keys(M).length+' moves, '+Object.keys(S).length+
             ' species, '+Object.keys(d).length+' set entries');
 """ % json.dumps(OUT)
-    p = subprocess.run(["node", "-e", script], capture_output=True, text=True)
+    p = subprocess.run(["node", "-e", script], capture_output=True, text=True, check=False)
     if p.returncode != 0:
         print("  (could not re-export JSON: %s)" % (p.stderr or "").strip()[:200])
         return

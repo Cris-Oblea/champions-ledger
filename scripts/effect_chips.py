@@ -102,13 +102,13 @@ def quantity(sides):
 # listed on the chance that it might be.
 AFTER = [
     (r"^\s*%?\s*chance to (\w+)", lambda m: m.group(1) + " chance"),
-    (r"^\s*%?\s*chance", lambda m: "chance"),
-    (r"^\s*(?:%|" + TIMES + r"|x)?\s*(?:target's )?max HP", lambda m: "max HP"),
-    (r"^\s*or less of its max HP", lambda m: None),      # BEFORE answers this
-    (r"^\s*(?:%|" + TIMES + r"|x)?\s*power", lambda m: "power"),
-    (r"^\s*(?:%|" + TIMES + r"|x)?\s*accuracy", lambda m: "accuracy"),
-    (r"^\s*(?:%|" + TIMES + r"|x)?\s*damage", lambda m: "damage"),
-    (r"^\s*(?:%|" + TIMES + r"|x)?\s*recoil", lambda m: "recoil"),
+    (r"^\s*%?\s*chance", lambda _: "chance"),
+    (r"^\s*(?:%|" + TIMES + r"|x)?\s*(?:target's )?max HP", lambda _: "max HP"),
+    (r"^\s*or less of its max HP", lambda _: None),      # BEFORE answers this
+    (r"^\s*(?:%|" + TIMES + r"|x)?\s*power", lambda _: "power"),
+    (r"^\s*(?:%|" + TIMES + r"|x)?\s*accuracy", lambda _: "accuracy"),
+    (r"^\s*(?:%|" + TIMES + r"|x)?\s*damage", lambda _: "damage"),
+    (r"^\s*(?:%|" + TIMES + r"|x)?\s*recoil", lambda _: "recoil"),
     (r"^\s*(?:%|" + TIMES + r"|x)?\s*(SpD|SpA|Def|Atk|Spe)\b",
      lambda m: m.group(1)),
     (r"^\s*(?:%|" + TIMES + r"|x)?\s*(Defense|Defence|Attack|Speed)\b",
@@ -116,23 +116,23 @@ AFTER = [
     (r"^\s*%\s*(confusion|psn|burn|freeze|flinch|paralyze|par|frz)\b",
      lambda m: {"psn": "poison", "par": "paralysis",
                 "frz": "freeze"}.get(m.group(1), m.group(1)) + " chance"),
-    (r"^\s*%\s*dmg dealt", lambda m: "of damage dealt"),
+    (r"^\s*%\s*dmg dealt", lambda _: "of damage dealt"),
     # Rivalry: "attacks do 1.25x on same gender; 0.75x on opposite"
-    (r"^\s*(?:%|" + TIMES + r"|x)\s*on\b", lambda m: "damage"),
-    (r"^\s*%\s*-\d", lambda m: "chance"),
+    (r"^\s*(?:%|" + TIMES + r"|x)\s*on\b", lambda _: "damage"),
+    (r"^\s*%\s*-\d", lambda _: "chance"),
 ]
 BEFORE = [
-    (r"\bAt\s*$", lambda m: "at {n} max HP"),            # Overgrow's threshold
-    (r"offensive stat is\s*$", lambda m: "offensive stat"),
+    (r"\bAt\s*$", lambda _: "at {n} max HP"),            # Overgrow's threshold
+    (r"offensive stat is\s*$", lambda _: "offensive stat"),
     (r"(Attack|Speed|Defense|Defence|SpA|SpD|Atk|Def|Spe) is\s*$",
      lambda m: m.group(1)),
-    (r"\baccuracy\b[^.]*\bis\s*$", lambda m: "accuracy"),
-    (r"\bis healed\s*$", lambda m: "healed"),
-    (r"\bis hurt\s*$", lambda m: "damage taken"),
-    (r"\bRecovers\s*$", lambda m: "of damage dealt"),
-    (r"\bUser loses\s*$", lambda m: "self-damage"),
-    (r"\bheals\s*$", lambda m: "healed"),
-    (r"\bMax\s*$", lambda m: "at most"),
+    (r"\baccuracy\b[^.]*\bis\s*$", lambda _: "accuracy"),
+    (r"\bis healed\s*$", lambda _: "healed"),
+    (r"\bis hurt\s*$", lambda _: "damage taken"),
+    (r"\bRecovers\s*$", lambda _: "of damage dealt"),
+    (r"\bUser loses\s*$", lambda _: "self-damage"),
+    (r"\bheals\s*$", lambda _: "healed"),
+    (r"\bMax\s*$", lambda _: "at most"),
 ]
 
 

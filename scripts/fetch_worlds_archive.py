@@ -86,7 +86,7 @@ def fetch_event(tid, div, force):
         return "cached"
     argv = [sys.executable, "scripts/fetch_tournament.py",
             "--tid", tid, "--division", div]
-    r = subprocess.run(argv, cwd=ROOT, capture_output=True, text=True)
+    r = subprocess.run(argv, cwd=ROOT, capture_output=True, text=True, check=False)
     if r.returncode != 0 or not os.path.exists(p):
         return "FAILED"
     return "fetched"

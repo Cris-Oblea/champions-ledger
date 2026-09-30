@@ -203,7 +203,7 @@ def stages(reg, deep=False):
 def run(st):
     print("\n=== %s" % st.label)
     t0 = time.time()
-    r = subprocess.run([PY] + st.argv, cwd=ROOT)
+    r = subprocess.run([PY] + st.argv, cwd=ROOT, check=False)
     dt = time.time() - t0
     ok = r.returncode == 0
     print("--- %s  (%.1f s)" % ("ok" if ok else "FAILED rc=%d" % r.returncode, dt))

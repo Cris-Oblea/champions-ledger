@@ -413,7 +413,7 @@ def sh(argv, cwd=ROOT):
         # The output is read, never parsed, so replacing an undecodable byte
         # costs nothing.
         r = subprocess.run(argv, cwd=cwd, capture_output=True, text=True,
-                           encoding="utf-8", errors="replace")
+                           encoding="utf-8", errors="replace", check=False)
     except OSError as e:
         return 127, "could not run %s: %s" % (" ".join(argv), e)
     return r.returncode, (r.stdout or "") + (r.stderr or "")
@@ -534,7 +534,7 @@ def main():
             rc, bout = sh(argv)
             if rc != 0:
                 out.append("BLOCKED: could not rebuild %s" % what)
-                out += ["  " + l for l in bout.splitlines()[-6:]]
+                out += ["  " + line for line in bout.splitlines()[-6:]]
                 log(out)
                 print("\n".join(out))
                 return 1
@@ -547,7 +547,7 @@ def main():
             rc, bout = sh(argv)
             if rc != 0:
                 out.append("BLOCKED: could not rebuild %s" % what)
-                out += ["  " + l for l in bout.splitlines()[-6:]]
+                out += ["  " + line for line in bout.splitlines()[-6:]]
                 log(out)
                 print("\n".join(out))
                 return 1
@@ -559,9 +559,9 @@ def main():
         out.append("mode: " + ("deep (Smogon analyses + pokebase splits forced)"
                                if deep else "daily (ladder + engine)"))
         rc, refresh_out = sh(argv)
-        tail = [l for l in refresh_out.splitlines() if l.strip()][-4:]
+        tail = [line for line in refresh_out.splitlines() if line.strip()][-4:]
         out.append("refresh.py exit %d" % rc)
-        out += ["  " + l for l in tail]
+        out += ["  " + line for line in tail]
 
     after = snapshot()
     after_ladder = ladder_summary()
@@ -584,7 +584,7 @@ def main():
     d, dout = sh([PY, "scripts/diff_db.py", "--limit", "30"])
     if d == 0 and dout.strip() and "no field changed" not in dout:
         out.append("WHAT CHANGED, field by field:")
-        out += ["  " + l for l in dout.splitlines()[:60]]
+        out += ["  " + line for line in dout.splitlines()[:60]]
 
     if before_ladder and after_ladder and before_ladder != after_ladder:
         out.append("  ladder %s (%d rows) -> %s (%d rows)"
@@ -607,7 +607,7 @@ def main():
     # when a snapshot of the last good state is worth having. Where there is no
     # database - CI - it says so and moves on.
     b, bout = sh([PY, "scripts/backup_ledger.py", "--skip-if-offline"])
-    out += [l for l in bout.splitlines() if l.strip()][:3]
+    out += [line for line in bout.splitlines() if line.strip()][:3]
     if b != 0:
         gate_ok = False
         out.append("BLOCKED: the ledger could not be backed up")
@@ -630,7 +630,7 @@ def main():
         if g != 0:
             gate_ok = False
             out.append("BLOCKED: %s failed" % what)
-            out += ["  " + l for l in gout.splitlines()[-6:]]
+            out += ["  " + line for line in gout.splitlines()[-6:]]
         else:
             out.append("ok: %s" % what)
 
@@ -639,7 +639,7 @@ def main():
         if g != 0:
             gate_ok = False
             out.append("BLOCKED: %s failed" % what)
-            out += ["  " + l for l in gout.splitlines() if l.strip()][-6:]
+            out += ["  " + line for line in gout.splitlines() if line.strip()][-6:]
         else:
             out.append("ok: %s" % what)
 
@@ -659,10 +659,10 @@ def main():
             # read as fifteen blank lines - the cause (a hardcoded Windows path
             # in every test file) was invisible in the CI log. Fall back to the
             # tail of whatever it did say.
-            detail = [l for l in gout.splitlines() if l.strip().startswith("FAIL")]
+            detail = [line for line in gout.splitlines() if line.strip().startswith("FAIL")]
             if not detail:
-                detail = [l for l in gout.splitlines() if l.strip()][-5:]
-            out += ["  " + l for l in detail[:6]]
+                detail = [line for line in gout.splitlines() if line.strip()][-5:]
+            out += ["  " + line for line in detail[:6]]
         else:
             out.append("ok: %s" % what)
 
@@ -676,7 +676,7 @@ def main():
     else:
         d, dout = sh(["npx", "wrangler", "deploy"],
                      cwd=os.path.join(ROOT, "tracker"))
-        ver = [l.strip() for l in dout.splitlines() if "Version ID" in l]
+        ver = [line.strip() for line in dout.splitlines() if "Version ID" in line]
         out.append("deploy exit %d  %s" % (d, ver[0] if ver else ""))
         deployed = d == 0
         if not deployed:
