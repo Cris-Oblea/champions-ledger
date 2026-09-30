@@ -262,7 +262,7 @@ script, so a stage can also run on its own. They fall into four families:
 
 | Family | Scripts | What they do |
 |---|---|---|
-| **fetch_** | `fetch_serebii`, `fetch_pokebase`, `fetch_pokebase_splits`, `fetch_smogon`, `fetch_smogon_calc`, `fetch_tournament`, `fetch_worlds_archive`, `fetch_home_dex`, `fetch_dex_numbers` | Download one source into `data/raw/` (a cache: a page already there is not fetched again) |
+| **fetch_** | `fetch_serebii`, `fetch_pokebase`, `fetch_pokebase_splits`, `fetch_smogon`, `fetch_smogon_calc`, `fetch_tournament`, `fetch_worlds_archive`, `fetch_home_dex`, `fetch_dex_numbers` | Download one source into `data/raw/` (a cache: a page already there is not fetched again). Every request goes through `net.get()` in `scripts/net.py`: one User-Agent, three tries |
 | **build_** | `build_db` (the core: species, moves, abilities, items), `build_typechart`, `build_effects`, `build_text_facts`, `build_statuses`, `build_ability_moves`, `build_item_facts`, `build_item_links`, `build_gts_difficulty`, `build_type_colors` | Parse the raw pages into the JSON in `data/db/` and `data/meta/` |
 | **audit_ / test_** | `audit_forms`, `audit_sources`, `audit_lookups`, `audit_learnsets`, `audit_abilities`, `test_norm`, `damage.py --selftest` | Cross-check sources against each other. A failure stops the run |
 | **build_ for the page** | `build_tracker_data`, `build_splits_data`, `build_analysis_data`, `build_outside_dex`, `build_engine_bundle`, `build_docs`, `build_tracker_page` | Turn `data/` into what the phone downloads, then build the page |

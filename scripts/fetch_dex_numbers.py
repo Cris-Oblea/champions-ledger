@@ -22,8 +22,9 @@ Ninetales is #38 in HOME, same as Ninetales.
 import argparse
 import json
 import os
-import urllib.request
 from pathlib import Path
+
+import net
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RAW = os.path.join(ROOT, "data", "raw", "pokeapi_species.json")
@@ -34,9 +35,7 @@ URL = "https://pokeapi.co/api/v2/pokemon-species?limit=2000"
 def fetch(force=False):
     if os.path.exists(RAW) and not force:
         return json.loads(Path(RAW).read_text(encoding="utf-8"))
-    req = urllib.request.Request(URL, headers={"User-Agent": "champions-ledger"})
-    with urllib.request.urlopen(req, timeout=60) as r:
-        data = json.load(r)
+    data = json.loads(net.get(URL))
     os.makedirs(os.path.dirname(RAW), exist_ok=True)
     Path(RAW).write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
     return data

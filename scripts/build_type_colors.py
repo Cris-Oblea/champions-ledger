@@ -41,7 +41,8 @@ import json
 import pathlib
 import re
 import sys
-import urllib.request
+
+import net
 
 ROOT = pathlib.Path(__file__).resolve().parent.parent
 OUT = ROOT / "data" / "db" / "type_colors.json"
@@ -84,8 +85,7 @@ def contrast(a, b):
 
 
 def fetch():
-    req = urllib.request.Request(CSS, headers={"User-Agent": "Mozilla/5.0"})
-    return urllib.request.urlopen(req, timeout=60).read().decode("utf-8", "replace")
+    return net.get(CSS).decode("utf-8", "replace")
 
 
 def parse(css):

@@ -47,9 +47,9 @@ import csv
 import os
 import re
 import sys
-import urllib.request
 from pathlib import Path
 
+import net
 import query as Q
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -81,10 +81,7 @@ def table(name, force=False):
     os.makedirs(RAW, exist_ok=True)
     path = os.path.join(RAW, name)
     if not os.path.exists(path) or force:
-        req = urllib.request.Request(BASE + name,
-                                     headers={"User-Agent": "champions-ledger"})
-        with urllib.request.urlopen(req, timeout=180) as r:
-            Path(path).write_bytes(r.read())
+        Path(path).write_bytes(net.get(BASE + name, timeout=180))
     return path
 
 

@@ -22,52 +22,47 @@ Usage:
     python scripts/fetch_smogon.py --force
 """
 import html
-import http.client
 import json
 import os
 import re
 import sys
 import time
-import urllib.request
 from pathlib import Path
 
+import net
+
 RPC = "https://www.smogon.com/dex/_rpc/"
-UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
-      "(KHTML, like Gecko) Chrome/128.0 Safari/537.36")
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 META = os.path.join(ROOT, "data", "meta")
 DB = os.path.join(ROOT, "data", "db")
 RAW = os.path.join(ROOT, "data", "raw", "smogon")
 
 
-def rpc(method, params, timeout=60):
-    body = json.dumps(params).encode("utf-8")
-    req = urllib.request.Request(
-        RPC + method, data=body,
-        headers={"User-Agent": UA, "Content-Type": "application/json"})
-    for attempt in range(3):
+def _post(method, params, timeout=60):
+    """One Smogon RPC answer, decoded; raises net.ERRORS.
+
+    `decode("utf-8", "replace")` looks safe and silently destroys data: Smogon
+    has served cp1252 at least once, where the multiplication sign is a bare
+    0xD7 - invalid UTF-8 - so every "1.3x damage" in the item and ability text
+    became "1.3�". The numbers survived; the operator did not. So try the
+    encoding it claims, then the one it has actually used, and only then give
+    up a character."""
+    raw = net.get(RPC + method, data=json.dumps(params).encode("utf-8"),
+                  headers={"Content-Type": "application/json"}, timeout=timeout)
+    for enc in ("utf-8", "cp1252"):
         try:
-            with urllib.request.urlopen(req, timeout=timeout) as r:
-                raw = r.read()
-            # `decode("utf-8", "replace")` looks safe and silently destroys
-            # data: Smogon has served cp1252 at least once, where the
-            # multiplication sign is a bare 0xD7 - invalid UTF-8 - so every
-            # "1.3x damage" in the item and ability text became "1.3�".
-            # The numbers survived; the operator did not. Try the encoding it
-            # claims, then the one it has actually used, and only then give up
-            # a character.
-            for enc in ("utf-8", "cp1252"):
-                try:
-                    return json.loads(raw.decode(enc))
-                except (UnicodeDecodeError, ValueError):
-                    continue
-            return json.loads(raw.decode("utf-8", "replace"))
-        except (OSError, http.client.HTTPException, ValueError) as e:
-            if attempt == 2:
-                print("  RPC failed %s %s -> %s" % (method, params, e))
-                return None
-            time.sleep(1.5 * (attempt + 1))
-    return None
+            return json.loads(raw.decode(enc))
+        except (UnicodeDecodeError, ValueError):
+            continue
+    return json.loads(raw.decode("utf-8", "replace"))
+
+
+def rpc(method, params, timeout=60):
+    try:
+        return _post(method, params, timeout)
+    except net.ERRORS as e:
+        print("  RPC failed %s %s -> %s" % (method, params, e))
+        return None
 
 
 def strip_html(s):
@@ -100,26 +95,13 @@ def ask_dex(kind, alias):
     such entry, and the string "failed" when the question never got an answer
     - the two must not look alike, or a network blip would be cached as "not
     in Champions" for good."""
-    body = json.dumps({"alias": alias, "gen": "champions"}).encode("utf-8")
-    req = urllib.request.Request(RPC + "dump-" + kind, data=body,
-                                 headers={"User-Agent": UA,
-                                          "Content-Type": "application/json"})
-    for attempt in range(3):
-        try:
-            with urllib.request.urlopen(req, timeout=60) as r:
-                raw = r.read()
-            # the same two encodings rpc() learned to try: Smogon has served
-            # cp1252 at least once, where the x in "1.3x damage" is a bare 0xD7
-            for enc in ("utf-8", "cp1252"):
-                try:
-                    d = json.loads(raw.decode(enc))
-                    break
-                except (UnicodeDecodeError, ValueError):
-                    d = None
-            return (d or {}).get("description") or None
-        except (OSError, http.client.HTTPException):
-            time.sleep(1.5 * (attempt + 1))
-    return "failed"
+    try:
+        d = _post("dump-" + kind, {"alias": alias, "gen": "champions"})
+    except json.JSONDecodeError:
+        return None           # it answered, and the answer is no entry
+    except net.ERRORS:
+        return "failed"
+    return (d or {}).get("description") or None
 
 
 # What is asked for, per kind: the RPC, the cache folder and the list of names.

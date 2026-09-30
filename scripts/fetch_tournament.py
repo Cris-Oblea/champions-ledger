@@ -37,18 +37,16 @@ Usage:
 import contextlib
 import hashlib
 import html
-import http.client
 import json
 import os
 import re
 import sys
 import time
 import urllib.parse
-import urllib.request
+
+import net
 
 BASE = "https://www.pokedata.ovh/standingsVGC"
-UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
-      "(KHTML, like Gecko) Chrome/128.0 Safari/537.36")
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 META = os.path.join(ROOT, "data", "meta")
 RAW = os.path.join(ROOT, "data", "raw", "tournaments")
@@ -59,16 +57,10 @@ DEFAULT_DIVISION = "masters"
 
 
 def get(url, timeout=60):
-    req = urllib.request.Request(url, headers={"User-Agent": UA})
-    for attempt in range(3):
-        try:
-            with urllib.request.urlopen(req, timeout=timeout) as r:
-                return r.read().decode("utf-8", "replace")
-        except (OSError, http.client.HTTPException):
-            if attempt == 2:
-                return None
-            time.sleep(1.5 * (attempt + 1))
-    return None
+    try:
+        return net.get(url, timeout=timeout).decode("utf-8", "replace")
+    except net.ERRORS:
+        return None
 
 
 def round_info(tid, division):

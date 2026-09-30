@@ -12,7 +12,6 @@ Usage:
     python scripts/fetch_serebii.py all
 """
 import hashlib
-import http.client
 import os
 import queue
 import re
@@ -20,10 +19,10 @@ import sys
 import threading
 import time
 
+import net
 from serebii_text import read
 
 BASE = "https://www.serebii.net"
-UA = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/128.0 Safari/537.36"
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RAW = os.path.join(ROOT, "data", "raw")
 
@@ -32,12 +31,6 @@ STATIC_PAGES = [
     "newabilities", "megaabilities", "statusconditions", "transferonly",
     "giftpokemon", "battlepass", "recruit", "patch", "onlinecompetitions",
 ]
-
-try:
-    import urllib.request as _u
-except ImportError:
-    sys.exit("python3 required")
-
 
 # What a forced sweep actually changed. A regulation is a PATCH - M-B added
 # species, moves, abilities and items and removed nothing; M-C added more and
@@ -59,31 +52,21 @@ def get(url, dest, force=False):
                 before = hashlib.sha256(f.read()).hexdigest()
         except OSError:
             before = None
-    req = _u.Request(url, headers={"User-Agent": UA})
-    for attempt in range(3):
-        try:
-            with _u.urlopen(req, timeout=45) as r:
-                body = r.read()
-            if len(body) < 2000:
-                raise ValueError("respuesta demasiado corta")
-            os.makedirs(os.path.dirname(dest), exist_ok=True)
-            # Written only once the body is in hand, so a failed sweep leaves
-            # the previous page in place rather than a hole. Deleting the cache
-            # up front - which is what --regulation used to do - meant a
-            # Serebii outage halfway through left the database with no
-            # movepools and nothing to fall back on.
-            with open(dest, "wb") as f:
-                f.write(body)
-            if before is not None and \
-                    hashlib.sha256(body).hexdigest() != before:
-                CHANGED.append(os.path.basename(dest))
-            return True, False
-        except (OSError, http.client.HTTPException, ValueError) as e:
-            if attempt == 2:
-                print("  FAILED %s -> %s" % (url, e))
-                return False, False
-            time.sleep(1.5 * (attempt + 1))
-    return False, False
+    try:
+        body = net.get(url, timeout=45, min_size=2000)
+    except net.ERRORS as e:
+        print("  FAILED %s -> %s" % (url, e))
+        return False, False
+    os.makedirs(os.path.dirname(dest), exist_ok=True)
+    # Written only once the body is in hand, so a failed sweep leaves the
+    # previous page in place rather than a hole. Deleting the cache up front -
+    # which is what --regulation used to do - meant a Serebii outage halfway
+    # through left the database with no movepools and nothing to fall back on.
+    with open(dest, "wb") as f:
+        f.write(body)
+    if before is not None and hashlib.sha256(body).hexdigest() != before:
+        CHANGED.append(os.path.basename(dest))
+    return True, False
 
 
 def _tally(stats, ok, cached):

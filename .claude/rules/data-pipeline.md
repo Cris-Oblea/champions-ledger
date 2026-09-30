@@ -8,6 +8,7 @@ paths:
   - "scripts/check_regulation.py"
   - "scripts/diff_db.py"
   - "scripts/serebii_text.py"
+  - "scripts/net.py"
   - "scripts/smogon_engine.js"
   - "scripts/build_{db,typechart,splits_data,text_facts,statuses,effects,item_facts,item_links,outside_dex}.py"
   - "data/raw/**"
@@ -62,6 +63,8 @@ never an older game's text.
   against the others. `python scripts/build_splits_data.py --check` asserts all
   four shapes over all 283 Pokemon and runs inside the gate.
 - **Do not pipe a fetch script into `head`**; SIGPIPE kills it before it writes.
+- **Every download is `net.get()`** (`scripts/net.py`): the browser User-Agent
+  and three tries. A caller that can go on without the page catches `net.ERRORS`.
 - **A Pokemon page labels both Mega blocks the same** ("Mega Charizard" twice).
   The X/Y suffix exists only in the master list, and Raichu's two Megas are both
   pure Electric, so they can only be paired by order of appearance.

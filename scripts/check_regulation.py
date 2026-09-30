@@ -37,25 +37,21 @@ Exit codes, so a caller can branch without parsing prose:
     2   could not tell (no network, a page that changed shape)
 """
 import argparse
-import http.client
 import json
 import os
 import re
 import sys
-import urllib.request
+
+import net
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RECORD = os.path.join(ROOT, "data", "db", "regulation.json")
-UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
-      "(KHTML, like Gecko) Chrome/128.0 Safari/537.36")
 POKEBASE = "https://pokebase.app/pokemon-champions/pokemon"
 SEREBII = "https://www.serebii.net/pokemonchampions/rankedbattle.shtml"
 
 
 def get(url):
-    req = urllib.request.Request(url, headers={"User-Agent": UA})
-    with urllib.request.urlopen(req, timeout=90) as r:
-        return r.read().decode("utf-8", "replace")
+    return net.get(url, timeout=90).decode("utf-8", "replace")
 
 
 def live_slug(html):
@@ -115,7 +111,7 @@ def look():
     """(status, live slug, ours, what Serebii knows)."""
     try:
         live = live_slug(get(POKEBASE))
-    except (OSError, http.client.HTTPException) as e:
+    except net.ERRORS as e:
         return "unknown", None, recorded().get("slug"), ("pokebase: %s" % e)
     if not live:
         return "unknown", None, recorded().get("slug"), "pokebase page changed shape"
@@ -124,7 +120,7 @@ def look():
         return "current", live, ours, ""
     try:
         known = serebii_regulations(get(SEREBII))
-    except (OSError, http.client.HTTPException) as e:
+    except net.ERRORS as e:
         return "waiting", live, ours, ("serebii: %s" % e)
     # FAIL TOWARDS ACTING. If Serebii names no regulation at all - the page
     # changed shape, or they write it some way this does not recognise - that
