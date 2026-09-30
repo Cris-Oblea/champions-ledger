@@ -9,6 +9,12 @@
             "command": "python \"$CLAUDE_PROJECT_DIR/scripts/check_docs.py\" --hook",
             "timeout": 30,
             "statusMessage": "Checking the docs"
+          },
+          {
+            "type": "command",
+            "command": "node \"$CLAUDE_PROJECT_DIR/scripts/hooks/lint-on-edit.js\"",
+            "timeout": 30,
+            "statusMessage": "Linting the file"
           }
         ]
       }

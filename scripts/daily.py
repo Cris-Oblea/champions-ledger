@@ -35,6 +35,15 @@ cheap and missing a regulation is not.
 """
 import argparse, datetime, hashlib, io, json, os, subprocess, sys
 
+# Windows consoles default to cp1252, and the summary quotes what the sources
+# printed - a U+FFFD in one of them killed the run at its very last line,
+# after the deploy. Replace what cp1252 cannot show instead of dying.
+for _s in (sys.stdout, sys.stderr):
+    try:
+        _s.reconfigure(errors="replace")
+    except (AttributeError, ValueError):
+        pass
+
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PY = sys.executable
 LOGDIR = os.path.join(ROOT, "data", "raw", "daily_logs")
