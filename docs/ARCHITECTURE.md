@@ -317,6 +317,10 @@ runs in four places: the `pre-push` hook, every pull request, every push to
   function longer than 80 lines of code. `tests/`, `scripts/` and `cron/` run
   the same rules as errors. The whole repo is at zero, and the gate runs with
   `--max-warnings 0`, so a push that adds any finding fails.
+  `scripts/hooks/lint-on-edit.js` runs the same rules earlier: a Claude Code
+  PostToolUse hook (`.claude/settings.json`) that lints each `.js` file Claude
+  writes, silent when it is clean, so a finding shows up while the edit is
+  still on screen instead of at the push.
 - **`node scripts/check_app.js`**: what no linter can see - every element id
   the app reaches for exists in the markup, and every `CALC` switch the
   calculator screen sets reaches the engine.
