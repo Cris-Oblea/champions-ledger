@@ -1,0 +1,43 @@
+/* ---------- utilities ---------------------------------------------------- */
+/* One margin or one text colour on one element, where a component's own
+   styling is right everywhere but here. The markup and the JavaScript both use
+   these instead of style="" or el.style.*, so a gap or a tone is set in CSS
+   and spelled the same way wherever it appears. What is left in el.style is
+   only what is computed at run time: a meter's width, a type's colours.
+
+   This file is LAST in index.css: a utility replaces an inline style, and has
+   to win over the component rule it adjusts the way that style did.
+
+   Margins: the side (t, b, l, r, x = left and right) and the pixels. The
+   values are the ones the app actually uses; add one here before using it. */
+.mt2{margin-top:2px}
+.mt4{margin-top:4px}
+.mt6{margin-top:6px}
+.mt8{margin-top:8px}
+.mt10{margin-top:10px}
+.mt12{margin-top:12px}
+.mt14{margin-top:14px}
+.mb0{margin-bottom:0}
+.mb3{margin-bottom:3px}
+.mb4{margin-bottom:4px}
+.mb5{margin-bottom:5px}
+.mb6{margin-bottom:6px}
+.mb8{margin-bottom:8px}
+.mb10{margin-bottom:10px}
+.mb12{margin-bottom:12px}
+.ml8{margin-left:8px}
+.mr4{margin-right:4px}
+.mr6{margin-right:6px}
+.mx6{margin-left:6px;margin-right:6px}
+
+/* Text tones, named after the token they read. */
+.c-accent{color:var(--accent)}
+.c-good{color:var(--good)}
+.c-warn{color:var(--warn)}
+.c-bad{color:var(--bad)}
+.c-faint{color:var(--faint)}
+.c-mega{color:var(--mega)}
+
+/* Something on screen that does not apply here: a screen that stops the other
+   category, a Pokemon already offered, an item another slot holds. */
+.dim{opacity:.5}

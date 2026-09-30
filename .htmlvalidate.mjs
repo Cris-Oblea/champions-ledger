@@ -1,6 +1,6 @@
 /* The HTML half of the lint gate, over tracker/src/markup/: html-validate's
    recommended rules, every one an error. The markup has no inline style="",
-   and no-inline-style keeps it that way - spacing lives in styles/space.css. */
+   and no-inline-style keeps it that way - one-off spacing and tones live in styles/utils.css. */
 export default {
   extends: ["html-validate:recommended"],
   rules: {

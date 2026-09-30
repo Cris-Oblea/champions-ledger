@@ -162,8 +162,7 @@ function itemRow(r, have){
      on most teams. */
   var why = r[6], abl = r[7] || [], mvs = r[8] || [];
   if (why) {
-    var w = el("div", "st");
-    w.style.color = "var(--accent)";
+    var w = el("div", "st c-accent");
     w.textContent = why + (mvs.length || abl.length
       ? " — " + mvs.concat(abl).join(", ") : "");
     m.appendChild(w);
@@ -257,8 +256,7 @@ function drawStatuses(){
     m.appendChild(line);
     var mv = r.moves || [];
     if (mv.length) {
-      var mline = el("div", "st");
-      mline.style.color = "var(--accent)";
+      var mline = el("div", "st c-accent");
       mline.textContent = mv.length + (mv.length === 1 ? " move causes it: "
                                                        : " moves cause it: ") +
         mv.join(", ");

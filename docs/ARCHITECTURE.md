@@ -330,8 +330,11 @@ runs in four places: the `pre-push` hook, every pull request, every push to
 - **stylelint** (`stylelint.config.mjs`) over `tracker/src/styles/` and
   **html-validate** (`.htmlvalidate.mjs`) over `tracker/src/markup/`: the
   standard rule sets, every rule an error, the few switched off each with its
-  reason in the config. The markup holds no `style=""`; a one-off gap is a
-  class from `styles/space.css`.
+  reason in the config. The markup holds no `style=""`, and ESLint refuses a
+  fixed value assigned to `el.style` in the app: a one-off gap or text tone is
+  a class from `styles/utils.css`, anything bigger a rule in its component's
+  file. `el.style` keeps only what run time computes (a meter's width, a
+  type's colours, the scroll position).
 - **`node scripts/check_app.js`**: what no linter can see - every element id
   the app reaches for exists in the markup, and every `CALC` switch the
   calculator screen sets reaches the engine.

@@ -508,7 +508,7 @@ function offerFields(body, id, d){
   var w = el("div", "field");
   w.appendChild(el("label", "f", "Note"));
   var ta = el("textarea"); ta.value = d.note || "";
-  if ((d.note || "").length > 200) ta.style.minHeight = "180px";
+  if ((d.note || "").length > 200) ta.classList.add("long");
   ta.oninput = function(){ d.note = ta.value; };
   w.appendChild(ta);
   body.appendChild(w);
@@ -900,7 +900,7 @@ function mineCard(r, ctx, seen, nth){
     },
     notes: function(body2){ m = body2; }
   });
-  if (held) { b.disabled = true; b.style.opacity = "0.55"; }
+  if (held) { b.disabled = true; b.classList.add("dim"); }
   mineNotes(m, r, {held: held, last: last, kin: kin, cv: cv});
   if (!held) b.onclick = function(){ ctx.onPick(r); };
   return b;

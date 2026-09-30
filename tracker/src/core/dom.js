@@ -39,8 +39,7 @@ function toast(msg){
    learn the move. This says it, in the same words everywhere. */
 function capNote(host, shown, total, what){
   if (shown >= total) return null;
-  var n = el("div", "sub");
-  n.style.margin = "6px 0 0";
+  var n = el("div", "sub mt6 mb0");
   n.textContent = "Showing " + shown + " of " + total + " " + what +
                   " — type above to narrow the list.";
   host.appendChild(n);
@@ -132,8 +131,7 @@ function fbtn(label, cls, fn){
 }
 
 function note(kind, html){
-  var n = el("div", "note " + kind);
-  n.style.marginBottom = "10px";
+  var n = el("div", "note mb10 " + kind);
   n.innerHTML = html;
   return n;
 }
@@ -141,7 +139,7 @@ function note(kind, html){
 /* The small label above a row of filter chips or a sort row - the pickers
    all use the same one. */
 function filterLabel(t){
-  var d = el("div", "sub"); d.style.margin = "0 0 4px"; d.textContent = t;
+  var d = el("div", "sub mb4"); d.textContent = t;
   return d;
 }
 
