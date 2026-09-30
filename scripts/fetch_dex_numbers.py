@@ -64,7 +64,7 @@ def main():
 
     lookup = {key(k): v for k, v in nums.items()}
     # a few the two spell differently
-    ALIAS = {"mr-mime": "mr-mime", "mime-jr": "mime-jr", "type-null": "type-null",
+    alias = {"mr-mime": "mr-mime", "mime-jr": "mime-jr", "type-null": "type-null",
              "nidoran-f": "nidoran-f", "nidoran-m": "nidoran-m",
              "farfetchd": "farfetchd", "sirfetchd": "sirfetchd",
              "ho-oh": "ho-oh", "porygon-z": "porygon-z",
@@ -74,7 +74,7 @@ def main():
              "great-tusk": "great-tusk", "iron-treads": "iron-treads",
              "wo-chien": "wo-chien", "chien-pao": "chien-pao",
              "ting-lu": "ting-lu", "chi-yu": "chi-yu"}
-    for k, v in ALIAS.items():
+    for k, v in alias.items():
         if v in lookup:
             lookup.setdefault(k, lookup[v])
 

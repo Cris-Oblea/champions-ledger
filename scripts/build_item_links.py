@@ -249,7 +249,7 @@ def item_links(item, props, setters, facts):
     # These had no link while nothing said which move causes which status.
     # data/db/statuses.json has that column now, so a Cheri Berry can point at
     # the fifteen moves that paralyse.
-    CURES = [("Paralysis", r"paralysis|paraly[sz]ed"),
+    cures = [("Paralysis", r"paralysis|paraly[sz]ed"),
              ("Freeze", r"thaw|frozen|freez"),
              ("Sleep", r"drowsiness|asleep|\bsleep\b"),
              ("Poison", r"poisoned|poisoning"),
@@ -260,7 +260,7 @@ def item_links(item, props, setters, facts):
         if has(r"any status condition"):
             got = sorted({n for s in STATUS for n in STATUS[s]})
             return got, [], "cures whatever status just landed on it"
-        for st, pat in CURES:
+        for st, pat in cures:
             if has(pat) and STATUS.get(st):
                 return (sorted(STATUS[st]), [],
                         "cures the " + st.lower() + " this inflicts")

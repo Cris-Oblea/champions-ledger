@@ -42,7 +42,6 @@ ignore = [
 # it blocks like every other rule, so the count can only go down. The goal is
 # an empty list. `python -m ruff check --extend-select <RULE>` shows one.
 extend-ignore = [
-    "N806", "N803",  # UPPERCASE locals and arguments
     "C901", "PLR0913",  # functions too complex, or taking too much
 ]
 

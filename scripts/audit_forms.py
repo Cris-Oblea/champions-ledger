@@ -275,10 +275,10 @@ def main():
     # the daily job should stop. The watchlist idea is unchanged - only where
     # the threshold sits, and now it is set from the distribution rather than
     # from "any figure at all".
-    TAIL = 0.5
+    tail = 0.5
     usage_of = {r["name"]: (r.get("usage_percent") or 0)
                 for r in (meta("usage_pokemon") or {}).get("rows", [])}
-    zero_usage = {n for n, v in usage_of.items() if v < TAIL}
+    zero_usage = {n for n, v in usage_of.items() if v < tail}
     unresolved = defaultdict(set)
     src = {
         "pokebase usage": [r["name"] for r in
@@ -321,13 +321,13 @@ def main():
     seen_low = sorted({n for n in watch if usage_of.get(n, 0) > 0},
                       key=lambda n: -usage_of.get(n, 0))
     if seen_low:
-        print("\n  Below the %.1f%% tail, so watched rather than blocking:" % TAIL)
+        print("\n  Below the %.1f%% tail, so watched rather than blocking:" % tail)
         for n in seen_low[:10]:
             print("    %-22s %.1f%% on the ladder, and not in Serebii's list"
                   % (n, usage_of[n]))
     if watch:
         print("\n  Watchlist - not in Serebii's list, under the %.1f%% tail (%d):"
-              % (TAIL, len(watch)))
+              % (tail, len(watch)))
         for i in range(0, len(watch), 6):
             print("    " + ", ".join(watch[i:i + 6]))
         print("  If any of these starts showing usage, a new regulation added it:")
