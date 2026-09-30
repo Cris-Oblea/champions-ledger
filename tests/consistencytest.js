@@ -286,9 +286,9 @@ setTimeout(() => {
      siempre la fuente debe ser champions dex". Octolock is his example; the
      rest pin the three ways the old line fell short. */
   console.log("\n  lo que hace cada movimiento");
-  const txt = n => (C.MOVES.find(r => r[0] === n) || [])[14] || "";
+  const txt = n => (w.MOVE_BY[n] || {}).text || "";
   ok("todo movimiento de Champions tiene descripcion",
-     list(C.MOVES.filter(r => !r[14]).map(r => r[0])), "0");
+     list(Object.values(w.MOVE_BY).filter(m => !m.text).map(m => m.name)), "0");
   ok("Octolock dice que baja Def y SpD cada turno",
      /Defense and Special Defense are lowered by 1 stage/.test(txt("Octolock")), true);
   ok("...y como se escapa y cuando termina",

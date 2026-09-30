@@ -54,8 +54,6 @@ FIELD = {
     "Misty Terrain":    r"misty terrain",
     "Psychic Terrain":  r"psychic terrain",
 }
-# what an item that names a field effect is doing about it
-FIELD_WHY = "extends it"
 
 # WHICH WAY A LINK POINTS, from the point of view of whoever USES the move.
 #

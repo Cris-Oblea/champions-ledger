@@ -919,10 +919,6 @@ def worlds_mega_counts():
 
 # Abilities that change an offensive stat outright, rather than move power.
 STAT_ABILITY = {"Huge Power": ("atk", 2.0), "Pure Power": ("atk", 2.0)}
-# Abilities that bias a Pokemon toward one damage category regardless of stats.
-BIAS_ABILITY = {"Tough Claws": "physical", "Skill Link": "physical",
-                "Sheer Force": "physical", "Huge Power": "physical",
-                "Refrigerate": "either", "Adaptability": "either"}
 
 
 def mega_profile(m):

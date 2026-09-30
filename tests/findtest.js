@@ -99,7 +99,7 @@ setTimeout(() => {
         ok("Taunt explica el mecanismo, no el nombre del estado",
            /three turns|3 turns/.test(tt.textContent), true);
         ok("y ningun movimiento se queda sin texto",
-           w.CHAMP.MOVES.filter(m => !m[14]).length <= 1, true);
+           Object.values(w.MOVE_BY).filter(m => !m.text).length <= 1, true);
         w.closeSheet();
         click(d.getElementById("findClear"));
         afterText();

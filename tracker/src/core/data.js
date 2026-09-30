@@ -35,8 +35,8 @@ C.STONES.forEach(function(r){ STONE_OF[r[1]] = r[0]; });
 const MOVES = C.MOVES.map(function(r,i){
   return {i:i, name:r[0], type:r[1], cat:r[2], bp:r[3], acc:r[4], pp:r[5],
           pri:r[6], target:r[7], spread:!!r[8], hitsAlly:!!r[9],
-          hits:r[10] || null, crit:!!r[11], f:r[12] || "", sec:!!r[13],
-          text:r[14] || ""};
+          hits:r[10] || null, crit:!!r[11], f:r[12] || "",
+          text:r[13] || ""};
 });
 /* P physical, S special, T status - three codes, never two */
 /* The comparator for sorting names: locale-aware, so an accent never

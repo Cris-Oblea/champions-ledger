@@ -6,11 +6,10 @@ be retracted.
 
 - **A round number is not a swiss round.** Worlds sat at "R15" because it was
   the Final. Read `round_label` and `complete`.
-- **`effect_rate` is not a secondary-effect flag.** It reads 4.17 (the crit
-  rate) for moves whose secondary is *guaranteed*, so filtering on it silently
-  drops Lunge, Skitter Smack and Rock Tomb — and wrongly includes Stone Edge,
-  whose crit-ratio boost Sheer Force does **not** count. Use the rules, not the
-  field.
+- **`effect_rate` is not a secondary-effect flag.** It is the CHANCE Serebii
+  states, and Serebii states none when the secondary is *guaranteed*: Lunge,
+  Skitter Smack, Rock Tomb and Icy Wind all carry null, exactly like
+  Earthquake. Filtering on it drops them. Smogon's `secondaries` is the flag.
 - **Type volume must be counted after conversions.** Pixilate, Refrigerate and
   the like retype Normal moves, and Weather Ball becomes the team's weather. Raw
   counting says Normal is the most-thrown type (1379); corrected, Fairy leads at

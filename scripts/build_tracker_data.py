@@ -29,24 +29,6 @@ def flag_str(m):
     return "".join(v for k, v in _FLAG_LETTER.items() if f.get(k))
 
 
-def secondary(m):
-    """Does the move carry a SECONDARY effect - the thing Sheer Force trades?
-
-    moves.json puts the crit rate in effect_rate when there is no secondary, so
-    "effect_rate > 0" marks Earthquake and Close Combat as having one. The
-    honest test is whether it differs from the crit rate.
-    """
-    er = m.get("effect_rate")
-    if er in (None, 0):
-        return 0
-    cr = (m.get("crit_rate") or "").rstrip("%")
-    try:
-        cr = float(cr)
-    except ValueError:
-        return 1
-    return 0 if er == cr else 1
-
-
 TEXTS = None
 
 
@@ -138,7 +120,7 @@ def build_moves(use):
                      # x1.5 on the base damage
                      m.get("hits") or None,
                      1 if m.get("always_crit") else 0,
-                     flag_str(m), secondary(m),
+                     flag_str(m),
                      # what the move DOES. It was not in the blob at all, so
                      # the app could show every number about a move and not
                      # one word about its effect - and "which of these burns"
@@ -680,7 +662,7 @@ def build_effects(app_abilities, app_items, app_moves):
     """
     shown_text = dict(app_abilities)
     shown_text.update({r[0]: r[3] for r in app_items})
-    shown_text.update({r[0]: r[14] for r in app_moves})
+    shown_text.update({r[0]: r[13] for r in app_moves})
     effects = {}
     for name, v in ((Q.db("effects") or {}).get("effects") or {}).items():
         said = shown_text.get(name) or ""
