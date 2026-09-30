@@ -378,20 +378,31 @@ def smogon_gloss(name):
     return None
 
 
-def cmd_move(a):
-    mv = next((m for m in db("moves") if key(m["name"]) == key(a.name)), None)
-    if not mv:
-        near = [m["name"] for m in db("moves") if key(a.name) in key(m["name"])]
-        print("No move called %r.%s" % (a.name,
-              ("  Did you mean: " + ", ".join(near[:8])) if near else ""))
-        return
-    f = mv.get("flags") or {}
-    print("=" * 78)
-    print("%s   %s %s" % (mv["name"], mv.get("type"), mv.get("category")))
-    print("=" * 78)
-    print("Power %s | Accuracy %s | PP %s | Priority %s"
-          % (mv.get("power"), mv.get("accuracy"), mv.get("pp"), mv.get("priority")))
-    print("Target: %s" % mv.get("target"))
+def _worlds_teams_running(move_name):
+    """division -> (teams running the move, teams)."""
+    counts = Counter()
+    for d, t in tournaments():
+        n = sum(1 for pl in t.get("players", [])
+                if any(key(x) == key(move_name)
+                       for sl in pl.get("team", []) for x in (sl.get("moves") or [])))
+        counts[d] = (n, len(t.get("players", [])))
+    return counts
+
+
+def _print_box_learners(mv):
+    perm, temp, _, _ = owned_sets()
+    mine = [(learner, own_tag(learner, perm, temp))
+            for learner in mv.get("learners", [])
+            if own_tag(learner, perm, temp)]
+    print("\nLearners: %d in the format." % (mv.get("learner_count") or 0))
+    if mine:
+        print("In your box (%d): %s" % (len(mine), ", ".join(
+            "%s%s" % (n, "" if t == "OWN" else " (r)") for n, t in sorted(mine))))
+    else:
+        print("Nothing in your box learns it.")
+
+
+def _print_move_texts(mv):
     print("\nSerebii: %s" % (mv.get("effect") or "-"))
     if mv.get("in_depth"):
         print("         %s" % mv["in_depth"][:600])
@@ -409,6 +420,23 @@ def cmd_move(a):
         print("\nSmogon, in full (smogon.com/dex/champions):")
         print(textwrap.fill(full, 78, initial_indent="         ",
                             subsequent_indent="         "))
+
+
+def cmd_move(a):
+    mv = next((m for m in db("moves") if key(m["name"]) == key(a.name)), None)
+    if not mv:
+        near = [m["name"] for m in db("moves") if key(a.name) in key(m["name"])]
+        print("No move called %r.%s" % (a.name,
+              ("  Did you mean: " + ", ".join(near[:8])) if near else ""))
+        return
+    f = mv.get("flags") or {}
+    print("=" * 78)
+    print("%s   %s %s" % (mv["name"], mv.get("type"), mv.get("category")))
+    print("=" * 78)
+    print("Power %s | Accuracy %s | PP %s | Priority %s"
+          % (mv.get("power"), mv.get("accuracy"), mv.get("pp"), mv.get("priority")))
+    print("Target: %s" % mv.get("target"))
+    _print_move_texts(mv)
     for field, why in (mv.get("rulings") or {}).items():
         print("\nRuling on %s: %s" % (field, why))
     on = [k for k, v in f.items() if v]
@@ -417,69 +445,91 @@ def cmd_move(a):
 
     mu = move_usage_index()
     print("\nLadder usage: %s" % pct(mu.get(key(mv["name"]))))
-    counts, tot = Counter(), 0
-    for d, t in tournaments():
-        n = 0
-        for pl in t.get("players", []):
-            if any(key(x) == key(mv["name"])
-                   for sl in pl.get("team", []) for x in (sl.get("moves") or [])):
-                n += 1
-        counts[d] = (n, len(t.get("players", [])))
-        tot += n
+    counts = _worlds_teams_running(mv["name"])
     print("Worlds teams running it: %s"
           % ", ".join("%s %d/%d (%.1f%%)" % (d, n, m, 100.0 * n / m if m else 0)
                       for d, (n, m) in counts.items()))
+    _print_box_learners(mv)
 
+
+def _priority_ok(p, want):
+    """--priority: "+", "-" or an exact bracket; no filter when not given."""
+    if not want:
+        return True
+    if p is None:
+        return False
+    if want == "+":
+        return p > 0
+    if want == "-":
+        return p < 0
+    return p == int(want)
+
+
+def _move_matches(m, a):
+    f = m.get("flags") or {}
+    text = ((m.get("effect") or "") + " " + (m.get("in_depth") or "")).lower()
+    basic = (
+        # the Attackdex documents ~900 moves but only ~500 are useable in
+        # Champions; the rest have no legal user in the format
+        getattr(a, "all", False) or m.get("useable") is not False,
+        not a.effect or a.effect.lower() in text,
+        not a.flag or f.get(a.flag),
+        not a.type or (m.get("type") or "").lower() == a.type.lower(),
+        not a.category or (m.get("category") or "").lower() == a.category.lower(),
+        not a.min_power or (m.get("power") or 0) >= a.min_power,
+        not a.name or key(a.name) in key(m["name"]),
+    )
+    return (all(basic) and _priority_ok(m.get("priority"), a.priority)
+            and (not a.learner or a.learner.lower() in [
+                learner.lower() for learner in m.get("learners", [])]))
+
+
+def _owned_box():
+    """norm() key -> display name, "*" in front of a permanent.
+
+    owned_sets() returns norm() keys, which are lowercased and token
+    sorted ("alola ninetales"), so the display name is read straight from
+    the ledger instead - he has to recognise these at a glance.
+    """
+    inv = ledger.inv()
+    box = {}
+    for x in inv.get("permanent_pokemon", []):
+        box[norm(x)] = "*" + x
+    for x in (inv.get("rental_pokemon", {}) or {}).get("list", []):
+        box.setdefault(norm(x), x)
+    return box
+
+
+def _box_cells(m, box):
+    """(how many box Pokemon learn it, the first six by name)."""
+    mine = sorted({box[norm(learner)] for learner in m.get("learners", [])
+                   if norm(learner) in box},
+                  key=lambda x: (not x.startswith("*"), x))
+    # A move half the box learns says nothing useful and wrecks the
+    # table width; the count still carries the fact.
+    shown = [x.lstrip("*") + ("" if x.startswith("*") else " (r)")
+             for x in mine[:6]]
+    if len(mine) > 6:
+        shown.append("+%d more" % (len(mine) - 6))
+    return [len(mine), ", ".join(shown) or "-"]
+
+
+def _print_learner_counts(res, a):
     perm, temp, _, _ = owned_sets()
-    mine = [(learner, own_tag(learner, perm, temp))
-            for learner in mv.get("learners", [])
-            if own_tag(learner, perm, temp)]
-    print("\nLearners: %d in the format." % (mv.get("learner_count") or 0))
-    if mine:
-        print("In your box (%d): %s" % (len(mine), ", ".join(
-            "%s%s" % (n, "" if t == "OWN" else " (r)") for n, t in sorted(mine))))
-    else:
-        print("Nothing in your box learns it.")
+    ui = usage_index()
+    print("\nPokemon that learn these moves (Champions legal):")
+    counts = Counter()
+    for m in res:
+        for learner in m.get("learners", []):
+            counts[learner] += 1
+    rows = [[name, c, pct(usage_of(name, ui)), own_tag(name, perm, temp)]
+            for name, c in counts.most_common(a.limit)]
+    table(rows, ["Pokemon", "#Moves", "Usage", "You"])
 
 
 def cmd_moves(a):
-    moves = db("moves")
     mu = move_usage_index()
-    res = []
-    for m in moves:
-        f = m.get("flags") or {}
-        # the Attackdex documents ~900 moves but only ~500 are useable in
-        # Champions; the rest have no legal user in the format
-        if not getattr(a, "all", False) and m.get("useable") is False:
-            continue
-        if a.effect and a.effect.lower() not in (
-                (m.get("effect") or "") + " " + (m.get("in_depth") or "")).lower():
-            continue
-        if a.flag and not f.get(a.flag):
-            continue
-        if a.type and (m.get("type") or "").lower() != a.type.lower():
-            continue
-        if a.category and (m.get("category") or "").lower() != a.category.lower():
-            continue
-        if a.min_power and (m.get("power") or 0) < a.min_power:
-            continue
-        if a.name and key(a.name) not in key(m["name"]):
-            continue
-        p = m.get("priority")
-        if a.priority:
-            if p is None:
-                continue
-            if a.priority == "+" and p <= 0:
-                continue
-            if a.priority == "-" and p >= 0:
-                continue
-            if a.priority not in ("+", "-") and p != int(a.priority):
-                continue
-        if a.learner and a.learner.lower() not in [
-                learner.lower() for learner in m.get("learners", [])]:
-            continue
-        res.append(m)
-
+    res = [m for m in db("moves") if _move_matches(m, a)]
     if a.used:
         res = [m for m in res if mu.get(key(m["name"])) is not None]
     res.sort(key=lambda m: (-(mu.get(key(m["name"])) or -1), -(m.get("power") or 0)))
@@ -490,16 +540,7 @@ def cmd_moves(a):
     # the Pokemon in the box that learn it, so a capability question ("who has
     # priority?") is answered without cross-referencing 500 learner lists by
     # hand. Permanents sort first because only they can be trained.
-    box = {}
-    if getattr(a, "owned", False):
-        # owned_sets() returns norm() keys, which are lowercased and token
-        # sorted ("alola ninetales"), so the display name is read straight from
-        # the ledger instead - he has to recognise these at a glance.
-        inv = ledger.inv()
-        for x in inv.get("permanent_pokemon", []):
-            box[norm(x)] = "*" + x
-        for x in (inv.get("rental_pokemon", {}) or {}).get("list", []):
-            box.setdefault(norm(x), x)
+    box = _owned_box() if getattr(a, "owned", False) else {}
 
     rows = []
     for m in res[:a.limit]:
@@ -510,17 +551,7 @@ def cmd_moves(a):
             pct(mu.get(key(m["name"]))),
         ]
         if box:
-            mine = sorted({box[norm(learner)] for learner in m.get("learners", [])
-                           if norm(learner) in box},
-                          key=lambda x: (not x.startswith("*"), x))
-            # A move half the box learns says nothing useful and wrecks the
-            # table width; the count still carries the fact.
-            shown = [x.lstrip("*") + ("" if x.startswith("*") else " (r)")
-                     for x in mine[:6]]
-            if len(mine) > 6:
-                shown.append("+%d more" % (len(mine) - 6))
-            row.append(len(mine))
-            row.append(", ".join(shown) or "-")
+            row += _box_cells(m, box)
         rows.append(row)
     heads = ["Move", "Type", "Cat", "Pow", "Acc", "PP", "Pri", "Users", "Usage"]
     if box:
@@ -531,17 +562,7 @@ def cmd_moves(a):
               " permanents listed first." % len(box))
 
     if a.learners:
-        perm, temp, _, _ = owned_sets()
-        ui = usage_index()
-        print("\nPokemon that learn these moves (Champions legal):")
-        counts = Counter()
-        for m in res:
-            for learner in m.get("learners", []):
-                counts[learner] += 1
-        rows = []
-        for name, c in counts.most_common(a.limit):
-            rows.append([name, c, pct(usage_of(name, ui)), own_tag(name, perm, temp)])
-        table(rows, ["Pokemon", "#Moves", "Usage", "You"])
+        _print_learner_counts(res, a)
 
 
 def cmd_counter_priority(a):
@@ -578,6 +599,43 @@ def cmd_counter_priority(a):
           ["Move", "Pri", "Type", "Pow", "Users", "Usage"])
 
 
+def _print_megas(p, stones):
+    megas = [m for m in db("pokemon")
+             if m["is_mega"] and norm(m.get("species") or "") == norm(p["name"])]
+    for m in megas:
+        mb = m["base_stats"]
+        stone = next((s for s in stones if norm(s).startswith(norm(p["name"])[:5])), None)
+        print("  Mega        %s %s  BST %s  ability %s%s"
+              % (m["name"], "/".join(m["types"]), mb["total"],
+                 ", ".join(m["abilities"]), "  [stone owned]" if stone else ""))
+
+
+def _movepool(name):
+    """The learnset filed under this name, its norm() spelling, or - for a
+    cosmetic or gender form - the base species'."""
+    learn = load(os.path.join(DB, "learnsets.json"), {}) or {}
+    return (learn.get(name)
+            or next((v for k, v in learn.items() if norm(k) == norm(name)), None)
+            or next((v for k, v in learn.items()
+                     if species_norm(k) == species_norm(name)), None)
+            or [])
+
+
+def _print_movepool_table(mv):
+    mu = move_usage_index()
+    byname = {m["name"]: m for m in db("moves")}
+    rows = []
+    for name in mv:
+        m = byname.get(name)
+        if not m:
+            continue
+        rows.append([name, m.get("type"), (m.get("category") or "")[:4],
+                     m.get("power"), m.get("accuracy"), m.get("pp"),
+                     m.get("priority"), pct(mu.get(norm(name)))])
+    rows.sort(key=lambda r: -(float(r[7].rstrip("%")) if r[7] else -1))
+    table(rows, ["Move", "Type", "Cat", "Pow", "Acc", "PP", "Pri", "Usage"])
+
+
 def cmd_pokemon(a):
     p = find_pokemon(a.name)
     if not p:
@@ -600,79 +658,51 @@ def cmd_pokemon(a):
     tag = own_tag(p["name"], perm, temp)
     print("  You own it  %s" % ("yes (permanent)" if tag == "OWN" else
                                 "rental only" if tag == "rent" else "no"))
+    _print_megas(p, stones)
 
-    megas = [m for m in db("pokemon")
-             if m["is_mega"] and norm(m.get("species") or "") == norm(p["name"])]
-    for m in megas:
-        mb = m["base_stats"]
-        stone = next((s for s in stones if norm(s).startswith(norm(p["name"])[:5])), None)
-        print("  Mega        %s %s  BST %s  ability %s%s"
-              % (m["name"], "/".join(m["types"]), mb["total"],
-                 ", ".join(m["abilities"]), "  [stone owned]" if stone else ""))
-
-    learn = load(os.path.join(DB, "learnsets.json"), {}) or {}
-    mv = learn.get(p["name"]) or []
-    if not mv:
-        for k in learn:
-            if norm(k) == norm(p["name"]):
-                mv = learn[k]
-                break
-    if not mv:
-        # cosmetic and gender forms share the base species' movepool
-        for k in learn:
-            if species_norm(k) == species_norm(p["name"]):
-                mv = learn[k]
-                break
+    mv = _movepool(p["name"])
     print("\n  Movepool: %d moves" % len(mv))
     if a.moves:
-        mu = move_usage_index()
-        byname = {m["name"]: m for m in db("moves")}
-        rows = []
-        for name in mv:
-            m = byname.get(name)
-            if not m:
-                continue
-            rows.append([name, m.get("type"), (m.get("category") or "")[:4],
-                         m.get("power"), m.get("accuracy"), m.get("pp"),
-                         m.get("priority"), pct(mu.get(norm(name)))])
-        rows.sort(key=lambda r: -(float(r[7].rstrip("%")) if r[7] else -1))
-        table(rows, ["Move", "Type", "Cat", "Pow", "Acc", "PP", "Pri", "Usage"])
+        _print_movepool_table(mv)
 
     show_smogon(p["name"])
+
+
+def _print_moveset(ms):
+    print("\n  [%s]" % ms["name"])
+    for slot in ms["moveslots"]:
+        print("    - " + " / ".join(slot))
+    if ms["items"]:
+        print("    Item:    %s" % " / ".join(ms["items"]))
+    if ms["abilities"]:
+        print("    Ability: %s" % " / ".join(ms["abilities"]))
+    if ms["natures"]:
+        print("    Nature:  %s" % " / ".join(ms["natures"]))
+    for sp in ms["stat_points"]:
+        print("    SP:      %s" % " / ".join(
+            "%s %s" % (k.upper(), v) for k, v in sp.items() if v))
+    if ms.get("explanation"):
+        print("    " + ms["explanation"].replace("\n", "\n    "))
 
 
 def show_smogon(name):
     sm = meta("smogon_analyses")
     if not sm:
         return
-    target = norm(name)
-    for entry in sm.get("pokemon", []):
-        if norm(entry["name"]) != target:
-            continue
-        if not entry.get("vgc_strategies"):
-            print("\n  Smogon: no written VGC analysis for this Pokemon yet.")
-            return
-        for st in entry["vgc_strategies"]:
-            print("\n  --- Smogon %s ---" % st["format"])
-            if st.get("overview"):
-                print("  " + st["overview"].replace("\n", "\n  "))
-            for ms in st.get("movesets", []):
-                print("\n  [%s]" % ms["name"])
-                for slot in ms["moveslots"]:
-                    print("    - " + " / ".join(slot))
-                if ms["items"]:
-                    print("    Item:    %s" % " / ".join(ms["items"]))
-                if ms["abilities"]:
-                    print("    Ability: %s" % " / ".join(ms["abilities"]))
-                if ms["natures"]:
-                    print("    Nature:  %s" % " / ".join(ms["natures"]))
-                for sp in ms["stat_points"]:
-                    print("    SP:      %s" % " / ".join(
-                        "%s %s" % (k.upper(), v) for k, v in sp.items() if v))
-                if ms.get("explanation"):
-                    print("    " + ms["explanation"].replace("\n", "\n    "))
+    entry = next((e for e in sm.get("pokemon", []) if norm(e["name"]) == norm(name)),
+                 None)
+    if entry is None:
+        print("\n  Smogon: no entry found.")
         return
-    print("\n  Smogon: no entry found.")
+    if not entry.get("vgc_strategies"):
+        print("\n  Smogon: no written VGC analysis for this Pokemon yet.")
+        return
+    for st in entry["vgc_strategies"]:
+        print("\n  --- Smogon %s ---" % st["format"])
+        if st.get("overview"):
+            print("  " + st["overview"].replace("\n", "\n  "))
+        for ms in st.get("movesets", []):
+            _print_moveset(ms)
 
 
 # The order a spread is written in, and how each stat is spelled, everywhere
@@ -1019,6 +1049,83 @@ SP_BUDGET = 66
 SP_MAX = 32
 
 
+def _print_spread(sp):
+    if not sp:
+        print("  SP     -- not recorded --")
+        return
+    total = sum(v for v in sp.values() if isinstance(v, int))
+    over = [k for k, v in sp.items() if isinstance(v, int) and v > SP_MAX]
+    spread = " / ".join("%s %s" % (k.upper(), v) for k, v in sp.items() if v)
+    if total != SP_BUDGET:
+        flag = "   *** %d SP, budget is %d ***" % (total, SP_BUDGET)
+    elif over:
+        flag = "   *** over %d in %s ***" % (SP_MAX, ", ".join(over))
+    else:
+        flag = "   (%d/%d SP, legal)" % (total, SP_BUDGET)
+    print("  SP     %s%s" % (spread, flag))
+
+
+def _print_build_moves(b, learn, moves_by):
+    mvs = b.get("moves") or []
+    if not mvs:
+        print("  moves  -- not recorded --")
+        return
+    print("  moves")
+    legal = next((v for k, v in learn.items() if norm(k) == norm(b["pokemon"])), None)
+    mu = move_usage_index()
+    for name in mvs:
+        m = moves_by.get(name)
+        ok = "" if legal is None or name in legal else "  *** NOT LEGAL ***"
+        if m:
+            print("    %-16s %-9s %-8s pow %-4s acc %-4s pp %-3s %s%s"
+                  % (name, m["type"], m["category"], m["power"] or "-",
+                     m["accuracy"] or "-", m["pp"] or "-",
+                     pct(mu.get(key(name))) or "", ok))
+        else:
+            print("    %-16s  *** unknown move ***" % name)
+
+
+# Every other string field on the build is printed as a labelled note, so a
+# field added to builds.json shows up here the same day instead of being
+# silently dropped.
+BUILD_FIELDS = {"pokemon", "mega", "ability", "mega_ability", "nature",
+                "stat_points", "moves", "role", "rationale", "_missing"}
+
+
+def _print_build_notes(b):
+    if b.get("rationale"):
+        print("\n  %s" % b["rationale"].replace(". ", ".\n  "))
+    for k, v in b.items():
+        if k in BUILD_FIELDS or not isinstance(v, str):
+            continue
+        print("\n  %s:\n    %s" % (k.replace("_", " ").upper(),
+                                 v.replace(". ", ".\n    ")))
+    if b.get("_missing"):
+        print("\n  TODO: %s" % b["_missing"])
+
+
+def _print_build(b, learn, moves_by):
+    p = find_pokemon(b["pokemon"])
+    print("=" * 74)
+    title = b["pokemon"] + (" -> " + b["mega"] if b.get("mega") else "")
+    print("%s   [%s]" % (title, b.get("role") or ""))
+    print("=" * 74)
+    if p:
+        bs = p["base_stats"]
+        print("  base   HP %s Atk %s Def %s SpA %s SpD %s Spe %s"
+              % (bs["hp"], bs["atk"], bs["def"], bs["spa"], bs["spd"], bs["spe"]))
+    mab = build_mega_ability(b)
+    print("  abil   %s%s" % (build_ability(b) or "--",
+                             " -> " + mab if mab else ""))
+    nat = natures().get(b.get("nature") or "")
+    print("  nature %s%s" % (b.get("nature") or "-- not recorded --",
+                             "   (%s)" % nat["summary"] if nat else ""))
+    _print_spread(b.get("stat_points"))
+    _print_build_moves(b, learn, moves_by)
+    _print_build_notes(b)
+    print()
+
+
 def cmd_build(a):
     """Show the player's own builds and check them against the rules."""
     builds = ledger.builds()
@@ -1027,81 +1134,10 @@ def cmd_build(a):
     if not builds:
         print("No build recorded for %s" % (a.name or "anyone"))
         return
-
     learn = load(os.path.join(DB, "learnsets.json"), {}) or {}
     moves_by = {m["name"]: m for m in db("moves")}
-
     for b in builds:
-        p = find_pokemon(b["pokemon"])
-        print("=" * 74)
-        title = b["pokemon"] + (" -> " + b["mega"] if b.get("mega") else "")
-        print("%s   [%s]" % (title, b.get("role") or ""))
-        print("=" * 74)
-        if p:
-            bs = p["base_stats"]
-            print("  base   HP %s Atk %s Def %s SpA %s SpD %s Spe %s"
-                  % (bs["hp"], bs["atk"], bs["def"], bs["spa"], bs["spd"], bs["spe"]))
-        mab = build_mega_ability(b)
-        print("  abil   %s%s" % (build_ability(b) or "--",
-                                 " -> " + mab if mab else ""))
-        nat = natures().get(b.get("nature") or "")
-        print("  nature %s%s" % (b.get("nature") or "-- not recorded --",
-                                 "   (%s)" % nat["summary"] if nat else ""))
-
-        sp = b.get("stat_points")
-        if sp:
-            total = sum(v for v in sp.values() if isinstance(v, int))
-            over = [k for k, v in sp.items() if isinstance(v, int) and v > SP_MAX]
-            spread = " / ".join("%s %s" % (k.upper(), v) for k, v in sp.items() if v)
-            flag = ""
-            if total != SP_BUDGET:
-                flag = "   *** %d SP, budget is %d ***" % (total, SP_BUDGET)
-            elif over:
-                flag = "   *** over %d in %s ***" % (SP_MAX, ", ".join(over))
-            else:
-                flag = "   (%d/%d SP, legal)" % (total, SP_BUDGET)
-            print("  SP     %s%s" % (spread, flag))
-        else:
-            print("  SP     -- not recorded --")
-
-        mvs = b.get("moves") or []
-        if mvs:
-            print("  moves")
-            legal = None
-            for k, v in learn.items():
-                if norm(k) == norm(b["pokemon"]):
-                    legal = v
-                    break
-            mu = move_usage_index()
-            for name in mvs:
-                m = moves_by.get(name)
-                ok = "" if legal is None or name in legal else "  *** NOT LEGAL ***"
-                if m:
-                    print("    %-16s %-9s %-8s pow %-4s acc %-4s pp %-3s %s%s"
-                          % (name, m["type"], m["category"], m["power"] or "-",
-                             m["accuracy"] or "-", m["pp"] or "-",
-                             pct(mu.get(key(name))) or "", ok))
-                else:
-                    print("    %-16s  *** unknown move ***" % name)
-        else:
-            print("  moves  -- not recorded --")
-
-        if b.get("rationale"):
-            print("\n  %s" % b["rationale"].replace(". ", ".\n  "))
-
-        # Every other string field on the build is printed as a labelled
-        # note, so a field added to builds.json shows up here the same day
-        # instead of being silently dropped.
-        structural = {"pokemon", "mega", "ability", "mega_ability", "nature",
-                      "stat_points", "moves", "role", "rationale", "_missing"}
-        for k, v in b.items():
-            if k in structural or not isinstance(v, str):
-                continue
-            print("\n  %s:\n    %s" % (k.replace("_", " ").upper(),
-                                     v.replace(". ", ".\n    ")))
-        if b.get("_missing"):
-            print("\n  TODO: %s" % b["_missing"])
-        print()
+        _print_build(b, learn, moves_by)
 
 
 TYPES = ["Normal", "Fire", "Water", "Electric", "Grass", "Ice", "Fighting",
@@ -1318,6 +1354,47 @@ def cmd_nature(a):
     table(rows, ["Nature", "Summary", "Raises", "Lowers"])
 
 
+def _core_hits(members, prof):
+    """[attacking type, how many members it hits for 2x+, who and how hard],
+    most members first."""
+    rows = []
+    for t in TYPES:
+        hits = [(m["name"], prof[m["name"]][t]) for m in members
+                if prof[m["name"]][t] >= 2]
+        if hits:
+            rows.append([t, len(hits),
+                         ", ".join("%s x%g" % (n, v) for n, v in hits)])
+    rows.sort(key=lambda r: (-r[1], -max(float(x.split("x")[-1])
+                                         for x in r[2].split(", "))))
+    return rows
+
+
+def _patches(members, holes, chart, ba):
+    """Every owned Pokemon outside the core that resists one of the holes."""
+    perm, temp, _, _ = owned_sets()
+    builds = {b["pokemon"] for b in ledger.builds()}
+    ui = usage_index()
+    have = {m["name"] for m in members}
+    cand = []
+    for q in db("pokemon"):
+        own = own_tag(q["name"], perm, temp)
+        if q["name"] in have or not own:
+            continue
+        chosen = ba.get(norm(q["name"]))
+        d = defence(q["types"], chart, [chosen] if chosen else list(q["abilities"]))
+        covered = [t for t in holes if d[t] <= 0.5]
+        if not covered:
+            continue
+        built = "yes" if any(norm(b) == norm(q["name"]) or
+                             norm(b) == norm(q.get("species") or "")
+                             for b in builds) else ""
+        cand.append([len(covered), q["name"], "/".join(q["types"]),
+                     ", ".join("%s x%g" % (t, d[t]) for t in covered),
+                     pct(ui.get(norm(q["name"]))) or "", own, built])
+    cand.sort(key=lambda r: (-r[0], r[6] == "", r[1]))
+    return cand
+
+
 def cmd_core(a):
     """Combined defensive profile of a partial team, and what patches the holes.
 
@@ -1342,16 +1419,7 @@ def cmd_core(a):
     ba = build_abilities()
     prof = {m["name"]: defence(m["types"], chart, ba.get(norm(m["name"])))
             for m in members}
-    rows = []
-    for t in TYPES:
-        hits = [(m["name"], prof[m["name"]][t]) for m in members
-                if prof[m["name"]][t] >= 2]
-        if not hits:
-            continue
-        rows.append([t, len(hits),
-                     ", ".join("%s x%g" % (n, v) for n, v in hits)])
-    rows.sort(key=lambda r: (-r[1], -max(float(x.split("x")[-1])
-                                         for x in r[2].split(", "))))
+    rows = _core_hits(members, prof)
     if rows:
         print("\n  Attacking types that hit this core for 2x or more:")
         table(rows, ["Type", "Hits", "Who"])
@@ -1364,34 +1432,10 @@ def cmd_core(a):
         return
 
     print("\n  SHARED HOLES (2+ members at 2x or worse): %s" % ", ".join(holes))
-
-    perm, temp, _, _ = owned_sets()
-    builds = {b["pokemon"] for b in ledger.builds()}
-    ui = usage_index()
-    have = {m["name"] for m in members}
-
-    cand = []
-    for q in db("pokemon"):
-        if q["name"] in have:
-            continue
-        own = own_tag(q["name"], perm, temp)
-        if not own:
-            continue
-        chosen = ba.get(norm(q["name"]))
-        d = defence(q["types"], chart, [chosen] if chosen else list(q["abilities"]))
-        covered = [t for t in holes if d[t] <= 0.5]
-        if not covered:
-            continue
-        built = "yes" if any(norm(b) == norm(q["name"]) or
-                             norm(b) == norm(q.get("species") or "")
-                             for b in builds) else ""
-        cand.append([len(covered), q["name"], "/".join(q["types"]),
-                     ", ".join("%s x%g" % (t, d[t]) for t in covered),
-                     pct(ui.get(norm(q["name"]))) or "", own, built])
+    cand = _patches(members, holes, chart, ba)
     if not cand:
         print("  Nothing you own resists any of those.")
         return
-    cand.sort(key=lambda r: (-r[0], r[6] == "", r[1]))
     print("\n  What you own that resists them:")
     table([c[1:] for c in cand[:14]],
           ["Pokemon", "Types", "Resists", "Usage", "You", "Built"])
@@ -1535,13 +1579,7 @@ def worlds_compare(divs, a):
     table(rows, ["Pokemon"] + [d.capitalize() for d, _ in divs] + ["You"])
 
 
-def cmd_worlds(a):
-    want = list(DIVISIONS) if a.division == "all" else [a.division]
-    divs = tournaments(want)
-    if not divs:
-        print("No tournament data for %s. Run: python scripts/fetch_tournament.py"
-              " --division %s" % (a.division, want[0]))
-        return
+def _print_event_lines(divs):
     for d, t in divs:
         # The top cut carries on numbering from the last swiss round, so R15 is
         # the Final, not an unfinished swiss. Print the label, never the bare
@@ -1554,53 +1592,65 @@ def cmd_worlds(a):
                  " COMPLETE" if t.get("complete") else "",
                  len(t.get("players", [])), t.get("fetched")))
 
-    if len(divs) > 1:
-        if a.usage:
-            worlds_compare(divs, a)
-        else:
-            for d, t in divs:
-                print("\n=== %s ===" % d.upper())
-                worlds_listing(t, a)
-        return
 
-    tour = divs[0][1]
+def _worlds_usage(top):
+    """(species -> teams, species -> item/ability/move Counters) over `top`."""
+    counts = Counter()
+    items, abil, moves = defaultdict(Counter), defaultdict(Counter), defaultdict(Counter)
+    for p in top:
+        for slot in p.get("team", []):
+            mon = slot.get("pokemon")
+            if not mon:
+                continue
+            counts[mon] += 1
+            if slot.get("item"):
+                items[mon][slot["item"]] += 1
+            if slot.get("ability"):
+                base_ab, becomes = active_ability(mon, slot.get("item"),
+                                                  slot["ability"])
+                abil[mon][base_ab + (" -> " + becomes if becomes else "")] += 1
+            for mv in slot.get("moves", []):
+                moves[mon][mv] += 1
+    return counts, items, abil, moves
+
+
+def _print_worlds_usage(tour, division, a):
     players = tour.get("players", [])
+    top = players[:a.top] if a.top else players
+    counts, items, abil, moves = _worlds_usage(top)
+    n = len(top)
+    perm, temp, _, _ = owned_sets()
+    rows = []
+    for mon, c in counts.most_common(a.limit):
+        rows.append([mon, c, "%.1f%%" % (100.0 * c / n) if n else "",
+                     items[mon].most_common(1)[0][0] if items[mon] else "",
+                     abil[mon].most_common(1)[0][0] if abil[mon] else "",
+                     ", ".join(m for m, _ in moves[mon].most_common(4)),
+                     own_tag(mon, perm, temp)])
+    print("\nMost used across the top %d %s teams:" % (n, division))
+    table(rows, ["Pokemon", "N", "Share", "Top item", "Top ability",
+                 "Most common moves", "You"])
 
-    if a.usage:
-        top = players[:a.top] if a.top else players
-        counts = Counter()
-        items = defaultdict(Counter)
-        abil = defaultdict(Counter)
-        moves = defaultdict(Counter)
-        for p in top:
-            for slot in p.get("team", []):
-                mon = slot.get("pokemon")
-                if not mon:
-                    continue
-                counts[mon] += 1
-                if slot.get("item"):
-                    items[mon][slot["item"]] += 1
-                if slot.get("ability"):
-                    base_ab, becomes = active_ability(mon, slot.get("item"),
-                                                      slot["ability"])
-                    abil[mon][base_ab + (" -> " + becomes if becomes else "")] += 1
-                for mv in slot.get("moves", []):
-                    moves[mon][mv] += 1
-        n = len(top)
-        perm, temp, _, _ = owned_sets()
-        rows = []
-        for mon, c in counts.most_common(a.limit):
-            rows.append([mon, c, "%.1f%%" % (100.0 * c / n) if n else "",
-                         items[mon].most_common(1)[0][0] if items[mon] else "",
-                         abil[mon].most_common(1)[0][0] if abil[mon] else "",
-                         ", ".join(m for m, _ in moves[mon].most_common(4)),
-                         own_tag(mon, perm, temp)])
-        print("\nMost used across the top %d %s teams:" % (n, divs[0][0]))
-        table(rows, ["Pokemon", "N", "Share", "Top item", "Top ability",
-                     "Most common moves", "You"])
+
+def cmd_worlds(a):
+    want = list(DIVISIONS) if a.division == "all" else [a.division]
+    divs = tournaments(want)
+    if not divs:
+        print("No tournament data for %s. Run: python scripts/fetch_tournament.py"
+              " --division %s" % (a.division, want[0]))
         return
+    _print_event_lines(divs)
 
-    worlds_listing(tour, a)
+    if len(divs) > 1 and a.usage:
+        worlds_compare(divs, a)
+    elif len(divs) > 1:
+        for d, t in divs:
+            print("\n=== %s ===" % d.upper())
+            worlds_listing(t, a)
+    elif a.usage:
+        _print_worlds_usage(divs[0][1], divs[0][0], a)
+    else:
+        worlds_listing(divs[0][1], a)
 
 
 def worlds_listing(tour, a):
