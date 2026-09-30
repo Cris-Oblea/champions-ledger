@@ -132,6 +132,53 @@ def species_table(path):
                     for k, v in c.most_common(40)]}
 
 
+def _merge_year(slot, ev):
+    """Fold one event's divisions into its year: whichever event actually has
+    teams wins a division; if both do, the one with more of them."""
+    slot["events"].append(ev["tid"])
+    for div, tbl in ev["divisions"].items():
+        cur = slot["divisions"].get(div)
+        if not tbl["teamlists"]:
+            # remember it exists, but never let it displace real teams
+            if cur is None:
+                slot["divisions"][div] = tbl
+                slot["from"][div] = ev["tid"]
+            continue
+        if cur is None or not cur["teamlists"] or tbl["teams"] > cur["teams"]:
+            slot["divisions"][div] = tbl
+            slot["from"][div] = ev["tid"]
+
+
+def _by_year(events):
+    """The view actually worth reading: one row per YEAR. A year can be
+    published as two events (a Day 1 and a Day 2) and the teamlists are split
+    across them unevenly."""
+    by_year = {}
+    for ev in events:
+        if ev["year"] is None:
+            continue
+        slot = by_year.setdefault(ev["year"], {"year": ev["year"], "divisions": {},
+                                               "from": {}, "events": []})
+        _merge_year(slot, ev)
+    return [by_year[y] for y in sorted(by_year, reverse=True)]
+
+
+def _event_record(ev, a):
+    """One event with the species table of each division it has on disk,
+    fetching them first unless --rollup."""
+    rec = dict(ev)
+    rec["divisions"] = {}
+    for div in DIVISIONS:
+        if not a.rollup:
+            state = fetch_event(ev["tid"], div, a.force)
+            print("  %s %-8s %-8s %s" % (ev["tid"], div, state,
+                                         ev["label"][:44]))
+        tbl = species_table(event_path(ev["tid"], div))
+        if tbl:
+            rec["divisions"][div] = tbl
+    return rec
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--force", action="store_true")
@@ -150,45 +197,9 @@ def main():
                              "metagames off the same roster. Never pool them.",
                "_counted": "Per TEAM, not per appearance: the Species Clause "
                            "means a team holds a species at most once.",
-               "source": INDEX, "events": []}
-
-    for ev in events:
-        rec = dict(ev)
-        rec["divisions"] = {}
-        for div in DIVISIONS:
-            if not a.rollup:
-                state = fetch_event(ev["tid"], div, a.force)
-                print("  %s %-8s %-8s %s" % (ev["tid"], div, state,
-                                             ev["label"][:44]))
-            tbl = species_table(event_path(ev["tid"], div))
-            if tbl:
-                rec["divisions"][div] = tbl
-        archive["events"].append(rec)
-
-    # ---- the view actually worth reading: one row per YEAR ----------------
-    # A year can be published as two events (a Day 1 and a Day 2) and the
-    # teamlists are split across them unevenly. Per division, take whichever
-    # event actually has teams; if both do, the one with more of them.
-    by_year = {}
-    for ev in archive["events"]:
-        y = ev["year"]
-        if y is None:
-            continue
-        slot = by_year.setdefault(y, {"year": y, "divisions": {},
-                                      "from": {}, "events": []})
-        slot["events"].append(ev["tid"])
-        for div, tbl in ev["divisions"].items():
-            cur = slot["divisions"].get(div)
-            if not tbl["teamlists"]:
-                # remember it exists, but never let it displace real teams
-                if cur is None:
-                    slot["divisions"][div] = tbl
-                    slot["from"][div] = ev["tid"]
-                continue
-            if cur is None or not cur["teamlists"] or tbl["teams"] > cur["teams"]:
-                slot["divisions"][div] = tbl
-                slot["from"][div] = ev["tid"]
-    archive["years"] = [by_year[y] for y in sorted(by_year, reverse=True)]
+               "source": INDEX,
+               "events": [_event_record(ev, a) for ev in events]}
+    archive["years"] = _by_year(archive["events"])
     archive["_years_note"] = (
         "One entry per year, merged across that year's events. 2023 is the "
         "case that forces this: its Masters teamlists are on the Day 1 event "
