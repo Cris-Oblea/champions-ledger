@@ -1,5 +1,6 @@
 /* The DOM helpers every screen builds with: $, el, the toast, a note, a
-   footer button, and the search box with its clear button. */
+   footer button, the search box with its clear button, and the three every
+   switch and sheet shares - setPressed, showPane, resetHost. */
 
 /* ===================================================================== util */
 function $(id){ return document.getElementById(id); }
@@ -143,6 +144,37 @@ function filterLabel(t){
   return d;
 }
 
+/* A toggle's state IS its aria-pressed: the stylesheet draws the pressed look
+   off it and a screen reader announces it, so there is no class to keep in
+   step with it. */
+function setPressed(node, on){
+  node.setAttribute("aria-pressed", on ? "true" : "false");
+}
+
+/* Empty a host that every sheet or editor reuses. innerHTML only clears the
+   children - an expando a previous builder hung on the node (body._mode,
+   body._marks) survives into the next one, which is exactly how the
+   Champions "rental" choice leaked into the 11 HOME adds of 2026-09-11.
+   Anything underscore-prefixed is that builder's own state, so it goes too. */
+function resetHost(node){
+  node.innerHTML = "";
+  Object.keys(node).forEach(function(k){
+    if (k.startsWith("_")) { try { delete node[k]; } catch (e) {} }
+  });
+  return node;
+}
+
+/* A segmented switch between panes: {key: [paneId, buttonId]}. Shows the
+   chosen pane, hides the rest and presses its button - written once, so a
+   switcher that gains a pane cannot forget to hide it. */
+function showPane(panes, which){
+  Object.keys(panes).forEach(function(k){
+    $(panes[k][0]).hidden = k !== which;
+    setPressed($(panes[k][1]), k === which);
+  });
+}
+
 export {
-  $, capNote, el, fbtn, filterLabel, note, searchField, toast, wireClears,
+  $, capNote, el, fbtn, filterLabel, note, resetHost, searchField, setPressed,
+  showPane, toast, wireClears,
 };

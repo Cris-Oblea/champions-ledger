@@ -6,7 +6,9 @@ import {
   natMult, splitPct, splitsFor, splitsReg, spTotal, STAT_KEYS, STAT_LABEL,
   statAt,
 } from "../core/data.js";
-import { $, capNote, el, fbtn, searchField, toast } from "../core/dom.js";
+import {
+  $, capNote, el, fbtn, searchField, setPressed, toast,
+} from "../core/dom.js";
 import {
   activeAbility, boxRows, buildLink, buildsOn, megaAbility, ORIGIN_LABEL,
   originOf, ownedNames, S, soleAbility,
@@ -89,11 +91,11 @@ function speciesSheet(onPick){
     [["dex", "Dex no."], ["az", "A-Z"], ["bst", "BST"],
      ["spe", "Speed"]].forEach(function(o){
       var t = el("button", "tog", o[1]);
-      t.setAttribute("aria-pressed", PS.sort === o[0] ? "true" : "false");
+      setPressed(t, PS.sort === o[0]);
       t.onclick = function(){
         PS.sort = o[0];
         Array.prototype.forEach.call(sortWrap.children, function(c){
-          c.setAttribute("aria-pressed", c === t ? "true" : "false");
+          setPressed(c, c === t);
         });
         draw();
       };
@@ -105,10 +107,10 @@ function speciesSheet(onPick){
     var mineTog = el("button", "tog", "In your boxes");
     mineTog.title = "Everything else is still here - a set for a Pokemon you "
                   + "have not got yet is an idea worth keeping.";
-    mineTog.setAttribute("aria-pressed", "false");
+    setPressed(mineTog, false);
     mineTog.onclick = function(){
       PS.mine = !PS.mine;
-      mineTog.setAttribute("aria-pressed", PS.mine ? "true" : "false");
+      setPressed(mineTog, PS.mine);
       draw();
     };
     mineWrap.appendChild(mineTog);
@@ -565,12 +567,12 @@ function megaField(body, ed){
   fm.appendChild(el("label", "f", "Mega"));
   var togs = el("div", "toggles");
   var none = el("button", "tog", "Base form only");
-  none.setAttribute("aria-pressed", draft.mega ? "false" : "true");
+  setPressed(none, !draft.mega);
   none.onclick = function(){ draft.mega = null; draft.mega_ability = null; ed.redraw(); };
   togs.appendChild(none);
   ms.forEach(function(m){
     var t = el("button", "tog mega", m.name);
-    t.setAttribute("aria-pressed", draft.mega === m.name ? "true" : "false");
+    setPressed(t, draft.mega === m.name);
     t.onclick = function(){
       draft.mega = m.name;
       draft.mega_ability = m.ab[0] || null;

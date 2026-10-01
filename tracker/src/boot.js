@@ -2,7 +2,7 @@
    store. renderAll() is the one redraw every change ends in. */
 /* FIRST, so a script error anywhere after this line is caught and shown. */
 import "./core/errors.js";
-import { $, el, wireClears } from "./core/dom.js";
+import { $, el, setPressed, showPane, wireClears } from "./core/dom.js";
 import { VIEW } from "./core/state.js";
 import { whenChanged } from "./core/store.js";
 import {
@@ -107,22 +107,28 @@ Array.prototype.forEach.call($("calcMode").children, function(b){
   b.onclick = function(){
     CALC.gameType = b.dataset.mode;
     Array.prototype.forEach.call($("calcMode").children, function(x){
-      x.setAttribute("aria-pressed", x === b ? "true" : "false");
+      setPressed(x, x === b);
     });
     calcDraw();
   };
 });
+/* The same segmented control sits on more than one screen (the sort on both
+   boxes, the HOME panes in two places), so every copy is marked at once: the
+   button whose data-<key> is the chosen value is pressed in each. */
+function markSeg(sel, key, value){
+  document.querySelectorAll(sel).forEach(function(g){
+    Array.prototype.forEach.call(g.children, function(x){
+      setPressed(x, x.dataset[key] === value);
+    });
+  });
+}
 /* one order for every box list, so HOME and the Champions Box can be read
    against the phone's own screen without re-sorting in your head */
 document.querySelectorAll(".sortseg").forEach(function(seg){
   Array.prototype.forEach.call(seg.children, function(b){
     b.onclick = function(){
       VIEW.sort = b.dataset.sort;
-      document.querySelectorAll(".sortseg").forEach(function(g){
-        Array.prototype.forEach.call(g.children, function(x){
-          x.setAttribute("aria-pressed", x.dataset.sort === VIEW.sort ? "true" : "false");
-        });
-      });
+      markSeg(".sortseg", "sort", VIEW.sort);
       try { localStorage.setItem("champ-sort", VIEW.sort); } catch (e) {}
       renderAll();
     };
@@ -133,11 +139,7 @@ try {
   if (savedSort === "order") savedSort = "dex";   // the option that went away
   if (savedSort) {
     VIEW.sort = savedSort;
-    document.querySelectorAll(".sortseg").forEach(function(g){
-      Array.prototype.forEach.call(g.children, function(x){
-        x.setAttribute("aria-pressed", x.dataset.sort === VIEW.sort ? "true" : "false");
-      });
-    });
+    markSeg(".sortseg", "sort", VIEW.sort);
   }
 } catch (e) {
   /* Storage throws in private browsing; the default sort stands. */
@@ -172,11 +174,7 @@ function homePane(which){
   Object.keys(HOME_PANES).forEach(function(k){
     $(HOME_PANES[k]).hidden = k !== which;
   });
-  document.querySelectorAll(".homeseg").forEach(function(g){
-    Array.prototype.forEach.call(g.children, function(x){
-      x.setAttribute("aria-pressed", x.dataset.home === which ? "true" : "false");
-    });
-  });
+  markSeg(".homeseg", "home", which);
   try { localStorage.setItem("champ-homepane", which); } catch (e) {}
   if (which === "dex") drawDexPane();
   if (which === "gts") drawGtsWanted();
@@ -191,12 +189,8 @@ try { homePane(localStorage.getItem("champ-homepane") || "box"); }
 catch (e) { homePane("box"); }
 /* three panes, one switcher - written once so a fourth cannot forget one */
 function gearPane(which){
-  var panes = {stones:"gearStonePane", items:"gearItemPane"};
-  var btns = {stones:"gearStones", items:"gearItems"};
-  Object.keys(panes).forEach(function(k){
-    $(panes[k]).hidden = k !== which;
-    $(btns[k]).setAttribute("aria-pressed", k === which ? "true" : "false");
-  });
+  showPane({stones:["gearStonePane", "gearStones"],
+            items:["gearItemPane", "gearItems"]}, which);
 }
 $("gearStones").onclick = function(){ gearPane("stones"); };
 $("gearItems").onclick  = function(){ gearPane("items"); };

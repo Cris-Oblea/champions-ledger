@@ -3,7 +3,9 @@
 import {
   anyRow, bst, byName, C, dexLabel, dexNo, FORMS, freeSlug,
 } from "../core/data.js";
-import { $, capNote, el, fbtn, note, searchField, toast } from "../core/dom.js";
+import {
+  $, capNote, el, fbtn, note, searchField, setPressed, toast,
+} from "../core/dom.js";
 import { boxRows, originOf, S } from "../core/state.js";
 import { drop, put, putNew } from "../core/store.js";
 import {
@@ -759,11 +761,11 @@ function mineControls(body, PICK, draw){
   [["dex", "Dex no."], ["az", "A-Z"], ["bst", "BST"],
    ["reach", "What it can ask"]].forEach(function(o){
     var t = el("button", "tog", o[1]);
-    t.setAttribute("aria-pressed", PICK.sort === o[0] ? "true" : "false");
+    setPressed(t, PICK.sort === o[0]);
     t.onclick = function(){
       PICK.sort = o[0];
       Array.prototype.forEach.call(sortWrap.children, function(c){
-        c.setAttribute("aria-pressed", c === t ? "true" : "false");
+        setPressed(c, c === t);
       });
       draw();
     };
@@ -783,10 +785,10 @@ function mineControls(body, PICK, draw){
   ].forEach(function(o){
     var t = el("button", "tog", o[1]);
     t.title = o[2];
-    t.setAttribute("aria-pressed", "false");
+    setPressed(t, false);
     t.onclick = function(){
       PICK[o[0]] = !PICK[o[0]];
-      t.setAttribute("aria-pressed", PICK[o[0]] ? "true" : "false");
+      setPressed(t, PICK[o[0]]);
       draw();
     };
     filtWrap.appendChild(t);

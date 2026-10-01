@@ -2,7 +2,7 @@
 import {
   bst, byText, C, catName, DEX, dexNo, learnset, MOVES, STAT_KEYS, STAT_LABEL,
 } from "../core/data.js";
-import { $, el, fbtn, searchField } from "../core/dom.js";
+import { $, el, fbtn, searchField, setPressed } from "../core/dom.js";
 import { boxRows, FIND, originOf, ownedNames } from "../core/state.js";
 import { megaLine, numText, pokeCard, typeChip, typeSkin } from "../ui/card.js";
 import {
@@ -78,7 +78,7 @@ function findDraw(){
   host.innerHTML = "";
   function chip(label, onClear, cls, title){
     var t = el("button", "tog " + (cls || ""), label);
-    t.setAttribute("aria-pressed", "true");
+    setPressed(t, true);
     t.title = title || "Remove this filter";
     t.onclick = onClear;
     host.appendChild(t);
@@ -108,8 +108,8 @@ function findDraw(){
   }
   if (FIND.ability) chip("has " + FIND.ability,
     function(){ FIND.ability = ""; findDraw(); });
-  $("findInChamp").setAttribute("aria-pressed", FIND.inChamp ? "true" : "false");
-  $("findInHome").setAttribute("aria-pressed", FIND.inHome ? "true" : "false");
+  setPressed($("findInChamp"), FIND.inChamp);
+  setPressed($("findInHome"), FIND.inHome);
   if (FIND.inChamp) chip("in the Champions box",
     function(){ FIND.inChamp = false; findDraw(); });
   if (FIND.inHome) chip("in HOME",
@@ -344,7 +344,7 @@ function wireFindMode(){
     b.onclick = function(){
       var m = b.dataset.mode;
       Array.prototype.forEach.call(mrow.children, function(x){
-        x.setAttribute("aria-pressed", x === b ? "true" : "false");
+        setPressed(x, x === b);
       });
       $("findSearch").hidden = m !== "search";
       $("findWorlds").hidden = m !== "worlds";
@@ -436,11 +436,11 @@ function typeFilterSheet(){
 /* ALL or ANY. */
 function typeModeButton(mrow, o, paint){
   var b = el("button", "tog", o[1]);
-  b.setAttribute("aria-pressed", FIND.typeMode === o[0] ? "true" : "false");
+  setPressed(b, FIND.typeMode === o[0]);
   b.onclick = function(){
     FIND.typeMode = o[0];
     Array.prototype.forEach.call(mrow.children, function(x){
-      x.setAttribute("aria-pressed", x === b ? "true" : "false");
+      setPressed(x, x === b);
     });
     paint(); findDraw();
   };
@@ -481,7 +481,7 @@ function paintTypeFilter(chips, note){
     var on = FIND.types.includes(ty);
     var no = FIND.notTypes.includes(ty);
     var b = chips[ty];
-    b.setAttribute("aria-pressed", on ? "true" : "false");
+    setPressed(b, on);
     b.classList.toggle("no", no);
     b.textContent = (no ? "− " : "") + ty;
     typeSkin(b, ty, on);
@@ -537,10 +537,10 @@ function abilityKindChips(pick, draw){
     Object.keys(C.ABIL).forEach(function(a){ if (CLS[a] === k) n++; });
     if (!n) return;
     var t = el("button", "tog", (CLSL[k] || k) + " · " + n);
-    t.setAttribute("aria-pressed", "false");
+    setPressed(t, false);
     t.onclick = function(){
       if (pick[k]) delete pick[k]; else pick[k] = 1;
-      t.setAttribute("aria-pressed", pick[k] ? "true" : "false");
+      setPressed(t, pick[k]);
       draw();
     };
     frow.appendChild(t);
@@ -606,7 +606,7 @@ function paintSort(){
     var arrow = "";
     if (o[0] !== "dex") arrow = FIND.dir === "asc" ? " ↑" : " ↓";
     var t = el("button", "tog", o[1] + (on ? arrow : ""));
-    t.setAttribute("aria-pressed", on ? "true" : "false");
+    setPressed(t, on);
     if (o[0] === "dex") t.title = "Dex order";
     else if (on) t.title = "Tap again for " +
       (FIND.dir === "asc" ? "highest first" : "lowest first");

@@ -4,7 +4,7 @@
    A small surface on purpose: go() changes tab, openSheet() shows a sheet,
    ask() asks. The tab bar's own data, the scroll lock behind a sheet and the
    history counters stay private. */
-import { $, el } from "../core/dom.js";
+import { $, el, resetHost, showPane } from "../core/dom.js";
 import { S } from "../core/state.js";
 
 /* ===================================================================== tabs */
@@ -124,12 +124,7 @@ function leaveEditor(pane){
 function openEditor(view, title, build, foot){
   var pre = view === "teamedit" ? "teamEdit" : "buildEdit";
   $(pre + "Title").textContent = title;
-  var body = $(pre + "Body");
-  body.innerHTML = "";
-  Object.keys(body).forEach(function(k){
-    if (k.startsWith("_")) { try { delete body[k]; } catch (e) {} }
-  });
-  build(body);
+  build(resetHost($(pre + "Body")));
   var f = $(pre + "Foot");
   f.innerHTML = "";
   (foot || []).filter(Boolean).forEach(function(b){ f.appendChild(b); });
@@ -163,15 +158,9 @@ function lockScroll(on){
 
 function openSheet(title, build, foot){
   $("sheetTitle").textContent = title;
-  /* #sheetBody is ONE node reused by every sheet, and innerHTML only clears
-     its children - an expando a previous builder hung on it (body._mode,
-     body._marks) survives into the next sheet. That is exactly how the
-     Champions "rental" choice leaked into the 11 HOME adds of 2026-09-11.
-     Anything underscore-prefixed is sheet-local state, so wipe it by hand. */
-  var body = $("sheetBody"); body.innerHTML = "";
-  Object.keys(body).forEach(function(k){
-    if (k.startsWith("_")) { try { delete body[k]; } catch (e) {} }
-  });
+  /* #sheetBody is ONE node reused by every sheet - resetHost says why it
+     takes more than innerHTML to empty it */
+  var body = resetHost($("sheetBody"));
   build(body);
   var f = $("sheetFoot"); f.innerHTML = "";
   /* a caller may pass null for a button that does not apply to this case,
@@ -341,12 +330,8 @@ window.addEventListener("popstate", function(){
    (player, 2026-09-13) - and they belong together anyway, since a team IS six
    builds. */
 function buildsPane(which){
-  var panes = {builds:"buildsPane", teams:"teamsPane"};
-  var btns = {builds:"bldPaneBuilds", teams:"bldPaneTeams"};
-  Object.keys(panes).forEach(function(k){
-    $(panes[k]).hidden = k !== which;
-    $(btns[k]).setAttribute("aria-pressed", k === which ? "true" : "false");
-  });
+  showPane({builds:["buildsPane", "bldPaneBuilds"],
+            teams:["teamsPane", "bldPaneTeams"]}, which);
   /* the "New build" button in the header belongs to the Builds pane only */
   var add = $("buildAdd");
   if (add) add.hidden = which !== "builds";

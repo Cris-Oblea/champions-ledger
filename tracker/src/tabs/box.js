@@ -6,7 +6,9 @@
 import {
   anyRow, byName, C, dexLabel, FORMS, freeSlug, outsideRow,
 } from "../core/data.js";
-import { $, capNote, el, fbtn, note, searchField, toast } from "../core/dom.js";
+import {
+  $, capNote, el, fbtn, note, searchField, setPressed, toast,
+} from "../core/dom.js";
 import {
   boxRows, buildsOn, capacity, originOf, originRows, RELEASE_FLOOR,
   releaseBlock, rowMatches, S, sortRows, VIEW,
@@ -165,7 +167,7 @@ function originBlock(body, rec){
 /* One origin choice: saving it writes the row and closes the sheet. */
 function originButton(rec, o, opt){
   var t = el("button", "tog", opt[1]);
-  t.setAttribute("aria-pressed", o === opt[0] ? "true" : "false");
+  setPressed(t, o === opt[0]);
   t.title = opt[2];
   t.onclick = function(){
     put("box/" + rec._id, {name:rec.name, location:rec.location,
@@ -195,10 +197,10 @@ function copyFlags(body, rec){
 
 function flagButton(rec, key, label){
   var b = el("button", "tog", label);
-  b.setAttribute("aria-pressed", rec[key] ? "true" : "false");
+  setPressed(b, rec[key]);
   b.onclick = function(){
     rec[key] = !rec[key];
-    b.setAttribute("aria-pressed", rec[key] ? "true" : "false");
+    setPressed(b, rec[key]);
   };
   return b;
 }
@@ -351,10 +353,10 @@ function markToggles(marks){
   var mrow = el("div", "toggles mb12");
   [["shiny", "Shiny"], ["trained", "Trained in Champions"]].forEach(function(o){
     var t = el("button", "tog", o[1]);
-    t.setAttribute("aria-pressed", "false");
+    setPressed(t, false);
     t.onclick = function(){
       marks[o[0]] = !marks[o[0]];
-      t.setAttribute("aria-pressed", marks[o[0]] ? "true" : "false");
+      setPressed(t, marks[o[0]]);
     };
     mrow.appendChild(t);
   });
@@ -377,11 +379,11 @@ function boughtOrRental(body, draw){
   [["champions","Bought · 2500 VP or a ticket"],
    ["rental","Rental · 0 VP"]].forEach(function(o){
     var b = el("button", "tog", o[1]);
-    b.setAttribute("aria-pressed", "false");
+    setPressed(b, false);
     b.onclick = function(){
       mode.v = o[0];
       Array.prototype.forEach.call(st.children, function(x){
-        x.setAttribute("aria-pressed", x === b ? "true" : "false");
+        setPressed(x, x === b);
       });
       draw();
     };

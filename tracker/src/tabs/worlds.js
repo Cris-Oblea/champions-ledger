@@ -1,6 +1,6 @@
 /* The Worlds view inside Find: what won at every VGC World Championship. */
 import { anyRow, C } from "../core/data.js";
-import { $, el } from "../core/dom.js";
+import { $, el, setPressed } from "../core/dom.js";
 import { ownedNames } from "../core/state.js";
 import { cardLine, labelBox, pokeCard } from "../ui/card.js";
 import { findDetail } from "../ui/pokemon.js";
@@ -34,11 +34,11 @@ function worldInit(){
   WORLD.year = years[0].y;
   years.forEach(function(r){
     var t = el("button", "tog", String(r.y));
-    t.setAttribute("aria-pressed", r.y === WORLD.year ? "true" : "false");
+    setPressed(t, r.y === WORLD.year);
     t.onclick = function(){
       WORLD.year = r.y;
       Array.prototype.forEach.call(yrow.children, function(x){
-        x.setAttribute("aria-pressed", x === t ? "true" : "false");
+        setPressed(x, x === t);
       });
       worldDraw();
     };
@@ -48,11 +48,11 @@ function worldInit(){
   [["masters","Masters"],["seniors","Seniors"],["juniors","Juniors"]]
     .forEach(function(o){
       var t = el("button", "tog", o[1]);
-      t.setAttribute("aria-pressed", o[0] === WORLD.div ? "true" : "false");
+      setPressed(t, o[0] === WORLD.div);
       t.onclick = function(){
         WORLD.div = o[0];
         Array.prototype.forEach.call(drow.children, function(x){
-          x.setAttribute("aria-pressed", x === t ? "true" : "false");
+          setPressed(x, x === t);
         });
         worldDraw();
       };
