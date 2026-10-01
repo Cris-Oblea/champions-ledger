@@ -1,7 +1,8 @@
 # Deploy target for the Champions Ledger.
 #
 # `dist` is the ONLY directory that may be served: tracker/ itself holds
-# supabase_seed.sql (the whole ledger in plaintext) and config.local.json.
+# config.local.json, and anything dropped there by hand - a backup snapshot
+# is the whole ledger in plaintext - would be public the moment it was served.
 # scripts/build_tracker_page.py rebuilds dist/ from scratch and refuses to
 # finish if anything unexpected appears in it.
 name = "champions-ledger"

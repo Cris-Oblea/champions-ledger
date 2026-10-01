@@ -88,7 +88,8 @@ error, and so is a function over 80 lines of code** (2026-09-29: the app went to
 zero, the build editor was one 686-line function) - a section that outgrows it
 gets its own named function taking the state as an argument. tests/, scripts/ and
 cron/ are at zero too (2026-09-30), under the same rules as errors. `node scripts/check_app.js` keeps the checks no linter can make: ids
-against the markup, CALC switches against the engine.
+against the markup, CALC switches against the engine, styled classes against
+the scripts and markup. knip (`knip.jsonc`) finds an export nothing imports.
 
 **The tracker's damage tab runs Smogon's engine itself** (bundled by
 `scripts/build_engine_bundle.py`), so it is exact rather than close. Do not

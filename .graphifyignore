@@ -7,3 +7,7 @@ tracker/analysis.js
 tracker/splits.js
 tracker/engine.bundle.js
 tracker/index.template.html
+# A spell-checker word list and the app's icons: no concepts in either, only
+# noise nodes for the semantic pass.
+.cspell-words.txt
+tracker/icons/
