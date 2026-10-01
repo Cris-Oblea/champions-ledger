@@ -56,9 +56,9 @@ def _post(method, params, timeout=60):
     return json.loads(raw.decode("utf-8", "replace"))
 
 
-def rpc(method, params, timeout=60):
+def rpc(method, params):
     try:
-        return _post(method, params, timeout)
+        return _post(method, params, 60)
     except net.ERRORS as e:
         print("  RPC failed %s %s -> %s" % (method, params, e))
         return None
