@@ -62,10 +62,10 @@ const modeChip = () => [...d.querySelectorAll("#findChips .tog")]
     click(d.getElementById("findClear"));
     click(d.getElementById("findAddMove"));
     await idle();
-    var inp = d.querySelector(".sheet input[type=text]");
+    const inp = d.querySelector(".sheet input[type=text]");
     inp.value = "critical";
     inp.dispatchEvent(new w.Event("input", {bubbles:true}));
-    var rr = sheetRows();
+    const rr = sheetRows();
     check("critical encuentra movimientos", rr.length > 0, true);
     check("y ninguno se llama asi",
        rr.every(r => !/critical/i.test(

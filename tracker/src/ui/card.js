@@ -48,11 +48,11 @@ function paintTypeColours(node, types){
      type 2, so BOTH halves take type 1 and the band halves top-to-bottom -
      which is how the badge itself is halved. Setting the right half to the
      second tone instead drew an X on pure Dragon. */
-  var mono = !types[1];
-  var c1 = TYPE_COLOR[types[0]];
-  var top1 = c1, bot1 = TYPE_COLOR2[types[0]] || c1;
-  var top2 = mono ? top1 : TYPE_COLOR[types[1]];
-  var bot2 = mono ? bot1 : (TYPE_COLOR2[types[1]] || top2);
+  const mono = !types[1];
+  const c1 = TYPE_COLOR[types[0]];
+  const top1 = c1, bot1 = TYPE_COLOR2[types[0]] || c1;
+  const top2 = mono ? top1 : TYPE_COLOR[types[1]];
+  const bot2 = mono ? bot1 : (TYPE_COLOR2[types[1]] || top2);
   node.style.setProperty("--tcol", c1);     /* solid, for borders */
   node.style.setProperty("--tcolb", bot1);
   node.style.setProperty("--tcol2", top2);
@@ -63,8 +63,8 @@ function paintTypeColours(node, types){
      Dragon-salmon before it fades out, and the right half Flying-cyan into
      Flying-grey. A single-toned type sets both to the same value and its fade
      is the plain one it always was. */
-  var s1 = tintOf(top1, 0.14), s1b = tintOf(bot1, 0.14) || s1;
-  var s2 = tintOf(top2, 0.14) || s1, s2b = tintOf(bot2, 0.14) || s2;
+  const s1 = tintOf(top1, 0.14), s1b = tintOf(bot1, 0.14) || s1;
+  const s2 = tintOf(top2, 0.14) || s1, s2b = tintOf(bot2, 0.14) || s2;
   node.style.setProperty("--tsoft", s1 || "transparent");
   node.style.setProperty("--tsoftb", s1b || "transparent");
   node.style.setProperty("--tsoft2", s2 || "transparent");
@@ -83,15 +83,15 @@ function paintTypeColours(node, types){
    dropped into a plain `.list` simply stays a row. */
 function typeCard(row, p, shiny){
   row.className += " card";
-  var types = p?.types || [];
-  var c1 = TYPE_COLOR[types[0]];
+  const types = p?.types || [];
+  const c1 = TYPE_COLOR[types[0]];
   if (!c1) return row;
   paintTypeColours(row, types);
   /* THE PICTURE GOES ON HERE, so it lands on every card from one place rather
      than at six call sites. A marker class rather than `:has(.sprite)`: a
      browser without `:has()` drops the rule silently and the badges would run
      under the image, which is the exact fault the overlap sweep exists for. */
-  var pic = spriteFor(p.name, false, shiny);
+  const pic = spriteFor(p.name, false, shiny);
   if (pic) { row.appendChild(pic); row.className += " hassprite"; }
   return row;
 }
@@ -122,15 +122,16 @@ function paintRetype(node, f){
 }
 
 function retypeLayer(row, base, forms){
-  var bt = (base.types || []).join("/");
+  const bt = (base.types || []).join("/");
   /* EVERY TYPING IT REACHES, not the first one. Castform reaches three and
      the card showed none of them, because this took the first form that
      differed and cross-faded to it - which on a Castform would have meant
      picking Fire and calling the other two nothing. Deduped, because two
      Megas landing on the same new typing is one colour, not two. */
-  var seen = {}, list = [];
+  const seen = {};
+  let list = [];
   (forms || []).forEach(function(f){
-    var k = (f.types || []).join("/");
+    const k = (f.types || []).join("/");
     if (k === bt || seen[k] || !TYPE_COLOR[(f.types || [])[0]]) return;
     seen[k] = 1;
     list.push(f);
@@ -145,7 +146,7 @@ function retypeLayer(row, base, forms){
      typing the card could carry them, because there was one; with three the
      card would be carrying whichever was written last. The band reads them
      off its own parent either way. */
-  var tints = document.createDocumentFragment();
+  const tints = document.createDocumentFragment();
   list.forEach(function(f, i){
     tints.appendChild(paintRetype(el("i", "retype i" + (i + 1)), f));
   });
@@ -211,7 +212,7 @@ function retypeLayer(row, base, forms){
 function megaSuffix(m, base){
   if (m?.battle) return m.battle;          /* Blade, Hero, Sunny... */
   if (m?.sfx !== undefined) return m.sfx;  /* an outside Mega's letter */
-  var sp = (base && (base.species || base.name)) || "";
+  const sp = (base && (base.species || base.name)) || "";
   return String(m.name).replace("Mega ", "").replace(sp, "").trim();
 }
 /* The same thing where a label has to distinguish two Megas of one species and
@@ -236,7 +237,7 @@ function megaSuffix(m, base){
    change, which is the point of having had them in one place. */
 function formInk(m, base){
   if (m?.battle) return "mk-b";
-  var k = megaSuffix(m, base).toUpperCase();
+  const k = megaSuffix(m, base).toUpperCase();
   return "mk-" + (k === "X" || k === "Y" || k === "Z" ? k.toLowerCase() : "m");
 }
 function formKey(m, base){
@@ -254,10 +255,10 @@ function statGrid(p, mark, megas){
      to see - "solo necesito saber las cosas que cambian del pokemon base a
      mega" - and it is why a Pokemon with no Mega line looks exactly as it did
      before: the extra line is only ever drawn where there is a difference. */
-  var b = p?.b || p || [];
-  var sl = el("div", "statline");
+  const b = p?.b || p || [];
+  const sl = el("div", "statline");
   STAT_KEYS.forEach(function(k, i){
-    var cell = el("div", mark === k ? "on" : null);
+    const cell = el("div", mark === k ? "on" : null);
     cell.appendChild(el("b", null, b[i]));
     cell.appendChild(el("span", "lbl", STAT_LABEL[k]));
     /* ONE ROW PER MEGA, ALWAYS IN THE SAME ORDER, and a blank where that
@@ -288,10 +289,10 @@ function statGrid(p, mark, megas){
        reserving three empty rows under every number and the card grew half
        its height again to say nothing (seen on the card, 2026-09-21). The
        same applies to a Mega that is taken purely for its ability. */
-    var moved = (megas || []).filter(function(m){
+    const moved = (megas || []).filter(function(m){
       return m.b?.some(function(v, j){ return v !== b[j]; });
     });
-    var line = moved.length > 1;
+    const line = moved.length > 1;
     moved.forEach(function(m){
       if (m.b[i] === b[i]) {
         /* THE PLACEHOLDER HAS TO BE THE SAME SHAPE, not just the same
@@ -300,7 +301,7 @@ function statGrid(p, mark, megas){
            high and the columns still did not line up. It carries a hidden
            key of its own now, so the two boxes are identical in height. */
         if (line) {
-          var gh = el("span", "mg ghost");
+          const gh = el("span", "mg ghost");
           gh.appendChild(el("span", "mgk", formKey(m, p)));
           gh.appendChild(document.createTextNode("—"));
           cell.appendChild(gh);
@@ -310,7 +311,7 @@ function statGrid(p, mark, megas){
       /* THE NUMBER ITSELF CARRIES THE MEGA'S INK, not just the little key
          beside it - otherwise a species with two Megas prints both deltas in
          the same purple and the cell says nothing about which is which. */
-      var d = el("span", "mg " + formInk(m, p) +
+      const d = el("span", "mg " + formInk(m, p) +
                          (m.b[i] > b[i] ? " up" : " down"));
       /* WHOSE NUMBER IT IS. With one Mega the arrow is enough; with two, two
          bare arrows in a cell say nothing about which is which (player,
@@ -340,8 +341,8 @@ function statGrid(p, mark, megas){
    keeps the tabular mono the stat cells use, so columns of them line up. "on"
    marks the cell the list is currently ranked by, exactly as in statGrid. */
 function labelBox(value, label, cls){
-  var d = el("div", cls || null);
-  var b = el("b");
+  const d = el("div", cls || null);
+  const b = el("b");
   /* AN ARRAY BREAKS ONLY BETWEEN ITS ITEMS. Joining three abilities into one
      string and letting the browser wrap it split "Sticky Hold" across two
      lines, which reads as two different abilities - the break has to land on
@@ -364,7 +365,7 @@ function labelBox(value, label, cls){
 /* The strip of them that sits above the stat table. Nulls are dropped, so a
    caller can offer a cell it does not always have without branching. */
 function cardLine(cells){
-  var row = el("div", "cardline");
+  const row = el("div", "cardline");
   cells.filter(Boolean).forEach(function(c){ row.appendChild(c); });
   return row;
 }
@@ -427,9 +428,9 @@ function cardLine(cells){
    whether this Pokemon has a Mega line to show. */
 function pokeFacts(m, p, ms, o){
   o = o || {};
-  var label = o.name || p.name;
+  const label = o.name || p.name;
   /* --- the meta line -------------------------------------------------- */
-  var meta = el("div", "rmeta");
+  const meta = el("div", "rmeta");
   /* THE DEX NUMBER STAYS HERE. It went to the name line for one build, on the
      theory that its 36px was what made the retyping Megas wrap - and measuring
      properly said otherwise: the type line was never over, the detector was
@@ -447,7 +448,7 @@ function pokeFacts(m, p, ms, o){
      arrow needs no letter because there is nothing to tell it apart from. */
   ms.forEach(function(mm){
     if (mm.types.join("/") === p.types.join("/")) return;
-    var arrow = el("span", "megato " + formInk(mm, p));
+    const arrow = el("span", "megato " + formInk(mm, p));
     arrow.textContent = "→" +
       ((mm.battle || ms.length > 1) ? " " + formKey(mm, p) : "");
     meta.appendChild(arrow);
@@ -459,9 +460,10 @@ function pokeFacts(m, p, ms, o){
   /* --- BST, abilities, and what the Mega makes of them ---------------- */
   /* DEDUPED: Absol's two Megas are both 565, and "465 -> 565 -> 565" says one
      number twice. */
-  var bstTxt = String(bst(p)), seen = {};
+  const seen = {};
+  let bstTxt = String(bst(p));
   ms.forEach(function(mm){
-    var v = bst(mm);
+    const v = bst(mm);
     if (v === bst(p) || seen[v]) return;
     seen[v] = 1;
     bstTxt += " → " + v;
@@ -487,7 +489,7 @@ function pokeFacts(m, p, ms, o){
      Mega's own ink, so the box, the sprite caption and the stat deltas are
      tied together by colour rather than by reading. The title is where the
      stone went: which one it needs, and whether it is owned. */
-  var megasOnly = ms.filter(function(mm){ return !mm.battle; });
+  const megasOnly = ms.filter(function(mm){ return !mm.battle; });
   /* NO BOX FOR THE BATTLE FORMS, and that is not an omission.
 
      A Mega gets one because the stone REPLACES its ability, so the card is
@@ -504,10 +506,10 @@ function pokeFacts(m, p, ms, o){
      job, and the sheet's "In battle" block opens with exactly that. */
   if (megasOnly.length) {
     m.appendChild(cardLine(megasOnly.map(function(mm){
-      var sfx = megaSuffix(mm, p);
-      var cell = labelBox(mm.ab || [],
+      const sfx = megaSuffix(mm, p);
+      const cell = labelBox(mm.ab || [],
         (sfx ? "Mega " + sfx : "Mega") + " ability", "wide");
-      var lbl = cell.querySelector(".lbl");
+      const lbl = cell.querySelector(".lbl");
       if (lbl) lbl.className = "lbl " + formInk(mm, p);
       /* WHETHER THE STONE IS OWNED IS NOT SAID HERE AT ALL - not as a shape,
          not in the title (player, 2026-09-20: "el tag de tener piedra o no
@@ -529,13 +531,13 @@ function pokeFacts(m, p, ms, o){
 }
 function pokeCard(p, o){
   o = o || {};
-  var row = typeCard(el(o.tag || "button", "row" + (o.cls ? " " + o.cls : "")),
+  const row = typeCard(el(o.tag || "button", "row" + (o.cls ? " " + o.cls : "")),
                      p, !!o.shiny);
-  var m = el("div", "rmain");
-  var label = o.name || p.name;
+  const m = el("div", "rmain");
+  const label = o.name || p.name;
 
   /* --- the name line ------------------------------------------------- */
-  var h = el("div", "rname");
+  const h = el("div", "rname");
   if (o.pre) o.pre(h);
   h.appendChild(document.createTextNode(label));
   if (o.badges) o.badges(h);
@@ -553,8 +555,8 @@ function pokeCard(p, o){
      one configuration and nothing the build declined - but a battle form is
      not a thing a build declines. An Aegislash build attacks at 140, whichever
      set it runs, so the form stays on the card. */
-  var megas = (o.megas === false || p.mega) ? [] : megaLine(p);
-  var ms = megas.concat(battleFormsOf(p));
+  const megas = (o.megas === false || p.mega) ? [] : megaLine(p);
+  const ms = megas.concat(battleFormsOf(p));
   /* NO MEGA CHIPS HERE ANY MORE (player, 2026-09-20: "los tags MEGA, MEGA Z,
      Mega X, Mega Y ya no sirven, porque ahora los sprites representan
      visualmente las megas con la leyenda morada que tienen"). They were the
@@ -563,7 +565,7 @@ function pokeCard(p, o){
      form's own face. What the chip also carried - which stone, and whether it
      is owned - moved to the ability box below, which is the row that is
      actually about that Mega. */
-  var med = podiumChip(label);
+  const med = podiumChip(label);
   if (med) h.appendChild(med);
   m.appendChild(h);
 
@@ -579,7 +581,7 @@ function pokeCard(p, o){
   /* NO ROW FOR THIS EXACT FORM. A caveat about the numbers themselves, which
      no tag can say for the caller. */
   if (p.approx) {
-    var src = el("div", "st mt6");
+    const src = el("div", "st mt6");
     src.textContent = "No row for this exact form — showing " + p.approx + ".";
     m.appendChild(src);
   }
@@ -607,18 +609,18 @@ function pokeCard(p, o){
      A LONE SPRITE CARRIES NO CAPTION. "base" only means something beside the
      thing it is not; on its own it is a word under a picture of the Pokemon
      whose name is written underneath anyway. */
-  var strip = el("div", "megapics");
-  var self = spriteFor(p.name, false, !!o.shiny);
+  const strip = el("div", "megapics");
+  const self = spriteFor(p.name, false, !!o.shiny);
   if (self) {
     self.className = "megapic";
     self.title = p.name;
-    var c0 = el("div", "megapicwrap");
+    const c0 = el("div", "megapicwrap");
     c0.appendChild(self);
     if (ms.length) c0.appendChild(el("span", "megapickey base", "base"));
     strip.appendChild(c0);
   }
   ms.forEach(function(mm){
-    var mp = formSprite(mm, p, false, !!o.shiny);
+    const mp = formSprite(mm, p, false, !!o.shiny);
     if (!mp) return;
     mp.className = "megapic";
     /* WHAT THE FORM DOES TO ITS MOVES rides on the picture's title, the one
@@ -626,13 +628,13 @@ function pokeCard(p, o){
        Switch - Aura Wheel is Dark". The sheet says it in full. */
     mp.title = [mm.name, mm.battle && mm.by].concat(formMoves(mm, p).map(
       function(c){ return c[0] + " is " + c[2]; })).filter(Boolean).join(" - ");
-    var cell = el("div", "megapicwrap");
+    const cell = el("div", "megapicwrap");
     cell.appendChild(mp);
     /* A BATTLE FORM IS CAPTIONED WITH ITS OWN NAME AND NOT THE WORD "MEGA".
        Blade, Hero, Sunny - the caption has to be readable as the thing the
        sprite shows, and calling any of them a Mega would be a lie about how
        it is reached. */
-    var key = "mega";
+    let key = "mega";
     if (mm.battle) key = mm.battle.toLowerCase();
     else if (megaSuffix(mm, p)) key = "mega " + megaSuffix(mm, p);
     cell.appendChild(el("span", "megapickey " + formInk(mm, p), key));
@@ -644,7 +646,7 @@ function pokeCard(p, o){
     /* typeCard already pinned one to the corner, and dropping the CLASS only
        stops it narrowing the text - the image is still there and still
        absolutely positioned, so the Pokemon appeared twice. */
-    var corner = row.querySelector("img.sprite");
+    const corner = row.querySelector("img.sprite");
     if (corner) corner.remove();
     row.insertBefore(strip, row.firstChild);
   }
@@ -677,7 +679,7 @@ function megaLine(p){
    unselected filter is. */
 function typeSkin(node, t, on){
   /* a type the palette does not know still reads as a chip: plain grey */
-  var a = TYPE_COLOR[t] || "#777", b = TYPE_COLOR2[t];
+  const a = TYPE_COLOR[t] || "#777", b = TYPE_COLOR2[t];
   node.style.borderColor = a;
   if (on === false) { node.style.background = ""; node.style.color = ""; return node; }
   /* halved the way pokemon.com halves it, which shows on the three types that
@@ -721,7 +723,7 @@ function spriteFor(name, big, shiny){
    white. C.FORM_SPRITE holds exactly those, keyed by the base it is drawn
    from. */
 function formSprite(form, base, big, shiny){
-  var own = form.sp ||
+  const own = form.sp ||
     C.FORM_SPRITE?.[base?.name]?.[form.name];
   return own ? spriteImg(own, big, shiny) : spriteFor(form.name, big, shiny);
 }
@@ -737,16 +739,16 @@ function formSprite(form, base, big, shiny){
    then nothing - which is what "not every sprite is loading" was, for these. */
 function spriteImg(id, big, shiny){
   if (!id) return null;
-  var g = C.SPRITE_GAPS || {};
-  var gone = function(k){ return (g[k] || []).includes(id); };
+  const g = C.SPRITE_GAPS || {};
+  const gone = function(k){ return (g[k] || []).includes(id); };
   /* The big picture prefers the HOME render and falls back to the pixel
      sprite; the small one is the pixel sprite unless that one is missing. */
-  var home;
+  let home;
   if (big) home = !gone(shiny ? "s" : "n");
   else home = gone(shiny ? "ps" : "p");
-  var cls = "sprite";
+  let cls = "sprite";
   if (big) cls = home ? "sprite big" : "sprite big native";
-  var img = el("img", cls);
+  const img = el("img", cls);
   img.src = SPRITE_BASE + (home ? "other/home/" : "") + (shiny ? "shiny/" : "")
             + id + ".png";
   img.alt = "";                       /* the name is right beside it */
@@ -754,7 +756,7 @@ function spriteImg(id, big, shiny){
      card's 96 is downscaled with smoothing, which a render survives and a
      pixel sprite would not - and a sheet whose render is missing draws the
      pixel one at its own 96 rather than blowing it up to 180. */
-  var px = big && home ? 180 : 96;
+  const px = big && home ? 180 : 96;
   img.width = px; img.height = px;
   img.loading = "lazy";               /* only what is actually on screen */
   img.decoding = "async";
@@ -806,13 +808,14 @@ function spriteImg(id, big, shiny){
    from text nodes, never innerHTML: the text is scraped, and a scraped string
    is not markup. */
 /* a number, a fraction or a percentage, with its unit when one follows */
-var NUMBER = /\d+(?:\.\d+)?(?:\/\d+)?(?:\s?[%×])?(?:\s(?:turns?|stages?)\b)?/;
+const NUMBER = /\d+(?:\.\d+)?(?:\/\d+)?(?:\s?[%×])?(?:\s(?:turns?|stages?)\b)?/;
 /* the four words that are numbers */
-var NUMBER_WORDS = /\b(?:halved|halves|doubled|doubles|quartered|tripled)\b/;
-var NUM_RE = new RegExp(NUMBER.source + "|" + NUMBER_WORDS.source, "g");
+const NUMBER_WORDS = /\b(?:halved|halves|doubled|doubles|quartered|tripled)\b/;
+const NUM_RE = new RegExp(NUMBER.source + "|" + NUMBER_WORDS.source, "g");
 function numText(text, tag, cls){
-  var node = el(tag || "span", cls || null);
-  var s = String(text == null ? "" : text), last = 0, m;
+  const node = el(tag || "span", cls || null);
+  const s = String(text == null ? "" : text);
+  let last = 0, m;
   NUM_RE.lastIndex = 0;
   while ((m = NUM_RE.exec(s))) {
     if (m.index > last)
@@ -832,32 +835,32 @@ function effectChips(e){
 }
 /* A row of them, with the source behind each on hover. */
 function effectLine(name){
-  var e = effectOf(name);
+  const e = effectOf(name);
   if (!e) return null;
-  var chips = effectChips(e);
+  const chips = effectChips(e);
   if (!chips.length && !e.desc) return null;
-  var box = el("div", "st mt2");
+  const box = el("div", "st mt2");
   chips.forEach(function(c){
-    var t = el("span", "tag ok", c.text);
+    const t = el("span", "tag ok", c.text);
     t.title = c.why;
     t.classList.add("mr4");
     box.appendChild(t);
   });
   if (e.desc) {
-    var d = el("span", "fxdesc", e.desc);
+    const d = el("span", "fxdesc", e.desc);
     box.appendChild(d);
   }
   return box;
 }
 function usageTag(pct, name, kind){
   if (pct == null) return null;
-  var top = splitMax(name, kind) || 100;
-  var share = pct / top;
-  var tone = "";
+  const top = splitMax(name, kind) || 100;
+  const share = pct / top;
+  let tone = "";
   if (share >= 0.5) tone = " ok";
   else if (pct === 0) tone = " warn";
-  var t = el("span", "tag" + tone, pct + "%");
-  var of = SHARE_OF[kind] || "of its sets";
+  const t = el("span", "tag" + tone, pct + "%");
+  const of = SHARE_OF[kind] || "of its sets";
   t.title = (pct === 0
         ? "In the table and at 0% — nobody brought this"
         : pct + "% " + of)
@@ -869,14 +872,14 @@ function usageTag(pct, name, kind){
    times cannot wear eighteen badges, so the row wears its best and the sheet
    lists them all. */
 function podiumChip(name){
-  var all = podiumFor(name);
+  const all = podiumFor(name);
   if (!all.length) return null;
-  var best = all[0];
+  let best = all[0];
   all.forEach(function(e){
     if (e.r < best.r || (e.r === best.r && e.y > best.y)) best = e;
   });
-  var place = ordinal(best.r);
-  var t = el("span", "tag" + (best.r <= 3 ? " gold" : ""),
+  const place = ordinal(best.r);
+  const t = el("span", "tag" + (best.r <= 3 ? " gold" : ""),
              "Worlds " + best.y + " · " + place);
   t.title = "Top 8 at " + all.length + " World Championship" +
     (all.length === 1 ? "" : "s") + ": " +
@@ -893,13 +896,13 @@ function podiumChip(name){
    list and the GTS picker both call it, so a mark added here shows up in both. */
 function boxBadges(node, rec){
   if (rec.shiny) {
-    var sh = el("span", "tag shiny", "shiny");
+    const sh = el("span", "tag shiny", "shiny");
     node.appendChild(sh);
   }
   if (rec.trained) node.appendChild(el("span", "tag ok", "trained"));
   if (rec.status === "rental") node.appendChild(el("span", "tag warn", "rental"));
   else if (rec.location === "champions") {
-    var o = originOf(rec);
+    const o = originOf(rec);
     node.appendChild(el("span", "tag" + (o === "home" ? " ok" : ""),
                         ORIGIN_LABEL[o]));
   }

@@ -25,10 +25,10 @@ import { numText, typeChip, typeSkin, usageTag } from "./card.js";
        (Contrary was badging Protect and Roost)
      - an ability that changes what comes IN never badges its own movepool
        (Bulletproof, Filter, Thick Fat are "def" and stay out of it) */
-var AB = C.AB_MOVES || {};
+const AB = C.AB_MOVES || {};
 const AB_SET = {};
 Object.keys(AB).forEach(function(name){
-  var e = AB[name], s = {all:!!e.all, side:e.side, x:e.x, why:e.why,
+  const e = AB[name], s = {all:!!e.all, side:e.side, x:e.x, why:e.why,
                          scope:e.scope};
   s.m = {}; (e.m || []).forEach(function(i){ s.m[i] = 1; });
   if (e.up)   { s.up = {};   e.up.forEach(function(i){ s.up[i] = 1; }); }
@@ -38,7 +38,7 @@ Object.keys(AB).forEach(function(name){
 });
 
 function abilityHit(ability, move){
-  var r = AB_SET[ability];
+  const r = AB_SET[ability];
   if (r?.side !== "off") return null;      // defensive rules badge nothing
   // An ability that covers a whole CATEGORY selects nothing, so a badge on
   // every row is noise that buries the abilities that do select. Guts is the
@@ -57,12 +57,12 @@ function abilityHit(ability, move){
 }
 /* the badge that goes on a move row when the chosen ability touches it */
 function abilityTag(ability, move, poke){
-  var hit = abilityHit(ability, move);
+  const hit = abilityHit(ability, move);
   if (!hit) return null;
   // STAB needs the user's own type; the move table cannot know it
   if (ability === "Adaptability" &&
       !poke?.types.includes(move.type)) return null;
-  var t = el("span", "tag ok", ability);
+  const t = el("span", "tag ok", ability);
   t.title = hit.why;
   return t;
 }
@@ -101,15 +101,15 @@ function spreadTags(m, host){
      1 to 10   Population Bomb, where "the attack ends if the user misses"
                makes the 1 a miss rather than a hit count */
 function multiHitTag(m, host){
-  var h = m.hits;
+  const h = m.hits;
   if (!h?.length) return;
-  var lo = h[0], hi = h.length > 1 ? h[1] : h[0];
-  var fixed = lo === hi;
+  const lo = h[0], hi = h.length > 1 ? h[1] : h[0];
+  const fixed = lo === hi;
   /* 2-5 hit moves land 3 times on average; any other range is read at its floor */
-  var typical = !fixed && lo === 2 && hi === 5 ? 3 : lo;
-  var t = el("span", "tag ok",
+  const typical = !fixed && lo === 2 && hi === 5 ? 3 : lo;
+  const t = el("span", "tag ok",
               fixed ? "×" + lo + " hits" : lo + "–" + hi + " hits");
-  var bits = [];
+  const bits = [];
   if (m.bp) {
     bits.push(fixed ? lo + " × " + m.bp + " BP = " + (lo * m.bp)
                     : "quoted at " + typical + " hits = " +
@@ -130,8 +130,8 @@ function multiHitTag(m, host){
    is where the player was looking (2026-09-12). */
 function priorityTag(m, host){
   if (!m.pri) return;
-  var cls = m.pri > 0 ? "tag ok" : "tag bad";
-  var t = el("span", cls, "priority " + (m.pri > 0 ? "+" : "") + m.pri);
+  const cls = m.pri > 0 ? "tag ok" : "tag bad";
+  const t = el("span", cls, "priority " + (m.pri > 0 ? "+" : "") + m.pri);
   t.title = m.pri > 0
     ? "Goes before any move of lower priority, whatever the Speed"
     : "Goes after every move of higher priority, whatever the Speed";
@@ -149,7 +149,7 @@ function itemTags(m, host){
        same grey chip, so the row said "these items are related" and left which
        way to be worked out (player, 2026-09-18). The side is decided in
        scripts/build_item_links.py, from the reason the link was made for. */
-    var t = el("span", "tag" + (p[1] === "against" ? " bad" : ""), p[0]);
+    const t = el("span", "tag" + (p[1] === "against" ? " bad" : ""), p[0]);
     t.title = p[1] === "against"
       ? p[0] + " answers this move"
       : p[0] + " is an item made for this move";
@@ -181,25 +181,25 @@ function itemTags(m, host){
    your own is a strategy you choose. Which side each one works from is
    decided in build_ability_moves.STOP_WHOSE. */
 function blockerTags(m, host){
-  var AB = C.AB_MOVES || {};
+  const AB = C.AB_MOVES || {};
   Object.keys(AB).forEach(function(a){
-    var st = AB[a].stop;
+    const st = AB[a].stop;
     if (!st?.includes(m.i)) return;
-    var t = el("span", "tag bad", a);
+    const t = el("span", "tag bad", a);
     t.title = "On an opponent, " + a + ": " + AB[a].why;
     host.appendChild(t);
   });
   Object.keys(AB).forEach(function(a){
-    var al = AB[a].ally;
+    const al = AB[a].ally;
     if (!al?.includes(m.i)) return;
-    var t = el("span", "tag ok", a);
+    const t = el("span", "tag ok", a);
     t.title = "On your partner, " + a + " keeps this move off it: " +
               AB[a].why;
     host.appendChild(t);
   });
 }
 function spreadNote(m){
-  var note = "";
+  let note = "";
   if (m.spread) note += "  ·  " + (m.cat === "T" ? "hits both opponents"
     : "spread ×0.75 while both targets are up, full power with one");
   if (m.hitsAlly) note += "  ·  lands on your own ally too";
@@ -225,53 +225,53 @@ function moveFilters(body, pool, onChange, placeholder, opts){
      DEFAULT sort, because that is the first question asked of a movepool
      (player, 2026-09-15: "seria bueno poner filtro a los movimientos de mayor
      a menor uso por el %"). */
-  var usageOf = opts?.usageOf || null;
+  const usageOf = opts?.usageOf || null;
   /* THE CAP LIVES HERE, WITH THE COUNT THAT REPORTS IT. Callers used to slice
      the result themselves while the count said a different number, and half
      the dex had its movepool quietly truncated (Rillaboom: 67 moves, 60
      shown). apply() returns the list already capped, so the two cannot
      disagree. A single movepool is never capped in practice - the longest is
      Gallade at 106; the default 80 is for the whole move table. */
-  var cap = opts?.cap || 80;
-  var st = {F: {cat:{}, trait:{}, type:{}}, EXCL: {}, onChange: onChange,
+  const cap = opts?.cap || 80;
+  const st = {F: {cat:{}, trait:{}, type:{}}, EXCL: {}, onChange: onChange,
             sort: usageOf ? "usage" : "bp"};
-  var inp = searchField(body, placeholder || ("Filter " + pool.length +
+  const inp = searchField(body, placeholder || ("Filter " + pool.length +
     " moves"), function(){ onChange(); });
   sortRow(body, st, usageOf);
   /* Two kinds of group, and the labels say which. A move cannot be Physical
      AND Special, or Fire AND Water, so those chips can only ever mean "any of
      these". A move CAN be spread and hit its ally at once, so those mean "all
      of these" - and "no such move" is then an answer, not a failed filter. */
-  var crow = el("div", "toggles mb8");
+  const crow = el("div", "toggles mb8");
   triChip(crow, st, "cat", "P", "Physical");
   triChip(crow, st, "cat", "S", "Special");
   triChip(crow, st, "cat", "T", "Status");
   body.appendChild(filterLabel("Category — one at a time, or − to rule out"));
   body.appendChild(crow);
 
-  var mrow = el("div", "toggles mb8");
+  const mrow = el("div", "toggles mb8");
   triChip(mrow, st, "trait", "spread", "Spread");
   triChip(mrow, st, "trait", "ally", "Hits ally");
   triChip(mrow, st, "trait", "pri", "Priority");
   body.appendChild(filterLabel("Must have — all of these, or − to rule out"));
   body.appendChild(mrow);
 
-  var types = [];
+  const types = [];
   pool.forEach(function(m){ if (!types.includes(m.type)) types.push(m.type); });
   types.sort(byText);
   if (types.length > 1) {
-    var trow = el("div", "toggles mb10");
+    const trow = el("div", "toggles mb10");
     types.forEach(function(ty){ triChip(trow, st, "type", ty, ty, ty); });
     body.appendChild(filterLabel("Type — any of these, or − to rule out"));
     body.appendChild(trow);
   }
-  var count = filterLabel("");
+  const count = filterLabel("");
   count.classList.add("mb6");
   body.appendChild(count);
 
   function apply(){
-    var q = inp.q();
-    var hits = pool.filter(function(m){ return movePasses(m, q, st.F); });
+    const q = inp.q();
+    const hits = pool.filter(function(m){ return movePasses(m, q, st.F); });
     hits.sort(moveOrder(st.sort, usageOf));
     count.textContent = hits.length === pool.length
       ? pool.length + " moves"
@@ -285,11 +285,11 @@ function moveFilters(body, pool, onChange, placeholder, opts){
 
 /* The sort choices: usage first when there is a Pokemon to be a share of. */
 function sortRow(body, st, usageOf){
-  var srow = el("div", "toggles mb8");
-  var sorts = [["bp","BP × acc"],["name","A–Z"],["pp","PP"],["type","Type"]];
+  const srow = el("div", "toggles mb8");
+  const sorts = [["bp","BP × acc"],["name","A–Z"],["pp","PP"],["type","Type"]];
   if (usageOf) sorts.unshift(["usage","Usage %"]);
   sorts.forEach(function(o){
-    var t = el("button", "tog", o[1]);
+    const t = el("button", "tog", o[1]);
     setPressed(t, o[0] === st.sort);
     t.onclick = function(){
       st.sort = o[0];
@@ -311,16 +311,16 @@ function sortRow(body, st, usageOf){
    as the opposite of the chip beside it. A type chip wears the type's own
    colours (typeSkin knows which are written in black). */
 function triChip(row, st, group, key, text, type){
-  var t = el("button", "tog", text);
+  const t = el("button", "tog", text);
   setPressed(t, false);
   if (type) typeSkin(t, type, false);
   st.EXCL[group] ||= {};
   st.EXCL[group][key] = t;
   t._paint = function(v){ paintTriChip(t, text, type, v); };
   t.onclick = function(){
-    var F = st.F;
-    var was = F[group][key] || 0;
-    var now = ({0: 1, 1: -1})[was] || 0;
+    const F = st.F;
+    const was = F[group][key] || 0;
+    const now = ({0: 1, 1: -1})[was] || 0;
     if (now) F[group][key] = now; else delete F[group][key];
     /* A MOVE HAS EXACTLY ONE CATEGORY, so including one drops the other
        (player, 2026-09-19: "seleccionar una desactiva la otra"). Excludes
@@ -363,16 +363,16 @@ function movePasses(m, q, F){
   if (F.cat[m.cat] === -1) return false;
   if (F.type[m.type] === -1) return false;
   if (!includedOrNone(F.cat, m.cat) || !includedOrNone(F.type, m.type)) return false;
-  var trs = Object.keys(F.trait);
+  const trs = Object.keys(F.trait);
   if (trs.some(function(k){ return F.trait[k] === -1 && hasTrait(m, k); }))
     return false;
-  var inTr = trs.filter(function(k){ return F.trait[k] === 1; });
+  const inTr = trs.filter(function(k){ return F.trait[k] === 1; });
   return !inTr.length || inTr.every(function(k){ return hasTrait(m, k); });
 }
 
 /* Nothing included in the group, or this value is one of the included. */
 function includedOrNone(group, value){
-  var inc = Object.keys(group).filter(function(k){ return group[k] === 1; });
+  const inc = Object.keys(group).filter(function(k){ return group[k] === 1; });
   return !inc.length || inc.includes(value);
 }
 
@@ -388,8 +388,8 @@ function hasTrait(m, k){
 function moveOrder(sort, usageOf){
   return function(a, b){
     if (sort === "usage") {
-      var ua = splitPct(usageOf, "m", a.name);
-      var ub = splitPct(usageOf, "m", b.name);
+      const ua = splitPct(usageOf, "m", a.name);
+      const ub = splitPct(usageOf, "m", b.name);
       if (ua == null && ub == null) return moveScore(b) - moveScore(a) ||
                                            a.name.localeCompare(b.name);
       return (ub == null ? -1 : ub) - (ua == null ? -1 : ua) ||
@@ -418,7 +418,7 @@ function moveOrder(sort, usageOf){
    rather than assembling a string with the separators in it - which is what
    every one of these did, three times over, with slightly different spacing. */
 function factLine(parts){
-  var box = el("div", "rmeta");
+  const box = el("div", "rmeta");
   parts.filter(Boolean).forEach(function(t){
     box.appendChild(el("span", "mono fact", t));
   });
@@ -451,13 +451,13 @@ function factLine(parts){
    the Mega, its usage is recorded on the base species. */
 function moveRowFor(m, ability, poke, opts){
   opts = opts || {};
-  var abils = [];
+  let abils = [];
   if (typeof ability === "string") abils = [ability];
   else if (ability != null) abils = ability.slice();
-  var r = el(opts.onPick ? "button" : "div", "row");
+  const r = el(opts.onPick ? "button" : "div", "row");
   if (opts.onPick) r.onclick = opts.onPick;
-  var mm = el("div", "rmain");
-  var h = el("div", "rname");
+  const mm = el("div", "rmain");
+  const h = el("div", "rname");
   h.appendChild(typeChip(m.type));
   h.appendChild(document.createTextNode(m.name));
   /* A move Champions carries but has not enabled. It is shown - the whole
@@ -465,18 +465,18 @@ function moveRowFor(m, ability, poke, opts){
      and it says plainly that it cannot be used, so nothing here ever reads as
      something you could build with. */
   if (m.notInChampions) {
-    var ni = el("span", "tag bad", "not in Champions");
+    const ni = el("span", "tag bad", "not in Champions");
     ni.title = "Champions has a row for this move but no Pokemon it allows can "
              + "use it. It becomes playable if the game enables it.";
     h.appendChild(ni);
   }
   priorityTag(m, h); spreadTags(m, h); itemTags(m, h);
   blockerTags(m, h);
-  var hits = [];
+  const hits = [];
   abils.forEach(function(a){
-    var hit = abilityHit(a, m);
+    const hit = abilityHit(a, m);
     if (!hit) return;
-    var tag = abilityTag(a, m, poke);          // keeps the Adaptability filter
+    const tag = abilityTag(a, m, poke);          // keeps the Adaptability filter
     if (!tag) return;
     h.appendChild(tag);
     hits.push({ability:a, hit:hit});
@@ -493,13 +493,13 @@ function moveRowFor(m, ability, poke, opts){
      quiero es que marque todos los ataques posibles con % de uso").
      splitPct returns null only when the Pokemon has no table at all, and
      that is the one case that stays silent. */
-  var who = opts.usageOf || poke?.name;
+  const who = opts.usageOf || poke?.name;
   if (who) {
-    var utag = usageTag(splitPct(who, "m", m.name), who, "m");
+    const utag = usageTag(splitPct(who, "m", m.name), who, "m");
     if (utag) h.appendChild(utag);
   }
   mm.appendChild(h);
-  var facts = [catName(m.cat),
+  const facts = [catName(m.cat),
                m.bp ? m.bp + " BP" : "— BP",
                (m.acc == null ? "—" : m.acc) + " acc",
                (m.pp == null ? "—" : m.pp) + " PP",
@@ -512,7 +512,7 @@ function moveRowFor(m, ability, poke, opts){
      full power with one" inside one is 413px wide on a 360px screen and runs
      straight off the edge. The "spread" chip on the name already flags it;
      the explanation goes below, where a line break is allowed. */
-  var spread = spreadNote(m).replace(/^\s*·\s*/, "").trim();
+  const spread = spreadNote(m).replace(/^\s*·\s*/, "").trim();
   hits.forEach(function(x){
     if (x.hit.x && m.bp)
       facts.push(Math.round(m.bp * x.hit.x) + " BP with " + x.ability);
@@ -520,7 +520,7 @@ function moveRowFor(m, ability, poke, opts){
   facts.push(m.target);
   mm.appendChild(factLine(facts));
   if (spread) {
-    var sp = el("div", "st", spread.split("·").map(function(s){
+    const sp = el("div", "st", spread.split("·").map(function(s){
       return s.trim();
     }).join(" · "));
     sp.classList.add("c-warn");
@@ -528,7 +528,7 @@ function moveRowFor(m, ability, poke, opts){
   }
   if (m.text) mm.appendChild(numText(m.text, "div", "st"));
   hits.forEach(function(x){
-    var w = el("div", "st c-accent");
+    const w = el("div", "st c-accent");
     // name it when there is more than one, or the two reasons run together
     w.textContent = (hits.length > 1 ? x.ability + ": " : "") + x.hit.why;
     mm.appendChild(w);

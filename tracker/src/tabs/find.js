@@ -44,9 +44,9 @@ import { worldInit } from "./worlds.js";
 /* megaLine lives in ui/card.js, with the card. */
 /* the value this Pokemon can reach in the direction being ranked */
 function reach(p, key, dir){
-  var best = statOf(p, key);
+  let best = statOf(p, key);
   megaLine(p).forEach(function(m){
-    var v = statOf(m, key);
+    const v = statOf(m, key);
     best = dir === "asc" ? Math.min(best, v) : Math.max(best, v);
   });
   return best;
@@ -56,13 +56,13 @@ function reach(p, key, dir){
    worked out. */
 function orMega(p, fn){
   if (fn(p)) return p;
-  var ms = megaLine(p);
+  const ms = megaLine(p);
   for (const m of ms) if (fn(m)) return m;
   return null;
 }
 /* bst is not a base stat but it filters and sorts exactly like one, so it
    rides in the same table rather than keeping its own input. */
-var FIND_STATS = [["bst","BST"],["hp","HP"],["atk","Atk"],["def","Def"],
+const FIND_STATS = [["bst","BST"],["hp","HP"],["atk","Atk"],["def","Def"],
                   ["spa","SpA"],["spd","SpD"],["spe","Spe"]];
 function statOf(p, key){
   return key === "bst" ? bst(p) : p.b[STAT_KEYS.indexOf(key)];
@@ -72,10 +72,10 @@ function statLabel(key){
 }
 
 function findDraw(){
-  var host = $("findChips");
+  const host = $("findChips");
   host.innerHTML = "";
   function chip(label, onClear, cls, title){
-    var t = el("button", "tog " + (cls || ""), label);
+    const t = el("button", "tog " + (cls || ""), label);
     setPressed(t, true);
     t.title = title || "Remove this filter";
     t.onclick = onClear;
@@ -129,17 +129,17 @@ const OWNED_ORIGIN = {home: "HOME origin", champions: "Champions origin"};
 /* THE SEARCH. Every base form that passes every filter at once, ranked, as
    cards - 120 at most, and it says so. */
 function findRun(){
-  var out = $("findOut");
+  const out = $("findOut");
   out.innerHTML = "";
-  var own = ownedNames();
-  var inHome = {};
+  const own = ownedNames();
+  const inHome = {};
   boxRows("home").forEach(function(r){ inHome[r.name] = 1; });
-  var ctx = {q: (FIND.q || "").trim().toLowerCase(), own: own, inHome: inHome,
+  const ctx = {q: (FIND.q || "").trim().toLowerCase(), own: own, inHome: inHome,
              matchedAs: {}};              /* base name -> the Mega that matched */
-  var hits = DEX.filter(function(p){ return findMatches(p, ctx); });
+  const hits = DEX.filter(function(p){ return findMatches(p, ctx); });
 
-  var head = el("p", "sub");
-  var BASES = DEX.filter(function(p){ return !p.mega; }).length;
+  const head = el("p", "sub");
+  const BASES = DEX.filter(function(p){ return !p.mega; }).length;
   head.textContent = hits.length + " of " + BASES + " Pokemon match" +
     (FIND.moves.length > 1
       ? " - all " + FIND.moves.length + " moves on the same Pokemon" : "") +
@@ -159,7 +159,7 @@ function findRun(){
   /* A GRID once there is room for one: 345 results in a single column is
      nineteen screens, three across is six. The class does the deciding, by
      width, so a phone still gets one column. */
-  var list = el("div", "cards");
+  const list = el("div", "cards");
   hits.slice(0, 120).forEach(function(p){ list.appendChild(findCard(p, ctx)); });
   out.appendChild(list);
   if (hits.length > 120) out.appendChild(el("p", "sub",
@@ -174,7 +174,7 @@ function findMatches(p, ctx){
   if (p.mega) return false;
   if (ctx.q && !nameMatches(p, ctx.q)) return false;
   if (!inTheBoxes(p, ctx) || ruledOut(p)) return false;
-  var via = typeAndAbility(p);
+  const via = typeAndAbility(p);
   if (via === false) return false;
   if (FIND.moves.length && !learnsAll(p)) return false;
   if (via) ctx.matchedAs[p.name] = via;
@@ -185,14 +185,14 @@ function findMatches(p, ctx){
    Returns false when one fails; otherwise the Mega that was needed (the
    ability's, if both needed one), or null when the base form did it all. */
 function typeAndAbility(p){
-  var via = null;
+  let via = null;
   if (FIND.types.length) {
-    var hit = orMega(p, hasTheTypes);
+    const hit = orMega(p, hasTheTypes);
     if (!hit) return false;
     if (hit !== p) via = hit;
   }
   if (FIND.ability) {
-    var ah = orMega(p, function(f){
+    const ah = orMega(p, function(f){
       return (f.ab || []).includes(FIND.ability); });
     if (!ah) return false;
     if (ah !== p) via = ah;
@@ -216,8 +216,8 @@ function nameMatches(p, q){
    With neither on, every Pokemon passes. */
 function inTheBoxes(p, ctx){
   if (!FIND.inChamp && !FIND.inHome) return true;
-  var c = FIND.inChamp && ((p.name in ctx.own) || (p.species in ctx.own));
-  var h = FIND.inHome && ((p.name in ctx.inHome) || (p.species in ctx.inHome));
+  const c = FIND.inChamp && ((p.name in ctx.own) || (p.species in ctx.own));
+  const h = FIND.inHome && ((p.name in ctx.inHome) || (p.species in ctx.inHome));
   return c || h;
 }
 
@@ -240,9 +240,9 @@ function hasTheTypes(f){
    moveset es el mismo en el base que en el mega al final"), so this is asked
    of the base only. */
 function learnsAll(p){
-  var ls = learnset(p.name);
+  const ls = learnset(p.name);
   if (!ls) return false;
-  var have = {};
+  const have = {};
   ls.forEach(function(m){ have[m.name] = 1; });
   return FIND.moves.every(function(n){ return have[n]; });
 }
@@ -259,7 +259,7 @@ function sortFinds(hits){
     });
     return;
   }
-  var sign = FIND.dir === "asc" ? -1 : 1;
+  const sign = FIND.dir === "asc" ? -1 : 1;
   hits.sort(function(a, b){
     return sign * (reach(b, FIND.sort, FIND.dir) -
                    reach(a, FIND.sort, FIND.dir)) ||
@@ -276,16 +276,16 @@ function sortFinds(hits){
    because its Mega is Fighting/Flying, and a card showing only Normal/Flying
    looks like a bug. */
 function findCard(p, ctx){
-  var here = (p.name in ctx.own) || (p.species in ctx.own);
-  var ranking = FIND.sort !== "dex";
+  const here = (p.name in ctx.own) || (p.species in ctx.own);
+  const ranking = FIND.sort !== "dex";
   return pokeCard(p, {
     cls: here ? "perm" : "",
     mark: ranking ? FIND.sort : null,
     badges: function(h){
       if (here) h.appendChild(ownedTag(p));
-      var via = ctx.matchedAs[p.name];
+      const via = ctx.matchedAs[p.name];
       if (via) {
-        var vt = el("span", "tag warn", "as " + via.name);
+        const vt = el("span", "tag warn", "as " + via.name);
         vt.title = "The base form does not match - this one does.";
         h.appendChild(vt);
       }
@@ -297,10 +297,10 @@ function findCard(p, ctx){
 /* WHICH copy he owns and how elastic it is, not the retired word
    "permanent": a rental, or his, with its origin. */
 function ownedTag(p){
-  var rec = boxRows("champions").find(function(x){
+  const rec = boxRows("champions").find(function(x){
     return x.name === p.name || x.name === p.species; });
-  var o = rec ? originOf(rec) : null;
-  var ownTag = rec?.status === "rental" ? "rental in your box"
+  const o = rec ? originOf(rec) : null;
+  const ownTag = rec?.status === "rental" ? "rental in your box"
     : "yours, " + (OWNED_ORIGIN[o] || "origin?");
   return el("span", "tag " + (o === "home" ? "ok" : ""), ownTag);
 }
@@ -312,7 +312,7 @@ function findInit(){
   /* Typed, not tapped: this one narrows as you go rather than adding a chip,
      because it is the control for "open Garchomp" and not for building a
      query. It still lives beside the chips, so clearing it is one gesture. */
-  var nameBox = $("findName");
+  const nameBox = $("findName");
   if (nameBox) {
     nameBox.value = FIND.q || "";
     nameBox.oninput = function(){ FIND.q = nameBox.value; findRun(); };
@@ -337,10 +337,10 @@ function findInit(){
    345 result rows, which is the same as not being there. A segmented control
    rather than another tab, because it belongs to Find. */
 function wireFindMode(){
-  var mrow = $("findMode");
+  const mrow = $("findMode");
   Array.prototype.forEach.call(mrow.children, function(b){
     b.onclick = function(){
-      var m = b.dataset.mode;
+      const m = b.dataset.mode;
       Array.prototype.forEach.call(mrow.children, function(x){
         setPressed(x, x === b);
       });
@@ -366,15 +366,15 @@ function clearFind(){
    in both places. Picking one adds a "learns" chip and closes. */
 function moveFilterSheet(){
   openSheet("Add a move filter", function(body){
-    var pool = MOVES.filter(function(m){
+    const pool = MOVES.filter(function(m){
       return !FIND.moves.includes(m.name);
     });
-    var ui = moveFilters(body, pool, function(){ draw(); },
+    const ui = moveFilters(body, pool, function(){ draw(); },
                          "Any of " + pool.length + " moves");
-    var list = el("div", "list");
+    const list = el("div", "list");
     body.appendChild(list);
     function draw(){
-      var hits = ui.apply();
+      const hits = ui.apply();
       list.innerHTML = "";
       hits.forEach(function(m){ list.appendChild(moveFilterRow(m)); });
       if (!list.children.length) list.appendChild(el("div", "empty", "Nothing matches"));
@@ -398,16 +398,16 @@ function moveFilterRow(m){
    el operador logico and y or, pero falta algo que diga no"). */
 function typeFilterSheet(){
   openSheet("Type filter", function(body){
-    var note = el("p", "sub");
+    const note = el("p", "sub");
     body.appendChild(note);
-    var mrow = el("div", "toggles mb10");
-    var chips = {};
+    const mrow = el("div", "toggles mb10");
+    const chips = {};
     function paint(){ paintTypeFilter(chips, note); }
     [["and", "has ALL of these"], ["or", "has ANY of these"]].forEach(function(o){
       mrow.appendChild(typeModeButton(mrow, o, paint));
     });
     body.appendChild(mrow);
-    var t = el("div", "toggles");
+    const t = el("div", "toggles");
     body.appendChild(t);
     liveTypes().forEach(function(ty){
       chips[ty] = typeFilterChip(ty, paint);
@@ -419,7 +419,7 @@ function typeFilterSheet(){
 
 /* ALL or ANY. */
 function typeModeButton(mrow, o, paint){
-  var b = el("button", "tog", o[1]);
+  const b = el("button", "tog", o[1]);
   setPressed(b, FIND.typeMode === o[0]);
   b.onclick = function(){
     FIND.typeMode = o[0];
@@ -436,17 +436,17 @@ function typeModeButton(mrow, o, paint){
    ever return zero. Read off the dex, so a regulation that adds a type adds
    the filter. */
 function liveTypes(){
-  var live = {};
+  const live = {};
   DEX.forEach(function(p){ (p.types || []).forEach(function(t){ live[t] = 1; }); });
   return Object.keys(live).sort(byText);
 }
 
 /* One type chip: off -> has it -> hasn't it -> off. */
 function typeFilterChip(ty, paint){
-  var b = el("button", "tog", ty);
+  const b = el("button", "tog", ty);
   typeSkin(b, ty, false);
   b.onclick = function(){
-    var i = FIND.types.indexOf(ty), j = FIND.notTypes.indexOf(ty);
+    const i = FIND.types.indexOf(ty), j = FIND.notTypes.indexOf(ty);
     if (i < 0 && j < 0) FIND.types.push(ty);
     else if (i >= 0) { FIND.types.splice(i, 1); FIND.notTypes.push(ty); }
     else FIND.notTypes.splice(j, 1);
@@ -462,9 +462,9 @@ function typeFilterChip(ty, paint){
    can never match. */
 function paintTypeFilter(chips, note){
   Object.keys(chips).forEach(function(ty){
-    var on = FIND.types.includes(ty);
-    var no = FIND.notTypes.includes(ty);
-    var b = chips[ty];
+    const on = FIND.types.includes(ty);
+    const no = FIND.notTypes.includes(ty);
+    const b = chips[ty];
     setPressed(b, on);
     b.classList.toggle("no", no);
     b.textContent = (no ? "− " : "") + ty;
@@ -495,15 +495,15 @@ const CLS_TONE = {"moves-off": "ok", "moves-def": "warn"};
    read off the text by the same script, whose --audit prints every bucket. */
 function abilityFilterSheet(){
   openSheet("Add an ability filter", function(body){
-    var inp = searchField(body, "Search " + Object.keys(C.ABIL).length +
+    const inp = searchField(body, "Search " + Object.keys(C.ABIL).length +
       " abilities — name or effect", function(){ draw(); });
-    var pick = {};
+    const pick = {};
     body.appendChild(abilityKindChips(pick, function(){ draw(); }));
-    var count = el("div", "sub mb6");
+    const count = el("div", "sub mb6");
     body.appendChild(count);
-    var list = el("div", "list");
+    const list = el("div", "list");
     body.appendChild(list);
-    var all = Object.keys(C.ABIL).sort(byText);
+    const all = Object.keys(C.ABIL).sort(byText);
     function draw(){ drawAbilityPicks(list, count, all, pick, inp.q()); }
     draw();
     setTimeout(function(){ inp.focus(); }, 60);
@@ -512,15 +512,15 @@ function abilityFilterSheet(){
 
 /* One chip per kind that has any abilities, with its count. */
 function abilityKindChips(pick, draw){
-  var CLS = C.AB_CLASS || {}, CLSL = C.AB_CLASS_LABEL || {};
-  var ORDER = ["moves-off","moves-def","weather","terrain","speed",
+  const CLS = C.AB_CLASS || {}, CLSL = C.AB_CLASS_LABEL || {};
+  const ORDER = ["moves-off","moves-def","weather","terrain","speed",
                "status","stats","item","switch","other"];
-  var frow = el("div", "toggles mt8 mb10");
+  const frow = el("div", "toggles mt8 mb10");
   ORDER.forEach(function(k){
-    var n = 0;
+    let n = 0;
     Object.keys(C.ABIL).forEach(function(a){ if (CLS[a] === k) n++; });
     if (!n) return;
-    var t = el("button", "tog", (CLSL[k] || k) + " · " + n);
+    const t = el("button", "tog", (CLSL[k] || k) + " · " + n);
     setPressed(t, false);
     t.onclick = function(){
       if (pick[k]) delete pick[k]; else pick[k] = 1;
@@ -535,9 +535,9 @@ function abilityKindChips(pick, draw){
 /* ALL of them that match - there are 215 in Champions, so there is no reason
    to cut, and the count counts what is drawn. */
 function drawAbilityPicks(list, count, all, pick, q){
-  var CLS = C.AB_CLASS || {};
-  var ks = Object.keys(pick);
-  var hits = all.filter(function(a){
+  const CLS = C.AB_CLASS || {};
+  const ks = Object.keys(pick);
+  const hits = all.filter(function(a){
     if (q && !a.toLowerCase().includes(q) &&
         !(C.ABIL[a] || "").toLowerCase().includes(q)) return false;
     if (ks.length && !ks.includes(CLS[a] || "other")) return false;
@@ -554,12 +554,12 @@ function drawAbilityPicks(list, count, all, pick, q){
 /* One ability: its kind, the items that serve it, and its WHOLE text - this
    row is the only place the description appears, so it is never cut. */
 function abilityPickRow(a){
-  var CLS = C.AB_CLASS || {}, CLSL = C.AB_CLASS_LABEL || {};
-  var r = el("button", "row");
-  var mm = el("div", "rmain");
-  var h = el("div", "rname");
+  const CLS = C.AB_CLASS || {}, CLSL = C.AB_CLASS_LABEL || {};
+  const r = el("button", "row");
+  const mm = el("div", "rmain");
+  const h = el("div", "rname");
   h.appendChild(document.createTextNode(a));
-  var k = CLS[a] || "other";
+  const k = CLS[a] || "other";
   h.appendChild(el("span",
     "tag " + (CLS_TONE[k] || ""),
     CLSL[k] || k));
@@ -582,14 +582,14 @@ function abilityPickRow(a){
    and max boxes: a threshold has to be guessed before you can ask, and an
    order does not. */
 function paintSort(){
-  var row = $("findSort");
+  const row = $("findSort");
   if (!row) return;
   row.innerHTML = "";
   [["dex","Dex #"]].concat(FIND_STATS).forEach(function(o){
-    var on = o[0] === FIND.sort;
-    var arrow = "";
+    const on = o[0] === FIND.sort;
+    let arrow = "";
     if (o[0] !== "dex") arrow = FIND.dir === "asc" ? " ↑" : " ↓";
-    var t = el("button", "tog", o[1] + (on ? arrow : ""));
+    const t = el("button", "tog", o[1] + (on ? arrow : ""));
     setPressed(t, on);
     if (o[0] === "dex") t.title = "Dex order";
     else if (on) t.title = "Tap again for " +

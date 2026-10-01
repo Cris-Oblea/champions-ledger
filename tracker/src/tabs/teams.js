@@ -26,10 +26,10 @@ $("teamAdd").onclick = function(){ teamSheet(null, null); };
 
 /* ================================================================ the list */
 function drawTeams(){
-  var host = $("listTeams");
+  const host = $("listTeams");
   if (!host) return;
   host.innerHTML = "";
-  var all = Object.keys(S.teams).sort(function(a, b){
+  const all = Object.keys(S.teams).sort(function(a, b){
     return String(S.teams[a].name).localeCompare(String(S.teams[b].name));
   });
   if (!all.length) {
@@ -37,8 +37,8 @@ function drawTeams(){
       "No teams yet. A team is six builds and the items they hold."));
     return;
   }
-  var q = ($("teamSearch")?.value || "").trim().toLowerCase();
-  var ids = all.filter(function(id){ return !q || teamMatches(S.teams[id], q); });
+  const q = ($("teamSearch")?.value || "").trim().toLowerCase();
+  const ids = all.filter(function(id){ return !q || teamMatches(S.teams[id], q); });
   if (!ids.length) {
     host.appendChild(el("div", "empty", "No team matches"));
     return;
@@ -50,10 +50,10 @@ function drawTeams(){
    Farigiraf in" and "who is holding the Sitrus Berry" are both questions
    about a Pokemon, asked at the list rather than by opening six teams. */
 function teamMatches(t, q){
-  var hay = [t.name, t.notes?.idea || ""];
+  const hay = [t.name, t.notes?.idea || ""];
   (t.slots || []).forEach(function(sl){
     if (sl?.item) hay.push(sl.item);
-    var b = sl?.build_id && S.builds[sl.build_id];
+    const b = sl?.build_id && S.builds[sl.build_id];
     if (b) hay.push(b.pokemon, b.mega, b.role);
   });
   return hay.filter(Boolean).join(" ").toLowerCase().includes(q);
@@ -62,10 +62,10 @@ function teamMatches(t, q){
 /* One team in the list: its name, how many slots are filled, how many can be
    brought today, whether anything breaks a clause, and who is in it. */
 function teamRow(id, t){
-  var r = teamReport(t);
-  var row = el("button", "row");
-  var m = el("div", "rmain");
-  var h = el("div", "rname");
+  const r = teamReport(t);
+  const row = el("button", "row");
+  const m = el("div", "rmain");
+  const h = el("div", "rname");
   h.appendChild(document.createTextNode(t.name || "Untitled"));
   h.appendChild(el("span", "tag" + (r.filled === TEAM_SLOTS ? " ok" : ""),
     r.filled + "/" + TEAM_SLOTS));
@@ -74,7 +74,7 @@ function teamRow(id, t){
   if (r.problems.length)
     h.appendChild(el("span", "tag bad", r.problems.length + " illegal"));
   m.appendChild(h);
-  var meta = el("div", "rmeta");
+  const meta = el("div", "rmeta");
   r.slots.filter(function(x){ return x.name; }).forEach(function(x){
     meta.appendChild(el("span", null, x.name));
   });
@@ -91,16 +91,16 @@ function teamRow(id, t){
    and open a new one, which is why a Back from the item picker took the
    whole team with it. */
 function teamSheet(id, t){
-  var draft = structuredClone(t || {name:"", slots:[], notes:{}});
+  const draft = structuredClone(t || {name:"", slots:[], notes:{}});
   draft.slots = teamSlots(draft);
   function redraw(){ teamSheet(id, draft); }
 
   openEditor("teamedit", draft.name || "New team", function(body){
     nameField(body, draft);
-    var r = teamReport(draft);
+    const r = teamReport(draft);
     teamVerdict(body, r);
     body.appendChild(el("h2", null, "The six"));
-    var list = el("div", "list");
+    const list = el("div", "list");
     r.slots.forEach(function(x, i){
       list.appendChild(teamSlotRow(draft, id, x, i, redraw));
     });
@@ -114,9 +114,9 @@ function teamSheet(id, t){
 }
 
 function nameField(body, draft){
-  var fn = el("div", "field");
+  const fn = el("div", "field");
   fn.appendChild(el("label", "f", "Name"));
-  var inp = el("input"); inp.type = "text"; inp.value = draft.name || "";
+  const inp = el("input"); inp.type = "text"; inp.value = draft.name || "";
   inp.oninput = function(){ draft.name = inp.value; };
   fn.appendChild(inp);
   body.appendChild(fn);
@@ -133,7 +133,7 @@ function teamVerdict(body, r){
   r.warnings.forEach(function(msg){
     body.appendChild(note("warn", msg));
   });
-  var line = r.ready + " of " + r.filled + " ready to bring";
+  let line = r.ready + " of " + r.filled + " ready to bring";
   if (r.missing.length)
     line += " · still to get: " + r.missing.join(", ");
   if (r.filled < TEAM_SLOTS)
@@ -143,9 +143,9 @@ function teamVerdict(body, r){
 }
 
 function ideaField(body, draft){
-  var fw = el("div", "field");
+  const fw = el("div", "field");
   fw.appendChild(el("label", "f", "The idea"));
-  var ta = el("textarea");
+  const ta = el("textarea");
   ta.value = draft.notes?.idea || "";
   ta.oninput = function(){
     draft.notes = draft.notes || {}; draft.notes.idea = ta.value; };
@@ -157,9 +157,9 @@ function ideaField(body, draft){
    (see putNew); an edit keeps its own. */
 function saveTeam(id, draft){
   if (!draft.name) { toast("Give the team a name"); return; }
-  var stem = String(draft.name).toLowerCase()
+  const stem = String(draft.name).toLowerCase()
     .replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 40) || "team";
-  var doc = teamDoc(draft);
+  const doc = teamDoc(draft);
   (id ? put("teams/" + id, doc).then(function(){ return id; })
       : putNew("teams", stem, doc)).then(function(){
     leaveEditor("teams"); toast("Team saved");
@@ -192,11 +192,11 @@ function deleteTeam(id, draft){
    unit is a WORLD - nobody evolved, or this one did - and both sections are
    drawn from the one chosen. */
 function scenarioSection(body, r){
-  var SCEN = scenarios(r);
-  var scenAt = {v: null};
-  var scenWhy = null, speedBox = null, typeBox = null;
+  const SCEN = scenarios(r);
+  const scenAt = {v: null};
+  let scenWhy = null, speedBox = null, typeBox = null;
   function paintScenario(){
-    var cur = SCEN.find(function(x){ return x.at === scenAt.v; }) || SCEN[0];
+    const cur = SCEN.find(function(x){ return x.at === scenAt.v; }) || SCEN[0];
     if (scenWhy) scenWhy.textContent = cur.why;
     if (speedBox) paintSpeeds(speedBox, teamSpeeds(r, cur.at));
     if (typeBox) paintTypes(typeBox, teamTypes(r, cur.at));
@@ -227,13 +227,13 @@ function scenarioSection(body, r){
 /* The worlds to choose between: nobody evolves, then one per slot whose Mega
    changes its typing or its Speed. */
 function scenarios(r){
-  var SCEN = [{at: null, tab: r.megaCases.length ? "Nobody evolves" : "The six",
+  const SCEN = [{at: null, tab: r.megaCases.length ? "Nobody evolves" : "The six",
                why: "Every one of them in base form. Mega Evolution resolves "
                   + "after switch-ins, so this is what takes the first hit "
                   + "— and staying here to resist something is a play, "
                   + "not a delay."}];
   r.megaCases.forEach(function(x){
-    var bits = [];
+    const bits = [];
     if (x.retype) bits.push(x.from.join("/") + " → " + x.to.join("/"));
     if (x.respeed) bits.push("Speed " + x.speFrom + " → " + x.speTo);
     SCEN.push({at: x.i, tab: x.mega,
@@ -247,11 +247,11 @@ function scenarios(r){
 
 /* The segmented control that picks the world. */
 function scenarioButtons(SCEN, scenAt, paint){
-  var seg = el("div", "seg");
+  const seg = el("div", "seg");
   seg.setAttribute("role", "group");
   seg.setAttribute("aria-label", "Which one Mega Evolves");
   SCEN.forEach(function(sc){
-    var b2 = el("button", null, sc.tab);
+    const b2 = el("button", null, sc.tab);
     setPressed(b2, sc.at === scenAt.v);
     b2.onclick = function(){
       scenAt.v = sc.at;
@@ -273,14 +273,14 @@ function scenarioButtons(SCEN, scenAt, paint){
 function paintSpeeds(host, rows){
   host.innerHTML = "";
   rows.forEach(function(x){
-    var line = el("div", "mb3");
-    var nm = el("strong", null, x.form);
+    const line = el("div", "mb3");
+    const nm = el("strong", null, x.form);
     if (x.mega) nm.classList.add("c-mega");
     line.appendChild(nm);
-    var num = el("span", "mono mx6");
+    const num = el("span", "mono mx6");
     num.textContent = String(x.spe);
     line.appendChild(num);
-    var how = el("span", "c-faint");
+    const how = el("span", "c-faint");
     how.textContent = x.base + " base"
       + (x.sp ? " + " + x.sp + " SP" : "")
       + (natMult(x.nature, "spe") !== 1
@@ -288,7 +288,7 @@ function paintSpeeds(host, rows){
     line.appendChild(how);
     host.appendChild(line);
   });
-  var sfoot = el("div", "st mt6");
+  const sfoot = el("div", "st mt6");
   sfoot.textContent = "At level 50, with each build's own SP and nature. "
     + "Fastest first — so the bottom of the list is what moves first "
     + "under Trick Room.";
@@ -302,28 +302,28 @@ function paintSpeeds(host, rows){
    invisible behind six shared weaknesses, the exact hole this table exists to
    find. Each type says who is weak to it and who resists it. */
 function paintTypes(host, all){
-  var tt = all.filter(function(x){ return x.weak; });
+  const tt = all.filter(function(x){ return x.weak; });
   host.innerHTML = "";
   if (!tt.length) {
     host.appendChild(el("div", "note", "Nothing on the team is weak to "
       + "anything."));
     return;
   }
-  var grid = el("div", "typegrid");
+  const grid = el("div", "typegrid");
   host.appendChild(grid);
   tt.forEach(function(x){
-    var d = el("div", "st");
-    var head = el("div");
+    const d = el("div", "st");
+    const head = el("div");
     head.appendChild(typeChip(x.type));
     if (x.weak >= 3) head.appendChild(el("span", "tag bad",
       x.weak + " of the six"));
     d.appendChild(head);
-    var wk = el("div", "c-bad");
+    const wk = el("div", "c-bad");
     wk.textContent = "weak: " + withMultipliers(x.weakOf);
     d.appendChild(wk);
     /* the other half of the answer, and the one that decides whether a
        shared weakness is actually a problem: who can take the hit */
-    var rs = el("div", x.resistOf.length ? "c-good" : "c-faint");
+    const rs = el("div", x.resistOf.length ? "c-good" : "c-faint");
     rs.textContent = x.resistOf.length
       ? "resists: " + withMultipliers(x.resistOf)
       : "nothing on the team resists it";
@@ -350,11 +350,11 @@ function withMultipliers(list){
    every team carrying it. The item is chosen here because the Item Clause is
    a team-level rule. */
 function teamSlotRow(draft, id, x, i, redraw){
-  var row = x.build ? slotCard(x) : null;
+  let row = x.build ? slotCard(x) : null;
   if (!row) {
     row = el("div", "row");
-    var m = el("div", "rmain");
-    var h = el("div", "rname");
+    const m = el("div", "rmain");
+    const h = el("div", "rname");
     h.appendChild(el("span", "st", "Slot " + (i + 1) + " — empty"));
     m.appendChild(h);
     row.appendChild(m);
@@ -372,10 +372,10 @@ function teamSlotRow(draft, id, x, i, redraw){
    habilidad, Nature, SPs, moves"). Returns null for a build whose Pokemon
    the dex does not carry. */
 function slotCard(x){
-  var draw = byName[x.build.mega || x.build.pokemon] || byName[x.build.pokemon];
+  const draw = byName[x.build.mega || x.build.pokemon] || byName[x.build.pokemon];
   if (!draw) return null;
-  var ab = activeAbility(x.build);
-  var spTxt = STAT_KEYS.map(function(k){
+  const ab = activeAbility(x.build);
+  const spTxt = STAT_KEYS.map(function(k){
     return x.build.stat_points?.[k] || 0; }).join("/");
   return pokeCard(draw, {
     tag: "div",
@@ -421,11 +421,11 @@ function slotBadges(h, x){
    names are what you read a team off. Each is its own chip so a phone breaks
    between them and never inside one. Then why the slot holds its item. */
 function slotMoves(body, x){
-  var mv = el("div", "rmeta mt4");
+  const mv = el("div", "rmeta mt4");
   if ((x.build.moves || []).length) {
     x.build.moves.forEach(function(n){
-      var mrow = MOVE_BY[n];
-      var sp2 = el("span", "tag");
+      const mrow = MOVE_BY[n];
+      const sp2 = el("span", "tag");
       if (mrow) sp2.appendChild(typeChip(mrow.type));
       sp2.appendChild(document.createTextNode(n));
       mv.appendChild(sp2);
@@ -440,8 +440,8 @@ function slotMoves(body, x){
 /* The slot's buttons: pick or change the build, set the item, open the set
    in the build editor, empty the slot. */
 function slotButtons(draft, id, x, i, redraw){
-  var side = el("div", "rside");
-  var pick = el("button", "btn sm", x.build ? "Change" : "Fill");
+  const side = el("div", "rside");
+  const pick = el("button", "btn sm", x.build ? "Change" : "Fill");
   pick.onclick = function(e){
     e.stopPropagation();
     /* the draft and the slot index go in, so the picker can grey out a
@@ -454,20 +454,20 @@ function slotButtons(draft, id, x, i, redraw){
   };
   side.appendChild(pick);
   if (!x.build) return side;
-  var it = el("button", "btn sm", x.slot.item ? "Item" : "+ Item");
+  const it = el("button", "btn sm", x.slot.item ? "Item" : "+ Item");
   it.onclick = function(e){
     e.stopPropagation();
     teamPickItem(draft, i, redraw);
   };
   side.appendChild(it);
-  var ed = el("button", "btn sm", "Edit set");
+  const ed = el("button", "btn sm", "Edit set");
   ed.title = "Open this build's editor — the team is saved first";
   ed.onclick = function(e){
     e.stopPropagation();
     teamEditBuild(draft, id, x.slot.build_id);
   };
   side.appendChild(ed);
-  var rm = el("button", "btn sm", "×");
+  const rm = el("button", "btn sm", "×");
   rm.title = "Empty this slot";
   rm.onclick = function(e){ e.stopPropagation(); draft.slots[i] = {}; redraw(); };
   side.appendChild(rm);
@@ -485,7 +485,7 @@ function slotButtons(draft, id, x, i, redraw){
    inventing one would create a team he never asked for, so that case asks
    for a name instead. */
 function teamEditBuild(draft, id, bid){
-  var b = S.builds[bid];
+  const b = S.builds[bid];
   if (!b) { toast("That build is gone"); return; }
   if (!id) {
     toast("Name and save the team first — editing a build leaves this screen");
@@ -514,24 +514,24 @@ function teamEditBuild(draft, id, bid){
    item picker: a species another slot already holds is greyed out with the
    reason written on it, rather than accepted and reported as illegal. */
 function teamPickBuild(draft, idx, onPick){
-  var taken = takenSpecies(draft, idx);
-  var F = {role:{}, type:{}, sort:"az"};
+  const taken = takenSpecies(draft, idx);
+  const F = {role:{}, type:{}, sort:"az"};
   openSheet("Which build?", function(body){
     if (!Object.keys(S.builds).length) {
       body.appendChild(el("div", "empty",
         "No builds yet. A team is made of builds, so write one first."));
       return;
     }
-    var rows = pickRows(taken);
-    var inp = searchField(body, "Search " + rows.length + " build" +
+    const rows = pickRows(taken);
+    const inp = searchField(body, "Search " + rows.length + " build" +
       (rows.length === 1 ? "" : "s") + " — name, move, role, nature, type",
       function(){ draw(); });
     sortControls(body, F, draw);
     roleChips(body, rows, F, draw);
     typeChips(body, rows, F, draw);
-    var count = el("div", "sub mb6");
+    const count = el("div", "sub mb6");
     body.appendChild(count);
-    var list = el("div", "list cards");
+    const list = el("div", "list cards");
     body.appendChild(list);
     function draw(){ drawPicks(list, count, rows, F, inp.q(), onPick); }
     draw();
@@ -545,10 +545,10 @@ function teamPickBuild(draft, idx, onPick){
    measured on - 0 of the 642 Worlds teams repeats even a form - so two
    Squawkabilly of different plumage are still two of the same thing. */
 function takenSpecies(draft, idx){
-  var taken = {};
+  const taken = {};
   (draft?.slots || []).forEach(function(sl, j){
     if (j === idx || !sl?.build_id) return;
-    var ob = S.builds[sl.build_id];
+    const ob = S.builds[sl.build_id];
     if (ob?.pokemon) taken[ob.pokemon] = 1;
   });
   return taken;
@@ -559,9 +559,9 @@ function takenSpecies(draft, idx){
    AS - the Mega when a stone is on it. */
 function pickRows(taken){
   return Object.keys(S.builds).map(function(bid){
-    var b = S.builds[bid], lk = buildLink(bid);
-    var p = (b.mega && byName[b.mega]) || byName[b.pokemon] || null;
-    var hay = [bid, b.pokemon, b.mega, b.role, b.nature, baseAbility(b),
+    const b = S.builds[bid], lk = buildLink(bid);
+    const p = (b.mega && byName[b.mega]) || byName[b.pokemon] || null;
+    const hay = [bid, b.pokemon, b.mega, b.role, b.nature, baseAbility(b),
                activeAbility(b), b.rationale, (b.moves || []).join(" "),
                p ? p.types.join(" ") : "",
                byName[b.pokemon] ? dexNo(b.pokemon) : ""]
@@ -580,14 +580,14 @@ function pickRows(taken){
    importan los de atk, def, spa, spd..."). The two he asked for are the row;
    the six stats and BST sit together behind a fold. */
 function sortControls(body, F, draw){
-  var SORTS = [["az", "A–Z"], ["dex", "Dex no."]];
-  var STATSORTS = [["bst", "BST"], ["hp", "HP"], ["atk", "Atk"],
+  const SORTS = [["az", "A–Z"], ["dex", "Dex no."]];
+  const STATSORTS = [["bst", "BST"], ["hp", "HP"], ["atk", "Atk"],
                    ["def", "Def"], ["spa", "SpA"], ["spd", "SpD"],
                    ["spe", "Spe"]];
-  var srow = el("div", "toggles mb8");
-  var strow2 = el("div", "toggles mb8");
+  const srow = el("div", "toggles mb8");
+  const strow2 = el("div", "toggles mb8");
   strow2.hidden = true;
-  var groups = [srow, strow2];
+  const groups = [srow, strow2];
   SORTS.forEach(function(o){ sortButton(srow, groups, F, o[0], o[1], draw); });
   STATSORTS.forEach(function(o){ sortButton(strow2, groups, F, o[0], o[1], draw); });
   body.appendChild(filterLabel("Sort"));
@@ -598,7 +598,7 @@ function sortControls(body, F, draw){
 
 /* One sort choice. Pressing it un-presses every other in both rows. */
 function sortButton(row, groups, F, key, text, draw){
-  var t = el("button", "tog", text);
+  const t = el("button", "tog", text);
   setPressed(t, F.sort === key);
   t.onclick = function(){
     F.sort = key;
@@ -622,17 +622,17 @@ function pressOnly(group, on){
    (player, 2026-09-21: "el role podria ir oculto o plegado siempre"). The
    count rides on the button. */
 function roleChips(body, rows, F, draw){
-  var roleKeys = [], roleN = {}, roleText = {};
+  const roleKeys = [], roleN = {}, roleText = {};
   rows.forEach(function(r){
     if (!r.role) return;
-    var k = r.role.toLowerCase();
+    const k = r.role.toLowerCase();
     if (!roleN[k]) { roleKeys.push(k); roleText[k] = r.role; }
     roleN[k] = (roleN[k] || 0) + 1;
   });
   roleKeys.sort(function(a, b){
     return roleN[b] - roleN[a] || a.localeCompare(b); });
   if (roleKeys.length < 2) return;
-  var rrow = el("div", "toggles mb8");
+  const rrow = el("div", "toggles mb8");
   rrow.hidden = true;
   roleKeys.forEach(function(k){
     filterChip(rrow, F, draw, "role", k, roleText[k] + " · " + roleN[k]);
@@ -645,7 +645,7 @@ function roleChips(body, rows, F, draw){
    chips are the types the builds actually cover, so the row shrinks with the
    box rather than always showing eighteen. */
 function typeChips(body, rows, F, draw){
-  var tKeys = [], tN = {};
+  const tKeys = [], tN = {};
   rows.forEach(function(r){
     r.types.forEach(function(t){
       if (!tN[t]) tKeys.push(t);
@@ -654,7 +654,7 @@ function typeChips(body, rows, F, draw){
   });
   tKeys.sort(byText);
   if (tKeys.length < 2) return;
-  var trow = el("div", "toggles mb10");
+  const trow = el("div", "toggles mb10");
   tKeys.forEach(function(t){ filterChip(trow, F, draw, "type", t, t + " · " + tN[t], t); });
   body.appendChild(filterLabel("Type — any of these, the form it plays as"));
   body.appendChild(trow);
@@ -664,12 +664,12 @@ function typeChips(body, rows, F, draw){
    the third "rule it out" state the Find tab needs would be a control nobody
    reaches for. A type chip wears the type's colours. */
 function filterChip(row, F, draw, group, key, text, type){
-  var t = el("button", "tog", text);
+  const t = el("button", "tog", text);
   setPressed(t, false);
   if (type) typeSkin(t, type, false);
   t.onclick = function(){
     if (F[group][key]) delete F[group][key]; else F[group][key] = 1;
-    var on = !!F[group][key];
+    const on = !!F[group][key];
     setPressed(t, on);
     if (type) typeSkin(t, type, on);
     draw();
@@ -681,16 +681,16 @@ function filterChip(row, F, draw, group, key, text, type){
 /* A button that folds `panel` open and shut: a caret, the label, and how many
    things are inside, so what is in there shows without opening it. */
 function foldToggle(text, n, panel){
-  var tog = el("button", "btn sm fold inline");
+  const tog = el("button", "btn sm fold inline");
   tog.type = "button";
   tog.setAttribute("aria-expanded", "false");
-  var caret = el("span", "foldcaret");
+  const caret = el("span", "foldcaret");
   caret.innerHTML = "&#9656;";
   tog.appendChild(caret);
   tog.appendChild(el("span", null, text));
   tog.appendChild(el("span", "n", String(n)));
   tog.onclick = function(){
-    var open = panel.hidden;
+    const open = panel.hidden;
     panel.hidden = !open;
     tog.setAttribute("aria-expanded", open ? "true" : "false");
     caret.innerHTML = open ? "&#9662;" : "&#9656;";
@@ -702,8 +702,8 @@ function foldToggle(text, n, panel){
    is not hidden: the clause is the reason it cannot be picked, and that is
    worth reading once. */
 function drawPicks(list, count, rows, F, q, onPick){
-  var ro = Object.keys(F.role), ty = Object.keys(F.type);
-  var hits = rows.filter(function(r){
+  const ro = Object.keys(F.role), ty = Object.keys(F.type);
+  const hits = rows.filter(function(r){
     if (q && !r.hay.includes(q)) return false;
     if (ro.length && !ro.includes(r.role.toLowerCase())) return false;
     if (ty.length && !r.types.some(function(t){ return ty.includes(t); }))
@@ -728,15 +728,15 @@ function drawPicks(list, count, rows, F, q, onPick){
    AS, Mega included - the same row every other number on the card comes
    from - and a build with no dex row sorts last rather than at zero. */
 function pickOrder(sort){
-  var IDX = {hp:0, atk:1, def:2, spa:3, spd:4, spe:5};
+  const IDX = {hp:0, atk:1, def:2, spa:3, spd:4, spe:5};
   return function(a, b){
     if (sort === "dex")
       return a.dex - b.dex || a.b.pokemon.localeCompare(b.b.pokemon);
     if (sort === "bst")
       return b.bst - a.bst || a.b.pokemon.localeCompare(b.b.pokemon);
     if (IDX[sort] != null) {
-      var k = IDX[sort];
-      var av = a.p ? a.p.b[k] : -1, bv = b.p ? b.p.b[k] : -1;
+      const k = IDX[sort];
+      const av = a.p ? a.p.b[k] : -1, bv = b.p ? b.p.b[k] : -1;
       return bv - av || a.b.pokemon.localeCompare(b.b.pokemon);
     }
     return a.b.pokemon.localeCompare(b.b.pokemon) || a.id.localeCompare(b.id);
@@ -750,8 +750,8 @@ function pickOrder(sort){
    typing, a nature and the four move names and nothing else - and this is the
    screen where a team is decided. */
 function buildPickRow(r, onPick){
-  var b = r.b, bid = r.id, lk = r.lk;
-  var badges = function(h){
+  const b = r.b, bid = r.id, lk = r.lk;
+  const badges = function(h){
     /* several builds per species is the point, so the id is shown: it is
        what tells farigiraf from farigiraf-2 */
     if (buildsFor(b.pokemon).length > 1)
@@ -763,7 +763,7 @@ function buildPickRow(r, onPick){
     if (lk.state === "parked")
       h.appendChild(el("span", "tag warn", "in HOME"));
   };
-  var opts = {
+  const opts = {
     cls: (r.dupe || lk.state === "orphan") ? "illegal" : "",
     name: b.pokemon,
     /* the one it CHOSE, not the three the species could have had - a build's
@@ -788,15 +788,15 @@ function buildPickRow(r, onPick){
     },
     onclick: r.dupe ? null : function(){ closeSheet(); onPick(bid); }
   };
-  var btn;
+  let btn;
   if (r.p) {
     btn = pokeCard(r.p, opts);
   } else {
     /* a build for a species the dex does not carry: it is still an idea worth
        picking, so it keeps a row rather than disappearing */
     btn = el("button", "row" + (r.dupe ? " illegal" : ""));
-    var m = el("div", "rmain");
-    var h = el("div", "rname");
+    const m = el("div", "rmain");
+    const h = el("div", "rname");
     h.appendChild(document.createTextNode(b.pokemon));
     badges(h);
     m.appendChild(h);
@@ -815,7 +815,7 @@ function buildPickRow(r, onPick){
    "owned" is the one that matters here, because an item not recorded is a
    2000 VP decision, not a choice between six. */
 function teamPickItem(draft, i, redraw){
-  var taken = {};
+  const taken = {};
   draft.slots.forEach(function(sl, j){
     if (j !== i && sl?.item) taken[sl.item] = 1;
   });
@@ -823,14 +823,14 @@ function teamPickItem(draft, i, redraw){
     body.appendChild(el("p", "sub",
       "One item per team — the Item Clause. Anything another slot already " +
       "holds is greyed out."));
-    var POOL = holdable();
-    var inp = searchField(body, "Search " + POOL.length +
+    const POOL = holdable();
+    const inp = searchField(body, "Search " + POOL.length +
       " holdable items — name or effect", function(){ draw(); });
-    var F = {cat:{}, own:false};
+    const F = {cat:{}, own:false};
     itemFilters(body, POOL, F, draw);
-    var count = el("div", "sub mb6");
+    const count = el("div", "sub mb6");
     body.appendChild(count);
-    var list = el("div", "list");
+    const list = el("div", "list");
     body.appendChild(list);
     function draw(){
       drawItemPicks(list, count, POOL, F, inp.q(), {draft: draft, i: i, taken: taken, redraw: redraw});
@@ -843,12 +843,12 @@ function teamPickItem(draft, i, redraw){
 /* The category chips and "Only ones you own". Drawn only when there is more
    than one thing to choose between. */
 function itemFilters(body, POOL, F, draw){
-  var nCat = {};
+  const nCat = {};
   POOL.forEach(function(x){ nCat[x.cat] = (nCat[x.cat] || 0) + 1; });
-  var crow = el("div", "toggles mb8");
+  const crow = el("div", "toggles mb8");
   ["Hold Items", "Berries", "Mega Stones"].forEach(function(k){
     if (!nCat[k]) return;
-    var t = el("button", "tog", k + " · " + nCat[k]);
+    const t = el("button", "tog", k + " · " + nCat[k]);
     setPressed(t, false);
     t.onclick = function(){
       if (F.cat[k]) delete F.cat[k]; else F.cat[k] = 1;
@@ -857,7 +857,7 @@ function itemFilters(body, POOL, F, draw){
     };
     crow.appendChild(t);
   });
-  var own = el("button", "tog", "Only ones you own");
+  const own = el("button", "tog", "Only ones you own");
   setPressed(own, false);
   own.onclick = function(){
     F.own = !F.own;
@@ -882,16 +882,16 @@ function ownsItem(x){
    nothing said so - the worst shape for a list you are choosing FROM. `slot`
    is {draft, i, taken, redraw}. */
 function drawItemPicks(list, count, POOL, F, q, slot){
-  var cats = Object.keys(F.cat);
+  const cats = Object.keys(F.cat);
   list.innerHTML = "";
-  var none = el("button", "row");
+  const none = el("button", "row");
   none.appendChild(el("div", "rmain")).appendChild(
     el("div", "rname", "— no item —"));
   none.onclick = function(){
     slot.draft.slots[slot.i].item = ""; slot.draft.slots[slot.i].why = "";
     closeSheet(); slot.redraw(); };
   list.appendChild(none);
-  var pool = POOL.filter(function(x){
+  const pool = POOL.filter(function(x){
     if (cats.length && !cats.includes(x.cat)) return false;
     if (F.own && !ownsItem(x)) return false;
     return !q || x.name.toLowerCase().includes(q) ||
@@ -912,11 +912,11 @@ function drawItemPicks(list, count, POOL, F, q, slot){
    and what it does - whole, not the first 120 characters, because the cut
    landed exactly where an item says when it does NOT work. */
 function itemPickRow(x, slot){
-  var draft = slot.draft, i = slot.i, taken = slot.taken;
-  var btn = el("button", "row" + (taken[x.name] ? " illegal" : ""));
+  const draft = slot.draft, i = slot.i, taken = slot.taken;
+  const btn = el("button", "row" + (taken[x.name] ? " illegal" : ""));
   if (taken[x.name]) { btn.disabled = true; btn.classList.add("dim"); }
-  var m = el("div", "rmain");
-  var h = el("div", "rname");
+  const m = el("div", "rmain");
+  const h = el("div", "rname");
   h.appendChild(document.createTextNode(x.name));
   if (x.stone) h.appendChild(el("span", "tag mega", "Mega Stone"));
   if (taken[x.name])
@@ -927,9 +927,9 @@ function itemPickRow(x, slot){
     h.appendChild(el("span", "tag warn", x.vp ? x.vp + " VP" : "not owned"));
   /* The ladder's share belongs here, at the slot, and not on the build: the
      Item Clause makes the item a team decision. */
-  var who = draft.slots[i]?.build_id
+  const who = draft.slots[i]?.build_id
     && S.builds[draft.slots[i].build_id];
-  var utag = who ? usageTag(splitPct(who.pokemon, "i", x.name),
+  const utag = who ? usageTag(splitPct(who.pokemon, "i", x.name),
                             who.pokemon, "i") : null;
   if (utag) h.appendChild(utag);
   m.appendChild(h);
@@ -942,14 +942,14 @@ function itemPickRow(x, slot){
 /* Set the item, then ask why this one - the half of a team that is not
    derivable from anything else. */
 function pickItem(x, slot){
-  var draft = slot.draft, i = slot.i;
+  const draft = slot.draft, i = slot.i;
   draft.slots[i].item = x.name;
   closeSheet();
   openSheet(x.name + " on " + S.builds[draft.slots[i].build_id]?.pokemon,
     function(b2){
       b2.appendChild(el("p", "sub", "Why this one? One line is enough."));
-      var f = el("div", "field");
-      var ta = el("textarea"); ta.value = draft.slots[i].why || "";
+      const f = el("div", "field");
+      const ta = el("textarea"); ta.value = draft.slots[i].why || "";
       ta.oninput = function(){ draft.slots[i].why = ta.value; };
       f.appendChild(ta); b2.appendChild(f);
     }, [fbtn("Done", "primary", function(){ closeSheet(); slot.redraw(); })]);

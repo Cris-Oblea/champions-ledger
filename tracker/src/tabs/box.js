@@ -47,23 +47,23 @@ function keptAs(n){
   return (n > 1 ? "its builds are" : "its build is") + " kept as an idea";
 }
 function pokeRow(rec){
-  var p = byName[rec.name];
+  const p = byName[rec.name];
   /* WHAT TO DRAW vs WHAT IT CAN DO. `p` stays the Champions dex row and every
      rule below keeps asking it - legality, Megas, whether it can be brought.
      `d` is the row to DRAW, which for a species Champions does not have comes
      from PokeAPI so the card is a card instead of a name and a tag. */
-  var d = p || outsideRow(rec.name);
-  var o = originOf(rec);
-  var cls;
+  const d = p || outsideRow(rec.name);
+  const o = originOf(rec);
+  let cls;
   if (rec.location === "home") cls = p ? "home" : "illegal";
   else if (rec.status === "rental") cls = "rental";
   else cls = ORIGIN_CLASS[o] || "unknown";
   if (!d) {
     /* no row anywhere: a name typed by hand into HOME. It still has to be
        tappable, so it keeps the one shape that needs no data. */
-    var bare = el("button", "row " + cls);
-    var bm = el("div", "rmain");
-    var bh = el("div", "rname");
+    const bare = el("button", "row " + cls);
+    const bm = el("div", "rmain");
+    const bh = el("div", "rname");
     bh.appendChild(document.createTextNode(rec.name));
     boxBadges(bh, rec);
     bh.appendChild(el("span", "tag bad", "not in Champions"));
@@ -105,15 +105,15 @@ function pokeRow(rec){
    iguales"). `anyRow`, so a species Champions lacks still draws its
    main-series row. */
 function pokeSheet(rec){
-  var show = anyRow(rec.name);
-  var isHome = rec.location === "home";
+  const show = anyRow(rec.name);
+  const isHome = rec.location === "home";
   openSheet(rec.name, function(body){
     if (show) pokeHead(body, show, {shiny: !!rec.shiny, rec: rec});
     else body.appendChild(unknownNote(rec));
     originBlock(body, rec);
     copyFlags(body, rec);
     body.appendChild(el("h2", null, "Note"));
-    var ta = el("textarea");
+    const ta = el("textarea");
     ta.value = rec.note || "";
     ta.id = "pkNote";
     body.appendChild(ta);
@@ -130,7 +130,7 @@ function pokeSheet(rec){
    can hold anything, including a name no table has heard of, and the honest
    answer is to say so. */
 function unknownNote(rec){
-  var gone = el("div", "note warn");
+  const gone = el("div", "note warn");
   gone.innerHTML = "<strong>" + rec.name + "</strong> is not in any dex " +
     "this app carries — not Champions', and not the main series' " +
     "either. It can sit in HOME, but there is nothing to show about it. " +
@@ -142,7 +142,7 @@ function unknownNote(rec){
    came from - HOME or an Encounter - and says what that makes its slot. */
 function originBlock(body, rec){
   if (rec.status === "rental") {
-    var w = el("div", "note warn mt12");
+    const w = el("div", "note warn mt12");
     w.innerHTML = "<strong>Rental.</strong> It cannot be trained — no move, " +
       "nature, ability or SP change — so it is locked to the set it ships " +
       "with. It can still hold a Mega Stone. Buying it for 2500 VP does not " +
@@ -153,20 +153,20 @@ function originBlock(body, rec){
   }
   if (rec.location !== "champions") return;
   body.appendChild(el("h2", null, "Where did it come from?"));
-  var o = originOf(rec);
-  var togs = el("div", "toggles");
+  const o = originOf(rec);
+  const togs = el("div", "toggles");
   [["home", "HOME origin", "Caught in GO, or traded in. Can go back out."],
    ["champions", "Champions origin", "From an Encounter. Stuck here."]
   ].forEach(function(opt){ togs.appendChild(originButton(rec, o, opt)); });
   body.appendChild(togs);
-  var on = el("div", o === "unknown" ? "note warn mt10" : "note mt10");
+  const on = el("div", o === "unknown" ? "note warn mt10" : "note mt10");
   on.innerHTML = originNote(o, rec);
   body.appendChild(on);
 }
 
 /* One origin choice: saving it writes the row and closes the sheet. */
 function originButton(rec, o, opt){
-  var t = el("button", "tog", opt[1]);
+  const t = el("button", "tog", opt[1]);
   setPressed(t, o === opt[0]);
   t.title = opt[2];
   t.onclick = function(){
@@ -182,7 +182,7 @@ function originButton(rec, o, opt){
 /* Shiny and trained, toggled here and written by Save below. */
 function copyFlags(body, rec){
   body.appendChild(el("h2", null, "This copy"));
-  var flags = el("div", "toggles");
+  const flags = el("div", "toggles");
   flags.appendChild(flagButton(rec, "shiny", "Shiny"));
   flags.appendChild(flagButton(rec, "trained", "Trained in Champions"));
   body.appendChild(flags);
@@ -196,7 +196,7 @@ function copyFlags(body, rec){
 }
 
 function flagButton(rec, key, label){
-  var b = el("button", "tog", label);
+  const b = el("button", "tog", label);
   setPressed(b, rec[key]);
   b.onclick = function(){
     rec[key] = !rec[key];
@@ -211,8 +211,8 @@ function flagButton(rec, key, label){
    whatever the row used to say, which also makes re-saving a bad legacy row
    the repair for it. */
 function saveCopy(rec, extra){
-  var n = $("pkNote");
-  var body = {name:rec.name, location:rec.location, status:rec.status,
+  const n = $("pkNote");
+  const body = {name:rec.name, location:rec.location, status:rec.status,
               note:n ? n.value : (rec.note || ""), order:rec.order || 0,
               origin:rec.origin || "unknown",
               shiny:!!rec.shiny, trained:!!rec.trained};
@@ -224,7 +224,7 @@ function saveCopy(rec, extra){
 /* The sheet's buttons: where this copy can go from here, then Release where
    the game allows it. */
 function moveButtons(rec, isHome){
-  var out = stayButtons(rec, isHome);
+  const out = stayButtons(rec, isHome);
   if (!releaseBlock(rec)) out.push(releaseButton(rec, isHome));
   return out;
 }
@@ -242,7 +242,7 @@ function saveButton(rec, cls){
    box: Park back to HOME first. Anything else: Save. */
 function stayButtons(rec, isHome){
   if (isHome) {
-    var out = [saveButton(rec, "primary")];
+    const out = [saveButton(rec, "primary")];
     if (byName[rec.name]) {
       out.push(fbtn("Send to Champions", "", function(){
         saveCopy(rec, {location:"champions", status:"permanent", origin:"home"})
@@ -293,8 +293,8 @@ function buyButton(rec){
    Only offered where the game allows it - see releaseBlock. */
 function releaseButton(rec, isHome){
   return fbtn("Release", "danger", function(){
-    var mine = buildsOn(rec._id);
-    var msg = [];
+    const mine = buildsOn(rec._id);
+    const msg = [];
     if (mine.length) {
       msg.push(mine.length + " build" + (mine.length > 1 ? "s" : "") +
                " will be KEPT as " + (mine.length > 1 ? "ideas" : "an idea") +
@@ -311,7 +311,7 @@ function releaseButton(rec, isHome){
 function releaseCopy(rec, mine){
   drop("box/" + rec._id).then(function(){
     return Promise.all(mine.map(function(k){
-      var doc = structuredClone(S.builds[k]);
+      const doc = structuredClone(S.builds[k]);
       delete doc._boxId;
       doc.box_id = null;
       return put("builds/" + k, doc);
@@ -331,16 +331,16 @@ function releaseCopy(rec, mine){
    typed name on top, because no list here is guaranteed to be complete. */
 function addSheet(loc){
   openSheet(loc === "home" ? "Add to the HOME Box" : "Add to the Champions Box", function(body){
-    var marks = {shiny:false, trained:false};
-    var mrow = markToggles(marks);
+    const marks = {shiny:false, trained:false};
+    const mrow = markToggles(marks);
     body._marks = marks;
     if (loc === "champions") body._mode = boughtOrRental(body, function(){ draw(); });
     body.appendChild(el("p", "sub",
       loc === "home" ? "Anything about this copy, before you pick it:"
                      : "Anything about this copy:"));
     body.appendChild(mrow);
-    var inp = searchField(body, "Species or form", function(){ draw(); });
-    var list = el("div", "list cards");
+    const inp = searchField(body, "Species or form", function(){ draw(); });
+    const list = el("div", "list cards");
     body.appendChild(list);
     function draw(){ drawAddList(list, inp, loc, body); }
     draw();
@@ -350,9 +350,9 @@ function addSheet(loc){
 
 /* Shiny and trained, set before the Pokemon is picked. */
 function markToggles(marks){
-  var mrow = el("div", "toggles mb12");
+  const mrow = el("div", "toggles mb12");
   [["shiny", "Shiny"], ["trained", "Trained in Champions"]].forEach(function(o){
-    var t = el("button", "tog", o[1]);
+    const t = el("button", "tog", o[1]);
     setPressed(t, false);
     t.onclick = function(){
       marks[o[0]] = !marks[o[0]];
@@ -374,11 +374,11 @@ function boughtOrRental(body, draw){
     "tap <strong>Send to Champions</strong>, so the record travels " +
     "instead of being written twice.";
   body.appendChild(el("label", "f", "Which one is it? (required)"));
-  var st = el("div", "btnrow mb12");
-  var mode = {v:null};
+  const st = el("div", "btnrow mb12");
+  const mode = {v:null};
   [["champions","Bought · 2500 VP or a ticket"],
    ["rental","Rental · 0 VP"]].forEach(function(o){
-    var b = el("button", "tog", o[1]);
+    const b = el("button", "tog", o[1]);
     setPressed(b, false);
     b.onclick = function(){
       mode.v = o[0];
@@ -396,10 +396,10 @@ function boughtOrRental(body, draw){
 /* The list to add from. The Champions Box waits for bought-or-rental, with
    the search box off until it is answered. */
 function drawAddList(list, inp, loc, body){
-  var q = inp.q();
+  const q = inp.q();
   list.innerHTML = "";
   if (loc === "champions" && !body._mode?.v) {
-    var g = el("div", "note warn");
+    const g = el("div", "note warn");
     g.innerHTML = "<strong>Say whether it is bought or a rental first</strong>, " +
       "at the top of this sheet. A rental cannot be trained, and buying " +
       "one later costs 2500 VP without making it any less stuck here.";
@@ -410,11 +410,11 @@ function drawAddList(list, inp, loc, body){
   }
   inp.disabled = false;
   inp.placeholder = "Species or form";
-  var pool = FORMS.filter(function(p){
+  const pool = FORMS.filter(function(p){
     return !q || p.name.toLowerCase().includes(q);
   });
-  var hits = pool.slice(0, 120);
-  var homeAll = null, extra = [];
+  const hits = pool.slice(0, 120);
+  let homeAll = null, extra = [];
   if (loc === "home") {
     homeAll = (C.HOME_ONLY || []).filter(function(n){
       return q && n.toLowerCase().includes(q);
@@ -437,9 +437,9 @@ function drawAddList(list, inp, loc, body){
    typing and six stats from PokeAPI - which is the whole reason the HOME
    shelf can be planned at all. A name with no numbers keeps a plain row. */
 function homeOnlyAdd(n){
-  var op = anyRow(n);
-  var add = function(){
-    var id = freeSlug(n, S.box);
+  const op = anyRow(n);
+  const add = function(){
+    const id = freeSlug(n, S.box);
     put("box/" + id, {name:n, location:"home", status:"permanent",
         origin:"home", note:"", order:Object.keys(S.box).length})
       .then(function(){ closeSheet(); toast(n + " added to HOME"); });
@@ -448,9 +448,9 @@ function homeOnlyAdd(n){
     return pokeCard(op, {cls:"illegal", name:n, badges:notInDexBadge,
                          notes:neverInGame, onclick:add});
   }
-  var r = el("button", "row illegal");
-  var m2 = el("div", "rmain");
-  var h2 = el("div", "rname");
+  const r = el("button", "row illegal");
+  const m2 = el("div", "rmain");
+  const h2 = el("div", "rname");
   h2.appendChild(document.createTextNode(n));
   notInDexBadge(h2);
   m2.appendChild(h2);
@@ -471,9 +471,9 @@ function neverInGame(m){
 
 /* A name no list carries, added to HOME exactly as typed. */
 function typedAdd(nm){
-  var add = el("button", "btn primary mt10", "Add “" + nm + "” anyway");
+  const add = el("button", "btn primary mt10", "Add “" + nm + "” anyway");
   add.onclick = function(){
-    var id = freeSlug(nm, S.box);
+    const id = freeSlug(nm, S.box);
     put("box/" + id, {name:nm, location:"home", status:"permanent",
         origin:"home", note:"typed by hand", order:Object.keys(S.box).length})
       .then(function(){ closeSheet(); toast(nm + " added to HOME"); });
@@ -489,20 +489,20 @@ function typedAdd(nm){
    does not change that - so it is Champions origin. */
 function addCard(p, loc, body){
   return pokeCard(p, {onclick: function(){
-    var mode = loc === "home" ? "home" : body._mode?.v;
+    const mode = loc === "home" ? "home" : body._mode?.v;
     if (!mode) { toast("Bought or rental?"); return; }
-    var status = (loc === "champions" && mode === "rental")
+    const status = (loc === "champions" && mode === "rental")
                ? "rental" : "permanent";
-    var origin = loc === "home" ? "home" : "champions";
-    var id = freeSlug(p.name, S.box);
-    var mk = body._marks || {};
+    const origin = loc === "home" ? "home" : "champions";
+    const id = freeSlug(p.name, S.box);
+    const mk = body._marks || {};
     put("box/" + id, {name:p.name, location:loc, status:status,
                       origin:origin, note:"",
                       shiny:!!mk.shiny, trained:!!mk.trained,
                       order:Object.keys(S.box).length})
       .then(function(){
         closeSheet();
-        var where = " added, Champions origin";
+        let where = " added, Champions origin";
         if (loc === "home") where = " added to HOME";
         else if (mode === "rental") where = " added as a rental";
         toast(p.name + where);
@@ -515,22 +515,22 @@ function addCard(p, loc, body){
    warnings that matter for managing it - and the HOME box list. Called by
    renderAll on every change. */
 function drawBoxes(){
-  var perm = boxRows("champions", "permanent");
-  var rent = boxRows("champions", "rental");
-  var home = boxRows("home");
-  var oHome = originRows("home"), oChamp = originRows("champions"),
+  const perm = boxRows("champions", "permanent");
+  const rent = boxRows("champions", "rental");
+  const home = boxRows("home");
+  const oHome = originRows("home"), oChamp = originRows("champions"),
       oUnk = originRows("unknown");
-  var cap = capacity(), used = perm.length + rent.length;
+  const cap = capacity(), used = perm.length + rent.length;
   boxCounter(used, cap);
   /* ONE FILTER, THREE SECTIONS. Which origin a Pokemon has is not part of
      "where is my Chesnaught", so the box's filter runs across all three and
      each heading says how much of itself is showing. */
-  var bq = ($("boxFilter")?.value || "").trim().toLowerCase();
-  var nHO = boxSection($("listHomeOrigin"), sortRows(oHome), bq,
+  const bq = ($("boxFilter")?.value || "").trim().toLowerCase();
+  const nHO = boxSection($("listHomeOrigin"), sortRows(oHome), bq,
                        "Nothing routed in from HOME yet");
-  var nCO = boxSection($("listChampOrigin"), sortRows(oChamp.concat(oUnk)), bq,
+  const nCO = boxSection($("listChampOrigin"), sortRows(oChamp.concat(oUnk)), bq,
                        "Nothing marked as Encounter-bought");
-  var nRe = boxSection($("listRent"), sortRows(rent), bq, "No rentals");
+  const nRe = boxSection($("listRent"), sortRows(rent), bq, "No rentals");
   drawHomeList(home);
   /* the checklist and the trade ideas are derived from the box and HOME, so
      they go stale the moment either does - but only the visible pane is
@@ -547,7 +547,7 @@ function drawBoxes(){
 
 /* "box 44/50", amber within three of full and red at full. */
 function boxCounter(used, cap){
-  var bc = $("boxCount");
+  const bc = $("boxCount");
   bc.textContent = "box " + used + "/" + cap;
   bc.className = "counter";
   if (used >= cap) bc.className += " full";
@@ -556,7 +556,7 @@ function boxCounter(used, cap){
 
 /* One section of the Champions box, filtered. Returns how many it shows. */
 function boxSection(node, rows, bq, empty){
-  var hits = rows.filter(function(r){ return rowMatches(r, bq); });
+  const hits = rows.filter(function(r){ return rowMatches(r, bq); });
   fill(node, hits, bq ? "Nothing here matches that" : empty);
   return hits.length;
 }
@@ -569,12 +569,12 @@ function sectionCount(id, bq, shown, total){
 
 /* The HOME box: twelve rows until he asks for the rest. */
 function drawHomeList(home){
-  var hq = ($("homeFilter")?.value || "").trim().toLowerCase();
-  var homeShown = sortRows(home).filter(function(r){ return rowMatches(r, hq); });
-  var homeCap = VIEW.homeAll ? homeShown.length : 12;
+  const hq = ($("homeFilter")?.value || "").trim().toLowerCase();
+  const homeShown = sortRows(home).filter(function(r){ return rowMatches(r, hq); });
+  const homeCap = VIEW.homeAll ? homeShown.length : 12;
   fill($("listHome"), homeShown.slice(0, homeCap),
        hq ? "Nothing in HOME matches that" : "HOME is empty");
-  var more = $("homeMore");
+  const more = $("homeMore");
   more.innerHTML = "";
   if (homeShown.length > homeCap) {
     more.appendChild(fbtn("Show the other " + (homeShown.length - homeCap), "sm",
@@ -593,7 +593,7 @@ function drawHomeList(home){
    one at the release floor cannot leave (player, 2026-09-27), so neither is
    called trade material. */
 function boxWarnings(b){
-  var warn = $("boxWarn");
+  const warn = $("boxWarn");
   warn.innerHTML = "";
   warn.appendChild(note(b.oHome.length ? "" : "warn",
     "<strong>" + b.oHome.length + " of " + b.used + " slots are elastic.</strong> " +
@@ -614,7 +614,7 @@ function boxWarnings(b){
       "the cautious read. Tap one to say where it really came from: " +
       b.oUnk.map(function(r){ return r.name; }).join(", ")));
   }
-  var rep = releasableRepeats(b.copies);
+  const rep = releasableRepeats(b.copies);
   if (rep.length) {
     warn.appendChild(note("warn", "<strong>Species Clause.</strong> " +
       rep.join(", ") + " appear" + (rep.length === 1 ? "s" : "") +
@@ -626,9 +626,9 @@ function boxWarnings(b){
 /* Species held more than once in the Champions box where at least one copy
    can be released. */
 function releasableRepeats(copies){
-  var dupes = {};
+  const dupes = {};
   copies.forEach(function(r){
-    var sp = byName[r.name]?.species || r.name;
+    const sp = byName[r.name]?.species || r.name;
     dupes[sp] ||= [];
     dupes[sp].push(r);
   });
@@ -665,10 +665,11 @@ function releasableRepeats(copies){
    ("cuando hagan falta mas pokemones puedo pensar en copias adicionales"), so
    there is no third bucket - just a line saying so. */
 function dexChecklist(){
-  var inHome = {}, inChamp = {};
+  const inHome = {}, inChamp = {};
   boxRows("home").forEach(function(r){ inHome[r.name] = true; });
   boxRows("champions").forEach(function(r){ inChamp[r.name] = r.status; });
-  var missing = [], have = 0;
+  const missing = [];
+  let have = 0;
   FORMS.forEach(function(p){
     if (inHome[p.name] || inChamp[p.name]) { have++; return; }
     missing.push(p);
@@ -677,7 +678,7 @@ function dexChecklist(){
      in GO, which is the only half he can act on - a 1 is an afternoon and a 5
      is the Gimmighoul grind. */
   missing.sort(function(a, b){
-    var da = gtsDiff(a.name), db = gtsDiff(b.name);
+    const da = gtsDiff(a.name), db = gtsDiff(b.name);
     return (da?.supply || 3) - (db?.supply || 3) ||
            a.name.localeCompare(b.name);
   });
@@ -697,11 +698,11 @@ function dexCard(p, why){
     onclick: function(){ findDetail(p); }
   });
 }
-var DEX_CAP = 12, dexAll = {missing:false};
+const DEX_CAP = 12, dexAll = {missing:false};
 function drawDexPane(){
-  var c = dexChecklist();
-  var q = ($("dexFilter")?.value || "").trim().toLowerCase();
-  var miss = c.missing.filter(function(p){
+  const c = dexChecklist();
+  const q = ($("dexFilter")?.value || "").trim().toLowerCase();
+  const miss = c.missing.filter(function(p){
     return !q || p.name.toLowerCase().includes(q) ||
            String(dexLabel(p.name)).toLowerCase().includes(q) ||
            p.types.join(" ").toLowerCase().includes(q);
@@ -719,15 +720,15 @@ function drawDexPane(){
     + "but not in HOME are not here — they are targets rather than holes, "
     + "and the GTS pane lists them with what you could offer for each.";
 
-  var host = $("listDexMissing"), more = $("dexMissingMore");
-  var cap = dexAll.missing ? miss.length : DEX_CAP;
+  const host = $("listDexMissing"), more = $("dexMissingMore");
+  const cap = dexAll.missing ? miss.length : DEX_CAP;
   host.innerHTML = "";
   if (!miss.length) {
     host.appendChild(el("div", "empty", q ? "Nothing here matches that"
                                           : "Nothing left — the dex is done"));
   } else {
     miss.slice(0, cap).forEach(function(p){
-      var d = gtsDiff(p.name);
+      const d = gtsDiff(p.name);
       host.appendChild(dexCard(p, d?.how ? d.how : ""));
     });
   }
@@ -760,37 +761,37 @@ function drawDexPane(){
    not cover a plain Ninetales. Same-species-different-form pairs are real but
    are NOT interchangeable, so they get a footnote instead of a row. */
 function dupeReport(){
-  var homeNames = {}, homeSpecies = {};
+  const homeNames = {}, homeSpecies = {};
   boxRows("home").forEach(function(r){
     homeNames[r.name] = (homeNames[r.name] || 0) + 1;
-    var sp = byName[r.name]?.species || r.name;
+    const sp = byName[r.name]?.species || r.name;
     homeSpecies[sp] ||= [];
     homeSpecies[sp].push(r.name);
   });
-  var hits = [], formOnly = [];
+  const hits = [], formOnly = [];
   boxRows("champions").forEach(function(r){
     if (releaseBlock(r)) return;
     if (homeNames[r.name]) { hits.push(r); return; }
-    var sp = byName[r.name]?.species || r.name;
+    const sp = byName[r.name]?.species || r.name;
     if (homeSpecies[sp]) {
       formOnly.push({name:r.name, others:homeSpecies[sp].filter(function(n){
         return n !== r.name; })});
     }
   });
-  var by = {champions:[], rental:[]};
+  const by = {champions:[], rental:[]};
   hits.forEach(function(r){
     by[r.status === "rental" ? "rental" : "champions"].push(r);
   });
   return {hits:hits, formOnly:formOnly, by:by};
 }
 function drawDupeHome(){
-  var blk = $("dupeBlock");
-  var d = dupeReport();
+  const blk = $("dupeBlock");
+  const d = dupeReport();
   if (!d.hits.length && !d.formOnly.length) { blk.hidden = true; return; }
   blk.hidden = false;
   $("nDupeHome").textContent = d.hits.length;
 
-  var rent = d.by.rental.length, lock = d.by.champions.length;
+  const rent = d.by.rental.length, lock = d.by.champions.length;
   $("dupeSub").textContent = d.hits.length
     ? "Champions-origin slots whose species you also hold in HOME, and that " +
       "the game will let you release. Freeing one does not lose the species - " +
@@ -798,7 +799,7 @@ function drawDupeHome(){
       "so the slot stays elastic from then on."
     : "Nothing releasable in the box is duplicated in HOME.";
 
-  var n = $("dupeNote");
+  const n = $("dupeNote");
   n.innerHTML = "";
   if (rent) {
     n.appendChild(note("", "<strong>" + rent + " rental.</strong> " +
@@ -806,7 +807,7 @@ function drawDupeHome(){
       "carries no build and costs nothing to drop."));
   }
   if (lock) {
-    var withBuild = d.by.champions.filter(function(r){
+    const withBuild = d.by.champions.filter(function(r){
       return buildsOn(r._id).length;
     });
     n.appendChild(note("warn", "<strong>" + lock + " Champions origin.</strong> " +
@@ -818,7 +819,7 @@ function drawDupeHome(){
   }
   /* an empty list under a heading that already reads "0" is a fourth way of
      saying nothing; the form-only note below is the only real content then */
-  var host = $("listDupeHome");
+  const host = $("listDupeHome");
   host.innerHTML = "";
   host.hidden = !d.hits.length;
   if (d.hits.length) {

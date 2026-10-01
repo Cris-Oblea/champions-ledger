@@ -8,20 +8,20 @@ import {
 import { baseAbility, megaAbility, ownedNames } from "./state.js";
 
 function checks(d, p){
-  var out = [];
-  var tot = spTotal(d.stat_points);
+  const out = [];
+  const tot = spTotal(d.stat_points);
   if (tot > 66) out.push(["bad", "<strong>" + tot + " Stat Points.</strong> The budget is 66."]);
   STAT_KEYS.forEach(function(k){
     if ((Number(d.stat_points[k]) || 0) > 32)
       out.push(["bad", "<strong>" + STAT_LABEL[k] + " is over 32.</strong> No single stat may pass 32."]);
   });
-  var basep = byName[d.mega || d.pokemon] || p;
+  const basep = byName[d.mega || d.pokemon] || p;
   if (basep) {
-    var atk = statAt(basep.b[1], d.stat_points.atk, false, natMult(d.nature, "atk"));
-    var spa = statAt(basep.b[3], d.stat_points.spa, false, natMult(d.nature, "spa"));
-    var main = atk >= spa ? "P" : "S";
+    const atk = statAt(basep.b[1], d.stat_points.atk, false, natMult(d.nature, "atk"));
+    const spa = statAt(basep.b[3], d.stat_points.spa, false, natMult(d.nature, "spa"));
+    const main = atk >= spa ? "P" : "S";
     (d.moves || []).forEach(function(n){
-      var m = MOVE_BY[n];
+      const m = MOVE_BY[n];
       if (!m) return;
       if (m.pri > 0 && m.cat !== "T" && m.cat !== main) {
         out.push(["warn", "<strong>" + m.name + " is priority, but " +
@@ -35,7 +35,7 @@ function checks(d, p){
           "Only run it if the partner absorbs it or is immune."]);
       }
     });
-    var abil = megaAbility(d) || "";
+    const abil = megaAbility(d) || "";
     if (abil === "Intimidate" || baseAbility(d) === "Intimidate") {
       out.push(["warn", "<strong>Intimidate on your own side.</strong> Defiant, " +
         "Competitive, Contrary, Guard Dog and Rattled all turn it into a free " +
@@ -45,9 +45,9 @@ function checks(d, p){
       out.push(["warn", "<strong>Weather Ball is never Normal in play.</strong> " +
         "Resolve it to this team's own weather before quoting any number."]);
     }
-    var ls = learnset(d.pokemon);
+    const ls = learnset(d.pokemon);
     if (ls) {
-      var legal = {};
+      const legal = {};
       ls.forEach(function(m){ legal[m.name] = 1; });
       (d.moves || []).forEach(function(n){
         if (n && !legal[n])
@@ -64,23 +64,24 @@ function checks(d, p){
     out.push(["warn", "<strong>No ability chosen.</strong> " + d.pokemon +
       " can have " + p.ab.join(", ") + ". Until one is picked the move badges " +
       "and the calculator run without it."]);
-  var own = ownedNames();
+  const own = ownedNames();
   if (d.pokemon && !(d.pokemon in own))
     out.push(["bad", "<strong>" + d.pokemon + " is not in the Champions Box.</strong>"]);
   return out;
 }
 
 function retuneCost(a, b){
-  var parts = [], vp = 0;
-  var sa = a.stat_points || {}, sb = b.stat_points || {};
-  var spDelta = STAT_KEYS.reduce(function(n, k){
+  const parts = [];
+  let vp = 0;
+  const sa = a.stat_points || {}, sb = b.stat_points || {};
+  const spDelta = STAT_KEYS.reduce(function(n, k){
     return n + Math.abs((Number(sa[k]) || 0) - (Number(sb[k]) || 0));
   }, 0);
   if (spDelta) { vp += spDelta * COSTS.training_stat_point;
                  parts.push(spDelta + " SP × 5"); }
-  var ma = (a.moves || []).join("|"), mb = (b.moves || []).join("|");
+  const ma = (a.moves || []).join("|"), mb = (b.moves || []).join("|");
   if (ma !== mb) {
-    var n = (b.moves || []).filter(function(m, i){ return m !== (a.moves || [])[i]; }).length;
+    const n = (b.moves || []).filter(function(m, i){ return m !== (a.moves || [])[i]; }).length;
     vp += n * COSTS.training_move;
     parts.push(n + " move" + (n === 1 ? "" : "s") + " × 250");
   }

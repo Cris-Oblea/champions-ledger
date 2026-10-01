@@ -328,7 +328,9 @@ runs in four places: the `pre-push` hook, every pull request, every push to
 - **ESLint** (`eslint.config.mjs`): the rules SonarQube for IDE shows in VS
   Code, run over every file. `no-undef` catches a name a module uses without
   declaring or importing it, which the bundler would link as a global and the
-  phone would throw on. In `tracker/src` every rule is an error, and so is a
+  phone would throw on. `no-var` and `prefer-const`: a declaration is
+  `const` unless the name is reassigned, so the line itself says which
+  values can change. In `tracker/src` every rule is an error, and so is a
   function longer than 80 lines of code. `tests/`, `scripts/` and `cron/` run
   the same rules as errors. The whole repo is at zero, and the gate runs with
   `--max-warnings 0`, so a push that adds any finding fails.

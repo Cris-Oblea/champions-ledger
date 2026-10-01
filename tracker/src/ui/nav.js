@@ -8,7 +8,7 @@ import { $, el, resetHost, showPane } from "../core/dom.js";
 import { S } from "../core/state.js";
 
 /* ===================================================================== tabs */
-var TABS = [
+const TABS = [
   /* One word each. "Champs Box" was the only label that wrapped to two lines
      (measured at 360 and 390), which stretched the whole bar and left one tab
      visibly taller than the other six. Each view's own H1 still says
@@ -38,9 +38,9 @@ function mq(q){
   catch (e) { return false; }
 }
 function syncNavHeight(){
-  var nav = $("tabs");
+  const nav = $("tabs");
   if (!nav) return;
-  var h = nav.getBoundingClientRect().height;
+  let h = nav.getBoundingClientRect().height;
   /* in the >=900px rail the bar is full height down the side, not a strip
      along the bottom, so it must not push the toast up the screen */
   if (mq("(min-width:900px)")) h = 0;
@@ -50,9 +50,9 @@ window.addEventListener("resize", syncNavHeight);
 window.addEventListener("orientationchange", syncNavHeight);
 
 function buildTabs(){
-  var nav = $("tabs");
+  const nav = $("tabs");
   TABS.forEach(function(t){
-    var b = el("button");
+    const b = el("button");
     b.setAttribute("role", "tab");
     b.dataset.tab = t[0];
     b.innerHTML = '<svg viewBox="0 0 24 24"><path d="' + t[2] + '"/></svg>';
@@ -65,9 +65,9 @@ function buildTabs(){
 /* Views that are NOT tabs: the two editors. They are reached from a list and
    leave by their own Back button, so they never appear in the bar - but go()
    still has to hide every other view, or the old one shows through. */
-var EXTRA_VIEWS = ["buildedit", "teamedit"];
+const EXTRA_VIEWS = ["buildedit", "teamedit"];
 /* which tab stays lit while an editor is open - both belong to Builds */
-var EDITOR_HOME = {buildedit: "builds", teamedit: "builds"};
+const EDITOR_HOME = {buildedit: "builds", teamedit: "builds"};
 
 /* A tab that rebuilds itself every time it is shown registers its redraw
    here - boot.js: onShow("calc", calcDraw) - so navigation never imports
@@ -103,7 +103,7 @@ function go(tab){
     $("v-" + t[0]).hidden = t[0] !== tab;
   });
   EXTRA_VIEWS.forEach(function(v){ $("v-" + v).hidden = v !== tab; });
-  var lit = EDITOR_HOME[tab] || tab;
+  const lit = EDITOR_HOME[tab] || tab;
   Array.prototype.forEach.call($("tabs").children, function(b){
     b.setAttribute("aria-selected", b.dataset.tab === lit ? "true" : "false");
   });
@@ -115,20 +115,20 @@ function go(tab){
 /* Leaving an editor returns to the list it came from, which is the Builds tab
    with one pane or the other showing. */
 function leaveEditor(pane){
-  var wasOpen = inEditor();
+  const wasOpen = inEditor();
   go("builds");
   buildsPane(pane === "teams" ? "teams" : "builds");
   if (wasOpen) layerClosed();
 }
 
 function openEditor(view, title, build, foot){
-  var pre = view === "teamedit" ? "teamEdit" : "buildEdit";
+  const pre = view === "teamedit" ? "teamEdit" : "buildEdit";
   $(pre + "Title").textContent = title;
   build(resetHost($(pre + "Body")));
-  var f = $(pre + "Foot");
+  const f = $(pre + "Foot");
   f.innerHTML = "";
   (foot || []).filter(Boolean).forEach(function(b){ f.appendChild(b); });
-  var wasOpen = inEditor();
+  const wasOpen = inEditor();
   go(view);
   if (!wasOpen) layerOpened();
 }
@@ -140,9 +140,9 @@ function openEditor(view, title, build, foot){
    overscroll-behavior:contain on .sheetbody stops the chaining; this stops
    the page moving at all, and restores the exact scroll position after. A
    counter, not a boolean, because gtsSheet closes and reopens itself. */
-var _lockY = 0, _lockN = 0;
+let _lockY = 0, _lockN = 0;
 function lockScroll(on){
-  var b = document.body;
+  const b = document.body;
   if (on) {
     if (_lockN++ === 0) {
       _lockY = window.scrollY || 0;
@@ -160,22 +160,22 @@ function openSheet(title, build, foot){
   $("sheetTitle").textContent = title;
   /* #sheetBody is ONE node reused by every sheet - resetHost says why it
      takes more than innerHTML to empty it */
-  var body = resetHost($("sheetBody"));
+  const body = resetHost($("sheetBody"));
   build(body);
-  var f = $("sheetFoot"); f.innerHTML = "";
+  const f = $("sheetFoot"); f.innerHTML = "";
   /* a caller may pass null for a button that does not apply to this case,
      which is cleaner than building two different arrays */
-  var btns = (foot || []).filter(Boolean);
+  const btns = (foot || []).filter(Boolean);
   btns.forEach(function(b){ f.appendChild(b); });
   f.hidden = !btns.length;
-  var wasOpen = !$("scrim").hidden;
+  const wasOpen = !$("scrim").hidden;
   $("scrim").hidden = false;
   if (!wasOpen) { lockScroll(true); layerOpened(); }
   /* a sheet that opens scrolled halfway down its predecessor is disorienting */
   body.scrollTop = 0;
 }
 function closeSheet(){
-  var wasOpen = !$("scrim").hidden;
+  const wasOpen = !$("scrim").hidden;
   $("scrim").hidden = true;
   if (wasOpen) { lockScroll(false); layerClosed(); }
 }
@@ -201,22 +201,22 @@ document.addEventListener("keydown", function(e){
    about something that cannot be undone should not be dismissable into a yes. */
 function ask(title, body, okLabel, danger){
   return new Promise(function(resolve){
-    var scrim = $("askScrim");
+    const scrim = $("askScrim");
     $("askTitle").textContent = title;
     /* TEXT, NOT HTML. Several of these messages interpolate a Pokemon's name
        or a trade's contents; none of that should ever be parsed as markup.
        A blank line starts a new paragraph, which is how the messages were
        already written for confirm(). */
-    var host = $("askBody");
+    const host = $("askBody");
     host.innerHTML = "";
     if (body?.nodeType) host.appendChild(body);
     else String(body || "").split(/\n\s*\n/).forEach(function(par){
       if (par.trim()) host.appendChild(el("p", null, par.trim()));
     });
-    var yes = $("askYes"), no = $("askNo");
+    const yes = $("askYes"), no = $("askNo");
     yes.textContent = okLabel || "OK";
     yes.className = "btn " + (danger ? "danger" : "primary");
-    var done = false;
+    let done = false;
     function finish(v){
       if (done) return;
       done = true;
@@ -269,10 +269,10 @@ function ask(title, body, okLabel, danger){
    survives its own dialog, and the next Back finds nothing open and walks the
    user off a tab they never left. SWALLOW counts the pops we caused
    ourselves, so the handler ignores exactly those and no more. */
-var LAYERS = 0;                  /* history entries pushed for open layers */
-var SWALLOW = 0;                 /* pops we caused and have already acted on */
-var TABHIST = [];                /* tabs visited, so Back can step through */
-var NAV_BACK = false;            /* true while a pop is being serviced */
+let LAYERS = 0;                  /* history entries pushed for open layers */
+let SWALLOW = 0;                 /* pops we caused and have already acted on */
+const TABHIST = [];                /* tabs visited, so Back can step through */
+let NAV_BACK = false;            /* true while a pop is being serviced */
 
 function layerOpened(){
   /* A NEW LAYER DRAINS ANY STALE SWALLOW. layerClosed() asks the browser to
@@ -293,7 +293,7 @@ function layerClosed(){
 
 function inEditor(){
   return EXTRA_VIEWS.some(function(v){
-    var n = $("v-" + v);
+    const n = $("v-" + v);
     return n && !n.hidden;
   });
 }
@@ -306,7 +306,7 @@ window.addEventListener("popstate", function(){
       LAYERS--;
       if (!$("askScrim").hidden) {
         /* the dialog resolves false on its own Cancel path */
-        var no = $("askNo");
+        const no = $("askNo");
         if (no?.onclick) no.onclick();
       } else if (!$("scrim").hidden) {
         closeSheet();
@@ -333,7 +333,7 @@ function buildsPane(which){
   showPane({builds:["buildsPane", "bldPaneBuilds"],
             teams:["teamsPane", "bldPaneTeams"]}, which);
   /* the "New build" button in the header belongs to the Builds pane only */
-  var add = $("buildAdd");
+  const add = $("buildAdd");
   if (add) add.hidden = which !== "builds";
 }
 

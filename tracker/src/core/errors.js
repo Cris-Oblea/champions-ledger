@@ -5,7 +5,7 @@
    "It does not work on my phone" is not something to guess at from a desktop
    browser that works. This reports what the page can actually see, on the
    device where it is failing, without needing a console. */
-var BOOT_ERRORS = [];
+const BOOT_ERRORS = [];
 window.addEventListener("error", function(e){
   BOOT_ERRORS.push((e.message || "error") +
     (e.filename ? "  @" + String(e.filename).split("/").pop() : "") +
@@ -19,7 +19,7 @@ window.addEventListener("unhandledrejection", function(e){
 
 /* an error that only reaches the console is invisible on a phone */
 function showBootError(){
-  var bar = document.getElementById("bootErr");
+  const bar = document.getElementById("bootErr");
   if (!bar) return;
   bar.hidden = false;
   bar.textContent = BOOT_ERRORS.length + " script error" +

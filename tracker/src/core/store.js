@@ -24,15 +24,16 @@ function put(path, body){
 function putNew(coll, stem, body, cap){
   if (!S.db) { toast("Not connected to the store"); return Promise.resolve(null); }
   body.updated = new Date().toISOString().slice(0, 10);
-  var n = 1, tried = [];
+  const tried = [];
+  let n = 1;
   function attempt(){
-    var id = n === 1 ? stem : stem + "-" + n;
+    const id = n === 1 ? stem : stem + "-" + n;
     tried.push(id);
     return S.db.doc(coll + "/" + id).create(body).then(function(){ return id; },
       function(e){
         /* 23505 is Postgres' unique_violation: the id is taken, by this device
            or another one. Anything else is a real failure and must surface. */
-        var taken = e && (e.code === "23505" ||
+        const taken = e && (e.code === "23505" ||
                           /duplicate key|already exists/i.test(e.message || ""));
         if (!taken) { toast("Could not save: " + (e?.code || "error")); throw e; }
         if (++n > (cap || 30)) {
@@ -106,10 +107,10 @@ function rowFromDoc(coll, id, uid, d){
     /* everything that is not a column is a measurement, and goes to
        `data` - so a field added to a closed trade tomorrow needs no
        migration, and no field is silently dropped on the way in. */
-    var COLS = {offered:1, requested:1, offeredId:1, deposited:1,
+    const COLS = {offered:1, requested:1, offeredId:1, deposited:1,
                 depositedAt:1, closed:1, closedAt:1, note:1,
                 status:1, updated:1};
-    var extra = {};
+    const extra = {};
     Object.keys(d).forEach(function(k){
       if (!COLS[k] && d[k] !== undefined) extra[k] = d[k];
     });
@@ -122,7 +123,7 @@ function rowFromDoc(coll, id, uid, d){
             note:d.note || "", data:extra};
   }
   if (coll === "meta") {
-    var body = {}; Object.keys(d).forEach(function(k){
+    const body = {}; Object.keys(d).forEach(function(k){
       if (k !== "updated") body[k] = d[k]; });
     return {user_id:uid, id:id, data:body};
   }
@@ -145,7 +146,7 @@ function rowFromDoc(coll, id, uid, d){
    st.cache[coll][id] is a row as the database holds it; st.emit(coll) tells
    every listener of that table what it holds now. */
 function supabaseStore(sb, uid){
-  var st = {sb: sb, uid: uid, listeners: {}, cache: {}};
+  const st = {sb: sb, uid: uid, listeners: {}, cache: {}};
   st.emit = function(coll){ emitSnapshot(st, coll); };
   st.load = function(coll){ return loadTable(st, coll); };
   /* stones and items are tables of their own since migration 6 - a row per
@@ -162,7 +163,7 @@ function supabaseStore(sb, uid){
      out of a hand-written list, so a team saved on the phone never reached
      the laptop - and that stale view is exactly what makes two devices
      compute the same new id. */
-  var ch = sb.channel("ledger");
+  let ch = sb.channel("ledger");
   COLLS.forEach(function(coll){
     ch = ch.on("postgres_changes", {event:"*", schema:"public", table:coll},
                function(){ st.load(coll); });
@@ -183,13 +184,13 @@ function supabaseStore(sb, uid){
   };
 }
 
-var COLLS = ["box", "builds", "teams", "stones", "items", "gts", "meta"];
+const COLLS = ["box", "builds", "teams", "stones", "items", "gts", "meta"];
 
 /* Hand every listener of a table its rows, sorted by id, in the snapshot
    shape the app reads. */
 function emitSnapshot(st, coll){
-  var rows = st.cache[coll] || {};
-  var docs = Object.keys(rows).sort(byText).map(function(id){
+  const rows = st.cache[coll] || {};
+  const docs = Object.keys(rows).sort(byText).map(function(id){
     return {id:id, exists:true, data:function(){
       return docFromRow(coll, rows[id]); }, metadata:{}};
   });
@@ -203,7 +204,7 @@ function emitSnapshot(st, coll){
 function loadTable(st, coll){
   return st.sb.from(coll).select("*").then(function(r){
     if (r.error) throw r.error;
-    var m = {};
+    const m = {};
     (r.data || []).forEach(function(row){ m[row.id] = row; });
     st.cache[coll] = m;
     st.emit(coll);
@@ -212,7 +213,7 @@ function loadTable(st, coll){
 
 /* "builds/farigiraf" -> ["builds", "farigiraf"] */
 function splitPath(path){
-  var i = path.indexOf("/");
+  const i = path.indexOf("/");
   return [path.slice(0, i), path.slice(i + 1)];
 }
 
@@ -220,11 +221,11 @@ function splitPath(path){
    or listen to it. Every write goes to the database first and only then into
    the cache, so a failed write never shows as saved. */
 function docHandle(st, path){
-  var p = splitPath(path), coll = p[0], id = p[1];
-  var sb = st.sb, cache = st.cache;
+  const p = splitPath(path), coll = p[0], id = p[1];
+  const sb = st.sb, cache = st.cache;
   return {
     get: function(){
-      var row = cache[coll]?.[id];
+      const row = cache[coll]?.[id];
       return Promise.resolve({id:id, exists:!!row,
         data:function(){ return row ? docFromRow(coll, row) : undefined; },
         metadata:{}});
@@ -236,7 +237,7 @@ function docHandle(st, path){
        replace the first. The primary key (user_id, id) already knows better;
        this just stops asking it to look the other way. */
     create: function(d){
-      var row = rowFromDoc(coll, id, st.uid, d);
+      const row = rowFromDoc(coll, id, st.uid, d);
       return sb.from(coll).insert(row).then(function(r){
         if (r.error) throw r.error;
         if (!cache[coll]) cache[coll] = {};
@@ -245,7 +246,7 @@ function docHandle(st, path){
       });
     },
     set: function(d){
-      var row = rowFromDoc(coll, id, st.uid, d);
+      const row = rowFromDoc(coll, id, st.uid, d);
       return sb.from(coll).upsert(row, {onConflict:"user_id,id"})
         .then(function(r){
           if (r.error) throw r.error;
@@ -256,14 +257,14 @@ function docHandle(st, path){
     },
     update: function(d){
       // meta bodies merge inside the jsonb; the other tables merge columns
-      var cur = cache[coll]?.[id];
+      const cur = cache[coll]?.[id];
       if (coll === "meta") {
-        var merged = {...cur?.data};
+        const merged = {...cur?.data};
         Object.keys(d).forEach(function(k){
           if (k !== "updated") merged[k] = d[k]; });
         return this.set(merged);
       }
-      var full = {...(cur && docFromRow(coll, cur)), ...d};
+      const full = {...(cur && docFromRow(coll, cur)), ...d};
       return this.set(full);
     },
     delete: function(){
@@ -276,7 +277,7 @@ function docHandle(st, path){
     onSnapshot: function(next){
       st.listeners[coll] ||= [];
       st.listeners[coll].push(function(snap){
-        var hit = null;
+        let hit = null;
         snap.docs.forEach(function(x){ if (x.id === id) hit = x; });
         next(hit || {id:id, exists:false,
                      data:function(){ return undefined; }, metadata:{}});
@@ -290,30 +291,30 @@ function docHandle(st, path){
 /* The one thing this file knows about the screen: every snapshot has to
    end in a redraw. boot.js says which, with whenChanged(renderAll), so the
    store never imports the screen it serves. */
-var redraw = function(){};
+let redraw = function(){};
 function whenChanged(fn){ redraw = fn; }
 
 /* attach the app to whichever store it was handed */
 function wire(db){
   db.collection("box").onSnapshot(function(snap){
-    var m = {};
+    const m = {};
     snap.docs.forEach(function(d){ m[d.id] = d.data() || {}; });
     S.box = m; S.ready = true; redraw();
   }, function(e){ dbState(false, e.code); });
   db.collection("builds").onSnapshot(function(snap){
-    var m = {};
+    const m = {};
     snap.docs.forEach(function(d){ m[d.id] = d.data() || {}; });
     S.builds = m; redraw();
   }, function(e){ dbState(false, e.code); });
   db.collection("teams").onSnapshot(function(snap){
-    var m = {}; snap.docs.forEach(function(doc){ m[doc.id] = doc.data(); });
+    const m = {}; snap.docs.forEach(function(doc){ m[doc.id] = doc.data(); });
     S.teams = m; redraw();
   }, function(e){ dbState(false, e.code); });
   /* The two set tables. Their ids ARE the names - "Charizardite Y",
      "Focus Sash" - so the map is the answer to "do I own this". */
   ["stones", "items", "gts"].forEach(function(coll){
     db.collection(coll).onSnapshot(function(snap){
-      var m = {};
+      const m = {};
       snap.docs.forEach(function(doc){ m[doc.id] = doc.data() || {}; });
       S[coll] = m; redraw();
     }, function(e){ dbState(false, e.code); });
@@ -328,9 +329,9 @@ function wire(db){
   });
 }
 function dbState(ok, why){
-  var n = $("dbNote");
+  const n = $("dbNote");
   n.innerHTML = "";
-  var d = el("span", "dot " + (ok ? "live" : "off"));
+  const d = el("span", "dot " + (ok ? "live" : "off"));
   n.appendChild(d);
   n.appendChild(document.createTextNode(ok
     ? " Live. Every edit saves as you make it, on every device you open this on."

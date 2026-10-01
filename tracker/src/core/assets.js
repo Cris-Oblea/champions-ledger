@@ -14,10 +14,10 @@ import { byName } from "./data.js";
    nothing to get wrong about encoding. And because it IS an assignment,
    anything that already ran it - a second panel, a test - counts as loaded. */
 function lazyScript(global, urlGlobal){
-  var state = "idle", waiting = [];      // idle | loading | ready | absent
+  let state = "idle", waiting = [];      // idle | loading | ready | absent
   function settle(to){
     state = to;
-    var q = waiting;
+    const q = waiting;
     waiting = [];
     q.forEach(function(fn){ try { fn(to === "ready"); } catch (e) {} });
   }
@@ -26,10 +26,10 @@ function lazyScript(global, urlGlobal){
     if (state === "ready" || state === "absent") return then(state === "ready");
     waiting.push(then);
     if (state === "loading") return;
-    var url = window[urlGlobal];
+    const url = window[urlGlobal];
     if (!url) return settle("absent");
     state = "loading";
-    var sc = document.createElement("script");
+    const sc = document.createElement("script");
     sc.src = url;
     sc.onload = function(){ settle("ready"); };
     sc.onerror = function(){ settle("absent"); };
@@ -48,16 +48,16 @@ function lazyScript(global, urlGlobal){
    visit for a panel opened while arguing about a build is the wrong trade. The
    script tag is added the first time a sheet asks, and the file is immutable
    by its content hash, so it is fetched once ever. */
-var loadAnalysis = lazyScript("CHAMP_ANALYSIS", "CHAMP_ANALYSIS_URL");
+const loadAnalysis = lazyScript("CHAMP_ANALYSIS", "CHAMP_ANALYSIS_URL");
 
 function analysisFor(name){
-  var all = window.CHAMP_ANALYSIS;
+  const all = window.CHAMP_ANALYSIS;
   if (!all) return null;
   /* Smogon files a Mega under its own name and the box knows it as one too,
      so a direct hit comes first; failing that, a Mega falls back to the base
      species, whose analysis is the one that discusses the stone. */
   if (all[name]) return all[name];
-  var p = byName[name];
+  const p = byName[name];
   if (p?.species && all[p.species]) return all[p.species];
   return null;
 }
@@ -80,7 +80,7 @@ function analysisFor(name){
    argued in scripts/build_outside_dex.py - the short version being that the
    MOVES are Champions' own data all along, and only the ability text is
    main-series. */
-var loadOutside = lazyScript("CHAMP_OUTSIDE", "CHAMP_OUTSIDE_URL");
+const loadOutside = lazyScript("CHAMP_OUTSIDE", "CHAMP_OUTSIDE_URL");
 
 function outsideDex(){ return window.CHAMP_OUTSIDE || {}; }
 function outsideMovesFor(name){ return outsideDex().m?.[name] || null; }
@@ -89,7 +89,7 @@ function outsideMovesFor(name){ return outsideDex().m?.[name] || null; }
    tags index by it, and a move with no index must match none of them rather
    than match move 0. */
 function outsideMove(name){
-  var r = outsideDex().mv?.[name];
+  const r = outsideDex().mv?.[name];
   if (!r) return null;
   return {i:-1, name:name, type:r[0], cat:r[1], bp:r[2], acc:r[3], pp:r[4],
           pri:0, target:"Selected Target", spread:false, hitsAlly:false,

@@ -54,7 +54,7 @@ function renderAll(){
    Done here rather than in the markup so it applies to every intro the app
    ever grows, and so the markup keeps reading as prose. */
 function foldIntros(){
-  var LONG = 16;                       /* words before it is worth folding */
+  const LONG = 16;                       /* words before it is worth folding */
   Array.prototype.forEach.call(document.querySelectorAll(".view .lede, .view > .sub"),
     function(p){
       if (p.dataset.folded) return;
@@ -62,7 +62,7 @@ function foldIntros(){
          across several lines, and `.` does not cross a newline - so the lazy
          match could never reach the end of a first sentence that wrapped, and
          the longest intro in the app folded not at all. */
-      var text = (p.textContent || "").replace(/\s+/g, " ").trim();
+      const text = (p.textContent || "").replace(/\s+/g, " ").trim();
       if (text.split(/\s+/).length <= LONG) return;
       /* THE FIRST SENTENCE, and only on a real boundary. "0 VP." and "2500
          VP." are not sentence ends, so a full stop counts only when what
@@ -70,21 +70,21 @@ function foldIntros(){
          was missing and it cost the tab that needed this most: Builds opens
          "...and it waits. 66 Stat Points, 32 max in one stat.", so nothing
          matched and the longest intro in the app folded not at all. */
-      var m = text.match(/^(.+?[.!?])\s+(?=[A-Z0-9"“])([\s\S]+)$/);
+      const m = text.match(/^(.+?[.!?])\s+(?=[A-Z0-9"“])([\s\S]+)$/);
       if (!m) return;
-      var rest = m[2].trim();
+      const rest = m[2].trim();
       if (rest.split(/\s+/).length < 6) return;
       p.dataset.folded = "1";
       p.textContent = m[1] + " ";
-      var more = el("span", "more");
+      const more = el("span", "more");
       more.textContent = rest;
       more.hidden = true;
-      var btn = el("button", "whybtn");
+      const btn = el("button", "whybtn");
       btn.type = "button";
       btn.setAttribute("aria-expanded", "false");
       btn.textContent = "why (" + rest.split(/\s+/).length + " words)";
       btn.onclick = function(){
-        var open = more.hidden;
+        const open = more.hidden;
         more.hidden = !open;
         btn.setAttribute("aria-expanded", open ? "true" : "false");
         btn.textContent = open ? "less" : "why (" +
@@ -135,7 +135,7 @@ document.querySelectorAll(".sortseg").forEach(function(seg){
   });
 });
 try {
-  var savedSort = localStorage.getItem("champ-sort");
+  let savedSort = localStorage.getItem("champ-sort");
   if (savedSort === "order") savedSort = "dex";   // the option that went away
   if (savedSort) {
     VIEW.sort = savedSort;
@@ -168,7 +168,7 @@ wireClears();
    have opened under a 170-row box. The chosen pane is remembered, because
    the answer to "what was I doing in here" is almost always the same one
    (player, 2026-09-20: "podria ser algun submenu"). */
-var HOME_PANES = {box:"homePaneBox", gts:"homePaneGts", dex:"homePaneDex"};
+const HOME_PANES = {box:"homePaneBox", gts:"homePaneGts", dex:"homePaneDex"};
 function homePane(which){
   if (!HOME_PANES[which]) which = "box";
   Object.keys(HOME_PANES).forEach(function(k){
@@ -197,14 +197,14 @@ $("gearItems").onclick  = function(){ gearPane("items"); };
 $("bldPaneBuilds").onclick = function(){ buildsPane("builds"); };
 $("bldPaneTeams").onclick  = function(){ buildsPane("teams"); };
 $("railBtn").onclick = function(){
-  var sh = document.querySelector(".shell");
+  const sh = document.querySelector(".shell");
   sh.classList.toggle("narrow");
   try { localStorage.setItem("champ-rail", sh.classList.contains("narrow") ? "1" : ""); } catch (e) {}
 };
 try { if (localStorage.getItem("champ-rail")) document.querySelector(".shell").classList.add("narrow"); } catch (e) {}
 $("themeBtn").onclick = function(){
-  var r = document.documentElement;
-  var now = r.dataset.theme;
+  const r = document.documentElement;
+  let now = r.dataset.theme;
   if (!now) {
     now = mq("(prefers-color-scheme: dark)") ? "dark" : "light";
   }
@@ -212,7 +212,7 @@ $("themeBtn").onclick = function(){
   try { localStorage.setItem("champ-theme", r.dataset.theme); } catch (e) {}
 };
 try {
-  var saved = localStorage.getItem("champ-theme");
+  const saved = localStorage.getItem("champ-theme");
   if (saved) document.documentElement.dataset.theme = saved;
 } catch (e) {
   /* Storage throws in private browsing; the system theme stands. */

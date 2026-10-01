@@ -26,21 +26,21 @@ function kv(host, rows){
   rows.forEach(function(r){
     if (r == null) return;
     host.appendChild(el("dt", null, r[0]));
-    var d = el("dd", null, String(r[1]));
+    const d = el("dd", null, String(r[1]));
     if (r[2]) d.title = r[2];
     host.appendChild(d);
   });
 }
 
 function drawTrainer(){
-  var t = S.meta.trainer || {};
+  const t = S.meta.trainer || {};
   if (document.activeElement?.closest?.("#v-trainer")) return;
   $("tCap").value = t.box_capacity != null ? t.box_capacity : 50;
 
   /* the capacity number means nothing without the usage beside it */
-  var inChamp = boxRows("champions");
-  var cap = capacity(), used = inChamp.length, free = cap - used;
-  var cu = $("capUse");
+  const inChamp = boxRows("champions");
+  const cap = capacity(), used = inChamp.length, free = cap - used;
+  const cu = $("capUse");
   cu.innerHTML = "";
   cu.appendChild(el("span", "dot"));
   cu.appendChild(document.createTextNode(
@@ -48,9 +48,9 @@ function drawTrainer(){
   cu.classList.toggle("c-bad", free <= 0);
   cu.classList.toggle("c-warn", free > 0 && free <= 3);
 
-  var rent = boxRows("champions", "rental").length;
-  var home = boxRows("home").length;
-  var stones = ownedStones().length;
+  const rent = boxRows("champions", "rental").length;
+  const home = boxRows("home").length;
+  const stones = ownedStones().length;
   kv($("profCounts"), [
     ["In the Champions box", used + " (" + (used - rent) + " bought, " +
                              rent + " rental" + (rent === 1 ? "" : "s") + ")"],
@@ -76,8 +76,8 @@ function drawTrainer(){
        Two numbers from two fetches shown under one date is how a stale one
        hides. */
     ["What each Pokemon runs", (function(){
-      var S = window.CHAMP_SPLITS || {};
-      var n = Object.keys(S.p || {}).length;
+      const S = window.CHAMP_SPLITS || {};
+      const n = Object.keys(S.p || {}).length;
       return n ? n + " Pokemon, " + (S.r || "?") +
                  " tournaments, fetched " + (S.f || "?") + " · weekly"
                : "not in this build";
@@ -89,7 +89,7 @@ function drawTrainer(){
     ["Page built", window.CHAMP_BUILD || "unknown"]
   ]);
 
-  var c = $("costs");
+  const c = $("costs");
   /* No affordability colouring any more: it read the hand-typed VP balance,
      and colouring against a stale number is worse than not colouring. */
   kv(c, [["A ranked win pays", "+" + COSTS.ranked_win + " VP"],
@@ -116,9 +116,9 @@ function csv(rows){
 /* Hand the viewer a file: a Blob behind a temporary <a download>, which is
    how every browser saves generated data without a server round trip. */
 function offer(filename, text){
-  var type = filename.endsWith(".json") ? "application/json" : "text/csv";
-  var url = URL.createObjectURL(new Blob([text], {type: type + ";charset=utf-8"}));
-  var a = el("a");
+  const type = filename.endsWith(".json") ? "application/json" : "text/csv";
+  const url = URL.createObjectURL(new Blob([text], {type: type + ";charset=utf-8"}));
+  const a = el("a");
   a.href = url; a.download = filename;
   document.body.appendChild(a); a.click(); a.remove();
   setTimeout(function(){ URL.revokeObjectURL(url); }, 0);
@@ -126,24 +126,24 @@ function offer(filename, text){
 }
 document.querySelectorAll("[data-export]").forEach(function(b){
   b.onclick = function(){
-    var k = b.dataset.export;
+    const k = b.dataset.export;
     if (k === "box-csv") {
-      var rows = [["name","location","status","types","bst","note"]];
+      const rows = [["name","location","status","types","bst","note"]];
       ["champions","home"].forEach(function(loc){
         boxRows(loc).forEach(function(r){
           /* anyRow: an exported box should carry the HOME-only rows'
              numbers too, not a pair of empty columns */
-          var p = anyRow(r.name);
+          const p = anyRow(r.name);
           rows.push([r.name, loc, r.status, p ? p.types.join("/") : "",
                      p ? bst(p) : "", r.note || ""]);
         });
       });
       offer("champions-box.csv", csv(rows));
     } else if (k === "builds-csv") {
-      var rows2 = [["pokemon","mega","ability","nature","hp","atk","def","spa",
+      const rows2 = [["pokemon","mega","ability","nature","hp","atk","def","spa",
                     "spd","spe","sp_total","move1","move2","move3","move4","role"]];
       Object.keys(S.builds).sort(byText).forEach(function(id){
-        var b2 = S.builds[id], sp = b2.stat_points || {}, mv = b2.moves || [];
+        const b2 = S.builds[id], sp = b2.stat_points || {}, mv = b2.moves || [];
         rows2.push([b2.pokemon, b2.mega || "", baseAbility(b2) || "", b2.nature || "",
           sp.hp||0, sp.atk||0, sp.def||0, sp.spa||0, sp.spd||0, sp.spe||0,
           spTotal(sp), mv[0]||"", mv[1]||"", mv[2]||"", mv[3]||"", b2.role||""]);
@@ -159,10 +159,10 @@ document.querySelectorAll("[data-export]").forEach(function(b){
 /* The newest write across the three tables. A save that failed silently shows
    up here as a date that stopped moving. */
 function lastWrite(){
-  var best = "";
+  let best = "";
   [S.box, S.builds, S.teams, S.meta].forEach(function(t){
     Object.keys(t || {}).forEach(function(k){
-      var v = t[k] && (t[k].updated_at || t[k].updated);
+      const v = t[k] && (t[k].updated_at || t[k].updated);
       if (v && String(v) > best) best = String(v);
     });
   });
@@ -172,7 +172,7 @@ function lastWrite(){
 /* Filled in by checking the deployed page's own build stamp. Starts as a
    question rather than a claim, because until the fetch answers we do not
    know - and a diagnostic that guesses is worse than one that says so. */
-var DIAG_LATEST = "checking…";
+let DIAG_LATEST = "checking…";
 function checkLatest(){
   /* asked once per load, not on every redraw - it is a network round trip */
   if (DIAG_LATEST !== "checking…") return;
@@ -185,9 +185,9 @@ function checkLatest(){
     .then(function(r){ return r.ok ? r.text() : null; })
     .then(function(t){
       if (!t) { DIAG_LATEST = "could not check"; return; }
-      var m = /CHAMP_BUILD\s*=\s*['"]([^'"]+)['"]/.exec(t);
-      var live = m ? m[1] : null;
-      var mine = window.CHAMP_BUILD || "";
+      const m = /CHAMP_BUILD\s*=\s*['"]([^'"]+)['"]/.exec(t);
+      const live = m ? m[1] : null;
+      const mine = window.CHAMP_BUILD || "";
       if (!live) DIAG_LATEST = "could not check";
       else if (live === mine) DIAG_LATEST = "yes, this is the current build";
       else DIAG_LATEST = "NO - the server has " + live + ", reload to get it";
@@ -197,7 +197,7 @@ function checkLatest(){
 }
 
 function diagLines(){
-  var L = [];
+  const L = [];
   function add(k, v){ L.push([k, v]); }
   add("Page built", (window.CHAMP_BUILD || "unknown"));
   /* Is the page in front of you the one that is deployed? A phone serving a
@@ -211,8 +211,8 @@ function diagLines(){
       (C?.REG_STARTED ? " since " + C.REG_STARTED : ""));
   add("Ladder usage fetched", C?.USAGE_AT || "unknown");
   add("Per-Pokemon splits", (function(){
-    var S = window.CHAMP_SPLITS || {};
-    var n = Object.keys(S.p || {}).length;
+    const S = window.CHAMP_SPLITS || {};
+    const n = Object.keys(S.p || {}).length;
     return n ? n + " Pokemon, " + (S.r || "?") + ", fetched " + (S.f || "?")
              : "absent";
   })());
@@ -250,21 +250,21 @@ function diagLines(){
 }
 
 function drawDiag(){
-  var host = $("diagOut");
+  const host = $("diagOut");
   if (!host) return;
   host.innerHTML = "";
-  var dl = el("dl", "kv diag");
+  const dl = el("dl", "kv diag");
   diagLines().forEach(function(r){
     dl.appendChild(el("dt", null, r[0]));
-    var dd = el("dd", null, String(r[1]));
+    const dd = el("dd", null, String(r[1]));
     if (/MISSING|NOT LOADED|BLOCKED/.test(String(r[1]))) dd.classList.add("c-bad");
     dl.appendChild(dd);
   });
   host.appendChild(dl);
 
-  var b = el("button", "btn sm mt10", "Copy this");
+  const b = el("button", "btn sm mt10", "Copy this");
   b.onclick = function(){
-    var txt = diagLines().map(function(r){ return r[0] + ": " + r[1]; }).join("\n");
+    const txt = diagLines().map(function(r){ return r[0] + ": " + r[1]; }).join("\n");
     if (!navigator.clipboard) { diagFallback(txt); return; }
     navigator.clipboard.writeText(txt).then(function(){ toast("Copied"); },
       function(){ diagFallback(txt); });
@@ -287,17 +287,17 @@ function drawDiag(){
      SWEPT, NOT COMPARED PAIRWISE. Find lays out thousands of boxes and the
      obvious double loop froze the renderer outright. Sorted by top edge, each
      box is only measured against the ones that start before it ends. */
-  var ob = el("button", "btn sm mt8 ml8", "Check every screen for overlaps");
+  const ob = el("button", "btn sm mt8 ml8", "Check every screen for overlaps");
   ob.onclick = function(){ overlapReport(host); };
   host.appendChild(ob);
 }
 
 function overlapSweep(view){
-  var boxes = paintedBoxes(view);
+  const boxes = paintedBoxes(view);
   boxes.sort(function(a, b){ return a.r.top - b.r.top; });
-  var hits = [], floats = [];
-  for (var i2 = 0; i2 < boxes.length && hits.length < 12; i2++) {
-    var hit = firstCollision(boxes, i2, view, floats);
+  const hits = [], floats = [];
+  for (let i2 = 0; i2 < boxes.length && hits.length < 12; i2++) {
+    const hit = firstCollision(boxes, i2, view, floats);
     if (hit) hits.push(hit);
   }
   return {boxes: boxes.length, hits: hits, floating: floats};
@@ -311,14 +311,14 @@ function overlapSweep(view){
    written for (caught by planting the bug back and watching the tool miss
    it). Anything else has to say something to be worth colliding with. */
 function paintedBoxes(view){
-  var boxes = [];
-  for (var e of view.querySelectorAll("*")) {
-    var tag = e.tagName;
-    var isIcon = /^(svg|img)$/i.test(tag);
-    var isField = /^(input|textarea|select)$/i.test(tag);
+  const boxes = [];
+  for (const e of view.querySelectorAll("*")) {
+    const tag = e.tagName;
+    const isIcon = /^(svg|img)$/i.test(tag);
+    const isField = /^(input|textarea|select)$/i.test(tag);
     if (e.children.length && !isIcon) continue;
     if (!isIcon && !isField && !e.textContent.trim()) continue;
-    var r = e.getBoundingClientRect();
+    let r = e.getBoundingClientRect();
     if (isField) r = contentBox(e, r);
     if (r.width < 4 || r.height < 4) continue;
     boxes.push({e: e, r: r});
@@ -338,15 +338,15 @@ function paintedBoxes(view){
    BOTH out of the flow is a genuine fault: two floating layers fighting over
    one corner is nobody's design. */
 function firstCollision(boxes, i, view, floats){
-  var A = boxes[i];
-  for (var j = i + 1; j < boxes.length; j++) {
-    var B = boxes[j];
+  const A = boxes[i];
+  for (let j = i + 1; j < boxes.length; j++) {
+    const B = boxes[j];
     if (B.r.top >= A.r.bottom - 1) break;         /* the sweep's whole point */
     if (A.e.contains(B.e) || B.e.contains(A.e)) continue;
-    var ox = Math.min(A.r.right, B.r.right) - Math.max(A.r.left, B.r.left);
-    var oy = Math.min(A.r.bottom, B.r.bottom) - Math.max(A.r.top, B.r.top);
+    const ox = Math.min(A.r.right, B.r.right) - Math.max(A.r.left, B.r.left);
+    const oy = Math.min(A.r.bottom, B.r.bottom) - Math.max(A.r.top, B.r.top);
     if (ox <= 1 || oy <= 1 || ox * oy < 30) continue;
-    var line = overlapLabel(A.e) + "  over  " + overlapLabel(B.e) +
+    const line = overlapLabel(A.e) + "  over  " + overlapLabel(B.e) +
                "  (" + Math.round(ox * oy) + "px²)";
     if (floatingLayer(A.e, view) !== floatingLayer(B.e, view)) {
       if (floats.length < 8) floats.push(line);
@@ -363,8 +363,8 @@ function firstCollision(boxes, i, view, floats){
    BOXES ACTUALLY TOUCH: asking for every box cost a getComputedStyle per
    ancestor of 200 boxes and broke the sweep's own 150ms budget. */
 function floatingLayer(e, view){
-  for (var n = e; n?.nodeType === 1 && n !== view; n = n.parentNode) {
-    var pos = window.getComputedStyle(n).position;
+  for (let n = e; n?.nodeType === 1 && n !== view; n = n.parentNode) {
+    const pos = window.getComputedStyle(n).position;
     if (pos === "fixed" || pos === "sticky" || pos === "absolute") return true;
   }
   return false;
@@ -378,11 +378,11 @@ function floatingLayer(e, view){
    a generous rectangle reports a false positive, which someone reads; a
    collapsed one reports nothing, which nobody does. */
 function contentBox(e, r){
-  var cs = window.getComputedStyle(e);
-  var l = r.left + px(cs.borderLeftWidth) + px(cs.paddingLeft);
-  var t = r.top + px(cs.borderTopWidth) + px(cs.paddingTop);
-  var rt = r.right - px(cs.borderRightWidth) - px(cs.paddingRight);
-  var b = r.bottom - px(cs.borderBottomWidth) - px(cs.paddingBottom);
+  const cs = window.getComputedStyle(e);
+  const l = r.left + px(cs.borderLeftWidth) + px(cs.paddingLeft);
+  const t = r.top + px(cs.borderTopWidth) + px(cs.paddingTop);
+  const rt = r.right - px(cs.borderRightWidth) - px(cs.paddingRight);
+  const b = r.bottom - px(cs.borderBottomWidth) - px(cs.paddingBottom);
   if (rt - l < 4 || b - t < 4) return r;
   return {left:l, top:t, right:rt, bottom:b, width:rt - l, height:b - t};
 }
@@ -392,8 +392,8 @@ function px(v){ return Number.parseFloat(v) || 0; }
 /* "span.tag “Fire”" - an element as a person can find it. An SVG's className
    is an SVGAnimatedString, so the class is read as an attribute. */
 function overlapLabel(e){
-  var c = (e.getAttribute?.("class") || "").split(" ")[0];
-  var t = (e.value || e.textContent || "").trim().slice(0, 14);
+  const c = (e.getAttribute?.("class") || "").split(" ")[0];
+  const t = (e.value || e.textContent || "").trim().slice(0, 14);
   return e.tagName.toLowerCase() + (c ? "." + c : "") +
          (t ? " “" + t + "”" : "");
 }
@@ -402,9 +402,9 @@ function overlapReport(host){
   /* Found through `host`, not by id: `$()` is for ids the MARKUP declares, and
      check_app asserts exactly that - a lookup for something no markup
      contains is usually a typo, which is a check worth keeping sharp. */
-  var old = host.querySelector(".overlapout");
+  const old = host.querySelector(".overlapout");
   if (old) old.remove();
-  var out = el("div", "note overlapout mt10");
+  const out = el("div", "note overlapout mt10");
   /* EVERY VIEW, not just the one you are standing on. The diagnostics panel
      lives in Settings, so a sweep of "the current screen" could only ever
      sweep Settings - the one screen nobody was worried about.
@@ -412,13 +412,14 @@ function overlapReport(host){
      A hidden view reports every rectangle as zero, so each one is shown for
      the length of a measurement and put straight back. The flicker is the
      price of measuring the real layout instead of guessing at it. */
-  var open = document.querySelector(".view:not([hidden])");
-  var views = Array.from(document.querySelectorAll(".view"));
-  var total = 0, bad = [], over = [];
+  const open = document.querySelector(".view:not([hidden])");
+  const views = Array.from(document.querySelectorAll(".view"));
+  const bad = [], over = [];
+  let total = 0;
   views.forEach(function(v){
-    var was = v.hidden;
+    const was = v.hidden;
     v.hidden = false;
-    var r = overlapSweep(v);
+    const r = overlapSweep(v);
     v.hidden = was;
     total += r.boxes;
     r.hits.forEach(function(h){ bad.push(v.id + " — " + h); });
@@ -443,7 +444,7 @@ function overlapReport(host){
      would otherwise be invisible, which is how this tool went blind once
      before. */
   if (over.length) {
-    var fl = el("div", "st mt8");
+    const fl = el("div", "st mt8");
     fl.innerHTML = "<strong>" + over.length + " floating layer" +
       (over.length === 1 ? "" : "s") + " over content</strong> — by " +
       "design (the + button, a sheet, a toast). Listed so it cannot hide:";
@@ -456,7 +457,7 @@ function overlapReport(host){
 function diagFallback(txt){
   openSheet("Diagnostics", function(body){
     body.appendChild(el("p", "sub", "Select it all and copy."));
-    var ta = el("textarea", "diagdump");
+    const ta = el("textarea", "diagdump");
     ta.value = txt; ta.readOnly = true;
     body.appendChild(ta);
     setTimeout(function(){ ta.select(); }, 60);
