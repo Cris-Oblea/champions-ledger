@@ -49,9 +49,9 @@ import re
 import sys
 from pathlib import Path
 
+import dex
 import fetch_home_dex
 import net
-import query as Q
 from paths import ROOT
 
 RAW = os.path.join(ROOT, "data", "raw", "pokeapi_csv")
@@ -127,7 +127,7 @@ def main():
     args = ap.parse_args()
 
     up = upstream(args.force)
-    ours = Q.db("learnsets")
+    ours = dex.db("learnsets")
     paired = 0
     new_ours, new_up, known = [], [], 0
     for name in sorted(ours):

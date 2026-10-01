@@ -60,8 +60,9 @@ python scripts/ledger.py --refresh    # ignore the 15-minute cache
 
 It answers from a short-lived cache, then the live database, then the newest
 backup snapshot - and it says which. With none of the three it returns empty
-structures rather than raising, because twelve scripts import `query.py` and
-four of them run inside the gate, where there is no database at all.
+structures rather than raising, so `query.py` still answers what it can
+where there is no database at all. Only `query.py` imports it: the build
+scripts read through `dex.py`, which never touches the ledger.
 
 **VP IS NO LONGER TRACKED, AND THAT IS DELIBERATE** (player, 2026-09-13: "en
 la app ya hablamos sobre eso y no es necesario... solo dejamos la casilla box

@@ -28,7 +28,7 @@ import os
 import re
 from pathlib import Path
 
-import query as Q
+import dex
 from paths import ROOT
 
 PB = os.path.join(ROOT, "data", "raw", "pokebase")
@@ -135,7 +135,7 @@ def _print_move_report(ours, rows, gaps, agree):
 
 
 def check_moves():
-    ours = [m for m in Q.db("moves") if m.get("useable")]
+    ours = [m for m in dex.db("moves") if m.get("useable")]
     pb = pokebase_moves()
     sm = json.loads(Path(SMOG).read_text(encoding="utf-8")) if os.path.exists(SMOG) else {}
     rows, gaps, agree = [], [], 0
@@ -161,7 +161,7 @@ def check_moves():
 
 
 def check_items():
-    facts = (Q.db("item_facts") or {}).get("prices") or {}
+    facts = (dex.db("item_facts") or {}).get("prices") or {}
     both = [(n, r) for n, r in facts.items() if r.get("vp")]
     src = {}
     for _n, r in both:

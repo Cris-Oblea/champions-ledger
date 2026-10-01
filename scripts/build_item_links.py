@@ -31,14 +31,11 @@ import os
 import re
 import sys
 
-import query as Q
+import dex
 from paths import ROOT
 
 OUT = os.path.join(ROOT, "data", "db", "item_links.json")
 
-TYPES = ["Normal", "Fire", "Water", "Electric", "Grass", "Ice", "Fighting",
-         "Poison", "Ground", "Flying", "Psychic", "Bug", "Rock", "Ghost",
-         "Dragon", "Dark", "Steel", "Fairy"]
 
 # A field effect, and every spelling the game uses for it. "rain" needs a word
 # boundary or "terrain" matches it - the same trap that put all six terrain
@@ -83,7 +80,7 @@ AGAINST = {
 def side_of(why):
     """'for' or 'against', from the reason - shaped so a type or a status
     in the middle of one does not need an entry of its own."""
-    shaped = re.sub(r"\b(?:" + "|".join(TYPES) + r")\b", "{type}", why)
+    shaped = re.sub(r"\b(?:" + "|".join(dex.TYPES) + r")\b", "{type}", why)
     shaped = re.sub(r"cures the \w+ this inflicts",
                     "cures the {status} this inflicts", shaped)
     return "against" if shaped in AGAINST else "for"
@@ -114,7 +111,7 @@ def field_setters(moves, abils):
 
 # status -> the moves that inflict it, from scripts/build_statuses.py
 STATUS = {k: (v.get("moves") or [])
-          for k, v in ((Q.db("statuses") or {}).get("statuses") or {}).items()}
+          for k, v in ((dex.db("statuses") or {}).get("statuses") or {}).items()}
 
 
 def _has(t, pat):
@@ -157,7 +154,7 @@ TYPE_RULES = [
 def _type_rule(t, props, dmg):
     for pat, why in TYPE_RULES:
         m = _has(t, pat)
-        if m and m.group(1).capitalize() in TYPES:
+        if m and m.group(1).capitalize() in dex.TYPES:
             ty = m.group(1).capitalize()
             return [n for n in dmg if props[n]["type"] == ty], [], why.format(ty)
     return None
@@ -331,9 +328,9 @@ def _reverse_index(items, key):
 
 
 def build():
-    moves = Q.db("moves")
-    abils = Q.db("abilities")
-    props = (Q.db("ability_moves") or {}).get("moves") or {}
+    moves = dex.db("moves")
+    abils = dex.db("abilities")
+    props = (dex.db("ability_moves") or {}).get("moves") or {}
     if not props:
         sys.exit("run scripts/build_ability_moves.py first - this needs its "
                  "derived move properties")
@@ -345,9 +342,9 @@ def build():
             sys.exit("no move or ability sets %r any more - the wording "
                      "changed, fix FIELD" % eff)
 
-    facts = (Q.db("item_facts") or {}).get("prices") or {}
+    facts = (dex.db("item_facts") or {}).get("prices") or {}
     items, unlinked = {}, []
-    for it in Q.db("items"):
+    for it in dex.db("items"):
         if it.get("is_mega_stone") or it.get("category") == "Miscellaneous":
             continue
         ms, abs_, why = item_links(it, props, setters, facts)

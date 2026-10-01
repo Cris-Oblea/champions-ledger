@@ -16,6 +16,7 @@ import re
 from collections import defaultdict
 from pathlib import Path
 
+import dex
 from paths import DB, RAW
 from serebii_text import read, unmojibake
 
@@ -28,9 +29,6 @@ from serebii_text import read, unmojibake
 # broken slug among the 1,389 ability links on the Pokedex pages was enough to
 # lose an ability.
 ABIL_LINK = r'/abilitydex/[^"]*"[^>]*>\s*<b>([^<]+)</b>'
-
-# The six base stats in the order every stat table on Serebii lists them.
-STAT_KEYS = ["hp", "atk", "def", "spa", "spd", "spe"]
 
 # Sprite suffix -> form. The meaning is species-dependent: "-m" is Mow on
 # Rotom but Midnight on Lycanroc, so the per-species map wins.
@@ -438,7 +436,7 @@ def _six_stats(chunk):
     nums = re.findall(r'<td[^>]*>\s*(\d{1,3})\s*</td>', chunk)[:6]
     if len(nums) != 6:
         return None
-    return dict(zip(STAT_KEYS, map(int, nums), strict=True))
+    return dict(zip(dex.STAT_KEYS, map(int, nums), strict=True))
 
 
 def _block_stats(stat_blocks, hstart, hend):
@@ -569,18 +567,18 @@ def forms_from_attackdex():
             nums = [int(n) for n in re.findall(r">\s*(\d{1,3})\s*<", m.group(6))][:6]
             if len(nums) != 6:
                 continue
-            stats = dict(zip(STAT_KEYS, nums, strict=True))
+            stats = dict(zip(dex.STAT_KEYS, nums, strict=True))
             stats["total"] = sum(nums)
             # Indeedee's female row carries "#0" instead of "#0876". The
             # sprite filename always has the real number, so read it from
             # there rather than trusting the cell.
-            dex = int(m.group(1))
-            if not dex:
+            number = int(m.group(1))
+            if not number:
                 mdx = re.match(r"(\d+)", m.group(2).split("/")[-1])
-                dex = int(mdx.group(1)) if mdx else None
+                number = int(mdx.group(1)) if mdx else None
             found[key] = {
                 "slug": None, "name": key, "species": species, "form": form,
-                "dex": dex, "types": types, "abilities": abils,
+                "dex": number, "types": types, "abilities": abils,
                 "base_stats": stats, "is_mega": False,
             }
     return found
@@ -743,18 +741,17 @@ def complete_form_abilities(forms):
     exists to prevent. audit_abilities.py checks that nothing a page names is
     left on no row at all.
     """
-    import query as _Q
     by_norm, by_species = {}, defaultdict(list)
     for name, p in forms.items():
-        by_norm.setdefault(_Q.norm(name), []).append(p)
-        by_species[_Q.norm(p.get("species") or name)].append(p)
+        by_norm.setdefault(dex.norm(name), []).append(p)
+        by_species[dex.norm(p.get("species") or name)].append(p)
     added = []
     for fn in sorted(os.listdir(os.path.join(RAW, "pokedex"))):
         species = os.path.splitext(fn)[0]
-        rows = by_species.get(_Q.norm(species), [])
+        rows = by_species.get(dex.norm(species), [])
         for label, abs_ in abilities_by_form(
                 os.path.join(RAW, "pokedex", fn)).items():
-            hits = by_norm.get(_Q.norm(species + " " + label), [])
+            hits = by_norm.get(dex.norm(species + " " + label), [])
             for p in hits:
                 _add_abilities(p, abs_, added)
             if (not hits and len(rows) == 1

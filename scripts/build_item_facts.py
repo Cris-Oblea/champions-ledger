@@ -32,7 +32,7 @@ import os
 import re
 from pathlib import Path
 
-import query as Q
+import dex
 from paths import ROOT
 
 RAW = os.path.join(ROOT, "data", "raw", "pokebase")
@@ -173,9 +173,9 @@ def main():
 
     pb = pokebase_unlocks()
     pbtext = pokebase_text()
-    smogon = (Q.db("smogon_text") or {}).get("items") or {}
+    smogon = (dex.db("smogon_text") or {}).get("items") or {}
     rows, filled, agree, clash, nothing = {}, [], 0, [], []
-    for it in Q.db("items"):
+    for it in dex.db("items"):
         name = it["name"]
         vp, src, unlock, status = _price(it, pb)
         agree += status == "agree"

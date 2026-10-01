@@ -29,6 +29,7 @@ import sys
 import time
 from pathlib import Path
 
+import dex
 import net
 from paths import DB, META, ROOT
 
@@ -306,8 +307,8 @@ def main():
             "name": mon.get("name"),
             "alias": alias,
             "types": mon.get("types") or [],
-            "base_stats": {k: mon.get(k) for k in
-                           ("hp", "atk", "def", "spa", "spd", "spe") if k in mon},
+            "base_stats": {k: mon.get(k) for k in dex.STAT_KEYS
+                           if k in mon},
             "learnset": data.get("learnset") or [],
             "vgc_strategies": strategies,
         })

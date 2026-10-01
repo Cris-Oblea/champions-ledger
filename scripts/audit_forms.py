@@ -17,8 +17,8 @@ import sys
 from collections import defaultdict
 from pathlib import Path
 
+from dex import DIVISIONS, meta, norm, species_norm, tournament
 from paths import DB, RAW
-from query import meta, norm, species_norm
 from serebii_text import read
 
 
@@ -281,8 +281,8 @@ def _meta_names():
     # All three age divisions share the roster, so a name only one of them uses
     # still has to resolve. Each is listed separately: which division dropped a
     # row is the first thing you want to know.
-    for _div in ("masters", "seniors", "juniors"):
-        _t = meta("tournament_0000191_" + _div)
+    for _div in DIVISIONS:
+        _t = tournament(_div)
         if _t:
             src["worlds " + _div] = [s.get("pokemon") for p in _t.get("players", [])
                                      for s in p.get("team", [])]

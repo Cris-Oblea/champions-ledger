@@ -10,8 +10,8 @@ import re
 import unicodedata
 from pathlib import Path
 
+import dex
 import effect_chips
-import query as Q
 from paths import ROOT
 
 OUT = os.path.join(ROOT, "tracker", "data.js")
@@ -44,7 +44,7 @@ def movetext(m):
     """
     global TEXTS
     if TEXTS is None:
-        TEXTS = (Q.db("text_facts") or {}).get("moves") or {}
+        TEXTS = (dex.db("text_facts") or {}).get("moves") or {}
     picked = (TEXTS.get(m["name"]) or {}).get("text")
     t = picked or (m.get("effect") or "").strip() or (m.get("in_depth") or "").strip()
     return " ".join(t.replace("�", "'").split())
@@ -103,7 +103,7 @@ def _targeting(m, props):
 
 
 def build_moves(use):
-    props = (Q.db("ability_moves") or {}).get("moves") or {}
+    props = (dex.db("ability_moves") or {}).get("moves") or {}
     rows = []
     for m in use:
         tgt, spread, ally = _targeting(m, props)
@@ -184,7 +184,7 @@ def _owner_form(p, base, mons):
     owner = p.get("species") or p["name"]
     if base:
         hit = next((q["name"] for q in mons
-                    if not q.get("is_mega") and Q.norm(q["name"]) == Q.norm(base)),
+                    if not q.get("is_mega") and dex.norm(q["name"]) == dex.norm(base)),
                    None)
         if hit:
             owner = hit
@@ -232,10 +232,10 @@ def learn_aliases(mons, app_learn):
         n, sp = p["name"], p.get("species") or p["name"]
         if n in app_learn or sp in app_learn:
             continue
-        hit = next((k for k in app_learn if Q.norm(k) == Q.norm(n)), None)
+        hit = next((k for k in app_learn if dex.norm(k) == dex.norm(n)), None)
         if not hit:
             base = re.sub(r"^Mega ", "", n).split("-")[0]
-            hit = next((k for k in app_learn if Q.norm(k) == Q.norm(base)), None)
+            hit = next((k for k in app_learn if dex.norm(k) == dex.norm(base)), None)
         if not hit:
             # the pool is filed under a SUFFIXED name and the dex row is not:
             # Champions' Floette is the Eternal Flower one, so the dex says
@@ -257,15 +257,14 @@ def learn_aliases(mons, app_learn):
 # profile and its STAB. The data has carried all of this in `battle_forms`
 # for a while; nothing shipped it to the app, so the app has been showing
 # the misleading half. Only what actually CHANGES is sent.
-STAT_KEYS = ("hp", "atk", "def", "spa", "spd", "spe")
 
 
 def _form_change(p, v):
     e = {}
     if v.get("types") and v["types"] != p["types"]:
         e["t"] = v["types"]
-    st = [v[k] for k in STAT_KEYS]
-    if st != [p["base_stats"][k] for k in STAT_KEYS]:
+    st = [v[k] for k in dex.STAT_KEYS]
+    if st != [p["base_stats"][k] for k in dex.STAT_KEYS]:
         e["b"] = st
     return e
 
@@ -334,7 +333,7 @@ def form_pictures(mons, form_line, bforms):
     form_sprite = {}
     champ_rows = {p["name"]: p for p in mons}
     mega_names = {p["name"] for p in mons if p.get("is_mega")}
-    sprite_of = Q.db("sprite_ids") or {}
+    sprite_of = dex.db("sprite_ids") or {}
     for name, forms in form_line.items():
         p = champ_rows.get(name)
         if not p:
@@ -352,16 +351,16 @@ def form_pictures(mons, form_line, bforms):
 
 
 def build_dex(mons):
-    dex = []
+    rows = []
     for p in mons:
         b = p["base_stats"]
         # the National Dex number, so the box can be read in the same order
         # Pokemon HOME shows it - which is how you check one against the other
-        dex.append([p["name"], p.get("species") or p["name"], p["types"],
-                    [b["hp"], b["atk"], b["def"], b["spa"], b["spd"], b["spe"]],
+        rows.append([p["name"], p.get("species") or p["name"], p["types"],
+                    [b[k] for k in dex.STAT_KEYS],
                     1 if p.get("is_mega") else 0, p.get("abilities") or [],
                     p.get("dex") or 0])
-    return dex
+    return rows
 
 
 def home_dex_with_forms(mons, form_line):
@@ -369,7 +368,7 @@ def home_dex_with_forms(mons, form_line):
     Mewtwo's card carried no Mega X or Y, Kyogre no Primal. Main-series
     numbers, the same as the row they ride on - and the card's "not in the
     Champions dex" tag covers them exactly as it covers the base."""
-    home_dex = Q.db("home_dex") or {}
+    home_dex = dex.db("home_dex") or {}
     champ = {p["name"] for p in mons}
     for name, forms in form_line.items():
         if name in home_dex and name not in champ:
@@ -386,7 +385,7 @@ def gts_difficulty():
     [score, demand, supply, rank, how, usage, ladder_size]. demand and rank
     are null for a species with no row on the M-B ladder - absent, not zero.
     """
-    gd = (Q.meta("gts_difficulty") or {}).get("species") or {}
+    gd = (dex.meta("gts_difficulty") or {}).get("species") or {}
     return {k: [v["score"], v["demand"], v["supply"], v.get("rank"),
                 v.get("how") or "", v.get("usage"), v.get("ladder_size")]
             for k, v in gd.items()}
@@ -398,7 +397,7 @@ def build_stones(mons):
     for p in mons:
         if not p.get("is_mega"):
             continue
-        st = Q.stone_for(p)
+        st = dex.stone_for(p)
         stones.append([st or "", p["name"], p.get("species") or ""])
     stones.sort(key=lambda r: r[1])
     return stones
@@ -432,8 +431,8 @@ def _item_row(i, pr, link):
 
 
 def build_items(items):
-    prices = (Q.db("item_facts") or {}).get("prices") or {}
-    links = (Q.db("item_links") or {}).get("items", {})
+    prices = (dex.db("item_facts") or {}).get("prices") or {}
+    links = (dex.db("item_links") or {}).get("items", {})
     rows = [_item_row(i, prices.get(i["name"]) or {}, links.get(i["name"]) or {})
             for i in items if not i.get("is_mega_stone")]
     rows.sort()
@@ -443,7 +442,7 @@ def build_items(items):
 def build_abilities(abil):
     """Same merge for abilities: pokebase wins the nine where it states a
     number Serebii leaves out (Guard Dog's +1 stage, Sand Veil's 25%)."""
-    atext = (Q.db("text_facts") or {}).get("abilities") or {}
+    atext = (dex.db("text_facts") or {}).get("abilities") or {}
     out = {}
     for a in (abil if isinstance(abil, list) else abil.values()):
         pick = (atext.get(a["name"]) or {}).get("text") or a.get("effect") or ""
@@ -521,9 +520,9 @@ def home_only_species(mons, wt):
     canonical name. The player found both.
     """
     champ_names = {p["name"] for p in mons} | {p.get("species") for p in mons}
-    champ_keys = {Q.norm(n) for n in champ_names if n}
+    champ_keys = {dex.norm(n) for n in champ_names if n}
     return sorted(n for n in wt
-                  if Q.norm(n) not in champ_keys
+                  if dex.norm(n) not in champ_keys
                   and "-Mega" not in n and "-Gmax" not in n
                   and "-Totem" not in n and "-Starter" not in n)
 
@@ -532,7 +531,7 @@ def canonical_names(mons):
     """norm() key -> the dex row's own spelling (the first row wins)."""
     canon = {}
     for p in mons:
-        canon.setdefault(Q.norm(p["name"]), p["name"])
+        canon.setdefault(dex.norm(p["name"]), p["name"])
     return canon
 
 
@@ -544,7 +543,7 @@ def cosmetic_spellings(wt, canon):
     the dex carries one entry on purpose."""
     cosmetic = {}
     for n in wt:
-        k = Q.norm(n)
+        k = dex.norm(n)
         if k not in canon or n == canon[k]:
             continue
         # a Mega written the other way round ("Abomasnow-Mega") is a spelling,
@@ -567,7 +566,7 @@ def alias_every_spelling(wt, canon, app_learn, learn_alias):
     for n in wt:
         if n in app_learn or n in learn_alias:
             continue
-        hit = canon.get(Q.norm(n))
+        hit = canon.get(dex.norm(n))
         if not hit:
             continue
         tgt = hit if hit in app_learn else learn_alias.get(hit)
@@ -582,7 +581,7 @@ MENUS = ("atk_ability", "def_ability", "atk_item", "def_item")
 
 
 def build_mods():
-    measured = Q.db("modifiers") or {}
+    measured = dex.db("modifiers") or {}
     return {k: sorted(measured.get(k) or {}) for k in MENUS}
 
 
@@ -662,7 +661,7 @@ def build_effects(app_abilities, app_items, app_moves):
     shown_text.update({r[0]: r[3] for r in app_items})
     shown_text.update({r[0]: r[13] for r in app_moves})
     effects = {}
-    for name, v in ((Q.db("effects") or {}).get("effects") or {}).items():
+    for name, v in ((dex.db("effects") or {}).get("effects") or {}).items():
         said = shown_text.get(name) or ""
         c = effect_chips.unsaid(effect_chips.chips(v), said)
         desc = None if said else v.get("described")
@@ -712,7 +711,7 @@ def _best_worlds_sources():
     same championship and reading them straight gave Seniors and Juniors two
     podiums each. The one with more players is the complete list."""
     best_src = {}
-    for ev in (Q.meta("worlds_archive") or {}).get("events") or []:
+    for ev in (dex.meta("worlds_archive") or {}).get("events") or []:
         for div, info in (ev.get("divisions") or {}).items():
             if not info.get("teamlists"):
                 continue
@@ -734,7 +733,7 @@ def _podium_row(year, div, pl, slot, mega_of_stone, mega_abil):
         "mv": slot.get("moves") or [],
     }
     # the stone says it Mega Evolved, and says into what
-    mega = mega_of_stone.get(Q.norm(slot.get("item") or ""))
+    mega = mega_of_stone.get(dex.norm(slot.get("item") or ""))
     if mega:
         row["mg"] = mega
         if mega_abil.get(mega):
@@ -743,20 +742,20 @@ def _podium_row(year, div, pl, slot, mega_of_stone, mega_abil):
 
 
 def build_podium(stones, mons, canon):
-    mega_of_stone = {Q.norm(st): mega for st, mega, _sp in stones if st}
+    mega_of_stone = {dex.norm(st): mega for st, mega, _sp in stones if st}
     mega_abil = {m["name"]: ", ".join(m.get("abilities") or [])
                  for m in mons if m.get("is_mega")}
     podium = {}
     seen_events = []
     for (year, div), (_n, tid) in sorted(_best_worlds_sources().items()):
-        t = Q.meta("tournament_%s_%s" % (tid, div))
+        t = dex.meta("tournament_%s_%s" % (tid, div))
         if not t:
             continue
         top8 = [pl for pl in t.get("players") or []
                 if pl.get("rank") and pl["rank"] <= 8]
         for pl in top8:
             for slot in pl.get("team") or []:
-                form = canon.get(Q.norm(slot.get("pokemon") or ""))
+                form = canon.get(dex.norm(slot.get("pokemon") or ""))
                 if form:
                     podium.setdefault(form, []).append(
                         _podium_row(year, div, pl, slot, mega_of_stone, mega_abil))
@@ -782,7 +781,7 @@ def build_worlds():
     of the kids' - so the app tabs between them instead of averaging.
     """
     worlds = []
-    for y in (Q.meta("worlds_archive") or {}).get("years") or []:
+    for y in (dex.meta("worlds_archive") or {}).get("years") or []:
         divs = {}
         for dname, d in (y.get("divisions") or {}).items():
             if not d.get("teamlists") or not d.get("top"):
@@ -813,13 +812,13 @@ def item_for_move(links):
 
 
 def main():
-    mons = Q.db("pokemon")
-    moves = Q.db("moves")
-    items = Q.db("items")
-    learn = Q.db("learnsets")
-    nat = Q.db("natures")
-    chart = Q.db("typechart")
-    abil = Q.db("abilities")
+    mons = dex.db("pokemon")
+    moves = dex.db("moves")
+    items = dex.db("items")
+    learn = dex.db("learnsets")
+    nat = dex.db("natures")
+    chart = dex.db("typechart")
+    abil = dex.db("abilities")
 
     use = sorted((m for m in moves if m.get("useable")), key=lambda m: m["name"])
     midx = {m["name"]: i for i, m in enumerate(use)}
@@ -828,13 +827,13 @@ def main():
     mega_owner = mega_owners(mons)
     learn_alias = learn_aliases(mons, app_learn)
     bforms = battle_forms(mons)
-    form_line = Q.db("form_line") or {}
+    form_line = dex.db("form_line") or {}
     form_sprite = form_pictures(mons, form_line, bforms)
-    dex = build_dex(mons)
+    dex_rows = build_dex(mons)
     # ...and the National Dex number for everything HOME can hold, which is
     # far more than the Champions dex: Melmetal and Oricorio are already in the
     # box without one.
-    dexno = (Q.db("dex_numbers") or {}).get("numbers", {})
+    dexno = (dex.db("dex_numbers") or {}).get("numbers", {})
     home_dex = home_dex_with_forms(mons, form_line)
     stones = build_stones(mons)
     app_items = build_items(items)
@@ -844,8 +843,8 @@ def main():
     # pokebase's weight table, read for its KEYS: it names every species and
     # form pokebase knows, which is the list HOME_ONLY and the cosmetic forms
     # are cut from. The weights themselves are Smogon's engine's business.
-    wt = (Q.db("weights") or {}).get("weights", {})
-    am = Q.db("ability_moves") or {}
+    wt = (dex.db("weights") or {}).get("weights", {})
+    am = dex.db("ability_moves") or {}
     ab_moves = build_ab_moves(am, midx)
     home_only = home_only_species(mons, wt)
     canon = canonical_names(mons)
@@ -857,13 +856,13 @@ def main():
     effects = build_effects(app_abilities, app_items, app_moves)
     podium = build_podium(stones, mons, canon)
     worlds = build_worlds()
-    links = Q.db("item_links") or {}
+    links = dex.db("item_links") or {}
 
-    blob = {"DEX": dex, "HOME_ONLY": home_only, "MODS": mods,
+    blob = {"DEX": dex_rows, "HOME_ONLY": home_only, "MODS": mods,
             "WORLDS": worlds, "PODIUM": podium,
             "DEXNO": dexno, "BFORMS": bforms,
             "REG": reg, "REG_STARTED": reg_started,
-            "USAGE_AT": (Q.meta("usage_pokemon") or {}).get("fetched"),
+            "USAGE_AT": (dex.meta("usage_pokemon") or {}).get("fetched"),
             "SMOGON_NAME": smogon, "AEGIS": AEGIS,
             "MOVES": app_moves, "LEARN": app_learn, "STONES": stones,
             "ITEMS": app_items, "NATURES": app_natures, "CHART": chart,
@@ -876,20 +875,20 @@ def main():
             "MEGA_OWNER": mega_owner,
             # the status conditions, with Champions' own rebalance: paralysis
             # is 12.5% here, not 25%, and nothing in the app said so
-            "STATUSES": (Q.db("statuses") or {}).get("statuses") or {},
+            "STATUSES": (dex.db("statuses") or {}).get("statuses") or {},
             "GTSDIFF": gts_difficulty(),
             # Species HOME's own GTS refuses to take. Not a Champions rule and
             # not scraped from anywhere - the player found it in the game, and
             # data/meta/gts_blocked.json says so per entry. Recommending a chip
             # he cannot deposit is recommending something impossible.
-            "GTSBLOCK": (Q.meta("gts_blocked") or {}).get("blocked") or {},
+            "GTSBLOCK": (dex.meta("gts_blocked") or {}).get("blocked") or {},
             # Mythical, read off PokeAPI at the pinned commit rather than
             # typed from memory. Champions has none of them, so every one that
             # reaches HOME lands in the pile the GTS recommendations put
             # first - and Melmetal, the only one he has, is refused by the
             # GTS. See data/meta/gts_blocked.json for what that is and is not
             # allowed to conclude.
-            "MYTHICAL": (Q.db("species_flags") or {}).get("mythical") or [],
+            "MYTHICAL": (dex.db("species_flags") or {}).get("mythical") or [],
             # THE TYPE COLOURS, TAKEN FROM POKEMON'S OWN STYLESHEET rather than
             # guessed at. All eighteen used to be hand-written and darkened so
             # white text would sit on them, which made every one of them wrong -
@@ -898,7 +897,7 @@ def main():
             # two-toned) and the text colour that type is written in, because
             # that is a decision pokemon.com already made per type.
             # scripts/build_type_colors.py, and --check says if upstream moved.
-            "TYPE_COLORS": Q.db("type_colors") or {},
+            "TYPE_COLORS": dex.db("type_colors") or {},
             # THE SPECIES CHAMPIONS DOES NOT HAVE, so a HOME row for one is a
             # card like any other instead of a name and a tag. The player keeps
             # 129 Pokemon in HOME and 24 of them were blank: "si quisiera hacer
@@ -914,13 +913,13 @@ def main():
             # repo NOASSERTION for exactly that reason, and this repo is
             # public. Only the number travels; the picture is fetched from a
             # CDN at a pinned commit when a card is actually on screen.
-            "SPRITE_ID": Q.db("sprite_ids") or {},
+            "SPRITE_ID": dex.db("sprite_ids") or {},
             # A form drawn differently from the name it shares: Champions has
             # one "Mega Meowstic" row, and the female's Mega is white.
             "FORM_SPRITE": form_sprite,
             # Which pictures one set has and the other lacks, so the page
             # goes straight to the one that exists instead of drawing a 404.
-            "SPRITE_GAPS": Q.db("sprite_gaps") or {},
+            "SPRITE_GAPS": dex.db("sprite_gaps") or {},
             # what KIND of ability each one is, for the search filters. The two
             # "moves-*" buckets are the RULES table itself, not a re-reading of
             # the text, so the classification already made cannot drift.
@@ -944,7 +943,7 @@ def main():
     print("wrote %s  (%.0f KB)" % (OUT, os.path.getsize(OUT) / 1024))
     print("  %d forms, %d moves, %d learnsets, %d stones, %d items, "
           "%d abilities, %d ability rules, %d HOME-only"
-          % (len(dex), len(app_moves), len(app_learn), len(stones), len(app_items),
+          % (len(dex_rows), len(app_moves), len(app_learn), len(stones), len(app_items),
              len(app_abilities), len(ab_moves), len(home_only)))
 
 

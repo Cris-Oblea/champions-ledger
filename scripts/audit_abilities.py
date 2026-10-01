@@ -64,7 +64,7 @@ import re
 import sys
 from pathlib import Path
 
-import query as Q
+import dex
 from fetch_home_dex import key as hkey
 from paths import ROOT
 
@@ -175,12 +175,12 @@ def serebii(forms):
         return None
     rows = collections.defaultdict(set)
     for p in forms:
-        rows[Q.norm(p.get("species") or p["name"])].update(
+        rows[dex.norm(p.get("species") or p["name"])].update(
             p.get("abilities") or [])
     pages, gaps = 0, []
     for path in sorted(glob.glob(os.path.join(PAGES, "*.html"))):
         slug = os.path.splitext(os.path.basename(path))[0]
-        have = rows.get(Q.norm(slug))
+        have = rows.get(dex.norm(slug))
         if have is None:
             continue
         s = Path(path).read_text(encoding="cp1252", errors="replace")
@@ -195,7 +195,7 @@ def serebii(forms):
 
 
 def main():
-    forms = Q.db("pokemon")
+    forms = dex.db("pokemon")
     up = upstream(forms)
     own = serebii(forms)
     bad = False

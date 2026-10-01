@@ -35,13 +35,13 @@ import subprocess
 import sys
 from pathlib import Path
 
+import dex
 import net
 from paths import META, ROOT
 
 RAW = os.path.join(ROOT, "data", "raw", "tournaments")
 OUT = os.path.join(META, "worlds_archive.json")
 INDEX = "https://www.pokedata.ovh/standingsVGC/"
-DIVISIONS = ("masters", "seniors", "juniors")
 
 
 def discover():
@@ -164,7 +164,7 @@ def _event_record(ev, a):
     fetching them first unless --rollup."""
     rec = dict(ev)
     rec["divisions"] = {}
-    for div in DIVISIONS:
+    for div in dex.DIVISIONS:
         if not a.rollup:
             state = fetch_event(ev["tid"], div, a.force)
             print("  %s %-8s %-8s %s" % (ev["tid"], div, state,

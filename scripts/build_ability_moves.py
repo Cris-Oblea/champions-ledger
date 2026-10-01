@@ -41,7 +41,7 @@ import sys
 import unicodedata
 from pathlib import Path
 
-import query as Q
+import dex
 from paths import ROOT
 
 OUT = os.path.join(ROOT, "data", "db", "ability_moves.json")
@@ -146,7 +146,7 @@ def smogon_moves():
     if not os.path.exists(SMOG):
         return {}
     raw = json.loads(Path(SMOG).read_text(encoding="utf-8"))
-    return {Q.key(n): v for n, v in raw.items() if isinstance(v, dict)}
+    return {dex.key(n): v for n, v in raw.items() if isinstance(v, dict)}
 
 
 # How many Pokemon a move hits, and whether one of them is your own ally.
@@ -186,7 +186,7 @@ def derive(moves):
         f = m.get("flags") or {}
         body = clean(m.get("effect")) + " " + clean(m.get("in_depth"))
         name = m["name"]
-        smogon = sm.get(Q.key(name), {})
+        smogon = sm.get(dex.key(name), {})
         # Serebii owns what a move IS; Smogon's engine owns how an ability
         # treats it. Where the two flag tables disagree the difference is
         # recorded rather than silently resolved.
@@ -265,7 +265,7 @@ STATUSES = ("Paralysis", "Burn", "Poison", "Badly Poisoned", "Freeze",
 def st(m, status):
     global _STATUS
     if _STATUS is None:
-        rows = (Q.db("statuses") or {}).get("statuses") or {}
+        rows = (dex.db("statuses") or {}).get("statuses") or {}
         _STATUS = {k: set(v.get("moves") or []) for k, v in rows.items()}
     return m["name"] in _STATUS.get(status, ())
 
@@ -848,7 +848,7 @@ def ability_text(a):
     t = (a.get("effect") or "").strip()
     if t:
         return t
-    facts = (Q.db("text_facts") or {}).get("abilities") or {}
+    facts = (dex.db("text_facts") or {}).get("abilities") or {}
     return (facts.get(a["name"]) or {}).get("text") or ""
 
 
@@ -892,7 +892,7 @@ CLASS_LABEL = {
 
 def audit(table):
     """Every ability in the format, and what we decided about it."""
-    abil = Q.db("abilities")
+    abil = dex.db("abilities")
     mentions_move = re.compile(r"\bmoves?\b|\bpower\b|\bdamage\b|STAB|priority|contact|"
                                r"sound|punch|bit(?:e|ing)|slicing|bullet|pulse|powder|"
                                r"recoil|immune|absorb", re.I)
@@ -947,7 +947,7 @@ def main():
     ap.add_argument("--audit", action="store_true")
     a = ap.parse_args()
 
-    props = derive(Q.db("moves"))
+    props = derive(dex.db("moves"))
     table, report = build(props)
 
     print("%d useable moves classified" % len(props))
@@ -977,7 +977,7 @@ def main():
         with open(OUT, "w", encoding="utf-8") as f:
             classes = {a["name"]: classify(a["name"], table,
                                            ability_text(a))
-                       for a in Q.db("abilities")}
+                       for a in dex.db("abilities")}
             json.dump({"_comment":
                        "Derived by scripts/build_ability_moves.py from the move "
                        "and ability text. Do not hand-edit; re-run it instead.",
