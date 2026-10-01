@@ -39,6 +39,7 @@ import datetime
 import hashlib
 import json
 import os
+import re
 import subprocess
 import sys
 from pathlib import Path
@@ -146,6 +147,16 @@ SOURCE_CHECKS = [
      "no CSS lint finding comes back once it is fixed"),
     (["node_modules/html-validate/bin/html-validate.mjs", "tracker/src/markup/**/*.html"],
      "no HTML lint finding comes back once it is fixed"),
+    # Copy-paste, across every language the repo is written in. The cleanup of
+    # 2026-09-30 took it to zero - a shared factory, a helper, one CSS
+    # property where four gradients stood - so a new copy is a choice to make
+    # out loud: share it, or mark it `jscpd:ignore-start` with the reason (the
+    # dark tokens, which CSS cannot write once). .jscpd.json holds the rest.
+    (["node_modules/jscpd/bin/jscpd", "tracker/src", "scripts", "tests", "cron"],
+     "no copy-pasted block comes back once it is shared",
+     lambda o: [line for line in o.splitlines()
+                if line.startswith(("Clone found", "ERROR"))
+                or re.search(r"\[\d+:\d+ - \d+:\d+\]", line)][:13]),
 ]
 
 # The browser tests, run against the BUILT page. Nothing gated on these until
@@ -668,12 +679,16 @@ def _gate(out):
     # precisely because nothing ran them (2026-09-12).
     checks = ([([PY] + argv, what, lambda o: o.splitlines()[-6:])
                for argv, what in GATE_CHECKS]
-              + [(["node"] + argv, what,
-                  lambda o: [line for line in o.splitlines() if line.strip()][-6:])
-                 for argv, what in SOURCE_CHECKS]
+              + [(["node"] + argv, what, pick[0] if pick else _last_lines)
+                 for argv, what, *pick in SOURCE_CHECKS]
               + [(["node", os.path.join("tests", t)], what, _browser_failure)
                  for t, what in BROWSER_TESTS])
     return _run_checks(checks, out) and ok
+
+
+def _last_lines(o):
+    """What a failed source check shows: its last six non-blank lines."""
+    return [line for line in o.splitlines() if line.strip()][-6:]
 
 
 def _deploy(a, gate_ok, changed, out):
