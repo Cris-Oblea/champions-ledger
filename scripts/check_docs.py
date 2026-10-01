@@ -247,6 +247,14 @@ DECISIONS = [
      r"--engine (smogon|local)|ABILITY not modelled|CONDITIONAL:|--moves-last",
      "damage.py runs only Smogon's engine and refuses a move it lacks a fact for",
      DOCS),
+
+    # core/store.js wrapped Supabase in doc().set() / collection().onSnapshot(),
+    # the storage shape of the Claude artifact the app began in. It talks to
+    # Supabase directly now (2026-10-01), so no doc may send anyone to it.
+    ("store-talks-to-supabase",
+     r"Firestore-shaped|S\.db\.doc\(|doc\(\)\.set\(\)|collection\(\)\.onSnapshot",
+     "core/store.js loads tables into S and writes rows; there is no doc() layer",
+     DOCS),
 ]
 
 

@@ -1,7 +1,6 @@
 /* The sign-in gate, the connection to Supabase, and the signed-in button. */
 import { $, el } from "../core/dom.js";
-import { S } from "../core/state.js";
-import { dbState, supabaseStore, wire } from "../core/store.js";
+import { dbState, openLedger } from "../core/store.js";
 import { ask } from "./nav.js";
 
 function connect(){
@@ -38,10 +37,9 @@ function showGate(msg){
 }
 function start(session){
   $("gate").hidden = true;
-  S.db = supabaseStore(SB, session.user.id);
+  openLedger(SB, session.user.id);
   dbState(true, "live");
   signedInChip(session.user.email);
-  wire(S.db);
 }
 function signedInChip(email){
   const bar = $("themeBtn").parentNode;

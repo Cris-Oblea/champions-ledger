@@ -141,7 +141,7 @@ Each file opens with a comment saying what it is for.
 | `core/data.js` | The game DB (`window.CHAMP`) unpacked into lookups, and the pure rules read off it: stats, natures, learnsets, Megas, usage | `C`, `DEX`, `byName`, `MOVE_BY`, `learnset`, `statAt` |
 | `core/state.js` | `S`, the rules about his box (origin, release floor, what a build is bound to), and the lists' sort and search state | `S`, `boxRows`, `buildLink`, `VIEW`, `FIND` |
 | `core/dom.js` | `$`, `el`, the toast, a note, a footer button, the search box, a toggle's pressed state, a pane switcher, emptying a reused host | `$`, `el`, `toast`, `note`, `fbtn`, `setPressed`, `showPane`, `resetHost` |
-| `core/store.js` | Every write, and the Supabase adapter behind them | `put`, `putNew`, `patch`, `drop`, `whenChanged` |
+| `core/store.js` | The Supabase connection: loads every table into `S`, keeps it live, and every write | `openLedger`, `put`, `putNew`, `patch`, `drop`, `whenChanged` |
 | `core/assets.js` | The two payloads fetched only on demand: Smogon's analyses, the rest of the dex | `loadAnalysis`, `loadOutside` |
 | `core/errors.js` | Script errors, caught from the first moment, for the diagnostics | `BOOT_ERRORS` |
 | `core/build.js` | What a build may be (the SP budget, the moveset rules) and what a change costs in VP | `checks`, `retuneCost` |
@@ -193,10 +193,9 @@ To see who depends on whom, press F12 on any imported name in VS Code, or run
 
 1. You tap Save in the build editor (`tabs/builds.js`), which calls
    `put("builds/<id>", body)` or, for a new build, `putNew("builds", stem, body)`.
-2. `put()` (`core/store.js`) stamps `updated` and calls
-   `S.db.doc(path).set(body)`.
-3. The adapter turns the document into a table row and sends an **upsert** to
-   PostgREST. A new build uses `create()`, a plain **insert**, so two devices
+2. `put()` (`core/store.js`) stamps `updated`, turns the record into a table
+   row (`rowFromDoc`) and sends an **upsert** to PostgREST.
+3. A new build goes through `putNew()`, a plain **insert**, so two devices
    picking the same id get a `23505` error instead of overwriting each other,
    and `putNew` tries `farigiraf-2`, then `-3`.
 4. Postgres checks RLS (`auth.uid() = user_id`), writes the row, and the
@@ -204,11 +203,6 @@ To see who depends on whom, press F12 on any imported name in VS Code, or run
 5. Realtime tells every open device that `builds` changed. Each one reloads
    the table, updates `S.builds` and calls `renderAll()`. The PC shows what
    the phone just saved.
-
-**Why the adapter looks like Firestore** (`doc().set()`,
-`collection().onSnapshot()`): the app first ran inside a Claude artifact
-whose storage had that shape. Supabase was put behind the same interface so
-none of the screens had to change. See §10.
 
 ### 4.5 The public surface
 
@@ -392,11 +386,9 @@ gates and publishes. You never deploy by hand.
 
 ## 10. Known leftovers
 
-- **The Firestore-shaped adapter** in `core/store.js`. The app began as a Claude
-  artifact, whose storage had that shape. It runs on Cloudflare and Supabase
-  now, and everything else from the artifact era is gone (the storage
-  fallback, the screenshot scanner, the download hook). The adapter works, but
-  with a single backend it is one layer more than Supabase needs.
+None open. `core/store.js` used to wrap Supabase in a Firestore-shaped layer,
+a leftover from the Claude artifact the app began in; it talks to Supabase
+directly.
 
 ---
 
