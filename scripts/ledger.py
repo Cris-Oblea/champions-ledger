@@ -210,10 +210,10 @@ def inv(refresh=False):
     }
 
 
-def builds(refresh=False):
+def builds():
     """Every build, newest field set first, with `extra` merged back in."""
     out = []
-    for r in sorted(tables(refresh).get("builds") or [],
+    for r in sorted(tables().get("builds") or [],
                     key=lambda x: str(x.get("id"))):
         b = {"id": r.get("id")}
         for k in ("pokemon", "box_id", "mega", "ability", "mega_ability",
@@ -225,8 +225,8 @@ def builds(refresh=False):
     return out
 
 
-def teams(refresh=False):
-    return sorted(tables(refresh).get("teams") or [],
+def teams():
+    return sorted(tables().get("teams") or [],
                   key=lambda x: str(x.get("id")))
 
 
