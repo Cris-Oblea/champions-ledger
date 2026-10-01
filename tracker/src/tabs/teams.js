@@ -5,7 +5,7 @@ import {
   bst, byName, byText, dexNo, MOVE_BY, natMult, plural, splitPct, STAT_KEYS,
 } from "../core/data.js";
 import {
-  $, el, fbtn, filterLabel, note, searchField, toast,
+  $, el, fbtn, filterLabel, note, searchField, setPressed, toast,
 } from "../core/dom.js";
 import {
   activeAbility, baseAbility, buildLink, buildsFor, hasItem, hasStone, S,
@@ -252,11 +252,11 @@ function scenarioButtons(SCEN, scenAt, paint){
   seg.setAttribute("aria-label", "Which one Mega Evolves");
   SCEN.forEach(function(sc){
     var b2 = el("button", null, sc.tab);
-    b2.setAttribute("aria-pressed", sc.at === scenAt.v ? "true" : "false");
+    setPressed(b2, sc.at === scenAt.v);
     b2.onclick = function(){
       scenAt.v = sc.at;
       Array.prototype.forEach.call(seg.children, function(x){
-        x.setAttribute("aria-pressed", x === b2 ? "true" : "false");
+        setPressed(x, x === b2);
       });
       paint();
     };
@@ -599,7 +599,7 @@ function sortControls(body, F, draw){
 /* One sort choice. Pressing it un-presses every other in both rows. */
 function sortButton(row, groups, F, key, text, draw){
   var t = el("button", "tog", text);
-  t.setAttribute("aria-pressed", F.sort === key ? "true" : "false");
+  setPressed(t, F.sort === key);
   t.onclick = function(){
     F.sort = key;
     groups.forEach(function(g){ pressOnly(g, t); });
@@ -611,7 +611,7 @@ function sortButton(row, groups, F, key, text, draw){
 /* Mark `on` as the pressed button of a group, and every sibling as not. */
 function pressOnly(group, on){
   Array.prototype.forEach.call(group.children, function(x){
-    x.setAttribute("aria-pressed", x === on ? "true" : "false");
+    setPressed(x, x === on);
   });
 }
 
@@ -665,12 +665,12 @@ function typeChips(body, rows, F, draw){
    reaches for. A type chip wears the type's colours. */
 function filterChip(row, F, draw, group, key, text, type){
   var t = el("button", "tog", text);
-  t.setAttribute("aria-pressed", "false");
+  setPressed(t, false);
   if (type) typeSkin(t, type, false);
   t.onclick = function(){
     if (F[group][key]) delete F[group][key]; else F[group][key] = 1;
     var on = !!F[group][key];
-    t.setAttribute("aria-pressed", on ? "true" : "false");
+    setPressed(t, on);
     if (type) typeSkin(t, type, on);
     draw();
   };
@@ -849,19 +849,19 @@ function itemFilters(body, POOL, F, draw){
   ["Hold Items", "Berries", "Mega Stones"].forEach(function(k){
     if (!nCat[k]) return;
     var t = el("button", "tog", k + " · " + nCat[k]);
-    t.setAttribute("aria-pressed", "false");
+    setPressed(t, false);
     t.onclick = function(){
       if (F.cat[k]) delete F.cat[k]; else F.cat[k] = 1;
-      t.setAttribute("aria-pressed", F.cat[k] ? "true" : "false");
+      setPressed(t, F.cat[k]);
       draw();
     };
     crow.appendChild(t);
   });
   var own = el("button", "tog", "Only ones you own");
-  own.setAttribute("aria-pressed", "false");
+  setPressed(own, false);
   own.onclick = function(){
     F.own = !F.own;
-    own.setAttribute("aria-pressed", F.own ? "true" : "false");
+    setPressed(own, F.own);
     draw();
   };
   crow.appendChild(own);

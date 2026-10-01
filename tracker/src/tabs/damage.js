@@ -7,7 +7,7 @@ import {
   anyRow, byName, byText, C, catName, DEX, learnset, MOVE_BY, natMult, plural,
   STAT_KEYS, STAT_LABEL, statAt,
 } from "../core/data.js";
-import { $, capNote, el, searchField, toast } from "../core/dom.js";
+import { $, capNote, el, searchField, setPressed, toast } from "../core/dom.js";
 import { activeAbility, baseAbility, S } from "../core/state.js";
 import { labelBox, pokeCard, statGrid, typeChip } from "../ui/card.js";
 import { spreadTags } from "../ui/moves.js";
@@ -672,7 +672,7 @@ function fieldRows(host){
     },
     tog: function(label, on, fn, cls){
       var t = el("button", "tog " + (cls || ""), label);
-      t.setAttribute("aria-pressed", on ? "true" : "false");
+      setPressed(t, on);
       t.onclick = fn;
       (cur || host).appendChild(t);
       return t;

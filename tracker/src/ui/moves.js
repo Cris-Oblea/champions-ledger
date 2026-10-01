@@ -4,7 +4,7 @@
    Shared rather than copied: a move ranked one way in the build picker and
    another way in search is the bug this file exists to prevent. */
 import { byText, C, catName, splitPct } from "../core/data.js";
-import { el, filterLabel, searchField } from "../core/dom.js";
+import { el, filterLabel, searchField, setPressed } from "../core/dom.js";
 import { numText, typeChip, typeSkin, usageTag } from "./card.js";
 
 /* ------------------------------------------- which ability boosts what -----
@@ -290,11 +290,11 @@ function sortRow(body, st, usageOf){
   if (usageOf) sorts.unshift(["usage","Usage %"]);
   sorts.forEach(function(o){
     var t = el("button", "tog", o[1]);
-    t.setAttribute("aria-pressed", o[0] === st.sort ? "true" : "false");
+    setPressed(t, o[0] === st.sort);
     t.onclick = function(){
       st.sort = o[0];
       Array.prototype.forEach.call(srow.children, function(x){
-        x.setAttribute("aria-pressed", x === t ? "true" : "false");
+        setPressed(x, x === t);
       });
       st.onChange();
     };
@@ -312,7 +312,7 @@ function sortRow(body, st, usageOf){
    colours (typeSkin knows which are written in black). */
 function triChip(row, st, group, key, text, type){
   var t = el("button", "tog", text);
-  t.setAttribute("aria-pressed", "false");
+  setPressed(t, false);
   if (type) typeSkin(t, type, false);
   st.EXCL[group] ||= {};
   st.EXCL[group][key] = t;
@@ -343,7 +343,7 @@ function triChip(row, st, group, key, text, type){
    border as well: the border is the last thing still saying "this is a
    Psychic chip" when the whole point is that Psychic is being refused. */
 function paintTriChip(t, text, type, v){
-  t.setAttribute("aria-pressed", v === 1 ? "true" : "false");
+  setPressed(t, v === 1);
   t.classList.toggle("no", v === -1);
   t.textContent = (v === -1 ? "− " : "") + text;
   if (type) {

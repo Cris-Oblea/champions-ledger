@@ -140,7 +140,7 @@ Each file opens with a comment saying what it is for.
 |---|---|---|
 | `core/data.js` | The game DB (`window.CHAMP`) unpacked into lookups, and the pure rules read off it: stats, natures, learnsets, Megas, usage | `C`, `DEX`, `byName`, `MOVE_BY`, `learnset`, `statAt` |
 | `core/state.js` | `S`, the rules about his box (origin, release floor, what a build is bound to), and the lists' sort and search state | `S`, `boxRows`, `buildLink`, `VIEW`, `FIND` |
-| `core/dom.js` | `$`, `el`, the toast, a note, a footer button, the search box | `$`, `el`, `toast`, `note`, `fbtn` |
+| `core/dom.js` | `$`, `el`, the toast, a note, a footer button, the search box, a toggle's pressed state, a pane switcher, emptying a reused host | `$`, `el`, `toast`, `note`, `fbtn`, `setPressed`, `showPane`, `resetHost` |
 | `core/store.js` | Every write, and the Supabase adapter behind them | `put`, `putNew`, `patch`, `drop`, `whenChanged` |
 | `core/assets.js` | The two payloads fetched only on demand: Smogon's analyses, the rest of the dex | `loadAnalysis`, `loadOutside` |
 | `core/errors.js` | Script errors, caught from the first moment, for the diagnostics | `BOOT_ERRORS` |
