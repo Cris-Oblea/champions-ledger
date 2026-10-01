@@ -4,21 +4,14 @@
    discrete event. This test drives a drag as a browser does: several `input`
    events on the SAME node, checking it survives every one of them. It also
    covers the two new ways in, the arrows and the typed box. */
-const { check, open, idle } = require("./harness.js");
-const UID = "u1";
-const ROWS = [{user_id:UID,id:"primarina",name:"Primarina",location:"champions",
-               status:"permanent",origin:"home",note:"",ord:0,
-               updated_at:"2026-09-10",shiny:false,trained:false}];
-/* `builds` is a flat table, not {id, data} like `meta` - getting that wrong is
-   what made the first run of this test read every stat as 0. */
-const BUILDS = [{user_id:UID,id:"primarina",pokemon:"Primarina",mega:null,
-  ability:"Torrent",mega_ability:null,nature:"Modest",
-  stat_points:{hp:4,atk:0,def:0,spa:32,spd:8,spe:22},
-  moves:["Hyper Voice"],role:"",rationale:"",extra:{},updated_at:"2026-09-10"}];
+const { check, open, idle, row, build, click } = require("./harness.js");
+const ROWS = [row("primarina", "Primarina", {origin:"home"})];
+const BUILDS = [build("primarina", "Primarina", {ability:"Torrent",
+  nature:"Modest", stat_points:{hp:4,atk:0,def:0,spa:32,spd:8,spe:22},
+  moves:["Hyper Voice"]})];
 const { dom, errs } = open({ box: ROWS, builds: BUILDS });
 const w = dom.window, d = w.document;
 const fire = (n,t)=>n.dispatchEvent(new w.Event(t,{bubbles:true}));
-const click = n=>n.dispatchEvent(new w.MouseEvent("click",{bubbles:true}));
 (async () => {
   await idle();
   w.go("builds");

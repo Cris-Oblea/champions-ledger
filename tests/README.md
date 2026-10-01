@@ -17,8 +17,10 @@ the list, with one line saying what each protects.
 
 ```js
 const { describe } = require("node:test");
-const { check, idle, open } = require("./harness.js");
-const { dom, errs } = open({ box: ROWS, builds: BUILDS });
+const { check, idle, open, row, build, click } = require("./harness.js");
+const { dom, errs } = open({
+  box: [row("garchomp", "Garchomp", { trained: true })],
+  builds: [build("garchomp", "Garchomp", { box_id: "garchomp" })] });
 
 (async () => {
   await idle();
@@ -37,6 +39,11 @@ found). `open()` boots the page on a stubbed ledger and never needs a Supabase
 stub of its own: the tables passed are what the ledger holds, and passing any
 signs the page in. What the app sends back lands in `window.__WROTE`
 (`{op, table, row}`) and `window.__DELETED` (`{table, col, id}`).
+
+`row(id, name, fields)` and `build(id, pokemon, fields)` are a box row and a
+build with every column at its plain default, so a test writes only what its
+case is about (where the row sits, its origin, the moves); `click(node)` is a
+bubbling click. `fixture.js` builds its awkward ledger on the same two.
 
 **Nothing waits a guessed number of milliseconds.** `await idle()` is one turn
 of the event loop, and that finishes everything the page started: the stubbed

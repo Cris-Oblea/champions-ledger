@@ -190,4 +190,26 @@ function open(tables, opts) {
   return { dom, w: dom.window, d: dom.window.document, errs };
 }
 
-module.exports = { ROOT, check, idle, until, page, source, styles, markup, open };
+/* A box row and a build row as the ledger stores them, every column filled.
+   A test names only what its case is about - the species, where it sits, its
+   origin, the moves - and the rest is the plain default, so the reader sees
+   the point of the fixture rather than twelve columns that never vary.
+   store.js normalises what it reads (box_id null, shiny a boolean, the date
+   cut to a day), so these defaults are the same values the app would see. */
+const row = (id, name, fields) => ({
+  user_id: "u1", id, name, location: "champions", status: "permanent",
+  origin: "champions", note: "", ord: 0, shiny: false, trained: false,
+  updated_at: "2026-09-10", ...fields });
+
+const build = (id, pokemon, fields) => ({
+  user_id: "u1", id, pokemon, box_id: null, mega: null, ability: null,
+  mega_ability: null, nature: null, stat_points: {}, moves: [], role: "",
+  rationale: "", extra: {}, updated_at: "2026-09-10", ...fields });
+
+/* A click as a person makes one: bubbling, so the listeners the app hangs on
+   a list or a sheet rather than on each button see it. */
+const click = n => n.dispatchEvent(
+  new n.ownerDocument.defaultView.MouseEvent("click", { bubbles: true }));
+
+module.exports = { ROOT, check, idle, until, page, source, styles, markup, open,
+                   row, build, click };

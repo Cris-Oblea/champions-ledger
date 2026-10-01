@@ -12,7 +12,7 @@
  * it was written for is worse than no fixture, because it still passes.
  */
 const { describe } = require("node:test");
-const { check, idle } = require("./harness.js");
+const { check, idle, click } = require("./harness.js");
 const { boot } = require("./fixture.js");
 
 const { window: w, errors } = boot();
@@ -246,8 +246,7 @@ async function speciesPicker() {
     check("ya no hay un desplegable de 264 opciones",
        !!field && !field.querySelector("select"), true);
     check("sino una card que se toca", !!field.querySelector("button.row"), true);
-    field.querySelector("button.row")
-      .dispatchEvent(new w.MouseEvent("click", {bubbles:true}));
+    click(field.querySelector("button.row"));
     await idle();
 
     const sheet = d.getElementById("sheetBody");
@@ -277,15 +276,14 @@ async function speciesPicker() {
        tiene es una idea que vale la pena guardar (2026-09-13) */
     const mine = [...sheet.querySelectorAll(".tog")]
       .find(b => /In your boxes/.test(b.textContent));
-    mine.dispatchEvent(new w.MouseEvent("click", {bubbles:true}));
+    click(mine);
     check("y el filtro de la caja deja solo lo que tiene",
        names().sort().join(","), "Charizard,Farigiraf,Garchomp,Gholdengo,Incineroar,Kingambit," +
        "Maushold,Rillaboom,Sinistcha,Sneasler,Whimsicott");
-    mine.dispatchEvent(new w.MouseEvent("click", {bubbles:true}));
+    click(mine);
 
     type("sneasler");
-    [...sheet.querySelectorAll(".list .row")][0]
-      .dispatchEvent(new w.MouseEvent("click", {bubbles:true}));
+    click([...sheet.querySelectorAll(".list .row")][0]);
     await idle();
     check("al elegir uno queda puesto en la build",
        /Sneasler/.test(d.getElementById("v-buildedit").textContent), true);

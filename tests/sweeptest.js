@@ -10,16 +10,12 @@ const blank = () => ({sp:{hp:0,atk:0,def:0,spa:0,spd:0,spe:0},
 
 /* The engine's error for one pairing, or null when it calculates. */
 function failure(atkName, defName) {
+  /* only the two sides and the move: every field switch stays at the
+     page's own default, off */
   Object.assign(w.CALC, {
     atk: Object.assign(blank(), {name: atkName}),
     def: Object.assign(blank(), {name: defName}),
-    move: w.MOVE_BY.Earthquake, gameType: "Singles",
-    weather:null, terrain:null, screen:null, crit:false,
-    helpingHand:false, friendGuard:false, charge:false, fairyAura:false,
-    gravity:false, wonderRoom:false, magicRoom:false, protected:false,
-    stealthRock:false, spikes:0, leechSeed:false, saltCure:false,
-    nightmare:false, switching:false, tailwindAtk:false, powerTrickAtk:false
-  });
+    move: w.MOVE_BY.Earthquake, gameType: "Singles"});
   try { w.engineCalc(); return null; }
   catch (e) { return atkName + " vs " + defName + ": " + e.message.slice(0, 70); }
 }

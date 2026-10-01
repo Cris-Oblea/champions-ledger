@@ -14,22 +14,20 @@
    states, including two builds on one Pokemon - the case the old model could
    not represent. */
 const { describe } = require("node:test");
-const { check, open, idle, until } = require("./harness.js");
-const UID = "u1";
+const { check, open, idle, until, row, build, click } = require("./harness.js");
 
-const row = (id, name, location, origin, extra) => Object.assign(
-  {user_id:UID, id, name, location, status:"permanent", origin, note:"", ord:0,
-   updated_at:"2026-09-10", shiny:false, trained:true}, extra || {});
+const R = (id, name, location, origin) =>
+  row(id, name, {location, origin, trained:true});
 const ROWS = [
-  row("garchomp", "Garchomp", "champions", "champions"),
-  row("dragonite", "Dragonite", "home", "home"),
-  row("sylveon", "Sylveon", "champions", "home"),   // HOME origin, in the box
-  row("camerupt-2", "Camerupt", "home", "home"),    // the relink candidate
+  R("garchomp", "Garchomp", "champions", "champions"),
+  R("dragonite", "Dragonite", "home", "home"),
+  R("sylveon", "Sylveon", "champions", "home"),   // HOME origin, in the box
+  R("camerupt-2", "Camerupt", "home", "home"),    // the relink candidate
   /* The game will not release below six Champions-origin Pokemon (player,
      2026-09-27), so Garchomp needs six more beside it to be releasable at all.
      tests/releasetest.js covers the floor itself. */
   ...["Incineroar", "Whimsicott", "Rillaboom", "Sinistcha", "Gholdengo",
-      "Maushold"].map(n => row(n.toLowerCase(), n, "champions", "champions")),
+      "Maushold"].map(n => R(n.toLowerCase(), n, "champions", "champions")),
 ];
 /* box_id is the LINK now, and it is not the id. Until 2026-09-13 a build WAS
    the box row it sat on - same id, one build per Pokemon, and no build without
@@ -39,16 +37,14 @@ const ROWS = [
    No fallback from a missing box_id to the id, deliberately: an idea build for
    Farigiraf gets the id "farigiraf", and a fallback would silently marry it to
    a box row of the same name. */
-const build = (id, pokemon, box_id) => ({user_id:UID, id, pokemon,
-  box_id: box_id === undefined ? id : box_id, mega:null,
-  ability:null, mega_ability:null, nature:"Jolly",
-  stat_points:{hp:2,atk:32,def:0,spa:0,spd:0,spe:32}, moves:["Protect"],
-  role:"", rationale:"", extra:{}, updated_at:"2026-09-10"});
-const BUILDS = [build("garchomp","Garchomp"), build("dragonite","Dragonite"),
-                build("sylveon","Sylveon"), build("camerupt","Camerupt"),
+const B = (id, pokemon, box_id = id) => build(id, pokemon, {box_id,
+  nature:"Jolly", stat_points:{hp:2,atk:32,def:0,spa:0,spd:0,spe:32},
+  moves:["Protect"]});
+const BUILDS = [B("garchomp","Garchomp"), B("dragonite","Dragonite"),
+                B("sylveon","Sylveon"), B("camerupt","Camerupt"),
                 /* the two new shapes */
-                build("garchomp-2","Garchomp", "garchomp"),
-                build("kingambit-idea","Kingambit", null)];
+                B("garchomp-2","Garchomp", "garchomp"),
+                B("kingambit-idea","Kingambit", null)];
 
 const { dom, errs } = open({ box: ROWS, builds: BUILDS });
 /* The app asks with its OWN dialog now, not the operating system's, so there
@@ -57,7 +53,6 @@ const { dom, errs } = open({ box: ROWS, builds: BUILDS });
    keep passing while the real dialog was broken. */
 dom.window.confirm = function () { throw new Error("native confirm() must not be used"); };
 const w = dom.window, d = w.document;
-const click = n => n.dispatchEvent(new w.MouseEvent("click", {bubbles:true}));
 const tags = n => [...n.querySelectorAll(".tag")].map(t => t.textContent);
 
 (async () => {
