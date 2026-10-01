@@ -13,11 +13,10 @@ Usage:
 """
 import hashlib
 import os
-import queue
 import re
 import sys
-import threading
 import time
+from concurrent.futures import ThreadPoolExecutor, as_completed
 
 import net
 from paths import RAW
@@ -68,45 +67,26 @@ def get(url, dest, force=False):
     return True, False
 
 
-def _tally(stats, ok, cached):
-    """Count one page; returns how many are done."""
-    stats["fail" if not ok else "cached" if cached else "ok"] += 1
-    return stats["ok"] + stats["cached"] + stats["fail"]
-
-
-def _worker(q, stats, lock, total, pause, force):
-    while True:
-        try:
-            url, dest = q.get_nowait()
-        except queue.Empty:
-            return
-        ok, cached = get(url, dest, force=force)
-        with lock:
-            done = _tally(stats, ok, cached)
-            if done % 25 == 0 or done == total:
-                print("  %d/%d (new=%d cached=%d failed=%d)"
-                      % (done, total, stats["ok"], stats["cached"], stats["fail"]),
-                      flush=True)
+def fetch_many(items, workers=5, pause=0.12, force=False):
+    """items: list of (url, dest). Fetches with modest concurrency; a worker
+    that went to the network waits `pause` before its next page, so the
+    pool never hammers Serebii. Progress is counted here, in one thread."""
+    def one(item):
+        ok, cached = get(*item, force=force)
         if not cached:
             time.sleep(pause)
-        q.task_done()
+        return ok, cached
 
-
-def fetch_many(items, workers=5, pause=0.12, force=False):
-    """items: list of (url, dest). Fetches with modest concurrency."""
-    q = queue.Queue()
-    for it in items:
-        q.put(it)
     stats = {"ok": 0, "cached": 0, "fail": 0}
-    lock = threading.Lock()
-    threads = [threading.Thread(target=_worker, daemon=True,
-                                args=(q, stats, lock, len(items), pause, force))
-               for _ in range(workers)]
-    for t in threads:
-        t.start()
-    for t in threads:
-        t.join()
-    return stats
+    with ThreadPoolExecutor(workers) as pool:
+        futures = [pool.submit(one, it) for it in items]
+        for done, f in enumerate(as_completed(futures), 1):
+            ok, cached = f.result()
+            stats["fail" if not ok else "cached" if cached else "ok"] += 1
+            if done % 25 == 0 or done == len(items):
+                print("  %d/%d (new=%d cached=%d failed=%d)"
+                      % (done, len(items), stats["ok"], stats["cached"],
+                         stats["fail"]), flush=True)
 
 
 # Set from the command line. A regulation sweep re-fetches every page ON TOP
