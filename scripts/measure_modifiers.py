@@ -18,9 +18,9 @@ import re
 import subprocess
 import sys
 
-from paths import ROOT
+from paths import DB, ROOT
 
-OUT = os.path.join(ROOT, "data", "db", "modifiers.json")
+OUT = os.path.join(DB, "modifiers.json")
 PY = sys.executable
 DMG = os.path.join(ROOT, "scripts", "damage.py")
 

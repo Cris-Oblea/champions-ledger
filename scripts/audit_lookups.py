@@ -31,7 +31,7 @@ from pathlib import Path
 
 import damage as Dm
 import dex
-from paths import ROOT
+from paths import DB, ROOT
 
 bad = 0
 
@@ -145,7 +145,7 @@ def _duplicate_keys(text):
 
 def _check_db_files():
     print("\n  los ficheros que todo lo demas lee")
-    for f in sorted(glob.glob(os.path.join(ROOT, "data", "db", "*.json"))):
+    for f in sorted(glob.glob(os.path.join(DB, "*.json"))):
         name = os.path.basename(f)
         try:
             dup = _duplicate_keys(Path(f).read_text(encoding="utf-8"))

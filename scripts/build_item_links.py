@@ -32,9 +32,9 @@ import re
 import sys
 
 import dex
-from paths import ROOT
+from paths import DB
 
-OUT = os.path.join(ROOT, "data", "db", "item_links.json")
+OUT = os.path.join(DB, "item_links.json")
 
 
 # A field effect, and every spelling the game uses for it. "rain" needs a word

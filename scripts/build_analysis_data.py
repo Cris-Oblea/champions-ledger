@@ -25,9 +25,9 @@ import os
 import sys
 from pathlib import Path
 
-from paths import ROOT
+from paths import META, ROOT
 
-SRC = os.path.join(ROOT, "data", "meta", "smogon_analyses.json")
+SRC = os.path.join(META, "smogon_analyses.json")
 OUT = os.path.join(ROOT, "tracker", "analysis.js")
 
 

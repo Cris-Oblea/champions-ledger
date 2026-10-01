@@ -253,9 +253,11 @@ and `supabase db query "select ..." --linked` runs any query.
 
 `python scripts/refresh.py` runs every stage in order. Each stage is one
 script, so a stage can also run on its own. Every script finds the repo
-through `scripts/paths.py` (`ROOT`, `RAW`, `DB`, `META`), never its own
-`__file__`, and reads the database through `scripts/dex.py`: `db()` and
-`meta()` load a file once, `TYPES`/`STAT_KEYS`/`DIVISIONS` are the shared
+through `scripts/paths.py` (`ROOT`, `RAW`, `DB`, `META`, and the raw caches
+more than one script reads: `POKEBASE`, `SMOGON_CALC`, `POKEAPI_CSV`,
+`TOURNAMENTS`), never its own `__file__`, and reads the database through
+`scripts/dex.py`: `db()` and `meta()` load a file once,
+`TYPES`/`STAT_KEYS`/`DIVISIONS`/`CATEGORY`/`SPREAD_TARGETS` are the shared
 lists, `find_pokemon()`/`find_move()`/`stone_for()` the lookups. `dex.py`
 reads files only - no network, no ledger - so any stage can import it.
 They fall into four families:

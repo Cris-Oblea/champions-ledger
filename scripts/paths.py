@@ -17,3 +17,9 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RAW = os.path.join(ROOT, "data", "raw")
 DB = os.path.join(ROOT, "data", "db")
 META = os.path.join(ROOT, "data", "meta")
+
+# The caches more than one script reads, so each is spelt once.
+POKEBASE = os.path.join(RAW, "pokebase")        # fetch_pokebase.py's pages
+SMOGON_CALC = os.path.join(RAW, "smogon_calc")  # Smogon's calculator source
+POKEAPI_CSV = os.path.join(RAW, "pokeapi_csv")  # PokeAPI's tables, pinned
+TOURNAMENTS = os.path.join(RAW, "tournaments")  # pokedata's responses

@@ -25,7 +25,7 @@ import re
 import sys
 from pathlib import Path
 
-from paths import ROOT
+from paths import POKEBASE, ROOT
 
 README = os.path.join(ROOT, "README.md")
 STATUS = os.path.join(ROOT, "STATUS.md")
@@ -153,7 +153,7 @@ def vintage():
     """What regulation the data describes, and when it was fetched."""
     u = load("data/meta/usage_pokemon.json") or {}
     reg = "unknown"
-    raw = os.path.join(ROOT, "data", "raw", "pokebase", "pokemon.html")
+    raw = os.path.join(POKEBASE, "pokemon.html")
     if os.path.exists(raw):
         s = Path(raw).read_text(encoding="utf-8", errors="replace")
         m = re.search(r'defaultLatestRegulationSetSlug\\?":\\?"([a-z\-]+)', s)

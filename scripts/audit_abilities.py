@@ -65,11 +65,10 @@ import sys
 
 import dex
 from fetch_home_dex import key as hkey
-from paths import ROOT
+from paths import POKEAPI_CSV, RAW
 from serebii_text import read
 
-RAW = os.path.join(ROOT, "data", "raw", "pokeapi_csv")
-PAGES = os.path.join(ROOT, "data", "raw", "pokedex")
+PAGES = os.path.join(RAW, "pokedex")
 ENGLISH = "9"
 # name -> why it is not a finding. Each one checked by hand, once.
 KNOWN = {
@@ -78,7 +77,7 @@ KNOWN = {
 
 
 def table(name):
-    path = os.path.join(RAW, name)
+    path = os.path.join(POKEAPI_CSV, name)
     if not os.path.exists(path):
         return None
     return list(csv.DictReader(open(path, encoding="utf-8")))

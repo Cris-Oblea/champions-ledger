@@ -25,19 +25,19 @@ import os
 from pathlib import Path
 
 import net
-from paths import ROOT
+from paths import DB, RAW
 
-RAW = os.path.join(ROOT, "data", "raw", "pokeapi_species.json")
-OUT = os.path.join(ROOT, "data", "db", "dex_numbers.json")
+SPECIES_CACHE = os.path.join(RAW, "pokeapi_species.json")
+OUT = os.path.join(DB, "dex_numbers.json")
 URL = "https://pokeapi.co/api/v2/pokemon-species?limit=2000"
 
 
 def fetch(force=False):
-    if os.path.exists(RAW) and not force:
-        return json.loads(Path(RAW).read_text(encoding="utf-8"))
+    if os.path.exists(SPECIES_CACHE) and not force:
+        return json.loads(Path(SPECIES_CACHE).read_text(encoding="utf-8"))
     data = json.loads(net.get(URL))
-    os.makedirs(os.path.dirname(RAW), exist_ok=True)
-    Path(RAW).write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
+    os.makedirs(os.path.dirname(SPECIES_CACHE), exist_ok=True)
+    Path(SPECIES_CACHE).write_text(json.dumps(data, ensure_ascii=False), encoding="utf-8")
     return data
 
 
@@ -91,7 +91,7 @@ def main():
             for row in fetch(a.force).get("results", [])}
     lookup = {_key(k): v for k, v in nums.items()}
 
-    db = Path(ROOT, "data", "db")
+    db = Path(DB)
     mons = json.loads((db / "pokemon.json").read_text(encoding="utf-8"))
     wt = json.loads((db / "weights.json").read_text(encoding="utf-8"))["weights"]
     every = sorted({p["name"] for p in mons} |

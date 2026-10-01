@@ -43,10 +43,9 @@ import urllib.parse
 
 import dex
 import net
-from paths import META, ROOT
+from paths import META, ROOT, TOURNAMENTS
 
 BASE = "https://www.pokedata.ovh/standingsVGC"
-RAW = os.path.join(ROOT, "data", "raw", "tournaments")
 TEAM_PHP = "https://www.pokedata.ovh/misc/team.php?team="
 
 DEFAULT_TID = "0000191"          # 2026 Pokemon World Championships
@@ -240,7 +239,7 @@ def cache_stem(path):
 
 def cached(stem, url, timeout=45):
     """Fetch once, then serve from data/raw/tournaments on every later run."""
-    path = os.path.join(RAW, stem)
+    path = os.path.join(TOURNAMENTS, stem)
     if os.path.exists(path):
         return open(path, encoding="utf-8").read()
     body = get(url, timeout=timeout)
@@ -311,7 +310,7 @@ def enrich_with_teamlists(players):
     calls, which serves all of them.
     """
     todo = [p for p in players if p.get("_teamfile")]
-    os.makedirs(RAW, exist_ok=True)
+    os.makedirs(TOURNAMENTS, exist_ok=True)
     done = fell_back = 0
     for p in todo:
         merged, via_php = _player_team(p["_teamfile"])
@@ -370,7 +369,7 @@ def main():
     tid = opt("--tid", DEFAULT_TID)
     division = opt("--division", DEFAULT_DIVISION)
 
-    os.makedirs(RAW, exist_ok=True)
+    os.makedirs(TOURNAMENTS, exist_ok=True)
     info = round_info(tid, division)
     rnd = info.get("round")
 

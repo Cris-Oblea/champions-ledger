@@ -64,19 +64,18 @@ from types import SimpleNamespace
 
 import dex
 import net
-from paths import META, ROOT
+from paths import DB, META, POKEAPI_CSV, RAW, ROOT
 
-RAW = os.path.join(ROOT, "data", "raw", "pokeapi_csv")
-OUT = os.path.join(ROOT, "data", "db", "home_dex.json")
-SPRITES = os.path.join(ROOT, "data", "db", "sprite_ids.json")
-FORMS = os.path.join(ROOT, "data", "db", "form_line.json")
-GAPS = os.path.join(ROOT, "data", "db", "sprite_gaps.json")
+OUT = os.path.join(DB, "home_dex.json")
+SPRITES = os.path.join(DB, "sprite_ids.json")
+FORMS = os.path.join(DB, "form_line.json")
+GAPS = os.path.join(DB, "sprite_gaps.json")
 # The sprite commit is pinned in the APP, which is what builds the URLs, and
 # read from there - one pin, so the ids written here can never be checked
 # against a different commit than the one the phone fetches from.
 APP_DATA = os.path.join(ROOT, "tracker", "src", "core", "data.js")
-SPRITE_RAW = os.path.join(ROOT, "data", "raw", "pokeapi_sprites")
-FLAGS = os.path.join(ROOT, "data", "db", "species_flags.json")
+SPRITE_RAW = os.path.join(RAW, "pokeapi_sprites")
+FLAGS = os.path.join(DB, "species_flags.json")
 # PokeAPI/pokeapi, BSD-3-Clause, pinned. Bump deliberately and read the diff.
 PIN = "4b82c204ddd19ecb8eda2ea044ccb59e222b721c"
 BASE = "https://raw.githubusercontent.com/PokeAPI/pokeapi/%s/data/v2/csv/" % PIN
@@ -171,12 +170,20 @@ MEGA_BASE = {"pyroar-male": "pyroar"}
 MEGA = re.compile(r"^Mega (.+?)(?: ([XYZ]))?$")
 
 
-def table(name, force=False):
-    os.makedirs(RAW, exist_ok=True)
-    path = os.path.join(RAW, name)
+def csv_path(name, force=False):
+    """One PokeAPI table at PIN, downloaded once into data/raw/pokeapi_csv.
+    The timeout is for pokemon_moves.csv, which is 10 MB."""
+    os.makedirs(POKEAPI_CSV, exist_ok=True)
+    path = os.path.join(POKEAPI_CSV, name)
     if not os.path.exists(path) or force:
-        Path(path).write_bytes(net.get(BASE + name))
-    return list(csv.DictReader(open(path, encoding="utf-8")))
+        Path(path).write_bytes(net.get(BASE + name, timeout=180))
+    return path
+
+
+def table(name, force=False):
+    """That table's rows."""
+    with open(csv_path(name, force), encoding="utf-8") as f:
+        return list(csv.DictReader(f))
 
 
 def key(name):

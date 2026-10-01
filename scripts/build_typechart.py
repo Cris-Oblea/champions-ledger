@@ -23,11 +23,6 @@ import dex
 from paths import DB, RAW
 from serebii_text import read
 
-# The order of the columns in Serebii's Weakness table, which is fixed.
-SEREBII_ORDER = ["Normal", "Fire", "Water", "Electric", "Grass", "Ice",
-                 "Fighting", "Poison", "Ground", "Flying", "Psychic", "Bug",
-                 "Rock", "Ghost", "Dragon", "Dark", "Steel", "Fairy"]
-
 
 def load_basics():
     p = os.path.join(DB, "smogon_basics.json")
@@ -86,7 +81,7 @@ def serebii_weaknesses():
             if len(vals) >= 18:
                 blocks.append([float(v) for v in vals[:18]])
         if len(blocks) == 1:
-            out[fn[:-5]] = dict(zip(SEREBII_ORDER, blocks[0], strict=True))
+            out[fn[:-5]] = dict(zip(dex.TYPES, blocks[0], strict=True))  # Serebii's columns: game order
     return out
 
 

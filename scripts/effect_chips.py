@@ -60,9 +60,9 @@ import os
 import re
 from pathlib import Path
 
-from paths import ROOT
+from paths import DB
 
-EFFECTS = os.path.join(ROOT, "data", "db", "effects.json")
+EFFECTS = os.path.join(DB, "effects.json")
 
 # No digit, no subject, and the word is in the sentence already.
 WORD_VALUES = {"half", "double", "third", "quarter"}

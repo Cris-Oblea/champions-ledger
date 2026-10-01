@@ -38,10 +38,9 @@ import dex
 # The number reader the effect chips use to decide what a description already
 # says - one reader, so "the text states it" means the same thing in both.
 from effect_chips import same_number, values
-from paths import ROOT
+from paths import DB, POKEBASE
 
-RAW = os.path.join(ROOT, "data", "raw", "pokebase")
-OUT = os.path.join(ROOT, "data", "db", "text_facts.json")
+OUT = os.path.join(DB, "text_facts.json")
 
 DESC = re.compile(r'\\"name\\":\\"([^\\"]+)\\"'
                   r'((?:(?!\\"name\\").){0,900}?)'
@@ -51,7 +50,7 @@ DESC = re.compile(r'\\"name\\":\\"([^\\"]+)\\"'
 def pokebase(kind):
     """kind: "moves" or "abilities" - pokebase paginates both."""
     out = {}
-    for f in sorted(glob.glob(os.path.join(RAW, kind + "*.html"))):
+    for f in sorted(glob.glob(os.path.join(POKEBASE, kind + "*.html"))):
         h = Path(f).read_text(encoding="utf-8", errors="replace")
         for m in DESC.finditer(h):
             t = m.group(3)

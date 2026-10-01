@@ -44,9 +44,9 @@ import sys
 from pathlib import Path
 
 import dex
-from paths import ROOT
+from paths import META, ROOT
 
-SRC = os.path.join(ROOT, "data", "meta", "usage_splits.json")
+SRC = os.path.join(META, "usage_splits.json")
 OUT = os.path.join(ROOT, "tracker", "splits.js")
 
 # Spreads are the one section long enough to matter for size - 26 rows of six

@@ -25,10 +25,10 @@ import sys
 from pathlib import Path
 
 import dex
-from paths import ROOT
+from paths import META
 
-OUT = os.path.join(ROOT, "data", "meta", "gts_difficulty.json")
-SRC = os.path.join(ROOT, "data", "meta", "go_sourcing.json")
+OUT = os.path.join(META, "gts_difficulty.json")
+SRC = os.path.join(META, "go_sourcing.json")
 
 # Ladder usage -> demand 1-5. The cuts are where the ladder actually steps:
 # a top-25 Pokemon is a different negotiation from a rank-150 one.

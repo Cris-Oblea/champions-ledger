@@ -35,9 +35,8 @@ import sys
 from pathlib import Path
 
 import net
-from paths import ROOT
+from paths import SMOGON_CALC
 
-OUT = os.path.join(ROOT, "data", "raw", "smogon_calc")
 BASE = "https://calc.pokemonshowdown.com"
 
 # Everything the engine needs to run standalone, plus the sets file.
@@ -77,7 +76,7 @@ const d=JSON.parse(s.slice(s.indexOf('{')).trim().replace(/;$/,''));
 fs.writeFileSync(path.join(B,'champions_sets.json'),JSON.stringify(d,null,1));
 console.log(Object.keys(M).length+' moves, '+Object.keys(S).length+
             ' species, '+Object.keys(d).length+' set entries');
-""" % json.dumps(OUT)
+""" % json.dumps(SMOGON_CALC)
     p = subprocess.run(["node", "-e", script], capture_output=True, text=True, check=False)
     if p.returncode != 0:
         print("  (could not re-export JSON: %s)" % (p.stderr or "").strip()[:200])
@@ -91,10 +90,10 @@ def main():
                     help="report what changed upstream, write nothing")
     a = ap.parse_args()
 
-    os.makedirs(OUT, exist_ok=True)
+    os.makedirs(SMOGON_CALC, exist_ok=True)
     changed, same, failed = [], 0, []
     for rel in FILES:
-        dest = os.path.join(OUT, rel.replace("/", os.sep))
+        dest = os.path.join(SMOGON_CALC, rel.replace("/", os.sep))
         os.makedirs(os.path.dirname(dest), exist_ok=True)
         try:
             body = net.get(BASE + "/" + rel)

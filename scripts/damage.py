@@ -44,9 +44,7 @@ import sys
 from pathlib import Path
 
 import dex
-from paths import ROOT
-
-SMOGON_BUNDLE = os.path.join(ROOT, "data", "raw", "smogon_calc")
+from paths import ROOT, SMOGON_CALC
 
 # Psyshock is the only move in Champions that attacks one defence and is
 # categorised as the other: it is Special, but it hits the physical Defense.
@@ -141,7 +139,7 @@ def smogon_name(name, attacking=False):
                dex.norm("Floette"): "Floette-Eternal"}
     if dex.norm(name) in special:
         return special[dex.norm(name)]
-    path = os.path.join(SMOGON_BUNDLE, "raw_species.json")
+    path = os.path.join(SMOGON_CALC, "raw_species.json")
     if not os.path.exists(path):
         raise SystemExit(
             "Smogon's engine is not vendored - expected %s\n"

@@ -30,6 +30,12 @@ TYPES = ["Normal", "Fire", "Water", "Electric", "Grass", "Ice", "Fighting",
 # spread in the repo is keyed and ordered by these.
 STAT_KEYS = ("hp", "atk", "def", "spa", "spd", "spe")
 
+# A move's category as moves.json spells it -> the one-letter code the app
+# and the outside dex ship. Three distinct codes: taking the first letter
+# collapses Special and Status onto "S", which silently turned every
+# Protect into a special attack downstream.
+CATEGORY = {"Physical": "P", "Special": "S", "Status": "T"}
+
 # Serebii's target column spells "hits more than one Pokemon" four ways.
 # Compared against target_key(), never against the display string.
 SPREAD_TARGETS = {"all adjacent foes", "all adjacent opponents",
