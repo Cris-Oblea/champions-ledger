@@ -216,38 +216,26 @@ The `VGC*` filter in `fetch_smogon.py` is correct. Keep singles out.
 ## Refresh
 
 ```bash
-python scripts/fetch_serebii.py all && python scripts/build_db.py
-python scripts/fetch_pokebase.py
-python scripts/fetch_smogon.py
-python scripts/fetch_tournament.py                    # Masters, newest round
-python scripts/fetch_tournament.py --division seniors
-python scripts/fetch_tournament.py --division juniors
-python scripts/fetch_smogon_calc.py                   # Smogon's Champions engine
-python scripts/audit_forms.py && python scripts/test_norm.py
-python scripts/damage.py --selftest                   # the engine vs Smogon's prose
+python scripts/refresh.py                # every source, the audits, the app
+python scripts/refresh.py --regulation   # forced by hand; normally automatic
+python scripts/refresh.py --tracker-only # only rebuild tracker/data.js
 ```
 
-Raw responses cache under `data/raw/`, so re-runs are cheap. During a live event
-re-run `fetch_tournament.py` to pull later rounds.
+The cloud runs it every night (`.github/workflows/daily.yml`, through
+`daily.py`), so a local run is for testing a fetcher, never for shipping data:
+the laptop's `data/raw/` is behind the cloud's, and committing what it rebuilds
+reverts whatever the last nightly fetched. Fix the script and let the nightly
+regenerate. The docstring and `stages()` in `refresh.py` say what each stage
+does and why the order is what it is.
 
-**That cache is a trap on a new regulation, and the commands above are NOT
-enough for one.** `fetch_serebii.py` skips any page already on disk, and
-`fetch_pokebase.py` re-parses the cached HTML unless you pass `--force`. So the
-plain run picks up new *Pokedex* pages but silently keeps every stale
-*attackdex* page — and the attackdex is where form rows and **learnsets** come
-from, so all the new species end up with no movepool and no ability to be found
-by `--learner`. What a regulation drop actually needs (done for M-C on
-2026-09-09, full recipe in `analysis/regulation_m_c.md`):
-
-```bash
-python scripts/fetch_serebii.py list          # forced already
-rm data/raw/pages/*.html                      # then re-run `pages`
-# re-fetch pokedex AND attackdex with force=True, not just the new slugs
-python scripts/build_db.py
-python scripts/fetch_pokebase.py --force      # else it only re-parses old HTML
-python scripts/fetch_smogon.py --force
-python scripts/fetch_smogon_calc.py
-```
+Raw responses cache under `data/raw/`, so re-runs are cheap. **That cache is a
+trap on a new regulation**: `fetch_serebii.py` skips any page already on disk,
+and the attackdex is where form rows and **learnsets** come from, so a plain run
+would give every new species no movepool. `refresh.py` handles it by itself:
+when `check_regulation.py` sees a new regulation it turns `--regulation` on,
+which re-fetches every Serebii page ON TOP of the cache (nothing is deleted) and
+prints the pages that came back different - the patch note. The M-C drop that
+taught this is in `analysis/regulation_m_c.md`.
 
 **A round number is not a swiss round.** pokedata numbers the top cut straight on
 from the last swiss round: Worlds Masters ran 11 swiss rounds and then 12=TopCut,
