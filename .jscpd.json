@@ -1,0 +1,11 @@
+{
+  "ignore": [
+    "**/_*.js",
+    "**/node_modules/**"
+  ],
+  "threshold": 0,
+  "reporters": [
+    "console"
+  ],
+  "gitignore": true
+}
