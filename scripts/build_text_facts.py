@@ -55,7 +55,7 @@ def pokebase(kind):
         h = Path(f).read_text(encoding="utf-8", errors="replace")
         for m in DESC.finditer(h):
             t = m.group(3)
-            t = t.replace("\\u2019", "'").replace("�", "'")
+            t = t.replace("\\u2019", "'")
             t = re.sub(r"\\u[0-9a-fA-F]{4}", " ", t)
             t = t.replace("\\n", " ").replace("\\", "")
             out.setdefault(m.group(1), " ".join(t.split()))
@@ -81,7 +81,7 @@ def score(t):
 
 
 def clean(s):
-    return " ".join((s or "").replace("�", "'").split())
+    return " ".join((s or "").split())
 
 
 def merge(rows, pb, label):

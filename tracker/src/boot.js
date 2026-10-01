@@ -2,7 +2,7 @@
    store. renderAll() is the one redraw every change ends in. */
 /* FIRST, so a script error anywhere after this line is caught and shown. */
 import "./core/errors.js";
-import { $, el, setPressed, showPane, wireClears } from "./core/dom.js";
+import { $, el, pressOnly, setPressed, showPane, wireClears } from "./core/dom.js";
 import { VIEW } from "./core/state.js";
 import { whenChanged } from "./core/store.js";
 import {
@@ -106,9 +106,7 @@ document.querySelectorAll("[data-add]").forEach(function(b){
 Array.prototype.forEach.call($("calcMode").children, function(b){
   b.onclick = function(){
     CALC.gameType = b.dataset.mode;
-    Array.prototype.forEach.call($("calcMode").children, function(x){
-      setPressed(x, x === b);
-    });
+    pressOnly($("calcMode"), b);
     calcDraw();
   };
 });

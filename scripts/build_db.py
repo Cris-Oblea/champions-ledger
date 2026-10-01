@@ -687,7 +687,7 @@ def abilities_by_form(path):
     right everywhere else. Returns {form label: [abilities]}.
     """
     try:
-        s = Path(path).read_text(encoding="cp1252", errors="replace")
+        s = read(path)
     except OSError:
         return {}
     m = re.search(r"<b>Abilities</b>\s*:(.*?)</td>", s, re.S)

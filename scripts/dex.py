@@ -10,12 +10,14 @@ anywhere, the gate included. query.py is the command line on top of it.
     norm(name)       the cross-source key for a Pokemon (keeps Mega and form)
     key(name)        the key for a move, item or ability (spelling only)
     species_norm()   the base species, form qualifiers dropped
+    target_key()     Serebii's move target, comparable to SPREAD_TARGETS
     find_pokemon(), find_move(), stone_for()
     kept_stamp()     a rewritten file keeps its date when nothing else moved
 """
 import json
 import os
 import re
+import unicodedata
 
 from paths import DB, META
 
@@ -27,6 +29,11 @@ TYPES = ["Normal", "Fire", "Water", "Electric", "Grass", "Ice", "Fighting",
 # The six stats in the order the game lists them; every stat table and
 # spread in the repo is keyed and ordered by these.
 STAT_KEYS = ("hp", "atk", "def", "spa", "spd", "spe")
+
+# Serebii's target column spells "hits more than one Pokemon" four ways.
+# Compared against target_key(), never against the display string.
+SPREAD_TARGETS = {"all adjacent foes", "all adjacent opponents",
+                  "all adjacent pokemon", "all opponents"}
 
 
 # --------------------------------------------------------------------------
@@ -219,6 +226,13 @@ def key(name):
     s = str(name).lower().strip()
     s = re.sub(r"[^a-z0-9]+", " ", s)
     return re.sub(r"\s+", " ", s).strip()
+
+
+def target_key(target):
+    """Serebii's target field, de-accented and lower-cased: "All Adjacent
+    Pokemon" really carries an accented e."""
+    return "".join(c for c in unicodedata.normalize("NFKD", target or "")
+                   if not unicodedata.combining(c)).lower()
 
 
 def species_norm(name):

@@ -38,7 +38,6 @@ import json
 import os
 import re
 import sys
-import unicodedata
 from pathlib import Path
 
 import dex
@@ -60,10 +59,6 @@ STAGE = re.compile(r"\bstages?\b|maximi[sz]e|minimi[sz]e|to maximum", re.I)
 ATTACKER = re.compile(r"attacker|opponent|the foe", re.I)
 
 
-def clean(s):
-    return (s or "").replace("�", "'")
-
-
 def sentences(text):
     """Split on real sentence ends - and "Sp. Atk" is not one.
 
@@ -71,14 +66,14 @@ def sentences(text):
     "." cut "Boosts the user's Sp. Atk stat by 2 stages." in half and left
     neither piece with both a stat name and a verb.
     """
-    t = re.sub(r"Sp\.\s*(Atk|Def)", r"Sp.\1", clean(text))
+    t = re.sub(r"Sp\.\s*(Atk|Def)", r"Sp.\1", (text or ""))
     return [s for s in re.split(r"(?<=[.])\s+", t) if s.strip()]
 
 
 def stat_moves(m):
     """(self_up, self_down, target_up, target_down) for one move."""
     su = sd = tu = td = False
-    body = clean(m.get("effect")) + " " + clean(m.get("in_depth"))
+    body = (m.get("effect") or "") + " " + (m.get("in_depth") or "")
     for s in sentences(body):
         if CRIT.search(s) or not re.search(STATS, s):
             continue
@@ -112,7 +107,7 @@ def down_stats(m):
     same sentence the drop came from.
     """
     out = set()
-    body = clean(m.get("effect")) + " " + clean(m.get("in_depth"))
+    body = (m.get("effect") or "") + " " + (m.get("in_depth") or "")
     for s in sentences(body):
         if CRIT.search(s) or not STAGE.search(s) or not re.search(DOWN, s):
             continue
@@ -156,15 +151,6 @@ def smogon_moves():
 # wherever it has one. Same call damage.py makes; the disagreements it lists
 # (Misty Explosion, Burning Jealousy, Psyshield Bash) come out of this
 # automatically, and Corrosive Gas is a fourth it does not have.
-_SERB_SPREAD = {"all adjacent foes", "all adjacent opponents",
-                "all adjacent pokemon", "all opponents"}
-
-
-def fold(t):
-    return "".join(c for c in unicodedata.normalize("NFKD", t or "")
-                   if not unicodedata.combining(c)).lower()
-
-
 def targeting(m, smogon):
     """(spread, hits_ally) - more than one target, and is the ally one of them?"""
     t = smogon.get("target") if smogon else None
@@ -172,8 +158,8 @@ def targeting(m, smogon):
         return True, t == "allAdjacent"
     if smogon:                     # Smogon knows the move and says single-target
         return False, False
-    k = fold(m.get("target"))
-    return k in _SERB_SPREAD, k == "all adjacent pokemon"
+    k = dex.target_key(m.get("target"))
+    return k in dex.SPREAD_TARGETS, k == "all adjacent pokemon"
 
 
 def derive(moves):
@@ -184,7 +170,7 @@ def derive(moves):
             continue
         su, sd, tu, td = stat_moves(m)
         f = m.get("flags") or {}
-        body = clean(m.get("effect")) + " " + clean(m.get("in_depth"))
+        body = (m.get("effect") or "") + " " + (m.get("in_depth") or "")
         name = m["name"]
         smogon = sm.get(dex.key(name), {})
         # Serebii owns what a move IS; Smogon's engine owns how an ability
@@ -198,9 +184,9 @@ def derive(moves):
                 conflicts.append((name, ours, bool(f.get(ours)),
                                   bool(smogon.get(theirs))))
         spread, hits_ally = targeting(m, smogon)
-        if spread != (fold(m.get("target")) in _SERB_SPREAD):
+        if spread != (dex.target_key(m.get("target")) in dex.SPREAD_TARGETS):
             conflicts.append((name, "spread",
-                              fold(m.get("target")) in _SERB_SPREAD, spread))
+                              dex.target_key(m.get("target")) in dex.SPREAD_TARGETS, spread))
         out[name] = {
             # the name travels with the props so a rule can ask the status
             # table "does this move paralyse?"
@@ -277,7 +263,7 @@ def foe(m):
     and Good as Gold blocks a foe's Taunt, not its own Swords Dance - so a
     "def" rule about incoming moves has to know which way a move points.
     """
-    k = fold(m["target"])
+    k = dex.target_key(m["target"])
     return (k in ("all", "selected target", "random target")
             or any(w in k for w in ("foe", "opponent", "enemy", "adjacent pok")))
 
@@ -859,7 +845,7 @@ def classify(name, table, text):
     r = table.get(name)
     if r:
         return "moves-off" if r["side"] == "off" else "moves-def"
-    t = clean(text)
+    t = (text or "")
     # SEVERAL STATS AT ONCE IS A STAT ABILITY, even when Speed is one of them.
     # "speed" sits ahead of "stats" so that Swift Swim is filed by what it is
     # for; Battle Bond raises Attack, Sp. Atk AND Speed, and the order filed it
@@ -898,7 +884,7 @@ def audit(table):
                                r"recoil|immune|absorb", re.I)
     covered, mentions, quiet, decided = [], [], [], []
     for a in abil:
-        n, e = a["name"], clean(a.get("effect"))
+        n, e = a["name"], (a.get("effect") or "")
         if n in table:
             covered.append(n)
         elif n in NO_RULE:

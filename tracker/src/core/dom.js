@@ -151,6 +151,14 @@ function setPressed(node, on){
   node.setAttribute("aria-pressed", on ? "true" : "false");
 }
 
+/* A row of toggles where exactly one is chosen: `on` pressed, its siblings
+   not. */
+function pressOnly(group, on){
+  Array.prototype.forEach.call(group.children, function(x){
+    setPressed(x, x === on);
+  });
+}
+
 /* Empty a host that every sheet or editor reuses. innerHTML only clears the
    children - an expando a previous builder hung on the node (body._mode,
    body._marks) survives into the next one, which is exactly how the
@@ -175,6 +183,6 @@ function showPane(panes, which){
 }
 
 export {
-  $, capNote, el, fbtn, filterLabel, note, resetHost, searchField, setPressed,
-  showPane, toast, wireClears,
+  $, capNote, el, fbtn, filterLabel, note, pressOnly, resetHost, searchField,
+  setPressed, showPane, toast, wireClears,
 };

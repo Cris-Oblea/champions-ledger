@@ -1,7 +1,7 @@
 /* THE Pokemon card, drawn the same everywhere, and the pieces it is made
    of: type colours, the stat table, facts, badges and usage chips. */
 import {
-  battleFormsOf, bst, C, dexLabel, formMoves, megasFor, ordinal, outsideForms,
+  anyRow, battleFormsOf, bst, C, dexLabel, formMoves, megasFor, ordinal, outsideForms,
   podiumFor, SHARE_OF, splitMax, splitsReg, SPRITE_BASE, STAT_KEYS,
   STAT_LABEL, TYPE_COLOR, TYPE_COLOR2, TYPE_INK,
 } from "../core/data.js";
@@ -909,8 +909,29 @@ function boxBadges(node, rec){
   return node;
 }
 
+/* A species Champions does not have, on THE SAME CARD: picture, typing and
+   six stats from PokeAPI, which is what lets a HOME shelf be planned at all.
+   A name with no numbers at all keeps a plain row. `tag` and `why` are what
+   the caller's screen needs said about it. */
+function outsideCard(n, tag, why, onclick){
+  const badges = function(h){ h.appendChild(el("span", "tag bad", tag)); };
+  const notes = function(m){ m.appendChild(el("div", "st", why)); };
+  const op = anyRow(n);
+  if (op) return pokeCard(op, {cls:"illegal", name:n, badges, notes, onclick});
+  const r = el("button", "row illegal");
+  const m = el("div", "rmain");
+  const h = el("div", "rname");
+  h.appendChild(document.createTextNode(n));
+  badges(h);
+  m.appendChild(h);
+  notes(m);
+  r.appendChild(m);
+  r.onclick = onclick;
+  return r;
+}
+
 export {
   boxBadges, cardLine, effectLine, formInk, formSprite, labelBox, megaLine,
-  numText, podiumChip, pokeCard, pokeFacts, spriteFor, statGrid, typeChip,
+  numText, outsideCard, podiumChip, pokeCard, pokeFacts, spriteFor, statGrid, typeChip,
   typeSkin, usageTag,
 };

@@ -14,7 +14,7 @@ import {
   gtsSuggest, keepableCopies, ladderText, lastCopyOf, offerAge, offerStart,
   otherFormsOf, signed,
 } from "../core/trade.js";
-import { boxBadges, pokeCard } from "../ui/card.js";
+import { boxBadges, outsideCard, pokeCard } from "../ui/card.js";
 import { ask, closeSheet, openSheet } from "../ui/nav.js";
 
 $("gtsAdd").onclick = function(){
@@ -1114,34 +1114,12 @@ function wantedCard(p, onPick){
   });
 }
 
-/* A species Champions has never heard of still gets a card, its numbers from
-   PokeAPI: asking for one is a real decision - it is how a HOME shelf gets
-   filled. A name with no numbers at all keeps a plain row. */
+/* A species Champions has never heard of can still be asked for: it is how
+   a HOME shelf gets filled. */
 function homeOnlyCard(n, onPick){
-  const op = anyRow(n);
-  if (op) {
-    return pokeCard(op, {cls:"illegal", name:n, badges:homeOnlyBadge,
-                         notes:homeOnlyWhy, onclick:function(){ onPick(n); }});
-  }
-  const b = el("button", "row illegal");
-  const m = el("div", "rmain");
-  const h = el("div", "rname");
-  h.appendChild(document.createTextNode(n));
-  homeOnlyBadge(h);
-  m.appendChild(h);
-  homeOnlyWhy(m);
-  b.appendChild(m);
-  b.onclick = function(){ onPick(n); };
-  return b;
-}
-
-function homeOnlyBadge(h){
-  h.appendChild(el("span", "tag bad", "HOME only"));
-}
-
-function homeOnlyWhy(m){
-  m.appendChild(el("div", "st",
-    "It can live in HOME, but never enter Champions."));
+  return outsideCard(n, "HOME only",
+    "It can live in HOME, but never enter Champions.",
+    function(){ onPick(n); });
 }
 
 export { diffChip, drawGts, gtsPickMine, gtsPickWanted };
