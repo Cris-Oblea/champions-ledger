@@ -162,6 +162,32 @@ def find_key(obj, key, hits=None):
     return hits
 
 
+def _carrying(node, keys):
+    """Every object under `node` that has all of `keys`, in document order."""
+    if isinstance(node, dict):
+        if all(k in node for k in keys):
+            yield node
+        for v in node.values():
+            yield from _carrying(v, keys)
+    elif isinstance(node, list):
+        for v in node:
+            yield from _carrying(v, keys)
+
+
+def rows_with(page, *keys):
+    """Every object carrying all of `keys` in a cached list page, every page
+    of it, in order: rows_with("items", "name", "unlock").
+
+    Read as JSON, field by field. The build scripts used to pattern-match the
+    raw HTML for a "name" followed by a "description", which paired 17 moves'
+    text with the name of their TYPE (a move's type is an object with its own
+    "name") and missed Snow Warning, whose text carries an escape the pattern
+    did not expect."""
+    stems = [page] + ["%s_p%d" % (page, n) for n in range(2, PAGED.get(page, 1) + 1)]
+    for stem in stems:
+        yield from _carrying(list(rsc_lines(rsc_payload(stem)).values()), keys)
+
+
 # --------------------------------------------------------------------------
 # Parsers
 # --------------------------------------------------------------------------

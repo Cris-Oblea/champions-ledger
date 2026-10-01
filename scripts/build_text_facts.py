@@ -27,37 +27,28 @@ ground truth for rules. Both texts are kept either way, and the report prints
 every entry where the two disagree, so the choice can be argued with.
 """
 import argparse
-import glob
 import json
 import os
 import re
-from pathlib import Path
 
 import dex
 
 # The number reader the effect chips use to decide what a description already
 # says - one reader, so "the text states it" means the same thing in both.
 from effect_chips import same_number, values
-from paths import DB, POKEBASE
+from fetch_pokebase import rows_with
+from paths import DB
 
 OUT = os.path.join(DB, "text_facts.json")
 
-DESC = re.compile(r'\\"name\\":\\"([^\\"]+)\\"'
-                  r'((?:(?!\\"name\\").){0,900}?)'
-                  r'\\"description\\":\\"((?:[^\\"]|\\\\.)*?)\\"', re.S)
-
 
 def pokebase(kind):
-    """kind: "moves" or "abilities" - pokebase paginates both."""
+    """kind: "moves" or "abilities". The first row of a name wins (As One has
+    two forms under one name)."""
     out = {}
-    for f in sorted(glob.glob(os.path.join(POKEBASE, kind + "*.html"))):
-        h = Path(f).read_text(encoding="utf-8", errors="replace")
-        for m in DESC.finditer(h):
-            t = m.group(3)
-            t = t.replace("\\u2019", "'")
-            t = re.sub(r"\\u[0-9a-fA-F]{4}", " ", t)
-            t = t.replace("\\n", " ").replace("\\", "")
-            out.setdefault(m.group(1), " ".join(t.split()))
+    for r in rows_with(kind, "name", "description"):
+        if isinstance(r["description"], str):
+            out.setdefault(r["name"], " ".join(r["description"].split()))
     return out
 
 
