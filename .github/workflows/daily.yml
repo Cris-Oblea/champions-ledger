@@ -132,33 +132,16 @@ jobs:
       - name: install what the scripts import
         run: |
           python -m pip install --upgrade pip
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          pip install -r requirements.txt
           # jsdom, for the browser tests in daily.py's gate. Without it they
           # cannot run at all, which is how four of them drifted unnoticed.
           # `npm ci`, not `npm install`: it installs exactly what
           # package-lock.json pins and fails if the lock and package.json have
           # drifted. With `install` and a caret range, the gate resolved jsdom
-          # fresh on every run - so the seventeen browser tests could break one
+          # fresh on every run - so the browser tests could break one
           # morning on a version nobody chose.
           npm ci --no-audit --no-fund
 
-      # Refreshes and gates, and does NOT deploy. The deploy belongs to the push
-      # to main that the merge below now produces - push.yml's job, on the
-      # content that actually landed.
-      #
-      # It used to deploy from here because the merge triggered nothing: it was
-      # made with GITHUB_TOKEN, and GitHub starts no workflow for that. The App
-      # merges now, so main gets a real run, and deploying from both was the same
-      # page published twice a night.
-      #
-      # The consequence is the right one: if the gate on the pull request fails,
-      # the PR stays open and NOTHING is deployed. Data that did not pass no
-      # longer reaches the phone by a side door - which is exactly what deploying
-      # from here, before the PR existed, was doing.
-      #
-      # Hence no Cloudflare credentials in this step any more. The Supabase pair
-      # stays: it is baked into the page at build time, and the page is built
-      # here, for the gate to have something to check.
       # Only the first attempt of the day does the work. It asks the workflow's
       # own run history rather than keeping a file: a state file in a fresh
       # checkout is either not there or not trustworthy, and this question -
@@ -226,6 +209,23 @@ jobs:
             echo "normal refresh: the nightly sources only"
           fi
 
+      # Refreshes and gates, and does NOT deploy. The deploy belongs to the push
+      # to main that the merge below now produces - push.yml's job, on the
+      # content that actually landed.
+      #
+      # It used to deploy from here because the merge triggered nothing: it was
+      # made with GITHUB_TOKEN, and GitHub starts no workflow for that. The App
+      # merges now, so main gets a real run, and deploying from both was the same
+      # page published twice a night.
+      #
+      # The consequence is the right one: if the gate on the pull request fails,
+      # the PR stays open and NOTHING is deployed. Data that did not pass no
+      # longer reaches the phone by a side door - which is exactly what deploying
+      # from here, before the PR existed, was doing.
+      #
+      # Hence no Cloudflare credentials in this step any more. The Supabase pair
+      # stays: it is baked into the page at build time, and the page is built
+      # here, for the gate to have something to check.
       - name: refresh and verify
         if: steps.already.outputs.skip != 'yes' 
         env:
