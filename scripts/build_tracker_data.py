@@ -11,7 +11,7 @@ from pathlib import Path
 
 import dex
 import effect_chips
-from paths import ROOT
+from paths import POKEBASE, ROOT, SMOGON_CALC
 
 OUT = os.path.join(ROOT, "tracker", "data.js")
 
@@ -50,10 +50,6 @@ def movetext(m):
 
 
 # --- moves: only the useable ones, indexed -------------------------------
-# Physical / Special / Status must stay three distinct codes - taking the
-# first letter collapses Special and Status onto "S", which silently turns
-# every Protect into a special attack downstream
-CATEGORY = {"Physical": "P", "Special": "S", "Status": "T"}
 TARGET_LABEL = {(1, 1): "All Adjacent Pokémon", (1, 0): "All Adjacent Foes",
                 (0, 0): "Selected Target"}
 
@@ -86,7 +82,7 @@ def _targeting(m, props):
     # at your own side. Psyshield Bash reads "Ally" and Mountain Gale
     # reads "Self"; both are ordinary single-target attacks, which is what
     # Smogon's table says by having no target override for either.
-    elif (k == "self" or "ally" in k) and CATEGORY.get(m.get("category")) != "T" \
+    elif (k == "self" or "ally" in k) and dex.CATEGORY.get(m.get("category")) != "T" \
             and (m.get("power") or 0) > 0:
         tgt = "Selected Target"
     return tgt, spread, ally
@@ -97,7 +93,7 @@ def build_moves(use):
     rows = []
     for m in use:
         tgt, spread, ally = _targeting(m, props)
-        rows.append([m["name"], m["type"], CATEGORY.get(m.get("category"), "T"),
+        rows.append([m["name"], m["type"], dex.CATEGORY.get(m.get("category"), "T"),
                      m.get("power"), m.get("accuracy"), m.get("pp"),
                      m.get("priority") or 0, tgt,
                      spread,
@@ -139,8 +135,7 @@ def build_learn(learn, midx):
 def _smogon_mega_bases():
     """Smogon's Mega name -> the baseSpecies it names."""
     try:
-        sroster = json.loads(Path(ROOT, "data", "raw", "smogon_calc",
-                                  "raw_species.json").read_text(encoding="utf-8"))
+        sroster = json.loads(Path(SMOGON_CALC, "raw_species.json").read_text(encoding="utf-8"))
     except (OSError, ValueError):
         sroster = {}
     return {k: v["baseSpecies"] for k, v in sroster.items()
@@ -610,7 +605,7 @@ def current_regulation():
     pokebase calls `defaultLatestRegulationSetSlug`.
     """
     try:
-        raw = Path(ROOT, "data", "raw", "pokebase", "pokemon.html").read_text(
+        raw = Path(POKEBASE, "pokemon.html").read_text(
             encoding="utf-8", errors="replace")
     except OSError:                     # no page cached: no regulation shown
         return None, None

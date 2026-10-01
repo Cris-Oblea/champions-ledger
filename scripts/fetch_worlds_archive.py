@@ -38,7 +38,6 @@ import dex
 import net
 from paths import META, ROOT
 
-RAW = os.path.join(ROOT, "data", "raw", "tournaments")
 OUT = os.path.join(META, "worlds_archive.json")
 INDEX = "https://www.pokedata.ovh/standingsVGC/"
 

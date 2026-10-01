@@ -26,10 +26,9 @@ import time
 
 import dex
 import net
-from paths import META, ROOT
+from paths import META, POKEBASE
 
 BASE = "https://pokebase.app/pokemon-champions"
-RAW = os.path.join(ROOT, "data", "raw", "pokebase")
 
 PAGES = ["pokemon", "moves", "abilities", "items", "speed-tiers", "teams"]
 
@@ -40,10 +39,10 @@ PAGED = {"moves": 10, "abilities": 4, "items": 2}
 
 def fetch(page, force=False, num=None):
     name = page if num in (None, 1) else "%s_p%d" % (page, num)
-    dest = os.path.join(RAW, name + ".html")
+    dest = os.path.join(POKEBASE, name + ".html")
     if os.path.exists(dest) and os.path.getsize(dest) > 5000 and not force:
         return dest
-    os.makedirs(RAW, exist_ok=True)
+    os.makedirs(POKEBASE, exist_ok=True)
     url = BASE + "/" + page + ("" if num in (None, 1) else "?page=%d" % num)
     try:
         body = net.get(url, timeout=90)
@@ -58,7 +57,7 @@ def fetch(page, force=False, num=None):
 
 
 def read(page):
-    p = os.path.join(RAW, page + ".html")
+    p = os.path.join(POKEBASE, page + ".html")
     return open(p, encoding="utf-8", errors="replace").read() if os.path.exists(p) else ""
 
 

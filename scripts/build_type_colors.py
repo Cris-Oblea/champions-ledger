@@ -45,8 +45,7 @@ import sys
 import net
 import paths
 
-ROOT = pathlib.Path(paths.ROOT)
-OUT = ROOT / "data" / "db" / "type_colors.json"
+OUT = pathlib.Path(paths.DB, "type_colors.json")
 CSS = "https://assets.pokemon.com/static2/_ui/css/main.css"
 
 # The app writes type names capitalised, the stylesheet lowercases them.
@@ -140,7 +139,7 @@ def main():
     two = [k for k, v in got.items() if v["two_tone"]]
     dark = [k for k, v in got.items() if v["ink"] != "#FFFFFF"]
     low = [k for k, v in got.items() if v["contrast"] < 4.5]
-    print("wrote %s  (%d types)" % (OUT.relative_to(ROOT), len(got)))
+    print("wrote %s  (%d types)" % (OUT.relative_to(paths.ROOT), len(got)))
     print("  two-toned:      " + ", ".join(sorted(two)))
     print("  dark text:      " + ", ".join(sorted(dark)))
     if low:

@@ -44,19 +44,12 @@ incomplete. Anything NEW is what this is for.
 """
 import argparse
 import csv
-import os
 import re
 import sys
-from pathlib import Path
 
 import dex
 import fetch_home_dex
-import net
-from paths import ROOT
 
-RAW = os.path.join(ROOT, "data", "raw", "pokeapi_csv")
-PIN = "4b82c204ddd19ecb8eda2ea044ccb59e222b721c"
-BASE = "https://raw.githubusercontent.com/PokeAPI/pokeapi/%s/data/v2/csv/" % PIN
 CHAMPIONS_VG = "32"
 
 # Checked one by one against the Serebii page for that move on 2026-09-16.
@@ -77,26 +70,18 @@ KNOWN_UPSTREAM = {                   # upstream lists it, we do not
 }
 
 
-def table(name, force=False):
-    os.makedirs(RAW, exist_ok=True)
-    path = os.path.join(RAW, name)
-    if not os.path.exists(path) or force:
-        Path(path).write_bytes(net.get(BASE + name, timeout=180))
-    return path
-
-
 def mkey(n):
     """A move name reduced so both spellings meet."""
     return re.sub("[^a-z0-9]+", "-", n.lower().replace("'", "")).strip("-")
 
 
 def upstream(force=False):
-    with open(table("pokemon.csv", force), encoding="utf-8") as fh:
+    with open(fetch_home_dex.csv_path("pokemon.csv", force), encoding="utf-8") as fh:
         by_id = {r["id"]: r["identifier"] for r in csv.DictReader(fh)}
-    with open(table("moves.csv", force), encoding="utf-8") as fh:
+    with open(fetch_home_dex.csv_path("moves.csv", force), encoding="utf-8") as fh:
         mv = {r["id"]: r["identifier"] for r in csv.DictReader(fh)}
     out = {}
-    with open(table("pokemon_moves.csv", force), encoding="utf-8") as fh:
+    with open(fetch_home_dex.csv_path("pokemon_moves.csv", force), encoding="utf-8") as fh:
         for r in csv.DictReader(fh):
             if r["version_group_id"] != CHAMPIONS_VG:
                 continue

@@ -49,9 +49,9 @@ import sys
 import time
 from pathlib import Path
 
-from paths import ROOT
+from paths import DB, RAW
 
-CACHE = os.path.join(ROOT, "data", "raw", "ledger_cache.json")
+CACHE = os.path.join(RAW, "ledger_cache.json")
 TTL = 900                                   # seconds
 
 # Observed in game by the player on 2026-08-29. Serebii's training page still
@@ -157,7 +157,7 @@ def _item_categories():
     the owned list, which meant a category could drift from the dex that
     defines it.
     """
-    path = os.path.join(ROOT, "data", "db", "items.json")
+    path = os.path.join(DB, "items.json")
     try:
         rows = json.loads(Path(path).read_text(encoding="utf-8"))
     except (OSError, ValueError):

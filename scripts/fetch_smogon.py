@@ -31,10 +31,10 @@ from pathlib import Path
 
 import dex
 import net
-from paths import DB, META, ROOT
+from paths import DB, META, RAW
 
 RPC = "https://www.smogon.com/dex/_rpc/"
-RAW = os.path.join(ROOT, "data", "raw", "smogon")
+CACHE = os.path.join(RAW, "smogon")
 
 
 def _post(method, params, timeout=60):
@@ -140,7 +140,7 @@ def dex_texts(force=False):
     asks everything again, which is what keeps it current."""
     out, asked, failed = {}, 0, []
     for bucket, rpc_kind, source in DEX_KINDS:
-        cache_dir = os.path.join(RAW, bucket)
+        cache_dir = os.path.join(CACHE, bucket)
         os.makedirs(cache_dir, exist_ok=True)
         rows = json.loads(Path(DB, source).read_text(encoding="utf-8"))
         rows = rows if isinstance(rows, list) else list(rows.values())
@@ -216,7 +216,7 @@ def parse_moveset(ms):
 
 def _basics(force):
     """Smogon's Champions dex basics, from the cache unless --force."""
-    basics_path = os.path.join(RAW, "basics.json")
+    basics_path = os.path.join(CACHE, "basics.json")
     if os.path.exists(basics_path) and not force:
         return json.loads(Path(basics_path).read_text(encoding="utf-8"))
     print("Fetching dump-basics ...")
@@ -246,7 +246,7 @@ def _write_basics(basics):
 
 def _pokemon_dump(alias, force):
     """One Pokemon's dump, cached; None when Smogon did not answer."""
-    cache = os.path.join(RAW, alias + ".json")
+    cache = os.path.join(CACHE, alias + ".json")
     if os.path.exists(cache) and not force:
         return json.loads(Path(cache).read_text(encoding="utf-8"))
     data = rpc("dump-pokemon", {"alias": alias, "gen": "champions", "language": "en"})
@@ -285,7 +285,7 @@ def _vgc_strategies(data):
 
 def main():
     force = "--force" in sys.argv
-    os.makedirs(RAW, exist_ok=True)
+    os.makedirs(CACHE, exist_ok=True)
     os.makedirs(META, exist_ok=True)
     os.makedirs(DB, exist_ok=True)
 

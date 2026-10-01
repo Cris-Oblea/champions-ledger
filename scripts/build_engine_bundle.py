@@ -21,9 +21,9 @@ import os
 import subprocess
 import sys
 
-from paths import ROOT
+from paths import ROOT, SMOGON_CALC
 
-CALC = os.path.join(ROOT, "data", "raw", "smogon_calc", "calc")
+CALC = os.path.join(SMOGON_CALC, "calc")
 ENTRY = os.path.join(CALC, "__entry.js")
 OUT = os.path.join(ROOT, "tracker", "engine.bundle.js")
 

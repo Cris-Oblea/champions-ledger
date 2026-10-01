@@ -41,9 +41,9 @@ import re
 import sys
 
 import net
-from paths import ROOT
+from paths import DB
 
-RECORD = os.path.join(ROOT, "data", "db", "regulation.json")
+RECORD = os.path.join(DB, "regulation.json")
 POKEBASE = "https://pokebase.app/pokemon-champions/pokemon"
 SEREBII = "https://www.serebii.net/pokemonchampions/rankedbattle.shtml"
 

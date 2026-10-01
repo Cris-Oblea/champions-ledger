@@ -33,10 +33,9 @@ import re
 from pathlib import Path
 
 import dex
-from paths import ROOT
+from paths import DB, POKEBASE
 
-RAW = os.path.join(ROOT, "data", "raw", "pokebase")
-OUT = os.path.join(ROOT, "data", "db", "item_facts.json")
+OUT = os.path.join(DB, "item_facts.json")
 
 # "name":"Life Orb", ... ,"unlock":"shop-1000-vp"  - escaped inside the RSC
 # payload, so the quotes arrive as \" and the window is capped so one item's
@@ -51,7 +50,7 @@ DESC = re.compile(r'\\"name\\":\\"([^\\"]+)\\"'
 
 def pokebase_pages():
     for fn in ("items.html", "items_p2.html"):
-        p = os.path.join(RAW, fn)
+        p = os.path.join(POKEBASE, fn)
         if os.path.exists(p):
             yield Path(p).read_text(encoding="utf-8", errors="replace")
 

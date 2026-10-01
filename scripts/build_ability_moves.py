@@ -41,9 +41,9 @@ import sys
 from pathlib import Path
 
 import dex
-from paths import ROOT
+from paths import DB, SMOGON_CALC
 
-OUT = os.path.join(ROOT, "data", "db", "ability_moves.json")
+OUT = os.path.join(DB, "ability_moves.json")
 
 STATS = (r"Attack|Defense|Defence|Sp\. ?Atk|Sp\. ?Def|Special Attack|"
          r"Special Defense|Speed|accuracy|evasiveness")
@@ -124,7 +124,7 @@ _STAT_NAME = {"Sp.Atk": "Sp. Atk", "Sp.Def": "Sp. Def", "Defence": "Defense",
               "Special Attack": "Sp. Atk", "Special Defense": "Sp. Def"}
 
 
-SMOG = os.path.join(ROOT, "data", "raw", "smogon_calc", "raw_moves.json")
+SMOG = os.path.join(SMOGON_CALC, "raw_moves.json")
 
 
 def smogon_moves():

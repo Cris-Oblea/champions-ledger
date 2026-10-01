@@ -42,7 +42,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-from paths import ROOT
+from paths import META, RAW, ROOT, SMOGON_CALC
 
 # Windows consoles default to cp1252, and the summary quotes what the sources
 # printed - a U+FFFD in one of them killed the run at its very last line,
@@ -52,8 +52,8 @@ for _s in (sys.stdout, sys.stderr):
         _s.reconfigure(errors="replace")
 
 PY = sys.executable
-LOGDIR = os.path.join(ROOT, "data", "raw", "daily_logs")
-STATE = os.path.join(ROOT, "data", "raw", "daily_state.json")
+LOGDIR = os.path.join(RAW, "daily_logs")
+STATE = os.path.join(RAW, "daily_state.json")
 
 # what is worth reporting a change in, and how to describe it
 WATCH = [
@@ -339,7 +339,7 @@ def snapshot():
 
 def ladder_summary():
     """The one source whose *content* is worth summarising, not just hashing."""
-    p = os.path.join(ROOT, "data", "meta", "usage_pokemon.json")
+    p = os.path.join(META, "usage_pokemon.json")
     try:
         d = json.loads(Path(p).read_text(encoding="utf-8"))
     except (OSError, ValueError):
@@ -512,8 +512,7 @@ def _rebuild_from_repo(out):
     published and must never be a leftover.
     """
     out.append("mode: no refresh - rebuild from the repo, then gate")
-    vendored = os.path.exists(os.path.join(
-        ROOT, "data", "raw", "smogon_calc", "raw_species.json"))
+    vendored = os.path.exists(os.path.join(SMOGON_CALC, "raw_species.json"))
     steps = []
     if vendored:
         steps = [([PY, "scripts/build_tracker_data.py"], "data.js"),

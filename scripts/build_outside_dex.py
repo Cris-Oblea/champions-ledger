@@ -64,7 +64,7 @@ import dex
 from audit_learnsets import CHAMPIONS_VG
 from fetch_home_dex import key as hkey
 from fetch_home_dex import resolver, table
-from paths import ROOT
+from paths import DB, ROOT
 
 OUT = os.path.join(ROOT, "tracker", "outsidedex.js")
 ENGLISH = "9"
@@ -72,8 +72,6 @@ ENGLISH = "9"
 # against move_damage_classes.csv rather than trusted, because a silent
 # reordering upstream would turn every status move into a physical one.
 CLASS = {"status": "T", "physical": "P", "special": "S"}
-# ...and OUR spelling of the same three, which is what moves.json writes.
-CAT = {"Physical": "P", "Special": "S", "Status": "T"}
 
 
 def key(s):
@@ -126,7 +124,7 @@ def _pool(move_ids, upstream_name, champ_by_key, smogon, mv, nomatch):
         nm = row["name"]                       # OUR spelling, always
         names.append(nm)
         if not row.get("useable") and nm not in mv:
-            mv[nm] = [row.get("type"), CAT.get(row.get("category"), "T"),
+            mv[nm] = [row.get("type"), dex.CATEGORY.get(row.get("category"), "T"),
                       row.get("power"), row.get("accuracy"), row.get("pp"),
                       smogon.get(nm) or clean(row.get("effect") or "")]
     return names
@@ -146,7 +144,7 @@ def build():
     # older game's page, which can describe a different move.
     smogon = (dex.db("smogon_text") or {}).get("moves") or {}
     champ_abils = {key(a["name"]) for a in dex.db("abilities")}
-    home = json.loads(Path(ROOT, "data", "db", "home_dex.json").read_text(encoding="utf-8"))
+    home = json.loads(Path(DB, "home_dex.json").read_text(encoding="utf-8"))
     upstream_name, aname, aprose = _upstream_names()
 
     # --- the abilities Champions has no row for ---------------------------

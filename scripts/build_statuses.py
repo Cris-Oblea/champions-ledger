@@ -34,11 +34,11 @@ import os
 import re
 
 import dex
-from paths import ROOT
+from paths import DB, RAW
 from serebii_text import read
 
-PAGE = os.path.join(ROOT, "data", "raw", "pages", "statusconditions.html")
-OUT = os.path.join(ROOT, "data", "db", "statuses.json")
+PAGE = os.path.join(RAW, "pages", "statusconditions.html")
+OUT = os.path.join(DB, "statuses.json")
 
 
 def txt(s):

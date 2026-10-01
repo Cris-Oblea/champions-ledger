@@ -29,11 +29,10 @@ import re
 from pathlib import Path
 
 import dex
-from paths import ROOT
+from paths import POKEAPI_CSV, POKEBASE, SMOGON_CALC
 
-PB = os.path.join(ROOT, "data", "raw", "pokebase")
-SMOG = os.path.join(ROOT, "data", "raw", "smogon_calc", "raw_moves.json")
-API = os.path.join(ROOT, "data", "raw", "pokeapi_csv", "moves.csv")
+SMOG = os.path.join(SMOGON_CALC, "raw_moves.json")
+API = os.path.join(POKEAPI_CSV, "moves.csv")
 
 # pokebase's payload states the four numbers inline, in one shape
 PB_MOVE = re.compile(
@@ -49,7 +48,7 @@ def num(x):
 
 def pokebase_moves():
     out = {}
-    for f in sorted(glob.glob(os.path.join(PB, "moves*.html"))):
+    for f in sorted(glob.glob(os.path.join(POKEBASE, "moves*.html"))):
         h = Path(f).read_text(encoding="utf-8", errors="replace")
         for m in PB_MOVE.finditer(h):
             out.setdefault(m.group(1), {
