@@ -25,8 +25,7 @@ import sys
 from pathlib import Path
 
 import query as Q
-
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+from paths import ROOT
 
 OUT = os.path.join(ROOT, "data", "meta", "gts_difficulty.json")
 SRC = os.path.join(ROOT, "data", "meta", "go_sourcing.json")

@@ -20,11 +20,10 @@ import threading
 import time
 
 import net
+from paths import RAW
 from serebii_text import read
 
 BASE = "https://www.serebii.net"
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-RAW = os.path.join(ROOT, "data", "raw")
 
 STATIC_PAGES = [
     "pokemon", "moves", "updatedattacks", "items", "training", "rankedbattle",

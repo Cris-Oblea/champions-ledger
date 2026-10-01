@@ -20,7 +20,8 @@ import re
 import subprocess
 import sys
 
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+from paths import ROOT
+
 OUT = os.path.join(ROOT, "data", "db", "modifiers.json")
 PY = sys.executable
 DMG = os.path.join(ROOT, "scripts", "damage.py")

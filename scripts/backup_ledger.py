@@ -45,7 +45,8 @@ import subprocess
 import sys
 from pathlib import Path
 
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+from paths import ROOT
+
 DEFAULT_DIR = os.environ.get(
     "CHAMPIONS_BACKUP_DIR",
     os.path.join(os.path.expanduser("~"), "ChampionsLedgerBackups"))

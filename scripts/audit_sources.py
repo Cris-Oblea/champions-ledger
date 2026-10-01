@@ -29,8 +29,7 @@ import re
 from pathlib import Path
 
 import query as Q
-
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+from paths import ROOT
 
 PB = os.path.join(ROOT, "data", "raw", "pokebase")
 SMOG = os.path.join(ROOT, "data", "raw", "smogon_calc", "raw_moves.json")

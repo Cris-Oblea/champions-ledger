@@ -25,8 +25,8 @@ import os
 from pathlib import Path
 
 import net
+from paths import ROOT
 
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RAW = os.path.join(ROOT, "data", "raw", "pokeapi_species.json")
 OUT = os.path.join(ROOT, "data", "db", "dex_numbers.json")
 URL = "https://pokeapi.co/api/v2/pokemon-species?limit=2000"

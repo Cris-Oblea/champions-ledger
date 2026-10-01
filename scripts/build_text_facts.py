@@ -38,8 +38,7 @@ import query as Q
 # The number reader the effect chips use to decide what a description already
 # says - one reader, so "the text states it" means the same thing in both.
 from effect_chips import same_number, values
-
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+from paths import ROOT
 
 RAW = os.path.join(ROOT, "data", "raw", "pokebase")
 OUT = os.path.join(ROOT, "data", "db", "text_facts.json")
@@ -181,7 +180,6 @@ def smogon_first(moves, mv):
         print("   DISPUTE %-14s our row carries a %d%% secondary chance; "
               "Smogon's Champions text states none" % (n, r))
     return mv
-
 
 
 def smogon_abilities(ab):

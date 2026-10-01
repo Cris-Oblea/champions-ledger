@@ -20,14 +20,13 @@ which is the patch note for that regulation.  It is not usually typed: the
 run asks the sources which regulation is live and turns it on by itself.
 """
 import argparse
-import os
 import subprocess
 import sys
 import time
 from typing import NamedTuple
 
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-RAW = os.path.join(ROOT, "data", "raw")
+from paths import ROOT
+
 PY = sys.executable
 
 

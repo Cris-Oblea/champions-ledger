@@ -31,8 +31,7 @@ from pathlib import Path
 
 import damage as Dm
 import query as Q
-
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+from paths import ROOT
 
 bad = 0
 

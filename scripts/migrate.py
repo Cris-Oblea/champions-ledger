@@ -29,7 +29,8 @@ import subprocess
 import sys
 from pathlib import Path
 
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+from paths import ROOT
+
 SQLDIR = os.path.join(ROOT, "tracker")
 
 LEDGER = """

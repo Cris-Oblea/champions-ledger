@@ -49,7 +49,8 @@ import sys
 import time
 from pathlib import Path
 
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+from paths import ROOT
+
 CACHE = os.path.join(ROOT, "data", "raw", "ledger_cache.json")
 TTL = 900                                   # seconds
 

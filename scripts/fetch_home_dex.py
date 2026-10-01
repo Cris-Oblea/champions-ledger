@@ -64,11 +64,9 @@ from types import SimpleNamespace
 
 import net
 import query as Q
-
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+from paths import META, ROOT
 
 RAW = os.path.join(ROOT, "data", "raw", "pokeapi_csv")
-META = os.path.join(ROOT, "data", "meta")
 OUT = os.path.join(ROOT, "data", "db", "home_dex.json")
 SPRITES = os.path.join(ROOT, "data", "db", "sprite_ids.json")
 FORMS = os.path.join(ROOT, "data", "db", "form_line.json")

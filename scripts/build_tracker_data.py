@@ -12,11 +12,9 @@ from pathlib import Path
 
 import effect_chips
 import query as Q
-
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+from paths import ROOT
 
 OUT = os.path.join(ROOT, "tracker", "data.js")
-
 
 
 # Which flags an ability keys off. One letter each so the blob stays small.
