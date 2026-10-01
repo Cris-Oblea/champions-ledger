@@ -16272,7 +16272,10 @@
    "Baxcalibur"
   ],
   "learner_count": 9,
-  "useable": true
+  "useable": true,
+  "rulings": {
+   "effect_rate": "No secondary: Serebii's 100% rate is the guaranteed crit, which Smogon's engine models as willCrit, not as a secondary."
+  }
  },
  {
   "slug": "frustration",
