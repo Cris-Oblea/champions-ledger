@@ -198,16 +198,16 @@ def rows_with(page, *keys):
 # --------------------------------------------------------------------------
 def parse_pokemon_usage():
     """Pokemon usage lives in a id->percent map; names come from the same payload."""
-    payload = rsc_payload("pokemon")
+    lines = rsc_lines(rsc_payload("pokemon"))
     usage = {}
-    m = re.search(r'"usagePercentByPokemonId":\{(.*?)\}', payload, re.S)
-    if m:
-        for pid, pct in re.findall(r'"([0-9a-f]{24})":([\d.]+)', m.group(1)):
-            usage[pid] = float(pct)
+    for m in find_key(lines, "usagePercentByPokemonId"):
+        if isinstance(m, dict):
+            usage = {pid: float(pct) for pid, pct in m.items()}
+            break
 
     # names/stats come from the docs array, keyed by the same object id
     names = {}
-    for bucket in find_key(rsc_lines(payload), "docs"):
+    for bucket in find_key(lines, "docs"):
         if not (isinstance(bucket, list) and bucket):
             continue
         for d in bucket:
@@ -273,25 +273,9 @@ def parse_table_usage(page):
 
 
 def parse_speed_tiers():
-    payload = rsc_payload("speed-tiers")
-    m = re.search(r'"tierRows":(\[.*?\}\]\}\])', payload, re.S)
-    if not m:
-        return []
-    try:
-        rows = json.loads(m.group(1))
-    except ValueError:
-        # fall back: cut at the next top-level key
-        depth, end = 0, None
-        raw = payload[payload.find('"tierRows":') + 11:]
-        for i, ch in enumerate(raw):
-            if ch == "[":
-                depth += 1
-            elif ch == "]":
-                depth -= 1
-                if depth == 0:
-                    end = i + 1
-                    break
-        rows = json.loads(raw[:end]) if end else []
+    lines = rsc_lines(rsc_payload("speed-tiers"))
+    rows = next((resolve(v, lines) for v in find_key(lines, "tierRows")
+                 if isinstance(v, list)), [])
     out = []
     for r in rows:
         out.append({
