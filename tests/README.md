@@ -16,9 +16,18 @@ the list, with one line saying what each protects.
 **A check is one line, and Node's own runner judges it** (`node:test`):
 
 ```js
-const { check, tick, open } = require("./harness.js");
+const { describe } = require("node:test");
+const { check, idle, open } = require("./harness.js");
 const { dom, errs } = open({ box: ROWS, builds: BUILDS });
-check("the build keeps its ability", got, "Intimidate");
+
+(async () => {
+  await idle();
+  await describe("saving a build", async () => {
+    click(saveButton());
+    await idle();
+    check("the build keeps its ability", got(), "Intimidate");
+  });
+})();
 ```
 
 `check(label, got, want)` compares the two as strings and is one `node:test`
@@ -27,9 +36,16 @@ test, so a failure fails the file - no test keeps its own counter or exit code
 found). `open()` boots the page on a stubbed ledger and never needs a Supabase
 stub of its own: the tables passed are what the ledger holds, and passing any
 signs the page in. What the app sends back lands in `window.__WROTE`
-(`{op, table, row}`) and `window.__DELETED` (`{table, col, id}`). `tick(ms)`
-lets the page run its timers and redraws; `ROOT` is the repo, for reading a
-file. `fixture.js` is the deliberately awkward ledger `ledgertest.js` walks.
+(`{op, table, row}`) and `window.__DELETED` (`{table, col, id}`).
+
+**Nothing waits a guessed number of milliseconds.** `await idle()` is one turn
+of the event loop, and that finishes everything the page started: the stubbed
+ledger answers with promises already resolved, and the app's own deferred work
+sits on zero-delay timers. A delay the app chose itself (the confirm dialog
+focuses its button after 30 ms) is waited out with `await until(cond)`, which
+never throws - the check after it says whether it held. Sections are
+`describe()` blocks, so a failure is reported under the section it broke.
+`ROOT` is the repo, for reading a file. `fixture.js` is the deliberately awkward ledger `ledgertest.js` walks.
 
 ## What each one is for
 

@@ -8,7 +8,8 @@
 
    So this asserts the SHAPE, not the values: one input, no VP anywhere, and
    every derived line present and non-empty. */
-const { check, open, source } = require("./harness.js");
+const { describe } = require("node:test");
+const { check, open, source, idle } = require("./harness.js");
 
 const UID = "u1";
 const ROWS = [
@@ -42,48 +43,70 @@ const pairs = id => {
   return out;
 };
 
-setTimeout(() => {
-  console.log("\n  el encabezado");
-  check("se llama Settings", d.querySelector("#v-trainer h1").textContent, "Settings");
-  check("y la pestaña tambien",
-     [...d.querySelectorAll("#tabs button, #tabs a")]
-       .some(b => b.textContent.trim() === "Settings"), true);
+/* The open sheet's "In battle" block, as one line of text. IT IS A BLOCK NOW,
+   NOT A LINE (2026-09-21). It was one grey sentence while there was nowhere
+   better to put it; the sheet draws these forms the way it draws a Mega now -
+   sprite, typing, six stats, its own damage table - so this reads the block
+   instead. The facts asserted with it are the same ones, and that is the
+   point of changing only the reader. */
+const bnote = () => {
+  const b = d.getElementById("sheetBody");
+  const hs = [...b.querySelectorAll("h2")]
+    .filter(x => /^In battle/.test(x.textContent));
+  if (!hs.length) return "";
+  let t = hs[0].textContent;
+  for (let n = hs[0].nextElementSibling; n && n.tagName !== "H2";
+       n = n.nextElementSibling) t += " " + n.textContent;
+  return t.replace(/\s+/g, " ");
+};
 
-  console.log("\n  un solo campo editable");
-  const inputs = [...d.querySelectorAll("#v-trainer input")]
-    .filter(i => i.type !== "file").map(i => i.id);
-  check("solo queda box capacity", inputs.join(", "), "tCap");
+(async () => {
+  await idle();
+  describe("el encabezado", () => {
+    check("se llama Settings", d.querySelector("#v-trainer h1").textContent, "Settings");
+    check("y la pestaña tambien",
+       [...d.querySelectorAll("#tabs button, #tabs a")]
+         .some(b => b.textContent.trim() === "Settings"), true);
+  });
 
-  console.log("\n  el VP no se guarda en ningun sitio");
-  check("sin campo de balance", !!d.getElementById("tVp"), false);
-  check("sin chip de VP en la cabecera", !!d.getElementById("vpCount"), false);
-  check("y el codigo no lo escribe", /vp_balance/.test(code), false);
-  /* the cost table stays, as pure reference */
-  const costs = pairs("costs");
-  check("la tabla de costes sigue", Object.keys(costs).length >= 8, true);
-  check("y un coste conocido es correcto", costs["Move"], "250 VP");
+  describe("un solo campo editable", () => {
+    const inputs = [...d.querySelectorAll("#v-trainer input")]
+      .filter(i => i.type !== "file").map(i => i.id);
+    check("solo queda box capacity", inputs.join(", "), "tCap");
+  });
 
-  console.log("\n  lo derivado, que no puede quedarse obsoleto");
-  check("uso de la caja junto a la capacidad",
-     /2 of 50 used . 48 free/.test(d.getElementById("capUse").textContent), true);
-  const hold = pairs("profCounts");
-  check("cuenta la caja separando comprados de rentals",
-     hold["In the Champions box"], "2 (1 bought, 1 rental)");
-  check("cuenta HOME", hold["In HOME"], "1");
-  check("cuenta builds", hold["Builds written"], "1");
-  check("cuenta piedras sobre el total", /of 81$/.test(hold["Mega Stones owned"]), true);
+  describe("el VP no se guarda en ningun sitio", () => {
+    check("sin campo de balance", !!d.getElementById("tVp"), false);
+    check("sin chip de VP en la cabecera", !!d.getElementById("vpCount"), false);
+    check("y el codigo no lo escribe", /vp_balance/.test(code), false);
+    /* the cost table stays, as pure reference */
+    const costs = pairs("costs");
+    check("la tabla de costes sigue", Object.keys(costs).length >= 8, true);
+    check("y un coste conocido es correcto", costs["Move"], "250 VP");
+  });
 
-  const data = pairs("profData");
-  /* the regulation is READ from pokebase, never typed - which is the whole
-     point: the field it replaced said M-B three days into M-C */
-  check("la regulacion sale de los datos", /^M-[A-Z] . since \d{4}-\d\d-\d\d/.test(data["Regulation"]), true);
-  check("dice cuando se bajo el uso del ladder",
-     /fetched \d{4}-\d\d-\d\d/.test(data["Ladder usage"]), true);
-  check("y que es del ladder de esa regulacion",
-     data["Ladder usage"].indexOf(data["Regulation"].split(" ")[0]) > 0, true);
-  check("marca los datos de torneo como historia",
-     /M-B/.test(data["Tournament data"]), true);
-  check("cuenta las formas del dex", /^\d{3} forms/.test(data["Dex"]), true);
+  describe("lo derivado, que no puede quedarse obsoleto", () => {
+    check("uso de la caja junto a la capacidad",
+       /2 of 50 used . 48 free/.test(d.getElementById("capUse").textContent), true);
+    const hold = pairs("profCounts");
+    check("cuenta la caja separando comprados de rentals",
+       hold["In the Champions box"], "2 (1 bought, 1 rental)");
+    check("cuenta HOME", hold["In HOME"], "1");
+    check("cuenta builds", hold["Builds written"], "1");
+    check("cuenta piedras sobre el total", /of 81$/.test(hold["Mega Stones owned"]), true);
+
+    const data = pairs("profData");
+    /* the regulation is READ from pokebase, never typed - which is the whole
+       point: the field it replaced said M-B three days into M-C */
+    check("la regulacion sale de los datos", /^M-[A-Z] . since \d{4}-\d\d-\d\d/.test(data["Regulation"]), true);
+    check("dice cuando se bajo el uso del ladder",
+       /fetched \d{4}-\d\d-\d\d/.test(data["Ladder usage"]), true);
+    check("y que es del ladder de esa regulacion",
+       data["Ladder usage"].indexOf(data["Regulation"].split(" ")[0]) > 0, true);
+    check("marca los datos de torneo como historia",
+       /M-B/.test(data["Tournament data"]), true);
+    check("cuenta las formas del dex", /^\d{3} forms/.test(data["Dex"]), true);
+  });
 
   /* The stat line is the form it STARTS in, and Aegislash never attacks in
      that one: Stance Change gives it 140 Attack the moment it uses a damaging
@@ -91,45 +114,32 @@ setTimeout(() => {
      for a while and nothing shipped it to the app, so both sheets showed the
      misleading half (found 2026-09-12). Asserted on BOTH, because the number
      is equally wrong on each. */
-  console.log("\n  lo que cambia en combate");
-  /* IT IS A BLOCK NOW, NOT A LINE (2026-09-21). It was one grey sentence
-     while there was nowhere better to put it; the sheet draws these forms
-     the way it draws a Mega now - sprite, typing, six stats, its own damage
-     table - so this reads the block instead. The facts asserted below are
-     the same ones, and that is the point of changing only the reader. */
-  const bnote = () => {
-    const b = d.getElementById("sheetBody");
-    const hs = [...b.querySelectorAll("h2")]
-      .filter(x => /^In battle/.test(x.textContent));
-    if (!hs.length) return "";
-    let t = hs[0].textContent;
-    for (let n = hs[0].nextElementSibling; n && n.tagName !== "H2";
-         n = n.nextElementSibling) t += " " + n.textContent;
-    return t.replace(/\s+/g, " ");
-  };
-  w.findDetail(w.byName["Aegislash"]);
-  check("Aegislash avisa de Blade Forme", /Blade/.test(bnote()), true);
-  check("...y que el Ataque pasa de 50 a 140", /Atk 50 . 140/.test(bnote()), true);
-  check("...nombrando la habilidad", /Stance Change/.test(bnote()), true);
-  w.findDetail(w.byName["Palafin"]);
-  check("Palafin avisa de Hero Form", /Atk 70 . 160/.test(bnote()), true);
-  w.findDetail(w.byName["Castform"]);
-  check("Castform avisa del cambio de TIPO",
-     /Fire/.test(bnote()) && /Water/.test(bnote()) && /Ice/.test(bnote()), true);
-  w.findDetail(w.byName["Garchomp"]);
-  check("y un Pokemon que no cambia no lleva bloque", bnote(), "");
-  w.pokeSheet({name:"Aegislash", location:"champions", status:"permanent",
-               origin:"champions", _id:"x"});
-  check("y la ficha de la caja lo dice igual", /Atk 50 . 140/.test(bnote()), true);
-
-  console.log("\n  diagnostics");
-  const diag = pairs("diagOut");
-  ["Latest deployed", "Regulation", "Ladder usage fetched", "Blob integrity",
-   "Last ledger write"].forEach(k => {
-    check("informa " + k, !!(diag[k] && diag[k].length), true);
+  describe("lo que cambia en combate", () => {
+    w.findDetail(w.byName["Aegislash"]);
+    check("Aegislash avisa de Blade Forme", /Blade/.test(bnote()), true);
+    check("...y que el Ataque pasa de 50 a 140", /Atk 50 . 140/.test(bnote()), true);
+    check("...nombrando la habilidad", /Stance Change/.test(bnote()), true);
+    w.findDetail(w.byName["Palafin"]);
+    check("Palafin avisa de Hero Form", /Atk 70 . 160/.test(bnote()), true);
+    w.findDetail(w.byName["Castform"]);
+    check("Castform avisa del cambio de TIPO",
+       /Fire/.test(bnote()) && /Water/.test(bnote()) && /Ice/.test(bnote()), true);
+    w.findDetail(w.byName["Garchomp"]);
+    check("y un Pokemon que no cambia no lleva bloque", bnote(), "");
+    w.pokeSheet({name:"Aegislash", location:"champions", status:"permanent",
+                 origin:"champions", _id:"x"});
+    check("y la ficha de la caja lo dice igual", /Atk 50 . 140/.test(bnote()), true);
   });
-  check("la integridad no reporta nada vacio", /MISSING/.test(diag["Blob integrity"]), false);
-  check("la ultima escritura sale del ledger", diag["Last ledger write"], "2026-09-12");
+
+  describe("diagnostics", () => {
+    const diag = pairs("diagOut");
+    ["Latest deployed", "Regulation", "Ladder usage fetched", "Blob integrity",
+     "Last ledger write"].forEach(k => {
+      check("informa " + k, !!(diag[k] && diag[k].length), true);
+    });
+    check("la integridad no reporta nada vacio", /MISSING/.test(diag["Blob integrity"]), false);
+    check("la ultima escritura sale del ledger", diag["Last ledger write"], "2026-09-12");
+  });
 
   check("la pagina no reporta errores de script", errs.join(" | ") || "ninguno", "ninguno");
-}, 1600);
+})();

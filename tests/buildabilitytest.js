@@ -30,7 +30,8 @@
      Lycanroc-Midnight                      -> still has No Guard (2026-09-19)
      Greninja-Bond / Rockruff-Dusk in HOME  -> their own ability, not the
                                                base species' three */
-const { check, tick, open } = require("./harness.js");
+const { describe } = require("node:test");
+const { check, idle, open } = require("./harness.js");
 const UID = "u1";
 
 const row = (id, name) => ({user_id:UID, id, name, location:"champions",
@@ -69,97 +70,99 @@ const cardFor = n => [...d.querySelectorAll("#listBuilds .row")]
   .find(r => ((r.querySelector(".rname") || r).textContent.trim().indexOf(n) === 0));
 
 (async () => {
-  await tick(900);
-  console.log("\n  la habilidad que corre una build");
-  check("Aegislash: una sola, o sea es un hecho",
-     w.activeAbility({pokemon:"Aegislash"}), "Stance Change");
-  check("Clawitzer: igual", w.activeAbility({pokemon:"Clawitzer"}), "Mega Launcher");
-  check("Garchomp: dos, o sea es una eleccion sin hacer",
-     w.activeAbility({pokemon:"Garchomp"}), "null");
-  check("y con piedra corre la del Mega",
-     w.activeAbility({pokemon:"Camerupt", mega:"Mega Camerupt"}), "Sheer Force");
-  check("lo elegido manda sobre lo deducido",
-     w.activeAbility({pokemon:"Garchomp", ability:"Rough Skin"}), "Rough Skin");
+  await idle();
+  describe("la habilidad que corre una build", () => {
+    check("Aegislash: una sola, o sea es un hecho",
+       w.activeAbility({pokemon:"Aegislash"}), "Stance Change");
+    check("Clawitzer: igual", w.activeAbility({pokemon:"Clawitzer"}), "Mega Launcher");
+    check("Garchomp: dos, o sea es una eleccion sin hacer",
+       w.activeAbility({pokemon:"Garchomp"}), "null");
+    check("y con piedra corre la del Mega",
+       w.activeAbility({pokemon:"Camerupt", mega:"Mega Camerupt"}), "Sheer Force");
+    check("lo elegido manda sobre lo deducido",
+       w.activeAbility({pokemon:"Garchomp", ability:"Rough Skin"}), "Rough Skin");
+  });
+  describe("y por eso la ficha ya la muestra", () => {
+    w.go("builds");
+    check("Clawitzer: Mega Launcher en la tarjeta",
+       /Mega Launcher/.test(cardFor("Clawitzer").textContent), true);
+    check("Aegislash: Stance Change, aunque sea solo una idea",
+       /Stance Change/.test(cardFor("Aegislash").textContent), true);
+    check("Camerupt con piedra: la del Mega",
+       /Sheer Force/.test(cardFor("Camerupt").textContent), true);
+    check("Garchomp no inventa ninguna",
+       /Sand Veil|Rough Skin/.test(cardFor("Garchomp").textContent), false);
+  });
+  await describe("abierta la build de Clawitzer", async () => {
+    click(cardFor("Clawitzer"));
+    await idle();
+    const ab = [...editor().querySelectorAll("select")]
+      .find(s => [...s.options].some(o => o.value === "Mega Launcher"));
+    check("el selector trae la unica que hay", ab.value, "Mega Launcher");
+    check("y no ofrece una fila en blanco",
+       [...ab.options].some(o => o.value === ""), false);
+    const slot = [...editor().querySelectorAll(".slot")]
+      .find(s => /Water Pulse/.test(s.textContent));
+    check("Water Pulse lleva el bono de Mega Launcher",
+       /Mega Launcher/.test(slot.textContent), true);
+    /* escribirla NO es retunear: es la habilidad que siempre tuvo */
+    check("no cobra 500 VP por anotarla",
+       /ability 500/.test(editor().textContent), false);
+  });
+  await describe("al guardar", async () => {
+    click(saveBtn());
+    await idle();
+    const wrote = w.__WROTE.filter(x => x.table === "builds").pop();
+    check("guarda la habilidad", wrote.row.ability, "Mega Launcher");
+    check("en la fila de esta build", wrote.row.id, "clawitzer");
+  });
+  await describe("y con dos habilidades no elige por el", async () => {
+    w.go("builds");
+    click(cardFor("Garchomp"));
+    await idle();
+    const ab2 = [...editor().querySelectorAll("select")]
+      .find(s => [...s.options].some(o => o.value === "Rough Skin"));
+    check("el selector abre sin elegir", ab2.value, "");
+    check("y lo dice en la primera fila",
+       /not chosen/.test(ab2.options[0].textContent), true);
+    check("los checks avisan de que falta",
+       /No ability chosen/.test(editor().textContent), true);
+    click(saveBtn());
+    await idle();
+    const w2 = w.__WROTE.filter(x => x.table === "builds").pop();
+    check("y guarda null, no la primera de la lista", w2.row.ability, "null");
+  });
+  await describe("ninguna habilidad se pierde por el camino", async () => {
+    /* the list the choice is made from - his sentence is the case */
+    const possible = n => {
+      w.findDetail(w.byName[n]);
+      const l = [...d.querySelectorAll("#sheetBody .lbl")]
+        .find(x => x.textContent === "Possible ability");
+      const v = l ? l.previousElementSibling.textContent : "";
+      w.closeSheet();
+      return v;
+    };
+    check("Greninja: tres en su ficha", possible("Greninja"),
+       "Torrent / Protean / Battle Bond");
+    check("Lycanroc-Midnight sigue con No Guard",
+       /No Guard/.test(possible("Lycanroc-Midnight")), true);
+    check("Greninja-Bond de HOME: la suya, no las del base",
+       (w.anyRow("Greninja-Bond").ab || []).join(" / "), "Battle Bond");
+    check("Rockruff-Dusk de HOME: Own Tempo",
+       (w.anyRow("Rockruff-Dusk").ab || []).join(" / "), "Own Tempo");
 
-  w.go("builds");
-  console.log("\n  y por eso la ficha ya la muestra");
-  check("Clawitzer: Mega Launcher en la tarjeta",
-     /Mega Launcher/.test(cardFor("Clawitzer").textContent), true);
-  check("Aegislash: Stance Change, aunque sea solo una idea",
-     /Stance Change/.test(cardFor("Aegislash").textContent), true);
-  check("Camerupt con piedra: la del Mega",
-     /Sheer Force/.test(cardFor("Camerupt").textContent), true);
-  check("Garchomp no inventa ninguna",
-     /Sand Veil|Rough Skin/.test(cardFor("Garchomp").textContent), false);
+    w.go("builds");
+    click(cardFor("Greninja"));
+    await idle();
+    const ab3 = [...editor().querySelectorAll("select")]
+      .find(s => [...s.options].some(o => o.value === "Protean"));
+    /* the set, not the order: the picker ranks by what is run */
+    check("y el selector de su build ofrece las tres",
+       [...ab3.options].map(o => o.value).filter(Boolean).sort()
+         .join(" / "), "Battle Bond / Protean / Torrent");
+  });
 
-  click(cardFor("Clawitzer"));
-  await tick(60);
-  const ab = [...editor().querySelectorAll("select")]
-    .find(s => [...s.options].some(o => o.value === "Mega Launcher"));
-  console.log("\n  abierta la build de Clawitzer");
-  check("el selector trae la unica que hay", ab.value, "Mega Launcher");
-  check("y no ofrece una fila en blanco",
-     [...ab.options].some(o => o.value === ""), false);
-  const slot = [...editor().querySelectorAll(".slot")]
-    .find(s => /Water Pulse/.test(s.textContent));
-  check("Water Pulse lleva el bono de Mega Launcher",
-     /Mega Launcher/.test(slot.textContent), true);
-  /* escribirla NO es retunear: es la habilidad que siempre tuvo */
-  check("no cobra 500 VP por anotarla",
-     /ability 500/.test(editor().textContent), false);
-
-  click(saveBtn());
-  await tick(60);
-  const wrote = w.__WROTE.filter(x => x.table === "builds").pop();
-  console.log("\n  al guardar");
-  check("guarda la habilidad", wrote.row.ability, "Mega Launcher");
-  check("en la fila de esta build", wrote.row.id, "clawitzer");
-
-  w.go("builds");
-  click(cardFor("Garchomp"));
-  await tick(60);
-  const ab2 = [...editor().querySelectorAll("select")]
-    .find(s => [...s.options].some(o => o.value === "Rough Skin"));
-  console.log("\n  y con dos habilidades no elige por el");
-  check("el selector abre sin elegir", ab2.value, "");
-  check("y lo dice en la primera fila",
-     /not chosen/.test(ab2.options[0].textContent), true);
-  check("los checks avisan de que falta",
-     /No ability chosen/.test(editor().textContent), true);
-  click(saveBtn());
-  await tick(60);
-  const w2 = w.__WROTE.filter(x => x.table === "builds").pop();
-  check("y guarda null, no la primera de la lista", w2.row.ability, "null");
-
-  /* the list the choice is made from - his sentence is the case */
-  const possible = n => {
-    w.findDetail(w.byName[n]);
-    const l = [...d.querySelectorAll("#sheetBody .lbl")]
-      .find(x => x.textContent === "Possible ability");
-    const v = l ? l.previousElementSibling.textContent : "";
-    w.closeSheet();
-    return v;
-  };
-  console.log("\n  ninguna habilidad se pierde por el camino");
-  check("Greninja: tres en su ficha", possible("Greninja"),
-     "Torrent / Protean / Battle Bond");
-  check("Lycanroc-Midnight sigue con No Guard",
-     /No Guard/.test(possible("Lycanroc-Midnight")), true);
-  check("Greninja-Bond de HOME: la suya, no las del base",
-     (w.anyRow("Greninja-Bond").ab || []).join(" / "), "Battle Bond");
-  check("Rockruff-Dusk de HOME: Own Tempo",
-     (w.anyRow("Rockruff-Dusk").ab || []).join(" / "), "Own Tempo");
-
-  w.go("builds");
-  click(cardFor("Greninja"));
-  await tick(60);
-  const ab3 = [...editor().querySelectorAll("select")]
-    .find(s => [...s.options].some(o => o.value === "Protean"));
-  /* the set, not the order: the picker ranks by what is run */
-  check("y el selector de su build ofrece las tres",
-     [...ab3.options].map(o => o.value).filter(Boolean).sort()
-       .join(" / "), "Battle Bond / Protean / Torrent");
-
-  console.log("\n  sin errores de JS");
-  check("jsdom no reporta errores", errs.join(" | ") || "ninguno", "ninguno");
+  describe("sin errores de JS", () => {
+    check("jsdom no reporta errores", errs.join(" | ") || "ninguno", "ninguno");
+  });
 })();

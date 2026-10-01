@@ -14,7 +14,8 @@
 
    And the ones that CAN go: anything in HOME, plus a HOME-origin Pokemon
    sitting in the Champions box, which can be parked back and deposited. */
-const { check, open } = require("./harness.js");
+const { describe } = require("node:test");
+const { check, open, idle } = require("./harness.js");
 
 const UID = "u1";
 const R = (id, name, loc, origin, status) => ({user_id:UID, id, name,
@@ -44,91 +45,95 @@ const w = dom.window, d = w.document;
 
 const nameOf = b => b.querySelector(".rname").firstChild.textContent.trim();
 
-setTimeout(() => {
+(async () => {
+  await idle();
   w.gtsPickMine(function(){}, null);
   const sheet = d.getElementById("sheetBody");
-  const offered = [...sheet.querySelectorAll(".list .row")]
-    .map(b => b.querySelector(".rname").firstChild.textContent.trim());
-
-  console.log("\n  lo que se puede depositar");
-  check("Sharpedo, que esta en HOME", offered.indexOf("Sharpedo") >= 0, true);
-  check("Sableye, HOME origin dentro de la caja",
-     offered.indexOf("Sableye") >= 0, true);
-  check("y nada mas", offered.length, 5);
-
-  console.log("\n  lo que no puede salir del juego");
-  check("Garchomp (origen Champions) fuera",
-     offered.indexOf("Garchomp") >= 0, false);
-  check("Sneasler (rental) fuera", offered.indexOf("Sneasler") >= 0, false);
-  check("Mawile (origen sin registrar) fuera",
-     offered.indexOf("Mawile") >= 0, false);
-
-  console.log("\n  y se dice, no se esconde");
-  const notes = [...sheet.querySelectorAll("p.sub")].map(p => p.textContent);
-  check("cuenta los que quedan fuera",
-     notes.some(t => /4 more in the Champions box/.test(t)), true);
-  check("y explica por que",
-     notes.some(t => /never leave the game/.test(t)), true);
-
-  /* ------------------------------------------- la card, y como se ordena */
-  /* Era una fila pelada con un BST y una Speed, que no alcanza para decidir
-     que regalas (2026-09-18: "solo muestra bst y speed, pero falta todo lo
-     demas"). Ahora es la misma card que el resto de la app. */
-  console.log("\n  la misma card que en todas partes");
   const cards = () => [...sheet.querySelectorAll(".list .row")];
-  check("cada fila es una card",
-     cards().every(b => / card\b/.test(b.className)), true);
-  check("con sus seis stats",
-     cards().every(b => !!b.querySelector(".statline")), true);
-  check("y con su BST", cards().every(b => /BST/.test(b.textContent)), true);
-  /* el que Champions no tiene TAMBIEN, que es justo el que sirve de moneda */
-  const bulba = cards().find(b => nameOf(b) === "Bulbasaur");
-  check("hasta el que no esta en Champions trae numeros",
-     !!bulba && /318/.test(bulba.textContent), true);
-
   const tog = t => [...sheet.querySelectorAll(".tog")]
     .find(b => b.textContent.trim() === t);
   const press = t => tog(t)
     .dispatchEvent(new w.MouseEvent("click", {bubbles:true}));
+  const offered = cards().map(nameOf);
 
-  console.log("\n  los dos filtros que esta pantalla existe para responder");
-  check("hay orden por numero de dex", !!tog("Dex no."), true);
-  press("Duplicates only");
-  /* UN RENTAL NO HACE DUPLICADO. Los dos Sharpedo si lo son; el Metagross de
-     HOME esta solo, porque el rental de la caja nunca podra salir del juego y
-     por tanto nunca podra ser la copia que se queda. */
-  check("duplicados: solo los dos Sharpedo",
-     cards().map(nameOf).join(","), "Sharpedo,Sharpedo");
-  check("Metagross no cuenta como duplicado",
-     cards().map(nameOf).indexOf("Metagross") >= 0, false);
-  press("Duplicates only");
-  press("Not in Champions only");
-  check("fuera del dex: solo Bulbasaur", cards().map(nameOf).join(","), "Bulbasaur");
-  press("Not in Champions only");
-  check("y al soltarlos vuelven los cinco", cards().length, 5);
-  /* Y LA RED DE SEGURIDAD LEIA EL MISMO NUMERO EQUIVOCADO. El aviso de
-     "ultima copia" es lo que atrapa el error que el filtro dejaba pasar, y
-     con el rental contado como copia no salia. */
-  const badgesOf = n => {
-    const c = cards().find(b => nameOf(b) === n);
-    return c ? [...c.querySelectorAll(".rname .tag")].map(t => t.textContent) : [];
-  };
-  check("el Metagross de HOME avisa de que es la ultima copia",
-     badgesOf("Metagross").some(t => /your only one/i.test(t)), true);
-  check("y un Sharpedo no", badgesOf("Sharpedo").some(t => /your only one/i.test(t)),
-     false);
+  describe("lo que se puede depositar", () => {
+    check("Sharpedo, que esta en HOME", offered.indexOf("Sharpedo") >= 0, true);
+    check("Sableye, HOME origin dentro de la caja",
+       offered.indexOf("Sableye") >= 0, true);
+    check("y nada mas", offered.length, 5);
+  });
 
-  console.log("\n  el que no esta en Champions tiene precio, y por tanto consejo");
-  /* chipValue() leia byName, que para una especie que Champions no conoce es
-     undefined - sin precio no hay banda en la que buscar, asi que meter uno en
-     una caja GTS no daba NINGUNA recomendacion (2026-09-18). */
-  w.closeSheet();
-  w.gtsPickWanted(function(){}, "Bulbasaur", false);
-  const wanted = d.getElementById("sheetBody");
-  check("dice cuanto vale", /is worth about 318/.test(wanted.textContent), true);
-  check("y propone algo que pedir",
-     wanted.querySelectorAll(".list .row").length > 0, true);
+  describe("lo que no puede salir del juego", () => {
+    check("Garchomp (origen Champions) fuera",
+       offered.indexOf("Garchomp") >= 0, false);
+    check("Sneasler (rental) fuera", offered.indexOf("Sneasler") >= 0, false);
+    check("Mawile (origen sin registrar) fuera",
+       offered.indexOf("Mawile") >= 0, false);
+  });
+
+  describe("y se dice, no se esconde", () => {
+    const notes = [...sheet.querySelectorAll("p.sub")].map(p => p.textContent);
+    check("cuenta los que quedan fuera",
+       notes.some(t => /4 more in the Champions box/.test(t)), true);
+    check("y explica por que",
+       notes.some(t => /never leave the game/.test(t)), true);
+  });
+
+  /* Era una fila pelada con un BST y una Speed, que no alcanza para decidir
+     que regalas (2026-09-18: "solo muestra bst y speed, pero falta todo lo
+     demas"). Ahora es la misma card que el resto de la app. */
+  describe("la misma card que en todas partes", () => {
+    check("cada fila es una card",
+       cards().every(b => / card\b/.test(b.className)), true);
+    check("con sus seis stats",
+       cards().every(b => !!b.querySelector(".statline")), true);
+    check("y con su BST", cards().every(b => /BST/.test(b.textContent)), true);
+    /* el que Champions no tiene TAMBIEN, que es justo el que sirve de moneda */
+    const bulba = cards().find(b => nameOf(b) === "Bulbasaur");
+    check("hasta el que no esta en Champions trae numeros",
+       !!bulba && /318/.test(bulba.textContent), true);
+  });
+
+  describe("los dos filtros que esta pantalla existe para responder", () => {
+    check("hay orden por numero de dex", !!tog("Dex no."), true);
+    press("Duplicates only");
+    /* UN RENTAL NO HACE DUPLICADO. Los dos Sharpedo si lo son; el Metagross de
+       HOME esta solo, porque el rental de la caja nunca podra salir del juego y
+       por tanto nunca podra ser la copia que se queda. */
+    check("duplicados: solo los dos Sharpedo",
+       cards().map(nameOf).join(","), "Sharpedo,Sharpedo");
+    check("Metagross no cuenta como duplicado",
+       cards().map(nameOf).indexOf("Metagross") >= 0, false);
+    press("Duplicates only");
+    press("Not in Champions only");
+    check("fuera del dex: solo Bulbasaur", cards().map(nameOf).join(","), "Bulbasaur");
+    press("Not in Champions only");
+    check("y al soltarlos vuelven los cinco", cards().length, 5);
+    /* Y LA RED DE SEGURIDAD LEIA EL MISMO NUMERO EQUIVOCADO. El aviso de
+       "ultima copia" es lo que atrapa el error que el filtro dejaba pasar, y
+       con el rental contado como copia no salia. */
+    const badgesOf = n => {
+      const c = cards().find(b => nameOf(b) === n);
+      return c ? [...c.querySelectorAll(".rname .tag")].map(t => t.textContent) : [];
+    };
+    check("el Metagross de HOME avisa de que es la ultima copia",
+       badgesOf("Metagross").some(t => /your only one/i.test(t)), true);
+    check("y un Sharpedo no", badgesOf("Sharpedo").some(t => /your only one/i.test(t)),
+       false);
+  });
+
+  describe("el que no esta en Champions tiene precio, y por tanto consejo", () => {
+    /* chipValue() leia byName, que para una especie que Champions no conoce es
+       undefined - sin precio no hay banda en la que buscar, asi que meter uno en
+       una caja GTS no daba NINGUNA recomendacion (2026-09-18). */
+    w.closeSheet();
+    w.gtsPickWanted(function(){}, "Bulbasaur", false);
+    const wanted = d.getElementById("sheetBody");
+    check("dice cuanto vale", /is worth about 318/.test(wanted.textContent), true);
+    check("y propone algo que pedir",
+       wanted.querySelectorAll(".list .row").length > 0, true);
+  });
 
 
   check("la pagina no reporta errores de script", errs.join(" | ") || "ninguno", "ninguno");
-}, 1500);
+})();

@@ -1,5 +1,5 @@
 /* A GTS trade must be an EXCHANGE: what you gave leaves, what you got arrives. */
-const { check, tick, open } = require("./harness.js");
+const { check, idle, open } = require("./harness.js");
 
 const UID = "u1";
 const ROWS = [
@@ -19,10 +19,10 @@ const w = dom.window, d = w.document;
 const click = n => n.dispatchEvent(new w.MouseEvent("click", {bubbles:true}));
 
 (async () => {
-  await tick(1500);
+  await idle();
   w.go("home");
   click(d.querySelectorAll("#listGts .row")[0]);
-  await tick();
+  await idle();
   const btn = [...d.querySelectorAll("#sheetFoot .btn")]
     .find(b => /Trade went through/.test(b.textContent));
   check("el boton Trade went through existe", !!btn, true);
@@ -32,7 +32,7 @@ const click = n => n.dispatchEvent(new w.MouseEvent("click", {bubbles:true}));
      This test once clicked into that scrim for weeks unnoticed. */
   const yes = d.getElementById("askYes");
   if (yes && !d.getElementById("askScrim").hidden) click(yes);
-  await tick();
+  await idle();
 
   const got = w.__WROTE.filter(x => x.table === "box" && x.row.name === "Golisopod");
   check("el Pokemon recibido se agrega a la caja", got.length > 0, true);
