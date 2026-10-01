@@ -32,25 +32,24 @@ player to confirm it in this one. Nothing here is invented.
 import json
 import os
 import re
-from pathlib import Path
 
 import dex
 from paths import ROOT
+from serebii_text import read
 
 PAGE = os.path.join(ROOT, "data", "raw", "pages", "statusconditions.html")
 OUT = os.path.join(ROOT, "data", "db", "statuses.json")
 
 
 def txt(s):
-    return " ".join(re.sub(r"<[^>]+>", " ", s).replace("&nbsp;", " ")
-                    .replace("�", "'").split())
+    return " ".join(re.sub(r"<[^>]+>", " ", s).replace("&nbsp;", " ").split())
 
 
 def serebii_changes():
     """(condition -> {prior, new}) from Serebii's Champions rebalance table."""
     if not os.path.exists(PAGE):
         return {}
-    h = Path(PAGE).read_text(encoding="cp1252", errors="replace")
+    h = read(PAGE)
     out = {}
     for r in re.findall(r"<tr.*?</tr>", h, re.S):
         cells = [txt(c) for c in re.findall(r"<t[dh].*?</t[dh]>", r, re.S)]
