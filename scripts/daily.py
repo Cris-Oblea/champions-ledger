@@ -152,6 +152,12 @@ SOURCE_CHECKS = [
     # property where four gradients stood - so a new copy is a choice to make
     # out loud: share it, or mark it `jscpd:ignore-start` with the reason (the
     # dark tokens, which CSS cannot write once). .jscpd.json holds the rest.
+    # The cross-file half of ESLint: an export nothing imports, a file nothing
+    # reaches, a package nothing uses. A grep for the same thing missed an
+    # export named `fill`, a word every other module also contains; knip reads
+    # the imports themselves. knip.jsonc names the entry points.
+    (["node_modules/knip/bin/knip.js", "--no-progress"],
+     "no export, file or package is left unreachable"),
     (["node_modules/jscpd/bin/jscpd", "tracker/src", "scripts", "tests", "cron"],
      "no copy-pasted block comes back once it is shared",
      lambda o: [line for line in o.splitlines()

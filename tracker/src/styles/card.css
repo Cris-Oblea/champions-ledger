@@ -380,12 +380,6 @@
 .row.card .rmeta{gap:4px}
 .row.card .rmeta .t{font-size:9px;padding:1px 5px}
 .row.card .rmeta .mono{font-size:10px}
-/* The dex number, in front of the name it identifies. Quiet and monospaced,
-   so it reads as a label rather than as part of the name - and out of the
-   type line, where its 36px was the difference between one row of chips and
-   two on every Mega that retypes. */
-.rname .dexno{font-family:var(--mono);font-size:10.5px;font-weight:500;
-  color:var(--faint);font-variant-numeric:tabular-nums}
 /* THE STATS AS A TABLE, NOT A SENTENCE. They were a run of "115 HP 175 Atk
    117 Def ..." and the player could not read them: "sale primero el número
    del stat y luego el stat, eso se ve feo, no se sabe cómo leerlo bien... va

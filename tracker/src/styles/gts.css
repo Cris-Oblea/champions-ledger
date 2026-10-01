@@ -10,20 +10,7 @@
 .gtsside > .row{background:transparent;border:0;padding:0;width:100%;
   text-align:left}
 .gtsside .rname{font-size:13.5px}
-.gtsside .rmeta{margin-top:3px}
-/* FLOATED, not absolute. A card's sprite is pinned to its top-right corner
-   and the text is narrowed to clear it; a GTS side is a third of that width,
-   so the same trick would put the picture on the name. Floating it makes the
-   text flow around it instead, and it stays inside the layout - which is also
-   what keeps the overlap sweep honest, since a float is a box it can measure. */
-/* 96, THE SIZE THE FILE IS. It was set to 56 to fit a narrow side, which
-   is the one thing a pixel sprite must never be: 96 scaled to 56 is a
-   resample, and `image-rendering:pixelated` on a DOWNscale makes it worse
-   rather than better - it drops pixels instead of blending them (player,
-   2026-09-19: "los sprites se ven mas chicos y no de tamano nativo").
-   Native or nothing; the float still keeps the text clear of it. */
-.gtsside .gtspic{float:right;width:96px;height:96px;margin:-2px -2px 2px 8px}
-.gtsside .statline{margin-top:6px;clear:both}
+.gtsside .statline{margin-top:6px}
 .gtslabel{font-family:var(--cond);text-transform:uppercase;letter-spacing:.07em;
   font-size:9.5px;font-weight:600;color:var(--faint);margin-bottom:3px}
 .gtsarrow{font-family:var(--mono);font-size:17px;color:var(--muted);
