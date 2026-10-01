@@ -114,6 +114,11 @@ GATE_CHECKS = [
     # check_docs' watched decisions had never matched anything (2026-09-30).
     (["-m", "ruff", "check", "--quiet", "--output-format", "concise"],
      "no Python lint finding comes back once it is fixed"),
+    # What ruff cannot see: ruff judges one file at a time, so a function whose
+    # last caller lived in ANOTHER script reads as used forever. vulture reads
+    # every script together. At zero since 2026-09-30; its default confidence
+    # (60%) is the one that found nothing false.
+    (["-m", "vulture", "scripts"], "no Python function or name is left unreachable"),
 ]
 
 # Read the SOURCE, which is the one thing the browser tests cannot: they

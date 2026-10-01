@@ -636,15 +636,16 @@ it. A source that quietly changes a denominator is the failure this catches.
 ```
 
 <!-- GATE:START -->
-**The gate** is 42 checks, and nothing reaches the phone without
+**The gate** is 43 checks, and nothing reaches the phone without
 passing all of them:
 
 - a **shrink guard** — if a rebuild comes back with fewer forms, moves or
   learnsets than the last good one, a source broke and the run stops
-- **ten Python audits** — the damage formula against Smogon's engine, name
+- **eleven Python audits** — the damage formula against Smogon's engine, name
   matching across all five sources, every derived index resolving, every form
   still accounted for, the README's own numbers, that no SQL migration is
-  still waiting to be applied, and ruff's lint over every script
+  still waiting to be applied, ruff's lint over
+  every script, and vulture's search for code that nothing calls any more
 - **four source checks** — ESLint, with SonarSource's own rules,
   over every file (a name one of the twenty-five ES modules uses without
   importing it links fine and throws on the phone), stylelint over the CSS,
