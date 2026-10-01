@@ -32,8 +32,7 @@ import re
 import sys
 
 import query as Q
-
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+from paths import ROOT
 
 OUT = os.path.join(ROOT, "data", "db", "item_links.json")
 

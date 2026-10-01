@@ -35,7 +35,9 @@ import subprocess
 import sys
 import webbrowser
 
-ROOT = pathlib.Path(__file__).resolve().parent.parent
+import paths
+
+ROOT = pathlib.Path(paths.ROOT)
 DIST = ROOT / "tracker" / "dist"
 PORT = 8777
 

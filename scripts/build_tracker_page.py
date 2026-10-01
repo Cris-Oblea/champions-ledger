@@ -31,7 +31,8 @@ import subprocess
 import sys
 from pathlib import Path
 
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+from paths import ROOT
+
 TPL = os.path.join(ROOT, "tracker", "index.template.html")
 DATA = os.path.join(ROOT, "tracker", "data.js")
 CFG = os.path.join(ROOT, "tracker", "config.local.json")

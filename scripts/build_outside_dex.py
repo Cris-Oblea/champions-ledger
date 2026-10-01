@@ -64,8 +64,7 @@ import query as Q
 from audit_learnsets import CHAMPIONS_VG
 from fetch_home_dex import key as hkey
 from fetch_home_dex import resolver, table
-
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+from paths import ROOT
 
 OUT = os.path.join(ROOT, "tracker", "outsidedex.js")
 ENGLISH = "9"

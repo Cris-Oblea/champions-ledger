@@ -25,7 +25,8 @@ import os
 import sys
 from pathlib import Path
 
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+from paths import ROOT
+
 SRC = os.path.join(ROOT, "data", "meta", "smogon_analyses.json")
 OUT = os.path.join(ROOT, "tracker", "analysis.js")
 

@@ -66,8 +66,7 @@ from pathlib import Path
 
 import query as Q
 from fetch_home_dex import key as hkey
-
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+from paths import ROOT
 
 RAW = os.path.join(ROOT, "data", "raw", "pokeapi_csv")
 PAGES = os.path.join(ROOT, "data", "raw", "pokedex")

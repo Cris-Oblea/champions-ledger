@@ -36,6 +36,7 @@ import textwrap
 from collections import Counter, defaultdict
 
 import ledger
+from paths import DB, META
 
 # Windows consoles default to cp1252, which cannot encode the Korean and
 # Japanese player names in the Worlds standings. Replace them instead of
@@ -43,11 +44,6 @@ import ledger
 for _s in (sys.stdout, sys.stderr):
     with contextlib.suppress(AttributeError, ValueError):
         _s.reconfigure(errors="replace")
-
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DB = os.path.join(ROOT, "data", "db")
-META = os.path.join(ROOT, "data", "meta")
-
 
 
 # --------------------------------------------------------------------------

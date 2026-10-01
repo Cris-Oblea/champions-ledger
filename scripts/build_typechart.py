@@ -19,12 +19,8 @@ import re
 import sys
 from pathlib import Path
 
+from paths import DB, RAW
 from serebii_text import read
-
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
-DB = os.path.join(ROOT, "data", "db")
-RAW = os.path.join(ROOT, "data", "raw")
 
 # The order of the columns in Serebii's Weakness table, which is fixed.
 SEREBII_ORDER = ["Normal", "Fire", "Water", "Electric", "Grass", "Ice",

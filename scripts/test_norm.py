@@ -13,12 +13,9 @@ rows quietly. These cases lock that in.
     python scripts/test_norm.py
     python scripts/test_norm.py -v
 """
-import os
 import sys
 
 from query import norm, species_norm
-
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Every group must collapse to one key. First entry is the dex spelling.
 SAME = [

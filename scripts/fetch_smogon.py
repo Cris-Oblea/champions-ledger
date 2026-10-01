@@ -30,11 +30,9 @@ import time
 from pathlib import Path
 
 import net
+from paths import DB, META, ROOT
 
 RPC = "https://www.smogon.com/dex/_rpc/"
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-META = os.path.join(ROOT, "data", "meta")
-DB = os.path.join(ROOT, "data", "db")
 RAW = os.path.join(ROOT, "data", "raw", "smogon")
 
 

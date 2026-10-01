@@ -49,10 +49,10 @@ import re
 import sys
 from pathlib import Path
 
+import fetch_home_dex
 import net
 import query as Q
-
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+from paths import ROOT
 
 RAW = os.path.join(ROOT, "data", "raw", "pokeapi_csv")
 PIN = "4b82c204ddd19ecb8eda2ea044ccb59e222b721c"
@@ -105,15 +105,6 @@ def upstream(force=False):
     return out
 
 
-def _load_fetch_home_dex():
-    import importlib.util
-    spec = importlib.util.spec_from_file_location(
-        "fhd", os.path.join(ROOT, "scripts", "fetch_home_dex.py"))
-    fhd = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(fhd)
-    return fhd
-
-
 def _sort_out(name, moves, known_map, side, show):
     """(the moves that are NEW disagreements, how many were known ones);
     `show` prints the known ones too."""
@@ -135,13 +126,12 @@ def main():
                     help="print every disagreement, known ones included")
     args = ap.parse_args()
 
-    fhd = _load_fetch_home_dex()
     up = upstream(args.force)
     ours = Q.db("learnsets")
     paired = 0
     new_ours, new_up, known = [], [], 0
     for name in sorted(ours):
-        u = up.get(fhd.key(name))
+        u = up.get(fetch_home_dex.key(name))
         if not u:
             continue
         paired += 1

@@ -21,7 +21,8 @@ import os
 import subprocess
 import sys
 
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+from paths import ROOT
+
 CALC = os.path.join(ROOT, "data", "raw", "smogon_calc", "calc")
 ENTRY = os.path.join(CALC, "__entry.js")
 OUT = os.path.join(ROOT, "tracker", "engine.bundle.js")

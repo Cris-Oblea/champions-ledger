@@ -64,9 +64,8 @@ import time
 from pathlib import Path
 
 import net
+from paths import META
 
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-META = os.path.join(ROOT, "data", "meta")
 OUT = os.path.join(META, "usage_splits.json")
 BASE = "https://pokebase.app/pokemon-champions/pokemon/"
 
