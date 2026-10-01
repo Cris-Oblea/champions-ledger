@@ -73,11 +73,16 @@ def read_all_pages(page):
 # --------------------------------------------------------------------------
 # RSC flight payload
 # --------------------------------------------------------------------------
-def rsc_payload(page):
-    """Reassemble the streamed React Server Component payload."""
-    s = read(page)
-    chunks = re.findall(r'self\.__next_f\.push\(\[1,("(?:[^"\\]|\\.)*")\]\)', s, re.S)
+def payload(html):
+    """The streamed React Server Component payload, reassembled: every
+    `self.__next_f.push([1,"..."])` carries one chunk of one JSON string."""
+    chunks = re.findall(r'self\.__next_f\.push\(\[1,("(?:[^"\\]|\\.)*")\]\)', html, re.S)
     return "".join(json.loads(c) for c in chunks)
+
+
+def rsc_payload(page):
+    """payload() of a cached page."""
+    return payload(read(page))
 
 
 def rsc_lines(payload):

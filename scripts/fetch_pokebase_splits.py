@@ -64,6 +64,7 @@ from pathlib import Path
 
 import dex
 import net
+from fetch_pokebase import payload
 from paths import META
 
 OUT = os.path.join(META, "usage_splits.json")
@@ -80,22 +81,6 @@ STAT_WORD = {"hp": "HP", "attack": "Atk", "defense": "Def",
 
 
 # --------------------------------------------------------------- the payload
-
-def flight(html):
-    """The Next.js flight stream, unescaped and joined.
-
-    Every `self.__next_f.push([1,"..."])` carries one chunk of a single JSON
-    string. Concatenated, they hold the props of every component on the page -
-    which is where the sections that paginate keep their rows.
-    """
-    chunks = re.findall(r'self\.__next_f\.push\(\[1,"(.*?)"\]\)', html,
-                        flags=re.S)
-    out = []
-    for c in chunks:
-        with contextlib.suppress(ValueError):
-            out.append(json.loads('"' + c + '"'))
-    return "".join(out)
-
 
 def _span(s, i, open_c, close_c):
     """The balanced JSON value starting at s[i], honouring strings."""
@@ -291,7 +276,9 @@ def season(flow):
 
 
 def parse(html):
-    flow = flight(html)
+    # the props of every component on the page, which is where the
+    # sections that paginate keep their rows
+    flow = payload(html)
     got = {"tournament": tournament(flow, html)}
     ladder = season(flow)
     if ladder:
