@@ -1,9 +1,9 @@
 {
   "name": "champions-ledger",
   "private": true,
-  "description": "Champions Ledger: a box, build and team manager for Pokemon Champions. This manifest exists so the browser tests can run in CI - they load tracker/dist/index.html under jsdom, and without it the daily job had no way to install jsdom, which is why nothing gated on them.",
+  "description": "Champions Ledger: a box, build and team manager for Pokemon Champions. Supabase is the app's one runtime library; the rest are the build and lint tools the gate runs, and jsdom for the browser tests.",
   "scripts": {
-    "test": "node tests/pagetest.js"
+    "test": "node --test \"tests/*test.js\""
   },
   "devDependencies": {
     "esbuild": "0.28.2",

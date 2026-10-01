@@ -69,7 +69,7 @@ def pokebase_text():
     out = {}
     for h in pokebase_pages():
         for m in DESC.finditer(h):
-            t = m.group(3).replace("\u2019", "'").replace("�", "'")
+            t = m.group(3).replace("\u2019", "'")
             t = t.replace("\n", " ").replace("\\", "")
             out.setdefault(m.group(1), " ".join(t.split()))
     return out
@@ -128,7 +128,7 @@ def _texts(it, smogon, pbtext):
     which the player confirmed in game and Serebii's line leaves out.
     pokebase's mechanics and Serebii's flavour stay behind it, and both
     are kept, because the item links read them too."""
-    ser = " ".join((it.get("effect") or "").replace("�", "'").split())
+    ser = " ".join((it.get("effect") or "").split())
     smo = smogon.get(it["name"])
     pbt = pbtext.get(it["name"])
     return {"text": smo or pbt or ser,

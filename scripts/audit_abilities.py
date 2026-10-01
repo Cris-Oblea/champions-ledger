@@ -62,11 +62,11 @@ import html
 import os
 import re
 import sys
-from pathlib import Path
 
 import dex
 from fetch_home_dex import key as hkey
 from paths import ROOT
+from serebii_text import read
 
 RAW = os.path.join(ROOT, "data", "raw", "pokeapi_csv")
 PAGES = os.path.join(ROOT, "data", "raw", "pokedex")
@@ -183,7 +183,7 @@ def serebii(forms):
         have = rows.get(dex.norm(slug))
         if have is None:
             continue
-        s = Path(path).read_text(encoding="cp1252", errors="replace")
+        s = read(path)
         pages += 1
         for cell in re.findall(r"<b>Abilities</b>\s*:(.*?)</td>", s, re.S):
             for raw in re.findall(r"<b>([^<]+)</b>", cell):

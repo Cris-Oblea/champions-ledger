@@ -7,7 +7,6 @@ tracker sees a new regulation's species, moves and stones.
 import json
 import os
 import re
-import unicodedata
 from pathlib import Path
 
 import dex
@@ -47,7 +46,7 @@ def movetext(m):
         TEXTS = (dex.db("text_facts") or {}).get("moves") or {}
     picked = (TEXTS.get(m["name"]) or {}).get("text")
     t = picked or (m.get("effect") or "").strip() or (m.get("in_depth") or "").strip()
-    return " ".join(t.replace("�", "'").split())
+    return " ".join(t.split())
 
 
 # --- moves: only the useable ones, indexed -------------------------------
@@ -57,15 +56,6 @@ def movetext(m):
 CATEGORY = {"Physical": "P", "Special": "S", "Status": "T"}
 TARGET_LABEL = {(1, 1): "All Adjacent Pokémon", (1, 0): "All Adjacent Foes",
                 (0, 0): "Selected Target"}
-SPREAD_TARGETS = {"all adjacent foes", "all adjacent opponents",
-                  "all adjacent pokemon", "all opponents"}
-
-
-def _fold(t):
-    """"All Adjacent Pokemon" really carries an accented e, so match on a
-    de-accented key rather than on the display string."""
-    return "".join(c for c in unicodedata.normalize("NFKD", t)
-                   if not unicodedata.combining(c))
 
 
 def _idx(names, midx):
@@ -86,11 +76,11 @@ def _targeting(m, props):
     move sheet does not print "Ally" under a single-target attack.
     """
     tgt = m.get("target") or ""
-    k = _fold(tgt).lower()
+    k = dex.target_key(tgt)
     p = props.get(m["name"]) or {}
-    spread = 1 if p.get("spread", k in SPREAD_TARGETS) else 0
+    spread = 1 if p.get("spread", k in dex.SPREAD_TARGETS) else 0
     ally = 1 if p.get("hits_ally", k == "all adjacent pokemon") else 0
-    if spread != (k in SPREAD_TARGETS) or ally != (k == "all adjacent pokemon"):
+    if spread != (k in dex.SPREAD_TARGETS) or ally != (k == "all adjacent pokemon"):
         tgt = TARGET_LABEL[(spread, ally)]
     # and the other Serebii slip: a move that DEALS DAMAGE cannot be aimed
     # at your own side. Psyshield Bash reads "Ally" and Mountain Gale
@@ -418,8 +408,7 @@ def _item_row(i, pr, link):
             # the item's ONE description - Smogon's Champions dex
             # first (build_item_facts.py), Serebii's line only where
             # neither of the others has the item
-            " ".join((pr.get("text") or i.get("effect") or "")
-                     .replace("�", "'").split()),
+            " ".join((pr.get("text") or i.get("effect") or "").split()),
             pr.get("note") or i.get("source") or "",
             pr.get("source") or "",
             # what this item serves: the sentence, the abilities it
@@ -448,7 +437,7 @@ def build_abilities(abil):
         pick = (atext.get(a["name"]) or {}).get("text") or a.get("effect") or ""
         # whole: Smogon's Champions text runs past 400 characters for the
         # abilities with the most exceptions, and those are the ones to read
-        out[a["name"]] = " ".join(pick.replace("�", "'").split())
+        out[a["name"]] = " ".join(pick.split())
     return out
 
 
