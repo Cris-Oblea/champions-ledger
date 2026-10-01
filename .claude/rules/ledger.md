@@ -2,7 +2,6 @@
 paths:
   - "scripts/{ledger,backup_ledger,migrate}.py"
   - "supabase/**"
-  - "tracker/supabase*.sql"
   - ".github/workflows/**"
   - "cron/**"
 ---

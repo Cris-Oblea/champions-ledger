@@ -539,11 +539,11 @@ gts/{id}      {offered, requested, offered_id, deposited, deposited_at,
 - `tracker/icons/` — the home-screen icons, copied into `dist/` as they are
 - `tracker/config.local.json` — Supabase URL + publishable key. Not a secret,
   but not generated either; without it the build falls back to the Claude db.
-- `tracker/supabase_schema.sql` — tables, RLS policies, realtime. Idempotent.
+- `supabase/supabase_schema.sql` — tables, RLS policies, realtime. Idempotent.
 - there is **no seed file any more.** `tracker/supabase_seed.sql` and the script
   that wrote it were deleted: a seed is the whole ledger in plaintext, and this
   repo is public. A fresh project gets its structure from
-  `tracker/supabase_schema.sql` plus `scripts/migrate.py`, and its DATA from a
+  `supabase/supabase_schema.sql` plus `scripts/migrate.py`, and its DATA from a
   backup snapshot — `python scripts/backup_ledger.py --restore FILE`, which is
   the same path that has actually been tested in both directions
 - `scripts/ledger.py` — reads the ledger; `scripts/backup_ledger.py` — snapshots and restores it

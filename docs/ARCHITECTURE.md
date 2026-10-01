@@ -47,7 +47,7 @@ public because it carries no personal row.
 |---|---|---|---|
 | UI | **Vanilla JavaScript** (ES modules), HTML, CSS. No framework | `tracker/src/` | One user, one page. The DOM API is enough, and there is no framework version to keep up with |
 | Module linking | **esbuild** (pinned in `package-lock.json`) | `scripts/build_tracker_page.py` | Turns twelve modules into one script plus a sourcemap. The browser tests run in jsdom, which cannot load module scripts |
-| Database | **Supabase**: PostgreSQL, with PostgREST as the HTTP API, Auth for the login and Realtime for live updates | `tracker/supabase_schema.sql`, `supabase_migrate_*.sql` | Free hosted Postgres with login and row-level security built in |
+| Database | **Supabase**: PostgreSQL, with PostgREST as the HTTP API, Auth for the login and Realtime for live updates | `supabase/supabase_schema.sql`, `supabase/supabase_migrate_*.sql` | Free hosted Postgres with login and row-level security built in |
 | DB client | **supabase-js** (`@supabase/supabase-js`), inlined from `node_modules` (not a CDN) | `package.json` | A CDN would be a third party inside a page that holds the ledger |
 | Hosting | **Cloudflare Workers**, static assets only | `tracker/wrangler.toml` → `tracker/dist/` | Free, fast, and the served folder is only `dist/`, so nothing private can leak |
 | Scheduler | A second **Cloudflare Worker** (JavaScript, Web Crypto) | `cron/src/cron.js` | Starts the nightly GitHub workflow on time; GitHub's own schedule ran hours late |
@@ -228,7 +228,7 @@ than UUIDs, because the pickers show them.
 | `meta` | Loose documents | `data jsonb`; today only `trainer` |
 | `schema_migrations` | A migration already applied | the file name |
 
-The column list above is a summary; `tracker/supabase_schema.sql` plus the
+The column list above is a summary; `supabase/supabase_schema.sql` plus the
 `supabase_migrate_<N>.sql` files, applied in order, are the truth.
 
 **Security, in three layers:**
@@ -240,7 +240,7 @@ The column list above is a summary; `tracker/supabase_schema.sql` plus the
 3. **The secret key** (`service_role` / `sb_secret_`) bypasses RLS, so
    `build_tracker_page.py` refuses to build if it finds one.
 
-**Migrations:** add `tracker/supabase_migrate_<N>.sql`, written so it is safe
+**Migrations:** add `supabase/supabase_migrate_<N>.sql`, written so it is safe
 to run twice, then run `python scripts/migrate.py`. The gate fails while any
 migration is still pending (`--check`).
 
