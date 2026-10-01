@@ -35,8 +35,24 @@ function check(label, got, want) {
   test(label, () => assert.equal(String(got), String(want)));
 }
 
-/* Let the page run: timers, the store's snapshots, a redraw. */
-const tick = ms => new Promise(r => setTimeout(r, ms ?? 400));
+/* LET THE PAGE FINISH WHAT IT STARTED. Nothing the app does under test takes
+   real time: the stubbed ledger answers with promises that are already
+   resolved, and the app's own deferred work - go() running a tab's ON_SHOW,
+   the store re-emitting a cached table - sits on zero-delay timers. Node fires
+   timers of the same delay in the order they were set, and settles every
+   pending promise between two of them, so one zero-delay turn queued after
+   the page's own ends after all of it. The tests used to sleep 250 to 1500 ms
+   instead - a guess, paid on every wait, that a slower machine could lose. */
+const idle = () => new Promise(r => setTimeout(r, 0));
+
+/* The one wait idle() cannot cover: a delay the APP chose, such as the
+   confirm dialog moving focus 30 ms after it opens. Polls until cond() holds
+   or two seconds pass, and never throws - the check that follows is what
+   says whether it held, under its own label. */
+async function until(cond, ms = 2000) {
+  const end = Date.now() + ms;
+  while (!cond() && Date.now() < end) await new Promise(r => setTimeout(r, 10));
+}
 
 function page() {
   const dist = path.join(ROOT, "tracker", "dist");
@@ -174,4 +190,4 @@ function open(tables, opts) {
   return { dom, w: dom.window, d: dom.window.document, errs };
 }
 
-module.exports = { ROOT, check, tick, page, source, styles, markup, open };
+module.exports = { ROOT, check, idle, until, page, source, styles, markup, open };

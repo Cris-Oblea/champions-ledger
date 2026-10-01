@@ -24,7 +24,7 @@
  * in 7 - a row per owned thing, a row per trade - so meta is down to the one
  * document that really is a document.
  */
-const { open, tick } = require("./harness.js");
+const { open } = require("./harness.js");
 
 const UID = "00000000-0000-4000-8000-00000000fixt";
 const DAY = "2026-09-14";
@@ -174,7 +174,7 @@ const ROWS = { box, builds, teams, stones, items, gts, meta };
 
 /* Boot the built page with the ledger above in place.
  *
- * Returns { window, errors, tick } - `errors` collects every uncaught
+ * Returns { window, errors } - `errors` collects every uncaught
  * exception and console.error the page produces, which is the whole point:
  * a ReferenceError on a data-dependent path is invisible unless something
  * is watching for it. */
@@ -191,7 +191,7 @@ function boot() {
     errors.push([...arguments].map(x => (x && x.stack) || String(x)).join(" "));
     if (realError) realError.apply(this, arguments);
   };
-  return { window: dom.window, errors, tick, ROWS, UID };
+  return { window: dom.window, errors, ROWS, UID };
 }
 
 module.exports = { boot, ROWS, UID };

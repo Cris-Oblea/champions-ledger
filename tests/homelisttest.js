@@ -4,7 +4,7 @@
    button offers the others. Nothing else covered that button - the shared
    fixture holds five HOME rows, so it never appears there - and it is the one
    control whose redraw moved when the box drawing left boot.js. */
-const { check, open } = require("./harness.js");
+const { check, open, idle } = require("./harness.js");
 const UID = "u1";
 
 const NAMES = ["Pikachu", "Charizard", "Venusaur", "Blastoise", "Gengar",
@@ -19,7 +19,8 @@ const w = dom.window, d = w.document;
 const shown = () => d.querySelectorAll("#listHome > *").length;
 const more = () => d.querySelector("#homeMore button");
 
-setTimeout(() => {
+(async () => {
+  await idle();
   check("HOME opens on twelve", shown(), 12);
   check("and offers the rest", more()?.textContent, "Show the other 3");
   more().click();
@@ -28,4 +29,4 @@ setTimeout(() => {
   more().click();
   check("folding goes back to twelve", shown(), 12);
   check("no script errors", errs.length, 0);
-}, 600);
+})();

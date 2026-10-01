@@ -11,7 +11,8 @@
    Pokemon, with a second copy in HOME. The "Already in HOME" panel told him to
    release it, and the game would not. Same for a HOME-origin Garchomp sent in
    while another Garchomp stayed in HOME. */
-const { check, open } = require("./harness.js");
+const { describe } = require("node:test");
+const { check, open, idle } = require("./harness.js");
 const UID = "u1";
 
 const row = (id, name, location, origin) => ({user_id:UID, id, name, location,
@@ -43,35 +44,35 @@ const boxRow = name => [...d.querySelectorAll(
 const buttons = () => [...d.querySelectorAll(".sheet button")]
   .map(b => b.textContent);
 
-setTimeout(() => {
+(async () => {
+  await idle();
   w.go("box");
-  console.log("\n  el panel 'Already in HOME'");
-  check("no aparece: nada de lo duplicado se puede liberar",
-     d.getElementById("dupeBlock").hidden, true);
-  check("y la caja no lo llama material de intercambio",
-     /trade material|can be released/.test(d.getElementById("boxWarn")
-       .textContent), false);
+  describe("el panel 'Already in HOME'", () => {
+    check("no aparece: nada de lo duplicado se puede liberar",
+       d.getElementById("dupeBlock").hidden, true);
+    check("y la caja no lo llama material de intercambio",
+       /trade material|can be released/.test(d.getElementById("boxWarn")
+         .textContent), false);
+  });
 
-  console.log("\n  la ficha");
-  click(boxRow("Sinistcha"));
-  setTimeout(() => {
+  await describe("la ficha", async () => {
+    click(boxRow("Sinistcha"));
+    await idle();
     check("Sinistcha (Champions origin, en el suelo de 6): sin Release",
        buttons().indexOf("Release"), -1);
     check("...y dice que el hueco es para siempre",
        /This slot is permanent/.test(d.querySelector(".sheet").textContent), true);
     click(boxRow("Garchomp"));
-    setTimeout(() => {
-      const b = buttons();
-      check("Garchomp (HOME origin, en la caja): sin Release", b.indexOf("Release"), -1);
-      check("...pero si Park back to HOME", b.indexOf("Park back to HOME") >= 0, true);
-      click([...d.querySelectorAll(".sheet button")]
-        .find(x => x.textContent === "Park back to HOME"));
-      setTimeout(() => {
-        check("el aviso de Park nombra su build (hallada por box_id)",
-           /Its build is kept/.test(d.getElementById("toast").textContent), true);
+    await idle();
+    const b = buttons();
+    check("Garchomp (HOME origin, en la caja): sin Release", b.indexOf("Release"), -1);
+    check("...pero si Park back to HOME", b.indexOf("Park back to HOME") >= 0, true);
+    click([...d.querySelectorAll(".sheet button")]
+      .find(x => x.textContent === "Park back to HOME"));
+    await idle();
+    check("el aviso de Park nombra su build (hallada por box_id)",
+       /Its build is kept/.test(d.getElementById("toast").textContent), true);
+  });
 
-        check("la pagina no reporta errores de script", errs.join(" | ") || "ninguno", "ninguno");
-      }, 400);
-    }, 400);
-  }, 400);
-}, 1200);
+  check("la pagina no reporta errores de script", errs.join(" | ") || "ninguno", "ninguno");
+})();

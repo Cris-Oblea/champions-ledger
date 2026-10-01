@@ -18,7 +18,8 @@
    The fixture makes the race real. The device has loaded `farigiraf` only,
    while the table also holds a `farigiraf-2` that another device wrote a
    second ago. A correct create walks past both. */
-const { check, open } = require("./harness.js");
+const { describe } = require("node:test");
+const { check, open, idle } = require("./harness.js");
 const UID = "u1";
 
 const ROWS = [{user_id:UID, id:"farigiraf", name:"Farigiraf",
@@ -44,38 +45,39 @@ const click = n => n.dispatchEvent(new w.MouseEvent("click", {bubbles:true}));
 const save = which => click([...d.querySelectorAll("#" + which + "Foot button")]
   .find(b => b.textContent === "Save"));
 
-setTimeout(() => {
-  console.log("\n  una build nueva, con la carrera en marcha");
-  check("el aparato solo ha cargado una build",
-     Object.keys(w.S.builds).length, 1);
-  w.buildSheet(null, {pokemon:"Farigiraf"});
-  save("buildEdit");
-  setTimeout(() => {
+(async () => {
+  await idle();
+  await describe("una build nueva, con la carrera en marcha", async () => {
+    check("el aparato solo ha cargado una build",
+       Object.keys(w.S.builds).length, 1);
+    w.buildSheet(null, {pokemon:"Farigiraf"});
+    save("buildEdit");
+    await idle();
     check("prueba farigiraf, luego -2, luego -3",
        sent("insert").join(","), "builds/farigiraf,builds/farigiraf-2,builds/farigiraf-3");
     /* the whole point: the id it could not see was NOT overwritten */
     check("no sobrescribe nada por el camino", sent("upsert").length, 0);
     check("y el id sigue siendo legible",
        /^builds\/farigiraf-3$/.test(sent("insert")[2]), true);
+  });
 
-    console.log("\n  editar una build existente no crea otra");
+  await describe("editar una build existente no crea otra", async () => {
     w.__WROTE.length = 0;
     w.buildSheet("farigiraf", w.S.builds.farigiraf);
     save("buildEdit");
-    setTimeout(() => {
-      check("escribe sobre su propio id", sent("upsert").join(","), "builds/farigiraf");
-      check("y no intenta crear nada", sent("insert").length, 0);
+    await idle();
+    check("escribe sobre su propio id", sent("upsert").join(","), "builds/farigiraf");
+    check("y no intenta crear nada", sent("insert").length, 0);
+  });
 
-      console.log("\n  lo mismo para los equipos");
-      w.__WROTE.length = 0;
-      w.teamSheet(null, {name:"Prueba", slots:[], notes:{}});
-      save("teamEdit");
-      setTimeout(() => {
-        check("prueba y prueba-2", sent("insert").join(","), "teams/prueba,teams/prueba-2");
-        check("sin sobrescribir el equipo del otro aparato", sent("upsert").length, 0);
+  await describe("lo mismo para los equipos", async () => {
+    w.__WROTE.length = 0;
+    w.teamSheet(null, {name:"Prueba", slots:[], notes:{}});
+    save("teamEdit");
+    await idle();
+    check("prueba y prueba-2", sent("insert").join(","), "teams/prueba,teams/prueba-2");
+    check("sin sobrescribir el equipo del otro aparato", sent("upsert").length, 0);
+  });
 
-        check("la pagina no reporta errores de script", errs.join(" | ") || "ninguno", "ninguno");
-      }, 400);
-    }, 400);
-  }, 600);
-}, 1500);
+  check("la pagina no reporta errores de script", errs.join(" | ") || "ninguno", "ninguno");
+})();
