@@ -15,12 +15,10 @@
    And the ones that CAN go: anything in HOME, plus a HOME-origin Pokemon
    sitting in the Champions box, which can be parked back and deposited. */
 const { describe } = require("node:test");
-const { check, open, idle } = require("./harness.js");
+const { check, open, idle, row, click } = require("./harness.js");
 
-const UID = "u1";
-const R = (id, name, loc, origin, status) => ({user_id:UID, id, name,
-  location:loc, status, origin, note:"", ord:0,
-  updated_at:"2026-09-12", shiny:false, trained:false});
+const R = (id, name, location, origin, status) =>
+  row(id, name, {location, origin, status});
 const ROWS = [
   R("g1", "Garchomp",  "champions", "champions", "permanent"),
   R("g2", "Sneasler",  "champions", "home",      "rental"),   // rental beats origin
@@ -52,8 +50,7 @@ const nameOf = b => b.querySelector(".rname").firstChild.textContent.trim();
   const cards = () => [...sheet.querySelectorAll(".list .row")];
   const tog = t => [...sheet.querySelectorAll(".tog")]
     .find(b => b.textContent.trim() === t);
-  const press = t => tog(t)
-    .dispatchEvent(new w.MouseEvent("click", {bubbles:true}));
+  const press = t => click(tog(t));
   const offered = cards().map(nameOf);
 
   describe("lo que se puede depositar", () => {

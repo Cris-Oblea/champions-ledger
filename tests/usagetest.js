@@ -20,21 +20,15 @@
    proved the old parser had been mixing two different measurements.
 */
 const { describe } = require("node:test");
-const { check, open, idle } = require("./harness.js");
-const UID = "u1";
+const { check, open, idle, row, build, click } = require("./harness.js");
 
-const ROWS = [{user_id:UID, id:"rillaboom", name:"Rillaboom",
-  location:"champions", status:"permanent", origin:"champions", note:"",
-  ord:0, updated_at:"2026-09-15", shiny:false, trained:true}];
-const BUILDS = [{user_id:UID, id:"rillaboom", pokemon:"Rillaboom", mega:null,
-  ability:"Grassy Surge", mega_ability:null, nature:"Adamant",
-  stat_points:{hp:32,atk:32,def:0,spa:0,spd:2,spe:0},
-  moves:["Fake Out",null,null,null], role:"", rationale:"", extra:{},
-  updated_at:"2026-09-15"}];
+const ROWS = [row("rillaboom", "Rillaboom", {trained:true})];
+const BUILDS = [build("rillaboom", "Rillaboom", {ability:"Grassy Surge",
+  nature:"Adamant", stat_points:{hp:32,atk:32,def:0,spa:0,spd:2,spe:0},
+  moves:["Fake Out",null,null,null]})];
 
 const { dom, errs } = open({ box: ROWS, builds: BUILDS });
 const w = dom.window, d = w.document;
-const click = n => n.dispatchEvent(new w.MouseEvent("click", {bubbles:true}));
 const sum = a => a.reduce((n, r) => n + r[1], 0);
 const foot = t => [...d.querySelectorAll("#sheetFoot .btn")]
   .find(b => b.textContent.trim() === t);

@@ -16,7 +16,7 @@
    in the built file. It is a sweep, not a sample, because a sample missed 24
    of those 25 forms. */
 const { describe } = require("node:test");
-const { check, open, page, source, idle } = require("./harness.js");
+const { check, open, page, source, idle, click } = require("./harness.js");
 
 const list = (a, n = 6) => {
   if (!a.length) return "0";
@@ -115,8 +115,7 @@ const w = dom.window;
     check("pero oculto de entrada", bl.querySelector(".more").hidden, true);
     check("el boton dice cuantas palabras esconde",
        /^why \(\d+ words\)$/.test(bl.querySelector(".whybtn").textContent), true);
-    bl.querySelector(".whybtn").dispatchEvent(
-      new w.MouseEvent("click", {bubbles:true}));
+    click(bl.querySelector(".whybtn"));
     check("y al pulsarlo se abre", bl.querySelector(".more").hidden, false);
     check("...diciendo como cerrarlo", bl.querySelector(".whybtn").textContent,
        "less");

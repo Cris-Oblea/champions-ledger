@@ -9,21 +9,18 @@
    So this asserts the SHAPE, not the values: one input, no VP anywhere, and
    every derived line present and non-empty. */
 const { describe } = require("node:test");
-const { check, open, source, idle } = require("./harness.js");
+const { check, open, source, idle, row, build } = require("./harness.js");
 
-const UID = "u1";
+/* The dates are part of the case: the newest one, the rental's, is what the
+   diagnostics have to report as the last ledger write. */
 const ROWS = [
- {user_id:UID,id:"garchomp",name:"Garchomp",location:"champions",status:"permanent",
-  origin:"champions",note:"",ord:0,updated_at:"2026-09-11",shiny:false,trained:true},
- {user_id:UID,id:"sneasler",name:"Sneasler",location:"champions",status:"rental",
-  origin:"champions",note:"",ord:1,updated_at:"2026-09-12",shiny:false,trained:false},
- {user_id:UID,id:"sableye",name:"Sableye",location:"home",status:"permanent",
-  origin:"home",note:"",ord:2,updated_at:"2026-09-10",shiny:false,trained:true}];
-const BUILDS = [{user_id:UID,id:"garchomp",pokemon:"Garchomp",mega:null,
-  ability:"Rough Skin",mega_ability:null,nature:"Jolly",
-  stat_points:{hp:0,atk:32,def:0,spa:0,spd:2,spe:32},
+  row("garchomp", "Garchomp", {trained:true, updated_at:"2026-09-11"}),
+  row("sneasler", "Sneasler", {status:"rental", ord:1, updated_at:"2026-09-12"}),
+  row("sableye", "Sableye", {location:"home", origin:"home", ord:2, trained:true})];
+const BUILDS = [build("garchomp", "Garchomp", {ability:"Rough Skin",
+  nature:"Jolly", stat_points:{hp:0,atk:32,def:0,spa:0,spd:2,spe:32},
   moves:["Earthquake","Rock Slide","Dragon Claw","Protect"],
-  role:"",rationale:"",extra:{},updated_at:"2026-09-11"}];
+  updated_at:"2026-09-11"})];
 
 const code = source();
 const { dom, errs } = open({ box: ROWS, builds: BUILDS });

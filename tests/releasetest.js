@@ -12,31 +12,24 @@
    release it, and the game would not. Same for a HOME-origin Garchomp sent in
    while another Garchomp stayed in HOME. */
 const { describe } = require("node:test");
-const { check, open, idle } = require("./harness.js");
-const UID = "u1";
+const { check, open, idle, row, build, click } = require("./harness.js");
 
-const row = (id, name, location, origin) => ({user_id:UID, id, name, location,
-  status:"permanent", origin, note:"", ord:0, updated_at:"2026-09-27",
-  shiny:false, trained:false});
 const ROWS = [
   /* exactly six Champions origin: the floor */
   ...["Sinistcha", "Maushold", "Sceptile", "Incineroar", "Kingambit",
-      "Gholdengo"].map(n => row(n.toLowerCase(), n, "champions", "champions")),
-  row("garchomp", "Garchomp", "champions", "home"),   // sent in from HOME
-  row("garchomp-h", "Garchomp", "home", "home"),      // ...and a copy left there
-  row("sinistcha-h", "Sinistcha", "home", "home"),
+      "Gholdengo"].map(n => row(n.toLowerCase(), n)),
+  row("garchomp", "Garchomp", {origin:"home"}),        // sent in from HOME
+  row("garchomp-h", "Garchomp", {location:"home", origin:"home"}),  // ...and a copy left there
+  row("sinistcha-h", "Sinistcha", {location:"home", origin:"home"}),
 ];
 
 /* The Garchomp in the box carries a build. Its id is NOT the box row's: the
    Park toast used to look the build up by the row's id and so never saw it. */
-const BUILDS = [{user_id:UID, id:"b-chomp", pokemon:"Garchomp", box_id:"garchomp",
-  mega:null, ability:null, mega_ability:null, nature:"Jolly",
-  stat_points:{hp:2,atk:32,def:0,spa:0,spd:0,spe:32}, moves:["Protect"],
-  role:"", rationale:"", extra:{}, updated_at:"2026-09-27"}];
+const BUILDS = [build("b-chomp", "Garchomp", {box_id:"garchomp", nature:"Jolly",
+  stat_points:{hp:2,atk:32,def:0,spa:0,spd:0,spe:32}, moves:["Protect"]})];
 
 const { dom, errs } = open({ box: ROWS, builds: BUILDS });
 const w = dom.window, d = w.document;
-const click = n => n.dispatchEvent(new w.MouseEvent("click", {bubbles:true}));
 const boxRow = name => [...d.querySelectorAll(
     "#listChampOrigin .row, #listHomeOrigin .row")]
   .find(r => ((r.querySelector(".rname") || r).textContent.trim()

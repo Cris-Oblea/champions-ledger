@@ -11,7 +11,7 @@
    three places a move is drawn. */
 const fs = require("fs");
 const { describe } = require("node:test");
-const { ROOT, check, open, idle } = require("./harness.js");
+const { ROOT, check, open, idle, row, build, click } = require("./harness.js");
 
 const raw = JSON.parse(fs.readFileSync(
   ROOT + "data/raw/smogon_calc/raw_moves.json", "utf8"));
@@ -20,18 +20,12 @@ const SM = {};
 Object.keys(raw).forEach(n => { if (raw[n] && typeof raw[n] === "object")
                                   SM[key(n)] = raw[n].target; });
 
-const UID = "u1";
-const ROWS = [{user_id:UID,id:"garchomp",name:"Garchomp",location:"champions",
-               status:"permanent",origin:"champions",note:"",ord:0,
-               updated_at:"2026-09-10",shiny:false,trained:true}];
-const BUILDS = [{user_id:UID,id:"garchomp",pokemon:"Garchomp",mega:null,
-  ability:"Rough Skin",mega_ability:null,nature:"Jolly",
-  stat_points:{hp:0,atk:32,def:0,spa:0,spd:2,spe:32},
-  moves:["Earthquake","Rock Slide","Dragon Claw","Protect"],
-  role:"",rationale:"",extra:{},updated_at:"2026-09-10"}];
+const ROWS = [row("garchomp", "Garchomp", {trained:true})];
+const BUILDS = [build("garchomp", "Garchomp", {ability:"Rough Skin",
+  nature:"Jolly", stat_points:{hp:0,atk:32,def:0,spa:0,spd:2,spe:32},
+  moves:["Earthquake","Rock Slide","Dragon Claw","Protect"]})];
 const { dom, errs } = open({ box: ROWS, builds: BUILDS });
 const w = dom.window, d = w.document;
-const click = n => n.dispatchEvent(new w.MouseEvent("click", {bubbles:true}));
 const tags = n => [...n.querySelectorAll(".tag")].map(t => t.textContent);
 
 const tagsOf = m => [...w.moveRowFor(w.MOVE_BY[m], [], null)

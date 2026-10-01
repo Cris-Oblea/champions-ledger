@@ -16,17 +16,14 @@
        alone. The flag read `megas: !build.mega`, which switched the Mega line
        ON for exactly the builds that have no Mega. */
 const { describe } = require("node:test");
-const { check, idle, open } = require("./harness.js");
+const { check, idle, open, row, build } = require("./harness.js");
 const UID = "u1";
 
-const R = (id, name, loc, origin, extra) => Object.assign({user_id:UID, id,
-  name, location:loc, status:"permanent", origin, note:"", ord:0,
-  updated_at:"2026-09-27", shiny:false, trained:false}, extra || {});
-const B = (id, pokemon, box_id, extra) => Object.assign({user_id:UID, id,
-  pokemon, box_id, mega:null, ability:null, mega_ability:null,
+const R = (id, name, location, origin, extra) =>
+  row(id, name, {location, origin, ...extra});
+const B = (id, pokemon, box_id) => build(id, pokemon, {box_id,
   nature:"Modest", stat_points:{hp:2,atk:0,def:0,spa:32,spd:0,spe:32},
-  moves:["Protect"], role:"", rationale:"", extra:{},
-  updated_at:"2026-09-27"}, extra || {});
+  moves:["Protect"]});
 
 const ROWS = [
   R("charizard", "Charizard", "champions", "home", {shiny:true, trained:true}),

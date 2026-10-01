@@ -4,15 +4,13 @@
    button offers the others. Nothing else covered that button - the shared
    fixture holds five HOME rows, so it never appears there - and it is the one
    control whose redraw moved when the box drawing left boot.js. */
-const { check, open, idle } = require("./harness.js");
-const UID = "u1";
+const { check, open, idle, row } = require("./harness.js");
 
 const NAMES = ["Pikachu", "Charizard", "Venusaur", "Blastoise", "Gengar",
   "Dragonite", "Tyranitar", "Garchomp", "Lucario", "Gardevoir", "Snorlax",
   "Gyarados", "Alakazam", "Machamp", "Arcanine"];
-const ROWS = NAMES.map((n, i) => ({user_id:UID, id:n.toLowerCase(), name:n,
-  location:"home", status:"permanent", origin:"home", note:"", ord:i,
-  updated_at:"2026-09-29", shiny:false, trained:false}));
+const ROWS = NAMES.map((n, i) => row(n.toLowerCase(), n,
+  {location:"home", origin:"home", ord:i}));
 
 const { dom, errs } = open({ box: ROWS });
 const w = dom.window, d = w.document;
