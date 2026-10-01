@@ -2,7 +2,7 @@
 import {
   bst, byText, C, DEX, dexNo, learnset, MOVES, STAT_KEYS, STAT_LABEL,
 } from "../core/data.js";
-import { $, el, fbtn, searchField, setPressed } from "../core/dom.js";
+import { $, el, fbtn, searchField, pressOnly, setPressed } from "../core/dom.js";
 import { boxRows, FIND, originOf, ownedNames } from "../core/state.js";
 import { megaLine, numText, pokeCard, typeSkin } from "../ui/card.js";
 import { moveFilters, moveRowFor } from "../ui/moves.js";
@@ -341,9 +341,7 @@ function wireFindMode(){
   Array.prototype.forEach.call(mrow.children, function(b){
     b.onclick = function(){
       const m = b.dataset.mode;
-      Array.prototype.forEach.call(mrow.children, function(x){
-        setPressed(x, x === b);
-      });
+      pressOnly(mrow, b);
       $("findSearch").hidden = m !== "search";
       $("findWorlds").hidden = m !== "worlds";
     };
@@ -423,9 +421,7 @@ function typeModeButton(mrow, o, paint){
   setPressed(b, FIND.typeMode === o[0]);
   b.onclick = function(){
     FIND.typeMode = o[0];
-    Array.prototype.forEach.call(mrow.children, function(x){
-      setPressed(x, x === b);
-    });
+    pressOnly(mrow, b);
     paint(); findDraw();
   };
   return b;

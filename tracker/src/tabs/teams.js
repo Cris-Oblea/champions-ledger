@@ -5,7 +5,7 @@ import {
   bst, byName, byText, dexNo, MOVE_BY, natMult, plural, splitPct, STAT_KEYS,
 } from "../core/data.js";
 import {
-  $, el, fbtn, filterLabel, note, searchField, setPressed, toast,
+  $, el, fbtn, filterLabel, note, searchField, pressOnly, setPressed, toast,
 } from "../core/dom.js";
 import {
   activeAbility, baseAbility, buildLink, buildsFor, hasItem, hasStone, S,
@@ -255,9 +255,7 @@ function scenarioButtons(SCEN, scenAt, paint){
     setPressed(b2, sc.at === scenAt.v);
     b2.onclick = function(){
       scenAt.v = sc.at;
-      Array.prototype.forEach.call(seg.children, function(x){
-        setPressed(x, x === b2);
-      });
+      pressOnly(seg, b2);
       paint();
     };
     seg.appendChild(b2);
@@ -606,13 +604,6 @@ function sortButton(row, groups, F, key, text, draw){
     draw();
   };
   row.appendChild(t);
-}
-
-/* Mark `on` as the pressed button of a group, and every sibling as not. */
-function pressOnly(group, on){
-  Array.prototype.forEach.call(group.children, function(x){
-    setPressed(x, x === on);
-  });
 }
 
 /* WHAT JOB IT DOES. `role` is typed by hand, so the chips are the distinct
