@@ -24,7 +24,8 @@
  * in 7 - a row per owned thing, a row per trade - so meta is down to the one
  * document that really is a document.
  */
-const { open } = require("./harness.js");
+const harness = require("./harness.js");
+const { open } = harness;
 
 const UID = "00000000-0000-4000-8000-00000000fixt";
 const DAY = "2026-09-14";
@@ -63,10 +64,8 @@ const box = [
 ];
 
 function row(id, name, location, status, origin, extra) {
-  return Object.assign({
-    user_id: UID, id, name, location, status, origin,
-    note: "", shiny: 0, trained: 0, ord: 0, updated_at: DAY + "T00:00:00Z",
-  }, extra || {});
+  return harness.row(id, name, { user_id: UID, location, status, origin,
+                                 updated_at: DAY + "T00:00:00Z", ...extra });
 }
 
 const builds = [
@@ -99,12 +98,8 @@ const builds = [
 ];
 
 function build(id, pokemon, box_id, extra) {
-  return Object.assign({
-    user_id: UID, id, pokemon, box_id,
-    mega: null, ability: null, mega_ability: null, nature: null,
-    stat_points: {}, moves: [], role: "", rationale: "",
-    extra: {}, updated_at: DAY + "T00:00:00Z",
-  }, extra || {});
+  return harness.build(id, pokemon, { user_id: UID, box_id,
+                                      updated_at: DAY + "T00:00:00Z", ...extra });
 }
 
 /* Six slots, six DIFFERENT items - the Item Clause holds, so the report has to

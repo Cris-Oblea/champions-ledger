@@ -19,17 +19,13 @@
    while the table also holds a `farigiraf-2` that another device wrote a
    second ago. A correct create walks past both. */
 const { describe } = require("node:test");
-const { check, open, idle } = require("./harness.js");
+const { check, open, idle, row, build, click } = require("./harness.js");
 const UID = "u1";
 
-const ROWS = [{user_id:UID, id:"farigiraf", name:"Farigiraf",
-  location:"champions", status:"permanent", origin:"champions", note:"",
-  ord:0, updated_at:"2026-09-13", shiny:false, trained:true}];
-const BUILDS = [{user_id:UID, id:"farigiraf", pokemon:"Farigiraf",
-  box_id:"farigiraf", mega:null, ability:null, mega_ability:null,
+const ROWS = [row("farigiraf", "Farigiraf", {trained:true})];
+const BUILDS = [build("farigiraf", "Farigiraf", {box_id:"farigiraf",
   nature:"Quiet", stat_points:{hp:32,atk:0,def:2,spa:32,spd:0,spe:0},
-  moves:["Trick Room"], role:"", rationale:"", extra:{},
-  updated_at:"2026-09-13"}];
+  moves:["Trick Room"]})];
 const TEAMS = [{user_id:UID, id:"t1", name:"Otro", slots:[], notes:{},
   updated_at:"2026-09-13"}];
 
@@ -41,7 +37,6 @@ const { dom, errs } = open(
 /* what the app sent, as "table/id", one list per kind of write */
 const sent = op => dom.window.__WROTE.filter(x => x.op === op).map(x => x.table + "/" + x.row.id);
 const w = dom.window, d = w.document;
-const click = n => n.dispatchEvent(new w.MouseEvent("click", {bubbles:true}));
 const save = which => click([...d.querySelectorAll("#" + which + "Foot button")]
   .find(b => b.textContent === "Save"));
 

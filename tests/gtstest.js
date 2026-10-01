@@ -1,10 +1,10 @@
 /* A GTS trade must be an EXCHANGE: what you gave leaves, what you got arrives. */
-const { check, idle, open } = require("./harness.js");
+const { check, idle, open, row, click } = require("./harness.js");
 
 const UID = "u1";
 const ROWS = [
-  {user_id:UID,id:"chesnaught",name:"Chesnaught",location:"home",status:"permanent",origin:"home",note:"",ord:0,updated_at:"2026-09-09"},
-  {user_id:UID,id:"sableye",name:"Sableye",location:"home",status:"permanent",origin:"home",note:"",ord:1,updated_at:"2026-09-09"}
+  row("chesnaught", "Chesnaught", {location:"home", origin:"home"}),
+  row("sableye", "Sableye", {location:"home", origin:"home", ord:1}),
 ];
 const META = [];
 /* A row per trade since migration 7. The offer is open because `closed` is
@@ -16,7 +16,6 @@ const GTS = [{user_id:UID,id:"chesnaught",offered:"Chesnaught",
   data:{},updated_at:"2026-09-09"}];
 const { dom, errs } = open({ box: ROWS, meta: META, gts: GTS });
 const w = dom.window, d = w.document;
-const click = n => n.dispatchEvent(new w.MouseEvent("click", {bubbles:true}));
 
 (async () => {
   await idle();

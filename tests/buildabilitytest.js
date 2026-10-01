@@ -31,37 +31,29 @@
      Greninja-Bond / Rockruff-Dusk in HOME  -> their own ability, not the
                                                base species' three */
 const { describe } = require("node:test");
-const { check, idle, open } = require("./harness.js");
-const UID = "u1";
+const { check, idle, open, row, build, click } = require("./harness.js");
 
-const row = (id, name) => ({user_id:UID, id, name, location:"champions",
-  status:"permanent", origin:"champions", note:"", ord:0,
-  updated_at:"2026-09-10", shiny:false, trained:true});
-const ROWS = [row("clawitzer", "Clawitzer"), row("garchomp", "Garchomp"),
-              row("camerupt", "Camerupt")];
+const ROWS = ["Clawitzer", "Garchomp", "Camerupt"]
+  .map(n => row(n.toLowerCase(), n, {trained:true}));
 
-const build = (id, pokemon, extra) => Object.assign(
-  {user_id:UID, id, pokemon, box_id:id, mega:null, ability:null,
-   mega_ability:null, nature:"Modest",
-   stat_points:{hp:0,atk:0,def:0,spa:32,spd:0,spe:32},
-   moves:["Water Pulse", "Protect", null, null], role:"", rationale:"",
-   extra:{}, updated_at:"2026-09-10"}, extra || {});
+const B = (id, pokemon, extra) => build(id, pokemon, {box_id:id,
+  nature:"Modest", stat_points:{hp:0,atk:0,def:0,spa:32,spd:0,spe:32},
+  moves:["Water Pulse", "Protect", null, null], ...extra});
 const BUILDS = [
-  build("clawitzer", "Clawitzer"),
+  B("clawitzer", "Clawitzer"),
   /* an idea, with no Pokemon behind it - the state the ability still has to
      resolve in, because a build is its own thing now */
-  build("aegislash", "Aegislash",
+  B("aegislash", "Aegislash",
         {box_id:null, moves:["Iron Head", null, null, null]}),
-  build("garchomp", "Garchomp", {moves:["Earthquake", null, null, null]}),
-  build("camerupt", "Camerupt",
+  B("garchomp", "Garchomp", {moves:["Earthquake", null, null, null]}),
+  B("camerupt", "Camerupt",
         {mega:"Mega Camerupt", moves:["Eruption", null, null, null]}),
-  build("greninja", "Greninja",
+  B("greninja", "Greninja",
         {box_id:null, moves:["Dark Pulse", null, null, null]}),
 ];
 
 const { dom, errs } = open({ box: ROWS, builds: BUILDS });
 const w = dom.window, d = w.document;
-const click = n => n.dispatchEvent(new w.MouseEvent("click", {bubbles:true}));
 const editor = () => d.getElementById("buildEditBody");
 const saveBtn = () =>
   [...d.getElementById("buildEditFoot").querySelectorAll("button")]

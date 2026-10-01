@@ -10,18 +10,13 @@
        box answers "can I play this today", HOME answers "can I bring it in".
 */
 const { describe } = require("node:test");
-const { check, open, idle } = require("./harness.js");
-const UID = "u1";
+const { check, open, idle, row, click } = require("./harness.js");
 
-const row = (id, name, location, origin) => ({user_id:UID, id, name, location,
-  status:"permanent", origin, note:"", ord:0, updated_at:"2026-09-10",
-  shiny:false, trained:true});
-const ROWS = [row("garchomp","Garchomp","champions","champions"),
-              row("dragonite","Dragonite","home","home")];
+const ROWS = [row("garchomp", "Garchomp", {trained:true}),
+              row("dragonite", "Dragonite", {location:"home", origin:"home", trained:true})];
 
 const { dom, errs } = open({ box: ROWS });
 const w = dom.window, d = w.document;
-const click = n => n.dispatchEvent(new w.MouseEvent("click", {bubbles:true}));
 const sheetChip = t => [...d.querySelectorAll(".sheet .tog")]
   .find(b => b.textContent.trim() === t);
 const sheetRows = () => [...d.querySelectorAll(".sheet .list .row")];

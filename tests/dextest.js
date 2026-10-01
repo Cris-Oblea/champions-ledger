@@ -12,12 +12,10 @@
    already in HOME is DONE even when a copy is also welded into the Champions
    box, because the HOME copy is the one that makes the slot elastic. */
 const { describe } = require("node:test");
-const { check, open, idle } = require("./harness.js");
-const UID = "u1";
+const { check, open, idle, row: boxRow, click } = require("./harness.js");
 
-const row = (id, name, location, status, origin) => ({user_id:UID, id, name,
-  location, status, origin, note:"", ord:0, updated_at:"2026-09-21",
-  shiny:false, trained:true});
+const row = (id, name, location, status, origin) =>
+  boxRow(id, name, {location, status, origin, trained:true});
 /* Aggron is bought and welded, Meganium is a rental, Dragonite only exists in
    HOME, and Garchomp is in BOTH - which is the case that must NOT be listed. */
 const ROWS = [
@@ -120,10 +118,10 @@ const names = id => [...d.querySelectorAll("#" + id + " .row.card .rname")]
     check("Celebi sigue en la lista", !!celebi, true);
     check("...avisando de que el GTS puede rechazarlo",
        !!celebi && /GTS may refuse it/.test(celebi.textContent), true);
-    wantTog("outside").dispatchEvent(new w.MouseEvent("click", {bubbles:true}));
+    click(wantTog("outside"));
     check("y deja solo esos",
        names("listGtsWant").every(n => !w.byName[n]), true);
-    wantTog("all").dispatchEvent(new w.MouseEvent("click", {bubbles:true}));
+    click(wantTog("all"));
     check("marcado como que libera slot",
        !!d.querySelector("#listGtsWant .tag.ok"), true);
     check("el record sale de sus propios trades cerrados",

@@ -8,21 +8,15 @@
    Garchomp is the fixture because its pool covers all three categories, both
    spread kinds (Earthquake hits the ally, Rock Slide does not) and priority. */
 const { describe } = require("node:test");
-const { check, open, idle } = require("./harness.js");
-const UID = "u1";
+const { check, open, idle, row, build, click } = require("./harness.js");
 
-const ROWS = [{user_id:UID, id:"garchomp", name:"Garchomp", location:"champions",
-  status:"permanent", origin:"champions", note:"", ord:0,
-  updated_at:"2026-09-10", shiny:false, trained:true}];
-const BUILDS = [{user_id:UID, id:"garchomp", pokemon:"Garchomp", mega:null,
-  ability:"Rough Skin", mega_ability:null, nature:"Jolly",
-  stat_points:{hp:2,atk:32,def:0,spa:0,spd:0,spe:32},
-  moves:["Earthquake",null,null,null], role:"", rationale:"", extra:{},
-  updated_at:"2026-09-10"}];
+const ROWS = [row("garchomp", "Garchomp", {trained:true})];
+const BUILDS = [build("garchomp", "Garchomp", {ability:"Rough Skin",
+  nature:"Jolly", stat_points:{hp:2,atk:32,def:0,spa:0,spd:0,spe:32},
+  moves:["Earthquake",null,null,null]})];
 
 const { dom, errs } = open({ box: ROWS, builds: BUILDS });
 const w = dom.window, d = w.document;
-const click = n => n.dispatchEvent(new w.MouseEvent("click", {bubbles:true}));
 /* UN CHIP TIENE TRES ESTADOS y escribe un menos en su propia etiqueta
    cuando excluye, asi que buscarlo por texto exacto deja de encontrarlo
    en cuanto se usa. Se busca por el texto sin el signo. */

@@ -10,7 +10,7 @@
    stones in their own pane - each row carrying what the item does, what it
    costs in VP, and whether it is owned. */
 const { describe } = require("node:test");
-const { check, open, idle } = require("./harness.js");
+const { check, open, idle, click } = require("./harness.js");
 const UID = "u1";
 
 /* A ROW PER OWNED THING since migration 6, not a list inside one document.
@@ -23,7 +23,6 @@ const STONES = [{user_id:UID, id:"Garchompite", updated_at:"2026-09-10"}];
 
 const { dom, errs } = open({ meta: META, items: ITEMS, stones: STONES });
 const w = dom.window, d = w.document;
-const click = n => n.dispatchEvent(new w.MouseEvent("click", {bubbles:true}));
 const rows = () => [...d.querySelectorAll("#itemCats .row")];
 /* An item's row in the list, found by its name. */
 const item = n => rows().find(r => r.textContent.indexOf(n) === 0);
@@ -168,8 +167,7 @@ const heads = () => [...d.querySelectorAll("#itemCats h2")]
     check("la tabla vive ahora en la vista de damage",
        !!d.querySelector("#v-calc #statusList"), true);
     check("y arranca plegada", d.getElementById("statusBody").hidden, true);
-    d.getElementById("statusFold")
-     .dispatchEvent(new w.MouseEvent("click", {bubbles:true}));
+    click(d.getElementById("statusFold"));
     check("se abre al tocarla", d.getElementById("statusBody").hidden, false);
     const st = [...d.querySelectorAll("#statusList .row")];
     check("los ocho estados", st.length, 8);

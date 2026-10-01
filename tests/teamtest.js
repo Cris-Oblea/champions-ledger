@@ -20,21 +20,16 @@
 
    The fixture breaks both clauses on purpose. */
 const { describe } = require("node:test");
-const { check, open, idle } = require("./harness.js");
+const { check, open, idle, row, build } = require("./harness.js");
 const UID = "u1";
 
-const R = (id, name, loc, origin, status) => ({user_id:UID, id, name,
-  location:loc, status, origin, note:"", ord:0, updated_at:"2026-09-13",
-  shiny:false, trained:true});
-const B = (id, pokemon, box_id, extra) => Object.assign({user_id:UID, id,
-  pokemon, box_id, mega:null, ability:null, mega_ability:null,
+const B = (id, pokemon, box_id, extra) => build(id, pokemon, {box_id,
   nature:"Adamant", stat_points:{hp:0,atk:32,def:0,spa:0,spd:2,spe:32},
-  moves:["Protect"], role:"", rationale:"", extra:{},
-  updated_at:"2026-09-13"}, extra || {});
+  moves:["Protect"], ...extra});
 
-const ROWS = [R("garchomp","Garchomp","champions","champions","permanent"),
-              R("farigiraf","Farigiraf","champions","champions","permanent"),
-              R("sableye","Sableye","home","home","permanent")];
+const ROWS = [row("garchomp", "Garchomp", {trained:true}),
+              row("farigiraf", "Farigiraf", {trained:true}),
+              row("sableye", "Sableye", {location:"home", origin:"home", trained:true})];
 const BUILDS = [B("garchomp","Garchomp","garchomp",{moves:["Earthquake","Protect"], ability:"Rough Skin"}),
                 B("farigiraf","Farigiraf","farigiraf",{role:"Trick Room"}),
                 B("farigiraf-2","Farigiraf","farigiraf",{role:"Armor Tail"}),
