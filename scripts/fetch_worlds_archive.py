@@ -124,7 +124,10 @@ def species_table(path):
             "round_label": d.get("round_label"), "complete": d.get("complete"),
             "top": [{"name": k, "teams": v,
                      "pct": round(100.0 * v / n, 1) if n else 0.0}
-                    for k, v in c.most_common(40)]}
+                    # ties by name: Counter keeps them in the order a SET
+                    # handed them over, which changes with every process, so
+                    # the nightly refresh rewrote this frozen file every day
+                    for k, v in sorted(c.items(), key=lambda kv: (-kv[1], kv[0]))[:40]]}
 
 
 def _merge_year(slot, ev):
