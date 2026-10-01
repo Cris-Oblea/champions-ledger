@@ -167,16 +167,16 @@ def find_key(obj, key, hits=None):
     return hits
 
 
-def _carrying(node, keys):
+def carrying(node, keys):
     """Every object under `node` that has all of `keys`, in document order."""
     if isinstance(node, dict):
         if all(k in node for k in keys):
             yield node
         for v in node.values():
-            yield from _carrying(v, keys)
+            yield from carrying(v, keys)
     elif isinstance(node, list):
         for v in node:
-            yield from _carrying(v, keys)
+            yield from carrying(v, keys)
 
 
 def rows_with(page, *keys):
@@ -190,7 +190,7 @@ def rows_with(page, *keys):
     did not expect."""
     stems = [page] + ["%s_p%d" % (page, n) for n in range(2, PAGED.get(page, 1) + 1)]
     for stem in stems:
-        yield from _carrying(list(rsc_lines(rsc_payload(stem)).values()), keys)
+        yield from carrying(list(rsc_lines(rsc_payload(stem)).values()), keys)
 
 
 # --------------------------------------------------------------------------
