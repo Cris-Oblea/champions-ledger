@@ -344,29 +344,8 @@ def resolver(pokemon):
 
 
 def build(force=False):
-    pokemon = table("pokemon.csv", force)
-    stats = table("pokemon_stats.csv", force)
-    ptypes = table("pokemon_types.csv", force)
-    pabil = table("pokemon_abilities.csv", force)
-    types = {r["id"]: r["identifier"].capitalize()
-             for r in table("types.csv", force)}
-    abil = {r["ability_id"]: r["name"]
-            for r in table("ability_names.csv", force)
-            if r.get("local_language_id") == ENGLISH}
-
-    resolve = resolver(pokemon)
-
-    st, ty, ab = {}, {}, {}
-    for r in stats:
-        if int(r["stat_id"]) in STAT_ORDER:
-            st.setdefault(r["pokemon_id"], {})[int(r["stat_id"])] = \
-                int(r["base_stat"])
-    for r in ptypes:
-        ty.setdefault(r["pokemon_id"], []).append((int(r["slot"]), r["type_id"]))
-    for r in pabil:
-        ab.setdefault(r["pokemon_id"], []).append((int(r["slot"]),
-                                                   r["ability_id"]))
-
+    resolve = resolver(table("pokemon.csv", force))
+    numbers = _numbers_reader(force)
     by_form = form_rows(force)
     out, missed = {}, []
     for name in home_only_names():
@@ -379,13 +358,12 @@ def build(force=False):
         form = by_form(key(name)) if approx else None
         if form:
             pid, approx = form["pid"], None
-        if not pid or pid not in st:
+        row = numbers(pid) if pid else None
+        if not row:
             missed.append(name)
             continue
-        row = {"t": (form and form["t"]) or
-                    [types[t] for _, t in sorted(ty.get(pid, []))],
-               "b": [st[pid].get(i, 0) for i in STAT_ORDER],
-               "ab": [abil.get(a, a) for _, a in sorted(ab.get(pid, []))]}
+        if form and form["t"]:
+            row["t"] = form["t"]
         if approx:
             row["approx"] = approx
         out[name] = row
@@ -644,7 +622,8 @@ MEGA_FORM = re.compile(r"^(.+)-mega(?:-([xyz]))?$")
 
 
 def _numbers_reader(force):
-    """numbers(pokemon id) -> its types, spread and abilities, upstream's."""
+    """numbers(pokemon id) -> its types, spread and abilities, upstream's,
+    or None for an id upstream publishes no stats for."""
     stats = table("pokemon_stats.csv", force)
     ptypes = table("pokemon_types.csv", force)
     pabil = table("pokemon_abilities.csv", force)
@@ -664,6 +643,8 @@ def _numbers_reader(force):
                                                    r["ability_id"]))
 
     def numbers(pid):
+        if pid not in st:
+            return None
         return {"t": [types[t] for _, t in sorted(ty.get(pid, []))],
                 "b": [st[pid].get(i, 0) for i in STAT_ORDER],
                 "ab": [abil.get(a, a) for _, a in sorted(ab.get(pid, []))]}

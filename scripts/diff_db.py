@@ -110,11 +110,10 @@ def names(v):
     return set(v) if isinstance(v, list) else set()
 
 
-def _list_change(ra, rb, listfield):
-    """A movepool growing or shrinking, or None. The names are what is worth
+def _list_change(old, new):
+    """A list growing or shrinking, or None. The names are what is worth
     saying: "Slash: +29" is the M-C change the counts could not see."""
-    gone = names(ra.get(listfield)) - names(rb.get(listfield))
-    came = names(rb.get(listfield)) - names(ra.get(listfield))
+    gone, came = names(old) - names(new), names(new) - names(old)
     bits = []
     if came:
         bits.append("+%d (%s)" % (len(came), ", ".join(sorted(came)[:8])))
@@ -136,7 +135,8 @@ def table_diff(rel, holder, key, fields, listfield):
             x, y = a[k].get(f), b[k].get(f)
             if show(x) != show(y):
                 lines.append(("changed", k, f, "%s -> %s" % (show(x), show(y))))
-        change = _list_change(a[k], b[k], listfield) if listfield else None
+        change = (_list_change(a[k].get(listfield), b[k].get(listfield))
+                  if listfield else None)
         if change:
             lines.append(("changed", k, listfield, change))
     return {"file": rel, "unknown": False, "lines": lines}
@@ -157,14 +157,9 @@ def learnset_diff():
     for k in sorted(set(a) - set(b)):
         lines.append(("removed", k, "", ""))
     for k in sorted(set(a) & set(b)):
-        gone, came = names(a[k]) - names(b[k]), names(b[k]) - names(a[k])
-        if gone or came:
-            bits = []
-            if came:
-                bits.append("+%d (%s)" % (len(came), ", ".join(sorted(came)[:8])))
-            if gone:
-                bits.append("-%d (%s)" % (len(gone), ", ".join(sorted(gone)[:8])))
-            lines.append(("changed", k, "moves", "  ".join(bits)))
+        change = _list_change(a[k], b[k])
+        if change:
+            lines.append(("changed", k, "moves", change))
     return {"file": rel, "unknown": False, "lines": lines}
 
 
