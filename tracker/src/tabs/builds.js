@@ -15,11 +15,10 @@ import {
 } from "../core/state.js";
 import { drop, put, putNew } from "../core/store.js";
 import {
-  boxBadges, effectLine, labelBox, numText, pokeCard, typeChip, usageTag,
+  boxBadges, effectLine, labelBox, numText, pokeCard, typeChip,
 } from "../ui/card.js";
 import {
-  AB_SET, abilityHit, abilityTag, blockerTags, factLine, itemTags,
-  moveFilters, moveScore, priorityTag, spreadNote, spreadTags,
+  AB_SET, abilityTag, moveFilters, moveRowFor, spreadNote, spreadTags,
 } from "../ui/moves.js";
 import {
   ask, closeSheet, leaveEditor, openEditor, openSheet,
@@ -1039,52 +1038,14 @@ function movePicker(draft, idx, ls, done){
                          {usageOf: draft.pokemon, cap: 200});
     var list = el("div", "list");
     body.appendChild(list);
-    var score = moveScore;
     function draw(){
       var hits = ui.apply();
       list.innerHTML = "";
       hits.forEach(function(m){
-        var r = el("button", "row");
-        var mm = el("div", "rmain");
-        var h = el("div", "rname");
-        h.appendChild(typeChip(m.type));
-        h.appendChild(document.createTextNode(m.name));
-        priorityTag(m, h); spreadTags(m, h); itemTags(m, h);
-        blockerTags(m, h);
-        var atag = abil ? abilityTag(abil, m, apoke) : null;
-        if (atag) h.appendChild(atag);
-        /* EVERY move carries one, including the ones at 0%. The picker used
-           to badge four or five and leave the rest of the movepool blank, and
-           blank reads as "no data" when it actually meant "nobody brought it"
-           - which is an answer, and the one the player asked to see (2026-09-
-           15: "lo que yo quiero es que marque todos los ataques posibles con %
-           de uso"). splitPct returns null only when the Pokemon has no table
-           at all, and that is the one case that stays silent. */
-        var utag = usageTag(splitPct(draft.pokemon, "m", m.name),
-                            draft.pokemon, "m");
-        if (utag) h.appendChild(utag);
-        mm.appendChild(h);
-        /* One span per fact, so a phone breaks the line between them and
-           never inside one - see factLine. Nine badges and five numbers on a
-           360px row is what made that matter. */
-        var hh = abil ? abilityHit(abil, m) : null;
-        mm.appendChild(factLine([
-          catName(m.cat),
-          m.bp ? m.bp + " BP" : "— BP",
-          (m.acc == null ? "—" : m.acc) + " acc",
-          (m.pp == null ? "—" : m.pp) + " PP",
-          m.bp ? Math.round(score(m)) + " effective" : null,
-          hh?.x && m.bp
-            ? Math.round(m.bp * hh.x) + " BP with " + abil : null,
-          m.target
-        ]));
-        if (m.text) mm.appendChild(numText(m.text, "div", "st"));
-        r.appendChild(mm);
-        r.onclick = function(){
-          draft.moves[idx] = m.name;
-          finish();
-        };
-        list.appendChild(r);
+        list.appendChild(moveRowFor(m, abil, apoke, {
+          usageOf: draft.pokemon,
+          onPick: function(){ draft.moves[idx] = m.name; finish(); },
+        }));
       });
       if (!hits.length) list.appendChild(el("div", "empty", "Nothing matches"));
     }
