@@ -24,6 +24,7 @@ import re
 import sys
 import time
 
+import dex
 import net
 from paths import META, ROOT
 
@@ -349,7 +350,9 @@ def main():
         payload = {"source": "pokebase.app/pokemon-champions",
                    "game": "Pokemon Champions", "fetched": stamp,
                    "count": len(rows), "rows": rows}
-        with open(os.path.join(META, name + ".json"), "w", encoding="utf-8") as f:
+        path = os.path.join(META, name + ".json")
+        payload["fetched"] = dex.kept_stamp(path, payload)
+        with open(path, "w", encoding="utf-8") as f:
             json.dump(payload, f, ensure_ascii=False, indent=1)
         print("  %-18s %d rows" % (name, len(rows)))
 

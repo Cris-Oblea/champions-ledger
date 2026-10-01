@@ -168,13 +168,16 @@ def dex_texts(force=False):
         out[bucket] = got_all
         print("  %-9s %d described by Champions' dex, of %d"
               % (bucket, len(got_all), len(rows)))
-    Path(DB, "smogon_text.json").write_text(json.dumps(dict({
+    blob = dict({
         "source": "smogon.com/dex/champions (dump-move, dump-ability, dump-item)",
         "fetched": time.strftime("%Y-%m-%d"),
         "note": "Champions' own dex only. An entry it does not describe is "
                 "absent, never filled from another game.",
-    }, **out), ensure_ascii=False, indent=1, sort_keys=True),
-        encoding="utf-8")
+    }, **out)
+    path = Path(DB, "smogon_text.json")
+    blob["fetched"] = dex.kept_stamp(path, blob)
+    path.write_text(json.dumps(blob, ensure_ascii=False, indent=1, sort_keys=True),
+                    encoding="utf-8")
     print("  %d requests" % asked)
     if failed:
         print("  !! %d requests failed and will be asked again: %s"
@@ -226,7 +229,7 @@ def _basics(force):
 
 
 def _write_basics(basics):
-    Path(DB, "smogon_basics.json").write_text(json.dumps({
+    blob = {
         "source": "smogon.com/dex/champions",
         "fetched": time.strftime("%Y-%m-%d"),
         "moveflags": basics.get("moveflags") or [],
@@ -235,7 +238,10 @@ def _write_basics(basics):
         "items": basics.get("items") or [],
         "abilities": basics.get("abilities") or [],
         "moves": basics.get("moves") or [],
-    }, ensure_ascii=False, indent=1), encoding="utf-8")
+    }
+    path = Path(DB, "smogon_basics.json")
+    blob["fetched"] = dex.kept_stamp(path, blob)
+    path.write_text(json.dumps(blob, ensure_ascii=False, indent=1), encoding="utf-8")
 
 
 def _pokemon_dump(alias, force):
@@ -316,7 +322,7 @@ def main():
             print("  %d/%d (%d with VGC analysis)" % (i, len(mons), with_analysis),
                   flush=True)
 
-    Path(META, "smogon_analyses.json").write_text(json.dumps({
+    blob = {
         "source": "smogon.com/dex/champions",
         "game": "Pokemon Champions",
         "note": "VGC formats only (doubles, bring 6 pick 4). Singles dropped.",
@@ -324,7 +330,10 @@ def main():
         "count": len(out),
         "with_vgc_analysis": with_analysis,
         "pokemon": out,
-    }, ensure_ascii=False, indent=1), encoding="utf-8")
+    }
+    path = Path(META, "smogon_analyses.json")
+    blob["fetched"] = dex.kept_stamp(path, blob)
+    path.write_text(json.dumps(blob, ensure_ascii=False, indent=1), encoding="utf-8")
     print("  %d Pokemon, %d with a written VGC analysis" % (len(out), with_analysis))
 
 

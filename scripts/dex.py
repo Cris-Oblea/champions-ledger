@@ -11,6 +11,7 @@ anywhere, the gate included. query.py is the command line on top of it.
     key(name)        the key for a move, item or ability (spelling only)
     species_norm()   the base species, form qualifiers dropped
     find_pokemon(), find_move(), stone_for()
+    kept_stamp()     a rewritten file keeps its date when nothing else moved
 """
 import json
 import os
@@ -43,6 +44,21 @@ def load(path, default=None):
     with open(path, encoding="utf-8") as f:
         _cache[path] = json.load(f)
     return _cache[path]
+
+
+def kept_stamp(path, blob, key="fetched"):
+    """blob[key], unless the file at `path` already holds this same blob: then
+    the date already on it. A source re-parsed from cache, or re-fetched with
+    nothing new in it, must not rewrite its file with only a new date - the
+    nightly report hashes these files, and a moved date read as "Smogon
+    written analyses changed" every night while nothing had."""
+    try:
+        with open(path, encoding="utf-8") as f:
+            old = json.load(f)
+    except (OSError, ValueError):
+        return blob[key]
+    same = key in old and json.loads(json.dumps({**blob, key: old[key]})) == old
+    return old[key] if same else blob[key]
 
 
 def db(name):

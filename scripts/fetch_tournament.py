@@ -41,6 +41,7 @@ import sys
 import time
 import urllib.parse
 
+import dex
 import net
 from paths import META, ROOT
 
@@ -404,6 +405,7 @@ def main():
     }
     os.makedirs(META, exist_ok=True)
     dest = os.path.join(META, "tournament_%s_%s.json" % (tid, division))
+    out["fetched"] = dex.kept_stamp(dest, out)
     with open(dest, "w", encoding="utf-8") as f:
         json.dump(out, f, ensure_ascii=False, indent=1)
     print("  wrote %s" % os.path.relpath(dest, ROOT))
