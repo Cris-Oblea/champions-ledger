@@ -7,7 +7,7 @@ import {
   anyRow, byName, C, dexLabel, FORMS, freeSlug, outsideRow,
 } from "../core/data.js";
 import {
-  $, capNote, el, fbtn, note, searchField, setPressed, toast,
+  $, capNote, el, fbtn, note, searchField, pressOnly, setPressed, toast,
 } from "../core/dom.js";
 import {
   boxRows, buildsOn, capacity, originOf, originRows, RELEASE_FLOOR,
@@ -15,7 +15,7 @@ import {
 } from "../core/state.js";
 import { drop, put } from "../core/store.js";
 import { gtsDiff } from "../core/trade.js";
-import { boxBadges, pokeCard } from "../ui/card.js";
+import { boxBadges, outsideCard, pokeCard } from "../ui/card.js";
 import { ask, closeSheet, openSheet } from "../ui/nav.js";
 import { findDetail, pokeBody, pokeHead } from "../ui/pokemon.js";
 import { diffChip } from "./gts.js";
@@ -382,9 +382,7 @@ function boughtOrRental(body, draw){
     setPressed(b, false);
     b.onclick = function(){
       mode.v = o[0];
-      Array.prototype.forEach.call(st.children, function(x){
-        setPressed(x, x === b);
-      });
+      pressOnly(st, b);
       draw();
     };
     st.appendChild(b);
@@ -433,40 +431,16 @@ function drawAddList(list, inp, loc, body){
     capNote(list, extra.length, homeAll.length, "HOME-only names");
 }
 
-/* A species Champions does not have, on THE SAME CARD, with its picture,
-   typing and six stats from PokeAPI - which is the whole reason the HOME
-   shelf can be planned at all. A name with no numbers keeps a plain row. */
+/* A species Champions does not have, added to HOME from its card. */
 function homeOnlyAdd(n){
-  const op = anyRow(n);
   const add = function(){
     const id = freeSlug(n, S.box);
     put("box/" + id, {name:n, location:"home", status:"permanent",
         origin:"home", note:"", order:Object.keys(S.box).length})
       .then(function(){ closeSheet(); toast(n + " added to HOME"); });
   };
-  if (op) {
-    return pokeCard(op, {cls:"illegal", name:n, badges:notInDexBadge,
-                         notes:neverInGame, onclick:add});
-  }
-  const r = el("button", "row illegal");
-  const m2 = el("div", "rmain");
-  const h2 = el("div", "rname");
-  h2.appendChild(document.createTextNode(n));
-  notInDexBadge(h2);
-  m2.appendChild(h2);
-  neverInGame(m2);
-  r.appendChild(m2);
-  r.onclick = add;
-  return r;
-}
-
-function notInDexBadge(h){
-  h.appendChild(el("span", "tag bad", "not in the Champions dex"));
-}
-
-function neverInGame(m){
-  m.appendChild(el("div", "st",
-    "It can live in HOME, but it can never be sent into the game."));
+  return outsideCard(n, "not in the Champions dex",
+    "It can live in HOME, but it can never be sent into the game.", add);
 }
 
 /* A name no list carries, added to HOME exactly as typed. */

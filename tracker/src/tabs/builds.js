@@ -7,7 +7,7 @@ import {
   statAt,
 } from "../core/data.js";
 import {
-  $, capNote, el, fbtn, searchField, setPressed, toast,
+  $, capNote, el, fbtn, searchField, pressOnly, setPressed, toast,
 } from "../core/dom.js";
 import {
   activeAbility, boxRows, buildLink, buildsOn, megaAbility, ORIGIN_LABEL,
@@ -93,9 +93,7 @@ function speciesSheet(onPick){
       setPressed(t, PS.sort === o[0]);
       t.onclick = function(){
         PS.sort = o[0];
-        Array.prototype.forEach.call(sortWrap.children, function(c){
-          setPressed(c, c === t);
-        });
+        pressOnly(sortWrap, t);
         draw();
       };
       sortWrap.appendChild(t);
