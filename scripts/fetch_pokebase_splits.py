@@ -54,7 +54,6 @@ minutes and 427 MB of someone else's bandwidth for numbers that drift slowly.
 refresh.py --deep pulls it.
 """
 import argparse
-import contextlib
 import json
 import os
 import re
@@ -64,6 +63,7 @@ from pathlib import Path
 
 import dex
 import net
+from fetch_pokebase import carrying, find_key, payload, rsc_lines
 from paths import META
 
 OUT = os.path.join(META, "usage_splits.json")
@@ -81,54 +81,9 @@ STAT_WORD = {"hp": "HP", "attack": "Atk", "defense": "Def",
 
 # --------------------------------------------------------------- the payload
 
-def flight(html):
-    """The Next.js flight stream, unescaped and joined.
-
-    Every `self.__next_f.push([1,"..."])` carries one chunk of a single JSON
-    string. Concatenated, they hold the props of every component on the page -
-    which is where the sections that paginate keep their rows.
-    """
-    chunks = re.findall(r'self\.__next_f\.push\(\[1,"(.*?)"\]\)', html,
-                        flags=re.S)
-    out = []
-    for c in chunks:
-        with contextlib.suppress(ValueError):
-            out.append(json.loads('"' + c + '"'))
-    return "".join(out)
-
-
-def _span(s, i, open_c, close_c):
-    """The balanced JSON value starting at s[i], honouring strings."""
-    depth, k, in_str, esc = 0, i, False, False
-    while k < len(s):
-        c = s[k]
-        if esc:
-            esc = False
-        elif c == "\\":
-            esc = True
-        elif c == '"':
-            in_str = not in_str
-        elif not in_str:
-            if c == open_c:
-                depth += 1
-            elif c == close_c:
-                depth -= 1
-                if depth == 0:
-                    return s[i:k + 1]
-        k += 1
-    return None
-
-
-def _json_after(flow, key):
-    """Every array that follows a given key, parsed."""
-    out = []
-    for m in re.finditer(r'"%s":\s*(?=\[)' % re.escape(key), flow):
-        raw = _span(flow, m.end(), "[", "]")
-        if not raw:
-            continue
-        with contextlib.suppress(ValueError):
-            out.append(json.loads(raw))
-    return out
+def _lists(lines, key):
+    """Every array stored under `key`, in page order."""
+    return [v for v in find_key(lines, key) if isinstance(v, list)]
 
 
 def _rows(rows, extra=None):
@@ -188,10 +143,10 @@ def _kind(rows):
     return None
 
 
-def tournament(flow, html):
+def tournament(lines, flow, html):
     """The regulation's tournament block, every page of it."""
     got = {}
-    for rows in _json_after(flow, "rows"):
+    for rows in _lists(lines, "rows"):
         k = _kind(rows)
         if k and k not in got:
             got[k] = rows
@@ -246,7 +201,7 @@ def block_abilities(html, under):
 
 # --------------------------------------------------------------- ladder side
 
-def season(flow):
+def season(lines):
     """The newest DOUBLES ladder season, or None when the page has no block.
 
     Singles is dropped here for the same reason fetch_smogon.py drops it: it
@@ -255,19 +210,12 @@ def season(flow):
     the row rather than on the page.
     """
     seasons = {}
-    for arr in _json_after(flow, "seasons"):
+    for arr in _lists(lines, "seasons"):
         for s in arr:
             if isinstance(s, dict) and s.get("id"):
                 seasons[s["id"]] = s
     best, best_n = None, -1
-    for m in re.finditer(r'"seasonId"', flow):
-        raw = _span(flow, flow.rfind("{", 0, m.start()), "{", "}")
-        if not raw:
-            continue
-        try:
-            o = json.loads(raw)
-        except ValueError:
-            continue
+    for o in carrying(list(lines.values()), ("seasonId",)):
         if o.get("format") != "doubles":
             continue
         n = (seasons.get(o.get("seasonId")) or {}).get("season") or 0
@@ -291,9 +239,12 @@ def season(flow):
 
 
 def parse(html):
-    flow = flight(html)
-    got = {"tournament": tournament(flow, html)}
-    ladder = season(flow)
+    # the props of every component on the page, which is where the
+    # sections that paginate keep their rows
+    flow = payload(html)
+    lines = rsc_lines(flow)
+    got = {"tournament": tournament(lines, flow, html)}
+    ladder = season(lines)
     if ladder:
         got["season"] = ladder
     return got

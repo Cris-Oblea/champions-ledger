@@ -73,11 +73,16 @@ def read_all_pages(page):
 # --------------------------------------------------------------------------
 # RSC flight payload
 # --------------------------------------------------------------------------
-def rsc_payload(page):
-    """Reassemble the streamed React Server Component payload."""
-    s = read(page)
-    chunks = re.findall(r'self\.__next_f\.push\(\[1,("(?:[^"\\]|\\.)*")\]\)', s, re.S)
+def payload(html):
+    """The streamed React Server Component payload, reassembled: every
+    `self.__next_f.push([1,"..."])` carries one chunk of one JSON string."""
+    chunks = re.findall(r'self\.__next_f\.push\(\[1,("(?:[^"\\]|\\.)*")\]\)', html, re.S)
     return "".join(json.loads(c) for c in chunks)
+
+
+def rsc_payload(page):
+    """payload() of a cached page."""
+    return payload(read(page))
 
 
 def rsc_lines(payload):
@@ -162,16 +167,16 @@ def find_key(obj, key, hits=None):
     return hits
 
 
-def _carrying(node, keys):
+def carrying(node, keys):
     """Every object under `node` that has all of `keys`, in document order."""
     if isinstance(node, dict):
         if all(k in node for k in keys):
             yield node
         for v in node.values():
-            yield from _carrying(v, keys)
+            yield from carrying(v, keys)
     elif isinstance(node, list):
         for v in node:
-            yield from _carrying(v, keys)
+            yield from carrying(v, keys)
 
 
 def rows_with(page, *keys):
@@ -185,7 +190,7 @@ def rows_with(page, *keys):
     did not expect."""
     stems = [page] + ["%s_p%d" % (page, n) for n in range(2, PAGED.get(page, 1) + 1)]
     for stem in stems:
-        yield from _carrying(list(rsc_lines(rsc_payload(stem)).values()), keys)
+        yield from carrying(list(rsc_lines(rsc_payload(stem)).values()), keys)
 
 
 # --------------------------------------------------------------------------
@@ -193,16 +198,16 @@ def rows_with(page, *keys):
 # --------------------------------------------------------------------------
 def parse_pokemon_usage():
     """Pokemon usage lives in a id->percent map; names come from the same payload."""
-    payload = rsc_payload("pokemon")
+    lines = rsc_lines(rsc_payload("pokemon"))
     usage = {}
-    m = re.search(r'"usagePercentByPokemonId":\{(.*?)\}', payload, re.S)
-    if m:
-        for pid, pct in re.findall(r'"([0-9a-f]{24})":([\d.]+)', m.group(1)):
-            usage[pid] = float(pct)
+    for m in find_key(lines, "usagePercentByPokemonId"):
+        if isinstance(m, dict):
+            usage = {pid: float(pct) for pid, pct in m.items()}
+            break
 
     # names/stats come from the docs array, keyed by the same object id
     names = {}
-    for bucket in find_key(rsc_lines(payload), "docs"):
+    for bucket in find_key(lines, "docs"):
         if not (isinstance(bucket, list) and bucket):
             continue
         for d in bucket:
@@ -268,25 +273,9 @@ def parse_table_usage(page):
 
 
 def parse_speed_tiers():
-    payload = rsc_payload("speed-tiers")
-    m = re.search(r'"tierRows":(\[.*?\}\]\}\])', payload, re.S)
-    if not m:
-        return []
-    try:
-        rows = json.loads(m.group(1))
-    except ValueError:
-        # fall back: cut at the next top-level key
-        depth, end = 0, None
-        raw = payload[payload.find('"tierRows":') + 11:]
-        for i, ch in enumerate(raw):
-            if ch == "[":
-                depth += 1
-            elif ch == "]":
-                depth -= 1
-                if depth == 0:
-                    end = i + 1
-                    break
-        rows = json.loads(raw[:end]) if end else []
+    lines = rsc_lines(rsc_payload("speed-tiers"))
+    rows = next((resolve(v, lines) for v in find_key(lines, "tierRows")
+                 if isinstance(v, list)), [])
     out = []
     for r in rows:
         out.append({
