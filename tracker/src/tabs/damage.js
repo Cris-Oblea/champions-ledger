@@ -110,12 +110,11 @@ function engineCalc(){
   const S = window.SMOGON;
   const a = CALC.atk, d = CALC.def, m = CALC.move;
   const an = engName(a.name, true), dn = engName(d.name, false);
-  if (!C.SMOGON_NAME?.[a.name] && a.name !== "Aegislash")
-    throw new Error(a.name + " is not in Smogon's Champions roster, so the " +
-      "engine has no stats for it.");
-  if (!C.SMOGON_NAME?.[d.name] && d.name !== "Aegislash")
-    throw new Error(d.name + " is not in Smogon's Champions roster, so the " +
-      "engine has no stats for it.");
+  for (const p of [a, d]) {
+    if (!C.SMOGON_NAME?.[p.name] && p.name !== "Aegislash")
+      throw new Error(p.name + " is not in Smogon's Champions roster, so the " +
+        "engine has no stats for it.");
+  }
   a._plusOne = CALC.plusOneAtk; d._plusOne = CALC.plusOneDef;
   const A = new S.Pokemon(S.gen, an, engSide(a));
   const D = new S.Pokemon(S.gen, dn, engSide(d));
