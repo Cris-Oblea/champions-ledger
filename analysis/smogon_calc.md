@@ -160,6 +160,13 @@ Pokemon. Only `python scripts/query.py build` checks the budget.
 
 ## 5. What this exercise found wrong in OUR toolchain — and fixed
 
+> **Superseded (2026-09-30, #202).** The hand-written calculator this section
+> fixed is gone: `scripts/damage.py` now runs Smogon's engine itself, so the
+> functions named below (`is_spread()`, `find_mon()`, `caveats()`) no longer
+> exist. What `caveats()` used to warn about, `damage.py` now refuses until a
+> flag supplies the missing fact (`NEEDS`), or refuses outright (`NOT_A_CALC`).
+> The findings stand as the record of why the engine replaced it.
+
 `scripts/damage.py` had the right formula and four modifiers. The engine has the
 same formula and a great many more. Everything below was found by running 909
 attacker/move/defender combinations through both and diffing, and all of it is
