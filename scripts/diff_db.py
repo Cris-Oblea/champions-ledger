@@ -2,7 +2,6 @@
 """What changed in the database, field by field, against what is committed.
 
     python scripts/diff_db.py            # the report
-    python scripts/diff_db.py --json     # the same, for a caller
     python scripts/diff_db.py --limit 40 # how many lines per table
 
 WHY COUNTS ARE NOT ENOUGH. The shrink guard asks "did a table come back
@@ -165,7 +164,6 @@ def learnset_diff():
 
 def report(limit=25):
     out = [table_diff(*t) for t in TABLES] + [learnset_diff()]
-    total = sum(len(t["lines"]) for t in out)
     text = []
     for t in out:
         if t["unknown"]:
@@ -180,19 +178,13 @@ def report(limit=25):
             text.append("  ... and %d more" % (len(t["lines"]) - limit))
     if not text:
         text = ["no field changed against the committed database"]
-    return total, out, "\n".join(text)
+    return "\n".join(text)
 
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    ap.add_argument("--json", action="store_true")
     ap.add_argument("--limit", type=int, default=25)
-    a = ap.parse_args()
-    total, out, text = report(a.limit)
-    if a.json:
-        print(json.dumps({"total": total, "tables": out}, ensure_ascii=False))
-    else:
-        print(text)
+    print(report(ap.parse_args().limit))
     return 0
 
 

@@ -20,7 +20,6 @@ the same roster, which is why they are never pooled into one percentage.
 
     python scripts/fetch_worlds_archive.py            # fetch anything missing
     python scripts/fetch_worlds_archive.py --force    # re-fetch every event
-    python scripts/fetch_worlds_archive.py --rollup   # rebuild the summary only
 
 Writes data/meta/tournament_<tid>_<division>.json per event (the same shape
 fetch_tournament.py produces) plus data/meta/worlds_archive.json, which is the
@@ -159,16 +158,13 @@ def _by_year(events):
     return [by_year[y] for y in sorted(by_year, reverse=True)]
 
 
-def _event_record(ev, a):
-    """One event with the species table of each division it has on disk,
-    fetching them first unless --rollup."""
+def _event_record(ev, force):
+    """One event with the species table of each division, fetched first."""
     rec = dict(ev)
     rec["divisions"] = {}
     for div in dex.DIVISIONS:
-        if not a.rollup:
-            state = fetch_event(ev["tid"], div, a.force)
-            print("  %s %-8s %-8s %s" % (ev["tid"], div, state,
-                                         ev["label"][:44]))
+        state = fetch_event(ev["tid"], div, force)
+        print("  %s %-8s %-8s %s" % (ev["tid"], div, state, ev["label"][:44]))
         tbl = species_table(event_path(ev["tid"], div))
         if tbl:
             rec["divisions"][div] = tbl
@@ -178,8 +174,6 @@ def _event_record(ev, a):
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--force", action="store_true")
-    ap.add_argument("--rollup", action="store_true",
-                    help="rebuild worlds_archive.json from what is on disk")
     a = ap.parse_args()
 
     events = discover()
@@ -194,7 +188,7 @@ def main():
                "_counted": "Per TEAM, not per appearance: the Species Clause "
                            "means a team holds a species at most once.",
                "source": INDEX,
-               "events": [_event_record(ev, a) for ev in events]}
+               "events": [_event_record(ev, a.force) for ev in events]}
     archive["years"] = _by_year(archive["events"])
     archive["_years_note"] = (
         "One entry per year, merged across that year's events. 2023 is the "

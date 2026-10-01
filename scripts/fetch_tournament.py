@@ -30,9 +30,6 @@ Usage:
     python scripts/fetch_tournament.py --division seniors
     python scripts/fetch_tournament.py --division juniors
     python scripts/fetch_tournament.py --tid 0000191 --division masters
-    python scripts/fetch_tournament.py --round 11            # pin a round
-    python scripts/fetch_tournament.py --scrape              # ignore the export
-    python scripts/fetch_tournament.py --no-teamlists        # standings only
 """
 import contextlib
 import hashlib
@@ -329,23 +326,19 @@ def enrich_with_teamlists(players, limit=None):
     return done
 
 
-def _scrape(tid, division, rnd, pinned, args):
+def _scrape(tid, division, rnd):
     """(players, the round) from the per-round standings pages - the route for
     the older events that publish no JSON export."""
-    if pinned or not rnd:
-        body = get("%s/%s/%s/R%s.php" % (BASE, tid, division, rnd or 1),
-                   timeout=90) if rnd else None
-        if not body:
-            rnd, body = latest_round(tid, division)
-    else:
+    if rnd:
         body = get("%s/%s/%s/R%d.php" % (BASE, tid, division, rnd), timeout=90)
+    else:
+        rnd, body = latest_round(tid, division)
     if not body:
         sys.exit("No standings found for tid=%s division=%s" % (tid, division))
     players = parse_standings(body)
     print("  %d players parsed" % len(players))
-    if "--no-teamlists" not in args:
-        n = enrich_with_teamlists(players)
-        print("  %d teamlists merged (adds nature)" % n)
+    n = enrich_with_teamlists(players)
+    print("  %d teamlists merged (adds nature)" % n)
     for p in players:
         p.pop("_teamfile", None)
     return players, rnd
@@ -376,26 +369,21 @@ def main():
 
     tid = opt("--tid", DEFAULT_TID)
     division = opt("--division", DEFAULT_DIVISION)
-    pinned = opt("--round")
 
     os.makedirs(RAW, exist_ok=True)
     info = round_info(tid, division)
-    rnd = int(pinned) if pinned else info.get("round")
+    rnd = info.get("round")
 
     players, origin = [], None
-    if not pinned and "--scrape" not in args:
-        rows = event_json(tid, division, rnd)
-        if rows:
-            players = players_from_event(rows)
-            origin = "event JSON export"
+    rows = event_json(tid, division, rnd)
+    if rows:
+        players = players_from_event(rows)
+        origin = "event JSON export"
     if not players:                      # older events publish no export
-        players, rnd = _scrape(tid, division, rnd, pinned, args)
+        players, rnd = _scrape(tid, division, rnd)
         origin = "per-round standings scrape"
 
     _print_summary(tid, division, rnd, info, origin, players)
-    if "--no-teamlists" in args:
-        for p in players:
-            p["team"] = []
 
     out = {
         "source": "pokedata.ovh/standingsVGC",

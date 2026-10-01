@@ -2,7 +2,6 @@
 """What each Pokemon actually runs, per Pokemon, from pokebase's own pages.
 
     python scripts/fetch_pokebase_splits.py            # every Pokemon with usage
-    python scripts/fetch_pokebase_splits.py --limit 5  # a sample, for checking
     python scripts/fetch_pokebase_splits.py --force    # ignore what is stored
 
 The global tables answer "how much is Sucker Punch used" across the whole
@@ -344,14 +343,11 @@ def _fetch_missing(rows, out, force):
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    ap.add_argument("--limit", type=int, default=0)
     ap.add_argument("--force", action="store_true")
     a = ap.parse_args()
 
     usage = json.loads(Path(META, "usage_pokemon.json").read_text(encoding="utf-8"))
     rows = usage.get("rows") or []
-    if a.limit:
-        rows = rows[:a.limit]
 
     out = dict(_stored(a.force))
     n, empty = _fetch_missing(rows, out, a.force)
