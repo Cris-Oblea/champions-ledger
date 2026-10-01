@@ -1,8 +1,8 @@
 {
  "source": "pokebase.app/pokemon-champions",
  "game": "Pokemon Champions",
- "fetched": "2026-09-30",
- "count": 759,
+ "fetched": "2026-10-01",
+ "count": 469,
  "rows": [
   {
    "rank": 1,
@@ -22,7 +22,7 @@
    "rank": 3,
    "slug": "close-combat",
    "name": "Close Combat",
-   "usage_percent": 2.8,
+   "usage_percent": 2.7,
    "description": ""
   },
   {
@@ -71,7 +71,7 @@
    "rank": 10,
    "slug": "iron-head",
    "name": "Iron Head",
-   "usage_percent": 1.8,
+   "usage_percent": 1.7,
    "description": ""
   },
   {
@@ -272,50 +272,50 @@
   },
   {
    "rank": 39,
+   "slug": "earth-power",
+   "name": "Earth Power",
+   "usage_percent": 0.7,
+   "description": ""
+  },
+  {
+   "rank": 40,
    "slug": "extreme-speed",
    "name": "Extreme Speed",
    "usage_percent": 0.7,
    "description": ""
   },
   {
-   "rank": 40,
+   "rank": 41,
    "slug": "flamethrower",
    "name": "Flamethrower",
    "usage_percent": 0.7,
    "description": ""
   },
   {
-   "rank": 41,
+   "rank": 42,
    "slug": "head-smash",
    "name": "Head Smash",
    "usage_percent": 0.7,
    "description": ""
   },
   {
-   "rank": 42,
+   "rank": 43,
    "slug": "hurricane",
    "name": "Hurricane",
    "usage_percent": 0.7,
    "description": ""
   },
   {
-   "rank": 43,
+   "rank": 44,
    "slug": "swords-dance",
    "name": "Swords Dance",
    "usage_percent": 0.7,
    "description": ""
   },
   {
-   "rank": 44,
+   "rank": 45,
    "slug": "detect",
    "name": "Detect",
-   "usage_percent": 0.6,
-   "description": ""
-  },
-  {
-   "rank": 45,
-   "slug": "earth-power",
-   "name": "Earth Power",
    "usage_percent": 0.6,
    "description": ""
   },
@@ -461,232 +461,232 @@
   },
   {
    "rank": 66,
-   "slug": "scald",
-   "name": "Scald",
-   "usage_percent": 0.4,
-   "description": ""
-  },
-  {
-   "rank": 67,
    "slug": "ancient-power",
    "name": "Ancient Power",
    "usage_percent": 0.3,
    "description": ""
   },
   {
-   "rank": 68,
+   "rank": 67,
    "slug": "aurora-veil",
    "name": "Aurora Veil",
    "usage_percent": 0.3,
    "description": ""
   },
   {
-   "rank": 69,
+   "rank": 68,
    "slug": "double-edge",
    "name": "Double-Edge",
    "usage_percent": 0.3,
    "description": ""
   },
   {
-   "rank": 70,
+   "rank": 69,
    "slug": "flip-turn",
    "name": "Flip Turn",
    "usage_percent": 0.3,
    "description": ""
   },
   {
-   "rank": 71,
+   "rank": 70,
    "slug": "ice-punch",
    "name": "Ice Punch",
    "usage_percent": 0.3,
    "description": ""
   },
   {
-   "rank": 72,
+   "rank": 71,
    "slug": "light-screen",
    "name": "Light Screen",
    "usage_percent": 0.3,
    "description": ""
   },
   {
-   "rank": 73,
+   "rank": 72,
    "slug": "muddy-water",
    "name": "Muddy Water",
    "usage_percent": 0.3,
    "description": ""
   },
   {
-   "rank": 74,
+   "rank": 73,
    "slug": "perish-song",
    "name": "Perish Song",
    "usage_percent": 0.3,
    "description": ""
   },
   {
-   "rank": 75,
+   "rank": 74,
    "slug": "reflect",
    "name": "Reflect",
    "usage_percent": 0.3,
    "description": ""
   },
   {
-   "rank": 76,
+   "rank": 75,
    "slug": "rock-tomb",
    "name": "Rock Tomb",
    "usage_percent": 0.3,
    "description": ""
   },
   {
+   "rank": 76,
+   "slug": "scald",
+   "name": "Scald",
+   "usage_percent": 0.3,
+   "description": ""
+  },
+  {
    "rank": 77,
+   "slug": "snarl",
+   "name": "Snarl",
+   "usage_percent": 0.3,
+   "description": ""
+  },
+  {
+   "rank": 78,
    "slug": "solar-beam",
    "name": "Solar Beam",
    "usage_percent": 0.3,
    "description": ""
   },
   {
-   "rank": 78,
+   "rank": 79,
    "slug": "stomping-tantrum",
    "name": "Stomping Tantrum",
    "usage_percent": 0.3,
    "description": ""
   },
   {
-   "rank": 79,
+   "rank": 80,
    "slug": "armor-cannon",
    "name": "Armor Cannon",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 80,
+   "rank": 81,
    "slug": "coaching",
    "name": "Coaching",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 81,
+   "rank": 82,
    "slug": "coil",
    "name": "Coil",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 82,
+   "rank": 83,
    "slug": "dark-pulse",
    "name": "Dark Pulse",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 83,
+   "rank": 84,
    "slug": "draining-kiss",
    "name": "Draining Kiss",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 84,
+   "rank": 85,
    "slug": "dual-wingbeat",
    "name": "Dual Wingbeat",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 85,
+   "rank": 86,
    "slug": "eruption",
    "name": "Eruption",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 86,
+   "rank": 87,
    "slug": "giga-drain",
    "name": "Giga Drain",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 87,
+   "rank": 88,
    "slug": "hypnosis",
    "name": "Hypnosis",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 88,
+   "rank": 89,
    "slug": "imprison",
    "name": "Imprison",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 89,
+   "rank": 90,
    "slug": "liquidation",
    "name": "Liquidation",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 90,
+   "rank": 91,
    "slug": "matcha-gotcha",
    "name": "Matcha Gotcha",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 91,
+   "rank": 92,
    "slug": "mystical-fire",
    "name": "Mystical Fire",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 92,
+   "rank": 93,
    "slug": "overheat",
    "name": "Overheat",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 93,
+   "rank": 94,
    "slug": "psychic-fangs",
    "name": "Psychic Fangs",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 94,
+   "rank": 95,
    "slug": "quiver-dance",
    "name": "Quiver Dance",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 95,
+   "rank": 96,
    "slug": "recover",
    "name": "Recover",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 96,
+   "rank": 97,
    "slug": "roost",
    "name": "Roost",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 97,
+   "rank": 98,
    "slug": "sleep-powder",
    "name": "Sleep Powder",
-   "usage_percent": 0.2,
-   "description": ""
-  },
-  {
-   "rank": 98,
-   "slug": "snarl",
-   "name": "Snarl",
    "usage_percent": 0.2,
    "description": ""
   },
@@ -748,4574 +748,2544 @@
   },
   {
    "rank": 107,
+   "slug": "bug-buzz",
+   "name": "Bug Buzz",
+   "usage_percent": 0.1,
+   "description": ""
+  },
+  {
+   "rank": 108,
    "slug": "bulk-up",
    "name": "Bulk Up",
    "usage_percent": 0.1,
    "description": ""
   },
   {
-   "rank": 108,
+   "rank": 109,
    "slug": "clanging-scales",
    "name": "Clanging Scales",
    "usage_percent": 0.1,
    "description": ""
   },
   {
-   "rank": 109,
+   "rank": 110,
    "slug": "clangorous-soul",
    "name": "Clangorous Soul",
    "usage_percent": 0.1,
    "description": ""
   },
   {
-   "rank": 110,
+   "rank": 111,
    "slug": "double-shock",
    "name": "Double Shock",
    "usage_percent": 0.1,
    "description": ""
   },
   {
-   "rank": 111,
+   "rank": 112,
    "slug": "dragon-dance",
    "name": "Dragon Dance",
    "usage_percent": 0.1,
    "description": ""
   },
   {
-   "rank": 112,
+   "rank": 113,
    "slug": "drain-punch",
    "name": "Drain Punch",
    "usage_percent": 0.1,
    "description": ""
   },
   {
-   "rank": 113,
+   "rank": 114,
    "slug": "drill-run",
    "name": "Drill Run",
    "usage_percent": 0.1,
    "description": ""
   },
   {
-   "rank": 114,
+   "rank": 115,
    "slug": "energy-ball",
    "name": "Energy Ball",
    "usage_percent": 0.1,
    "description": ""
   },
   {
-   "rank": 115,
+   "rank": 116,
    "slug": "feint",
    "name": "Feint",
    "usage_percent": 0.1,
    "description": ""
   },
   {
-   "rank": 116,
+   "rank": 117,
+   "slug": "fiery-dance",
+   "name": "Fiery Dance",
+   "usage_percent": 0.1,
+   "description": ""
+  },
+  {
+   "rank": 118,
    "slug": "first-impression",
    "name": "First Impression",
    "usage_percent": 0.1,
    "description": ""
   },
   {
-   "rank": 117,
+   "rank": 119,
    "slug": "foul-play",
    "name": "Foul Play",
    "usage_percent": 0.1,
    "description": ""
   },
   {
-   "rank": 118,
+   "rank": 120,
    "slug": "freeze-dry",
    "name": "Freeze-Dry",
    "usage_percent": 0.1,
    "description": ""
   },
   {
-   "rank": 119,
+   "rank": 121,
    "slug": "glaive-rush",
    "name": "Glaive Rush",
    "usage_percent": 0.1,
    "description": ""
   },
   {
-   "rank": 120,
+   "rank": 122,
    "slug": "gunk-shot",
    "name": "Gunk Shot",
    "usage_percent": 0.1,
    "description": ""
   },
   {
-   "rank": 121,
+   "rank": 123,
    "slug": "hydro-pump",
    "name": "Hydro Pump",
    "usage_percent": 0.1,
    "description": ""
   },
   {
-   "rank": 122,
+   "rank": 124,
    "slug": "ice-shard",
    "name": "Ice Shard",
    "usage_percent": 0.1,
    "description": ""
   },
   {
-   "rank": 123,
+   "rank": 125,
    "slug": "icicle-crash",
    "name": "Icicle Crash",
    "usage_percent": 0.1,
    "description": ""
   },
   {
-   "rank": 124,
+   "rank": 126,
    "slug": "leaf-storm",
    "name": "Leaf Storm",
    "usage_percent": 0.1,
    "description": ""
   },
   {
-   "rank": 125,
+   "rank": 127,
    "slug": "life-dew",
    "name": "Life Dew",
    "usage_percent": 0.1,
    "description": ""
   },
   {
-   "rank": 126,
+   "rank": 128,
    "slug": "light-of-ruin",
    "name": "Light of Ruin",
    "usage_percent": 0.1,
    "description": ""
   },
   {
-   "rank": 127,
+   "rank": 129,
    "slug": "night-slash",
    "name": "Night Slash",
    "usage_percent": 0.1,
    "description": ""
   },
   {
-   "rank": 128,
+   "rank": 130,
    "slug": "play-rough",
    "name": "Play Rough",
    "usage_percent": 0.1,
    "description": ""
   },
   {
-   "rank": 129,
+   "rank": 131,
    "slug": "poison-jab",
    "name": "Poison Jab",
    "usage_percent": 0.1,
    "description": ""
   },
   {
-   "rank": 130,
+   "rank": 132,
+   "slug": "poltergeist",
+   "name": "Poltergeist",
+   "usage_percent": 0.1,
+   "description": ""
+  },
+  {
+   "rank": 133,
    "slug": "psycho-cut",
    "name": "Psycho Cut",
    "usage_percent": 0.1,
    "description": ""
   },
   {
-   "rank": 131,
+   "rank": 134,
    "slug": "quick-guard",
    "name": "Quick Guard",
    "usage_percent": 0.1,
    "description": ""
   },
   {
-   "rank": 132,
+   "rank": 135,
    "slug": "rain-dance",
    "name": "Rain Dance",
    "usage_percent": 0.1,
    "description": ""
   },
   {
-   "rank": 133,
+   "rank": 136,
    "slug": "revival-blessing",
    "name": "Revival Blessing",
    "usage_percent": 0.1,
    "description": ""
   },
   {
-   "rank": 134,
+   "rank": 137,
    "slug": "sacred-sword",
    "name": "Sacred Sword",
    "usage_percent": 0.1,
    "description": ""
   },
   {
-   "rank": 135,
+   "rank": 138,
    "slug": "shadow-claw",
    "name": "Shadow Claw",
    "usage_percent": 0.1,
    "description": ""
   },
   {
-   "rank": 136,
+   "rank": 139,
    "slug": "shadow-sneak",
    "name": "Shadow Sneak",
    "usage_percent": 0.1,
    "description": ""
   },
   {
-   "rank": 137,
+   "rank": 140,
    "slug": "shell-smash",
    "name": "Shell Smash",
    "usage_percent": 0.1,
    "description": ""
   },
   {
-   "rank": 138,
+   "rank": 141,
    "slug": "spiky-shield",
    "name": "Spiky Shield",
    "usage_percent": 0.1,
    "description": ""
   },
   {
-   "rank": 139,
+   "rank": 142,
    "slug": "steel-roller",
    "name": "Steel Roller",
    "usage_percent": 0.1,
    "description": ""
   },
   {
-   "rank": 140,
+   "rank": 143,
    "slug": "struggle-bug",
    "name": "Struggle Bug",
    "usage_percent": 0.1,
    "description": ""
   },
   {
-   "rank": 141,
+   "rank": 144,
    "slug": "sunny-day",
    "name": "Sunny Day",
    "usage_percent": 0.1,
    "description": ""
   },
   {
-   "rank": 142,
+   "rank": 145,
    "slug": "superpower",
    "name": "Superpower",
    "usage_percent": 0.1,
    "description": ""
   },
   {
-   "rank": 143,
+   "rank": 146,
+   "slug": "toxic",
+   "name": "Toxic",
+   "usage_percent": 0.1,
+   "description": ""
+  },
+  {
+   "rank": 147,
    "slug": "triple-axel",
    "name": "Triple Axel",
    "usage_percent": 0.1,
    "description": ""
   },
   {
-   "rank": 144,
+   "rank": 148,
    "slug": "twin-beam",
    "name": "Twin Beam",
    "usage_percent": 0.1,
    "description": ""
   },
   {
-   "rank": 145,
+   "rank": 149,
    "slug": "volt-switch",
    "name": "Volt Switch",
    "usage_percent": 0.1,
    "description": ""
   },
   {
-   "rank": 146,
+   "rank": 150,
    "slug": "water-spout",
    "name": "Water Spout",
    "usage_percent": 0.1,
    "description": ""
   },
   {
-   "rank": 147,
+   "rank": 151,
    "slug": "yawn",
    "name": "Yawn",
    "usage_percent": 0.1,
    "description": ""
   },
   {
-   "rank": 148,
+   "rank": 152,
    "slug": "accelerock",
    "name": "Accelerock",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 149,
+   "rank": 153,
    "slug": "acid-spray",
    "name": "Acid Spray",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 150,
+   "rank": 154,
    "slug": "acupressure",
    "name": "Acupressure",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 151,
+   "rank": 155,
    "slug": "aerial-ace",
    "name": "Aerial Ace",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 152,
+   "rank": 156,
    "slug": "after-you",
    "name": "After You",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 153,
+   "rank": 157,
    "slug": "agility",
    "name": "Agility",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 154,
+   "rank": 158,
    "slug": "air-cutter",
    "name": "Air Cutter",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 155,
+   "rank": 159,
    "slug": "air-slash",
    "name": "Air Slash",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 156,
+   "rank": 160,
    "slug": "alluring-voice",
    "name": "Alluring Voice",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 157,
+   "rank": 161,
    "slug": "ally-switch",
    "name": "Ally Switch",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 158,
+   "rank": 162,
    "slug": "apple-acid",
    "name": "Apple Acid",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 159,
+   "rank": 163,
    "slug": "aqua-cutter",
    "name": "Aqua Cutter",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 160,
+   "rank": 164,
    "slug": "aqua-step",
    "name": "Aqua Step",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 161,
+   "rank": 165,
    "slug": "aqua-tail",
    "name": "Aqua Tail",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 162,
+   "rank": 166,
    "slug": "assurance",
    "name": "Assurance",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 163,
+   "rank": 167,
    "slug": "attract",
    "name": "Attract",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 164,
+   "rank": 168,
    "slug": "aura-wheel",
    "name": "Aura Wheel",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 165,
+   "rank": 169,
    "slug": "avalanche",
    "name": "Avalanche",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 166,
+   "rank": 170,
    "slug": "baby-doll-eyes",
    "name": "Baby-Doll Eyes",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 167,
+   "rank": 171,
    "slug": "baneful-bunker",
    "name": "Baneful Bunker",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 168,
+   "rank": 172,
    "slug": "barb-barrage",
    "name": "Barb Barrage",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 169,
+   "rank": 173,
    "slug": "baton-pass",
    "name": "Baton Pass",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 170,
+   "rank": 174,
    "slug": "beak-blast",
    "name": "Beak Blast",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 171,
+   "rank": 175,
    "slug": "beat-up",
    "name": "Beat Up",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 172,
+   "rank": 176,
    "slug": "belch",
    "name": "Belch",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 173,
+   "rank": 177,
    "slug": "belly-drum",
    "name": "Belly Drum",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 174,
+   "rank": 178,
+   "slug": "bide",
+   "name": "Bide",
+   "usage_percent": 0.0,
+   "description": ""
+  },
+  {
+   "rank": 179,
    "slug": "bite",
    "name": "Bite",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 175,
+   "rank": 180,
    "slug": "bitter-malice",
    "name": "Bitter Malice",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 176,
+   "rank": 181,
    "slug": "blast-burn",
    "name": "Blast Burn",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 177,
+   "rank": 182,
    "slug": "blaze-kick",
    "name": "Blaze Kick",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 178,
+   "rank": 183,
    "slug": "block",
    "name": "Block",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 179,
+   "rank": 184,
    "slug": "body-slam",
    "name": "Body Slam",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 180,
+   "rank": 185,
    "slug": "boomburst",
    "name": "Boomburst",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 181,
+   "rank": 186,
    "slug": "bounce",
    "name": "Bounce",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 182,
+   "rank": 187,
    "slug": "breaking-swipe",
    "name": "Breaking Swipe",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 183,
+   "rank": 188,
    "slug": "brick-break",
    "name": "Brick Break",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 184,
+   "rank": 189,
    "slug": "brutal-swing",
    "name": "Brutal Swing",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 185,
+   "rank": 190,
    "slug": "bug-bite",
    "name": "Bug Bite",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 186,
-   "slug": "bug-buzz",
-   "name": "Bug Buzz",
-   "usage_percent": 0.0,
-   "description": ""
-  },
-  {
-   "rank": 187,
+   "rank": 191,
    "slug": "bulldoze",
    "name": "Bulldoze",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 188,
+   "rank": 192,
    "slug": "bullet-punch",
    "name": "Bullet Punch",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 189,
+   "rank": 193,
    "slug": "bullet-seed",
    "name": "Bullet Seed",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 190,
+   "rank": 194,
    "slug": "burn-up",
    "name": "Burn Up",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 191,
+   "rank": 195,
    "slug": "burning-jealousy",
    "name": "Burning Jealousy",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 192,
+   "rank": 196,
    "slug": "ceaseless-edge",
    "name": "Ceaseless Edge",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 193,
+   "rank": 197,
    "slug": "charge",
    "name": "Charge",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 194,
+   "rank": 198,
    "slug": "charge-beam",
    "name": "Charge Beam",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 195,
+   "rank": 199,
    "slug": "charm",
    "name": "Charm",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 196,
+   "rank": 200,
    "slug": "chilling-water",
    "name": "Chilling Water",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 197,
+   "rank": 201,
    "slug": "chilly-reception",
    "name": "Chilly Reception",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 198,
+   "rank": 202,
    "slug": "circle-throw",
    "name": "Circle Throw",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 199,
+   "rank": 203,
    "slug": "clear-smog",
    "name": "Clear Smog",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 200,
+   "rank": 204,
    "slug": "comeuppance",
    "name": "Comeuppance",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 201,
+   "rank": 205,
    "slug": "confuse-ray",
    "name": "Confuse Ray",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 202,
+   "rank": 206,
    "slug": "copycat",
    "name": "Copycat",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 203,
+   "rank": 207,
    "slug": "corrosive-gas",
    "name": "Corrosive Gas",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 204,
+   "rank": 208,
    "slug": "cosmic-power",
    "name": "Cosmic Power",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 205,
+   "rank": 209,
    "slug": "cotton-guard",
    "name": "Cotton Guard",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 206,
+   "rank": 210,
    "slug": "cotton-spore",
    "name": "Cotton Spore",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 207,
+   "rank": 211,
    "slug": "counter",
    "name": "Counter",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 208,
+   "rank": 212,
    "slug": "court-change",
    "name": "Court Change",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 209,
+   "rank": 213,
    "slug": "crabhammer",
    "name": "Crabhammer",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 210,
+   "rank": 214,
    "slug": "cross-chop",
    "name": "Cross Chop",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 211,
+   "rank": 215,
    "slug": "cross-poison",
    "name": "Cross Poison",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 212,
+   "rank": 216,
    "slug": "crunch",
    "name": "Crunch",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 213,
+   "rank": 217,
    "slug": "curse",
    "name": "Curse",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 214,
+   "rank": 218,
    "slug": "decorate",
    "name": "Decorate",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 215,
+   "rank": 219,
    "slug": "defog",
    "name": "Defog",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 216,
+   "rank": 220,
    "slug": "destiny-bond",
    "name": "Destiny Bond",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 217,
+   "rank": 221,
    "slug": "dig",
    "name": "Dig",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 218,
+   "rank": 222,
    "slug": "disable",
    "name": "Disable",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 219,
+   "rank": 223,
    "slug": "discharge",
    "name": "Discharge",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 220,
+   "rank": 224,
    "slug": "double-team",
    "name": "Double Team",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 221,
+   "rank": 225,
    "slug": "dragon-cheer",
    "name": "Dragon Cheer",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 222,
+   "rank": 226,
    "slug": "dragon-darts",
    "name": "Dragon Darts",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 223,
+   "rank": 227,
    "slug": "dragon-rush",
    "name": "Dragon Rush",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 224,
+   "rank": 228,
    "slug": "dragon-tail",
    "name": "Dragon Tail",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 225,
+   "rank": 229,
    "slug": "drill-peck",
    "name": "Drill Peck",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 226,
+   "rank": 230,
    "slug": "drum-beating",
    "name": "Drum Beating",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 227,
+   "rank": 231,
    "slug": "dynamic-punch",
    "name": "Dynamic Punch",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 228,
+   "rank": 232,
    "slug": "eerie-impulse",
    "name": "Eerie Impulse",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 229,
+   "rank": 233,
    "slug": "eerie-spell",
    "name": "Eerie Spell",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 230,
+   "rank": 234,
    "slug": "electric-terrain",
    "name": "Electric Terrain",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 231,
+   "rank": 235,
    "slug": "electrify",
    "name": "Electrify",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 232,
+   "rank": 236,
    "slug": "electro-ball",
    "name": "Electro Ball",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 233,
+   "rank": 237,
    "slug": "electroweb",
    "name": "Electroweb",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 234,
+   "rank": 238,
    "slug": "endeavor",
    "name": "Endeavor",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 235,
+   "rank": 239,
    "slug": "endure",
    "name": "Endure",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 236,
+   "rank": 240,
    "slug": "entrainment",
    "name": "Entrainment",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 237,
+   "rank": 241,
    "slug": "explosion",
    "name": "Explosion",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 238,
+   "rank": 242,
    "slug": "extrasensory",
    "name": "Extrasensory",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 239,
+   "rank": 243,
    "slug": "facade",
    "name": "Facade",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 240,
+   "rank": 244,
    "slug": "fake-tears",
    "name": "Fake Tears",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 241,
+   "rank": 245,
    "slug": "feather-dance",
    "name": "Feather Dance",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 242,
+   "rank": 246,
    "slug": "fell-stinger",
    "name": "Fell Stinger",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 243,
+   "rank": 247,
    "slug": "fickle-beam",
    "name": "Fickle Beam",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 244,
-   "slug": "fiery-dance",
-   "name": "Fiery Dance",
-   "usage_percent": 0.0,
-   "description": ""
-  },
-  {
-   "rank": 245,
+   "rank": 248,
    "slug": "final-gambit",
    "name": "Final Gambit",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 246,
+   "rank": 249,
    "slug": "fire-blast",
    "name": "Fire Blast",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 247,
+   "rank": 250,
    "slug": "fire-fang",
    "name": "Fire Fang",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 248,
+   "rank": 251,
    "slug": "fire-punch",
    "name": "Fire Punch",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 249,
+   "rank": 252,
    "slug": "fire-spin",
    "name": "Fire Spin",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 250,
+   "rank": 253,
    "slug": "fissure",
    "name": "Fissure",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 251,
+   "rank": 254,
    "slug": "flame-burst",
    "name": "Flame Burst",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 252,
+   "rank": 255,
    "slug": "flame-charge",
    "name": "Flame Charge",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 253,
+   "rank": 256,
    "slug": "fling",
    "name": "Fling",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 254,
+   "rank": 257,
    "slug": "flower-trick",
    "name": "Flower Trick",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 255,
+   "rank": 258,
    "slug": "fly",
    "name": "Fly",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 256,
+   "rank": 259,
    "slug": "flying-press",
    "name": "Flying Press",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 257,
+   "rank": 260,
    "slug": "focus-energy",
    "name": "Focus Energy",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 258,
+   "rank": 261,
    "slug": "focus-punch",
    "name": "Focus Punch",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 259,
+   "rank": 262,
    "slug": "forests-curse",
    "name": "Forest’s Curse",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 260,
+   "rank": 263,
    "slug": "frost-breath",
    "name": "Frost Breath",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 261,
+   "rank": 264,
    "slug": "future-sight",
    "name": "Future Sight",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 262,
+   "rank": 265,
    "slug": "gastro-acid",
    "name": "Gastro Acid",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 263,
+   "rank": 266,
    "slug": "giga-impact",
    "name": "Giga Impact",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 264,
+   "rank": 267,
    "slug": "gigaton-hammer",
    "name": "Gigaton Hammer",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 265,
+   "rank": 268,
    "slug": "glare",
    "name": "Glare",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 266,
+   "rank": 269,
    "slug": "grass-knot",
    "name": "Grass Knot",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 267,
+   "rank": 270,
    "slug": "grassy-terrain",
    "name": "Grassy Terrain",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 268,
+   "rank": 271,
    "slug": "grav-apple",
    "name": "Grav Apple",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 269,
+   "rank": 272,
    "slug": "gravity",
    "name": "Gravity",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 270,
+   "rank": 273,
    "slug": "growth",
    "name": "Growth",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 271,
+   "rank": 274,
    "slug": "guard-split",
    "name": "Guard Split",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 272,
+   "rank": 275,
    "slug": "guillotine",
    "name": "Guillotine",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 273,
+   "rank": 276,
    "slug": "gyro-ball",
    "name": "Gyro Ball",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 274,
+   "rank": 277,
    "slug": "hammer-arm",
    "name": "Hammer Arm",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 275,
+   "rank": 278,
    "slug": "hard-press",
    "name": "Hard Press",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 276,
+   "rank": 279,
    "slug": "haze",
    "name": "Haze",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 277,
+   "rank": 280,
    "slug": "headlong-rush",
    "name": "Headlong Rush",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 278,
+   "rank": 281,
    "slug": "heal-pulse",
    "name": "Heal Pulse",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 279,
+   "rank": 282,
    "slug": "healing-wish",
    "name": "Healing Wish",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 280,
+   "rank": 283,
    "slug": "heat-crash",
    "name": "Heat Crash",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 281,
+   "rank": 284,
    "slug": "heavy-slam",
    "name": "Heavy Slam",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 282,
+   "rank": 285,
    "slug": "hex",
    "name": "Hex",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 283,
+   "rank": 286,
    "slug": "high-jump-kick",
    "name": "High Jump Kick",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 284,
+   "rank": 287,
+   "slug": "hone-claws",
+   "name": "Hone Claws",
+   "usage_percent": 0.0,
+   "description": ""
+  },
+  {
+   "rank": 288,
    "slug": "horn-drill",
    "name": "Horn Drill",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 285,
+   "rank": 289,
    "slug": "horn-leech",
    "name": "Horn Leech",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 286,
+   "rank": 290,
    "slug": "howl",
    "name": "Howl",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 287,
+   "rank": 291,
    "slug": "hydro-cannon",
    "name": "Hydro Cannon",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 288,
+   "rank": 292,
    "slug": "ice-ball",
    "name": "Ice Ball",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 289,
+   "rank": 293,
    "slug": "ice-fang",
    "name": "Ice Fang",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 290,
+   "rank": 294,
    "slug": "ice-hammer",
    "name": "Ice Hammer",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 291,
+   "rank": 295,
    "slug": "ice-spinner",
    "name": "Ice Spinner",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 292,
+   "rank": 296,
    "slug": "icicle-spear",
    "name": "Icicle Spear",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 293,
+   "rank": 297,
    "slug": "infernal-parade",
    "name": "Infernal Parade",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 294,
+   "rank": 298,
    "slug": "infestation",
    "name": "Infestation",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 295,
+   "rank": 299,
    "slug": "instruct",
    "name": "Instruct",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 296,
+   "rank": 300,
    "slug": "iron-defense",
    "name": "Iron Defense",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 297,
+   "rank": 301,
    "slug": "iron-tail",
    "name": "Iron Tail",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 298,
+   "rank": 302,
    "slug": "jaw-lock",
    "name": "Jaw Lock",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 299,
+   "rank": 303,
    "slug": "jet-punch",
    "name": "Jet Punch",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 300,
+   "rank": 304,
    "slug": "kings-shield",
    "name": "King’s Shield",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 301,
+   "rank": 305,
    "slug": "lash-out",
    "name": "Lash Out",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 302,
+   "rank": 306,
    "slug": "last-resort",
    "name": "Last Resort",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 303,
+   "rank": 307,
    "slug": "lava-plume",
    "name": "Lava Plume",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 304,
+   "rank": 308,
    "slug": "leaf-blade",
    "name": "Leaf Blade",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 305,
+   "rank": 309,
    "slug": "leech-seed",
    "name": "Leech Seed",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 306,
+   "rank": 310,
    "slug": "low-sweep",
    "name": "Low Sweep",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 307,
+   "rank": 311,
    "slug": "lumina-crash",
    "name": "Lumina Crash",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 308,
+   "rank": 312,
    "slug": "lunge",
    "name": "Lunge",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 309,
+   "rank": 313,
    "slug": "mach-punch",
    "name": "Mach Punch",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 310,
+   "rank": 314,
    "slug": "magic-powder",
    "name": "Magic Powder",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 311,
+   "rank": 315,
    "slug": "magic-room",
    "name": "Magic Room",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 312,
+   "rank": 316,
    "slug": "megahorn",
    "name": "Megahorn",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 313,
+   "rank": 317,
    "slug": "memento",
    "name": "Memento",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 314,
+   "rank": 318,
    "slug": "metal-burst",
    "name": "Metal Burst",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 315,
+   "rank": 319,
    "slug": "metal-sound",
    "name": "Metal Sound",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 316,
+   "rank": 320,
    "slug": "meteor-assault",
    "name": "Meteor Assault",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 317,
+   "rank": 321,
    "slug": "meteor-beam",
    "name": "Meteor Beam",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 318,
+   "rank": 322,
    "slug": "meteor-mash",
    "name": "Meteor Mash",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 319,
+   "rank": 323,
    "slug": "milk-drink",
    "name": "Milk Drink",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 320,
+   "rank": 324,
    "slug": "minimize",
    "name": "Minimize",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 321,
+   "rank": 325,
    "slug": "mirror-coat",
    "name": "Mirror Coat",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 322,
+   "rank": 326,
    "slug": "misty-explosion",
    "name": "Misty Explosion",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 323,
+   "rank": 327,
    "slug": "misty-terrain",
    "name": "Misty Terrain",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 324,
+   "rank": 328,
    "slug": "moongeist-beam",
    "name": "Moongeist Beam",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 325,
+   "rank": 329,
    "slug": "moonlight",
    "name": "Moonlight",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 326,
+   "rank": 330,
    "slug": "morning-sun",
    "name": "Morning Sun",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 327,
+   "rank": 331,
    "slug": "mortal-spin",
    "name": "Mortal Spin",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 328,
+   "rank": 332,
    "slug": "mud-slap",
    "name": "Mud-Slap",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 329,
+   "rank": 333,
    "slug": "night-daze",
    "name": "Night Daze",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 330,
+   "rank": 334,
    "slug": "night-shade",
    "name": "Night Shade",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 331,
+   "rank": 335,
    "slug": "no-retreat",
    "name": "No Retreat",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 332,
+   "rank": 336,
    "slug": "noble-roar",
    "name": "Noble Roar",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 333,
+   "rank": 337,
    "slug": "nuzzle",
    "name": "Nuzzle",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 334,
+   "rank": 338,
    "slug": "octolock",
    "name": "Octolock",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 335,
+   "rank": 339,
    "slug": "outrage",
    "name": "Outrage",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 336,
+   "rank": 340,
    "slug": "overdrive",
    "name": "Overdrive",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 337,
+   "rank": 341,
    "slug": "pain-split",
    "name": "Pain Split",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 338,
+   "rank": 342,
    "slug": "parabolic-charge",
    "name": "Parabolic Charge",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 339,
+   "rank": 343,
    "slug": "payback",
    "name": "Payback",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 340,
+   "rank": 344,
    "slug": "petal-blizzard",
    "name": "Petal Blizzard",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 341,
+   "rank": 345,
    "slug": "phantom-force",
    "name": "Phantom Force",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 342,
+   "rank": 346,
    "slug": "pin-missile",
    "name": "Pin Missile",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 343,
+   "rank": 347,
+   "slug": "plasma-fists",
+   "name": "Plasma Fists",
+   "usage_percent": 0.0,
+   "description": ""
+  },
+  {
+   "rank": 348,
    "slug": "pluck",
    "name": "Pluck",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 344,
+   "rank": 349,
    "slug": "pollen-puff",
    "name": "Pollen Puff",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 345,
-   "slug": "poltergeist",
-   "name": "Poltergeist",
-   "usage_percent": 0.0,
-   "description": ""
-  },
-  {
-   "rank": 346,
+   "rank": 350,
    "slug": "population-bomb",
    "name": "Population Bomb",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 347,
+   "rank": 351,
    "slug": "power-swap",
    "name": "Power Swap",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 348,
+   "rank": 352,
    "slug": "power-trick",
    "name": "Power Trick",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 349,
+   "rank": 353,
    "slug": "power-trip",
    "name": "Power Trip",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 350,
+   "rank": 354,
    "slug": "power-whip",
    "name": "Power Whip",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 351,
+   "rank": 355,
    "slug": "psych-up",
    "name": "Psych Up",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 352,
+   "rank": 356,
    "slug": "psychic-noise",
    "name": "Psychic Noise",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 353,
+   "rank": 357,
    "slug": "psychic-terrain",
    "name": "Psychic Terrain",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 354,
+   "rank": 358,
    "slug": "psyshield-bash",
    "name": "Psyshield Bash",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 355,
+   "rank": 359,
    "slug": "psyshock",
    "name": "Psyshock",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 356,
+   "rank": 360,
    "slug": "pyro-ball",
    "name": "Pyro Ball",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 357,
+   "rank": 361,
    "slug": "quash",
    "name": "Quash",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 358,
+   "rank": 362,
    "slug": "rage",
    "name": "Rage",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 359,
+   "rank": 363,
    "slug": "rage-fist",
    "name": "Rage Fist",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 360,
+   "rank": 364,
    "slug": "raging-bull",
    "name": "Raging Bull",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 361,
+   "rank": 365,
    "slug": "rapid-spin",
    "name": "Rapid Spin",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 362,
+   "rank": 366,
    "slug": "razor-shell",
    "name": "Razor Shell",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 363,
+   "rank": 367,
    "slug": "recycle",
    "name": "Recycle",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 364,
+   "rank": 368,
    "slug": "reflect-type",
    "name": "Reflect Type",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 365,
+   "rank": 369,
    "slug": "rest",
    "name": "Rest",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 366,
+   "rank": 370,
    "slug": "reversal",
    "name": "Reversal",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 367,
+   "rank": 371,
    "slug": "rising-voltage",
    "name": "Rising Voltage",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 368,
+   "rank": 372,
    "slug": "roar",
    "name": "Roar",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 369,
+   "rank": 373,
    "slug": "rock-blast",
    "name": "Rock Blast",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 370,
+   "rank": 374,
    "slug": "rock-wrecker",
    "name": "Rock Wrecker",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 371,
+   "rank": 375,
    "slug": "role-play",
    "name": "Role Play",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 372,
+   "rank": 376,
    "slug": "round",
    "name": "Round",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 373,
+   "rank": 377,
    "slug": "safeguard",
    "name": "Safeguard",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 374,
+   "rank": 378,
    "slug": "salt-cure",
    "name": "Salt Cure",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 375,
+   "rank": 379,
    "slug": "sand-tomb",
    "name": "Sand Tomb",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 376,
+   "rank": 380,
    "slug": "sandstorm",
    "name": "Sandstorm",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 377,
+   "rank": 381,
    "slug": "scale-shot",
    "name": "Scale Shot",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 378,
+   "rank": 382,
    "slug": "scary-face",
    "name": "Scary Face",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 379,
+   "rank": 383,
    "slug": "scorching-sands",
    "name": "Scorching Sands",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 380,
+   "rank": 384,
    "slug": "screech",
    "name": "Screech",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 381,
+   "rank": 385,
    "slug": "seed-bomb",
    "name": "Seed Bomb",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 382,
+   "rank": 386,
    "slug": "self-destruct",
    "name": "Self-Destruct",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 383,
+   "rank": 387,
+   "slug": "shadow-punch",
+   "name": "Shadow Punch",
+   "usage_percent": 0.0,
+   "description": ""
+  },
+  {
+   "rank": 388,
    "slug": "shed-tail",
    "name": "Shed Tail",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 384,
+   "rank": 389,
    "slug": "sheer-cold",
    "name": "Sheer Cold",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 385,
+   "rank": 390,
    "slug": "shell-side-arm",
    "name": "Shell Side Arm",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 386,
+   "rank": 391,
    "slug": "shelter",
    "name": "Shelter",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 387,
+   "rank": 392,
    "slug": "simple-beam",
    "name": "Simple Beam",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 388,
+   "rank": 393,
    "slug": "sing",
    "name": "Sing",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 389,
+   "rank": 394,
    "slug": "skill-swap",
    "name": "Skill Swap",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 390,
+   "rank": 395,
    "slug": "skitter-smack",
    "name": "Skitter Smack",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 391,
+   "rank": 396,
    "slug": "slack-off",
    "name": "Slack Off",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 392,
+   "rank": 397,
    "slug": "slash",
    "name": "Slash",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 393,
+   "rank": 398,
    "slug": "sleep-talk",
    "name": "Sleep Talk",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 394,
+   "rank": 399,
    "slug": "sludge-wave",
    "name": "Sludge Wave",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 395,
+   "rank": 400,
    "slug": "smack-down",
    "name": "Smack Down",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 396,
+   "rank": 401,
    "slug": "smart-strike",
    "name": "Smart Strike",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 397,
+   "rank": 402,
    "slug": "snap-trap",
    "name": "Snap Trap",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 398,
+   "rank": 403,
    "slug": "snipe-shot",
    "name": "Snipe Shot",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 399,
+   "rank": 404,
    "slug": "snowscape",
    "name": "Snowscape",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 400,
+   "rank": 405,
    "slug": "soak",
    "name": "Soak",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 401,
+   "rank": 406,
    "slug": "solar-blade",
    "name": "Solar Blade",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 402,
+   "rank": 407,
    "slug": "sparkling-aria",
    "name": "Sparkling Aria",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 403,
+   "rank": 408,
    "slug": "speed-swap",
    "name": "Speed Swap",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 404,
+   "rank": 409,
    "slug": "spikes",
    "name": "Spikes",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 405,
+   "rank": 410,
    "slug": "spirit-shackle",
    "name": "Spirit Shackle",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 406,
+   "rank": 411,
    "slug": "stealth-rock",
    "name": "Stealth Rock",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 407,
+   "rank": 412,
    "slug": "steel-beam",
    "name": "Steel Beam",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 408,
+   "rank": 413,
    "slug": "steel-wing",
    "name": "Steel Wing",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 409,
+   "rank": 414,
    "slug": "sticky-web",
    "name": "Sticky Web",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 410,
+   "rank": 415,
    "slug": "stockpile",
    "name": "Stockpile",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 411,
+   "rank": 416,
    "slug": "stone-axe",
    "name": "Stone Axe",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 412,
+   "rank": 417,
    "slug": "stone-edge",
    "name": "Stone Edge",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 413,
+   "rank": 418,
    "slug": "stored-power",
    "name": "Stored Power",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 414,
+   "rank": 419,
    "slug": "storm-throw",
    "name": "Storm Throw",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 415,
+   "rank": 420,
    "slug": "strength-sap",
    "name": "Strength Sap",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 416,
+   "rank": 421,
    "slug": "string-shot",
    "name": "String Shot",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 417,
+   "rank": 422,
    "slug": "stuff-cheeks",
    "name": "Stuff Cheeks",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 418,
+   "rank": 423,
    "slug": "stun-spore",
    "name": "Stun Spore",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 419,
+   "rank": 424,
    "slug": "submission",
    "name": "Submission",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 420,
+   "rank": 425,
    "slug": "substitute",
    "name": "Substitute",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 421,
+   "rank": 426,
    "slug": "super-fang",
    "name": "Super Fang",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 422,
+   "rank": 427,
    "slug": "supercell-slam",
    "name": "Supercell Slam",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 423,
+   "rank": 428,
    "slug": "surf",
    "name": "Surf",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 424,
+   "rank": 429,
    "slug": "swagger",
    "name": "Swagger",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 425,
+   "rank": 430,
    "slug": "switcheroo",
    "name": "Switcheroo",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 426,
+   "rank": 431,
    "slug": "synthesis",
    "name": "Synthesis",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 427,
+   "rank": 432,
    "slug": "tail-glow",
    "name": "Tail Glow",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 428,
+   "rank": 433,
    "slug": "tearful-look",
    "name": "Tearful Look",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 429,
+   "rank": 434,
    "slug": "temper-flare",
    "name": "Temper Flare",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 430,
+   "rank": 435,
    "slug": "thief",
    "name": "Thief",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 431,
+   "rank": 436,
    "slug": "thrash",
    "name": "Thrash",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 432,
+   "rank": 437,
    "slug": "thunder",
    "name": "Thunder",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 433,
+   "rank": 438,
    "slug": "thunder-fang",
    "name": "Thunder Fang",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 434,
+   "rank": 439,
    "slug": "thunder-punch",
    "name": "Thunder Punch",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 435,
+   "rank": 440,
    "slug": "thunder-wave",
    "name": "Thunder Wave",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 436,
+   "rank": 441,
    "slug": "tickle",
    "name": "Tickle",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 437,
+   "rank": 442,
    "slug": "tidy-up",
    "name": "Tidy Up",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 438,
+   "rank": 443,
    "slug": "topsy-turvy",
    "name": "Topsy-Turvy",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 439,
+   "rank": 444,
    "slug": "torch-song",
    "name": "Torch Song",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 440,
+   "rank": 445,
    "slug": "torment",
    "name": "Torment",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 441,
-   "slug": "toxic",
-   "name": "Toxic",
-   "usage_percent": 0.0,
-   "description": ""
-  },
-  {
-   "rank": 442,
+   "rank": 446,
    "slug": "toxic-spikes",
    "name": "Toxic Spikes",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 443,
+   "rank": 447,
    "slug": "trailblaze",
    "name": "Trailblaze",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 444,
+   "rank": 448,
    "slug": "transform",
    "name": "Transform",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 445,
+   "rank": 449,
    "slug": "tri-attack",
    "name": "Tri Attack",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 446,
+   "rank": 450,
    "slug": "trick-or-treat",
    "name": "Trick-or-Treat",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 447,
+   "rank": 451,
    "slug": "triple-arrows",
    "name": "Triple Arrows",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 448,
+   "rank": 452,
    "slug": "trop-kick",
    "name": "Trop Kick",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 449,
+   "rank": 453,
    "slug": "upper-hand",
    "name": "Upper Hand",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 450,
+   "rank": 454,
    "slug": "uproar",
    "name": "Uproar",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 451,
+   "rank": 455,
    "slug": "vacuum-wave",
    "name": "Vacuum Wave",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 452,
+   "rank": 456,
    "slug": "venoshock",
    "name": "Venoshock",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 453,
+   "rank": 457,
    "slug": "volt-tackle",
    "name": "Volt Tackle",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 454,
+   "rank": 458,
    "slug": "water-pulse",
    "name": "Water Pulse",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 455,
+   "rank": 459,
    "slug": "water-shuriken",
    "name": "Water Shuriken",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 456,
+   "rank": 460,
    "slug": "water-sport",
    "name": "Water Sport",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 457,
+   "rank": 461,
    "slug": "waterfall",
    "name": "Waterfall",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 458,
+   "rank": 462,
    "slug": "whirlpool",
    "name": "Whirlpool",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 459,
+   "rank": 463,
    "slug": "whirlwind",
    "name": "Whirlwind",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 460,
+   "rank": 464,
    "slug": "wild-charge",
    "name": "Wild Charge",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 461,
+   "rank": 465,
    "slug": "wish",
    "name": "Wish",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 462,
+   "rank": 466,
    "slug": "worry-seed",
    "name": "Worry Seed",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 463,
+   "rank": 467,
    "slug": "x-scissor",
    "name": "X-Scissor",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 464,
+   "rank": 468,
    "slug": "zen-headbutt",
    "name": "Zen Headbutt",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 465,
+   "rank": 469,
    "slug": "zing-zap",
    "name": "Zing Zap",
    "usage_percent": 0.0,
    "description": ""
-  },
-  {
-   "rank": 466,
-   "slug": "absorb",
-   "name": "Absorb",
-   "usage_percent": 100.0,
-   "description": "A nutrient-draining attack. The user&#x27;s HP is restored by up to half the damage taken by the target."
-  },
-  {
-   "rank": 467,
-   "slug": "acid",
-   "name": "Acid",
-   "usage_percent": 100.0,
-   "description": "Opposing Pokémon are attacked with a spray of harsh acid. This may also lower their Sp. Def stats."
-  },
-  {
-   "rank": 468,
-   "slug": "aeroblast",
-   "name": "Aeroblast",
-   "usage_percent": 95.0,
-   "description": "A vortex of air is shot at the target to inflict damage. This move has a heightened chance of landing a critical hit."
-  },
-  {
-   "rank": 469,
-   "slug": "anchor-shot",
-   "name": "Anchor Shot",
-   "usage_percent": 100.0,
-   "description": "The user entangles the target with its anchor chain while attacking. The target becomes unable to flee."
-  },
-  {
-   "rank": 470,
-   "slug": "arm-thrust",
-   "name": "Arm Thrust",
-   "usage_percent": 100.0,
-   "description": "The user attacks the target with open-palmed arm thrusts. This move hits two to five times in a row."
-  },
-  {
-   "rank": 471,
-   "slug": "astonish",
-   "name": "Astonish",
-   "usage_percent": 100.0,
-   "description": "The user attacks the target by crying out in a startling fashion. This may also make the target flinch."
-  },
-  {
-   "rank": 472,
-   "slug": "astral-barrage",
-   "name": "Astral Barrage",
-   "usage_percent": 100.0,
-   "description": "The user attacks by sending a frightful amount of small ghosts at opposing Pokémon."
-  },
-  {
-   "rank": 473,
-   "slug": "attack-order",
-   "name": "Attack Order",
-   "usage_percent": 100.0,
-   "description": "The user calls out its underlings to pummel the target. This move has a heightened chance of landing a critical hit."
-  },
-  {
-   "rank": 474,
-   "slug": "aurora-beam",
-   "name": "Aurora Beam",
-   "usage_percent": 100.0,
-   "description": "The target is hit with a rainbow-colored beam. This may also lower the target&#x27;s Attack stat."
-  },
-  {
-   "rank": 475,
-   "slug": "axe-kick",
-   "name": "Axe Kick",
-   "usage_percent": 90.0,
-   "description": "The user attacks by kicking up into the air and slamming its heel down upon the target. This may also confuse the target. If it misses, the user takes damage instead."
-  },
-  {
-   "rank": 476,
-   "slug": "baddy-bad",
-   "name": "Baddy Bad",
-   "usage_percent": 95.0,
-   "description": "This move can’t be used. It’s recommended that this move is forgotten. Once forgotten, this move can’t be remembered."
-  },
-  {
-   "rank": 477,
-   "slug": "barrage",
-   "name": "Barrage",
-   "usage_percent": 85.0,
-   "description": "This move can’t be used. It’s recommended that this move is forgotten. Once forgotten, this move can’t be remembered."
-  },
-  {
-   "rank": 478,
-   "slug": "behemoth-bash",
-   "name": "Behemoth Bash",
-   "usage_percent": 100.0,
-   "description": "The user becomes a gigantic shield and slams into the target. This move deals twice the damage if the target is Dynamaxed."
-  },
-  {
-   "rank": 479,
-   "slug": "behemoth-blade",
-   "name": "Behemoth Blade",
-   "usage_percent": 100.0,
-   "description": "The user becomes a gigantic sword and cuts the target. This move deals twice the damage if the target is Dynamaxed."
-  },
-  {
-   "rank": 480,
-   "slug": "bind",
-   "name": "Bind",
-   "usage_percent": 85.0,
-   "description": "A long body, tentacles, or the like are used to bind and squeeze the target for four to five turns."
-  },
-  {
-   "rank": 481,
-   "slug": "blazing-torque",
-   "name": "Blazing Torque",
-   "usage_percent": 100.0,
-   "description": ""
-  },
-  {
-   "rank": 482,
-   "slug": "bleakwind-storm",
-   "name": "Bleakwind Storm",
-   "usage_percent": 80.0,
-   "description": "The user attacks with savagely cold winds that cause both body and spirit to tremble. This may also lower the Speed stats of opposing Pokémon."
-  },
-  {
-   "rank": 483,
-   "slug": "blood-moon",
-   "name": "Blood Moon",
-   "usage_percent": 100.0,
-   "description": "The user unleashes the full brunt of its spirit from a full moon that shines as red as blood. This move can&#x27;t be used twice in a row."
-  },
-  {
-   "rank": 484,
-   "slug": "blue-flare",
-   "name": "Blue Flare",
-   "usage_percent": 85.0,
-   "description": "The user attacks by engulfing the target in an intense, yet beautiful, blue flame. This may also leave the target with a burn."
-  },
-  {
-   "rank": 485,
-   "slug": "bolt-beak",
-   "name": "Bolt Beak",
-   "usage_percent": 100.0,
-   "description": "The user stabs the target with its electrified beak. If the user attacks before the target, the power of this move is doubled."
-  },
-  {
-   "rank": 486,
-   "slug": "bolt-strike",
-   "name": "Bolt Strike",
-   "usage_percent": 85.0,
-   "description": "The user surrounds itself with a great amount of electricity and charges the target. This may also leave the target with paralysis."
-  },
-  {
-   "rank": 487,
-   "slug": "bone-club",
-   "name": "Bone Club",
-   "usage_percent": 85.0,
-   "description": "This move can’t be used. It’s recommended that this move is forgotten. Once forgotten, this move can’t be remembered."
-  },
-  {
-   "rank": 488,
-   "slug": "bone-rush",
-   "name": "Bone Rush",
-   "usage_percent": 90.0,
-   "description": "The user attacks by striking the target with a hard bone. This move hits two to five times in a row."
-  },
-  {
-   "rank": 489,
-   "slug": "bonemerang",
-   "name": "Bonemerang",
-   "usage_percent": 90.0,
-   "description": "The user throws the bone it holds. The bone loops around to hit the target twice—coming and going."
-  },
-  {
-   "rank": 490,
-   "slug": "bouncy-bubble",
-   "name": "Bouncy Bubble",
-   "usage_percent": 100.0,
-   "description": "This move can’t be used. It’s recommended that this move is forgotten. Once forgotten, this move can’t be remembered."
-  },
-  {
-   "rank": 491,
-   "slug": "branch-poke",
-   "name": "Branch Poke",
-   "usage_percent": 100.0,
-   "description": "The user attacks the target by poking it with a sharply pointed branch."
-  },
-  {
-   "rank": 492,
-   "slug": "brine",
-   "name": "Brine",
-   "usage_percent": 100.0,
-   "description": "This move&#x27;s power is doubled if the target&#x27;s HP is at half or less."
-  },
-  {
-   "rank": 493,
-   "slug": "bubble",
-   "name": "Bubble",
-   "usage_percent": 100.0,
-   "description": "This move can’t be used. It’s recommended that this move is forgotten. Once forgotten, this move can’t be remembered."
-  },
-  {
-   "rank": 494,
-   "slug": "bubble-beam",
-   "name": "Bubble Beam",
-   "usage_percent": 100.0,
-   "description": "A spray of bubbles is forcefully ejected at the target. This may also lower the target&#x27;s Speed stat."
-  },
-  {
-   "rank": 495,
-   "slug": "buzzy-buzz",
-   "name": "Buzzy Buzz",
-   "usage_percent": 100.0,
-   "description": "This move can’t be used. It’s recommended that this move is forgotten. Once forgotten, this move can’t be remembered."
-  },
-  {
-   "rank": 496,
-   "slug": "captivate",
-   "name": "Captivate",
-   "usage_percent": 100.0,
-   "description": "This move can’t be used. It’s recommended that this move is forgotten. Once forgotten, this move can’t be remembered."
-  },
-  {
-   "rank": 497,
-   "slug": "chatter",
-   "name": "Chatter",
-   "usage_percent": 100.0,
-   "description": "The user attacks the target with sound waves of deafening chatter. This confuses the target."
-  },
-  {
-   "rank": 498,
-   "slug": "chip-away",
-   "name": "Chip Away",
-   "usage_percent": 100.0,
-   "description": "This move can’t be used. It’s recommended that this move is forgotten. Once forgotten, this move can’t be remembered."
-  },
-  {
-   "rank": 499,
-   "slug": "chloroblast",
-   "name": "Chloroblast",
-   "usage_percent": 95.0,
-   "description": "The user launches its amassed chlorophyll to inflict damage on the target. This also damages the user."
-  },
-  {
-   "rank": 500,
-   "slug": "clamp",
-   "name": "Clamp",
-   "usage_percent": 85.0,
-   "description": "This move can’t be used. It’s recommended that this move is forgotten. Once forgotten, this move can’t be remembered."
-  },
-  {
-   "rank": 501,
-   "slug": "collision-course",
-   "name": "Collision Course",
-   "usage_percent": 100.0,
-   "description": "The user transforms and crashes to the ground, causing a massive prehistoric explosion. This move&#x27;s power is boosted more than usual if it’s a supereffective hit."
-  },
-  {
-   "rank": 502,
-   "slug": "combat-torque",
-   "name": "Combat Torque",
-   "usage_percent": 100.0,
-   "description": ""
-  },
-  {
-   "rank": 503,
-   "slug": "comet-punch",
-   "name": "Comet Punch",
-   "usage_percent": 85.0,
-   "description": "This move can’t be used. It’s recommended that this move is forgotten. Once forgotten, this move can’t be remembered."
-  },
-  {
-   "rank": 504,
-   "slug": "confusion",
-   "name": "Confusion",
-   "usage_percent": 100.0,
-   "description": "The target is hit with a weak telekinetic force to inflict damage. This may also confuse the target."
-  },
-  {
-   "rank": 505,
-   "slug": "constrict",
-   "name": "Constrict",
-   "usage_percent": 100.0,
-   "description": "This move can’t be used. It’s recommended that this move is forgotten. Once forgotten, this move can’t be remembered."
-  },
-  {
-   "rank": 506,
-   "slug": "core-enforcer",
-   "name": "Core Enforcer",
-   "usage_percent": 100.0,
-   "description": "If the Pokémon the user has inflicted damage on have already used their moves, this move eliminates the effect of the target’s Ability."
-  },
-  {
-   "rank": 507,
-   "slug": "covet",
-   "name": "Covet",
-   "usage_percent": 100.0,
-   "description": "The user endearingly approaches the target, then steals the target&#x27;s held item."
-  },
-  {
-   "rank": 508,
-   "slug": "crush-claw",
-   "name": "Crush Claw",
-   "usage_percent": 95.0,
-   "description": "The user slashes the target with hard and sharp claws. This may also lower the target&#x27;s Defense stat."
-  },
-  {
-   "rank": 509,
-   "slug": "crush-grip",
-   "name": "Crush Grip",
-   "usage_percent": 100.0,
-   "description": "The target is crushed with great force. The more HP the target has left, the greater the move&#x27;s power."
-  },
-  {
-   "rank": 510,
-   "slug": "cut",
-   "name": "Cut",
-   "usage_percent": 95.0,
-   "description": "The target is cut with a scythe or claw."
-  },
-  {
-   "rank": 511,
-   "slug": "dark-void",
-   "name": "Dark Void",
-   "usage_percent": 50.0,
-   "description": "Opposing Pokémon are dragged into a world of total darkness that puts them to sleep."
-  },
-  {
-   "rank": 512,
-   "slug": "diamond-storm",
-   "name": "Diamond Storm",
-   "usage_percent": 95.0,
-   "description": "The user whips up a storm of diamonds to damage opposing Pokémon. This may also sharply boost the user&#x27;s Defense stat."
-  },
-  {
-   "rank": 513,
-   "slug": "dive",
-   "name": "Dive",
-   "usage_percent": 100.0,
-   "description": "The user dives on the first turn, then floats up and attacks on the next turn."
-  },
-  {
-   "rank": 514,
-   "slug": "dizzy-punch",
-   "name": "Dizzy Punch",
-   "usage_percent": 100.0,
-   "description": "This move can’t be used. It’s recommended that this move is forgotten. Once forgotten, this move can’t be remembered."
-  },
-  {
-   "rank": 515,
-   "slug": "doodle",
-   "name": "Doodle",
-   "usage_percent": 100.0,
-   "description": "The user captures the very essence of the target in a sketch. This changes the Abilities of the user and its ally Pokémon to that of the target."
-  },
-  {
-   "rank": 516,
-   "slug": "doom-desire",
-   "name": "Doom Desire",
-   "usage_percent": 100.0,
-   "description": "This move can&#x27;t be used. It&#x27;s recommended that this move is forgotten. Once forgotten, this move can&#x27;t be remembered."
-  },
-  {
-   "rank": 517,
-   "slug": "double-hit",
-   "name": "Double Hit",
-   "usage_percent": 90.0,
-   "description": "The user slams the target with a tail or the like. The target is hit twice in a row."
-  },
-  {
-   "rank": 518,
-   "slug": "double-iron-bash",
-   "name": "Double Iron Bash",
-   "usage_percent": 100.0,
-   "description": "The user rotates, centering the hex nut in its chest, and then strikes with its arms twice in a row. This may also make the target flinch."
-  },
-  {
-   "rank": 519,
-   "slug": "double-kick",
-   "name": "Double Kick",
-   "usage_percent": 100.0,
-   "description": "The user attacks by kicking the target twice in a row using two feet."
-  },
-  {
-   "rank": 520,
-   "slug": "double-slap",
-   "name": "Double Slap",
-   "usage_percent": 85.0,
-   "description": "This move can’t be used. It’s recommended that this move is forgotten. Once forgotten, this move can’t be remembered."
-  },
-  {
-   "rank": 521,
-   "slug": "dragon-ascent",
-   "name": "Dragon Ascent",
-   "usage_percent": 100.0,
-   "description": "The user attacks the target by dropping out of the sky at high speed. This also lowers the user&#x27;s Defense and Sp. Def stats."
-  },
-  {
-   "rank": 522,
-   "slug": "dragon-breath",
-   "name": "Dragon Breath",
-   "usage_percent": 100.0,
-   "description": "The user exhales a mighty gust that inflicts damage. This may also leave the target with paralysis."
-  },
-  {
-   "rank": 523,
-   "slug": "dragon-energy",
-   "name": "Dragon Energy",
-   "usage_percent": 100.0,
-   "description": "Converting its life-force into power, the user attacks opposing Pokémon. The lower the user&#x27;s HP, the lower the move&#x27;s power."
-  },
-  {
-   "rank": 524,
-   "slug": "dragon-hammer",
-   "name": "Dragon Hammer",
-   "usage_percent": 100.0,
-   "description": "The user wields its body like a hammer to attack the target and inflict damage."
-  },
-  {
-   "rank": 525,
-   "slug": "dragon-rage",
-   "name": "Dragon Rage",
-   "usage_percent": 100.0,
-   "description": "This move can’t be used. It’s recommended that this move is forgotten. Once forgotten, this move can’t be remembered."
-  },
-  {
-   "rank": 526,
-   "slug": "dream-eater",
-   "name": "Dream Eater",
-   "usage_percent": 100.0,
-   "description": "The user eats the dreams of a sleeping target. The user&#x27;s HP is restored by up to half the damage taken by the target."
-  },
-  {
-   "rank": 527,
-   "slug": "dual-chop",
-   "name": "Dual Chop",
-   "usage_percent": 90.0,
-   "description": "The user attacks its target by hitting it with brutal strikes. The target is hit twice in a row."
-  },
-  {
-   "rank": 528,
-   "slug": "dynamax-cannon",
-   "name": "Dynamax Cannon",
-   "usage_percent": 100.0,
-   "description": "The user condenses energy within its body and unleashes that energy from its core to inflict damage."
-  },
-  {
-   "rank": 529,
-   "slug": "echoed-voice",
-   "name": "Echoed Voice",
-   "usage_percent": 100.0,
-   "description": "The user attacks the target with an echoing voice. If this move is used consecutively by any Pokémon, its power is boosted."
-  },
-  {
-   "rank": 530,
-   "slug": "egg-bomb",
-   "name": "Egg Bomb",
-   "usage_percent": 75.0,
-   "description": "This move can’t be used. It’s recommended that this move is forgotten. Once forgotten, this move can’t be remembered."
-  },
-  {
-   "rank": 531,
-   "slug": "electro-drift",
-   "name": "Electro Drift",
-   "usage_percent": 100.0,
-   "description": "The user races forward at ultrafast speeds, piercing its target with futuristic electricity. This move&#x27;s power is boosted more than usual if it&#x27;s a supereffective hit."
-  },
-  {
-   "rank": 532,
-   "slug": "embargo",
-   "name": "Embargo",
-   "usage_percent": 100.0,
-   "description": "This move can’t be used. It’s recommended that this move is forgotten. Once forgotten, this move can’t be remembered."
-  },
-  {
-   "rank": 533,
-   "slug": "ember",
-   "name": "Ember",
-   "usage_percent": 100.0,
-   "description": "The target is attacked with small flames. This may also leave the target with a burn."
-  },
-  {
-   "rank": 534,
-   "slug": "esper-wing",
-   "name": "Esper Wing",
-   "usage_percent": 100.0,
-   "description": "The user slashes the target with aura-enriched wings. This also boosts the user&#x27;s Speed stat. This move has a heightened chance of landing a critical hit."
-  },
-  {
-   "rank": 535,
-   "slug": "eternabeam",
-   "name": "Eternabeam",
-   "usage_percent": 90.0,
-   "description": "This is Eternatus’s most powerful attack in its original form. The user can’t move on the next turn."
-  },
-  {
-   "rank": 536,
-   "slug": "fairy-wind",
-   "name": "Fairy Wind",
-   "usage_percent": 100.0,
-   "description": "The user attacks by stirring up a fairy wind to strike the target."
-  },
-  {
-   "rank": 537,
-   "slug": "false-swipe",
-   "name": "False Swipe",
-   "usage_percent": 100.0,
-   "description": "A restrained attack that prevents the target from fainting. The target is left with at least 1 HP."
-  },
-  {
-   "rank": 538,
-   "slug": "fiery-wrath",
-   "name": "Fiery Wrath",
-   "usage_percent": 100.0,
-   "description": "The user transforms its wrath into a fire-like aura to attack. This may also make opposing Pokémon flinch."
-  },
-  {
-   "rank": 539,
-   "slug": "fire-lash",
-   "name": "Fire Lash",
-   "usage_percent": 100.0,
-   "description": "The user strikes the target with a burning lash. This also lowers the target&#x27;s Defense stat."
-  },
-  {
-   "rank": 540,
-   "slug": "fire-pledge",
-   "name": "Fire Pledge",
-   "usage_percent": 100.0,
-   "description": "A column of fire hits the target. When used with its grass counterpart, this move&#x27;s power is boosted and a vast sea of fire appears."
-  },
-  {
-   "rank": 541,
-   "slug": "fishious-rend",
-   "name": "Fishious Rend",
-   "usage_percent": 100.0,
-   "description": "The user rends the target with its hard gills. If the user attacks before the target, the power of this move is doubled."
-  },
-  {
-   "rank": 542,
-   "slug": "flail",
-   "name": "Flail",
-   "usage_percent": 100.0,
-   "description": "The user flails about aimlessly to attack. The less HP the user has, the greater the move&#x27;s power."
-  },
-  {
-   "rank": 543,
-   "slug": "flame-wheel",
-   "name": "Flame Wheel",
-   "usage_percent": 100.0,
-   "description": "The user attacks by cloaking itself in fire and charging at the target. This may also leave the target with a burn."
-  },
-  {
-   "rank": 544,
-   "slug": "flash",
-   "name": "Flash",
-   "usage_percent": 100.0,
-   "description": "This move can’t be used. It’s recommended that this move is forgotten. Once forgotten, this move can’t be remembered."
-  },
-  {
-   "rank": 545,
-   "slug": "flatter",
-   "name": "Flatter",
-   "usage_percent": 100.0,
-   "description": "Flattery is used to confuse the target. However, this also boosts the target&#x27;s Sp. Atk stat."
-  },
-  {
-   "rank": 546,
-   "slug": "fleur-cannon",
-   "name": "Fleur Cannon",
-   "usage_percent": 90.0,
-   "description": "The user unleashes a strong beam. The recoil from this move harshly lowers the user&#x27;s Sp. Atk stat."
-  },
-  {
-   "rank": 547,
-   "slug": "floaty-fall",
-   "name": "Floaty Fall",
-   "usage_percent": 95.0,
-   "description": "This move can’t be used. It’s recommended that this move is forgotten. Once forgotten, this move can’t be remembered."
-  },
-  {
-   "rank": 548,
-   "slug": "force-palm",
-   "name": "Force Palm",
-   "usage_percent": 100.0,
-   "description": "The target is attacked with a shock wave. This may also leave the target with paralysis."
-  },
-  {
-   "rank": 549,
-   "slug": "freeze-shock",
-   "name": "Freeze Shock",
-   "usage_percent": 90.0,
-   "description": "The turn after using this move, the user hits the target with electrically charged ice to inflict damage. This may also leave the target with paralysis."
-  },
-  {
-   "rank": 550,
-   "slug": "freezing-glare",
-   "name": "Freezing Glare",
-   "usage_percent": 100.0,
-   "description": "The user shoots its psychic power from its eyes to attack. This may also leave the target frozen."
-  },
-  {
-   "rank": 551,
-   "slug": "freezy-frost",
-   "name": "Freezy Frost",
-   "usage_percent": 90.0,
-   "description": "This move can’t be used. It’s recommended that this move is forgotten. Once forgotten, this move can’t be remembered."
-  },
-  {
-   "rank": 552,
-   "slug": "frenzy-plant",
-   "name": "Frenzy Plant",
-   "usage_percent": 90.0,
-   "description": "The user slams the target with the roots of an enormous tree. The user can&#x27;t move on the next turn."
-  },
-  {
-   "rank": 553,
-   "slug": "frustration",
-   "name": "Frustration",
-   "usage_percent": 100.0,
-   "description": "This move can’t be used. It’s recommended that this move is forgotten. Once forgotten, this move can’t be remembered."
-  },
-  {
-   "rank": 554,
-   "slug": "fury-attack",
-   "name": "Fury Attack",
-   "usage_percent": 85.0,
-   "description": "The user attacks by jabbing the target with a horn, a beak, or the like. This move hits two to five times in a row."
-  },
-  {
-   "rank": 555,
-   "slug": "fury-cutter",
-   "name": "Fury Cutter",
-   "usage_percent": 95.0,
-   "description": "The user attacks by slashing the target with scythes, claws, or the like. This attack becomes more powerful if it hits in succession."
-  },
-  {
-   "rank": 556,
-   "slug": "fury-swipes",
-   "name": "Fury Swipes",
-   "usage_percent": 80.0,
-   "description": "The user attacks by raking the target with claws, scythes, or the like. This move hits two to five times in a row."
-  },
-  {
-   "rank": 557,
-   "slug": "fusion-bolt",
-   "name": "Fusion Bolt",
-   "usage_percent": 100.0,
-   "description": "The user throws down a giant lightning bolt. This move&#x27;s power is boosted when influenced by an enormous flame."
-  },
-  {
-   "rank": 558,
-   "slug": "fusion-flare",
-   "name": "Fusion Flare",
-   "usage_percent": 100.0,
-   "description": "The user brings down a giant flame. This move&#x27;s power is boosted when influenced by an enormous lightning bolt."
-  },
-  {
-   "rank": 559,
-   "slug": "gear-grind",
-   "name": "Gear Grind",
-   "usage_percent": 85.0,
-   "description": "The user attacks by throwing steel gears at its target twice."
-  },
-  {
-   "rank": 560,
-   "slug": "glacial-lance",
-   "name": "Glacial Lance",
-   "usage_percent": 100.0,
-   "description": "The user attacks by hurling a blizzard-cloaked icicle lance at opposing Pokémon."
-  },
-  {
-   "rank": 561,
-   "slug": "glaciate",
-   "name": "Glaciate",
-   "usage_percent": 95.0,
-   "description": "The user attacks by blowing freezing cold air at opposing Pokémon. This also lowers their Speed stats."
-  },
-  {
-   "rank": 562,
-   "slug": "glitzy-glow",
-   "name": "Glitzy Glow",
-   "usage_percent": 95.0,
-   "description": "This move can’t be used. It’s recommended that this move is forgotten. Once forgotten, this move can’t be remembered."
-  },
-  {
-   "rank": 563,
-   "slug": "grass-pledge",
-   "name": "Grass Pledge",
-   "usage_percent": 100.0,
-   "description": "A column of grass hits the target. When used with its water counterpart, this move&#x27;s power is boosted and a vast swamp appears."
-  },
-  {
-   "rank": 564,
-   "slug": "grass-whistle",
-   "name": "Grass Whistle",
-   "usage_percent": 55.0,
-   "description": "This move can’t be used. It’s recommended that this move is forgotten. Once forgotten, this move can’t be remembered."
-  },
-  {
-   "rank": 565,
-   "slug": "growl",
-   "name": "Growl",
-   "usage_percent": 100.0,
-   "description": "The user growls in an endearing way, making opposing Pokémon less wary. This lowers their Attack stats."
-  },
-  {
-   "rank": 566,
-   "slug": "gust",
-   "name": "Gust",
-   "usage_percent": 100.0,
-   "description": "A gust of wind is whipped up by wings and launched at the target to inflict damage."
-  },
-  {
-   "rank": 567,
-   "slug": "head-charge",
-   "name": "Head Charge",
-   "usage_percent": 100.0,
-   "description": "The user charges its head into its target, using its powerful guard hair. This also damages the user a little."
-  },
-  {
-   "rank": 568,
-   "slug": "headbutt",
-   "name": "Headbutt",
-   "usage_percent": 100.0,
-   "description": "The user sticks out its head and attacks by charging straight into the target. This may also make the target flinch."
-  },
-  {
-   "rank": 569,
-   "slug": "heal-block",
-   "name": "Heal Block",
-   "usage_percent": 100.0,
-   "description": "This move can’t be used. It’s recommended that this move is forgotten. Once forgotten, this move can’t be remembered."
-  },
-  {
-   "rank": 570,
-   "slug": "heart-stamp",
-   "name": "Heart Stamp",
-   "usage_percent": 100.0,
-   "description": "This move can’t be used. It’s recommended that this move is forgotten. Once forgotten, this move can’t be remembered."
-  },
-  {
-   "rank": 571,
-   "slug": "hidden-power",
-   "name": "Hidden Power",
-   "usage_percent": 100.0,
-   "description": "This move can’t be used. It’s recommended that this move is forgotten. Once forgotten, this move can’t be remembered."
-  },
-  {
-   "rank": 572,
-   "slug": "hold-back",
-   "name": "Hold Back",
-   "usage_percent": 100.0,
-   "description": "The user holds back when it attacks, and the target is left with at least 1 HP."
-  },
-  {
-   "rank": 573,
-   "slug": "horn-attack",
-   "name": "Horn Attack",
-   "usage_percent": 100.0,
-   "description": "The target is jabbed with a sharply pointed horn to inflict damage."
-  },
-  {
-   "rank": 574,
-   "slug": "hydro-steam",
-   "name": "Hydro Steam",
-   "usage_percent": 100.0,
-   "description": "The user blasts the target with boiling-hot water. This move&#x27;s power is not lowered in harsh sunlight but rather boosted by 50 percent."
-  },
-  {
-   "rank": 575,
-   "slug": "hyper-drill",
-   "name": "Hyper Drill",
-   "usage_percent": 100.0,
-   "description": "The user spins the pointed part of its body at high speed to pierce the target. This attack can hit a target using a move such as Protect or Detect."
-  },
-  {
-   "rank": 576,
-   "slug": "hyper-fang",
-   "name": "Hyper Fang",
-   "usage_percent": 90.0,
-   "description": "The user bites hard on the target with its sharp front fangs. This may also make the target flinch."
-  },
-  {
-   "rank": 577,
-   "slug": "ice-burn",
-   "name": "Ice Burn",
-   "usage_percent": 90.0,
-   "description": "The turn after using this move, the user surrounds the target with an ultracold, freezing wind to inflict damage. This may also leave the target with a burn."
-  },
-  {
-   "rank": 578,
-   "slug": "incinerate",
-   "name": "Incinerate",
-   "usage_percent": 100.0,
-   "description": "The user attacks opposing Pokémon with fire. If a Pokémon is holding a certain item, such as a Berry, the item becomes burned up and unusable."
-  },
-  {
-   "rank": 579,
-   "slug": "inferno",
-   "name": "Inferno",
-   "usage_percent": 50.0,
-   "description": "The user attacks by engulfing the target in an intense fire. This leaves the target with a burn."
-  },
-  {
-   "rank": 580,
-   "slug": "ivy-cudgel",
-   "name": "Ivy Cudgel",
-   "usage_percent": 100.0,
-   "description": "The user strikes with an ivy-wrapped cudgel. This move&#x27;s type changes depending on the mask worn by the user, and it has a heightened chance of landing a critical hit."
-  },
-  {
-   "rank": 581,
-   "slug": "judgment",
-   "name": "Judgment",
-   "usage_percent": 100.0,
-   "description": "The user releases countless shots of light at the target. This move&#x27;s type changes depending on the kind of plate held by the user."
-  },
-  {
-   "rank": 582,
-   "slug": "jump-kick",
-   "name": "Jump Kick",
-   "usage_percent": 95.0,
-   "description": "This move can’t be used. It’s recommended that this move is forgotten. Once forgotten, this move can’t be remembered."
-  },
-  {
-   "rank": 583,
-   "slug": "karate-chop",
-   "name": "Karate Chop",
-   "usage_percent": 100.0,
-   "description": "This move can’t be used. It’s recommended that this move is forgotten. Once forgotten, this move can’t be remembered."
-  },
-  {
-   "rank": 584,
-   "slug": "kinesis",
-   "name": "Kinesis",
-   "usage_percent": 80.0,
-   "description": "The user distracts the target by bending a spoon. This lowers the target’s accuracy."
-  },
-  {
-   "rank": 585,
-   "slug": "lands-wrath",
-   "name": "Land’s Wrath",
-   "usage_percent": 100.0,
-   "description": "The user gathers the energy of the land and focuses that power on opposing Pokémon to damage them."
-  },
-  {
-   "rank": 586,
-   "slug": "leaf-tornado",
-   "name": "Leaf Tornado",
-   "usage_percent": 90.0,
-   "description": "The user attacks its target by encircling it in sharp leaves. This attack may also lower the target’s accuracy."
-  },
-  {
-   "rank": 587,
-   "slug": "leafage",
-   "name": "Leafage",
-   "usage_percent": 100.0,
-   "description": "The user attacks by pelting the target with leaves."
-  },
-  {
-   "rank": 588,
-   "slug": "leer",
-   "name": "Leer",
-   "usage_percent": 100.0,
-   "description": "The user gives opposing Pokémon an intimidating leer that lowers their Defense stats."
-  },
-  {
-   "rank": 589,
-   "slug": "lick",
-   "name": "Lick",
-   "usage_percent": 100.0,
-   "description": "The user licks the target with a long tongue to inflict damage. This may also leave the target with paralysis."
-  },
-  {
-   "rank": 590,
-   "slug": "lovely-kiss",
-   "name": "Lovely Kiss",
-   "usage_percent": 75.0,
-   "description": "With a scary face, the user tries to force a kiss on the target. If it succeeds, the target falls asleep."
-  },
-  {
-   "rank": 591,
-   "slug": "luster-purge",
-   "name": "Luster Purge",
-   "usage_percent": 100.0,
-   "description": "The user lets loose a damaging burst of light. This may also lower the target&#x27;s Sp. Def stat."
-  },
-  {
-   "rank": 592,
-   "slug": "magical-torque",
-   "name": "Magical Torque",
-   "usage_percent": 100.0,
-   "description": ""
-  },
-  {
-   "rank": 593,
-   "slug": "magma-storm",
-   "name": "Magma Storm",
-   "usage_percent": 75.0,
-   "description": "The user traps the target inside a maelstrom of fire that inflicts damage for four to five turns."
-  },
-  {
-   "rank": 594,
-   "slug": "magnitude",
-   "name": "Magnitude",
-   "usage_percent": 100.0,
-   "description": "This move can’t be used. It’s recommended that this move is forgotten. Once forgotten, this move can’t be remembered."
-  },
-  {
-   "rank": 595,
-   "slug": "malignant-chain",
-   "name": "Malignant Chain",
-   "usage_percent": 100.0,
-   "description": "The user pours toxins into the target by wrapping them in a toxic, corrosive chain. This may also leave the target badly poisoned."
-  },
-  {
-   "rank": 596,
-   "slug": "mega-drain",
-   "name": "Mega Drain",
-   "usage_percent": 100.0,
-   "description": "A nutrient-draining attack. The user&#x27;s HP is restored by up to half the damage taken by the target."
-  },
-  {
-   "rank": 597,
-   "slug": "mega-kick",
-   "name": "Mega Kick",
-   "usage_percent": 75.0,
-   "description": "The target is attacked by a kick launched with muscle-packed power."
-  },
-  {
-   "rank": 598,
-   "slug": "mega-punch",
-   "name": "Mega Punch",
-   "usage_percent": 85.0,
-   "description": "The target is slugged by a punch thrown with muscle-packed power."
-  },
-  {
-   "rank": 599,
-   "slug": "metal-claw",
-   "name": "Metal Claw",
-   "usage_percent": 95.0,
-   "description": "The target is raked with steel claws. This may also boost the user&#x27;s Attack stat."
-  },
-  {
-   "rank": 600,
-   "slug": "mighty-cleave",
-   "name": "Mighty Cleave",
-   "usage_percent": 100.0,
-   "description": "The user wields the light that has accumulated atop its head to cleave the target. This move hits even if the target protects itself."
-  },
-  {
-   "rank": 601,
-   "slug": "mind-blown",
-   "name": "Mind Blown",
-   "usage_percent": 100.0,
-   "description": "The user attacks everything around it by causing its own head to explode. This also damages the user."
-  },
-  {
-   "rank": 602,
-   "slug": "mirror-shot",
-   "name": "Mirror Shot",
-   "usage_percent": 85.0,
-   "description": "This move can’t be used. It’s recommended that this move is forgotten. Once forgotten, this move can’t be remembered."
-  },
-  {
-   "rank": 603,
-   "slug": "mist-ball",
-   "name": "Mist Ball",
-   "usage_percent": 100.0,
-   "description": "A mist-like flurry of down envelops and damages the target. This may also lower the target&#x27;s Sp. Atk stat."
-  },
-  {
-   "rank": 604,
-   "slug": "mountain-gale",
-   "name": "Mountain Gale",
-   "usage_percent": 85.0,
-   "description": "The user hurls giant chunks of ice at the target to inflict damage. This may also make the target flinch."
-  },
-  {
-   "rank": 605,
-   "slug": "mud-bomb",
-   "name": "Mud Bomb",
-   "usage_percent": 85.0,
-   "description": "This move can’t be used. It’s recommended that this move is forgotten. Once forgotten, this move can’t be remembered."
-  },
-  {
-   "rank": 606,
-   "slug": "mud-shot",
-   "name": "Mud Shot",
-   "usage_percent": 95.0,
-   "description": "The user attacks by hurling a blob of mud at the target. This also lowers the target&#x27;s Speed stat."
-  },
-  {
-   "rank": 607,
-   "slug": "multi-attack",
-   "name": "Multi-Attack",
-   "usage_percent": 100.0,
-   "description": "Cloaking itself in high energy, the user slams into the target. The memory held determines the move’s type."
-  },
-  {
-   "rank": 608,
-   "slug": "mystical-power",
-   "name": "Mystical Power",
-   "usage_percent": 90.0,
-   "description": "The user attacks by emitting a mysterious power. This also boosts the user’s Sp. Atk stat."
-  },
-  {
-   "rank": 609,
-   "slug": "natural-gift",
-   "name": "Natural Gift",
-   "usage_percent": 100.0,
-   "description": "This move can’t be used. It’s recommended that this move is forgotten. Once forgotten, this move can’t be remembered."
-  },
-  {
-   "rank": 610,
-   "slug": "natures-madness",
-   "name": "Nature’s Madness",
-   "usage_percent": 90.0,
-   "description": "The user hits the target with the force of nature. It halves the target’s HP."
-  },
-  {
-   "rank": 611,
-   "slug": "needle-arm",
-   "name": "Needle Arm",
-   "usage_percent": 100.0,
-   "description": "This move can’t be used. It’s recommended that this move is forgotten. Once forgotten, this move can’t be remembered."
-  },
-  {
-   "rank": 612,
-   "slug": "nightmare",
-   "name": "Nightmare",
-   "usage_percent": 100.0,
-   "description": "This move can’t be used. It’s recommended that this move is forgotten. Once forgotten, this move can’t be remembered."
-  },
-  {
-   "rank": 613,
-   "slug": "noxious-torque",
-   "name": "Noxious Torque",
-   "usage_percent": 100.0,
-   "description": ""
-  },
-  {
-   "rank": 614,
-   "slug": "oblivion-wing",
-   "name": "Oblivion Wing",
-   "usage_percent": 100.0,
-   "description": "The user absorbs its target’s HP. The user’s HP is restored by over half of the damage taken by the target."
-  },
-  {
-   "rank": 615,
-   "slug": "obstruct",
-   "name": "Obstruct",
-   "usage_percent": 100.0,
-   "description": "This move enables the user to protect itself from all attacks. Its chance of failing rises if it is used in succession. Direct contact harshly lowers the attacker’s Defense stat."
-  },
-  {
-   "rank": 616,
-   "slug": "octazooka",
-   "name": "Octazooka",
-   "usage_percent": 85.0,
-   "description": "Has a 50% chance of lowering the target’s accuracy by 1 stage."
-  },
-  {
-   "rank": 617,
-   "slug": "ominous-wind",
-   "name": "Ominous Wind",
-   "usage_percent": 100.0,
-   "description": "This move can’t be used. It’s recommended that this move is forgotten. Once forgotten, this move can’t be remembered."
-  },
-  {
-   "rank": 618,
-   "slug": "order-up",
-   "name": "Order Up",
-   "usage_percent": 100.0,
-   "description": "The user attacks with elegant poise. If the user has a Tatsugiri in its mouth, this move boosts one of the user&#x27;s stats based on the Tatsugiri&#x27;s form."
-  },
-  {
-   "rank": 619,
-   "slug": "origin-pulse",
-   "name": "Origin Pulse",
-   "usage_percent": 85.0,
-   "description": "The user attacks opposing Pokémon with countless beams of light that glow a deep and brilliant blue."
-  },
-  {
-   "rank": 620,
-   "slug": "pay-day",
-   "name": "Pay Day",
-   "usage_percent": 100.0,
-   "description": "Coins are hurled at the target to inflict damage. Money is earned after the battle."
-  },
-  {
-   "rank": 621,
-   "slug": "peck",
-   "name": "Peck",
-   "usage_percent": 100.0,
-   "description": "The target is jabbed with a sharply pointed beak or horn to inflict damage."
-  },
-  {
-   "rank": 622,
-   "slug": "petal-dance",
-   "name": "Petal Dance",
-   "usage_percent": 100.0,
-   "description": "The user attacks the target by scattering petals for two to three turns. The user then becomes confused."
-  },
-  {
-   "rank": 623,
-   "slug": "photon-geyser",
-   "name": "Photon Geyser",
-   "usage_percent": 100.0,
-   "description": "The user attacks the target with a pillar of light. This move inflicts damage using the Attack or Sp. Atk stat—whichever is higher for the user."
-  },
-  {
-   "rank": 624,
-   "slug": "plasma-fists",
-   "name": "Plasma Fists",
-   "usage_percent": 100.0,
-   "description": "The user attacks with electrically charged fists. This move changes Normal-type moves to Electric-type moves."
-  },
-  {
-   "rank": 625,
-   "slug": "poison-fang",
-   "name": "Poison Fang",
-   "usage_percent": 100.0,
-   "description": "The user bites the target with toxic fangs. This may also leave the target badly poisoned."
-  },
-  {
-   "rank": 626,
-   "slug": "poison-gas",
-   "name": "Poison Gas",
-   "usage_percent": 90.0,
-   "description": "A cloud of poison gas is sprayed in the faces of opposing Pokémon, poisoning those it hits."
-  },
-  {
-   "rank": 627,
-   "slug": "poison-powder",
-   "name": "Poison Powder",
-   "usage_percent": 75.0,
-   "description": "Poisons the target. Grass-type Pokémon are unaffected."
-  },
-  {
-   "rank": 628,
-   "slug": "poison-sting",
-   "name": "Poison Sting",
-   "usage_percent": 100.0,
-   "description": "The user stabs the target with a poisonous stinger to inflict damage. This may also poison the target."
-  },
-  {
-   "rank": 629,
-   "slug": "poison-tail",
-   "name": "Poison Tail",
-   "usage_percent": 100.0,
-   "description": "The user hits the target with its tail. This move has a heightened chance of landing a critical hit and may also poison the target."
-  },
-  {
-   "rank": 630,
-   "slug": "pounce",
-   "name": "Pounce",
-   "usage_percent": 100.0,
-   "description": "The user attacks by pouncing on the target. This also lowers the target&#x27;s Speed stat."
-  },
-  {
-   "rank": 631,
-   "slug": "pound",
-   "name": "Pound",
-   "usage_percent": 100.0,
-   "description": "The target is physically pounded with a long tail, a foreleg, or the like."
-  },
-  {
-   "rank": 632,
-   "slug": "powder",
-   "name": "Powder",
-   "usage_percent": 100.0,
-   "description": "The user covers the target in a combustible powder. If the target uses a Fire-type move, the powder explodes and damages the target."
-  },
-  {
-   "rank": 633,
-   "slug": "powder-snow",
-   "name": "Powder Snow",
-   "usage_percent": 100.0,
-   "description": "The user attacks with a chilling gust of powdery snow. This may also leave opposing Pokémon frozen."
-  },
-  {
-   "rank": 634,
-   "slug": "power-up-punch",
-   "name": "Power-Up Punch",
-   "usage_percent": 100.0,
-   "description": "Striking opponents over and over makes the user’s fists harder. Hitting a target raises the Attack stat."
-  },
-  {
-   "rank": 635,
-   "slug": "precipice-blades",
-   "name": "Precipice Blades",
-   "usage_percent": 85.0,
-   "description": "The user attacks opposing Pokémon by manifesting the power of the land in fearsome blades of stone."
-  },
-  {
-   "rank": 636,
-   "slug": "present",
-   "name": "Present",
-   "usage_percent": 90.0,
-   "description": "The user attacks by giving the target a gift with a hidden trap. The gift restores HP sometimes, however."
-  },
-  {
-   "rank": 637,
-   "slug": "prismatic-laser",
-   "name": "Prismatic Laser",
-   "usage_percent": 100.0,
-   "description": "The user shoots powerful lasers using the power of a prism. The user can&#x27;t move on the next turn."
-  },
-  {
-   "rank": 638,
-   "slug": "psybeam",
-   "name": "Psybeam",
-   "usage_percent": 100.0,
-   "description": "The target is attacked with a peculiar ray. This may also confuse the target."
-  },
-  {
-   "rank": 639,
-   "slug": "psyblade",
-   "name": "Psyblade",
-   "usage_percent": 100.0,
-   "description": "The user rends the target with an ethereal blade. This move&#x27;s power is boosted by 50 percent if the user is on Electric Terrain."
-  },
-  {
-   "rank": 640,
-   "slug": "psycho-boost",
-   "name": "Psycho Boost",
-   "usage_percent": 90.0,
-   "description": "The user attacks the target with all its might. The recoil from this move harshly lowers the user&#x27;s Sp. Atk stat."
-  },
-  {
-   "rank": 641,
-   "slug": "psycho-shift",
-   "name": "Psycho Shift",
-   "usage_percent": 100.0,
-   "description": "Using its psychic power of suggestion, the user transfers its status conditions to the target."
-  },
-  {
-   "rank": 642,
-   "slug": "psystrike",
-   "name": "Psystrike",
-   "usage_percent": 100.0,
-   "description": "The user materializes an odd psychic wave to attack the target. This move deals physical damage."
-  },
-  {
-   "rank": 643,
-   "slug": "psywave",
-   "name": "Psywave",
-   "usage_percent": 100.0,
-   "description": "This move can’t be used. It’s recommended that this move is forgotten. Once forgotten, this move can’t be remembered."
-  },
-  {
-   "rank": 644,
-   "slug": "punishment",
-   "name": "Punishment",
-   "usage_percent": 100.0,
-   "description": "This move can’t be used. It’s recommended that this move is forgotten. Once forgotten, this move can’t be remembered."
-  },
-  {
-   "rank": 645,
-   "slug": "pursuit",
-   "name": "Pursuit",
-   "usage_percent": 100.0,
-   "description": "This move can’t be used. It’s recommended that this move is forgotten. Once forgotten, this move can’t be remembered."
-  },
-  {
-   "rank": 646,
-   "slug": "raging-fury",
-   "name": "Raging Fury",
-   "usage_percent": 100.0,
-   "description": "The user rampages around spewing flames for two to three turns. The user then becomes confused."
-  },
-  {
-   "rank": 647,
-   "slug": "razor-leaf",
-   "name": "Razor Leaf",
-   "usage_percent": 95.0,
-   "description": "Sharp-edged leaves are launched to slash at opposing Pokémon. This move has a heightened chance of landing a critical hit."
-  },
-  {
-   "rank": 648,
-   "slug": "razor-wind",
-   "name": "Razor Wind",
-   "usage_percent": 100.0,
-   "description": "This move can’t be used. It’s recommended that this move is forgotten. Once forgotten, this move can’t be remembered."
-  },
-  {
-   "rank": 649,
-   "slug": "relic-song",
-   "name": "Relic Song",
-   "usage_percent": 100.0,
-   "description": "The user sings an ancient song and attacks by appealing to the hearts of the listening opposing Pokémon. This may also induce sleep."
-  },
-  {
-   "rank": 650,
-   "slug": "retaliate",
-   "name": "Retaliate",
-   "usage_percent": 100.0,
-   "description": "The user takes revenge for a fainted ally. This move&#x27;s power is boosted if an ally fainted in the previous turn."
-  },
-  {
-   "rank": 651,
-   "slug": "return",
-   "name": "Return",
-   "usage_percent": 100.0,
-   "description": "This move can’t be used. It’s recommended that this move is forgotten. Once forgotten, this move can’t be remembered."
-  },
-  {
-   "rank": 652,
-   "slug": "revelation-dance",
-   "name": "Revelation Dance",
-   "usage_percent": 100.0,
-   "description": "The user attacks the target by dancing with all its might. This move becomes the same type as the user&#x27;s type."
-  },
-  {
-   "rank": 653,
-   "slug": "revenge",
-   "name": "Revenge",
-   "usage_percent": 100.0,
-   "description": "This attack move’s power is doubled if the user has been hurt by the opponent in the same turn."
-  },
-  {
-   "rank": 654,
-   "slug": "roar-of-time",
-   "name": "Roar of Time",
-   "usage_percent": 90.0,
-   "description": "The user blasts the target with power that distorts even time. The user can&#x27;t move on the next turn."
-  },
-  {
-   "rank": 655,
-   "slug": "rock-climb",
-   "name": "Rock Climb",
-   "usage_percent": 85.0,
-   "description": "This move can’t be used. It’s recommended that this move is forgotten. Once forgotten, this move can’t be remembered."
-  },
-  {
-   "rank": 656,
-   "slug": "rock-smash",
-   "name": "Rock Smash",
-   "usage_percent": 100.0,
-   "description": "The user attacks with a punch. This may also lower the target&#x27;s Defense stat."
-  },
-  {
-   "rank": 657,
-   "slug": "rock-throw",
-   "name": "Rock Throw",
-   "usage_percent": 90.0,
-   "description": "The user picks up and throws a small rock at the target to inflict damage."
-  },
-  {
-   "rank": 658,
-   "slug": "rolling-kick",
-   "name": "Rolling Kick",
-   "usage_percent": 85.0,
-   "description": "This move can’t be used. It’s recommended that this move is forgotten. Once forgotten, this move can’t be remembered."
-  },
-  {
-   "rank": 659,
-   "slug": "rollout",
-   "name": "Rollout",
-   "usage_percent": 90.0,
-   "description": "The user continually rolls into the target over five turns. This attack becomes more powerful each time it hits."
-  },
-  {
-   "rank": 660,
-   "slug": "ruination",
-   "name": "Ruination",
-   "usage_percent": 90.0,
-   "description": "The user summons a ruinous disaster. This cuts the target’s HP in half."
-  },
-  {
-   "rank": 661,
-   "slug": "sacred-fire",
-   "name": "Sacred Fire",
-   "usage_percent": 95.0,
-   "description": "The target is razed with a mystical fire of great intensity. This may also leave the target with a burn."
-  },
-  {
-   "rank": 662,
-   "slug": "sand-attack",
-   "name": "Sand Attack",
-   "usage_percent": 100.0,
-   "description": "Sand is hurled in the target&#x27;s face, lowering the target&#x27;s accuracy."
-  },
-  {
-   "rank": 663,
-   "slug": "sandsear-storm",
-   "name": "Sandsear Storm",
-   "usage_percent": 80.0,
-   "description": "The user attacks by wrapping opposing Pokémon in fierce winds and searingly hot sand. This may also leave them with a burn."
-  },
-  {
-   "rank": 664,
-   "slug": "sappy-seed",
-   "name": "Sappy Seed",
-   "usage_percent": 90.0,
-   "description": "This move can’t be used. It’s recommended that this move is forgotten. Once forgotten, this move can’t be remembered."
-  },
-  {
-   "rank": 665,
-   "slug": "scratch",
-   "name": "Scratch",
-   "usage_percent": 100.0,
-   "description": "Hard, pointed, sharp claws rake the target to inflict damage."
-  },
-  {
-   "rank": 666,
-   "slug": "searing-shot",
-   "name": "Searing Shot",
-   "usage_percent": 100.0,
-   "description": "The user torches everything around it in an inferno of scarlet flames. This may also leave those it hits with a burn."
-  },
-  {
-   "rank": 667,
-   "slug": "secret-power",
-   "name": "Secret Power",
-   "usage_percent": 100.0,
-   "description": "This move can’t be used. It’s recommended that this move is forgotten. Once forgotten, this move can’t be remembered."
-  },
-  {
-   "rank": 668,
-   "slug": "secret-sword",
-   "name": "Secret Sword",
-   "usage_percent": 100.0,
-   "description": "The user cuts with its long horn. The odd power contained in the horn deals physical damage to the target."
-  },
-  {
-   "rank": 669,
-   "slug": "seed-flare",
-   "name": "Seed Flare",
-   "usage_percent": 85.0,
-   "description": "The user emits a shock wave from its body to attack its target. This may also harshly lower the target&#x27;s Sp. Def stat."
-  },
-  {
-   "rank": 670,
-   "slug": "seismic-toss",
-   "name": "Seismic Toss",
-   "usage_percent": 100.0,
-   "description": "The target is thrown using the power of gravity. It inflicts damage equal to the user&#x27;s level."
-  },
-  {
-   "rank": 671,
-   "slug": "shadow-blast",
-   "name": "Shadow Blast",
-   "usage_percent": 100.0,
-   "description": ""
-  },
-  {
-   "rank": 672,
-   "slug": "shadow-blitz",
-   "name": "Shadow Blitz",
-   "usage_percent": 100.0,
-   "description": ""
-  },
-  {
-   "rank": 673,
-   "slug": "shadow-bolt",
-   "name": "Shadow Bolt",
-   "usage_percent": 100.0,
-   "description": ""
-  },
-  {
-   "rank": 674,
-   "slug": "shadow-bone",
-   "name": "Shadow Bone",
-   "usage_percent": 100.0,
-   "description": "The user attacks by beating the target with a bone that contains a spirit. This may also lower the target’s Defense stat."
-  },
-  {
-   "rank": 675,
-   "slug": "shadow-break",
-   "name": "Shadow Break",
-   "usage_percent": 100.0,
-   "description": ""
-  },
-  {
-   "rank": 676,
-   "slug": "shadow-chill",
-   "name": "Shadow Chill",
-   "usage_percent": 100.0,
-   "description": ""
-  },
-  {
-   "rank": 677,
-   "slug": "shadow-down",
-   "name": "Shadow Down",
-   "usage_percent": 100.0,
-   "description": ""
-  },
-  {
-   "rank": 678,
-   "slug": "shadow-end",
-   "name": "Shadow End",
-   "usage_percent": 60.0,
-   "description": ""
-  },
-  {
-   "rank": 679,
-   "slug": "shadow-fire",
-   "name": "Shadow Fire",
-   "usage_percent": 100.0,
-   "description": ""
-  },
-  {
-   "rank": 680,
-   "slug": "shadow-force",
-   "name": "Shadow Force",
-   "usage_percent": 100.0,
-   "description": "The user disappears on the first turn, then attacks on the next turn. This move hits even if the target protects itself."
-  },
-  {
-   "rank": 681,
-   "slug": "shadow-half",
-   "name": "Shadow Half",
-   "usage_percent": 100.0,
-   "description": ""
-  },
-  {
-   "rank": 682,
-   "slug": "shadow-mist",
-   "name": "Shadow Mist",
-   "usage_percent": 100.0,
-   "description": ""
-  },
-  {
-   "rank": 683,
-   "slug": "shadow-panic",
-   "name": "Shadow Panic",
-   "usage_percent": 90.0,
-   "description": ""
-  },
-  {
-   "rank": 684,
-   "slug": "shadow-rave",
-   "name": "Shadow Rave",
-   "usage_percent": 100.0,
-   "description": ""
-  },
-  {
-   "rank": 685,
-   "slug": "shadow-rush",
-   "name": "Shadow Rush",
-   "usage_percent": 100.0,
-   "description": ""
-  },
-  {
-   "rank": 686,
-   "slug": "shadow-storm",
-   "name": "Shadow Storm",
-   "usage_percent": 100.0,
-   "description": ""
-  },
-  {
-   "rank": 687,
-   "slug": "shadow-wave",
-   "name": "Shadow Wave",
-   "usage_percent": 100.0,
-   "description": ""
-  },
-  {
-   "rank": 688,
-   "slug": "shell-trap",
-   "name": "Shell Trap",
-   "usage_percent": 100.0,
-   "description": "The user sets a shell trap. If the user is hit by a physical move, the trap will explode and inflict damage on opposing Pokémon."
-  },
-  {
-   "rank": 689,
-   "slug": "signal-beam",
-   "name": "Signal Beam",
-   "usage_percent": 100.0,
-   "description": "This move can’t be used. It’s recommended that this move is forgotten. Once forgotten, this move can’t be remembered."
-  },
-  {
-   "rank": 690,
-   "slug": "silver-wind",
-   "name": "Silver Wind",
-   "usage_percent": 100.0,
-   "description": "This move can’t be used. It’s recommended that this move is forgotten. Once forgotten, this move can’t be remembered."
-  },
-  {
-   "rank": 691,
-   "slug": "sizzly-slide",
-   "name": "Sizzly Slide",
-   "usage_percent": 100.0,
-   "description": "This move can’t be used. It’s recommended that this move is forgotten. Once forgotten, this move can’t be remembered."
-  },
-  {
-   "rank": 692,
-   "slug": "skull-bash",
-   "name": "Skull Bash",
-   "usage_percent": 100.0,
-   "description": "The user tucks in its head to raise its Defense stat on the first turn, then rams the target on the next turn."
-  },
-  {
-   "rank": 693,
-   "slug": "sky-attack",
-   "name": "Sky Attack",
-   "usage_percent": 90.0,
-   "description": "The user attacks the turn after using this move. This move has a heightened chance of landing a critical hit and may also make the target flinch."
-  },
-  {
-   "rank": 694,
-   "slug": "sky-drop",
-   "name": "Sky Drop",
-   "usage_percent": 100.0,
-   "description": "This move can’t be used. It’s recommended that this move is forgotten. Once forgotten, this move can’t be remembered."
-  },
-  {
-   "rank": 695,
-   "slug": "sky-uppercut",
-   "name": "Sky Uppercut",
-   "usage_percent": 90.0,
-   "description": "This move can’t be used. It’s recommended that this move is forgotten. Once forgotten, this move can’t be remembered."
-  },
-  {
-   "rank": 696,
-   "slug": "slam",
-   "name": "Slam",
-   "usage_percent": 75.0,
-   "description": "The target is slammed with a long tail, vines, or the like to inflict damage."
-  },
-  {
-   "rank": 697,
-   "slug": "sludge",
-   "name": "Sludge",
-   "usage_percent": 100.0,
-   "description": "The user hurls unsanitary sludge at the target to inflict damage. This may also poison the target."
-  },
-  {
-   "rank": 698,
-   "slug": "smelling-salts",
-   "name": "Smelling Salts",
-   "usage_percent": 100.0,
-   "description": "This move can’t be used. It’s recommended that this move is forgotten. Once forgotten, this move can’t be remembered."
-  },
-  {
-   "rank": 699,
-   "slug": "smog",
-   "name": "Smog",
-   "usage_percent": 70.0,
-   "description": "The target is attacked with a discharge of filthy gases. This may also poison the target."
-  },
-  {
-   "rank": 700,
-   "slug": "smokescreen",
-   "name": "Smokescreen",
-   "usage_percent": 100.0,
-   "description": "The user releases an obscuring cloud of smoke or ink. This lowers the target&#x27;s accuracy."
-  },
-  {
-   "rank": 701,
-   "slug": "snore",
-   "name": "Snore",
-   "usage_percent": 100.0,
-   "description": "This attack can be used only if the user is asleep. The harsh noise may also make the target flinch."
-  },
-  {
-   "rank": 702,
-   "slug": "sonic-boom",
-   "name": "Sonic Boom",
-   "usage_percent": 90.0,
-   "description": "This move can’t be used. It’s recommended that this move is forgotten. Once forgotten, this move can’t be remembered."
-  },
-  {
-   "rank": 703,
-   "slug": "spacial-rend",
-   "name": "Spacial Rend",
-   "usage_percent": 95.0,
-   "description": "The user tears the target along with the space around it. This move has a heightened chance of landing a critical hit."
-  },
-  {
-   "rank": 704,
-   "slug": "spark",
-   "name": "Spark",
-   "usage_percent": 100.0,
-   "description": "The user attacks the target with an electrically charged tackle. This may also leave the target with paralysis."
-  },
-  {
-   "rank": 705,
-   "slug": "sparkly-swirl",
-   "name": "Sparkly Swirl",
-   "usage_percent": 85.0,
-   "description": "This move can’t be used. It’s recommended that this move is forgotten. Once forgotten, this move can’t be remembered."
-  },
-  {
-   "rank": 706,
-   "slug": "spectral-thief",
-   "name": "Spectral Thief",
-   "usage_percent": 100.0,
-   "description": "The user hides in the target’s shadow, steals the target’s stat boosts, and then attacks."
-  },
-  {
-   "rank": 707,
-   "slug": "spike-cannon",
-   "name": "Spike Cannon",
-   "usage_percent": 100.0,
-   "description": "This move can’t be used. It’s recommended that this move is forgotten. Once forgotten, this move can’t be remembered."
-  },
-  {
-   "rank": 708,
-   "slug": "spin-out",
-   "name": "Spin Out",
-   "usage_percent": 100.0,
-   "description": "The user spins furiously by straining its legs, inflicting damage on the target. This also harshly lowers the user&#x27;s Speed stat."
-  },
-  {
-   "rank": 709,
-   "slug": "spit-up",
-   "name": "Spit Up",
-   "usage_percent": 100.0,
-   "description": "The power stored using the move Stockpile is released at once in an attack. The more power is stored, the greater the move&#x27;s power."
-  },
-  {
-   "rank": 710,
-   "slug": "spite",
-   "name": "Spite",
-   "usage_percent": 100.0,
-   "description": "The user unleashes its grudge on the move last used by the target by cutting 4 PP from it."
-  },
-  {
-   "rank": 711,
-   "slug": "splishy-splash",
-   "name": "Splishy Splash",
-   "usage_percent": 100.0,
-   "description": "This move can’t be used. It’s recommended that this move is forgotten. Once forgotten, this move can’t be remembered."
-  },
-  {
-   "rank": 712,
-   "slug": "spore",
-   "name": "Spore",
-   "usage_percent": 100.0,
-   "description": "Puts the target to sleep. Grass-type Pokémon are unaffected."
-  },
-  {
-   "rank": 713,
-   "slug": "springtide-storm",
-   "name": "Springtide Storm",
-   "usage_percent": 80.0,
-   "description": "The user attacks by wrapping opposing Pokémon in fierce winds brimming with love and hate. This may also lower their Attack stats."
-  },
-  {
-   "rank": 714,
-   "slug": "steam-eruption",
-   "name": "Steam Eruption",
-   "usage_percent": 95.0,
-   "description": "The user immerses the target in superheated steam. This may also leave the target with a burn."
-  },
-  {
-   "rank": 715,
-   "slug": "steamroller",
-   "name": "Steamroller",
-   "usage_percent": 100.0,
-   "description": "This move can’t be used. It’s recommended that this move is forgotten. Once forgotten, this move can’t be remembered."
-  },
-  {
-   "rank": 716,
-   "slug": "stomp",
-   "name": "Stomp",
-   "usage_percent": 100.0,
-   "description": "The user attacks by stomping on the target with a big foot. This may also make the target flinch."
-  },
-  {
-   "rank": 717,
-   "slug": "strange-steam",
-   "name": "Strange Steam",
-   "usage_percent": 95.0,
-   "description": "The user attacks the target by emitting steam. This may also confuse the target."
-  },
-  {
-   "rank": 718,
-   "slug": "strength",
-   "name": "Strength",
-   "usage_percent": 100.0,
-   "description": "The target is slugged with a punch thrown at maximum power."
-  },
-  {
-   "rank": 719,
-   "slug": "sunsteel-strike",
-   "name": "Sunsteel Strike",
-   "usage_percent": 100.0,
-   "description": "The user slams into the target with the force of a meteor. This move can be used on the target regardless of its Ability."
-  },
-  {
-   "rank": 720,
-   "slug": "supersonic",
-   "name": "Supersonic",
-   "usage_percent": 55.0,
-   "description": "The user generates odd sound waves from its body that confuse the target."
-  },
-  {
-   "rank": 721,
-   "slug": "surging-strikes",
-   "name": "Surging Strikes",
-   "usage_percent": 100.0,
-   "description": "The user, having mastered the Water style, strikes the target with a flowing motion three times in a row. This move always lands a critical hit."
-  },
-  {
-   "rank": 722,
-   "slug": "sweet-kiss",
-   "name": "Sweet Kiss",
-   "usage_percent": 75.0,
-   "description": "The user kisses the target with a sweet, angelic cuteness that causes confusion."
-  },
-  {
-   "rank": 723,
-   "slug": "sweet-scent",
-   "name": "Sweet Scent",
-   "usage_percent": 100.0,
-   "description": "The user releases a scent that harshly lowers opposing Pokémon&#x27;s evasiveness."
-  },
-  {
-   "rank": 724,
-   "slug": "synchronoise",
-   "name": "Synchronoise",
-   "usage_percent": 100.0,
-   "description": "This move can’t be used. It’s recommended that this move is forgotten. Once forgotten, this move can’t be remembered."
-  },
-  {
-   "rank": 725,
-   "slug": "syrup-bomb",
-   "name": "Syrup Bomb",
-   "usage_percent": 90.0,
-   "description": "The user sets off an explosion of sticky candy syrup, which coats the target and causes the target&#x27;s Speed stat to drop each turn for three turns."
-  },
-  {
-   "rank": 726,
-   "slug": "tackle",
-   "name": "Tackle",
-   "usage_percent": 100.0,
-   "description": "A physical attack in which the user charges and slams into the target with its whole body."
-  },
-  {
-   "rank": 727,
-   "slug": "tail-slap",
-   "name": "Tail Slap",
-   "usage_percent": 85.0,
-   "description": "The user attacks by striking the target with its hard tail. This move hits two to five times in a row."
-  },
-  {
-   "rank": 728,
-   "slug": "tail-whip",
-   "name": "Tail Whip",
-   "usage_percent": 100.0,
-   "description": "The user wags its tail cutely, making opposing Pokémon less wary. This lowers their Defense stats."
-  },
-  {
-   "rank": 729,
-   "slug": "take-down",
-   "name": "Take Down",
-   "usage_percent": 85.0,
-   "description": "A reckless full-body charge attack for slamming into the target. This also damages the user a little."
-  },
-  {
-   "rank": 730,
-   "slug": "tar-shot",
-   "name": "Tar Shot",
-   "usage_percent": 100.0,
-   "description": "The user pours sticky tar over the target, lowering the target&#x27;s Speed stat. The target becomes weaker to Fire-type moves."
-  },
-  {
-   "rank": 731,
-   "slug": "techno-blast",
-   "name": "Techno Blast",
-   "usage_percent": 100.0,
-   "description": "The user fires a beam of light at its target. The move’s type changes depending on the Drive the user holds."
-  },
-  {
-   "rank": 732,
-   "slug": "teeter-dance",
-   "name": "Teeter Dance",
-   "usage_percent": 100.0,
-   "description": "The user performs a wobbly dance that confuses every Pokémon around it."
-  },
-  {
-   "rank": 733,
-   "slug": "tera-blast",
-   "name": "Tera Blast",
-   "usage_percent": 100.0,
-   "description": "If the user has Terastallized, it unleashes energy of its Tera Type. This move inflicts damage using the Attack or Sp. Atk stat—whichever is higher for the user."
-  },
-  {
-   "rank": 734,
-   "slug": "tera-starstorm",
-   "name": "Tera Starstorm",
-   "usage_percent": 100.0,
-   "description": "With the power of its crystals, the user bombards and eliminates the target. When used by Terapagos in its Stellar Form, this move damages all opposing Pokémon."
-  },
-  {
-   "rank": 735,
-   "slug": "thousand-arrows",
-   "name": "Thousand Arrows",
-   "usage_percent": 100.0,
-   "description": "This move also hits opposing Pokémon that are in the air. Those Pokémon are knocked down to the ground."
-  },
-  {
-   "rank": 736,
-   "slug": "thousand-waves",
-   "name": "Thousand Waves",
-   "usage_percent": 100.0,
-   "description": "The user attacks with a wave that crawls along the ground. Those it hits can’t flee from battle."
-  },
-  {
-   "rank": 737,
-   "slug": "thunder-cage",
-   "name": "Thunder Cage",
-   "usage_percent": 90.0,
-   "description": "The user traps the target inside a cage of sparking electricity that inflicts damage for four to five turns."
-  },
-  {
-   "rank": 738,
-   "slug": "thunder-shock",
-   "name": "Thunder Shock",
-   "usage_percent": 100.0,
-   "description": "The user attacks the target with a jolt of electricity. This may also leave the target with paralysis."
-  },
-  {
-   "rank": 739,
-   "slug": "thunderclap",
-   "name": "Thunderclap",
-   "usage_percent": 100.0,
-   "description": "This move enables the user to attack first with a jolt of electricity. This move fails if the target is not readying an attack."
-  },
-  {
-   "rank": 740,
-   "slug": "thunderous-kick",
-   "name": "Thunderous Kick",
-   "usage_percent": 100.0,
-   "description": "The user overwhelms the target with lightning-like movement before delivering a kick. This also lowers the target&#x27;s Defense stat."
-  },
-  {
-   "rank": 741,
-   "slug": "toxic-thread",
-   "name": "Toxic Thread",
-   "usage_percent": 100.0,
-   "description": "Inflicts Poison. Lowers opponent&#x27;s Speed by 2 stages."
-  },
-  {
-   "rank": 742,
-   "slug": "triple-dive",
-   "name": "Triple Dive",
-   "usage_percent": 95.0,
-   "description": "The user performs a perfectly timed triple dive, hitting the target with splashes of water three times in a row."
-  },
-  {
-   "rank": 743,
-   "slug": "triple-kick",
-   "name": "Triple Kick",
-   "usage_percent": 90.0,
-   "description": "A consecutive three-kick attack that becomes more powerful with each successful hit."
-  },
-  {
-   "rank": 744,
-   "slug": "twineedle",
-   "name": "Twineedle",
-   "usage_percent": 100.0,
-   "description": "This move can’t be used. It’s recommended that this move is forgotten. Once forgotten, this move can’t be remembered."
-  },
-  {
-   "rank": 745,
-   "slug": "twister",
-   "name": "Twister",
-   "usage_percent": 100.0,
-   "description": "The user whips up a vicious tornado to tear at opposing Pokémon. This may also make them flinch."
-  },
-  {
-   "rank": 746,
-   "slug": "v-create",
-   "name": "V-create",
-   "usage_percent": 95.0,
-   "description": "With a hot flame on its forehead, the user hurls itself at its target. This lowers the user’s Defense, Sp. Def, and Speed stats."
-  },
-  {
-   "rank": 747,
-   "slug": "venom-drench",
-   "name": "Venom Drench",
-   "usage_percent": 100.0,
-   "description": "Opposing Pokémon are drenched in an odd poisonous liquid. This lowers the Attack, Sp. Atk, and Speed stats of a poisoned target."
-  },
-  {
-   "rank": 748,
-   "slug": "vine-whip",
-   "name": "Vine Whip",
-   "usage_percent": 100.0,
-   "description": "The target is struck with slender, whiplike vines to inflict damage."
-  },
-  {
-   "rank": 749,
-   "slug": "vice-grip",
-   "name": "Vise Grip",
-   "usage_percent": 100.0,
-   "description": "The target is gripped and squeezed from both sides to inflict damage."
-  },
-  {
-   "rank": 750,
-   "slug": "wake-up-slap",
-   "name": "Wake-Up Slap",
-   "usage_percent": 100.0,
-   "description": "This move can’t be used. It’s recommended that this move is forgotten. Once forgotten, this move can’t be remembered."
-  },
-  {
-   "rank": 751,
-   "slug": "water-gun",
-   "name": "Water Gun",
-   "usage_percent": 100.0,
-   "description": "The target is blasted with a forceful shot of water."
-  },
-  {
-   "rank": 752,
-   "slug": "water-pledge",
-   "name": "Water Pledge",
-   "usage_percent": 100.0,
-   "description": "A column of water hits the target. When used with its fire counterpart, this move&#x27;s power is boosted and a rainbow appears."
-  },
-  {
-   "rank": 753,
-   "slug": "wicked-blow",
-   "name": "Wicked Blow",
-   "usage_percent": 100.0,
-   "description": "The user, having mastered the Dark style, strikes the target with a fierce blow. This move always lands a critical hit."
-  },
-  {
-   "rank": 754,
-   "slug": "wicked-torque",
-   "name": "Wicked Torque",
-   "usage_percent": 100.0,
-   "description": ""
-  },
-  {
-   "rank": 755,
-   "slug": "wildbolt-storm",
-   "name": "Wildbolt Storm",
-   "usage_percent": 80.0,
-   "description": "The user summons a thunderous tempest and savagely attacks with lightning and wind. This may also leave opposing Pokémon with paralysis."
-  },
-  {
-   "rank": 756,
-   "slug": "wing-attack",
-   "name": "Wing Attack",
-   "usage_percent": 100.0,
-   "description": "The target is struck with large, imposing wings spread wide to inflict damage."
-  },
-  {
-   "rank": 757,
-   "slug": "wrap",
-   "name": "Wrap",
-   "usage_percent": 90.0,
-   "description": "A long body, vines, or the like are used to wrap and squeeze the target for four to five turns."
-  },
-  {
-   "rank": 758,
-   "slug": "wring-out",
-   "name": "Wring Out",
-   "usage_percent": 100.0,
-   "description": "This move can’t be used. It’s recommended that this move is forgotten. Once forgotten, this move can’t be remembered."
-  },
-  {
-   "rank": 759,
-   "slug": "zippy-zap",
-   "name": "Zippy Zap",
-   "usage_percent": 100.0,
-   "description": "This move can’t be used. It’s recommended that this move is forgotten. Once forgotten, this move can’t be remembered."
   }
  ]
 }
