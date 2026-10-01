@@ -27,7 +27,7 @@ while read -r _local_ref local_sha _remote_ref _remote_sha; do
 done
 
 echo "pre-push: running the gate (about 100s) - git push --no-verify to skip"
-if python scripts/daily.py --no-refresh --dry-run; then
+if python scripts/daily.py --no-refresh --skip-deploy; then
   echo "pre-push: gate green, pushing"
   exit 0
 fi

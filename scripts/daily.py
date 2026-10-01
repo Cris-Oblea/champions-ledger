@@ -2,10 +2,8 @@
 """The daily job: refresh every source, rebuild the app, deploy if it moved.
 
     python scripts/daily.py              # the real thing
-    python scripts/daily.py --dry-run    # refresh and report, never deploy
-    python scripts/daily.py --no-refresh # gate what is built, then deploy
-    python scripts/daily.py --install    # register the Windows scheduled task
-    python scripts/daily.py --uninstall
+    python scripts/daily.py --skip-deploy  # refresh and gate, never deploy
+    python scripts/daily.py --no-refresh   # gate what is built, then deploy
 
 PUBLISH A HAND EDIT WITH --no-refresh, never with a bare `wrangler deploy`.
 Everything below has to pass a shrink guard, the Python audits, the source
@@ -56,7 +54,6 @@ for _s in (sys.stdout, sys.stderr):
 PY = sys.executable
 LOGDIR = os.path.join(ROOT, "data", "raw", "daily_logs")
 STATE = os.path.join(ROOT, "data", "raw", "daily_state.json")
-TASK = "ChampionsLedgerDaily"
 
 # what is worth reporting a change in, and how to describe it
 WATCH = [
@@ -451,32 +448,14 @@ def sh(argv, cwd=ROOT):
     return r.returncode, (r.stdout or "") + (r.stderr or "")
 
 
-def install_task():
-    """Register it with Windows Task Scheduler, daily."""
-    script = os.path.join(ROOT, "scripts", "daily.py")
-    cmd = '"%s" "%s"' % (PY, script)
-    rc, out = sh(["schtasks", "/Create", "/TN", TASK, "/TR", cmd,
-                  "/SC", "DAILY", "/ST", "05:30", "/F"])
-    print(out.strip())
-    if rc == 0:
-        print("\nRegistered '%s', daily at 05:30." % TASK)
-        print("It only runs while the PC is on and awake; a missed day is")
-        print("picked up by the next run, because every source is re-read in")
-        print("full rather than diffed against the last one.")
-        print("\n  schtasks /Run /TN %s     run it now" % TASK)
-        print("  schtasks /Query /TN %s   when it last ran" % TASK)
-    return rc
-
-
 def _parser():
     ap = argparse.ArgumentParser()
-    ap.add_argument("--dry-run", action="store_true")
-    ap.add_argument("--install", action="store_true")
     ap.add_argument("--install-hooks", action="store_true",
                     help="point core.hooksPath at scripts/hooks, so the "
                          "pre-push gate runs on this clone too")
-    ap.add_argument("--uninstall", action="store_true")
-    ap.add_argument("--skip-deploy", action="store_true")
+    ap.add_argument("--skip-deploy", action="store_true",
+                    help="refresh and gate, never deploy (CI's pull requests "
+                         "and the pre-push hook)")
     ap.add_argument("--no-refresh", action="store_true",
                     help="skip the fetchers: gate what is already built, then "
                          "deploy. The safe way to publish a hand edit.")
@@ -486,8 +465,7 @@ def _parser():
 
 
 def _setup(a):
-    """--install-hooks, --install, --uninstall: the exit code, or None when
-    none of them was asked for."""
+    """--install-hooks: the exit code, or None when it was not asked for."""
     if a.install_hooks:
         # The hook lives in scripts/hooks rather than .git/hooks so that it is
         # versioned, reviewable, and arrives with a fresh clone. core.hooksPath
@@ -495,12 +473,6 @@ def _setup(a):
         rc, o = sh(["git", "config", "core.hooksPath", "scripts/hooks"])
         print(o.strip() or ("hooks installed: scripts/hooks"
                             if rc == 0 else "could not set core.hooksPath"))
-        return rc
-    if a.install:
-        return install_task()
-    if a.uninstall:
-        rc, out = sh(["schtasks", "/Delete", "/TN", TASK, "/F"])
-        print(out.strip())
         return rc
     return None
 
@@ -699,7 +671,7 @@ def _last_lines(o):
 
 def _deploy(a, gate_ok, changed, out):
     """True when a deploy was attempted and landed."""
-    if a.dry_run or a.skip_deploy:
+    if a.skip_deploy:
         out.append("deploy skipped (flag)")
         return False
     if not gate_ok:
@@ -777,7 +749,7 @@ def main():
     # green means "the app on Cloudflare matches this data". A
     # failed check, or a deploy attempted and not landed, is red.
     wanted = ((bool(changed) or a.no_refresh) and gate_ok
-              and not (a.dry_run or a.skip_deploy))
+              and not a.skip_deploy)
     return 0 if (gate_ok and (deployed or not wanted)) else 1
 
 
