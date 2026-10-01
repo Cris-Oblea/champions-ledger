@@ -19,6 +19,7 @@ import re
 import sys
 from pathlib import Path
 
+import dex
 from paths import DB, RAW
 from serebii_text import read
 
@@ -50,7 +51,7 @@ def build_natures(basics):
     for n in basics.get("natures") or []:
         if "Champions" not in (n.get("genfamily") or []):
             continue
-        mult = {k: n[k] for k in ("hp", "atk", "def", "spa", "spd", "spe")}
+        mult = {k: n[k] for k in dex.STAT_KEYS}
         raised = [k for k, v in mult.items() if v > 1]
         lowered = [k for k, v in mult.items() if v < 1]
         out[n["name"]] = {

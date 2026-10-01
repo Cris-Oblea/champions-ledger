@@ -30,7 +30,7 @@ import sys
 from pathlib import Path
 
 import damage as Dm
-import query as Q
+import dex
 from paths import ROOT
 
 bad = 0
@@ -77,10 +77,10 @@ def _resolve(p, learn):
     mv = learn.get(p["name"]) or []
     if not mv:
         mv = next((learn[k] for k in learn
-                   if Q.norm(k) == Q.norm(p["name"])), [])
+                   if dex.norm(k) == dex.norm(p["name"])), [])
     if not mv:
         mv = next((learn[k] for k in learn
-                   if Q.species_norm(k) == Q.species_norm(p["name"])), [])
+                   if dex.species_norm(k) == dex.species_norm(p["name"])), [])
     return mv
 
 
@@ -89,12 +89,12 @@ def _check_forms(mons, learn):
     ok("formas en el dex", len(mons), len(mons))
 
     wrong = [p["name"] for p in mons
-             if (Q.find_pokemon(p["name"]) or {}).get("name") != p["name"]]
+             if (dex.find_pokemon(p["name"]) or {}).get("name") != p["name"]]
     ok("find_pokemon devuelve la forma pedida", lst(wrong))
 
     by = collections.defaultdict(list)
     for p in mons:
-        by[Q.norm(p["name"])].append(p["name"])
+        by[dex.norm(p["name"])].append(p["name"])
     ok("ninguna colision bajo norm()",
        lst(["/".join(v) for v in by.values() if len(v) > 1]))
 
@@ -110,11 +110,11 @@ def _check_megas(mons):
     megas = [p for p in mons if p.get("is_mega")]
     stones = collections.defaultdict(list)
     for p in megas:
-        s = Q.stone_for(p)
+        s = dex.stone_for(p)
         if s:
             stones[s].append(p["name"])
     ok("cada Mega tiene piedra",
-       lst([p["name"] for p in megas if not Q.stone_for(p)]))
+       lst([p["name"] for p in megas if not dex.stone_for(p)]))
     ok("ninguna piedra sirve a dos Megas",
        lst(["%s: %s" % (k, ", ".join(v)) for k, v in stones.items()
             if len(v) > 1]))
@@ -156,26 +156,26 @@ def _check_db_files():
 
 def _check_references(learn):
     print("\n  las tablas derivadas apuntan a cosas que existen")
-    moves = {m["name"] for m in Q.db("moves")}
-    abil = {a["name"] for a in Q.db("abilities")}
-    am = Q.db("ability_moves") or {}
+    moves = {m["name"] for m in dex.db("moves")}
+    abil = {a["name"] for a in dex.db("abilities")}
+    am = dex.db("ability_moves") or {}
     ok("cada movimiento de la tabla de habilidades existe",
        lst([n for r in (am.get("abilities") or {}).values()
             for n in (r.get("moves") or []) if n not in moves]))
     ok("cada habilidad con regla existe",
        lst([a for a in (am.get("abilities") or {}) if a not in abil]))
-    il = Q.db("item_links") or {}
+    il = dex.db("item_links") or {}
     ok("cada movimiento que un item sirve existe",
        lst([n for n in (il.get("by_move") or {}) if n not in moves]))
     ok("cada habilidad que un item sirve existe",
        lst([a for a in (il.get("by_ability") or {}) if a not in abil]))
-    st = (Q.db("statuses") or {}).get("statuses") or {}
+    st = (dex.db("statuses") or {}).get("statuses") or {}
     ok("cada movimiento que causa estado existe",
        lst([n for r in st.values() for n in (r.get("moves") or [])
             if n not in moves]))
     ok("cada learnset apunta a movimientos reales",
        lst([k for k, v in learn.items() if any(n not in moves for n in v)]))
-    tf = Q.db("text_facts") or {}
+    tf = dex.db("text_facts") or {}
     ok("cada texto de movimiento corresponde a un movimiento",
        lst([n for n in (tf.get("moves") or {}) if n not in moves]))
     ok("cada texto de habilidad corresponde a una habilidad",
@@ -184,8 +184,8 @@ def _check_references(learn):
 
 def main():
     _check_code()
-    mons = Q.db("pokemon")
-    learn = Q.db("learnsets")
+    mons = dex.db("pokemon")
+    learn = dex.db("learnsets")
     _check_forms(mons, learn)
     _check_megas(mons)
     _check_db_files()

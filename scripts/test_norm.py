@@ -15,7 +15,7 @@ rows quietly. These cases lock that in.
 """
 import sys
 
-from query import norm, species_norm
+from dex import norm, species_norm
 
 # Every group must collapse to one key. First entry is the dex spelling.
 SAME = [

@@ -43,6 +43,7 @@ import os
 import sys
 from pathlib import Path
 
+import dex
 from paths import ROOT
 
 SRC = os.path.join(ROOT, "data", "meta", "usage_splits.json")
@@ -53,7 +54,6 @@ OUT = os.path.join(ROOT, "tracker", "splits.js")
 # one team's private tuning rather than a pattern. Two pages' worth is what an
 # indicator can show. Everything else is carried whole.
 KEEP_SPREADS = 12
-SP_ORDER = ["hp", "atk", "def", "spa", "spd", "spe"]
 
 
 def pairs(rows):
@@ -70,7 +70,7 @@ def spreads(rows):
     out = []
     for r in rows or []:
         sp = r.get("sp") or {}
-        out.append([sp.get(k, 0) for k in SP_ORDER] + [r["percent"]])
+        out.append([sp.get(k, 0) for k in dex.STAT_KEYS] + [r["percent"]])
     out.sort(key=lambda x: -x[-1])
     return out[:KEEP_SPREADS]
 

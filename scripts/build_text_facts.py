@@ -33,7 +33,7 @@ import os
 import re
 from pathlib import Path
 
-import query as Q
+import dex
 
 # The number reader the effect chips use to decide what a description already
 # says - one reader, so "the text states it" means the same thing in both.
@@ -148,7 +148,7 @@ def augment(m, text, base_crit):
 
 def smogon_first(moves, mv):
     """Put Smogon's description in front, and report what it leaves out."""
-    long = (Q.db("smogon_text") or {}).get("moves") or {}
+    long = (dex.db("smogon_text") or {}).get("moves") or {}
     rates = {}
     for m in moves:
         c = (m.get("crit_rate") or "").strip()
@@ -199,7 +199,7 @@ def smogon_abilities(ab):
     merged: two sentences about one ability are exactly the duplication just
     removed, and most of these are one fact in two units (25% evasion is x0.8
     accuracy)."""
-    long = (Q.db("smogon_text") or {}).get("abilities") or {}
+    long = (dex.db("smogon_text") or {}).get("abilities") or {}
     used, gaps = 0, []
     for n, row in ab.items():
         t = long.get(n)
@@ -248,10 +248,10 @@ def main():
     ap.add_argument("--show", type=int, default=12)
     a = ap.parse_args()
 
-    moves = [m for m in Q.db("moves") if m.get("useable")]
+    moves = [m for m in dex.db("moves") if m.get("useable")]
     mv, mdiff = merge(moves, pokebase("moves"), "moves")
     mv = smogon_first(moves, mv)
-    ab, adiff = merge(Q.db("abilities"), pokebase("abilities"), "abilities")
+    ab, adiff = merge(dex.db("abilities"), pokebase("abilities"), "abilities")
     ab = smogon_abilities(ab)
 
     print("\n--- where pokebase won, because Serebii only named a status ---")

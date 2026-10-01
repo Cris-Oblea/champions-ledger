@@ -3,6 +3,7 @@ paths:
   - "scripts/fetch_*.py"
   - "scripts/audit_*.py"
   - "scripts/query.py"
+  - "scripts/dex.py"
   - "scripts/test_norm.py"
   - "scripts/refresh.py"
   - "scripts/check_regulation.py"
@@ -27,7 +28,7 @@ never an older game's text.
 ## Gotchas already solved — do not re-break these
 
 - **Form names differ per source**: Serebii `Ninetales-Alola`, pokebase
-  `Alolan Ninetales`, pokedata `Basculegion [Male]`. `query.py:norm()` reduces a
+  `Alolan Ninetales`, pokedata `Basculegion [Male]`. `dex.py:norm()` reduces a
   name to a sorted token set so all spellings meet. Use it for any new join.
 - **Serebii pages are cp1252**, not UTF-8.
 - **The Pokedex page merges regional forms** into one block (Samurott's types come
@@ -92,7 +93,7 @@ never an older game's text.
 - **`norm()` treats a colour or a size as decoration — except where it is not.**
   A colour is nothing on a Florges and a different Pokemon on a Squawkabilly; a
   size is nothing anywhere else and 45 Speed on a Gourgeist. `_SIGNIFICANT` in
-  `query.py` takes those tokens back for those two species only, so every other
+  `dex.py` takes those tokens back for those two species only, so every other
   cosmetic set keeps collapsing. The base row's own word is deliberately NOT
   listed: our `Squawkabilly` row IS the Green Plumage and `Gourgeist` IS the
   Medium Variety, so "Green"/"Medium" must keep collapsing onto them.

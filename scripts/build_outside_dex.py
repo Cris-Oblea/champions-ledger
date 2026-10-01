@@ -60,7 +60,7 @@ import re
 import sys
 from pathlib import Path
 
-import query as Q
+import dex
 from audit_learnsets import CHAMPIONS_VG
 from fetch_home_dex import key as hkey
 from fetch_home_dex import resolver, table
@@ -137,15 +137,15 @@ def build():
     # Keyed, because upstream writes "Will-O-Wisp" and "will-o-wisp" and our
     # row is the one whose spelling must win - it is the one the rest of the
     # app looks moves up by.
-    champ_by_key = {key(m["name"]): m for m in Q.db("moves")}
+    champ_by_key = {key(m["name"]): m for m in dex.db("moves")}
     # WHAT EACH ONE DOES. These rows shipped with no description at all - a
     # name, a type and four numbers. From CHAMPIONS' OWN DEX only (player,
     # 2026-09-27: "siempre la fuente debe ser champions dex"): Smogon's full
     # text where its Champions dex has the move, else Serebii's
     # attackdex-champions line, which covers every one of them. Never an
     # older game's page, which can describe a different move.
-    smogon = (Q.db("smogon_text") or {}).get("moves") or {}
-    champ_abils = {key(a["name"]) for a in Q.db("abilities")}
+    smogon = (dex.db("smogon_text") or {}).get("moves") or {}
+    champ_abils = {key(a["name"]) for a in dex.db("abilities")}
     home = json.loads(Path(ROOT, "data", "db", "home_dex.json").read_text(encoding="utf-8"))
     upstream_name, aname, aprose = _upstream_names()
 

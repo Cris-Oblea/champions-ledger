@@ -30,7 +30,7 @@
   "css.validate": false,
   "stylelint.validate": ["css"],
   "ruff.importStrategy": "fromEnvironment",
-  // The scripts import each other by bare name (`import query as Q`), which
+  // The scripts import each other by bare name (`import dex`), which
   // works because Python puts the script's own folder on the path. Pylance
   // has to be told, or every such import reads as unresolved.
   "python.analysis.extraPaths": ["scripts"]

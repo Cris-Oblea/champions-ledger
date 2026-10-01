@@ -24,7 +24,7 @@ import os
 import sys
 from pathlib import Path
 
-import query as Q
+import dex
 from paths import ROOT
 
 OUT = os.path.join(ROOT, "data", "meta", "gts_difficulty.json")
@@ -53,19 +53,19 @@ def main():
     seeded = src.get("species") or {}
     default_supply = 2
 
-    rows = (Q.meta("usage_pokemon") or {}).get("rows", [])
+    rows = (dex.meta("usage_pokemon") or {}).get("rows", [])
     # pokebase spells forms its own way - "Indeedee (Female)" for our
     # "Indeedee-Female", "Alolan Persian" for "Persian-Alola". Matching on the
     # raw string silently dropped every one of them, which is the gotcha
     # CLAUDE.md already documents: join Pokemon names through norm().
     usage = {}
     for r in rows:
-        usage[Q.norm(r["name"])] = (r.get("usage_percent") or 0.0,
+        usage[dex.norm(r["name"])] = (r.get("usage_percent") or 0.0,
                                     r.get("rank"))
     ladder_size = len(rows)
 
     out = {}
-    for p in Q.db("pokemon") or []:
+    for p in dex.db("pokemon") or []:
         if p.get("is_mega"):
             continue
         name = p["name"]
@@ -73,7 +73,7 @@ def main():
         # added 23 species that simply have no row yet. Scoring those as 0.0%
         # said "almost nobody runs it, a spare costs them nothing", which is a
         # claim the data does not support - it is unknown, not unwanted.
-        key = Q.norm(name)
+        key = dex.norm(name)
         known = key in usage
         pct, rank = usage.get(key, (None, None))
         dem = demand_of(pct) if known else None

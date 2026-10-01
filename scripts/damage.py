@@ -40,9 +40,10 @@ import argparse
 import json
 import os
 import subprocess
+import sys
 from pathlib import Path
 
-import query as Q
+import dex
 from paths import ROOT
 
 SMOGON_BUNDLE = os.path.join(ROOT, "data", "raw", "smogon_calc")
@@ -105,22 +106,20 @@ NOT_A_CALC = {
 }
 
 
-def find_move(name):
-    for m in Q.db("moves"):
-        if Q.key(m["name"]) == Q.key(name):
-            return m
-    raise SystemExit("No move called %r" % name)
+def move_named(name):
+    """The move row, or the run stops: there is no guessing which was meant."""
+    return dex.find_move(name) or sys.exit("No move called %r" % name)
 
 
 def check_move(a):
     """Refuse a question the engine would answer with a guess."""
-    k = Q.key(find_move(a.move)["name"])
+    k = dex.key(move_named(a.move)["name"])
     if k in NOT_A_CALC:
         raise SystemExit("Not a damage calculation: " + NOT_A_CALC[k])
     need = NEEDS.get(k)
     if need and not all(getattr(a, f) not in (None, "") for f in need[0]):
         raise SystemExit("%s needs more than the two Pokemon: %s."
-                         % (find_move(a.move)["name"], need[1]))
+                         % (move_named(a.move)["name"], need[1]))
 
 
 def smogon_name(name, attacking=False):
@@ -134,21 +133,21 @@ def smogon_name(name, attacking=False):
     Change switches it the moment it uses a damaging move, and the Shield
     spread has 50 Attack to Blade's 140.
     """
-    if Q.norm(name) == Q.norm("Aegislash"):
+    if dex.norm(name) == dex.norm("Aegislash"):
         return "Aegislash-Blade" if attacking else "Aegislash-Shield"
-    special = {Q.norm("Basculegion-Female"): "Basculegion-F",
-               Q.norm("Meowstic-Female"): "Meowstic-F",
-               Q.norm("Indeedee-Female"): "Indeedee-F",
-               Q.norm("Floette"): "Floette-Eternal"}
-    if Q.norm(name) in special:
-        return special[Q.norm(name)]
+    special = {dex.norm("Basculegion-Female"): "Basculegion-F",
+               dex.norm("Meowstic-Female"): "Meowstic-F",
+               dex.norm("Indeedee-Female"): "Indeedee-F",
+               dex.norm("Floette"): "Floette-Eternal"}
+    if dex.norm(name) in special:
+        return special[dex.norm(name)]
     path = os.path.join(SMOGON_BUNDLE, "raw_species.json")
     if not os.path.exists(path):
         raise SystemExit(
             "Smogon's engine is not vendored - expected %s\n"
             "Fetch it with: python scripts/fetch_smogon_calc.py" % path)
     roster = json.loads(Path(path).read_text(encoding="utf-8"))
-    hit = next((k for k in roster if Q.norm(k) == Q.norm(name)), None)
+    hit = next((k for k in roster if dex.norm(k) == dex.norm(name)), None)
     if not hit:
         raise SystemExit("Smogon's Champions roster has no %r" % name)
     return hit
@@ -254,7 +253,7 @@ def _parser():
 
 
 def _item(v):
-    return None if v is None or Q.key(v) == "none" else v
+    return None if v is None or dex.key(v) == "none" else v
 
 
 def engine_case(a):
@@ -264,10 +263,10 @@ def engine_case(a):
     Body Press attacks off Defense and Psyshock hits the target's Defense even
     though it is Special.
     """
-    move_row = find_move(a.move)
+    move_row = move_named(a.move)
     phys = move_row.get("category") == "Physical"
-    k = Q.key(move_row["name"])
-    a_key = "def" if k == Q.key("Body Press") else ("atk" if phys else "spa")
+    k = dex.key(move_row["name"])
+    a_key = "def" if k == dex.key("Body Press") else ("atk" if phys else "spa")
     d_key = _DEFENCE_OVERRIDE.get(k) or ("def" if phys else "spd")
     aevs = {a_key: a.atk_sp}
     devs = {"hp": a.def_hp_sp, d_key: a.def_sp}
@@ -321,7 +320,7 @@ def answer(a):
     # The engine falls back to the FIRST ability in the species row when
     # none is given, and Kingambit's first is Defiant, not Supreme Overlord.
     # So a bare --allies-fainted quietly buys nothing; say so.
-    if a.allies_fainted and Q.key(r.get("ability") or "") != Q.key("Supreme Overlord"):
+    if a.allies_fainted and dex.key(r.get("ability") or "") != dex.key("Supreme Overlord"):
         print("   NOTE: --allies-fainted does nothing here - %s is using %s, "
               "not Supreme Overlord. Add --atk-ability \"Supreme Overlord\"."
               % (r["attacker"], r.get("ability")))

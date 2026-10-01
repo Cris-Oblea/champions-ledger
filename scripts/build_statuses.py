@@ -34,7 +34,7 @@ import os
 import re
 from pathlib import Path
 
-import query as Q
+import dex
 from paths import ROOT
 
 PAGE = os.path.join(ROOT, "data", "raw", "pages", "statusconditions.html")
@@ -153,11 +153,11 @@ def causes(text, word):
 
 def status_moves():
     """status -> the useable moves that inflict it."""
-    tf = (Q.db("text_facts") or {}).get("moves") or {}
+    tf = (dex.db("text_facts") or {}).get("moves") or {}
     out = {}
     for st, word in WORD.items():
         hits = []
-        for m in Q.db("moves"):
+        for m in dex.db("moves"):
             if not m.get("useable"):
                 continue
             r = tf.get(m["name"]) or {}
@@ -172,7 +172,7 @@ def status_moves():
 
 def main():
     changes = serebii_changes()
-    mods = Q.db("modifiers") or {}
+    mods = dex.db("modifiers") or {}
     burn = (mods.get("status") or {}).get("Burn|physical")
     if burn:
         BASE["Burn"]["physical"]["value"] = round(burn, 3)

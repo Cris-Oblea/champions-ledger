@@ -62,8 +62,8 @@ import sys
 from pathlib import Path
 from types import SimpleNamespace
 
+import dex
 import net
-import query as Q
 from paths import META, ROOT
 
 RAW = os.path.join(ROOT, "data", "raw", "pokeapi_csv")
@@ -249,14 +249,14 @@ def home_only_names():
     weight table (which is what HOME can hold) and every Worlds teamlist (which
     is history, and had no numbers on it at all).
     """
-    wt = set(Q.db("weights")["weights"])
+    wt = set(dex.db("weights")["weights"])
     champ = set()
-    for p in Q.db("pokemon"):                 # a LIST of form rows
+    for p in dex.db("pokemon"):                 # a LIST of form rows
         for n in (p.get("name"), p.get("species")):
             if n:
-                champ.add(Q.norm(n))
+                champ.add(dex.norm(n))
     return sorted(n for n in (wt | worlds_names())
-                  if Q.norm(n) not in champ
+                  if dex.norm(n) not in champ
                   and "-Mega" not in n and "-Gmax" not in n
                   and "-Totem" not in n and "-Starter" not in n)
 
@@ -391,7 +391,7 @@ def species_flags(force=False):
             myth.add(r["identifier"])
         if r.get("is_legendary") == "1":
             leg.add(r["identifier"])
-    names = [p["name"] for p in Q.db("pokemon")] + home_only_names()
+    names = [p["name"] for p in dex.db("pokemon")] + home_only_names()
     out = {"mythical": [], "legendary": []}
     for n in sorted(set(names)):
         k = key(n)
@@ -532,7 +532,7 @@ def sprite_ids(force=False):
     by_form = form_rows(force)
     files = sprite_files(force)
     out, missed = {}, []
-    names = [p["name"] for p in Q.db("pokemon")] + home_only_names()
+    names = [p["name"] for p in dex.db("pokemon")] + home_only_names()
     for name in names:
         # EXACT ROWS ONLY. A stand-in spread is honest because the card says
         # whose it is; a stand-in PICTURE is not - every Arceus plate looks
@@ -653,7 +653,7 @@ def _card_owners(resolve):
     """Which cards each upstream row IS - exact resolutions only, the same
     standard the pictures are held to."""
     cards = {}
-    for name in [p["name"] for p in Q.db("pokemon")
+    for name in [p["name"] for p in dex.db("pokemon")
                  if not p.get("is_mega")] + home_only_names():
         pid, approx = resolve(key(name))
         if pid and not approx:
@@ -828,7 +828,7 @@ def main():
     print("wrote %s  (%d mythical, %d legendary)"
           % (os.path.relpath(FLAGS, ROOT), len(flags["mythical"]),
              len(flags["legendary"])))
-    champ = [p["name"] for p in Q.db("pokemon")]
+    champ = [p["name"] for p in dex.db("pokemon")]
     gap = [n for n in champ if n not in sid]
     if gap:
         print("  %d CHAMPIONS forms have no sprite id: %s"
