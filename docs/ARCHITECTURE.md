@@ -140,7 +140,7 @@ Each file opens with a comment saying what it is for.
 |---|---|---|
 | `core/data.js` | The game DB (`window.CHAMP`) unpacked into lookups, and the pure rules read off it: stats, natures, learnsets, Megas, usage | `C`, `DEX`, `byName`, `MOVE_BY`, `learnset`, `statAt` |
 | `core/state.js` | `S`, the rules about his box (origin, release floor, what a build is bound to), and the lists' sort and search state | `S`, `boxRows`, `buildLink`, `VIEW`, `FIND` |
-| `core/dom.js` | `$`, `el`, the toast, a note, a footer button, the search box, a toggle's pressed state, a pane switcher, emptying a reused host | `$`, `el`, `toast`, `note`, `fbtn`, `setPressed`, `showPane`, `resetHost` |
+| `core/dom.js` | `$`, `el`, the toast, a note, a footer button, the search box, a toggle's pressed state (one, or one of a row), a pane switcher, emptying a reused host | `$`, `el`, `toast`, `note`, `fbtn`, `setPressed`, `pressOnly`, `showPane`, `resetHost` |
 | `core/store.js` | The Supabase connection: loads every table into `S`, keeps it live, and every write | `openLedger`, `put`, `putNew`, `patch`, `drop`, `whenChanged` |
 | `core/assets.js` | The two payloads fetched only on demand: Smogon's analyses, the rest of the dex | `loadAnalysis`, `loadOutside` |
 | `core/errors.js` | Script errors, caught from the first moment, for the diagnostics | `BOOT_ERRORS` |
@@ -148,7 +148,7 @@ Each file opens with a comment saying what it is for.
 | `core/team.js` | A team without drawing it: slots, Mega outcomes, the clause report, Speed order, weaknesses | `teamReport`, `teamSpeeds`, `teamTypes` |
 | `core/trade.js` | The GTS rules: keep one per form, what a chip is worth, difficulty, the three slots | `chipValue`, `gtsSuggest`, `keepableCopies` |
 | `ui/nav.js` | Tabs, editors, the sheet, the app's own confirm, the Back button | `go`, `openSheet`, `ask`, `onShow` |
-| `ui/card.js` | `pokeCard()`, the one Pokemon card, and what it is made of: type colours, the stat table, sprites, facts, badges | `pokeCard`, `statGrid`, `typeChip` |
+| `ui/card.js` | `pokeCard()`, the one Pokemon card, and what it is made of: type colours, the stat table, sprites, facts, badges; the card for a species Champions lacks | `pokeCard`, `outsideCard`, `statGrid`, `typeChip` |
 | `ui/pokemon.js` | One Pokemon's full sheet, with Smogon's analysis panel inside | `pokeHead`, `pokeBody`, `findDetail` |
 | `ui/moves.js` | The move vocabulary: how a move is scored, its tags, which abilities touch it, the movepool filters | `moveFilters`, `moveRowFor`, `abilityTag` |
 | `ui/signin.js` | The sign-in gate and the connection | `connect` |
