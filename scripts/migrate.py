@@ -5,12 +5,13 @@
     python scripts/migrate.py --check    # fail if anything is pending
     python scripts/migrate.py --status   # just list them
 
-Until now `tracker/supabase_migrate_*.sql` were pasted into the Supabase SQL
-editor by hand, and nothing recorded that it had happened. That is how a schema
-and the client that reads it drift apart: add a column, forget to paste it, and
-the app breaks at runtime with a message about a column that exists in the
-repo and not in the database. Migration 4 added `builds.box_id`; migration 5
-added the whole `teams` table. Neither left a trace anywhere but a commit.
+The migrations (`supabase/supabase_migrate_*.sql`) used to be pasted into the
+Supabase SQL editor by hand, and nothing recorded that it had happened. That is
+how a schema and the client that reads it drift apart: add a column, forget to
+paste it, and the app breaks at runtime with a message about a column that
+exists in the repo and not in the database. Migration 4 added `builds.box_id`;
+migration 5 added the whole `teams` table. Neither left a trace anywhere but a
+commit.
 
 So a `schema_migrations` table records the file names, and `--check` joins the
 gate. RLS is ON with no policy at all, which is the point: the CLI connects as
@@ -31,7 +32,7 @@ from pathlib import Path
 
 from paths import ROOT
 
-SQLDIR = os.path.join(ROOT, "tracker")
+SQLDIR = os.path.join(ROOT, "supabase")
 
 LEDGER = """
 create table if not exists public.schema_migrations (
