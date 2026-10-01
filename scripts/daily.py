@@ -112,7 +112,7 @@ GATE_CHECKS = [
      "no document contradicts a decision, names a missing file or outgrows its budget"),
     # The Python half of the lint gate, and the twin of ESLint below: ruff.toml
     # holds the rules, the same file VS Code's Ruff extension reads. It found
-    # two regexes whose  had been typed as a literal backspace, so one of
+    # two regexes whose \b had been typed as a literal backspace, so one of
     # check_docs' watched decisions had never matched anything (2026-09-30).
     (["-m", "ruff", "check", "--quiet", "--output-format", "concise"],
      "no Python lint finding comes back once it is fixed"),

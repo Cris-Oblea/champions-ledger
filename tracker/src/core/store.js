@@ -5,72 +5,166 @@ import { byText } from "./data.js";
 import { $, el, toast } from "./dom.js";
 import { S } from "./state.js";
 
-/* ===================================================================== db */
-function put(path, body){
-  if (!S.db) { toast("Not connected to the store"); return Promise.resolve(); }
-  body.updated = new Date().toISOString().slice(0,10);
-  return S.db.doc(path).set(body).catch(function(e){
-    toast("Could not save: " + (e?.code || "error"));
-    throw e;
+/* ============================================================ the ledger ==
+   One Supabase client, a cache of every table, and the slice of S each table
+   fills. Tables map onto what the app reads like this:
+
+     box, builds, teams, gts -> S[table], {id: record}, sorted by id
+     stones, items           -> S[table], {name: {updated}} - a row per owned thing
+     meta                    -> S.meta.trainer, the one row that really is a document
+
+   Every row carries user_id, and RLS on the server is what keeps one account's
+   rows invisible to another. The key in this page cannot read past it.
+   S.db is this connection, or null until the sign-in finishes. */
+const TABLES = ["box", "builds", "teams", "stones", "items", "gts", "meta"];
+
+/* The one thing this file knows about the screen: every change has to end in
+   a redraw. boot.js says which, with whenChanged(renderAll), so the store
+   never imports the screen it serves. */
+let redraw = function(){};
+function whenChanged(fn){ redraw = fn; }
+
+function openLedger(sb, uid){
+  S.db = {sb: sb, uid: uid, cache: {}};
+  TABLES.forEach(function(t){
+    load(t).catch(function(e){
+      console.error("[ledger] load " + t, e);
+      toast("Could not load " + t);
+    });
+  });
+  /* ONE CHANNEL FOR THE LOT, so a change made on the phone lands on the PC.
+     Subscribed from the same list the tables load from: teams was once left
+     out of a hand-written list, so a team saved on the phone never reached
+     the laptop - and that stale view is exactly what makes two devices
+     compute the same new id. */
+  let ch = sb.channel("ledger");
+  TABLES.forEach(function(t){
+    ch = ch.on("postgres_changes", {event:"*", schema:"public", table:t},
+               function(){ load(t); });
+  });
+  ch.subscribe();
+}
+
+/* Read a whole table into the cache, then into S. */
+function load(t){
+  return S.db.sb.from(t).select("*").then(function(r){
+    if (r.error) throw r.error;
+    const m = {};
+    (r.data || []).forEach(function(row){ m[row.id] = row; });
+    S.db.cache[t] = m;
+    publish(t);
   });
 }
+
+/* Hand the cache of one table to S, in the shape the app reads, and redraw. */
+function publish(t){
+  const rows = S.db.cache[t] || {};
+  if (t === "meta") {
+    S.meta.trainer = rows.trainer ? docFromRow(t, rows.trainer) : {};
+  } else {
+    const m = {};
+    Object.keys(rows).sort(byText).forEach(function(id){
+      m[id] = docFromRow(t, rows[id]); });
+    S[t] = m;
+  }
+  if (t === "box") S.ready = true;
+  redraw();
+}
+
+/* ================================================================ writes ==
+   A path is "table/id": "builds/farigiraf". Every write goes to the database
+   first and only then into the cache, so a failed write never shows as saved. */
+function splitPath(path){
+  const i = path.indexOf("/");
+  return [path.slice(0, i), path.slice(i + 1)];
+}
+function offline(){
+  if (S.db) return false;
+  toast("Not connected to the store");
+  return true;
+}
+function saveFailed(e){
+  toast("Could not save: " + (e?.code || "error"));
+  throw e;
+}
+
+/* Write a whole record, creating or replacing it. */
+function put(path, body){
+  if (offline()) return Promise.resolve();
+  body.updated = new Date().toISOString().slice(0,10);
+  const [t, id] = splitPath(path);
+  const row = rowFromDoc(t, id, S.db.uid, body);
+  return S.db.sb.from(t).upsert(row, {onConflict:"user_id,id"}).then(function(r){
+    if (r.error) throw r.error;
+    const c = S.db.cache[t] ||= {};
+    c[id] = {...c[id], ...row};
+    publish(t);
+  }).catch(saveFailed);
+}
+
+/* Merge some fields into a record. A meta body merges inside its jsonb (the
+   record IS the jsonb), every other table merges columns - both are the
+   record as the app reads it, plus `body`. */
+function patch(path, body){
+  if (offline()) return Promise.resolve();
+  const [t, id] = splitPath(path);
+  const cur = S.db.cache[t]?.[id];
+  return put(path, {...(cur && docFromRow(t, cur)), ...body});
+}
+
 /* Create a record under the first id that is actually free.
    `stem` is the readable base - "farigiraf" - and this tries farigiraf,
    farigiraf-2, farigiraf-3... A clash is decided by the DATABASE, not by what
    this device happens to have loaded, which is the only way two devices can
    both be right. Readable ids are worth keeping: the build picker shows the id
    to tell one Farigiraf set from another, and a UUID would say nothing.
+   INSERT, not upsert: the point is that it FAILS when the id is taken - two
+   devices creating at the same moment both pick the same id, and an upsert
+   would let the second silently replace the first.
    Returns the id it used. */
-function putNew(coll, stem, body, cap){
-  if (!S.db) { toast("Not connected to the store"); return Promise.resolve(null); }
+function putNew(t, stem, body, cap){
+  if (offline()) return Promise.resolve(null);
   body.updated = new Date().toISOString().slice(0, 10);
   const tried = [];
   let n = 1;
   function attempt(){
     const id = n === 1 ? stem : stem + "-" + n;
     tried.push(id);
-    return S.db.doc(coll + "/" + id).create(body).then(function(){ return id; },
-      function(e){
-        /* 23505 is Postgres' unique_violation: the id is taken, by this device
-           or another one. Anything else is a real failure and must surface. */
-        const taken = e && (e.code === "23505" ||
-                          /duplicate key|already exists/i.test(e.message || ""));
-        if (!taken) { toast("Could not save: " + (e?.code || "error")); throw e; }
-        if (++n > (cap || 30)) {
-          toast("Could not find a free id after " + tried.length + " tries");
-          throw e;
-        }
-        return attempt();
-      });
+    const row = rowFromDoc(t, id, S.db.uid, body);
+    return S.db.sb.from(t).insert(row).then(function(r){
+      if (r.error) throw r.error;
+      S.db.cache[t] ||= {};
+      S.db.cache[t][id] = row;
+      publish(t);
+      return id;
+    }).catch(function(e){
+      /* 23505 is Postgres' unique_violation: the id is taken, by this device
+         or another one. Anything else is a real failure and must surface. */
+      const taken = e && (e.code === "23505" ||
+                        /duplicate key|already exists/i.test(e.message || ""));
+      if (!taken) saveFailed(e);
+      if (++n > (cap || 30)) {
+        toast("Could not find a free id after " + tried.length + " tries");
+        throw e;
+      }
+      return attempt();
+    });
   }
   return attempt();
 }
 
-function patch(path, body){
-  if (!S.db) { toast("Not connected to the store"); return Promise.resolve(); }
-  body.updated = new Date().toISOString().slice(0,10);
-  return S.db.doc(path).update(body).catch(function(e){
-    if (e?.code === "invalid_argument") return S.db.doc(path).set(body);
-    toast("Could not save: " + (e?.code || "error"));
-    throw e;
-  });
-}
 function drop(path){
   if (!S.db) return Promise.resolve();
-  return S.db.doc(path).delete();
+  const [t, id] = splitPath(path);
+  return S.db.sb.from(t).delete().eq("id", id).then(function(r){
+    if (r.error) throw r.error;
+    if (S.db.cache[t]) delete S.db.cache[t][id];
+    publish(t);
+  });
 }
 
-/* ===================================================== the Supabase store ==
-   The app talks to ONE small interface - doc(path).set/update/delete/onSnapshot
-   and collection(name).onSnapshot - so the storage backend is swappable. This
-   adapter puts Supabase behind that interface, mapping documents onto rows:
-
-     box/{id}     -> table box      (order  <-> ord)
-     builds/{id}  -> table builds   (columns one-to-one)
-     meta/{id}    -> table meta     (the whole body lives in the data jsonb)
-
-   Every row carries user_id, and RLS on the server is what keeps one account's
-   rows invisible to another. The key in this page cannot read past it. */
+/* ======================================================= rows <-> records ==
+   What a row looks like in the app, and back. */
 function docFromRow(coll, row){
   if (coll === "meta") return row.data || {};
   /* A set table: the row's existence IS the fact, and there is nothing
@@ -141,193 +235,6 @@ function rowFromDoc(coll, id, uid, d){
     rationale:d.rationale || "", extra:d.extra || {}};
 }
 
-/* THE STORE BEHIND put/patch/drop: one Supabase client, a cache of every
-   table, and the listeners the app registered. `st` carries all of it:
-   st.cache[coll][id] is a row as the database holds it; st.emit(coll) tells
-   every listener of that table what it holds now. */
-function supabaseStore(sb, uid){
-  const st = {sb: sb, uid: uid, listeners: {}, cache: {}};
-  st.emit = function(coll){ emitSnapshot(st, coll); };
-  st.load = function(coll){ return loadTable(st, coll); };
-  /* stones and items are tables of their own since migration 6 - a row per
-     owned thing, so two devices toggling different ones cannot overwrite
-     each other. They load exactly like the rest. */
-  COLLS.forEach(function(coll){
-    st.load(coll).catch(function(e){
-      console.error("[ledger] load " + coll, e);
-      toast("Could not load " + coll);
-    });
-  });
-  /* ONE CHANNEL FOR THE LOT, so a change made on the phone lands on the PC.
-     Subscribed from the same list the tables load from: teams was once left
-     out of a hand-written list, so a team saved on the phone never reached
-     the laptop - and that stale view is exactly what makes two devices
-     compute the same new id. */
-  let ch = sb.channel("ledger");
-  COLLS.forEach(function(coll){
-    ch = ch.on("postgres_changes", {event:"*", schema:"public", table:coll},
-               function(){ st.load(coll); });
-  });
-  ch.subscribe();
-  return {
-    doc: function(path){ return docHandle(st, path); },
-    collection: function(name){
-      return {
-        onSnapshot: function(next){
-          st.listeners[name] ||= [];
-          st.listeners[name].push(next);
-          if (st.cache[name]) setTimeout(function(){ st.emit(name); }, 0);
-          return function(){};
-        }
-      };
-    }
-  };
-}
-
-const COLLS = ["box", "builds", "teams", "stones", "items", "gts", "meta"];
-
-/* Hand every listener of a table its rows, sorted by id, in the snapshot
-   shape the app reads. */
-function emitSnapshot(st, coll){
-  const rows = st.cache[coll] || {};
-  const docs = Object.keys(rows).sort(byText).map(function(id){
-    return {id:id, exists:true, data:function(){
-      return docFromRow(coll, rows[id]); }, metadata:{}};
-  });
-  (st.listeners[coll] || []).forEach(function(fn){
-    fn({docs:docs, size:docs.length, empty:!docs.length,
-        docChanges:function(){ return []; }, metadata:{}});
-  });
-}
-
-/* Read a whole table into the cache, then tell its listeners. */
-function loadTable(st, coll){
-  return st.sb.from(coll).select("*").then(function(r){
-    if (r.error) throw r.error;
-    const m = {};
-    (r.data || []).forEach(function(row){ m[row.id] = row; });
-    st.cache[coll] = m;
-    st.emit(coll);
-  });
-}
-
-/* "builds/farigiraf" -> ["builds", "farigiraf"] */
-function splitPath(path){
-  const i = path.indexOf("/");
-  return [path.slice(0, i), path.slice(i + 1)];
-}
-
-/* One document: read it, create it, overwrite it, merge into it, delete it,
-   or listen to it. Every write goes to the database first and only then into
-   the cache, so a failed write never shows as saved. */
-function docHandle(st, path){
-  const p = splitPath(path), coll = p[0], id = p[1];
-  const sb = st.sb, cache = st.cache;
-  return {
-    get: function(){
-      const row = cache[coll]?.[id];
-      return Promise.resolve({id:id, exists:!!row,
-        data:function(){ return row ? docFromRow(coll, row) : undefined; },
-        metadata:{}});
-    },
-    /* INSERT, not upsert: the point is that it FAILS when the id is taken.
-       Creating a record computes its id from what this device can see -
-       farigiraf, farigiraf-2 - so two devices creating at the same moment
-       both pick the same one, and an upsert would let the second silently
-       replace the first. The primary key (user_id, id) already knows better;
-       this just stops asking it to look the other way. */
-    create: function(d){
-      const row = rowFromDoc(coll, id, st.uid, d);
-      return sb.from(coll).insert(row).then(function(r){
-        if (r.error) throw r.error;
-        if (!cache[coll]) cache[coll] = {};
-        cache[coll][id] = row;
-        st.emit(coll);
-      });
-    },
-    set: function(d){
-      const row = rowFromDoc(coll, id, st.uid, d);
-      return sb.from(coll).upsert(row, {onConflict:"user_id,id"})
-        .then(function(r){
-          if (r.error) throw r.error;
-          cache[coll] ||= {};
-          cache[coll][id] = {...cache[coll][id], ...row};
-          st.emit(coll);
-        });
-    },
-    update: function(d){
-      // meta bodies merge inside the jsonb; the other tables merge columns
-      const cur = cache[coll]?.[id];
-      if (coll === "meta") {
-        const merged = {...cur?.data};
-        Object.keys(d).forEach(function(k){
-          if (k !== "updated") merged[k] = d[k]; });
-        return this.set(merged);
-      }
-      const full = {...(cur && docFromRow(coll, cur)), ...d};
-      return this.set(full);
-    },
-    delete: function(){
-      return sb.from(coll).delete().eq("id", id).then(function(r){
-        if (r.error) throw r.error;
-        if (cache[coll]) delete cache[coll][id];
-        st.emit(coll);
-      });
-    },
-    onSnapshot: function(next){
-      st.listeners[coll] ||= [];
-      st.listeners[coll].push(function(snap){
-        let hit = null;
-        snap.docs.forEach(function(x){ if (x.id === id) hit = x; });
-        next(hit || {id:id, exists:false,
-                     data:function(){ return undefined; }, metadata:{}});
-      });
-      if (cache[coll]) setTimeout(function(){ st.emit(coll); }, 0);
-      return function(){};
-    }
-  };
-}
-
-/* The one thing this file knows about the screen: every snapshot has to
-   end in a redraw. boot.js says which, with whenChanged(renderAll), so the
-   store never imports the screen it serves. */
-let redraw = function(){};
-function whenChanged(fn){ redraw = fn; }
-
-/* attach the app to whichever store it was handed */
-function wire(db){
-  db.collection("box").onSnapshot(function(snap){
-    const m = {};
-    snap.docs.forEach(function(d){ m[d.id] = d.data() || {}; });
-    S.box = m; S.ready = true; redraw();
-  }, function(e){ dbState(false, e.code); });
-  db.collection("builds").onSnapshot(function(snap){
-    const m = {};
-    snap.docs.forEach(function(d){ m[d.id] = d.data() || {}; });
-    S.builds = m; redraw();
-  }, function(e){ dbState(false, e.code); });
-  db.collection("teams").onSnapshot(function(snap){
-    const m = {}; snap.docs.forEach(function(doc){ m[doc.id] = doc.data(); });
-    S.teams = m; redraw();
-  }, function(e){ dbState(false, e.code); });
-  /* The two set tables. Their ids ARE the names - "Charizardite Y",
-     "Focus Sash" - so the map is the answer to "do I own this". */
-  ["stones", "items", "gts"].forEach(function(coll){
-    db.collection(coll).onSnapshot(function(snap){
-      const m = {};
-      snap.docs.forEach(function(doc){ m[doc.id] = doc.data() || {}; });
-      S[coll] = m; redraw();
-    }, function(e){ dbState(false, e.code); });
-  });
-  /* stones and items left this list with migration 6, the GTS with 7. What
-     remains is the one document that really is a document. */
-  ["trainer"].forEach(function(k){
-    db.doc("meta/" + k).onSnapshot(function(d){
-      S.meta[k] = d.exists ? (d.data() || {}) : {};
-      redraw();
-    }, function(e){ dbState(false, e.code); });
-  });
-}
 function dbState(ok, why){
   const n = $("dbNote");
   n.innerHTML = "";
@@ -338,4 +245,4 @@ function dbState(ok, why){
     : " Not connected (" + why + "). The reference tabs still work; edits will not save."));
 }
 
-export { dbState, drop, patch, put, putNew, supabaseStore, whenChanged, wire };
+export { dbState, drop, openLedger, patch, put, putNew, whenChanged };
