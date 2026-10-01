@@ -56,6 +56,12 @@
     --shadow:0 1px 2px rgb(0 0 0 / 40%), 0 8px 24px -12px rgb(0 0 0 / 70%);
   }
 }
+/* THE SAME DARK VALUES TWICE, ON PURPOSE: once for the system setting and
+   once for the button. CSS cannot OR a media query with a selector, and
+   light-dark() - the one-block way - leaves a browser older than Safari
+   17.5 or Chrome 123 with no colours at all, while the app is meant to
+   work in most browsers. Change one block, change the other. */
+/* jscpd:ignore-start */
 :root[data-theme="dark"]{
   --ground:#0A1012; --surface:#121A1C; --sunk:#0E1618; --gold-ink:#C79A2E;
   --line:#222F31; --line-hard:#35494B;
@@ -69,5 +75,6 @@
   --good:#5CBE7C;
   --shadow:0 1px 2px rgb(0 0 0 / 40%), 0 8px 24px -12px rgb(0 0 0 / 70%);
 }
+/* jscpd:ignore-end */
 
 *{box-sizing:border-box}

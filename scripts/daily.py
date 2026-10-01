@@ -143,7 +143,7 @@ SOURCE_CHECKS = [
     # expand their own globs, so no shell is involved.
     (["node_modules/stylelint/bin/stylelint.mjs", "tracker/src/styles/*.css"],
      "no CSS lint finding comes back once it is fixed"),
-    (["node_modules/html-validate/bin/html-validate.mjs", "tracker/src/markup/*.html"],
+    (["node_modules/html-validate/bin/html-validate.mjs", "tracker/src/markup/**/*.html"],
      "no HTML lint finding comes back once it is fixed"),
 ]
 
@@ -171,6 +171,7 @@ BROWSER_TESTS = [
     # the seam twice: a bright line across every retyping card, never seen in
     # Edge. The tints run at 179.9deg; this fails if one goes back to 180.
     ("tintdirtest.js",    "no card tint is an exact vertical"),
+    ("tokenstest.js",     "both dark-theme blocks define the same tokens"),
     # A <select> of one option never fires its own onchange, so every
     # single-ability species - Aegislash, Clawitzer, and all 81 Megas - showed
     # the right ability and saved null. Pins both halves of the rule: one

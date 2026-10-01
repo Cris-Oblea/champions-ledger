@@ -126,9 +126,10 @@ function styles() {
 
 function markup() {
   const dir = path.join(ROOT, "tracker", "src", "markup");
-  return fs.readFileSync(path.join(dir, "index.html"), "utf8")
-    .replace(/^[ \t]*<!--#include ([\w.-]+) -->\r?\n/gm,
-             (m, name) => fs.readFileSync(path.join(dir, name), "utf8"));
+  /* twice: the fragments, then the parts/ pieces the fragments include */
+  const include = html => html.replace(/^[ \t]*<!--#include ([\w./-]+) -->\r?\n/gm,
+    (m, name) => fs.readFileSync(path.join(dir, name), "utf8"));
+  return include(include(fs.readFileSync(path.join(dir, "index.html"), "utf8")));
 }
 
 /* The stub: the shape supabase-js presents to the app (ui/signin.js and
