@@ -341,6 +341,8 @@ runs in four places: the `pre-push` hook, every pull request, every push to
 - **The browser tests** in `tests/`: each loads the **built**
   `dist/index.html` into jsdom through `open()` in `tests/harness.js`, with a
   fake Supabase that records every write, and clicks through the real UI.
+  Every assertion is `check()` from the same file, one `node:test` test, so a
+  failure fails the file through Node's own runner.
   `tests/fixture.js` is the awkward, fully stocked ledger the widest one boots
   on.
 

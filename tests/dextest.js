@@ -11,16 +11,8 @@
    The rule this pins down is the one that is easy to get backwards: a species
    already in HOME is DONE even when a copy is also welded into the Champions
    box, because the HOME copy is the one that makes the slot elastic. */
-const ROOT = require("path").join(__dirname, "..") + "/";
+const { check, open } = require("./harness.js");
 const UID = "u1";
-
-let bad = 0;
-const ok = (label, got, want) => {
-  const good = String(got) === String(want);
-  if (!good) bad++;
-  console.log("  " + (good ? "OK  " : "FAIL") + "  " + label.padEnd(52) +
-              got + (good ? "" : "   (esperado " + want + ")"));
-};
 
 const row = (id, name, location, status, origin) => ({user_id:UID, id, name,
   location, status, origin, note:"", ord:0, updated_at:"2026-09-21",
@@ -42,7 +34,7 @@ const ROWS = [
   row("celebi",   "Celebi",    "home",      "permanent", "home"),
 ];
 
-const { dom, errs } = require("./harness.js").open(ROOT, { box: ROWS });
+const { dom, errs } = open({ box: ROWS });
 const w = dom.window, d = w.document;
 const pane = k => [...d.querySelectorAll(".homeseg button")]
   .find(b => b.dataset.home === k);
@@ -58,29 +50,29 @@ setTimeout(() => {
   w.go("home");
 
   console.log("\n  tres paneles, un selector");
-  ok("empieza en la caja", d.getElementById("homePaneBox").hidden, false);
+  check("empieza en la caja", d.getElementById("homePaneBox").hidden, false);
   pane("gts").click();
-  ok("GTS se abre", d.getElementById("homePaneGts").hidden, false);
-  ok("...y la caja se cierra", d.getElementById("homePaneBox").hidden, true);
+  check("GTS se abre", d.getElementById("homePaneGts").hidden, false);
+  check("...y la caja se cierra", d.getElementById("homePaneBox").hidden, true);
   pane("dex").click();
-  ok("Dex se abre", d.getElementById("homePaneDex").hidden, false);
-  ok("...y GTS se cierra", d.getElementById("homePaneGts").hidden, true);
+  check("Dex se abre", d.getElementById("homePaneDex").hidden, false);
+  check("...y GTS se cierra", d.getElementById("homePaneGts").hidden, true);
 
   console.log("\n  que falta, y en que orden");
   /* 264 = el dex sin las megas. Una mega no se obtiene, se crea con su piedra,
      asi que no puede estar en una lista de capturas. */
-  ok("el objetivo es el dex sin megas",
+  check("el objetivo es el dex sin megas",
      w.CHAMP.DEX.filter(p => !p[4]).length, 264);
-  ok("cuatro especies son suyas", /4 of 264/.test(
+  check("cuatro especies son suyas", /4 of 264/.test(
      d.getElementById("dexDone").textContent), true);
-  ok("faltan 260", d.getElementById("nDexMissing").textContent, 260);
+  check("faltan 260", d.getElementById("nDexMissing").textContent, 260);
 
   console.log("\n  y los que SI tienes en Champions son objetivos de GTS");
   /* EL LISTADO DE LO QUE TIENE EN CHAMPIONS NO ES UNA CHECKLIST. Se ve en la
      Champions Box; lo que la caja no puede decir es con que cambiarlo
      (player, 2026-09-21: "el listado de champions se puede usar como
      recomendaciones de cambio en el gts"). */
-  ok("la lista de 'libera slot' ya no esta en Dex",
+  check("la lista de 'libera slot' ya no esta en Dex",
      !!d.getElementById("listDexFree"), false);
   pane("gts").click();
   /* LAS CARDS SON LOS CHIPS, NO LOS OBJETIVOS. Se lee desde HOME: lo que su
@@ -88,67 +80,67 @@ setTimeout(() => {
      especie que Champions no puede usar. Los objetivos van en la linea
      "Ask for", y el que libera slot va marcado. */
   const chips = names("listGtsWant");
-  ok("Dragonite es un chip: duplicado dentro de HOME",
+  check("Dragonite es un chip: duplicado dentro de HOME",
      chips.indexOf("Dragonite") >= 0, true);
   /* Y GARCHOMP NO, aunque haya dos filas. Una es de origen Champions y esa
      no puede salir del juego nunca, asi que no puede ser la copia que se
      queda - la de HOME es la unica de verdad (player, 2026-09-21: "los
      duplicados solo se cuentan cuando el origen es home. cuando el origen es
      champions sea permanente o rental no cuentan para duplicado"). */
-  ok("Garchomp no, su segunda copia es de origen Champions",
+  check("Garchomp no, su segunda copia es de origen Champions",
      chips.indexOf("Garchomp") >= 0, false);
-  ok("Aggron no es un chip, es un objetivo",
+  check("Aggron no es un chip, es un objetivo",
      chips.indexOf("Aggron") >= 0, false);
   const asks = [...d.querySelectorAll("#listGtsWant .st")]
     .map(x => x.textContent).join(" ");
-  ok("y aparece como algo que pedir", /Aggron/.test(asks), true);
+  check("y aparece como algo que pedir", /Aggron/.test(asks), true);
   /* LO QUE SE PIDE ES JUGABLE, SIEMPRE. Cambiar por algo que Champions no
      puede usar compra una fila de HOME y nada mas (player, 2026-09-21: "no
      quiero cambiar por pokemones que no pueda usar"). */
-  ok("y nunca se propone pedir algo que Champions no tiene",
+  check("y nunca se propone pedir algo que Champions no tiene",
      [...d.querySelectorAll("#listGtsWant .st .tag")]
        .every(t => !!w.byName[t.textContent]), true);
   /* EL FILTRO, que es la pregunta con la que abre la pantalla */
   const wantTog = v => [...d.querySelectorAll("#gtsWantFilter button")]
     .find(b => b.dataset.want === v);
-  ok("hay filtro por los que no puede usar", !!wantTog("outside"), true);
-  ok("Melmetal no se recomienda: el GTS no lo acepta",
+  check("hay filtro por los que no puede usar", !!wantTog("outside"), true);
+  check("Melmetal no se recomienda: el GTS no lo acepta",
      names("listGtsWant").indexOf("Melmetal") >= 0, false);
-  ok("y se dice, no se esconde",
+  check("y se dice, no se esconde",
      /Melmetal/.test(d.getElementById("gtsWantSub").textContent), true);
   /* Celebi si se lista - un dato no es una regla - pero al final y avisando */
   const celebi = [...d.querySelectorAll("#listGtsWant .row.card")]
     .find(c => [...c.querySelector(".rname").childNodes]
       .filter(n => n.nodeType === 3).map(n => n.textContent).join("").trim()
         === "Celebi");
-  ok("Celebi sigue en la lista", !!celebi, true);
-  ok("...avisando de que el GTS puede rechazarlo",
+  check("Celebi sigue en la lista", !!celebi, true);
+  check("...avisando de que el GTS puede rechazarlo",
      !!celebi && /GTS may refuse it/.test(celebi.textContent), true);
   wantTog("outside").dispatchEvent(new w.MouseEvent("click", {bubbles:true}));
-  ok("y deja solo esos",
+  check("y deja solo esos",
      names("listGtsWant").every(n => !w.byName[n]), true);
   wantTog("all").dispatchEvent(new w.MouseEvent("click", {bubbles:true}));
-  ok("marcado como que libera slot",
+  check("marcado como que libera slot",
      !!d.querySelector("#listGtsWant .tag.ok"), true);
-  ok("el record sale de sus propios trades cerrados",
+  check("el record sale de sus propios trades cerrados",
      /closed trades/.test(d.getElementById("gtsWantSub").textContent) ||
      !w.CHAMP_GTS_ROWS, true);
   pane("dex").click();
 
   /* EL CASO QUE IMPORTA: Garchomp esta en la caja Y en HOME, y ninguna de las
      dos listas debe pedirlo. */
-  ok("Garchomp no aparece entre los que faltan",
+  check("Garchomp no aparece entre los que faltan",
      names("listDexMissing").indexOf("Garchomp") >= 0, false);
-  ok("Aggron tampoco, lo tienes en Champions",
+  check("Aggron tampoco, lo tienes en Champions",
      names("listDexMissing").indexOf("Aggron") >= 0, false);
-  ok("Dragonite tampoco, solo vive en HOME",
+  check("Dragonite tampoco, solo vive en HOME",
      names("listDexMissing").indexOf("Dragonite") >= 0, false);
 
   console.log("\n  el filtro");
   const inp = d.getElementById("dexFilter");
   inp.value = "aggron";
   inp.dispatchEvent(new w.Event("input", {bubbles:true}));
-  ok("filtra a nada, porque Aggron no falta",
+  check("filtra a nada, porque Aggron no falta",
      !!d.querySelector("#listDexMissing .empty"), true);
   /* el nombre sale de la propia lista, para que el test no dependa de que
      tal especie este o no en el roster de Champions */
@@ -157,10 +149,10 @@ setTimeout(() => {
   const one = names("listDexMissing")[0];
   inp.value = one.toLowerCase();
   inp.dispatchEvent(new w.Event("input", {bubbles:true}));
-  ok("y encuentra lo que si falta", names("listDexMissing").join(","), one);
+  check("y encuentra lo que si falta", names("listDexMissing").join(","), one);
   inp.value = "";
   inp.dispatchEvent(new w.Event("input", {bubbles:true}));
-  ok("y se deshace", d.getElementById("nDexMissing").textContent, 260);
+  check("y se deshace", d.getElementById("nDexMissing").textContent, 260);
 
   console.log("\n  HOME aguanta cualquier nombre");
   /* Oinkologne vive en HOME y no en Champions, y PokeAPI no tiene fila
@@ -172,20 +164,18 @@ setTimeout(() => {
   ["Oinkologne", "Oinkologne-F", "Deoxys", "Giratina", "Shaymin", "Meloetta",
    "Keldeo", "Wormadam", "Darmanitan", "Minior", "Enamorus", "Dudunsparce",
    "Frillish", "Jellicent"].forEach(function(n){
-    ok(n + " tiene fila", !!(hd[n] && hd[n].b && hd[n].b[0]), true);
+    check(n + " tiene fila", !!(hd[n] && hd[n].b && hd[n].b[0]), true);
   });
-  ok("y la hembra no es el macho", (hd["Oinkologne-F"] || {b:[]}).b.join("/"),
+  check("y la hembra no es el macho", (hd["Oinkologne-F"] || {b:[]}).b.join("/"),
      "115/90/70/59/90/65");
   /* y una fila que no existe en ningun dex abre ficha en vez de tirar error */
   w.pokeSheet({name:"Syclant", location:"home", status:"permanent",
                origin:"home", _id:"cap"});
-  ok("un nombre que no conoce ningun dex no rompe la ficha",
+  check("un nombre que no conoce ningun dex no rompe la ficha",
      !!d.getElementById("sheetBody"), true);
-  ok("...y lo dice", /not in any dex/.test(
+  check("...y lo dice", /not in any dex/.test(
      d.getElementById("sheetBody").textContent), true);
   w.closeSheet();
 
-  errs.forEach(e => console.log("  jsdom: " + e));
-  console.log(bad ? "\n  " + bad + " FALLAN\n" : "\n  todo bien\n");
-  process.exit(bad ? 1 : 0);
+  check("la pagina no reporta errores de script", errs.join(" | ") || "ninguno", "ninguno");
 }, 1200);

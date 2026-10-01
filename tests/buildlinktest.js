@@ -13,20 +13,8 @@
    Released now UNBINDS rather than deletes. The fixtures below cover all four
    states, including two builds on one Pokemon - the case the old model could
    not represent. */
-/* the repo, found from this file - NOT a hardcoded path. Every test in
-   here carried an absolute Windows path, so none of them had ever run
-   anywhere but one laptop, and all fifteen died instantly the first time
-   CI tried (2026-09-13). */
-const ROOT = require("path").join(__dirname, "..") + "/";
+const { check, open } = require("./harness.js");
 const UID = "u1";
-
-let bad = 0;
-const ok = (label, got, want) => {
-  const good = String(got) === String(want);
-  if (!good) bad++;
-  console.log("  " + (good ? "OK  " : "FAIL") + "  " + label.padEnd(48) +
-              got + (good ? "" : "   (esperado " + want + ")"));
-};
 
 const row = (id, name, location, origin, extra) => Object.assign(
   {user_id:UID, id, name, location, status:"permanent", origin, note:"", ord:0,
@@ -61,7 +49,7 @@ const BUILDS = [build("garchomp","Garchomp"), build("dragonite","Dragonite"),
                 build("garchomp-2","Garchomp", "garchomp"),
                 build("kingambit-idea","Kingambit", null)];
 
-const { dom, errs } = require("./harness.js").open(ROOT, { box: ROWS, builds: BUILDS });
+const { dom, errs } = open({ box: ROWS, builds: BUILDS });
 /* The app asks with its OWN dialog now, not the operating system's, so there
    is nothing to stub: the question is in the DOM and the test answers it by
    clicking, which is what a person does too. A confirm() stub left here would
@@ -73,11 +61,11 @@ const tags = n => [...n.querySelectorAll(".tag")].map(t => t.textContent);
 
 setTimeout(() => {
   console.log("\n  el estado de cada build");
-  ok("garchomp (en la caja) = activa", w.buildLink("garchomp").state, "active");
-  ok("dragonite (en HOME) = aparcada", w.buildLink("dragonite").state, "parked");
-  ok("sylveon (HOME origin, en la caja) = activa",
+  check("garchomp (en la caja) = activa", w.buildLink("garchomp").state, "active");
+  check("dragonite (en HOME) = aparcada", w.buildLink("dragonite").state, "parked");
+  check("sylveon (HOME origin, en la caja) = activa",
      w.buildLink("sylveon").state, "active");
-  ok("camerupt (sin Pokemon) = huerfana", w.buildLink("camerupt").state, "orphan");
+  check("camerupt (sin Pokemon) = huerfana", w.buildLink("camerupt").state, "orphan");
 
   w.go("builds");
   const rows = [...d.querySelectorAll("#listBuilds .row")];
@@ -87,17 +75,17 @@ setTimeout(() => {
   const by = n => rows.find(r => ((r.querySelector(".rname") || r)
     .textContent.trim().indexOf(n) === 0));
   console.log("\n  como se ven en la lista");
-  ok("Garchomp sin avisos",
+  check("Garchomp sin avisos",
      tags(by("Garchomp")).filter(t => /HOME|orphan/.test(t)).length, 0);
-  ok("Dragonite dice que esta en HOME",
+  check("Dragonite dice que esta en HOME",
      tags(by("Dragonite")).indexOf("in HOME — inactive") >= 0, true);
-  ok("Camerupt dice huerfana",
+  check("Camerupt dice huerfana",
      tags(by("Camerupt")).indexOf("orphan — no Pokemon") >= 0, true);
   /* unbound is not a fault, and the two cases read differently: a set waiting
      for one of your copies, against a set for a species you do not have */
-  ok("Kingambit dice que es una idea sin Pokemon",
+  check("Kingambit dice que es una idea sin Pokemon",
      tags(by("Kingambit")).indexOf("an idea — you have none yet") >= 0, true);
-  ok("y la segunda Garchomp sigue activa (dos builds, un Pokemon)",
+  check("y la segunda Garchomp sigue activa (dos builds, un Pokemon)",
      w.buildLink("garchomp-2").state, "active");
 
   /* releasing the Pokemon must take the build with it */
@@ -108,7 +96,7 @@ setTimeout(() => {
   setTimeout(() => {
     const rel = [...d.querySelectorAll(".sheet button")]
       .find(b => b.textContent === "Release");
-    ok("hay boton Release", !!rel, true);
+    check("hay boton Release", !!rel, true);
     click(rel);
     setTimeout(() => {
       console.log("\n  al liberar");
@@ -120,37 +108,35 @@ setTimeout(() => {
          keeps them - and garchomp carries TWO, which is the case the old
          one-build-per-row model could not produce. */
       /* THE APP'S OWN QUESTION, not the operating system's. */
-      ok("pregunta con el dialogo propio",
+      check("pregunta con el dialogo propio",
          d.getElementById("askScrim").hidden, false);
       const asked = d.getElementById("askTitle").textContent + " " +
                     d.getElementById("askBody").textContent;
-      ok("y el boton seguro es el que tiene el foco",
+      check("y el boton seguro es el que tiene el foco",
          d.activeElement === d.getElementById("askNo"), true);
-      ok("avisa de que las builds se conservan",
+      check("avisa de que las builds se conservan",
          /will be KEPT as ideas/.test(asked), true);
-      ok("...y dice cuantas", /2 builds/.test(asked), true);
+      check("...y dice cuantas", /2 builds/.test(asked), true);
       /* answered the way a person answers it */
       click(d.getElementById("askYes"));
-      ok("y se cierra al responder",
+      check("y se cierra al responder",
          d.getElementById("askScrim").hidden, true);
       /* The release only STARTS when the question is answered, so the writes
          land a tick later - the old native confirm() returned inline and the
          assertions could follow it straight away. */
       setTimeout(() => {
-        ok("borra la fila de la caja",
+        check("borra la fila de la caja",
            w.__DELETED.some(x => x.table === "box" && x.col === "id" && x.id === "garchomp"), true);
-        ok("NO borra ninguna build",
+        check("NO borra ninguna build",
            w.__DELETED.filter(x => x.table === "builds" && x.col === "id").length, 0);
         const wroteBuilds = w.__WROTE.filter(x => x.table === "builds");
         const unbound = wroteBuilds.filter(x => x.row.box_id === null)
           .map(x => x.row.id).sort();
-        ok("desata las dos de ese Pokemon", unbound.join(","), "garchomp,garchomp-2");
-        ok("y no toca la de otro",
+        check("desata las dos de ese Pokemon", unbound.join(","), "garchomp,garchomp-2");
+        check("y no toca la de otro",
            wroteBuilds.some(x => x.row.id === "dragonite"), false);
 
-        console.log("\n  ERRORES JS: " + (errs.length ? errs.join(" | ") : "ninguno"));
-        console.log(bad ? "\n  " + bad + " FALLOS\n" : "\n  todo bien\n");
-        process.exit(bad || errs.length ? 1 : 0);
+        check("la pagina no reporta errores de script", errs.join(" | ") || "ninguno", "ninguno");
       }, 400);
     }, 500);
   }, 400);

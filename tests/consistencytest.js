@@ -15,29 +15,18 @@
    every key it will be asked for is there, and re-checks the two code smells
    in the built file. It is a sweep, not a sample, because a sample missed 24
    of those 25 forms. */
-/* the repo, found from this file - NOT a hardcoded path. Every test in
-   here carried an absolute Windows path, so none of them had ever run
-   anywhere but one laptop, and all fifteen died instantly the first time
-   CI tried (2026-09-13). */
-const ROOT = require("path").join(__dirname, "..") + "/";
+const { check, open, page, source } = require("./harness.js");
 
-let bad = 0;
-const ok = (label, got, want) => {
-  const good = String(got) === String(want);
-  if (!good) bad++;
-  console.log("  " + (good ? "OK  " : "FAIL") + "  " + label.padEnd(52) +
-              got + (good ? "" : "   (esperado " + want + ")"));
-};
 const list = (a, n = 6) => {
   if (!a.length) return "0";
   const more = a.length > n ? " (+" + (a.length - n) + ")" : "";
   return a.slice(0, n).join(", ") + more;
 };
 
-const src = require("./harness.js").page(ROOT);
+const src = page();
 /* the code smells below are about the SOURCE, so they read the source */
-const code = require("./harness.js").source(ROOT);
-const { dom, errs } = require("./harness.js").open(ROOT);
+const code = source();
+const { dom, errs } = open();
 const w = dom.window;
 
 setTimeout(() => {
@@ -50,9 +39,9 @@ setTimeout(() => {
     for (const [, name] of code.matchAll(re)) (seen.has(name) ? dup : seen).add(name);
     return [...dup];
   };
-  ok("ningun var declarado dos veces",
+  check("ningun var declarado dos veces",
      list(twice(/^var ([A-Za-z_$][\w$]*)\s*=/gm)), "0");
-  ok("ninguna funcion declarada dos veces",
+  check("ninguna funcion declarada dos veces",
      list(twice(/^function ([A-Za-z_$][\w$]*)\s*\(/gm)), "0");
   /* the drawItems bug: a guard that skips the redraw when focus is inside the
      container it is about to rebuild. Legitimate for a form of text inputs
@@ -66,8 +55,8 @@ setTimeout(() => {
     return /activeElement/.test(l) && /\breturn\b/.test(l) &&
            !/^\s*\/?\*/.test(l);
   });
-  ok("solo queda un guard de redibujado", guards.length, 1);
-  ok("y es el de la pestaña Trainer",
+  check("solo queda un guard de redibujado", guards.length, 1);
+  check("y es el de la pestaña Trainer",
      guards.join(" ").indexOf("#v-trainer") >= 0, true);
 
   /* A CARD MUST SAY WHERE ITS CONTENTS START.
@@ -89,9 +78,9 @@ setTimeout(() => {
   /* the top-level rule, at the start of a line - not one indented inside a
      media query, which can come earlier in the file */
   const cardRule = (css.match(/(?:^|\n)\.row\.card\{[^}]*\}/) || [""])[0];
-  ok("existe la regla .row.card", !!cardRule, true);
-  ok("dice hacia donde apila", /flex-direction:\s*column/.test(cardRule), true);
-  ok("y donde empieza el contenido",
+  check("existe la regla .row.card", !!cardRule, true);
+  check("dice hacia donde apila", /flex-direction:\s*column/.test(cardRule), true);
+  check("y donde empieza el contenido",
      /justify-content:\s*flex-start/.test(cardRule), true);
 
   /* THE INTROS FOLD, AND NOTHING IS LOST WHEN THEY DO.
@@ -111,31 +100,31 @@ setTimeout(() => {
   const d = w.document;
   const ledes = [...d.querySelectorAll(".view .lede, .view > .sub")];
   const folded = ledes.filter(p => p.dataset.folded);
-  ok("hay textos plegados", folded.length >= 3, true);
-  ok("y el de Builds es uno de ellos",
+  check("hay textos plegados", folded.length >= 3, true);
+  check("y el de Builds es uno de ellos",
      !!d.querySelector("#v-builds .lede .whybtn"), true);
   const bl = d.querySelector("#v-builds .lede");
-  ok("la primera frase sigue visible",
+  check("la primera frase sigue visible",
      /A set is its own thing/.test(bl.firstChild.textContent), true);
   /* NOT DELETED - one tap away, and in the page for anyone reading source */
-  ok("el resto sigue en el DOM",
+  check("el resto sigue en el DOM",
      /66 Stat Points/.test(bl.querySelector(".more").textContent), true);
-  ok("pero oculto de entrada", bl.querySelector(".more").hidden, true);
-  ok("el boton dice cuantas palabras esconde",
+  check("pero oculto de entrada", bl.querySelector(".more").hidden, true);
+  check("el boton dice cuantas palabras esconde",
      /^why \(\d+ words\)$/.test(bl.querySelector(".whybtn").textContent), true);
   bl.querySelector(".whybtn").dispatchEvent(
     new w.MouseEvent("click", {bubbles:true}));
-  ok("y al pulsarlo se abre", bl.querySelector(".more").hidden, false);
-  ok("...diciendo como cerrarlo", bl.querySelector(".whybtn").textContent,
+  check("y al pulsarlo se abre", bl.querySelector(".more").hidden, false);
+  check("...diciendo como cerrarlo", bl.querySelector(".whybtn").textContent,
      "less");
   /* ---- every key the page will ask for, in every table ---------------- */
   console.log("\n  las tablas, barridas");
   const DEX = C.DEX, names = {}, species = {};
   DEX.forEach(r => { names[r[0]] = r; species[r[1]] = 1; });
 
-  ok("cada forma tiene movepool",
+  check("cada forma tiene movepool",
      list(DEX.map(r => r[0]).filter(n => !(w.learnset(n) || []).length)), "0");
-  ok("cada forma tiene tipos con color",
+  check("cada forma tiene tipos con color",
      list(DEX.filter(r => r[2].some(t => !(w.TYPE_COLOR||{})[t])).map(r => r[0])), "0");
   /* THE COLOURS ARE FETCHED, NOT TYPED, and this is what stops them being
      typed again. All eighteen used to be hand-written and darkened so white
@@ -146,25 +135,25 @@ setTimeout(() => {
      Three facts per type, all three from pokemon.com's own rule: the colour,
      the second tone, and the ink that type's name is written in. */
   const TC = C.TYPE_COLORS || {};
-  ok("la tabla de colores viaja en el payload", Object.keys(TC).length >= 18, true);
-  ok("y cada color del app sale de ella",
+  check("la tabla de colores viaja en el payload", Object.keys(TC).length >= 18, true);
+  check("y cada color del app sale de ella",
      list(Object.keys(w.TYPE_COLOR || {})
        .filter(t => !TC[t] || TC[t].top !== w.TYPE_COLOR[t])), "0");
-  ok("Fire es el oficial, no el oscurecido",
+  check("Fire es el oficial, no el oscurecido",
      (w.TYPE_COLOR || {}).Fire, "#FD7D24");
   /* the three the player spotted before the script did */
-  ok("Dragon, Flying y Ground son de dos tonos",
+  check("Dragon, Flying y Ground son de dos tonos",
      Object.keys(TC).filter(t => TC[t].two_tone).sort().join(","),
      "Dragon,Flying,Ground");
-  ok("y los demas repiten su color",
+  check("y los demas repiten su color",
      list(Object.keys(TC).filter(t => !TC[t].two_tone &&
        w.TYPE_COLOR2[t] !== w.TYPE_COLOR[t])), "0");
   /* the ink is a decision pokemon.com already made, and reading it is what
      lets the app keep the true colour instead of darkening it */
-  ok("ocho tipos se escriben en negro",
+  check("ocho tipos se escriben en negro",
      Object.keys(TC).filter(t => TC[t].ink !== "#FFFFFF").sort().join(","),
      "Electric,Fairy,Flying,Grass,Ground,Ice,Normal,Steel");
-  ok("y cada tipo tiene tinta", list(Object.keys(TC)
+  check("y cada tipo tiene tinta", list(Object.keys(TC)
      .filter(t => !/^#[0-9A-F]{6}$/.test(w.TYPE_INK[t] || ""))), "0");
   /* NADA INVENTADO. A Stellar row was added here first, because the type is in
      the chart and a missing colour paints something grey. The player settled
@@ -173,23 +162,23 @@ setTimeout(() => {
      which inherits from Scarlet/Violet. Champions has no Terastallization and
      no Pokemon carries the type. So the palette is exactly the eighteen
      pokemon.com publishes, and this asserts nobody adds a nineteenth. */
-  ok("los 18 y nada mas", Object.keys(TC).length, 18);
-  ok("ninguno inventado", list(Object.keys(TC).filter(t => !TC[t].official)), "0");
-  ok("Stellar no tiene color, porque no existe aqui",
+  check("los 18 y nada mas", Object.keys(TC).length, 18);
+  check("ninguno inventado", list(Object.keys(TC).filter(t => !TC[t].official)), "0");
+  check("Stellar no tiene color, porque no existe aqui",
      !!(w.TYPE_COLOR || {}).Stellar, false);
-  ok("cada habilidad del dex tiene texto",
+  check("cada habilidad del dex tiene texto",
      list([...new Set([].concat.apply([], DEX.map(r => r[5] || [])))]
        .filter(a => !C.ABIL[a])), "0");
-  ok("cada habilidad del dex esta clasificada",
+  check("cada habilidad del dex esta clasificada",
      list([...new Set([].concat.apply([], DEX.map(r => r[5] || [])))]
        .filter(a => !(C.AB_CLASS || {})[a])), "0");
-  ok("cada Mega tiene piedra",
+  check("cada Mega tiene piedra",
      list(C.STONES.filter(r => !r[0]).map(r => r[1])), "0");
-  ok("cada piedra apunta a un Mega que existe",
+  check("cada piedra apunta a un Mega que existe",
      list(C.STONES.filter(r => !names[r[1]]).map(r => r[1])), "0");
-  ok("cada forma tiene numero de dex",
+  check("cada forma tiene numero de dex",
      list(DEX.filter(r => !r[6] && !(C.DEXNO || {})[r[1]]).map(r => r[0])), "0");
-  ok("cada forma resuelve un nombre en el motor de Smogon",
+  check("cada forma resuelve un nombre en el motor de Smogon",
      list(DEX.map(r => r[0]).filter(n => !(C.SMOGON_NAME || {})[n] &&
                                          !(C.AEGIS || {})[n] &&
                                          !/Aegislash/.test(n))), "0");
@@ -201,22 +190,22 @@ setTimeout(() => {
      Floette-ETERNAL. */
   console.log("\n  cada Mega, en la forma que sostiene la piedra");
   const megaNames = DEX.filter(r => r[4]).map(r => r[0]);
-  ok("ninguna Mega se queda sin dueño",
+  check("ninguna Mega se queda sin dueño",
      list(megaNames.filter(m => !Object.keys(C.MEGA_OWNER || {})
        .some(k => C.MEGA_OWNER[k].indexOf(m) >= 0))), "0");
-  ok("ninguna forma alternativa hereda Megas de su base",
+  check("ninguna forma alternativa hereda Megas de su base",
      list(DEX.filter(r => r[0] !== r[1] && !r[4]).filter(function(r){
        const offered = (w.megasFor(r[0]) || []).map(x => x.name);
        const own = (C.MEGA_OWNER || {})[r[0]] || [];
        return offered.some(m => own.indexOf(m) < 0);
      }).map(r => r[0])), "0");
-  ok("Raichu-Alola no puede Mega Evolucionar",
+  check("Raichu-Alola no puede Mega Evolucionar",
      (w.megasFor("Raichu-Alola") || []).length, 0);
-  ok("Slowbro-Galar tampoco", (w.megasFor("Slowbro-Galar") || []).length, 0);
-  ok("Raichu si, con sus dos", (w.megasFor("Raichu") || []).length, 2);
-  ok("Mega Floette es de Floette-Eternal",
+  check("Slowbro-Galar tampoco", (w.megasFor("Slowbro-Galar") || []).length, 0);
+  check("Raichu si, con sus dos", (w.megasFor("Raichu") || []).length, 2);
+  check("Mega Floette es de Floette-Eternal",
      ((C.MEGA_OWNER || {})["Floette-Eternal"] || []).join(","), "Mega Floette");
-  ok("ninguna clave repite una Mega",
+  check("ninguna clave repite una Mega",
      list(Object.keys(C.MEGA_OWNER || {}).filter(k =>
        new Set(C.MEGA_OWNER[k]).size !== C.MEGA_OWNER[k].length)), "0");
 
@@ -230,10 +219,10 @@ setTimeout(() => {
       return (C.COSMETIC[k] || []).indexOf(n) >= 0;
     });
   });
-  ok("ninguna grafia alternativa se ofrece como HOME-only", list(spellings), "0");
-  ok("Indeedee-F no esta en HOME_ONLY",
+  check("ninguna grafia alternativa se ofrece como HOME-only", list(spellings), "0");
+  check("Indeedee-F no esta en HOME_ONLY",
      (C.HOME_ONLY || []).indexOf("Indeedee-F") >= 0, false);
-  ok("los colores de Squawkabilly tampoco",
+  check("los colores de Squawkabilly tampoco",
      (C.HOME_ONLY || []).filter(n => n.indexOf("Squawkabilly-") === 0).length, 0);
   /* They used to be listed here as three cosmetic spellings of one entry. They
      are not: the plumage is fixed when you catch the bird and it decides the
@@ -241,17 +230,17 @@ setTimeout(() => {
      collapsing them had left Sheer Force with no carrier in the database at
      all (player, 2026-09-12). Each is its own dex row now, so none of them may
      be filed as a spelling of another. */
-  ok("las plumas NO son grafias cosmeticas",
+  check("las plumas NO son grafias cosmeticas",
      ((C.COSMETIC || {})["Squawkabilly"] || []).length, 0);
-  ok("cada pluma es su propia fila del dex",
+  check("cada pluma es su propia fila del dex",
      ["Squawkabilly", "Squawkabilly-Blue", "Squawkabilly-Yellow",
       "Squawkabilly-White"].filter(n =>
         C.DEX.some(r => r[0] === n)).length, 4);
-  ok("y los cuatro tamanos de Gourgeist tambien",
+  check("y los cuatro tamanos de Gourgeist tambien",
      ["Gourgeist", "Gourgeist-Small", "Gourgeist-Large",
       "Gourgeist-Jumbo"].filter(n =>
         C.DEX.some(r => r[0] === n)).length, 4);
-  ok("ninguna Mega se cuela como grafia cosmetica",
+  check("ninguna Mega se cuela como grafia cosmetica",
      list(Object.keys(C.COSMETIC || {}).filter(k =>
        (C.COSMETIC[k] || []).some(n => /-Mega/.test(n)))), "0");
 
@@ -264,19 +253,19 @@ setTimeout(() => {
       if (!C.MOVES[i]) badMove.push(a + "[" + i + "]");
     });
   });
-  ok("cada indice de la tabla de habilidades apunta a un movimiento",
+  check("cada indice de la tabla de habilidades apunta a un movimiento",
      list(badMove), "0");
-  ok("cada movimiento que un item sirve existe",
+  check("cada movimiento que un item sirve existe",
      list(Object.keys(C.ITEM_FOR_MOVE || {}).filter(n => !moveNames[n])), "0");
-  ok("cada habilidad que un item sirve existe",
+  check("cada habilidad que un item sirve existe",
      list(Object.keys(C.ITEM_FOR_ABILITY || {}).filter(a => !C.ABIL[a])), "0");
-  ok("cada movimiento que causa estado existe",
+  check("cada movimiento que causa estado existe",
      list([].concat.apply([], Object.keys(C.STATUSES || {})
        .map(s => C.STATUSES[s].moves || [])).filter(n => !moveNames[n])), "0");
-  ok("cada learnset apunta a movimientos reales",
+  check("cada learnset apunta a movimientos reales",
      list(Object.keys(C.LEARN).filter(k =>
        C.LEARN[k].some(i => !C.MOVES[i]))), "0");
-  ok("cada alias de learnset apunta a una clave real",
+  check("cada alias de learnset apunta a una clave real",
      list(Object.keys(C.LEARN_ALIAS || {})
        .filter(k => !C.LEARN[C.LEARN_ALIAS[k]])), "0");
 
@@ -287,23 +276,21 @@ setTimeout(() => {
      rest pin the three ways the old line fell short. */
   console.log("\n  lo que hace cada movimiento");
   const txt = n => (w.MOVE_BY[n] || {}).text || "";
-  ok("todo movimiento de Champions tiene descripcion",
+  check("todo movimiento de Champions tiene descripcion",
      list(Object.values(w.MOVE_BY).filter(m => !m.text).map(m => m.name)), "0");
-  ok("Octolock dice que baja Def y SpD cada turno",
+  check("Octolock dice que baja Def y SpD cada turno",
      /Defense and Special Defense are lowered by 1 stage/.test(txt("Octolock")), true);
-  ok("...y como se escapa y cuando termina",
+  check("...y como se escapa y cuando termina",
      /Shed Shell/.test(txt("Octolock")) && /leaves the field/.test(txt("Octolock")),
      true);
-  ok("nada recortado: Fire Spin llega hasta el final",
+  check("nada recortado: Fire Spin llega hasta el final",
      /not stackable/.test(txt("Fire Spin")), true);
-  ok("Freeze-Dry no congela en Champions",
+  check("Freeze-Dry no congela en Champions",
      /freez/i.test(txt("Freeze-Dry")), false);
-  ok("un critico alto dice su numero de Champions",
+  check("un critico alto dice su numero de Champions",
      /12\.5%/.test(txt("Night Slash")), true);
-  ok("Night Shade dice los 50 de nivel 50",
+  check("Night Shade dice los 50 de nivel 50",
      /50 HP/.test(txt("Night Shade")), true);
 
-  console.log("\n  ERRORES JS: " + (errs.length ? errs.join(" | ") : "ninguno"));
-  console.log(bad ? "\n  " + bad + " FALLOS\n" : "\n  todo bien\n");
-  process.exit(bad || errs.length ? 1 : 0);
+  check("la pagina no reporta errores de script", errs.join(" | ") || "ninguno", "ninguno");
 }, 1400);

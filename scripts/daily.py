@@ -619,12 +619,14 @@ def _check_backup_and_shrink(out):
 
 
 def _browser_failure(gout):
-    """A test that ASSERTS wrong prints FAIL lines; a test that CRASHES
-    prints none, and reporting only the former made fifteen failures
+    """A failed check is a line node:test starts with a cross; a test that
+    CRASHES prints none, and reporting only the former made fifteen failures
     read as fifteen blank lines - the cause (a hardcoded Windows path
     in every test file) was invisible in the CI log. Fall back to the
     tail of whatever it did say."""
-    detail = [line for line in gout.splitlines() if line.strip().startswith("FAIL")]
+    detail = list(dict.fromkeys(
+        line.strip() for line in gout.splitlines()
+        if line.startswith("✖") and "failing tests" not in line))
     if not detail:
         detail = [line for line in gout.splitlines() if line.strip()][-5:]
     return detail[:6]

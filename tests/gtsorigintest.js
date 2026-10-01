@@ -14,19 +14,7 @@
 
    And the ones that CAN go: anything in HOME, plus a HOME-origin Pokemon
    sitting in the Champions box, which can be parked back and deposited. */
-/* the repo, found from this file - NOT a hardcoded path. Every test in
-   here carried an absolute Windows path, so none of them had ever run
-   anywhere but one laptop, and all fifteen died instantly the first time
-   CI tried (2026-09-13). */
-const ROOT = require("path").join(__dirname, "..") + "/";
-
-let bad = 0;
-const ok = (label, got, want) => {
-  const good = String(got) === String(want);
-  if (!good) bad++;
-  console.log("  " + (good ? "OK  " : "FAIL") + "  " + label.padEnd(50) +
-              got + (good ? "" : "   (esperado " + want + ")"));
-};
+const { check, open } = require("./harness.js");
 
 const UID = "u1";
 const R = (id, name, loc, origin, status) => ({user_id:UID, id, name,
@@ -51,7 +39,7 @@ const ROWS = [
   R("g8", "Metagross", "home",      "home",      "permanent"),
   R("g9", "Metagross", "champions", "champions", "rental")];
 
-const { dom, errs } = require("./harness.js").open(ROOT, { box: ROWS });
+const { dom, errs } = open({ box: ROWS });
 const w = dom.window, d = w.document;
 
 const nameOf = b => b.querySelector(".rname").firstChild.textContent.trim();
@@ -63,23 +51,23 @@ setTimeout(() => {
     .map(b => b.querySelector(".rname").firstChild.textContent.trim());
 
   console.log("\n  lo que se puede depositar");
-  ok("Sharpedo, que esta en HOME", offered.indexOf("Sharpedo") >= 0, true);
-  ok("Sableye, HOME origin dentro de la caja",
+  check("Sharpedo, que esta en HOME", offered.indexOf("Sharpedo") >= 0, true);
+  check("Sableye, HOME origin dentro de la caja",
      offered.indexOf("Sableye") >= 0, true);
-  ok("y nada mas", offered.length, 5);
+  check("y nada mas", offered.length, 5);
 
   console.log("\n  lo que no puede salir del juego");
-  ok("Garchomp (origen Champions) fuera",
+  check("Garchomp (origen Champions) fuera",
      offered.indexOf("Garchomp") >= 0, false);
-  ok("Sneasler (rental) fuera", offered.indexOf("Sneasler") >= 0, false);
-  ok("Mawile (origen sin registrar) fuera",
+  check("Sneasler (rental) fuera", offered.indexOf("Sneasler") >= 0, false);
+  check("Mawile (origen sin registrar) fuera",
      offered.indexOf("Mawile") >= 0, false);
 
   console.log("\n  y se dice, no se esconde");
   const notes = [...sheet.querySelectorAll("p.sub")].map(p => p.textContent);
-  ok("cuenta los que quedan fuera",
+  check("cuenta los que quedan fuera",
      notes.some(t => /4 more in the Champions box/.test(t)), true);
-  ok("y explica por que",
+  check("y explica por que",
      notes.some(t => /never leave the game/.test(t)), true);
 
   /* ------------------------------------------- la card, y como se ordena */
@@ -88,14 +76,14 @@ setTimeout(() => {
      demas"). Ahora es la misma card que el resto de la app. */
   console.log("\n  la misma card que en todas partes");
   const cards = () => [...sheet.querySelectorAll(".list .row")];
-  ok("cada fila es una card",
+  check("cada fila es una card",
      cards().every(b => / card\b/.test(b.className)), true);
-  ok("con sus seis stats",
+  check("con sus seis stats",
      cards().every(b => !!b.querySelector(".statline")), true);
-  ok("y con su BST", cards().every(b => /BST/.test(b.textContent)), true);
+  check("y con su BST", cards().every(b => /BST/.test(b.textContent)), true);
   /* el que Champions no tiene TAMBIEN, que es justo el que sirve de moneda */
   const bulba = cards().find(b => nameOf(b) === "Bulbasaur");
-  ok("hasta el que no esta en Champions trae numeros",
+  check("hasta el que no esta en Champions trae numeros",
      !!bulba && /318/.test(bulba.textContent), true);
 
   const tog = t => [...sheet.querySelectorAll(".tog")]
@@ -104,20 +92,20 @@ setTimeout(() => {
     .dispatchEvent(new w.MouseEvent("click", {bubbles:true}));
 
   console.log("\n  los dos filtros que esta pantalla existe para responder");
-  ok("hay orden por numero de dex", !!tog("Dex no."), true);
+  check("hay orden por numero de dex", !!tog("Dex no."), true);
   press("Duplicates only");
   /* UN RENTAL NO HACE DUPLICADO. Los dos Sharpedo si lo son; el Metagross de
      HOME esta solo, porque el rental de la caja nunca podra salir del juego y
      por tanto nunca podra ser la copia que se queda. */
-  ok("duplicados: solo los dos Sharpedo",
+  check("duplicados: solo los dos Sharpedo",
      cards().map(nameOf).join(","), "Sharpedo,Sharpedo");
-  ok("Metagross no cuenta como duplicado",
+  check("Metagross no cuenta como duplicado",
      cards().map(nameOf).indexOf("Metagross") >= 0, false);
   press("Duplicates only");
   press("Not in Champions only");
-  ok("fuera del dex: solo Bulbasaur", cards().map(nameOf).join(","), "Bulbasaur");
+  check("fuera del dex: solo Bulbasaur", cards().map(nameOf).join(","), "Bulbasaur");
   press("Not in Champions only");
-  ok("y al soltarlos vuelven los cinco", cards().length, 5);
+  check("y al soltarlos vuelven los cinco", cards().length, 5);
   /* Y LA RED DE SEGURIDAD LEIA EL MISMO NUMERO EQUIVOCADO. El aviso de
      "ultima copia" es lo que atrapa el error que el filtro dejaba pasar, y
      con el rental contado como copia no salia. */
@@ -125,9 +113,9 @@ setTimeout(() => {
     const c = cards().find(b => nameOf(b) === n);
     return c ? [...c.querySelectorAll(".rname .tag")].map(t => t.textContent) : [];
   };
-  ok("el Metagross de HOME avisa de que es la ultima copia",
+  check("el Metagross de HOME avisa de que es la ultima copia",
      badgesOf("Metagross").some(t => /your only one/i.test(t)), true);
-  ok("y un Sharpedo no", badgesOf("Sharpedo").some(t => /your only one/i.test(t)),
+  check("y un Sharpedo no", badgesOf("Sharpedo").some(t => /your only one/i.test(t)),
      false);
 
   console.log("\n  el que no esta en Champions tiene precio, y por tanto consejo");
@@ -137,12 +125,10 @@ setTimeout(() => {
   w.closeSheet();
   w.gtsPickWanted(function(){}, "Bulbasaur", false);
   const wanted = d.getElementById("sheetBody");
-  ok("dice cuanto vale", /is worth about 318/.test(wanted.textContent), true);
-  ok("y propone algo que pedir",
+  check("dice cuanto vale", /is worth about 318/.test(wanted.textContent), true);
+  check("y propone algo que pedir",
      wanted.querySelectorAll(".list .row").length > 0, true);
 
 
-  console.log("\n  ERRORES JS: " + (errs.length ? errs.join(" | ") : "ninguno"));
-  console.log(bad ? "\n  " + bad + " FALLOS\n" : "\n  todo bien\n");
-  process.exit(bad || errs.length ? 1 : 0);
+  check("la pagina no reporta errores de script", errs.join(" | ") || "ninguno", "ninguno");
 }, 1500);
