@@ -20,17 +20,9 @@
    left off for that - which took their picture with them, and with it the
    one thing Hangry Mode really changes: "aura wheel de morpeko cambia de tipo
    el move segun su forma". */
-const ROOT = require("path").join(__dirname, "..") + "/";
+const { check, open } = require("./harness.js");
 
-let bad = 0;
-const ok = (label, got, want) => {
-  const good = String(got) === String(want);
-  if (!good) bad++;
-  console.log("  " + (good ? "OK  " : "FAIL") + "  " + label.padEnd(52) +
-              got + (good ? "" : "   (esperado " + want + ")"));
-};
-
-const { dom, errs } = require("./harness.js").open(ROOT);
+const { dom, errs } = open();
 const w = dom.window, d = w.document;
 
 function card(name){
@@ -49,131 +41,129 @@ const keys = (c) => [...c.querySelectorAll(".megapickey")]
 setTimeout(() => {
   console.log("\n  cuantas formas de batalla tiene Champions");
   const bf = w.CHAMP.BFORMS;
-  ok("las cinco, muevan un numero o no", Object.keys(bf).sort().join(","),
+  check("las cinco, muevan un numero o no", Object.keys(bf).sort().join(","),
      "Aegislash,Castform,Mimikyu,Morpeko,Palafin");
-  ok("y cada una trae su propio sprite",
+  check("y cada una trae su propio sprite",
      Object.keys(bf).every(k => Object.values(bf[k].f).every(e => !!e.sp)), true);
-  ok("y cada una dice que habilidad la provoca",
+  check("y cada una dice que habilidad la provoca",
      Object.keys(bf).every(k => !!bf[k].by), true);
 
   console.log("\n  Aegislash: Stance Change le da 140 de ataque");
   const ae = card("Aegislash");
-  ok("la card existe", !!ae, true);
-  ok("el sprite de Blade esta en la tira",
+  check("la card existe", !!ae, true);
+  check("el sprite de Blade esta en la tira",
      [...ae.querySelectorAll(".megapickey")].map(x => x.textContent).join(" "),
      "base blade");
-  ok("y lleva su propia tinta, no la de una mega",
+  check("y lleva su propia tinta, no la de una mega",
      !!ae.querySelector(".megapickey.mk-b"), true);
-  ok("el ataque muestra el segundo numero",
+  check("el ataque muestra el segundo numero",
      /140/.test(ae.querySelectorAll(".statline > div")[1].textContent), true);
   /* SIN CAJA. La habilidad que lo provoca ya esta arriba - las tres formas de
      batalla de Champions tienen una sola habilidad - asi que una caja mas
      repetiria la palabra debajo de si misma. */
-  ok("Stance Change aparece una sola vez",
+  check("Stance Change aparece una sola vez",
      (ae.textContent.match(/Stance Change/g) || []).length, 1);
-  ok("y no la llama habilidad mega", /Mega ability/.test(ae.textContent), false);
+  check("y no la llama habilidad mega", /Mega ability/.test(ae.textContent), false);
 
   console.log("\n  Palafin: Zero to Hero, 70 -> 160");
   const pa = card("Palafin");
-  ok("el sprite de Hero esta en la tira",
+  check("el sprite de Hero esta en la tira",
      [...pa.querySelectorAll(".megapickey")].map(x => x.textContent).join(" "),
      "base hero");
-  ok("el ataque muestra 160",
+  check("el ataque muestra 160",
      /160/.test(pa.querySelectorAll(".statline > div")[1].textContent), true);
-  ok("y el BST sube", /457\s*→\s*650/.test(pa.textContent.replace(/\s+/g," ")), true);
+  check("y el BST sube", /457\s*→\s*650/.test(pa.textContent.replace(/\s+/g," ")), true);
 
   console.log("\n  Castform: Forecast le cambia el tipo tres veces");
   const ca = card("Castform");
-  ok("los tres sprites estan",
+  check("los tres sprites estan",
      [...ca.querySelectorAll(".megapickey")].map(x => x.textContent).join(" "),
      "base sunny rainy snowy");
-  ok("y las tres flechas nombran su forma",
+  check("y las tres flechas nombran su forma",
      [...ca.querySelectorAll(".megato")].map(x => x.textContent.trim()).join(" "),
      "→ sunny → rainy → snowy");
-  ["Fire", "Water", "Ice"].forEach(t => ok("chip de " + t,
+  ["Fire", "Water", "Ice"].forEach(t => check("chip de " + t,
      [...ca.querySelectorAll(".rmeta .t")].some(x => x.textContent === t), true));
   /* EL COLOR DE LA CARD TAMBIEN CICLA. Una capa por tipo, no una sola: con
      una sola el color habria elegido Fuego y llamado nada a los otros dos.
      Cada transicion es UNA capa moviendose sobre algo solido, que es la
      regla que dejo el marco. */
-  ok("una capa de color por tipo", ca.querySelectorAll(".retype").length, 3);
-  ok("y un marco por tipo", ca.querySelectorAll(".retyperim").length, 3);
-  ok("la card pide el ciclo de cuatro", ca.classList.contains("n3"), true);
+  check("una capa de color por tipo", ca.querySelectorAll(".retype").length, 3);
+  check("y un marco por tipo", ca.querySelectorAll(".retyperim").length, 3);
+  check("la card pide el ciclo de cuatro", ca.classList.contains("n3"), true);
 
 
   console.log("\n  Morpeko: Hunger Switch no mueve ningun numero, y es otra forma");
   const mo = card("Morpeko");
-  ok("el sprite de Hangry esta en la tira", keys(mo), "base hangry");
+  check("el sprite de Hangry esta en la tira", keys(mo), "base hangry");
   const hang = mo.querySelectorAll(".megapic")[1];
-  ok("y es el dibujo de Hangry, no el de la base",
+  check("y es el dibujo de Hangry, no el de la base",
      /\/10187\.png$/.test(src(hang)), true);
-  ok("su titulo dice lo que le hace a Aura Wheel",
+  check("su titulo dice lo que le hace a Aura Wheel",
      /Aura Wheel is Dark/.test(hang && hang.title), true);
-  ok("sin segundo numero inventado en los stats",
+  check("sin segundo numero inventado en los stats",
      mo.querySelectorAll(".statline .mg").length, 0);
   w.findDetail(w.byName["Morpeko"]);
   const sb = d.getElementById("sheetBody").textContent.replace(/\s+/g, " ");
-  ok("la ficha abre el bloque In battle", /In battle — Hunger Switch/.test(sb), true);
-  ok("y dice que Aura Wheel pasa de Electric a Dark",
+  check("la ficha abre el bloque In battle", /In battle — Hunger Switch/.test(sb), true);
+  check("y dice que Aura Wheel pasa de Electric a Dark",
      /Aura Wheel:\s*Electric\s*→\s*Dark/.test(sb), true);
-  ok("sin decir que cambia el tipo del Pokemon",
+  check("sin decir que cambia el tipo del Pokemon",
      /changes the typing/.test(sb), false);
 
   console.log("\n  Mimikyu: Disguise tambien es una forma");
-  ok("el sprite de Busted esta en la tira", keys(card("Mimikyu")), "base busted");
+  check("el sprite de Busted esta en la tira", keys(card("Mimikyu")), "base busted");
 
   console.log("\n  una mega, dos dibujos");
   const mf = w.pokeCard(w.byName["Meowstic-Female"], {});
-  ok("Meowstic hembra dibuja SU mega, no la del macho",
+  check("Meowstic hembra dibuja SU mega, no la del macho",
      /\/10326\.png$/.test(src(mf.querySelectorAll(".megapic")[1])), true);
   const mm = w.pokeCard(w.byName["Meowstic"], {});
-  ok("y el macho la suya",
+  check("y el macho la suya",
      /\/10314\.png$/.test(src(mm.querySelectorAll(".megapic")[1])), true);
 
   console.log("\n  un Pokemon que Champions no tiene tambien trae sus formas");
   const mw = w.pokeCard(w.anyRow("Mewtwo"), {});
-  ok("Mewtwo muestra Mega X y Mega Y", keys(mw), "base mega X mega Y");
-  ok("con la tinta de cada letra",
+  check("Mewtwo muestra Mega X y Mega Y", keys(mw), "base mega X mega Y");
+  check("con la tinta de cada letra",
      !!mw.querySelector(".megapickey.mk-x") && !!mw.querySelector(".megapickey.mk-y"),
      true);
-  ok("y Mega X lo vuelve Psychic/Fighting",
+  check("y Mega X lo vuelve Psychic/Fighting",
      [...mw.querySelectorAll(".rmeta .t")].map(x => x.textContent).join(","),
      "Psychic,Psychic,Fighting");
-  ok("Kyogre muestra su forma Primal",
+  check("Kyogre muestra su forma Primal",
      keys(w.pokeCard(w.anyRow("Kyogre"), {})), "base primal");
   const tz = w.pokeCard(w.anyRow("Tatsugiri-Droopy"), {});
-  ok("cada Tatsugiri su propia mega, con su propio dibujo",
+  check("cada Tatsugiri su propia mega, con su propio dibujo",
      /\/10323\.png$/.test(src(tz.querySelectorAll(".megapic")[1])), true);
   const zy = w.pokeCard(w.anyRow("Zygarde"), {});
-  ok("Mega Zygarde, que solo existe como render HOME, lo usa",
+  check("Mega Zygarde, que solo existe como render HOME, lo usa",
      /other\/home\/10301\.png$/.test(src(zy.querySelectorAll(".megapic")[1])), true);
   w.findDetail(w.anyRow("Mewtwo"));
   const mws = d.getElementById("sheetBody").textContent.replace(/\s+/g, " ");
-  ok("la ficha de Mewtwo trae su Mega line",
+  check("la ficha de Mewtwo trae su Mega line",
      /Mega line — 2 of them/.test(mws) && /Mega Mewtwo Y/.test(mws), true);
 
   console.log("\n  toda card tiene su dibujo");
   const sid = w.CHAMP.SPRITE_ID;
   const names = w.CHAMP.DEX.map(r => r[0]).concat(Object.keys(w.CHAMP.HOME_DEX));
-  ok("ningun nombre del dex ni de HOME sin sprite",
+  check("ningun nombre del dex ni de HOME sin sprite",
      names.filter(n => !sid[n]).join(", "), "");
-  ok("Arceus-Ice dibuja su placa, archivada por forma",
+  check("Arceus-Ice dibuja su placa, archivada por forma",
      /\/493-ice\.png$/.test(src(w.pokeCard(w.anyRow("Arceus-Ice"), {})
        .querySelector(".megapic"))), true);
   const pi = w.spriteFor("Pichu-Spiky-eared", true);
-  ok("una ficha sin render HOME cae al sprite de 96, a su tamano",
+  check("una ficha sin render HOME cae al sprite de 96, a su tamano",
      /pokemon\/172-spiky-eared\.png$/.test(src(pi)) && pi.width === 96, true);
 
   console.log("\n  un Pokemon sin forma de batalla no cambia en nada");
   const ga = card("Garchomp");
-  ok("Garchomp no tiene tinta de forma de batalla",
+  check("Garchomp no tiene tinta de forma de batalla",
      !!ga.querySelector(".mk-b"), false);
   /* y una mega que SI cambia de tipo sigue con su fundido de dos estados */
-  ok("Garchomp cicla dos estados, no cuatro",
+  check("Garchomp cicla dos estados, no cuatro",
      ga.className.indexOf("n3") < 0 && /retyping/.test(ga.className), true);
-  ok("con una sola capa", ga.querySelectorAll(".retype").length, 1);
+  check("con una sola capa", ga.querySelectorAll(".retype").length, 1);
 
-  errs.forEach(e => console.log("  jsdom: " + e));
-  console.log(bad ? "\n  " + bad + " FALLAN\n" : "\n  todo bien\n");
-  process.exit(bad ? 1 : 0);
+  check("la pagina no reporta errores de script", errs.join(" | ") || "ninguno", "ninguno");
 }, 900);

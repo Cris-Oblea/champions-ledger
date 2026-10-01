@@ -1,46 +1,34 @@
 /* Every form in the dex, attacking and defending, through the page's engine.
    A sample would have missed the naming bug the player hit. */
-/* the repo, found from this file - NOT a hardcoded path. Every test in
-   here carried an absolute Windows path, so none of them had ever run
-   anywhere but one laptop, and all fifteen died instantly the first time
-   CI tried (2026-09-13). */
-const ROOT = require("path").join(__dirname, "..") + "/";
-const { w, errs } = require("./harness.js").open(ROOT);
+const { check, open } = require("./harness.js");
+const { w, errs } = open();
 
 const blank = () => ({sp:{hp:0,atk:0,def:0,spa:0,spd:0,spe:0},
                       boost:{atk:0,def:0,spa:0,spd:0,spe:0},
                       nature:null, ability:null, item:null, status:null,
                       curHP:null, buildId:null});
 
-setTimeout(() => {
-  const DEX = w.DEX, MOVE_BY = w.MOVE_BY;
-  function tryOne(atkName, defName, moveName) {
-    Object.assign(w.CALC, {
-      atk: Object.assign(blank(), {name: atkName}),
-      def: Object.assign(blank(), {name: defName}),
-      move: MOVE_BY[moveName], gameType: "Singles",
-      weather:null, terrain:null, screen:null, crit:false,
-      helpingHand:false, friendGuard:false, charge:false, fairyAura:false,
-      gravity:false, wonderRoom:false, magicRoom:false, protected:false,
-      stealthRock:false, spikes:0, leechSeed:false, saltCure:false,
-      nightmare:false, switching:false, tailwindAtk:false, powerTrickAtk:false
-    });
-    try { const r = w.engineCalc(); return {ok:true, v:r.lo + "-" + r.hi}; }
-    catch (e) { return {ok:false, v:e.message}; }
-  }
-  const failAtk = [], failDef = [];
-  DEX.forEach(p => {
-    // as the attacker, with a move everything can be given
-    let r = tryOne(p.name, "Kingambit", "Earthquake");
-    if (!r.ok) failAtk.push([p.name, r.v]);
-    // and as the target
-    r = tryOne("Garchomp", p.name, "Earthquake");
-    if (!r.ok) failDef.push([p.name, r.v]);
+/* The engine's error for one pairing, or null when it calculates. */
+function failure(atkName, defName) {
+  Object.assign(w.CALC, {
+    atk: Object.assign(blank(), {name: atkName}),
+    def: Object.assign(blank(), {name: defName}),
+    move: w.MOVE_BY.Earthquake, gameType: "Singles",
+    weather:null, terrain:null, screen:null, crit:false,
+    helpingHand:false, friendGuard:false, charge:false, fairyAura:false,
+    gravity:false, wonderRoom:false, magicRoom:false, protected:false,
+    stealthRock:false, spikes:0, leechSeed:false, saltCure:false,
+    nightmare:false, switching:false, tailwindAtk:false, powerTrickAtk:false
   });
-  console.log("  formas probadas:", DEX.length, "atacando y defendiendo");
-  console.log("  fallan atacando :", failAtk.length);
-  failAtk.slice(0, 12).forEach(f => console.log("     ", f[0], "->", f[1].slice(0, 70)));
-  console.log("  fallan de objetivo:", failDef.length);
-  failDef.slice(0, 12).forEach(f => console.log("     ", f[0], "->", f[1].slice(0, 70)));
-  console.log("  ERRORES:", errs.length ? errs.slice(0, 2) : "ninguno");
-}, 2000);
+  try { w.engineCalc(); return null; }
+  catch (e) { return atkName + " vs " + defName + ": " + e.message.slice(0, 70); }
+}
+
+/* Earthquake, because everything can be handed it: as the attacker against
+   Kingambit, and as the target of Garchomp's. */
+const attacking = w.DEX.map(p => failure(p.name, "Kingambit")).filter(Boolean);
+const defending = w.DEX.map(p => failure("Garchomp", p.name)).filter(Boolean);
+check("hay formas que probar", w.DEX.length > 300, true);
+check("toda forma calcula atacando", attacking.slice(0, 5).join(" | ") || "todas", "todas");
+check("y defendiendo", defending.slice(0, 5).join(" | ") || "todas", "todas");
+check("la pagina no reporta errores de script", errs.join(" | ") || "ninguno", "ninguno");

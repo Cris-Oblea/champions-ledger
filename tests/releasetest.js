@@ -11,16 +11,8 @@
    Pokemon, with a second copy in HOME. The "Already in HOME" panel told him to
    release it, and the game would not. Same for a HOME-origin Garchomp sent in
    while another Garchomp stayed in HOME. */
-const ROOT = require("path").join(__dirname, "..") + "/";
+const { check, open } = require("./harness.js");
 const UID = "u1";
-
-let bad = 0;
-const ok = (label, got, want) => {
-  const good = String(got) === String(want);
-  if (!good) bad++;
-  console.log("  " + (good ? "OK  " : "FAIL") + "  " + label.padEnd(52) +
-              got + (good ? "" : "   (esperado " + want + ")"));
-};
 
 const row = (id, name, location, origin) => ({user_id:UID, id, name, location,
   status:"permanent", origin, note:"", ord:0, updated_at:"2026-09-27",
@@ -41,7 +33,7 @@ const BUILDS = [{user_id:UID, id:"b-chomp", pokemon:"Garchomp", box_id:"garchomp
   stat_points:{hp:2,atk:32,def:0,spa:0,spd:0,spe:32}, moves:["Protect"],
   role:"", rationale:"", extra:{}, updated_at:"2026-09-27"}];
 
-const { dom, errs } = require("./harness.js").open(ROOT, { box: ROWS, builds: BUILDS });
+const { dom, errs } = open({ box: ROWS, builds: BUILDS });
 const w = dom.window, d = w.document;
 const click = n => n.dispatchEvent(new w.MouseEvent("click", {bubbles:true}));
 const boxRow = name => [...d.querySelectorAll(
@@ -54,33 +46,31 @@ const buttons = () => [...d.querySelectorAll(".sheet button")]
 setTimeout(() => {
   w.go("box");
   console.log("\n  el panel 'Already in HOME'");
-  ok("no aparece: nada de lo duplicado se puede liberar",
+  check("no aparece: nada de lo duplicado se puede liberar",
      d.getElementById("dupeBlock").hidden, true);
-  ok("y la caja no lo llama material de intercambio",
+  check("y la caja no lo llama material de intercambio",
      /trade material|can be released/.test(d.getElementById("boxWarn")
        .textContent), false);
 
   console.log("\n  la ficha");
   click(boxRow("Sinistcha"));
   setTimeout(() => {
-    ok("Sinistcha (Champions origin, en el suelo de 6): sin Release",
+    check("Sinistcha (Champions origin, en el suelo de 6): sin Release",
        buttons().indexOf("Release"), -1);
-    ok("...y dice que el hueco es para siempre",
+    check("...y dice que el hueco es para siempre",
        /This slot is permanent/.test(d.querySelector(".sheet").textContent), true);
     click(boxRow("Garchomp"));
     setTimeout(() => {
       const b = buttons();
-      ok("Garchomp (HOME origin, en la caja): sin Release", b.indexOf("Release"), -1);
-      ok("...pero si Park back to HOME", b.indexOf("Park back to HOME") >= 0, true);
+      check("Garchomp (HOME origin, en la caja): sin Release", b.indexOf("Release"), -1);
+      check("...pero si Park back to HOME", b.indexOf("Park back to HOME") >= 0, true);
       click([...d.querySelectorAll(".sheet button")]
         .find(x => x.textContent === "Park back to HOME"));
       setTimeout(() => {
-        ok("el aviso de Park nombra su build (hallada por box_id)",
+        check("el aviso de Park nombra su build (hallada por box_id)",
            /Its build is kept/.test(d.getElementById("toast").textContent), true);
 
-        console.log("\n  ERRORES JS: " + (errs.length ? errs.join(" | ") : "ninguno"));
-        console.log(bad ? "\n  " + bad + " FALLOS\n" : "\n  todo bien\n");
-        process.exit(bad || errs.length ? 1 : 0);
+        check("la pagina no reporta errores de script", errs.join(" | ") || "ninguno", "ninguno");
       }, 400);
     }, 400);
   }, 400);

@@ -19,16 +19,8 @@
    four pages, 26 spreads over six, and no Season block at all - the case that
    proved the old parser had been mixing two different measurements.
 */
-const ROOT = require("path").join(__dirname, "..") + "/";
+const { check, open } = require("./harness.js");
 const UID = "u1";
-
-let bad = 0;
-const ok = (label, got, want) => {
-  const good = String(got) === String(want);
-  if (!good) bad++;
-  console.log("  " + (good ? "OK  " : "FAIL") + "  " + label.padEnd(50) +
-              got + (good ? "" : "   (esperado " + want + ")"));
-};
 
 const ROWS = [{user_id:UID, id:"rillaboom", name:"Rillaboom",
   location:"champions", status:"permanent", origin:"champions", note:"",
@@ -39,7 +31,7 @@ const BUILDS = [{user_id:UID, id:"rillaboom", pokemon:"Rillaboom", mega:null,
   moves:["Fake Out",null,null,null], role:"", rationale:"", extra:{},
   updated_at:"2026-09-15"}];
 
-const { dom, errs } = require("./harness.js").open(ROOT, { box: ROWS, builds: BUILDS });
+const { dom, errs } = open({ box: ROWS, builds: BUILDS });
 const w = dom.window, d = w.document;
 const click = n => n.dispatchEvent(new w.MouseEvent("click", {bubbles:true}));
 const sum = a => a.reduce((n, r) => n + r[1], 0);
@@ -91,20 +83,20 @@ setTimeout(() => {
   /* ---------------------------------------------------- the asset itself */
   console.log("\n  el asset trae todas las paginas, no la primera");
   const S = w.CHAMP_SPLITS || {};
-  ok("regulacion sellada en el asset", S.r, "M-C");
+  check("regulacion sellada en el asset", S.r, "M-C");
   const rilla = (S.p || {})["Rillaboom"] || {};
-  ok("moves de Rillaboom (4 paginas de 5)", rilla.m.length >= 19, true);
-  ok("spreads de Rillaboom (6 paginas)", rilla.s.length > 5, true);
-  ok("items de Rillaboom (4 paginas)", rilla.i.length >= 19, true);
-  ok("teammates con % y no solo orden", rilla.t[0].length === 2, true);
-  ok("y ese % es un numero", typeof rilla.t[0][1], "number");
+  check("moves de Rillaboom (4 paginas de 5)", rilla.m.length >= 19, true);
+  check("spreads de Rillaboom (6 paginas)", rilla.s.length > 5, true);
+  check("items de Rillaboom (4 paginas)", rilla.i.length >= 19, true);
+  check("teammates con % y no solo orden", rilla.t[0].length === 2, true);
+  check("y ese % es un numero", typeof rilla.t[0][1], "number");
 
   /* The measurement that decides how the chip may be coloured. If pokebase
      ever switches this column back to a share of SETS it sums to ~400 and
      every number in the app silently changes meaning. */
-  ok("moves suman ~100 (share de SLOTS)", Math.abs(sum(rilla.m) - 100) < 12, true);
-  ok("items suman ~100 (share de SETS)", Math.abs(sum(rilla.i) - 100) < 12, true);
-  ok("ningun move pasa de 30%", rilla.m.every(r => r[1] <= 30), true);
+  check("moves suman ~100 (share de SLOTS)", Math.abs(sum(rilla.m) - 100) < 12, true);
+  check("items suman ~100 (share de SETS)", Math.abs(sum(rilla.i) - 100) < 12, true);
+  check("ningun move pasa de 30%", rilla.m.every(r => r[1] <= 30), true);
 
   /* ------------------------------------------------ chips sin duplicacion */
   /* UN HECHO, UN CHIP, Y EL CHIP DICE DE QUE. Black Glasses decia x1.2 tres
@@ -119,15 +111,15 @@ setTimeout(() => {
     const t = txt(n);
     return new Set(t).size !== t.length;
   });
-  ok("ninguna entrada repite un chip", twice.join(", "), "");
+  check("ninguna entrada repite un chip", twice.join(", "), "");
   const units = Object.keys(E).filter(
     n => txt(n).some(t => / stages stages| turns turns|max HP max HP/.test(t)));
-  ok("ninguna unidad se escribe dos veces", units.join(", "), "");
+  check("ninguna unidad se escribe dos veces", units.join(", "), "");
   const bare = Object.keys(E).filter(
     n => txt(n).some(t => /^(half|double|third|quarter)$/i.test(t)));
-  ok("ningun chip es solo una palabra sin numero", bare.join(", "), "");
+  check("ningun chip es solo una palabra sin numero", bare.join(", "), "");
 
-  ok("...y 1.2998 ya no aparece en ningun sitio",
+  check("...y 1.2998 ya no aparece en ningun sitio",
      JSON.stringify(E).indexOf("1.2998") >= 0, false);
   /* REGLA 6 (player, 2026-09-27): "sitrus berry dice que al alcanzar 1/2 de
      hp, te recupera 1/4 de hp y tiene dos tags con 1/2 hp y 1/4 hp, que no
@@ -138,17 +130,17 @@ setTimeout(() => {
   const ABIL = w.CHAMP.ABIL, ITEMS = w.CHAMP.ITEMS;
   const itemText = n => ((ITEMS.find(r => r[0] === n) || [])[3]) || "";
   const shown = n => ABIL[n] || itemText(n);
-  ok("Sitrus Berry sin chips que repiten su frase", E["Sitrus Berry"] ? txt("Sitrus Berry").length : 0, 0);
-  ok("...y su frase dice las dos cifras",
+  check("Sitrus Berry sin chips que repiten su frase", E["Sitrus Berry"] ? txt("Sitrus Berry").length : 0, 0);
+  check("...y su frase dice las dos cifras",
      /1\/4 max HP when at 1\/2 max HP or less/.test(itemText("Sitrus Berry")), true);
-  ok("Life Orb tampoco repite 1.3 y 1/10", E["Life Orb"] ? txt("Life Orb").length : 0, 0);
-  ok("ninguna descripcion aparece dos veces (sin resumen debajo)",
+  check("Life Orb tampoco repite 1.3 y 1/10", E["Life Orb"] ? txt("Life Orb").length : 0, 0);
+  check("ninguna descripcion aparece dos veces (sin resumen debajo)",
      Object.keys(E).filter(n => shown(n) && E[n].desc).join(", "), "");
-  ok("ningun chip repite un numero de su descripcion",
+  check("ningun chip repite un numero de su descripcion",
      Object.keys(E).filter(n => shown(n) && txt(n).length).join(", "), "");
-  ok("Intimidate dice que vuelve a activarse al megaevolucionar",
+  check("Intimidate dice que vuelve a activarse al megaevolucionar",
      /Mega Evolving into it fires it again/.test(ABIL["Intimidate"]), true);
-  ok("Drizzle dice cuantos turnos", /for 5 turns/.test(ABIL["Drizzle"]), true);
+  check("Drizzle dice cuantos turnos", /for 5 turns/.test(ABIL["Drizzle"]), true);
 
   w.go("builds");
   click(d.querySelectorAll("#listBuilds .row")[0]);
@@ -160,31 +152,31 @@ setTimeout(() => {
                  new RegExp(lab).test(f.querySelector("label").textContent))
       .querySelector("select");
     const nat = sel("^Nature");
-    ok("la primera naturaleza es la mas usada",
+    check("la primera naturaleza es la mas usada",
        /^Adamant/.test(nat.options[0].text), true);
-    ok("y lleva su %", /·\s+\d/.test(nat.options[0].text), true);
+    check("y lleva su %", /·\s+\d/.test(nat.options[0].text), true);
     const marked = [...nat.options].filter(o => /·\s+\d/.test(o.text));
-    ok("solo las que pokebase lista van marcadas",
+    check("solo las que pokebase lista van marcadas",
        marked.length > 0 && marked.length < nat.options.length, true);
-    ok("las marcadas van primero y en orden",
+    check("las marcadas van primero y en orden",
        marked.every((o, i) => o.index === i), true);
     const abl = sel("^Ability");
-    ok("la ability mas usada encabeza",
+    check("la ability mas usada encabeza",
        /^Grassy Surge/.test(abl.options[0].text), true);
 
     /* ------------------------------------------------ spreads y teammates */
     const txt = d.getElementById("v-buildedit").textContent;
-    ok("hay un bloque de referencia", /What its players run/.test(txt), true);
-    ok("y dice que no rellena nada",
+    check("hay un bloque de referencia", /What its players run/.test(txt), true);
+    check("y dice que no rellena nada",
        /nothing here fills anything in/i.test(txt), true);
     /* The rule he had to state twice: an indicator sits beside a choice and
        changes nothing. A spread that can be CLICKED is an autobuilder. */
-    ok("los spreads no son botones",
+    check("los spreads no son botones",
        [...d.querySelectorAll("#v-buildedit .field")]
          .filter(f => /SP spreads/.test((f.querySelector("label")||{}).textContent||""))
          .every(f => f.querySelectorAll("button").length === 0), true);
-    ok("y aparece con quien se trae", /Brought alongside/.test(txt), true);
-    ok("Sneasler entre ellos", /Sneasler/.test(txt), true);
+    check("y aparece con quien se trae", /Brought alongside/.test(txt), true);
+    check("Sneasler entre ellos", /Sneasler/.test(txt), true);
 
     /* ------------------------------------------------------ el move picker */
     click(slotWith(/Fake Out/));
@@ -193,39 +185,39 @@ setTimeout(() => {
       const chip = t => [...d.querySelectorAll(".sheet .tog")]
         .find(b => b.textContent.trim() === t);
       const rows = () => [...d.querySelectorAll(".sheet .list .row")];
-      ok("existe el orden por uso", !!chip("Usage %"), true);
-      ok("y es el que viene puesto",
+      check("existe el orden por uso", !!chip("Usage %"), true);
+      check("y es el que viene puesto",
          chip("Usage %").getAttribute("aria-pressed"), "true");
       const rr = rows();
-      ok("hay filas", rr.length > 10, true);
-      ok("todas llevan %", rr.every(r => usageOf(r) !== null), true);
+      check("hay filas", rr.length > 10, true);
+      check("todas llevan %", rr.every(r => usageOf(r) !== null), true);
       const ps = rr.map(usageOf);
-      ok("y van de mayor a menor",
+      check("y van de mayor a menor",
          ps.every((v, i) => i === 0 || ps[i - 1] >= v), true);
-      ok("el primero es el mas usado", ps[0] >= 20, true);
-      ok("y la cola llega a 0%", ps[ps.length - 1], 0);
+      check("el primero es el mas usado", ps[0] >= 20, true);
+      check("y la cola llega a 0%", ps[ps.length - 1], 0);
 
       console.log("\n  tag de multi-golpe");
       const inp = d.querySelector(".sheet input[type=text]");
       inp.value = "bullet seed";
       inp.dispatchEvent(new w.Event("input", {bubbles:true}));
       const bs = rows()[0];
-      ok("Bullet Seed dice que golpea varias veces",
+      check("Bullet Seed dice que golpea varias veces",
          /2–5 hits/.test(bs.querySelector(".rname").textContent), true);
-      ok("y el total esta en el title",
+      check("y el total esta en el title",
          /quoted at 3 hits = 75 BP/.test(
            bs.querySelector(".rname .tag.ok").title), true);
-      ok("y nombra Skill Link",
+      check("y nombra Skill Link",
          /Skill Link forces 5 = 125 BP/.test(
            bs.querySelector(".rname .tag.ok").title), true);
 
       /* ----------------------------------------- los botones del pie ---- */
       console.log("\n  Clear slot y Back cierran la ventana");
-      ok("estan los dos", !!foot("Clear slot") && !!foot("Back"), true);
+      check("estan los dos", !!foot("Clear slot") && !!foot("Back"), true);
       click(foot("Back"));
       setTimeout(() => {
-        ok("Back cierra el sheet", d.getElementById("scrim").hidden, true);
-        ok("y no toca el movimiento",
+        check("Back cierra el sheet", d.getElementById("scrim").hidden, true);
+        check("y no toca el movimiento",
            /Fake Out/.test(d.getElementById("v-buildedit").textContent), true);
         click(slotWith(/Fake Out/));
         setTimeout(clearSlot, 300);
@@ -236,8 +228,8 @@ setTimeout(() => {
   function clearSlot(){
     click(foot("Clear slot"));
     setTimeout(() => {
-      ok("Clear slot cierra el sheet", d.getElementById("scrim").hidden, true);
-      ok("y vacia la ranura",
+      check("Clear slot cierra el sheet", d.getElementById("scrim").hidden, true);
+      check("y vacia la ranura",
          /Empty slot 1/.test(d.getElementById("v-buildedit").textContent), true);
       tiers();
     }, 200);
@@ -257,80 +249,80 @@ setTimeout(() => {
       const sortTab = t => [...d.querySelectorAll("#findSort .tog")]
         .find(b => b.textContent.trim().replace(/[↑↓]/, "").trim() === t);
       ["Dex #","BST","HP","Atk","Def","SpA","SpD","Spe"].forEach(t =>
-        ok("orden por " + t, !!sortTab(t), true));
-      ok("las cajas fijas de Speed ya no existen",
+        check("orden por " + t, !!sortTab(t), true));
+      check("las cajas fijas de Speed ya no existen",
          !d.getElementById("findSpeMin") && !d.getElementById("findSpeMax") &&
          !d.getElementById("findBst"), true);
       /* And no min/max either: the player cut that idea the same hour. An
          order answers "who is slowest" without needing a threshold guessed
          in advance, which is what the Trick Room box was asking for. */
-      ok("ni minimos ni maximos", !d.getElementById("findAddStat"), true);
-      ok("BST es el orden por defecto",
+      check("ni minimos ni maximos", !d.getElementById("findAddStat"), true);
+      check("BST es el orden por defecto",
          sortTab("BST").getAttribute("aria-pressed"), "true");
 
       const rows = () => [...d.querySelectorAll("#findOut .row")];
       const vr = rows().map(r => reachOf(r, "BST"));
-      ok("hay filas", vr.length > 20, true);
-      ok("ordenado por BST", vr.every((x,i) => i===0 || vr[i-1] >= x), true);
+      check("hay filas", vr.length > 20, true);
+      check("ordenado por BST", vr.every((x,i) => i===0 || vr[i-1] >= x), true);
 
       /* NOTHING IS HIDDEN. Ranking by one stat must not drop the other five -
          an Attack list is read with the Speed beside it. The ranked one is
          marked instead. */
       click(sortTab("Spe"));
       const sp = rows().map(r => reachOf(r, "Spe"));
-      ok("cambiar a Spe reordena la misma tabla",
+      check("cambiar a Spe reordena la misma tabla",
          sp.every((x,i) => i===0 || sp[i-1] >= x), true);
-      ok("y las seis stats siguen ahi",
+      check("y las seis stats siguen ahi",
          ["HP","Atk","Def","SpA","SpD","Spe"].every(k => !!cellOf(rows()[0], k)),
          true);
-      ok("la rankeada va marcada",
+      check("la rankeada va marcada",
          rows()[0].querySelector(".statline .on span").textContent.trim(), "Spe");
       /* BST AND LA HABILIDAD TAMBIEN SON CUADROS. The player asked for it so
          the card speaks one visual language ("seria bonito que bst tambien
          tuviera un cuadro como los stats... y tambien para la habilidad"), and
          a cell is the only shape this file can assert without matching prose. */
-      ok("BST tiene su propio cuadro", !!cellOf(rows()[0], "BST"), true);
+      check("BST tiene su propio cuadro", !!cellOf(rows()[0], "BST"), true);
       /* "Possible ability", not "Ability": a dex row lists what this
          Pokemon CAN have, while a build row shows the one it runs. The
          two labels were the same word on cards that mean different
          things, and the search shares its card with the box now. */
-      ok("y la habilidad tambien",
+      check("y la habilidad tambien",
          !!cellOf(rows()[0], "Possible ability"), true);
-      ok("la habilidad dice algo",
+      check("la habilidad dice algo",
          cellOf(rows()[0], "Possible ability").querySelector("b")
            .textContent.length > 2, true);
       /* SP and nature are the builder's business, not the list's. */
-      ok("sin SPs en el listado",
+      check("sin SPs en el listado",
          /at 0 SP|max/.test(rows()[0].textContent), false);
-      ok("el encabezado dice por que ordena",
+      check("el encabezado dice por que ordena",
          /by Spe, highest first/.test(
            d.querySelector("#findOut .sub").textContent), true);
-      ok("y la pestana activa lleva la flecha",
+      check("y la pestana activa lleva la flecha",
          /↓/.test(sortTab("Spe").textContent), true);
 
       /* Tapping the active stat flips the direction - and ascending Speed IS
          the Trick Room list, which is why there is no "Speed at most" box. */
       click(sortTab("Spe"));
       const asc = rows().map(r => lowOf(r, "Spe"));
-      ok("tocarla de nuevo invierte el orden",
+      check("tocarla de nuevo invierte el orden",
          asc.every((x,i) => i===0 || asc[i-1] <= x), true);
-      ok("y el encabezado lo dice",
+      check("y el encabezado lo dice",
          /by Spe, lowest first/.test(
            d.querySelector("#findOut .sub").textContent), true);
-      ok("con la flecha al reves",
+      check("con la flecha al reves",
          /↑/.test(sortTab("Spe").textContent), true);
       click(sortTab("Spe"));   // back to descending
 
       /* The M-C scope toggle is GONE. It was added, renamed because he could
          not tell what it meant, and then cut outright - "no me sirve en find,
          lo encuentro malo". The two box filters stay. */
-      ok("no hay filtro de M-C", !d.getElementById("findInMeta"), true);
-      ok("pero si los de las cajas",
+      check("no hay filtro de M-C", !d.getElementById("findInMeta"), true);
+      check("pero si los de las cajas",
          !!d.getElementById("findInChamp") && !!d.getElementById("findInHome"),
          true);
       click(sortTab("Atk"));
       click(d.getElementById("findClear"));
-      ok("Clear vuelve a BST",
+      check("Clear vuelve a BST",
          sortTab("BST").getAttribute("aria-pressed"), "true");
       medals();
     }, 300);
@@ -347,30 +339,30 @@ setTimeout(() => {
     const dv = t => [...d.querySelectorAll("#worldDiv .tog")]
       .find(b => b.textContent.trim() === t);
     const rows = () => [...d.querySelectorAll("#worldOut .row")];
-    ok("hay pestana 2026", !!yr("2026"), true);
-    ok("y anios anteriores", !!yr("2024"), true);
-    ok("la ultima es la que viene puesta",
+    check("hay pestana 2026", !!yr("2026"), true);
+    check("y anios anteriores", !!yr("2024"), true);
+    check("la ultima es la que viene puesta",
        yr("2026").getAttribute("aria-pressed"), "true");
-    ok("tres divisiones", !!dv("Masters") && !!dv("Seniors") && !!dv("Juniors"),
+    check("tres divisiones", !!dv("Masters") && !!dv("Seniors") && !!dv("Juniors"),
        true);
-    ok("y NO hay una que las mezcle",
+    check("y NO hay una que las mezcle",
        [...d.querySelectorAll("#worldDiv .tog")]
          .some(b => /all|todas/i.test(b.textContent)), false);
     const rr = rows();
-    ok("Masters 2026 trae filas", rr.length > 10, true);
-    ok("Kingambit encabeza", /Kingambit/.test(rr[0].textContent), true);
+    check("Masters 2026 trae filas", rr.length > 10, true);
+    check("Kingambit encabeza", /Kingambit/.test(rr[0].textContent), true);
     /* The share and the count are two cells now, not one sentence - "24.6% ·
        97 of 394 teams" was prose in a ranking, which is the one place numbers
        have to be scannable down the column. */
-    ok("con su cuenta de equipos",
+    check("con su cuenta de equipos",
        /^\d+ \/ \d+$/.test(cellOf(rr[0], "brought it")
          .querySelector("b").textContent.trim()), true);
     const ps = rr.map(shareOf);
-    ok("de mayor a menor", ps.every((v, i) => i === 0 || ps[i - 1] >= v), true);
+    check("de mayor a menor", ps.every((v, i) => i === 0 || ps[i - 1] >= v), true);
     click(dv("Juniors"));
-    ok("Juniors es otra lista", rows().map(shareOf)[0] !== ps[0] ||
+    check("Juniors es otra lista", rows().map(shareOf)[0] !== ps[0] ||
        rows()[0].textContent !== rr[0].textContent, true);
-    ok("y el encabezado lo dice",
+    check("y el encabezado lo dice",
        /juniors/.test(d.querySelector("#worldOut .sub").textContent), true);
     fields();
   }
@@ -382,26 +374,26 @@ setTimeout(() => {
   function medals(){
     console.log("\n  medallas de Worlds, y el set con que se ganaron");
     const P = w.CHAMP.PODIUM || {};
-    ok("hay formas con podio", Object.keys(P).length > 20, true);
+    check("hay formas con podio", Object.keys(P).length > 20, true);
     /* FILED UNDER WHAT WAS REGISTERED. Of the 16,875 team slots pokedata
        publishes, zero are written as "Mega something" - the entrant is always
        the base form holding a stone, and that is who wears the medal. */
-    ok("nada se archiva como Mega",
+    check("nada se archiva como Mega",
        Object.keys(P).some(k => /^Mega /.test(k)), false);
     const champ = (P["Dragonite"] || []).find(
       e => e.y === 2026 && e.d === "masters" && e.r === 1);
-    ok("Dragonite gano el 2026 masters", !!champ, true);
-    ok("con su set completo",
+    check("Dragonite gano el 2026 masters", !!champ, true);
+    check("con su set completo",
        champ.it === "Dragoninite" && champ.ab === "Multiscale" &&
        champ.na === "Modest" && champ.mv.length === 4, true);
     /* and the stone says what it became, derived rather than deduced by hand */
-    ok("y la piedra dice en que mega evoluciona", champ.mg, "Mega Dragonite");
-    ok("y con que habilidad", !!champ.mgab, true);
-    ok("Floette tambien estaba en ese equipo",
+    check("y la piedra dice en que mega evoluciona", champ.mg, "Mega Dragonite");
+    check("y con que habilidad", !!champ.mgab, true);
+    check("Floette tambien estaba en ese equipo",
        (P["Floette-Eternal"] || []).some(
          e => e.y === 2026 && e.d === "masters" && e.r === 1 &&
               e.mg === "Mega Floette"), true);
-    ok("ningun podio pasa del top 8",
+    check("ningun podio pasa del top 8",
        Object.values(P).every(v => v.every(e => e.r >= 1 && e.r <= 8)), true);
     /* 2023 split its divisions across two pokedata events; reading both gave
        Seniors and Juniors two podiums each */
@@ -413,29 +405,29 @@ setTimeout(() => {
         seen[k] = 1; return false;
       });
     });
-    ok("sin entradas duplicadas (2023 va en dos eventos)", dupes, false);
+    check("sin entradas duplicadas (2023 va en dos eventos)", dupes, false);
 
     w.closeSheet();
     const dex = w.CHAMP.DEX.map(r => ({name:r[0], species:r[1], types:r[2],
       b:r[3], mega:!!r[4], ab:r[5], dex:r[6]||0}));
     w.findDetail(dex.find(x => x.name === "Dragonite"));
     setTimeout(() => {
-      ok("la ficha lleva la medalla",
+      check("la ficha lleva la medalla",
          /Worlds 2026 · 1st/.test(
            (d.querySelector(".sheet .tag.gold")||{}).textContent||""), true);
       const fold = [...d.querySelectorAll(".sheet .fold")]
         .find(b => /Worlds/.test(b.textContent));
-      ok("y un desplegable con los sets", !!fold, true);
+      check("y un desplegable con los sets", !!fold, true);
       click(fold);
       const cards = [...d.querySelectorAll(".sheet .note")]
         .filter(n => /Worlds \d{4}/.test(n.textContent));
-      ok("que muestra item, ability, nature y moves",
+      check("que muestra item, ability, nature y moves",
          /Dragoninite/.test(cards[0].textContent) &&
          /Multiscale/.test(cards[0].textContent) &&
          /Modest/.test(cards[0].textContent) &&
          /Extreme Speed/.test(cards[0].textContent), true);
-      ok("y dice la division", /masters/.test(cards[0].textContent), true);
-      ok("y en que Mega evoluciona",
+      check("y dice la division", /masters/.test(cards[0].textContent), true);
+      check("y en que Mega evoluciona",
          /Mega Evolves into Mega Dragonite/.test(cards[0].textContent), true);
       w.closeSheet();
       worlds();
@@ -455,22 +447,22 @@ setTimeout(() => {
     setTimeout(() => {
       const si = d.querySelector(".sheet .search input");
       const svg = d.querySelector(".sheet .search svg");
-      ok("el texto arranca despues de la lupa",
+      check("el texto arranca despues de la lupa",
          parseFloat(cs(si).paddingLeft) >= 34, true);
-      ok("y la lupa no se come el clic", cs(svg).pointerEvents, "none");
+      check("y la lupa no se come el clic", cs(svg).pointerEvents, "none");
       w.closeSheet();
       const pass = d.getElementById("gatePass");
-      ok("el campo de contrasena deja sitio al ojito del navegador",
+      check("el campo de contrasena deja sitio al ojito del navegador",
          parseFloat(cs(pass).paddingRight) >= 34, true);
       w.go("builds");
       click(d.querySelectorAll("#listBuilds .row")[0]);
       setTimeout(() => {
         const num = d.querySelector(".sp .spnum");
-        ok("el numero de SP usa su propio padding", cs(num).padding, "6px 2px");
+        check("el numero de SP usa su propio padding", cs(num).padding, "6px 2px");
         const normal = cs(num).color;
         num.closest(".sp").classList.add("over");
         const over = cs(num).color;
-        ok("y se pone rojo al pasarse del tope de 32", over !== normal, true);
+        check("y se pone rojo al pasarse del tope de 32", over !== normal, true);
         num.closest(".sp").classList.remove("over");
         done();
       }, 700);
@@ -478,9 +470,6 @@ setTimeout(() => {
   }
 
   function done(){
-    console.log("\n  ERRORES JS: " + (errs.length ? errs.join(" | ") : "ninguno"));
-    if (errs.length) bad++;
-    console.log(bad ? "\n  " + bad + " FALLOS\n" : "\n  todo bien\n");
-    process.exit(bad ? 1 : 0);
+    check("la pagina no reporta errores de script", errs.join(" | ") || "ninguno", "ninguno");
   }
 }, 700);

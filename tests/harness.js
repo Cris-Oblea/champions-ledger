@@ -15,9 +15,31 @@
  */
 const fs = require("fs");
 const path = require("path");
+const { test } = require("node:test");
+const assert = require("node:assert/strict");
 
-function page(root) {
-  const dist = path.join(root, "tracker", "dist");
+/* The repo, found from this file - never a hardcoded path: every test once
+   carried an absolute Windows path, and all fifteen died the first time CI
+   ran them (2026-09-13). Ends in "/" so a test can write ROOT + "data/...". */
+const ROOT = path.join(__dirname, "..") + "/";
+
+/* ONE CHECK, REPORTED BY NODE'S OWN RUNNER. Every test file used to carry its
+   own `ok()`, a failure counter and a process.exit at the end - and three of
+   them never exited non-zero at all, so the gate printed "ok" over whatever
+   they found. node:test sets the exit code itself: a check that fails fails
+   the file, whether or not anyone remembered to count it.
+
+   Values are compared as strings, which is how every check here was written:
+   a count against "0", a boolean against true, a list joined into one line. */
+function check(label, got, want) {
+  test(label, () => assert.equal(String(got), String(want)));
+}
+
+/* Let the page run: timers, the store's snapshots, a redraw. */
+const tick = ms => new Promise(r => setTimeout(r, ms ?? 400));
+
+function page() {
+  const dist = path.join(ROOT, "tracker", "dist");
   let html = fs.readFileSync(path.join(dist, "index.html"), "utf8");
   html = html.replace(/<script src="([^"]+\.js)"><\/script>/g, function (m, name) {
     const body = fs.readFileSync(path.join(dist, name), "utf8");
@@ -64,8 +86,8 @@ function page(root) {
  * The generated `_entry.js` is deliberately not included: it is output, and a
  * smell found in it was written elsewhere.
  */
-function source(root) {
-  const src = path.join(root, "tracker", "src");
+function source() {
+  const src = path.join(ROOT, "tracker", "src");
   return fs.readdirSync(src, { recursive: true })
     .map(f => f.split(path.sep).join("/"))
     .filter(f => f.endsWith(".js") && !path.posix.basename(f).startsWith("_"))
@@ -79,15 +101,15 @@ function source(root) {
  * Two checks read these rather than the built page because they are about
  * what a person wrote - a gradient's angle, an id the script asks for.
  */
-function styles(root) {
-  const dir = path.join(root, "tracker", "src", "styles");
+function styles() {
+  const dir = path.join(ROOT, "tracker", "src", "styles");
   const index = fs.readFileSync(path.join(dir, "index.css"), "utf8");
   return [...index.matchAll(/^@import "([\w.-]+)";$/gm)]
     .map(m => fs.readFileSync(path.join(dir, m[1]), "utf8")).join("");
 }
 
-function markup(root) {
-  const dir = path.join(root, "tracker", "src", "markup");
+function markup() {
+  const dir = path.join(ROOT, "tracker", "src", "markup");
   return fs.readFileSync(path.join(dir, "index.html"), "utf8")
     .replace(/^[ \t]*<!--#include ([\w.-]+) -->\r?\n/gm,
              (m, name) => fs.readFileSync(path.join(dir, name), "utf8"));
@@ -139,7 +161,7 @@ function stub(tables, uid, email, taken) {
  * jsdom reports, bar the scrollTo it does not implement, and with
  * `consoleErrors` every console.error the page writes as well.
  */
-function open(root, tables, opts) {
+function open(tables, opts) {
   const { JSDOM, VirtualConsole } = require("jsdom");
   const o = Object.assign({ uid: "u1", email: "t@t" }, opts);
   const errs = [];
@@ -147,9 +169,9 @@ function open(root, tables, opts) {
     e => { if (!/scrollTo/.test(e.message)) errs.push(e.message); });
   if (o.consoleErrors) vc.on("error", (...a) => errs.push(a.join(" ")));
   const dom = new JSDOM(
-    page(root).replace("<head>", "<head>" + stub(tables, o.uid, o.email, o.taken)),
+    page().replace("<head>", "<head>" + stub(tables, o.uid, o.email, o.taken)),
     { runScripts: "dangerously", pretendToBeVisual: true, virtualConsole: vc });
   return { dom, w: dom.window, d: dom.window.document, errs };
 }
 
-module.exports = { page, source, styles, markup, open };
+module.exports = { ROOT, check, tick, page, source, styles, markup, open };

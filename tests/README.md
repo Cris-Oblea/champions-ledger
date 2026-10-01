@@ -1,41 +1,35 @@
 # Tracker tests
 
 Node + jsdom, run against the **built** page (`tracker/dist/index.html`), not
-the template — so they test what actually ships.
+the template - so they test what actually ships. Build it first
+(`python scripts/build_tracker_page.py`); `npm ci` at the repo root installs
+jsdom.
 
 ```bash
-cd tests
-npm install jsdom          # once
-node pagetest.js           # the page's engine vs the engine under Node
-node sweeptest.js          # all 340 dex forms, attacking and defending
-node gtstest.js            # a GTS trade removes what you gave away
-node gtsorigintest.js      # only what can leave the game may be deposited
-node burntest.js           # burn halves physical, leaves special alone
-node sptest.js             # the SP slider can be dragged, not just clicked
-node abilitytest.js        # which ability badges which move
-node spreadtest.js         # spread moves, and the ones that hit your ally
-node buildlinktest.js      # a build follows its Pokemon, and dies with it
-node pickertest.js         # the move picker's filters stack
-node findtest.js           # the search view: move filters, ability buckets, two boxes
-node itemstest.js          # every item, in the game's own four groups
-node learnsettest.js       # a regional form has its OWN movepool
-node consistencytest.js    # the same class of bug, hunted across every table
-node profiletest.js        # Profile: one editable field, the rest derived
-node teamtest.js           # teams: six slots, Item and Species Clause
-node createtest.js         # creating a record never overwrites another device's
-node homelisttest.js       # HOME opens on twelve rows, then the rest
+node --test "tests/*test.js"   # all of them, in parallel
+node tests/teamtest.js         # one
 ```
 
-A new test boots the page with one line, and never writes its own Supabase
-stub:
+The gate runs each file on its own; `BROWSER_TESTS` in `scripts/daily.py` is
+the list, with one line saying what each protects.
+
+**A check is one line, and Node's own runner judges it** (`node:test`):
 
 ```js
-const { dom, errs } = require("./harness.js").open(ROOT, { box: ROWS, builds: BUILDS });
+const { check, tick, open } = require("./harness.js");
+const { dom, errs } = open({ box: ROWS, builds: BUILDS });
+check("the build keeps its ability", got, "Intimidate");
 ```
 
-The tables passed are what the ledger holds, and passing any signs the page
-in. What the app sends back lands in `window.__WROTE` (`{op, table, row}`) and
-`window.__DELETED` (`{table, col, id}`).
+`check(label, got, want)` compares the two as strings and is one `node:test`
+test, so a failure fails the file - no test keeps its own counter or exit code
+(three of them once had none, and the gate printed "ok" over whatever they
+found). `open()` boots the page on a stubbed ledger and never needs a Supabase
+stub of its own: the tables passed are what the ledger holds, and passing any
+signs the page in. What the app sends back lands in `window.__WROTE`
+(`{op, table, row}`) and `window.__DELETED` (`{table, col, id}`). `tick(ms)`
+lets the page run its timers and redraws; `ROOT` is the repo, for reading a
+file. `fixture.js` is the deliberately awkward ledger `ledgertest.js` walks.
 
 ## What each one is for
 

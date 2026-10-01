@@ -12,21 +12,9 @@
 
    The species fallback has to stay, though: a Mega has no learnset of its own,
    so Mega Garchomp reads Garchomp's. Both halves are asserted here. */
-/* the repo, found from this file - NOT a hardcoded path. Every test in
-   here carried an absolute Windows path, so none of them had ever run
-   anywhere but one laptop, and all fifteen died instantly the first time
-   CI tried (2026-09-13). */
-const ROOT = require("path").join(__dirname, "..") + "/";
+const { check, open, source } = require("./harness.js");
 
-let bad = 0;
-const ok = (label, got, want) => {
-  const good = String(got) === String(want);
-  if (!good) bad++;
-  console.log("  " + (good ? "OK  " : "FAIL") + "  " + label.padEnd(50) +
-              got + (good ? "" : "   (esperado " + want + ")"));
-};
-
-const { dom, errs } = require("./harness.js").open(ROOT);
+const { dom, errs } = open();
 const w = dom.window;
 
 setTimeout(() => {
@@ -36,21 +24,21 @@ setTimeout(() => {
   const C = w.CHAMP;
 
   console.log("\n  lo que encontro el jugador");
-  ok("Samurott-Hisui aprende Ceaseless Edge",
+  check("Samurott-Hisui aprende Ceaseless Edge",
      has("Samurott-Hisui", "Ceaseless Edge"), true);
-  ok("Samurott-Hisui aprende Sucker Punch",
+  check("Samurott-Hisui aprende Sucker Punch",
      has("Samurott-Hisui", "Sucker Punch"), true);
-  ok("Rotom-Wash aprende Hydro Pump", has("Rotom-Wash", "Hydro Pump"), true);
+  check("Rotom-Wash aprende Hydro Pump", has("Rotom-Wash", "Hydro Pump"), true);
 
   console.log("\n  y no se los presta a la forma base");
-  ok("Samurott base NO aprende Ceaseless Edge",
+  check("Samurott base NO aprende Ceaseless Edge",
      has("Samurott", "Ceaseless Edge"), false);
-  ok("Rotom base NO aprende Hydro Pump", has("Rotom", "Hydro Pump"), false);
+  check("Rotom base NO aprende Hydro Pump", has("Rotom", "Hydro Pump"), false);
 
   console.log("\n  la caida a la especie sigue viva (las Megas la necesitan)");
-  ok("Mega Garchomp lee el pool de Garchomp",
+  check("Mega Garchomp lee el pool de Garchomp",
      size("Mega Garchomp"), size("Garchomp"));
-  ok("y no esta vacio", size("Mega Garchomp") > 0, true);
+  check("y no esta vacio", size("Mega Garchomp") > 0, true);
 
   /* the sweep: every form that has its own key must read its own pool, not
      its species'. A sample would have missed 24 of the 25. */
@@ -63,7 +51,7 @@ setTimeout(() => {
     const own = C.LEARN[form].length;
     if (size(form) !== own) wrong.push(form);
   });
-  ok("ninguna lee el pool de su especie", wrong.join(", ") || "0", "0");
+  check("ninguna lee el pool de su especie", wrong.join(", ") || "0", "0");
 
   /* and the other half of the question: is EVERY form covered? Four were not
      - Floette and Mega Floette (Champions' Floette is the Eternal Flower one,
@@ -71,42 +59,40 @@ setTimeout(() => {
      base species'. */
   console.log("\n  todas las formas, sin excepcion");
   let empty = C.DEX.map(r => r[0]).filter(n => !size(n));
-  ok("ninguna forma se queda sin movepool", empty.join(", ") || "0", "0");
+  check("ninguna forma se queda sin movepool", empty.join(", ") || "0", "0");
   /* Champions' Floette is the Eternal Flower one and there is no other: the
      master list has only 670-e, no learner table says plain "Floette", and the
      Pokedex block carries the Eternal spread. The bare name still has to find
      it, because every usage source writes it that way. */
-  ok("Floette-Eternal tiene el suyo", has("Floette-Eternal", "Moonblast"), true);
-  ok("y 'Floette' a secas cae en el (es el unico que existe)",
+  check("Floette-Eternal tiene el suyo", has("Floette-Eternal", "Moonblast"), true);
+  check("y 'Floette' a secas cae en el (es el unico que existe)",
      has("Floette", "Moonblast"), true);
-  ok("Mega Floette tambien", size("Mega Floette") > 0, true);
+  check("Mega Floette tambien", size("Mega Floette") > 0, true);
   /* Indeedee-Female does NOT inherit: Serebii lists it in the learner tables
      under a "#0" dex cell, which a \d{4} pattern dropped, so it used to come
      out with the male's list or with nothing. It has its own pool, and the
      difference is the point - Follow Me is on the female only. */
-  ok("Indeedee-Female tiene movepool propio, no el del macho",
+  check("Indeedee-Female tiene movepool propio, no el del macho",
      size("Indeedee-Female") !== size("Indeedee") && size("Indeedee-Female") > 0,
      true);
-  ok("...y es la que aprende Follow Me",
+  check("...y es la que aprende Follow Me",
      has("Indeedee-Female", "Follow Me"), true);
-  ok("...que el macho no aprende", has("Indeedee", "Follow Me"), false);
+  check("...que el macho no aprende", has("Indeedee", "Follow Me"), false);
   /* Basculegion-Female really does inherit: Serebii gives it no learner row at
      all, only an "<h2>Stats - Female</h2>" block. */
-  ok("Basculegion-Female hereda el de Basculegion",
+  check("Basculegion-Female hereda el de Basculegion",
      size("Basculegion-Female"), size("Basculegion"));
   /* the forms split on 2026-09-12 share the species pool */
-  ok("Squawkabilly-White hereda el de Squawkabilly",
+  check("Squawkabilly-White hereda el de Squawkabilly",
      size("Squawkabilly-White"), size("Squawkabilly"));
-  ok("Gourgeist-Jumbo hereda el de Gourgeist",
+  check("Gourgeist-Jumbo hereda el de Gourgeist",
      size("Gourgeist-Jumbo"), size("Gourgeist"));
 
   /* every screen that offers moves goes through this one helper, so the fix
      reaches all of them - assert that nothing reads the table directly */
-  const code = require("./harness.js").source(ROOT);
+  const code = source();
   const direct = (code.match(/C\.LEARN\[/g) || []).length;
-  ok("solo learnset() lee la tabla (3 lecturas, todas suyas)", direct, 3);
+  check("solo learnset() lee la tabla (3 lecturas, todas suyas)", direct, 3);
 
-  console.log("\n  ERRORES JS: " + (errs.length ? errs.join(" | ") : "ninguno"));
-  console.log(bad ? "\n  " + bad + " FALLOS\n" : "\n  todo bien\n");
-  process.exit(bad || errs.length ? 1 : 0);
+  check("la pagina no reporta errores de script", errs.join(" | ") || "ninguno", "ninguno");
 }, 1200);

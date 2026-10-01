@@ -18,16 +18,8 @@
    The fixture makes the race real. The device has loaded `farigiraf` only,
    while the table also holds a `farigiraf-2` that another device wrote a
    second ago. A correct create walks past both. */
-const ROOT = require("path").join(__dirname, "..") + "/";
+const { check, open } = require("./harness.js");
 const UID = "u1";
-
-let bad = 0;
-const ok = (label, got, want) => {
-  const good = String(got) === String(want);
-  if (!good) bad++;
-  console.log("  " + (good ? "OK  " : "FAIL") + "  " + label.padEnd(52) +
-              got + (good ? "" : "   (esperado " + want + ")"));
-};
 
 const ROWS = [{user_id:UID, id:"farigiraf", name:"Farigiraf",
   location:"champions", status:"permanent", origin:"champions", note:"",
@@ -43,7 +35,7 @@ const TEAMS = [{user_id:UID, id:"t1", name:"Otro", slots:[], notes:{},
 /* TAKEN is what the TABLE holds, which is not what the device has loaded:
    builds/farigiraf-2 and teams/prueba were written elsewhere. */
 const TAKEN = { builds: ["farigiraf", "farigiraf-2"], teams: ["otro", "prueba"] };
-const { dom, errs } = require("./harness.js").open(ROOT,
+const { dom, errs } = open(
   { box: ROWS, builds: BUILDS, teams: TEAMS }, { taken: TAKEN });
 /* what the app sent, as "table/id", one list per kind of write */
 const sent = op => dom.window.__WROTE.filter(x => x.op === op).map(x => x.table + "/" + x.row.id);
@@ -54,16 +46,16 @@ const save = which => click([...d.querySelectorAll("#" + which + "Foot button")]
 
 setTimeout(() => {
   console.log("\n  una build nueva, con la carrera en marcha");
-  ok("el aparato solo ha cargado una build",
+  check("el aparato solo ha cargado una build",
      Object.keys(w.S.builds).length, 1);
   w.buildSheet(null, {pokemon:"Farigiraf"});
   save("buildEdit");
   setTimeout(() => {
-    ok("prueba farigiraf, luego -2, luego -3",
+    check("prueba farigiraf, luego -2, luego -3",
        sent("insert").join(","), "builds/farigiraf,builds/farigiraf-2,builds/farigiraf-3");
     /* the whole point: the id it could not see was NOT overwritten */
-    ok("no sobrescribe nada por el camino", sent("upsert").length, 0);
-    ok("y el id sigue siendo legible",
+    check("no sobrescribe nada por el camino", sent("upsert").length, 0);
+    check("y el id sigue siendo legible",
        /^builds\/farigiraf-3$/.test(sent("insert")[2]), true);
 
     console.log("\n  editar una build existente no crea otra");
@@ -71,20 +63,18 @@ setTimeout(() => {
     w.buildSheet("farigiraf", w.S.builds.farigiraf);
     save("buildEdit");
     setTimeout(() => {
-      ok("escribe sobre su propio id", sent("upsert").join(","), "builds/farigiraf");
-      ok("y no intenta crear nada", sent("insert").length, 0);
+      check("escribe sobre su propio id", sent("upsert").join(","), "builds/farigiraf");
+      check("y no intenta crear nada", sent("insert").length, 0);
 
       console.log("\n  lo mismo para los equipos");
       w.__WROTE.length = 0;
       w.teamSheet(null, {name:"Prueba", slots:[], notes:{}});
       save("teamEdit");
       setTimeout(() => {
-        ok("prueba y prueba-2", sent("insert").join(","), "teams/prueba,teams/prueba-2");
-        ok("sin sobrescribir el equipo del otro aparato", sent("upsert").length, 0);
+        check("prueba y prueba-2", sent("insert").join(","), "teams/prueba,teams/prueba-2");
+        check("sin sobrescribir el equipo del otro aparato", sent("upsert").length, 0);
 
-        console.log("\n  ERRORES JS: " + (errs.length ? errs.join(" | ") : "ninguno"));
-        console.log(bad ? "\n  " + bad + " FALLOS\n" : "\n  todo bien\n");
-        process.exit(bad || errs.length ? 1 : 0);
+        check("la pagina no reporta errores de script", errs.join(" | ") || "ninguno", "ninguno");
       }, 400);
     }, 400);
   }, 600);
