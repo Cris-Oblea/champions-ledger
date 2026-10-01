@@ -95,14 +95,28 @@
    the worst case is a pixel losing half of 0.14 and nobody can see it, and
    stacking them full-width WOULD show: measured, the doubled pixel jumps from
    41,45,41 to 57,61,59, a brighter line in place of an invisible one. */
-.row.card::before{content:"";display:block;height:6px;
-  background:
+/* THE BAND AND THE TINT, WRITTEN ONCE. Declared on every node that carries
+   type colours - the card, and each Mega layer, which sets the same --tcol*
+   and --tsoft* on itself (paintTypes in ui/card.js). A custom property is
+   resolved on the element that declares it, so each node's --band is drawn
+   in its own colours, and its pseudo-elements inherit that. */
+.row.card, .row.card > .retype, .row.card > .retyperim{
+  --band:
     linear-gradient(180deg, var(--tcol2, var(--tcol, var(--line-hard))) 50%,
                     var(--tcol2b, var(--tcol2, var(--tcol, var(--line-hard)))) 50%)
       right top / 50% 100% no-repeat,
     linear-gradient(180deg, var(--tcol, var(--line-hard)) 50%,
                     var(--tcolb, var(--tcol, var(--line-hard))) 50%)
-      left top / 100% 100% no-repeat}
+      left top / 100% 100% no-repeat;
+  --tint:
+    linear-gradient(var(--tint-dir), var(--tsoft, transparent) 0,
+                    var(--tsoftb, var(--tsoft, transparent)) 34px,
+                    transparent 76px)
+      left top / 50% 100% no-repeat,
+    linear-gradient(var(--tint-dir), var(--tsoft2, var(--tsoft, transparent)) 0,
+                    var(--tsoft2b, var(--tsoft2, var(--tsoft, transparent))) 34px,
+                    transparent 76px) right top / 50% 100% no-repeat}
+.row.card::before{content:"";display:block;height:6px;background:var(--band)}
 /* ------- A CARD WHOSE TYPE CHANGES SAYS SO IN ITS OWN COLOURS -----------
 
    The card wears its Pokemon's types. Eighteen species change types when they
@@ -140,25 +154,11 @@
 .row.card > .retype{position:absolute;inset:0;z-index:0;pointer-events:none;
   opacity:0;border-radius:inherit;
   /* the same two-half tint as the card, in the Mega's tones... */
-  background:
-    linear-gradient(var(--tint-dir), var(--msoft, transparent) 0,
-                    var(--msoftb, var(--msoft, transparent)) 34px,
-                    transparent 76px)
-      left top / 50% 100% no-repeat,
-    linear-gradient(var(--tint-dir), var(--msoft2, var(--msoft, transparent)) 0,
-                    var(--msoft2b, var(--msoft2, var(--msoft, transparent))) 34px,
-                    transparent 76px) right top / 50% 100% no-repeat}
+  background:var(--tint)}
 /* ...and the 6px band on top of it, halved exactly as the real one is, so the
    two line up pixel for pixel while they cross-fade. */
 .row.card > .retype::before{content:"";position:absolute;left:0;right:0;top:0;
-  height:6px;
-  background:
-    linear-gradient(180deg, var(--mcol2, var(--mcol, var(--line-hard))) 50%,
-                    var(--mcol2b, var(--mcol2, var(--mcol, var(--line-hard)))) 50%)
-      right top / 50% 100% no-repeat,
-    linear-gradient(180deg, var(--mcol, var(--line-hard)) 50%,
-                    var(--mcolb, var(--mcol, var(--line-hard))) 50%)
-      left top / 100% 100% no-repeat}
+  height:6px;background:var(--band)}
 /* The content sits ABOVE the overlay. Named rather than `> *`, because the
    sprite is absolutely positioned and `position:relative` on it would drop it
    back into the flow. */
@@ -185,13 +185,7 @@
   pointer-events:none;opacity:0;z-index:3}
 @supports ((mask-composite: exclude) or (-webkit-mask-composite: xor)) {
   .row.card > .retyperim{
-    background:
-      linear-gradient(180deg, var(--mcol2, var(--mcol, var(--line-hard))) 50%,
-                      var(--mcol2b, var(--mcol2, var(--mcol, var(--line-hard)))) 50%)
-        right top / 50% 100% no-repeat,
-      linear-gradient(180deg, var(--mcol, var(--line-hard)) 50%,
-                      var(--mcolb, var(--mcol, var(--line-hard))) 50%)
-        left top / 100% 100% no-repeat;
+    background:var(--band);
     padding:2px;
     -webkit-mask:linear-gradient(#000 0 0) content-box,
                  linear-gradient(#000 0 0);
@@ -633,13 +627,7 @@
 @supports ((mask-composite: exclude) or (-webkit-mask-composite: xor)) {
   .row.card::after{content:"";position:absolute;inset:0;pointer-events:none;
     border-radius:inherit;padding:2px;opacity:1;z-index:2;
-    background:
-      linear-gradient(180deg, var(--tcol2, var(--tcol, var(--line-hard))) 50%,
-                      var(--tcol2b, var(--tcol2, var(--tcol, var(--line-hard)))) 50%)
-        right top / 50% 100% no-repeat,
-      linear-gradient(180deg, var(--tcol, var(--line-hard)) 50%,
-                      var(--tcolb, var(--tcol, var(--line-hard))) 50%)
-        left top / 100% 100% no-repeat;
+    background:var(--band);
     -webkit-mask:linear-gradient(#000 0 0) content-box,
                  linear-gradient(#000 0 0);
     mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);

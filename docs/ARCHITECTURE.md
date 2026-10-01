@@ -164,7 +164,7 @@ Each file opens with a comment saying what it is for.
 | `tabs/settings.js` | Settings: box capacity, export, diagnostics | `drawTrainer`, `drawDiag` |
 | `boot.js` | `renderAll()`, the controls' wiring, what runs on load | `renderAll` |
 | `styles/` | The styles, one file per area (`tokens`, `shell`, `card`, `lists`, `controls`, `sheet`, `density`...). `styles/index.css` lists them in cascade order, and that order is the one the build uses | none |
-| `markup/` | The screens: `markup/index.html` is the page's skeleton (header, tab bar, sheet, dialogs, sign-in), and each tab is its own file, included by a `<!--#include tab.html -->` line | none |
+| `markup/` | The screens: `markup/index.html` is the page's skeleton (header, tab bar, sheet, dialogs, sign-in), and each tab is its own file, included by a `<!--#include tab.html -->` line. A piece that sits on more than one screen (the sort switch) lives once in `markup/parts/` and is included wherever it appears | none |
 
 To see who depends on whom, press F12 on any imported name in VS Code, or run
 `graphify query "what depends on core/store.js"`.

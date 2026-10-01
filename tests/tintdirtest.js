@@ -14,15 +14,17 @@
    stops did not help, so the angle is the fix and this pins it.
 
    What it checks, in the stylesheet as written:
-     - every gradient painting a tint (--tsoft*, --msoft*) takes its direction
-       from var(--tint-dir), not a literal;
+     - every gradient painting a tint (--tsoft*; the Mega layers set the same
+       properties on themselves) takes its direction from var(--tint-dir),
+       not a literal;
      - --tint-dir is defined, and is not an axis-aligned direction. */
 const { check, styles } = require("./harness.js");
 const css = styles();
 
 /* every linear-gradient( ... ) whose first colour is a tint variable */
-const grads = [...css.matchAll(/linear-gradient\(([^,]+),\s*var\(--[tm]soft/g)];
-check("hay tintes que revisar", grads.length >= 4, true);
+const grads = [...css.matchAll(/linear-gradient\(([^,]+),\s*var\(--tsoft/g)];
+/* the two halves of --tint, written once in card.css */
+check("hay tintes que revisar", grads.length >= 2, true);
 const literal = grads.filter(m => m[1].trim() !== "var(--tint-dir)");
 check("todos toman la direccion de --tint-dir",
    literal.map(m => m[1].trim()).join(", ") || "todos", "todos");

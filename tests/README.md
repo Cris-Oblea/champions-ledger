@@ -142,6 +142,11 @@ Raichu-Alola the two Mega Raichu and Slowbro-Galar the Mega Slowbro. Smogon's
 roster states which form each Mega belongs to, and it is not always the base
 one — Mega Floette belongs to Floette-**Eternal**.
 
+**`tokenstest.js`** — the dark theme is written twice in `styles/tokens.css`,
+once for the system setting and once for the button, because CSS cannot OR a
+media query with a selector and `light-dark()` would leave an older browser
+with no colours. This fails when one block changes and the other does not.
+
 **`burntest.js`** — burn halves a physical attack and leaves a special one
 alone. It was reported as "doing nothing", and it was: a dead toggle left over
 from the hand-written engine was setting state the real engine never read.

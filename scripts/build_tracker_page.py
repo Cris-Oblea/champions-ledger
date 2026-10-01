@@ -141,16 +141,29 @@ def markup():
     only toggles `hidden`, the session and the loaded ledger are never thrown
     away, and nothing is fetched. The split is for the person reading it.
     Every fragment must be included exactly once.
+
+    markup/parts/ holds the pieces that appear in more than one place - the
+    sort switch sits on both boxes - and any fragment may include one as
+    `<!--#include parts/x.html -->`, as often as it needs. A part nothing
+    includes fails the build like a fragment would.
     """
     index = read_src("markup", "index.html")
-    inc = re.compile(r"^[ \t]*<!--#include ([\w.-]+) -->\n", re.M)
+    inc = re.compile(r"^[ \t]*<!--#include ([\w./-]+) -->\n", re.M)
     names = inc.findall(index)
     on_disk = sorted(f for f in os.listdir(os.path.join(SRC, "markup"))
                      if f.endswith(".html") and f != "index.html")
     if sorted(names) != on_disk:
         sys.exit("markup/index.html includes %s but markup/ holds %s"
                  % (sorted(names), on_disk))
-    return inc.sub(lambda m: read_src("markup", m.group(1)), index)
+    page = inc.sub(lambda m: read_src("markup", m.group(1)), index)
+    parts = set(inc.findall(page))
+    parts_dir = os.path.join(SRC, "markup", "parts")
+    on_disk = {"parts/" + f for f in os.listdir(parts_dir)} \
+        if os.path.isdir(parts_dir) else set()
+    if parts != on_disk:
+        sys.exit("markup includes parts %s but markup/parts/ holds %s"
+                 % (sorted(parts), sorted(on_disk)))
+    return inc.sub(lambda m: read_src("markup", m.group(1)), page)
 
 
 # THE APP'S PUBLIC SURFACE - the names that leave the bundle.
