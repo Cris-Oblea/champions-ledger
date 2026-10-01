@@ -538,6 +538,6 @@ function moveRowFor(m, ability, poke, opts){
 }
 
 export {
-  AB_SET, abilityHit, abilityTag, blockerTags, factLine, itemTags,
-  moveFilters, moveRowFor, moveScore, priorityTag, spreadNote, spreadTags,
+  AB_SET, abilityTag, blockerTags, factLine, itemTags,
+  moveFilters, moveRowFor, spreadNote, spreadTags,
 };

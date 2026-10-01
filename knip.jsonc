@@ -1,0 +1,12 @@
+// knip: what ESLint cannot see across files - an export nothing imports, a
+// file nothing reaches, a package nothing uses. ESLint judges one module at a
+// time, so an export that lost its last importer reads as used forever.
+{
+  "$schema": "https://unpkg.com/knip@6/schema.json",
+  "entry": ["tracker/src/_entry.js", "scripts/*.js", "scripts/hooks/*.js", "tests/*.js", "cron/src/cron.js"],
+  "project": ["tracker/src/**/*.js", "scripts/**/*.js", "tests/**/*.js", "cron/src/**/*.js"],
+  // Used, but from Python, which knip does not read: build_engine_bundle.py and
+  // build_tracker_page.py run esbuild and inline supabase-js, daily.py runs the
+  // other two as gate checks.
+  "ignoreDependencies": ["@supabase/supabase-js", "esbuild", "html-validate", "jscpd"]
+}

@@ -840,4 +840,4 @@ function fill(node, rows, emptyMsg){
   rows.forEach(function(r){ node.appendChild(pokeRow(r)); });
 }
 
-export { addSheet, drawBoxes, drawDexPane, drawDupeHome, fill, pokeSheet };
+export { addSheet, drawBoxes, drawDexPane, drawDupeHome, pokeSheet };

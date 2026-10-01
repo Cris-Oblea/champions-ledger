@@ -10,6 +10,10 @@
  *
  * 2. An element id the script reaches for that the markup does not contain.
  *
+ * 3. A class or id the stylesheet styles that no script or markup uses -
+ *    stylelint reads the CSS alone, so a rule whose element was deleted
+ *    stays valid CSS forever.
+ *
  * It used to make two more checks - a `var` declared twice in one scope, and a
  * part using a name it never imported - by hand-rolled scope analysis. ESLint
  * makes both now (`no-redeclare`, `no-undef`) and makes the second one
@@ -54,6 +58,28 @@ console.log("element ids used but not in the markup");
   for (const m4 of app.matchAll(/\$\("([^"]+)"\)/g)) {
     if (!ids.has(m4[1]) && !dynamic.has(m4[1])) {
       fail('$("' + m4[1] + '") has no matching id in the markup');
+    }
+  }
+  if (problems === before) console.log("  none");
+}
+
+console.log("CSS classes and ids nothing uses");
+{
+  const before = problems;
+  /* Selectors only: comments and declaration blocks out first, so a url(),
+     a hex colour or a number with a dot is never read as a class. */
+  const selectors = harness.styles().replaceAll(/\/\*[\s\S]*?\*\//g, "")
+    .replaceAll(/\{[^{}]*\}/g, "{}");
+  const words = new Set((app + src).match(/[\w-]+/g));
+  /* Built by concatenation, so no source spells them whole: the retype layers
+     ("i" + n) and their count ("n" + n) in ui/card.js, and the Mega marks
+     ("mk-" + letter) beside them. */
+  const dynamic = /^(i\d|n\d|mk-\w+)$/;
+  const used = new Set([...selectors.matchAll(/[.#](-?[A-Za-z_][\w-]*)/g)].map(m5 => m5[0]));
+  for (const sel of [...used].sort()) {
+    const name = sel.slice(1);
+    if (!words.has(name) && !dynamic.test(name)) {
+      fail(sel + " is styled but no script or markup uses it");
     }
   }
   if (problems === before) console.log("  none");

@@ -560,7 +560,6 @@ determinan
 determinar
 detras
 devuelve
-dexno
 dexnos
 dextest
 dialogo
@@ -905,7 +904,6 @@ gtslabel
 gtsnote
 gtsorigintest
 gtspair
-gtspic
 gtsrow
 gtsside
 gtstest
@@ -2010,7 +2008,6 @@ usan
 usando
 usar
 usarlo
-userchip
 usuario
 utag
 vacia
