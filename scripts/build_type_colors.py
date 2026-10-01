@@ -43,8 +43,9 @@ import re
 import sys
 
 import net
+import paths
 
-ROOT = pathlib.Path(__file__).resolve().parent.parent
+ROOT = pathlib.Path(paths.ROOT)
 OUT = ROOT / "data" / "db" / "type_colors.json"
 CSS = "https://assets.pokemon.com/static2/_ui/css/main.css"
 

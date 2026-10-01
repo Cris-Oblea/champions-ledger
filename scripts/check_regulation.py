@@ -43,8 +43,8 @@ import re
 import sys
 
 import net
+from paths import ROOT
 
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RECORD = os.path.join(ROOT, "data", "db", "regulation.json")
 POKEBASE = "https://pokebase.app/pokemon-champions/pokemon"
 SEREBII = "https://www.serebii.net/pokemonchampions/rankedbattle.shtml"

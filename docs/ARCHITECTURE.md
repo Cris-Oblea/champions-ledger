@@ -258,7 +258,9 @@ and `supabase db query "select ..." --linked` runs any query.
 ## 6. The data pipeline
 
 `python scripts/refresh.py` runs every stage in order. Each stage is one
-script, so a stage can also run on its own. They fall into four families:
+script, so a stage can also run on its own. Every script finds the repo
+through `scripts/paths.py` (`ROOT`, `RAW`, `DB`, `META`), never its own
+`__file__`. They fall into four families:
 
 | Family | Scripts | What they do |
 |---|---|---|

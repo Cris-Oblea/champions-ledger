@@ -35,8 +35,8 @@ import re
 import subprocess
 import sys
 
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-DB = os.path.join(ROOT, "data", "db")
+from paths import DB, ROOT
+
 OUT = os.path.join(DB, "effects.json")
 PROBE = os.path.join(ROOT, "scripts", "probe_modifiers.js")
 

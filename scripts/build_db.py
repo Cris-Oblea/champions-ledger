@@ -16,11 +16,8 @@ import re
 from collections import defaultdict
 from pathlib import Path
 
+from paths import DB, RAW
 from serebii_text import read, unmojibake
-
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-RAW = os.path.join(ROOT, "data", "raw")
-DB = os.path.join(ROOT, "data", "db")
 
 # An ability is read by its NAME, never by its link's slug. Serebii links
 # Greninja's Battle Bond as href="/abilitydex/.shtml" - an empty slug - and

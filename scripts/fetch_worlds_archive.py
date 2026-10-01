@@ -36,9 +36,8 @@ import sys
 from pathlib import Path
 
 import net
+from paths import META, ROOT
 
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-META = os.path.join(ROOT, "data", "meta")
 RAW = os.path.join(ROOT, "data", "raw", "tournaments")
 OUT = os.path.join(META, "worlds_archive.json")
 INDEX = "https://www.pokedata.ovh/standingsVGC/"

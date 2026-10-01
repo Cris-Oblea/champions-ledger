@@ -25,7 +25,8 @@ import re
 import sys
 from pathlib import Path
 
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+from paths import ROOT
+
 README = os.path.join(ROOT, "README.md")
 STATUS = os.path.join(ROOT, "STATUS.md")
 

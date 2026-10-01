@@ -42,7 +42,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+from paths import ROOT
 
 # Files that state rules. Not analysis/ write-ups, which are dated accounts of
 # one investigation and are allowed to describe what was believed at the time -

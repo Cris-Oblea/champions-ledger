@@ -60,7 +60,8 @@ import os
 import re
 from pathlib import Path
 
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+from paths import ROOT
+
 EFFECTS = os.path.join(ROOT, "data", "db", "effects.json")
 
 # No digit, no subject, and the word is in the sentence already.

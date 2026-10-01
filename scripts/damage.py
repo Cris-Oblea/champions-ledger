@@ -43,8 +43,8 @@ import subprocess
 from pathlib import Path
 
 import query as Q
+from paths import ROOT
 
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SMOGON_BUNDLE = os.path.join(ROOT, "data", "raw", "smogon_calc")
 
 # Psyshock is the only move in Champions that attacks one defence and is

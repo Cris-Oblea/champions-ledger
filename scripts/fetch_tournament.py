@@ -45,10 +45,9 @@ import time
 import urllib.parse
 
 import net
+from paths import META, ROOT
 
 BASE = "https://www.pokedata.ovh/standingsVGC"
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-META = os.path.join(ROOT, "data", "meta")
 RAW = os.path.join(ROOT, "data", "raw", "tournaments")
 TEAM_PHP = "https://www.pokedata.ovh/misc/team.php?team="
 

@@ -35,8 +35,7 @@ import re
 from pathlib import Path
 
 import query as Q
-
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+from paths import ROOT
 
 PAGE = os.path.join(ROOT, "data", "raw", "pages", "statusconditions.html")
 OUT = os.path.join(ROOT, "data", "db", "statuses.json")

@@ -26,11 +26,10 @@ import sys
 import time
 
 import net
+from paths import META, ROOT
 
 BASE = "https://pokebase.app/pokemon-champions"
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 RAW = os.path.join(ROOT, "data", "raw", "pokebase")
-META = os.path.join(ROOT, "data", "meta")
 
 PAGES = ["pokemon", "moves", "abilities", "items", "speed-tiers", "teams"]
 
