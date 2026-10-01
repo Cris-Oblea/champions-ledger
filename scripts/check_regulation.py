@@ -2,8 +2,6 @@
 """Which regulation is live, and is the database still built for it?
 
     python scripts/check_regulation.py            # ask the sources, report
-    python scripts/check_regulation.py --json     # the same, for a script
-    python scripts/check_regulation.py --record   # write what is live as ours
 
 WHY THIS EXISTS. A regulation is the one event that can quietly wreck the
 database. `fetch_serebii.py` skips any page already cached, and the attackdex
@@ -137,38 +135,25 @@ def look():
 
 def main():
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
-    ap.add_argument("--json", action="store_true")
-    ap.add_argument("--record", action="store_true",
-                    help="write the live regulation as the one we are built for")
-    a = ap.parse_args()
-
+    ap.parse_args()
     status, live, ours, why = look()
-    if a.record and live:
-        record(live, why)
-        status = "current"
-        ours = live
-
-    if a.json:
-        print(json.dumps({"status": status, "live": live, "ours": ours,
-                          "why": why}))
+    if status == "current":
+        print("regulation %s - the database is built for it"
+              % (live or "?").upper())
+    elif status == "ready":
+        print("NEW REGULATION: %s is live, the database is built for %s."
+              % (live.upper(), (ours or "nothing").upper()))
+        print("  %s" % why)
+        print("  run: python scripts/refresh.py --regulation")
+    elif status == "waiting":
+        print("NEW REGULATION: %s is live, the database is built for %s - "
+              "but Serebii has not published it yet."
+              % (live.upper(), (ours or "nothing").upper()))
+        print("  %s" % why)
+        print("  clearing its cache now would re-download the same pages, "
+              "so this waits.")
     else:
-        if status == "current":
-            print("regulation %s - the database is built for it"
-                  % (live or "?").upper())
-        elif status == "ready":
-            print("NEW REGULATION: %s is live, the database is built for %s."
-                  % (live.upper(), (ours or "nothing").upper()))
-            print("  %s" % why)
-            print("  run: python scripts/refresh.py --regulation")
-        elif status == "waiting":
-            print("NEW REGULATION: %s is live, the database is built for %s - "
-                  "but Serebii has not published it yet."
-                  % (live.upper(), (ours or "nothing").upper()))
-            print("  %s" % why)
-            print("  clearing its cache now would re-download the same pages, "
-                  "so this waits.")
-        else:
-            print("could not tell which regulation is live: %s" % why)
+        print("could not tell which regulation is live: %s" % why)
     return {"current": 0, "ready": 10, "waiting": 11}.get(status, 2)
 
 

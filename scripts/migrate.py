@@ -2,8 +2,7 @@
 """Apply the SQL migrations, and know which ones already ran.
 
     python scripts/migrate.py            # apply whatever is pending
-    python scripts/migrate.py --check    # fail if anything is pending
-    python scripts/migrate.py --status   # just list them
+    python scripts/migrate.py --check    # list them; fail if anything is pending
 
 The migrations (`supabase/supabase_migrate_*.sql`) used to be pasted into the
 Supabase SQL editor by hand, and nothing recorded that it had happened. That is
@@ -82,7 +81,6 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--check", action="store_true",
                     help="exit non-zero if a migration has not been applied")
-    ap.add_argument("--status", action="store_true")
     a = ap.parse_args()
 
     all_files = [os.path.basename(p) for p in files()]
@@ -103,8 +101,6 @@ def main():
     for f in all_files:
         print("  %-28s %s" % (f, "applied" if f in done else "PENDING"))
 
-    if a.status:
-        return 0
     if not pending:
         print("\nall %d applied" % len(all_files))
         return 0

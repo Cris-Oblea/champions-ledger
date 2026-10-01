@@ -7,7 +7,6 @@ use, and reports anything that appears in one place but not the other.
 
 Usage:
     python scripts/audit_forms.py
-    python scripts/audit_forms.py --verbose
 """
 import html
 import json
@@ -193,18 +192,15 @@ def _match_by_type(r, dex):
                 None)
 
 
-def _missing_rows(master, dex, by_norm, verbose):
+def _missing_rows(master, dex, by_norm):
     print("\n--- 2. Master-list rows missing from the dex ---")
     missing = []
     for r in master:
         # a suffixed sprite means a distinct form; the dex names it Species-Form
         if norm(r["name"]) in by_norm:
             continue
-        hit = _match_by_type(r, dex)
-        if hit is None:
+        if _match_by_type(r, dex) is None:
             missing.append(r)
-        elif verbose:
-            print("  matched by type: %s (list) == %s (dex)" % (r["name"], hit["name"]))
     for r in missing:
         print("  MISSING  #%04d %-22s sprite=%-10s types=%s"
               % (r["dex"], r["name"], r["sprite"], "/".join(r["types"])))
@@ -348,7 +344,6 @@ def main():
     naming something with usage that we do not have, and a page that splits a
     form the dex has not split. Those four are how a form goes missing.
     """
-    verbose = "--verbose" in sys.argv
     dex = json.loads(Path(DB, "pokemon.json").read_text(encoding="utf-8"))
     master = master_list()
 
@@ -358,7 +353,7 @@ def main():
 
     by_norm = {norm(p["name"]): p for p in dex}
     problems = _collisions(dex)
-    problems += _missing_rows(master, dex, by_norm, verbose)
+    problems += _missing_rows(master, dex, by_norm)
     _extra_forms(master, dex)
     _multi_form(dex)
     _gender_split(dex)

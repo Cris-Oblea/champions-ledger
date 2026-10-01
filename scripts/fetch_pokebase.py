@@ -17,7 +17,6 @@ payload instead, which we reassemble and index by line id.
 
 Usage:
     python scripts/fetch_pokebase.py          # fetch + parse everything
-    python scripts/fetch_pokebase.py --parse  # re-parse cached HTML only
 """
 import json
 import os
@@ -323,13 +322,11 @@ def parse_teams():
 
 # --------------------------------------------------------------------------
 def main():
-    parse_only = "--parse" in sys.argv
-    if not parse_only:
-        print("Fetching pokebase.app ...")
-        force = "--force" in sys.argv
-        for p in PAGES:
-            for n in range(1, PAGED.get(p, 1) + 1):
-                fetch(p, force=force, num=n)
+    print("Fetching pokebase.app ...")
+    force = "--force" in sys.argv
+    for p in PAGES:
+        for n in range(1, PAGED.get(p, 1) + 1):
+            fetch(p, force=force, num=n)
 
     os.makedirs(META, exist_ok=True)
     stamp = time.strftime("%Y-%m-%d")

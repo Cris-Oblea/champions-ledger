@@ -2,7 +2,6 @@
 """Measure every combat modifier against Smogon's own Champions engine.
 
     python scripts/measure_modifiers.py            # measure and write the table
-    python scripts/measure_modifiers.py --quick    # a short smoke subset
 
 Serebii's item text says "slightly boosts the power", which is not a number,
 and reciting the number from memory is exactly what this project forbids. So
@@ -13,7 +12,6 @@ The output is data/db/modifiers.json, and the printed table is the evidence.
 Anything the engine does not model shows as x1.00 and is dropped rather than
 carried as a guess.
 """
-import argparse
 import json
 import os
 import re
@@ -193,13 +191,8 @@ CASES += [
 
 
 def main():
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--quick", action="store_true")
-    a = ap.parse_args()
-    cases = CASES[:8] if a.quick else CASES
-
     base_cache, table, rows = {}, {}, []
-    for group, name, base, flags in cases:
+    for group, name, base, flags in CASES:
         bk = tuple(base)
         if bk not in base_cache:
             base_cache[bk] = run(base)
@@ -228,14 +221,13 @@ def main():
                 if table[g][n] == 1.0:
                     del table[g][n]
 
-    if not a.quick:
-        with open(OUT, "w", encoding="utf-8") as f:
-            json.dump({"_comment":
-                       "Multipliers MEASURED against Smogon's Champions engine "
-                       "by scripts/measure_modifiers.py - never recited. Re-run "
-                       "it after fetch_smogon_calc.py reports upstream moved.",
-                       **table}, f, ensure_ascii=False, indent=1)
-        print("\nwrote %s" % OUT)
+    with open(OUT, "w", encoding="utf-8") as f:
+        json.dump({"_comment":
+                   "Multipliers MEASURED against Smogon's Champions engine "
+                   "by scripts/measure_modifiers.py - never recited. Re-run "
+                   "it after fetch_smogon_calc.py reports upstream moved.",
+                   **table}, f, ensure_ascii=False, indent=1)
+    print("\nwrote %s" % OUT)
 
 
 if __name__ == "__main__":
