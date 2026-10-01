@@ -442,12 +442,20 @@ function factLine(parts){
    read differently depending on which screen you were on (player, 2026-09-15:
    "la ficha de moves cambio en build y la de find igual deberia conservar los
    mismos cambios para que se entienda de la misma forma en ambas partes").
-   Anything added to one belongs in the other. */
-function moveRowFor(m, ability, poke){
+   Anything added to one belongs in the other - which is why the build's move
+   picker and the search's "+ Move" draw THIS row too, rather than copies
+   that had drifted again (no "not in Champions", no PP, no spread note).
+
+   `opts.onPick` makes the row a button that calls it; `opts.usageOf` names
+   whose usage to show when it is not `poke` - the build picker's Pokemon is
+   the Mega, its usage is recorded on the base species. */
+function moveRowFor(m, ability, poke, opts){
+  opts = opts || {};
   var abils = [];
   if (typeof ability === "string") abils = [ability];
   else if (ability != null) abils = ability.slice();
-  var r = el("div", "row");
+  var r = el(opts.onPick ? "button" : "div", "row");
+  if (opts.onPick) r.onclick = opts.onPick;
   var mm = el("div", "rmain");
   var h = el("div", "rname");
   h.appendChild(typeChip(m.type));
@@ -476,9 +484,18 @@ function moveRowFor(m, ability, poke){
   /* How many of THIS Pokemon's players ran it - the same chip the builder
      shows, on the same terms. Only where there IS a Pokemon: the "+ Move"
      sheet searches the whole table with nobody in hand, and a share needs
-     something to be a share of. */
-  if (poke?.name) {
-    var utag = usageTag(splitPct(poke.name, "m", m.name), poke.name, "m");
+     something to be a share of.
+
+     And EVERY move carries one, including the ones at 0%. The picker used to
+     badge four or five and leave the rest of the movepool blank, and blank
+     reads as "no data" when it actually meant "nobody brought it" - which is
+     an answer, and the one the player asked to see (2026-09-15: "lo que yo
+     quiero es que marque todos los ataques posibles con % de uso").
+     splitPct returns null only when the Pokemon has no table at all, and
+     that is the one case that stays silent. */
+  var who = opts.usageOf || poke?.name;
+  if (who) {
+    var utag = usageTag(splitPct(who, "m", m.name), who, "m");
     if (utag) h.appendChild(utag);
   }
   mm.appendChild(h);

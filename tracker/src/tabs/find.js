@@ -1,13 +1,11 @@
 /* The Find tab: search every Pokemon by type, ability, move and stat. */
 import {
-  bst, byText, C, catName, DEX, dexNo, learnset, MOVES, STAT_KEYS, STAT_LABEL,
+  bst, byText, C, DEX, dexNo, learnset, MOVES, STAT_KEYS, STAT_LABEL,
 } from "../core/data.js";
 import { $, el, fbtn, searchField, setPressed } from "../core/dom.js";
 import { boxRows, FIND, originOf, ownedNames } from "../core/state.js";
-import { megaLine, numText, pokeCard, typeChip, typeSkin } from "../ui/card.js";
-import {
-  blockerTags, itemTags, moveFilters, priorityTag, spreadTags,
-} from "../ui/moves.js";
+import { megaLine, numText, pokeCard, typeSkin } from "../ui/card.js";
+import { moveFilters, moveRowFor } from "../ui/moves.js";
 import { closeSheet, openSheet } from "../ui/nav.js";
 import { findDetail } from "../ui/pokemon.js";
 import { worldInit } from "./worlds.js";
@@ -387,23 +385,9 @@ function moveFilterSheet(){
 }
 
 function moveFilterRow(m){
-  var r = el("button", "row");
-  var mm = el("div", "rmain");
-  var h = el("div", "rname");
-  h.appendChild(typeChip(m.type));
-  h.appendChild(document.createTextNode(m.name));
-  priorityTag(m, h); spreadTags(m, h); itemTags(m, h);
-  blockerTags(m, h);
-  mm.appendChild(h);
-  mm.appendChild(el("div", "st", catName(m.cat) + "  ·  " +
-    (m.bp ? m.bp + " BP" : "— BP") + "  ·  " +
-    (m.acc == null ? "—" : m.acc) + " acc  ·  " + m.target));
-  if (m.text) mm.appendChild(numText(m.text, "div", "st"));
-  r.appendChild(mm);
-  r.onclick = function(){
+  return moveRowFor(m, [], null, {onPick: function(){
     FIND.moves.push(m.name); closeSheet(); findDraw();
-  };
-  return r;
+  }});
 }
 
 /* TYPES COME IN TWO QUESTIONS, not one. "Rock AND Steel" is a dual type and
