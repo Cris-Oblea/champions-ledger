@@ -87,7 +87,7 @@ def side_of(why):
 
 
 def clean(s):
-    return " ".join((s or "").replace("�", "'").split())
+    return " ".join((s or "").split())
 
 
 def field_setters(moves, abils):
