@@ -151,9 +151,10 @@ def players_from_event(rows):
     return players
 
 
-def latest_round(tid, division, start=20):
-    """Rounds appear as they are played; walk down to the newest one present."""
-    for n in range(start, 0, -1):
+def latest_round(tid, division):
+    """Rounds appear as they are played; walk down from 20 to the newest one
+    present."""
+    for n in range(20, 0, -1):
         body = get("%s/%s/%s/R%d.php" % (BASE, tid, division, n), timeout=90)
         if body and 'id="standings"' in body and "trow" in body:
             return n, body
@@ -301,7 +302,7 @@ def _player_team(path):
     return merged, bool(merged)
 
 
-def enrich_with_teamlists(players, limit=None):
+def enrich_with_teamlists(players):
     """The per-player teamlist adds the nature, which the tooltip does not carry.
 
     The plain .json endpoint 404s for every player whose name is not ASCII, so
@@ -309,8 +310,6 @@ def enrich_with_teamlists(players, limit=None):
     calls, which serves all of them.
     """
     todo = [p for p in players if p.get("_teamfile")]
-    if limit:
-        todo = todo[:limit]
     os.makedirs(RAW, exist_ok=True)
     done = fell_back = 0
     for p in todo:

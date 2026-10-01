@@ -67,14 +67,14 @@ def get(url, dest, force=False):
     return True, False
 
 
-def fetch_many(items, workers=5, pause=0.12, force=False):
+def fetch_many(items, workers=5, force=False):
     """items: list of (url, dest). Fetches with modest concurrency; a worker
-    that went to the network waits `pause` before its next page, so the
+    that went to the network waits 0.12 s before its next page, so the
     pool never hammers Serebii. Progress is counted here, in one thread."""
     def one(item):
         ok, cached = get(*item, force=force)
         if not cached:
-            time.sleep(pause)
+            time.sleep(0.12)
         return ok, cached
 
     stats = {"ok": 0, "cached": 0, "fail": 0}
