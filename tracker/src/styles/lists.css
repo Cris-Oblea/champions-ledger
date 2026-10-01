@@ -19,15 +19,8 @@
    A card already carries the type ring; the origin is on its tag. */
 .row.card{display:flex;flex-direction:column;align-items:stretch;
   justify-content:flex-start;padding:0;overflow:hidden;position:relative;
-  background:
-    linear-gradient(var(--tint-dir), var(--tsoft, transparent) 0,
-                    var(--tsoftb, var(--tsoft, transparent)) 34px,
-                    transparent 76px)
-      left top / 50% 100% no-repeat,
-    linear-gradient(var(--tint-dir), var(--tsoft2, var(--tsoft, transparent)) 0,
-                    var(--tsoft2b, var(--tsoft2, var(--tsoft, transparent))) 34px,
-                    transparent 76px) right top / 50% 100% no-repeat,
-    var(--surface);
+  /* --tint is declared with the band, in card.css */
+  background:var(--tint), var(--surface);
   border-left:1px solid var(--line)}
 .rmain{flex:1;min-width:0}
 .rname{font-weight:600;font-size:14.5px;display:flex;align-items:center;

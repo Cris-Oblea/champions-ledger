@@ -17,22 +17,13 @@ function tintOf(h, alpha){
                    Number.parseInt(h.slice(3, 5), 16) + "," +
                    Number.parseInt(h.slice(5, 7), 16) + "," + alpha + ")";
 }
-/* Dress a row as a CARD wearing its Pokemon's type: the band across the top
-   and the tint behind it. Used by every list that shows Pokemon, so the four
-   of them cannot drift apart.
-
-   It only adds - the caller's own classes stay, and that matters: the LEFT
-   stripe still means origin (HOME-elastic, Champions-welded, rental) or
-   ownership, which is a different fact from the type and must not be traded
-   away for a tidier picture. Two edges, two facts.
-
-   The card styling itself is scoped to `.cards`, so a row marked here and
-   dropped into a plain `.list` simply stays a row. */
-function typeCard(row, p, shiny){
-  row.className += " card";
-  var types = p?.types || [];
-  var c1 = TYPE_COLOR[types[0]];
-  if (!c1) return row;
+/* THE TYPE'S COLOURS, as the custom properties the band and the tint read
+   (--tcol* and --tsoft*). The card sets them on itself; a Mega layer sets
+   them on itself too, and since a property set on a node beats the one it
+   inherits, the same CSS paints both - in each one's own colours. A tint
+   that cannot be made is written as transparent rather than left unset,
+   or a layer would inherit the card's. */
+function paintTypeColours(node, types){
   /* A DUAL TYPE IS ITS OWN COLOUR, not its first half. Fire/Psychic and
      Fire/Rock are different Pokemon and should not wear the same card
      (player, 2026-09-16: "podría ser color diferente... tener más tonalidades
@@ -58,13 +49,14 @@ function typeCard(row, p, shiny){
      which is how the badge itself is halved. Setting the right half to the
      second tone instead drew an X on pure Dragon. */
   var mono = !types[1];
+  var c1 = TYPE_COLOR[types[0]];
   var top1 = c1, bot1 = TYPE_COLOR2[types[0]] || c1;
   var top2 = mono ? top1 : TYPE_COLOR[types[1]];
   var bot2 = mono ? bot1 : (TYPE_COLOR2[types[1]] || top2);
-  row.style.setProperty("--tcol", c1);     /* solid, for borders */
-  row.style.setProperty("--tcolb", bot1);
-  row.style.setProperty("--tcol2", top2);
-  row.style.setProperty("--tcol2b", bot2);
+  node.style.setProperty("--tcol", c1);     /* solid, for borders */
+  node.style.setProperty("--tcolb", bot1);
+  node.style.setProperty("--tcol2", top2);
+  node.style.setProperty("--tcol2b", bot2);
   /* THE TINT RUNS THROUGH BOTH TONES TOO, in the same half as the band above
      it (player: "asi la sombra o contraste igual difumina el/los color/es del
      tipo en cada mitad"). So the left half fades Dragon-blue into
@@ -73,10 +65,28 @@ function typeCard(row, p, shiny){
      is the plain one it always was. */
   var s1 = tintOf(top1, 0.14), s1b = tintOf(bot1, 0.14) || s1;
   var s2 = tintOf(top2, 0.14) || s1, s2b = tintOf(bot2, 0.14) || s2;
-  if (s1) row.style.setProperty("--tsoft", s1);
-  if (s1b) row.style.setProperty("--tsoftb", s1b);
-  if (s2) row.style.setProperty("--tsoft2", s2);
-  if (s2b) row.style.setProperty("--tsoft2b", s2b);
+  node.style.setProperty("--tsoft", s1 || "transparent");
+  node.style.setProperty("--tsoftb", s1b || "transparent");
+  node.style.setProperty("--tsoft2", s2 || "transparent");
+  node.style.setProperty("--tsoft2b", s2b || "transparent");
+}
+/* Dress a row as a CARD wearing its Pokemon's type: the band across the top
+   and the tint behind it. Used by every list that shows Pokemon, so the four
+   of them cannot drift apart.
+
+   It only adds - the caller's own classes stay, and that matters: the LEFT
+   stripe still means origin (HOME-elastic, Champions-welded, rental) or
+   ownership, which is a different fact from the type and must not be traded
+   away for a tidier picture. Two edges, two facts.
+
+   The card styling itself is scoped to `.cards`, so a row marked here and
+   dropped into a plain `.list` simply stays a row. */
+function typeCard(row, p, shiny){
+  row.className += " card";
+  var types = p?.types || [];
+  var c1 = TYPE_COLOR[types[0]];
+  if (!c1) return row;
+  paintTypeColours(row, types);
   /* THE PICTURE GOES ON HERE, so it lands on every card from one place rather
      than at six call sites. A marker class rather than `:has(.sprite)`: a
      browser without `:has()` drops the rule silently and the badges would run
@@ -93,9 +103,9 @@ function typeCard(row, p, shiny){
    (player, 2026-09-20: "como podriamos hacer para las cards que tienen cambio
    de tipo (por ende mas o menos colores) se vea visible?").
 
-   This sets a second set of variables - the same four the band uses and the
-   same four the tint uses, under `--m*` - and drops in the layer that carries
-   them. The animation lives in the stylesheet; everything here does is decide
+   This drops in a layer per new typing, painted by paintTypeColours() exactly as
+   the card is, in that typing's colours. The animation lives in the
+   stylesheet; all this code does is decide
    WHETHER there is anything to fade to. A Mega that keeps its typing gets
    nothing at all, which is 57 of the 76.
 
@@ -103,23 +113,10 @@ function typeCard(row, p, shiny){
    over the whole dex - so this is always a two-state fade rather than a
    cycle. If a regulation ever adds one, the first differing Mega wins and the
    second is still spelled out in the chips and the arrows. */
-/* One retyping layer, carrying the new typing's colours as the --m* custom
-   properties: both halves of the band, and the soft tints behind them. */
+/* One retyping layer, carrying the new typing's colours on itself - the
+   same properties the card carries, so the same CSS paints it. */
 function paintRetype(node, f){
-  var t = f.types || [], c1 = TYPE_COLOR[t[0]], mono = !t[1];
-  var top1 = c1, bot1 = TYPE_COLOR2[t[0]] || c1;
-  var top2 = mono ? top1 : TYPE_COLOR[t[1]];
-  var bot2 = mono ? bot1 : (TYPE_COLOR2[t[1]] || top2);
-  node.style.setProperty("--mcol", c1);
-  node.style.setProperty("--mcolb", bot1);
-  node.style.setProperty("--mcol2", top2);
-  node.style.setProperty("--mcol2b", bot2);
-  var s1 = tintOf(top1, 0.14), s1b = tintOf(bot1, 0.14) || s1;
-  var s2 = tintOf(top2, 0.14) || s1, s2b = tintOf(bot2, 0.14) || s2;
-  if (s1) node.style.setProperty("--msoft", s1);
-  if (s1b) node.style.setProperty("--msoftb", s1b);
-  if (s2) node.style.setProperty("--msoft2", s2);
-  if (s2b) node.style.setProperty("--msoft2b", s2b);
+  paintTypeColours(node, f.types || []);
   node.setAttribute("aria-hidden", "true");
   return node;
 }

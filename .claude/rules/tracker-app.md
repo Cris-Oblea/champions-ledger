@@ -67,7 +67,8 @@ capa").** `tracker/src/core/` (data, state, rules, DOM helpers, store),
 `tracker/src/ui/` (what several tabs share), `tracker/src/tabs/` (one file per
 screen) and `tracker/src/boot.js`, plus `styles/` (CSS, cascade order in
 `styles/index.css` - a file not listed there fails the build) and `markup/`
-(`index.html` skeleton + one file per tab, joined by `<!--#include -->` lines).
+(`index.html` skeleton + one file per tab, joined by `<!--#include -->` lines;
+`markup/parts/` holds what more than one screen shows, included as often as needed).
 **A part imports from its own layer or a lower one, and no import cycle is
 allowed**: ESLint flags it on the line, `check_graph()` in
 `scripts/build_tracker_page.py` fails the build. When a lower layer needs a
