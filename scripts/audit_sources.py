@@ -22,38 +22,26 @@ accuracy. Reading a number off either one would import a value from a different
 game; CLAUDE.md allows them for a MECHANIC only, after checking Champions did
 not change it.
 """
-import glob
 import json
 import os
 import re
 from pathlib import Path
 
 import dex
-from paths import POKEAPI_CSV, POKEBASE, SMOGON_CALC
+from fetch_pokebase import rows_with
+from paths import POKEAPI_CSV, SMOGON_CALC
 
 SMOG = os.path.join(SMOGON_CALC, "raw_moves.json")
 API = os.path.join(POKEAPI_CSV, "moves.csv")
 
-# pokebase's payload states the four numbers inline, in one shape
-PB_MOVE = re.compile(
-    r'\\"name\\":\\"([^\\"]+)\\",\\"slug\\":\\"[^\\"]*\\",\\"type\\":[^,]*,'
-    r'\\"damageClass\\":\\"([a-z]+)\\",\\"power\\":([0-9]+|null),'
-    r'\\"accuracy\\":([0-9]+|null),\\"pp\\":([0-9]+|null)')
 CAT = {"physical": "Physical", "special": "Special", "status": "Status"}
-
-
-def num(x):
-    return None if x in (None, "null", "") else int(x)
 
 
 def pokebase_moves():
     out = {}
-    for f in sorted(glob.glob(os.path.join(POKEBASE, "moves*.html"))):
-        h = Path(f).read_text(encoding="utf-8", errors="replace")
-        for m in PB_MOVE.finditer(h):
-            out.setdefault(m.group(1), {
-                "cat": CAT.get(m.group(2)), "bp": num(m.group(3)),
-                "acc": num(m.group(4)), "pp": num(m.group(5))})
+    for r in rows_with("moves", "name", "damageClass", "power", "accuracy", "pp"):
+        out.setdefault(r["name"], {"cat": CAT.get(r["damageClass"]), "bp": r["power"],
+                                   "acc": r["accuracy"], "pp": r["pp"]})
     return out
 
 

@@ -30,47 +30,29 @@ import argparse
 import json
 import os
 import re
-from pathlib import Path
 
 import dex
-from paths import DB, POKEBASE
+from fetch_pokebase import rows_with
+from paths import DB
 
 OUT = os.path.join(DB, "item_facts.json")
 
-# "name":"Life Orb", ... ,"unlock":"shop-1000-vp"  - escaped inside the RSC
-# payload, so the quotes arrive as \" and the window is capped so one item's
-# name cannot pair with the next item's unlock
-PAIR = re.compile(r'\\"name\\":\\"([^\\"]+)\\"'
-                  r'((?:(?!\\"name\\").){0,1500}?)'
-                  r'\\"unlock\\":\\"([^\\"]+)\\"', re.S)
-DESC = re.compile(r'\\"name\\":\\"([^\\"]+)\\"'
-                  r'((?:(?!\\"name\\").){0,900}?)'
-                  r'\\"description\\":\\"((?:[^\\"]|\\.)*?)\\"', re.S)
-
-
-def pokebase_pages():
-    for fn in ("items.html", "items_p2.html"):
-        p = os.path.join(POKEBASE, fn)
-        if os.path.exists(p):
-            yield Path(p).read_text(encoding="utf-8", errors="replace")
-
 
 def pokebase_unlocks():
+    """name -> how the shop unlocks it ("shop-1000-vp")."""
     out = {}
-    for h in pokebase_pages():
-        for m in PAIR.finditer(h):
-            out.setdefault(m.group(1), m.group(3))
+    for r in rows_with("items", "name", "unlock"):
+        out.setdefault(r["name"], r["unlock"])
     return out
 
 
 def pokebase_text():
     """pokebase's description: the mechanics, with the numbers in them."""
     out = {}
-    for h in pokebase_pages():
-        for m in DESC.finditer(h):
-            t = m.group(3).replace("\u2019", "'")
-            t = t.replace("\n", " ").replace("\\", "")
-            out.setdefault(m.group(1), " ".join(t.split()))
+    for r in rows_with("items", "name", "description"):
+        if isinstance(r["description"], str):
+            t = r["description"].replace("\u2019", "'")
+            out.setdefault(r["name"], " ".join(t.split()))
     return out
 
 
