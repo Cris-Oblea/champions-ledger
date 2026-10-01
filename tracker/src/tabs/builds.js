@@ -40,17 +40,17 @@ import { analysisFold } from "../ui/pokemon.js";
    the local copy of S.builds only catches up when the write echoes back.
    The whole row goes back, because the store writes a box row whole. */
 function setTrained(boxId, on){
-  var r = boxId && S.box[boxId];
+  const r = boxId && S.box[boxId];
   if (!r || !!r.trained === on || (on && r.status === "rental"))
     return Promise.resolve();
-  var row = {};
+  const row = {};
   Object.keys(r).forEach(function(k){ if (k !== "_id") row[k] = r[k]; });
   row.trained = on;
   return put("box/" + boxId, row);
 }
 function syncTrained(fromId, toId, buildId){
   if ((fromId || null) === (toId || null)) return setTrained(toId, true);
-  var stillCarried = fromId && buildsOn(fromId, buildId).length;
+  const stillCarried = fromId && buildsOn(fromId, buildId).length;
   return Promise.all([
     stillCarried ? null : setTrained(fromId, false),
     setTrained(toId, true)
@@ -76,20 +76,20 @@ function syncTrained(fromId, toId, buildId){
    and never a limit - and the ones he owns are marked rather than the ones he
    does not, which is the shorter list to read. */
 function speciesSheet(onPick){
-  var PS = {sort: "dex", mine: false};
+  const PS = {sort: "dex", mine: false};
   openSheet("Which Pokemon?", function(body){
-    var ownedNow = {};
+    const ownedNow = {};
     boxRows("champions").concat(boxRows("home")).forEach(function(r){
       ownedNow[r.name] = (ownedNow[r.name] || 0) + 1;
     });
 
-    var inp = searchField(body, "Search " + FORMS.length +
+    const inp = searchField(body, "Search " + FORMS.length +
       " forms \u2014 name, type or number", function(){ draw(); });
 
-    var sortWrap = el("div", "toggles");
+    const sortWrap = el("div", "toggles");
     [["dex", "Dex no."], ["az", "A-Z"], ["bst", "BST"],
      ["spe", "Speed"]].forEach(function(o){
-      var t = el("button", "tog", o[1]);
+      const t = el("button", "tog", o[1]);
       setPressed(t, PS.sort === o[0]);
       t.onclick = function(){
         PS.sort = o[0];
@@ -102,8 +102,8 @@ function speciesSheet(onPick){
     });
     body.appendChild(sortWrap);
 
-    var mineWrap = el("div", "toggles");
-    var mineTog = el("button", "tog", "In your boxes");
+    const mineWrap = el("div", "toggles");
+    const mineTog = el("button", "tog", "In your boxes");
     mineTog.title = "Everything else is still here - a set for a Pokemon you "
                   + "have not got yet is an idea worth keeping.";
     setPressed(mineTog, false);
@@ -115,13 +115,13 @@ function speciesSheet(onPick){
     mineWrap.appendChild(mineTog);
     body.appendChild(mineWrap);
 
-    var list = el("div", "list cards");
+    const list = el("div", "list cards");
     body.appendChild(list);
 
     function draw(){
-      var q = inp.q();
+      const q = inp.q();
       list.innerHTML = "";
-      var hits = FORMS.filter(function(p){
+      const hits = FORMS.filter(function(p){
         if (PS.mine && !ownedNow[p.name]) return false;
         if (!q) return true;
         return p.name.toLowerCase().includes(q)
@@ -162,15 +162,15 @@ function speciesSheet(onPick){
 }
 
 function buildRow(id, b){
-  var p = byName[b.mega || b.pokemon] || byName[b.pokemon];
-  var lk = buildLink(id);
-  var isRental = lk.row?.status === "rental";
-  var badges = function(nm){
+  const p = byName[b.mega || b.pokemon] || byName[b.pokemon];
+  const lk = buildLink(id);
+  const isRental = lk.row?.status === "rental";
+  const badges = function(nm){
     /* the form the set runs, named. NO "stone missing" badge: that was an
        audit of what he owns on a card about a SET, and a stone's status
        belongs to the Items tab. */
     if (b.mega) nm.appendChild(el("span", "tag mega", b.mega));
-    var tot = spTotal(b.stat_points || {});
+    const tot = spTotal(b.stat_points || {});
     if (tot !== 66) nm.appendChild(el("span", "tag bad", tot + "/66 SP"));
     if (isRental) nm.appendChild(el("span", "tag warn", "rental — cannot train"));
     if (lk.state === "parked")
@@ -181,21 +181,21 @@ function buildRow(id, b){
        for a Pokemon that is not carrying it yet. The two cases read
        differently and only one is a shopping-list item. */
     if (lk.state === "unbound") {
-      var own = boxRows("champions").concat(boxRows("home"))
+      const own = boxRows("champions").concat(boxRows("home"))
         .some(function(r){ return r.name === b.pokemon; });
       nm.appendChild(el("span", "tag", own ? "an idea — not installed"
                                            : "an idea — you have none yet"));
     }
   };
-  var cls = "perm";
+  let cls = "perm";
   if (lk.state === "orphan") cls = "illegal";
   else if (lk.state === "parked" || isRental) cls = "rental";
   if (!p) {
     /* a set for a species the dex does not carry - still a build, still
        openable */
-    var bare = el("button", "row " + cls);
-    var bm = el("div", "rmain");
-    var bh = el("div", "rname");
+    const bare = el("button", "row " + cls);
+    const bm = el("div", "rmain");
+    const bh = el("div", "rname");
     bh.appendChild(document.createTextNode(b.pokemon));
     badges(bh);
     bm.appendChild(bh);
@@ -214,7 +214,7 @@ function buildRow(id, b){
      `p` is already the right row - byName[b.mega] when there is a stone - so
      the only thing left is to stop the card offering the species' options
      beside the decision. */
-  var mab = megaAbility(b);
+  const mab = megaAbility(b);
   return pokeCard(p, {
     cls: cls,
     name: b.pokemon,
@@ -249,13 +249,13 @@ function buildRow(id, b){
    caller sets it afterwards - an indicator sits beside a choice and never
    makes it. */
 function orderByUsage(sel, pokemon, kind){
-  var opts = Array.prototype.slice.call(sel.options);
-  var rows = opts.map(function(opt, i){
+  const opts = Array.prototype.slice.call(sel.options);
+  const rows = opts.map(function(opt, i){
     return {opt:opt, i:i, pct:splitPct(pokemon, kind, opt.value)};
   });
   if (!rows.some(function(r){ return r.pct; })) return;
   rows.sort(function(a, b){
-    var pa = a.pct || 0, pb = b.pct || 0;
+    const pa = a.pct || 0, pb = b.pct || 0;
     return pb - pa || a.i - b.i;
   });
   rows.forEach(function(r){
@@ -279,7 +279,7 @@ function orderByUsage(sel, pokemon, kind){
 
    Nothing is saved until Save; Cancel or Back simply drops the draft. */
 function buildSheet(id, b, keepOriginal){
-  var draft = structuredClone(b || {});
+  const draft = structuredClone(b || {});
   /* the link is stored as box_id and edited as _boxId - seed one from the
      other, or editing a build would silently unbind it on save */
   draft._boxId = draft.box_id || null;
@@ -295,7 +295,7 @@ function buildSheet(id, b, keepOriginal){
   if (!draft.ability) draft.ability = soleAbility(draft.pokemon);
   if (draft.mega && !draft.mega_ability)
     draft.mega_ability = soleAbility(draft.mega);
-  var ed = {id: id, b: b, draft: draft, p: null,
+  const ed = {id: id, b: b, draft: draft, p: null,
             original: keepOriginal || structuredClone(draft),
             checkBox: el("div"), costBox: el("div")};
   /* redraw rebuilds the sheet from the live draft, carrying the pre-edit
@@ -305,13 +305,13 @@ function buildSheet(id, b, keepOriginal){
   openEditor("buildedit", draft.pokemon || "New build", function(body){
     if (!id && !speciesField(body, ed)) return;
     ed.p = byName[draft.pokemon];
-    var copies = copyField(body, ed);
+    const copies = copyField(body, ed);
     linkNotes(body, ed, copies);
     megaField(body, ed);
     abilityAndNature(body, ed);
     usageReference(body, ed);
     smogonFold(body, draft.pokemon);
-    var spPaint = statPoints(body, ed);
+    const spPaint = statPoints(body, ed);
     moveSlots(body, ed);
     /* The 66-point budget and the 32-per-stat cap are the two things a slider
        drag can break, so they repaint with the slider instead of waiting for
@@ -334,11 +334,11 @@ function buildSheet(id, b, keepOriginal){
    answered below. Returns whether a species is chosen - until one is, there
    is nothing else to edit. */
 function speciesField(body, ed){
-  var draft = ed.draft;
-  var f0 = el("div", "field");
+  const draft = ed.draft;
+  const f0 = el("div", "field");
   f0.appendChild(el("label", "f", "Pokemon"));
-  var chosen = draft.pokemon ? byName[draft.pokemon] : null;
-  var open = function(){
+  const chosen = draft.pokemon ? byName[draft.pokemon] : null;
+  const open = function(){
     speciesSheet(function(name){
       draft.pokemon = name;
       draft._boxId = null;          // the copy is chosen separately
@@ -352,7 +352,7 @@ function speciesField(body, ed){
       ed.redraw();
     });
   };
-  var pick;
+  let pick;
   if (chosen) {
     /* the card, so the species you picked reads the same here as in the
        list you picked it from - and it is the form the BUILD plays as, the
@@ -364,9 +364,9 @@ function speciesField(body, ed){
                      onclick:open});
   } else {
     pick = el("button", "row unknown");
-    var pm = el("div", "rmain");
+    const pm = el("div", "rmain");
     pm.appendChild(el("div", "rname", "Tap to choose"));
-    var pmeta = el("div", "rmeta");
+    const pmeta = el("div", "rmeta");
     pmeta.appendChild(el("span", null,
       "any of the " + FORMS.length + " forms in the game, owned or not"));
     pm.appendChild(pmeta);
@@ -397,27 +397,27 @@ function speciesField(body, ed){
 
    Returns the copies, which the notes below need. */
 function copyField(body, ed){
-  var draft = ed.draft;
-  var copies = boxRows("champions").concat(boxRows("home"))
+  const draft = ed.draft;
+  const copies = boxRows("champions").concat(boxRows("home"))
     .filter(function(r){ return r.name === draft.pokemon; });
-  var f1 = el("div", "field");
+  const f1 = el("div", "field");
   f1.appendChild(el("label", "f", "Installed on"));
   if (copies.length) {
-    var sel1 = el("select");
+    const sel1 = el("select");
     sel1.appendChild(new Option("— not installed (just an idea) —", ""));
-    var labels = copies.map(function(r){ return copyLabel(r, ed.id); });
+    const labels = copies.map(function(r){ return copyLabel(r, ed.id); });
     /* TWO COPIES CAN BE THE SAME IN EVERYTHING THE LEDGER RECORDS - his two
        Heracross are both in HOME, neither shiny nor trained, no note - and
        two identical lines read as a bug. They are not, so the line says so,
        rather than inventing a "copy 2" that tells nothing apart: whichever
        he picks is the same Pokemon as far as anything here knows. */
     copies.forEach(function(r, i){
-      var alike = labels.filter(function(t){ return t === labels[i]; }).length;
+      const alike = labels.filter(function(t){ return t === labels[i]; }).length;
       sel1.appendChild(new Option(labels[i] +
         (alike > 1 ? " · one of " + alike + " identical" : ""), r._id));
     });
     sel1.value = draft._boxId || "";
-    var copyCard = el("div", "mt8");
+    const copyCard = el("div", "mt8");
     sel1.onchange = function(){
       draft._boxId = sel1.value || null;
       paintCopy(copyCard, copies, ed);
@@ -435,8 +435,8 @@ function copyField(body, ed){
 /* One copy, as the dropdown names it: where, shiny, trained, origin, what it
    already carries, its note. */
 function copyLabel(r, exceptId){
-  var others = buildsOn(r._id, exceptId);
-  var note = r.note && r.note.length > 40
+  const others = buildsOn(r._id, exceptId);
+  const note = r.note && r.note.length > 40
     ? r.note.slice(0, 39) + "…" : r.note;
   return [
     r.name,
@@ -453,10 +453,10 @@ function copyLabel(r, exceptId){
 /* The card of the copy the dropdown names, redrawn in place. */
 function paintCopy(copyCard, copies, ed){
   copyCard.innerHTML = "";
-  var r = copies.find(function(c){ return c._id === ed.draft._boxId; });
+  const r = copies.find(function(c){ return c._id === ed.draft._boxId; });
   if (!r) return;
-  var others = buildsOn(r._id, ed.id);
-  var pr = byName[r.name];
+  const others = buildsOn(r._id, ed.id);
+  const pr = byName[r.name];
   copyCard.appendChild(pr ? pokeCard(pr, {
     tag: "div",
     name: r.name,
@@ -488,17 +488,17 @@ function paintCopy(copyCard, copies, ed){
    "Not installed on anything" was the same sentence twice (player,
    2026-09-15: "ese mensaje de not installed es redudandte"). */
 function linkNotes(body, ed, copies){
-  var draft = ed.draft;
-  var lk = ed.id ? buildLink(ed.id) : {state:draft._boxId ? "active" : "unbound"};
+  const draft = ed.draft;
+  const lk = ed.id ? buildLink(ed.id) : {state:draft._boxId ? "active" : "unbound"};
   if (lk.state === "unbound" && !copies.length) {
-    var ub = el("div", "note");
+    const ub = el("div", "note");
     ub.innerHTML = "<strong>You do not have a " + draft.pokemon +
       " yet.</strong> The set is saved anyway, so the idea keeps — it just " +
       "cannot be trained or brought to a battle until one arrives.";
     body.appendChild(ub);
   }
   if (lk.state === "parked") {
-    var pk = el("div", "note warn");
+    const pk = el("div", "note warn");
     pk.innerHTML = "<strong>Parked in HOME — this build is inactive.</strong> " +
       "It is kept exactly as it is, because a HOME-origin Pokemon comes back " +
       "with its training. Nothing here can be applied while it sits in HOME; " +
@@ -507,7 +507,7 @@ function linkNotes(body, ed, copies){
   }
   if (lk.state === "orphan") orphanNote(body, ed);
   if (ownedNames()[draft.pokemon] === "rental") {
-    var w = el("div", "note warn");
+    const w = el("div", "note warn");
     w.innerHTML = "<strong>This one is a rental.</strong> Nothing on this page " +
       "can be applied in game until it is made permanent (2500 VP). A rental " +
       "is locked to its default set.";
@@ -519,30 +519,30 @@ function linkNotes(body, ed, copies){
    copy of the species - including one that already carries a build, since
    more than one set per Pokemon is allowed - to re-link it to. */
 function orphanNote(body, ed){
-  var draft = ed.draft;
-  var or = el("div", "note bad");
+  const draft = ed.draft;
+  const or = el("div", "note bad");
   or.innerHTML = "<strong>Orphan build.</strong> The Pokemon this belonged " +
     "to is no longer in the ledger, so this set is not on anything. Point " +
     "it at another " + draft.pokemon + ", or delete it.";
   body.appendChild(or);
-  var cands = boxRows("champions").concat(boxRows("home")).filter(function(r){
+  const cands = boxRows("champions").concat(boxRows("home")).filter(function(r){
     return r.name === draft.pokemon;
   });
   if (!cands.length) return;
-  var fr = el("div", "field");
+  const fr = el("div", "field");
   fr.appendChild(el("label", "f", "Link this build to"));
-  var selr = el("select");
+  const selr = el("select");
   cands.forEach(function(r){
     selr.appendChild(new Option(
       r.name + " — " + (r.location === "home" ? "in HOME" : "Champions box"),
       r._id));
   });
   fr.appendChild(selr);
-  var go = el("button", "fbtn primary", "Link");
+  const go = el("button", "fbtn primary", "Link");
   go.onclick = function(){
     /* Re-point the LINK. The build keeps its id and its name; only box_id
        changes. */
-    var doc = structuredClone(ed.b);
+    const doc = structuredClone(ed.b);
     delete doc._boxId;
     doc.box_id = selr.value;
     put("builds/" + ed.id, doc).then(function(){
@@ -559,18 +559,18 @@ function orphanNote(body, ed){
    Base form, or one of the species' Megas. Only the form's name: what the
    stone costs is the Items tab's business, not this picker's. */
 function megaField(body, ed){
-  var draft = ed.draft, p = ed.p;
-  var ms = megasFor(draft.pokemon);
+  const draft = ed.draft, p = ed.p;
+  const ms = megasFor(draft.pokemon);
   if (!ms.length) return;
-  var fm = el("div", "field");
+  const fm = el("div", "field");
   fm.appendChild(el("label", "f", "Mega"));
-  var togs = el("div", "toggles");
-  var none = el("button", "tog", "Base form only");
+  const togs = el("div", "toggles");
+  const none = el("button", "tog", "Base form only");
   setPressed(none, !draft.mega);
   none.onclick = function(){ draft.mega = null; draft.mega_ability = null; ed.redraw(); };
   togs.appendChild(none);
   ms.forEach(function(m){
-    var t = el("button", "tog mega", m.name);
+    const t = el("button", "tog mega", m.name);
     setPressed(t, draft.mega === m.name);
     t.onclick = function(){
       draft.mega = m.name;
@@ -582,8 +582,8 @@ function megaField(body, ed){
   fm.appendChild(togs);
   body.appendChild(fm);
   if (draft.mega) {
-    var mm = byName[draft.mega];
-    var nt = el("div", "note");
+    const mm = byName[draft.mega];
+    const nt = el("div", "note");
     nt.innerHTML = "<strong>" + draft.mega + ".</strong> " +
       p.types.join("/") + " → " + mm.types.join("/") + ". Ability " +
       p.ab.join("/") + " → " + mm.ab.join("/") + ". Spe " + p.b[5] +
@@ -598,7 +598,7 @@ function megaField(body, ed){
    editor has one, so there is always a way to see where you are in it. */
 function abilityAndNature(body, ed){
   body.appendChild(el("h2", null, "Ability and nature · 500 VP each"));
-  var g = el("div", "grid2");
+  const g = el("div", "grid2");
   g.appendChild(abilityField(ed));
   g.appendChild(natureField(ed));
   body.appendChild(g);
@@ -608,10 +608,10 @@ function abilityAndNature(body, ed){
    pick - Kingambit is 98.6% Defiant, and a list of three cannot say that on
    its own. */
 function abilityField(ed){
-  var draft = ed.draft, p = ed.p;
-  var fa = el("div", "field");
+  const draft = ed.draft, p = ed.p;
+  const fa = el("div", "field");
   fa.appendChild(el("label", "f", "Ability (base form)"));
-  var sa = el("select");
+  const sa = el("select");
   (p?.ab || []).forEach(function(a){ sa.appendChild(new Option(a, a)); });
   if (draft.ability && !p?.ab.includes(draft.ability))
     sa.appendChild(new Option(draft.ability, draft.ability));
@@ -633,7 +633,7 @@ function abilityField(ed){
      sentence that decides a calculation. */
   if (draft.ability && C.ABIL[draft.ability]) {
     fa.appendChild(numText(C.ABIL[draft.ability], "p", "sub"));
-    var abnum = effectLine(draft.ability);
+    const abnum = effectLine(draft.ability);
     if (abnum) fa.appendChild(abnum);
   }
   return fa;
@@ -643,10 +643,10 @@ function abilityField(ed){
    answer 25 alphabetical rows cannot give), and blank until he picks one: a
    nature is 25 choices and 500 VP - it is his. */
 function natureField(ed){
-  var draft = ed.draft;
-  var fn = el("div", "field");
+  const draft = ed.draft;
+  const fn = el("div", "field");
   fn.appendChild(el("label", "f", "Nature"));
-  var sn = el("select");
+  const sn = el("select");
   Object.keys(C.NATURES).sort(byText).forEach(function(n){
     sn.appendChild(new Option(n + " — " + C.NATURES[n][2], n));
   });
@@ -666,11 +666,11 @@ function natureField(ed){
    mio." An indicator informs a decision; a button makes it. So this is text,
    with no click and no handler - the sliders are his. */
 function usageReference(body, ed){
-  var draft = ed.draft;
-  var sp = splitsFor(draft.pokemon);
+  const draft = ed.draft;
+  const sp = splitsFor(draft.pokemon);
   if (!sp) return;
   if ((sp.s || []).length || (sp.t || []).length) {
-    var rh = el("h2", null, "What its players run" +
+    const rh = el("h2", null, "What its players run" +
                 (splitsReg() ? " · " + splitsReg() : ""));
     rh.title = "Reference only. Nothing here fills anything in.";
     body.appendChild(rh);
@@ -685,14 +685,14 @@ function usageReference(body, ed){
    percent] - six numbers in STAT_KEYS order, then its share: flat, because
    an object per row was more than twice the bytes for 283 Pokemon. */
 function spreadRows(spreads){
-  var sprow = el("div", "field");
+  const sprow = el("div", "field");
   sprow.appendChild(el("label", "f", "SP spreads"));
   spreads.slice(0, 6).forEach(function(row){
-    var bits = STAT_KEYS.map(function(k, i){
+    const bits = STAT_KEYS.map(function(k, i){
       return row[i] ? row[i] + " " + STAT_LABEL[k] : null;
     }).filter(Boolean).join(" / ");
-    var line = el("div", "st");
-    var t = el("span", "tag mr6", row[6] + "%");
+    const line = el("div", "st");
+    const t = el("span", "tag mr6", row[6] + "%");
     line.appendChild(t);
     line.appendChild(document.createTextNode(bits));
     sprow.appendChild(line);
@@ -706,11 +706,11 @@ function spreadRows(spreads){
    2026-09-15: "es super completo eso y la ayuda que brinda para armar
    teams"). */
 function teammateRow(pairs, pokemon){
-  var tmrow = el("div", "field");
+  const tmrow = el("div", "field");
   tmrow.appendChild(el("label", "f", "Brought alongside"));
-  var tmline = el("div", "rmeta");
+  const tmline = el("div", "rmeta");
   pairs.forEach(function(pair){
-    var t = el("span", "tag", pair[0] + " " + pair[1] + "%");
+    const t = el("span", "tag", pair[0] + " " + pair[1] + "%");
     t.title = pair[1] + "% of the teams that brought " + pokemon +
       " also brought " + pair[0];
     tmline.appendChild(t);
@@ -736,19 +736,19 @@ function smogonFold(body, pokemon){
    draft. Returns spPaint, which buildSheet calls once the whole editor -
    the checks and the cost included - is on the page. */
 function statPoints(body, ed){
-  var draft = ed.draft;
+  const draft = ed.draft;
   body.appendChild(el("h2", null, "Stat Points · 5 VP each"));
-  var meter = el("div", "meter");
-  var fill = el("i");
+  const meter = el("div", "meter");
+  const fill = el("i");
   meter.appendChild(fill);
   body.appendChild(meter);
-  var bud = el("div", "budget");
-  var budSpent = el("span"), budLeft = el("span");
+  const bud = el("div", "budget");
+  const budSpent = el("span"), budLeft = el("span");
   bud.appendChild(budSpent);
   bud.appendChild(budLeft);
   body.appendChild(bud);
 
-  var spRepaint = [];
+  const spRepaint = [];
   function setSp(k, v, typing){
     draft.stat_points[k] = Math.max(0, Math.min(32, v));
     spPaint(typing);
@@ -756,7 +756,7 @@ function statPoints(body, ed){
   /* `typing` is the box the player is mid-keystroke in; writing back to it
      would fight the cursor, so it is the one node spPaint leaves alone */
   function spPaint(typing){
-    var t = spTotal(draft.stat_points);
+    const t = spTotal(draft.stat_points);
     fill.style.width = Math.min(100, t / 66 * 100) + "%";
     if (t > 66) meter.classList.add("over"); else meter.classList.remove("over");
     budSpent.textContent = t + " of 66 spent";
@@ -781,16 +781,16 @@ function statPoints(body, ed){
 /* One stat's row: slider, minus, the typed box, plus, and the level-50 stat
    it makes. Returns the function that repaints the row from the draft. */
 function statLine(body, ed, k, i, setSp){
-  var draft = ed.draft;
-  var line = el("div", "sp spedit");
+  const draft = ed.draft;
+  const line = el("div", "sp spedit");
   line.appendChild(el("span", "k", STAT_LABEL[k]));
 
-  var r = el("input"); r.type = "range"; r.min = 0; r.max = 32; r.step = 1;
+  const r = el("input"); r.type = "range"; r.min = 0; r.max = 32; r.step = 1;
   r.setAttribute("aria-label", STAT_LABEL[k] + " stat points");
   r.oninput = function(){ setSp(k, Number(r.value), null); };
   line.appendChild(r);
 
-  var dec = el("button", "step", "−");
+  const dec = el("button", "step", "−");
   dec.type = "button";
   dec.setAttribute("aria-label", "One less " + STAT_LABEL[k]);
   dec.onclick = function(){
@@ -798,10 +798,10 @@ function statLine(body, ed, k, i, setSp){
   };
   line.appendChild(dec);
 
-  var num = statNumber(draft, k, setSp);
+  const num = statNumber(draft, k, setSp);
   line.appendChild(num);
 
-  var inc = el("button", "step", "+");
+  const inc = el("button", "step", "+");
   inc.type = "button";
   inc.setAttribute("aria-label", "One more " + STAT_LABEL[k]);
   inc.onclick = function(){
@@ -809,13 +809,13 @@ function statLine(body, ed, k, i, setSp){
   };
   line.appendChild(inc);
 
-  var cs = el("span", "calc");
+  const cs = el("span", "calc");
   cs.title = "Level 50 stat";
   line.appendChild(cs);
   body.appendChild(line);
 
   return function(typing){
-    var v = Number(draft.stat_points[k]) || 0;
+    const v = Number(draft.stat_points[k]) || 0;
     /* a build imported from elsewhere can hold more than 32; show the real
        number and flag it rather than quietly clamping the display */
     r.value = Math.min(32, v);
@@ -823,7 +823,7 @@ function statLine(body, ed, k, i, setSp){
     if (v > 32) line.classList.add("over"); else line.classList.remove("over");
     dec.disabled = v <= 0;
     inc.disabled = v >= 32;
-    var basep = byName[draft.mega || draft.pokemon] || ed.p;
+    const basep = byName[draft.mega || draft.pokemon] || ed.p;
     cs.textContent = basep
       ? String(statAt(basep.b[i], v, k === "hp", natMult(draft.nature, k)))
       : "0";
@@ -834,12 +834,12 @@ function statLine(body, ed, k, i, setSp){
    spinner would sit right next to our own arrows doing the same job, and on
    Android type=number still lets "e", "+" and "-" through. */
 function statNumber(draft, k, setSp){
-  var num = el("input", "spnum");
+  const num = el("input", "spnum");
   num.type = "text";
   num.inputMode = "numeric";
   num.setAttribute("aria-label", STAT_LABEL[k] + " stat points, 0 to 32");
   num.oninput = function(){
-    var clean = num.value.replace(/\D/g, "").slice(0, 2);
+    const clean = num.value.replace(/\D/g, "").slice(0, 2);
     if (clean !== num.value) num.value = clean;
     if (clean === "") return;     // let the box be emptied and retyped
     /* 40 is not a number this box can hold, so correct it on screen too.
@@ -860,8 +860,8 @@ function statNumber(draft, k, setSp){
    Four slots; tapping one opens the move picker for it. */
 function moveSlots(body, ed){
   body.appendChild(el("h2", null, "Moves · 250 VP each"));
-  var ls = learnset(ed.draft.pokemon);
-  for (var idx = 0; idx < 4; idx++) {
+  const ls = learnset(ed.draft.pokemon);
+  for (let idx = 0; idx < 4; idx++) {
     body.appendChild(moveSlot(ed, idx, ls));
     body.appendChild(el("div", "gap6"));
   }
@@ -869,9 +869,9 @@ function moveSlots(body, ed){
 
 /* One slot, a button that opens the move picker for it. */
 function moveSlot(ed, idx, ls){
-  var draft = ed.draft;
-  var name = draft.moves[idx];
-  var s = el("button", "slot" + (name ? "" : " blank"));
+  const draft = ed.draft;
+  const name = draft.moves[idx];
+  const s = el("button", "slot" + (name ? "" : " blank"));
   s.appendChild(slotFace(draft, name, idx));
   s.onclick = function(){ movePicker(draft, idx, ls, ed.redraw); };
   return s;
@@ -880,8 +880,8 @@ function moveSlot(ed, idx, ls){
 /* What a slot shows: the move with its badges and numbers - or, for a name
    the move list does not know, that; or an empty slot, which is allowed. */
 function slotFace(draft, name, idx){
-  var mv = name ? MOVE_BY[name] : null;
-  var mm = el("div", "rmain");
+  const mv = name ? MOVE_BY[name] : null;
+  const mm = el("div", "rmain");
   if (mv) {
     mm.appendChild(slotHead(draft, mv));
     mm.appendChild(el("div", "st", moveNumbers(mv)));
@@ -899,13 +899,13 @@ function slotFace(draft, name, idx){
 /* The move's type and name, its priority, whether it is a spread move, and
    what the build's own ability does to it. */
 function slotHead(draft, mv){
-  var h = el("div", "rname");
+  const h = el("div", "rname");
   h.appendChild(typeChip(mv.type));
   h.appendChild(el("span", "nm", mv.name));
   if (mv.pri > 0) h.appendChild(el("span", "tag ok", "+" + mv.pri));
   spreadTags(mv, h);
-  var ab2 = activeAbility(draft);
-  var at2 = ab2 ? abilityTag(ab2, mv, byName[draft.mega || draft.pokemon]) : null;
+  const ab2 = activeAbility(draft);
+  const at2 = ab2 ? abilityTag(ab2, mv, byName[draft.mega || draft.pokemon]) : null;
   if (at2) h.appendChild(at2);
   return h;
 }
@@ -924,11 +924,11 @@ function moveNumbers(mv){
    Free text, his own words. They write straight into the draft. */
 function proseFields(body, draft){
   body.appendChild(el("h2", null, "Role"));
-  var tr = el("input"); tr.type = "text"; tr.value = draft.role || "";
+  const tr = el("input"); tr.type = "text"; tr.value = draft.role || "";
   tr.oninput = function(){ draft.role = tr.value; };
   body.appendChild(tr);
   body.appendChild(el("h2", null, "Why"));
-  var ta = el("textarea"); ta.value = draft.rationale || "";
+  const ta = el("textarea"); ta.value = draft.rationale || "";
   ta.oninput = function(){ draft.rationale = ta.value; };
   body.appendChild(ta);
 }
@@ -936,13 +936,13 @@ function proseFields(body, draft){
 /* What the checks in core/build.js find wrong with the draft: over budget, a
    stat past 32, a moveset rule. Refilled in place on every slider step. */
 function paintChecks(ed){
-  var checkBox = ed.checkBox;
+  const checkBox = ed.checkBox;
   checkBox.innerHTML = "";
-  var probs = checks(ed.draft, ed.p);
+  const probs = checks(ed.draft, ed.p);
   if (!probs.length) return;
   checkBox.appendChild(el("h2", null, "Worth a look"));
   probs.forEach(function(t){
-    var n = el("div", "note mb6 " + t[0]);
+    const n = el("div", "note mb6 " + t[0]);
     n.innerHTML = t[1];
     checkBox.appendChild(n);
   });
@@ -951,11 +951,11 @@ function paintChecks(ed){
 /* What applying the draft in game would cost in VP, against the set as it
    was when the editor opened. Refilled in place on every slider step. */
 function paintCost(ed){
-  var costBox = ed.costBox;
+  const costBox = ed.costBox;
   costBox.innerHTML = "";
-  var cost = retuneCost(ed.original, ed.draft);
+  const cost = retuneCost(ed.original, ed.draft);
   if (!cost) return;
-  var cn = el("div", "note mt12");
+  const cn = el("div", "note mt12");
   cn.innerHTML = "<strong>" + cost.vp + " VP</strong> to apply this in game: " +
     cost.parts.join(", ") + ".";
   costBox.appendChild(cn);
@@ -968,11 +968,11 @@ function paintCost(ed){
    of guessing from what this device has loaded (see putNew). An EDIT keeps
    its own. Then the trained tag follows the build to its copy. */
 function saveBuild(ed){
-  var draft = ed.draft, id = ed.id, b = ed.b;
+  const draft = ed.draft, id = ed.id, b = ed.b;
   if (!draft.pokemon) { toast("Pick a Pokemon first"); return; }
-  var stem = String(draft.pokemon).toLowerCase()
+  const stem = String(draft.pokemon).toLowerCase()
     .replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
-  var doc = {pokemon:draft.pokemon, box_id:draft._boxId || null,
+  const doc = {pokemon:draft.pokemon, box_id:draft._boxId || null,
              mega:draft.mega || null,
              ability:draft.ability || null,
              mega_ability:draft.mega_ability || null,
@@ -992,7 +992,7 @@ function saveBuild(ed){
 /* DELETE, after asking - or, for a build never saved, just leave. The copy
    it sat on loses its trained tag unless another build is still on it. */
 function deleteBuild(ed){
-  var id = ed.id;
+  const id = ed.id;
   if (!id) { leaveEditor(); return; }
   ask("Delete the " + ed.draft.pokemon + " build?",
       "Only this set goes. The Pokemon it sits on loses its trained tag, " +
@@ -1006,8 +1006,8 @@ function deleteBuild(ed){
 }
 
 function movePicker(draft, idx, ls, done){
-  var abil = activeAbility(draft);
-  var apoke = byName[draft.mega || draft.pokemon];
+  const abil = activeAbility(draft);
+  const apoke = byName[draft.mega || draft.pokemon];
   /* CLOSE THE SHEET, THEN REDRAW. `done` is the editor's redraw and nothing
      more, so every exit from this picker used to leave the sheet sitting on
      top of the editor it had just changed. Picking a move looked like it
@@ -1026,20 +1026,20 @@ function movePicker(draft, idx, ls, done){
       return;
     }
     if (abil && AB_SET[abil]?.side === "off") {
-      var n = el("div", "note mb10");
+      const n = el("div", "note mb10");
       n.innerHTML = "<strong>" + abil + ".</strong> " + (AB_SET[abil].why || "") +
         " Moves it touches are marked below.";
       body.appendChild(n);
     }
-    var ui = moveFilters(body, ls, function(){ draw(); },
+    const ui = moveFilters(body, ls, function(){ draw(); },
                          "Filter " + ls.length + " legal moves",
                          /* one Pokemon's legal moves, so show all of them -
                             the longest movepool in Champions is 106 */
                          {usageOf: draft.pokemon, cap: 200});
-    var list = el("div", "list");
+    const list = el("div", "list");
     body.appendChild(list);
     function draw(){
-      var hits = ui.apply();
+      const hits = ui.apply();
       list.innerHTML = "";
       hits.forEach(function(m){
         list.appendChild(moveRowFor(m, abil, apoke, {
@@ -1057,13 +1057,13 @@ function movePicker(draft, idx, ls, done){
 }
 
 function drawBuilds(){
-  var q = ($("buildSearch").value || "").trim().toLowerCase();
-  var node = $("listBuilds");
+  const q = ($("buildSearch").value || "").trim().toLowerCase();
+  const node = $("listBuilds");
   node.innerHTML = "";
-  var ids = Object.keys(S.builds).sort(function(a, b){
+  const ids = Object.keys(S.builds).sort(function(a, b){
     return String(S.builds[a].pokemon).localeCompare(String(S.builds[b].pokemon));
   }).filter(function(id){
-    var b = S.builds[id];
+    const b = S.builds[id];
     return !q || (b.pokemon + " " + (b.role || "") + " " +
                   (b.moves || []).join(" ")).toLowerCase().includes(q);
   });

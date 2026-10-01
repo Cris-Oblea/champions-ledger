@@ -16,7 +16,7 @@ function rowMatches(r, q){
   if (!q) return true;
   if (r.name.toLowerCase().includes(q)) return true;
   if (String(dexNo(r.name)).includes(q)) return true;
-  var p = byName[r.name];
+  const p = byName[r.name];
   if (p?.types.join(" ").toLowerCase().includes(q)) return true;
   if (q === "shiny" && r.shiny) return true;
   if (q === "trained" && r.trained) return true;
@@ -24,7 +24,7 @@ function rowMatches(r, q){
   return false;
 }
 function sortRows(rows){
-  var r = rows.slice();
+  const r = rows.slice();
   if (VIEW.sort === "az") {
     r.sort(function(a, b){ return a.name.localeCompare(b.name); });
   } else {
@@ -41,7 +41,7 @@ const S = {box:{}, builds:{}, teams:{}, stones:{}, items:{}, gts:{},
 
 function boxRows(loc, st){
   return Object.keys(S.box).map(function(k){
-    var v = S.box[k]; v._id = k; return v;
+    const v = S.box[k]; v._id = k; return v;
   }).filter(function(v){
     return v.location === loc && (!st || v.status === st);
   }).sort(function(a,b){
@@ -80,7 +80,7 @@ const RELEASE_FLOOR = 6;
 function releaseBlock(r){
   if (r?.location !== "champions") return null;
   if (originOf(r) === "home") return "home";
-  var n = boxRows("champions").filter(function(x){
+  const n = boxRows("champions").filter(function(x){
     return originOf(x) !== "home";
   }).length;
   return n <= RELEASE_FLOOR ? "floor" : null;
@@ -107,10 +107,10 @@ function releaseBlock(r){
    build points at a row that no longer exists, which is what happens when the
    Pokemon is released or traded. */
 function buildLink(id){
-  var b = S.builds[id];
-  var boxId = b?.box_id;
+  const b = S.builds[id];
+  const boxId = b?.box_id;
   if (!boxId) return {state:"unbound"};
-  var row = S.box[boxId];
+  const row = S.box[boxId];
   if (!row) return {state:"orphan"};
   row._id = boxId;
   return {row:row, state:row.location === "champions" ? "active" : "parked"};
@@ -149,7 +149,7 @@ function buildsOn(boxId, exceptId){
 
    All 81 Megas have exactly one ability, so a stone always resolves. */
 function soleAbility(name){
-  var p = name ? byName[name] : null;
+  const p = name ? byName[name] : null;
   return p?.ab?.length === 1 ? p.ab[0] : null;
 }
 function baseAbility(b){
@@ -184,7 +184,7 @@ function hasStone(n){ return !!S.stones[n]; }
 function ownedItems(){ return S.items; }
 function hasItem(n){ return !!S.items[n]; }
 function ownedNames(){
-  var m = {}; boxRows("champions").forEach(function(v){ m[v.name] = v.status; });
+  const m = {}; boxRows("champions").forEach(function(v){ m[v.name] = v.status; });
   return m;
 }
 

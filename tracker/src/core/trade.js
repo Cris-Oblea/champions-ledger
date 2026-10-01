@@ -34,9 +34,9 @@ function demandFit(gap){
 
    The harder half decides the score, because either one alone is enough to
    kill a trade; when both are hard it goes to 5. */
-var DIFF_LABEL = ["", "easy", "doable", "hard", "very hard", "near impossible"];
+const DIFF_LABEL = ["", "easy", "doable", "hard", "very hard", "near impossible"];
 function gtsDiff(name){
-  var d = C.GTSDIFF?.[name];
+  const d = C.GTSDIFF?.[name];
   if (!d) return null;
   return {score:d[0], demand:d[1], supply:d[2], rank:d[3], how:d[4] || "",
           usage:d[5], size:d[6] || 0};
@@ -62,8 +62,8 @@ function gtsSelfServe(d){ return d && d.supply <= 2 && d.demand >= 3; }
    open offer occupies one until it is taken or withdrawn, so the fourth
    deposit is not a thing the game will accept. A fixed rule, unlike the box
    capacity, which grows and therefore lives in meta.trainer. */
-var CEILING = 60;
-var GTS_SLOTS = 3;
+const CEILING = 60;
+const GTS_SLOTS = 3;
 /* ==================================================== GTS intelligence ====
    Five things the app knew half of and never joined up. All of it is derived
    at read time from the blob plus the ledger - no new stored data except the
@@ -82,7 +82,7 @@ var GTS_SLOTS = 3;
    is an estimate. The trade history records shininess, so the moment a shiny
    changes hands the real figure can replace this one, exactly the way the
    Mega rule was arrived at. */
-var SHINY_REACH = 60;    // ESTIMATE: about one BST tier. Not measured.
+const SHINY_REACH = 60;    // ESTIMATE: about one BST tier. Not measured.
 
 /* A WANTED CHIP REACHES HIGHER, and the ladder is where "wanted" is measured
    (player, 2026-09-12): "indeedee voló, no duró nada en gts, y con los
@@ -99,7 +99,7 @@ var SHINY_REACH = 60;    // ESTIMATE: about one BST tier. Not measured.
    trades price the Mega rule exactly but nothing has yet measured this. The
    history records both, so it becomes measurable. */
 function demandReach(name){
-  var d = gtsDiff(name);
+  const d = gtsDiff(name);
   if (d?.rank == null) return 0;
   if (d.demand >= 5) return 90;      // top of the ladder: people come to you
   if (d.demand >= 4) return 60;
@@ -119,12 +119,12 @@ function chipValue(name, shiny){
      A BST is a BST. HOME_DEX has the real one, there is no Mega line to reach
      for and no ladder row to want it, so the price comes out as the base row
      and says so rather than being absent. */
-  var p = anyRow(name);
+  const p = anyRow(name);
   if (!p) return null;
-  var base = bst(p);
-  var best = base;
+  const base = bst(p);
+  let best = base;
   megasFor(name).forEach(function(m){ best = Math.max(best, bst(m)); });
-  var dem = demandReach(name);
+  const dem = demandReach(name);
   return {base:base, value:best, viaMega:best > base,
           shiny:!!shiny,
           demandBonus:dem,
@@ -140,21 +140,21 @@ function chipValueOf(rec){
 /* Stones bought for a Pokemon that is nowhere in the ledger - 2000 VP each,
    sitting dead. The app knew both halves and never crossed them. */
 function deadStones(){
-  var have = {};
+  const have = {};
   boxRows("home").concat(boxRows("champions")).forEach(function(r){
     have[r.name] = 1;
-    var p = byName[r.name];
+    const p = byName[r.name];
     if (p?.species) have[p.species] = 1;
   });
-  var out = [];
+  const out = [];
   /* walk the Megas, not the stones: STONE_OF is keyed by Mega name, and a
      stone is only dead if NO form of its species is anywhere in the ledger */
   Object.keys(MEGAS_OF).forEach(function(sp){
     if (have[sp]) return;
     MEGAS_OF[sp].forEach(function(m){
-      var st = STONE_OF[m.name];
+      const st = STONE_OF[m.name];
       if (!st || !hasStone(st)) return;
-      var base = byName[sp];
+      const base = byName[sp];
       out.push({stone:st, species:sp, mega:m.name,
                 bst:base ? bst(base) : null, megaBst:bst(m),
                 spe:base ? base.b[5] : null});
@@ -195,16 +195,16 @@ function chipBand(v, b){
    could is safe, and a generous floor costs nothing.
    Full write-up in analysis/gts_pricing.md. */
 function gtsSuggest(chipName, limit, shiny){
-  var v = chipValue(chipName, shiny);
+  const v = chipValue(chipName, shiny);
   if (!v) return [];
-  var own = ownership();
-  var bands = askBands(v, own, deadStonesBySpecies(own));
+  const own = ownership();
+  const bands = askBands(v, own, deadStonesBySpecies(own));
   bands.reach.sort(bySuggestScore);
   bands.base.sort(bySuggestScore);
   /* filled alternately, so a chip with a big Mega cannot bury the safer half
      under thirty reach-band targets */
-  var want = limit || 14;
-  var out = [];
+  const want = limit || 14;
+  const out = [];
   while (out.length < want && (bands.reach.length || bands.base.length)) {
     if (bands.reach.length) out.push(bands.reach.shift());
     if (out.length < want && bands.base.length) out.push(bands.base.shift());
@@ -219,7 +219,7 @@ function gtsSuggest(chipName, limit, shiny){
    HOME-origin in the box); `frees` is what a HOME copy would free a slot for.
    Both are keyed by form and by species. */
 function ownership(){
-  var owned = {}, frees = {};
+  const owned = {}, frees = {};
   boxRows("home").forEach(function(r){ markOwned(owned, r); });
   boxRows("champions").forEach(function(r){
     markOwned(originOf(r) === "home" ? owned : frees, r);
@@ -229,18 +229,18 @@ function ownership(){
 
 function markOwned(into, r){
   into[r.name] = 1;
-  var p = byName[r.name];
+  const p = byName[r.name];
   if (p?.species) into[p.species] = 1;
 }
 
 /* Species with a Mega Stone already bought and nothing to hold it: trading
    for one turns 2000 VP back on. */
 function deadStonesBySpecies(own){
-  var dead = {};
+  const dead = {};
   Object.keys(MEGAS_OF).forEach(function(sp){
     if (own.owned[sp] || own.frees[sp]) return;
     MEGAS_OF[sp].forEach(function(m){
-      var st = STONE_OF[m.name];
+      const st = STONE_OF[m.name];
       if (st && hasStone(st)) dead[sp] = st;
     });
   });
@@ -264,17 +264,17 @@ function deadStonesBySpecies(own){
    anchor, and A SLOT IS WORTH MORE THAN A STONE: a dead stone is 2000 VP
    already spent, a welded slot cannot be bought back at all. */
 function askBands(v, own, dead){
-  var bands = {reach:[], base:[]};
+  const bands = {reach:[], base:[]};
   FORMS.forEach(function(p){
     if (own.owned[p.name] || own.owned[p.species]) return;
-    var b = bst(p);
-    var band = chipBand(v, b);
+    const b = bst(p);
+    const band = chipBand(v, b);
     if (!band) return;
-    var d = gtsDiff(p.name);
+    const d = gtsDiff(p.name);
     if (d?.demand != null && d.demand >= 4) return;
-    var stone = dead[p.species];
-    var anchor = band === "reach" ? v.reach : v.base;
-    var free = !!(own.frees[p.name] || own.frees[p.species]);
+    const stone = dead[p.species];
+    const anchor = band === "reach" ? v.reach : v.base;
+    const free = !!(own.frees[p.name] || own.frees[p.species]);
     bands[band].push({name:p.name, bst:b, spe:p.b[5], stone:stone || null,
               rank:d?.rank, demand:d?.demand, band:band, frees:free,
               stretch:b > v.value,
@@ -290,17 +290,17 @@ function bySuggestScore(a, b){ return b.score - a.score || b.bst - a.bst; }
 /* How long an offer has been sitting. `deposited` was stored and never read;
    an offer nobody has taken in nine days is telling you the price is wrong. */
 function offerAge(o){
-  var t = offerStart(o);
+  const t = offerStart(o);
   if (t == null) return null;
   return Math.max(0, Math.round((Date.now() - t) / 86400000));
 }
 function offerStart(o){
   if (o.depositedAt) {
-    var p = Date.parse(o.depositedAt);
+    const p = Date.parse(o.depositedAt);
     if (!Number.isNaN(p)) return p;
   }
   if (!o.deposited) return null;
-  var t = Date.parse(o.deposited + "T00:00:00");
+  const t = Date.parse(o.deposited + "T00:00:00");
   return Number.isNaN(t) ? null : t;
 }
 /* Hours matter here in a way they do not elsewhere. Indeedee is BST 475 and
@@ -309,7 +309,7 @@ function offerStart(o){
    cannot see - so it is reported at whatever resolution it actually has. */
 function elapsedText(ms){
   if (ms == null || ms < 0) return null;
-  var h = ms / 3600000;
+  const h = ms / 3600000;
   if (h < 1) return Math.max(1, Math.round(ms / 60000)) + " min";
   if (h < 36) return (h < 10 ? h.toFixed(1) : Math.round(h)) + "h";
   return Math.round(h / 24) + " days";
@@ -327,7 +327,7 @@ function elapsedText(ms){
    pricing rule rests on them, so the cap is gone with the array. */
 function gtsRows(){
   return Object.keys(S.gts).map(function(id){
-    var r = S.gts[id]; r._id = id; return r;
+    const r = S.gts[id]; r._id = id; return r;
   });
 }
 function gtsHistory(){
@@ -355,7 +355,7 @@ function gtsHistory(){
    HOME counts - one already there, or one in the Champions box that came from
    HOME and can be parked back. */
 function keepableCopies(){
-  var n = {};
+  const n = {};
   boxRows("home").forEach(function(r){ n[r.name] = (n[r.name] || 0) + 1; });
   boxRows("champions").forEach(function(r){
     if (originOf(r) === "home") n[r.name] = (n[r.name] || 0) + 1;
@@ -396,12 +396,12 @@ function lastCopyOf(rec){
    because only he knows which form he wants to keep. Returns the sibling
    forms, so the message can name them. */
 function otherFormsOf(rec){
-  var p = byName[rec.name];
+  const p = byName[rec.name];
   if (!p?.species) return [];
-  var out = {};
+  const out = {};
   boxRows("home").concat(boxRows("champions")).forEach(function(r){
     if (r.name === rec.name) return;
-    var q = byName[r.name];
+    const q = byName[r.name];
     if (q && q.species === p.species) out[r.name] = 1;
   });
   return Object.keys(out);
@@ -421,7 +421,7 @@ function gtsFree(){ return Math.max(0, GTS_SLOTS - gtsOffers().length); }
    collision. Returns the clashing offer, or null. */
 function gtsClash(d, exceptId){
   if (!d.offeredId) return null;
-  var hit = null;
+  let hit = null;
   gtsOffers().forEach(function(o){
     if (o._id !== exceptId && o.offeredId === d.offeredId) hit = o;
   });
@@ -444,7 +444,7 @@ function gtsClash(d, exceptId){
    one that ever arrives is a species Champions cannot use - which is exactly
    the pile this list puts first - and thirteen of the twenty-three can be
    caught in GO. */
-var MYTH_SET = null;
+let MYTH_SET = null;
 function gtsBlocked(name){
   if (C.GTSBLOCK?.[name]) return "confirmed";
   if (!MYTH_SET) {
@@ -458,28 +458,28 @@ function gtsBlocked(name){
    it is what the other side WANTED, and a chip that sat for three days was
    priced wrong however good the arithmetic looked. */
 function closeMs(o){
-  var start = offerStart(o);
+  const start = offerStart(o);
   if (start == null) return null;
-  var end = Number.NaN;
+  let end = Number.NaN;
   if (o.closedAt) end = Date.parse(o.closedAt);
   else if (o.closed && o.closed !== true) end = Date.parse(o.closed + "T00:00:00");
   if (Number.isNaN(end)) return null;
-  var ms = end - start;
+  const ms = end - start;
   return ms >= 0 ? ms : null;
 }
 function gtsRecord(name){
-  var all = [], mine = [], gaps = [];
+  const all = [], mine = [], gaps = [];
   gtsHistory().forEach(function(o){
-    var ms = closeMs(o);
+    const ms = closeMs(o);
     if (ms == null) return;
     all.push(ms);
     if (name && o.offered === name) mine.push(ms);
-    var a = anyRow(o.offered), b = anyRow(o.requested);
+    const a = anyRow(o.offered), b = anyRow(o.requested);
     if (a && b) gaps.push(bst(b) - bst(a));
   });
   function mid(xs){
     if (!xs.length) return null;
-    var v = xs.slice().sort(function(x, y){ return x - y; });
+    const v = xs.slice().sort(function(x, y){ return x - y; });
     return v[Math.floor(v.length / 2)];
   }
   return {n:all.length, median:mid(all), mine:mine.length, myMedian:mid(mine),

@@ -5,14 +5,14 @@
 /* ===================================================================== util */
 function $(id){ return document.getElementById(id); }
 function el(tag, cls, txt){
-  var n = document.createElement(tag);
+  const n = document.createElement(tag);
   if (cls) n.className = cls;
   if (txt != null) n.textContent = txt;
   return n;
 }
-var toastT = null;
+let toastT = null;
 function toast(msg){
-  var t = $("toast");
+  const t = $("toast");
   t.textContent = msg;
   /* restart the entrance animation, otherwise a second toast inside the
      window just swaps the text with no sign anything happened */
@@ -20,7 +20,7 @@ function toast(msg){
   clearTimeout(toastT);
   /* long messages need longer than short ones - 2.6s is not enough to read
      "That copy is already in the GTS, waiting for Steelix" */
-  var ms = Math.min(7000, Math.max(2600, 1200 + msg.length * 55));
+  const ms = Math.min(7000, Math.max(2600, 1200 + msg.length * 55));
   toastT = setTimeout(function(){ t.hidden = true; }, ms);
 }
 
@@ -40,7 +40,7 @@ function toast(msg){
    learn the move. This says it, in the same words everywhere. */
 function capNote(host, shown, total, what){
   if (shown >= total) return null;
-  var n = el("div", "sub mt6 mb0");
+  const n = el("div", "sub mt6 mb0");
   n.textContent = "Showing " + shown + " of " + total + " " + what +
                   " — type above to narrow the list.";
   host.appendChild(n);
@@ -67,7 +67,7 @@ function capNote(host, shown, total, what){
    tap is a filter you stop using. */
 function addClear(wrap, inp){
   if (!wrap || !inp || wrap.querySelector(".clr")) return;
-  var clr = el("button", "clr", "×");
+  const clr = el("button", "clr", "×");
   clr.type = "button";
   clr.title = "Clear";
   clr.setAttribute("aria-label", "Clear the filter");
@@ -77,7 +77,7 @@ function addClear(wrap, inp){
      The seven boxes written straight into the markup are wired in boot.js,
      and this pass runs over them afterwards - taking `oninput` would have
      silently unwired all seven. */
-  var prev = inp.oninput;
+  const prev = inp.oninput;
   inp.oninput = function(e){ paint(); if (prev) prev.call(inp, e); };
   clr.onclick = function(e){
     /* guarded: a test, or any code, may call this handler directly */
@@ -94,18 +94,18 @@ function addClear(wrap, inp){
 /* Every search box written straight into the markup gets the same clear
    button, so the two ways a field can be born look identical on screen. */
 function wireClears(root){
-  var wraps = (root || document).querySelectorAll(".search");
+  const wraps = (root || document).querySelectorAll(".search");
   Array.prototype.forEach.call(wraps, function(w){
-    var inp = w.querySelector("input");
+    const inp = w.querySelector("input");
     if (inp) addClear(w, inp);
   });
 }
 
 function searchField(host, placeholder, onInput){
-  var wrap = el("div", "search field");
+  const wrap = el("div", "search field");
   wrap.innerHTML = '<svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/>'
                  + '<path d="m20 20-3.5-3.5"/></svg>';
-  var inp = el("input");
+  const inp = el("input");
   inp.type = "text";
   inp.placeholder = placeholder || "Search";
   inp.setAttribute("aria-label", inp.placeholder);
@@ -126,13 +126,13 @@ function searchField(host, placeholder, onInput){
 }
 
 function fbtn(label, cls, fn){
-  var b = el("button", "btn " + (cls || ""), label);
+  const b = el("button", "btn " + (cls || ""), label);
   b.onclick = fn;
   return b;
 }
 
 function note(kind, html){
-  var n = el("div", "note mb10 " + kind);
+  const n = el("div", "note mb10 " + kind);
   n.innerHTML = html;
   return n;
 }
@@ -140,7 +140,7 @@ function note(kind, html){
 /* The small label above a row of filter chips or a sort row - the pickers
    all use the same one. */
 function filterLabel(t){
-  var d = el("div", "sub mb4"); d.textContent = t;
+  const d = el("div", "sub mb4"); d.textContent = t;
   return d;
 }
 

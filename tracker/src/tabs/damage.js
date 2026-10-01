@@ -23,11 +23,11 @@ import { closeSheet, openSheet } from "../ui/nav.js";
    Anything measured at x1.00 was then checked against the format: Choice Band,
    Choice Specs, Assault Vest, Eviolite, Transistor, Steelworker, Ice Scales and
    Storm Drain are not in Champions at all, which is why they moved nothing. */
-var MODS = C.MODS || {};
+const MODS = C.MODS || {};
 
 /* The resist berries and the type-boosting items, keyed by the type each one
    acts on. The Item menu offers them beside C.MODS. */
-var BERRY_TYPE = {
+const BERRY_TYPE = {
   "Chople Berry": "Fighting", "Colbur Berry": "Dark", "Occa Berry": "Fire",
   "Passho Berry": "Water", "Wacan Berry": "Electric", "Rindo Berry": "Grass",
   "Yache Berry": "Ice", "Shuca Berry": "Ground", "Coba Berry": "Flying",
@@ -35,7 +35,7 @@ var BERRY_TYPE = {
   "Kasib Berry": "Ghost", "Haban Berry": "Dragon", "Babiri Berry": "Steel",
   "Kebia Berry": "Poison", "Roseli Berry": "Fairy", "Chilan Berry": "Normal"
 };
-var TYPE_ITEM = {
+const TYPE_ITEM = {
   "Black Glasses": "Dark", "Mystic Water": "Water", "Metal Coat": "Steel",
   "Fairy Feather": "Fairy", "Charcoal": "Fire", "Magnet": "Electric",
   "Miracle Seed": "Grass", "Hard Stone": "Rock", "Black Belt": "Fighting",
@@ -48,7 +48,7 @@ var TYPE_ITEM = {
    the player counts as a real change - a percentage drop is decoration. */
 function koCount(lo, hi, hp){
   if (hi <= 0) return {text:"it does nothing", n:Infinity};
-  var best = Math.ceil(hp / hi), worst = Math.ceil(hp / lo);
+  const best = Math.ceil(hp / hi), worst = Math.ceil(hp / lo);
   if (best === worst) return {text:"guaranteed " + hko(best), n:best};
   return {text:hko(best) + " on a high roll, " + hko(worst) + " otherwise",
           n:best};
@@ -84,7 +84,7 @@ function engName(name, attacking){
 
 /* our SP object -> the engine's evs, and our boost object -> its boosts */
 function engSide(side){
-  var evs = {}, boosts = {};
+  const evs = {}, boosts = {};
   STAT_KEYS.forEach(function(k){
     if (side.sp[k]) evs[k] = side.sp[k];
     if (k !== "hp" && side.boost[k]) boosts[k] = side.boost[k];
@@ -94,7 +94,7 @@ function engSide(side){
       if (!boosts[k]) boosts[k] = 1;
     });
   }
-  var o = {evs: evs, boosts: boosts};
+  const o = {evs: evs, boosts: boosts};
   if (side.nature) o.nature = side.nature;
   if (side.ability) o.ability = side.ability;
   if (side.item) o.item = side.item;
@@ -107,9 +107,9 @@ function engSide(side){
    is out of, every roll, the engine's own sentence and KO text, and how many
    hits. Throws for a Pokemon the engine has no stats for. */
 function engineCalc(){
-  var S = window.SMOGON;
-  var a = CALC.atk, d = CALC.def, m = CALC.move;
-  var an = engName(a.name, true), dn = engName(d.name, false);
+  const S = window.SMOGON;
+  const a = CALC.atk, d = CALC.def, m = CALC.move;
+  const an = engName(a.name, true), dn = engName(d.name, false);
   if (!C.SMOGON_NAME?.[a.name] && a.name !== "Aegislash")
     throw new Error(a.name + " is not in Smogon's Champions roster, so the " +
       "engine has no stats for it.");
@@ -117,14 +117,14 @@ function engineCalc(){
     throw new Error(d.name + " is not in Smogon's Champions roster, so the " +
       "engine has no stats for it.");
   a._plusOne = CALC.plusOneAtk; d._plusOne = CALC.plusOneDef;
-  var A = new S.Pokemon(S.gen, an, engSide(a));
-  var D = new S.Pokemon(S.gen, dn, engSide(d));
-  var M = new S.Move(S.gen, m.name, {isCrit: !!CALC.crit});
-  var r = S.calculate(S.gen, A, D, M, engineField(S, a, d));
-  var range = damageRange(r.damage);
-  var desc = "";
+  const A = new S.Pokemon(S.gen, an, engSide(a));
+  const D = new S.Pokemon(S.gen, dn, engSide(d));
+  const M = new S.Move(S.gen, m.name, {isCrit: !!CALC.crit});
+  const r = S.calculate(S.gen, A, D, M, engineField(S, a, d));
+  const range = damageRange(r.damage);
+  let desc = "";
   try { desc = r.desc(); } catch (e) { desc = ""; }
-  var ko = "";
+  let ko = "";
   try { ko = r.koChanceText ? r.koChanceText() : ""; } catch (e) { ko = ""; }
   return {lo:range.lo, hi:range.hi, hp:D.maxHP(), curHP:D.curHP(),
           rolls:range.rolls, desc:desc, koText:ko,
@@ -178,11 +178,11 @@ function engineField(S, a, d){
    takes is the per-hit minimum summed to the per-hit maximum summed - never
    the min and max of the flattened list. */
 function damageRange(damage){
-  var multi = Array.isArray(damage[0]);
-  var flat = [];
+  const multi = Array.isArray(damage[0]);
+  let flat = [];
   (multi ? damage : [damage]).forEach(function(x){ flat = flat.concat(x); });
   if (!multi) return {lo:Math.min.apply(null, flat), hi:Math.max.apply(null, flat), rolls:flat};
-  var lo = 0, hi = 0;
+  let lo = 0, hi = 0;
   damage.forEach(function(x){
     lo += Math.min.apply(null, x); hi += Math.max.apply(null, x);
   });
@@ -217,21 +217,21 @@ const CALC = {
    and Sp. Def together and wrong again for Body Press and Psyshock. The
    Champions budget - 66 in all, 32 in one - is shown here too. */
 function calcSideCtl(which){
-  var side = CALC[which], host = $(which === "atk" ? "calcAtk" : "calcDef");
+  const side = CALC[which], host = $(which === "atk" ? "calcAtk" : "calcDef");
   host.innerHTML = "";
   host.appendChild(sidePick(which, side));
   if (!side.name) return;
-  var P = byName[side.name];
+  const P = byName[side.name];
   host.appendChild(sideSelects(which, side, P));
   /* which stat does the chosen move actually read on this side? Body Press
      attacks off Defense and Psyshock hits it, so this is not the category. */
-  var live = calcLiveStats();
+  const live = calcLiveStats();
   host.appendChild(statsHeader());
   STAT_KEYS.forEach(function(k, i){
     host.appendChild(statRow(which, side, P, k, i, live));
   });
   if (which === "def") host.appendChild(curHPField(side));
-  var b = el("div", "budget");
+  const b = el("div", "budget");
   b.id = which + "Budget";
   host.appendChild(b);
   calcBudget(which);
@@ -243,10 +243,10 @@ function calcSideCtl(which){
    chosen yet, or a name with no row anywhere, gets the one shape that needs
    no data. Either way, tapping it opens the picker. */
 function sidePick(which, side){
-  var p0 = side.name ? anyRow(side.name) : null;
+  const p0 = side.name ? anyRow(side.name) : null;
   if (side.name && p0) {
-    var m = null;
-    var pick = pokeCard(p0, {
+    let m = null;
+    const pick = pokeCard(p0, {
       badges: function(h){
         if (side.buildId) h.appendChild(el("span", "tag ok", "your build"));
       },
@@ -256,9 +256,9 @@ function sidePick(which, side){
     otherSpreads(m, byName[side.name], which);
     return pick;
   }
-  var blank = el("button", "row unknown");
-  var bm = el("div", "rmain");
-  var pickWhat = which === "atk" ? "Pick the attacker" : "Pick the defender";
+  const blank = el("button", "row unknown");
+  const bm = el("div", "rmain");
+  const pickWhat = which === "atk" ? "Pick the attacker" : "Pick the defender";
   bm.appendChild(el("div", "rname", side.name || pickWhat));
   bm.appendChild(el("div", "rmeta")).appendChild(
     el("span", null, "From a build, or any Pokemon in the dex"));
@@ -277,14 +277,14 @@ function sidePick(which, side){
    shown as what it WOULD be, because claiming it is in play would be a guess
    about the battle. */
 function otherSpreads(m, p, which){
-  var bf = p && C.BFORMS?.[p.name];
+  const bf = p && C.BFORMS?.[p.name];
   if (!bf?.f) return;
   Object.keys(bf.f).forEach(function(fname){
-    var alt = bf.f[fname].b;
+    const alt = bf.f[fname].b;
     if (!alt) return;
-    var row = el("div", "rmeta");
-    var mine = p.name === "Aegislash" && which === "atk";
-    var tag = el("span", "tag" + (mine ? " ok" : ""),
+    const row = el("div", "rmeta");
+    const mine = p.name === "Aegislash" && which === "atk";
+    const tag = el("span", "tag" + (mine ? " ok" : ""),
                  mine ? "in play attacking" : "when " + (bf.by || "it")
                         + " flips it");
     row.appendChild(el("span", null, fname));
@@ -300,10 +300,10 @@ function otherSpreads(m, p, which){
    en pantalla"). The two halves stay stacked above the stats: side by side
    the SP boxes came out 22px wide. */
 function sideSelects(which, side, P){
-  var g2 = el("div", "grid2 tight mt8");
+  const g2 = el("div", "grid2 tight mt8");
   g2.appendChild(sideField("Ability", abilityOptions(which, P), side, "ability"));
   g2.appendChild(sideField("Item", itemOptions(which), side, "item"));
-  var natures = Object.keys(C.NATURES).sort(byText).map(function(n){
+  const natures = Object.keys(C.NATURES).sort(byText).map(function(n){
     return [n + " (" + C.NATURES[n][2] + ")", n];
   });
   g2.appendChild(sideField("Nature", [["none", ""]].concat(natures), side, "nature"));
@@ -316,9 +316,9 @@ function sideSelects(which, side, P){
 /* A labelled <select> of [text, value] options that writes side[key] and
    redraws the calculator. */
 function sideField(label, options, side, key){
-  var f = el("div", "field");
+  const f = el("div", "field");
   f.appendChild(el("label", "f", label));
-  var s = el("select");
+  const s = el("select");
   options.forEach(function(o){ s.appendChild(new Option(o[0], o[1])); });
   s.value = side[key] || "";
   s.onchange = function(){ side[key] = s.value || null; calcDraw(); };
@@ -330,8 +330,8 @@ function sideField(label, options, side, key){
    Pokemon's real abilities first, then every one with a measured effect on
    this side, because the opponent's is often the unknown. */
 function abilityOptions(which, P){
-  var opts = [["none", ""]];
-  var own = (P.ab || []), seen = {};
+  const opts = [["none", ""]];
+  const own = (P.ab || []), seen = {};
   own.forEach(function(x){
     seen[x] = 1;
     opts.push([x + "  (its own)", x]);
@@ -346,11 +346,11 @@ function abilityOptions(which, P){
 /* The measured items for this side, plus the type-boosting items for the
    attacker and the resist berries for the defender - each once. */
 function itemOptions(which){
-  var opts = [["none", ""]];
-  var pool = (MODS[which === "atk" ? "atk_item" : "def_item"] || []).slice();
+  const opts = [["none", ""]];
+  let pool = (MODS[which === "atk" ? "atk_item" : "def_item"] || []).slice();
   if (which === "def") pool = pool.concat(Object.keys(BERRY_TYPE));
   if (which === "atk") pool = pool.concat(Object.keys(TYPE_ITEM));
-  var done = {};
+  const done = {};
   pool.sort(byText);
   pool.forEach(function(x){
     if (done[x]) return;
@@ -362,9 +362,9 @@ function itemOptions(which){
 
 /* The column heads over the six stat rows. */
 function statsHeader(){
-  var head = el("div", "sp c-faint");
+  const head = el("div", "sp c-faint");
   ["", "SP 0-32", "stage", "="].forEach(function(t, i){
-    var s = el("span", ["k", "v", "v", "calc"][i], t);
+    const s = el("span", ["k", "v", "v", "calc"][i], t);
     head.appendChild(s);
   });
   return head;
@@ -373,14 +373,14 @@ function statsHeader(){
 /* One stat: its SP, its stage (HP takes none) and the stat it makes, the
    one the move actually reads marked in the accent colour. */
 function statRow(which, side, P, k, i, live){
-  var used = (which === "atk" && k === live.aKey) ||
+  const used = (which === "atk" && k === live.aKey) ||
              (which === "def" && (k === live.dKey || k === "hp"));
-  var row = el("div", "sp" + ((side.sp[k] || 0) > 32 ? " over" : ""));
-  var lab = el("span", "k", STAT_LABEL[k]);
+  const row = el("div", "sp" + ((side.sp[k] || 0) > 32 ? " over" : ""));
+  const lab = el("span", "k", STAT_LABEL[k]);
   if (used) lab.classList.add("c-accent");
   row.appendChild(lab);
 
-  var inp = el("input");
+  const inp = el("input");
   inp.type = "number"; inp.min = 0; inp.max = 32;
   inp.value = side.sp[k] || 0;
   inp.setAttribute("aria-label", STAT_LABEL[k] + " stat points");
@@ -393,9 +393,9 @@ function statRow(which, side, P, k, i, live){
   if (k === "hp") row.appendChild(el("span", "v", "—"));
   else row.appendChild(stageSelect(side, k));
 
-  var val = statAt(P.b[i], side.sp[k] || 0, k === "hp",
+  const val = statAt(P.b[i], side.sp[k] || 0, k === "hp",
                    natMult(side.nature, k));
-  var vs = el("span", "calc", String(val));
+  const vs = el("span", "calc", String(val));
   if (used) vs.classList.add("used");
   row.appendChild(vs);
   return row;
@@ -403,7 +403,7 @@ function statRow(which, side, P, k, i, live){
 
 /* -6 to +6. */
 function stageSelect(side, k){
-  var sb = el("select");
+  const sb = el("select");
   [-6,-5,-4,-3,-2,-1,0,1,2,3,4,5,6].forEach(function(v){
     sb.appendChild(new Option(v > 0 ? "+" + v : String(v), String(v)));
   });
@@ -415,10 +415,10 @@ function stageSelect(side, k){
 /* The HP it is ON, not its maximum - after a switch, after chip, after the
    first attack. This is what turns a percentage into a KO answer. */
 function curHPField(side){
-  var g3 = el("div", "grid2 tight");
-  var fh = el("div", "field");
+  const g3 = el("div", "grid2 tight");
+  const fh = el("div", "field");
   fh.appendChild(el("label", "f", "Current HP"));
-  var ih = el("input");
+  const ih = el("input");
   ih.type = "number"; ih.min = 1;
   ih.placeholder = "full";
   ih.value = side.curHP == null ? "" : side.curHP;
@@ -433,26 +433,26 @@ function curHPField(side){
 
 /* 66 total, 32 max in one - the same limits the build editor enforces */
 function calcBudget(which){
-  var side = CALC[which], node = $(which + "Budget");
+  const side = CALC[which], node = $(which + "Budget");
   if (!node) return;
-  var tot = STAT_KEYS.reduce(function(a, k){ return a + (side.sp[k] || 0); }, 0);
+  const tot = STAT_KEYS.reduce(function(a, k){ return a + (side.sp[k] || 0); }, 0);
   node.innerHTML = "";
   node.appendChild(el("span", null, tot + " of 66 SP"));
-  var over = STAT_KEYS.filter(function(k){ return (side.sp[k] || 0) > 32; });
-  var msg = (66 - tot) + " left";
+  const over = STAT_KEYS.filter(function(k){ return (side.sp[k] || 0) > 32; });
+  let msg = (66 - tot) + " left";
   if (tot > 66) msg = (tot - 66) + " over the budget";
   else if (over.length) msg = over.map(function(k){ return STAT_LABEL[k]; }).join(", ") + " over 32";
-  var s = el("span", null, msg);
+  const s = el("span", null, msg);
   if (tot > 66 || over.length) s.classList.add("c-bad");
   node.appendChild(s);
 }
 
 /* which stats the current move really reads, before any of them are shown */
 function calcLiveStats(){
-  var m = CALC.move;
+  const m = CALC.move;
   if (!m) return {aKey:"atk", dKey:"def"};
-  var phys = m.cat === "P";
-  var aKey = phys ? "atk" : "spa", dKey = phys ? "def" : "spd";
+  const phys = m.cat === "P";
+  let aKey = phys ? "atk" : "spa", dKey = phys ? "def" : "spd";
   if (m.name === "Psyshock") dKey = "def";      // Special, hits Defense
   if (m.name === "Body Press") aKey = "def";    // attacks off Defense
   if (m.name === "Foul Play") aKey = "atk";     // off the TARGET's Attack
@@ -462,13 +462,13 @@ function calcLiveStats(){
 /* PICK A SIDE: from his builds (searchable - a hundred builds is a hundred
    cards to scroll past), or any form in the dex. */
 function calcPickSheet(which){
-  var side = CALC[which];
+  const side = CALC[which];
   openSheet(which === "atk" ? "Attacker" : "Defender", function(body){
     buildPicks(body, which);
     body.appendChild(el("h2", null, "Or any Pokemon"));
-    var inp = searchField(body, "Search " + DEX.length +
+    const inp = searchField(body, "Search " + DEX.length +
       " forms, Megas included", function(){ draw(); });
-    var list = el("div", "list cards");
+    const list = el("div", "list cards");
     body.appendChild(list);
     function draw(){ drawDexPicks(list, inp.q(), which, side); }
     draw();
@@ -477,22 +477,22 @@ function calcPickSheet(which){
 
 /* "From your builds", with its own filter and count. */
 function buildPicks(body, which){
-  var builds = Object.keys(S.builds).sort(function(a, b){
+  const builds = Object.keys(S.builds).sort(function(a, b){
     return String(S.builds[a].pokemon).localeCompare(String(S.builds[b].pokemon));
   });
   if (!builds.length) return;
   body.appendChild(el("h2", null, "From your builds"));
-  var bq = searchField(body, "Filter " + builds.length + " build" +
+  const bq = searchField(body, "Filter " + builds.length + " build" +
     (builds.length === 1 ? "" : "s"), function(){ drawBuilds(); });
-  var bl = el("div", "list cards");
-  var bcount = el("div", "sub mb6");
+  const bl = el("div", "list cards");
+  const bcount = el("div", "sub mb6");
   body.appendChild(bcount);
   function drawBuilds(){
-    var q = bq.q();
+    const q = bq.q();
     bl.innerHTML = "";
-    var shown = 0;
+    let shown = 0;
     builds.forEach(function(id){
-      var card = buildPickCard(which, id, q);
+      const card = buildPickCard(which, id, q);
       if (!card) return;
       shown++;
       bl.appendChild(card);
@@ -511,10 +511,10 @@ function buildPicks(body, which){
    with its nature and spread as cells. Null when it does not match the filter
    or has no dex row. */
 function buildPickCard(which, id, q){
-  var b = S.builds[id];
-  var p = byName[b.mega || b.pokemon] || byName[b.pokemon];
+  const b = S.builds[id];
+  const p = byName[b.mega || b.pokemon] || byName[b.pokemon];
   if (!p) return null;
-  var hay = [id, b.pokemon, b.mega, b.role, b.nature, baseAbility(b),
+  const hay = [id, b.pokemon, b.mega, b.role, b.nature, baseAbility(b),
              (b.moves || []).join(" "), p.types.join(" ")]
     .filter(Boolean).join(" ").toLowerCase();
   if (q && !hay.includes(q)) return null;
@@ -535,7 +535,7 @@ function buildPickCard(which, id, q){
    like one the calculator did not know about. */
 function drawDexPicks(list, q, which, side){
   list.innerHTML = "";
-  var all = DEX.filter(function(p){
+  const all = DEX.filter(function(p){
     return !q || p.name.toLowerCase().includes(q);
   });
   all.slice(0, 120).forEach(function(p){
@@ -554,12 +554,12 @@ function drawDexPicks(list, q, which, side){
 /* Load a saved build onto a side: its form, nature, ability and spread, and
    no stat stages. A new attacker drops the move it had. */
 function calcLoadBuild(which, id, b){
-  var side = CALC[which];
+  const side = CALC[which];
   side.name = b.mega || b.pokemon;
   side.buildId = id;
   side.nature = b.nature || null;
   side.ability = activeAbility(b);
-  var sp = b.stat_points || {};
+  const sp = b.stat_points || {};
   STAT_KEYS.forEach(function(k){ side.sp[k] = sp[k] || 0; });
   STAT_KEYS.forEach(function(k){ if (k !== "hp") side.boost[k] = 0; });
   if (which === "atk") CALC.move = null;
@@ -572,33 +572,33 @@ function calcLoadBuild(which, id, b){
    power times accuracy. The longest movepool is 106, and a cut at 60 took
    moves off half the dex with nothing saying so. */
 function calcMoveSheet(){
-  var a = CALC.atk;
+  const a = CALC.atk;
   if (!a.name) { toast("Pick the attacker first"); return; }
-  var ls = learnset(a.name);
-  var build = a.buildId ? S.builds[a.buildId] : null;
+  const ls = learnset(a.name);
+  const build = a.buildId ? S.builds[a.buildId] : null;
   openSheet("Move", function(body){
     if (build && (build.moves || []).length) {
       body.appendChild(el("h2", null, "On this build"));
-      var bl = el("div", "list");
+      const bl = el("div", "list");
       (build.moves || []).forEach(function(n){
-        var mv = MOVE_BY[n];
+        const mv = MOVE_BY[n];
         if (!mv) return;
         bl.appendChild(calcMoveRow(mv, true));
       });
       body.appendChild(bl);
     }
     body.appendChild(el("h2", null, ls ? "Everything it learns" : "All moves"));
-    var inp = searchField(body, "Filter by name or type",
+    const inp = searchField(body, "Filter by name or type",
                           function(){ draw(); });
-    var list = el("div", "list");
+    const list = el("div", "list");
     body.appendChild(list);
     if (!ls) {
       body.appendChild(el("div", "note bad",
         "No movepool on record for " + a.name + "."));
     }
-    var pool = (ls || []).filter(function(m){ return m.cat !== "T"; });
+    const pool = (ls || []).filter(function(m){ return m.cat !== "T"; });
     function draw(){
-      var q = inp.q();
+      const q = inp.q();
       list.innerHTML = "";
       pool.filter(function(m){
         return !q || m.name.toLowerCase().includes(q) ||
@@ -613,9 +613,9 @@ function calcMoveSheet(){
   }, []);
 }
 function calcMoveRow(m, fromBuild){
-  var r = el("button", "row" + (fromBuild ? " perm" : ""));
-  var mm = el("div", "rmain");
-  var h = el("div", "rname");
+  const r = el("button", "row" + (fromBuild ? " perm" : ""));
+  const mm = el("div", "rmain");
+  const h = el("div", "rname");
   h.appendChild(typeChip(m.type));
   h.appendChild(document.createTextNode(m.name));
   spreadTags(m, h);
@@ -638,9 +638,9 @@ function calcMoveRow(m, fromBuild){
    espacio innecesario"). Each switch is written out as its own assignment to
    CALC, which is what lets check_app.js prove every one reaches the engine. */
 function calcFieldCtl(){
-  var host = $("calcField");
+  const host = $("calcField");
   host.innerHTML = "";
-  var f = fieldRows(host);
+  const f = fieldRows(host);
   f.group("The hit", "What happens on this particular hit");
   f.tog("Critical hit", CALC.crit, function(){ CALC.crit = !CALC.crit; calcDraw(); });
   weatherAndTerrain(f);
@@ -660,18 +660,18 @@ function calcFieldCtl(){
    (its label a cell in the row, the reason on hover), tog() adds a toggle to
    the current row. */
 function fieldRows(host){
-  var cur = null;
+  let cur = null;
   return {
     group: function(label, why){
       cur = el("div", "fieldrow");
-      var h = el("span", "fieldgroup");
+      const h = el("span", "fieldgroup");
       h.textContent = label;
       if (why) h.title = why;
       cur.appendChild(h);
       host.appendChild(cur);
     },
     tog: function(label, on, fn, cls){
-      var t = el("button", "tog " + (cls || ""), label);
+      const t = el("button", "tog " + (cls || ""), label);
       setPressed(t, on);
       t.onclick = fn;
       (cur || host).appendChild(t);
@@ -748,8 +748,8 @@ function screenSwitches(f, m){
   f.group("Screens", "Reflect, Light Screen and Aurora Veil on the target's side");
   [["Reflect", "physical", "P"], ["Light Screen", "special", "S"],
    ["Aurora Veil", "both", null]].forEach(function(r){
-    var sc = r[0], relevant = !m || !r[2] || m.cat === r[2];
-    var t = f.tog(sc + " (" + r[1] + ")", CALC.screen === sc, function(){
+    const sc = r[0], relevant = !m || !r[2] || m.cat === r[2];
+    const t = f.tog(sc + " (" + r[1] + ")", CALC.screen === sc, function(){
       CALC.screen = CALC.screen === sc ? null : sc; calcDraw();
     });
     if (!relevant) { t.classList.add("dim");
@@ -765,9 +765,9 @@ const KO_FILL = {1: "var(--bad)", 2: "var(--warn)"};
    bar, the engine's own sentence - it names every modifier that actually
    fired - the notes a number cannot carry, and every roll. */
 function calcRun(){
-  var out = $("calcOut");
+  const out = $("calcOut");
   out.innerHTML = "";
-  var a = CALC.atk, d = CALC.def, m = CALC.move;
+  const a = CALC.atk, d = CALC.def, m = CALC.move;
   if (!a.name || !d.name || !m) {
     out.appendChild(el("div", "empty",
       "Pick an attacker, a move and a defender."));
@@ -779,27 +779,27 @@ function calcRun(){
       "Reload the page; if it keeps happening the bundle needs rebuilding."));
     return;
   }
-  var r;
+  let r;
   try { r = engineCalc(); }
   catch (e) {
     out.appendChild(el("div", "note bad",
       "The engine could not calculate this: " + (e?.message || e)));
     return;
   }
-  var hp = r.curHP != null ? r.curHP : r.hp;
-  var ko = koCount(r.lo, r.hi, hp);
+  const hp = r.curHP != null ? r.curHP : r.hp;
+  const ko = koCount(r.lo, r.hi, hp);
   out.appendChild(verdictLine(r, ko));
   out.appendChild(koBar(r, hp, ko));
   if (r.desc) {
-    var dsc = el("p", "sub mt6 mb0");
+    const dsc = el("p", "sub mt6 mb0");
     dsc.textContent = r.desc;
     out.appendChild(dsc);
   }
-  var flags = calcFlags(m);
+  const flags = calcFlags(m);
   if (flags.length) {
-    var fl = el("div", "calcflags");
+    const fl = el("div", "calcflags");
     flags.forEach(function(t){
-      var x = el("div", "note " + (t[0] || ""));
+      const x = el("div", "note " + (t[0] || ""));
       x.textContent = t[1];
       fl.appendChild(x);
     });
@@ -811,8 +811,8 @@ function calcRun(){
 /* The number, the percentage and the verdict on one line - this is the
    answer, and it stays on screen while the inputs below it change. */
 function verdictLine(r, ko){
-  var pctLo = r.lo / r.hp * 100, pctHi = r.hi / r.hp * 100;
-  var v = el("div", "verdict");
+  const pctLo = r.lo / r.hp * 100, pctHi = r.hi / r.hp * 100;
+  const v = el("div", "verdict");
   v.appendChild(el("span", "num", r.lo + " - " + r.hi));
   v.appendChild(el("span", "pct", "of " + r.hp + " HP  ·  " +
     pctLo.toFixed(1) + "-" + pctHi.toFixed(1) + "%" +
@@ -823,8 +823,8 @@ function verdictLine(r, ko){
 }
 
 function koBar(r, hp, ko){
-  var bar = el("div", "meter ko");
-  var fill = el("i");
+  const bar = el("div", "meter ko");
+  const fill = el("i");
   fill.style.width = Math.min(100, r.hi / hp * 100) + "%";
   fill.style.background = KO_FILL[ko.n] || "var(--accent)";
   bar.appendChild(fill);
@@ -835,7 +835,7 @@ function koBar(r, hp, ko){
    move that hits the ally, and the moves whose power depends on something
    the calculator was not told. */
 function calcFlags(m){
-  var flags = [];
+  const flags = [];
   if (CALC.gameType === "Singles") {
     flags.push(["", "Singles: no spread reduction, and a screen is x0.5 " +
       "instead of the x0.667 it is in doubles."]);
@@ -856,10 +856,10 @@ function calcFlags(m){
 }
 
 function rollsDetails(r){
-  var det = el("details", "rolls");
-  var sum = el("summary", null, "Every roll, and where the number came from");
+  const det = el("details", "rolls");
+  const sum = el("summary", null, "Every roll, and where the number came from");
   det.appendChild(sum);
-  var rl = el("div", "rmeta");
+  const rl = el("div", "rmeta");
   r.rolls.forEach(function(x){ rl.appendChild(el("span", "tag", String(x))); });
   det.appendChild(rl);
   det.appendChild(el("p", "sub",
@@ -873,11 +873,11 @@ function rollsDetails(r){
 function calcDraw(){
   calcSideCtl("atk");
   calcSideCtl("def");
-  var b = $("calcMove");
+  const b = $("calcMove");
   b.innerHTML = "";
-  var mm = el("div", "rmain");
+  const mm = el("div", "rmain");
   if (CALC.move) {
-    var h = el("div", "rname");
+    const h = el("div", "rname");
     h.appendChild(typeChip(CALC.move.type));
     h.appendChild(el("span", "nm", CALC.move.name));
     mm.appendChild(h);

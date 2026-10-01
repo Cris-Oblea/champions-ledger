@@ -5,7 +5,7 @@ import { dbState, supabaseStore, wire } from "../core/store.js";
 import { ask } from "./nav.js";
 
 function connect(){
-  var cfg = window.CHAMP_CONFIG || {};
+  const cfg = window.CHAMP_CONFIG || {};
   if (cfg.supabase && window.supabase) return connectSupabase(cfg.supabase);
   dbState(false, "no backend configured");
 }
@@ -13,7 +13,7 @@ function connect(){
 /* ------------------------------------------------------- Supabase + auth --
    The gate is not decoration: until there is a session the app has no rows to
    show, because the server refuses to send any. */
-var SB = null;
+let SB = null;
 function connectSupabase(cfg){
   SB = window.supabase.createClient(cfg.url, cfg.key);
   $("gateEmail").value = cfg.email || "";
@@ -21,7 +21,7 @@ function connectSupabase(cfg){
     "Nothing is stored in this page - your box lives in the database, and "
     + "only this password reaches it.";
   SB.auth.getSession().then(function(r){
-    var s = r.data?.session;
+    const s = r.data?.session;
     if (s) { start(s); } else { showGate(); }
   }, function(){ showGate("Could not reach the database."); });
 
@@ -44,9 +44,9 @@ function start(session){
   wire(S.db);
 }
 function signedInChip(email){
-  var bar = $("themeBtn").parentNode;
+  const bar = $("themeBtn").parentNode;
   if ($("whoBtn")) return;
-  var b = el("button", "iconbtn", null);
+  const b = el("button", "iconbtn", null);
   b.id = "whoBtn";
   b.title = "Signed in as " + email + " - tap to sign out";
   b.setAttribute("aria-label", "Sign out");
@@ -63,7 +63,7 @@ if ($("gateForm")) {
   $("gateForm").onsubmit = function(e){
     e.preventDefault();
     if (!SB) return;
-    var btn = $("gateBtn");
+    const btn = $("gateBtn");
     btn.disabled = true; btn.textContent = "Signing in…";
     $("gateErr").hidden = true;
     SB.auth.signInWithPassword({

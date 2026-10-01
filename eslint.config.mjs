@@ -18,6 +18,11 @@ export default [
     rules: {
       "no-undef": "error",
       "no-redeclare": "error",
+      /* let/const only, and const unless the name is reassigned: a reader
+         sees at the declaration which values can change. `var` was 1,299 of
+         the app's declarations until 2026-09-30. */
+      "no-var": "error",
+      "prefer-const": "error",
       // Sonar's S7721 ("move function to the outer scope") is this rule.
       "unicorn/consistent-function-scoping": "error",
       // S1135 flags the word "todo"; the only one is Spanish, inside a quote.

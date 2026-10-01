@@ -22,8 +22,8 @@ import { openSheet } from "./nav.js";
 /* One set, as the thing you would actually build: the four slots, the spread,
    and the reasoning underneath. */
 function analysisSet(st){
-  var box = el("div", "note mb8");
-  var head = el("div", "rname");
+  const box = el("div", "note mb8");
+  const head = el("div", "rname");
   head.appendChild(el("span", null, st.name || "Set"));
   (st.ability || []).slice(0, 1).forEach(function(a){
     head.appendChild(el("span", "tag", a));
@@ -39,24 +39,24 @@ function analysisSet(st){
   if ((st.item || []).length) {
     box.appendChild(el("div", "st", "Items: " + st.item.join(" / ")));
   }
-  var mv = (st.moves || []).map(function(slot){
+  const mv = (st.moves || []).map(function(slot){
     return Array.isArray(slot) ? slot.join(" / ") : String(slot);
   }).filter(Boolean);
   if (mv.length) {
-    var row = el("div", "st mt2");
+    const row = el("div", "st mt2");
     mv.forEach(function(m){
-      var t = el("span", "tag ok mr4", m);
+      const t = el("span", "tag ok mr4", m);
       row.appendChild(t);
     });
     box.appendChild(row);
   }
   (st.sp || []).forEach(function(sp){
-    var bits = STAT_KEYS.map(function(k){
+    const bits = STAT_KEYS.map(function(k){
       return sp[k] ? sp[k] + " " + STAT_LABEL[k] : null;
     }).filter(Boolean);
     if (!bits.length) return;
-    var total = STAT_KEYS.reduce(function(a, k){ return a + (sp[k] || 0); }, 0);
-    var line = el("div", "st c-accent", bits.join(" / ") + "   ·   " + total + "/66 SP");
+    const total = STAT_KEYS.reduce(function(a, k){ return a + (sp[k] || 0); }, 0);
+    const line = el("div", "st c-accent", bits.join(" / ") + "   ·   " + total + "/66 SP");
     box.appendChild(line);
   });
   if (st.why) box.appendChild(prose(st.why));
@@ -80,12 +80,12 @@ function analysisSet(st){
  * itself as the label, which is exactly how they should be read.
  */
 function prose(text){
-  var wrap = el("div", "mt6");
+  const wrap = el("div", "mt6");
   String(text).split(/\n+/).forEach(function(line){
     line = line.trim();
     if (!line) return;
-    var cut = line.indexOf(":");
-    var label = cut > 0 ? line.slice(0, cut).trim() : "";
+    const cut = line.indexOf(":");
+    const label = cut > 0 ? line.slice(0, cut).trim() : "";
     /* A heading is short and has no colon. A label is short and does. Both
        tests are on LENGTH rather than on a list of known words, because
        Smogon's headings differ per Pokemon and a list would go stale. */
@@ -93,13 +93,13 @@ function prose(text){
        atacante especial." is a short sentence, and the first version drew it
        as one. */
     if (!label && line.split(" ").length <= 5 && !/[.!?]$/.test(line)) {
-      var h = el("div", "rname mt8", line);
+      const h = el("div", "rname mt8", line);
       wrap.appendChild(h);
       return;
     }
-    var para = el("div", "st mt4");
+    const para = el("div", "st mt4");
     if (label && label.length <= 70 && cut < line.length - 1) {
-      var b = el("strong", "c-accent", label);
+      const b = el("strong", "c-accent", label);
       para.appendChild(b);
       para.appendChild(document.createTextNode(" " + line.slice(cut + 1).trim()));
     } else {
@@ -117,9 +117,9 @@ function analysisPanel(name, host){
   /* Something on screen from the first frame. A panel that is empty while a
      407 KB script loads is indistinguishable from a panel that is broken, and
      on a phone on mobile data that wait is real. */
-  var wait = el("div", "st", "Loading Smogon's analysis...");
+  const wait = el("div", "st", "Loading Smogon's analysis...");
   host.appendChild(wait);
-  var gaveUp = setTimeout(function(){
+  const gaveUp = setTimeout(function(){
     if (host.contains(wait)) {
       wait.textContent = "Smogon's analysis did not load. It is a separate "
         + "file, fetched only when this is opened - try again in a moment.";
@@ -128,7 +128,7 @@ function analysisPanel(name, host){
   loadAnalysis(function(ready){
     clearTimeout(gaveUp);
     if (wait.parentNode) wait.remove();
-    var got = analysisFor(name);
+    const got = analysisFor(name);
     if (!got?.length) {
       host.appendChild(el("div", "st", !ready
         ? "Smogon's analyses are not in this build."
@@ -148,7 +148,7 @@ function analysisPanel(name, host){
        Sorted by the regulation letter rather than by arrival, so the newest
        reading is the one at the top. Singles stays out - see
        scripts/fetch_smogon.py, that call is settled. */
-    var order = got.slice().sort(function(a, b){
+    const order = got.slice().sort(function(a, b){
       return String(b.format).localeCompare(String(a.format));
     });
     if (order.length > 1) {
@@ -158,7 +158,7 @@ function analysisPanel(name, host){
         ". All of them are below."));
     }
     order.forEach(function(st){
-      var head = el("div", "st mb4");
+      const head = el("div", "st mb4");
       head.appendChild(el("span", "tag" + (st.outdated ? " warn" : ""),
                           st.format + (st.outdated ? " · outdated" : "")));
       if ((st.credits || []).length) {
@@ -209,10 +209,10 @@ function pokeHead(body, p, opts){
 
      The 512px render rather than the 96px pixel sprite: a sheet draws one
      Pokemon and can afford the file a list of 159 cannot. */
-  var head = el("div", "sheethead");
-  var big = spriteFor(p.name, true, opts.shiny);
+  const head = el("div", "sheethead");
+  const big = spriteFor(p.name, true, opts.shiny);
   if (big) head.appendChild(big);
-  var info = el("div", "sheetfacts");
+  const info = el("div", "sheetfacts");
   /* THE SAME FUNCTION AS THE CARD, drawing the BASE POKEMON ONLY.
 
      A card has one chance to say everything, so it carries the Mega line:
@@ -235,7 +235,7 @@ function pokeHead(body, p, opts){
     stats: false,
     name: p.name,
     meta: function(chips){
-      var med0 = podiumChip(p.name);
+      const med0 = podiumChip(p.name);
       if (med0) chips.appendChild(med0);
     }
   });
@@ -253,7 +253,7 @@ function pokeHead(body, p, opts){
      stats full width, the abilities explained, what damages it. Two forms,
      one shape, and the sheet is a stack of Pokemon rather than a stack of
      topics. */
-  var panel = el("div", "panel megablock mb10");
+  const panel = el("div", "panel megablock mb10");
   panel.appendChild(head);
   panel.appendChild(statGrid(p));
   body.appendChild(panel);
@@ -266,9 +266,9 @@ function pokeHead(body, p, opts){
      "also written", not "changes nothing", because a few of these do change
      something in battle (Palafin-Hero, Castform's weather forms); what they
      share is one dex entry. */
-  var also = C.COSMETIC?.[p.name];
+  const also = C.COSMETIC?.[p.name];
   if (also?.length) {
-    var an = el("div", "note mb10");
+    const an = el("div", "note mb10");
     an.innerHTML = "<strong>Also written:</strong> " + also.join(", ") +
       ". Same Pokemon — the dex keeps one entry" +
       (also.length > 1 ? " for all of them." : ".");
@@ -280,7 +280,7 @@ function pokeHead(body, p, opts){
      main-series ones because Champions publishes none - which the sheet has
      to say plainly rather than let them read as ours. */
   if (p.outside) {
-    var osrc = el("div", "note mb10");
+    const osrc = el("div", "note mb10");
     osrc.innerHTML = "<strong>Not in the Champions dex.</strong> It can live "
       + "in HOME but never enter the game"
       + (p.approx ? ". No row for this exact form either — the numbers "
@@ -308,7 +308,7 @@ function pokeHead(body, p, opts){
    the moves it learns" has to be counted against the form that HAS the
    ability. */
 function abilityNote(a, form, badge, ls){
-  var n = el("div", "note mb6");
+  const n = el("div", "note mb6");
   /* CHAMPIONS' OWN TEXT FIRST, ALWAYS. 95 of the abilities carried by
      species the game has not added have no row here at all - Protosynthesis
      was a name on the sheet with nothing to say about it - so those fall
@@ -319,23 +319,23 @@ function abilityNote(a, form, badge, ls){
      own ink, so the note, the sprite caption, the stat deltas and the
      card all say the same form the same way. */
   if (badge) n.insertBefore(badge, n.firstChild);
-  var say = numText(C.ABIL[a] || "");
+  const say = numText(C.ABIL[a] || "");
   n.appendChild(say);
   if (!C.ABIL[a]) {
     say.textContent = "Loading…";
     loadOutside(function(){
-      var t = outsideDex().ab?.[a];
+      const t = outsideDex().ab?.[a];
       say.textContent = "";
       say.appendChild(numText(t || "No description on record for " + a + "."));
       if (t) {
-        var tg = el("span", "tag", "main-series text");
+        const tg = el("span", "tag", "main-series text");
         tg.title = "Champions has no row for " + a + " because no Pokemon it "
                  + "allows carries it. This is the main-series description.";
         say.appendChild(tg);
       }
     });
   }
-  var anum = effectLine(a);
+  const anum = effectLine(a);
   if (anum) n.appendChild(anum);
   /* What it does to this Pokemon's moves, said HERE rather than as a badge
      on every row. Two shapes, and the difference is the whole point:
@@ -343,7 +343,7 @@ function abilityNote(a, form, badge, ls){
      the category, because badging all of them picks out nothing; one that
      really selects says how many of THIS movepool it hits, so the badges
      below have a number to be checked against. */
-  var r = AB_SET[a], sc = el("div", "st");
+  const r = AB_SET[a], sc = el("div", "st");
   sc.classList.add("mt2");
   /* NOT r.why HERE. It is the rule's one-line summary - "no damage - it heals
      25% instead" - written for the tooltip on a move's tag, where the
@@ -356,8 +356,8 @@ function abilityNote(a, form, badge, ls){
                      "it picks out nothing.";
     n.appendChild(sc);
   } else if (r?.side === "off" && ls) {
-    var k = ls.filter(function(mn){
-      var mv = MOVE_BY[mn];
+    const k = ls.filter(function(mn){
+      const mv = MOVE_BY[mn];
       return mv && abilityTag(a, mv, form);
     }).length;
     sc.textContent = k
@@ -378,13 +378,13 @@ function multTone(x){
   return "";
 }
 function damageTable(types){
-  var dfc = defence(types);
-  var dl = el("div");
+  const dfc = defence(types);
+  const dl = el("div");
   [[4, "×4"], [2, "×2"], [.5, "½"], [.25, "¼"],
    [0, "immune"]].forEach(function(g){
-    var hits = Object.keys(dfc).filter(function(t){ return dfc[t] === g[0]; });
+    const hits = Object.keys(dfc).filter(function(t){ return dfc[t] === g[0]; });
     if (!hits.length) return;
-    var line = el("div", "rmeta mb5");
+    const line = el("div", "rmeta mb5");
     line.appendChild(el("span",
       "tag" + multTone(g[0]), g[1]));
     hits.forEach(function(t){ line.appendChild(typeChip(t)); });
@@ -409,7 +409,7 @@ function formChange(moved, retype){
 function pokeBody(body, p){
   /* resolved first, because each ability reports how much of THIS movepool
      it touches */
-  var ls = learnset(p.name);
+  const ls = learnset(p.name);
   baseBlock(body, p, ls);
   megaSection(body, p, ls);
   battleFormSection(body, p);
@@ -419,7 +419,7 @@ function pokeBody(body, p){
   else if (p.outside) outsideMovepool(body, p);
   /* WHAT SMOGON WROTE. Last, and folded, because it is long and the payload
      behind it is not fetched until it is opened. */
-  var aw = analysisFold(p.name, "What Smogon says about " + p.name);
+  const aw = analysisFold(p.name, "What Smogon says about " + p.name);
   aw.classList.add("mt10");
   body.appendChild(aw);
 }
@@ -431,7 +431,7 @@ function pokeBody(body, p){
    species Champions has never heard of gets one too. The box sheet may hand
    in its own panel (`body._basePanel`) for these to go in. */
 function baseBlock(body, p, ls){
-  var caja = body._basePanel || body;
+  const caja = body._basePanel || body;
   (p.ab || []).forEach(function(a){
     caja.appendChild(abilityNote(a, p, null, ls));
   });
@@ -449,7 +449,7 @@ function baseBlock(body, p, ls){
    Champions Megas plus the ones a species Champions lacks carries on its
    outside row - Mewtwo's X and Y. */
 function megaSection(body, p, ls){
-  var ms = megaLine(p);
+  const ms = megaLine(p);
   if (!ms.length) return;
   body.appendChild(el("h2", null,
     ms.length > 1 ? "Mega line — " + ms.length + " of them, and only one"
@@ -458,7 +458,7 @@ function megaSection(body, p, ls){
   ms.forEach(function(m){
     /* the stone is named, because it is what this block is about - but NOT
        whether it is owned: that lives in the Items tab and nowhere else */
-    var pn = formPanel(p, m, m.name,
+    const pn = formPanel(p, m, m.name,
       STONE_OF[m.name] ? el("span", "tag mega", STONE_OF[m.name]) : null,
       [labelBox(bst(m), "BST"), labelBox(m.ab, "Ability", "wide")]);
     /* ITS ABILITY, EXPLAINED - the text, the measured multiplier, what it
@@ -466,12 +466,12 @@ function megaSection(body, p, ls){
        often the reason, and sometimes the cost: Mawile gains Huge Power,
        Froslass trades Cursed Body for Snow Warning. */
     (m.ab || []).forEach(function(ab){
-      var note = abilityNote(ab, m, null, ls);
+      const note = abilityNote(ab, m, null, ls);
       note.classList.add("mt8");
       pn.appendChild(note);
     });
     pn.appendChild(statGrid(m));
-    var moved = movedStats(p, m);
+    const moved = movedStats(p, m);
     pn.appendChild(el("div", "st",
       moved.length ? "The stone moves " + moved.join(", ") + "."
                    : "The stone moves no stat — it is here for the "
@@ -489,15 +489,15 @@ function megaSection(body, p, ls){
    no item tag, no ability cell - the ability is the one it already has, and
    the line underneath says it is what does this. */
 function battleFormSection(body, p){
-  var bfs = battleFormsOf(p);
+  const bfs = battleFormsOf(p);
   if (!bfs.length) return;
   body.appendChild(el("h2", null,
     bfs.length > 1 ? "In battle — " + bfs[0].by + " gives it "
                      + bfs.length + " more forms"
                    : "In battle — " + bfs[0].by));
   bfs.forEach(function(f){
-    var retype = f.types.join("/") !== p.types.join("/");
-    var pn = formPanel(p, f, p.name + " — " + f.battle,
+    const retype = f.types.join("/") !== p.types.join("/");
+    const pn = formPanel(p, f, p.name + " — " + f.battle,
       el("span", "tag bf", f.by), [labelBox(bst(f), "BST")]);
     pn.appendChild(statGrid(f));
     pn.appendChild(el("div", "st",
@@ -511,16 +511,16 @@ function battleFormSection(body, p){
 /* The head of a Mega's or a battle form's block: its picture, its name with
    one tag, its types, and a strip of cells. */
 function formPanel(p, f, nameText, tag, cells){
-  var pn = el("div", "panel megablock mb10");
-  var head = el("div", "sheethead");
-  var pic = formSprite(f, p, true);
+  const pn = el("div", "panel megablock mb10");
+  const head = el("div", "sheethead");
+  const pic = formSprite(f, p, true);
   if (pic) head.appendChild(pic);
-  var info = el("div", "sheetfacts");
-  var h = el("div", "rname");
+  const info = el("div", "sheetfacts");
+  const h = el("div", "rname");
   h.appendChild(document.createTextNode(nameText));
   if (tag) h.appendChild(tag);
   info.appendChild(h);
-  var mt = el("div", "rmeta");
+  const mt = el("div", "rmeta");
   f.types.forEach(function(t){ mt.appendChild(typeChip(t)); });
   info.appendChild(mt);
   info.appendChild(cardLine(cells));
@@ -551,7 +551,7 @@ function retypedTable(pn, p, f){
    cambia de tipo el move segun su forma"). `c` is [move, type before, type in
    this form]. */
 function formMoveLine(c, f, p){
-  var line = el("div", "rmeta mt6");
+  const line = el("div", "rmeta mt6");
   line.appendChild(el("span", null, c[0] + ":"));
   if (c[1]) line.appendChild(typeChip(c[1]));
   line.appendChild(el("span", "megato " + formInk(f, p), "→"));
@@ -566,17 +566,17 @@ function formMoveLine(c, f, p){
    question than "what is popular" (player, 2026-09-15). History, and it says
    so: each set carries its year, its division and the regulation. */
 function worldsFold(body, p){
-  var pod = podiumFor(p.name);
+  const pod = podiumFor(p.name);
   if (!pod.length) return;
-  var wrap = el("div", "mb10");
-  var tog = el("button", "btn sm fold");
+  const wrap = el("div", "mb10");
+  const tog = el("button", "btn sm fold");
   tog.setAttribute("aria-expanded", "false");
   tog.textContent = "Worlds — " + pod.length + " top-8 set" +
                     (pod.length === 1 ? "" : "s");
-  var host = el("div");
+  const host = el("div");
   host.hidden = true;
   tog.onclick = function(){
-    var open = host.hidden;
+    const open = host.hidden;
     host.hidden = !open;
     tog.setAttribute("aria-expanded", open ? "true" : "false");
   };
@@ -595,9 +595,9 @@ function worldsFold(body, p){
    BASE one - what a teamlist records - and the stone settles what the Mega
    became (player, 2026-09-15: "esa se sabe por descarte"). */
 function worldsSet(e){
-  var card = el("div", "note mb6");
-  var head = el("div", "rname");
-  var place = ordinal(e.r);
+  const card = el("div", "note mb6");
+  const head = el("div", "rname");
+  const place = ordinal(e.r);
   head.appendChild(el("span", "tag" + (e.r <= 3 ? " gold" : ""),
                       "Worlds " + e.y + " · " + e.d + " · " + place));
   if (e.who) head.appendChild(document.createTextNode(e.who));
@@ -608,15 +608,15 @@ function worldsSet(e){
     e.ab ? e.ab : null,
     e.na ? e.na : null]));
   if (e.mg) {
-    var mg = el("div", "st c-mega");
+    const mg = el("div", "st c-mega");
     mg.textContent = "Mega Evolves into " + e.mg +
       (e.mgab ? " — ability becomes " + e.mgab : "");
     card.appendChild(mg);
   }
-  var mv = el("div", "rmeta");
+  const mv = el("div", "rmeta");
   (e.mv || []).forEach(function(n){
-    var mm2 = MOVE_BY[n];
-    var chip = el("span", "tag", n);
+    const mm2 = MOVE_BY[n];
+    const chip = el("span", "tag", n);
     if (mm2) chip.title = catName(mm2.cat) + " · " +
       (mm2.bp ? mm2.bp + " BP" : "— BP") + " · " +
       (mm2.acc == null ? "—" : mm2.acc) + " acc";
@@ -630,9 +630,9 @@ function worldsSet(e){
    a search that named some. */
 function askedMoves(body, p){
   body.appendChild(el("h2", null, "The moves you asked for"));
-  var l = el("div", "list");
+  const l = el("div", "list");
   FIND.moves.forEach(function(n){
-    var mv = MOVE_BY[n];
+    const mv = MOVE_BY[n];
     if (mv) l.appendChild(moveRowFor(mv, p.ab || [], p));
   });
   body.appendChild(l);
@@ -644,10 +644,10 @@ function askedMoves(body, p){
    players' usage on every move. */
 function ownMovepool(body, p, ls){
   body.appendChild(el("h2", null, "Movepool"));
-  var ui = moveFilters(body, ls, function(){ drawPool(); },
+  const ui = moveFilters(body, ls, function(){ drawPool(); },
                        "Filter " + ls.length + " moves it learns",
                        {cap: 200, usageOf: p.name});
-  var pool = el("div", "list");
+  const pool = el("div", "list");
   body.appendChild(pool);
   function drawPool(){ drawMoveRows(pool, ui.apply(), p); }
   drawPool();
@@ -670,23 +670,23 @@ function drawMoveRows(list, hits, p){
    has not enabled, which are marked. */
 function outsideMovepool(body, p){
   body.appendChild(el("h2", null, "Movepool"));
-  var outsideHost = el("div");
+  const outsideHost = el("div");
   body.appendChild(outsideHost);
   outsideHost.appendChild(el("div", "st", "Loading what it knows..."));
   loadOutside(function(){
     outsideHost.innerHTML = "";
-    var got = outsideMovesFor(p.name);
+    const got = outsideMovesFor(p.name);
     if (!got) {
       outsideHost.appendChild(el("div", "st",
         "No movepool on record for " + p.name + " — there is no "
         + "Champions page for it and nothing upstream either."));
       return;
     }
-    var off = 0;
-    var pool = got.map(function(n){
-      var m = MOVE_BY[n];
+    let off = 0;
+    const pool = got.map(function(n){
+      const m = MOVE_BY[n];
       if (m) return m;
-      var o = outsideMove(n);
+      const o = outsideMove(n);
       if (o) off++;
       return o;
     }).filter(Boolean);
@@ -696,10 +696,10 @@ function outsideMovepool(body, p){
       + "Champions' own row for that move."
       + (off ? " " + off + " of them are moves Champions has in its database "
          + "but has not enabled; they are marked." : "")));
-    var ui2 = moveFilters(outsideHost, pool, function(){ drawOut(); },
+    const ui2 = moveFilters(outsideHost, pool, function(){ drawOut(); },
                           "Filter " + pool.length + " moves it learns",
                           {cap: 200});
-    var list2 = el("div", "list");
+    const list2 = el("div", "list");
     outsideHost.appendChild(list2);
     function drawOut(){ drawMoveRows(list2, ui2.apply(), p); }
     drawOut();
@@ -710,14 +710,14 @@ function outsideMovepool(body, p){
    payload fetched - only the first time it is opened. The build editor and
    the Pokemon sheet both use it, with their own label. */
 function analysisFold(name, label){
-  var aw = el("div");
-  var atog = el("button", "btn sm fold");
+  const aw = el("div");
+  const atog = el("button", "btn sm fold");
   atog.setAttribute("aria-expanded", "false");
-  var ahost = el("div");
+  const ahost = el("div");
   ahost.hidden = true;
   atog.textContent = label;
   atog.onclick = function(){
-    var open = ahost.hidden;
+    const open = ahost.hidden;
     ahost.hidden = !open;
     atog.setAttribute("aria-expanded", open ? "true" : "false");
     if (open && !ahost._drawn) { ahost._drawn = 1; analysisPanel(name, ahost); }

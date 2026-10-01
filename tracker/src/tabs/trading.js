@@ -12,7 +12,7 @@ import { findDetail } from "../ui/pokemon.js";
 /* The closed-trade record behind the suggestions, as one sentence. */
 function ownRecord(rec){
   if (!rec.n) return "";
-  var gap = "";
+  let gap = "";
   if (rec.gap != null) {
     gap = ", and what came back ran " + (rec.gap >= 0 ? "+" : "") + rec.gap +
       " BST on the median";
@@ -59,15 +59,15 @@ const EMPTY_WANT = {
    supply 2 because 2 is the default, so the claim was mostly a guess wearing
    a number. What replaced it is his own closed trades, which are measured. */
 function gtsChips(){
-  var taken = {};
+  const taken = {};
   gtsOffers().forEach(function(o){ if (o.offeredId) taken[o.offeredId] = 1; });
   /* what can LEAVE: HOME, plus anything in the Champions box that came from
      HOME and can go back. A rental or an Encounter buy can never reach a GTS
      box at all. */
-  var all = boxRows("home").concat(boxRows("champions").filter(function(r){
+  const all = boxRows("home").concat(boxRows("champions").filter(function(r){
     return originOf(r) === "home";
   }));
-  var copies = keepableCopies();
+  const copies = keepableCopies();
   /* HIS RULE, NOT OURS: only a duplicate past the first copy, or a species
      Champions cannot use. Offering a singleton of a legal species loses it -
      and a rental of that species in the Champions box does not make it a
@@ -84,11 +84,12 @@ function gtsChips(){
     return (copies[r.name] || 0) > 1 || !byName[r.name];
   });
 }
-var TRADE_CAP = 6, tradeAll = false, WANT_FILTER = "all";
+const TRADE_CAP = 6;
+let tradeAll = false, WANT_FILTER = "all";
 function setWantFilter(v){
   WANT_FILTER = v;
   tradeAll = false;
-  var seg = $("gtsWantFilter");
+  const seg = $("gtsWantFilter");
   if (seg) Array.prototype.forEach.call(seg.children, function(b){
     setPressed(b, b.dataset.want === v);
   });
@@ -98,14 +99,14 @@ function setWantFilter(v){
    could ask for, the cheapest currency first. Six to start with, the rest one
    tap away. */
 function drawGtsWanted(){
-  var host = $("listGtsWant"), more = $("gtsWantMore");
+  const host = $("listGtsWant"), more = $("gtsWantMore");
   if (!host) return;
   wireWantFilter($("gtsWantFilter"));
   /* The segment answers "which KIND of chip"; the search box answers "that
      one". With 44 chips the two are different questions. */
-  var wq = ($("gtsWantSearch")?.value || "")
+  const wq = ($("gtsWantSearch")?.value || "")
     .trim().toLowerCase();
-  var ideas = tradeIdeas(filteredChips(wq));
+  const ideas = tradeIdeas(filteredChips(wq));
   $("nGtsWant").textContent = ideas.length;
   $("gtsWantSub").innerHTML = wantSubtitle(ideas.length, gtsRecord(null));
   host.innerHTML = "";
@@ -113,7 +114,7 @@ function drawGtsWanted(){
     host.appendChild(el("div", "empty",
       wq ? "Nothing in HOME matches that" : EMPTY_WANT[WANT_FILTER] || "Nothing to offer"));
   }
-  var cap = tradeAll ? ideas.length : TRADE_CAP;
+  const cap = tradeAll ? ideas.length : TRADE_CAP;
   ideas.slice(0, cap).forEach(function(i){ host.appendChild(ideaCard(i)); });
   more.innerHTML = "";
   if (ideas.length > cap) {
@@ -136,10 +137,10 @@ function wireWantFilter(seg){
 
 /* The chips, narrowed by the search box (name or type) and the segment. */
 function filteredChips(wq){
-  var chips = gtsChips();
+  let chips = gtsChips();
   if (wq) {
     chips = chips.filter(function(c){
-      var p = byName[c.name];
+      const p = byName[c.name];
       return c.name.toLowerCase().includes(wq) ||
              (p?.types.join(" ").toLowerCase().includes(wq));
     });
@@ -160,11 +161,11 @@ function filteredChips(wq){
    a trade that brings back something Champions cannot play has bought a HOME
    row and nothing else. */
 function tradeIdeas(chips){
-  var group = {}, ideas = [];
+  const group = {}, ideas = [];
   chips.forEach(function(c){
-    var k = c.name + (c.shiny ? "|shiny" : "");
+    const k = c.name + (c.shiny ? "|shiny" : "");
     if (group[k]) { group[k].n++; return; }
-    var asks = gtsSuggest(c.name, 24, !!c.shiny);
+    const asks = gtsSuggest(c.name, 24, !!c.shiny);
     if (!asks.length) return;
     group[k] = {rec:c, n:1, asks:asks,
                 frees:asks.filter(function(a){ return a.frees; }),
@@ -192,7 +193,7 @@ function ideaOrder(a, b){
 /* What the list is read off and why, with his own closed-trade record - and
    NOTHING HIDDEN SILENTLY: a name dropped for being impossible is named. */
 function wantSubtitle(n, rec){
-  var sub = n
+  let sub = n
     ? "Read off your <strong>HOME box</strong>: everything your own rule lets "
       + "you put up — a duplicate past the first copy, or a species "
       + "Champions cannot use — with what it could realistically fetch. "
@@ -202,7 +203,7 @@ function wantSubtitle(n, rec){
     : "Nothing in HOME can go up right now. Your rule allows a duplicate past "
       + "the first copy, or a species Champions cannot use — a singleton "
       + "of a legal species would be lost for good.";
-  var dropped = boxRows("home").filter(function(r){
+  const dropped = boxRows("home").filter(function(r){
     return gtsBlocked(r.name) === "confirmed";
   }).map(function(r){ return r.name; });
   if (dropped.length) {
@@ -215,8 +216,8 @@ function wantSubtitle(n, rec){
 
 /* One spare species, as its card, with what it could ask for underneath. */
 function ideaCard(i){
-  var p = anyRow(i.rec.name);
-  var mine = gtsRecord(i.rec.name);
+  const p = anyRow(i.rec.name);
+  const mine = gtsRecord(i.rec.name);
   return pokeCard(p, {
     name: i.rec.name,
     shiny: !!i.rec.shiny,
@@ -232,7 +233,7 @@ function ideaCard(i){
    and his own record trading this species. */
 function ideaBadges(nm, i, mine){
   if (gtsBlocked(i.rec.name) === "inferred") {
-    var mb = el("span", "tag bad", "GTS may refuse it");
+    const mb = el("span", "tag bad", "GTS may refuse it");
     mb.title = "It is a Mythical, and the one Mythical you have tried - "
       + "Melmetal - the GTS would not hold. That is one data point, not "
       + "a rule, so it is still listed. If this one is refused too, say "
@@ -240,7 +241,7 @@ function ideaBadges(nm, i, mine){
     nm.appendChild(mb);
   }
   if (!byName[i.rec.name]) {
-    var ox = el("span", "tag", "not in Champions");
+    const ox = el("span", "tag", "not in Champions");
     ox.title = "It can live in HOME for ever and can never enter a "
       + "game, so giving it away costs you nothing playable. This is "
       + "the currency to spend first.";
@@ -248,14 +249,14 @@ function ideaBadges(nm, i, mine){
   }
   if (i.rec.shiny) nm.appendChild(el("span", "tag warn", "shiny"));
   if (i.n > 1) {
-    var c = el("span", "tag", i.n + " spare");
+    const c = el("span", "tag", i.n + " spare");
     c.title = "You hold " + i.n + " of these that your rule lets you "
       + "trade. They price the same, so this is one recommendation.";
     nm.appendChild(c);
   }
   if (i.frees.length) nm.appendChild(el("span", "tag ok", "frees a slot"));
   if (mine.mine) {
-    var t = el("span", "tag", mine.mine + " traded · "
+    const t = el("span", "tag", mine.mine + " traded · "
       + (elapsedText(mine.myMedian) || "?"));
     t.title = "You have closed " + mine.mine + " trade"
       + (mine.mine === 1 ? "" : "s") + " offering this species. Half of "
@@ -269,7 +270,7 @@ function ideaBadges(nm, i, mine){
    tener una vision mas amplia"). Six to start, because a card is read at a
    glance and 24 tags is not a glance, and the rest one tap away. */
 function askLine(i){
-  var line = el("div", "st");
+  const line = el("div", "st");
   function paintAsks(n){
     line.innerHTML = "";
     line.appendChild(document.createTextNode("Ask for: "));
@@ -293,10 +294,10 @@ function askLine(i){
 /* One ask, coloured by what it buys: a freed slot, a stone turned on, or
    simply a price - with the reason on hover. */
 function askTag(a){
-  var tone = "";
+  let tone = "";
   if (a.frees) tone = " ok";
   else if (a.stone) tone = " warn";
-  var tag = el("span", "tag" + tone, a.name);
+  const tag = el("span", "tag" + tone, a.name);
   tag.title = a.bst + " BST"
     + (a.frees ? " — you hold it only in the Champions box, so a "
         + "HOME copy frees that slot" : "")

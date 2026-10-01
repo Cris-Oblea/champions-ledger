@@ -48,7 +48,7 @@ const w = dom.window;
   /* the sweep: every form that has its own key must read its own pool, not
      its species'. A sample would have missed 24 of the 25. */
   describe("barrido de todas las formas con pool propio", () => {
-    let wrong = [];
+    const wrong = [];
     C.DEX.forEach(function(r){
       const form = r[0], sp = r[1];
       if (form === sp || r[4]) return;              // r[4] = is a Mega
@@ -64,7 +64,7 @@ const w = dom.window;
      filed as "Floette-Eternal") and the two gender forms, whose pool is the
      base species'. */
   describe("todas las formas, sin excepcion", () => {
-    let empty = C.DEX.map(r => r[0]).filter(n => !size(n));
+    const empty = C.DEX.map(r => r[0]).filter(n => !size(n));
     check("ninguna forma se queda sin movepool", empty.join(", ") || "0", "0");
     /* Champions' Floette is the Eternal Flower one and there is no other: the
        master list has only 670-e, no learner table says plain "Floette", and the

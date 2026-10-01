@@ -11,13 +11,13 @@ const DEX = C.DEX.map(function(r){
    of has no number here - Melmetal and Oricorio - and sorts last rather than
    being given one from memory. */
 function dexNo(name){
-  var n = C.DEXNO?.[name];
+  const n = C.DEXNO?.[name];
   if (n) return n;
-  var p = byName[name];
+  const p = byName[name];
   return p?.dex ? p.dex : 99999;
 }
 function dexLabel(name){
-  var n = dexNo(name);
+  const n = dexNo(name);
   return n === 99999 ? "#----" : "#" + String(n).padStart(4, "0");
 }
 const byName = {};
@@ -79,7 +79,7 @@ const STAT_LABEL = {hp:"HP", atk:"Atk", def:"Def", spa:"SpA", spd:"SpD", spe:"Sp
 
    The three tables below are views onto that one source. They are built rather
    than written so nothing can drift from it. */
-var TYPE_COLORS = window.CHAMP?.TYPE_COLORS || {};
+const TYPE_COLORS = window.CHAMP?.TYPE_COLORS || {};
 const TYPE_COLOR = {}, TYPE_COLOR2 = {}, TYPE_INK = {};
 Object.keys(TYPE_COLORS).forEach(function(t){
   TYPE_COLOR[t] = TYPE_COLORS[t].top;
@@ -94,7 +94,8 @@ function slug(s){
           .replace(/^-|-$/g,"")) || "x";
 }
 function freeSlug(s, taken){
-  var b = slug(s), k = b, n = 2;
+  const b = slug(s);
+  let k = b, n = 2;
   while (taken[k]) { k = b + "-" + n; n++; }
   return k;
 }
@@ -117,10 +118,10 @@ function freeSlug(s, taken){
 function battleFormsOf(p){
   if (!p || p.mega) return [];
   if (p.outside) return outsideForms(p, false);
-  var bfm = C.BFORMS?.[p.name];
+  const bfm = C.BFORMS?.[p.name];
   if (!bfm) return [];
   return Object.keys(bfm.f).map(function(lab){
-    var e = bfm.f[lab];
+    const e = bfm.f[lab];
     return {name: p.name + "-" + lab, species: p.species || p.name,
             types: e.t || p.types, b: e.b || p.b, ab: p.ab || [],
             battle: lab, by: bfm.by, sp: e.sp};
@@ -133,9 +134,9 @@ function battleFormsOf(p){
    the same fact, asked the other way round. Hangry Morpeko is the case that
    made it matter: Aura Wheel is Electric, and Dark in that form. */
 function formMoves(form, base){
-  var ft = C.FORM_TYPED || {};
+  const ft = C.FORM_TYPED || {};
   return Object.keys(ft).filter(function(mv){
-    var t = ft[mv][form.name];
+    const t = ft[mv][form.name];
     return t && t !== ft[mv][base.name];
   }).map(function(mv){
     return [mv, ft[mv][base.name] || MOVE_BY[mv]?.type, ft[mv][form.name]];
@@ -174,7 +175,7 @@ function bst(p){ return p.b.reduce(function(a,b){ return a+b; }, 0); }
    is legal, whether it Mega Evolves, whether it can be brought - still asks
    byName, which knows only the Champions dex. */
 function outsideRow(name){
-  var h = C.HOME_DEX?.[name];
+  const h = C.HOME_DEX?.[name];
   if (!h) return null;
   return {name:name, species:name, types:h.t || [], b:h.b || [],
           ab:h.ab || [], mega:false, dex:0,
@@ -189,7 +190,7 @@ function outsideRow(name){
    BST and no sheet at all (player, 2026-09-18: "floette no tiene ficha, si
    deberia tenerla"). */
 function anyRow(name){
-  var alias = C.LEARN_ALIAS?.[name];
+  const alias = C.LEARN_ALIAS?.[name];
   return byName[name] || (alias && byName[alias]) || outsideRow(name)
          || (alias && outsideRow(alias)) || null;
 }
@@ -221,29 +222,29 @@ function anyRow(name){
    and nothing local enforces _headers: every sprite was there in development
    and blocked the moment it shipped, with no error a person would ever see
    (player, 2026-09-18). */
-var IMG_HOSTS = ["https://cdn.jsdelivr.net"];
-var SPRITE_PIN = "2ecb4eeacd5a1718621fc30f12772e3f60d830b9";
-var SPRITE_BASE = IMG_HOSTS[0] + "/gh/PokeAPI/sprites@" + SPRITE_PIN +
+const IMG_HOSTS = ["https://cdn.jsdelivr.net"];
+const SPRITE_PIN = "2ecb4eeacd5a1718621fc30f12772e3f60d830b9";
+const SPRITE_BASE = IMG_HOSTS[0] + "/gh/PokeAPI/sprites@" + SPRITE_PIN +
                   "/sprites/pokemon/";
 
 /* level-50 stat, the formula the repo verified against 504 speed tiers */
 function statAt(base, sp, isHp, mult){
-  var v = base + Math.max(0, Math.min(32, sp || 0)) + (isHp ? 75 : 20);
+  const v = base + Math.max(0, Math.min(32, sp || 0)) + (isHp ? 75 : 20);
   return Math.floor(v * (isHp ? 1 : (mult || 1)));
 }
 function natMult(nature, key){
-  var n = C.NATURES[nature];
+  const n = C.NATURES[nature];
   if (!n) return 1;
   if (n[0] === key) return 1.1;
   if (n[1] === key) return 0.9;
   return 1;
 }
 function defence(types){
-  var out = {};
+  const out = {};
   Object.keys(C.CHART).forEach(function(atk){
-    var m = 1;
+    let m = 1;
     types.forEach(function(d){
-      var row = C.CHART[atk];
+      const row = C.CHART[atk];
       if (row?.[d] != null) m *= row[d];
     });
     if (m !== 1) out[atk] = m;
@@ -260,15 +261,15 @@ function defence(types){
    The species fallback still matters and must stay: a Mega has no learnset of
    its own, so Mega Garchomp has to read Garchomp's. */
 function learnset(name){
-  var p = byName[name];
-  var sp = p ? p.species : name;
+  const p = byName[name];
+  const sp = p ? p.species : name;
   /* and four forms find their pool under neither name: Champions' Floette is
      the Eternal Flower one, filed as "Floette-Eternal", and the two gender
      forms inherit the base species' pool. build_tracker_data.py resolves
      those with norm() and ships the answer, so this stays a plain lookup and
      no form is left without a movepool. */
-  var alias = C.LEARN_ALIAS?.[name];
-  var ids = C.LEARN[name] || (alias && C.LEARN[alias]) || C.LEARN[sp] || null;
+  const alias = C.LEARN_ALIAS?.[name];
+  const ids = C.LEARN[name] || (alias && C.LEARN[alias]) || C.LEARN[sp] || null;
   return ids ? ids.map(function(i){ return MOVES[i]; }) : null;
 }
 /* A Mega belongs to ONE form, not to every form of the species. Reading it off
@@ -279,12 +280,12 @@ function learnset(name){
    build_tracker_data.py resolves it there; the species is only the fallback
    for a form Smogon does not carry. */
 function megasFor(name){
-  var owned = C.MEGA_OWNER?.[name];
+  const owned = C.MEGA_OWNER?.[name];
   if (owned) return owned.map(function(n){ return byName[n]; }).filter(Boolean);
   /* an alternate form with no Megas of its own gets none - it must not
      inherit its base form's */
   if (byName[name] && byName[name].species !== name) return [];
-  var p = byName[name];
+  const p = byName[name];
   return (p && MEGAS_OF[p.species]) || MEGAS_OF[name] || [];
 }
 
@@ -316,9 +317,9 @@ function megasFor(name){
    species people ladder with, and a Mega Charizard Y is a Charizard holding a
    stone as far as the results are concerned. */
 function splitsFor(name){
-  var all = window.CHAMP_SPLITS?.p || {};
+  const all = window.CHAMP_SPLITS?.p || {};
   if (all[name]) return all[name];
-  var p = byName[name];
+  const p = byName[name];
   return (p?.species && all[p.species]) || null;
 }
 /* The regulation these numbers came from, for anything that prints a source. */
@@ -332,8 +333,8 @@ function splitsReg(){
    different answers and the app shows them differently: silence against a
    measured "nobody". */
 function splitPct(name, kind, what){
-  var s = splitsFor(name);
-  var rows = s?.[kind];
+  const s = splitsFor(name);
+  const rows = s?.[kind];
   if (!rows?.length) return null;
   for (const row of rows) {
     if (row[0] === what) return row[1];
@@ -343,8 +344,8 @@ function splitPct(name, kind, what){
 /* That Pokemon's own top row for a section. Rows arrive sorted descending, so
    this is row 0 and not a scan. */
 function splitMax(name, kind){
-  var s = splitsFor(name);
-  var rows = s?.[kind];
+  const s = splitsFor(name);
+  const rows = s?.[kind];
   return rows?.length ? rows[0][1] : 0;
 }
 /* A chip, emphasised RELATIVE to that Pokemon's own maximum - see above for
