@@ -62,6 +62,7 @@ import sys
 import time
 from pathlib import Path
 
+import dex
 import net
 from paths import META
 
@@ -366,6 +367,7 @@ def main():
             "regulations": regs,
             "fetched": time.strftime("%Y-%m-%d"),
             "count": len(out), "pokemon": out}
+    blob["fetched"] = dex.kept_stamp(OUT, blob)
     with open(OUT, "w", encoding="utf-8", newline="\n") as f:
         json.dump(blob, f, ensure_ascii=False, indent=1, sort_keys=True)
         f.write("\n")
