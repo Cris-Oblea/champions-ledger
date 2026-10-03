@@ -1,7 +1,7 @@
 /* The GTS pane's offers: the three slots, their history, and the sheet that
    deposits or closes one - with the keep-one rule that decides what may leave. */
 import {
-  anyRow, bst, byName, C, dexLabel, dexNo, FORMS, freeSlug,
+  anyRow, bst, byName, C, dexLabel, dexNo, FORMS, freeSlug, slug,
 } from "../core/data.js";
 import {
   $, capNote, el, fbtn, note, searchField, setPressed, toast,
@@ -18,12 +18,22 @@ import { boxBadges, outsideCard, pokeCard } from "../ui/card.js";
 import { ask, closeSheet, openSheet } from "../ui/nav.js";
 
 $("gtsAdd").onclick = function(){
-  if (!gtsFree()) {
-    toast("All " + GTS_SLOTS + " GTS slots are taken — withdraw one first");
-    return;
-  }
-  gtsSheet(null, null);
+  if (!slotsFull()) gtsSheet(null, null);
 };
+
+/* True, and says so, when every slot holds an offer. */
+function slotsFull(){
+  if (gtsFree()) return false;
+  toast("All " + GTS_SLOTS + " GTS slots are taken — withdraw one first");
+  return true;
+}
+
+/* True, and says so, when this copy already waits in another offer. */
+function clashes(d, id){
+  const cl = gtsClash(d, id);
+  if (cl) toast("That copy is already in the GTS, waiting for " + (cl.requested || "something"));
+  return Boolean(cl);
+}
 
 /* a box row's card stripe: HOME, or the Champions box */
 function locClass(r){ return r.location === "home" ? "home" : "perm"; }
@@ -523,9 +533,7 @@ function offerFields(body, id, d){
 /* Edit an open offer - its own row, and nothing else. */
 function saveOffer(id, d){
   if (!d.offered || !d.requested) { toast("Both sides are needed"); return; }
-  const cl = gtsClash(d, id);
-  if (cl) { toast("That copy is already in the GTS, waiting for " +
-                  (cl.requested || "something")); return; }
+  if (clashes(d, id)) return;
   put("gts/" + id, d).then(function(){
     closeSheet(); toast("Offer updated");
   });
@@ -601,10 +609,7 @@ function closeTrade(id, d, going){
    got a #2). Choosing between forms is his call. */
 function logOffer(d){
   if (!d.offered || !d.requested) { toast("Both names are needed"); return; }
-  if (!gtsFree()) {
-    toast("All " + GTS_SLOTS + " GTS slots are taken — withdraw one first");
-    return;
-  }
+  if (slotsFull()) return;
   const lastRec = d.offeredId ? S.box[d.offeredId] : null;
   if (lastCopyOf(lastRec) && !otherFormsOf(lastRec).length) {
     ask("Your only " + d.offered + "?",
@@ -625,11 +630,8 @@ function postOffer(d){
   const rdNow = gtsDiff(d.requested);
   if (rdNow?.rank != null) d.rankAtDeposit = rdNow.rank;
   if (!d.depositedAt) d.depositedAt = new Date().toISOString();
-  const cl2 = gtsClash(d, null);
-  if (cl2) { toast("That copy is already in the GTS, waiting for " +
-                   (cl2.requested || "something")); return; }
-  const stem = String(d.offered).toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "") || "offer";
+  if (clashes(d, null)) return;
+  const stem = slug(d.offered) || "offer";
   putNew("gts", stem, d).then(function(){
     closeSheet(); toast("Offer logged");
   });

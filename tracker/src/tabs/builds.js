@@ -3,7 +3,7 @@
 import { checks, retuneCost } from "../core/build.js";
 import {
   bst, byName, byText, C, catName, dexNo, FORMS, learnset, megasFor, MOVE_BY,
-  natMult, splitPct, splitsFor, splitsReg, spTotal, STAT_KEYS, STAT_LABEL,
+  natMult, slug, splitPct, splitsFor, splitsReg, spTotal, STAT_KEYS, STAT_LABEL,
   statAt,
 } from "../core/data.js";
 import {
@@ -968,8 +968,7 @@ function paintCost(ed){
 function saveBuild(ed){
   const draft = ed.draft, id = ed.id, b = ed.b;
   if (!draft.pokemon) { toast("Pick a Pokemon first"); return; }
-  const stem = String(draft.pokemon).toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
+  const stem = slug(draft.pokemon);
   const doc = {pokemon:draft.pokemon, box_id:draft._boxId || null,
              mega:draft.mega || null,
              ability:draft.ability || null,

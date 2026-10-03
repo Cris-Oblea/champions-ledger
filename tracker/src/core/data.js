@@ -89,12 +89,13 @@ Object.keys(TYPE_COLORS).forEach(function(t){
 const COSTS = {ranked_win:300, mega_stone_shop:2000, keep_rental_pokemon:2500,
              training_move:250, training_nature:500, training_ability:500,
              training_stat_point:5};
+/* A name as an id: "Mr. Mime" -> "mr-mime". Empty when nothing is left, so
+   each caller names its own fallback. */
 function slug(s){
-  return (String(s).toLowerCase().replace(/[^a-z0-9]+/g,"-")
-          .replace(/^-|-$/g,"")) || "x";
+  return String(s).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 }
 function freeSlug(s, taken){
-  const b = slug(s);
+  const b = slug(s) || "x";
   let k = b, n = 2;
   while (taken[k]) { k = b + "-" + n; n++; }
   return k;
@@ -383,7 +384,7 @@ export {
   anyRow, battleFormsOf, bst, byName, byText, C, catName, COSTS, defence, DEX,
   dexLabel, dexNo, formMoves, FORMS, freeSlug, learnset, MEGAS_OF, megasFor,
   MOVE_BY, MOVES, natMult, ordinal, outsideForms, outsideRow, plural,
-  podiumFor, SHARE_OF, splitMax, splitPct, splitsFor, splitsReg, SPRITE_BASE,
+  podiumFor, SHARE_OF, slug, splitMax, splitPct, splitsFor, splitsReg, SPRITE_BASE,
   spTotal, STAT_KEYS, STAT_LABEL, statAt, STONE_OF, TYPE_COLOR, TYPE_COLOR2,
   TYPE_INK,
 };

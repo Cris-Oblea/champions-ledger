@@ -2,7 +2,7 @@
    item in each. The Item Clause lives in teamPickItem: an item is a decision
    about the TEAM, so the only way to set one is through the slot being edited. */
 import {
-  bst, byName, byText, dexNo, MOVE_BY, natMult, plural, splitPct, STAT_KEYS,
+  bst, byName, byText, dexNo, MOVE_BY, natMult, plural, slug, splitPct, STAT_KEYS,
 } from "../core/data.js";
 import {
   $, el, fbtn, filterLabel, note, searchField, pressOnly, setPressed, toast,
@@ -157,8 +157,7 @@ function ideaField(body, draft){
    (see putNew); an edit keeps its own. */
 function saveTeam(id, draft){
   if (!draft.name) { toast("Give the team a name"); return; }
-  const stem = String(draft.name).toLowerCase()
-    .replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "").slice(0, 40) || "team";
+  const stem = slug(draft.name).slice(0, 40) || "team";
   const doc = teamDoc(draft);
   (id ? put("teams/" + id, doc).then(function(){ return id; })
       : putNew("teams", stem, doc)).then(function(){
