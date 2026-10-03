@@ -130,9 +130,10 @@ def move_slugs():
     get(BASE + "/attackdex-champions/", p, force=FORCE)
     s = read(p)
     found = set(re.findall(r'/attackdex-champions/([a-z0-9\-\'\.]+)\.shtml', s))
-    # type/category index pages are not moves
+    # type/category index pages are not moves. "psychic" is deliberately NOT
+    # here: psychic.shtml is the MOVE Psychic.
     skip = {"normal", "fire", "water", "electric", "grass", "ice", "fighting",
-            "poison", "ground", "flying", "psychict", "bug", "rock", "ghost",
+            "poison", "ground", "flying", "bug", "rock", "ghost",
             "dragon", "dark", "steel", "fairy", "physical", "special", "other",
             "status"}
     return sorted(found - skip)
