@@ -234,6 +234,14 @@ def key(name):
     return re.sub(r"\s+", " ", s).strip()
 
 
+def slug(name):
+    """The URL spelling Smogon and PokeAPI share: lower case, apostrophes and
+    dots dropped, every other run of punctuation one hyphen. "King's Rock" ->
+    kings-rock, "U-turn" -> u-turn, "Mr. Mime" -> mr-mime."""
+    s = (name or "").lower().replace("'", "").replace("’", "").replace(".", "")
+    return re.sub(r"[^a-z0-9]+", "-", s).strip("-")
+
+
 def target_key(target):
     """Serebii's target field, de-accented and lower-cased: "All Adjacent
     Pokemon" really carries an accented e."""

@@ -216,10 +216,8 @@ def main():
     if unmodelled:
         print("\n  el motor no las modela (x1.00), se descartan: %s"
               % ", ".join(unmodelled))
-        for g in table:
-            for n in list(table[g]):
-                if table[g][n] == 1.0:
-                    del table[g][n]
+        for g, mods in table.items():
+            table[g] = {n: r for n, r in mods.items() if r != 1.0}
 
     with open(OUT, "w", encoding="utf-8") as f:
         json.dump({"_comment":

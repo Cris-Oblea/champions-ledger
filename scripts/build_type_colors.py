@@ -84,10 +84,6 @@ def contrast(a, b):
     return (hi + 0.05) / (lo + 0.05)
 
 
-def fetch():
-    return net.get(CSS).decode("utf-8", "replace")
-
-
 def parse(css):
     out = {}
     for m in RULE.finditer(css):
@@ -111,7 +107,7 @@ def main():
                     help="fail if upstream no longer matches what is stored")
     args = ap.parse_args()
 
-    got = parse(fetch())
+    got = parse(net.text(CSS))
     if len(got) < 18:
         sys.exit("only %d type rules found at %s - the page has been "
                  "restructured, do not overwrite the stored table" % (len(got), CSS))

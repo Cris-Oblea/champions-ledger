@@ -265,15 +265,12 @@ def parse_speed_tiers():
     lines = rsc_lines(rsc_payload("speed-tiers"))
     rows = next((resolve(v, lines) for v in find_key(lines, "tierRows")
                  if isinstance(v, list)), [])
-    out = []
-    for r in rows:
-        out.append({
-            "base_speed": r.get("baseSpeed"),
-            "speeds": r.get("speeds", {}),
-            "pokemon": [{"name": p.get("name"), "slug": p.get("slug")}
-                        for p in r.get("pokemon", [])],
-        })
-    return out
+    return [{
+        "base_speed": r.get("baseSpeed"),
+        "speeds": r.get("speeds", {}),
+        "pokemon": [{"name": p.get("name"), "slug": p.get("slug")}
+                    for p in r.get("pokemon", [])],
+    } for r in rows]
 
 
 # --------------------------------------------------------------------------

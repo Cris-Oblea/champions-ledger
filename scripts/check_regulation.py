@@ -48,10 +48,6 @@ POKEBASE = "https://pokebase.app/pokemon-champions/pokemon"
 SEREBII = "https://www.serebii.net/pokemonchampions/rankedbattle.shtml"
 
 
-def get(url):
-    return net.get(url, timeout=90).decode("utf-8", "replace")
-
-
 def live_slug(html):
     """What pokebase says is the latest regulation set, e.g. "m-c".
 
@@ -108,7 +104,7 @@ def record(slug, note=""):
 def look():
     """(status, live slug, ours, what Serebii knows)."""
     try:
-        live = live_slug(get(POKEBASE))
+        live = live_slug(net.text(POKEBASE, timeout=90))
     except net.ERRORS as e:
         return "unknown", None, recorded().get("slug"), ("pokebase: %s" % e)
     if not live:
@@ -117,7 +113,7 @@ def look():
     if ours == live:
         return "current", live, ours, ""
     try:
-        known = serebii_regulations(get(SEREBII))
+        known = serebii_regulations(net.text(SEREBII, timeout=90))
     except net.ERRORS as e:
         return "waiting", live, ours, ("serebii: %s" % e)
     # FAIL TOWARDS ACTING. If Serebii names no regulation at all - the page

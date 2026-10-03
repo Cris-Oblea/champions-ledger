@@ -261,9 +261,8 @@ def cases_for_abilities(abilities, veh, touches):
         name = ab["name"]
         extra = NEEDS.get(name, {})
         picks = [("Physical", a_move(veh, "any", "Physical")),
-                 ("Special", a_move(veh, "any", "Special"))]
-        for mv in (touches.get(name) or [])[:2]:
-            picks.append((None, mv))
+                 ("Special", a_move(veh, "any", "Special")),
+                 *((None, mv) for mv in (touches.get(name) or [])[:2])]
         for cat, mv in picks:
             if not mv:
                 continue
@@ -367,11 +366,10 @@ def numbers_from(text):
             seen.add(key)
             out.append({"kind": kind, "value": value, "as_written": shown,
                         "phrase": sentence_around(text, m.start())})
-    for pat, value, shown in WORD_VALUES:
-        for m in re.finditer(pat, text, re.I):
-            out.append({"kind": "multiplier", "value": value,
-                        "as_written": shown,
-                        "phrase": sentence_around(text, m.start())})
+    out += [{"kind": "multiplier", "value": value, "as_written": shown,
+             "phrase": sentence_around(text, m.start())}
+            for pat, value, shown in WORD_VALUES
+            for m in re.finditer(pat, text, re.I)]
     # a fraction already claimed as "of max HP" should not be repeated as a
     # bare fraction: one number, one meaning. Matched on the VALUE and not on
     # what it reads as, because "1/16" and "1/16 of max HP" are the same number

@@ -48,13 +48,12 @@ from paths import META, ROOT, TOURNAMENTS
 BASE = "https://www.pokedata.ovh/standingsVGC"
 TEAM_PHP = "https://www.pokedata.ovh/misc/team.php?team="
 
-DEFAULT_TID = "0000191"          # 2026 Pokemon World Championships
 DEFAULT_DIVISION = "masters"
 
 
 def get(url, timeout=60):
     try:
-        return net.get(url, timeout=timeout).decode("utf-8", "replace")
+        return net.text(url, timeout=timeout)
     except net.ERRORS:
         return None
 
@@ -98,7 +97,7 @@ def event_json(tid, division, rnd=None):
 
     Cached per round so a live event still picks up the newer file.
     """
-    stem = "event_%s_%s_R%s.json" % (tid, division, rnd if rnd else "x")
+    stem = "event_%s_%s_R%s.json" % (tid, division, rnd or "x")
     url = "%s/%s/%s/%s_%s.json" % (BASE, tid, division, tid, division.capitalize())
     body = cached(stem, url, timeout=120)
     if not body:
@@ -366,7 +365,7 @@ def main():
     def opt(flag, default=None):
         return args[args.index(flag) + 1] if flag in args else default
 
-    tid = opt("--tid", DEFAULT_TID)
+    tid = opt("--tid", dex.WORLDS_TID)
     division = opt("--division", DEFAULT_DIVISION)
 
     os.makedirs(TOURNAMENTS, exist_ok=True)

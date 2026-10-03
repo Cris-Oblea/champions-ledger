@@ -193,8 +193,7 @@ def key(name):
         base = key(m.group(1))
         base = MEGA_BASE.get(base, base)
         return base + "-mega" + (("-" + m.group(2).lower()) if m.group(2) else "")
-    s = name.lower().replace("’", "").replace("'", "").replace(".", "")
-    s = re.sub("[^a-z0-9]+", "-", s).strip("-")
+    s = dex.slug(name)
     return ALIASES.get(s, s)
 
 
