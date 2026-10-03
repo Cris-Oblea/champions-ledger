@@ -308,6 +308,8 @@ def ignored(names, dirs):
 
 
 def check_named_files():
+    """Every file a document names in backticks must exist, unless the
+    lines around it say it is gone or never meant to exist."""
     files = repo_files()
     base = {f.rsplit("/", 1)[-1] for f in files}
     found = []
@@ -346,13 +348,15 @@ ARCH = "docs/ARCHITECTURE.md"
 
 
 def architecture_parts():
+    """[(kind, names)] of everything ARCHITECTURE.md must name: app modules,
+    workflows, pipeline scripts, Supabase tables, npm and pip packages."""
     import build_tracker_page  # the one definition of what a part is
 
     def names(pattern, strip=""):
         return sorted(os.path.basename(f)[:len(os.path.basename(f)) - len(strip)]
                       for f in glob.glob(os.path.join(ROOT, pattern)))
     tables = set()
-    for f in glob.glob(os.path.join(ROOT, "tracker", "*.sql")):
+    for f in glob.glob(os.path.join(ROOT, "supabase", "*.sql")):
         tables |= set(re.findall(r"create table if not exists public\.(\w+)",
                                  Path(f).read_text(encoding="utf-8"), re.I))
     with open(os.path.join(ROOT, "requirements.txt"), encoding="utf-8") as f:
@@ -375,9 +379,17 @@ def architecture_parts():
 
 
 def check_architecture():
+    """Count the parts ARCHITECTURE.md never names (and empty scans)."""
     text = "\n".join(read(ARCH) or [])
     problems = 0
     for kind, found in architecture_parts():
+        # A kind that finds NOTHING is a scan pointed at the wrong place (the
+        # SQL once moved to supabase/ and this saw zero tables for weeks) -
+        # it would pass forever while checking nothing.
+        if not found:
+            problems += 1
+            print("found no %s at all - the scan in architecture_parts() is "
+                  "looking in the wrong place" % kind)
         for name in found:
             if not re.search(r"(?<![\w-])%s(?![\w-])" % re.escape(name), text):
                 problems += 1
@@ -387,6 +399,7 @@ def check_architecture():
 
 
 def check_budgets():
+    """Count the documents over their byte budget (BUDGETS)."""
     problems = 0
     for rel, limit in BUDGETS.items():
         size = os.path.getsize(os.path.join(ROOT, rel))
@@ -479,6 +492,8 @@ def main():
 
 
 def check_repo():
+    """The whole check: every DECISION's stale wording, named files, the
+    architecture map and the budgets. Exit status: 1 on any problem."""
     missing = [d for d in DOCS if read(d) is None]
     if missing:
         print("these documents are listed but do not exist: %s"

@@ -101,11 +101,6 @@ def merge(rows, pb, label):
 
 
 # --------------------------------------------- Smogon's full description ---
-# (player, 2026-09-27) "octolock solo dice que lo deja octolocked and can't
-# escape statuses. pero no dice que significa cada uno de esos statuses!...
-# necesito que todos los moves esten igual de bien definidos como lo hace
-# smogon."
-#
 # Both sources above NAME a mechanic; Smogon's dex page DEFINES it: Octolock
 # traps the target, lowers its Def and SpD by 1 every turn, can be escaped
 # with Shed Shell or a pivot, and ends when either one leaves. So for a move
@@ -173,17 +168,14 @@ def smogon_first(moves, mv):
 
 
 def smogon_abilities(ab):
-    """The same for abilities (player, 2026-09-27: "haz lo mismo con las
-    abilities e items, smogon casi siempre los tiene mejor descritos y con
-    numeros"). Smogon's Champions text replaces the pick outright - Intimidate
+    """The same for abilities: Smogon's Champions text almost always describes
+    one better, and with its numbers, so it replaces the pick outright - Intimidate
     goes from "lowers the Attack of opposing Pokemon" to that plus who is
     immune to it - and the two originals stay beside it.
 
-    ONE DESCRIPTION, NOT TWO (player: "no se dupliquen las descripciones...
-    en algunas abilities habian descripciones duplicadas y eran obvias"). The
-    app used to print this line AND Smogon's one-line summary under it, which
-    said the same thing twice; build_tracker_data.py now drops the summary
-    wherever this text exists.
+    ONE DESCRIPTION, NOT TWO: Smogon's one-line summary would say this line
+    again, so build_tracker_data.py drops the summary wherever this text
+    exists.
 
     A number the old pick states and Smogon's text does not is PRINTED, not
     merged: two sentences about one ability are exactly the duplication just
@@ -223,8 +215,8 @@ def smogon_abilities(ab):
     print("\nsmogon's full description: %d of %d abilities" % (used, len(ab)))
     # What is left after the units are allowed for is either a word the
     # sentence uses instead of a digit, or a real disagreement - Effect Spore
-    # (Serebii 10%, Smogon 30%) and Healer (Serebii 30%, Smogon 50%) were the
-    # two on 2026-09-27. Printed so a new one is seen; Smogon's Champions text
+    # (Serebii 10%, Smogon 30%) and Healer (Serebii 30%, Smogon 50%) are the
+    # known two. Printed so a new one is seen; Smogon's Champions text
     # is what ships.
     for n, lost, old in gaps:
         print("   only the old text says %-12s %-16s %s"

@@ -203,12 +203,11 @@ _TYPE = re.compile(r'<span title="([A-Za-z]+)" class="inline-flex')
 def parse_pokemon_usage():
     """The ladder, from the rendered table: name, slug, types, usage %.
 
-    Until 2026-10-02 the page's payload carried the whole roster (`docs`) next
-    to an id -> percent map, and the two were joined by id. pokebase stopped
-    shipping the roster - the map is still there, with nothing to name its ids -
-    and the nightly wrote 0 rows four times until the shrink guard stopped it.
-    The table renders 100 rows a page like the moves one, so every page is
-    walked (PAGED). A species with no usage cell is left out, as for moves.
+    Not the page's payload: its id -> percent map no longer carries the
+    roster that names the ids, so it cannot be joined (the shrink guard in
+    daily.py is what caught that). The table renders 100 rows a page like
+    the moves one, so every page is walked (PAGED). A species with no usage
+    cell is left out, as for moves.
     """
     rows, seen = [], set()
     for s in read_all_pages("pokemon"):

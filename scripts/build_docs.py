@@ -4,11 +4,10 @@
     python scripts/build_docs.py           # rewrite the generated blocks
     python scripts/build_docs.py --check   # fail if they are out of date
 
-Every count in the README had drifted by 2026-09-13 - 308 forms against a real
-345, 200 abilities against 215, a regulation two versions old, and instructions
-telling the reader to hand-edit a file the app replaced. None of it was wrong
-when it was written, which is the point: a number typed into prose is a promise
-to come back and retype it, and nobody ever does.
+A count typed into prose is a promise to come back and retype it, and nobody
+ever does: every count in the README once drifted (forms, abilities, the
+regulation) without any of it being wrong when it was written. So the counts
+are generated between markers, and --check fails the gate when they drift.
 
 So the counts live between markers and are written from the data itself, and
 `--check` is wired into daily.py's gate. The README cannot drift without the
@@ -231,10 +230,8 @@ def tests_line():
     return "tests/       %s browser tests, run against the BUILT page" % word(n)
 
 
-# Which generated block belongs to which document. STATUS.md joined on
-# 2026-09-20: it carried its own hand-typed table of the same counts, one
-# regulation out of date, while the README's were generated three feet
-# away. Two documents, one generator, no second place to be wrong.
+# Which generated block belongs to which document. Both documents state the
+# same counts, so both come from one generator: no second place to be wrong.
 DOCS = {
     README: {"COUNTS": counts, "VINTAGE": vintage,
              "GATE": gate, "TESTS": tests_line},

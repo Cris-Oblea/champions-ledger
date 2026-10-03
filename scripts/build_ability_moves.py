@@ -10,7 +10,7 @@ properties derived from Serebii's own move text, so a move added by a regulation
 is classified the day the data refreshes. The report is the point: it prints
 what every rule caught, so the classification can be checked, not trusted.
 
-Three rules the earlier version got wrong, all found by the player:
+Rules that read the text too literally once, and must not again:
 
   * A power multiplier CANNOT apply to a move that deals no damage. Adaptability
     was badging Basculegion's Rain Dance - a Water move with 0 BP and no STAB to
@@ -21,7 +21,7 @@ Three rules the earlier version got wrong, all found by the player:
     goes OUT. Bulletproof and Filter never touch their own Pokemon's moves, so
     they are classed defensive and never badge a movepool.
 
-Two more the sentence splitter got wrong, found 2026-09-10:
+Two the sentence splitter has to get right:
 
   * "Sp. Atk" ENDS A SENTENCE as far as a naive split on "." is concerned, so
     every move whose only stat is a special one fell out of the table. Contrary
@@ -128,7 +128,7 @@ SMOG = os.path.join(SMOGON_CALC, "raw_moves.json")
 
 
 def smogon_moves():
-    """Smogon's own move table, keyed the way query.key() keys ours.
+    """Smogon's own move table, keyed the way dex.key() keys ours.
 
     It is the better source for two things this file turns on. `secondaries`
     marks the guaranteed on-hit effects - Icy Wind, Rock Tomb, Snarl - that
@@ -163,6 +163,10 @@ def targeting(m, smogon):
 
 
 def derive(moves):
+    """Each useable move's PROPERTIES (flags, secondary, stat changes,
+    target...) - Serebii's facts cross-checked against Smogon's engine
+    flags, every disagreement collected for the report. The rules then run
+    over these, never over raw text."""
     sm = smogon_moves()
     out, conflicts = {}, []
     for m in moves:
@@ -249,6 +253,7 @@ STATUSES = ("Paralysis", "Burn", "Poison", "Badly Poisoned", "Freeze",
 
 
 def st(m, status):
+    """Does move `m` cause `status`? (data/db/statuses.json, read once)"""
     global _STATUS
     if _STATUS is None:
         rows = (dex.db("statuses") or {}).get("statuses") or {}
@@ -346,9 +351,9 @@ RULES = {
                     "boosted, Water weakened, and no rain penalty")),
 
  # ======================================================================
- # Everything below was added 2026-09-10, after the player found that an
- # ability with no rule reads in the app as an ability that does nothing -
- # Liquid Voice badged nothing on Primarina's Hyper Voice. Each one is
+ # Everything below exists because an ability with no rule reads in the app
+ # as an ability that does nothing (Liquid Voice badging nothing on
+ # Primarina's Hyper Voice). Each one is
  # written from the ability's own text in data/db/abilities.json, never from
  # memory of the console games. Where Serebii states a number the number is
  # here; where it does not, the multiplier stays None, because `x` is printed
@@ -464,9 +469,8 @@ RULES = {
  "Lightning Rod": ("def", lambda m: m["type"] == "Electric", None,
                    "drawn to it, does no damage, and gives it +1 Sp. Atk"),
  "Justified":     ("def", lambda m: m["type"] == "Dark", None, "+1 Attack"),
- # DAMAGE, not "any Fire move" - the player caught this on the move tags
- # (2026-09-19: "thermal exchange se activa con dano y no con ataques fuego
- # de status"), and Serebii says it in as many words: "When the Pokemon
+ # DAMAGE, not "any Fire move" - a Fire status move does not trigger it,
+ # and Serebii says it in as many words: "When the Pokemon
  # takes DAMAGE from a Fire-type move". Will-O-Wisp is still answered, but
  # by the second clause and not the first - it cannot be burned, whatever
  # burns it - so the two halves are written as the two halves they are.
@@ -562,11 +566,10 @@ RULES = {
                    "Defense x1.5 while Grassy Terrain is up"),
  "Pressure":      ("def", None, None, "costs the attacker 2 PP, not 1"),
 
- # ---- the status family, unblocked 2026-09-10 --------------------------
- # These sat in NO_RULE twice because nothing said which move causes which
- # status. data/db/statuses.json has that column now, derived from both
- # descriptions with the traps handled (Electric Terrain PREVENTS sleep,
- # Snore REQUIRES it), so the rules can finally be written.
+ # ---- the status family ------------------------------------------------
+ # These need to know which move causes which status: data/db/statuses.json
+ # has that column, derived from both descriptions with the traps handled
+ # (Electric Terrain PREVENTS sleep, Snore REQUIRES it).
  "Insomnia":      ("def", lambda m: st(m, "Sleep"), None, "it cannot be put to sleep"),
  "Vital Spirit":  ("def", lambda m: st(m, "Sleep"), None, "it cannot be put to sleep"),
  "Sweet Veil":    ("def", lambda m: st(m, "Sleep"), None,
@@ -593,7 +596,7 @@ CONTRARY_DOWN = "this DROP becomes a boost - Contrary inverts it"
 
 # Abilities that mention a move and still get NO rule, each with the reason -
 # because "no rule" on its own reads as "this ability does nothing", which is
-# what sent the player looking in the first place. Reviewed 2026-09-10.
+# why each exception is written down rather than left blank.
 NO_RULE = {
  "Sturdy": "changes no damage number, only whether the target ends at 1 HP - "
            "the same call CLAUDE.md makes for Focus Sash",
@@ -701,15 +704,11 @@ STOPS_EFFECT = {
 
 # WHOSE ABILITY IT HAS TO BE for the block to matter to the move's user.
 #
-# (player, 2026-09-27) "telepathy sale en tags negativos para todos los moves
-# que hacen hit a los allies, pero en realidad deberia ser verde positivo,
-# porque telepathy protege a tu pokemon de los ataques spread que hitean
-# aliados de tu otro pokemon! si el oponente tiene telepathy no se cubre de
-# mis ataques. hay que tener conocimiento de la perspectiva de una habilidad!"
-#
-# Every block used to be read as the TARGET's, and the target was assumed to
-# be an opponent - so it was always bad news, drawn red. Three cases, and the
-# default of each list is the common one:
+# A block is NOT always bad news for the user: Telepathy stops an ALLY's
+# spread move, which makes it the reason to run one. So each blocking
+# ability says whose it must be to matter, from the side of the Pokemon
+# using the move. Three cases, and the default of each list is the common
+# one:
 #
 #   foe   it only stops an OPPONENT's move: red on the move, and nothing when
 #         your partner holds it. Armor Tail and Queenly Majesty stop "an
@@ -717,12 +716,9 @@ STOPS_EFFECT = {
 #         Bounce on your own partner would send your move back at you.
 #   ally  it only stops an ALLY's move: Telepathy. Useless on a foe, and on
 #         your partner it is the reason to run the spread move - green.
-#   any   the holder is immune whoever attacks. RED, and only red (player,
-#         2026-09-27: "pueden ser negativos para el oponente y positivos para
-#         uno mismo dependiendo de la estrategia... pero solamente por el
-#         pokemon tener la habilidad diria que para el oponente es una
-#         desventaja... si yo tiro earthquake y me switchean a un pokemon con
-#         levitate no le hago nada"). Pairing Earthquake with your own
+#   any   the holder is immune whoever attacks. RED, and only red: a foe
+#         switching in Levitate under your Earthquake is the fact the tag
+#         exists to report. Pairing Earthquake with your own
 #         Levitate is a strategy you choose; a foe's Levitate is a fact you
 #         face - and the tag reports facts. Drawing it green as well would
 #         also print the same name twice on one row. The default for
@@ -740,6 +736,8 @@ STOP_WHOSE = {
 
 
 def build(props):
+    """Run every RULE over the move properties: (the ability -> moves table
+    that ships, a report per ability for --audit)."""
     table, report = {}, {}
     scopes = _scopes(props)
     for ab, (side, pred, mult, why) in RULES.items():
@@ -845,10 +843,8 @@ def classify(name, table, text):
     t = (text or "")
     # SEVERAL STATS AT ONCE IS A STAT ABILITY, even when Speed is one of them.
     # "speed" sits ahead of "stats" so that Swift Swim is filed by what it is
-    # for; Battle Bond raises Attack, Sp. Atk AND Speed, and the order filed it
-    # under speed the day its text started naming all three (player,
-    # 2026-09-27: "se supone que battle bond da varias estadisticas. deberia
-    # quedar en stats, no?").
+    # for; Battle Bond raises Attack, Sp. Atk AND Speed, so it is a stat
+    # ability, not a speed one.
     # Case-sensitive on purpose: the text capitalises a STAT ("its Attack")
     # and not the noun ("hit by an attack").
     named = sum(1 for p in (r"(?<!Special )\bAttack\b", r"(?<!Special )\bDefen[cs]e\b",

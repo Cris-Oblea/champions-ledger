@@ -379,8 +379,8 @@ def link():
     There used to be a second one, `_legacy.js`: while the conversion was under
     way it held the parts that were not modules yet, concatenated as they had
     always been and wrapped as one module, importing what the converted parts
-    exported and exporting what they still needed back. It lost a part on every
-    increment and the last one left on 2026-09-14. The bridge is not kept
+    exported and exporting what they still needed back, until the last part
+    was converted. The bridge is not kept
     "in case": a part that does not declare its imports is now an error, so
     "every part is a module" is enforced rather than merely true today.
     """
@@ -407,8 +407,8 @@ def image_hosts(js):
     was one of those three, sprites arrived later from a CDN, and Cloudflare
     served a policy that blocked every one of them. Locally nothing enforces
     `_headers`, so the sprites were there all through development and gone the
-    moment they shipped - the failure had no error anyone would see, just 345
-    Pokemon with no picture (player, 2026-09-18).
+    moment they shipped - the failure had no error anyone would see, just
+    every Pokemon with no picture.
 
     So the host is not typed here twice. It is read out of the linked app, and
     the build FAILS if the app has stopped loading any - because that would mean
@@ -493,7 +493,7 @@ def config_js():
     #     dist/analysis.<hash>.js was written but the page never references it
     #
     # a message about the Smogon analysis panel, on a pull request that bumps
-    # jsdom. #135 on 2026-09-21, and it would have been every one after it.
+    # jsdom - and on every pull request after it.
     lazy = ("window.CHAMP_ANALYSIS_URL = '';" + chr(10)
             + "window.CHAMP_OUTSIDE_URL = '';" + chr(10))
     # CI has no config.local.json - it is gitignored, because it is per
@@ -858,7 +858,7 @@ def icons():
     They are committed PNGs in tracker/icons/, not drawn at build time: the
     mark changes about never, and drawing it each build was the only reason
     the repo needed Pillow. The design rules and the code that drew them are in
-    git history (build_tracker_page.py, before 2026-09-29).
+    git history of this file.
     """
     for name in ICON_FILES:
         shutil.copyfile(os.path.join(ICONS, name), os.path.join(DIST, name))

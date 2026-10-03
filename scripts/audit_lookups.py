@@ -37,6 +37,7 @@ bad = 0
 
 
 def ok(label, got, want="0"):
+    """Print one check as OK / FAIL and count the failures in `bad`."""
     global bad
     good = str(got) == str(want)
     if not good:
@@ -52,13 +53,15 @@ def lst(xs, n=6):
 
 
 def _check_code():
+    """No script defines the same top-level name twice (the second silently
+    wins), and every script parses."""
     print("\n  the code")
     dups = []
     for f in sorted(glob.glob(os.path.join(ROOT, "scripts", "*.py"))):
         try:
             tree = ast.parse(Path(f).read_text(encoding="utf-8"))
         except SyntaxError as e:
-            dups.append("%s no parsea: %s" % (os.path.basename(f), e))
+            dups.append("%s does not parse: %s" % (os.path.basename(f), e))
             continue
         seen = collections.Counter()
         for node in tree.body:
@@ -85,6 +88,8 @@ def _resolve(p, learn):
 
 
 def _check_forms(mons, learn):
+    """Every form finds itself, collides with nobody under norm(), and
+    resolves a movepool."""
     print("\n  the forms, one by one")
     ok("forms in the dex", len(mons), len(mons))
 
@@ -107,6 +112,8 @@ def _check_forms(mons, learn):
 
 
 def _check_megas(mons):
+    """Mega Stones and Megas are 1:1, and every form has a name in Smogon's
+    engine (else the damage calculator cannot be asked about it)."""
     megas = [p for p in mons if p.get("is_mega")]
     stones = collections.defaultdict(list)
     for p in megas:
@@ -144,6 +151,8 @@ def _duplicate_keys(text):
 
 
 def _check_db_files():
+    """Every data/db file loads and repeats no key (json.loads keeps the
+    LAST of a repeated key, silently)."""
     print("\n  the files everything else reads")
     for f in sorted(glob.glob(os.path.join(DB, "*.json"))):
         name = os.path.basename(f)
@@ -155,6 +164,8 @@ def _check_db_files():
 
 
 def _check_references(learn):
+    """The derived tables only point at moves, abilities and Pokemon that
+    exist."""
     print("\n  the derived tables point at things that exist")
     moves = {m["name"] for m in dex.db("moves")}
     abil = {a["name"] for a in dex.db("abilities")}
@@ -190,7 +201,7 @@ def main():
     _check_megas(mons)
     _check_db_files()
     _check_references(learn)
-    print("\n%s" % ("ALL GOOD" if not bad else "%d FAILED" % bad))
+    print("\n%s" % ("TODO BIEN" if not bad else "%d FALLOS" % bad))
     return 1 if bad else 0
 
 

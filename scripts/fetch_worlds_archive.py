@@ -7,7 +7,7 @@ Why this is separate from fetch_tournament.py, which pulls the CURRENT event:
     2026 was played under Regulation M-B; the ladder has since moved to M-C and
     will keep moving. So the 2026 teamlists stop being "what the field plays"
     and become "what the field played in August 2026" - still worth having, but
-    as history, never as today's usage. (player, 2026-09-11)
+    as history, never as today's usage.
 
     Read that way a whole archive is more useful than one event: it shows what
     each regulation actually rewarded, and which Pokemon keep showing up across
