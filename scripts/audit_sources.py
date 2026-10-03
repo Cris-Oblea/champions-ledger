@@ -50,7 +50,7 @@ def rescaled_pp(ours):
 
     Champions rescales PP globally, so the main-series number is not the answer
     - but how every other move with that main-series number was rescaled is a
-    strong one. Measured on 2026-09-27: 5 -> 8 (81 of 81), 10 -> 12 (188 of
+    strong one. Measured over the whole table: 5 -> 8 (81 of 81), 10 -> 12 (188 of
     196), 15 -> 16 (101 of 103), 20 and up -> 20. So the majority bucket for a
     move's main-series PP is a fourth, independent vote on a PP dispute - and
     the one that settled Night Slash, the only 15-PP move Serebii put at 20.
@@ -157,7 +157,7 @@ def check_items():
     for k, v in sorted(src.items()):
         print("  %-10s %d" % (k, v))
     print("  disagreements are printed by build_item_facts.py, which is where "
-          "the merge happens (none today, over the 123 both sources price)")
+          "the merge happens")
 
 
 def main():

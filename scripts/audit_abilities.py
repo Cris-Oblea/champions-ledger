@@ -3,26 +3,16 @@
 
     python scripts/audit_abilities.py          # report; non-zero on a NEW gap
 
-WHY. The movepools got a second opinion in audit_learnsets.py and the ability
-lists never had one - and one was missing for months without anything noticing:
-
-    "ciertos pokemones como lycanroc midnight le hace falta 1 habilidad, no
-     tiene no guard, pero smogon y el juego si dicen que tiene no guard"
-     (player, 2026-09-19)
-
-He was right, and the cause was worth finding rather than patching. Form rows
-come from the ATTACKDEX, because that is the only place each form gets a row of
+WHY. The movepools get a second opinion in audit_learnsets.py; the ability
+lists need one too, because one can go missing with nothing noticing (No
+Guard on Lycanroc-Midnight once did). Form rows come from the ATTACKDEX, because that is the only place each form gets a row of
 its own - and Serebii's attackdex row for Lycanroc-Midnight lists Keen Eye and
 Vital Spirit and stops, while its POKEDEX page lists all three and links
 /abilitydex/noguard.shtml. The two halves of one site disagree. build_db.py
-completes the short row from the page now; this is what would have said so.
+completes the short row from the page; this is what says so when it cannot.
 
-AND THEN IT DID NOT SAY SO, eight days later:
-
-    "greninja tiene 3 habilidades y no 2... por alguna razon algunas
-     habilidades se estan perdiendo" (player, 2026-09-27)
-
-Greninja's page names Battle Bond, but links it as /abilitydex/.shtml - an
+A SECOND BLIND SPOT, and why the audit reads the page as well: Greninja's
+page names Battle Bond, but links it as /abilitydex/.shtml - an
 empty slug - and every ability pattern in build_db.py demanded [a-z0-9]+. So
 the name was skipped, and this audit passed it twice over:
 

@@ -16,9 +16,8 @@ was true on every day except the one day it mattered.
 
 THE SIGNAL IS EXPLICIT AND MACHINE-READABLE. pokebase's dex page ships
 `defaultLatestRegulationSetSlug":"m-c"` in its own page data - not scraped
-prose, the value the site itself uses to decide what to show. That is what M-C
-was confirmed with on 2026-09-12, and build_docs.py already prints the
-regulation from it.
+prose, the value the site itself uses to decide what to show - and
+build_docs.py prints the regulation from the same value.
 
 TWO SOURCES, BECAUSE THEY MOVE AT DIFFERENT TIMES. On M-C day Serebii was fully
 updated while pokebase's usage was still empty; the reverse can happen just as

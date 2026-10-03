@@ -7,18 +7,10 @@
 
 WHY THIS EXISTS.
 
-A HOME row for a species Champions has never heard of showed a name, a "not in
-the Champions dex" tag and nothing else - no types, no BST, no stats, no
-ability. 24 of the player's 129 HOME Pokemon are in that state, and HOME is
-exactly where he decides what to keep and what to send on:
-
-    "no me parece correcto que no me muestre el tipo bst y stats y ability como
-     el resto de cards, porque si quisiera hacer un cambio en pokemon home, no
-     sabria por que cambiarlos"  (2026-09-16)
-
-    "la idea es tener el dex completo en home, necesito tener esa informacion y
-     conservar el tag de not in champion dex, asi se cuales cambiar por otros
-     motivos."
+A HOME row for a species Champions has never heard of would be a name, a "not
+in Champions" tag and nothing else - no types, no BST, no stats, no ability -
+and HOME is exactly where the player decides what to keep and what to trade.
+So every species gets its card, and keeps the tag.
 
 THE TAG STAYS. This does not make these Pokemon playable and must never read as
 if it did - it fills in the card so a decision can be made about a Pokemon
@@ -34,7 +26,7 @@ usage for them, and there is nothing for a main-series number to contradict.
 These are main-series rows about main-series Pokemon, which is all that exists -
 so the payload marks every one and the card says where the numbers came from.
 
-THE CSVs, NOT THE REST API (the player found the repo, 2026-09-16). PokeAPI
+THE CSVs, NOT THE REST API. PokeAPI
 publishes its whole database as plain tables under data/v2/csv. Six of them,
 263 KB, one download each - against 1027 HTTP requests and a slug guessed per
 form, which is what the first version of this did.
@@ -132,8 +124,8 @@ ALIASES = {
     # and falls back to the base row, so the Battle Bond Greninja came out
     # with Torrent and Protean and the Own Tempo Rockruff with Keen Eye, Vital
     # Spirit and Steadfast - each carrying exactly the abilities it cannot
-    # have. Found by the sweep that found Battle Bond missing from our own
-    # Greninja row (2026-09-27).
+    # have. Found by the same sweep that found Battle Bond missing from our
+    # own Greninja row.
     "greninja-bond": "greninja-battle-bond",
     "rockruff-dusk": "rockruff-own-tempo",
     # The six a WORLDS TEAMLIST writes bare while the weight table only carries
@@ -203,19 +195,10 @@ def worlds_names():
 
     These are not in the weight table under the spelling pokedata uses, and 53
     of them are not in the Champions dex at all - the 2025 field was full of
-    Calyrex, Koraidon and Flutter Mane, none of which this game has. The app
-    drew each of them as a bare name: no types, no BST, no stats, no ability
-    and no sheet behind it.
+    Calyrex, Koraidon and Flutter Mane, none of which this game has - and
+    each needs a card and a sheet like any other.
 
-        "en Find, en el apartado Worlds, floette no tiene ficha, si deberia
-         tenerla... igualmente en los otros anos habian otros pokemones
-         disponibles y existe el mismo problema que en la caja de home... es
-         mejor tenerla ahora que ir cargandola despues, ya que cuando los
-         pokemones llegan a champions por actualizacion de regulation, muy
-         pocas veces sufren balanceos, en stats es poco probable"
-         (player, 2026-09-18)
-
-    He is right about the second half too, and it is why this is safe: a
+    It is safe to fetch them now rather than when they arrive: a
     regulation rebalances MOVEPOOLS far more often than spreads, and a main-
     series spread for a species Champions does not have contradicts nothing of
     ours. The moment it arrives, Serebii's row replaces this one.
@@ -311,11 +294,9 @@ def resolver(pokemon):
     called `oinkologne` - it files the species as `oinkologne-male` and
     `oinkologne-female`, and the old lookup asked for the bare name, missed,
     fell back to `k.split("-")[0]`, which is the same bare name, and missed
-    again. So a Pokemon sitting in his HOME box had no types, no stats, no
-    ability and no picture, and tapping it opened a sheet built from null
-    (player, 2026-09-21: "la card y la ficha de Oinkolgne-f tira error de
-    script, creo que sigue sin reconocer todos los pokemones"). Sixty-odd
-    names were in that state, all of them species whose only rows are forms.
+    again - and a Pokemon in his HOME box would have no types, no stats, no
+    ability and no picture, and a sheet built from null. That hits every
+    species whose only rows are forms.
 
     Three steps, in order, and only the third is an approximation:
 
@@ -378,7 +359,7 @@ def species_flags(force=False):
     """Which names are Mythical, and which Legendary.
 
     WHY IT IS DERIVED AND NOT TYPED. Melmetal cannot be deposited in HOME's
-    GTS (player, 2026-09-21) and he confirmed it is a Mythical, which makes
+    GTS (confirmed in game) and it is a Mythical, which makes
     "Mythicals are refused" the obvious explanation - but a list of the 23
     Mythicals written from memory is exactly the kind of thing this project
     does not do. PokeAPI publishes the flag, at the same pinned commit as
@@ -722,11 +703,8 @@ def form_line(force=False):
     """What every card's Pokemon can TURN INTO mid-battle: its Megas and its
     in-battle forms, with the picture and the main-series numbers of each.
 
-    WHY (player, 2026-09-27): "no todos los sprites estan cargando... morpeko
-    tiene otra forma y es por habilidad y no se ve su otro sprite... la idea
-    es tener todas las imagenes funcionando." And why it matters beyond the
-    picture: "algunas formas determinan algunas habilidades o ataques, como
-    aura wheel de morpeko cambia de tipo el move segun su forma."
+    WHY: every form should have its picture, and a form can matter beyond
+    the picture (Hangry Morpeko's Aura Wheel is Dark).
 
     The card only knew what the CHAMPIONS data said a Pokemon becomes, and
     that data only carries a form when Serebii prints numbers for it - so the

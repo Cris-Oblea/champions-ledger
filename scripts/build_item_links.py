@@ -55,12 +55,9 @@ FIELD = {
 #
 # A tag on a move row is not neutral. Heat Rock on Sunny Day is a reason to run
 # the move; Aspear Berry on Ice Beam is the reason it will not work - the target
-# thaws and the freeze was the whole point. Both read as the same grey chip, so
-# the screen said "these items are related" and left which way to be worked out
-# (player, 2026-09-18: "necesito que ese tag sea visualmente negativo, puesto
-# que significa que el freeze de ese ataque se puede evitar con ese item. La
-# vision del movimiento es cosas beneficiosas para el usuario y las cosas
-# negativas las que lo pueden perjudicar").
+# thaws and the freeze was the whole point. A move row is read from its USER's
+# side: what helps the user is a reason ("for"), what can undo the move is a
+# warning ("against", drawn red).
 #
 # Keyed on the reason the rule gave, because that is where the direction was
 # already decided - and asserted complete below, so a new rule cannot arrive
@@ -236,9 +233,8 @@ def _named_rule(t, props, name):
     return named, [], "changes what these moves do"
 
 
-# The status berries, unblocked 2026-09-10. These had no link while nothing
-# said which move causes which status. data/db/statuses.json has that column
-# now, so a Cheri Berry can point at the fifteen moves that paralyse.
+# The status berries. data/db/statuses.json says which move causes which
+# status, so a Cheri Berry can point at the moves that paralyse.
 CURES = [("Paralysis", r"paralysis|paraly[sz]ed"),
          ("Freeze", r"thaw|frozen|freez"),
          ("Sleep", r"drowsiness|asleep|\bsleep\b"),
@@ -284,8 +280,8 @@ def item_links(item, props, setters, facts):
     # pair means neither phrasing is a single point of failure - reading
     # pokebase alone lost every type booster, because it says "Boosts" where
     # Serebii says "boosts".
-    # ALL THREE since Smogon's Champions text became the shown one (2026-09-27):
-    # the rules below were written against the other two's phrasing, and
+    # ALL THREE, because Smogon's Champions text is the one shown while the
+    # rules below were written against the other two's phrasing, and
     # reading only the shown text dropped Air Balloon, Bright Powder,
     # Metronome and Terrain Extender - the same single point of failure,
     # moved. Every phrasing is matched, so a better description can only add.

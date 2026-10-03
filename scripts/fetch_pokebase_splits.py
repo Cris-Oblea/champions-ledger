@@ -9,9 +9,8 @@ ladder. This answers the question a build actually asks: of the people running
 KINGAMBIT, what do THEY run - which moves, which item, which ability, which
 nature, which SP spread, and beside whom.
 
-THE PAGE HAS TWO OF THESE, AND THEY ARE NOT THE SAME NUMBERS. Caught by the
-player 2026-09-15 ("mira abilities, natures, items, common teammates, moves.
-TIENE PAGES!"), and looking for the pages turned up the bigger problem:
+THE PAGE HAS TWO OF THESE, AND THEY ARE NOT THE SAME NUMBERS (and each
+paginates client-side, so the rendered HTML shows only page 1):
 
   TOURNAMENT STATS - tournament teamlists for ONE regulation, stamped with it
       on the page ("M-C"). Present for every Pokemon that has been brought to
@@ -39,10 +38,9 @@ because the rendered HTML gives an order and no number; the payload gives
 "Sneasler 53.9%", which is the number that makes the section useful for
 building a team rather than merely suggestive.
 
-WHY POKEBASE AND NOT PIKALYTICS. Pikalytics has the same shape of data and is
-stamped 2026-05 with its ladder code still on season 3 - the player's call
-(2026-09-15): one month to update or it stops being a source. pokebase is the
-live M-C data, which is the format being played.
+WHY POKEBASE AND NOT PIKALYTICS. Pikalytics has the same shape of data but
+stopped updating - the rule is one month to update or it stops being a
+source. pokebase is the live data for the format being played.
 
 THE RAW HTML IS NOT CACHED, and that is deliberate. Each page is 1.3 MB of
 Next.js markup and there are 321 of them: 427 MB, more than twice the entire

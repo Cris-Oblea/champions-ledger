@@ -19,7 +19,7 @@
  * makes both now (`no-redeclare`, `no-undef`) and makes the second one
  * properly: the hand-rolled version only reported a name some other part
  * EXPORTED, so a private function called across files, and a name that no
- * longer existed anywhere, both went to production (2026-09-29).
+ * longer existed anywhere, could both reach production.
  */
 const path = require("path");
 

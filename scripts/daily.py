@@ -26,8 +26,8 @@ Why this exists rather than a bare `refresh.py` on a timer:
   * It keeps a log, because nobody watches a 3am job.
 
 The sources move on different clocks. pokebase's ladder is the one that
-changes daily - and the one whose cache made a plain refresh a no-op until
-2026-09-11. Serebii is rules and only moves on a regulation. Smogon's engine
+changes daily (so its pages are re-fetched every run, never served from the
+cache). Serebii is rules and only moves on a regulation. Smogon's engine
 moves when Smogon ships. All three are checked every run anyway; checking is
 cheap and missing a regulation is not.
 """
@@ -80,10 +80,9 @@ GATE_CHECKS = [
     (["scripts/test_norm.py"], "name matching"),
     (["scripts/audit_lookups.py"], "every lookup resolves"),
     (["scripts/audit_forms.py"], "no form went missing"),
-    # The README is the front door of a public repo, and every number in it
-    # had drifted by the time anyone looked. The counts are generated now, so
-    # this only has to check they were regenerated. STATUS.md joined it on
-    # 2026-09-20, for the same reason and with the same table.
+    # The README is the front door of a public repo, and a typed number in it
+    # drifts. The counts (README and STATUS) are generated, so this only has
+    # to check they were regenerated.
     (["scripts/build_docs.py", "--check"],
      "the README and STATUS are current"),
     # Schema and client drifting apart is a runtime failure, not a build one:
@@ -102,21 +101,20 @@ GATE_CHECKS = [
     # spell a timestamp differently. Needs no database, so it runs anywhere.
     (["scripts/backup_ledger.py", "--selftest"], "a restore can still tell what changed"),
     # The README's numbers are generated so they cannot drift; its PROSE can,
-    # and so can every other document. STATUS.md - the file a new session reads
-    # first - stated a rule that had been reversed two days earlier, and
-    # nothing noticed. This is what notices (player, 2026-09-13).
+    # and so can every other document - a reversed rule still stated as
+    # current in STATUS.md, the file a new session reads first. This notices.
     (["scripts/check_docs.py"],
      "no document contradicts a decision, names a missing file or outgrows its budget"),
     # The Python half of the lint gate, and the twin of ESLint below: ruff.toml
     # holds the rules, the same file VS Code's Ruff extension reads. It found
     # two regexes whose \b had been typed as a literal backspace, so one of
-    # check_docs' watched decisions had never matched anything (2026-09-30).
+    # check_docs' watched decisions had never matched anything.
     (["-m", "ruff", "check", "--quiet", "--output-format", "concise"],
      "no Python lint finding comes back once it is fixed"),
     # What ruff cannot see: ruff judges one file at a time, so a function whose
     # last caller lived in ANOTHER script reads as used forever. vulture reads
-    # every script together. At zero since 2026-09-30; its default confidence
-    # (60%) is the one that found nothing false.
+    # every script together. At zero; its default confidence (60%) is the
+    # one that reports nothing false.
     (["-m", "vulture", "scripts"], "no Python function or name is left unreachable"),
 ]
 
@@ -125,7 +123,7 @@ GATE_CHECKS = [
 # legal JavaScript that simply does the wrong thing there. Two shipped that
 # way: a sort preference saved under a name that no longer existed, and a CSV
 # export calling a function another file kept private - both ReferenceErrors,
-# both silent until the button was pressed (2026-09-29).
+# both silent until the button was pressed.
 #
 # ESLint runs the same rules SonarQube for IDE shows in VS Code, over every
 # file, with `--max-warnings 0`: the repo is at zero, so a warning fails the
@@ -144,9 +142,9 @@ SOURCE_CHECKS = [
      "no CSS lint finding comes back once it is fixed"),
     (["node_modules/html-validate/bin/html-validate.mjs", "tracker/src/markup/**/*.html"],
      "no HTML lint finding comes back once it is fixed"),
-    # Copy-paste, across every language the repo is written in. The cleanup of
-    # 2026-09-30 took it to zero - a shared factory, a helper, one CSS
-    # property where four gradients stood - so a new copy is a choice to make
+    # Copy-paste, across every language the repo is written in. The repo is at
+    # zero - a shared factory, a helper, one CSS property where four
+    # gradients stood - so a new copy is a choice to make
     # out loud: share it, or mark it `jscpd:ignore-start` with the reason (the
     # dark tokens, which CSS cannot write once). .jscpd.json holds the rest.
     # The cross-file half of ESLint: an export nothing imports, a file nothing
@@ -162,9 +160,9 @@ SOURCE_CHECKS = [
                 or re.search(r"\[\d+:\d+ - \d+:\d+\]", line)][:13]),
 ]
 
-# The browser tests, run against the BUILT page. Nothing gated on these until
-# 2026-09-13, which is how four of them drifted for weeks: they test what the
-# phone actually loads, and no Python check can see a template regression.
+# The browser tests, run against the BUILT page: they test what the phone
+# actually loads, and no Python check can see a template regression. (Tests
+# nothing runs drift: four once did, for weeks.)
 BROWSER_TESTS = [
     ("pagetest.js",       "the page's engine matches Node's"),
     ("sweeptest.js",      "every form calculates, attacking and defending"),
@@ -218,8 +216,8 @@ BROWSER_TESTS = [
     # The only test that signs in and loads a ledger WITH ROWS. Every
     # other one stubs Supabase empty, so the login gate stays up and any
     # branch that draws something only when there is something to draw
-    # never runs - which is how three missing imports reached the live
-    # page on 2026-09-14 with all sixteen tests green.
+    # never runs - which is how three missing imports once reached the live
+    # page with every other test green.
     ("ledgertest.js",     "the app draws a ledger that has rows in it"),
 ]
 
@@ -265,6 +263,8 @@ SHRINK = [
 
 
 def _count(blob, how="rows"):
+    """How big a data file is, in the unit SHRINK watches it by: "rows",
+    "inside" (entries summed across a dict of lists) or "priced"."""
     # THE PER-POKEMON SPLITS ARE THE ONE FILE WHOSE SHAPE CHANGED UNDER US.
     # pokebase paginates those sections client-side; reading the rendered HTML
     # saw five rows of nineteen, and the same page carries two datasets whose
@@ -323,6 +323,7 @@ def shrink_check():
 
 
 def digest(rel):
+    """sha256 of a repo file, or None if it is missing."""
     p = os.path.join(ROOT, rel)
     if not os.path.exists(p):
         return None
@@ -350,6 +351,7 @@ def ladder_summary():
 
 
 def log(lines):
+    """Append to today's log in data/raw/daily_logs/, keeping a month."""
     os.makedirs(LOGDIR, exist_ok=True)
     stamp = datetime.datetime.now().strftime("%Y-%m-%d")
     with open(os.path.join(LOGDIR, stamp + ".log"), "a", encoding="utf-8") as f:
@@ -373,9 +375,8 @@ def log(lines):
 #   tracker/engine.bundle.js  built only from data/raw/smogon_calc. The
 #       committed one carried `y?.megaStone` - an optional-chaining guard the
 #       nightly had picked up from upstream - and a local rebuild replaced it
-#       with `y.megaStone`. Twice: once about to be committed inside a change
-#       that was nominally about CSP headers (2026-09-18), and once actually
-#       DEPLOYED by a local --no-refresh run (2026-09-22).
+#       with `y.megaStone` - and was once committed inside an unrelated
+#       change, and once actually DEPLOYED by a local --no-refresh run.
 #   tracker/data.js           built from data/db and data/meta, which ARE
 #       committed, plus two files in data/raw.
 #
@@ -427,19 +428,16 @@ def pin_generated():
 
 
 def sh(argv, cwd=ROOT):
+    """Run a command; (exit code, stdout + stderr). Never raises."""
     # npx is npx.cmd on Windows and subprocess will not find it without the
-    # extension. It never mattered while the only caller was the Linux runner;
-    # it does now that --no-refresh makes this the hand-publish path too, and
-    # the failure was a bare WinError 2 with no hint of which command.
+    # extension; the failure would be a bare WinError 2 naming no command.
     if os.name == "nt" and argv and argv[0] in ("npx", "npm", "node"):
         argv = [argv[0] + ".cmd" if argv[0] != "node" else argv[0]] + argv[1:]
     try:
         # ENCODING NAMED, because text=True decodes with the locale codec and
-        # on this machine that is cp1252: wrangler prints a box-drawing
-        # character and the reader thread dies with a UnicodeDecodeError
-        # traceback in the middle of an otherwise clean run (seen 2026-09-22).
-        # The output is read, never parsed, so replacing an undecodable byte
-        # costs nothing.
+        # on Windows that is cp1252: wrangler prints a box-drawing character
+        # and the reader thread would die with a UnicodeDecodeError. The
+        # output is read, never parsed, so replacing a byte costs nothing.
         r = subprocess.run(argv, cwd=cwd, capture_output=True, text=True,
                            encoding="utf-8", errors="replace", check=False)
     except OSError as e:
@@ -541,6 +539,7 @@ def _rebuild_from_repo(out):
 
 
 def _refresh(a, out):
+    """Run refresh.py - deep on Mondays or with --deep - and log its tail."""
     deep = a.deep or datetime.date.today().weekday() == 0
     argv = [PY, "scripts/refresh.py"] + (["--deep"] if deep else [])
     out.append("mode: " + ("deep (Smogon analyses + pokebase splits forced)"
@@ -583,6 +582,8 @@ def _report_changes(before, before_ladder, out):
 
 
 def _check_backup_and_shrink(out):
+    """Back the ledger up, then refuse a refresh that LOST data (SHRINK).
+    False blocks the deploy."""
     ok = True
     # ---- back the ledger up BEFORE anything else --------------------------
     # Supabase holds the whole ledger now and the free plan takes no backups of
@@ -651,8 +652,7 @@ def _gate(out):
     # The browser tests run against tracker/dist/index.html, so they catch
     # what the Python checks cannot: a template edit that breaks the sheet, a
     # blob field the page reads under another name, a startup error that
-    # empties every list. Four of them had drifted unnoticed for weeks
-    # precisely because nothing ran them (2026-09-12).
+    # empties every list. A test nothing runs drifts unnoticed.
     checks = ([([PY] + argv, what, lambda o: o.splitlines()[-6:])
                for argv, what in GATE_CHECKS]
               + [(["node"] + argv, what, pick[0] if pick else _last_lines)

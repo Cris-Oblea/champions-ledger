@@ -4,33 +4,20 @@
     python scripts/build_outside_dex.py
     python scripts/build_outside_dex.py --report    # counts only, write nothing
 
-WHY THE WHOLE DEX AND NOT JUST THE PLAYABLE PART (player, 2026-09-19):
+WHY THE WHOLE DEX AND NOT JUST THE PLAYABLE PART: the app should know every
+Pokemon, every move and every ability. Champions rebalances a Pokemon WHEN IT
+ADDS IT, so until then there is nothing of ours to contradict, and knowing
+what Flutter Mane would bring is how you judge whether you want it. The "not
+in Champions" tag is what says it cannot be played yet.
 
-    "La idea es tener la DEX COMPLETA, la unica dex diferente es la de champions
-     y no es diferente por numero ni nada, solamente es diferente por tener
-     pokemones habilitados y otros no. pero necesito tener la database de todas
-     las abilities, todos los moves, todos los pokemones. asi cuando se consulta
-     por algo se sabe todo y el tag not in champions indica si es posible usarlo
-     o no. ademas el balanceo de champions recien se ve cuando habilitan a esos
-     pokemones que faltan en regulaciones nuevas."
+THREE THINGS SHIP HERE:
 
-That last sentence is the argument, and it is right: Champions rebalances a
-Pokemon WHEN IT ADDS IT. Until then there is nothing of ours to contradict, and
-knowing what Flutter Mane would bring is exactly how you judge whether you want
-it. The "not in Champions" tag is what says it cannot be played yet.
+  ab   ABILITY TEXT for the abilities only species Champions lacks carry
+       (Protosynthesis), which Champions has no entry for.
 
-THREE THINGS SHIP HERE, and each fills a hole the app had:
-
-  ab   ABILITY TEXT for the 95 abilities carried by species Champions lacks.
-       Protosynthesis had a name and no description - the sheet listed it and
-       could say nothing about it.
-
-  mv   THE MOVE ROWS the app does not ship. build_home_moves.py dropped 6,385
-       of these on the reasoning that a name with no base power is a word
-       rather than information - Flutter Mane lost six that way. The reasoning
-       was right and the conclusion was wrong, because checking found something
-       better than a workaround: OUR OWN DATABASE ALREADY HAS THEM. data/db/
-       moves.json holds 901 moves, of which 512 are useable and 389 are not,
+  mv   THE MOVE ROWS the app does not ship. A name with no base power would
+       be a word rather than information - but OUR OWN DATABASE HAS THEM:
+       data/db/moves.json holds 901 moves, of which 512 are useable and 389 are not,
        and 388 of the 389 carry a full Champions row - type, category, base
        power, accuracy and PP. They were never missing; they were simply not
        shipped, because the app only sends the playable ones to the phone.
@@ -132,9 +119,7 @@ def build():
     # row is the one whose spelling must win - it is the one the rest of the
     # app looks moves up by.
     champ_by_key = {dex.slug(m["name"]): m for m in dex.db("moves")}
-    # WHAT EACH ONE DOES. These rows shipped with no description at all - a
-    # name, a type and four numbers. From CHAMPIONS' OWN DEX only (player,
-    # 2026-09-27: "siempre la fuente debe ser champions dex"): Smogon's full
+    # WHAT EACH ONE DOES, from CHAMPIONS' OWN DEX only: Smogon's full
     # text where its Champions dex has the move, else Serebii's
     # attackdex-champions line, which covers every one of them. Never an
     # older game's page, which can describe a different move.
@@ -152,10 +137,8 @@ def build():
     # a species whose only rows are forms under those forms, so asking for the
     # bare name misses. `oinkologne` is `oinkologne-male`, `deoxys` is
     # `deoxys-normal`, `giratina` is Altered - and each of those had a spread
-    # and an ability here while its movepool came back empty, which is half a
-    # sheet (player, 2026-09-21: "el moveset que aprenden cada uno de esos
-    # pokemones junto con sus habilidades supongo que los puedes sacar del
-    # ultimo juego en el que estuvieron presentes").
+    # and an ability here while its movepool came back empty - half a sheet.
+    # The movepool comes from the last game the species appeared in.
     #
     # The approximate half is taken here too, and it is right: Arceus' plates
     # and Silvally's memories share one movepool exactly as they share one

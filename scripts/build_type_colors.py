@@ -9,8 +9,7 @@ WHY THIS IS FETCHED AND NOT TYPED.
 The app's palette was eighteen hand-written hexes with no source next to them -
 Fire was #C8501E, a dark brick, where the official Fire is #FD7D24. They had
 been darkened at some point so white text would sit on them, and a darkened
-colour is no longer the colour. The player asked the obvious question
-(2026-09-16): "son esos los originales o solo un aproximado?"
+colour is no longer the colour.
 
 `pokemon.com` answers it exactly. Its Pokedex ships one rule per type, and the
 rule carries three facts, not one:
@@ -59,8 +58,8 @@ INK = re.compile(r"(?<![-a-z])color\s*:\s*(#[0-9a-fA-F]{3,6})")
 #
 # A Stellar entry was invented here first, on the reasoning that the type is in
 # data/db/typechart.json and a missing colour would paint something grey. The
-# player settled it (2026-09-16): "stellar no existe, eso es una invencion de
-# smogon". It reaches the chart because that file is built from Smogon's
+# player settled it: Stellar does not exist in Champions. It reaches the
+# chart only because that file is built from Smogon's
 # dump-basics, which inherits from Scarlet/Violet - Champions has no
 # Terastallization at all, no Pokemon carries the type, and `core/team.js` was
 # already filtering it out of the weakness table by name.

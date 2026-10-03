@@ -106,8 +106,8 @@ TEAMMATE_CAP = 10
 def teammate_sum(rows, s):
     """Is this teammates column the right shape? Two different guarantees.
 
-    THE ONE RANGE THIS REPLACES BLOCKED THE NIGHTLY on 2026-09-21, and it was
-    right to fail and wrong about why: Krookodile summed to 144.3 against a
+    A FIXED RANGE ONCE BLOCKED THE NIGHTLY, right to fail and wrong about
+    why: Krookodile summed to 144.3 against a
     floor of 150. Nothing upstream had changed. Krookodile is on nine
     tournament teams - its rows are 44.4 (4/9) and nine of 11.1 (1/9) - and
     the top TEN teammates of a nine-team sample simply do not add up to much.

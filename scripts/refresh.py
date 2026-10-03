@@ -52,12 +52,11 @@ def stages(reg, deep=False):
                    which is the only way new species get movepools. It turns
                    itself on when check_regulation sees a new regulation.
     """
-    # A REGULATION IS A PATCH, NOT A REBUILD. This used to DELETE the three
-    # Serebii caches and download all 1,148 pages into the hole. Two things
-    # were wrong with that: a failure halfway through left the database with no
-    # movepools and nothing to fall back on (proved by accident on 2026-09-14,
-    # testing the detector), and throwing the old bytes away threw away the
-    # only way to say WHAT the regulation changed.
+    # A REGULATION IS A PATCH, NOT A REBUILD. Deleting the Serebii caches and
+    # re-downloading every page would be wrong twice: a failure halfway
+    # through leaves the database with no movepools and nothing to fall back
+    # on, and throwing the old bytes away throws away the only way to say
+    # WHAT the regulation changed.
     #
     # --force re-fetches every page ON TOP of the cache instead, compares each
     # one with what was there, and prints the list that came back different.
@@ -72,8 +71,8 @@ def stages(reg, deep=False):
     serebii = ["scripts/fetch_serebii.py", "all"] + (["--force"] if reg else [])
     # ALWAYS --force. fetch_pokebase skips any page already on disk over 5 KB,
     # so without it a daily run re-parses yesterday's HTML and the ladder never
-    # moves. Caught 2026-09-11: the M-C ladder had been live for two days and a
-    # plain refresh would not have seen a row of it. Serebii is the opposite -
+    # moves - a new regulation's ladder would go unseen. Serebii is the
+    # opposite -
     # its pages are rules, they change on a regulation, so its cache stays.
     pokebase = ["scripts/fetch_pokebase.py", "--force"]
     smogon = ["scripts/fetch_smogon.py"] + (["--force"] if (reg or deep) else [])
@@ -184,10 +183,9 @@ def stages(reg, deep=False):
         Stage("outsidedex",
               "the rest of the dex for what Champions does not have",
               ["scripts/build_outside_dex.py"], False),
-        # The ability lists get the second opinion the movepools have had
-        # since 2026-09-16. Lycanroc-Midnight was missing No Guard for
-        # months because Serebii's attackdex row and its Pokedex page
-        # disagree, and nothing was comparing them to anything.
+        # The ability lists get the second opinion the movepools have:
+        # Serebii's attackdex row and its Pokedex page can disagree (No Guard
+        # on Lycanroc-Midnight), and only a comparison catches it.
         Stage("abilityaudit", "every form's abilities, crossed upstream",
               ["scripts/audit_abilities.py"], False),
         Stage("tracker", "regenerate tracker/data.js",

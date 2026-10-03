@@ -37,6 +37,7 @@ bad = 0
 
 
 def ok(label, got, want="0"):
+    """Print one check as OK / FAIL and count the failures in `bad`."""
     global bad
     good = str(got) == str(want)
     if not good:
@@ -52,6 +53,8 @@ def lst(xs, n=6):
 
 
 def _check_code():
+    """No script defines the same top-level name twice (the second silently
+    wins), and every script parses."""
     print("\n  el codigo")
     dups = []
     for f in sorted(glob.glob(os.path.join(ROOT, "scripts", "*.py"))):
@@ -85,6 +88,8 @@ def _resolve(p, learn):
 
 
 def _check_forms(mons, learn):
+    """Every form finds itself, collides with nobody under norm(), and
+    resolves a movepool."""
     print("\n  las formas, una por una")
     ok("formas en el dex", len(mons), len(mons))
 
@@ -107,6 +112,8 @@ def _check_forms(mons, learn):
 
 
 def _check_megas(mons):
+    """Mega Stones and Megas are 1:1, and every form has a name in Smogon's
+    engine (else the damage calculator cannot be asked about it)."""
     megas = [p for p in mons if p.get("is_mega")]
     stones = collections.defaultdict(list)
     for p in megas:
@@ -144,6 +151,8 @@ def _duplicate_keys(text):
 
 
 def _check_db_files():
+    """Every data/db file loads and repeats no key (json.loads keeps the
+    LAST of a repeated key, silently)."""
     print("\n  los ficheros que todo lo demas lee")
     for f in sorted(glob.glob(os.path.join(DB, "*.json"))):
         name = os.path.basename(f)
@@ -155,6 +164,8 @@ def _check_db_files():
 
 
 def _check_references(learn):
+    """The derived tables only point at moves, abilities and Pokemon that
+    exist."""
     print("\n  las tablas derivadas apuntan a cosas que existen")
     moves = {m["name"] for m in dex.db("moves")}
     abil = {a["name"] for a in dex.db("abilities")}

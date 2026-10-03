@@ -22,10 +22,9 @@ from serebii_text import read, unmojibake
 
 # An ability is read by its NAME, never by its link's slug. Serebii links
 # Greninja's Battle Bond as href="/abilitydex/.shtml" - an empty slug - and
-# every pattern here used to demand [a-z0-9]+, so the name was skipped without
-# a word and Battle Bond was missing from the database entirely (player,
-# 2026-09-27: "greninja tiene 3 habilidades y no 2... algunas habilidades se
-# estan perdiendo"). The <b> is the name; the slug is decoration, and one
+# a pattern demanding [a-z0-9]+ skips the name without a word (Battle Bond
+# went missing from the database that way). The <b> is the name; the slug is
+# decoration, and one
 # broken slug among the 1,389 ability links on the Pokedex pages was enough to
 # lose an ability.
 ABIL_LINK = r'/abilitydex/[^"]*"[^>]*>\s*<b>([^<]+)</b>'
@@ -132,10 +131,9 @@ TYPE_PAGES = {"normal", "fire", "water", "electric", "grass", "ice", "fighting",
 
 
 # ------------------------------------------------------ settled numbers --
-# Where the sources disagree on a move's number, the one decided on stands
-# here with its reason (player, 2026-09-27: "siempre escoger el que mejor se
-# acerque a la verdad, puede hacerse una tabla de fuentes y decidir cuál es el
-# número realista"). `scripts/audit_sources.py` is that table: Serebii,
+# Where the sources disagree on a move's number, the one closest to the truth
+# stands here with its reason. `scripts/audit_sources.py` is the table of
+# sources it is decided from: Serebii,
 # pokebase, Smogon's engine, and PokeAPI's main-series PP pushed through the
 # rescale the rest of the move table follows.
 #
@@ -154,8 +152,7 @@ MOVE_RULINGS = {
     # other move with a rate states that rate in its Battle Effect ("Has a 10%
     # chance of freezing"), Freeze-Dry is the only one that does not. Smogon's
     # engine deletes the secondary for Champions on purpose, its Champions dex
-    # text names none, and the player confirmed it in game (2026-09-27: "ojo
-    # que freeze-dry ya no congela en champions").
+    # text names none, and the player confirmed it in game.
     ("Freeze-Dry", "effect_rate"): (None,
         ("No freeze in Champions: Serebii's Battle Effect names none (the 10% "
          "sits alone in its rate cell), Smogon's engine deletes the secondary, "
@@ -256,6 +253,7 @@ def _move_name(s, slug):
 
 
 def _move_type_and_category(s):
+    """(type, "Physical" / "Special" / "Status") off a move page's icons."""
     mtype = cat = None
     mt = re.search(r'/attackdex-champions/\w+\.shtml"><img src="/pokedex-bw/type/(\w+)\.gif', s)
     if mt:
@@ -288,6 +286,7 @@ def _move_section(s, label):
 
 
 def _move_crit_priority_target(s):
+    """(crit rate text, priority as int, target) off a move page's table."""
     mx = re.search(
         r"Base Critical Hit Rate.*?Speed Priority.*?Hit in Battle.*?</tr>\s*<tr>\s*"
         r'<td class="cen">\s*([^<]*?)</td>\s*<td class="cen">\s*([^<]*?)</td>\s*'
@@ -351,6 +350,9 @@ def _move_learners(s):
 
 
 def parse_move(path, useable=None):
+    """One cached attackdex page -> one move row of data/db/moves.json.
+    `useable` is the set of slugs Champions enables; the rest are kept,
+    flagged useable=False, because a movepool can still list them."""
     s = read(path)
     slug = os.path.basename(path)[:-5]
     mtype, cat = _move_type_and_category(s)
@@ -415,6 +417,7 @@ def _block_name(blk, slug):
 
 
 def _block_types(blk):
+    """The types in one form's block of a Pokedex page, deduplicated."""
     raw_types = re.findall(
         r'/pokedex-champions/\w+\.shtml"><img src="/pokedex-bw/type/(\w+)\.gif', blk)
     if not raw_types:
@@ -424,6 +427,7 @@ def _block_types(blk):
 
 
 def _block_abilities(blk):
+    """The abilities in one form's block, minus the "Details" link text."""
     ab = re.search(r"<b>Abilities</b>\s*:(.*?)</td>", blk, re.S)
     abils = [re.sub(r"\s+", " ", html.unescape(a.group(1))).strip()
              for a in re.finditer(ABIL_LINK, ab.group(1))] if ab else []
@@ -483,7 +487,7 @@ def _in_battle_forms(s):
     Blade Forme</h2>", "Stats - Hero Form", "Stats - Jumbo Variety") but they
     are NOT separate rows. Every usage source calls them by the base name -
     pokebase writes "Aegislash (Blade)" for the thing a teamlist just calls
-    "Aegislash" - so query.norm() collapses them on purpose, and adding rows
+    "Aegislash" - so dex.norm() collapses them on purpose, and adding rows
     would make every join ambiguous. They go on the base row instead, because
     the damage calculator still needs the real numbers: Stance Change flips
     Aegislash to Blade the moment it attacks, so its Attack is 140, not 50."""
@@ -499,6 +503,9 @@ def _in_battle_forms(s):
 
 
 def parse_pokemon(path, mega_names=None):
+    """One cached Pokedex page -> a row per form block on it (base, regional,
+    Mega). `mega_names` gives each Mega block its real X / Y name in order,
+    because the page titles both "Mega Charizard"."""
     s = read(path)
     slug = os.path.basename(path)[:-5]
     megas_here = iter((mega_names or {}).get(slug, []))
@@ -678,8 +685,7 @@ def abilities_by_form(path):
     place each form gets a row of its own. Usually the two agree. Lycanroc is
     where they do not: the attackdex row for Midnight lists Keen Eye and Vital
     Spirit and stops, so **No Guard was missing from the database entirely** -
-    found in game by the player (2026-09-19: "smogon y el juego si dicen que
-    tiene no guard"), then confirmed here, in Serebii's own markup, which links
+    found in game by the player, then confirmed in Serebii's own markup, which links
     /abilitydex/noguard.shtml on that page.
 
     16 pages group their abilities this way and only that one form was short,
@@ -706,6 +712,8 @@ def abilities_by_form(path):
 
 
 def _add_abilities(p, abs_, added, note=None):
+    """Append the abilities `p` lacks, record what was added in `added` for
+    the report, and attach `note` to each (whether or not it was new)."""
     have = p.get("abilities") or []
     new = [a for a in abs_ if a not in have]
     if new:
@@ -719,7 +727,7 @@ def _add_abilities(p, abs_, added, note=None):
 def complete_form_abilities(forms):
     """Add anything the Pokedex page lists for a form that its row is missing.
 
-    Matched with query.norm(), the project's own name matcher, so "(Midnight
+    Matched with dex.norm(), the project's own name matcher, so "(Midnight
     Form)" on the Lycanroc page finds "Lycanroc-Midnight" and "(Hisuian Form)"
     on the Arcanine page finds "Arcanine-Hisui" without a table of suffixes.
 
@@ -872,6 +880,9 @@ def _write(name, rows):
 
 
 def build_pokemon():
+    """Every form, in dex order: base and regional forms from the attackdex
+    (one row per form), merged with the Pokedex pages' stats and Megas, then
+    the battle forms and the fixed forms Serebii lists nowhere."""
     # base and regional forms from the attackdex (one row per form)
     forms = forms_from_attackdex()
     complete_form_abilities(forms)
@@ -888,6 +899,7 @@ def build_pokemon():
 
 
 def build_moves():
+    """Every move page parsed, then the in-game MOVE_RULINGS applied."""
     adir = os.path.join(RAW, "attackdex")
     useable = useable_moves()
     moves = []

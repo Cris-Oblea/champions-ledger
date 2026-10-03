@@ -77,8 +77,8 @@ def _price(it, pb):
     if serebii and pbvp:
         status = "agree" if serebii == pbvp else "clash"
         if status == "clash":
-            # SETTLED by the player, 2026-09-13: "los precios son los que
-            # dice serebii". Serebii's item page IS the shop listing, item
+            # SETTLED by the player's ruling: Serebii's price wins. Serebii's
+            # item page IS the shop listing, item
             # by item; pokebase buckets everything it is unsure of into
             # shop-2000-vp, which is why all twelve disagreements run the
             # same way. Keeping pokebase's bucket alongside Serebii's price
@@ -102,9 +102,8 @@ def _unpriced_note(it, unlock):
 
 
 def _texts(it, smogon, pbtext):
-    """SMOGON'S CHAMPIONS DEX FIRST (player, 2026-09-27: "haz lo mismo con
-    las abilities e items, smogon casi siempre los tiene mejor descritos
-    y con numeros"). Sitrus Berry is "Restores 1/4 max HP when at 1/2
+    """SMOGON'S CHAMPIONS DEX FIRST: it almost always describes an item
+    better, and with its numbers. Sitrus Berry is "Restores 1/4 max HP when at 1/2
     max HP or less. Single use." there; Light Clay names Aurora Veil,
     which the player confirmed in game and Serebii's line leaves out.
     pokebase's mechanics and Serebii's flavour stay behind it, and both
@@ -131,14 +130,14 @@ def _print_summary(rows, filled, agree, nothing, clash):
           % tuple(sum(1 for r in rows.values() if r["text_source"] == k)
                   for k in ("smogon", "pokebase", "serebii")))
     if clash:
-        # SETTLED by the player, 2026-09-13: "los precios son los que dice
-        # serebii". Serebii's page IS the shop listing, priced item by item;
+        # SETTLED by the player's ruling: Serebii's price wins. Serebii's
+        # page IS the shop listing, priced item by item;
         # pokebase buckets what it is unsure of into shop-2000-vp, which is why
         # all of these run the same way. Printed as a resolved decision, not as
         # an open question - a question that keeps asking itself gets answered
         # again every time someone reads it.
         print("\n  %d priced by Serebii where pokebase disagrees "
-              "(Serebii wins - the player's ruling, 2026-09-13):" % len(clash))
+              "(Serebii wins - the player's ruling):" % len(clash))
         for n, s, p in clash:
             print("     %-22s %s VP, not pokebase's %s" % (n, s, p))
     if filled:
