@@ -244,6 +244,7 @@ def surface(text):
 
 
 def _layer(f):
+    """A part's layer rank (core < ui < tabs), boot.js last."""
     return LAYERS.index(f.split("/")[0]) if "/" in f else len(LAYERS)
 
 
@@ -265,6 +266,7 @@ def _cycles(files, graph, bad):
     state = {}
 
     def walk(f, path):
+        """Depth-first over the import graph, recording any cycle it closes."""
         state[f] = 1
         for d in graph.get(f, []):
             if state.get(d) == 1:
@@ -610,6 +612,9 @@ def headers(supabase_url, assets=()):
 
 
 def main():
+    """Pour the app, the engine, supabase-js, the config and the data into the
+    template, stamp the build, and write dist/.
+    """
     if not os.path.exists(DATA):
         sys.exit("tracker/data.js is missing - run scripts/build_tracker_data.py")
     tpl = assemble(Path(TPL).read_text(encoding="utf-8"))

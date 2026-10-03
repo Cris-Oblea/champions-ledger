@@ -57,6 +57,7 @@ def _post(method, params, timeout=60):
 
 
 def rpc(method, params):
+    """Call Smogon's dex API, or None (printed) when it fails."""
     try:
         return _post(method, params, 60)
     except net.ERRORS as e:
@@ -182,10 +183,14 @@ def dex_texts(force=False):
 
 
 def is_vgc(fmt):
+    """Is this a VGC format? Singles analyses are kept out."""
     return bool(fmt) and fmt.strip().upper().startswith("VGC")
 
 
 def parse_moveset(ms):
+    """One Smogon set reduced to the fields kept: moves per slot, items,
+    abilities, natures, SP and the explanation.
+    """
     slots = []
     for slot in ms.get("moveslots") or []:
         opts = [m.get("move") for m in slot if isinstance(m, dict) and m.get("move")]
@@ -220,6 +225,9 @@ def _basics(force):
 
 
 def _write_basics(basics):
+    """Write smogon_basics.json: move flags, natures, types, items, abilities
+    and moves as Champions' dex has them.
+    """
     blob = {
         "source": "smogon.com/dex/champions",
         "fetched": time.strftime("%Y-%m-%d"),
@@ -248,6 +256,7 @@ def _pokemon_dump(alias, force):
 
 
 def _credits(st):
+    """The usernames credited for an analysis."""
     if not st.get("credits"):
         return []
     members = ((st.get("credits") or {}).get("teams") or [{}])[0].get("members", [])
@@ -275,6 +284,9 @@ def _vgc_strategies(data):
 
 
 def main():
+    """Fetch Champions' dex basics and texts, then each Pokemon's dump, and
+    write every VGC analysis to smogon_analyses.json.
+    """
     force = "--force" in sys.argv
     os.makedirs(CACHE, exist_ok=True)
     os.makedirs(META, exist_ok=True)

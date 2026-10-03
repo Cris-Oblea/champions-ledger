@@ -61,11 +61,13 @@ NEEDS = {
 
 
 def load(name):
+    """One data/db table."""
     with open(os.path.join(DB, name), encoding="utf-8") as f:
         return json.load(f)
 
 
 def rows(blob, key):
+    """A table's rows, whether it is a bare list or wrapped under `key`."""
     return blob if isinstance(blob, list) else (blob.get(key) or [])
 
 
@@ -96,6 +98,7 @@ def run(cases, chunk=120):
 
 
 def _attacker(cat):
+    """The probe attacker for a move category."""
     return ATK_PHYS if cat == "Physical" else ATK_SPEC
 
 
@@ -495,6 +498,7 @@ def _add_text_numbers(got):
 
 
 def _print_disagreements(known):
+    """Every entry where the engine's number and the text's number disagree."""
     disagree = [(n, v["notes"]) for n, v in known.items()
                 if any("engine says" in x for x in v["notes"])]
     if disagree:
@@ -506,6 +510,7 @@ def _print_disagreements(known):
 
 
 def _print_audit(got):
+    """Every entry that came out with no number, and why."""
     print("\nno number, and why:")
     for n in sorted(got):
         if got[n]["effects"] or got[n].get("text_numbers"):
@@ -516,6 +521,10 @@ def _print_audit(got):
 
 
 def main():
+    """Probe every item and ability through Smogon's engine, add the numbers
+    their text states, write effects.json, and report the disagreements
+    (--audit lists what got no number).
+    """
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--audit", action="store_true")
     a = ap.parse_args()

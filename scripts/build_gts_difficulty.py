@@ -48,6 +48,10 @@ DEMAND_WHY = {
 
 
 def main():
+    """Score how hard each species is to get by trade - the harder of demand
+    (ladder usage) and supply (researched sourcing) - and write
+    gts_difficulty.json (--show prints the table).
+    """
     show = "--show" in sys.argv
     src = json.loads(Path(SRC).read_text(encoding="utf-8"))
     seeded = src.get("species") or {}

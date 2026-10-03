@@ -54,6 +54,7 @@ FILES = [
 
 
 def digest(b):
+    """A short content hash."""
     return hashlib.sha256(b).hexdigest()[:16]
 
 
@@ -85,6 +86,10 @@ console.log(Object.keys(M).length+' moves, '+Object.keys(S).length+
 
 
 def main():
+    """Re-download every vendored calculator file and report which changed;
+    unless --check, store them and, when any changed, re-export the engine's
+    tables as JSON.
+    """
     ap = argparse.ArgumentParser()
     ap.add_argument("--check", action="store_true",
                     help="report what changed upstream, write nothing")

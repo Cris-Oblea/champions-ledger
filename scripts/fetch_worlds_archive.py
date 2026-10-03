@@ -71,10 +71,14 @@ def discover():
 
 
 def event_path(tid, div):
+    """Where one event's division is stored."""
     return os.path.join(META, "tournament_%s_%s.json" % (tid, div))
 
 
 def fetch_event(tid, div, force):
+    """Fetch one event's division through fetch_tournament.py, unless it is
+    cached.
+    """
     p = event_path(tid, div)
     if os.path.exists(p) and not force:
         return "cached"
@@ -174,6 +178,9 @@ def _event_record(ev, force):
 
 
 def main():
+    """Discover every World Championship on pokedata, fetch each division, and
+    write the archive with one merged row per year.
+    """
     ap = argparse.ArgumentParser()
     ap.add_argument("--force", action="store_true")
     a = ap.parse_args()

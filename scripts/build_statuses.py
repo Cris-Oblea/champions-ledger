@@ -42,6 +42,7 @@ OUT = os.path.join(DB, "statuses.json")
 
 
 def txt(s):
+    """HTML to plain text."""
     return " ".join(re.sub(r"<[^>]+>", " ", s).replace("&nbsp;", " ").split())
 
 
@@ -140,6 +141,9 @@ NOT_A_CAUSE = re.compile(
 
 
 def causes(text, word):
+    """Does this text inflict the status on a target (not cure it, not prevent
+    it)?
+    """
     for s in re.split(r"(?<=[.]) ", text):
         if NOT_A_CAUSE.search(s):
             continue
@@ -170,6 +174,9 @@ def status_moves():
 
 
 def main():
+    """Build statuses.json: each status's numbers with their source, and the
+    moves that inflict it.
+    """
     changes = serebii_changes()
     mods = dex.db("modifiers") or {}
     burn = (mods.get("status") or {}).get("Burn|physical")

@@ -118,6 +118,10 @@ def build():
     # Keyed, because upstream writes "Will-O-Wisp" and "will-o-wisp" and our
     # row is the one whose spelling must win - it is the one the rest of the
     # app looks moves up by.
+    """The payload for species Champions lacks: their movepools and the move
+    rows the app does not ship, Champions' own row always winning over
+    upstream's.
+    """
     champ_by_key = {dex.slug(m["name"]): m for m in dex.db("moves")}
     # WHAT EACH ONE DOES, from CHAMPIONS' OWN DEX only: Smogon's full
     # text where its Champions dex has the move, else Serebii's
@@ -166,6 +170,7 @@ def build():
 
 
 def main():
+    """Build and write the outside dex, and report what did not match."""
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--report", action="store_true")
     a = ap.parse_args()

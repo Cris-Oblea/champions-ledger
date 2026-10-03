@@ -84,6 +84,7 @@ def side_of(why):
 
 
 def clean(s):
+    """Collapse whitespace."""
     return " ".join((s or "").split())
 
 
@@ -112,6 +113,7 @@ STATUS = {k: (v.get("moves") or [])
 
 
 def _has(t, pat):
+    """Case-insensitive search."""
     return re.search(pat, t, re.I)
 
 
@@ -149,6 +151,7 @@ TYPE_RULES = [
 
 
 def _type_rule(t, props, dmg):
+    """An item that boosts one type: links every damaging move of that type."""
     for pat, why in TYPE_RULES:
         m = _has(t, pat)
         if m and m.group(1).capitalize() in dex.TYPES:
@@ -158,22 +161,28 @@ def _type_rule(t, props, dmg):
 
 
 def _attacks_where(key, value):
+    """A rule picking the damaging moves whose property `key` equals `value`.
+    """
     return lambda props, dmg: [n for n in dmg if props[n][key] == value]
 
 
 def _moves_where(key):
+    """A rule picking every move with property `key` set."""
     return lambda props, _dmg: [n for n, p in props.items() if p[key]]
 
 
 def _can_miss(props, _dmg):
+    """The moves that can miss."""
     return [n for n, p in props.items() if p["acc"] is not None and p["acc"] < 100]
 
 
 def _every_move(props, _dmg):
+    """Every move."""
     return sorted(props)
 
 
 def _every_attack(_props, dmg):
+    """Every damaging move."""
     return dmg
 
 
@@ -212,6 +221,9 @@ MOVE_RULES = [
 
 
 def _move_rule(t, props, dmg):
+    """The first MOVE_RULES pattern the item's text matches, as (moves,
+    abilities, why).
+    """
     for pat, pick, why in MOVE_RULES:
         if _has(t, pat):
             return pick(props, dmg), [], why
@@ -245,6 +257,7 @@ CURES = [("Paralysis", r"paralysis|paraly[sz]ed"),
 
 
 def _status_rule(t):
+    """A curing berry or item: links the moves that inflict what it cures."""
     if not _has(t, r"cure|thaw|free itself|shake off|lift the effects|status condition"):
         return None
     if _has(t, r"any status condition"):
@@ -324,6 +337,10 @@ def _reverse_index(items, key):
 
 
 def build():
+    """Link every held item and berry to the moves and abilities it serves,
+    through the field effect it names. Returns the items, both indexes, the
+    unlinked items with their reason, and who sets each effect.
+    """
     moves = dex.db("moves")
     abils = dex.db("abilities")
     props = (dex.db("ability_moves") or {}).get("moves") or {}
@@ -354,6 +371,9 @@ def build():
 
 
 def main():
+    """Build the links and write item_links.json; --report and --audit print
+    what linked and why the rest did not.
+    """
     ap = argparse.ArgumentParser()
     ap.add_argument("--report", action="store_true")
     ap.add_argument("--audit", action="store_true")

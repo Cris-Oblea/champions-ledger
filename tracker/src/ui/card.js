@@ -154,11 +154,15 @@ function megaSuffix(m, base){
   const sp = (base && (base.species || base.name)) || "";
   return String(m.name).replace("Mega ", "").replace(sp, "").trim();
 }
+/* The ink class a form is named in: amber for a battle form, blue/red/green
+   for Mega X/Y/Z, the plain Mega colour otherwise. */
 function formInk(m, base){
   if (m?.battle) return "mk-b";
   const k = megaSuffix(m, base).toUpperCase();
   return "mk-" + (k === "X" || k === "Y" || k === "Z" ? k.toLowerCase() : "m");
 }
+/* The short caption under a form's sprite: the battle form's name, else the
+   Mega's letter, else "mega". */
 function formKey(m, base){
   if (m?.battle) return m.battle.toLowerCase();
   return megaSuffix(m, base) || "mega";
@@ -473,6 +477,7 @@ function typeSkin(node, t, on){
   node.style.color = TYPE_INK[t] || "#FFFFFF";
   return node;
 }
+/* A type's name as a chip in that type's own colours. */
 function typeChip(t){ return typeSkin(el("span", "t", t), t); }
 /* ---------------------------------------------------------- the pictures ---
    TWO SETS, AND THE REASON IS RESOLUTION, NOT TASTE.
@@ -564,6 +569,9 @@ const NUMBER = /\d+(?:\.\d+)?(?:\/\d+)?(?:\s?[%×])?(?:\s(?:turns?|stages?)\b)?/
 /* the words that are numbers */
 const NUMBER_WORDS = /\b(?:halved|halves|doubled|doubles|quartered|tripled)\b/;
 const NUM_RE = new RegExp(NUMBER.source + "|" + NUMBER_WORDS.source, "g");
+/* Text with every number in it (a percentage, a fraction, a multiplier, a
+   count of turns) wrapped in <b class=num>, so a description's numbers are
+   marked in the sentence instead of repeated beside it. */
 function numText(text, tag, cls){
   const node = el(tag || "span", cls || null);
   const s = String(text == null ? "" : text);

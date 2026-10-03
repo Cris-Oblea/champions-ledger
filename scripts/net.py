@@ -35,6 +35,7 @@ def get(url, *, data=None, headers=None, timeout=60, min_size=0):
                                  headers={"User-Agent": UA, **(headers or {})})
 
     def once():
+        """One attempt; a body under min_size is an error page, not data."""
         with urllib.request.urlopen(req, timeout=timeout) as r:
             body = r.read()
         if len(body) < min_size:

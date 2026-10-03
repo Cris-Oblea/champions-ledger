@@ -74,6 +74,7 @@ def committed(rel):
 
 
 def current(rel):
+    """A file as it is on disk now, or None."""
     try:
         return json.load(open(os.path.join(ROOT, rel), encoding="utf-8"))
     except (OSError, ValueError):
@@ -92,6 +93,7 @@ def rows(blob, holder):
 
 
 def by_key(records, key):
+    """Index records by one field."""
     out = {}
     for r in records:
         if isinstance(r, dict) and r.get(key) is not None:
@@ -100,12 +102,14 @@ def by_key(records, key):
 
 
 def show(v):
+    """A value as one printable line."""
     if isinstance(v, (dict, list)):
         return json.dumps(v, ensure_ascii=False, sort_keys=True)
     return str(v)
 
 
 def names(v):
+    """A list field as a set (anything else as empty)."""
     return set(v) if isinstance(v, list) else set()
 
 
@@ -122,6 +126,9 @@ def _list_change(old, new):
 
 
 def table_diff(rel, holder, key, fields, listfield):
+    """Rows added, removed and changed (field by field, list fields as names in
+    and out) between the committed table and the one on disk.
+    """
     old, new = committed(rel), current(rel)
     if old is None or new is None:
         return {"file": rel, "unknown": True, "lines": []}
@@ -161,6 +168,7 @@ def learnset_diff():
 
 
 def report(limit=25):
+    """Every table's diff as text, at most `limit` lines each."""
     out = [table_diff(*t) for t in TABLES] + [learnset_diff()]
     text = []
     for t in out:
@@ -180,6 +188,7 @@ def report(limit=25):
 
 
 def main():
+    """Print what a rebuild changed against git."""
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--limit", type=int, default=25)
     print(report(ap.parse_args().limit))

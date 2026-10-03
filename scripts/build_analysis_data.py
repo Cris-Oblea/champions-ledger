@@ -32,6 +32,9 @@ OUT = os.path.join(ROOT, "tracker", "analysis.js")
 
 
 def main():
+    """Turn Smogon's analyses into the lazily loaded payload the Pokemon sheet
+    reads: per Pokemon, each format's overview, credits and sets.
+    """
     if not os.path.exists(SRC):
         sys.exit("no analyses yet - run scripts/fetch_smogon.py")
     blob = json.loads(Path(SRC).read_text(encoding="utf-8"))

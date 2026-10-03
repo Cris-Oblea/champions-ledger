@@ -32,6 +32,9 @@ STATUS = os.path.join(ROOT, "STATUS.md")
 
 
 def load(rel, key=None):
+    """A JSON file under the repo, optionally one key of it, or None when it
+    does not exist.
+    """
     p = os.path.join(ROOT, rel)
     if not os.path.exists(p):
         return None
@@ -171,6 +174,7 @@ WORDS = ("zero one two three four five six seven eight nine ten eleven twelve "
 
 
 def word(n):
+    """A small number as a word ("twelve"), larger ones as digits."""
     return WORDS[n] if n < len(WORDS) else str(n)
 
 
@@ -240,6 +244,9 @@ DOCS = {
 
 
 def render(text, blocks, what):
+    """Replace every generated block in a document; stop if a block's markers
+    are missing.
+    """
     for name, fn in blocks.items():
         pat = re.compile(r"(<!-- %s:START -->\n).*?(\n<!-- %s:END -->)"
                          % (name, name), re.S)
@@ -252,6 +259,9 @@ def render(text, blocks, what):
 
 
 def main():
+    """Regenerate the counted blocks in README.md and STATUS.md; --check only
+    reports what is stale and exits 1.
+    """
     ap = argparse.ArgumentParser()
     ap.add_argument("--check", action="store_true",
                     help="exit non-zero if a document is out of date")

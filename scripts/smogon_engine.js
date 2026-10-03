@@ -42,6 +42,7 @@ try {
 
 const gen = Generations.get(0);   // Champions is generation 0 in this bundle
 
+/* The cases to calculate, as JSON from a file or from stdin ("-"). */
 function readInput(arg) {
   if (arg === '-' || arg === undefined) {
     return JSON.parse(fs.readFileSync(0, 'utf8'));

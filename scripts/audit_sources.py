@@ -38,6 +38,7 @@ CAT = {"physical": "Physical", "special": "Special", "status": "Status"}
 
 
 def pokebase_moves():
+    """pokebase's numbers per move: category, BP, accuracy and PP."""
     out = {}
     for r in rows_with("moves", "name", "damageClass", "power", "accuracy", "pp"):
         out.setdefault(r["name"], {"cat": CAT.get(r["damageClass"]), "bp": r["power"],
@@ -64,6 +65,7 @@ def rescaled_pp(ours):
     with open(API, encoding="utf-8") as f:
         main = {r["identifier"]: r["pp"] for r in csv.DictReader(f)}
     def ident(n):
+        """A name as Smogon's calc spells its keys."""
         return re.sub(r"[^a-z0-9-]", "", n.lower().replace(" ", "-"))
     buckets = defaultdict(Counter)
     for m in ours:
@@ -98,6 +100,9 @@ def _move_pairs(m, p, s):
 
 
 def _print_move_report(ours, rows, gaps, agree):
+    """The move cross-check: how many agree, every disagreement with who
+    disagrees, and the PP rescale vote.
+    """
     print("MOVES - %d checked" % len(ours))
     print("  %d numbers agree across the sources" % agree)
     print("  %d disagree:" % len(rows))
@@ -122,6 +127,9 @@ def _print_move_report(ours, rows, gaps, agree):
 
 
 def check_moves():
+    """Compare every useable move's BP, accuracy and category across Serebii,
+    pokebase and Smogon's calc.
+    """
     ours = [m for m in dex.db("moves") if m.get("useable")]
     pb = pokebase_moves()
     sm = json.loads(Path(SMOG).read_text(encoding="utf-8")) if os.path.exists(SMOG) else {}
@@ -148,6 +156,7 @@ def check_moves():
 
 
 def check_items():
+    """How many items are priced, and by which source."""
     facts = (dex.db("item_facts") or {}).get("prices") or {}
     both = [(n, r) for n, r in facts.items() if r.get("vp")]
     src = {}
@@ -161,6 +170,7 @@ def check_items():
 
 
 def main():
+    """Run the move and item cross-checks."""
     check_moves()
     check_items()
     print("\nAbilities carry no numbers to cross-check - what they carry is "

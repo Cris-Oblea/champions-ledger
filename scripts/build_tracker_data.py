@@ -783,6 +783,8 @@ def item_for_move(links):
 
 
 def main():
+    """Assemble every table the app reads into tracker/data.js (window.CHAMP).
+    """
     mons = dex.db("pokemon")
     moves = dex.db("moves")
     items = dex.db("items")

@@ -142,6 +142,9 @@ function sweep(){
 
 
 def main():
+    """Build (unless --no-build), serve tracker/dist with the three-viewport
+    page, and open it.
+    """
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--no-build", action="store_true",
                     help="serve tracker/dist as it stands")

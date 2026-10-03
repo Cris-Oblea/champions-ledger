@@ -17,6 +17,7 @@ function el(tag, cls, txt){
 /* The one-line message at the bottom of the screen. Its time on screen
    grows with its length, so a long one can be read before it goes. */
 let toastT = null;
+/* A short message along the bottom, kept on screen longer the longer it is. */
 function toast(msg){
   const t = $("toast");
   t.textContent = msg;
@@ -56,6 +57,7 @@ function addClear(wrap, inp){
   clr.title = "Clear";
   clr.setAttribute("aria-label", "Clear the filter");
   wrap.appendChild(clr);
+  /* The clear button shows only while there is text to clear. */
   function paint(){ wrap.classList.toggle("has", !!inp.value); }
   /* WRAPS whatever handler is already on the field rather than replacing it.
      The seven boxes written straight into the markup are wired in boot.js,

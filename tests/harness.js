@@ -54,6 +54,8 @@ async function until(cond) {
   while (!cond() && Date.now() < end) await new Promise(r => setTimeout(r, 10));
 }
 
+/* The built page as one HTML string, with each hashed script inlined back so
+   jsdom runs it without a server. */
 function page() {
   const dist = path.join(ROOT, "tracker", "dist");
   let html = fs.readFileSync(path.join(dist, "index.html"), "utf8");
@@ -124,6 +126,7 @@ function styles() {
     .map(m => fs.readFileSync(path.join(dir, m[1]), "utf8")).join("");
 }
 
+/* The markup as written: markup/index.html with every include expanded. */
 function markup() {
   const dir = path.join(ROOT, "tracker", "src", "markup");
   /* twice: the fragments, then the parts/ pieces the fragments include */

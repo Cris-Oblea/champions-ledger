@@ -54,6 +54,7 @@ const FIND_STATS = [["bst","BST"],["hp","HP"],["atk","Atk"],["def","Def"],
 function statOf(p, key){
   return key === "bst" ? bst(p) : p.b[STAT_KEYS.indexOf(key)];
 }
+/* A stat's column caption, BST included. */
 function statLabel(key){
   return key === "bst" ? "BST" : STAT_LABEL[key];
 }
@@ -63,6 +64,7 @@ function statLabel(key){
 function findDraw(){
   const host = $("findChips");
   host.innerHTML = "";
+  /* One active filter, drawn as a chip that removes it when tapped. */
   function chip(label, onClear, cls, title){
     const t = el("button", "tog " + (cls || ""), label);
     setPressed(t, true);

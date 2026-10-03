@@ -69,6 +69,8 @@ const EDITOR_HOME = {buildedit: "builds", teamedit: "builds"};
    here - boot.js: onShow("calc", calcDraw) - so navigation never imports
    the tabs it switches between. */
 const ON_SHOW = {};
+/* Register what a tab redraws when it is shown. boot.js calls this, so
+   navigation imports no tab. */
 function onShow(tab, fn){ ON_SHOW[tab] = fn; }
 
 /* Show one view (a tab or an editor), hide the rest, light its tab. */
@@ -133,6 +135,8 @@ function openEditor(view, title, build, foot){
    exact scroll position after. A counter, not a boolean, because a sheet may
    close and reopen itself while a dialog sits over it. */
 let _lockY = 0, _lockN = 0;
+/* Freeze the page behind a sheet or dialog. Locks nest (a confirm over a
+   sheet), and the scroll position comes back when the last one lifts. */
 function lockScroll(on){
   const b = document.body;
   if (on) {
@@ -168,6 +172,8 @@ function openSheet(title, build, foot){
   /* a sheet that opens scrolled halfway down its predecessor is disorienting */
   body.scrollTop = 0;
 }
+/* Close the bottom sheet, releasing its scroll lock and the history entry it
+   took. */
 function closeSheet(){
   const wasOpen = !$("scrim").hidden;
   $("scrim").hidden = true;
@@ -210,6 +216,8 @@ function ask(title, body, okLabel, danger){
     yes.textContent = okLabel || "OK";
     yes.className = "btn " + (danger ? "danger" : "primary");
     let done = false;
+    /* Close the dialog and answer the promise, once - Escape, a tap outside
+       and a button can all race to get here. */
     function finish(v){
       if (done) return;
       done = true;
@@ -221,6 +229,8 @@ function ask(title, body, okLabel, danger){
       if ($("scrim").hidden) lockScroll(false);
       resolve(v);
     }
+    /* Escape answers no; Enter answers yes only while the confirm button has
+       focus. */
     function onKey(e){
       if (e.key === "Escape") { e.stopPropagation(); finish(false); }
       else if (e.key === "Enter" && document.activeElement === yes) finish(true);
@@ -273,6 +283,8 @@ function layerOpened(){
   LAYERS++;
   try { history.pushState({champLayer: LAYERS}, ""); } catch (e) {}
 }
+/* A layer the UI closed (not Back): drop the history entry it pushed, and
+   swallow the popstate that causes. */
 function layerClosed(){
   if (LAYERS <= 0 || NAV_BACK) return;
   LAYERS--; SWALLOW++;

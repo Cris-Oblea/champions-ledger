@@ -25,6 +25,7 @@ from serebii_text import read
 
 
 def load_basics():
+    """Smogon's basics dump, or stop if it has not been fetched."""
     p = os.path.join(DB, "smogon_basics.json")
     if not os.path.exists(p):
         sys.exit("missing %s - run scripts/fetch_smogon.py first" % p)
@@ -42,6 +43,7 @@ def build_chart(basics):
 
 
 def build_natures(basics):
+    """The Champions natures: which stat each raises and lowers."""
     out = {}
     for n in basics.get("natures") or []:
         if "Champions" not in (n.get("genfamily") or []):
@@ -121,6 +123,9 @@ def verify(chart, weak):
 
 
 def main():
+    """Write typechart.json and natures.json from Smogon's basics, then
+    cross-check the chart against Serebii's weakness tables.
+    """
     basics = load_basics()
     chart = build_chart(basics)
     natures = build_natures(basics)

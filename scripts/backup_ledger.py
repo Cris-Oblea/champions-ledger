@@ -146,6 +146,7 @@ def digest(tables):
 
 
 def read_snapshot(path):
+    """Load a snapshot and stop if its checksum does not match its tables."""
     d = json.loads(Path(path).read_text(encoding="utf-8"))
     got = digest(d["tables"])
     if got != d.get("_sha256"):
@@ -155,6 +156,7 @@ def read_snapshot(path):
 
 
 def snapshots(d):
+    """Every snapshot file in a directory, oldest first."""
     if not os.path.isdir(d):
         return []
     return sorted(os.path.join(d, f) for f in os.listdir(d)
@@ -285,6 +287,7 @@ def diff(table, want, live):
 
 
 def quote(s):
+    """A value as a SQL string literal."""
     return "'" + str(s).replace("'", "''") + "'"
 
 
@@ -330,6 +333,7 @@ def _restore_plan(snap):
 
 
 def _run_or_stop(statement, failure):
+    """Run one SQL statement and stop with `failure` if it fails."""
     ok, out = sql(statement)
     if not ok:
         print(out.strip()[-500:])
@@ -350,6 +354,9 @@ def _restore_table(t, work, gone):
 
 
 def restore(a):
+    """Show what restoring a snapshot would change; with --confirm, write it
+    (rows the snapshot lacks are deleted unless --keep-extra).
+    """
     snap = read_snapshot(a.restore)
     print("snapshot %s, taken %s"
           % (os.path.basename(a.restore), snap.get("_taken_at", "?")))
@@ -466,6 +473,9 @@ def check(a):
 
 
 def main():
+    """Dispatch: --list, --selftest, --check, --verify, --restore, or (by
+    default) take a snapshot.
+    """
     ap = argparse.ArgumentParser(
         description=__doc__,
         formatter_class=argparse.RawDescriptionHelpFormatter)

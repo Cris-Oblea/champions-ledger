@@ -335,6 +335,7 @@ def digest(rel):
 
 
 def snapshot():
+    """A digest of every watched file, so the run can say what it changed."""
     return {k: digest(rel) for k, rel, _ in WATCH}
 
 
@@ -446,6 +447,7 @@ def sh(argv, cwd=ROOT):
 
 
 def _parser():
+    """The gate's command line."""
     ap = argparse.ArgumentParser()
     ap.add_argument("--install-hooks", action="store_true",
                     help="point core.hooksPath at scripts/hooks, so the "
@@ -694,6 +696,11 @@ def _deploy(a, gate_ok, changed, out):
 
 
 def main():
+    """One run: refresh the sources (or rebuild from what is committed with
+    --no-refresh), report what changed, run the gate, and deploy when the
+    gate passed and something moved. Exit 0 only when the gate passed and
+    any wanted deploy landed.
+    """
     a = _parser().parse_args()
     rc = _setup(a)
     if rc is not None:

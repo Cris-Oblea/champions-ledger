@@ -71,10 +71,14 @@ def score(t):
 
 
 def clean(s):
+    """Collapse whitespace."""
     return " ".join((s or "").split())
 
 
 def merge(rows, pb, label):
+    """Pick the more concrete of Serebii's and pokebase's text per entry,
+    keeping both and counting who won.
+    """
     out, wins = {}, {"serebii": 0, "pokebase": 0, "only serebii": 0,
                      "only pokebase": 0}
     diffs = []
@@ -118,6 +122,9 @@ LEVEL = 50
 
 
 def augment(m, text, base_crit):
+    """Add the number a sentence leaves as a word: a high-crit move's rate
+    beside "higher chance for a critical hit".
+    """
     crit = (m.get("crit_rate") or "").strip()
     if crit and crit not in ("None", base_crit, "100%") and             "higher chance for a critical hit" in text and crit not in text:
         text = text.replace(
@@ -225,6 +232,9 @@ def smogon_abilities(ab):
 
 
 def main():
+    """Build text_facts.json for moves and abilities, and report where the two
+    sources disagree.
+    """
     ap = argparse.ArgumentParser()
     ap.add_argument("--report", action="store_true")
     ap.add_argument("--show", type=int, default=12)

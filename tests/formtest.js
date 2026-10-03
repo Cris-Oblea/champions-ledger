@@ -20,6 +20,7 @@ const { check, open, idle } = require("./harness.js");
 const { dom, errs } = open();
 const w = dom.window, d = w.document;
 
+/* Search the Find tab for one Pokemon and return its card. */
 function card(name){
   w.go("find");
   const inp = d.getElementById("findName");

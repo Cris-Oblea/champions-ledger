@@ -7,8 +7,8 @@ const blank = () => ({sp:{hp:0,atk:32,def:0,spa:32,spd:0,spe:0},
                       boost:{atk:0,def:0,spa:0,spd:0,spe:0},nature:null,
                       ability:null,item:null,status:null,curHP:null,buildId:null});
 function range(status, move){
-  /* only the two sides and the move: every field switch stays at the
-     page's own default, off */
+  /* Garchomp's range on Kingambit, as "lo-hi", with only the attacker's
+     status set: every field switch stays at the page's own default, off */
   Object.assign(w.CALC, {
     atk: Object.assign(blank(), {name:"Garchomp", status}),
     def: Object.assign(blank(), {name:"Kingambit"}),

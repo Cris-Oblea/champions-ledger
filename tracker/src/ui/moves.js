@@ -193,6 +193,9 @@ function spreadNote(m){
    that never misses (no accuracy) counts as 100. */
 function moveScore(m){ return (m.bp || 0) * Math.min(100, m.acc || 100) / 100; }
 
+/* A move list with its search box, its sort and its three-state chips;
+   `rowFor` draws each row. The build editor's picker and Find's "+ Move" both
+   use it, so one question is asked one way. */
 function moveFilters(body, pool, rowFor, placeholder, opts){
   /* `usageOf` is a Pokemon name: it turns "rank the movepool by raw power"
      into "rank it by what its players actually bring". Only a caller with one
@@ -242,6 +245,8 @@ function moveFilters(body, pool, rowFor, placeholder, opts){
   const list = el("div", "list");
   body.appendChild(list);
 
+  /* Filter, sort, count and draw. At most `cap` rows are written, and the
+     count line says when that cut any. */
   function draw(){
     const q = inp.q();
     const hits = pool.filter(function(m){ return movePasses(m, q, st.F); });

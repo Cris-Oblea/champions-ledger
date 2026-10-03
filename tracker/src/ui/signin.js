@@ -15,6 +15,8 @@ function connect(){
    The gate is not decoration: until there is a session the app has no rows to
    show, because the server refuses to send any. */
 let SB = null;
+/* Create the client, restore the session or show the sign-in gate, and reload
+   on sign-out so no ledger stays on screen. */
 function connectSupabase(cfg){
   SB = window.supabase.createClient(cfg.url, cfg.key);
   $("gateEmail").value = cfg.email || "";

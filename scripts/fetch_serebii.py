@@ -72,6 +72,7 @@ def fetch_many(items, workers=5, force=False):
     that went to the network waits 0.12 s before its next page, so the
     pool never hammers Serebii. Progress is counted here, in one thread."""
     def one(item):
+        """Fetch one page, pausing a moment after a real download."""
         ok, cached = get(*item, force=force)
         if not cached:
             time.sleep(0.12)
@@ -97,12 +98,15 @@ FORCE = False
 
 
 def cmd_list():
+    """Step 1: the list of Pokemon available in Champions (always re-fetched).
+    """
     print("[1/4] Available Pokemon list")
     get(BASE + "/pokemonchampions/pokemon.shtml",
         os.path.join(RAW, "pages", "pokemon.html"), force=True)
 
 
 def cmd_pages():
+    """Step 2: the rules and mechanics pages."""
     print("[2/4] Rules and mechanics pages")
     items = [(BASE + "/pokemonchampions/%s.shtml" % p,
               os.path.join(RAW, "pages", "%s.html" % p)) for p in STATIC_PAGES]
@@ -110,6 +114,7 @@ def cmd_pages():
 
 
 def slugs_from_list():
+    """Every Pokemon page the list links to."""
     p = os.path.join(RAW, "pages", "pokemon.html")
     if not os.path.exists(p):
         cmd_list()
@@ -118,6 +123,7 @@ def slugs_from_list():
 
 
 def cmd_pokedex():
+    """Step 3: one page per Pokemon."""
     slugs = slugs_from_list()
     print("[3/4] Pokemon pages: %d" % len(slugs))
     items = [(BASE + "/pokedex-champions/%s/" % s,
@@ -126,6 +132,9 @@ def cmd_pokedex():
 
 
 def move_slugs():
+    """Every move page the attackdex index links to, minus the index pages for
+    types and categories.
+    """
     p = os.path.join(RAW, "pages", "attackdex_index.html")
     get(BASE + "/attackdex-champions/", p, force=FORCE)
     s = read(p)
@@ -140,6 +149,7 @@ def move_slugs():
 
 
 def cmd_attackdex():
+    """Step 4: one page per move."""
     slugs = move_slugs()
     print("[4/4] Move pages: %d" % len(slugs))
     items = [(BASE + "/attackdex-champions/%s.shtml" % s,

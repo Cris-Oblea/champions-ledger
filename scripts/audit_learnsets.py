@@ -70,6 +70,8 @@ KNOWN_UPSTREAM = {                   # upstream lists it, we do not
 
 
 def upstream(force=False):
+    """PokeAPI's Champions movepools: {species identifier: {move identifier}}.
+    """
     with open(fetch_home_dex.csv_path("pokemon.csv", force), encoding="utf-8") as fh:
         by_id = {r["id"]: r["identifier"] for r in csv.DictReader(fh)}
     with open(fetch_home_dex.csv_path("moves.csv", force), encoding="utf-8") as fh:
@@ -99,6 +101,10 @@ def _sort_out(name, moves, known_map, side, show):
 
 
 def main():
+    """Pair every movepool with PokeAPI's and report each disagreement nobody
+    has settled yet (--list shows the settled ones too). Exits 1 on a new
+    one.
+    """
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--force", action="store_true")
     ap.add_argument("--list", action="store_true",

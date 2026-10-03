@@ -177,6 +177,8 @@ function itemRow(r, have){
    ticket, something the account starts with. Neither is turned into a
    number. */
 function priceLabel(vp, src){ return vp ? vp + " VP" : priceless(src); }
+/* Where an item with no VP price comes from, with Serebii's "Shop" and "???
+   VP" stripped off; "not sold" when nothing is left. */
 function priceless(src){
   const s = (src || "").replace(/^Shop\s*/, "").replace(/\?\?\?\s*VP/, "").trim();
   if (!s || s === "-") return "not sold";

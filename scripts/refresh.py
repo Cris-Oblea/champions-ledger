@@ -202,6 +202,7 @@ def stages(reg, deep=False):
 
 
 def run(st):
+    """Run one stage as its own process, timed; True when it succeeded."""
     print("\n=== %s" % st.label)
     t0 = time.time()
     r = subprocess.run([PY] + st.argv, cwd=ROOT, check=False)
@@ -211,6 +212,7 @@ def run(st):
     return ok
 
 def _parser():
+    """The refresh's command line."""
     ap = argparse.ArgumentParser(
         description=__doc__,
         formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -307,6 +309,9 @@ def _record_regulation():
 
 
 def main():
+    """Run every stage in order (only the app's with --tracker-only), switching
+    to --regulation by itself when a new regulation is live.
+    """
     a = _parser().parse_args()
 
     if a.tracker_only:

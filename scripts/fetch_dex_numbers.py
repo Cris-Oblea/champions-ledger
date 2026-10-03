@@ -33,6 +33,7 @@ URL = "https://pokeapi.co/api/v2/pokemon-species?limit=2000"
 
 
 def fetch(force=False):
+    """PokeAPI's species list, from the cache unless forced."""
     if os.path.exists(SPECIES_CACHE) and not force:
         return json.loads(Path(SPECIES_CACHE).read_text(encoding="utf-8"))
     data = json.loads(net.get(URL))
@@ -65,12 +66,16 @@ def _strip_form(name):
 
 
 def _number_of(name, lookup):
+    """A form's National Dex number: its own name first, then with the form
+    stripped.
+    """
     clean = name.replace("Mega ", "")
     return next((lookup[p] for p in (_key(clean), _key(_strip_form(clean)))
                  if p in lookup), None)
 
 
 def _report(nums, resolved, missing, mons):
+    """How many names got a number, and the Champions forms that did not."""
     print("%d species from PokeAPI" % len(nums))
     print("wrote %s  -  %d names resolved, %d without a number"
           % (OUT, len(resolved), len(missing)))
@@ -83,6 +88,7 @@ def _report(nums, resolved, missing, mons):
 
 
 def main():
+    """Give every form in the dex its National Dex number and write it out."""
     ap = argparse.ArgumentParser()
     ap.add_argument("--force", action="store_true")
     a = ap.parse_args()
