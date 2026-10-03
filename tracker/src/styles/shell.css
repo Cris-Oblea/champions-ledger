@@ -54,8 +54,8 @@ main{max-width:820px;margin:0 auto;
 
 /* The collapse control only has something to collapse in the >=900px rail
    layout. Below that the menu is a fixed bottom bar and the button did
-   nothing at all - "practicamente esta de adorno" (player, 2026-09-11). The
-   layout already adapts on its own, so the button simply should not be there.
+   nothing at all. The layout already adapts on its own, so the button simply
+   should not be there.
    Hidden, not removed: it is still the right control on a desktop. */
 #railBtn{display:none}
 @media (min-width:900px){ #railBtn{display:grid} }
@@ -109,7 +109,7 @@ div.tabs button:active{background:var(--sunk)}
 }
 
 /* ---------- the desktop workspace ----------------------------------------
-   MEASURED BEFORE IT WAS CHANGED, on the deployed build at 2026-09-16:
+   MEASURED BEFORE IT WAS CHANGED, on the deployed build:
 
      Find   @1920   43% of the width used,  445px dead,  19.1 screens tall
      Items  @1920   29% of the width used,  578px dead,   6.7 screens

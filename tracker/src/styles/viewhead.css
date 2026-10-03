@@ -24,7 +24,7 @@ h2 .n{font-family:var(--mono);color:var(--faint);font-weight:500;letter-spacing:
 .lede{color:var(--muted);font-size:13.5px;margin:2px 0 0;max-width:60ch}
 /* The action used to be a flex item after a spacer, so as soon as the lede
    filled the line it wrapped onto a row of its own - a whole empty band above
-   the content on every phone (seen 2026-09-11). As a grid, the title block
+   the content on every phone. As a grid, the title block
    takes column 1 and the action sits in column 2 beside the H1, where it
    belongs, and the lede flows full width underneath it. */
 .viewhead{display:grid;grid-template-columns:minmax(0,1fr) auto;

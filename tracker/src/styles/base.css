@@ -6,8 +6,8 @@ fieldset{margin:0;padding:0;border:0;min-inline-size:0}
 dialog{position:static;inset:auto;margin:0;padding:0;border:0;color:inherit;
   width:auto;height:auto;max-width:none;max-height:none}
 /* ---------- reads as an installed app, not a page ------------------------
-   Measured on the deployed build 2026-09-11: the tap flash, the rubber-band
-   scroll and the 300ms double-tap delay are all browser defaults that a
+   The tap flash, the rubber-band scroll and the 300ms double-tap delay are
+   all browser defaults that a
    native app does not have, and each one is one line to turn off. */
 html{-webkit-tap-highlight-color:transparent}
 body{background:var(--ground);color:var(--text);font-family:var(--sans);

@@ -5,16 +5,11 @@
   text-align:right}
 /* diagnostics values are long strings (URLs, errors), not numbers */
 .kv.diag dd{text-align:left;overflow-wrap:anywhere;font-size:11.5px}
-/* SIX COLUMNS, because there are six stats. It said seven, so every stat grid
-   in the app has been drawing an empty seventh cell and squeezing the real
-   ones to fit. */
-/* minmax(0,1fr), NOT 1fr. A grid track's default minimum is its content,
-   so `repeat(6,1fr)` is only equal columns while nothing inside is wider
-   than its share - and a two-Mega stat cell is. Garchomp's line measured
-   301px inside a 264px card and the Speed column hung off the right edge
-   (player, 2026-09-20: "no se alcanza ver la stat de speed en el
-   garchomp... en la card"). With a zero minimum the six always fit and
-   the cell's own content is what adapts. */
+/* THE STAT TABLE: six columns, one per stat. minmax(0,1fr), NOT 1fr: a grid
+   track's default minimum is its content, so `repeat(6,1fr)` is only equal
+   while nothing inside is wider than its share - and a cell carrying two
+   Megas' deltas is, which pushed the Speed column off the card's edge. With
+   a zero minimum the six always fit and the cell's content adapts. */
 .statline{display:grid;grid-template-columns:repeat(6,minmax(0,1fr));
   gap:5px;margin-top:8px}
 .statline div{min-width:0;text-align:center;background:var(--sunk);
