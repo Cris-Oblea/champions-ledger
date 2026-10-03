@@ -135,7 +135,8 @@ function analysisPanel(name, host){
     if (!got?.length) {
       host.appendChild(el("div", "st", !ready
         ? "Smogon's analyses are not in this build."
-        : "Smogon has not written one for " + name + " - 54 Pokemon have one."));
+        : "Smogon has not written one for " + name + " - " +
+          Object.keys(window.CHAMP_ANALYSIS).length + " Pokemon have one."));
       return;
     }
     /* EVERY VGC FORMAT SMOGON HAS, NEWEST FIRST, and the panel lists them, so
