@@ -1,0 +1,26 @@
+# Dependabot's pull requests merge themselves once the gate passes.
+#
+# Every tool of this project runs its newest release (player, 2026-10-03:
+# "todas las dependencias y herramientas del proyecto se encuentren siempre en
+# su ultima version"). Dependabot opens the bump; this turns on auto-merge, so
+# GitHub merges it the moment `gate` is green and never when it is red. main
+# requires a branch to be up to date, and Dependabot rebases its own pull
+# request when main moves, so nothing has to update it by hand.
+
+name: dependabot auto-merge
+
+on: pull_request
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  automerge:
+    if: github.event.pull_request.user.login == 'dependabot[bot]'
+    runs-on: ubuntu-latest
+    steps:
+      - run: gh pr merge --auto --merge "$PR"
+        env:
+          PR: ${{ github.event.pull_request.html_url }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

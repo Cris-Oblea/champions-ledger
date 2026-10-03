@@ -33,5 +33,12 @@
   // The scripts import each other by bare name (`import dex`), which
   // works because Python puts the script's own folder on the path. Pylance
   // has to be told, or every such import reads as unresolved.
-  "python.analysis.extraPaths": ["scripts"]
+  "python.analysis.extraPaths": ["scripts"],
+  // The tests are tests/*test.js (burntest.js, not burn.test.js), the same
+  // glob `npm test` passes to node --test; the runner's default would miss
+  // every one of them.
+  "nodejs-testing.include": ["./tests"],
+  "nodejs-testing.extensions": [
+    {"extensions": ["js"], "filePatterns": ["**/*test.js"], "parameters": []}
+  ]
 }

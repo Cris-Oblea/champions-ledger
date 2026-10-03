@@ -1,17 +1,33 @@
 {
+  // One extension per tool the project is assembled with, so opening the repo
+  // offers everything. Tools with no extension run in the gate only (jscpd,
+  // vulture, esbuild); Claude Code plugins (ponytail, graphify) live in
+  // Claude Code, not here.
   "recommendations": [
+    // Linters: the exact checks the gate runs (see settings.json)
+    "dbaeumer.vscode-eslint",
+    "stylelint.vscode-stylelint",
+    "html-validate.vscode-html-validate",
+    "charliermarsh.ruff",
+    "webpro.vscode-knip",
+    // Languages and config files
+    "ms-python.python",
+    "tamasfe.even-better-toml",
+    "redhat.vscode-yaml",
     "bierner.markdown-mermaid",
     "streetsidesoftware.code-spell-checker",
+    // Tests: node:test, the runner of tests/*test.js
+    "connor4312.nodejs-testing",
+    // GitHub: pull requests, workflows, history
     "github.vscode-pull-request-github",
     "github.vscode-github-actions",
     "eamodio.gitlens",
     "usernamehw.errorlens",
-    "stylelint.vscode-stylelint",
-    "html-validate.vscode-html-validate",
-    "dbaeumer.vscode-eslint",
-    "charliermarsh.ruff",
-    "ms-python.python",
+    // The ledger: Supabase, and its Postgres for ad-hoc queries
+    "supabase.vscode-supabase-extension",
     "mtxr.sqltools",
-    "mtxr.sqltools-driver-pg"
+    "mtxr.sqltools-driver-pg",
+    // Claude Code
+    "anthropic.claude-code"
   ]
 }

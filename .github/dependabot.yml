@@ -10,14 +10,20 @@
 # It matters more than usual here because the actions are pinned to commit SHAs.
 # A pin with nobody watching it is a version frozen for ever; Dependabot is the
 # half that moves it, and it rewrites the SHA and the `# v7` comment together.
+#
+# DAILY, and merged by itself once the gate passes (workflows/dependabot.yml):
+# every tool of this project runs its newest release (player, 2026-10-03), and
+# the gate on the pull request is what makes a bump safe to take unattended.
+# The pins stay, so CI and a laptop run the same version; this keeps them new.
+# What it cannot see floats instead: Node and Python in the workflows, and the
+# Supabase CLI in backup.yml.
 version: 2
 updates:
   - package-ecosystem: "github-actions"
     directory: "/"
     schedule:
-      interval: "weekly"
-    # This repo takes pull requests only, so a batch of them is a batch of gate
-    # runs. One a week, grouped, is plenty for three workflows.
+      interval: "daily"
+    # Grouped: one pull request, one gate run, for every action at once.
     groups:
       actions:
         patterns: ["*"]
@@ -25,12 +31,23 @@ updates:
   - package-ecosystem: "npm"
     directory: "/"
     schedule:
-      interval: "weekly"
+      interval: "daily"
     # Two kinds of package live here. jsdom (with esbuild and ESLint) is tooling:
     # the browser tests in the gate all run under it, and a jsdom that moves
     # unannounced is a gate that fails one morning for a reason nobody changed.
     # supabase-js is not tooling - build_tracker_page.py inlines it from
-    # node_modules into the page, so merging its bump deploys it.
+    # node_modules into the page. Its bump reaches the phone on the next push
+    # to main (the nightly's, at the latest): a merge made with GITHUB_TOKEN
+    # starts no workflow, so the auto-merge itself does not deploy.
     groups:
       npm:
+        patterns: ["*"]
+
+  # requirements.txt: ruff and vulture, the two Python checks in the gate.
+  - package-ecosystem: "pip"
+    directory: "/"
+    schedule:
+      interval: "daily"
+    groups:
+      pip:
         patterns: ["*"]
