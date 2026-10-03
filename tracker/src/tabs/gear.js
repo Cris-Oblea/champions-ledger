@@ -1,8 +1,9 @@
-/* The Items tab: Mega Stones, held items and the status reference.
+/* The Items tab: which Mega Stones and held items he OWNS, what each does
+   and costs, and the status reference.
 
-   setItem is the only write for an item, which is what keeps the Item
-   Clause honest: the team picker greys out what another slot holds, and
-   that is only true if nothing else can set one. */
+   Owning is all this tab records: toggleStone and setItem are the only
+   writes to the stones and items tables. Which item a Pokemon HOLDS is a
+   team decision (the Item Clause), set on a team slot in tabs/teams.js. */
 import { byName, C } from "../core/data.js";
 import { $, el, toast } from "../core/dom.js";
 import {
@@ -12,6 +13,8 @@ import { drop, put } from "../core/store.js";
 import { effectLine, numText, pokeFacts } from "../ui/card.js";
 
 /* ====================================================================== gear */
+/* The stones pane: owned and not owned, each row the Mega it creates, and a
+   note naming any owned stone whose species is not in the box. */
 function drawStones(){
   const q = ($("stoneSearch").value || "").trim().toLowerCase();
   const own = ownedNames();
@@ -31,11 +34,9 @@ function drawStones(){
     m.appendChild(h);
     const mp = byName[mega];
     if (mp) {
-      /* THE MEGA'S OWN FACTS, drawn by the same function as every card and
-         the sheet. A stone row is ABOUT a Pokemon - the one the stone
-         creates - and it was the last place still writing its own BST cell
-         and ability cell, with no stat table at all. Which is the question
-         this screen exists to answer: is this 2000 VP worth it. */
+      /* THE MEGA'S OWN FACTS, drawn by the same function as every card: a
+         stone row is ABOUT the Pokemon it creates, and "is this 2000 VP
+         worth it" is answered by that Pokemon's numbers. */
       pokeFacts(m, mp, [], {
         dex: false,
         abLabel: "Mega ability",
@@ -67,11 +68,9 @@ function drawStones(){
       "dead weight until it arrives: " + dead.join(", ") + "."
      : "Every stone you own has its species in the box.");
 }
-/* One row, one stone (migration 6). This used to rewrite the entire owned
-   list from this device's copy of it, so a stone marked on the other device
-   while this one was asleep was quietly dropped on the next toggle. Now
-   marking is an insert of that stone and unmarking a delete of it, and no
-   other stone is touched by either. */
+/* One row, one stone (migration 6): marking is an insert of that stone and
+   unmarking a delete of it, and no other stone is touched by either - so a
+   device that was asleep can never drop a stone marked on another. */
 function toggleStone(stone){
   const have = hasStone(stone);
   (have ? drop("stones/" + stone) : put("stones/" + stone, {}))
@@ -83,23 +82,15 @@ function toggleStone(stone){
 /* Items, the way the game groups them: Hold Items, Berries, Miscellaneous -
    the three tables Serebii lays the page out with, which is where the
    categories come from rather than a set invented here. Mega Stones are the
-   fourth and keep their own pane.
-
-   This used to be two rows of toggle buttons: the ones you own, and a search
-   that asked prompt() for a made-up "shop category" before it would record
-   anything. You could see 118 item NAMES and never what any of them did. It
-   reads like the stone list now - a row per item, what it does, what it
-   costs, and whether you have it. */
-
+   fourth and keep their own pane. A row per item: what it does, what it
+   costs, and whether he has it. */
 const ITEM_CATS = ["Hold Items", "Berries", "Miscellaneous"];
 
+/* The items pane, by category, owned first. */
 function drawItems(){
-  /* No activeElement guard here. The old pane kept its search box INSIDE this
-     container, so a redraw mid-keystroke would have stolen focus and one was
-     needed. The rows are buttons now: clicking one leaves it focused inside
-     the container, so that same guard swallowed the redraw and an item you
-     had just ticked did not change until you left the tab. The search box
-     lives outside the container now, so nothing here needs protecting. */
+  /* No activeElement guard: the search box lives OUTSIDE this container, so
+     a redraw cannot steal its focus - and a guard would swallow the redraw
+     after a row (a button inside the container) is tapped. */
   const pane = $("itemCats");
   pane.innerHTML = "";
   const q = ($("itemSearch")?.value || "").trim().toLowerCase();
@@ -118,8 +109,7 @@ function drawItems(){
     const h = el("h2", null, cat + " ");
     h.appendChild(el("span", "n", have + "/" + hits.length));
     pane.appendChild(h);
-    /* Items are a list you PICK FROM, 118 of them: a grid is the shape of
-       that, not a column six screens long. */
+    /* a list you PICK FROM: a grid, not a column several screens long */
     const list = el("div", "list cards");
     /* owned first, then by name - the same order the stone list reads in */
     hits.sort(function(x, y){
@@ -137,6 +127,7 @@ function drawItems(){
     "part of a build.";
 }
 
+/* One item: what it does, what it is for, and its price or "owned". */
 function itemRow(r, have){
   const name = r[0], vp = r[1], effect = r[3] || "", src = r[4] || "",
       from = r[5] || "";
@@ -151,9 +142,8 @@ function itemRow(r, have){
   m.appendChild(h);
   if (effect) m.appendChild(numText(effect, "div", "st"));
   /* The description is Smogon's Champions text and states its own numbers,
-     marked in colour - Leftovers' 1/16 is in the sentence now, not in a chip
-     beside it. This line only appears when the engine measured something the
-     sentence does NOT say (effect_chips.py rule 6), which today is nothing. */
+     marked in colour. This line only appears when the engine measured
+     something the sentence does NOT say (effect_chips.py rule 6). */
   const num = effectLine(name);
   if (num) m.appendChild(num);
   /* what this item is FOR: the move and the ability it serves, together.
@@ -181,24 +171,23 @@ function itemRow(r, have){
   row.onclick = function(){ setItem(name, !have); };
   return row;
 }
-/* Serebii prints "??? VP" for a shop item whose price it does not have, and
-   a plain source for anything that is not sold. Neither is a price, and
-   neither gets turned into one here. */
-/* Only reached when neither source has a price, which now means the item is
-   not sold at all: a reward, a ticket, or something the account starts with.
-   The slot says which, rather than pretending there is a number. */
+/* The price, or - when no source has one - where the item comes from
+   instead. Serebii prints "??? VP" for a shop price it does not know (pokebase
+   fills those in) and a plain source for anything not sold: a reward, a
+   ticket, something the account starts with. Neither is turned into a
+   number. */
 function priceLabel(vp, src){ return vp ? vp + " VP" : priceless(src); }
 function priceless(src){
   const s = (src || "").replace(/^Shop\s*/, "").replace(/\?\?\?\s*VP/, "").trim();
   if (!s || s === "-") return "not sold";
-  /* Not truncated. 24 characters cut "Received from ..." mid-word, and where
-     an item comes from is the whole content of this line. */
+  /* Not truncated: where an item comes from is the whole content of this
+     line. */
   return s;
 }
 
 /* ------------------------------------------------------------- statuses ---
-   The fourth thing that decides a turn, and the app said nothing about it.
-   Champions rebalanced three: paralysis loses the turn 12.5% of the time here,
+   The status conditions, with their numbers. Champions rebalanced three:
+   paralysis loses the turn 12.5% of the time here,
    not 25%; freeze thaws at 25% and only on a turn it tries to move; sleep
    wakes on a schedule instead of a 2-4 turn roll.
 
@@ -213,6 +202,7 @@ const STAT_LABELS = {
   physical: "physical damage taken", chip: "chip damage a turn",
   self_hit: "hits itself"
 };
+/* 0.125 -> "12.5%", 1 -> "always" */
 function pct(v){
   if (v === 1) return "always";
   const p = v * 100;
@@ -224,6 +214,8 @@ const SOURCE_NOTE = {
   measured: "Measured against Smogon's Champions engine",
   mainline: "The main-series value - no Champions source states this one",
 };
+/* The status reference: a row per condition, each number tagged with its
+   source. */
 function drawStatuses(){
   const host = $("statusList");
   if (!host) return;
@@ -269,9 +261,7 @@ function drawStatuses(){
     host.appendChild(el("div", "empty", "No status data"));
 }
 
-/* One row, one item - the same change as toggleStone, for the same reason.
-   The old [name, [category]] pairs were carried across by migration 6, so the
-   two shapes this used to read are one shape now. */
+/* One row, one item - the same as toggleStone, for the same reason. */
 function setItem(name, own){
   (own ? put("items/" + name, {}) : drop("items/" + name))
     .then(function(){
