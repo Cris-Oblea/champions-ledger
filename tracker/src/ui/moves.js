@@ -213,12 +213,13 @@ function spreadNote(m){
    the search view had nothing at all.
 
    Everything stacks: the sort is one choice, each filter group ANDs with the
-   others, and the chips inside one group OR together. `apply()` hands back the
-   pool the chips describe; the caller draws its own rows, because the editor
-   badges abilities and effective BP and the search view does not. */
+   others, and the chips inside one group OR together. It owns the list under
+   the controls too, and redraws it on every change; the caller only says what
+   ONE row is (`rowFor`), because the editor badges abilities and effective BP
+   and the search view does not. */
 function moveScore(m){ return (m.bp || 0) * Math.min(100, m.acc || 100) / 100; }
 
-function moveFilters(body, pool, onChange, placeholder, opts){
+function moveFilters(body, pool, rowFor, placeholder, opts){
   /* `usageOf` is a Pokemon name, and it is what turns this from "rank the
      movepool by raw power" into "rank it by what its players actually bring".
      Only a caller with one Pokemon in hand passes it, and then usage is the
@@ -229,14 +230,14 @@ function moveFilters(body, pool, onChange, placeholder, opts){
   /* THE CAP LIVES HERE, WITH THE COUNT THAT REPORTS IT. Callers used to slice
      the result themselves while the count said a different number, and half
      the dex had its movepool quietly truncated (Rillaboom: 67 moves, 60
-     shown). apply() returns the list already capped, so the two cannot
+     shown). draw() caps the rows it writes the count for, so the two cannot
      disagree. A single movepool is never capped in practice - the longest is
      Gallade at 106; the default 80 is for the whole move table. */
   const cap = opts?.cap || 80;
-  const st = {F: {cat:{}, trait:{}, type:{}}, EXCL: {}, onChange: onChange,
+  const st = {F: {cat:{}, trait:{}, type:{}}, EXCL: {}, onChange: draw,
             sort: usageOf ? "usage" : "bp"};
   const inp = searchField(body, placeholder || ("Filter " + pool.length +
-    " moves"), function(){ onChange(); });
+    " moves"), draw);
   sortRow(body, st, usageOf);
   /* Two kinds of group, and the labels say which. A move cannot be Physical
      AND Special, or Fire AND Water, so those chips can only ever mean "any of
@@ -268,8 +269,10 @@ function moveFilters(body, pool, onChange, placeholder, opts){
   const count = filterLabel("");
   count.classList.add("mb6");
   body.appendChild(count);
+  const list = el("div", "list");
+  body.appendChild(list);
 
-  function apply(){
+  function draw(){
     const q = inp.q();
     const hits = pool.filter(function(m){ return movePasses(m, q, st.F); });
     hits.sort(moveOrder(st.sort, usageOf));
@@ -278,9 +281,12 @@ function moveFilters(body, pool, onChange, placeholder, opts){
       : hits.length + " of " + pool.length + " moves";
     if (hits.length > cap)
       count.textContent += " · first " + cap + " shown";
-    return hits.slice(0, cap);
+    list.innerHTML = "";
+    hits.slice(0, cap).forEach(function(m){ list.appendChild(rowFor(m)); });
+    if (!hits.length) list.appendChild(el("div", "empty", "Nothing matches"));
   }
-  return {apply:apply, input:inp};
+  draw();
+  return {input:inp};
 }
 
 /* The sort choices: usage first when there is a Pokemon to be a share of. */

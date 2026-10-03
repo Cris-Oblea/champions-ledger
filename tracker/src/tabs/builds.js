@@ -1028,25 +1028,15 @@ function movePicker(draft, idx, ls, done){
         " Moves it touches are marked below.";
       body.appendChild(n);
     }
-    const ui = moveFilters(body, ls, function(){ draw(); },
-                         "Filter " + ls.length + " legal moves",
-                         /* one Pokemon's legal moves, so show all of them -
-                            the longest movepool in Champions is 106 */
-                         {usageOf: draft.pokemon, cap: 200});
-    const list = el("div", "list");
-    body.appendChild(list);
-    function draw(){
-      const hits = ui.apply();
-      list.innerHTML = "";
-      hits.forEach(function(m){
-        list.appendChild(moveRowFor(m, abil, apoke, {
-          usageOf: draft.pokemon,
-          onPick: function(){ draft.moves[idx] = m.name; finish(); },
-        }));
+    moveFilters(body, ls, function(m){
+      return moveRowFor(m, abil, apoke, {
+        usageOf: draft.pokemon,
+        onPick: function(){ draft.moves[idx] = m.name; finish(); },
       });
-      if (!hits.length) list.appendChild(el("div", "empty", "Nothing matches"));
-    }
-    draw();
+    }, "Filter " + ls.length + " legal moves",
+    /* one Pokemon's legal moves, so show all of them - the longest movepool
+       in Champions is 106 */
+    {usageOf: draft.pokemon, cap: 200});
   }, [
     fbtn("Clear slot", "", function(){ draft.moves[idx] = null; finish(); }),
     fbtn("Back", "", finish)

@@ -155,7 +155,7 @@ SOURCE_CHECKS = [
     # the imports themselves. knip.jsonc names the entry points.
     (["node_modules/knip/bin/knip.js", "--no-progress"],
      "no export, file or package is left unreachable"),
-    (["node_modules/jscpd/bin/jscpd", "tracker/src", "scripts", "tests", "cron"],
+    (["node_modules/jscpd/run-jscpd.js", "--no-colors", "tracker/src", "scripts", "tests", "cron"],
      "no copy-pasted block comes back once it is shared",
      lambda o: [line for line in o.splitlines()
                 if line.startswith(("Clone found", "ERROR"))

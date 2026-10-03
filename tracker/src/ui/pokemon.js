@@ -644,22 +644,12 @@ function askedMoves(body, p){
    players' usage on every move. */
 function ownMovepool(body, p, ls){
   body.appendChild(el("h2", null, "Movepool"));
-  const ui = moveFilters(body, ls, function(){ drawPool(); },
-                       "Filter " + ls.length + " moves it learns",
-                       {cap: 200, usageOf: p.name});
-  const pool = el("div", "list");
-  body.appendChild(pool);
-  function drawPool(){ drawMoveRows(pool, ui.apply(), p); }
-  drawPool();
+  moveFilters(body, ls, learnerRow(p), "Filter " + ls.length + " moves it learns",
+              {cap: 200, usageOf: p.name});
 }
 
-function drawMoveRows(list, hits, p){
-  list.innerHTML = "";
-  hits.forEach(function(m){
-    list.appendChild(moveRowFor(m, p.ab || [], p));
-  });
-  if (!hits.length)
-    list.appendChild(el("div", "empty", "Nothing matches"));
+function learnerRow(p){
+  return function(m){ return moveRowFor(m, p.ab || [], p); };
 }
 
 /* A SPECIES CHAMPIONS DOES NOT HAVE STILL KNOWS THINGS. Its movepool comes
@@ -696,13 +686,8 @@ function outsideMovepool(body, p){
       + "Champions' own row for that move."
       + (off ? " " + off + " of them are moves Champions has in its database "
          + "but has not enabled; they are marked." : "")));
-    const ui2 = moveFilters(outsideHost, pool, function(){ drawOut(); },
-                          "Filter " + pool.length + " moves it learns",
-                          {cap: 200});
-    const list2 = el("div", "list");
-    outsideHost.appendChild(list2);
-    function drawOut(){ drawMoveRows(list2, ui2.apply(), p); }
-    drawOut();
+    moveFilters(outsideHost, pool, learnerRow(p),
+                "Filter " + pool.length + " moves it learns", {cap: 200});
   });
 }
 
