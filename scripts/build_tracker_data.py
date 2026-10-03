@@ -369,12 +369,13 @@ def gts_difficulty():
     fields the phone needs, to keep the blob small.
 
     [score, demand, supply, rank, how, usage, ladder_size]. demand and rank
-    are null for a species with no row on the M-B ladder - absent, not zero.
+    are null for a species with no row on the ladder - absent, not zero.
     """
-    gd = (dex.meta("gts_difficulty") or {}).get("species") or {}
+    blob = dex.meta("gts_difficulty") or {}
+    size = blob.get("ladder_size")
     return {k: [v["score"], v["demand"], v["supply"], v.get("rank"),
-                v.get("how") or "", v.get("usage"), v.get("ladder_size")]
-            for k, v in gd.items()}
+                v.get("how") or "", v.get("usage"), size]
+            for k, v in (blob.get("species") or {}).items()}
 
 
 def build_stones(mons):

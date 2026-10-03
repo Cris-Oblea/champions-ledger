@@ -69,10 +69,10 @@ def main():
         if p.get("is_mega"):
             continue
         name = p["name"]
-        # ABSENT IS NOT ZERO. The pokebase snapshot is Regulation M-B; M-C
-        # added 23 species that simply have no row yet. Scoring those as 0.0%
-        # said "almost nobody runs it, a spare costs them nothing", which is a
-        # claim the data does not support - it is unknown, not unwanted.
+        # ABSENT IS NOT ZERO. A species the ladder has no row for - one a new
+        # regulation just added, say - scored 0.0% said "almost nobody runs
+        # it, a spare costs them nothing", which is a claim the data does not
+        # support: it is unknown, not unwanted.
         key = dex.norm(name)
         known = key in usage
         pct, rank = usage.get(key, (None, None))
@@ -95,10 +95,9 @@ def main():
             "supply": sup,
             "usage": pct,
             "rank": rank,
-            "ladder_size": ladder_size,
             "why_demand": (DEMAND_WHY[dem] if dem is not None else
-                           "not on the M-B ladder - a Regulation M-C arrival, "
-                           "so there is no usage number for it yet"),
+                           "not on the ladder, so there is no usage "
+                           "number for it yet"),
             "how": (ent or {}).get("how"),
             "seeded": bool(ent),
         }
@@ -107,6 +106,9 @@ def main():
                      "measured from pokebase ladder usage; supply is declared "
                      "in data/meta/go_sourcing.json and is an ESTIMATE.",
             "_scale": src.get("_scale"),
+            # Once, not on every row: it moves most nights, and on every row
+            # it rewrote all 264 of them when one number changed.
+            "ladder_size": ladder_size,
             "count": len(out), "species": out}
     Path(OUT).write_text(json.dumps(blob, ensure_ascii=False, indent=1), encoding="utf-8")
     print("wrote %s (%d species, %d with researched sourcing)"
