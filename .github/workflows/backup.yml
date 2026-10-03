@@ -103,7 +103,7 @@ jobs:
       # the ledger should not change overnight without anyone choosing it.
       - uses: supabase/setup-cli@45a513f8c64c0bc8e0e3dfe572b5c95be85f6359   # v3
         with:
-          version: 2.117.0
+          version: 2.119.0
 
       - name: fetch the private store
         env:

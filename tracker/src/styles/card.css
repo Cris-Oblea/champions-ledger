@@ -183,15 +183,6 @@
    and the coverage never does. */
 .row.card > .retyperim{position:absolute;inset:0;border-radius:inherit;
   pointer-events:none;opacity:0;z-index:3}
-@supports ((mask-composite: exclude) or (-webkit-mask-composite: xor)) {
-  .row.card > .retyperim{
-    background:var(--band);
-    padding:2px;
-    -webkit-mask:linear-gradient(#000 0 0) content-box,
-                 linear-gradient(#000 0 0);
-    mask:linear-gradient(#000 0 0) content-box, linear-gradient(#000 0 0);
-    -webkit-mask-composite:xor;mask-composite:exclude}
-}
 /* Held, changed, held, changed back. The holds are what make it legible: a
    continuous fade never shows either typing long enough to be read.
 
@@ -620,7 +611,9 @@
    cannot. */
 @supports ((mask-composite: exclude) or (-webkit-mask-composite: xor)) {
   .row.card::after{content:"";position:absolute;inset:0;pointer-events:none;
-    border-radius:inherit;padding:2px;opacity:1;z-index:2;
+    border-radius:inherit;opacity:1;z-index:2}
+  /* The Mega's ring above (.retyperim) is the same masked frame. */
+  .row.card::after, .row.card > .retyperim{padding:2px;
     background:var(--band);
     -webkit-mask:linear-gradient(#000 0 0) content-box,
                  linear-gradient(#000 0 0);

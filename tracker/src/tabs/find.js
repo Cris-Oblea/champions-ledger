@@ -367,17 +367,8 @@ function moveFilterSheet(){
     const pool = MOVES.filter(function(m){
       return !FIND.moves.includes(m.name);
     });
-    const ui = moveFilters(body, pool, function(){ draw(); },
+    const ui = moveFilters(body, pool, moveFilterRow,
                          "Any of " + pool.length + " moves");
-    const list = el("div", "list");
-    body.appendChild(list);
-    function draw(){
-      const hits = ui.apply();
-      list.innerHTML = "";
-      hits.forEach(function(m){ list.appendChild(moveFilterRow(m)); });
-      if (!list.children.length) list.appendChild(el("div", "empty", "Nothing matches"));
-    }
-    draw();
     setTimeout(function(){ ui.input.focus(); }, 60);
   }, []);
 }

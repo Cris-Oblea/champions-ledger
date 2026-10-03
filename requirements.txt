@@ -1,7 +1,7 @@
 # The scripts themselves need only the standard library. This is the linter the
 # gate runs (python -m ruff check), pinned so the rules cannot change under a
 # push: a new ruff release adds findings, and it should arrive in a PR.
-ruff==0.16.9
+ruff==0.16.10
 # Dead code: a function, class, variable or import nothing reaches. ruff only
 # sees a name unused inside its own file; vulture reads every script at once,
 # so a helper that lost its last caller in another file is found too.
