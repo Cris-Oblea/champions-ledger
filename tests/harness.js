@@ -49,8 +49,8 @@ const idle = () => new Promise(r => setTimeout(r, 0));
    confirm dialog moving focus 30 ms after it opens. Polls until cond() holds
    or two seconds pass, and never throws - the check that follows is what
    says whether it held, under its own label. */
-async function until(cond, ms = 2000) {
-  const end = Date.now() + ms;
+async function until(cond) {
+  const end = Date.now() + 2000;
   while (!cond() && Date.now() < end) await new Promise(r => setTimeout(r, 10));
 }
 

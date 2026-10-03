@@ -250,9 +250,9 @@ def parse(html):
     return got
 
 
-def fetch(slug, timeout=60):
+def fetch(slug):
     try:
-        return net.get(BASE + slug, timeout=timeout).decode("utf-8", "replace")
+        return net.get(BASE + slug).decode("utf-8", "replace")
     except net.ERRORS as e:
         print("  FAILED %s -> %s" % (slug, e))
         return None
