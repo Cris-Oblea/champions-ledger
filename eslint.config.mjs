@@ -25,6 +25,13 @@ export default [
       "prefer-const": "error",
       // Sonar's S7721 ("move function to the outer scope") is this rule.
       "unicorn/consistent-function-scoping": "error",
+      /* The simpler spelling where one exists (round 10, 2026-10-03):
+         .flat() for [].concat.apply, .find/.findLast for filter()[0] and
+         filter().pop(), startsWith/endsWith for an anchored regex. */
+      "unicorn/prefer-array-flat": "error",
+      "unicorn/prefer-array-find": ["error", {checkFromLast: true}],
+      "unicorn/prefer-string-starts-ends-with": "error",
+      "unicorn/no-useless-length-check": "error",
       // S1135 flags the word "todo"; the only one is Spanish, inside a quote.
       "sonarjs/todo-tag": "off",
     },

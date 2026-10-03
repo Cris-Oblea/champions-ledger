@@ -49,7 +49,7 @@ const pairs = id => {
 const bnote = () => {
   const b = d.getElementById("sheetBody");
   const hs = [...b.querySelectorAll("h2")]
-    .filter(x => /^In battle/.test(x.textContent));
+    .filter(x => x.textContent.startsWith("In battle"));
   if (!hs.length) return "";
   let t = hs[0].textContent;
   for (let n = hs[0].nextElementSibling; n && n.tagName !== "H2";
@@ -90,7 +90,7 @@ const bnote = () => {
        hold["In the Champions box"], "2 (1 bought, 1 rental)");
     check("cuenta HOME", hold["In HOME"], "1");
     check("cuenta builds", hold["Builds written"], "1");
-    check("cuenta piedras sobre el total", /of 81$/.test(hold["Mega Stones owned"]), true);
+    check("cuenta piedras sobre el total", hold["Mega Stones owned"].endsWith("of 81"), true);
 
     const data = pairs("profData");
     /* the regulation is READ from pokebase, never typed - which is the whole

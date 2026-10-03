@@ -169,10 +169,10 @@ const w = dom.window;
     check("Stellar no tiene color, porque no existe aqui",
        !!(w.TYPE_COLOR || {}).Stellar, false);
     check("cada habilidad del dex tiene texto",
-       list([...new Set([].concat.apply([], DEX.map(r => r[5] || [])))]
+       list([...new Set(DEX.map(r => r[5] || []).flat())]
          .filter(a => !C.ABIL[a])), "0");
     check("cada habilidad del dex esta clasificada",
-       list([...new Set([].concat.apply([], DEX.map(r => r[5] || [])))]
+       list([...new Set(DEX.map(r => r[5] || []).flat())]
          .filter(a => !(C.AB_CLASS || {})[a])), "0");
     check("cada Mega tiene piedra",
        list(C.STONES.filter(r => !r[0]).map(r => r[1])), "0");
@@ -265,8 +265,8 @@ const w = dom.window;
     check("cada habilidad que un item sirve existe",
        list(Object.keys(C.ITEM_FOR_ABILITY || {}).filter(a => !C.ABIL[a])), "0");
     check("cada movimiento que causa estado existe",
-       list([].concat.apply([], Object.keys(C.STATUSES || {})
-         .map(s => C.STATUSES[s].moves || [])).filter(n => !moveNames[n])), "0");
+       list(Object.keys(C.STATUSES || {})
+         .map(s => C.STATUSES[s].moves || []).flat().filter(n => !moveNames[n])), "0");
     check("cada learnset apunta a movimientos reales",
        list(Object.keys(C.LEARN).filter(k =>
          C.LEARN[k].some(i => !C.MOVES[i]))), "0");

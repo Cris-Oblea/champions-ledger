@@ -152,7 +152,7 @@ const sheetRows = () => [...d.querySelectorAll(".sheet .list .row")];
       .querySelector("select");
     const nat = sel("^Nature");
     check("la primera naturaleza es la mas usada",
-       /^Adamant/.test(nat.options[0].text), true);
+       nat.options[0].text.startsWith("Adamant"), true);
     check("y lleva su %", /·\s+\d/.test(nat.options[0].text), true);
     const marked = [...nat.options].filter(o => /·\s+\d/.test(o.text));
     check("solo las que pokebase lista van marcadas",
@@ -161,7 +161,7 @@ const sheetRows = () => [...d.querySelectorAll(".sheet .list .row")];
        marked.every((o, i) => o.index === i), true);
     const abl = sel("^Ability");
     check("la ability mas usada encabeza",
-       /^Grassy Surge/.test(abl.options[0].text), true);
+       abl.options[0].text.startsWith("Grassy Surge"), true);
 
     /* ------------------------------------------------ spreads y teammates */
     const txt = d.getElementById("v-buildedit").textContent;
@@ -324,7 +324,7 @@ const sheetRows = () => [...d.querySelectorAll(".sheet .list .row")];
        publishes, zero are written as "Mega something" - the entrant is always
        the base form holding a stone, and that is who wears the medal. */
     check("nada se archiva como Mega",
-       Object.keys(P).some(k => /^Mega /.test(k)), false);
+       Object.keys(P).some(k => k.startsWith("Mega ")), false);
     const champ = (P["Dragonite"] || []).find(
       e => e.y === 2026 && e.d === "masters" && e.r === 1);
     check("Dragonite gano el 2026 masters", !!champ, true);
@@ -364,16 +364,16 @@ const sheetRows = () => [...d.querySelectorAll(".sheet .list .row")];
       .find(b => /Worlds/.test(b.textContent));
     check("y un desplegable con los sets", !!fold, true);
     click(fold);
-    const cards = [...d.querySelectorAll(".sheet .note")]
-      .filter(n => /Worlds \d{4}/.test(n.textContent));
+    const card = [...d.querySelectorAll(".sheet .note")]
+      .find(n => /Worlds \d{4}/.test(n.textContent));
     check("que muestra item, ability, nature y moves",
-       /Dragoninite/.test(cards[0].textContent) &&
-       /Multiscale/.test(cards[0].textContent) &&
-       /Modest/.test(cards[0].textContent) &&
-       /Extreme Speed/.test(cards[0].textContent), true);
-    check("y dice la division", /masters/.test(cards[0].textContent), true);
+       /Dragoninite/.test(card.textContent) &&
+       /Multiscale/.test(card.textContent) &&
+       /Modest/.test(card.textContent) &&
+       /Extreme Speed/.test(card.textContent), true);
+    check("y dice la division", /masters/.test(card.textContent), true);
     check("y en que Mega evoluciona",
-       /Mega Evolves into Mega Dragonite/.test(cards[0].textContent), true);
+       /Mega Evolves into Mega Dragonite/.test(card.textContent), true);
   });
 
   /* HISTORY, and it must keep saying so. A Worlds is played once under one
