@@ -12,9 +12,9 @@ it was written. That is exactly the problem: a decision gets reversed in one
 file and the four other files that stated the old one go on stating it, and the
 next session reads whichever it opens first.
 
-The player asked for this directly (2026-09-13): "STATUS.md tambien deberia ser
-parte del gate como lo es README.md e incluso CLAUDE.md cuando no respeta las
-decisiones mas actuales, asi ningun archivo o parte del proyecto se contradice."
+The player asked for this directly (2026-09-13): every document, STATUS.md
+and CLAUDE.md included, is part of the gate the way README.md is, so no file
+contradicts the latest decisions.
 
 So every reversed or settled decision is written down ONCE, here, with the
 words the superseded version used. If those words turn up in a documentation
@@ -57,8 +57,7 @@ DOCS = ["CLAUDE.md", "README.md", "STATUS.md", "tracker/README.md",
            glob.glob(os.path.join(ROOT, ".claude", "**", "*.md"), recursive=True))
 
 # CLAUDE.md is sent with EVERY request, whole: at 67 KB it cost ~17,000 tokens
-# a message before anything was asked (player, 2026-09-28: "no a costa del
-# rendimiento de claude code"). STATUS.md is what a new session reads first, and
+# a message before anything was asked. STATUS.md is what a new session reads first, and
 # the skill's index loads with any game question. Over budget means something
 # belongs in a narrower file - .claude/rules/docs.md has the map - not that the
 # budget should grow.
@@ -181,8 +180,7 @@ DECISIONS = [
      DOCS),
 
     # HIS STATE IS THE APP'S, NOT THE DOCUMENTATION'S (player, 2026-09-20:
-    # "todo lo que tenga que ver con team, build, piedras y todo eso lo veo
-    # yo... la app ya me maneja las cosas que tengo"). STATUS.md carried a box
+    # teams, builds, stones - he tracks them in the app). STATUS.md carried a box
     # count, a list of twenty builds, fourteen untrained permanents with their
     # ladder percentages and a plan for what to release next - and every one of
     # those numbers was stale, because the app is where they change. A count
@@ -343,8 +341,8 @@ def check_named_files():
 
 
 # docs/ARCHITECTURE.md is the map of the code, so what the code HAS must be on
-# it (player, 2026-09-29: "todo lo que es escritura para entender, saber,
-# siempre este actualizado"). A new module, workflow, pipeline script, table or
+# it: everything written to understand the project must stay current. A new
+# module, workflow, pipeline script, table or
 # package the map does not name fails the gate until it is written in.
 ARCH = "docs/ARCHITECTURE.md"
 

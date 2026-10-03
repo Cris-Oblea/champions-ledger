@@ -21,5 +21,5 @@ function block(head) {
 
 const system = block(':root:not([data-theme="light"]){');
 const button = block(':root[data-theme="dark"]{');
-check("el tema oscuro del sistema define tokens", system.length > 0, true);
-check("y el boton define los mismos, con los mismos valores", button, system);
+check("the system dark theme defines tokens", system.length > 0, true);
+check("and the button defines the same ones, with the same values", button, system);

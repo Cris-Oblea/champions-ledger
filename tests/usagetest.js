@@ -1,23 +1,22 @@
-/* What this Pokemon's own players run, in the build editor (player,
-   2026-09-15).
+/* What this Pokemon's own players run, in the build editor.
 
-   Four things were wrong at once and they are all checked here:
+   Four things that can each go wrong on their own, all checked here:
 
      - pokebase paginates every per-Pokemon section CLIENT-SIDE, out of props
-       the server already sent, so the rendered HTML only ever held page 1 and
-       the app knew five moves of nineteen. "TIENE PAGES!"
-     - the picker badged only the moves it happened to have, and a blank row
-       reads as "no data" when it means "nobody brought it". Every move now
-       carries a percentage, and the sort defaults to it.
+       the server already sent, so the rendered HTML only ever holds page 1
+       (five moves of nineteen). The asset must carry every page.
+     - the picker must badge EVERY move: a blank row reads as "no data" when
+       it means "nobody brought it". Every move carries a percentage, and the
+       sort defaults to it.
      - a nature dropdown of 25 in alphabetical order does not answer "what do
        people pick"; abilities the same.
      - the move percentage is a share of move SLOTS, not of sets, so nothing
        in that column can pass ~25 and a fixed "50% is popular" threshold
        would paint every move in the game as fringe.
 
-   Rillaboom is the fixture because it is the page he opened: 19 moves over
-   four pages, 26 spreads over six, and no Season block at all - the case that
-   proved the old parser had been mixing two different measurements.
+   Rillaboom is the fixture: 19 moves over four pages, 26 spreads over six,
+   and no Season block at all - the case that shows whether a parser mixes
+   two different measurements.
 */
 const { describe } = require("node:test");
 const { check, open, idle, row, build, click } = require("./harness.js");
@@ -42,10 +41,8 @@ const usageOf = r => {
   return t ? Number(t.textContent.replace("%", "")) : null;
 };
 /* EVERY NUMBER ON A CARD IS A CELL: a <b> with the value and a <span> with the
-   label under it. It used to be one prose line of ".fact" spans, read by
-   matching the text - so when the stats became a table the selector found
-   nothing and the test died on a null instead of failing an assertion. Reading
-   the label and the value as the two elements they are cannot go stale that way. */
+   label under it. Reading the label and the value as the two elements they
+   are cannot go stale the way matching prose would. */
 const cells = r => [...r.querySelectorAll(".statline > div, .cardline > div")];
 /* ".lbl", not the first span: a cell whose value is a LIST holds one
    unbreakable span per item inside its <b>, so the first span in the cell is
@@ -58,9 +55,8 @@ const cellOf = (r, lab) => cells(r).find(c =>
    read from the whole cell, not from one label. */
 const cellNums = (r, lab) => (cellOf(r, lab).textContent.match(/\d+/g) || []).map(Number);
 /* WHAT THE POKEMON REACHES, not what its base row says: the whole Mega line
-   decides the order (player, 2026-09-19: "absol, garchomp y lucario deberian
-   aparecer primero en el filtro de speed de mayor a menor"). Descending sorts
-   on the highest number of the line... */
+   decides the order (Absol, Garchomp and Lucario rank by their Megas' Speed).
+   Descending sorts on the highest number of the line... */
 const reachOf = (r, lab) => {
   const ns = cellNums(r, lab);
   return ns.length ? Math.max(...ns) : 0;
@@ -81,68 +77,66 @@ const sheetRows = () => [...d.querySelectorAll(".sheet .list .row")];
 
 (async () => {
   await idle();
-  describe("el asset trae todas las paginas, no la primera", () => {
+  describe("the asset carries every page, not the first", () => {
     const S = w.CHAMP_SPLITS || {};
-    check("regulacion sellada en el asset", S.r, "M-C");
+    check("regulation stamped in the asset", S.r, "M-C");
     const rilla = (S.p || {})["Rillaboom"] || {};
-    check("moves de Rillaboom (4 paginas de 5)", rilla.m.length >= 19, true);
-    check("spreads de Rillaboom (6 paginas)", rilla.s.length > 5, true);
-    check("items de Rillaboom (4 paginas)", rilla.i.length >= 19, true);
-    check("teammates con % y no solo orden", rilla.t[0].length === 2, true);
-    check("y ese % es un numero", typeof rilla.t[0][1], "number");
+    check("Rillaboom's moves (4 pages of 5)", rilla.m.length >= 19, true);
+    check("Rillaboom's spreads (6 pages)", rilla.s.length > 5, true);
+    check("Rillaboom's items (4 pages)", rilla.i.length >= 19, true);
+    check("teammates with a %, not just an order", rilla.t[0].length === 2, true);
+    check("and that % is a number", typeof rilla.t[0][1], "number");
 
     /* The measurement that decides how the chip may be coloured. If pokebase
        ever switches this column back to a share of SETS it sums to ~400 and
        every number in the app silently changes meaning. */
-    check("moves suman ~100 (share de SLOTS)", Math.abs(sum(rilla.m) - 100) < 12, true);
-    check("items suman ~100 (share de SETS)", Math.abs(sum(rilla.i) - 100) < 12, true);
-    check("ningun move pasa de 30%", rilla.m.every(r => r[1] <= 30), true);
+    check("moves sum to ~100 (share of SLOTS)", Math.abs(sum(rilla.m) - 100) < 12, true);
+    check("items sum to ~100 (share of SETS)", Math.abs(sum(rilla.i) - 100) < 12, true);
+    check("no move passes 30%", rilla.m.every(r => r[1] <= 30), true);
   });
 
-  /* UN HECHO, UN CHIP, Y EL CHIP DICE DE QUE. Black Glasses decia x1.2 tres
-     veces - la sonda fisica, la especial y la frase de Smogon, las tres lo
-     mismo - y Life Orb se contradecia a si mismo con x1.2998 dos veces y 1.3x
-     una. Y un chip que pone "1/3", o "Double", no nombra ningun sujeto.
-     scripts/effect_chips.py decide todo eso; esto comprueba el resultado. */
-  describe("un hecho, un chip, y el chip dice de que", () => {
+  /* ONE FACT, ONE CHIP, AND THE CHIP SAYS OF WHAT. Black Glasses could say
+     x1.2 three times (the physical probe, the special one and Smogon's
+     sentence), Life Orb could contradict itself (x1.2998 against 1.3x), and a
+     chip reading "1/3" or "Double" names no subject. scripts/effect_chips.py
+     decides all of that; this checks the result. */
+  describe("one fact, one chip, and the chip says of what", () => {
     const E = w.CHAMP.EFFECTS || {};
     const txt = n => (E[n].c || []).map(p => p[0]);
     const twice = Object.keys(E).filter(n => {
       const t = txt(n);
       return new Set(t).size !== t.length;
     });
-    check("ninguna entrada repite un chip", twice.join(", "), "");
+    check("no entry repeats a chip", twice.join(", "), "");
     const units = Object.keys(E).filter(
       n => txt(n).some(t => / stages stages| turns turns|max HP max HP/.test(t)));
-    check("ninguna unidad se escribe dos veces", units.join(", "), "");
+    check("no unit is written twice", units.join(", "), "");
     const bare = Object.keys(E).filter(
       n => txt(n).some(t => /^(half|double|third|quarter)$/i.test(t)));
-    check("ningun chip es solo una palabra sin numero", bare.join(", "), "");
+    check("no chip is a bare word with no number", bare.join(", "), "");
 
-    check("...y 1.2998 ya no aparece en ningun sitio",
+    check("...and 1.2998 appears nowhere",
        JSON.stringify(E).indexOf("1.2998") >= 0, false);
-    /* REGLA 6 (player, 2026-09-27): "sitrus berry dice que al alcanzar 1/2 de
-       hp, te recupera 1/4 de hp y tiene dos tags con 1/2 hp y 1/4 hp, que no
-       dicen absolutamente nada... se debe aplicar a todos los items y
-       abilities." La descripcion es el texto COMPLETO de Smogon ahora, y dice
-       cada numero - asi que un chip solo existe si dice algo que ella no. Y la
-       frase corta de Smogon debajo era la misma descripcion otra vez. */
+    /* RULE 6: the description is Smogon's FULL text and states every number,
+       so a chip only exists when it says something the description does not
+       (Sitrus Berry's "1/2 HP" and "1/4 HP" chips said nothing). And Smogon's
+       one-line summary under it would be the same description again. */
     const ABIL = w.CHAMP.ABIL, ITEMS = w.CHAMP.ITEMS;
     const itemText = n => ((ITEMS.find(r => r[0] === n) || [])[3]) || "";
     const shown = n => ABIL[n] || itemText(n);
-    check("Sitrus Berry sin chips que repiten su frase", E["Sitrus Berry"] ? txt("Sitrus Berry").length : 0, 0);
-    check("...y su frase dice las dos cifras",
+    check("Sitrus Berry has no chips repeating its sentence", E["Sitrus Berry"] ? txt("Sitrus Berry").length : 0, 0);
+    check("...and its sentence states both figures",
        /1\/4 max HP when at 1\/2 max HP or less/.test(itemText("Sitrus Berry")), true);
-    check("Life Orb tampoco repite 1.3 y 1/10", E["Life Orb"] ? txt("Life Orb").length : 0, 0);
-    check("ninguna descripcion aparece dos veces (sin resumen debajo)",
+    check("nor does Life Orb repeat 1.3 and 1/10", E["Life Orb"] ? txt("Life Orb").length : 0, 0);
+    check("no description appears twice (no summary under it)",
        Object.keys(E).filter(n => shown(n) && E[n].desc).join(", "), "");
-    check("ningun chip repite un numero de su descripcion",
+    check("no chip repeats a number of its description",
        Object.keys(E).filter(n => shown(n) && txt(n).length).join(", "), "");
-    check("Intimidate dice que vuelve a activarse al megaevolucionar",
+    check("Intimidate says Mega Evolving fires it again",
        /Mega Evolving into it fires it again/.test(ABIL["Intimidate"]), true);
-    check("Drizzle dice cuantos turnos", /for 5 turns/.test(ABIL["Drizzle"]), true);
+    check("Drizzle says how many turns", /for 5 turns/.test(ABIL["Drizzle"]), true);
   });
-  await describe("los desplegables se ordenan por uso", async () => {
+  await describe("the dropdowns are ordered by usage", async () => {
     w.go("builds");
     click(d.querySelectorAll("#listBuilds .row")[0]);
     await idle();
@@ -151,84 +145,82 @@ const sheetRows = () => [...d.querySelectorAll(".sheet .list .row")];
                  new RegExp(lab).test(f.querySelector("label").textContent))
       .querySelector("select");
     const nat = sel("^Nature");
-    check("la primera naturaleza es la mas usada",
+    check("the first nature is the most used",
        nat.options[0].text.startsWith("Adamant"), true);
-    check("y lleva su %", /·\s+\d/.test(nat.options[0].text), true);
+    check("and carries its %", /·\s+\d/.test(nat.options[0].text), true);
     const marked = [...nat.options].filter(o => /·\s+\d/.test(o.text));
-    check("solo las que pokebase lista van marcadas",
+    check("only the ones pokebase lists are marked",
        marked.length > 0 && marked.length < nat.options.length, true);
-    check("las marcadas van primero y en orden",
+    check("the marked ones come first, in order",
        marked.every((o, i) => o.index === i), true);
     const abl = sel("^Ability");
-    check("la ability mas usada encabeza",
+    check("the most used ability leads",
        abl.options[0].text.startsWith("Grassy Surge"), true);
 
-    /* ------------------------------------------------ spreads y teammates */
+    /* ------------------------------------------------ spreads and teammates */
     const txt = d.getElementById("v-buildedit").textContent;
-    check("hay un bloque de referencia", /What its players run/.test(txt), true);
-    check("y dice que no rellena nada",
+    check("there is a reference block", /What its players run/.test(txt), true);
+    check("and it says it fills nothing in",
        /nothing here fills anything in/i.test(txt), true);
-    /* The rule he had to state twice: an indicator sits beside a choice and
-       changes nothing. A spread that can be CLICKED is an autobuilder. */
-    check("los spreads no son botones",
+    /* An indicator sits beside a choice and changes nothing. A spread that
+       can be CLICKED is an autobuilder. */
+    check("the spreads are not buttons",
        [...d.querySelectorAll("#v-buildedit .field")]
          .filter(f => /SP spreads/.test((f.querySelector("label")||{}).textContent||""))
          .every(f => f.querySelectorAll("button").length === 0), true);
-    check("y aparece con quien se trae", /Brought alongside/.test(txt), true);
-    check("Sneasler entre ellos", /Sneasler/.test(txt), true);
+    check("and who it is brought with appears", /Brought alongside/.test(txt), true);
+    check("Sneasler among them", /Sneasler/.test(txt), true);
   });
-  await describe("el picker marca TODOS los movimientos", async () => {
+  await describe("the picker marks EVERY move", async () => {
     click(slotWith(/Fake Out/));
     await idle();
-    check("existe el orden por uso", !!sheetChip("Usage %"), true);
-    check("y es el que viene puesto",
+    check("there is a usage sort", !!sheetChip("Usage %"), true);
+    check("and it is the default",
        sheetChip("Usage %").getAttribute("aria-pressed"), "true");
     const rr = sheetRows();
-    check("hay filas", rr.length > 10, true);
-    check("todas llevan %", rr.every(r => usageOf(r) !== null), true);
+    check("there are rows", rr.length > 10, true);
+    check("all carry a %", rr.every(r => usageOf(r) !== null), true);
     const ps = rr.map(usageOf);
-    check("y van de mayor a menor",
+    check("highest to lowest",
        ps.every((v, i) => i === 0 || ps[i - 1] >= v), true);
-    check("el primero es el mas usado", ps[0] >= 20, true);
-    check("y la cola llega a 0%", ps[ps.length - 1], 0);
+    check("the first is the most used", ps[0] >= 20, true);
+    check("and the tail reaches 0%", ps[ps.length - 1], 0);
   });
 
-  describe("tag de multi-golpe", () => {
+  describe("the multi-hit tag", () => {
     const inp = d.querySelector(".sheet input[type=text]");
     inp.value = "bullet seed";
     inp.dispatchEvent(new w.Event("input", {bubbles:true}));
     const bs = sheetRows()[0];
-    check("Bullet Seed dice que golpea varias veces",
+    check("Bullet Seed says it hits several times",
        /2–5 hits/.test(bs.querySelector(".rname").textContent), true);
-    check("y el total esta en el title",
+    check("and the total is in the title",
        /quoted at 3 hits = 75 BP/.test(
          bs.querySelector(".rname .tag.ok").title), true);
-    check("y nombra Skill Link",
+    check("and it names Skill Link",
        /Skill Link forces 5 = 125 BP/.test(
          bs.querySelector(".rname .tag.ok").title), true);
   });
 
-  await describe("Clear slot y Back cierran la ventana", async () => {
-    check("estan los dos", !!foot("Clear slot") && !!foot("Back"), true);
+  await describe("Clear slot and Back close the sheet", async () => {
+    check("both are there", !!foot("Clear slot") && !!foot("Back"), true);
     click(foot("Back"));
     await idle();
-    check("Back cierra el sheet", d.getElementById("scrim").hidden, true);
-    check("y no toca el movimiento",
+    check("Back closes the sheet", d.getElementById("scrim").hidden, true);
+    check("and leaves the move alone",
        /Fake Out/.test(d.getElementById("v-buildedit").textContent), true);
     click(slotWith(/Fake Out/));
     await idle();
     click(foot("Clear slot"));
     await idle();
-    check("Clear slot cierra el sheet", d.getElementById("scrim").hidden, true);
-    check("y vacia la ranura",
+    check("Clear slot closes the sheet", d.getElementById("scrim").hidden, true);
+    check("and empties the slot",
        /Empty slot 1/.test(d.getElementById("v-buildedit").textContent), true);
   });
-  await describe("una sola tabla, con filtros y orden por stat", async () => {
-    /* This started as a separate "Tiers" block with a tab per stat. The player
-       replaced the idea with a better one: Find already filters by type,
-       ability and move, so a tier list is just this list sorted by one column
-       - and keeping it apart meant a speed tier could never also be "and it
-       learns Fake Out and I own it". The two fixed Speed boxes are gone. */
+  await describe("one table, with filters and a sort by stat", async () => {
+    /* A tier list IS Find's list sorted by one column, so it composes with
+       every filter - a speed tier can also be "and it learns Fake Out and I
+       own it". No separate tiers block, no fixed Speed boxes. */
     w.go("find");
     await idle();
     /* The active tab's label carries an arrow, so an exact match would
@@ -236,109 +228,104 @@ const sheetRows = () => [...d.querySelectorAll(".sheet .list .row")];
     const sortTab = t => [...d.querySelectorAll("#findSort .tog")]
       .find(b => b.textContent.trim().replace(/[↑↓]/, "").trim() === t);
     ["Dex #","BST","HP","Atk","Def","SpA","SpD","Spe"].forEach(t =>
-      check("orden por " + t, !!sortTab(t), true));
-    check("las cajas fijas de Speed ya no existen",
+      check("sort by " + t, !!sortTab(t), true));
+    check("no fixed Speed boxes",
        !d.getElementById("findSpeMin") && !d.getElementById("findSpeMax") &&
        !d.getElementById("findBst"), true);
-    /* And no min/max either: the player cut that idea the same hour. An
-       order answers "who is slowest" without needing a threshold guessed
-       in advance, which is what the Trick Room box was asking for. */
-    check("ni minimos ni maximos", !d.getElementById("findAddStat"), true);
-    check("BST es el orden por defecto",
+    /* And no min/max either: an order answers "who is slowest" without a
+       threshold guessed in advance. */
+    check("no minimums or maximums", !d.getElementById("findAddStat"), true);
+    check("BST is the default sort",
        sortTab("BST").getAttribute("aria-pressed"), "true");
 
     const rows = () => [...d.querySelectorAll("#findOut .row")];
     const vr = rows().map(r => reachOf(r, "BST"));
-    check("hay filas", vr.length > 20, true);
-    check("ordenado por BST", vr.every((x,i) => i===0 || vr[i-1] >= x), true);
+    check("there are rows", vr.length > 20, true);
+    check("sorted by BST", vr.every((x,i) => i===0 || vr[i-1] >= x), true);
 
     /* NOTHING IS HIDDEN. Ranking by one stat must not drop the other five -
        an Attack list is read with the Speed beside it. The ranked one is
        marked instead. */
     click(sortTab("Spe"));
     const sp = rows().map(r => reachOf(r, "Spe"));
-    check("cambiar a Spe reordena la misma tabla",
+    check("switching to Spe reorders the same table",
        sp.every((x,i) => i===0 || sp[i-1] >= x), true);
-    check("y las seis stats siguen ahi",
+    check("and all six stats are still there",
        ["HP","Atk","Def","SpA","SpD","Spe"].every(k => !!cellOf(rows()[0], k)),
        true);
-    check("la rankeada va marcada",
+    check("the ranked one is marked",
        rows()[0].querySelector(".statline .on span").textContent.trim(), "Spe");
-    /* BST AND LA HABILIDAD TAMBIEN SON CUADROS. The player asked for it so
-       the card speaks one visual language ("seria bonito que bst tambien
-       tuviera un cuadro como los stats... y tambien para la habilidad"), and
-       a cell is the only shape this file can assert without matching prose. */
-    check("BST tiene su propio cuadro", !!cellOf(rows()[0], "BST"), true);
-    /* "Possible ability", not "Ability": a dex row lists what this
-       Pokemon CAN have, while a build row shows the one it runs. The
-       two labels were the same word on cards that mean different
-       things, and the search shares its card with the box now. */
-    check("y la habilidad tambien",
+    /* BST AND THE ABILITY ARE CELLS TOO, so the card speaks one visual
+       language - and a cell is the only shape this file can assert without
+       matching prose. */
+    check("BST has its own cell", !!cellOf(rows()[0], "BST"), true);
+    /* "Possible ability", not "Ability": a dex row lists what this Pokemon
+       CAN have, while a build row shows the one it runs. */
+    check("and so does the ability",
        !!cellOf(rows()[0], "Possible ability"), true);
-    check("la habilidad dice algo",
+    check("the ability says something",
        cellOf(rows()[0], "Possible ability").querySelector("b")
          .textContent.length > 2, true);
     /* SP and nature are the builder's business, not the list's. */
-    check("sin SPs en el listado",
+    check("no SP in the listing",
        /at 0 SP|max/.test(rows()[0].textContent), false);
-    check("el encabezado dice por que ordena",
+    check("the header says what it sorts by",
        /by Spe, highest first/.test(
          d.querySelector("#findOut .sub").textContent), true);
-    check("y la pestana activa lleva la flecha",
+    check("and the active tab carries the arrow",
        /↓/.test(sortTab("Spe").textContent), true);
 
     /* Tapping the active stat flips the direction - and ascending Speed IS
        the Trick Room list, which is why there is no "Speed at most" box. */
     click(sortTab("Spe"));
     const asc = rows().map(r => lowOf(r, "Spe"));
-    check("tocarla de nuevo invierte el orden",
+    check("tapping it again reverses the order",
        asc.every((x,i) => i===0 || asc[i-1] <= x), true);
-    check("y el encabezado lo dice",
+    check("and the header says so",
        /by Spe, lowest first/.test(
          d.querySelector("#findOut .sub").textContent), true);
-    check("con la flecha al reves",
+    check("with the arrow flipped",
        /↑/.test(sortTab("Spe").textContent), true);
     click(sortTab("Spe"));   // back to descending
 
-    /* The M-C scope toggle is GONE. It was added, renamed because he could
-       not tell what it meant, and then cut outright - "no me sirve en find,
-       lo encuentro malo". The two box filters stay. */
-    check("no hay filtro de M-C", !d.getElementById("findInMeta"), true);
-    check("pero si los de las cajas",
+    /* No "current regulation only" scope toggle: it was unclear and cut. The
+       two box filters stay. */
+    check("no M-C filter", !d.getElementById("findInMeta"), true);
+    check("but the box ones are there",
        !!d.getElementById("findInChamp") && !!d.getElementById("findInHome"),
        true);
     click(sortTab("Atk"));
     click(d.getElementById("findClear"));
-    check("Clear vuelve a BST",
+    check("Clear goes back to BST",
        sortTab("BST").getAttribute("aria-pressed"), "true");
   });
 
-  /* THE PODIUM. A result, not a rate - and a Mega is filed under the MEGA,
-     resolved by the stone it held, because a teamlist records the BASE
-     ability and so cannot tell you. The 2026 champion ran a Floette holding
-     a Floettite and a Dragonite holding a Dragoninite; both were Megas. */
-  await describe("medallas de Worlds, y el set con que se ganaron", async () => {
+  /* THE PODIUM. A result, not a rate - and the Mega it became is resolved by
+     the stone it held, because a teamlist records the BASE ability and so
+     cannot tell you. The 2026 champion ran a Floette holding a Floettite and
+     a Dragonite holding a Dragoninite; both were Megas. */
+  await describe("Worlds medals, and the set that won them", async () => {
     const P = w.CHAMP.PODIUM || {};
-    check("hay formas con podio", Object.keys(P).length > 20, true);
+    check("there are forms with a podium", Object.keys(P).length > 20, true);
     /* FILED UNDER WHAT WAS REGISTERED. Of the 16,875 team slots pokedata
        publishes, zero are written as "Mega something" - the entrant is always
        the base form holding a stone, and that is who wears the medal. */
-    check("nada se archiva como Mega",
+    check("nothing is filed as a Mega",
        Object.keys(P).some(k => k.startsWith("Mega ")), false);
     const champ = (P["Dragonite"] || []).find(
       e => e.y === 2026 && e.d === "masters" && e.r === 1);
-    check("Dragonite gano el 2026 masters", !!champ, true);
-    check("con su set completo",
+    check("Dragonite won the 2026 masters", !!champ, true);
+    check("with its whole set",
        champ.it === "Dragoninite" && champ.ab === "Multiscale" &&
        champ.na === "Modest" && champ.mv.length === 4, true);
     /* and the stone says what it became, derived rather than deduced by hand */
-    check("y la piedra dice en que mega evoluciona", champ.mg, "Mega Dragonite");
-    check("y con que habilidad", !!champ.mgab, true);
-    check("Floette tambien estaba en ese equipo",
+    check("and the stone says which Mega it becomes", champ.mg, "Mega Dragonite");
+    check("and with which ability", !!champ.mgab, true);
+    check("Floette was on that team too",
        (P["Floette-Eternal"] || []).some(
          e => e.y === 2026 && e.d === "masters" && e.r === 1 &&
               e.mg === "Mega Floette"), true);
-    check("ningun podio pasa del top 8",
+    check("no podium goes past the top 8",
        Object.values(P).every(v => v.every(e => e.r >= 1 && e.r <= 8)), true);
     /* 2023 split its divisions across two pokedata events; reading both gave
        Seniors and Juniors two podiums each */
@@ -350,29 +337,29 @@ const sheetRows = () => [...d.querySelectorAll(".sheet .list .row")];
         seen[k] = 1; return false;
       });
     });
-    check("sin entradas duplicadas (2023 va en dos eventos)", dupes, false);
+    check("no duplicate entries (2023 spans two events)", dupes, false);
 
     w.closeSheet();
     const dex = w.CHAMP.DEX.map(r => ({name:r[0], species:r[1], types:r[2],
       b:r[3], mega:!!r[4], ab:r[5], dex:r[6]||0}));
     w.findDetail(dex.find(x => x.name === "Dragonite"));
     await idle();
-    check("la ficha lleva la medalla",
+    check("the sheet wears the medal",
        /Worlds 2026 · 1st/.test(
          (d.querySelector(".sheet .tag.gold")||{}).textContent||""), true);
     const fold = [...d.querySelectorAll(".sheet .fold")]
       .find(b => /Worlds/.test(b.textContent));
-    check("y un desplegable con los sets", !!fold, true);
+    check("and a fold with the sets", !!fold, true);
     click(fold);
     const card = [...d.querySelectorAll(".sheet .note")]
       .find(n => /Worlds \d{4}/.test(n.textContent));
-    check("que muestra item, ability, nature y moves",
+    check("showing item, ability, nature and moves",
        /Dragoninite/.test(card.textContent) &&
        /Multiscale/.test(card.textContent) &&
        /Modest/.test(card.textContent) &&
        /Extreme Speed/.test(card.textContent), true);
-    check("y dice la division", /masters/.test(card.textContent), true);
-    check("y en que Mega evoluciona",
+    check("and the division", /masters/.test(card.textContent), true);
+    check("and which Mega it evolves into",
        /Mega Evolves into Mega Dragonite/.test(card.textContent), true);
   });
 
@@ -380,69 +367,67 @@ const sheetRows = () => [...d.querySelectorAll(".sheet .list .row")];
      regulation and frozen; 2026 was M-B. The three divisions are three
      metagames off one roster and must never be pooled - if an "All" tab ever
      appears here, that rule has been broken. */
-  describe("Worlds: historia, por anio y por division", () => {
+  describe("Worlds: history, by year and by division", () => {
     w.closeSheet();
     const yr = t => [...d.querySelectorAll("#worldYear .tog")]
       .find(b => b.textContent.trim() === t);
     const dv = t => [...d.querySelectorAll("#worldDiv .tog")]
       .find(b => b.textContent.trim() === t);
     const rows = () => [...d.querySelectorAll("#worldOut .row")];
-    check("hay pestana 2026", !!yr("2026"), true);
-    check("y anios anteriores", !!yr("2024"), true);
-    check("la ultima es la que viene puesta",
+    check("there is a 2026 tab", !!yr("2026"), true);
+    check("and earlier years", !!yr("2024"), true);
+    check("the latest is the default",
        yr("2026").getAttribute("aria-pressed"), "true");
-    check("tres divisiones", !!dv("Masters") && !!dv("Seniors") && !!dv("Juniors"),
+    check("three divisions", !!dv("Masters") && !!dv("Seniors") && !!dv("Juniors"),
        true);
-    check("y NO hay una que las mezcle",
+    check("and NO tab that pools them",
        [...d.querySelectorAll("#worldDiv .tog")]
          .some(b => /all|todas/i.test(b.textContent)), false);
     const rr = rows();
-    check("Masters 2026 trae filas", rr.length > 10, true);
-    check("Kingambit encabeza", /Kingambit/.test(rr[0].textContent), true);
-    /* The share and the count are two cells now, not one sentence - "24.6% ·
-       97 of 394 teams" was prose in a ranking, which is the one place numbers
-       have to be scannable down the column. */
-    check("con su cuenta de equipos",
+    check("Masters 2026 has rows", rr.length > 10, true);
+    check("Kingambit leads", /Kingambit/.test(rr[0].textContent), true);
+    /* The share and the count are two cells, not one sentence: a ranking is
+       the one place numbers have to be scannable down the column. */
+    check("with its team count",
        /^\d+ \/ \d+$/.test(cellOf(rr[0], "brought it")
          .querySelector("b").textContent.trim()), true);
     const ps = rr.map(shareOf);
-    check("de mayor a menor", ps.every((v, i) => i === 0 || ps[i - 1] >= v), true);
+    check("highest to lowest", ps.every((v, i) => i === 0 || ps[i - 1] >= v), true);
     click(dv("Juniors"));
-    check("Juniors es otra lista", rows().map(shareOf)[0] !== ps[0] ||
+    check("Juniors is another list", rows().map(shareOf)[0] !== ps[0] ||
        rows()[0].textContent !== rr[0].textContent, true);
-    check("y el encabezado lo dice",
+    check("and the header says so",
        /juniors/.test(d.querySelector("#worldOut .sub").textContent), true);
   });
 
-  /* THE SPECIFICITY TRAP. The field rule guarded itself with a bare `:not()`
-     chain, and `:not()` takes the specificity of its ARGUMENT - (0,4,1),
-     heavier than any sane rule aimed at a field. Three rules lost to it in
-     silence for as long as they had existed, and nothing about CSS says out
-     loud that a rule never applied. Asserted here so it cannot come back. */
-  await describe("los campos reciben el estilo que les escribieron", async () => {
+  /* THE SPECIFICITY TRAP. A field rule guarded by a bare `:not()` chain takes
+     the specificity of its ARGUMENT - (0,4,1), heavier than any sane rule
+     aimed at a field - and the rules it beats lose in silence: nothing in CSS
+     says out loud that a rule never applied. Asserted so it cannot return. */
+  await describe("the fields get the style written for them", async () => {
     const cs = n => w.getComputedStyle(n);
     w.go("find");
     click(d.getElementById("findAddMove"));
     await idle();
     const si = d.querySelector(".sheet .search input");
     const svg = d.querySelector(".sheet .search svg");
-    check("el texto arranca despues de la lupa",
+    check("the text starts after the magnifier",
        parseFloat(cs(si).paddingLeft) >= 34, true);
-    check("y la lupa no se come el clic", cs(svg).pointerEvents, "none");
+    check("and the magnifier does not eat the click", cs(svg).pointerEvents, "none");
     w.closeSheet();
     const pass = d.getElementById("gatePass");
-    check("el campo de contrasena deja sitio al ojito del navegador",
+    check("the password field leaves room for the browser's eye",
        parseFloat(cs(pass).paddingRight) >= 34, true);
     w.go("builds");
     click(d.querySelectorAll("#listBuilds .row")[0]);
     await idle();
     const num = d.querySelector(".sp .spnum");
-    check("el numero de SP usa su propio padding", cs(num).padding, "6px 2px");
+    check("the SP number box uses its own padding", cs(num).padding, "6px 2px");
     const normal = cs(num).color;
     num.closest(".sp").classList.add("over");
     const over = cs(num).color;
-    check("y se pone rojo al pasarse del tope de 32", over !== normal, true);
+    check("and turns red past the 32 cap", over !== normal, true);
     num.closest(".sp").classList.remove("over");
   });
-  check("la pagina no reporta errores de script", errs.join(" | ") || "ninguno", "ninguno");
+  check("the page reports no script error", errs.join(" | ") || "none", "none");
 })();

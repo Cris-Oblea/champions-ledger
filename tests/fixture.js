@@ -3,10 +3,9 @@
  * WHY THIS EXISTS. Every other test stubs Supabase with an empty result, so the
  * app runs with no session and no data: the login gate is up, `renderAll` never
  * fires, and every branch that only draws something WHEN THERE IS SOMETHING TO
- * DRAW is never executed. Three missing imports reached production through that
- * hole on 2026-09-14 - `note is not defined` in the GTS panel and in the
- * duplicate report - and the gate went green on all sixteen tests while the
- * live page threw on load.
+ * DRAW is never executed. Missing imports once reached production through that
+ * hole - `note is not defined` in the GTS panel and in the duplicate report -
+ * with every test green while the live page threw on load.
  *
  * So the rows below are not a sample of a ledger, they are a DELIBERATELY
  * AWKWARD one: the GTS is full, the box duplicates three HOME species across
@@ -46,7 +45,7 @@ const box = [
   row("charizard", "Charizard", "champions", "permanent", "home", { shiny: 1 }),
   row("farigiraf", "Farigiraf", "champions", "permanent", "home", { trained: 1 }),
   /* The game will not release while six or fewer Champions-origin Pokemon
-     remain (player, 2026-09-27), so without these the two above sit at the
+     remain, so without these the two above sit at the
      floor and the duplicate report, rightly, has nothing to offer. */
   ...["Incineroar", "Rillaboom", "Gholdengo", "Maushold", "Sinistcha"].map(
     n => row(n.toLowerCase(), n, "champions", "permanent", "champions")),
@@ -57,9 +56,9 @@ const box = [
   row("whimsicott-home", "Whimsicott", "home", "permanent", "home"),
   /* A SPECIES CHAMPIONS HAS NEVER HEARD OF, which HOME can hold for ever. Its
      card and its sheet are drawn off HOME_DEX rather than the Champions dex,
-     and that is a whole branch nothing here used to enter: opening the sheet
-     of one threw on its first line, in production, for two days (player,
-     2026-09-18). Bulbasaur, because it is unmistakably not in the format. */
+     and that is a whole branch an ordinary ledger never enters (a sheet built
+     on the wrong table throws on its first line). Bulbasaur, because it is
+     unmistakably not in the format. */
   row("bulbasaur-home", "Bulbasaur", "home", "permanent", "home"),
 ];
 

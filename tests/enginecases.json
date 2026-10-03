@@ -1,6 +1,6 @@
 [
  {
-  "label": "plano",
+  "label": "plain",
   "atk": "Garchomp",
   "move": "Earthquake",
   "def": "Kingambit",
@@ -102,7 +102,7 @@
  },
  {
   "atkStatus": "brn",
-  "label": "Quemado",
+  "label": "Burned",
   "atk": "Garchomp",
   "move": "Earthquake",
   "def": "Kingambit",
@@ -123,7 +123,7 @@
  {
   "screen": "Reflect",
   "spread": true,
-  "label": "Reflect vs fisico",
+  "label": "Reflect vs physical",
   "atk": "Garchomp",
   "move": "Earthquake",
   "def": "Kingambit",
@@ -133,7 +133,7 @@
  },
  {
   "weather": "Sun",
-  "label": "Sol + Rain Dance-tipo",
+  "label": "Sun + Rain Dance-type",
   "atk": "Incineroar",
   "move": "Flare Blitz",
   "def": "Kingambit",
@@ -142,7 +142,7 @@
   "gameType": "Singles"
  },
  {
-  "label": "multi-golpe",
+  "label": "multi-hit",
   "atk": "Aggron",
   "move": "Rock Blast",
   "def": "Incineroar",

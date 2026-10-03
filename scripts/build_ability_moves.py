@@ -669,14 +669,11 @@ SCOPE_EXEMPT = {"Adaptability"}
 # ---------------------------------------------------- what STOPS a move -----
 # A defensive rule badges nothing on a move row, and that was right while the
 # alternative was all 67 of them: Fire Lash would have carried 32 grey chips.
-# But the player asked for a narrower thing, and named it exactly:
+# But there is a narrower class worth a tag: Bulletproof, Overcoat and
+# Soundproof should be tagged, in red, on the moves they switch off - seeing
+# Bulletproof on Zap Cannon says that move is blocked by that ability.
 #
-#     "habilidades como bulletproof, overcoat y soundproof deben salir tageadas
-#      de forma negativa en los moves que afectan. asi por ejemplo si viese zap
-#      cannon en algun pokemon como raichu, y veo que tiene el tag bulletproof,
-#      sabria que ese move es bloqueado por esa habilidad en concreto."
-#
-# BLOQUEADO. Not "takes half", not "may burn you back" - the move does nothing.
+# BLOCKED. Not "takes half", not "may burn you back" - the move does nothing.
 # That is a different and much smaller class, and it splits in two:
 #
 #   STOPS_MOVE    the move does not happen at all, whatever it was.

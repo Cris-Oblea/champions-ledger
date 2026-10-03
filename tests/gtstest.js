@@ -24,26 +24,26 @@ const w = dom.window, d = w.document;
   await idle();
   const btn = [...d.querySelectorAll("#sheetFoot .btn")]
     .find(b => /Trade went through/.test(b.textContent));
-  check("el boton Trade went through existe", !!btn, true);
+  check("the Trade went through button exists", !!btn, true);
   click(btn);
   /* AND THEN CONFIRM IT. Closing a trade is asked in the app's own dialog,
-     not the browser's, so the click above opens a question and stops there.
-     This test once clicked into that scrim for weeks unnoticed. */
+     not the browser's, so the click above opens a question and stops there -
+     without answering it, this test would assert against an unclosed trade. */
   const yes = d.getElementById("askYes");
   if (yes && !d.getElementById("askScrim").hidden) click(yes);
   await idle();
 
   const got = w.__WROTE.filter(x => x.table === "box" && x.row.name === "Golisopod");
-  check("el Pokemon recibido se agrega a la caja", got.length > 0, true);
+  check("the Pokemon received is added to the box", got.length > 0, true);
   /* the trade is in the history; the note is his, and arrives empty */
-  check("y llega sin nota", got.every(x => !x.row.note), true);
-  check("el que diste sale de la caja",
+  check("and arrives with no note", got.every(x => !x.row.note), true);
+  check("the one given leaves the box",
         w.__DELETED.some(x => x.table === "box" && x.id === "chesnaught"), true);
   /* The trade CLOSES on its own row: the same id comes back with a `closed`
      date on it, so the offer leaves the open list by becoming history rather
      than by being deleted from an array. */
-  check("la oferta se cierra en su propia fila",
+  check("the offer closes on its own row",
         w.__WROTE.some(x => x.table === "gts" && x.row.id === "chesnaught" && !!x.row.closed),
         true);
-  check("la pagina no reporta errores de script", errs.join(" | ") || "ninguno", "ninguno");
+  check("the page reports no script error", errs.join(" | ") || "none", "none");
 })();

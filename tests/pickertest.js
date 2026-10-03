@@ -1,9 +1,8 @@
-/* The move picker in a build: filters that stack (player, 2026-09-10).
+/* The move picker in a build: filters that stack.
 
-   It sorted by BP x accuracy or A-Z and that was all, so "which special
-   Electric move do I actually have" meant scrolling a list ordered by
-   something else. Now the sort is one choice and the filters stack: every
-   group ANDs with the others, and the chips inside a group OR together.
+   The sort is one choice and the filters stack: every group ANDs with the
+   others, and the chips inside a group OR together - so "which special
+   Electric move do I actually have" is a question, not a scroll.
 
    Garchomp is the fixture because its pool covers all three categories, both
    spread kinds (Earthquake hits the ally, Rock Slide does not) and priority. */
@@ -17,18 +16,18 @@ const BUILDS = [build("garchomp", "Garchomp", {ability:"Rough Skin",
 
 const { dom, errs } = open({ box: ROWS, builds: BUILDS });
 const w = dom.window, d = w.document;
-/* UN CHIP TIENE TRES ESTADOS y escribe un menos en su propia etiqueta
-   cuando excluye, asi que buscarlo por texto exacto deja de encontrarlo
-   en cuanto se usa. Se busca por el texto sin el signo. */
+/* A CHIP HAS THREE STATES and writes a minus into its own label when it
+   excludes, so finding it by exact text stops working the moment it is
+   used. It is found by its text without the sign. */
 const chip = t => [...d.querySelectorAll(".sheet .tog")]
   .find(b => b.textContent.replace(/^−\s*/, "").trim() === t);
 const state = t => {
   const b = chip(t);
   if (b.classList.contains("no")) return "no";
-  return b.getAttribute("aria-pressed") === "true" ? "si" : "off";
+  return b.getAttribute("aria-pressed") === "true" ? "on" : "off";
 };
-/* off -> incluir -> excluir -> off, asi que "apagar" puede ser mas de
-   un toque */
+/* off -> include -> exclude -> off, so "turning off" can take more than
+   one tap */
 const off = t => { while (state(t) !== "off") click(chip(t)); };
 const rows = () => [...d.querySelectorAll(".sheet .list .row")];
 const names = () => rows().map(r => r.querySelector(".rname").textContent
@@ -47,112 +46,110 @@ const countLine = () => [...d.querySelectorAll(".sheet .sub")]
   await idle();
   const all = rows().length;               // the movepool, unfiltered
 
-  describe("los controles estan", () => {
+  describe("the controls are there", () => {
     ["BP × acc", "A–Z", "PP", "Type"].forEach(function(t){
-      check("orden: " + t, !!chip(t), true);
+      check("sort: " + t, !!chip(t), true);
     });
     ["Physical", "Special", "Status", "Spread", "Hits ally", "Priority"]
-      .forEach(function(t){ check("filtro: " + t, !!chip(t), true); });
-    check("hay chips de tipo (Ground)", !!chip("Ground"), true);
-    check("empieza sin filtrar", /^\d+ moves$/.test(countLine().split(" ·")[0]), true);
+      .forEach(function(t){ check("filter: " + t, !!chip(t), true); });
+    check("there are type chips (Ground)", !!chip("Ground"), true);
+    check("it starts unfiltered", /^\d+ moves$/.test(countLine().split(" ·")[0]), true);
   });
 
-  describe("un filtro", () => {
+  describe("one filter", () => {
     click(chip("Physical"));
-    check("solo fisicos", meta().every(t => t.startsWith("Physical")), true);
-    check("y son menos que todos", rows().length < all, true);
+    check("physical only", meta().every(t => t.startsWith("Physical")), true);
+    check("and fewer than all", rows().length < all, true);
   });
 
-  describe("dos filtros a la vez (se acumulan)", () => {
+  describe("two filters at once (they stack)", () => {
     click(chip("Ground"));
-    check("solo Ground fisicos", meta().every(t => t.startsWith("Physical")), true);
-    check("todas son Ground",
+    check("only physical Ground", meta().every(t => t.startsWith("Physical")), true);
+    check("all of them Ground",
        rows().every(r => /Ground/.test(r.querySelector(".t").textContent)), true);
-    check("el contador dice N de M", / of \d+ moves/.test(countLine()), true);
+    check("the counter says N of M", / of \d+ moves/.test(countLine()), true);
   });
 
-  describe("el orden se combina con los filtros", () => {
+  describe("the sort combines with the filters", () => {
     const twoFilters = rows().length;
     click(chip("A–Z"));
     const az = names();
-    check("sigue filtrado", rows().length, twoFilters);
-    check("y ahora en A-Z",
+    check("still filtered", rows().length, twoFilters);
+    check("and now A-Z",
        az.join("|") === az.slice().sort((a,b)=>a.localeCompare(b)).join("|"), true);
   });
 
-  describe("quitar un chip lo devuelve", () => {
+  describe("removing a chip brings them back", () => {
     off("Ground"); off("Physical");
-    check("vuelven todos", rows().length, all);
+    check("all return", rows().length, all);
   });
 
-  describe("los otros filtros", () => {
+  describe("the other filters", () => {
     click(chip("Priority"));
-    check("todas con prioridad",
+    check("all with priority",
        rows().every(r => /priority \+/.test(r.querySelector(".rname").textContent)), true);
     off("Priority");
     click(chip("Hits ally"));
-    check("todas golpean al aliado",
+    check("all hit the ally",
        rows().length > 0 &&
        rows().every(r => /hits ally/.test(r.querySelector(".rname").textContent)), true);
     off("Hits ally");
     click(chip("Status"));
-    check("solo status", meta().every(t => t.startsWith("Status")), true);
+    check("status only", meta().every(t => t.startsWith("Status")), true);
   });
 
-  /* Two chips in "Must have" mean BOTH, not either - the player caught
-     this returning the union. A move cannot be spread and priority at
-     once in Champions, and 0 results is the honest answer to that. */
-  describe("dos rasgos a la vez piden LOS DOS", () => {
+  /* Two chips in "Must have" mean BOTH, not either. A move cannot be spread
+     and priority at once in Champions, and 0 results is the honest answer
+     to that. */
+  describe("two traits at once ask for BOTH", () => {
     off("Status");
     off("Status"); click(chip("Spread")); click(chip("Hits ally"));
     const bothTraits = rows();
-    check("spread + hits ally: cumplen ambos",
+    check("spread + hits ally: both hold",
        bothTraits.length > 0 && bothTraits.every(r => {
          const t = r.querySelector(".rname").textContent;
          return /spread/.test(t) && /hits ally/.test(t); }), true);
     off("Hits ally"); click(chip("Priority"));
-    check("spread + priority: no existe ninguno", rows().length, 0);
-    check("y el contador lo dice", /^0 of \d+ moves/.test(countLine()), true);
+    check("spread + priority: none exists", rows().length, 0);
+    check("and the counter says so", /^0 of \d+ moves/.test(countLine()), true);
     off("Spread"); off("Priority");
-    check("al quitarlos vuelven todos", rows().length, all);
+    check("removing them brings all back", rows().length, all);
   });
 
-  /* "en el filtro de tipo esta el operador logico and y or, pero falta
-     algo que diga no" (2026-09-19). Un toque incluye, el siguiente
-     excluye, el tercero lo apaga. */
-  describe("el tercer estado de un chip: excluir", () => {
+  /* A chip's third state: one tap includes, the next excludes, the third
+     turns it off. */
+  describe("a chip's third state: exclude", () => {
     off("Spread"); off("Priority"); off("Status");
     click(chip("Water"));
-    check("un toque incluye", state("Water"), "si");
+    check("one tap includes", state("Water"), "on");
     click(chip("Water"));
-    check("dos toques excluyen", state("Water"), "no");
-    check("y lo dice con un menos", chip("Water").textContent.charAt(0), "−");
-    check("no queda ningun Water", meta().some(t => /Water/.test(t)), false);
-    check("pero si quedan moves", rows().length > 0, true);
+    check("two taps exclude", state("Water"), "no");
+    check("and it says so with a minus", chip("Water").textContent.charAt(0), "−");
+    check("no Water move left", meta().some(t => /Water/.test(t)), false);
+    check("but moves remain", rows().length > 0, true);
     click(chip("Water"));
-    check("el tercer toque lo apaga", state("Water"), "off");
-    check("y vuelven todos", rows().length, all);
+    check("the third tap turns it off", state("Water"), "off");
+    check("and all return", rows().length, all);
   });
 
-  /* "un move solo puede tener 1 de las 3 categorias... seleccionar una
-     desactiva la otra" */
-  describe("la categoria se elige de una en una", () => {
+  /* A move has exactly one category, so choosing one releases the other. */
+  describe("a category is chosen one at a time", () => {
     click(chip("Physical"));
     click(chip("Special"));
-    check("elegir Special suelta Physical", state("Physical"), "off");
-    check("y Special queda puesta", state("Special"), "si");
-    check("solo salen specials", meta().every(t => t.startsWith("Special")), true);
-    /* excluir SI se puede acumular: es como se pide "ni status ni fisico" */
+    check("choosing Special releases Physical", state("Physical"), "off");
+    check("and Special stays on", state("Special"), "on");
+    check("only specials show", meta().every(t => t.startsWith("Special")), true);
+    /* excluding DOES stack: it is how "neither status nor physical" is asked */
     off("Special");
     click(chip("Status")); click(chip("Status"));
     click(chip("Physical")); click(chip("Physical"));
-    check("dos exclusiones conviven",
+    check("two exclusions live together",
        state("Status") + "/" + state("Physical"), "no/no");
-    check("y solo quedan specials", meta().every(t => t.startsWith("Special")), true);
+    check("and only specials remain", meta().every(t => t.startsWith("Special")), true);
     off("Status"); off("Physical");
-    check("al soltarlas vuelven todos", rows().length, all);
+    check("releasing them brings all back", rows().length, all);
   });
 
 
-  check("la pagina no reporta errores de script", errs.join(" | ") || "ninguno", "ninguno");
+  check("the page reports no script error", errs.join(" | ") || "none", "none");
 })();

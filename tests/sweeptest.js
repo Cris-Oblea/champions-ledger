@@ -1,5 +1,6 @@
 /* Every form in the dex, attacking and defending, through the page's engine.
-   A sample would have missed the naming bug the player hit. */
+   A sweep, not a sample: a sample misses a bug that only some forms have
+   (a Mega naming bug once hid that way). */
 const { check, open } = require("./harness.js");
 const { w, errs } = open();
 
@@ -24,7 +25,7 @@ function failure(atkName, defName) {
    Kingambit, and as the target of Garchomp's. */
 const attacking = w.DEX.map(p => failure(p.name, "Kingambit")).filter(Boolean);
 const defending = w.DEX.map(p => failure("Garchomp", p.name)).filter(Boolean);
-check("hay formas que probar", w.DEX.length > 300, true);
-check("toda forma calcula atacando", attacking.slice(0, 5).join(" | ") || "todas", "todas");
-check("y defendiendo", defending.slice(0, 5).join(" | ") || "todas", "todas");
-check("la pagina no reporta errores de script", errs.join(" | ") || "ninguno", "ninguno");
+check("there are forms to try", w.DEX.length > 300, true);
+check("every form calculates attacking", attacking.slice(0, 5).join(" | ") || "all", "all");
+check("and defending", defending.slice(0, 5).join(" | ") || "all", "all");
+check("the page reports no script error", errs.join(" | ") || "none", "none");
