@@ -1,7 +1,7 @@
 {
  "source": "pokebase.app/pokemon-champions",
  "game": "Pokemon Champions",
- "fetched": "2026-10-01",
+ "fetched": "2026-10-03",
  "count": 190,
  "rows": [
   {
@@ -78,7 +78,7 @@
    "rank": 11,
    "slug": "rough-skin",
    "name": "Rough Skin",
-   "usage_percent": 2.5,
+   "usage_percent": 2.6,
    "description": ""
   },
   {
@@ -90,22 +90,22 @@
   },
   {
    "rank": 13,
-   "slug": "emergency-exit",
-   "name": "Emergency Exit",
-   "usage_percent": 2.4,
-   "description": ""
-  },
-  {
-   "rank": 14,
    "slug": "blaze",
    "name": "Blaze",
    "usage_percent": 2.3,
    "description": ""
   },
   {
-   "rank": 15,
+   "rank": 14,
    "slug": "competitive",
    "name": "Competitive",
+   "usage_percent": 2.3,
+   "description": ""
+  },
+  {
+   "rank": 15,
+   "slug": "emergency-exit",
+   "name": "Emergency Exit",
    "usage_percent": 2.3,
    "description": ""
   },
@@ -146,16 +146,16 @@
   },
   {
    "rank": 21,
-   "slug": "flash-fire",
-   "name": "Flash Fire",
+   "slug": "sand-stream",
+   "name": "Sand Stream",
    "usage_percent": 1.4,
    "description": ""
   },
   {
    "rank": 22,
-   "slug": "sand-stream",
-   "name": "Sand Stream",
-   "usage_percent": 1.4,
+   "slug": "flash-fire",
+   "name": "Flash Fire",
+   "usage_percent": 1.3,
    "description": ""
   },
   {
@@ -370,79 +370,79 @@
   },
   {
    "rank": 53,
-   "slug": "aerilate",
-   "name": "Aerilate",
-   "usage_percent": 0.2,
-   "description": ""
-  },
-  {
-   "rank": 54,
    "slug": "compound-eyes",
    "name": "Compound Eyes",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 55,
+   "rank": 54,
    "slug": "damp",
    "name": "Damp",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 56,
+   "rank": 55,
    "slug": "friend-guard",
    "name": "Friend Guard",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 57,
+   "rank": 56,
    "slug": "hyper-cutter",
    "name": "Hyper Cutter",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 58,
+   "rank": 57,
    "slug": "justified",
    "name": "Justified",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 59,
+   "rank": 58,
    "slug": "overgrow",
    "name": "Overgrow",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 60,
+   "rank": 59,
    "slug": "pressure",
    "name": "Pressure",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 61,
+   "rank": 60,
    "slug": "regenerator",
    "name": "Regenerator",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 62,
+   "rank": 61,
    "slug": "scrappy",
    "name": "Scrappy",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 63,
+   "rank": 62,
    "slug": "solar-power",
    "name": "Solar Power",
    "usage_percent": 0.2,
+   "description": ""
+  },
+  {
+   "rank": 63,
+   "slug": "aerilate",
+   "name": "Aerilate",
+   "usage_percent": 0.1,
    "description": ""
   },
   {

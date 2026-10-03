@@ -1,6 +1,6 @@
 {
- "count": 341,
- "fetched": "2026-09-30",
+ "count": 343,
+ "fetched": "2026-10-03",
  "note": "What each Pokemon's own players run. TWO datasets, kept apart because their percentages are not the same measure: `tournament` is teamlists for one regulation and exists for every Pokemon; `season` is the ladder and only exists for a Pokemon ranked that season. Read from the Next.js payload, which carries every page of every section - the rendered HTML only ever holds page 1.",
  "pokemon": {
   "Abomasnow": {
@@ -37082,6 +37082,92 @@
     ]
    }
   },
+  "Mega Pinsir": {
+   "tournament": {
+    "abilities": [
+     {
+      "name": "Hyper Cutter",
+      "percent": 100.0
+     }
+    ],
+    "items": [
+     {
+      "name": "Pinsirite",
+      "percent": 100
+     }
+    ],
+    "moves": [
+     {
+      "name": "Body Slam",
+      "percent": 25
+     },
+     {
+      "name": "Lunge",
+      "percent": 25
+     },
+     {
+      "name": "Protect",
+      "percent": 25
+     },
+     {
+      "name": "Rock Slide",
+      "percent": 25
+     }
+    ],
+    "natures": [
+     {
+      "effect": "+Spe / -SpA",
+      "name": "Jolly",
+      "percent": 100
+     }
+    ],
+    "regulation": "M-C",
+    "spreads": [
+     {
+      "percent": 50,
+      "sp": {
+       "atk": 32,
+       "hp": 2,
+       "spe": 32
+      }
+     },
+     {
+      "percent": 50,
+      "sp": {
+       "atk": 32,
+       "hp": 32,
+       "spe": 2
+      }
+     }
+    ],
+    "teammates": [
+     {
+      "name": "Araquanid",
+      "percent": 100
+     },
+     {
+      "name": "Kleavor",
+      "percent": 100
+     },
+     {
+      "name": "Golisopod",
+      "percent": 100
+     },
+     {
+      "name": "Mega Golisopod",
+      "percent": 100
+     },
+     {
+      "name": "Vivillon",
+      "percent": 100
+     },
+     {
+      "name": "Volcarona",
+      "percent": 100
+     }
+    ]
+   }
+  },
   "Mega Pyroar": {
    "tournament": {
     "abilities": [
@@ -45630,6 +45716,87 @@
      {
       "name": "Mega Lucario Z",
       "percent": 14.3
+     }
+    ]
+   }
+  },
+  "Pinsir": {
+   "season": {
+    "abilities": [],
+    "dates": "Aug 5 – Sep 9, 2026",
+    "items": [],
+    "moves": [],
+    "name": "Season M-5",
+    "natures": [],
+    "of": 235,
+    "rank": 169,
+    "spreads": [],
+    "teammates": []
+   },
+   "tournament": {
+    "abilities": [
+     {
+      "name": "Hyper Cutter",
+      "percent": 100.0
+     }
+    ],
+    "items": [],
+    "moves": [
+     {
+      "name": "Pinsirite",
+      "percent": 100
+     }
+    ],
+    "natures": [
+     {
+      "effect": "+Spe / -SpA",
+      "name": "Jolly",
+      "percent": 100
+     }
+    ],
+    "regulation": "M-C",
+    "spreads": [
+     {
+      "percent": 50,
+      "sp": {
+       "atk": 32,
+       "hp": 2,
+       "spe": 32
+      }
+     },
+     {
+      "percent": 50,
+      "sp": {
+       "atk": 32,
+       "hp": 32,
+       "spe": 2
+      }
+     }
+    ],
+    "teammates": [
+     {
+      "name": "Araquanid",
+      "percent": 100
+     },
+     {
+      "name": "Kleavor",
+      "percent": 100
+     },
+     {
+      "name": "Golisopod",
+      "percent": 100
+     },
+     {
+      "name": "Mega Golisopod",
+      "percent": 100
+     },
+     {
+      "name": "Vivillon",
+      "percent": 100
+     },
+     {
+      "name": "Volcarona",
+      "percent": 100
      }
     ]
    }
