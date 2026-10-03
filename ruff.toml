@@ -27,6 +27,9 @@ select = [
     "PIE", "RET", "SIM",  # redundant code, and the simpler form of it
     "PLE", "PLW",  # pylint's errors and warnings
     "PLR0913", # too many parameters (Sonar S107)
+    "PLC0206", # a dict walked by key, then indexed by it: .items() says it once
+    "FURB",    # refurb: the newer stdlib spelling (removeprefix, `or`, writelines)
+    "PERF",    # a loop that only appends is a comprehension
     "UP020",   # io.open is open
     "RUF010", "RUF012", "RUF015", "RUF019", "RUF059", "RUF100",
 ]
@@ -34,6 +37,7 @@ ignore = [
     "N812",    # `import query as Q` is the project's idiom, used everywhere
     "PLW0603", # `global` for a module's lazily loaded cache is what it is for
     "SIM905",  # a word list written as one "...".split() reads better
+    "FURB167", # re.I vs re.IGNORECASE is spelling, not a simpler form
 ]
 # Nothing else is ignored: every rule above blocks a push. The ratchet that
 # let the rules with findings through one at a time emptied on 2026-09-30.

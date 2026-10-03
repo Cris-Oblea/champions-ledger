@@ -47,3 +47,9 @@ def get(url, *, data=None, headers=None, timeout=60, min_size=0):
         except ERRORS:
             time.sleep(pause)
     return once()
+
+
+def text(url, **kw):
+    """get() read as UTF-8, for an HTML or CSS page: a byte that is not UTF-8
+    becomes U+FFFD instead of failing the whole page."""
+    return get(url, **kw).decode("utf-8", "replace")

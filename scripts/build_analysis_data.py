@@ -42,19 +42,17 @@ def main():
             continue
         got = []
         for st in strategies:
-            sets = []
-            for ms in st.get("movesets") or []:
-                sets.append({
-                    "name": ms.get("name") or "",
-                    "ability": ms.get("abilities") or [],
-                    "item": ms.get("items") or [],
-                    "nature": ms.get("natures") or [],
-                    # Champions calls them SP, and the spread is the half of a
-                    # set that cannot be guessed from the moves
-                    "sp": ms.get("stat_points") or [],
-                    "moves": ms.get("moveslots") or [],
-                    "why": ms.get("explanation") or "",
-                })
+            sets = [{
+                "name": ms.get("name") or "",
+                "ability": ms.get("abilities") or [],
+                "item": ms.get("items") or [],
+                "nature": ms.get("natures") or [],
+                # Champions calls them SP, and the spread is the half of a
+                # set that cannot be guessed from the moves
+                "sp": ms.get("stat_points") or [],
+                "moves": ms.get("moveslots") or [],
+                "why": ms.get("explanation") or "",
+            } for ms in st.get("movesets") or []]
             if not sets and not (st.get("overview") or "").strip():
                 continue
             got.append({

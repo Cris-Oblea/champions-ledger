@@ -44,7 +44,6 @@ incomplete. Anything NEW is what this is for.
 """
 import argparse
 import csv
-import re
 import sys
 
 import dex
@@ -68,11 +67,6 @@ KNOWN_UPSTREAM = {                   # upstream lists it, we do not
     "mirror-coat": "Serebii does not list Archaludon",
     "pound": "Serebii does not list Politoed",
 }
-
-
-def mkey(n):
-    """A move name reduced so both spellings meet."""
-    return re.sub("[^a-z0-9]+", "-", n.lower().replace("'", "")).strip("-")
 
 
 def upstream(force=False):
@@ -120,7 +114,7 @@ def main():
         if not u:
             continue
         paired += 1
-        mine = {mkey(m) for m in ours[name]}
+        mine = {dex.slug(m) for m in ours[name]}
         n, k = _sort_out(name, u - mine, KNOWN_UPSTREAM, "upstream-only", args.list)
         new_up += n
         known += k

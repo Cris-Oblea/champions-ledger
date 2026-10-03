@@ -192,11 +192,9 @@ def block_abilities(html, under):
     toks = [x.strip() for x in
             re.sub(r"\|+", "|", re.sub(r"<[^>]+>", "|", chunk)).split("|")]
     toks = [x for x in toks if x]
-    out = []
-    for i in range(len(toks) - 2):
-        if re.fullmatch(r"\d+(?:\.\d+)?", toks[i + 1]) and toks[i + 2] == "%":
-            out.append({"name": toks[i], "percent": float(toks[i + 1])})
-    return out
+    return [{"name": toks[i], "percent": float(toks[i + 1])}
+            for i in range(len(toks) - 2)
+            if re.fullmatch(r"\d+(?:\.\d+)?", toks[i + 1]) and toks[i + 2] == "%"]
 
 
 # --------------------------------------------------------------- ladder side
@@ -252,7 +250,7 @@ def parse(html):
 
 def fetch(slug):
     try:
-        return net.get(BASE + slug).decode("utf-8", "replace")
+        return net.text(BASE + slug)
     except net.ERRORS as e:
         print("  FAILED %s -> %s" % (slug, e))
         return None

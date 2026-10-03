@@ -353,8 +353,7 @@ def log(lines):
     os.makedirs(LOGDIR, exist_ok=True)
     stamp = datetime.datetime.now().strftime("%Y-%m-%d")
     with open(os.path.join(LOGDIR, stamp + ".log"), "a", encoding="utf-8") as f:
-        for ln in lines:
-            f.write(ln + "\n")
+        f.writelines(ln + "\n" for ln in lines)
     # keep a month, no more
     keep = sorted(os.listdir(LOGDIR))[-31:]
     for old in os.listdir(LOGDIR):

@@ -150,11 +150,9 @@ def learnset_diff():
         return {"file": rel, "unknown": True, "lines": []}
     a = old.get("learnsets", old) if isinstance(old, dict) else {}
     b = new.get("learnsets", new) if isinstance(new, dict) else {}
-    lines = []
-    for k in sorted(set(b) - set(a)):
-        lines.append(("added", k, "", "%d moves" % len(b[k] or [])))
-    for k in sorted(set(a) - set(b)):
-        lines.append(("removed", k, "", ""))
+    lines = [("added", k, "", "%d moves" % len(b[k] or []))
+             for k in sorted(set(b) - set(a))]
+    lines += [("removed", k, "", "") for k in sorted(set(a) - set(b))]
     for k in sorted(set(a) & set(b)):
         change = _list_change(a[k], b[k])
         if change:

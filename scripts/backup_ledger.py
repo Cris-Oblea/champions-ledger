@@ -270,7 +270,7 @@ def canonical(row):
         if isinstance(v, str) and _TIMESTAMP.match(v):
             with contextlib.suppress(ValueError):
                 out[k] = datetime.datetime.fromisoformat(
-                    v.replace("Z", "+00:00")).isoformat()
+                    v).isoformat()
     return json.dumps(out, sort_keys=True, default=str)
 
 

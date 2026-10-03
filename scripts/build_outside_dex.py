@@ -74,10 +74,6 @@ ENGLISH = "9"
 CLASS = {"status": "T", "physical": "P", "special": "S"}
 
 
-def key(s):
-    return re.sub(r"[^a-z0-9]+", "-", (s or "").lower()).strip("-")
-
-
 def clean(s):
     """One line, and no markup. PokeAPI's effect text carries its own wiki
     links - [Pound]{move:pound} - which are noise on a phone."""
@@ -113,7 +109,7 @@ def _pool(move_ids, upstream_name, champ_by_key, smogon, mv, nomatch):
     names = []
     for mid in sorted(move_ids, key=int):
         up = upstream_name.get(mid)
-        row = champ_by_key.get(key(up)) if up else None
+        row = champ_by_key.get(dex.slug(up)) if up else None
         if not row:
             # measured at zero: every move any of these species learns is
             # already in moves.json. Counted rather than assumed, so the
@@ -135,7 +131,7 @@ def build():
     # Keyed, because upstream writes "Will-O-Wisp" and "will-o-wisp" and our
     # row is the one whose spelling must win - it is the one the rest of the
     # app looks moves up by.
-    champ_by_key = {key(m["name"]): m for m in dex.db("moves")}
+    champ_by_key = {dex.slug(m["name"]): m for m in dex.db("moves")}
     # WHAT EACH ONE DOES. These rows shipped with no description at all - a
     # name, a type and four numbers. From CHAMPIONS' OWN DEX only (player,
     # 2026-09-27: "siempre la fuente debe ser champions dex"): Smogon's full
@@ -143,13 +139,13 @@ def build():
     # attackdex-champions line, which covers every one of them. Never an
     # older game's page, which can describe a different move.
     smogon = (dex.db("smogon_text") or {}).get("moves") or {}
-    champ_abils = {key(a["name"]) for a in dex.db("abilities")}
+    champ_abils = {dex.slug(a["name"]) for a in dex.db("abilities")}
     home = json.loads(Path(DB, "home_dex.json").read_text(encoding="utf-8"))
     upstream_name, aname, aprose = _upstream_names()
 
     # --- the abilities Champions has no row for ---------------------------
     ab = {n: aprose[aid] for aid, n in aname.items()
-          if key(n) not in champ_abils and aprose.get(aid)}
+          if dex.slug(n) not in champ_abils and aprose.get(aid)}
 
     # --- movepools, complete, plus rows for what Champions lacks ----------
     # THE SAME RESOLVER THE STATS USE, and for the same reason: PokeAPI files
