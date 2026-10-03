@@ -9,8 +9,8 @@ WHY THIS EXISTS, AND WHY IT IS NOT A WINDOW.
 Resizing the browser window does not work on this machine: the player runs
 **komorebi**, a tiling window manager, so it re-tiles the window and every
 `resize` silently has no effect - the call reports success and `innerWidth`
-stays whatever the tiling layout gave that pane. Measured 2026-09-16: the
-window read 948 CSS px wide while the monitor was 1920x1200 physical at
+stays whatever the tiling layout gave that pane. Measured: the window read
+948 CSS px wide while the monitor was 1920x1200 physical at
 DPR 1.25, i.e. **1536x960 CSS**. A layout "verified at 1920x1080" was
 therefore verified at a width his browser never has.
 

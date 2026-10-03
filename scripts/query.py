@@ -119,6 +119,8 @@ def pct(v):
 
 
 def owned_sets():
+    """(permanent, rental, stones, items) he owns, as sets of norm() keys /
+    names - read from the live ledger through ledger.inv()."""
     inv = ledger.inv()
     perm = {norm(x) for x in inv.get("permanent_pokemon", [])}
     temp = {norm(x) for x in (inv.get("rental_pokemon", {}) or {}).get("list", [])}
@@ -131,6 +133,7 @@ def owned_sets():
 
 
 def own_tag(name, perm, temp):
+    """ "OWN", "rent" or "" - the column the listings print beside a name."""
     n = norm(name)
     if n in perm:
         return "OWN"
@@ -254,6 +257,7 @@ def _priority_ok(p, want):
 
 
 def _move_matches(m, a):
+    """Does move row `m` pass every `query.py moves` filter in `a`?"""
     f = m.get("flags") or {}
     text = ((m.get("effect") or "") + " " + (m.get("in_depth") or "")).lower()
     basic = (
@@ -755,6 +759,9 @@ def mega_profile(m):
 
 
 def cmd_megas(_a):
+    """`query.py megas`: every Mega line - base vs Mega, the stone, whether he
+    owns it and the species, what a stone or keeping a rental would cost,
+    and how often Worlds teams brought it."""
     inv = ledger.inv()
     perm = inv.get("permanent_pokemon", [])
     rentinfo = inv.get("rental_pokemon", {}) or {}
@@ -815,10 +822,9 @@ def cmd_megas(_a):
     print("Role folds the ability in, so Mega Mawile reads as the physical")
     print("attacker it is (Huge Power doubles Attack) and not as its SpA 55.")
     print("A rental CAN Mega Evolve, but cannot be TRAINED - the ticket or")
-    # What a rental COSTS is a rule and stays. What he HAS is not tracked any
-    # more (2026-09-13): Profile keeps one editable field, box capacity, and a
-    # number nobody can edit goes stale and then gets quoted - vp_balance had
-    # sat at 8000 since 2026-09-12. Ask him if it ever matters.
+    # What a rental COSTS is a rule and stays. What he HAS in VP is not
+    # tracked (a balance nobody keeps current goes stale and then gets
+    # quoted). Ask him if it ever matters.
     print("%d VP is what buys it a build.\n" % keep_vp)
 
     hdr = ["Role", "Mega", "Types", "Offense", "Speed", "Bulk",
@@ -963,8 +969,8 @@ def sole_ability(name):
     Aegislash is Stance Change, Clawitzer is Mega Launcher, and every one of
     the 81 Megas is a single line, so a build that records no ability for one
     of them is not undecided: the app's <select> had one option and could never
-    fire its own onchange, so it saved null (player, 2026-09-22). The app
-    writes it now and resolves it the same way for the rows saved before that.
+    fire its own onchange, so it could save null. The app writes it, and
+    resolves it the same way for any row saved without it.
     Where the species really offers two or three, this returns None and the
     choice stays his.
     """
@@ -1019,6 +1025,8 @@ def defence(types, chart=None, abilities=None):
 
 
 def canon_type(word):
+    """A typed type ("elec", "Fairy") -> its canonical name, or None. Exact
+    match first, then the unique-looking prefix."""
     w = key(word)
     for t in TYPES:
         if key(t) == w:
@@ -1434,6 +1442,8 @@ def cmd_worlds(a):
 
 
 def worlds_listing(tour, a):
+    """Print the top `a.top` (8) teams of one event, with what each Mega
+    Evolves into."""
     for p in tour.get("players", [])[:a.top or 8]:
         print("\n#%s  %s [%s]  %s" % (p["rank"], p["player"], p.get("country") or "",
                                       p.get("record") or ""))

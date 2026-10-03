@@ -3,13 +3,11 @@
 Smogon publishes a Champions engine (generation 0 in @smogon/calc, vendored
 under data/raw/smogon_calc/). It is the one the app runs, and this script asks
 the same engine through scripts/smogon_engine.js, so the page and the terminal
-cannot disagree. Until 2026-09-30 this file also carried its own port of the
-formula, checked against the engine case by case. The port did not model
-abilities, and it calculated every move whose power is not a number (Serebii
-writes "1" for all of them) as a 1 BP hit: Seismic Toss read "1-2 damage, no
-OHKO" without a warning. It is gone - the engine is never hand-ported (the
-modifier chain runs in four buckets with a rounding step between each, and a
-one-point drift flips a KO count).
+cannot disagree. The engine is never hand-ported: the modifier chain runs in
+four buckets with a rounding step between each, and a one-point drift flips a
+KO count. (A port once lived here; it did not model abilities and read every
+move whose power is not a number - Serebii writes "1" for all of them - as a
+1 BP hit.)
 
 WHAT THIS FILE ADDS TO THE ENGINE
 
@@ -19,7 +17,7 @@ WHAT THIS FILE ADDS TO THE ENGINE
   * Doubles by default, so a spread move takes x0.75. The modifier is decided
     WHEN THE MOVE IS CHOSEN: with only one opposing Pokemon on the field it is
     full power, and a partner's KO before it resolves does NOT restore it
-    (player, confirmed in game 2026-09-04 and 2026-09-27). Neither this file
+    (confirmed in game by the player). Neither this file
     nor the engine can see the field, so that case is the caller's to declare
     with --single-target.
   * A move whose damage needs a fact beyond the two Pokemon and their stats
@@ -28,7 +26,7 @@ WHAT THIS FILE ADDS TO THE ENGINE
     no damage calculation answers, and says what they do instead.
 
 Focus Sash and Sturdy change no damage number, only whether the target lands
-on 1 HP (player, 2026-09-04); the KO line is read with that in mind.
+on 1 HP (confirmed in game); the KO line is read with that in mind.
 
 Usage:
     python scripts/damage.py --selftest

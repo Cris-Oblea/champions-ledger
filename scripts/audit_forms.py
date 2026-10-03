@@ -112,6 +112,8 @@ def _split_heads(s):
 
 
 def _split_pages(dex):
+    """A Pokedex page with several form blocks whose species the dex holds
+    as ONE row - unless it is a known cosmetic or battle form."""
     have = defaultdict(set)
     for p in dex:
         have[norm(p.get("species") or p["name"])].add(p["name"])
@@ -171,6 +173,7 @@ def alternate_form_watch(dex):
 
 
 def _collisions(dex):
+    """1. Two dex rows that norm() turns into the same key."""
     print("\n--- 1. Name collisions inside the dex ---")
     dupes = defaultdict(list)
     for p in dex:
@@ -193,6 +196,7 @@ def _match_by_type(r, dex):
 
 
 def _missing_rows(master, dex, by_norm):
+    """2. A master-list row (name, sprite, types) no dex form resolves to."""
     print("\n--- 2. Master-list rows missing from the dex ---")
     missing = []
     for r in master:
@@ -210,6 +214,8 @@ def _missing_rows(master, dex, by_norm):
 
 
 def _extra_forms(master, dex):
+    """3. Dex forms the master list does not spell out, and where each came
+    from (informational)."""
     print("\n--- 3. Forms in the dex that the master list does not spell out ---")
     master_dex = defaultdict(list)
     for r in master:
@@ -226,6 +232,7 @@ def _extra_forms(master, dex):
 
 
 def _multi_form(dex):
+    """4. Every species held as more than one row (informational)."""
     print("\n--- 4. Multi-form species: what we hold per species ---")
     groups = defaultdict(list)
     for p in dex:
@@ -238,6 +245,8 @@ def _multi_form(dex):
 
 
 def _gender_split(dex):
+    """5. The gender-split species: their forms and their learnset keys
+    side by side (informational)."""
     print("\n--- 5. Gender-split species present in Champions ---")
     gender = ["Basculegion", "Meowstic", "Indeedee", "Oinkologne", "Unfezant",
               "Frillish", "Jellicent", "Pyroar", "Hippowdon"]
@@ -252,8 +261,8 @@ def _gender_split(dex):
 
 # pokebase publishes its whole Pokedex, including species that are not legal
 # in Champions. Those used to sit at exactly 0.00%, so any non-zero figure
-# meant a real gap - but on 2026-09-13 the table deepened from 199 rows to
-# 278 and grew a long tail: 63 rows under 0.2%, and the bottom of it is
+# meant a real gap - but the table deepened (199 rows to 278) and grew a
+# long tail: 63 rows under 0.2%, and the bottom of it is
 # ordinary Champions Pokemon - Rampardos, Dragalge, Mega Meowstic, Salazzle
 # - all reading 0.1%. At that depth the figure says nothing about legality,
 # so "non-zero" turned into a daily false alarm: Hitmontop, at 0.1%, which
@@ -309,6 +318,8 @@ def _print_watchlist(watch, usage_of):
 
 
 def _unresolved_meta_names(by_norm):
+    """6. Names the usage and tournament sources use that resolve to no dex
+    form. Names under the usage tail are noise, reported apart."""
     print("\n--- 6. Names used by the meta sources that do not resolve ---")
     usage_of = {r["name"]: (r.get("usage_percent") or 0)
                 for r in (meta("usage_pokemon") or {}).get("rows", [])}

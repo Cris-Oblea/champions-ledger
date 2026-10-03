@@ -1,8 +1,18 @@
 #!/usr/bin/env python3
 """Emit tracker/data.js - the compact reference blob the phone tracker inlines.
 
-Everything here is DERIVED from data/db/. Re-run it after build_db.py so the
-tracker sees a new regulation's species, moves and stones.
+    python scripts/build_tracker_data.py      -> tracker/data.js (window.CHAMP)
+
+Everything here is DERIVED from data/db/ and data/meta/; refresh.py runs it
+after build_db.py so the app sees a new regulation's species, moves and
+stones. The blob is POSITIONAL (arrays, not objects) to stay small, and
+tracker/src/core/data.js is the one place that unpacks it - a column added
+here is read there.
+
+The rule for what ships: whatever the phone would otherwise have to derive
+(name matching, Mega ownership, which ability touches which move) is
+resolved HERE, in Python where norm() and the audits live, so the page is
+plain lookups.
 """
 import json
 import os
@@ -23,6 +33,7 @@ _FLAG_LETTER = {"contact": "c", "sound": "s", "punch": "p", "biting": "b",
 
 
 def flag_str(m):
+    """The move's ability-relevant flags as letters: "cp" = contact + punch."""
     f = m.get("flags") or {}
     return "".join(v for k, v in _FLAG_LETTER.items() if f.get(k))
 
@@ -37,10 +48,8 @@ def movetext(m):
     every move Champions has, and otherwise Serebii where it states the
     numbers and pokebase where Serebii only names a status.
 
-    NOT CUT SHORT. This used to stop at 300 characters, which is where a
-    binding move says how to escape it and Protect says what makes it fail -
-    the half the player asked for (2026-09-27: "no dice que significa cada
-    uno de esos statuses... en mi app toda esa info se pierde").
+    NOT CUT SHORT: the end of the text is where a binding move says how to
+    escape it and Protect says what makes it fail.
     """
     global TEXTS
     if TEXTS is None:
@@ -63,13 +72,11 @@ def _idx(names, midx):
 def _targeting(m, props):
     """(target label, hits more than one, also hits your ally) for one move.
 
-    How many Pokemon a move hits is NOT read off Serebii's target field here.
-    It spells one thing four ways and gets three moves outright wrong, so
-    build_ability_moves.py resolves it against Smogon's engine target column
-    and stores the answer per move. Reading the raw field cost Burning
-    Jealousy and Misty Explosion their spread modifier, and left Corrosive
-    Gas looking like a single-target move when it strips your own ally's
-    item too. Where the two disagree the LABEL is corrected as well, so the
+    How many Pokemon a move hits is NOT read off Serebii's target field: it
+    spells one thing four ways and gets some moves wrong (Burning Jealousy is
+    a spread move, Corrosive Gas hits your own ally). build_ability_moves.py
+    resolves it against Smogon's engine target column and stores the answer
+    per move. Where the two disagree the LABEL is corrected as well, so the
     move sheet does not print "Ally" under a single-target attack.
     """
     tgt = m.get("target") or ""
@@ -90,6 +97,9 @@ def _targeting(m, props):
 
 
 def build_moves(use):
+    """The MOVES rows, in the column order core/data.js unpacks: name, type,
+    category, power, accuracy, pp, priority, target, spread, hits ally, hit
+    count, always-crit, flags, text."""
     props = (dex.db("ability_moves") or {}).get("moves") or {}
     rows = []
     for m in use:
@@ -106,11 +116,8 @@ def build_moves(use):
                      m.get("hits") or None,
                      1 if m.get("always_crit") else 0,
                      flag_str(m),
-                     # what the move DOES. It was not in the blob at all, so
-                     # the app could show every number about a move and not
-                     # one word about its effect - and "which of these burns"
-                     # had no answer on the phone. Serebii's short line,
-                     # falling back to the long one.
+                     # what the move DOES, so "which of these burns" has an
+                     # answer on the phone (see movetext)
                      movetext(m)])
     return rows
 
@@ -126,13 +133,11 @@ def build_learn(learn, midx):
 
 
 # --- which FORM a Mega actually belongs to --------------------------------
-# Our dex files every Mega under the bare species, so an alternate form
-# inherited its base form's Megas: the app was offering Mega Raichu X to
-# Raichu-Alola and Mega Slowbro to Slowbro-Galar, neither of which can
-# hold the stone. Smogon's roster states the relation - each Mega carries
-# `baseSpecies` - so it settles this the way the damage engine settles
-# arithmetic. Floette is the case that proves it is not just "the base
-# form": Floette-Mega's baseSpecies is Floette-ETERNAL.
+# Our dex files every Mega under the bare species, which would hand an
+# alternate form its base form's Megas (Mega Raichu X to Raichu-Alola, who
+# cannot hold the stone). Smogon's roster states the relation - each Mega
+# carries `baseSpecies` - so it settles this. Floette proves it is not just
+# "the base form": Floette-Mega's baseSpecies is Floette-ETERNAL.
 def _smogon_mega_bases():
     """Smogon's Mega name -> the baseSpecies it names."""
     try:
@@ -178,6 +183,9 @@ def _owner_form(p, base, mons):
 
 
 def mega_owners(mons):
+    """MEGA_OWNER: dex form -> the Megas it can become. Prints every Mega that
+    landed on a form other than its bare species, so a change is visible in
+    the refresh log."""
     smog_base = _smogon_mega_bases()
     import damage as _Dm
     owners = {}
@@ -207,11 +215,11 @@ def mega_owners(mons):
 def learn_aliases(mons, app_learn):
     """Forms whose pool is filed under another name.
 
-    Four of the 340 find nothing by their own name OR their species:
-    Floette and Mega Floette (the pool is under "Floette-Eternal") and the
-    two gender forms, whose movepool CLAUDE.md records as inherited from the
-    base species. The app is a plain key lookup, so the resolving happens
-    here, where norm() and the alias table already live.
+    A few forms find nothing by their own name OR their species: Floette and
+    Mega Floette (the pool is under "Floette-Eternal") and the gender forms,
+    whose movepool is inherited from the base species
+    (.claude/rules/data-pipeline.md). The app is a plain key lookup, so the
+    resolving happens here, where norm() and the alias table already live.
     """
     out = {}
     for p in mons:
@@ -235,17 +243,15 @@ def learn_aliases(mons, app_learn):
 
 
 # --- what a Pokemon becomes mid-battle ------------------------------------
-# The dex row is the form it STARTS in, and for two of these that is the
-# form it never attacks in: the sheet was printing Aegislash at 50 Attack
-# when Stance Change flips it to 140 the moment it uses a damaging move,
-# and Palafin at 70 when Zero to Hero makes it 160. Castform's three
-# weather forms change the TYPE instead, which is its whole defensive
-# profile and its STAB. The data has carried all of this in `battle_forms`
-# for a while; nothing shipped it to the app, so the app has been showing
-# the misleading half. Only what actually CHANGES is sent.
+# The dex row is the form it STARTS in, and for some that is the form it
+# never attacks in: Stance Change flips Aegislash from 50 Attack to 140 the
+# moment it uses a damaging move, Zero to Hero takes Palafin from 70 to 160,
+# and Castform's weather forms change the TYPE instead. build_db.py records
+# these as `battle_forms`; only what actually CHANGES is shipped.
 
 
 def _form_change(p, v):
+    """{"t": types, "b": stats} for whatever this form changes; {} if nothing."""
     e = {}
     if v.get("types") and v["types"] != p["types"]:
         e["t"] = v["types"]
@@ -256,6 +262,7 @@ def _form_change(p, v):
 
 
 def battle_forms(mons):
+    """BFORMS: name -> {"by": the ability, "f": {form label: changes}}."""
     bforms = {}
     for p in mons:
         out = {}
@@ -273,13 +280,9 @@ def battle_forms(mons):
 
 # --- ...and the forms that move NO number ---------------------------------
 # The loop above only sends what Serebii printed a spread or a typing for,
-# so a form that changes neither never reached the card: Morpeko's Hangry
-# Mode and Mimikyu's Busted Form had no picture at all (player,
-# 2026-09-27: "morpeko tiene otra forma y es por habilidad y no se ve su
-# otro sprite"). They are real, and one of them is exactly why a form
-# matters beyond the picture: "aura wheel de morpeko cambia de tipo el
-# move segun su forma" - which FORM_TYPED already says, keyed by the
-# form's name, and which the sheet reads beside the form now.
+# so a form that changes neither (Morpeko's Hangry Mode, Mimikyu's Busted
+# Form) would have no picture. They are real, and can still change a move
+# (Hangry Morpeko's Aura Wheel is Dark - FORM_TYPED, keyed by form name).
 #
 # form_line.json (fetch_home_dex.py) says which forms EXIST and what each
 # looks like. It carries upstream's numbers, and those are never used for
@@ -298,6 +301,9 @@ def _mega_picture(name, f, mega_names, sprite_of, form_sprite):
 
 
 def _flat_form(name, p, f, bforms):
+    """Attach an upstream form's picture to BFORMS. Stops the build when the
+    form changes numbers Champions has no row for, or names an ability the
+    species lacks - drawing it anyway would state a wrong fact as ours."""
     bf = bforms.setdefault(name, {"by": f["by"], "f": {}})
     if f["k"] in bf["f"]:
         bf["f"][f["k"]]["sp"] = f["sp"]
@@ -337,6 +343,7 @@ def form_pictures(mons, form_line, bforms):
 
 
 def build_dex(mons):
+    """DEX rows: name, species, types, base stats, is-Mega, abilities, dex no."""
     rows = []
     for p in mons:
         b = p["base_stats"]
@@ -350,10 +357,9 @@ def build_dex(mons):
 
 
 def home_dex_with_forms(mons, form_line):
-    """What a species Champions LACKS turns into, which it had no way to say:
-    Mewtwo's card carried no Mega X or Y, Kyogre no Primal. Main-series
-    numbers, the same as the row they ride on - and the card's "not in the
-    Champions dex" tag covers them exactly as it covers the base."""
+    """HOME_DEX with each outside species' forms attached (Mewtwo's Mega X
+    and Y, Kyogre's Primal). Main-series numbers, the same as the row they
+    ride on - and the card's "not in Champions" tag covers them too."""
     home_dex = dex.db("home_dex") or {}
     champ = {p["name"] for p in mons}
     for name, forms in form_line.items():
@@ -390,14 +396,12 @@ def build_stones(mons):
     return stones
 
 
-# --- items, in the four groups the game itself uses -----------------------
-# Name, VP price, category, what it does, where it comes from. The effect
-# text was missing before, so the app listed item NAMES with no way to
-# know what any of them did, and the price was only in the shop.
-# the price is the MERGED one - Serebii first, pokebase filling the 20 it
-# prints as "??? VP" - with a note for the items that have no price at all
-# because they are rewards. scripts/build_item_prices.py does the merge and
-# reports any disagreement; there are none today.
+# --- items, in the groups the game itself uses -----------------------------
+# Name, VP price, category, what it does, where it comes from, and what it
+# serves. The price is the MERGED one - Serebii first, pokebase filling the
+# ones it prints as "??? VP" - with a note for items that have no price at
+# all because they are rewards. scripts/build_item_facts.py does the merge
+# and reports any disagreement.
 def _item_row(i, pr, link):
     moves = link.get("moves") or []
     return [i["name"], pr.get("vp") or i.get("price_vp"),
@@ -417,6 +421,8 @@ def _item_row(i, pr, link):
 
 
 def build_items(items):
+    """ITEMS rows, sorted by name. Mega Stones are left out on purpose: they
+    ship as STONES and get their own pane."""
     prices = (dex.db("item_facts") or {}).get("prices") or {}
     links = (dex.db("item_links") or {}).get("items", {})
     rows = [_item_row(i, prices.get(i["name"]) or {}, links.get(i["name"]) or {})
@@ -426,8 +432,8 @@ def build_items(items):
 
 
 def build_abilities(abil):
-    """Same merge for abilities: pokebase wins the nine where it states a
-    number Serebii leaves out (Guard Dog's +1 stage, Sand Veil's 25%)."""
+    """ABIL: ability -> its ONE description, the text build_text_facts.py
+    picked across the sources (the one that states the numbers wins)."""
     atext = (dex.db("text_facts") or {}).get("abilities") or {}
     out = {}
     for a in (abil if isinstance(abil, list) else abil.values()):
@@ -448,14 +454,15 @@ FORM_TYPED = {
 
 
 def _ability_rule(ab, rule, midx):
+    """One AB_MOVES entry, its move names turned into indices (ui/moves.js
+    documents every field)."""
     e = {"side": rule.get("side"), "x": rule.get("x"),
          "why": rule.get("why")}
     # `scope` means the rule covers a whole category and therefore picks
     # out nothing - the app states it once on the ability instead of
-    # badging every row with it. The move list is then dead weight on the
-    # phone (Guts alone was shipping 213 indices the page never reads), so
-    # it is dropped here rather than in data/db/ability_moves.json, where
-    # "which moves does Guts cover" is still a fair question to ask.
+    # badging every row. Its move list is then dead weight on the phone, so
+    # it is dropped here, not in data/db/ability_moves.json, where "which
+    # moves does Guts cover" is still a fair question to ask.
     if rule.get("scope"):
         e["scope"] = rule["scope"]
         return e
@@ -466,7 +473,7 @@ def _ability_rule(ab, rule, midx):
         # ...and which of those it STOPS OUTRIGHT, which is the only half
         # a defensive ability may badge a move row with. Everything else it
         # does - halving, punishing, a 30% burn back - belongs on the
-        # ability, not on 169 move rows.
+        # ability, not on every move row.
         if rule.get("stop"):
             e["stop"] = _idx(rule["stop"], midx)
         # ...and the moves it keeps off YOUR partner, which is the same
@@ -492,18 +499,15 @@ def build_ab_moves(am, midx):
 
 
 def home_only_species(mons, wt):
-    """The HOME box can hold Pokemon Champions does not allow - Melmetal and
-    Oricorio are already in it - so its picker cannot be the Champions dex.
-    pokebase's species table is the widest list on hand; anything in it that
-    the Champions dex has never heard of is offered as HOME-only, and the
-    picker also takes a typed name, because no list here is guaranteed
-    complete and HOME is the player's own record.
+    """HOME_ONLY: the names the HOME box may hold that Champions does not
+    allow. pokebase's species table is the widest list on hand; anything in
+    it the Champions dex has never heard of is HOME-only (the picker also
+    takes a typed name, since no list is guaranteed complete).
 
-    Matched with norm(), never by exact spelling. pokebase writes Indeedee-F
-    where our dex writes Indeedee-Female, and lists Squawkabilly's three
-    extra plumages separately - so an exact-name filter offered all of them
-    as "HOME only, not in the Champions dex" when they ARE in it, under the
-    canonical name. The player found both.
+    Matched with norm(), never by exact spelling: pokebase writes Indeedee-F
+    where our dex writes Indeedee-Female, and lists Squawkabilly's plumages
+    separately - an exact-name filter would call those "not in Champions"
+    when they ARE in it, under the canonical name.
     """
     champ_names = {p["name"] for p in mons} | {p.get("species") for p in mons}
     champ_keys = {dex.norm(n) for n in champ_names if n}
@@ -526,7 +530,7 @@ def cosmetic_spellings(wt, canon):
     Tauros' Paldean breeds written with hyphens, Indeedee-F. Shipped so the
     app can say "this is the same Pokemon" instead of the player meeting the
     question twice - these forms change no stat, no move and no ability, so
-    the dex carries one entry on purpose."""
+    the dex carries one entry on purpose. (COSMETIC)"""
     cosmetic = {}
     for n in wt:
         k = dex.norm(n)
@@ -567,6 +571,7 @@ MENUS = ("atk_ability", "def_ability", "atk_item", "def_item")
 
 
 def build_mods():
+    """MODS: per menu, the sorted names measured to move the damage."""
     measured = dex.db("modifiers") or {}
     return {k: sorted(measured.get(k) or {}) for k in MENUS}
 
@@ -577,9 +582,10 @@ AEGIS = {"attacking": "Aegislash-Blade", "defending": "Aegislash-Shield"}
 
 
 def smogon_names(mons):
-    """Our spelling -> the one Smogon's engine answers to. norm() does the work
-    (Mega Glalie <-> Glalie-Mega) and it lives in Python with 44 locked test
-    cases, so the mapping is precomputed here rather than ported to JS."""
+    """SMOGON_NAME: our spelling -> the one Smogon's engine answers to. norm()
+    does the work (Mega Glalie <-> Glalie-Mega) and lives in Python, locked
+    by test_norm.py, so the mapping is precomputed here rather than ported
+    to JS."""
     import damage as Dm
     names, missing = {}, []
     for p in mons:
@@ -597,9 +603,8 @@ def smogon_names(mons):
 def current_regulation():
     """(regulation, the day it started), or (None, None).
 
-    What this data IS, so the app can state its own vintage instead of the
-    player typing it. The stored `regulation` field said M-B three days into
-    M-C, which is the whole reason it stopped being a field.
+    What this data IS, so the app can state its own vintage instead of
+    anyone typing it (a typed regulation goes stale the day it changes).
     pokebase ships the regulation list and marks the current one; asking it
     is better than hardcoding, because the next regulation moves this on its
     own. The ladder numbers are that regulation's, since fetch_pokebase.py
@@ -623,24 +628,17 @@ def current_regulation():
 def build_effects(app_abilities, app_items, app_moves):
     """Trimmed to what a screen needs: the quantified sentence and the chips.
 
-    THE CHIPS ARE DECIDED HERE, not on the phone. They used to be one per
-    measurement and one per number found in the text, which is how Black
-    Glasses came to say x1.2 three times and Life Orb managed to disagree
-    with itself - x1.2998 twice from the engine's 4096ths and 1.3x once from
-    Smogon's sentence (player, 2026-09-18: "se tiene que llegar a 1 solo
-    concenso de la verdad y mostrar la informacion claramente 1 vez").
+    THE CHIPS ARE DECIDED HERE, not on the phone: one fact, one chip, never
+    the same number twice (the engine measures in 4096ths and Smogon writes
+    "1.3x", so naive merging shows x1.2998 beside 1.3x).
+    scripts/effect_chips.py is that consensus, a script of its own so that
+    `--audit` can list the numbers whose subject it still cannot name. The
+    raw stage dumps stay in data/db/effects.json for anyone checking.
 
-    scripts/effect_chips.py is that consensus, and it is a script rather than
-    a few lines here so that `--audit` can list the numbers whose subject it
-    still cannot name. The probe's raw stage dumps and every number it found
-    stay in data/db/effects.json for anyone checking the working.
-    WHAT THE SCREEN ALREADY SAYS decides what a chip may add (player,
-    2026-09-27: "no se dupliquen las descripciones" and "los tags deben ser
-    informacion util"). Each item, ability and move now carries ONE full
-    description; Smogon's one-line summary beside it was the same sentence
-    again, and most chips were its numbers again. So the summary is shipped
-    only where there is no description, and a chip only when the
-    description does not state its number - effect_chips.py rule 6.
+    WHAT THE SCREEN ALREADY SAYS decides what a chip may add. Each item,
+    ability and move carries ONE full description, so Smogon's one-line
+    summary ships only where there is no description, and a chip only when
+    the description does not state its number - effect_chips.py rule 6.
     """
     shown_text = dict(app_abilities)
     shown_text.update({r[0]: r[3] for r in app_items})
@@ -663,32 +661,19 @@ def build_effects(app_abilities, app_items, app_moves):
 # "how often is this brought" but "this exact set won".
 #
 # IT IS FILED UNDER THE FORM THAT WAS REGISTERED, which is always the
-# BASE one. Measured rather than assumed: of the 16,875 team slots pokedata
-# publishes, exactly ZERO are written as "Mega something". Takuma Yamazaki
-# won 2026 with "Floette [Eternal Flower] @ Floettite", and Floette is the
-# entrant.
+# BASE one: of the 16,875 team slots pokedata publishes, none is written as
+# "Mega something". Filing it under the Mega would invent an entrant that
+# was never on the sheet, and a search for Floette would miss the team that
+# won 2026 with one.
 #
-# This was the other way round for an afternoon - the medal went to Mega
-# Floette - and the player corrected it: "creo que deberia ser al reves, la
-# base tener la medalla y por consiguiente por el item se sabe que es
-# mega". He is right twice over. Filing it under the Mega invents an
-# entrant that was never on the sheet, and it makes a search for Floette
-# come back empty about the team that won with one.
-#
-# NOTHING IS LOST, because the stone is right there in the set, and the
-# stone settles it: stone_for() is 1:1 over all 81 Megas, so the Mega and
-# the single ability it gains are both derivable. They are derived HERE
-# rather than left to the reader - "esa se sabe por descarte" is true and
-# is exactly the kind of deduction a database should do for you.
-#
-# And the recorded ability is the BASE one, which is correct and must never
-# be called mislabelled: it is what the Pokemon has until it evolves, and
-# WHEN to evolve is a real decision because that ability is doing something
-# until then.
+# NOTHING IS LOST: the stone is in the set, and stone_for() is 1:1 over the
+# Megas, so the Mega and the single ability it gains are derived HERE (mg,
+# mgab) rather than left to the reader. The recorded ability is the BASE
+# one, which is correct: it is what the Pokemon has until it evolves.
 #
 # Placement comes from the players list's own `rank`, which is the final
-# standing - NOT a swiss round number. See the note in CLAUDE.md: pokedata
-# numbers the top cut straight on from the last swiss round.
+# standing - NOT a swiss round number (pokedata numbers the top cut straight
+# on from the last swiss round; .claude/rules/data-pipeline.md).
 def _best_worlds_sources():
     """ONE EVENT PER (YEAR, DIVISION). 2023 is the case that forces this:
     pokedata put that year's Masters teamlists on the Day 1 event and its
@@ -708,6 +693,7 @@ def _best_worlds_sources():
 
 
 def _podium_row(year, div, pl, slot, mega_of_stone, mega_abil):
+    """One top-8 set, in the short keys tracker/src/ui/pokemon.js reads."""
     row = {
         "y": year, "d": div, "r": pl["rank"],
         "who": pl.get("player") or "",
@@ -727,6 +713,7 @@ def _podium_row(year, div, pl, slot, mega_of_stone, mega_abil):
 
 
 def build_podium(stones, mons, canon):
+    """PODIUM: dex form -> its top-8 sets, newest first, Masters first."""
     mega_of_stone = {dex.norm(st): mega for st, mega, _sp in stones if st}
     mega_abil = {m["name"]: ", ".join(m.get("abilities") or [])
                  for m in mons if m.get("is_mega")}
@@ -761,9 +748,8 @@ def build_worlds():
     9 KB: a separate file would cost a second request forever to save nine
     kilobytes a night.
 
-    The three divisions stay apart. They are three metagames off one roster
-    and pooling them is wrong - Incineroar is 41% of Masters teams and 26%
-    of the kids' - so the app tabs between them instead of averaging.
+    The three divisions stay apart: three metagames off one roster, so the
+    app tabs between them instead of averaging.
     """
     worlds = []
     for y in (dex.meta("worlds_archive") or {}).get("years") or []:
@@ -781,13 +767,13 @@ def build_worlds():
 
 
 def item_for_move(links):
-    """Which item serves a given move - only the specific ones. Life Orb rides
-    on all 334 attacks and would badge every row with noise, so anything
+    """ITEM_FOR_MOVE: which item serves a given move - only the specific ones.
+    Life Orb rides on every attack and would badge every row, so anything
     covering more than 8 moves is left out of the reverse index.
 
-    ...and WHICH WAY each one points. Heat Rock on Sunny Day is a reason to
-    run the move; Aspear Berry on Ice Beam is the reason it will not work.
-    Both were the same grey chip.
+    ...and WHICH WAY each one points ("for" / "against"): Heat Rock on Sunny
+    Day is a reason to run the move; Aspear Berry on Ice Beam is a reason it
+    will not work.
     """
     items = links.get("items") or {}
     return {k: [[i, items[i].get("side") or "for"]
@@ -816,8 +802,7 @@ def main():
     form_sprite = form_pictures(mons, form_line, bforms)
     dex_rows = build_dex(mons)
     # ...and the National Dex number for everything HOME can hold, which is
-    # far more than the Champions dex: Melmetal and Oricorio are already in the
-    # box without one.
+    # far more than the Champions dex.
     dexno = (dex.db("dex_numbers") or {}).get("numbers", {})
     home_dex = home_dex_with_forms(mons, form_line)
     stones = build_stones(mons)
@@ -858,37 +843,29 @@ def main():
             "LEARN_ALIAS": learn_alias,
             "COSMETIC": cosmetic,
             "MEGA_OWNER": mega_owner,
-            # the status conditions, with Champions' own rebalance: paralysis
-            # is 12.5% here, not 25%, and nothing in the app said so
+            # the status conditions, with Champions' own rebalance
+            # (paralysis is 12.5% here, not 25%)
             "STATUSES": (dex.db("statuses") or {}).get("statuses") or {},
             "GTSDIFF": gts_difficulty(),
             # Species HOME's own GTS refuses to take. Not a Champions rule and
-            # not scraped from anywhere - the player found it in the game, and
-            # data/meta/gts_blocked.json says so per entry. Recommending a chip
-            # he cannot deposit is recommending something impossible.
+            # not scraped - seen in the game, and data/meta/gts_blocked.json
+            # says who confirmed each. A chip he cannot deposit must never be
+            # recommended.
             "GTSBLOCK": (dex.meta("gts_blocked") or {}).get("blocked") or {},
             # Mythical, read off PokeAPI at the pinned commit rather than
-            # typed from memory. Champions has none of them, so every one that
-            # reaches HOME lands in the pile the GTS recommendations put
-            # first - and Melmetal, the only one he has, is refused by the
-            # GTS. See data/meta/gts_blocked.json for what that is and is not
-            # allowed to conclude.
+            # typed from memory. The GTS probably refuses them (one confirmed
+            # case), so the app ranks them last and tags them - see gtsBlocked
+            # in core/trade.js and data/meta/gts_blocked.json.
             "MYTHICAL": (dex.db("species_flags") or {}).get("mythical") or [],
-            # THE TYPE COLOURS, TAKEN FROM POKEMON'S OWN STYLESHEET rather than
-            # guessed at. All eighteen used to be hand-written and darkened so
-            # white text would sit on them, which made every one of them wrong -
-            # Fire was #C8501E against the real #FD7D24. Each row carries the
-            # top colour, the bottom one (Dragon, Flying and Ground really are
-            # two-toned) and the text colour that type is written in, because
-            # that is a decision pokemon.com already made per type.
-            # scripts/build_type_colors.py, and --check says if upstream moved.
+            # THE TYPE COLOURS, from pokemon.com's own stylesheet: top, bottom
+            # (Dragon, Flying and Ground are two-toned) and the ink the type's
+            # name is written in. scripts/build_type_colors.py; --check says
+            # if upstream moved.
             "TYPE_COLORS": dex.db("type_colors") or {},
             # THE SPECIES CHAMPIONS DOES NOT HAVE, so a HOME row for one is a
-            # card like any other instead of a name and a tag. The player keeps
-            # 129 Pokemon in HOME and 24 of them were blank: "si quisiera hacer
-            # un cambio en pokemon home, no sabria por que cambiarlos".
-            # MAIN-SERIES NUMBERS, and the card says so - Champions has no row
-            # for these at all, so there is nothing of ours to contradict.
+            # card like any other instead of a name and a tag. MAIN-SERIES
+            # NUMBERS, and the card says so - Champions has no row for these
+            # at all, so there is nothing of ours to contradict.
             # scripts/fetch_home_dex.py, from PokeAPI's tables at a pinned
             # commit. The "not in the Champions dex" tag stays on every one.
             "HOME_DEX": home_dex,
@@ -910,13 +887,11 @@ def main():
             # the text, so the classification already made cannot drift.
             "AB_CLASS": am.get("classes") or {},
             "AB_CLASS_LABEL": am.get("class_labels") or {},
-            # WHAT A THING ACTUALLY DOES, AS A NUMBER. Serebii's item text is
-            # qualitative for 197 of the 199 - "slowly but steadily restores
-            # the holder's HP" is what Leftovers said on the phone, with the
-            # 1/16 nowhere in sight. data/db/effects.json carries the exact
-            # multipliers read out of the engine's own modifier stages and the
-            # numbers Smogon writes down, each with the sentence it came from.
-            # 48 KB trimmed, which is what it costs to stop guessing.
+            # WHAT A THING ACTUALLY DOES, AS A NUMBER: Serebii's item text is
+            # almost all qualitative ("slowly restores HP", never the 1/16).
+            # data/db/effects.json carries the exact multipliers read out of
+            # the engine's own modifier stages and the numbers Smogon writes
+            # down; build_effects() above trims them to what a screen shows.
             "EFFECTS": effects}
 
     with open(OUT, "w", encoding="utf-8") as f:

@@ -112,22 +112,16 @@ def dex_texts(force=False):
     """Smogon's FULL description of every move, ability and item - the text
     its dex page prints.
 
-    WHY (player, 2026-09-27): "octolock solo dice que lo deja octolocked and
-    can't escape statuses. pero no dice que significa cada uno de esos
-    statuses!... necesito que todos los moves esten igual de bien definidos
-    como lo hace smogon." And then of the other two: "haz lo mismo con las
-    abilities e items, smogon casi siempre los tiene mejor descritos y con
-    numeros... que la base de datos sea util y seria y no una simple
-    descripcion que no aporta nada."
+    WHY: the other sources NAME a mechanic ("Octolock: can't escape"); Smogon
+    DEFINES it, with its numbers, for moves, abilities and items alike.
 
     dump-basics carries only the one-line shortDesc ("Traps target, lowers
     Def and SpD by 1 each turn."). The page itself asks dump-move,
     dump-ability and dump-item, which answer with the whole mechanic: what it
     does, how much, how long, what ends it and what does not trigger it.
 
-    CHAMPIONS' OWN DEX AND NO OTHER (player, 2026-09-27: "al leer un move,
-    siempre la fuente debe ser champions dex o saber que viene de champions y
-    no de una gen"). Serebii and Smogon both keep one page per entry PER GAME,
+    CHAMPIONS' OWN DEX AND NO OTHER. Serebii and Smogon both keep one page per
+    entry PER GAME,
     and one reads differently from the next - Freeze-Dry freezes in
     Scarlet/Violet and does not in Champions. Something the Champions dex does
     not describe gets no text here, never an older game's.

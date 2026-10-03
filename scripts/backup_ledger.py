@@ -7,11 +7,10 @@
     python scripts/backup_ledger.py --restore FILE  # dry run: what would change
     python scripts/backup_ledger.py --restore FILE --confirm    # actually do it
 
-Supabase now holds EVERYTHING - the box, HOME, every build, every team, the
-stones, the items, VP (player, 2026-09-13: "supabase es la que guarda TODA la
-informacion"), and the repo's copy under inventory/ is being retired. That
-makes one database the single point of failure for the whole ledger, and the
-free plan takes no backups of its own. Nothing here was protecting it.
+Supabase holds EVERYTHING - the box, HOME, every build, every team, the
+stones, the items - and the repo holds no copy. That makes one database the
+single point of failure for the whole ledger, and the free plan takes no
+backups of its own. This is what protects it.
 
 What this actually protects against, in order of how likely it is:
 

@@ -4,8 +4,8 @@
 // it answers every question here - the same engine the app bundles, so the two
 // cannot disagree. It models 46 attacker-side abilities, 65 defender-side
 // ones, the conditional base powers and every multi-hit; a Python copy of the
-// formula would drift the moment Smogon updates them (one did, until
-// 2026-09-30, and read Seismic Toss as a 1 BP hit).
+// formula would drift the moment Smogon updates them (one did, and read
+// Seismic Toss as a 1 BP hit).
 //
 // The bundle is vendored under data/raw/smogon_calc/ and is plain CommonJS, so
 // this needs Node and nothing else - no npm install.

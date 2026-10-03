@@ -4,25 +4,18 @@
     python scripts/effect_chips.py            # what every chip reads as
     python scripts/effect_chips.py --audit    # the ones with no subject yet
 
-WHAT WAS WRONG (player, 2026-09-18, both halves of it):
+THE TWO FAILURES THIS PREVENTS: one fact shown several times, and a number
+with no subject.
 
-    "en algunas descripciones de items como por ejemplo black glasses dice
-     x1.2 3 veces seguidas... se tiene que llegar a 1 solo concenso de la
-     verdad y mostrar la informacion claramente 1 vez de manera cuantitativa"
-
-    "overgrow dice 1.5x y 1/3, deberia decir 1.5x damage y at 1/3 hp o algo
-     parecido... swift swim dice Double y no dice que"
-
-Black Glasses said x1.2 three times: twice from the engine, which probes a
+Black Glasses could say x1.2 three times: twice from the engine, which probes a
 physical and a special vehicle and gets the same answer from both, and once
 more from Smogon's sentence, which says it too. Life Orb managed to disagree
 with itself while doing it - x1.2998 twice and 1.3x once - because the engine
 works in 4096ths and 5324/4096 is not 1.3 exactly.
 
-And a chip reading 1/3, or Double, names no subject at all. The player's rule
-for when a tag earns its place: "si voy a repetir algo en tag es porque la
-informacion es nueva o complementaria o tiene otra mirada que ayuda a entender
-la habilidad."
+And a chip reading 1/3, or Double, names no subject at all (Overgrow's 1.5x
+is DAMAGE, its 1/3 is HP). A tag earns its place only when it says something
+new, complementary, or from an angle that helps understand the ability.
 
 THE FIVE RULES, in the order they apply.
 
@@ -212,11 +205,9 @@ def chips(entry):
 
 
 # --- 6: nothing the description already says --------------------------------
-# (player, 2026-09-27) "sitrus berry dice que al alcanzar 1/2 de hp, te recupera
-# 1/4 de hp y tiene dos tags con 1/2 hp y 1/4 hp, que no dicen absolutamente
-# nada... los tags deben ser informacion util, no algo que entorpezca la
-# comprension de un item o habilidad." And: "se debe aplicar a todos los items
-# y abilities."
+# Sitrus Berry's description says "1/4 max HP when at 1/2 max HP or less";
+# chips reading "1/2 HP" and "1/4 HP" beside it add nothing. Applies to every
+# item and ability.
 #
 # Rules 1-5 were written while the line under the chips was Smogon's ONE-LINE
 # summary. The description is Smogon's full Champions text now, and it states

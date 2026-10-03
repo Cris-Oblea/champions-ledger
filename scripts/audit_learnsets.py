@@ -26,8 +26,8 @@ disagree with Champions, and 16 base powers - so it is wrong about what a move
 does. This asks it only "who learns it", and when the two disagree, Serebii
 decides.
 
-THE FIRST RUN, 2026-09-16: 235 species paired, ~14,600 move-species pairs,
-SEVEN disagreements - and Serebii backed this project on all seven.
+THE FIRST RUN: 235 species paired, ~14,600 move-species pairs, SEVEN
+disagreements - and Serebii backed this project on all seven.
 
   we have, upstream does not
     Slash on 30 species   upstream has 1407 Slash rows and ZERO in the
@@ -51,7 +51,7 @@ import fetch_home_dex
 
 CHAMPIONS_VG = "32"
 
-# Checked one by one against the Serebii page for that move on 2026-09-16.
+# Checked one by one against the Serebii page for that move.
 # Every one of them is upstream being incomplete or carrying a main-series row.
 # A disagreement NOT in here is the point of the audit.
 KNOWN_OURS = {                       # we list it, upstream does not

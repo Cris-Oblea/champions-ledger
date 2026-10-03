@@ -70,6 +70,8 @@ def rows(blob, key):
 
 
 def engine_map():
+    """What the probe knows about items: which boost a type, which are
+    resist berries (probe_modifiers.js --map)."""
     r = subprocess.run(["node", PROBE, "--map"], cwd=ROOT,
                        capture_output=True, text=True, check=False)
     if r.returncode != 0:
@@ -78,6 +80,8 @@ def engine_map():
 
 
 def run(cases, chunk=120):
+    """Send the cases to the engine probe in chunks (one node process each,
+    to keep the command line short); every case's measured result."""
     got = []
     for i in range(0, len(cases), chunk):
         part = cases[i:i + chunk]
@@ -197,6 +201,8 @@ def _boost_cases(name, boost, veh):
 
 
 def _berry_cases(name, berry, veh):
+    """A resist berry measured where it fires: the holder DEFENDING against a
+    super-effective hit of its type, once physical and once special."""
     out = []
     for cat in ("Physical", "Special"):
         mv = a_move(veh, berry, cat)
@@ -236,6 +242,9 @@ def _generic_item_cases(name, veh):
 
 
 def cases_for_items(items, emap, veh):
+    """Every probe case for every item: a type booster on its type, a berry
+    on a super-effective hit, anything else in the generic positions. Mega
+    Stones are skipped - a stone creates a form, not a modifier."""
     out = []
     for it in items:
         name = it["name"]
@@ -336,6 +345,8 @@ def sentence_around(text, at):
 
 
 def numbers_from(text):
+    """Every number a sentence states (fraction, multiplier, percent...), as
+    {kind, value, shown}, each value once."""
     out, seen = [], set()
     for kind, pat in NUMBER_PATTERNS:
         for m in re.finditer(pat, text):

@@ -4,15 +4,10 @@
     python scripts/ledger.py            # what it can see right now
     python scripts/ledger.py --refresh  # ignore the cache
 
-`inventory/inventory.json` and `inventory/builds.json` used to hold this, and
-by 2026-09-13 they were wrong in both directions at once: the box said 47 and
-HOME 39 against a real 38 and 101, while builds.json held ten sets the app had
-never seen. `query.py owned` was printing "BOX 47/50" off two-day-old files.
-
-The player settled it: "ya nada deberia guardar datos en el repo, la DB es la
-que manda en ese sentido... yo borre esas builds cuando saque a los pokemones
-de champions que las tenian, no me importa perderlas." So the files are gone
-and this reads the ledger.
+THE DATABASE IS THE ONLY COPY. The repo holds none of his state: copies kept
+in files (the old inventory/ folder) drifted in both directions within days,
+and every CLI then printed stale numbers as current. So this reads the
+ledger, and nothing writes his state anywhere else.
 
 THREE SOURCES, IN ORDER, AND IT SAYS WHICH ONE IT USED:
 
@@ -34,13 +29,11 @@ THE VP COSTS BELOW ARE NOT LEDGER DATA. They are rules of the game, observed in
 play, and they stay in the repo where rules live - the same reason the Item
 Clause is in CLAUDE.md and not in a table.
 
-A PRICE IS NOT A BALANCE, and the balance is no longer tracked at all (player,
-2026-09-13: "en la app ya hablamos sobre eso y no es necesario... solo dejamos
-la casilla box para modificarla"). Profile keeps one editable field, box
-capacity. A number nobody can edit is a number that goes stale and then gets
-quoted as current - vp_balance had sat at 8000 since 2026-09-12, and the
-permanence-ticket count with it. So the costs stay and the balance is gone: say
-what something COSTS, and ask him what he has if it ever decides anything.
+A PRICE IS NOT A BALANCE, and the VP balance is not tracked at all: Settings
+keeps one editable field, box capacity. A number nobody keeps current goes
+stale and then gets quoted as current. So the costs stay and the balance is
+gone: say what something COSTS, and ask him what he has if it ever decides
+anything.
 """
 import argparse
 import json
