@@ -25,10 +25,10 @@ import argparse
 import glob
 import os
 import re
-import subprocess
 import sys
 from pathlib import Path
 
+import backup_ledger
 from paths import ROOT
 
 SQLDIR = os.path.join(ROOT, "supabase")
@@ -43,21 +43,14 @@ alter table public.schema_migrations enable row level security;
 
 
 def sql(text):
-    """Run SQL through the linked Supabase CLI. Returns (ok, output).
+    """Run SQL through backup_ledger's Supabase CLI door. Returns (ok, output).
 
     The CLI takes one string, and a `--` comment would swallow everything after
     it on the way through the shell, so comments are stripped and the whole
     file is sent as one line.
     """
-    body = " ".join(line for line in text.splitlines()
-                    if not line.strip().startswith("--"))
-    try:
-        r = subprocess.run(["supabase", "db", "query", body, "--linked"],
-                           cwd=ROOT, capture_output=True, text=True, timeout=180, check=False)
-    except (OSError, subprocess.TimeoutExpired) as e:
-        return False, "could not run the Supabase CLI: %s" % e
-    out = (r.stdout or "") + (r.stderr or "")
-    return r.returncode == 0, out
+    return backup_ledger.sql(" ".join(line for line in text.splitlines()
+                                      if not line.strip().startswith("--")))
 
 
 def files():

@@ -21,7 +21,7 @@ import os
 import subprocess
 import sys
 
-from paths import ROOT, SMOGON_CALC
+from paths import ESBUILD, ROOT, SMOGON_CALC
 
 CALC = os.path.join(SMOGON_CALC, "calc")
 ENTRY = os.path.join(CALC, "__entry.js")
@@ -47,16 +47,10 @@ def main():
         sys.exit("the engine is not vendored - run scripts/fetch_smogon_calc.py")
     with open(ENTRY, "w", encoding="utf-8") as f:
         f.write(ENTRY_SRC)
-    # The PINNED esbuild from node_modules, never `npx esbuild`. npx fetches
-    # whatever is newest at the moment it runs - unversioned, unreviewed, and
-    # in CI too - to build a file that then goes straight onto the phone. The
-    # version is in package-lock.json and `npm ci` installs exactly it, which
-    # is the same rule supabase-js follows for the same reason.
-    esb = os.path.join(ROOT, "node_modules", ".bin",
-                       "esbuild.cmd" if os.name == "nt" else "esbuild")
-    if not os.path.exists(esb):
-        sys.exit("esbuild is not installed - run `npm ci`. Looked in %s" % esb)
-    r = subprocess.run([esb, ENTRY, "--bundle", "--format=iife",
+    # paths.ESBUILD is the pinned one, never `npx esbuild` (see there)
+    if not os.path.exists(ESBUILD):
+        sys.exit("esbuild is not installed - run `npm ci`. Looked in %s" % ESBUILD)
+    r = subprocess.run([ESBUILD, ENTRY, "--bundle", "--format=iife",
                         "--minify", "--outfile=" + OUT],
                        capture_output=True, text=True, cwd=ROOT, check=False)
     if r.returncode != 0:
