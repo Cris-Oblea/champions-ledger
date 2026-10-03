@@ -1017,9 +1017,10 @@ function movePicker(draft, idx, ls, done){
   openSheet("Slot " + (idx + 1), function(body){
     if (!ls) {
       body.appendChild(el("div", "note bad",
-        "No movepool on record for " + draft.pokemon + ", so nothing can be " +
-        "offered here. Re-run scripts/refresh.py - the attackdex is where " +
-        "learnsets come from."));
+        "No movepool on record for " + draft.pokemon + " yet, so nothing can " +
+        "be offered here. The nightly data refresh fills movepools in from " +
+        "Serebii's attackdex; if this is still empty tomorrow, the gap is in " +
+        "the data, not in your build."));
       return;
     }
     if (abil && AB_SET[abil]?.side === "off") {

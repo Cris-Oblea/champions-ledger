@@ -439,8 +439,7 @@ function homeOnlyAdd(n){
         origin:"home", note:"", order:Object.keys(S.box).length})
       .then(function(){ closeSheet(); toast(n + " added to HOME"); });
   };
-  return outsideCard(n, "not in the Champions dex",
-    "It can live in HOME, but it can never be sent into the game.", add);
+  return outsideCard(n, add);
 }
 
 /* A name no list carries, added to HOME exactly as typed. */

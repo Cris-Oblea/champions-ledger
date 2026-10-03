@@ -911,11 +911,13 @@ function boxBadges(node, rec){
 
 /* A species Champions does not have, on THE SAME CARD: picture, typing and
    six stats from PokeAPI, which is what lets a HOME shelf be planned at all.
-   A name with no numbers at all keeps a plain row. `tag` and `why` are what
-   the caller's screen needs said about it. */
-function outsideCard(n, tag, why, onclick){
-  const badges = function(h){ h.appendChild(el("span", "tag bad", tag)); };
-  const notes = function(m){ m.appendChild(el("div", "st", why)); };
+   A name with no numbers at all keeps a plain row. It says the same thing on
+   every screen, in the words every other "not in Champions" tag uses. */
+function outsideCard(n, onclick){
+  const badges = function(h){ h.appendChild(el("span", "tag bad", "not in Champions")); };
+  const notes = function(m){
+    m.appendChild(el("div", "st", "It can live in HOME, but it can never be sent into Champions."));
+  };
   const op = anyRow(n);
   if (op) return pokeCard(op, {cls:"illegal", name:n, badges, notes, onclick});
   const r = el("button", "row illegal");
