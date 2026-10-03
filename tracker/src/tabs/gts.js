@@ -295,7 +295,7 @@ function offerSide(label, name, rec){
     box.appendChild(nm0);
     const mt0 = el("div", "rmeta");
     mt0.appendChild(el("span", "mono", dexLabel(name)));
-    if (name) mt0.appendChild(el("span", "tag bad", "not in the Champions dex"));
+    if (name) mt0.appendChild(el("span", "tag bad", "not in Champions"));
     box.appendChild(mt0);
     return box;
   }
@@ -671,7 +671,7 @@ function pickField(label, current, subtitle, opener, rec){
     const h = el("div", "rname");
     h.appendChild(document.createTextNode(current));
     if (rec) boxBadges(h, rec);
-    h.appendChild(el("span", "tag bad", "not in the Champions dex"));
+    h.appendChild(el("span", "tag bad", "not in Champions"));
     m.appendChild(h);
     const meta = el("div", "rmeta");
     meta.appendChild(el("span", "mono", dexLabel(current)));
@@ -1119,9 +1119,7 @@ function wantedCard(p, onPick){
 /* A species Champions has never heard of can still be asked for: it is how
    a HOME shelf gets filled. */
 function homeOnlyCard(n, onPick){
-  return outsideCard(n, "HOME only",
-    "It can live in HOME, but never enter Champions.",
-    function(){ onPick(n); });
+  return outsideCard(n, function(){ onPick(n); });
 }
 
 export { diffChip, drawGts, gtsPickMine, gtsPickWanted };

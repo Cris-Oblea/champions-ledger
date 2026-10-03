@@ -214,7 +214,7 @@ const w = dom.window;
   });
 
   /* the player met the same Pokemon twice under two spellings: Indeedee-F and
-     Indeedee-Female, one of them labelled "not in the Champions dex", and
+     Indeedee-Female, one of them labelled "not in Champions", and
      Squawkabilly's three extra plumages listed as if they were something
      else. HOME_ONLY is matched with norm() now, never by exact spelling. */
   describe("un Pokemon, un nombre", () => {
