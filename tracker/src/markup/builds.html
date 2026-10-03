@@ -10,10 +10,9 @@
         <span class="spacer"></span>
         <button class="btn primary fab" id="buildAdd"><span class="fabplus" aria-hidden="true">+</span>New build</button>
       </div>
-      <!-- Teams lives in here rather than in its own tab: an eighth tab broke
-           the phone's bar onto two rows and cost more visibility than the tab
-           was worth (player, 2026-09-13). They belong together anyway - a team
-           IS six builds, and this is the same pane pattern Items already uses. -->
+      <!-- Teams lives in here rather than in its own tab: an eighth tab would
+           break the phone's bar onto two rows. They belong together anyway - a
+           team IS six builds, and this is the same pane pattern Items uses. -->
       <div class="btnrow mb12">
         <button class="btn sm" id="bldPaneBuilds" aria-pressed="true">Builds</button>
         <button class="btn sm" id="bldPaneTeams" aria-pressed="false">Teams</button>
@@ -40,13 +39,11 @@
     </section>
 
     <!-- ===================================================== EDITORS ====
-         A build and a team are edited as real VIEWS, not as pop-up sheets.
-         They used to be sheets, and sheets nest: opening the item picker from
-         inside a team put a sheet on a sheet, so pressing Back closed BOTH and
-         took every unsaved slot with it (player, 2026-09-13). A view cannot be
-         dismissed by accident - the pickers stay sheets, because they are
-         short-lived and closing one now returns to an editor that still holds
-         its draft. -->
+         A build and a team are edited as real VIEWS, not as pop-up sheets,
+         because their pickers ARE sheets: a sheet on a sheet would close both
+         on Back and take the unsaved draft with it. A view cannot be dismissed
+         by accident, and closing a picker returns to an editor that still
+         holds its draft. -->
     <section class="view" id="v-buildedit" role="tabpanel" hidden>
       <div class="viewhead">
         <div><h1 id="buildEditTitle">Build</h1></div>

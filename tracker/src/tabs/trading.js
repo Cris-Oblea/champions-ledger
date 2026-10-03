@@ -29,35 +29,21 @@ const EMPTY_WANT = {
 };
 
 /* ============================================ trades worth making, from HOME
+   THIS READS THE HOME BOX: it starts from the CHIPS, not from what he wants.
+   Every Pokemon his own rule allows him to put up - a duplicate past the
+   first copy, or a species Champions cannot use - is asked the question the
+   deposit screen asks one at a time: what could this fetch? gtsSuggest
+   (core/trade.js) answers: the two price bands, nothing people are actually
+   running, and a species whose Mega Stone sits dead in the bag ranked up.
 
-   THIS READS THE HOME BOX, not the Champions one. The first version listed
-   the species welded into Champions and called them targets, which is a list
-   of Pokemon he already owns printed under a new heading - and the Champions
-   Box tab is that screen (player, 2026-09-21: "el listado de los pokemones
-   que tengo en champions es un poco tonto... si lo puedo ver desde champions
-   box"). The second half of what he said is the design: "seria bueno que el
-   gts recomendara hacer intercambios leyendo los pokemones que estan en mi
-   home, y que no solo sea una copia de la lista de la caja de champions".
+   The best asks FREE A SLOT: a species he holds only in the Champions box is
+   welded there (an Encounter Pokemon can never leave), so a HOME copy of it
+   is worth a whole slot - more than a dead stone, and the only thing here
+   that cannot be bought.
 
-   So it starts from the CHIPS. Every Pokemon in HOME that his own rule allows
-   him to put up - a duplicate past the first copy, or a species Champions
-   cannot use - is asked the question the deposit screen asks one at a time:
-   what could this fetch? The answer is gtsSuggest, which already knows the
-   two price bands, drops what people are actually running, and prefers a
-   species whose Mega Stone is sitting dead in the bag.
-
-   What was ADDED to it is the slot: a species owned only in the Champions box
-   used to count as owned and was filtered out, which removed the best asks on
-   the board. An Encounter Pokemon can never leave, so a HOME copy of one is
-   worth a whole slot - more than a dead stone, and the only thing here that
-   cannot be bought back.
-
-   AND NOTHING SAYS "EASY IN GO" ANY MORE. It did, off a declared `supply`
-   score, and he cut it: "es dificil que pongas que algunos son faciles en go,
-   porque sigue siendo dificil obtener algunos. para determinar que es facil
-   en go es mejor hacer un estudio". He is right - 260 of the 264 sit at
-   supply 2 because 2 is the default, so the claim was mostly a guess wearing
-   a number. What replaced it is his own closed trades, which are measured. */
+   NOTHING HERE SAYS "EASY IN GO": the `supply` estimate is mostly its
+   default value, too weak to recommend on. His own closed trades, which are
+   measured, are what this screen quotes instead. */
 function gtsChips(){
   const taken = {};
   gtsOffers().forEach(function(o){ if (o.offeredId) taken[o.offeredId] = 1; });
@@ -73,10 +59,8 @@ function gtsChips(){
      and a rental of that species in the Champions box does not make it a
      duplicate, because a rental can never come back out.
 
-     AND WHAT HOME'S GTS WILL NOT TAKE AT ALL. Melmetal is in his box, is a
-     species Champions cannot use, and was being recommended as a chip - and
-     the GTS refuses to hold it (player, 2026-09-21: "melmetal esta bloqueado
-     del gts"). A recommendation you cannot act on is worse than none.
+     AND NOT WHAT HOME'S GTS REFUSES TO HOLD (seen in game, e.g. Melmetal):
+     a recommendation you cannot act on is worse than none.
      data/meta/gts_blocked.json is the list and says who confirmed each. */
   return all.filter(function(r){
     if (taken[r._id]) return false;              /* already in a GTS slot */
@@ -84,8 +68,10 @@ function gtsChips(){
     return (copies[r.name] || 0) > 1 || !byName[r.name];
   });
 }
+/* six cards until he asks for the rest; the segment's current choice */
 const TRADE_CAP = 6;
 let tradeAll = false, WANT_FILTER = "all";
+/* Switch the All / Not in Champions / Duplicates segment and redraw. */
 function setWantFilter(v){
   WANT_FILTER = v;
   tradeAll = false;
@@ -103,7 +89,7 @@ function drawGtsWanted(){
   if (!host) return;
   wireWantFilter($("gtsWantFilter"));
   /* The segment answers "which KIND of chip"; the search box answers "that
-     one". With 44 chips the two are different questions. */
+     one". */
   const wq = ($("gtsWantSearch")?.value || "")
     .trim().toLowerCase();
   const ideas = tradeIdeas(filteredChips(wq));
@@ -154,12 +140,11 @@ function filteredChips(wq){
 }
 
 /* ONE CARD PER SPECIES, COUNTED. Three spare Garchomp are three chips and one
-   recommendation - they price and fetch identically (seen live, 2026-09-21).
-   Which COPY goes up is the deposit screen's decision; a shiny prices
-   differently, so it keeps a card of its own. THE ASKS ARE PLAYABLE ONLY
-   (player, 2026-09-21: "no quiero cambiar por pokemones que no pueda usar"):
-   a trade that brings back something Champions cannot play has bought a HOME
-   row and nothing else. */
+   recommendation - they price and fetch identically. Which COPY goes up is
+   the deposit screen's decision; a shiny prices differently, so it keeps a
+   card of its own. THE ASKS ARE PLAYABLE ONLY (gtsSuggest walks the
+   Champions dex): a trade that brings back something Champions cannot play
+   has bought a HOME row and nothing else. */
 function tradeIdeas(chips){
   const group = {}, ideas = [];
   chips.forEach(function(c){
@@ -176,10 +161,9 @@ function tradeIdeas(chips){
   return ideas;
 }
 
-/* THE CHEAPEST CURRENCY FIRST, his own reasoning: "de esos que no puedo usar
-   cambiarlos por pokemones usables en champions". A species Champions cannot
-   use costs him nothing to give away, so it is spent before a duplicate of a
-   playable one. Then the best outcome - a chip that can buy back a welded
+/* THE CHEAPEST CURRENCY FIRST: a species Champions cannot use costs him
+   nothing to give away, so it is spent before a duplicate of a playable one.
+   Then the best outcome - a chip that can buy back a welded
    slot, then one that turns on a dead stone - then whatever reaches
    furthest. What the GTS may refuse goes last. */
 function ideaOrder(a, b){
@@ -266,9 +250,8 @@ function ideaBadges(nm, i, mine){
   }
 }
 
-/* "Ask for: ..." - THE WHOLE LIST OPENS (player, 2026-09-21: "me gustaria
-   tener una vision mas amplia"). Six to start, because a card is read at a
-   glance and 24 tags is not a glance, and the rest one tap away. */
+/* "Ask for: ..." - six to start, because a card is read at a glance and 24
+   tags is not a glance, and the whole list one tap away. */
 function askLine(i){
   const line = el("div", "st");
   function paintAsks(n){
