@@ -8,7 +8,7 @@
    "rank": 1,
    "slug": "intimidate",
    "name": "Intimidate",
-   "usage_percent": 12.2,
+   "usage_percent": 12.1,
    "description": ""
   },
   {
@@ -36,14 +36,14 @@
    "rank": 5,
    "slug": "good-as-gold",
    "name": "Good as Gold",
-   "usage_percent": 4.1,
+   "usage_percent": 4.2,
    "description": ""
   },
   {
    "rank": 6,
    "slug": "psychic-surge",
    "name": "Psychic Surge",
-   "usage_percent": 4.1,
+   "usage_percent": 4.0,
    "description": ""
   },
   {
@@ -71,14 +71,14 @@
    "rank": 10,
    "slug": "rock-head",
    "name": "Rock Head",
-   "usage_percent": 2.8,
+   "usage_percent": 2.7,
    "description": ""
   },
   {
    "rank": 11,
    "slug": "rough-skin",
    "name": "Rough Skin",
-   "usage_percent": 2.6,
+   "usage_percent": 2.7,
    "description": ""
   },
   {
@@ -111,23 +111,23 @@
   },
   {
    "rank": 16,
+   "slug": "flower-veil",
+   "name": "Flower Veil",
+   "usage_percent": 2.1,
+   "description": ""
+  },
+  {
+   "rank": 17,
    "slug": "prankster",
    "name": "Prankster",
    "usage_percent": 2.1,
    "description": ""
   },
   {
-   "rank": 17,
+   "rank": 18,
    "slug": "stamina",
    "name": "Stamina",
    "usage_percent": 2.1,
-   "description": ""
-  },
-  {
-   "rank": 18,
-   "slug": "flower-veil",
-   "name": "Flower Veil",
-   "usage_percent": 2.0,
    "description": ""
   },
   {
@@ -153,16 +153,16 @@
   },
   {
    "rank": 22,
-   "slug": "flash-fire",
-   "name": "Flash Fire",
+   "slug": "flame-body",
+   "name": "Flame Body",
    "usage_percent": 1.3,
    "description": ""
   },
   {
    "rank": 23,
-   "slug": "flame-body",
-   "name": "Flame Body",
-   "usage_percent": 1.2,
+   "slug": "flash-fire",
+   "name": "Flash Fire",
+   "usage_percent": 1.3,
    "description": ""
   },
   {
@@ -230,15 +230,15 @@
   },
   {
    "rank": 33,
-   "slug": "poison-touch",
-   "name": "Poison Touch",
+   "slug": "liquid-voice",
+   "name": "Liquid Voice",
    "usage_percent": 0.6,
    "description": ""
   },
   {
    "rank": 34,
-   "slug": "snow-warning",
-   "name": "Snow Warning",
+   "slug": "poison-touch",
+   "name": "Poison Touch",
    "usage_percent": 0.6,
    "description": ""
   },
@@ -258,15 +258,15 @@
   },
   {
    "rank": 37,
-   "slug": "liquid-voice",
-   "name": "Liquid Voice",
+   "slug": "magic-bounce",
+   "name": "Magic Bounce",
    "usage_percent": 0.5,
    "description": ""
   },
   {
    "rank": 38,
-   "slug": "magic-bounce",
-   "name": "Magic Bounce",
+   "slug": "snow-warning",
+   "name": "Snow Warning",
    "usage_percent": 0.5,
    "description": ""
   },
@@ -286,36 +286,36 @@
   },
   {
    "rank": 41,
+   "slug": "mirror-armor",
+   "name": "Mirror Armor",
+   "usage_percent": 0.4,
+   "description": ""
+  },
+  {
+   "rank": 42,
    "slug": "soundproof",
    "name": "Soundproof",
    "usage_percent": 0.4,
    "description": ""
   },
   {
-   "rank": 42,
+   "rank": 43,
    "slug": "speed-boost",
    "name": "Speed Boost",
    "usage_percent": 0.4,
    "description": ""
   },
   {
-   "rank": 43,
+   "rank": 44,
    "slug": "gale-wings",
    "name": "Gale Wings",
    "usage_percent": 0.3,
    "description": ""
   },
   {
-   "rank": 44,
+   "rank": 45,
    "slug": "infiltrator",
    "name": "Infiltrator",
-   "usage_percent": 0.3,
-   "description": ""
-  },
-  {
-   "rank": 45,
-   "slug": "mirror-armor",
-   "name": "Mirror Armor",
    "usage_percent": 0.3,
    "description": ""
   },
