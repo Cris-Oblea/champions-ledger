@@ -123,8 +123,8 @@ def verify(chart, weak):
 
 
 def main():
-    """Write typechart.json and natures.json from Smogon's basics, then cross-
-    check the chart against Serebii's weakness tables.
+    """Write typechart.json and natures.json from Smogon's basics, then
+    cross-check the chart against Serebii's weakness tables.
     """
     basics = load_basics()
     chart = build_chart(basics)
