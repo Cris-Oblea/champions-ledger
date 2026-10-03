@@ -77,7 +77,7 @@ higher one, the higher one registers itself (`whenChanged(renderAll)`,
 (GTS value, team report, build cost) goes to `core/`, never into a tab file.
 The build links the parts with esbuild into `tracker/index.template.html`'s
 shell, then splits the result into `tracker/dist/`. **Edit the part, never
-`index.template.html` (a 23-line shell of markers), never `dist/` and never
+`index.template.html` (a shell of markers), never `dist/` and never
 `tracker/src/_*.js` (all generated).** `docs/ARCHITECTURE.md` §4.2 says what
 each file owns; `tracker/README.md` has the full write-up.
 
@@ -99,7 +99,7 @@ step between each, and a one-point drift can flip a KO count. After
 and the page inherits the same fix Smogon shipped.
 
 **Which ability touches which move is derived, not written** -
-`scripts/build_ability_moves.py --audit` classifies all 215 abilities and
+`scripts/build_ability_moves.py --audit` classifies every ability and
 prints the ones it has no rule for. Sheer Force comes from Smogon's
 `secondaries` field, not from Serebii's text: Serebii records a guaranteed
 on-hit effect (Icy Wind, Rock Tomb, Snarl) with no rate at all.
@@ -109,6 +109,6 @@ on-hit effect (Icy Wind, Rock Tomb, Snarl) with no rate at all.
 without it. Anything that measures x1.00 gets checked against the format before
 being called unmodelled; most such cases turned out not to exist in Champions.
 
-**Test by sweeping, not by sampling.** `tests/sweeptest.js` puts all 340 forms
+**Test by sweeping, not by sampling.** `tests/sweeptest.js` puts every form
 through the engine as attacker and defender. A 16-case sample shipped a Mega
 naming bug because no sampled case used a Mega.

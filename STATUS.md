@@ -1,4 +1,4 @@
-# Status — 2026-09-28
+# Status — 2026-10-03
 
 Where the project stands, and what comes next. What happened session by
 session is in `analysis/history.md`; this file is the current state only.
@@ -15,7 +15,7 @@ Five sources are scraped into local JSON, then joined by one query tool.
   pokedata.ovh ────┼──► data/raw/  (cached HTML+JSON, regenerable, not in git)
   PokeAPI ─────────┤          │
   Smogon ──────────┤          ▼
-  Smogon calc ─────┘   (the executable one: engine + 406 sets)
+  Smogon calc ─────┘   (the executable one: the engine and its sets)
                        build_db.py / fetch_*.py
                               │
                     data/db/    (rules: what exists, what it does)
@@ -54,6 +54,10 @@ the code in `.claude/rules/` (`.claude/rules/docs.md` has the map).
 | `build_typechart.py` | Type chart + natures, cross-checked against Serebii |
 | `audit_forms.py` | Checks no form/gender/Mega went missing |
 | `test_norm.py` | Checks names match across the five sources |
+
+Those are the ones a session reaches for. Every script, by family, is in
+`docs/ARCHITECTURE.md` §6, and §14 there goes from a symptom to the file
+behind it.
 
 ### Everyday commands
 

@@ -11,7 +11,10 @@ node tests/teamtest.js         # one
 ```
 
 The gate runs each file on its own; `BROWSER_TESTS` in `scripts/daily.py` is
-the list, with one line saying what each protects.
+the list, with one line saying what each protects. A test file that is not in
+that list never runs in the gate.
+
+## How a test is written
 
 **A check is one line, and Node's own runner judges it** (`node:test`):
 
@@ -33,131 +36,191 @@ const { dom, errs } = open({
 ```
 
 `check(label, got, want)` compares the two as strings and is one `node:test`
-test, so a failure fails the file - no test keeps its own counter or exit code
-(three of them once had none, and the gate printed "ok" over whatever they
-found). `open()` boots the page on a stubbed ledger and never needs a Supabase
-stub of its own: the tables passed are what the ledger holds, and passing any
-signs the page in. What the app sends back lands in `window.__WROTE`
-(`{op, table, row}`) and `window.__DELETED` (`{table, col, id}`).
+test, so a failure fails the file - no test keeps its own counter or exit code,
+because a test that prints its findings and exits 0 lets the gate say "ok" over
+them. Sections are `describe()` blocks, so a failure is reported under the
+section it broke.
 
-`row(id, name, fields)` and `build(id, pokemon, fields)` are a box row and a
-build with every column at its plain default, so a test writes only what its
-case is about (where the row sits, its origin, the moves); `click(node)` is a
-bubbling click. `fixture.js` builds its awkward ledger on the same two.
+Everything a test needs comes from `harness.js`:
 
-**Nothing waits a guessed number of milliseconds.** `await idle()` is one turn
-of the event loop, and that finishes everything the page started: the stubbed
-ledger answers with promises already resolved, and the app's own deferred work
-sits on zero-delay timers. A delay the app chose itself (the confirm dialog
-focuses its button after 30 ms) is waited out with `await until(cond)`, which
-never throws - the check after it says whether it held. Sections are
-`describe()` blocks, so a failure is reported under the section it broke.
-`ROOT` is the repo, for reading a file. `fixture.js` is the deliberately awkward ledger `ledgertest.js` walks.
+| Name | What it is |
+|---|---|
+| `open(tables)` | boots the built page on a stubbed ledger. The tables passed are what the ledger holds, and passing any signs the page in. Returns `{dom, errs}` |
+| `row(id, name, fields)` | a box row with every column at its plain default, so a test writes only what its case is about |
+| `build(id, pokemon, fields)` | the same for a build |
+| `click(node)` | a bubbling click |
+| `idle()` | one turn of the event loop |
+| `until(cond)` | waits for a delay the app chose itself; never throws |
+| `ROOT` | the repo, found from the harness file, ending in `/` |
+| `page()` | the built page's HTML, for a test that reads it rather than boots it |
+| `source()` | every hand-written `tracker/src/` part, joined, for code smells |
+| `styles()` / `markup()` | the stylesheets in cascade order, and the markup with its includes expanded - what a person wrote, not what the build made |
 
-## What each one is for
+What the app writes back lands in `window.__WROTE` (`{op, table, row}`) and
+`window.__DELETED` (`{table, col, id}`).
 
-**`pagetest.js`** — 16 cases covering an item, an ability on each side, weather,
-terrain, gravity, a screen, a status, a room, a multi-hit and a resist berry.
-The expected values in `enginecases.json` were produced by
-`scripts/damage.py`, so this compares the engine bundled in the
-page against the same engine run under Node. They should never disagree: it is
-the same code. If they do, the bundle is stale — re-run
-`scripts/build_engine_bundle.py`.
+**Nothing waits a guessed number of milliseconds.** `await idle()` finishes
+everything the page started: the stubbed ledger answers with promises already
+resolved, and the app's own deferred work sits on zero-delay timers. A delay
+the app chose itself (the confirm dialog focuses its button after a moment) is
+waited out with `await until(cond)`, and the check after it says whether it
+held.
 
-**`sweeptest.js`** — every form in the dex, as attacker and as defender, 680
-engine calls. This exists because a 16-case sample missed a whole class of bug:
-none of those cases used a Mega, so the Serebii→Smogon name mismatch
-("Mega Glalie" vs "Glalie-Mega") shipped. The sweep caught that and a second
-one nobody had noticed, Indeedee-Female, which Smogon files as `Indeedee-F`.
-Run it after any regulation adds forms.
-
-**`gtstest.js`** — a completed GTS trade must be an *exchange*. Adding the
-Pokemon you received without removing the one you gave away left a Chesnaught
-in the box that no longer existed.
-
-**`sptest.js`** — the SP slider in a build could not be dragged, only clicked
-one step at a time. `oninput` called `redraw()`, which rebuilds the whole sheet,
-so the element under the finger was destroyed on the first step. The test drives
-a drag the way a browser does — several `input` events on the SAME node — and
-asserts the node survives all of them; one event would have passed against the
-broken version. It also covers the two arrows and the typed 0-32 box.
-
-**`abilitytest.js`** — the ability badges on a move row, called through the
-page's own `abilityTag`. Every case is one that reached the player: Liquid
-Voice badging nothing on Hyper Voice, Adaptability badging Rain Dance,
-Contrary badging Protect — and Contrary badging **nothing** on Draco Meteor,
-Overheat and Leaf Storm, because the sentence splitter cut "Sp. Atk" in half
-and lost every special-stat move. It also asserts no defensive rule ever
-badges its own movepool.
-
-**`spreadtest.js`** — the x0.75 and the ally. Sweeps all 514 useable moves
-against Smogon's engine target column (the truth: Serebii spells one target
-four ways and gets Burning Jealousy, Misty Explosion and Corrosive Gas wrong),
-then checks the badges actually render in the build sheet and in the move
-picker, which showed nothing at all before.
-
-**`buildlinktest.js`** — a build belongs to a Pokemon, not to a species: active
-in the Champions box, kept-but-inactive when parked in HOME, deleted when the
-Pokemon is released. Written because the ledger already had an orphan — the
-Camerupt build survived its Camerupt being traded away, since releasing a box
-row never touched the build.
-
-**`pickertest.js`** — the move picker's sort and its three filter groups,
-driven the way a thumb does it: one chip, then two at once, then a sort on top
-of both, then chips off again. It asserts the groups AND together and that the
-count line tracks, because a filter combination that silently returns nothing
-looks exactly like an empty movepool.
-
-**`findtest.js`** — the search view. That "+ Move" offers the same controls as
-the build editor (they share one implementation), that every ability carries a
-bucket and the two move-related buckets still agree with the rule table, and
-that "in my box" is two independent filters over the two boxes.
-
-**`itemstest.js`** — the Items tab: the game's four groups, every item listed
-with its effect text and its price or its source, owned/not-owned toggling that
-does not lose the rows already stored, and search over the descriptions. It
-also checks the old `[name, [category]]` shape still reads, because that is
-what is in the ledger today.
-
-**`learnsettest.js`** — `learnset()` looked up the SPECIES first and the form
-second, so every regional form was handed its base form's pool: the app told
-the player Samurott-Hisui does not learn Ceaseless Edge or Sucker Punch, and
-Rotom-Wash does not learn Hydro Pump. 25 forms were affected and the build
-editor offers from the same list, so sets were being picked out of the wrong
-pool. The test asserts both halves — the form wins, and the species fallback
-still works, because a Mega has no pool of its own — then sweeps every form
-that has its own key, since a sample would have missed 24 of the 25.
-
-**`consistencytest.js`** — written after two bugs of the same shape landed on
-one day: a lookup that silently returns the wrong thing instead of failing.
-`STAT_LABEL` was declared twice and the second declaration won; `learnset()`
-resolved the species before the form. So this sweeps the code for both smells
-(no name declared twice, no focus guard outside the one form view) and then
-every table the page reads, asserting every key it will be asked for is there —
-movepools, type colours, ability text and buckets, stones, dex numbers, engine
-names, and every derived index pointing at something real.
-
-It also found a third: **`megasFor()` had the same fault**, offering
-Raichu-Alola the two Mega Raichu and Slowbro-Galar the Mega Slowbro. Smogon's
-roster states which form each Mega belongs to, and it is not always the base
-one — Mega Floette belongs to Floette-**Eternal**.
-
-**`tokenstest.js`** — the dark theme is written twice in `styles/tokens.css`,
-once for the system setting and once for the button, because CSS cannot OR a
-media query with a selector and `light-dark()` would leave an older browser
-with no colours. This fails when one block changes and the other does not.
-
-**`burntest.js`** — burn halves a physical attack and leaves a special one
-alone. It was reported as "doing nothing", and it was: a dead toggle left over
-from the hand-written engine was setting state the real engine never read.
+`fixture.js` is the deliberately awkward ledger `ledgertest.js` walks: a row
+of every shape the app has a branch for. `enginecases.json` holds the damage
+cases `pagetest.js` replays, with the ranges `scripts/damage.py` produced.
 
 ## The rule these encode
 
-Every one of these was written *after* a bug reached the player. A sample of
+Most of these were written *after* a bug reached the player. A sample of
 hand-picked cases keeps missing the thing nobody thought of, so where a full
-sweep is cheap — 680 calls take seconds — sweep instead of sampling.
+sweep is cheap - every form through the engine takes seconds - sweep instead
+of sampling. And each file opens with a comment saying which bug or rule it
+pins; that comment is the long version of the paragraph below.
 
-**`homelisttest.js`** — the HOME box opens on twelve rows and a button offers
-the rest, then folds them again. The shared fixture holds five HOME rows, so
-nothing else ever showed that button; it is also the one control whose redraw
-moved when the box drawing left `boot.js` for `tabs/box.js`.
+## What each one is for
+
+### The engine and the data the page reads
+
+**`pagetest.js`** - the damage engine bundled in the page against the same
+engine run under Node, over the cases in `enginecases.json` (an item, an
+ability on each side, weather, terrain, a screen, a status, a room, a
+multi-hit, a resist berry). It is the same code, so they never disagree; when
+they do, the bundle is stale - re-run `scripts/build_engine_bundle.py`.
+
+**`sweeptest.js`** - every form in the dex, as attacker and as defender,
+through the page's engine. A sample once shipped a Mega naming mismatch
+("Mega Glalie" vs "Glalie-Mega") because no sampled case used a Mega. Run it
+after a regulation adds forms.
+
+**`burntest.js`** - burn halves a physical hit and leaves a special one alone,
+through the page's own engine.
+
+**`consistencytest.js`** - bugs of one shape: a lookup that silently returns
+the wrong thing instead of failing. It sweeps the built code for the smells
+(a name declared twice, a focus guard outside the one form view) and every
+table the page reads for every key it will be asked for - movepools, type
+colours, ability text and buckets, stones, dex numbers, engine names, and
+every derived index pointing at something real. It is also where a Mega is
+checked against the form it belongs to (Mega Floette belongs to
+Floette-Eternal, and Raichu-Alola gets no Mega Raichu). Its Python twin is
+`scripts/audit_lookups.py`.
+
+**`learnsettest.js`** - a regional form has its own movepool: `learnset()`
+looks up the form before the species, so Samurott-Hisui learns Ceaseless Edge.
+The species fallback stays, because a Mega has no pool of its own. It sweeps
+every form with its own key.
+
+**`spreadtest.js`** - a spread move's x0.75, the moves that also hit your own
+partner, and priority. The shipped data is checked against Smogon's engine
+target column (Serebii spells one target several ways and gets some wrong),
+and the badges against the three places a move row is drawn.
+
+**`abilitytest.js`** - which ability badges which move, through the page's own
+`abilityTag`. Every case reached the player: Liquid Voice on Hyper Voice,
+Adaptability not on Rain Dance, Contrary not on Protect but on Draco Meteor,
+Overheat and Leaf Storm. No defensive rule badges its own movepool.
+
+**`usagetest.js`** - what this Pokemon's players run: the asset carries every
+page pokebase paginates in the browser, every move in the picker carries a
+percentage, the dropdowns are ordered by usage, and the move column is read
+as a share of move slots (it sums to ~100, so a fixed "popular" threshold
+would be wrong). It also covers the Worlds medals and history panes.
+
+**`itemstest.js`** - the items pane of the Gear tab: every item in the game's
+own groups, with its effect text and its price or its source, ownership as a
+row per item, and search over the descriptions.
+
+**`formtest.js`** - what a Pokemon turns into, by stone or by ability. A battle
+form gets the same card treatment as a Mega, the test pins the number of
+battle forms in Champions so a regulation adding one fails here, and every
+name a card can carry has its picture.
+
+### Builds
+
+**`buildlinktest.js`** - a build is its own thing, and `box_id` says which
+Pokemon carries it: active in the Champions box, parked in HOME, orphaned when
+its row is gone, unbound when it is an idea. A release unbinds rather than
+deletes.
+
+**`buildabilitytest.js`** - the ability a build runs and the one it saves. A
+`<select>` of one option never fires its own `onchange`, so a single-ability
+species (every Mega among them) is resolved and written as a fact, while two
+or three abilities stay a choice until he makes it.
+
+**`installtest.js`** - which copy a build is installed on: the dropdown's
+closed face is that copy and its card sits under it, the "trained" tag follows
+the build on and off a copy, and a team slot with a base build draws the base
+form alone.
+
+**`createtest.js`** - creating a record never overwrites one. Build and team
+ids are readable (`farigiraf`, `farigiraf-2`), and the database decides
+whether one is free: insert, and treat Postgres' 23505 as "taken, try the
+next". The fixture runs the race two devices would.
+
+**`pickertest.js`** - the move picker: groups AND together, chips inside a
+group OR, a chip's third state excludes, the sort combines with the filters,
+and the count line tracks.
+
+**`sptest.js`** - the SP slider survives a drag: several `input` events on the
+same node, which a `redraw()` from `oninput` would destroy on the first one.
+The arrows and the typed box too.
+
+### Teams
+
+**`teamtest.js`** - six slots and the clauses checked rather than remembered.
+A slot points at a build, the item lives on the slot, a team may be
+incomplete, and the fixture breaks both clauses on purpose. Also the slot
+picker's search and filters, the Speed and types views, and the list.
+
+### The box, HOME and the GTS
+
+**`gtstest.js`** - a completed GTS trade is an exchange: what you gave leaves,
+what you got arrives, and closing an offer updates its row.
+
+**`gtsorigintest.js`** - only a Pokemon that can leave the game is offered for
+deposit. Champions origin, a rental, and a missing origin are all locked.
+
+**`releasetest.js`** - only what the game can release is offered: never a
+HOME-origin Pokemon from the Champions box, and never one of the last six
+Champions-origin Pokemon.
+
+**`homelisttest.js`** - the HOME box opens on twelve rows, a button offers the
+rest and folds them again. The shared fixture is too small to ever show that
+button.
+
+**`dextest.js`** - the dex checklist: what is still missing, one copy per
+species, easiest first. A species already in HOME is done even when a copy is
+also in the Champions box.
+
+### The whole page
+
+**`ledgertest.js`** - the only test that boots a ledger with rows in every
+table (`fixture.js`) and walks every tab. It asserts no error of any kind, and
+that the awkward branches actually ran - a fixture that quietly stopped
+covering its case would still pass.
+
+**`profiletest.js`** - the Settings tab: one editable field, VP stored
+nowhere, every derived line present, what changes mid-battle, and the
+diagnostics.
+
+**`findtest.js`** - the search view: "+ Move" runs the same filters as the
+build editor, every ability carries a bucket that agrees with the rule table,
+and "in my box" is two independent flags over the two boxes.
+
+**`overlaptest.js`** - the algorithm behind "nothing painted on top of
+anything else". jsdom lays nothing out, so the real screens are swept on the
+device by the diagnostics button; this feeds the sweep rectangles it controls
+and checks it finds a planted collision, ignores the look-alikes, and stays
+linear.
+
+### The stylesheet
+
+**`tokenstest.js`** - the dark theme is written twice in `styles/tokens.css`
+(once for the system setting, once for the button, because CSS cannot OR a
+media query with a selector). This fails when one block changes and the other
+does not.
+
+**`tintdirtest.js`** - no card tint is an exactly vertical gradient. Firefox's
+renderer (Waterfox too) paints the seam of one twice, a bright line Edge never
+shows; the tints run at 179.9deg and this pins it.

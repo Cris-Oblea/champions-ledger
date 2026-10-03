@@ -48,7 +48,7 @@ def discover():
     Always fetched fresh: this is precisely the call that has to notice a
     Worlds that did not exist last time it ran.
     """
-    body = net.get(INDEX, timeout=45).decode("cp1252", "replace")
+    body = net.text(INDEX, timeout=45)
     rows = re.findall(r"location\.href='(\d+)/'[^>]*>([^<]+)", body)
     out = []
     for tid, raw in rows:
