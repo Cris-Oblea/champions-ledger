@@ -95,14 +95,14 @@ CHUNK = 25
 DB_URL = os.environ.get("CHAMPIONS_DB_URL")
 
 
-def sql(text, timeout=300):
+def sql(text):
     """Run one statement through the Supabase CLI. -> (ok, output)."""
     door = ["--db-url", DB_URL] if DB_URL else ["--linked"]
     try:
         r = subprocess.run(["supabase", "db", "query", text] + door
                            + ["-o", "json"],
                            cwd=ROOT, capture_output=True, text=True,
-                           encoding="utf-8", errors="replace", timeout=timeout, check=False)
+                           encoding="utf-8", errors="replace", timeout=300, check=False)
     except (OSError, subprocess.TimeoutExpired) as e:
         return False, "could not run the Supabase CLI: %s" % e
     out = (r.stdout or "") + (r.stderr or "")

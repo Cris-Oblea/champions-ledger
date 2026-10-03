@@ -122,7 +122,7 @@ function patch(path, body){
    devices creating at the same moment both pick the same id, and an upsert
    would let the second silently replace the first.
    Returns the id it used. */
-function putNew(t, stem, body, cap){
+function putNew(t, stem, body){
   if (offline()) return Promise.resolve(null);
   body.updated = new Date().toISOString().slice(0, 10);
   const tried = [];
@@ -143,7 +143,7 @@ function putNew(t, stem, body, cap){
       const taken = e && (e.code === "23505" ||
                         /duplicate key|already exists/i.test(e.message || ""));
       if (!taken) saveFailed(e);
-      if (++n > (cap || 30)) {
+      if (++n > 30) {
         toast("Could not find a free id after " + tried.length + " tries");
         throw e;
       }

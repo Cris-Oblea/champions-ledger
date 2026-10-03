@@ -47,7 +47,7 @@ never an older game's text.
   them in the browser, so the rendered HTML holds page 1 for ever and there is
   no URL for page 2. Everything is in the Next.js flight payload — the
   `self.__next_f.push([1,"..."])` chunks, concatenated and unescaped into one
-  JSON string. `fetch_pokebase_splits.py:flight()` does that. Rillaboom: 19
+  JSON string. `fetch_pokebase.py:payload()` does that. Rillaboom: 19
   moves over four pages, 26 spreads over six, 19 items over four. Reading the
   markup saw five of each.
 - **That page carries TWO datasets with the same headings and they are NOT the

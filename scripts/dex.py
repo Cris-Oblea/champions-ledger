@@ -59,8 +59,8 @@ def load(path, default=None):
     return _cache[path]
 
 
-def kept_stamp(path, blob, key="fetched"):
-    """blob[key], unless the file at `path` already holds this same blob: then
+def kept_stamp(path, blob):
+    """blob["fetched"], unless the file at `path` already holds this same blob: then
     the date already on it. A source re-parsed from cache, or re-fetched with
     nothing new in it, must not rewrite its file with only a new date - the
     nightly report hashes these files, and a moved date read as "Smogon
@@ -69,17 +69,17 @@ def kept_stamp(path, blob, key="fetched"):
         with open(path, encoding="utf-8") as f:
             old = json.load(f)
     except (OSError, ValueError):
-        return blob[key]
-    same = key in old and json.loads(json.dumps({**blob, key: old[key]})) == old
-    return old[key] if same else blob[key]
+        return blob["fetched"]
+    same = "fetched" in old and json.loads(json.dumps({**blob, "fetched": old["fetched"]})) == old
+    return old["fetched"] if same else blob["fetched"]
 
 
 def db(name):
     return load(os.path.join(DB, name + ".json"), [])
 
 
-def meta(name, default=None):
-    return load(os.path.join(META, name + ".json"), default)
+def meta(name):
+    return load(os.path.join(META, name + ".json"))
 
 
 # Worlds runs three age divisions off the same roster and the same regulation,

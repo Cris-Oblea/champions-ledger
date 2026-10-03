@@ -5,7 +5,7 @@
    "text": "No additional effect.",
    "source": "smogon",
    "serebii": "",
-   "pokebase": "",
+   "pokebase": "The user smashes into the target at high speed. This move always goes first.",
    "smogon": "No additional effect."
   },
   "Acid Armor": {
@@ -26,14 +26,14 @@
    "text": "Power doubles if the user has no held item.",
    "source": "smogon",
    "serebii": "This move's power is doubled if the user isn't holding an item.",
-   "pokebase": "",
+   "pokebase": "The user nimbly strikes the target. This attack does massive damage if the user isn't holding an item.",
    "smogon": "Power doubles if the user has no held item."
   },
   "Acupressure": {
    "text": "Raises a random stat by 2 stages as long as the stat is not already at stage 6. The user can choose to use this move on itself or an adjacent ally. Fails if no stat stage can be raised or if used on an ally with a substitute.",
    "source": "smogon",
    "serebii": "Boosts the Attack Defense Sp. Atk Sp. Def Speed accuracy or evasiveness of the user or an ally by 2 stages.",
-   "pokebase": "",
+   "pokebase": "The user applies pressure to stress points, sharply boosting one of its or its allies' stats.",
    "smogon": "Raises a random stat by 2 stages as long as the stat is not already at stage 6. The user can choose to use this move on itself or an adjacent ally. Fails if no stat stage can be raised or if used on an ally with a substitute."
   },
   "Aerial Ace": {
@@ -54,7 +54,7 @@
    "text": "Raises the user's Speed by 2 stages.",
    "source": "smogon",
    "serebii": "Boosts the user's Speed stat by 2 stages.",
-   "pokebase": "",
+   "pokebase": "The user relaxes and lightens its body to move faster. This sharply boosts its Speed stat.",
    "smogon": "Raises the user's Speed by 2 stages."
   },
   "Air Cutter": {
@@ -75,7 +75,7 @@
    "text": "Has a 100% chance to confuse the target if it had a stat stage raised this turn.",
    "source": "smogon",
    "serebii": "Confuses the target if its stats were boosted during the turn this move is used.",
-   "pokebase": "",
+   "pokebase": "The user attacks the target using its angelic voice. This also confuses the target if its stats have been boosted during the turn.",
    "smogon": "Has a 100% chance to confuse the target if it had a stat stage raised this turn."
   },
   "Ally Switch": {
@@ -110,7 +110,7 @@
    "text": "Has a higher chance for a critical hit (12.5%, against 4.17% for a normal move).",
    "source": "smogon",
    "serebii": "This move has a 1-stage Critical-Hit Ratio Boost.",
-   "pokebase": "",
+   "pokebase": "The user expels pressurized water to cut at the target like a blade. This move has a heightened chance of landing a critical hit.",
    "smogon": "Has a higher chance for a critical hit."
   },
   "Aqua Jet": {
@@ -145,7 +145,7 @@
    "text": "Lowers the user's Defense and Special Defense by 1 stage.",
    "source": "smogon",
    "serebii": "Lowers the user's Defense and Sp. Def stats by 1 stage.",
-   "pokebase": "",
+   "pokebase": "The user shoots its own armor out as blazing projectiles. This also lowers the user’s Defense and Sp. Def stats.",
    "smogon": "Lowers the user's Defense and Special Defense by 1 stage."
   },
   "Aromatic Mist": {
@@ -159,7 +159,7 @@
    "text": "Power doubles if the target has already taken damage this turn, other than direct damage from Belly Drum, confusion, Curse, or Pain Split.",
    "source": "smogon",
    "serebii": "This move's power is doubled if the target has already taken damage during the turn this move is used.",
-   "pokebase": "",
+   "pokebase": "This move's power is doubled if the target has already taken some damage in the same turn.",
    "smogon": "Power doubles if the target has already taken damage this turn, other than direct damage from Belly Drum, confusion, Curse, or Pain Split."
   },
   "Attract": {
@@ -362,7 +362,7 @@
    "text": "Has a 100% chance to lower the target's Attack by 1 stage.",
    "source": "smogon",
    "serebii": "Lowers targets' Attack stats by 1 stage.",
-   "pokebase": "",
+   "pokebase": "The user swings its tough tail wildly and attacks opposing Pokémon. This also lowers their Attack stats.",
    "smogon": "Has a 100% chance to lower the target's Attack by 1 stage."
   },
   "Brick Break": {
@@ -2301,7 +2301,7 @@
    "text": "Has a 10% chance to lower the target's Special Defense by 1 stage.",
    "source": "smogon",
    "serebii": "Has a 10% chance of lowering the target's Sp. Def stat by 1 stage.",
-   "pokebase": "The user relaxes and lightens its body to move faster. This sharply boosts its Speed stat.",
+   "pokebase": "The target is hit with a strong telekinetic force to inflict damage. This may also lower the target’s Sp. Def stat.",
    "smogon": "Has a 10% chance to lower the target's Special Defense by 1 stage."
   },
   "Psychic Fangs": {
@@ -4759,7 +4759,7 @@
    "text": "On switch-in, this Pokemon summons Snow, for 5 turns.",
    "source": "smogon",
    "serebii": "Snowstorm blows when the Pokémon enters battle. As of X & Y, this lasts 5 turns.",
-   "pokebase": "",
+   "pokebase": "Snowstorm blows when the Pokémon enters battle. As of X & Y, this lasts 5 turns.",
    "smogon": "On switch-in, this Pokemon summons Snow."
   },
   "Solar Power": {
