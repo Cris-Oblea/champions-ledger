@@ -3,6 +3,8 @@ import { $, el } from "../core/dom.js";
 import { dbState, openLedger } from "../core/store.js";
 import { ask } from "./nav.js";
 
+/* Called once by boot.js. A build with no Supabase config (or no client
+   library) still runs the reference tabs and says it is not connected. */
 function connect(){
   const cfg = window.CHAMP_CONFIG || {};
   if (cfg.supabase && window.supabase) return connectSupabase(cfg.supabase);
@@ -28,6 +30,7 @@ function connectSupabase(cfg){
     if (evt === "SIGNED_OUT") location.reload();
   });
 }
+/* Show the sign-in form, with an error line when there is one. */
 function showGate(msg){
   $("gate").hidden = false;
   if (msg) { $("gateErr").textContent = msg; $("gateErr").hidden = false; }
@@ -35,12 +38,14 @@ function showGate(msg){
     ($("gateEmail").value ? $("gatePass") : $("gateEmail")).focus();
   }, 80);
 }
+/* Signed in: hide the gate and open the ledger as this user. */
 function start(session){
   $("gate").hidden = true;
   openLedger(SB, session.user.id);
   dbState(true, "live");
   signedInChip(session.user.email);
 }
+/* The header button that says who is signed in and signs out. */
 function signedInChip(email){
   const bar = $("themeBtn").parentNode;
   if ($("whoBtn")) return;

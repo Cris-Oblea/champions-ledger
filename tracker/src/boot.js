@@ -37,19 +37,11 @@ function renderAll(){
   checkLatest();
 }
 
-/* ======================================================================= go */
-/* THE EXPLANATION STOPS STANDING IN FRONT OF THE ANSWER.
-
-   Measured at 758px: Builds spent 220px and 58 words before the first build,
-   HOME 199px, and Find 350px and 75 words before the first result - about a
-   quarter of the first screen, every time, on paragraphs that state rules the
-   player knows by heart (66 Stat Points, 32 max, the Item Clause).
-
-   NOTHING IS DELETED, AND NOTHING IS HIDDEN BEHIND A GUESS. The first sentence
-   stays - it is the one that says what the screen IS - and the rest goes
-   behind a button that says how many words are in it. That is a disclosure,
-   not a cut: the text is one tap away, it is still in the page for anyone
-   reading the source, and a reader who has never seen the app can open it.
+/* =========================================================== the intros ===
+   THE EXPLANATION STOPS STANDING IN FRONT OF THE ANSWER. A screen's intro
+   paragraph keeps its first sentence - the one that says what the screen IS -
+   and the rest folds behind a "why (N words)" button. Nothing is deleted:
+   the text is one tap away and still in the page.
 
    Done here rather than in the markup so it applies to every intro the app
    ever grows, and so the markup keeps reading as prose. */
@@ -58,18 +50,14 @@ function foldIntros(){
   Array.prototype.forEach.call(document.querySelectorAll(".view .lede, .view > .sub"),
     function(p){
       if (p.dataset.folded) return;
-      /* COLLAPSE THE WHITESPACE FIRST. The markup indents these paragraphs
-         across several lines, and `.` does not cross a newline - so the lazy
-         match could never reach the end of a first sentence that wrapped, and
-         the longest intro in the app folded not at all. */
+      /* COLLAPSE THE WHITESPACE FIRST: the markup indents these paragraphs
+         across several lines, and `.` does not cross a newline, so a first
+         sentence that wrapped would never match. */
       const text = (p.textContent || "").replace(/\s+/g, " ").trim();
       if (text.split(/\s+/).length <= LONG) return;
-      /* THE FIRST SENTENCE, and only on a real boundary. "0 VP." and "2500
-         VP." are not sentence ends, so a full stop counts only when what
-         follows starts a new one - a capital, a quote, OR A DIGIT. The digit
-         was missing and it cost the tab that needed this most: Builds opens
-         "...and it waits. 66 Stat Points, 32 max in one stat.", so nothing
-         matched and the longest intro in the app folded not at all. */
+      /* THE FIRST SENTENCE, and only on a real boundary: a full stop counts
+         only when what follows starts a new sentence - a capital, a quote,
+         or a digit ("...and it waits. 66 Stat Points..."). */
       const m = text.match(/^(.+?[.!?])\s+(?=[A-Z0-9"“])([\s\S]+)$/);
       if (!m) return;
       const rest = m[2].trim();
@@ -161,11 +149,11 @@ $("gtsHistSearch").oninput = drawGts;
    WRAPS the handler it finds rather than replacing it, and the handlers are
    assigned directly above. */
 wireClears();
-/* THREE PANES IN HOME, one switcher. The box, the GTS and the dex checklist
-   are asked at different times and were one scroll, so the checklist would
-   have opened under a 170-row box. The chosen pane is remembered, because
-   the answer to "what was I doing in here" is almost always the same one
-   (player, 2026-09-20: "podria ser algun submenu"). */
+/* THREE PANES IN HOME, one switcher: the box, the GTS and the dex checklist
+   are asked at different times, and one scroll would bury the checklist
+   under the whole box. The chosen pane is remembered, since the answer to
+   "what was I doing in here" is almost always the same one. The panes that
+   draw something expensive draw it only when shown. */
 const HOME_PANES = {box:"homePaneBox", gts:"homePaneGts", dex:"homePaneDex"};
 function homePane(which){
   if (!HOME_PANES[which]) which = "box";
@@ -185,7 +173,7 @@ document.querySelectorAll(".homeseg").forEach(function(seg){
 $("dexFilter").oninput = drawDexPane;
 try { homePane(localStorage.getItem("champ-homepane") || "box"); }
 catch (e) { homePane("box"); }
-/* three panes, one switcher - written once so a fourth cannot forget one */
+/* the Items tab's two panes: Mega Stones and held items */
 function gearPane(which){
   showPane({stones:["gearStonePane", "gearStones"],
             items:["gearItemPane", "gearItems"]}, which);

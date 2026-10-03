@@ -8,35 +8,30 @@ import { $, el, resetHost, showPane } from "../core/dom.js";
 import { S } from "../core/state.js";
 
 /* ===================================================================== tabs */
+/* [view id, label, icon path]. The view id is the `v-<id>` section in the
+   markup and what go() takes. Labels are kept to one word so the phone's bar
+   never wraps to two lines; each view's own heading spells the name out. */
 const TABS = [
-  /* One word each. "Champs Box" was the only label that wrapped to two lines
-     (measured at 360 and 390), which stretched the whole bar and left one tab
-     visibly taller than the other six. Each view's own H1 still says
-     "Champions Box" and "HOME Box" in full. */
   ["box", "Champs", "M3 8h18v11H3zM3 8l2-4h14l2 4M9 12h6"],
   ["home", "HOME", "M3 13h5l1 3h6l1-3h5M5 13 7 5h10l2 8v6H5z"],
   ["builds", "Builds", "M4 19V9m5 10V5m5 14v-7m5 7V8"],
   ["calc", "Damage Calc.", "M7 4h10v16H7zM10 8h4M10 12h4M10 16h4"],
   ["find", "Find", "M11 4a7 7 0 1 0 0 14 7 7 0 0 0 0-14M20 20l-4-4"],
   ["gear", "Items", "M12 8a4 4 0 1 0 0 8 4 4 0 0 0 0-8M4 12h2m12 0h2m-8-8v2m0 12v2M6.5 6.5 8 8m8 8 1.5 1.5m0-11L16 8M8 16l-1.5 1.5"],
-  /* SETTINGS, not Profile (player, 2026-09-27: "ya no es un profile, solo
-     permite configurar el box"). The view id stays `trainer` - it is an
-     internal name, and renaming it would touch every go("trainer"). */
+  /* the id stays `trainer` from when the tab was a profile: an internal
+     name only, and renaming it would touch every go("trainer") */
   ["trainer", "Settings", "M4 7h9m4 0h3M15 5v4M4 17h3m4 0h9M9 15v4"]
 ];
-/* The toast sits above the tab bar, whose height changes with the breakpoint
-   (47px icon-only at 320, 68px with labels at 412) and again in the desktop
-   rail. Measured and published as --navh rather than hard-coded. */
-/* A media query is a LAYOUT question, and a layout question must never be able
-   to stop the app loading. It could: syncNavHeight() runs during startup, and
-   where window.matchMedia is missing the TypeError propagated and killed the
-   rest of init - the box and the builds never loaded and every list rendered
-   empty. Real browsers all have it; the environment the page is TESTED in does
-   not, which is why five DOM tests had been finding an empty page. */
+/* Does a media query match? Never throws: a LAYOUT question must never be
+   able to stop the app loading, and jsdom (where the tests run) has no
+   matchMedia - a TypeError here once killed the rest of startup. */
 function mq(q){
   try { return !!(window.matchMedia?.(q).matches); }
   catch (e) { return false; }
 }
+/* The toast sits above the tab bar, whose height changes with the
+   breakpoint and again in the desktop rail, so the bar is measured and
+   published as --navh rather than hard-coded in the CSS. */
 function syncNavHeight(){
   const nav = $("tabs");
   if (!nav) return;
@@ -49,6 +44,7 @@ function syncNavHeight(){
 window.addEventListener("resize", syncNavHeight);
 window.addEventListener("orientationchange", syncNavHeight);
 
+/* Draw the tab bar from TABS, once, at startup. */
 function buildTabs(){
   const nav = $("tabs");
   TABS.forEach(function(t){
@@ -75,22 +71,17 @@ const EDITOR_HOME = {buildedit: "builds", teamedit: "builds"};
 const ON_SHOW = {};
 function onShow(tab, fn){ ON_SHOW[tab] = fn; }
 
+/* Show one view (a tab or an editor), hide the rest, light its tab. */
 function go(tab){
   /* ONE HISTORY ENTRY PER TAB CHANGE, so Back walks them one at a time.
-
-     Two things here were wrong when this was first written and both were found
-     by pressing Back in Edge rather than by reading it. THE FIRST TAB WAS
-     NEVER RECORDED: boot calls go() with S.tab already set to the same tab, so
-     the "did it change" guard skipped it and TABHIST started empty - which
-     meant the first real move made it length 1, not 2, and the entry that Back
-     needed was never pushed. AND ONLY ONE WAS EVER PUSHED, so a second Back
-     walked off the page. It seeds itself now, and every change pays its own
-     entry.
+     TABHIST seeds itself with the tab being left: at boot S.tab already
+     equals the first tab, so without the seed the first Back would have
+     nothing to return to.
 
      Never while servicing a Back - the handler calls go() itself and would
-     re-push what it just popped - and never on the way OUT of an editor, which
-     returns through go("builds") and is already paying for itself in
-     leaveEditor(). */
+     re-push what it just popped - and never on the way into or out of an
+     editor, whose own history entry is paid for by layerOpened() and
+     layerClosed(). */
   if (!NAV_BACK && S.tab !== tab &&
       !EXTRA_VIEWS.includes(tab) && !EXTRA_VIEWS.includes(S.tab)) {
     if (!TABHIST.length) TABHIST.push(S.tab || tab);
@@ -110,8 +101,6 @@ function go(tab){
   window.scrollTo(0, 0);
 }
 
-/* The sheet API, rendered into a view instead. Same three arguments, so the
-   body-building code that used openSheet moves across untouched. */
 /* Leaving an editor returns to the list it came from, which is the Builds tab
    with one pane or the other showing. */
 function leaveEditor(pane){
@@ -121,6 +110,9 @@ function leaveEditor(pane){
   if (wasOpen) layerClosed();
 }
 
+/* The sheet API, rendered into a full-screen view instead ("buildedit" or
+   "teamedit"). Same arguments as openSheet - `build(body)` fills it, `foot`
+   is the buttons - so a builder written for a sheet works here unchanged. */
 function openEditor(view, title, build, foot){
   const pre = view === "teamedit" ? "teamEdit" : "buildEdit";
   $(pre + "Title").textContent = title;
@@ -135,11 +127,11 @@ function openEditor(view, title, build, foot){
 
 /* ===================================================================== sheet */
 /* ---------- body scroll lock -------------------------------------------
-   With a sheet open, dragging it to its end used to start scrolling the page
-   underneath - the single clearest "this is a web page" tell on a phone.
-   overscroll-behavior:contain on .sheetbody stops the chaining; this stops
-   the page moving at all, and restores the exact scroll position after. A
-   counter, not a boolean, because gtsSheet closes and reopens itself. */
+   With a sheet open, the page underneath must not scroll - on a phone that is
+   the clearest "this is a web page" tell. overscroll-behavior:contain on
+   .sheetbody stops the chaining; this pins the page itself and restores the
+   exact scroll position after. A counter, not a boolean, because a sheet may
+   close and reopen itself while a dialog sits over it. */
 let _lockY = 0, _lockN = 0;
 function lockScroll(on){
   const b = document.body;
@@ -156,6 +148,8 @@ function lockScroll(on){
   }
 }
 
+/* The modal sheet: `build(body)` fills it, `foot` is its buttons (nulls are
+   skipped). Opening one while another is open replaces it in place. */
 function openSheet(title, build, foot){
   $("sheetTitle").textContent = title;
   /* #sheetBody is ONE node reused by every sheet - resetHost says why it
@@ -188,10 +182,9 @@ document.addEventListener("keydown", function(e){
    `confirm()` draws the OPERATING SYSTEM's dialog in the middle of a designed
    app: another typeface, another button order, another set of words, and on a
    phone it lands at the top of the screen, far from the thumb that asked for
-   it. Seven of them were in here and every one guards something irreversible
-   - deleting a build, buying a rental into Champions origin, closing a trade
-   (player, 2026-09-16: "debería la app tener su propio estilo de alertas y
-   notificaciones, para conservar el mismo diseño").
+   it. Every confirm in the app guards something irreversible - deleting a
+   build, buying a rental into Champions origin, closing a trade - so it is
+   drawn in the app's own design instead.
 
    Returns a promise so the callers read the same way they did with confirm(),
    one `await`-shaped step instead of a callback pyramid.
@@ -245,15 +238,10 @@ function ask(title, body, okLabel, danger){
 }
 
 /* ================================================= THE PHONE'S BACK BUTTON ==
-   On Android, Back minimised the app.
-
-     "el boton atras de los celulares android minimiza la app, deberia solo ir
-      atras dentro de la app, habria que habilitar la navegacion nativa movil
-      para la comodidad en movil."  (player, 2026-09-19)
-
-   It did that because nothing here ever touched history: the page loads once
-   and everything after is a hidden/shown <section>, so the browser's only
-   entry IS the page and Back leaves it.
+   The page loads once and everything after is a hidden/shown <section>, so
+   without help the browser's only history entry IS the page, and Android's
+   Back would leave the app. So every layer and tab change pushes an entry,
+   and Back undoes the topmost thing instead.
 
    WHAT BACK SHOULD UNDO, topmost first - the same order the eye would expect:
 
@@ -291,6 +279,7 @@ function layerClosed(){
   try { history.back(); } catch (e) { SWALLOW--; }
 }
 
+/* is one of the two editor views showing? */
 function inEditor(){
   return EXTRA_VIEWS.some(function(v){
     const n = $("v-" + v);
@@ -325,10 +314,9 @@ window.addEventListener("popstate", function(){
   } finally { NAV_BACK = false; }
 });
 
-/* Builds and Teams share one tab, by the same switcher. An eighth tab wrapped
-   the phone's bar onto two rows, which cost more than the tab was worth
-   (player, 2026-09-13) - and they belong together anyway, since a team IS six
-   builds. */
+/* Builds and Teams share one tab, switched by a segmented control: an eighth
+   tab would wrap the phone's bar onto two rows, and they belong together
+   anyway, since a team IS six builds. */
 function buildsPane(which){
   showPane({builds:["buildsPane", "bldPaneBuilds"],
             teams:["teamsPane", "bldPaneTeams"]}, which);

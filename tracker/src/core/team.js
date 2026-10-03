@@ -10,9 +10,9 @@ import { buildLink, hasStone, S } from "./state.js";
 /* ===================================================================== teams
    A team is six slots, and a slot points at a BUILD rather than at a box row -
    so one Pokemon can sit in any number of teams and editing its set updates
-   every one of them (player, 2026-09-13). A build may itself be unbound, which
-   is what lets a team be four-sixths real and still worth writing down: he
-   asked to be told what he has, where it is, and what is still missing.
+   every one of them. A build may itself be unbound (an idea), which lets a
+   team be four-sixths real and still worth writing down: the report says what
+   he has, where it is, and what is still missing.
 
    THE ITEM LIVES ON THE SLOT. Not a layout choice - the Item Clause means six
    Pokemon field exactly one Sitrus Berry, so an item stored per build is a
@@ -48,6 +48,8 @@ function megaOf(b, slot){
   return null;
 }
 
+/* Always exactly six slots, empty ones as {}, so every screen can index
+   slot 0..5 without checking. */
 function teamSlots(t){
   const out = (t?.slots || []).slice(0, TEAM_SLOTS);
   while (out.length < TEAM_SLOTS) out.push({});
@@ -124,17 +126,13 @@ function slotReadiness(r, b, sl, info){
 }
 
 /* The slot's form, and THE SPEED THE BUILD ACTUALLY HAS - its own SP and
-   nature, not its species' base row (player, 2026-09-21: "seria bueno que
-   representara el numero real de la build de cada pokemon, para saber quien
-   es mas rapido en mi build"). Two builds of one species differ by 32 SP and
-   a nature, which is most of what a Speed order is decided by.
+   nature, not its species' base row. Two builds of one species differ by 32
+   SP and a nature, which is most of what a Speed order is decided by.
 
-   A SCENARIO IS EARNED BY A CHANGE, whichever half of the screen it lands in
-   (player, 2026-09-21: "el pokemon solo cambia de stat al mega evolucionar y
-   si no mega evoluciona la tabla de speed no cambia"). Mega Sceptile retypes
-   AND gains 25 Speed; Mega Camerupt keeps Fire/Ground and drops from 40 to 20,
-   which the type table cannot see and the Speed order very much can - so a
-   Mega counts if it changes the typing OR the Speed. */
+   A Mega becomes a "what if it evolves" case (megaCases) only if it CHANGES
+   something on screen: the typing, or the Speed. Mega Camerupt keeps
+   Fire/Ground but drops from 40 to 20 Speed - invisible to the type table,
+   decisive in the Speed order. */
 function slotForm(r, b, sl, p, info){
   const mg = megaOf(b, sl);
   info.p = p;
@@ -158,10 +156,9 @@ function slotForm(r, b, sl, p, info){
    or null for nobody - the same argument teamTypes takes, because they are
    two readings of the same battle and must never disagree on screen.
 
-   A Pokemon only gains the Mega's stats by evolving, so an unevolved slot is
-   its base row no matter what stone it is carrying. That is the whole reason
-   this is a selector and not four Megas listed at once, which is what it used
-   to be and could not happen. */
+   Only one Pokemon may Mega Evolve per battle, and an unevolved slot is its
+   base row whatever stone it carries - so this is asked per outcome, never
+   with every Mega applied at once. */
 function teamSpeeds(r, megaAt){
   const out = [];
   r.slots.forEach(function(s, i){
@@ -180,38 +177,25 @@ function teamSpeeds(r, megaAt){
   return out;
 }
 
-/* What the six of them, together, are weak to. The chart is already shipped,
-   so this is a count rather than a claim: how many of the team take super
-   effective damage from each attacking type, and how many resist it. */
-/* `megaAt` is the slot index that has Mega Evolved, or null for nobody.
+/* What the six of them, together, are weak to and resist, per attacking
+   type: a count off the shipped type chart, with the names behind it, worst
+   first. `megaAt` is the slot index that has Mega Evolved, or null.
 
-   ONE TABLE WAS NEVER THE TRUTH FOR A TEAM CARRYING A RETYPING STONE, and the
-   player named the shape himself (2026-09-21):
-
-     "podria la tabla mencionar dos casos cuando se hallen? ... si mi equipo
-      tiene 2 megapiedras, hacer dos tablas cuando una o ambos de los pokemones
-      que evolucionan cambian de tipo ... también es importante mencionar que a
-      veces no se megaevoluciona de inmediato porque es preferible esperar tal
-      vez para resistir algo, entre otros. así que también debería quedar una
-      tabla antes de ser mega si el tipo cambiase."
-
-   Both halves are right and both are already rules of this format. Only ONE
-   Pokemon may Mega Evolve per battle, so two stones are two different teams
-   and never one, which is why they cannot be merged into a single table. And
-   "before" is not a transitional state to be skipped: Mega Evolution resolves
-   AFTER switch-ins, so the base typing is what takes the first hit, and
-   staying in base form to resist something is a real play. */
+   ONE TABLE PER OUTCOME, because a retyping stone makes several teams out of
+   one. Only one Pokemon may Mega Evolve per battle, so two stones are two
+   different teams and cannot be merged. And the base typing is a real case,
+   not a transition: Mega Evolution resolves after switch-ins, so the base
+   form takes the first hit, and staying unevolved to resist something is a
+   real play. */
 function teamTypes(r, megaAt){
   const out = [];
   /* Stellar is in the chart and NOT in Champions - there is no Tera here, so
      no move can be that type and counting it would invent a weakness. */
   Object.keys(C.CHART).filter(function(t){ return t !== "Stellar"; })
         .forEach(function(atk){
-    /* THE NAMES, not just the tally. "Fire: 3 weak, 1 resist" is a count of
-       a thing you then have to work out for yourself, one Pokemon at a time
-       (player, 2026-09-21: "no dice quien es debil a que cosa ni tampoco
-       quien resiste que cosa"). The multiplier rides along because x4 and x2
-       are not the same problem, and neither are x0.25 and x0.5. */
+    /* THE NAMES, not just the tally: "Fire: 3 weak" leaves you to work out
+       who. The multiplier rides along because x4 and x2 are not the same
+       problem, and neither are x0.25 and x0.5. */
     const weakOf = [], resistOf = [];
     r.slots.forEach(function(s, si){
       if (!s.types || !s.name) return;
@@ -237,28 +221,14 @@ function teamTypes(r, megaAt){
 }
 
 /* ------------------------------------------------ WHAT CAN ACTUALLY BE HELD --
-   Two things were wrong with the pool this picker offered, and the player hit
-   both in the same minute (2026-09-21):
+   The pool the team's item picker offers: every Hold Item and Berry, plus
+   every Mega Stone.
 
-     "en el apartado de items no puedo equipar mega piedras!"
-     "los items miscellaneous no se pueden equipar...."
-     "solo necesito los hold items (los berries son hold items igual) y las
-      mega piedras para equiparlas..."
-
-   THE STONES WERE NEVER IN THE LIST. `build_tracker_data.py` skips every row
-   with `is_mega_stone` when it builds C.ITEMS - deliberately, because the
-   Items tab gives them a pane of their own - so all 81 of them were missing
-   from the one screen where an item is actually equipped. They come from
-   C.STONES here instead, which is [stone, mega, species].
-
-   AND A THIRD OF WHAT WAS THERE COULD NOT BE HELD. 33 of the 118 rows are
-   Miscellaneous, which is the game's bucket for things that are not held at
-   all, so they were a third of the list you scroll through and none of them
-   was ever an answer.
-
-   Berries are Hold Items in every sense that matters here - the category is
-   the shop's shelf, not a rule - so they stay, and the chip stays with them
-   because "which Berry" is a real question. */
+   The stones come from C.STONES ([stone, mega, species]), because C.ITEMS
+   leaves them out on purpose - the Items tab gives them a pane of their own.
+   Miscellaneous items are dropped: that is the game's bucket for things that
+   cannot be held. Berries stay - their category is the shop's shelf, not a
+   rule about holding. */
 function holdable(){
   const out = (C.ITEMS || []).filter(function(it){
     const cat = it[2] || "Miscellaneous";

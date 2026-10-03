@@ -7,6 +7,11 @@ import {
 } from "./data.js";
 import { baseAbility, megaAbility, ownedNames } from "./state.js";
 
+/* What is wrong with a build draft, as [tone, html] lines: "bad" breaks a
+   rule (SP over budget, a move it cannot learn, not in the box), "warn" is
+   legal but questionable (priority on the weaker side, a move that hits the
+   ally, Intimidate on your own side). `p` is the species row. The editor
+   shows these live, so a set is checked while it is written. */
 function checks(d, p){
   const out = [];
   const tot = spTotal(d.stat_points);
@@ -70,6 +75,9 @@ function checks(d, p){
   return out;
 }
 
+/* The VP it costs to turn build `a` into build `b` in game, as
+   {vp, parts}, or null when nothing billable changed. Every Stat Point moved
+   counts, in either direction, since the game charges for each one. */
 function retuneCost(a, b){
   const parts = [];
   let vp = 0;

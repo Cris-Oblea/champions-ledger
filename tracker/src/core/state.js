@@ -12,6 +12,8 @@ import { byName, byText, dexNo } from "./data.js";
    than two exported variables, because an importer may change an object's
    properties but may never reassign another module's binding. */
 const VIEW = {sort: "dex", homeAll: false};
+/* Whether a box row matches a lowercased search: its name, dex number,
+   types, note, or the words "shiny" / "trained". */
 function rowMatches(r, q){
   if (!q) return true;
   if (r.name.toLowerCase().includes(q)) return true;
@@ -23,6 +25,8 @@ function rowMatches(r, q){
   if (r.note && String(r.note).toLowerCase().includes(q)) return true;
   return false;
 }
+/* A copy of the rows in the order VIEW.sort asks for: A-Z, or dex order
+   (the order HOME itself shows). */
 function sortRows(rows){
   const r = rows.slice();
   if (VIEW.sort === "az") {
@@ -35,10 +39,16 @@ function sortRows(rows){
   return r;
 }
 
-/* ===================================================================== state */
+/* ===================================================================== state
+   One map per table, {id: record}, filled by core/store.js. `db` is the live
+   connection (null until signed in), `ready` turns true once the box has
+   loaded, and `tab` is the screen showing. */
 const S = {box:{}, builds:{}, teams:{}, stones:{}, items:{}, gts:{},
          meta:{}, db:null, ready:false, tab:"box"};
 
+/* The box rows in one location ("champions" or "home"), optionally of one
+   status ("permanent" / "rental"), in his own order. Each row gets its id as
+   `_id`, since the record itself does not carry it. */
 function boxRows(loc, st){
   return Object.keys(S.box).map(function(k){
     const v = S.box[k]; v._id = k; return v;
@@ -61,21 +71,19 @@ const ORIGIN_LABEL = {home:"HOME origin", champions:"Champions origin",
                     unknown:"origin?"};
 
 /* ------------------------------------------------ who can be RELEASED ----
-   Two in-game rules (player, 2026-09-27), and releasing is the only way out
-   of the box that destroys the Pokemon, so both are enforced here, once:
+   Releasing is the only way out of the box that destroys the Pokemon, so the
+   game's two rules about it are enforced here, once:
 
-   - A HOME-origin Pokemon is never released from the Champions box. The game
-     does not offer it, and it has no reason to: "Park back to HOME" frees the
-     slot and keeps the Pokemon. It is a real Pokemon, so a second copy of it
-     is value, never a duplicate to get rid of.
+   - A HOME-origin Pokemon is never released from the Champions box: "Park
+     back to HOME" frees the slot and keeps it. A second copy of a real
+     Pokemon is value, never a duplicate to get rid of.
    - The game refuses a release that would leave fewer than six to battle
      with. HOME-origin ones can always be parked out, so the floor lands on
-     the Champions-origin ones: while six or fewer remain, none of them can
-     go, and those six hold their slots for good ("así de simple").
+     the Champions-origin ones: while six or fewer remain, none can go.
 
-   Returns null when the row can be released, or the reason it cannot. A row
-   in the HOME box is only a ledger entry leaving (a trade, a transfer), so it
-   is not asked about here. */
+   Returns null when the row can be released, or the reason it cannot
+   ("home" / "floor"). A row in the HOME box is only a ledger entry leaving
+   (a trade, a transfer), so it is not asked about here. */
 const RELEASE_FLOOR = 6;
 function releaseBlock(r){
   if (r?.location !== "champions") return null;
@@ -86,26 +94,19 @@ function releaseBlock(r){
   return n <= RELEASE_FLOOR ? "floor" : null;
 }
 
-/* ------------------------------------------------ a build has an OWNER ----
-   A build is not a plan for a species, it is the set THIS Pokemon is carrying,
-   so it lives and dies with the box row of the same id (player, 2026-09-10):
+/* ------------------------------------------------ what a build is BOUND to --
+   A build is its own record: several can exist for one species, and one can
+   be written for a Pokemon he does not own yet. Its `box_id` says which box
+   row runs it, and that gives four states:
 
-     in the Champions box  -> ACTIVE. The set it is actually running.
-     parked back in HOME   -> KEPT but inactive. Nothing can be trained in
-                              HOME, and it returns with the Pokemon.
-     the row is released   -> the build goes with it. A Champions-origin
-                              Pokemon can only leave by being released, so its
-                              build always dies; a HOME-origin one has "Park
-                              back to HOME", which keeps both.
+     active    box_id is a row in the Champions box - the set it is running
+     parked    box_id is a row parked in HOME - kept, but nothing trains there
+     orphan    box_id points at a row that no longer exists - worth flagging
+     unbound   no box_id - an idea, not a fault
 
-   Anything else leaves an ORPHAN - a set for a Pokemon that no longer exists.
-   There was one already (the Camerupt build, after its Camerupt was traded
-   away), which is what prompted the rule. */
-/* UNBOUND is not orphaned. A build with no box_id is an idea - a set written
-   down for a Pokemon he does not have yet, so it survives until he does
-   (player, 2026-09-13). An ORPHAN is different and still worth flagging: the
-   build points at a row that no longer exists, which is what happens when the
-   Pokemon is released or traded. */
+   Never fall back from a missing box_id to the build's own id: an idea build
+   for Farigiraf has the id `farigiraf`, and a fallback would silently marry
+   it to a box row of the same name. */
 function buildLink(id){
   const b = S.builds[id];
   const boxId = b?.box_id;
@@ -124,30 +125,24 @@ function buildsFor(name){
     return S.builds[k].pokemon === name;
   });
 }
-/* The builds installed on one box row, found by their LINK (box_id): a
-   build's own id stopped being its Pokemon's id when builds became many per
-   species. `exceptId` leaves out the build being edited. */
+/* The builds installed on one box row, found by their link (box_id), never
+   by their own id. `exceptId` leaves out the build being edited. */
 function buildsOn(boxId, exceptId){
   return Object.keys(S.builds).filter(function(k){
     return k !== exceptId && S.builds[k].box_id === boxId;
   });
 }
 /* ------------------------------------------- the ability a build RUNS ------
-   A SPECIES WITH ONE ABILITY NEVER MADE A CHOICE, so an empty `ability` on
-   such a build is not a blank to be drawn as an em dash - it is the only
-   ability that Pokemon has ever had. Aegislash is Stance Change, Clawitzer is
-   Mega Launcher, and the editor showed exactly that in a <select> of one
-   option while the row it saved held null (player, 2026-09-22: "los pokemones
-   que tienen solo 1 ability no se guardan... no se reflejan los bonos en su
-   movelist"). The editor writes it now; this is what makes the rows written
-   before it did read correctly anyway, on the card, in the team builder and
-   in the calculator.
+   A species with ONE ability never made a choice, so an empty `ability` on
+   its build means that ability, not a blank: Aegislash is Stance Change.
+   The editor writes it now; this keeps rows saved before it did correct on
+   the card, in the team builder and in the calculator.
 
-   Where the species really does offer two or three, an unset ability STAYS
-   unset. Nothing here picks the first or the popular one - an indicator sits
-   beside a choice and never makes it (2026-09-15).
+   Where the species offers two or three, an unset ability STAYS unset.
+   Nothing here picks the first or the popular one - an indicator sits beside
+   a choice and never makes it.
 
-   All 81 Megas have exactly one ability, so a stone always resolves. */
+   Every Mega has exactly one ability, so a stone always resolves. */
 function soleAbility(name){
   const p = name ? byName[name] : null;
   return p?.ab?.length === 1 ? p.ab[0] : null;
@@ -160,63 +155,48 @@ function megaAbility(b){
   return b?.mega ? (b.mega_ability || soleAbility(b.mega)) : null;
 }
 /* the one actually on the field: the Mega's while it is a Mega, otherwise the
-   base form's. The base ability is the fallback for a stone whose own ability
-   is somehow missing, which is the shape every call site already used. */
+   base form's (also the fallback for a stone whose own ability is missing) */
 function activeAbility(b){
   return megaAbility(b) || baseAbility(b);
 }
+/* The permanent Champions-box rows of one origin ("home" / "champions"). */
 function originRows(o){
   return boxRows("champions", "permanent").filter(function(r){
     return originOf(r) === o;
   });
 }
+/* The box's size. It grows in game, so it is his setting, not a constant. */
 function capacity(){ return S.meta.trainer?.box_capacity || 50; }
-/* A ROW PER STONE, not a list inside one document (migration 6).
-   Owning a stone is the existence of its row, so marking one on the phone
-   and another on the laptop are two independent writes and neither can
-   erase the other. As a list they rewrote the whole document from
-   whatever copy that device last loaded, and a device that had been
-   asleep silently dropped what it never saw. */
+/* A ROW PER STONE, not a list inside one document (migration 6). Owning a
+   stone is the existence of its row, so marking one on the phone and another
+   on the laptop are two independent writes and neither can erase the other.
+   A shared list would be rewritten whole from whatever copy a device last
+   loaded, and a device that had been asleep would drop what it never saw. */
 function ownedStones(){ return Object.keys(S.stones).sort(byText); }
 function hasStone(n){ return !!S.stones[n]; }
-/* Same shape, same reason. The categories the old document carried are
+/* Held items: the same shape, for the same reason. Their categories are
    the game's own and come from the dex. */
 function ownedItems(){ return S.items; }
 function hasItem(n){ return !!S.items[n]; }
+/* {name: status} for every species in the Champions box - "is it here,
+   and is it a rental". */
 function ownedNames(){
   const m = {}; boxRows("champions").forEach(function(v){ m[v.name] = v.status; });
   return m;
 }
 
 /* --------------------------------------------------------- the search view --
-   The question this exists for is "who learns Imprison AND Wide Guard AND
-   Protect" - a chain that used to mean asking Claude. Filters are ANDed. */
-/* "in my box" was one flag over two different boxes, which cannot answer
-   "do I have this in Champions right now" - the question that decides whether
-   a Pokemon is playable today - separately from "can I bring it in from
-   HOME". Two flags, and both on means either box. */
-/* STATS ARE A FILTER LIKE ANY OTHER NOW, and the sort is what makes this the
-   tier list. It used to be two fixed boxes - "Speed at least", "Speed at
-   most" - which answered one stat and only by filtering, so "where does this
-   sit in the Speed order" had no answer here at all and lived in a separate
-   block with a tab per stat. The player collapsed the two ideas (2026-09-15):
-   one table, per-stat filters, and Find's existing type / ability / move
-   filters compose with them. A speed tier that is also "learns Fake Out and I
-   own one" is a question the old shape could not ask.
+   Find's filters, ANDed, so "who learns Imprison AND Wide Guard AND Protect,
+   and is in my box" is one question.
 
-   A DIRECTION, NOT A PAIR OF BOUNDS. The first go at this gave every stat a
-   min and a max, and the player cut it the same hour (2026-09-15): "creo que
-   poner el maximo y el minimo esta demas, es mejor un orden ascendente y
-   descendente como opciones, asi veo como se ordena por ese stat de mayor a
-   menor o viceversa."
-
-   He is right, and it also subsumes the thing the old fixed boxes were for.
-   "Speed at most" was labelled the Trick Room filter; sorting Speed ASCENDING
-   answers that better, because it ranks the slow rather than making you guess
-   a threshold first. Two controls became one, and nothing was lost.
-
-   `sort` is a stat key, "bst" or "dex". `dir` is "desc" or "asc"; tapping the
-   stat you are already on flips it. */
+     q, moves, types, notTypes, typeMode, ability, cat   what to match
+     inChamp, inHome      owned in the Champions box / in HOME, kept apart
+                          because "playable today" and "can be brought in"
+                          are different questions; both on means either
+     sort, dir            a stat key, "bst" or "dex", and "desc" / "asc" -
+                          the sort is what makes this the speed-tier list
+                          (Speed ascending is the Trick Room view). Tapping
+                          the stat already chosen flips the direction. */
 const FIND = {q: "", moves: [], types: [], notTypes: [], typeMode: "and",
             ability: "",
             inChamp: false, inHome: false,

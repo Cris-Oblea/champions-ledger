@@ -1,5 +1,10 @@
 /* One Pokemon's full sheet - stats, abilities, damage taken, forms,
-   movepool - and Smogon's analysis panel inside it. */
+   movepool - and Smogon's analysis panel inside it.
+
+   ONE SHEET, WHICHEVER DOOR OPENED IT: the Champions box, HOME and a search
+   result all draw it with pokeHead + pokeBody, so which screen you came from
+   never decides what you are allowed to know. A door adds only its own
+   controls, between the two halves (see pokeHead). */
 import {
   analysisFor, loadAnalysis, loadOutside, outsideDex,
   outsideMove, outsideMovesFor,
@@ -65,9 +70,9 @@ function analysisSet(st){
 
 /* Smogon's prose, laid out the way their page lays it out.
  *
- * It arrives as one block of lines and reads as a wall - the player's words:
- * "me parece muy dificil de leer". It is not shapeless, though. Three kinds of
- * line, and telling them apart is what makes it skimmable:
+ * It arrives as one block of lines, which reads as a wall. It is not
+ * shapeless, though: three kinds of line, and telling them apart is what
+ * makes it skimmable:
  *
  *   Other Options            a section heading - short, no colon
  *   Make It Rain: it hits    a labelled paragraph - the label is the subject
@@ -86,12 +91,10 @@ function prose(text){
     if (!line) return;
     const cut = line.indexOf(":");
     const label = cut > 0 ? line.slice(0, cut).trim() : "";
-    /* A heading is short and has no colon. A label is short and does. Both
-       tests are on LENGTH rather than on a list of known words, because
-       Smogon's headings differ per Pokemon and a list would go stale. */
-    /* ...and does not end in a full stop. "Other Options" is a heading; "Un
-       atacante especial." is a short sentence, and the first version drew it
-       as one. */
+    /* A heading is short, has no colon and does not end like a sentence
+       ("Other Options"); a label is short and does have a colon. Both tests
+       are on SHAPE rather than on a list of known words, because Smogon's
+       headings differ per Pokemon and a list would go stale. */
     if (!label && line.split(" ").length <= 5 && !/[.!?]$/.test(line)) {
       const h = el("div", "rname mt8", line);
       wrap.appendChild(h);
@@ -114,9 +117,9 @@ function prose(text){
    before it. */
 function analysisPanel(name, host){
   host.innerHTML = "";
-  /* Something on screen from the first frame. A panel that is empty while a
-     407 KB script loads is indistinguishable from a panel that is broken, and
-     on a phone on mobile data that wait is real. */
+  /* Something on screen from the first frame: a panel that is empty while
+     its script loads looks exactly like a broken one, and on mobile data the
+     wait is real. */
   const wait = el("div", "st", "Loading Smogon's analysis...");
   host.appendChild(wait);
   const gaveUp = setTimeout(function(){
@@ -135,19 +138,11 @@ function analysisPanel(name, host){
         : "Smogon has not written one for " + name + " - 54 Pokemon have one."));
       return;
     }
-    /* EVERY VGC FORMAT SMOGON HAS, NEWEST FIRST, and the panel says so out
-       loud. Nothing here has ever filtered by regulation - Garchomp carries
-       both an M-A and an M-B analysis and both were always drawn - but the
-       panel gave no way to tell "this is all of it" from "this is the one we
-       kept", which is what the player was asking about (2026-09-15: "necesito
-       ver todas las opciones de smogon en formato vgc sea de la regulacion
-       que sea"). A regulation missing from this line is missing UPSTREAM:
-       Smogon writes an analysis per regulation and had published none for the
-       current one at the time of the last fetch.
-
-       Sorted by the regulation letter rather than by arrival, so the newest
-       reading is the one at the top. Singles stays out - see
-       scripts/fetch_smogon.py, that call is settled. */
+    /* EVERY VGC FORMAT SMOGON HAS, NEWEST FIRST, and the panel lists them, so
+       "this is all of it" can be told from "this is the one kept". Nothing is
+       filtered by regulation: a regulation missing here is missing UPSTREAM.
+       Sorted by the format name, so the newest regulation is on top. Singles
+       stays out (scripts/fetch_smogon.py says why). */
     const order = got.slice().sort(function(a, b){
       return String(b.format).localeCompare(String(a.format));
     });
@@ -172,24 +167,11 @@ function analysisPanel(name, host){
 }
 
 /* ================================================= ONE SHEET, THREE DOORS ==
-   A Pokemon's sheet is the same sheet whether it was opened from the Champions
-   box, from HOME or from a search result. It was three sheets (player,
-   2026-09-18):
-
-     "las fichas tanto de home box, champions box y find... deben ser todas
-      iguales, la mas completa es la de find, que dice absolutamente todo,
-      habilidades, moves, etc. creo que solo le falta el takes damage que tiene
-      la ficha de home box... la unica diferencia es la opcion shiny y si esta
-      entrenado en champions y el origen."
-
-   Find had the abilities, the Worlds sets and the whole movepool; the box had
-   the Mega line, the type chart and what Smogon wrote. Neither had the other
-   half, so which door you came through decided what you were allowed to know.
-
-   Two functions rather than one, and the split is where the box needs to put
-   its own controls: IDENTITY first, then whatever that door owns, then the
-   REFERENCE. Origin, shiny and trained are edits, and an edit belongs under
-   the name it applies to - not below two hundred rows of movepool.
+   Two functions rather than one, and the split is where a door puts its own
+   controls: IDENTITY first, then whatever that door owns, then the
+   REFERENCE. The box's origin, shiny and trained switches are edits, and an
+   edit belongs under the name it applies to - not below two hundred rows of
+   movepool.
 
      pokeHead   picture, types, BST, the six stats, the other spellings of
                 this name, and what it turns into mid-battle
@@ -201,35 +183,20 @@ function analysisPanel(name, host){
    than a copy of it. */
 function pokeHead(body, p, opts){
   opts = opts || {};
-  /* THE PICTURE SITS BESIDE THE FACTS, NOT ABOVE THEM. Centred on its own
-     row at 180px it cost about 190px of height before a single number
-     (player, 2026-09-16: "la imagen del profile del pokemon si la encuentro
-     grande, ocupa mucho espacio"). Beside the chips and the BST cell it
-     shares vertical space those rows were using anyway.
-
-     The 512px render rather than the 96px pixel sprite: a sheet draws one
-     Pokemon and can afford the file a list of 159 cannot. */
+  /* THE PICTURE SITS BESIDE THE FACTS, NOT ABOVE THEM, sharing height those
+     rows use anyway instead of costing a screenful before the first number.
+     The big HOME render, since a sheet draws only one (ui/card.js). */
   const head = el("div", "sheethead");
   const big = spriteFor(p.name, true, opts.shiny);
   if (big) head.appendChild(big);
   const info = el("div", "sheetfacts");
-  /* THE SAME FUNCTION AS THE CARD, drawing the BASE POKEMON ONLY.
-
-     A card has one chance to say everything, so it carries the Mega line:
-     the ability boxes, the arrows, the deltas. A SHEET HAS A MEGA LINE
-     SECTION further down that says all of it properly - each Mega with its
-     own picture, its own typing, its own ability and its own six stats, plus
-     a sentence naming what the stone moved. Bringing it up here as well put
-     the same facts on the screen twice (player, 2026-09-20: "cuando abajo
-     donde dice mega line ya dice esos datos... info duplicada = info inutil
-     ocupando espacio repitiendo lo mismo que ya se sabe").
-
-     So `ms` is empty: no Mega ability box, no type arrow, no BST arrow and no
-     deltas in the stat table. What is left is what this head is for - the
-     Pokemon you opened, as it is before any stone.
+  /* THE SAME FUNCTION AS THE CARD, drawing the BASE POKEMON ONLY (`ms` is
+     empty). A card carries the Mega line because it has one chance to say
+     everything; a sheet has a whole Mega section below, so repeating it
+     here would put the same facts on screen twice.
 
      The dex number is dropped - the sheet has it in the title - and the
-     medal joins the chips, which is the one thing this door adds. */
+     Worlds medal joins the chips. */
   pokeFacts(info, p, [], {
     dex: false,
     stats: false,
@@ -241,18 +208,10 @@ function pokeHead(body, p, opts){
   });
   head.appendChild(info);
 
-  /* THE BASE FORM GETS THE SAME BOX AS A MEGA (player, 2026-09-20: "mega
-     line tiene todo dentro de un mismo cuadro, pero la forma base no,
-     deberias dejar ambas formas de igual manera").
-
-     It was the odd one out by history rather than by design: the head was
-     written first and loose on the page, then abilities got a section of
-     their own, then the damage table did, and the Mega block - written last
-     - put all three in one panel and read better than any of them. So the
-     base is a panel too, in the Mega's order: picture and facts, the six
-     stats full width, the abilities explained, what damages it. Two forms,
-     one shape, and the sheet is a stack of Pokemon rather than a stack of
-     topics. */
+  /* THE BASE FORM GETS THE SAME BOX AS A MEGA, in the same order: picture
+     and facts, the six stats full width, the abilities explained, what
+     damages it. Every form one shape, so the sheet reads as a stack of
+     Pokemon rather than a stack of topics. */
   const panel = el("div", "panel megablock mb10");
   panel.appendChild(head);
   panel.appendChild(statGrid(p));
@@ -260,12 +219,10 @@ function pokeHead(body, p, opts){
   /* handed to pokeBody, which fills it with the abilities and the damage
      table - they are the base form's and belong in the base form's box. */
   body._basePanel = panel;
-  /* The other spellings that mean this Pokemon. Squawkabilly's three extra
-     plumages and Indeedee-F used to show up as separate entries marked "not
-     in the Champions dex" - they are in it, under this name. The note says
-     "also written", not "changes nothing", because a few of these do change
-     something in battle (Palafin-Hero, Castform's weather forms); what they
-     share is one dex entry. */
+  /* The other spellings that mean this Pokemon (Squawkabilly's plumages,
+     Indeedee-F): one dex entry, so they are not separate Pokemon. The note
+     says "also written", not "changes nothing", because a few do change
+     something in battle (Palafin-Hero, Castform's weathers). */
   const also = C.COSMETIC?.[p.name];
   if (also?.length) {
     const an = el("div", "note mb10");
@@ -275,10 +232,9 @@ function pokeHead(body, p, opts){
     body.appendChild(an);
   }
 
-  /* A SPECIES CHAMPIONS HAS NEVER HEARD OF says so, on every door. HOME can
-     hold one for ever and never send it in, and the numbers above it are
-     main-series ones because Champions publishes none - which the sheet has
-     to say plainly rather than let them read as ours. */
+  /* A SPECIES CHAMPIONS DOES NOT HAVE says so, on every door: HOME can hold
+     it but never send it in, and the numbers above are main-series ones
+     (Champions publishes none), which must never read as Champions data. */
   if (p.outside) {
     const osrc = el("div", "note mb10");
     osrc.innerHTML = "<strong>Not in the Champions dex.</strong> It can live "
@@ -287,37 +243,22 @@ function pokeHead(body, p, opts){
          + "shown are " + p.approx + "'s" : "") + ".";
     body.appendChild(osrc);
   }
-
-  /* THE PROSE NOTE THAT USED TO SIT HERE IS GONE. It said "In battle it
-     changes. Stance Change: Blade - Atk 50 -> 140, Def 140 -> 50..." in one
-     grey line, which was the whole of what the app knew about a battle form
-     while there was nowhere better to put it. There is now: the block below
-     the Mega line draws the same fact as a form - its sprite, its typing, its
-     six stats and its own damage table - so keeping the line as well printed
-     it twice on the same sheet (seen on the sheet, 2026-09-21). */
 }
 
-/* Everything a Pokemon IS, under whatever the door that opened it owns. */
-/* The type chart for one typing, as rows of chips. A function because a Mega
-   that RETYPES needs its own - Mega Ampharos is Electric/Dragon and takes Ice
-   at x2 where Ampharos does not - and printing one table under two typings
-   would be the same number meaning two different things. */
 /* ONE ABILITY, EXPLAINED: the text, the measured multiplier, and what it
-   does to THIS movepool. A function at module level because both the base
-   panel and each Mega panel call it - and `form` matters, since "tags N of
-   the moves it learns" has to be counted against the form that HAS the
-   ability. */
+   does to THIS movepool. Both the base panel and each Mega panel call it,
+   and `form` matters: "tags N of the moves it learns" is counted against
+   the form that HAS the ability. `badge` names whose it is, when it is not
+   the base form's; `ls` is the learnset. */
 function abilityNote(a, form, badge, ls){
   const n = el("div", "note mb6");
-  /* CHAMPIONS' OWN TEXT FIRST, ALWAYS. 95 of the abilities carried by
-     species the game has not added have no row here at all - Protosynthesis
-     was a name on the sheet with nothing to say about it - so those fall
-     back to the outside dex, which says on screen that it is main-series.
-     An ability Champions HAS never reaches that branch. */
+  /* CHAMPIONS' OWN TEXT FIRST, ALWAYS. An ability only species outside the
+     game carry has no Champions row, so it falls back to the outside dex and
+     says on screen that the text is main-series. An ability Champions HAS
+     never reaches that branch. */
   n.innerHTML = "<strong>" + a + ".</strong> ";
-  /* WHOSE ability it is, when it is not the base form's. In that Mega's
-     own ink, so the note, the sprite caption, the stat deltas and the
-     card all say the same form the same way. */
+  /* the badge is in that form's own ink, so the note, the sprite caption
+     and the stat deltas all name the form the same way */
   if (badge) n.insertBefore(badge, n.firstChild);
   const say = numText(C.ABIL[a] || "");
   n.appendChild(say);
@@ -345,12 +286,10 @@ function abilityNote(a, form, badge, ls){
      below have a number to be checked against. */
   const r = AB_SET[a], sc = el("div", "st");
   sc.classList.add("mt2");
-  /* NOT r.why HERE. It is the rule's one-line summary - "no damage - it heals
-     25% instead" - written for the tooltip on a move's tag, where the
-     description is not on screen. Under the description it said the same
-     thing a second time (player, 2026-09-27: "en algunas abilities habian
-     descripciones duplicadas y eran obvias"). What stays is only what the
-     description cannot say: how it meets THIS movepool. */
+  /* NOT r.why HERE: that is the one-line summary written for a move tag's
+     tooltip, where the description is not on screen. Under the description
+     it would repeat it. Only what the description cannot say goes here: how
+     the ability meets THIS movepool. */
   if (r?.side === "off" && r.scope) {
     sc.textContent = "Affects " + r.scope + " it knows. No per-move tag: " +
                      "it picks out nothing.";
@@ -377,6 +316,9 @@ function multTone(x){
   if (x < 1) return " ok";
   return "";
 }
+/* The type chart for one typing, as rows of chips grouped x4, x2, 1/2, 1/4,
+   immune. Called per typing, because a Mega that RETYPES has its own table -
+   one table under two typings would be one number meaning two things. */
 function damageTable(types){
   const dfc = defence(types);
   const dl = el("div");
@@ -399,13 +341,11 @@ function formChange(moved, retype){
   if (retype) return " changes the typing, not the spread.";
   return " moves no stat and keeps the typing.";
 }
-/* ONE POKEMON'S SHEET, BELOW ITS HEAD, in the order a Pokemon is read in
-   (player, 2026-09-19: "estan los datos como el tipo, stats y la habilidad
-   deberia seguirle, luego la info de las megas y tabla de debilidad extra por
-   si algun tipo cambio"): the head above carries the types and the six
-   stats; then the abilities and what damages it; then the Mega line and the
-   battle forms, each with its own damage table only when it really retypes;
-   then what it won with, its movepool, and what Smogon wrote. */
+/* ONE POKEMON'S SHEET, BELOW ITS HEAD, in the order a Pokemon is read in:
+   the head carries the types and the six stats; then the abilities and what
+   damages it; then the Mega line and the battle forms, each with its own
+   damage table only when it really retypes; then what it won with, its
+   movepool, and what Smogon wrote. */
 function pokeBody(body, p){
   /* resolved first, because each ability reports how much of THIS movepool
      it touches */
@@ -425,8 +365,7 @@ function pokeBody(body, p){
 }
 
 /* THE BASE FORM'S ABILITIES, AND ONLY THOSE - a Mega's is explained in its
-   own block, beside the form that has it (player, 2026-09-20: "cosas de mega
-   tipo, habilidad, debilidades, resistencias etc. todo en mega line"). Then
+   own block, beside the form that has it. Then
    WHAT DAMAGES IT: a type chart needs the types and nothing else, so a
    species Champions has never heard of gets one too. The box sheet may hand
    in its own panel (`body._basePanel`) for these to go in. */
@@ -441,13 +380,10 @@ function baseBlock(body, p, ls){
 
 /* ============================================ WHAT THE STONE MAKES OF IT ==
    One block per Mega, each a whole Pokemon rather than a line of
-   differences (player: "dice los bst, pero le falta toda la info, y deberia
-   decir solo la info de mega absol"): its picture, its stone, its types, its
-   six stats with the ones the stone MOVES said, and its ability explained.
-   Nothing the sheet already said above is repeated (player, 2026-09-19: "es
-   muy importante no duplicar la informacion"). megaLine, not megasFor: the
-   Champions Megas plus the ones a species Champions lacks carries on its
-   outside row - Mewtwo's X and Y. */
+   differences: its picture, its stone, its types, its six stats with the
+   ones the stone MOVES said, and its ability explained. Nothing the sheet
+   already said above is repeated. megaLine, not megasFor, so a species
+   Champions lacks shows its Megas too (Mewtwo's X and Y). */
 function megaSection(body, p, ls){
   const ms = megaLine(p);
   if (!ms.length) return;
@@ -481,13 +417,12 @@ function megaSection(body, p, ls){
   });
 }
 
-/* AND THE SAME BLOCK FOR THE FORM IT TAKES WITHOUT A STONE. Stance Change
+/* AND THE SAME BLOCK FOR THE FORMS IT TAKES WITHOUT A STONE: Stance Change
    gives Aegislash 140 Attack the moment it attacks, Zero to Hero takes
-   Palafin from 70 to 160, and Castform changes TYPE three ways (player,
-   2026-09-20: "faltan las formas de batalla... tambien son modificaciones in
-   battle, como los megas"). It is NOT a stone and must never read like one:
-   no item tag, no ability cell - the ability is the one it already has, and
-   the line underneath says it is what does this. */
+   Palafin from 70 to 160, Forecast retypes Castform three ways. It is NOT a
+   stone and must never read like one: no item tag, no ability cell - the
+   ability is the one it already has, and the line underneath says it is
+   what does this. */
 function battleFormSection(body, p){
   const bfs = battleFormsOf(p);
   if (!bfs.length) return;
@@ -547,9 +482,8 @@ function retypedTable(pn, p, f){
 }
 
 /* WHAT A FORM DOES TO ITS MOVES, which for a form that moves no number is the
-   whole reason it matters (player, 2026-09-27: "como aura wheel de morpeko
-   cambia de tipo el move segun su forma"). `c` is [move, type before, type in
-   this form]. */
+   whole reason it matters (Hangry Morpeko's Aura Wheel turns Dark). `c` is
+   [move, type before, type in this form]. */
 function formMoveLine(c, f, p){
   const line = el("div", "rmeta mt6");
   line.appendChild(el("span", null, c[0] + ":"));
@@ -560,11 +494,11 @@ function formMoveLine(c, f, p){
   return line;
 }
 
-/* WHAT IT WON WITH. Folded, because a Kingambit has eighteen of these and the
-   movepool is what the sheet is usually opened for - but one tap away,
+/* WHAT IT WON WITH. Folded, because some Pokemon have eighteen of these and
+   the movepool is what the sheet is usually opened for - but one tap away,
    because "what did the set that actually won look like" is a better
-   question than "what is popular" (player, 2026-09-15). History, and it says
-   so: each set carries its year, its division and the regulation. */
+   question than "what is popular". History, and it says so: each set
+   carries its year, its division and the regulation. */
 function worldsFold(body, p){
   const pod = podiumFor(p.name);
   if (!pod.length) return;
@@ -593,7 +527,7 @@ function worldsFold(body, p){
 /* One top-8 set: the finish, the player, their record, the item, ability and
    nature, what it Mega Evolved into, and the four moves. The ability is the
    BASE one - what a teamlist records - and the stone settles what the Mega
-   became (player, 2026-09-15: "esa se sabe por descarte"). */
+   became. */
 function worldsSet(e){
   const card = el("div", "note mb6");
   const head = el("div", "rname");
@@ -648,6 +582,7 @@ function ownMovepool(body, p, ls){
               {cap: 200, usageOf: p.name});
 }
 
+/* the row renderer for a movepool: every ability this species can have */
 function learnerRow(p){
   return function(m){ return moveRowFor(m, p.ab || [], p); };
 }

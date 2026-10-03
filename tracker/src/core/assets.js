@@ -38,18 +38,16 @@ function lazyScript(global, urlGlobal){
 }
 
 /* ------------------------------------------------ what Smogon wrote ------
-   The only source in this project with REASONING in it, and until now the
-   only one the phone never saw. 54 Pokemon have a written VGC analysis: the
-   sets people actually run, the SP spread and what each point of it survives,
-   which Pokemon check it, which partners cover its holes. It was downloaded
-   every night and read only through `query.py pokemon` on the laptop.
+   Smogon's written VGC analyses: the only source here with REASONING in it -
+   the sets people run, what each SP of a spread survives, what checks the
+   Pokemon and which partners cover it.
 
-   LOADED ON DEMAND. 407 KB against a dex payload of 419 - paying that on every
-   visit for a panel opened while arguing about a build is the wrong trade. The
-   script tag is added the first time a sheet asks, and the file is immutable
-   by its content hash, so it is fetched once ever. */
+   LOADED ON DEMAND: it is about as big as the whole dex payload, and only a
+   sheet's analysis panel reads it. The file is named by its content hash, so
+   it is fetched once and then served from cache. */
 const loadAnalysis = lazyScript("CHAMP_ANALYSIS", "CHAMP_ANALYSIS_URL");
 
+/* The analysis for a name, or null (also null before it has loaded). */
 function analysisFor(name){
   const all = window.CHAMP_ANALYSIS;
   if (!all) return null;
@@ -63,25 +61,18 @@ function analysisFor(name){
 }
 
 /* ------------------------------- THE REST OF THE DEX, ON DEMAND ----------
-   The same loader, for a different 503 KB.
+   So the app knows every Pokemon, not only the ones Champions has: for the
+   species the game has not added, their movepools, the move rows the page
+   does not otherwise ship, and the ability text Champions has no entry for.
+   A "not in Champions" tag can then say what a thing is AND that it cannot
+   be used.
 
-     "La idea es tener la DEX COMPLETA... necesito tener la database de todas
-      las abilities, todos los moves, todos los pokemones. asi cuando se
-      consulta por algo se sabe todo y el tag not in champions indica si es
-      posible usarlo o no."  (player, 2026-09-19)
-
-   So this carries three things for the 933 species the game has not added:
-   every movepool, the move rows the app does not ship to the phone, and the
-   ability text Champions has no entry for - Protosynthesis had a name on the
-   sheet and nothing to say about it.
-
-   Fetched when one of those sheets is opened and never otherwise, because most
-   sessions never open one. What is in it and where each part comes from is
-   argued in scripts/build_outside_dex.py - the short version being that the
-   MOVES are Champions' own data all along, and only the ability text is
-   main-series. */
+   Fetched when one of those sheets is opened, never otherwise. Where each
+   part comes from is argued in scripts/build_outside_dex.py: the moves are
+   Champions' own data, only the ability text is main-series. */
 const loadOutside = lazyScript("CHAMP_OUTSIDE", "CHAMP_OUTSIDE_URL");
 
+/* {} until loaded, so a caller never has to test for it */
 function outsideDex(){ return window.CHAMP_OUTSIDE || {}; }
 function outsideMovesFor(name){ return outsideDex().m?.[name] || null; }
 /* A move the app does not ship, dressed as one it does, so the same row
