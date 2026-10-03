@@ -1,5 +1,7 @@
 /* The GTS pane's offers: the three slots, their history, and the sheet that
-   deposits or closes one - with the keep-one rule that decides what may leave. */
+   deposits or closes one - with the keep-one rule that decides what may leave.
+   Every rule about what a chip is WORTH lives in core/trade.js; this file
+   only draws and writes. */
 import {
   anyRow, bst, byName, C, dexLabel, dexNo, FORMS, freeSlug, slug,
 } from "../core/data.js";
@@ -39,6 +41,7 @@ function clashes(d, id){
 function locClass(r){ return r.location === "home" ? "home" : "perm"; }
 
 /* ============================================================ open offers */
+/* The open offers, their warnings, and the history fold below them. */
 function drawGts(){
   const list = $("listGts");
   list.innerHTML = "";
@@ -62,8 +65,8 @@ function drawGts(){
     list.appendChild(el("div", "empty",
       "No offers sitting in the GTS — " + GTS_SLOTS + " slots free"));
     /* The history is not part of the open-offer list and must not share its
-       early return: the closed trades vanished at exactly the moment you
-       would go looking for them (player, 2026-09-12). */
+       early return, or the closed trades would vanish exactly when the slots
+       are empty and you go looking for them. */
     drawGtsHistory();
     return;
   }
@@ -75,10 +78,10 @@ function drawGts(){
 }
 
 /* Two things worth saying above the offers. Stones bought for a Pokemon that
-   is not in the ledger: 2000 VP each, idle - the app knew the stones and the
-   box separately and never crossed them. And a collision already in the
-   data: two offers that believe they hold the same copy, where closing
-   either would remove a Pokemon the other still counts on. */
+   is not in the ledger: 2000 VP each, idle until a trade brings one in. And
+   a collision already in the data: two offers that believe they hold the
+   same copy, where closing either would remove a Pokemon the other still
+   counts on. */
 function offerWarnings(list, offers){
   const byId = {}, clash = [];
   offers.forEach(function(o){
@@ -242,7 +245,7 @@ function diffChip(name, node){
 
 /* ============================================================ one offer ==
    Shown as the two sides of a trade rather than a line of text. What decides
-   whether an offer is fair is BST tier - the player's own test - so both
+   whether an offer is fair is BST tier, so both
    sides wear their card, and under them the verdicts that matter: is the ask
    within the chip's price, how wanted each side is, what the target costs
    the other side to give, how long it has waited, and whether the ladder
@@ -282,7 +285,7 @@ function gtsRow(i, o){
 
 /* One side of the trade, as the card - half-width. It carries the one fact
    this screen is FOR: the Mega line, since a chip is priced by its Mega's
-   BST (player, 2026-09-20). A name no dex carries still holds its side. */
+   BST. A name no dex carries still holds its side. */
 function offerSide(label, name, rec){
   const box = el("div", "gtsside");
   box.appendChild(el("div", "gtslabel", label));
@@ -306,9 +309,8 @@ function offerSide(label, name, rec){
     shiny: !!rec?.shiny,
     badges: function(nm){ if (rec) boxBadges(nm, rec); },
     meta: function(meta){
-      /* Both sides (player, 2026-09-11: "beedrill en que posicion esta?").
-         The ask decides whether anyone CAN give it; the chip decides whether
-         anyone WANTS to. An offer needs both, so both are on screen. */
+      /* The ladder on BOTH sides: the ask decides whether anyone CAN give
+         it, the chip whether anyone WANTS to. An offer needs both. */
       if (sd) {
         if (asked) diffChip(name, meta);
         else meta.appendChild(el("span", "tag", "ladder " + ladderText(sd)));
@@ -363,8 +365,8 @@ function priceParts(cv){
   return " (" + parts.join(", ") + ")";
 }
 
-/* THE DESIRABILITY GAP, WHICH BST CANNOT SEE. "nadie quiere a flamigo"
-   (player): a chip is worth what the other side will take. Two ladder ranks
+/* THE DESIRABILITY GAP, WHICH BST CANNOT SEE: a chip is worth what the other
+   side will take. Two ladder ranks
    side by side are the whole negotiation in one line - and a side the ladder
    does not rank is unknown, not zero. */
 function demandGap(o, od, rd){
@@ -461,10 +463,10 @@ function ladderMove(o, rd){
    Log a new offer, or edit, close or withdraw an open one. `d` is the draft;
    each picker re-opens this sheet with its answer filled in. */
 function gtsSheet(id, o){
-  /* `deposited` is a date the player can edit, so it stays. `depositedAt` is
-     the machine stamp: BST does not explain why Indeedee went in hours while
-     a Beedrill sat for days (player, 2026-09-12), and a date alone cannot
-     measure that - two trades on the same day look identical. */
+  /* `deposited` is a date the player can edit. `depositedAt` is the machine
+     stamp, because time-to-close is measured in HOURS (it is what the other
+     side wants, which BST cannot see) and a date alone makes two trades on
+     the same day look identical. */
   const now = new Date();
   o = o || {offered:"", requested:"",
             deposited:now.toISOString().slice(0,10),
@@ -540,8 +542,8 @@ function saveOffer(id, d){
 }
 
 /* A TRADE IS AN EXCHANGE: the Pokemon deposited is gone the moment someone
-   takes it, so it leaves the box as the new one arrives (player,
-   2026-09-09). The offer records WHICH copy went, so a box with three
+   takes it, so it leaves the box as the new one arrives. The offer records
+   WHICH copy went, so a box with three
    Chesnaught loses the right one; offers logged before that was stored fall
    back to the first match by name. Asks first, saying exactly that. */
 function confirmTrade(id, d){
@@ -570,8 +572,8 @@ function confirmTrade(id, d){
 /* Write the ending onto the offer's own row - it is the same trade, not a
    new record - with what it MEASURED: how long it took, whether the chip was
    shiny, both BSTs and the chip's Mega value. A closed trade is the only
-   hard evidence of what the market pays; the pricing rule itself came from
-   remembering five of these. Then the new Pokemon arrives in HOME (HOME
+   hard evidence of what the market pays, and the pricing rules are measured
+   on these. Then the new Pokemon arrives in HOME (HOME
    origin, so its slot stays elastic) and the one given leaves the box. */
 function closeTrade(id, d, going){
   const offRec = d.offeredId ? S.box[d.offeredId] : null;
@@ -588,9 +590,8 @@ function closeTrade(id, d, going){
     rankAtDeposit:d.rankAtDeposit != null ? d.rankAtDeposit : null};
   put("gts/" + id, done).then(function(){
     const newId = freeSlug(d.requested, S.box);
-    /* NO NOTE on the arrival: the closed trade carries the chip, the
-       Pokemon and the date (player, 2026-09-28: "como ya tengo un historial
-       de trades gts, creo que eso quedó sobrando"). The note is his. */
+    /* NO NOTE on the arrival: the closed trade already records the chip,
+       the Pokemon and the date. The note field is his. */
     return put("box/" + newId, {name:d.requested, location:"home",
       status:"permanent", origin:"home", note:"",
       order:Object.keys(S.box).length});
@@ -605,8 +606,8 @@ function closeTrade(id, d, going){
 
 /* Log a new offer. Only the hard case stops you: your only copy of a
    species the game allows, with no other form of it anywhere - and even then
-   it asks rather than blocks (the one time this happened he gave a #28 and
-   got a #2). Choosing between forms is his call. */
+   it asks rather than blocks, since a last copy can still be the right trade.
+   Choosing between forms is his call. */
 function logOffer(d){
   if (!d.offered || !d.requested) { toast("Both names are needed"); return; }
   if (slotsFull()) return;
@@ -691,12 +692,11 @@ function pickField(label, current, subtitle, opener, rec){
    Chesnaught stay three distinguishable Chesnaught.
 
    Only what CAN leave: a Champions-ORIGIN Pokemon never leaves the game, so
-   it can never reach a GTS box (player, 2026-09-12). Rentals are Champions
-   origin by definition, and so is a leftover "unknown" - the safe way round:
-   offering something you cannot move is a dead end, hiding something you
-   could move is one question away. And one Pokemon, one GTS slot (player,
-   2026-09-11: "no debería dejarme elegir el mismo pokemon"): a copy already
-   deposited is shown greyed with what it waits for, never hidden.
+   it can never reach a GTS box. Rentals are Champions origin by definition,
+   and so is a leftover "unknown" - the safe way round: offering something
+   you cannot move is a dead end, hiding something you could move is one
+   question away. And one Pokemon, one GTS slot: a copy already deposited is
+   shown greyed with what it waits for, never hidden.
 
    `exceptId` is the offer being EDITED - its own pick has to stay
    selectable, or re-saving that offer would be impossible. */
@@ -752,12 +752,10 @@ function gtsPickMine(onPick, exceptId){
   }, []);
 }
 
-/* SORTING AND TWO FILTERS, BECAUSE THIS IS A SHORTLIST, NOT A BOX. His rule
-   lets only DUPLICATES and species Champions cannot use go (player,
-   2026-09-18: "seria muy interesante que el listado tuviese orden por dex
-   number o filtro de pokemones duplicados o pokemones con tag not in
-   champions"). Dex order first, because that is the order HOME itself lists
-   in, which is how one screen gets checked against the other. */
+/* SORTING AND TWO FILTERS, BECAUSE THIS IS A SHORTLIST, NOT A BOX: his rule
+   lets only DUPLICATES and species Champions cannot use go, and each filter
+   is one of those. Dex order first, because that is the order HOME itself
+   lists in, which is how one screen gets checked against the other. */
 function mineControls(body, PICK, draw){
   const sortWrap = el("div", "toggles");
   [["dex", "Dex no."], ["az", "A-Z"], ["bst", "BST"],
@@ -865,9 +863,9 @@ function mineSection(out, title, all, sub, q, ctx){
 }
 
 /* One copy, on the card every list uses - its type, its picture (its own
-   colours if shiny), its Mega line and its six stats, because a bare row with
-   a BST and a Speed is not enough to choose what to give away (player,
-   2026-09-18). The badges say whether it is already deposited, whether it is
+   colours if shiny), its Mega line and its six stats, because a bare name
+   and a BST are not enough to choose what to give away. The badges say
+   whether it is already deposited, whether it is
    the last of its form, which copy it is and its marks; the meta, how the
    ladder rates it and how high it can ask. */
 function mineCard(r, ctx, seen, nth){
@@ -893,8 +891,8 @@ function mineCard(r, ctx, seen, nth){
       boxBadges(h, r);
     },
     meta: function(meta){
-      /* The ladder on THIS side of the trade too (player, 2026-09-13): how
-         fast his own chip clears, and how high it can therefore ask. */
+      /* The ladder on THIS side of the trade too: how fast his own chip
+         clears, and how high it can therefore ask. */
       if (cd) meta.appendChild(el("span", "tag" + (cd.demand >= 4 ? " ok" : ""),
         "ladder " + ladderText(cd)));
       else if (p) meta.appendChild(el("span", "tag warn", "no ladder row"));
@@ -943,10 +941,9 @@ function mineNotes(m, r, s){
 
 /* ===================================================== what you ask for ==
    Anything that exists: the whole dex, plus everything HOME can hold that
-   Champions cannot. And first - given the chip - what it can actually fetch,
-   by the same reasoning that picked Abomasnow and Steelix by hand
-   (2026-09-11): price by the Mega, skip what the ladder is running, and put a
-   stone already owned with nothing to hold it on top. */
+   Champions cannot. And first - given the chip - what it can actually fetch
+   (gtsSuggest in core/trade.js): price by the Mega, skip what the ladder is
+   running, and put a stone already owned with nothing to hold it on top. */
 function gtsPickWanted(onPick, chipName, chipShiny){
   openSheet("What did you ask for?", function(body){
     if (chipName) chipAdvice(body, chipName, chipShiny, onPick);
@@ -1009,6 +1006,8 @@ function chipWorth(body, chipName, chipShiny, v){
   }
 }
 
+/* One band of suggestions under its heading; nothing when the band is
+   empty. */
 function suggestList(body, title, sub, rows, v, onPick){
   if (!rows.length) return;
   body.appendChild(el("h2", null, title));
@@ -1021,9 +1020,9 @@ function suggestList(body, title, sub, rows, v, onPick){
   body.appendChild(sl);
 }
 
-/* One suggestion, on the same card as every other list (player,
-   2026-09-20) - what a chip can fetch is mostly a question about the
-   target's Mega - with the reason it is on the list: a stone already owned,
+/* One suggestion, on the same card as every other list - what a chip can
+   fetch is mostly a question about the target's Mega - with the reason it is
+   on the list: a stone already owned,
    a stretch the premiums put in range, or a safer ask under the price. */
 function suggestCard(c, v, onPick){
   const p2 = anyRow(c.name);
@@ -1047,6 +1046,7 @@ function suggestCard(c, v, onPick){
   return b2;
 }
 
+/* The sentence under a suggestion: why it is on the list. */
 function suggestWhy(c, v){
   if (c.stone) {
     return "You bought " + c.stone + " and have nothing to put it on — " +

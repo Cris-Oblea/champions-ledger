@@ -1,5 +1,5 @@
 /* ---------- touch targets ------------------------------------------------
-   Audited on the deployed build at 360px (2026-09-11). Every interactive
+   Audited on the deployed build at 360px. Every interactive
    class came in under 40px tall: .btn 37, .btn.sm 30, .seg buttons 28-31,
    and the 32 field toggles in the damage calc at 32. On a 6.7" phone those
    are a miss waiting to happen, and the calc toggles are the ones you tap
@@ -20,24 +20,21 @@
 }
 
 /* ---------- phone density ------------------------------------------------
-   Measured on the deployed build at 360px (2026-09-15) after the usage
-   percentages landed. A move row in the build picker can now carry a type
+   Measured on the deployed build at 360px. A move row in the build picker
+   can carry a type
    chip, the name, priority, spread, hits-ally, multi-hit, an item, an ability
-   and the usage share - nine things where there used to be four - and at
-   10.5px with 6px gaps that wrapped to four lines and pushed the numbers
-   below the fold.
+   and the usage share - nine things - and at 10.5px with 6px gaps that
+   wrapped to four lines and pushed the numbers below the fold.
 
    The name is what you scan for, so it keeps its size and the CHIPS give way:
    a point smaller and tighter, which is legible because a chip is two or
    three words of known shape rather than prose. Above 430px nothing changes -
    there the row fits as it is. */
 @media (max-width:430px){
-  /* The chips are NOT shrunk. They were, to 9.5px, on the theory that nine
-     badges on a move row were what made it four lines tall - and measuring it
-     at 360px says otherwise: the row is 135px at 9.5px, at 10px and at the
-     10.5px default, identically. What actually fixed the wrapping was giving
-     each fact its own span. So the reduction bought nothing and cost
-     legibility, and the gaps below are the part that was doing the work. */
+  /* The chips are NOT shrunk: measured at 360px, a move row is the same
+     height at 9.5px, 10px and the 10.5px default, so a smaller chip buys
+     nothing and costs legibility. What stops the wrapping is each fact being
+     its own span (factLine), and the tighter gaps below. */
   .rname{gap:5px;font-size:14px}
   .rmeta{gap:5px;font-size:11.5px}
   /* the calculator's columns are already one per row here; the padding was
@@ -62,9 +59,8 @@
    eight lines of pure heading back on a column that was 747px tall */
 /* 4px of air and a rule, not 14. Eight groups were paying 7px above the
    line and 7px below it - 98px of a 448px column spent on separators
-   alone (player, 2026-09-19: "tambien es muyyy grande y todo separado y
-   con demasiado espacio"). The rule still separates them; it just does
-   not need a finger's width on each side to do it. */
+   alone. The rule still separates them; it just does not need a finger's
+   width on each side to do it. */
 .fieldrow{display:flex;flex-wrap:wrap;align-items:center;gap:4px;width:100%;
   padding-top:4px;margin-top:4px;border-top:1px solid var(--line)}
 .fieldrow:first-child{padding-top:0;margin-top:0;border-top:0}
@@ -85,17 +81,15 @@
 /* ---------- density, where a screen carries two of everything ----------- */
 /* The calculator holds an attacker AND a defender, so every millimetre it
    spends is spent twice. Four dropdowns, six stat rows and a budget line per
-   side put the thing you came for - the number - a long way up the scroll
-   (player, 2026-09-19: "ocupa demasiado espacio en pantalla... tenemos
-   botones grandes, un espaciado enorme entre lineas y secciones. Debe ser
-   mas simple manteniendo la elegancia que ya tiene la app").
+   side put the thing you came for - the number - a long way down the
+   scroll.
 
    NOTHING IS REMOVED. The controls sit closer, the way pokebase's and
    Smogon's do: a tighter grid, a shorter row, less air between sections. */
 .grid2.tight{gap:7px 8px}
 .grid2.tight .field{margin-bottom:0}
 /* LABEL TO THE LEFT, ONE LINE PER FIELD - the idea taken from Smogon's
-   calculator, which the player pointed at. Its selects are 19px tall and
+   calculator. Its selects are 19px tall and
    its rows 16px, which is desktop-only density a phone-first app cannot
    copy; what IS portable is that the caption sits beside the control
    rather than above it. Four fields cost two lines instead of four.
@@ -120,7 +114,7 @@
   padding:4px 6px}
 .calccol .sp .k{font-size:10.5px}
 
-/* MEASURED AGAINST POKEBASE, which is the calculator the player pointed at.
+/* MEASURED AGAINST POKEBASE'S CALCULATOR, the reference for this screen.
    Its six stat rows run at a 43px pitch and ours at 44 - the rows were never
    the difference. Two things were:
 
@@ -150,8 +144,7 @@
 .foldwrap{margin-top:16px}
 .foldwrap .sub{margin-top:8px}
 
-/* A NUMBER INSIDE A DESCRIPTION, marked so the eye finds it (player,
-   2026-09-27: "se podria remarcar con color los % o numeros para leerlo
-   rapidamente"). It replaced the chips that repeated the same numbers beside
-   the sentence. The accent ink, which both themes already tune for text. */
+/* A NUMBER INSIDE A DESCRIPTION, marked so the eye finds it (numText in
+   ui/card.js) - instead of chips that repeat the sentence's own numbers.
+   The accent ink, which both themes already tune for text. */
 b.num{color:var(--accent);font-weight:600}

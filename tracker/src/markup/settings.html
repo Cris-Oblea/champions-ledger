@@ -7,11 +7,9 @@
       <!-- Box capacity is the ONE field left. It earns its place because the
            app really uses it - capacity() drives the box-full warning - and
            because it changes only when Champions raises the limit.
-           Rank, VP, regulation, season and the two ticket counts were removed
-           on 2026-09-12: nothing read them, they were hand-typed, and they had
-           drifted (the stored regulation still said M-B three days into M-C).
-           Their values are NOT deleted - meta updates merge into the jsonb, so
-           the old keys stay in the ledger untouched. -->
+           Nothing hand-typed lives here (rank, VP, regulation...): nothing
+           read such fields and they drifted. Older rows may still carry those
+           keys - meta updates merge into the jsonb, so they stay untouched. -->
       <div class="panel mb12">
         <div class="grid2">
           <div class="field"><label class="f" for="tCap">Box capacity</label>

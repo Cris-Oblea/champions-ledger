@@ -43,9 +43,11 @@ function originNote(o, rec){
   return "<strong>Not recorded yet.</strong> It is being counted as Champions " +
     "origin, which is the cautious read rather than a known fact.";
 }
+/* the end of the "released" toast: what happened to its builds */
 function keptAs(n){
   return (n > 1 ? "its builds are" : "its build is") + " kept as an idea";
 }
+/* One box row as a card, opening that copy's sheet. */
 function pokeRow(rec){
   const p = byName[rec.name];
   /* WHAT TO DRAW vs WHAT IT CAN DO. `p` stays the Champions dex row and every
@@ -72,10 +74,9 @@ function pokeRow(rec){
     bare.onclick = function(){ pokeSheet(rec); };
     return bare;
   }
-  /* THE CARD EVERY OTHER LIST DRAWS. The box used to write its own, which is
-     how it ended up with six stats while the pickers had none. What is left
-     here is only what a BOX row knows and a dex row cannot: which copy this
-     is, where it came from, and that his shiny is a different picture. */
+  /* THE CARD EVERY OTHER LIST DRAWS. All a BOX row adds is what a dex row
+     cannot know: which copy this is, where it came from, and that his shiny
+     is a different picture. */
   return pokeCard(d, {
     cls: cls,
     name: rec.name,
@@ -85,8 +86,8 @@ function pokeRow(rec){
        row records no ability - only a build does. */
     badges: function(nm){
       boxBadges(nm, rec);
-      /* "not in dex" was wrong the moment these rows got their stats: it IS
-         in a dex, just not this game's (player, 2026-09-16). */
+      /* "not in Champions", not "not in dex": it IS in a dex, with stats on
+         the card, just not this game's */
       if (!p) nm.appendChild(el("span", "tag bad", "not in Champions"));
     },
     meta: function(meta){
@@ -97,13 +98,10 @@ function pokeRow(rec){
   });
 }
 
-/* ONE COPY'S SHEET: the same sheet the search view draws, with this copy's
-   own facts wedged into the middle - where it came from, shiny, trained, its
-   note - and the buttons that move it. It used to be a second, smaller sheet,
-   so which door you came through decided what you were allowed to know about
-   the same Pokemon (player, 2026-09-18: "las fichas... deben ser todas
-   iguales"). `anyRow`, so a species Champions lacks still draws its
-   main-series row. */
+/* ONE COPY'S SHEET: the same sheet the search view draws (ui/pokemon.js),
+   with this copy's own facts wedged into the middle - where it came from,
+   shiny, trained, its note - and the buttons that move it. `anyRow`, so a
+   species Champions lacks still draws its main-series row. */
 function pokeSheet(rec){
   const show = anyRow(rec.name);
   const isHome = rec.location === "home";
@@ -125,10 +123,9 @@ function pokeSheet(rec){
   }, moveButtons(rec, isHome));
 }
 
-/* A ROW THAT EXISTS NOWHERE MUST NOT TAKE THE SHEET DOWN WITH IT (player,
-   2026-09-21: "la card y la ficha de Oinkolgne-f tira error de script"). HOME
-   can hold anything, including a name no table has heard of, and the honest
-   answer is to say so. */
+/* A ROW THAT EXISTS NOWHERE MUST NOT TAKE THE SHEET DOWN WITH IT. HOME can
+   hold anything, including a misspelt name no table has heard of, and the
+   honest answer is to say so - and that renaming fixes it. */
 function unknownNote(rec){
   const gone = el("div", "note warn");
   gone.innerHTML = "<strong>" + rec.name + "</strong> is not in any dex " +
@@ -195,6 +192,7 @@ function copyFlags(body, rec){
     "Tap Save below to keep these."));
 }
 
+/* A toggle that flips rec[key] in memory; saveCopy() writes it. */
 function flagButton(rec, key, label){
   const b = el("button", "tog", label);
   setPressed(b, rec[key]);
@@ -229,6 +227,7 @@ function moveButtons(rec, isHome){
   return out;
 }
 
+/* Save: write the sheet's edits back and close. */
 function saveButton(rec, cls){
   return fbtn("Save", cls, function(){
     saveCopy(rec).then(function(){ closeSheet(); toast("Saved"); });
@@ -237,9 +236,9 @@ function saveButton(rec, cls){
 
 /* In HOME: Save, and Send to Champions for a species the game has - arriving
    from HOME is what makes it HOME origin, never a guess. A rental: Buy, NOT
-   primary, because buying welds it into the box for good and his own plan is
-   to sit on rentals so the VP keeps rolling the Encounter. HOME origin in the
-   box: Park back to HOME first. Anything else: Save. */
+   primary, because buying welds it into the box for good, and keeping VP to
+   roll Encounters is usually the better use. HOME origin in the box: Park
+   back to HOME first. Anything else: Save. */
 function stayButtons(rec, isHome){
   if (isHome) {
     const out = [saveButton(rec, "primary")];
@@ -270,10 +269,10 @@ function stayButtons(rec, isHome){
   return [saveButton(rec, "primary")];
 }
 
-/* Buying a rental, after asking. The 2500 VP is not deducted from a stored
-   balance: the ledger once tracked one number that only went down, while
-   ranked wins went unrecorded, so it drifted from the first battle (player,
-   2026-09-12). */
+/* Buying a rental, after asking. The 2500 VP is not deducted from any
+   stored balance: VP is not tracked at all, since ranked wins would have to
+   be recorded too and a balance that only goes down drifts from the first
+   battle. */
 function buyButton(rec){
   return fbtn("Buy it · 2500 VP", "", function(){
     ask("Buy " + rec.name + " for 2500 VP?",
@@ -288,9 +287,9 @@ function buyButton(rec){
 }
 
 /* RELEASE ENDS A POKEMON, AND UNBINDS ITS BUILDS rather than deleting them: a
-   build with no Pokemon is a first-class state now - an idea - and an idea
-   should not be lost for want of a row to hang it on (player, 2026-09-13).
-   Only offered where the game allows it - see releaseBlock. */
+   build with no Pokemon is a first-class state - an idea - and an idea
+   should not be lost for want of a row to hang it on. Only offered where the
+   game allows it - see releaseBlock. */
 function releaseButton(rec, isHome){
   return fbtn("Release", "danger", function(){
     const mine = buildsOn(rec._id);
@@ -308,6 +307,8 @@ function releaseButton(rec, isHome){
   });
 }
 
+/* Delete the row FIRST, then unbind its builds: a failed delete leaves both
+   untouched, never builds pointing nowhere with the Pokemon still there. */
 function releaseCopy(rec, mine){
   drop("box/" + rec._id).then(function(){
     return Promise.all(mine.map(function(k){
@@ -455,8 +456,8 @@ function typedAdd(nm){
 }
 
 /* ONE CARD, THE SAME ONE: choosing what to add is exactly the moment the six
-   stats and the Mega line matter (player, 2026-09-20). Picking it writes the
-   row. HOME never asks bought-or-rental, so it never reads an answer:
+   stats and the Mega line matter. Picking it writes the row. HOME never asks
+   bought-or-rental, so it never reads an answer:
    everything in HOME is permanent and HOME origin by definition. Every route
    into the Champions Box through this sheet is an Encounter - buying a rental
    does not change that - so it is Champions origin. */
@@ -563,7 +564,7 @@ function drawHomeList(home){
    any row without a recorded origin (a row with nowhere to appear is a row
    silently lost), and a species held twice where one copy can actually go.
    HOME-origin copies may stay duplicated for good, and a Champions-origin
-   one at the release floor cannot leave (player, 2026-09-27), so neither is
+   one at the release floor cannot leave, so neither is
    called trade material. */
 function boxWarnings(b){
   const warn = $("boxWarn");
@@ -612,31 +613,18 @@ function releasableRepeats(copies){
 }
 
 /* ====================================================== what is still missing
+   THE GOAL IS THE WHOLE CHAMPIONS DEX, one copy of each form. Champions' own
+   route in is a gacha (an Encounter: random species, take one), so the way
+   to CHOOSE what you own is Pokemon GO into HOME, and the GTS for what GO
+   cannot give.
 
-   THE DEX IS THE POINT OF THE HOME BOX. Champions' own route in is a gacha -
-   ten random species, take one - so the only way to decide what you own is
-   Pokemon GO into HOME, and the GTS for what GO cannot give (player,
-   2026-09-20: "tengo como objetivo completar todo el pokedex de champions...
-   los que no puedo conseguir en go facilmente o que simplemente no estan en
-   go, se usa la caja gts para intercambios mundiales").
+   So this is an ORDER OF ATTACK, not a list: every form owned nowhere,
+   easiest to get first. A species owned only in Champions is not a hole -
+   it is a target of its own (a HOME copy would free its welded slot), and
+   the GTS pane lists those. Extra copies are a later question, so nothing
+   here asks for a second of anything.
 
-   A list of everything he does not own would be 134 cards in dex order and
-   answer nothing. What he asked for is an ORDER OF ATTACK, and he named the
-   first bucket himself: "los mas priorizados deberian ser los que estan
-   haciendo espacio en pokemon champions en estos momentos. para ir
-   liberandolos en champions".
-
-   That is the standing plan the box warning already states, made actionable.
-   A Champions-origin Pokemon came out of an Encounter and can NEVER leave the
-   box - releasing it is the only exit - so every one of them welds a slot
-   shut. Catch that same species in GO, send it through HOME, and the welded
-   copy becomes releasable: the slot comes back elastic and the Pokemon is
-   trainable besides. Each one is worth a slot, which nothing in the second
-   bucket is.
-
-   ONE COPY PER SPECIES IS THE TARGET, and extra copies are a later question
-   ("cuando hagan falta mas pokemones puedo pensar en copias adicionales"), so
-   there is no third bucket - just a line saying so. */
+   Returns {missing (sorted), have, total}. */
 function dexChecklist(){
   const inHome = {}, inChamp = {};
   boxRows("home").forEach(function(r){ inHome[r.name] = true; });
@@ -648,8 +636,7 @@ function dexChecklist(){
     missing.push(p);
   });
   /* EASIEST FIRST. `supply` is the estimate of how hard the species is to get
-     in GO, which is the only half he can act on - a 1 is an afternoon and a 5
-     is the Gimmighoul grind. */
+     in GO - the half he can act on. Unknown sorts in the middle (3). */
   missing.sort(function(a, b){
     const da = gtsDiff(a.name), db = gtsDiff(b.name);
     return (da?.supply || 3) - (db?.supply || 3) ||
@@ -671,7 +658,9 @@ function dexCard(p, why){
     onclick: function(){ findDetail(p); }
   });
 }
+/* twelve until he asks for the rest, like the HOME list */
 const DEX_CAP = 12, dexAll = {missing:false};
+/* HOME's "Dex" pane: the progress line and the missing list. */
 function drawDexPane(){
   const c = dexChecklist();
   const q = ($("dexFilter")?.value || "").trim().toLowerCase();
@@ -716,20 +705,14 @@ function drawDexPane(){
 }
 
 /* ------------------------------------------- duplicates against HOME ----
-   The sweep this answers (player, 2026-09-11): which Champions slots am I
-   holding for a species I already have safe in HOME? Those are the ones to
-   free first, because the species is not lost when the slot goes.
+   Which Champions slots hold a species already safe in HOME? Those are the
+   ones to free first: the species is not lost when the slot goes.
 
-   ONLY WHAT CAN ACTUALLY GO (player, 2026-09-27). It used to list every
-   match and sort it by origin, which put two kinds of row in front of him
-   that the game will not let him act on:
-     - HOME origin. Never a duplicate: it is a real Pokemon, a second copy of
-       it has value, and it cannot be released from the Champions box anyway.
-     - Champions origin at the floor. The game refuses a release that leaves
-       fewer than six to battle with, so with six or fewer left (Sinistcha,
-       with another in HOME) the "free this one" advice was impossible.
-   `releaseBlock` answers both, so what is left is exactly the releasable set:
-   Champions origin above the floor, and rentals.
+   ONLY WHAT CAN ACTUALLY GO. `releaseBlock` drops the two kinds the game
+   will not let him act on - a HOME-origin copy (never a duplicate: a real
+   Pokemon, and it cannot be released from the box anyway) and a
+   Champions-origin one at the release floor - so what is left is exactly the
+   releasable set: Champions origin above the floor, and rentals.
    Matching is on the exact form name, because Ninetales-Alola in HOME does
    not cover a plain Ninetales. Same-species-different-form pairs are real but
    are NOT interchangeable, so they get a footnote instead of a row. */
@@ -757,6 +740,7 @@ function dupeReport(){
   });
   return {hits:hits, formOnly:formOnly, by:by};
 }
+/* The "duplicated in HOME" block of the Champions box, hidden when empty. */
 function drawDupeHome(){
   const blk = $("dupeBlock");
   const d = dupeReport();
@@ -807,6 +791,7 @@ function drawDupeHome(){
   }
 }
 
+/* Replace a list's rows with box cards, or one empty-state line. */
 function fill(node, rows, emptyMsg){
   node.innerHTML = "";
   if (!rows.length) { node.appendChild(el("div", "empty", emptyMsg)); return; }

@@ -1,5 +1,5 @@
-/* The Settings tab: the box capacity, the export buttons, and the
-   diagnostics. */
+/* The Settings tab: the box capacity, the counts and the data's vintage,
+   the VP prices, the export buttons, and the diagnostics. */
 import { anyRow, bst, byText, C, COSTS, spTotal } from "../core/data.js";
 import { $, el, fbtn, toast } from "../core/dom.js";
 import { BOOT_ERRORS } from "../core/errors.js";
@@ -10,17 +10,18 @@ import { patch } from "../core/store.js";
 import { closeSheet, openSheet } from "../ui/nav.js";
 import { engineReady } from "./damage.js";
 
-/* =================================================================== profile
+/* ================================================================ settings
    One editable number and three derived panels. The editable one is box
-   capacity, because the app acts on it and only Champions can change it; every
-   other field that used to live here was hand-typed, unread, and wrong by the
-   time anyone looked (player, 2026-09-12). */
+   capacity, because the app acts on it and only the game can change it.
+   Everything else is DERIVED from the ledger and the shipped data, never
+   typed: a hand-typed field goes stale the day after it is written. */
 $("tSave").onclick = function(){
   patch("meta/trainer", {
     box_capacity:Number($("tCap").value) || 50
   }).then(function(){ toast("Box capacity saved"); });
 };
 
+/* Fill a <dl> with [label, value, tooltip?] rows; null rows are skipped. */
 function kv(host, rows){
   host.innerHTML = "";
   rows.forEach(function(r){
@@ -32,6 +33,8 @@ function kv(host, rows){
   });
 }
 
+/* The Settings panels. Skipped while a field in the tab has focus, so a
+   redraw from another device never overwrites a number being typed. */
 function drawTrainer(){
   const t = S.meta.trainer || {};
   if (document.activeElement?.closest?.("#v-trainer")) return;
@@ -59,8 +62,8 @@ function drawTrainer(){
     ["Mega Stones owned", stones + " of " + (C.STONES || []).length]
   ]);
 
-  /* Vintage, read off the blob rather than typed. The stored `regulation` key
-     said M-B three days into M-C, which is exactly the failure this replaces. */
+  /* Vintage, read off the shipped data rather than typed, so it can never
+     name a regulation the data has moved past. */
   kv($("profData"), [
     ["Regulation", (C.REG || "unknown") +
        (C.REG_STARTED ? " · since " + C.REG_STARTED : "")],
@@ -90,8 +93,8 @@ function drawTrainer(){
   ]);
 
   const c = $("costs");
-  /* No affordability colouring any more: it read the hand-typed VP balance,
-     and colouring against a stale number is worse than not colouring. */
+  /* No affordability colouring: VP held is not tracked, and colouring
+     against a stale balance is worse than not colouring. */
   kv(c, [["A ranked win pays", "+" + COSTS.ranked_win + " VP"],
          ["Stat Point", COSTS.training_stat_point + " VP"],
          ["Move", COSTS.training_move + " VP"],
@@ -105,6 +108,7 @@ function drawTrainer(){
 }
 
 /* ==================================================================== export */
+/* rows -> CSV text, quoting any cell with a comma, quote or newline */
 function csv(rows){
   return rows.map(function(r){
     return r.map(function(v){
@@ -196,6 +200,8 @@ function checkLatest(){
     .then(function(){ if ($("diagOut")?.children.length) drawDiag(); });
 }
 
+/* The diagnostics, as [label, value] lines: everything needed to tell a
+   broken page, a stale cache and stale data apart from a phone. */
 function diagLines(){
   const L = [];
   function add(k, v){ L.push([k, v]); }
@@ -249,6 +255,7 @@ function diagLines(){
   return L;
 }
 
+/* The diagnostics panel: the lines, Copy, and the overlap check. */
 function drawDiag(){
   const host = $("diagOut");
   if (!host) return;
@@ -272,26 +279,20 @@ function drawDiag(){
   host.appendChild(b);
 
   /* ------------------------------------------- nothing painted on top -----
-     The search icon sat on the text you were typing, in all eight search
-     boxes, for as long as those boxes had existed - and the only thing that
-     ever found it was a person looking at a phone. He asked for the check
-     rather than for the one bug: "si es algo bueno entonces seria bueno
-     terminarlo... tal vez se nos ocurran mas cosas y queden solapamientos."
+     A button that checks every screen for one thing drawn over another (an
+     icon over the text being typed, a badge under a picture).
 
-     It lives HERE, in diagnostics, and not in the test suite, for a reason
-     that is not laziness: jsdom does not lay anything out - every rectangle
-     it reports is zero - so a test there would pass while the screen was
-     wrong, which is the worst kind of check. Run on the real device, against
-     the real layout, it is the measurement that would have caught it.
-
-     SWEPT, NOT COMPARED PAIRWISE. Find lays out thousands of boxes and the
-     obvious double loop froze the renderer outright. Sorted by top edge, each
-     box is only measured against the ones that start before it ends. */
+     It lives HERE, in diagnostics, and not in the test suite: jsdom does not
+     lay anything out - every rectangle it reports is zero - so a test there
+     would pass while the screen was wrong. Run on the real device, against
+     the real layout, it measures what is actually drawn. */
   const ob = el("button", "btn sm mt8 ml8", "Check every screen for overlaps");
   ob.onclick = function(){ overlapReport(host); };
   host.appendChild(ob);
 }
 
+/* One view: how many painted boxes, the collisions (up to 12), and the
+   floating layers that sit over content. */
 function overlapSweep(view){
   const boxes = paintedBoxes(view);
   boxes.sort(function(a, b){ return a.r.top - b.r.top; });
@@ -306,10 +307,9 @@ function overlapSweep(view){
 /* Every leaf that paints something, with its rectangle. An ICON paints
    without carrying a word, and an icon on top of text is the exact bug this
    exists for, so svg and img count even though their text is empty. A FIELD
-   PAINTS ITS VALUE, which is not its textContent - without that an <input>
-   was never a box at all, and the sweep could not see the one bug it was
-   written for (caught by planting the bug back and watching the tool miss
-   it). Anything else has to say something to be worth colliding with. */
+   PAINTS ITS VALUE, which is not its textContent, so a field counts even
+   when empty - an icon over a search box's text is the bug this exists for.
+   Anything else has to say something to be worth colliding with. */
 function paintedBoxes(view){
   const boxes = [];
   for (const e of view.querySelectorAll("*")) {
@@ -326,8 +326,9 @@ function paintedBoxes(view){
   return boxes;
 }
 
-/* SWEPT, NOT COMPARED PAIRWISE: boxes are sorted by top edge, so box i is
-   only measured against the ones that start before it ends. Returns the
+/* SWEPT, NOT COMPARED PAIRWISE (a double loop over thousands of boxes
+   freezes the renderer): boxes are sorted by top edge, so box i is only
+   measured against the ones that start before it ends. Returns the
    first real collision as a line of text. A two-pixel kiss is layout, not a
    collision.
 
@@ -360,8 +361,8 @@ function firstCollision(boxes, i, view, floats){
 /* Out of the flow: its own layer, by declaration. Read off the ancestors
    because the painted leaf inherits the positioning of the box that floats -
    the "+" glyph is a plain span inside a fixed button. ASKED ONLY WHEN TWO
-   BOXES ACTUALLY TOUCH: asking for every box cost a getComputedStyle per
-   ancestor of 200 boxes and broke the sweep's own 150ms budget. */
+   BOXES ACTUALLY TOUCH: a getComputedStyle per ancestor of every box would
+   make the sweep too slow to run. */
 function floatingLayer(e, view){
   for (let n = e; n?.nodeType === 1 && n !== view; n = n.parentNode) {
     const pos = window.getComputedStyle(n).position;
@@ -387,6 +388,7 @@ function contentBox(e, r){
   return {left:l, top:t, right:rt, bottom:b, width:rt - l, height:b - t};
 }
 
+/* "12px" -> 12, anything unparseable -> 0 */
 function px(v){ return Number.parseFloat(v) || 0; }
 
 /* "span.tag “Fire”" - an element as a person can find it. An SVG's className
@@ -398,6 +400,7 @@ function overlapLabel(e){
          (t ? " “" + t + "”" : "");
 }
 
+/* Sweep every view and write the result under the button. */
 function overlapReport(host){
   /* Found through `host`, not by id: `$()` is for ids the MARKUP declares, and
      check_app asserts exactly that - a lookup for something no markup
@@ -405,9 +408,8 @@ function overlapReport(host){
   const old = host.querySelector(".overlapout");
   if (old) old.remove();
   const out = el("div", "note overlapout mt10");
-  /* EVERY VIEW, not just the one you are standing on. The diagnostics panel
-     lives in Settings, so a sweep of "the current screen" could only ever
-     sweep Settings - the one screen nobody was worried about.
+  /* EVERY VIEW, not just the one you are standing on - the button lives in
+     Settings, so "the current screen" would only ever be Settings.
 
      A hidden view reports every rectangle as zero, so each one is shown for
      the length of a measurement and put straight back. The flicker is the
@@ -438,11 +440,9 @@ function overlapReport(host){
       "px, of " + total + " painted boxes:";
     bad.slice(0, 14).forEach(function(h){ out.appendChild(el("div", "st", h)); });
   }
-  /* SHOWN, NOT COUNTED. The "+" button floats over the list on purpose and the
-     page scrolls out from under it, so it is not a fault - but listing it is
-     what keeps the check honest: a floating layer really swallowing something
-     would otherwise be invisible, which is how this tool went blind once
-     before. */
+  /* SHOWN, NOT COUNTED. The "+" button floats over the list on purpose, so
+     it is not a fault - but listing it keeps the check honest: a floating
+     layer really swallowing something would otherwise be invisible. */
   if (over.length) {
     const fl = el("div", "st mt8");
     fl.innerHTML = "<strong>" + over.length + " floating layer" +
@@ -454,6 +454,8 @@ function overlapReport(host){
   host.appendChild(out);
 }
 
+/* Where the clipboard API is missing or refused: the text in a sheet, to
+   select and copy by hand. */
 function diagFallback(txt){
   openSheet("Diagnostics", function(body){
     body.appendChild(el("p", "sub", "Select it all and copy."));

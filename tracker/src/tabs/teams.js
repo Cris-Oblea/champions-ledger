@@ -25,6 +25,7 @@ import { buildSheet } from "./builds.js";
 $("teamAdd").onclick = function(){ teamSheet(null, null); };
 
 /* ================================================================ the list */
+/* The Teams list, filtered by the search box. */
 function drawTeams(){
   const host = $("listTeams");
   if (!host) return;
@@ -85,11 +86,10 @@ function teamRow(id, t){
 }
 
 /* ========================================================== the team editor
-   A view, not a sheet: a sheet on a sheet took every unsaved slot with it.
-   `draft` is the team being edited; nothing is written until Save.
-   redraw() re-renders it in place from the draft - it used to close a sheet
-   and open a new one, which is why a Back from the item picker took the
-   whole team with it. */
+   A full-screen VIEW, not a sheet, because its pickers are sheets: closing
+   a picker must return to the team, not take the unsaved draft with it.
+   `draft` is the team being edited; nothing is written until Save. redraw()
+   re-renders the view in place from the draft. */
 function teamSheet(id, t){
   const draft = structuredClone(t || {name:"", slots:[], notes:{}});
   draft.slots = teamSlots(draft);
@@ -113,6 +113,7 @@ function teamSheet(id, t){
   ]);
 }
 
+/* The team's name, written straight into the draft. */
 function nameField(body, draft){
   const fn = el("div", "field");
   fn.appendChild(el("label", "f", "Name"));
@@ -142,6 +143,7 @@ function teamVerdict(body, r){
   body.appendChild(el("div", "note", line));
 }
 
+/* "The idea": his free text about what the team is for. */
 function ideaField(body, draft){
   const fw = el("div", "field");
   fw.appendChild(el("label", "f", "The idea"));
@@ -179,17 +181,10 @@ function deleteTeam(id, draft){
 
 /* ----------------------------------------------------- which one evolves --
    ONE SELECTOR, BOTH SECTIONS. The Speed order and the type table are two
-   readings of the same battle, so they cannot be allowed to disagree on
-   screen - and they did: the order listed four Megas at once while the table
-   had just learned that only one of them happens.
-
-     "creo que el selector de mega es mas honesto no? porque el pokemon solo
-      cambia de stat al mega evolucionar y si no mega evoluciona la tabla de
-      speed no cambia."   (player, 2026-09-21)
-
-   An unevolved slot is its base row whatever stone it holds, so the honest
-   unit is a WORLD - nobody evolved, or this one did - and both sections are
-   drawn from the one chosen. */
+   readings of the same battle, so they must never disagree on screen. An
+   unevolved slot is its base row whatever stone it holds, and only one may
+   evolve per battle, so the honest unit is a WORLD - nobody evolved, or this
+   one did - and both sections are drawn from the one chosen. */
 function scenarioSection(body, r){
   const SCEN = scenarios(r);
   const scenAt = {v: null};
@@ -292,12 +287,10 @@ function paintSpeeds(host, rows){
   host.appendChild(sfoot);
 }
 
-/* EVERY TYPE THAT HITS ANY OF THEM, never the first six (player, 2026-09-21:
-   "no debería tener límite de tipo que mostrar tanto para weak como para
-   resists"). Sorted worst first, so a cap silently dropped the tail - and the
-   tail is where a single x4 sits: a Chesnaught weak to Flying x4 was
-   invisible behind six shared weaknesses, the exact hole this table exists to
-   find. Each type says who is weak to it and who resists it. */
+/* EVERY TYPE THAT HITS ANY OF THEM, uncapped. Sorted worst first, so a cap
+   would drop the tail - and the tail is where a lone x4 sits (one Pokemon
+   weak to Flying x4 behind six shared weaknesses), the exact hole this table
+   exists to find. Each type says who is weak to it and who resists it. */
 function paintTypes(host, all){
   const tt = all.filter(function(x){ return x.weak; });
   host.innerHTML = "";
@@ -329,10 +322,9 @@ function paintTypes(host, all){
   });
 }
 
-/* "Chesnaught ×4, Incineroar ×2". EVERY NAME CARRIES ITS OWN MULTIPLIER
-   (player, 2026-09-21: "tampoco dice el multiplicador de x por cuanto
-   resiste o por cuanto es debil"): x4 and x2 are different problems, and so
-   are x0.25, x0.5 and an immunity. */
+/* "Chesnaught ×4, Incineroar ×2". EVERY NAME CARRIES ITS OWN MULTIPLIER:
+   x4 and x2 are different problems, and so are x0.25, x0.5 and an
+   immunity. */
 function withMultipliers(list){
   return list.map(function(e){
     return e.name + " ×" + (e.m === 0 ? "0" : e.m);
@@ -363,11 +355,9 @@ function teamSlotRow(draft, id, x, i, redraw){
 /* A filled slot wears the same card as everywhere else, typed as the BUILD's
    Pokemon - the Mega when a stone is on it, because that is what walks onto
    the field - and carrying the set it runs: the ability it chose, its nature,
-   its item, its SP and its moves. Checking what a team does used to mean
-   opening six builds (player, 2026-09-21: "la card en team builder del
-   pokemon es suficientemente grande como para mostrar el resumen de
-   habilidad, Nature, SPs, moves"). Returns null for a build whose Pokemon
-   the dex does not carry. */
+   its item, its SP and its moves - so a team can be read without opening
+   six builds. Returns null for a build whose Pokemon the dex does not
+   carry. */
 function slotCard(x){
   const draw = byName[x.build.mega || x.build.pokemon] || byName[x.build.pokemon];
   if (!draw) return null;
@@ -381,7 +371,7 @@ function slotCard(x){
     abLabel: x.build.mega ? "Ability after Mega" : "Ability",
     /* ONLY THE FORM THE BUILD PLAYS AS: a Mega build is drawn as the Mega
        row, and a base build must not grow the species' whole Mega line
-       beside a set that carries no stone (player, 2026-09-27). */
+       beside a set that carries no stone. */
     megas: false,
     /* THE ITEM GETS A CELL OF ITS OWN, because on this screen it is the
        decision being made - the six items are read down the column against
@@ -471,10 +461,8 @@ function slotButtons(draft, id, x, i, redraw){
   return side;
 }
 
-/* STRAIGHT INTO THE SET, from the screen where its problems are visible
-   (player, 2026-09-21: "podria haber un acceso rapido si uno quisiera
-   cambiar rapido una build en el team builder en vez de ir a la otra
-   pestaña").
+/* STRAIGHT INTO THE SET, from the screen where its problems are visible,
+   instead of going to the Builds tab to find it.
 
    THE TEAM IS WRITTEN FIRST, and that is not a convenience: leaving for the
    build editor abandons this draft, so saving first is the only version of
@@ -495,8 +483,7 @@ function teamEditBuild(draft, id, bid){
 
 /* ------------------------------------------- WHICH BUILD GOES IN THE SLOT --
    A search box and filters, because a slot is picked out of every build in
-   the ledger (player, 2026-09-21: "el selector de slot no tiene buscador!
-   imaginate tener 100 builds diferentes y tener que deslizar").
+   the ledger, and scrolling a hundred of them is not picking.
 
    The questions asked while a team is put together. WHAT IS IT - the search
    box, which reads the build's own words as well as its Pokemon's: an id, a
@@ -505,7 +492,7 @@ function teamEditBuild(draft, id, bid){
    builds that EXIST, so they offer exactly what is there; a row with a
    single chip cannot narrow anything and is left out. No "where is it"
    filter: a team can be written before one of its six exists, and where a
-   copy lives is the boxes' question (player, 2026-09-21).
+   copy lives is the boxes' question.
 
    And the Species Clause is enforced HERE, the way the Item Clause is in the
    item picker: a species another slot already holds is greyed out with the
@@ -538,9 +525,9 @@ function teamPickBuild(draft, idx, onPick){
   }, [fbtn("Back", "", function(){ closeSheet(); })]);
 }
 
-/* The species the OTHER slots hold. PER FORM, which is what the clause was
-   measured on - 0 of the 642 Worlds teams repeats even a form - so two
-   Squawkabilly of different plumage are still two of the same thing. */
+/* The species the OTHER slots hold, keyed by the dex FORM name - the same
+   key core/team.js checks the clause on. A cosmetic variant (Squawkabilly's
+   plumages) is one dex entry, so it is one form here too. */
 function takenSpecies(draft, idx){
   const taken = {};
   (draft?.slots || []).forEach(function(sl, j){
@@ -572,10 +559,9 @@ function pickRows(taken){
   });
 }
 
-/* A–Z AND DEX, AND THE STATS ARE ALL OR NONE (player, 2026-09-21: "me basta
-   con el orden de a-z, dex, y si voy a poner bst y speed, entonces tambien
-   importan los de atk, def, spa, spd..."). The two he asked for are the row;
-   the six stats and BST sit together behind a fold. */
+/* A–Z AND DEX, AND THE STATS ARE ALL OR NONE: offering BST and Speed but not
+   the rest would be an arbitrary pick. A-Z and Dex are the row; the six
+   stats and BST sit together behind a fold. */
 function sortControls(body, F, draw){
   const SORTS = [["az", "A–Z"], ["dex", "Dex no."]];
   const STATSORTS = [["bst", "BST"], ["hp", "HP"], ["atk", "Atk"],
@@ -608,9 +594,8 @@ function sortButton(row, groups, F, key, text, draw){
 /* WHAT JOB IT DOES. `role` is typed by hand, so the chips are the distinct
    roles that exist, matched case-insensitively and labelled with the
    spelling first used. FOLDED, AND IT STAYS FOLDED: with a role per build
-   these are as many chips as builds, and they pushed the list off the screen
-   (player, 2026-09-21: "el role podria ir oculto o plegado siempre"). The
-   count rides on the button. */
+   these are as many chips as builds, and open they would push the list off
+   the screen. The count rides on the button. */
 function roleChips(body, rows, F, draw){
   const roleKeys = [], roleN = {}, roleText = {};
   rows.forEach(function(r){
@@ -736,9 +721,8 @@ function pickOrder(sort){
 /* One build, drawn as the card every other list draws.
 
    A BUILD IS STILL A POKEMON, so the slot picker shows the card the rest of
-   the app shows, with the build's own facts as the extra cells. It had a
-   typing, a nature and the four move names and nothing else - and this is the
-   screen where a team is decided. */
+   the app shows, with the build's own facts as the extra cells - this is the
+   screen where a team is decided, and it needs the numbers. */
 function buildPickRow(r, onPick){
   const b = r.b, bid = r.id, lk = r.lk;
   const badges = function(h){
@@ -867,10 +851,9 @@ function ownsItem(x){
   return x.stone ? hasStone(x.name) : hasItem(x.name);
 }
 
-/* "No item" first, then ALL the items that pass the filters. There are 118
-   in Champions and this once drew 60, so half the pool was invisible and
-   nothing said so - the worst shape for a list you are choosing FROM. `slot`
-   is {draft, i, taken, redraw}. */
+/* "No item" first, then ALL the items that pass the filters - uncapped,
+   because a list you are choosing FROM must not hide part of the pool.
+   `slot` is {draft, i, taken, redraw}. */
 function drawItemPicks(list, count, POOL, F, q, slot){
   const cats = Object.keys(F.cat);
   list.innerHTML = "";

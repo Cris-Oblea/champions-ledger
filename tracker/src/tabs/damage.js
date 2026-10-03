@@ -53,26 +53,26 @@ function koCount(lo, hi, hp){
   return {text:hko(best) + " on a high roll, " + hko(worst) + " otherwise",
           n:best};
 }
+/* 2 -> "2HKO" */
 function hko(n){ return n + "HKO"; }
 
 /* ============================================ the calculator, for real =====
-   This does not approximate Smogon's engine - it runs it. The bundle is the
-   vendored calc/ compiled for the browser by scripts/build_engine_bundle.py.
-
-   A hand port used to live here. It agreed on the plain cases and drifted by
-   a point or two once modifiers stacked, because the real chain runs in four
-   separate buckets - base power, attack, defence, final - each chained in
-   4096-space with its own rounding step. One point can turn a 2HKO into a
-   3HKO, and the KO count is the only thing that counts. */
+   This does not approximate Smogon's engine - it runs it (window.SMOGON, the
+   bundle scripts/build_engine_bundle.py compiles). NEVER hand-port the
+   formula: the real chain runs in four separate buckets - base power,
+   attack, defence, final - each chained in 4096ths with its own rounding
+   step, and a port drifts by a point once modifiers stack. One point can
+   turn a 2HKO into a 3HKO, and the KO count is the only thing that counts. */
 function engineReady(){
   return !!window.SMOGON?.calculate;
 }
 
 /* Our spelling is Serebii's ("Mega Glalie"); the engine answers to its own
-   ("Glalie-Mega"). The table is precomputed by build_tracker_data.py through
-   query.norm(), which has 44 locked test cases - porting that matcher to JS
-   would be a second implementation to keep in step. Aegislash is the one form
-   whose name depends on the side: it attacks as Blade, and is hit as Shield. */
+   ("Glalie-Mega"). The table (C.SMOGON_NAME) is precomputed by
+   build_tracker_data.py through dex.norm(), whose spellings test_norm.py
+   locks in - porting that matcher to JS would be a second implementation to
+   keep in step. Aegislash is the one form whose name depends on the side: it
+   attacks as Blade, and is hit as Shield. */
 function engName(name, attacking){
   if (name === "Aegislash" || name === "Aegislash-Shield" ||
       name === "Aegislash-Blade") {
@@ -237,10 +237,9 @@ function calcSideCtl(which){
 }
 
 /* THE CARD, WITH ITS POKEMON ON IT - the same one the pickers draw, so the
-   Pokemon you chose looks like the Pokemon you chose it from (player,
-   2026-09-19: "a la calculadora tambien le faltan los sprites"). Nothing
-   chosen yet, or a name with no row anywhere, gets the one shape that needs
-   no data. Either way, tapping it opens the picker. */
+   Pokemon you chose looks like the Pokemon you chose it from. Nothing chosen
+   yet, or a name with no row anywhere, gets the one shape that needs no
+   data. Either way, tapping it opens the picker. */
 function sidePick(which, side){
   const p0 = side.name ? anyRow(side.name) : null;
   if (side.name && p0) {
@@ -267,14 +266,10 @@ function sidePick(which, side){
 }
 
 /* THE OTHER SPREAD, WRITTEN OUT. A Pokemon that changes stats mid-battle has
-   two, and a sentence about the second was not enough (player, 2026-09-15:
-   "yo tambien necesito ver las estadisticas fisicas y especiales, no me sirve
-   asi"). The CALCULATION was already right - engName() asks for
-   Aegislash-Blade when it attacks - so this is the display catching up with
-   the arithmetic: both rows shown, the one in play marked. Aegislash is the
-   one the app switches by itself, and only when attacking; anything else is
-   shown as what it WOULD be, because claiming it is in play would be a guess
-   about the battle. */
+   two, and both are shown as tables, the one in play marked. Aegislash is
+   the one the calculator switches by itself (engName asks for Blade when it
+   attacks); any other form is shown as what it WOULD be, because claiming it
+   is in play would be a guess about the battle. */
 function otherSpreads(m, p, which){
   const bf = p && C.BFORMS?.[p.name];
   if (!bf?.f) return;
@@ -295,9 +290,8 @@ function otherSpreads(m, p, which){
 
 /* ONE COMPACT BLOCK, NOT FOUR STACKED ONES: ability, item, nature and status
    are the four things you set on a Pokemon before you read the number, and
-   the screen carries two sides (player, 2026-09-19: "ocupa demasiado espacio
-   en pantalla"). The two halves stay stacked above the stats: side by side
-   the SP boxes came out 22px wide. */
+   the screen carries two sides. The two halves stay stacked above the
+   stats: side by side the SP boxes would be too narrow to type in. */
 function sideSelects(which, side, P){
   const g2 = el("div", "grid2 tight mt8");
   g2.appendChild(sideField("Ability", abilityOptions(which, P), side, "ability"));
@@ -567,9 +561,8 @@ function calcLoadBuild(which, id, b){
 }
 
 /* PICK THE MOVE: the build's own moves first when the attacker came from a
-   build, then everything it learns - ALL of it, damaging moves ranked by
-   power times accuracy. The longest movepool is 106, and a cut at 60 took
-   moves off half the dex with nothing saying so. */
+   build, then every damaging move it learns - uncapped, ranked by power
+   times accuracy. */
 function calcMoveSheet(){
   const a = CALC.atk;
   if (!a.name) { toast("Pick the attacker first"); return; }
@@ -611,6 +604,7 @@ function calcMoveSheet(){
     draw();
   }, []);
 }
+/* One move to pick; `fromBuild` marks the ones on the attacker's build. */
 function calcMoveRow(m, fromBuild){
   const r = el("button", "row" + (fromBuild ? " perm" : ""));
   const mm = el("div", "rmain");
@@ -632,9 +626,8 @@ function calcMoveRow(m, fromBuild){
 }
 
 /* THE FIELD PANEL: every switch the engine reads, in labelled rows. A GROUP'S
-   LABEL SITS ON THE SAME LINE AS ITS BUTTONS - eight full-width headings cost
-   eight lines of nothing (player, 2026-09-19: "sigo pensando que ocupan
-   espacio innecesario"). Each switch is written out as its own assignment to
+   LABEL SITS ON THE SAME LINE AS ITS BUTTONS - full-width headings would cost
+   a line each and say nothing. Each switch is written out as its own assignment to
    CALC, which is what lets check_app.js prove every one reaches the engine. */
 function calcFieldCtl(){
   const host = $("calcField");
@@ -696,6 +689,7 @@ function weatherAndTerrain(f){
   });
 }
 
+/* The attacker's side of the field. */
 function attackerSwitches(f){
   f.group("Attacker", "On the attacking Pokemon's side of the field");
   f.tog("Helping Hand", CALC.helpingHand, function(){
@@ -711,8 +705,8 @@ function attackerSwitches(f){
 }
 
 /* The target's side, and then what changes the HP it is ON rather than one
-   hit - which is what decides whether the NEXT hit KOes (the player's point:
-   you calculate after a switch, after chip, after an attack). */
+   hit - which is what decides whether the NEXT hit KOes: you calculate after
+   a switch, after chip, after an attack. */
 function targetSwitches(f){
   f.group("Target", "On the target's side of the field");
   f.tog("Friend Guard", CALC.friendGuard, function(){
@@ -821,6 +815,8 @@ function verdictLine(r, ko){
   return v;
 }
 
+/* The bar under the verdict: the high roll as a share of the HP it is on,
+   coloured by the KO count. */
 function koBar(r, hp, ko){
   const bar = el("div", "meter ko");
   const fill = el("i");
@@ -854,6 +850,7 @@ function calcFlags(m){
   return flags;
 }
 
+/* "Every roll", folded: each damage roll and where the number came from. */
 function rollsDetails(r){
   const det = el("details", "rolls");
   const sum = el("summary", null, "Every roll, and where the number came from");
