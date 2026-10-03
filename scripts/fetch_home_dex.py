@@ -411,7 +411,7 @@ def species_flags(force=False):
 
 
 def sprite_pin():
-    m = re.search(r'var SPRITE_PIN = "([0-9a-f]{40})"',
+    m = re.search(r'SPRITE_PIN = "([0-9a-f]{40})"',
                   Path(APP_DATA).read_text(encoding="utf-8"))
     if not m:
         sys.exit("SPRITE_PIN not found in %s" % os.path.relpath(APP_DATA, ROOT))
