@@ -1,6 +1,6 @@
-/* Every write (put, putNew, patch, drop) and the Supabase adapter behind
-   them. The rest of the app asks for these four and never learns what is
-   behind them. */
+/* The ledger: loads every Supabase table into S, keeps it live over one
+   Realtime channel, and is the only way anything is written (put, putNew,
+   patch, drop). The screens call those four and never touch Supabase. */
 import { byText } from "./data.js";
 import { $, el, toast } from "./dom.js";
 import { S } from "./state.js";
@@ -24,6 +24,8 @@ const TABLES = ["box", "builds", "teams", "stones", "items", "gts", "meta"];
 let redraw = function(){};
 function whenChanged(fn){ redraw = fn; }
 
+/* Called once by ui/signin.js with the signed-in client: load every table,
+   then subscribe to changes made anywhere else. */
 function openLedger(sb, uid){
   S.db = {sb: sb, uid: uid, cache: {}};
   TABLES.forEach(function(t){
@@ -33,10 +35,10 @@ function openLedger(sb, uid){
     });
   });
   /* ONE CHANNEL FOR THE LOT, so a change made on the phone lands on the PC.
-     Subscribed from the same list the tables load from: teams was once left
-     out of a hand-written list, so a team saved on the phone never reached
-     the laptop - and that stale view is exactly what makes two devices
-     compute the same new id. */
+     Subscribed from the same TABLES list the loads use, so a table can
+     never be loaded but not followed - a device with a stale table is
+     exactly how two devices end up computing the same new id. A change
+     reloads that whole table: they are small, and a reload cannot drift. */
   let ch = sb.channel("ledger");
   TABLES.forEach(function(t){
     ch = ch.on("postgres_changes", {event:"*", schema:"public", table:t},
@@ -78,17 +80,21 @@ function splitPath(path){
   const i = path.indexOf("/");
   return [path.slice(0, i), path.slice(i + 1)];
 }
+/* true (and says so) when there is no connection to write through */
 function offline(){
   if (S.db) return false;
   toast("Not connected to the store");
   return true;
 }
+/* Every failed write tells the user, then rethrows so the caller's own
+   promise rejects and nothing downstream treats it as saved. */
 function saveFailed(e){
   toast("Could not save: " + (e?.code || "error"));
   throw e;
 }
 
-/* Write a whole record, creating or replacing it. */
+/* Write a whole record, creating or replacing it (an upsert). Stamps
+   `updated`; resolves once the database has accepted it. */
 function put(path, body){
   if (offline()) return Promise.resolve();
   body.updated = new Date().toISOString().slice(0,10);
@@ -153,6 +159,8 @@ function putNew(t, stem, body){
   return attempt();
 }
 
+/* Delete a record. Quietly does nothing while signed out, since there is
+   nothing on screen to delete then. */
 function drop(path){
   if (!S.db) return Promise.resolve();
   const [t, id] = splitPath(path);
@@ -164,7 +172,10 @@ function drop(path){
 }
 
 /* ======================================================= rows <-> records ==
-   What a row looks like in the app, and back. */
+   docFromRow turns a database row into the record the app reads (camelCase,
+   defaults filled in); rowFromDoc is the way back. They are the only two
+   functions that know the column names, so a schema change is edited here
+   and in a supabase/ migration, nowhere else. */
 function docFromRow(coll, row){
   if (coll === "meta") return row.data || {};
   /* A set table: the row's existence IS the fact, and there is nothing
@@ -235,6 +246,7 @@ function rowFromDoc(coll, id, uid, d){
     rationale:d.rationale || "", extra:d.extra || {}};
 }
 
+/* The connection line in Settings: live, or why not. */
 function dbState(ok, why){
   const n = $("dbNote");
   n.innerHTML = "";

@@ -2,9 +2,9 @@
    Settings diagnostics can show them on a phone that has no console. */
 
 /* ------------------------------------------------------------ diagnostics --
-   "It does not work on my phone" is not something to guess at from a desktop
-   browser that works. This reports what the page can actually see, on the
-   device where it is failing, without needing a console. */
+   "It does not work on my phone" cannot be diagnosed from a desktop browser
+   where it works. This records what the page sees, on the device where it
+   fails. boot.js imports it first, so no error escapes it. */
 const BOOT_ERRORS = [];
 window.addEventListener("error", function(e){
   BOOT_ERRORS.push((e.message || "error") +
@@ -23,7 +23,7 @@ function showBootError(){
   if (!bar) return;
   bar.hidden = false;
   bar.textContent = BOOT_ERRORS.length + " script error" +
-    (BOOT_ERRORS.length === 1 ? "" : "s") + " - open Trainer > Diagnostics";
+    (BOOT_ERRORS.length === 1 ? "" : "s") + " - open Settings > Diagnostics";
 }
 
 export { BOOT_ERRORS };

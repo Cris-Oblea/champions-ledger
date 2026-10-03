@@ -8,23 +8,23 @@ import { el, filterLabel, searchField, setPressed } from "../core/dom.js";
 import { numText, typeChip, typeSkin, usageTag } from "./card.js";
 
 /* ------------------------------------------- which ability boosts what -----
-   Each entry answers one question: given this Pokemon's chosen ability, which
-   of the moves it actually learns are changed by it? The test runs against the
-   move's own flags, so a new move added by a regulation is covered the day the
-   data refreshes - nothing here is a hand-written move list.
+   Given a Pokemon's ability, which of its moves does it change? C.AB_MOVES
+   answers per ability, as move-index lists DERIVED by
+   scripts/build_ability_moves.py from the move data and cross-checked against
+   Smogon's engine - never a hand-written list, so a move a new regulation
+   adds is covered the day the data refreshes. Each entry carries:
 
-   `sec` marks a move with a SECONDARY effect, which is what Sheer Force trades
-   away for 30% power. */
-/* Derived by scripts/build_ability_moves.py from Serebii's move text, cross-
-   checked against Smogon's engine, and shipped as move-index lists. Nothing
-   here is written by hand, which is the point: three bugs came from hand rules.
+     side      "off" (it changes the user's moves) or "def" (what comes IN -
+               Bulletproof, Filter - which never badges its own movepool)
+     m         the moves it touches; `all` for every move
+     up, down  Contrary only: which moves it turns from a boost into a drop
+               and back, each with its own `why`
+     x, why    the power multiplier and the sentence the badge shows
+     scope     set when it touches a whole CATEGORY (Guts: every physical
+               move), stated once on the ability rather than on every row
+     stop, ally  the moves it switches off, from a foe / from an ally
 
-     - a power multiplier can never apply to a move that deals no damage
-       (Adaptability was badging Basculegion's Rain Dance)
-     - "1-stage Critical-Hit Ratio Boost" is not a stat stage
-       (Contrary was badging Protect and Roost)
-     - an ability that changes what comes IN never badges its own movepool
-       (Bulletproof, Filter, Thick Fat are "def" and stay out of it) */
+   AB_SET is the same with the lists turned into sets, for the lookups below. */
 const AB = C.AB_MOVES || {};
 const AB_SET = {};
 Object.keys(AB).forEach(function(name){
@@ -37,15 +37,13 @@ Object.keys(AB).forEach(function(name){
   AB_SET[name] = s;
 });
 
+/* Does `ability` change this move for its user? The entry (with the right
+   `why`), or null. */
 function abilityHit(ability, move){
   const r = AB_SET[ability];
   if (r?.side !== "off") return null;      // defensive rules badge nothing
-  // An ability that covers a whole CATEGORY selects nothing, so a badge on
-  // every row is noise that buries the abilities that do select. Guts is the
-  // case the player named: it multiplies the Attack STAT while statused, so
-  // "the moves it affects" is just "every physical move" - which the row's own
-  // category already says. Those are stated once, on the ability itself; see
-  // abilityScope(). Measured in build_ability_moves.py, never listed by hand.
+  // A whole-category ability selects nothing: a badge on every physical row
+  // would bury the abilities that do pick moves out. Stated once instead.
   if (r.scope) return null;
   if (r.all) return r;
   if (!r.m[move.i]) return null;
@@ -69,29 +67,23 @@ function abilityTag(ability, move, poke){
 
 /* --------------------------------------------------- spread, and the ally --
    Two facts that decide games in doubles and are easy to miss on a phone:
-   a spread move deals x0.75 while both targets are up, and fourteen of them
-   land on your own partner as well - which the player's own rule says not to
-   run unless the ally is immune or absorbs it.
+   a spread move deals x0.75 while both targets are up, and some land on your
+   own partner as well - not to be run unless the ally is immune or absorbs it.
 
-   Neither flag is read off Serebii's target field. It spells one thing four
-   ways and gets three moves wrong outright, so build_ability_moves.py resolves
-   both against Smogon's engine target column: Burning Jealousy really is a
-   spread move, Corrosive Gas strips your own ally's item, and Psyshield Bash
-   is a single-target attack however "Ally" reads.
+   Both flags come from Smogon's engine target column, not Serebii's target
+   field, which spells one thing four ways and gets some moves wrong (resolved
+   in build_ability_moves.py).
 
    There is no hover on a phone, so the badge says it and the line under it
-   says it again in full. */
+   (spreadNote) says it again in full. */
 function spreadTags(m, host){
   if (m.spread) host.appendChild(el("span", "tag warn", "spread"));
   if (m.hitsAlly) host.appendChild(el("span", "tag bad", "hits ally"));
   multiHitTag(m, host);
 }
-/* MULTI-HIT, WITH THE TOTAL. 14 moves in Champions hit more than once, and the
-   BP column shows one hit of them - Bullet Seed reads 25 BP next to Seed Bomb's
-   80 and loses, when it is really 75 across three hits and 125 with Skill Link.
-   A row that does not say so is comparing the wrong numbers, which is why the
-   player asked for the tag (2026-09-15: "falta que los movimientos tengan tag
-   de si son multi-hit").
+/* MULTI-HIT, WITH THE TOTAL. The BP column shows ONE hit, so Bullet Seed reads
+   25 BP next to Seed Bomb's 80 when it is really 75 across three hits and 125
+   with Skill Link. The tag's title gives the total.
 
    Three shapes, and they are genuinely different moves:
      fixed     Dragon Darts always twice - the total is just n x BP
@@ -121,13 +113,9 @@ function multiHitTag(m, host){
   t.title = bits.join(" · ") || "Hits more than once";
   host.appendChild(t);
 }
-/* Priority, with its NUMBER. Filtering a movepool by "priority" and getting
-   back rows that do not say how much is no answer: +1 and +2 are a different
-   move in doubles, and the whole point of Fake Out over Quick Attack is the
-   extra stage. Negative priority is shown for the same reason - Vital Throw
-   and Dragon Tail moving last is a fact about the turn, not a footnote. The
-   move picker already did this for +N; the Pokemon's own sheet did not, which
-   is where the player was looking (2026-09-12). */
+/* Priority, with its NUMBER: +1 and +2 are different moves in doubles (the
+   point of Fake Out over Quick Attack is the extra stage). Negative priority
+   is shown too - moving last is a fact about the turn. */
 function priorityTag(m, host){
   if (!m.pri) return;
   const cls = m.pri > 0 ? "tag ok" : "tag bad";
@@ -144,11 +132,9 @@ function priorityTag(m, host){
 function itemTags(m, host){
   (C.ITEM_FOR_MOVE?.[m.name] || []).forEach(function(p){
     /* WHICH WAY THE TAG POINTS. Heat Rock on Sunny Day is a reason to run the
-       move; Aspear Berry on Ice Beam is the reason it will not work, because
-       the target thaws and the freeze was the whole point. Both read as the
-       same grey chip, so the row said "these items are related" and left which
-       way to be worked out (player, 2026-09-18). The side is decided in
-       scripts/build_item_links.py, from the reason the link was made for. */
+       move; Aspear Berry on Ice Beam is a reason it will not work (the target
+       thaws), so it is red. The side is decided in
+       scripts/build_item_links.py, from the reason the link was made. */
     const t = el("span", "tag" + (p[1] === "against" ? " bad" : ""), p[0]);
     t.title = p[1] === "against"
       ? p[0] + " answers this move"
@@ -157,29 +143,17 @@ function itemTags(m, host){
   });
 }
 
-/* WHAT TURNS THIS MOVE OFF. A defensive ability badges nothing on a move row
-   as a rule, and that is right while the alternative is all 67 of them - Fire
-   Lash would carry 32 grey chips. These are the narrow class the player asked
-   for and named exactly: the ones that make the move do NOTHING.
-
-     "si viese zap cannon en algun pokemon como raichu, y veo que tiene el tag
-      bulletproof, sabria que ese move es bloqueado por esa habilidad"
-
-   Zap Cannon comes back Bulletproof, Lightning Rod, Motor Drive, Volt Absorb;
-   Fire Lash comes back empty, because Big Pecks only eats its Defence drop and
-   that is not the move being blocked. Which is which is derived in
-   scripts/build_ability_moves.py, never listed here. */
-/* EVERY ABILITY THAT SWITCHES THIS MOVE OFF, SEEN FROM THE SIDE THAT USES IT.
+/* WHAT SWITCHES THIS MOVE OFF, SEEN FROM THE SIDE THAT USES IT. Only the
+   abilities that make the move do NOTHING (Zap Cannon: Bulletproof, Lightning
+   Rod, Motor Drive, Volt Absorb) - one that merely softens it (Big Pecks
+   against a Defence drop) would put dozens of chips on a row.
 
    Red is an ability that stops it when an OPPONENT holds it - Levitate under
    your Earthquake. Green is one that only ever helps you: Telepathy stops an
    ALLY's move and nobody else's, so on your partner it is the reason to run
-   the spread move and on a foe it does nothing (player, 2026-09-27: "si el
-   oponente tiene telepathy no se cubre de mis ataques. hay que tener
-   conocimiento de la perspectiva de una habilidad!"). An immunity that works
-   against anyone stays red only: a foe's Levitate is a fact you face, pairing
-   your own is a strategy you choose. Which side each one works from is
-   decided in build_ability_moves.STOP_WHOSE. */
+   the spread move. An immunity that works against anyone stays red only: a
+   foe's Levitate is a fact you face, pairing your own is a choice. Which side
+   each works from is decided in build_ability_moves.STOP_WHOSE. */
 function blockerTags(m, host){
   const AB = C.AB_MOVES || {};
   Object.keys(AB).forEach(function(a){
@@ -198,6 +172,7 @@ function blockerTags(m, host){
     host.appendChild(t);
   });
 }
+/* The spread / ally facts as prose, for the line under a move. */
 function spreadNote(m){
   let note = "";
   if (m.spread) note += "  ·  " + (m.cat === "T" ? "hits both opponents"
@@ -207,32 +182,27 @@ function spreadNote(m){
 }
 
 /* ------------------------------------------------ finding one move fast ---
-   The search box, the sort and the filter chips that sit above a move list.
-   It lives here, once, because the build editor and the search view ask the
-   same question and used to answer it differently - the editor had a sort and
-   the search view had nothing at all.
+   The search box, the sort and the filter chips that sit above a move list,
+   and the list itself, redrawn on every change. One implementation, used by
+   the build editor and the search view, so both answer the same question the
+   same way. The caller only says what ONE row is (`rowFor`).
 
    Everything stacks: the sort is one choice, each filter group ANDs with the
-   others, and the chips inside one group OR together. It owns the list under
-   the controls too, and redraws it on every change; the caller only says what
-   ONE row is (`rowFor`), because the editor badges abilities and effective BP
-   and the search view does not. */
+   others, and the chips inside one group OR together. */
+/* BP x accuracy: how this project ranks moves, and the default sort. A move
+   that never misses (no accuracy) counts as 100. */
 function moveScore(m){ return (m.bp || 0) * Math.min(100, m.acc || 100) / 100; }
 
 function moveFilters(body, pool, rowFor, placeholder, opts){
-  /* `usageOf` is a Pokemon name, and it is what turns this from "rank the
-     movepool by raw power" into "rank it by what its players actually bring".
-     Only a caller with one Pokemon in hand passes it, and then usage is the
-     DEFAULT sort, because that is the first question asked of a movepool
-     (player, 2026-09-15: "seria bueno poner filtro a los movimientos de mayor
-     a menor uso por el %"). */
+  /* `usageOf` is a Pokemon name: it turns "rank the movepool by raw power"
+     into "rank it by what its players actually bring". Only a caller with one
+     Pokemon in hand passes it, and then usage is the DEFAULT sort, because
+     that is the first question asked of a movepool. */
   const usageOf = opts?.usageOf || null;
-  /* THE CAP LIVES HERE, WITH THE COUNT THAT REPORTS IT. Callers used to slice
-     the result themselves while the count said a different number, and half
-     the dex had its movepool quietly truncated (Rillaboom: 67 moves, 60
-     shown). draw() caps the rows it writes the count for, so the two cannot
-     disagree. A single movepool is never capped in practice - the longest is
-     Gallade at 106; the default 80 is for the whole move table. */
+  /* THE CAP LIVES HERE, WITH THE COUNT THAT REPORTS IT: draw() caps the rows
+     it writes the count for, so the two cannot disagree and a cut is never
+     silent. A single Pokemon's movepool fits under the default; the cap is
+     for the whole move table. */
   const cap = opts?.cap || 80;
   const st = {F: {cat:{}, trait:{}, type:{}}, EXCL: {}, onChange: draw,
             sort: usageOf ? "usage" : "bp"};
@@ -310,9 +280,8 @@ function sortRow(body, st, usageOf){
   body.appendChild(srow);
 }
 
-/* ONE FILTER CHIP, WITH THREE STATES: off, include, EXCLUDE (player,
-   2026-09-19: "falta algo que diga no... que no me muestre ningun pokemon de
-   tipo psyquico"). A tap cycles off -> include -> exclude -> off, and an
+/* ONE FILTER CHIP, WITH THREE STATES: off, include, EXCLUDE ("no Psychic"
+   is a real question). A tap cycles off -> include -> exclude -> off, and an
    excluded chip is drawn with a minus, struck through, because it has to read
    as the opposite of the chip beside it. A type chip wears the type's own
    colours (typeSkin knows which are written in black). */
@@ -328,9 +297,8 @@ function triChip(row, st, group, key, text, type){
     const was = F[group][key] || 0;
     const now = ({0: 1, 1: -1})[was] || 0;
     if (now) F[group][key] = now; else delete F[group][key];
-    /* A MOVE HAS EXACTLY ONE CATEGORY, so including one drops the other
-       (player, 2026-09-19: "seleccionar una desactiva la otra"). Excludes
-       still stack, which keeps "not status" sayable. */
+    /* A MOVE HAS EXACTLY ONE CATEGORY, so including one drops the other.
+       Excludes still stack, which keeps "not status" sayable. */
     if (group === "cat" && now === 1) {
       Object.keys(st.EXCL.cat).forEach(function(k){
         if (k !== key && F.cat[k] === 1) {
@@ -382,6 +350,7 @@ function includedOrNone(group, value){
   return !inc.length || inc.includes(value);
 }
 
+/* the "Must have" chips: spread, hits ally, priority (positive only) */
 function hasTrait(m, k){
   if (k === "spread") return !!m.spread;
   if (k === "ally") return !!m.hitsAlly;
@@ -421,8 +390,7 @@ function moveOrder(sort, usageOf){
    which means the only place a wrap can happen is a join.
 
    Falsy parts are dropped, so a caller can pass a conditional straight in
-   rather than assembling a string with the separators in it - which is what
-   every one of these did, three times over, with slightly different spacing. */
+   rather than assembling a string with the separators in it. */
 function factLine(parts){
   const box = el("div", "rmeta");
   parts.filter(Boolean).forEach(function(t){
@@ -431,26 +399,15 @@ function factLine(parts){
   return box;
 }
 
-/* one move row, badged with whatever ability of this Pokemon touches it.
+/* ONE MOVE ROW - the only one: a Pokemon's sheet, the build's move picker
+   and Find's "+ Move" all draw it, so a move reads the same on every screen.
+   Anything a row should show is added here.
 
-   `ability` takes a single name (the build editor, where one ability is
-   chosen) or the whole list (a dex sheet, where none is). It used to take
-   `p.ab[0]` even on the sheet, so Conkeldurr - Guts, Sheer Force, Iron Fist -
-   only ever answered for Guts, and the two that actually pick out moves were
-   invisible. Every ability that hits is badged now, by name, because the
-   question is "which moves, and with WHICH ability". They are alternatives,
-   never at once: a Pokemon has one ability per battle.
-
-   THIS ROW AND THE BUILD PICKER'S ARE THE SAME ROW, and they have to stay
-   that way. A Pokemon's moves are shown in exactly two places - the builder
-   and the search - and they had drifted: the picker gained the usage share,
-   the effective number and the target, and this one did not, so the same move
-   read differently depending on which screen you were on (player, 2026-09-15:
-   "la ficha de moves cambio en build y la de find igual deberia conservar los
-   mismos cambios para que se entienda de la misma forma en ambas partes").
-   Anything added to one belongs in the other - which is why the build's move
-   picker and the search's "+ Move" draw THIS row too, rather than copies
-   that had drifted again (no "not in Champions", no PP, no spread note).
+   `ability` takes a single name (the build editor, where one is chosen) or
+   the whole list (a dex sheet, where none is). Every ability that touches
+   the move is badged by name, since the question is "which moves, and with
+   WHICH ability" - alternatives, never at once: a Pokemon has one ability
+   per battle.
 
    `opts.onPick` makes the row a button that calls it; `opts.usageOf` names
    whose usage to show when it is not `poke` - the build picker's Pokemon is
@@ -487,18 +444,11 @@ function moveRowFor(m, ability, poke, opts){
     h.appendChild(tag);
     hits.push({ability:a, hit:hit});
   });
-  /* How many of THIS Pokemon's players ran it - the same chip the builder
-     shows, on the same terms. Only where there IS a Pokemon: the "+ Move"
-     sheet searches the whole table with nobody in hand, and a share needs
-     something to be a share of.
-
-     And EVERY move carries one, including the ones at 0%. The picker used to
-     badge four or five and leave the rest of the movepool blank, and blank
-     reads as "no data" when it actually meant "nobody brought it" - which is
-     an answer, and the one the player asked to see (2026-09-15: "lo que yo
-     quiero es que marque todos los ataques posibles con % de uso").
-     splitPct returns null only when the Pokemon has no table at all, and
-     that is the one case that stays silent. */
+  /* How many of THIS Pokemon's players ran it. Only where there IS a
+     Pokemon: "+ Move" searches the whole table with nobody in hand, and a
+     share needs something to be a share of. EVERY move carries one, 0%
+     included - blank would read as "no data" when it means "nobody brought
+     it". Only a Pokemon with no table at all stays silent (splitPct null). */
   const who = opts.usageOf || poke?.name;
   if (who) {
     const utag = usageTag(splitPct(who, "m", m.name), who, "m");
@@ -512,12 +462,9 @@ function moveRowFor(m, ability, poke, opts){
                /* BP x accuracy, which is how this project ranks moves - and
                   the number the picker sorts on by default */
                m.bp ? Math.round(moveScore(m)) + " effective" : null];
-  /* THE SPREAD SENTENCE IS PROSE, NOT A FACT, and it has to go somewhere that
-     can wrap. A `.fact` is `white-space:nowrap` so that "100 acc" never breaks
-     between the number and the unit; "spread x0.75 while both targets are up,
-     full power with one" inside one is 413px wide on a 360px screen and runs
-     straight off the edge. The "spread" chip on the name already flags it;
-     the explanation goes below, where a line break is allowed. */
+  /* THE SPREAD SENTENCE IS PROSE, NOT A FACT: a `.fact` never wraps, and the
+     sentence is wider than a phone. The "spread" chip on the name flags it;
+     the explanation goes on its own line below, where wrapping is allowed. */
   const spread = spreadNote(m).replace(/^\s*·\s*/, "").trim();
   hits.forEach(function(x){
     if (x.hit.x && m.bp)

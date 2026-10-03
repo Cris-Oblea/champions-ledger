@@ -1,15 +1,21 @@
 /* The DOM helpers every screen builds with: $, el, the toast, a note, a
-   footer button, the search box with its clear button, and the three every
-   switch and sheet shares - setPressed, showPane, resetHost. */
+   footer button, the search box with its clear button, and the ones every
+   switch and sheet shares - setPressed, pressOnly, showPane, resetHost.
+   No screen logic: anything here must be true of every screen. */
 
 /* ===================================================================== util */
 function $(id){ return document.getElementById(id); }
+/* The one way the UI makes an element: a tag, its classes, its text.
+   Text goes through textContent, so a scraped string is never parsed as
+   markup. */
 function el(tag, cls, txt){
   const n = document.createElement(tag);
   if (cls) n.className = cls;
   if (txt != null) n.textContent = txt;
   return n;
 }
+/* The one-line message at the bottom of the screen. Its time on screen
+   grows with its length, so a long one can be read before it goes. */
 let toastT = null;
 function toast(msg){
   const t = $("toast");
@@ -18,26 +24,16 @@ function toast(msg){
      window just swaps the text with no sign anything happened */
   t.hidden = true; t.getBoundingClientRect(); t.hidden = false;
   clearTimeout(toastT);
-  /* long messages need longer than short ones - 2.6s is not enough to read
-     "That copy is already in the GTS, waiting for Steelix" */
   const ms = Math.min(7000, Math.max(2600, 1200 + msg.length * 55));
   toastT = setTimeout(function(){ t.hidden = true; }, ms);
 }
 
 /* ------------------------------------------------------ nothing cut silently
-
-   NO LIST MAY SHOW FEWER ROWS THAN IT HAS WITHOUT SAYING SO.
-
-   Every picker in the app capped itself and none of them mentioned it: the
-   species list in the damage calculator drew 50 of 345 forms, the team's item
-   picker 60 of 118, a Pokemon's own movepool 60 - and 131 of the 264
-   learnsets in Champions are longer than 60, so half the dex was quietly
-   losing moves off the end. The player found it on Rillaboom, 67 moves and 60
-   drawn: "no se alcanza a ver toda en el movil, se corta".
-
-   A cap is sometimes right - 512 move rows is too many to draw on a phone -
-   but a cap nobody can see is indistinguishable from a Pokemon that does not
-   learn the move. This says it, in the same words everywhere. */
+   NO LIST MAY SHOW FEWER ROWS THAN IT HAS WITHOUT SAYING SO. A cap is
+   sometimes right - 512 move rows is too many to draw on a phone - but a cap
+   nobody can see looks exactly like a Pokemon that does not learn the move.
+   Every capped list calls this, so it is said in the same words everywhere.
+   Returns the note, or null when nothing was cut. */
 function capNote(host, shown, total, what){
   if (shown >= total) return null;
   const n = el("div", "sub mt6 mb0");
@@ -47,24 +43,12 @@ function capNote(host, shown, total, what){
   return n;
 }
 
-/* ONE SEARCH BOX, AND EVERY LIST GETS ONE.
+/* EVERY LIST GETS A SEARCH BOX: a list built in JS calls searchField(), and
+   one written in the markup is wired by wireClears(). Both end in addClear().
 
-   Eight copies of the same six lines - a div, an inline magnifier, an input -
-   had grown across the app, so a screen only got a search box if whoever wrote
-   it remembered to paste them. The team's build picker did not:
-
-     "el selector de slot no tiene buscador! imaginate tener 100 builds
-      diferentes y tener que deslizar, es mucho tiempo perdido. yo necesito que
-      todos los menus de busqueda de cualquier cosa puedan tener un search y/o
-      filtros"  (player, 2026-09-21)
-
-   A helper makes adding one a line rather than a paste, which is the only way
-   "every list" stays true of the next list as well.
-
-   It carries its own clear button rather than relying on `type=search`: the
-   native one is drawn by the browser inside our own border, Safari hides it
-   the moment a search field is restyled, and a filter you cannot empty in one
-   tap is a filter you stop using. */
+   The clear button is our own rather than `type=search`'s: the native one is
+   drawn by the browser inside our border, Safari hides it once the field is
+   restyled, and a filter you cannot empty in one tap is one you stop using. */
 function addClear(wrap, inp){
   if (!wrap || !inp || wrap.querySelector(".clr")) return;
   const clr = el("button", "clr", "×");
@@ -101,6 +85,8 @@ function wireClears(){
   });
 }
 
+/* A search box, appended to `host`: returns the input, with `.wrap` (its
+   container) and `.q()` (the value, trimmed and lowercased). */
 function searchField(host, placeholder, onInput){
   const wrap = el("div", "search field");
   wrap.innerHTML = '<svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/>'
@@ -125,12 +111,15 @@ function searchField(host, placeholder, onInput){
   return inp;
 }
 
+/* A button for a sheet's footer (or anywhere): label, extra classes, click. */
 function fbtn(label, cls, fn){
   const b = el("button", "btn " + (cls || ""), label);
   b.onclick = fn;
   return b;
 }
 
+/* A boxed note; `kind` is its tone class ("warn", "bad", "ok"...). Takes
+   HTML, so only ever pass it text the app wrote, never scraped text. */
 function note(kind, html){
   const n = el("div", "note mb10 " + kind);
   n.innerHTML = html;
@@ -161,9 +150,9 @@ function pressOnly(group, on){
 
 /* Empty a host that every sheet or editor reuses. innerHTML only clears the
    children - an expando a previous builder hung on the node (body._mode,
-   body._marks) survives into the next one, which is exactly how the
-   Champions "rental" choice leaked into the 11 HOME adds of 2026-09-11.
-   Anything underscore-prefixed is that builder's own state, so it goes too. */
+   body._marks) survives into the next one, which once leaked one sheet's
+   "rental" choice into the next sheet's adds. Anything underscore-prefixed
+   is that builder's own state, so it goes too. */
 function resetHost(node){
   node.innerHTML = "";
   Object.keys(node).forEach(function(k){

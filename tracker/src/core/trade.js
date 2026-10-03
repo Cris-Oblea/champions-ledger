@@ -21,19 +21,17 @@ function demandFit(gap){
 }
 
 /* ------------------------------------------------- GTS difficulty ----
-   Why an offer sits unclaimed is TWO questions, and BST answers neither
-   (player, 2026-09-11): "tal vez gholdengo sea dificil de obtenerlo por gts
-   no por su bst sino porque es escaso".
+   How hard a species is to get through the GTS is TWO questions, and BST
+   answers neither:
 
-     DEMAND - measured, from pokebase ladder usage. Sneasler is 23.1% of the
-              ladder, rank 9: the other side is running it, not trading it.
-     SUPPLY - how hard it is to obtain in Pokemon GO, which is this player's
-              only route in. NOT measurable from any Champions source, so it
-              is declared in data/meta/go_sourcing.json and always shown as an
-              estimate.
+     DEMAND - measured, from pokebase ladder usage: a Pokemon the other side
+              is running is not one they will trade away.
+     SUPPLY - how hard it is to obtain in Pokemon GO, the player's only route
+              in. No Champions source measures it, so it is declared in
+              data/meta/go_sourcing.json and always shown as an estimate.
 
-   The harder half decides the score, because either one alone is enough to
-   kill a trade; when both are hard it goes to 5. */
+   The harder half decides the score (build_gts_difficulty.py), because
+   either alone is enough to kill a trade; when both are hard it goes to 5. */
 const DIFF_LABEL = ["", "easy", "doable", "hard", "very hard", "near impossible"];
 function gtsDiff(name){
   const d = C.GTSDIFF?.[name];
@@ -41,15 +39,13 @@ function gtsDiff(name){
   return {score:d[0], demand:d[1], supply:d[2], rank:d[3], how:d[4] || "",
           usage:d[5], size:d[6] || 0};
 }
-/* A rank with no denominator is half a fact - #224 means nothing until you
-   know the ladder is 324 long. And an ABSENT row is not rank 324: a species
-   a new regulation just added has no row at all. */
+/* "#224 of 324 · 0.41%". A rank with no denominator is half a fact. An
+   ABSENT row is not last place: a species a new regulation just added has
+   no row at all, and says "unranked". */
 function ladderText(d){
   if (!d) return "";
-  /* Do NOT name the regulation here. This string said "M-B" and the ladder
-     refreshed to M-C underneath it on 2026-09-11, so the page was confidently
-     citing the wrong format. The honest statement is the one the data
-     supports: the ladder ranks N species and this is not among them. */
+  /* Never name the regulation in this string: the ladder data refreshes
+     under it, and a hard-coded name goes stale while sounding certain. */
   if (d.rank == null) return "unranked" + (d.size ? " (ladder lists " + d.size + ")" : "");
   return "#" + d.rank + (d.size ? " of " + d.size : "") +
          (d.usage != null ? " · " + d.usage.toFixed(2) + "%" : "");
@@ -58,46 +54,34 @@ function ladderText(d){
    chip spent here is a chip wasted. */
 function gtsSelfServe(d){ return d && d.supply <= 2 && d.demand >= 3; }
 
-/* The GTS holds THREE slots (player, 2026-09-11). Not three free ones - an
-   open offer occupies one until it is taken or withdrawn, so the fourth
-   deposit is not a thing the game will accept. A fixed rule, unlike the box
-   capacity, which grows and therefore lives in meta.trainer. */
+/* How far above a chip's full price an ask may still be suggested. Measured
+   on his closed trades: every trade that landed above the old, tighter
+   ceiling closed anyway, and 60 covers all of them (analysis/gts_pricing.md). */
 const CEILING = 60;
+/* The GTS holds THREE offers at once; an open offer occupies its slot until
+   it is taken or withdrawn. A fixed game rule, unlike the box capacity,
+   which grows and therefore lives in meta.trainer. */
 const GTS_SLOTS = 3;
-/* ==================================================== GTS intelligence ====
-   Five things the app knew half of and never joined up. All of it is derived
-   at read time from the blob plus the ledger - no new stored data except the
-   trade history, which is a record of things that actually happened. */
+/* ==================================================== what a chip is WORTH ==
+   All derived at read time from the dex plus the ledger; the only stored
+   evidence is the trade history, a record of what actually happened.
 
-/* What a chip is WORTH. The player measured this himself and it is not the
-   base row: Beedrill 395 fetched Toxapex 495 and Slowbro 490, Mawile 380
-   fetched Glalie 480 - each one exactly its Mega's BST. So the base number is
-   a floor and the Mega line is the price. */
-/* A shiny is rarer than its own species and trades above it (player,
-   2026-09-11). Unlike the Mega rule, this one is NOT measured yet - his
-   closed trades price Beedrill at exactly Mega Beedrill's 495, but no shiny
-   trade has gone through to price the premium. So it is deliberately NOT
-   folded into `value`, which stays the measured number. It widens `reach`
-   instead - how far up the chip may aim - and every surface says the premium
-   is an estimate. The trade history records shininess, so the moment a shiny
-   changes hands the real figure can replace this one, exactly the way the
-   Mega rule was arrived at. */
+   THE MEGA LINE IS THE PRICE, the base row only the floor. Measured on his
+   own trades: Beedrill (395) fetched Toxapex (495) and Slowbro (490), Mawile
+   (380) fetched Glalie (480) - each exactly its Mega's BST.
+
+   Two premiums widen how far up a chip may AIM (`reach`) without touching
+   its measured `value`, because neither is measured yet - every surface
+   that shows them calls them estimates. The trade history records shininess
+   and the ladder rank at the time, so both can be measured later the same
+   way the Mega rule was:
+
+     SHINY_REACH   a shiny is rarer than its species and trades above it
+     demandReach   a Pokemon the ladder WANTS clears fast whatever its BST:
+                   Indeedee (475, no Mega, top-30) cleared the same day,
+                   twice, while bigger numbers sat for days */
 const SHINY_REACH = 60;    // ESTIMATE: about one BST tier. Not measured.
 
-/* A WANTED CHIP REACHES HIGHER, and the ladder is where "wanted" is measured
-   (player, 2026-09-12): "indeedee voló, no duró nada en gts, y con los
-   shinies también pasa lo mismo". Indeedee is BST 475 with no Mega - by the
-   stat table alone it is an unremarkable chip - but it sits at ladder #28 and
-   cleared the same day, twice.
-
-   So demand belongs in the price, not just in what you ask for. The other
-   side takes a trade because they want the thing you are offering, and BST
-   does not know that: Squawkabilly is 417 and unranked, Indeedee is 475 and
-   top-30, and those are not 58 points apart in practice.
-
-   Estimated, like the shiny premium, and for the same reason - his closed
-   trades price the Mega rule exactly but nothing has yet measured this. The
-   history records both, so it becomes measurable. */
 function demandReach(name){
   const d = gtsDiff(name);
   if (d?.rank == null) return 0;
@@ -107,18 +91,13 @@ function demandReach(name){
   if (d.demand >= 2) return 15;
   return 0;
 }
+/* A chip's price: {base, value (the Mega line's best BST), reach (how far
+   up it may aim), and the premiums that make up the difference}. */
 function chipValue(name, shiny){
-  /* anyRow, NOT byName. A species Champions has never heard of has no row in
-     its dex, so this returned null for every one of them - and with no price
-     there was no band to search in, so putting one in a GTS box produced no
-     recommendation at all (player, 2026-09-18: "faltan las recomendaciones de
-     los pokemones que tienen tag not in champions"). Those are exactly the
-     Pokemon a GTS chip is MADE of: by his own rule only duplicates and
-     species Champions cannot use may be offered.
-
-     A BST is a BST. HOME_DEX has the real one, there is no Mega line to reach
-     for and no ladder row to want it, so the price comes out as the base row
-     and says so rather than being absent. */
+  /* anyRow, NOT byName: a species Champions does not have is exactly what a
+     GTS chip is usually made of (only duplicates and species Champions cannot
+     use may be offered), and it still has a real BST in HOME_DEX. With no
+     Mega line and no ladder row, its price is simply its base row. */
   const p = anyRow(name);
   if (!p) return null;
   const base = bst(p);
@@ -138,7 +117,7 @@ function chipValueOf(rec){
 }
 
 /* Stones bought for a Pokemon that is nowhere in the ledger - 2000 VP each,
-   sitting dead. The app knew both halves and never crossed them. */
+   sitting dead until a trade brings one in. */
 function deadStones(){
   const have = {};
   boxRows("home").concat(boxRows("champions")).forEach(function(r){
@@ -164,36 +143,22 @@ function deadStones(){
   return out;
 }
 
-/* Candidates this chip could realistically fetch. The reasoning that produced
-   Abomasnow and Steelix on 2026-09-11, made repeatable:
-     - in the Champions dex, and not already in the ledger
-     - BST at or under the chip's value (a small stretch up is allowed, since
-       Beedrill 495 -> Steelix 510 is the kind of deal that does land)
-     - low demand, because a top-of-ladder Pokemon is being played, not traded
-     - and a stone you already own with nothing to put it on wins outright */
-/* IS THIS ASK IN RANGE FOR THAT CHIP? The two bands, written once.
+/* IS AN ASK OF BST `b` IN RANGE FOR CHIP `v`? "reach", "base" or null - the
+   two bands askBands() explains, written once so the suggestion list and
+   anything checking a single trade can never disagree.
 
-   It was inline in gtsSuggest, which asks "what could this chip fetch" and
-   walks the dex. Anything asking the mirror question needs the same
-   arithmetic, and a second copy of it is how two answers about one trade
-   start disagreeing.
-
-   `reach` is at or above what the chip is worth, up to its full price plus a
-   little; `base` is under it, down to 70 below the base row. Asking for less
-   than you could is how an offer clears the same day. */
+   The ceiling is CEILING above the chip's reach; the floor is 70 below its
+   base row, and nothing in his 51 priced trades ever landed below it -
+   asking for less than you could is safe. */
 function chipBand(v, b){
   if (!v) return null;
   if (b > v.reach + CEILING || b < Math.min(v.base, v.value) - 70) return null;
   return b >= v.value - 25 ? "reach" : "base";
 }
-/* THE CEILING IS MEASURED NOW, not guessed. It was reach + 20, and his own
-   61 closed trades say that is a little tight: 5 of the 51 priced on both
-   sides landed ABOVE it, the furthest being Indeedee 475 -> Rillaboom 530,
-   and every one of the five closed - three of them inside six hours. 60
-   covers all five with nothing to spare. The floor stays at 70 under,
-   because in 51 trades NOTHING landed below it: asking for less than you
-   could is safe, and a generous floor costs nothing.
-   Full write-up in analysis/gts_pricing.md. */
+/* What this chip could realistically fetch, best first, up to `limit`
+   (14): species not already his for keeps, in range of the chip, not in
+   high demand (a top-of-ladder Pokemon is played, not traded), ranked up
+   when it would free a welded slot or put a dead stone to use. */
 function gtsSuggest(chipName, limit, shiny){
   const v = chipValue(chipName, shiny);
   if (!v) return [];
@@ -247,11 +212,9 @@ function deadStonesBySpecies(own){
   return dead;
 }
 
-/* TWO BANDS, NOT ONE WINDOW (player, 2026-09-13): the Mega reach kept AND
-   asks around the base row. One window was the bug: a Mega-capable chip
-   prices at its Mega, so the window moved up bodily and cut the base
-   neighbourhood out - Beedrill's base is 395 and its window started at 425,
-   so the asks most likely to be TAKEN could never be suggested.
+/* TWO BANDS, NOT ONE WINDOW. A Mega-capable chip prices at its Mega, and a
+   single window around that price would cut out the asks around its base
+   row - the ones most likely to be TAKEN.
 
      reach - at or above the chip's full price (the Mega's BST plus the
              estimated premiums): what it can aim at.
@@ -285,15 +248,18 @@ function askBands(v, own, dead){
   return bands;
 }
 
+/* best score first; a tie goes to the bigger BST */
 function bySuggestScore(a, b){ return b.score - a.score || b.bst - a.bst; }
 
-/* How long an offer has been sitting. `deposited` was stored and never read;
-   an offer nobody has taken in nine days is telling you the price is wrong. */
+/* How many days an offer has been sitting, or null when it has no date. An
+   offer nobody has taken in nine days is saying the price is wrong. */
 function offerAge(o){
   const t = offerStart(o);
   if (t == null) return null;
   return Math.max(0, Math.round((Date.now() - t) / 86400000));
 }
+/* When an offer went up, in ms: the exact time when it has one, else the
+   day it was deposited (older rows only stored the date). */
 function offerStart(o){
   if (o.depositedAt) {
     const p = Date.parse(o.depositedAt);
@@ -303,10 +269,9 @@ function offerStart(o){
   const t = Date.parse(o.deposited + "T00:00:00");
   return Number.isNaN(t) ? null : t;
 }
-/* Hours matter here in a way they do not elsewhere. Indeedee is BST 475 and
-   cleared in hours; Beedrill is worth 495 by the Mega rule and sat for days.
-   Time-to-close measures what the other side WANTS, which is the axis BST
-   cannot see - so it is reported at whatever resolution it actually has. */
+/* "40 min", "6.5h", "3 days". Hours matter here: time-to-close measures what
+   the other side WANTS, the axis BST cannot see, and the difference between
+   a trade that cleared in hours and one that sat for days is the signal. */
 function elapsedText(ms){
   if (ms == null || ms < 0) return null;
   const h = ms / 3600000;
@@ -315,21 +280,17 @@ function elapsedText(ms){
   return Math.round(h / 24) + " days";
 }
 
-/* One table, and `closed` is what sorts a trade into one list or the other
-   (migration 7). They used to be two arrays in one document, which is why
-   every write had to carry both - the "Withdrew it" button still carried a
-   comment warning that a put() omitting history would erase every closed
-   trade on record. It cannot now: closing a trade is an update of the row
-   that was already there.
-
-   The history was also truncated to 60 by one call site, with 34 in it. A
-   closed trade is the only hard evidence of what the market pays, and the
-   pricing rule rests on them, so the cap is gone with the array. */
+/* One row per trade, from deposit to close (migration 7): `closed` is what
+   sorts it into the open offers or the history, so closing a trade updates
+   the row that was already there and can never erase another. The history
+   is never capped - a closed trade is the only hard evidence of what the
+   market pays, and the pricing rules rest on it. */
 function gtsRows(){
   return Object.keys(S.gts).map(function(id){
     const r = S.gts[id]; r._id = id; return r;
   });
 }
+/* closed trades, newest first */
 function gtsHistory(){
   return gtsRows().filter(function(r){ return r.closed; })
     .sort(function(a, b){
@@ -338,22 +299,14 @@ function gtsHistory(){
     });
 }
 
-/* WHAT COUNTS AS A DUPLICATE, and a welded copy does not.
+/* HOW MANY KEEPABLE COPIES of each form he has: {name: count}. This is what
+   "duplicate" means, and a welded copy does not count.
 
-   It was "how many rows of this species exist in either box", which is a
-   different question and a dangerous one to confuse with this one. He has a
-   Metagross in HOME and a Metagross RENTAL in the Champions box, and the
-   filter called that a duplicate and offered the HOME one as trade material
-   (player, 2026-09-21: "ESO NO ES DUPLICADO!, duplicado seria tener dos
-   pokemones iguales del mismo origen, aqui tengo un metagross real y un
-   metagross rental que nunca se podra mover!, por lo que metagross no es
-   duplicado en home"). Trading it away would have lost the species from HOME
-   for good, which is exactly what the keep-one rule exists to prevent.
-
-   A rental and an Encounter buy are Champions origin: they can never leave
-   the game, so they can never be the copy he keeps. Only a row that can BE in
-   HOME counts - one already there, or one in the Champions box that came from
-   HOME and can be parked back. */
+   A rental or an Encounter buy is Champions origin: it can never leave the
+   game, so it can never be the copy he keeps. A HOME Metagross beside a
+   rental Metagross is ONE keepable copy, and trading the HOME one would lose
+   the species for good. Only a row that can BE in HOME counts - one already
+   there, or a HOME-origin one in the Champions box that can be parked back. */
 function keepableCopies(){
   const n = {};
   boxRows("home").forEach(function(r){ n[r.name] = (n[r.name] || 0) + 1; });
@@ -362,39 +315,24 @@ function keepableCopies(){
   });
   return n;
 }
-/* THE KEEP-ONE RULE (player, 2026-09-10): "yo siempre quiero quedarme con 1
-   especie en home para siempre". Only two things may be offered - a duplicate
-   past the first copy, or a species Champions does not allow at all. Offering
-   a singleton of a legal species loses it for good.
-
-   This exists because the app let it happen: Indeedee went out on 2026-09-12
-   as the last copy of a species sitting at ladder #28, and nothing said a
-   word. The trade turned out well - Rillaboom, #2 - but that was the draw,
-   not the ledger doing its job.
+/* THE KEEP-ONE RULE: he always keeps one of every form in HOME. Only two
+   things may be offered - a copy past the first, or a species Champions does
+   not allow at all. True when offering `rec` would give away the last
+   keepable copy, which is what the deposit sheet warns about.
 
    Counts the BOX, not the offers: depositing does not remove the Pokemon, so
-   the copy is still there until the trade actually closes.
-
-   AND IT COUNTS KEEPABLE COPIES ONLY, which is the same correction the
-   duplicate filter needed and for the same reason: a rental or an Encounter
-   buy of the species is welded into the Champions box and can never be the
-   copy he keeps, so it must not make the one in HOME look expendable. This
-   is the warning that catches the mistake the filter would have let through,
-   and it was reading the same wrong number. */
+   the copy is still there until the trade actually closes. And it counts
+   keepable copies only (keepableCopies), so a welded rental never makes the
+   one in HOME look expendable. */
 function lastCopyOf(rec){
   if (!rec) return false;
   if (!byName[rec.name]) return false;          // not in the dex: free to trade
   return (keepableCopies()[rec.name] || 0) <= 1;
 }
-/* THE RULE IS PER FORM, NOT PER SPECIES, AND HE PICKS WHICH FORM (player,
-   2026-09-12): "tenía indeedee macho y uno hembra, me quedo con la hembra me
-   sirve más". So the last Indeedee going out was NOT the mistake it looked
-   like - the Female was the keeper and the Male was spare by his own reading.
-
-   That means the warning must not be a flat "this is your last one". It has
-   to say what else of the same species is still in the box and let him judge,
-   because only he knows which form he wants to keep. Returns the sibling
-   forms, so the message can name them. */
+/* THE RULE IS PER FORM, AND HE PICKS WHICH FORM to keep: with a male and a
+   female Indeedee, either may be the keeper. So the last-copy warning names
+   the other forms of the species still in the box and lets him judge. Returns
+   those sibling form names. */
 function otherFormsOf(rec){
   const p = byName[rec.name];
   if (!p?.species) return [];
@@ -407,6 +345,7 @@ function otherFormsOf(rec){
   return Object.keys(out);
 }
 
+/* open offers, oldest first */
 function gtsOffers(){
   return gtsRows().filter(function(r){ return !r.closed; })
     .sort(function(a, b){
@@ -427,23 +366,15 @@ function gtsClash(d, exceptId){
   });
   return hit;
 }
-/* CONFIRMED, INFERRED, OR FINE - and the difference decides what the list
-   does about it.
+/* CAN THE GTS TAKE IT? "confirmed" (refused, seen in game - listed in
+   data/meta/gts_blocked.json), "inferred" (a Mythical, which HOME's GTS
+   probably refuses, judged from one confirmed case), or null.
 
-   CONFIRMED is one name: Melmetal, which he tried. It is dropped, because a
-   recommendation you cannot act on is worse than none.
-
-   INFERRED is the other Mythicals. He confirmed Melmetal is one, which makes
-   "HOME's GTS refuses Mythicals" the obvious reading of a single data point -
-   and a single data point is not a rule. They are ranked LAST and tagged
-   instead of dropped, because a wrong guess that hides a chip is worse than
-   one that warns about it. When a second is refused the rule earns its place
-   and the name moves into data/meta/gts_blocked.json.
-
-   It matters more than one Pokemon: Champions has ZERO Mythicals, so every
-   one that ever arrives is a species Champions cannot use - which is exactly
-   the pile this list puts first - and thirteen of the twenty-three can be
-   caught in GO. */
+   A confirmed block is dropped from suggestions: a recommendation you cannot
+   act on is worse than none. An inferred one is ranked last and tagged
+   instead, because one data point is not a rule and a wrong guess that hides
+   a chip is worse than one that warns. When a second Mythical is refused in
+   game, it moves into gts_blocked.json. */
 let MYTH_SET = null;
 function gtsBlocked(name){
   if (C.GTSBLOCK?.[name]) return "confirmed";
@@ -453,10 +384,10 @@ function gtsBlocked(name){
   }
   return MYTH_SET[name] ? "inferred" : null;
 }
-/* WHAT HIS OWN TRADES SAY, which is the only evidence on this screen that was
-   measured rather than estimated. Time to close is the axis BST cannot see:
-   it is what the other side WANTED, and a chip that sat for three days was
-   priced wrong however good the arithmetic looked. */
+/* How long a closed trade took, deposit to close, in ms (null if unknown).
+   His own trades are the only MEASURED evidence on the GTS screen: a chip
+   that sat for three days was priced wrong however good the arithmetic
+   looked. */
 function closeMs(o){
   const start = offerStart(o);
   if (start == null) return null;
@@ -467,6 +398,9 @@ function closeMs(o){
   const ms = end - start;
   return ms >= 0 ? ms : null;
 }
+/* The summary of his closed trades: how many, the median time to close
+   (overall and for `name`), and the median and largest BST gap between what
+   was given and what came back. */
 function gtsRecord(name){
   const all = [], mine = [], gaps = [];
   gtsHistory().forEach(function(o){
