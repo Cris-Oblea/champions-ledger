@@ -201,7 +201,7 @@ def main():
     _check_megas(mons)
     _check_db_files()
     _check_references(learn)
-    print("\n%s" % ("TODO BIEN" if not bad else "%d FALLOS" % bad))
+    print("\n%s" % ("ALL GOOD" if not bad else "%d FAILED" % bad))
     return 1 if bad else 0
 
 
