@@ -55,6 +55,7 @@ function ordinal(n){ return ({1: "1st", 2: "2nd", 3: "3rd"})[n] || n + "th"; }
 /* "1 build", "3 builds" */
 function plural(n, word){ return n + " " + word + (n === 1 ? "" : "s"); }
 const CATEGORY = {P: "Physical", S: "Special"};
+/* A move's category code as the word the screens show. */
 function catName(c){ return CATEGORY[c] || "Status"; }
 const MOVE_BY = {};
 MOVES.forEach(function(m){ MOVE_BY[m.name] = m; });
@@ -152,6 +153,7 @@ function outsideForms(p, megas){
             sfx: f.mega, battle: f.k, by: f.by};
   });
 }
+/* Base stat total. */
 function bst(p){ return p.b.reduce(function(a,b){ return a+b; }, 0); }
 /* A ROW FOR A POKEMON CHAMPIONS DOES NOT HAVE, so HOME can show what it is
    when deciding what to keep or trade.

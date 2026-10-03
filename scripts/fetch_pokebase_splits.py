@@ -104,6 +104,7 @@ def _rows(rows, extra=None):
 
 
 def _spreads(rows, field):
+    """The SP spreads of one section, with their share."""
     out = []
     for r in rows or []:
         vals = r.get(field) or {}
@@ -150,6 +151,7 @@ def tournament(lines, flow, html):
             got[k] = rows
 
     def nature_effect(src, row):
+        """Label a nature row with the stat it raises and lowers."""
         if src.get("incStat"):
             row["effect"] = "+%s / -%s" % (
                 STAT_WORD.get(src["incStat"], src["incStat"]),
@@ -237,6 +239,9 @@ def season(lines):
 def parse(html):
     # the props of every component on the page, which is where the
     # sections that paginate keep their rows
+    """Everything one Pokemon page holds: the tournament block for the
+    regulation, and the ladder seasons when the page has them.
+    """
     flow = payload(html)
     lines = rsc_lines(flow)
     got = {"tournament": tournament(lines, flow, html)}
@@ -247,6 +252,7 @@ def parse(html):
 
 
 def fetch(slug):
+    """One Pokemon page, or None (printed) when it fails."""
     try:
         return net.text(BASE + slug)
     except net.ERRORS as e:
@@ -290,6 +296,9 @@ def _fetch_missing(rows, out, force):
 
 
 def main():
+    """Fetch the splits page of every Pokemon on the ladder and write
+    usage_splits.json.
+    """
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--force", action="store_true")
     a = ap.parse_args()

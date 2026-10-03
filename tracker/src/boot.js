@@ -155,6 +155,9 @@ wireClears();
    "what was I doing in here" is almost always the same one. The panes that
    draw something expensive draw it only when shown. */
 const HOME_PANES = {box:"homePaneBox", gts:"homePaneGts", dex:"homePaneDex"};
+/* Show one of HOME's three panes (box, GTS, dex) and remember it for the next
+   visit. The dex and the trade suggestions are drawn only when their pane
+   opens - both are slow and most visits never look. */
 function homePane(which){
   if (!HOME_PANES[which]) which = "box";
   Object.keys(HOME_PANES).forEach(function(k){

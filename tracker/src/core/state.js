@@ -85,6 +85,10 @@ const ORIGIN_LABEL = {home:"HOME origin", champions:"Champions origin",
    ("home" / "floor"). A row in the HOME box is only a ledger entry leaving
    (a trade, a transfer), so it is not asked about here. */
 const RELEASE_FLOOR = 6;
+/* Why the game would refuse to release this row, or null when it may go: a
+   HOME-origin Pokemon leaves by parking ("home"), and the last RELEASE_FLOOR
+   Champions-origin ones cannot leave at all ("floor"). Every Release button
+   asks this one function. */
 function releaseBlock(r){
   if (r?.location !== "champions") return null;
   if (originOf(r) === "home") return "home";
@@ -147,6 +151,8 @@ function soleAbility(name){
   const p = name ? byName[name] : null;
   return p?.ab?.length === 1 ? p.ab[0] : null;
 }
+/* The ability a build runs: the one chosen, or the species' only one when
+   there is no choice to make. */
 function baseAbility(b){
   return b?.ability || soleAbility(b?.pokemon) || null;
 }

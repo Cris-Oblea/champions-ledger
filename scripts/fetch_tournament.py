@@ -52,6 +52,7 @@ DEFAULT_DIVISION = "masters"
 
 
 def get(url, timeout=60):
+    """A page's text, or None when it fails."""
     try:
         return net.text(url, timeout=timeout)
     except net.ERRORS:
@@ -276,6 +277,7 @@ def parse_team_html(body):
 
 
 def _team_from_json(body):
+    """One player's team from pokedata's teamlist JSON."""
     try:
         rows = json.loads(body)
     except ValueError:
@@ -343,6 +345,9 @@ def _scrape(tid, division, rnd):
 
 
 def _print_summary(tid, division, rnd, info, origin, players):
+    """The event, round (with its label), swiss rounds, players and teamlist
+    count.
+    """
     label = info.get("round_label")
     print("Tournament %s / %s - round %s%s  [%s]"
           % (tid, division, rnd, " (%s)" % label if label else "", origin))
@@ -360,9 +365,13 @@ def _print_summary(tid, division, rnd, info, origin, players):
 
 
 def main():
+    """Fetch one division of one event (--tid, --division), with every player's
+    teamlist, and write it to data/meta.
+    """
     args = sys.argv[1:]
 
     def opt(flag, default=None):
+        """The value after a flag, or the default."""
         return args[args.index(flag) + 1] if flag in args else default
 
     tid = opt("--tid", dex.WORLDS_TID)

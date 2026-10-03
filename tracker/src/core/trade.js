@@ -33,6 +33,8 @@ function demandFit(gap){
    The harder half decides the score (build_gts_difficulty.py), because
    either alone is enough to kill a trade; when both are hard it goes to 5. */
 const DIFF_LABEL = ["", "easy", "doable", "hard", "very hard", "near impossible"];
+/* A species' GTS difficulty row, unpacked from the payload's array into named
+   fields. */
 function gtsDiff(name){
   const d = C.GTSDIFF?.[name];
   if (!d) return null;
@@ -192,6 +194,8 @@ function ownership(){
   return {owned: owned, frees: frees};
 }
 
+/* Mark a row's form and its species as owned, so a lookup by either spelling
+   finds it. */
 function markOwned(into, r){
   into[r.name] = 1;
   const p = byName[r.name];
@@ -353,6 +357,7 @@ function gtsOffers(){
         .localeCompare(String(b.depositedAt || b.deposited || ""));
     });
 }
+/* How many GTS slots are still free. */
 function gtsFree(){ return Math.max(0, GTS_SLOTS - gtsOffers().length); }
 /* The picker greys committed copies out, but the picker is only the UI. One
    Pokemon cannot sit in two GTS slots, so the rule is checked again at save -
@@ -376,6 +381,9 @@ function gtsClash(d, exceptId){
    a chip is worse than one that warns. When a second Mythical is refused in
    game, it moves into gts_blocked.json. */
 let MYTH_SET = null;
+/* Can HOME's GTS hold this species? "confirmed" when it is known to refuse it,
+   "inferred" for a Mythical (one refusal seen, so the rest are only
+   suspected), null otherwise. */
 function gtsBlocked(name){
   if (C.GTSBLOCK?.[name]) return "confirmed";
   if (!MYTH_SET) {
@@ -411,6 +419,7 @@ function gtsRecord(name){
     const a = anyRow(o.offered), b = anyRow(o.requested);
     if (a && b) gaps.push(bst(b) - bst(a));
   });
+  /* The median, or null for an empty list. */
   function mid(xs){
     if (!xs.length) return null;
     const v = xs.slice().sort(function(x, y){ return x - y; });

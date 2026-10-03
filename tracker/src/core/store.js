@@ -133,6 +133,8 @@ function putNew(t, stem, body){
   body.updated = new Date().toISOString().slice(0, 10);
   const tried = [];
   let n = 1;
+  /* Insert under stem, then stem-2, stem-3... until the database accepts an
+     id. */
   function attempt(){
     const id = n === 1 ? stem : stem + "-" + n;
     tried.push(id);
@@ -206,6 +208,10 @@ function docFromRow(coll, row){
     role:row.role || "", rationale:row.rationale || "",
     extra:row.extra || {}, updated:(row.updated_at || "").slice(0, 10)};
 }
+/* The app's record turned into its table's row: an owned stone or item is only
+   an id, a trade keeps its columns and puts every other field in `data`,
+   `meta` is one json document, and a box row, team or build maps field by
+   field with the defaults the schema expects. */
 function rowFromDoc(coll, id, uid, d){
   if (coll === "stones" || coll === "items") return {user_id:uid, id:id};
   if (coll === "gts") {

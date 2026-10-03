@@ -67,6 +67,9 @@ KNOWN = {
 
 
 def table(name):
+    """One cached PokeAPI CSV table as a list of dict rows, or None when it is
+    not on disk.
+    """
     path = os.path.join(POKEAPI_CSV, name)
     if not os.path.exists(path):
         return None
@@ -90,6 +93,9 @@ def _upstream_tables():
         types[r["pokemon_id"]][r["slot"]] = r["type_id"]
 
     def shape(pid):
+        """A form's stats and types as one comparable key: variants with the
+        same shape are the same Pokemon.
+        """
         return (tuple(sorted(stats[pid].items())),
                 tuple(sorted(types[pid].items())))
     return by_pid, shape
@@ -184,6 +190,9 @@ def serebii(forms):
 
 
 def main():
+    """Report forms missing an ability PokeAPI lists, and abilities Serebii
+    names that no row kept. Exits 1 on either.
+    """
     forms = dex.db("pokemon")
     up = upstream(forms)
     own = serebii(forms)

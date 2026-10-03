@@ -57,6 +57,7 @@ def files():
     """Every migration, in the order their numbers say."""
     found = glob.glob(os.path.join(SQLDIR, "supabase_migrate_*.sql"))
     def num(p):
+        """A migration's number, from its file name."""
         m = re.search(r"_(\d+)\.sql$", p)
         return int(m.group(1)) if m else 0
     return sorted(found, key=num)
@@ -71,6 +72,9 @@ def applied():
 
 
 def main():
+    """Apply every migration the database has not recorded, in order, recording
+    each; --check only reports what is pending.
+    """
     ap = argparse.ArgumentParser()
     ap.add_argument("--check", action="store_true",
                     help="exit non-zero if a migration has not been applied")

@@ -727,6 +727,8 @@ function gtsPickMine(onPick, exceptId){
     /* Copies he could KEEP, over the whole ledger and not the section. A
        welded Champions row is not one of them - see keepableCopies. */
     const ctx = {PICK: PICK, copies: keepableCopies(), taken: taken, onPick: onPick};
+    /* The deposit picker: HOME first, then the Champions-box Pokemon that
+       came from HOME and can be parked back, then what is locked and why. */
     function draw(){
       const q = inp.q();
       out.innerHTML = "";

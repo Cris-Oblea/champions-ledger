@@ -254,6 +254,7 @@ function ideaBadges(nm, i, mine){
    tags is not a glance, and the whole list one tap away. */
 function askLine(i){
   const line = el("div", "st");
+  /* The first n asks as tags, and a button that shows the rest in place. */
   function paintAsks(n){
     line.innerHTML = "";
     line.appendChild(document.createTextNode("Ask for: "));

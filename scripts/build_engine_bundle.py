@@ -43,6 +43,9 @@ globalThis.SMOGON = {
 
 
 def main():
+    """Bundle Smogon's vendored calculator with the pinned esbuild into
+    tracker/engine.bundle.js, then prove the bundle runs one calculation.
+    """
     if not os.path.isdir(CALC):
         sys.exit("the engine is not vendored - run scripts/fetch_smogon_calc.py")
     with open(ENTRY, "w", encoding="utf-8") as f:

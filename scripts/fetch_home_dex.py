@@ -213,6 +213,7 @@ def worlds_names():
              and (f.startswith("tournament_") or f == "worlds_archive.json")]
 
     def walk(node):
+        """Collect every `name` anywhere in a nested JSON value."""
         if isinstance(node, dict):
             n = node.get("name")
             if isinstance(n, str) and n:
@@ -270,6 +271,10 @@ def _near(k, order, is_def):
 
 
 def _resolve(k, by_key, order, is_def):
+    """A name's PokeAPI row: the exact key, then the nearest spelling, then the
+    name with its last form word dropped (returned as the base it fell back
+    to).
+    """
     if k in by_key:
         return by_key[k], None
     n = _near(k, order, is_def)
@@ -329,6 +334,9 @@ def resolver(pokemon):
 
 
 def build(force=False):
+    """Main-series numbers for every species HOME can hold that Champions
+    lacks, resolved through PokeAPI's tables at the pin.
+    """
     resolve = resolver(table("pokemon.csv", force))
     numbers = _numbers_reader(force)
     by_form = form_rows(force)
@@ -391,6 +399,9 @@ def species_flags(force=False):
 
 
 def sprite_pin():
+    """The sprite commit the app pins, read from the app itself so the two
+    never disagree.
+    """
     m = re.search(r'SPRITE_PIN = "([0-9a-f]{40})"',
                   Path(APP_DATA).read_text(encoding="utf-8"))
     if not m:
@@ -434,6 +445,7 @@ def sprite_files(force=False):
     seen = {}
 
     def get(url):
+        """Fetch a URL once per run."""
         if url not in seen:
             seen[url] = json.loads(net.get(url, headers=head).decode("utf-8"))
         return seen[url]
@@ -628,6 +640,9 @@ def _numbers_reader(force):
                                                    r["ability_id"]))
 
     def numbers(pid):
+        """A Pokemon's types, base stats and abilities, or None without a stats
+        row.
+        """
         if pid not in st:
             return None
         return {"t": [types[t] for _, t in sorted(ty.get(pid, []))],
@@ -649,6 +664,7 @@ def _card_owners(resolve):
 
 
 def _title(ident):
+    """A PokeAPI identifier as a display name."""
     return " ".join(w.capitalize() for w in ident.split("-"))
 
 
@@ -762,6 +778,9 @@ def form_line(force=False):
 
 
 def main():
+    """Write the outside-dex numbers, sprite ids, form lines, sprite gaps and
+    species flags; --check re-downloads at the pin and fails if anything moved.
+    """
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--force", action="store_true")
     ap.add_argument("--check", action="store_true",

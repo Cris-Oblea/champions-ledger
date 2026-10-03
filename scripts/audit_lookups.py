@@ -47,6 +47,9 @@ def ok(label, got, want="0"):
 
 
 def lst(xs, n=6):
+    """A short printable list: the first n items and how many more, or "0" when
+    empty.
+    """
     xs = list(xs)
     return (", ".join(map(str, xs[:n])) +
             (" (+%d)" % (len(xs) - n) if len(xs) > n else "")) if xs else "0"
@@ -141,6 +144,7 @@ def _duplicate_keys(text):
     dup = []
 
     def hook(pairs):
+        """json.loads hook that records every key an object repeats."""
         ks = [k for k, _ in pairs]
         for k in ks:
             if ks.count(k) > 1 and k not in dup:
@@ -194,6 +198,7 @@ def _check_references(learn):
 
 
 def main():
+    """Run every check and exit 1 if any failed."""
     _check_code()
     mons = dex.db("pokemon")
     learn = dex.db("learnsets")

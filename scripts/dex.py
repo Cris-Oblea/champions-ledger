@@ -49,6 +49,7 @@ _cache = {}
 
 
 def load(path, default=None):
+    """Read a JSON file once and keep it; `default` when it does not exist."""
     if path in _cache:
         return _cache[path]
     if not os.path.exists(path):
@@ -75,10 +76,12 @@ def kept_stamp(path, blob):
 
 
 def db(name):
+    """A data/db table, or [] when it has not been built."""
     return load(os.path.join(DB, name + ".json"), [])
 
 
 def meta(name):
+    """A data/meta file, or None when it has not been fetched."""
     return load(os.path.join(META, name + ".json"))
 
 
@@ -91,6 +94,7 @@ DIVISIONS = ("masters", "seniors", "juniors")
 
 
 def tournament(division="masters"):
+    """One division of the current Worlds, or None."""
     return meta("tournament_%s_%s" % (WORLDS_TID, division))
 
 

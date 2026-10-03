@@ -651,6 +651,7 @@ def incoming(p):
 # again on the next build with no edit here.
 def _scopes(props):
     def cat(c):
+        """The useable moves of one category."""
         return {n for n, p in props.items() if p["cat"] == c}
     dmgset = {n for n, p in props.items() if dmg(p)}
     return [("every move", set(props)),
@@ -921,6 +922,10 @@ def audit(table):
 
 
 def main():
+    """Derive each move's properties, build the ability rule table, print the
+    report (--audit fails on a rule for an ability that does not exist), and
+    write ability_moves.json with every ability's bucket.
+    """
     ap = argparse.ArgumentParser()
     ap.add_argument("--report", action="store_true")
     ap.add_argument("--audit", action="store_true")

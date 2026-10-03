@@ -191,6 +191,9 @@ CASES += [
 
 
 def main():
+    """Run every case with and without its modifier through the engine, record
+    the ratio, and write the modifiers that move a number.
+    """
     base_cache, table, rows = {}, {}, []
     for group, name, base, flags in CASES:
         bk = tuple(base)

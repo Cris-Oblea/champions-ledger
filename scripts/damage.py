@@ -189,11 +189,17 @@ FIELD_FLAGS = (("helping-hand", "an ally used Helping Hand (doubles)"),
 
 
 def _camel(flag):
+    """A command-line flag as the engine's field name ("atk-ability" ->
+    "atkAbility").
+    """
     head, *rest = flag.split("-")
     return head + "".join(w.capitalize() for w in rest)
 
 
 def _parser():
+    """The calculator's command line: the two Pokemon and the move, then a flag
+    for every fact the engine may need.
+    """
     ap = argparse.ArgumentParser()
     ap.add_argument("attacker", nargs="?")
     ap.add_argument("move", nargs="?")
@@ -249,6 +255,7 @@ def _parser():
 
 
 def _item(v):
+    """An item flag, with "none" meaning no item."""
     return None if v is None or dex.key(v) == "none" else v
 
 
@@ -309,6 +316,9 @@ def engine_case(a):
 
 
 def answer(a):
+    """Run one calculation through Smogon's engine and print its description,
+    the damage range against max HP, and the KO chance.
+    """
     check_move(a)
     r = run_smogon([engine_case(a)])[0]
     if r.get("error"):
@@ -376,6 +386,7 @@ def _run_quiet(argv):
 
 
 def _span(r):
+    """A self-test result as "lo-hi", or "refused"."""
     return r if r == "refused" else "%d-%d" % (r["lo"], r["hi"])
 
 
@@ -403,6 +414,9 @@ def selftest():
 
 
 def main():
+    """Run the self-test (also when no Pokemon is given), otherwise answer the
+    one calculation asked.
+    """
     a = _parser().parse_args()
     if a.selftest or not a.attacker:
         raise SystemExit(0 if selftest() else 1)

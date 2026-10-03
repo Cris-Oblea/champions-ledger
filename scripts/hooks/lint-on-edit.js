@@ -32,6 +32,8 @@ process.stdin.on("end", async () => {
   process.exitCode = 2;
 });
 
+/* Lint one Python file with the repo's ruff rules; on a finding, print it and
+   exit 2 so Claude Code shows it at once. */
 function ruff(file) {
   // --force-exclude: a path named explicitly still honours ruff.toml's excludes.
   // The one lint exception in the repo: this runs on the developer's own

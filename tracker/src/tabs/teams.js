@@ -189,6 +189,8 @@ function scenarioSection(body, r){
   const SCEN = scenarios(r);
   const scenAt = {v: null};
   let scenWhy = null, speedBox = null, typeBox = null;
+  /* Repaint the Speed order and the type chart for the scenario picked (nobody
+     evolves, or which one Mega does). */
   function paintScenario(){
     const cur = SCEN.find(function(x){ return x.at === scenAt.v; }) || SCEN[0];
     if (scenWhy) scenWhy.textContent = cur.why;

@@ -119,6 +119,7 @@ def _texts(it, smogon, pbtext):
 
 
 def _print_summary(rows, filled, agree, nothing, clash):
+    """How many items each source priced, where they agree, and every clash."""
     print("%d items" % len(rows))
     print("  %3d priced by Serebii" % sum(1 for r in rows.values()
                                           if r["source"] == "serebii"))
@@ -147,6 +148,9 @@ def _print_summary(rows, filled, agree, nothing, clash):
 
 
 def main():
+    """Price every item (Serebii first, pokebase to fill gaps), attach its
+    texts, and write item_facts.json.
+    """
     ap = argparse.ArgumentParser()
     ap.add_argument("--report", action="store_true")
     a = ap.parse_args()

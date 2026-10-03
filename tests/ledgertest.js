@@ -25,6 +25,8 @@ const d = w.document;
 /* the page's last error since `before`, or "ok" if it threw nothing */
 const newError = before => errors.length === before ? "ok" : errors[errors.length - 1];
 
+/* The ledger loaded and drew: the sign-in gate closed, both boxes have rows,
+   and nothing threw. */
 async function loads() {
   describe("the ledger loads", () => {
     check("the sign-in gate closed (there is a session)", d.getElementById("gate").hidden, true);
@@ -38,6 +40,7 @@ async function loads() {
   });
 }
 
+/* Every tab draws on this ledger without one error. */
 async function everyTab() {
   await describe("every tab draws", async () => {
     for (const t of TABS) {
@@ -382,6 +385,8 @@ async function backButton() {
   });
 }
 
+/* The remaining sheets - a Mega build, a six-slot team, the GTS picker - open
+   on real data without an error. */
 async function otherSheets() {
   let before = errors.length;
   w.buildSheet("charizard");

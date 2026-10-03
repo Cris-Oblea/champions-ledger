@@ -60,6 +60,7 @@ _SAID = False
 
 
 def _note(msg):
+    """Say once, on stderr, where the ledger was read from."""
     global _SAID
     if not _SAID:
         print("  (ledger: %s)" % msg, file=sys.stderr)
@@ -67,6 +68,8 @@ def _note(msg):
 
 
 def _from_db():
+    """Every table, read live from Supabase, or None when it cannot be reached.
+    """
     try:
         import backup_ledger
     except ImportError:
@@ -81,6 +84,9 @@ def _from_db():
 
 
 def _from_snapshot():
+    """Every table from the newest backup snapshot, and its date; (None, None)
+    when there is none.
+    """
     try:
         import backup_ledger
         files = backup_ledger.snapshots(backup_ledger.DEFAULT_DIR)
@@ -128,6 +134,7 @@ def tables(refresh=False):
 
 
 def _meta(t, key):
+    """One meta document's data."""
     for r in t.get("meta") or []:
         if r.get("id") == key:
             return r.get("data") or {}
@@ -135,6 +142,8 @@ def _meta(t, key):
 
 
 def _box(t, location, rental=None):
+    """The names in one box, in the app's order (rentals only, none, or both).
+    """
     rows = [r for r in (t.get("box") or [])
             if r.get("location") == location
             and (rental is None or (r.get("status") == "rental") == rental)]
@@ -219,11 +228,13 @@ def builds():
 
 
 def teams():
+    """Every team, by id."""
     return sorted(tables().get("teams") or [],
                   key=lambda x: str(x.get("id")))
 
 
 def main():
+    """Print the box, HOME, stones, items, builds and teams."""
     ap = argparse.ArgumentParser()
     ap.add_argument("--refresh", action="store_true")
     a = ap.parse_args()

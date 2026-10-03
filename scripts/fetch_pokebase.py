@@ -37,6 +37,9 @@ PAGED = {"pokemon": 4, "moves": 10, "abilities": 4, "items": 2}
 
 
 def fetch(page, force=False, num=None):
+    """Download one pokebase page (or page `num` of it) into the cache, unless
+    a real copy is already there.
+    """
     name = page if num in (None, 1) else "%s_p%d" % (page, num)
     dest = os.path.join(POKEBASE, name + ".html")
     if os.path.exists(dest) and os.path.getsize(dest) > 5000 and not force:
@@ -56,6 +59,7 @@ def fetch(page, force=False, num=None):
 
 
 def read(page):
+    """A cached page's HTML, or "" when it was never fetched."""
     p = os.path.join(POKEBASE, page + ".html")
     return open(p, encoding="utf-8", errors="replace").read() if os.path.exists(p) else ""
 
@@ -261,6 +265,7 @@ def parse_table_usage(page):
 
 
 def parse_speed_tiers():
+    """The speed-tier table, read from the page's flight payload."""
     lines = rsc_lines(rsc_payload("speed-tiers"))
     rows = next((resolve(v, lines) for v in find_key(lines, "tierRows")
                  if isinstance(v, list)), [])

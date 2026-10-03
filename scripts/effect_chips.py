@@ -261,6 +261,9 @@ def same_number(v, stated):
 
 
 def chip_values(text):
+    """The numbers a chip states: its multiplier when it is one, else every
+    number in it.
+    """
     m = re.match(r"x(\d+(?:\.\d+)?)", text)
     return {float(m.group(1))} if m else values(text)
 
@@ -307,6 +310,9 @@ BARE = re.compile(r"^[\d./]+[x%]?$")
 
 
 def main():
+    """Print what every chip reads as; --audit only the numbers whose subject
+    is not in the tables yet.
+    """
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.add_argument("--audit", action="store_true",
                     help="only the numbers whose subject is not in the tables")

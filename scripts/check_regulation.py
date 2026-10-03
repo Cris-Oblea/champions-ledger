@@ -76,6 +76,9 @@ def serebii_regulations(html):
 
 
 def recorded():
+    """The regulation the database was built for, or {} when nothing is
+    recorded.
+    """
     try:
         return json.load(open(RECORD, encoding="utf-8"))
     except (OSError, ValueError):
@@ -129,6 +132,10 @@ def look():
 
 
 def main():
+    """Say whether the database is built for the live regulation. Exit 0 when
+    it is, 10 when a new one is ready to build, 11 when it is live but not
+    yet buildable, 2 when it could not tell.
+    """
     ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     ap.parse_args()
     status, live, ours, why = look()

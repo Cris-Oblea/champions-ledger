@@ -51,6 +51,8 @@ function pemBytes(pem) {
   return out;
 }
 
+/* A JWT signed with the GitHub App's private key, which is what proves the
+   Worker is the App. */
 async function appJwt(appId, pem) {
   const key = await crypto.subtle.importKey(
     "pkcs8", pemBytes(pem),
@@ -67,6 +69,7 @@ async function appJwt(appId, pem) {
   return head + "." + body + "." + b64url(sig);
 }
 
+/* One GitHub API call with the token and the headers GitHub requires. */
 async function gh(url, token, init) {
   const r = await fetch(url, {
     ...init,
@@ -96,6 +99,7 @@ async function installationToken(env) {
   return (await tok.json()).token;
 }
 
+/* Start the daily refresh workflow on main, as the App. */
 async function trigger(env) {
   const token = await installationToken(env);
   const r = await gh(

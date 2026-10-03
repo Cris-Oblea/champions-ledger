@@ -62,6 +62,8 @@ const box = [
   row("bulbasaur-home", "Bulbasaur", "home", "permanent", "home"),
 ];
 
+/* A box row of this ledger: the harness default, owned by the fixture's user
+   and dated the fixture's day. */
 function row(id, name, location, status, origin, extra) {
   return harness.row(id, name, { user_id: UID, location, status, origin,
                                  updated_at: DAY + "T00:00:00Z", ...extra });
@@ -96,6 +98,7 @@ const builds = [
   }),
 ];
 
+/* A build of this ledger, the same way. */
 function build(id, pokemon, box_id, extra) {
   return harness.build(id, pokemon, { user_id: UID, box_id,
                                       updated_at: DAY + "T00:00:00Z", ...extra });
@@ -126,6 +129,7 @@ const stones = ["Charizardite Y", "Garchompite", "Sablenite"].map(named);
 const items = ["Focus Sash", "Sitrus Berry", "Black Glasses", "Assault Vest"]
   .map(named);
 
+/* A stone or item row: ownership is the row existing. */
 function named(id) {
   return { user_id: UID, id, updated_at: DAY + "T00:00:00Z" };
 }
@@ -155,6 +159,7 @@ const gts = [
   },
 ];
 
+/* A GTS trade row, open unless `extra` closes it. */
 function offer(id, offered, requested, deposited, extra) {
   return Object.assign({
     user_id: UID, id, offered, requested, offered_id: null,

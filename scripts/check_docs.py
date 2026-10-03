@@ -353,6 +353,7 @@ def architecture_parts():
     import build_tracker_page  # the one definition of what a part is
 
     def names(pattern, strip=""):
+        """The basenames matching a glob, with a suffix stripped."""
         return sorted(os.path.basename(f)[:len(os.path.basename(f)) - len(strip)]
                       for f in glob.glob(os.path.join(ROOT, pattern)))
     tables = set()
@@ -412,6 +413,7 @@ def check_budgets():
 
 
 def read(rel):
+    """A repo file's lines, or None when it does not exist."""
     p = os.path.join(ROOT, rel)
     if not os.path.exists(p):
         return None
@@ -472,6 +474,9 @@ def hook():
 
 
 def main():
+    """Run every doc check and exit 1 on a problem. --hook checks the one file
+    a Claude Code edit touched; --list counts the decisions watched.
+    """
     ap = argparse.ArgumentParser(
         description=__doc__,
         formatter_class=argparse.RawDescriptionHelpFormatter)

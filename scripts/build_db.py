@@ -247,6 +247,7 @@ def always_crit(effect, indepth):
 
 
 def _move_name(s, slug):
+    """A move page's name from its <title>, or the slug when there is none."""
     m = re.search(r"<title>(.*?)</title>", s, re.S | re.I)
     name = html.unescape(m.group(1)).split(" - ")[0].strip() if m else None
     return name or slug
@@ -265,6 +266,7 @@ def _move_type_and_category(s):
 
 
 def _cell_number(v):
+    """A table cell as an int, or None for "--" and blanks."""
     v = v.strip().replace("--", "")
     return int(v) if v.isdigit() else None
 
@@ -281,6 +283,7 @@ def _move_numbers(s):
 
 
 def _move_section(s, label):
+    """The text of the table row that follows a labelled row."""
     mm = re.search(re.escape(label) + r".*?</tr>\s*<tr>(.*?)</tr>", s, re.S)
     return txt(mm.group(1)) if mm else ""
 
@@ -875,6 +878,7 @@ def _add_typed_battle_forms(forms):
 
 
 def _write(name, rows):
+    """Write one data/db table."""
     Path(DB, name).write_text(
         json.dumps(rows, ensure_ascii=False, indent=1), encoding="utf-8")
 
@@ -937,6 +941,9 @@ def build_learnsets(moves, pokemon):
 
 
 def main():
+    """Build every core table from the Serebii cache: pokemon, moves,
+    learnsets, items, abilities.
+    """
     os.makedirs(DB, exist_ok=True)
 
     print("Pokemon...", flush=True)

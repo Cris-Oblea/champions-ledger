@@ -480,6 +480,8 @@ function buildPicks(body, which){
   const bl = el("div", "list cards");
   const bcount = el("div", "sub mb6");
   body.appendChild(bcount);
+  /* The saved builds that pass the filter, with a count that says how many
+     were hidden. */
   function drawBuilds(){
     const q = bq.q();
     bl.innerHTML = "";
@@ -589,6 +591,7 @@ function calcMoveSheet(){
         "No movepool on record for " + a.name + "."));
     }
     const pool = (ls || []).filter(function(m){ return m.cat !== "T"; });
+    /* The movepool for the search, strongest first (BP x accuracy). */
     function draw(){
       const q = inp.q();
       list.innerHTML = "";

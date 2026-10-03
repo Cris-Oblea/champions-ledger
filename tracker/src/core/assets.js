@@ -15,6 +15,8 @@ import { byName } from "./data.js";
    anything that already ran it - a second panel, a test - counts as loaded. */
 function lazyScript(global, urlGlobal){
   let state = "idle", waiting = [];      // idle | loading | ready | absent
+  /* End the load once and answer everyone who asked while it was in flight, so
+     a second caller never starts a second download. */
   function settle(to){
     state = to;
     const q = waiting;
@@ -74,6 +76,8 @@ const loadOutside = lazyScript("CHAMP_OUTSIDE", "CHAMP_OUTSIDE_URL");
 
 /* {} until loaded, so a caller never has to test for it */
 function outsideDex(){ return window.CHAMP_OUTSIDE || {}; }
+/* The movepool of a species Champions lacks, from the outside dex (null until
+   that asset has loaded). */
 function outsideMovesFor(name){ return outsideDex().m?.[name] || null; }
 /* A move the app does not ship, dressed as one it does, so the same row
    renderer draws it. `i` is -1 on purpose: the ability badges and the blocker

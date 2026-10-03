@@ -177,6 +177,8 @@ function lastWrite(){
    question rather than a claim, because until the fetch answers we do not
    know - and a diagnostic that guesses is worse than one that says so. */
 let DIAG_LATEST = "checking…";
+/* Fetch the live page once per load and compare its build stamp with this
+   copy's, for the diagnostics' "Latest deployed" line. */
 function checkLatest(){
   /* asked once per load, not on every redraw - it is a network round trip */
   if (DIAG_LATEST !== "checking…") return;

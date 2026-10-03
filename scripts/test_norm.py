@@ -124,6 +124,7 @@ DIFFERENT = [
 
 
 def _check_same(verbose):
+    """Every group that must collapse to one key does."""
     print("--- groups that must share one key ---")
     failed = 0
     for group in SAME:
@@ -141,6 +142,7 @@ def _check_same(verbose):
 
 
 def _check_different(verbose):
+    """Every pair that must stay apart does."""
     print("\n--- pairs that must stay distinct ---")
     bad = 0
     for a, b in DIFFERENT:
@@ -175,6 +177,7 @@ SPECIES = [("Ninetales-Alola", "ninetales"),
 
 
 def _check_species(verbose):
+    """species_norm() strips the form words it should."""
     print("\n--- species_norm strips form qualifiers ---")
     sp = 0
     for name, want in SPECIES:
@@ -190,6 +193,7 @@ def _check_species(verbose):
 
 
 def main():
+    """Run the three checks; exit 1 on any failure."""
     verbose = "-v" in sys.argv
     total = _check_same(verbose) + _check_different(verbose) + _check_species(verbose)
     print("\n%s" % ("ALL PASS" if not total else "%d FAILURES" % total))

@@ -107,6 +107,8 @@ function speciesSheet(onPick){
     const list = el("div", "list cards");
     body.appendChild(list);
 
+    /* The species list for the search, the "in your boxes" filter and the
+       sort chosen. */
     function draw(){
       const q = inp.q();
       list.innerHTML = "";
@@ -721,6 +723,9 @@ function statPoints(body, ed){
   body.appendChild(bud);
 
   const spRepaint = [];
+  /* Set one stat's Stat Points, clamped to 0-32, and repaint the budget.
+     `typing` is true when the number box is the source, so it is not rewritten
+     under the cursor. */
   function setSp(k, v, typing){
     draft.stat_points[k] = Math.max(0, Math.min(32, v));
     spPaint(typing);

@@ -30,6 +30,7 @@ const M = require(path.join(CALC, "mechanics", "champions"));
 
 const gen = Generations.get(0);
 
+/* A Smogon Pokemon from a probe case's spec. */
 function build(spec) {
   const opts = {};
   if (spec.item) opts.item = spec.item;

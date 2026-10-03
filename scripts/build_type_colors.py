@@ -70,6 +70,7 @@ EXTRA = {}
 
 
 def luminance(hexstr):
+    """WCAG relative luminance of a #rrggbb colour."""
     def chan(c):
         c = int(hexstr[c:c + 2], 16) / 255
         return c / 12.92 if c <= 0.03928 else ((c + 0.055) / 1.055) ** 2.4
@@ -78,12 +79,16 @@ def luminance(hexstr):
 
 
 def contrast(a, b):
+    """WCAG contrast ratio between two colours."""
     la, lb = luminance(a), luminance(b)
     hi, lo = max(la, lb), min(la, lb)
     return (hi + 0.05) / (lo + 0.05)
 
 
 def parse(css):
+    """Each type's colour, second colour and name ink from pokemon.com's
+    stylesheet.
+    """
     out = {}
     for m in RULE.finditer(css):
         name, body = m.group(1), m.group(2)
@@ -101,6 +106,9 @@ def parse(css):
 
 
 def main():
+    """Read the type colours from pokemon.com and write type_colors.json;
+    --check fails if upstream moved.
+    """
     ap = argparse.ArgumentParser(description=__doc__)
     ap.add_argument("--check", action="store_true",
                     help="fail if upstream no longer matches what is stored")
