@@ -233,6 +233,15 @@ DECISIONS = [
     # with findings in an extend-ignore list, until that list emptied on
     # 2026-09-30. A document that still describes the list would tell a reader
     # some rules are optional.
+    # Pins used to be bumped when someone chose to (a weekly Dependabot, the
+    # Supabase CLI and the runtimes held by hand). Since 2026-10-03 every tool
+    # runs its newest release: Dependabot daily and self-merging, the rest
+    # floating (player: "siempre en su ultima version").
+    ("tools-track-latest",
+     r"\| Weekly \| Opens PRs|the pin stays for its other reason",
+     "every tool runs its newest release: Dependabot daily + auto-merge, runtimes float",
+     DOCS),
+
     ("ruff-ignores-nothing",
      r"`ruff\.toml` has a ratchet|rules that still have findings are listed",
      "ruff.toml ignores nothing past its three idiom rules; every rule blocks",

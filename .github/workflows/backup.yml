@@ -92,18 +92,16 @@ jobs:
 
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97   # v7
         with:
-          python-version: "3.12"
+          python-version: "3.x"   # the newest Python 3, like every tool here
 
-      # v3 installs the CLI from npm rather than from GitHub releases, which
-      # removes the lookup that failed here on the first run from main: with
-      # `version: latest`, v1 resolved the release through an unauthenticated
-      # GitHub API call from a shared runner IP, and five test runs in one
-      # evening was enough to hit "rate limit exceeded" before the job reached
-      # the database. The pin stays for its other reason - the tool that reads
-      # the ledger should not change overnight without anyone choosing it.
+      # `latest`, because every tool of this project runs its newest release
+      # (player, 2026-10-03) and Dependabot cannot see this one. It is safe
+      # again since v3: v1 resolved `latest` through an unauthenticated GitHub
+      # API call from a shared runner IP and hit "rate limit exceeded"; v3
+      # installs the CLI from npm, with no such lookup.
       - uses: supabase/setup-cli@45a513f8c64c0bc8e0e3dfe572b5c95be85f6359   # v3
         with:
-          version: 2.119.0
+          version: latest
 
       - name: fetch the private store
         env:

@@ -384,7 +384,8 @@ node tests/teamtest.js
 | Gate and publish | `.github/workflows/push.yml` | Every PR and every push to `main` | Runs `daily.py --no-refresh`: the gate on a PR, the gate followed by `wrangler deploy` on `main` |
 | Backup | `.github/workflows/backup.yml` | Nightly | Snapshots every table to a separate private repo |
 | Cron Worker | `cron/src/cron.js` | 08:07 UTC | Signs a JWT as the GitHub App, gets a token, and dispatches the daily workflow |
-| Dependabot | `.github/dependabot.yml` | Weekly | Opens PRs for the pinned actions and the npm packages |
+| Dependabot | `.github/dependabot.yml` | Daily | Opens PRs for the pinned actions, the npm packages and `requirements.txt` |
+| Dependabot auto-merge | `.github/workflows/dependabot.yml` | Every Dependabot PR | Turns on auto-merge, so the bump merges itself once `gate` is green. Node, Python and the Supabase CLI float to their newest release instead, because Dependabot cannot see them |
 
 **So "merge = deploy"**: merging a PR into `main` triggers `push.yml`, which
 gates and publishes. You never deploy by hand.
@@ -449,7 +450,11 @@ gh pr create                          # CI gates it; merge = deploy
   analyse nothing.
 - **Recommended extensions** are listed in `.vscode/extensions.json`, so
   VS Code offers to install them when the repo opens (or: Extensions panel,
-  filter `@recommended`).
+  filter `@recommended`). There is one per tool the project is built with;
+  jscpd, vulture and esbuild have none and run in the gate only.
+- **Testing** panel (the flask): the node:test runner extension lists every
+  `tests/*test.js` file and runs one test, or one file, with a click -
+  `settings.json` tells it our file names.
 - **Code Spell Checker** reads `cspell.json`, whose word list is
   `.cspell-words.txt` (Pokemon names, sources, tools, and the Spanish quotes).
   For a new name, use the Quick Fix (Ctrl+.) "Add to dictionary: project".
