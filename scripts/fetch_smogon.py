@@ -83,10 +83,7 @@ DEX_ALIAS = {"Compoundeyes": "compound-eyes"}
 
 def dex_alias(name):
     """Smogon's URL spelling: "King's Rock" -> kings-rock, "U-turn" -> u-turn."""
-    if name in DEX_ALIAS:
-        return DEX_ALIAS[name]
-    s = name.lower().replace("'", "").replace("’", "").replace(".", "")
-    return re.sub(r"[^a-z0-9]+", "-", s).strip("-")
+    return DEX_ALIAS.get(name) or dex.slug(name)
 
 
 def ask_dex(kind, alias):

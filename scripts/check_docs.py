@@ -318,7 +318,7 @@ def check_named_files():
         for i, line in enumerate(lines):
             for m in NAMED_FILE.finditer(line):
                 name = m.group(1)
-                name = name[2:] if name.startswith("./") else name
+                name = name.removeprefix("./")
                 if "/" in name:
                     if any(f == name or f.endswith("/" + name) for f in files):
                         continue
