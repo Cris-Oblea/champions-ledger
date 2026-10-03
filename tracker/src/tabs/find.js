@@ -225,8 +225,7 @@ function inTheBoxes(p, ctx){
    up Psychic does not make the Pokemon Psychic in the box, and the question
    being asked - "nothing Psychic on this team" - is about what walks on. */
 function ruledOut(p){
-  return FIND.notTypes.length > 0 &&
-    FIND.notTypes.some(function(t){ return p.types.includes(t); });
+  return FIND.notTypes.some(function(t){ return p.types.includes(t); });
 }
 
 /* ALL of the picked types, or ANY of them - the switch the chip row offers. */

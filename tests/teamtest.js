@@ -204,8 +204,8 @@ const byType = (t, rows) => rows.find(x => x.type === t);
     /* El selector de item ya tenia buscador; ahora tambien filtros. */
     w.teamSheet("t1", w.S.teams.t1);
     const it = [...d.querySelectorAll("#teamEditBody button")]
-      .filter(b => /^(\+ Item|Item)$/.test(b.textContent.trim()));
-    it[0].click();
+      .find(b => /^(\+ Item|Item)$/.test(b.textContent.trim()));
+    it.click();
     const ib = d.getElementById("sheetBody");
     check("el de items tambien busca", !!ib.querySelector(".search input"), true);
     const icat = t => [...ib.querySelectorAll(".tog")]

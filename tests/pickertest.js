@@ -59,13 +59,13 @@ const countLine = () => [...d.querySelectorAll(".sheet .sub")]
 
   describe("un filtro", () => {
     click(chip("Physical"));
-    check("solo fisicos", meta().every(t => /^Physical/.test(t)), true);
+    check("solo fisicos", meta().every(t => t.startsWith("Physical")), true);
     check("y son menos que todos", rows().length < all, true);
   });
 
   describe("dos filtros a la vez (se acumulan)", () => {
     click(chip("Ground"));
-    check("solo Ground fisicos", meta().every(t => /^Physical/.test(t)), true);
+    check("solo Ground fisicos", meta().every(t => t.startsWith("Physical")), true);
     check("todas son Ground",
        rows().every(r => /Ground/.test(r.querySelector(".t").textContent)), true);
     check("el contador dice N de M", / of \d+ moves/.test(countLine()), true);
@@ -96,7 +96,7 @@ const countLine = () => [...d.querySelectorAll(".sheet .sub")]
        rows().every(r => /hits ally/.test(r.querySelector(".rname").textContent)), true);
     off("Hits ally");
     click(chip("Status"));
-    check("solo status", meta().every(t => /^Status/.test(t)), true);
+    check("solo status", meta().every(t => t.startsWith("Status")), true);
   });
 
   /* Two chips in "Must have" mean BOTH, not either - the player caught
@@ -141,14 +141,14 @@ const countLine = () => [...d.querySelectorAll(".sheet .sub")]
     click(chip("Special"));
     check("elegir Special suelta Physical", state("Physical"), "off");
     check("y Special queda puesta", state("Special"), "si");
-    check("solo salen specials", meta().every(t => /^Special/.test(t)), true);
+    check("solo salen specials", meta().every(t => t.startsWith("Special")), true);
     /* excluir SI se puede acumular: es como se pide "ni status ni fisico" */
     off("Special");
     click(chip("Status")); click(chip("Status"));
     click(chip("Physical")); click(chip("Physical"));
     check("dos exclusiones conviven",
        state("Status") + "/" + state("Physical"), "no/no");
-    check("y solo quedan specials", meta().every(t => /^Special/.test(t)), true);
+    check("y solo quedan specials", meta().every(t => t.startsWith("Special")), true);
     off("Status"); off("Physical");
     check("al soltarlas vuelven todos", rows().length, all);
   });

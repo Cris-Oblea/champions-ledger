@@ -104,7 +104,7 @@ const cardFor = n => [...d.querySelectorAll("#listBuilds .row")]
   await describe("al guardar", async () => {
     click(saveBtn());
     await idle();
-    const wrote = w.__WROTE.filter(x => x.table === "builds").pop();
+    const wrote = w.__WROTE.findLast(x => x.table === "builds");
     check("guarda la habilidad", wrote.row.ability, "Mega Launcher");
     check("en la fila de esta build", wrote.row.id, "clawitzer");
   });
@@ -121,7 +121,7 @@ const cardFor = n => [...d.querySelectorAll("#listBuilds .row")]
        /No ability chosen/.test(editor().textContent), true);
     click(saveBtn());
     await idle();
-    const w2 = w.__WROTE.filter(x => x.table === "builds").pop();
+    const w2 = w.__WROTE.findLast(x => x.table === "builds");
     check("y guarda null, no la primera de la lista", w2.row.ability, "null");
   });
   await describe("ninguna habilidad se pierde por el camino", async () => {

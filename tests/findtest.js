@@ -273,7 +273,7 @@ const modeChip = () => [...d.querySelectorAll("#findChips .tog")]
        la caja de habilidad y el delta de cada stat. */
     check("una caja de habilidad por cada Mega de la linea",
        [...results()[0].querySelectorAll(".cardline .lbl")]
-         .filter(t => /^Mega/.test(t.textContent)).length, 2);
+         .filter(t => t.textContent.startsWith("Mega")).length, 2);
     check("y un sprite rotulado por cada una",
        [...results()[0].querySelectorAll(".megapickey")]
          .filter(t => !/base/.test(t.textContent)).length, 2);

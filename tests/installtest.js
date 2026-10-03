@@ -83,7 +83,7 @@ const tagsOf = n => [...n.querySelectorAll(".tag")].map(t => t.textContent);
        sel ? sel.options.length : 0, 4);
     /* "sigue diciendo not installed!" - the closed face IS the answer */
     check("cerrado dice en cual esta, no 'not installed'",
-       /^Charizard · Champions box · shiny · trained/.test(face(sel)) &&
+       face(sel).startsWith("Charizard · Champions box · shiny · trained") &&
        !/not installed/i.test(face(sel)), true);
     check("ninguna opcion dice 'copy N'", /copy \d/.test(sel.textContent), false);
     check("la opcion dice que builds ya lleva",
@@ -104,7 +104,7 @@ const tagsOf = n => [...n.querySelectorAll(".tag")].map(t => t.textContent);
     choose(sel, "charizard-2");           /* moverla a la de HOME */
     const card = installed().querySelectorAll(".row");
     check("cambiar de copia no redibuja: el mismo desplegable",
-       d.contains(sel) && /^Charizard · in HOME/.test(face(sel)), true);
+       d.contains(sel) && face(sel).startsWith("Charizard · in HOME"), true);
     check("la tarjeta pasa a ser la de HOME, con su nota",
        card.length === 1 && tagsOf(card[0]).indexOf("in HOME") >= 0 &&
        /the one from GO/.test(card[0].textContent), true);
@@ -122,7 +122,7 @@ const tagsOf = n => [...n.querySelectorAll(".tag")].map(t => t.textContent);
        /not installed/.test(face(hsel)) &&
        installed().querySelectorAll(".row").length === 0, true);
     check("dos copias identicas lo dicen, en vez de repetir la linea",
-       [1, 2].every(i => / · one of 2 identical$/.test(hsel.options[i].text)), true);
+       [1, 2].every(i => hsel.options[i].text.endsWith(" · one of 2 identical")), true);
   });
 
   /* "no se puede sacar al ampharos!" - its only copy, and it comes off */
@@ -132,7 +132,7 @@ const tagsOf = n => [...n.querySelectorAll(".tag")].map(t => t.textContent);
     w.buildSheet("ampharos", w.S.builds.ampharos);
     await idle();
     const asel = installed().querySelector("select");
-    check("cerrado dice Ampharos", /^Ampharos · Champions box/.test(face(asel)), true);
+    check("cerrado dice Ampharos", face(asel).startsWith("Ampharos · Champions box"), true);
     choose(asel, "");
     check("elegir 'not installed' quita la tarjeta",
        installed().querySelectorAll(".row").length, 0);

@@ -62,7 +62,7 @@ function mods(atkSpec, defSpec, moveName, fieldSpec, typeEff) {
   let dmg = 0;
   try {
     const res = M.calculateChampions(gen, attacker, defender, move, field);
-    const flat = [].concat.apply([], [].concat.apply([], [res.damage])).flat(2);
+    const flat = [res.damage].flat(Infinity);
     const nums = flat.filter((x) => typeof x === "number");
     dmg = nums.length ? Math.max.apply(null, nums) : 0;
   } catch {
