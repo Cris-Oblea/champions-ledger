@@ -9,11 +9,10 @@ Outputs to data/meta/:
     usage_abilities.json  top 100 abilities by usage %
     usage_items.json      top 100 held items by usage %
     speed_tiers.json      base speed -> actual speed at each investment level
-    teams.json            shared teams: full sets, natures, items, rental codes
 
 Pokebase is a Next.js app; list pages are server-rendered, so the numbers are in
-the HTML. The Pokemon usage map and the speed/team data live in the RSC flight
-payload instead, which we reassemble and index by line id.
+the HTML. The speed tiers live in the RSC flight payload instead, which we
+reassemble and index by line id.
 
 Usage:
     python scripts/fetch_pokebase.py          # fetch + parse everything
@@ -30,11 +29,11 @@ from paths import META, POKEBASE
 
 BASE = "https://pokebase.app/pokemon-champions"
 
-PAGES = ["pokemon", "moves", "abilities", "items", "speed-tiers", "teams"]
+PAGES = ["pokemon", "moves", "abilities", "items", "speed-tiers"]
 
 # The list pages render only 100 rows at a time and the usage % exists only in
 # that rendered HTML, so every page of the table has to be walked with ?page=N.
-PAGED = {"moves": 10, "abilities": 4, "items": 2}
+PAGED = {"pokemon": 4, "moves": 10, "abilities": 4, "items": 2}
 
 
 def fetch(page, force=False, num=None):
@@ -196,44 +195,34 @@ def rows_with(page, *keys):
 # --------------------------------------------------------------------------
 # Parsers
 # --------------------------------------------------------------------------
+_LADDER_ROW = re.compile(r'href="/pokemon-champions/pokemon/([a-z0-9\-\.]+)"><img alt="([^"]*)"')
+_PERCENT = re.compile(r">([\d.]+)<!-- -->%<")
+_TYPE = re.compile(r'<span title="([A-Za-z]+)" class="inline-flex')
+
+
 def parse_pokemon_usage():
-    """Pokemon usage lives in a id->percent map; names come from the same payload."""
-    lines = rsc_lines(rsc_payload("pokemon"))
-    usage = {}
-    for m in find_key(lines, "usagePercentByPokemonId"):
-        if isinstance(m, dict):
-            usage = {pid: float(pct) for pid, pct in m.items()}
-            break
+    """The ladder, from the rendered table: name, slug, types, usage %.
 
-    # names/stats come from the docs array, keyed by the same object id
-    names = {}
-    for bucket in find_key(lines, "docs"):
-        if not (isinstance(bucket, list) and bucket):
-            continue
-        for d in bucket:
-            if not (isinstance(d, dict) and "nationalNumber" in d and d.get("id")):
+    Until 2026-10-02 the page's payload carried the whole roster (`docs`) next
+    to an id -> percent map, and the two were joined by id. pokebase stopped
+    shipping the roster - the map is still there, with nothing to name its ids -
+    and the nightly wrote 0 rows four times until the shrink guard stopped it.
+    The table renders 100 rows a page like the moves one, so every page is
+    walked (PAGED). A species with no usage cell is left out, as for moves.
+    """
+    rows, seen = [], set()
+    for s in read_all_pages("pokemon"):
+        found = list(_LADDER_ROW.finditer(s))
+        for i, m in enumerate(found):
+            row_html = s[m.end():found[i + 1].start() if i + 1 < len(found) else len(s)]
+            link_end = row_html.find("</a>")
+            cell = _PERCENT.search(row_html, link_end)
+            if m.group(1) in seen or link_end < 0 or not cell:
                 continue
-            types = d.get("type") or []
-            names[d["id"]] = {
-                "name": d.get("name"), "slug": d.get("slug"),
-                "national_number": d.get("nationalNumber"),
-                "is_mega": bool(d.get("isMega")),
-                "types": [t.get("name") for t in types if isinstance(t, dict)],
-                "base_stats": {
-                    "hp": d.get("hp"), "atk": d.get("attack"), "def": d.get("defense"),
-                    "spa": d.get("specialAttack"), "spd": d.get("specialDefense"),
-                    "spe": d.get("speed"),
-                },
-            }
-
-    rows = []
-    for pid, pct in usage.items():
-        info = names.get(pid)
-        if not info:
-            continue
-        row = dict(info)
-        row["usage_percent"] = pct
-        rows.append(row)
+            seen.add(m.group(1))
+            rows.append({"name": m.group(2), "slug": m.group(1),
+                         "types": _TYPE.findall(row_html[:link_end]),
+                         "usage_percent": float(cell.group(1))})
     rows.sort(key=lambda r: -r["usage_percent"])
     for i, r in enumerate(rows, 1):
         r["rank"] = i
@@ -287,54 +276,6 @@ def parse_speed_tiers():
     return out
 
 
-def parse_teams():
-    payload = rsc_payload("teams")
-    lines = rsc_lines(payload)
-    teams, seen = [], set()
-    for bucket in find_key(lines, "community") + find_key(lines, "tournament"):
-        if not isinstance(bucket, list):
-            continue
-        for raw in bucket:
-            if not isinstance(raw, dict) or "team" not in raw:
-                continue
-            t = resolve(raw, lines)
-            tid = t.get("id")
-            if tid in seen:
-                continue
-            seen.add(tid)
-            members = []
-            for slot in t.get("team") or []:
-                if not isinstance(slot, dict):
-                    continue
-                p = slot.get("pokemon") or {}
-                item = slot.get("item")
-                ability = slot.get("ability")
-                members.append({
-                    "pokemon": p.get("name") if isinstance(p, dict) else None,
-                    "slug": p.get("slug") if isinstance(p, dict) else None,
-                    "ability": ability.get("name") if isinstance(ability, dict) else ability,
-                    "item": item.get("name") if isinstance(item, dict) else item,
-                    "nature": slot.get("nature"),
-                    "moves": [mv.get("name") for mv in (slot.get("moves") or [])
-                              if isinstance(mv, dict)],
-                    "stat_points": slot.get("stats"),
-                })
-            if not members:
-                continue
-            creator = t.get("creator") or {}
-            reg = t.get("regulationSet") or {}
-            teams.append({
-                "name": t.get("name"),
-                "creator": creator.get("name") if isinstance(creator, dict) else None,
-                "regulation": reg.get("name") if isinstance(reg, dict) else None,
-                "rental_code": t.get("gameTeamId"),
-                "source_url": t.get("sourceUrl"),
-                "date_shared": t.get("dateShared"),
-                "members": members,
-            })
-    return teams
-
-
 # --------------------------------------------------------------------------
 def main():
     print("Fetching pokebase.app ...")
@@ -352,7 +293,6 @@ def main():
         ("usage_abilities", lambda: parse_table_usage("abilities")),
         ("usage_items", lambda: parse_table_usage("items")),
         ("speed_tiers", parse_speed_tiers),
-        ("teams", parse_teams),
     ]
     print("Parsing ...")
     for name, fn in jobs:
