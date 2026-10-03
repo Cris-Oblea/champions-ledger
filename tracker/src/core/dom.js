@@ -93,8 +93,8 @@ function addClear(wrap, inp){
 
 /* Every search box written straight into the markup gets the same clear
    button, so the two ways a field can be born look identical on screen. */
-function wireClears(root){
-  const wraps = (root || document).querySelectorAll(".search");
+function wireClears(){
+  const wraps = document.querySelectorAll(".search");
   Array.prototype.forEach.call(wraps, function(w){
     const inp = w.querySelector("input");
     if (inp) addClear(w, inp);
