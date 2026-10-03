@@ -18,10 +18,10 @@
 const { describe } = require("node:test");
 const { check, open, page, source, idle, click } = require("./harness.js");
 
-const list = (a, n = 6) => {
+const list = a => {
   if (!a.length) return "0";
-  const more = a.length > n ? " (+" + (a.length - n) + ")" : "";
-  return a.slice(0, n).join(", ") + more;
+  const more = a.length > 6 ? " (+" + (a.length - 6) + ")" : "";
+  return a.slice(0, 6).join(", ") + more;
 };
 
 const src = page();
