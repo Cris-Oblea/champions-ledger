@@ -25,6 +25,7 @@ import re
 import sys
 from pathlib import Path
 
+from check_regulation import live_slug
 from paths import POKEBASE, ROOT
 
 README = os.path.join(ROOT, "README.md")
@@ -155,10 +156,9 @@ def vintage():
     reg = "unknown"
     raw = os.path.join(POKEBASE, "pokemon.html")
     if os.path.exists(raw):
-        s = Path(raw).read_text(encoding="utf-8", errors="replace")
-        m = re.search(r'defaultLatestRegulationSetSlug\\?":\\?"([a-z\-]+)', s)
-        if m:
-            reg = m.group(1).upper()
+        slug = live_slug(Path(raw).read_text(encoding="utf-8", errors="replace"))
+        if slug:
+            reg = slug.upper()
     return ("Regulation **%s**. Ladder usage fetched %s, from %d Pokemon.\n"
             "Tournament data is Worlds 2026, played under M-B - that is history, "
             "not stale." % (reg, u.get("fetched", "?"),

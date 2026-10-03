@@ -11,6 +11,7 @@ from pathlib import Path
 
 import dex
 import effect_chips
+from check_regulation import live_slug
 from paths import POKEBASE, ROOT, SMOGON_CALC
 
 OUT = os.path.join(ROOT, "tracker", "data.js")
@@ -609,10 +610,9 @@ def current_regulation():
             encoding="utf-8", errors="replace")
     except OSError:                     # no page cached: no regulation shown
         return None, None
-    cur = re.search(r'defaultLatestRegulationSetSlug\\?":\\?"([a-z\-]+)', raw)
-    if not cur:
+    slug = live_slug(raw)
+    if not slug:
         return None, None
-    slug = cur.group(1)
     st = re.search(r'\\?"value\\?":\\?"%s\\?",\\?"label\\?":\\?"[^"\\]+\\?",'
                    r'\\?"id\\?":\\?"[^"\\]+\\?",\\?"startDate\\?":\\?"(\d{4}-\d\d-\d\d)'
                    % re.escape(slug), raw)

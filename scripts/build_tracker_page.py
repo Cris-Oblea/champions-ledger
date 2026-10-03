@@ -31,7 +31,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-from paths import ROOT
+from paths import ESBUILD, ROOT
 
 TPL = os.path.join(ROOT, "tracker", "index.template.html")
 DATA = os.path.join(ROOT, "tracker", "data.js")
@@ -212,11 +212,7 @@ PUBLIC = [
 # it has always been served. The tests then run on the exact bytes that deploy,
 # which is worth more than any promise a build tool makes about itself.
 #
-# esbuild is PINNED in package-lock.json and installed by `npm ci` - never
-# `npx esbuild`, which fetches whatever is newest at the moment it runs,
-# including in CI.
-ESBUILD = os.path.join(ROOT, "node_modules", ".bin",
-                       "esbuild.cmd" if os.name == "nt" else "esbuild")
+# esbuild: paths.ESBUILD, the pinned one.
 
 ENTRY = os.path.join(SRC, "_entry.js")
 # The part that STARTS the app: it builds the tab bar, draws the first screen

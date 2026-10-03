@@ -23,3 +23,9 @@ POKEBASE = os.path.join(RAW, "pokebase")        # fetch_pokebase.py's pages
 SMOGON_CALC = os.path.join(RAW, "smogon_calc")  # Smogon's calculator source
 POKEAPI_CSV = os.path.join(RAW, "pokeapi_csv")  # PokeAPI's tables, pinned
 TOURNAMENTS = os.path.join(RAW, "tournaments")  # pokedata's responses
+
+# esbuild is PINNED in package-lock.json and installed by `npm ci` - never
+# `npx esbuild`, which fetches whatever is newest at the moment it runs,
+# including in CI, to build files that go straight onto the phone.
+ESBUILD = os.path.join(ROOT, "node_modules", ".bin",
+                       "esbuild.cmd" if os.name == "nt" else "esbuild")
