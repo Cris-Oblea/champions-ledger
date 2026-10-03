@@ -1,10 +1,8 @@
-/* The Profile tab: one editable number, and everything else derived.
+/* The Settings tab: one editable number, and everything else derived.
 
-   It was called Trainer and held seven hand-typed fields. Nothing read five of
-   them, and by the time the player looked they had drifted - the stored
-   `regulation` still said M-B three days into M-C. His rule (2026-09-12): keep
-   only what the app really uses and what only he can know, and derive the rest
-   so it cannot go stale.
+   Hand-typed fields that nothing reads drift (a stored regulation that names
+   the previous one). The rule: keep only what the app really uses and what
+   only he can know, and derive the rest so it cannot go stale.
 
    So this asserts the SHAPE, not the values: one input, no VP anywhere, and
    every derived line present and non-empty. */
@@ -40,12 +38,9 @@ const pairs = id => {
   return out;
 };
 
-/* The open sheet's "In battle" block, as one line of text. IT IS A BLOCK NOW,
-   NOT A LINE (2026-09-21). It was one grey sentence while there was nowhere
-   better to put it; the sheet draws these forms the way it draws a Mega now -
-   sprite, typing, six stats, its own damage table - so this reads the block
-   instead. The facts asserted with it are the same ones, and that is the
-   point of changing only the reader. */
+/* The open sheet's "In battle" block, as one line of text: the sheet draws
+   these forms the way it draws a Mega - sprite, typing, six stats, its own
+   damage table - and this reads the whole block. */
 const bnote = () => {
   const b = d.getElementById("sheetBody");
   const hs = [...b.querySelectorAll("h2")]
@@ -59,84 +54,82 @@ const bnote = () => {
 
 (async () => {
   await idle();
-  describe("el encabezado", () => {
-    check("se llama Settings", d.querySelector("#v-trainer h1").textContent, "Settings");
-    check("y la pestaña tambien",
+  describe("the header", () => {
+    check("is called Settings", d.querySelector("#v-trainer h1").textContent, "Settings");
+    check("and so is the tab",
        [...d.querySelectorAll("#tabs button, #tabs a")]
          .some(b => b.textContent.trim() === "Settings"), true);
   });
 
-  describe("un solo campo editable", () => {
+  describe("a single editable field", () => {
     const inputs = [...d.querySelectorAll("#v-trainer input")]
       .filter(i => i.type !== "file").map(i => i.id);
-    check("solo queda box capacity", inputs.join(", "), "tCap");
+    check("only box capacity remains", inputs.join(", "), "tCap");
   });
 
-  describe("el VP no se guarda en ningun sitio", () => {
-    check("sin campo de balance", !!d.getElementById("tVp"), false);
-    check("sin chip de VP en la cabecera", !!d.getElementById("vpCount"), false);
-    check("y el codigo no lo escribe", /vp_balance/.test(code), false);
+  describe("VP is stored nowhere", () => {
+    check("no balance field", !!d.getElementById("tVp"), false);
+    check("no VP chip in the header", !!d.getElementById("vpCount"), false);
+    check("and the code does not write it", /vp_balance/.test(code), false);
     /* the cost table stays, as pure reference */
     const costs = pairs("costs");
-    check("la tabla de costes sigue", Object.keys(costs).length >= 8, true);
-    check("y un coste conocido es correcto", costs["Move"], "250 VP");
+    check("the cost table remains", Object.keys(costs).length >= 8, true);
+    check("and a known cost is right", costs["Move"], "250 VP");
   });
 
-  describe("lo derivado, que no puede quedarse obsoleto", () => {
-    check("uso de la caja junto a la capacidad",
+  describe("what is derived, and cannot go stale", () => {
+    check("box usage beside the capacity",
        /2 of 50 used . 48 free/.test(d.getElementById("capUse").textContent), true);
     const hold = pairs("profCounts");
-    check("cuenta la caja separando comprados de rentals",
+    check("counts the box, bought apart from rentals",
        hold["In the Champions box"], "2 (1 bought, 1 rental)");
-    check("cuenta HOME", hold["In HOME"], "1");
-    check("cuenta builds", hold["Builds written"], "1");
-    check("cuenta piedras sobre el total", hold["Mega Stones owned"].endsWith("of 81"), true);
+    check("counts HOME", hold["In HOME"], "1");
+    check("counts builds", hold["Builds written"], "1");
+    check("counts stones against the total", hold["Mega Stones owned"].endsWith("of 81"), true);
 
     const data = pairs("profData");
-    /* the regulation is READ from pokebase, never typed - which is the whole
-       point: the field it replaced said M-B three days into M-C */
-    check("la regulacion sale de los datos", /^M-[A-Z] . since \d{4}-\d\d-\d\d/.test(data["Regulation"]), true);
-    check("dice cuando se bajo el uso del ladder",
+    /* the regulation is READ from pokebase, never typed - a typed one goes
+       stale the day it changes */
+    check("the regulation comes from the data", /^M-[A-Z] . since \d{4}-\d\d-\d\d/.test(data["Regulation"]), true);
+    check("it says when the ladder usage was fetched",
        /fetched \d{4}-\d\d-\d\d/.test(data["Ladder usage"]), true);
-    check("y que es del ladder de esa regulacion",
+    check("and that it is that regulation's ladder",
        data["Ladder usage"].indexOf(data["Regulation"].split(" ")[0]) > 0, true);
-    check("marca los datos de torneo como historia",
+    check("it marks the tournament data as history",
        /M-B/.test(data["Tournament data"]), true);
-    check("cuenta las formas del dex", /^\d{3} forms/.test(data["Dex"]), true);
+    check("it counts the dex's forms", /^\d{3} forms/.test(data["Dex"]), true);
   });
 
   /* The stat line is the form it STARTS in, and Aegislash never attacks in
      that one: Stance Change gives it 140 Attack the moment it uses a damaging
-     move, while the sheet printed 50. The database has carried `battle_forms`
-     for a while and nothing shipped it to the app, so both sheets showed the
-     misleading half (found 2026-09-12). Asserted on BOTH, because the number
-     is equally wrong on each. */
-  describe("lo que cambia en combate", () => {
+     move, while its stat line says 50. Asserted on BOTH sheets (Find's and
+     the box's), because the number would be equally wrong on each. */
+  describe("what changes in battle", () => {
     w.findDetail(w.byName["Aegislash"]);
-    check("Aegislash avisa de Blade Forme", /Blade/.test(bnote()), true);
-    check("...y que el Ataque pasa de 50 a 140", /Atk 50 . 140/.test(bnote()), true);
-    check("...nombrando la habilidad", /Stance Change/.test(bnote()), true);
+    check("Aegislash flags Blade Forme", /Blade/.test(bnote()), true);
+    check("...and that Attack goes from 50 to 140", /Atk 50 . 140/.test(bnote()), true);
+    check("...naming the ability", /Stance Change/.test(bnote()), true);
     w.findDetail(w.byName["Palafin"]);
-    check("Palafin avisa de Hero Form", /Atk 70 . 160/.test(bnote()), true);
+    check("Palafin flags Hero Form", /Atk 70 . 160/.test(bnote()), true);
     w.findDetail(w.byName["Castform"]);
-    check("Castform avisa del cambio de TIPO",
+    check("Castform flags the TYPE change",
        /Fire/.test(bnote()) && /Water/.test(bnote()) && /Ice/.test(bnote()), true);
     w.findDetail(w.byName["Garchomp"]);
-    check("y un Pokemon que no cambia no lleva bloque", bnote(), "");
+    check("and a Pokemon that does not change has no block", bnote(), "");
     w.pokeSheet({name:"Aegislash", location:"champions", status:"permanent",
                  origin:"champions", _id:"x"});
-    check("y la ficha de la caja lo dice igual", /Atk 50 . 140/.test(bnote()), true);
+    check("and the box's sheet says the same", /Atk 50 . 140/.test(bnote()), true);
   });
 
   describe("diagnostics", () => {
     const diag = pairs("diagOut");
     ["Latest deployed", "Regulation", "Ladder usage fetched", "Blob integrity",
      "Last ledger write"].forEach(k => {
-      check("informa " + k, !!(diag[k] && diag[k].length), true);
+      check("reports " + k, !!(diag[k] && diag[k].length), true);
     });
-    check("la integridad no reporta nada vacio", /MISSING/.test(diag["Blob integrity"]), false);
-    check("la ultima escritura sale del ledger", diag["Last ledger write"], "2026-09-12");
+    check("integrity reports nothing empty", /MISSING/.test(diag["Blob integrity"]), false);
+    check("the last write comes from the ledger", diag["Last ledger write"], "2026-09-12");
   });
 
-  check("la pagina no reporta errores de script", errs.join(" | ") || "ninguno", "ninguno");
+  check("the page reports no script error", errs.join(" | ") || "none", "none");
 })();

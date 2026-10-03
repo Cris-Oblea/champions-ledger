@@ -1,6 +1,5 @@
 /* Burn halves a PHYSICAL hit and leaves a special one alone, through the
-   page's own engine. This printed four numbers and "(no debe cambiar)" for
-   a person to compare, and passed whatever they said. */
+   page's own engine - asserted, never printed for a person to compare. */
 const { check, open } = require("./harness.js");
 const { w, errs } = open();
 
@@ -19,7 +18,7 @@ function range(status, move){
 }
 
 const [lo, hi] = range(null, "Earthquake").split("-").map(Number);
-check("quemado, un golpe fisico hace la mitad", range("brn", "Earthquake"),
+check("burned, a physical hit does half", range("brn", "Earthquake"),
       Math.floor(lo / 2) + "-" + Math.floor(hi / 2));
-check("y uno especial no cambia", range("brn", "Fire Blast"), range(null, "Fire Blast"));
-check("la pagina no reporta errores de script", errs.join(" | ") || "ninguno", "ninguno");
+check("and a special one is unchanged", range("brn", "Fire Blast"), range(null, "Fire Blast"));
+check("the page reports no script error", errs.join(" | ") || "none", "none");

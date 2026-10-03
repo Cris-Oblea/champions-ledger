@@ -1,15 +1,12 @@
 /* The team builder: six slots, and the rules of the format checked rather than
    remembered.
 
-   The app could say what one Pokemon was running and nothing could say what he
-   was BRINGING, which is the question the game asks. Five teams existed only
-   as prose in a write-up and the app had never seen one.
-
-   Three things decided the shape, and each is asserted here:
+   A team is what the game asks about: not what one Pokemon runs, but what he
+   is BRINGING. Three things decide its shape, and each is asserted here:
 
      A slot points at a BUILD, not a box row - so one Pokemon can sit in any
      number of teams, and three different Farigiraf are three different
-     answers (player, 2026-09-13).
+     answers.
 
      THE ITEM LIVES ON THE SLOT. The Item Clause means six Pokemon field
      exactly one Sitrus Berry, so an item stored per build is a preference that
@@ -35,20 +32,20 @@ const BUILDS = [B("garchomp","Garchomp","garchomp",{moves:["Earthquake","Protect
                 B("farigiraf-2","Farigiraf","farigiraf",{role:"Armor Tail"}),
                 B("sableye","Sableye","sableye"),
                 B("kingambit-idea","Kingambit",null),
-                /* Ampharos Electric -> Electric/Dragon: la piedra cambia el
-                   tipo, asi que su equipo tiene DOS perfiles. */
+                /* Ampharos Electric -> Electric/Dragon: the stone changes the
+                   typing, so its team has TWO profiles. */
                 B("ampharos","Ampharos",null,{mega:"Mega Ampharos"}),
-                /* Camerupt Fire/Ground -> Fire/Ground: la piedra NO cambia
-                   nada, asi que no gana pestaña. */
+                /* Camerupt Fire/Ground -> Fire/Ground: the stone changes no
+                   typing (only the Speed). */
                 B("camerupt","Camerupt",null,{mega:"Mega Camerupt"})];
-const TEAMS = [{user_id:UID, id:"t1", name:"Prueba", slots:[
+const TEAMS = [{user_id:UID, id:"t1", name:"Trial", slots:[
   {build_id:"garchomp",      item:"Life Orb",     why:"power"},
   {build_id:"farigiraf",     item:"Sitrus Berry", why:"bulk"},
   {build_id:"farigiraf-2",   item:"Focus Sash",   why:"second Farigiraf, on purpose"},
   {build_id:"sableye",       item:"Life Orb",     why:"repeated item, on purpose"},
   {build_id:"kingambit-idea",item:"Leftovers",    why:"not owned yet"}
 ], notes:{}, updated_at:"2026-09-13"},
-  {user_id:UID, id:"t2", name:"Piedras", slots:[
+  {user_id:UID, id:"t2", name:"Stones", slots:[
     {build_id:"ampharos", item:"", why:""},
     {build_id:"camerupt", item:"", why:""},
     {build_id:"garchomp", item:"", why:""}
@@ -64,347 +61,337 @@ const byType = (t, rows) => rows.find(x => x.type === t);
   await idle();
   const r = w.teamReport(w.S.teams.t1);
 
-  describe("lo que tiene, donde esta, y que falta", () => {
-    check("cinco huecos llenos", r.filled, 5);
-    check("y siempre son seis", r.slots.length, 6);
-    check("tres se pueden llevar hoy", r.ready, 3);
-    check("dice cual falta por conseguir", r.missing.join(","), "Kingambit");
-    check("y avisa del que esta en HOME",
+  describe("what he has, where it is, and what is missing", () => {
+    check("five slots filled", r.filled, 5);
+    check("and always six", r.slots.length, 6);
+    check("three can be brought today", r.ready, 3);
+    check("it names the one still to get", r.missing.join(","), "Kingambit");
+    check("and warns about the one in HOME",
        r.warnings.some(x => /Sableye is parked in HOME/.test(x)), true);
   });
 
-  describe("las clausulas, comprobadas y no recordadas", () => {
-    check("Species Clause: dos Farigiraf",
+  describe("the clauses, checked rather than remembered", () => {
+    check("Species Clause: two Farigiraf",
        r.problems.some(x => /two Farigiraf.*Species Clause/.test(x)), true);
-    check("Item Clause: dos Life Orb",
+    check("Item Clause: two Life Orb",
        r.problems.some(x => /two Life Orb.*Item Clause/.test(x)), true);
-    check("y nada mas se declara ilegal", r.problems.length, 2);
+    check("and nothing else is called illegal", r.problems.length, 2);
   });
 
-  describe("lo derivado", () => {
-    check("orden de velocidad, el mas rapido primero",
+  describe("what is derived", () => {
+    check("Speed order, fastest first",
        r.speeds[0].name, "Garchomp");
     /* Stellar is in the type chart and NOT in Champions - there is no Tera here,
        so counting it would invent a weakness nothing can exploit. */
-    check("Stellar no cuenta como debilidad",
+    check("Stellar does not count as a weakness",
        w.teamTypes(r).some(x => x.type === "Stellar"), false);
-    check("las debilidades compartidas salen ordenadas",
+    check("the shared weaknesses come out sorted",
        w.teamTypes(r)[0].weak >= w.teamTypes(r)[5].weak, true);
   });
 
-  describe("la lista", () => {
-    /* Teams shares the Builds tab: an eighth tab wrapped the phone's bar onto
-       two rows and cost more visibility than the tab was worth (2026-09-13). */
+  describe("the list", () => {
+    /* Teams shares the Builds tab: an eighth tab would wrap the phone's bar
+       onto two rows. */
     w.go("builds");
     w.buildsPane("teams");
-    check("la pestana Teams ya no existe",
+    check("there is no Teams tab",
        [...d.querySelectorAll("#tabs button, #tabs a")]
          .some(b => b.textContent.trim() === "Teams"), false);
-    check("y el panel de equipos se ve",
+    check("and the teams pane shows",
        d.getElementById("teamsPane").hidden, false);
-    check("mientras el de builds se esconde",
+    check("while the builds pane hides",
        d.getElementById("buildsPane").hidden, true);
-    /* DOS equipos en la lista desde que existe el de las piedras, y "Piedras"
-       va antes que "Prueba" alfabeticamente - buscar la fila por su nombre en
-       vez de por su posicion. */
+    /* TWO teams in the list, and "Stones" sorts before "Trial" - so the row
+       is found by its name, not by its position. */
     const row = [...d.querySelectorAll("#listTeams .row")]
-      .find(x => /Prueba/.test(x.textContent));
-    check("el equipo aparece", !!row, true);
-    check("con cuantos huecos lleva", /5\/6/.test(row.textContent), true);
-    check("cuantos son jugables hoy", /3 playable today/.test(row.textContent), true);
-    check("y que es ilegal", /2 illegal/.test(row.textContent), true);
+      .find(x => /Trial/.test(x.textContent));
+    check("the team is listed", !!row, true);
+    check("with how many slots it fills", /5\/6/.test(row.textContent), true);
+    check("how many are playable today", /3 playable today/.test(row.textContent), true);
+    check("and what is illegal", /2 illegal/.test(row.textContent), true);
   });
 
-  /* El selector de build de un hueco. Era la lista entera del ledger en
-     orden alfabetico y sin nada con que acotarla (jugador, 2026-09-21: "el
-     selector de slot no tiene buscador! imaginate tener 100 builds
-     diferentes y tener que deslizar, es mucho tiempo perdido"). */
-  describe("el selector de un hueco: buscador y filtros", () => {
+  /* A slot's build picker: it is picked out of every build in the ledger, so
+     it needs a search box and filters. */
+  describe("a slot's picker: search and filters", () => {
     w.teamSheet("t1", w.S.teams.t1);
     const fill = [...d.querySelectorAll("#teamEditBody button")]
       .filter(b => /^(Change|Fill)$/.test(b.textContent.trim()));
-    check("cada hueco tiene su boton", fill.length >= 6, true);
-    fill[0].click();                       /* el hueco 1, el de Garchomp */
+    check("every slot has its button", fill.length >= 6, true);
+    fill[0].click();                       /* slot 1, Garchomp's */
     const sb = d.getElementById("sheetBody");
     const inp = sb.querySelector(".search input");
     const rows = () => [...sb.querySelectorAll(".list .row")];
-    check("el selector tiene buscador", !!inp, true);
-    check("y estan las siete builds", rows().length, 7);
-    check("dice cuantas hay", /7 builds/.test(sb.textContent), true);
+    check("the picker has a search box", !!inp, true);
+    check("and all seven builds are there", rows().length, 7);
+    check("it says how many", /7 builds/.test(sb.textContent), true);
 
     inp.value = "armor"; inp.oninput();
-    check("busca por el ROL de la build", rows().length, 1);
-    check("y es la que lleva ese rol",
+    check("searches the build's ROLE", rows().length, 1);
+    check("and finds the one with that role",
        /Farigiraf/.test(rows()[0].textContent), true);
     inp.value = "earthquake"; inp.oninput();
-    check("busca por un MOVIMIENTO", rows().length, 1);
-    check("y da con su Pokemon", /Garchomp/.test(rows()[0].textContent), true);
+    check("searches a MOVE", rows().length, 1);
+    check("and finds its Pokemon", /Garchomp/.test(rows()[0].textContent), true);
     inp.value = "dragon"; inp.oninput();
-    /* Garchomp, y la build de Ampharos porque su piedra la hace Electric/Dragon
-       - el filtro lee la forma que JUEGA, que es justo lo que tiene que hacer */
-    check("busca por TIPO", rows().length, 2);
-    check("y encuentra el tipo que da la piedra",
+    /* Garchomp, and the Ampharos build because its stone makes it
+       Electric/Dragon - the filter reads the form it PLAYS AS */
+    check("searches by TYPE", rows().length, 2);
+    check("and finds the type a stone gives",
        /Ampharos/.test(sb.textContent), true);
-    check("lo dice el contador", /2 of 7 builds/.test(sb.textContent), true);
+    check("the counter says so", /2 of 7 builds/.test(sb.textContent), true);
 
-    /* la X: sin ella un filtro se vacia a base de borrar */
+    /* the X: without it a filter is emptied by backspacing */
     sb.querySelector(".search .clr").click();
-    check("la X vacia el campo", inp.value, "");
-    check("y vuelven todas", rows().length, 7);
+    check("the X empties the field", inp.value, "");
+    check("and they all come back", rows().length, 7);
 
-    /* La Clausula de Especie se aplica AQUI, igual que la de Objeto en el
-       selector de item: una especie que ya lleva otro hueco sale apagada y con
-       el motivo escrito, en vez de aceptarse y declararse ilegal despues. */
+    /* The Species Clause is enforced HERE, as the Item Clause is in the item
+       picker: a species another slot holds is greyed out with the reason
+       written, rather than accepted and called illegal afterwards. */
     const dis = rows().filter(r => r.disabled);
-    check("las especies que ya estan en el equipo salen apagadas", dis.length, 4);
-    check("con el motivo escrito",
+    check("the species already on the team are greyed out", dis.length, 4);
+    check("with the reason written",
        /no team may run two of the same species/.test(sb.textContent), true);
-    /* las apagadas van al final, asi que la primera fila siempre es elegible */
-    check("y una elegible va primero", rows()[0].disabled, false);
-    check("con las apagadas al final",
+    /* the greyed ones go last, so the first row is always pickable */
+    check("and a pickable one comes first", rows()[0].disabled, false);
+    check("with the greyed ones last",
        rows()[rows().length - 1].disabled, true);
 
-    /* DONDE ESTA UNA COPIA ES COSA DE LAS CAJAS. Un equipo puede ser teorico,
-       asi que ese filtro no pinta nada aqui (jugador, 2026-09-21). */
+    /* WHERE A COPY IS, IS THE BOXES' QUESTION. A team can be theoretical, so
+       that filter has no place here. */
     const chip = t => [...sb.querySelectorAll(".tog")]
       .find(b => b.textContent.trim().indexOf(t) === 0);
-    check("ya no filtra por donde esta", !!chip("Ready today"), false);
-    check("ni por si la tienes", !!chip("Not owned"), false);
-    check("ni ordena por eso", !!chip("Ready first"), false);
+    check("no filter by where it is", !!chip("Ready today"), false);
+    check("nor by whether he owns it", !!chip("Not owned"), false);
+    check("nor a sort by that", !!chip("Ready first"), false);
 
-    /* Solo A-Z y Dex a la vista; las stats, completas, plegadas. */
-    check("ordena por A–Z", !!chip("A–Z"), true);
-    check("y por Dex", !!chip("Dex no."), true);
+    /* Only A-Z and Dex in view; the stats, all of them, folded. */
+    check("sorts A–Z", !!chip("A–Z"), true);
+    check("and by Dex", !!chip("Dex no."), true);
     const fold = t => [...sb.querySelectorAll(".btn.fold")]
       .find(b => b.textContent.indexOf(t) >= 0);
-    check("las stats van detras de un pliegue", !!fold("By a stat"), true);
+    check("the stats sit behind a fold", !!fold("By a stat"), true);
     const statRow = fold("By a stat").nextSibling;
-    check("cerrado de entrada", statRow.hidden, true);
+    check("closed at first", statRow.hidden, true);
     fold("By a stat").click();
-    check("y se abre", statRow.hidden, false);
-    /* si estan BST y Speed, estan las seis: media lista es arbitraria */
+    check("and it opens", statRow.hidden, false);
+    /* if BST and Speed are there, all six are: half a list is arbitrary */
     ["BST", "HP", "Atk", "Def", "SpA", "SpD", "Spe"].forEach(function(k){
-      check("  ordena por " + k, !!chip(k), true);
+      check("  sorts by " + k, !!chip(k), true);
     });
     chip("Spe").click();
-    check("el mas rapido primero", /Garchomp/.test(rows()[0].textContent), true);
+    check("fastest first", /Garchomp/.test(rows()[0].textContent), true);
 
-    /* El rol ocupaba demasiado, asi que va plegado y siempre. */
-    check("el rol va plegado", !!fold("Role"), true);
+    /* Role takes too much room, so it is folded, always. */
+    check("role is folded", !!fold("Role"), true);
     const roleRow = fold("Role").nextSibling;
-    check("cerrado de entrada", roleRow.hidden, true);
+    check("closed at first", roleRow.hidden, true);
     fold("Role").click();
-    check("y se abre", roleRow.hidden, false);
-    check("con los roles que existen", !!chip("Trick Room"), true);
+    check("and it opens", roleRow.hidden, false);
+    check("with the roles that exist", !!chip("Trick Room"), true);
     chip("Trick Room").click();
-    check("filtra por rol", rows().length, 1);
+    check("filters by role", rows().length, 1);
     chip("Trick Room").click();
-    check("al soltarlo vuelven todas", rows().length, 7);
+    check("releasing it brings them all back", rows().length, 7);
 
-    /* El selector de item ya tenia buscador; ahora tambien filtros. */
+    /* The item picker searches, and filters too. */
     w.teamSheet("t1", w.S.teams.t1);
     const it = [...d.querySelectorAll("#teamEditBody button")]
       .find(b => /^(\+ Item|Item)$/.test(b.textContent.trim()));
     it.click();
     const ib = d.getElementById("sheetBody");
-    check("el de items tambien busca", !!ib.querySelector(".search input"), true);
+    check("the item picker searches too", !!ib.querySelector(".search input"), true);
     const icat = t => [...ib.querySelectorAll(".tog")]
       .some(b => b.textContent.indexOf(t) === 0);
-    check("filtra por categoria", icat("Berries"), true);
-    check("y por lo que tienes",
+    check("filters by category", icat("Berries"), true);
+    check("and by what he owns",
        [...ib.querySelectorAll(".tog")]
          .some(b => /Only ones you own/.test(b.textContent)), true);
 
-    /* SOLO LO QUE SE PUEDE LLEVAR. Las 81 piedras nunca estuvieron en la lista
-       - build_tracker_data las salta al construir C.ITEMS - y un tercio de lo
-       que si estaba, Miscellaneous, no se puede equipar (jugador, 2026-09-21).  */
-    check("las Mega Piedras se pueden equipar", icat("Mega Stones"), true);
-    check("y Miscellaneous ya no se ofrece", icat("Miscellaneous"), false);
+    /* ONLY WHAT CAN BE HELD: every Mega Stone (C.ITEMS leaves them out, so they
+       come from C.STONES), and nothing Miscellaneous, which cannot be held. */
+    check("Mega Stones can be equipped", icat("Mega Stones"), true);
+    check("and Miscellaneous is not offered", icat("Miscellaneous"), false);
     const irow = n => [...ib.querySelectorAll(".list .row")]
       .find(r => r.textContent.indexOf(n) === 0);
-    check("una piedra concreta esta", !!irow("Garchompite"), true);
-    check("y se puede pulsar", irow("Garchompite").disabled, false);
-    check("marcada como piedra",
+    check("a given stone is there", !!irow("Garchompite"), true);
+    check("and can be tapped", irow("Garchompite").disabled, false);
+    check("marked as a stone",
        /Mega Stone/.test(irow("Garchompite").textContent), true);
     const misc = [...ib.querySelectorAll(".list .row")]
       .some(r => /Rare Candy|Exp\. Share|Ability Capsule/.test(r.textContent));
-    check("nada de lo no equipable en la lista", misc, false);
+    check("nothing unholdable in the list", misc, false);
 
-    /* Y el orden de velocidad con el numero REAL de cada build. */
+    /* And the Speed order with each build's REAL number. */
     w.teamSheet("t1", w.S.teams.t1);
     const sp = w.teamReport(w.S.teams.t1).speeds;
-    /* Garchomp: base 102, +32 SP, Adamant no toca Speed -> 102+32+20 = 154 */
-    check("velocidad real, no la base", sp[0].spe, 154);
-    check("y dice de donde sale", sp[0].base, 102);
-    check("con la SP invertida", sp[0].sp, 32);
-    check("el mas rapido primero", sp[0].name, "Garchomp");
-    check("y el mas lento al final", sp[sp.length - 1].spe <= sp[0].spe, true);
-    check("la pantalla lo escribe",
+    /* Garchomp: base 102, +32 SP, Adamant leaves Speed alone -> 102+32+20 = 154 */
+    check("real Speed, not the base", sp[0].spe, 154);
+    check("and it says where it comes from", sp[0].base, 102);
+    check("with the SP invested", sp[0].sp, 32);
+    check("fastest first", sp[0].name, "Garchomp");
+    check("and slowest last", sp[sp.length - 1].spe <= sp[0].spe, true);
+    check("the screen writes it",
        /154/.test(d.getElementById("teamEditBody").textContent), true);
 
-    /* Las debilidades dicen QUIEN y POR CUANTO. */
+    /* The weaknesses say WHO and BY HOW MUCH. */
     const weak = d.getElementById("teamEditBody").textContent;
-    check("nombra quien es debil", /weak: [A-Z]/.test(weak), true);
-    check("con su multiplicador", /weak: [^\n]*×\d/.test(weak), true);
-    check("y quien resiste", /resists: |nothing on the team resists it/.test(weak),
+    check("names who is weak", /weak: [A-Z]/.test(weak), true);
+    check("with the multiplier", /weak: [^\n]*×\d/.test(weak), true);
+    check("and who resists", /resists: |nothing on the team resists it/.test(weak),
        true);
     const tt = w.teamTypes(w.teamReport(w.S.teams.t1));
     const one = tt.find(x => x.weak);
-    check("y el dato lleva los nombres", one.weakOf.length, one.weak);
-    check("con el multiplicador de cada uno", typeof one.weakOf[0].m, "number");
+    check("and the data carries the names", one.weakOf.length, one.weak);
+    check("with each one's multiplier", typeof one.weakOf[0].m, "number");
   });
 
-  /* LA CARD DE UN HUECO LLEVA EL SET ENTERO. Decia un nombre, una naturaleza
-     y "4 moves", asi que revisar lo que hace el equipo eran seis builds
-     abiertas de una en una (jugador, 2026-09-21). */
-  await describe("la card del hueco, y el atajo a la build", async () => {
-    /* Y los buscadores que viven en el markup: la misma X, puesta por
-       wireClears en el arranque, y el filtro que la Champions Box no tenia. */
+  /* A SLOT'S CARD CARRIES THE WHOLE SET, so a team can be read without
+     opening six builds. */
+  await describe("the slot's card, and the shortcut to the build", async () => {
     w.teamSheet("t1", w.S.teams.t1);
     const eb = d.getElementById("teamEditBody");
     const slot0 = eb.querySelectorAll(".list .row")[0];
-    check("la card nombra la habilidad elegida",
+    check("the card names the chosen ability",
        /Rough Skin/.test(slot0.textContent), true);
-    check("y la etiqueta dice que es LA suya",
+    check("and the label says it is THE one",
        /Ability/.test(slot0.textContent), true);
-    check("lleva la naturaleza", /Adamant/.test(slot0.textContent), true);
-    check("lleva los SP", /0\/32\/0\/0\/2\/32/.test(slot0.textContent), true);
-    check("y los NOMBRES de los moves, no el numero",
+    check("it carries the nature", /Adamant/.test(slot0.textContent), true);
+    check("it carries the SP", /0\/32\/0\/0\/2\/32/.test(slot0.textContent), true);
+    check("and the move NAMES, not a count",
        /Earthquake/.test(slot0.textContent) && /Protect/.test(slot0.textContent),
        true);
-    check("el item sigue en su celda", /Life Orb/.test(slot0.textContent), true);
+    check("the item keeps its cell", /Life Orb/.test(slot0.textContent), true);
 
     const edBtn = [...eb.querySelectorAll("button")]
       .filter(b => b.textContent.trim() === "Edit set");
-    check("cada hueco lleno tiene atajo a su build", edBtn.length, 5);
+    check("every filled slot has a shortcut to its build", edBtn.length, 5);
     edBtn[0].click();
-    /* EL ATAJO ESCRIBE EL EQUIPO ANTES DE IRSE, y eso es una promesa: los dos
-       editores son vistas, asi que saltar sin guardar se llevaria el borrador
-       por delante. El test tiene que esperar ese write igual que lo espera la
-       pantalla. */
+    /* THE SHORTCUT SAVES THE TEAM BEFORE LEAVING, and that is a promise: both
+       editors are views, so jumping without saving would lose the draft. The
+       test waits for that write the way the screen does. */
     await idle();
-    check("y abre el editor de la build",
+    check("and it opens the build editor",
        d.getElementById("v-buildedit").hidden, false);
-    check("el del equipo se cierra", d.getElementById("v-teamedit").hidden, true);
-    check("y es la build correcta",
+    check("the team editor closes", d.getElementById("v-teamedit").hidden, true);
+    check("and it is the right build",
        /Garchomp/.test(d.getElementById("buildEditTitle").textContent), true);
   });
 
-  /* UN SELECTOR, DOS SECCIONES. Solo una puede Mega Evolucionar por combate,
-     y un Pokemon solo toma las stats de su Mega al evolucionar - asi que
-     "nadie evoluciona" y "evoluciona esta" son equipos distintos, y el orden
-     de velocidad y las debilidades tienen que contar la MISMA historia
-     (jugador, 2026-09-21: "el pokemon solo cambia de stat al mega evolucionar
-     y si no mega evoluciona la tabla de speed no cambia"). */
-  describe("un mundo a la vez: velocidad y tipos bajo el mismo selector", () => {
+  /* ONE SELECTOR, TWO SECTIONS. Only one Pokemon may Mega Evolve per battle,
+     and a Pokemon only takes its Mega's stats by evolving - so "nobody
+     evolves" and "this one evolves" are different teams, and the Speed order
+     and the weaknesses must tell the SAME story. */
+  describe("one world at a time: Speed and types under one selector", () => {
     const r2 = w.teamReport(w.S.teams.t2);
-    const caso = n => r2.megaCases.find(x => new RegExp(n).test(x.mega));
+    const megaCase = n => r2.megaCases.find(x => new RegExp(n).test(x.mega));
 
-    /* Ampharos retipa Y cambia velocidad; Camerupt NO retipa pero SI cambia
-       velocidad, y filtrar por retipado solo lo habria perdido. */
-    check("dos piedras cambian algo", r2.megaCases.length, 2);
-    check("Ampharos retipa", caso("Ampharos").retype, true);
-    check("de Electric", caso("Ampharos").from.join("/"), "Electric");
-    check("a Electric/Dragon", caso("Ampharos").to.join("/"), "Electric/Dragon");
-    check("Camerupt NO retipa", caso("Camerupt").retype, false);
-    check("pero si cambia velocidad", caso("Camerupt").respeed, true);
-    check("de 40", caso("Camerupt").speFrom, 40);
-    check("a 20", caso("Camerupt").speTo, 20);
+    /* Ampharos retypes AND changes Speed; Camerupt does NOT retype but DOES
+       change Speed, which filtering by retyping alone would have lost. */
+    check("two stones change something", r2.megaCases.length, 2);
+    check("Ampharos retypes", megaCase("Ampharos").retype, true);
+    check("from Electric", megaCase("Ampharos").from.join("/"), "Electric");
+    check("to Electric/Dragon", megaCase("Ampharos").to.join("/"), "Electric/Dragon");
+    check("Camerupt does NOT retype", megaCase("Camerupt").retype, false);
+    check("but does change Speed", megaCase("Camerupt").respeed, true);
+    check("from 40", megaCase("Camerupt").speFrom, 40);
+    check("to 20", megaCase("Camerupt").speTo, 20);
 
-    /* LA VELOCIDAD SIGUE AL SELECTOR. Sin evolucionar, la piedra no hace nada. */
+    /* THE SPEED FOLLOWS THE SELECTOR. Unevolved, the stone does nothing. */
     const spBase = w.teamSpeeds(r2, null);
-    const spCam  = w.teamSpeeds(r2, caso("Camerupt").i);
-    check("sin evolucionar, Camerupt corre a su base", find(spBase, "Camerupt").base, 40);
-    check("y no se llama Mega", /^Camerupt$/.test(find(spBase, "Camerupt").form), true);
-    check("al evolucionarla, cae a la base de la Mega",
+    const spCam  = w.teamSpeeds(r2, megaCase("Camerupt").i);
+    check("unevolved, Camerupt runs at its base", find(spBase, "Camerupt").base, 40);
+    check("and is not called Mega", /^Camerupt$/.test(find(spBase, "Camerupt").form), true);
+    check("evolved, it drops to the Mega's base",
        find(spCam, "Mega Camerupt").base, 20);
-    check("y el resto del equipo no se mueve",
+    check("and the rest of the team does not move",
        find(spCam, "Ampharos").base, find(spBase, "Ampharos").base);
-    check("solo una evoluciona a la vez",
+    check("only one evolves at a time",
        spCam.filter(x => x.mega).length, 1);
-    check("y en el mundo base, ninguna", spBase.filter(x => x.mega).length, 0);
+    check("and in the base world, none", spBase.filter(x => x.mega).length, 0);
 
-    /* LOS TIPOS SIGUEN EL MISMO SELECTOR. */
+    /* THE TYPES FOLLOW THE SAME SELECTOR. */
     const base = w.teamTypes(r2, null);
-    const mega = w.teamTypes(r2, caso("Ampharos").i);
-    check("antes de evolucionar no es debil a Hielo",
+    const mega = w.teamTypes(r2, megaCase("Ampharos").i);
+    check("before evolving it is not weak to Ice",
        byType("Ice", base).weakOf.some(x => /Ampharos/.test(x.name)), false);
-    check("despues si lo es",
+    check("after, it is",
        byType("Ice", mega).weakOf.some(x => /Mega Ampharos/.test(x.name)), true);
-    check("y la tabla lo nombra por su forma Mega",
+    check("and the table names it by its Mega form",
        byType("Ice", mega).weakOf.find(x => /Ampharos/.test(x.name)).name,
        "Mega Ampharos");
-    check("Hada pasa a pegarle",
+    check("Fairy starts hitting it",
        byType("Fairy", mega).weakOf.some(x => /Mega Ampharos/.test(x.name)), true);
-    check("que antes no",
+    check("which it did not before",
        byType("Fairy", base).weakOf.some(x => /Ampharos/.test(x.name)), false);
 
-    /* Y en pantalla: UN selector, y las dos secciones debajo. */
+    /* And on screen: ONE selector, and the two sections under it. */
     w.teamSheet("t2", w.S.teams.t2);
     const eb2 = d.getElementById("teamEditBody");
     const seg = [...eb2.querySelectorAll(".seg")].pop();
     const tabs = seg ? [...seg.children].map(b => b.textContent.trim()) : [];
-    check("tres mundos", tabs.length, 3);
-    check("y el de nadie va primero", tabs[0], "Nobody evolves");
-    check("empieza ahi", seg.children[0].getAttribute("aria-pressed"), "true");
-    check("dice que mandan los dos de abajo",
+    check("three worlds", tabs.length, 3);
+    check("and nobody's comes first", tabs[0], "Nobody evolves");
+    check("it starts there", seg.children[0].getAttribute("aria-pressed"), "true");
+    check("it says the two below follow it",
        /Speed order and the weaknesses below both follow this choice/
          .test(eb2.textContent), true);
-    check("el selector esta ENCIMA del orden de velocidad",
+    check("the selector sits ABOVE the Speed order",
        eb2.textContent.indexOf("Which one Mega Evolves")
          < eb2.textContent.indexOf("Speed order"), true);
 
-    /* SOLO EL BLOQUE DE VELOCIDAD. El nombre de una Mega tambien vive en la
-       pestaña del selector y en la card del hueco, asi que buscarlo en todo el
-       editor no dice nada sobre que forma se esta usando. */
+    /* THE SPEED BLOCK ONLY. A Mega's name also lives on the selector's tab and
+       on the slot's card, so searching the whole editor says nothing about
+       which form is in use. */
     const speedTxt = () => {
       const h = [...eb2.querySelectorAll("h2")].find(x => /Speed order/.test(x.textContent));
       return h.nextSibling.textContent.replace(/\s+/g, " ");
     };
     const camTab = tabs.findIndex(t => /Camerupt/.test(t));
     seg.children[camTab].click();
-    check("al elegir Camerupt lo dice con su velocidad",
+    check("picking Camerupt says so with its Speed",
        /Speed 40 → 20/.test(eb2.textContent), true);
-    check("y el orden ya la nombra Mega", /Mega Camerupt/.test(speedTxt()), true);
-    check("sin evolucionar la otra", /Mega Ampharos/.test(speedTxt()), false);
+    check("and the order names it Mega", /Mega Camerupt/.test(speedTxt()), true);
+    check("with the other one unevolved", /Mega Ampharos/.test(speedTxt()), false);
 
     const ampTab = tabs.findIndex(t => /Ampharos/.test(t));
     seg.children[ampTab].click();
-    check("al cambiar explica el intercambio de tipo",
+    check("switching explains the type change",
        /Electric → Electric\/Dragon/.test(eb2.textContent), true);
-    check("y ahora la que evoluciona es la otra",
+    check("and now the other one evolves",
        /Mega Ampharos/.test(speedTxt()), true);
-    check("con Camerupt de vuelta en su forma base",
+    check("with Camerupt back in its base form",
        /Mega Camerupt/.test(speedTxt()), false);
-    check("y su velocidad vuelve a la de base",
+    check("and its Speed back to its base",
        /40 base/.test(speedTxt()), true);
 
-    /* Un equipo sin piedra que cambie nada no gana controles. */
+    /* A team with no stone that changes anything gets no controls. */
     w.teamSheet("t1", w.S.teams.t1);
     const eb1 = d.getElementById("teamEditBody");
-    check("sin cambios no hay selector",
+    check("no change, no selector",
        /Which one Mega Evolves/.test(eb1.textContent), false);
-    check("pero la tabla sigue estando", /weak: /.test(eb1.textContent), true);
-    check("y el orden de velocidad tambien",
+    check("but the table is still there", /weak: /.test(eb1.textContent), true);
+    check("and so is the Speed order",
        /Speed order/.test(eb1.textContent), true);
   });
 
-  describe("los filtros de las pestanas", () => {
-    check("el filtro de builds tiene su X",
+  describe("the tabs' own filters", () => {
+    check("the builds filter has its X",
        !!d.querySelector("#buildSearch").parentNode.querySelector(".clr"), true);
     const bf = d.getElementById("boxFilter");
-    check("la Champions Box ya tiene filtro", !!bf, true);
+    check("the Champions Box has a filter", !!bf, true);
     const champ = () => d.querySelectorAll("#listChampOrigin .row").length;
-    check("y estan los dos de Encounter", champ(), 2);
+    check("and both Encounter ones are there", champ(), 2);
     bf.value = "farigiraf"; bf.oninput();
-    check("filtra por nombre", champ(), 1);
-    check("y el encabezado dice cuantos de cuantos",
+    check("filters by name", champ(), 1);
+    check("and the heading says how many of how many",
        d.getElementById("nChampOrigin").textContent, "1 of 2");
     bf.parentNode.querySelector(".clr").click();
-    check("la X lo devuelve entero", champ(), 2);
-    check("y el encabezado vuelve al total",
+    check("the X brings it all back", champ(), 2);
+    check("and the heading returns to the total",
        d.getElementById("nChampOrigin").textContent, "2");
   });
 
-  check("la pagina no reporta errores de script", errs.join(" | ") || "ninguno", "ninguno");
+  check("the page reports no script error", errs.join(" | ") || "none", "none");
 })();

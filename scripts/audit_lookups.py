@@ -52,7 +52,7 @@ def lst(xs, n=6):
 
 
 def _check_code():
-    print("\n  el codigo")
+    print("\n  the code")
     dups = []
     for f in sorted(glob.glob(os.path.join(ROOT, "scripts", "*.py"))):
         try:
@@ -69,7 +69,7 @@ def _check_code():
                 seen.update(t.id for t in node.targets if isinstance(t, ast.Name))
         dups += ["%s: %s" % (os.path.basename(f), k)
                  for k, v in seen.items() if v > 1]
-    ok("ningun nombre definido dos veces en un modulo", lst(dups))
+    ok("no name defined twice in a module", lst(dups))
 
 
 def _resolve(p, learn):
@@ -85,22 +85,22 @@ def _resolve(p, learn):
 
 
 def _check_forms(mons, learn):
-    print("\n  las formas, una por una")
-    ok("formas en el dex", len(mons), len(mons))
+    print("\n  the forms, one by one")
+    ok("forms in the dex", len(mons), len(mons))
 
     wrong = [p["name"] for p in mons
              if (dex.find_pokemon(p["name"]) or {}).get("name") != p["name"]]
-    ok("find_pokemon devuelve la forma pedida", lst(wrong))
+    ok("find_pokemon returns the form asked for", lst(wrong))
 
     by = collections.defaultdict(list)
     for p in mons:
         by[dex.norm(p["name"])].append(p["name"])
-    ok("ninguna colision bajo norm()",
+    ok("no collision under norm()",
        lst(["/".join(v) for v in by.values() if len(v) > 1]))
 
-    ok("cada forma resuelve un movepool",
+    ok("every form resolves a movepool",
        lst([p["name"] for p in mons if not _resolve(p, learn)]))
-    ok("y la forma gana a su especie cuando tiene pool propio",
+    ok("and the form beats its species when it has its own pool",
        lst([p["name"] for p in mons
             if learn.get(p["name"]) and
             len(_resolve(p, learn)) != len(learn[p["name"]])]))
@@ -113,12 +113,12 @@ def _check_megas(mons):
         s = dex.stone_for(p)
         if s:
             stones[s].append(p["name"])
-    ok("cada Mega tiene piedra",
+    ok("every Mega has a stone",
        lst([p["name"] for p in megas if not dex.stone_for(p)]))
-    ok("ninguna piedra sirve a dos Megas",
+    ok("no stone serves two Megas",
        lst(["%s: %s" % (k, ", ".join(v)) for k, v in stones.items()
             if len(v) > 1]))
-    ok("la correspondencia es 1:1", len(stones), len(megas))
+    ok("the mapping is 1:1", len(stones), len(megas))
 
     miss = []
     for p in mons:
@@ -126,7 +126,7 @@ def _check_megas(mons):
             Dm.smogon_name(p["name"])
         except SystemExit:
             miss.append(p["name"])
-    ok("cada forma tiene nombre en el motor de Smogon", lst(miss))
+    ok("every form has a name in Smogon's engine", lst(miss))
 
 
 def _duplicate_keys(text):
@@ -144,41 +144,41 @@ def _duplicate_keys(text):
 
 
 def _check_db_files():
-    print("\n  los ficheros que todo lo demas lee")
+    print("\n  the files everything else reads")
     for f in sorted(glob.glob(os.path.join(DB, "*.json"))):
         name = os.path.basename(f)
         try:
             dup = _duplicate_keys(Path(f).read_text(encoding="utf-8"))
-            ok("%s carga y no repite claves" % name, lst(dup))
+            ok("%s loads and repeats no key" % name, lst(dup))
         except (OSError, ValueError) as e:
-            ok("%s carga" % name, str(e)[:40])
+            ok("%s loads" % name, str(e)[:40])
 
 
 def _check_references(learn):
-    print("\n  las tablas derivadas apuntan a cosas que existen")
+    print("\n  the derived tables point at things that exist")
     moves = {m["name"] for m in dex.db("moves")}
     abil = {a["name"] for a in dex.db("abilities")}
     am = dex.db("ability_moves") or {}
-    ok("cada movimiento de la tabla de habilidades existe",
+    ok("every move in the ability table exists",
        lst([n for r in (am.get("abilities") or {}).values()
             for n in (r.get("moves") or []) if n not in moves]))
-    ok("cada habilidad con regla existe",
+    ok("every ability with a rule exists",
        lst([a for a in (am.get("abilities") or {}) if a not in abil]))
     il = dex.db("item_links") or {}
-    ok("cada movimiento que un item sirve existe",
+    ok("every move an item serves exists",
        lst([n for n in (il.get("by_move") or {}) if n not in moves]))
-    ok("cada habilidad que un item sirve existe",
+    ok("every ability an item serves exists",
        lst([a for a in (il.get("by_ability") or {}) if a not in abil]))
     st = (dex.db("statuses") or {}).get("statuses") or {}
-    ok("cada movimiento que causa estado existe",
+    ok("every move that causes a status exists",
        lst([n for r in st.values() for n in (r.get("moves") or [])
             if n not in moves]))
-    ok("cada learnset apunta a movimientos reales",
+    ok("every learnset points at real moves",
        lst([k for k, v in learn.items() if any(n not in moves for n in v)]))
     tf = dex.db("text_facts") or {}
-    ok("cada texto de movimiento corresponde a un movimiento",
+    ok("every move text belongs to a move",
        lst([n for n in (tf.get("moves") or {}) if n not in moves]))
-    ok("cada texto de habilidad corresponde a una habilidad",
+    ok("every ability text belongs to an ability",
        lst([a for a in (tf.get("abilities") or {}) if a not in abil]))
 
 
@@ -190,7 +190,7 @@ def main():
     _check_megas(mons)
     _check_db_files()
     _check_references(learn)
-    print("\n%s" % ("TODO BIEN" if not bad else "%d FALLOS" % bad))
+    print("\n%s" % ("ALL GOOD" if not bad else "%d FAILED" % bad))
     return 1 if bad else 0
 
 

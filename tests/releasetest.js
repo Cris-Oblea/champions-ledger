@@ -1,16 +1,16 @@
 /* Only what the game can actually release is ever offered for release.
 
-   Two in-game rules (player, 2026-09-27):
+   Two in-game rules:
      - a HOME-origin Pokemon is never released from the Champions box. Park is
        its exit, and a second copy of it is a real Pokemon with value, not a
        duplicate to get rid of;
      - the game refuses a release that would leave fewer than six to battle
        with, so the last six Champions-origin Pokemon hold their slots.
 
-   The case that surfaced it: Sinistcha, one of exactly six Champions-origin
-   Pokemon, with a second copy in HOME. The "Already in HOME" panel told him to
-   release it, and the game would not. Same for a HOME-origin Garchomp sent in
-   while another Garchomp stayed in HOME. */
+   The cases: Sinistcha, one of exactly six Champions-origin Pokemon, with a
+   second copy in HOME - the "Already in HOME" panel must not tell him to
+   release it, because the game will not. The same for a HOME-origin Garchomp
+   sent in while another Garchomp stays in HOME. */
 const { describe } = require("node:test");
 const { check, open, idle, row, build, click } = require("./harness.js");
 
@@ -23,8 +23,8 @@ const ROWS = [
   row("sinistcha-h", "Sinistcha", {location:"home", origin:"home"}),
 ];
 
-/* The Garchomp in the box carries a build. Its id is NOT the box row's: the
-   Park toast used to look the build up by the row's id and so never saw it. */
+/* The Garchomp in the box carries a build. Its id is NOT the box row's, so
+   the Park toast must look it up by box_id (buildsOn), never by the row's id. */
 const BUILDS = [build("b-chomp", "Garchomp", {box_id:"garchomp", nature:"Jolly",
   stat_points:{hp:2,atk:32,def:0,spa:0,spd:0,spe:32}, moves:["Protect"]})];
 
@@ -40,32 +40,32 @@ const buttons = () => [...d.querySelectorAll(".sheet button")]
 (async () => {
   await idle();
   w.go("box");
-  describe("el panel 'Already in HOME'", () => {
-    check("no aparece: nada de lo duplicado se puede liberar",
+  describe("the 'Already in HOME' panel", () => {
+    check("it does not show: nothing duplicated can be released",
        d.getElementById("dupeBlock").hidden, true);
-    check("y la caja no lo llama material de intercambio",
+    check("and the box does not call it trade material",
        /trade material|can be released/.test(d.getElementById("boxWarn")
          .textContent), false);
   });
 
-  await describe("la ficha", async () => {
+  await describe("the sheet", async () => {
     click(boxRow("Sinistcha"));
     await idle();
-    check("Sinistcha (Champions origin, en el suelo de 6): sin Release",
+    check("Sinistcha (Champions origin, at the floor of 6): no Release",
        buttons().indexOf("Release"), -1);
-    check("...y dice que el hueco es para siempre",
+    check("...and it says the slot is for good",
        /This slot is permanent/.test(d.querySelector(".sheet").textContent), true);
     click(boxRow("Garchomp"));
     await idle();
     const b = buttons();
-    check("Garchomp (HOME origin, en la caja): sin Release", b.indexOf("Release"), -1);
-    check("...pero si Park back to HOME", b.indexOf("Park back to HOME") >= 0, true);
+    check("Garchomp (HOME origin, in the box): no Release", b.indexOf("Release"), -1);
+    check("...but Park back to HOME, yes", b.indexOf("Park back to HOME") >= 0, true);
     click([...d.querySelectorAll(".sheet button")]
       .find(x => x.textContent === "Park back to HOME"));
     await idle();
-    check("el aviso de Park nombra su build (hallada por box_id)",
+    check("the Park toast names its build (found by box_id)",
        /Its build is kept/.test(d.getElementById("toast").textContent), true);
   });
 
-  check("la pagina no reporta errores de script", errs.join(" | ") || "ninguno", "ninguno");
+  check("the page reports no script error", errs.join(" | ") || "none", "none");
 })();

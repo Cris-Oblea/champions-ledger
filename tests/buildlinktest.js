@@ -1,18 +1,15 @@
 /* A build is its own thing, and box_id says which Pokemon is carrying it.
 
-   It used to BE the Pokemon - same id, one build per box row, and no build
-   without one (player, 2026-09-10). He replaced that on 2026-09-13: several
-   builds per species, and builds for Pokemon he does not own yet, so an idea
-   is not lost for want of a row to hang it on.
+   Several builds per species, and builds for Pokemon he does not own yet,
+   so an idea is not lost for want of a row to hang it on.
 
      linked, in the Champions box -> active
      linked, parked in HOME       -> kept, inactive (nothing trains in HOME)
      linked to a row that is gone -> orphan, and still worth flagging
      not linked at all            -> unbound: an idea, which is fine
 
-   Released now UNBINDS rather than deletes. The fixtures below cover all four
-   states, including two builds on one Pokemon - the case the old model could
-   not represent. */
+   A release UNBINDS rather than deletes. The fixtures below cover all four
+   states, including two builds on one Pokemon. */
 const { describe } = require("node:test");
 const { check, open, idle, until, row, build, click } = require("./harness.js");
 
@@ -23,17 +20,14 @@ const ROWS = [
   R("dragonite", "Dragonite", "home", "home"),
   R("sylveon", "Sylveon", "champions", "home"),   // HOME origin, in the box
   R("camerupt-2", "Camerupt", "home", "home"),    // the relink candidate
-  /* The game will not release below six Champions-origin Pokemon (player,
-     2026-09-27), so Garchomp needs six more beside it to be releasable at all.
+  /* The game will not release below six Champions-origin Pokemon, so
+     Garchomp needs six more beside it to be releasable at all.
      tests/releasetest.js covers the floor itself. */
   ...["Incineroar", "Whimsicott", "Rillaboom", "Sinistcha", "Gholdengo",
       "Maushold"].map(n => R(n.toLowerCase(), n, "champions", "champions")),
 ];
-/* box_id is the LINK now, and it is not the id. Until 2026-09-13 a build WAS
-   the box row it sat on - same id, one build per Pokemon, and no build without
-   one. The player replaced that with two rules: several builds for a species
-   (three different Farigiraf), and a build for a Pokemon he does not own yet,
-   so the idea survives until he does.
+/* box_id is the LINK, and it is not the id: several builds for a species
+   (three different Farigiraf), and a build for a Pokemon he does not own yet.
    No fallback from a missing box_id to the id, deliberately: an idea build for
    Farigiraf gets the id "farigiraf", and a fallback would silently marry it to
    a box row of the same name. */
@@ -57,14 +51,14 @@ const tags = n => [...n.querySelectorAll(".tag")].map(t => t.textContent);
 
 (async () => {
   await idle();
-  describe("el estado de cada build", () => {
-    check("garchomp (en la caja) = activa", w.buildLink("garchomp").state, "active");
-    check("dragonite (en HOME) = aparcada", w.buildLink("dragonite").state, "parked");
-    check("sylveon (HOME origin, en la caja) = activa",
+  describe("each build's state", () => {
+    check("garchomp (in the box) = active", w.buildLink("garchomp").state, "active");
+    check("dragonite (in HOME) = parked", w.buildLink("dragonite").state, "parked");
+    check("sylveon (HOME origin, in the box) = active",
        w.buildLink("sylveon").state, "active");
-    check("camerupt (sin Pokemon) = huerfana", w.buildLink("camerupt").state, "orphan");
+    check("camerupt (no Pokemon) = orphan", w.buildLink("camerupt").state, "orphan");
   });
-  describe("como se ven en la lista", () => {
+  describe("how they look in the list", () => {
     w.go("builds");
     const rows = [...d.querySelectorAll("#listBuilds .row")];
     /* by the NAME LINE, not by where the name falls in the row text: a
@@ -72,21 +66,21 @@ const tags = n => [...n.querySelectorAll(".tag")].map(t => t.textContent);
        name" was testing the DOM order of a picture. */
     const by = n => rows.find(r => ((r.querySelector(".rname") || r)
       .textContent.trim().indexOf(n) === 0));
-    check("Garchomp sin avisos",
+    check("Garchomp has no warnings",
        tags(by("Garchomp")).filter(t => /HOME|orphan/.test(t)).length, 0);
-    check("Dragonite dice que esta en HOME",
+    check("Dragonite says it is in HOME",
        tags(by("Dragonite")).indexOf("in HOME — inactive") >= 0, true);
-    check("Camerupt dice huerfana",
+    check("Camerupt says orphan",
        tags(by("Camerupt")).indexOf("orphan — no Pokemon") >= 0, true);
     /* unbound is not a fault, and the two cases read differently: a set waiting
        for one of your copies, against a set for a species you do not have */
-    check("Kingambit dice que es una idea sin Pokemon",
+    check("Kingambit says it is an idea with no Pokemon",
        tags(by("Kingambit")).indexOf("an idea — you have none yet") >= 0, true);
-    check("y la segunda Garchomp sigue activa (dos builds, un Pokemon)",
+    check("and the second Garchomp is still active (two builds, one Pokemon)",
        w.buildLink("garchomp-2").state, "active");
   });
 
-  await describe("al liberar", async () => {
+  await describe("on release", async () => {
     w.go("box");
     const boxRow = [...d.querySelectorAll("#listChampOrigin .row, #listHomeOrigin .row")]
       .find(r => r.textContent.indexOf("Garchomp") >= 0);
@@ -94,46 +88,42 @@ const tags = n => [...n.querySelectorAll(".tag")].map(t => t.textContent);
     await idle();
     const rel = [...d.querySelectorAll(".sheet button")]
       .find(b => b.textContent === "Release");
-    check("hay boton Release", !!rel, true);
+    check("there is a Release button", !!rel, true);
     click(rel);
     await idle();
-    /* A release used to DELETE the builds, so the ledger would not fill with
-       sets for Pokemon that no longer exist. That reason died with the model
-       change: a build with no Pokemon is a first-class state now, and the
-       player's reason for unbinding builds at all was that an idea should
-       not be lost for want of a row to hang it on. So a release unbinds and
-       keeps them - and garchomp carries TWO, which is the case the old
-       one-build-per-row model could not produce. */
+    /* A release UNBINDS the builds and keeps them: a build with no Pokemon
+       is a first-class state (an idea), and an idea should not be lost for
+       want of a row to hang it on. garchomp carries TWO, so both must be
+       unbound. */
     /* THE APP'S OWN QUESTION, not the operating system's. */
-    check("pregunta con el dialogo propio",
+    check("it asks with the app's own dialog",
        d.getElementById("askScrim").hidden, false);
     const asked = d.getElementById("askTitle").textContent + " " +
                   d.getElementById("askBody").textContent;
     await until(() => d.activeElement === d.getElementById("askNo"));
-    check("y el boton seguro es el que tiene el foco",
+    check("and the safe button is the one with focus",
        d.activeElement === d.getElementById("askNo"), true);
-    check("avisa de que las builds se conservan",
+    check("it warns the builds are kept",
        /will be KEPT as ideas/.test(asked), true);
-    check("...y dice cuantas", /2 builds/.test(asked), true);
+    check("...and says how many", /2 builds/.test(asked), true);
     /* answered the way a person answers it */
     click(d.getElementById("askYes"));
-    check("y se cierra al responder",
+    check("and it closes when answered",
        d.getElementById("askScrim").hidden, true);
     /* The release only STARTS when the question is answered, so the writes
-       land a tick later - the old native confirm() returned inline and the
-       assertions could follow it straight away. */
+       land a tick later. */
     await idle();
-    check("borra la fila de la caja",
+    check("it deletes the box row",
        w.__DELETED.some(x => x.table === "box" && x.col === "id" && x.id === "garchomp"), true);
-    check("NO borra ninguna build",
+    check("it deletes NO build",
        w.__DELETED.filter(x => x.table === "builds" && x.col === "id").length, 0);
     const wroteBuilds = w.__WROTE.filter(x => x.table === "builds");
     const unbound = wroteBuilds.filter(x => x.row.box_id === null)
       .map(x => x.row.id).sort();
-    check("desata las dos de ese Pokemon", unbound.join(","), "garchomp,garchomp-2");
-    check("y no toca la de otro",
+    check("it unbinds both of that Pokemon's", unbound.join(","), "garchomp,garchomp-2");
+    check("and leaves another's alone",
        wroteBuilds.some(x => x.row.id === "dragonite"), false);
   });
 
-  check("la pagina no reporta errores de script", errs.join(" | ") || "ninguno", "ninguno");
+  check("the page reports no script error", errs.join(" | ") || "none", "none");
 })();

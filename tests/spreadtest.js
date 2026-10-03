@@ -1,11 +1,10 @@
-/* A spread move takes x0.75 while both targets are up, and fourteen of them
-   land on your own partner as well - which the player's own rule says not to
-   run unless the ally absorbs it. Neither fact was on a move row anywhere
-   except one line of small print, and the move PICKER showed neither, so the
-   choice was made blind.
+/* A spread move takes x0.75 while both targets are up, and some land on your
+   own partner as well - not to be run unless the ally absorbs it. Both facts
+   must be on every move row, the move PICKER included, or the choice is made
+   blind.
 
    Serebii is not the source for this: it spells one target four ways and gets
-   three moves wrong outright. So the sweep below checks the shipped data
+   some moves wrong outright. So the sweep below checks the shipped data
    against Smogon's engine target column - the truth - rather than against the
    table that produced it, and the render checks confirm the badges reach the
    three places a move is drawn. */
@@ -38,7 +37,7 @@ const tagsOf = m => [...w.moveRowFor(w.MOVE_BY[m], [], null)
      one this checks. */
   const MOVES = Object.values(w.MOVE_BY);
   const mv = n => w.MOVE_BY[n];
-  await describe("barrido de los " + MOVES.length + " movimientos usables", () => {
+  await describe("a sweep of the " + MOVES.length + " useable moves", () => {
     let nSpread = 0, nAlly = 0;
     const mismatch = [];
     MOVES.forEach(m => {
@@ -51,26 +50,25 @@ const tagsOf = m => [...w.moveRowFor(w.MOVE_BY[m], [], null)
                       " ally=" + m.hitsAlly + ")");
       nSpread += m.spread; nAlly += m.hitsAlly;
     });
-    check("ninguno discrepa con el motor de Smogon", mismatch.join(", ") || "0", "0");
-    /* 38 when this was written, with the comment "Smogon lists 39; Overdrive is
-       the one Champions does not have". It has it now: Regulation M-C brought
-       Toxtricity (2026-09-09), which learns it, so Overdrive went useable and the
-       count went to 39. The number is asserted with its cause beside it, so the
-       next move to arrive is a named change rather than a bare digit to bump. */
-    check("movimientos spread", nSpread, 39);
-    check("de esos, golpean al aliado", nAlly, 16);
+    check("none disagrees with Smogon's engine", mismatch.join(", ") || "0", "0");
+    /* The count is asserted with its cause beside it, so the next move a
+       regulation adds is a named change rather than a bare digit to bump:
+       39 since Regulation M-C brought Toxtricity, whose Overdrive went
+       useable. */
+    check("spread moves", nSpread, 39);
+    check("of those, hit the ally", nAlly, 16);
 
-    check("el 39o es Overdrive, que llego con M-C", !!mv("Overdrive"), true);
-    check("...y es spread", mv("Overdrive").spread, true);
+    check("the 39th is Overdrive, which came with M-C", !!mv("Overdrive"), true);
+    check("...and it is spread", mv("Overdrive").spread, true);
 
-    check("Burning Jealousy es spread (Serebii: no)", mv("Burning Jealousy").spread, true);
-    check("Corrosive Gas golpea al aliado (Serebii: no)", mv("Corrosive Gas").hitsAlly, true);
-    check("Misty Explosion golpea al aliado", mv("Misty Explosion").hitsAlly, true);
-    check("Psyshield Bash NO apunta al aliado", mv("Psyshield Bash").target,
+    check("Burning Jealousy is spread (Serebii: no)", mv("Burning Jealousy").spread, true);
+    check("Corrosive Gas hits the ally (Serebii: no)", mv("Corrosive Gas").hitsAlly, true);
+    check("Misty Explosion hits the ally", mv("Misty Explosion").hitsAlly, true);
+    check("Psyshield Bash does NOT target the ally", mv("Psyshield Bash").target,
        "Selected Target");
-    check("Mountain Gale NO apunta a si mismo", mv("Mountain Gale").target,
+    check("Mountain Gale does NOT target itself", mv("Mountain Gale").target,
        "Selected Target");
-    check("Tailwind sigue siendo Ally", mv("Tailwind").target, "Ally");
+    check("Tailwind is still Ally", mv("Tailwind").target, "Ally");
   });
 
   /* -------------------------------------------------- the badges on screen */
@@ -82,31 +80,29 @@ const tagsOf = m => [...w.moveRowFor(w.MOVE_BY[m], [], null)
   const by = n => slots.find(s => s.textContent.includes(n));
   /* Priority has to show its NUMBER on the row. Filtering a movepool by
      "priority" and getting back rows that do not say how much is no answer:
-     +1 and +3 are a different move in doubles. The Pokemon's own sheet
-     showed no priority at all - which is where the player was looking
-     (2026-09-12) - and the two renderers that did show it only handled +N,
-     so nothing ever said that Dragon Tail moves LAST. One priorityTag() now,
-     shared by all three. */
-  await describe("la prioridad, con su numero", () => {
-    check("Fake Out dice +3", tagsOf("Fake Out").indexOf("priority +3") >= 0, true);
-    check("Aqua Jet dice +1", tagsOf("Aqua Jet").indexOf("priority +1") >= 0, true);
-    check("Dragon Tail dice -6 (va ultimo)",
+     +1 and +3 are a different move in doubles, and a NEGATIVE priority
+     (Dragon Tail moves LAST) is as much a fact about the turn. One
+     priorityTag(), shared by every renderer. */
+  await describe("priority, with its number", () => {
+    check("Fake Out says +3", tagsOf("Fake Out").indexOf("priority +3") >= 0, true);
+    check("Aqua Jet says +1", tagsOf("Aqua Jet").indexOf("priority +1") >= 0, true);
+    check("Dragon Tail says -6 (moves last)",
        tagsOf("Dragon Tail").indexOf("priority -6") >= 0, true);
-    check("Earthquake no lleva etiqueta de prioridad",
+    check("Earthquake carries no priority tag",
        tagsOf("Earthquake").some(t => /priority/.test(t)), false);
   });
 
   const eq = by("Earthquake");
-  await describe("la hoja del build", () => {
+  await describe("the build's sheet", () => {
     const rs = by("Rock Slide"), dc = by("Dragon Claw");
-    check("Earthquake lleva spread", tags(eq).indexOf("spread") >= 0, true);
-    check("Earthquake avisa del aliado", tags(eq).indexOf("hits ally") >= 0, true);
-    check("Earthquake lo dice tambien en texto",
+    check("Earthquake carries spread", tags(eq).indexOf("spread") >= 0, true);
+    check("Earthquake warns about the ally", tags(eq).indexOf("hits ally") >= 0, true);
+    check("Earthquake also says it in text",
        /ally/.test(eq.textContent), true);
-    check("Rock Slide lleva spread", tags(rs).indexOf("spread") >= 0, true);
-    check("Rock Slide NO avisa del aliado",
+    check("Rock Slide carries spread", tags(rs).indexOf("spread") >= 0, true);
+    check("Rock Slide does NOT warn about the ally",
        tags(rs).indexOf("hits ally") >= 0, false);
-    check("Dragon Claw no lleva ninguno",
+    check("Dragon Claw carries neither",
        tags(dc).indexOf("spread") >= 0 || tags(dc).indexOf("hits ally") >= 0,
        false);
   });
@@ -114,18 +110,18 @@ const tagsOf = m => [...w.moveRowFor(w.MOVE_BY[m], [], null)
   /* the picker, which is where the move is actually chosen */
   click(eq);
   await idle();
-  await describe("el buscador de movimientos", () => {
+  await describe("the move picker", () => {
     const rows = [...d.querySelectorAll(".sheet .row")];
     const find = n => rows.find(r => r.textContent.indexOf(n) >= 0);
     const peq = find("Earthquake"), pdc = find("Dragon Claw");
-    check("Earthquake en la lista lleva spread",
+    check("Earthquake in the list carries spread",
        peq && tags(peq).indexOf("spread") >= 0, true);
-    check("Earthquake en la lista avisa del aliado",
+    check("Earthquake in the list warns about the ally",
        peq && tags(peq).indexOf("hits ally") >= 0, true);
-    check("Dragon Claw en la lista no lleva ninguno",
+    check("Dragon Claw in the list carries neither",
        pdc ? (tags(pdc).indexOf("spread") >= 0 ||
-              tags(pdc).indexOf("hits ally") >= 0) : "no está", false);
+              tags(pdc).indexOf("hits ally") >= 0) : "not there", false);
   });
 
-  check("la pagina no reporta errores de script", errs.join(" | ") || "ninguno", "ninguno");
+  check("the page reports no script error", errs.join(" | ") || "none", "none");
 })();

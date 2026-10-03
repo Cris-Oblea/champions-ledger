@@ -6,7 +6,7 @@ const CASES = JSON.parse(fs.readFileSync(__dirname + "/enginecases.json", "utf8"
 
 const { w, errs } = open();
 
-check("el motor esta cargado en la pagina", !!(w.SMOGON && w.SMOGON.calculate), true);
+check("the engine is loaded in the page", !!(w.SMOGON && w.SMOGON.calculate), true);
 CASES.forEach(c => {
   // drive the page's own state, exactly as the UI does
   w.CALC.atk = {name:c.atk, buildId:null, sp:{hp:0,atk:32,def:0,spa:32,spd:0,spe:0},
@@ -33,4 +33,4 @@ CASES.forEach(c => {
   catch (e) { got = "ERROR: " + e.message; }
   check(c.label, got, c.want);
 });
-check("la pagina no reporta errores de script", errs.join(" | ") || "ninguno", "ninguno");
+check("the page reports no script error", errs.join(" | ") || "none", "none");

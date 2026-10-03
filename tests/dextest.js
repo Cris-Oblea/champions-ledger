@@ -2,11 +2,8 @@
 
    Champions' own route in is a gacha, so the dex is finished through Pokemon
    GO into HOME and the GTS for the rest. A list of everything he does not own
-   would be 134 cards in dex order and answer nothing; what this pane is for
-   is the ORDER (player, 2026-09-20: "la idea es ir priorizando pokemones que
-   no tengo por al menos 1 copia por especie", and the first bucket is his
-   own: "los mas priorizados deberian ser los que estan haciendo espacio en
-   pokemon champions en estos momentos").
+   in dex order answers nothing; what this pane is for is the ORDER - one copy
+   per species, easiest first.
 
    The rule this pins down is the one that is easy to get backwards: a species
    already in HOME is DONE even when a copy is also welded into the Champions
@@ -25,10 +22,10 @@ const ROWS = [
   row("garchomp",  "Garchomp",  "champions", "permanent", "champions"),
   row("garchomp2", "Garchomp",  "home",      "permanent", "home"),
   row("dragonite2","Dragonite", "home",      "permanent", "home"),
-  /* EL GTS NO LOS ACEPTA, Y NO SON EL MISMO CASO. Melmetal lo probo el
-     jugador y lo rechazo: se cae de la lista. Celebi es Mythical como
-     Melmetal, que es UN dato y no una regla, asi que se queda pero al final
-     y avisando. */
+  /* THE GTS REFUSES THEM, AND THEY ARE NOT THE SAME CASE. Melmetal was tried
+     in game and refused: it drops out of the list. Celebi is a Mythical like
+     Melmetal, which is ONE data point and not a rule, so it stays - last, and
+     with a warning. */
   row("melmetal", "Melmetal",  "home",      "permanent", "home"),
   row("celebi",   "Celebi",    "home",      "permanent", "home"),
 ];
@@ -39,8 +36,7 @@ const pane = k => [...d.querySelectorAll(".homeseg button")]
   .find(b => b.dataset.home === k);
 /* THE NAME, NOT THE WHOLE LINE. A card's name line also carries badges - a
    difficulty chip, "frees a slot", a Worlds medal - and they are elements,
-   while the name itself is the one bare text node pokeCard appends. Splitting
-   the textContent on capitals worked until a badge arrived in lower case. */
+   while the name itself is the one bare text node pokeCard appends. */
 const names = id => [...d.querySelectorAll("#" + id + " .row.card .rname")]
   .map(x => [...x.childNodes].filter(n => n.nodeType === 3)
                              .map(n => n.textContent).join("").trim());
@@ -49,138 +45,132 @@ const names = id => [...d.querySelectorAll("#" + id + " .row.card .rname")]
   await idle();
   w.go("home");
 
-  describe("tres paneles, un selector", () => {
-    check("empieza en la caja", d.getElementById("homePaneBox").hidden, false);
+  describe("three panes, one switch", () => {
+    check("starts on the box", d.getElementById("homePaneBox").hidden, false);
     pane("gts").click();
-    check("GTS se abre", d.getElementById("homePaneGts").hidden, false);
-    check("...y la caja se cierra", d.getElementById("homePaneBox").hidden, true);
+    check("GTS opens", d.getElementById("homePaneGts").hidden, false);
+    check("...and the box closes", d.getElementById("homePaneBox").hidden, true);
     pane("dex").click();
-    check("Dex se abre", d.getElementById("homePaneDex").hidden, false);
-    check("...y GTS se cierra", d.getElementById("homePaneGts").hidden, true);
+    check("Dex opens", d.getElementById("homePaneDex").hidden, false);
+    check("...and GTS closes", d.getElementById("homePaneGts").hidden, true);
   });
 
-  describe("que falta, y en que orden", () => {
-    /* 264 = el dex sin las megas. Una mega no se obtiene, se crea con su piedra,
-       asi que no puede estar en una lista de capturas. */
-    check("el objetivo es el dex sin megas",
+  describe("what is missing, and in what order", () => {
+    /* 264 = the dex without the Megas. A Mega is not caught, it is made with
+       its stone, so it cannot be on a list of catches. */
+    check("the goal is the dex without Megas",
        w.CHAMP.DEX.filter(p => !p[4]).length, 264);
-    check("cuatro especies son suyas", /4 of 264/.test(
+    check("four species are his", /4 of 264/.test(
        d.getElementById("dexDone").textContent), true);
-    check("faltan 260", d.getElementById("nDexMissing").textContent, 260);
+    check("260 to go", d.getElementById("nDexMissing").textContent, 260);
   });
 
-  describe("y los que SI tienes en Champions son objetivos de GTS", () => {
-    /* EL LISTADO DE LO QUE TIENE EN CHAMPIONS NO ES UNA CHECKLIST. Se ve en la
-       Champions Box; lo que la caja no puede decir es con que cambiarlo
-       (player, 2026-09-21: "el listado de champions se puede usar como
-       recomendaciones de cambio en el gts"). */
-    check("la lista de 'libera slot' ya no esta en Dex",
+  describe("and the ones he HAS in Champions are GTS targets", () => {
+    /* WHAT HE HAS IN CHAMPIONS IS NOT A CHECKLIST: the Champions Box shows it.
+       What the box cannot say is what to trade for it. */
+    check("no 'frees a slot' list in Dex",
        !!d.getElementById("listDexFree"), false);
     pane("gts").click();
-    /* LAS CARDS SON LOS CHIPS, NO LOS OBJETIVOS. Se lee desde HOME: lo que su
-       propia regla deja ofrecer - un duplicado pasada la primera copia, o una
-       especie que Champions no puede usar. Los objetivos van en la linea
-       "Ask for", y el que libera slot va marcado. */
+    /* THE CARDS ARE THE CHIPS, NOT THE TARGETS. Read from HOME: what his own
+       rule lets him offer - a duplicate past the first copy, or a species
+       Champions cannot use. The targets are on the "Ask for" line, and one
+       that frees a slot is marked. */
     const chips = names("listGtsWant");
-    check("Dragonite es un chip: duplicado dentro de HOME",
+    check("Dragonite is a chip: a duplicate inside HOME",
        chips.indexOf("Dragonite") >= 0, true);
-    /* Y GARCHOMP NO, aunque haya dos filas. Una es de origen Champions y esa
-       no puede salir del juego nunca, asi que no puede ser la copia que se
-       queda - la de HOME es la unica de verdad (player, 2026-09-21: "los
-       duplicados solo se cuentan cuando el origen es home. cuando el origen es
-       champions sea permanente o rental no cuentan para duplicado"). */
-    check("Garchomp no, su segunda copia es de origen Champions",
+    /* AND GARCHOMP IS NOT, though it has two rows. One is Champions origin and
+       can never leave the game, so it can never be the copy kept - the HOME
+       one is the only real one. Duplicates count HOME-origin copies only. */
+    check("not Garchomp, its second copy is Champions origin",
        chips.indexOf("Garchomp") >= 0, false);
-    check("Aggron no es un chip, es un objetivo",
+    check("Aggron is not a chip, it is a target",
        chips.indexOf("Aggron") >= 0, false);
     const asks = [...d.querySelectorAll("#listGtsWant .st")]
       .map(x => x.textContent).join(" ");
-    check("y aparece como algo que pedir", /Aggron/.test(asks), true);
-    /* LO QUE SE PIDE ES JUGABLE, SIEMPRE. Cambiar por algo que Champions no
-       puede usar compra una fila de HOME y nada mas (player, 2026-09-21: "no
-       quiero cambiar por pokemones que no pueda usar"). */
-    check("y nunca se propone pedir algo que Champions no tiene",
+    check("and appears as something to ask for", /Aggron/.test(asks), true);
+    /* WHAT IS ASKED FOR IS ALWAYS PLAYABLE: trading for something Champions
+       cannot use buys a HOME row and nothing else. */
+    check("and never proposes asking for something Champions lacks",
        [...d.querySelectorAll("#listGtsWant .st .tag")]
          .every(t => !!w.byName[t.textContent]), true);
-    /* EL FILTRO, que es la pregunta con la que abre la pantalla */
+    /* THE FILTER, which is the question the screen opens with */
     const wantTog = v => [...d.querySelectorAll("#gtsWantFilter button")]
       .find(b => b.dataset.want === v);
-    check("hay filtro por los que no puede usar", !!wantTog("outside"), true);
-    check("Melmetal no se recomienda: el GTS no lo acepta",
+    check("there is a filter for the ones he cannot use", !!wantTog("outside"), true);
+    check("Melmetal is not recommended: the GTS refuses it",
        names("listGtsWant").indexOf("Melmetal") >= 0, false);
-    check("y se dice, no se esconde",
+    check("and that is said, not hidden",
        /Melmetal/.test(d.getElementById("gtsWantSub").textContent), true);
-    /* Celebi si se lista - un dato no es una regla - pero al final y avisando */
+    /* Celebi IS listed - one data point is not a rule - but last, and warned */
     const celebi = [...d.querySelectorAll("#listGtsWant .row.card")]
       .find(c => [...c.querySelector(".rname").childNodes]
         .filter(n => n.nodeType === 3).map(n => n.textContent).join("").trim()
           === "Celebi");
-    check("Celebi sigue en la lista", !!celebi, true);
-    check("...avisando de que el GTS puede rechazarlo",
+    check("Celebi is still listed", !!celebi, true);
+    check("...warning that the GTS may refuse it",
        !!celebi && /GTS may refuse it/.test(celebi.textContent), true);
     click(wantTog("outside"));
-    check("y deja solo esos",
+    check("and leaves only those",
        names("listGtsWant").every(n => !w.byName[n]), true);
     click(wantTog("all"));
-    check("marcado como que libera slot",
+    check("marked as freeing a slot",
        !!d.querySelector("#listGtsWant .tag.ok"), true);
-    check("el record sale de sus propios trades cerrados",
+    check("the record comes from his own closed trades",
        /closed trades/.test(d.getElementById("gtsWantSub").textContent) ||
        !w.CHAMP_GTS_ROWS, true);
     pane("dex").click();
 
-    /* EL CASO QUE IMPORTA: Garchomp esta en la caja Y en HOME, y ninguna de las
-       dos listas debe pedirlo. */
-    check("Garchomp no aparece entre los que faltan",
+    /* THE CASE THAT MATTERS: Garchomp is in the box AND in HOME, and neither
+       list may ask for it. */
+    check("Garchomp is not among the missing",
        names("listDexMissing").indexOf("Garchomp") >= 0, false);
-    check("Aggron tampoco, lo tienes en Champions",
+    check("nor Aggron, he has it in Champions",
        names("listDexMissing").indexOf("Aggron") >= 0, false);
-    check("Dragonite tampoco, solo vive en HOME",
+    check("nor Dragonite, which lives only in HOME",
        names("listDexMissing").indexOf("Dragonite") >= 0, false);
   });
 
-  describe("el filtro", () => {
+  describe("the filter", () => {
     const inp = d.getElementById("dexFilter");
     inp.value = "aggron";
     inp.dispatchEvent(new w.Event("input", {bubbles:true}));
-    check("filtra a nada, porque Aggron no falta",
+    check("filters to nothing, because Aggron is not missing",
        !!d.querySelector("#listDexMissing .empty"), true);
-    /* el nombre sale de la propia lista, para que el test no dependa de que
-       tal especie este o no en el roster de Champions */
+    /* the name comes from the list itself, so the test does not depend on
+       whether a given species is in Champions' roster */
     inp.value = "";
     inp.dispatchEvent(new w.Event("input", {bubbles:true}));
     const one = names("listDexMissing")[0];
     inp.value = one.toLowerCase();
     inp.dispatchEvent(new w.Event("input", {bubbles:true}));
-    check("y encuentra lo que si falta", names("listDexMissing").join(","), one);
+    check("and finds what IS missing", names("listDexMissing").join(","), one);
     inp.value = "";
     inp.dispatchEvent(new w.Event("input", {bubbles:true}));
-    check("y se deshace", d.getElementById("nDexMissing").textContent, 260);
+    check("and it undoes", d.getElementById("nDexMissing").textContent, 260);
   });
 
-  describe("HOME aguanta cualquier nombre", () => {
-    /* Oinkologne vive en HOME y no en Champions, y PokeAPI no tiene fila
-       `oinkologne` - la especie esta archivada como `oinkologne-male` y
-       `oinkologne-female`. La busqueda pedia el nombre pelado, fallaba, caia a
-       lo mismo y volvia a fallar, asi que la ficha se construia con null y
-       reventaba en su primera linea. */
+  describe("HOME holds any name", () => {
+    /* Oinkologne lives in HOME and not in Champions, and PokeAPI has no
+       `oinkologne` row - the species is filed as `oinkologne-male` and
+       `oinkologne-female`. A lookup by the bare name must still resolve, or
+       the sheet is built from null. */
     const hd = w.CHAMP.HOME_DEX || {};
     ["Oinkologne", "Oinkologne-F", "Deoxys", "Giratina", "Shaymin", "Meloetta",
      "Keldeo", "Wormadam", "Darmanitan", "Minior", "Enamorus", "Dudunsparce",
      "Frillish", "Jellicent"].forEach(function(n){
-      check(n + " tiene fila", !!(hd[n] && hd[n].b && hd[n].b[0]), true);
+      check(n + " has a row", !!(hd[n] && hd[n].b && hd[n].b[0]), true);
     });
-    check("y la hembra no es el macho", (hd["Oinkologne-F"] || {b:[]}).b.join("/"),
+    check("and the female is not the male", (hd["Oinkologne-F"] || {b:[]}).b.join("/"),
        "115/90/70/59/90/65");
-    /* y una fila que no existe en ningun dex abre ficha en vez de tirar error */
+    /* and a row no dex knows opens a sheet instead of throwing */
     w.pokeSheet({name:"Syclant", location:"home", status:"permanent",
                  origin:"home", _id:"cap"});
-    check("un nombre que no conoce ningun dex no rompe la ficha",
+    check("a name no dex knows does not break the sheet",
        !!d.getElementById("sheetBody"), true);
-    check("...y lo dice", /not in any dex/.test(
+    check("...and it says so", /not in any dex/.test(
        d.getElementById("sheetBody").textContent), true);
     w.closeSheet();
   });
 
-  check("la pagina no reporta errores de script", errs.join(" | ") || "ninguno", "ninguno");
+  check("the page reports no script error", errs.join(" | ") || "none", "none");
 })();

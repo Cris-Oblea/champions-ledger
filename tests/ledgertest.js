@@ -2,9 +2,9 @@
  *
  * The other tests stub Supabase empty, so the login gate stays up and every
  * branch that draws something only when there is something to draw never runs.
- * That is how three missing imports reached the live page on 2026-09-14:
- * `note is not defined`, thrown by the GTS panel and the duplicate report the
- * moment real data arrived, with all sixteen tests green.
+ * That is how missing imports once reached the live page - `note is not
+ * defined`, thrown by the GTS panel and the duplicate report the moment real
+ * data arrived - with every other test green.
  *
  * So this one signs in, loads tests/fixture.js, walks every tab, and asserts
  * that the page produced no error of any kind. Then it asserts that the awkward
@@ -26,27 +26,27 @@ const d = w.document;
 const newError = before => errors.length === before ? "ok" : errors[errors.length - 1];
 
 async function loads() {
-  describe("el ledger carga", () => {
-    check("la puerta de acceso se cerro (hay sesion)", d.getElementById("gate").hidden, true);
+  describe("the ledger loads", () => {
+    check("the sign-in gate closed (there is a session)", d.getElementById("gate").hidden, true);
     /* the box is drawn in three lists by origin, which is the app's own answer
        to "what can leave the game" - so the count is across all three */
     const boxRows = ["listHomeOrigin", "listChampOrigin", "listRent"]
       .reduce((n, id) => n + (d.getElementById(id) || { children: [] }).children.length, 0);
-    check("las tres listas del box tienen filas", boxRows, 10);
-    check("y HOME tambien", d.getElementById("listHome").children.length > 0, true);
-    check("sin errores al cargar", errors.length ? errors[0] : "ninguno", "ninguno");
+    check("the box's three lists have rows", boxRows, 10);
+    check("and so does HOME", d.getElementById("listHome").children.length > 0, true);
+    check("no error while loading", errors.length ? errors[0] : "none", "none");
   });
 }
 
 async function everyTab() {
-  await describe("cada pestana se dibuja", async () => {
+  await describe("every tab draws", async () => {
     for (const t of TABS) {
       const before = errors.length;
       w.go(t);
       await idle();
       const view = d.getElementById("v-" + t);
-      check(t + ": visible y sin errores",
-         (view && !view.hidden ? "" : "no se mostro ") +
+      check(t + ": visible and error-free",
+         (view && !view.hidden ? "" : "not shown ") +
          (errors.length === before ? "" : errors[errors.length - 1]) || "ok", "ok");
     }
   });
@@ -56,47 +56,47 @@ async function dataBranches() {
   /* ---- the branches this fixture exists for -------------------------------
      Each of these only runs because the ledger is awkward. If one stops
      drawing, the fixture has stopped protecting the code that threw. */
-  await describe("las ramas que solo existen con datos", async () => {
+  await describe("the branches that only exist with data", async () => {
     w.go("box");
     await idle();
 
     const gts = d.getElementById("listGts");
-    check("el panel GTS se dibujo", !!gts && gts.children.length > 0, true);
-    check("con las tres ofertas abiertas, y la cerrada fuera",
+    check("the GTS panel drew", !!gts && gts.children.length > 0, true);
+    check("with the three open offers, and the closed one out of it",
        d.getElementById("nGts").textContent, "3/3");
-    check("el cierre esta en el historial",
+    check("the closed one is in the history",
        d.getElementById("nGtsHist").textContent, "1");
-    check("y avisa que los 3 slots estan ocupados",
+    check("and it warns that all 3 slots are taken",
        /All 3 GTS slots are in use/.test(gts.innerHTML), true);
-    check("el boton de anadir queda deshabilitado",
+    check("the add button is disabled",
        d.getElementById("gtsAdd").disabled, true);
 
     const dupe = d.getElementById("dupeBlock");
-    check("el informe de duplicados se dibujo", !!dupe && !dupe.hidden, true);
+    check("the duplicate report drew", !!dupe && !dupe.hidden, true);
     const dnote = d.getElementById("dupeNote");
     /* two, not three: a HOME-origin copy is never offered for release */
-    check("con las dos notas (rental, Champions origin)",
+    check("with its two notes (rental, Champions origin)",
        dnote ? dnote.children.length : 0, 2);
-    check("y el Garchomp de origen HOME no aparece",
+    check("and the HOME-origin Garchomp is not in it",
        /Garchomp/.test(d.getElementById("listDupeHome").textContent), false);
-    check("y nombra el build que se conserva como idea",
+    check("and it names the build kept as an idea",
        /Kingambit/.test(dnote ? dnote.innerHTML : ""), true);
   });
 }
 
 async function ownedRows() {
-  /* stones and items are rows now (migration 6), and the Items tab is where
-     that is visible - a stone owned for a species that is not in the box is
-     the "dead weight until it arrives" line. */
-  await describe("lo que se posee, fila por fila", async () => {
+  /* stones and items are rows (migration 6), and the Items tab is where that
+     is visible - a stone owned for a species that is not in the box is the
+     "dead weight until it arrives" line. */
+  await describe("what he owns, row by row", async () => {
     w.go("gear");
     await idle();
-    check("las piedras se cuentan desde su tabla",
+    check("the stones are counted from their table",
        /3 of \d+/.test(d.getElementById("stoneNote").textContent), true);
-    check("y avisa de la que no tiene especie en la caja",
+    check("and it flags the one with no species in the box",
        /dead weight until it arrives/.test(d.getElementById("stoneNote").textContent),
        true);
-    check("los items marcados vienen de la suya",
+    check("the owned items come from theirs",
        w.S && Object.keys(w.S.items).length, 4);
     w.go("box");
     await idle();
@@ -107,41 +107,40 @@ const link = id => w.buildLink(id).state;
 
 async function buildStates() {
   /* the four build states: active, parked, orphan, unbound */
-  describe("los cuatro estados de un build", () => {
+  describe("the four states of a build", () => {
     check("kingambit -> active", link("kingambit"), "active");
-    check("iron-hands -> unbound (una idea, no un fallo)", link("iron-hands"), "unbound");
-    check("camerupt -> orphan (la fila ya no existe)", link("camerupt"), "orphan");
+    check("iron-hands -> unbound (an idea, not a fault)", link("iron-hands"), "unbound");
+    check("camerupt -> orphan (its row no longer exists)", link("camerupt"), "orphan");
   });
 }
 
 async function sheetsOnData() {
   /* a sheet is where most of the app's drawing actually happens */
-  await describe("las hojas se abren sobre datos reales", async () => {
+  await describe("the sheets open on real data", async () => {
     let before = errors.length;
     w.pokeSheet({ _id: "kingambit", name: "Kingambit", location: "champions",
                   status: "permanent", origin: "champions" });
     await idle();
-    check("la hoja de un Pokemon", newError(before), "ok");
+    check("a Pokemon's sheet", newError(before), "ok");
     w.closeSheet();
 
-    /* THE ONE CHAMPIONS HAS NEVER HEARD OF. Its card already carried the types,
-       the BST, the stats and the abilities - and the sheet read them off the
-       Champions row instead, which for this Pokemon does not exist, so it threw
-       before drawing anything. The tag is what says it cannot come into the
-       game; the facts are what a keep-or-send decision is made on, so both have
-       to be there. */
+    /* ONE CHAMPIONS HAS NEVER HEARD OF. Its sheet must read the outside row
+       (types, BST, stats, abilities), not the Champions row, which for this
+       Pokemon does not exist. The tag says it cannot come into the game; the
+       facts are what a keep-or-trade decision is made on, so both have to be
+       there. */
     before = errors.length;
     w.pokeSheet({ _id: "bulbasaur-home", name: "Bulbasaur", location: "home",
                   status: "permanent", origin: "home" });
     await idle();
-    check("la hoja de uno que no esta en Champions",
+    check("the sheet of one not in Champions",
        newError(before), "ok");
     const osheet = d.getElementById("sheetBody").textContent.replace(/\s+/g, " ");
-    check("...dice que no esta en el dex", /Not in the Champions dex/.test(osheet), true);
-    check("...y aun asi lista sus tipos", /Grass/.test(osheet) && /Poison/.test(osheet), true);
-    check("...su BST", /318/.test(osheet), true);
-    check("...su habilidad", /Chlorophyll/.test(osheet), true);
-    check("...y lo que le hace dano, que es del tipo y no del juego",
+    check("...says it is not in the dex", /Not in the Champions dex/.test(osheet), true);
+    check("...and still lists its types", /Grass/.test(osheet) && /Poison/.test(osheet), true);
+    check("...its BST", /318/.test(osheet), true);
+    check("...its ability", /Chlorophyll/.test(osheet), true);
+    check("...and what damages it, which is the typing's, not the game's",
        /Takes damage/.test(osheet) && /Fire/.test(osheet), true);
     w.closeSheet();
   });
@@ -149,17 +148,15 @@ async function sheetsOnData() {
 
 const heads = () => [...d.getElementById("sheetBody").querySelectorAll("h2")]
   .map(h => h.textContent.trim());
-/* EL CUADRO DE LA FORMA BASE. Las habilidades y la tabla de dano dejaron
-   de ser secciones sueltas el 2026-09-20 y viven dentro del cuadro de la
-   forma base, igual que las de cada Mega viven dentro del suyo ("mega line
-   tiene todo dentro de un mismo cuadro, pero la forma base no"). Siguen
-   teniendo que estar en las tres puertas - eso es lo que este test mide -
-   asi que se buscan donde ahora estan. */
+/* THE BASE FORM'S PANEL. The abilities and the damage table live inside the
+   base form's panel, the way each Mega's live inside its own. They still have
+   to be on all three doors - which is what this test measures - so they are
+   looked for where they live. */
 const base = () => {
   const pn = d.getElementById("sheetBody").querySelector(".panel");
-  if (!pn) return {abilities: 0, dano: false, stats: false};
+  if (!pn) return {abilities: 0, damage: false, stats: false};
   return {abilities: pn.querySelectorAll(".note strong").length,
-          dano: /Takes damage/.test(pn.textContent),
+          damage: /Takes damage/.test(pn.textContent),
           stats: !!pn.querySelector(".statline")};
 };
 const folds = () => [...d.getElementById("sheetBody").querySelectorAll(".fold")]
@@ -167,13 +164,10 @@ const folds = () => [...d.getElementById("sheetBody").querySelectorAll(".fold")]
 const hasHead = (list, h) => list.some(x => x.indexOf(h) === 0);
 
 async function threeDoors() {
-  /* LAS TRES PUERTAS DAN LA MISMA FICHA. Find tenia las habilidades, los sets
-     de Worlds y el movepool entero; la caja tenia la linea Mega, el "takes
-     damage" y lo que escribio Smogon. Ninguna tenia la mitad de la otra, asi
-     que la puerta por la que entrabas decidia que te dejaban saber del mismo
-     Pokemon. Lo unico que puede diferenciarlas es lo que se POSEE: origen,
-     shiny, entrenado y la nota. */
-  await describe("la misma ficha por las tres puertas", async () => {
+  /* THE THREE DOORS OPEN THE SAME SHEET: Find, the Champions box and HOME.
+     The only things that may differ are what is OWNED: origin, shiny,
+     trained and the note. */
+  await describe("the same sheet through all three doors", async () => {
 
     w.findDetail(w.byName["Garchomp"]);
     await idle();
@@ -192,92 +186,86 @@ async function threeDoors() {
     const homeHeads = heads(), homeFolds = folds(), homeBase = base();
     w.closeSheet();
 
-    /* "Mega line" lleva ahora la cuenta cuando hay dos - Garchomp tiene dos y el
-       encabezado avisa de que solo una puede evolucionar por combate - asi que
-       se compara por prefijo y no por igualdad. */
+    /* "Mega line" carries a count when there are two (Garchomp has two, and
+       the heading says only one may evolve per battle), so headings are
+       compared by prefix, not equality. */
     const REF = ["Mega line", "Movepool"];
     REF.forEach(h => {
-      check("Find trae " + h, hasHead(findHeads, h), true);
-      check("...la caja Champions tambien", hasHead(boxHeads, h), true);
-      check("...y HOME tambien", hasHead(homeHeads, h), true);
+      check("Find has " + h, hasHead(findHeads, h), true);
+      check("...so does the Champions box", hasHead(boxHeads, h), true);
+      check("...and HOME", hasHead(homeHeads, h), true);
     });
-    /* y lo que se mudo al cuadro de la forma base sigue estando en las tres */
-    [["Find", findBase], ["la caja", boxBase], ["HOME", homeBase]].forEach(function(x){
-      check(x[0] + " explica las habilidades en el cuadro base", x[1].abilities > 0, true);
-      check(x[0] + " lleva su tabla de dano ahi", x[1].dano, true);
-      check(x[0] + " lleva sus stats ahi", x[1].stats, true);
+    /* and what lives in the base form's panel is on all three */
+    [["Find", findBase], ["the box", boxBase], ["HOME", homeBase]].forEach(function(x){
+      check(x[0] + " explains the abilities in the base panel", x[1].abilities > 0, true);
+      check(x[0] + " carries its damage table there", x[1].damage, true);
+      check(x[0] + " carries its stats there", x[1].stats, true);
     });
 
-    /* y la caja NO puede anadir nada que no sea propiedad: origen, esta copia
-       (shiny / entrenado) y la nota. Cualquier otra cosa que aparezca aqui es
-       una ficha volviendo a separarse en dos. */
-    check("la caja solo anade lo que se POSEE",
+    /* and the box may add NOTHING but what is owned: origin, this copy (shiny /
+       trained) and the note. Anything else here is a sheet splitting in two
+       again. */
+    check("the box only adds what is OWNED",
        boxHeads.filter(h => !hasHead(findHeads, h)).join(", "),
        "Where did it come from?, This copy, Note");
-    check("y HOME solo anade esta copia y la nota",
+    check("and HOME only adds this copy and the note",
        homeHeads.filter(h => !hasHead(findHeads, h)).join(", "),
        "This copy, Note");
-    check("lo que Smogon escribio esta en las tres",
+    check("what Smogon wrote is on all three",
        findFolds.concat(homeFolds).filter(t => /What Smogon says/.test(t)).length, 2);
-    /* lo unico que puede cambiar entre puertas */
-    check("solo la caja pregunta por el origen",
+    /* the only things that may differ between doors */
+    check("only the box asks about origin",
        boxHeads.indexOf("Where did it come from?") >= 0 &&
        findHeads.indexOf("Where did it come from?") < 0, true);
-    check("y solo la caja guarda una nota",
+    check("and only a box keeps a note",
        homeHeads.indexOf("Note") >= 0 && findHeads.indexOf("Note") < 0, true);
   });
 }
 
 async function speciesPicker() {
-  /* ----------------------------------------- el selector de especie -------- */
-  /* Era un <select> con las 264 formas en una sola tirada alfabetica y ninguna
-     forma de buscar dentro:
-
-       "necesito buscar rapidamente entre los pokemones disponibles del juego,
-        y no buscar manualmente en una lista" (2026-09-18)
-
-     Ahora es un campo que se toca, con la misma hoja de busqueda que usan el
-     GTS y la calculadora. */
-  await describe("el selector de especie se busca, no se recorre", async () => {
+  /* ----------------------------------------- the species picker ----------- */
+  /* A field you tap, opening the same searchable sheet the GTS and the
+     calculator use - never a <select> of every form in one alphabetical run. */
+  await describe("the species picker is searched, not scrolled", async () => {
     w.buildSheet(null, {});
     await idle();
     const field = [...d.querySelectorAll("#v-buildedit .field")]
       .find(f => /^Pokemon$/.test((f.querySelector("label") || {}).textContent || ""));
-    check("ya no hay un desplegable de 264 opciones",
+    check("no dropdown of every form",
        !!field && !field.querySelector("select"), true);
-    check("sino una card que se toca", !!field.querySelector("button.row"), true);
+    check("but a card you tap", !!field.querySelector("button.row"), true);
     click(field.querySelector("button.row"));
     await idle();
 
     const sheet = d.getElementById("sheetBody");
     const inp = sheet.querySelector(".search input");
-    check("la hoja trae un buscador", !!inp, true);
+    check("the sheet has a search box", !!inp, true);
     const names = () => [...sheet.querySelectorAll(".list .row")]
       .map(b => b.querySelector(".rname").firstChild.textContent.trim());
-    /* Venusaur, no Bulbasaur: el dex de Champions empieza ahi - por eso
-       Bulbasaur sirve de fixture para "no esta en Champions" */
-    check("y arranca en orden de dex", names()[0], "Venusaur");
-    check("con la card completa, seis stats incluidas",
+    /* Venusaur, not Bulbasaur: Champions' dex starts there - which is why
+       Bulbasaur serves the fixture as "not in Champions" */
+    check("and starts in dex order", names()[0], "Venusaur");
+    check("with the full card, six stats included",
        !!sheet.querySelector(".list .row .statline"), true);
 
     const type = t => { inp.value = t; inp.dispatchEvent(new w.Event("input")); };
     type("garchomp");
-    check("busca por nombre", names().join(","), "Garchomp");
+    check("searches by name", names().join(","), "Garchomp");
     type("zzzz");
-    check("lo que no existe no devuelve nada", names().length, 0);
+    check("what does not exist returns nothing", names().length, 0);
     type("445");
-    check("busca por numero de dex", names().indexOf("Garchomp") >= 0, true);
+    check("searches by dex number", names().indexOf("Garchomp") >= 0, true);
     type("dragon");
-    check("y por tipo", names().length > 5 && names().indexOf("Garchomp") >= 0, true);
+    check("and by type", names().length > 5 && names().indexOf("Garchomp") >= 0, true);
     type("");
-    check("al vaciarlo vuelven todas", names().length > 100, true);
+    check("emptying it brings them all back", names().length > 100, true);
 
-    /* la caja es un FILTRO, nunca un limite: una build para algo que todavia no
-       tiene es una idea que vale la pena guardar (2026-09-13) */
+    /* the box is a FILTER, never a limit: a build for something he does not
+       have yet is an idea worth keeping */
     const mine = [...sheet.querySelectorAll(".tog")]
       .find(b => /In your boxes/.test(b.textContent));
     click(mine);
-    check("y el filtro de la caja deja solo lo que tiene",
+    check("and the box filter leaves only what he has",
        names().sort().join(","), "Charizard,Farigiraf,Garchomp,Gholdengo,Incineroar,Kingambit," +
        "Maushold,Rillaboom,Sinistcha,Sneasler,Whimsicott");
     click(mine);
@@ -285,7 +273,7 @@ async function speciesPicker() {
     type("sneasler");
     click([...sheet.querySelectorAll(".list .row")][0]);
     await idle();
-    check("al elegir uno queda puesto en la build",
+    check("picking one sets it on the build",
        /Sneasler/.test(d.getElementById("v-buildedit").textContent), true);
     w.leaveEditor();
     await idle();
@@ -293,18 +281,12 @@ async function speciesPicker() {
 }
 
 async function worldsRows() {
-  /* ------------------------------------- Worlds: todos tienen ficha ------- */
-  /* 53 de los nombres de las cuatro finales no estan en el dex de Champions -
-     el campo de 2025 iba lleno de Calyrex y Koraidon - y cada uno se dibujaba
-     como un nombre pelado: sin tipos, sin stats, sin BST y sin ficha detras.
-
-       "en Find, en el apartado Worlds, floette no tiene ficha, si deberia
-        tenerla... igualmente en los otros anos habian otros pokemones
-        disponibles y existe el mismo problema" (2026-09-18)
-
-     Floette era ademas otro caso: SI esta en Champions, pero como
-     Floette-Eternal, que es la unica que el juego tiene. */
-  describe("toda fila de Worlds tiene una ficha detras", () => {
+  /* ------------------------------------- Worlds: every row has a sheet ---- */
+  /* Many names across the championships are not in Champions' dex (the 2025
+     field was full of Calyrex and Koraidon), and each still needs types,
+     stats, a BST and a sheet behind it. Floette is the other case: it IS in
+     Champions, as Floette-Eternal, the only one the game has. */
+  describe("every Worlds row has a sheet behind it", () => {
     const dexNames = new Set(w.DEX.map(p => p.name));
     const home = w.CHAMP.HOME_DEX || {};
     const alias = w.CHAMP.LEARN_ALIAS || {};
@@ -321,31 +303,28 @@ async function worldsRows() {
         });
       });
     });
-    check("hay filas que comprobar", rows > 400, true);
-    check("ninguna se queda sin fila", orphan.slice(0, 3).join(", "), "");
-    /* y el resolvedor de la app las encuentra, que es lo que dibuja la card */
-    check("Floette resuelve a la unica que el juego tiene",
+    check("there are rows to check", rows > 400, true);
+    check("none is left without a row", orphan.slice(0, 3).join(", "), "");
+    /* and the app's resolver finds them, which is what draws the card */
+    check("Floette resolves to the only one the game has",
        (w.anyRow("Floette") || {}).name, "Floette-Eternal");
     ["Calyrex", "Koraidon", "Landorus", "Ogerpon", "Urshifu", "Tatsugiri"]
       .forEach(n => {
         const r = w.anyRow(n);
-        check(n + " trae tipos y stats",
+        check(n + " has types and stats",
            !!(r && r.types.length && r.b.length === 6), true);
       });
   });
 }
 
 async function outsideMovepool() {
-  /* ------------------------------ y lo que sabe el que no esta en el juego */
-  /* 425 KB, mas que el motor, para una lista que se lee al abrir una de estas
-     fichas y nunca en otro momento - asi que es su propio asset y se pide solo
-     entonces. Aqui se simula ya cargado: lo que se comprueba es que la seccion
-     se dibuje y diga de donde salen los movimientos. */
-  await describe("el que no esta en Champions tambien lista sus movimientos", async () => {
-    /* La dex entera va en su propio asset y se pide solo al abrir una de estas
-       fichas, asi que aqui se simula ya cargada. Lleva las tres cosas que le
-       faltaban a la app: el movepool, las FILAS de los moves que la app no
-       manda al telefono, y el texto de las abilities que Champions no tiene. */
+  /* ------------------------- what the app knows about one not in the game */
+  /* The rest of the dex is its own asset, fetched only when one of these
+     sheets opens, so here it is simulated as already loaded. It carries the
+     movepools, the ROWS of the moves the app does not otherwise ship, and the
+     ability text Champions has no entry for. What is checked is that the
+     section draws and says where the moves come from. */
+  await describe("one not in Champions still lists its moves", async () => {
     w.CHAMP_OUTSIDE = {
       m: {Bulbasaur: ["Tackle", "Growl", "Vine Whip", "Sleep Powder",
                       "Giga Drain", "Mega Drain"]},
@@ -354,55 +333,52 @@ async function outsideMovepool() {
     w.findDetail(w.anyRow("Bulbasaur"));
     await idle();
     const sheet2 = d.getElementById("sheetBody").textContent.replace(/\s+/g, " ");
-    check("hay seccion de movepool", /Movepool/.test(sheet2), true);
-    check("...y dice de donde sale la lista",
+    check("there is a movepool section", /Movepool/.test(sheet2), true);
+    check("...and it says where the list comes from",
        /Which moves it learns is main-series/.test(sheet2), true);
-    check("...y los movimientos estan ahi",
+    check("...and the moves are there",
        /Giga Drain/.test(sheet2) && /Sleep Powder/.test(sheet2), true);
-    /* NADA SE TIRA YA. Antes se descartaban los moves que la app no manda -
-       Flutter Mane perdia seis, uno de ellos Tera Blast - con el argumento de
-       que un nombre sin BP es una palabra y no informacion. El argumento era
-       bueno y la conclusion no: moves.json YA los tiene, con su fila completa
-       de Champions; solo no se envian al telefono, para que ningun picker deje
-       construir con ellos. Aqui se muestran, marcados. */
-    check("...incluido el que Champions no habilita", /Mega Drain/.test(sheet2), true);
-    check("...y va marcado como tal", /not in Champions/.test(sheet2), true);
-    check("...y lo dice en la cabecera",
+    /* NOTHING IS DROPPED: a move Champions has in its database but has not
+       enabled is shown, marked, rather than left out - moves.json has its
+       full row; it is only kept off the pickers, so nothing builds with it. */
+    check("...including the one Champions has not enabled", /Mega Drain/.test(sheet2), true);
+    check("...and it is marked as such", /not in Champions/.test(sheet2), true);
+    check("...and the header says so",
        /1 of them are moves Champions has in its database/.test(sheet2), true);
     w.closeSheet();
   });
 }
 
 async function backButton() {
-  /* ------------------------------------- el boton atras del telefono ----- */
-  /* En Android, Atras minimizaba la app: la pagina carga una vez y todo lo
-     demas es una <section> que se muestra o se esconde, asi que la unica
-     entrada del historial ERA la pagina (2026-09-19). Ahora cada capa que se
-     abre gasta una entrada y Atras las deshace de arriba abajo. */
-  await describe("atras deshace capas, no cierra la app", async () => {
+  /* ------------------------------------- the phone's Back button --------- */
+  /* The page loads once and everything after is a <section> shown or hidden,
+     so without help the only history entry IS the page and Android's Back
+     would leave the app. Each layer that opens spends an entry, and Back
+     undoes them from the top down. */
+  await describe("Back undoes layers, it does not close the app", async () => {
     w.go("find"); w.go("calc");
     w.findDetail(w.byName["Garchomp"]);
     await idle();
-    check("con la hoja abierta", !d.getElementById("scrim").hidden, true);
-    /* jsdom implementa history.back() pero NO despacha popstate por el, asi que
-       aqui se lanza el evento igual que lo lanza el navegador. La integracion de
-       verdad - pulsar Atras y que se cierre la hoja - se comprobo en Edge sobre
-       la pagina servida, que es donde el boton existe. */
+    check("with the sheet open", !d.getElementById("scrim").hidden, true);
+    /* jsdom implements history.back() but does NOT dispatch popstate for it,
+       so the event is fired here the way the browser fires it. The real
+       integration - pressing Back closes the sheet - is checked in a real
+       browser on the served page, where the button exists. */
     const back = async () => {
       w.dispatchEvent(new w.PopStateEvent("popstate", {state: null}));
       await idle();
     };
     await back();
-    check("el primer atras cierra la hoja", d.getElementById("scrim").hidden, true);
-    check("...y no se mueve de pestana", w.S.tab, "calc");
+    check("the first Back closes the sheet", d.getElementById("scrim").hidden, true);
+    check("...and does not change tab", w.S.tab, "calc");
     await back();
-    check("el segundo atras vuelve a la pestana anterior", w.S.tab, "find");
-    /* y sigue retrocediendo por donde se paso, no a una pestana fija: este test
-       ya ha recorrido todas antes de llegar aqui */
+    check("the second Back returns to the previous tab", w.S.tab, "find");
+    /* and it keeps stepping back through where it has been, not to a fixed
+       tab: this test has visited every tab before reaching here */
     const before3 = w.S.tab;
     await back();
-    check("el tercero sigue retrocediendo", w.S.tab !== before3, true);
-    check("...y nunca sale de la app", !!d.getElementById("v-" + w.S.tab), true);
+    check("the third keeps stepping back", w.S.tab !== before3, true);
+    check("...and never leaves the app", !!d.getElementById("v-" + w.S.tab), true);
   });
 }
 
@@ -410,21 +386,21 @@ async function otherSheets() {
   let before = errors.length;
   w.buildSheet("charizard");
   await idle();
-  check("la hoja de un build con Mega",
+  check("a Mega build's sheet",
      newError(before), "ok");
   w.closeSheet();
 
   before = errors.length;
   w.teamSheet("rain-ish", null);
   await idle();
-  check("la hoja de un equipo de seis slots",
+  check("a six-slot team's sheet",
      newError(before), "ok");
   w.closeSheet();
 
   before = errors.length;
   w.gtsPickMine(function () {});
   await idle();
-  check("el selector del GTS", newError(before), "ok");
+  check("the GTS picker", newError(before), "ok");
   w.closeSheet();
 
 }
@@ -436,6 +412,6 @@ async function otherSheets() {
                          outsideMovepool, backButton, otherSheets])
     await section();
 
-  check("cero errores en toda la sesion", errors.join(" | ") || "ninguno", "ninguno");
+  check("zero errors in the whole session", errors.join(" | ") || "none", "none");
 
 })();

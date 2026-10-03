@@ -18,9 +18,9 @@ const path = require("path");
 const { test } = require("node:test");
 const assert = require("node:assert/strict");
 
-/* The repo, found from this file - never a hardcoded path: every test once
-   carried an absolute Windows path, and all fifteen died the first time CI
-   ran them (2026-09-13). Ends in "/" so a test can write ROOT + "data/...". */
+/* The repo, found from this file - never a hardcoded path, or the tests die
+   on any other machine, CI included. Ends in "/" so a test can write
+   ROOT + "data/...". */
 const ROOT = path.join(__dirname, "..") + "/";
 
 /* ONE CHECK, REPORTED BY NODE'S OWN RUNNER. Every test file used to carry its
@@ -67,8 +67,8 @@ function page() {
   /* A PAGE BUILT WITHOUT SECRETS GETS A TEST ADDRESS. A Dependabot pull
      request never receives the repository's secrets, so its build writes
      `window.CHAMP_CONFIG = {};` - the app then never calls createClient, every
-     test's stubbed ledger is never read, and seven of them fail on an empty
-     box (#135, every run since 2026-09-21). The tests stub the client, so the
+     test's stubbed ledger is never read, and the tests fail on an empty
+     box. The tests stub the client, so the
      address is never contacted; it only has to exist. `.invalid` is reserved
      and resolves nowhere, in case anything ever tried. This touches the
      string the TESTS load, never dist/, so no deployed page carries it. */

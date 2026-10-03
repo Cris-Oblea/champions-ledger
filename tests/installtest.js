@@ -1,20 +1,17 @@
 /* Installing a build on a Pokemon: which copy, what it looks like, and the
-   "trained" tag that follows it (player, 2026-09-27, 2026-09-28).
+   "trained" tag that follows it.
 
      - "Installed on" is a dropdown whose closed face is the copy the build
        is on, and the card of THAT copy sits under it - shiny, trained,
        origin, where it lives, what it already carries, its note. A list of
-       cards replaced the dropdown for a day and every build read "Not
-       installed - just an idea", because the list's first row looked like
-       its value, and nothing said how to take a build off a copy. His two
-       sentences are cases below: "sigue diciendo not installed!" and
-       "no se puede sacar al ampharos!".
+       cards has no closed face (its first row reads as the value) and no
+       obvious way to take a build off a copy; both cases are below.
      - The "trained" tag follows the build both ways: installing one sets it,
        moving the build away or deleting it clears it from the copy it left,
        unless another build still sits there.
      - A team slot holding a BASE build with no stone draws the base form
-       alone. The flag read `megas: !build.mega`, which switched the Mega line
-       ON for exactly the builds that have no Mega. */
+       alone (a `megas: !build.mega` flag would switch the Mega line ON for
+       exactly the builds that have no Mega). */
 const { describe } = require("node:test");
 const { check, idle, open, row, build } = require("./harness.js");
 const UID = "u1";
@@ -66,80 +63,80 @@ const tagsOf = n => [...n.querySelectorAll(".tag")].map(t => t.textContent);
 (async function () {
   await idle();
 
-  await describe("el slot de un team", async () => {
+  await describe("a team's slot", async () => {
     w.teamSheet("t1", w.S.teams.t1);
     await idle();
     const slot = d.querySelector("#teamEditBody .row.card");
     /* the strip is always there; what matters is how many forms it holds */
-    check("una build base sin piedra dibuja UN sprite, no base + Megas",
+    check("a base build with no stone draws ONE sprite, not base + Megas",
        slot ? slot.querySelectorAll(".megapics .megapic").length : -1, 1);
   });
 
-  await describe("sobre que copia se instala", async () => {
+  await describe("which copy it is installed on", async () => {
     w.buildSheet("charizard", w.S.builds.charizard);
     await idle();
     const sel = installed().querySelector("select");
-    check("un desplegable: 'solo una idea' mas una opcion por copia",
+    check("a dropdown: 'just an idea' plus one option per copy",
        sel ? sel.options.length : 0, 4);
-    /* "sigue diciendo not installed!" - the closed face IS the answer */
-    check("cerrado dice en cual esta, no 'not installed'",
+    /* the closed face IS the answer */
+    check("closed, it says which copy, not 'not installed'",
        face(sel).startsWith("Charizard · Champions box · shiny · trained") &&
        !/not installed/i.test(face(sel)), true);
-    check("ninguna opcion dice 'copy N'", /copy \d/.test(sel.textContent), false);
-    check("la opcion dice que builds ya lleva",
+    check("no option says 'copy N'", /copy \d/.test(sel.textContent), false);
+    check("the option says which builds it already carries",
        /already carries charizard-b, charizard-c/.test(sel.options[2].text), true);
     /* the Champions box first, then HOME - the order the box itself uses */
-    check("y la de HOME, donde vive y su nota",
+    check("and the HOME one, where it lives and its note",
        /in HOME.*the one from GO/.test(sel.options[3].text), true);
     const card = installed().querySelectorAll(".row");
-    check("debajo, UNA tarjeta: la de la copia elegida", card.length, 1);
-    check("la tarjeta dice shiny", tagsOf(card[0]).indexOf("shiny") >= 0, true);
-    check("y donde vive", tagsOf(card[0]).indexOf("Champions box") >= 0, true);
-    check("y no es un boton: se elige arriba", card[0].tagName, "DIV");
+    check("under it, ONE card: the chosen copy's", card.length, 1);
+    check("the card says shiny", tagsOf(card[0]).indexOf("shiny") >= 0, true);
+    check("and where it lives", tagsOf(card[0]).indexOf("Champions box") >= 0, true);
+    check("and it is not a button: the choice is made above", card[0].tagName, "DIV");
   });
 
   /* the same sheet, still open */
-  await describe("el tag trained sigue a la build", async () => {
+  await describe("the trained tag follows the build", async () => {
     const sel = installed().querySelector("select");
-    choose(sel, "charizard-2");           /* moverla a la de HOME */
+    choose(sel, "charizard-2");           /* move it to the HOME one */
     const card = installed().querySelectorAll(".row");
-    check("cambiar de copia no redibuja: el mismo desplegable",
+    check("changing copy does not redraw: the same dropdown",
        d.contains(sel) && face(sel).startsWith("Charizard · in HOME"), true);
-    check("la tarjeta pasa a ser la de HOME, con su nota",
+    check("the card becomes the HOME one, with its note",
        card.length === 1 && tagsOf(card[0]).indexOf("in HOME") >= 0 &&
        /the one from GO/.test(card[0].textContent), true);
     foot("Save").click();
     await idle();
-    check("la copia nueva gana trained, la que deja lo pierde", boxWrites(),
+    check("the new copy gains trained, the one it left loses it", boxWrites(),
        "charizard-2=true,charizard=false");
   });
 
-  await describe("una idea, y dos copias iguales", async () => {
+  await describe("an idea, and two identical copies", async () => {
     w.buildSheet("heracross", w.S.builds.heracross);
     await idle();
     const hsel = installed().querySelector("select");
-    check("sin instalar SI dice 'not installed', y sin tarjeta",
+    check("uninstalled it DOES say 'not installed', with no card",
        /not installed/.test(face(hsel)) &&
        installed().querySelectorAll(".row").length === 0, true);
-    check("dos copias identicas lo dicen, en vez de repetir la linea",
+    check("two identical copies say so, instead of repeating the line",
        [1, 2].every(i => hsel.options[i].text.endsWith(" · one of 2 identical")), true);
   });
 
-  /* "no se puede sacar al ampharos!" - its only copy, and it comes off */
-  await describe("sacarla de su unica copia", async () => {
+  /* its only copy, and the build still comes off it */
+  await describe("taking it off its only copy", async () => {
     w.closeSheet();
     w.__WROTE.length = 0;
     w.buildSheet("ampharos", w.S.builds.ampharos);
     await idle();
     const asel = installed().querySelector("select");
-    check("cerrado dice Ampharos", face(asel).startsWith("Ampharos · Champions box"), true);
+    check("closed, it says Ampharos", face(asel).startsWith("Ampharos · Champions box"), true);
     choose(asel, "");
-    check("elegir 'not installed' quita la tarjeta",
+    check("choosing 'not installed' removes the card",
        installed().querySelectorAll(".row").length, 0);
     foot("Save").click();
     await idle();
-    check("se guarda sin copia", buildWrites(), "ampharos=null");
-    check("y la copia que deja pierde trained", boxWrites(), "ampharos=false");
+    check("it saves with no copy", buildWrites(), "ampharos=null");
+    check("and the copy it left loses trained", boxWrites(), "ampharos=false");
 
     w.__WROTE.length = 0;
     w.buildSheet("charizard-b", w.S.builds["charizard-b"]);
@@ -147,9 +144,9 @@ const tagsOf = n => [...n.querySelectorAll(".tag")].map(t => t.textContent);
     choose(installed().querySelector("select"), "");
     foot("Save").click();
     await idle();
-    check("desinstalar con otra build aun encima no le quita el tag",
+    check("uninstalling with another build still on it keeps the tag",
        boxWrites(), "");
   });
 
-  check("la pagina no reporta errores de script", errs.join(" | ") || "ninguno", "ninguno");
+  check("the page reports no script error", errs.join(" | ") || "none", "none");
 })();

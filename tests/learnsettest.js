@@ -1,14 +1,9 @@
-/* A regional form has its OWN movepool (player, 2026-09-10).
+/* A regional form has its OWN movepool.
 
-   He opened the Samurott-Hisui build and the app told him it does not learn
-   Ceaseless Edge or Sucker Punch. It does. Then the same with Rotom-Wash and
-   Hydro Pump.
-
-   The cause was one line: learnset() looked up the SPECIES first and the form
-   second, so every regional form was handed its base form's pool -
-   Samurott-Hisui got Samurott's 62 moves instead of its own 68. 25 forms were
-   affected, and because the build editor offers from this same list, it was
-   picking sets out of the wrong pool.
+   learnset() must look up the FORM before the species: the other way round
+   hands every regional form its base form's pool - Samurott-Hisui would get
+   Samurott's moves and "not learn" Ceaseless Edge or Sucker Punch, which it
+   does - and the build editor offers from this same list.
 
    The species fallback has to stay, though: a Mega has no learnset of its own,
    so Mega Garchomp reads Garchomp's. Both halves are asserted here. */
@@ -25,29 +20,29 @@ const w = dom.window;
   const size = f => (w.learnset(f) || []).length;
   const C = w.CHAMP;
 
-  describe("lo que encontro el jugador", () => {
-    check("Samurott-Hisui aprende Ceaseless Edge",
+  describe("the cases found on a build", () => {
+    check("Samurott-Hisui learns Ceaseless Edge",
        has("Samurott-Hisui", "Ceaseless Edge"), true);
-    check("Samurott-Hisui aprende Sucker Punch",
+    check("Samurott-Hisui learns Sucker Punch",
        has("Samurott-Hisui", "Sucker Punch"), true);
-    check("Rotom-Wash aprende Hydro Pump", has("Rotom-Wash", "Hydro Pump"), true);
+    check("Rotom-Wash learns Hydro Pump", has("Rotom-Wash", "Hydro Pump"), true);
   });
 
-  describe("y no se los presta a la forma base", () => {
-    check("Samurott base NO aprende Ceaseless Edge",
+  describe("and does not lend them to the base form", () => {
+    check("base Samurott does NOT learn Ceaseless Edge",
        has("Samurott", "Ceaseless Edge"), false);
-    check("Rotom base NO aprende Hydro Pump", has("Rotom", "Hydro Pump"), false);
+    check("base Rotom does NOT learn Hydro Pump", has("Rotom", "Hydro Pump"), false);
   });
 
-  describe("la caida a la especie sigue viva (las Megas la necesitan)", () => {
-    check("Mega Garchomp lee el pool de Garchomp",
+  describe("the species fallback is still alive (Megas need it)", () => {
+    check("Mega Garchomp reads Garchomp's pool",
        size("Mega Garchomp"), size("Garchomp"));
-    check("y no esta vacio", size("Mega Garchomp") > 0, true);
+    check("and it is not empty", size("Mega Garchomp") > 0, true);
   });
 
   /* the sweep: every form that has its own key must read its own pool, not
-     its species'. A sample would have missed 24 of the 25. */
-  describe("barrido de todas las formas con pool propio", () => {
+     its species'. A sweep, because a sample misses most of such a class. */
+  describe("a sweep of every form with its own pool", () => {
     const wrong = [];
     C.DEX.forEach(function(r){
       const form = r[0], sp = r[1];
@@ -56,50 +51,49 @@ const w = dom.window;
       const own = C.LEARN[form].length;
       if (size(form) !== own) wrong.push(form);
     });
-    check("ninguna lee el pool de su especie", wrong.join(", ") || "0", "0");
+    check("none reads its species' pool", wrong.join(", ") || "0", "0");
   });
 
-  /* and the other half of the question: is EVERY form covered? Four were not
-     - Floette and Mega Floette (Champions' Floette is the Eternal Flower one,
-     filed as "Floette-Eternal") and the two gender forms, whose pool is the
+  /* and the other half of the question: is EVERY form covered? The hard ones
+     are Floette and Mega Floette (Champions' Floette is the Eternal Flower
+     one, filed as "Floette-Eternal") and the gender forms, whose pool is the
      base species'. */
-  describe("todas las formas, sin excepcion", () => {
+  describe("every form, no exception", () => {
     const empty = C.DEX.map(r => r[0]).filter(n => !size(n));
-    check("ninguna forma se queda sin movepool", empty.join(", ") || "0", "0");
+    check("no form is left without a movepool", empty.join(", ") || "0", "0");
     /* Champions' Floette is the Eternal Flower one and there is no other: the
        master list has only 670-e, no learner table says plain "Floette", and the
        Pokedex block carries the Eternal spread. The bare name still has to find
        it, because every usage source writes it that way. */
-    check("Floette-Eternal tiene el suyo", has("Floette-Eternal", "Moonblast"), true);
-    check("y 'Floette' a secas cae en el (es el unico que existe)",
+    check("Floette-Eternal has its own", has("Floette-Eternal", "Moonblast"), true);
+    check("and a bare 'Floette' lands on it (the only one that exists)",
        has("Floette", "Moonblast"), true);
-    check("Mega Floette tambien", size("Mega Floette") > 0, true);
+    check("so does Mega Floette", size("Mega Floette") > 0, true);
     /* Indeedee-Female does NOT inherit: Serebii lists it in the learner tables
-       under a "#0" dex cell, which a \d{4} pattern dropped, so it used to come
-       out with the male's list or with nothing. It has its own pool, and the
-       difference is the point - Follow Me is on the female only. */
-    check("Indeedee-Female tiene movepool propio, no el del macho",
+       under a "#0" dex cell, which a \d{4} pattern drops. It has its own pool,
+       and the difference is the point - Follow Me is on the female only. */
+    check("Indeedee-Female has its own movepool, not the male's",
        size("Indeedee-Female") !== size("Indeedee") && size("Indeedee-Female") > 0,
        true);
-    check("...y es la que aprende Follow Me",
+    check("...and is the one that learns Follow Me",
        has("Indeedee-Female", "Follow Me"), true);
-    check("...que el macho no aprende", has("Indeedee", "Follow Me"), false);
+    check("...which the male does not", has("Indeedee", "Follow Me"), false);
     /* Basculegion-Female really does inherit: Serebii gives it no learner row at
        all, only an "<h2>Stats - Female</h2>" block. */
-    check("Basculegion-Female hereda el de Basculegion",
+    check("Basculegion-Female inherits Basculegion's",
        size("Basculegion-Female"), size("Basculegion"));
-    /* the forms split on 2026-09-12 share the species pool */
-    check("Squawkabilly-White hereda el de Squawkabilly",
+    /* the fixed forms (plumages, sizes) share the species pool */
+    check("Squawkabilly-White inherits Squawkabilly's",
        size("Squawkabilly-White"), size("Squawkabilly"));
-    check("Gourgeist-Jumbo hereda el de Gourgeist",
+    check("Gourgeist-Jumbo inherits Gourgeist's",
        size("Gourgeist-Jumbo"), size("Gourgeist"));
 
     /* every screen that offers moves goes through this one helper, so the fix
        reaches all of them - assert that nothing reads the table directly */
     const code = source();
     const direct = (code.match(/C\.LEARN\[/g) || []).length;
-    check("solo learnset() lee la tabla (3 lecturas, todas suyas)", direct, 3);
+    check("only learnset() reads the table (3 reads, all its own)", direct, 3);
   });
 
-  check("la pagina no reporta errores de script", errs.join(" | ") || "ninguno", "ninguno");
+  check("the page reports no script error", errs.join(" | ") || "none", "none");
 })();
