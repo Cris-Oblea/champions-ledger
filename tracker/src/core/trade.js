@@ -42,8 +42,8 @@ function gtsDiff(name){
           usage:d[5], size:d[6] || 0};
 }
 /* A rank with no denominator is half a fact - #224 means nothing until you
-   know the ladder is 324 long. And an ABSENT row is not rank 324: the
-   snapshot is Regulation M-B and M-C added species that have no row at all. */
+   know the ladder is 324 long. And an ABSENT row is not rank 324: a species
+   a new regulation just added has no row at all. */
 function ladderText(d){
   if (!d) return "";
   /* Do NOT name the regulation here. This string said "M-B" and the ladder
