@@ -23,13 +23,10 @@ tracker/index.html
 tracker/src/_*.js
 tracker/build/
 tracker/champions-ledger.zip
-# The seed is GENERATED from inventory/*.json by build_supabase_migration.py,
-# and it is a frozen copy of the live ledger: every Pokemon, every build. Once
-# Supabase holds the data, a copy in git is a snapshot that drifts from the
-# truth and carries personal data for no reason (player, 2026-09-13: "no seria
-# mejor borrarlo ya que mis datos de usuario estan en supabase?"). Regenerate
-# it when a fresh project needs seeding; do not version the output. Same rule
-# the built page already follows.
+# A seed is a frozen copy of the live ledger: every Pokemon, every build. A
+# copy in git drifts from the truth and puts personal data in a public repo, so
+# nothing writes one any more (a fresh project is restored from a backup
+# snapshot). Still ignored so an old local copy is never committed.
 tracker/supabase_seed.sql
 # Supabase CLI scratch state: per-machine, rewritten by every CLI version, and
 # it carries the project and organisation ids for no benefit. Nothing reads it

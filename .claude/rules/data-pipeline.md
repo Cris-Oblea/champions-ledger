@@ -145,11 +145,11 @@ never an older game's text.
 - **A Mega's stone is not findable by name prefix alone.** "Dragon Fang" beats
   "Dragoninite" for Dragonite and "Sharp Beak" beats "Sharpedonite" for
   Sharpedo. `stone_for()` filters on the `is_mega_stone` flag first; the mapping
-  is 1:1 over all 81 Megas and 81 stones, and that invariant is worth re-checking
-  after a regulation adds more.
+  is 1:1 over every Mega and stone (`audit_lookups.py` asserts it), and that
+  invariant is worth re-checking after a regulation adds more.
 - Run `python scripts/audit_forms.py` after any parser change, and
-  `python scripts/test_norm.py` after touching `norm()`. The test locks in 44
-  name groups that must collapse and 21 pairs that must stay apart.
+  `python scripts/test_norm.py` after touching `norm()`. The test locks in the
+  name groups that must collapse and the pairs that must stay apart.
 
 ## The watchlist
 

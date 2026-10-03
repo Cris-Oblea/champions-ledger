@@ -82,16 +82,16 @@ rental, both Champions origin); arriving from HOME is a MOVE, made from the
 HOME row's "Send to Champions", which sets HOME origin and carries the record
 across rather than writing a second one. Adding a HOME-origin Pokemon straight
 into the Champions Box was possible and was removed - it left the HOME copy in
-place, the same duplicate the GTS trade used to leave. `_origin_rule`'s "ASK rather than guessing"
+place, the same duplicate the GTS trade used to leave. "Ask rather than guess the origin"
 is now enforced by the app instead of being a note. A leftover `unknown` from
 before that is counted as Champions origin and flagged on screen, never hidden.
 
 **"Permanent" is the wrong word and the app no longer uses it (player,
-2026-09-09).** What matters is ORIGIN, exactly as `_origin_rule` in
-inventory.json says: HOME origin can be parked back to HOME and recalled with
-the training intact, so the slot is elastic; Champions origin came out of an
-Encounter and can never leave the box. The app records this per Pokemon into
-`_origin_of`, and `unknown` means **not asked yet** — never read it as
+2026-09-09).** What matters is ORIGIN: HOME origin can be parked back to
+HOME and recalled with the training intact, so the slot is elastic; Champions
+origin came out of an Encounter and can never leave the box. The app records
+it per Pokemon in the box table's `origin` column, and `unknown` means **not
+asked yet** — never read it as
 Champions origin when advising.
 
 **Never put a `service_role` / `sb_secret_` key in `tracker/config.local.json`

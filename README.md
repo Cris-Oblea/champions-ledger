@@ -93,7 +93,7 @@ so it draws that form and the one ability it runs - not the species' other
 options, and not a Mega line the set does not use.
 
 **And a species with ONE ability never chose it.** Aegislash is Stance Change,
-Clawitzer is Mega Launcher, and every one of the 81 Megas is a single line, so
+Clawitzer is Mega Launcher, and every Mega is a single line, so
 the build carries that ability whether or not anyone ever touched the control -
 on the card, on the move rows it boosts, and in the calculator. Where the
 species really does offer two or three, the choice stays open, the editor says
@@ -108,12 +108,12 @@ in `scripts/effect_chips.py` from the engine's own 4096ths and Smogon's words,
 and once the sentence became Smogon's full text they said the same numbers a
 second time. So a chip now survives only if the description does **not** state
 its number, in any unit — "halves" is x0.5, "by 50%" is x0.5, 1.3× is +30% —
-and today, measured over all 390 entries, none does: every multiplier the engine
+and today, measured over every entry, none does: every multiplier the engine
 measures is already in the text. The day one disagrees, its chip comes back on
 its own. The exact 4096ths stays in `data/db/effects.json`.
 
-**A Mega lives on its base Pokemon's row.** The search listed all 345 forms,
-81 of which are Megas — a fifth of every page was a Pokemon you cannot own,
+**A Mega lives on its base Pokemon's row.** The search used to list every form,
+Megas included — a fifth of every page was a Pokemon you cannot own,
 because a Mega only exists mid-battle and only while a stone is held. It is not
 a thing you store, so it is not a thing you browse: it is a fact *about* the
 Pokemon you store. **264 rows instead of 345**, and three things survive the
@@ -254,8 +254,8 @@ makes that a nearest-neighbour upscale with hard square edges. That is what
 
 **A filter chip has three states, not two.** A tap includes, the next rules
 out, the third clears — so **"Trick Room, but nothing Psychic"** is one query
-instead of an impossible one: 46 Pokemon learn it, 27 are Psychic, and ruling
-that out leaves 19. It is in the **Find tab's type filter**, which is where the
+instead of an impossible one: more than half the Pokemon that learn it are
+Psychic, and ruling them out leaves the rest. It is in the **Find tab's type filter**, which is where the
 question gets asked, and in the move filters as well. An excluded chip is struck through with a minus
 rather than shaded, because it has to read as the opposite of the chip beside
 it. And the **category** group picks one at a time: a move has exactly one of
@@ -272,7 +272,7 @@ leave. Verified in Edge on a clean tab, including the last part: an app that
 cannot be left would be worse than the bug.
 
 **Choosing which Pokemon a build is for is a search, not a scroll.** It was a
-`<select>` of 264 forms in one alphabetical run with no way to look inside it.
+`<select>` of every form in one alphabetical run with no way to look inside it.
 It is a field you tap now, opening the same kind of sheet the GTS and the
 calculator use: a search box that matches the **name, either type, or the dex
 number**, the app's usual sorts, and the same card as everywhere else. The
@@ -392,22 +392,22 @@ whether you want it. So the app carries **every** species, **every** move and
 **every** ability, and the *not in Champions* tag is what says a thing cannot
 be played yet.
 
-Three parts fill that in for the 933 species the game has not added: their
+Three parts fill that in for every species the game has not added: their
 **movepools**, the **move rows** the app does not ship, and the **ability text**
 Champions has no entry for. Only the last is main-series — the moves were ours
-all along. `data/db/moves.json` holds 901 moves of which 512 are useable, and
-388 of the other 389 carry a full Champions row; they were never missing, just
+all along. `data/db/moves.json` holds every move, useable or not, and
+nearly all of the ones Champions does not allow carry a full Champions row; they were never missing, just
 not sent to the phone, because the pickers draw from that list and a build made
 of a disabled move would be an illegal build the app helped write. They are
-shown here, marked. 503 KB, so it is its own hashed asset, fetched the first
+shown here, marked. It is a large payload, so it is its own hashed asset, fetched the first
 time one of those sheets is opened and never otherwise.
 
 **Every move, ability and item says what it does, whole, and from
 Champions.** Serebii names a mechanic ("Gives the target the Octolocked and
 Can't Escape statuses") where Smogon's dex page defines it: the target cannot
 switch, loses 1 Def and 1 SpD every turn, can still leave with Shed Shell or a
-pivot, and is freed when either side leaves. So all 512 moves, 215 of the 216
-abilities and every holdable item carry Smogon's full description, uncut, as
+pivot, and is freed when either side leaves. So every useable move, nearly every
+ability and every holdable item carry Smogon's full description, uncut, as
 their **one** description, from its **Champions** dex and never an older game's —
 Serebii and Smogon both keep one page per move per game, and a move reads
 differently between them: Freeze-Dry freezes in Scarlet/Violet and not here.
@@ -481,7 +481,7 @@ too.
 species the game does not have, and those rows used to be a name and a "not in
 the Champions dex" tag with nothing else - no types, no BST, no stats, no
 ability - which is no help at all on the one screen where you decide what to
-keep. `scripts/fetch_home_dex.py` fills them in for 920 species from PokeAPI's
+keep. `scripts/fetch_home_dex.py` fills them in for every one of them from PokeAPI's
 own tables, read at a pinned commit. The tag stays, and the card says plainly
 that these are main-series numbers: Champions publishes none for them, so there
 is nothing of ours to contradict - and nothing of theirs is ever used for a
@@ -725,6 +725,9 @@ scripts/     fetchers, the database build, the query CLI, the damage calculator
 data/db/     the built database - the thing everything else reads
 data/meta/   usage, tournaments, speed tiers, written analyses
 tracker/     the app: a shell, its ES modules under src/, and a generated data blob
+supabase/    the ledger's schema and migrations
+cron/        the Cloudflare Worker that starts the nightly refresh on time
+docs/        ARCHITECTURE.md: how the code fits together, for a person learning it
 <!-- TESTS:START -->
 tests/       twenty-eight browser tests, run against the BUILT page
 <!-- TESTS:END -->

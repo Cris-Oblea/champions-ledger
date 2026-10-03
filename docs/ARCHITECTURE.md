@@ -3,7 +3,8 @@
 This is the engineer's map of the repo. `README.md` says **what** the app is;
 this file says **how** it is built, so you can open any file in VS Code and
 know where it sits in the whole. Read it top to bottom once, then use it as an
-index.
+index: §14 goes from a screen or a symptom to the files behind it, and §15
+lists every tool the project is built with.
 
 Every path below is clickable in VS Code (Ctrl+click). When this file and the
 code disagree, the code wins; fix this file in the same PR.
@@ -46,7 +47,7 @@ public because it carries no personal row.
 | Layer | Technology | Where | Why this and not something else |
 |---|---|---|---|
 | UI | **Vanilla JavaScript** (ES modules), HTML, CSS. No framework | `tracker/src/` | One user, one page. The DOM API is enough, and there is no framework version to keep up with |
-| Module linking | **esbuild** (pinned in `package-lock.json`) | `scripts/build_tracker_page.py` | Turns twelve modules into one script plus a sourcemap. The browser tests run in jsdom, which cannot load module scripts |
+| Module linking | **esbuild** (pinned in `package-lock.json`) | `scripts/build_tracker_page.py` | Links the modules into one script plus a sourcemap. The browser tests run in jsdom, which cannot load module scripts |
 | Database | **Supabase**: PostgreSQL, with PostgREST as the HTTP API, Auth for the login and Realtime for live updates | `supabase/supabase_schema.sql`, `supabase/supabase_migrate_*.sql` | Free hosted Postgres with login and row-level security built in |
 | DB client | **supabase-js** (`@supabase/supabase-js`), inlined from `node_modules` (not a CDN) | `package.json` | A CDN would be a third party inside a page that holds the ledger |
 | Hosting | **Cloudflare Workers**, static assets only | `tracker/wrangler.toml` → `tracker/dist/` | Free, fast, and the served folder is only `dist/`, so nothing private can leak |
@@ -56,7 +57,7 @@ public because it carries no personal row.
 | Tests | **Node + jsdom** browser tests; **ESLint** with **globals**, **eslint-plugin-sonarjs** and **eslint-plugin-unicorn** for the JavaScript; **stylelint** with **stylelint-config-standard** for the CSS; **html-validate** for the markup; **ruff** and **vulture** for the Python; **knip** for exports, files and packages nothing reaches; **jscpd** for copy-paste in all of them; Python audits | `tests/`, `eslint.config.mjs`, `stylelint.config.mjs`, `.htmlvalidate.mjs`, `ruff.toml`, `knip.jsonc`, `.jscpd.json`, `scripts/check_app.js`, `scripts/audit_*.py` | Tests run against the *built* page, which is the thing that ships |
 | CI/CD | **GitHub Actions**, a GitHub App bot, **Dependabot**, a git `pre-push` hook | `.github/`, `scripts/hooks/pre-push` | Nothing reaches the phone without passing the gate |
 | Fonts / sprites | Google Fonts (IBM Plex), Pokemon sprites from a CDN at a pinned commit | `tracker/index.template.html`, `spriteFor()` in `tracker/src/ui/card.js` | Sprites are Nintendo's images, so the repo ships only their ids |
-| Dev tools | Supabase CLI, `npx wrangler`, `gh`, graphify | your machine | Reading the DB, deploying the cron, PRs, the code map |
+| Dev tools | Supabase CLI, `npx wrangler`, `gh`, graphify, VS Code, Claude Code | your machine | Reading the DB, deploying the cron, PRs, the code map. Every one is in §15 |
 
 **Languages, in order of how much of the repo they are:** JavaScript, Python,
 CSS, SQL, HTML, YAML (workflows), TOML (Cloudflare config), Markdown.
@@ -67,15 +68,18 @@ CSS, SQL, HTML, YAML (workflows), TOML (Cloudflare config), Markdown.
 
 ```
 tracker/src/       THE APP. The only frontend code you edit.
-tracker/           Its shell, generated payloads, SQL schema + migrations, icons
+tracker/           Its shell, generated payloads, the Cloudflare config, icons
 tracker/dist/      Generated deploy folder (gitignored). Never edit.
+supabase/          The ledger's SQL: the schema and the numbered migrations
 scripts/           Python pipeline, build scripts, the gate, the CLIs
 data/db/           The built database (JSON). Everything reads this
 data/meta/         Usage, tournaments, speed tiers, Smogon analyses
 data/raw/          Fetched HTML/JSON cache, 195 MB, gitignored
 tests/             Browser tests (Node + jsdom) against the built page
 cron/              The Cloudflare cron Worker
+docs/              This file
 .github/           Workflows and Dependabot
+.vscode/           Editor settings and the recommended extensions
 analysis/          Write-ups and investigations; history.md = session log
 .claude/           Rules and the game skill for Claude Code sessions
 ```
@@ -155,7 +159,7 @@ Each file opens with a comment saying what it is for.
 | `tabs/box.js` | Champions box and HOME box: rows, adding, a row's sheet, duplicates, the dex checklist | `pokeRow`, `pokeSheet`, `addSheet` |
 | `tabs/builds.js` | The builds list and the build editor | `buildSheet`, `buildRow` |
 | `tabs/teams.js` | The teams list and the team editor; the Item Clause | `drawTeams`, `teamSheet` |
-| `tabs/gear.js` | The Items tab: stones, held items, statuses | `drawStones`, `drawItems` |
+| `tabs/gear.js` | The Items tab (Mega Stones, held items) and the status-effects fold in the Damage tab | `drawStones`, `drawItems`, `wireStatusFold` |
 | `tabs/gts.js` | GTS offers: the slots, their history, the deposit and close sheet | `drawGts`, `gtsPickMine` |
 | `tabs/trading.js` | "Worth trading": what each Pokemon you could let go can fetch | `drawGtsWanted` |
 | `tabs/damage.js` | The Damage tab: Smogon's engine and the calculator around it | `calcDraw`, `engineCalc` |
@@ -268,6 +272,8 @@ They fall into four families:
 | **build_** | `build_db` (the core: species, moves, abilities, items), `build_typechart`, `build_effects`, `build_text_facts`, `build_statuses`, `build_ability_moves`, `build_item_facts`, `build_item_links`, `build_gts_difficulty`, `build_type_colors` | Parse the raw pages into the JSON in `data/db/` and `data/meta/` |
 | **audit_ / test_** | `audit_forms`, `audit_sources`, `audit_lookups`, `audit_learnsets`, `audit_abilities`, `test_norm`, `damage.py --selftest` | Cross-check sources against each other. A failure stops the run |
 | **build_ for the page** | `build_tracker_data`, `build_splits_data`, `build_analysis_data`, `build_outside_dex`, `build_engine_bundle`, `build_docs`, `build_tracker_page` | Turn `data/` into what the phone downloads, then build the page |
+| **shared helpers** | `paths`, `dex`, `net`, `serebii_text` (Serebii's cp1252 and its double-encoded spans), `effect_chips` (what a number in an effect governs) | Imported by the stages; none runs a stage of its own |
+| **tools run by hand** | `diff_db` (what a rebuild changed, field by field, against git), `measure_modifiers` + `probe_modifiers.js` (each combat multiplier measured through the engine), `ledger`, `backup_ledger`, `migrate`, `preview` | Questions and chores outside the nightly chain |
 
 **Name matching** is the hard part of joining five sources ("Mr. Mime",
 `mr-mime`, "Mr Mime"). Everything goes through `norm()` in `scripts/dex.py`,
@@ -382,7 +388,7 @@ node tests/teamtest.js
 |---|---|---|---|
 | Nightly refresh | `.github/workflows/daily.yml` | 05:07 Chile, with retries; started on time by the cron Worker | Refreshes every source and runs the gate. If anything moved, it opens a PR as the bot, and the PR merges itself once green |
 | Gate and publish | `.github/workflows/push.yml` | Every PR and every push to `main` | Runs `daily.py --no-refresh`: the gate on a PR, the gate followed by `wrangler deploy` on `main` |
-| Backup | `.github/workflows/backup.yml` | Nightly | Snapshots every table to a separate private repo |
+| Backup | `.github/workflows/backup.yml` | Nightly | Runs `scripts/backup_ledger.py`: snapshots every table to a separate private repo |
 | Cron Worker | `cron/src/cron.js` | 08:07 UTC | Signs a JWT as the GitHub App, gets a token, and dispatches the daily workflow |
 | Dependabot | `.github/dependabot.yml` | Daily | Opens PRs for the pinned actions, the npm packages and `requirements.txt` |
 | Dependabot auto-merge | `.github/workflows/dependabot.yml` | Every Dependabot PR | Turns on auto-merge, so the bump merges itself once `gate` is green. Node, Python and the Supabase CLI float to their newest release instead, because Dependabot cannot see them |
@@ -502,3 +508,129 @@ Do each one on a branch, and throw the branch away afterwards.
    what you think it changes. Then compare with the description.
 5. **Follow a build down to the row.** Save a build, then run
    `supabase db query "select id, pokemon, moves from builds order by updated_at desc limit 1" --linked`.
+
+---
+
+## 14. Where to look
+
+### From a screen to its files
+
+Every tab is one `<section>` in `markup/`, drawn by one file in `tabs/`, with
+its styles in the files named here. Paths are under `tracker/src/`.
+
+| On screen | Markup | Drawn by | Rules it asks | Styles |
+|---|---|---|---|---|
+| **Champs** tab: the Champions box, "Already in HOME" | `markup/box.html` | `tabs/box.js` | `core/state.js` (origin, the release floor) | `styles/lists.css` |
+| **HOME** tab: the HOME box | `markup/home.html` (`homePaneBox`) | `tabs/box.js` | `core/state.js` | `styles/lists.css` |
+| **HOME** tab: GTS offers and their history | `markup/home.html` (`homePaneGts`) | `tabs/gts.js` | `core/trade.js` | `styles/gts.css` |
+| **HOME** tab: "Worth trading" | `markup/home.html` | `tabs/trading.js` | `core/trade.js` (`chipValue`) | `styles/gts.css` |
+| **HOME** tab: the dex checklist | `markup/home.html` (`homePaneDex`) | `tabs/box.js` | `core/data.js` | `styles/lists.css` |
+| **Builds** tab and the build editor | `markup/builds.html` (`v-builds`, `v-buildedit`) | `tabs/builds.js` | `core/build.js` (SP, VP cost), `ui/moves.js` (the move picker) | `styles/sheet.css`, `styles/controls.css` |
+| **Teams** (a pane of Builds) and the team editor | `markup/builds.html` (`v-teamedit`) | `tabs/teams.js` | `core/team.js` (the clauses, Speed, weaknesses) | `styles/lists.css` |
+| **Damage Calc.** tab | `markup/damage.html` | `tabs/damage.js` | Smogon's engine, `tracker/engine.bundle.js` | `styles/damage.css` |
+| **Find** tab | `markup/find.html` | `tabs/find.js` | `ui/moves.js` (`moveFilters`) | `styles/controls.css` |
+| **Find** tab, Worlds mode | `markup/find.html` | `tabs/worlds.js` | `C.WORLDS` in `core/data.js` (from `fetch_worlds_archive.py`) | `styles/lists.css` |
+| **Damage Calc.**, the status-effects fold | `markup/damage.html` (`statusFold`) | `tabs/gear.js` (`drawStatuses`) | `C.STATUSES` in `core/data.js` | `styles/lists.css` |
+| **Items** tab: Mega Stones and items | `markup/gear.html` | `tabs/gear.js` | `core/data.js` | `styles/lists.css` |
+| **Settings** tab and Diagnostics | `markup/settings.html` | `tabs/settings.js` | `core/errors.js` | `styles/misc.css` |
+| A Pokemon's card, anywhere | none, it is built in script | `ui/card.js` (`pokeCard`) | `core/data.js` | `styles/card.css` |
+| A Pokemon's full sheet, Smogon's analysis | none | `ui/pokemon.js` | `core/assets.js` | `styles/sheet.css` |
+| The tab bar, the sheet, the confirm, Back | `markup/index.html` | `ui/nav.js` | none | `styles/shell.css`, `styles/sheet.css`, `styles/dialogs.css` |
+| The sign-in gate | `markup/index.html` | `ui/signin.js` | `core/store.js` | `styles/shell.css` |
+| Colours, the dark theme | none | none | none | `styles/tokens.css` |
+| Tap-target sizes on a phone | none | none | none | `styles/density.css` |
+
+The tab ids are older than some labels: Champs is `box`, Damage Calc. is
+`calc`, Items is `gear` and Settings is `trainer` (`TABS` in `ui/nav.js`).
+
+### From a symptom to the cause
+
+| Symptom | Where it comes from | First thing to run |
+|---|---|---|
+| A number about the game is wrong (a stat, a move's BP, an effect text) | The data, not the app: `data/db/`, built by `scripts/build_db.py` from Serebii, shipped as `tracker/data.js` by `scripts/build_tracker_data.py` | `python scripts/query.py move "<move>"` or `brief <pokemon>` |
+| A damage range is wrong | Smogon's engine, the same in the page and the terminal | `python scripts/damage.py ...`; if the page disagrees, `node tests/pagetest.js`, then `python scripts/build_engine_bundle.py` |
+| A usage percentage looks wrong | `scripts/fetch_pokebase.py` / `fetch_pokebase_splits.py`, read by `build_splits_data.py` | `python scripts/build_splits_data.py --check` |
+| An ability badge on a move is wrong or missing | `scripts/build_ability_moves.py` (`RULES`, `STOP_WHOSE`), drawn by `abilityTag` in `ui/moves.js` | `python scripts/build_ability_moves.py --audit` |
+| A form or a name does not join across sources | `norm()` in `scripts/dex.py` | `python scripts/test_norm.py`, `python scripts/audit_forms.py` |
+| A Pokemon has no movepool, or another form's | `learnset()` in `core/data.js`; the attackdex cache on a new regulation | `python scripts/audit_lookups.py`, `node tests/learnsettest.js` |
+| A save did not stick, or one device undid another | `core/store.js` (`put`, `putNew`, `patch`), the table's RLS and migrations in `supabase/` | `supabase db query "select ..." --linked` |
+| The page throws on the phone | The line the sourcemap names | Settings > Diagnostics, then the Sources panel in DevTools |
+| A layout breaks at one width or in one browser | `styles/`, often `density.css` or `card.css` | `python scripts/preview.py`, then Edge and Waterfox |
+| Something is painted on top of something else | The overlap sweep in Settings > Diagnostics | `node tests/overlaptest.js` for the algorithm |
+| The nightly refresh did not run | `cron/src/cron.js` starts `.github/workflows/daily.yml` | `gh run list --workflow daily.yml` |
+| A README count is wrong | `scripts/build_docs.py` writes them | `python scripts/build_docs.py` |
+| The gate fails on a doc | `scripts/check_docs.py` (`DECISIONS`, `BUDGETS`, `check_architecture`) | `python scripts/check_docs.py` |
+
+---
+
+## 15. Every tool the project is built with
+
+What each tool is for and where its configuration lives. Versions are pinned
+in `package.json`, `requirements.txt` and the workflows, never typed here.
+
+### Languages
+
+| Tool | For | Where |
+|---|---|---|
+| **JavaScript** (ES modules, no framework) | The app, the cron Worker, the tests, two checks | `tracker/src/`, `cron/src/`, `tests/`, `scripts/check_app.js` |
+| **Python 3**, standard library only | The data pipeline, the CLIs, the gate | `scripts/` |
+| **CSS** and **HTML** | The app's styles and screens | `tracker/src/styles/`, `tracker/src/markup/` |
+| **SQL** (PostgreSQL) | The ledger's schema, policies and migrations | `supabase/` |
+| **TypeScript** | Only Smogon's calculator, copied from upstream and bundled | `data/raw/smogon_calc/` |
+| **YAML**, **TOML**, **JSONC** | Workflows, Cloudflare config, tool config | `.github/`, `*/wrangler.toml`, `knip.jsonc` |
+
+### What runs in the page
+
+| Tool | For | Where |
+|---|---|---|
+| **supabase-js** | Sign-in, every read and write, Realtime | `package.json`, inlined by the build from `node_modules` |
+| **Smogon's damage-calc** | Every damage number | `tracker/engine.bundle.js`, written by `scripts/build_engine_bundle.py` |
+| **Google Fonts** (IBM Plex) and sprites at a pinned commit | Type and pictures | `tracker/index.template.html`, `spriteFor()` in `ui/card.js` |
+
+### Building and shipping
+
+| Tool | For | Where |
+|---|---|---|
+| **esbuild** | Links the modules into one script plus a sourcemap; bundles Smogon's engine | `scripts/build_tracker_page.py`, `scripts/build_engine_bundle.py` |
+| **npm** (`npm ci`) | Installs exactly what `package-lock.json` says | `package.json` |
+| **Cloudflare Workers** + **wrangler** | Hosts `tracker/dist/`; runs the cron Worker | `tracker/wrangler.toml`, `cron/wrangler.toml`; `npx wrangler deploy` from `daily.py` |
+| **Supabase** (Postgres, PostgREST, Auth, Realtime) | The ledger | `supabase/` |
+| **Supabase CLI** | Reads the ledger from the terminal, runs migrations, the backup's dump | `scripts/ledger.py`, `scripts/migrate.py`, `.github/workflows/backup.yml` |
+
+### The gate
+
+| Tool | Checks | Config |
+|---|---|---|
+| **ESLint** + `globals`, `eslint-plugin-sonarjs`, `eslint-plugin-unicorn` | All JavaScript: undeclared names, layer climbs, size, the Sonar rules | `eslint.config.mjs` |
+| **stylelint** + `stylelint-config-standard` | The CSS | `stylelint.config.mjs` |
+| **html-validate** | The markup | `.htmlvalidate.mjs` |
+| **ruff** | All Python, the same way ESLint does JavaScript | `ruff.toml`, `requirements.txt` |
+| **vulture** | Python code nothing reaches, across files | `requirements.txt` |
+| **knip** | Exports, files and npm packages nothing reaches | `knip.jsonc` |
+| **jscpd** | Copy-paste, every language at once | `.jscpd.json` |
+| **`check_app.js`**, **`check_docs.py`**, **`build_docs.py --check`** | What no linter sees: ids against markup, the doc rules, the README's counts | `scripts/` |
+| **node:test** + **jsdom** | The browser tests against the built page | `tests/` |
+| The **audits** | Sources against each other | `scripts/audit_*.py`, `test_norm.py`, `damage.py --selftest` |
+
+`python scripts/daily.py` runs all of it; the `pre-push` hook
+(`scripts/hooks/pre-push`) and every workflow call it.
+
+### Automation
+
+| Tool | For | Where |
+|---|---|---|
+| **GitHub Actions** | The gate on every PR, deploy on merge, the nightly refresh, the backup | `.github/workflows/` |
+| A **GitHub App** | The bot that opens and merges the nightly PR, and that the cron Worker signs in as | `daily.yml`, `cron/src/cron.js` |
+| **Dependabot** | Daily bumps of the actions, npm packages and `requirements.txt`, merged once green | `.github/dependabot.yml`, `.github/workflows/dependabot.yml` |
+| **gh** (GitHub CLI) | Pull requests, merges, workflow runs from the terminal | your machine |
+
+### Working on it
+
+| Tool | For | Where |
+|---|---|---|
+| **VS Code** | The editor. One extension per tool above, so each check shows in the Problems panel as the gate would report it | `.vscode/settings.json`, `.vscode/extensions.json`, §11 |
+| **Code Spell Checker** (cspell) | Spelling, with the project's own word list | `cspell.json`, `.cspell-words.txt` |
+| **`preview.py`** | The phone, laptop and desktop widths side by side in one real browser | `scripts/preview.py` |
+| **Edge** and **Waterfox** | Visual checks in both engines: Chromium and Firefox paint some things differently (`tests/tintdirtest.js` exists for one) | your machine |
+| **Claude Code** | Writes and reviews most changes. Its rules load per directory, the game rules are a skill, and two hooks lint each edit and check each doc as it is written | `CLAUDE.md`, `.claude/rules/`, `.claude/skills/`, `.claude/settings.json`, `scripts/hooks/lint-on-edit.js` |
+| **graphify** | A knowledge graph of the code and docs, for "what depends on X" questions | `graphify-out/` (gitignored), `.graphifyignore` |
