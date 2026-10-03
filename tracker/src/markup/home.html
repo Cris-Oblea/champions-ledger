@@ -10,11 +10,9 @@
       </div>
       <!-- THREE THINGS LIVE IN HOME AND THEY ARE ASKED AT DIFFERENT TIMES:
            what is parked there, what is out on the GTS, and what is still
-           missing from the dex. They were one scroll, so the checklist would
-           have opened under a 170-row box (player, 2026-09-20: "podria ser
-           algun submenu o algo que me indique los pokemones con prioridad de
-           captura o intercambio"). A segmented control rather than an eighth
-           tab: the bar was measured at its limit with seven. -->
+           missing from the dex. One scroll would bury the checklist under the
+           whole box, so they are three panes. A segmented control rather than
+           an eighth tab: the bar was measured at its limit with seven. -->
       <fieldset class="seg homeseg" aria-label="What to look at">
         <button data-home="box" aria-pressed="true">HOME box</button>
         <button data-home="gts" aria-pressed="false">GTS</button>
@@ -31,17 +29,14 @@
         <button class="btn sm" id="gtsAdd">Log an offer</button>
       </div>
 
-      <!-- WHAT TO ASK FOR, AND WITH WHAT. The Champions box is already a
-           screen; what it cannot say is which of your spares would buy one of
-           the species welded into it (player, 2026-09-21: "el listado de
-           champions se puede usar como recomendaciones de cambio en el gts.
-           eso quedaria mucho mejor"). -->
+      <!-- WHAT TO ASK FOR, AND WITH WHAT: which of your spares could buy what
+           (tabs/trading.js) - including a HOME copy of a species welded into
+           the Champions box, which frees its slot. -->
       <h2>Worth trading <span class="n" id="nGtsWant"></span></h2>
       <p class="sub" id="gtsWantSub"></p>
-      <!-- The question he actually opens this for: "de esos que no puedo usar
-           cambiarlos por pokemones usables en champions". The unusable ones
-           lead the list anyway, but with 44 chips a filter is the difference
-           between reading and scrolling. -->
+      <!-- The first question asked here is "what can I trade away that I
+           cannot use". Those already lead the list; the filter is the
+           difference between reading and scrolling. -->
       <fieldset class="seg wantseg" id="gtsWantFilter"
            aria-label="Which of your Pokemon to offer">
         <button data-want="all" aria-pressed="true">All</button>
@@ -53,12 +48,11 @@
       </div>
       <div class="list cards" id="listGtsWant"></div>
       <div class="btnrow" id="gtsWantMore"></div>
-      <!-- Closed trades are the only real evidence of what the market pays.
-           The player's own pricing rule came from remembering five of them. -->
-      <!-- Collapsed. There are 21 closed trades already and the list only
-           grows; left open it buried the HOME box under a wall of history
-           you rarely need open (player, 2026-09-12). The summary line is the
-           part worth seeing every time, so it stays outside the fold. -->
+      <!-- Closed trades are the only real evidence of what the market pays,
+           and the pricing rules are measured on them. COLLAPSED, because the
+           list only grows and open it would bury everything below it; the
+           summary line is the part worth seeing every time, so it stays
+           outside the fold. -->
       <div id="gtsHistWrap" hidden>
         <button class="btn sm fold" id="gtsHistToggle" aria-expanded="false"
                 aria-controls="gtsHistBody">
@@ -92,8 +86,7 @@
            The dex is finished through HOME - caught in GO where that is
            possible, traded on the GTS where it is not - and the list that
            matters is not "everything you do not have" but "what to go after
-           next" (player, 2026-09-20: "la idea es ir priorizando pokemones
-           que no tengo por al menos 1 copia por especie"). -->
+           next": one copy per species, easiest first. -->
       <div id="homePaneDex" hidden>
         <p class="lede">Every Pokemon Champions lets you own, and what is
           missing. Caught in GO and sent through HOME where that works, traded

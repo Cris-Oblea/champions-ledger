@@ -14,14 +14,15 @@ import { findDetail } from "../ui/pokemon.js";
    to prevent, so the year carries its format and the lede says "frozen".
 
    THE THREE DIVISIONS ARE NEVER POOLED. Masters, Seniors and Juniors run the
-   same roster and are three different metagames - Incineroar is 41% of the
-   Masters teams and 26% of the Juniors' - so they are tabs and there is no
-   "all" option. Masters leads because that is the division he enters.
+   same roster and are three different metagames (one Pokemon can be twice
+   as common in one as in another), so they are tabs and there is no "all"
+   option. Masters leads because that is the division he enters.
 
    Counted per TEAM, not per appearance: under the Species Clause a team holds
    a species at most once, so "52.8%" is 208 of 394 teams and not 208 slots. */
 const WORLD = {year: null, div: "masters"};
 
+/* Build the year and division rows (newest year first) and draw. */
 function worldInit(){
   const years = C.WORLDS || [];
   const yrow = $("worldYear"); yrow.innerHTML = "";
@@ -61,6 +62,7 @@ function worldInit(){
   worldDraw();
 }
 
+/* The chosen year and division: its most-brought Pokemon, ranked. */
 function worldDraw(){
   const out = $("worldOut");
   if (!out) return;
@@ -81,18 +83,13 @@ function worldDraw(){
   const list = el("div", "cards");
   d.top.forEach(function(row, i){
     const name = row[0], teams = row[1], pct = row[2];
-    /* anyRow, not byName. A Worlds list is HISTORY: 53 of the names across the
-       four championships are not in the Champions dex - the 2025 field was
-       full of Calyrex and Koraidon - and every one of them drew a bare name
-       with no types, no stats, no BST and no sheet behind it. They have all
-       three now, off the same HOME_DEX the box uses, and the sheet says where
-       the numbers came from (player, 2026-09-18: "necesito que todos si tengan
-       esa informacion"). */
+    /* anyRow, not byName: a Worlds list is HISTORY, and many of its names are
+       not in the Champions dex (earlier years ran other formats). They still
+       get a card and a sheet, off the same HOME_DEX the box uses, and the
+       sheet says where the numbers came from. */
     const p = anyRow(name);
     const mine = (name in own) || (p && p.species in own);
-    /* The Worlds list is Pokemon too, so it reads like the rest of the app -
-       the player asked for the card everywhere, not only in the search. */
-    /* Two numbers, so two cells. "24.6% - 97 of 394 teams" is a sentence you
+    /* The same card as every list. Two numbers, so two cells. "24.6% - 97 of 394 teams" is a sentence you
        read; a share and a count side by side are numbers you scan down the
        column, which is the only way a ranking gets used. */
     const cells = [

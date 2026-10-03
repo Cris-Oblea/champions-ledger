@@ -1,4 +1,6 @@
-/* The Find tab: search every Pokemon by type, ability, move and stat. */
+/* The Find tab: search every Pokemon by type, ability, move and stat, and
+   the Worlds view beside it (tabs/worlds.js). The filters live in FIND
+   (core/state.js), so they survive leaving the tab. */
 import {
   bst, byText, C, DEX, dexNo, learnset, MOVES, STAT_KEYS, STAT_LABEL,
 } from "../core/data.js";
@@ -11,37 +13,21 @@ import { findDetail } from "../ui/pokemon.js";
 import { worldInit } from "./worlds.js";
 
 /* ============================================ A MEGA LIVES ON ITS BASE ROW ==
-   The search listed all 345 forms, 81 of which are Megas, so a fifth of every
-   result page was a Pokemon you cannot own:
+   A Mega only exists mid-battle, and only because a stone is held. It is not
+   a thing you store, so it is not a result of its own - it is a fact ABOUT
+   the Pokemon you store. Three things have to survive that, or it would cost
+   more than it saves:
 
-     "en el buscador se me llena de pokemones mega, y necesito saber solo su
-      cambio de tipo, de habilidad, de stats. Solo necesito saber las cosas que
-      cambian del pokemon base a mega... los pokemones se guardan en todo lugar
-      en su forma normal y no mega."  (player, 2026-09-19)
+   1. THE QUERY. Mega Ampharos is Electric/Dragon; a search for Dragon must
+      still find Ampharos. A filter matches the base form OR any of its Megas
+      (orMega), and the card says which matched.
 
-   That is the whole argument: a Mega only exists mid-battle, and only because
-   a stone is held. It is not a thing you store, so it is not a thing you
-   browse - it is a fact ABOUT the Pokemon you store.
+   2. THE RANK. The sort reads the value the Pokemon can REACH (reach): the
+      highest across its line going down, the lowest going up - a Mega that
+      raises Speed does not help a Trick Room list, the base is what is slow.
 
-   THREE THINGS HAVE TO SURVIVE THE FOLD, or it costs more than it saves.
-
-   1. THE QUERY. Mega Ampharos is Electric/Dragon and Mega Staraptor is
-      Fighting/Flying; searching those types found them while they were rows of
-      their own, and folding them in would silently lose the answer. A filter
-      matches the base form OR any of its Megas, and the card says which.
-
-   2. THE RANK. "en el filtro de stats, por ejemplo absol, garchomp y lucario
-      deberian aparecer primero en el filtro de speed de mayor a menor, porque
-      sus formas base tienen una velocidad diferente a la mega, pero igualmente
-      los stats de la mega afectan al rank." So the sort reads the value the
-      Pokemon can REACH: the highest across the line going down, the lowest
-      going up - because a Mega that raises Speed does not help a Trick Room
-      list, and the base is what is slow.
-
-   3. WHAT CHANGES. Only that. A stat cell gains a second number when the Mega
-      moves it, the types and the ability are shown only when the stone really
-      swaps them, and a Pokemon with no Mega looks exactly as it did before. */
-/* megaLine lives in ui/card.js, with the card. */
+   3. WHAT CHANGES. The card shows the Mega's deltas, and a Pokemon with no
+      Mega looks exactly as it would otherwise. */
 /* the value this Pokemon can reach in the direction being ranked */
 function reach(p, key, dir){
   let best = statOf(p, key);
@@ -64,6 +50,7 @@ function orMega(p, fn){
    rides in the same table rather than keeping its own input. */
 const FIND_STATS = [["bst","BST"],["hp","HP"],["atk","Atk"],["def","Def"],
                   ["spa","SpA"],["spd","SpD"],["spe","Spe"]];
+/* a base stat by key, or the BST */
 function statOf(p, key){
   return key === "bst" ? bst(p) : p.b[STAT_KEYS.indexOf(key)];
 }
@@ -71,6 +58,8 @@ function statLabel(key){
   return key === "bst" ? "BST" : STAT_LABEL[key];
 }
 
+/* Redraw the chips for the active filters (each removes itself when
+   tapped), then the results. */
 function findDraw(){
   const host = $("findChips");
   host.innerHTML = "";
@@ -156,9 +145,8 @@ function findRun(){
     return;
   }
   sortFinds(hits);
-  /* A GRID once there is room for one: 345 results in a single column is
-     nineteen screens, three across is six. The class does the deciding, by
-     width, so a phone still gets one column. */
+  /* A GRID once there is room for one: the class decides by width, so a
+     phone still gets one column and a desktop three. */
   const list = el("div", "cards");
   hits.slice(0, 120).forEach(function(p){ list.appendChild(findCard(p, ctx)); });
   out.appendChild(list);
@@ -200,10 +188,9 @@ function typeAndAbility(p){
   return via;
 }
 
-/* THE NAME BOX (player: "algo que pueda buscar pokemon por simple nombre,
-   cuando quiero ver la ficha rapidamente de uno sin tener que filtrar"): the
-   name, the species, the dex number - and a Mega's name, because typing
-   "mega absol" should find the card that carries it. */
+/* THE NAME BOX, for opening one Pokemon's sheet quickly without building a
+   query: the name, the species, the dex number - and a Mega's name, because
+   typing "mega absol" should find the card that carries it. */
 function nameMatches(p, q){
   return p.name.toLowerCase().includes(q) ||
          (p.species || "").toLowerCase().includes(q) ||
@@ -235,9 +222,8 @@ function hasTheTypes(f){
     : FIND.types.every(function(t){ return f.types.includes(t); });
 }
 
-/* Every picked move, in one movepool. A MEGA SHARES ITS BASE'S MOVEPOOL ("el
-   moveset es el mismo en el base que en el mega al final"), so this is asked
-   of the base only. */
+/* Every picked move, in one movepool. A MEGA SHARES ITS BASE'S MOVEPOOL, so
+   this is asked of the base only. */
 function learnsAll(p){
   const ls = learnset(p.name);
   if (!ls) return false;
@@ -246,11 +232,9 @@ function learnsAll(p){
   return FIND.moves.every(function(n){ return have[n]; });
 }
 
-/* THE SORT IS THE TIER LIST, and it reads both ways. Descending is the speed
-   tier; ascending is the Trick Room one, which replaced a "Speed at most" box
-   that asked for a threshold nobody knows in advance. Dex order is the one
-   non-ranking answer. A stat ranks by what the Pokemon can REACH - see
-   reach(). */
+/* THE SORT IS THE TIER LIST, and it reads both ways: descending is the speed
+   tier, ascending the Trick Room one. Dex order is the one non-ranking
+   answer. A stat ranks by what the Pokemon can REACH - see reach(). */
 function sortFinds(hits){
   if (FIND.sort === "dex") {
     hits.sort(function(a, b){
@@ -266,14 +250,12 @@ function sortFinds(hits){
   });
 }
 
-/* One result, on THE card - pokeCard() in ui/card.js, because the same card
-   has to appear on every screen that shows a Pokemon (player, 2026-09-20).
-   ALL SIX STATS, ALWAYS, AND THE RANKED ONE MARKED: "si filtro por atk, de
-   mayor a menor, pero tambien quiero ver la speed, no puedes quitarme esa
-   informacion." Badged with whether he owns one, and - when a Mega is the
-   reason it matched at all - which Mega: searching Fighting finds Staraptor
-   because its Mega is Fighting/Flying, and a card showing only Normal/Flying
-   looks like a bug. */
+/* One result, on THE card (ui/card.js). ALL SIX STATS, ALWAYS, AND THE
+   RANKED ONE MARKED: ranking by one stat must not hide the others. Badged
+   with whether he owns one, and - when a Mega is the reason it matched at
+   all - which Mega: Fighting finds Staraptor because its Mega is
+   Fighting/Flying, and a card showing only Normal/Flying would look like a
+   bug. */
 function findCard(p, ctx){
   const here = (p.name in ctx.own) || (p.species in ctx.own);
   const ranking = FIND.sort !== "dex";
@@ -293,8 +275,8 @@ function findCard(p, ctx){
   });
 }
 
-/* WHICH copy he owns and how elastic it is, not the retired word
-   "permanent": a rental, or his, with its origin. */
+/* WHICH copy he owns and how elastic it is: a rental, or his, with its
+   origin - the origin is what says whether the slot can be freed. */
 function ownedTag(p){
   const rec = boxRows("champions").find(function(x){
     return x.name === p.name || x.name === p.species; });
@@ -332,9 +314,8 @@ function findInit(){
 }
 
 /* SEARCH OR WORLDS, one tap apart. They answer different questions - "who
-   matches this" and "what won that August" - and Worlds used to live below
-   345 result rows, which is the same as not being there. A segmented control
-   rather than another tab, because it belongs to Find. */
+   matches this" and "what won that August" - so each gets the whole screen.
+   A segmented control rather than another tab, because it belongs to Find. */
 function wireFindMode(){
   const mrow = $("findMode");
   Array.prototype.forEach.call(mrow.children, function(b){
@@ -372,6 +353,7 @@ function moveFilterSheet(){
   }, []);
 }
 
+/* a move row that adds a "learns" chip when tapped */
 function moveFilterRow(m){
   return moveRowFor(m, [], null, {onPick: function(){
     FIND.moves.push(m.name); closeSheet(); findDraw();
@@ -380,10 +362,8 @@ function moveFilterRow(m){
 
 /* TYPES COME IN TWO QUESTIONS, not one. "Rock AND Steel" is a dual type and
    can only ever be two; "Rock OR Steel OR Ground" is a group with no limit.
-   The sheet asks which one you mean and stays open, because picking three
-   types through three round trips was the real cost. Each chip cycles
-   OFF -> HAS IT -> HASN'T IT (player, 2026-09-19: "en el filtro de tipo esta
-   el operador logico and y or, pero falta algo que diga no"). */
+   The sheet asks which one you mean and stays open, so several types are
+   picked in one visit. Each chip cycles OFF -> HAS IT -> HASN'T IT. */
 function typeFilterSheet(){
   openSheet("Type filter", function(body){
     const note = el("p", "sub");
@@ -472,11 +452,12 @@ function paintTypeFilter(chips, note){
   }
 }
 
+/* the tag tone of an ability's kind: changes your moves / what lands on it */
 const CLS_TONE = {"moves-off": "ok", "moves-def": "warn"};
 
 /* ADD AN ABILITY: every ability, searchable by name or by what it does, and
-   sorted into ONE kind each so 215 names can be narrowed to the kind you are
-   after. The two "changes moves" kinds ARE the rule table in
+   sorted into ONE kind each so the whole list can be narrowed to the kind
+   you are after. The two "changes moves" kinds ARE the rule table in
    build_ability_moves.py, with the side each ability was given; the rest are
    read off the text by the same script, whose --audit prints every bucket. */
 function abilityFilterSheet(){
@@ -518,7 +499,7 @@ function abilityKindChips(pick, draw){
   return frow;
 }
 
-/* ALL of them that match - there are 215 in Champions, so there is no reason
+/* ALL of them that match - the list is short enough that there is no reason
    to cut, and the count counts what is drawn. */
 function drawAbilityPicks(list, count, all, pick, q){
   const CLS = C.AB_CLASS || {};

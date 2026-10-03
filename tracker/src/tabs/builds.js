@@ -26,13 +26,11 @@ import {
 import { analysisFold } from "../ui/pokemon.js";
 
 /* ==================================================================== builds */
-/* THE "TRAINED" TAG FOLLOWS THE BUILD, both ways (player, 2026-09-27):
-   "si la coloco sobre un pokemon, ese pokemon se considere entrenado, así no
-   tengo que manualmente estar tageandolos" - and, minutes later, "cuando
-   quiera desmarcar la build sobre un pokemon también el tag debería
-   desaparecer". So when a build moves from one copy to another, is unbound,
-   or is deleted, the copy it LEFT loses the tag - unless another build still
-   sits on it - and the copy it ARRIVED on gains it.
+/* THE "TRAINED" TAG FOLLOWS THE BUILD, both ways: installing a build on a
+   copy marks it trained, so he never tags them by hand. When a build moves
+   from one copy to another, is unbound, or is deleted, the copy it LEFT
+   loses the tag - unless another build still sits on it - and the copy it
+   ARRIVED on gains it.
    The manual toggle in the box sheet stays, for a copy trained with no set
    written down; this only acts on the copies a build actually moved between.
    A rental is never tagged: it cannot be trained, whatever set is written.
@@ -48,6 +46,7 @@ function setTrained(boxId, on){
   row.trained = on;
   return put("box/" + boxId, row);
 }
+/* Move the tag from the copy a build left to the copy it arrived on. */
 function syncTrained(fromId, toId, buildId){
   if ((fromId || null) === (toId || null)) return setTrained(toId, true);
   const stillCarried = fromId && buildsOn(fromId, buildId).length;
@@ -57,24 +56,16 @@ function syncTrained(fromId, toId, buildId){
   ]);
 }
 /* ------------------------------------------- choosing which Pokemon it is --
-   A <select> of 264 forms in one alphabetical run, with no way to search it:
+   A field you TAP, like the GTS pickers and the calculator's - a sheet with a
+   search box, the sorts the rest of the app offers, and the same card every
+   other list draws - because a <select> of every form cannot be searched.
+   Searching matches the name, either type, or the dex number: the three
+   things anyone knows about a Pokemon they are looking for.
 
-     "el selector de pokemon en el apartado de builds al crear una nueva build
-      me muestra un listado sin filtro por nombre ni dex ni nada, es solo un
-      box con opciones, necesito buscar rapidamente entre los pokemones
-      disponibles del juego, y no buscar manualmente en una lista."
-      (player, 2026-09-18)
-
-   So it is a field you TAP, like the GTS pickers and the calculator's - a
-   sheet with a search box, the sorts the rest of the app offers, and the same
-   card everywhere else draws. Searching matches the name, either type, or the
-   dex number, because those are the three things anyone knows about a Pokemon
-   they are looking for.
-
-   The WHOLE dex, still. A set for a Pokemon he has not got yet is an idea
-   worth keeping until he has it (2026-09-13), so "in your boxes" is a filter
-   and never a limit - and the ones he owns are marked rather than the ones he
-   does not, which is the shorter list to read. */
+   The WHOLE dex. A set for a Pokemon he has not got yet is an idea worth
+   keeping, so "in your boxes" is a filter and never a limit - and the ones
+   he owns are marked rather than the ones he does not, the shorter list to
+   read. */
 function speciesSheet(onPick){
   const PS = {sort: "dex", mine: false};
   openSheet("Which Pokemon?", function(body){
@@ -159,6 +150,7 @@ function speciesSheet(onPick){
   }, []);
 }
 
+/* One build in the list: the card of the form it runs, with its state. */
 function buildRow(id, b){
   const p = byName[b.mega || b.pokemon] || byName[b.pokemon];
   const lk = buildLink(id);
@@ -206,8 +198,7 @@ function buildRow(id, b){
      is on it, the Mega's own types, BST and spread and the ability it runs as
      a Mega; if not, the base form and the ability it runs as a base. No
      "possible" list, no other Mega line, no deltas to a form this set does
-     not use (player, 2026-09-20: "si es mega o no, cual habilidad en
-     especifico tiene la build, porque se ve muy desordenado").
+     not use.
 
      `p` is already the right row - byName[b.mega] when there is a stone - so
      the only thing left is to stop the card offering the species' options
@@ -231,11 +222,9 @@ function buildRow(id, b){
 
 /* A <select> REORDERED by what this Pokemon's players run.
 
-   A dropdown of 25 natures in alphabetical order makes the player read all 25
-   to find the two that anyone actually picks; sorting it by usage puts those
-   two at the top and costs nothing, because the whole list is still there
-   (player, 2026-09-15: "lo mismo para las naturalezas debe ordenarse por % de
-   uso... lo mismo para las habilidades").
+   A dropdown of 25 natures in alphabetical order makes him read all 25 to
+   find the two anyone picks; sorting by usage puts those two on top and
+   costs nothing, because the whole list is still there.
 
    ANYTHING THE TABLE DOES NOT LIST KEEPS ITS ORIGINAL ORDER, below the ones
    that do, and is not labelled. A nature nobody brought is not "0% popular",
@@ -284,12 +273,10 @@ function buildSheet(id, b, keepOriginal){
   draft.stat_points = draft.stat_points || {hp:0,atk:0,def:0,spa:0,spd:0,spe:0};
   draft.moves = draft.moves || [];
   /* THE ONE ABILITY A SPECIES HAS IS A FACT, NOT A CHOICE, and it belongs in
-     the build rather than only in the control that displays it. A <select> of
-     one option can never fire its own onchange, so Aegislash and Clawitzer
-     saved a null ability: no badges on their moves, nothing for the
-     calculator to model (player, 2026-09-22). Written here, BEFORE `original`
-     is snapshotted, so recording it costs no VP - he is not changing an
-     ability, he is writing down the one it has always had. */
+     the build: a <select> of one option can never fire its own onchange, so
+     without this it would save null - no badges on the moves, nothing for
+     the calculator to model. Written BEFORE `original` is snapshotted, so
+     recording it costs no VP. */
   if (!draft.ability) draft.ability = soleAbility(draft.pokemon);
   if (draft.mega && !draft.mega_ability)
     draft.mega_ability = soleAbility(draft.mega);
@@ -326,9 +313,8 @@ function buildSheet(id, b, keepOriginal){
 
 /* --- species (new builds only) -------------------------------------------
    The species first, and it is ANY form in the dex - not only what is in the
-   box. A set for a Pokemon he has not got yet is an idea worth keeping until
-   he has it, rather than one lost for want of a row to hang it on (player,
-   2026-09-13). Which copy it is installed on is a second, optional question,
+   box: a set for a Pokemon he has not got yet is an idea worth keeping.
+   Which copy it is installed on is a second, optional question,
    answered below. Returns whether a species is chosen - until one is, there
    is nothing else to edit. */
 function speciesField(body, ed){
@@ -381,17 +367,13 @@ function speciesField(body, ed){
    either box, whether or not it already carries a build - three Farigiraf
    builds is the point, and choosing between them happens in game or per team.
 
-   THE DROPDOWN IS THE ANSWER, AND THE CARD UNDER IT IS THE COPY IT NAMES
-   (player, 2026-09-28). A list of cards was tried first, so he could see "si
-   es shiny, si ya está entrenado, etc. para saber sobre qué estoy colocando
-   la build" - and it lost what the dropdown does without anyone noticing: its
-   closed face IS the current state. A list has no closed face, so its first
-   row read as the value on every build, and taking a build off meant tapping
-   a sentence nothing said was a button. So both halves, each doing what it is
-   good at: the dropdown says where the build is and is where it is changed or
-   taken off, its options carrying the badges so two copies are told apart;
-   the card of the chosen copy sits underneath with everything else, and is
-   swapped in place so the page does not jump under his thumb.
+   THE DROPDOWN IS THE ANSWER, AND THE CARD UNDER IT IS THE COPY IT NAMES. A
+   dropdown's closed face IS the current state, which a list of cards does
+   not have (its first row reads as the value). So both halves, each doing
+   what it is good at: the dropdown says where the build is and is where it
+   is changed or taken off, its options carrying enough to tell two copies
+   apart (shiny, trained, origin); the card of the chosen copy sits
+   underneath, swapped in place so the page does not jump under his thumb.
 
    Returns the copies, which the notes below need. */
 function copyField(body, ed){
@@ -404,11 +386,10 @@ function copyField(body, ed){
     const sel1 = el("select");
     sel1.appendChild(new Option("— not installed (just an idea) —", ""));
     const labels = copies.map(function(r){ return copyLabel(r, ed.id); });
-    /* TWO COPIES CAN BE THE SAME IN EVERYTHING THE LEDGER RECORDS - his two
-       Heracross are both in HOME, neither shiny nor trained, no note - and
-       two identical lines read as a bug. They are not, so the line says so,
-       rather than inventing a "copy 2" that tells nothing apart: whichever
-       he picks is the same Pokemon as far as anything here knows. */
+    /* TWO COPIES CAN BE THE SAME IN EVERYTHING THE LEDGER RECORDS, and two
+       identical lines would read as a bug. So the line says so, rather than
+       inventing a "copy 2" that tells nothing apart: whichever he picks is
+       the same Pokemon as far as anything here knows. */
     copies.forEach(function(r, i){
       const alike = labels.filter(function(t){ return t === labels[i]; }).length;
       sel1.appendChild(new Option(labels[i] +
@@ -481,10 +462,8 @@ function paintCopy(copyCard, copies, ed){
    a build parked in HOME, an orphan (with the field that re-links it), and a
    rental that nothing can be applied to.
 
-   NO NOTE WHEN HE OWNS ONE AND IT IS NOT INSTALLED. The dropdown above
-   already reads "— not installed (just an idea) —", so a paragraph saying
-   "Not installed on anything" was the same sentence twice (player,
-   2026-09-15: "ese mensaje de not installed es redudandte"). */
+   NO NOTE WHEN HE OWNS ONE AND IT IS NOT INSTALLED: the dropdown above
+   already reads "— not installed (just an idea) —". */
 function linkNotes(body, ed, copies){
   const draft = ed.draft;
   const lk = ed.id ? buildLink(ed.id) : {state:draft._boxId ? "active" : "unbound"};
@@ -603,8 +582,7 @@ function abilityAndNature(body, ed){
 }
 
 /* The base form's ability, the list REORDERED by what this Pokemon's players
-   pick - Kingambit is 98.6% Defiant, and a list of three cannot say that on
-   its own. */
+   pick - a list of three cannot say on its own that one is near-universal. */
 function abilityField(ed){
   const draft = ed.draft, p = ed.p;
   const fa = el("div", "field");
@@ -637,8 +615,7 @@ function abilityField(ed){
   return fa;
 }
 
-/* The nature, reordered the same way (90.3% Adamant on Kingambit is the
-   answer 25 alphabetical rows cannot give), and blank until he picks one: a
+/* The nature, reordered the same way, and blank until he picks one: a
    nature is 25 choices and 500 VP - it is his. */
 function natureField(ed){
   const draft = ed.draft;
@@ -659,10 +636,9 @@ function natureField(ed){
 
 /* --- what its players run ------------------------------------------------
    THE SPREADS ITS PLAYERS RUN, AND WHO THEY BRING IT WITH - SHOWN, NEVER
-   APPLIED. His rule (2026-09-15): "no quiero autollenado, solo quiero un
-   indicador de lo mas popular para armar las builds... el armado final es
-   mio." An indicator informs a decision; a button makes it. So this is text,
-   with no click and no handler - the sliders are his. */
+   APPLIED. An indicator informs a decision; a button would make it, and the
+   final build is his. So this is text, with no click and no handler - the
+   sliders are his. */
 function usageReference(body, ed){
   const draft = ed.draft;
   const sp = splitsFor(draft.pokemon);
@@ -681,7 +657,7 @@ function usageReference(body, ed){
 
 /* The six most-run spreads. A spread is [hp, atk, def, spa, spd, spe,
    percent] - six numbers in STAT_KEYS order, then its share: flat, because
-   an object per row was more than twice the bytes for 283 Pokemon. */
+   an object per row was more than twice the bytes across the whole dex. */
 function spreadRows(spreads){
   const sprow = el("div", "field");
   sprow.appendChild(el("label", "f", "SP spreads"));
@@ -700,9 +676,7 @@ function spreadRows(spreads){
 
 /* WHO IT IS BROUGHT WITH. The Item Clause makes a team six decisions that
    constrain each other, so "53.9% of the teams that brought this also
-   brought Sneasler" is the most useful line here for team building (player,
-   2026-09-15: "es super completo eso y la ayuda que brinda para armar
-   teams"). */
+   brought Sneasler" is the most useful line here for team building. */
 function teammateRow(pairs, pokemon){
   const tmrow = el("div", "field");
   tmrow.appendChild(el("label", "f", "Brought alongside"));
@@ -726,9 +700,9 @@ function smogonFold(body, pokemon){
 }
 
 /* --- stat points ---------------------------------------------------------
-   NOTHING HERE REBUILDS THE EDITOR. Dragging a slider used to be impossible
-   because oninput called redraw(), which destroyed the range element under
-   the finger on the first step. spPaint() repaints only what depends on the
+   NOTHING HERE REBUILDS THE EDITOR: a redraw() from oninput would destroy the
+   range element under the finger on the first step of a drag. spPaint()
+   repaints only what depends on the
    values. The slider, the two arrows and the typed box are three doors into
    the same setSp(), so they can never disagree with each other or with the
    draft. Returns spPaint, which buildSheet calls once the whole editor -
@@ -959,9 +933,9 @@ function paintCost(ed){
   costBox.appendChild(cn);
 }
 
-/* SAVE. The id is the build's own now, and the link to a box row lives in
-   box_id, which may be null (player, 2026-09-13: three different Farigiraf,
-   and a set for a Pokemon he has not got yet). A NEW build asks the database
+/* SAVE. The id is the build's own, and the link to a box row lives in
+   box_id, which may be null (several builds per species, and sets for
+   Pokemon he has not got yet). A NEW build asks the database
    for a free id derived from the species - farigiraf, farigiraf-2 - instead
    of guessing from what this device has loaded (see putNew). An EDIT keeps
    its own. Then the trained tag follows the build to its copy. */
@@ -1002,17 +976,14 @@ function deleteBuild(ed){
   });
 }
 
+/* The move picker for one slot: the legal movepool, filterable, ranked by
+   this Pokemon's usage, badged by the ability the build runs. */
 function movePicker(draft, idx, ls, done){
   const abil = activeAbility(draft);
   const apoke = byName[draft.mega || draft.pokemon];
-  /* CLOSE THE SHEET, THEN REDRAW. `done` is the editor's redraw and nothing
-     more, so every exit from this picker used to leave the sheet sitting on
-     top of the editor it had just changed. Picking a move looked like it
-     worked - the slot really was set, underneath - but "Clear slot" and
-     "Back" looked broken, because their whole effect was on the screen behind
-     the one still covering it, and the only way out was the X (player,
-     2026-09-15: "el botón clear slot y back de la ventana de slot de moves no
-     funcionan, debo cerrar con la X"). Every exit goes through here now. */
+  /* EVERY EXIT CLOSES THE SHEET, THEN REDRAWS. `done` is only the editor's
+     redraw; without the close, the sheet would stay on top of the editor it
+     just changed and every button would look broken. */
   function finish(){ closeSheet(); done(); }
   openSheet("Slot " + (idx + 1), function(body){
     if (!ls) {
@@ -1035,8 +1006,8 @@ function movePicker(draft, idx, ls, done){
         onPick: function(){ draft.moves[idx] = m.name; finish(); },
       });
     }, "Filter " + ls.length + " legal moves",
-    /* one Pokemon's legal moves, so show all of them - the longest movepool
-       in Champions is 106 */
+    /* one Pokemon's legal moves, so show all of them - no movepool comes
+       near 200 */
     {usageOf: draft.pokemon, cap: 200});
   }, [
     fbtn("Clear slot", "", function(){ draft.moves[idx] = null; finish(); }),
@@ -1044,6 +1015,7 @@ function movePicker(draft, idx, ls, done){
   ]);
 }
 
+/* The Builds list, filtered by the search box (species, role or a move). */
 function drawBuilds(){
   const q = ($("buildSearch").value || "").trim().toLowerCase();
   const node = $("listBuilds");

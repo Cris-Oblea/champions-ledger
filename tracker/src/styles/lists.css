@@ -74,9 +74,8 @@
    "the stat row". */
 /* THE STAT BEING RANKED, made findable rather than made lonely. A list sorted
    by Attack is read WITH the Speed beside it - dropping the other five to
-   "reduce noise" took away half of what picks the Pokemon (player,
-   2026-09-15: "no puedes quitarme esa informacion"). All six stay; one is
-   marked. */
+   "reduce noise" would take away half of what picks the Pokemon. All six
+   stay; one is marked. */
 .rmeta .fact.on{color:var(--accent);font-weight:600}
 .rside{display:flex;align-items:center;gap:6px;flex-shrink:0}
 
