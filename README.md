@@ -32,504 +32,215 @@ request returns nothing.
 
 | Tab | What it answers |
 |---|---|
-| **Champs / HOME** | What is in each box, what came from where, and what can still leave the game |
-| **Builds** | Every set written, and the **Teams** made of them — six slots, the item each holds, and the clauses checked. Every move, ability, nature and spread carries what this Pokemon's own players run |
-| **Damage Calc.** | Real damage rolls, running Smogon's Champions engine in the page |
-| **Find** | "Who learns Imprison *and* Wide Guard *and* Protect" — filters that stack, and sorting by any stat turns the same list into that stat's tier order, either way up. A **Worlds medal** on anything that finished top 8, with the exact set it played — filed under the form that was registered, and the stone says which Mega it became. Plus **Worlds**: what the field actually brought, per championship |
-| **Items** | Every item, what it does, what it costs, and which move or ability it serves |
-| **GTS** | Open trades, what a chip is worth, and what it can realistically fetch |
-| **Settings** | Box capacity, and everything else derived so it cannot go stale |
+| **Champs** | What is in the Champions box, where each one came from, and what may leave |
+| **HOME** | Three panes: what is parked in HOME, what is out on the **GTS** (and what each spare copy could fetch), and the **dex checklist** - what is still missing, easiest first |
+| **Builds** | Every set written, and the **Teams** made of them - six slots, the item each holds, and both clauses checked. Every move, ability, nature and spread carries what this Pokemon's own players run |
+| **Damage Calc.** | Real damage rolls, running Smogon's Champions engine in the page, with the status effects folded underneath |
+| **Find** | "Who learns Imprison *and* Wide Guard *and* Protect, and do I own one" - filters that stack, and a stat sort that turns the list into that stat's tier order. Plus **Worlds**: what the field brought to each championship, per division, and a medal on anything that finished top 8, with the set it played |
+| **Items** | Every Mega Stone and item, what it does, what it costs, and which move or ability it serves |
+| **Settings** | Box capacity, everything else derived so it cannot go stale, and the diagnostics |
 
-On a phone it is one column and a bottom tab bar. On a desktop it spreads:
-the controls sit beside the answer in a sticky sidebar instead of on top of
-it, results come back as a grid of cards that wear their Pokemon's type, and
-the column grows to 1560px rather than staying at the 820 it was drawn for.
-Every question the app asks - deleting a build, releasing a Pokemon, closing a
-trade - is asked in its own dialog rather than the browser's.
+On a phone it is one column and a bottom tab bar. On a desktop the controls
+sit beside the answer in a sticky sidebar, results come back as a grid of
+cards, and the column grows to 1560px. Every question the app asks - deleting
+a build, releasing a Pokemon, closing a trade - is its own dialog, and the
+phone's **Back** button walks back through what is open (dialog, sheet,
+editor, tab) before it leaves the app. `tracker/README.md` is the long
+write-up; this is what the app is.
 
-The type colours are **Pokemon's own**, not an approximation. All eighteen used
-to be hand-written and darkened so white text would sit on them, which made
-every one of them wrong - Fire read `#C8501E` against the real `#FD7D24`.
-`scripts/build_type_colors.py` reads them out of pokemon.com's stylesheet, and
-each type brings three facts rather than one: its colour, its **second** colour
-where it has one (Dragon, Flying and Ground are officially two-toned), and the
-ink its name is written in - eight of the eighteen are written in black, which
-is what lets the app keep the true colour instead of darkening it. A card's
-band and hover ring carry all of them: a Dragon/Flying wears four colours,
-halved by type.
+### One card, everywhere
 
-**A Pokemon looks the same wherever it appears** - in the box, in a build, in a
-team slot, in a trade, in a search result or in a Worlds ranking. One card: a
-band of its type across the top, two of them for a dual type, then every fact
-in a cell of its own with the label under the value - BST, the ability, and the
-six base stats - so two cards can be read against each other down the column
-instead of as six numbers with six words between them. Nothing is trimmed to
-fit: a long ability list wraps rather than ending in an ellipsis.
+A Pokemon looks the same wherever it appears - box, build, team slot, trade,
+search result, Worlds ranking, and every picker that opens inside a sheet.
+There is one implementation, `pokeCard()`, and each screen passes in its own
+extras (a usage chip, an item cell, the reason a suggestion is in range). A
+card is a band of its type across the top, then every fact in a cell of its
+own with the label under the value - BST, the ability, the six base stats - so
+two cards can be read against each other down a column. Nothing is trimmed to
+fit, and nothing wraps out of its cell from a 320px phone to a desktop.
 
-**Wherever** now includes every picker that opens inside a sheet - adding a
-Pokemon to the box, choosing what to ask for in a trade, picking the attacker
-in the calculator, choosing a species for a build, filling a team slot. Those
-were bare rows with a name and a BST while the screen behind them showed the
-full card, because each had been written on the day its screen was built and
-every improvement since was made by copying the best card into one more place.
-There is one implementation now - `pokeCard()` - and each screen passes in its
-own extras: a ladder chip, an item cell, the reason a suggestion is in range.
-The sheet and the stones tab share its middle, `pokeFacts()`, so the box that
-opens when you tap a card says the same things in the same order as the card
-that opened it.
+- **The type colours are Pokemon's own**, read out of pokemon.com's stylesheet
+  by `scripts/build_type_colors.py`: the colour, the second colour where a type
+  is officially two-toned, and the ink its name is written in, so the true
+  colour never has to be darkened for white text.
+- **A Mega lives on its base Pokemon's row.** A Mega only exists mid-battle,
+  while a stone is held, so it is a fact *about* a Pokemon you store, not a
+  row of its own. The card carries the whole line at native size, a stat cell
+  gains a second number where the stone moves it, and the types appear again
+  only when the stone swaps them. Each Mega has its own ink - X blue, Y red,
+  Z green, a plain Mega the app's purple - and is named `Mega`, `Mega X`,
+  `Mega Y` or `Mega Z`, never an invented letter.
+- **A stone is not the only thing a Pokemon turns into.** Five Champions
+  Pokemon change form mid-battle off an ability - Aegislash, Palafin, Castform,
+  Morpeko, Mimikyu - and are drawn the way a Mega is, in an amber of their
+  own. A test pins the count, so a regulation adding a sixth fails the gate
+  instead of shipping a card that leaves it out.
+- **A build card shows only the build**: the form it plays as and the one
+  ability it runs.
+- **A shiny is a different picture**, wherever a specific copy is in hand.
+- **Sprites** come from a CDN at a pinned commit and are never copied into the
+  repo - they are Nintendo's images and the repo is public. Every name a card
+  can carry has its picture, and a test says so. They are drawn at native size
+  and smoothed, never `pixelated`, which turns a 1.25 device-pixel ratio into
+  hard square edges.
 
-**And no line on a card ever wraps to a second line.** That took one word of
-CSS and a measurement to find: flex breaks a line on each item's CONTENT width
-before it shrinks anything, so an ability box that could have narrowed to fit
-beside BST jumped to a row of its own and left BST using a fifth of it. The
-median card wanted 230px of boxes and the worst 363, against 186 beside a
-corner sprite - 284 of 341 lines wrapped. The boxes shrink now and their text
-wraps inside them, which is what a card is allowed to do; 264 forms were
-re-measured at five widths from a 320px phone to a 1536px desktop, and nothing
-breaks or overflows.
+**One Pokemon sheet, whichever door it is opened from.** Tapping a card in the
+box, in HOME or in a search gives the same sheet: **identity** first (picture,
+types, stats, what it becomes mid-battle), then only what that door owns
+(origin, shiny, trained, the note), then **reference** - the Mega line and
+what the stone costs, what damages it, its abilities and how much of its
+movepool each touches, the top-8 sets it won with, its movepool under the
+build editor's filters, and Smogon's write-up. Each form is the same box, the
+base one too, and a Mega or a battle form whose typing changes gets its own
+damage table.
 
-**A build card shows only the build.** It is one Pokemon in one configuration,
-so it draws that form and the one ability it runs - not the species' other
-options, and not a Mega line the set does not use.
+**Every move, ability and item says what it does, once, from Champions.** The
+description is Smogon's full text from its **Champions** dex, never an older
+game's - Freeze-Dry freezes in Scarlet/Violet and not here. Its numbers are
+drawn in colour inside the sentence rather than repeated as chips beside it;
+a chip survives only if the sentence does not state its number in any unit,
+and today none does. Where our data carries a number Smogon's text does not,
+the build reports it as a dispute instead of pasting either one.
 
-**And a species with ONE ability never chose it.** Aegislash is Stance Change,
-Clawitzer is Mega Launcher, and every Mega is a single line, so
-the build carries that ability whether or not anyone ever touched the control -
-on the card, on the move rows it boosts, and in the calculator. Where the
-species really does offer two or three, the choice stays open, the editor says
-so, and nothing fills it in.
+### Builds and teams
 
-**A number is read in its sentence, marked in colour — not repeated beside
-it.** Items, abilities and moves each carry one description, and its
-percentages, fractions, multipliers, turns and stages are drawn in the accent
-ink so the eye finds them: Sitrus Berry reads "Restores **1/4** max HP when at
-**1/2** max HP or less". There used to be chips beside the sentence, worked out
-in `scripts/effect_chips.py` from the engine's own 4096ths and Smogon's words,
-and once the sentence became Smogon's full text they said the same numbers a
-second time. So a chip now survives only if the description does **not** state
-its number, in any unit — "halves" is x0.5, "by 50%" is x0.5, 1.3× is +30% —
-and today, measured over every entry, none does: every multiplier the engine
-measures is already in the text. The day one disagrees, its chip comes back on
-its own. The exact 4096ths stays in `data/db/effects.json`.
+A build is one set - species, Mega, ability, nature, Stat Points, moves - with
+its own id, so one species can have several. It never records an item: the
+Item Clause makes the item a team decision, so it lives on the team slot.
+Which Pokemon carries a build is a separate link, so a build is **active** (on
+a Champions box Pokemon), **parked** (on one in HOME), **orphaned** (its
+Pokemon is gone, flagged) or **unbound** (an idea for a Pokemon not owned
+yet). Releasing a Pokemon unbinds its builds; it never deletes them.
 
-**A Mega lives on its base Pokemon's row.** The search used to list every form,
-Megas included — a fifth of every page was a Pokemon you cannot own,
-because a Mega only exists mid-battle and only while a stone is held. It is not
-a thing you store, so it is not a thing you browse: it is a fact *about* the
-Pokemon you store. **264 rows instead of 345**, and three things survive the
-fold, because without them it would cost more than it saves.
+- **Choosing the species is a search**, over the whole dex - a set for a
+  Pokemon that has not arrived yet is worth keeping - with "in your boxes" as a
+  filter, never a limit.
+- **"Installed on" is a dropdown** whose closed face is the copy the build sits
+  on, with that copy's card under it. Copies are named by what they are (where
+  they live, shiny, trained, origin, what they carry), and the **trained** tag
+  follows the build on and off a copy.
+- **A species with one ability never chose it.** Aegislash is Stance Change and
+  every Mega is a single line, so the build carries that ability whether or not
+  the control was touched. Where there really are two or three, the choice stays
+  open and the editor says so.
+- **The editor checks the rules as you type**: 66 Stat Points and 32 per stat,
+  moves the form actually learns, priority on the weaker side, a move that
+  hits your own ally, Intimidate on your own side, Weather Ball read as Normal,
+  a rental that cannot be trained. It says what an edit costs in VP before it
+  is saved.
+- **The move picker's filters stack**: a sort (usage, BP x accuracy, A-Z, PP,
+  type), and category, trait and type chips. A chip has three states - include,
+  **exclude**, off - so "Trick Room, but nothing Psychic" is one query; the
+  Find tab uses the same chips.
 
-*The query.* A filter matches the base **or any of its Megas**, and the card
-says which — searching Fighting still finds Staraptor, whose Mega is
-Fighting/Flying, and the card is tagged `as Mega Staraptor` rather than looking
-like a bug. *The rank.* The sort reads the value the Pokemon can **reach**:
-highest across the line going down, lowest going up, since a Mega that raises
-Speed does not help a Trick Room list. That is why Absol, Garchomp and Lucario
-head a descending Speed sort — all three reach 151. *And only what changes.* A
-stat cell gains a second line where the stone moves it, and the types appear
-again only when the stone really swaps them.
+A **team** is six slots, each a build and the item it holds. Both clauses are
+enforced where the choice is made: a species or an item another slot already
+holds is greyed out, sorted last and carries the reason. A team may be
+incomplete - four of six is worth writing down - and its sheet says what is
+owned, where it is, and what is still to get, with the team's Speed order and
+shared weaknesses.
 
-**Each Mega is named by its own colour**, and the same ink runs through every
-place that names it: the caption under its sprite, the key on a stat delta, the
-arrow before its typing and the label on its ability box. X is blue, Y red and
-Z green — the games' own — and a plain Mega keeps the app's purple. Four work
-in an 8.5px caption because they never all meet: a species carries either an
-X/Y pair or a plain Mega with a Z. **There is no "Mega M":** Champions writes
-`Mega`, `Mega X`, `Mega Y` and `Mega Z`, so the unlettered one is labelled with
-the word rather than an invented letter.
+**A tag on a move row says which side it plays on.** Heat Rock on Sunny Day is
+a reason to run the move; Aspear Berry on Ice Beam is a reason it will not
+work, and is drawn in red. The abilities that turn a move off entirely are on
+the row too, read from the side that uses it: Zap Cannon shows Bulletproof,
+Lightning Rod, Motor Drive and Volt Absorb in red, because on a foe each one
+stops it; Boomburst shows Telepathy in green, because on your partner it is
+the reason to run a spread move. `build_item_links.py` and
+`build_ability_moves.py` derive all of it - nothing is a hand-written list.
 
-**A stone is not the only thing a Pokemon turns into.** Five Champions
-Pokemon change form in the middle of the battle, off an ability rather than an
-item, and they are drawn exactly the way a Mega is — sprite in the strip, its
-own ink, a second number under every stat it moves, an arrow when the typing
-changes. Stance Change gives Aegislash 140 Attack the moment it attacks, Zero
-to Hero takes Palafin from 70 to 160, and Forecast retypes Castform to Fire,
-Water or Ice with the weather. Hunger Switch and Disguise move no number, and
-are drawn anyway, because a form is more than its numbers: Hangry Morpeko's
-Aura Wheel is Dark, and its sheet says so beside the form. They wear an amber
-that is none of the four Mega inks, because one is a decision you make at team
-preview and the other just happens. There are exactly five, and a test says
-so: a regulation adding a sixth fails the gate rather than shipping a card
-that omits it.
+### HOME and the GTS
 
-**A species Champions does not have carries its forms too** — Mewtwo its Mega
-X and Y, Kyogre its Primal, Darmanitan its Zen Mode, each with its picture and
-main-series numbers under the same "not in the Champions dex" tag. Which forms
-exist, and what each looks like, comes from PokeAPI's own form table
-(`data/db/form_line.json`); a form upstream flags as battle-only that no card
-draws is listed with its reason (Gigantamax, a Tera form, Ultra Burst — none of
-which Champions has), and a new one stops the fetch until it is classified.
+The rules here are the game's, and the app only ever offers what the game
+allows:
 
-**Every form gets a row in a stat cell, in the same order**, with a blank where
-it changes nothing — so row two is the same Pokemon in all six cells and a
-table can be read across as well as down. A form that moves *nothing at all*
-gets no row anywhere, because the blank buys alignment and there is nothing to
-align: Castform's three weather forms are 70 across the board.
-
-The card carries the **whole line at native size**, base first and then what it
-becomes, which is why a card is never narrower than 300px: three sprites are
-294 and nothing shrinks them.
-
-On the sheet, **each form is a box and they are all the same box** — the base
-one too. Picture and facts, the six stats, the abilities explained, and what
-damages it; a Mega adds the sentence naming what the stone moved, and gets its
-own damage table when the typing changes, since Mega Ampharos picks up a
-Dragon's weaknesses. A battle form gets the same box under its own heading,
-naming the ability instead of the stone — and Castform's three earn three
-damage tables, which is the whole of what Forecast does. Nothing is said in two boxes: a sheet is a stack of
-Pokemon rather than a stack of topics.
-
-**HOME holds three questions, so it has three panes.** What is parked there,
-what is out on the GTS, and what is still missing from the dex — one scroll
-would have opened the checklist under a 170-row box. The bar was measured at
-its limit with seven tabs, so it is a segmented control rather than an eighth.
+- **Origin is what matters.** A HOME-origin Pokemon can be parked back to HOME
+  and recalled with its training, so its slot is elastic; one bought from an
+  Encounter can never leave the Champions box.
+- **Release is offered only where the game allows it.** Never a HOME-origin
+  Pokemon from the Champions box - parking is its exit - and never one of the
+  last six Champions-origin Pokemon, which the game will not release.
+- **A duplicate is an origin question.** A copy counts only if it could be the
+  one kept; a rental or an Encounter buy of the same species is welded into the
+  game and does not make the HOME copy expendable.
+- **The GTS shortlist** is filtered by the two rules that decide what may go
+  into a box - a duplicate, or a species Champions cannot use - and sorted in
+  dex order, the order HOME itself lists in.
+- **The suggester reads the HOME box.** Each spare is asked what it could
+  fetch, using the same price bands the deposit screen uses. What you **ask**
+  for is always playable; what you **offer** is best something you could never
+  field. Asks that would free a Champions slot rank first. Nothing claims a
+  species is easy to get: the evidence shown is the closed trades - how many
+  cleared, how long they took, how much BST came back.
+- **It never recommends a chip the GTS refuses.** `data/meta/gts_blocked.json`
+  lists what HOME's GTS will not hold, with who confirmed each entry and when.
+  The other Mythicals are ranked last and tagged, never dropped, because one
+  refusal is not yet a rule.
 
 **The dex checklist is an order of attack, not a list of holes.** Champions'
-own route in is a gacha — ten random species, take one — so the dex is
-finished through Pokemon GO into HOME, and through the GTS for what GO cannot
-give. It lists what is **in neither box**, easiest to get first; one copy per
-species is the target, and extra copies are a later question, so nothing there
-asks for a second of anything. A species already in HOME is **done** even when
-a copy is also welded into the Champions box. Megas are not on it at all: a
-Mega is not caught, it is a stone on something you own.
+own route in is a gacha, so the dex is finished through Pokemon GO into HOME
+and through the GTS. It lists what is in **neither** box, one copy per species,
+easiest first. A species already in HOME is done even when a copy is also in
+the Champions box, and Megas are not on it - a Mega is a stone, not a catch.
 
-**The GTS pane recommends trades by reading the HOME box.** Every Pokemon in
-HOME that the keep-one rule allows you to put up — a duplicate past the first
-copy, or a species Champions cannot use — is asked what it could fetch, using
-the same two price bands the deposit screen uses one chip at a time. The asks
-that would **free a Champions slot** are marked and ranked first: a species you
-hold only in the Champions box is welded there, because an Encounter Pokemon
-can only leave by being released, so a HOME copy of one is worth more than the
-dead Mega Stone the suggester used to rank top.
+### The calculator
 
-**What counts as a duplicate is an origin question.** A copy only counts if it
-could be the one you keep — in HOME, or in the Champions box and able to be
-parked back there. A rental or an Encounter buy of the same species is welded
-into the game and can never come back out, so it does not make the HOME copy
-expendable. Getting this wrong offered a singleton as trade material and would
-have lost the species.
+Smogon's own Champions engine runs in the page, so its number is the number
+calc.pokemonshowdown.com gives, and `scripts/damage.py` runs the same engine in
+the terminal. Either side loads from a saved build or is set by hand. The field
+panel exposes what Smogon's own calculator exposes and nothing it does not.
+Its layout gives each control a caption beside it rather than above, and keeps
+a height a thumb can hit. The status-effects fold underneath gives what each
+status does here - Champions rebalanced paralysis, freeze and sleep - with the
+source of every number.
 
-**Release is offered only where the game allows it.** A HOME-origin Pokemon is
-never released from the Champions box — parking it back to HOME is its exit,
-and a second copy of it is a real Pokemon, not a duplicate to get rid of. And
-the game refuses any release that would leave fewer than six to battle with, so
-the last six Champions-origin Pokemon hold their slots for good. The Release
-button, the "Already in HOME" panel and the Species Clause warning all ask the
-same one rule, so none of them suggests a release the game would refuse.
+### Find, and the dex beyond Champions
 
-**What you ask for is always playable; what you offer usually should not be.**
-The two sides of a trade are not the same question. An ask that Champions
-cannot use buys a HOME row and nothing else, so the suggester never proposes
-one. The *chip*, though, is best spent on something you could never field: a
-Pokemon in HOME that Champions cannot use costs nothing playable to give away,
-so those lead the list, carry a tag saying why, and have a filter of their own.
+**Find** is one table: by name or dex number first, then filters that AND
+together (moves, types, ability, in the Champions box, in HOME), and a stat
+sort that is the tier list - highest first for a speed tier, lowest first for
+Trick Room. A filter matches a Pokemon or any of its Megas and the card says
+which; the sort reads the value the line can reach in that direction. Types
+ask which question you mean: "Rock AND Steel" is a dual type, "Rock OR Steel
+OR Ground" is a group.
 
-**And it will not recommend a chip the GTS refuses to hold.** Melmetal is in
-HOME, is unplayable in Champions, and was top of the list — and HOME's GTS will
-not take it. `data/meta/gts_blocked.json` is that list, and it records who
-confirmed each entry and when, because none of the five sources covers HOME's
-own rules and there is nothing to check it against.
+**The dex is complete; Champions is the part of it that is switched on.** The
+game rebalances a Pokemon when it adds it, so until then knowing what it would
+bring is how you judge whether you want it. Every species, move and ability is
+in the app, and the *not in Champions* tag says what cannot be played yet. A
+species Champions lacks gets its card, its forms (Mewtwo's Megas, Kyogre's
+Primal), its movepool and its ability text from PokeAPI's tables at a pinned
+commit, labelled as main-series numbers. Nothing from PokeAPI is ever used for
+a species Champions does have, where the rebalance makes it wrong. That is
+also why every name in a Worlds ranking has a card behind it, including the
+legendaries earlier fields were built on. This half of the dex is a separate
+asset, fetched only when one of those sheets is opened.
 
-Melmetal is also a **Mythical**, which makes "the GTS refuses Mythicals" the
-obvious reading of one data point — and one data point is not a rule. So the
-other Mythicals are **ranked last and tagged**, never dropped: a wrong guess
-that hides a chip is worse than one that warns about it. It matters beyond one
-Pokemon, because Champions has **zero** Mythicals and zero Legendaries, so
-every one that ever reaches HOME lands in exactly the pile this list puts
-first — and thirteen of the twenty-three can be caught in GO. Which species
-carry the flag is read off PokeAPI at the pinned commit, never typed out.
+### The data behind it is crossed, not trusted
 
-**Nothing on it claims a species is easy in Pokemon GO.** It did, from a
-declared supply score — and 260 of the 264 sit at the default of 2, so the
-claim was mostly a guess wearing a number. What is there instead is the only
-measured evidence in the building: the closed trades. How many have cleared,
-how long half of them took, and how much BST came back against what went
-out — per species where the record is long enough to mean anything.
+Every number in the app is checked against a second source somewhere in the
+gate:
 
-**And no sprite is ever drawn with `image-rendering: pixelated`.** It looks
-like it should do nothing at native size, and on a 1x display it does — but a
-1.25 device-pixel ratio draws 96 CSS px into 120 real ones, and `pixelated`
-makes that a nearest-neighbour upscale with hard square edges. That is what
-"se ven pixelados" was.
+- the damage formula against Smogon's engine;
+- the type chart against Serebii's weakness tables;
+- every movepool against PokeAPI's own Champions version group
+  (`audit_learnsets.py`), where Serebii decides and each known disagreement
+  records the page that settled it;
+- every form's abilities against Serebii's Pokedex page, PokeAPI and the
+  form's variants (`audit_abilities.py`).
 
-**A filter chip has three states, not two.** A tap includes, the next rules
-out, the third clears — so **"Trick Room, but nothing Psychic"** is one query
-instead of an impossible one: more than half the Pokemon that learn it are
-Psychic, and ruling them out leaves the rest. It is in the **Find tab's type filter**, which is where the
-question gets asked, and in the move filters as well. An excluded chip is struck through with a minus
-rather than shaded, because it has to read as the opposite of the chip beside
-it. And the **category** group picks one at a time: a move has exactly one of
-Physical, Special and Status, so two of them included could only ever mean
-"either", which is what ruling out the third already says.
+Those audits are how No Guard was found missing from Lycanroc-Midnight and
+Battle Bond from Greninja.
 
-**The phone's Back button navigates the app instead of leaving it.** Nothing
-here touched history before — the page loads once and every screen after is a
-hidden `<section>` — so the browser's only entry *was* the page, and on Android
-Back minimised it. Every layer that opens now spends one history entry, and
-Back undoes them topmost first: the confirm dialog, then an open sheet, then an
-editor, then the tab before it, and only when none of those are left does it
-leave. Verified in Edge on a clean tab, including the last part: an app that
-cannot be left would be worse than the bug.
+`python scripts/preview.py` puts the phone, laptop and desktop widths side by
+side in one browser, each in its own iframe so the media queries are real,
+with the app's own overlap check on a button.
 
-**Choosing which Pokemon a build is for is a search, not a scroll.** It was a
-`<select>` of every form in one alphabetical run with no way to look inside it.
-It is a field you tap now, opening the same kind of sheet the GTS and the
-calculator use: a search box that matches the **name, either type, or the dex
-number**, the app's usual sorts, and the same card as everywhere else. The
-whole dex stays on offer — a set for a Pokemon that has not arrived yet is an
-idea worth keeping — so "in your boxes" is a filter and never a limit.
-
-**Which copy it goes on is a dropdown, and the copy's card sits under it.**
-Closed, the dropdown says where the build is installed — or "not installed",
-only when that is true — and it is where the build is moved to another copy or
-taken off altogether. Each option names the copy by what it is — where it
-lives, shiny, trained, origin, the builds it already carries, its note — so two
-Garchomp are told apart by what they are, not by "copy 2 of 3"; two copies
-identical in all of that are labelled as identical. Underneath, the chosen
-copy is drawn as the card the box draws for it. And the **trained** tag
-follows the build: installing one on a copy tags it, and moving the build off,
-unbinding it or deleting it clears the tag from the copy it left, unless
-another build still sits there. A build's card, in the list and in a team slot,
-shows only the form it plays as — the Mega when a stone is on it, the base form
-alone when not.
-
-**And that goes for every list, not just that one.** A search box only existed
-where somebody remembered to paste one in, so the screen where a team is
-actually assembled — the slot picker, which lists every build in the ledger —
-had none at all. There is one helper now, and it is what every list uses, so
-the next list cannot be born without one. Where it was worth more than a text
-match the list also got chips: the slot picker filters by **where the build is**
-(ready today, parked in HOME, not owned yet), by the **roles that exist** in the
-ledger and by the **type the build plays as**, Mega included, which is the
-question a sixth slot is really asking. The item picker filters by category and
-by what you own. Every box carries a clear button, because a filter you cannot
-empty in one tap is a filter you stop using.
-
-**The Species Clause is enforced where the choice is made.** The item picker
-already greyed out anything another slot held; the build picker accepted a
-second Farigiraf and reported it as illegal underneath afterwards. It greys it
-out now, sorts it to the bottom and writes the reason on the row. Both clauses
-are measurements — 0 of the 642 Worlds teams with a full list repeats a species,
-0 of the 636 with a full item list repeats an item — so neither is a preference
-to be argued with at save time.
-
-**A tag on a move row is not neutral.** Heat Rock on Sunny Day is a reason to
-run the move; **Aspear Berry on Ice Beam is the reason it will not work** — the
-target thaws and the freeze was the whole point. Both read as the same grey
-chip, so the row said "these items are related" and left which way to be worked
-out. Each link now carries the side it plays on, decided in
-`build_item_links.py` from the reason the link was made for, and the ones that
-answer the move are drawn in red.
-
-**And what turns a move off is on the row too, seen from the side that uses
-it.** A defensive ability badges nothing as a rule — the alternative is all 67
-of them, and Fire Lash would carry 32 grey chips. But the narrow class that
-makes a move do **nothing** is worth seeing: Zap Cannon comes back
-**Bulletproof, Lightning Rod, Motor Drive, Volt Absorb** in red, because on an
-opponent each one turns it off. Telepathy is the other way round — it only
-stops an **ally's** move, so on a foe it does nothing and on your partner it is
-the reason to run the spread move: Boomburst shows **Soundproof** in red and
-**Telepathy** in green. An immunity that works against anyone, like Levitate,
-stays red only: a foe's Levitate is a fact you face, pairing your own is a
-strategy you choose. Which abilities those
-are is derived in `build_ability_moves.py`, in two groups — one that stops the
-move whatever it was, and one that stops the thing the move *does*, which only
-counts as a block on a status move. So Will-O-Wisp is blocked by Thermal
-Exchange and Fire Lash is not, because Big Pecks only eats its Defence drop and
-that is not the move being stopped.
-
-**The calculator carries two of everything, so every millimetre it spends is
-spent twice** — and it was measured against pokebase's, in a real browser at
-three widths, rather than guessed at. Its stat rows run at a 43px pitch and
-ours at 44, so the rows were never the difference. Three things were: a global
-`min-height:42px` held every control 10px taller than it needed to be (it is a
-touch target, and stays everywhere else); each of the field's eight groups put
-its **label on a line of its own**, so eight lines were pure heading and the
-column reached 747px — which, since the grid stretches all three columns to the
-tallest, was holding the attacker and the defender open at 370; and Ability,
-Item, Nature and Status stacked full-width instead of sitting beside the stats.
-A fourth came from Smogon's calculator: its caption sits **beside** its control
-rather than above it, so four fields cost two lines instead of four. Its selects
-are 19px tall and its rows 16px, which is desktop-only density a phone-first app
-cannot copy — but that one idea is portable, and the control keeps a height a
-thumb can hit.
-
-Fixed, the calculator is **904px instead of 1100** at 1526, **1275 instead of
-1704** at 820 and **2208 instead of 2864** on a phone, with the field column
-alone going from 747px to 374.
-
-One change was made, measured as a 107px saving, and then **taken back out after
-looking at it**: running the dropdowns beside the stats rather than above them.
-A side is 360px wide at three columns, so each half is 169 and the SP number box
-came out **22 pixels** wide — and no viewport fixes that, since even 1920 leaves
-about 220. A stat editor you cannot read is not worth 107px. The number box is
-sized for a number now (70px) and the space goes to the computed stat, which is
-the half you read.
-
-Nothing was removed, and `itemstest` asserts the structure that produced it —
-all 32 field buttons still there, every group label inside its row, the six stat
-rows intact with all four parts, and the side **not** split. The **status dictionary is folded**: seven entries you read once, which
-were sitting open under the controls and pushing the number the screen exists
-for further up the scroll. It stays on this screen, because that is where a
-status gets applied and where its multiplier is read, and it is drawn the first
-time it is opened rather than on every redraw.
-
-**Every row in a Worlds ranking has a Pokemon behind it.** A Worlds list is
-history, and **53 of the names across the four championships are not in the
-Champions dex** — the 2025 field was full of Calyrex, Koraidon and Flutter Mane.
-Each of those drew a bare name with no types, no stats, no BST and no sheet.
-They all have one now, off the same PokeAPI tables the HOME cards use, and
-`fetch_home_dex.py` walks the teamlists as well as the weight table so the two
-sources of "a name the app can draw" can never disagree. Floette was a second
-case on top of that — it *is* in Champions, as **Floette-Eternal**, the only
-one the game has — so name resolution follows the alias table before giving up.
-
-**The dex is complete; Champions is the part of it that is switched on.**
-That framing is the player's (2026-09-19) and it is the right one: the game
-rebalances a Pokemon *when it adds it*, so until then there is nothing of ours
-to contradict, and knowing what Flutter Mane would bring is how you judge
-whether you want it. So the app carries **every** species, **every** move and
-**every** ability, and the *not in Champions* tag is what says a thing cannot
-be played yet.
-
-Three parts fill that in for every species the game has not added: their
-**movepools**, the **move rows** the app does not ship, and the **ability text**
-Champions has no entry for. Only the last is main-series — the moves were ours
-all along. `data/db/moves.json` holds every move, useable or not, and
-nearly all of the ones Champions does not allow carry a full Champions row; they were never missing, just
-not sent to the phone, because the pickers draw from that list and a build made
-of a disabled move would be an illegal build the app helped write. They are
-shown here, marked. It is a large payload, so it is its own hashed asset, fetched the first
-time one of those sheets is opened and never otherwise.
-
-**Every move, ability and item says what it does, whole, and from
-Champions.** Serebii names a mechanic ("Gives the target the Octolocked and
-Can't Escape statuses") where Smogon's dex page defines it: the target cannot
-switch, loses 1 Def and 1 SpD every turn, can still leave with Shed Shell or a
-pivot, and is freed when either side leaves. So every useable move, nearly every
-ability and every holdable item carry Smogon's full description, uncut, as
-their **one** description, from its **Champions** dex and never an older game's —
-Serebii and Smogon both keep one page per move per game, and a move reads
-differently between them: Freeze-Dry freezes in Scarlet/Violet and not here.
-Where the sentence leaves a number as a word, our row adds it (a high-crit
-move's 12.5%, Night Shade's 50 HP at level 50, a weather ability's 5 turns,
-and Intimidate firing again when a Pokemon Mega Evolves into it); where our row
-carries a number Smogon's text does not state, the build reports it as a
-dispute instead of pasting either one — Effect Spore and Healer are the two
-today. A new entry is fetched the night it appears; every text is fetched again
-on the Monday deep refresh.
-
-**A GTS box is a shortlist, so it is filtered like one.** What may go into one
-is settled by two rules rather than taste — only a **duplicate** (the Species
-Clause means a second copy can never share a team with the first) or a species
-**Champions cannot use** — and both were left to be found by eye down a hundred
-rows. They are two toggles now, beside a sort that defaults to **dex order**,
-which is the order HOME itself lists in and therefore how one screen gets
-checked against the other. The rows carry the same card as every other list:
-type band, the picture in the copy's own colours, BST, the ability and the six
-stats, instead of a BST and a Speed. An offer shows both sides the same way.
-And a chip Champions has never heard of now has a **price**, so it gets
-recommendations — `chipValue` read the Champions dex, found nothing, and
-returned no price at all, which meant the one kind of Pokemon the rules say to
-trade was the one kind the app would not advise on.
-
-**One Pokemon sheet, three doors.** Opening a Pokemon from the Champions box,
-from HOME or from a search result used to give three different sheets: the
-search view had the abilities, the Worlds sets and the whole movepool, the box
-had the Mega line, the type chart and Smogon's write-up, and neither had the
-other half — so which door you came through decided what you were allowed to
-know about the same Pokemon. It is one sheet now, drawn in two halves with a
-gap in the middle: **identity** (picture, types, BST, the six stats, the other
-spellings of the name, what it becomes mid-battle), then whatever that door
-owns, then **reference** (the Mega line and what the stone costs as well as
-adds, what damages it, its abilities and how much of its own movepool each one
-touches, the top-8 sets it won with, its movepool under the same filters the
-build editor uses, and what Smogon wrote). Only ownership may sit in that gap —
-origin, shiny, trained, and the note — and it sits there rather than at the
-bottom because an edit belongs under the name it applies to, not below two
-hundred rows of movepool. `ledgertest` holds all three to it: the box may add
-those and nothing else.
-
-**A shiny is a different picture.** Both sprite sets carry one, so a copy
-recorded as shiny wears its own colours on its card and on its sheet. Only
-where a specific copy is in hand — the search view draws the species, not his
-copy of it.
-
-**Two sources inside one site can disagree, so the ability lists are crossed
-too.** A form's abilities come from the **attackdex**, because that is the only
-place each form gets a row of its own — and Serebii's attackdex row for
-Lycanroc-Midnight lists Keen Eye and Vital Spirit and stops, while its **Pokedex
-page** lists all three and links `/abilitydex/noguard.shtml`. **No Guard was
-missing from the database entirely**, found in game by the player. `build_db.py`
-completes a short form row from the page now — it only ever adds.
-
-**Then Greninja lost Battle Bond, and that audit passed it.** Serebii links it
-as `/abilitydex/.shtml`, an empty slug, and every ability pattern demanded one,
-so the name was skipped without a word; PokeAPI files Battle Bond on a Pokemon
-of its own, so upstream agreed Greninja had two. An ability is read by its
-**name** now, never by its link, and `scripts/audit_abilities.py` asks three
-questions instead of one: what PokeAPI lists for each form, what its
-same-typed, same-statted variants carry (`greninja-battle-bond`), and whether
-every name in bold on a Serebii page landed on a row of that species. Where
-Serebii qualifies an ability rather than naming a form — *"Battle Bond
-(Alternate Greninja Only)"* — the qualifier is kept beside it as
-`ability_notes`. One known difference is recorded with its reason rather than
-silenced: Serebii writes *Compoundeyes* as one word and our whole database does
-too.
-
-**A HOME Pokemon Champions has never heard of is still a card.** HOME holds
-species the game does not have, and those rows used to be a name and a "not in
-the Champions dex" tag with nothing else - no types, no BST, no stats, no
-ability - which is no help at all on the one screen where you decide what to
-keep. `scripts/fetch_home_dex.py` fills them in for every one of them from PokeAPI's
-own tables, read at a pinned commit. The tag stays, and the card says plainly
-that these are main-series numbers: Champions publishes none for them, so there
-is nothing of ours to contradict - and nothing of theirs is ever used for a
-species Champions does have, where the move rebalance makes PokeAPI wrong (81%
-of its PP values and 16 of its base powers disagree with Champions).
-
-**The explanation does not stand in front of the answer.** Each screen opens
-with the one sentence that says what it is; the rest of the intro sits behind a
-link that states how many words are in it. Nothing is deleted and nothing is
-guessed at - the text is one tap away and still in the page - but Builds now
-reaches its first build in 181px instead of 220, and HOME in 161 instead of 199.
-
-**The movepools finally have a second opinion.** Every other number here is
-crossed against something - the damage formula against Smogon's engine, the type
-chart against Serebii's own weakness tables, the item prices against pokebase -
-but a movepool came from one parse of one page, and when that parse went wrong
-it went wrong silently. PokeAPI tracks Champions as its own version group, so
-`scripts/audit_learnsets.py` pairs 235 of them against an independent read:
-~14,600 move-species pairs, **seven disagreements, and Serebii backed this
-project on all seven**. It never rewrites anything - when the two disagree,
-Serebii decides - and each known disagreement records which Serebii page
-settled it, so only a NEW one speaks up.
-
-**Every card carries its Pokemon's sprite**, fetched from a CDN at a pinned
-commit and never copied into this repository - those are Nintendo and Game Freak
-images, PokeAPI licenses its own sprites repo NOASSERTION for exactly that
-reason, and this repo is public. Only the id ships. The pixel set rather than
-the artwork, measured: 1.3 KB against 139 KB for the HOME render and 153 KB for
-the official one, and a screen of 159 cards would be 22 MB of those. A sprite is
-also the one thing PokeAPI has that is safe for the species Champions DOES have
-- a picture is not rebalanced.
-
-**Every card has one**, and a test says so. A picture is filed by row where
-the form has its own numbers and by form where it does not — Arceus' plates
-are `493-ice.png` and the like — so both are looked up, against the directory
-listing of the pinned commit rather than on faith. The HOME set lacks a few
-the pixel set has, and the pixel set lacks Mega Zygarde, which upstream has
-only ever drawn as a HOME render; the page asks for whichever exists.
-
-`python scripts/preview.py` puts three viewports side by side in a browser -
-desktop, laptop and phone - each in its own iframe so the media queries are
-real, with the cache cleared first and the app's own overlap check on a button.
-
-Its source is ES modules under `tracker/src/` in three layers - `core/` (the
+The source is ES modules under `tracker/src/` in three layers - `core/` (the
 data, the rules, the store), `ui/` (what the tabs share) and `tabs/` (one per
-screen) - each saying what it exports and importing only from its own layer or
-a lower one. The build links them into the single script the browser is handed, plus a sourcemap
-so a stack trace still names the file a person edits. **Edit a part, never
+screen) - each importing only from its own layer or a lower one. The build
+links them into the single script the browser is handed, plus a sourcemap so a
+stack trace still names the file a person edits. **Edit a part, never
 `tracker/dist/`** - it is generated. How the pieces fit is in
 [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
