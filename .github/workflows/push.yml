@@ -1,7 +1,7 @@
 # Every push to main, gated and published from here.
 #
-# WHY THIS EXISTS. The nightly job has to pass a shrink guard, four audits and
-# fifteen browser tests before it may deploy. A person at a keyboard passed
+# WHY THIS EXISTS. The nightly job has to pass a shrink guard, the audits and
+# the browser tests before it may deploy. A person at a keyboard passed
 # none of them: `npx wrangler deploy` publishes whatever is in tracker/dist,
 # and that is the path taken far more often than the 05:30 one. The automation
 # had become safer than the human (player, 2026-09-13: "si tú eres el agujero
@@ -89,11 +89,11 @@ jobs:
       - name: install what the scripts import
         run: |
           python -m pip install --upgrade pip
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+          pip install -r requirements.txt
           # `npm ci`, not `npm install`: it installs exactly what
           # package-lock.json pins and fails if the lock and package.json have
           # drifted. With `install` and a caret range, the gate resolved jsdom
-          # fresh on every run - so the seventeen browser tests could break one
+          # fresh on every run - so the browser tests could break one
           # morning on a version nobody chose.
           npm ci --no-audit --no-fund
 
