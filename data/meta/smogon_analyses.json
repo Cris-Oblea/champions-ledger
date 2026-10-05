@@ -2,9 +2,9 @@
  "source": "smogon.com/dex/champions",
  "game": "Pokemon Champions",
  "note": "VGC formats only (doubles, bring 6 pick 4). Singles dropped.",
- "fetched": "2026-09-30",
+ "fetched": "2026-10-05",
  "count": 358,
- "with_vgc_analysis": 56,
+ "with_vgc_analysis": 58,
  "pokemon": [
   {
    "name": "Gholdengo",
@@ -19396,7 +19396,62 @@
     "Wide Guard",
     "X-Scissor"
    ],
-   "vgc_strategies": []
+   "vgc_strategies": [
+    {
+     "format": "VGC26 Regulation M-C",
+     "outdated": null,
+     "overview": "Mega Golisopod is a premier bulky attacker in Regulation M-C. It utilizes its titanic bulk and good defensive typing to shrug off hits while dealing heavy damage back thanks to its high Attack stat and Tough Claws. Mega Golisopod's lackluster Speed lets it makes excellent use of Trick Room, allowing it to outspeed faster foes that may threaten it. Because of its typing and STAB combination, it has a naturally good matchup against Mega Gardevoir, Mega Floette, and Rillaboom.",
+     "comments": "",
+     "movesets": [
+      {
+       "name": "Bulky Attacker",
+       "pokemon": "Golisopod",
+       "abilities": [
+        "Emergency Exit"
+       ],
+       "items": [
+        "Golisopite"
+       ],
+       "natures": [
+        "Adamant"
+       ],
+       "stat_points": [
+        {
+         "hp": 32,
+         "atk": 32,
+         "def": 0,
+         "spa": 0,
+         "spd": 2,
+         "spe": 0
+        }
+       ],
+       "moveslots": [
+        [
+         "Leech Life"
+        ],
+        [
+         "Iron Head",
+         "Sucker Punch"
+        ],
+        [
+         "Swords Dance",
+         "Drill Run",
+         "Sucker Punch"
+        ],
+        [
+         "Protect",
+         "Sucker Punch"
+        ]
+       ],
+       "explanation": "This set allows Mega Golisopod to comfortably trade damage while being quite difficult to take down. Because of its absolutely monstrous bulk, it has an easy time setting up with Swords Dance.\nSucker Punch can pick off weaker foes, as well as be utilized over Iron Head as a priority option. Swords Dance allows Mega Golisopod to potentially OHKO Kingambit with Leech Life. Drill Run can be used over Swords Dance to hit Archaludon, Gholdengo, Kingambit, and Incineroar super effectively and hit other Mega Golisopod neutrally. Using Sucker Punch over Iron Head means Mega Golisopod cannot hit Mega Floette and Sylveon super effectively. However, Sucker Punch over Protect is typically seen in dedicated Trick Room teams to maximize offensive capabilities and to bypass the speed control foes have gained.\nUsage Tips\nIncineroar can cut Mega Golisopod's damage output with Intimidate and OHKO it with Flare Blitz. Hisuian Arcanine can also OHKO Mega Golisopod with Flare Blitz without utilizing Intimidate to weaken Mega Golisopod. Mega Charizard Y also resists both of Mega Golisopod's STAB moves and threatens to OHKO it with sun-boosted Weather Ball or Heat Wave. Armarouge can OHKO Mega Golisopod in rain with Armor Cannon.\nArchaludon, Pelipper, Excadrill, and Gholdengo resist both of Mega Golisopod's STAB moves while chunking it with Electro Shot, rain-boosted Weather Ball, High Horsepower, and Shadow Ball, respectively. Gholdengo can also set up with Nasty Plot in front of Mega Golisopod very comfortably.\nMega Garchomp Z and Mega Salamence utilize coverage in Flamethrower, and even Heat Wave in Mega Salamence's case, to threaten Mega Golisopod. Mega Salamence can also utilize its base forme's ability in Intimidate to weaken Mega Golisopod's damage output. Dragapult can outspeed most of Mega Golisopod's allies and burn it with Will-O-Wisp.\nMega Golisopod benefits from partners such as Pelipper and Politoed because they weaken Fire-type moves thanks to Drizzle and threaten the Fire-types with Water-type Weather Ball.\nArchaludon can use Snarl to whittle down Gholdengo and weaken its damage output while also utilizing Electro Shot to threaten Mega Charizard Y and Basculegion-M.\nFarigiraf gives Mega Golisopod speed control in Trick Room. Incineroar and Rillaboom give Mega Golisopod room to potentially set up with Swords Dance thanks to Fake Out. Rillaboom's Grassy Surge can even extend Mega Golisopod's longevity.\nMilotic deters Intimidate users thanks to Competitive, chunks Fire-types with Muddy Water or Scald, and puts foes to sleep thanks to Hypnosis. This can allow Mega Golisopod more room to set up with Swords Dance."
+      }
+     ],
+     "credits": [
+      "RauSakura",
+      "Darkmalice"
+     ]
+    }
+   ]
   },
   {
    "name": "Mimikyu",
@@ -21085,7 +21140,57 @@
     "Trick Room",
     "Wonder Room"
    ],
-   "vgc_strategies": []
+   "vgc_strategies": [
+    {
+     "format": "VGC26 Regulation M-C",
+     "outdated": null,
+     "overview": "Hatterene is a powerful special attacker and a reliable Trick Room setter, which would ideally sweep with Expanding Force under Psychic Terrain. Its typing can place it into advantageous matchups against Dragon- and Fighting-types like Kommo-o and Mega Staraptor. However, its typing also gives it a massive disadvantage against Steel-types like Corviknight, Mega Golisopod, and Gholdengo, as Hatterene is threatened by the typing while being unable to deal much damage back to them. In addition, Incineroar and Kingambit and Wide Guard users like Pelipper can completely render Expanding Force useless. Furthermore, given its extremely low Speed, Hatterene would ideally always want to set up Trick Room before attacking, leaving it constantly vulnerable before being able to attack.",
+     "comments": "",
+     "movesets": [
+      {
+       "name": "Trick Room Sweeper",
+       "pokemon": "Hatterene",
+       "abilities": [
+        "Magic Bounce"
+       ],
+       "items": [
+        "Life Orb"
+       ],
+       "natures": [
+        "Quiet"
+       ],
+       "stat_points": [
+        {
+         "hp": 32,
+         "atk": 0,
+         "def": 2,
+         "spa": 32,
+         "spd": 0,
+         "spe": 0
+        }
+       ],
+       "moveslots": [
+        [
+         "Expanding Force"
+        ],
+        [
+         "Trick Room"
+        ],
+        [
+         "Dazzling Gleam"
+        ],
+        [
+         "Protect"
+        ]
+       ],
+       "explanation": "Hatterene aims to deal as much spread damage as possible within Trick Room, placing Pokemon that usually rely on their Speed such as Sneasler, Dragapult, and Mega Salamence in adverse positions.\nMagic Bounce adds an extra layer of protection for Hatterene against certain status moves that could have prevented Hatterene from setting up Trick Room or annoyed it after setting Trick Room, such as Taunt, Encore, and Sleep Powder.\nLife Orb extends Hatterene's offensive capabilities, enabling it to deal massive damage and achieve 2HKOs on most Psychic-neutral Pokemon with Expanding Force under Psychic Terrain. It can even let Expanding Force reach some OHKOs on Pokemon such as Hisuian Arcanine, Mega Raichu Y, and Torkoal.\nUsage Tips\nRillaboom is a major nuisance towards Hatterene. It can disrupt Hatterene from setting up Trick Room with Fake Out and override the desired Psychic Terrain with Grassy Terrain, lowering Expanding Force's damage output and Hatterene's full effectiveness under Trick Room.\nSteel-types such as Corviknight, Mega Golisopod, Kingambit, and Gholdengo can shrug off both of Hatterene's attacks while being able to threaten it with their super effective attacks. Kingambit and Mega Golisopod, in particular, are strong options against Hatterene teams due to their Speed, meaning they enjoy Trick Room more than some of Hatterene's faster teammates while still being faster than it outside of Trick Room.\nFarigiraf and Indeedee-F can be hard to remove for Hatterene and can therefore reliably reverse Trick Room, while Indeedee-M notably runs Imprison, preventing Hatterene from setting up Trick Room in the first place and placing it in a Speed disadvantage.\nIncineroar can prevent Hatterene from setting up Trick Room with Fake Out and Parting Shot, which forces Hatterene to switch out before it can use Trick Room due to Parting Shot's interactions with Magic Bounce. Incineroar can also effectively wall Hatterene's attacks because it is immune to Psychic-type moves and takes lackluster damage from Dazzling Gleam, and it can 2HKO Hatterene with Flare Blitz most of the time.\nGiven Psychic Terrain makes Expanding Force a spread move, Hatterene can be easily shut down with Wide Guard from Pelipper and Mega Aerodactyl, essentially wasting turns in Trick Room.\nAs the premier Psychic Terrain setter thanks to Psychic Surge, Indeedee-F is Hatterene's most valuable partner, allowing Hatterene to reach its full offensive potential with Expanding Force. It also provides layers of protection via Follow Me's redirection and Psychic Terrain's ability to block Fake Out, as well as boosting Hatterene's damage output even more with Helping Hand. Indeedee-F can also set up Trick Room, while Hatterene can switch in from the back for a late-game sweep.\nKingambit can switch into Ghost-, Steel-, and Poison-type attacks for Hatterene, and it also benefits from Trick Room alongside Hatterene. Kowtow Cleave can threaten Pokemon that may try to reverse Trick Room, such as Farigiraf and Indeedee-F, as well as Ghost-types like Basculegion-M and Gholdengo. It also has Low Kick to threaten opposing Kingambit. Hatterene can switch in for Kingambit, tank Fighting-type attacks, and threaten Fighting-type Pokemon such as Mega Staraptor, Kommo-o, and Sneasler with Expanding Force.\nFire-types like Incineroar, Torkoal, and Mega Camerupt threaten Rillaboom and the Steel-types, which Hatterene struggles to break through. Mega Camerupt's additional Ground typing lets it resist and OHKO Poison-types like Glimmora, and it can use Earth Power to threaten Incineroar, which Hatterene cannot quickly remove. It also has Rock-type coverage in Ancient Power to threaten Mega Aerodactyl and Pelipper under Trick Room."
+      }
+     ],
+     "credits": [
+      "pengu"
+     ]
+    }
+   ]
   },
   {
    "name": "Grimmsnarl",
