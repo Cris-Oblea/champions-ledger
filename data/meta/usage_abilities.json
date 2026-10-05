@@ -1,7 +1,7 @@
 {
  "source": "pokebase.app/pokemon-champions",
  "game": "Pokemon Champions",
- "fetched": "2026-10-04",
+ "fetched": "2026-10-05",
  "count": 190,
  "rows": [
   {
@@ -22,7 +22,7 @@
    "rank": 3,
    "slug": "unburden",
    "name": "Unburden",
-   "usage_percent": 6.5,
+   "usage_percent": 6.4,
    "description": ""
   },
   {
@@ -55,29 +55,29 @@
   },
   {
    "rank": 8,
-   "slug": "adaptability",
-   "name": "Adaptability",
-   "usage_percent": 2.9,
-   "description": ""
-  },
-  {
-   "rank": 9,
    "slug": "drizzle",
    "name": "Drizzle",
    "usage_percent": 2.9,
    "description": ""
   },
   {
+   "rank": 9,
+   "slug": "adaptability",
+   "name": "Adaptability",
+   "usage_percent": 2.8,
+   "description": ""
+  },
+  {
    "rank": 10,
-   "slug": "rock-head",
-   "name": "Rock Head",
-   "usage_percent": 2.7,
+   "slug": "rough-skin",
+   "name": "Rough Skin",
+   "usage_percent": 2.8,
    "description": ""
   },
   {
    "rank": 11,
-   "slug": "rough-skin",
-   "name": "Rough Skin",
+   "slug": "rock-head",
+   "name": "Rock Head",
    "usage_percent": 2.7,
    "description": ""
   },
@@ -97,16 +97,16 @@
   },
   {
    "rank": 14,
-   "slug": "competitive",
-   "name": "Competitive",
+   "slug": "emergency-exit",
+   "name": "Emergency Exit",
    "usage_percent": 2.3,
    "description": ""
   },
   {
    "rank": 15,
-   "slug": "emergency-exit",
-   "name": "Emergency Exit",
-   "usage_percent": 2.3,
+   "slug": "competitive",
+   "name": "Competitive",
+   "usage_percent": 2.2,
    "description": ""
   },
   {
@@ -146,16 +146,16 @@
   },
   {
    "rank": 21,
-   "slug": "sand-stream",
-   "name": "Sand Stream",
+   "slug": "flame-body",
+   "name": "Flame Body",
    "usage_percent": 1.4,
    "description": ""
   },
   {
    "rank": 22,
-   "slug": "flame-body",
-   "name": "Flame Body",
-   "usage_percent": 1.3,
+   "slug": "sand-stream",
+   "name": "Sand Stream",
+   "usage_percent": 1.4,
    "description": ""
   },
   {
@@ -188,23 +188,23 @@
   },
   {
    "rank": 27,
+   "slug": "drought",
+   "name": "Drought",
+   "usage_percent": 0.9,
+   "description": ""
+  },
+  {
+   "rank": 28,
    "slug": "hospitality",
    "name": "Hospitality",
    "usage_percent": 0.9,
    "description": ""
   },
   {
-   "rank": 28,
+   "rank": 29,
    "slug": "trace",
    "name": "Trace",
    "usage_percent": 0.9,
-   "description": ""
-  },
-  {
-   "rank": 29,
-   "slug": "drought",
-   "name": "Drought",
-   "usage_percent": 0.8,
    "description": ""
   },
   {
@@ -356,71 +356,71 @@
   },
   {
    "rank": 51,
-   "slug": "technician",
-   "name": "Technician",
-   "usage_percent": 0.3,
-   "description": ""
-  },
-  {
-   "rank": 52,
    "slug": "compound-eyes",
    "name": "Compound Eyes",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 53,
+   "rank": 52,
    "slug": "damp",
    "name": "Damp",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 54,
+   "rank": 53,
    "slug": "friend-guard",
    "name": "Friend Guard",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 55,
+   "rank": 54,
    "slug": "hyper-cutter",
    "name": "Hyper Cutter",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 56,
+   "rank": 55,
    "slug": "justified",
    "name": "Justified",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 57,
+   "rank": 56,
    "slug": "overgrow",
    "name": "Overgrow",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 58,
+   "rank": 57,
    "slug": "regenerator",
    "name": "Regenerator",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 59,
+   "rank": 58,
    "slug": "scrappy",
    "name": "Scrappy",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 60,
+   "rank": 59,
    "slug": "solar-power",
    "name": "Solar Power",
+   "usage_percent": 0.2,
+   "description": ""
+  },
+  {
+   "rank": 60,
+   "slug": "technician",
+   "name": "Technician",
    "usage_percent": 0.2,
    "description": ""
   },
