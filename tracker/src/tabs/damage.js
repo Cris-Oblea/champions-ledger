@@ -13,6 +13,17 @@ import { labelBox, pokeCard, statGrid, typeChip } from "../ui/card.js";
 import { spreadTags } from "../ui/moves.js";
 import { closeSheet, openSheet } from "../ui/nav.js";
 
+/** @typedef {"atk" | "def"} SideKey */
+/** One side of the calculator. `_plusOne` is set just before a calculation,
+    from CALC.plusOneAtk / plusOneDef.
+    @typedef {{name: string | null, buildId: string | null,
+      sp: Record<Stat, number>, boost: Partial<Record<Stat, number>>,
+      nature: string | null, ability: string | null, item: string | null,
+      status: string | null, curHP: number | null, _plusOne?: boolean}} CalcSide */
+/** @typedef {{text: string, n: number}} KoCount */
+/** @typedef {ReturnType<typeof engineCalc>} CalcResult */
+/** @typedef {ReturnType<typeof fieldRows>} FieldRows */
+
 /* ----------------------------------- what the calculator lets you pick ----
    The Ability and Item menus offer only what can change the number, and that
    list is MEASURED rather than written: scripts/measure_modifiers.py runs
@@ -23,10 +34,12 @@ import { closeSheet, openSheet } from "../ui/nav.js";
    Anything measured at x1.00 was then checked against the format: Choice Band,
    Choice Specs, Assault Vest, Eviolite, Transistor, Steelworker, Ice Scales and
    Storm Drain are not in Champions at all, which is why they moved nothing. */
+/** @type {Record<string, string[]>} */
 const MODS = C.MODS || {};
 
 /* The resist berries and the type-boosting items, keyed by the type each one
    acts on. The Item menu offers them beside C.MODS. */
+/** @type {Record<string, string>} */
 const BERRY_TYPE = {
   "Chople Berry": "Fighting", "Colbur Berry": "Dark", "Occa Berry": "Fire",
   "Passho Berry": "Water", "Wacan Berry": "Electric", "Rindo Berry": "Grass",
@@ -35,6 +48,7 @@ const BERRY_TYPE = {
   "Kasib Berry": "Ghost", "Haban Berry": "Dragon", "Babiri Berry": "Steel",
   "Kebia Berry": "Poison", "Roseli Berry": "Fairy", "Chilan Berry": "Normal"
 };
+/** @type {Record<string, string>} */
 const TYPE_ITEM = {
   "Black Glasses": "Dark", "Mystic Water": "Water", "Metal Coat": "Steel",
   "Fairy Feather": "Fairy", "Charcoal": "Fire", "Magnet": "Electric",
@@ -44,8 +58,12 @@ const TYPE_ITEM = {
   "Soft Sand": "Ground", "Spell Tag": "Ghost", "Twisted Spoon": "Psychic"
 };
 
-/* How many of these does it take? A KO count, because that is the only thing
-   the player counts as a real change - a percentage drop is decoration. */
+/** How many of these does it take? A KO count, because that is the only thing
+   the player counts as a real change - a percentage drop is decoration.
+   @param {number} lo
+   @param {number} hi
+   @param {number} hp
+   @returns {KoCount} */
 function koCount(lo, hi, hp){
   if (hi <= 0) return {text:"it does nothing", n:Infinity};
   const best = Math.ceil(hp / hi), worst = Math.ceil(hp / lo);
@@ -53,7 +71,8 @@ function koCount(lo, hi, hp){
   return {text:hko(best) + " on a high roll, " + hko(worst) + " otherwise",
           n:best};
 }
-/* 2 -> "2HKO" */
+/** 2 -> "2HKO"
+   @param {number} n */
 function hko(n){ return n + "HKO"; }
 
 /* ============================================ the calculator, for real =====
@@ -67,12 +86,14 @@ function engineReady(){
   return !!window.SMOGON?.calculate;
 }
 
-/* Our spelling is Serebii's ("Mega Glalie"); the engine answers to its own
+/** Our spelling is Serebii's ("Mega Glalie"); the engine answers to its own
    ("Glalie-Mega"). The table (C.SMOGON_NAME) is precomputed by
    build_tracker_data.py through dex.norm(), whose spellings test_norm.py
    locks in - porting that matcher to JS would be a second implementation to
    keep in step. Aegislash is the one form whose name depends on the side: it
-   attacks as Blade, and is hit as Shield. */
+   attacks as Blade, and is hit as Shield.
+   @param {string} name
+   @param {boolean} attacking */
 function engName(name, attacking){
   if (name === "Aegislash" || name === "Aegislash-Shield" ||
       name === "Aegislash-Blade") {
@@ -82,24 +103,30 @@ function engName(name, attacking){
   return C.SMOGON_NAME?.[name] || name;
 }
 
-/* our SP object -> the engine's evs, and our boost object -> its boosts */
+/** our SP object -> the engine's evs, and our boost object -> its boosts
+   @param {CalcSide} side
+   @returns {EngineSide} */
 function engSide(side){
-  const evs = {}, boosts = {};
+  /** @type {EngineSide["evs"]} */
+  const evs = {};
+  /** @type {EngineSide["boosts"]} */
+  const boosts = {};
   STAT_KEYS.forEach(function(k){
     if (side.sp[k]) evs[k] = side.sp[k];
     if (k !== "hp" && side.boost[k]) boosts[k] = side.boost[k];
   });
   if (side._plusOne) {
-    ["atk", "def", "spa", "spd", "spe"].forEach(function(k){
+    /** @type {Stat[]} */ (["atk", "def", "spa", "spd", "spe"]).forEach(function(k){
       if (!boosts[k]) boosts[k] = 1;
     });
   }
+  /** @type {EngineSide} */
   const o = {evs: evs, boosts: boosts};
   if (side.nature) o.nature = side.nature;
   if (side.ability) o.ability = side.ability;
   if (side.item) o.item = side.item;
   if (side.status) o.status = side.status;
-  if (side.curHP != null && side.curHP !== "") o.curHP = Number(side.curHP);
+  if (side.curHP != null) o.curHP = side.curHP;
   return o;
 }
 
@@ -109,10 +136,12 @@ function engSide(side){
 function engineCalc(){
   const S = window.SMOGON;
   const a = CALC.atk, d = CALC.def, m = CALC.move;
+  /* calcRun asks only with both sides, a move and the engine in place */
+  if (!S || !a.name || !d.name || !m) throw new Error("nothing to calculate yet");
   const an = engName(a.name, true), dn = engName(d.name, false);
-  for (const p of [a, d]) {
-    if (!C.SMOGON_NAME?.[p.name] && p.name !== "Aegislash")
-      throw new Error(p.name + " is not in Smogon's Champions roster, so the " +
+  for (const p of [a.name, d.name]) {
+    if (!C.SMOGON_NAME?.[p] && p !== "Aegislash")
+      throw new Error(p + " is not in Smogon's Champions roster, so the " +
         "engine has no stats for it.");
   }
   a._plusOne = CALC.plusOneAtk; d._plusOne = CALC.plusOneDef;
@@ -132,10 +161,13 @@ function engineCalc(){
              actually out - so a 1-vs-1 endgame is expressed by switching to
              Singles, exactly as scripts/damage.py does with --single-target. */
           singleTarget:CALC.gameType === "Singles",
-          hits:(Array.isArray(r.damage[0]) ? r.damage.length : 1)};
+          hits:range.hits};
 }
 
-/* Every switch on the Field panel, as the engine's Field. */
+/** Every switch on the Field panel, as the engine's Field.
+   @param {SmogonEngine} S
+   @param {CalcSide} a
+   @param {CalcSide} d */
 function engineField(S, a, d){
   return new S.Field({
     gameType: CALC.gameType || "Doubles",
@@ -173,25 +205,35 @@ function engineField(S, a, d){
   });
 }
 
-/* For a multi-hit the engine gives one array PER HIT, so what the target
+/** For a multi-hit the engine gives one array PER HIT, so what the target
    takes is the per-hit minimum summed to the per-hit maximum summed - never
-   the min and max of the flattened list. */
+   the min and max of the flattened list.
+   @param {EngineResult["damage"]} damage */
 function damageRange(damage){
-  const multi = Array.isArray(damage[0]);
-  let flat = [];
-  (multi ? damage : [damage]).forEach(function(x){ flat = flat.concat(x); });
-  if (!multi) return {lo:Math.min.apply(null, flat), hi:Math.max.apply(null, flat), rolls:flat};
+  const multi = Array.isArray(damage) && Array.isArray(damage[0]);
+  const perHit = /** @type {number[][]} */ (multi ? damage : [[damage].flat()]);
+  const flat = perHit.flat();
+  if (!multi) return {lo:Math.min(...flat), hi:Math.max(...flat), rolls:flat, hits:1};
   let lo = 0, hi = 0;
-  damage.forEach(function(x){
-    lo += Math.min.apply(null, x); hi += Math.max.apply(null, x);
+  perHit.forEach(function(x){
+    lo += Math.min(...x); hi += Math.max(...x);
   });
-  return {lo:lo, hi:hi, rolls:flat};
+  return {lo:lo, hi:hi, rolls:flat, hits:perHit.length};
 }
 
 /* ------------------------------------------------- the calculator's screen --
    Either side can be loaded from a saved build or set by hand, because the
    question is usually asymmetric: your own Pokemon is built, the opponent's is
    whatever the ladder brings. */
+/** @type {{atk: CalcSide, def: CalcSide, move: Move | null, gameType: string,
+    screen: string | null, crit: boolean, weather: string | null,
+    terrain: string | null, helpingHand: boolean, friendGuard: boolean,
+    charge: boolean, stealthRock: boolean, spikes: number, leechSeed: boolean,
+    saltCure: boolean, nightmare: boolean, switching: boolean,
+    tailwindAtk: boolean, powerTrickAtk: boolean, powerTrickDef: boolean,
+    plusOneAtk: boolean, plusOneDef: boolean, gravity: boolean,
+    wonderRoom: boolean, magicRoom: boolean, protected: boolean,
+    atkStatus: string | null}} */
 const CALC = {
   atk: {name:null, buildId:null, sp:{hp:0,atk:0,def:0,spa:0,spd:0,spe:0},
         boost:{atk:0,def:0,spa:0,spd:0,spe:0}, nature:null,
@@ -209,18 +251,20 @@ const CALC = {
   atkStatus:null
 };
 
-/* ONE SIDE OF THE CALCULATOR: the Pokemon, its ability, item, nature and
+/** ONE SIDE OF THE CALCULATOR: the Pokemon, its ability, item, nature and
    status, the FULL spread - six stats, the way a real calculator does it -
    and, on the defender, the HP it is on. A single "SP in the attacking stat"
    box guessed which stat from the move's category, which is wrong for Sp. Atk
    and Sp. Def together and wrong again for Body Press and Psyshock. The
-   Champions budget - 66 in all, 32 in one - is shown here too. */
+   Champions budget - 66 in all, 32 in one - is shown here too.
+   @param {SideKey} which */
 function calcSideCtl(which){
   const side = CALC[which], host = $(which === "atk" ? "calcAtk" : "calcDef");
   host.innerHTML = "";
   host.appendChild(sidePick(which, side));
   if (!side.name) return;
   const P = byName[side.name];
+  if (!P) return;             // a name with no dex row: its card says so
   host.appendChild(sideSelects(which, side, P));
   /* which stat does the chosen move actually read on this side? Body Press
      attacks off Defense and Psyshock hits it, so this is not the category. */
@@ -236,13 +280,16 @@ function calcSideCtl(which){
   calcBudget(which);
 }
 
-/* THE CARD, WITH ITS POKEMON ON IT - the same one the pickers draw, so the
+/** THE CARD, WITH ITS POKEMON ON IT - the same one the pickers draw, so the
    Pokemon you chose looks like the Pokemon you chose it from. Nothing chosen
    yet, or a name with no row anywhere, gets the one shape that needs no
-   data. Either way, tapping it opens the picker. */
+   data. Either way, tapping it opens the picker.
+   @param {SideKey} which
+   @param {CalcSide} side */
 function sidePick(which, side){
   const p0 = side.name ? anyRow(side.name) : null;
   if (side.name && p0) {
+    /** @type {HTMLElement | null} */
     let m = null;
     const pick = pokeCard(p0, {
       badges: function(h){
@@ -265,14 +312,17 @@ function sidePick(which, side){
   return blank;
 }
 
-/* THE OTHER SPREAD, WRITTEN OUT. A Pokemon that changes stats mid-battle has
+/** THE OTHER SPREAD, WRITTEN OUT. A Pokemon that changes stats mid-battle has
    two, and both are shown as tables, the one in play marked. Aegislash is
    the one the calculator switches by itself (engName asks for Blade when it
    attacks); any other form is shown as what it WOULD be, because claiming it
-   is in play would be a guess about the battle. */
+   is in play would be a guess about the battle.
+   @param {HTMLElement | null} m
+   @param {DexRow | undefined} p
+   @param {SideKey} which */
 function otherSpreads(m, p, which){
   const bf = p && C.BFORMS?.[p.name];
-  if (!bf?.f) return;
+  if (!m || !p || !bf?.f) return;
   Object.keys(bf.f).forEach(function(fname){
     const alt = bf.f[fname].b;
     if (!alt) return;
@@ -288,10 +338,13 @@ function otherSpreads(m, p, which){
   });
 }
 
-/* ONE COMPACT BLOCK, NOT FOUR STACKED ONES: ability, item, nature and status
+/** ONE COMPACT BLOCK, NOT FOUR STACKED ONES: ability, item, nature and status
    are the four things you set on a Pokemon before you read the number, and
    the screen carries two sides. The two halves stay stacked above the
-   stats: side by side the SP boxes would be too narrow to type in. */
+   stats: side by side the SP boxes would be too narrow to type in.
+   @param {SideKey} which
+   @param {CalcSide} side
+   @param {DexRow} P */
 function sideSelects(which, side, P){
   const g2 = el("div", "grid2 tight mt8");
   g2.appendChild(sideField("Ability", abilityOptions(which, P), side, "ability"));
@@ -306,8 +359,12 @@ function sideSelects(which, side, P){
   return g2;
 }
 
-/* A labelled <select> of [text, value] options that writes side[key] and
-   redraws the calculator. */
+/** A labelled <select> of [text, value] options that writes side[key] and
+   redraws the calculator.
+   @param {string} label
+   @param {string[][]} options
+   @param {CalcSide} side
+   @param {"ability" | "item" | "nature" | "status"} key */
 function sideField(label, options, side, key){
   const f = el("div", "field");
   f.appendChild(el("label", "f", label));
@@ -319,12 +376,16 @@ function sideField(label, options, side, key){
   return f;
 }
 
-/* WHO has the ability matters, so each side owns its own list: this
+/** WHO has the ability matters, so each side owns its own list: this
    Pokemon's real abilities first, then every one with a measured effect on
-   this side, because the opponent's is often the unknown. */
+   this side, because the opponent's is often the unknown.
+   @param {SideKey} which
+   @param {DexRow} P */
 function abilityOptions(which, P){
   const opts = [["none", ""]];
-  const own = (P.ab || []), seen = {};
+  const own = (P.ab || []);
+  /** @type {Record<string, number>} */
+  const seen = {};
   own.forEach(function(x){
     seen[x] = 1;
     opts.push([x + "  (its own)", x]);
@@ -336,13 +397,15 @@ function abilityOptions(which, P){
   return opts;
 }
 
-/* The measured items for this side, plus the type-boosting items for the
-   attacker and the resist berries for the defender - each once. */
+/** The measured items for this side, plus the type-boosting items for the
+   attacker and the resist berries for the defender - each once.
+   @param {SideKey} which */
 function itemOptions(which){
   const opts = [["none", ""]];
   let pool = (MODS[which === "atk" ? "atk_item" : "def_item"] || []).slice();
   if (which === "def") pool = pool.concat(Object.keys(BERRY_TYPE));
   if (which === "atk") pool = pool.concat(Object.keys(TYPE_ITEM));
+  /** @type {Record<string, number>} */
   const done = {};
   pool.sort(byText);
   pool.forEach(function(x){
@@ -363,8 +426,14 @@ function statsHeader(){
   return head;
 }
 
-/* One stat: its SP, its stage (HP takes none) and the stat it makes, the
-   one the move actually reads marked in the accent colour. */
+/** One stat: its SP, its stage (HP takes none) and the stat it makes, the
+   one the move actually reads marked in the accent colour.
+   @param {SideKey} which
+   @param {CalcSide} side
+   @param {DexRow} P
+   @param {Stat} k
+   @param {number} i
+   @param {{aKey: Stat, dKey: Stat}} live */
 function statRow(which, side, P, k, i, live){
   const used = (which === "atk" && k === live.aKey) ||
              (which === "def" && (k === live.dKey || k === "hp"));
@@ -375,7 +444,7 @@ function statRow(which, side, P, k, i, live){
 
   const inp = el("input");
   inp.type = "number"; inp.min = "0"; inp.max = "32";
-  inp.value = side.sp[k] || 0;
+  inp.value = String(side.sp[k] || 0);
   inp.setAttribute("aria-label", STAT_LABEL[k] + " stat points");
   inp.oninput = function(){
     side.sp[k] = Math.max(0, Math.min(32, Number(inp.value) || 0));
@@ -394,7 +463,9 @@ function statRow(which, side, P, k, i, live){
   return row;
 }
 
-/* -6 to +6. */
+/** -6 to +6.
+   @param {CalcSide} side
+   @param {Stat} k */
 function stageSelect(side, k){
   const sb = el("select");
   [-6,-5,-4,-3,-2,-1,0,1,2,3,4,5,6].forEach(function(v){
@@ -405,8 +476,9 @@ function stageSelect(side, k){
   return sb;
 }
 
-/* The HP it is ON, not its maximum - after a switch, after chip, after the
-   first attack. This is what turns a percentage into a KO answer. */
+/** The HP it is ON, not its maximum - after a switch, after chip, after the
+   first attack. This is what turns a percentage into a KO answer.
+   @param {CalcSide} side */
 function curHPField(side){
   const g3 = el("div", "grid2 tight");
   const fh = el("div", "field");
@@ -414,7 +486,7 @@ function curHPField(side){
   const ih = el("input");
   ih.type = "number"; ih.min = "1";
   ih.placeholder = "full";
-  ih.value = side.curHP == null ? "" : side.curHP;
+  ih.value = side.curHP == null ? "" : String(side.curHP);
   ih.oninput = function(){
     side.curHP = ih.value === "" ? null : Math.max(1, Number(ih.value) || 1);
     calcRun();
@@ -424,7 +496,8 @@ function curHPField(side){
   return g3;
 }
 
-/* 66 total, 32 max in one - the same limits the build editor enforces */
+/** 66 total, 32 max in one - the same limits the build editor enforces
+   @param {SideKey} which */
 function calcBudget(which){
   const side = CALC[which], node = $(which + "Budget");
   if (!node) return;
@@ -440,20 +513,25 @@ function calcBudget(which){
   node.appendChild(s);
 }
 
-/* which stats the current move really reads, before any of them are shown */
+/** which stats the current move really reads, before any of them are shown
+   @returns {{aKey: Stat, dKey: Stat}} */
 function calcLiveStats(){
   const m = CALC.move;
   if (!m) return {aKey:"atk", dKey:"def"};
   const phys = m.cat === "P";
-  let aKey = phys ? "atk" : "spa", dKey = phys ? "def" : "spd";
+  /** @type {Stat} */
+  let aKey = phys ? "atk" : "spa";
+  /** @type {Stat} */
+  let dKey = phys ? "def" : "spd";
   if (m.name === "Psyshock") dKey = "def";      // Special, hits Defense
   if (m.name === "Body Press") aKey = "def";    // attacks off Defense
   if (m.name === "Foul Play") aKey = "atk";     // off the TARGET's Attack
   return {aKey:aKey, dKey:dKey};
 }
 
-/* PICK A SIDE: from his builds (searchable - a hundred builds is a hundred
-   cards to scroll past), or any form in the dex. */
+/** PICK A SIDE: from his builds (searchable - a hundred builds is a hundred
+   cards to scroll past), or any form in the dex.
+   @param {SideKey} which */
 function calcPickSheet(which){
   const side = CALC[which];
   openSheet(which === "atk" ? "Attacker" : "Defender", function(body){
@@ -468,7 +546,9 @@ function calcPickSheet(which){
   }, []);
 }
 
-/* "From your builds", with its own filter and count. */
+/** "From your builds", with its own filter and count.
+   @param {SheetBody} body
+   @param {SideKey} which */
 function buildPicks(body, which){
   const builds = Object.keys(S.builds).sort(function(a, b){
     return String(S.builds[a].pokemon).localeCompare(String(S.builds[b].pokemon));
@@ -501,10 +581,13 @@ function buildPicks(body, which){
   drawBuilds();
 }
 
-/* One build as THE SAME CARD AS THE BOX AND FIND - picking who is attacking
+/** One build as THE SAME CARD AS THE BOX AND FIND - picking who is attacking
    is a comparison between Pokemon, so it needs the numbers being compared -
    with its nature and spread as cells. Null when it does not match the filter
-   or has no dex row. */
+   or has no dex row.
+   @param {SideKey} which
+   @param {string} id
+   @param {string} q */
 function buildPickCard(which, id, q){
   const b = S.builds[id];
   const p = byName[b.mega || b.pokemon] || byName[b.pokemon];
@@ -526,8 +609,12 @@ function buildPickCard(which, id, q){
   });
 }
 
-/* Up to 120 forms, and it says so: a Pokemon merely past the cut used to look
-   like one the calculator did not know about. */
+/** Up to 120 forms, and it says so: a Pokemon merely past the cut used to look
+   like one the calculator did not know about.
+   @param {HTMLElement} list
+   @param {string} q
+   @param {SideKey} which
+   @param {CalcSide} side */
 function drawDexPicks(list, q, which, side){
   list.innerHTML = "";
   const all = DEX.filter(function(p){
@@ -546,8 +633,11 @@ function drawDexPicks(list, q, which, side){
   if (!list.children.length) list.appendChild(el("div", "empty", "Nothing matches"));
 }
 
-/* Load a saved build onto a side: its form, nature, ability and spread, and
-   no stat stages. A new attacker drops the move it had. */
+/** Load a saved build onto a side: its form, nature, ability and spread, and
+   no stat stages. A new attacker drops the move it had.
+   @param {SideKey} which
+   @param {string} id
+   @param {Build} b */
 function calcLoadBuild(which, id, b){
   const side = CALC[which];
   side.name = b.mega || b.pokemon;
@@ -607,7 +697,9 @@ function calcMoveSheet(){
     draw();
   }, []);
 }
-/* One move to pick; `fromBuild` marks the ones on the attacker's build. */
+/** One move to pick; `fromBuild` marks the ones on the attacker's build.
+   @param {Move} m
+   @param {boolean} [fromBuild] */
 function calcMoveRow(m, fromBuild){
   const r = el("button", "row" + (fromBuild ? " perm" : ""));
   const mm = el("div", "rmain");
@@ -651,12 +743,16 @@ function calcFieldCtl(){
     CALC.magicRoom = !CALC.magicRoom; calcDraw(); });
 }
 
-/* The two builders the Field panel is made of: group() starts a labelled row
+/** The two builders the Field panel is made of: group() starts a labelled row
    (its label a cell in the row, the reason on hover), tog() adds a toggle to
-   the current row. */
+   the current row.
+   @param {HTMLElement} host */
 function fieldRows(host){
+  /** @type {HTMLElement | null} */
   let cur = null;
   return {
+    /** @param {string} label
+        @param {string} [why] */
     group: function(label, why){
       cur = el("div", "fieldrow");
       const h = el("span", "fieldgroup");
@@ -665,6 +761,10 @@ function fieldRows(host){
       cur.appendChild(h);
       host.appendChild(cur);
     },
+    /** @param {string} label
+        @param {boolean} on
+        @param {() => void} fn
+        @param {string} [cls] */
     tog: function(label, on, fn, cls){
       const t = el("button", "tog " + (cls || ""), label);
       setPressed(t, on);
@@ -675,8 +775,9 @@ function fieldRows(host){
   };
 }
 
-/* One weather and one terrain at most; tapping the one that is on turns it
-   off. */
+/** One weather and one terrain at most; tapping the one that is on turns it
+   off.
+   @param {FieldRows} f */
 function weatherAndTerrain(f){
   f.group("Weather");
   ["Sun", "Rain", "Sand", "Snow"].forEach(function(w){
@@ -692,7 +793,8 @@ function weatherAndTerrain(f){
   });
 }
 
-/* The attacker's side of the field. */
+/** The attacker's side of the field.
+   @param {FieldRows} f */
 function attackerSwitches(f){
   f.group("Attacker", "On the attacking Pokemon's side of the field");
   f.tog("Helping Hand", CALC.helpingHand, function(){
@@ -707,9 +809,10 @@ function attackerSwitches(f){
     CALC.plusOneAtk = !CALC.plusOneAtk; calcDraw(); });
 }
 
-/* The target's side, and then what changes the HP it is ON rather than one
+/** The target's side, and then what changes the HP it is ON rather than one
    hit - which is what decides whether the NEXT hit KOes: you calculate after
-   a switch, after chip, after an attack. */
+   a switch, after chip, after an attack.
+   @param {FieldRows} f */
 function targetSwitches(f){
   f.group("Target", "On the target's side of the field");
   f.tog("Friend Guard", CALC.friendGuard, function(){
@@ -738,12 +841,16 @@ function targetSwitches(f){
     CALC.nightmare = !CALC.nightmare; calcDraw(); });
 }
 
-/* One screen at most. A screen that cannot touch the chosen move is dimmed
-   rather than hidden, so it is obvious WHY it changes nothing. */
+/** One screen at most. A screen that cannot touch the chosen move is dimmed
+   rather than hidden, so it is obvious WHY it changes nothing.
+   @param {FieldRows} f
+   @param {Move | null} m */
 function screenSwitches(f, m){
   f.group("Screens", "Reflect, Light Screen and Aurora Veil on the target's side");
-  [["Reflect", "physical", "P"], ["Light Screen", "special", "S"],
-   ["Aurora Veil", "both", null]].forEach(function(r){
+  /** @type {[string, string, string | null][]} */
+  const screens = [["Reflect", "physical", "P"], ["Light Screen", "special", "S"],
+                   ["Aurora Veil", "both", null]];
+  screens.forEach(function(r){
     const sc = r[0], relevant = !m || !r[2] || m.cat === r[2];
     const t = f.tog(sc + " (" + r[1] + ")", CALC.screen === sc, function(){
       CALC.screen = CALC.screen === sc ? null : sc; calcDraw();
@@ -754,7 +861,9 @@ function screenSwitches(f, m){
 }
 
 /* The verdict's colour by hits to KO: one, two, or three and more. */
+/** @type {Record<number, string>} */
 const KO_CLASS = {1: "k1", 2: "k2"};
+/** @type {Record<number, string>} */
 const KO_FILL = {1: "var(--bad)", 2: "var(--warn)"};
 
 /* THE ANSWER: the range, the percentage and the KO verdict on one line, a
@@ -779,7 +888,7 @@ function calcRun(){
   try { r = engineCalc(); }
   catch (e) {
     out.appendChild(el("div", "note bad",
-      "The engine could not calculate this: " + (e?.message || e)));
+      "The engine could not calculate this: " + (e instanceof Error ? e.message : String(e))));
     return;
   }
   const hp = r.curHP != null ? r.curHP : r.hp;
@@ -804,8 +913,10 @@ function calcRun(){
   out.appendChild(rollsDetails(r));
 }
 
-/* The number, the percentage and the verdict on one line - this is the
-   answer, and it stays on screen while the inputs below it change. */
+/** The number, the percentage and the verdict on one line - this is the
+   answer, and it stays on screen while the inputs below it change.
+   @param {CalcResult} r
+   @param {KoCount} ko */
 function verdictLine(r, ko){
   const pctLo = r.lo / r.hp * 100, pctHi = r.hi / r.hp * 100;
   const v = el("div", "verdict");
@@ -818,8 +929,11 @@ function verdictLine(r, ko){
   return v;
 }
 
-/* The bar under the verdict: the high roll as a share of the HP it is on,
-   coloured by the KO count. */
+/** The bar under the verdict: the high roll as a share of the HP it is on,
+   coloured by the KO count.
+   @param {CalcResult} r
+   @param {number} hp
+   @param {KoCount} ko */
 function koBar(r, hp, ko){
   const bar = el("div", "meter ko");
   const fill = el("i");
@@ -829,10 +943,13 @@ function koBar(r, hp, ko){
   return bar;
 }
 
-/* What the number cannot say by itself: Singles vs a spread move's x0.75, a
+/** What the number cannot say by itself: Singles vs a spread move's x0.75, a
    move that hits the ally, and the moves whose power depends on something
-   the calculator was not told. */
+   the calculator was not told.
+   @param {Move} m
+   @returns {[string, string][]} */
 function calcFlags(m){
+  /** @type {[string, string][]} */
   const flags = [];
   if (CALC.gameType === "Singles") {
     flags.push(["", "Singles: no spread reduction, and a screen is x0.5 " +
@@ -853,7 +970,8 @@ function calcFlags(m){
   return flags;
 }
 
-/* "Every roll", folded: each damage roll and where the number came from. */
+/** "Every roll", folded: each damage roll and where the number came from.
+   @param {CalcResult} r */
 function rollsDetails(r){
   const det = el("details", "rolls");
   const sum = el("summary", null, "Every roll, and where the number came from");
@@ -875,13 +993,14 @@ function calcDraw(){
   const b = $("calcMove");
   b.innerHTML = "";
   const mm = el("div", "rmain");
-  if (CALC.move) {
+  const mv = CALC.move;
+  if (mv) {
     const h = el("div", "rname");
-    h.appendChild(typeChip(CALC.move.type));
-    h.appendChild(el("span", "nm", CALC.move.name));
+    h.appendChild(typeChip(mv.type));
+    h.appendChild(el("span", "nm", mv.name));
     mm.appendChild(h);
-    mm.appendChild(el("div", "st", catName(CALC.move.cat) + "  ·  " +
-      (CALC.move.bp || "—") + " BP  ·  " + (CALC.move.acc == null ? "—" : CALC.move.acc) + " acc"));
+    mm.appendChild(el("div", "st", catName(mv.cat) + "  ·  " +
+      (mv.bp || "—") + " BP  ·  " + (mv.acc == null ? "—" : mv.acc) + " acc"));
     b.className = "slot";
   } else {
     mm.appendChild(el("div", "rname", "Pick a move"));

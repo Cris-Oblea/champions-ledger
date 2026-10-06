@@ -237,6 +237,8 @@ interface BoxRow {
 
 /** A box row as the lists hand it out: with its id, which boxRows() sets. */
 type ListedBox = BoxRow & { _id: string };
+/** A trade as the GTS lists hand it out: with its id. */
+type ListedTrade = Trade & { _id: string };
 
 interface Build {
   pokemon: string;
@@ -314,6 +316,30 @@ interface AppState {
   tab: string;
 }
 
+/* ------------------------------------------- Smogon's engine, as the page uses it
+   tracker/engine.bundle.js is Smogon's vendored calculator, compiled JS with no
+   types of its own, so this names only what tabs/damage.js calls on it. */
+/** What one side hands the engine: Stat Points as evs, stages as boosts. */
+interface EngineSide {
+  evs: Partial<Record<Stat, number>>; boosts: Partial<Record<Stat, number>>;
+  nature?: string; ability?: string; item?: string; status?: string; curHP?: number;
+}
+interface EnginePokemon { maxHP(): number; curHP(): number; }
+/** A calculation: one roll list, or one per hit for a multi-hit move. */
+interface EngineResult {
+  damage: number | number[] | number[][];
+  desc(): string;
+  koChanceText?(): string;
+}
+interface SmogonEngine {
+  gen: unknown;
+  Pokemon: new (gen: unknown, name: string, side: EngineSide) => EnginePokemon;
+  Move: new (gen: unknown, name: string, opts: {isCrit: boolean}) => object;
+  Field: new (field: object) => object;
+  calculate(gen: unknown, attacker: EnginePokemon, defender: EnginePokemon,
+            move: object, field: object): EngineResult;
+}
+
 /** What the page finds on window before any part runs. */
 interface Window {
   CHAMP: Champ;                     // tracker/data.js, the dex
@@ -325,6 +351,6 @@ interface Window {
   CHAMP_OUTSIDE_URL: string;
   CHAMP_BUILD?: string;             // when the page was built
   CHAMP_CONFIG?: {supabase?: {url: string, key: string}};
-  SMOGON: any;                      // tracker/engine.bundle.js, Smogon's calc
+  SMOGON?: SmogonEngine;            // tracker/engine.bundle.js, Smogon's calc
   supabase?: typeof import("@supabase/supabase-js");
 }
