@@ -38,7 +38,7 @@ import re
 import sys
 import textwrap
 from collections import Counter, defaultdict
-from collections.abc import Sequence
+from collections.abc import Callable, Sequence
 from typing import Any
 
 import ledger
@@ -49,11 +49,13 @@ from dex import (
     db,
     db_obj,
     find_pokemon,
+    is_arr,
     key,
     load,
     meta,
     meta_obj,
     norm,
+    obj,
     species_norm,
     stone_for,
     tournament,
@@ -76,7 +78,7 @@ for _s in (sys.stdout, sys.stderr):
 def division_shares(name: str) -> list[tuple[str, int, int]]:
     """[(division, n, total)] - how many teams in each division ran `name`."""
     target = norm(name)
-    rows = []
+    rows: list[tuple[str, int, int]] = []
     for d, t in tournaments():
         players = t.get("players", [])
         n = sum(1 for pl in players for slot in pl.get("team", [])
@@ -87,8 +89,8 @@ def division_shares(name: str) -> list[tuple[str, int, int]]:
 
 def usage_index() -> dict[str, float]:
     """name -> usage percent, from the pokebase ladder data."""
-    rows = meta_obj("usage_pokemon").get("rows", [])
-    idx = {}
+    rows: list[Row] = meta_obj("usage_pokemon").get("rows", [])
+    idx: dict[str, float] = {}
     for r in rows:
         idx[norm(r["name"])] = r["usage_percent"]
     return idx
@@ -102,7 +104,7 @@ def usage_of(name: str, idx: dict[str, float] | None = None) -> float | None:
 
 def move_usage_index() -> dict[str, float]:
     """{move key: usage %} over every move on the ladder."""
-    rows = meta_obj("usage_moves").get("rows", [])
+    rows: list[Row] = meta_obj("usage_moves").get("rows", [])
     return {key(r["name"]): r["usage_percent"] for r in rows}
 
 
@@ -132,11 +134,11 @@ def owned_sets() -> tuple[set[str], set[str], set[str], set[str]]:
     names - read from the live ledger through ledger.inv()."""
     inv = ledger.inv()
     perm = {norm(x) for x in inv.get("permanent_pokemon", [])}
-    temp = {norm(x) for x in (inv.get("rental_pokemon", {}) or {}).get("list", [])}
-    stones = set(inv.get("mega_stones", []))
-    items = set()
-    for v in (inv.get("items") or {}).values():
-        if isinstance(v, list):
+    temp = {norm(x) for x in obj(inv.get("rental_pokemon")).get("list", [])}
+    stones: set[str] = set(inv.get("mega_stones", []))
+    items: set[str] = set()
+    for v in obj(inv.get("items")).values():
+        if is_arr(v):
             items.update(v)
     return perm, temp, stones, items
 
@@ -169,7 +171,7 @@ def smogon_gloss(name: str) -> Row | None:
     duration. Always show both - reading only one of them has produced wrong
     answers twice.
     """
-    b = db("smogon_basics") or {}
+    b = db_obj("smogon_basics")
     k = key(name)
     for bucket in ("moves", "abilities", "items"):
         for r in (b.get(bucket) or ()):
@@ -221,7 +223,7 @@ def _print_move_texts(mv: Row) -> None:
         print("\nSmogon:  (not in smogon_basics)")
     # ...and the whole of it, which is what the dex page prints: the one-liner
     # above says "Traps target"; this says what ends it and what escapes it.
-    full = (db_obj("smogon_text").get("moves") or {}).get(mv["name"])
+    full: str | None = obj(db_obj("smogon_text").get("moves")).get(mv["name"])
     if full:
         print("\nSmogon, in full (smogon.com/dex/champions):")
         print(textwrap.fill(full, 78, initial_indent="         ",
@@ -238,7 +240,7 @@ def cmd_move(a: argparse.Namespace) -> None:
         print("No move called %r.%s" % (a.name,
               ("  Did you mean: " + ", ".join(near[:8])) if near else ""))
         return
-    f = mv.get("flags") or {}
+    f = obj(mv.get("flags"))
     print("=" * 78)
     print("%s   %s %s" % (mv["name"], mv.get("type"), mv.get("category")))
     print("=" * 78)
@@ -246,7 +248,7 @@ def cmd_move(a: argparse.Namespace) -> None:
           % (mv.get("power"), mv.get("accuracy"), mv.get("pp"), mv.get("priority")))
     print("Target: %s" % mv.get("target"))
     _print_move_texts(mv)
-    for field, why in (mv.get("rulings") or {}).items():
+    for field, why in obj(mv.get("rulings")).items():
         print("\nRuling on %s: %s" % (field, why))
     on = [k for k, v in f.items() if v]
     if on:
@@ -276,7 +278,7 @@ def _priority_ok(p: int | None, want: str | None) -> bool:
 
 def _move_matches(m: Row, a: argparse.Namespace) -> bool:
     """Does move row `m` pass every `query.py moves` filter in `a`?"""
-    f = m.get("flags") or {}
+    f = obj(m.get("flags"))
     text = ((m.get("effect") or "") + " " + (m.get("in_depth") or "")).lower()
     basic = (
         # the Attackdex documents ~900 moves but only ~500 are useable in
@@ -302,10 +304,10 @@ def _owned_box() -> dict[str, str]:
     the ledger instead - he has to recognise these at a glance.
     """
     inv = ledger.inv()
-    box = {}
+    box: dict[str, str] = {}
     for x in inv.get("permanent_pokemon", []):
         box[norm(x)] = "*" + x
-    for x in (inv.get("rental_pokemon", {}) or {}).get("list", []):
+    for x in obj(inv.get("rental_pokemon")).get("list", []):
         box.setdefault(norm(x), x)
     return box
 
@@ -331,7 +333,7 @@ def _print_learner_counts(res: list[Row], a: argparse.Namespace) -> None:
     perm, temp, _, _ = owned_sets()
     ui = usage_index()
     print("\nPokemon that learn these moves (Champions legal):")
-    counts = Counter()
+    counts: Counter[str] = Counter()
     for m in res:
         for learner in m.get("learners", []):
             counts[learner] += 1
@@ -358,9 +360,9 @@ def cmd_moves(a: argparse.Namespace) -> None:
     # hand. Permanents sort first because only they can be trained.
     box = _owned_box() if getattr(a, "owned", False) else {}
 
-    rows = []
+    rows: list[list[Any]] = []
     for m in res[:a.limit]:
-        row = [
+        row: list[Any] = [
             m["name"], m.get("type"), (m.get("category") or "")[:4],
             m.get("power"), m.get("accuracy"), m.get("pp"),
             m.get("priority"), m.get("learner_count"),
@@ -389,7 +391,7 @@ def cmd_counter_priority(a: argparse.Namespace) -> None:
     # blocker is worse than showing one extra row.
     deny = ("unable", "cannot", "can't", "prevent", "protect", "block", "fail",
             "immune", "deny", "denies", "stop", "nullif", "negat")
-    blockers = []
+    blockers: list[tuple[str, str, str, str]] = []
     for ab in abilities:
         e = (ab.get("effect") or "").lower()
         if "priority" in e and any(d in e for d in deny):
@@ -432,7 +434,7 @@ def _print_megas(p: Row, stones: set[str]) -> None:
 def _movepool(name: str) -> list[str]:
     """The learnset filed under this name, its norm() spelling, or - for a
     cosmetic or gender form - the base species'."""
-    learn = load(os.path.join(DB, "learnsets.json"), {}) or {}
+    learn: dict[str, list[str]] = load(os.path.join(DB, "learnsets.json"), {}) or {}
     return (learn.get(name)
             or next((v for k, v in learn.items() if norm(k) == norm(name)), None)
             or next((v for k, v in learn.items()
@@ -445,8 +447,8 @@ def _print_movepool_table(mv: list[str]) -> None:
     strongest first.
     """
     mu = move_usage_index()
-    byname = {m["name"]: m for m in db("moves")}
-    rows = []
+    byname: dict[str, Row] = {m["name"]: m for m in db("moves")}
+    rows: list[list[Any]] = []
     for name in mv:
         m = byname.get(name)
         if not m:
@@ -474,7 +476,7 @@ def cmd_pokemon(a: argparse.Namespace) -> None:
           % (bs["hp"], bs["atk"], bs["def"], bs["spa"], bs["spd"], bs["spe"], bs["total"]))
     # Serebii's qualifier where it gives one, e.g. "Battle Bond (Alternate
     # Greninja Only)" - its words, not a rule the player has confirmed
-    notes = p.get("ability_notes") or {}
+    notes: dict[str, str] = p.get("ability_notes") or {}
     print("  Abilities   %s" % ", ".join(
         a + (" (%s, per Serebii)" % notes[a] if a in notes else "")
         for a in p["abilities"]))
@@ -559,12 +561,12 @@ def print_splits(name: str) -> None:
     and is per SET throughout; it is missing entirely for a Pokemon that was
     not ranked that season.
     """
-    blob = meta("usage_splits") or {}
-    row = (blob.get("pokemon") or {}).get(name)
+    blob = meta_obj("usage_splits")
+    splits = obj(blob.get("pokemon"))
+    row: Row | None = splits.get(name)
     if not row:
         # a Mega is filed under the species people ladder with
-        p = find_pokemon(name) or {}
-        row = (blob.get("pokemon") or {}).get(p.get("species") or "")
+        row = splits.get(obj(find_pokemon(name)).get("species") or "")
     if not row:
         return
 
@@ -576,7 +578,7 @@ def print_splits(name: str) -> None:
             "%s %s%%" % (r["name"], r["percent"])
             for r in rows[:n] if "percent" in r)))
 
-    t = row.get("tournament") or {}
+    t = obj(row.get("tournament"))
     if any(t.get(k) for k in ("moves", "items", "abilities", "natures")):
         print("\nWhat its players ran [pokebase, %s tournaments, fetched %s]"
               % (t.get("regulation") or "?", blob.get("fetched") or "?"))
@@ -586,18 +588,19 @@ def print_splits(name: str) -> None:
         line("Items:", t.get("items"))
         line("Ability:", t.get("abilities"))
         line("Nature:", t.get("natures"))
-        for sp in (t.get("spreads") or [])[:3]:
+        spreads: list[Row] = t.get("spreads") or []
+        for sp in spreads[:3]:
             # HP / Atk / Def / SpA / SpD / Spe, which is how a spread is
             # written everywhere else. Sorting the keys alphabetically read
             # "2 ATK / 32 HP / 32 SPD" and nobody writes one that way.
-            vals = sp.get("sp") or {}
+            vals = obj(sp.get("sp"))
             print("  %-10s %s  %s%%"
                   % ("Spread:", " / ".join(
                       "%d %s" % (vals[k], lab) for k, lab in SP_ORDER
                       if vals.get(k)), sp["percent"]))
         line("Alongside:", t.get("teammates"))
 
-    se = row.get("season") or {}
+    se = obj(row.get("season"))
     if se.get("moves"):
         print("\nLadder [%s, %s]  rank %s of %s"
               % (se.get("name") or "?", se.get("dates") or "?",
@@ -720,7 +723,7 @@ def cmd_brief(a: argparse.Namespace) -> None:
 
 def stone_owner_map() -> dict[str, str]:
     """Mega Stone name -> the species it works on, read from the item text."""
-    out = {}
+    out: dict[str, str] = {}
     for it in db("items"):
         if not it.get("is_mega_stone"):
             continue
@@ -741,7 +744,7 @@ def worlds_mega_counts() -> tuple[Counter[str], int]:
     if not tour:
         return Counter(), 0
     stones = {key(i["name"]) for i in db("items") if i.get("is_mega_stone")}
-    counts = Counter()
+    counts: Counter[str] = Counter()
     players = tour.get("players", [])
     for pl in players:
         for slot in pl.get("team", []):
@@ -804,19 +807,18 @@ def cmd_megas(_a: argparse.Namespace) -> None:
     owns it and the species, what a stone or keeping a rental would cost,
     and how often Worlds teams brought it."""
     inv = ledger.inv()
-    perm = inv.get("permanent_pokemon", [])
-    rentinfo = inv.get("rental_pokemon", {}) or {}
-    rent = rentinfo.get("list", [])
-    stones = set(inv.get("mega_stones", []))
-    econ = (inv.get("economy", {}) or {}).get("costs", {}) or {}
-    stone_vp = econ.get("mega_stone_shop", 2000)
-    keep_vp = econ.get("keep_rental_pokemon", 2500)
+    perm: list[str] = inv.get("permanent_pokemon", [])
+    rent: list[str] = obj(inv.get("rental_pokemon")).get("list", [])
+    stones: set[str] = set(inv.get("mega_stones", []))
+    econ = obj(obj(inv.get("economy")).get("costs"))
+    stone_vp: int = econ.get("mega_stone_shop", 2000)
+    keep_vp: int = econ.get("keep_rental_pokemon", 2500)
     owner = stone_owner_map()
     wcounts, wtotal = worlds_mega_counts()
     builds = {norm(str(b.get("pokemon"))) for b in ledger.builds()}
     bases = {norm(p["name"]): p for p in db("pokemon") if not p["is_mega"]}
 
-    rows = []
+    rows: list[list[Any]] = []
     for m in db("pokemon"):
         if not m["is_mega"]:
             continue
@@ -844,9 +846,9 @@ def cmd_megas(_a: argparse.Namespace) -> None:
             cost = "Encounter only"
 
         base = bases.get(norm(sp))
-        bty, mty = "/".join((base or {}).get("types") or []), "/".join(m["types"])
+        bty, mty = "/".join(obj(base).get("types") or []), "/".join(m["types"])
         gained = ", ".join(m["abilities"])
-        lost = [x for x in ((base or {}).get("abilities") or ()) if x not in m["abilities"]]
+        lost = [x for x in obj(base).get("abilities") or () if x not in m["abilities"]]
         wor = wcounts.get(norm(sp), 0)
         role, stat_txt, bulk, tempo = mega_profile(m)
         base_role = mega_profile(base)[0] if base else "?"
@@ -904,7 +906,7 @@ def _print_build_moves(b: Row, learn: dict[str, list[str]],
     """A build's moves, each checked against the form's movepool and shown with
     its usage.
     """
-    mvs = b.get("moves") or []
+    mvs: list[str] = b.get("moves") or []
     if not mvs:
         print("  moves  -- not recorded --")
         return
@@ -977,8 +979,8 @@ def cmd_build(a: argparse.Namespace) -> None:
     if not builds:
         print("No build recorded for %s" % (a.name or "anyone"))
         return
-    learn = load(os.path.join(DB, "learnsets.json"), {}) or {}
-    moves_by = {m["name"]: m for m in db("moves")}
+    learn: dict[str, list[str]] = load(os.path.join(DB, "learnsets.json"), {}) or {}
+    moves_by: dict[str, Row] = {m["name"]: m for m in db("moves")}
     for b in builds:
         _print_build(b, learn, moves_by)
 
@@ -1028,7 +1030,7 @@ def sole_ability(name: str | None) -> str | None:
     choice stays his.
     """
     p = find_pokemon(name) if name else None
-    ab = (p or {}).get("abilities") or []
+    ab: list[str] = obj(p).get("abilities") or []
     return ab[0] if len(ab) == 1 else None
 
 
@@ -1046,7 +1048,7 @@ def build_mega_ability(b: Row) -> str | None:
 
 def build_abilities() -> dict[str, str | None]:
     """Pokemon name -> the ability the player actually runs, from builds.json."""
-    out = {}
+    out: dict[str, str | None] = {}
     for b in ledger.builds():
         out[norm(b["pokemon"])] = build_ability(b)
         mab = build_mega_ability(b)
@@ -1063,7 +1065,7 @@ def defence(types: list[str], chart: dict[str, dict[str, float]] | None = None,
     has is applied on top of the type chart.
     """
     chart = chart or typechart()
-    out = {}
+    out: dict[str, float] = {}
     for atk in TYPES:
         m = 1.0
         for d in types:
@@ -1120,9 +1122,11 @@ def cmd_types(a: argparse.Namespace) -> None:
 
 def _show_defence(d: dict[str, float]) -> None:
     """A typing's weaknesses and resistances grouped by multiplier."""
-    for tag, test in (("x4", lambda m: m == 4), ("x2", lambda m: m == 2),
-                      ("x0.5", lambda m: m == 0.5), ("x0.25", lambda m: m == 0.25),
-                      ("x0", lambda m: m == 0)):
+    tests: list[tuple[str, Callable[[float], bool]]] = [
+        ("x4", lambda m: m == 4), ("x2", lambda m: m == 2),
+        ("x0.5", lambda m: m == 0.5), ("x0.25", lambda m: m == 0.25),
+        ("x0", lambda m: m == 0)]
+    for tag, test in tests:
         hit = [t for t in TYPES if test(d[t])]
         if hit:
             print("  %-6s %s" % (tag, ", ".join(hit)))
@@ -1143,7 +1147,7 @@ def cmd_resist(a: argparse.Namespace) -> None:
     builds = {b["pokemon"] for b in ledger.builds()}
     ba = build_abilities()
 
-    rows = []
+    rows: list[list[Any]] = []
     for p in db("pokemon"):
         chosen = ba.get(norm(p["name"]))
         # A built Pokemon uses the ability it actually runs; anything else is
@@ -1189,7 +1193,7 @@ def cmd_nature(a: argparse.Namespace) -> None:
             return
     else:
         hit = nat
-    rows = []
+    rows: list[list[Any]] = []
     for name in sorted(hit):
         v = hit[name]
         rows.append([name, v["summary"],
@@ -1202,7 +1206,7 @@ def _core_hits(members: list[Row],
                prof: dict[str, dict[str, float]]) -> list[list[Any]]:
     """[attacking type, how many members it hits for 2x+, who and how hard],
     most members first."""
-    rows = []
+    rows: list[list[Any]] = []
     for t in TYPES:
         hits = [(m["name"], prof[m["name"]][t]) for m in members
                 if prof[m["name"]][t] >= 2]
@@ -1221,7 +1225,7 @@ def _patches(members: list[Row], holes: list[str], chart: dict[str, dict[str, fl
     builds = {b["pokemon"] for b in ledger.builds()}
     ui = usage_index()
     have = {m["name"] for m in members}
-    cand = []
+    cand: list[list[Any]] = []
     for q in db("pokemon"):
         own = own_tag(q["name"], perm, temp)
         if q["name"] in have or not own:
@@ -1249,7 +1253,7 @@ def cmd_core(a: argparse.Namespace) -> None:
     doubles is how games are lost.
     """
     chart = typechart()
-    members = []
+    members: list[Row] = []
     for term in a.names:
         p = find_pokemon(term)
         if not p:
@@ -1309,8 +1313,8 @@ def cmd_ability(a: argparse.Namespace) -> None:
     # Battle Bond is the case: named on Greninja's page, never described. The
     # other two sources do describe it, so show them rather than a blank line.
     if not hit.get("effect"):
-        pb = ((db_obj("text_facts").get("abilities") or {})
-              .get(hit["name"]) or {}).get("pokebase")
+        pb: str | None = obj(obj(db_obj("text_facts").get("abilities"))
+                             .get(hit["name"])).get("pokebase")
         sm = next((x.get("description") for x in
                    db_obj("smogon_basics").get("abilities") or ()
                    if x.get("name") == hit["name"]), None)
@@ -1318,7 +1322,7 @@ def cmd_ability(a: argparse.Namespace) -> None:
             if txt:
                 print("  %-9s %s" % (src + ":", txt))
     # the whole of it, from Smogon's Champions dex - what the app shows
-    full = (db_obj("smogon_text").get("abilities") or {}).get(hit["name"])
+    full: str | None = obj(db_obj("smogon_text").get("abilities")).get(hit["name"])
     if full:
         print("\n  Smogon, in full (smogon.com/dex/champions):")
         print(textwrap.fill(full, 78, initial_indent="    ",
@@ -1333,20 +1337,20 @@ def cmd_usage(a: argparse.Namespace) -> None:
     """`query.py usage`: the ladder's most used Pokemon, with their typing from
     our dex and ownership.
     """
-    rows = meta_obj("usage_pokemon").get("rows", [])
+    rows: list[Row] = meta_obj("usage_pokemon").get("rows", [])
     perm, temp, _, _ = owned_sets()
     if a.owned:
         rows = [r for r in rows if own_tag(r["name"], perm, temp)]
     # pokebase stores types as RSC back-references, so read them from our own dex
     local = {norm(p["name"]): p for p in db("pokemon")}
-    out = []
+    out: list[list[Any]] = []
     for r in rows[:a.top]:
-        bs = r.get("base_stats") or {}
-        mine = local.get(norm(r["name"])) or {}
-        types = mine.get("types") or [t for t in (r.get("types") or ())
+        bs = obj(r.get("base_stats"))
+        mine = obj(local.get(norm(r["name"])))
+        types: list[str] = mine.get("types") or [t for t in (r.get("types") or ())
                                       if isinstance(t, str) and not t.startswith("$")]
         out.append([r.get("rank"), r["name"], pct(r["usage_percent"]),
-                    "/".join(types), bs.get("spe") or (mine.get("base_stats") or {}).get("spe"),
+                    "/".join(types), bs.get("spe") or obj(mine.get("base_stats")).get("spe"),
                     own_tag(r["name"], perm, temp)])
     table(out, ["#", "Pokemon", "Usage", "Types", "Spe", "You"])
 
@@ -1355,15 +1359,15 @@ def cmd_speed(a: argparse.Namespace) -> None:
     """`query.py speed`: pokebase's speed tiers, between --min and --max, with
     ownership.
     """
-    rows = meta_obj("speed_tiers").get("rows", [])
+    rows: list[Row] = meta_obj("speed_tiers").get("rows", [])
     perm, temp, _, _ = owned_sets()
-    out = []
+    out: list[list[Any]] = []
     for r in rows:
         if a.min and (r["base_speed"] or 0) < a.min:
             continue
         if a.max and (r["base_speed"] or 0) > a.max:
             continue
-        sp = r.get("speeds") or {}
+        sp = obj(r.get("speeds"))
         names = ", ".join(p["name"] for p in r["pokemon"])
         mine = [p["name"] for p in r["pokemon"] if own_tag(p["name"], perm, temp)]
         out.append([r["base_speed"], sp.get("max"), sp.get("neuMax"),
@@ -1407,12 +1411,13 @@ def worlds_compare(divs: list[tuple[str, Row]], a: argparse.Namespace) -> None:
     instead of one pooled percentage. Sorted by the Masters share when Masters
     is in the set, because that is the division the player enters.
     """
-    counts, totals = {}, {}
+    counts: dict[str, Counter[str]] = {}
+    totals: dict[str, int] = {}
     for d, t in divs:
         players = t.get("players", [])
         top = players[:a.top] if a.top else players
         totals[d] = len(top)
-        c = Counter()
+        c: Counter[str] = Counter()
         for pl in top:
             for slot in pl.get("team", []):
                 if slot.get("pokemon"):
@@ -1423,12 +1428,12 @@ def worlds_compare(divs: list[tuple[str, Row]], a: argparse.Namespace) -> None:
                   key=lambda m: (-(counts[order][m] / (totals[order] or 1)),
                                  -sum(counts[d][m] for d in counts), m))
     perm, temp, _, _ = owned_sets()
-    rows = []
+    rows: list[list[str]] = []
     for mon in mons[:a.limit]:
         row = [mon]
         for d, _ in divs:
-            c, tot = counts[d][mon], totals[d]
-            row.append("%.1f%% (%d)" % (100.0 * c / tot, c) if tot and c else "-")
+            n, tot = counts[d][mon], totals[d]
+            row.append("%.1f%% (%d)" % (100.0 * n / tot, n) if tot and n else "-")
         row.append(own_tag(mon, perm, temp))
         rows.append(row)
     print("\nShare of teams per division  (%s)"
@@ -1455,8 +1460,10 @@ def _print_event_lines(divs: list[tuple[str, Row]]) -> None:
 
 def _worlds_usage(top: list[Row]) -> tuple[Counter[str], dict[str, Counter[str]], dict[str, Counter[str]], dict[str, Counter[str]]]:
     """(species -> teams, species -> item/ability/move Counters) over `top`."""
-    counts = Counter()
-    items, abil, moves = defaultdict(Counter), defaultdict(Counter), defaultdict(Counter)
+    counts: Counter[str] = Counter()
+    items: defaultdict[str, Counter[str]] = defaultdict(Counter)
+    abil: defaultdict[str, Counter[str]] = defaultdict(Counter)
+    moves: defaultdict[str, Counter[str]] = defaultdict(Counter)
     for p in top:
         for slot in p.get("team", []):
             mon = slot.get("pokemon")
@@ -1483,7 +1490,7 @@ def _print_worlds_usage(tour: Row, division: str, a: argparse.Namespace) -> None
     counts, items, abil, moves = _worlds_usage(top)
     n = len(top)
     perm, temp, _, _ = owned_sets()
-    rows = []
+    rows: list[list[Any]] = []
     for mon, c in counts.most_common(a.limit):
         rows.append([mon, c, "%.1f%%" % (100.0 * c / n) if n else "",
                      items[mon].most_common(1)[0][0] if items[mon] else "",
@@ -1552,7 +1559,9 @@ def mega_line(name: str, mons: list[Row], stones: set[str]) -> tuple[str, str, s
     megas = [m for m in mons if m["is_mega"] and norm(m.get("species") or "") == norm(name)]
     if not megas:
         return "-", "-", "-"
-    stats, abils, stone_bits = [], [], []
+    stats: list[str] = []
+    abils: list[str] = []
+    stone_bits: list[str] = []
     for m in megas:
         bs = m["base_stats"]
         tag = "" if len(megas) == 1 else m["name"].replace("Mega ", "") + " "
@@ -1579,9 +1588,9 @@ def cmd_owned(_a: argparse.Namespace) -> None:
     mons = db("pokemon")
     byname = {norm(p["name"]): p for p in mons if not p["is_mega"]}
 
-    perm_list = inv.get("permanent_pokemon", [])
-    rent_list = inv.get("rental_pokemon", {}).get("list", [])
-    tr = inv.get("trainer", {}) or {}
+    perm_list: list[str] = inv.get("permanent_pokemon", [])
+    rent_list: list[str] = obj(inv.get("rental_pokemon")).get("list", [])
+    tr = obj(inv.get("trainer"))
     slots = len(perm_list) + len(rent_list)
     cap = tr.get("box_capacity")
     # box_used is counted from the rows now, so it cannot disagree with the
@@ -1593,11 +1602,11 @@ def cmd_owned(_a: argparse.Namespace) -> None:
 
     def row_for(name: str, label: str | None = None) -> list[Any]:
         """One row of the owned table, Mega line included."""
-        p = byname.get(norm(name))
-        bs = (p or {}).get("base_stats") or {}
+        p = obj(byname.get(norm(name)))
+        bs = obj(p.get("base_stats"))
         mlabel, mabil, stone = mega_line(name, mons, stones)
-        base_ab = ",".join((p or {}).get("abilities") or [])
-        return [label or name, "/".join((p or {}).get("types") or []),
+        base_ab = ",".join(p.get("abilities") or [])
+        return [label or name, "/".join(p.get("types") or []),
                 bs.get("total"), bs.get("spa"), bs.get("spe"),
                 base_ab, pct(usage_of(name, ui)), mlabel, mabil, stone]
 
@@ -1607,7 +1616,7 @@ def cmd_owned(_a: argparse.Namespace) -> None:
     # a Pokemon listed twice is two copies kept for different builds
     perm_counts = Counter(perm_list)
     print("\nPERMANENT (%d slots, %d species)" % (len(perm_list), len(perm_counts)))
-    rows = []
+    rows: list[list[Any]] = []
     for name in sorted(perm_counts, key=perm_list.index):
         n = perm_counts[name]
         rows.append(row_for(name, name + ("  x%d" % n if n > 1 else "")))

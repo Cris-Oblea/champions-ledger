@@ -99,7 +99,7 @@ def ask_dex(kind: str, alias: str) -> Any:
         return None           # it answered, and the answer is no entry
     except net.ERRORS:
         return "failed"
-    return (d or {}).get("description") or None
+    return dex.obj(d).get("description") or None
 
 
 # What is asked for, per kind: the RPC, the cache folder and the list of names.
@@ -131,13 +131,15 @@ def dex_texts(force: bool = False) -> None:
     One request per entry, cached per entry INCLUDING "not in Champions", so a
     nightly run only asks about what it has never seen; the Monday --deep run
     asks everything again, which is what keeps it current."""
-    out, asked, failed = {}, 0, []
+    out: dict[str, dict[str, str]] = {}
+    failed: list[str] = []
+    asked = 0
     for bucket, rpc_kind, source in DEX_KINDS:
         cache_dir = os.path.join(CACHE, bucket)
         os.makedirs(cache_dir, exist_ok=True)
-        rows = json.loads(Path(DB, source).read_text(encoding="utf-8"))
-        rows = rows if isinstance(rows, list) else list(rows.values())
-        got_all = {}
+        table = json.loads(Path(DB, source).read_text(encoding="utf-8"))
+        rows: list[dex.Row] = table if dex.is_arr(table) else list(table.values())
+        got_all: dict[str, str] = {}
         for r in rows:
             alias = dex_alias(r["name"])
             path = os.path.join(cache_dir, alias + ".json")
@@ -161,7 +163,7 @@ def dex_texts(force: bool = False) -> None:
         out[bucket] = got_all
         print("  %-9s %d described by Champions' dex, of %d"
               % (bucket, len(got_all), len(rows)))
-    blob = dict({
+    blob: dict[str, Any] = dict({
         "source": "smogon.com/dex/champions (dump-move, dump-ability, dump-item)",
         "fetched": time.strftime("%Y-%m-%d"),
         "note": "Champions' own dex only. An entry it does not describe is "
@@ -192,9 +194,9 @@ def parse_moveset(ms: dict[str, Any]) -> dict[str, Any]:
     """One Smogon set reduced to the fields kept: moves per slot, items,
     abilities, natures, SP and the explanation.
     """
-    slots = []
+    slots: list[list[str]] = []
     for slot in ms.get("moveslots") or ():
-        opts = [m.get("move") for m in slot if isinstance(m, dict) and m.get("move")]
+        opts = [m["move"] for m in slot if dex.is_obj(m) and m.get("move")]
         if opts:
             slots.append(opts)
     return {
@@ -229,7 +231,7 @@ def _write_basics(basics: dict[str, Any]) -> None:
     """Write smogon_basics.json: move flags, natures, types, items, abilities
     and moves as Champions' dex has them.
     """
-    blob = {
+    blob: dict[str, Any] = {
         "source": "smogon.com/dex/champions",
         "fetched": time.strftime("%Y-%m-%d"),
         "moveflags": basics.get("moveflags") or [],
@@ -260,13 +262,14 @@ def _credits(st: dict[str, Any]) -> list[str | None]:
     """The usernames credited for an analysis."""
     if not st.get("credits"):
         return []
-    members = ((st.get("credits") or {}).get("teams") or [{}])[0].get("members", [])
-    return [c.get("username") for c in members if isinstance(c, dict)]
+    teams: list[dex.Row] = dex.obj(st.get("credits")).get("teams") or [{}]
+    members: list[dex.Json] = teams[0].get("members", [])
+    return [c.get("username") for c in members if dex.is_obj(c)]
 
 
 def _vgc_strategies(data: dict[str, Any]) -> list[dict[str, Any]]:
     """The VGC analyses in a dump that say anything; singles are dropped."""
-    strategies = []
+    strategies: list[dict[str, Any]] = []
     for st in data.get("strategies") or ():
         if not is_vgc(st.get("format")):
             continue
@@ -294,7 +297,7 @@ def main() -> None:
     os.makedirs(DB, exist_ok=True)
 
     basics = _basics(force)
-    mons = basics.get("pokemon") or []
+    mons: list[dex.Row] = basics.get("pokemon") or []
     print("  %d Pokemon, %d moves, %d items, %d abilities"
           % (len(mons), len(basics.get("moves") or []),
              len(basics.get("items") or []), len(basics.get("abilities") or [])))
@@ -304,9 +307,10 @@ def main() -> None:
     dex_texts(force)
 
     print("Fetching per-Pokemon analyses (VGC formats only) ...")
-    out, with_analysis = [], 0
+    out: list[dict[str, Any]] = []
+    with_analysis = 0
     for i, mon in enumerate(mons, 1):
-        alias = mon.get("alias") or re.sub(r"[^a-z0-9-]", "",
+        alias: str = mon.get("alias") or re.sub(r"[^a-z0-9-]", "",
                                            (mon.get("name") or "").lower().replace(" ", "-"))
         data = _pokemon_dump(alias, force)
         if data is None:
@@ -326,7 +330,7 @@ def main() -> None:
             print("  %d/%d (%d with VGC analysis)" % (i, len(mons), with_analysis),
                   flush=True)
 
-    blob = {
+    blob: dict[str, Any] = {
         "source": "smogon.com/dex/champions",
         "game": "Pokemon Champions",
         "note": "VGC formats only (doubles, bring 6 pick 4). Singles dropped.",

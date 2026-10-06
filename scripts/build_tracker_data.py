@@ -14,6 +14,7 @@ The rule for what ships: whatever the phone would otherwise have to derive
 resolved HERE, in Python where norm() and the audits live, so the page is
 plain lookups.
 """
+import functools
 import json
 import os
 import re
@@ -36,11 +37,14 @@ _FLAG_LETTER = {"contact": "c", "sound": "s", "punch": "p", "biting": "b",
 
 def flag_str(m: dex.Row) -> str:
     """The move's ability-relevant flags as letters: "cp" = contact + punch."""
-    f = m.get("flags") or {}
+    f = dex.obj(m.get("flags"))
     return "".join(v for k, v in _FLAG_LETTER.items() if f.get(k))
 
 
-TEXTS = None
+@functools.cache
+def _move_texts() -> dict[str, dex.Row]:
+    """build_text_facts.py's pick per move, read once."""
+    return dex.db_obj("text_facts").get("moves") or {}
 
 
 def movetext(m: dex.Row) -> str:
@@ -53,10 +57,7 @@ def movetext(m: dex.Row) -> str:
     NOT CUT SHORT: the end of the text is where a binding move says how to
     escape it and Protect says what makes it fail.
     """
-    global TEXTS
-    if TEXTS is None:
-        TEXTS = dex.db_obj("text_facts").get("moves") or {}
-    picked = (TEXTS.get(m["name"]) or {}).get("text")
+    picked = dex.obj(_move_texts().get(m["name"])).get("text")
     t = picked or (m.get("effect") or "").strip() or (m.get("in_depth") or "").strip()
     return " ".join(t.split())
 
@@ -83,7 +84,7 @@ def _targeting(m: dex.Row, props: dict[str, Any]) -> tuple[str, int, int]:
     """
     tgt = m.get("target") or ""
     k = dex.target_key(tgt)
-    p = props.get(m["name"]) or {}
+    p = dex.obj(props.get(m["name"]))
     spread = 1 if p.get("spread", k in dex.SPREAD_TARGETS) else 0
     ally = 1 if p.get("hits_ally", k == "all adjacent pokemon") else 0
     if spread != (k in dex.SPREAD_TARGETS) or ally != (k == "all adjacent pokemon"):
@@ -102,8 +103,8 @@ def build_moves(use: list[dex.Row]) -> list[list[Any]]:
     """The MOVES rows, in the column order core/data.js unpacks: name, type,
     category, power, accuracy, pp, priority, target, spread, hits ally, hit
     count, always-crit, flags, text."""
-    props = dex.db_obj("ability_moves").get("moves") or {}
-    rows = []
+    props: dict[str, dex.Row] = dex.db_obj("ability_moves").get("moves") or {}
+    rows: list[list[Any]] = []
     for m in use:
         tgt, spread, ally = _targeting(m, props)
         rows.append([m["name"], m["type"], dex.CATEGORY.get(m.get("category") or "", "T"),
@@ -127,7 +128,7 @@ def build_moves(use: list[dex.Row]) -> list[list[Any]]:
 def build_learn(learn: dict[str, list[str]],
                 midx: dict[str, int]) -> dict[str, list[int]]:
     """Learnsets as index lists."""
-    out = {}
+    out: dict[str, list[int]] = {}
     for sp, lst in learn.items():
         ids = _idx(lst, midx)
         if ids:
@@ -144,11 +145,12 @@ def build_learn(learn: dict[str, list[str]],
 def _smogon_mega_bases() -> dict[str, str]:
     """Smogon's Mega name -> the baseSpecies it names."""
     try:
-        sroster = json.loads(Path(SMOGON_CALC, "raw_species.json").read_text(encoding="utf-8"))
+        sroster: dict[str, Any] = json.loads(
+            Path(SMOGON_CALC, "raw_species.json").read_text(encoding="utf-8"))
     except (OSError, ValueError):
         sroster = {}
     return {k: v["baseSpecies"] for k, v in sroster.items()
-            if isinstance(v, dict) and v.get("baseSpecies") and "Mega" in k}
+            if dex.is_obj(v) and v.get("baseSpecies") and "Mega" in k}
 
 
 def _attach_gendered(p: dex.Row, sname: str | None, smog_base: dict[str, str],
@@ -192,7 +194,7 @@ def mega_owners(mons: list[dex.Row]) -> dict[str, list[str]]:
     the refresh log."""
     smog_base = _smogon_mega_bases()
     import damage as _Dm
-    owners = {}
+    owners: dict[str, list[str]] = {}
     for p in mons:
         if not p.get("is_mega"):
             continue
@@ -204,7 +206,7 @@ def mega_owners(mons: list[dex.Row]) -> dict[str, list[str]]:
         owner = _owner_form(p, smog_base.get(sname or ""), mons)
         if p["name"] not in owners.setdefault(owner, []):
             owners[owner].append(p["name"])
-    species_of = {}
+    species_of: dict[str, str | None] = {}
     for q in mons:
         species_of.setdefault(q["name"], q.get("species"))
     moved = [(o, ms) for o, ms in owners.items()
@@ -226,14 +228,14 @@ def learn_aliases(mons: list[dex.Row],
     (.claude/rules/data-pipeline.md). The app is a plain key lookup, so the
     resolving happens here, where norm() and the alias table already live.
     """
-    out = {}
+    out: dict[str, str] = {}
     for p in mons:
         n, sp = p["name"], p.get("species") or p["name"]
         if n in app_learn or sp in app_learn:
             continue
         hit = next((k for k in app_learn if dex.norm(k) == dex.norm(n)), None)
+        base = re.sub(r"^Mega ", "", n).split("-")[0]
         if not hit:
-            base = re.sub(r"^Mega ", "", n).split("-")[0]
             hit = next((k for k in app_learn if dex.norm(k) == dex.norm(base)), None)
         if not hit:
             # the pool is filed under a SUFFIXED name and the dex row is not:
@@ -257,7 +259,7 @@ def learn_aliases(mons: list[dex.Row],
 
 def _form_change(p: dex.Row, v: dict[str, Any]) -> dict[str, Any]:
     """{"t": types, "b": stats} for whatever this form changes; {} if nothing."""
-    e = {}
+    e: dict[str, Any] = {}
     if v.get("types") and v["types"] != p["types"]:
         e["t"] = v["types"]
     st = [v[k] for k in dex.STAT_KEYS]
@@ -268,10 +270,11 @@ def _form_change(p: dex.Row, v: dict[str, Any]) -> dict[str, Any]:
 
 def battle_forms(mons: list[dex.Row]) -> dict[str, dict[str, Any]]:
     """BFORMS: name -> {"by": the ability, "f": {form label: changes}}."""
-    bforms = {}
+    bforms: dict[str, dict[str, Any]] = {}
     for p in mons:
-        out = {}
-        for label, v in (p.get("battle_forms") or {}).items():
+        out: dict[str, dict[str, Any]] = {}
+        forms: dict[str, dict[str, Any]] = p.get("battle_forms") or {}
+        for label, v in forms.items():
             e = _form_change(p, v)
             if e:
                 out[label] = e
@@ -331,10 +334,10 @@ def form_pictures(mons: list[dex.Row], form_line: dict[str, list[dict[str, Any]]
                   bforms: dict[str, dict[str, Any]]) -> dict[str, dict[str, Any]]:
     """Adds the picture of every battle form to `bforms`; returns the Megas
     drawn differently from their species (FORM_SPRITE)."""
-    form_sprite = {}
+    form_sprite: dict[str, dict[str, Any]] = {}
     champ_rows = {p["name"]: p for p in mons}
     mega_names = {p["name"] for p in mons if p.get("is_mega")}
-    sprite_of = dex.db("sprite_ids") or {}
+    sprite_of = dex.db_obj("sprite_ids")
     for name, forms in form_line.items():
         p = champ_rows.get(name)
         if not p:
@@ -353,7 +356,7 @@ def form_pictures(mons: list[dex.Row], form_line: dict[str, list[dict[str, Any]]
 
 def build_dex(mons: list[dex.Row]) -> list[list[Any]]:
     """DEX rows: name, species, types, base stats, is-Mega, abilities, dex no."""
-    rows = []
+    rows: list[list[Any]] = []
     for p in mons:
         b = p["base_stats"]
         # the National Dex number, so the box can be read in the same order
@@ -370,7 +373,7 @@ def home_dex_with_forms(mons: list[dex.Row],
     """HOME_DEX with each outside species' forms attached (Mewtwo's Mega X
     and Y, Kyogre's Primal). Main-series numbers, the same as the row they
     ride on - and the card's "not in Champions" tag covers them too."""
-    home_dex = dex.db("home_dex") or {}
+    home_dex = dex.db_obj("home_dex")
     champ = {p["name"] for p in mons}
     for name, forms in form_line.items():
         if name in home_dex and name not in champ:
@@ -387,16 +390,16 @@ def gts_difficulty() -> dict[str, list[Any]]:
     [score, demand, supply, rank, how, usage, ladder_size]. demand and rank
     are null for a species with no row on the ladder - absent, not zero.
     """
-    blob = dex.meta("gts_difficulty") or {}
+    blob = dex.meta_obj("gts_difficulty")
     size = blob.get("ladder_size")
     return {k: [v["score"], v["demand"], v["supply"], v.get("rank"),
                 v.get("how") or "", v.get("usage"), size]
-            for k, v in (blob.get("species") or {}).items()}
+            for k, v in dex.obj(blob.get("species")).items()}
 
 
 def build_stones(mons: list[dex.Row]) -> list[list[str]]:
     """Stones: 1:1 with the Megas."""
-    stones = []
+    stones: list[list[str]] = []
     for p in mons:
         if not p.get("is_mega"):
             continue
@@ -413,7 +416,7 @@ def build_stones(mons: list[dex.Row]) -> list[list[str]]:
 # all because they are rewards. scripts/build_item_facts.py does the merge
 # and reports any disagreement.
 def _item_row(i: dex.Row, pr: dict[str, Any], link: dict[str, Any]) -> list[Any]:
-    moves = link.get("moves") or []
+    moves: list[str] = link.get("moves") or []
     return [i["name"], pr.get("vp") or i.get("price_vp"),
             i.get("category") or "Miscellaneous",
             # the item's ONE description - Smogon's Champions dex
@@ -433,8 +436,8 @@ def _item_row(i: dex.Row, pr: dict[str, Any], link: dict[str, Any]) -> list[Any]
 def build_items(items: list[dex.Row]) -> list[list[Any]]:
     """ITEMS rows, sorted by name. Mega Stones are left out on purpose: they
     ship as STONES and get their own pane."""
-    prices = dex.db_obj("item_facts").get("prices") or {}
-    links = dex.db_obj("item_links").get("items", {})
+    prices: dict[str, dex.Row] = dex.db_obj("item_facts").get("prices") or {}
+    links: dict[str, dex.Row] = dex.db_obj("item_links").get("items", {})
     rows = [_item_row(i, prices.get(i["name"]) or {}, links.get(i["name"]) or {})
             for i in items if not i.get("is_mega_stone")]
     rows.sort()
@@ -444,10 +447,11 @@ def build_items(items: list[dex.Row]) -> list[list[Any]]:
 def build_abilities(abil: dex.Json) -> dict[str, str]:
     """ABIL: ability -> its ONE description, the text build_text_facts.py
     picked across the sources (the one that states the numbers wins)."""
-    atext = dex.db_obj("text_facts").get("abilities") or {}
-    out = {}
-    for a in (abil if isinstance(abil, list) else abil.values()):
-        pick = (atext.get(a["name"]) or {}).get("text") or a.get("effect") or ""
+    atext: dict[str, dex.Row] = dex.db_obj("text_facts").get("abilities") or {}
+    out: dict[str, str] = {}
+    rows: list[dex.Row] = abil if dex.is_arr(abil) else list(abil.values())
+    for a in rows:
+        pick: str = dex.obj(atext.get(a["name"])).get("text") or a.get("effect") or ""
         # whole: Smogon's Champions text runs past 400 characters for the
         # abilities with the most exceptions, and those are the ones to read
         out[a["name"]] = " ".join(pick.split())
@@ -507,7 +511,7 @@ def build_ab_moves(am: dict[str, Any],
     scripts/build_ability_moves.py. Stored as move-index lists so the blob
     stays small and the page never has to re-derive anything."""
     return {ab: _ability_rule(ab, rule, midx)
-            for ab, rule in (am.get("abilities") or {}).items()}
+            for ab, rule in dex.obj(am.get("abilities")).items()}
 
 
 def home_only_species(mons: list[dex.Row], wt: Iterable[str]) -> list[str]:
@@ -531,7 +535,7 @@ def home_only_species(mons: list[dex.Row], wt: Iterable[str]) -> list[str]:
 
 def canonical_names(mons: list[dex.Row]) -> dict[str, str]:
     """norm() key -> the dex row's own spelling (the first row wins)."""
-    canon = {}
+    canon: dict[str, str] = {}
     for p in mons:
         canon.setdefault(dex.norm(p["name"]), p["name"])
     return canon
@@ -544,7 +548,7 @@ def cosmetic_spellings(wt: Iterable[str],
     app can say "this is the same Pokemon" instead of the player meeting the
     question twice - these forms change no stat, no move and no ability, so
     the dex carries one entry on purpose. (COSMETIC)"""
-    cosmetic = {}
+    cosmetic: dict[str, list[str]] = {}
     for n in wt:
         k = dex.norm(n)
         if k not in canon or n == canon[k]:
@@ -587,7 +591,7 @@ MENUS = ("atk_ability", "def_ability", "atk_item", "def_item")
 
 def build_mods() -> dict[str, list[str]]:
     """MODS: per menu, the sorted names measured to move the damage."""
-    measured = dex.db("modifiers") or {}
+    measured = dex.db_obj("modifiers")
     return {k: sorted(measured.get(k) or {}) for k in MENUS}
 
 
@@ -602,7 +606,8 @@ def smogon_names(mons: list[dex.Row]) -> dict[str, str]:
     by test_norm.py, so the mapping is precomputed here rather than ported
     to JS."""
     import damage as Dm
-    names, missing = {}, []
+    names: dict[str, str] = {}
+    missing: list[str] = []
     for p in mons:
         n = p["name"]
         try:
@@ -659,8 +664,9 @@ def build_effects(app_abilities: dict[str, str], app_items: list[list[Any]],
     shown_text = dict(app_abilities)
     shown_text.update({r[0]: r[3] for r in app_items})
     shown_text.update({r[0]: r[13] for r in app_moves})
-    effects = {}
-    for name, v in (dex.db_obj("effects").get("effects") or {}).items():
+    effects: dict[str, dict[str, Any]] = {}
+    rows: dict[str, dex.Row] = dex.db_obj("effects").get("effects") or {}
+    for name, v in rows.items():
         said = shown_text.get(name) or ""
         c = effect_chips.unsaid(effect_chips.chips(v), said)
         desc = None if said else v.get("described")
@@ -696,9 +702,10 @@ def _best_worlds_sources() -> dict[tuple[int, str], tuple[int, str]]:
     Seniors and Juniors on the Day 2 one, so both events carry rows for the
     same championship and reading them straight gave Seniors and Juniors two
     podiums each. The one with more players is the complete list."""
-    best_src = {}
+    best_src: dict[tuple[int, str], tuple[int, str]] = {}
     for ev in dex.meta_obj("worlds_archive").get("events") or ():
-        for div, info in (ev.get("divisions") or {}).items():
+        divisions: dict[str, dex.Row] = ev.get("divisions") or {}
+        for div, info in divisions.items():
             if not info.get("teamlists"):
                 continue
             key = (ev["year"], div)
@@ -712,7 +719,7 @@ def _podium_row(year: int, div: str, pl: dict[str, Any], slot: dict[str, Any],
                 mega_of_stone: dict[str, str],
                 mega_abil: dict[str, str]) -> dict[str, Any]:
     """One top-8 set, in the short keys tracker/src/ui/pokemon.js reads."""
-    row = {
+    row: dict[str, Any] = {
         "y": year, "d": div, "r": pl["rank"],
         "who": pl.get("player") or "",
         "rec": pl.get("record") or "",
@@ -736,8 +743,8 @@ def build_podium(stones: list[list[str]], mons: list[dex.Row],
     mega_of_stone = {dex.norm(st): mega for st, mega, _sp in stones if st}
     mega_abil = {m["name"]: ", ".join(m.get("abilities") or [])
                  for m in mons if m.get("is_mega")}
-    podium = {}
-    seen_events = []
+    podium: dict[str, list[dict[str, Any]]] = {}
+    seen_events: list[str] = []
     for (year, div), (_n, tid) in sorted(_best_worlds_sources().items()):
         t = dex.meta("tournament_%s_%s" % (tid, div))
         if not t:
@@ -770,10 +777,11 @@ def build_worlds() -> list[dict[str, Any]]:
     The three divisions stay apart: three metagames off one roster, so the
     app tabs between them instead of averaging.
     """
-    worlds = []
+    worlds: list[dict[str, Any]] = []
     for y in dex.meta_obj("worlds_archive").get("years") or ():
-        divs = {}
-        for dname, d in (y.get("divisions") or {}).items():
+        divs: dict[str, dict[str, Any]] = {}
+        divisions: dict[str, dex.Row] = y.get("divisions") or {}
+        for dname, d in divisions.items():
             if not d.get("teamlists") or not d.get("top"):
                 continue
             divs[dname] = {"n": d.get("teams") or 0,
@@ -794,21 +802,22 @@ def item_for_move(links: dict[str, Any]) -> dict[str, list[list[str]]]:
     Day is a reason to run the move; Aspear Berry on Ice Beam is a reason it
     will not work.
     """
-    items = links.get("items") or {}
+    items: dict[str, dex.Row] = links.get("items") or {}
+    by_move: dict[str, list[str]] = links.get("by_move") or {}
     return {k: [[i, items[i].get("side") or "for"]
                 for i in v if len(items[i]["moves"]) <= 8]
-            for k, v in (links.get("by_move") or {}).items()
+            for k, v in by_move.items()
             if any(len(items[i]["moves"]) <= 8 for i in v)}
 
 
 def main() -> None:
     """Assemble every table the app reads into tracker/data.js (window.CHAMP).
     """
-    mons = dex.db("pokemon")
-    moves = dex.db("moves")
-    items = dex.db("items")
-    learn = dex.db("learnsets")
-    nat = dex.db("natures")
+    mons: list[dex.Row] = dex.db("pokemon")
+    moves: list[dex.Row] = dex.db("moves")
+    items: list[dex.Row] = dex.db("items")
+    learn: dict[str, list[str]] = dex.db("learnsets")
+    nat: dict[str, dex.Row] = dex.db("natures")
     chart = dex.db("typechart")
     abil = dex.db("abilities")
 
@@ -819,7 +828,7 @@ def main() -> None:
     mega_owner = mega_owners(mons)
     learn_alias = learn_aliases(mons, app_learn)
     bforms = battle_forms(mons)
-    form_line = dex.db("form_line") or {}
+    form_line: dict[str, list[dict[str, Any]]] = dex.db_obj("form_line")
     form_sprite = form_pictures(mons, form_line, bforms)
     dex_rows = build_dex(mons)
     # ...and the National Dex number for everything HOME can hold, which is
@@ -834,8 +843,8 @@ def main() -> None:
     # pokebase's weight table, read for its KEYS: it names every species and
     # form pokebase knows, which is the list HOME_ONLY and the cosmetic forms
     # are cut from. The weights themselves are Smogon's engine's business.
-    wt = dex.db_obj("weights").get("weights", {})
-    am = dex.db("ability_moves") or {}
+    wt: dict[str, Any] = dex.db_obj("weights").get("weights", {})
+    am = dex.db_obj("ability_moves")
     ab_moves = build_ab_moves(am, midx)
     home_only = home_only_species(mons, wt)
     canon = canonical_names(mons)
@@ -847,9 +856,9 @@ def main() -> None:
     effects = build_effects(app_abilities, app_items, app_moves)
     podium = build_podium(stones, mons, canon)
     worlds = build_worlds()
-    links = dex.db("item_links") or {}
+    links = dex.db_obj("item_links")
 
-    blob = {"DEX": dex_rows, "HOME_ONLY": home_only, "MODS": mods,
+    blob: dict[str, Any] = {"DEX": dex_rows, "HOME_ONLY": home_only, "MODS": mods,
             "WORLDS": worlds, "PODIUM": podium,
             "DEXNO": dexno, "BFORMS": bforms,
             "REG": reg, "REG_STARTED": reg_started,

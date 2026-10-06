@@ -51,7 +51,7 @@ import argparse
 import json
 import os
 import re
-from collections.abc import Iterable
+from collections.abc import Callable, Iterable
 from pathlib import Path
 from typing import Any
 
@@ -96,7 +96,9 @@ def quantity(sides: Iterable[str]) -> str:
 # match wins, so the specific patterns come before the general ones. Every
 # entry here was taken from a sentence that is really in the data; nothing is
 # listed on the chance that it might be.
-AFTER = [
+# (pattern, the subject it names from the match - None: let BEFORE answer)
+type Rule = tuple[str, Callable[[re.Match[str]], str | None]]
+AFTER: list[Rule] = [
     (r"^\s*%?\s*chance to (\w+)", lambda m: m.group(1) + " chance"),
     (r"^\s*%?\s*chance", lambda _: "chance"),
     (r"^\s*(?:%|" + TIMES + r"|x)?\s*(?:target's )?max HP", lambda _: "max HP"),
@@ -117,7 +119,7 @@ AFTER = [
     (r"^\s*(?:%|" + TIMES + r"|x)\s*on\b", lambda _: "damage"),
     (r"^\s*%\s*-\d", lambda _: "chance"),
 ]
-BEFORE = [
+BEFORE: list[Rule] = [
     (r"\bAt\s*$", lambda _: "at {n} max HP"),            # Overgrow's threshold
     (r"offensive stat is\s*$", lambda _: "offensive stat"),
     (r"(Attack|Speed|Defense|Defence|SpA|SpD|Atk|Def|Spe) is\s*$",
@@ -169,10 +171,11 @@ def trim(x4096: float) -> str:
 
 def chips(entry: dict[str, Any]) -> list[list[str]]:
     """[[text, why], ...] - what the screen shows for one item/ability/move."""
-    out, engine_values = [], set()
+    out: list[list[str]] = []
+    engine_values: set[float] = set()
 
     # --- 1 and 2: the engine's own, collapsed and rounded ---------------
-    groups = {}
+    groups: dict[str, dict[str, Any]] = {}
     for e in entry.get("effects") or ():
         if not e.get("x4096"):
             continue
@@ -192,9 +195,9 @@ def chips(entry: dict[str, Any]) -> list[list[str]]:
                     + "; ".join(g["when"][:4])])
 
     # --- 3, 4 and 5: what Smogon's sentence adds on top -----------------
-    nums = entry.get("text_numbers") or []
+    nums: list[dict[str, Any]] = entry.get("text_numbers") or []
     if len(nums) > 1:
-        seen = set()
+        seen: set[str] = set()
         for n in nums:
             shown = n["as_written"]
             if shown in WORD_VALUES or shown in seen:
@@ -227,7 +230,7 @@ WORDNUM = {"one": 1, "two": 2, "three": 3, "four": 4, "five": 5, "half": 0.5,
 
 def values(s: str | None) -> set[float]:
     """Every number a sentence states, as floats - "1/3" also as 0.333."""
-    out = set()
+    out: set[float] = set()
     s = (s or "").replace(TIMES, " ")
     for x in NUM.findall(s):
         if "/" in x:
@@ -276,7 +279,7 @@ def unsaid(cs: list[list[str]], description: str | None) -> list[list[str]]:
     if not description:
         return cs
     stated = values(description)
-    keep = []
+    keep: list[list[str]] = []
     for c in cs:
         vs = chip_values(c[0])
         if vs and not all(same_number(v, stated) for v in vs):
@@ -320,7 +323,8 @@ def main() -> None:
                     help="only the numbers whose subject is not in the tables")
     a = ap.parse_args()
     blob = json.loads(Path(EFFECTS).read_text(encoding="utf-8"))["effects"]
-    bare, total = [], 0
+    bare: list[tuple[str, str]] = []
+    total = 0
     for name in sorted(blob):
         cs = chips(blob[name])
         total += len(cs)

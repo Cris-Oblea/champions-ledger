@@ -36,6 +36,7 @@ import subprocess
 import sys
 from typing import Any
 
+import dex
 from paths import DB, ROOT
 
 OUT = os.path.join(DB, "effects.json")
@@ -69,7 +70,10 @@ def load(name: str) -> Any:
 
 def rows(blob: Any, key: str) -> list[Any]:
     """A table's rows, whether it is a bare list or wrapped under `key`."""
-    return blob if isinstance(blob, list) else (blob.get(key) or [])
+    if dex.is_arr(blob):
+        return blob
+    got: list[Any] = blob.get(key) or []
+    return got
 
 
 def engine_map() -> Any:
@@ -85,7 +89,7 @@ def engine_map() -> Any:
 def run(cases: list[dict[str, Any]], chunk: int = 120) -> list[Any]:
     """Send the cases to the engine probe in chunks (one node process each,
     to keep the command line short); every case's measured result."""
-    got = []
+    got: list[Any] = []
     for i in range(0, len(cases), chunk):
         part = cases[i:i + chunk]
         r = subprocess.run(["node", PROBE, json.dumps(part)], cwd=ROOT,
@@ -105,21 +109,22 @@ def _attacker(cat: str) -> str:
 
 def _vehicle_candidates(moves: list[dict[str, Any]]) -> dict[tuple[str, str], list[dict[str, Any]]]:
     """The six most powerful single-hit attacks per (type, category)."""
-    cands = {}
+    cands: dict[tuple[str, str], list[dict[str, Any]]] = {}
     for m in moves:
         if not m.get("useable") or m.get("category") == "Status":
             continue
         if not m.get("power") or m.get("hits"):
             continue
-        key = (m.get("type"), m.get("category"))
-        if key[0] and key[1]:
-            cands.setdefault(key, []).append(m)
+        t, cat = m.get("type"), m.get("category")
+        if t and cat:
+            cands.setdefault((t, cat), []).append(m)
     return {k: sorted(v, key=lambda m: -m["power"])[:6] for k, v in cands.items()}
 
 
 def _verified_vehicles(cands: dict[tuple[str, str], list[dict[str, Any]]]) -> dict[tuple[str, str], str]:
     """{(type, category): the first candidate the engine confirms}."""
-    probes, want = [], {}
+    probes: list[dict[str, Any]] = []
+    want: dict[str, tuple[tuple[str, str], str, int]] = {}
     for (t, cat), ms in cands.items():
         for m in ms:
             cid = "vehicle|%s %s|%s" % (t, cat, m["name"])
@@ -127,12 +132,12 @@ def _verified_vehicles(cands: dict[tuple[str, str], list[dict[str, Any]]]) -> di
             probes.append({"id": cid, "move": m["name"],
                            "atk": {"name": _attacker(cat)},
                            "def": {"name": DEF}})
-    out = {}
+    out: dict[tuple[str, str], str] = {}
     for r in run(probes, chunk=250):
         if r.get("error"):
             continue
         key, name, power = want[r["id"]]
-        w = ((r.get("raw") or {}).get("without") or {})
+        w = dex.obj(dex.obj(r.get("raw")).get("without"))
         if w.get("basePower") == power and (w.get("damage") or 0) > 0 \
                 and w.get("category") == key[1] and key not in out:
             out[key] = name
@@ -192,7 +197,7 @@ def _boost_cases(name: str, boost: str,
                  veh: dict[tuple[str, str], str]) -> list[dict[str, Any]]:
     """An item that boosts a type boosts it in EITHER category, so both are
     probed - and the label says which, because that is the fact."""
-    out = []
+    out: list[dict[str, Any]] = []
     for cat in ("Physical", "Special"):
         mv = a_move(veh, boost, cat)
         if mv:
@@ -209,7 +214,7 @@ def _berry_cases(name: str, berry: str,
                  veh: dict[tuple[str, str], str]) -> list[dict[str, Any]]:
     """A resist berry measured where it fires: the holder DEFENDING against a
     super-effective hit of its type, once physical and once special."""
-    out = []
+    out: list[dict[str, Any]] = []
     for cat in ("Physical", "Special"):
         mv = a_move(veh, berry, cat)
         if mv:
@@ -225,7 +230,7 @@ def _berry_cases(name: str, berry: str,
 def _generic_item_cases(name: str,
                         veh: dict[tuple[str, str], str]) -> list[dict[str, Any]]:
     """Held by either side, through a generic move of each category."""
-    out = []
+    out: list[dict[str, Any]] = []
     for side in ("atk", "def"):
         for cat in ("Physical", "Special"):
             mv = a_move(veh, "any", cat)
@@ -233,7 +238,7 @@ def _generic_item_cases(name: str,
                 continue
             who = _attacker(cat)
             label = ("as attacker" if side == "atk" else "as defender")
-            c = {"id": "item|%s|%s, %s"
+            c: dict[str, Any] = {"id": "item|%s|%s, %s"
                        % (name, label, generic_label(veh, cat)),
                  "move": mv, "typeEff": 2}
             if side == "atk":
@@ -253,7 +258,7 @@ def cases_for_items(items: list[dict[str, Any]], emap: dict[str, Any],
     """Every probe case for every item: a type booster on its type, a berry
     on a super-effective hit, anything else in the generic positions. Mega
     Stones are skipped - a stone creates a form, not a modifier."""
-    out = []
+    out: list[dict[str, Any]] = []
     for it in items:
         name = it["name"]
         if it.get("is_mega_stone"):
@@ -275,13 +280,14 @@ def cases_for_abilities(abilities: list[dict[str, Any]],
     """Both categories on both sides, plus any move the ability is known to
     touch - ability_moves.json already works out which - so an ability that
     only fires on punches or on sound is probed through one."""
-    out = []
+    out: list[dict[str, Any]] = []
     for ab in abilities:
         name = ab["name"]
         extra = NEEDS.get(name, {})
+        touched: list[str] = touches.get(name) or []
         picks = [("Physical", a_move(veh, "any", "Physical")),
                  ("Special", a_move(veh, "any", "Special")),
-                 *((None, mv) for mv in (touches.get(name) or [])[:2])]
+                 *((None, mv) for mv in touched[:2])]
         for cat, mv in picks:
             if not mv:
                 continue
@@ -289,7 +295,7 @@ def cases_for_abilities(abilities: list[dict[str, Any]],
             what = generic_label(veh, cat) if cat else ("using %s" % mv)
             for side in ("atk", "def"):
                 label = "as attacker" if side == "atk" else "as defender"
-                c = {"id": "ability|%s|%s, %s" % (name, label, what),
+                c: dict[str, Any] = {"id": "ability|%s|%s, %s" % (name, label, what),
                      "move": mv, "typeEff": 2}
                 if side == "atk":
                     c["atk"] = dict({"name": who, "ability": name}, **extra)
@@ -357,7 +363,8 @@ def sentence_around(text: str, at: int) -> str:
 def numbers_from(text: str) -> list[dict[str, Any]]:
     """Every number a sentence states (fraction, multiplier, percent...), as
     {kind, value, shown}, each value once."""
-    out, seen = [], set()
+    out: list[dict[str, Any]] = []
+    seen: set[tuple[str, str, int]] = set()
     for kind, pat in NUMBER_PATTERNS:
         for m in re.finditer(pat, text):
             if kind in ("fraction", "fraction of max HP"):
@@ -402,17 +409,17 @@ def numbers_from(text: str) -> list[dict[str, Any]]:
                     and (n["value"], n["phrase"]) in hp)]
 
 
-def smogon_text() -> dict[str, Any]:
+def smogon_text() -> dict[tuple[str, str], str]:
     """name -> (kind, description), from Smogon's own tables."""
     try:
         b = load("smogon_basics.json")
     except (OSError, ValueError):
         return {}
-    out = {}
+    out: dict[tuple[str, str], str] = {}
     for kind, key in (("item", "items"), ("ability", "abilities"),
                       ("move", "moves")):
         for r in b.get(key) or ():
-            if isinstance(r, dict) and r.get("name"):
+            if dex.is_obj(r) and r.get("name"):
                 out[(kind, r["name"])] = r.get("description") or ""
     return out
 
@@ -422,7 +429,7 @@ STAGE = {"bp": "base power", "at": "attack", "df": "defence", "fin": "final"}
 
 def collect(results: list[dict[str, Any]]) -> dict[str, dict[str, Any]]:
     """id -> the exact multipliers it adds, per stage, keyed by the thing."""
-    out = {}
+    out: dict[str, dict[str, Any]] = {}
     for r in results:
         if r.get("error"):
             kind, name = r["id"].split("|")[:2]
@@ -435,7 +442,8 @@ def collect(results: list[dict[str, Any]]) -> dict[str, dict[str, Any]]:
             continue
         kind, name, when = r["id"].split("|", 2)
         e = out.setdefault(name, {"kind": kind, "effects": [], "notes": []})
-        for stage, vals in (r.get("stages") or {}).items():
+        stages: dict[str, list[int]] = r.get("stages") or {}
+        for stage, vals in stages.items():
             if stage == "basePower":
                 e["effects"].append({"when": when, "stage": "base power",
                                      "from": vals[0], "to": vals[1]})
@@ -450,15 +458,16 @@ def collect(results: list[dict[str, Any]]) -> dict[str, dict[str, Any]]:
 
 def _touches() -> dict[str, Any]:
     """ability -> the moves ability_moves.json says it touches."""
+    rules: dex.Json
     try:
-        touches = load("ability_moves.json")
-        touches = touches.get("abilities", touches)
+        blob = load("ability_moves.json")
+        rules = blob.get("abilities", blob)
     except (OSError, ValueError):
-        touches = {}
-    if isinstance(touches, dict):
-        touches = {k: (v.get("moves") if isinstance(v, dict) else v) or []
-                   for k, v in touches.items()}
-    return touches
+        rules = {}
+    if not dex.is_obj(rules):
+        return rules
+    return {k: (v.get("moves") if dex.is_obj(v) else v) or []
+            for k, v in rules.items()}
 
 
 def _drop_repeats(got: dict[str, dict[str, Any]]) -> None:

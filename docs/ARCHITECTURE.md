@@ -326,12 +326,11 @@ runs in four places: the `pre-push` hook, every pull request, every push to
   `python -m pip install -r requirements.txt`, which pins the version.
 - **pyright** (`pyrightconfig.json`, an npm package pinned like typescript):
   the Python type check, the same checker as VS Code's Pylance, so the
-  editor shows what blocks a push. Every script is checked in `basic` mode at
-  zero, and every function is annotated (`reportMissingParameterType` fails
-  an untyped parameter); `strict` (nothing Unknown either) is
-  switched on file by file in the config's `strict` list. JSON read from disk
+  editor shows what blocks a push. Every script is checked in `strict` mode
+  at zero: every function annotated, nothing Unknown. JSON read from disk
   is the data boundary: `dex.load/db/meta` return `Json` (`Any`), the Python
-  twin of `docFromRow`.
+  twin of `docFromRow`, and `dex.is_obj/is_arr/obj/db_obj/meta_obj` keep what
+  is read from it typed.
 - **vulture** (`python -m vulture scripts`): dead Python code across files -
   a function whose last caller was in another script, which ruff, reading
   one file at a time, counts as used. Pinned in the same `requirements.txt`.

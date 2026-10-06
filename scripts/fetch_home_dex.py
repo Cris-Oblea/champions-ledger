@@ -214,20 +214,20 @@ def worlds_names() -> set[str]:
     # standings, a year's archive and a division's teamlists - nest a name at
     # three different depths, and a reader that knows only one of them finds
     # five of the six and looks like it worked. Ogerpon was the sixth.
-    out = set()
+    out: set[str] = set()
     files = [f for f in os.listdir(META)
              if f.endswith(".json")
              and (f.startswith("tournament_") or f == "worlds_archive.json")]
 
     def walk(node: dex.Json) -> None:
         """Collect every `name` anywhere in a nested JSON value."""
-        if isinstance(node, dict):
+        if dex.is_obj(node):
             n = node.get("name")
             if isinstance(n, str) and n:
                 out.add(n)
             for v in node.values():
                 walk(v)
-        elif isinstance(node, list):
+        elif dex.is_arr(node):
             for v in node:
                 walk(v)
 
@@ -247,7 +247,7 @@ def home_only_names() -> list[str]:
     is history, and had no numbers on it at all).
     """
     wt = set(dex.db("weights")["weights"])
-    champ = set()
+    champ: set[str] = set()
     for p in dex.db("pokemon"):                 # a LIST of form rows
         for n in (p.get("name"), p.get("species")):
             if n:
@@ -330,7 +330,9 @@ def resolver(pokemon: list[CsvRow]) -> Resolve:
 
     Returns resolve(name) -> (id, the base it fell back to or None).
     """
-    by_key, is_def, order = {}, {}, []
+    by_key: dict[str, str] = {}
+    is_def: dict[str, bool] = {}
+    order: list[str] = []
     for r in pokemon:
         i = r["identifier"]
         if i in by_key:
@@ -348,7 +350,8 @@ def build(force: bool = False) -> tuple[dict[str, dict[str, Any]], list[str]]:
     resolve = resolver(table("pokemon.csv", force))
     numbers = _numbers_reader(force)
     by_form = form_rows(force)
-    out, missed = {}, []
+    out: dict[str, dict[str, Any]] = {}
+    missed: list[str] = []
     for name in home_only_names():
         pid, approx = resolve(key(name))
         # A NAMED FORM OF A ROW IS NOT AN APPROXIMATION. Arceus-Ice has no row
@@ -388,14 +391,15 @@ def species_flags(force: bool = False) -> dict[str, list[str]]:
     will refuse to hold.
 
     Returned per NAME, every form, because that is what the app has in hand."""
-    myth, leg = set(), set()
+    myth: set[str] = set()
+    leg: set[str] = set()
     for r in table("pokemon_species.csv", force):
         if r.get("is_mythical") == "1":
             myth.add(r["identifier"])
         if r.get("is_legendary") == "1":
             leg.add(r["identifier"])
     names = [p["name"] for p in dex.db("pokemon")] + home_only_names()
-    out = {"mythical": [], "legendary": []}
+    out: dict[str, list[str]] = {"mythical": [], "legendary": []}
     for n in sorted(set(names)):
         k = key(n)
         base = k.split("-")[0]
@@ -450,7 +454,7 @@ def sprite_files(force: bool = False) -> dict[str, set[str]]:
     tok = os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN")
     if tok:
         head["Authorization"] = "Bearer " + tok
-    seen = {}
+    seen: dict[str, dex.Json] = {}
 
     def get(url: str) -> dex.Json:
         """Fetch a URL once per run."""
@@ -459,7 +463,7 @@ def sprite_files(force: bool = False) -> dict[str, set[str]]:
         return seen[url]
 
     root = get(api + "commits/" + pin)["commit"]["tree"]["sha"]
-    out = {}
+    out: dict[str, list[str]] = {}
     for label, sub in SPRITE_DIRS.items():
         sha = root
         for part in sub.split("/"):
@@ -497,11 +501,11 @@ def form_rows(force: bool = False) -> Callable[[str], dict[str, Any] | None]:
     writes Vivillon-Pokeball where upstream writes vivillon-poke-ball."""
     types = {r["id"]: r["identifier"].capitalize()
              for r in table("types.csv", force)}
-    ftypes = {}
+    ftypes: dict[str, list[tuple[int, str]]] = {}
     for r in table("pokemon_form_types.csv", force):
         ftypes.setdefault(r["pokemon_form_id"], []).append(
             (int(r["slot"]), types[r["type_id"]]))
-    by = {}
+    by: dict[str, dict[str, Any]] = {}
     for r in table("pokemon_forms.csv", force):
         row = {"pid": r["pokemon_id"],
                "stem": (r["pokemon_id"] if r.get("is_default") == "1"
@@ -538,8 +542,9 @@ def sprite_ids(force: bool = False) -> tuple[dict[str, int | str], list[str]]:
     resolve = resolver(pokemon)
     by_form = form_rows(force)
     files = sprite_files(force)
-    out, missed = {}, []
-    names = [p["name"] for p in dex.db("pokemon")] + home_only_names()
+    out: dict[str, int | str] = {}
+    missed: list[str] = []
+    names: list[str] = [p["name"] for p in dex.db("pokemon")] + home_only_names()
     for name in names:
         # EXACT ROWS ONLY. A stand-in spread is honest because the card says
         # whose it is; a stand-in PICTURE is not - every Arceus plate looks
@@ -571,7 +576,7 @@ def sprite_gaps(ids: Iterable[int | str],
       p / ps   no pixel sprite, normal / shiny -> use the HOME render"""
     files = sprite_files(force)
     used = sorted({str(v) for v in ids}, key=lambda s: (len(s), s))
-    out = {}
+    out: dict[str, list[int | str]] = {}
     for k, where in (("n", "home"), ("s", "home_shiny"),
                      ("p", "pixel"), ("ps", "shiny")):
         out[k] = [stem_value(s) for s in used if s not in files[where]]
@@ -638,7 +643,9 @@ def _numbers_reader(force: bool) -> Callable[[str], dict[str, Any] | None]:
     abil = {r["ability_id"]: r["name"]
             for r in table("ability_names.csv", force)
             if r.get("local_language_id") == ENGLISH}
-    st, ty, ab = {}, {}, {}
+    st: dict[str, dict[int, int]] = {}
+    ty: dict[str, list[tuple[int, str]]] = {}
+    ab: dict[str, list[tuple[int, str]]] = {}
     for r in stats:
         if int(r["stat_id"]) in STAT_ORDER:
             st.setdefault(r["pokemon_id"], {})[int(r["stat_id"])] = int(r["base_stat"])
@@ -663,7 +670,7 @@ def _numbers_reader(force: bool) -> Callable[[str], dict[str, Any] | None]:
 def _card_owners(resolve: Resolve) -> dict[str, list[str]]:
     """Which cards each upstream row IS - exact resolutions only, the same
     standard the pictures are held to."""
-    cards = {}
+    cards: dict[str, list[str]] = {}
     for name in [p["name"] for p in dex.db("pokemon")
                  if not p.get("is_mega")] + home_only_names():
         pid, approx = resolve(key(name))
@@ -755,7 +762,9 @@ def form_line(force: bool = False) -> tuple[dict[str, list[dict[str, Any]]], lis
         species_of={r["id"]: r["species_id"] for r in pokemon})
     cards = _card_owners(up.resolve)
 
-    out, unknown, orphan = {}, [], []
+    out: dict[str, list[dict[str, Any]]] = {}
+    unknown: list[str] = []
+    orphan: list[str] = []
     for r in forms:
         got = _classify(r, up, unknown, orphan)
         if not got:

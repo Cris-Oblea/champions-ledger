@@ -2,52 +2,13 @@
 // editor shows what blocks a push. Nothing is compiled; the annotations are
 // read as written. The gate runs it (daily.py).
 //
-// "basic" over every script, at zero, with every parameter annotated (and
-// every return, which pyright has no rule for - keep it that way by hand).
-// "strict" (nothing Unknown either) is switched on file by file in the list
-// below, and when every file is in it the mode becomes "strict" and the list
-// goes. JSON read from disk is the data boundary: dex.load/db/meta return
-// `Json` (Any), the Python twin of docFromRow in the app.
+// "strict" over every script, at zero: every parameter and return annotated
+// (pyright has no rule for a missing return - keep it that way by hand) and
+// nothing Unknown. JSON read from disk is the data boundary: dex.load/db/meta
+// return `Json` (Any), the Python twin of docFromRow in the app; the idioms
+// that keep it typed are in .claude/rules/data-pipeline.md.
 {
   "include": ["scripts"],
   "pythonVersion": "3.14",
-  "typeCheckingMode": "basic",
-  "reportMissingParameterType": "error",
-  "strict": [
-    "scripts/audit_learnsets.py",
-    "scripts/audit_sources.py",
-    "scripts/backup_ledger.py",
-    "scripts/build_analysis_data.py",
-    "scripts/build_engine_bundle.py",
-    "scripts/build_gts_difficulty.py",
-    "scripts/build_item_facts.py",
-    "scripts/build_item_links.py",
-    "scripts/build_outside_dex.py",
-    "scripts/build_statuses.py",
-    "scripts/build_text_facts.py",
-    "scripts/build_tracker_page.py",
-    "scripts/build_type_colors.py",
-    "scripts/build_typechart.py",
-    "scripts/check_docs.py",
-    "scripts/check_regulation.py",
-    "scripts/damage.py",
-    "scripts/dex.py",
-    "scripts/diff_db.py",
-    "scripts/fetch_dex_numbers.py",
-    "scripts/fetch_pokebase.py",
-    "scripts/fetch_pokebase_splits.py",
-    "scripts/fetch_serebii.py",
-    "scripts/fetch_smogon_calc.py",
-    "scripts/fetch_tournament.py",
-    "scripts/fetch_worlds_archive.py",
-    "scripts/ledger.py",
-    "scripts/measure_modifiers.py",
-    "scripts/migrate.py",
-    "scripts/net.py",
-    "scripts/paths.py",
-    "scripts/preview.py",
-    "scripts/refresh.py",
-    "scripts/serebii_text.py",
-    "scripts/test_norm.py"
-  ]
+  "typeCheckingMode": "strict"
 }

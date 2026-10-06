@@ -25,11 +25,10 @@ and does not in Champions. `fetch_smogon.py` asks `gen: "champions"` only; a
 move Champions' dex does not describe gets Serebii's attackdex-champions line,
 never an older game's text.
 
-**The Python type-checks (pyright, `pyrightconfig.json`, in the gate).** Every
-script is at zero in `basic`, and every function's parameters and return are
-annotated (the config fails an unannotated parameter; a missing return has no
-rule, so add it by hand); `strict` is switched on file by file in that
-config's `strict` list - a file in it is fully annotated, so keep it that way.
+**The Python type-checks (pyright `strict`, `pyrightconfig.json`, in the
+gate, 2026-10-06).** Every script is at zero: every parameter and return
+annotated (a missing return has no rule, so add it by hand) and nothing
+Unknown - a new empty container states its type (`out: list[str] = []`).
 JSON from disk is `dex.Json` (the boundary); state the shape where a reader
 relies on one. `__doc__` can be None: `(__doc__ or "").split(...)`. What
 strict needs at that boundary: sniff a shape with `dex.is_obj()` /
