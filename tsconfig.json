@@ -12,10 +12,10 @@
     "moduleResolution": "bundler",
     "lib": ["es2024", "dom", "dom.iterable"],
     "skipLibCheck": true,
-    // Off here (TypeScript 6 turns it on by default): strict asks for a type
-    // on every parameter, and it is switched on one layer at a time, each in
-    // its own tsconfig.json - core/ and ui/ are.
-    "strict": false
+    // Every parameter typed, every null checked. It came on one layer at a
+    // time (core/, ui/, tabs/) and the whole app has run strict since
+    // 2026-10-06.
+    "strict": true
   },
   "include": ["tracker/src/**/*.js", "tracker/src/globals.d.ts"],
   "exclude": ["tracker/src/_*.js"]

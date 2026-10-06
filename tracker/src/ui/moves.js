@@ -4,7 +4,7 @@
    Shared rather than copied: a move ranked one way in the build picker and
    another way in search is the bug this file exists to prevent. */
 import { byText, C, catName, splitPct } from "../core/data.js";
-import { el, filterLabel, searchField, setPressed } from "../core/dom.js";
+import { el, filterLabel, kids, searchField, setPressed } from "../core/dom.js";
 import { numText, typeChip, typeSkin, usageTag } from "./card.js";
 
 /* ------------------------------------------- which ability boosts what -----
@@ -323,7 +323,7 @@ function sortRow(body, st, usageOf){
     setPressed(t, o[0] === st.sort);
     t.onclick = function(){
       st.sort = o[0];
-      Array.prototype.forEach.call(srow.children, function(/** @type {Element} */ x){
+      kids(srow).forEach(function(x){
         setPressed(x, x === t);
       });
       st.onChange();

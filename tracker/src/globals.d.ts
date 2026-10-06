@@ -8,8 +8,8 @@ type SpSpread = Partial<Record<Stat, number>>;
 
 /* ------------------------------------------------- the dex payload (CHAMP) */
 /** window.CHAMP, written by build_tracker_data.py. Positional rows keep it
- *  small; data.js is the one reader of the positions. A field core/ does not
- *  read yet is `any` until a layer that reads it is typed. */
+ *  small; data.js is the one reader of the positions. Every field the page
+ *  reads is declared here, so a field nobody declared is an error. */
 interface Champ {
   /** [name, species, types, base stats, is Mega (0/1), abilities, dex no] */
   DEX: [string, string, string[], number[], number, string[], number][];
@@ -252,7 +252,7 @@ interface Build {
   moves: string[];
   role: string;
   rationale: string;
-  extra: Record<string, any>;
+  extra: Record<string, unknown>;
   updated: string;
 }
 
@@ -261,6 +261,8 @@ interface Build {
 interface TeamSlot {
   build_id?: string;
   item?: string;
+  /** his one line on why this slot holds this item */
+  why?: string;
 }
 
 interface Team {
@@ -284,13 +286,25 @@ interface Trade {
   status: "TRADED" | "PENDING";
   updated?: string;
   _id?: string;
-  [measured: string]: any;
+  /* what the trade measured, written when it closes (tabs/gts.js closeTrade) */
+  days?: number | null;
+  tookMs?: number | null;
+  gaveShiny?: boolean;
+  gaveBst?: number;
+  gaveValue?: number;
+  gotBst?: number;
+  /** the ladder rank of what was asked for, when the offer went up */
+  rankAtDeposit?: number | null;
+  /** a trade logged after the fact, from memory */
+  backfilled?: boolean;
+  /** anything else a trade measures lands in the row's jsonb: no migration */
+  [measured: string]: unknown;
 }
 
 /** An owned stone or item: the row existing is the fact. */
 interface Owned { updated: string; }
 
-interface Trainer { box_capacity?: number; updated?: string; [setting: string]: any; }
+interface Trainer { box_capacity?: number; updated?: string; [setting: string]: unknown; }
 
 type Table = "box" | "builds" | "teams" | "stones" | "items" | "gts" | "meta";
 

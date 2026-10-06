@@ -4,7 +4,9 @@
 import {
   bst, byText, C, DEX, dexNo, learnset, MOVES, STAT_KEYS, STAT_LABEL,
 } from "../core/data.js";
-import { $, el, fbtn, field, pressOnly, searchField, setPressed } from "../core/dom.js";
+import {
+  $, el, fbtn, field, kids, pressOnly, searchField, setPressed,
+} from "../core/dom.js";
 import { boxRows, FIND, originOf, ownedNames } from "../core/state.js";
 import { megaLine, numText, pokeCard, typeSkin } from "../ui/card.js";
 import { moveFilters, moveRowFor } from "../ui/moves.js";
@@ -357,7 +359,7 @@ function findInit(){
    A segmented control rather than another tab, because it belongs to Find. */
 function wireFindMode(){
   const mrow = $("findMode");
-  Array.prototype.forEach.call(mrow.children, function(/** @type {HTMLElement} */ b){
+  kids(mrow).forEach(function(b){
     b.onclick = function(){
       const m = b.dataset.mode;
       pressOnly(mrow, b);
