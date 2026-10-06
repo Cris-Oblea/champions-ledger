@@ -1,8 +1,8 @@
 {
  "source": "pokebase.app/pokemon-champions",
  "game": "Pokemon Champions",
- "fetched": "2026-10-05",
- "count": 190,
+ "fetched": "2026-10-06",
+ "count": 191,
  "rows": [
   {
    "rank": 1,
@@ -50,7 +50,7 @@
    "rank": 7,
    "slug": "lightning-rod",
    "name": "Lightning Rod",
-   "usage_percent": 3.3,
+   "usage_percent": 3.4,
    "description": ""
   },
   {
@@ -69,16 +69,16 @@
   },
   {
    "rank": 10,
-   "slug": "rough-skin",
-   "name": "Rough Skin",
+   "slug": "rock-head",
+   "name": "Rock Head",
    "usage_percent": 2.8,
    "description": ""
   },
   {
    "rank": 11,
-   "slug": "rock-head",
-   "name": "Rock Head",
-   "usage_percent": 2.7,
+   "slug": "rough-skin",
+   "name": "Rough Skin",
+   "usage_percent": 2.8,
    "description": ""
   },
   {
@@ -92,20 +92,20 @@
    "rank": 13,
    "slug": "blaze",
    "name": "Blaze",
-   "usage_percent": 2.3,
+   "usage_percent": 2.4,
    "description": ""
   },
   {
    "rank": 14,
-   "slug": "emergency-exit",
-   "name": "Emergency Exit",
-   "usage_percent": 2.3,
+   "slug": "competitive",
+   "name": "Competitive",
+   "usage_percent": 2.2,
    "description": ""
   },
   {
    "rank": 15,
-   "slug": "competitive",
-   "name": "Competitive",
+   "slug": "emergency-exit",
+   "name": "Emergency Exit",
    "usage_percent": 2.2,
    "description": ""
   },
@@ -258,15 +258,15 @@
   },
   {
    "rank": 37,
-   "slug": "magic-bounce",
-   "name": "Magic Bounce",
+   "slug": "snow-warning",
+   "name": "Snow Warning",
    "usage_percent": 0.5,
    "description": ""
   },
   {
    "rank": 38,
-   "slug": "snow-warning",
-   "name": "Snow Warning",
+   "slug": "soundproof",
+   "name": "Soundproof",
    "usage_percent": 0.5,
    "description": ""
   },
@@ -286,15 +286,15 @@
   },
   {
    "rank": 41,
-   "slug": "mirror-armor",
-   "name": "Mirror Armor",
+   "slug": "magic-bounce",
+   "name": "Magic Bounce",
    "usage_percent": 0.4,
    "description": ""
   },
   {
    "rank": 42,
-   "slug": "soundproof",
-   "name": "Soundproof",
+   "slug": "mirror-armor",
+   "name": "Mirror Armor",
    "usage_percent": 0.4,
    "description": ""
   },
@@ -307,71 +307,71 @@
   },
   {
    "rank": 44,
-   "slug": "gale-wings",
-   "name": "Gale Wings",
-   "usage_percent": 0.3,
-   "description": ""
-  },
-  {
-   "rank": 45,
    "slug": "infiltrator",
    "name": "Infiltrator",
    "usage_percent": 0.3,
    "description": ""
   },
   {
-   "rank": 46,
+   "rank": 45,
    "slug": "multiscale",
    "name": "Multiscale",
    "usage_percent": 0.3,
    "description": ""
   },
   {
-   "rank": 47,
+   "rank": 46,
    "slug": "rain-dish",
    "name": "Rain Dish",
    "usage_percent": 0.3,
    "description": ""
   },
   {
-   "rank": 48,
+   "rank": 47,
    "slug": "sharpness",
    "name": "Sharpness",
    "usage_percent": 0.3,
    "description": ""
   },
   {
-   "rank": 49,
+   "rank": 48,
    "slug": "solid-rock",
    "name": "Solid Rock",
    "usage_percent": 0.3,
    "description": ""
   },
   {
-   "rank": 50,
+   "rank": 49,
    "slug": "synchronize",
    "name": "Synchronize",
    "usage_percent": 0.3,
    "description": ""
   },
   {
-   "rank": 51,
+   "rank": 50,
    "slug": "compound-eyes",
    "name": "Compound Eyes",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 52,
+   "rank": 51,
    "slug": "damp",
    "name": "Damp",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 53,
+   "rank": 52,
    "slug": "friend-guard",
    "name": "Friend Guard",
+   "usage_percent": 0.2,
+   "description": ""
+  },
+  {
+   "rank": 53,
+   "slug": "gale-wings",
+   "name": "Gale Wings",
    "usage_percent": 0.2,
    "description": ""
   },
@@ -1203,132 +1203,139 @@
   },
   {
    "rank": 172,
+   "slug": "shield-dust",
+   "name": "Shield Dust",
+   "usage_percent": 0.0,
+   "description": ""
+  },
+  {
+   "rank": 173,
    "slug": "skill-link",
    "name": "Skill Link",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 173,
+   "rank": 174,
    "slug": "slush-rush",
    "name": "Slush Rush",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 174,
+   "rank": 175,
    "slug": "spicy-spray",
    "name": "Spicy Spray",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 175,
+   "rank": 176,
    "slug": "stalwart",
    "name": "Stalwart",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 176,
+   "rank": 177,
    "slug": "steadfast",
    "name": "Steadfast",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 177,
+   "rank": 178,
    "slug": "steely-spirit",
    "name": "Steely Spirit",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 178,
+   "rank": 179,
    "slug": "strong-jaw",
    "name": "Strong Jaw",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 179,
+   "rank": 180,
    "slug": "supersweet-syrup",
    "name": "Supersweet Syrup",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 180,
+   "rank": 181,
    "slug": "supreme-overlord",
    "name": "Supreme Overlord",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 181,
+   "rank": 182,
    "slug": "surge-surfer",
    "name": "Surge Surfer",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 182,
+   "rank": 183,
    "slug": "swarm",
    "name": "Swarm",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 183,
+   "rank": 184,
    "slug": "sweet-veil",
    "name": "Sweet Veil",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 184,
+   "rank": 185,
    "slug": "symbiosis",
    "name": "Symbiosis",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 185,
+   "rank": 186,
    "slug": "unseen-fist",
    "name": "Unseen Fist",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 186,
+   "rank": 187,
    "slug": "vital-spirit",
    "name": "Vital Spirit",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 187,
+   "rank": 188,
    "slug": "wandering-spirit",
    "name": "Wandering Spirit",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 188,
+   "rank": 189,
    "slug": "water-absorb",
    "name": "Water Absorb",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 189,
+   "rank": 190,
    "slug": "white-smoke",
    "name": "White Smoke",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 190,
+   "rank": 191,
    "slug": "zero-to-hero",
    "name": "Zero to Hero",
    "usage_percent": 0.0,
