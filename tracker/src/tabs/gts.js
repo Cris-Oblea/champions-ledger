@@ -19,6 +19,16 @@ import {
 import { boxBadges, outsideCard, pokeCard } from "../ui/card.js";
 import { ask, closeSheet, openSheet } from "../ui/nav.js";
 
+/** @typedef {import("../core/trade.js").Ask} Ask */
+/** @typedef {import("../core/trade.js").ChipValue} ChipValue */
+/** @typedef {import("../core/trade.js").GtsDiff} GtsDiff */
+/** The deposit picker's sort and its two filters.
+    @typedef {{sort: string, dupes: boolean, outside: boolean}} PickState */
+/** What the deposit picker's sections share: the picker state, his keepable
+    copies per form, the copies already in an offer, and what a pick does.
+    @typedef {{PICK: PickState, copies: Record<string, number>,
+      taken: Record<string, Trade>, onPick: (rec: ListedBox) => void}} MineCtx */
+
 field("gtsAdd").onclick = function(){
   if (!slotsFull()) gtsSheet(null, null);
 };
@@ -30,14 +40,17 @@ function slotsFull(){
   return true;
 }
 
-/* True, and says so, when this copy already waits in another offer. */
+/** True, and says so, when this copy already waits in another offer.
+   @param {Trade} d
+   @param {string | null} id */
 function clashes(d, id){
   const cl = gtsClash(d, id);
   if (cl) toast("That copy is already in the GTS, waiting for " + (cl.requested || "something"));
   return Boolean(cl);
 }
 
-/* a box row's card stripe: HOME, or the Champions box */
+/** a box row's card stripe: HOME, or the Champions box
+   @param {BoxRow} r */
 function locClass(r){ return r.location === "home" ? "home" : "perm"; }
 
 /* ============================================================ open offers */
@@ -77,13 +90,18 @@ function drawGts(){
   drawGtsHistory();
 }
 
-/* Two things worth saying above the offers. Stones bought for a Pokemon that
+/** Two things worth saying above the offers. Stones bought for a Pokemon that
    is not in the ledger: 2000 VP each, idle until a trade brings one in. And
    a collision already in the data: two offers that believe they hold the
    same copy, where closing either would remove a Pokemon the other still
-   counts on. */
+   counts on.
+   @param {HTMLElement} list
+   @param {Trade[]} offers */
 function offerWarnings(list, offers){
-  const byId = {}, clash = [];
+  /** @type {Record<string, number>} */
+  const byId = {};
+  /** @type {string[]} */
+  const clash = [];
   offers.forEach(function(o){
     if (!o.offeredId) return;
     if (byId[o.offeredId]) clash.push(o.offeredId);
@@ -91,6 +109,7 @@ function offerWarnings(list, offers){
   });
   const dead = deadStones();
   if (dead.length) {
+    /** @type {Record<string, string>} */
     const names = {};
     dead.forEach(function(d){ names[d.species] = d.stone; });
     const keys = Object.keys(names);
@@ -135,27 +154,33 @@ function drawGtsHistory(){
   shown.forEach(function(r){ host.appendChild(historyRow(r)); });
 }
 
-/* Wired once. A fold that forgets is a fold you reopen every visit, so its
-   state is kept in localStorage. */
+/** Wired once. A fold that forgets is a fold you reopen every visit, so its
+   state is kept in localStorage.
+   @param {HTMLElement} tog
+   @param {HTMLElement} bod */
 function wireHistoryFold(tog, bod){
   if (tog.dataset.wired) return;
   tog.dataset.wired = "1";
-  tog.onclick = function(){
+  /* Open or shut the fold, and remember which. */
+  function toggle(){
     const open = bod.hidden;
     bod.hidden = !open;
     tog.setAttribute("aria-expanded", open ? "true" : "false");
-    tog.querySelector(".foldcaret").innerHTML = open ? "&#9662;" : "&#9656;";
+    const caret = tog.querySelector(".foldcaret");
+    if (caret) caret.innerHTML = open ? "&#9662;" : "&#9656;";
     try { localStorage.setItem("champ-gtshist", open ? "1" : ""); } catch (e) {}
-  };
+  }
+  tog.onclick = toggle;
   try {
-    if (localStorage.getItem("champ-gtshist")) tog.onclick();
+    if (localStorage.getItem("champ-gtshist")) toggle();
   } catch (e) {}
 }
 
-/* Collapsed, the fold's one line IS the feature, so it carries the finding
+/** Collapsed, the fold's one line IS the feature, so it carries the finding
    rather than a description: over every closed trade, how often a chip
    reached the ceiling its Mega line sets. The trades say that ceiling is
-   reachable, not automatic. */
+   reachable, not automatic.
+   @param {Trade[]} h */
 function marketSummary(h){
   const ceil = h.filter(function(r){ return r.gaveValue && r.gotBst; });
   const hit = ceil.filter(function(r){ return r.gotBst >= r.gaveValue - 10; });
@@ -168,16 +193,17 @@ function marketSummary(h){
     " — so that ceiling is reachable, not automatic.";
 }
 
-/* One closed trade: what went and what came, the BST on both sides and the
+/** One closed trade: what went and what came, the BST on both sides and the
    gap, the chip's Mega line when that is what priced it, a shiny chip's
-   premium, and how long it took to close. */
+   premium, and how long it took to close.
+   @param {Trade} r */
 function historyRow(r){
   const row = el("div", "row perm");
   const m = el("div", "rmain");
   const nm = el("div", "rname");
   nm.appendChild(document.createTextNode(
     r.offered + "  →  " + r.requested));
-  if (r.closed) nm.appendChild(el("span", "tag", r.closed));
+  if (r.closed) nm.appendChild(el("span", "tag", String(r.closed)));
   m.appendChild(nm);
   const meta = el("div", "rmeta");
   bstChange(meta, r);
@@ -196,8 +222,10 @@ function historyRow(r){
   return row;
 }
 
-/* BST given -> BST got, the gap, and the chip's Mega line when that is what
-   priced it. */
+/** BST given -> BST got, the gap, and the chip's Mega line when that is what
+   priced it.
+   @param {HTMLElement} meta
+   @param {Trade} r */
 function bstChange(meta, r){
   if (r.gaveBst && r.gotBst) {
     const d = r.gotBst - r.gaveBst;
@@ -212,8 +240,10 @@ function bstChange(meta, r){
   }
 }
 
-/* The row that will eventually price a shiny: what a shiny chip actually
-   fetched, against what the same species is worth plain. */
+/** The row that will eventually price a shiny: what a shiny chip actually
+   fetched, against what the same species is worth plain.
+   @param {HTMLElement} meta
+   @param {Trade} r */
 function shinyPremium(meta, r){
   if (!r.gaveShiny) return;
   const prem = (r.gotBst != null && r.gaveValue != null)
@@ -222,16 +252,19 @@ function shinyPremium(meta, r){
     (prem != null ? " · " + signed(prem) + " over plain" : "")));
 }
 
-/* How long a trade sat: measured to the hour when the deposit was stamped,
-   in days for the ones logged before it was. */
+/** How long a trade sat: measured to the hour when the deposit was stamped,
+   in days for the ones logged before it was.
+   @param {Trade} r */
 function tradeDuration(r){
   if (r.tookMs != null) return elapsedText(r.tookMs);
   if (r.days != null) return r.days + " days";
   return null;
 }
 
-/* How hard a species is to get, as a chip coloured by it: hopeless, hard,
-   fair, easy - and where it sits on the ladder. */
+/** How hard a species is to get, as a chip coloured by it: hopeless, hard,
+   fair, easy - and where it sits on the ladder.
+   @param {string} name
+   @param {HTMLElement} node */
 function diffChip(name, node){
   const d = gtsDiff(name);
   if (!d) return;
@@ -250,6 +283,8 @@ function diffChip(name, node){
    within the chip's price, how wanted each side is, what the target costs
    the other side to give, how long it has waited, and whether the ladder
    moved under it. */
+/** @param {string} i
+   @param {Trade} o */
 function gtsRow(i, o){
   const row = el("button", "row rental gtsrow");
   const m = el("div", "rmain");
@@ -283,9 +318,12 @@ function gtsRow(i, o){
   return row;
 }
 
-/* One side of the trade, as the card - half-width. It carries the one fact
+/** One side of the trade, as the card - half-width. It carries the one fact
    this screen is FOR: the Mega line, since a chip is priced by its Mega's
-   BST. A name no dex carries still holds its side. */
+   BST. A name no dex carries still holds its side.
+   @param {string} label
+   @param {string} name
+   @param {BoxRow | null | undefined} rec */
 function offerSide(label, name, rec){
   const box = el("div", "gtsside");
   box.appendChild(el("div", "gtslabel", label));
@@ -327,10 +365,11 @@ function offerSide(label, name, rec){
   return box;
 }
 
-/* IS THE ASK WITHIN THE CHIP'S PRICE. The chip is priced the way his closed
+/** IS THE ASK WITHIN THE CHIP'S PRICE. The chip is priced the way his closed
    trades priced it - by its Mega's BST, plus the shiny and demand estimates -
    not by its base row: Beedrill 395 asking Steelix 510 is a 15-point stretch
-   against a Mega price of 495, not 115. */
+   against a Mega price of 495, not 115.
+   @param {Trade} o */
 function priceVerdict(o){
   const aRec = o.offeredId ? S.box[o.offeredId] : null;
   const cv = chipValue(o.offered, !!aRec?.shiny);
@@ -354,8 +393,9 @@ function priceVerdict(o){
   return verdict;
 }
 
-/* " (395 base, 495 via its Mega, +20 est. shiny)" - how the price was made,
-   when it is more than the base row. */
+/** " (395 base, 495 via its Mega, +20 est. shiny)" - how the price was made,
+   when it is more than the base row.
+   @param {ChipValue} cv */
 function priceParts(cv){
   if (!(cv.viaMega || cv.shiny || cv.demandBonus)) return "";
   const parts = [cv.base + " base"];
@@ -365,10 +405,13 @@ function priceParts(cv){
   return " (" + parts.join(", ") + ")";
 }
 
-/* THE DESIRABILITY GAP, WHICH BST CANNOT SEE: a chip is worth what the other
+/** THE DESIRABILITY GAP, WHICH BST CANNOT SEE: a chip is worth what the other
    side will take. Two ladder ranks
    side by side are the whole negotiation in one line - and a side the ladder
-   does not rank is unknown, not zero. */
+   does not rank is unknown, not zero.
+   @param {Trade} o
+   @param {GtsDiff | null} od
+   @param {GtsDiff | null} rd */
 function demandGap(o, od, rd){
   if (!od || !rd) return null;
   if (od.rank != null && rd.rank != null) {
@@ -390,9 +433,10 @@ function demandGap(o, od, rd){
   return mv2;
 }
 
-/* What the target costs the OTHER side to give: running it on the ladder,
+/** What the target costs the OTHER side to give: running it on the ladder,
    hard to obtain in GO, or so easy he can get it himself - which makes
-   spending a chip on it spending it twice. */
+   spending a chip on it spending it twice.
+   @param {GtsDiff | null} wd */
 function targetNote(wd){
   if (!wd) return null;
   const bits = [];
@@ -423,13 +467,14 @@ function targetNote(wd){
   return d2;
 }
 
-/* HOW LONG IT HAS WAITED. An offer nobody has taken in over a week is not
-   waiting - it is priced wrong. */
+/** HOW LONG IT HAS WAITED. An offer nobody has taken in over a week is not
+   waiting - it is priced wrong.
+   @param {Trade} o */
 function waitLine(o){
-  const age = offerAge(o);
-  if (age == null) return null;
+  const age = offerAge(o), start = offerStart(o);
+  if (age == null || start == null) return null;
   const ar = el("div", "rmeta");
-  const waited = elapsedText(Date.now() - offerStart(o));
+  const waited = elapsedText(Date.now() - start);
   let stale = "";
   if (age >= 14) stale = "bad";
   else if (age >= 7) stale = "warn";
@@ -443,9 +488,11 @@ function waitLine(o){
   return ar;
 }
 
-/* THE LADDER MOVES UNDER A STANDING OFFER: Sneasler went 23% -> 50% while an
+/** THE LADDER MOVES UNDER A STANDING OFFER: Sneasler went 23% -> 50% while an
    offer for it sat there. Its rank is recorded at deposit and compared now;
-   a move of 8 places or more is worth saying. */
+   a move of 8 places or more is worth saying.
+   @param {Trade} o
+   @param {GtsDiff | null} rd */
 function ladderMove(o, rd){
   if (o.rankAtDeposit == null || rd?.rank == null ||
       Math.abs(o.rankAtDeposit - rd.rank) < 8) return null;
@@ -462,16 +509,18 @@ function ladderMove(o, rd){
 /* ====================================================== the offer's sheet ==
    Log a new offer, or edit, close or withdraw an open one. `d` is the draft;
    each picker re-opens this sheet with its answer filled in. */
+/** @param {string | null} id
+   @param {Trade | null} o */
 function gtsSheet(id, o){
   /* `deposited` is a date the player can edit. `depositedAt` is the machine
      stamp, because time-to-close is measured in HOURS (it is what the other
      side wants, which BST cannot see) and a date alone makes two trades on
      the same day look identical. */
   const now = new Date();
-  o = o || {offered:"", requested:"",
+  o = o || /** @type {Trade} */ ({offered:"", requested:"",
             deposited:now.toISOString().slice(0,10),
             depositedAt:now.toISOString(),
-            status:"PENDING", note:""};
+            status:"PENDING", note:""});
   const d = structuredClone(o);
   openSheet(id == null ? "Log a GTS offer" : "GTS offer", function(body){
     offerFields(body, id, d);
@@ -493,7 +542,10 @@ function gtsSheet(id, o){
   ]);
 }
 
-/* The two sides, the date, a note, and what depositing means. */
+/** The two sides, the date, a note, and what depositing means.
+   @param {SheetBody} body
+   @param {string | null} id
+   @param {Trade} d */
 function offerFields(body, id, d){
   body.appendChild(pickField("You deposited", d.offered,
     "From your box - it remembers WHICH copy",
@@ -532,7 +584,9 @@ function offerFields(body, id, d){
     "it sits there."));
 }
 
-/* Edit an open offer - its own row, and nothing else. */
+/** Edit an open offer - its own row, and nothing else.
+   @param {string} id
+   @param {Trade} d */
 function saveOffer(id, d){
   if (!d.offered || !d.requested) { toast("Both sides are needed"); return; }
   if (clashes(d, id)) return;
@@ -541,20 +595,22 @@ function saveOffer(id, d){
   });
 }
 
-/* A TRADE IS AN EXCHANGE: the Pokemon deposited is gone the moment someone
+/** A TRADE IS AN EXCHANGE: the Pokemon deposited is gone the moment someone
    takes it, so it leaves the box as the new one arrives. The offer records
    WHICH copy went, so a box with three
    Chesnaught loses the right one; offers logged before that was stored fall
-   back to the first match by name. Asks first, saying exactly that. */
+   back to the first match by name. Asks first, saying exactly that.
+   @param {string} id
+   @param {Trade} d */
 function confirmTrade(id, d){
+  /** @type {ListedBox | null} */
   let going = null;
   if (d.offeredId && S.box[d.offeredId]) {
-    going = S.box[d.offeredId];
-    going._id = d.offeredId;
+    going = {...S.box[d.offeredId], _id: d.offeredId};
   }
   const mine = boxRows("home").concat(boxRows("champions"))
     .filter(function(r){ return r.name === d.offered; });
-  if (!going) going = mine[0];
+  if (!going) going = mine[0] || null;
   let msg = d.offered + " is not in the box any more, so only " +
     d.requested + " will be added.";
   if (going) {
@@ -569,12 +625,15 @@ function confirmTrade(id, d){
   });
 }
 
-/* Write the ending onto the offer's own row - it is the same trade, not a
+/** Write the ending onto the offer's own row - it is the same trade, not a
    new record - with what it MEASURED: how long it took, whether the chip was
    shiny, both BSTs and the chip's Mega value. A closed trade is the only
    hard evidence of what the market pays, and the pricing rules are measured
    on these. Then the new Pokemon arrives in HOME (HOME
-   origin, so its slot stays elastic) and the one given leaves the box. */
+   origin, so its slot stays elastic) and the one given leaves the box.
+   @param {string} id
+   @param {Trade} d
+   @param {ListedBox | null} going */
 function closeTrade(id, d, going){
   const offRec = d.offeredId ? S.box[d.offeredId] : null;
   const wasShiny = !!offRec?.shiny;
@@ -604,15 +663,16 @@ function closeTrade(id, d, going){
   });
 }
 
-/* Log a new offer. Only the hard case stops you: your only copy of a
+/** Log a new offer. Only the hard case stops you: your only copy of a
    species the game allows, with no other form of it anywhere - and even then
    it asks rather than blocks, since a last copy can still be the right trade.
-   Choosing between forms is his call. */
+   Choosing between forms is his call.
+   @param {Trade} d */
 function logOffer(d){
   if (!d.offered || !d.requested) { toast("Both names are needed"); return; }
   if (slotsFull()) return;
   const lastRec = d.offeredId ? S.box[d.offeredId] : null;
-  if (lastCopyOf(lastRec) && !otherFormsOf(lastRec).length) {
+  if (lastRec && lastCopyOf(lastRec) && !otherFormsOf(lastRec).length) {
     ask("Your only " + d.offered + "?",
         "It is in the Champions dex, so trading it means losing the "
         + "species for good — your own rule is to keep one of everything "
@@ -623,10 +683,11 @@ function logOffer(d){
   postOffer(d);
 }
 
-/* Stamp what the ladder says TODAY, so a later reading can tell the target
+/** Stamp what the ladder says TODAY, so a later reading can tell the target
    moved; stamp the moment it is really posted; and ask the database for a
    free id - beedrill, beedrill-2 - rather than guessing from what this
-   device has loaded, so two devices logging at once cannot both pick one. */
+   device has loaded, so two devices logging at once cannot both pick one.
+   @param {Trade} d */
 function postOffer(d){
   const rdNow = gtsDiff(d.requested);
   if (rdNow?.rank != null) d.rankAtDeposit = rdNow.rank;
@@ -638,11 +699,16 @@ function postOffer(d){
   });
 }
 
-/* A field you tap rather than type into: a typed name is a typo waiting to
+/** A field you tap rather than type into: a typed name is a typo waiting to
    happen. Empty, it says what it offers; filled, it is the same card as
    everywhere else - BST is the whole argument on this screen, and the card
    puts it in a cell of its own. A name no dex carries says it can sit in
-   HOME but never enter the game. */
+   HOME but never enter the game.
+   @param {string} label
+   @param {string} current
+   @param {string} subtitle
+   @param {() => void} opener
+   @param {BoxRow | null | undefined} rec */
 function pickField(label, current, subtitle, opener, rec){
   const w = el("div", "field");
   w.appendChild(el("label", "f", label));
@@ -700,7 +766,10 @@ function pickField(label, current, subtitle, opener, rec){
 
    `exceptId` is the offer being EDITED - its own pick has to stay
    selectable, or re-saving that offer would be impossible. */
+/** @param {(rec: ListedBox) => void} onPick
+   @param {string | null} exceptId */
 function gtsPickMine(onPick, exceptId){
+  /** @type {Record<string, Trade>} */
   const taken = {};
   gtsOffers().forEach(function(o){
     if (o._id !== exceptId && o.offeredId) taken[o.offeredId] = o;
@@ -720,6 +789,7 @@ function gtsPickMine(onPick, exceptId){
     }
     const inp = searchField(body, "Filter " + (home.length + champ.length) +
       " in your box — name, type or number", function(){ draw(); });
+    /** @type {PickState} */
     const PICK = {sort: "dex", dupes: false, outside: false};
     mineControls(body, PICK, draw);
     const out = el("div");
@@ -754,10 +824,13 @@ function gtsPickMine(onPick, exceptId){
   }, []);
 }
 
-/* SORTING AND TWO FILTERS, BECAUSE THIS IS A SHORTLIST, NOT A BOX: his rule
+/** SORTING AND TWO FILTERS, BECAUSE THIS IS A SHORTLIST, NOT A BOX: his rule
    lets only DUPLICATES and species Champions cannot use go, and each filter
    is one of those. Dex order first, because that is the order HOME itself
-   lists in, which is how one screen gets checked against the other. */
+   lists in, which is how one screen gets checked against the other.
+   @param {HTMLElement} body
+   @param {PickState} PICK
+   @param {() => void} draw */
 function mineControls(body, PICK, draw){
   const sortWrap = el("div", "toggles");
   [["dex", "Dex no."], ["az", "A-Z"], ["bst", "BST"],
@@ -766,7 +839,7 @@ function mineControls(body, PICK, draw){
     setPressed(t, PICK.sort === o[0]);
     t.onclick = function(){
       PICK.sort = o[0];
-      Array.prototype.forEach.call(sortWrap.children, function(c){
+      Array.prototype.forEach.call(sortWrap.children, function(/** @type {Element} */ c){
         setPressed(c, c === t);
       });
       draw();
@@ -776,7 +849,8 @@ function mineControls(body, PICK, draw){
   body.appendChild(sortWrap);
 
   const filtWrap = el("div", "toggles");
-  [["dupes", "Duplicates only", "You hold more than one copy you could " +
+  /** @type {["dupes" | "outside", string, string][]} */
+  const filters = [["dupes", "Duplicates only", "You hold more than one copy you could " +
     "KEEP - in HOME, or in the Champions box and able to go back there. A " +
     "rental or an Encounter buy of the same species does not count: it can " +
     "never leave the game, so it can never be the copy you keep. The " +
@@ -784,7 +858,8 @@ function mineControls(body, PICK, draw){
     "the first, so it is pure trade material."],
    ["outside", "Not in Champions only", "HOME can hold it for ever and it " +
     "can never enter the game, so it costs you nothing to give away."]
-  ].forEach(function(o){
+  ];
+  filters.forEach(function(o){
     const t = el("button", "tog", o[1]);
     t.title = o[2];
     setPressed(t, false);
@@ -798,7 +873,9 @@ function mineControls(body, PICK, draw){
   body.appendChild(filtWrap);
 }
 
-/* The deposit picker's empty state, naming whichever filters are on. */
+/** The deposit picker's empty state, naming whichever filters are on.
+   @param {PickState} pick
+   @param {string} q */
 function emptyPick(pick, q){
   const match = q ? " and matches “" + q + "”" : "";
   if (pick.dupes && pick.outside)
@@ -810,8 +887,11 @@ function emptyPick(pick, q){
   return "Nothing you can deposit matches “" + q + "”";
 }
 
-/* Does a box row pass the filters and the search - name, dex number, type,
-   or the words "shiny" and "trained"? */
+/** Does a box row pass the filters and the search - name, dex number, type,
+   or the words "shiny" and "trained"?
+   @param {ListedBox} r
+   @param {string} q
+   @param {MineCtx} ctx */
 function mineMatches(r, q, ctx){
   if (ctx.PICK.dupes && (ctx.copies[r.name] || 0) < 2) return false;
   if (ctx.PICK.outside && byName[r.name]) return false;
@@ -825,28 +905,38 @@ function mineMatches(r, q, ctx){
   return false;
 }
 
-/* The sort key: a name for A-Z, otherwise a number (negated, so the biggest
-   BST or the highest ask comes first). */
+/** The sort key: a name for A-Z, otherwise a number (negated, so the biggest
+   BST or the highest ask comes first).
+   @param {ListedBox} r
+   @param {string} sort
+   @returns {[number, string]} */
 function mineOrder(r, sort){
   const p = anyRow(r.name);
-  if (sort === "az") return r.name;
-  if (sort === "bst") return -(p ? bst(p) : 0);
+  if (sort === "az") return [0, r.name];
+  if (sort === "bst") return [-(p ? bst(p) : 0), ""];
   if (sort === "reach") {
     const cv = chipValueOf(r);
-    return -(cv ? cv.reach : 0);
+    return [-(cv ? cv.reach : 0), ""];
   }
-  return dexNo(r.name);
+  return [dexNo(r.name), ""];
 }
 
-/* One box's section. Returns how many rows it drew, so an empty result can
-   be said once for both. */
+/** One box's section. Returns how many rows it drew, so an empty result can
+   be said once for both.
+   @param {HTMLElement} out
+   @param {string} title
+   @param {ListedBox[]} all
+   @param {string} sub
+   @param {string} q
+   @param {MineCtx} ctx */
 function mineSection(out, title, all, sub, q, ctx){
   const rows = all.filter(function(r){ return mineMatches(r, q, ctx); });
   if (!rows.length) return 0;
   rows.sort(function(a, b){
     const x = mineOrder(a, ctx.PICK.sort), y = mineOrder(b, ctx.PICK.sort);
-    if (x < y) return -1;
-    if (x > y) return 1;
+    if (x[0] !== y[0]) return x[0] - y[0];
+    if (x[1] < y[1]) return -1;
+    if (x[1] > y[1]) return 1;
     return a.name.localeCompare(b.name);
   });
   out.appendChild(el("h2", null, title));
@@ -854,7 +944,10 @@ function mineSection(out, title, all, sub, q, ctx){
   const l = el("div", "list cards");
   /* the copy count is over the WHOLE section, not the filtered rows: "copy 2
      of 2" has to mean the same thing whether or not you typed anything */
-  const seen = {}, nth = {};
+  /** @type {Record<string, number>} */
+  const seen = {};
+  /** @type {Record<string, number>} */
+  const nth = {};
   all.forEach(function(r){ seen[r.name] = (seen[r.name] || 0) + 1; });
   all.forEach(function(r){
     nth[r._id] = (nth[r.name + "#"] = (nth[r.name + "#"] || 0) + 1);
@@ -864,21 +957,26 @@ function mineSection(out, title, all, sub, q, ctx){
   return rows.length;
 }
 
-/* One copy, on the card every list uses - its type, its picture (its own
+/** One copy, on the card every list uses - its type, its picture (its own
    colours if shiny), its Mega line and its six stats, because a bare name
    and a BST are not enough to choose what to give away. The badges say
    whether it is already deposited, whether it is
    the last of its form, which copy it is and its marks; the meta, how the
-   ladder rates it and how high it can ask. */
+   ladder rates it and how high it can ask.
+   @param {ListedBox} r
+   @param {MineCtx} ctx
+   @param {Record<string, number>} seen
+   @param {Record<string, number>} nth */
 function mineCard(r, ctx, seen, nth){
   const p = anyRow(r.name);
   const held = ctx.taken[r._id];
   const last = !held && lastCopyOf(r);
   const kin = last ? otherFormsOf(r) : [];
-  const cd = p && gtsDiff(r.name);
-  const cv = p && chipValueOf(r);
+  const cd = p ? gtsDiff(r.name) : null;
+  const cv = p ? chipValueOf(r) : null;
+  /** @type {HTMLElement | null} */
   let m = null;
-  const b = pokeCard(p || anyRow(r.name) || {name:r.name, species:r.name, types:[], b:[0,0,0,0,0,0], ab:[]}, {
+  const b = pokeCard(p || {name:r.name, species:r.name, types:[], b:[0,0,0,0,0,0], ab:[]}, {
     cls: held ? "illegal" : locClass(r),
     name: r.name,
     shiny: !!r.shiny,
@@ -910,11 +1008,15 @@ function mineCard(r, ctx, seen, nth){
   return b;
 }
 
-/* Under the card: why it can ask above its base row (and which part of that
+/** Under the card: why it can ask above its base row (and which part of that
    is measured - the Mega half comes from his own closed trades, the other two
    are estimates); what being the last copy means; and what a deposited copy
-   is waiting for. */
+   is waiting for.
+   @param {HTMLElement | null} m
+   @param {ListedBox} r
+   @param {{held: Trade | undefined, last: boolean, kin: string[], cv: ChipValue | null}} s */
 function mineNotes(m, r, s){
+  if (!m) return;
   const cv = s.cv;
   if (cv && cv.reach > cv.base && !s.held) {
     let why = "Base " + cv.base;
@@ -946,6 +1048,9 @@ function mineNotes(m, r, s){
    Champions cannot. And first - given the chip - what it can actually fetch
    (gtsSuggest in core/trade.js): price by the Mega, skip what the ladder is
    running, and put a stone already owned with nothing to hold it on top. */
+/** @param {(name: string) => void} onPick
+   @param {string | null} chipName
+   @param {boolean} chipShiny */
 function gtsPickWanted(onPick, chipName, chipShiny){
   openSheet("What did you ask for?", function(body){
     if (chipName) chipAdvice(body, chipName, chipShiny, onPick);
@@ -958,12 +1063,17 @@ function gtsPickWanted(onPick, chipName, chipShiny){
   }, []);
 }
 
-/* What the chip is worth, why, and two lists of what it can fetch: what it
-   can REACH, and what it can reach that someone will actually take today. */
+/** What the chip is worth, why, and two lists of what it can fetch: what it
+   can REACH, and what it can reach that someone will actually take today.
+   @param {SheetBody} body
+   @param {string} chipName
+   @param {boolean} chipShiny
+   @param {(name: string) => void} onPick */
 function chipAdvice(body, chipName, chipShiny, onPick){
   const v = chipValue(chipName, chipShiny);
+  if (!v) return;             // no price, so nothing to suggest either
   const picks = gtsSuggest(chipName, 14, chipShiny);
-  if (v) chipWorth(body, chipName, chipShiny, v);
+  chipWorth(body, chipName, chipShiny, v);
   if (!picks.length) return;
   suggestList(body, "Worth asking for",
     "At or above what the chip is worth — " + v.value +
@@ -978,8 +1088,12 @@ function chipAdvice(body, chipName, chipShiny, onPick){
   body.appendChild(el("h2", null, "Or anything else"));
 }
 
-/* The chip's price, and the two premiums on it - demand and shininess - each
-   called an ESTIMATE until enough closed trades measure it. */
+/** The chip's price, and the two premiums on it - demand and shininess - each
+   called an ESTIMATE until enough closed trades measure it.
+   @param {SheetBody} body
+   @param {string} chipName
+   @param {boolean} chipShiny
+   @param {ChipValue} v */
 function chipWorth(body, chipName, chipShiny, v){
   body.appendChild(el("p", "sub",
     chipName + (chipShiny ? " (shiny)" : "") + " is worth about " +
@@ -987,8 +1101,8 @@ function chipWorth(body, chipName, chipShiny, v){
     (v.viaMega ? " — its base row says " + v.base +
                  ", but a chip fetches its Mega's BST, which is what " +
                  "your own closed trades paid." : ".")));
-  if (v.demandBonus) {
-    const cd = gtsDiff(chipName);
+  const cd = gtsDiff(chipName);
+  if (v.demandBonus && cd) {
     body.appendChild(note("", "<strong>People want this one.</strong> " +
       chipName + " is ladder #" + cd.rank +
       (cd.usage != null ? " at " + cd.usage.toFixed(1) + "%" : "") +
@@ -1008,8 +1122,14 @@ function chipWorth(body, chipName, chipShiny, v){
   }
 }
 
-/* One band of suggestions under its heading; nothing when the band is
-   empty. */
+/** One band of suggestions under its heading; nothing when the band is
+   empty.
+   @param {SheetBody} body
+   @param {string} title
+   @param {string} sub
+   @param {Ask[]} rows
+   @param {ChipValue} v
+   @param {(name: string) => void} onPick */
 function suggestList(body, title, sub, rows, v, onPick){
   if (!rows.length) return;
   body.appendChild(el("h2", null, title));
@@ -1022,10 +1142,13 @@ function suggestList(body, title, sub, rows, v, onPick){
   body.appendChild(sl);
 }
 
-/* One suggestion, on the same card as every other list - what a chip can
+/** One suggestion, on the same card as every other list - what a chip can
    fetch is mostly a question about the target's Mega - with the reason it is
    on the list: a stone already owned,
-   a stretch the premiums put in range, or a safer ask under the price. */
+   a stretch the premiums put in range, or a safer ask under the price.
+   @param {Ask} c
+   @param {ChipValue} v
+   @param {(name: string) => void} onPick */
 function suggestCard(c, v, onPick){
   const p2 = anyRow(c.name);
   if (!p2) return null;
@@ -1045,7 +1168,9 @@ function suggestCard(c, v, onPick){
   });
 }
 
-/* The sentence under a suggestion: why it is on the list. */
+/** The sentence under a suggestion: why it is on the list.
+   @param {Ask} c
+   @param {ChipValue} v */
 function suggestWhy(c, v){
   if (c.stone) {
     return "You bought " + c.stone + " and have nothing to put it on — " +
@@ -1070,8 +1195,11 @@ function suggestWhy(c, v){
   return null;
 }
 
-/* The search: up to 120 forms from the Champions dex, and - once something
-   is typed - up to 40 names only HOME can hold. Both caps are said. */
+/** The search: up to 120 forms from the Champions dex, and - once something
+   is typed - up to 40 names only HOME can hold. Both caps are said.
+   @param {HTMLElement} list
+   @param {string} q
+   @param {(name: string) => void} onPick */
 function drawWanted(list, q, onPick){
   list.innerHTML = "";
   const pool = FORMS.filter(function(p){
@@ -1096,9 +1224,11 @@ function drawWanted(list, q, onPick){
   }
 }
 
-/* A Champions form, with how hard it is to get - the moment to find out an
+/** A Champions form, with how hard it is to get - the moment to find out an
    ask is hopeless is before depositing, not weeks later - and a warning when
-   he could get it in GO himself. */
+   he could get it in GO himself.
+   @param {DexRow} p
+   @param {(name: string) => void} onPick */
 function wantedCard(p, onPick){
   return pokeCard(p, {
     meta: function(meta){ diffChip(p.name, meta); },
@@ -1115,8 +1245,10 @@ function wantedCard(p, onPick){
   });
 }
 
-/* A species Champions has never heard of can still be asked for: it is how
-   a HOME shelf gets filled. */
+/** A species Champions has never heard of can still be asked for: it is how
+   a HOME shelf gets filled.
+   @param {string} n
+   @param {(name: string) => void} onPick */
 function homeOnlyCard(n, onPick){
   return outsideCard(n, function(){ onPick(n); });
 }

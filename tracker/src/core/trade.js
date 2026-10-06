@@ -335,14 +335,15 @@ function elapsedText(ms){
   return Math.round(h / 24) + " days";
 }
 
-/* One row per trade, from deposit to close (migration 7): `closed` is what
+/** One row per trade, from deposit to close (migration 7): `closed` is what
    sorts it into the open offers or the history, so closing a trade updates
    the row that was already there and can never erase another. The history
    is never capped - a closed trade is the only hard evidence of what the
-   market pays, and the pricing rules rest on it. */
+   market pays, and the pricing rules rest on it.
+   @returns {ListedTrade[]} */
 function gtsRows(){
   return Object.keys(S.gts).map(function(id){
-    const r = S.gts[id]; r._id = id; return r;
+    const r = S.gts[id]; r._id = id; return /** @type {ListedTrade} */ (r);
   });
 }
 /* closed trades, newest first */
@@ -420,9 +421,11 @@ function gtsFree(){ return Math.max(0, GTS_SLOTS - gtsOffers().length); }
    an offer edited, or a stale sheet left open, must not be able to write a
    collision. Returns the clashing offer, or null.
    @param {{offeredId?: string | null}} d
-   @param {string} [exceptId] */
+   @param {string | null} [exceptId]
+   @returns {Trade | null} */
 function gtsClash(d, exceptId){
   if (!d.offeredId) return null;
+  /** @type {Trade | null} */
   let hit = null;
   gtsOffers().forEach(function(o){
     if (o._id !== exceptId && o.offeredId === d.offeredId) hit = o;
