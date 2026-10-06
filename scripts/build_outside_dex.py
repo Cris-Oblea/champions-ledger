@@ -171,7 +171,7 @@ def build():
 
 def main():
     """Build and write the outside dex, and report what did not match."""
-    ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    ap = argparse.ArgumentParser(description=(__doc__ or "").split("\n")[0])
     ap.add_argument("--report", action="store_true")
     a = ap.parse_args()
     blob, missing, nomatch = build()

@@ -40,6 +40,7 @@ import re
 import sys
 import time
 import urllib.parse
+from typing import Any
 
 import dex
 import net
@@ -74,7 +75,7 @@ def round_info(tid, division):
     labels = {int(n): html.unescape(t).strip()
               for n, t in re.findall(
                   r'onclick="showRound\((\d+)\)">([^<]+)</button>', body)}
-    info = {"round_labels": labels or None}
+    info: dict[str, Any] = {"round_labels": labels or None}
     mh = re.search(r"<h2>(\d+) players - Round (\d+)/(\d+)"
                    r"[^<]*?Tables Still Playing\s*:\s*(\d+)", body)
     if mh:

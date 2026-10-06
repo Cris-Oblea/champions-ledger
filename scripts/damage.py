@@ -401,7 +401,8 @@ def selftest():
             got, want_s = "%s vs %s" % (_span(r), _span(other)), "differ"
         elif want == "survives":
             good = r != "refused" and r["hi"] < r["maxHP"]
-            got, want_s = "%s of %d" % (_span(r), r["maxHP"]), want
+            got = "refused" if r == "refused" else "%s of %d" % (_span(r), r["maxHP"])
+            want_s = want
         elif want == "refused":
             good, got, want_s = r == "refused", _span(r), want
         else:

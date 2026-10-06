@@ -1,0 +1,15 @@
+// The Python type check: pyright, the checker inside VS Code's Pylance, so the
+// editor shows what blocks a push. Nothing is compiled; the annotations are
+// read as written. The gate runs it (daily.py).
+//
+// "basic" over every script, at zero. "strict" (every parameter and return
+// annotated, nothing Unknown) is switched on file by file in the list below,
+// and when every file is in it the mode becomes "strict" and the list goes.
+// JSON read from disk is the data boundary: dex.load/db/meta return `Json`
+// (Any), the Python twin of docFromRow in the app.
+{
+  "include": ["scripts"],
+  "pythonVersion": "3.12",
+  "typeCheckingMode": "basic",
+  "strict": []
+}

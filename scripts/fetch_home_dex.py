@@ -53,6 +53,7 @@ import re
 import sys
 from pathlib import Path
 from types import SimpleNamespace
+from typing import Any
 
 import dex
 import net
@@ -675,7 +676,7 @@ def _not_drawn(fid):
                for k in NOT_DRAWN)
 
 
-def _classify(r, up, unknown, orphan):
+def _classify(r, up, unknown, orphan) -> tuple[dict[str, Any], str] | None:
     """(the entry so far, the base row's id) for a form the cards draw, or
     None. `up` carries resolve, pid_of, species_ident and species_of."""
     fid = r["identifier"]
@@ -752,11 +753,14 @@ def form_line(force=False):
             continue
         entry, base = got
         entry["sp"] = _picture(r, base, files)
-        entry.update(numbers(r["pokemon_id"]))
+        own_n = numbers(r["pokemon_id"])
+        base_n = numbers(base)
+        if own_n is None or base_n is None:
+            sys.exit("no stats row for %s or its base %s" % (r["identifier"], base))
+        entry.update(own_n)
         # MOVES NO NUMBER: the typing and the spread are the base's own. What
         # lets a Champions species take this form without a Serebii row for
         # it - Hangry Morpeko is Morpeko's spread in every game
-        base_n = numbers(base)
         if entry["t"] == base_n["t"] and entry["b"] == base_n["b"]:
             entry["flat"] = 1
         owners = cards.get(base)

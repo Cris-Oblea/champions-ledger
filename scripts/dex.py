@@ -18,6 +18,7 @@ import json
 import os
 import re
 import unicodedata
+from typing import Any
 
 from paths import DB, META
 
@@ -45,10 +46,14 @@ SPREAD_TARGETS = {"all adjacent foes", "all adjacent opponents",
 # --------------------------------------------------------------------------
 # loading
 # --------------------------------------------------------------------------
-_cache = {}
+# A JSON document as read from disk: the data boundary, like docFromRow in the
+# app. Each reader states the shape it expects where it uses one.
+type Json = Any
+
+_cache: dict[str, Json] = {}
 
 
-def load(path, default=None):
+def load(path: str, default: Json = None) -> Json:
     """Read a JSON file once and keep it; `default` when it does not exist."""
     if path in _cache:
         return _cache[path]
@@ -60,7 +65,7 @@ def load(path, default=None):
     return _cache[path]
 
 
-def kept_stamp(path, blob):
+def kept_stamp(path: str | os.PathLike[str], blob: dict[str, Any]) -> str:
     """blob["fetched"], unless the file at `path` already holds this same blob: then
     the date already on it. A source re-parsed from cache, or re-fetched with
     nothing new in it, must not rewrite its file with only a new date - the
@@ -75,12 +80,12 @@ def kept_stamp(path, blob):
     return old["fetched"] if same else blob["fetched"]
 
 
-def db(name):
+def db(name: str) -> Json:
     """A data/db table, or [] when it has not been built."""
     return load(os.path.join(DB, name + ".json"), [])
 
 
-def meta(name):
+def meta(name: str) -> Json:
     """A data/meta file, or None when it has not been fetched."""
     return load(os.path.join(META, name + ".json"))
 

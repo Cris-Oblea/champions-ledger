@@ -265,7 +265,7 @@ def _regulation_moved():
     if status == "ready":
         print("=" * 60)
         print("NEW REGULATION: %s is live, the database is built for %s."
-              % (live.upper(), (ours or "nothing").upper()), flush=True)
+              % ((live or "?").upper(), (ours or "nothing").upper()), flush=True)
         print("%s - running the regulation recipe rather than a plain "
               "refresh." % why)
         print("=" * 60)

@@ -22,6 +22,8 @@ import os
 import re
 import sys
 import time
+from collections.abc import Iterator, Sequence
+from typing import Any
 
 import dex
 import net
@@ -170,7 +172,7 @@ def find_key(obj, key, hits=None):
     return hits
 
 
-def carrying(node, keys):
+def carrying(node: Any, keys: Sequence[str]) -> Iterator[dict[str, Any]]:
     """Every object under `node` that has all of `keys`, in document order."""
     if isinstance(node, dict):
         if all(k in node for k in keys):
@@ -182,7 +184,7 @@ def carrying(node, keys):
             yield from carrying(v, keys)
 
 
-def rows_with(page, *keys):
+def rows_with(page: str, *keys: str) -> Iterator[dict[str, Any]]:
     """Every object carrying all of `keys` in a cached list page, every page
     of it, in order: rows_with("items", "name", "unlock").
 

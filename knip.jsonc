@@ -6,7 +6,7 @@
   "entry": ["tracker/src/_entry.js", "scripts/*.js", "scripts/hooks/*.js", "tests/*.js", "cron/src/cron.js"],
   "project": ["tracker/src/**/*.js", "scripts/**/*.js", "tests/**/*.js", "cron/src/**/*.js"],
   // Used, but from Python, which knip does not read: build_engine_bundle.py and
-  // build_tracker_page.py run esbuild, daily.py runs the other two as gate
+  // build_tracker_page.py run esbuild, daily.py runs the others as gate
   // checks. (supabase-js needs no entry: the app's types import it.)
-  "ignoreDependencies": ["esbuild", "html-validate", "jscpd"]
+  "ignoreDependencies": ["esbuild", "html-validate", "jscpd", "pyright"]
 }
