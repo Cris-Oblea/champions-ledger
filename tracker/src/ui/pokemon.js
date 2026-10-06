@@ -641,7 +641,7 @@ function analysisFold(name, label){
     const open = ahost.hidden;
     ahost.hidden = !open;
     atog.setAttribute("aria-expanded", open ? "true" : "false");
-    if (open && !ahost._drawn) { ahost._drawn = 1; analysisPanel(name, ahost); }
+    if (open && !ahost.dataset.drawn) { ahost.dataset.drawn = "1"; analysisPanel(name, ahost); }
   };
   aw.appendChild(atog);
   aw.appendChild(ahost);

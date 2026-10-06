@@ -139,6 +139,10 @@ SOURCE_CHECKS = [
     # argument, fails here instead of on the phone.
     (["node_modules/typescript/bin/tsc", "--pretty", "false"],
      "the app type-checks"),
+    # core/ again, strict (its own tsconfig.json). A layer joins this when it
+    # reaches zero, and the last one to join switches the root to strict.
+    (["node_modules/typescript/bin/tsc", "-p", "tracker/src/core", "--pretty", "false"],
+     "core/ type-checks strict"),
     (["scripts/check_app.js"], "the app's source agrees with its markup and its engine"),
     # The same treatment for the other two languages of the page, so nothing
     # in tracker/src/ is linted only by an editor. stylelint.config.mjs and

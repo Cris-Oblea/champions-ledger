@@ -11,32 +11,37 @@ const DEX = C.DEX.map(function(r){
   return {name:r[0], species:r[1], types:r[2], b:r[3], mega:!!r[4], ab:r[5],
           dex:r[6] || 0};
 });
-/* The National Dex number, so the box sorts in the order HOME shows it and the
+/** The National Dex number, so the box sorts in the order HOME shows it and the
    two screens can be checked line by line. A name with no number sorts last
-   (99999) rather than being given one from memory. */
+   (99999) rather than being given one from memory.
+   @param {string} name */
 function dexNo(name){
   const n = C.DEXNO?.[name];
   if (n) return n;
   const p = byName[name];
   return p?.dex ? p.dex : 99999;
 }
-/* "#0445", or "#----" for a name with no number. */
+/** "#0445", or "#----" for a name with no number.
+   @param {string} name */
 function dexLabel(name){
   const n = dexNo(name);
   return n === 99999 ? "#----" : "#" + String(n).padStart(4, "0");
 }
+/** @type {Record<string, DexRow>} */
 const byName = {};
 DEX.forEach(function(p){ byName[p.name] = p; });
 /* Every form a box row can be, alphabetical: the dex minus the Megas, which
    are reached through a stone and never owned on their own. */
 const FORMS = DEX.filter(function(p){ return !p.mega; })
                .sort(function(a,b){ return a.name.localeCompare(b.name); });
+/** @type {Record<string, DexRow[]>} */
 const MEGAS_OF = {};                       // species -> its Mega rows
 DEX.forEach(function(p){
   if (!p.mega) return;
   MEGAS_OF[p.species] ||= [];
   MEGAS_OF[p.species].push(p);
 });
+/** @type {Record<string, string>} */
 const STONE_OF = {};                       // mega name -> stone name
 C.STONES.forEach(function(r){ STONE_OF[r[1]] = r[0]; });
 /* `cat` is P physical, S special, T status. `i` is the move's index in
@@ -47,21 +52,31 @@ const MOVES = C.MOVES.map(function(r,i){
           hits:r[10] || null, crit:!!r[11], f:r[12] || "",
           text:r[13] || ""};
 });
-/* The comparator for sorting names: locale-aware, so an accent never
-   sorts after "z". */
+/** The comparator for sorting names: locale-aware, so an accent never
+   sorts after "z".
+   @param {unknown} a
+   @param {unknown} b */
 function byText(a, b){ return String(a).localeCompare(String(b)); }
-/* 1 -> "1st", 4 -> "4th": a finishing place. Worlds ranks stop at 8. */
+/** 1 -> "1st", 4 -> "4th": a finishing place. Worlds ranks stop at 8.
+   @param {number} n */
 function ordinal(n){ return ({1: "1st", 2: "2nd", 3: "3rd"})[n] || n + "th"; }
-/* "1 build", "3 builds" */
+/** "1 build", "3 builds"
+   @param {number} n
+   @param {string} word */
 function plural(n, word){ return n + " " + word + (n === 1 ? "" : "s"); }
+/** @type {Record<string, string>} */
 const CATEGORY = {P: "Physical", S: "Special"};
-/* A move's category code as the word the screens show. */
+/** A move's category code as the word the screens show.
+   @param {string} c */
 function catName(c){ return CATEGORY[c] || "Status"; }
+/** @type {Record<string, Move>} */
 const MOVE_BY = {};
 MOVES.forEach(function(m){ MOVE_BY[m.name] = m; });
 /* The order of `b` (base stats) and of every Stat Point spread. */
+/** @type {Stat[]} */
 const STAT_KEYS = ["hp","atk","def","spa","spd","spe"];
-/* The Stat Points a spread spends, out of the 66 a build may. */
+/** The Stat Points a spread spends, out of the 66 a build may.
+   @param {SpSpread} sp */
 function spTotal(sp){
   return STAT_KEYS.reduce(function(a,k){ return a + (Number(sp[k]) || 0); }, 0);
 }
@@ -79,7 +94,12 @@ const STAT_LABEL = {hp:"HP", atk:"Atk", def:"Def", spa:"SpA", spd:"SpD", spe:"Sp
    The three tables are views onto that one source, built rather than
    written so they cannot drift from it. */
 const TYPE_COLORS = window.CHAMP?.TYPE_COLORS || {};
-const TYPE_COLOR = {}, TYPE_COLOR2 = {}, TYPE_INK = {};
+/** @type {Record<string, string>} */
+const TYPE_COLOR = {};
+/** @type {Record<string, string>} */
+const TYPE_COLOR2 = {};
+/** @type {Record<string, string>} */
+const TYPE_INK = {};
 Object.keys(TYPE_COLORS).forEach(function(t){
   TYPE_COLOR[t] = TYPE_COLORS[t].top;
   TYPE_COLOR2[t] = TYPE_COLORS[t].bottom || TYPE_COLORS[t].top;
@@ -90,21 +110,24 @@ Object.keys(TYPE_COLORS).forEach(function(t){
 const COSTS = {ranked_win:300, mega_stone_shop:2000, keep_rental_pokemon:2500,
              training_move:250, training_nature:500, training_ability:500,
              training_stat_point:5};
-/* A name as an id: "Mr. Mime" -> "mr-mime". Empty when nothing is left, so
-   each caller names its own fallback. */
+/** A name as an id: "Mr. Mime" -> "mr-mime". Empty when nothing is left, so
+   each caller names its own fallback.
+   @param {unknown} s */
 function slug(s){
   return String(s).toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-|-$/g, "");
 }
-/* The first slug of `s` not already a key of `taken`: mr-mime, mr-mime-2...
+/** The first slug of `s` not already a key of `taken`: mr-mime, mr-mime-2...
    Only for ids decided on this device; a new database row goes through
-   store.putNew(), where the DATABASE decides what is free. */
+   store.putNew(), where the DATABASE decides what is free.
+   @param {string} s
+   @param {Record<string, unknown>} taken */
 function freeSlug(s, taken){
   const b = slug(s) || "x";
   let k = b, n = 2;
   while (taken[k]) { k = b + "-" + n; n++; }
   return k;
 }
-/* THE FORMS A POKEMON TAKES DURING THE BATTLE, off an ability rather than a
+/** THE FORMS A POKEMON TAKES DURING THE BATTLE, off an ability rather than a
    stone, shaped exactly like a Mega row so the card draws them with the same
    machinery: Stance Change (Aegislash), Zero to Hero (Palafin), Forecast
    (Castform), Hunger Switch (Morpeko), Disguise (Mimikyu). A form that moves
@@ -113,7 +136,9 @@ function freeSlug(s, taken){
 
    `battle` is the form's own name and is what tells the label helpers in
    ui/card.js that this is not a Mega. `by` is the ability that does it, `sp`
-   its picture. */
+   its picture.
+   @param {DexRow | null | undefined} p
+   @returns {DexRow[]} */
 function battleFormsOf(p){
   if (!p || p.mega) return [];
   if (p.outside) return outsideForms(p, false);
@@ -126,11 +151,13 @@ function battleFormsOf(p){
             battle: lab, by: bfm.by, sp: e.sp};
   });
 }
-/* WHAT A FORM DOES TO ITS MOVES, as [move, type before, type in this form].
+/** WHAT A FORM DOES TO ITS MOVES, as [move, type before, type in this form].
 
    C.FORM_TYPED is the table the calculator reads - the moves whose type
    comes from the user's form rather than from the move row - so this is the
-   same fact asked the other way round. */
+   same fact asked the other way round.
+   @param {DexRow} form
+   @param {DexRow} base */
 function formMoves(form, base){
   const ft = C.FORM_TYPED || {};
   return Object.keys(ft).filter(function(mv){
@@ -140,10 +167,13 @@ function formMoves(form, base){
     return [mv, ft[mv][base.name] || MOVE_BY[mv]?.type, ft[mv][form.name]];
   });
 }
-/* The Megas (`megas` true) or the battle forms of a species Champions does
+/** The Megas (`megas` true) or the battle forms of a species Champions does
    not have, read off its outside row. `sfx` is the stone's letter, carried
    rather than worked out of the name: Tatsugiri-Droopy's Mega is "Mega
-   Tatsugiri", and subtracting one name from the other leaves nonsense. */
+   Tatsugiri", and subtracting one name from the other leaves nonsense.
+   @param {DexRow} p
+   @param {boolean} megas
+   @returns {DexRow[]} */
 function outsideForms(p, megas){
   return (p.forms || []).filter(function(f){
     return megas ? f.mega !== undefined : f.mega === undefined;
@@ -153,9 +183,10 @@ function outsideForms(p, megas){
             sfx: f.mega, battle: f.k, by: f.by};
   });
 }
-/* Base stat total. */
+/** Base stat total.
+   @param {DexRow} p */
 function bst(p){ return p.b.reduce(function(a,b){ return a+b; }, 0); }
-/* A ROW FOR A POKEMON CHAMPIONS DOES NOT HAVE, so HOME can show what it is
+/** A ROW FOR A POKEMON CHAMPIONS DOES NOT HAVE, so HOME can show what it is
    when deciding what to keep or trade.
 
    Shaped like a dex row so every card component takes it unchanged, with
@@ -165,7 +196,9 @@ function bst(p){ return p.b.reduce(function(a,b){ return a+b; }, 0); }
 
    FOR DISPLAY ONLY. Whatever decides what a Pokemon can DO - whether it is
    legal, whether it Mega Evolves, whether it can be brought - asks byName,
-   which knows only the Champions dex. */
+   which knows only the Champions dex.
+   @param {string} name
+   @returns {DexRow | null} */
 function outsideRow(name){
   const h = C.HOME_DEX?.[name];
   if (!h) return null;
@@ -173,11 +206,13 @@ function outsideRow(name){
           ab:h.ab || [], mega:false, dex:0,
           outside:true, approx:h.approx || null, forms:h.f || null};
 }
-/* The row to DRAW for any name: the Champions row first, always, so a
+/** The row to DRAW for any name: the Champions row first, always, so a
    Champions Pokemon is never described by outside numbers; then the same
    for the name's other spelling (C.LEARN_ALIAS - a bare "Floette" from a
    Worlds teamlist IS Floette-Eternal, the only Floette the game has); then
-   the outside row. */
+   the outside row.
+   @param {string} name
+   @returns {DexRow | null} */
 function anyRow(name){
   const alias = C.LEARN_ALIAS?.[name];
   return byName[name] || (alias && byName[alias]) || outsideRow(name)
@@ -201,24 +236,32 @@ const SPRITE_PIN = "2ecb4eeacd5a1718621fc30f12772e3f60d830b9";
 const SPRITE_BASE = IMG_HOSTS[0] + "/gh/PokeAPI/sprites@" + SPRITE_PIN +
                   "/sprites/pokemon/";
 
-/* A level-50 stat: base + Stat Points (capped at 32) + 75 for HP or 20 for
+/** A level-50 stat: base + Stat Points (capped at 32) + 75 for HP or 20 for
    the rest, times the nature. The formula was verified against 504 speed
-   tiers. */
+   tiers.
+   @param {number} base
+   @param {number | undefined} sp
+   @param {boolean} isHp
+   @param {number} mult */
 function statAt(base, sp, isHp, mult){
   const v = base + Math.max(0, Math.min(32, sp || 0)) + (isHp ? 75 : 20);
   return Math.floor(v * (isHp ? 1 : (mult || 1)));
 }
-/* The nature's multiplier on one stat: 1.1, 0.9 or 1. */
+/** The nature's multiplier on one stat: 1.1, 0.9 or 1.
+   @param {string | null | undefined} nature
+   @param {Stat} key */
 function natMult(nature, key){
-  const n = C.NATURES[nature];
+  const n = nature ? C.NATURES[nature] : null;
   if (!n) return 1;
   if (n[0] === key) return 1.1;
   if (n[1] === key) return 0.9;
   return 1;
 }
-/* What each attacking type does to this typing, as {type: multiplier}, with
-   the neutral (x1) types left out. */
+/** What each attacking type does to this typing, as {type: multiplier}, with
+   the neutral (x1) types left out.
+   @param {string[]} types */
 function defence(types){
+  /** @type {Record<string, number>} */
   const out = {};
   Object.keys(C.CHART).forEach(function(atk){
     let m = 1;
@@ -230,13 +273,14 @@ function defence(types){
   });
   return out;
 }
-/* A Pokemon's movepool, as move rows. THE FORM FIRST, then the species: a
+/** A Pokemon's movepool, as move rows. THE FORM FIRST, then the species: a
    regional form has its own pool (Samurott-Hisui learns Ceaseless Edge,
    Samurott does not), and the build editor offers from this list. The
    species is the fallback a Mega needs, since a Mega has no learnset of its
    own. Between the two, C.LEARN_ALIAS: the few forms filed under neither
    name (Champions' Floette is the Eternal Flower one), resolved with norm()
-   by build_tracker_data.py so this stays a plain lookup. */
+   by build_tracker_data.py so this stays a plain lookup.
+   @param {string} name */
 function learnset(name){
   const p = byName[name];
   const sp = p ? p.species : name;
@@ -244,11 +288,13 @@ function learnset(name){
   const ids = C.LEARN[name] || (alias && C.LEARN[alias]) || C.LEARN[sp] || null;
   return ids ? ids.map(function(i){ return MOVES[i]; }) : null;
 }
-/* The Megas THIS form can become. A Mega belongs to one form, not to the
+/** The Megas THIS form can become. A Mega belongs to one form, not to the
    species: Raichu-Alola cannot hold a Raichunite, and Mega Floette belongs
    to Floette-Eternal. Smogon's roster states the relation (`baseSpecies` on
    each Mega) and build_tracker_data.py ships it as C.MEGA_OWNER; the species
-   is only the fallback for a form Smogon does not carry. */
+   is only the fallback for a form Smogon does not carry.
+   @param {string} name
+   @returns {DexRow[]} */
 function megasFor(name){
   const owned = C.MEGA_OWNER?.[name];
   if (owned) return owned.map(function(n){ return byName[n]; }).filter(Boolean);
@@ -279,6 +325,8 @@ function megasFor(name){
    nightly. A Mega falls back to its base species: pokebase files usage
    under the species people bring, and a Mega is that species holding a
    stone. */
+/** @param {string} name
+    @returns {SplitTable | null} */
 function splitsFor(name){
   const all = window.CHAMP_SPLITS?.p || {};
   if (all[name]) return all[name];
@@ -289,10 +337,13 @@ function splitsFor(name){
 function splitsReg(){
   return window.CHAMP_SPLITS?.r || null;
 }
-/* The percentage for one thing. `null` means this Pokemon has no table at
+/** The percentage for one thing. `null` means this Pokemon has no table at
    all (nobody brought it) and 0 means the table exists and this is not in
    it: silence against a measured "nobody", and the app shows them
-   differently. */
+   differently.
+   @param {string} name
+   @param {string} kind
+   @param {string} what */
 function splitPct(name, kind, what){
   const s = splitsFor(name);
   const rows = s?.[kind];
@@ -302,8 +353,10 @@ function splitPct(name, kind, what){
   }
   return 0;
 }
-/* That Pokemon's own top row for a section. Rows arrive sorted descending, so
-   this is row 0 and not a scan. */
+/** That Pokemon's own top row for a section. Rows arrive sorted descending, so
+   this is row 0 and not a scan.
+   @param {string} name
+   @param {string} kind */
 function splitMax(name, kind){
   const s = splitsFor(name);
   const rows = s?.[kind];
@@ -324,6 +377,7 @@ const SHARE_OF = {m: "of this Pokemon's move slots", t: "of its teams also carri
    becomes, and build_tracker_data.py derives that Mega and its ability. The
    recorded ability is the base one, which is correct: it is what the
    Pokemon has until it evolves. */
+/** @param {string} name */
 function podiumFor(name){
   return C.PODIUM?.[name] || [];
 }

@@ -207,7 +207,7 @@ function moveFilters(body, pool, rowFor, placeholder, opts){
      silent. A single Pokemon's movepool fits under the default; the cap is
      for the whole move table. */
   const cap = opts?.cap || 80;
-  const st = {F: {cat:{}, trait:{}, type:{}}, EXCL: {}, onChange: draw,
+  const st = {F: {cat:{}, trait:{}, type:{}}, PAINT: {}, onChange: draw,
             sort: usageOf ? "usage" : "bp"};
   const inp = searchField(body, placeholder || ("Filter " + pool.length +
     " moves"), draw);
@@ -294,9 +294,11 @@ function triChip(row, st, group, key, text, type){
   const t = el("button", "tog", text);
   setPressed(t, false);
   if (type) typeSkin(t, type, false);
-  st.EXCL[group] ||= {};
-  st.EXCL[group][key] = t;
-  t._paint = function(v){ paintTriChip(t, text, type, v); };
+  /* each chip's repaint, by group and key, so including one category can
+     repaint the other */
+  const paint = function(v){ paintTriChip(t, text, type, v); };
+  st.PAINT[group] ||= {};
+  st.PAINT[group][key] = paint;
   t.onclick = function(){
     const F = st.F;
     const was = F[group][key] || 0;
@@ -305,14 +307,14 @@ function triChip(row, st, group, key, text, type){
     /* A MOVE HAS EXACTLY ONE CATEGORY, so including one drops the other.
        Excludes still stack, which keeps "not status" sayable. */
     if (group === "cat" && now === 1) {
-      Object.keys(st.EXCL.cat).forEach(function(k){
+      Object.keys(st.PAINT.cat).forEach(function(k){
         if (k !== key && F.cat[k] === 1) {
           delete F.cat[k];
-          st.EXCL.cat[k]._paint(0);
+          st.PAINT.cat[k](0);
         }
       });
     }
-    t._paint(now);
+    paint(now);
     st.onChange();
   };
   row.appendChild(t);

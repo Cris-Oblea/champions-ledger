@@ -8,10 +8,12 @@ import {
 import { boxRows, hasStone, originOf, S } from "./state.js";
 
 /* ======================================================================= gts */
-/* +12, -3, 0 */
+/** +12, -3, 0
+   @param {number} n */
 function signed(n){ return (n > 0 ? "+" : "") + n; }
-/* How far apart the two sides of a trade are on ladder demand, as
-   [tag tone, sentence]. gap > 0 means asking for the more wanted one. */
+/** How far apart the two sides of a trade are on ladder demand, as
+   [tag tone, sentence]. gap > 0 means asking for the more wanted one.
+   @param {number} gap */
 function demandFit(gap){
   if (gap >= 120)
     return ["bad", "a long way up — the other side wants theirs far more than yours"];
@@ -32,18 +34,30 @@ function demandFit(gap){
 
    The harder half decides the score (build_gts_difficulty.py), because
    either alone is enough to kill a trade; when both are hard it goes to 5. */
+/** @typedef {NonNullable<ReturnType<typeof gtsDiff>>} GtsDiff */
+/** @typedef {NonNullable<ReturnType<typeof chipValue>>} ChipValue */
+/** What he has for keeps (`owned`) and what a HOME copy would free a slot for
+    (`frees`), each keyed by form and by species.
+    @typedef {{owned: Record<string, number>, frees: Record<string, number>}} Ownership */
+/** One species a chip could fetch, scored for the suggestion list.
+    @typedef {{name: string, bst: number, spe: number, stone: string | null,
+      rank: number | null | undefined, demand: number | undefined,
+      band: "reach" | "base", frees: boolean, stretch: boolean,
+      score: number}} Ask */
 const DIFF_LABEL = ["", "easy", "doable", "hard", "very hard", "near impossible"];
-/* A species' GTS difficulty row, unpacked from the payload's array into named
-   fields. */
+/** A species' GTS difficulty row, unpacked from the payload's array into named
+   fields.
+   @param {string} name */
 function gtsDiff(name){
   const d = C.GTSDIFF?.[name];
   if (!d) return null;
   return {score:d[0], demand:d[1], supply:d[2], rank:d[3], how:d[4] || "",
           usage:d[5], size:d[6] || 0};
 }
-/* "#224 of 324 · 0.41%". A rank with no denominator is half a fact. An
+/** "#224 of 324 · 0.41%". A rank with no denominator is half a fact. An
    ABSENT row is not last place: a species a new regulation just added has
-   no row at all, and says "unranked". */
+   no row at all, and says "unranked".
+   @param {GtsDiff | null} d */
 function ladderText(d){
   if (!d) return "";
   /* Never name the regulation in this string: the ladder data refreshes
@@ -52,8 +66,9 @@ function ladderText(d){
   return "#" + d.rank + (d.size ? " of " + d.size : "") +
          (d.usage != null ? " · " + d.usage.toFixed(2) + "%" : "");
 }
-/* The question that outranks the trade: if he can just evolve it in GO, a
-   chip spent here is a chip wasted. */
+/** The question that outranks the trade: if he can just evolve it in GO, a
+   chip spent here is a chip wasted.
+   @param {GtsDiff | null} d */
 function gtsSelfServe(d){ return d && d.supply <= 2 && d.demand >= 3; }
 
 /* How far above a chip's full price an ask may still be suggested. Measured
@@ -84,6 +99,7 @@ const GTS_SLOTS = 3;
                    twice, while bigger numbers sat for days */
 const SHINY_REACH = 60;    // ESTIMATE: about one BST tier. Not measured.
 
+/** @param {string} name */
 function demandReach(name){
   const d = gtsDiff(name);
   if (d?.rank == null) return 0;
@@ -93,8 +109,10 @@ function demandReach(name){
   if (d.demand >= 2) return 15;
   return 0;
 }
-/* A chip's price: {base, value (the Mega line's best BST), reach (how far
-   up it may aim), and the premiums that make up the difference}. */
+/** A chip's price: {base, value (the Mega line's best BST), reach (how far
+   up it may aim), and the premiums that make up the difference}.
+   @param {string} name
+   @param {boolean} [shiny] */
 function chipValue(name, shiny){
   /* anyRow, NOT byName: a species Champions does not have is exactly what a
      GTS chip is usually made of (only duplicates and species Champions cannot
@@ -112,21 +130,25 @@ function chipValue(name, shiny){
           reach:best + (shiny ? SHINY_REACH : 0) + dem,
           shinyBonus:shiny ? SHINY_REACH : 0};
 }
-/* the shiny flag lives on the box row, not on the species */
+/** the shiny flag lives on the box row, not on the species
+   @param {BoxRow | null | undefined} rec */
 function chipValueOf(rec){
   if (!rec) return null;
   return chipValue(rec.name, !!rec.shiny);
 }
 
-/* Stones bought for a Pokemon that is nowhere in the ledger - 2000 VP each,
-   sitting dead until a trade brings one in. */
+/** Stones bought for a Pokemon that is nowhere in the ledger - 2000 VP each,
+   sitting dead until a trade brings one in.
+   @returns {{stone: string, species: string, mega: string, bst: number | null, megaBst: number, spe: number | null}[]} */
 function deadStones(){
+  /** @type {Record<string, number>} */
   const have = {};
   boxRows("home").concat(boxRows("champions")).forEach(function(r){
     have[r.name] = 1;
     const p = byName[r.name];
     if (p?.species) have[p.species] = 1;
   });
+  /** @type {ReturnType<typeof deadStones>} */
   const out = [];
   /* walk the Megas, not the stones: STONE_OF is keyed by Mega name, and a
      stone is only dead if NO form of its species is anywhere in the ledger */
@@ -145,22 +167,29 @@ function deadStones(){
   return out;
 }
 
-/* IS AN ASK OF BST `b` IN RANGE FOR CHIP `v`? "reach", "base" or null - the
+/** IS AN ASK OF BST `b` IN RANGE FOR CHIP `v`? "reach", "base" or null - the
    two bands askBands() explains, written once so the suggestion list and
    anything checking a single trade can never disagree.
 
    The ceiling is CEILING above the chip's reach; the floor is 70 below its
    base row, and nothing in his 51 priced trades ever landed below it -
-   asking for less than you could is safe. */
+   asking for less than you could is safe.
+   @param {ChipValue | null} v
+   @param {number} b
+   @returns {"reach" | "base" | null} */
 function chipBand(v, b){
   if (!v) return null;
   if (b > v.reach + CEILING || b < Math.min(v.base, v.value) - 70) return null;
   return b >= v.value - 25 ? "reach" : "base";
 }
-/* What this chip could realistically fetch, best first, up to `limit`
+/** What this chip could realistically fetch, best first, up to `limit`
    (14): species not already his for keeps, in range of the chip, not in
    high demand (a top-of-ladder Pokemon is played, not traded), ranked up
-   when it would free a welded slot or put a dead stone to use. */
+   when it would free a welded slot or put a dead stone to use.
+   @param {string} chipName
+   @param {number} [limit]
+   @param {boolean} [shiny]
+   @returns {Ask[]} */
 function gtsSuggest(chipName, limit, shiny){
   const v = chipValue(chipName, shiny);
   if (!v) return [];
@@ -171,22 +200,29 @@ function gtsSuggest(chipName, limit, shiny){
   /* filled alternately, so a chip with a big Mega cannot bury the safer half
      under thirty reach-band targets */
   const want = limit || 14;
+  /** @type {Ask[]} */
   const out = [];
   while (out.length < want && (bands.reach.length || bands.base.length)) {
-    if (bands.reach.length) out.push(bands.reach.shift());
-    if (out.length < want && bands.base.length) out.push(bands.base.shift());
+    const up = bands.reach.shift();
+    if (up) out.push(up);
+    const safe = out.length < want ? bands.base.shift() : undefined;
+    if (safe) out.push(safe);
   }
   return out;
 }
 
-/* OWNED IN HOME IS DONE; OWNED ONLY IN CHAMPIONS IS STILL A TARGET. Both used
+/** OWNED IN HOME IS DONE; OWNED ONLY IN CHAMPIONS IS STILL A TARGET. Both used
    to count as owned, which quietly removed the best asks on the board: an
    Encounter Pokemon can never leave the box, so a second copy arriving through
    HOME is worth a whole slot. `owned` is what he has for keeps (HOME, or
    HOME-origin in the box); `frees` is what a HOME copy would free a slot for.
-   Both are keyed by form and by species. */
+   Both are keyed by form and by species.
+   @returns {Ownership} */
 function ownership(){
-  const owned = {}, frees = {};
+  /** @type {Record<string, number>} */
+  const owned = {};
+  /** @type {Record<string, number>} */
+  const frees = {};
   boxRows("home").forEach(function(r){ markOwned(owned, r); });
   boxRows("champions").forEach(function(r){
     markOwned(originOf(r) === "home" ? owned : frees, r);
@@ -194,17 +230,22 @@ function ownership(){
   return {owned: owned, frees: frees};
 }
 
-/* Mark a row's form and its species as owned, so a lookup by either spelling
-   finds it. */
+/** Mark a row's form and its species as owned, so a lookup by either spelling
+   finds it.
+   @param {Record<string, number>} into
+   @param {BoxRow} r */
 function markOwned(into, r){
   into[r.name] = 1;
   const p = byName[r.name];
   if (p?.species) into[p.species] = 1;
 }
 
-/* Species with a Mega Stone already bought and nothing to hold it: trading
-   for one turns 2000 VP back on. */
+/** Species with a Mega Stone already bought and nothing to hold it: trading
+   for one turns 2000 VP back on.
+   @param {Ownership} own
+   @returns {Record<string, string>} */
 function deadStonesBySpecies(own){
+  /** @type {Record<string, string>} */
   const dead = {};
   Object.keys(MEGAS_OF).forEach(function(sp){
     if (own.owned[sp] || own.frees[sp]) return;
@@ -216,7 +257,7 @@ function deadStonesBySpecies(own){
   return dead;
 }
 
-/* TWO BANDS, NOT ONE WINDOW. A Mega-capable chip prices at its Mega, and a
+/** TWO BANDS, NOT ONE WINDOW. A Mega-capable chip prices at its Mega, and a
    single window around that price would cut out the asks around its base
    row - the ones most likely to be TAKEN.
 
@@ -229,8 +270,13 @@ function deadStonesBySpecies(own){
    is left out; an UNKNOWN demand is not a low one, so it stays in but is
    never ranked as if it were cheap. Each band is scored against its OWN
    anchor, and A SLOT IS WORTH MORE THAN A STONE: a dead stone is 2000 VP
-   already spent, a welded slot cannot be bought back at all. */
+   already spent, a welded slot cannot be bought back at all.
+   @param {ChipValue} v
+   @param {Ownership} own
+   @param {Record<string, string>} dead
+   @returns {{reach: Ask[], base: Ask[]}} */
 function askBands(v, own, dead){
+  /** @type {{reach: Ask[], base: Ask[]}} */
   const bands = {reach:[], base:[]};
   FORMS.forEach(function(p){
     if (own.owned[p.name] || own.owned[p.species]) return;
@@ -252,18 +298,22 @@ function askBands(v, own, dead){
   return bands;
 }
 
-/* best score first; a tie goes to the bigger BST */
+/** best score first; a tie goes to the bigger BST
+   @param {Ask} a
+   @param {Ask} b */
 function bySuggestScore(a, b){ return b.score - a.score || b.bst - a.bst; }
 
-/* How many days an offer has been sitting, or null when it has no date. An
-   offer nobody has taken in nine days is saying the price is wrong. */
+/** How many days an offer has been sitting, or null when it has no date. An
+   offer nobody has taken in nine days is saying the price is wrong.
+   @param {Trade} o */
 function offerAge(o){
   const t = offerStart(o);
   if (t == null) return null;
   return Math.max(0, Math.round((Date.now() - t) / 86400000));
 }
-/* When an offer went up, in ms: the exact time when it has one, else the
-   day it was deposited (older rows only stored the date). */
+/** When an offer went up, in ms: the exact time when it has one, else the
+   day it was deposited (older rows only stored the date).
+   @param {Trade} o */
 function offerStart(o){
   if (o.depositedAt) {
     const p = Date.parse(o.depositedAt);
@@ -273,9 +323,10 @@ function offerStart(o){
   const t = Date.parse(o.deposited + "T00:00:00");
   return Number.isNaN(t) ? null : t;
 }
-/* "40 min", "6.5h", "3 days". Hours matter here: time-to-close measures what
+/** "40 min", "6.5h", "3 days". Hours matter here: time-to-close measures what
    the other side WANTS, the axis BST cannot see, and the difference between
-   a trade that cleared in hours and one that sat for days is the signal. */
+   a trade that cleared in hours and one that sat for days is the signal.
+   @param {number | null} ms */
 function elapsedText(ms){
   if (ms == null || ms < 0) return null;
   const h = ms / 3600000;
@@ -303,15 +354,17 @@ function gtsHistory(){
     });
 }
 
-/* HOW MANY KEEPABLE COPIES of each form he has: {name: count}. This is what
+/** HOW MANY KEEPABLE COPIES of each form he has: {name: count}. This is what
    "duplicate" means, and a welded copy does not count.
 
    A rental or an Encounter buy is Champions origin: it can never leave the
    game, so it can never be the copy he keeps. A HOME Metagross beside a
    rental Metagross is ONE keepable copy, and trading the HOME one would lose
    the species for good. Only a row that can BE in HOME counts - one already
-   there, or a HOME-origin one in the Champions box that can be parked back. */
+   there, or a HOME-origin one in the Champions box that can be parked back.
+   @returns {Record<string, number>} */
 function keepableCopies(){
+  /** @type {Record<string, number>} */
   const n = {};
   boxRows("home").forEach(function(r){ n[r.name] = (n[r.name] || 0) + 1; });
   boxRows("champions").forEach(function(r){
@@ -319,7 +372,7 @@ function keepableCopies(){
   });
   return n;
 }
-/* THE KEEP-ONE RULE: he always keeps one of every form in HOME. Only two
+/** THE KEEP-ONE RULE: he always keeps one of every form in HOME. Only two
    things may be offered - a copy past the first, or a species Champions does
    not allow at all. True when offering `rec` would give away the last
    keepable copy, which is what the deposit sheet warns about.
@@ -327,19 +380,22 @@ function keepableCopies(){
    Counts the BOX, not the offers: depositing does not remove the Pokemon, so
    the copy is still there until the trade actually closes. And it counts
    keepable copies only (keepableCopies), so a welded rental never makes the
-   one in HOME look expendable. */
+   one in HOME look expendable.
+   @param {BoxRow | null | undefined} rec */
 function lastCopyOf(rec){
   if (!rec) return false;
   if (!byName[rec.name]) return false;          // not in the dex: free to trade
   return (keepableCopies()[rec.name] || 0) <= 1;
 }
-/* THE RULE IS PER FORM, AND HE PICKS WHICH FORM to keep: with a male and a
+/** THE RULE IS PER FORM, AND HE PICKS WHICH FORM to keep: with a male and a
    female Indeedee, either may be the keeper. So the last-copy warning names
    the other forms of the species still in the box and lets him judge. Returns
-   those sibling form names. */
+   those sibling form names.
+   @param {BoxRow} rec */
 function otherFormsOf(rec){
   const p = byName[rec.name];
   if (!p?.species) return [];
+  /** @type {Record<string, number>} */
   const out = {};
   boxRows("home").concat(boxRows("champions")).forEach(function(r){
     if (r.name === rec.name) return;
@@ -359,10 +415,12 @@ function gtsOffers(){
 }
 /* How many GTS slots are still free. */
 function gtsFree(){ return Math.max(0, GTS_SLOTS - gtsOffers().length); }
-/* The picker greys committed copies out, but the picker is only the UI. One
+/** The picker greys committed copies out, but the picker is only the UI. One
    Pokemon cannot sit in two GTS slots, so the rule is checked again at save -
    an offer edited, or a stale sheet left open, must not be able to write a
-   collision. Returns the clashing offer, or null. */
+   collision. Returns the clashing offer, or null.
+   @param {{offeredId?: string | null}} d
+   @param {string} [exceptId] */
 function gtsClash(d, exceptId){
   if (!d.offeredId) return null;
   let hit = null;
@@ -380,22 +438,22 @@ function gtsClash(d, exceptId){
    instead, because one data point is not a rule and a wrong guess that hides
    a chip is worse than one that warns. When a second Mythical is refused in
    game, it moves into gts_blocked.json. */
+/** @type {Set<string> | null} */
 let MYTH_SET = null;
-/* Can HOME's GTS hold this species? "confirmed" when it is known to refuse it,
+/** Can HOME's GTS hold this species? "confirmed" when it is known to refuse it,
    "inferred" for a Mythical (one refusal seen, so the rest are only
-   suspected), null otherwise. */
+   suspected), null otherwise.
+   @param {string} name */
 function gtsBlocked(name){
   if (C.GTSBLOCK?.[name]) return "confirmed";
-  if (!MYTH_SET) {
-    MYTH_SET = {};
-    (C.MYTHICAL || []).forEach(function(n){ MYTH_SET[n] = 1; });
-  }
-  return MYTH_SET[name] ? "inferred" : null;
+  MYTH_SET ||= new Set(C.MYTHICAL || []);
+  return MYTH_SET.has(name) ? "inferred" : null;
 }
-/* How long a closed trade took, deposit to close, in ms (null if unknown).
+/** How long a closed trade took, deposit to close, in ms (null if unknown).
    His own trades are the only MEASURED evidence on the GTS screen: a chip
    that sat for three days was priced wrong however good the arithmetic
-   looked. */
+   looked.
+   @param {Trade} o */
 function closeMs(o){
   const start = offerStart(o);
   if (start == null) return null;
@@ -406,11 +464,17 @@ function closeMs(o){
   const ms = end - start;
   return ms >= 0 ? ms : null;
 }
-/* The summary of his closed trades: how many, the median time to close
+/** The summary of his closed trades: how many, the median time to close
    (overall and for `name`), and the median and largest BST gap between what
-   was given and what came back. */
+   was given and what came back.
+   @param {string | null} name */
 function gtsRecord(name){
-  const all = [], mine = [], gaps = [];
+  /** @type {number[]} */
+  const all = [];
+  /** @type {number[]} */
+  const mine = [];
+  /** @type {number[]} */
+  const gaps = [];
   gtsHistory().forEach(function(o){
     const ms = closeMs(o);
     if (ms == null) return;
@@ -419,7 +483,8 @@ function gtsRecord(name){
     const a = anyRow(o.offered), b = anyRow(o.requested);
     if (a && b) gaps.push(bst(b) - bst(a));
   });
-  /* The median, or null for an empty list. */
+  /** The median, or null for an empty list.
+     @param {number[]} xs */
   function mid(xs){
     if (!xs.length) return null;
     const v = xs.slice().sort(function(x, y){ return x - y; });

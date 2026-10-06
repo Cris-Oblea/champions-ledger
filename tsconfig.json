@@ -12,8 +12,9 @@
     "moduleResolution": "bundler",
     "lib": ["es2024", "dom", "dom.iterable"],
     "skipLibCheck": true,
-    // Off for now (TypeScript 7 turns it on by default): strict asks for a
-    // type on every parameter, and it is switched on one layer at a time.
+    // Off here (TypeScript 6 turns it on by default): strict asks for a type
+    // on every parameter, and it is switched on one layer at a time, each in
+    // its own tsconfig.json - core/ is.
     "strict": false
   },
   "include": ["tracker/src/**/*.js", "tracker/src/globals.d.ts"],

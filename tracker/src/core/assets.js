@@ -16,15 +16,19 @@ import { byName } from "./data.js";
 /** @param {"CHAMP_ANALYSIS" | "CHAMP_OUTSIDE"} global
     @param {"CHAMP_ANALYSIS_URL" | "CHAMP_OUTSIDE_URL"} urlGlobal */
 function lazyScript(global, urlGlobal){
-  let state = "idle", waiting = [];      // idle | loading | ready | absent
-  /* End the load once and answer everyone who asked while it was in flight, so
-     a second caller never starts a second download. */
+  let state = "idle";                    // idle | loading | ready | absent
+  /** @type {((ready: boolean) => void)[]} */
+  let waiting = [];
+  /** End the load once and answer everyone who asked while it was in flight, so
+     a second caller never starts a second download.
+     @param {string} to */
   function settle(to){
     state = to;
     const q = waiting;
     waiting = [];
     q.forEach(function(fn){ try { fn(to === "ready"); } catch (e) {} });
   }
+  /** @param {(ready: boolean) => void} then */
   return function load(then){
     if (window[global]) { state = "ready"; return then(true); }
     if (state === "ready" || state === "absent") return then(state === "ready");
@@ -51,7 +55,8 @@ function lazyScript(global, urlGlobal){
    it is fetched once and then served from cache. */
 const loadAnalysis = lazyScript("CHAMP_ANALYSIS", "CHAMP_ANALYSIS_URL");
 
-/* The analysis for a name, or null (also null before it has loaded). */
+/** The analysis for a name, or null (also null before it has loaded).
+   @param {string} name */
 function analysisFor(name){
   const all = window.CHAMP_ANALYSIS;
   if (!all) return null;
@@ -78,13 +83,16 @@ const loadOutside = lazyScript("CHAMP_OUTSIDE", "CHAMP_OUTSIDE_URL");
 
 /* {} until loaded, so a caller never has to test for it */
 function outsideDex(){ return window.CHAMP_OUTSIDE || {}; }
-/* The movepool of a species Champions lacks, from the outside dex (null until
-   that asset has loaded). */
+/** The movepool of a species Champions lacks, from the outside dex (null until
+   that asset has loaded).
+   @param {string} name */
 function outsideMovesFor(name){ return outsideDex().m?.[name] || null; }
-/* A move the app does not ship, dressed as one it does, so the same row
+/** A move the app does not ship, dressed as one it does, so the same row
    renderer draws it. `i` is -1 on purpose: the ability badges and the blocker
    tags index by it, and a move with no index must match none of them rather
-   than match move 0. */
+   than match move 0.
+   @param {string} name
+   @returns {Move | null} */
 function outsideMove(name){
   const r = outsideDex().mv?.[name];
   if (!r) return null;

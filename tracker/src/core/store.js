@@ -16,16 +16,20 @@ import { S } from "./state.js";
    Every row carries user_id, and RLS on the server is what keeps one account's
    rows invisible to another. The key in this page cannot read past it.
    S.db is this connection, or null until the sign-in finishes. */
+/** @type {Table[]} */
 const TABLES = ["box", "builds", "teams", "stones", "items", "gts", "meta"];
 
 /* The one thing this file knows about the screen: every change has to end in
    a redraw. boot.js says which, with whenChanged(renderAll), so the store
    never imports the screen it serves. */
 let redraw = function(){};
+/** @param {() => void} fn */
 function whenChanged(fn){ redraw = fn; }
 
-/* Called once by ui/signin.js with the signed-in client: load every table,
-   then subscribe to changes made anywhere else. */
+/** Called once by ui/signin.js with the signed-in client: load every table,
+   then subscribe to changes made anywhere else.
+   @param {Ledger["sb"]} sb
+   @param {string} uid */
 function openLedger(sb, uid){
   S.db = {sb: sb, uid: uid, cache: {}};
   TABLES.forEach(function(t){
@@ -47,23 +51,30 @@ function openLedger(sb, uid){
   ch.subscribe();
 }
 
-/* Read a whole table into the cache, then into S. */
+/** Read a whole table into the cache, then into S. The query builder is only
+   a thenable; Promise.resolve makes it a Promise, with .catch.
+   @param {Table} t */
 function load(t){
-  return S.db.sb.from(t).select("*").then(function(r){
+  const db = S.db;
+  if (!db) return Promise.resolve();
+  return Promise.resolve(db.sb.from(t).select("*")).then(function(r){
     if (r.error) throw r.error;
+    /** @type {Record<string, any>} */
     const m = {};
     (r.data || []).forEach(function(row){ m[row.id] = row; });
-    S.db.cache[t] = m;
+    db.cache[t] = m;
     publish(t);
   });
 }
 
-/* Hand the cache of one table to S, in the shape the app reads, and redraw. */
+/** Hand the cache of one table to S, in the shape the app reads, and redraw.
+   @param {Table} t */
 function publish(t){
-  const rows = S.db.cache[t] || {};
+  const rows = S.db?.cache[t] || {};
   if (t === "meta") {
     S.meta.trainer = rows.trainer ? docFromRow(t, rows.trainer) : {};
   } else {
+    /** @type {Record<string, any>} */
     const m = {};
     Object.keys(rows).sort(byText).forEach(function(id){
       m[id] = docFromRow(t, rows[id]); });
@@ -76,49 +87,59 @@ function publish(t){
 /* ================================================================ writes ==
    A path is "table/id": "builds/farigiraf". Every write goes to the database
    first and only then into the cache, so a failed write never shows as saved. */
+/** The table and the id of a path. The table is taken on trust: every path
+   is written in the app as "<table>/" + id.
+   @param {string} path
+   @returns {[Table, string]} */
 function splitPath(path){
   const i = path.indexOf("/");
-  return [path.slice(0, i), path.slice(i + 1)];
+  return [/** @type {Table} */ (path.slice(0, i)), path.slice(i + 1)];
 }
-/* true (and says so) when there is no connection to write through */
-function offline(){
-  if (S.db) return false;
-  toast("Not connected to the store");
-  return true;
+/* The connection to write through, or null (and says so) when there is none. */
+function writable(){
+  if (!S.db) toast("Not connected to the store");
+  return S.db;
 }
-/* Every failed write tells the user, then rethrows so the caller's own
-   promise rejects and nothing downstream treats it as saved. */
+/** Every failed write tells the user, then rethrows so the caller's own
+   promise rejects and nothing downstream treats it as saved.
+   @param {{code?: string} | null | undefined} e */
 function saveFailed(e){
   toast("Could not save: " + (e?.code || "error"));
   throw e;
 }
 
-/* Write a whole record, creating or replacing it (an upsert). Stamps
-   `updated`; resolves once the database has accepted it. */
+/** Write a whole record, creating or replacing it (an upsert). Stamps
+   `updated`; resolves once the database has accepted it.
+   @param {string} path
+   @param {Record<string, any>} body */
 function put(path, body){
-  if (offline()) return Promise.resolve();
+  const db = writable();
+  if (!db) return Promise.resolve();
   body.updated = new Date().toISOString().slice(0,10);
   const [t, id] = splitPath(path);
-  const row = rowFromDoc(t, id, S.db.uid, body);
-  return S.db.sb.from(t).upsert(row, {onConflict:"user_id,id"}).then(function(r){
+  const row = rowFromDoc(t, id, db.uid, body);
+  return Promise.resolve(db.sb.from(t).upsert(row, {onConflict:"user_id,id"})).then(function(r){
     if (r.error) throw r.error;
-    const c = S.db.cache[t] ||= {};
+    const c = db.cache[t] ||= {};
     c[id] = {...c[id], ...row};
     publish(t);
   }).catch(saveFailed);
 }
 
-/* Merge some fields into a record. A meta body merges inside its jsonb (the
+/** Merge some fields into a record. A meta body merges inside its jsonb (the
    record IS the jsonb), every other table merges columns - both are the
-   record as the app reads it, plus `body`. */
+   record as the app reads it, plus `body`.
+   @param {string} path
+   @param {Record<string, any>} body */
 function patch(path, body){
-  if (offline()) return Promise.resolve();
+  const db = writable();
+  if (!db) return Promise.resolve();
   const [t, id] = splitPath(path);
-  const cur = S.db.cache[t]?.[id];
+  const cur = db.cache[t]?.[id];
   return put(path, {...(cur && docFromRow(t, cur)), ...body});
 }
 
-/* Create a record under the first id that is actually free.
+/** Create a record under the first id that is actually free.
    `stem` is the readable base - "farigiraf" - and this tries farigiraf,
    farigiraf-2, farigiraf-3... A clash is decided by the DATABASE, not by what
    this device happens to have loaded, which is the only way two devices can
@@ -127,22 +148,28 @@ function patch(path, body){
    INSERT, not upsert: the point is that it FAILS when the id is taken - two
    devices creating at the same moment both pick the same id, and an upsert
    would let the second silently replace the first.
-   Returns the id it used. */
+   Returns the id it used.
+   @param {Table} t
+   @param {string} stem
+   @param {Record<string, any>} body
+   @returns {Promise<string | null>} */
 function putNew(t, stem, body){
-  if (offline()) return Promise.resolve(null);
+  const db = writable();
+  if (!db) return Promise.resolve(null);
   body.updated = new Date().toISOString().slice(0, 10);
   const tried = [];
   let n = 1;
-  /* Insert under stem, then stem-2, stem-3... until the database accepts an
-     id. */
-  function attempt(){
+  /** Insert under stem, then stem-2, stem-3... until the database accepts an
+     id.
+     @returns {Promise<string>} */
+  const attempt = function(){
     const id = n === 1 ? stem : stem + "-" + n;
     tried.push(id);
-    const row = rowFromDoc(t, id, S.db.uid, body);
-    return S.db.sb.from(t).insert(row).then(function(r){
+    const row = rowFromDoc(t, id, db.uid, body);
+    return Promise.resolve(db.sb.from(t).insert(row)).then(function(r){
       if (r.error) throw r.error;
-      S.db.cache[t] ||= {};
-      S.db.cache[t][id] = row;
+      const c = db.cache[t] ||= {};
+      c[id] = row;
       publish(t);
       return id;
     }).catch(function(e){
@@ -157,18 +184,21 @@ function putNew(t, stem, body){
       }
       return attempt();
     });
-  }
+  };
   return attempt();
 }
 
-/* Delete a record. Quietly does nothing while signed out, since there is
-   nothing on screen to delete then. */
+/** Delete a record. Quietly does nothing while signed out, since there is
+   nothing on screen to delete then.
+   @param {string} path */
 function drop(path){
-  if (!S.db) return Promise.resolve();
+  const db = S.db;
+  if (!db) return Promise.resolve();
   const [t, id] = splitPath(path);
-  return S.db.sb.from(t).delete().eq("id", id).then(function(r){
+  return db.sb.from(t).delete().eq("id", id).then(function(r){
     if (r.error) throw r.error;
-    if (S.db.cache[t]) delete S.db.cache[t][id];
+    const c = db.cache[t];
+    if (c) delete c[id];
     publish(t);
   });
 }
@@ -178,6 +208,11 @@ function drop(path){
    defaults filled in); rowFromDoc is the way back. They are the only two
    functions that know the column names, so a schema change is edited here
    and in a supabase/ migration, nowhere else. */
+/** A database row as the record the app reads. `any` on purpose: the shape
+   depends on the table, and the types of S say what each one holds.
+   @param {Table} coll
+   @param {Record<string, any>} row
+   @returns {any} */
 function docFromRow(coll, row){
   if (coll === "meta") return row.data || {};
   /* A set table: the row's existence IS the fact, and there is nothing
@@ -208,19 +243,26 @@ function docFromRow(coll, row){
     role:row.role || "", rationale:row.rationale || "",
     extra:row.extra || {}, updated:(row.updated_at || "").slice(0, 10)};
 }
-/* The app's record turned into its table's row: an owned stone or item is only
+/** The app's record turned into its table's row: an owned stone or item is only
    an id, a trade keeps its columns and puts every other field in `data`,
    `meta` is one json document, and a box row, team or build maps field by
-   field with the defaults the schema expects. */
+   field with the defaults the schema expects.
+   @param {Table} coll
+   @param {string} id
+   @param {string} uid
+   @param {Record<string, any>} d
+   @returns {Record<string, unknown>} */
 function rowFromDoc(coll, id, uid, d){
   if (coll === "stones" || coll === "items") return {user_id:uid, id:id};
   if (coll === "gts") {
     /* everything that is not a column is a measurement, and goes to
        `data` - so a field added to a closed trade tomorrow needs no
        migration, and no field is silently dropped on the way in. */
+    /** @type {Record<string, number>} */
     const COLS = {offered:1, requested:1, offeredId:1, deposited:1,
                 depositedAt:1, closed:1, closedAt:1, note:1,
                 status:1, updated:1};
+    /** @type {Record<string, unknown>} */
     const extra = {};
     Object.keys(d).forEach(function(k){
       if (!COLS[k] && d[k] !== undefined) extra[k] = d[k];
@@ -234,6 +276,7 @@ function rowFromDoc(coll, id, uid, d){
             note:d.note || "", data:extra};
   }
   if (coll === "meta") {
+    /** @type {Record<string, unknown>} */
     const body = {}; Object.keys(d).forEach(function(k){
       if (k !== "updated") body[k] = d[k]; });
     return {user_id:uid, id:id, data:body};
@@ -252,7 +295,9 @@ function rowFromDoc(coll, id, uid, d){
     rationale:d.rationale || "", extra:d.extra || {}};
 }
 
-/* The connection line in Settings: live, or why not. */
+/** The connection line in Settings: live, or why not.
+   @param {boolean} ok
+   @param {string} [why] */
 function dbState(ok, why){
   const n = $("dbNote");
   n.innerHTML = "";
