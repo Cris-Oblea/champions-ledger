@@ -692,7 +692,7 @@ function effectLine(name){
    "nobody", shown as a warning; null (no table) draws nothing.
    @param {number | null | undefined} pct
    @param {string} name
-   @param {string} kind */
+   @param {UsageSection} kind */
 function usageTag(pct, name, kind){
   if (pct == null) return null;
   const top = splitMax(name, kind) || 100;

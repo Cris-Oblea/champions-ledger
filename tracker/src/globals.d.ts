@@ -153,9 +153,12 @@ interface OutsideDex {
   ab?: Record<string, string>;
 }
 
-/** pokebase's per-Pokemon usage: section ("m" moves, "i" items, "a"
- *  abilities, "n" natures, "t" teammates...) -> [what, %] rows, highest first. */
-type SplitTable = Record<string, [string, number][]>;
+/** A section of pokebase's per-Pokemon usage: "m" moves, "i" items, "a"
+ *  abilities, "n" natures, "t" teammates. */
+type UsageSection = "m" | "i" | "a" | "n" | "t";
+/** One Pokemon's usage: each section's [what, %] rows, highest first, and
+ *  "s", the spreads, each [hp, atk, def, spa, spd, spe, %]. */
+type SplitTable = Partial<Record<UsageSection, [string, number][]>> & {s?: number[][]};
 
 /* ----------------------------------------------------- the rows data.js makes */
 /** A Pokemon as every card draws it: a dex row, a Mega, a battle form or a
@@ -231,6 +234,9 @@ interface BoxRow {
   /** its id, set by whoever listed it (the record does not carry it) */
   _id?: string;
 }
+
+/** A box row as the lists hand it out: with its id, which boxRows() sets. */
+type ListedBox = BoxRow & { _id: string };
 
 interface Build {
   pokemon: string;

@@ -343,7 +343,7 @@ function splitsReg(){
    it: silence against a measured "nobody", and the app shows them
    differently.
    @param {string} name
-   @param {string} kind
+   @param {UsageSection} kind
    @param {string} what */
 function splitPct(name, kind, what){
   const s = splitsFor(name);
@@ -357,7 +357,7 @@ function splitPct(name, kind, what){
 /** That Pokemon's own top row for a section. Rows arrive sorted descending, so
    this is row 0 and not a scan.
    @param {string} name
-   @param {string} kind */
+   @param {UsageSection} kind */
 function splitMax(name, kind){
   const s = splitsFor(name);
   const rows = s?.[kind];

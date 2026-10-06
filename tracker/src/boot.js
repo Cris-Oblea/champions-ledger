@@ -89,7 +89,7 @@ buildTabs();
 findInit();
 go("box");
 $$("[data-add]").forEach(function(b){
-  b.onclick = function(){ addSheet(b.dataset.add); };
+  b.onclick = function(){ addSheet(/** @type {BoxLocation} */ (b.dataset.add)); };
 });
 Array.prototype.forEach.call($("calcMode").children, function(b){
   b.onclick = function(){
@@ -130,7 +130,7 @@ try {
 } catch (e) {
   /* Storage throws in private browsing; the default sort stands. */
 }
-$("buildAdd").onclick = function(){ buildSheet(null, {}); };
+$("buildAdd").onclick = function(){ buildSheet(null, null); };
 $("buildEditBack").onclick = function(){ leaveEditor(); };
 $("teamEditBack").onclick  = function(){ leaveEditor("teams"); };
 $("buildSearch").oninput = drawBuilds;
