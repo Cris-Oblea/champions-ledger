@@ -1,0 +1,21 @@
+// The type check of the app: TypeScript's checker run over the JavaScript as
+// it is (checkJs), with types written as JSDoc. Nothing is compiled - esbuild
+// still links the parts - so this only reads. The gate runs it (daily.py) and
+// VS Code reads this same file, so the editor shows what blocks a push.
+{
+  "compilerOptions": {
+    "allowJs": true,
+    "checkJs": true,
+    "noEmit": true,
+    "target": "es2024",
+    "module": "preserve",
+    "moduleResolution": "bundler",
+    "lib": ["es2024", "dom", "dom.iterable"],
+    "skipLibCheck": true,
+    // Off for now (TypeScript 7 turns it on by default): strict asks for a
+    // type on every parameter, and it is switched on one layer at a time.
+    "strict": false
+  },
+  "include": ["tracker/src/**/*.js", "tracker/src/globals.d.ts"],
+  "exclude": ["tracker/src/_*.js"]
+}

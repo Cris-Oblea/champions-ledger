@@ -308,7 +308,7 @@ window.addEventListener("popstate", function(){
       if (!$("askScrim").hidden) {
         /* the dialog resolves false on its own Cancel path */
         const no = $("askNo");
-        if (no?.onclick) no.onclick();
+        no?.click();
       } else if (!$("scrim").hidden) {
         closeSheet();
       } else if (inEditor()) {

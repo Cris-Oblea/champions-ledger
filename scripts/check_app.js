@@ -56,7 +56,7 @@ console.log("element ids used but not in the markup");
   const before = problems;
   const ids = new Set([...src.matchAll(/id="([^"]+)"/g)].map(m3 => m3[1]));
   const dynamic = new Set(["pkNote", "whoBtn", "atkBudget", "defBudget"]);
-  for (const m4 of app.matchAll(/\$\("([^"]+)"\)/g)) {
+  for (const m4 of app.matchAll(/(?<!\$)\$\("([^"]+)"\)/g)) {   // not $$(selector)
     if (!ids.has(m4[1]) && !dynamic.has(m4[1])) {
       fail('$("' + m4[1] + '") has no matching id in the markup');
     }

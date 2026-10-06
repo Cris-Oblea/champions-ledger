@@ -5,6 +5,13 @@
 
 /* ===================================================================== util */
 function $(id){ return document.getElementById(id); }
+/* $ for a control read by its value or switched off: an input, a select, a
+   textarea or a button. The same element; only its type says so. */
+function field(id){ return /** @type {HTMLInputElement} */ ($(id)); }
+/* Every element matching a selector, as an array. */
+function $$(sel){
+  return /** @type {HTMLElement[]} */ (Array.from(document.querySelectorAll(sel)));
+}
 /* The one way the UI makes an element: a tag, its classes, its text.
    Text goes through textContent, so a scraped string is never parsed as
    markup. */
@@ -80,8 +87,7 @@ function addClear(wrap, inp){
 /* Every search box written straight into the markup gets the same clear
    button, so the two ways a field can be born look identical on screen. */
 function wireClears(){
-  const wraps = document.querySelectorAll(".search");
-  Array.prototype.forEach.call(wraps, function(w){
+  $$(".search").forEach(function(w){
     const inp = w.querySelector("input");
     if (inp) addClear(w, inp);
   });
@@ -174,6 +180,6 @@ function showPane(panes, which){
 }
 
 export {
-  $, capNote, el, fbtn, filterLabel, note, pressOnly, resetHost, searchField,
+  $, $$, capNote, el, fbtn, field, filterLabel, note, pressOnly, resetHost, searchField,
   setPressed, showPane, toast, wireClears,
 };

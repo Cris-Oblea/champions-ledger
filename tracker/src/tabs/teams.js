@@ -5,7 +5,8 @@ import {
   bst, byName, byText, dexNo, MOVE_BY, natMult, plural, slug, splitPct, STAT_KEYS,
 } from "../core/data.js";
 import {
-  $, el, fbtn, filterLabel, note, searchField, pressOnly, setPressed, toast,
+  $, el, fbtn, field, filterLabel, note, pressOnly, searchField, setPressed,
+  toast,
 } from "../core/dom.js";
 import {
   activeAbility, baseAbility, buildLink, buildsFor, hasItem, hasStone, S,
@@ -38,7 +39,7 @@ function drawTeams(){
       "No teams yet. A team is six builds and the items they hold."));
     return;
   }
-  const q = ($("teamSearch")?.value || "").trim().toLowerCase();
+  const q = (field("teamSearch")?.value || "").trim().toLowerCase();
   const ids = all.filter(function(id){ return !q || teamMatches(S.teams[id], q); });
   if (!ids.length) {
     host.appendChild(el("div", "empty", "No team matches"));

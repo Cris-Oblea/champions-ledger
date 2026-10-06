@@ -210,9 +210,10 @@ def gate():
         "- **%s source checks** — ESLint, with SonarSource's own rules,\n"
         "  over every file (a name one of the %s ES modules uses "
         "without\n  importing it links fine and throws on the phone), "
-        "stylelint over the CSS,\n  html-validate over the markup, knip for "
-        "an export or file nothing\n  reaches, jscpd for copy-paste, and the "
-        "app read against its own markup,\n  engine and stylesheet\n"
+        "TypeScript's checker\n  over the app, stylelint over the CSS, "
+        "html-validate over the markup,\n  knip for an export or file nothing "
+        "reaches, jscpd for copy-paste, and\n  the app read against its own "
+        "markup, engine and stylesheet\n"
         "- **%s browser tests** — run against the built page, because no "
         "Python\n  check can see a template regression"
         % (word(1 + py + node + browser), word(py), word(node),

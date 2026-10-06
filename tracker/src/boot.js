@@ -2,7 +2,7 @@
    store. renderAll() is the one redraw every change ends in. */
 /* FIRST, so a script error anywhere after this line is caught and shown. */
 import "./core/errors.js";
-import { $, el, pressOnly, setPressed, showPane, wireClears } from "./core/dom.js";
+import { $, $$, el, pressOnly, setPressed, showPane, wireClears } from "./core/dom.js";
 import { VIEW } from "./core/state.js";
 import { whenChanged } from "./core/store.js";
 import {
@@ -47,7 +47,7 @@ function renderAll(){
    ever grows, and so the markup keeps reading as prose. */
 function foldIntros(){
   const LONG = 16;                       /* words before it is worth folding */
-  Array.prototype.forEach.call(document.querySelectorAll(".view .lede, .view > .sub"),
+  $$(".view .lede, .view > .sub").forEach(
     function(p){
       if (p.dataset.folded) return;
       /* COLLAPSE THE WHITESPACE FIRST: the markup indents these paragraphs
@@ -88,7 +88,7 @@ whenChanged(renderAll);
 buildTabs();
 findInit();
 go("box");
-document.querySelectorAll("[data-add]").forEach(function(b){
+$$("[data-add]").forEach(function(b){
   b.onclick = function(){ addSheet(b.dataset.add); };
 });
 Array.prototype.forEach.call($("calcMode").children, function(b){
@@ -102,7 +102,7 @@ Array.prototype.forEach.call($("calcMode").children, function(b){
    boxes, the HOME panes in two places), so every copy is marked at once: the
    button whose data-<key> is the chosen value is pressed in each. */
 function markSeg(sel, key, value){
-  document.querySelectorAll(sel).forEach(function(g){
+  $$(sel).forEach(function(g){
     Array.prototype.forEach.call(g.children, function(x){
       setPressed(x, x.dataset[key] === value);
     });
@@ -110,7 +110,7 @@ function markSeg(sel, key, value){
 }
 /* one order for every box list, so HOME and the Champions Box can be read
    against the phone's own screen without re-sorting in your head */
-document.querySelectorAll(".sortseg").forEach(function(seg){
+$$(".sortseg").forEach(function(seg){
   Array.prototype.forEach.call(seg.children, function(b){
     b.onclick = function(){
       VIEW.sort = b.dataset.sort;
@@ -168,7 +168,7 @@ function homePane(which){
   if (which === "dex") drawDexPane();
   if (which === "gts") drawGtsWanted();
 }
-document.querySelectorAll(".homeseg").forEach(function(seg){
+$$(".homeseg").forEach(function(seg){
   Array.prototype.forEach.call(seg.children, function(b){
     b.onclick = function(){ homePane(b.dataset.home); };
   });

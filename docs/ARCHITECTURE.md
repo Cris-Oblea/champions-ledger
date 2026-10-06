@@ -54,7 +54,7 @@ public because it carries no personal row.
 | Scheduler | A second **Cloudflare Worker** (JavaScript, Web Crypto) | `cron/src/cron.js` | Starts the nightly GitHub workflow on time; GitHub's own schedule ran hours late |
 | Data pipeline | **Python 3**, standard library only (`urllib`, `json`, `re`, `argparse`, `html`) | `scripts/` | The scripts need no `pip install`; the gate's linter does (`requirements.txt`) |
 | Damage maths | **Smogon's damage-calc** (TypeScript, copied from upstream, bundled with esbuild) | `scripts/build_engine_bundle.py` → `tracker/engine.bundle.js`; `scripts/damage.py` → `scripts/smogon_engine.js` | The page and the terminal run the same engine; nothing ports the formula |
-| Tests | **Node + jsdom** browser tests; **ESLint** with **globals**, **eslint-plugin-sonarjs** and **eslint-plugin-unicorn** for the JavaScript; **stylelint** with **stylelint-config-standard** for the CSS; **html-validate** for the markup; **ruff** and **vulture** for the Python; **knip** for exports, files and packages nothing reaches; **jscpd** for copy-paste in all of them; Python audits | `tests/`, `eslint.config.mjs`, `stylelint.config.mjs`, `.htmlvalidate.mjs`, `ruff.toml`, `knip.jsonc`, `.jscpd.json`, `scripts/check_app.js`, `scripts/audit_*.py` | Tests run against the *built* page, which is the thing that ships |
+| Tests | **Node + jsdom** browser tests; **ESLint** with **globals**, **eslint-plugin-sonarjs** and **eslint-plugin-unicorn** for the JavaScript; **typescript** to type-check the app; **stylelint** with **stylelint-config-standard** for the CSS; **html-validate** for the markup; **ruff** and **vulture** for the Python; **knip** for exports, files and packages nothing reaches; **jscpd** for copy-paste in all of them; Python audits | `tests/`, `eslint.config.mjs`, `tsconfig.json`, `stylelint.config.mjs`, `.htmlvalidate.mjs`, `ruff.toml`, `knip.jsonc`, `.jscpd.json`, `scripts/check_app.js`, `scripts/audit_*.py` | Tests run against the *built* page, which is the thing that ships |
 | CI/CD | **GitHub Actions**, a GitHub App bot, **Dependabot**, a git `pre-push` hook | `.github/`, `scripts/hooks/pre-push` | Nothing reaches the phone without passing the gate |
 | Fonts / sprites | Google Fonts (IBM Plex), Pokemon sprites from a CDN at a pinned commit | `tracker/index.template.html`, `spriteFor()` in `tracker/src/ui/card.js` | Sprites are Nintendo's images, so the repo ships only their ids |
 | Dev tools | Supabase CLI, `npx wrangler`, `gh`, graphify, VS Code, Claude Code | your machine | Reading the DB, deploying the cron, PRs, the code map. Every one is in §15 |
@@ -144,7 +144,7 @@ Each file opens with a comment saying what it is for.
 |---|---|---|
 | `core/data.js` | The game DB (`window.CHAMP`) unpacked into lookups, and the pure rules read off it: stats, natures, learnsets, Megas, usage | `C`, `DEX`, `byName`, `MOVE_BY`, `learnset`, `statAt` |
 | `core/state.js` | `S`, the rules about his box (origin, release floor, what a build is bound to), and the lists' sort and search state | `S`, `boxRows`, `buildLink`, `VIEW`, `FIND` |
-| `core/dom.js` | `$`, `el`, the toast, a note, a footer button, the search box, a toggle's pressed state (one, or one of a row), a pane switcher, emptying a reused host | `$`, `el`, `toast`, `note`, `fbtn`, `setPressed`, `pressOnly`, `showPane`, `resetHost` |
+| `core/dom.js` | `$`, `$$` (every match, as an array), `field` (`$` for a control read by value), `el`, the toast, a note, a footer button, the search box, a toggle's pressed state (one, or one of a row), a pane switcher, emptying a reused host | `$`, `$$`, `field`, `el`, `toast`, `note`, `fbtn`, `setPressed`, `pressOnly`, `showPane`, `resetHost` |
 | `core/store.js` | The Supabase connection: loads every table into `S`, keeps it live, and every write | `openLedger`, `put`, `putNew`, `patch`, `drop`, `whenChanged` |
 | `core/assets.js` | The two payloads fetched only on demand: Smogon's analyses, the rest of the dex | `loadAnalysis`, `loadOutside` |
 | `core/errors.js` | Script errors, caught from the first moment, for the diagnostics | `BOOT_ERRORS` |
@@ -340,6 +340,16 @@ runs in four places: the `pre-push` hook, every pull request, every push to
   PostToolUse hook (`.claude/settings.json`) that lints each `.js` file Claude
   writes (and each `.py` file, with ruff), silent when it is clean, so a finding shows up while the edit is
   still on screen instead of at the push.
+- **TypeScript** (`tsconfig.json`, `tsc`): the checker reads the app's
+  JavaScript as it is (`checkJs`) and compiles nothing - esbuild still links
+  the parts. It knows what ESLint cannot: what a value is, so `.value` read
+  off an element that has none, or a call short of an argument, fails the
+  push. Types are JSDoc. What the page finds on `window` before any part
+  runs (the payloads, the config, supabase-js) is declared once in
+  `tracker/src/globals.d.ts`. At zero with `strict` off; strict is switched
+  on one layer at a time, `core/` first, since a layer imports only its own
+  or a lower one. Pinned to 6.0, the last release with the JavaScript API
+  `eslint-plugin-sonarjs` loads: 7.0 (native) breaks ESLint.
 - **stylelint** (`stylelint.config.mjs`) over `tracker/src/styles/` and
   **html-validate** (`.htmlvalidate.mjs`) over `tracker/src/markup/`: the
   standard rule sets, every rule an error, the few switched off each with its
@@ -576,7 +586,7 @@ in `package.json`, `requirements.txt` and the workflows, never typed here.
 | **Python 3**, standard library only | The data pipeline, the CLIs, the gate | `scripts/` |
 | **CSS** and **HTML** | The app's styles and screens | `tracker/src/styles/`, `tracker/src/markup/` |
 | **SQL** (PostgreSQL) | The ledger's schema, policies and migrations | `supabase/` |
-| **TypeScript** | Only Smogon's calculator, copied from upstream and bundled | `data/raw/smogon_calc/` |
+| **TypeScript** | Smogon's calculator, copied from upstream and bundled; and the declarations of the page's `window` globals, for the type check | `data/raw/smogon_calc/`, `tracker/src/globals.d.ts` |
 | **YAML**, **TOML**, **JSONC** | Workflows, Cloudflare config, tool config | `.github/`, `*/wrangler.toml`, `knip.jsonc` |
 
 ### What runs in the page
@@ -602,6 +612,7 @@ in `package.json`, `requirements.txt` and the workflows, never typed here.
 | Tool | Checks | Config |
 |---|---|---|
 | **ESLint** + `globals`, `eslint-plugin-sonarjs`, `eslint-plugin-unicorn` | All JavaScript: undeclared names, layer climbs, size, the Sonar rules | `eslint.config.mjs` |
+| **TypeScript** (`tsc`, checkJs) | The app's types: what a value is, read from JSDoc | `tsconfig.json`, `tracker/src/globals.d.ts` |
 | **stylelint** + `stylelint-config-standard` | The CSS | `stylelint.config.mjs` |
 | **html-validate** | The markup | `.htmlvalidate.mjs` |
 | **ruff** | All Python, the same way ESLint does JavaScript | `ruff.toml`, `requirements.txt` |

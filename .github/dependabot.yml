@@ -42,6 +42,12 @@ updates:
     groups:
       npm:
         patterns: ["*"]
+    # typescript stays on 6.0: eslint-plugin-sonarjs loads its JavaScript API
+    # (it asks for >=5 <6.1) and 7.0 is native, with none, so the bump would
+    # fail ESLint and hold back the whole group. Lift when sonarjs takes 7.
+    ignore:
+      - dependency-name: "typescript"
+        versions: [">=6.1.0"]
 
   # requirements.txt: ruff and vulture, the two Python checks in the gate.
   - package-ecosystem: "pip"
