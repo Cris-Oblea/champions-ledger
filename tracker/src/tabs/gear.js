@@ -68,9 +68,10 @@ function drawStones(){
       "dead weight until it arrives: " + dead.join(", ") + "."
      : "Every stone you own has its species in the box.");
 }
-/* One row, one stone (migration 6): marking is an insert of that stone and
+/** One row, one stone (migration 6): marking is an insert of that stone and
    unmarking a delete of it, and no other stone is touched by either - so a
-   device that was asleep can never drop a stone marked on another. */
+   device that was asleep can never drop a stone marked on another.
+   @param {string} stone */
 function toggleStone(stone){
   const have = hasStone(stone);
   (have ? drop("stones/" + stone) : put("stones/" + stone, {}))
@@ -98,7 +99,7 @@ function drawItems(){
   let nOwn = 0, nTot = 0;
 
   ITEM_CATS.forEach(function(cat){
-    const rows = C.ITEMS.filter(function(r){ return (r[2] || "Miscellaneous") === cat; });
+    const rows = (C.ITEMS || []).filter(function(r){ return (r[2] || "Miscellaneous") === cat; });
     nTot += rows.length;
     rows.forEach(function(r){ if (own[r[0]]) nOwn++; });
     const hits = rows.filter(function(r){
@@ -127,7 +128,9 @@ function drawItems(){
     "part of a build.";
 }
 
-/* One item: what it does, what it is for, and its price or "owned". */
+/** One item: what it does, what it is for, and its price or "owned".
+   @param {ItemRow} r
+   @param {boolean} have */
 function itemRow(r, have){
   const name = r[0], vp = r[1], effect = r[3] || "", src = r[4] || "",
       from = r[5] || "";
@@ -171,14 +174,17 @@ function itemRow(r, have){
   row.onclick = function(){ setItem(name, !have); };
   return row;
 }
-/* The price, or - when no source has one - where the item comes from
+/** The price, or - when no source has one - where the item comes from
    instead. Serebii prints "??? VP" for a shop price it does not know (pokebase
    fills those in) and a plain source for anything not sold: a reward, a
    ticket, something the account starts with. Neither is turned into a
-   number. */
+   number.
+   @param {number | null} vp
+   @param {string} src */
 function priceLabel(vp, src){ return vp ? vp + " VP" : priceless(src); }
-/* Where an item with no VP price comes from, with Serebii's "Shop" and "???
-   VP" stripped off; "not sold" when nothing is left. */
+/** Where an item with no VP price comes from, with Serebii's "Shop" and "???
+   VP" stripped off; "not sold" when nothing is left.
+   @param {string} src */
 function priceless(src){
   const s = (src || "").replace(/^Shop\s*/, "").replace(/\?\?\?\s*VP/, "").trim();
   if (!s || s === "-") return "not sold";
@@ -198,19 +204,22 @@ function priceless(src){
    run through Smogon's Champions engine, and `main_series` is the other games'
    value, kept only where no Champions source states one - shown as unconfirmed
    rather than quietly presented as fact. */
+/** @type {Record<string, string>} */
 const STAT_LABELS = {
   speed: "Speed", skip_turn: "loses the turn", thaw: "thaws",
   wake_turn2: "wakes on turn 2", wake_turn3: "wakes on turn 3",
   physical: "physical damage taken", chip: "chip damage a turn",
   self_hit: "hits itself"
 };
-/* 0.125 -> "12.5%", 1 -> "always" */
+/** 0.125 -> "12.5%", 1 -> "always"
+   @param {number} v */
 function pct(v){
   if (v === 1) return "always";
   const p = v * 100;
   return (Math.round(p * 10) / 10) + "%";
 }
 /* Where a status multiplier came from, in the order they are trusted. */
+/** @type {Record<string, string>} */
 const SOURCE_NOTE = {
   serebii: "From Champions' own rebalance page",
   measured: "Measured against Smogon's Champions engine",
@@ -238,9 +247,9 @@ function drawStatuses(){
     /* the numbers, each with its source - a value nobody measured here must
        never look like one that was */
     const line = el("div", "rmeta");
-    Object.keys(r).forEach(function(k){
-      const v = r[k];
-      if (!v || typeof v !== "object" || v.value == null) return;
+    Object.entries(r).forEach(function([k, val]){
+      if (!val || typeof val !== "object" || val.value == null) return;
+      const v = /** @type {StatusFact} */ (val);
       const t = el("span", "tag " + (v.source === "main_series" ? "warn" : "ok"),
                  (STAT_LABELS[k] || k) + " " + pct(v.value));
       t.title = SOURCE_NOTE[v.source] || SOURCE_NOTE.mainline;
@@ -263,7 +272,9 @@ function drawStatuses(){
     host.appendChild(el("div", "empty", "No status data"));
 }
 
-/* One row, one item - the same as toggleStone, for the same reason. */
+/** One row, one item - the same as toggleStone, for the same reason.
+   @param {string} name
+   @param {boolean} own */
 function setItem(name, own){
   (own ? put("items/" + name, {}) : drop("items/" + name))
     .then(function(){

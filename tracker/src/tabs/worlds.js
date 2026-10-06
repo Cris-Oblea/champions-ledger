@@ -20,6 +20,7 @@ import { findDetail } from "../ui/pokemon.js";
 
    Counted per TEAM, not per appearance: under the Species Clause a team holds
    a species at most once, so "52.8%" is 208 of 394 teams and not 208 slots. */
+/** @type {{year: number | null, div: string}} */
 const WORLD = {year: null, div: "masters"};
 
 /* Build the year and division rows (newest year first) and draw. */

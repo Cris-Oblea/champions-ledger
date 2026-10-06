@@ -9,7 +9,14 @@ import {
 import { pokeCard } from "../ui/card.js";
 import { findDetail } from "../ui/pokemon.js";
 
-/* The closed-trade record behind the suggestions, as one sentence. */
+/** @typedef {import("../core/trade.js").Ask} Ask */
+/** @typedef {ReturnType<typeof gtsRecord>} GtsRecord */
+/** One spare species: a chip, how many copies of it are spare, and what it
+    could ask for (the asks that free a slot, the ones that turn on a stone).
+    @typedef {{rec: BoxRow, n: number, asks: Ask[], frees: Ask[], stones: Ask[]}} Idea */
+
+/** The closed-trade record behind the suggestions, as one sentence.
+   @param {GtsRecord} rec */
 function ownRecord(rec){
   if (!rec.n) return "";
   let gap = "";
@@ -23,6 +30,7 @@ function ownRecord(rec){
     gap + ".";
 }
 /* The trade suggestions' empty state, by the filter that emptied them. */
+/** @type {Record<string, string>} */
 const EMPTY_WANT = {
   outside: "Nothing in HOME that Champions cannot use can go up right now",
   dupes: "No duplicates to spare",
@@ -44,7 +52,9 @@ const EMPTY_WANT = {
    NOTHING HERE SAYS "EASY IN GO": the `supply` estimate is mostly its
    default value, too weak to recommend on. His own closed trades, which are
    measured, are what this screen quotes instead. */
+/** @returns {BoxRow[]} */
 function gtsChips(){
+  /** @type {Record<string, number>} */
   const taken = {};
   gtsOffers().forEach(function(o){ if (o.offeredId) taken[o.offeredId] = 1; });
   /* what can LEAVE: HOME, plus anything in the Champions box that came from
@@ -63,7 +73,7 @@ function gtsChips(){
      a recommendation you cannot act on is worse than none.
      data/meta/gts_blocked.json is the list and says who confirmed each. */
   return all.filter(function(r){
-    if (taken[r._id]) return false;              /* already in a GTS slot */
+    if (r._id && taken[r._id]) return false;              /* already in a GTS slot */
     if (gtsBlocked(r.name) === "confirmed") return false;
     return (copies[r.name] || 0) > 1 || !byName[r.name];
   });
@@ -71,12 +81,13 @@ function gtsChips(){
 /* six cards until he asks for the rest; the segment's current choice */
 const TRADE_CAP = 6;
 let tradeAll = false, WANT_FILTER = "all";
-/* Switch the All / Not in Champions / Duplicates segment and redraw. */
+/** Switch the All / Not in Champions / Duplicates segment and redraw.
+   @param {string} v */
 function setWantFilter(v){
   WANT_FILTER = v;
   tradeAll = false;
   const seg = $("gtsWantFilter");
-  if (seg) Array.prototype.forEach.call(seg.children, function(b){
+  if (seg) Array.prototype.forEach.call(seg.children, function(/** @type {HTMLElement} */ b){
     setPressed(b, b.dataset.want === v);
   });
   drawGtsWanted();
@@ -112,16 +123,18 @@ function drawGtsWanted(){
   }
 }
 
-/* The All / Not in Champions / Duplicates segment, wired once. */
+/** The All / Not in Champions / Duplicates segment, wired once.
+   @param {HTMLElement & {_wired?: number}} seg */
 function wireWantFilter(seg){
   if (!seg || seg._wired) return;
   seg._wired = 1;
-  Array.prototype.forEach.call(seg.children, function(b){
-    b.onclick = function(){ setWantFilter(b.dataset.want); };
+  Array.prototype.forEach.call(seg.children, function(/** @type {HTMLElement} */ b){
+    b.onclick = function(){ setWantFilter(b.dataset.want || "all"); };
   });
 }
 
-/* The chips, narrowed by the search box (name or type) and the segment. */
+/** The chips, narrowed by the search box (name or type) and the segment.
+   @param {string} wq */
 function filteredChips(wq){
   let chips = gtsChips();
   if (wq) {
@@ -139,14 +152,18 @@ function filteredChips(wq){
   return chips;
 }
 
-/* ONE CARD PER SPECIES, COUNTED. Three spare Garchomp are three chips and one
+/** ONE CARD PER SPECIES, COUNTED. Three spare Garchomp are three chips and one
    recommendation - they price and fetch identically. Which COPY goes up is
    the deposit screen's decision; a shiny prices differently, so it keeps a
    card of its own. THE ASKS ARE PLAYABLE ONLY (gtsSuggest walks the
    Champions dex): a trade that brings back something Champions cannot play
-   has bought a HOME row and nothing else. */
+   has bought a HOME row and nothing else.
+   @param {BoxRow[]} chips */
 function tradeIdeas(chips){
-  const group = {}, ideas = [];
+  /** @type {Record<string, Idea>} */
+  const group = {};
+  /** @type {Idea[]} */
+  const ideas = [];
   chips.forEach(function(c){
     const k = c.name + (c.shiny ? "|shiny" : "");
     if (group[k]) { group[k].n++; return; }
@@ -161,11 +178,13 @@ function tradeIdeas(chips){
   return ideas;
 }
 
-/* THE CHEAPEST CURRENCY FIRST: a species Champions cannot use costs him
+/** THE CHEAPEST CURRENCY FIRST: a species Champions cannot use costs him
    nothing to give away, so it is spent before a duplicate of a playable one.
    Then the best outcome - a chip that can buy back a welded
    slot, then one that turns on a dead stone - then whatever reaches
-   furthest. What the GTS may refuse goes last. */
+   furthest. What the GTS may refuse goes last.
+   @param {Idea} a
+   @param {Idea} b */
 function ideaOrder(a, b){
   return (gtsBlocked(a.rec.name) ? 1 : 0) - (gtsBlocked(b.rec.name) ? 1 : 0) ||
          (byName[a.rec.name] ? 1 : 0) - (byName[b.rec.name] ? 1 : 0) ||
@@ -174,8 +193,10 @@ function ideaOrder(a, b){
          (b.asks[0] ? b.asks[0].bst : 0) - (a.asks[0] ? a.asks[0].bst : 0);
 }
 
-/* What the list is read off and why, with his own closed-trade record - and
-   NOTHING HIDDEN SILENTLY: a name dropped for being impossible is named. */
+/** What the list is read off and why, with his own closed-trade record - and
+   NOTHING HIDDEN SILENTLY: a name dropped for being impossible is named.
+   @param {number} n
+   @param {GtsRecord} rec */
 function wantSubtitle(n, rec){
   let sub = n
     ? "Read off your <strong>HOME box</strong>: everything your own rule lets "
@@ -198,9 +219,12 @@ function wantSubtitle(n, rec){
   return sub;
 }
 
-/* One spare species, as its card, with what it could ask for underneath. */
+/** One spare species, as its card, with what it could ask for underneath.
+   @param {Idea} i */
 function ideaCard(i){
-  const p = anyRow(i.rec.name);
+  /* a typed HOME name the dex does not know still gets a card */
+  const p = anyRow(i.rec.name) ||
+    {name:i.rec.name, species:i.rec.name, types:[], b:[0,0,0,0,0,0], ab:[]};
   const mine = gtsRecord(i.rec.name);
   return pokeCard(p, {
     name: i.rec.name,
@@ -211,10 +235,13 @@ function ideaCard(i){
   });
 }
 
-/* Whether the GTS may refuse it, whether Champions can use it, shiny (a shiny
+/** Whether the GTS may refuse it, whether Champions can use it, shiny (a shiny
    is its own card and has to say so - at card size the sprite alone is not a
    difference you can rely on), how many spare, whether an ask frees a slot,
-   and his own record trading this species. */
+   and his own record trading this species.
+   @param {HTMLElement} nm
+   @param {Idea} i
+   @param {GtsRecord} mine */
 function ideaBadges(nm, i, mine){
   if (gtsBlocked(i.rec.name) === "inferred") {
     const mb = el("span", "tag bad", "GTS may refuse it");
@@ -250,11 +277,13 @@ function ideaBadges(nm, i, mine){
   }
 }
 
-/* "Ask for: ..." - six to start, because a card is read at a glance and 24
-   tags is not a glance, and the whole list one tap away. */
+/** "Ask for: ..." - six to start, because a card is read at a glance and 24
+   tags is not a glance, and the whole list one tap away.
+   @param {Idea} i */
 function askLine(i){
   const line = el("div", "st");
-  /* The first n asks as tags, and a button that shows the rest in place. */
+  /** The first n asks as tags, and a button that shows the rest in place.
+     @param {number} n */
   function paintAsks(n){
     line.innerHTML = "";
     line.appendChild(document.createTextNode("Ask for: "));
@@ -275,8 +304,9 @@ function askLine(i){
   return line;
 }
 
-/* One ask, coloured by what it buys: a freed slot, a stone turned on, or
-   simply a price - with the reason on hover. */
+/** One ask, coloured by what it buys: a freed slot, a stone turned on, or
+   simply a price - with the reason on hover.
+   @param {Ask} a */
 function askTag(a){
   let tone = "";
   if (a.frees) tone = " ok";

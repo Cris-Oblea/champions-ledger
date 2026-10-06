@@ -37,12 +37,12 @@ interface Champ {
   MEGA_OWNER?: Record<string, string[]>;
   PODIUM?: Record<string, PodiumSet[]>;
   TYPE_COLORS?: Record<string, {top: string, bottom?: string, ink?: string}>;
-  /** [name, VP, category, text, ...] */
-  ITEMS?: [string, number, string, string, ...any[]][];
+  ITEMS?: ItemRow[];
   /** [score, demand, supply, rank, how, usage %, ladder size] */
   GTSDIFF?: Record<string, [number, number, number, number | null, string,
                             number | null, number]>;
-  GTSBLOCK?: Record<string, unknown>;
+  /** a species the GTS refuses, as the player confirmed it in game */
+  GTSBLOCK?: Record<string, {confirmed: string, note: string}>;
   MYTHICAL?: string[];
   /** ability -> Champions' description */
   ABIL: Record<string, string>;
@@ -60,10 +60,51 @@ interface Champ {
   FORM_SPRITE?: Record<string, Record<string, SpriteId>>;
   /** sprite set (n, s, p, ps) -> the ids missing from it */
   SPRITE_GAPS?: Record<string, SpriteId[]>;
-  [field: string]: any;
+  /** the species HOME holds that Champions does not */
+  HOME_ONLY?: string[];
+  /** the calculator's menus: menu -> the names it offers */
+  MODS?: Record<string, string[]>;
+  /** every Worlds, newest first: year, and per division its team count
+   *  and [name, teams, % of teams] */
+  WORLDS?: {y: number, d: Record<string, {n: number,
+    top: [string, number, number][]}>}[];
+  /** the regulation, the day it started, the day usage was read */
+  REG?: string;
+  REG_STARTED?: string;
+  USAGE_AT?: string;
+  /** dex name -> the name Smogon's engine knows it by */
+  SMOGON_NAME?: Record<string, string>;
+  /** the form Aegislash is in when attacking and when defending */
+  AEGIS?: {attacking: string, defending: string};
+  /** ability -> the items made for it */
+  ITEM_FOR_ABILITY?: Record<string, string[]>;
+  /** ability -> its class, and each class's label */
+  AB_CLASS?: Record<string, string>;
+  AB_CLASS_LABEL?: Record<string, string>;
+  /** status -> what it does in Champions, measured or sourced */
+  STATUSES?: Record<string, StatusRule>;
 }
 
 type SpriteId = number | string;
+
+/** [name, VP (null: not sold), category, text, where it comes from, whose
+ *  text, why it matters, abilities it is for, moves it is for] */
+type ItemRow = [string, number | null, string, string, string, string, string,
+                string[], string[]];
+
+/** One number a status applies, and where it came from. */
+interface StatusFact { value: number; source: string; was?: number; note?: string; }
+interface StatusRule {
+  short: string;
+  moves?: string[];
+  rebalanced_in_champions?: boolean;
+  champions_confirmed?: boolean;
+  serebii_prior?: string;
+  serebii_new?: string;
+  speed?: StatusFact; skip_turn?: StatusFact; thaw?: StatusFact;
+  wake_turn2?: StatusFact; wake_turn3?: StatusFact; physical?: StatusFact;
+  chip?: StatusFact; self_hit?: StatusFact;
+}
 
 /** What one ability does to moves. `m`, `up`, `down`, `stop` and `ally` are
  *  indices into MOVES; ui/moves.js explains each field. */
@@ -241,7 +282,7 @@ interface Trade {
 /** An owned stone or item: the row existing is the fact. */
 interface Owned { updated: string; }
 
-interface Trainer { box_capacity?: number; [setting: string]: any; }
+interface Trainer { box_capacity?: number; updated?: string; [setting: string]: any; }
 
 type Table = "box" | "builds" | "teams" | "stones" | "items" | "gts" | "meta";
 
@@ -270,7 +311,8 @@ interface AppState {
 /** What the page finds on window before any part runs. */
 interface Window {
   CHAMP: Champ;                     // tracker/data.js, the dex
-  CHAMP_SPLITS?: {r?: string, p?: Record<string, SplitTable>, [k: string]: any};
+  /** tracker/splits.js: the tournaments it covers, when, per Pokemon */
+  CHAMP_SPLITS?: {r?: string, f?: string, p?: Record<string, SplitTable>};
   CHAMP_ANALYSIS?: Record<string, SmogonAnalysis[]>;  // tracker/analysis.js, on demand
   CHAMP_OUTSIDE?: OutsideDex;       // tracker/outsidedex.js, loaded on demand
   CHAMP_ANALYSIS_URL: string;       // '' in the single-file build

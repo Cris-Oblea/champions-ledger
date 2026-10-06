@@ -195,7 +195,7 @@ function formKey(m, base){
    form line: each form that moves any stat gets one extra row, in its own
    ink, under every cell it changes.
    @param {DexRow | number[]} p
-   @param {string} [mark]
+   @param {string | null} [mark]
    @param {DexRow[]} [megas] */
 function statGrid(p, mark, megas){
   const b = Array.isArray(p) ? p : p.b;
@@ -402,7 +402,7 @@ function pokeFacts(m, p, ms, o){
    @property {string} [name]
    @property {boolean} [shiny]
    @property {boolean} [dex]
-   @property {string} [mark]
+   @property {string | null} [mark]
    @property {boolean} [megas]
    @property {boolean} [stats]
    @property {string} [abLabel]
