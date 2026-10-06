@@ -2,6 +2,14 @@
    They should be identical, because they are the same code. */
 const fs = require("fs");
 const { check, open } = require("./harness.js");
+/** One question for the engine, and the range it must answer (enginecases.json).
+    @typedef {{label: string, atk: string, def: string, move: string, want: string,
+      gameType?: string, singleTarget?: boolean, spread?: boolean,
+      atkItem?: string, defItem?: string, atkAbility?: string, defAbility?: string,
+      atkStatus?: string, weather?: string, terrain?: string, screen?: string,
+      helpingHand?: boolean, friendGuard?: boolean, charge?: boolean,
+      gravity?: boolean, wonderRoom?: boolean, magicRoom?: boolean}} EngineCase */
+/** @type {EngineCase[]} */
 const CASES = JSON.parse(fs.readFileSync(__dirname + "/enginecases.json", "utf8"));
 
 const { w, errs } = open();
@@ -30,7 +38,7 @@ CASES.forEach(c => {
   w.CALC.tailwindAtk = false; w.CALC.powerTrickAtk = false;
   let got;
   try { const r = w.engineCalc(); got = `${r.lo}-${r.hi}`; }
-  catch (e) { got = "ERROR: " + e.message; }
+  catch (e) { got = "ERROR: " + /** @type {Error} */ (e).message; }
   check(c.label, got, c.want);
 });
 check("the page reports no script error", errs.join(" | ") || "none", "none");

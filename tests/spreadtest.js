@@ -10,11 +10,13 @@
    three places a move is drawn. */
 const fs = require("fs");
 const { describe } = require("node:test");
-const { ROOT, check, open, idle, row, build, click } = require("./harness.js");
+const { ROOT, check, open, idle, row, build, click, all, found } = require("./harness.js");
 
 const raw = JSON.parse(fs.readFileSync(
   ROOT + "data/raw/smogon_calc/raw_moves.json", "utf8"));
+/** @param {string} s */
 const key = s => s.toLowerCase().replace(/[^a-z0-9]/g, "");
+/** @type {Record<string, string>} */
 const SM = {};
 Object.keys(raw).forEach(n => { if (raw[n] && typeof raw[n] === "object")
                                   SM[key(n)] = raw[n].target; });
@@ -25,10 +27,11 @@ const BUILDS = [build("garchomp", "Garchomp", {ability:"Rough Skin",
   moves:["Earthquake","Rock Slide","Dragon Claw","Protect"]})];
 const { dom, errs } = open({ box: ROWS, builds: BUILDS });
 const w = dom.window, d = w.document;
-const tags = n => [...n.querySelectorAll(".tag")].map(t => t.textContent);
+/** @param {ParentNode | null | undefined} n */
+const tags = n => [...all(n, ".tag")].map(t => t.textContent);
 
-const tagsOf = m => [...w.moveRowFor(w.MOVE_BY[m], [], null)
-  .querySelectorAll(".tag")].map(t => t.textContent);
+/** @param {string} m */
+const tagsOf = m => [...all(w.moveRowFor(w.MOVE_BY[m], [], null), ".tag")].map(t => t.textContent);
 
 (async () => {
   await idle();
@@ -36,10 +39,12 @@ const tagsOf = m => [...w.moveRowFor(w.MOVE_BY[m], [], null)
   /* The moves as the page reads them, by name: the row a build draws is the
      one this checks. */
   const MOVES = Object.values(w.MOVE_BY);
+  /** @param {string} n */
   const mv = n => w.MOVE_BY[n];
   await describe("a sweep of the " + MOVES.length + " useable moves", () => {
     let nSpread = 0, nAlly = 0;
-    const mismatch = [];
+    /** @type {string[]} */
+  const mismatch = [];
     MOVES.forEach(m => {
       const t = SM[key(m.name)];
       if (t === undefined) return;          // Octazooka: not in Smogon's table
@@ -48,7 +53,7 @@ const tagsOf = m => [...w.moveRowFor(w.MOVE_BY[m], [], null)
       if (m.spread !== wantSpread || m.hitsAlly !== wantAlly)
         mismatch.push(m.name + " (" + t + " -> spread=" + m.spread +
                       " ally=" + m.hitsAlly + ")");
-      nSpread += m.spread; nAlly += m.hitsAlly;
+      nSpread += Number(m.spread); nAlly += Number(m.hitsAlly);
     });
     check("none disagrees with Smogon's engine", mismatch.join(", ") || "0", "0");
     /* The count is asserted with its cause beside it, so the next move a
@@ -73,10 +78,11 @@ const tagsOf = m => [...w.moveRowFor(w.MOVE_BY[m], [], null)
 
   /* -------------------------------------------------- the badges on screen */
   w.go("builds");
-  click(d.querySelectorAll("#listBuilds .row")[0]);
+  click(all(d, "#listBuilds .row")[0]);
   await idle();
-  const slots = [...d.querySelectorAll(".slot")]
+  const slots = [...all(d, ".slot")]
     .filter(s => /Earthquake|Rock Slide|Dragon Claw|Protect/.test(s.textContent));
+  /** @param {string} n */
   const by = n => slots.find(s => s.textContent.includes(n));
   /* Priority has to show its NUMBER on the row. Filtering a movepool by
      "priority" and getting back rows that do not say how much is no answer:
@@ -92,7 +98,7 @@ const tagsOf = m => [...w.moveRowFor(w.MOVE_BY[m], [], null)
        tagsOf("Earthquake").some(t => /priority/.test(t)), false);
   });
 
-  const eq = by("Earthquake");
+  const eq = found(by("Earthquake"), "eq");
   await describe("the build's sheet", () => {
     const rs = by("Rock Slide"), dc = by("Dragon Claw");
     check("Earthquake carries spread", tags(eq).indexOf("spread") >= 0, true);
@@ -111,7 +117,8 @@ const tagsOf = m => [...w.moveRowFor(w.MOVE_BY[m], [], null)
   click(eq);
   await idle();
   await describe("the move picker", () => {
-    const rows = [...d.querySelectorAll(".sheet .row")];
+    const rows = [...all(d, ".sheet .row")];
+    /** @param {string} n */
     const find = n => rows.find(r => r.textContent.indexOf(n) >= 0);
     const peq = find("Earthquake"), pdc = find("Dragon Claw");
     check("Earthquake in the list carries spread",

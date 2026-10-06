@@ -771,7 +771,7 @@ function pickField(label, current, subtitle, opener, rec){
    `exceptId` is the offer being EDITED - its own pick has to stay
    selectable, or re-saving that offer would be impossible. */
 /** @param {(rec: ListedBox) => void} onPick
-   @param {string | null} exceptId */
+   @param {string | null} [exceptId] */
 function gtsPickMine(onPick, exceptId){
   /** @type {Record<string, Trade>} */
   const taken = {};

@@ -74,7 +74,7 @@ function abilityHit(ability, move){
 /** the badge that goes on a move row when the chosen ability touches it
    @param {string} ability
    @param {Move} move
-   @param {DexRow | null | undefined} poke */
+   @param {Pick<DexRow, "types"> | null | undefined} poke  only its types are read */
 function abilityTag(ability, move, poke){
   const hit = abilityHit(ability, move);
   if (!hit) return null;

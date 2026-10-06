@@ -10,7 +10,8 @@
 const { check, styles } = require("./harness.js");
 const css = styles();
 
-/* the token declarations inside the first {...} after `head` */
+/** the token declarations inside the first {...} after `head`
+   @param {string} head */
 function block(head) {
   const at = css.indexOf(head);
   if (at < 0) return "";

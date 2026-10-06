@@ -13,11 +13,19 @@
        alone (a `megas: !build.mega` flag would switch the Mega line ON for
        exactly the builds that have no Mega). */
 const { describe } = require("node:test");
-const { check, idle, open, row, build } = require("./harness.js");
+const { check, idle, open, row, build, one, all, found } = require("./harness.js");
 const UID = "u1";
 
+/** @param {string} id
+   @param {string} name
+   @param {string} location
+   @param {string} origin
+   @param {Record<string, unknown>} [extra] */
 const R = (id, name, location, origin, extra) =>
   row(id, name, {location, origin, ...extra});
+/** @param {string} id
+   @param {string} pokemon
+   @param {string | null} box_id */
 const B = (id, pokemon, box_id) => build(id, pokemon, {box_id,
   nature:"Modest", stat_points:{hp:2,atk:0,def:0,spa:32,spd:0,spe:32},
   moves:["Protect"]});
@@ -50,15 +58,20 @@ const boxWrites = () => w.__WROTE.filter(x => x.table === "box")
   .map(x => x.row.id + "=" + x.row.trained).sort().join(",");
 const buildWrites = () => w.__WROTE.filter(x => x.table === "builds")
   .map(x => x.row.id + "=" + x.row.box_id).join(",");
-const foot = label => [...d.querySelectorAll("#buildEditFoot button")]
-  .find(b => b.textContent === label);
+/** @param {string} label */
+const foot = label => found([...all(d, "#buildEditFoot button")]
+  .find(b => b.textContent === label), "the " + label + " button");
 /* The build editor's "Installed on" field, and what its select says closed. */
-const installed = () => [...d.querySelectorAll("#buildEditBody .field")]
-  .find(f => /Installed on/.test(f.textContent));
+const installed = () => found([...all(d, "#buildEditBody .field")]
+  .find(f => /Installed on/.test(f.textContent)), "the Installed on field");
+/** @param {import("./harness.js").Field} s */
 const face = s => s.options[s.selectedIndex].text;
+/** @param {import("./harness.js").Field} sel
+   @param {string} v */
 const choose = (sel, v) => {
   sel.value = v; sel.dispatchEvent(new w.Event("change")); };
-const tagsOf = n => [...n.querySelectorAll(".tag")].map(t => t.textContent);
+/** @param {ParentNode} n */
+const tagsOf = n => [...all(n, ".tag")].map(t => t.textContent);
 
 (async function () {
   await idle();
@@ -69,13 +82,13 @@ const tagsOf = n => [...n.querySelectorAll(".tag")].map(t => t.textContent);
     const slot = d.querySelector("#teamEditBody .row.card");
     /* the strip is always there; what matters is how many forms it holds */
     check("a base build with no stone draws ONE sprite, not base + Megas",
-       slot ? slot.querySelectorAll(".megapics .megapic").length : -1, 1);
+       slot ? all(slot, ".megapics .megapic").length : -1, 1);
   });
 
   await describe("which copy it is installed on", async () => {
     w.buildSheet("charizard", w.S.builds.charizard);
     await idle();
-    const sel = installed().querySelector("select");
+    const sel = one(installed(), "select");
     check("a dropdown: 'just an idea' plus one option per copy",
        sel ? sel.options.length : 0, 4);
     /* the closed face IS the answer */
@@ -88,7 +101,7 @@ const tagsOf = n => [...n.querySelectorAll(".tag")].map(t => t.textContent);
     /* the Champions box first, then HOME - the order the box itself uses */
     check("and the HOME one, where it lives and its note",
        /in HOME.*the one from GO/.test(sel.options[3].text), true);
-    const card = installed().querySelectorAll(".row");
+    const card = all(installed(), ".row");
     check("under it, ONE card: the chosen copy's", card.length, 1);
     check("the card says shiny", tagsOf(card[0]).indexOf("shiny") >= 0, true);
     check("and where it lives", tagsOf(card[0]).indexOf("Champions box") >= 0, true);
@@ -97,9 +110,9 @@ const tagsOf = n => [...n.querySelectorAll(".tag")].map(t => t.textContent);
 
   /* the same sheet, still open */
   await describe("the trained tag follows the build", async () => {
-    const sel = installed().querySelector("select");
+    const sel = one(installed(), "select");
     choose(sel, "charizard-2");           /* move it to the HOME one */
-    const card = installed().querySelectorAll(".row");
+    const card = all(installed(), ".row");
     check("changing copy does not redraw: the same dropdown",
        d.contains(sel) && face(sel).startsWith("Charizard · in HOME"), true);
     check("the card becomes the HOME one, with its note",
@@ -114,10 +127,10 @@ const tagsOf = n => [...n.querySelectorAll(".tag")].map(t => t.textContent);
   await describe("an idea, and two identical copies", async () => {
     w.buildSheet("heracross", w.S.builds.heracross);
     await idle();
-    const hsel = installed().querySelector("select");
+    const hsel = one(installed(), "select");
     check("uninstalled it DOES say 'not installed', with no card",
        /not installed/.test(face(hsel)) &&
-       installed().querySelectorAll(".row").length === 0, true);
+       all(installed(), ".row").length === 0, true);
     check("two identical copies say so, instead of repeating the line",
        [1, 2].every(i => hsel.options[i].text.endsWith(" · one of 2 identical")), true);
   });
@@ -128,11 +141,11 @@ const tagsOf = n => [...n.querySelectorAll(".tag")].map(t => t.textContent);
     w.__WROTE.length = 0;
     w.buildSheet("ampharos", w.S.builds.ampharos);
     await idle();
-    const asel = installed().querySelector("select");
+    const asel = one(installed(), "select");
     check("closed, it says Ampharos", face(asel).startsWith("Ampharos · Champions box"), true);
     choose(asel, "");
     check("choosing 'not installed' removes the card",
-       installed().querySelectorAll(".row").length, 0);
+       all(installed(), ".row").length, 0);
     foot("Save").click();
     await idle();
     check("it saves with no copy", buildWrites(), "ampharos=null");
@@ -141,7 +154,7 @@ const tagsOf = n => [...n.querySelectorAll(".tag")].map(t => t.textContent);
     w.__WROTE.length = 0;
     w.buildSheet("charizard-b", w.S.builds["charizard-b"]);
     await idle();
-    choose(installed().querySelector("select"), "");
+    choose(one(installed(), "select"), "");
     foot("Save").click();
     await idle();
     check("uninstalling with another build still on it keeps the tag",

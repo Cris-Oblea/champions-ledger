@@ -15,8 +15,11 @@ const w = dom.window;
 
 (async () => {
   await idle();
+  /** @param {string} form
+     @param {string} move */
   const has = (form, move) =>
     (w.learnset(form) || []).some(m => m.name === move);
+  /** @param {string} f */
   const size = f => (w.learnset(f) || []).length;
   const C = w.CHAMP;
 
@@ -43,7 +46,8 @@ const w = dom.window;
   /* the sweep: every form that has its own key must read its own pool, not
      its species'. A sweep, because a sample misses most of such a class. */
   describe("a sweep of every form with its own pool", () => {
-    const wrong = [];
+    /** @type {string[]} */
+  const wrong = [];
     C.DEX.forEach(function(r){
       const form = r[0], sp = r[1];
       if (form === sp || r[4]) return;              // r[4] = is a Mega

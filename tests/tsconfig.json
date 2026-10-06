@@ -1,0 +1,11 @@
+// The browser tests type-check strict too, against the app they test: the
+// names the app puts on window come typed from the module that exports them
+// (tracker/src/_public.d.ts, written by the build), so a test that calls an
+// export the app renamed fails here before it fails in jsdom. Node's own types
+// for require/fs/node:test, jsdom's for the window. The gate runs it (daily.py)
+// after the build, which writes _public.d.ts.
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": { "types": ["node"] },
+  "include": ["./*.js", "./*.d.ts", "../tracker/src/globals.d.ts", "../tracker/src/_public.d.ts"]
+}

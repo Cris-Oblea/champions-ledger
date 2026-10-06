@@ -62,8 +62,14 @@ const box = [
   row("bulbasaur-home", "Bulbasaur", "home", "permanent", "home"),
 ];
 
-/* A box row of this ledger: the harness default, owned by the fixture's user
-   and dated the fixture's day. */
+/** A box row of this ledger: the harness default, owned by the fixture's user
+   and dated the fixture's day.
+   @param {string} id
+   @param {string} name
+   @param {string} location
+   @param {string} status
+   @param {string} origin
+   @param {Record<string, unknown>} [extra] */
 function row(id, name, location, status, origin, extra) {
   return harness.row(id, name, { user_id: UID, location, status, origin,
                                  updated_at: DAY + "T00:00:00Z", ...extra });
@@ -98,7 +104,11 @@ const builds = [
   }),
 ];
 
-/* A build of this ledger, the same way. */
+/** A build of this ledger, the same way.
+   @param {string} id
+   @param {string} pokemon
+   @param {string | null} box_id
+   @param {Record<string, unknown>} [extra] */
 function build(id, pokemon, box_id, extra) {
   return harness.build(id, pokemon, { user_id: UID, box_id,
                                       updated_at: DAY + "T00:00:00Z", ...extra });
@@ -129,7 +139,8 @@ const stones = ["Charizardite Y", "Garchompite", "Sablenite"].map(named);
 const items = ["Focus Sash", "Sitrus Berry", "Black Glasses", "Assault Vest"]
   .map(named);
 
-/* A stone or item row: ownership is the row existing. */
+/** A stone or item row: ownership is the row existing.
+   @param {string} id */
 function named(id) {
   return { user_id: UID, id, updated_at: DAY + "T00:00:00Z" };
 }
@@ -159,7 +170,12 @@ const gts = [
   },
 ];
 
-/* A GTS trade row, open unless `extra` closes it. */
+/** A GTS trade row, open unless `extra` closes it.
+   @param {string} id
+   @param {string} offered
+   @param {string} requested
+   @param {string | null} deposited
+   @param {Record<string, unknown>} [extra] */
 function offer(id, offered, requested, deposited, extra) {
   return Object.assign({
     user_id: UID, id, offered, requested, offered_id: null,

@@ -25,7 +25,12 @@ const { check, open, idle } = require("./harness.js");
 const { dom, errs } = open();
 const w = dom.window, d = w.document;
 
-/* A fake view whose boxes report exactly the rectangles we say they do. */
+/** One box of a fake view: where it sits and what it is.
+    @typedef {{l: number, t: number, w: number, h: number, tag?: string,
+      cls?: string, style?: string, fixed?: boolean, text?: string,
+      parent?: Element, el?: HTMLElement}} FakeBox */
+/** A fake view whose boxes report exactly the rectangles we say they do.
+   @param {FakeBox[]} boxes */
 function view(boxes){
   const v = d.createElement("div");
   boxes.forEach(b => {
@@ -40,15 +45,15 @@ function view(boxes){
        that treats it differently */
     if (b.fixed) e.style.position = "fixed";
     e.textContent = b.text === undefined ? "x" : b.text;
-    e.getBoundingClientRect = () => ({
+    e.getBoundingClientRect = () => /** @type {DOMRect} */ ({
       left:b.l, top:b.t, right:b.l + b.w, bottom:b.t + b.h,
       width:b.w, height:b.h
     });
     host.appendChild(e);
     b.el = e;
   });
-  v.getBoundingClientRect = () => ({left:0,top:0,right:1000,bottom:1000,
-                                    width:1000,height:1000});
+  v.getBoundingClientRect = () => /** @type {DOMRect} */ ({left:0, top:0,
+    right:1000, bottom:1000, width:1000, height:1000});
   return v;
 }
 
@@ -102,8 +107,8 @@ function view(boxes){
     /* NOT a collision: one inside the other. Every nested box overlaps its
        parent by definition, which is what makes the naive version useless. */
     const outer = d.createElement("div");
-    outer.getBoundingClientRect = () => ({left:0,top:0,right:200,bottom:40,
-                                          width:200,height:40});
+    outer.getBoundingClientRect = () => /** @type {DOMRect} */ ({left:0, top:0,
+      right:200, bottom:40, width:200, height:40});
     r = sweep(view([
       {cls:"child", parent:outer, l:10, t:10, w:50, h:20}
     ]));

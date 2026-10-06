@@ -347,7 +347,7 @@ it. A source that quietly changes a denominator is the failure this catches.
 ```
 
 <!-- GATE:START -->
-**The gate** is 47 checks, and nothing reaches the phone without
+**The gate** is 50 checks, and nothing reaches the phone without
 passing all of them:
 
 - a **shrink guard** — if a rebuild comes back with fewer forms, moves or
@@ -357,7 +357,7 @@ passing all of them:
   still accounted for, the README's own numbers, that no SQL migration is
   still waiting to be applied, ruff's lint over
   every script, and vulture's search for code that nothing calls any more
-- **seven source checks** — ESLint, with SonarSource's own rules,
+- **ten source checks** — ESLint, with SonarSource's own rules,
   over every file (a name one of the twenty-five ES modules uses without
   importing it links fine and throws on the phone), TypeScript's checker
   over the app, stylelint over the CSS, html-validate over the markup,

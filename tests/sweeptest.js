@@ -1,24 +1,21 @@
 /* Every form in the dex, attacking and defending, through the page's engine.
    A sweep, not a sample: a sample misses a bug that only some forms have
    (a Mega naming bug once hid that way). */
-const { check, open } = require("./harness.js");
+const { check, open, calcSide } = require("./harness.js");
 const { w, errs } = open();
 
-const blank = () => ({sp:{hp:0,atk:0,def:0,spa:0,spd:0,spe:0},
-                      boost:{atk:0,def:0,spa:0,spd:0,spe:0},
-                      nature:null, ability:null, item:null, status:null,
-                      curHP:null, buildId:null});
-
-/* The engine's error for one pairing, or null when it calculates. */
+/** The engine's error for one pairing, or null when it calculates.
+   @param {string} atkName
+   @param {string} defName */
 function failure(atkName, defName) {
   /* only the two sides and the move: every field switch stays at the
      page's own default, off */
   Object.assign(w.CALC, {
-    atk: Object.assign(blank(), {name: atkName}),
-    def: Object.assign(blank(), {name: defName}),
+    atk: calcSide(atkName),
+    def: calcSide(defName),
     move: w.MOVE_BY.Earthquake, gameType: "Singles"});
   try { w.engineCalc(); return null; }
-  catch (e) { return atkName + " vs " + defName + ": " + e.message.slice(0, 70); }
+  catch (e) { return atkName + " vs " + defName + ": " + /** @type {Error} */ (e).message.slice(0, 70); }
 }
 
 /* Earthquake, because everything can be handed it: as the attacker against

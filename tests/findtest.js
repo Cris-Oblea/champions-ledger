@@ -8,22 +8,23 @@
        play this today", HOME answers "can I bring it in".
 */
 const { describe } = require("node:test");
-const { check, open, idle, row, click } = require("./harness.js");
+const { check, open, idle, row, click, one, all, byId, found, text } = require("./harness.js");
 
 const ROWS = [row("garchomp", "Garchomp", {trained:true}),
               row("dragonite", "Dragonite", {location:"home", origin:"home", trained:true})];
 
 const { dom, errs } = open({ box: ROWS });
 const w = dom.window, d = w.document;
-const sheetChip = t => [...d.querySelectorAll(".sheet .tog")]
+/** @param {string} t */
+const sheetChip = t => [...all(d, ".sheet .tog")]
   .find(b => b.textContent.trim() === t);
-const sheetRows = () => [...d.querySelectorAll(".sheet .list .row")];
-const results = () => [...d.querySelectorAll("#findOut .row")];
-const countLine = () => [...d.querySelectorAll(".sheet .sub")]
+const sheetRows = () => [...all(d, ".sheet .list .row")];
+const results = () => [...all(d, "#findOut .row")];
+const countLine = () => [...all(d, ".sheet .sub")]
   .map(x => x.textContent).find(t => /abilities$|moves$| of \d+ moves/.test(t)) || "";
 /* The AND/OR chip lives in the filter bar, so it can be flipped without
    reopening the sheet. */
-const modeChip = () => [...d.querySelectorAll("#findChips .tog")]
+const modeChip = () => [...all(d, "#findChips .tog")]
   .find(b => /of those types/.test(b.textContent));
 
 (async () => {
@@ -45,13 +46,13 @@ const modeChip = () => [...d.querySelectorAll("#findChips .tog")]
     check("and the counter says so", / of \d+ moves/.test(countLine()), true);
     click(sheetChip("Ground"));
     check("stacks type + category",
-       sheetRows().every(r => /Ground/.test(r.querySelector(".t").textContent) &&
+       sheetRows().every(r => /Ground/.test(one(r, ".t").textContent) &&
                               /Status/.test(r.textContent)), true);
     click(sheetRows()[0]);
 
     await idle();
     check("the filter is set",
-       /learns /.test(d.getElementById("findChips").textContent), true);
+       /learns /.test(byId(d, "findChips").textContent), true);
   });
 
   /* every move carries what it DOES, so "which of these crits" has an answer
@@ -60,14 +61,14 @@ const modeChip = () => [...d.querySelectorAll("#findChips .tog")]
     click(d.getElementById("findClear"));
     click(d.getElementById("findAddMove"));
     await idle();
-    const inp = d.querySelector(".sheet input[type=text]");
+    const inp = one(d, ".sheet input[type=text]");
     inp.value = "critical";
     inp.dispatchEvent(new w.Event("input", {bubbles:true}));
     const rr = sheetRows();
     check("critical finds moves", rr.length > 0, true);
     check("and none is named that",
        rr.every(r => !/critical/i.test(
-         r.querySelector(".rname").textContent)), true);
+         one(r, ".rname").textContent)), true);
     check("because the text is on the row",
        rr.every(r => /Critical/i.test(r.textContent)), true);
     inp.value = "burn";
@@ -78,8 +79,8 @@ const modeChip = () => [...d.querySelectorAll("#findChips .tog")]
        line that explains it. */
     inp.value = "taunt";
     inp.dispatchEvent(new w.Event("input", {bubbles:true}));
-    const tt = sheetRows().find(r => /Taunt/.test(
-      r.querySelector(".rname").textContent));
+    const tt = found(sheetRows().find(r => /Taunt/.test(
+      one(r, ".rname").textContent)), "tt");
     check("Taunt explains the mechanism, not the status name",
        /three turns|3 turns/.test(tt.textContent), true);
     check("and no move is left without text",
@@ -92,39 +93,38 @@ const modeChip = () => [...d.querySelectorAll("#findChips .tog")]
     click(d.getElementById("findClear"));
     click(d.getElementById("findAddAbility"));
     await idle();
-    const cls = w.CHAMP.AB_CLASS, lbl = w.CHAMP.AB_CLASS_LABEL;
+    const cls = found(w.CHAMP.AB_CLASS, "cls"), lbl = found(w.CHAMP.AB_CLASS_LABEL, "lbl");
     /* against the abilities the page carries, never a typed count - a new
        ability would fail the gate for being classified */
-    const all = Object.keys(w.CHAMP.ABIL);
-    check("all of them are classified", all.filter(a => !cls[a]).join(", ") ||
+    const abilities = Object.keys(w.CHAMP.ABIL);
+    check("all of them are classified", abilities.filter(a => !cls[a]).join(", ") ||
        "all", "all");
     check("and none that does not exist is classified",
-       Object.keys(cls).length, all.length);
-    const offChip = [...d.querySelectorAll(".sheet .tog")]
-      .find(b => b.textContent.indexOf(lbl["moves-off"]) === 0);
-    const defChip = [...d.querySelectorAll(".sheet .tog")]
+       Object.keys(cls).length, abilities.length);
+    const offChip = found([...all(d, ".sheet .tog")]
+      .find(b => b.textContent.indexOf(lbl["moves-off"]) === 0), "offChip");
+    const defChip = [...all(d, ".sheet .tog")]
       .find(b => b.textContent.indexOf(lbl["moves-def"]) === 0);
     check("there is a 'changes its moves' chip", !!offChip, true);
     check("there is a defensive chip", !!defChip, true);
     check("the chip carries its count", /· \d+$/.test(offChip.textContent), true);
     click(offChip);
-    const names = sheetRows().map(r => r.querySelector(".rname")
-      .childNodes[0].textContent);
+    const names = sheetRows().map(r => text(one(r, ".rname").childNodes[0]));
     check("only the offensive ones show",
        names.every(n => cls[n] === "moves-off"), true);
     check("and they are the rule table's",
        names.every(n => w.AB_SET[n] && w.AB_SET[n].side === "off"), true);
     click(defChip);
     check("two chips add up (OR within the group)",
-       sheetRows().map(r => r.querySelector(".rname").childNodes[0].textContent)
+       sheetRows().map(r => text(one(r, ".rname").childNodes[0]))
          .every(n => cls[n] === "moves-off" || cls[n] === "moves-def"), true);
     click(offChip); click(defChip);
-    const weather = [...d.querySelectorAll(".sheet .tog")]
+    const weather = [...all(d, ".sheet .tog")]
       .find(b => b.textContent.indexOf(lbl.weather) === 0);
     check("there is a weather chip", !!weather, true);
     click(weather);
     check("and it filters to weather",
-       sheetRows().map(r => r.querySelector(".rname").childNodes[0].textContent)
+       sheetRows().map(r => text(one(r, ".rname").childNodes[0]))
          .every(n => cls[n] === "weather"), true);
   });
 
@@ -144,7 +144,7 @@ const modeChip = () => [...d.querySelectorAll("#findChips .tog")]
     click(mode);
     check("Rock OR Steel: more of them", results().length > andHits, true);
     check("and the chip says so",
-       /any of those types/.test(d.getElementById("findChips").textContent),
+       /any of those types/.test(byId(d, "findChips").textContent),
        true);
     click(d.getElementById("findAddType"));
     await idle();
@@ -154,7 +154,7 @@ const modeChip = () => [...d.querySelectorAll("#findChips .tog")]
     click(modeChip());
     check("under AND with three types there is nothing", results().length, 0);
     check("and it warns why",
-       /three types/.test(d.getElementById("findOut").textContent), true);
+       /three types/.test(byId(d, "findOut").textContent), true);
   });
 
   /* the sheet you land on after tapping a result: the six stats each under
@@ -162,9 +162,9 @@ const modeChip = () => [...d.querySelectorAll("#findChips .tog")]
      to be in a Pokemon's own sheet). */
   await describe("the Pokemon's sheet", async () => {
     click(d.getElementById("findClear"));
-    click([...d.querySelectorAll("#findOut .row")][0]);
+    click([...all(d, "#findOut .row")][0]);
     await idle();
-    const sl = d.querySelector(".sheet .statline");
+    const sl = one(d, ".sheet .statline");
     check("there is a stats block", !!sl, true);
     ["HP", "Atk", "Def", "SpA", "SpD", "Spe"].forEach(function(k){
       check("it says which is " + k, sl.textContent.indexOf(k) >= 0, true);
@@ -173,15 +173,16 @@ const modeChip = () => [...d.querySelectorAll("#findChips .tog")]
        !/undefined/.test(sl.textContent), true);
     check("the search row is labelled too",
        /HP.*Atk.*Spe/.test(
-         d.querySelectorAll("#findOut .row")[0].textContent), true);
+         all(d, "#findOut .row")[0].textContent), true);
 
-    const chip = t => [...d.querySelectorAll(".sheet .tog")]
+    /** @param {string} t */
+    const chip = t => [...all(d, ".sheet .tog")]
       .find(b => b.textContent.trim() === t);
     check("the movepool has the filters", !!chip("Physical"), true);
     check("and the sort", !!chip("A–Z"), true);
-    const before = [...d.querySelectorAll(".sheet .list .row")].length;
+    const before = [...all(d, ".sheet .list .row")].length;
     click(chip("Status"));
-    const st = [...d.querySelectorAll(".sheet .list .row")];
+    const st = [...all(d, ".sheet .list .row")];
     check("status moves can be seen", st.length > 0, true);
     check("and they are all status",
        st.every(r => /Status/.test(r.textContent)), true);
@@ -195,8 +196,9 @@ const modeChip = () => [...d.querySelectorAll("#findChips .tog")]
     w.closeSheet();
     w.FIND.moves = ["Trick Room"]; w.FIND.types = []; w.FIND.notTypes = [];
     w.findRun();
-    const nm = () => [...d.querySelectorAll("#findOut .row .rname")]
-      .map(n => n.firstChild.textContent.trim());
+    const nm = () => [...all(d, "#findOut .row .rname")]
+      .map(n => text(n.firstChild).trim());
+    /** @param {string} n */
     const isPsy = n => (w.byName[n].types || []).indexOf("Psychic") >= 0;
     const withTR = nm();
     check("Trick Room returns plenty", withTR.length > 30, true);
@@ -211,9 +213,9 @@ const modeChip = () => [...d.querySelectorAll("#findChips .tog")]
     /* and it shows as a filter, not only inside the sheet */
     w.findDraw();
     check("the chip says so up top",
-       [...d.querySelectorAll("#findChips .tog")].map(t => t.textContent)
+       [...all(d, "#findChips .tog")].map(t => t.textContent)
          .indexOf("not Psychic") >= 0, true);
-    d.getElementById("findClear").click();
+    byId(d, "findClear").click();
     check("and Clear releases it", w.FIND.notTypes.length, 0);
   });
 
@@ -221,11 +223,12 @@ const modeChip = () => [...d.querySelectorAll("#findChips .tog")]
      building a filter */
   describe("the name search", () => {
     w.FIND.moves = [];
-    const box = d.getElementById("findName");
+    const box = byId(d, "findName");
+    /** @param {string} v */
     const type = v => { box.value = v;
       box.dispatchEvent(new w.Event("input")); };
-    const named = () => [...d.querySelectorAll("#findOut .row .rname")]
-      .map(n => n.firstChild.textContent.trim());
+    const named = () => [...all(d, "#findOut .row .rname")]
+      .map(n => text(n.firstChild).trim());
     type("garchomp");
     check("by name", named().join(","), "Garchomp");
     type("445");
@@ -256,13 +259,13 @@ const modeChip = () => [...d.querySelectorAll("#findChips .tog")]
        says there are two in three places at once - the sprite, the ability
        box and each stat's delta. */
     check("one ability box per Mega of the line",
-       [...results()[0].querySelectorAll(".cardline .lbl")]
+       [...all(results()[0], ".cardline .lbl")]
          .filter(t => t.textContent.startsWith("Mega")).length, 2);
     check("and a captioned sprite for each",
-       [...results()[0].querySelectorAll(".megapickey")]
+       [...all(results()[0], ".megapickey")]
          .filter(t => !/base/.test(t.textContent)).length, 2);
     check("no Mega chips on the name",
-       [...results()[0].querySelectorAll(".rname .tag")]
+       [...all(results()[0], ".rname .tag")]
          .filter(t => /^mega/i.test(t.textContent)).length, 0);
     click(d.getElementById("findInChamp"));
     click(d.getElementById("findInHome"));

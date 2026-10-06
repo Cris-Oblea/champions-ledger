@@ -7,7 +7,7 @@
    So this asserts the SHAPE, not the values: one input, no VP anywhere, and
    every derived line present and non-empty. */
 const { describe } = require("node:test");
-const { check, open, source, idle, row, build } = require("./harness.js");
+const { check, open, source, idle, row, build, one, all, byId } = require("./harness.js");
 
 /* The dates are part of the case: the newest one, the rental's, is what the
    diagnostics have to report as the last ledger write. */
@@ -24,13 +24,18 @@ const code = source();
 const { dom, errs } = open({ box: ROWS, builds: BUILDS });
 const w = dom.window, d = w.document;
 
-/* profCounts/profData ARE the <dl>; diagOut is a <div> wrapping one, plus a
-   "Copy this" button - so look through to the list either way. */
+/** profCounts/profData ARE the <dl>; diagOut is a <div> wrapping one, plus a
+   "Copy this" button - so look through to the list either way.
+   @param {string} id
+   @returns {Record<string, string>} */
 const pairs = id => {
   let n = d.getElementById(id);
   if (!n) return {};
   if (n.tagName !== "DL") n = n.querySelector("dl") || n;
-  const out = {}; let k = null;
+  /** @type {Record<string, string>} */
+  const out = {};
+  /** @type {string | null} */
+  let k = null;
   [...n.children].forEach(c => {
     if (c.tagName === "DT") k = c.textContent.trim();
     else if (k) { out[k] = c.textContent.trim(); k = null; }
@@ -42,8 +47,8 @@ const pairs = id => {
    these forms the way it draws a Mega - sprite, typing, six stats, its own
    damage table - and this reads the whole block. */
 const bnote = () => {
-  const b = d.getElementById("sheetBody");
-  const hs = [...b.querySelectorAll("h2")]
+  const b = byId(d, "sheetBody");
+  const hs = [...all(b, "h2")]
     .filter(x => x.textContent.startsWith("In battle"));
   if (!hs.length) return "";
   let t = hs[0].textContent;
@@ -55,14 +60,14 @@ const bnote = () => {
 (async () => {
   await idle();
   describe("the header", () => {
-    check("is called Settings", d.querySelector("#v-trainer h1").textContent, "Settings");
+    check("is called Settings", one(d, "#v-trainer h1").textContent, "Settings");
     check("and so is the tab",
-       [...d.querySelectorAll("#tabs button, #tabs a")]
+       [...all(d, "#tabs button, #tabs a")]
          .some(b => b.textContent.trim() === "Settings"), true);
   });
 
   describe("a single editable field", () => {
-    const inputs = [...d.querySelectorAll("#v-trainer input")]
+    const inputs = [...all(d, "#v-trainer input")]
       .filter(i => i.type !== "file").map(i => i.id);
     check("only box capacity remains", inputs.join(", "), "tCap");
   });
@@ -79,7 +84,7 @@ const bnote = () => {
 
   describe("what is derived, and cannot go stale", () => {
     check("box usage beside the capacity",
-       /2 of 50 used . 48 free/.test(d.getElementById("capUse").textContent), true);
+       /2 of 50 used . 48 free/.test(byId(d, "capUse").textContent), true);
     const hold = pairs("profCounts");
     check("counts the box, bought apart from rentals",
        hold["In the Champions box"], "2 (1 bought, 1 rental)");
@@ -116,8 +121,8 @@ const bnote = () => {
        /Fire/.test(bnote()) && /Water/.test(bnote()) && /Ice/.test(bnote()), true);
     w.findDetail(w.byName["Garchomp"]);
     check("and a Pokemon that does not change has no block", bnote(), "");
-    w.pokeSheet({name:"Aegislash", location:"champions", status:"permanent",
-                 origin:"champions", _id:"x"});
+    w.pokeSheet(/** @type {ListedBox} */ ({name:"Aegislash", location:"champions", status:"permanent",
+                 origin:"champions", _id:"x"}));
     check("and the box's sheet says the same", /Atk 50 . 140/.test(bnote()), true);
   });
 

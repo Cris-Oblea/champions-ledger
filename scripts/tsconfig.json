@@ -1,0 +1,7 @@
+// The Node scripts (and the hook, and the lint configs at the root) type-check
+// strict too: Node's own types, nothing compiled. The gate runs it (daily.py).
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": { "types": ["node"], "lib": ["es2024"] },
+  "include": ["./*.js", "./hooks/*.js", "../*.mjs"]
+}

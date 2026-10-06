@@ -24,11 +24,14 @@
      Greninja-Bond / Rockruff-Dusk in HOME  -> their own ability, not the
                                                base species' three */
 const { describe } = require("node:test");
-const { check, idle, open, row, build, click } = require("./harness.js");
+const { check, idle, open, row, build, click, all, byId, found } = require("./harness.js");
 
 const ROWS = ["Clawitzer", "Garchomp", "Camerupt"]
   .map(n => row(n.toLowerCase(), n, {trained:true}));
 
+/** @param {string} id
+   @param {string} pokemon
+   @param {Record<string, unknown>} [extra] */
 const B = (id, pokemon, extra) => build(id, pokemon, {box_id:id,
   nature:"Modest", stat_points:{hp:0,atk:0,def:0,spa:32,spd:0,spe:32},
   moves:["Water Pulse", "Protect", null, null], ...extra});
@@ -47,25 +50,27 @@ const BUILDS = [
 
 const { dom, errs } = open({ box: ROWS, builds: BUILDS });
 const w = dom.window, d = w.document;
-const editor = () => d.getElementById("buildEditBody");
+const editor = () => byId(d, "buildEditBody");
 const saveBtn = () =>
-  [...d.getElementById("buildEditFoot").querySelectorAll("button")]
+  [...all(d.getElementById("buildEditFoot"), "button")]
     .find(b => b.textContent === "Save");
-const cardFor = n => [...d.querySelectorAll("#listBuilds .row")]
-  .find(r => ((r.querySelector(".rname") || r).textContent.trim().indexOf(n) === 0));
+/** @param {string} n */
+const cardFor = n => found([...all(d, "#listBuilds .row")]
+  .find(r => ((r.querySelector(".rname") || r).textContent.trim().indexOf(n) === 0)),
+  "the card of " + n);
 
 (async () => {
   await idle();
   describe("the ability a build runs", () => {
     check("Aegislash: only one, so it is a fact",
-       w.activeAbility({pokemon:"Aegislash"}), "Stance Change");
-    check("Clawitzer: the same", w.activeAbility({pokemon:"Clawitzer"}), "Mega Launcher");
+       w.activeAbility(/** @type {Build} */ ({pokemon:"Aegislash"})), "Stance Change");
+    check("Clawitzer: the same", w.activeAbility(/** @type {Build} */ ({pokemon:"Clawitzer"})), "Mega Launcher");
     check("Garchomp: two, so it is a choice not yet made",
-       w.activeAbility({pokemon:"Garchomp"}), "null");
+       w.activeAbility(/** @type {Build} */ ({pokemon:"Garchomp"})), "null");
     check("and with a stone, the Mega's runs",
-       w.activeAbility({pokemon:"Camerupt", mega:"Mega Camerupt"}), "Sheer Force");
+       w.activeAbility(/** @type {Build} */ ({pokemon:"Camerupt", mega:"Mega Camerupt"})), "Sheer Force");
     check("what was chosen beats what is deduced",
-       w.activeAbility({pokemon:"Garchomp", ability:"Rough Skin"}), "Rough Skin");
+       w.activeAbility(/** @type {Build} */ ({pokemon:"Garchomp", ability:"Rough Skin"})), "Rough Skin");
   });
   describe("and so the card shows it", () => {
     w.go("builds");
@@ -81,13 +86,13 @@ const cardFor = n => [...d.querySelectorAll("#listBuilds .row")]
   await describe("with Clawitzer's build open", async () => {
     click(cardFor("Clawitzer"));
     await idle();
-    const ab = [...editor().querySelectorAll("select")]
-      .find(s => [...s.options].some(o => o.value === "Mega Launcher"));
+    const ab = found([...all(editor(), "select")]
+      .find(s => [...s.options].some(o => o.value === "Mega Launcher")), "ab");
     check("the select carries the only one there is", ab.value, "Mega Launcher");
     check("and offers no blank row",
        [...ab.options].some(o => o.value === ""), false);
-    const slot = [...editor().querySelectorAll(".slot")]
-      .find(s => /Water Pulse/.test(s.textContent));
+    const slot = found([...all(editor(), ".slot")]
+      .find(s => /Water Pulse/.test(s.textContent)), "slot");
     check("Water Pulse carries the Mega Launcher bonus",
        /Mega Launcher/.test(slot.textContent), true);
     /* writing it down is NOT a retune: it is the ability it always had */
@@ -97,7 +102,7 @@ const cardFor = n => [...d.querySelectorAll("#listBuilds .row")]
   await describe("on save", async () => {
     click(saveBtn());
     await idle();
-    const wrote = w.__WROTE.findLast(x => x.table === "builds");
+    const wrote = found(w.__WROTE.findLast(x => x.table === "builds"), "wrote");
     check("it saves the ability", wrote.row.ability, "Mega Launcher");
     check("on this build's row", wrote.row.id, "clawitzer");
   });
@@ -105,8 +110,8 @@ const cardFor = n => [...d.querySelectorAll("#listBuilds .row")]
     w.go("builds");
     click(cardFor("Garchomp"));
     await idle();
-    const ab2 = [...editor().querySelectorAll("select")]
-      .find(s => [...s.options].some(o => o.value === "Rough Skin"));
+    const ab2 = found([...all(editor(), "select")]
+      .find(s => [...s.options].some(o => o.value === "Rough Skin")), "ab2");
     check("the select opens unchosen", ab2.value, "");
     check("and says so on its first row",
        /not chosen/.test(ab2.options[0].textContent), true);
@@ -114,16 +119,17 @@ const cardFor = n => [...d.querySelectorAll("#listBuilds .row")]
        /No ability chosen/.test(editor().textContent), true);
     click(saveBtn());
     await idle();
-    const w2 = w.__WROTE.findLast(x => x.table === "builds");
+    const w2 = found(w.__WROTE.findLast(x => x.table === "builds"), "w2");
     check("and it saves null, not the first in the list", w2.row.ability, "null");
   });
   await describe("no ability is lost on the way", async () => {
-    /* the list the choice is made from */
+    /** the list the choice is made from
+       @param {string} n */
     const possible = n => {
       w.findDetail(w.byName[n]);
-      const l = [...d.querySelectorAll("#sheetBody .lbl")]
+      const l = [...all(d, "#sheetBody .lbl")]
         .find(x => x.textContent === "Possible ability");
-      const v = l ? l.previousElementSibling.textContent : "";
+      const v = l ? found(l.previousElementSibling, "l.previousElementSibling").textContent : "";
       w.closeSheet();
       return v;
     };
@@ -132,15 +138,15 @@ const cardFor = n => [...d.querySelectorAll("#listBuilds .row")]
     check("Lycanroc-Midnight still has No Guard",
        /No Guard/.test(possible("Lycanroc-Midnight")), true);
     check("HOME's Greninja-Bond: its own, not the base's",
-       (w.anyRow("Greninja-Bond").ab || []).join(" / "), "Battle Bond");
+       (found(w.anyRow("Greninja-Bond"), "w.anyRow('Greninja-Bond')").ab || []).join(" / "), "Battle Bond");
     check("HOME's Rockruff-Dusk: Own Tempo",
-       (w.anyRow("Rockruff-Dusk").ab || []).join(" / "), "Own Tempo");
+       (found(w.anyRow("Rockruff-Dusk"), "w.anyRow('Rockruff-Dusk')").ab || []).join(" / "), "Own Tempo");
 
     w.go("builds");
     click(cardFor("Greninja"));
     await idle();
-    const ab3 = [...editor().querySelectorAll("select")]
-      .find(s => [...s.options].some(o => o.value === "Protean"));
+    const ab3 = found([...all(editor(), "select")]
+      .find(s => [...s.options].some(o => o.value === "Protean")), "ab3");
     /* the set, not the order: the picker ranks by what is run */
     check("and its build's select offers all three",
        [...ab3.options].map(o => o.value).filter(Boolean).sort()

@@ -14,8 +14,13 @@
    And the ones that CAN go: anything in HOME, plus a HOME-origin Pokemon
    sitting in the Champions box, which can be parked back and deposited. */
 const { describe } = require("node:test");
-const { check, open, idle, row, click } = require("./harness.js");
+const { check, open, idle, row, click, all, byId, one, text } = require("./harness.js");
 
+/** @param {string} id
+   @param {string} name
+   @param {string} location
+   @param {string | null} origin  null: a row recorded before origin was
+   @param {string} [status] */
 const R = (id, name, location, origin, status) =>
   row(id, name, {location, origin, status});
 const ROWS = [
@@ -37,15 +42,18 @@ const ROWS = [
 const { dom, errs } = open({ box: ROWS });
 const w = dom.window, d = w.document;
 
-const nameOf = b => b.querySelector(".rname").firstChild.textContent.trim();
+/** @param {Element} b */
+const nameOf = b => text(one(b, ".rname").firstChild).trim();
 
 (async () => {
   await idle();
   w.gtsPickMine(function(){}, null);
-  const sheet = d.getElementById("sheetBody");
-  const cards = () => [...sheet.querySelectorAll(".list .row")];
-  const tog = t => [...sheet.querySelectorAll(".tog")]
+  const sheet = byId(d, "sheetBody");
+  const cards = () => [...all(sheet, ".list .row")];
+  /** @param {string} t */
+  const tog = t => [...all(sheet, ".tog")]
     .find(b => b.textContent.trim() === t);
+  /** @param {string} t */
   const press = t => click(tog(t));
   const offered = cards().map(nameOf);
 
@@ -65,7 +73,7 @@ const nameOf = b => b.querySelector(".rname").firstChild.textContent.trim();
   });
 
   describe("and it is said, not hidden", () => {
-    const notes = [...sheet.querySelectorAll("p.sub")].map(p => p.textContent);
+    const notes = [...all(sheet, "p.sub")].map(p => p.textContent);
     check("it counts the ones left out",
        notes.some(t => /4 more in the Champions box/.test(t)), true);
     check("and explains why",
@@ -101,12 +109,13 @@ const nameOf = b => b.querySelector(".rname").firstChild.textContent.trim();
     check("outside the dex: only Bulbasaur", cards().map(nameOf).join(","), "Bulbasaur");
     press("Not in Champions only");
     check("and releasing them brings the five back", cards().length, 5);
-    /* AND THE SAFETY NET READS THE SAME NUMBER. The "last copy" warning is
+    /** AND THE SAFETY NET READS THE SAME NUMBER. The "last copy" warning is
        what catches the mistake a filter would let through, so it must not
-       count the rental as a copy either. */
+       count the rental as a copy either.
+       @param {string} n */
     const badgesOf = n => {
       const c = cards().find(b => nameOf(b) === n);
-      return c ? [...c.querySelectorAll(".rname .tag")].map(t => t.textContent) : [];
+      return c ? [...all(c, ".rname .tag")].map(t => t.textContent) : [];
     };
     check("the HOME Metagross warns it is the last copy",
        badgesOf("Metagross").some(t => /your only one/i.test(t)), true);
@@ -120,10 +129,10 @@ const nameOf = b => b.querySelector(".rname").firstChild.textContent.trim();
        so depositing one would get NO recommendation. */
     w.closeSheet();
     w.gtsPickWanted(function(){}, "Bulbasaur", false);
-    const wanted = d.getElementById("sheetBody");
+    const wanted = byId(d, "sheetBody");
     check("it says what it is worth", /is worth about 318/.test(wanted.textContent), true);
     check("and proposes something to ask for",
-       wanted.querySelectorAll(".list .row").length > 0, true);
+       all(wanted, ".list .row").length > 0, true);
   });
 
 

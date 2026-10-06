@@ -359,8 +359,19 @@ runs in four places: the `pre-push` hook, every pull request, every push to
   it (`SmogonEngine`), since the bundle carries no types. A database row stays
   loosely typed up to `docFromRow` in `store.js`, the trust boundary; `$`
   is typed never-null because `check_app.js` holds every id against the
-  markup. Pinned to 6.0, the last release with the JavaScript API
-  `eslint-plugin-sonarjs` loads: 7.0 (native) breaks ESLint.
+  markup. Every other JavaScript file is checked strict as well, each by a
+  `tsconfig.json` beside it that names its platform: `tests/` (Node, with
+  **@types/node**, and jsdom's window, with **@types/jsdom**), `scripts/`
+  (Node; it also covers the hook and the root `*.mjs` lint configs) and
+  `cron/` (a Cloudflare Worker: Web APIs, no Node). The tests are checked
+  against the app itself: the build writes `tracker/src/_public.d.ts`, the
+  names `_entry.js` puts on `window` typed from the module that exports
+  each, so a test calling a renamed export fails the type check. A lookup
+  in a test goes through `one()` / `all()` / `byId()` / `found()` /
+  `text()` (`tests/harness.js`), which fail naming what was missing.
+  Pinned to 6.0, the last release with the JavaScript API
+  `eslint-plugin-sonarjs` loads: 7.0 (native) breaks ESLint. `@types/node`
+  follows the Node LTS the project runs (24), not the newest major.
 - **stylelint** (`stylelint.config.mjs`) over `tracker/src/styles/` and
   **html-validate** (`.htmlvalidate.mjs`) over `tracker/src/markup/`: the
   standard rule sets, every rule an error, the few switched off each with its
@@ -623,7 +634,8 @@ in `package.json`, `requirements.txt` and the workflows, never typed here.
 | Tool | Checks | Config |
 |---|---|---|
 | **ESLint** + `globals`, `eslint-plugin-sonarjs`, `eslint-plugin-unicorn` | All JavaScript: undeclared names, layer climbs, size, the Sonar rules | `eslint.config.mjs` |
-| **TypeScript** (`tsc`, checkJs) | The app's types: what a value is, read from JSDoc; strict | `tsconfig.json`, `tracker/src/globals.d.ts` |
+| **TypeScript** (`tsc`, checkJs) | Every JavaScript file's types: what a value is, read from JSDoc; strict | `tsconfig.json`, `tests/tsconfig.json`, `scripts/tsconfig.json`, `cron/tsconfig.json`, `tracker/src/globals.d.ts` |
+| **@types/node**, **@types/jsdom** | The type definitions for Node (tests, scripts) and for jsdom's window (tests) | `package.json` |
 | **stylelint** + `stylelint-config-standard` | The CSS | `stylelint.config.mjs` |
 | **html-validate** | The markup | `.htmlvalidate.mjs` |
 | **ruff** | All Python, the same way ESLint does JavaScript | `ruff.toml`, `requirements.txt` |
