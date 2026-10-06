@@ -4,7 +4,7 @@
    A small surface on purpose: go() changes tab, openSheet() shows a sheet,
    ask() asks. The tab bar's own data, the scroll lock behind a sheet and the
    history counters stay private. */
-import { $, el, resetHost, showPane } from "../core/dom.js";
+import { $, el, kids, resetHost, showPane } from "../core/dom.js";
 import { S } from "../core/state.js";
 
 /* ===================================================================== tabs */
@@ -103,7 +103,7 @@ function go(tab){
   });
   EXTRA_VIEWS.forEach(function(v){ $("v-" + v).hidden = v !== tab; });
   const lit = EDITOR_HOME[tab] || tab;
-  Array.prototype.forEach.call($("tabs").children, function(/** @type {HTMLElement} */ b){
+  kids($("tabs")).forEach(function(b){
     b.setAttribute("aria-selected", b.dataset.tab === lit ? "true" : "false");
   });
   window.scrollTo(0, 0);

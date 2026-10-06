@@ -23,6 +23,24 @@ import {
 } from "../ui/nav.js";
 import { buildSheet } from "./builds.js";
 
+/** @typedef {import("../core/team.js").TeamReport} TeamReport */
+/** @typedef {import("../core/team.js").SlotInfo} SlotInfo */
+/** @typedef {import("../core/team.js").SpeedRow} SpeedRow */
+/** @typedef {import("../core/team.js").TypeRow} TypeRow */
+/** @typedef {ReturnType<typeof holdable>[number]} Holdable */
+/** A world to read the team in: nobody evolved (`at` null), or the slot that did.
+    @typedef {{at: number | null, tab: string, why: string}} Scenario */
+/** One build as the slot picker reads it: see pickRows.
+    @typedef {ReturnType<typeof pickRows>[number]} PickRow */
+/** The slot picker's chips (role, type) and its sort.
+    @typedef {{role: Record<string, number>, type: Record<string, number>,
+      sort: string}} BuildFilter */
+/** The item picker's category chips and "only ones you own".
+    @typedef {{cat: Record<string, number>, own: boolean}} ItemFilter */
+/** The slot an item is being picked for, and the items other slots hold.
+    @typedef {{draft: Team, i: number, taken: Record<string, number>,
+      redraw: () => void}} ItemSlot */
+
 $("teamAdd").onclick = function(){ teamSheet(null, null); };
 
 /* ================================================================ the list */
@@ -48,10 +66,13 @@ function drawTeams(){
   ids.forEach(function(id){ host.appendChild(teamRow(id, S.teams[id])); });
 }
 
-/* THE MEMBERS ARE SEARCHED TOO, and the items with them. "Which team is my
+/** THE MEMBERS ARE SEARCHED TOO, and the items with them. "Which team is my
    Farigiraf in" and "who is holding the Sitrus Berry" are both questions
-   about a Pokemon, asked at the list rather than by opening six teams. */
+   about a Pokemon, asked at the list rather than by opening six teams.
+   @param {Team} t
+   @param {string} q */
 function teamMatches(t, q){
+  /** @type {(string | null | undefined)[]} */
   const hay = [t.name, t.notes?.idea || ""];
   (t.slots || []).forEach(function(sl){
     if (sl?.item) hay.push(sl.item);
@@ -61,8 +82,10 @@ function teamMatches(t, q){
   return hay.filter(Boolean).join(" ").toLowerCase().includes(q);
 }
 
-/* One team in the list: its name, how many slots are filled, how many can be
-   brought today, whether anything breaks a clause, and who is in it. */
+/** One team in the list: its name, how many slots are filled, how many can be
+   brought today, whether anything breaks a clause, and who is in it.
+   @param {string} id
+   @param {Team} t */
 function teamRow(id, t){
   const r = teamReport(t);
   const row = el("button", "row");
@@ -91,8 +114,10 @@ function teamRow(id, t){
    a picker must return to the team, not take the unsaved draft with it.
    `draft` is the team being edited; nothing is written until Save. redraw()
    re-renders the view in place from the draft. */
+/** @param {string | null} id
+   @param {Team | null} t */
 function teamSheet(id, t){
-  const draft = structuredClone(t || {name:"", slots:[], notes:{}});
+  const draft = structuredClone(t || {name:"", slots:[], notes:{}, updated:""});
   draft.slots = teamSlots(draft);
   function redraw(){ teamSheet(id, draft); }
 
@@ -114,7 +139,9 @@ function teamSheet(id, t){
   ]);
 }
 
-/* The team's name, written straight into the draft. */
+/** The team's name, written straight into the draft.
+   @param {SheetBody} body
+   @param {Team} draft */
 function nameField(body, draft){
   const fn = el("div", "field");
   fn.appendChild(el("label", "f", "Name"));
@@ -124,10 +151,12 @@ function nameField(body, draft){
   body.appendChild(fn);
 }
 
-/* What is wrong first, because a team that cannot be registered is not a
+/** What is wrong first, because a team that cannot be registered is not a
    team - the clauses are measured facts about this format, not opinions.
    Then what he HAS, where it is and what is still missing, so a team can be
-   four-sixths real and still worth writing. */
+   four-sixths real and still worth writing.
+   @param {SheetBody} body
+   @param {TeamReport} r */
 function teamVerdict(body, r){
   r.problems.forEach(function(msg){
     body.appendChild(note("bad", "<strong>Illegal.</strong> " + msg));
@@ -144,7 +173,9 @@ function teamVerdict(body, r){
   body.appendChild(el("div", "note", line));
 }
 
-/* "The idea": his free text about what the team is for. */
+/** "The idea": his free text about what the team is for.
+   @param {SheetBody} body
+   @param {Team} draft */
 function ideaField(body, draft){
   const fw = el("div", "field");
   fw.appendChild(el("label", "f", "The idea"));
@@ -156,8 +187,10 @@ function ideaField(body, draft){
   body.appendChild(fw);
 }
 
-/* SAVE. A new team asks the database for a free id derived from its name
-   (see putNew); an edit keeps its own. */
+/** SAVE. A new team asks the database for a free id derived from its name
+   (see putNew); an edit keeps its own.
+   @param {string | null} id
+   @param {Team} draft */
 function saveTeam(id, draft){
   if (!draft.name) { toast("Give the team a name"); return; }
   const stem = slug(draft.name).slice(0, 40) || "team";
@@ -168,8 +201,10 @@ function saveTeam(id, draft){
   });
 }
 
-/* DELETE, after asking - or, for a team never saved, just leave. The builds
-   are not touched. */
+/** DELETE, after asking - or, for a team never saved, just leave. The builds
+   are not touched.
+   @param {string | null} id
+   @param {Team} draft */
 function deleteTeam(id, draft){
   if (!id) { leaveEditor("teams"); return; }
   ask("Delete the team “" + draft.name + "”?",
@@ -186,10 +221,18 @@ function deleteTeam(id, draft){
    unevolved slot is its base row whatever stone it holds, and only one may
    evolve per battle, so the honest unit is a WORLD - nobody evolved, or this
    one did - and both sections are drawn from the one chosen. */
+/** @param {SheetBody} body
+   @param {TeamReport} r */
 function scenarioSection(body, r){
   const SCEN = scenarios(r);
+  /** @type {{v: number | null}} */
   const scenAt = {v: null};
-  let scenWhy = null, speedBox = null, typeBox = null;
+  /** @type {HTMLElement | null} */
+  let scenWhy = null;
+  /** @type {HTMLElement | null} */
+  let speedBox = null;
+  /** @type {HTMLElement | null} */
+  let typeBox = null;
   /* Repaint the Speed order and the type chart for the scenario picked (nobody
      evolves, or which one Mega does). */
   function paintScenario(){
@@ -221,15 +264,19 @@ function scenarioSection(body, r){
   paintScenario();
 }
 
-/* The worlds to choose between: nobody evolves, then one per slot whose Mega
-   changes its typing or its Speed. */
+/** The worlds to choose between: nobody evolves, then one per slot whose Mega
+   changes its typing or its Speed.
+   @param {TeamReport} r
+   @returns {Scenario[]} */
 function scenarios(r){
+  /** @type {Scenario[]} */
   const SCEN = [{at: null, tab: r.megaCases.length ? "Nobody evolves" : "The six",
                why: "Every one of them in base form. Mega Evolution resolves "
                   + "after switch-ins, so this is what takes the first hit "
                   + "— and staying here to resist something is a play, "
                   + "not a delay."}];
   r.megaCases.forEach(function(x){
+    /** @type {string[]} */
     const bits = [];
     if (x.retype) bits.push(x.from.join("/") + " → " + x.to.join("/"));
     if (x.respeed) bits.push("Speed " + x.speFrom + " → " + x.speTo);
@@ -242,7 +289,10 @@ function scenarios(r){
   return SCEN;
 }
 
-/* The segmented control that picks the world. */
+/** The segmented control that picks the world.
+   @param {Scenario[]} SCEN
+   @param {{v: number | null}} scenAt
+   @param {() => void} paint */
 function scenarioButtons(SCEN, scenAt, paint){
   const seg = el("div", "seg");
   seg.setAttribute("role", "group");
@@ -260,11 +310,13 @@ function scenarioButtons(SCEN, scenAt, paint){
   return seg;
 }
 
-/* WHERE EACH NUMBER CAME FROM, on its own line: the base, the SP spent on it
+/** WHERE EACH NUMBER CAME FROM, on its own line: the base, the SP spent on it
    and what the nature did. Without that a Speed order is six numbers to take
    on trust, and the SP is the half he can still change. The evolved one is
    written in the Mega's ink so the row that changed is the one that stands
-   out. */
+   out.
+   @param {HTMLElement} host
+   @param {SpeedRow[]} rows */
 function paintSpeeds(host, rows){
   host.innerHTML = "";
   rows.forEach(function(x){
@@ -290,10 +342,12 @@ function paintSpeeds(host, rows){
   host.appendChild(sfoot);
 }
 
-/* EVERY TYPE THAT HITS ANY OF THEM, uncapped. Sorted worst first, so a cap
+/** EVERY TYPE THAT HITS ANY OF THEM, uncapped. Sorted worst first, so a cap
    would drop the tail - and the tail is where a lone x4 sits (one Pokemon
    weak to Flying x4 behind six shared weaknesses), the exact hole this table
-   exists to find. Each type says who is weak to it and who resists it. */
+   exists to find. Each type says who is weak to it and who resists it.
+   @param {HTMLElement} host
+   @param {TypeRow[]} all */
 function paintTypes(host, all){
   const tt = all.filter(function(x){ return x.weak; });
   host.innerHTML = "";
@@ -325,9 +379,10 @@ function paintTypes(host, all){
   });
 }
 
-/* "Chesnaught ×4, Incineroar ×2". EVERY NAME CARRIES ITS OWN MULTIPLIER:
+/** "Chesnaught ×4, Incineroar ×2". EVERY NAME CARRIES ITS OWN MULTIPLIER:
    x4 and x2 are different problems, and so are x0.25, x0.5 and an
-   immunity. */
+   immunity.
+   @param {{name: string, m: number}[]} list */
 function withMultipliers(list){
   return list.map(function(e){
     return e.name + " ×" + (e.m === 0 ? "0" : e.m);
@@ -341,6 +396,11 @@ function withMultipliers(list){
    Farigiraf be three different answers, and what makes editing a set update
    every team carrying it. The item is chosen here because the Item Clause is
    a team-level rule. */
+/** @param {Team} draft
+   @param {string | null} id
+   @param {SlotInfo} x
+   @param {number} i
+   @param {() => void} redraw */
 function teamSlotRow(draft, id, x, i, redraw){
   let row = x.build ? slotCard(x) : null;
   if (!row) {
@@ -355,23 +415,26 @@ function teamSlotRow(draft, id, x, i, redraw){
   return row;
 }
 
-/* A filled slot wears the same card as everywhere else, typed as the BUILD's
+/** A filled slot wears the same card as everywhere else, typed as the BUILD's
    Pokemon - the Mega when a stone is on it, because that is what walks onto
    the field - and carrying the set it runs: the ability it chose, its nature,
    its item, its SP and its moves - so a team can be read without opening
    six builds. Returns null for a build whose Pokemon the dex does not
-   carry. */
+   carry.
+   @param {SlotInfo} x */
 function slotCard(x){
-  const draw = byName[x.build.mega || x.build.pokemon] || byName[x.build.pokemon];
+  const b = x.build;
+  if (!b) return null;
+  const draw = byName[b.mega || b.pokemon] || byName[b.pokemon];
   if (!draw) return null;
-  const ab = activeAbility(x.build);
+  const ab = activeAbility(b);
   const spTxt = STAT_KEYS.map(function(k){
-    return x.build.stat_points?.[k] || 0; }).join("/");
+    return b.stat_points?.[k] || 0; }).join("/");
   return pokeCard(draw, {
     tag: "div",
-    name: x.build.pokemon,
+    name: b.pokemon,
     abValue: ab || "—",
-    abLabel: x.build.mega ? "Ability after Mega" : "Ability",
+    abLabel: b.mega ? "Ability after Mega" : "Ability",
     /* ONLY THE FORM THE BUILD PLAYS AS: a Mega build is drawn as the Mega
        row, and a base build must not grow the species' whole Mega line
        beside a set that carries no stone. */
@@ -380,7 +443,7 @@ function slotCard(x){
        decision being made - the six items are read down the column against
        each other. */
     cells: [
-      labelBox(x.build.nature || null, "Nature", "wide"),
+      labelBox(b.nature || null, "Nature", "wide"),
       labelBox(x.slot.item || null, "Item", "wide"),
       labelBox(spTxt === "0/0/0/0/0/0" ? null : spTxt,
                "SP  hp/atk/def/spa/spd/spe", "wide")
@@ -388,15 +451,17 @@ function slotCard(x){
     badges: function(h){ slotBadges(h, x); },
     meta: function(meta){
       meta.appendChild(el("span", "mono",
-        (x.build.moves || []).length + " moves"));
+        (b.moves || []).length + " moves"));
     },
     notes: function(body){ slotMoves(body, x); }
   });
 }
 
-/* The Mega it runs, and whether it can be brought today. */
+/** The Mega it runs, and whether it can be brought today.
+   @param {HTMLElement} h
+   @param {SlotInfo} x */
 function slotBadges(h, x){
-  if (x.build.mega) h.appendChild(el("span", "tag mega", x.build.mega));
+  if (x.build?.mega) h.appendChild(el("span", "tag mega", x.build.mega));
   if (x.state === "parked")
     h.appendChild(el("span", "tag warn", "in HOME — recall it first"));
   else if (x.state === "unbound")
@@ -407,13 +472,16 @@ function slotBadges(h, x){
     h.appendChild(el("span", "tag warn", "rental — cannot be trained"));
 }
 
-/* THE MOVE NAMES, not the count: a count tells you a set is finished, the
+/** THE MOVE NAMES, not the count: a count tells you a set is finished, the
    names are what you read a team off. Each is its own chip so a phone breaks
-   between them and never inside one. Then why the slot holds its item. */
+   between them and never inside one. Then why the slot holds its item.
+   @param {HTMLElement} body
+   @param {SlotInfo} x */
 function slotMoves(body, x){
   const mv = el("div", "rmeta mt4");
-  if ((x.build.moves || []).length) {
-    x.build.moves.forEach(function(n){
+  const moves = x.build?.moves || [];
+  if (moves.length) {
+    moves.forEach(function(n){
       const mrow = MOVE_BY[n];
       const sp2 = el("span", "tag");
       if (mrow) sp2.appendChild(typeChip(mrow.type));
@@ -427,8 +495,13 @@ function slotMoves(body, x){
   if (x.slot.why) body.appendChild(el("div", "st", x.slot.why));
 }
 
-/* The slot's buttons: pick or change the build, set the item, open the set
-   in the build editor, empty the slot. */
+/** The slot's buttons: pick or change the build, set the item, open the set
+   in the build editor, empty the slot.
+   @param {Team} draft
+   @param {string | null} id
+   @param {SlotInfo} x
+   @param {number} i
+   @param {() => void} redraw */
 function slotButtons(draft, id, x, i, redraw){
   const side = el("div", "rside");
   const pick = el("button", "btn sm", x.build ? "Change" : "Fill");
@@ -464,17 +537,20 @@ function slotButtons(draft, id, x, i, redraw){
   return side;
 }
 
-/* STRAIGHT INTO THE SET, from the screen where its problems are visible,
+/** STRAIGHT INTO THE SET, from the screen where its problems are visible,
    instead of going to the Builds tab to find it.
 
    THE TEAM IS WRITTEN FIRST, and that is not a convenience: leaving for the
    build editor abandons this draft, so saving first is the only version of
    this that cannot lose work. A team never saved has no id to write to, and
    inventing one would create a team he never asked for, so that case asks
-   for a name instead. */
+   for a name instead.
+   @param {Team} draft
+   @param {string | null} id
+   @param {string | undefined} bid */
 function teamEditBuild(draft, id, bid){
-  const b = S.builds[bid];
-  if (!b) { toast("That build is gone"); return; }
+  const b = bid ? S.builds[bid] : null;
+  if (!bid || !b) { toast("That build is gone"); return; }
   if (!id) {
     toast("Name and save the team first — editing a build leaves this screen");
     return;
@@ -500,8 +576,12 @@ function teamEditBuild(draft, id, bid){
    And the Species Clause is enforced HERE, the way the Item Clause is in the
    item picker: a species another slot already holds is greyed out with the
    reason written on it, rather than accepted and reported as illegal. */
+/** @param {Team} draft
+   @param {number} idx
+   @param {(bid: string) => void} onPick */
 function teamPickBuild(draft, idx, onPick){
   const taken = takenSpecies(draft, idx);
+  /** @type {BuildFilter} */
   const F = {role:{}, type:{}, sort:"az"};
   openSheet("Which build?", function(body){
     if (!Object.keys(S.builds).length) {
@@ -528,10 +608,13 @@ function teamPickBuild(draft, idx, onPick){
   }, [fbtn("Back", "", function(){ closeSheet(); })]);
 }
 
-/* The species the OTHER slots hold, keyed by the dex FORM name - the same
+/** The species the OTHER slots hold, keyed by the dex FORM name - the same
    key core/team.js checks the clause on. A cosmetic variant (Squawkabilly's
-   plumages) is one dex entry, so it is one form here too. */
+   plumages) is one dex entry, so it is one form here too.
+   @param {Team} draft
+   @param {number} idx */
 function takenSpecies(draft, idx){
+  /** @type {Record<string, number>} */
   const taken = {};
   (draft?.slots || []).forEach(function(sl, j){
     if (j === idx || !sl?.build_id) return;
@@ -541,9 +624,10 @@ function takenSpecies(draft, idx){
   return taken;
 }
 
-/* ONE PASS over the ledger, so the filter rows and the list read the same
+/** ONE PASS over the ledger, so the filter rows and the list read the same
    facts rather than each deriving their own. `p` is the form the build PLAYS
-   AS - the Mega when a stone is on it. */
+   AS - the Mega when a stone is on it.
+   @param {Record<string, number>} taken */
 function pickRows(taken){
   return Object.keys(S.builds).map(function(bid){
     const b = S.builds[bid], lk = buildLink(bid);
@@ -562,9 +646,12 @@ function pickRows(taken){
   });
 }
 
-/* A–Z AND DEX, AND THE STATS ARE ALL OR NONE: offering BST and Speed but not
+/** A–Z AND DEX, AND THE STATS ARE ALL OR NONE: offering BST and Speed but not
    the rest would be an arbitrary pick. A-Z and Dex are the row; the six
-   stats and BST sit together behind a fold. */
+   stats and BST sit together behind a fold.
+   @param {SheetBody} body
+   @param {BuildFilter} F
+   @param {() => void} draw */
 function sortControls(body, F, draw){
   const SORTS = [["az", "A–Z"], ["dex", "Dex no."]];
   const STATSORTS = [["bst", "BST"], ["hp", "HP"], ["atk", "Atk"],
@@ -582,7 +669,13 @@ function sortControls(body, F, draw){
   body.appendChild(strow2);
 }
 
-/* One sort choice. Pressing it un-presses every other in both rows. */
+/** One sort choice. Pressing it un-presses every other in both rows.
+   @param {HTMLElement} row
+   @param {HTMLElement[]} groups
+   @param {BuildFilter} F
+   @param {string} key
+   @param {string} text
+   @param {() => void} draw */
 function sortButton(row, groups, F, key, text, draw){
   const t = el("button", "tog", text);
   setPressed(t, F.sort === key);
@@ -594,13 +687,22 @@ function sortButton(row, groups, F, key, text, draw){
   row.appendChild(t);
 }
 
-/* WHAT JOB IT DOES. `role` is typed by hand, so the chips are the distinct
+/** WHAT JOB IT DOES. `role` is typed by hand, so the chips are the distinct
    roles that exist, matched case-insensitively and labelled with the
    spelling first used. FOLDED, AND IT STAYS FOLDED: with a role per build
    these are as many chips as builds, and open they would push the list off
-   the screen. The count rides on the button. */
+   the screen. The count rides on the button.
+   @param {SheetBody} body
+   @param {PickRow[]} rows
+   @param {BuildFilter} F
+   @param {() => void} draw */
 function roleChips(body, rows, F, draw){
-  const roleKeys = [], roleN = {}, roleText = {};
+  /** @type {string[]} */
+  const roleKeys = [];
+  /** @type {Record<string, number>} */
+  const roleN = {};
+  /** @type {Record<string, string>} */
+  const roleText = {};
   rows.forEach(function(r){
     if (!r.role) return;
     const k = r.role.toLowerCase();
@@ -619,11 +721,18 @@ function roleChips(body, rows, F, draw){
   body.appendChild(rrow);
 }
 
-/* A TYPE IS WHY THE SIXTH SLOT EXISTS: the hole the other five leave. The
+/** A TYPE IS WHY THE SIXTH SLOT EXISTS: the hole the other five leave. The
    chips are the types the builds actually cover, so the row shrinks with the
-   box rather than always showing eighteen. */
+   box rather than always showing eighteen.
+   @param {SheetBody} body
+   @param {PickRow[]} rows
+   @param {BuildFilter} F
+   @param {() => void} draw */
 function typeChips(body, rows, F, draw){
-  const tKeys = [], tN = {};
+  /** @type {string[]} */
+  const tKeys = [];
+  /** @type {Record<string, number>} */
+  const tN = {};
   rows.forEach(function(r){
     r.types.forEach(function(t){
       if (!tN[t]) tKeys.push(t);
@@ -638,9 +747,16 @@ function typeChips(body, rows, F, draw){
   body.appendChild(trow);
 }
 
-/* One filter chip, on or off - a slot is being FILLED here, not queried, so
+/** One filter chip, on or off - a slot is being FILLED here, not queried, so
    the third "rule it out" state the Find tab needs would be a control nobody
-   reaches for. A type chip wears the type's colours. */
+   reaches for. A type chip wears the type's colours.
+   @param {HTMLElement} row
+   @param {BuildFilter} F
+   @param {() => void} draw
+   @param {"role" | "type"} group
+   @param {string} key
+   @param {string} text
+   @param {string} [type] */
 function filterChip(row, F, draw, group, key, text, type){
   const t = el("button", "tog", text);
   setPressed(t, false);
@@ -656,8 +772,11 @@ function filterChip(row, F, draw, group, key, text, type){
   return t;
 }
 
-/* A button that folds `panel` open and shut: a caret, the label, and how many
-   things are inside, so what is in there shows without opening it. */
+/** A button that folds `panel` open and shut: a caret, the label, and how many
+   things are inside, so what is in there shows without opening it.
+   @param {string} text
+   @param {number} n
+   @param {HTMLElement} panel */
 function foldToggle(text, n, panel){
   const tog = el("button", "btn sm fold inline");
   tog.type = "button";
@@ -676,9 +795,15 @@ function foldToggle(text, n, panel){
   return tog;
 }
 
-/* The list, filtered and sorted. A species another slot holds goes LAST and
+/** The list, filtered and sorted. A species another slot holds goes LAST and
    is not hidden: the clause is the reason it cannot be picked, and that is
-   worth reading once. */
+   worth reading once.
+   @param {HTMLElement} list
+   @param {HTMLElement} count
+   @param {PickRow[]} rows
+   @param {BuildFilter} F
+   @param {string} q
+   @param {(bid: string) => void} onPick */
 function drawPicks(list, count, rows, F, q, onPick){
   const ro = Object.keys(F.role), ty = Object.keys(F.type);
   const hits = rows.filter(function(r){
@@ -702,10 +827,13 @@ function drawPicks(list, count, rows, F, q, onPick){
   }
 }
 
-/* The comparator for a sort key. A stat sort reads the FORM THE BUILD PLAYS
+/** The comparator for a sort key. A stat sort reads the FORM THE BUILD PLAYS
    AS, Mega included - the same row every other number on the card comes
-   from - and a build with no dex row sorts last rather than at zero. */
+   from - and a build with no dex row sorts last rather than at zero.
+   @param {string} sort
+   @returns {(a: PickRow, b: PickRow) => number} */
 function pickOrder(sort){
+  /** @type {Record<string, number>} */
   const IDX = {hp:0, atk:1, def:2, spa:3, spd:4, spe:5};
   return function(a, b){
     if (sort === "dex")
@@ -721,14 +849,16 @@ function pickOrder(sort){
   };
 }
 
-/* One build, drawn as the card every other list draws.
+/** One build, drawn as the card every other list draws.
 
    A BUILD IS STILL A POKEMON, so the slot picker shows the card the rest of
    the app shows, with the build's own facts as the extra cells - this is the
-   screen where a team is decided, and it needs the numbers. */
+   screen where a team is decided, and it needs the numbers.
+   @param {PickRow} r
+   @param {(bid: string) => void} onPick */
 function buildPickRow(r, onPick){
   const b = r.b, bid = r.id, lk = r.lk;
-  const badges = function(h){
+  const badges = function(/** @type {HTMLElement} */ h){
     /* several builds per species is the point, so the id is shown: it is
        what tells farigiraf from farigiraf-2 */
     if (buildsFor(b.pokemon).length > 1)
@@ -740,6 +870,7 @@ function buildPickRow(r, onPick){
     if (lk.state === "parked")
       h.appendChild(el("span", "tag warn", "in HOME"));
   };
+  /** @type {import("../ui/card.js").CardOpts} */
   const opts = {
     cls: (r.dupe || lk.state === "orphan") ? "illegal" : "",
     name: b.pokemon,
@@ -778,7 +909,7 @@ function buildPickRow(r, onPick){
     badges(h);
     m.appendChild(h);
     btn.appendChild(m);
-    if (!r.dupe) btn.onclick = opts.onclick;
+    if (!r.dupe) btn.onclick = opts.onclick || null;
   }
   if (r.dupe && btn.tagName === "BUTTON") /** @type {HTMLButtonElement} */ (btn).disabled = true;
   return btn;
@@ -791,7 +922,11 @@ function buildPickRow(r, onPick){
    thing is it (the game's own categories), and can I actually use it -
    "owned" is the one that matters here, because an item not recorded is a
    2000 VP decision, not a choice between six. */
+/** @param {Team} draft
+   @param {number} i
+   @param {() => void} redraw */
 function teamPickItem(draft, i, redraw){
+  /** @type {Record<string, number>} */
   const taken = {};
   draft.slots.forEach(function(sl, j){
     if (j !== i && sl?.item) taken[sl.item] = 1;
@@ -803,6 +938,7 @@ function teamPickItem(draft, i, redraw){
     const POOL = holdable();
     const inp = searchField(body, "Search " + POOL.length +
       " holdable items — name or effect", function(){ draw(); });
+    /** @type {ItemFilter} */
     const F = {cat:{}, own:false};
     itemFilters(body, POOL, F, draw);
     const count = el("div", "sub mb6");
@@ -817,9 +953,14 @@ function teamPickItem(draft, i, redraw){
   }, [fbtn("Back", "", function(){ closeSheet(); })]);
 }
 
-/* The category chips and "Only ones you own". Drawn only when there is more
-   than one thing to choose between. */
+/** The category chips and "Only ones you own". Drawn only when there is more
+   than one thing to choose between.
+   @param {SheetBody} body
+   @param {Holdable[]} POOL
+   @param {ItemFilter} F
+   @param {() => void} draw */
 function itemFilters(body, POOL, F, draw){
+  /** @type {Record<string, number>} */
   const nCat = {};
   POOL.forEach(function(x){ nCat[x.cat] = (nCat[x.cat] || 0) + 1; });
   const crow = el("div", "toggles mb8");
@@ -829,7 +970,7 @@ function itemFilters(body, POOL, F, draw){
     setPressed(t, false);
     t.onclick = function(){
       if (F.cat[k]) delete F.cat[k]; else F.cat[k] = 1;
-      setPressed(t, F.cat[k]);
+      setPressed(t, !!F.cat[k]);
       draw();
     };
     crow.appendChild(t);
@@ -848,15 +989,22 @@ function itemFilters(body, POOL, F, draw){
   }
 }
 
-/* A stone is owned when the STONE ledger says so, not the item one - they
-   are two different tables and always have been. */
+/** A stone is owned when the STONE ledger says so, not the item one - they
+   are two different tables and always have been.
+   @param {Holdable} x */
 function ownsItem(x){
   return x.stone ? hasStone(x.name) : hasItem(x.name);
 }
 
-/* "No item" first, then ALL the items that pass the filters - uncapped,
+/** "No item" first, then ALL the items that pass the filters - uncapped,
    because a list you are choosing FROM must not hide part of the pool.
-   `slot` is {draft, i, taken, redraw}. */
+   `slot` is {draft, i, taken, redraw}.
+   @param {HTMLElement} list
+   @param {HTMLElement} count
+   @param {Holdable[]} POOL
+   @param {ItemFilter} F
+   @param {string} q
+   @param {ItemSlot} slot */
 function drawItemPicks(list, count, POOL, F, q, slot){
   const cats = Object.keys(F.cat);
   list.innerHTML = "";
@@ -883,10 +1031,12 @@ function drawItemPicks(list, count, POOL, F, q, slot){
   pool.forEach(function(x){ list.appendChild(itemPickRow(x, slot)); });
 }
 
-/* One item: its name, whether it is a stone, whether another slot holds it
+/** One item: its name, whether it is a stone, whether another slot holds it
    or it is not owned, how many of THIS slot's Pokemon hold it on the ladder,
    and what it does - whole, not the first 120 characters, because the cut
-   landed exactly where an item says when it does NOT work. */
+   landed exactly where an item says when it does NOT work.
+   @param {Holdable} x
+   @param {ItemSlot} slot */
 function itemPickRow(x, slot){
   const draft = slot.draft, i = slot.i, taken = slot.taken;
   const btn = el("button", "row" + (taken[x.name] ? " illegal" : ""));
@@ -915,13 +1065,16 @@ function itemPickRow(x, slot){
   return btn;
 }
 
-/* Set the item, then ask why this one - the half of a team that is not
-   derivable from anything else. */
+/** Set the item, then ask why this one - the half of a team that is not
+   derivable from anything else.
+   @param {Holdable} x
+   @param {ItemSlot} slot */
 function pickItem(x, slot){
   const draft = slot.draft, i = slot.i;
   draft.slots[i].item = x.name;
   closeSheet();
-  openSheet(x.name + " on " + S.builds[draft.slots[i].build_id]?.pokemon,
+  const bid = draft.slots[i].build_id;
+  openSheet(x.name + " on " + (bid ? S.builds[bid]?.pokemon : ""),
     function(b2){
       b2.appendChild(el("p", "sub", "Why this one? One line is enough."));
       const f = el("div", "field");

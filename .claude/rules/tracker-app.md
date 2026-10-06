@@ -97,13 +97,14 @@ checkJs, nothing compiled) is in the gate at zero. Types are JSDoc in a
 `DexRow`, `Move`, `BoxRow`, `Build`, `Team`, `Trade`, `AppState`) are global in
 `tracker/src/globals.d.ts`; a shape one module builds is a `@typedef` there. A
 control read by value is `field(id)`, a document-wide query `$$(sel)`.
-**`core/` is strict (2026-10-06, `tracker/src/core/tsconfig.json`)**: no
-untyped parameter, no unchecked null; never type one `any` to get past it -
-`docFromRow` is the one deliberate `any` (database rows). **`ui/` too
-(2026-10-06, `tracker/src/ui/tsconfig.json`)**; `tabs/` is next. A sheet
-builder's `_` expandos are named on `SheetBody` in `globals.d.ts`. typescript
-is pinned to 6.0: 7.0 has no JavaScript API and `eslint-plugin-sonarjs` needs
-one.
+**The whole app is strict (2026-10-06, one `tsconfig.json`)**: no untyped
+parameter, no unchecked null; never type one `any` to get past it - the
+database boundary in `store.js` (`docFromRow`, the row bodies) is the one
+deliberate `any`. Read a node's children with `kids(node)`, never
+`Array.prototype.forEach.call`, whose callback gets an `any` strict never
+reports. A sheet builder's `_` expandos are named on `SheetBody`, a list row
+with its id is `ListedBox` / `ListedTrade`. typescript is pinned to 6.0: 7.0
+has no JavaScript API and `eslint-plugin-sonarjs` needs one.
 
 **The tracker's damage tab runs Smogon's engine itself** (bundled by
 `scripts/build_engine_bundle.py`), so it is exact rather than close. Do not

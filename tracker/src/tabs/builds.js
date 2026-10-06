@@ -261,7 +261,7 @@ function buildRow(id, b){
    @param {string} pokemon
    @param {UsageSection} kind */
 function orderByUsage(sel, pokemon, kind){
-  const opts = Array.prototype.slice.call(sel.options);
+  const opts = Array.from(sel.options);
   const rows = opts.map(function(opt, i){
     return {opt:opt, i:i, pct:splitPct(pokemon, kind, opt.value)};
   });

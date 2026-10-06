@@ -1,8 +1,0 @@
-// core/ type-checks strict: every parameter typed, null kept apart. It can go
-// strict on its own because it imports only from core/. The gate runs it
-// (daily.py), and VS Code picks this file for anything in core/.
-{
-  "extends": "../../../tsconfig.json",
-  "compilerOptions": { "strict": true },
-  "include": ["./*.js", "../globals.d.ts"]
-}

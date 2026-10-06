@@ -18,6 +18,11 @@ function field(id){ return /** @type {HTMLInputElement} */ ($(id)); }
 function $$(sel){
   return /** @type {HTMLElement[]} */ (Array.from(document.querySelectorAll(sel)));
 }
+/** A node's element children, as an array: $$ for one node's own row.
+   @param {Element} node */
+function kids(node){
+  return /** @type {HTMLElement[]} */ (Array.from(node.children));
+}
 /** The one way the UI makes an element: a tag, its classes, its text.
    Text goes through textContent, so a scraped string is never parsed as
    markup.
@@ -184,7 +189,7 @@ function setPressed(node, on){
    @param {Element} group
    @param {Element | null} on */
 function pressOnly(group, on){
-  Array.prototype.forEach.call(group.children, function(x){
+  kids(group).forEach(function(x){
     setPressed(x, x === on);
   });
 }
@@ -219,6 +224,6 @@ function showPane(panes, which){
     @typedef {HTMLInputElement & {wrap: HTMLElement, q: () => string}} SearchInput */
 
 export {
-  $, $$, capNote, el, fbtn, field, filterLabel, note, pressOnly, resetHost, searchField,
-  setPressed, showPane, toast, wireClears,
+  $, $$, capNote, el, fbtn, field, filterLabel, kids, note, pressOnly, resetHost,
+  searchField, setPressed, showPane, toast, wireClears,
 };

@@ -6,7 +6,7 @@ import {
   anyRow, bst, byName, C, dexLabel, dexNo, FORMS, freeSlug, slug,
 } from "../core/data.js";
 import {
-  $, capNote, el, fbtn, field, note, searchField, setPressed, toast,
+  $, capNote, el, fbtn, field, kids, note, searchField, setPressed, toast,
 } from "../core/dom.js";
 import { boxRows, originOf, S } from "../core/state.js";
 import { drop, put, putNew } from "../core/store.js";
@@ -182,9 +182,13 @@ function wireHistoryFold(tog, bod){
    reachable, not automatic.
    @param {Trade[]} h */
 function marketSummary(h){
-  const ceil = h.filter(function(r){ return r.gaveValue && r.gotBst; });
-  const hit = ceil.filter(function(r){ return r.gotBst >= r.gaveValue - 10; });
-  const mega = ceil.filter(function(r){ return r.gaveValue > r.gaveBst; });
+  /* the trades priced on both sides: what the chip was worth, what came back */
+  const ceil = h.flatMap(function(r){
+    return r.gaveValue && r.gotBst
+      ? [{value: r.gaveValue, got: r.gotBst, base: r.gaveBst}] : [];
+  });
+  const hit = ceil.filter(function(c){ return c.got >= c.value - 10; });
+  const mega = ceil.filter(function(c){ return c.base !== undefined && c.value > c.base; });
   if (!ceil.length) return "What the market actually paid.";
   const parity = mega.length
     ? ", " + (mega.length - hit.length) + " settled at base parity instead" : "";
@@ -234,7 +238,7 @@ function bstChange(meta, r){
     meta.appendChild(el("span", "tag " + (d > 20 ? "ok" : ""),
       (d > 0 ? "+" : "") + d));
   }
-  if (r.gaveValue && r.gaveValue > r.gaveBst) {
+  if (r.gaveValue && r.gaveBst !== undefined && r.gaveValue > r.gaveBst) {
     meta.appendChild(el("span", null,
       "chip's Mega line: " + r.gaveValue));
   }
@@ -839,7 +843,7 @@ function mineControls(body, PICK, draw){
     setPressed(t, PICK.sort === o[0]);
     t.onclick = function(){
       PICK.sort = o[0];
-      Array.prototype.forEach.call(sortWrap.children, function(/** @type {Element} */ c){
+      kids(sortWrap).forEach(function(c){
         setPressed(c, c === t);
       });
       draw();

@@ -1,6 +1,6 @@
 /* The Worlds view inside Find: what won at every VGC World Championship. */
 import { anyRow, C } from "../core/data.js";
-import { $, el, setPressed } from "../core/dom.js";
+import { $, el, kids, setPressed } from "../core/dom.js";
 import { ownedNames } from "../core/state.js";
 import { cardLine, labelBox, pokeCard } from "../ui/card.js";
 import { findDetail } from "../ui/pokemon.js";
@@ -39,7 +39,7 @@ function worldInit(){
     setPressed(t, r.y === WORLD.year);
     t.onclick = function(){
       WORLD.year = r.y;
-      Array.prototype.forEach.call(yrow.children, function(x){
+      kids(yrow).forEach(function(x){
         setPressed(x, x === t);
       });
       worldDraw();
@@ -53,7 +53,7 @@ function worldInit(){
       setPressed(t, o[0] === WORLD.div);
       t.onclick = function(){
         WORLD.div = o[0];
-        Array.prototype.forEach.call(drow.children, function(x){
+        kids(drow).forEach(function(x){
           setPressed(x, x === t);
         });
         worldDraw();

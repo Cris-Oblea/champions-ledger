@@ -2,7 +2,9 @@
    store. renderAll() is the one redraw every change ends in. */
 /* FIRST, so a script error anywhere after this line is caught and shown. */
 import "./core/errors.js";
-import { $, $$, el, pressOnly, setPressed, showPane, wireClears } from "./core/dom.js";
+import {
+  $, $$, el, kids, pressOnly, setPressed, showPane, wireClears,
+} from "./core/dom.js";
 import { VIEW } from "./core/state.js";
 import { whenChanged } from "./core/store.js";
 import {
@@ -91,19 +93,22 @@ go("box");
 $$("[data-add]").forEach(function(b){
   b.onclick = function(){ addSheet(/** @type {BoxLocation} */ (b.dataset.add)); };
 });
-Array.prototype.forEach.call($("calcMode").children, function(b){
+kids($("calcMode")).forEach(function(b){
   b.onclick = function(){
-    CALC.gameType = b.dataset.mode;
+    CALC.gameType = b.dataset.mode || "Doubles";
     pressOnly($("calcMode"), b);
     calcDraw();
   };
 });
-/* The same segmented control sits on more than one screen (the sort on both
+/** The same segmented control sits on more than one screen (the sort on both
    boxes, the HOME panes in two places), so every copy is marked at once: the
-   button whose data-<key> is the chosen value is pressed in each. */
+   button whose data-<key> is the chosen value is pressed in each.
+   @param {string} sel
+   @param {string} key
+   @param {string} value */
 function markSeg(sel, key, value){
   $$(sel).forEach(function(g){
-    Array.prototype.forEach.call(g.children, function(x){
+    kids(g).forEach(function(x){
       setPressed(x, x.dataset[key] === value);
     });
   });
@@ -111,9 +116,9 @@ function markSeg(sel, key, value){
 /* one order for every box list, so HOME and the Champions Box can be read
    against the phone's own screen without re-sorting in your head */
 $$(".sortseg").forEach(function(seg){
-  Array.prototype.forEach.call(seg.children, function(b){
+  kids(seg).forEach(function(b){
     b.onclick = function(){
-      VIEW.sort = b.dataset.sort;
+      VIEW.sort = b.dataset.sort || "dex";
       markSeg(".sortseg", "sort", VIEW.sort);
       try { localStorage.setItem("champ-sort", VIEW.sort); } catch (e) {}
       renderAll();
@@ -154,10 +159,12 @@ wireClears();
    under the whole box. The chosen pane is remembered, since the answer to
    "what was I doing in here" is almost always the same one. The panes that
    draw something expensive draw it only when shown. */
+/** @type {Record<string, string>} */
 const HOME_PANES = {box:"homePaneBox", gts:"homePaneGts", dex:"homePaneDex"};
-/* Show one of HOME's three panes (box, GTS, dex) and remember it for the next
+/** Show one of HOME's three panes (box, GTS, dex) and remember it for the next
    visit. The dex and the trade suggestions are drawn only when their pane
-   opens - both are slow and most visits never look. */
+   opens - both are slow and most visits never look.
+   @param {string} which */
 function homePane(which){
   if (!HOME_PANES[which]) which = "box";
   Object.keys(HOME_PANES).forEach(function(k){
@@ -169,14 +176,15 @@ function homePane(which){
   if (which === "gts") drawGtsWanted();
 }
 $$(".homeseg").forEach(function(seg){
-  Array.prototype.forEach.call(seg.children, function(b){
-    b.onclick = function(){ homePane(b.dataset.home); };
+  kids(seg).forEach(function(b){
+    b.onclick = function(){ homePane(b.dataset.home || "box"); };
   });
 });
 $("dexFilter").oninput = drawDexPane;
 try { homePane(localStorage.getItem("champ-homepane") || "box"); }
 catch (e) { homePane("box"); }
-/* the Items tab's two panes: Mega Stones and held items */
+/** the Items tab's two panes: Mega Stones and held items
+   @param {string} which */
 function gearPane(which){
   showPane({stones:["gearStonePane", "gearStones"],
             items:["gearItemPane", "gearItems"]}, which);
@@ -187,10 +195,11 @@ $("bldPaneBuilds").onclick = function(){ buildsPane("builds"); };
 $("bldPaneTeams").onclick  = function(){ buildsPane("teams"); };
 $("railBtn").onclick = function(){
   const sh = document.querySelector(".shell");
+  if (!sh) return;
   sh.classList.toggle("narrow");
   try { localStorage.setItem("champ-rail", sh.classList.contains("narrow") ? "1" : ""); } catch (e) {}
 };
-try { if (localStorage.getItem("champ-rail")) document.querySelector(".shell").classList.add("narrow"); } catch (e) {}
+try { if (localStorage.getItem("champ-rail")) document.querySelector(".shell")?.classList.add("narrow"); } catch (e) {}
 $("themeBtn").onclick = function(){
   const r = document.documentElement;
   let now = r.dataset.theme;

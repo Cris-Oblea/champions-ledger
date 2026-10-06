@@ -1,7 +1,7 @@
 /* The GTS pane's "Worth trading": what each Pokemon you could let go is
    worth as a chip, and what it can realistically fetch. */
 import { anyRow, byName } from "../core/data.js";
-import { $, el, fbtn, field, setPressed } from "../core/dom.js";
+import { $, el, fbtn, field, kids, setPressed } from "../core/dom.js";
 import { boxRows, originOf } from "../core/state.js";
 import {
   elapsedText, gtsBlocked, gtsOffers, gtsRecord, gtsSuggest, keepableCopies,
@@ -87,7 +87,7 @@ function setWantFilter(v){
   WANT_FILTER = v;
   tradeAll = false;
   const seg = $("gtsWantFilter");
-  if (seg) Array.prototype.forEach.call(seg.children, function(/** @type {HTMLElement} */ b){
+  if (seg) kids(seg).forEach(function(b){
     setPressed(b, b.dataset.want === v);
   });
   drawGtsWanted();
@@ -128,7 +128,7 @@ function drawGtsWanted(){
 function wireWantFilter(seg){
   if (!seg || seg._wired) return;
   seg._wired = 1;
-  Array.prototype.forEach.call(seg.children, function(/** @type {HTMLElement} */ b){
+  kids(seg).forEach(function(b){
     b.onclick = function(){ setWantFilter(b.dataset.want || "all"); };
   });
 }

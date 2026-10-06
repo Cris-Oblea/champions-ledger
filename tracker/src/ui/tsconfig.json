@@ -1,7 +1,0 @@
-// ui/ type-checks strict, with core/ (which it imports) checked again here.
-// The gate runs it (daily.py), and VS Code picks this file for anything in ui/.
-{
-  "extends": "../../../tsconfig.json",
-  "compilerOptions": { "strict": true },
-  "include": ["./*.js", "../core/*.js", "../globals.d.ts"]
-}
