@@ -9,8 +9,13 @@
    already in HOME is DONE even when a copy is also welded into the Champions
    box, because the HOME copy is the one that makes the slot elastic. */
 const { describe } = require("node:test");
-const { check, open, idle, row: boxRow, click } = require("./harness.js");
+const { check, open, idle, row: boxRow, click, one, all, byId, found } = require("./harness.js");
 
+/** @param {string} id
+   @param {string} name
+   @param {string} location
+   @param {string} status
+   @param {string} origin */
 const row = (id, name, location, status, origin) =>
   boxRow(id, name, {location, status, origin, trained:true});
 /* Aggron is bought and welded, Meganium is a rental, Dragonite only exists in
@@ -32,12 +37,14 @@ const ROWS = [
 
 const { dom, errs } = open({ box: ROWS });
 const w = dom.window, d = w.document;
-const pane = k => [...d.querySelectorAll(".homeseg button")]
-  .find(b => b.dataset.home === k);
-/* THE NAME, NOT THE WHOLE LINE. A card's name line also carries badges - a
+/** @param {string} k */
+const pane = k => found([...all(d, ".homeseg button")]
+  .find(b => b.dataset.home === k), "the " + k + " pane");
+/** THE NAME, NOT THE WHOLE LINE. A card's name line also carries badges - a
    difficulty chip, "frees a slot", a Worlds medal - and they are elements,
-   while the name itself is the one bare text node pokeCard appends. */
-const names = id => [...d.querySelectorAll("#" + id + " .row.card .rname")]
+   while the name itself is the one bare text node pokeCard appends.
+   @param {string} id */
+const names = id => [...all(d, "#" + id + " .row.card .rname")]
   .map(x => [...x.childNodes].filter(n => n.nodeType === 3)
                              .map(n => n.textContent).join("").trim());
 
@@ -46,13 +53,13 @@ const names = id => [...d.querySelectorAll("#" + id + " .row.card .rname")]
   w.go("home");
 
   describe("three panes, one switch", () => {
-    check("starts on the box", d.getElementById("homePaneBox").hidden, false);
+    check("starts on the box", byId(d, "homePaneBox").hidden, false);
     pane("gts").click();
-    check("GTS opens", d.getElementById("homePaneGts").hidden, false);
-    check("...and the box closes", d.getElementById("homePaneBox").hidden, true);
+    check("GTS opens", byId(d, "homePaneGts").hidden, false);
+    check("...and the box closes", byId(d, "homePaneBox").hidden, true);
     pane("dex").click();
-    check("Dex opens", d.getElementById("homePaneDex").hidden, false);
-    check("...and GTS closes", d.getElementById("homePaneGts").hidden, true);
+    check("Dex opens", byId(d, "homePaneDex").hidden, false);
+    check("...and GTS closes", byId(d, "homePaneGts").hidden, true);
   });
 
   describe("what is missing, and in what order", () => {
@@ -61,8 +68,8 @@ const names = id => [...d.querySelectorAll("#" + id + " .row.card .rname")]
     check("the goal is the dex without Megas",
        w.CHAMP.DEX.filter(p => !p[4]).length, 264);
     check("four species are his", /4 of 264/.test(
-       d.getElementById("dexDone").textContent), true);
-    check("260 to go", d.getElementById("nDexMissing").textContent, 260);
+       byId(d, "dexDone").textContent), true);
+    check("260 to go", byId(d, "nDexMissing").textContent, 260);
   });
 
   describe("and the ones he HAS in Champions are GTS targets", () => {
@@ -85,25 +92,26 @@ const names = id => [...d.querySelectorAll("#" + id + " .row.card .rname")]
        chips.indexOf("Garchomp") >= 0, false);
     check("Aggron is not a chip, it is a target",
        chips.indexOf("Aggron") >= 0, false);
-    const asks = [...d.querySelectorAll("#listGtsWant .st")]
+    const asks = [...all(d, "#listGtsWant .st")]
       .map(x => x.textContent).join(" ");
     check("and appears as something to ask for", /Aggron/.test(asks), true);
     /* WHAT IS ASKED FOR IS ALWAYS PLAYABLE: trading for something Champions
        cannot use buys a HOME row and nothing else. */
     check("and never proposes asking for something Champions lacks",
-       [...d.querySelectorAll("#listGtsWant .st .tag")]
+       [...all(d, "#listGtsWant .st .tag")]
          .every(t => !!w.byName[t.textContent]), true);
-    /* THE FILTER, which is the question the screen opens with */
-    const wantTog = v => [...d.querySelectorAll("#gtsWantFilter button")]
+    /** THE FILTER, which is the question the screen opens with
+       @param {string} v */
+    const wantTog = v => [...all(d, "#gtsWantFilter button")]
       .find(b => b.dataset.want === v);
     check("there is a filter for the ones he cannot use", !!wantTog("outside"), true);
     check("Melmetal is not recommended: the GTS refuses it",
        names("listGtsWant").indexOf("Melmetal") >= 0, false);
     check("and that is said, not hidden",
-       /Melmetal/.test(d.getElementById("gtsWantSub").textContent), true);
+       /Melmetal/.test(byId(d, "gtsWantSub").textContent), true);
     /* Celebi IS listed - one data point is not a rule - but last, and warned */
-    const celebi = [...d.querySelectorAll("#listGtsWant .row.card")]
-      .find(c => [...c.querySelector(".rname").childNodes]
+    const celebi = [...all(d, "#listGtsWant .row.card")]
+      .find(c => [...one(c, ".rname").childNodes]
         .filter(n => n.nodeType === 3).map(n => n.textContent).join("").trim()
           === "Celebi");
     check("Celebi is still listed", !!celebi, true);
@@ -116,7 +124,7 @@ const names = id => [...d.querySelectorAll("#" + id + " .row.card .rname")]
     check("marked as freeing a slot",
        !!d.querySelector("#listGtsWant .tag.ok"), true);
     check("the record comes from his own closed trades",
-       /closed trades/.test(d.getElementById("gtsWantSub").textContent) ||
+       /closed trades/.test(byId(d, "gtsWantSub").textContent) ||
        !w.CHAMP_GTS_ROWS, true);
     pane("dex").click();
 
@@ -131,7 +139,7 @@ const names = id => [...d.querySelectorAll("#" + id + " .row.card .rname")]
   });
 
   describe("the filter", () => {
-    const inp = d.getElementById("dexFilter");
+    const inp = byId(d, "dexFilter");
     inp.value = "aggron";
     inp.dispatchEvent(new w.Event("input", {bubbles:true}));
     check("filters to nothing, because Aggron is not missing",
@@ -140,13 +148,13 @@ const names = id => [...d.querySelectorAll("#" + id + " .row.card .rname")]
        whether a given species is in Champions' roster */
     inp.value = "";
     inp.dispatchEvent(new w.Event("input", {bubbles:true}));
-    const one = names("listDexMissing")[0];
-    inp.value = one.toLowerCase();
+    const first = names("listDexMissing")[0];
+    inp.value = first.toLowerCase();
     inp.dispatchEvent(new w.Event("input", {bubbles:true}));
-    check("and finds what IS missing", names("listDexMissing").join(","), one);
+    check("and finds what IS missing", names("listDexMissing").join(","), first);
     inp.value = "";
     inp.dispatchEvent(new w.Event("input", {bubbles:true}));
-    check("and it undoes", d.getElementById("nDexMissing").textContent, 260);
+    check("and it undoes", byId(d, "nDexMissing").textContent, 260);
   });
 
   describe("HOME holds any name", () => {
@@ -160,15 +168,15 @@ const names = id => [...d.querySelectorAll("#" + id + " .row.card .rname")]
      "Frillish", "Jellicent"].forEach(function(n){
       check(n + " has a row", !!(hd[n] && hd[n].b && hd[n].b[0]), true);
     });
-    check("and the female is not the male", (hd["Oinkologne-F"] || {b:[]}).b.join("/"),
+    check("and the female is not the male", found((hd["Oinkologne-F"] || {b:[]}).b, "(hd['Oinkologne-F'] || {b:[]}).b").join("/"),
        "115/90/70/59/90/65");
     /* and a row no dex knows opens a sheet instead of throwing */
-    w.pokeSheet({name:"Syclant", location:"home", status:"permanent",
-                 origin:"home", _id:"cap"});
+    w.pokeSheet(/** @type {ListedBox} */ ({name:"Syclant", location:"home", status:"permanent",
+                 origin:"home", _id:"cap"}));
     check("a name no dex knows does not break the sheet",
        !!d.getElementById("sheetBody"), true);
     check("...and it says so", /not in any dex/.test(
-       d.getElementById("sheetBody").textContent), true);
+       byId(d, "sheetBody").textContent), true);
     w.closeSheet();
   });
 

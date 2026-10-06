@@ -36,7 +36,10 @@ interface Champ {
     approx?: string, f?: OutsideForm[]}>;
   MEGA_OWNER?: Record<string, string[]>;
   PODIUM?: Record<string, PodiumSet[]>;
-  TYPE_COLORS?: Record<string, {top: string, bottom?: string, ink?: string}>;
+  /** type -> its colours, whether the official badge has two tones, whether
+   *  the colour is the official one, and its ink's contrast */
+  TYPE_COLORS?: Record<string, {top: string, bottom?: string, ink?: string,
+    two_tone?: boolean, official?: boolean, contrast?: number}>;
   ITEMS?: ItemRow[];
   /** [score, demand, supply, rank, how, usage %, ladder size] */
   GTSDIFF?: Record<string, [number, number, number, number | null, string,
@@ -147,8 +150,8 @@ interface SmogonSet {
 interface OutsideDex {
   /** species -> the moves it learns */
   m?: Record<string, string[]>;
-  /** move -> [type, cat, bp, acc, pp, text] */
-  mv?: Record<string, [string, "P" | "S" | "T", number, number | null, number, string]>;
+  /** move -> [type, cat, bp, acc, pp, text]; a move with no text omits it */
+  mv?: Record<string, [string, "P" | "S" | "T", number, number | null, number, string?]>;
   /** ability -> its main-series description */
   ab?: Record<string, string>;
 }

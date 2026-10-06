@@ -11,8 +11,12 @@
    A release UNBINDS rather than deletes. The fixtures below cover all four
    states, including two builds on one Pokemon. */
 const { describe } = require("node:test");
-const { check, open, idle, until, row, build, click } = require("./harness.js");
+const { check, open, idle, until, row, build, click, all, byId, found } = require("./harness.js");
 
+/** @param {string} id
+   @param {string} name
+   @param {string} location
+   @param {string} origin */
 const R = (id, name, location, origin) =>
   row(id, name, {location, origin, trained:true});
 const ROWS = [
@@ -26,11 +30,14 @@ const ROWS = [
   ...["Incineroar", "Whimsicott", "Rillaboom", "Sinistcha", "Gholdengo",
       "Maushold"].map(n => R(n.toLowerCase(), n, "champions", "champions")),
 ];
-/* box_id is the LINK, and it is not the id: several builds for a species
+/** box_id is the LINK, and it is not the id: several builds for a species
    (three different Farigiraf), and a build for a Pokemon he does not own yet.
    No fallback from a missing box_id to the id, deliberately: an idea build for
    Farigiraf gets the id "farigiraf", and a fallback would silently marry it to
-   a box row of the same name. */
+   a box row of the same name.
+   @param {string} id
+   @param {string} pokemon
+   @param {string | null} [box_id] */
 const B = (id, pokemon, box_id = id) => build(id, pokemon, {box_id,
   nature:"Jolly", stat_points:{hp:2,atk:32,def:0,spa:0,spd:0,spe:32},
   moves:["Protect"]});
@@ -47,7 +54,8 @@ const { dom, errs } = open({ box: ROWS, builds: BUILDS });
    keep passing while the real dialog was broken. */
 dom.window.confirm = function () { throw new Error("native confirm() must not be used"); };
 const w = dom.window, d = w.document;
-const tags = n => [...n.querySelectorAll(".tag")].map(t => t.textContent);
+/** @param {ParentNode} n */
+const tags = n => [...all(n, ".tag")].map(t => t.textContent);
 
 (async () => {
   await idle();
@@ -60,33 +68,34 @@ const tags = n => [...n.querySelectorAll(".tag")].map(t => t.textContent);
   });
   describe("how they look in the list", () => {
     w.go("builds");
-    const rows = [...d.querySelectorAll("#listBuilds .row")];
-    /* by the NAME LINE, not by where the name falls in the row text: a
+    const rows = [...all(d, "#listBuilds .row")];
+    /** by the NAME LINE, not by where the name falls in the row text: a
        card with Megas opens with a strip of sprites, so "starts with the
-       name" was testing the DOM order of a picture. */
+       name" was testing the DOM order of a picture.
+       @param {string} n */
     const by = n => rows.find(r => ((r.querySelector(".rname") || r)
       .textContent.trim().indexOf(n) === 0));
     check("Garchomp has no warnings",
-       tags(by("Garchomp")).filter(t => /HOME|orphan/.test(t)).length, 0);
+       tags(found(by("Garchomp"), "by('Garchomp')")).filter(t => /HOME|orphan/.test(t)).length, 0);
     check("Dragonite says it is in HOME",
-       tags(by("Dragonite")).indexOf("in HOME — inactive") >= 0, true);
+       tags(found(by("Dragonite"), "by('Dragonite')")).indexOf("in HOME — inactive") >= 0, true);
     check("Camerupt says orphan",
-       tags(by("Camerupt")).indexOf("orphan — no Pokemon") >= 0, true);
+       tags(found(by("Camerupt"), "by('Camerupt')")).indexOf("orphan — no Pokemon") >= 0, true);
     /* unbound is not a fault, and the two cases read differently: a set waiting
        for one of your copies, against a set for a species you do not have */
     check("Kingambit says it is an idea with no Pokemon",
-       tags(by("Kingambit")).indexOf("an idea — you have none yet") >= 0, true);
+       tags(found(by("Kingambit"), "by('Kingambit')")).indexOf("an idea — you have none yet") >= 0, true);
     check("and the second Garchomp is still active (two builds, one Pokemon)",
        w.buildLink("garchomp-2").state, "active");
   });
 
   await describe("on release", async () => {
     w.go("box");
-    const boxRow = [...d.querySelectorAll("#listChampOrigin .row, #listHomeOrigin .row")]
+    const boxRow = [...all(d, "#listChampOrigin .row, #listHomeOrigin .row")]
       .find(r => r.textContent.indexOf("Garchomp") >= 0);
     click(boxRow);
     await idle();
-    const rel = [...d.querySelectorAll(".sheet button")]
+    const rel = [...all(d, ".sheet button")]
       .find(b => b.textContent === "Release");
     check("there is a Release button", !!rel, true);
     click(rel);
@@ -97,9 +106,9 @@ const tags = n => [...n.querySelectorAll(".tag")].map(t => t.textContent);
        unbound. */
     /* THE APP'S OWN QUESTION, not the operating system's. */
     check("it asks with the app's own dialog",
-       d.getElementById("askScrim").hidden, false);
-    const asked = d.getElementById("askTitle").textContent + " " +
-                  d.getElementById("askBody").textContent;
+       byId(d, "askScrim").hidden, false);
+    const asked = byId(d, "askTitle").textContent + " " +
+                  byId(d, "askBody").textContent;
     await until(() => d.activeElement === d.getElementById("askNo"));
     check("and the safe button is the one with focus",
        d.activeElement === d.getElementById("askNo"), true);
@@ -109,7 +118,7 @@ const tags = n => [...n.querySelectorAll(".tag")].map(t => t.textContent);
     /* answered the way a person answers it */
     click(d.getElementById("askYes"));
     check("and it closes when answered",
-       d.getElementById("askScrim").hidden, true);
+       byId(d, "askScrim").hidden, true);
     /* The release only STARTS when the question is answered, so the writes
        land a tick later. */
     await idle();

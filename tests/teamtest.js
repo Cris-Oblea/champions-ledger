@@ -17,9 +17,13 @@
 
    The fixture breaks both clauses on purpose. */
 const { describe } = require("node:test");
-const { check, open, idle, row, build } = require("./harness.js");
+const { check, open, idle, row, build, one, all, byId, found, click, text } = require("./harness.js");
 const UID = "u1";
 
+/** @param {string} id
+   @param {string} pokemon
+   @param {string | null} box_id
+   @param {Record<string, unknown>} [extra] */
 const B = (id, pokemon, box_id, extra) => build(id, pokemon, {box_id,
   nature:"Adamant", stat_points:{hp:0,atk:32,def:0,spa:0,spd:2,spe:32},
   moves:["Protect"], ...extra});
@@ -54,8 +58,13 @@ const TEAMS = [{user_id:UID, id:"t1", name:"Trial", slots:[
 const { dom, errs } = open({ box: ROWS, builds: BUILDS, teams: TEAMS });
 const w = dom.window, d = w.document;
 
-const find = (rows, n) => rows.find(x => new RegExp(n).test(x.form));
-const byType = (t, rows) => rows.find(x => x.type === t);
+/** @param {import("../tracker/src/core/team.js").SpeedRow[]} rows
+   @param {string} n */
+const find = (rows, n) => found(rows.find(x => new RegExp(n).test(String(x.form))),
+  n + " in the Speed order");
+/** @param {string} t
+   @param {import("../tracker/src/core/team.js").TypeRow[]} rows */
+const byType = (t, rows) => found(rows.find(x => x.type === t), t + " in the type table");
 
 (async () => {
   await idle();
@@ -95,16 +104,16 @@ const byType = (t, rows) => rows.find(x => x.type === t);
     w.go("builds");
     w.buildsPane("teams");
     check("there is no Teams tab",
-       [...d.querySelectorAll("#tabs button, #tabs a")]
+       [...all(d, "#tabs button, #tabs a")]
          .some(b => b.textContent.trim() === "Teams"), false);
     check("and the teams pane shows",
-       d.getElementById("teamsPane").hidden, false);
+       byId(d, "teamsPane").hidden, false);
     check("while the builds pane hides",
-       d.getElementById("buildsPane").hidden, true);
+       byId(d, "buildsPane").hidden, true);
     /* TWO teams in the list, and "Stones" sorts before "Trial" - so the row
        is found by its name, not by its position. */
-    const row = [...d.querySelectorAll("#listTeams .row")]
-      .find(x => /Trial/.test(x.textContent));
+    const row = found([...all(d, "#listTeams .row")]
+      .find(x => /Trial/.test(x.textContent)), "row");
     check("the team is listed", !!row, true);
     check("with how many slots it fills", /5\/6/.test(row.textContent), true);
     check("how many are playable today", /3 playable today/.test(row.textContent), true);
@@ -115,25 +124,25 @@ const byType = (t, rows) => rows.find(x => x.type === t);
      it needs a search box and filters. */
   describe("a slot's picker: search and filters", () => {
     w.teamSheet("t1", w.S.teams.t1);
-    const fill = [...d.querySelectorAll("#teamEditBody button")]
+    const fill = [...all(d, "#teamEditBody button")]
       .filter(b => /^(Change|Fill)$/.test(b.textContent.trim()));
     check("every slot has its button", fill.length >= 6, true);
     fill[0].click();                       /* slot 1, Garchomp's */
-    const sb = d.getElementById("sheetBody");
-    const inp = sb.querySelector(".search input");
-    const rows = () => [...sb.querySelectorAll(".list .row")];
+    const sb = byId(d, "sheetBody");
+    const inp = one(sb, ".search input");
+    const rows = () => [...all(sb, ".list .row")];
     check("the picker has a search box", !!inp, true);
     check("and all seven builds are there", rows().length, 7);
     check("it says how many", /7 builds/.test(sb.textContent), true);
 
-    inp.value = "armor"; inp.oninput();
+    inp.value = "armor"; inp.dispatchEvent(new w.Event("input", {bubbles:true}));
     check("searches the build's ROLE", rows().length, 1);
     check("and finds the one with that role",
        /Farigiraf/.test(rows()[0].textContent), true);
-    inp.value = "earthquake"; inp.oninput();
+    inp.value = "earthquake"; inp.dispatchEvent(new w.Event("input", {bubbles:true}));
     check("searches a MOVE", rows().length, 1);
     check("and finds its Pokemon", /Garchomp/.test(rows()[0].textContent), true);
-    inp.value = "dragon"; inp.oninput();
+    inp.value = "dragon"; inp.dispatchEvent(new w.Event("input", {bubbles:true}));
     /* Garchomp, and the Ampharos build because its stone makes it
        Electric/Dragon - the filter reads the form it PLAYS AS */
     check("searches by TYPE", rows().length, 2);
@@ -142,7 +151,7 @@ const byType = (t, rows) => rows.find(x => x.type === t);
     check("the counter says so", /2 of 7 builds/.test(sb.textContent), true);
 
     /* the X: without it a filter is emptied by backspacing */
-    sb.querySelector(".search .clr").click();
+    one(sb, ".search .clr").click();
     check("the X empties the field", inp.value, "");
     check("and they all come back", rows().length, 7);
 
@@ -158,9 +167,10 @@ const byType = (t, rows) => rows.find(x => x.type === t);
     check("with the greyed ones last",
        rows()[rows().length - 1].disabled, true);
 
-    /* WHERE A COPY IS, IS THE BOXES' QUESTION. A team can be theoretical, so
-       that filter has no place here. */
-    const chip = t => [...sb.querySelectorAll(".tog")]
+    /** WHERE A COPY IS, IS THE BOXES' QUESTION. A team can be theoretical, so
+       that filter has no place here.
+       @param {string} t */
+    const chip = t => [...all(sb, ".tog")]
       .find(b => b.textContent.trim().indexOf(t) === 0);
     check("no filter by where it is", !!chip("Ready today"), false);
     check("nor by whether he owns it", !!chip("Not owned"), false);
@@ -169,57 +179,62 @@ const byType = (t, rows) => rows.find(x => x.type === t);
     /* Only A-Z and Dex in view; the stats, all of them, folded. */
     check("sorts A–Z", !!chip("A–Z"), true);
     check("and by Dex", !!chip("Dex no."), true);
-    const fold = t => [...sb.querySelectorAll(".btn.fold")]
+    /** @param {string} t */
+    const fold = t => [...all(sb, ".btn.fold")]
       .find(b => b.textContent.indexOf(t) >= 0);
     check("the stats sit behind a fold", !!fold("By a stat"), true);
-    const statRow = fold("By a stat").nextSibling;
+    const statRow = /** @type {HTMLElement} */ (
+      found(fold("By a stat"), "the By a stat fold").nextSibling);
     check("closed at first", statRow.hidden, true);
-    fold("By a stat").click();
+    found(fold("By a stat"), "fold('By a stat')").click();
     check("and it opens", statRow.hidden, false);
     /* if BST and Speed are there, all six are: half a list is arbitrary */
     ["BST", "HP", "Atk", "Def", "SpA", "SpD", "Spe"].forEach(function(k){
       check("  sorts by " + k, !!chip(k), true);
     });
-    chip("Spe").click();
+    found(chip("Spe"), "chip('Spe')").click();
     check("fastest first", /Garchomp/.test(rows()[0].textContent), true);
 
     /* Role takes too much room, so it is folded, always. */
     check("role is folded", !!fold("Role"), true);
-    const roleRow = fold("Role").nextSibling;
+    const roleRow = /** @type {HTMLElement} */ (
+      found(fold("Role"), "the Role fold").nextSibling);
     check("closed at first", roleRow.hidden, true);
-    fold("Role").click();
+    found(fold("Role"), "fold('Role')").click();
     check("and it opens", roleRow.hidden, false);
     check("with the roles that exist", !!chip("Trick Room"), true);
-    chip("Trick Room").click();
+    found(chip("Trick Room"), "chip('Trick Room')").click();
     check("filters by role", rows().length, 1);
-    chip("Trick Room").click();
+    found(chip("Trick Room"), "chip('Trick Room')").click();
     check("releasing it brings them all back", rows().length, 7);
 
     /* The item picker searches, and filters too. */
     w.teamSheet("t1", w.S.teams.t1);
-    const it = [...d.querySelectorAll("#teamEditBody button")]
-      .find(b => /^(\+ Item|Item)$/.test(b.textContent.trim()));
+    const it = found([...all(d, "#teamEditBody button")]
+      .find(b => /^(\+ Item|Item)$/.test(b.textContent.trim())), "it");
     it.click();
-    const ib = d.getElementById("sheetBody");
+    const ib = byId(d, "sheetBody");
     check("the item picker searches too", !!ib.querySelector(".search input"), true);
-    const icat = t => [...ib.querySelectorAll(".tog")]
+    /** @param {string} t */
+    const icat = t => [...all(ib, ".tog")]
       .some(b => b.textContent.indexOf(t) === 0);
     check("filters by category", icat("Berries"), true);
     check("and by what he owns",
-       [...ib.querySelectorAll(".tog")]
+       [...all(ib, ".tog")]
          .some(b => /Only ones you own/.test(b.textContent)), true);
 
     /* ONLY WHAT CAN BE HELD: every Mega Stone (C.ITEMS leaves them out, so they
        come from C.STONES), and nothing Miscellaneous, which cannot be held. */
     check("Mega Stones can be equipped", icat("Mega Stones"), true);
     check("and Miscellaneous is not offered", icat("Miscellaneous"), false);
-    const irow = n => [...ib.querySelectorAll(".list .row")]
+    /** @param {string} n */
+    const irow = n => [...all(ib, ".list .row")]
       .find(r => r.textContent.indexOf(n) === 0);
     check("a given stone is there", !!irow("Garchompite"), true);
-    check("and can be tapped", irow("Garchompite").disabled, false);
+    check("and can be tapped", found(irow("Garchompite"), "irow('Garchompite')").disabled, false);
     check("marked as a stone",
-       /Mega Stone/.test(irow("Garchompite").textContent), true);
-    const misc = [...ib.querySelectorAll(".list .row")]
+       /Mega Stone/.test(found(irow("Garchompite"), "irow('Garchompite')").textContent), true);
+    const misc = [...all(ib, ".list .row")]
       .some(r => /Rare Candy|Exp\. Share|Ability Capsule/.test(r.textContent));
     check("nothing unholdable in the list", misc, false);
 
@@ -233,26 +248,26 @@ const byType = (t, rows) => rows.find(x => x.type === t);
     check("fastest first", sp[0].name, "Garchomp");
     check("and slowest last", sp[sp.length - 1].spe <= sp[0].spe, true);
     check("the screen writes it",
-       /154/.test(d.getElementById("teamEditBody").textContent), true);
+       /154/.test(byId(d, "teamEditBody").textContent), true);
 
     /* The weaknesses say WHO and BY HOW MUCH. */
-    const weak = d.getElementById("teamEditBody").textContent;
+    const weak = byId(d, "teamEditBody").textContent;
     check("names who is weak", /weak: [A-Z]/.test(weak), true);
     check("with the multiplier", /weak: [^\n]*×\d/.test(weak), true);
     check("and who resists", /resists: |nothing on the team resists it/.test(weak),
        true);
     const tt = w.teamTypes(w.teamReport(w.S.teams.t1));
-    const one = tt.find(x => x.weak);
-    check("and the data carries the names", one.weakOf.length, one.weak);
-    check("with each one's multiplier", typeof one.weakOf[0].m, "number");
+    const weakest = found(tt.find(x => x.weak), "weakest");
+    check("and the data carries the names", weakest.weakOf.length, weakest.weak);
+    check("with each one's multiplier", typeof weakest.weakOf[0].m, "number");
   });
 
   /* A SLOT'S CARD CARRIES THE WHOLE SET, so a team can be read without
      opening six builds. */
   await describe("the slot's card, and the shortcut to the build", async () => {
     w.teamSheet("t1", w.S.teams.t1);
-    const eb = d.getElementById("teamEditBody");
-    const slot0 = eb.querySelectorAll(".list .row")[0];
+    const eb = byId(d, "teamEditBody");
+    const slot0 = all(eb, ".list .row")[0];
     check("the card names the chosen ability",
        /Rough Skin/.test(slot0.textContent), true);
     check("and the label says it is THE one",
@@ -264,7 +279,7 @@ const byType = (t, rows) => rows.find(x => x.type === t);
        true);
     check("the item keeps its cell", /Life Orb/.test(slot0.textContent), true);
 
-    const edBtn = [...eb.querySelectorAll("button")]
+    const edBtn = [...all(eb, "button")]
       .filter(b => b.textContent.trim() === "Edit set");
     check("every filled slot has a shortcut to its build", edBtn.length, 5);
     edBtn[0].click();
@@ -273,10 +288,10 @@ const byType = (t, rows) => rows.find(x => x.type === t);
        test waits for that write the way the screen does. */
     await idle();
     check("and it opens the build editor",
-       d.getElementById("v-buildedit").hidden, false);
-    check("the team editor closes", d.getElementById("v-teamedit").hidden, true);
+       byId(d, "v-buildedit").hidden, false);
+    check("the team editor closes", byId(d, "v-teamedit").hidden, true);
     check("and it is the right build",
-       /Garchomp/.test(d.getElementById("buildEditTitle").textContent), true);
+       /Garchomp/.test(byId(d, "buildEditTitle").textContent), true);
   });
 
   /* ONE SELECTOR, TWO SECTIONS. Only one Pokemon may Mega Evolve per battle,
@@ -285,7 +300,9 @@ const byType = (t, rows) => rows.find(x => x.type === t);
      and the weaknesses must tell the SAME story. */
   describe("one world at a time: Speed and types under one selector", () => {
     const r2 = w.teamReport(w.S.teams.t2);
-    const megaCase = n => r2.megaCases.find(x => new RegExp(n).test(x.mega));
+    /** @param {string} n */
+    const megaCase = n => found(r2.megaCases.find(x => new RegExp(n).test(x.mega)),
+                               "the Mega case " + n);
 
     /* Ampharos retypes AND changes Speed; Camerupt does NOT retype but DOES
        change Speed, which filtering by retyping alone would have lost. */
@@ -302,7 +319,7 @@ const byType = (t, rows) => rows.find(x => x.type === t);
     const spBase = w.teamSpeeds(r2, null);
     const spCam  = w.teamSpeeds(r2, megaCase("Camerupt").i);
     check("unevolved, Camerupt runs at its base", find(spBase, "Camerupt").base, 40);
-    check("and is not called Mega", /^Camerupt$/.test(find(spBase, "Camerupt").form), true);
+    check("and is not called Mega", /^Camerupt$/.test(String(find(spBase, "Camerupt").form)), true);
     check("evolved, it drops to the Mega's base",
        find(spCam, "Mega Camerupt").base, 20);
     check("and the rest of the team does not move",
@@ -319,7 +336,7 @@ const byType = (t, rows) => rows.find(x => x.type === t);
     check("after, it is",
        byType("Ice", mega).weakOf.some(x => /Mega Ampharos/.test(x.name)), true);
     check("and the table names it by its Mega form",
-       byType("Ice", mega).weakOf.find(x => /Ampharos/.test(x.name)).name,
+       found(byType("Ice", mega).weakOf.find(x => /Ampharos/.test(x.name)), "Ampharos weak to Ice").name,
        "Mega Ampharos");
     check("Fairy starts hitting it",
        byType("Fairy", mega).weakOf.some(x => /Mega Ampharos/.test(x.name)), true);
@@ -328,8 +345,8 @@ const byType = (t, rows) => rows.find(x => x.type === t);
 
     /* And on screen: ONE selector, and the two sections under it. */
     w.teamSheet("t2", w.S.teams.t2);
-    const eb2 = d.getElementById("teamEditBody");
-    const seg = [...eb2.querySelectorAll(".seg")].pop();
+    const eb2 = byId(d, "teamEditBody");
+    const seg = found([...all(eb2, ".seg")].pop(), "seg");
     const tabs = seg ? [...seg.children].map(b => b.textContent.trim()) : [];
     check("three worlds", tabs.length, 3);
     check("and nobody's comes first", tabs[0], "Nobody evolves");
@@ -345,18 +362,18 @@ const byType = (t, rows) => rows.find(x => x.type === t);
        on the slot's card, so searching the whole editor says nothing about
        which form is in use. */
     const speedTxt = () => {
-      const h = [...eb2.querySelectorAll("h2")].find(x => /Speed order/.test(x.textContent));
-      return h.nextSibling.textContent.replace(/\s+/g, " ");
+      const h = found([...all(eb2, "h2")].find(x => /Speed order/.test(x.textContent)), "h");
+      return text(h.nextSibling).replace(/\s+/g, " ");
     };
     const camTab = tabs.findIndex(t => /Camerupt/.test(t));
-    seg.children[camTab].click();
+    click(seg.children[camTab]);
     check("picking Camerupt says so with its Speed",
        /Speed 40 → 20/.test(eb2.textContent), true);
     check("and the order names it Mega", /Mega Camerupt/.test(speedTxt()), true);
     check("with the other one unevolved", /Mega Ampharos/.test(speedTxt()), false);
 
     const ampTab = tabs.findIndex(t => /Ampharos/.test(t));
-    seg.children[ampTab].click();
+    click(seg.children[ampTab]);
     check("switching explains the type change",
        /Electric → Electric\/Dragon/.test(eb2.textContent), true);
     check("and now the other one evolves",
@@ -368,7 +385,7 @@ const byType = (t, rows) => rows.find(x => x.type === t);
 
     /* A team with no stone that changes anything gets no controls. */
     w.teamSheet("t1", w.S.teams.t1);
-    const eb1 = d.getElementById("teamEditBody");
+    const eb1 = byId(d, "teamEditBody");
     check("no change, no selector",
        /Which one Mega Evolves/.test(eb1.textContent), false);
     check("but the table is still there", /weak: /.test(eb1.textContent), true);
@@ -378,19 +395,19 @@ const byType = (t, rows) => rows.find(x => x.type === t);
 
   describe("the tabs' own filters", () => {
     check("the builds filter has its X",
-       !!d.querySelector("#buildSearch").parentNode.querySelector(".clr"), true);
-    const bf = d.getElementById("boxFilter");
+       !!found(one(d, "#buildSearch").parentNode, "one(d, '#buildSearch').parentNode").querySelector(".clr"), true);
+    const bf = byId(d, "boxFilter");
     check("the Champions Box has a filter", !!bf, true);
-    const champ = () => d.querySelectorAll("#listChampOrigin .row").length;
+    const champ = () => all(d, "#listChampOrigin .row").length;
     check("and both Encounter ones are there", champ(), 2);
-    bf.value = "farigiraf"; bf.oninput();
+    bf.value = "farigiraf"; bf.dispatchEvent(new w.Event("input", {bubbles:true}));
     check("filters by name", champ(), 1);
     check("and the heading says how many of how many",
-       d.getElementById("nChampOrigin").textContent, "1 of 2");
-    bf.parentNode.querySelector(".clr").click();
+       byId(d, "nChampOrigin").textContent, "1 of 2");
+    one(bf.parentNode, ".clr").click();
     check("the X brings it all back", champ(), 2);
     check("and the heading returns to the total",
-       d.getElementById("nChampOrigin").textContent, "2");
+       byId(d, "nChampOrigin").textContent, "2");
   });
 
   check("the page reports no script error", errs.join(" | ") || "none", "none");

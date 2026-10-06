@@ -14,7 +14,7 @@
    The page exports abilityTag/AB_SET, so the rules are called directly rather
    than hunted for in the DOM - that way a failure names the rule. */
 const { describe } = require("node:test");
-const { check, open, idle } = require("./harness.js");
+const { check, open, idle, byId, found } = require("./harness.js");
 
 const { dom, errs } = open();
 const w = dom.window;
@@ -23,21 +23,34 @@ const w = dom.window;
   await idle();
   const MOVE = w.MOVE_BY, AB = w.AB_SET;
   const water = {types:["Water","Fairy"]};
+  /** @param {string} ab
+     @param {string} mv
+     @param {DexRow | {types: string[]} | null} [poke] */
   const tag = (ab, mv, poke) => {
     const t = w.abilityTag(ab, MOVE[mv], poke || null);
     return t ? (t.title || "no text") : "NO TAG";
   };
+  /** @param {string} ab
+     @param {string} mv
+     @param {DexRow | {types: string[]} | null} [poke] */
   const has = (ab, mv, poke) => tag(ab, mv, poke) !== "NO TAG";
-  /* The chips blockerTags() or itemTags() draws on a move's row. */
+  /** The chips blockerTags() or itemTags() draws on a move's row.
+     @param {"blockerTags" | "itemTags"} fn
+     @param {string} mv */
   const drawn = (fn, mv) => {
     const host = w.document.createElement("div");
     w[fn](MOVE[mv], host);
     return [...host.children];
   };
+  /** @param {string} mv */
   const blockers = mv => drawn("blockerTags", mv).map(n => n.textContent).sort();
+  /** @param {string} mv */
   const allBad = mv => drawn("blockerTags", mv).every(n => / bad\b/.test(n.className));
+  /** @param {string} mv
+     @param {string} cls */
   const tagged = (mv, cls) => drawn("blockerTags", mv)
     .filter(n => n.classList.contains(cls)).map(n => n.textContent).sort();
+  /** @param {string} mv */
   const items = mv => drawn("itemTags", mv)
     .map(n => n.textContent + (/ bad\b/.test(n.className) ? "!" : ""));
 
@@ -166,8 +179,8 @@ const w = dom.window;
     check("Earthquake: Levitate in red", tagged("Earthquake", "bad").indexOf("Levitate") >= 0, true);
     check("...and not also in green", tagged("Earthquake", "ok").indexOf("Levitate") >= 0, false);
     check("no row repeats a name", Object.keys(MOVE).filter(mv => {
-         const all = tagged(mv, "bad").concat(tagged(mv, "ok"));
-         return new Set(all).size !== all.length; }).join(", "), "");
+         const tags = tagged(mv, "bad").concat(tagged(mv, "ok"));
+         return new Set(tags).size !== tags.length; }).join(", "), "");
     check("a move that does not touch the ally has no greens",
        tagged("Zap Cannon", "ok").length, 0);
     check("Armor Tail only counts on the foe",
@@ -180,8 +193,8 @@ const w = dom.window;
     check("nor Protect", blockers("Protect").length, 0);
     /* and a defensive ability that only softens never appears */
     check("Fur Coat blocks nothing",
-       Object.keys(w.CHAMP.AB_MOVES).filter(
-         n => n === "Fur Coat" && w.CHAMP.AB_MOVES[n].stop).length, 0);
+       Object.keys(found(w.CHAMP.AB_MOVES, "w.CHAMP.AB_MOVES")).filter(
+         n => n === "Fur Coat" && found(w.CHAMP.AB_MOVES, "w.CHAMP.AB_MOVES")[n].stop).length, 0);
   });
 
   /* Thermal Exchange triggers on DAMAGE from a Fire move, not on any Fire
@@ -190,12 +203,13 @@ const w = dom.window;
      half of the ability: it cannot be burned, whatever burns it. It is the
      reason that changes. */
   describe("a damage ability does not react to a status move", () => {
+    /** @param {string} n */
     const statusOf = n => (AB[n] ? Object.keys(AB[n].m || {}) : [])
-      .map(i => w.CHAMP.MOVES[i]).filter(m => m[2] === "T").map(m => m[0]).sort();
+      .map(i => w.CHAMP.MOVES[Number(i)]).filter(m => m[2] === "T").map(m => m[0]).sort();
     check("Thermal Exchange only touches Will-O-Wisp, through the burn",
        statusOf("Thermal Exchange").join(","), "Will-O-Wisp");
     check("...and says so in its text",
-       /damaging Fire move/.test(AB["Thermal Exchange"].why), true);
+       /damaging Fire move/.test(found(AB["Thermal Exchange"].why, "AB['Thermal Exchange'].why")), true);
     check("Rattled is not scared by a Taunt", statusOf("Rattled").join(","), "");
     check("Thick Fat does not soften a Will-O-Wisp", statusOf("Thick Fat").join(","), "");
     check("nor Heatproof", statusOf("Heatproof").join(","), "");
@@ -229,7 +243,7 @@ const w = dom.window;
      none, and told every Pokemon its ability touched nothing. */
   describe("the sheet counts the moves an ability touches", () => {
     w.findDetail(w.byName["Scizor"]);
-    const sb = w.document.getElementById("sheetBody").textContent;
+    const sb = byId(w.document, "sheetBody").textContent;
     check("Technician tags some of Scizor's moves",
        /Technician\.[^]*?Tags \d+ of the \d+ moves it learns/.test(sb), true);
   });

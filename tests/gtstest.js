@@ -1,11 +1,12 @@
 /* A GTS trade must be an EXCHANGE: what you gave leaves, what you got arrives. */
-const { check, idle, open, row, click } = require("./harness.js");
+const { check, idle, open, row, click, all, byId } = require("./harness.js");
 
 const UID = "u1";
 const ROWS = [
   row("chesnaught", "Chesnaught", {location:"home", origin:"home"}),
   row("sableye", "Sableye", {location:"home", origin:"home", ord:1}),
 ];
+/** @type {Record<string, unknown>[]} */
 const META = [];
 /* A row per trade since migration 7. The offer is open because `closed` is
    null, and closing it is an UPDATE of this same row - not a delete from one
@@ -20,9 +21,9 @@ const w = dom.window, d = w.document;
 (async () => {
   await idle();
   w.go("home");
-  click(d.querySelectorAll("#listGts .row")[0]);
+  click(all(d, "#listGts .row")[0]);
   await idle();
-  const btn = [...d.querySelectorAll("#sheetFoot .btn")]
+  const btn = [...all(d, "#sheetFoot .btn")]
     .find(b => /Trade went through/.test(b.textContent));
   check("the Trade went through button exists", !!btn, true);
   click(btn);
@@ -30,7 +31,7 @@ const w = dom.window, d = w.document;
      not the browser's, so the click above opens a question and stops there -
      without answering it, this test would assert against an unclosed trade. */
   const yes = d.getElementById("askYes");
-  if (yes && !d.getElementById("askScrim").hidden) click(yes);
+  if (yes && !byId(d, "askScrim").hidden) click(yes);
   await idle();
 
   const got = w.__WROTE.filter(x => x.table === "box" && x.row.name === "Golisopod");

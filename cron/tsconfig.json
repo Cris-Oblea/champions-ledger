@@ -1,0 +1,8 @@
+// The cron Worker type-checks strict too. It runs on Cloudflare, not Node, so
+// it gets the Web APIs a Worker has (fetch, Web Crypto, btoa) and no Node types.
+// The gate runs it (daily.py).
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": { "lib": ["es2024", "webworker"], "types": [] },
+  "include": ["./src/*.js"]
+}

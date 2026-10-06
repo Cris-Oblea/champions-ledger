@@ -35,14 +35,16 @@ try {
   ({toID} = require(path.join(BUNDLE, 'util.js')));
   ({calculateChampions} = require(path.join(BUNDLE, 'mechanics', 'champions.js')));
 } catch (e) {
-  console.error('Cannot load the Champions engine from ' + BUNDLE + ': ' + e.message);
+  console.error('Cannot load the Champions engine from ' + BUNDLE + ': ' +
+                /** @type {Error} */ (e).message);
   console.error('Re-fetch it with: python scripts/fetch_smogon_calc.py');
   process.exit(2);
 }
 
 const gen = Generations.get(0);   // Champions is generation 0 in this bundle
 
-/* The cases to calculate, as JSON from a file or from stdin ("-"). */
+/** The cases to calculate, as JSON from a file or from stdin ("-").
+   @param {string | undefined} arg */
 function readInput(arg) {
   if (arg === '-' || arg === undefined) {
     return JSON.parse(fs.readFileSync(0, 'utf8'));
@@ -165,7 +167,7 @@ for (const c of cases) {
     });
   } catch (e) {
     out.push({attacker: c.attacker, move: c.move, defender: c.defender,
-              error: String(e && e.message ? e.message : e)});
+              error: String(e instanceof Error && e.message ? e.message : e)});
   }
 }
 process.stdout.write(JSON.stringify(out, null, 1));

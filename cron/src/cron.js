@@ -30,7 +30,11 @@ const WORKFLOW = "daily.yml";
 const API = "https://api.github.com";
 const UA = "champions-ledger-cron";
 
-/* base64url, which is what a JWT is made of - not plain base64 */
+/** The Worker's secrets (wrangler secret put; see cron/README.md).
+    @typedef {{GH_APP_ID: string, GH_APP_PRIVATE_KEY: string}} Env */
+
+/** base64url, which is what a JWT is made of - not plain base64
+    @param {Uint8Array | ArrayBuffer} bytes */
 function b64url(bytes) {
   let s = "";
   const a = bytes instanceof Uint8Array ? bytes : new Uint8Array(bytes);
@@ -38,11 +42,12 @@ function b64url(bytes) {
   return btoa(s).replace(/\+/g, "-").replace(/\//g, "_").replace(/=/g, "");
 }
 
-/* The PEM's base64 body as bytes. The key must be PKCS#8 ("BEGIN PRIVATE
+/** The PEM's base64 body as bytes. The key must be PKCS#8 ("BEGIN PRIVATE
    KEY"); GitHub hands out PKCS#1 ("BEGIN RSA PRIVATE KEY"), which Web Crypto
    cannot import, so it is converted once with openssl when the secret is set -
    see cron/README.md. Doing that conversion here would mean writing DER by
-   hand in a Worker, which is a fiddly thing to get wrong quietly. */
+   hand in a Worker, which is a fiddly thing to get wrong quietly.
+   @param {string} pem */
 function pemBytes(pem) {
   const body = pem.replace(/-----[^-]+-----/g, "").replace(/\s+/g, "");
   const raw = atob(body);
@@ -51,8 +56,10 @@ function pemBytes(pem) {
   return out;
 }
 
-/* A JWT signed with the GitHub App's private key, which is what proves the
-   Worker is the App. */
+/** A JWT signed with the GitHub App's private key, which is what proves the
+   Worker is the App.
+   @param {string} appId
+   @param {string} pem */
 async function appJwt(appId, pem) {
   const key = await crypto.subtle.importKey(
     "pkcs8", pemBytes(pem),
@@ -69,7 +76,10 @@ async function appJwt(appId, pem) {
   return head + "." + body + "." + b64url(sig);
 }
 
-/* One GitHub API call with the token and the headers GitHub requires. */
+/** One GitHub API call with the token and the headers GitHub requires.
+    @param {string} url
+    @param {string} token
+    @param {RequestInit} [init] */
 async function gh(url, token, init) {
   const r = await fetch(url, {
     ...init,
@@ -84,9 +94,11 @@ async function gh(url, token, init) {
   return r;
 }
 
-/* The App is installed on the repository; this asks which installation that
+/** The App is installed on the repository; this asks which installation that
    is rather than keeping its id as a fourth secret, so there is one less thing
-   to be wrong after a reinstall. */
+   to be wrong after a reinstall.
+   @param {Env} env
+   @returns {Promise<string>} */
 async function installationToken(env) {
   const jwt = await appJwt(env.GH_APP_ID, env.GH_APP_PRIVATE_KEY);
   const inst = await gh(
@@ -99,7 +111,8 @@ async function installationToken(env) {
   return (await tok.json()).token;
 }
 
-/* Start the daily refresh workflow on main, as the App. */
+/** Start the daily refresh workflow on main, as the App.
+    @param {Env} env */
 async function trigger(env) {
   const token = await installationToken(env);
   const r = await gh(
@@ -114,6 +127,9 @@ async function trigger(env) {
 }
 
 export default {
+  /** @param {unknown} event
+      @param {Env} env
+      @param {{waitUntil(p: Promise<unknown>): void}} ctx */
   async scheduled(event, env, ctx) {
     ctx.waitUntil(trigger(env).then(
       (m) => console.log(`[cron] ${m}`),
@@ -121,7 +137,7 @@ export default {
          could dispatch twice; the workflow's own guard would stop the second,
          but the three GitHub crons are the real safety net, so the honest
          thing is to say it failed and let them cover. */
-      (e) => console.log(`[cron] FAILED: ${e.message}`)));
+      (e) => console.log(`[cron] FAILED: ${e instanceof Error ? e.message : e}`)));
   },
 
   /* No public surface. The Worker exists for its schedule; anything reaching

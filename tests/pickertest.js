@@ -7,7 +7,7 @@
    Garchomp is the fixture because its pool covers all three categories, both
    spread kinds (Earthquake hits the ally, Rock Slide does not) and priority. */
 const { describe } = require("node:test");
-const { check, open, idle, row, build, click } = require("./harness.js");
+const { check, open, idle, row, build, click, one, all, found } = require("./harness.js");
 
 const ROWS = [row("garchomp", "Garchomp", {trained:true})];
 const BUILDS = [build("garchomp", "Garchomp", {ability:"Rough Skin",
@@ -16,35 +16,38 @@ const BUILDS = [build("garchomp", "Garchomp", {ability:"Rough Skin",
 
 const { dom, errs } = open({ box: ROWS, builds: BUILDS });
 const w = dom.window, d = w.document;
-/* A CHIP HAS THREE STATES and writes a minus into its own label when it
+/** A CHIP HAS THREE STATES and writes a minus into its own label when it
    excludes, so finding it by exact text stops working the moment it is
-   used. It is found by its text without the sign. */
-const chip = t => [...d.querySelectorAll(".sheet .tog")]
+   used. It is found by its text without the sign.
+   @param {string} t */
+const chip = t => [...all(d, ".sheet .tog")]
   .find(b => b.textContent.replace(/^−\s*/, "").trim() === t);
+/** @param {string} t */
 const state = t => {
-  const b = chip(t);
+  const b = found(chip(t), "b");
   if (b.classList.contains("no")) return "no";
   return b.getAttribute("aria-pressed") === "true" ? "on" : "off";
 };
-/* off -> include -> exclude -> off, so "turning off" can take more than
-   one tap */
+/** off -> include -> exclude -> off, so "turning off" can take more than
+   one tap
+   @param {string} t */
 const off = t => { while (state(t) !== "off") click(chip(t)); };
-const rows = () => [...d.querySelectorAll(".sheet .list .row")];
-const names = () => rows().map(r => r.querySelector(".rname").textContent
+const rows = () => [...all(d, ".sheet .list .row")];
+const names = () => rows().map(r => one(r, ".rname").textContent
   .replace(/priority \+\d| ?spread| ?hits ally|Rough Skin/g, "").trim());
-const meta = () => rows().map(r => r.querySelector(".rmeta .mono").textContent);
-const countLine = () => [...d.querySelectorAll(".sheet .sub")]
+const meta = () => rows().map(r => one(r, ".rmeta .mono").textContent);
+const countLine = () => [...all(d, ".sheet .sub")]
   .map(x => x.textContent).find(t => / moves$| of \d+ moves/.test(t)) || "";
 
 (async () => {
   await idle();
   w.go("builds");
-  click(d.querySelectorAll("#listBuilds .row")[0]);
+  click(all(d, "#listBuilds .row")[0]);
   await idle();
-  const slot = [...d.querySelectorAll(".slot")].find(s => /Earthquake/.test(s.textContent));
+  const slot = [...all(d, ".slot")].find(s => /Earthquake/.test(s.textContent));
   click(slot);
   await idle();
-  const all = rows().length;               // the movepool, unfiltered
+  const pool = rows().length;               // the movepool, unfiltered
 
   describe("the controls are there", () => {
     ["BP × acc", "A–Z", "PP", "Type"].forEach(function(t){
@@ -59,14 +62,14 @@ const countLine = () => [...d.querySelectorAll(".sheet .sub")]
   describe("one filter", () => {
     click(chip("Physical"));
     check("physical only", meta().every(t => t.startsWith("Physical")), true);
-    check("and fewer than all", rows().length < all, true);
+    check("and fewer than all", rows().length < pool, true);
   });
 
   describe("two filters at once (they stack)", () => {
     click(chip("Ground"));
     check("only physical Ground", meta().every(t => t.startsWith("Physical")), true);
     check("all of them Ground",
-       rows().every(r => /Ground/.test(r.querySelector(".t").textContent)), true);
+       rows().every(r => /Ground/.test(one(r, ".t").textContent)), true);
     check("the counter says N of M", / of \d+ moves/.test(countLine()), true);
   });
 
@@ -81,18 +84,18 @@ const countLine = () => [...d.querySelectorAll(".sheet .sub")]
 
   describe("removing a chip brings them back", () => {
     off("Ground"); off("Physical");
-    check("all return", rows().length, all);
+    check("all return", rows().length, pool);
   });
 
   describe("the other filters", () => {
     click(chip("Priority"));
     check("all with priority",
-       rows().every(r => /priority \+/.test(r.querySelector(".rname").textContent)), true);
+       rows().every(r => /priority \+/.test(one(r, ".rname").textContent)), true);
     off("Priority");
     click(chip("Hits ally"));
     check("all hit the ally",
        rows().length > 0 &&
-       rows().every(r => /hits ally/.test(r.querySelector(".rname").textContent)), true);
+       rows().every(r => /hits ally/.test(one(r, ".rname").textContent)), true);
     off("Hits ally");
     click(chip("Status"));
     check("status only", meta().every(t => t.startsWith("Status")), true);
@@ -107,13 +110,13 @@ const countLine = () => [...d.querySelectorAll(".sheet .sub")]
     const bothTraits = rows();
     check("spread + hits ally: both hold",
        bothTraits.length > 0 && bothTraits.every(r => {
-         const t = r.querySelector(".rname").textContent;
+         const t = one(r, ".rname").textContent;
          return /spread/.test(t) && /hits ally/.test(t); }), true);
     off("Hits ally"); click(chip("Priority"));
     check("spread + priority: none exists", rows().length, 0);
     check("and the counter says so", /^0 of \d+ moves/.test(countLine()), true);
     off("Spread"); off("Priority");
-    check("removing them brings all back", rows().length, all);
+    check("removing them brings all back", rows().length, pool);
   });
 
   /* A chip's third state: one tap includes, the next excludes, the third
@@ -124,12 +127,12 @@ const countLine = () => [...d.querySelectorAll(".sheet .sub")]
     check("one tap includes", state("Water"), "on");
     click(chip("Water"));
     check("two taps exclude", state("Water"), "no");
-    check("and it says so with a minus", chip("Water").textContent.charAt(0), "−");
+    check("and it says so with a minus", found(chip("Water"), "chip('Water')").textContent.charAt(0), "−");
     check("no Water move left", meta().some(t => /Water/.test(t)), false);
     check("but moves remain", rows().length > 0, true);
     click(chip("Water"));
     check("the third tap turns it off", state("Water"), "off");
-    check("and all return", rows().length, all);
+    check("and all return", rows().length, pool);
   });
 
   /* A move has exactly one category, so choosing one releases the other. */
@@ -147,7 +150,7 @@ const countLine = () => [...d.querySelectorAll(".sheet .sub")]
        state("Status") + "/" + state("Physical"), "no/no");
     check("and only specials remain", meta().every(t => t.startsWith("Special")), true);
     off("Status"); off("Physical");
-    check("releasing them brings all back", rows().length, all);
+    check("releasing them brings all back", rows().length, pool);
   });
 
 

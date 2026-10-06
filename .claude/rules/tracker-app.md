@@ -104,7 +104,11 @@ deliberate `any`. Read a node's children with `kids(node)`, never
 `Array.prototype.forEach.call`, whose callback gets an `any` strict never
 reports. A sheet builder's `_` expandos are named on `SheetBody`, a list row
 with its id is `ListedBox` / `ListedTrade`. typescript is pinned to 6.0: 7.0
-has no JavaScript API and `eslint-plugin-sonarjs` needs one.
+has no JavaScript API and `eslint-plugin-sonarjs` needs one. **The tests are
+strict too (`tests/tsconfig.json`)**, against the app's real exports
+(`_public.d.ts`, written by the build): look things up with the harness's
+`one/all/byId/found/text`, never a bare `querySelector(...).x`, unless the
+check is that the thing is absent.
 
 **The tracker's damage tab runs Smogon's engine itself** (bundled by
 `scripts/build_engine_bundle.py`), so it is exact rather than close. Do not

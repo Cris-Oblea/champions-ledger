@@ -4,27 +4,29 @@
    event. This test drives a drag as a browser does: several `input` events on
    the SAME node, checking it survives every one of them. It also covers the
    other two ways in, the arrows and the typed box. */
-const { check, open, idle, row, build, click } = require("./harness.js");
+const { check, open, idle, row, build, click, one, all, found } = require("./harness.js");
 const ROWS = [row("primarina", "Primarina", {origin:"home"})];
 const BUILDS = [build("primarina", "Primarina", {ability:"Torrent",
   nature:"Modest", stat_points:{hp:4,atk:0,def:0,spa:32,spd:8,spe:22},
   moves:["Hyper Voice"]})];
 const { dom, errs } = open({ box: ROWS, builds: BUILDS });
 const w = dom.window, d = w.document;
+/** @param {Element} n
+   @param {string} t */
 const fire = (n,t)=>n.dispatchEvent(new w.Event(t,{bubbles:true}));
 (async () => {
   await idle();
   w.go("builds");
-  click(d.querySelectorAll("#listBuilds .row")[0]);
+  click(all(d, "#listBuilds .row")[0]);
   await idle();
-  const rows = [...d.querySelectorAll(".sp.spedit")];
+  const rows = [...all(d, ".sp.spedit")];
   check("one SP row per stat", rows.length, 6);
   const spa = rows[3];                       // hp atk def spa spd spe
-  const range = spa.querySelector("input[type=range]");
-  const num   = spa.querySelector(".spnum");
-  const steps = spa.querySelectorAll(".step");
+  const range = one(spa, "input[type=range]");
+  const num   = one(spa, ".spnum");
+  const steps = all(spa, ".step");
   const dec = steps[0], inc = steps[1];
-  const budget = () => d.querySelector(".budget").firstChild.textContent;
+  const budget = () => found(one(d, ".budget").firstChild, "one(d, '.budget').firstChild").textContent;
 
   check("SpA's starting value", num.value, "32");
   check("the starting budget", budget(), "66 of 66 spent");
@@ -40,7 +42,7 @@ const fire = (n,t)=>n.dispatchEvent(new w.Event(t,{bubbles:true}));
   check("the slider survives the drag", detached, 0);
   check("value after dragging to 22", num.value, "22");
   check("the budget updated", budget(), "56 of 66 spent");
-  check("nothing was rebuilt", d.querySelectorAll(".sp.spedit").length, 6);
+  check("nothing was rebuilt", all(d, ".sp.spedit").length, 6);
 
   click(inc); click(inc);
   check("two + arrows add 2", num.value, "24");

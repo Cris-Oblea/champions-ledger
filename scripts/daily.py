@@ -140,6 +140,16 @@ SOURCE_CHECKS = [
     # Strict: every parameter has a type.
     (["node_modules/typescript/bin/tsc", "--pretty", "false"],
      "the app type-checks"),
+    # And everything else written in JavaScript, each with the platform it
+    # runs on: the browser tests against the app's real exports (the build
+    # writes tracker/src/_public.d.ts first), the Node scripts and the lint
+    # configs, and the cron Worker.
+    (["node_modules/typescript/bin/tsc", "-p", "tests", "--pretty", "false"],
+     "the tests type-check against the app"),
+    (["node_modules/typescript/bin/tsc", "-p", "scripts", "--pretty", "false"],
+     "the Node scripts type-check"),
+    (["node_modules/typescript/bin/tsc", "-p", "cron", "--pretty", "false"],
+     "the cron Worker type-checks"),
     (["scripts/check_app.js"], "the app's source agrees with its markup and its engine"),
     # The same treatment for the other two languages of the page, so nothing
     # in tracker/src/ is linted only by an editor. stylelint.config.mjs and

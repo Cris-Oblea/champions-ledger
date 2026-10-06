@@ -14,8 +14,9 @@
    a sweep, not a sample, because a sample misses nearly all of a class like
    that. */
 const { describe } = require("node:test");
-const { check, open, page, source, idle, click } = require("./harness.js");
+const { check, open, page, source, idle, click, one, all, found } = require("./harness.js");
 
+/** @param {string[]} a */
 const list = a => {
   if (!a.length) return "0";
   const more = a.length > 6 ? " (+" + (a.length - 6) + ")" : "";
@@ -33,6 +34,7 @@ const w = dom.window;
   const C = w.CHAMP, DEX = C.DEX;
 
   describe("the code", () => {
+    /** @param {RegExp} re */
     const twice = re => {
       const seen = new Set(), dup = new Set();
       for (const [, name] of code.matchAll(re)) (seen.has(name) ? dup : seen).add(name);
@@ -87,27 +89,30 @@ const w = dom.window;
      does not cross the markup's line breaks. Hence this test. */
   describe("the intro texts", () => {
     const d = w.document;
-    const ledes = [...d.querySelectorAll(".view .lede, .view > .sub")];
+    const ledes = [...all(d, ".view .lede, .view > .sub")];
     const folded = ledes.filter(p => p.dataset.folded);
     check("some intros are folded", folded.length >= 3, true);
     check("and Builds' is one of them",
        !!d.querySelector("#v-builds .lede .whybtn"), true);
-    const bl = d.querySelector("#v-builds .lede");
+    const bl = one(d, "#v-builds .lede");
     check("the first sentence stays visible",
-       /A set is its own thing/.test(bl.firstChild.textContent), true);
+       /A set is its own thing/.test(String(found(bl.firstChild, "bl.firstChild").textContent)), true);
     /* NOT DELETED - one tap away, and in the page for anyone reading source */
     check("the rest is still in the DOM",
-       /66 Stat Points/.test(bl.querySelector(".more").textContent), true);
-    check("but hidden at first", bl.querySelector(".more").hidden, true);
+       /66 Stat Points/.test(one(bl, ".more").textContent), true);
+    check("but hidden at first", one(bl, ".more").hidden, true);
     check("the button says how many words it hides",
-       /^why \(\d+ words\)$/.test(bl.querySelector(".whybtn").textContent), true);
+       /^why \(\d+ words\)$/.test(one(bl, ".whybtn").textContent), true);
     click(bl.querySelector(".whybtn"));
-    check("and tapping it opens it", bl.querySelector(".more").hidden, false);
-    check("...saying how to close it", bl.querySelector(".whybtn").textContent,
+    check("and tapping it opens it", one(bl, ".more").hidden, false);
+    check("...saying how to close it", one(bl, ".whybtn").textContent,
        "less");
   });
   describe("the tables, swept", () => {
-    const names = {}, species = {};
+    /** @type {Record<string, unknown>} */
+    const names = {};
+    /** @type {Record<string, number>} */
+    const species = {};
     DEX.forEach(r => { names[r[0]] = r; species[r[1]] = 1; });
 
     check("every form has a movepool",
@@ -164,7 +169,7 @@ const w = dom.window;
        list(DEX.filter(r => !r[6] && !(C.DEXNO || {})[r[1]]).map(r => r[0])), "0");
     check("every form resolves a name in Smogon's engine",
        list(DEX.map(r => r[0]).filter(n => !(C.SMOGON_NAME || {})[n] &&
-                                           !(C.AEGIS || {})[n] &&
+                                           !(/** @type {Record<string, string>} */ (C.AEGIS || {}))[n] &&
                                            !/Aegislash/.test(n))), "0");
   });
 
@@ -177,7 +182,7 @@ const w = dom.window;
     const megaNames = DEX.filter(r => r[4]).map(r => r[0]);
     check("no Mega is left without an owner",
        list(megaNames.filter(m => !Object.keys(C.MEGA_OWNER || {})
-         .some(k => C.MEGA_OWNER[k].indexOf(m) >= 0))), "0");
+         .some(k => found(C.MEGA_OWNER, "C.MEGA_OWNER")[k].indexOf(m) >= 0))), "0");
     check("no alternate form inherits its base's Megas",
        list(DEX.filter(r => r[0] !== r[1] && !r[4]).filter(function(r){
          const offered = (w.megasFor(r[0]) || []).map(x => x.name);
@@ -192,7 +197,7 @@ const w = dom.window;
        ((C.MEGA_OWNER || {})["Floette-Eternal"] || []).join(","), "Mega Floette");
     check("no key repeats a Mega",
        list(Object.keys(C.MEGA_OWNER || {}).filter(k =>
-         new Set(C.MEGA_OWNER[k]).size !== C.MEGA_OWNER[k].length)), "0");
+         new Set(found(C.MEGA_OWNER, "C.MEGA_OWNER")[k]).size !== found(C.MEGA_OWNER, "C.MEGA_OWNER")[k].length)), "0");
   });
 
   /* one Pokemon, one name: Indeedee-F and Indeedee-Female are the same entry,
@@ -201,7 +206,7 @@ const w = dom.window;
   describe("one Pokemon, one name", () => {
     const spellings = (C.HOME_ONLY || []).filter(function(n){
       return Object.keys(C.COSMETIC || {}).some(function(k){
-        return (C.COSMETIC[k] || []).indexOf(n) >= 0;
+        return (found(C.COSMETIC, "C.COSMETIC")[k] || []).indexOf(n) >= 0;
       });
     });
     check("no alternate spelling is offered as HOME-only", list(spellings), "0");
@@ -226,15 +231,17 @@ const w = dom.window;
           C.DEX.some(r => r[0] === n)).length, 4);
     check("no Mega slips in as a cosmetic spelling",
        list(Object.keys(C.COSMETIC || {}).filter(k =>
-         (C.COSMETIC[k] || []).some(n => /-Mega/.test(n)))), "0");
+         (found(C.COSMETIC, "C.COSMETIC")[k] || []).some(n => /-Mega/.test(n)))), "0");
   });
 
   describe("the derived tables", () => {
+    /** @type {Record<string, number>} */
     const moveNames = {};
     C.MOVES.forEach(r => { moveNames[r[0]] = 1; });
+    /** @type {string[]} */
     const badMove = [];
     Object.keys(C.AB_MOVES || {}).forEach(a => {
-      (C.AB_MOVES[a].m || []).forEach(i => {
+      (found(C.AB_MOVES, "C.AB_MOVES")[a].m || []).forEach(i => {
         if (!C.MOVES[i]) badMove.push(a + "[" + i + "]");
       });
     });
@@ -246,19 +253,20 @@ const w = dom.window;
        list(Object.keys(C.ITEM_FOR_ABILITY || {}).filter(a => !C.ABIL[a])), "0");
     check("every move that causes a status exists",
        list(Object.keys(C.STATUSES || {})
-         .map(s => C.STATUSES[s].moves || []).flat().filter(n => !moveNames[n])), "0");
+         .map(s => found(C.STATUSES, "C.STATUSES")[s].moves || []).flat().filter(n => !moveNames[n])), "0");
     check("every learnset points at real moves",
        list(Object.keys(C.LEARN).filter(k =>
          C.LEARN[k].some(i => !C.MOVES[i]))), "0");
     check("every learnset alias points at a real key",
        list(Object.keys(C.LEARN_ALIAS || {})
-         .filter(k => !C.LEARN[C.LEARN_ALIAS[k]])), "0");
+         .filter(k => !C.LEARN[found(C.LEARN_ALIAS, "C.LEARN_ALIAS")[k]])), "0");
   });
 
   /* WHAT A MOVE DOES, WHOLE, AND FROM CHAMPIONS: a description that defines
      the mechanic (not just names it), is never cut short, and comes from
      Champions' own dex - never another game's page. */
   describe("what each move does", () => {
+    /** @param {string} n */
     const txt = n => (w.MOVE_BY[n] || {}).text || "";
     check("every Champions move has a description",
        list(Object.values(w.MOVE_BY).filter(m => !m.text).map(m => m.name)), "0");

@@ -12,7 +12,7 @@
  * it was written for is worse than no fixture, because it still passes.
  */
 const { describe } = require("node:test");
-const { check, idle, click } = require("./harness.js");
+const { check, idle, click, one, all, byId, found, text } = require("./harness.js");
 const { boot } = require("./fixture.js");
 
 const { window: w, errors } = boot();
@@ -22,20 +22,21 @@ const { window: w, errors } = boot();
 const TABS = ["box", "home", "builds", "calc", "find", "gear", "trainer"];
 
 const d = w.document;
-/* the page's last error since `before`, or "ok" if it threw nothing */
+/** the page's last error since `before`, or "ok" if it threw nothing
+   @param {number} before */
 const newError = before => errors.length === before ? "ok" : errors[errors.length - 1];
 
 /* The ledger loaded and drew: the sign-in gate closed, both boxes have rows,
    and nothing threw. */
 async function loads() {
   describe("the ledger loads", () => {
-    check("the sign-in gate closed (there is a session)", d.getElementById("gate").hidden, true);
+    check("the sign-in gate closed (there is a session)", byId(d, "gate").hidden, true);
     /* the box is drawn in three lists by origin, which is the app's own answer
        to "what can leave the game" - so the count is across all three */
     const boxRows = ["listHomeOrigin", "listChampOrigin", "listRent"]
       .reduce((n, id) => n + (d.getElementById(id) || { children: [] }).children.length, 0);
     check("the box's three lists have rows", boxRows, 10);
-    check("and so does HOME", d.getElementById("listHome").children.length > 0, true);
+    check("and so does HOME", byId(d, "listHome").children.length > 0, true);
     check("no error while loading", errors.length ? errors[0] : "none", "none");
   });
 }
@@ -63,16 +64,16 @@ async function dataBranches() {
     w.go("box");
     await idle();
 
-    const gts = d.getElementById("listGts");
+    const gts = byId(d, "listGts");
     check("the GTS panel drew", !!gts && gts.children.length > 0, true);
     check("with the three open offers, and the closed one out of it",
-       d.getElementById("nGts").textContent, "3/3");
+       byId(d, "nGts").textContent, "3/3");
     check("the closed one is in the history",
-       d.getElementById("nGtsHist").textContent, "1");
+       byId(d, "nGtsHist").textContent, "1");
     check("and it warns that all 3 slots are taken",
        /All 3 GTS slots are in use/.test(gts.innerHTML), true);
     check("the add button is disabled",
-       d.getElementById("gtsAdd").disabled, true);
+       byId(d, "gtsAdd").disabled, true);
 
     const dupe = d.getElementById("dupeBlock");
     check("the duplicate report drew", !!dupe && !dupe.hidden, true);
@@ -81,7 +82,7 @@ async function dataBranches() {
     check("with its two notes (rental, Champions origin)",
        dnote ? dnote.children.length : 0, 2);
     check("and the HOME-origin Garchomp is not in it",
-       /Garchomp/.test(d.getElementById("listDupeHome").textContent), false);
+       /Garchomp/.test(byId(d, "listDupeHome").textContent), false);
     check("and it names the build kept as an idea",
        /Kingambit/.test(dnote ? dnote.innerHTML : ""), true);
   });
@@ -95,9 +96,9 @@ async function ownedRows() {
     w.go("gear");
     await idle();
     check("the stones are counted from their table",
-       /3 of \d+/.test(d.getElementById("stoneNote").textContent), true);
+       /3 of \d+/.test(byId(d, "stoneNote").textContent), true);
     check("and it flags the one with no species in the box",
-       /dead weight until it arrives/.test(d.getElementById("stoneNote").textContent),
+       /dead weight until it arrives/.test(byId(d, "stoneNote").textContent),
        true);
     check("the owned items come from theirs",
        w.S && Object.keys(w.S.items).length, 4);
@@ -106,6 +107,7 @@ async function ownedRows() {
   });
 }
 
+/** @param {string} id */
 const link = id => w.buildLink(id).state;
 
 async function buildStates() {
@@ -121,8 +123,8 @@ async function sheetsOnData() {
   /* a sheet is where most of the app's drawing actually happens */
   await describe("the sheets open on real data", async () => {
     let before = errors.length;
-    w.pokeSheet({ _id: "kingambit", name: "Kingambit", location: "champions",
-                  status: "permanent", origin: "champions" });
+    w.pokeSheet(/** @type {ListedBox} */ ({ _id: "kingambit", name: "Kingambit", location: "champions",
+                  status: "permanent", origin: "champions" }));
     await idle();
     check("a Pokemon's sheet", newError(before), "ok");
     w.closeSheet();
@@ -133,12 +135,12 @@ async function sheetsOnData() {
        facts are what a keep-or-trade decision is made on, so both have to be
        there. */
     before = errors.length;
-    w.pokeSheet({ _id: "bulbasaur-home", name: "Bulbasaur", location: "home",
-                  status: "permanent", origin: "home" });
+    w.pokeSheet(/** @type {ListedBox} */ ({ _id: "bulbasaur-home", name: "Bulbasaur", location: "home",
+                  status: "permanent", origin: "home" }));
     await idle();
     check("the sheet of one not in Champions",
        newError(before), "ok");
-    const osheet = d.getElementById("sheetBody").textContent.replace(/\s+/g, " ");
+    const osheet = byId(d, "sheetBody").textContent.replace(/\s+/g, " ");
     check("...says it is not in the dex", /Not in the Champions dex/.test(osheet), true);
     check("...and still lists its types", /Grass/.test(osheet) && /Poison/.test(osheet), true);
     check("...its BST", /318/.test(osheet), true);
@@ -149,21 +151,23 @@ async function sheetsOnData() {
   });
 }
 
-const heads = () => [...d.getElementById("sheetBody").querySelectorAll("h2")]
+const heads = () => [...all(d.getElementById("sheetBody"), "h2")]
   .map(h => h.textContent.trim());
 /* THE BASE FORM'S PANEL. The abilities and the damage table live inside the
    base form's panel, the way each Mega's live inside its own. They still have
    to be on all three doors - which is what this test measures - so they are
    looked for where they live. */
 const base = () => {
-  const pn = d.getElementById("sheetBody").querySelector(".panel");
+  const pn = byId(d, "sheetBody").querySelector(".panel");
   if (!pn) return {abilities: 0, damage: false, stats: false};
-  return {abilities: pn.querySelectorAll(".note strong").length,
+  return {abilities: all(pn, ".note strong").length,
           damage: /Takes damage/.test(pn.textContent),
           stats: !!pn.querySelector(".statline")};
 };
-const folds = () => [...d.getElementById("sheetBody").querySelectorAll(".fold")]
+const folds = () => [...all(d.getElementById("sheetBody"), ".fold")]
   .map(b => b.textContent.trim());
+/** @param {string[]} list
+   @param {string} h */
 const hasHead = (list, h) => list.some(x => x.indexOf(h) === 0);
 
 async function threeDoors() {
@@ -177,14 +181,14 @@ async function threeDoors() {
     const findHeads = heads(), findFolds = folds(), findBase = base();
     w.closeSheet();
 
-    w.pokeSheet({ _id: "garchomp", name: "Garchomp", location: "champions",
-                  status: "permanent", origin: "home" });
+    w.pokeSheet(/** @type {ListedBox} */ ({ _id: "garchomp", name: "Garchomp", location: "champions",
+                  status: "permanent", origin: "home" }));
     await idle();
     const boxHeads = heads(), boxBase = base();
     w.closeSheet();
 
-    w.pokeSheet({ _id: "garchomp-home", name: "Garchomp", location: "home",
-                  status: "permanent", origin: "home" });
+    w.pokeSheet(/** @type {ListedBox} */ ({ _id: "garchomp-home", name: "Garchomp", location: "home",
+                  status: "permanent", origin: "home" }));
     await idle();
     const homeHeads = heads(), homeFolds = folds(), homeBase = base();
     w.closeSheet();
@@ -199,7 +203,9 @@ async function threeDoors() {
       check("...and HOME", hasHead(homeHeads, h), true);
     });
     /* and what lives in the base form's panel is on all three */
-    [["Find", findBase], ["the box", boxBase], ["HOME", homeBase]].forEach(function(x){
+    /** @type {[string, typeof findBase][]} */
+    const bases = [["Find", findBase], ["the box", boxBase], ["HOME", homeBase]];
+    bases.forEach(function(x){
       check(x[0] + " explains the abilities in the base panel", x[1].abilities > 0, true);
       check(x[0] + " carries its damage table there", x[1].damage, true);
       check(x[0] + " carries its stats there", x[1].stats, true);
@@ -230,27 +236,28 @@ async function speciesPicker() {
   /* A field you tap, opening the same searchable sheet the GTS and the
      calculator use - never a <select> of every form in one alphabetical run. */
   await describe("the species picker is searched, not scrolled", async () => {
-    w.buildSheet(null, {});
+    w.buildSheet(null, null);
     await idle();
-    const field = [...d.querySelectorAll("#v-buildedit .field")]
-      .find(f => /^Pokemon$/.test((f.querySelector("label") || {}).textContent || ""));
+    const field = found([...all(d, "#v-buildedit .field")]
+      .find(f => /^Pokemon$/.test((f.querySelector("label") || {}).textContent || "")), "field");
     check("no dropdown of every form",
        !!field && !field.querySelector("select"), true);
     check("but a card you tap", !!field.querySelector("button.row"), true);
     click(field.querySelector("button.row"));
     await idle();
 
-    const sheet = d.getElementById("sheetBody");
-    const inp = sheet.querySelector(".search input");
+    const sheet = byId(d, "sheetBody");
+    const inp = one(sheet, ".search input");
     check("the sheet has a search box", !!inp, true);
-    const names = () => [...sheet.querySelectorAll(".list .row")]
-      .map(b => b.querySelector(".rname").firstChild.textContent.trim());
+    const names = () => [...all(sheet, ".list .row")]
+      .map(b => text(one(b, ".rname").firstChild).trim());
     /* Venusaur, not Bulbasaur: Champions' dex starts there - which is why
        Bulbasaur serves the fixture as "not in Champions" */
     check("and starts in dex order", names()[0], "Venusaur");
     check("with the full card, six stats included",
        !!sheet.querySelector(".list .row .statline"), true);
 
+    /** @param {string} t */
     const type = t => { inp.value = t; inp.dispatchEvent(new w.Event("input")); };
     type("garchomp");
     check("searches by name", names().join(","), "Garchomp");
@@ -265,7 +272,7 @@ async function speciesPicker() {
 
     /* the box is a FILTER, never a limit: a build for something he does not
        have yet is an idea worth keeping */
-    const mine = [...sheet.querySelectorAll(".tog")]
+    const mine = [...all(sheet, ".tog")]
       .find(b => /In your boxes/.test(b.textContent));
     click(mine);
     check("and the box filter leaves only what he has",
@@ -274,10 +281,10 @@ async function speciesPicker() {
     click(mine);
 
     type("sneasler");
-    click([...sheet.querySelectorAll(".list .row")][0]);
+    click([...all(sheet, ".list .row")][0]);
     await idle();
     check("picking one sets it on the build",
-       /Sneasler/.test(d.getElementById("v-buildedit").textContent), true);
+       /Sneasler/.test(byId(d, "v-buildedit").textContent), true);
     w.leaveEditor();
     await idle();
   });
@@ -294,7 +301,8 @@ async function worldsRows() {
     const home = w.CHAMP.HOME_DEX || {};
     const alias = w.CHAMP.LEARN_ALIAS || {};
     let rows = 0;
-    const orphan = [];
+    /** @type {string[]} */
+  const orphan = [];
     (w.CHAMP.WORLDS || []).forEach(y => {
       Object.keys(y.d || {}).forEach(div => {
         (y.d[div].top || []).forEach(r => {
@@ -333,9 +341,9 @@ async function outsideMovepool() {
                       "Giga Drain", "Mega Drain"]},
       mv: {"Mega Drain": ["Grass", "S", 40, 100, 15]},
       ab: {Chlorophyll: "Doubles Speed in harsh sunlight."}};
-    w.findDetail(w.anyRow("Bulbasaur"));
+    w.findDetail(found(w.anyRow("Bulbasaur"), "w.anyRow('Bulbasaur')"));
     await idle();
-    const sheet2 = d.getElementById("sheetBody").textContent.replace(/\s+/g, " ");
+    const sheet2 = byId(d, "sheetBody").textContent.replace(/\s+/g, " ");
     check("there is a movepool section", /Movepool/.test(sheet2), true);
     check("...and it says where the list comes from",
        /Which moves it learns is main-series/.test(sheet2), true);
@@ -362,7 +370,7 @@ async function backButton() {
     w.go("find"); w.go("calc");
     w.findDetail(w.byName["Garchomp"]);
     await idle();
-    check("with the sheet open", !d.getElementById("scrim").hidden, true);
+    check("with the sheet open", !byId(d, "scrim").hidden, true);
     /* jsdom implements history.back() but does NOT dispatch popstate for it,
        so the event is fired here the way the browser fires it. The real
        integration - pressing Back closes the sheet - is checked in a real
@@ -372,7 +380,7 @@ async function backButton() {
       await idle();
     };
     await back();
-    check("the first Back closes the sheet", d.getElementById("scrim").hidden, true);
+    check("the first Back closes the sheet", byId(d, "scrim").hidden, true);
     check("...and does not change tab", w.S.tab, "calc");
     await back();
     check("the second Back returns to the previous tab", w.S.tab, "find");
@@ -389,7 +397,7 @@ async function backButton() {
    on real data without an error. */
 async function otherSheets() {
   let before = errors.length;
-  w.buildSheet("charizard");
+  w.buildSheet("charizard", w.S.builds.charizard);
   await idle();
   check("a Mega build's sheet",
      newError(before), "ok");

@@ -17,7 +17,7 @@
    while the table also holds a `farigiraf-2` that another device wrote a
    second ago. A correct create walks past both. */
 const { describe } = require("node:test");
-const { check, open, idle, row, build, click } = require("./harness.js");
+const { check, open, idle, row, build, click, all } = require("./harness.js");
 const UID = "u1";
 
 const ROWS = [row("farigiraf", "Farigiraf", {trained:true})];
@@ -32,10 +32,12 @@ const TEAMS = [{user_id:UID, id:"t1", name:"Other", slots:[], notes:{},
 const TAKEN = { builds: ["farigiraf", "farigiraf-2"], teams: ["other", "trial"] };
 const { dom, errs } = open(
   { box: ROWS, builds: BUILDS, teams: TEAMS }, { taken: TAKEN });
-/* what the app sent, as "table/id", one list per kind of write */
+/** what the app sent, as "table/id", one list per kind of write
+   @param {string} op */
 const sent = op => dom.window.__WROTE.filter(x => x.op === op).map(x => x.table + "/" + x.row.id);
 const w = dom.window, d = w.document;
-const save = which => click([...d.querySelectorAll("#" + which + "Foot button")]
+/** @param {string} which */
+const save = which => click([...all(d, "#" + which + "Foot button")]
   .find(b => b.textContent === "Save"));
 
 (async () => {
@@ -43,7 +45,7 @@ const save = which => click([...d.querySelectorAll("#" + which + "Foot button")]
   await describe("a new build, with the race running", async () => {
     check("the device has loaded only one build",
        Object.keys(w.S.builds).length, 1);
-    w.buildSheet(null, {pokemon:"Farigiraf"});
+    w.buildSheet(null, /** @type {Build} */ ({pokemon:"Farigiraf"}));
     save("buildEdit");
     await idle();
     check("it tries farigiraf, then -2, then -3",
@@ -65,7 +67,7 @@ const save = which => click([...d.querySelectorAll("#" + which + "Foot button")]
 
   await describe("the same for teams", async () => {
     w.__WROTE.length = 0;
-    w.teamSheet(null, {name:"Trial", slots:[], notes:{}});
+    w.teamSheet(null, {name:"Trial", slots:[], notes:{}, updated:""});
     save("teamEdit");
     await idle();
     check("trial, then trial-2", sent("insert").join(","), "teams/trial,teams/trial-2");

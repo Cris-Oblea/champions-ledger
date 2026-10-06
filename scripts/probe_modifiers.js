@@ -30,8 +30,15 @@ const M = require(path.join(CALC, "mechanics", "champions"));
 
 const gen = Generations.get(0);
 
-/* A Smogon Pokemon from a probe case's spec. */
+/** One side of a probe case, as the case generator writes it.
+    @typedef {{name: string, item?: string, ability?: string, status?: string,
+      evs?: object, nature?: string, boosts?: object}} ProbeSide */
+/** @typedef {ReturnType<typeof mods>} Mods */
+
+/** A Smogon Pokemon from a probe case's spec.
+   @param {ProbeSide} spec */
 function build(spec) {
+  /** @type {Record<string, unknown>} */
   const opts = {};
   if (spec.item) opts.item = spec.item;
   if (spec.ability) opts.ability = spec.ability;
@@ -42,8 +49,13 @@ function build(spec) {
   return new Pokemon(gen, spec.name, opts);
 }
 
-/* The four stages, each a list of 4096ths. `desc` is written into by the
-   engine and thrown away; the mod lists are what is wanted. */
+/** The four stages, each a list of 4096ths. `desc` is written into by the
+   engine and thrown away; the mod lists are what is wanted.
+   @param {ProbeSide} atkSpec
+   @param {ProbeSide} defSpec
+   @param {string} moveName
+   @param {object} [fieldSpec]
+   @param {number} [typeEff] */
 function mods(atkSpec, defSpec, moveName, fieldSpec, typeEff) {
   const attacker = build(atkSpec);
   const defender = build(defSpec);
@@ -83,12 +95,16 @@ function mods(atkSpec, defSpec, moveName, fieldSpec, typeEff) {
   };
 }
 
-/* What the probed thing ADDS: the multipliers present with it and absent
-   without it, per stage, as exact fractions of 4096. */
+/** What the probed thing ADDS: the multipliers present with it and absent
+   without it, per stage, as exact fractions of 4096.
+   @param {Mods} withIt
+   @param {Mods} without */
 function attributable(withIt, without) {
+  /** @type {Record<string, number[]>} */
   const out = {};
-  for (const stage of ["bp", "at", "df", "fin"]) {
+  for (const stage of /** @type {const} */ (["bp", "at", "df", "fin"])) {
     const base = (without[stage] || []).slice();
+    /** @type {number[]} */
     const extra = [];
     for (const v of withIt[stage] || []) {
       const i = base.indexOf(v);
@@ -109,6 +125,7 @@ function attributable(withIt, without) {
    silently rots the day Smogon adds a Plate. */
 if (process.argv[2] === "--map") {
   const items = require(path.join(CALC, "items"));
+  /** @type {{boost: Record<string, string>, berry: Record<string, string>, known: string[]}} */
   const out = { boost: {}, berry: {}, known: [] };
   for (const item of gen.items) {
     const t = items.getItemBoostType(item.name);
@@ -137,7 +154,7 @@ for (const c of cases) {
       raw: { with: withIt, without: without },
     });
   } catch (e) {
-    results.push({ id: c.id, error: String((e && e.message) || e) });
+    results.push({ id: c.id, error: String((e instanceof Error && e.message) || e) });
   }
 }
 process.stdout.write(JSON.stringify(results));

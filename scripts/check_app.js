@@ -31,7 +31,8 @@ const src = harness.markup(ROOT);
 const app = harness.source(ROOT);
 
 let problems = 0;
-/* Count and print one problem. */
+/** Count and print one problem.
+   @param {string} msg */
 function fail(msg) { problems++; console.log("  " + msg); }
 
 console.log("CALC switches the engine ignores");

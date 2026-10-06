@@ -8,11 +8,15 @@ import globals from "globals";
 import sonarjs from "eslint-plugin-sonarjs";
 import unicorn from "eslint-plugin-unicorn";
 
+/* The plugin's types call its configs optional; this one ships them. */
+const sonarRecommended = /** @type {NonNullable<typeof sonarjs.configs>} */ (
+  sonarjs.configs).recommended;
+
 export default [
   { ignores: ["node_modules/**", "data/**", "graphify-out/**",
               "tracker/dist/**", "tracker/build/**", "tracker/*.js",
               "tracker/src/_*.js"] },
-  sonarjs.configs.recommended,
+  sonarRecommended,
   {
     plugins: { unicorn },
     rules: {

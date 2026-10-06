@@ -208,7 +208,7 @@ function slotForm(r, b, sl, p, info){
    base row whatever stone it carries - so this is asked per outcome, never
    with every Mega applied at once.
    @param {TeamReport} r
-   @param {number | null} megaAt
+   @param {number | null} [megaAt] nobody evolved when left out
    @returns {SpeedRow[]} */
 function teamSpeeds(r, megaAt){
   /** @type {SpeedRow[]} */
@@ -240,7 +240,7 @@ function teamSpeeds(r, megaAt){
    form takes the first hit, and staying unevolved to resist something is a
    real play.
    @param {TeamReport} r
-   @param {number | null} megaAt
+   @param {number | null} [megaAt] nobody evolved when left out
    @returns {TypeRow[]} */
 function teamTypes(r, megaAt){
   /** @type {TypeRow[]} */

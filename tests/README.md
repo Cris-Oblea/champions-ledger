@@ -49,6 +49,10 @@ Everything a test needs comes from `harness.js`:
 | `row(id, name, fields)` | a box row with every column at its plain default, so a test writes only what its case is about |
 | `build(id, pokemon, fields)` | the same for a build |
 | `click(node)` | a bubbling click |
+| `one(root, sel)` / `all(root, sel)` / `byId(doc, id)` | the element (or every element) a check is about, typed as a `Field` (an input that also has a select's `options`); a lookup that finds nothing fails on the spot and names the selector. A check that something is ABSENT keeps `querySelector`, whose null is the answer |
+| `found(value, what)` | a value a test found with `.find()` or an index, or a failure that says what was not found |
+| `text(node)` | the text of a node that has to be there |
+| `calcSide(name, fields)` | one side of the damage calculator with nothing set but its Pokemon and `fields`, as `CALC.atk` / `CALC.def` hold it |
 | `idle()` | one turn of the event loop |
 | `until(cond)` | waits for a delay the app chose itself; never throws |
 | `ROOT` | the repo, found from the harness file, ending in `/` |

@@ -18,19 +18,25 @@ const path = require("path");
 const { test } = require("node:test");
 const assert = require("node:assert/strict");
 
+/** The stubbed ledger: a table name -> its rows, as the database holds them.
+    @typedef {Record<string, Record<string, unknown>[]>} Tables */
+
 /* The repo, found from this file - never a hardcoded path, or the tests die
    on any other machine, CI included. Ends in "/" so a test can write
    ROOT + "data/...". */
 const ROOT = path.join(__dirname, "..") + "/";
 
-/* ONE CHECK, REPORTED BY NODE'S OWN RUNNER. Every test file used to carry its
+/** ONE CHECK, REPORTED BY NODE'S OWN RUNNER. Every test file used to carry its
    own `ok()`, a failure counter and a process.exit at the end - and three of
    them never exited non-zero at all, so the gate printed "ok" over whatever
    they found. node:test sets the exit code itself: a check that fails fails
    the file, whether or not anyone remembered to count it.
 
    Values are compared as strings, which is how every check here was written:
-   a count against "0", a boolean against true, a list joined into one line. */
+   a count against "0", a boolean against true, a list joined into one line.
+   @param {string} label
+   @param {unknown} got
+   @param {unknown} want */
 function check(label, got, want) {
   test(label, () => assert.equal(String(got), String(want)));
 }
@@ -45,10 +51,11 @@ function check(label, got, want) {
    instead - a guess, paid on every wait, that a slower machine could lose. */
 const idle = () => new Promise(r => setTimeout(r, 0));
 
-/* The one wait idle() cannot cover: a delay the APP chose, such as the
+/** The one wait idle() cannot cover: a delay the APP chose, such as the
    confirm dialog moving focus 30 ms after it opens. Polls until cond() holds
    or two seconds pass, and never throws - the check that follows is what
-   says whether it held, under its own label. */
+   says whether it held, under its own label.
+   @param {() => unknown} cond */
 async function until(cond) {
   const end = Date.now() + 2000;
   while (!cond() && Date.now() < end) await new Promise(r => setTimeout(r, 10));
@@ -106,7 +113,7 @@ function page() {
  */
 function source() {
   const src = path.join(ROOT, "tracker", "src");
-  return fs.readdirSync(src, { recursive: true })
+  return fs.readdirSync(src, { recursive: true, encoding: "utf8" })
     .map(f => f.split(path.sep).join("/"))
     .filter(f => f.endsWith(".js") && !path.posix.basename(f).startsWith("_"))
     .sort()
@@ -130,12 +137,13 @@ function styles() {
 function markup() {
   const dir = path.join(ROOT, "tracker", "src", "markup");
   /* twice: the fragments, then the parts/ pieces the fragments include */
-  const include = html => html.replace(/^[ \t]*<!--#include ([\w./-]+) -->\r?\n/gm,
-    (m, name) => fs.readFileSync(path.join(dir, name), "utf8"));
+  const include = (/** @type {string} */ html) => html.replace(/^[ \t]*<!--#include ([\w./-]+) -->\r?\n/gm,
+    (/** @type {string} */ m, /** @type {string} */ name) =>
+      fs.readFileSync(path.join(dir, name), "utf8"));
   return include(include(fs.readFileSync(path.join(dir, "index.html"), "utf8")));
 }
 
-/* The stub: the shape supabase-js presents to the app (ui/signin.js and
+/** The stub: the shape supabase-js presents to the app (ui/signin.js and
  * core/store.js) and nothing more. A <script>, because the app reads
  * window.supabase at load.
  *
@@ -144,7 +152,10 @@ function markup() {
  * sent. window.__TAKEN[table] is ids the TABLE holds that the device never
  * loaded - written from another phone - and an insert on one fails the way
  * Postgres does, which is the race createtest.js is about.
- */
+   @param {Tables | undefined} tables
+   @param {string} uid
+   @param {string} email
+   @param {Record<string, string[]> | undefined} taken */
 function stub(tables, uid, email, taken) {
   const user = tables ? JSON.stringify({ user: { id: uid, email } }) : "null";
   return "<script>" +
@@ -174,16 +185,18 @@ function stub(tables, uid, email, taken) {
     }};<\/script>`;
 }
 
-/* The built page, booted under jsdom on a stubbed ledger.
+/** The built page, booted under jsdom on a stubbed ledger.
  *
  * `tables` maps a table name to its rows and signs the page in; left out, the
  * page boots signed out with every table empty. `errs` collects every error
  * jsdom reports, bar the scrollTo it does not implement, and with
  * `consoleErrors` every console.error the page writes as well.
- */
+   @param {Tables} [tables]
+   @param {{uid?: string, email?: string, taken?: Record<string, string[]>, consoleErrors?: boolean}} [opts] */
 function open(tables, opts) {
   const { JSDOM, VirtualConsole } = require("jsdom");
   const o = Object.assign({ uid: "u1", email: "t@t" }, opts);
+  /** @type {string[]} */
   const errs = [];
   const vc = new VirtualConsole().on("jsdomError",
     e => { if (!/scrollTo/.test(e.message)) errs.push(e.message); });
@@ -200,20 +213,89 @@ function open(tables, opts) {
    the point of the fixture rather than twelve columns that never vary.
    store.js normalises what it reads (box_id null, shiny a boolean, the date
    cut to a day), so these defaults are the same values the app would see. */
+/** @param {string} id
+    @param {string} name
+    @param {Record<string, unknown>} [fields] */
 const row = (id, name, fields) => ({
   user_id: "u1", id, name, location: "champions", status: "permanent",
   origin: "champions", note: "", ord: 0, shiny: false, trained: false,
   updated_at: "2026-09-10", ...fields });
 
+/** @param {string} id
+    @param {string} pokemon
+    @param {Record<string, unknown>} [fields] */
 const build = (id, pokemon, fields) => ({
   user_id: "u1", id, pokemon, box_id: null, mega: null, ability: null,
   mega_ability: null, nature: null, stat_points: {}, moves: [], role: "",
   rationale: "", extra: {}, updated_at: "2026-09-10", ...fields });
 
-/* A click as a person makes one: bubbling, so the listeners the app hangs on
-   a list or a sheet rather than on each button see it. */
-const click = n => n.dispatchEvent(
-  new n.ownerDocument.defaultView.MouseEvent("click", { bubbles: true }));
+/* THE THING A CHECK IS ABOUT, OR A FAILURE THAT NAMES IT. A lookup that
+   finds nothing used to surface as "cannot read properties of null" three
+   calls later; these fail on the spot and say what was missing. Each one
+   takes what a lookup can return - null, undefined - so a test hands its
+   result straight on, and an element comes back as a Field: an input that
+   is also a select, the widest element a test pokes at (value, options,
+   disabled, click) - the same choice the app makes with field(). A check that a thing is ABSENT keeps
+   querySelector, whose null is the answer. */
+/** @typedef {HTMLInputElement & Pick<HTMLSelectElement, "options" | "selectedIndex" | "selectedOptions">} Field */
+/** A value a test found with .find() or an index, or a failure naming it.
+    @template T
+    @param {T | null | undefined} v
+    @param {string} what
+    @returns {T} */
+function found(v, what) {
+  if (v == null) throw new Error("not found: " + what);
+  return v;
+}
+/** One side of the calculator as CALC.atk / CALC.def hold it, with nothing set
+    but its Pokemon and what `fields` says: no Stat Points, no stages, no
+    nature, ability, item or status, full HP.
+    @param {string} name
+    @param {Partial<import("../tracker/src/tabs/damage.js").CalcSide>} [fields]
+    @returns {import("../tracker/src/tabs/damage.js").CalcSide} */
+function calcSide(name, fields) {
+  return { name, buildId: null, sp: { hp: 0, atk: 0, def: 0, spa: 0, spd: 0, spe: 0 },
+           boost: { atk: 0, def: 0, spa: 0, spd: 0, spe: 0 }, nature: null,
+           ability: null, item: null, status: null, curHP: null, ...fields };
+}
+
+/** The text of a node that has to be there: its textContent, never null.
+    @param {Node | null | undefined} n */
+function text(n) {
+  return found(n, "a node to read").textContent || "";
+}
+/** A click as a person makes one: bubbling, so the listeners the app hangs on
+   a list or a sheet rather than on each button see it.
+   @param {Element | null | undefined} n */
+function click(n) {
+  const el = found(n, "the element to click");
+  el.dispatchEvent(new (/** @type {Window & typeof globalThis} */ (
+    el.ownerDocument.defaultView)).MouseEvent("click", { bubbles: true }));
+}
+/** @param {ParentNode | null | undefined} root
+    @param {string} sel
+    @returns {Field} */
+function one(root, sel) {
+  const n = found(root, "a place to look for " + sel).querySelector(sel);
+  if (!n) throw new Error("nothing on the page matches " + sel);
+  return /** @type {Field} */ (n);
+}
+/** Every element matching `sel`, as an array.
+    @param {ParentNode | null | undefined} root
+    @param {string} sel
+    @returns {Field[]} */
+function all(root, sel) {
+  return /** @type {Field[]} */ (
+    [...found(root, "a place to look for " + sel).querySelectorAll(sel)]);
+}
+/** @param {Document} doc
+    @param {string} id
+    @returns {Field} */
+function byId(doc, id) {
+  const n = doc.getElementById(id);
+  if (!n) throw new Error("no #" + id + " on the page");
+  return /** @type {Field} */ (n);
+}
 
 module.exports = { ROOT, check, idle, until, page, source, styles, markup, open,
-                   row, build, click };
+                   row, build, click, one, all, byId, found, text, calcSide };
