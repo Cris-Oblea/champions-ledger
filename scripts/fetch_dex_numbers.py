@@ -105,7 +105,8 @@ def main() -> None:
     every = sorted({p["name"] for p in mons} |
                    {p.get("species") for p in mons if p.get("species")} |
                    set(wt))
-    resolved, missing = {}, []
+    resolved: dict[str, int] = {}
+    missing: list[str] = []
     for n in every:
         num = _number_of(n, lookup)
         if num is None:

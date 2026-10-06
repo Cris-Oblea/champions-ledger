@@ -24,6 +24,7 @@ import json
 import os
 import sys
 from pathlib import Path
+from typing import Any
 
 from paths import META, ROOT
 
@@ -38,14 +39,14 @@ def main() -> int:
     if not os.path.exists(SRC):
         sys.exit("no analyses yet - run scripts/fetch_smogon.py")
     blob = json.loads(Path(SRC).read_text(encoding="utf-8"))
-    out = {}
-    for mon in blob.get("pokemon") or []:
-        strategies = mon.get("vgc_strategies") or []
+    out: dict[str, list[dict[str, Any]]] = {}
+    for mon in blob.get("pokemon") or ():
+        strategies: list[dict[str, Any]] = mon.get("vgc_strategies") or []
         if not strategies:
             continue
-        got = []
+        got: list[dict[str, Any]] = []
         for st in strategies:
-            sets = [{
+            sets: list[dict[str, Any]] = [{
                 "name": ms.get("name") or "",
                 "ability": ms.get("abilities") or [],
                 "item": ms.get("items") or [],
@@ -55,7 +56,7 @@ def main() -> int:
                 "sp": ms.get("stat_points") or [],
                 "moves": ms.get("moveslots") or [],
                 "why": ms.get("explanation") or "",
-            } for ms in st.get("movesets") or []]
+            } for ms in st.get("movesets") or ()]
             if not sets and not (st.get("overview") or "").strip():
                 continue
             got.append({
@@ -78,9 +79,9 @@ def main() -> int:
             + ";\n")
     with open(OUT, "w", encoding="utf-8", newline="\n") as f:
         f.write(body)
-    sets = sum(len(s["sets"]) for v in out.values() for s in v)
+    n_sets = sum(len(s["sets"]) for v in out.values() for s in v)
     print("wrote %s  (%d KB, %d Pokemon, %d sets)"
-          % (OUT, len(body.encode("utf-8")) // 1024, len(out), sets))
+          % (OUT, len(body.encode("utf-8")) // 1024, len(out), n_sets))
     return 0
 
 

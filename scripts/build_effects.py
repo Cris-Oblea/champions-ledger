@@ -411,7 +411,7 @@ def smogon_text() -> dict[str, Any]:
     out = {}
     for kind, key in (("item", "items"), ("ability", "abilities"),
                       ("move", "moves")):
-        for r in b.get(key) or []:
+        for r in b.get(key) or ():
             if isinstance(r, dict) and r.get("name"):
                 out[(kind, r["name"])] = r.get("description") or ""
     return out

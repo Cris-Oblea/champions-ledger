@@ -178,7 +178,7 @@ def _check_references(learn: dict[str, list[str]]) -> None:
     am = dex.db("ability_moves") or {}
     ok("every move in the ability table exists",
        lst([n for r in (am.get("abilities") or {}).values()
-            for n in (r.get("moves") or []) if n not in moves]))
+            for n in (r.get("moves") or ()) if n not in moves]))
     ok("every ability with a rule exists",
        lst([a for a in (am.get("abilities") or {}) if a not in abil]))
     il = dex.db("item_links") or {}
@@ -186,9 +186,9 @@ def _check_references(learn: dict[str, list[str]]) -> None:
        lst([n for n in (il.get("by_move") or {}) if n not in moves]))
     ok("every ability an item serves exists",
        lst([a for a in (il.get("by_ability") or {}) if a not in abil]))
-    st = (dex.db("statuses") or {}).get("statuses") or {}
+    st = dex.db_obj("statuses").get("statuses") or {}
     ok("every move that causes a status exists",
-       lst([n for r in st.values() for n in (r.get("moves") or [])
+       lst([n for r in st.values() for n in (r.get("moves") or ())
             if n not in moves]))
     ok("every learnset points at real moves",
        lst([k for k, v in learn.items() if any(n not in moves for n in v)]))

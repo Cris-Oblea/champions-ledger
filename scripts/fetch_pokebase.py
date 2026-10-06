@@ -98,7 +98,8 @@ def rsc_lines(payload: str) -> dict[str, Any]:
     everything after them: walk the stream and consume each row by its own
     length instead.
     """
-    out, i, n = {}, 0, len(payload)
+    out: dict[str, Any] = {}
+    i, n = 0, len(payload)
     dec = json.JSONDecoder()
     head = re.compile(r"([0-9a-f]+):")
     text = re.compile(r"T([0-9a-f]+),")
@@ -141,19 +142,19 @@ def resolve(node: Any, lines: dict[str, Any], depth: int = 0) -> Any:
     if isinstance(node, str):
         if node.startswith("$") and ":" in node:
             parts = node[1:].split(":")
-            cur = lines.get(parts[0])
+            cur: Any = lines.get(parts[0])
             if cur is None:
                 return node
             for key in parts[1:]:
                 try:
-                    cur = cur[int(key)] if isinstance(cur, list) else cur[key]
+                    cur = cur[int(key)] if dex.is_arr(cur) else cur[key]
                 except (KeyError, IndexError, ValueError, TypeError):
                     return node
             return resolve(cur, lines, depth + 1)
         return node
-    if isinstance(node, list):
+    if dex.is_arr(node):
         return [resolve(v, lines, depth + 1) for v in node]
-    if isinstance(node, dict):
+    if dex.is_obj(node):
         return {k: resolve(v, lines, depth + 1) for k, v in node.items()}
     return node
 
@@ -161,12 +162,12 @@ def resolve(node: Any, lines: dict[str, Any], depth: int = 0) -> Any:
 def find_key(obj: Any, key: str, hits: list[Any] | None = None) -> list[Any]:
     """Collect every value stored under `key`, at any depth."""
     hits = [] if hits is None else hits
-    if isinstance(obj, dict):
+    if dex.is_obj(obj):
         for k, v in obj.items():
             if k == key:
                 hits.append(v)
             find_key(v, key, hits)
-    elif isinstance(obj, list):
+    elif dex.is_arr(obj):
         for v in obj:
             find_key(v, key, hits)
     return hits
@@ -174,12 +175,12 @@ def find_key(obj: Any, key: str, hits: list[Any] | None = None) -> list[Any]:
 
 def carrying(node: Any, keys: Sequence[str]) -> Iterator[dict[str, Any]]:
     """Every object under `node` that has all of `keys`, in document order."""
-    if isinstance(node, dict):
+    if dex.is_obj(node):
         if all(k in node for k in keys):
             yield node
         for v in node.values():
             yield from carrying(v, keys)
-    elif isinstance(node, list):
+    elif dex.is_arr(node):
         for v in node:
             yield from carrying(v, keys)
 
@@ -215,7 +216,8 @@ def parse_pokemon_usage() -> list[dict[str, Any]]:
     the moves one, so every page is walked (PAGED). A species with no usage
     cell is left out, as for moves.
     """
-    rows, seen = [], set()
+    rows: list[dict[str, Any]] = []
+    seen: set[str] = set()
     for s in read_all_pages("pokemon"):
         found = list(_LADDER_ROW.finditer(s))
         for i, m in enumerate(found):
@@ -241,7 +243,8 @@ def parse_table_usage(page: str) -> list[dict[str, Any]]:
     nobody runs has "—" there, and a pattern that searched onward for the
     next "N%" found its accuracy instead: Return, Absorb and 199 more were
     recorded at 100% usage. A move with no usage is left out."""
-    rows, seen = [], set()
+    rows: list[dict[str, Any]] = []
+    seen: set[str] = set()
     name = re.compile(r'href="/pokemon-champions/%s/([a-z0-9\-\.]+)">([^<]+)</a>'
                       % re.escape(page))
     first_cell = re.compile(r"</td><td[^>]*><span[^>]*>([\d.]+)?")
@@ -269,8 +272,8 @@ def parse_table_usage(page: str) -> list[dict[str, Any]]:
 def parse_speed_tiers() -> list[dict[str, Any]]:
     """The speed-tier table, read from the page's flight payload."""
     lines = rsc_lines(rsc_payload("speed-tiers"))
-    rows = next((resolve(v, lines) for v in find_key(lines, "tierRows")
-                 if isinstance(v, list)), [])
+    rows: list[Any] = next((resolve(v, lines) for v in find_key(lines, "tierRows")
+                            if dex.is_arr(v)), None) or []
     return [{
         "base_speed": r.get("baseSpeed"),
         "speeds": r.get("speeds", {}),

@@ -67,7 +67,7 @@ INK = re.compile(r"(?<![-a-z])color\s*:\s*(#[0-9a-fA-F]{3,6})")
 #
 # So the palette is exactly the eighteen pokemon.com publishes. Anything asking
 # for a nineteenth is asking about something that is not in this game.
-EXTRA = {}
+EXTRA: dict[str, dict[str, Any]] = {}
 
 
 def luminance(hexstr: str) -> float:
@@ -90,7 +90,7 @@ def parse(css: str) -> dict[str, dict[str, Any]]:
     """Each type's colour, second colour and name ink from pokemon.com's
     stylesheet.
     """
-    out = {}
+    out: dict[str, dict[str, Any]] = {}
     for m in RULE.finditer(css):
         name, body = m.group(1), m.group(2)
         g, f, i = GRAD.search(body), FLAT.search(body), INK.search(body)

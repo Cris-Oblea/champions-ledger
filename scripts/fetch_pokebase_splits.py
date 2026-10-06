@@ -83,7 +83,7 @@ STAT_WORD = {"hp": "HP", "attack": "Atk", "defense": "Def",
 
 def _lists(lines: dict[str, Any], key: str) -> list[list[Any]]:
     """Every array stored under `key`, in page order."""
-    return [v for v in find_key(lines, key) if isinstance(v, list)]
+    return [v for v in find_key(lines, key) if dex.is_arr(v)]
 
 
 def _rows(rows: list[dict[str, Any]] | None,
@@ -95,8 +95,8 @@ def _rows(rows: list[dict[str, Any]] | None,
     tournament block measures the same thing ("Sneasler 53.9%"), so the two
     must not be shown as if they said the same thing.
     """
-    out = []
-    for r in rows or []:
+    out: list[dict[str, Any]] = []
+    for r in rows or ():
         row = {"name": r["name"], "percent": r.get("percent")}
         if row["percent"] is None:
             del row["percent"]
@@ -108,9 +108,9 @@ def _rows(rows: list[dict[str, Any]] | None,
 
 def _spreads(rows: list[dict[str, Any]] | None, field: str) -> list[dict[str, Any]]:
     """The SP spreads of one section, with their share."""
-    out = []
-    for r in rows or []:
-        vals = r.get(field) or {}
+    out: list[dict[str, Any]] = []
+    for r in rows or ():
+        vals = dex.obj(r.get(field))
         sp = {short: vals[long_] for long_, short in SP_KEYS if vals.get(long_)}
         if sp:
             out.append({"sp": sp, "percent": r["percent"]})
@@ -119,7 +119,7 @@ def _spreads(rows: list[dict[str, Any]] | None, field: str) -> list[dict[str, An
 
 # ----------------------------------------------------------- tournament side
 
-def _kind(rows: list[dict[str, Any]]) -> str | None:
+def _kind(rows: list[Any]) -> str | None:
     """Which section a table of rows is, read off its own columns.
 
     Order of appearance would be shorter, and is exactly the assumption that
@@ -127,9 +127,9 @@ def _kind(rows: list[dict[str, Any]]) -> str | None:
     spread carries `values`, a nature carries the stat it raises, a move
     carries its type, a teammate carries how many teams it appeared on.
     """
-    if not rows or not isinstance(rows[0], dict):
+    f = rows[0] if rows else None
+    if not dex.is_obj(f):
         return None
-    f = rows[0]
     if "percent" not in f:
         return None
     if "values" in f:
@@ -147,7 +147,7 @@ def _kind(rows: list[dict[str, Any]]) -> str | None:
 
 def tournament(lines: dict[str, Any], flow: str, html: str) -> dict[str, Any]:
     """The regulation's tournament block, every page of it."""
-    got = {}
+    got: dict[str, list[dict[str, Any]]] = {}
     for rows in _lists(lines, "rows"):
         k = _kind(rows)
         if k and k not in got:
@@ -210,21 +210,21 @@ def season(lines: dict[str, Any]) -> dict[str, Any] | None:
     formats are published under the same seasonId, so the filter has to be on
     the row rather than on the page.
     """
-    seasons = {}
+    seasons: dict[Any, dex.Row] = {}   # keyed by the page's own id
     for arr in _lists(lines, "seasons"):
         for s in arr:
-            if isinstance(s, dict) and s.get("id"):
+            if dex.is_obj(s) and s.get("id"):
                 seasons[s["id"]] = s
     best, best_n = None, -1
     for o in carrying(list(lines.values()), ("seasonId",)):
         if o.get("format") != "doubles":
             continue
-        n = (seasons.get(o.get("seasonId")) or {}).get("season") or 0
+        n: int = dex.obj(seasons.get(o.get("seasonId"))).get("season") or 0
         if n > best_n:
             best, best_n = o, n
     if not best:
         return None
-    meta = seasons.get(best.get("seasonId")) or {}
+    meta = dex.obj(seasons.get(best.get("seasonId")))
     return {
         "name": meta.get("name"),
         "dates": meta.get("dateRangeLabel"),
@@ -278,7 +278,8 @@ def _fetch_missing(rows: list[dict[str, Any]], out: dict[str, Any],
                    force: bool) -> tuple[int, list[str]]:
     """Fetch each ladder row not in `out` yet into it; (how many were fetched,
     the names whose page had no usage block)."""
-    n, empty = 0, []
+    n = 0
+    empty: list[str] = []
     for r in rows:
         slug, name = r.get("slug"), r.get("name")
         if not slug or not name or (name in out and not force):
@@ -308,14 +309,14 @@ def main() -> int:
     a = ap.parse_args()
 
     usage = json.loads(Path(META, "usage_pokemon.json").read_text(encoding="utf-8"))
-    rows = usage.get("rows") or []
+    rows: list[dict[str, Any]] = usage.get("rows") or []
 
     out = dict(_stored(a.force))
     n, empty = _fetch_missing(rows, out, a.force)
 
-    regs = sorted({r for v in out.values()
-                   if (r := (v.get("tournament") or {}).get("regulation"))})
-    blob = {"source": "pokebase.app per-Pokemon pages",
+    regs: list[str] = sorted({r for v in out.values()
+                              if (r := dex.obj(v.get("tournament")).get("regulation"))})
+    blob: dict[str, Any] = {"source": "pokebase.app per-Pokemon pages",
             "note": ("What each Pokemon's own players run. TWO datasets, kept "
                      "apart because their percentages are not the same "
                      "measure: `tournament` is teamlists for one regulation "

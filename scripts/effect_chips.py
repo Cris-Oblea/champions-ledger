@@ -173,7 +173,7 @@ def chips(entry: dict[str, Any]) -> list[list[str]]:
 
     # --- 1 and 2: the engine's own, collapsed and rounded ---------------
     groups = {}
-    for e in entry.get("effects") or []:
+    for e in entry.get("effects") or ():
         if not e.get("x4096"):
             continue
         role = e["when"].split(",")[0].replace("as ", "").strip()

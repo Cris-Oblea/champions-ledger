@@ -46,7 +46,7 @@ OUT = os.path.join(DB, "text_facts.json")
 def pokebase(kind: str) -> dict[str, str]:
     """kind: "moves" or "abilities". The first row of a name wins (As One has
     two forms under one name)."""
-    out = {}
+    out: dict[str, str] = {}
     for r in rows_with(kind, "name", "description"):
         if isinstance(r["description"], str):
             out.setdefault(r["name"], " ".join(r["description"].split()))
@@ -77,13 +77,13 @@ def clean(s: str | None) -> str:
 
 
 def merge(rows: list[dex.Row], pb: dict[str, str],
-          label: str) -> tuple[dict[str, dict[str, Any]], list[Any]]:
+          label: str) -> tuple[dict[str, dict[str, Any]], list[tuple[str, str, str, str]]]:
     """Pick the more concrete of Serebii's and pokebase's text per entry,
     keeping both and counting who won.
     """
-    out, wins = {}, {"serebii": 0, "pokebase": 0, "only serebii": 0,
-                     "only pokebase": 0}
-    diffs = []
+    out: dict[str, dict[str, Any]] = {}
+    wins = {"serebii": 0, "pokebase": 0, "only serebii": 0, "only pokebase": 0}
+    diffs: list[tuple[str, str, str, str]] = []
     for r in rows:
         n = r["name"]
         s, p = clean(r.get("effect")), pb.get(n, "")
@@ -143,14 +143,15 @@ def augment(m: dex.Row, text: str, base_crit: str) -> str:
 def smogon_first(moves: list[dex.Row],
                  mv: dict[str, dict[str, Any]]) -> dict[str, dict[str, Any]]:
     """Put Smogon's description in front, and report what it leaves out."""
-    long = (dex.db("smogon_text") or {}).get("moves") or {}
-    rates = {}
+    long: dict[str, str] = dex.db_obj("smogon_text").get("moves") or {}
+    rates: dict[str, int] = {}
     for m in moves:
         c = (m.get("crit_rate") or "").strip()
         rates[c] = rates.get(c, 0) + 1
     base_crit = max((c for c in rates if c.endswith("%") and c != "100%"),
                     key=lambda c: rates[c])
-    used, gaps = 0, []
+    used = 0
+    gaps: list[tuple[str, int]] = []
     for m in moves:
         n = m["name"]
         s = long.get(n)            # Champions' own dex, never another game's
@@ -191,8 +192,9 @@ def smogon_abilities(ab: dict[str, dict[str, Any]]) -> dict[str, dict[str, Any]]
     merged: two sentences about one ability are exactly the duplication just
     removed, and most of these are one fact in two units (25% evasion is x0.8
     accuracy)."""
-    long = (dex.db("smogon_text") or {}).get("abilities") or {}
-    used, gaps = 0, []
+    long: dict[str, str] = dex.db_obj("smogon_text").get("abilities") or {}
+    used = 0
+    gaps: list[tuple[str, list[float], str]] = []
     for n, row in ab.items():
         t = long.get(n)
         if not t:

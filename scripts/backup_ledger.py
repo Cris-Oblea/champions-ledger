@@ -45,6 +45,7 @@ import sys
 from pathlib import Path
 from typing import Any
 
+import dex
 from paths import ROOT
 
 DEFAULT_DIR = os.environ.get(
@@ -132,9 +133,9 @@ def rows(table: str) -> list[dict[str, Any]] | None:
             blob = json.loads(out[out.index(opener):out.rindex(closer) + 1])
         except ValueError:
             continue
-        if isinstance(blob, dict) and isinstance(blob.get("rows"), list):
+        if dex.is_obj(blob) and dex.is_arr(blob.get("rows")):
             return blob["rows"]
-        if isinstance(blob, list):
+        if dex.is_arr(blob):
             return blob
     return None
 
@@ -166,7 +167,8 @@ def snapshots(d: str) -> list[str]:
 
 # ------------------------------------------------------------------ take ----
 def take(a: argparse.Namespace) -> int:
-    tables, counts = {}, {}
+    tables: dict[str, list[dict[str, Any]]] = {}
+    counts: dict[str, int] = {}
     for t in TABLES:
         r = rows(t)
         if r is None:
@@ -189,7 +191,7 @@ def take(a: argparse.Namespace) -> int:
 
     os.makedirs(a.dir, exist_ok=True)
     now = datetime.datetime.now()
-    body = {"_taken_at": now.isoformat(timespec="seconds"),
+    body: dict[str, Any] = {"_taken_at": now.isoformat(timespec="seconds"),
             "_counts": counts, "_sha256": digest(tables), "tables": tables}
     path = os.path.join(a.dir, "ledger-%s.json" % now.strftime("%Y-%m-%d-%H%M"))
 
@@ -220,7 +222,8 @@ def prune(d: str, keep: int) -> None:
     if len(files) <= keep:
         return
     cutoff = datetime.date.today() - datetime.timedelta(days=14)
-    seen_months, doomed = set(), []
+    seen_months: set[str] = set()
+    doomed: list[str] = []
     for p in reversed(files):                       # newest first
         stamp = os.path.basename(p)[7:17]           # YYYY-MM-DD
         try:
@@ -311,10 +314,14 @@ def upsert(table: str, batch: list[dict[str, Any]]) -> str:
                      s=sets)
 
 
-def _restore_plan(snap: dict[str, Any]) -> tuple[list[Any], int]:
+type Plan = tuple[str, list[dict[str, Any]], list[dict[str, Any]], list[dict[str, Any]]]
+
+
+def _restore_plan(snap: dict[str, Any]) -> tuple[list[Plan], int]:
     """[(table, rows to add, rows to change, rows to delete)] and how many rows
     that is in all, printing what each table would do."""
-    plans, total = [], 0
+    plans: list[Plan] = []
+    total = 0
     for t in TABLES:
         if t in NO_RESTORE:
             continue
@@ -507,10 +514,11 @@ def main() -> int:
             return 1
         for p in files:
             d = json.loads(Path(p).read_text(encoding="utf-8"))
+            counted: dict[str, int] = d.get("_counts") or {}
             print("  %-28s %s  %s" % (
                 os.path.basename(p), d.get("_taken_at", "?"),
                 " ".join("%s=%d" % (k, v)
-                         for k, v in sorted((d.get("_counts") or {}).items()))))
+                         for k, v in sorted(counted.items()))))
         print("\n%d snapshot(s) in %s" % (len(files), a.dir))
         return 0
     if a.selftest:

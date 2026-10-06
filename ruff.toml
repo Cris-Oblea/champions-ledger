@@ -7,7 +7,7 @@
 # plus what Sonar has no rule for. Style-only families (quote style, printf
 # formatting, line length) are left out: they would add hundreds of findings
 # and make no file easier to read.
-target-version = "py312"                # what CI runs; the laptop runs newer
+target-version = "py314"                # what CI runs: setup-python "3.x", the newest
 extend-exclude = ["data", "graphify-out", "node_modules"]
 
 [lint]

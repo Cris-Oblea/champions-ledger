@@ -257,7 +257,7 @@ def st(m: dict[str, Any], status: str) -> bool:
     """Does move `m` cause `status`? (data/db/statuses.json, read once)"""
     global _STATUS
     if _STATUS is None:
-        rows = (dex.db("statuses") or {}).get("statuses") or {}
+        rows = dex.db_obj("statuses").get("statuses") or {}
         _STATUS = {k: set(v.get("moves") or []) for k, v in rows.items()}
     return m["name"] in _STATUS.get(status, ())
 
@@ -831,7 +831,7 @@ def ability_text(a: dex.Row) -> str:
     t = (a.get("effect") or "").strip()
     if t:
         return t
-    facts = (dex.db("text_facts") or {}).get("abilities") or {}
+    facts = dex.db_obj("text_facts").get("abilities") or {}
     return (facts.get(a["name"]) or {}).get("text") or ""
 
 

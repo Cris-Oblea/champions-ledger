@@ -53,7 +53,9 @@ FIRE = ["Incineroar", "Flare Blitz", "Kingambit", "--atk-sp", "32"]
 WATER = ["Basculegion", "Wave Crash", "Garchomp", "--atk-sp", "32"]
 SE = ["Garchomp", "Earthquake", "Kingambit", "--atk-sp", "32"]      # x2 on Steel
 
-CASES = [
+# (group, name, the attack without the modifier, the flags that add it)
+type Case = tuple[str, str, list[str], list[str]]
+CASES: list[Case] = [
     # ---- attacker abilities -------------------------------------------
     ("atk_ability", "Adaptability", WATER, ["--atk-ability", "Adaptability"]),
     ("atk_ability", "Sheer Force", ["Garchomp", "Iron Head", "Kingambit",
@@ -164,7 +166,7 @@ ELEC = ["Jolteon", "Thunderbolt", "Garchomp", "--atk-sp", "32"]
 DARK = ["Kingambit", "Kowtow Cleave", "Farigiraf", "--atk-sp", "32"]
 FAIRY = ["Sylveon", "Moonblast", "Garchomp", "--atk-sp", "32"]
 STEEL = ["Aggron", "Iron Head", "Whimsicott", "--atk-sp", "32"]
-CASES += [
+FIELD_CASES: list[Case] = [
     ("field", "Helping Hand", PHYS, ["--helping-hand"]),
     ("field", "Friend Guard", PHYS, ["--friend-guard"]),
     ("field", "Charge|Electric", ELEC, ["--charge"]),
@@ -194,8 +196,10 @@ def main() -> None:
     """Run every case with and without its modifier through the engine, record
     the ratio, and write the modifiers that move a number.
     """
-    base_cache, table, rows = {}, {}, []
-    for group, name, base, flags in CASES:
+    base_cache: dict[tuple[str, ...], tuple[int, int] | None] = {}
+    table: dict[str, dict[str, float]] = {}
+    rows: list[tuple[str, str, str, float | None]] = []
+    for group, name, base, flags in CASES + FIELD_CASES:
         bk = tuple(base)
         if bk not in base_cache:
             base_cache[bk] = run(base)
@@ -205,7 +209,7 @@ def main() -> None:
             rows.append((group, name, "could not measure", None))
             continue
         # the ratio of the maxima, which is what a flat multiplier moves
-        ratio = round(w[1] / b[1], 3) if b[1] else 0
+        ratio = round(w[1] / b[1], 3) if b[1] else 0.0
         rows.append((group, name, "%d-%d -> %d-%d" % (b[0], b[1], w[0], w[1]),
                      ratio))
         table.setdefault(group, {})[name] = ratio
@@ -215,7 +219,7 @@ def main() -> None:
         print("  %-12s %-18s %-24s %s" % (g, n, shown,
                                           "%.2f" % r if r is not None else "-"))
 
-    unmodelled = [n for g, n, s, r in rows if r == 1.0]
+    unmodelled = [n for _, n, _, r in rows if r == 1.0]
     if unmodelled:
         print("\n  el motor no las modela (x1.00), se descartan: %s"
               % ", ".join(unmodelled))

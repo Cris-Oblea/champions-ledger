@@ -47,10 +47,12 @@ from dex import (
     TYPES,
     Row,
     db,
+    db_obj,
     find_pokemon,
     key,
     load,
     meta,
+    meta_obj,
     norm,
     species_norm,
     stone_for,
@@ -85,7 +87,7 @@ def division_shares(name: str) -> list[tuple[str, int, int]]:
 
 def usage_index() -> dict[str, float]:
     """name -> usage percent, from the pokebase ladder data."""
-    rows = (meta("usage_pokemon") or {}).get("rows", [])
+    rows = meta_obj("usage_pokemon").get("rows", [])
     idx = {}
     for r in rows:
         idx[norm(r["name"])] = r["usage_percent"]
@@ -100,7 +102,7 @@ def usage_of(name: str, idx: dict[str, float] | None = None) -> float | None:
 
 def move_usage_index() -> dict[str, float]:
     """{move key: usage %} over every move on the ladder."""
-    rows = (meta("usage_moves") or {}).get("rows", [])
+    rows = meta_obj("usage_moves").get("rows", [])
     return {key(r["name"]): r["usage_percent"] for r in rows}
 
 
@@ -170,7 +172,7 @@ def smogon_gloss(name: str) -> Row | None:
     b = db("smogon_basics") or {}
     k = key(name)
     for bucket in ("moves", "abilities", "items"):
-        for r in (b.get(bucket) or []):
+        for r in (b.get(bucket) or ()):
             if key(r.get("name") or "") == k:
                 return r
     return None
@@ -182,7 +184,7 @@ def _worlds_teams_running(move_name: str) -> dict[str, tuple[int, int]]:
     for d, t in tournaments():
         n = sum(1 for pl in t.get("players", [])
                 if any(key(x) == key(move_name)
-                       for sl in pl.get("team", []) for x in (sl.get("moves") or [])))
+                       for sl in pl.get("team", []) for x in (sl.get("moves") or ())))
         counts[d] = (n, len(t.get("players", [])))
     return counts
 
@@ -219,7 +221,7 @@ def _print_move_texts(mv: Row) -> None:
         print("\nSmogon:  (not in smogon_basics)")
     # ...and the whole of it, which is what the dex page prints: the one-liner
     # above says "Traps target"; this says what ends it and what escapes it.
-    full = ((db("smogon_text") or {}).get("moves") or {}).get(mv["name"])
+    full = (db_obj("smogon_text").get("moves") or {}).get(mv["name"])
     if full:
         print("\nSmogon, in full (smogon.com/dex/champions):")
         print(textwrap.fill(full, 78, initial_indent="         ",
@@ -664,7 +666,7 @@ def cmd_brief(a: argparse.Namespace) -> None:
             items = Counter(s.get("item") for _, s in entries if s.get("item"))
             abil = Counter(s.get("ability") for _, s in entries if s.get("ability"))
             nat = Counter(s.get("nature") for _, s in entries if s.get("nature"))
-            mvs = Counter(m for _, s in entries for m in (s.get("moves") or []))
+            mvs = Counter(m for _, s in entries for m in (s.get("moves") or ()))
             tot = len(entries)
 
             def dist(c: Counter[str], label: str) -> None:
@@ -701,7 +703,7 @@ def cmd_brief(a: argparse.Namespace) -> None:
     print_splits(name)
 
     # --- speed context ---
-    tiers = (meta("speed_tiers") or {}).get("rows", [])
+    tiers = meta_obj("speed_tiers").get("rows", [])
     for t in tiers:
         if any(norm(x["name"]) == norm(name) for x in t["pokemon"]):
             s = t["speeds"]
@@ -844,7 +846,7 @@ def cmd_megas(_a: argparse.Namespace) -> None:
         base = bases.get(norm(sp))
         bty, mty = "/".join((base or {}).get("types") or []), "/".join(m["types"])
         gained = ", ".join(m["abilities"])
-        lost = [x for x in ((base or {}).get("abilities") or []) if x not in m["abilities"]]
+        lost = [x for x in ((base or {}).get("abilities") or ()) if x not in m["abilities"]]
         wor = wcounts.get(norm(sp), 0)
         role, stat_txt, bulk, tempo = mega_profile(m)
         base_role = mega_profile(base)[0] if base else "?"
@@ -1301,22 +1303,22 @@ def cmd_ability(a: argparse.Namespace) -> None:
     ui = usage_index()
     perm, temp, _, _ = owned_sets()
     au = {key(r["name"]): r["usage_percent"]
-          for r in (meta("usage_abilities") or {}).get("rows", [])}
+          for r in meta_obj("usage_abilities").get("rows", [])}
     print("%s" % hit["name"])
     print("  %s" % (hit.get("effect") or "(Serebii names it but gives no text)"))
     # Battle Bond is the case: named on Greninja's page, never described. The
     # other two sources do describe it, so show them rather than a blank line.
     if not hit.get("effect"):
-        pb = (((db("text_facts") or {}).get("abilities") or {})
+        pb = ((db_obj("text_facts").get("abilities") or {})
               .get(hit["name"]) or {}).get("pokebase")
         sm = next((x.get("description") for x in
-                   (db("smogon_basics") or {}).get("abilities") or []
+                   db_obj("smogon_basics").get("abilities") or ()
                    if x.get("name") == hit["name"]), None)
         for src, txt in (("pokebase", pb), ("Smogon", sm)):
             if txt:
                 print("  %-9s %s" % (src + ":", txt))
     # the whole of it, from Smogon's Champions dex - what the app shows
-    full = ((db("smogon_text") or {}).get("abilities") or {}).get(hit["name"])
+    full = (db_obj("smogon_text").get("abilities") or {}).get(hit["name"])
     if full:
         print("\n  Smogon, in full (smogon.com/dex/champions):")
         print(textwrap.fill(full, 78, initial_indent="    ",
@@ -1331,7 +1333,7 @@ def cmd_usage(a: argparse.Namespace) -> None:
     """`query.py usage`: the ladder's most used Pokemon, with their typing from
     our dex and ownership.
     """
-    rows = (meta("usage_pokemon") or {}).get("rows", [])
+    rows = meta_obj("usage_pokemon").get("rows", [])
     perm, temp, _, _ = owned_sets()
     if a.owned:
         rows = [r for r in rows if own_tag(r["name"], perm, temp)]
@@ -1341,7 +1343,7 @@ def cmd_usage(a: argparse.Namespace) -> None:
     for r in rows[:a.top]:
         bs = r.get("base_stats") or {}
         mine = local.get(norm(r["name"])) or {}
-        types = mine.get("types") or [t for t in (r.get("types") or [])
+        types = mine.get("types") or [t for t in (r.get("types") or ())
                                       if isinstance(t, str) and not t.startswith("$")]
         out.append([r.get("rank"), r["name"], pct(r["usage_percent"]),
                     "/".join(types), bs.get("spe") or (mine.get("base_stats") or {}).get("spe"),
@@ -1353,7 +1355,7 @@ def cmd_speed(a: argparse.Namespace) -> None:
     """`query.py speed`: pokebase's speed tiers, between --min and --max, with
     ownership.
     """
-    rows = (meta("speed_tiers") or {}).get("rows", [])
+    rows = meta_obj("speed_tiers").get("rows", [])
     perm, temp, _, _ = owned_sets()
     out = []
     for r in rows:
@@ -1628,7 +1630,7 @@ def cmd_item(a: argparse.Namespace) -> None:
         print("Item not found: %s" % a.name)
         return
     iu = {key(r["name"]): r["usage_percent"]
-          for r in (meta("usage_items") or {}).get("rows", [])}
+          for r in meta_obj("usage_items").get("rows", [])}
     _, _, _, owned = owned_sets()
     print("%s%s" % (hit["name"], "  [you own it]" if hit["name"] in owned else ""))
     print("  %s" % hit["effect"])

@@ -140,7 +140,7 @@ def loaded() -> str:
     # divisions with their own counts. The newest complete one is the field the
     # rest of this file talks about.
     arc = load("data/meta/worlds_archive.json") or {}
-    ev = sorted([e for e in (arc.get("events") or []) if e.get("divisions")],
+    ev = sorted([e for e in (arc.get("events") or ()) if e.get("divisions")],
                 key=lambda e: e.get("year") or 0, reverse=True)
     if ev:
         top = ev[0]

@@ -36,7 +36,7 @@ STATIC_PAGES = [
 # not "1148 pages downloaded" but "these 37 pages are different". The old bytes
 # are compared before being overwritten, which is only possible because a
 # forced fetch no longer deletes the cache first.
-CHANGED = []
+CHANGED: list[str] = []
 
 
 def get(url: str, dest: str, force: bool = False) -> tuple[bool, bool]:
@@ -95,7 +95,7 @@ def fetch_many(items: list[tuple[str, str]], workers: int = 5,
 # of the cache instead of deleting it first; an ordinary run still skips
 # whatever is already there, because Serebii's pages are rules and rules only
 # move on a regulation.
-FORCE = False
+FORCE = "--force" in sys.argv
 
 
 def cmd_list() -> None:
@@ -160,7 +160,6 @@ def cmd_attackdex() -> None:
 
 if __name__ == "__main__":
     argv = [a for a in sys.argv[1:] if a != "--force"]
-    FORCE = "--force" in sys.argv
     what = argv[0] if argv else "all"
     t0 = time.time()
     if what in ("list", "all"):

@@ -19,7 +19,7 @@ import os
 import re
 import unicodedata
 from collections.abc import Iterable
-from typing import Any
+from typing import Any, TypeIs
 
 from paths import DB, META
 
@@ -52,6 +52,26 @@ SPREAD_TARGETS = {"all adjacent foes", "all adjacent opponents",
 type Json = Any
 # One JSON object: a row of a table, a Pokemon, a move.
 type Row = dict[str, Any]
+
+
+# A reader that sniffs a document's shape asks these, not isinstance(): a
+# JSON object's keys are strings, which isinstance(x, dict) cannot say.
+def is_obj(x: object) -> TypeIs[Row]:
+    """Is this JSON value an object?"""
+    return isinstance(x, dict)
+
+
+def is_arr(x: object) -> TypeIs[list[Json]]:
+    """Is this JSON value an array?"""
+    return isinstance(x, list)
+
+
+def obj(x: Json) -> Row:
+    """A JSON value that is an object or missing (None, absent) - as an
+    object, so `obj(row.get("k")).get(...)` reads like `(... or {}).get(...)`
+    and keeps its type."""
+    return x or {}
+
 
 _cache: dict[str, Json] = {}
 
@@ -91,6 +111,16 @@ def db(name: str) -> Json:
 def meta(name: str) -> Json:
     """A data/meta file, or None when it has not been fetched."""
     return load(os.path.join(META, name + ".json"))
+
+
+def db_obj(name: str) -> Row:
+    """A data/db document that is one object, or {} when it is not built."""
+    return db(name) or {}
+
+
+def meta_obj(name: str) -> Row:
+    """A data/meta document that is one object, or {} when not fetched."""
+    return meta(name) or {}
 
 
 # Worlds runs three age divisions off the same roster and the same regulation,

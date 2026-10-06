@@ -43,6 +43,7 @@ import time
 from pathlib import Path
 from typing import Any
 
+import dex
 from paths import DB, RAW
 
 CACHE = os.path.join(RAW, "ledger_cache.json")
@@ -56,16 +57,16 @@ COSTS = {"ranked_win": 300, "mega_stone_shop": 2000,
          "training_nature": 500, "training_ability": 500,
          "training_stat_point": 5}
 
-_CACHED = None                              # per-process, on top of the file
-_SAID = False
+_cached: dict[str, list[dict[str, Any]]] | None = None  # per-process, on top of the file
+_said = False
 
 
 def _note(msg: str) -> None:
     """Say once, on stderr, where the ledger was read from."""
-    global _SAID
-    if not _SAID:
+    global _said
+    if not _said:
         print("  (ledger: %s)" % msg, file=sys.stderr)
-        _SAID = True
+        _said = True
 
 
 def _from_db() -> dict[str, list[dict[str, Any]]] | None:
@@ -75,7 +76,7 @@ def _from_db() -> dict[str, list[dict[str, Any]]] | None:
         import backup_ledger
     except ImportError:
         return None
-    out = {}
+    out: dict[str, list[dict[str, Any]]] = {}
     for t in ("box", "builds", "teams", "stones", "items", "gts", "meta"):
         r = backup_ledger.rows(t)
         if r is None:
@@ -101,14 +102,19 @@ def _from_snapshot() -> tuple[Any, Any]:
 
 def tables(refresh: bool = False) -> dict[str, list[dict[str, Any]]]:
     """Every table, from whichever source answers first. Never raises."""
-    global _CACHED
-    if _CACHED is not None and not refresh:
-        return _CACHED
+    global _cached
+    if _cached is None or refresh:
+        _cached = _read(refresh)
+    return _cached
+
+
+def _read(refresh: bool) -> dict[str, list[dict[str, Any]]]:
+    """Every table: the file cache while fresh, else the database, else the
+    newest snapshot, else empty."""
     if not refresh and os.path.exists(CACHE):
         try:
             if time.time() - os.path.getmtime(CACHE) < TTL:
-                _CACHED = json.loads(Path(CACHE).read_text(encoding="utf-8"))
-                return _CACHED
+                return json.loads(Path(CACHE).read_text(encoding="utf-8"))
         except (OSError, ValueError):
             pass
 
@@ -120,23 +126,20 @@ def tables(refresh: bool = False) -> dict[str, list[dict[str, Any]]]:
                 json.dump(live, f, ensure_ascii=False, default=str)
         except OSError:
             pass
-        _CACHED = live
-        return _CACHED
+        return live
 
     snap, when = _from_snapshot()
     if snap is not None:
         _note("database unreachable - using the snapshot of %s" % when)
-        _CACHED = snap
-        return _CACHED
+        return snap
 
     _note("no database and no snapshot - nothing is known about the box")
-    _CACHED = {"box": [], "builds": [], "teams": [], "meta": []}
-    return _CACHED
+    return {"box": [], "builds": [], "teams": [], "meta": []}
 
 
 def _meta(t: dict[str, list[dict[str, Any]]], key: str) -> dict[str, Any]:
     """One meta document's data."""
-    for r in t.get("meta") or []:
+    for r in t.get("meta") or ():
         if r.get("id") == key:
             return r.get("data") or {}
     return {}
@@ -146,7 +149,7 @@ def _box(t: dict[str, list[dict[str, Any]]], location: str,
          rental: bool | None = None) -> list[str]:
     """The names in one box, in the app's order (rentals only, none, or both).
     """
-    rows = [r for r in (t.get("box") or [])
+    rows = [r for r in (t.get("box") or ())
             if r.get("location") == location
             and (rental is None or (r.get("status") == "rental") == rental)]
     rows.sort(key=lambda r: (r.get("ord") or 0, r.get("name") or ""))
@@ -163,14 +166,13 @@ def _item_categories() -> dict[str, str]:
     """
     path = os.path.join(DB, "items.json")
     try:
-        rows = json.loads(Path(path).read_text(encoding="utf-8"))
+        blob: dex.Json = json.loads(Path(path).read_text(encoding="utf-8"))
     except (OSError, ValueError):
         return {}
-    if isinstance(rows, dict):
-        rows = rows.get("items") or []
-    out = {}
+    rows: list[dex.Json] = (blob.get("items") or []) if dex.is_obj(blob) else blob
+    out: dict[str, str] = {}
     for r in rows:
-        if isinstance(r, dict) and r.get("name"):
+        if dex.is_obj(r) and r.get("name"):
             out[r["name"]] = (r.get("category") or r.get("kind") or "other")
     return out
 
@@ -189,8 +191,8 @@ def inv(refresh: bool = False) -> dict[str, Any]:
     # data/db/items.json. The old [name, [category]] pairs were converted by
     # that migration, so there is one shape to read here rather than two.
     cats = _item_categories()
-    items = {}
-    for row in (t.get("items") or []):
+    items: dict[str, list[str]] = {}
+    for row in (t.get("items") or ()):
         name = row.get("id")
         if not name:
             continue
@@ -201,7 +203,7 @@ def inv(refresh: bool = False) -> dict[str, Any]:
         "rental_pokemon": {"list": _box(t, "champions", rental=True),
                            "can_be_trained": False},
         "home_box": {"list": _box(t, "home")},
-        "mega_stones": sorted(r["id"] for r in (t.get("stones") or [])
+        "mega_stones": sorted(r["id"] for r in (t.get("stones") or ())
                               if r.get("id")),
         "items": {k: sorted(v) for k, v in sorted(items.items())},
         # box_used is DERIVED now. It was a hand-typed number in the file and
@@ -216,7 +218,7 @@ def inv(refresh: bool = False) -> dict[str, Any]:
 
 def builds() -> list[dict[str, Any]]:
     """Every build, newest field set first, with `extra` merged back in."""
-    out = []
+    out: list[dict[str, Any]] = []
     for r in sorted(tables().get("builds") or [],
                     key=lambda x: str(x.get("id"))):
         b = {"id": r.get("id")}

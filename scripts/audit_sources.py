@@ -40,7 +40,7 @@ CAT = {"physical": "Physical", "special": "Special", "status": "Status"}
 
 def pokebase_moves() -> dict[str, dict[str, Any]]:
     """pokebase's numbers per move: category, BP, accuracy and PP."""
-    out = {}
+    out: dict[str, dict[str, Any]] = {}
     for r in rows_with("moves", "name", "damageClass", "power", "accuracy", "pp"):
         out.setdefault(r["name"], {"cat": CAT.get(r["damageClass"]), "bp": r["power"],
                                    "acc": r["accuracy"], "pp": r["pp"]})
@@ -68,12 +68,12 @@ def rescaled_pp(ours: list[dex.Row]) -> dict[str, tuple[int, int, str]]:
     def ident(n: str) -> str:
         """A name as Smogon's calc spells its keys."""
         return re.sub(r"[^a-z0-9-]", "", n.lower().replace(" ", "-"))
-    buckets = defaultdict(Counter)
+    buckets: defaultdict[str, Counter[int]] = defaultdict(Counter)
     for m in ours:
         k = main.get(ident(m["name"]))
         if k and m.get("pp") is not None:
             buckets[k][m["pp"]] += 1
-    out = {}
+    out: dict[str, tuple[int, int, str]] = {}
     for m in ours:
         k = main.get(ident(m["name"]))
         if k and buckets[k]:
@@ -122,21 +122,32 @@ def _print_move_report(ours: list[dex.Row], rows: list[tuple[str, str, Any, Any,
         print("     %-16s %-9s pokebase says %s" % (n, f, v))
     # THE RULINGS, so a settled dispute stays visible as settled rather than
     # vanishing from the table the day build_db applied it
-    ruled = [(m["name"], f, m.get(f.lower() if f != "PP" else "pp"), why)
-             for m in ours for f, why in (m.get("rulings") or {}).items()]
+    ruled: list[tuple[str, str, Any, str]] = []
+    for m in ours:
+        rulings: dict[str, str] = m.get("rulings") or {}
+        ruled += [(m["name"], f, m.get(f.lower() if f != "PP" else "pp"), why)
+                  for f, why in rulings.items()]
     print("  %d settled by a ruling in build_db.MOVE_RULINGS:" % len(ruled))
     for n, f, v, why in sorted(ruled):
         print("     %-16s %-9s %-4s %s" % (n, f, v, why))
 
 
-def check_moves() -> tuple[list[Any], list[Any]]:
+# (move, field, ours, theirs, whose) and (move, field, the other source's value)
+type Disagreement = tuple[str, str, Any, Any, str]
+type Gap = tuple[str, str, Any]
+
+
+def check_moves() -> tuple[list[Disagreement], list[Gap]]:
     """Compare every useable move's BP, accuracy and category across Serebii,
     pokebase and Smogon's calc.
     """
     ours = [m for m in dex.db("moves") if m.get("useable")]
     pb = pokebase_moves()
-    sm = json.loads(Path(SMOG).read_text(encoding="utf-8")) if os.path.exists(SMOG) else {}
-    rows, gaps, agree = [], [], 0
+    sm: dict[str, Any] = (json.loads(Path(SMOG).read_text(encoding="utf-8"))
+                          if os.path.exists(SMOG) else {})
+    rows: list[Disagreement] = []
+    gaps: list[Gap] = []
+    agree = 0
     for m in ours:
         n = m["name"]
         p, s = pb.get(n), sm.get(n)
@@ -149,7 +160,7 @@ def check_moves() -> tuple[list[Any], list[Any]]:
                 gaps.append((n, field, theirs))
         if not p:
             continue
-        for field, mine, theirs, who in _move_pairs(m, p, s if isinstance(s, dict) else None):
+        for field, mine, theirs, who in _move_pairs(m, p, s if dex.is_obj(s) else None):
             if mine != theirs:
                 rows.append((n, field, mine, theirs, who))
             else:
@@ -160,9 +171,9 @@ def check_moves() -> tuple[list[Any], list[Any]]:
 
 def check_items() -> None:
     """How many items are priced, and by which source."""
-    facts = (dex.db("item_facts") or {}).get("prices") or {}
+    facts: dict[str, dex.Row] = dex.db_obj("item_facts").get("prices") or {}
     both = [(n, r) for n, r in facts.items() if r.get("vp")]
-    src = {}
+    src: dict[str, int] = {}
     for _n, r in both:
         src[r["source"]] = src.get(r["source"], 0) + 1
     print("\nITEMS - %d priced" % len(both))

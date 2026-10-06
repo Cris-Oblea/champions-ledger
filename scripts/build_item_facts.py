@@ -41,7 +41,7 @@ OUT = os.path.join(DB, "item_facts.json")
 
 def pokebase_unlocks() -> dict[str, str]:
     """name -> how the shop unlocks it ("shop-1000-vp")."""
-    out = {}
+    out: dict[str, str] = {}
     for r in rows_with("items", "name", "unlock"):
         out.setdefault(r["name"], r["unlock"])
     return out
@@ -49,7 +49,7 @@ def pokebase_unlocks() -> dict[str, str]:
 
 def pokebase_text() -> dict[str, str]:
     """pokebase's description: the mechanics, with the numbers in them."""
-    out = {}
+    out: dict[str, str] = {}
     for r in rows_with("items", "name", "description"):
         if isinstance(r["description"], str):
             t = r["description"].replace("\u2019", "'")
@@ -121,8 +121,9 @@ def _texts(it: dex.Row, smogon: dict[str, Any],
             "serebii_text": ser}
 
 
-def _print_summary(rows: dict[str, dict[str, Any]], filled: list[str], agree: int,
-                   nothing: list[str], clash: list[str]) -> None:
+def _print_summary(rows: dict[str, dict[str, Any]], filled: list[tuple[str, int | None]],
+                   agree: int, nothing: list[str],
+                   clash: list[tuple[str, Any, int | None]]) -> None:
     """How many items each source priced, where they agree, and every clash."""
     print("%d items" % len(rows))
     print("  %3d priced by Serebii" % sum(1 for r in rows.values()
@@ -161,8 +162,12 @@ def main() -> None:
 
     pb = pokebase_unlocks()
     pbtext = pokebase_text()
-    smogon = (dex.db("smogon_text") or {}).get("items") or {}
-    rows, filled, agree, clash, nothing = {}, [], 0, [], []
+    smogon: dict[str, Any] = dex.db_obj("smogon_text").get("items") or {}
+    rows: dict[str, dict[str, Any]] = {}
+    filled: list[tuple[str, int | None]] = []
+    clash: list[tuple[str, Any, int | None]] = []
+    nothing: list[str] = []
+    agree = 0
     for it in dex.db("items"):
         name = it["name"]
         vp, src, unlock, status = _price(it, pb)

@@ -31,7 +31,12 @@ annotated (the config fails an unannotated parameter; a missing return has no
 rule, so add it by hand); `strict` is switched on file by file in that
 config's `strict` list - a file in it is fully annotated, so keep it that way.
 JSON from disk is `dex.Json` (the boundary); state the shape where a reader
-relies on one. `__doc__` can be None: `(__doc__ or "").split(...)`.
+relies on one. `__doc__` can be None: `(__doc__ or "").split(...)`. What
+strict needs at that boundary: sniff a shape with `dex.is_obj()` /
+`dex.is_arr()`, never `isinstance(x, dict)` (its keys come out Unknown);
+`dex.obj(x)` and `dex.db_obj(name)` / `dex.meta_obj(name)` where the code said
+`(x or {})`; annotate the variable that receives `row.get(k) or []`; and a loop
+over a maybe-missing list reads `for x in row.get(k) or ()`.
 
 ## Gotchas already solved — do not re-break these
 

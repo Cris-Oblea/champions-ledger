@@ -193,7 +193,7 @@ def parse_moveset(ms: dict[str, Any]) -> dict[str, Any]:
     abilities, natures, SP and the explanation.
     """
     slots = []
-    for slot in ms.get("moveslots") or []:
+    for slot in ms.get("moveslots") or ():
         opts = [m.get("move") for m in slot if isinstance(m, dict) and m.get("move")]
         if opts:
             slots.append(opts)
@@ -267,10 +267,10 @@ def _credits(st: dict[str, Any]) -> list[str | None]:
 def _vgc_strategies(data: dict[str, Any]) -> list[dict[str, Any]]:
     """The VGC analyses in a dump that say anything; singles are dropped."""
     strategies = []
-    for st in data.get("strategies") or []:
+    for st in data.get("strategies") or ():
         if not is_vgc(st.get("format")):
             continue
-        movesets = [parse_moveset(m) for m in st.get("movesets") or []]
+        movesets = [parse_moveset(m) for m in st.get("movesets") or ()]
         if not (movesets or st.get("overview") or st.get("comments")):
             continue
         strategies.append({

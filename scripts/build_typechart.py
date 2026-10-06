@@ -35,8 +35,8 @@ def load_basics() -> Any:
 
 def build_chart(basics: dex.Row) -> dict[str, dict[str, float]]:
     """attacking -> {defending: multiplier}, Champions-legal types only."""
-    chart = {}
-    for t in basics.get("types") or []:
+    chart: dict[str, dict[str, float]] = {}
+    for t in basics.get("types") or ():
         if "Champions" not in (t.get("genfamily") or []):
             continue
         chart[t["name"]] = dict(t.get("atk_effectives") or [])
@@ -45,11 +45,11 @@ def build_chart(basics: dex.Row) -> dict[str, dict[str, float]]:
 
 def build_natures(basics: dex.Row) -> dict[str, dict[str, Any]]:
     """The Champions natures: which stat each raises and lowers."""
-    out = {}
-    for n in basics.get("natures") or []:
+    out: dict[str, dict[str, Any]] = {}
+    for n in basics.get("natures") or ():
         if "Champions" not in (n.get("genfamily") or []):
             continue
-        mult = {k: n[k] for k in dex.STAT_KEYS}
+        mult: dict[str, float] = {k: n[k] for k in dex.STAT_KEYS}
         raised = [k for k, v in mult.items() if v > 1]
         lowered = [k for k, v in mult.items() if v < 1]
         out[n["name"]] = {
@@ -72,13 +72,13 @@ def serebii_weaknesses() -> dict[str, dict[str, float]]:
     d = os.path.join(RAW, "pokedex")
     if not os.path.isdir(d):
         return {}
-    out = {}
+    out: dict[str, dict[str, float]] = {}
     row = re.compile(r'<td class="footype">\s*\*([\d.]+)\s*</td>')
     for fn in sorted(os.listdir(d)):
         if not fn.endswith(".html"):
             continue
         s = read(os.path.join(d, fn))
-        blocks = []
+        blocks: list[list[float]] = []
         for m in re.finditer(r">Weakness<", s):
             vals = row.findall(s[m.end():m.end() + 6000])
             if len(vals) >= 18:
@@ -89,21 +89,21 @@ def serebii_weaknesses() -> dict[str, dict[str, float]]:
 
 
 def verify(chart: dict[str, dict[str, float]],
-           weak: dict[str, dict[str, float]]) -> tuple[int, int, list[str]]:
+           weak: dict[str, dict[str, float]]
+           ) -> tuple[int, int, list[tuple[str, str, float, float]]]:
     """Check Smogon's chart reproduces Serebii's per-Pokemon weakness rows."""
-    mons = json.loads(Path(DB, "pokemon.json").read_text(encoding="utf-8"))
-    mons = mons["rows"] if isinstance(mons, dict) and "rows" in mons else mons
+    mons: list[dex.Row] = dex.db("pokemon")
     # pokemon.json only carries a slug on Mega entries, so index by species
     # reduced to the same shape as a Serebii page filename.
     def pagekey(x: str | None) -> str:
         return re.sub(r"[^a-z0-9]", "", (x or "").lower())
 
-    by_slug = {}
+    by_slug: dict[str, list[dex.Row]] = {}
     for p in mons:
         by_slug.setdefault(pagekey(p["species"]), []).append(p)
 
     checked = agree = 0
-    problems = []
+    problems: list[tuple[str, str, float, float]] = []
     for slug, row in weak.items():
         forms = by_slug.get(slug) or []
         # Only single-form species: a page with one Weakness table but several

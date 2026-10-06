@@ -55,7 +55,7 @@ def movetext(m: dex.Row) -> str:
     """
     global TEXTS
     if TEXTS is None:
-        TEXTS = (dex.db("text_facts") or {}).get("moves") or {}
+        TEXTS = dex.db_obj("text_facts").get("moves") or {}
     picked = (TEXTS.get(m["name"]) or {}).get("text")
     t = picked or (m.get("effect") or "").strip() or (m.get("in_depth") or "").strip()
     return " ".join(t.split())
@@ -68,7 +68,7 @@ TARGET_LABEL = {(1, 1): "All Adjacent Pokémon", (1, 0): "All Adjacent Foes",
 
 def _idx(names: Iterable[str] | None, midx: dict[str, int]) -> list[int]:
     """Move names -> sorted indices into MOVES, dropping unuseable ones."""
-    return sorted(midx[n] for n in names or [] if n in midx)
+    return sorted(midx[n] for n in names or () if n in midx)
 
 
 def _targeting(m: dex.Row, props: dict[str, Any]) -> tuple[str, int, int]:
@@ -102,7 +102,7 @@ def build_moves(use: list[dex.Row]) -> list[list[Any]]:
     """The MOVES rows, in the column order core/data.js unpacks: name, type,
     category, power, accuracy, pp, priority, target, spread, hits ally, hit
     count, always-crit, flags, text."""
-    props = (dex.db("ability_moves") or {}).get("moves") or {}
+    props = dex.db_obj("ability_moves").get("moves") or {}
     rows = []
     for m in use:
         tgt, spread, ally = _targeting(m, props)
@@ -433,8 +433,8 @@ def _item_row(i: dex.Row, pr: dict[str, Any], link: dict[str, Any]) -> list[Any]
 def build_items(items: list[dex.Row]) -> list[list[Any]]:
     """ITEMS rows, sorted by name. Mega Stones are left out on purpose: they
     ship as STONES and get their own pane."""
-    prices = (dex.db("item_facts") or {}).get("prices") or {}
-    links = (dex.db("item_links") or {}).get("items", {})
+    prices = dex.db_obj("item_facts").get("prices") or {}
+    links = dex.db_obj("item_links").get("items", {})
     rows = [_item_row(i, prices.get(i["name"]) or {}, links.get(i["name"]) or {})
             for i in items if not i.get("is_mega_stone")]
     rows.sort()
@@ -444,7 +444,7 @@ def build_items(items: list[dex.Row]) -> list[list[Any]]:
 def build_abilities(abil: dex.Json) -> dict[str, str]:
     """ABIL: ability -> its ONE description, the text build_text_facts.py
     picked across the sources (the one that states the numbers wins)."""
-    atext = (dex.db("text_facts") or {}).get("abilities") or {}
+    atext = dex.db_obj("text_facts").get("abilities") or {}
     out = {}
     for a in (abil if isinstance(abil, list) else abil.values()):
         pick = (atext.get(a["name"]) or {}).get("text") or a.get("effect") or ""
@@ -660,7 +660,7 @@ def build_effects(app_abilities: dict[str, str], app_items: list[list[Any]],
     shown_text.update({r[0]: r[3] for r in app_items})
     shown_text.update({r[0]: r[13] for r in app_moves})
     effects = {}
-    for name, v in ((dex.db("effects") or {}).get("effects") or {}).items():
+    for name, v in (dex.db_obj("effects").get("effects") or {}).items():
         said = shown_text.get(name) or ""
         c = effect_chips.unsaid(effect_chips.chips(v), said)
         desc = None if said else v.get("described")
@@ -697,7 +697,7 @@ def _best_worlds_sources() -> dict[tuple[int, str], tuple[int, str]]:
     same championship and reading them straight gave Seniors and Juniors two
     podiums each. The one with more players is the complete list."""
     best_src = {}
-    for ev in (dex.meta("worlds_archive") or {}).get("events") or []:
+    for ev in dex.meta_obj("worlds_archive").get("events") or ():
         for div, info in (ev.get("divisions") or {}).items():
             if not info.get("teamlists"):
                 continue
@@ -742,10 +742,10 @@ def build_podium(stones: list[list[str]], mons: list[dex.Row],
         t = dex.meta("tournament_%s_%s" % (tid, div))
         if not t:
             continue
-        top8 = [pl for pl in t.get("players") or []
+        top8 = [pl for pl in t.get("players") or ()
                 if pl.get("rank") and pl["rank"] <= 8]
         for pl in top8:
-            for slot in pl.get("team") or []:
+            for slot in pl.get("team") or ():
                 form = canon.get(dex.norm(slot.get("pokemon") or ""))
                 if form:
                     podium.setdefault(form, []).append(
@@ -771,7 +771,7 @@ def build_worlds() -> list[dict[str, Any]]:
     app tabs between them instead of averaging.
     """
     worlds = []
-    for y in (dex.meta("worlds_archive") or {}).get("years") or []:
+    for y in dex.meta_obj("worlds_archive").get("years") or ():
         divs = {}
         for dname, d in (y.get("divisions") or {}).items():
             if not d.get("teamlists") or not d.get("top"):
@@ -824,7 +824,7 @@ def main() -> None:
     dex_rows = build_dex(mons)
     # ...and the National Dex number for everything HOME can hold, which is
     # far more than the Champions dex.
-    dexno = (dex.db("dex_numbers") or {}).get("numbers", {})
+    dexno = dex.db_obj("dex_numbers").get("numbers", {})
     home_dex = home_dex_with_forms(mons, form_line)
     stones = build_stones(mons)
     app_items = build_items(items)
@@ -834,7 +834,7 @@ def main() -> None:
     # pokebase's weight table, read for its KEYS: it names every species and
     # form pokebase knows, which is the list HOME_ONLY and the cosmetic forms
     # are cut from. The weights themselves are Smogon's engine's business.
-    wt = (dex.db("weights") or {}).get("weights", {})
+    wt = dex.db_obj("weights").get("weights", {})
     am = dex.db("ability_moves") or {}
     ab_moves = build_ab_moves(am, midx)
     home_only = home_only_species(mons, wt)
@@ -853,7 +853,7 @@ def main() -> None:
             "WORLDS": worlds, "PODIUM": podium,
             "DEXNO": dexno, "BFORMS": bforms,
             "REG": reg, "REG_STARTED": reg_started,
-            "USAGE_AT": (dex.meta("usage_pokemon") or {}).get("fetched"),
+            "USAGE_AT": dex.meta_obj("usage_pokemon").get("fetched"),
             "SMOGON_NAME": smogon, "AEGIS": AEGIS,
             "MOVES": app_moves, "LEARN": app_learn, "STONES": stones,
             "ITEMS": app_items, "NATURES": app_natures, "CHART": chart,
@@ -866,18 +866,18 @@ def main() -> None:
             "MEGA_OWNER": mega_owner,
             # the status conditions, with Champions' own rebalance
             # (paralysis is 12.5% here, not 25%)
-            "STATUSES": (dex.db("statuses") or {}).get("statuses") or {},
+            "STATUSES": dex.db_obj("statuses").get("statuses") or {},
             "GTSDIFF": gts_difficulty(),
             # Species HOME's own GTS refuses to take. Not a Champions rule and
             # not scraped - seen in the game, and data/meta/gts_blocked.json
             # says who confirmed each. A chip he cannot deposit must never be
             # recommended.
-            "GTSBLOCK": (dex.meta("gts_blocked") or {}).get("blocked") or {},
+            "GTSBLOCK": dex.meta_obj("gts_blocked").get("blocked") or {},
             # Mythical, read off PokeAPI at the pinned commit rather than
             # typed from memory. The GTS probably refuses them (one confirmed
             # case), so the app ranks them last and tags them - see gtsBlocked
             # in core/trade.js and data/meta/gts_blocked.json.
-            "MYTHICAL": (dex.db("species_flags") or {}).get("mythical") or [],
+            "MYTHICAL": dex.db_obj("species_flags").get("mythical") or [],
             # THE TYPE COLOURS, from pokemon.com's own stylesheet: top, bottom
             # (Dragon, Flying and Ground are two-toned) and the ink the type's
             # name is written in. scripts/build_type_colors.py; --check says

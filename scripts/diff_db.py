@@ -36,6 +36,7 @@ import sys
 from collections.abc import Iterable
 from typing import Any
 
+import dex
 from paths import ROOT
 
 # (file, how records are keyed, which fields are worth a line of their own)
@@ -85,41 +86,41 @@ def current(rel: str) -> Any:
 
 def rows(blob: Any, holder: str) -> list[Any]:
     """The records, whether the file is a bare list or wraps one."""
-    if isinstance(blob, list):
+    if dex.is_arr(blob):
         return blob
-    if isinstance(blob, dict):
+    if dex.is_obj(blob):
         got = blob.get(holder)
-        if isinstance(got, list):
+        if dex.is_arr(got):
             return got
     return []
 
 
 def by_key(records: Iterable[Any], key: str) -> dict[str, dict[str, Any]]:
     """Index records by one field."""
-    out = {}
+    out: dict[str, dict[str, Any]] = {}
     for r in records:
-        if isinstance(r, dict) and r.get(key) is not None:
+        if dex.is_obj(r) and r.get(key) is not None:
             out[str(r[key])] = r
     return out
 
 
 def show(v: object) -> str:
     """A value as one printable line."""
-    if isinstance(v, (dict, list)):
+    if dex.is_obj(v) or dex.is_arr(v):
         return json.dumps(v, ensure_ascii=False, sort_keys=True)
     return str(v)
 
 
 def names(v: object) -> set[Any]:
     """A list field as a set (anything else as empty)."""
-    return set(v) if isinstance(v, list) else set()
+    return set(v) if dex.is_arr(v) else set()
 
 
 def _list_change(old: object, new: object) -> str | None:
     """A list growing or shrinking, or None. The names are what is worth
     saying: "Slash: +29" is the M-C change the counts could not see."""
     gone, came = names(old) - names(new), names(new) - names(old)
-    bits = []
+    bits: list[str] = []
     if came:
         bits.append("+%d (%s)" % (len(came), ", ".join(sorted(came)[:8])))
     if gone:
@@ -159,9 +160,10 @@ def learnset_diff() -> dict[str, Any]:
     old, new = committed(rel), current(rel)
     if old is None or new is None:
         return {"file": rel, "unknown": True, "lines": []}
-    a = old.get("learnsets", old) if isinstance(old, dict) else {}
-    b = new.get("learnsets", new) if isinstance(new, dict) else {}
-    lines = [("added", k, "", "%d moves" % len(b[k] or []))
+    a: dict[str, list[str]] = old.get("learnsets", old) if dex.is_obj(old) else {}
+    b: dict[str, list[str]] = new.get("learnsets", new) if dex.is_obj(new) else {}
+    lines: list[tuple[str, str, str | None, str]] = [
+        ("added", k, "", "%d moves" % len(b[k] or []))
              for k in sorted(set(b) - set(a))]
     lines += [("removed", k, "", "") for k in sorted(set(a) - set(b))]
     for k in sorted(set(a) & set(b)):
@@ -174,7 +176,7 @@ def learnset_diff() -> dict[str, Any]:
 def report(limit: int = 25) -> str:
     """Every table's diff as text, at most `limit` lines each."""
     out = [table_diff(*t) for t in TABLES] + [learnset_diff()]
-    text = []
+    text: list[str] = []
     for t in out:
         if t["unknown"]:
             text.append("%s: not committed yet - nothing to compare" % t["file"])

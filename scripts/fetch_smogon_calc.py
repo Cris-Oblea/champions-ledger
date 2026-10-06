@@ -96,7 +96,9 @@ def main() -> int:
     a = ap.parse_args()
 
     os.makedirs(SMOGON_CALC, exist_ok=True)
-    changed, same, failed = [], 0, []
+    changed: list[tuple[str, str, str]] = []
+    failed: list[tuple[str, str]] = []
+    same = 0
     for rel in FILES:
         dest = os.path.join(SMOGON_CALC, rel.replace("/", os.sep))
         os.makedirs(os.path.dirname(dest), exist_ok=True)

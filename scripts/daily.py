@@ -605,7 +605,7 @@ def _report_changes(before: dict[str, str | None], before_ladder: dict[str, Any]
                    % (before_ladder["fetched"], before_ladder["rows"],
                       after_ladder["fetched"], after_ladder["rows"]))
         out.append("  top now: " + ", ".join(
-            "%s %s%%" % (n, p) for n, p in (after_ladder["top"] or [])))
+            "%s %s%%" % (n, p) for n, p in (after_ladder["top"] or ())))
     return changed
 
 
