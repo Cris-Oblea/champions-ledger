@@ -24,8 +24,9 @@ import {
 } from "./moves.js";
 import { openSheet } from "./nav.js";
 
-/* One set, as the thing you would actually build: the four slots, the spread,
-   and the reasoning underneath. */
+/** One set, as the thing you would actually build: the four slots, the spread,
+   and the reasoning underneath.
+   @param {SmogonSet} st */
 function analysisSet(st){
   const box = el("div", "note mb8");
   const head = el("div", "rname");
@@ -41,7 +42,7 @@ function analysisSet(st){
   /* The items are a LIST on purpose - Smogon offers alternatives and the Item
      Clause means a team of six fields exactly one of each, so which one is a
      team decision rather than part of the set. */
-  if ((st.item || []).length) {
+  if (st.item?.length) {
     box.appendChild(el("div", "st", "Items: " + st.item.join(" / ")));
   }
   const mv = (st.moves || []).map(function(slot){
@@ -68,7 +69,7 @@ function analysisSet(st){
   return box;
 }
 
-/* Smogon's prose, laid out the way their page lays it out.
+/** Smogon's prose, laid out the way their page lays it out.
  *
  * It arrives as one block of lines, which reads as a wall. It is not
  * shapeless, though: three kinds of line, and telling them apart is what
@@ -83,7 +84,7 @@ function analysisSet(st){
  * ABOUT, so a reader looking for why an item was chosen can find it without
  * reading the rest. The spread lines use the same shape, with the spread
  * itself as the label, which is exactly how they should be read.
- */
+   @param {string} text */
 function prose(text){
   const wrap = el("div", "mt6");
   String(text).split(/\n+/).forEach(function(line){
@@ -113,8 +114,10 @@ function prose(text){
   return wrap;
 }
 
-/* The panel: a fold, because the prose is long and the sheet has a job to do
-   before it. */
+/** The panel: a fold, because the prose is long and the sheet has a job to do
+   before it.
+   @param {string} name
+   @param {HTMLElement} host */
 function analysisPanel(name, host){
   host.innerHTML = "";
   /* Something on screen from the first frame: a panel that is empty while
@@ -136,7 +139,7 @@ function analysisPanel(name, host){
       host.appendChild(el("div", "st", !ready
         ? "Smogon's analyses are not in this build."
         : "Smogon has not written one for " + name + " - " +
-          Object.keys(window.CHAMP_ANALYSIS).length + " Pokemon have one."));
+          Object.keys(window.CHAMP_ANALYSIS || {}).length + " Pokemon have one."));
       return;
     }
     /* EVERY VGC FORMAT SMOGON HAS, NEWEST FIRST, and the panel lists them, so
@@ -157,7 +160,7 @@ function analysisPanel(name, host){
       const head = el("div", "st mb4");
       head.appendChild(el("span", "tag" + (st.outdated ? " warn" : ""),
                           st.format + (st.outdated ? " · outdated" : "")));
-      if ((st.credits || []).length) {
+      if (st.credits?.length) {
         head.appendChild(el("span", null, "  by " + st.credits.join(", ")));
       }
       host.appendChild(head);
@@ -179,9 +182,11 @@ function analysisPanel(name, host){
      pokeBody   the Mega line, what damages it, the abilities, the Worlds sets
                 it won with, its movepool, and what Smogon wrote
 
-   `opts.shiny` draws his copy's colours; `opts.rec` is the box row when there
-   is one, and its absence is what makes the search view the species rather
-   than a copy of it. */
+   `opts.shiny` draws his copy's colours; the search view leaves it off and
+   so draws the species rather than a copy of it. */
+/** @param {SheetBody} body
+   @param {DexRow} p
+   @param {{shiny?: boolean}} [opts] */
 function pokeHead(body, p, opts){
   opts = opts || {};
   /* THE PICTURE SITS BESIDE THE FACTS, NOT ABOVE THEM, sharing height those
@@ -246,11 +251,15 @@ function pokeHead(body, p, opts){
   }
 }
 
-/* ONE ABILITY, EXPLAINED: the text, the measured multiplier, and what it
+/** ONE ABILITY, EXPLAINED: the text, the measured multiplier, and what it
    does to THIS movepool. Both the base panel and each Mega panel call it,
    and `form` matters: "tags N of the moves it learns" is counted against
    the form that HAS the ability. `badge` names whose it is, when it is not
-   the base form's; `ls` is the learnset. */
+   the base form's; `ls` is the learnset.
+   @param {string} a
+   @param {DexRow} form
+   @param {HTMLElement | null} badge
+   @param {Move[] | null} ls */
 function abilityNote(a, form, badge, ls){
   const n = el("div", "note mb6");
   /* CHAMPIONS' OWN TEXT FIRST, ALWAYS. An ability only species outside the
@@ -296,10 +305,7 @@ function abilityNote(a, form, badge, ls){
                      "it picks out nothing.";
     n.appendChild(sc);
   } else if (r?.side === "off" && ls) {
-    const k = ls.filter(function(mn){
-      const mv = MOVE_BY[mn];
-      return mv && abilityTag(a, mv, form);
-    }).length;
+    const k = ls.filter(function(mv){ return abilityTag(a, mv, form); }).length;
     sc.textContent = k
       ? "Tags " + k + " of the " + ls.length + " moves it learns."
       : "Touches none of the moves it learns.";
@@ -311,20 +317,23 @@ function abilityNote(a, form, badge, ls){
   return n;
 }
 
-/* a damage multiplier's tone: taking more is bad, taking less is good */
+/** a damage multiplier's tone: taking more is bad, taking less is good
+   @param {number} x */
 function multTone(x){
   if (x > 1) return " bad";
   if (x < 1) return " ok";
   return "";
 }
-/* The type chart for one typing, as rows of chips grouped x4, x2, 1/2, 1/4,
+/** The type chart for one typing, as rows of chips grouped x4, x2, 1/2, 1/4,
    immune. Called per typing, because a Mega that RETYPES has its own table -
-   one table under two typings would be one number meaning two things. */
+   one table under two typings would be one number meaning two things.
+   @param {string[]} types */
 function damageTable(types){
   const dfc = defence(types);
   const dl = el("div");
-  [[4, "×4"], [2, "×2"], [.5, "½"], [.25, "¼"],
-   [0, "immune"]].forEach(function(g){
+  /** @type {[number, string][]} */
+  const groups = [[4, "×4"], [2, "×2"], [.5, "½"], [.25, "¼"], [0, "immune"]];
+  groups.forEach(function(g){
     const hits = Object.keys(dfc).filter(function(t){ return dfc[t] === g[0]; });
     if (!hits.length) return;
     const line = el("div", "rmeta mb5");
@@ -336,17 +345,21 @@ function damageTable(types){
   return dl;
 }
 
-/* what a battle form changes, as the end of "<ability> ..." */
+/** what a battle form changes, as the end of "<ability> ..."
+   @param {string[]} moved
+   @param {boolean} retype */
 function formChange(moved, retype){
   if (moved.length) return " moves " + moved.join(", ") + ".";
   if (retype) return " changes the typing, not the spread.";
   return " moves no stat and keeps the typing.";
 }
-/* ONE POKEMON'S SHEET, BELOW ITS HEAD, in the order a Pokemon is read in:
+/** ONE POKEMON'S SHEET, BELOW ITS HEAD, in the order a Pokemon is read in:
    the head carries the types and the six stats; then the abilities and what
    damages it; then the Mega line and the battle forms, each with its own
    damage table only when it really retypes; then what it won with, its
-   movepool, and what Smogon wrote. */
+   movepool, and what Smogon wrote.
+   @param {SheetBody} body
+   @param {DexRow} p */
 function pokeBody(body, p){
   /* resolved first, because each ability reports how much of THIS movepool
      it touches */
@@ -365,11 +378,14 @@ function pokeBody(body, p){
   body.appendChild(aw);
 }
 
-/* THE BASE FORM'S ABILITIES, AND ONLY THOSE - a Mega's is explained in its
+/** THE BASE FORM'S ABILITIES, AND ONLY THOSE - a Mega's is explained in its
    own block, beside the form that has it. Then
    WHAT DAMAGES IT: a type chart needs the types and nothing else, so a
    species Champions has never heard of gets one too. The box sheet may hand
-   in its own panel (`body._basePanel`) for these to go in. */
+   in its own panel (`body._basePanel`) for these to go in.
+   @param {SheetBody} body
+   @param {DexRow} p
+   @param {Move[] | null} ls */
 function baseBlock(body, p, ls){
   const caja = body._basePanel || body;
   (p.ab || []).forEach(function(a){
@@ -385,6 +401,9 @@ function baseBlock(body, p, ls){
    ones the stone MOVES said, and its ability explained. Nothing the sheet
    already said above is repeated. megaLine, not megasFor, so a species
    Champions lacks shows its Megas too (Mewtwo's X and Y). */
+/** @param {HTMLElement} body
+   @param {DexRow} p
+   @param {Move[] | null} ls */
 function megaSection(body, p, ls){
   const ms = megaLine(p);
   if (!ms.length) return;
@@ -418,12 +437,14 @@ function megaSection(body, p, ls){
   });
 }
 
-/* AND THE SAME BLOCK FOR THE FORMS IT TAKES WITHOUT A STONE: Stance Change
+/** AND THE SAME BLOCK FOR THE FORMS IT TAKES WITHOUT A STONE: Stance Change
    gives Aegislash 140 Attack the moment it attacks, Zero to Hero takes
    Palafin from 70 to 160, Forecast retypes Castform three ways. It is NOT a
    stone and must never read like one: no item tag, no ability cell - the
    ability is the one it already has, and the line underneath says it is
-   what does this. */
+   what does this.
+   @param {HTMLElement} body
+   @param {DexRow} p */
 function battleFormSection(body, p){
   const bfs = battleFormsOf(p);
   if (!bfs.length) return;
@@ -444,8 +465,13 @@ function battleFormSection(body, p){
   });
 }
 
-/* The head of a Mega's or a battle form's block: its picture, its name with
-   one tag, its types, and a strip of cells. */
+/** The head of a Mega's or a battle form's block: its picture, its name with
+   one tag, its types, and a strip of cells.
+   @param {DexRow} p
+   @param {DexRow} f
+   @param {string} nameText
+   @param {HTMLElement | null} tag
+   @param {(HTMLElement | null)[]} cells */
 function formPanel(p, f, nameText, tag, cells){
   const pn = el("div", "panel megablock mb10");
   const head = el("div", "sheethead");
@@ -465,26 +491,35 @@ function formPanel(p, f, nameText, tag, cells){
   return pn;
 }
 
-/* "Atk 80 → 150", for every stat the form moves. */
+/** "Atk 80 → 150", for every stat the form moves.
+   @param {DexRow} p
+   @param {DexRow} f
+   @returns {string[]} */
 function movedStats(p, f){
-  return STAT_KEYS.map(function(k, i){
-    return f.b[i] === p.b[i] ? null
-         : STAT_LABEL[k] + " " + p.b[i] + " → " + f.b[i];
-  }).filter(Boolean);
+  return STAT_KEYS.flatMap(function(k, i){
+    return f.b[i] === p.b[i] ? []
+         : [STAT_LABEL[k] + " " + p.b[i] + " → " + f.b[i]];
+  });
 }
 
-/* ITS OWN DAMAGE TABLE, only when the typing really changes - it is a
+/** ITS OWN DAMAGE TABLE, only when the typing really changes - it is a
    different table, not a caveat: Mega Ampharos picks up a Dragon's
-   weaknesses and loses none of the Electric ones. */
+   weaknesses and loses none of the Electric ones.
+   @param {HTMLElement} pn
+   @param {DexRow} p
+   @param {DexRow} f */
 function retypedTable(pn, p, f){
   if (f.types.join("/") === p.types.join("/")) return;
   pn.appendChild(el("div", "st", "Takes damage differently:"));
   pn.appendChild(damageTable(f.types));
 }
 
-/* WHAT A FORM DOES TO ITS MOVES, which for a form that moves no number is the
+/** WHAT A FORM DOES TO ITS MOVES, which for a form that moves no number is the
    whole reason it matters (Hangry Morpeko's Aura Wheel turns Dark). `c` is
-   [move, type before, type in this form]. */
+   [move, type before, type in this form].
+   @param {string[]} c
+   @param {DexRow} f
+   @param {DexRow} p */
 function formMoveLine(c, f, p){
   const line = el("div", "rmeta mt6");
   line.appendChild(el("span", null, c[0] + ":"));
@@ -495,11 +530,13 @@ function formMoveLine(c, f, p){
   return line;
 }
 
-/* WHAT IT WON WITH. Folded, because some Pokemon have eighteen of these and
+/** WHAT IT WON WITH. Folded, because some Pokemon have eighteen of these and
    the movepool is what the sheet is usually opened for - but one tap away,
    because "what did the set that actually won look like" is a better
    question than "what is popular". History, and it says so: each set
-   carries its year, its division and the regulation. */
+   carries its year, its division and the regulation.
+   @param {HTMLElement} body
+   @param {DexRow} p */
 function worldsFold(body, p){
   const pod = podiumFor(p.name);
   if (!pod.length) return;
@@ -525,10 +562,11 @@ function worldsFold(body, p){
   body.appendChild(wrap);
 }
 
-/* One top-8 set: the finish, the player, their record, the item, ability and
+/** One top-8 set: the finish, the player, their record, the item, ability and
    nature, what it Mega Evolved into, and the four moves. The ability is the
    BASE one - what a teamlist records - and the stone settles what the Mega
-   became. */
+   became.
+   @param {PodiumSet} e */
 function worldsSet(e){
   const card = el("div", "note mb6");
   const head = el("div", "rname");
@@ -561,8 +599,10 @@ function worldsSet(e){
   return card;
 }
 
-/* The moves the Find search asked for, first, when the sheet was opened from
-   a search that named some. */
+/** The moves the Find search asked for, first, when the sheet was opened from
+   a search that named some.
+   @param {HTMLElement} body
+   @param {DexRow} p */
 function askedMoves(body, p){
   body.appendChild(el("h2", null, "The moves you asked for"));
   const l = el("div", "list");
@@ -573,27 +613,33 @@ function askedMoves(body, p){
   body.appendChild(l);
 }
 
-/* THE WHOLE MOVEPOOL, status moves included, with the same controls as the
+/** THE WHOLE MOVEPOOL, status moves included, with the same controls as the
    build editor and the search - one implementation, so searching inside one
    Pokemon's pool works the way searching anywhere else does - and its own
-   players' usage on every move. */
+   players' usage on every move.
+   @param {HTMLElement} body
+   @param {DexRow} p
+   @param {Move[]} ls */
 function ownMovepool(body, p, ls){
   body.appendChild(el("h2", null, "Movepool"));
   moveFilters(body, ls, learnerRow(p), "Filter " + ls.length + " moves it learns",
               {cap: 200, usageOf: p.name});
 }
 
-/* the row renderer for a movepool: every ability this species can have */
+/** the row renderer for a movepool: every ability this species can have
+   @param {DexRow} p */
 function learnerRow(p){
-  return function(m){ return moveRowFor(m, p.ab || [], p); };
+  return function(/** @type {Move} */ m){ return moveRowFor(m, p.ab || [], p); };
 }
 
-/* A SPECIES CHAMPIONS DOES NOT HAVE STILL KNOWS THINGS. Its movepool comes
+/** A SPECIES CHAMPIONS DOES NOT HAVE STILL KNOWS THINGS. Its movepool comes
    from the same PokeAPI tables its stats do, fetched only when a sheet like
    this is opened, and the section says so: these are main-series moves on a
    main-series Pokemon and must never read as Champions data. What each move
    DOES is Champions' own row for it - including the moves Champions has but
-   has not enabled, which are marked. */
+   has not enabled, which are marked.
+   @param {HTMLElement} body
+   @param {DexRow} p */
 function outsideMovepool(body, p){
   body.appendChild(el("h2", null, "Movepool"));
   const outsideHost = el("div");
@@ -609,13 +655,14 @@ function outsideMovepool(body, p){
       return;
     }
     let off = 0;
-    const pool = got.map(function(n){
+    const pool = got.flatMap(function(n){
       const m = MOVE_BY[n];
-      if (m) return m;
+      if (m) return [m];
       const o = outsideMove(n);
-      if (o) off++;
-      return o;
-    }).filter(Boolean);
+      if (!o) return [];
+      off++;
+      return [o];
+    });
     outsideHost.appendChild(el("p", "sub",
       "Which moves it learns is main-series — Champions publishes no "
       + "page for a species it does not have. What each one DOES is "
@@ -627,9 +674,11 @@ function outsideMovepool(body, p){
   });
 }
 
-/* A folded "what Smogon wrote" button: the analysis panel is drawn - and its
+/** A folded "what Smogon wrote" button: the analysis panel is drawn - and its
    payload fetched - only the first time it is opened. The build editor and
-   the Pokemon sheet both use it, with their own label. */
+   the Pokemon sheet both use it, with their own label.
+   @param {string} name
+   @param {string} label */
 function analysisFold(name, label){
   const aw = el("div");
   const atog = el("button", "btn sm fold");
@@ -648,8 +697,9 @@ function analysisFold(name, label){
   return aw;
 }
 
-/* The search view's door: the species, not a copy of it, so no shiny and no
-   ownership block between the two halves. */
+/** The search view's door: the species, not a copy of it, so no shiny and no
+   ownership block between the two halves.
+   @param {DexRow} p */
 function findDetail(p){
   openSheet(p.name, function(body){
     pokeHead(body, p, {});

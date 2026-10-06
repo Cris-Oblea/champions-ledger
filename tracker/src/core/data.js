@@ -362,7 +362,8 @@ function splitMax(name, kind){
   const rows = s?.[kind];
   return rows?.length ? rows[0][1] : 0;
 }
-/* What a usage share is a share OF, by the kind of column it came from. */
+/** What a usage share is a share OF, by the kind of column it came from.
+    @type {Record<string, string>} */
 const SHARE_OF = {m: "of this Pokemon's move slots", t: "of its teams also carried this"};
 
 /* ---------------------------------------------------------- what WON ------

@@ -99,9 +99,11 @@ checkJs, nothing compiled) is in the gate at zero. Types are JSDoc in a
 control read by value is `field(id)`, a document-wide query `$$(sel)`.
 **`core/` is strict (2026-10-06, `tracker/src/core/tsconfig.json`)**: no
 untyped parameter, no unchecked null; never type one `any` to get past it -
-`docFromRow` is the one deliberate `any` (database rows). `ui/` goes strict
-next, then `tabs/`. typescript is pinned to 6.0: 7.0 has no JavaScript API and
-`eslint-plugin-sonarjs` needs one.
+`docFromRow` is the one deliberate `any` (database rows). **`ui/` too
+(2026-10-06, `tracker/src/ui/tsconfig.json`)**; `tabs/` is next. A sheet
+builder's `_` expandos are named on `SheetBody` in `globals.d.ts`. typescript
+is pinned to 6.0: 7.0 has no JavaScript API and `eslint-plugin-sonarjs` needs
+one.
 
 **The tracker's damage tab runs Smogon's engine itself** (bundled by
 `scripts/build_engine_bundle.py`), so it is exact rather than close. Do not

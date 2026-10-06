@@ -25,20 +25,38 @@ import { numText, typeChip, typeSkin, usageTag } from "./card.js";
      stop, ally  the moves it switches off, from a foe / from an ally
 
    AB_SET is the same with the lists turned into sets, for the lookups below. */
+/** What an ability does to one move: its multiplier and the badge's sentence.
+    @typedef {{x?: number | null, why?: string | null}} AbilityHit */
+/** @typedef {Record<number, number>} IndexSet */
+/** An AB_MOVES entry with its lists as sets.
+    @typedef {AbilityHit & {all: boolean, side: AbilityMoves["side"], scope?: string,
+      m: IndexSet, up?: IndexSet, down?: IndexSet, why_up?: string, why_down?: string}} AbSet */
 const AB = C.AB_MOVES || {};
+/** @type {Record<string, AbSet>} */
 const AB_SET = {};
+/** @param {number[]} list
+    @returns {IndexSet} */
+function toSet(list){
+  /** @type {IndexSet} */
+  const set = {};
+  list.forEach(function(i){ set[i] = 1; });
+  return set;
+}
 Object.keys(AB).forEach(function(name){
-  const e = AB[name], s = {all:!!e.all, side:e.side, x:e.x, why:e.why,
-                         scope:e.scope};
-  s.m = {}; (e.m || []).forEach(function(i){ s.m[i] = 1; });
-  if (e.up)   { s.up = {};   e.up.forEach(function(i){ s.up[i] = 1; }); }
-  if (e.down) { s.down = {}; e.down.forEach(function(i){ s.down[i] = 1; }); }
-  s.why_up = e.why_up; s.why_down = e.why_down;
+  const e = AB[name];
+  /** @type {AbSet} */
+  const s = {all:!!e.all, side:e.side, x:e.x, why:e.why, scope:e.scope,
+             m:toSet(e.m || []), why_up:e.why_up, why_down:e.why_down};
+  if (e.up) s.up = toSet(e.up);
+  if (e.down) s.down = toSet(e.down);
   AB_SET[name] = s;
 });
 
-/* Does `ability` change this move for its user? The entry (with the right
-   `why`), or null. */
+/** Does `ability` change this move for its user? The entry (with the right
+   `why`), or null.
+   @param {string} ability
+   @param {Move} move
+   @returns {AbilityHit | null} */
 function abilityHit(ability, move){
   const r = AB_SET[ability];
   if (r?.side !== "off") return null;      // defensive rules badge nothing
@@ -53,7 +71,10 @@ function abilityHit(ability, move){
   if (r.down?.[move.i]) return {x:r.x, why:r.why_down};
   return r;
 }
-/* the badge that goes on a move row when the chosen ability touches it */
+/** the badge that goes on a move row when the chosen ability touches it
+   @param {string} ability
+   @param {Move} move
+   @param {DexRow | null | undefined} poke */
 function abilityTag(ability, move, poke){
   const hit = abilityHit(ability, move);
   if (!hit) return null;
@@ -61,7 +82,7 @@ function abilityTag(ability, move, poke){
   if (ability === "Adaptability" &&
       !poke?.types.includes(move.type)) return null;
   const t = el("span", "tag ok", ability);
-  t.title = hit.why;
+  t.title = hit.why || "";
   return t;
 }
 
@@ -76,12 +97,14 @@ function abilityTag(ability, move, poke){
 
    There is no hover on a phone, so the badge says it and the line under it
    (spreadNote) says it again in full. */
+/** @param {Move} m
+   @param {HTMLElement} host */
 function spreadTags(m, host){
   if (m.spread) host.appendChild(el("span", "tag warn", "spread"));
   if (m.hitsAlly) host.appendChild(el("span", "tag bad", "hits ally"));
   multiHitTag(m, host);
 }
-/* MULTI-HIT, WITH THE TOTAL. The BP column shows ONE hit, so Bullet Seed reads
+/** MULTI-HIT, WITH THE TOTAL. The BP column shows ONE hit, so Bullet Seed reads
    25 BP next to Seed Bomb's 80 when it is really 75 across three hits and 125
    with Skill Link. The tag's title gives the total.
 
@@ -91,7 +114,9 @@ function spreadTags(m, host){
                replaces the range with a flat five (and one accuracy roll for
                the whole move, so it is all-or-nothing)
      1 to 10   Population Bomb, where "the attack ends if the user misses"
-               makes the 1 a miss rather than a hit count */
+               makes the 1 a miss rather than a hit count
+   @param {Move} m
+   @param {HTMLElement} host */
 function multiHitTag(m, host){
   const h = m.hits;
   if (!h?.length) return;
@@ -113,9 +138,11 @@ function multiHitTag(m, host){
   t.title = bits.join(" · ") || "Hits more than once";
   host.appendChild(t);
 }
-/* Priority, with its NUMBER: +1 and +2 are different moves in doubles (the
+/** Priority, with its NUMBER: +1 and +2 are different moves in doubles (the
    point of Fake Out over Quick Attack is the extra stage). Negative priority
-   is shown too - moving last is a fact about the turn. */
+   is shown too - moving last is a fact about the turn.
+   @param {Move} m
+   @param {HTMLElement} host */
 function priorityTag(m, host){
   if (!m.pri) return;
   const cls = m.pri > 0 ? "tag ok" : "tag bad";
@@ -125,10 +152,12 @@ function priorityTag(m, host){
     : "Goes after every move of higher priority, whatever the Speed";
   host.appendChild(t);
 }
-/* The item that exists for this move. Only the SPECIFIC ones are indexed -
+/** The item that exists for this move. Only the SPECIFIC ones are indexed -
    Life Orb rides on all 334 attacks and would badge every row with noise -
    so a tag here means "this item was made for this move": Heat Rock on Sunny
-   Day, Light Clay on Reflect, Big Root on Giga Drain. */
+   Day, Light Clay on Reflect, Big Root on Giga Drain.
+   @param {Move} m
+   @param {HTMLElement} host */
 function itemTags(m, host){
   (C.ITEM_FOR_MOVE?.[m.name] || []).forEach(function(p){
     /* WHICH WAY THE TAG POINTS. Heat Rock on Sunny Day is a reason to run the
@@ -143,7 +172,7 @@ function itemTags(m, host){
   });
 }
 
-/* WHAT SWITCHES THIS MOVE OFF, SEEN FROM THE SIDE THAT USES IT. Only the
+/** WHAT SWITCHES THIS MOVE OFF, SEEN FROM THE SIDE THAT USES IT. Only the
    abilities that make the move do NOTHING (Zap Cannon: Bulletproof, Lightning
    Rod, Motor Drive, Volt Absorb) - one that merely softens it (Big Pecks
    against a Defence drop) would put dozens of chips on a row.
@@ -153,7 +182,9 @@ function itemTags(m, host){
    ALLY's move and nobody else's, so on your partner it is the reason to run
    the spread move. An immunity that works against anyone stays red only: a
    foe's Levitate is a fact you face, pairing your own is a choice. Which side
-   each works from is decided in build_ability_moves.STOP_WHOSE. */
+   each works from is decided in build_ability_moves.STOP_WHOSE.
+   @param {Move} m
+   @param {HTMLElement} host */
 function blockerTags(m, host){
   const AB = C.AB_MOVES || {};
   Object.keys(AB).forEach(function(a){
@@ -172,7 +203,8 @@ function blockerTags(m, host){
     host.appendChild(t);
   });
 }
-/* The spread / ally facts as prose, for the line under a move. */
+/** The spread / ally facts as prose, for the line under a move.
+   @param {Move} m */
 function spreadNote(m){
   let note = "";
   if (m.spread) note += "  ·  " + (m.cat === "T" ? "hits both opponents"
@@ -189,13 +221,25 @@ function spreadNote(m){
 
    Everything stacks: the sort is one choice, each filter group ANDs with the
    others, and the chips inside one group OR together. */
-/* BP x accuracy: how this project ranks moves, and the default sort. A move
-   that never misses (no accuracy) counts as 100. */
+/** BP x accuracy: how this project ranks moves, and the default sort. A move
+   that never misses (no accuracy) counts as 100.
+   @param {Move} m */
 function moveScore(m){ return (m.bp || 0) * Math.min(100, m.acc || 100) / 100; }
 
-/* A move list with its search box, its sort and its three-state chips;
+/** The chips' states (1 include, -1 exclude, absent off) per group.
+    @typedef {{cat: Record<string, number>, trait: Record<string, number>,
+      type: Record<string, number>}} Filters */
+/** A move list's state: the chips, each chip's repaint, the sort.
+    @typedef {{F: Filters, PAINT: Record<string, Record<string, (v: number) => void>>,
+      onChange: () => void, sort: string}} FilterState */
+/** A move list with its search box, its sort and its three-state chips;
    `rowFor` draws each row. The build editor's picker and Find's "+ Move" both
-   use it, so one question is asked one way. */
+   use it, so one question is asked one way.
+   @param {HTMLElement} body
+   @param {Move[]} pool
+   @param {(m: Move) => HTMLElement} rowFor
+   @param {string} [placeholder]
+   @param {{cap?: number, usageOf?: string}} [opts] */
 function moveFilters(body, pool, rowFor, placeholder, opts){
   /* `usageOf` is a Pokemon name: it turns "rank the movepool by raw power"
      into "rank it by what its players actually bring". Only a caller with one
@@ -207,6 +251,7 @@ function moveFilters(body, pool, rowFor, placeholder, opts){
      silent. A single Pokemon's movepool fits under the default; the cap is
      for the whole move table. */
   const cap = opts?.cap || 80;
+  /** @type {FilterState} */
   const st = {F: {cat:{}, trait:{}, type:{}}, PAINT: {}, onChange: draw,
             sort: usageOf ? "usage" : "bp"};
   const inp = searchField(body, placeholder || ("Filter " + pool.length +
@@ -230,6 +275,7 @@ function moveFilters(body, pool, rowFor, placeholder, opts){
   body.appendChild(filterLabel("Must have — all of these, or − to rule out"));
   body.appendChild(mrow);
 
+  /** @type {string[]} */
   const types = [];
   pool.forEach(function(m){ if (!types.includes(m.type)) types.push(m.type); });
   types.sort(byText);
@@ -264,7 +310,10 @@ function moveFilters(body, pool, rowFor, placeholder, opts){
   return {input:inp};
 }
 
-/* The sort choices: usage first when there is a Pokemon to be a share of. */
+/** The sort choices: usage first when there is a Pokemon to be a share of.
+   @param {HTMLElement} body
+   @param {FilterState} st
+   @param {string | null} usageOf */
 function sortRow(body, st, usageOf){
   const srow = el("div", "toggles mb8");
   const sorts = [["bp","BP × acc"],["name","A–Z"],["pp","PP"],["type","Type"]];
@@ -274,7 +323,7 @@ function sortRow(body, st, usageOf){
     setPressed(t, o[0] === st.sort);
     t.onclick = function(){
       st.sort = o[0];
-      Array.prototype.forEach.call(srow.children, function(x){
+      Array.prototype.forEach.call(srow.children, function(/** @type {Element} */ x){
         setPressed(x, x === t);
       });
       st.onChange();
@@ -285,24 +334,30 @@ function sortRow(body, st, usageOf){
   body.appendChild(srow);
 }
 
-/* ONE FILTER CHIP, WITH THREE STATES: off, include, EXCLUDE ("no Psychic"
+/** ONE FILTER CHIP, WITH THREE STATES: off, include, EXCLUDE ("no Psychic"
    is a real question). A tap cycles off -> include -> exclude -> off, and an
    excluded chip is drawn with a minus, struck through, because it has to read
    as the opposite of the chip beside it. A type chip wears the type's own
-   colours (typeSkin knows which are written in black). */
+   colours (typeSkin knows which are written in black).
+   @param {HTMLElement} row
+   @param {FilterState} st
+   @param {keyof Filters} group
+   @param {string} key
+   @param {string} text
+   @param {string} [type] */
 function triChip(row, st, group, key, text, type){
   const t = el("button", "tog", text);
   setPressed(t, false);
   if (type) typeSkin(t, type, false);
   /* each chip's repaint, by group and key, so including one category can
      repaint the other */
-  const paint = function(v){ paintTriChip(t, text, type, v); };
+  const paint = function(/** @type {number} */ v){ paintTriChip(t, text, type, v); };
   st.PAINT[group] ||= {};
   st.PAINT[group][key] = paint;
   t.onclick = function(){
     const F = st.F;
     const was = F[group][key] || 0;
-    const now = ({0: 1, 1: -1})[was] || 0;
+    const now = /** @type {Record<number, number>} */ ({0: 1, 1: -1})[was] || 0;
     if (now) F[group][key] = now; else delete F[group][key];
     /* A MOVE HAS EXACTLY ONE CATEGORY, so including one drops the other.
        Excludes still stack, which keeps "not status" sayable. */
@@ -320,9 +375,13 @@ function triChip(row, st, group, key, text, type){
   row.appendChild(t);
 }
 
-/* A chip in one of its three states. A ruled-out type chip drops the type's
+/** A chip in one of its three states. A ruled-out type chip drops the type's
    border as well: the border is the last thing still saying "this is a
-   Psychic chip" when the whole point is that Psychic is being refused. */
+   Psychic chip" when the whole point is that Psychic is being refused.
+   @param {HTMLElement} t
+   @param {string} text
+   @param {string | undefined} type
+   @param {number} v */
 function paintTriChip(t, text, type, v){
   setPressed(t, v === 1);
   t.classList.toggle("no", v === -1);
@@ -333,10 +392,13 @@ function paintTriChip(t, text, type, v){
   }
 }
 
-/* Does a move pass the search box and every chip? The text is searched as
+/** Does a move pass the search box and every chip? The text is searched as
    well as the name, because "which of these burns" is what a move list is
    opened for. An EXCLUDE is checked first and on its own, so "no Psychic"
-   works with nothing else picked. */
+   works with nothing else picked.
+   @param {Move} m
+   @param {string} q
+   @param {Filters} F */
 function movePasses(m, q, F){
   if (q && !m.name.toLowerCase().includes(q) &&
       !m.type.toLowerCase().includes(q) &&
@@ -351,25 +413,32 @@ function movePasses(m, q, F){
   return !inTr.length || inTr.every(function(k){ return hasTrait(m, k); });
 }
 
-/* Nothing included in the group, or this value is one of the included. */
+/** Nothing included in the group, or this value is one of the included.
+   @param {Record<string, number>} group
+   @param {string} value */
 function includedOrNone(group, value){
   const inc = Object.keys(group).filter(function(k){ return group[k] === 1; });
   return !inc.length || inc.includes(value);
 }
 
-/* the "Must have" chips: spread, hits ally, priority (positive only) */
+/** the "Must have" chips: spread, hits ally, priority (positive only)
+   @param {Move} m
+   @param {string} k */
 function hasTrait(m, k){
   if (k === "spread") return !!m.spread;
   if (k === "ally") return !!m.hitsAlly;
   return (m.pri || 0) > 0;
 }
 
-/* The comparator for a sort key. By usage, a move nobody brought sorts below
+/** The comparator for a sort key. By usage, a move nobody brought sorts below
    one at 0.1%, and both below silence - a Pokemon with no table at all falls
-   back to power rather than to alphabetical noise. */
+   back to power rather than to alphabetical noise.
+   @param {string} sort
+   @param {string | null} usageOf
+   @returns {(a: Move, b: Move) => number} */
 function moveOrder(sort, usageOf){
   return function(a, b){
-    if (sort === "usage") {
+    if (sort === "usage" && usageOf) {
       const ua = splitPct(usageOf, "m", a.name);
       const ub = splitPct(usageOf, "m", b.name);
       if (ua == null && ub == null) return moveScore(b) - moveScore(a) ||
@@ -388,7 +457,7 @@ function moveOrder(sort, usageOf){
 }
 
 
-/* A META LINE THAT BREAKS BETWEEN FACTS AND NEVER INSIDE ONE.
+/** A META LINE THAT BREAKS BETWEEN FACTS AND NEVER INSIDE ONE.
 
    "Physical · 40 BP · 100 acc · 12 PP · 40 effective" as one text node lets a
    phone wrap it wherever a space happens to fall, so "100" ends a line and
@@ -397,16 +466,17 @@ function moveOrder(sort, usageOf){
    which means the only place a wrap can happen is a join.
 
    Falsy parts are dropped, so a caller can pass a conditional straight in
-   rather than assembling a string with the separators in it. */
+   rather than assembling a string with the separators in it.
+   @param {(string | null | undefined | false)[]} parts */
 function factLine(parts){
   const box = el("div", "rmeta");
-  parts.filter(Boolean).forEach(function(t){
-    box.appendChild(el("span", "mono fact", t));
+  parts.forEach(function(t){
+    if (t) box.appendChild(el("span", "mono fact", t));
   });
   return box;
 }
 
-/* ONE MOVE ROW - the only one: a Pokemon's sheet, the build's move picker
+/** ONE MOVE ROW - the only one: a Pokemon's sheet, the build's move picker
    and Find's "+ Move" all draw it, so a move reads the same on every screen.
    Anything a row should show is added here.
 
@@ -418,9 +488,14 @@ function factLine(parts){
 
    `opts.onPick` makes the row a button that calls it; `opts.usageOf` names
    whose usage to show when it is not `poke` - the build picker's Pokemon is
-   the Mega, its usage is recorded on the base species. */
+   the Mega, its usage is recorded on the base species.
+   @param {Move} m
+   @param {string | string[] | null | undefined} ability
+   @param {DexRow | null | undefined} poke
+   @param {{onPick?: () => void, usageOf?: string}} [opts] */
 function moveRowFor(m, ability, poke, opts){
   opts = opts || {};
+  /** @type {string[]} */
   let abils = [];
   if (typeof ability === "string") abils = [ability];
   else if (ability != null) abils = ability.slice();
@@ -442,6 +517,7 @@ function moveRowFor(m, ability, poke, opts){
   }
   priorityTag(m, h); spreadTags(m, h); itemTags(m, h);
   blockerTags(m, h);
+  /** @type {{ability: string, hit: AbilityHit}[]} */
   const hits = [];
   abils.forEach(function(a){
     const hit = abilityHit(a, m);

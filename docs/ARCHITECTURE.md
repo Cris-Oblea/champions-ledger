@@ -351,9 +351,10 @@ runs in four places: the `pre-push` hook, every pull request, every push to
   them (`BoxRow`, `Build`, `Team`, `Trade`, `AppState`). A shape one module
   builds is a `@typedef` in that module (`TeamReport` in `team.js`, `Ask` in
   `trade.js`). The whole app is checked at zero with `strict` off, and
-  `core/` again strict (`tracker/src/core/tsconfig.json`): every parameter
-  typed, null kept apart. Strict comes on one layer at a time, since a layer
-  imports only its own or a lower one; `ui/` is next. A database row stays
+  `core/` and `ui/` again strict (`tracker/src/core/tsconfig.json`,
+  `tracker/src/ui/tsconfig.json`): every parameter typed, null kept apart.
+  Strict comes on one layer at a time, since a layer imports only its own or
+  a lower one; `tabs/` is next. A database row stays
   loosely typed up to `docFromRow` in `store.js`, the trust boundary; `$`
   is typed never-null because `check_app.js` holds every id against the
   markup. Pinned to 6.0, the last release with the JavaScript API
@@ -620,7 +621,7 @@ in `package.json`, `requirements.txt` and the workflows, never typed here.
 | Tool | Checks | Config |
 |---|---|---|
 | **ESLint** + `globals`, `eslint-plugin-sonarjs`, `eslint-plugin-unicorn` | All JavaScript: undeclared names, layer climbs, size, the Sonar rules | `eslint.config.mjs` |
-| **TypeScript** (`tsc`, checkJs) | The app's types: what a value is, read from JSDoc; `core/` strict | `tsconfig.json`, `tracker/src/core/tsconfig.json`, `tracker/src/globals.d.ts` |
+| **TypeScript** (`tsc`, checkJs) | The app's types: what a value is, read from JSDoc; `core/` and `ui/` strict | `tsconfig.json`, `tracker/src/core/tsconfig.json`, `tracker/src/ui/tsconfig.json`, `tracker/src/globals.d.ts` |
 | **stylelint** + `stylelint-config-standard` | The CSS | `stylelint.config.mjs` |
 | **html-validate** | The markup | `.htmlvalidate.mjs` |
 | **ruff** | All Python, the same way ESLint does JavaScript | `ruff.toml`, `requirements.txt` |

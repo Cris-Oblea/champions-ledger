@@ -14,25 +14,28 @@ function connect(){
 /* ------------------------------------------------------- Supabase + auth --
    The gate is not decoration: until there is a session the app has no rows to
    show, because the server refuses to send any. */
+/** @type {Ledger["sb"] | null} */
 let SB = null;
-/* Create the client, restore the session or show the sign-in gate, and reload
-   on sign-out so no ledger stays on screen. */
+/** Create the client, restore the session or show the sign-in gate, and reload
+   on sign-out so no ledger stays on screen. Only called with the library loaded.
+   @param {{url: string, key: string, email?: string}} cfg */
 function connectSupabase(cfg){
-  SB = window.supabase.createClient(cfg.url, cfg.key);
+  const sb = SB = /** @type {NonNullable<Window["supabase"]>} */ (window.supabase).createClient(cfg.url, cfg.key);
   field("gateEmail").value = cfg.email || "";
   $("gateFoot").textContent =
     "Nothing is stored in this page - your box lives in the database, and "
     + "only this password reaches it.";
-  SB.auth.getSession().then(function(r){
+  sb.auth.getSession().then(function(r){
     const s = r.data?.session;
     if (s) { start(s); } else { showGate(); }
   }, function(){ showGate("Could not reach the database."); });
 
-  SB.auth.onAuthStateChange(function(evt){
+  sb.auth.onAuthStateChange(function(evt){
     if (evt === "SIGNED_OUT") location.reload();
   });
 }
-/* Show the sign-in form, with an error line when there is one. */
+/** Show the sign-in form, with an error line when there is one.
+   @param {string} [msg] */
 function showGate(msg){
   $("gate").hidden = false;
   if (msg) { $("gateErr").textContent = msg; $("gateErr").hidden = false; }
@@ -40,16 +43,18 @@ function showGate(msg){
     (field("gateEmail").value ? field("gatePass") : field("gateEmail")).focus();
   }, 80);
 }
-/* Signed in: hide the gate and open the ledger as this user. */
+/** Signed in: hide the gate and open the ledger as this user.
+   @param {import("@supabase/supabase-js").Session} session */
 function start(session){
   $("gate").hidden = true;
-  openLedger(SB, session.user.id);
+  openLedger(/** @type {Ledger["sb"]} */ (SB), session.user.id);
   dbState(true, "live");
-  signedInChip(session.user.email);
+  signedInChip(session.user.email || "");
 }
-/* The header button that says who is signed in and signs out. */
+/** The header button that says who is signed in and signs out.
+   @param {string} email */
 function signedInChip(email){
-  const bar = $("themeBtn").parentNode;
+  const bar = /** @type {ParentNode} */ ($("themeBtn").parentNode);
   if ($("whoBtn")) return;
   const b = el("button", "iconbtn", null);
   b.id = "whoBtn";
@@ -60,7 +65,7 @@ function signedInChip(email){
     '<path d="M15 4h3a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2h-3M10 16l-4-4 4-4M6 12h11"/></svg>';
   b.onclick = function(){
     ask("Sign out?", "You are signed in as " + email + ".", "Sign out")
-      .then(function(ok){ if (ok) SB.auth.signOut(); });
+      .then(function(ok){ if (ok) SB?.auth.signOut(); });
   };
   bar.insertBefore(b, $("themeBtn"));
 }

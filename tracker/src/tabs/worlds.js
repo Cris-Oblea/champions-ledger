@@ -111,7 +111,7 @@ function worldDraw(){
         },
         onclick: function(){ findDetail(p); }
       });
-      const cl = r.querySelector(".cardline");
+      const cl = /** @type {HTMLElement | null} */ (r.querySelector(".cardline"));
       if (cl) cl.title = title;
     } else {
       /* a name with no row in any dex - it still holds its place in the

@@ -22,9 +22,10 @@ const TABS = [
      name only, and renaming it would touch every go("trainer") */
   ["trainer", "Settings", "M4 7h9m4 0h3M15 5v4M4 17h3m4 0h9M9 15v4"]
 ];
-/* Does a media query match? Never throws: a LAYOUT question must never be
+/** Does a media query match? Never throws: a LAYOUT question must never be
    able to stop the app loading, and jsdom (where the tests run) has no
-   matchMedia - a TypeError here once killed the rest of startup. */
+   matchMedia - a TypeError here once killed the rest of startup.
+   @param {string} q */
 function mq(q){
   try { return !!(window.matchMedia?.(q).matches); }
   catch (e) { return false; }
@@ -63,17 +64,22 @@ function buildTabs(){
    still has to hide every other view, or the old one shows through. */
 const EXTRA_VIEWS = ["buildedit", "teamedit"];
 /* which tab stays lit while an editor is open - both belong to Builds */
+/** @type {Record<string, string>} */
 const EDITOR_HOME = {buildedit: "builds", teamedit: "builds"};
 
 /* A tab that rebuilds itself every time it is shown registers its redraw
    here - boot.js: onShow("calc", calcDraw) - so navigation never imports
    the tabs it switches between. */
+/** @type {Record<string, () => void>} */
 const ON_SHOW = {};
-/* Register what a tab redraws when it is shown. boot.js calls this, so
-   navigation imports no tab. */
+/** Register what a tab redraws when it is shown. boot.js calls this, so
+   navigation imports no tab.
+   @param {string} tab
+   @param {() => void} fn */
 function onShow(tab, fn){ ON_SHOW[tab] = fn; }
 
-/* Show one view (a tab or an editor), hide the rest, light its tab. */
+/** Show one view (a tab or an editor), hide the rest, light its tab.
+   @param {string} tab */
 function go(tab){
   /* ONE HISTORY ENTRY PER TAB CHANGE, so Back walks them one at a time.
      TABHIST seeds itself with the tab being left: at boot S.tab already
@@ -97,14 +103,15 @@ function go(tab){
   });
   EXTRA_VIEWS.forEach(function(v){ $("v-" + v).hidden = v !== tab; });
   const lit = EDITOR_HOME[tab] || tab;
-  Array.prototype.forEach.call($("tabs").children, function(b){
+  Array.prototype.forEach.call($("tabs").children, function(/** @type {HTMLElement} */ b){
     b.setAttribute("aria-selected", b.dataset.tab === lit ? "true" : "false");
   });
   window.scrollTo(0, 0);
 }
 
-/* Leaving an editor returns to the list it came from, which is the Builds tab
-   with one pane or the other showing. */
+/** Leaving an editor returns to the list it came from, which is the Builds tab
+   with one pane or the other showing.
+   @param {string} [pane] */
 function leaveEditor(pane){
   const wasOpen = inEditor();
   go("builds");
@@ -112,16 +119,20 @@ function leaveEditor(pane){
   if (wasOpen) layerClosed();
 }
 
-/* The sheet API, rendered into a full-screen view instead ("buildedit" or
+/** The sheet API, rendered into a full-screen view instead ("buildedit" or
    "teamedit"). Same arguments as openSheet - `build(body)` fills it, `foot`
-   is the buttons - so a builder written for a sheet works here unchanged. */
+   is the buttons - so a builder written for a sheet works here unchanged.
+   @param {string} view
+   @param {string} title
+   @param {(body: SheetBody) => void} build
+   @param {Foot} [foot] */
 function openEditor(view, title, build, foot){
   const pre = view === "teamedit" ? "teamEdit" : "buildEdit";
   $(pre + "Title").textContent = title;
   build(resetHost($(pre + "Body")));
   const f = $(pre + "Foot");
   f.innerHTML = "";
-  (foot || []).filter(Boolean).forEach(function(b){ f.appendChild(b); });
+  (foot || []).forEach(function(b){ if (b) f.appendChild(b); });
   const wasOpen = inEditor();
   go(view);
   if (!wasOpen) layerOpened();
@@ -135,8 +146,9 @@ function openEditor(view, title, build, foot){
    exact scroll position after. A counter, not a boolean, because a sheet may
    close and reopen itself while a dialog sits over it. */
 let _lockY = 0, _lockN = 0;
-/* Freeze the page behind a sheet or dialog. Locks nest (a confirm over a
-   sheet), and the scroll position comes back when the last one lifts. */
+/** Freeze the page behind a sheet or dialog. Locks nest (a confirm over a
+   sheet), and the scroll position comes back when the last one lifts.
+   @param {boolean} on */
 function lockScroll(on){
   const b = document.body;
   if (on) {
@@ -152,8 +164,14 @@ function lockScroll(on){
   }
 }
 
-/* The modal sheet: `build(body)` fills it, `foot` is its buttons (nulls are
-   skipped). Opening one while another is open replaces it in place. */
+/** A sheet's or editor's buttons; a null or false is a button that does not
+    apply to this case, and is skipped.
+    @typedef {(HTMLElement | null | false | undefined)[]} Foot */
+/** The modal sheet: `build(body)` fills it, `foot` is its buttons (nulls are
+   skipped). Opening one while another is open replaces it in place.
+   @param {string} title
+   @param {(body: SheetBody) => void} build
+   @param {Foot} [foot] */
 function openSheet(title, build, foot){
   $("sheetTitle").textContent = title;
   /* #sheetBody is ONE node reused by every sheet - resetHost says why it
@@ -163,7 +181,7 @@ function openSheet(title, build, foot){
   const f = $("sheetFoot"); f.innerHTML = "";
   /* a caller may pass null for a button that does not apply to this case,
      which is cleaner than building two different arrays */
-  const btns = (foot || []).filter(Boolean);
+  const btns = /** @type {HTMLElement[]} */ ((foot || []).filter(Boolean));
   btns.forEach(function(b){ f.appendChild(b); });
   f.hidden = !btns.length;
   const wasOpen = !$("scrim").hidden;
@@ -198,6 +216,11 @@ document.addEventListener("keydown", function(e){
    THE SAFE ANSWER IS THE DEFAULT. Escape, the backdrop and the Cancel button
    all resolve false, and Cancel is the button that takes focus - a question
    about something that cannot be undone should not be dismissable into a yes. */
+/** @param {string} title
+   @param {string} body
+   @param {string} [okLabel]
+   @param {boolean} [danger]
+   @returns {Promise<boolean>} */
 function ask(title, body, okLabel, danger){
   return new Promise(function(resolve){
     const scrim = $("askScrim");
@@ -208,16 +231,16 @@ function ask(title, body, okLabel, danger){
        already written for confirm(). */
     const host = $("askBody");
     host.innerHTML = "";
-    if (body?.nodeType) host.appendChild(body);
-    else String(body || "").split(/\n\s*\n/).forEach(function(par){
+    body.split(/\n\s*\n/).forEach(function(par){
       if (par.trim()) host.appendChild(el("p", null, par.trim()));
     });
     const yes = $("askYes"), no = $("askNo");
     yes.textContent = okLabel || "OK";
     yes.className = "btn " + (danger ? "danger" : "primary");
     let done = false;
-    /* Close the dialog and answer the promise, once - Escape, a tap outside
-       and a button can all race to get here. */
+    /** Close the dialog and answer the promise, once - Escape, a tap outside
+       and a button can all race to get here.
+       @param {boolean} v */
     function finish(v){
       if (done) return;
       done = true;
@@ -229,8 +252,9 @@ function ask(title, body, okLabel, danger){
       if ($("scrim").hidden) lockScroll(false);
       resolve(v);
     }
-    /* Escape answers no; Enter answers yes only while the confirm button has
-       focus. */
+    /** Escape answers no; Enter answers yes only while the confirm button has
+       focus.
+       @param {KeyboardEvent} e */
     function onKey(e){
       if (e.key === "Escape") { e.stopPropagation(); finish(false); }
       else if (e.key === "Enter" && document.activeElement === yes) finish(true);
@@ -269,7 +293,7 @@ function ask(title, body, okLabel, danger){
    ourselves, so the handler ignores exactly those and no more. */
 let LAYERS = 0;                  /* history entries pushed for open layers */
 let SWALLOW = 0;                 /* pops we caused and have already acted on */
-const TABHIST = [];                /* tabs visited, so Back can step through */
+const TABHIST = /** @type {string[]} */ ([]); /* tabs visited, so Back can step through */
 let NAV_BACK = false;            /* true while a pop is being serviced */
 
 function layerOpened(){
@@ -321,14 +345,15 @@ window.addEventListener("popstate", function(){
        in, so the stack and the browser's history stay the same length. */
     if (TABHIST.length > 1) {
       TABHIST.pop();
-      go(TABHIST.at(-1));
+      go(/** @type {string} */ (TABHIST.at(-1)));
     }
   } finally { NAV_BACK = false; }
 });
 
-/* Builds and Teams share one tab, switched by a segmented control: an eighth
+/** Builds and Teams share one tab, switched by a segmented control: an eighth
    tab would wrap the phone's bar onto two rows, and they belong together
-   anyway, since a team IS six builds. */
+   anyway, since a team IS six builds.
+   @param {string} which */
 function buildsPane(which){
   showPane({builds:["buildsPane", "bldPaneBuilds"],
             teams:["teamsPane", "bldPaneTeams"]}, which);
