@@ -172,7 +172,7 @@ def main():
     """Turn the pokebase per-Pokemon splits into tracker/splits.js; --check
     asserts what each column is a share of.
     """
-    ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    ap = argparse.ArgumentParser(description=(__doc__ or "").split("\n")[0])
     ap.add_argument("--check", action="store_true",
                     help="verify what each percentage is a share OF")
     a = ap.parse_args()

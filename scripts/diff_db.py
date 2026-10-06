@@ -189,7 +189,7 @@ def report(limit=25):
 
 def main():
     """Print what a rebuild changed against git."""
-    ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    ap = argparse.ArgumentParser(description=(__doc__ or "").split("\n")[0])
     ap.add_argument("--limit", type=int, default=25)
     print(report(ap.parse_args().limit))
     return 0

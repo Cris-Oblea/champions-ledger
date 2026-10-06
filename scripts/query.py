@@ -32,6 +32,7 @@ Examples:
 """
 import argparse
 import contextlib
+import io
 import os
 import re
 import sys
@@ -59,8 +60,9 @@ from paths import DB
 # Japanese player names in the Worlds standings. Replace them instead of
 # dying halfway through a dossier.
 for _s in (sys.stdout, sys.stderr):
-    with contextlib.suppress(AttributeError, ValueError):
-        _s.reconfigure(errors="replace")
+    if isinstance(_s, io.TextIOWrapper):     # not when a test swapped it out
+        with contextlib.suppress(ValueError):
+            _s.reconfigure(errors="replace")
 
 
 # --------------------------------------------------------------------------
@@ -173,7 +175,7 @@ def smogon_gloss(name):
 
 def _worlds_teams_running(move_name):
     """division -> (teams running the move, teams)."""
-    counts = Counter()
+    counts: dict[str, tuple[int, int]] = {}
     for d, t in tournaments():
         n = sum(1 for pl in t.get("players", [])
                 if any(key(x) == key(move_name)

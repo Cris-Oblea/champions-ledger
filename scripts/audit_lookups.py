@@ -36,7 +36,7 @@ from paths import DB, ROOT
 bad = 0
 
 
-def ok(label, got, want="0"):
+def ok(label: str, got: object, want: object = "0"):
     """Print one check as OK / FAIL and count the failures in `bad`."""
     global bad
     good = str(got) == str(want)

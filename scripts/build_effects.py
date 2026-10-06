@@ -525,7 +525,7 @@ def main():
     their text states, write effects.json, and report the disagreements
     (--audit lists what got no number).
     """
-    ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    ap = argparse.ArgumentParser(description=(__doc__ or "").split("\n")[0])
     ap.add_argument("--audit", action="store_true")
     a = ap.parse_args()
 

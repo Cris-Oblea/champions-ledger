@@ -25,6 +25,12 @@ and does not in Champions. `fetch_smogon.py` asks `gen: "champions"` only; a
 move Champions' dex does not describe gets Serebii's attackdex-champions line,
 never an older game's text.
 
+**The Python type-checks (pyright, `pyrightconfig.json`, in the gate).** Every
+script is at zero in `basic`; `strict` is switched on file by file in that
+config's `strict` list - a file in it is fully annotated, so keep it that way.
+JSON from disk is `dex.Json` (the boundary); state the shape where a reader
+relies on one. `__doc__` can be None: `(__doc__ or "").split(...)`.
+
 ## Gotchas already solved — do not re-break these
 
 - **Form names differ per source**: Serebii `Ninetales-Alola`, pokebase

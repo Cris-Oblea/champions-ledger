@@ -136,7 +136,7 @@ def main():
     it is, 10 when a new one is ready to build, 11 when it is live but not
     yet buildable, 2 when it could not tell.
     """
-    ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    ap = argparse.ArgumentParser(description=(__doc__ or "").split("\n")[0])
     ap.parse_args()
     status, live, ours, why = look()
     if status == "current":
@@ -144,13 +144,13 @@ def main():
               % (live or "?").upper())
     elif status == "ready":
         print("NEW REGULATION: %s is live, the database is built for %s."
-              % (live.upper(), (ours or "nothing").upper()))
+              % ((live or "?").upper(), (ours or "nothing").upper()))
         print("  %s" % why)
         print("  run: python scripts/refresh.py --regulation")
     elif status == "waiting":
         print("NEW REGULATION: %s is live, the database is built for %s - "
               "but Serebii has not published it yet."
-              % (live.upper(), (ours or "nothing").upper()))
+              % ((live or "?").upper(), (ours or "nothing").upper()))
         print("  %s" % why)
         print("  clearing its cache now would re-download the same pages, "
               "so this waits.")

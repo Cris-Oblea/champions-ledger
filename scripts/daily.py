@@ -35,6 +35,7 @@ import argparse
 import contextlib
 import datetime
 import hashlib
+import io
 import json
 import os
 import re
@@ -48,8 +49,9 @@ from paths import META, RAW, ROOT, SMOGON_CALC
 # printed - a U+FFFD in one of them killed the run at its very last line,
 # after the deploy. Replace what cp1252 cannot show instead of dying.
 for _s in (sys.stdout, sys.stderr):
-    with contextlib.suppress(AttributeError, ValueError):
-        _s.reconfigure(errors="replace")
+    if isinstance(_s, io.TextIOWrapper):     # not when a test swapped it out
+        with contextlib.suppress(ValueError):
+            _s.reconfigure(errors="replace")
 
 PY = sys.executable
 LOGDIR = os.path.join(RAW, "daily_logs")
@@ -151,6 +153,10 @@ SOURCE_CHECKS = [
     (["node_modules/typescript/bin/tsc", "-p", "cron", "--pretty", "false"],
      "the cron Worker type-checks"),
     (["scripts/check_app.js"], "the app's source agrees with its markup and its engine"),
+    # And the Python's types: pyright (pyrightconfig.json), the checker inside
+    # VS Code's Pylance. "basic" everywhere, "strict" file by file as the list
+    # in that file grows.
+    (["node_modules/pyright/index.js"], "the Python type-checks"),
     # The same treatment for the other two languages of the page, so nothing
     # in tracker/src/ is linted only by an editor. stylelint.config.mjs and
     # .htmlvalidate.mjs say what each switches off and why; both linters

@@ -79,17 +79,21 @@ def table(name):
 def _upstream_tables():
     """(abilities by pokemon id as (slot, name), shape(pokemon id)) - a shape
     is the spread and typing, which is what tells a variant from a form."""
-    aname = {r["ability_id"]: r["name"] for r in table("ability_names.csv")
+    # upstream() has checked the cache; the tables are fetched together
+    def rows(name):
+        return table(name) or []
+
+    aname = {r["ability_id"]: r["name"] for r in rows("ability_names.csv")
              if r["local_language_id"] == ENGLISH}
     by_pid = collections.defaultdict(list)
-    for r in table("pokemon_abilities.csv"):
+    for r in rows("pokemon_abilities.csv"):
         by_pid[r["pokemon_id"]].append((int(r["slot"]),
                                         aname.get(r["ability_id"])))
     stats = collections.defaultdict(dict)
-    for r in table("pokemon_stats.csv"):
+    for r in rows("pokemon_stats.csv"):
         stats[r["pokemon_id"]][r["stat_id"]] = r["base_stat"]
     types = collections.defaultdict(dict)
-    for r in table("pokemon_types.csv"):
+    for r in rows("pokemon_types.csv"):
         types[r["pokemon_id"]][r["slot"]] = r["type_id"]
 
     def shape(pid):

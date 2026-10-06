@@ -54,7 +54,7 @@ public because it carries no personal row.
 | Scheduler | A second **Cloudflare Worker** (JavaScript, Web Crypto) | `cron/src/cron.js` | Starts the nightly GitHub workflow on time; GitHub's own schedule ran hours late |
 | Data pipeline | **Python 3**, standard library only (`urllib`, `json`, `re`, `argparse`, `html`) | `scripts/` | The scripts need no `pip install`; the gate's linter does (`requirements.txt`) |
 | Damage maths | **Smogon's damage-calc** (TypeScript, copied from upstream, bundled with esbuild) | `scripts/build_engine_bundle.py` → `tracker/engine.bundle.js`; `scripts/damage.py` → `scripts/smogon_engine.js` | The page and the terminal run the same engine; nothing ports the formula |
-| Tests | **Node + jsdom** browser tests; **ESLint** with **globals**, **eslint-plugin-sonarjs** and **eslint-plugin-unicorn** for the JavaScript; **typescript** to type-check the app; **stylelint** with **stylelint-config-standard** for the CSS; **html-validate** for the markup; **ruff** and **vulture** for the Python; **knip** for exports, files and packages nothing reaches; **jscpd** for copy-paste in all of them; Python audits | `tests/`, `eslint.config.mjs`, `tsconfig.json`, `stylelint.config.mjs`, `.htmlvalidate.mjs`, `ruff.toml`, `knip.jsonc`, `.jscpd.json`, `scripts/check_app.js`, `scripts/audit_*.py` | Tests run against the *built* page, which is the thing that ships |
+| Tests | **Node + jsdom** browser tests; **ESLint** with **globals**, **eslint-plugin-sonarjs** and **eslint-plugin-unicorn** for the JavaScript; **typescript** to type-check the app; **stylelint** with **stylelint-config-standard** for the CSS; **html-validate** for the markup; **ruff**, **vulture** and **pyright** for the Python; **knip** for exports, files and packages nothing reaches; **jscpd** for copy-paste in all of them; Python audits | `tests/`, `eslint.config.mjs`, `tsconfig.json`, `stylelint.config.mjs`, `.htmlvalidate.mjs`, `ruff.toml`, `knip.jsonc`, `.jscpd.json`, `scripts/check_app.js`, `scripts/audit_*.py` | Tests run against the *built* page, which is the thing that ships |
 | CI/CD | **GitHub Actions**, a GitHub App bot, **Dependabot**, a git `pre-push` hook | `.github/`, `scripts/hooks/pre-push` | Nothing reaches the phone without passing the gate |
 | Fonts / sprites | Google Fonts (IBM Plex), Pokemon sprites from a CDN at a pinned commit | `tracker/index.template.html`, `spriteFor()` in `tracker/src/ui/card.js` | Sprites are Nintendo's images, so the repo ships only their ids |
 | Dev tools | Supabase CLI, `npx wrangler`, `gh`, graphify, VS Code, Claude Code | your machine | Reading the DB, deploying the cron, PRs, the code map. Every one is in §15 |
@@ -324,6 +324,13 @@ runs in four places: the `pre-push` hook, every pull request, every push to
   and every selected rule blocks the push, complexity included (no function
   over 10). Installed with
   `python -m pip install -r requirements.txt`, which pins the version.
+- **pyright** (`pyrightconfig.json`, an npm package pinned like typescript):
+  the Python type check, the same checker as VS Code's Pylance, so the
+  editor shows what blocks a push. Every script is checked in `basic` mode at
+  zero; `strict` (every parameter and return annotated, nothing Unknown) is
+  switched on file by file in the config's `strict` list. JSON read from disk
+  is the data boundary: `dex.load/db/meta` return `Json` (`Any`), the Python
+  twin of `docFromRow`.
 - **vulture** (`python -m vulture scripts`): dead Python code across files -
   a function whose last caller was in another script, which ruff, reading
   one file at a time, counts as used. Pinned in the same `requirements.txt`.
@@ -639,6 +646,7 @@ in `package.json`, `requirements.txt` and the workflows, never typed here.
 | **stylelint** + `stylelint-config-standard` | The CSS | `stylelint.config.mjs` |
 | **html-validate** | The markup | `.htmlvalidate.mjs` |
 | **ruff** | All Python, the same way ESLint does JavaScript | `ruff.toml`, `requirements.txt` |
+| **pyright** | The Python's types, the checker inside Pylance | `pyrightconfig.json`, `package.json` |
 | **vulture** | Python code nothing reaches, across files | `requirements.txt` |
 | **knip** | Exports, files and npm packages nothing reaches | `knip.jsonc` |
 | **jscpd** | Copy-paste, every language at once | `.jscpd.json` |

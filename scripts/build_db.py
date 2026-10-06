@@ -438,7 +438,7 @@ def _block_abilities(blk):
                               if len(a) > 1 and a.lower() != "details"))
 
 
-def _six_stats(chunk):
+def _six_stats(chunk: str) -> dict[str, int] | None:
     """The six numbers of a stats table, as a spread, or None."""
     nums = re.findall(r'<td[^>]*>\s*(\d{1,3})\s*</td>', chunk)[:6]
     if len(nums) != 6:
@@ -448,10 +448,11 @@ def _six_stats(chunk):
 
 def _block_stats(stat_blocks, hstart, hend):
     """The stats table that sits inside this header block, if any."""
-    pos, total, tailblk = next(((pos, total, tail) for pos, total, tail in stat_blocks
-                                if hstart <= pos < hend), (None, None, None))
-    if pos is None:
+    hit = next(((total, tail) for pos, total, tail in stat_blocks
+                if hstart <= pos < hend), None)
+    if hit is None:
         return None
+    total, tailblk = hit
     stats = _six_stats(tailblk)
     if stats:
         stats["total"] = total
@@ -465,7 +466,9 @@ def _stats_heading_blocks(s, label=r"[^<]+"):
     caller keeps the pattern it was written with."""
     for m in re.finditer(r"<h2>Stats - (%s)</h2>(.{0,1200})" % label, s, re.S):
         mb = re.search(r"Base Stats - Total: (\d+)(.{0,900})", m.group(2), re.S)
-        st = _six_stats(mb.group(2)) if mb else None
+        if not mb:
+            continue
+        st = _six_stats(mb.group(2))
         if st:
             st["total"] = int(mb.group(1))
             yield m.group(1), st
@@ -577,7 +580,7 @@ def forms_from_attackdex():
             nums = [int(n) for n in re.findall(r">\s*(\d{1,3})\s*<", m.group(6))][:6]
             if len(nums) != 6:
                 continue
-            stats = dict(zip(dex.STAT_KEYS, nums, strict=True))
+            stats: dict[str, int] = dict(zip(dex.STAT_KEYS, nums, strict=True))
             stats["total"] = sum(nums)
             # Indeedee's female row carries "#0" instead of "#0876". The
             # sprite filename always has the real number, so read it from

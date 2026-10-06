@@ -299,7 +299,7 @@ def main():
     """Fetch the splits page of every Pokemon on the ladder and write
     usage_splits.json.
     """
-    ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    ap = argparse.ArgumentParser(description=(__doc__ or "").split("\n")[0])
     ap.add_argument("--force", action="store_true")
     a = ap.parse_args()
 
@@ -309,8 +309,8 @@ def main():
     out = dict(_stored(a.force))
     n, empty = _fetch_missing(rows, out, a.force)
 
-    regs = sorted({(v.get("tournament") or {}).get("regulation")
-                   for v in out.values()} - {None})
+    regs = sorted({r for v in out.values()
+                   if (r := (v.get("tournament") or {}).get("regulation"))})
     blob = {"source": "pokebase.app per-Pokemon pages",
             "note": ("What each Pokemon's own players run. TWO datasets, kept "
                      "apart because their percentages are not the same "

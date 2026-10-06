@@ -12,6 +12,7 @@
     "webpro.vscode-knip",
     // Languages and config files
     "ms-python.python",
+    "ms-python.vscode-pylance",
     "tamasfe.even-better-toml",
     "redhat.vscode-yaml",
     "bierner.markdown-mermaid",

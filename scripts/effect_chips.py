@@ -108,8 +108,8 @@ AFTER = [
     (r"^\s*(?:%|" + TIMES + r"|x)?\s*(Defense|Defence|Attack|Speed)\b",
      lambda m: m.group(1)),
     (r"^\s*%\s*(confusion|psn|burn|freeze|flinch|paralyze|par|frz)\b",
-     lambda m: {"psn": "poison", "par": "paralysis",
-                "frz": "freeze"}.get(m.group(1), m.group(1)) + " chance"),
+     lambda m: str({"psn": "poison", "par": "paralysis",
+                    "frz": "freeze"}.get(m.group(1), m.group(1))) + " chance"),
     (r"^\s*%\s*dmg dealt", lambda _: "of damage dealt"),
     # Rivalry: "attacks do 1.25x on same gender; 0.75x on opposite"
     (r"^\s*(?:%|" + TIMES + r"|x)\s*on\b", lambda _: "damage"),
@@ -313,7 +313,7 @@ def main():
     """Print what every chip reads as; --audit only the numbers whose subject
     is not in the tables yet.
     """
-    ap = argparse.ArgumentParser(description=__doc__.split("\n")[0])
+    ap = argparse.ArgumentParser(description=(__doc__ or "").split("\n")[0])
     ap.add_argument("--audit", action="store_true",
                     help="only the numbers whose subject is not in the tables")
     a = ap.parse_args()
