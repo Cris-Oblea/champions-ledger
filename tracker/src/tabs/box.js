@@ -24,8 +24,11 @@ import { drawGtsWanted } from "./trading.js";
 
 /* ===================================================================== rows */
 /* The row's left stripe, by origin, for a permanent Champions-box Pokemon. */
+/** @type {Record<string, string>} */
 const ORIGIN_CLASS = {home: "perm", champions: "locked"};
-/* What the sheet says about a slot, by where the Pokemon came from. */
+/** What the sheet says about a slot, by where the Pokemon came from.
+   @param {Origin} o
+   @param {ListedBox} rec */
 function originNote(o, rec){
   if (o === "home")
     return "<strong>This slot is elastic.</strong> Park it to HOME whenever you " +
@@ -44,11 +47,13 @@ function originNote(o, rec){
   return "<strong>Not recorded yet.</strong> It is being counted as Champions " +
     "origin, which is the cautious read rather than a known fact.";
 }
-/* the end of the "released" toast: what happened to its builds */
+/** the end of the "released" toast: what happened to its builds
+   @param {number} n */
 function keptAs(n){
   return (n > 1 ? "its builds are" : "its build is") + " kept as an idea";
 }
-/* One box row as a card, opening that copy's sheet. */
+/** One box row as a card, opening that copy's sheet.
+   @param {ListedBox} rec */
 function pokeRow(rec){
   const p = byName[rec.name];
   /* WHAT TO DRAW vs WHAT IT CAN DO. `p` stays the Champions dex row and every
@@ -99,10 +104,11 @@ function pokeRow(rec){
   });
 }
 
-/* ONE COPY'S SHEET: the same sheet the search view draws (ui/pokemon.js),
+/** ONE COPY'S SHEET: the same sheet the search view draws (ui/pokemon.js),
    with this copy's own facts wedged into the middle - where it came from,
    shiny, trained, its note - and the buttons that move it. `anyRow`, so a
-   species Champions lacks still draws its main-series row. */
+   species Champions lacks still draws its main-series row.
+   @param {ListedBox} rec */
 function pokeSheet(rec){
   const show = anyRow(rec.name);
   const isHome = rec.location === "home";
@@ -124,9 +130,10 @@ function pokeSheet(rec){
   }, moveButtons(rec, isHome));
 }
 
-/* A ROW THAT EXISTS NOWHERE MUST NOT TAKE THE SHEET DOWN WITH IT. HOME can
+/** A ROW THAT EXISTS NOWHERE MUST NOT TAKE THE SHEET DOWN WITH IT. HOME can
    hold anything, including a misspelt name no table has heard of, and the
-   honest answer is to say so - and that renaming fixes it. */
+   honest answer is to say so - and that renaming fixes it.
+   @param {ListedBox} rec */
 function unknownNote(rec){
   const gone = el("div", "note warn");
   gone.innerHTML = "<strong>" + rec.name + "</strong> is not in any dex " +
@@ -136,8 +143,10 @@ function unknownNote(rec){
   return gone;
 }
 
-/* A rental says what renting means. A Champions-box Pokemon asks where it
-   came from - HOME or an Encounter - and says what that makes its slot. */
+/** A rental says what renting means. A Champions-box Pokemon asks where it
+   came from - HOME or an Encounter - and says what that makes its slot.
+   @param {HTMLElement} body
+   @param {ListedBox} rec */
 function originBlock(body, rec){
   if (rec.status === "rental") {
     const w = el("div", "note warn mt12");
@@ -153,16 +162,21 @@ function originBlock(body, rec){
   body.appendChild(el("h2", null, "Where did it come from?"));
   const o = originOf(rec);
   const togs = el("div", "toggles");
-  [["home", "HOME origin", "Caught in GO, or traded in. Can go back out."],
-   ["champions", "Champions origin", "From an Encounter. Stuck here."]
-  ].forEach(function(opt){ togs.appendChild(originButton(rec, o, opt)); });
+  /** @type {[Origin, string, string][]} */
+  const origins = [
+    ["home", "HOME origin", "Caught in GO, or traded in. Can go back out."],
+    ["champions", "Champions origin", "From an Encounter. Stuck here."]];
+  origins.forEach(function(opt){ togs.appendChild(originButton(rec, o, opt)); });
   body.appendChild(togs);
   const on = el("div", o === "unknown" ? "note warn mt10" : "note mt10");
   on.innerHTML = originNote(o, rec);
   body.appendChild(on);
 }
 
-/* One origin choice: saving it writes the row and closes the sheet. */
+/** One origin choice: saving it writes the row and closes the sheet.
+   @param {ListedBox} rec
+   @param {Origin} o
+   @param {[Origin, string, string]} opt */
 function originButton(rec, o, opt){
   const t = el("button", "tog", opt[1]);
   setPressed(t, o === opt[0]);
@@ -177,7 +191,9 @@ function originButton(rec, o, opt){
   return t;
 }
 
-/* Shiny and trained, toggled here and written by Save below. */
+/** Shiny and trained, toggled here and written by Save below.
+   @param {HTMLElement} body
+   @param {ListedBox} rec */
 function copyFlags(body, rec){
   body.appendChild(el("h2", null, "This copy"));
   const flags = el("div", "toggles");
@@ -193,7 +209,10 @@ function copyFlags(body, rec){
     "Tap Save below to keep these."));
 }
 
-/* A toggle that flips rec[key] in memory; saveCopy() writes it. */
+/** A toggle that flips rec[key] in memory; saveCopy() writes it.
+   @param {ListedBox} rec
+   @param {"shiny" | "trained"} key
+   @param {string} label */
 function flagButton(rec, key, label){
   const b = el("button", "tog", label);
   setPressed(b, rec[key]);
@@ -204,42 +223,51 @@ function flagButton(rec, key, label){
   return b;
 }
 
-/* Write the row back whole - the note from the sheet, the marks, and any
+/** Write the row back whole - the note from the sheet, the marks, and any
    change passed in `extra`. The HOME invariant is held here as well as by the
    database CHECK: a record that lives in HOME is permanent and HOME origin
    whatever the row used to say, which also makes re-saving a bad legacy row
-   the repair for it. */
+   the repair for it.
+   @param {ListedBox} rec
+   @param {Partial<BoxRow>} [extra] */
 function saveCopy(rec, extra){
   const n = field("pkNote");
+  /** @type {Partial<BoxRow>} */
   const body = {name:rec.name, location:rec.location, status:rec.status,
               note:n ? n.value : (rec.note || ""), order:rec.order || 0,
               origin:rec.origin || "unknown",
               shiny:!!rec.shiny, trained:!!rec.trained};
-  Object.keys(extra || {}).forEach(function(k){ body[k] = extra[k]; });
+  Object.assign(body, extra);
   if (body.location === "home") { body.status = "permanent"; body.origin = "home"; }
   return put("box/" + rec._id, body);
 }
 
-/* The sheet's buttons: where this copy can go from here, then Release where
-   the game allows it. */
+/** The sheet's buttons: where this copy can go from here, then Release where
+   the game allows it.
+   @param {ListedBox} rec
+   @param {boolean} isHome */
 function moveButtons(rec, isHome){
   const out = stayButtons(rec, isHome);
   if (!releaseBlock(rec)) out.push(releaseButton(rec, isHome));
   return out;
 }
 
-/* Save: write the sheet's edits back and close. */
+/** Save: write the sheet's edits back and close.
+   @param {ListedBox} rec
+   @param {string} cls */
 function saveButton(rec, cls){
   return fbtn("Save", cls, function(){
     saveCopy(rec).then(function(){ closeSheet(); toast("Saved"); });
   });
 }
 
-/* In HOME: Save, and Send to Champions for a species the game has - arriving
+/** In HOME: Save, and Send to Champions for a species the game has - arriving
    from HOME is what makes it HOME origin, never a guess. A rental: Buy, NOT
    primary, because buying welds it into the box for good, and keeping VP to
    roll Encounters is usually the better use. HOME origin in the box: Park
-   back to HOME first. Anything else: Save. */
+   back to HOME first. Anything else: Save.
+   @param {ListedBox} rec
+   @param {boolean} isHome */
 function stayButtons(rec, isHome){
   if (isHome) {
     const out = [saveButton(rec, "primary")];
@@ -270,10 +298,11 @@ function stayButtons(rec, isHome){
   return [saveButton(rec, "primary")];
 }
 
-/* Buying a rental, after asking. The 2500 VP is not deducted from any
+/** Buying a rental, after asking. The 2500 VP is not deducted from any
    stored balance: VP is not tracked at all, since ranked wins would have to
    be recorded too and a balance that only goes down drifts from the first
-   battle. */
+   battle.
+   @param {ListedBox} rec */
 function buyButton(rec){
   return fbtn("Buy it · 2500 VP", "", function(){
     ask("Buy " + rec.name + " for 2500 VP?",
@@ -287,10 +316,12 @@ function buyButton(rec){
   });
 }
 
-/* RELEASE ENDS A POKEMON, AND UNBINDS ITS BUILDS rather than deleting them: a
+/** RELEASE ENDS A POKEMON, AND UNBINDS ITS BUILDS rather than deleting them: a
    build with no Pokemon is a first-class state - an idea - and an idea
    should not be lost for want of a row to hang it on. Only offered where the
-   game allows it - see releaseBlock. */
+   game allows it - see releaseBlock.
+   @param {ListedBox} rec
+   @param {boolean} isHome */
 function releaseButton(rec, isHome){
   return fbtn("Release", "danger", function(){
     const mine = buildsOn(rec._id);
@@ -308,8 +339,10 @@ function releaseButton(rec, isHome){
   });
 }
 
-/* Delete the row FIRST, then unbind its builds: a failed delete leaves both
-   untouched, never builds pointing nowhere with the Pokemon still there. */
+/** Delete the row FIRST, then unbind its builds: a failed delete leaves both
+   untouched, never builds pointing nowhere with the Pokemon still there.
+   @param {ListedBox} rec
+   @param {string[]} mine */
 function releaseCopy(rec, mine){
   drop("box/" + rec._id).then(function(){
     return Promise.all(mine.map(function(k){
@@ -330,6 +363,7 @@ function releaseCopy(rec, mine){
    what decides whether the slot is elastic. The HOME Box can hold anything,
    so it also offers every species Champions has never heard of, and takes a
    typed name on top, because no list here is guaranteed to be complete. */
+/** @param {BoxLocation} loc */
 function addSheet(loc){
   openSheet(loc === "home" ? "Add to the HOME Box" : "Add to the Champions Box", function(body){
     const marks = {shiny:false, trained:false};
@@ -349,10 +383,13 @@ function addSheet(loc){
   }, []);
 }
 
-/* Shiny and trained, set before the Pokemon is picked. */
+/** Shiny and trained, set before the Pokemon is picked.
+   @param {{shiny: boolean, trained: boolean}} marks */
 function markToggles(marks){
   const mrow = el("div", "toggles mb12");
-  [["shiny", "Shiny"], ["trained", "Trained in Champions"]].forEach(function(o){
+  /** @type {["shiny" | "trained", string][]} */
+  const marksOf = [["shiny", "Shiny"], ["trained", "Trained in Champions"]];
+  marksOf.forEach(function(o){
     const t = el("button", "tog", o[1]);
     setPressed(t, false);
     t.onclick = function(){
@@ -364,9 +401,11 @@ function markToggles(marks){
   return mrow;
 }
 
-/* The Champions Box's required question, and why: everything added here came
+/** The Champions Box's required question, and why: everything added here came
    out of an Encounter, so it is Champions origin. Bringing one IN from HOME is
-   a move, not an entry - Send to Champions, from the HOME Box. */
+   a move, not an entry - Send to Champions, from the HOME Box.
+   @param {HTMLElement} body
+   @param {() => void} draw */
 function boughtOrRental(body, draw){
   body.appendChild(el("div", "note")).innerHTML =
     "<strong>Everything added here came out of an Encounter</strong>, so " +
@@ -376,6 +415,7 @@ function boughtOrRental(body, draw){
     "instead of being written twice.";
   body.appendChild(el("label", "f", "Which one is it? (required)"));
   const st = el("div", "btnrow mb12");
+  /** @type {{v: string | null}} */
   const mode = {v:null};
   [["champions","Bought · 2500 VP or a ticket"],
    ["rental","Rental · 0 VP"]].forEach(function(o){
@@ -392,8 +432,12 @@ function boughtOrRental(body, draw){
   return mode;
 }
 
-/* The list to add from. The Champions Box waits for bought-or-rental, with
-   the search box off until it is answered. */
+/** The list to add from. The Champions Box waits for bought-or-rental, with
+   the search box off until it is answered.
+   @param {HTMLElement} list
+   @param {import("../core/dom.js").SearchInput} inp
+   @param {BoxLocation} loc
+   @param {SheetBody} body */
 function drawAddList(list, inp, loc, body){
   const q = inp.q();
   list.innerHTML = "";
@@ -413,7 +457,10 @@ function drawAddList(list, inp, loc, body){
     return !q || p.name.toLowerCase().includes(q);
   });
   const hits = pool.slice(0, 120);
-  let homeAll = null, extra = [];
+  /** @type {string[] | null} */
+  let homeAll = null;
+  /** @type {string[]} */
+  let extra = [];
   if (loc === "home") {
     homeAll = (C.HOME_ONLY || []).filter(function(n){
       return q && n.toLowerCase().includes(q);
@@ -432,7 +479,8 @@ function drawAddList(list, inp, loc, body){
     capNote(list, extra.length, homeAll.length, "HOME-only names");
 }
 
-/* A species Champions does not have, added to HOME from its card. */
+/** A species Champions does not have, added to HOME from its card.
+   @param {string} n */
 function homeOnlyAdd(n){
   const add = function(){
     const id = freeSlug(n, S.box);
@@ -443,7 +491,8 @@ function homeOnlyAdd(n){
   return outsideCard(n, add);
 }
 
-/* A name no list carries, added to HOME exactly as typed. */
+/** A name no list carries, added to HOME exactly as typed.
+   @param {string} nm */
 function typedAdd(nm){
   const add = el("button", "btn primary mt10", "Add “" + nm + "” anyway");
   add.onclick = function(){
@@ -455,12 +504,15 @@ function typedAdd(nm){
   return add;
 }
 
-/* ONE CARD, THE SAME ONE: choosing what to add is exactly the moment the six
+/** ONE CARD, THE SAME ONE: choosing what to add is exactly the moment the six
    stats and the Mega line matter. Picking it writes the row. HOME never asks
    bought-or-rental, so it never reads an answer:
    everything in HOME is permanent and HOME origin by definition. Every route
    into the Champions Box through this sheet is an Encounter - buying a rental
-   does not change that - so it is Champions origin. */
+   does not change that - so it is Champions origin.
+   @param {DexRow} p
+   @param {BoxLocation} loc
+   @param {SheetBody} body */
 function addCard(p, loc, body){
   return pokeCard(p, {onclick: function(){
     const mode = loc === "home" ? "home" : body._mode?.v;
@@ -469,7 +521,7 @@ function addCard(p, loc, body){
                ? "rental" : "permanent";
     const origin = loc === "home" ? "home" : "champions";
     const id = freeSlug(p.name, S.box);
-    const mk = body._marks || {};
+    const mk = body._marks || {shiny:false, trained:false};
     put("box/" + id, {name:p.name, location:loc, status:status,
                       origin:origin, note:"",
                       shiny:!!mk.shiny, trained:!!mk.trained,
@@ -519,7 +571,9 @@ function drawBoxes(){
                copies: perm.concat(rent)});
 }
 
-/* "box 44/50", amber within three of full and red at full. */
+/** "box 44/50", amber within three of full and red at full.
+   @param {number} used
+   @param {number} cap */
 function boxCounter(used, cap){
   const bc = $("boxCount");
   bc.textContent = "box " + used + "/" + cap;
@@ -528,20 +582,29 @@ function boxCounter(used, cap){
   else if (used >= cap - 3) bc.className += " tight";
 }
 
-/* One section of the Champions box, filtered. Returns how many it shows. */
+/** One section of the Champions box, filtered. Returns how many it shows.
+   @param {HTMLElement} node
+   @param {ListedBox[]} rows
+   @param {string} bq
+   @param {string} empty */
 function boxSection(node, rows, bq, empty){
   const hits = rows.filter(function(r){ return rowMatches(r, bq); });
   fill(node, hits, bq ? "Nothing here matches that" : empty);
   return hits.length;
 }
 
-/* "3 of 18" while a filter is on, because a bare 3 under a heading reads as
-   the section having shrunk rather than as the filter working. */
+/** "3 of 18" while a filter is on, because a bare 3 under a heading reads as
+   the section having shrunk rather than as the filter working.
+   @param {string} id
+   @param {string} bq
+   @param {number} shown
+   @param {number} total */
 function sectionCount(id, bq, shown, total){
-  $(id).textContent = bq && shown !== total ? shown + " of " + total : total;
+  $(id).textContent = bq && shown !== total ? shown + " of " + total : String(total);
 }
 
-/* The HOME box: twelve rows until he asks for the rest. */
+/** The HOME box: twelve rows until he asks for the rest.
+   @param {ListedBox[]} home */
 function drawHomeList(home){
   const hq = (field("homeFilter")?.value || "").trim().toLowerCase();
   const homeShown = sortRows(home).filter(function(r){ return rowMatches(r, hq); });
@@ -559,13 +622,14 @@ function drawHomeList(home){
   }
 }
 
-/* What matters for managing the box, in order: how many slots are elastic
+/** What matters for managing the box, in order: how many slots are elastic
    (the ones that can be freed without destroying anything), how full it is,
    any row without a recorded origin (a row with nowhere to appear is a row
    silently lost), and a species held twice where one copy can actually go.
    HOME-origin copies may stay duplicated for good, and a Champions-origin
    one at the release floor cannot leave, so neither is
-   called trade material. */
+   called trade material.
+   @param {{used: number, cap: number, oHome: ListedBox[], oUnk: ListedBox[], copies: ListedBox[]}} b */
 function boxWarnings(b){
   const warn = $("boxWarn");
   warn.innerHTML = "";
@@ -597,9 +661,11 @@ function boxWarnings(b){
   }
 }
 
-/* Species held more than once in the Champions box where at least one copy
-   can be released. */
+/** Species held more than once in the Champions box where at least one copy
+   can be released.
+   @param {ListedBox[]} copies */
 function releasableRepeats(copies){
+  /** @type {Record<string, ListedBox[]>} */
   const dupes = {};
   copies.forEach(function(r){
     const sp = byName[r.name]?.species || r.name;
@@ -626,9 +692,13 @@ function releasableRepeats(copies){
 
    Returns {missing (sorted), have, total}. */
 function dexChecklist(){
-  const inHome = {}, inChamp = {};
+  /** @type {Record<string, boolean>} */
+  const inHome = {};
+  /** @type {Record<string, string>} */
+  const inChamp = {};
   boxRows("home").forEach(function(r){ inHome[r.name] = true; });
   boxRows("champions").forEach(function(r){ inChamp[r.name] = r.status; });
+  /** @type {DexRow[]} */
   const missing = [];
   let have = 0;
   FORMS.forEach(function(p){
@@ -644,8 +714,10 @@ function dexChecklist(){
   });
   return {missing:missing, have:have, total:FORMS.length};
 }
-/* One entry. The same card every other list draws, plus the two things this
-   list is for: how hard it is to get, and what getting it would buy. */
+/** One entry. The same card every other list draws, plus the two things this
+   list is for: how hard it is to get, and what getting it would buy.
+   @param {DexRow} p
+   @param {string} why */
 function dexCard(p, why){
   return pokeCard(p, {
     dex: VIEW.sort === "dex",
@@ -717,14 +789,20 @@ function drawDexPane(){
    not cover a plain Ninetales. Same-species-different-form pairs are real but
    are NOT interchangeable, so they get a footnote instead of a row. */
 function dupeReport(){
-  const homeNames = {}, homeSpecies = {};
+  /** @type {Record<string, number>} */
+  const homeNames = {};
+  /** @type {Record<string, string[]>} */
+  const homeSpecies = {};
   boxRows("home").forEach(function(r){
     homeNames[r.name] = (homeNames[r.name] || 0) + 1;
     const sp = byName[r.name]?.species || r.name;
     homeSpecies[sp] ||= [];
     homeSpecies[sp].push(r.name);
   });
-  const hits = [], formOnly = [];
+  /** @type {ListedBox[]} */
+  const hits = [];
+  /** @type {{name: string, others: string[]}[]} */
+  const formOnly = [];
   boxRows("champions").forEach(function(r){
     if (releaseBlock(r)) return;
     if (homeNames[r.name]) { hits.push(r); return; }
@@ -734,6 +812,7 @@ function dupeReport(){
         return n !== r.name; })});
     }
   });
+  /** @type {{champions: ListedBox[], rental: ListedBox[]}} */
   const by = {champions:[], rental:[]};
   hits.forEach(function(r){
     by[r.status === "rental" ? "rental" : "champions"].push(r);
@@ -791,7 +870,10 @@ function drawDupeHome(){
   }
 }
 
-/* Replace a list's rows with box cards, or one empty-state line. */
+/** Replace a list's rows with box cards, or one empty-state line.
+   @param {HTMLElement} node
+   @param {ListedBox[]} rows
+   @param {string} emptyMsg */
 function fill(node, rows, emptyMsg){
   node.innerHTML = "";
   if (!rows.length) { node.appendChild(el("div", "empty", emptyMsg)); return; }

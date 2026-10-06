@@ -13,7 +13,7 @@ import { findDetail } from "../ui/pokemon.js";
 /** @typedef {ReturnType<typeof gtsRecord>} GtsRecord */
 /** One spare species: a chip, how many copies of it are spare, and what it
     could ask for (the asks that free a slot, the ones that turn on a stone).
-    @typedef {{rec: BoxRow, n: number, asks: Ask[], frees: Ask[], stones: Ask[]}} Idea */
+    @typedef {{rec: ListedBox, n: number, asks: Ask[], frees: Ask[], stones: Ask[]}} Idea */
 
 /** The closed-trade record behind the suggestions, as one sentence.
    @param {GtsRecord} rec */
@@ -52,7 +52,7 @@ const EMPTY_WANT = {
    NOTHING HERE SAYS "EASY IN GO": the `supply` estimate is mostly its
    default value, too weak to recommend on. His own closed trades, which are
    measured, are what this screen quotes instead. */
-/** @returns {BoxRow[]} */
+/** @returns {ListedBox[]} */
 function gtsChips(){
   /** @type {Record<string, number>} */
   const taken = {};
@@ -158,7 +158,7 @@ function filteredChips(wq){
    card of its own. THE ASKS ARE PLAYABLE ONLY (gtsSuggest walks the
    Champions dex): a trade that brings back something Champions cannot play
    has bought a HOME row and nothing else.
-   @param {BoxRow[]} chips */
+   @param {ListedBox[]} chips */
 function tradeIdeas(chips){
   /** @type {Record<string, Idea>} */
   const group = {};

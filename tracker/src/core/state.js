@@ -29,8 +29,9 @@ function rowMatches(r, q){
 }
 /** A copy of the rows in the order VIEW.sort asks for: A-Z, or dex order
    (the order HOME itself shows).
-   @param {BoxRow[]} rows
-   @returns {BoxRow[]} */
+   @template {BoxRow} T
+   @param {T[]} rows
+   @returns {T[]} */
 function sortRows(rows){
   const r = rows.slice();
   if (VIEW.sort === "az") {
@@ -56,10 +57,10 @@ const S = {box:{}, builds:{}, teams:{}, stones:{}, items:{}, gts:{},
    `_id`, since the record itself does not carry it.
    @param {BoxLocation} loc
    @param {BoxRow["status"]} [st]
-   @returns {BoxRow[]} */
+   @returns {ListedBox[]} */
 function boxRows(loc, st){
   return Object.keys(S.box).map(function(k){
-    const v = S.box[k]; v._id = k; return v;
+    const v = S.box[k]; v._id = k; return /** @type {ListedBox} */ (v);
   }).filter(function(v){
     return v.location === loc && (!st || v.status === st);
   }).sort(function(a,b){
@@ -123,7 +124,7 @@ function releaseBlock(r){
    for Farigiraf has the id `farigiraf`, and a fallback would silently marry
    it to a box row of the same name. */
 /** @param {string | undefined} id
-    @returns {{state: "active" | "parked" | "orphan" | "unbound", row?: BoxRow}} */
+    @returns {{state: "active" | "parked" | "orphan" | "unbound", row?: ListedBox}} */
 function buildLink(id){
   const b = id ? S.builds[id] : null;
   const boxId = b?.box_id;
@@ -131,7 +132,7 @@ function buildLink(id){
   const row = S.box[boxId];
   if (!row) return {state:"orphan"};
   row._id = boxId;
-  return {row:row, state:row.location === "champions" ? "active" : "parked"};
+  return {row:/** @type {ListedBox} */ (row), state:row.location === "champions" ? "active" : "parked"};
 }
 /** Every build written for this species, so the team builder and the sheet can
    offer the choice between them. A plain comparison is correct: both sides are
@@ -146,7 +147,7 @@ function buildsFor(name){
 /** The builds installed on one box row, found by their link (box_id), never
    by their own id. `exceptId` leaves out the build being edited.
    @param {string} boxId
-   @param {string} [exceptId] */
+   @param {string | null} [exceptId] */
 function buildsOn(boxId, exceptId){
   return Object.keys(S.builds).filter(function(k){
     return k !== exceptId && S.builds[k].box_id === boxId;
