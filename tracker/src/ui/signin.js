@@ -1,5 +1,5 @@
 /* The sign-in gate, the connection to Supabase, and the signed-in button. */
-import { $, el } from "../core/dom.js";
+import { $, el, field } from "../core/dom.js";
 import { dbState, openLedger } from "../core/store.js";
 import { ask } from "./nav.js";
 
@@ -19,7 +19,7 @@ let SB = null;
    on sign-out so no ledger stays on screen. */
 function connectSupabase(cfg){
   SB = window.supabase.createClient(cfg.url, cfg.key);
-  $("gateEmail").value = cfg.email || "";
+  field("gateEmail").value = cfg.email || "";
   $("gateFoot").textContent =
     "Nothing is stored in this page - your box lives in the database, and "
     + "only this password reaches it.";
@@ -37,7 +37,7 @@ function showGate(msg){
   $("gate").hidden = false;
   if (msg) { $("gateErr").textContent = msg; $("gateErr").hidden = false; }
   setTimeout(function(){
-    ($("gateEmail").value ? $("gatePass") : $("gateEmail")).focus();
+    (field("gateEmail").value ? field("gatePass") : field("gateEmail")).focus();
   }, 80);
 }
 /* Signed in: hide the gate and open the ledger as this user. */
@@ -68,11 +68,11 @@ if ($("gateForm")) {
   $("gateForm").onsubmit = function(e){
     e.preventDefault();
     if (!SB) return;
-    const btn = $("gateBtn");
+    const btn = field("gateBtn");
     btn.disabled = true; btn.textContent = "Signing in…";
     $("gateErr").hidden = true;
     SB.auth.signInWithPassword({
-      email: $("gateEmail").value.trim(), password: $("gatePass").value
+      email: field("gateEmail").value.trim(), password: field("gatePass").value
     }).then(function(r){
       btn.disabled = false; btn.textContent = "Sign in";
       if (r.error) {
@@ -80,10 +80,10 @@ if ($("gateForm")) {
           ? "That email and password do not match an account."
           : r.error.message;
         $("gateErr").hidden = false;
-        $("gatePass").select();
+        field("gatePass").select();
         return;
       }
-      $("gatePass").value = "";
+      field("gatePass").value = "";
       start(r.data.session);
     }, function(){
       btn.disabled = false; btn.textContent = "Sign in";

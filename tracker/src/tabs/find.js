@@ -4,7 +4,7 @@
 import {
   bst, byText, C, DEX, dexNo, learnset, MOVES, STAT_KEYS, STAT_LABEL,
 } from "../core/data.js";
-import { $, el, fbtn, searchField, pressOnly, setPressed } from "../core/dom.js";
+import { $, el, fbtn, field, pressOnly, searchField, setPressed } from "../core/dom.js";
 import { boxRows, FIND, originOf, ownedNames } from "../core/state.js";
 import { megaLine, numText, pokeCard, typeSkin } from "../ui/card.js";
 import { moveFilters, moveRowFor } from "../ui/moves.js";
@@ -295,7 +295,7 @@ function findInit(){
   /* Typed, not tapped: this one narrows as you go rather than adding a chip,
      because it is the control for "open Garchomp" and not for building a
      query. It still lives beside the chips, so clearing it is one gesture. */
-  const nameBox = $("findName");
+  const nameBox = field("findName");
   if (nameBox) {
     nameBox.value = FIND.q || "";
     nameBox.oninput = function(){ FIND.q = nameBox.value; findRun(); };
@@ -332,7 +332,7 @@ function wireFindMode(){
 
 /* Every filter off, the sort back to BST highest first. */
 function clearFind(){
-  FIND.q = ""; if ($("findName")) $("findName").value = "";
+  FIND.q = ""; if (field("findName")) field("findName").value = "";
   FIND.moves = []; FIND.types = []; FIND.notTypes = []; FIND.typeMode = "and";
   FIND.ability = "";
   FIND.inChamp = false; FIND.inHome = false;

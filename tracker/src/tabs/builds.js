@@ -7,7 +7,7 @@ import {
   statAt,
 } from "../core/data.js";
 import {
-  $, capNote, el, fbtn, searchField, pressOnly, setPressed, toast,
+  $, capNote, el, fbtn, field, pressOnly, searchField, setPressed, toast,
 } from "../core/dom.js";
 import {
   activeAbility, boxRows, buildLink, buildsOn, megaAbility, ORIGIN_LABEL,
@@ -1022,7 +1022,7 @@ function movePicker(draft, idx, ls, done){
 
 /* The Builds list, filtered by the search box (species, role or a move). */
 function drawBuilds(){
-  const q = ($("buildSearch").value || "").trim().toLowerCase();
+  const q = (field("buildSearch").value || "").trim().toLowerCase();
   const node = $("listBuilds");
   node.innerHTML = "";
   const ids = Object.keys(S.builds).sort(function(a, b){

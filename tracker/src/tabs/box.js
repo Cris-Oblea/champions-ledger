@@ -7,7 +7,8 @@ import {
   anyRow, byName, C, dexLabel, FORMS, freeSlug, outsideRow,
 } from "../core/data.js";
 import {
-  $, capNote, el, fbtn, note, searchField, pressOnly, setPressed, toast,
+  $, capNote, el, fbtn, field, note, pressOnly, searchField, setPressed,
+  toast,
 } from "../core/dom.js";
 import {
   boxRows, buildsOn, capacity, originOf, originRows, RELEASE_FLOOR,
@@ -209,7 +210,7 @@ function flagButton(rec, key, label){
    whatever the row used to say, which also makes re-saving a bad legacy row
    the repair for it. */
 function saveCopy(rec, extra){
-  const n = $("pkNote");
+  const n = field("pkNote");
   const body = {name:rec.name, location:rec.location, status:rec.status,
               note:n ? n.value : (rec.note || ""), order:rec.order || 0,
               origin:rec.origin || "unknown",
@@ -499,7 +500,7 @@ function drawBoxes(){
   /* ONE FILTER, THREE SECTIONS. Which origin a Pokemon has is not part of
      "where is my Chesnaught", so the box's filter runs across all three and
      each heading says how much of itself is showing. */
-  const bq = ($("boxFilter")?.value || "").trim().toLowerCase();
+  const bq = (field("boxFilter")?.value || "").trim().toLowerCase();
   const nHO = boxSection($("listHomeOrigin"), sortRows(oHome), bq,
                        "Nothing routed in from HOME yet");
   const nCO = boxSection($("listChampOrigin"), sortRows(oChamp.concat(oUnk)), bq,
@@ -514,7 +515,7 @@ function drawBoxes(){
   sectionCount("nHomeOrigin", bq, nHO, oHome.length);
   sectionCount("nChampOrigin", bq, nCO, oChamp.length + oUnk.length);
   sectionCount("nRent", bq, nRe, rent.length);
-  $("nHome").textContent = home.length;
+  $("nHome").textContent = String(home.length);
   boxWarnings({used: used, cap: cap, oHome: oHome, oUnk: oUnk,
                copies: perm.concat(rent)});
 }
@@ -543,7 +544,7 @@ function sectionCount(id, bq, shown, total){
 
 /* The HOME box: twelve rows until he asks for the rest. */
 function drawHomeList(home){
-  const hq = ($("homeFilter")?.value || "").trim().toLowerCase();
+  const hq = (field("homeFilter")?.value || "").trim().toLowerCase();
   const homeShown = sortRows(home).filter(function(r){ return rowMatches(r, hq); });
   const homeCap = VIEW.homeAll ? homeShown.length : 12;
   fill($("listHome"), homeShown.slice(0, homeCap),
@@ -663,7 +664,7 @@ const DEX_CAP = 12, dexAll = {missing:false};
 /* HOME's "Dex" pane: the progress line and the missing list. */
 function drawDexPane(){
   const c = dexChecklist();
-  const q = ($("dexFilter")?.value || "").trim().toLowerCase();
+  const q = (field("dexFilter")?.value || "").trim().toLowerCase();
   const miss = c.missing.filter(function(p){
     return !q || p.name.toLowerCase().includes(q) ||
            String(dexLabel(p.name)).toLowerCase().includes(q) ||
@@ -675,7 +676,7 @@ function drawDexPane(){
     "</strong> species are yours somewhere — in the Champions box, in " +
     "HOME, or both. " + (c.total - c.have) + " to go."));
 
-  $("nDexMissing").textContent = c.missing.length;
+  $("nDexMissing").textContent = String(c.missing.length);
   $("dexMissingSub").textContent = "One copy per species is the target here. "
     + "Extra copies are a later question, so nothing on this page asks for a "
     + "second of anything. Easiest to get first. The ones you own in Champions "
@@ -746,7 +747,7 @@ function drawDupeHome(){
   const d = dupeReport();
   if (!d.hits.length && !d.formOnly.length) { blk.hidden = true; return; }
   blk.hidden = false;
-  $("nDupeHome").textContent = d.hits.length;
+  $("nDupeHome").textContent = String(d.hits.length);
 
   const rent = d.by.rental.length, lock = d.by.champions.length;
   $("dupeSub").textContent = d.hits.length

@@ -5,7 +5,7 @@
    writes to the stones and items tables. Which item a Pokemon HOLDS is a
    team decision (the Item Clause), set on a team slot in tabs/teams.js. */
 import { byName, C } from "../core/data.js";
-import { $, el, toast } from "../core/dom.js";
+import { $, el, field, toast } from "../core/dom.js";
 import {
   hasStone, ownedItems, ownedNames, ownedStones,
 } from "../core/state.js";
@@ -16,7 +16,7 @@ import { effectLine, numText, pokeFacts } from "../ui/card.js";
 /* The stones pane: owned and not owned, each row the Mega it creates, and a
    note naming any owned stone whose species is not in the box. */
 function drawStones(){
-  const q = ($("stoneSearch").value || "").trim().toLowerCase();
+  const q = (field("stoneSearch").value || "").trim().toLowerCase();
   const own = ownedNames();
   const o = $("listStonesOwned"), n = $("listStonesNot");
   o.innerHTML = ""; n.innerHTML = "";
@@ -55,8 +55,8 @@ function drawStones(){
     row.onclick = function(){ toggleStone(stone); };
     if (have) { o.appendChild(row); co++; } else { n.appendChild(row); cn++; }
   });
-  $("nStones").textContent = co;
-  $("nStonesNot").textContent = cn;
+  $("nStones").textContent = String(co);
+  $("nStonesNot").textContent = String(cn);
   if (!co) o.appendChild(el("div", "empty", "No stones owned"));
   const dead = ownedStones().filter(function(s){
     const row = C.STONES.find(function(r){ return r[0] === s; });
@@ -93,7 +93,7 @@ function drawItems(){
      after a row (a button inside the container) is tapped. */
   const pane = $("itemCats");
   pane.innerHTML = "";
-  const q = ($("itemSearch")?.value || "").trim().toLowerCase();
+  const q = (field("itemSearch")?.value || "").trim().toLowerCase();
   const own = ownedItems();
   let nOwn = 0, nTot = 0;
 
@@ -275,13 +275,13 @@ function setItem(name, own){
    every redraw of a screen whose whole point is the number at the top. */
 function wireStatusFold(){
   const sf = $("statusFold"), sb = $("statusBody");
-  if (!sf || !sb || sf._wired) return;
-  sf._wired = 1;
+  if (!sf || !sb || sf.dataset.wired) return;
+  sf.dataset.wired = "1";
   sf.onclick = function(){
     const open = sb.hidden;
     sb.hidden = !open;
     sf.setAttribute("aria-expanded", open ? "true" : "false");
-    if (open && !sb._drawn) { sb._drawn = 1; drawStatuses(); }
+    if (open && !sb.dataset.drawn) { sb.dataset.drawn = "1"; drawStatuses(); }
   };
 }
 

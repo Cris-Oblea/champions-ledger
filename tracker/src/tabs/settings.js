@@ -1,7 +1,7 @@
 /* The Settings tab: the box capacity, the counts and the data's vintage,
    the VP prices, the export buttons, and the diagnostics. */
 import { anyRow, bst, byText, C, COSTS, spTotal } from "../core/data.js";
-import { $, el, fbtn, toast } from "../core/dom.js";
+import { $, $$, el, fbtn, field, toast } from "../core/dom.js";
 import { BOOT_ERRORS } from "../core/errors.js";
 import {
   baseAbility, boxRows, capacity, ownedStones, S, VIEW,
@@ -17,7 +17,7 @@ import { engineReady } from "./damage.js";
    typed: a hand-typed field goes stale the day after it is written. */
 $("tSave").onclick = function(){
   patch("meta/trainer", {
-    box_capacity:Number($("tCap").value) || 50
+    box_capacity:Number(field("tCap").value) || 50
   }).then(function(){ toast("Box capacity saved"); });
 };
 
@@ -38,7 +38,7 @@ function kv(host, rows){
 function drawTrainer(){
   const t = S.meta.trainer || {};
   if (document.activeElement?.closest?.("#v-trainer")) return;
-  $("tCap").value = t.box_capacity != null ? t.box_capacity : 50;
+  field("tCap").value = t.box_capacity != null ? t.box_capacity : 50;
 
   /* the capacity number means nothing without the usage beside it */
   const inChamp = boxRows("champions");
@@ -128,7 +128,7 @@ function offer(filename, text){
   setTimeout(function(){ URL.revokeObjectURL(url); }, 0);
   toast("Saved " + filename);
 }
-document.querySelectorAll("[data-export]").forEach(function(b){
+$$("[data-export]").forEach(function(b){
   b.onclick = function(){
     const k = b.dataset.export;
     if (k === "box-csv") {
@@ -416,8 +416,8 @@ function overlapReport(host){
      A hidden view reports every rectangle as zero, so each one is shown for
      the length of a measurement and put straight back. The flicker is the
      price of measuring the real layout instead of guessing at it. */
-  const open = document.querySelector(".view:not([hidden])");
-  const views = Array.from(document.querySelectorAll(".view"));
+  const views = $$(".view");
+  const open = views.find(function(v){ return !v.hidden; });
   const bad = [], over = [];
   let total = 0;
   views.forEach(function(v){

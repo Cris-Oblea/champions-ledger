@@ -133,6 +133,12 @@ GATE_CHECKS = [
 SOURCE_CHECKS = [
     (["node_modules/eslint/bin/eslint.js", "--max-warnings", "0"],
      "no lint finding comes back once it is fixed"),
+    # What ESLint cannot know: what a value IS. TypeScript's checker reads the
+    # app's JavaScript as it is (tsconfig.json: checkJs, nothing compiled), so
+    # a property read off the wrong kind of element, or a call short of an
+    # argument, fails here instead of on the phone.
+    (["node_modules/typescript/bin/tsc", "--pretty", "false"],
+     "the app type-checks"),
     (["scripts/check_app.js"], "the app's source agrees with its markup and its engine"),
     # The same treatment for the other two languages of the page, so nothing
     # in tracker/src/ is linted only by an editor. stylelint.config.mjs and

@@ -6,7 +6,7 @@ import {
   anyRow, bst, byName, C, dexLabel, dexNo, FORMS, freeSlug, slug,
 } from "../core/data.js";
 import {
-  $, capNote, el, fbtn, note, searchField, setPressed, toast,
+  $, capNote, el, fbtn, field, note, searchField, setPressed, toast,
 } from "../core/dom.js";
 import { boxRows, originOf, S } from "../core/state.js";
 import { drop, put, putNew } from "../core/store.js";
@@ -19,7 +19,7 @@ import {
 import { boxBadges, outsideCard, pokeCard } from "../ui/card.js";
 import { ask, closeSheet, openSheet } from "../ui/nav.js";
 
-$("gtsAdd").onclick = function(){
+field("gtsAdd").onclick = function(){
   if (!slotsFull()) gtsSheet(null, null);
 };
 
@@ -49,7 +49,7 @@ function drawGts(){
   /* "3" alone reads as an amount; "3/3" reads as a limit, which is the fact
      that changes what he does next */
   $("nGts").textContent = offers.length + "/" + GTS_SLOTS;
-  const add = $("gtsAdd");
+  const add = field("gtsAdd");
   const full = offers.length >= GTS_SLOTS;
   add.disabled = full;
   if (full) add.textContent = "All " + GTS_SLOTS + " slots taken";
@@ -123,14 +123,14 @@ function drawGtsHistory(){
   wireHistoryFold($("gtsHistToggle"), $("gtsHistBody"));
   $("gtsHistSub").textContent = marketSummary(h);
   host.innerHTML = "";
-  const hq = ($("gtsHistSearch")?.value || "")
+  const hq = (field("gtsHistSearch")?.value || "")
     .trim().toLowerCase();
   const shown = h.filter(function(r){
     return !hq || (r.offered + " " + r.requested + " " + (r.note || ""))
       .toLowerCase().includes(hq);
   });
   $("nGtsHist").textContent = hq && shown.length !== h.length
-    ? shown.length + " of " + h.length : h.length;
+    ? shown.length + " of " + h.length : String(h.length);
   if (!shown.length) host.appendChild(el("div", "empty", "No trade matches"));
   shown.forEach(function(r){ host.appendChild(historyRow(r)); });
 }
@@ -138,8 +138,8 @@ function drawGtsHistory(){
 /* Wired once. A fold that forgets is a fold you reopen every visit, so its
    state is kept in localStorage. */
 function wireHistoryFold(tog, bod){
-  if (tog._wired) return;
-  tog._wired = 1;
+  if (tog.dataset.wired) return;
+  tog.dataset.wired = "1";
   tog.onclick = function(){
     const open = bod.hidden;
     bod.hidden = !open;
@@ -1029,8 +1029,8 @@ function suggestList(body, title, sub, rows, v, onPick){
 function suggestCard(c, v, onPick){
   const p2 = anyRow(c.name);
   if (!p2) return null;
-  let m2 = null;
-  const b2 = pokeCard(p2, {
+  const why = suggestWhy(c, v);
+  return pokeCard(p2, {
     cls: c.stone ? "perm" : "",
     badges: function(h2){
       if (c.stone)
@@ -1040,12 +1040,9 @@ function suggestCard(c, v, onPick){
       mt.appendChild(el("span", "tag " + (c.rank == null ? "warn" : ""),
         c.rank == null ? "no ladder row" : "ladder #" + c.rank));
     },
-    notes: function(body2){ m2 = body2; },
+    notes: function(body2){ if (why) body2.appendChild(el("div", "st", why)); },
     onclick: function(){ onPick(c.name); }
   });
-  const why = suggestWhy(c, v);
-  if (why) m2.appendChild(el("div", "st", why));
-  return b2;
 }
 
 /* The sentence under a suggestion: why it is on the list. */

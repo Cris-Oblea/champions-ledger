@@ -13,6 +13,8 @@ import { byName } from "./data.js";
    is one assignment to window, so there is nothing to parse by hand and
    nothing to get wrong about encoding. And because it IS an assignment,
    anything that already ran it - a second panel, a test - counts as loaded. */
+/** @param {"CHAMP_ANALYSIS" | "CHAMP_OUTSIDE"} global
+    @param {"CHAMP_ANALYSIS_URL" | "CHAMP_OUTSIDE_URL"} urlGlobal */
 function lazyScript(global, urlGlobal){
   let state = "idle", waiting = [];      // idle | loading | ready | absent
   /* End the load once and answer everyone who asked while it was in flight, so

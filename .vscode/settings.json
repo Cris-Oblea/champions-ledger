@@ -26,6 +26,10 @@
   // (.htmlvalidate.mjs), both gate checks too. That leaves SonarQube for IDE
   // nothing, so if it is installed it is told to stay out of every file, and
   // VS Code's built-in CSS check is off so a finding is not reported twice.
+  // Types are not lint: VS Code's own TypeScript reads tsconfig.json and
+  // reports the checkJs findings, from the same pinned typescript the gate
+  // runs, so ESLint and it never report the same thing.
+  "js/ts.tsdk.path": "node_modules/typescript/lib",
   "sonarlint.analysisExcludesStandalone": "**/*",
   "css.validate": false,
   "stylelint.validate": ["css"],

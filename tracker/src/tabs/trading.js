@@ -1,7 +1,7 @@
 /* The GTS pane's "Worth trading": what each Pokemon you could let go is
    worth as a chip, and what it can realistically fetch. */
 import { anyRow, byName } from "../core/data.js";
-import { $, el, fbtn, setPressed } from "../core/dom.js";
+import { $, el, fbtn, field, setPressed } from "../core/dom.js";
 import { boxRows, originOf } from "../core/state.js";
 import {
   elapsedText, gtsBlocked, gtsOffers, gtsRecord, gtsSuggest, keepableCopies,
@@ -90,10 +90,10 @@ function drawGtsWanted(){
   wireWantFilter($("gtsWantFilter"));
   /* The segment answers "which KIND of chip"; the search box answers "that
      one". */
-  const wq = ($("gtsWantSearch")?.value || "")
+  const wq = (field("gtsWantSearch")?.value || "")
     .trim().toLowerCase();
   const ideas = tradeIdeas(filteredChips(wq));
-  $("nGtsWant").textContent = ideas.length;
+  $("nGtsWant").textContent = String(ideas.length);
   $("gtsWantSub").innerHTML = wantSubtitle(ideas.length, gtsRecord(null));
   host.innerHTML = "";
   if (!ideas.length) {
