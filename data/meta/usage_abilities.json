@@ -1,7 +1,7 @@
 {
  "source": "pokebase.app/pokemon-champions",
  "game": "Pokemon Champions",
- "fetched": "2026-10-03",
+ "fetched": "2026-10-05",
  "count": 190,
  "rows": [
   {
@@ -22,7 +22,7 @@
    "rank": 3,
    "slug": "unburden",
    "name": "Unburden",
-   "usage_percent": 6.5,
+   "usage_percent": 6.4,
    "description": ""
   },
   {
@@ -50,34 +50,34 @@
    "rank": 7,
    "slug": "lightning-rod",
    "name": "Lightning Rod",
-   "usage_percent": 3.2,
+   "usage_percent": 3.3,
    "description": ""
   },
   {
    "rank": 8,
-   "slug": "adaptability",
-   "name": "Adaptability",
-   "usage_percent": 2.9,
-   "description": ""
-  },
-  {
-   "rank": 9,
    "slug": "drizzle",
    "name": "Drizzle",
    "usage_percent": 2.9,
    "description": ""
   },
   {
+   "rank": 9,
+   "slug": "adaptability",
+   "name": "Adaptability",
+   "usage_percent": 2.8,
+   "description": ""
+  },
+  {
    "rank": 10,
-   "slug": "rock-head",
-   "name": "Rock Head",
-   "usage_percent": 2.7,
+   "slug": "rough-skin",
+   "name": "Rough Skin",
+   "usage_percent": 2.8,
    "description": ""
   },
   {
    "rank": 11,
-   "slug": "rough-skin",
-   "name": "Rough Skin",
+   "slug": "rock-head",
+   "name": "Rock Head",
    "usage_percent": 2.7,
    "description": ""
   },
@@ -97,16 +97,16 @@
   },
   {
    "rank": 14,
-   "slug": "competitive",
-   "name": "Competitive",
+   "slug": "emergency-exit",
+   "name": "Emergency Exit",
    "usage_percent": 2.3,
    "description": ""
   },
   {
    "rank": 15,
-   "slug": "emergency-exit",
-   "name": "Emergency Exit",
-   "usage_percent": 2.3,
+   "slug": "competitive",
+   "name": "Competitive",
+   "usage_percent": 2.2,
    "description": ""
   },
   {
@@ -134,7 +134,7 @@
    "rank": 19,
    "slug": "pixilate",
    "name": "Pixilate",
-   "usage_percent": 2.0,
+   "usage_percent": 1.9,
    "description": ""
   },
   {
@@ -146,16 +146,16 @@
   },
   {
    "rank": 21,
-   "slug": "sand-stream",
-   "name": "Sand Stream",
+   "slug": "flame-body",
+   "name": "Flame Body",
    "usage_percent": 1.4,
    "description": ""
   },
   {
    "rank": 22,
-   "slug": "flame-body",
-   "name": "Flame Body",
-   "usage_percent": 1.3,
+   "slug": "sand-stream",
+   "name": "Sand Stream",
+   "usage_percent": 1.4,
    "description": ""
   },
   {
@@ -188,23 +188,23 @@
   },
   {
    "rank": 27,
+   "slug": "drought",
+   "name": "Drought",
+   "usage_percent": 0.9,
+   "description": ""
+  },
+  {
+   "rank": 28,
    "slug": "hospitality",
    "name": "Hospitality",
    "usage_percent": 0.9,
    "description": ""
   },
   {
-   "rank": 28,
+   "rank": 29,
    "slug": "trace",
    "name": "Trace",
    "usage_percent": 0.9,
-   "description": ""
-  },
-  {
-   "rank": 29,
-   "slug": "drought",
-   "name": "Drought",
-   "usage_percent": 0.8,
    "description": ""
   },
   {
@@ -356,92 +356,92 @@
   },
   {
    "rank": 51,
-   "slug": "technician",
-   "name": "Technician",
-   "usage_percent": 0.3,
-   "description": ""
-  },
-  {
-   "rank": 52,
-   "slug": "tough-claws",
-   "name": "Tough Claws",
-   "usage_percent": 0.3,
-   "description": ""
-  },
-  {
-   "rank": 53,
    "slug": "compound-eyes",
    "name": "Compound Eyes",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 54,
+   "rank": 52,
    "slug": "damp",
    "name": "Damp",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 55,
+   "rank": 53,
    "slug": "friend-guard",
    "name": "Friend Guard",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 56,
+   "rank": 54,
    "slug": "hyper-cutter",
    "name": "Hyper Cutter",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 57,
+   "rank": 55,
    "slug": "justified",
    "name": "Justified",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 58,
+   "rank": 56,
    "slug": "overgrow",
    "name": "Overgrow",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 59,
-   "slug": "pressure",
-   "name": "Pressure",
-   "usage_percent": 0.2,
-   "description": ""
-  },
-  {
-   "rank": 60,
+   "rank": 57,
    "slug": "regenerator",
    "name": "Regenerator",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 61,
+   "rank": 58,
    "slug": "scrappy",
    "name": "Scrappy",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 62,
+   "rank": 59,
    "slug": "solar-power",
    "name": "Solar Power",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 63,
+   "rank": 60,
+   "slug": "technician",
+   "name": "Technician",
+   "usage_percent": 0.2,
+   "description": ""
+  },
+  {
+   "rank": 61,
+   "slug": "tough-claws",
+   "name": "Tough Claws",
+   "usage_percent": 0.2,
+   "description": ""
+  },
+  {
+   "rank": 62,
    "slug": "aerilate",
    "name": "Aerilate",
+   "usage_percent": 0.1,
+   "description": ""
+  },
+  {
+   "rank": 63,
+   "slug": "bulletproof",
+   "name": "Bulletproof",
    "usage_percent": 0.1,
    "description": ""
   },
@@ -545,197 +545,197 @@
   },
   {
    "rank": 78,
+   "slug": "pressure",
+   "name": "Pressure",
+   "usage_percent": 0.1,
+   "description": ""
+  },
+  {
+   "rank": 79,
    "slug": "protean",
    "name": "Protean",
    "usage_percent": 0.1,
    "description": ""
   },
   {
-   "rank": 79,
+   "rank": 80,
    "slug": "punk-rock",
    "name": "Punk Rock",
    "usage_percent": 0.1,
    "description": ""
   },
   {
-   "rank": 80,
+   "rank": 81,
    "slug": "queenly-majesty",
    "name": "Queenly Majesty",
    "usage_percent": 0.1,
    "description": ""
   },
   {
-   "rank": 81,
+   "rank": 82,
    "slug": "sand-veil",
    "name": "Sand Veil",
    "usage_percent": 0.1,
    "description": ""
   },
   {
-   "rank": 82,
+   "rank": 83,
    "slug": "sheer-force",
    "name": "Sheer Force",
    "usage_percent": 0.1,
    "description": ""
   },
   {
-   "rank": 83,
+   "rank": 84,
    "slug": "shell-armor",
    "name": "Shell Armor",
    "usage_percent": 0.1,
    "description": ""
   },
   {
-   "rank": 84,
+   "rank": 85,
    "slug": "sniper",
    "name": "Sniper",
    "usage_percent": 0.1,
    "description": ""
   },
   {
-   "rank": 85,
+   "rank": 86,
    "slug": "snow-cloak",
    "name": "Snow Cloak",
    "usage_percent": 0.1,
    "description": ""
   },
   {
-   "rank": 86,
+   "rank": 87,
    "slug": "stance-change",
    "name": "Stance Change",
    "usage_percent": 0.1,
    "description": ""
   },
   {
-   "rank": 87,
+   "rank": 88,
    "slug": "static",
    "name": "Static",
    "usage_percent": 0.1,
    "description": ""
   },
   {
-   "rank": 88,
+   "rank": 89,
    "slug": "sturdy",
    "name": "Sturdy",
    "usage_percent": 0.1,
    "description": ""
   },
   {
-   "rank": 89,
+   "rank": 90,
    "slug": "super-luck",
    "name": "Super Luck",
    "usage_percent": 0.1,
    "description": ""
   },
   {
-   "rank": 90,
+   "rank": 91,
    "slug": "swift-swim",
    "name": "Swift Swim",
    "usage_percent": 0.1,
    "description": ""
   },
   {
-   "rank": 91,
+   "rank": 92,
    "slug": "telepathy",
    "name": "Telepathy",
    "usage_percent": 0.1,
    "description": ""
   },
   {
-   "rank": 92,
+   "rank": 93,
    "slug": "thick-fat",
    "name": "Thick Fat",
    "usage_percent": 0.1,
    "description": ""
   },
   {
-   "rank": 93,
+   "rank": 94,
    "slug": "unaware",
    "name": "Unaware",
    "usage_percent": 0.1,
    "description": ""
   },
   {
-   "rank": 94,
+   "rank": 95,
    "slug": "volt-absorb",
    "name": "Volt Absorb",
    "usage_percent": 0.1,
    "description": ""
   },
   {
-   "rank": 95,
+   "rank": 96,
    "slug": "water-bubble",
    "name": "Water Bubble",
    "usage_percent": 0.1,
    "description": ""
   },
   {
-   "rank": 96,
+   "rank": 97,
    "slug": "weak-armor",
    "name": "Weak Armor",
    "usage_percent": 0.1,
    "description": ""
   },
   {
-   "rank": 97,
+   "rank": 98,
    "slug": "aftermath",
    "name": "Aftermath",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 98,
+   "rank": 99,
    "slug": "analytic",
    "name": "Analytic",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 99,
+   "rank": 100,
    "slug": "anger-point",
    "name": "Anger Point",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 100,
+   "rank": 101,
    "slug": "aroma-veil",
    "name": "Aroma Veil",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 101,
+   "rank": 102,
    "slug": "aura-guard",
    "name": "Aura Guard",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 102,
+   "rank": 103,
    "slug": "battle-armor",
    "name": "Battle Armor",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 103,
+   "rank": 104,
    "slug": "berserk",
    "name": "Berserk",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 104,
+   "rank": 105,
    "slug": "big-pecks",
    "name": "Big Pecks",
-   "usage_percent": 0.0,
-   "description": ""
-  },
-  {
-   "rank": 105,
-   "slug": "bulletproof",
-   "name": "Bulletproof",
    "usage_percent": 0.0,
    "description": ""
   },
