@@ -344,11 +344,19 @@ runs in four places: the `pre-push` hook, every pull request, every push to
   JavaScript as it is (`checkJs`) and compiles nothing - esbuild still links
   the parts. It knows what ESLint cannot: what a value is, so `.value` read
   off an element that has none, or a call short of an argument, fails the
-  push. Types are JSDoc. What the page finds on `window` before any part
-  runs (the payloads, the config, supabase-js) is declared once in
-  `tracker/src/globals.d.ts`. At zero with `strict` off; strict is switched
-  on one layer at a time, `core/` first, since a layer imports only its own
-  or a lower one. Pinned to 6.0, the last release with the JavaScript API
+  push. Types are JSDoc. `tracker/src/globals.d.ts` declares what every
+  part shares, global so a JSDoc names it with no import: what the page
+  finds on `window` (the payloads, the config, supabase-js), the rows
+  `data.js` unpacks (`DexRow`, `Move`) and the ledger's records as `S` holds
+  them (`BoxRow`, `Build`, `Team`, `Trade`, `AppState`). A shape one module
+  builds is a `@typedef` in that module (`TeamReport` in `team.js`, `Ask` in
+  `trade.js`). The whole app is checked at zero with `strict` off, and
+  `core/` again strict (`tracker/src/core/tsconfig.json`): every parameter
+  typed, null kept apart. Strict comes on one layer at a time, since a layer
+  imports only its own or a lower one; `ui/` is next. A database row stays
+  loosely typed up to `docFromRow` in `store.js`, the trust boundary; `$`
+  is typed never-null because `check_app.js` holds every id against the
+  markup. Pinned to 6.0, the last release with the JavaScript API
   `eslint-plugin-sonarjs` loads: 7.0 (native) breaks ESLint.
 - **stylelint** (`stylelint.config.mjs`) over `tracker/src/styles/` and
   **html-validate** (`.htmlvalidate.mjs`) over `tracker/src/markup/`: the
@@ -586,7 +594,7 @@ in `package.json`, `requirements.txt` and the workflows, never typed here.
 | **Python 3**, standard library only | The data pipeline, the CLIs, the gate | `scripts/` |
 | **CSS** and **HTML** | The app's styles and screens | `tracker/src/styles/`, `tracker/src/markup/` |
 | **SQL** (PostgreSQL) | The ledger's schema, policies and migrations | `supabase/` |
-| **TypeScript** | Smogon's calculator, copied from upstream and bundled; and the declarations of the page's `window` globals, for the type check | `data/raw/smogon_calc/`, `tracker/src/globals.d.ts` |
+| **TypeScript** | Smogon's calculator, copied from upstream and bundled; and the types every part of the app shares, for the type check | `data/raw/smogon_calc/`, `tracker/src/globals.d.ts` |
 | **YAML**, **TOML**, **JSONC** | Workflows, Cloudflare config, tool config | `.github/`, `*/wrangler.toml`, `knip.jsonc` |
 
 ### What runs in the page
@@ -612,7 +620,7 @@ in `package.json`, `requirements.txt` and the workflows, never typed here.
 | Tool | Checks | Config |
 |---|---|---|
 | **ESLint** + `globals`, `eslint-plugin-sonarjs`, `eslint-plugin-unicorn` | All JavaScript: undeclared names, layer climbs, size, the Sonar rules | `eslint.config.mjs` |
-| **TypeScript** (`tsc`, checkJs) | The app's types: what a value is, read from JSDoc | `tsconfig.json`, `tracker/src/globals.d.ts` |
+| **TypeScript** (`tsc`, checkJs) | The app's types: what a value is, read from JSDoc; `core/` strict | `tsconfig.json`, `tracker/src/core/tsconfig.json`, `tracker/src/globals.d.ts` |
 | **stylelint** + `stylelint-config-standard` | The CSS | `stylelint.config.mjs` |
 | **html-validate** | The markup | `.htmlvalidate.mjs` |
 | **ruff** | All Python, the same way ESLint does JavaScript | `ruff.toml`, `requirements.txt` |

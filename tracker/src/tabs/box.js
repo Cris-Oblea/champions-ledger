@@ -314,7 +314,6 @@ function releaseCopy(rec, mine){
   drop("box/" + rec._id).then(function(){
     return Promise.all(mine.map(function(k){
       const doc = structuredClone(S.builds[k]);
-      delete doc._boxId;
       doc.box_id = null;
       return put("builds/" + k, doc);
     }));

@@ -93,11 +93,15 @@ the scripts and markup. knip (`knip.jsonc`) finds an export nothing imports.
 
 **The app type-checks (2026-10-05):** `tsc` over `tracker/src` (`tsconfig.json`,
 checkJs, nothing compiled) is in the gate at zero. Types are JSDoc in a
-`/** */` block - a `/*` comment is not read. A global the page finds on
-`window` is declared in `tracker/src/globals.d.ts`, a control read by value is
-`field(id)` and a document-wide query is `$$(sel)`. `strict` is off and comes
-on one layer at a time, `core/` first. typescript is pinned to 6.0: 7.0 has no
-JavaScript API and `eslint-plugin-sonarjs` needs one.
+`/** */` block - a `/*` comment is not read. Shared types (window globals,
+`DexRow`, `Move`, `BoxRow`, `Build`, `Team`, `Trade`, `AppState`) are global in
+`tracker/src/globals.d.ts`; a shape one module builds is a `@typedef` there. A
+control read by value is `field(id)`, a document-wide query `$$(sel)`.
+**`core/` is strict (2026-10-06, `tracker/src/core/tsconfig.json`)**: no
+untyped parameter, no unchecked null; never type one `any` to get past it -
+`docFromRow` is the one deliberate `any` (database rows). `ui/` goes strict
+next, then `tabs/`. typescript is pinned to 6.0: 7.0 has no JavaScript API and
+`eslint-plugin-sonarjs` needs one.
 
 **The tracker's damage tab runs Smogon's engine itself** (bundled by
 `scripts/build_engine_bundle.py`), so it is exact rather than close. Do not

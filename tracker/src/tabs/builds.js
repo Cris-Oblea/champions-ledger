@@ -46,7 +46,11 @@ function setTrained(boxId, on){
   row.trained = on;
   return put("box/" + boxId, row);
 }
-/* Move the tag from the copy a build left to the copy it arrived on. */
+/** Move the tag from the copy a build left to the copy it arrived on.
+   @param {string | null | undefined} fromId
+   @param {string | null | undefined} toId
+   @param {string | null | undefined} buildId
+   @returns {Promise<unknown>} */
 function syncTrained(fromId, toId, buildId){
   if ((fromId || null) === (toId || null)) return setTrained(toId, true);
   const stillCarried = fromId && buildsOn(fromId, buildId).length;
@@ -522,7 +526,6 @@ function orphanNote(body, ed){
     /* Re-point the LINK. The build keeps its id and its name; only box_id
        changes. */
     const doc = structuredClone(ed.b);
-    delete doc._boxId;
     doc.box_id = selr.value;
     put("builds/" + ed.id, doc).then(function(){
       return syncTrained(null, doc.box_id, ed.id);
@@ -762,7 +765,7 @@ function statLine(body, ed, k, i, setSp){
   const line = el("div", "sp spedit");
   line.appendChild(el("span", "k", STAT_LABEL[k]));
 
-  const r = el("input"); r.type = "range"; r.min = 0; r.max = 32; r.step = 1;
+  const r = el("input"); r.type = "range"; r.min = "0"; r.max = "32"; r.step = "1";
   r.setAttribute("aria-label", STAT_LABEL[k] + " stat points");
   r.oninput = function(){ setSp(k, Number(r.value), null); };
   line.appendChild(r);
@@ -795,7 +798,7 @@ function statLine(body, ed, k, i, setSp){
     const v = Number(draft.stat_points[k]) || 0;
     /* a build imported from elsewhere can hold more than 32; show the real
        number and flag it rather than quietly clamping the display */
-    r.value = Math.min(32, v);
+    r.value = String(Math.min(32, v));
     if (num !== typing) num.value = String(v);
     if (v > 32) line.classList.add("over"); else line.classList.remove("over");
     dec.disabled = v <= 0;

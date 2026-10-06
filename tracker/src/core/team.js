@@ -20,22 +20,50 @@ import { buildLink, hasStone, S } from "./state.js";
    deliberately carry no item at all. */
 const TEAM_SLOTS = 6;
 
-/* What gets written. Built in one place because it is now saved from two -
+/** What teamReport works out about one slot. Filled in as it goes: a slot
+    with no build stops after `name`, one whose species is not in the dex
+    after `row`.
+    @typedef {{i: number, slot: TeamSlot, build: Build | null,
+      name: string | undefined, state?: string, row?: BoxRow, p?: DexRow,
+      types?: string[], mega?: DexRow | null, megaTypes?: string[],
+      sp?: number, nature?: string}} SlotInfo */
+/** A Mega that changes what the screen shows: its typing, its Speed, or both.
+    @typedef {{i: number, name: string, mega: string, retype: boolean,
+      respeed: boolean, from: string[], to: string[], speFrom: number,
+      speTo: number}} MegaCase */
+/** One line of the Speed order.
+    @typedef {{name: string | undefined, form: string | undefined,
+      mega: boolean, base: number, nature: string | undefined,
+      sp: number | undefined, spe: number}} SpeedRow */
+/** One attacking type against the six, with who is weak and who resists.
+    @typedef {{type: string, weak: number, resist: number,
+      weakOf: {name: string, m: number}[],
+      resistOf: {name: string, m: number}[]}} TypeRow */
+/** @typedef {{slots: SlotInfo[], filled: number, ready: number,
+      problems: string[], warnings: string[], missing: string[],
+      stones: {name: string, stone: string | undefined, owned: boolean}[],
+      speeds: SpeedRow[], megaCases: MegaCase[]}} TeamReport */
+
+/** What gets written. Built in one place because it is now saved from two -
    the Save button, and the quick jump into a build's editor, which has to
-   put this draft somewhere before it leaves the screen. */
+   put this draft somewhere before it leaves the screen.
+   @param {{name: string, slots: (TeamSlot | null | undefined)[], notes?: Record<string, string>}} draft */
 function teamDoc(draft){
   return {name: draft.name,
           slots: draft.slots.filter(function(x){ return x?.build_id; }),
           notes: draft.notes || {}};
 }
 
-/* WHAT THIS SLOT BECOMES IF IT MEGA EVOLVES, or null.
+/** WHAT THIS SLOT BECOMES IF IT MEGA EVOLVES, or null.
 
    Two routes, because the stone is recorded in two places for two different
    reasons and both are real. A BUILD declares its `mega` - the stone is what
    creates the form, so it lives in the build. A SLOT can also hold the stone
    as its item, which is where the Item Clause puts it. Reading only one of
-   them would miss half the teams. */
+   them would miss half the teams.
+   @param {Build | null | undefined} b
+   @param {TeamSlot | undefined} slot
+   @returns {DexRow | null} */
 function megaOf(b, slot){
   if (!b) return null;
   if (b.mega && byName[b.mega]) return byName[b.mega];
@@ -48,17 +76,22 @@ function megaOf(b, slot){
   return null;
 }
 
-/* Always exactly six slots, empty ones as {}, so every screen can index
-   slot 0..5 without checking. */
+/** Always exactly six slots, empty ones as {}, so every screen can index
+   slot 0..5 without checking.
+   @param {Team | null | undefined} t
+   @returns {TeamSlot[]} */
 function teamSlots(t){
   const out = (t?.slots || []).slice(0, TEAM_SLOTS);
   while (out.length < TEAM_SLOTS) out.push({});
   return out;
 }
 
-/* Everything the app can work out about a team, in one pass, so the sheet and
-   the list agree by construction rather than by both remembering. */
+/** Everything the app can work out about a team, in one pass, so the sheet and
+   the list agree by construction rather than by both remembering.
+   @param {Team | null | undefined} t
+   @returns {TeamReport} */
 function teamReport(t){
+  /** @type {TeamReport} */
   const r = {
     slots: [], filled: 0, ready: 0, problems: [], warnings: [],
     missing: [], stones: [], speeds: [],
@@ -82,10 +115,16 @@ function teamReport(t){
   return r;
 }
 
-/* One slot's facts, counted into the report as it goes: whether it can be
-   brought, its form and Mega, the Species and Item Clauses. */
+/** One slot's facts, counted into the report as it goes: whether it can be
+   brought, its form and Mega, the Species and Item Clauses.
+   @param {TeamReport} r
+   @param {TeamSlot} sl
+   @param {number} i
+   @param {{item: Record<string, number>, form: Record<string, number>}} seen
+   @returns {SlotInfo} */
 function slotReport(r, sl, i, seen){
   const b = sl.build_id ? S.builds[sl.build_id] : null;
+  /** @type {SlotInfo} */
   const info = {i: i, slot: sl, build: b, name: b?.pokemon};
   if (b) {
     r.filled++;
@@ -110,9 +149,13 @@ function slotReport(r, sl, i, seen){
   return info;
 }
 
-/* "READY" means it could be brought TODAY: the Pokemon exists and is in the
+/** "READY" means it could be brought TODAY: the Pokemon exists and is in the
    Champions box. Parked in HOME is one recall away; unbound is not owned at
-   all; an orphan's Pokemon is gone. */
+   all; an orphan's Pokemon is gone.
+   @param {TeamReport} r
+   @param {Build} b
+   @param {TeamSlot} sl
+   @param {SlotInfo} info */
 function slotReadiness(r, b, sl, info){
   const lk = buildLink(sl.build_id);
   info.state = lk.state;
@@ -125,14 +168,19 @@ function slotReadiness(r, b, sl, info){
   else r.missing.push(b.pokemon);
 }
 
-/* The slot's form, and THE SPEED THE BUILD ACTUALLY HAS - its own SP and
+/** The slot's form, and THE SPEED THE BUILD ACTUALLY HAS - its own SP and
    nature, not its species' base row. Two builds of one species differ by 32
    SP and a nature, which is most of what a Speed order is decided by.
 
    A Mega becomes a "what if it evolves" case (megaCases) only if it CHANGES
    something on screen: the typing, or the Speed. Mega Camerupt keeps
    Fire/Ground but drops from 40 to 20 Speed - invisible to the type table,
-   decisive in the Speed order. */
+   decisive in the Speed order.
+   @param {TeamReport} r
+   @param {Build} b
+   @param {TeamSlot} sl
+   @param {DexRow} p
+   @param {SlotInfo} info */
 function slotForm(r, b, sl, p, info){
   const mg = megaOf(b, sl);
   info.p = p;
@@ -152,22 +200,26 @@ function slotForm(r, b, sl, p, info){
   }
 }
 
-/* The Speed order for one outcome. `megaAt` is the slot that Mega Evolved,
+/** The Speed order for one outcome. `megaAt` is the slot that Mega Evolved,
    or null for nobody - the same argument teamTypes takes, because they are
    two readings of the same battle and must never disagree on screen.
 
    Only one Pokemon may Mega Evolve per battle, and an unevolved slot is its
    base row whatever stone it carries - so this is asked per outcome, never
-   with every Mega applied at once. */
+   with every Mega applied at once.
+   @param {TeamReport} r
+   @param {number | null} megaAt
+   @returns {SpeedRow[]} */
 function teamSpeeds(r, megaAt){
+  /** @type {SpeedRow[]} */
   const out = [];
   r.slots.forEach(function(s, i){
     if (!s.build || !s.p) return;
-    const evolved = megaAt != null && i === megaAt && s.mega;
-    const row = evolved ? s.mega : s.p;
+    const mg = megaAt != null && i === megaAt ? s.mega : null;
+    const row = mg || s.p;
     out.push({name: s.name,
-              form: evolved ? s.mega.name : s.name,
-              mega: evolved,
+              form: mg ? mg.name : s.name,
+              mega: !!mg,
               base: row.b[5],
               nature: s.nature,
               sp: s.sp,
@@ -177,7 +229,7 @@ function teamSpeeds(r, megaAt){
   return out;
 }
 
-/* What the six of them, together, are weak to and resist, per attacking
+/** What the six of them, together, are weak to and resist, per attacking
    type: a count off the shipped type chart, with the names behind it, worst
    first. `megaAt` is the slot index that has Mega Evolved, or null.
 
@@ -186,8 +238,12 @@ function teamSpeeds(r, megaAt){
    different teams and cannot be merged. And the base typing is a real case,
    not a transition: Mega Evolution resolves after switch-ins, so the base
    form takes the first hit, and staying unevolved to resist something is a
-   real play. */
+   real play.
+   @param {TeamReport} r
+   @param {number | null} megaAt
+   @returns {TypeRow[]} */
 function teamTypes(r, megaAt){
+  /** @type {TypeRow[]} */
   const out = [];
   /* Stellar is in the chart and NOT in Champions - there is no Tera here, so
      no move can be that type and counting it would invent a weakness. */
@@ -196,12 +252,16 @@ function teamTypes(r, megaAt){
     /* THE NAMES, not just the tally: "Fire: 3 weak" leaves you to work out
        who. The multiplier rides along because x4 and x2 are not the same
        problem, and neither are x0.25 and x0.5. */
-    const weakOf = [], resistOf = [];
+    /** @type {{name: string, m: number}[]} */
+    const weakOf = [];
+    /** @type {{name: string, m: number}[]} */
+    const resistOf = [];
     r.slots.forEach(function(s, si){
       if (!s.types || !s.name) return;
-      const evolved = megaAt != null && si === megaAt && s.megaTypes;
-      const types = evolved ? s.megaTypes : s.types;
-      const who = evolved ? s.mega.name : s.name;
+      /* megaTypes is set only for a Mega that retypes, so it implies s.mega */
+      const mg = megaAt != null && si === megaAt && s.megaTypes ? s.mega : null;
+      const types = (mg && s.megaTypes) || s.types;
+      const who = mg ? mg.name : s.name;
       let m = 1;
       types.forEach(function(t){
         const v = C.CHART[atk]?.[t];
@@ -239,6 +299,7 @@ function holdable(){
   });
   /* one row per STONE, not per Mega: Charizardite X and Y are two stones and
      one species, and the mapping is 1:1 over all 81 */
+  /** @type {Record<string, number>} */
   const seen = {};
   (C.STONES || []).forEach(function(r){
     const st = r[0];

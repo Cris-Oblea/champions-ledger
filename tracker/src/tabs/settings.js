@@ -38,7 +38,7 @@ function kv(host, rows){
 function drawTrainer(){
   const t = S.meta.trainer || {};
   if (document.activeElement?.closest?.("#v-trainer")) return;
-  field("tCap").value = t.box_capacity != null ? t.box_capacity : 50;
+  field("tCap").value = String(t.box_capacity != null ? t.box_capacity : 50);
 
   /* the capacity number means nothing without the usage beside it */
   const inChamp = boxRows("champions");
@@ -132,18 +132,18 @@ $$("[data-export]").forEach(function(b){
   b.onclick = function(){
     const k = b.dataset.export;
     if (k === "box-csv") {
+      /** @type {(string | number)[][]} */
       const rows = [["name","location","status","types","bst","note"]];
-      ["champions","home"].forEach(function(loc){
-        boxRows(loc).forEach(function(r){
-          /* anyRow: an exported box should carry the HOME-only rows'
-             numbers too, not a pair of empty columns */
-          const p = anyRow(r.name);
-          rows.push([r.name, loc, r.status, p ? p.types.join("/") : "",
-                     p ? bst(p) : "", r.note || ""]);
-        });
+      boxRows("champions").concat(boxRows("home")).forEach(function(r){
+        /* anyRow: an exported box should carry the HOME-only rows'
+           numbers too, not a pair of empty columns */
+        const p = anyRow(r.name);
+        rows.push([r.name, r.location, r.status, p ? p.types.join("/") : "",
+                   p ? bst(p) : "", r.note || ""]);
       });
       offer("champions-box.csv", csv(rows));
     } else if (k === "builds-csv") {
+      /** @type {(string | number)[][]} */
       const rows2 = [["pokemon","mega","ability","nature","hp","atk","def","spa",
                     "spd","spe","sp_total","move1","move2","move3","move4","role"]];
       Object.keys(S.builds).sort(byText).forEach(function(id){

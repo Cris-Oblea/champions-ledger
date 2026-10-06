@@ -7,12 +7,15 @@ import {
 } from "./data.js";
 import { baseAbility, megaAbility, ownedNames } from "./state.js";
 
-/* What is wrong with a build draft, as [tone, html] lines: "bad" breaks a
+/** What is wrong with a build draft, as [tone, html] lines: "bad" breaks a
    rule (SP over budget, a move it cannot learn, not in the box), "warn" is
    legal but questionable (priority on the weaker side, a move that hits the
    ally, Intimidate on your own side). `p` is the species row. The editor
-   shows these live, so a set is checked while it is written. */
+   shows these live, so a set is checked while it is written.
+   @param {Build} d
+   @param {DexRow | null | undefined} p */
 function checks(d, p){
+  /** @type {[string, string][]} */
   const out = [];
   const tot = spTotal(d.stat_points);
   if (tot > 66) out.push(["bad", "<strong>" + tot + " Stat Points.</strong> The budget is 66."]);
@@ -52,6 +55,7 @@ function checks(d, p){
     }
     const ls = learnset(d.pokemon);
     if (ls) {
+      /** @type {Record<string, number>} */
       const legal = {};
       ls.forEach(function(m){ legal[m.name] = 1; });
       (d.moves || []).forEach(function(n){
@@ -75,9 +79,11 @@ function checks(d, p){
   return out;
 }
 
-/* The VP it costs to turn build `a` into build `b` in game, as
+/** The VP it costs to turn build `a` into build `b` in game, as
    {vp, parts}, or null when nothing billable changed. Every Stat Point moved
-   counts, in either direction, since the game charges for each one. */
+   counts, in either direction, since the game charges for each one.
+   @param {Build} a
+   @param {Build} b */
 function retuneCost(a, b){
   const parts = [];
   let vp = 0;

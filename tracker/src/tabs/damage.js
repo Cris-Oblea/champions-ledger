@@ -374,7 +374,7 @@ function statRow(which, side, P, k, i, live){
   row.appendChild(lab);
 
   const inp = el("input");
-  inp.type = "number"; inp.min = 0; inp.max = 32;
+  inp.type = "number"; inp.min = "0"; inp.max = "32";
   inp.value = side.sp[k] || 0;
   inp.setAttribute("aria-label", STAT_LABEL[k] + " stat points");
   inp.oninput = function(){
@@ -412,7 +412,7 @@ function curHPField(side){
   const fh = el("div", "field");
   fh.appendChild(el("label", "f", "Current HP"));
   const ih = el("input");
-  ih.type = "number"; ih.min = 1;
+  ih.type = "number"; ih.min = "1";
   ih.placeholder = "full";
   ih.value = side.curHP == null ? "" : side.curHP;
   ih.oninput = function(){
