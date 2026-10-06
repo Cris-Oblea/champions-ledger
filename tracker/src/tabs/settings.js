@@ -15,13 +15,19 @@ import { engineReady } from "./damage.js";
    capacity, because the app acts on it and only the game can change it.
    Everything else is DERIVED from the ledger and the shipped data, never
    typed: a hand-typed field goes stale the day after it is written. */
+/** A box on screen, as getBoundingClientRect gives it or narrowed to its content.
+    @typedef {{left: number, top: number, right: number, bottom: number,
+      width: number, height: number}} Rect */
+/** @typedef {{e: Element, r: Rect}} Painted */
 $("tSave").onclick = function(){
   patch("meta/trainer", {
     box_capacity:Number(field("tCap").value) || 50
   }).then(function(){ toast("Box capacity saved"); });
 };
 
-/* Fill a <dl> with [label, value, tooltip?] rows; null rows are skipped. */
+/** Fill a <dl> with [label, value, tooltip?] rows; null rows are skipped.
+   @param {HTMLElement} host
+   @param {([string, string | number, string?] | null)[]} rows */
 function kv(host, rows){
   host.innerHTML = "";
   rows.forEach(function(r){
@@ -108,7 +114,8 @@ function drawTrainer(){
 }
 
 /* ==================================================================== export */
-/* rows -> CSV text, quoting any cell with a comma, quote or newline */
+/** rows -> CSV text, quoting any cell with a comma, quote or newline
+   @param {(string | number)[][]} rows */
 function csv(rows){
   return rows.map(function(r){
     return r.map(function(v){
@@ -117,8 +124,10 @@ function csv(rows){
     }).join(",");
   }).join("\r\n");
 }
-/* Hand the viewer a file: a Blob behind a temporary <a download>, which is
-   how every browser saves generated data without a server round trip. */
+/** Hand the viewer a file: a Blob behind a temporary <a download>, which is
+   how every browser saves generated data without a server round trip.
+   @param {string} filename
+   @param {string} text */
 function offer(filename, text){
   const type = filename.endsWith(".json") ? "application/json" : "text/csv";
   const url = URL.createObjectURL(new Blob([text], {type: type + ";charset=utf-8"}));
@@ -164,7 +173,10 @@ $$("[data-export]").forEach(function(b){
    up here as a date that stopped moving. */
 function lastWrite(){
   let best = "";
-  [S.box, S.builds, S.teams, S.meta].forEach(function(t){
+  /** @type {Record<string, {updated?: string, updated_at?: string} | undefined>[]} */
+  const tables = [S.box, S.builds, S.teams,
+                  /** @type {Record<string, Trainer | undefined>} */ (S.meta)];
+  tables.forEach(function(t){
     Object.keys(t || {}).forEach(function(k){
       const v = t[k] && (t[k].updated_at || t[k].updated);
       if (v && String(v) > best) best = String(v);
@@ -205,7 +217,10 @@ function checkLatest(){
 /* The diagnostics, as [label, value] lines: everything needed to tell a
    broken page, a stale cache and stale data apart from a phone. */
 function diagLines(){
+  /** @type {[string, string | number][]} */
   const L = [];
+  /** @param {string} k
+      @param {string | number} v */
   function add(k, v){ L.push([k, v]); }
   add("Page built", (window.CHAMP_BUILD || "unknown"));
   /* Is the page in front of you the one that is deployed? A phone serving a
@@ -251,7 +266,7 @@ function diagLines(){
   try {
     localStorage.setItem("__t", "1"); localStorage.removeItem("__t");
     add("Local storage", "works");
-  } catch (e) { add("Local storage", "BLOCKED - " + e.name); }
+  } catch (e) { add("Local storage", "BLOCKED - " + /** @type {Error} */ (e).name); }
   add("Sort", VIEW.sort);
   add("Script errors", BOOT_ERRORS.length ? BOOT_ERRORS.join(" | ") : "none");
   return L;
@@ -293,12 +308,16 @@ function drawDiag(){
   host.appendChild(ob);
 }
 
-/* One view: how many painted boxes, the collisions (up to 12), and the
-   floating layers that sit over content. */
+/** One view: how many painted boxes, the collisions (up to 12), and the
+   floating layers that sit over content.
+   @param {Element} view */
 function overlapSweep(view){
   const boxes = paintedBoxes(view);
   boxes.sort(function(a, b){ return a.r.top - b.r.top; });
-  const hits = [], floats = [];
+  /** @type {string[]} */
+  const hits = [];
+  /** @type {string[]} */
+  const floats = [];
   for (let i2 = 0; i2 < boxes.length && hits.length < 12; i2++) {
     const hit = firstCollision(boxes, i2, view, floats);
     if (hit) hits.push(hit);
@@ -306,13 +325,16 @@ function overlapSweep(view){
   return {boxes: boxes.length, hits: hits, floating: floats};
 }
 
-/* Every leaf that paints something, with its rectangle. An ICON paints
+/** Every leaf that paints something, with its rectangle. An ICON paints
    without carrying a word, and an icon on top of text is the exact bug this
    exists for, so svg and img count even though their text is empty. A FIELD
    PAINTS ITS VALUE, which is not its textContent, so a field counts even
    when empty - an icon over a search box's text is the bug this exists for.
-   Anything else has to say something to be worth colliding with. */
+   Anything else has to say something to be worth colliding with.
+   @param {Element} view
+   @returns {Painted[]} */
 function paintedBoxes(view){
+  /** @type {Painted[]} */
   const boxes = [];
   for (const e of view.querySelectorAll("*")) {
     const tag = e.tagName;
@@ -320,6 +342,7 @@ function paintedBoxes(view){
     const isField = /^(input|textarea|select)$/i.test(tag);
     if (e.children.length && !isIcon) continue;
     if (!isIcon && !isField && !e.textContent.trim()) continue;
+    /** @type {Rect} */
     let r = e.getBoundingClientRect();
     if (isField) r = contentBox(e, r);
     if (r.width < 4 || r.height < 4) continue;
@@ -328,7 +351,7 @@ function paintedBoxes(view){
   return boxes;
 }
 
-/* SWEPT, NOT COMPARED PAIRWISE (a double loop over thousands of boxes
+/** SWEPT, NOT COMPARED PAIRWISE (a double loop over thousands of boxes
    freezes the renderer): boxes are sorted by top edge, so box i is only
    measured against the ones that start before it ends. Returns the
    first real collision as a line of text. A two-pixel kiss is layout, not a
@@ -339,7 +362,11 @@ function paintedBoxes(view){
    toast - it is MEANT to be on top, so counting it would cry wolf; it goes
    into `floats` instead, so a layer really swallowing something still shows.
    BOTH out of the flow is a genuine fault: two floating layers fighting over
-   one corner is nobody's design. */
+   one corner is nobody's design.
+   @param {Painted[]} boxes
+   @param {number} i
+   @param {Element} view
+   @param {string[]} floats */
 function firstCollision(boxes, i, view, floats){
   const A = boxes[i];
   for (let j = i + 1; j < boxes.length; j++) {
@@ -360,26 +387,31 @@ function firstCollision(boxes, i, view, floats){
   return null;
 }
 
-/* Out of the flow: its own layer, by declaration. Read off the ancestors
+/** Out of the flow: its own layer, by declaration. Read off the ancestors
    because the painted leaf inherits the positioning of the box that floats -
    the "+" glyph is a plain span inside a fixed button. ASKED ONLY WHEN TWO
    BOXES ACTUALLY TOUCH: a getComputedStyle per ancestor of every box would
-   make the sweep too slow to run. */
+   make the sweep too slow to run.
+   @param {Element} e
+   @param {Element} view */
 function floatingLayer(e, view){
-  for (let n = e; n?.nodeType === 1 && n !== view; n = n.parentNode) {
+  for (let n = /** @type {Element | null} */ (e); n && n !== view; n = n.parentElement) {
     const pos = window.getComputedStyle(n).position;
     if (pos === "fixed" || pos === "sticky" || pos === "absolute") return true;
   }
   return false;
 }
 
-/* A FIELD'S BOX INCLUDES ITS PADDING, and the search icon lives in that
+/** A FIELD'S BOX INCLUDES ITS PADDING, and the search icon lives in that
    padding ON PURPOSE. What matters is whether something covers the field's
    TEXT, so a field is measured by its content box. A NONSENSE COMPUTED STYLE
    MUST NOT BLIND THE SWEEP: if the insets come back bigger than the box
    (jsdom resolves a border to 16px here), the border box is used instead -
    a generous rectangle reports a false positive, which someone reads; a
-   collapsed one reports nothing, which nobody does. */
+   collapsed one reports nothing, which nobody does.
+   @param {Element} e
+   @param {Rect} r
+   @returns {Rect} */
 function contentBox(e, r){
   const cs = window.getComputedStyle(e);
   const l = r.left + px(cs.borderLeftWidth) + px(cs.paddingLeft);
@@ -390,19 +422,22 @@ function contentBox(e, r){
   return {left:l, top:t, right:rt, bottom:b, width:rt - l, height:b - t};
 }
 
-/* "12px" -> 12, anything unparseable -> 0 */
+/** "12px" -> 12, anything unparseable -> 0
+   @param {string} v */
 function px(v){ return Number.parseFloat(v) || 0; }
 
-/* "span.tag “Fire”" - an element as a person can find it. An SVG's className
-   is an SVGAnimatedString, so the class is read as an attribute. */
+/** "span.tag “Fire”" - an element as a person can find it. An SVG's className
+   is an SVGAnimatedString, so the class is read as an attribute.
+   @param {Element} e */
 function overlapLabel(e){
   const c = (e.getAttribute?.("class") || "").split(" ")[0];
-  const t = (e.value || e.textContent || "").trim().slice(0, 14);
+  const t = (/** @type {{value?: string}} */ (e).value || e.textContent || "").trim().slice(0, 14);
   return e.tagName.toLowerCase() + (c ? "." + c : "") +
          (t ? " “" + t + "”" : "");
 }
 
-/* Sweep every view and write the result under the button. */
+/** Sweep every view and write the result under the button.
+   @param {HTMLElement} host */
 function overlapReport(host){
   /* Found through `host`, not by id: `$()` is for ids the MARKUP declares, and
      check_app asserts exactly that - a lookup for something no markup
@@ -418,7 +453,10 @@ function overlapReport(host){
      price of measuring the real layout instead of guessing at it. */
   const views = $$(".view");
   const open = views.find(function(v){ return !v.hidden; });
-  const bad = [], over = [];
+  /** @type {string[]} */
+  const bad = [];
+  /** @type {string[]} */
+  const over = [];
   let total = 0;
   views.forEach(function(v){
     const was = v.hidden;
@@ -456,8 +494,9 @@ function overlapReport(host){
   host.appendChild(out);
 }
 
-/* Where the clipboard API is missing or refused: the text in a sheet, to
-   select and copy by hand. */
+/** Where the clipboard API is missing or refused: the text in a sheet, to
+   select and copy by hand.
+   @param {string} txt */
 function diagFallback(txt){
   openSheet("Diagnostics", function(body){
     body.appendChild(el("p", "sub", "Select it all and copy."));

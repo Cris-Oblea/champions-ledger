@@ -12,6 +12,11 @@ import { closeSheet, openSheet } from "../ui/nav.js";
 import { findDetail } from "../ui/pokemon.js";
 import { worldInit } from "./worlds.js";
 
+/** One search's context: the name box, what he owns, and, per base form,
+    the Mega that matched for it.
+    @typedef {{q: string, own: Record<string, string>, inHome: Record<string, number>,
+      matchedAs: Record<string, DexRow>}} FindCtx */
+
 /* ============================================ A MEGA LIVES ON ITS BASE ROW ==
    A Mega only exists mid-battle, and only because a stone is held. It is not
    a thing you store, so it is not a result of its own - it is a fact ABOUT
@@ -28,7 +33,10 @@ import { worldInit } from "./worlds.js";
 
    3. WHAT CHANGES. The card shows the Mega's deltas, and a Pokemon with no
       Mega looks exactly as it would otherwise. */
-/* the value this Pokemon can reach in the direction being ranked */
+/** the value this Pokemon can reach in the direction being ranked
+   @param {DexRow} p
+   @param {string} key
+   @param {string} dir */
 function reach(p, key, dir){
   let best = statOf(p, key);
   megaLine(p).forEach(function(m){
@@ -37,9 +45,11 @@ function reach(p, key, dir){
   });
   return best;
 }
-/* does the base OR any of its Megas satisfy `fn`? Returns the form that did,
+/** does the base OR any of its Megas satisfy `fn`? Returns the form that did,
    so the card can say "matched as Mega Ampharos" rather than leaving it to be
-   worked out. */
+   worked out.
+   @param {DexRow} p
+   @param {(f: DexRow) => boolean} fn */
 function orMega(p, fn){
   if (fn(p)) return p;
   const ms = megaLine(p);
@@ -50,11 +60,14 @@ function orMega(p, fn){
    rides in the same table rather than keeping its own input. */
 const FIND_STATS = [["bst","BST"],["hp","HP"],["atk","Atk"],["def","Def"],
                   ["spa","SpA"],["spd","SpD"],["spe","Spe"]];
-/* a base stat by key, or the BST */
+/** a base stat by key, or the BST
+   @param {DexRow} p
+   @param {string} key */
 function statOf(p, key){
-  return key === "bst" ? bst(p) : p.b[STAT_KEYS.indexOf(key)];
+  return key === "bst" ? bst(p) : p.b[STAT_KEYS.indexOf(/** @type {Stat} */ (key))];
 }
-/* A stat's column caption, BST included. */
+/** A stat's column caption, BST included.
+   @param {string} key */
 function statLabel(key){
   return key === "bst" ? "BST" : STAT_LABEL[key];
 }
@@ -64,7 +77,11 @@ function statLabel(key){
 function findDraw(){
   const host = $("findChips");
   host.innerHTML = "";
-  /* One active filter, drawn as a chip that removes it when tapped. */
+  /** One active filter, drawn as a chip that removes it when tapped.
+     @param {string} label
+     @param {() => void} onClear
+     @param {string} [cls]
+     @param {string} [title] */
   function chip(label, onClear, cls, title){
     const t = el("button", "tog " + (cls || ""), label);
     setPressed(t, true);
@@ -111,10 +128,12 @@ function findDraw(){
   findRun();
 }
 
-/* ", highest first" / ", lowest first", after the prefix given */
+/** ", highest first" / ", lowest first", after the prefix given
+   @param {string} prefix */
 function dirLabel(prefix){
   return prefix + (FIND.dir === "asc" ? "lowest first" : "highest first");
 }
+/** @type {Record<string, string>} */
 const OWNED_ORIGIN = {home: "HOME origin", champions: "Champions origin"};
 
 /* THE SEARCH. Every base form that passes every filter at once, ranked, as
@@ -123,8 +142,10 @@ function findRun(){
   const out = $("findOut");
   out.innerHTML = "";
   const own = ownedNames();
+  /** @type {Record<string, number>} */
   const inHome = {};
   boxRows("home").forEach(function(r){ inHome[r.name] = 1; });
+  /** @type {FindCtx} */
   const ctx = {q: (FIND.q || "").trim().toLowerCase(), own: own, inHome: inHome,
              matchedAs: {}};              /* base name -> the Mega that matched */
   const hits = DEX.filter(function(p){ return findMatches(p, ctx); });
@@ -156,10 +177,12 @@ function findRun(){
     "Showing the first 120. Narrow it further to see the rest."));
 }
 
-/* Does one base form pass every filter? A Mega rides on its base row, so it
+/** Does one base form pass every filter? A Mega rides on its base row, so it
    is never a result of its own - but each filter may be satisfied by the
    base OR by one of its Megas, and the LAST one that needed a Mega is
-   remembered in ctx.matchedAs so the card can say so. */
+   remembered in ctx.matchedAs so the card can say so.
+   @param {DexRow} p
+   @param {FindCtx} ctx */
 function findMatches(p, ctx){
   if (p.mega) return false;
   if (ctx.q && !nameMatches(p, ctx.q)) return false;
@@ -171,9 +194,11 @@ function findMatches(p, ctx){
   return true;
 }
 
-/* The type and ability filters, each satisfied by the base or by a Mega.
+/** The type and ability filters, each satisfied by the base or by a Mega.
    Returns false when one fails; otherwise the Mega that was needed (the
-   ability's, if both needed one), or null when the base form did it all. */
+   ability's, if both needed one), or null when the base form did it all.
+   @param {DexRow} p
+   @returns {DexRow | null | false} */
 function typeAndAbility(p){
   let via = null;
   if (FIND.types.length) {
@@ -190,9 +215,11 @@ function typeAndAbility(p){
   return via;
 }
 
-/* THE NAME BOX, for opening one Pokemon's sheet quickly without building a
+/** THE NAME BOX, for opening one Pokemon's sheet quickly without building a
    query: the name, the species, the dex number - and a Mega's name, because
-   typing "mega absol" should find the card that carries it. */
+   typing "mega absol" should find the card that carries it.
+   @param {DexRow} p
+   @param {string} q */
 function nameMatches(p, q){
   return p.name.toLowerCase().includes(q) ||
          (p.species || "").toLowerCase().includes(q) ||
@@ -201,8 +228,10 @@ function nameMatches(p, q){
            return m.name.toLowerCase().includes(q); });
 }
 
-/* The two box toggles: in the Champions box, in HOME - both on means either.
-   With neither on, every Pokemon passes. */
+/** The two box toggles: in the Champions box, in HOME - both on means either.
+   With neither on, every Pokemon passes.
+   @param {DexRow} p
+   @param {FindCtx} ctx */
 function inTheBoxes(p, ctx){
   if (!FIND.inChamp && !FIND.inHome) return true;
   const c = FIND.inChamp && ((p.name in ctx.own) || (p.species in ctx.own));
@@ -210,33 +239,38 @@ function inTheBoxes(p, ctx){
   return c || h;
 }
 
-/* RULED OUT WINS, and it is checked on the BASE form only. A Mega that picks
+/** RULED OUT WINS, and it is checked on the BASE form only. A Mega that picks
    up Psychic does not make the Pokemon Psychic in the box, and the question
-   being asked - "nothing Psychic on this team" - is about what walks on. */
+   being asked - "nothing Psychic on this team" - is about what walks on.
+   @param {DexRow} p */
 function ruledOut(p){
   return FIND.notTypes.some(function(t){ return p.types.includes(t); });
 }
 
-/* ALL of the picked types, or ANY of them - the switch the chip row offers. */
+/** ALL of the picked types, or ANY of them - the switch the chip row offers.
+   @param {DexRow} f */
 function hasTheTypes(f){
   return FIND.typeMode === "or"
     ? FIND.types.some(function(t){ return f.types.includes(t); })
     : FIND.types.every(function(t){ return f.types.includes(t); });
 }
 
-/* Every picked move, in one movepool. A MEGA SHARES ITS BASE'S MOVEPOOL, so
-   this is asked of the base only. */
+/** Every picked move, in one movepool. A MEGA SHARES ITS BASE'S MOVEPOOL, so
+   this is asked of the base only.
+   @param {DexRow} p */
 function learnsAll(p){
   const ls = learnset(p.name);
   if (!ls) return false;
+  /** @type {Record<string, number>} */
   const have = {};
   ls.forEach(function(m){ have[m.name] = 1; });
   return FIND.moves.every(function(n){ return have[n]; });
 }
 
-/* THE SORT IS THE TIER LIST, and it reads both ways: descending is the speed
+/** THE SORT IS THE TIER LIST, and it reads both ways: descending is the speed
    tier, ascending the Trick Room one. Dex order is the one non-ranking
-   answer. A stat ranks by what the Pokemon can REACH - see reach(). */
+   answer. A stat ranks by what the Pokemon can REACH - see reach().
+   @param {DexRow[]} hits */
 function sortFinds(hits){
   if (FIND.sort === "dex") {
     hits.sort(function(a, b){
@@ -252,12 +286,14 @@ function sortFinds(hits){
   });
 }
 
-/* One result, on THE card (ui/card.js). ALL SIX STATS, ALWAYS, AND THE
+/** One result, on THE card (ui/card.js). ALL SIX STATS, ALWAYS, AND THE
    RANKED ONE MARKED: ranking by one stat must not hide the others. Badged
    with whether he owns one, and - when a Mega is the reason it matched at
    all - which Mega: Fighting finds Staraptor because its Mega is
    Fighting/Flying, and a card showing only Normal/Flying would look like a
-   bug. */
+   bug.
+   @param {DexRow} p
+   @param {FindCtx} ctx */
 function findCard(p, ctx){
   const here = (p.name in ctx.own) || (p.species in ctx.own);
   const ranking = FIND.sort !== "dex";
@@ -277,14 +313,15 @@ function findCard(p, ctx){
   });
 }
 
-/* WHICH copy he owns and how elastic it is: a rental, or his, with its
-   origin - the origin is what says whether the slot can be freed. */
+/** WHICH copy he owns and how elastic it is: a rental, or his, with its
+   origin - the origin is what says whether the slot can be freed.
+   @param {DexRow} p */
 function ownedTag(p){
   const rec = boxRows("champions").find(function(x){
     return x.name === p.name || x.name === p.species; });
   const o = rec ? originOf(rec) : null;
   const ownTag = rec?.status === "rental" ? "rental in your box"
-    : "yours, " + (OWNED_ORIGIN[o] || "origin?");
+    : "yours, " + ((o && OWNED_ORIGIN[o]) || "origin?");
   return el("span", "tag " + (o === "home" ? "ok" : ""), ownTag);
 }
 
@@ -320,7 +357,7 @@ function findInit(){
    A segmented control rather than another tab, because it belongs to Find. */
 function wireFindMode(){
   const mrow = $("findMode");
-  Array.prototype.forEach.call(mrow.children, function(b){
+  Array.prototype.forEach.call(mrow.children, function(/** @type {HTMLElement} */ b){
     b.onclick = function(){
       const m = b.dataset.mode;
       pressOnly(mrow, b);
@@ -355,7 +392,8 @@ function moveFilterSheet(){
   }, []);
 }
 
-/* a move row that adds a "learns" chip when tapped */
+/** a move row that adds a "learns" chip when tapped
+   @param {Move} m */
 function moveFilterRow(m){
   return moveRowFor(m, [], null, {onPick: function(){
     FIND.moves.push(m.name); closeSheet(); findDraw();
@@ -371,9 +409,12 @@ function typeFilterSheet(){
     const note = el("p", "sub");
     body.appendChild(note);
     const mrow = el("div", "toggles mb10");
+    /** @type {Record<string, HTMLElement>} */
     const chips = {};
     function paint(){ paintTypeFilter(chips, note); }
-    [["and", "has ALL of these"], ["or", "has ANY of these"]].forEach(function(o){
+    /** @type {[string, string][]} */
+    const modes = [["and", "has ALL of these"], ["or", "has ANY of these"]];
+    modes.forEach(function(o){
       mrow.appendChild(typeModeButton(mrow, o, paint));
     });
     body.appendChild(mrow);
@@ -387,7 +428,10 @@ function typeFilterSheet(){
   }, [fbtn("Done", "primary", function(){ closeSheet(); findDraw(); })]);
 }
 
-/* ALL or ANY. */
+/** ALL or ANY.
+   @param {HTMLElement} mrow
+   @param {[string, string]} o
+   @param {() => void} paint */
 function typeModeButton(mrow, o, paint){
   const b = el("button", "tog", o[1]);
   setPressed(b, FIND.typeMode === o[0]);
@@ -404,12 +448,15 @@ function typeModeButton(mrow, o, paint){
    ever return zero. Read off the dex, so a regulation that adds a type adds
    the filter. */
 function liveTypes(){
+  /** @type {Record<string, number>} */
   const live = {};
   DEX.forEach(function(p){ (p.types || []).forEach(function(t){ live[t] = 1; }); });
   return Object.keys(live).sort(byText);
 }
 
-/* One type chip: off -> has it -> hasn't it -> off. */
+/** One type chip: off -> has it -> hasn't it -> off.
+   @param {string} ty
+   @param {() => void} paint */
 function typeFilterChip(ty, paint){
   const b = el("button", "tog", ty);
   typeSkin(b, ty, false);
@@ -423,11 +470,13 @@ function typeFilterChip(ty, paint){
   return b;
 }
 
-/* Every chip in its state - in the type's own ink, since white on Electric is
+/** Every chip in its state - in the type's own ink, since white on Electric is
    unreadable; a ruled-out chip drops the type's border too, the last thing
    still saying "Psychic" when the point is that Psychic is being refused -
    and the note that explains ALL/ANY and warns that three types under ALL
-   can never match. */
+   can never match.
+   @param {Record<string, HTMLElement>} chips
+   @param {HTMLElement} note */
 function paintTypeFilter(chips, note){
   Object.keys(chips).forEach(function(ty){
     const on = FIND.types.includes(ty);
@@ -455,6 +504,7 @@ function paintTypeFilter(chips, note){
 }
 
 /* the tag tone of an ability's kind: changes your moves / what lands on it */
+/** @type {Record<string, string>} */
 const CLS_TONE = {"moves-off": "ok", "moves-def": "warn"};
 
 /* ADD AN ABILITY: every ability, searchable by name or by what it does, and
@@ -466,6 +516,7 @@ function abilityFilterSheet(){
   openSheet("Add an ability filter", function(body){
     const inp = searchField(body, "Search " + Object.keys(C.ABIL).length +
       " abilities — name or effect", function(){ draw(); });
+    /** @type {Record<string, number>} */
     const pick = {};
     body.appendChild(abilityKindChips(pick, function(){ draw(); }));
     const count = el("div", "sub mb6");
@@ -479,7 +530,9 @@ function abilityFilterSheet(){
   }, []);
 }
 
-/* One chip per kind that has any abilities, with its count. */
+/** One chip per kind that has any abilities, with its count.
+   @param {Record<string, number>} pick
+   @param {() => void} draw */
 function abilityKindChips(pick, draw){
   const CLS = C.AB_CLASS || {}, CLSL = C.AB_CLASS_LABEL || {};
   const ORDER = ["moves-off","moves-def","weather","terrain","speed",
@@ -493,7 +546,7 @@ function abilityKindChips(pick, draw){
     setPressed(t, false);
     t.onclick = function(){
       if (pick[k]) delete pick[k]; else pick[k] = 1;
-      setPressed(t, pick[k]);
+      setPressed(t, !!pick[k]);
       draw();
     };
     frow.appendChild(t);
@@ -501,8 +554,13 @@ function abilityKindChips(pick, draw){
   return frow;
 }
 
-/* ALL of them that match - the list is short enough that there is no reason
-   to cut, and the count counts what is drawn. */
+/** ALL of them that match - the list is short enough that there is no reason
+   to cut, and the count counts what is drawn.
+   @param {HTMLElement} list
+   @param {HTMLElement} count
+   @param {string[]} all
+   @param {Record<string, number>} pick
+   @param {string} q */
 function drawAbilityPicks(list, count, all, pick, q){
   const CLS = C.AB_CLASS || {};
   const ks = Object.keys(pick);
@@ -520,8 +578,9 @@ function drawAbilityPicks(list, count, all, pick, q){
   if (!hits.length) list.appendChild(el("div", "empty", "Nothing matches"));
 }
 
-/* One ability: its kind, the items that serve it, and its WHOLE text - this
-   row is the only place the description appears, so it is never cut. */
+/** One ability: its kind, the items that serve it, and its WHOLE text - this
+   row is the only place the description appears, so it is never cut.
+   @param {string} a */
 function abilityPickRow(a){
   const CLS = C.AB_CLASS || {}, CLSL = C.AB_CLASS_LABEL || {};
   const r = el("button", "row");

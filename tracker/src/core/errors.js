@@ -5,6 +5,7 @@
    "It does not work on my phone" cannot be diagnosed from a desktop browser
    where it works. This records what the page sees, on the device where it
    fails. boot.js imports it first, so no error escapes it. */
+/** @type {string[]} */
 const BOOT_ERRORS = [];
 window.addEventListener("error", function(e){
   BOOT_ERRORS.push((e.message || "error") +

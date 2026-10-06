@@ -80,6 +80,7 @@ const STAT_KEYS = ["hp","atk","def","spa","spd","spe"];
 function spTotal(sp){
   return STAT_KEYS.reduce(function(a,k){ return a + (Number(sp[k]) || 0); }, 0);
 }
+/** @type {Record<string, string>} */
 const STAT_LABEL = {hp:"HP", atk:"Atk", def:"Def", spa:"SpA", spd:"SpD", spe:"Spe"};
 /* THE OFFICIAL TYPE COLOURS, from pokemon.com's own stylesheet
    (scripts/build_type_colors.py). Each type brings three facts:
