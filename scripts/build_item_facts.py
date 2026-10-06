@@ -30,6 +30,7 @@ import argparse
 import json
 import os
 import re
+from typing import Any
 
 import dex
 from fetch_pokebase import rows_with
@@ -38,7 +39,7 @@ from paths import DB
 OUT = os.path.join(DB, "item_facts.json")
 
 
-def pokebase_unlocks():
+def pokebase_unlocks() -> dict[str, str]:
     """name -> how the shop unlocks it ("shop-1000-vp")."""
     out = {}
     for r in rows_with("items", "name", "unlock"):
@@ -46,7 +47,7 @@ def pokebase_unlocks():
     return out
 
 
-def pokebase_text():
+def pokebase_text() -> dict[str, str]:
     """pokebase's description: the mechanics, with the numbers in them."""
     out = {}
     for r in rows_with("items", "name", "description"):
@@ -56,7 +57,7 @@ def pokebase_text():
     return out
 
 
-def vp_of(unlock):
+def vp_of(unlock: str | None) -> int | None:
     """`shop-2000-vp` -> 2000. Anything else is not a price."""
     m = re.match(r"shop-(\d+)-vp$", unlock or "")
     return int(m.group(1)) if m else None
@@ -68,7 +69,8 @@ UNLOCK_LABEL = {
 }
 
 
-def _price(it, pb):
+def _price(it: dex.Row,
+           pb: dict[str, str]) -> tuple[int | None, str | None, str | None, str | None]:
     """(VP, who priced it, unlock, and 'agree', 'clash', 'filled' or None)."""
     serebii = it.get("price_vp")
     unlock = pb.get(it["name"])
@@ -92,7 +94,7 @@ def _price(it, pb):
     return serebii or pbvp, src, unlock, status
 
 
-def _unpriced_note(it, unlock):
+def _unpriced_note(it: dex.Row, unlock: str | None) -> str:
     """Where an item with no price comes from, or "" when nothing says."""
     note = UNLOCK_LABEL.get(unlock or "", "")
     if not note:
@@ -101,7 +103,8 @@ def _unpriced_note(it, unlock):
     return note
 
 
-def _texts(it, smogon, pbtext):
+def _texts(it: dex.Row, smogon: dict[str, Any],
+           pbtext: dict[str, str]) -> dict[str, Any]:
     """SMOGON'S CHAMPIONS DEX FIRST: it almost always describes an item
     better, and with its numbers. Sitrus Berry is "Restores 1/4 max HP when at 1/2
     max HP or less. Single use." there; Light Clay names Aurora Veil,
@@ -118,7 +121,8 @@ def _texts(it, smogon, pbtext):
             "serebii_text": ser}
 
 
-def _print_summary(rows, filled, agree, nothing, clash):
+def _print_summary(rows: dict[str, dict[str, Any]], filled: list[str], agree: int,
+                   nothing: list[str], clash: list[str]) -> None:
     """How many items each source priced, where they agree, and every clash."""
     print("%d items" % len(rows))
     print("  %3d priced by Serebii" % sum(1 for r in rows.values()
@@ -147,7 +151,7 @@ def _print_summary(rows, filled, agree, nothing, clash):
             print("     %-24s %d VP" % (n, v))
 
 
-def main():
+def main() -> None:
     """Price every item (Serebii first, pokebase to fill gaps), attach its
     texts, and write item_facts.json.
     """

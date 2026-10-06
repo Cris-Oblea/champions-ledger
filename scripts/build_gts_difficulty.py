@@ -32,7 +32,7 @@ SRC = os.path.join(META, "go_sourcing.json")
 
 # Ladder usage -> demand 1-5. The cuts are where the ladder actually steps:
 # a top-25 Pokemon is a different negotiation from a rank-150 one.
-def demand_of(pct):
+def demand_of(pct: float) -> int:
     for floor, level in ((15, 5), (7, 4), (3, 3), (1, 2)):
         if pct >= floor:
             return level
@@ -47,7 +47,7 @@ DEMAND_WHY = {
 }
 
 
-def main():
+def main() -> None:
     """Score how hard each species is to get by trade - the harder of demand
     (ladder usage) and supply (researched sourcing) - and write
     gts_difficulty.json (--show prints the table).

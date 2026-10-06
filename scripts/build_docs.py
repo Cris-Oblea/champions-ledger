@@ -22,7 +22,9 @@ import json
 import os
 import re
 import sys
+from collections.abc import Callable
 from pathlib import Path
+from typing import Any
 
 from check_regulation import live_slug
 from paths import POKEBASE, ROOT
@@ -31,7 +33,7 @@ README = os.path.join(ROOT, "README.md")
 STATUS = os.path.join(ROOT, "STATUS.md")
 
 
-def load(rel, key=None):
+def load(rel: str, key: str | None = None) -> Any:
     """A JSON file under the repo, optionally one key of it, or None when it
     does not exist.
     """
@@ -42,7 +44,7 @@ def load(rel, key=None):
     return d[key] if key else d
 
 
-def _payload(rel):
+def _payload(rel: str) -> int:
     """How many THINGS a meta file holds, not how many keys wrap them."""
     d = load(rel)
     if not isinstance(d, dict):
@@ -55,7 +57,7 @@ def _payload(rel):
     return len([k for k in d if not k.startswith("_")])
 
 
-def counts():
+def counts() -> str:
     """The table of what the database holds, row by row."""
     mons = load("data/db/pokemon.json") or []
     moves = load("data/db/moves.json") or []
@@ -102,7 +104,7 @@ def counts():
     return "\n".join(out)
 
 
-def loaded():
+def loaded() -> str:
     """What the database holds, for STATUS.md's "What is loaded" table.
 
     The same rule as the README's: this table had a count in every row and
@@ -152,7 +154,7 @@ def loaded():
     return "\n".join(out)
 
 
-def vintage():
+def vintage() -> str:
     """What regulation the data describes, and when it was fetched."""
     u = load("data/meta/usage_pokemon.json") or {}
     reg = "unknown"
@@ -173,12 +175,12 @@ WORDS = ("zero one two three four five six seven eight nine ten eleven twelve "
          "twenty-six twenty-seven twenty-eight twenty-nine thirty").split()
 
 
-def word(n):
+def word(n: int) -> str:
     """A small number as a word ("twelve"), larger ones as digits."""
     return WORDS[n] if n < len(WORDS) else str(n)
 
 
-def gate():
+def gate() -> str:
     """What the gate actually runs, counted from daily.py itself.
 
     This paragraph said "sixteen browser tests" in one place and "fifteen" in
@@ -220,7 +222,7 @@ def gate():
            word(parts), word(browser)))
 
 
-def tests_line():
+def tests_line() -> str:
     """The one line in the layout block that counts files on disk.
 
     A .js file in tests/ is not automatically a test: harness.js is the shared
@@ -244,7 +246,7 @@ DOCS = {
 }
 
 
-def render(text, blocks, what):
+def render(text: str, blocks: dict[str, Callable[[], str]], what: str) -> str:
     """Replace every generated block in a document; stop if a block's markers
     are missing.
     """
@@ -259,7 +261,7 @@ def render(text, blocks, what):
     return text
 
 
-def main():
+def main() -> int:
     """Regenerate the counted blocks in README.md and STATUS.md; --check only
     reports what is stale and exits 1.
     """

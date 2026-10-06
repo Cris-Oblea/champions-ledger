@@ -39,6 +39,7 @@ import os
 import re
 import sys
 from pathlib import Path
+from typing import Any
 
 import dex
 from paths import DB, SMOGON_CALC
@@ -59,7 +60,7 @@ STAGE = re.compile(r"\bstages?\b|maximi[sz]e|minimi[sz]e|to maximum", re.I)
 ATTACKER = re.compile(r"attacker|opponent|the foe", re.I)
 
 
-def sentences(text):
+def sentences(text: str) -> list[str]:
     """Split on real sentence ends - and "Sp. Atk" is not one.
 
     Serebii abbreviates the special stats mid-sentence, so a naive split on
@@ -70,7 +71,7 @@ def sentences(text):
     return [s for s in re.split(r"(?<=[.])\s+", t) if s.strip()]
 
 
-def stat_moves(m):
+def stat_moves(m: dex.Row) -> tuple[bool, bool, bool, bool]:
     """(self_up, self_down, target_up, target_down) for one move."""
     su = sd = tu = td = False
     body = (m.get("effect") or "") + " " + (m.get("in_depth") or "")
@@ -99,7 +100,7 @@ def stat_moves(m):
     return su, sd, tu, td
 
 
-def down_stats(m):
+def down_stats(m: dex.Row) -> list[str]:
     """Which of the target's stats this move lowers, by name.
 
     Hyper Cutter guards Attack and Big Pecks guards Defense; badging either on
@@ -127,7 +128,7 @@ _STAT_NAME = {"Sp.Atk": "Sp. Atk", "Sp.Def": "Sp. Def", "Defence": "Defense",
 SMOG = os.path.join(SMOGON_CALC, "raw_moves.json")
 
 
-def smogon_moves():
+def smogon_moves() -> dict[str, dict[str, Any]]:
     """Smogon's own move table, keyed the way dex.key() keys ours.
 
     It is the better source for two things this file turns on. `secondaries`
@@ -151,7 +152,7 @@ def smogon_moves():
 # wherever it has one. Same call damage.py makes; the disagreements it lists
 # (Misty Explosion, Burning Jealousy, Psyshield Bash) come out of this
 # automatically, and Corrosive Gas is a fourth it does not have.
-def targeting(m, smogon):
+def targeting(m: dex.Row, smogon: dict[str, Any] | None) -> tuple[bool, bool]:
     """(spread, hits_ally) - more than one target, and is the ally one of them?"""
     t = smogon.get("target") if smogon else None
     if t in ("allAdjacent", "allAdjacentFoes"):
@@ -162,7 +163,7 @@ def targeting(m, smogon):
     return k in dex.SPREAD_TARGETS, k == "all adjacent pokemon"
 
 
-def derive(moves):
+def derive(moves: list[dex.Row]) -> dict[str, dict[str, Any]]:
     """Each useable move's PROPERTIES (flags, secondary, stat changes,
     target...) - Serebii's facts cross-checked against Smogon's engine
     flags, every disagreement collected for the report. The rules then run
@@ -236,11 +237,11 @@ def derive(moves):
 
 # A damaging move is the precondition for every power multiplier: no damage,
 # nothing to multiply. This is the guard that was missing.
-def dmg(m):
+def dmg(m: dict[str, Any]) -> bool:
     return m["bp"] > 0 and m["cat"] != "Status"
 
 
-def can_miss(m):
+def can_miss(m: dict[str, Any]) -> bool:
     """101 is Champions' "never misses"; None is a cell Serebii left empty."""
     return m["acc"] is not None and m["acc"] < 100
 
@@ -252,7 +253,7 @@ STATUSES = ("Paralysis", "Burn", "Poison", "Badly Poisoned", "Freeze",
             "Sleep", "Confusion", "Flinch")
 
 
-def st(m, status):
+def st(m: dict[str, Any], status: str) -> bool:
     """Does move `m` cause `status`? (data/db/statuses.json, read once)"""
     global _STATUS
     if _STATUS is None:
@@ -261,7 +262,7 @@ def st(m, status):
     return m["name"] in _STATUS.get(status, ())
 
 
-def foe(m):
+def foe(m: dict[str, Any]) -> bool:
     """Can this move be aimed at an opposing Pokemon?
 
     Armor Tail stops an opponent's priority move, never the user's own Protect,
@@ -628,7 +629,7 @@ STATUS_FAMILY_NOTE = """
   badge is worse than none, so it waits for a real status column."""
 
 
-def incoming(p):
+def incoming(p: dict[str, Any]) -> bool:
     """Could this move ever be aimed at the Pokemon holding the ability?
 
     A defensive rule listing Swords Dance and Tailwind is noise: nothing on the
@@ -649,8 +650,8 @@ def incoming(p):
 # measured, never listed by hand: the hit set is compared against the canonical
 # category sets below, so a rule that stops covering a category starts badging
 # again on the next build with no edit here.
-def _scopes(props):
-    def cat(c):
+def _scopes(props: dict[str, dict[str, Any]]) -> list[tuple[str, set[str]]]:
+    def cat(c: str) -> set[str]:
         """The useable moves of one category."""
         return {n for n, p in props.items() if p["cat"] == c}
     dmgset = {n for n, p in props.items() if dmg(p)}
@@ -736,7 +737,7 @@ STOP_WHOSE = {
 }
 
 
-def build(props):
+def build(props: dict[str, dict[str, Any]]) -> tuple[dict[str, Any], dict[str, Any]]:
     """Run every RULE over the move properties: (the ability -> moves table
     that ships, a report per ability for --audit)."""
     table, report = {}, {}
@@ -818,7 +819,7 @@ CLASS_OVERRIDE = {
 # decided earlier moves because of a regex written later.
 
 
-def ability_text(a):
+def ability_text(a: dex.Row) -> str:
     """Serebii's text, or the merged one where Serebii has none.
 
     Serebii names Battle Bond on Greninja's page and gives it no text at all,
@@ -834,7 +835,7 @@ def ability_text(a):
     return (facts.get(a["name"]) or {}).get("text") or ""
 
 
-def classify(name, table, text):
+def classify(name: str, table: dict[str, Any], text: str) -> str:
     """One bucket per ability: what a player would filter on."""
     if name in CLASS_OVERRIDE:
         return CLASS_OVERRIDE[name]
@@ -870,7 +871,7 @@ CLASS_LABEL = {
 }
 
 
-def audit(table):
+def audit(table: dict[str, Any]) -> list[Any]:
     """Every ability in the format, and what we decided about it."""
     abil = dex.db("abilities")
     mentions_move = re.compile(r"\bmoves?\b|\bpower\b|\bdamage\b|STAB|priority|contact|"
@@ -921,7 +922,7 @@ def audit(table):
     return missing
 
 
-def main():
+def main() -> None:
     """Derive each move's properties, build the ability rule table, print the
     report (--audit fails on a rule for an ability that does not exist), and
     write ability_moves.json with every ability's bucket.

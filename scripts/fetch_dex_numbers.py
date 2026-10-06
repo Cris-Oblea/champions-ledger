@@ -23,6 +23,7 @@ import argparse
 import json
 import os
 from pathlib import Path
+from typing import Any
 
 import net
 from paths import DB, RAW
@@ -32,7 +33,7 @@ OUT = os.path.join(DB, "dex_numbers.json")
 URL = "https://pokeapi.co/api/v2/pokemon-species?limit=2000"
 
 
-def fetch(force=False):
+def fetch(force: bool = False) -> Any:
     """PokeAPI's species list, from the cache unless forced."""
     if os.path.exists(SPECIES_CACHE) and not force:
         return json.loads(Path(SPECIES_CACHE).read_text(encoding="utf-8"))
@@ -42,7 +43,7 @@ def fetch(force=False):
     return data
 
 
-def _key(name):
+def _key(name: str) -> str:
     """Our spelling is Serebii's; PokeAPI's is lowercase and hyphenated, and it
     keys on the BASE species, so a regional form resolves to its base number."""
     s = name.lower()
@@ -52,7 +53,7 @@ def _key(name):
     return s
 
 
-def _strip_form(name):
+def _strip_form(name: str) -> str:
     """Alolan Ninetales is #38, the same as Ninetales.
 
     The Mega suffixes are a space, not a hyphen - "Mega Charizard X" -
@@ -65,7 +66,7 @@ def _strip_form(name):
     return base
 
 
-def _number_of(name, lookup):
+def _number_of(name: str, lookup: dict[str, int]) -> int | None:
     """A form's National Dex number: its own name first, then with the form
     stripped.
     """
@@ -74,7 +75,8 @@ def _number_of(name, lookup):
                  if p in lookup), None)
 
 
-def _report(nums, resolved, missing, mons):
+def _report(nums: dict[str, int], resolved: dict[str, int], missing: list[str],
+            mons: list[dict[str, Any]]) -> None:
     """How many names got a number, and the Champions forms that did not."""
     print("%d species from PokeAPI" % len(nums))
     print("wrote %s  -  %d names resolved, %d without a number"
@@ -87,7 +89,7 @@ def _report(nums, resolved, missing, mons):
               "forms: %s ...)" % ", ".join(missing[:6]))
 
 
-def main():
+def main() -> None:
     """Give every form in the dex its National Dex number and write it out."""
     ap = argparse.ArgumentParser()
     ap.add_argument("--force", action="store_true")

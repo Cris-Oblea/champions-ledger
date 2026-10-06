@@ -16,11 +16,12 @@ round-trip actually succeeds, which normal cp1252 prose never does (a lone
 0xE9 for "e-acute" is not valid UTF-8).
 """
 import codecs
+import os
 
 _NAME = "serebii"
 
 
-def _handler(err):
+def _handler(err: UnicodeError) -> tuple[str | bytes, int]:
     """Map the five bytes cp1252 leaves undefined to U+0080-U+009F, both ways.
 
     That keeps the decode reversible, which is what lets unmojibake() re-encode
@@ -38,7 +39,7 @@ def _handler(err):
 codecs.register_error(_NAME, _handler)
 
 
-def unmojibake(s):
+def unmojibake(s: str) -> str:
     """Undo cp1252/UTF-8 round-trips, up to three deep (the most seen)."""
     for _ in range(3):
         try:
@@ -51,7 +52,7 @@ def unmojibake(s):
     return s
 
 
-def read(path):
+def read(path: str | os.PathLike[str]) -> str:
     """Read a cached Serebii page as text, losing nothing."""
     with open(path, "rb") as f:
         return f.read().decode("cp1252", _NAME)

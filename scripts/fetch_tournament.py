@@ -52,7 +52,7 @@ TEAM_PHP = "https://www.pokedata.ovh/misc/team.php?team="
 DEFAULT_DIVISION = "masters"
 
 
-def get(url, timeout=60):
+def get(url: str, timeout: float = 60) -> str | None:
     """A page's text, or None when it fails."""
     try:
         return net.text(url, timeout=timeout)
@@ -60,7 +60,7 @@ def get(url, timeout=60):
         return None
 
 
-def round_info(tid, division):
+def round_info(tid: str, division: str) -> dict[str, Any]:
     """What the index page says about where the event stands.
 
     The round buttons are labelled, and the labels are the only thing that
@@ -94,7 +94,8 @@ def round_info(tid, division):
     return info
 
 
-def event_json(tid, division, rnd=None):
+def event_json(tid: str, division: str,
+               rnd: int | None = None) -> list[dict[str, Any]] | None:
     """The site's own "Download JSON" export: the entire event in one request.
 
     Cached per round so a live event still picks up the newer file.
@@ -111,7 +112,7 @@ def event_json(tid, division, rnd=None):
     return rows if isinstance(rows, list) and rows else None
 
 
-def players_from_event(rows):
+def players_from_event(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
     """Reshape the export into the same records the rest of the project reads.
 
     The export writes the country into the name ("Takuma Yamazaki [JP]"), so it
@@ -152,7 +153,7 @@ def players_from_event(rows):
     return players
 
 
-def latest_round(tid, division):
+def latest_round(tid: str, division: str) -> tuple[int, str] | tuple[None, None]:
     """Rounds appear as they are played; walk down from 20 to the newest one
     present."""
     for n in range(20, 0, -1):
@@ -162,7 +163,7 @@ def latest_round(tid, division):
     return None, None
 
 
-def _row_record(row):
+def _row_record(row: str) -> tuple[str | None, bool]:
     """(record, dropped) from a standings row.
 
     The record cell has three shapes: "12-2-0", "12-2-0*" (still alive)
@@ -178,7 +179,7 @@ def _row_record(row):
     return None, False
 
 
-def _row_teamfile(row):
+def _row_teamfile(row: str) -> str | None:
     """showTeam() escapes a quote inside the name: a player called
     Cary D'Ortona arrives as Masters_Cary D\\'Ortona.json, so stop the
     match at ".json'" rather than at the first quote, then unescape."""
@@ -186,7 +187,7 @@ def _row_teamfile(row):
     return mf.group(1).replace(chr(92) + "'", "'") if mf else None
 
 
-def _tooltip_slot(t):
+def _tooltip_slot(t: str) -> dict[str, Any] | None:
     """One sprite tooltip: the Pokemon, then its ability, item and moves."""
     parts = [p.strip() for p in html.unescape(t).replace("&#10", "\n").split("\n")]
     parts = [p for p in parts if p]
@@ -205,7 +206,7 @@ def _tooltip_slot(t):
     return entry
 
 
-def parse_standings(body):
+def parse_standings(body: str) -> list[dict[str, Any]]:
     """One row per player: placement, record, and the team from the sprite tooltips."""
     players = []
     for row in re.split(r'<tr class="trow"', body)[1:]:
@@ -226,7 +227,7 @@ def parse_standings(body):
     return players
 
 
-def cache_stem(path):
+def cache_stem(path: str) -> str:
     """A filesystem-safe cache name that cannot collide.
 
     Sanitising alone is lossy: five Japanese Seniors all reduce to
@@ -238,7 +239,7 @@ def cache_stem(path):
     return "%s.%s" % (safe, hashlib.sha1(path.encode("utf-8")).hexdigest()[:8])
 
 
-def cached(stem, url, timeout=45):
+def cached(stem: str, url: str, timeout: float = 45) -> str | None:
     """Fetch once, then serve from data/raw/tournaments on every later run."""
     path = os.path.join(TOURNAMENTS, stem)
     if os.path.exists(path):
@@ -251,7 +252,7 @@ def cached(stem, url, timeout=45):
     return body
 
 
-def parse_team_html(body):
+def parse_team_html(body: str) -> list[dict[str, Any]]:
     """team.php renders one card per Pokemon: sprite, name, ability, item,
     nature, then the moves. Checked field-for-field against the JSON endpoint
     on players reachable both ways - it agrees on all six slots."""
@@ -277,7 +278,7 @@ def parse_team_html(body):
     return out
 
 
-def _team_from_json(body):
+def _team_from_json(body: str) -> list[dict[str, Any]]:
     """One player's team from pokedata's teamlist JSON."""
     try:
         rows = json.loads(body)
@@ -292,7 +293,7 @@ def _team_from_json(body):
     } for r in rows]
 
 
-def _player_team(path):
+def _player_team(path: str) -> tuple[list[dict[str, Any]], bool]:
     """(the teamlist, whether it came from team.php) for one player's file."""
     stem = cache_stem(path)
     body = cached(stem, "https://www.pokedata.ovh/" + urllib.parse.quote(path, safe="/"))
@@ -304,7 +305,7 @@ def _player_team(path):
     return merged, bool(merged)
 
 
-def enrich_with_teamlists(players):
+def enrich_with_teamlists(players: list[dict[str, Any]]) -> int:
     """The per-player teamlist adds the nature, which the tooltip does not carry.
 
     The plain .json endpoint 404s for every player whose name is not ASCII, so
@@ -327,7 +328,8 @@ def enrich_with_teamlists(players):
     return done
 
 
-def _scrape(tid, division, rnd):
+def _scrape(tid: str, division: str,
+            rnd: int | None) -> tuple[list[dict[str, Any]], int | None]:
     """(players, the round) from the per-round standings pages - the route for
     the older events that publish no JSON export."""
     if rnd:
@@ -345,7 +347,8 @@ def _scrape(tid, division, rnd):
     return players, rnd
 
 
-def _print_summary(tid, division, rnd, info, origin, players):
+def _print_summary(tid: str, division: str, rnd: int | None, info: dict[str, Any],
+                   origin: str, players: list[dict[str, Any]]) -> None:
     """The event, round (with its label), swiss rounds, players and teamlist
     count.
     """
@@ -365,13 +368,13 @@ def _print_summary(tid, division, rnd, info, origin, players):
                  and all(s.get("nature") for s in p["team"]))))
 
 
-def main():
+def main() -> None:
     """Fetch one division of one event (--tid, --division), with every player's
     teamlist, and write it to data/meta.
     """
     args = sys.argv[1:]
 
-    def opt(flag, default=None):
+    def opt(flag: str, default: str) -> str:
         """The value after a flag, or the default."""
         return args[args.index(flag) + 1] if flag in args else default
 
@@ -382,11 +385,9 @@ def main():
     info = round_info(tid, division)
     rnd = info.get("round")
 
-    players, origin = [], None
     rows = event_json(tid, division, rnd)
-    if rows:
-        players = players_from_event(rows)
-        origin = "event JSON export"
+    players = players_from_event(rows) if rows else []
+    origin = "event JSON export"
     if not players:                      # older events publish no export
         players, rnd = _scrape(tid, division, rnd)
         origin = "per-round standings scrape"

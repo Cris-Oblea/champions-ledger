@@ -38,6 +38,7 @@ import json
 import os
 import re
 import sys
+from typing import Any
 
 import net
 from paths import DB
@@ -47,7 +48,7 @@ POKEBASE = "https://pokebase.app/pokemon-champions/pokemon"
 SEREBII = "https://www.serebii.net/pokemonchampions/rankedbattle.shtml"
 
 
-def live_slug(html):
+def live_slug(html: str) -> str | None:
     """What pokebase says is the latest regulation set, e.g. "m-c".
 
     The quoting varies with how the page data is embedded - sometimes plain,
@@ -59,7 +60,7 @@ def live_slug(html):
     return m.group(1).strip().lower() if m else None
 
 
-def serebii_regulations(html):
+def serebii_regulations(html: str) -> set[str]:
     """Every regulation Serebii's Ranked Battle page names, lower-cased.
 
     DELIBERATELY NOT "M-x". Champions is on its M series today and nothing says
@@ -75,7 +76,7 @@ def serebii_regulations(html):
                 html)}
 
 
-def recorded():
+def recorded() -> dict[str, Any]:
     """The regulation the database was built for, or {} when nothing is
     recorded.
     """
@@ -85,7 +86,7 @@ def recorded():
         return {}
 
 
-def record(slug, note=""):
+def record(slug: str, note: str = "") -> dict[str, str]:
     """Write what the database is built for.
 
     Deliberately a file in data/db/ rather than a note in prose: it sits beside
@@ -103,7 +104,7 @@ def record(slug, note=""):
     return body
 
 
-def look():
+def look() -> tuple[str, str | None, str | None, str]:
     """(status, live slug, ours, what Serebii knows)."""
     try:
         live = live_slug(net.text(POKEBASE, timeout=90))
@@ -131,7 +132,7 @@ def look():
            "Serebii lists " + ", ".join(sorted(known))
 
 
-def main():
+def main() -> int:
     """Say whether the database is built for the live regulation. Exit 0 when
     it is, 10 when a new one is ready to build, 11 when it is live but not
     yet buildable, 2 when it could not tell.

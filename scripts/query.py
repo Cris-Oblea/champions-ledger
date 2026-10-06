@@ -38,11 +38,14 @@ import re
 import sys
 import textwrap
 from collections import Counter, defaultdict
+from collections.abc import Sequence
+from typing import Any
 
 import ledger
 from dex import (
     DIVISIONS,
     TYPES,
+    Row,
     db,
     find_pokemon,
     key,
@@ -68,7 +71,7 @@ for _s in (sys.stdout, sys.stderr):
 # --------------------------------------------------------------------------
 # indexes
 # --------------------------------------------------------------------------
-def division_shares(name):
+def division_shares(name: str) -> list[tuple[str, int, int]]:
     """[(division, n, total)] - how many teams in each division ran `name`."""
     target = norm(name)
     rows = []
@@ -80,7 +83,7 @@ def division_shares(name):
     return rows
 
 
-def usage_index():
+def usage_index() -> dict[str, float]:
     """name -> usage percent, from the pokebase ladder data."""
     rows = (meta("usage_pokemon") or {}).get("rows", [])
     idx = {}
@@ -89,13 +92,13 @@ def usage_index():
     return idx
 
 
-def usage_of(name, idx=None):
+def usage_of(name: str, idx: dict[str, float] | None = None) -> float | None:
     """A Pokemon's ladder usage %, or None when pokebase lists it nowhere."""
     idx = idx if idx is not None else usage_index()
     return idx.get(norm(name))
 
 
-def move_usage_index():
+def move_usage_index() -> dict[str, float]:
     """{move key: usage %} over every move on the ladder."""
     rows = (meta("usage_moves") or {}).get("rows", [])
     return {key(r["name"]): r["usage_percent"] for r in rows}
@@ -104,7 +107,7 @@ def move_usage_index():
 # --------------------------------------------------------------------------
 # output helpers
 # --------------------------------------------------------------------------
-def table(rows, headers):
+def table(rows: Sequence[Sequence[object]], headers: list[str]) -> None:
     if not rows:
         print("  (no results)")
         return
@@ -118,11 +121,11 @@ def table(rows, headers):
         print("  ".join(c.ljust(widths[i]) for i, c in enumerate(r)))
 
 
-def pct(v):
+def pct(v: float | None) -> str:
     return "" if v is None else ("%.1f%%" % v)
 
 
-def owned_sets():
+def owned_sets() -> tuple[set[str], set[str], set[str], set[str]]:
     """(permanent, rental, stones, items) he owns, as sets of norm() keys /
     names - read from the live ledger through ledger.inv()."""
     inv = ledger.inv()
@@ -136,7 +139,7 @@ def owned_sets():
     return perm, temp, stones, items
 
 
-def own_tag(name, perm, temp):
+def own_tag(name: str, perm: set[str], temp: set[str]) -> str:
     """ "OWN", "rent" or "" - the column the listings print beside a name."""
     n = norm(name)
     if n in perm:
@@ -154,7 +157,7 @@ FLAGS = ["contact", "sound", "punch", "biting", "snatchable", "slicing",
          "magic_coat", "protect_blocks", "mirror_move"]
 
 
-def smogon_gloss(name):
+def smogon_gloss(name: str) -> Row | None:
     """Smogon's one-line rules text for a move or ability.
 
     `data/db/smogon_basics.json` is a SECOND rules source sitting next to
@@ -173,7 +176,7 @@ def smogon_gloss(name):
     return None
 
 
-def _worlds_teams_running(move_name):
+def _worlds_teams_running(move_name: str) -> dict[str, tuple[int, int]]:
     """division -> (teams running the move, teams)."""
     counts: dict[str, tuple[int, int]] = {}
     for d, t in tournaments():
@@ -184,7 +187,7 @@ def _worlds_teams_running(move_name):
     return counts
 
 
-def _print_box_learners(mv):
+def _print_box_learners(mv: Row) -> None:
     """How many Pokemon in the format learn the move, and which of them are in
     his box ((r) = rental).
     """
@@ -200,7 +203,7 @@ def _print_box_learners(mv):
         print("Nothing in your box learns it.")
 
 
-def _print_move_texts(mv):
+def _print_move_texts(mv: Row) -> None:
     """The move's text from Serebii and Smogon side by side, so a rebalance
     shows up as a disagreement.
     """
@@ -223,7 +226,7 @@ def _print_move_texts(mv):
                             subsequent_indent="         "))
 
 
-def cmd_move(a):
+def cmd_move(a: argparse.Namespace) -> None:
     """`query.py move <name>`: one move's numbers, flags, texts, ladder usage
     and who in the box learns it. An unknown name suggests the near matches.
     """
@@ -256,7 +259,7 @@ def cmd_move(a):
     _print_box_learners(mv)
 
 
-def _priority_ok(p, want):
+def _priority_ok(p: int | None, want: str | None) -> bool:
     """--priority: "+", "-" or an exact bracket; no filter when not given."""
     if not want:
         return True
@@ -269,7 +272,7 @@ def _priority_ok(p, want):
     return p == int(want)
 
 
-def _move_matches(m, a):
+def _move_matches(m: Row, a: argparse.Namespace) -> bool:
     """Does move row `m` pass every `query.py moves` filter in `a`?"""
     f = m.get("flags") or {}
     text = ((m.get("effect") or "") + " " + (m.get("in_depth") or "")).lower()
@@ -289,7 +292,7 @@ def _move_matches(m, a):
                 learner.lower() for learner in m.get("learners", [])]))
 
 
-def _owned_box():
+def _owned_box() -> dict[str, str]:
     """norm() key -> display name, "*" in front of a permanent.
 
     owned_sets() returns norm() keys, which are lowercased and token
@@ -305,7 +308,7 @@ def _owned_box():
     return box
 
 
-def _box_cells(m, box):
+def _box_cells(m: Row, box: dict[str, str]) -> list[object]:
     """(how many box Pokemon learn it, the first six by name)."""
     mine = sorted({box[norm(learner)] for learner in m.get("learners", [])
                    if norm(learner) in box},
@@ -319,7 +322,7 @@ def _box_cells(m, box):
     return [len(mine), ", ".join(shown) or "-"]
 
 
-def _print_learner_counts(res, a):
+def _print_learner_counts(res: list[Row], a: argparse.Namespace) -> None:
     """Which Pokemon learn how many of the filtered moves, with ladder usage
     and ownership - the answer to "who learns all of these".
     """
@@ -335,7 +338,7 @@ def _print_learner_counts(res, a):
     table(rows, ["Pokemon", "#Moves", "Usage", "You"])
 
 
-def cmd_moves(a):
+def cmd_moves(a: argparse.Namespace) -> None:
     """`query.py moves`: the move list filtered by flag, type, category, effect
     text and power, most used first.
     """
@@ -376,7 +379,7 @@ def cmd_moves(a):
         _print_learner_counts(res, a)
 
 
-def cmd_counter_priority(a):
+def cmd_counter_priority(a: argparse.Namespace) -> None:
     """Everything that turns priority moves off, plus the priority moves themselves."""
     moves, abilities = db("moves"), db("abilities")
 
@@ -410,7 +413,7 @@ def cmd_counter_priority(a):
           ["Move", "Pri", "Type", "Pow", "Users", "Usage"])
 
 
-def _print_megas(p, stones):
+def _print_megas(p: Row, stones: set[str]) -> None:
     """The Pokemon's Mega lines: typing, BST, ability, and whether the stone is
     owned.
     """
@@ -424,7 +427,7 @@ def _print_megas(p, stones):
                  ", ".join(m["abilities"]), "  [stone owned]" if stone else ""))
 
 
-def _movepool(name):
+def _movepool(name: str) -> list[str]:
     """The learnset filed under this name, its norm() spelling, or - for a
     cosmetic or gender form - the base species'."""
     learn = load(os.path.join(DB, "learnsets.json"), {}) or {}
@@ -435,7 +438,7 @@ def _movepool(name):
             or [])
 
 
-def _print_movepool_table(mv):
+def _print_movepool_table(mv: list[str]) -> None:
     """A movepool as a table: type, category, BP, accuracy and ladder usage,
     strongest first.
     """
@@ -453,7 +456,7 @@ def _print_movepool_table(mv):
     table(rows, ["Move", "Type", "Cat", "Pow", "Acc", "PP", "Pri", "Usage"])
 
 
-def cmd_pokemon(a):
+def cmd_pokemon(a: argparse.Namespace) -> None:
     """`query.py pokemon <name>`: one form's stats, abilities, usage,
     ownership, Megas, movepool and Smogon's analysis.
     """
@@ -488,7 +491,7 @@ def cmd_pokemon(a):
     show_smogon(p["name"])
 
 
-def _print_moveset(ms):
+def _print_moveset(ms: Row) -> None:
     """One Smogon set: moves slot by slot, then items, abilities, natures and
     spread.
     """
@@ -508,7 +511,7 @@ def _print_moveset(ms):
         print("    " + ms["explanation"].replace("\n", "\n    "))
 
 
-def show_smogon(name):
+def show_smogon(name: str) -> None:
     """Smogon's written VGC analysis for a Pokemon: each format's overview and
     sets, or a line saying there is none.
     """
@@ -537,7 +540,7 @@ SP_ORDER = [("hp", "HP"), ("atk", "Atk"), ("def", "Def"),
             ("spa", "SpA"), ("spd", "SpD"), ("spe", "Spe")]
 
 
-def print_splits(name):
+def print_splits(name: str) -> None:
     """What the people who brought THIS Pokemon actually ran.
 
     pokebase publishes it per Pokemon and `fetch_pokebase_splits.py` stores
@@ -563,7 +566,7 @@ def print_splits(name):
     if not row:
         return
 
-    def line(label, rows, n=8):
+    def line(label: str, rows: list[Row] | None, n: int = 8) -> None:
         """One labelled line of the top entries, with their percentages."""
         if not rows:
             return
@@ -604,7 +607,7 @@ def print_splits(name):
         line("Nature:", se.get("natures"))
 
 
-def cmd_brief(a):
+def cmd_brief(a: argparse.Namespace) -> None:
     """Everything known about one Pokemon, in one place.
 
     Smogon only has written analyses for ~53 Pokemon. For the rest this is the
@@ -664,7 +667,7 @@ def cmd_brief(a):
             mvs = Counter(m for _, s in entries for m in (s.get("moves") or []))
             tot = len(entries)
 
-            def dist(c, label):
+            def dist(c: Counter[str], label: str) -> None:
                 """The six most common values of one field, as percentages."""
                 bits = ["%s %.0f%%" % (k, 100.0 * v / tot) for k, v in c.most_common(6)]
                 print("  %-9s %s" % (label, ", ".join(bits)))
@@ -713,7 +716,7 @@ def cmd_brief(a):
     show_smogon(name)
 
 
-def stone_owner_map():
+def stone_owner_map() -> dict[str, str]:
     """Mega Stone name -> the species it works on, read from the item text."""
     out = {}
     for it in db("items"):
@@ -726,7 +729,7 @@ def stone_owner_map():
     return out
 
 
-def worlds_mega_counts():
+def worlds_mega_counts() -> tuple[Counter[str], int]:
     """How often each species actually Mega Evolved at Worlds.
 
     Teamlists name the base Pokemon and put the stone in the item slot, so a
@@ -734,7 +737,7 @@ def worlds_mega_counts():
     """
     tour = tournament("masters")
     if not tour:
-        return {}, 0
+        return Counter(), 0
     stones = {key(i["name"]) for i in db("items") if i.get("is_mega_stone")}
     counts = Counter()
     players = tour.get("players", [])
@@ -749,7 +752,7 @@ def worlds_mega_counts():
 STAT_ABILITY = {"Huge Power": ("atk", 2.0), "Pure Power": ("atk", 2.0)}
 
 
-def mega_profile(m):
+def mega_profile(m: Row) -> tuple[str, str, int, str]:
     """What a Mega is actually FOR: role, the offensive stat that matters, bulk.
 
     The raw stat block lies about several of these. Mega Mawile reads SpA 55 and
@@ -794,7 +797,7 @@ def mega_profile(m):
     return role, stat_txt, bulk, "%d %s" % (spe, tempo)
 
 
-def cmd_megas(_a):
+def cmd_megas(_a: argparse.Namespace) -> None:
     """`query.py megas`: every Mega line - base vs Mega, the stone, whether he
     owns it and the species, what a stone or keeping a rental would cost,
     and how often Worlds teams brought it."""
@@ -875,7 +878,7 @@ SP_BUDGET = 66
 SP_MAX = 32
 
 
-def _print_spread(sp):
+def _print_spread(sp: dict[str, Any] | None) -> None:
     """A build's Stat Points, flagged when they miss the 66 budget or pass 32
     in a stat.
     """
@@ -894,7 +897,8 @@ def _print_spread(sp):
     print("  SP     %s%s" % (spread, flag))
 
 
-def _print_build_moves(b, learn, moves_by):
+def _print_build_moves(b: Row, learn: dict[str, list[str]],
+                       moves_by: dict[str, Row]) -> None:
     """A build's moves, each checked against the form's movepool and shown with
     its usage.
     """
@@ -924,7 +928,7 @@ BUILD_FIELDS = {"pokemon", "mega", "ability", "mega_ability", "nature",
                 "stat_points", "moves", "role", "rationale", "_missing"}
 
 
-def _print_build_notes(b):
+def _print_build_notes(b: Row) -> None:
     """A build's rationale and every free-text field it carries, as paragraphs.
     """
     if b.get("rationale"):
@@ -938,7 +942,7 @@ def _print_build_notes(b):
         print("\n  TODO: %s" % b["_missing"])
 
 
-def _print_build(b, learn, moves_by):
+def _print_build(b: Row, learn: dict[str, list[str]], moves_by: dict[str, Row]) -> None:
     """One build in full: base stats, spread, nature, ability, moves with their
     checks, and its notes.
     """
@@ -963,7 +967,7 @@ def _print_build(b, learn, moves_by):
     print()
 
 
-def cmd_build(a):
+def cmd_build(a: argparse.Namespace) -> None:
     """Show the player's own builds and check them against the rules."""
     builds = ledger.builds()
     if a.name:
@@ -978,11 +982,11 @@ def cmd_build(a):
 
 
 
-def typechart():
+def typechart() -> dict[str, dict[str, float]]:
     return db("typechart") or {}
 
 
-def natures():
+def natures() -> dict[str, Row]:
     return db("natures") or {}
 
 
@@ -1010,7 +1014,7 @@ ABILITY_DEFENCE = {
 }
 
 
-def sole_ability(name):
+def sole_ability(name: str | None) -> str | None:
     """The ability of a species that only has one - which is not a choice.
 
     Aegislash is Stance Change, Clawitzer is Mega Launcher, and every one of
@@ -1026,19 +1030,19 @@ def sole_ability(name):
     return ab[0] if len(ab) == 1 else None
 
 
-def build_ability(b):
+def build_ability(b: Row) -> str | None:
     """The ability a build runs as a base form."""
     return b.get("ability") or sole_ability(b.get("pokemon"))
 
 
-def build_mega_ability(b):
+def build_mega_ability(b: Row) -> str | None:
     """...and the one the stone turns it into, if the build carries one."""
     if not b.get("mega"):
         return None
     return b.get("mega_ability") or sole_ability(b["mega"])
 
 
-def build_abilities():
+def build_abilities() -> dict[str, str | None]:
     """Pokemon name -> the ability the player actually runs, from builds.json."""
     out = {}
     for b in ledger.builds():
@@ -1049,7 +1053,8 @@ def build_abilities():
     return out
 
 
-def defence(types, chart=None, abilities=None):
+def defence(types: list[str], chart: dict[str, dict[str, float]] | None = None,
+            abilities: str | list[str] | None = None) -> dict[str, float]:
     """Multiplier taken from every attacking type.
 
     `abilities` may be a single ability name or a list; any defensive effect it
@@ -1071,7 +1076,7 @@ def defence(types, chart=None, abilities=None):
     return out
 
 
-def canon_type(word):
+def canon_type(word: str) -> str | None:
     """A typed type ("elec", "Fairy") -> its canonical name, or None. Exact
     match first, then the unique-looking prefix."""
     w = key(word)
@@ -1084,7 +1089,7 @@ def canon_type(word):
     return None
 
 
-def cmd_types(a):
+def cmd_types(a: argparse.Namespace) -> None:
     """Defensive profile of one Pokemon, or of a bare type combination."""
     types = [t for t in (canon_type(x) for x in a.name.replace("/", " ").split()) if t]
     label = "/".join(types)
@@ -1111,7 +1116,7 @@ def cmd_types(a):
     _show_defence(d)
 
 
-def _show_defence(d):
+def _show_defence(d: dict[str, float]) -> None:
     """A typing's weaknesses and resistances grouped by multiplier."""
     for tag, test in (("x4", lambda m: m == 4), ("x2", lambda m: m == 2),
                       ("x0.5", lambda m: m == 0.5), ("x0.25", lambda m: m == 0.25),
@@ -1124,7 +1129,7 @@ def _show_defence(d):
         print("  %-6s %s" % ("x1", ", ".join(neutral)))
 
 
-def cmd_resist(a):
+def cmd_resist(a: argparse.Namespace) -> None:
     """Who resists ALL of the given attacking types - the coverage question."""
     want = [t for t in (canon_type(x) for x in a.types) if t]
     if not want:
@@ -1172,7 +1177,7 @@ def cmd_resist(a):
     table(rows, ["Pokemon", "Types", "Takes", "Usage", "You", "Built"])
 
 
-def cmd_nature(a):
+def cmd_nature(a: argparse.Namespace) -> None:
     """`query.py nature [name]`: which stat each nature raises and lowers."""
     nat = natures()
     if a.name:
@@ -1191,7 +1196,8 @@ def cmd_nature(a):
     table(rows, ["Nature", "Summary", "Raises", "Lowers"])
 
 
-def _core_hits(members, prof):
+def _core_hits(members: list[Row],
+               prof: dict[str, dict[str, float]]) -> list[list[Any]]:
     """[attacking type, how many members it hits for 2x+, who and how hard],
     most members first."""
     rows = []
@@ -1206,7 +1212,8 @@ def _core_hits(members, prof):
     return rows
 
 
-def _patches(members, holes, chart, ba):
+def _patches(members: list[Row], holes: list[str], chart: dict[str, dict[str, float]],
+             ba: dict[str, str | None]) -> list[list[Any]]:
     """Every owned Pokemon outside the core that resists one of the holes."""
     perm, temp, _, _ = owned_sets()
     builds = {b["pokemon"] for b in ledger.builds()}
@@ -1232,7 +1239,7 @@ def _patches(members, holes, chart, ba):
     return cand
 
 
-def cmd_core(a):
+def cmd_core(a: argparse.Namespace) -> None:
     """Combined defensive profile of a partial team, and what patches the holes.
 
     A hole is an attacking type that hits two or more members for at least
@@ -1278,7 +1285,7 @@ def cmd_core(a):
           ["Pokemon", "Types", "Resists", "Usage", "You", "Built"])
 
 
-def cmd_ability(a):
+def cmd_ability(a: argparse.Namespace) -> None:
     """`query.py ability <name>`: an ability's text (Serebii, else pokebase or
     Smogon), Smogon's full text, ladder use, and every carrier with its usage
     and ownership.
@@ -1320,7 +1327,7 @@ def cmd_ability(a):
           ["Pokemon", "Usage", "You"])
 
 
-def cmd_usage(a):
+def cmd_usage(a: argparse.Namespace) -> None:
     """`query.py usage`: the ladder's most used Pokemon, with their typing from
     our dex and ownership.
     """
@@ -1342,7 +1349,7 @@ def cmd_usage(a):
     table(out, ["#", "Pokemon", "Usage", "Types", "Spe", "You"])
 
 
-def cmd_speed(a):
+def cmd_speed(a: argparse.Namespace) -> None:
     """`query.py speed`: pokebase's speed tiers, between --min and --max, with
     ownership.
     """
@@ -1364,7 +1371,8 @@ def cmd_speed(a):
     table(out, ["Base", "Max+", "MaxN", "0N", "Scarf", "Pokemon", "Yours"])
 
 
-def active_ability(pokemon, item, ability):
+def active_ability(pokemon: str | None, item: str | None,
+                   ability: str | None) -> tuple[str | None, str | None]:
     """The ability that is actually ON THE FIELD, not the one on the teamlist.
 
     A teamlist records the base ability and that is correct - the Pokemon has
@@ -1390,7 +1398,7 @@ def active_ability(pokemon, item, ability):
     return ability, ", ".join(cands[0]["abilities"])
 
 
-def worlds_compare(divs, a):
+def worlds_compare(divs: list[tuple[str, Row]], a: argparse.Namespace) -> None:
     """One row per Pokemon, one share column per division.
 
     The three divisions are separate metagames, so they get separate columns
@@ -1426,7 +1434,7 @@ def worlds_compare(divs, a):
     table(rows, ["Pokemon"] + [d.capitalize() for d, _ in divs] + ["You"])
 
 
-def _print_event_lines(divs):
+def _print_event_lines(divs: list[tuple[str, Row]]) -> None:
     """One line per division: event, round with its label (R15 is the Final,
     not swiss), players and fetch date.
     """
@@ -1443,7 +1451,7 @@ def _print_event_lines(divs):
                  len(t.get("players", [])), t.get("fetched")))
 
 
-def _worlds_usage(top):
+def _worlds_usage(top: list[Row]) -> tuple[Counter[str], dict[str, Counter[str]], dict[str, Counter[str]], dict[str, Counter[str]]]:
     """(species -> teams, species -> item/ability/move Counters) over `top`."""
     counts = Counter()
     items, abil, moves = defaultdict(Counter), defaultdict(Counter), defaultdict(Counter)
@@ -1458,13 +1466,13 @@ def _worlds_usage(top):
             if slot.get("ability"):
                 base_ab, becomes = active_ability(mon, slot.get("item"),
                                                   slot["ability"])
-                abil[mon][base_ab + (" -> " + becomes if becomes else "")] += 1
+                abil[mon][(base_ab or "") + (" -> " + becomes if becomes else "")] += 1
             for mv in slot.get("moves", []):
                 moves[mon][mv] += 1
     return counts, items, abil, moves
 
 
-def _print_worlds_usage(tour, division, a):
+def _print_worlds_usage(tour: Row, division: str, a: argparse.Namespace) -> None:
     """Species usage at a Worlds division, with the items, abilities and moves
     each one ran.
     """
@@ -1485,7 +1493,7 @@ def _print_worlds_usage(tour, division, a):
                  "Most common moves", "You"])
 
 
-def cmd_worlds(a):
+def cmd_worlds(a: argparse.Namespace) -> None:
     """`query.py worlds`: what each Worlds division brought, never pooled
     across divisions.
     """
@@ -1509,7 +1517,7 @@ def cmd_worlds(a):
         worlds_listing(divs[0][1], a)
 
 
-def worlds_listing(tour, a):
+def worlds_listing(tour: Row, a: argparse.Namespace) -> None:
     """Print the top `a.top` (8) teams of one event, with what each Mega
     Evolves into."""
     for p in tour.get("players", [])[:a.top or 8]:
@@ -1528,7 +1536,7 @@ def worlds_listing(tour, a):
 
 
 
-def mega_line(name, mons, stones):
+def mega_line(name: str, mons: list[Row], stones: set[str]) -> tuple[str, str, str]:
     """A Pokemon with a Mega must be judged on its Mega line, not its base one.
 
     Returns (stats_label, ability_label, owns_stone). Mega Evolution can change
@@ -1559,7 +1567,7 @@ def mega_line(name, mons, stones):
     return ("  |  ".join(stats), "  |  ".join(abils), "  |  ".join(stone_bits))
 
 
-def cmd_owned(_a):
+def cmd_owned(_a: argparse.Namespace) -> None:
     """`query.py owned`: his box against the meta - each Pokemon with its
     stats, ability, usage and both Mega lines.
     """
@@ -1581,7 +1589,7 @@ def cmd_owned(_a):
     print("Mega Evolution can change stats, TYPING and ABILITY - the Mega ability")
     print("replaces the base one. Compare Mega against Mega, on all three.")
 
-    def row_for(name, label=None):
+    def row_for(name: str, label: str | None = None) -> list[Any]:
         """One row of the owned table, Mega line included."""
         p = byname.get(norm(name))
         bs = (p or {}).get("base_stats") or {}
@@ -1608,7 +1616,7 @@ def cmd_owned(_a):
     table([row_for(name) for name in rent_list], head)
 
 
-def cmd_item(a):
+def cmd_item(a: argparse.Namespace) -> None:
     """`query.py item <name>`: an item's effect, where it comes from or its VP
     price, ownership and ladder usage.
     """
@@ -1629,7 +1637,7 @@ def cmd_item(a):
     print("  Ladder use: %s" % pct(iu.get(key(hit["name"]))))
 
 
-def main():
+def main() -> None:
     """Parse the subcommand and run it; `-h` on any subcommand lists its
     filters.
     """

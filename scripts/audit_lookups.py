@@ -27,7 +27,9 @@ import glob
 import json
 import os
 import sys
+from collections.abc import Iterable
 from pathlib import Path
+from typing import Any
 
 import damage as Dm
 import dex
@@ -36,7 +38,7 @@ from paths import DB, ROOT
 bad = 0
 
 
-def ok(label: str, got: object, want: object = "0"):
+def ok(label: str, got: object, want: object = "0") -> None:
     """Print one check as OK / FAIL and count the failures in `bad`."""
     global bad
     good = str(got) == str(want)
@@ -46,7 +48,7 @@ def ok(label: str, got: object, want: object = "0"):
                                 "" if good else "   (want %s)" % want))
 
 
-def lst(xs, n=6):
+def lst(xs: Iterable[object], n: int = 6) -> str:
     """A short printable list: the first n items and how many more, or "0" when
     empty.
     """
@@ -55,7 +57,7 @@ def lst(xs, n=6):
             (" (+%d)" % (len(xs) - n) if len(xs) > n else "")) if xs else "0"
 
 
-def _check_code():
+def _check_code() -> None:
     """No script defines the same top-level name twice (the second silently
     wins), and every script parses."""
     print("\n  the code")
@@ -78,7 +80,7 @@ def _check_code():
     ok("no name defined twice in a module", lst(dups))
 
 
-def _resolve(p, learn):
+def _resolve(p: dex.Row, learn: dict[str, list[str]]) -> list[str]:
     """The order query.py uses: the form, then norm(), then the species."""
     mv = learn.get(p["name"]) or []
     if not mv:
@@ -90,7 +92,7 @@ def _resolve(p, learn):
     return mv
 
 
-def _check_forms(mons, learn):
+def _check_forms(mons: list[dex.Row], learn: dict[str, list[str]]) -> None:
     """Every form finds itself, collides with nobody under norm(), and
     resolves a movepool."""
     print("\n  the forms, one by one")
@@ -114,7 +116,7 @@ def _check_forms(mons, learn):
             len(_resolve(p, learn)) != len(learn[p["name"]])]))
 
 
-def _check_megas(mons):
+def _check_megas(mons: list[dex.Row]) -> None:
     """Mega Stones and Megas are 1:1, and every form has a name in Smogon's
     engine (else the damage calculator cannot be asked about it)."""
     megas = [p for p in mons if p.get("is_mega")]
@@ -139,11 +141,11 @@ def _check_megas(mons):
     ok("every form has a name in Smogon's engine", lst(miss))
 
 
-def _duplicate_keys(text):
+def _duplicate_keys(text: str) -> list[str]:
     """Every key some JSON object in `text` repeats, in the order met."""
     dup = []
 
-    def hook(pairs):
+    def hook(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
         """json.loads hook that records every key an object repeats."""
         ks = [k for k, _ in pairs]
         for k in ks:
@@ -154,7 +156,7 @@ def _duplicate_keys(text):
     return dup
 
 
-def _check_db_files():
+def _check_db_files() -> None:
     """Every data/db file loads and repeats no key (json.loads keeps the
     LAST of a repeated key, silently)."""
     print("\n  the files everything else reads")
@@ -167,7 +169,7 @@ def _check_db_files():
             ok("%s loads" % name, str(e)[:40])
 
 
-def _check_references(learn):
+def _check_references(learn: dict[str, list[str]]) -> None:
     """The derived tables only point at moves, abilities and Pokemon that
     exist."""
     print("\n  the derived tables point at things that exist")
@@ -197,7 +199,7 @@ def _check_references(learn):
        lst([a for a in (tf.get("abilities") or {}) if a not in abil]))
 
 
-def main():
+def main() -> int:
     """Run every check and exit 1 if any failed."""
     _check_code()
     mons = dex.db("pokemon")

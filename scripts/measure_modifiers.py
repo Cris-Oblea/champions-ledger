@@ -27,7 +27,7 @@ DMG = os.path.join(ROOT, "scripts", "damage.py")
 NUM = re.compile(r"^\s*(\d+)-(\d+) damage of", re.M)
 
 
-def run(args, timeout=90):
+def run(args: list[str], timeout: float = 90) -> tuple[int, int] | None:
     """One engine call -> (lo, hi), or None if it could not be measured."""
     cmd = [PY, DMG] + args + ["--single-target"]
     try:
@@ -190,7 +190,7 @@ CASES += [
 ]
 
 
-def main():
+def main() -> None:
     """Run every case with and without its modifier through the engine, record
     the ratio, and write the modifiers that move a number.
     """

@@ -39,7 +39,7 @@ STATIC_PAGES = [
 CHANGED = []
 
 
-def get(url, dest, force=False):
+def get(url: str, dest: str, force: bool = False) -> tuple[bool, bool]:
     """Fetch url into dest unless already cached. Returns (ok, was_cached)."""
     if os.path.exists(dest) and os.path.getsize(dest) > 2000 and not force:
         return True, True
@@ -67,11 +67,12 @@ def get(url, dest, force=False):
     return True, False
 
 
-def fetch_many(items, workers=5, force=False):
+def fetch_many(items: list[tuple[str, str]], workers: int = 5,
+               force: bool = False) -> None:
     """items: list of (url, dest). Fetches with modest concurrency; a worker
     that went to the network waits 0.12 s before its next page, so the
     pool never hammers Serebii. Progress is counted here, in one thread."""
-    def one(item):
+    def one(item: tuple[str, str]) -> tuple[bool, bool]:
         """Fetch one page, pausing a moment after a real download."""
         ok, cached = get(*item, force=force)
         if not cached:
@@ -97,7 +98,7 @@ def fetch_many(items, workers=5, force=False):
 FORCE = False
 
 
-def cmd_list():
+def cmd_list() -> None:
     """Step 1: the list of Pokemon available in Champions (always re-fetched).
     """
     print("[1/4] Available Pokemon list")
@@ -105,7 +106,7 @@ def cmd_list():
         os.path.join(RAW, "pages", "pokemon.html"), force=True)
 
 
-def cmd_pages():
+def cmd_pages() -> None:
     """Step 2: the rules and mechanics pages."""
     print("[2/4] Rules and mechanics pages")
     items = [(BASE + "/pokemonchampions/%s.shtml" % p,
@@ -113,7 +114,7 @@ def cmd_pages():
     fetch_many(items, force=FORCE, workers=3)
 
 
-def slugs_from_list():
+def slugs_from_list() -> list[str]:
     """Every Pokemon page the list links to."""
     p = os.path.join(RAW, "pages", "pokemon.html")
     if not os.path.exists(p):
@@ -122,7 +123,7 @@ def slugs_from_list():
     return sorted(set(re.findall(r'/pokedex-champions/([a-z0-9\-\'\.]+)/', s)))
 
 
-def cmd_pokedex():
+def cmd_pokedex() -> None:
     """Step 3: one page per Pokemon."""
     slugs = slugs_from_list()
     print("[3/4] Pokemon pages: %d" % len(slugs))
@@ -131,7 +132,7 @@ def cmd_pokedex():
     fetch_many(items, force=FORCE)
 
 
-def move_slugs():
+def move_slugs() -> list[str]:
     """Every move page the attackdex index links to, minus the index pages for
     types and categories.
     """
@@ -148,7 +149,7 @@ def move_slugs():
     return sorted(found - skip)
 
 
-def cmd_attackdex():
+def cmd_attackdex() -> None:
     """Step 4: one page per move."""
     slugs = move_slugs()
     print("[4/4] Move pages: %d" % len(slugs))

@@ -51,7 +51,9 @@ import argparse
 import json
 import os
 import re
+from collections.abc import Iterable
 from pathlib import Path
+from typing import Any
 
 from paths import DB
 
@@ -63,7 +65,7 @@ WORD_VALUES = {"half", "double", "third", "quarter"}
 TIMES = "×"                        # the multiplication sign Smogon writes
 
 
-def quantity(sides):
+def quantity(sides: Iterable[str]) -> str:
     """What the engine multiplied, from every side and stage it was seen on.
 
     Every stage but one scales damage in the direction you would read it: a
@@ -130,7 +132,7 @@ BEFORE = [
 ]
 
 
-def subject(num):
+def subject(num: dict[str, Any]) -> str | None:
     """What this number governs, or None if the sentence does not say."""
     phrase, shown = num.get("phrase") or "", num["as_written"]
     lit = shown.split(" ")[0].rstrip("x%")      # the digits, bare
@@ -160,12 +162,12 @@ def subject(num):
     return None
 
 
-def trim(x4096):
+def trim(x4096: float) -> str:
     """The engine's 4096ths as the number a person would say it is."""
     return "%g" % round(x4096 / 4096.0, 2)
 
 
-def chips(entry):
+def chips(entry: dict[str, Any]) -> list[list[str]]:
     """[[text, why], ...] - what the screen shows for one item/ability/move."""
     out, engine_values = [], set()
 
@@ -223,7 +225,7 @@ WORDNUM = {"one": 1, "two": 2, "three": 3, "four": 4, "five": 5, "half": 0.5,
            "doubles": 2, "twice": 2, "triple": 3, "tripled": 3}
 
 
-def values(s):
+def values(s: str | None) -> set[float]:
     """Every number a sentence states, as floats - "1/3" also as 0.333."""
     out = set()
     s = (s or "").replace(TIMES, " ")
@@ -242,7 +244,7 @@ def values(s):
     return out
 
 
-def forms(v):
+def forms(v: float) -> set[float]:
     """One number in the units it is written in: 30 (%), 0.3, 1.3, 0.7."""
     f = {round(v, 3), round(v / 100, 3), round(1 + v / 100, 3),
          round(1 - v / 100, 3)}
@@ -251,7 +253,7 @@ def forms(v):
     return f
 
 
-def same_number(v, stated):
+def same_number(v: float, stated: Iterable[float]) -> bool:
     """Is `v` already among `stated`, allowing for the unit either one is in -
     and for the rounding a chip is written with: Gravity's x1.67 is the text's
     "multiplied by 0.6" turned over, which is 1.667."""
@@ -260,7 +262,7 @@ def same_number(v, stated):
                for s in stated for a in mine for b in forms(s))
 
 
-def chip_values(text):
+def chip_values(text: str) -> set[float]:
     """The numbers a chip states: its multiplier when it is one, else every
     number in it.
     """
@@ -268,7 +270,7 @@ def chip_values(text):
     return {float(m.group(1))} if m else values(text)
 
 
-def unsaid(cs, description):
+def unsaid(cs: list[list[str]], description: str | None) -> list[list[str]]:
     """The chips whose number the description does not already state. A chip
     with no number at all says nothing a sentence cannot, and goes too."""
     if not description:
@@ -282,7 +284,7 @@ def unsaid(cs, description):
     return keep
 
 
-def label(shown, what):
+def label(shown: str, what: str | None) -> str:
     """The number and its subject, written the way the engine's chips are.
 
     Two small things, both of which the eye catches before the meaning does:
@@ -309,7 +311,7 @@ def label(shown, what):
 BARE = re.compile(r"^[\d./]+[x%]?$")
 
 
-def main():
+def main() -> None:
     """Print what every chip reads as; --audit only the numbers whose subject
     is not in the tables yet.
     """

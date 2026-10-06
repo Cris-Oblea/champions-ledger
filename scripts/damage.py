@@ -40,6 +40,7 @@ import os
 import subprocess
 import sys
 from pathlib import Path
+from typing import Any
 
 import dex
 from paths import ROOT, SMOGON_CALC
@@ -102,12 +103,12 @@ NOT_A_CALC = {
 }
 
 
-def move_named(name):
+def move_named(name: str) -> dex.Row:
     """The move row, or the run stops: there is no guessing which was meant."""
     return dex.find_move(name) or sys.exit("No move called %r" % name)
 
 
-def check_move(a):
+def check_move(a: argparse.Namespace) -> None:
     """Refuse a question the engine would answer with a guess."""
     k = dex.key(move_named(a.move)["name"])
     if k in NOT_A_CALC:
@@ -118,7 +119,7 @@ def check_move(a):
                          % (move_named(a.move)["name"], need[1]))
 
 
-def smogon_name(name, attacking=False):
+def smogon_name(name: str, attacking: bool = False) -> str:
     """Our spelling -> the Champions roster spelling in Smogon's engine.
 
     norm() does the work (Mega Glalie <-> Glalie-Mega), and these are the only
@@ -149,7 +150,7 @@ def smogon_name(name, attacking=False):
     return hit
 
 
-def run_smogon(cases):
+def run_smogon(cases: list[dict[str, Any]]) -> Any:
     """Hand a batch of questions to Smogon's own engine via Node."""
     js = os.path.join(ROOT, "scripts", "smogon_engine.js")
     try:
@@ -188,7 +189,7 @@ FIELD_FLAGS = (("helping-hand", "an ally used Helping Hand (doubles)"),
                ("vessel-of-ruin", "Vessel of Ruin: Sp. Atk -25%%"))
 
 
-def _camel(flag):
+def _camel(flag: str) -> str:
     """A command-line flag as the engine's field name ("atk-ability" ->
     "atkAbility").
     """
@@ -196,7 +197,7 @@ def _camel(flag):
     return head + "".join(w.capitalize() for w in rest)
 
 
-def _parser():
+def _parser() -> argparse.ArgumentParser:
     """The calculator's command line: the two Pokemon and the move, then a flag
     for every fact the engine may need.
     """
@@ -254,12 +255,12 @@ def _parser():
     return ap
 
 
-def _item(v):
+def _item(v: str | None) -> str | None:
     """An item flag, with "none" meaning no item."""
     return None if v is None or dex.key(v) == "none" else v
 
 
-def engine_case(a):
+def engine_case(a: argparse.Namespace) -> dict[str, Any]:
     """One question for Smogon's engine, from the parsed arguments.
 
     The SP go into the stat the MOVE uses, not the one its category suggests:
@@ -315,7 +316,7 @@ def engine_case(a):
     return case
 
 
-def answer(a):
+def answer(a: argparse.Namespace) -> Any:
     """Run one calculation through Smogon's engine and print its description,
     the damage range against max HP, and the KO chance.
     """
@@ -371,7 +372,7 @@ SELFTEST = [
 ]
 
 
-def _run_quiet(argv):
+def _run_quiet(argv: list[str]) -> Any:
     """answer() for a list of arguments -> the engine's row, or 'refused'."""
     import contextlib
     import io
@@ -385,12 +386,12 @@ def _run_quiet(argv):
             return "refused"
 
 
-def _span(r):
+def _span(r: Any) -> str:
     """A self-test result as "lo-hi", or "refused"."""
     return r if r == "refused" else "%d-%d" % (r["lo"], r["hi"])
 
 
-def selftest():
+def selftest() -> bool:
     """Smogon's own prose benchmarks, and one guard per rule this file adds."""
     ok = True
     for argv, want in SELFTEST:
@@ -414,7 +415,7 @@ def selftest():
     return ok
 
 
-def main():
+def main() -> None:
     """Run the self-test (also when no Pokemon is given), otherwise answer the
     one calculation asked.
     """

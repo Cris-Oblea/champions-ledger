@@ -43,6 +43,7 @@ import re
 import subprocess
 import sys
 from pathlib import Path
+from typing import Any
 
 from paths import ROOT
 
@@ -94,7 +95,7 @@ CHUNK = 25
 DB_URL = os.environ.get("CHAMPIONS_DB_URL")
 
 
-def sql(text):
+def sql(text: str) -> tuple[bool, str]:
     """Run one statement through the Supabase CLI. -> (ok, output)."""
     door = ["--db-url", DB_URL] if DB_URL else ["--linked"]
     try:
@@ -110,7 +111,7 @@ def sql(text):
     return r.returncode == 0, out
 
 
-def rows(table):
+def rows(table: str) -> list[dict[str, Any]] | None:
     """Every row of one table, as dicts. None if the database is unreachable.
 
     The CLI wraps its answer in an envelope with a `warning` about untrusted
@@ -138,14 +139,14 @@ def rows(table):
     return None
 
 
-def digest(tables):
+def digest(tables: dict[str, Any]) -> str:
     """A checksum over the content, so a truncated file cannot pass as whole."""
     blob = json.dumps(tables, sort_keys=True, ensure_ascii=False,
                       separators=(",", ":"))
     return hashlib.sha256(blob.encode("utf-8")).hexdigest()
 
 
-def read_snapshot(path):
+def read_snapshot(path: str) -> dict[str, Any]:
     """Load a snapshot and stop if its checksum does not match its tables."""
     d = json.loads(Path(path).read_text(encoding="utf-8"))
     got = digest(d["tables"])
@@ -155,7 +156,7 @@ def read_snapshot(path):
     return d
 
 
-def snapshots(d):
+def snapshots(d: str) -> list[str]:
     """Every snapshot file in a directory, oldest first."""
     if not os.path.isdir(d):
         return []
@@ -164,7 +165,7 @@ def snapshots(d):
 
 
 # ------------------------------------------------------------------ take ----
-def take(a):
+def take(a: argparse.Namespace) -> int:
     tables, counts = {}, {}
     for t in TABLES:
         r = rows(t)
@@ -209,7 +210,7 @@ def take(a):
     return 0
 
 
-def prune(d, keep):
+def prune(d: str, keep: int) -> None:
     """Keep every snapshot from the last 14 days, then one per month.
 
     A flat "newest N" is wrong for the failure that matters most: a bad write
@@ -239,7 +240,7 @@ def prune(d, keep):
 
 
 # ------------------------------------------------------------------ diff ----
-def key_of(t, row):
+def key_of(t: str, row: dict[str, Any]) -> tuple[Any, ...]:
     return tuple(row.get(k) for k in KEYS[t])
 
 
@@ -263,7 +264,7 @@ _TIMESTAMP = re.compile(r"^\d{4}-\d{2}-\d{2}[T ]\d{2}:\d{2}:\d{2}"
                         r"(?:\.\d+)?(?:Z|[+-]\d{2}(?::?\d{2})?)$")
 
 
-def canonical(row):
+def canonical(row: dict[str, Any]) -> str:
     """One spelling per value, so two doors can be compared at all."""
     out = {}
     for k, v in row.items():
@@ -275,7 +276,8 @@ def canonical(row):
     return json.dumps(out, sort_keys=True, default=str)
 
 
-def diff(table, want, live):
+def diff(table: str, want: list[dict[str, Any]],
+         live: list[dict[str, Any]]) -> tuple[list[dict[str, Any]], list[dict[str, Any]], list[dict[str, Any]]]:
     """What would have to happen to make `live` equal `want`."""
     wanted = {key_of(table, r): r for r in want}
     have = {key_of(table, r): r for r in live}
@@ -286,12 +288,12 @@ def diff(table, want, live):
     return add, changed, gone
 
 
-def quote(s):
+def quote(s: object) -> str:
     """A value as a SQL string literal."""
     return "'" + str(s).replace("'", "''") + "'"
 
 
-def upsert(table, batch):
+def upsert(table: str, batch: list[dict[str, Any]]) -> str:
     """One statement per chunk, with the rows travelling as jsonb.
 
     jsonb_populate_recordset casts every column against the table's own row
@@ -309,7 +311,7 @@ def upsert(table, batch):
                      s=sets)
 
 
-def _restore_plan(snap):
+def _restore_plan(snap: dict[str, Any]) -> tuple[list[Any], int]:
     """[(table, rows to add, rows to change, rows to delete)] and how many rows
     that is in all, printing what each table would do."""
     plans, total = [], 0
@@ -332,7 +334,7 @@ def _restore_plan(snap):
     return plans, total
 
 
-def _run_or_stop(statement, failure):
+def _run_or_stop(statement: str, failure: str) -> None:
     """Run one SQL statement and stop with `failure` if it fails."""
     ok, out = sql(statement)
     if not ok:
@@ -340,7 +342,8 @@ def _run_or_stop(statement, failure):
         sys.exit(failure)
 
 
-def _restore_table(t, work, gone):
+def _restore_table(t: str, work: list[dict[str, Any]],
+                   gone: list[dict[str, Any]]) -> None:
     """Upsert `work`, then delete `gone` (empty to keep the extra rows)."""
     for i in range(0, len(work), CHUNK):
         _run_or_stop(upsert(t, work[i:i + CHUNK]),
@@ -353,7 +356,7 @@ def _restore_table(t, work, gone):
                      "FAILED deleting from %s - stopped part way." % t)
 
 
-def restore(a):
+def restore(a: argparse.Namespace) -> int:
     """Show what restoring a snapshot would change; with --confirm, write it
     (rows the snapshot lacks are deleted unless --keep-extra).
     """
@@ -376,7 +379,7 @@ def restore(a):
 
 
 # ---------------------------------------------------------------- verify ----
-def verify(a):
+def verify(a: argparse.Namespace) -> int:
     files = snapshots(a.dir)
     if not files:
         print("no snapshots in %s - run: python scripts/backup_ledger.py" % a.dir)
@@ -402,7 +405,7 @@ def verify(a):
     return 0
 
 
-def selftest():
+def selftest() -> int:
     """The cross-door comparison, which needs no database to check.
 
     It earns a test because it is the only part of a backup nobody exercises
@@ -438,7 +441,7 @@ def selftest():
     return 1 if bad else 0
 
 
-def check(a):
+def check(a: argparse.Namespace) -> int:
     """Is the backup still happening? Part of the gate.
 
     A backup system fails silently by definition - the job stops running, the
@@ -472,7 +475,7 @@ def check(a):
     return 0
 
 
-def main():
+def main() -> int:
     """Dispatch: --list, --selftest, --check, --verify, --restore, or (by
     default) take a snapshot.
     """

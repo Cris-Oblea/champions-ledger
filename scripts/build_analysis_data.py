@@ -31,7 +31,7 @@ SRC = os.path.join(META, "smogon_analyses.json")
 OUT = os.path.join(ROOT, "tracker", "analysis.js")
 
 
-def main():
+def main() -> int:
     """Turn Smogon's analyses into the lazily loaded payload the Pokemon sheet
     reads: per Pokemon, each format's overview, credits and sets.
     """

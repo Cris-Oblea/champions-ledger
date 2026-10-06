@@ -18,13 +18,14 @@ import os
 import re
 import sys
 from pathlib import Path
+from typing import Any
 
 import dex
 from paths import DB, RAW
 from serebii_text import read
 
 
-def load_basics():
+def load_basics() -> Any:
     """Smogon's basics dump, or stop if it has not been fetched."""
     p = os.path.join(DB, "smogon_basics.json")
     if not os.path.exists(p):
@@ -32,7 +33,7 @@ def load_basics():
     return json.loads(Path(p).read_text(encoding="utf-8"))
 
 
-def build_chart(basics):
+def build_chart(basics: dex.Row) -> dict[str, dict[str, float]]:
     """attacking -> {defending: multiplier}, Champions-legal types only."""
     chart = {}
     for t in basics.get("types") or []:
@@ -42,7 +43,7 @@ def build_chart(basics):
     return chart
 
 
-def build_natures(basics):
+def build_natures(basics: dex.Row) -> dict[str, dict[str, Any]]:
     """The Champions natures: which stat each raises and lowers."""
     out = {}
     for n in basics.get("natures") or []:
@@ -61,7 +62,7 @@ def build_natures(basics):
     return out
 
 
-def serebii_weaknesses():
+def serebii_weaknesses() -> dict[str, dict[str, float]]:
     """Every cached Pokedex page's Weakness row: slug -> {type: multiplier}.
 
     Pages that merge several forms carry several Weakness tables and cannot be
@@ -87,13 +88,14 @@ def serebii_weaknesses():
     return out
 
 
-def verify(chart, weak):
+def verify(chart: dict[str, dict[str, float]],
+           weak: dict[str, dict[str, float]]) -> tuple[int, int, list[str]]:
     """Check Smogon's chart reproduces Serebii's per-Pokemon weakness rows."""
     mons = json.loads(Path(DB, "pokemon.json").read_text(encoding="utf-8"))
     mons = mons["rows"] if isinstance(mons, dict) and "rows" in mons else mons
     # pokemon.json only carries a slug on Mega entries, so index by species
     # reduced to the same shape as a Serebii page filename.
-    def pagekey(x):
+    def pagekey(x: str | None) -> str:
         return re.sub(r"[^a-z0-9]", "", (x or "").lower())
 
     by_slug = {}
@@ -122,7 +124,7 @@ def verify(chart, weak):
     return checked, agree, problems
 
 
-def main():
+def main() -> None:
     """Write typechart.json and natures.json from Smogon's basics, then
     cross-check the chart against Serebii's weakness tables.
     """

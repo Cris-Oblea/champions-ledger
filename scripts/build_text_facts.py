@@ -30,6 +30,7 @@ import argparse
 import json
 import os
 import re
+from typing import Any
 
 import dex
 
@@ -42,7 +43,7 @@ from paths import DB
 OUT = os.path.join(DB, "text_facts.json")
 
 
-def pokebase(kind):
+def pokebase(kind: str) -> dict[str, str]:
     """kind: "moves" or "abilities". The first row of a name wins (As One has
     two forms under one name)."""
     out = {}
@@ -56,7 +57,7 @@ BARE_STATUS = re.compile(r"^Gives the (?:target|user)(?:'s spot)? the "
                          r"[A-Za-z\- ]+ status\.?$", re.I)
 
 
-def score(t):
+def score(t: str | None) -> int:
     """How much does this sentence actually state?"""
     t = t or ""
     if not t:
@@ -70,12 +71,13 @@ def score(t):
     return s
 
 
-def clean(s):
+def clean(s: str | None) -> str:
     """Collapse whitespace."""
     return " ".join((s or "").split())
 
 
-def merge(rows, pb, label):
+def merge(rows: list[dex.Row], pb: dict[str, str],
+          label: str) -> tuple[dict[str, dict[str, Any]], list[Any]]:
     """Pick the more concrete of Serebii's and pokebase's text per entry,
     keeping both and counting who won.
     """
@@ -121,7 +123,7 @@ def merge(rows, pb, label):
 LEVEL = 50
 
 
-def augment(m, text, base_crit):
+def augment(m: dex.Row, text: str, base_crit: str) -> str:
     """Add the number a sentence leaves as a word: a high-crit move's rate
     beside "higher chance for a critical hit".
     """
@@ -138,7 +140,8 @@ def augment(m, text, base_crit):
     return text
 
 
-def smogon_first(moves, mv):
+def smogon_first(moves: list[dex.Row],
+                 mv: dict[str, dict[str, Any]]) -> dict[str, dict[str, Any]]:
     """Put Smogon's description in front, and report what it leaves out."""
     long = (dex.db("smogon_text") or {}).get("moves") or {}
     rates = {}
@@ -174,7 +177,7 @@ def smogon_first(moves, mv):
     return mv
 
 
-def smogon_abilities(ab):
+def smogon_abilities(ab: dict[str, dict[str, Any]]) -> dict[str, dict[str, Any]]:
     """The same for abilities: Smogon's Champions text almost always describes
     one better, and with its numbers, so it replaces the pick outright - Intimidate
     goes from "lowers the Attack of opposing Pokemon" to that plus who is
@@ -231,7 +234,7 @@ def smogon_abilities(ab):
     return ab
 
 
-def main():
+def main() -> None:
     """Build text_facts.json for moves and abilities, and report where the two
     sources disagree.
     """

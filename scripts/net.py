@@ -16,6 +16,7 @@ cannot lets it propagate, which stops the stage with the real error.
 import http.client
 import time
 import urllib.request
+from typing import Any
 
 # A browser's, because the scraped sites are built for browsers; the APIs
 # (GitHub, PokeAPI) accept anything.
@@ -26,7 +27,8 @@ UA = ("Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 "
 ERRORS = (OSError, http.client.HTTPException, ValueError)
 
 
-def get(url, *, data=None, headers=None, timeout=60, min_size=0):
+def get(url: str, *, data: bytes | None = None, headers: dict[str, str] | None = None,
+        timeout: float = 60, min_size: int = 0) -> bytes:
     """The response body; `data` makes it a POST. A body shorter than
     `min_size` is an error page rather than the page asked for, so it fails
     and is retried like a timeout. Two failures are waited out (1.5 s, 3 s);
@@ -34,7 +36,7 @@ def get(url, *, data=None, headers=None, timeout=60, min_size=0):
     req = urllib.request.Request(url, data=data,
                                  headers={"User-Agent": UA, **(headers or {})})
 
-    def once():
+    def once() -> bytes:
         """One attempt; a body under min_size is an error page, not data."""
         with urllib.request.urlopen(req, timeout=timeout) as r:
             body = r.read()
@@ -50,7 +52,7 @@ def get(url, *, data=None, headers=None, timeout=60, min_size=0):
     return once()
 
 
-def text(url, **kw):
+def text(url: str, **kw: Any) -> str:
     """get() read as UTF-8, for an HTML or CSS page: a byte that is not UTF-8
     becomes U+FFFD instead of failing the whole page."""
     return get(url, **kw).decode("utf-8", "replace")

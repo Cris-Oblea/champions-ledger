@@ -40,6 +40,7 @@ import json
 import pathlib
 import re
 import sys
+from typing import Any
 
 import net
 import paths
@@ -69,23 +70,23 @@ INK = re.compile(r"(?<![-a-z])color\s*:\s*(#[0-9a-fA-F]{3,6})")
 EXTRA = {}
 
 
-def luminance(hexstr):
+def luminance(hexstr: str) -> float:
     """WCAG relative luminance of a #rrggbb colour."""
-    def chan(c):
-        c = int(hexstr[c:c + 2], 16) / 255
+    def chan(at: int) -> float:
+        c = int(hexstr[at:at + 2], 16) / 255
         return c / 12.92 if c <= 0.03928 else ((c + 0.055) / 1.055) ** 2.4
     r, g, b = chan(1), chan(3), chan(5)
     return 0.2126 * r + 0.7152 * g + 0.0722 * b
 
 
-def contrast(a, b):
+def contrast(a: str, b: str) -> float:
     """WCAG contrast ratio between two colours."""
     la, lb = luminance(a), luminance(b)
     hi, lo = max(la, lb), min(la, lb)
     return (hi + 0.05) / (lo + 0.05)
 
 
-def parse(css):
+def parse(css: str) -> dict[str, dict[str, Any]]:
     """Each type's colour, second colour and name ink from pokemon.com's
     stylesheet.
     """
@@ -105,7 +106,7 @@ def parse(css):
     return out
 
 
-def main():
+def main() -> None:
     """Read the type colours from pokemon.com and write type_colors.json;
     --check fails if upstream moved.
     """

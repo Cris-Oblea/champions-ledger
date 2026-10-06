@@ -42,6 +42,7 @@ import json
 import os
 import sys
 from pathlib import Path
+from typing import Any
 
 import dex
 from paths import META, ROOT
@@ -56,7 +57,7 @@ OUT = os.path.join(ROOT, "tracker", "splits.js")
 KEEP_SPREADS = 12
 
 
-def pairs(rows):
+def pairs(rows: list[dex.Row] | None) -> list[list[Any]]:
     """[name, percent], descending. Sorted here so the app can read the top
     row as the maximum without scanning."""
     out = [[r["name"], r["percent"]] for r in rows or [] if "percent" in r]
@@ -64,7 +65,7 @@ def pairs(rows):
     return out
 
 
-def spreads(rows):
+def spreads(rows: list[dex.Row] | None) -> list[list[Any]]:
     """[hp, atk, def, spa, spd, spe, percent] - a flat row of numbers rather
     than an object, which is less than half the bytes for the same content."""
     out = []
@@ -103,7 +104,7 @@ COLUMN_SUMS = [
 TEAMMATE_CAP = 10
 
 
-def teammate_sum(rows, s):
+def teammate_sum(rows: list[dex.Row], s: float) -> tuple[bool, str]:
     """Is this teammates column the right shape? Two different guarantees.
 
     A FIXED RANGE ONCE BLOCKED THE NIGHTLY, right to fail and wrong about
@@ -137,7 +138,7 @@ def teammate_sum(rows, s):
             "100)" % TEAMMATE_CAP)
 
 
-def check(mons):
+def check(mons: dict[str, dex.Row]) -> int:
     """The shape of each column, asserted rather than believed."""
     bad = []
     for name, v in sorted(mons.items()):
@@ -168,7 +169,7 @@ def check(mons):
     return 0
 
 
-def main():
+def main() -> int:
     """Turn the pokebase per-Pokemon splits into tracker/splits.js; --check
     asserts what each column is a share of.
     """

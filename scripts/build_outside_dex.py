@@ -45,7 +45,9 @@ import json
 import os
 import re
 import sys
+from collections.abc import Iterable
 from pathlib import Path
+from typing import Any
 
 import dex
 from audit_learnsets import CHAMPIONS_VG
@@ -61,14 +63,14 @@ ENGLISH = "9"
 CLASS = {"status": "T", "physical": "P", "special": "S"}
 
 
-def clean(s):
+def clean(s: str | None) -> str:
     """One line, and no markup. PokeAPI's effect text carries its own wiki
     links - [Pound]{move:pound} - which are noise on a phone."""
     s = re.sub(r"\[([^\]]*)\]\{[^}]*\}", lambda m: m.group(1) or "", s or "")
     return " ".join(s.split())
 
 
-def _upstream_names():
+def _upstream_names() -> tuple[dict[str, str | None], dict[str, str], dict[str, str]]:
     """(move id -> upstream's English name, ability id -> name, ability id ->
     its short effect). Upstream's move table is used for ONE thing: turning a
     learn row's move id into a name we can look up in ours. Every number
@@ -89,7 +91,9 @@ def _upstream_names():
     return upstream_name, aname, aprose
 
 
-def _pool(move_ids, upstream_name, champ_by_key, smogon, mv, nomatch):
+def _pool(move_ids: Iterable[str], upstream_name: dict[str, str | None],
+          champ_by_key: dict[str, dex.Row], smogon: dict[str, Any], mv: dict[str, Any],
+          nomatch: set[str]) -> list[str]:
     """One species' movepool in OUR spelling; a move Champions cannot use goes
     into `mv` with its numbers, an upstream move we have no row for into
     `nomatch`."""
@@ -107,13 +111,13 @@ def _pool(move_ids, upstream_name, champ_by_key, smogon, mv, nomatch):
         nm = row["name"]                       # OUR spelling, always
         names.append(nm)
         if not row.get("useable") and nm not in mv:
-            mv[nm] = [row.get("type"), dex.CATEGORY.get(row.get("category"), "T"),
+            mv[nm] = [row.get("type"), dex.CATEGORY.get(row.get("category") or "", "T"),
                       row.get("power"), row.get("accuracy"), row.get("pp"),
                       smogon.get(nm) or clean(row.get("effect") or "")]
     return names
 
 
-def build():
+def build() -> tuple[dict[str, Any], list[str], list[str]]:
     # --- what Champions already has; these are never overridden -----------
     # Keyed, because upstream writes "Will-O-Wisp" and "will-o-wisp" and our
     # row is the one whose spelling must win - it is the one the rest of the
@@ -169,7 +173,7 @@ def build():
     return {"m": pools, "mv": mv, "ab": ab}, missing, sorted(nomatch)
 
 
-def main():
+def main() -> None:
     """Build and write the outside dex, and report what did not match."""
     ap = argparse.ArgumentParser(description=(__doc__ or "").split("\n")[0])
     ap.add_argument("--report", action="store_true")

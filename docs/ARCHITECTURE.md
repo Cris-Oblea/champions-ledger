@@ -327,7 +327,8 @@ runs in four places: the `pre-push` hook, every pull request, every push to
 - **pyright** (`pyrightconfig.json`, an npm package pinned like typescript):
   the Python type check, the same checker as VS Code's Pylance, so the
   editor shows what blocks a push. Every script is checked in `basic` mode at
-  zero; `strict` (every parameter and return annotated, nothing Unknown) is
+  zero, and every function is annotated (`reportMissingParameterType` fails
+  an untyped parameter); `strict` (nothing Unknown either) is
   switched on file by file in the config's `strict` list. JSON read from disk
   is the data boundary: `dex.load/db/meta` return `Json` (`Any`), the Python
   twin of `docFromRow`.
