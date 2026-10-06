@@ -91,10 +91,11 @@ def upstream(force: bool = False) -> dict[str, set[str]]:
 
 
 def _sort_out(name: str, moves: Iterable[str], known_map: dict[str, str], side: str,
-              show: bool) -> tuple[list[str], int]:
+              show: bool) -> tuple[list[tuple[str, str]], int]:
     """(the moves that are NEW disagreements, how many were known ones);
     `show` prints the known ones too."""
-    new, known = [], 0
+    new: list[tuple[str, str]] = []
+    known = 0
     for m in sorted(moves):
         if m in known_map:
             known += 1
@@ -119,7 +120,9 @@ def main() -> None:
     up = upstream(args.force)
     ours = dex.db("learnsets")
     paired = 0
-    new_ours, new_up, known = [], [], 0
+    new_ours: list[tuple[str, str]] = []
+    new_up: list[tuple[str, str]] = []
+    known = 0
     for name in sorted(ours):
         u = up.get(fetch_home_dex.key(name))
         if not u:

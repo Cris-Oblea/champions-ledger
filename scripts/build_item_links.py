@@ -100,7 +100,7 @@ def clean(s: str | None) -> str:
 def field_setters(moves: list[dex.Row],
                   abils: list[dex.Row]) -> dict[str, tuple[list[str], list[str]]]:
     """For each field effect: the moves and the abilities that turn it on."""
-    out = {}
+    out: dict[str, tuple[list[str], list[str]]] = {}
     for eff, pat in FIELD.items():
         rx = re.compile(pat, re.I)
         ms = [m["name"] for m in moves
@@ -118,8 +118,8 @@ def field_setters(moves: list[dex.Row],
 
 
 # status -> the moves that inflict it, from scripts/build_statuses.py
-STATUS = {k: (v.get("moves") or [])
-          for k, v in ((dex.db("statuses") or {}).get("statuses") or {}).items()}
+_STATUSES: dict[str, dex.Row] = dex.db_obj("statuses").get("statuses") or {}
+STATUS: dict[str, list[str]] = {k: (v.get("moves") or []) for k, v in _STATUSES.items()}
 
 
 def _has(t: str, pat: str) -> re.Match[str] | None:
@@ -136,7 +136,8 @@ def _field_rule(t: str, setters: dict[str, tuple[list[str], list[str]]]) -> Link
         return ms, abs_, ("extends " + hits[0] + " however it was set - "
                           "by the move or by the ability")
     if _has(t, r"\bterrain\b"):
-        ms, abs_ = [], []
+        ms: list[str] = []
+        abs_: list[str] = []
         for eff, (a, b) in setters.items():
             if "Terrain" in eff:
                 ms += a
@@ -310,7 +311,7 @@ def item_links(item: dex.Row, props: Props,
     # reading only the shown text dropped Air Balloon, Bright Powder,
     # Metronome and Terrain Extender - the same single point of failure,
     # moved. Every phrasing is matched, so a better description can only add.
-    f = facts.get(item["name"]) or {}
+    f: dex.Row = facts.get(item["name"]) or {}
     t = " || ".join(clean(x) for x in (
         f.get("text"), f.get("pokebase_text"),
         f.get("serebii_text") or item.get("effect")) if x)
@@ -341,21 +342,22 @@ def _mark_binding(props: Props, moves: list[dex.Row]) -> None:
 
 def _reverse_index(items: dict[str, dict[str, Any]], key: str) -> dict[str, list[str]]:
     """move (or ability) -> the items that serve it, sorted."""
-    out = {}
+    out: dict[str, list[str]] = {}
     for it, r in items.items():
         for n in r[key]:
             out.setdefault(n, []).append(it)
     return {k: sorted(v) for k, v in out.items()}
 
 
-def build() -> tuple[dict[str, Any], dict[str, list[str]], dict[str, list[str]], list[str], dict[str, Any]]:
+def build() -> tuple[dict[str, Any], dict[str, list[str]], dict[str, list[str]],
+                     list[tuple[str, str]], dict[str, tuple[list[str], list[str]]]]:
     """Link every held item and berry to the moves and abilities it serves,
     through the field effect it names. Returns the items, both indexes, the
     unlinked items with their reason, and who sets each effect.
     """
     moves = dex.db("moves")
     abils = dex.db("abilities")
-    props = (dex.db("ability_moves") or {}).get("moves") or {}
+    props: Props = dex.db_obj("ability_moves").get("moves") or {}
     if not props:
         sys.exit("run scripts/build_ability_moves.py first - this needs its "
                  "derived move properties")
@@ -367,8 +369,9 @@ def build() -> tuple[dict[str, Any], dict[str, list[str]], dict[str, list[str]],
             sys.exit("no move or ability sets %r any more - the wording "
                      "changed, fix FIELD" % eff)
 
-    facts = (dex.db("item_facts") or {}).get("prices") or {}
-    items, unlinked = {}, []
+    facts: dict[str, dex.Row] = dex.db_obj("item_facts").get("prices") or {}
+    items: dict[str, dict[str, Any]] = {}
+    unlinked: list[tuple[str, str]] = []
     for it in dex.db("items"):
         if it.get("is_mega_stone") or it.get("category") == "Miscellaneous":
             continue

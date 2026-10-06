@@ -60,7 +60,7 @@ KEEP_SPREADS = 12
 def pairs(rows: list[dex.Row] | None) -> list[list[Any]]:
     """[name, percent], descending. Sorted here so the app can read the top
     row as the maximum without scanning."""
-    out = [[r["name"], r["percent"]] for r in rows or [] if "percent" in r]
+    out = [[r["name"], r["percent"]] for r in rows or () if "percent" in r]
     out.sort(key=lambda x: -x[1])
     return out
 
@@ -69,7 +69,7 @@ def spreads(rows: list[dex.Row] | None) -> list[list[Any]]:
     """[hp, atk, def, spa, spd, spe, percent] - a flat row of numbers rather
     than an object, which is less than half the bytes for the same content."""
     out = []
-    for r in rows or []:
+    for r in rows or ():
         sp = r.get("sp") or {}
         out.append([sp.get(k, 0) for k in dex.STAT_KEYS] + [r["percent"]])
     out.sort(key=lambda x: -x[-1])

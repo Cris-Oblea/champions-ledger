@@ -17,7 +17,7 @@ from collections import defaultdict
 from pathlib import Path
 from typing import Any
 
-from dex import DIVISIONS, meta, norm, species_norm, tournament
+from dex import DIVISIONS, meta_obj, norm, species_norm, tournament
 from paths import DB, RAW
 from serebii_text import read
 
@@ -284,7 +284,7 @@ def _meta_names() -> dict[str, list[Any]]:
     """Every Pokemon name each meta source uses, per source."""
     src = {
         "pokebase usage": [r["name"] for r in
-                           (meta("usage_pokemon") or {}).get("rows", [])],
+                           meta_obj("usage_pokemon").get("rows", [])],
     }
     # All three age divisions share the roster, so a name only one of them uses
     # still has to resolve. Each is listed separately: which division dropped a
@@ -325,7 +325,7 @@ def _unresolved_meta_names(by_norm: dict[str, Any]) -> int:
     form. Names under the usage tail are noise, reported apart."""
     print("\n--- 6. Names used by the meta sources that do not resolve ---")
     usage_of = {r["name"]: (r.get("usage_percent") or 0)
-                for r in (meta("usage_pokemon") or {}).get("rows", [])}
+                for r in meta_obj("usage_pokemon").get("rows", [])}
     zero_usage = {n for n, v in usage_of.items() if v < TAIL}
     unresolved = defaultdict(set)
     for label, names in _meta_names().items():

@@ -32,6 +32,7 @@ player to confirm it in this one. Nothing here is invented.
 import json
 import os
 import re
+from typing import Any
 
 import dex
 from paths import DB, RAW
@@ -51,7 +52,7 @@ def serebii_changes() -> dict[str, dict[str, str]]:
     if not os.path.exists(PAGE):
         return {}
     h = read(PAGE)
-    out = {}
+    out: dict[str, dict[str, str]] = {}
     for r in re.findall(r"<tr.*?</tr>", h, re.S):
         cells = [txt(c) for c in re.findall(r"<t[dh].*?</t[dh]>", r, re.S)]
         if len(cells) == 3 and cells[0] and cells[0] != "Condition":
@@ -63,7 +64,7 @@ def serebii_changes() -> dict[str, dict[str, str]]:
 # from modifiers.json; `serebii` is filled from the rebalance table above;
 # `main_series` is the value from the other games, kept only where no Champions
 # source states one, and never presented as confirmed.
-BASE = {
+BASE: dict[str, dict[str, Any]] = {
     "Paralysis": {
         "short": "loses the turn sometimes, and moves at half Speed",
         "speed": {"value": 0.5, "source": "serebii"},
@@ -156,14 +157,14 @@ def causes(text: str, word: str) -> bool:
 
 def status_moves() -> dict[str, list[str]]:
     """status -> the useable moves that inflict it."""
-    tf = (dex.db("text_facts") or {}).get("moves") or {}
-    out = {}
+    tf: dict[str, dex.Row] = dex.db_obj("text_facts").get("moves") or {}
+    out: dict[str, list[str]] = {}
     for st, word in WORD.items():
-        hits = []
+        hits: list[str] = []
         for m in dex.db("moves"):
             if not m.get("useable"):
                 continue
-            r = tf.get(m["name"]) or {}
+            r: dex.Row = tf.get(m["name"]) or {}
             t = " | ".join(x for x in (r.get("serebii"), r.get("pokebase")) if x)
             if not t:
                 t = " ".join((m.get("effect") or "").split())
@@ -178,13 +179,13 @@ def main() -> None:
     moves that inflict it.
     """
     changes = serebii_changes()
-    mods = dex.db("modifiers") or {}
-    burn = (mods.get("status") or {}).get("Burn|physical")
+    status_mods: dict[str, float] = dex.db_obj("modifiers").get("status") or {}
+    burn = status_mods.get("Burn|physical")
     if burn:
         BASE["Burn"]["physical"]["value"] = round(burn, 3)
 
     caused = status_moves()
-    out = {}
+    out: dict[str, dict[str, Any]] = {}
     for name, body in BASE.items():
         row = dict(body)
         row["moves"] = caused.get(name, [])
@@ -192,7 +193,7 @@ def main() -> None:
         if name in changes:
             row["serebii_prior"] = changes[name]["prior"]
             row["serebii_new"] = changes[name]["new"]
-        srcs = {v["source"] for k, v in body.items() if isinstance(v, dict)}
+        srcs = {v["source"] for v in body.values() if dex.is_obj(v)}
         row["champions_confirmed"] = "main_series" not in srcs
         out[name] = row
 
@@ -207,9 +208,9 @@ def main() -> None:
 
     print("%d statuses" % len(out))
     for n, r in out.items():
-        bits = []
+        bits: list[str] = []
         for k, v in r.items():
-            if isinstance(v, dict) and "value" in v:
+            if dex.is_obj(v) and "value" in v:
                 bits.append("%s=%s (%s)" % (k, round(v["value"], 3), v["source"]))
         print("  %-16s %-9s %-44s %d moves cause it" % (n,
               "REBALANCED" if r["rebalanced_in_champions"] else "unchanged",

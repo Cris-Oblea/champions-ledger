@@ -268,7 +268,7 @@ DECISIONS = [
 
 def repo_files() -> list[str]:
     """Every file path on disk, repo-relative, minus the two huge trees."""
-    out = []
+    out: list[str] = []
     for d, dirs, files in os.walk(ROOT):
         dirs[:] = [x for x in dirs if x not in (".git", "node_modules")]
         rel = os.path.relpath(d, ROOT).replace(os.sep, "/")
@@ -301,7 +301,7 @@ def ignored(names: Iterable[str], dirs: Iterable[str]) -> set[str]:
     and trying it there excused the deleted inventory.json."""
     gone = git_ignored([d + "/" for d in dirs])
     kept = [d for d in dirs if d + "/" not in gone]
-    cand = {}   # one path can stand for several names: `a.json`, `x/a.json`
+    cand: dict[str, set[str]] = {}   # one path can stand for several names: `a.json`, `x/a.json`
     for n in names:
         for c in [n] + ([d + "/" + n for d in kept] if "/" not in n else []):
             cand.setdefault(c, set()).add(n)
@@ -313,7 +313,7 @@ def check_named_files() -> int:
     lines around it say it is gone or never meant to exist."""
     files = repo_files()
     base = {f.rsplit("/", 1)[-1] for f in files}
-    found = []
+    found: list[tuple[str, int, str]] = []
     for rel in DOCS:
         lines = read(rel) or []
         for i, line in enumerate(lines):
@@ -357,7 +357,7 @@ def architecture_parts() -> list[tuple[str, list[str]]]:
         """The basenames matching a glob, with a suffix stripped."""
         return sorted(os.path.basename(f)[:len(os.path.basename(f)) - len(strip)]
                       for f in glob.glob(os.path.join(ROOT, pattern)))
-    tables = set()
+    tables: set[str] = set()
     for f in glob.glob(os.path.join(ROOT, "supabase", "*.sql")):
         tables |= set(re.findall(r"create table if not exists public\.(\w+)",
                                  Path(f).read_text(encoding="utf-8"), re.I))

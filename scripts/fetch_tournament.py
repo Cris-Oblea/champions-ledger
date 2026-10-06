@@ -109,7 +109,7 @@ def event_json(tid: str, division: str,
         rows = json.loads(body)
     except ValueError:
         return None
-    return rows if isinstance(rows, list) and rows else None
+    return rows if dex.is_arr(rows) and rows else None
 
 
 def players_from_event(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
@@ -120,14 +120,14 @@ def players_from_event(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
     `drop` is the round the player dropped in, or -1 for those who played to the
     end, which is more useful than the scrape's bare "dropped" flag.
     """
-    players = []
+    players: list[dict[str, Any]] = []
     for r in rows:
         name = (r.get("name") or "").strip()
         country = None
         mc = re.match(r"^(.*?)\s*\[([A-Za-z]{2})\]$", name)
         if mc:
             name, country = mc.group(1).strip(), mc.group(2).upper()
-        rec = r.get("record") or {}
+        rec: dict[str, Any] = r.get("record") or {}
         record = None
         if rec:
             record = "%s-%s-%s" % (rec.get("wins", 0), rec.get("losses", 0),
@@ -147,7 +147,7 @@ def players_from_event(rows: list[dict[str, Any]]) -> list[dict[str, Any]]:
                 "item": s.get("item"),
                 "nature": s.get("stat_alignment"),
                 "moves": s.get("badges") or [],
-            } for s in (r.get("decklist") or [])],
+            } for s in (r.get("decklist") or ())],
         })
     players.sort(key=lambda p: (p["rank"] is None, p["rank"]))
     return players
@@ -193,7 +193,8 @@ def _tooltip_slot(t: str) -> dict[str, Any] | None:
     parts = [p for p in parts if p]
     if not parts:
         return None
-    entry = {"pokemon": parts[0], "ability": None, "item": None, "moves": []}
+    entry: dict[str, Any] = {"pokemon": parts[0], "ability": None, "item": None,
+                             "moves": []}
     for p in parts[1:]:
         if p.startswith("["):
             with contextlib.suppress(Exception):
@@ -208,7 +209,7 @@ def _tooltip_slot(t: str) -> dict[str, Any] | None:
 
 def parse_standings(body: str) -> list[dict[str, Any]]:
     """One row per player: placement, record, and the team from the sprite tooltips."""
-    players = []
+    players: list[dict[str, Any]] = []
     for row in re.split(r'<tr class="trow"', body)[1:]:
         mc = re.search(r'id="([a-z]{2})"', row)
         mrank = re.search(r"<td><div id=\"\d+\">(\d+)</div></td>", row)
@@ -256,7 +257,7 @@ def parse_team_html(body: str) -> list[dict[str, Any]]:
     """team.php renders one card per Pokemon: sprite, name, ability, item,
     nature, then the moves. Checked field-for-field against the JSON endpoint
     on players reachable both ways - it agrees on all six slots."""
-    out = []
+    out: list[dict[str, Any]] = []
     for card in re.split(r'src="[^"]*sprites/pokemon/', body)[1:]:
         texts = [html.unescape(t).strip() for t in
                  re.findall(r'text-align: left;[^"]*">\s*([^<]*?)\s*</div>', card)]
@@ -281,7 +282,7 @@ def parse_team_html(body: str) -> list[dict[str, Any]]:
 def _team_from_json(body: str) -> list[dict[str, Any]]:
     """One player's team from pokedata's teamlist JSON."""
     try:
-        rows = json.loads(body)
+        rows: list[dex.Row] = json.loads(body)
     except ValueError:
         rows = []
     return [{
@@ -356,10 +357,11 @@ def _print_summary(tid: str, division: str, rnd: int | None, info: dict[str, Any
     print("Tournament %s / %s - round %s%s  [%s]"
           % (tid, division, rnd, " (%s)" % label if label else "", origin))
     if info.get("swiss_rounds"):
+        labels: dict[int, str] = info.get("round_labels") or {}
         print("  %d swiss rounds, then the cut: %s"
               % (info["swiss_rounds"],
                  ", ".join("%d=%s" % (n, name) for n, name in
-                           sorted((info.get("round_labels") or {}).items())
+                           sorted(labels.items())
                            if n > info["swiss_rounds"]) or "none yet"))
     print("  %s - %d players, %d teamlists, %d complete natures"
           % ("EVENT COMPLETE" if info.get("complete") else "still running",

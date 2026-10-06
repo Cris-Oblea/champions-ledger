@@ -23,6 +23,7 @@ import json
 import os
 import sys
 from pathlib import Path
+from typing import Any
 
 import dex
 from paths import META
@@ -54,22 +55,22 @@ def main() -> None:
     """
     show = "--show" in sys.argv
     src = json.loads(Path(SRC).read_text(encoding="utf-8"))
-    seeded = src.get("species") or {}
+    seeded: dict[str, dict[str, Any]] = src.get("species") or {}
     default_supply = 2
 
-    rows = (dex.meta("usage_pokemon") or {}).get("rows", [])
+    rows: list[dex.Row] = dex.meta_obj("usage_pokemon").get("rows", [])
     # pokebase spells forms its own way - "Indeedee (Female)" for our
     # "Indeedee-Female", "Alolan Persian" for "Persian-Alola". Matching on the
     # raw string silently dropped every one of them, which is the gotcha
     # CLAUDE.md already documents: join Pokemon names through norm().
-    usage = {}
+    usage: dict[str, tuple[float, int | None]] = {}
     for r in rows:
         usage[dex.norm(r["name"])] = (r.get("usage_percent") or 0.0,
                                     r.get("rank"))
     ladder_size = len(rows)
 
-    out = {}
-    for p in dex.db("pokemon") or []:
+    out: dict[str, dict[str, Any]] = {}
+    for p in dex.db("pokemon") or ():
         if p.get("is_mega"):
             continue
         name = p["name"]
@@ -78,11 +79,11 @@ def main() -> None:
         # it, a spare costs them nothing", which is a claim the data does not
         # support: it is unknown, not unwanted.
         key = dex.norm(name)
-        known = key in usage
-        pct, rank = usage.get(key, (None, None))
-        dem = demand_of(pct) if known else None
-        ent = seeded.get(name) or seeded.get(p.get("species") or name)
-        sup = (ent or {}).get("cost", default_supply)
+        hit = usage.get(key)
+        pct, rank = hit or (None, None)
+        dem = demand_of(hit[0]) if hit else None
+        ent = seeded.get(name) or seeded.get(p.get("species") or name) or {}
+        sup = ent.get("cost", default_supply)
         # The harder half dominates: a species that is easy to catch but
         # universally played is still unobtainable by trade, and so is a rare
         # one nobody plays. Averaging would hide both.
@@ -102,11 +103,11 @@ def main() -> None:
             "why_demand": (DEMAND_WHY[dem] if dem is not None else
                            "not on the ladder, so there is no usage "
                            "number for it yet"),
-            "how": (ent or {}).get("how"),
+            "how": ent.get("how"),
             "seeded": bool(ent),
         }
 
-    blob = {"_what": "Derived by scripts/build_gts_difficulty.py. demand is "
+    blob: dict[str, Any] = {"_what": "Derived by scripts/build_gts_difficulty.py. demand is "
                      "measured from pokebase ladder usage; supply is declared "
                      "in data/meta/go_sourcing.json and is an ESTIMATE.",
             "_scale": src.get("_scale"),
@@ -119,11 +120,11 @@ def main() -> None:
           % (OUT, len(out), sum(1 for v in out.values() if v["seeded"])))
 
     if show:
-        rows = sorted(out.items(), key=lambda kv: (-kv[1]["score"],
+        ranked = sorted(out.items(), key=lambda kv: (-kv[1]["score"],
                                                    -(kv[1]["usage"] or 0)))
         print("\n%-20s %-6s %-7s %-7s %s" % ("species", "score", "demand",
                                              "supply", "usage"))
-        for n, v in rows[:30]:
+        for n, v in ranked[:30]:
             print("%-20s %-6d %-7s %-7d %s"
                   % (n, v["score"],
                      "?" if v["demand"] is None else v["demand"],

@@ -51,7 +51,7 @@ def discover() -> list[dict[str, Any]]:
     """
     body = net.text(INDEX, timeout=45)
     rows = re.findall(r"location\.href='(\d+)/'[^>]*>([^<]+)", body)
-    out = []
+    out: list[dict[str, Any]] = []
     for tid, raw in rows:
         label = " ".join(raw.split())
         if not re.search(r"world championship", label, re.I):
@@ -101,17 +101,17 @@ def species_table(path: str) -> dict[str, Any] | None:
         d = json.loads(Path(path).read_text(encoding="utf-8"))
     except (OSError, ValueError):
         return None
-    players = d.get("players") or []
+    players: list[dex.Row] = d.get("players") or []
     with_team = [p for p in players if p.get("team")]
-    c = collections.Counter()
+    c: collections.Counter[str] = collections.Counter()
     for p in with_team:
-        seen = set()
+        seen: set[str] = set()
         for slot in p["team"]:
-            n = (slot or {}).get("pokemon")
-            if not n:
+            mon: str | None = dex.obj(slot).get("pokemon")
+            if not mon:
                 continue
             # pokedata writes forms as "Ogerpon [Hearthflame Mask]"
-            base = n.split(" [")[0].strip()
+            base = mon.split(" [")[0].strip()
             seen.add(base)
         c.update(seen)
     n = len(with_team)
@@ -155,7 +155,7 @@ def _by_year(events: list[dict[str, Any]]) -> list[dict[str, Any]]:
     """The view actually worth reading: one row per YEAR. A year can be
     published as two events (a Day 1 and a Day 2) and the teamlists are split
     across them unevenly."""
-    by_year = {}
+    by_year: dict[int, dict[str, Any]] = {}
     for ev in events:
         if ev["year"] is None:
             continue
@@ -189,7 +189,8 @@ def main() -> int:
     events = discover()
     print("World Championships on pokedata: %d" % len(events))
 
-    archive = {"_what": "Every VGC World Championship pokedata publishes. A "
+    events_out = [_event_record(ev, a.force) for ev in events]
+    archive: dict[str, Any] = {"_what": "Every VGC World Championship pokedata publishes. A "
                         "Worlds is played once under one regulation and then "
                         "frozen, so these are HISTORY - what the field played "
                         "that August - never current usage.",
@@ -198,8 +199,8 @@ def main() -> int:
                "_counted": "Per TEAM, not per appearance: the Species Clause "
                            "means a team holds a species at most once.",
                "source": INDEX,
-               "events": [_event_record(ev, a.force) for ev in events]}
-    archive["years"] = _by_year(archive["events"])
+               "events": events_out}
+    archive["years"] = _by_year(events_out)
     archive["_years_note"] = (
         "One entry per year, merged across that year's events. 2023 is the "
         "case that forces this: its Masters teamlists are on the Day 1 event "
@@ -210,12 +211,11 @@ def main() -> int:
 
     Path(OUT).write_text(
         json.dumps(archive, ensure_ascii=False, indent=1), encoding="utf-8")
-    tot = sum(d["teams"] for e in archive["events"]
-              for d in e["divisions"].values())
+    tot = sum(d["teams"] for e in events_out for d in e["divisions"].values())
     print("\nwrote %s" % OUT)
     print("  %d events, %d division files, %d teams in total"
-          % (len(archive["events"]),
-             sum(len(e["divisions"]) for e in archive["events"]), tot))
+          % (len(events_out),
+             sum(len(e["divisions"]) for e in events_out), tot))
     return 0
 
 

@@ -97,7 +97,7 @@ def _pool(move_ids: Iterable[str], upstream_name: dict[str, str | None],
     """One species' movepool in OUR spelling; a move Champions cannot use goes
     into `mv` with its numbers, an upstream move we have no row for into
     `nomatch`."""
-    names = []
+    names: list[str] = []
     for mid in sorted(move_ids, key=int):
         up = upstream_name.get(mid)
         row = champ_by_key.get(dex.slug(up)) if up else None
@@ -131,7 +131,7 @@ def build() -> tuple[dict[str, Any], list[str], list[str]]:
     # text where its Champions dex has the move, else Serebii's
     # attackdex-champions line, which covers every one of them. Never an
     # older game's page, which can describe a different move.
-    smogon = (dex.db("smogon_text") or {}).get("moves") or {}
+    smogon: dict[str, str] = dex.db_obj("smogon_text").get("moves") or {}
     champ_abils = {dex.slug(a["name"]) for a in dex.db("abilities")}
     home = json.loads(Path(DB, "home_dex.json").read_text(encoding="utf-8"))
     upstream_name, aname, aprose = _upstream_names()
@@ -152,11 +152,15 @@ def build() -> tuple[dict[str, Any], list[str], list[str]]:
     # and Silvally's memories share one movepool exactly as they share one
     # spread, and the sheet already says whose row it is showing.
     resolve = resolver(table("pokemon.csv"))
-    by_pid = collections.defaultdict(lambda: collections.defaultdict(set))
+    by_pid: dict[str, dict[str, set[str]]] = collections.defaultdict(
+        lambda: collections.defaultdict(set))
     for r in table("pokemon_moves.csv"):
         by_pid[r["pokemon_id"]][r["version_group_id"]].add(r["move_id"])
 
-    pools, mv, missing, nomatch = {}, {}, [], set()
+    pools: dict[str, list[str]] = {}
+    mv: dict[str, list[Any]] = {}
+    missing: list[str] = []
+    nomatch: set[str] = set()
     for name in sorted(home):
         pid = resolve(hkey(name))[0]
         groups = by_pid.get(pid) if pid else None
