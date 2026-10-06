@@ -107,7 +107,7 @@ function pokeSheet(rec){
   const show = anyRow(rec.name);
   const isHome = rec.location === "home";
   openSheet(rec.name, function(body){
-    if (show) pokeHead(body, show, {shiny: !!rec.shiny, rec: rec});
+    if (show) pokeHead(body, show, {shiny: !!rec.shiny});
     else body.appendChild(unknownNote(rec));
     originBlock(body, rec);
     copyFlags(body, rec);

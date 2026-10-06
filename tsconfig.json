@@ -14,7 +14,7 @@
     "skipLibCheck": true,
     // Off here (TypeScript 6 turns it on by default): strict asks for a type
     // on every parameter, and it is switched on one layer at a time, each in
-    // its own tsconfig.json - core/ is.
+    // its own tsconfig.json - core/ and ui/ are.
     "strict": false
   },
   "include": ["tracker/src/**/*.js", "tracker/src/globals.d.ts"],

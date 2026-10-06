@@ -44,7 +44,34 @@ interface Champ {
                             number | null, number]>;
   GTSBLOCK?: Record<string, unknown>;
   MYTHICAL?: string[];
+  /** ability -> Champions' description */
+  ABIL: Record<string, string>;
+  /** ability -> the moves it changes (scripts/build_ability_moves.py) */
+  AB_MOVES?: Record<string, AbilityMoves>;
+  /** move -> the items made for it ("for") or that answer it ("against") */
+  ITEM_FOR_MOVE?: Record<string, [string, "for" | "against"][]>;
+  /** item, ability or move -> Smogon's sentence and its chips [text, why] */
+  EFFECTS?: Record<string, {kind: string, desc?: string, c?: [string, string][]}>;
+  /** dex name -> the other spellings that mean the same Pokemon */
+  COSMETIC?: Record<string, string[]>;
+  /** name -> sprite file id: a number, or "493-ice" for a form */
+  SPRITE_ID?: Record<string, SpriteId>;
+  /** base -> form -> the sprite one dex row cannot give (female Meowstic) */
+  FORM_SPRITE?: Record<string, Record<string, SpriteId>>;
+  /** sprite set (n, s, p, ps) -> the ids missing from it */
+  SPRITE_GAPS?: Record<string, SpriteId[]>;
   [field: string]: any;
+}
+
+type SpriteId = number | string;
+
+/** What one ability does to moves. `m`, `up`, `down`, `stop` and `ally` are
+ *  indices into MOVES; ui/moves.js explains each field. */
+interface AbilityMoves {
+  side: "off" | "def";
+  m?: number[]; all?: number; up?: number[]; down?: number[];
+  x?: number | null; why?: string | null; why_up?: string; why_down?: string;
+  scope?: string; stop?: number[]; ally?: number[];
 }
 
 /** A form of a species Champions does not have, from HOME_DEX. `mega` is the
@@ -59,6 +86,30 @@ interface OutsideForm {
 interface PodiumSet {
   y: number; d: string; r: number; who: string; rec: string;
   it?: string; ab?: string; na?: string; mv?: string[];
+  /** the Mega its stone made, and that Mega's ability */
+  mg?: string; mgab?: string;
+}
+
+/** One Smogon VGC analysis (tracker/analysis.js), and a set inside it. */
+interface SmogonAnalysis {
+  format: string; outdated?: boolean; credits?: string[]; overview?: string;
+  sets?: SmogonSet[];
+}
+interface SmogonSet {
+  name?: string; ability?: string[]; nature?: string[]; item?: string[];
+  /** each slot is one move or its alternatives */
+  moves?: (string | string[])[];
+  sp?: SpSpread[]; why?: string;
+}
+
+/** tracker/outsidedex.js: what the app knows of species Champions lacks. */
+interface OutsideDex {
+  /** species -> the moves it learns */
+  m?: Record<string, string[]>;
+  /** move -> [type, cat, bp, acc, pp, text] */
+  mv?: Record<string, [string, "P" | "S" | "T", number, number | null, number, string]>;
+  /** ability -> its main-series description */
+  ab?: Record<string, string>;
 }
 
 /** pokebase's per-Pokemon usage: section ("m" moves, "i" items, "a"
@@ -109,6 +160,17 @@ interface Move {
   text: string;
   sec?: boolean;
   notInChampions?: boolean;
+}
+
+/** A sheet's or an editor's body. A builder may hang its own state on it,
+ *  under a `_` name, and resetHost (core/dom.js) clears every one of them
+ *  before the next builder runs. */
+interface SheetBody extends HTMLElement {
+  /** ui/pokemon.js: the base form's box, where its abilities go */
+  _basePanel?: HTMLElement;
+  /** tabs/box.js, the add sheet: the copy's switches and how it came */
+  _marks?: {shiny: boolean, trained: boolean};
+  _mode?: {v: string | null};
 }
 
 /* ------------------------------------------------- the ledger, as S holds it */
@@ -209,8 +271,8 @@ interface AppState {
 interface Window {
   CHAMP: Champ;                     // tracker/data.js, the dex
   CHAMP_SPLITS?: {r?: string, p?: Record<string, SplitTable>, [k: string]: any};
-  CHAMP_ANALYSIS?: Record<string, any>;  // tracker/analysis.js, loaded on demand
-  CHAMP_OUTSIDE?: Record<string, any>;   // tracker/outsidedex.js, loaded on demand
+  CHAMP_ANALYSIS?: Record<string, SmogonAnalysis[]>;  // tracker/analysis.js, on demand
+  CHAMP_OUTSIDE?: OutsideDex;       // tracker/outsidedex.js, loaded on demand
   CHAMP_ANALYSIS_URL: string;       // '' in the single-file build
   CHAMP_OUTSIDE_URL: string;
   CHAMP_BUILD?: string;             // when the page was built

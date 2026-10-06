@@ -878,7 +878,7 @@ function mineCard(r, ctx, seen, nth){
   const cd = p && gtsDiff(r.name);
   const cv = p && chipValueOf(r);
   let m = null;
-  const b = pokeCard(p || anyRow(r.name) || {name:r.name, types:[], b:[0,0,0,0,0,0], ab:[]}, {
+  const b = pokeCard(p || anyRow(r.name) || {name:r.name, species:r.name, types:[], b:[0,0,0,0,0,0], ab:[]}, {
     cls: held ? "illegal" : locClass(r),
     name: r.name,
     shiny: !!r.shiny,
@@ -904,7 +904,7 @@ function mineCard(r, ctx, seen, nth){
     },
     notes: function(body2){ m = body2; }
   });
-  if (held) { b.disabled = true; b.classList.add("dim"); }
+  if (held) { /** @type {HTMLButtonElement} */ (b).disabled = true; b.classList.add("dim"); }
   mineNotes(m, r, {held: held, last: last, kin: kin, cv: cv});
   if (!held) b.onclick = function(){ ctx.onPick(r); };
   return b;

@@ -224,5 +224,15 @@ const w = dom.window;
   });
 
 
+  /* THE SHEET COUNTS WHAT AN ABILITY TOUCHES in that Pokemon's own movepool.
+     The count once looked moves up by name in a list that held moves, found
+     none, and told every Pokemon its ability touched nothing. */
+  describe("the sheet counts the moves an ability touches", () => {
+    w.findDetail(w.byName["Scizor"]);
+    const sb = w.document.getElementById("sheetBody").textContent;
+    check("Technician tags some of Scizor's moves",
+       /Technician\.[^]*?Tags \d+ of the \d+ moves it learns/.test(sb), true);
+  });
+
   check("the page reports no script error", errs.join(" | ") || "none", "none");
 })();

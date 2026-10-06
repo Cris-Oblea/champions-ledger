@@ -780,7 +780,7 @@ function buildPickRow(r, onPick){
     btn.appendChild(m);
     if (!r.dupe) btn.onclick = opts.onclick;
   }
-  if (r.dupe && btn.tagName === "BUTTON") btn.disabled = true;
+  if (r.dupe && btn.tagName === "BUTTON") /** @type {HTMLButtonElement} */ (btn).disabled = true;
   return btn;
 }
 
