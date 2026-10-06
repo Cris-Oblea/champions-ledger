@@ -18,7 +18,7 @@ another entry is mixed in anywhere. Format is **VGC**: doubles, bring 6 / pick 4
 ## What the data describes right now
 
 <!-- VINTAGE:START -->
-Regulation **M-C**. Ladder usage fetched 2026-10-05, from 334 Pokemon.
+Regulation **M-C**. Ladder usage fetched 2026-10-06, from 334 Pokemon.
 Tournament data is Worlds 2026, played under M-B - that is history, not stale.
 <!-- VINTAGE:END -->
 
