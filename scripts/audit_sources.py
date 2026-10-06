@@ -26,6 +26,7 @@ import json
 import os
 import re
 from pathlib import Path
+from typing import Any
 
 import dex
 from fetch_pokebase import rows_with
@@ -37,7 +38,7 @@ API = os.path.join(POKEAPI_CSV, "moves.csv")
 CAT = {"physical": "Physical", "special": "Special", "status": "Status"}
 
 
-def pokebase_moves():
+def pokebase_moves() -> dict[str, dict[str, Any]]:
     """pokebase's numbers per move: category, BP, accuracy and PP."""
     out = {}
     for r in rows_with("moves", "name", "damageClass", "power", "accuracy", "pp"):
@@ -46,7 +47,7 @@ def pokebase_moves():
     return out
 
 
-def rescaled_pp(ours):
+def rescaled_pp(ours: list[dex.Row]) -> dict[str, tuple[int, int, str]]:
     """What PP a move SHOULD have here, going by the rest of the table.
 
     Champions rescales PP globally, so the main-series number is not the answer
@@ -64,7 +65,7 @@ def rescaled_pp(ours):
     from collections import Counter, defaultdict
     with open(API, encoding="utf-8") as f:
         main = {r["identifier"]: r["pp"] for r in csv.DictReader(f)}
-    def ident(n):
+    def ident(n: str) -> str:
         """A name as Smogon's calc spells its keys."""
         return re.sub(r"[^a-z0-9-]", "", n.lower().replace(" ", "-"))
     buckets = defaultdict(Counter)
@@ -81,7 +82,8 @@ def rescaled_pp(ours):
     return out
 
 
-def _move_pairs(m, p, s):
+def _move_pairs(m: dex.Row, p: dict[str, Any],
+                s: dict[str, Any] | None) -> list[tuple[str, Any, Any, str]]:
     """(field, ours, theirs, whose) for every number the sources both state."""
     pairs = [("BP", m.get("power") or 0, p["bp"] or 0, "pokebase"),
              ("PP", m.get("pp"), p["pp"], "pokebase"),
@@ -99,7 +101,8 @@ def _move_pairs(m, p, s):
             and not (f == "BP" and derived)]
 
 
-def _print_move_report(ours, rows, gaps, agree):
+def _print_move_report(ours: list[dex.Row], rows: list[tuple[str, str, Any, Any, str]],
+                       gaps: list[tuple[str, str, Any]], agree: int) -> None:
     """The move cross-check: how many agree, every disagreement with who
     disagrees, and the PP rescale vote.
     """
@@ -126,7 +129,7 @@ def _print_move_report(ours, rows, gaps, agree):
         print("     %-16s %-9s %-4s %s" % (n, f, v, why))
 
 
-def check_moves():
+def check_moves() -> tuple[list[Any], list[Any]]:
     """Compare every useable move's BP, accuracy and category across Serebii,
     pokebase and Smogon's calc.
     """
@@ -155,7 +158,7 @@ def check_moves():
     return rows, gaps
 
 
-def check_items():
+def check_items() -> None:
     """How many items are priced, and by which source."""
     facts = (dex.db("item_facts") or {}).get("prices") or {}
     both = [(n, r) for n, r in facts.items() if r.get("vp")]
@@ -169,7 +172,7 @@ def check_items():
           "the merge happens")
 
 
-def main():
+def main() -> None:
     """Run the move and item cross-checks."""
     check_moves()
     check_items()

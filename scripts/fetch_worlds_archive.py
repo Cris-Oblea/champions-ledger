@@ -33,6 +33,7 @@ import re
 import subprocess
 import sys
 from pathlib import Path
+from typing import Any
 
 import dex
 import net
@@ -42,7 +43,7 @@ OUT = os.path.join(META, "worlds_archive.json")
 INDEX = "https://www.pokedata.ovh/standingsVGC/"
 
 
-def discover():
+def discover() -> list[dict[str, Any]]:
     """The index is JS-driven but the ids sit in plain onclick handlers.
 
     Always fetched fresh: this is precisely the call that has to notice a
@@ -70,12 +71,12 @@ def discover():
     return out
 
 
-def event_path(tid, div):
+def event_path(tid: str, div: str) -> str:
     """Where one event's division is stored."""
     return os.path.join(META, "tournament_%s_%s.json" % (tid, div))
 
 
-def fetch_event(tid, div, force):
+def fetch_event(tid: str, div: str, force: bool) -> str:
     """Fetch one event's division through fetch_tournament.py, unless it is
     cached.
     """
@@ -90,7 +91,7 @@ def fetch_event(tid, div, force):
     return "fetched"
 
 
-def species_table(path):
+def species_table(path: str) -> dict[str, Any] | None:
     """Team counts per species for one event, plus how many teams there were.
 
     Counted per TEAM, not per appearance, because the Species Clause means a
@@ -133,7 +134,7 @@ def species_table(path):
                     for k, v in sorted(c.items(), key=lambda kv: (-kv[1], kv[0]))[:40]]}
 
 
-def _merge_year(slot, ev):
+def _merge_year(slot: dict[str, Any], ev: dict[str, Any]) -> None:
     """Fold one event's divisions into its year: whichever event actually has
     teams wins a division; if both do, the one with more of them."""
     slot["events"].append(ev["tid"])
@@ -150,7 +151,7 @@ def _merge_year(slot, ev):
             slot["from"][div] = ev["tid"]
 
 
-def _by_year(events):
+def _by_year(events: list[dict[str, Any]]) -> list[dict[str, Any]]:
     """The view actually worth reading: one row per YEAR. A year can be
     published as two events (a Day 1 and a Day 2) and the teamlists are split
     across them unevenly."""
@@ -164,7 +165,7 @@ def _by_year(events):
     return [by_year[y] for y in sorted(by_year, reverse=True)]
 
 
-def _event_record(ev, force):
+def _event_record(ev: dict[str, Any], force: bool) -> dict[str, Any]:
     """One event with the species table of each division, fetched first."""
     rec = dict(ev)
     rec["divisions"] = {}
@@ -177,7 +178,7 @@ def _event_record(ev, force):
     return rec
 
 
-def main():
+def main() -> int:
     """Discover every World Championship on pokedata, fetch each division, and
     write the archive with one merged row per year.
     """

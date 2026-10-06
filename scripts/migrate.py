@@ -42,7 +42,7 @@ alter table public.schema_migrations enable row level security;
 """
 
 
-def sql(text):
+def sql(text: str) -> tuple[bool, str]:
     """Run SQL through backup_ledger's Supabase CLI door. Returns (ok, output).
 
     The CLI takes one string, and a `--` comment would swallow everything after
@@ -53,17 +53,17 @@ def sql(text):
                                       if not line.strip().startswith("--")))
 
 
-def files():
+def files() -> list[str]:
     """Every migration, in the order their numbers say."""
     found = glob.glob(os.path.join(SQLDIR, "supabase_migrate_*.sql"))
-    def num(p):
+    def num(p: str) -> int:
         """A migration's number, from its file name."""
         m = re.search(r"_(\d+)\.sql$", p)
         return int(m.group(1)) if m else 0
     return sorted(found, key=num)
 
 
-def applied():
+def applied() -> set[str] | None:
     """The names already recorded, or None if the database is unreachable."""
     ok, out = sql(LEDGER + " select name from public.schema_migrations;")
     if not ok:
@@ -71,7 +71,7 @@ def applied():
     return set(re.findall(r'"name":\s*"([^"]+)"', out))
 
 
-def main():
+def main() -> int:
     """Apply every migration the database has not recorded, in order, recording
     each; --check only reports what is pending.
     """

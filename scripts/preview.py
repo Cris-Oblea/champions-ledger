@@ -141,7 +141,7 @@ function sweep(){
 """
 
 
-def main():
+def main() -> None:
     """Build (unless --no-build), serve tracker/dist with the three-viewport
     page, and open it.
     """

@@ -41,6 +41,7 @@ import os
 import sys
 import time
 from pathlib import Path
+from typing import Any
 
 from paths import DB, RAW
 
@@ -59,7 +60,7 @@ _CACHED = None                              # per-process, on top of the file
 _SAID = False
 
 
-def _note(msg):
+def _note(msg: str) -> None:
     """Say once, on stderr, where the ledger was read from."""
     global _SAID
     if not _SAID:
@@ -67,7 +68,7 @@ def _note(msg):
         _SAID = True
 
 
-def _from_db():
+def _from_db() -> dict[str, list[dict[str, Any]]] | None:
     """Every table, read live from Supabase, or None when it cannot be reached.
     """
     try:
@@ -83,7 +84,7 @@ def _from_db():
     return out
 
 
-def _from_snapshot():
+def _from_snapshot() -> tuple[Any, Any]:
     """Every table from the newest backup snapshot, and its date; (None, None)
     when there is none.
     """
@@ -98,7 +99,7 @@ def _from_snapshot():
         return None, None
 
 
-def tables(refresh=False):
+def tables(refresh: bool = False) -> dict[str, list[dict[str, Any]]]:
     """Every table, from whichever source answers first. Never raises."""
     global _CACHED
     if _CACHED is not None and not refresh:
@@ -133,7 +134,7 @@ def tables(refresh=False):
     return _CACHED
 
 
-def _meta(t, key):
+def _meta(t: dict[str, list[dict[str, Any]]], key: str) -> dict[str, Any]:
     """One meta document's data."""
     for r in t.get("meta") or []:
         if r.get("id") == key:
@@ -141,7 +142,8 @@ def _meta(t, key):
     return {}
 
 
-def _box(t, location, rental=None):
+def _box(t: dict[str, list[dict[str, Any]]], location: str,
+         rental: bool | None = None) -> list[str]:
     """The names in one box, in the app's order (rentals only, none, or both).
     """
     rows = [r for r in (t.get("box") or [])
@@ -151,7 +153,7 @@ def _box(t, location, rental=None):
     return [r["name"] for r in rows]
 
 
-def _item_categories():
+def _item_categories() -> dict[str, str]:
     """name -> the group the game itself puts the item in.
 
     Serebii lays the item page out in three tables and that is where the
@@ -173,7 +175,7 @@ def _item_categories():
     return out
 
 
-def inv(refresh=False):
+def inv(refresh: bool = False) -> dict[str, Any]:
     """The shape query.py already expects, built from the ledger.
 
     Deliberately the OLD shape rather than a nicer one: this replaced a file
@@ -212,7 +214,7 @@ def inv(refresh=False):
     }
 
 
-def builds():
+def builds() -> list[dict[str, Any]]:
     """Every build, newest field set first, with `extra` merged back in."""
     out = []
     for r in sorted(tables().get("builds") or [],
@@ -227,13 +229,13 @@ def builds():
     return out
 
 
-def teams():
+def teams() -> list[dict[str, Any]]:
     """Every team, by id."""
     return sorted(tables().get("teams") or [],
                   key=lambda x: str(x.get("id")))
 
 
-def main():
+def main() -> int:
     """Print the box, HOME, stones, items, builds and teams."""
     ap = argparse.ArgumentParser()
     ap.add_argument("--refresh", action="store_true")

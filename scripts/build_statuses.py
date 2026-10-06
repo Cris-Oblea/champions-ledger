@@ -41,12 +41,12 @@ PAGE = os.path.join(RAW, "pages", "statusconditions.html")
 OUT = os.path.join(DB, "statuses.json")
 
 
-def txt(s):
+def txt(s: str) -> str:
     """HTML to plain text."""
     return " ".join(re.sub(r"<[^>]+>", " ", s).replace("&nbsp;", " ").split())
 
 
-def serebii_changes():
+def serebii_changes() -> dict[str, dict[str, str]]:
     """(condition -> {prior, new}) from Serebii's Champions rebalance table."""
     if not os.path.exists(PAGE):
         return {}
@@ -140,7 +140,7 @@ NOT_A_CAUSE = re.compile(
     r"heals?|thaw|wake|immune|restore", re.I)
 
 
-def causes(text, word):
+def causes(text: str, word: str) -> bool:
     """Does this text inflict the status on a target (not cure it, not prevent
     it)?
     """
@@ -154,7 +154,7 @@ def causes(text, word):
     return False
 
 
-def status_moves():
+def status_moves() -> dict[str, list[str]]:
     """status -> the useable moves that inflict it."""
     tf = (dex.db("text_facts") or {}).get("moves") or {}
     out = {}
@@ -173,7 +173,7 @@ def status_moves():
     return out
 
 
-def main():
+def main() -> None:
     """Build statuses.json: each status's numbers with their source, and the
     moves that inflict it.
     """

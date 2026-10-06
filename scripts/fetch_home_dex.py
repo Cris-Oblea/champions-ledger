@@ -51,6 +51,7 @@ import json
 import os
 import re
 import sys
+from collections.abc import Callable, Iterable
 from pathlib import Path
 from types import SimpleNamespace
 from typing import Any
@@ -162,8 +163,13 @@ MEGA_BASE = {"pyroar-male": "pyroar"}
 # already carries (absol-mega-z, garchomp-mega-z, lucario-mega-z).
 MEGA = re.compile(r"^Mega (.+?)(?: ([XYZ]))?$")
 
+# one row of a PokeAPI CSV table: every value a string, ids included
+type CsvRow = dict[str, str]
+# resolve(key) -> (PokeAPI id, the base it fell back to), as resolver() builds
+type Resolve = Callable[[str], tuple[str | None, str | None]]
 
-def csv_path(name, force=False):
+
+def csv_path(name: str, force: bool = False) -> str:
     """One PokeAPI table at PIN, downloaded once into data/raw/pokeapi_csv.
     The timeout is for pokemon_moves.csv, which is 10 MB."""
     os.makedirs(POKEAPI_CSV, exist_ok=True)
@@ -173,13 +179,13 @@ def csv_path(name, force=False):
     return path
 
 
-def table(name, force=False):
+def table(name: str, force: bool = False) -> list[CsvRow]:
     """That table's rows."""
     with open(csv_path(name, force), encoding="utf-8") as f:
         return list(csv.DictReader(f))
 
 
-def key(name):
+def key(name: str) -> str:
     """A spelling reduced to something both sides agree on."""
     m = MEGA.match(name)
     if m:
@@ -190,7 +196,7 @@ def key(name):
     return ALIASES.get(s, s)
 
 
-def worlds_names():
+def worlds_names() -> set[str]:
     """Every Pokemon a WORLDS TEAMLIST names, across all four championships and
     all three divisions.
 
@@ -213,7 +219,7 @@ def worlds_names():
              if f.endswith(".json")
              and (f.startswith("tournament_") or f == "worlds_archive.json")]
 
-    def walk(node):
+    def walk(node: dex.Json) -> None:
         """Collect every `name` anywhere in a nested JSON value."""
         if isinstance(node, dict):
             n = node.get("name")
@@ -233,7 +239,7 @@ def worlds_names():
     return out
 
 
-def home_only_names():
+def home_only_names() -> list[str]:
     """Every name the app can put on a card that Champions has no row for.
 
     Two sources, because the box is not the only screen that draws one: the
@@ -252,7 +258,7 @@ def home_only_names():
                   and "-Totem" not in n and "-Starter" not in n)
 
 
-def _short_suffix(kt, it):
+def _short_suffix(kt: list[str], it: list[str]) -> bool:
     """`oinkologne-f` is `oinkologne-female`: every earlier token matches and
     the last one starts the other's. It needs an earlier token, which is what
     stops `mew` from resolving to `mewtwo`."""
@@ -260,7 +266,7 @@ def _short_suffix(kt, it):
             and it[-1].startswith(kt[-1]))
 
 
-def _near(k, order, is_def):
+def _near(k: str, order: list[str], is_def: dict[str, bool]) -> list[str]:
     """Rows that ARE k: a form of it, or its suffix written short."""
     kt = k.split("-")
     out = [i for i in order if i != k
@@ -271,7 +277,8 @@ def _near(k, order, is_def):
     return out
 
 
-def _resolve(k, by_key, order, is_def):
+def _resolve(k: str, by_key: dict[str, str], order: list[str],
+             is_def: dict[str, bool]) -> tuple[str | None, str | None]:
     """A name's PokeAPI row: the exact key, then the nearest spelling, then the
     name with its last form word dropped (returned as the base it fell back
     to).
@@ -293,7 +300,7 @@ def _resolve(k, by_key, order, is_def):
     return None, None
 
 
-def resolver(pokemon):
+def resolver(pokemon: list[CsvRow]) -> Resolve:
     """PokeAPI's id for a name, or the closest honest stand-in.
 
     THE SPELLING IS NOT THE PROBLEM; THE DEFAULT FORM IS. PokeAPI has no row
@@ -334,7 +341,7 @@ def resolver(pokemon):
     return functools.partial(_resolve, by_key=by_key, order=order, is_def=is_def)
 
 
-def build(force=False):
+def build(force: bool = False) -> tuple[dict[str, dict[str, Any]], list[str]]:
     """Main-series numbers for every species HOME can hold that Champions
     lacks, resolved through PokeAPI's tables at the pin.
     """
@@ -364,7 +371,7 @@ def build(force=False):
     return out, missed
 
 
-def species_flags(force=False):
+def species_flags(force: bool = False) -> dict[str, list[str]]:
     """Which names are Mythical, and which Legendary.
 
     WHY IT IS DERIVED AND NOT TYPED. Melmetal cannot be deposited in HOME's
@@ -399,7 +406,7 @@ def species_flags(force=False):
     return out
 
 
-def sprite_pin():
+def sprite_pin() -> str:
     """The sprite commit the app pins, read from the app itself so the two
     never disagree.
     """
@@ -419,7 +426,7 @@ SPRITE_DIRS = {
 }
 
 
-def sprite_files(force=False):
+def sprite_files(force: bool = False) -> dict[str, set[str]]:
     """Every picture that EXISTS at the pinned sprites commit, per set.
 
     WHY THIS IS ASKED AND NOT ASSUMED. An id used to be written whenever the
@@ -445,7 +452,7 @@ def sprite_files(force=False):
         head["Authorization"] = "Bearer " + tok
     seen = {}
 
-    def get(url):
+    def get(url: str) -> dex.Json:
         """Fetch a URL once per run."""
         if url not in seen:
             seen[url] = json.loads(net.get(url, headers=head).decode("utf-8"))
@@ -468,12 +475,12 @@ def sprite_files(force=False):
     return {k: set(v) for k, v in out.items()}
 
 
-def stem_value(stem):
+def stem_value(stem: str) -> int | str:
     """A picture's file name as the app stores it: a number where it is one."""
     return int(stem) if stem.isdigit() else stem
 
 
-def form_rows(force=False):
+def form_rows(force: bool = False) -> Callable[[str], dict[str, Any] | None]:
     """Every FORM upstream names, by identifier: the row it belongs to, the
     picture it is filed under, and its own typing where it has one.
 
@@ -505,7 +512,7 @@ def form_rows(force=False):
     return lambda k: by.get(k) or by.get(k.replace("-", ""))
 
 
-def sprite_ids(force=False):
+def sprite_ids(force: bool = False) -> tuple[dict[str, int | str], list[str]]:
     """The picture for every name the app can put on a card.
 
     A SPRITE IS NOT A RULE. Everything else fetched here is refused for the
@@ -549,7 +556,8 @@ def sprite_ids(force=False):
     return out, missed
 
 
-def sprite_gaps(ids, force=False):
+def sprite_gaps(ids: Iterable[int | str],
+                force: bool = False) -> dict[str, list[int | str]]:
     """The pictures one set has and the other does not, for the ids in use.
 
     A sheet asks for the 512px HOME render and a card for the 96px pixel
@@ -619,7 +627,7 @@ NOT_DRAWN = {
 MEGA_FORM = re.compile(r"^(.+)-mega(?:-([xyz]))?$")
 
 
-def _numbers_reader(force):
+def _numbers_reader(force: bool) -> Callable[[str], dict[str, Any] | None]:
     """numbers(pokemon id) -> its types, spread and abilities, upstream's,
     or None for an id upstream publishes no stats for."""
     stats = table("pokemon_stats.csv", force)
@@ -640,7 +648,7 @@ def _numbers_reader(force):
         ab.setdefault(r["pokemon_id"], []).append((int(r["slot"]),
                                                    r["ability_id"]))
 
-    def numbers(pid):
+    def numbers(pid: str) -> dict[str, Any] | None:
         """A Pokemon's types, base stats and abilities, or None without a stats
         row.
         """
@@ -652,7 +660,7 @@ def _numbers_reader(force):
     return numbers
 
 
-def _card_owners(resolve):
+def _card_owners(resolve: Resolve) -> dict[str, list[str]]:
     """Which cards each upstream row IS - exact resolutions only, the same
     standard the pictures are held to."""
     cards = {}
@@ -664,19 +672,20 @@ def _card_owners(resolve):
     return cards
 
 
-def _title(ident):
+def _title(ident: str) -> str:
     """A PokeAPI identifier as a display name."""
     return " ".join(w.capitalize() for w in ident.split("-"))
 
 
-def _not_drawn(fid):
+def _not_drawn(fid: str) -> bool:
     """"-gmax" is a token anywhere in the name: Mimikyu's Totem is
     mimikyu-totem-busted, not something ending in -totem."""
     return any(fid == k or (k.startswith("-") and k + "-" in fid + "-")
                for k in NOT_DRAWN)
 
 
-def _classify(r, up, unknown, orphan) -> tuple[dict[str, Any], str] | None:
+def _classify(r: CsvRow, up: SimpleNamespace, unknown: list[str],
+              orphan: list[str]) -> tuple[dict[str, Any], str] | None:
     """(the entry so far, the base row's id) for a form the cards draw, or
     None. `up` carries resolve, pid_of, species_ident and species_of."""
     fid = r["identifier"]
@@ -705,7 +714,7 @@ def _classify(r, up, unknown, orphan) -> tuple[dict[str, Any], str] | None:
     return None
 
 
-def _picture(r, base, files):
+def _picture(r: CsvRow, base: str, files: dict[str, set[str]]) -> int | str:
     """The picture: the form's own row where it has one, else its file."""
     form_pid = r["pokemon_id"]
     stem = (form_pid if form_pid != base
@@ -716,7 +725,7 @@ def _picture(r, base, files):
     return stem_value(stem)
 
 
-def form_line(force=False):
+def form_line(force: bool = False) -> tuple[dict[str, list[dict[str, Any]]], list[str]]:
     """What every card's Pokemon can TURN INTO mid-battle: its Megas and its
     in-battle forms, with the picture and the main-series numbers of each.
 
@@ -781,7 +790,7 @@ def form_line(force=False):
     return out, sorted(orphan)
 
 
-def main():
+def main() -> None:
     """Write the outside-dex numbers, sprite ids, form lines, sprite gaps and
     species flags; --check re-downloads at the pin and fails if anything moved.
     """

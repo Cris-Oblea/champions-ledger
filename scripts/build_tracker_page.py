@@ -29,6 +29,7 @@ import re
 import shutil
 import subprocess
 import sys
+from collections.abc import Iterable
 from pathlib import Path
 
 from paths import ESBUILD, ROOT
@@ -69,7 +70,7 @@ KMARK = "<!--__CHAMP_MARKUP__-->"
 AMARK = "/*__CHAMP_APP__*/"
 
 
-def parts():
+def parts() -> list[str]:
     """The app's parts, as paths under tracker/src/ - "core/data.js".
 
     Every .js file in the three layer folders and boot.js. Anything starting
@@ -84,7 +85,7 @@ def parts():
     return sorted(got)
 
 
-def assemble(tpl):
+def assemble(tpl: str) -> str:
     """Put tracker/src/ back together into the single script it has to be.
 
     The app was one 7,269-line file, which is not a file anyone can hold in
@@ -106,13 +107,13 @@ def assemble(tpl):
     return tpl.replace(AMARK, link())
 
 
-def read_src(*path):
+def read_src(*path: str) -> str:
     """A source file exactly as written - newline="" so no line ending is
     translated on the way through, which would change the page's hash."""
     return open(os.path.join(SRC, *path), encoding="utf-8", newline="").read()
 
 
-def styles():
+def styles() -> str:
     """tracker/src/styles/, joined in the order styles/index.css lists them.
 
     The order IS the cascade - at equal specificity a later rule wins - so it
@@ -131,7 +132,7 @@ def styles():
     return "".join(read_src("styles", n) for n in names)
 
 
-def markup():
+def markup() -> str:
     """tracker/src/markup/index.html with each <!--#include x.html --> line
     replaced by that file: the page's skeleton in one place, one file per tab.
 
@@ -227,7 +228,7 @@ BOOT = "boot.js"
 LAYERS = ["core", "ui", "tabs"]
 
 
-def surface(text):
+def surface(text: str) -> tuple[list[str], dict[str, list[str]]]:
     """(what this part exports, what it imports and from where).
 
     Both are read off the part's own import/export statements, which are
@@ -244,12 +245,12 @@ def surface(text):
     return exports, imports
 
 
-def _layer(f):
+def _layer(f: str) -> int:
     """A part's layer rank (core < ui < tabs), boot.js last."""
     return LAYERS.index(f.split("/")[0]) if "/" in f else len(LAYERS)
 
 
-def _deps(f, bad):
+def _deps(f: str, bad: list[str]) -> list[str]:
     """The parts `f` imports; an import that points UP a layer goes into `bad`."""
     text = Path(SRC, f).read_text(encoding="utf-8")
     deps = []
@@ -262,11 +263,11 @@ def _deps(f, bad):
     return deps
 
 
-def _cycles(files, graph, bad):
+def _cycles(files: list[str], graph: dict[str, list[str]], bad: list[str]) -> None:
     """Every import cycle, depth first, into `bad`."""
     state = {}
 
-    def walk(f, path):
+    def walk(f: str, path: list[str]) -> None:
         """Depth-first over the import graph, recording any cycle it closes."""
         state[f] = 1
         for d in graph.get(f, []):
@@ -281,7 +282,7 @@ def _cycles(files, graph, bad):
             walk(f, [f])
 
 
-def check_graph(files):
+def check_graph(files: list[str]) -> None:
     """Every import points down a layer or sideways, and none goes round.
 
     A cycle is legal JavaScript and it used to be everywhere: the store
@@ -298,7 +299,7 @@ def check_graph(files):
         sys.exit("tracker/src/ breaks its layers:\n  " + "\n  ".join(bad))
 
 
-def _export_owners():
+def _export_owners() -> dict[str, str]:
     """exported name -> the part that exports it. Every part must be a module,
     and no name may be exported twice."""
     owner = {}
@@ -317,7 +318,7 @@ def _export_owners():
     return owner
 
 
-def _entry_source(owner):
+def _entry_source(owner: dict[str, str]) -> str:
     """_entry.js: the PUBLIC names, imported from their owners and put on
     window."""
     homeless = [n for n in PUBLIC if n not in owner]
@@ -346,7 +347,7 @@ def _entry_source(owner):
     return chr(10).join(entry) + chr(10)
 
 
-def _public_dts(owner):
+def _public_dts(owner: dict[str, str]) -> str:
     """_public.d.ts: the PUBLIC names as members of Window, each typed as its
     owner exports it. The browser tests reach the app through window, and
     tests/tsconfig.json reads this, so a test is type-checked against the
@@ -361,7 +362,7 @@ def _public_dts(owner):
     return chr(10).join(lines) + chr(10)
 
 
-def _bundle():
+def _bundle() -> str:
     """esbuild, from _entry.js to build/app.js; the path it wrote."""
     if not os.path.isdir(BUILD):
         os.makedirs(BUILD)
@@ -382,7 +383,7 @@ def _bundle():
     return out_js
 
 
-def link():
+def link() -> str:
     """Resolve the parts into the one script the page carries.
 
     Each part says what it exports and imports what it needs; esbuild follows
@@ -421,7 +422,7 @@ def link():
     return js.rstrip(chr(10))
 
 
-def image_hosts(js):
+def image_hosts(js: str) -> list[str]:
     """Which outside hosts the app draws PICTURES from, read off the app itself.
 
     THE POLICY BELOW IS A LIST OF WHAT THE PAGE ACTUALLY LOADS, and the day a
@@ -449,7 +450,7 @@ def image_hosts(js):
     return hosts
 
 
-def check_order(js, linked):
+def check_order(js: str, linked: list[str]) -> None:
     """Everything ran before boot.js, which starts the app.
 
     An app whose parts execute in the wrong order does not fail where it is
@@ -486,13 +487,13 @@ def check_order(js, linked):
                  "import ./%s first." % (", ".join(after), BOOT, BOOT))
 
 
-def write(path, text):
+def write(path: str | os.PathLike[str], text: str) -> None:
     """LF, always. A generated file whose line endings differ between this
     machine and CI changes the bundle, and the bundle's name is its hash."""
     Path(path).write_text(text, encoding="utf-8", newline="")
 
 
-def config_js():
+def config_js() -> str:
     """The Supabase endpoint, or nothing.
 
     The publishable key belongs in the page: the browser needs it to speak to
@@ -557,7 +558,7 @@ def config_js():
         ensure_ascii=False) + ";"
 
 
-def headers(supabase_url, assets=()):
+def headers(supabase_url: str | None, assets: Iterable[str] = ()) -> None:
     """What the page may load, and above all where it may SEND.
 
     Derived from the page's measured surface, not guessed:
@@ -632,7 +633,7 @@ def headers(supabase_url, assets=()):
         "  Content-Security-Policy: " + "; ".join(csp) + "\n", encoding="utf-8")
 
 
-def main():
+def main() -> None:
     """Pour the app, the engine, supabase-js, the config and the data into the
     template, stamp the build, and write dist/.
     """
@@ -673,7 +674,7 @@ def main():
     build_dist(out)
 
 
-def standalone(html):
+def standalone(html: str) -> str:
     """Wrap the assembled fragment into a real HTML document.
 
     The template is a fragment with no skeleton, so this adds the doctype,
@@ -719,7 +720,7 @@ def standalone(html):
 SPLIT = ["vendor-supabase", "engine", "dex", "splits", "app"]
 
 
-def split_assets(html):
+def split_assets(html: str) -> tuple[str, dict[str, str]]:
     """Move the four big inline blocks into their own files.
 
     -> (html carrying <script src> tags, {filename: text})
@@ -745,7 +746,7 @@ def split_assets(html):
     return html, assets
 
 
-def build_dist(html):
+def build_dist(html: str) -> None:
     """tracker/dist/ is the ONLY directory that may be deployed.
 
     tracker/ holds config.local.json, the template, and - whenever
@@ -878,7 +879,7 @@ ICONS = os.path.join(ROOT, "tracker", "icons")
 ICON_FILES = ("icon-192.png", "icon-512.png", "apple-touch-icon.png")
 
 
-def icons():
+def icons() -> None:
     """Copy the home-screen icons into dist/.
 
     They are committed PNGs in tracker/icons/, not drawn at build time: the

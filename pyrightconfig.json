@@ -2,14 +2,16 @@
 // editor shows what blocks a push. Nothing is compiled; the annotations are
 // read as written. The gate runs it (daily.py).
 //
-// "basic" over every script, at zero. "strict" (every parameter and return
-// annotated, nothing Unknown) is switched on file by file in the list below,
-// and when every file is in it the mode becomes "strict" and the list goes.
-// JSON read from disk is the data boundary: dex.load/db/meta return `Json`
-// (Any), the Python twin of docFromRow in the app.
+// "basic" over every script, at zero, with every parameter annotated (and
+// every return, which pyright has no rule for - keep it that way by hand).
+// "strict" (nothing Unknown either) is switched on file by file in the list
+// below, and when every file is in it the mode becomes "strict" and the list
+// goes. JSON read from disk is the data boundary: dex.load/db/meta return
+// `Json` (Any), the Python twin of docFromRow in the app.
 {
   "include": ["scripts"],
   "pythonVersion": "3.12",
   "typeCheckingMode": "basic",
+  "reportMissingParameterType": "error",
   "strict": []
 }

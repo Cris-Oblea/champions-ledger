@@ -40,6 +40,7 @@ import os
 import re
 import subprocess
 import sys
+from collections.abc import Iterable
 from pathlib import Path
 
 from paths import ROOT
@@ -265,7 +266,7 @@ DECISIONS = [
 ]
 
 
-def repo_files():
+def repo_files() -> list[str]:
     """Every file path on disk, repo-relative, minus the two huge trees."""
     out = []
     for d, dirs, files in os.walk(ROOT):
@@ -275,7 +276,7 @@ def repo_files():
     return out
 
 
-def git_ignored(paths):
+def git_ignored(paths: list[str]) -> set[str]:
     """The subset of paths git ignores."""
     if not paths:
         return set()
@@ -290,7 +291,7 @@ def git_ignored(paths):
     return set(r.stdout.decode().split())
 
 
-def ignored(names, dirs):
+def ignored(names: Iterable[str], dirs: Iterable[str]) -> set[str]:
     """The subset of names git ignores - generated or per-machine files, which
     exist on one machine and not in CI. A bare name is tried in every
     directory, because .gitignore anchors most entries to one
@@ -307,7 +308,7 @@ def ignored(names, dirs):
     return {n for c in git_ignored(list(cand)) for n in cand.get(c, ())}
 
 
-def check_named_files():
+def check_named_files() -> int:
     """Every file a document names in backticks must exist, unless the
     lines around it say it is gone or never meant to exist."""
     files = repo_files()
@@ -347,12 +348,12 @@ def check_named_files():
 ARCH = "docs/ARCHITECTURE.md"
 
 
-def architecture_parts():
+def architecture_parts() -> list[tuple[str, list[str]]]:
     """[(kind, names)] of everything ARCHITECTURE.md must name: app modules,
     workflows, pipeline scripts, Supabase tables, npm and pip packages."""
     import build_tracker_page  # the one definition of what a part is
 
-    def names(pattern, strip=""):
+    def names(pattern: str, strip: str = "") -> list[str]:
         """The basenames matching a glob, with a suffix stripped."""
         return sorted(os.path.basename(f)[:len(os.path.basename(f)) - len(strip)]
                       for f in glob.glob(os.path.join(ROOT, pattern)))
@@ -379,7 +380,7 @@ def architecture_parts():
     ]
 
 
-def check_architecture():
+def check_architecture() -> int:
     """Count the parts ARCHITECTURE.md never names (and empty scans)."""
     text = "\n".join(read(ARCH) or [])
     problems = 0
@@ -399,7 +400,7 @@ def check_architecture():
     return problems
 
 
-def check_budgets():
+def check_budgets() -> int:
     """Count the documents over their byte budget (BUDGETS)."""
     problems = 0
     for rel, limit in BUDGETS.items():
@@ -412,7 +413,7 @@ def check_budgets():
     return problems
 
 
-def read(rel):
+def read(rel: str) -> list[str] | None:
     """A repo file's lines, or None when it does not exist."""
     p = os.path.join(ROOT, rel)
     if not os.path.exists(p):
@@ -426,7 +427,7 @@ def read(rel):
 MEMORY_BUDGET = 8000
 
 
-def check_memory(folder):
+def check_memory(folder: str) -> int:
     """The auto-memory index: every link resolves, every memory is linked (an
     unlinked one is never found again), and the index stays small."""
     idx = os.path.join(folder, "MEMORY.md")
@@ -449,7 +450,7 @@ def check_memory(folder):
     return len(problems)
 
 
-def hook():
+def hook() -> int:
     """PostToolUse hook for Edit|Write (.claude/settings.json). Silent, and so
     free in tokens, unless the markdown file just written broke something -
     then exit 2 hands the report to Claude while the edit is still fresh,
@@ -473,7 +474,7 @@ def hook():
     return 0
 
 
-def main():
+def main() -> int:
     """Run every doc check and exit 1 on a problem. --hook checks the one file
     a Claude Code edit touched; --list counts the decisions watched.
     """
@@ -496,7 +497,7 @@ def main():
     return check_repo()
 
 
-def check_repo():
+def check_repo() -> int:
     """The whole check: every DECISION's stale wording, named files, the
     architecture map and the budgets. Exit status: 1 on any problem."""
     missing = [d for d in DOCS if read(d) is None]

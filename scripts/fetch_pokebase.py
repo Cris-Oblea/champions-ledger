@@ -38,7 +38,7 @@ PAGES = ["pokemon", "moves", "abilities", "items", "speed-tiers"]
 PAGED = {"pokemon": 4, "moves": 10, "abilities": 4, "items": 2}
 
 
-def fetch(page, force=False, num=None):
+def fetch(page: str, force: bool = False, num: int | None = None) -> str | None:
     """Download one pokebase page (or page `num` of it) into the cache, unless
     a real copy is already there.
     """
@@ -60,13 +60,13 @@ def fetch(page, force=False, num=None):
     return dest
 
 
-def read(page):
+def read(page: str) -> str:
     """A cached page's HTML, or "" when it was never fetched."""
     p = os.path.join(POKEBASE, page + ".html")
     return open(p, encoding="utf-8", errors="replace").read() if os.path.exists(p) else ""
 
 
-def read_all_pages(page):
+def read_all_pages(page: str) -> Iterator[str]:
     """Every cached page of a paginated table, in order."""
     yield read(page)
     for n in range(2, PAGED.get(page, 1) + 1):
@@ -78,19 +78,19 @@ def read_all_pages(page):
 # --------------------------------------------------------------------------
 # RSC flight payload
 # --------------------------------------------------------------------------
-def payload(html):
+def payload(html: str) -> str:
     """The streamed React Server Component payload, reassembled: every
     `self.__next_f.push([1,"..."])` carries one chunk of one JSON string."""
     chunks = re.findall(r'self\.__next_f\.push\(\[1,("(?:[^"\\]|\\.)*")\]\)', html, re.S)
     return "".join(json.loads(c) for c in chunks)
 
 
-def rsc_payload(page):
+def rsc_payload(page: str) -> str:
     """payload() of a cached page."""
     return payload(read(page))
 
 
-def rsc_lines(payload):
+def rsc_lines(payload: str) -> dict[str, Any]:
     """Index the payload by row id.
 
     A row is `<id>:<json>` or `<id>:T<hex-length>,<raw text>`. The text rows
@@ -134,7 +134,7 @@ def rsc_lines(payload):
     return out
 
 
-def resolve(node, lines, depth=0):
+def resolve(node: Any, lines: dict[str, Any], depth: int = 0) -> Any:
     """Expand `$<lineid>:path:to:value` back-references used to dedupe the payload."""
     if depth > 12:
         return node
@@ -158,7 +158,7 @@ def resolve(node, lines, depth=0):
     return node
 
 
-def find_key(obj, key, hits=None):
+def find_key(obj: Any, key: str, hits: list[Any] | None = None) -> list[Any]:
     """Collect every value stored under `key`, at any depth."""
     hits = [] if hits is None else hits
     if isinstance(obj, dict):
@@ -206,7 +206,7 @@ _PERCENT = re.compile(r">([\d.]+)<!-- -->%<")
 _TYPE = re.compile(r'<span title="([A-Za-z]+)" class="inline-flex')
 
 
-def parse_pokemon_usage():
+def parse_pokemon_usage() -> list[dict[str, Any]]:
     """The ladder, from the rendered table: name, slug, types, usage %.
 
     Not the page's payload: its id -> percent map no longer carries the
@@ -234,7 +234,7 @@ def parse_pokemon_usage():
     return rows
 
 
-def parse_table_usage(page):
+def parse_table_usage(page: str) -> list[dict[str, Any]]:
     """Moves / abilities / items list pages: name + usage % straight from the HTML.
 
     The usage is the FIRST cell after the name, and only that cell. A move
@@ -266,7 +266,7 @@ def parse_table_usage(page):
     return rows
 
 
-def parse_speed_tiers():
+def parse_speed_tiers() -> list[dict[str, Any]]:
     """The speed-tier table, read from the page's flight payload."""
     lines = rsc_lines(rsc_payload("speed-tiers"))
     rows = next((resolve(v, lines) for v in find_key(lines, "tierRows")
@@ -280,7 +280,7 @@ def parse_speed_tiers():
 
 
 # --------------------------------------------------------------------------
-def main():
+def main() -> None:
     print("Fetching pokebase.app ...")
     force = "--force" in sys.argv
     for p in PAGES:

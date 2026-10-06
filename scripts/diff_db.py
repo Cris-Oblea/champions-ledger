@@ -33,6 +33,8 @@ import json
 import os
 import subprocess
 import sys
+from collections.abc import Iterable
+from typing import Any
 
 from paths import ROOT
 
@@ -56,7 +58,7 @@ TABLES = [
 ]
 
 
-def committed(rel):
+def committed(rel: str) -> Any:
     """The version of a file on HEAD, or None if it is not committed yet."""
     # BYTES, then decode as UTF-8 by hand. `text=True` decodes with the
     # LOCALE encoding - cp1252 on this machine - so every accented character in
@@ -73,7 +75,7 @@ def committed(rel):
         return None
 
 
-def current(rel):
+def current(rel: str) -> Any:
     """A file as it is on disk now, or None."""
     try:
         return json.load(open(os.path.join(ROOT, rel), encoding="utf-8"))
@@ -81,7 +83,7 @@ def current(rel):
         return None
 
 
-def rows(blob, holder):
+def rows(blob: Any, holder: str) -> list[Any]:
     """The records, whether the file is a bare list or wraps one."""
     if isinstance(blob, list):
         return blob
@@ -92,7 +94,7 @@ def rows(blob, holder):
     return []
 
 
-def by_key(records, key):
+def by_key(records: Iterable[Any], key: str) -> dict[str, dict[str, Any]]:
     """Index records by one field."""
     out = {}
     for r in records:
@@ -101,19 +103,19 @@ def by_key(records, key):
     return out
 
 
-def show(v):
+def show(v: object) -> str:
     """A value as one printable line."""
     if isinstance(v, (dict, list)):
         return json.dumps(v, ensure_ascii=False, sort_keys=True)
     return str(v)
 
 
-def names(v):
+def names(v: object) -> set[Any]:
     """A list field as a set (anything else as empty)."""
     return set(v) if isinstance(v, list) else set()
 
 
-def _list_change(old, new):
+def _list_change(old: object, new: object) -> str | None:
     """A list growing or shrinking, or None. The names are what is worth
     saying: "Slash: +29" is the M-C change the counts could not see."""
     gone, came = names(old) - names(new), names(new) - names(old)
@@ -125,7 +127,8 @@ def _list_change(old, new):
     return "  ".join(bits) or None
 
 
-def table_diff(rel, holder, key, fields, listfield):
+def table_diff(rel: str, holder: str, key: str, fields: list[str],
+               listfield: str | None) -> dict[str, Any]:
     """Rows added, removed and changed (field by field, list fields as names in
     and out) between the committed table and the one on disk.
     """
@@ -134,7 +137,8 @@ def table_diff(rel, holder, key, fields, listfield):
         return {"file": rel, "unknown": True, "lines": []}
     a = by_key(rows(old, holder), key)
     b = by_key(rows(new, holder), key)
-    lines = [("added", k, "", "") for k in sorted(set(b) - set(a))]
+    lines: list[tuple[str, str, str | None, str]] = [
+        ("added", k, "", "") for k in sorted(set(b) - set(a))]
     lines += [("removed", k, "", "") for k in sorted(set(a) - set(b))]
     for k in sorted(set(a) & set(b)):
         for f in fields:
@@ -148,7 +152,7 @@ def table_diff(rel, holder, key, fields, listfield):
     return {"file": rel, "unknown": False, "lines": lines}
 
 
-def learnset_diff():
+def learnset_diff() -> dict[str, Any]:
     """Per Pokemon, which moves came and went. Keyed by Pokemon, not by move,
     because that is the question the box asks: what can this one do now."""
     rel = "data/db/learnsets.json"
@@ -167,7 +171,7 @@ def learnset_diff():
     return {"file": rel, "unknown": False, "lines": lines}
 
 
-def report(limit=25):
+def report(limit: int = 25) -> str:
     """Every table's diff as text, at most `limit` lines each."""
     out = [table_diff(*t) for t in TABLES] + [learnset_diff()]
     text = []
@@ -187,7 +191,7 @@ def report(limit=25):
     return "\n".join(text)
 
 
-def main():
+def main() -> int:
     """Print what a rebuild changed against git."""
     ap = argparse.ArgumentParser(description=(__doc__ or "").split("\n")[0])
     ap.add_argument("--limit", type=int, default=25)

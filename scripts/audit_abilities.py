@@ -52,6 +52,8 @@ import html
 import os
 import re
 import sys
+from collections.abc import Callable
+from typing import Any
 
 import dex
 from fetch_home_dex import key as hkey
@@ -66,7 +68,7 @@ KNOWN = {
 }
 
 
-def table(name):
+def table(name: str) -> list[dict[str, str]] | None:
     """One cached PokeAPI CSV table as a list of dict rows, or None when it is
     not on disk.
     """
@@ -76,11 +78,16 @@ def table(name):
     return list(csv.DictReader(open(path, encoding="utf-8")))
 
 
-def _upstream_tables():
+# abilities by pokemon id as (slot, name); a form's stats-and-types key
+type ByPid = dict[str, list[tuple[int, str | None]]]
+type Shape = tuple[Any, ...]
+
+
+def _upstream_tables() -> tuple[ByPid, Callable[[str], Shape]]:
     """(abilities by pokemon id as (slot, name), shape(pokemon id)) - a shape
     is the spread and typing, which is what tells a variant from a form."""
     # upstream() has checked the cache; the tables are fetched together
-    def rows(name):
+    def rows(name: str) -> list[dict[str, str]]:
         return table(name) or []
 
     aname = {r["ability_id"]: r["name"] for r in rows("ability_names.csv")
@@ -96,7 +103,7 @@ def _upstream_tables():
     for r in rows("pokemon_types.csv"):
         types[r["pokemon_id"]][r["slot"]] = r["type_id"]
 
-    def shape(pid):
+    def shape(pid: str) -> tuple[Any, ...]:
         """A form's stats and types as one comparable key: variants with the
         same shape are the same Pokemon.
         """
@@ -105,7 +112,8 @@ def _upstream_tables():
     return by_pid, shape
 
 
-def _missing_abilities(p, sources, by_pid):
+def _missing_abilities(p: dex.Row, sources: list[tuple[str, str]],
+                       by_pid: ByPid) -> tuple[list[str], int]:
     """(gaps, how many were known spelling differences) for one form."""
     ours = p.get("abilities") or []
     gaps, known = [], 0
@@ -120,7 +128,7 @@ def _missing_abilities(p, sources, by_pid):
     return gaps, known
 
 
-def upstream(forms):
+def upstream(forms: list[dex.Row]) -> list[Any] | None:
     """Checks 1 and 2: what PokeAPI lists that a form of ours does not."""
     pokemon = table("pokemon.csv")
     if pokemon is None:
@@ -163,7 +171,7 @@ def upstream(forms):
     return gaps
 
 
-def serebii(forms):
+def serebii(forms: list[dex.Row]) -> list[Any] | None:
     """Check 3: every ability a Pokedex page names is on a row of it.
 
     Read by the bold name alone, so a broken or missing link cannot hide one
@@ -193,7 +201,7 @@ def serebii(forms):
     return gaps
 
 
-def main():
+def main() -> int:
     """Report forms missing an ability PokeAPI lists, and abilities Serebii
     names that no row kept. Exits 1 on either.
     """

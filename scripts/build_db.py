@@ -14,6 +14,7 @@ import json
 import os
 import re
 from collections import defaultdict
+from collections.abc import Iterator
 from pathlib import Path
 
 import dex
@@ -83,7 +84,7 @@ TYPED_BATTLE_FORMS = {
 }
 
 
-def txt(x):
+def txt(x: str) -> str:
     """Reduce an HTML fragment to plain text."""
     x = re.sub(r"<(script|style)[^>]*>.*?</\1>", "", x, flags=re.S)
     x = re.sub(r"<br\s*/?>", " ", x)
@@ -91,7 +92,7 @@ def txt(x):
     return unmojibake(re.sub(r"\s+", " ", html.unescape(x)).strip())
 
 
-def sprite_form(src, species=None):
+def sprite_form(src: str, species: str | None = None) -> str | None:
     """Read the form off the sprite filename (003-a.png -> Alola)."""
     base = src.split("/")[-1].rsplit(".", 1)[0]
     if "-" not in base:
@@ -166,7 +167,7 @@ MOVE_RULINGS = {
 }
 
 
-def apply_move_rulings(moves):
+def apply_move_rulings(moves: list[dex.Row]) -> list[str]:
     """Apply MOVE_RULINGS in place. Returns the lines worth printing."""
     said = []
     by = {m["name"]: m for m in moves}
@@ -185,7 +186,7 @@ def apply_move_rulings(moves):
     return said
 
 
-def useable_moves():
+def useable_moves() -> set[str] | None:
     """Slugs from the "Useable Moves" page.
 
     The Champions Attackdex has a page for ~900 moves, but only about 500 can
@@ -201,7 +202,7 @@ def useable_moves():
     return found - TYPE_PAGES
 
 
-def hit_count(effect):
+def hit_count(effect: str) -> list[int] | None:
     """[min, max] hits for a multi-hit move, or None.
 
     Read off Serebii's own effect text ("The user attacks 2 to 5 times in a
@@ -232,7 +233,7 @@ def hit_count(effect):
     return None
 
 
-def always_crit(effect, indepth):
+def always_crit(effect: str, indepth: str) -> bool:
     """True for the moves that always land a critical hit (a flat x1.5).
 
     Champions has three - Flower Trick, Frost Breath and Storm Throw - and the
@@ -246,14 +247,14 @@ def always_crit(effect, indepth):
     return False
 
 
-def _move_name(s, slug):
+def _move_name(s: str, slug: str) -> str:
     """A move page's name from its <title>, or the slug when there is none."""
     m = re.search(r"<title>(.*?)</title>", s, re.S | re.I)
     name = html.unescape(m.group(1)).split(" - ")[0].strip() if m else None
     return name or slug
 
 
-def _move_type_and_category(s):
+def _move_type_and_category(s: str) -> tuple[str | None, str | None]:
     """(type, "Physical" / "Special" / "Status") off a move page's icons."""
     mtype = cat = None
     mt = re.search(r'/attackdex-champions/\w+\.shtml"><img src="/pokedex-bw/type/(\w+)\.gif', s)
@@ -265,13 +266,13 @@ def _move_type_and_category(s):
     return mtype, cat
 
 
-def _cell_number(v):
+def _cell_number(v: str) -> int | None:
     """A table cell as an int, or None for "--" and blanks."""
     v = v.strip().replace("--", "")
     return int(v) if v.isdigit() else None
 
 
-def _move_numbers(s):
+def _move_numbers(s: str) -> tuple[int | None, int | None, int | None]:
     """(PP, base power, accuracy); None where the cell is empty."""
     mb = re.search(
         r"Power Points.*?Base Power.*?Accuracy.*?</tr>\s*<tr>\s*"
@@ -282,13 +283,13 @@ def _move_numbers(s):
     return _cell_number(mb.group(1)), _cell_number(mb.group(2)), _cell_number(mb.group(3))
 
 
-def _move_section(s, label):
+def _move_section(s: str, label: str) -> str:
     """The text of the table row that follows a labelled row."""
     mm = re.search(re.escape(label) + r".*?</tr>\s*<tr>(.*?)</tr>", s, re.S)
     return txt(mm.group(1)) if mm else ""
 
 
-def _move_crit_priority_target(s):
+def _move_crit_priority_target(s: str) -> tuple[str | None, int | None, str | None]:
     """(crit rate text, priority as int, target) off a move page's table."""
     mx = re.search(
         r"Base Critical Hit Rate.*?Speed Priority.*?Hit in Battle.*?</tr>\s*<tr>\s*"
@@ -305,7 +306,7 @@ def _move_crit_priority_target(s):
     return txt(mx.group(1)), prio, txt(mx.group(3))
 
 
-def _move_flags(s):
+def _move_flags(s: str) -> dict[str, bool]:
     """The property table alternates header rows and value rows. Start at the
     <tr> that OPENS the "Physical Contact" row: starting at the text itself
     loses the first header and shifts every flag by one row."""
@@ -333,7 +334,7 @@ def _move_flags(s):
     return flags
 
 
-def _move_learners(s):
+def _move_learners(s: str) -> list[str]:
     """Every form in the "Pokemon That Learn" table, once, in page order."""
     li = s.find("That Learn")
     if li <= 0:
@@ -352,7 +353,7 @@ def _move_learners(s):
     return list(dict.fromkeys(learners))
 
 
-def parse_move(path, useable=None):
+def parse_move(path: str, useable: set[str] | None = None) -> dex.Row:
     """One cached attackdex page -> one move row of data/db/moves.json.
     `useable` is the set of slugs Champions enables; the rest are kept,
     flagged useable=False, because a movepool can still list them."""
@@ -387,7 +388,7 @@ def parse_move(path, useable=None):
 # --------------------------------------------------------------------------
 # POKEMON
 # --------------------------------------------------------------------------
-def master_mega_names():
+def master_mega_names() -> dict[str, list[str]]:
     """slug -> ordered list of Mega names, from the available-Pokemon list.
 
     A Pokemon page labels both of its Mega blocks just "Mega Charizard"; only
@@ -411,7 +412,7 @@ def master_mega_names():
     return out
 
 
-def _block_name(blk, slug):
+def _block_name(blk: str, slug: str) -> str:
     """The name is the first data cell after the "Name" header."""
     mn = re.search(r'>\s*Name\s*</td>.*?</tr>\s*<tr>\s*'
                    r'<td[^>]*class="fooinfo"[^>]*>\s*([^<]+?)\s*</td>', blk, re.S)
@@ -419,7 +420,7 @@ def _block_name(blk, slug):
     return name or slug.capitalize()
 
 
-def _block_types(blk):
+def _block_types(blk: str) -> list[str]:
     """The types in one form's block of a Pokedex page, deduplicated."""
     raw_types = re.findall(
         r'/pokedex-champions/\w+\.shtml"><img src="/pokedex-bw/type/(\w+)\.gif', blk)
@@ -429,7 +430,7 @@ def _block_types(blk):
     return list(dict.fromkeys(raw.capitalize() for raw in raw_types))
 
 
-def _block_abilities(blk):
+def _block_abilities(blk: str) -> list[str]:
     """The abilities in one form's block, minus the "Details" link text."""
     ab = re.search(r"<b>Abilities</b>\s*:(.*?)</td>", blk, re.S)
     abils = [re.sub(r"\s+", " ", html.unescape(a.group(1))).strip()
@@ -446,7 +447,8 @@ def _six_stats(chunk: str) -> dict[str, int] | None:
     return dict(zip(dex.STAT_KEYS, map(int, nums), strict=True))
 
 
-def _block_stats(stat_blocks, hstart, hend):
+def _block_stats(stat_blocks: list[tuple[int, int, str]], hstart: int,
+                 hend: int) -> dict[str, int] | None:
     """The stats table that sits inside this header block, if any."""
     hit = next(((total, tail) for pos, total, tail in stat_blocks
                 if hstart <= pos < hend), None)
@@ -459,7 +461,8 @@ def _block_stats(stat_blocks, hstart, hend):
     return stats
 
 
-def _stats_heading_blocks(s, label=r"[^<]+"):
+def _stats_heading_blocks(s: str,
+                          label: str = r"[^<]+") -> Iterator[tuple[str, dict[str, int]]]:
     """(label, spread) for every "<h2>Stats - <label></h2>" table on the page
     that carries a full spread. Each heading swallows the 1200 characters after
     it, so the label pattern decides which headings can hide the next one - a
@@ -474,7 +477,7 @@ def _stats_heading_blocks(s, label=r"[^<]+"):
             yield m.group(1), st
 
 
-def _gender_forms(s, slug, base):
+def _gender_forms(s: str, slug: str, base: dex.Row) -> list[dex.Row]:
     """Gender forms get no header block of their own - Basculegion's female
     form exists only as an "<h2>Stats - Female</h2>" table further down the
     page, and it is a real form with its own spread (120/92/65/100/75/78 vs
@@ -488,7 +491,7 @@ def _gender_forms(s, slug, base):
             for label, st in _stats_heading_blocks(s, "Female|Male")]
 
 
-def _in_battle_forms(s):
+def _in_battle_forms(s: str) -> dict[str, dict[str, int]]:
     """In-battle and size forms live in the same kind of block ("<h2>Stats -
     Blade Forme</h2>", "Stats - Hero Form", "Stats - Jumbo Variety") but they
     are NOT separate rows. Every usage source calls them by the base name -
@@ -508,7 +511,8 @@ def _in_battle_forms(s):
     return bf
 
 
-def parse_pokemon(path, mega_names=None):
+def parse_pokemon(path: str,
+                  mega_names: dict[str, list[str]] | None = None) -> list[dex.Row]:
     """One cached Pokedex page -> a row per form block on it (base, regional,
     Mega). `mega_names` gives each Mega block its real X / Y name in order,
     because the page titles both "Mega Charizard"."""
@@ -546,7 +550,7 @@ def parse_pokemon(path, mega_names=None):
     return out
 
 
-def forms_from_attackdex():
+def forms_from_attackdex() -> dict[str, dex.Row]:
     """Base and regional forms, read from the "Pokemon That Learn X" tables.
 
     The Pokedex page groups regional forms into one block (Samurott and
@@ -600,7 +604,7 @@ def forms_from_attackdex():
 # --------------------------------------------------------------------------
 # ITEMS / ABILITIES
 # --------------------------------------------------------------------------
-def parse_items():
+def parse_items() -> list[dex.Row]:
     """Every item, in the four groups the game itself uses.
 
     Serebii lays the page out as one table per group, each announced by a
@@ -643,7 +647,7 @@ def parse_items():
     return items
 
 
-def parse_champions_abilities(pokemon_rows):
+def parse_champions_abilities(pokemon_rows: list[dex.Row]) -> list[dex.Row]:
     """Ability text as Champions defines it, taken from the Pokemon pages."""
     descs = {}
     holders = defaultdict(list)
@@ -671,7 +675,7 @@ def parse_champions_abilities(pokemon_rows):
 
 
 # --------------------------------------------------------------------------
-def abilities_by_form(path):
+def abilities_by_form(path: str) -> dict[str, list[str]]:
     """The Pokedex page's Abilities cell, split by the form each group names.
 
     A PAGE WITH SEVERAL FORMS WRITES ONE CELL FOR ALL OF THEM:
@@ -717,7 +721,9 @@ def abilities_by_form(path):
     return out
 
 
-def _add_abilities(p, abs_, added, note=None):
+def _add_abilities(p: dex.Row, abs_: list[str],
+                   added: list[tuple[str, list[str], str | None]],
+                   note: str | None = None) -> None:
     """Append the abilities `p` lacks, record what was added in `added` for
     the report, and attach `note` to each (whether or not it was new)."""
     have = p.get("abilities") or []
@@ -730,7 +736,7 @@ def _add_abilities(p, abs_, added, note=None):
             p.setdefault("ability_notes", {})[a] = note
 
 
-def complete_form_abilities(forms):
+def complete_form_abilities(forms: dict[str, dex.Row]) -> int:
     """Add anything the Pokedex page lists for a form that its row is missing.
 
     Matched with dex.norm(), the project's own name matcher, so "(Midnight
@@ -777,7 +783,7 @@ def complete_form_abilities(forms):
     return len(added)
 
 
-def _mega_species(p):
+def _mega_species(p: dex.Row) -> None:
     """"Mega Charizard X" -> species "Charizard", form "Mega X", so the
     Mega still links back to the base form it evolves from.
     Regulation M-C added a third suffix: Z marks a SECOND Mega on a
@@ -791,7 +797,7 @@ def _mega_species(p):
     p["form"] = "Mega %s" % mx.group(2) if mx else "Mega"
 
 
-def _merge_dex_row(forms, p):
+def _merge_dex_row(forms: dict[str, dex.Row], p: dex.Row) -> None:
     """One Pokedex-page row into the attackdex's forms."""
     if p["is_mega"]:
         _mega_species(p)
@@ -820,7 +826,7 @@ def _merge_dex_row(forms, p):
         forms[p["name"]]["battle_forms"] = p["battle_forms"]
 
 
-def _drop_regional_battle_forms(forms):
+def _drop_regional_battle_forms(forms: dict[str, dex.Row]) -> None:
     """The Pokedex repeats the regional forms in the same "<h2>Stats - X</h2>"
     block shape as the in-battle ones ("Stats - Alolan Raichu", "Stats -
     Hisuian Arcanine"), and those already arrived from the attackdex with
@@ -841,7 +847,7 @@ def _drop_regional_battle_forms(forms):
             del p["battle_forms"]
 
 
-def _add_fixed_forms(forms):
+def _add_fixed_forms(forms: dict[str, dex.Row]) -> None:
     """Forms fixed at capture are their own Pokemon, so they get their own row.
     Gourgeist's sizes arrived above as `battle_forms` because the page writes
     them in the same block shape as Aegislash's stance - they are not a
@@ -865,7 +871,7 @@ def _add_fixed_forms(forms):
             }
 
 
-def _add_typed_battle_forms(forms):
+def _add_typed_battle_forms(forms: dict[str, dex.Row]) -> None:
     """Typing a Pokemon only has mid-battle. Stored beside the spread-changing
     stances rather than as rows, because it is one creature: pokebase's
     "Castform-Sunny" and a teamlist's "Castform" are the same registration."""
@@ -880,13 +886,13 @@ def _add_typed_battle_forms(forms):
         base["battle_forms"] = bf
 
 
-def _write(name, rows):
+def _write(name: str, rows: dex.Json) -> None:
     """Write one data/db table."""
     Path(DB, name).write_text(
         json.dumps(rows, ensure_ascii=False, indent=1), encoding="utf-8")
 
 
-def build_pokemon():
+def build_pokemon() -> list[dex.Row]:
     """Every form, in dex order: base and regional forms from the attackdex
     (one row per form), merged with the Pokedex pages' stats and Megas, then
     the battle forms and the fixed forms Serebii lists nowhere."""
@@ -905,7 +911,7 @@ def build_pokemon():
     return sorted(forms.values(), key=lambda x: (x["dex"] or 0, x["name"]))
 
 
-def build_moves():
+def build_moves() -> list[dex.Row]:
     """Every move page parsed, then the in-game MOVE_RULINGS applied."""
     adir = os.path.join(RAW, "attackdex")
     useable = useable_moves()
@@ -920,7 +926,8 @@ def build_moves():
     return moves
 
 
-def build_learnsets(moves, pokemon):
+def build_learnsets(moves: list[dex.Row],
+                    pokemon: list[dex.Row]) -> tuple[dict[str, list[str]], int]:
     """(form -> sorted move names, how many forms inherited the base's)."""
     learn = defaultdict(list)
     for mv in moves:
@@ -943,7 +950,7 @@ def build_learnsets(moves, pokemon):
     return dict(sorted(learn.items())), inherited
 
 
-def main():
+def main() -> None:
     """Build every core table from the Serebii cache: pokemon, moves,
     learnsets, items, abilities.
     """

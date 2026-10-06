@@ -26,7 +26,9 @@ move Champions' dex does not describe gets Serebii's attackdex-champions line,
 never an older game's text.
 
 **The Python type-checks (pyright, `pyrightconfig.json`, in the gate).** Every
-script is at zero in `basic`; `strict` is switched on file by file in that
+script is at zero in `basic`, and every function's parameters and return are
+annotated (the config fails an unannotated parameter; a missing return has no
+rule, so add it by hand); `strict` is switched on file by file in that
 config's `strict` list - a file in it is fully annotated, so keep it that way.
 JSON from disk is `dex.Json` (the boundary); state the shape where a reader
 relies on one. `__doc__` can be None: `(__doc__ or "").split(...)`.

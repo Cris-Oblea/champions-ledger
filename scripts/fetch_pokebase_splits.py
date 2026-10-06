@@ -57,7 +57,9 @@ import os
 import re
 import sys
 import time
+from collections.abc import Callable
 from pathlib import Path
+from typing import Any
 
 import dex
 import net
@@ -79,12 +81,13 @@ STAT_WORD = {"hp": "HP", "attack": "Atk", "defense": "Def",
 
 # --------------------------------------------------------------- the payload
 
-def _lists(lines, key):
+def _lists(lines: dict[str, Any], key: str) -> list[list[Any]]:
     """Every array stored under `key`, in page order."""
     return [v for v in find_key(lines, key) if isinstance(v, list)]
 
 
-def _rows(rows, extra=None):
+def _rows(rows: list[dict[str, Any]] | None,
+          extra: Callable[[dict[str, Any], dict[str, Any]], None] | None = None) -> list[dict[str, Any]]:
     """A section, trimmed to what the app reads.
 
     `percent` is allowed to be missing, and only one section ever is: the
@@ -103,7 +106,7 @@ def _rows(rows, extra=None):
     return out
 
 
-def _spreads(rows, field):
+def _spreads(rows: list[dict[str, Any]] | None, field: str) -> list[dict[str, Any]]:
     """The SP spreads of one section, with their share."""
     out = []
     for r in rows or []:
@@ -116,7 +119,7 @@ def _spreads(rows, field):
 
 # ----------------------------------------------------------- tournament side
 
-def _kind(rows):
+def _kind(rows: list[dict[str, Any]]) -> str | None:
     """Which section a table of rows is, read off its own columns.
 
     Order of appearance would be shorter, and is exactly the assumption that
@@ -142,7 +145,7 @@ def _kind(rows):
     return None
 
 
-def tournament(lines, flow, html):
+def tournament(lines: dict[str, Any], flow: str, html: str) -> dict[str, Any]:
     """The regulation's tournament block, every page of it."""
     got = {}
     for rows in _lists(lines, "rows"):
@@ -150,14 +153,14 @@ def tournament(lines, flow, html):
         if k and k not in got:
             got[k] = rows
 
-    def nature_effect(src, row):
+    def nature_effect(src: dict[str, Any], row: dict[str, Any]) -> None:
         """Label a nature row with the stat it raises and lowers."""
         if src.get("incStat"):
             row["effect"] = "+%s / -%s" % (
                 STAT_WORD.get(src["incStat"], src["incStat"]),
-                STAT_WORD.get(src.get("decStat"), src.get("decStat")))
+                STAT_WORD.get(src.get("decStat") or "", src.get("decStat")))
 
-    out = {
+    out: dict[str, Any] = {
         "moves": _rows(got.get("moves")),
         "items": _rows(got.get("items")),
         "natures": _rows(got.get("natures"), nature_effect),
@@ -170,7 +173,7 @@ def tournament(lines, flow, html):
     return out
 
 
-def block_abilities(html, under):
+def block_abilities(html: str, under: str) -> list[dict[str, Any]]:
     """Abilities, from the rendered HTML.
 
     They are the one section with no paginator - a species has at most three -
@@ -199,7 +202,7 @@ def block_abilities(html, under):
 
 # --------------------------------------------------------------- ladder side
 
-def season(lines):
+def season(lines: dict[str, Any]) -> dict[str, Any] | None:
     """The newest DOUBLES ladder season, or None when the page has no block.
 
     Singles is dropped here for the same reason fetch_smogon.py drops it: it
@@ -236,7 +239,7 @@ def season(lines):
     }
 
 
-def parse(html):
+def parse(html: str) -> dict[str, dict[str, Any]]:
     # the props of every component on the page, which is where the
     # sections that paginate keep their rows
     """Everything one Pokemon page holds: the tournament block for the
@@ -251,7 +254,7 @@ def parse(html):
     return got
 
 
-def fetch(slug):
+def fetch(slug: str) -> str | None:
     """One Pokemon page, or None (printed) when it fails."""
     try:
         return net.text(BASE + slug)
@@ -260,7 +263,7 @@ def fetch(slug):
         return None
 
 
-def _stored(force):
+def _stored(force: bool) -> dict[str, Any]:
     """What an earlier run already wrote, so an ordinary run only fetches the
     Pokemon it has not seen; nothing under --force."""
     if not os.path.exists(OUT) or force:
@@ -271,7 +274,8 @@ def _stored(force):
         return {}
 
 
-def _fetch_missing(rows, out, force):
+def _fetch_missing(rows: list[dict[str, Any]], out: dict[str, Any],
+                   force: bool) -> tuple[int, list[str]]:
     """Fetch each ladder row not in `out` yet into it; (how many were fetched,
     the names whose page had no usage block)."""
     n, empty = 0, []
@@ -295,7 +299,7 @@ def _fetch_missing(rows, out, force):
     return n, empty
 
 
-def main():
+def main() -> int:
     """Fetch the splits page of every Pokemon on the ladder and write
     usage_splits.json.
     """

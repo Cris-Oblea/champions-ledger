@@ -123,7 +123,7 @@ DIFFERENT = [
 ]
 
 
-def _check_same(verbose):
+def _check_same(verbose: bool) -> int:
     """Every group that must collapse to one key does."""
     print("--- groups that must share one key ---")
     failed = 0
@@ -141,7 +141,7 @@ def _check_same(verbose):
     return failed
 
 
-def _check_different(verbose):
+def _check_different(verbose: bool) -> int:
     """Every pair that must stay apart does."""
     print("\n--- pairs that must stay distinct ---")
     bad = 0
@@ -176,7 +176,7 @@ SPECIES = [("Ninetales-Alola", "ninetales"),
            ("Gourgeist-Jumbo", "gourgeist")]
 
 
-def _check_species(verbose):
+def _check_species(verbose: bool) -> int:
     """species_norm() strips the form words it should."""
     print("\n--- species_norm strips form qualifiers ---")
     sp = 0
@@ -192,7 +192,7 @@ def _check_species(verbose):
     return sp
 
 
-def main():
+def main() -> int:
     """Run the three checks; exit 1 on any failure."""
     verbose = "-v" in sys.argv
     total = _check_same(verbose) + _check_different(verbose) + _check_species(verbose)

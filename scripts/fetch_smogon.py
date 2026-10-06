@@ -28,6 +28,7 @@ import re
 import sys
 import time
 from pathlib import Path
+from typing import Any
 
 import dex
 import net
@@ -37,7 +38,7 @@ RPC = "https://www.smogon.com/dex/_rpc/"
 CACHE = os.path.join(RAW, "smogon")
 
 
-def _post(method, params, timeout=60):
+def _post(method: str, params: dict[str, Any], timeout: float = 60) -> Any:
     """One Smogon RPC answer, decoded; raises net.ERRORS.
 
     `decode("utf-8", "replace")` looks safe and silently destroys data: Smogon
@@ -56,7 +57,7 @@ def _post(method, params, timeout=60):
     return json.loads(raw.decode("utf-8", "replace"))
 
 
-def rpc(method, params):
+def rpc(method: str, params: dict[str, Any]) -> Any:
     """Call Smogon's dex API, or None (printed) when it fails."""
     try:
         return _post(method, params, 60)
@@ -65,7 +66,7 @@ def rpc(method, params):
         return None
 
 
-def strip_html(s):
+def strip_html(s: str | None) -> str:
     """Smogon prose is HTML; keep the words and the internal links' text."""
     if not s:
         return ""
@@ -82,12 +83,12 @@ def strip_html(s):
 DEX_ALIAS = {"Compoundeyes": "compound-eyes"}
 
 
-def dex_alias(name):
+def dex_alias(name: str) -> str:
     """Smogon's URL spelling: "King's Rock" -> kings-rock, "U-turn" -> u-turn."""
     return DEX_ALIAS.get(name) or dex.slug(name)
 
 
-def ask_dex(kind, alias):
+def ask_dex(kind: str, alias: str) -> Any:
     """One entry from Champions' own dex: its text, None when the dex has no
     such entry, and the string "failed" when the question never got an answer
     - the two must not look alike, or a network blip would be cached as "not
@@ -109,7 +110,7 @@ DEX_KINDS = (
 )
 
 
-def dex_texts(force=False):
+def dex_texts(force: bool = False) -> None:
     """Smogon's FULL description of every move, ability and item - the text
     its dex page prints.
 
@@ -182,12 +183,12 @@ def dex_texts(force=False):
               % (len(missing), ", ".join(missing[:10])))
 
 
-def is_vgc(fmt):
+def is_vgc(fmt: str | None) -> bool:
     """Is this a VGC format? Singles analyses are kept out."""
     return bool(fmt) and fmt.strip().upper().startswith("VGC")
 
 
-def parse_moveset(ms):
+def parse_moveset(ms: dict[str, Any]) -> dict[str, Any]:
     """One Smogon set reduced to the fields kept: moves per slot, items,
     abilities, natures, SP and the explanation.
     """
@@ -210,7 +211,7 @@ def parse_moveset(ms):
     }
 
 
-def _basics(force):
+def _basics(force: bool) -> Any:
     """Smogon's Champions dex basics, from the cache unless --force."""
     basics_path = os.path.join(CACHE, "basics.json")
     if os.path.exists(basics_path) and not force:
@@ -224,7 +225,7 @@ def _basics(force):
     return basics
 
 
-def _write_basics(basics):
+def _write_basics(basics: dict[str, Any]) -> None:
     """Write smogon_basics.json: move flags, natures, types, items, abilities
     and moves as Champions' dex has them.
     """
@@ -243,7 +244,7 @@ def _write_basics(basics):
     path.write_text(json.dumps(blob, ensure_ascii=False, indent=1), encoding="utf-8")
 
 
-def _pokemon_dump(alias, force):
+def _pokemon_dump(alias: str, force: bool) -> Any:
     """One Pokemon's dump, cached; None when Smogon did not answer."""
     cache = os.path.join(CACHE, alias + ".json")
     if os.path.exists(cache) and not force:
@@ -255,7 +256,7 @@ def _pokemon_dump(alias, force):
     return data
 
 
-def _credits(st):
+def _credits(st: dict[str, Any]) -> list[str | None]:
     """The usernames credited for an analysis."""
     if not st.get("credits"):
         return []
@@ -263,7 +264,7 @@ def _credits(st):
     return [c.get("username") for c in members if isinstance(c, dict)]
 
 
-def _vgc_strategies(data):
+def _vgc_strategies(data: dict[str, Any]) -> list[dict[str, Any]]:
     """The VGC analyses in a dump that say anything; singles are dropped."""
     strategies = []
     for st in data.get("strategies") or []:
@@ -283,7 +284,7 @@ def _vgc_strategies(data):
     return strategies
 
 
-def main():
+def main() -> None:
     """Fetch Champions' dex basics and texts, then each Pokemon's dump, and
     write every VGC analysis to smogon_analyses.json.
     """

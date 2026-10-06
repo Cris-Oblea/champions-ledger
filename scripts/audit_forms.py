@@ -15,13 +15,14 @@ import re
 import sys
 from collections import defaultdict
 from pathlib import Path
+from typing import Any
 
 from dex import DIVISIONS, meta, norm, species_norm, tournament
 from paths import DB, RAW
 from serebii_text import read
 
 
-def master_list():
+def master_list() -> list[dict[str, Any]]:
     """Every row of Serebii's available-Pokemon table, with its sprite suffix."""
     p = os.path.join(RAW, "pages", "pokemon.html")
     s = read(p)
@@ -99,7 +100,7 @@ _REGIONAL = re.compile(r"(Alola|Hisui|Galar|Paldea|Kanto|Johto|Unova|Kalos)",
                        re.I)
 
 
-def _split_heads(s):
+def _split_heads(s: str) -> tuple[list[str], list[Any]]:
     """The per-form ability headers and stat blocks a page splits into,
     leaving out the plain "Abilities" and the regional forms."""
     heads = [re.sub(r"<[^>]+>", "", m.group(1)).strip()
@@ -111,7 +112,7 @@ def _split_heads(s):
     return heads, stat_blocks
 
 
-def _split_pages(dex):
+def _split_pages(dex: list[dict[str, Any]]) -> int:
     """A Pokedex page with several form blocks whose species the dex holds
     as ONE row - unless it is a known cosmetic or battle form."""
     have = defaultdict(set)
@@ -138,7 +139,7 @@ def _split_pages(dex):
     return problems
 
 
-def _battle_form_gaps(dex):
+def _battle_form_gaps(dex: list[dict[str, Any]]) -> int:
     """An in-battle form that moves a stat or a type must actually carry it."""
     bad = []
     for slug, (what, _why) in sorted(BATTLE_FORM_OK.items()):
@@ -160,7 +161,7 @@ def _battle_form_gaps(dex):
     return len(bad)
 
 
-def alternate_form_watch(dex):
+def alternate_form_watch(dex: list[dict[str, Any]]) -> int:
     """Flag a Serebii page that splits a form's abilities with no dex row for it.
 
     This is the check that would have caught Squawkabilly. Serebii writes the
@@ -172,7 +173,7 @@ def alternate_form_watch(dex):
     return _split_pages(dex) + _battle_form_gaps(dex)
 
 
-def _collisions(dex):
+def _collisions(dex: list[dict[str, Any]]) -> int:
     """1. Two dex rows that norm() turns into the same key."""
     print("\n--- 1. Name collisions inside the dex ---")
     dupes = defaultdict(list)
@@ -186,7 +187,8 @@ def _collisions(dex):
     return len(collisions)
 
 
-def _match_by_type(r, dex):
+def _match_by_type(r: dict[str, Any],
+                   dex: list[dict[str, Any]]) -> dict[str, Any] | None:
     """The dex form a master-list row is, when its name does not resolve:
     same number, same typing, and a Mega only for a Mega."""
     return next((c for c in dex if c["dex"] == r["dex"]
@@ -195,7 +197,8 @@ def _match_by_type(r, dex):
                 None)
 
 
-def _missing_rows(master, dex, by_norm):
+def _missing_rows(master: list[dict[str, Any]], dex: list[dict[str, Any]],
+                  by_norm: dict[str, Any]) -> int:
     """2. A master-list row (name, sprite, types) no dex form resolves to."""
     print("\n--- 2. Master-list rows missing from the dex ---")
     missing = []
@@ -213,7 +216,7 @@ def _missing_rows(master, dex, by_norm):
     return len(missing)
 
 
-def _extra_forms(master, dex):
+def _extra_forms(master: list[dict[str, Any]], dex: list[dict[str, Any]]) -> None:
     """3. Dex forms the master list does not spell out, and where each came
     from (informational)."""
     print("\n--- 3. Forms in the dex that the master list does not spell out ---")
@@ -231,7 +234,7 @@ def _extra_forms(master, dex):
         print("  none")
 
 
-def _multi_form(dex):
+def _multi_form(dex: list[dict[str, Any]]) -> None:
     """4. Every species held as more than one row (informational)."""
     print("\n--- 4. Multi-form species: what we hold per species ---")
     groups = defaultdict(list)
@@ -244,7 +247,7 @@ def _multi_form(dex):
             "%s [%s]" % (p["name"], "/".join(p["types"])) for p in forms)))
 
 
-def _gender_split(dex):
+def _gender_split(dex: list[dict[str, Any]]) -> None:
     """5. The gender-split species: their forms and their learnset keys
     side by side (informational)."""
     print("\n--- 5. Gender-split species present in Champions ---")
@@ -277,7 +280,7 @@ def _gender_split(dex):
 TAIL = 0.5
 
 
-def _meta_names():
+def _meta_names() -> dict[str, list[Any]]:
     """Every Pokemon name each meta source uses, per source."""
     src = {
         "pokebase usage": [r["name"] for r in
@@ -294,7 +297,7 @@ def _meta_names():
     return src
 
 
-def _print_watchlist(watch, usage_of):
+def _print_watchlist(watch: list[str], usage_of: dict[str, Any]) -> None:
     """These sit at 0.00% because pokebase publishes its whole Pokedex while
     Champions only allows part of it. If a regulation adds one of them it
     starts scoring usage and moves into the PROBLEM list above - that is the
@@ -317,7 +320,7 @@ def _print_watchlist(watch, usage_of):
         print("    python scripts/fetch_serebii.py list && python scripts/build_db.py")
 
 
-def _unresolved_meta_names(by_norm):
+def _unresolved_meta_names(by_norm: dict[str, Any]) -> int:
     """6. Names the usage and tournament sources use that resolve to no dex
     form. Names under the usage tail are noise, reported apart."""
     print("\n--- 6. Names used by the meta sources that do not resolve ---")
@@ -345,7 +348,7 @@ def _unresolved_meta_names(by_norm):
     return problems
 
 
-def main():
+def main() -> int:
     """Returns the number of REAL problems, so daily.py can gate on it.
 
     "Real" is deliberately narrow. Section 3 (forms the master list does not

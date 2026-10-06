@@ -34,6 +34,7 @@ import os
 import re
 import subprocess
 import sys
+from typing import Any
 
 from paths import DB, ROOT
 
@@ -60,18 +61,18 @@ NEEDS = {
 }
 
 
-def load(name):
+def load(name: str) -> Any:
     """One data/db table."""
     with open(os.path.join(DB, name), encoding="utf-8") as f:
         return json.load(f)
 
 
-def rows(blob, key):
+def rows(blob: Any, key: str) -> list[Any]:
     """A table's rows, whether it is a bare list or wrapped under `key`."""
     return blob if isinstance(blob, list) else (blob.get(key) or [])
 
 
-def engine_map():
+def engine_map() -> Any:
     """What the probe knows about items: which boost a type, which are
     resist berries (probe_modifiers.js --map)."""
     r = subprocess.run(["node", PROBE, "--map"], cwd=ROOT,
@@ -81,7 +82,7 @@ def engine_map():
     return json.loads(r.stdout)
 
 
-def run(cases, chunk=120):
+def run(cases: list[dict[str, Any]], chunk: int = 120) -> list[Any]:
     """Send the cases to the engine probe in chunks (one node process each,
     to keep the command line short); every case's measured result."""
     got = []
@@ -97,12 +98,12 @@ def run(cases, chunk=120):
     return got
 
 
-def _attacker(cat):
+def _attacker(cat: str) -> str:
     """The probe attacker for a move category."""
     return ATK_PHYS if cat == "Physical" else ATK_SPEC
 
 
-def _vehicle_candidates(moves):
+def _vehicle_candidates(moves: list[dict[str, Any]]) -> dict[tuple[str, str], list[dict[str, Any]]]:
     """The six most powerful single-hit attacks per (type, category)."""
     cands = {}
     for m in moves:
@@ -116,7 +117,7 @@ def _vehicle_candidates(moves):
     return {k: sorted(v, key=lambda m: -m["power"])[:6] for k, v in cands.items()}
 
 
-def _verified_vehicles(cands):
+def _verified_vehicles(cands: dict[tuple[str, str], list[dict[str, Any]]]) -> dict[tuple[str, str], str]:
     """{(type, category): the first candidate the engine confirms}."""
     probes, want = [], {}
     for (t, cat), ms in cands.items():
@@ -138,7 +139,7 @@ def _verified_vehicles(cands):
     return out
 
 
-def vehicles(moves):
+def vehicles(moves: list[dict[str, Any]]) -> dict[tuple[str, str], str]:
     """A move to probe with, per type AND per category, verified by the engine.
 
     Three things a vehicle has to be, and each was learned by getting it wrong:
@@ -177,17 +178,18 @@ def vehicles(moves):
     return out
 
 
-def a_move(veh, kind, cat):
+def a_move(veh: dict[tuple[str, str], str], kind: str, cat: str) -> str | None:
     """A verified vehicle of this type (or any) in this category."""
     return veh.get((kind, cat)) or veh.get(("any", cat))
 
 
-def generic_label(veh, cat):
+def generic_label(veh: dict[tuple[str, str], str], cat: str) -> str:
     """What a generic probe really used, so the label cannot mislead."""
     return "%s %s move" % (veh.get(("anytype", cat), "?"), cat.lower())
 
 
-def _boost_cases(name, boost, veh):
+def _boost_cases(name: str, boost: str,
+                 veh: dict[tuple[str, str], str]) -> list[dict[str, Any]]:
     """An item that boosts a type boosts it in EITHER category, so both are
     probed - and the label says which, because that is the fact."""
     out = []
@@ -203,7 +205,8 @@ def _boost_cases(name, boost, veh):
     return out
 
 
-def _berry_cases(name, berry, veh):
+def _berry_cases(name: str, berry: str,
+                 veh: dict[tuple[str, str], str]) -> list[dict[str, Any]]:
     """A resist berry measured where it fires: the holder DEFENDING against a
     super-effective hit of its type, once physical and once special."""
     out = []
@@ -219,7 +222,8 @@ def _berry_cases(name, berry, veh):
     return out
 
 
-def _generic_item_cases(name, veh):
+def _generic_item_cases(name: str,
+                        veh: dict[tuple[str, str], str]) -> list[dict[str, Any]]:
     """Held by either side, through a generic move of each category."""
     out = []
     for side in ("atk", "def"):
@@ -244,7 +248,8 @@ def _generic_item_cases(name, veh):
     return out
 
 
-def cases_for_items(items, emap, veh):
+def cases_for_items(items: list[dict[str, Any]], emap: dict[str, Any],
+                    veh: dict[tuple[str, str], str]) -> list[dict[str, Any]]:
     """Every probe case for every item: a type booster on its type, a berry
     on a super-effective hit, anything else in the generic positions. Mega
     Stones are skipped - a stone creates a form, not a modifier."""
@@ -264,7 +269,9 @@ def cases_for_items(items, emap, veh):
     return out
 
 
-def cases_for_abilities(abilities, veh, touches):
+def cases_for_abilities(abilities: list[dict[str, Any]],
+                        veh: dict[tuple[str, str], str],
+                        touches: dict[str, Any]) -> list[dict[str, Any]]:
     """Both categories on both sides, plus any move the ability is known to
     touch - ability_moves.json already works out which - so an ability that
     only fires on punches or on sound is probed through one."""
@@ -336,7 +343,7 @@ WORD_VALUES = [
 ]
 
 
-def sentence_around(text, at):
+def sentence_around(text: str, at: int) -> str:
     """The sentence a number sits in - the evidence for it."""
     # `rfind` returns -1 when there is no earlier sentence, and -1 + 2 is 1 -
     # which quietly ate the first letter of every phrase that began the text
@@ -347,7 +354,7 @@ def sentence_around(text, at):
     return text[start:(end + 1 if end >= 0 else len(text))].strip()
 
 
-def numbers_from(text):
+def numbers_from(text: str) -> list[dict[str, Any]]:
     """Every number a sentence states (fraction, multiplier, percent...), as
     {kind, value, shown}, each value once."""
     out, seen = [], set()
@@ -395,7 +402,7 @@ def numbers_from(text):
                     and (n["value"], n["phrase"]) in hp)]
 
 
-def smogon_text():
+def smogon_text() -> dict[str, Any]:
     """name -> (kind, description), from Smogon's own tables."""
     try:
         b = load("smogon_basics.json")
@@ -413,7 +420,7 @@ def smogon_text():
 STAGE = {"bp": "base power", "at": "attack", "df": "defence", "fin": "final"}
 
 
-def collect(results):
+def collect(results: list[dict[str, Any]]) -> dict[str, dict[str, Any]]:
     """id -> the exact multipliers it adds, per stage, keyed by the thing."""
     out = {}
     for r in results:
@@ -441,7 +448,7 @@ def collect(results):
     return out
 
 
-def _touches():
+def _touches() -> dict[str, Any]:
     """ability -> the moves ability_moves.json says it touches."""
     try:
         touches = load("ability_moves.json")
@@ -454,7 +461,7 @@ def _touches():
     return touches
 
 
-def _drop_repeats(got):
+def _drop_repeats(got: dict[str, dict[str, Any]]) -> None:
     """One fact, said once. An ability is probed through a generic move of each
     category AND through whatever ability_moves.json says it touches, so the
     same x1.5 comes back three times with three labels. The generic label is
@@ -469,7 +476,7 @@ def _drop_repeats(got):
                         or (e["stage"], e.get("x4096")) not in generic]
 
 
-def _add_text_numbers(got):
+def _add_text_numbers(got: dict[str, dict[str, Any]]) -> None:
     """The text numbers, beside the engine's. Provenance is per number: an
     "engine" multiplier is what the engine actually applies, a "smogon text"
     one is what Smogon says it applies. Where both exist they are compared,
@@ -497,7 +504,7 @@ def _add_text_numbers(got):
                     % (x, " and ".join("x%g" % y for y in said_x)))
 
 
-def _print_disagreements(known):
+def _print_disagreements(known: dict[str, dict[str, Any]]) -> None:
     """Every entry where the engine's number and the text's number disagree."""
     disagree = [(n, v["notes"]) for n, v in known.items()
                 if any("engine says" in x for x in v["notes"])]
@@ -509,7 +516,7 @@ def _print_disagreements(known):
                     print("  %-20s %s" % (n, x))
 
 
-def _print_audit(got):
+def _print_audit(got: dict[str, dict[str, Any]]) -> None:
     """Every entry that came out with no number, and why."""
     print("\nno number, and why:")
     for n in sorted(got):
@@ -520,7 +527,7 @@ def _print_audit(got):
         print("  %-12s %-24s %s" % (got[n]["kind"], n, why[:60]))
 
 
-def main():
+def main() -> int:
     """Probe every item and ability through Smogon's engine, add the numbers
     their text states, write effects.json, and report the disagreements
     (--audit lists what got no number).

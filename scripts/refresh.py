@@ -23,7 +23,7 @@ import argparse
 import subprocess
 import sys
 import time
-from typing import NamedTuple
+from typing import NamedTuple, NoReturn
 
 from paths import ROOT
 
@@ -33,10 +33,10 @@ PY = sys.executable
 class Stage(NamedTuple):
     key: str           # the name in the "failed:" line
     label: str         # the heading printed before it runs
-    argv: list         # the script and its arguments, run from the repo root
+    argv: list[str]    # the script and its arguments, run from the repo root
     required: bool = True   # a failure stops the run here
 
-def stages(reg, deep=False):
+def stages(reg: bool, deep: bool = False) -> list[Stage]:
     """`deep` re-downloads the slow-moving sources without clearing any cache.
 
     Three tiers, by how fast the source actually moves:
@@ -201,7 +201,7 @@ def stages(reg, deep=False):
     ]
 
 
-def run(st):
+def run(st: Stage) -> bool:
     """Run one stage as its own process, timed; True when it succeeded."""
     print("\n=== %s" % st.label)
     t0 = time.time()
@@ -211,7 +211,7 @@ def run(st):
     print("--- %s  (%.1f s)" % ("ok" if ok else "FAILED rc=%d" % r.returncode, dt))
     return ok
 
-def _parser():
+def _parser() -> argparse.ArgumentParser:
     """The refresh's command line."""
     ap = argparse.ArgumentParser(
         description=__doc__,
@@ -239,7 +239,7 @@ TRACKER_ONLY = [
 ]
 
 
-def _regulation_moved():
+def _regulation_moved() -> bool:
     """True when a new regulation is live AND Serebii has it, so this run
     should be the regulation recipe.
 
@@ -283,10 +283,10 @@ def _regulation_moved():
     return False
 
 
-def _run_stages(todo):
+def _run_stages(todo: list[Stage]) -> tuple[list[str], bool]:
     """(the stages that failed, whether a required one did - which stops the
     run there)."""
-    failed = []
+    failed: list[str] = []
     for st in todo:
         if not run(st):
             failed.append(st.key)
@@ -296,7 +296,7 @@ def _run_stages(todo):
     return failed, False
 
 
-def _record_regulation():
+def _record_regulation() -> None:
     """Only once the rebuild actually worked. Recording the new regulation on a
     run that failed would tell tomorrow's run there is nothing to do, which
     is the one way this could make things worse rather than better."""
@@ -308,7 +308,7 @@ def _record_regulation():
               % got[1].upper())
 
 
-def main():
+def main() -> NoReturn:
     """Run every stage in order (only the app's with --tracker-only), switching
     to --regulation by itself when a new regulation is live.
     """

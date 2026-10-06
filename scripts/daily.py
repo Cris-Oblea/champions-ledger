@@ -41,7 +41,9 @@ import os
 import re
 import subprocess
 import sys
+from collections.abc import Callable
 from pathlib import Path
+from typing import Any
 
 from paths import META, RAW, ROOT, SMOGON_CALC
 
@@ -285,7 +287,7 @@ SHRINK = [
 ]
 
 
-def _count(blob, how="rows"):
+def _count(blob: Any, how: str = "rows") -> int:
     """How big a data file is, in the unit SHRINK watches it by: "rows",
     "inside" (entries summed across a dict of lists) or "priced"."""
     # THE PER-POKEMON SPLITS ARE THE ONE FILE WHOSE SHAPE CHANGED UNDER US.
@@ -317,7 +319,7 @@ def _count(blob, how="rows"):
     return 0
 
 
-def shrink_check():
+def shrink_check() -> list[str]:
     """Report any table that came back smaller than the committed one."""
     bad = []
     for rel, label, floor, how in SHRINK:
@@ -345,7 +347,7 @@ def shrink_check():
     return bad
 
 
-def digest(rel):
+def digest(rel: str) -> str | None:
     """sha256 of a repo file, or None if it is missing."""
     p = os.path.join(ROOT, rel)
     if not os.path.exists(p):
@@ -357,12 +359,12 @@ def digest(rel):
     return h.hexdigest()
 
 
-def snapshot():
+def snapshot() -> dict[str, str | None]:
     """A digest of every watched file, so the run can say what it changed."""
     return {k: digest(rel) for k, rel, _ in WATCH}
 
 
-def ladder_summary():
+def ladder_summary() -> dict[str, Any] | None:
     """The one source whose *content* is worth summarising, not just hashing."""
     p = os.path.join(META, "usage_pokemon.json")
     try:
@@ -374,7 +376,7 @@ def ladder_summary():
     return {"fetched": d.get("fetched"), "rows": len(rows), "top": top}
 
 
-def log(lines):
+def log(lines: list[str]) -> None:
     """Append to today's log in data/raw/daily_logs/, keeping a month."""
     os.makedirs(LOGDIR, exist_ok=True)
     stamp = datetime.datetime.now().strftime("%Y-%m-%d")
@@ -423,7 +425,7 @@ PINNED = [
 ]
 
 
-def pin_generated():
+def pin_generated() -> list[str]:
     """Put back any generated artefact this run rebuilt from a stale cache.
 
     Returns the lines to report, and says which way it decided rather than
@@ -451,7 +453,7 @@ def pin_generated():
     return said
 
 
-def sh(argv, cwd=ROOT):
+def sh(argv: list[str], cwd: str = ROOT) -> tuple[int, str]:
     """Run a command; (exit code, stdout + stderr). Never raises."""
     # npx is npx.cmd on Windows and subprocess will not find it without the
     # extension; the failure would be a bare WinError 2 naming no command.
@@ -469,7 +471,7 @@ def sh(argv, cwd=ROOT):
     return r.returncode, (r.stdout or "") + (r.stderr or "")
 
 
-def _parser():
+def _parser() -> argparse.ArgumentParser:
     """The gate's command line."""
     ap = argparse.ArgumentParser()
     ap.add_argument("--install-hooks", action="store_true",
@@ -486,7 +488,7 @@ def _parser():
     return ap
 
 
-def _setup(a):
+def _setup(a: argparse.Namespace) -> int | None:
     """--install-hooks: the exit code, or None when it was not asked for."""
     if a.install_hooks:
         # The hook lives in scripts/hooks rather than .git/hooks so that it is
@@ -499,7 +501,7 @@ def _setup(a):
     return None
 
 
-def _build(steps, out):
+def _build(steps: list[tuple[list[str], str]], out: list[str]) -> bool:
     """Run each (argv, what); False, with the reason in `out`, at the first
     that fails."""
     for argv, what in steps:
@@ -511,7 +513,7 @@ def _build(steps, out):
     return True
 
 
-def _rebuild_from_repo(out):
+def _rebuild_from_repo(out: list[str]) -> bool:
     """--no-refresh: rebuild from the repo, never from the network. False when
     a step failed.
 
@@ -563,7 +565,7 @@ def _rebuild_from_repo(out):
     return True
 
 
-def _refresh(a, out):
+def _refresh(a: argparse.Namespace, out: list[str]) -> None:
     """Run refresh.py - deep on Mondays or with --deep - and log its tail."""
     deep = a.deep or datetime.date.today().weekday() == 0
     argv = [PY, "scripts/refresh.py"] + (["--deep"] if deep else [])
@@ -575,7 +577,8 @@ def _refresh(a, out):
     out += ["  " + line for line in tail]
 
 
-def _report_changes(before, before_ladder, out):
+def _report_changes(before: dict[str, str | None], before_ladder: dict[str, Any] | None,
+                    out: list[str]) -> list[str]:
     """What moved since `before`, into `out`; returns the WATCH labels that
     changed."""
     after = snapshot()
@@ -606,7 +609,7 @@ def _report_changes(before, before_ladder, out):
     return changed
 
 
-def _check_backup_and_shrink(out):
+def _check_backup_and_shrink(out: list[str]) -> bool:
     """Back the ledger up, then refuse a refresh that LOST data (SHRINK).
     False blocks the deploy."""
     ok = True
@@ -638,7 +641,7 @@ def _check_backup_and_shrink(out):
     return ok
 
 
-def _browser_failure(gout):
+def _browser_failure(gout: str) -> list[str]:
     """A failed check is a line node:test starts with a cross; a test that
     CRASHES prints none, and reporting only the former made fifteen failures
     read as fifteen blank lines - the cause (a hardcoded Windows path
@@ -652,7 +655,8 @@ def _browser_failure(gout):
     return detail[:6]
 
 
-def _run_checks(checks, out):
+def _run_checks(checks: list[tuple[list[str], str, Callable[[str], list[str]]]],
+                out: list[str]) -> bool:
     """checks: (argv, what, the lines of a failure worth showing). False if
     any failed; every result goes into `out`."""
     ok = True
@@ -667,7 +671,7 @@ def _run_checks(checks, out):
     return ok
 
 
-def _gate(out):
+def _gate(out: list[str]) -> bool:
     """Correctness gate. A stale app beats a wrong one, so a failing check stops
     the deploy rather than shipping numbers nobody looked at - and because
     daily.py returns non-zero, the workflow's commit step is skipped too, so
@@ -687,12 +691,13 @@ def _gate(out):
     return _run_checks(checks, out) and ok
 
 
-def _last_lines(o):
+def _last_lines(o: str) -> list[str]:
     """What a failed source check shows: its last six non-blank lines."""
     return [line for line in o.splitlines() if line.strip()][-6:]
 
 
-def _deploy(a, gate_ok, changed, out):
+def _deploy(a: argparse.Namespace, gate_ok: bool, changed: list[str],
+            out: list[str]) -> bool:
     """True when a deploy was attempted and landed."""
     if a.skip_deploy:
         out.append("deploy skipped (flag)")
@@ -718,7 +723,7 @@ def _deploy(a, gate_ok, changed, out):
     return d == 0
 
 
-def main():
+def main() -> int:
     """One run: refresh the sources (or rebuild from what is committed with
     --no-refresh), report what changed, run the gate, and deploy when the
     gate passed and something moved. Exit 0 only when the gate passed and

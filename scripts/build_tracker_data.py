@@ -17,7 +17,9 @@ plain lookups.
 import json
 import os
 import re
+from collections.abc import Iterable
 from pathlib import Path
+from typing import Any
 
 import dex
 import effect_chips
@@ -32,7 +34,7 @@ _FLAG_LETTER = {"contact": "c", "sound": "s", "punch": "p", "biting": "b",
                 "slicing": "l", "bullet": "u", "wind": "w", "powder": "d"}
 
 
-def flag_str(m):
+def flag_str(m: dex.Row) -> str:
     """The move's ability-relevant flags as letters: "cp" = contact + punch."""
     f = m.get("flags") or {}
     return "".join(v for k, v in _FLAG_LETTER.items() if f.get(k))
@@ -41,7 +43,7 @@ def flag_str(m):
 TEXTS = None
 
 
-def movetext(m):
+def movetext(m: dex.Row) -> str:
     """What one move does, whole.
 
     scripts/build_text_facts.py picks per move: Smogon's full description for
@@ -64,12 +66,12 @@ TARGET_LABEL = {(1, 1): "All Adjacent Pokémon", (1, 0): "All Adjacent Foes",
                 (0, 0): "Selected Target"}
 
 
-def _idx(names, midx):
+def _idx(names: Iterable[str] | None, midx: dict[str, int]) -> list[int]:
     """Move names -> sorted indices into MOVES, dropping unuseable ones."""
     return sorted(midx[n] for n in names or [] if n in midx)
 
 
-def _targeting(m, props):
+def _targeting(m: dex.Row, props: dict[str, Any]) -> tuple[str, int, int]:
     """(target label, hits more than one, also hits your ally) for one move.
 
     How many Pokemon a move hits is NOT read off Serebii's target field: it
@@ -90,13 +92,13 @@ def _targeting(m, props):
     # at your own side. Psyshield Bash reads "Ally" and Mountain Gale
     # reads "Self"; both are ordinary single-target attacks, which is what
     # Smogon's table says by having no target override for either.
-    elif (k == "self" or "ally" in k) and dex.CATEGORY.get(m.get("category")) != "T" \
+    elif (k == "self" or "ally" in k) and dex.CATEGORY.get(m.get("category") or "") != "T" \
             and (m.get("power") or 0) > 0:
         tgt = "Selected Target"
     return tgt, spread, ally
 
 
-def build_moves(use):
+def build_moves(use: list[dex.Row]) -> list[list[Any]]:
     """The MOVES rows, in the column order core/data.js unpacks: name, type,
     category, power, accuracy, pp, priority, target, spread, hits ally, hit
     count, always-crit, flags, text."""
@@ -104,7 +106,7 @@ def build_moves(use):
     rows = []
     for m in use:
         tgt, spread, ally = _targeting(m, props)
-        rows.append([m["name"], m["type"], dex.CATEGORY.get(m.get("category"), "T"),
+        rows.append([m["name"], m["type"], dex.CATEGORY.get(m.get("category") or "", "T"),
                      m.get("power"), m.get("accuracy"), m.get("pp"),
                      m.get("priority") or 0, tgt,
                      spread,
@@ -122,7 +124,8 @@ def build_moves(use):
     return rows
 
 
-def build_learn(learn, midx):
+def build_learn(learn: dict[str, list[str]],
+                midx: dict[str, int]) -> dict[str, list[int]]:
     """Learnsets as index lists."""
     out = {}
     for sp, lst in learn.items():
@@ -138,7 +141,7 @@ def build_learn(learn, midx):
 # cannot hold the stone). Smogon's roster states the relation - each Mega
 # carries `baseSpecies` - so it settles this. Floette proves it is not just
 # "the base form": Floette-Mega's baseSpecies is Floette-ETERNAL.
-def _smogon_mega_bases():
+def _smogon_mega_bases() -> dict[str, str]:
     """Smogon's Mega name -> the baseSpecies it names."""
     try:
         sroster = json.loads(Path(SMOGON_CALC, "raw_species.json").read_text(encoding="utf-8"))
@@ -148,7 +151,8 @@ def _smogon_mega_bases():
             if isinstance(v, dict) and v.get("baseSpecies") and "Mega" in k}
 
 
-def _attach_gendered(p, sname, smog_base, mons, owners):
+def _attach_gendered(p: dex.Row, sname: str | None, smog_base: dict[str, str],
+                     mons: list[dex.Row], owners: dict[str, list[str]]) -> None:
     """Smogon carries a Mega per GENDER form where one exists -
     Meowstic-F-Mega and Meowstic-M-Mega - while our dex has a single
     "Mega Meowstic" row. Reading only baseSpecies ("Meowstic") would
@@ -169,7 +173,7 @@ def _attach_gendered(p, sname, smog_base, mons, owners):
                     owners[want].append(p["name"])
 
 
-def _owner_form(p, base, mons):
+def _owner_form(p: dex.Row, base: str | None, mons: list[dex.Row]) -> str:
     """The dex row that holds this Mega's stone: Smogon's baseSpecies, mapped
     back onto our spelling, or the bare species when Smogon names none."""
     owner = p.get("species") or p["name"]
@@ -182,7 +186,7 @@ def _owner_form(p, base, mons):
     return owner
 
 
-def mega_owners(mons):
+def mega_owners(mons: list[dex.Row]) -> dict[str, list[str]]:
     """MEGA_OWNER: dex form -> the Megas it can become. Prints every Mega that
     landed on a form other than its bare species, so a change is visible in
     the refresh log."""
@@ -212,7 +216,8 @@ def mega_owners(mons):
     return owners
 
 
-def learn_aliases(mons, app_learn):
+def learn_aliases(mons: list[dex.Row],
+                  app_learn: dict[str, list[int]]) -> dict[str, str]:
     """Forms whose pool is filed under another name.
 
     A few forms find nothing by their own name OR their species: Floette and
@@ -250,7 +255,7 @@ def learn_aliases(mons, app_learn):
 # these as `battle_forms`; only what actually CHANGES is shipped.
 
 
-def _form_change(p, v):
+def _form_change(p: dex.Row, v: dict[str, Any]) -> dict[str, Any]:
     """{"t": types, "b": stats} for whatever this form changes; {} if nothing."""
     e = {}
     if v.get("types") and v["types"] != p["types"]:
@@ -261,7 +266,7 @@ def _form_change(p, v):
     return e
 
 
-def battle_forms(mons):
+def battle_forms(mons: list[dex.Row]) -> dict[str, dict[str, Any]]:
     """BFORMS: name -> {"by": the ability, "f": {form label: changes}}."""
     bforms = {}
     for p in mons:
@@ -289,7 +294,9 @@ def battle_forms(mons):
 # a species Champions has: Champions' own row wins. A form upstream says
 # MOVES a number that ours has no row for is refused outright - drawing
 # it with the base spread would state the wrong number as ours.
-def _mega_picture(name, f, mega_names, sprite_of, form_sprite):
+def _mega_picture(name: str, f: dict[str, Any], mega_names: set[str],
+                  sprite_of: dict[str, Any],
+                  form_sprite: dict[str, dict[str, Any]]) -> None:
     """A Champions Mega is its own dex row with its own picture; only a
     Mega drawn DIFFERENTLY from a form of its species gets an entry here -
     the female Meowstic's is white."""
@@ -300,7 +307,8 @@ def _mega_picture(name, f, mega_names, sprite_of, form_sprite):
         form_sprite.setdefault(name, {})[f["n"]] = f["sp"]
 
 
-def _flat_form(name, p, f, bforms):
+def _flat_form(name: str, p: dex.Row, f: dict[str, Any],
+               bforms: dict[str, dict[str, Any]]) -> None:
     """Attach an upstream form's picture to BFORMS. Stops the build when the
     form changes numbers Champions has no row for, or names an ability the
     species lacks - drawing it anyway would state a wrong fact as ours."""
@@ -319,7 +327,8 @@ def _flat_form(name, p, f, bforms):
     bf["f"][f["k"]] = {"sp": f["sp"]}
 
 
-def form_pictures(mons, form_line, bforms):
+def form_pictures(mons: list[dex.Row], form_line: dict[str, list[dict[str, Any]]],
+                  bforms: dict[str, dict[str, Any]]) -> dict[str, dict[str, Any]]:
     """Adds the picture of every battle form to `bforms`; returns the Megas
     drawn differently from their species (FORM_SPRITE)."""
     form_sprite = {}
@@ -342,7 +351,7 @@ def form_pictures(mons, form_line, bforms):
     return form_sprite
 
 
-def build_dex(mons):
+def build_dex(mons: list[dex.Row]) -> list[list[Any]]:
     """DEX rows: name, species, types, base stats, is-Mega, abilities, dex no."""
     rows = []
     for p in mons:
@@ -356,7 +365,8 @@ def build_dex(mons):
     return rows
 
 
-def home_dex_with_forms(mons, form_line):
+def home_dex_with_forms(mons: list[dex.Row],
+                        form_line: dict[str, list[dict[str, Any]]]) -> dict[str, Any]:
     """HOME_DEX with each outside species' forms attached (Mewtwo's Mega X
     and Y, Kyogre's Primal). Main-series numbers, the same as the row they
     ride on - and the card's "not in Champions" tag covers them too."""
@@ -369,7 +379,7 @@ def home_dex_with_forms(mons, form_line):
     return home_dex
 
 
-def gts_difficulty():
+def gts_difficulty() -> dict[str, list[Any]]:
     """How hard each species is to pull off the GTS: demand measured from
     ladder usage, supply declared in data/meta/go_sourcing.json. Only the
     fields the phone needs, to keep the blob small.
@@ -384,7 +394,7 @@ def gts_difficulty():
             for k, v in (blob.get("species") or {}).items()}
 
 
-def build_stones(mons):
+def build_stones(mons: list[dex.Row]) -> list[list[str]]:
     """Stones: 1:1 with the Megas."""
     stones = []
     for p in mons:
@@ -402,7 +412,7 @@ def build_stones(mons):
 # ones it prints as "??? VP" - with a note for items that have no price at
 # all because they are rewards. scripts/build_item_facts.py does the merge
 # and reports any disagreement.
-def _item_row(i, pr, link):
+def _item_row(i: dex.Row, pr: dict[str, Any], link: dict[str, Any]) -> list[Any]:
     moves = link.get("moves") or []
     return [i["name"], pr.get("vp") or i.get("price_vp"),
             i.get("category") or "Miscellaneous",
@@ -420,7 +430,7 @@ def _item_row(i, pr, link):
             moves if len(moves) <= 6 else []]
 
 
-def build_items(items):
+def build_items(items: list[dex.Row]) -> list[list[Any]]:
     """ITEMS rows, sorted by name. Mega Stones are left out on purpose: they
     ship as STONES and get their own pane."""
     prices = (dex.db("item_facts") or {}).get("prices") or {}
@@ -431,7 +441,7 @@ def build_items(items):
     return rows
 
 
-def build_abilities(abil):
+def build_abilities(abil: dex.Json) -> dict[str, str]:
     """ABIL: ability -> its ONE description, the text build_text_facts.py
     picked across the sources (the one that states the numbers wins)."""
     atext = (dex.db("text_facts") or {}).get("abilities") or {}
@@ -453,7 +463,8 @@ FORM_TYPED = {
 }
 
 
-def _ability_rule(ab, rule, midx):
+def _ability_rule(ab: str, rule: dict[str, Any],
+                  midx: dict[str, int]) -> dict[str, Any]:
     """One AB_MOVES entry, its move names turned into indices (ui/moves.js
     documents every field)."""
     e = {"side": rule.get("side"), "x": rule.get("x"),
@@ -489,7 +500,8 @@ def _ability_rule(ab, rule, midx):
     return e
 
 
-def build_ab_moves(am, midx):
+def build_ab_moves(am: dict[str, Any],
+                   midx: dict[str, int]) -> dict[str, dict[str, Any]]:
     """Which ability touches which move, derived from Serebii's move text and
     cross-checked against Smogon's engine by
     scripts/build_ability_moves.py. Stored as move-index lists so the blob
@@ -498,7 +510,7 @@ def build_ab_moves(am, midx):
             for ab, rule in (am.get("abilities") or {}).items()}
 
 
-def home_only_species(mons, wt):
+def home_only_species(mons: list[dex.Row], wt: Iterable[str]) -> list[str]:
     """HOME_ONLY: the names the HOME box may hold that Champions does not
     allow. pokebase's species table is the widest list on hand; anything in
     it the Champions dex has never heard of is HOME-only (the picker also
@@ -517,7 +529,7 @@ def home_only_species(mons, wt):
                   and "-Totem" not in n and "-Starter" not in n)
 
 
-def canonical_names(mons):
+def canonical_names(mons: list[dex.Row]) -> dict[str, str]:
     """norm() key -> the dex row's own spelling (the first row wins)."""
     canon = {}
     for p in mons:
@@ -525,7 +537,8 @@ def canonical_names(mons):
     return canon
 
 
-def cosmetic_spellings(wt, canon):
+def cosmetic_spellings(wt: Iterable[str],
+                       canon: dict[str, str]) -> dict[str, list[str]]:
     """The spellings that DO collapse onto a dex row: Squawkabilly's plumages,
     Tauros' Paldean breeds written with hyphens, Indeedee-F. Shipped so the
     app can say "this is the same Pokemon" instead of the player meeting the
@@ -545,7 +558,9 @@ def cosmetic_spellings(wt, canon):
     return {k: sorted(set(v)) for k, v in cosmetic.items()}
 
 
-def alias_every_spelling(wt, canon, app_learn, learn_alias):
+def alias_every_spelling(wt: Iterable[str], canon: dict[str, str],
+                         app_learn: dict[str, list[int]],
+                         learn_alias: dict[str, str]) -> None:
     """Any spelling the rest of the project treats as the same Pokemon has to
     find that Pokemon's movepool here too, or the page answers "no moves" to
     a name every other source uses. norm() already knows them; only the page
@@ -570,7 +585,7 @@ def alias_every_spelling(wt, canon, app_learn, learn_alias):
 MENUS = ("atk_ability", "def_ability", "atk_item", "def_item")
 
 
-def build_mods():
+def build_mods() -> dict[str, list[str]]:
     """MODS: per menu, the sorted names measured to move the damage."""
     measured = dex.db("modifiers") or {}
     return {k: sorted(measured.get(k) or {}) for k in MENUS}
@@ -581,7 +596,7 @@ def build_mods():
 AEGIS = {"attacking": "Aegislash-Blade", "defending": "Aegislash-Shield"}
 
 
-def smogon_names(mons):
+def smogon_names(mons: list[dex.Row]) -> dict[str, str]:
     """SMOGON_NAME: our spelling -> the one Smogon's engine answers to. norm()
     does the work (Mega Glalie <-> Glalie-Mega) and lives in Python, locked
     by test_norm.py, so the mapping is precomputed here rather than ported
@@ -600,7 +615,7 @@ def smogon_names(mons):
     return names
 
 
-def current_regulation():
+def current_regulation() -> tuple[str, str | None] | tuple[None, None]:
     """(regulation, the day it started), or (None, None).
 
     What this data IS, so the app can state its own vintage instead of
@@ -625,7 +640,8 @@ def current_regulation():
     return slug.upper(), (st.group(1) if st else None)
 
 
-def build_effects(app_abilities, app_items, app_moves):
+def build_effects(app_abilities: dict[str, str], app_items: list[list[Any]],
+                  app_moves: list[list[Any]]) -> dict[str, dict[str, Any]]:
     """Trimmed to what a screen needs: the quantified sentence and the chips.
 
     THE CHIPS ARE DECIDED HERE, not on the phone: one fact, one chip, never
@@ -674,7 +690,7 @@ def build_effects(app_abilities, app_items, app_moves):
 # Placement comes from the players list's own `rank`, which is the final
 # standing - NOT a swiss round number (pokedata numbers the top cut straight
 # on from the last swiss round; .claude/rules/data-pipeline.md).
-def _best_worlds_sources():
+def _best_worlds_sources() -> dict[tuple[int, str], tuple[int, str]]:
     """ONE EVENT PER (YEAR, DIVISION). 2023 is the case that forces this:
     pokedata put that year's Masters teamlists on the Day 1 event and its
     Seniors and Juniors on the Day 2 one, so both events carry rows for the
@@ -692,7 +708,9 @@ def _best_worlds_sources():
     return best_src
 
 
-def _podium_row(year, div, pl, slot, mega_of_stone, mega_abil):
+def _podium_row(year: int, div: str, pl: dict[str, Any], slot: dict[str, Any],
+                mega_of_stone: dict[str, str],
+                mega_abil: dict[str, str]) -> dict[str, Any]:
     """One top-8 set, in the short keys tracker/src/ui/pokemon.js reads."""
     row = {
         "y": year, "d": div, "r": pl["rank"],
@@ -712,7 +730,8 @@ def _podium_row(year, div, pl, slot, mega_of_stone, mega_abil):
     return row
 
 
-def build_podium(stones, mons, canon):
+def build_podium(stones: list[list[str]], mons: list[dex.Row],
+                 canon: dict[str, str]) -> dict[str, list[dict[str, Any]]]:
     """PODIUM: dex form -> its top-8 sets, newest first, Masters first."""
     mega_of_stone = {dex.norm(st): mega for st, mega, _sp in stones if st}
     mega_abil = {m["name"]: ", ".join(m.get("abilities") or [])
@@ -740,7 +759,7 @@ def build_podium(stones, mons, canon):
     return podium
 
 
-def build_worlds():
+def build_worlds() -> list[dict[str, Any]]:
     """EVERY WORLDS, AS HISTORY. A Worlds is played once under one regulation
     and then frozen, so this is what the field brought that August and never
     what is current - the app labels it that way. It rides on the dex rather
@@ -766,7 +785,7 @@ def build_worlds():
     return worlds
 
 
-def item_for_move(links):
+def item_for_move(links: dict[str, Any]) -> dict[str, list[list[str]]]:
     """ITEM_FOR_MOVE: which item serves a given move - only the specific ones.
     Life Orb rides on every attack and would badge every row, so anything
     covering more than 8 moves is left out of the reverse index.
@@ -782,7 +801,7 @@ def item_for_move(links):
             if any(len(items[i]["moves"]) <= 8 for i in v)}
 
 
-def main():
+def main() -> None:
     """Assemble every table the app reads into tracker/data.js (window.CHAMP).
     """
     mons = dex.db("pokemon")

@@ -42,7 +42,7 @@ globalThis.SMOGON = {
 """
 
 
-def main():
+def main() -> None:
     """Bundle Smogon's vendored calculator with the pinned esbuild into
     tracker/engine.bundle.js, then prove the bundle runs one calculation.
     """

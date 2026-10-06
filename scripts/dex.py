@@ -18,6 +18,7 @@ import json
 import os
 import re
 import unicodedata
+from collections.abc import Iterable
 from typing import Any
 
 from paths import DB, META
@@ -49,6 +50,8 @@ SPREAD_TARGETS = {"all adjacent foes", "all adjacent opponents",
 # A JSON document as read from disk: the data boundary, like docFromRow in the
 # app. Each reader states the shape it expects where it uses one.
 type Json = Any
+# One JSON object: a row of a table, a Pokemon, a move.
+type Row = dict[str, Any]
 
 _cache: dict[str, Json] = {}
 
@@ -98,14 +101,14 @@ WORLDS_TID = "0000191"
 DIVISIONS = ("masters", "seniors", "juniors")
 
 
-def tournament(division="masters"):
+def tournament(division: str = "masters") -> Json:
     """One division of the current Worlds, or None."""
     return meta("tournament_%s_%s" % (WORLDS_TID, division))
 
 
-def tournaments(divisions=None):
+def tournaments(divisions: Iterable[str] | None = None) -> list[tuple[str, Json]]:
     """[(division, data)] for the divisions actually present on disk."""
-    out = []
+    out: list[tuple[str, Json]] = []
     for d in (divisions or DIVISIONS):
         t = tournament(d)
         if t:
@@ -204,7 +207,7 @@ _SIGNIFICANT = {
 }
 
 
-def norm(name):
+def norm(name: object) -> str:
     """Canonical cross-source key. Keeps Mega and form tokens, drops spelling."""
     if not name:
         return ""
@@ -213,12 +216,12 @@ def norm(name):
     s = re.sub(r"[\[\]()]", " ", s)
     s = re.sub(r"[^a-z0-9]+", " ", s)
     raw = [_FORM_SYNONYMS.get(t, t) for t in s.split()]
-    keep = set()
+    keep: set[str] = set()
     for t in raw:
         if t in _SIGNIFICANT:
             keep = _SIGNIFICANT[t]
             break
-    tokens = []
+    tokens: list[str] = []
     for t in raw:
         if (t in _NOISE or t in _BASE_MARKERS) and t not in keep:
             continue
@@ -228,7 +231,7 @@ def norm(name):
     return _ALIASES.get(k, k)
 
 
-def key(name):
+def key(name: object) -> str:
     """Plain key for moves, items and abilities.
 
     These must NOT go through norm(): its form vocabulary would eat real words
@@ -243,7 +246,7 @@ def key(name):
     return re.sub(r"\s+", " ", s).strip()
 
 
-def slug(name):
+def slug(name: str | None) -> str:
     """The URL spelling Smogon and PokeAPI share: lower case, apostrophes and
     dots dropped, every other run of punctuation one hyphen. "King's Rock" ->
     kings-rock, "U-turn" -> u-turn, "Mr. Mime" -> mr-mime."""
@@ -251,14 +254,14 @@ def slug(name):
     return re.sub(r"[^a-z0-9]+", "-", s).strip("-")
 
 
-def target_key(target):
+def target_key(target: str | None) -> str:
     """Serebii's target field, de-accented and lower-cased: "All Adjacent
     Pokemon" really carries an accented e."""
     return "".join(c for c in unicodedata.normalize("NFKD", target or "")
                    if not unicodedata.combining(c)).lower()
 
 
-def species_norm(name):
+def species_norm(name: object) -> str:
     """Key for the base species, ignoring Mega and regional qualifiers."""
     # "z" belongs here with x and y: Regulation M-C's second-Mega suffix.
     # Without it species_norm("Mega Garchomp Z") stayed "garchomp z", matched
@@ -277,7 +280,7 @@ def species_norm(name):
 # --------------------------------------------------------------------------
 # lookups
 # --------------------------------------------------------------------------
-def find_pokemon(term):
+def find_pokemon(term: str) -> Row | None:
     """Match by exact name, then normalised name, then substring."""
     mons = db("pokemon")
     t = term.strip().lower()
@@ -295,7 +298,7 @@ def find_pokemon(term):
     return part[0] if part else None
 
 
-def find_move(name):
+def find_move(name: str) -> Row | None:
     """The move with exactly this name (case and punctuation aside), or None.
 
     No substring fallback, unlike find_pokemon: damage.py answers for the move
@@ -306,7 +309,7 @@ def find_move(name):
     return next((m for m in db("moves") if key(m["name"]) == k), None)
 
 
-def stone_for(mega):
+def stone_for(mega: Row) -> str | None:
     """The one stone that creates this Mega form, by name.
 
     A species may now hold TWO Megas, each with its own stone - Charizardite

@@ -30,6 +30,8 @@ import json
 import os
 import re
 import sys
+from collections.abc import Callable
+from typing import Any
 
 import dex
 from paths import DB
@@ -73,8 +75,15 @@ AGAINST = {
     "locks it into the first move it picks",  # the Choice items, a cost
 }
 
+# (moves, abilities, why) for one item; None where nothing links
+type Link = tuple[list[str] | None, list[str] | None, str]
+# move name -> its properties, as ability_moves.json derives them
+type Props = dict[str, dict[str, Any]]
+# a rule that picks moves out of the properties and the damaging moves
+type Pick = Callable[[Props, list[str]], list[str]]
 
-def side_of(why):
+
+def side_of(why: str) -> str:
     """'for' or 'against', from the reason - shaped so a type or a status
     in the middle of one does not need an entry of its own."""
     shaped = re.sub(r"\b(?:" + "|".join(dex.TYPES) + r")\b", "{type}", why)
@@ -83,12 +92,13 @@ def side_of(why):
     return "against" if shaped in AGAINST else "for"
 
 
-def clean(s):
+def clean(s: str | None) -> str:
     """Collapse whitespace."""
     return " ".join((s or "").split())
 
 
-def field_setters(moves, abils):
+def field_setters(moves: list[dex.Row],
+                  abils: list[dex.Row]) -> dict[str, tuple[list[str], list[str]]]:
     """For each field effect: the moves and the abilities that turn it on."""
     out = {}
     for eff, pat in FIELD.items():
@@ -112,12 +122,12 @@ STATUS = {k: (v.get("moves") or [])
           for k, v in ((dex.db("statuses") or {}).get("statuses") or {}).items()}
 
 
-def _has(t, pat):
+def _has(t: str, pat: str) -> re.Match[str] | None:
     """Case-insensitive search."""
     return re.search(pat, t, re.I)
 
 
-def _field_rule(t, setters):
+def _field_rule(t: str, setters: dict[str, tuple[list[str], list[str]]]) -> Link | None:
     """The field-effect bridge: the move AND the ability, together."""
     hits = [eff for eff, (ms, abs_) in setters.items()
             if _has(t, FIELD[eff]) and (ms or abs_)]
@@ -150,7 +160,7 @@ TYPE_RULES = [
 ]
 
 
-def _type_rule(t, props, dmg):
+def _type_rule(t: str, props: Props, dmg: list[str]) -> Link | None:
     """An item that boosts one type: links every damaging move of that type."""
     for pat, why in TYPE_RULES:
         m = _has(t, pat)
@@ -160,28 +170,28 @@ def _type_rule(t, props, dmg):
     return None
 
 
-def _attacks_where(key, value):
+def _attacks_where(key: str, value: object) -> Pick:
     """A rule picking the damaging moves whose property `key` equals `value`.
     """
     return lambda props, dmg: [n for n in dmg if props[n][key] == value]
 
 
-def _moves_where(key):
+def _moves_where(key: str) -> Pick:
     """A rule picking every move with property `key` set."""
     return lambda props, _dmg: [n for n, p in props.items() if p[key]]
 
 
-def _can_miss(props, _dmg):
+def _can_miss(props: Props, _dmg: list[str]) -> list[str]:
     """The moves that can miss."""
     return [n for n, p in props.items() if p["acc"] is not None and p["acc"] < 100]
 
 
-def _every_move(props, _dmg):
+def _every_move(props: Props, _dmg: list[str]) -> list[str]:
     """Every move."""
     return sorted(props)
 
 
-def _every_attack(_props, dmg):
+def _every_attack(_props: Props, dmg: list[str]) -> list[str]:
     """Every damaging move."""
     return dmg
 
@@ -220,7 +230,7 @@ MOVE_RULES = [
 ]
 
 
-def _move_rule(t, props, dmg):
+def _move_rule(t: str, props: Props, dmg: list[str]) -> Link | None:
     """The first MOVE_RULES pattern the item's text matches, as (moves,
     abilities, why).
     """
@@ -230,7 +240,7 @@ def _move_rule(t, props, dmg):
     return None
 
 
-def _named_rule(t, props, name):
+def _named_rule(t: str, props: Props, name: str) -> Link | None:
     """Moves the text names outright."""
     named = sorted(n for n in props
                    if len(n) > 4 and re.search(r"\b" + re.escape(n) + r"\b", t))
@@ -256,7 +266,7 @@ CURES = [("Paralysis", r"paralysis|paraly[sz]ed"),
          ("Confusion", r"confusion|confused")]
 
 
-def _status_rule(t):
+def _status_rule(t: str) -> Link | None:
     """A curing berry or item: links the moves that inflict what it cures."""
     if not _has(t, r"cure|thaw|free itself|shake off|lift the effects|status condition"):
         return None
@@ -270,7 +280,7 @@ def _status_rule(t):
     return None
 
 
-def _no_link(t):
+def _no_link(t: str) -> Link:
     """Nothing links, and the reason is worth keeping: an item with no rule
     reads as one nobody looked at."""
     if _has(t, r"restores?|endure with 1 HP|switched out|remove the attacker|"
@@ -279,7 +289,9 @@ def _no_link(t):
     return None, None, "nothing in its text names a move, a type or a field effect"
 
 
-def item_links(item, props, setters, facts):
+def item_links(item: dex.Row, props: Props,
+               setters: dict[str, tuple[list[str], list[str]]],
+               facts: dict[str, Any]) -> Link:
     """(moves, abilities, why) for one item, or (None, None, reason).
 
     The text read here is the MERGED one from build_item_facts.py - pokebase's
@@ -318,7 +330,7 @@ def item_links(item, props, setters, facts):
             or _no_link(t))
 
 
-def _mark_binding(props, moves):
+def _mark_binding(props: Props, moves: list[dex.Row]) -> None:
     """One property this file needs that the ability table does not carry:
     a binding move is one that gives the Bound status."""
     for n, p in props.items():
@@ -327,7 +339,7 @@ def _mark_binding(props, moves):
                                     clean(mv.get("effect")) if mv else ""))
 
 
-def _reverse_index(items, key):
+def _reverse_index(items: dict[str, dict[str, Any]], key: str) -> dict[str, list[str]]:
     """move (or ability) -> the items that serve it, sorted."""
     out = {}
     for it, r in items.items():
@@ -336,7 +348,7 @@ def _reverse_index(items, key):
     return {k: sorted(v) for k, v in out.items()}
 
 
-def build():
+def build() -> tuple[dict[str, Any], dict[str, list[str]], dict[str, list[str]], list[str], dict[str, Any]]:
     """Link every held item and berry to the moves and abilities it serves,
     through the field effect it names. Returns the items, both indexes, the
     unlinked items with their reason, and who sets each effect.
@@ -370,7 +382,7 @@ def build():
             _reverse_index(items, "abilities"), unlinked, setters)
 
 
-def main():
+def main() -> None:
     """Build the links and write item_links.json; --report and --audit print
     what linked and why the rest did not.
     """

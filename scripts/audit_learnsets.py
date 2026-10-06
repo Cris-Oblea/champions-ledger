@@ -45,6 +45,7 @@ incomplete. Anything NEW is what this is for.
 import argparse
 import csv
 import sys
+from collections.abc import Iterable
 
 import dex
 import fetch_home_dex
@@ -69,24 +70,28 @@ KNOWN_UPSTREAM = {                   # upstream lists it, we do not
 }
 
 
-def upstream(force=False):
+def upstream(force: bool = False) -> dict[str, set[str]]:
     """PokeAPI's Champions movepools: {species identifier: {move identifier}}.
     """
     with open(fetch_home_dex.csv_path("pokemon.csv", force), encoding="utf-8") as fh:
         by_id = {r["id"]: r["identifier"] for r in csv.DictReader(fh)}
     with open(fetch_home_dex.csv_path("moves.csv", force), encoding="utf-8") as fh:
         mv = {r["id"]: r["identifier"] for r in csv.DictReader(fh)}
-    out = {}
+    out: dict[str, set[str]] = {}
     with open(fetch_home_dex.csv_path("pokemon_moves.csv", force), encoding="utf-8") as fh:
         for r in csv.DictReader(fh):
             if r["version_group_id"] != CHAMPIONS_VG:
                 continue
-            out.setdefault(by_id.get(r["pokemon_id"]), set()).add(
-                mv.get(r["move_id"]))
+            # a row naming an id the two tables lack would put None in the
+            # set, and sorting it later would fail far from the cause
+            name, move = by_id.get(r["pokemon_id"]), mv.get(r["move_id"])
+            if name and move:
+                out.setdefault(name, set()).add(move)
     return out
 
 
-def _sort_out(name, moves, known_map, side, show):
+def _sort_out(name: str, moves: Iterable[str], known_map: dict[str, str], side: str,
+              show: bool) -> tuple[list[str], int]:
     """(the moves that are NEW disagreements, how many were known ones);
     `show` prints the known ones too."""
     new, known = [], 0
@@ -100,7 +105,7 @@ def _sort_out(name, moves, known_map, side, show):
     return new, known
 
 
-def main():
+def main() -> None:
     """Pair every movepool with PokeAPI's and report each disagreement nobody
     has settled yet (--list shows the settled ones too). Exits 1 on a new
     one.

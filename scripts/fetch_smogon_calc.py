@@ -53,12 +53,12 @@ FILES = [
 ]
 
 
-def digest(b):
+def digest(b: bytes) -> str:
     """A short content hash."""
     return hashlib.sha256(b).hexdigest()[:16]
 
 
-def dump_json():
+def dump_json() -> None:
     """Re-export the Champions tables as JSON so Python can read them.
 
     Needs Node, but only here - smogon_engine.js is what actually calculates.
@@ -85,7 +85,7 @@ console.log(Object.keys(M).length+' moves, '+Object.keys(S).length+
     print("  " + p.stdout.strip())
 
 
-def main():
+def main() -> int:
     """Re-download every vendored calculator file and report which changed;
     unless --check, store them and, when any changed, re-export the engine's
     tables as JSON.
