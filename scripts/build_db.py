@@ -16,6 +16,7 @@ import re
 from collections import defaultdict
 from collections.abc import Iterator
 from pathlib import Path
+from typing import Any
 
 import dex
 from paths import DB, RAW
@@ -60,7 +61,7 @@ FORM_BY_SPECIES = {
 # Small to 85/100/54 on the Jumbo - a 45-point Speed spread across what used to
 # be one row. The base row is the Medium Variety. The spreads come off the
 # page's own "Stats - Small Variety" blocks, so only the naming is declared here.
-FIXED_FORMS = {
+FIXED_FORMS: dict[str, dict[str, dict[str, Any]]] = {
     "Squawkabilly": {
         "Blue": {"abilities": ["Intimidate", "Hustle", "Guts"]},
         "Yellow": {"abilities": ["Intimidate", "Hustle", "Sheer Force"]},
@@ -169,7 +170,7 @@ MOVE_RULINGS = {
 
 def apply_move_rulings(moves: list[dex.Row]) -> list[str]:
     """Apply MOVE_RULINGS in place. Returns the lines worth printing."""
-    said = []
+    said: list[str] = []
     by = {m["name"]: m for m in moves}
     for (name, field), (value, why) in MOVE_RULINGS.items():
         m = by.get(name)
@@ -310,13 +311,14 @@ def _move_flags(s: str) -> dict[str, bool]:
     """The property table alternates header rows and value rows. Start at the
     <tr> that OPENS the "Physical Contact" row: starting at the text itself
     loses the first header and shifts every flag by one row."""
-    flags = {}
+    flags: dict[str, bool] = {}
     fi = s.find("Physical Contact")
     if fi <= 0:
         return flags
     start = s.rfind("<tr", 0, fi)
     end = s.find("</table>", fi)
-    headers, values = [], []
+    headers: list[list[str]] = []
+    values: list[list[str]] = []
     for r in re.findall(r"<tr[^>]*>(.*?)</tr>", s[start:end], re.S):
         cells_h = re.findall(r'<td class="fooevo"[^>]*>(.*?)</td>', r, re.S)
         cells_v = re.findall(r'<td class="cen"[^>]*>(.*?)</td>', r, re.S)
@@ -339,7 +341,7 @@ def _move_learners(s: str) -> list[str]:
     li = s.find("That Learn")
     if li <= 0:
         return []
-    learners = []
+    learners: list[str] = []
     # "#0", not "#0876": Serebii leaves the dex cell blank on Indeedee's
     # female row. A four-digit-only pattern dropped it from all 45
     # movepools it appears in, so the form ended up with no moves at all.
@@ -404,7 +406,7 @@ def master_mega_names() -> dict[str, list[str]]:
     pat = re.compile(
         r'#(\d{4}).*?<img src="(/pokemonhome/pokemon/small/[^"]+)".*?'
         r'<a href="/pokedex-champions/([^"]+)/">([^<]+)<br', re.S)
-    out = defaultdict(list)
+    out: dict[str, list[str]] = defaultdict(list)
     for m in pat.finditer(s):
         name = re.sub(r"\s+", " ", html.unescape(m.group(4))).strip()
         if name.lower().startswith("mega "):
@@ -500,7 +502,7 @@ def _in_battle_forms(s: str) -> dict[str, dict[str, int]]:
     would make every join ambiguous. They go on the base row instead, because
     the damage calculator still needs the real numbers: Stance Change flips
     Aegislash to Blade the moment it attacks, so its Attack is 140, not 50."""
-    bf = {}
+    bf: dict[str, dict[str, int]] = {}
     for heading, st in _stats_heading_blocks(s):
         label = heading.strip()
         if re.match(r"(Female|Male)$", label):
@@ -519,7 +521,7 @@ def parse_pokemon(path: str,
     s = read(path)
     slug = os.path.basename(path)[:-5]
     megas_here = iter((mega_names or {}).get(slug, []))
-    out = []
+    out: list[dex.Row] = []
 
     heads = [m.start() for m in re.finditer(r'<td[^>]*class="fooevo"[^>]*>\s*Picture', s)]
     stat_blocks = [(m.start(), int(m.group(1)), m.group(2))
@@ -564,7 +566,7 @@ def forms_from_attackdex() -> dict[str, dex.Row]:
         r"(/pokedex-bw/type/\w+\.gif.*?)"
         r'class="fooinfo">((?:\s*<a href="/abilitydex/[^"]*"[^>]*>[^<]+</a>\s*(?:<br\s*/?>)?)+)</td>'
         r"((?:\s*<td[^>]*>\s*\d{1,3}\s*</td>){6})", re.S)
-    found = {}
+    found: dict[str, dex.Row] = {}
     adir = os.path.join(RAW, "attackdex")
     for fn in sorted(os.listdir(adir)):
         s = read(os.path.join(adir, fn))
@@ -615,7 +617,8 @@ def parse_items() -> list[dex.Row]:
     s = read(os.path.join(RAW, "pages", "items.html"))
     heads = {"hold items": "Hold Items", "mega stone": "Mega Stones",
              "berries": "Berries", "miscellaneous items": "Miscellaneous"}
-    items, seen = [], set()
+    items: list[dex.Row] = []
+    seen: set[str] = set()
     group = None
     # walk headings and rows in document order, so each row keeps the last
     # heading seen above it
@@ -649,8 +652,8 @@ def parse_items() -> list[dex.Row]:
 
 def parse_champions_abilities(pokemon_rows: list[dex.Row]) -> list[dex.Row]:
     """Ability text as Champions defines it, taken from the Pokemon pages."""
-    descs = {}
-    holders = defaultdict(list)
+    descs: dict[str, str] = {}
+    holders: dict[str, list[str]] = defaultdict(list)
     # on a Pokemon page each ability reads <a><b>Name</b></a>: description,
     # with <br /> between consecutive ones
     pat = re.compile(
@@ -711,7 +714,8 @@ def abilities_by_form(path: str) -> dict[str, list[str]]:
         return {}
     # the links in order, and the "(... Form)" markers between them
     cell = m.group(1)
-    out, cur = {}, []
+    out: dict[str, list[str]] = {}
+    cur: list[str] = []
     for tok in re.finditer(ABIL_LINK + r'|\(([^)]{1,30})\)', cell):
         if tok.group(1):
             cur.append(re.sub(r"\s+", " ", html.unescape(tok.group(1))).strip())
@@ -726,7 +730,7 @@ def _add_abilities(p: dex.Row, abs_: list[str],
                    note: str | None = None) -> None:
     """Append the abilities `p` lacks, record what was added in `added` for
     the report, and attach `note` to each (whether or not it was new)."""
-    have = p.get("abilities") or []
+    have: list[str] = p.get("abilities") or []
     new = [a for a in abs_ if a not in have]
     if new:
         p["abilities"] = have + new
@@ -761,11 +765,12 @@ def complete_form_abilities(forms: dict[str, dex.Row]) -> int:
     exists to prevent. audit_abilities.py checks that nothing a page names is
     left on no row at all.
     """
-    by_norm, by_species = {}, defaultdict(list)
+    by_norm: dict[str, list[dex.Row]] = {}
+    by_species: dict[str, list[dex.Row]] = defaultdict(list)
     for name, p in forms.items():
         by_norm.setdefault(dex.norm(name), []).append(p)
         by_species[dex.norm(p.get("species") or name)].append(p)
-    added = []
+    added: list[tuple[str, list[str], str | None]] = []
     for fn in sorted(os.listdir(os.path.join(RAW, "pokedex"))):
         species = os.path.splitext(fn)[0]
         rows = by_species.get(dex.norm(species), [])
@@ -856,12 +861,12 @@ def _add_fixed_forms(forms: dict[str, dex.Row]) -> None:
         base = forms.get(species)
         if not base:
             continue
-        sizes = base.pop("battle_forms", {}) or {}
+        sizes: dict[str, dict[str, int]] = base.pop("battle_forms", {}) or {}
         for label, spec in variants.items():
             name = "%s-%s" % (species, label)
             if name in forms:
                 continue
-            st = sizes.get(spec.get("stats_from")) or base["base_stats"]
+            st = sizes.get(spec.get("stats_from") or "") or base["base_stats"]
             forms[name] = {
                 "slug": base.get("slug"), "name": name, "species": species,
                 "form": label, "dex": base["dex"],
@@ -879,7 +884,7 @@ def _add_typed_battle_forms(forms: dict[str, dex.Row]) -> None:
         base = forms.get(species)
         if not base:
             continue
-        bf = base.get("battle_forms") or {}
+        bf: dict[str, dict[str, Any]] = base.get("battle_forms") or {}
         for label, types in variants.items():
             bf.setdefault(label, dict(base["base_stats"]))
             bf[label] = dict(bf[label], types=list(types))
@@ -915,7 +920,7 @@ def build_moves() -> list[dex.Row]:
     """Every move page parsed, then the in-game MOVE_RULINGS applied."""
     adir = os.path.join(RAW, "attackdex")
     useable = useable_moves()
-    moves = []
+    moves: list[dex.Row] = []
     files = sorted(os.listdir(adir))
     for i, fn in enumerate(files):
         moves.append(parse_move(os.path.join(adir, fn), useable))
@@ -929,11 +934,11 @@ def build_moves() -> list[dex.Row]:
 def build_learnsets(moves: list[dex.Row],
                     pokemon: list[dex.Row]) -> tuple[dict[str, list[str]], int]:
     """(form -> sorted move names, how many forms inherited the base's)."""
-    learn = defaultdict(list)
+    pools: dict[str, list[str]] = defaultdict(list)
     for mv in moves:
         for learner in mv["learners"]:
-            learn[learner].append(mv["name"])
-    learn = {k: sorted(v) for k, v in sorted(learn.items())}
+            pools[learner].append(mv["name"])
+    learn = {k: sorted(v) for k, v in sorted(pools.items())}
     # A form with no learner table of its own inherits the base form's, which
     # is what the game does: Serebii lists no move for Basculegion-Female or
     # for Squawkabilly's plumages, because they share the species' movepool.

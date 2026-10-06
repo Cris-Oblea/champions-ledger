@@ -34,10 +34,12 @@ Two the sentence splitter has to get right:
     attacker. A real stat change always says "stage" - or maximises one.
 """
 import argparse
+import functools
 import json
 import os
 import re
 import sys
+from collections.abc import Callable
 from pathlib import Path
 from typing import Any
 
@@ -107,7 +109,7 @@ def down_stats(m: dex.Row) -> list[str]:
     every stat-dropping move would be a lie, so the stat is read out of the
     same sentence the drop came from.
     """
-    out = set()
+    out: set[str] = set()
     body = (m.get("effect") or "") + " " + (m.get("in_depth") or "")
     for s in sentences(body):
         if CRIT.search(s) or not STAGE.search(s) or not re.search(DOWN, s):
@@ -115,7 +117,8 @@ def down_stats(m: dex.Row) -> list[str]:
         if not (re.search(r"the targets?'?s?\b|targets'", s)
                 or ATTACKER.search(s)):
             continue
-        for w in re.findall(STATS, s):
+        words: list[str] = re.findall(STATS, s)
+        for w in words:
             out.add(_STAT_NAME.get(w.replace(". ", "."), w))
     return sorted(out)
 
@@ -165,33 +168,22 @@ def targeting(m: dex.Row, smogon: dict[str, Any] | None) -> tuple[bool, bool]:
 
 def derive(moves: list[dex.Row]) -> dict[str, dict[str, Any]]:
     """Each useable move's PROPERTIES (flags, secondary, stat changes,
-    target...) - Serebii's facts cross-checked against Smogon's engine
-    flags, every disagreement collected for the report. The rules then run
-    over these, never over raw text."""
+    target...) - Serebii's facts, with Smogon's engine where it decides how
+    an ability treats a move. The rules then run over these, never over raw
+    text."""
     sm = smogon_moves()
-    out, conflicts = {}, []
+    out: dict[str, dict[str, Any]] = {}
     for m in moves:
         if not m.get("useable"):
             continue
         su, sd, tu, td = stat_moves(m)
-        f = m.get("flags") or {}
+        f = dex.obj(m.get("flags"))
         body = (m.get("effect") or "") + " " + (m.get("in_depth") or "")
         name = m["name"]
         smogon = sm.get(dex.key(name), {})
         # Serebii owns what a move IS; Smogon's engine owns how an ability
-        # treats it. Where the two flag tables disagree the difference is
-        # recorded rather than silently resolved.
-        for ours, theirs in (("contact", "makesContact"), ("sound", "isSound"),
-                             ("punch", "isPunch"), ("biting", "isBite"),
-                             ("slicing", "isSlicing"), ("bullet", "isBullet"),
-                             ("wind", "isWind")):
-            if smogon and bool(f.get(ours)) != bool(smogon.get(theirs)):
-                conflicts.append((name, ours, bool(f.get(ours)),
-                                  bool(smogon.get(theirs))))
+        # treats it.
         spread, hits_ally = targeting(m, smogon)
-        if spread != (dex.target_key(m.get("target")) in dex.SPREAD_TARGETS):
-            conflicts.append((name, "spread",
-                              dex.target_key(m.get("target")) in dex.SPREAD_TARGETS, spread))
         out[name] = {
             # the name travels with the props so a rule can ask the status
             # table "does this move paralyse?"
@@ -212,7 +204,7 @@ def derive(moves: list[dex.Row]) -> dict[str, dict[str, Any]]:
             "punch": bool(f.get("punch")), "biting": bool(f.get("biting")),
             "slicing": bool(f.get("slicing")), "bullet": bool(f.get("bullet")),
             "wind": bool(f.get("wind")), "powder": bool(f.get("powder")),
-            "multi": bool(smogon.get("multihit") and isinstance(smogon["multihit"], list)
+            "multi": bool(smogon.get("multihit") and dex.is_arr(smogon["multihit"])
                           and smogon["multihit"][0] != smogon["multihit"][1])
                      if smogon else bool(m.get("hits") and m["hits"][0] != m["hits"][1]),
             "recoil": bool(smogon.get("recoil")) if smogon else bool(RECOIL.search(body)),
@@ -231,7 +223,6 @@ def derive(moves: list[dex.Row]) -> dict[str, dict[str, Any]]:
             "heals": bool(smogon.get("drain")) if smogon else
                      bool(re.search(r"[Rr]estores? .*HP|[Dd]rain", body)),
         }
-    derive.conflicts = conflicts
     return out
 
 
@@ -248,18 +239,20 @@ def can_miss(m: dict[str, Any]) -> bool:
 
 # Which move inflicts which status, derived by scripts/build_statuses.py from
 # both descriptions. Loaded once; a rule asks `st(move, "Sleep")`.
-_STATUS = None
 STATUSES = ("Paralysis", "Burn", "Poison", "Badly Poisoned", "Freeze",
             "Sleep", "Confusion", "Flinch")
 
 
+@functools.cache
+def _status_moves() -> dict[str, set[str]]:
+    """status -> the moves that cause it, from data/db/statuses.json."""
+    rows: dict[str, dex.Row] = dex.db_obj("statuses").get("statuses") or {}
+    return {k: set(v.get("moves") or ()) for k, v in rows.items()}
+
+
 def st(m: dict[str, Any], status: str) -> bool:
     """Does move `m` cause `status`? (data/db/statuses.json, read once)"""
-    global _STATUS
-    if _STATUS is None:
-        rows = dex.db_obj("statuses").get("statuses") or {}
-        _STATUS = {k: set(v.get("moves") or []) for k, v in rows.items()}
-    return m["name"] in _STATUS.get(status, ())
+    return m["name"] in _status_moves().get(status, ())
 
 
 def foe(m: dict[str, Any]) -> bool:
@@ -277,7 +270,9 @@ def foe(m: dict[str, Any]) -> bool:
 # ------------------------------------------------------------------ rules ---
 # side: "off" changes what this Pokemon's moves do; "def" changes what lands on
 # it, and must never badge its own movepool.
-RULES = {
+# (side, which moves it touches, the multiplier, why) - None where it has none
+type Rule = tuple[str, Callable[[dict[str, Any]], Any] | None, float | None, str | None]
+RULES: dict[str, Rule] = {
  # ---- power multipliers on the user's own moves --------------------------
  "Sheer Force":   ("off", lambda m: dmg(m) and m["sec"], 1.3,
                    "+30% power, and the secondary is lost"),
@@ -737,10 +732,12 @@ STOP_WHOSE = {
 }
 
 
-def build(props: dict[str, dict[str, Any]]) -> tuple[dict[str, Any], dict[str, Any]]:
+def build(props: dict[str, dict[str, Any]]
+          ) -> tuple[dict[str, Any], dict[str, list[str] | None]]:
     """Run every RULE over the move properties: (the ability -> moves table
     that ships, a report per ability for --audit)."""
-    table, report = {}, {}
+    table: dict[str, Any] = {}
+    report: dict[str, list[str] | None] = {}
     scopes = _scopes(props)
     for ab, (side, pred, mult, why) in RULES.items():
         if pred is None:
@@ -831,8 +828,8 @@ def ability_text(a: dex.Row) -> str:
     t = (a.get("effect") or "").strip()
     if t:
         return t
-    facts = dex.db_obj("text_facts").get("abilities") or {}
-    return (facts.get(a["name"]) or {}).get("text") or ""
+    facts: dict[str, dex.Row] = dex.db_obj("text_facts").get("abilities") or {}
+    return dex.obj(facts.get(a["name"])).get("text") or ""
 
 
 def classify(name: str, table: dict[str, Any], text: str) -> str:
@@ -877,7 +874,10 @@ def audit(table: dict[str, Any]) -> list[Any]:
     mentions_move = re.compile(r"\bmoves?\b|\bpower\b|\bdamage\b|STAB|priority|contact|"
                                r"sound|punch|bit(?:e|ing)|slicing|bullet|pulse|powder|"
                                r"recoil|immune|absorb", re.I)
-    covered, mentions, quiet, decided = [], [], [], []
+    covered: list[str] = []
+    quiet: list[str] = []
+    mentions: list[tuple[str, str]] = []
+    decided: list[tuple[str, str]] = []
     for a in abil:
         n, e = a["name"], (a.get("effect") or "")
         if n in table:
@@ -905,7 +905,7 @@ def audit(table: dict[str, Any]) -> list[Any]:
         print("   %-20s %s" % (n, e[:88]))
 
     # the filter buckets the app's search offers, so a wrong one is visible
-    buckets = {}
+    buckets: dict[str, list[str]] = {}
     for a in abil:
         buckets.setdefault(classify(a["name"], table, ability_text(a)),
                            []).append(a["name"])

@@ -30,12 +30,12 @@ def master_list() -> list[dict[str, Any]]:
     pat = re.compile(
         r'#(\d{4}).*?<img src="/pokemonhome/pokemon/small/([^"]+)".*?'
         r'<a href="/pokedex-champions/([^"]+)/">([^<]+)<br(.*?)</tr>', re.S)
-    rows = []
+    rows: list[dict[str, Any]] = []
     for m in pat.finditer(s):
         name = re.sub(r"\s+", " ", html.unescape(m.group(4))).strip()
         sprite = m.group(2).rsplit(".", 1)[0]
         suffix = sprite.split("-", 1)[1] if "-" in sprite else ""
-        types = []
+        types: list[str] = []
         for raw in re.findall(r"/pokedex-bw/type/(\w+)\.gif", m.group(5)):
             t = raw.capitalize()
             if t not in types:
@@ -115,7 +115,7 @@ def _split_heads(s: str) -> tuple[list[str], list[Any]]:
 def _split_pages(dex: list[dict[str, Any]]) -> int:
     """A Pokedex page with several form blocks whose species the dex holds
     as ONE row - unless it is a known cosmetic or battle form."""
-    have = defaultdict(set)
+    have: dict[str, set[str]] = defaultdict(set)
     for p in dex:
         have[norm(p.get("species") or p["name"])].add(p["name"])
     pdir = os.path.join(RAW, "pokedex")
@@ -127,7 +127,7 @@ def _split_pages(dex: list[dict[str, Any]]) -> int:
             continue
         known = (slug in COSMETIC_OK or slug in BATTLE_FORM_OK
                  or slug in ROWS_ALREADY)
-        if len(have.get(norm(slug), set())) > 1 or known:
+        if len(have.get(norm(slug)) or ()) > 1 or known:
             continue
         problems += 1
         print("  PROBLEM %-14s splits %s but the dex holds one row"
@@ -141,12 +141,12 @@ def _split_pages(dex: list[dict[str, Any]]) -> int:
 
 def _battle_form_gaps(dex: list[dict[str, Any]]) -> int:
     """An in-battle form that moves a stat or a type must actually carry it."""
-    bad = []
+    bad: list[str] = []
     for slug, (what, _why) in sorted(BATTLE_FORM_OK.items()):
         row = next((p for p in dex if norm(p["name"]) == norm(slug)), None)
         if not row:
             continue
-        bf = row.get("battle_forms") or {}
+        bf: dict[str, dict[str, Any]] = row.get("battle_forms") or {}
         if what == "stats" and not any("hp" in v for v in bf.values()):
             bad.append("%s should carry a spread per form" % slug)
         if what == "type" and not any(v.get("types") for v in bf.values()):
@@ -176,7 +176,7 @@ def alternate_form_watch(dex: list[dict[str, Any]]) -> int:
 def _collisions(dex: list[dict[str, Any]]) -> int:
     """1. Two dex rows that norm() turns into the same key."""
     print("\n--- 1. Name collisions inside the dex ---")
-    dupes = defaultdict(list)
+    dupes: dict[str, list[str]] = defaultdict(list)
     for p in dex:
         dupes[norm(p["name"])].append(p["name"])
     collisions = {k: v for k, v in dupes.items() if len(v) > 1}
@@ -201,7 +201,7 @@ def _missing_rows(master: list[dict[str, Any]], dex: list[dict[str, Any]],
                   by_norm: dict[str, Any]) -> int:
     """2. A master-list row (name, sprite, types) no dex form resolves to."""
     print("\n--- 2. Master-list rows missing from the dex ---")
-    missing = []
+    missing: list[dict[str, Any]] = []
     for r in master:
         # a suffixed sprite means a distinct form; the dex names it Species-Form
         if norm(r["name"]) in by_norm:
@@ -220,7 +220,7 @@ def _extra_forms(master: list[dict[str, Any]], dex: list[dict[str, Any]]) -> Non
     """3. Dex forms the master list does not spell out, and where each came
     from (informational)."""
     print("\n--- 3. Forms in the dex that the master list does not spell out ---")
-    master_dex = defaultdict(list)
+    master_dex: dict[int, list[dict[str, Any]]] = defaultdict(list)
     for r in master:
         master_dex[r["dex"]].append(r)
     extra = [p for p in dex if norm(p["name"]) not in
@@ -237,7 +237,7 @@ def _extra_forms(master: list[dict[str, Any]], dex: list[dict[str, Any]]) -> Non
 def _multi_form(dex: list[dict[str, Any]]) -> None:
     """4. Every species held as more than one row (informational)."""
     print("\n--- 4. Multi-form species: what we hold per species ---")
-    groups = defaultdict(list)
+    groups: dict[str, list[dict[str, Any]]] = defaultdict(list)
     for p in dex:
         groups[species_norm(p["name"]) or norm(p["name"])].append(p)
     multi = {k: v for k, v in groups.items() if len(v) > 1}
@@ -280,7 +280,7 @@ def _gender_split(dex: list[dict[str, Any]]) -> None:
 TAIL = 0.5
 
 
-def _meta_names() -> dict[str, list[Any]]:
+def _meta_names() -> dict[str, list[str]]:
     """Every Pokemon name each meta source uses, per source."""
     src = {
         "pokebase usage": [r["name"] for r in
@@ -327,7 +327,7 @@ def _unresolved_meta_names(by_norm: dict[str, Any]) -> int:
     usage_of = {r["name"]: (r.get("usage_percent") or 0)
                 for r in meta_obj("usage_pokemon").get("rows", [])}
     zero_usage = {n for n, v in usage_of.items() if v < TAIL}
-    unresolved = defaultdict(set)
+    unresolved: dict[str, set[str]] = defaultdict(set)
     for label, names in _meta_names().items():
         for n in names:
             if n and norm(n) not in by_norm:

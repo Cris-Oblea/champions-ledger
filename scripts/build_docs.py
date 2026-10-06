@@ -26,6 +26,7 @@ from collections.abc import Callable
 from pathlib import Path
 from typing import Any
 
+import dex
 from check_regulation import live_slug
 from paths import POKEBASE, ROOT
 
@@ -47,21 +48,23 @@ def load(rel: str, key: str | None = None) -> Any:
 def _payload(rel: str) -> int:
     """How many THINGS a meta file holds, not how many keys wrap them."""
     d = load(rel)
-    if not isinstance(d, dict):
+    if not dex.is_obj(d):
         return len(d or [])
     for k in ("rows", "pokemon", "analyses", "numbers", "weights", "prices"):
-        if isinstance(d.get(k), (list, dict)):
-            return len(d[k])
-    if isinstance(d.get("count"), int):
-        return d["count"]
+        got = d.get(k)
+        if dex.is_obj(got) or dex.is_arr(got):
+            return len(got)
+    count = d.get("count")
+    if isinstance(count, int):
+        return count
     return len([k for k in d if not k.startswith("_")])
 
 
 def counts() -> str:
     """The table of what the database holds, row by row."""
-    mons = load("data/db/pokemon.json") or []
-    moves = load("data/db/moves.json") or []
-    rows = [
+    mons: list[dex.Row] = load("data/db/pokemon.json") or []
+    moves: list[dex.Row] = load("data/db/moves.json") or []
+    rows: list[tuple[str, object, str]] = [
         ("`data/db/pokemon.json`", len(mons),
          "Every playable form: types, base stats, abilities, and the %d Megas"
          % sum(1 for p in mons if p.get("is_mega"))),
@@ -75,10 +78,10 @@ def counts() -> str:
         ("`data/db/learnsets.json`", len(load("data/db/learnsets.json") or {}),
          "Reverse index: Pokemon to movepool"),
         ("`data/db/ability_moves.json`",
-         len((load("data/db/ability_moves.json") or {}).get("abilities") or {}),
+         len(dex.obj(load("data/db/ability_moves.json")).get("abilities") or {}),
          "Which ability changes which move, derived from the move text"),
         ("`data/db/effects.json`",
-         len((load("data/db/effects.json") or {}).get("effects") or {}),
+         len(dex.obj(load("data/db/effects.json")).get("effects") or {}),
          "What an item or ability multiplies, exactly, read out of the engine"),
         ("`data/db/typechart.json`", 18, "The type chart, cross-checked on 3402 matchups"),
         ("`data/meta/usage_pokemon.json`",
@@ -113,9 +116,9 @@ def loaded() -> str:
     a diff against one past regulation cannot be regenerated, and a number
     nobody can regenerate is the kind that goes stale in place.
     """
-    mons = load("data/db/pokemon.json") or []
-    moves = load("data/db/moves.json") or []
-    rows = [
+    mons: list[dex.Row] = load("data/db/pokemon.json") or []
+    moves: list[dex.Row] = load("data/db/moves.json") or []
+    rows: list[tuple[str, object]] = [
         ("Pokemon forms (**%d Mega**)" % sum(1 for p in mons if p.get("is_mega")),
          len(mons)),
         ("Moves (**%d useable** in Champions)"
@@ -132,19 +135,21 @@ def loaded() -> str:
         # written analysis" out of 358, which is the same mistake in reverse as
         # the envelope counts above.
         ("Smogon Pokemon (**%d with a written VGC analysis**)"
-         % ((load("data/meta/smogon_analyses.json") or {}).get(
+         % (dex.obj(load("data/meta/smogon_analyses.json")).get(
                 "with_vgc_analysis") or 0),
          _payload("data/meta/smogon_analyses.json")),
     ]
     # The Worlds events are a LIST, newest first, and each carries its three
     # divisions with their own counts. The newest complete one is the field the
     # rest of this file talks about.
-    arc = load("data/meta/worlds_archive.json") or {}
-    ev = sorted([e for e in (arc.get("events") or ()) if e.get("divisions")],
+    arc = dex.obj(load("data/meta/worlds_archive.json"))
+    events: list[dex.Row] = arc.get("events") or []
+    ev = sorted([e for e in events if e.get("divisions")],
                 key=lambda e: e.get("year") or 0, reverse=True)
     if ev:
         top = ev[0]
-        for div, t in (top.get("divisions") or {}).items():
+        divisions: dict[str, dex.Row] = top.get("divisions") or {}
+        for div, t in divisions.items():
             rows.append(("Worlds %s %s - players / teamlists"
                          % (top.get("year"), div.title()),
                          "%s / %s" % (t.get("players"), t.get("teams"))))
@@ -156,7 +161,7 @@ def loaded() -> str:
 
 def vintage() -> str:
     """What regulation the data describes, and when it was fetched."""
-    u = load("data/meta/usage_pokemon.json") or {}
+    u = dex.obj(load("data/meta/usage_pokemon.json"))
     reg = "unknown"
     raw = os.path.join(POKEBASE, "pokemon.html")
     if os.path.exists(raw):
@@ -270,7 +275,7 @@ def main() -> int:
                     help="exit non-zero if a document is out of date")
     a = ap.parse_args()
 
-    stale = []
+    stale: list[str] = []
     for path, blocks in DOCS.items():
         what = os.path.basename(path)
         cur = Path(path).read_text(encoding="utf-8")

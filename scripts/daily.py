@@ -45,6 +45,7 @@ from collections.abc import Callable
 from pathlib import Path
 from typing import Any
 
+import dex
 from paths import META, RAW, ROOT, SMOGON_CALC
 
 # Windows consoles default to cp1252, and the summary quotes what the sources
@@ -134,7 +135,10 @@ GATE_CHECKS = [
 # gate like an error. check_app.js keeps the two
 # checks no linter can make: they read the app against its own markup and its
 # own engine.
-SOURCE_CHECKS = [
+# (argv, what it guards[, which lines of its output to show on a failure])
+type SourceCheck = (tuple[list[str], str]
+                    | tuple[list[str], str, Callable[[str], list[str]]])
+SOURCE_CHECKS: list[SourceCheck] = [
     (["node_modules/eslint/bin/eslint.js", "--max-warnings", "0"],
      "no lint finding comes back once it is fixed"),
     # What ESLint cannot know: what a value IS. TypeScript's checker reads the
@@ -298,30 +302,30 @@ def _count(blob: Any, how: str = "rows") -> int:
     # Pokemon - the number that collapses if the payload parse ever breaks
     # again - and it is the reason this file is in SHRINK at all.
     if how == "priced":
-        mons = (blob.get("pokemon") or {}) if isinstance(blob, dict) else {}
-        return sum(len((v.get("tournament") or {}).get("moves") or [])
-                   for v in mons.values() if isinstance(v, dict))
+        mons = dex.obj(blob.get("pokemon")) if dex.is_obj(blob) else {}
+        return sum(len(dex.obj(v.get("tournament")).get("moves") or [])
+                   for v in mons.values() if dex.is_obj(v))
     if how == "inside":
-        rows = blob.get("learnsets", blob) if isinstance(blob, dict) else blob
-        if isinstance(rows, dict):
-            return sum(len(v) for v in rows.values()
-                       if isinstance(v, (list, dict)))
-        if isinstance(rows, list):
-            return sum(len(v) for v in rows if isinstance(v, (list, dict)))
+        rows = blob.get("learnsets", blob) if dex.is_obj(blob) else blob
+        if dex.is_obj(rows):
+            return sum(len(v) for v in rows.values() if dex.is_obj(v) or dex.is_arr(v))
+        if dex.is_arr(rows):
+            return sum(len(v) for v in rows if dex.is_obj(v) or dex.is_arr(v))
         return 0
-    if isinstance(blob, list):
+    if dex.is_arr(blob):
         return len(blob)
-    if isinstance(blob, dict):
+    if dex.is_obj(blob):
         for k in ("rows", "numbers", "weights", "prices", "pokemon"):
-            if isinstance(blob.get(k), (list, dict)):
-                return len(blob[k])
+            got = blob.get(k)
+            if dex.is_obj(got) or dex.is_arr(got):
+                return len(got)
         return len([k for k in blob if not k.startswith("_")])
     return 0
 
 
 def shrink_check() -> list[str]:
     """Report any table that came back smaller than the committed one."""
-    bad = []
+    bad: list[str] = []
     for rel, label, floor, how in SHRINK:
         path = os.path.join(ROOT, rel)
         if not os.path.exists(path):
@@ -371,7 +375,7 @@ def ladder_summary() -> dict[str, Any] | None:
         d = json.loads(Path(p).read_text(encoding="utf-8"))
     except (OSError, ValueError):
         return None
-    rows = d.get("rows") or []
+    rows: list[dex.Row] = d.get("rows") or []
     top = [(r.get("name"), r.get("usage_percent")) for r in rows[:5]]
     return {"fetched": d.get("fetched"), "rows": len(rows), "top": top}
 
@@ -418,7 +422,7 @@ def log(lines: list[str]) -> None:
 # It RESTORES rather than blocks. Blocking would stop every local publish from
 # a machine whose cache is stale, which on this one is every publish, and the
 # whole point of --no-refresh is to be the safe way to ship a hand edit.
-PINNED = [
+PINNED: list[tuple[str, list[str]]] = [
     # (the artefact, the repo-side inputs it is built from)
     ("tracker/engine.bundle.js", []),
     ("tracker/data.js", ["data/db", "data/meta"]),
@@ -433,7 +437,7 @@ def pin_generated() -> list[str]:
     git to ask, which is also the case that cannot arise: CI has no data/raw,
     so it never rebuilds either file in the first place.
     """
-    said = []
+    said: list[str] = []
     for rel, inputs in PINNED:
         rc, diff = sh(["git", "diff", "--name-only", "HEAD", "--", rel])
         if rc != 0 or not diff.strip():
@@ -583,7 +587,7 @@ def _report_changes(before: dict[str, str | None], before_ladder: dict[str, Any]
     changed."""
     after = snapshot()
     after_ladder = ladder_summary()
-    changed = [label for key, rel, label in WATCH
+    changed = [label for key, _rel, label in WATCH
                if before.get(key) != after.get(key)]
     out.append("CHANGED: " + ", ".join(changed) if changed else "nothing moved")
 
@@ -682,7 +686,8 @@ def _gate(out: list[str]) -> bool:
     # what the Python checks cannot: a template edit that breaks the sheet, a
     # blob field the page reads under another name, a startup error that
     # empties every list. A test nothing runs drifts unnoticed.
-    checks = ([([PY] + argv, what, lambda o: o.splitlines()[-6:])
+    checks: list[tuple[list[str], str, Callable[[str], list[str]]]] = (
+              [([PY] + argv, what, _last_lines)
                for argv, what in GATE_CHECKS]
               + [(["node"] + argv, what, pick[0] if pick else _last_lines)
                  for argv, what, *pick in SOURCE_CHECKS]
@@ -692,7 +697,7 @@ def _gate(out: list[str]) -> bool:
 
 
 def _last_lines(o: str) -> list[str]:
-    """What a failed source check shows: its last six non-blank lines."""
+    """What a failed check shows: its last six non-blank lines."""
     return [line for line in o.splitlines() if line.strip()][-6:]
 
 

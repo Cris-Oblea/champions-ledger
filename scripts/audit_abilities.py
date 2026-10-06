@@ -92,14 +92,14 @@ def _upstream_tables() -> tuple[ByPid, Callable[[str], Shape]]:
 
     aname = {r["ability_id"]: r["name"] for r in rows("ability_names.csv")
              if r["local_language_id"] == ENGLISH}
-    by_pid = collections.defaultdict(list)
+    by_pid: ByPid = collections.defaultdict(list)
     for r in rows("pokemon_abilities.csv"):
         by_pid[r["pokemon_id"]].append((int(r["slot"]),
                                         aname.get(r["ability_id"])))
-    stats = collections.defaultdict(dict)
+    stats: dict[str, dict[str, str]] = collections.defaultdict(dict)
     for r in rows("pokemon_stats.csv"):
         stats[r["pokemon_id"]][r["stat_id"]] = r["base_stat"]
-    types = collections.defaultdict(dict)
+    types: dict[str, dict[str, str]] = collections.defaultdict(dict)
     for r in rows("pokemon_types.csv"):
         types[r["pokemon_id"]][r["slot"]] = r["type_id"]
 
@@ -113,10 +113,11 @@ def _upstream_tables() -> tuple[ByPid, Callable[[str], Shape]]:
 
 
 def _missing_abilities(p: dex.Row, sources: list[tuple[str, str]],
-                       by_pid: ByPid) -> tuple[list[str], int]:
+                       by_pid: ByPid) -> tuple[list[tuple[str, str, str, str]], int]:
     """(gaps, how many were known spelling differences) for one form."""
-    ours = p.get("abilities") or []
-    gaps, known = [], 0
+    ours: list[str] = p.get("abilities") or []
+    gaps: list[tuple[str, str, str, str]] = []
+    known = 0
     for ident, pid in sources:
         for _, n in sorted(by_pid[pid]):
             if not n or n in ours:
@@ -134,11 +135,11 @@ def upstream(forms: list[dex.Row]) -> list[Any] | None:
     if pokemon is None:
         print("no PokeAPI tables cached - run scripts/fetch_home_dex.py first")
         return None
-    pk = {}
+    pk: dict[str, dict[str, str]] = {}
     for r in pokemon:
         pk.setdefault(r["identifier"], r)
     by_pid, shape = _upstream_tables()
-    by_species = collections.defaultdict(list)
+    by_species: dict[str, list[dict[str, str]]] = collections.defaultdict(list)
     for r in pokemon:
         by_species[r["species_id"]].append(r)
 
@@ -153,7 +154,8 @@ def upstream(forms: list[dex.Row]) -> list[Any] | None:
     alike = collections.Counter((me["species_id"], shape(me["id"]))
                                 for _, me in mine)
 
-    variants, gaps, known = 0, [], 0
+    gaps: list[tuple[str, str, str, str]] = []
+    variants = known = 0
     for p, me in mine:
         # the entry itself, then every same-shaped sibling of it
         sources = [(me["identifier"], me["id"])]
@@ -180,11 +182,12 @@ def serebii(forms: list[dex.Row]) -> list[Any] | None:
     if not os.path.isdir(PAGES):
         print("no Serebii Pokedex pages cached - run scripts/fetch_serebii.py")
         return None
-    rows = collections.defaultdict(set)
+    rows: dict[str, set[str]] = collections.defaultdict(set)
     for p in forms:
         rows[dex.norm(p.get("species") or p["name"])].update(
             p.get("abilities") or [])
-    pages, gaps = 0, []
+    pages = 0
+    gaps: list[tuple[str, str, str]] = []
     for path in sorted(glob.glob(os.path.join(PAGES, "*.html"))):
         slug = os.path.splitext(os.path.basename(path))[0]
         have = rows.get(dex.norm(slug))

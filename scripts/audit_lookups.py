@@ -61,14 +61,14 @@ def _check_code() -> None:
     """No script defines the same top-level name twice (the second silently
     wins), and every script parses."""
     print("\n  the code")
-    dups = []
+    dups: list[str] = []
     for f in sorted(glob.glob(os.path.join(ROOT, "scripts", "*.py"))):
         try:
             tree = ast.parse(Path(f).read_text(encoding="utf-8"))
         except SyntaxError as e:
             dups.append("%s does not parse: %s" % (os.path.basename(f), e))
             continue
-        seen = collections.Counter()
+        seen: collections.Counter[str] = collections.Counter()
         for node in tree.body:
             if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef,
                                  ast.ClassDef)):
@@ -85,10 +85,10 @@ def _resolve(p: dex.Row, learn: dict[str, list[str]]) -> list[str]:
     mv = learn.get(p["name"]) or []
     if not mv:
         mv = next((learn[k] for k in learn
-                   if dex.norm(k) == dex.norm(p["name"])), [])
+                   if dex.norm(k) == dex.norm(p["name"])), None) or []
     if not mv:
         mv = next((learn[k] for k in learn
-                   if dex.species_norm(k) == dex.species_norm(p["name"])), [])
+                   if dex.species_norm(k) == dex.species_norm(p["name"])), None) or []
     return mv
 
 
@@ -99,10 +99,10 @@ def _check_forms(mons: list[dex.Row], learn: dict[str, list[str]]) -> None:
     ok("forms in the dex", len(mons), len(mons))
 
     wrong = [p["name"] for p in mons
-             if (dex.find_pokemon(p["name"]) or {}).get("name") != p["name"]]
+             if dex.obj(dex.find_pokemon(p["name"])).get("name") != p["name"]]
     ok("find_pokemon returns the form asked for", lst(wrong))
 
-    by = collections.defaultdict(list)
+    by: dict[str, list[str]] = collections.defaultdict(list)
     for p in mons:
         by[dex.norm(p["name"])].append(p["name"])
     ok("no collision under norm()",
@@ -120,7 +120,7 @@ def _check_megas(mons: list[dex.Row]) -> None:
     """Mega Stones and Megas are 1:1, and every form has a name in Smogon's
     engine (else the damage calculator cannot be asked about it)."""
     megas = [p for p in mons if p.get("is_mega")]
-    stones = collections.defaultdict(list)
+    stones: dict[str, list[str]] = collections.defaultdict(list)
     for p in megas:
         s = dex.stone_for(p)
         if s:
@@ -132,7 +132,7 @@ def _check_megas(mons: list[dex.Row]) -> None:
             if len(v) > 1]))
     ok("the mapping is 1:1", len(stones), len(megas))
 
-    miss = []
+    miss: list[str] = []
     for p in mons:
         try:
             Dm.smogon_name(p["name"])
@@ -143,7 +143,7 @@ def _check_megas(mons: list[dex.Row]) -> None:
 
 def _duplicate_keys(text: str) -> list[str]:
     """Every key some JSON object in `text` repeats, in the order met."""
-    dup = []
+    dup: list[str] = []
 
     def hook(pairs: list[tuple[str, Any]]) -> dict[str, Any]:
         """json.loads hook that records every key an object repeats."""
@@ -175,28 +175,28 @@ def _check_references(learn: dict[str, list[str]]) -> None:
     print("\n  the derived tables point at things that exist")
     moves = {m["name"] for m in dex.db("moves")}
     abil = {a["name"] for a in dex.db("abilities")}
-    am = dex.db("ability_moves") or {}
+    rules: dict[str, dex.Row] = dex.db_obj("ability_moves").get("abilities") or {}
     ok("every move in the ability table exists",
-       lst([n for r in (am.get("abilities") or {}).values()
+       lst([n for r in rules.values()
             for n in (r.get("moves") or ()) if n not in moves]))
     ok("every ability with a rule exists",
-       lst([a for a in (am.get("abilities") or {}) if a not in abil]))
-    il = dex.db("item_links") or {}
+       lst([a for a in rules if a not in abil]))
+    il = dex.db_obj("item_links")
     ok("every move an item serves exists",
-       lst([n for n in (il.get("by_move") or {}) if n not in moves]))
+       lst([n for n in dex.obj(il.get("by_move")) if n not in moves]))
     ok("every ability an item serves exists",
-       lst([a for a in (il.get("by_ability") or {}) if a not in abil]))
-    st = dex.db_obj("statuses").get("statuses") or {}
+       lst([a for a in dex.obj(il.get("by_ability")) if a not in abil]))
+    st: dict[str, dex.Row] = dex.db_obj("statuses").get("statuses") or {}
     ok("every move that causes a status exists",
        lst([n for r in st.values() for n in (r.get("moves") or ())
             if n not in moves]))
     ok("every learnset points at real moves",
        lst([k for k, v in learn.items() if any(n not in moves for n in v)]))
-    tf = dex.db("text_facts") or {}
+    tf = dex.db_obj("text_facts")
     ok("every move text belongs to a move",
-       lst([n for n in (tf.get("moves") or {}) if n not in moves]))
+       lst([n for n in dex.obj(tf.get("moves")) if n not in moves]))
     ok("every ability text belongs to an ability",
-       lst([a for a in (tf.get("abilities") or {}) if a not in abil]))
+       lst([a for a in dex.obj(tf.get("abilities")) if a not in abil]))
 
 
 def main() -> int:
