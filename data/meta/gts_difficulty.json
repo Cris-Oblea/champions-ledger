@@ -8,8 +8,8 @@
    "score": 3,
    "demand": 3,
    "supply": 2,
-   "usage": 4.0,
-   "rank": 47,
+   "usage": 4.1,
+   "rank": 45,
    "why_demand": "common enough that some trainers hold spares",
    "how": null,
    "seeded": false
@@ -18,7 +18,7 @@
    "score": 4,
    "demand": 4,
    "supply": 2,
-   "usage": 11.2,
+   "usage": 11.3,
    "rank": 21,
    "why_demand": "heavily played, so spares are rare",
    "how": null,
@@ -29,7 +29,7 @@
    "demand": 2,
    "supply": 2,
    "usage": 2.1,
-   "rank": 68,
+   "rank": 67,
    "why_demand": "lightly played",
    "how": null,
    "seeded": false
@@ -39,7 +39,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.2,
-   "rank": 154,
+   "rank": 155,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -49,7 +49,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.1,
-   "rank": 203,
+   "rank": 206,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -69,7 +69,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.1,
-   "rank": 204,
+   "rank": 207,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -78,7 +78,7 @@
    "score": 5,
    "demand": 5,
    "supply": 2,
-   "usage": 20.5,
+   "usage": 20.6,
    "rank": 8,
    "why_demand": "top of the ladder - the other side is running it, not trading it",
    "how": null,
@@ -89,7 +89,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.1,
-   "rank": 205,
+   "rank": 208,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -109,7 +109,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.3,
-   "rank": 134,
+   "rank": 133,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -129,7 +129,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.2,
-   "rank": 156,
+   "rank": 157,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -139,7 +139,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.2,
-   "rank": 157,
+   "rank": 158,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -159,7 +159,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.2,
-   "rank": 158,
+   "rank": 159,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -169,7 +169,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.2,
-   "rank": 159,
+   "rank": 160,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -178,7 +178,7 @@
    "score": 5,
    "demand": 5,
    "supply": 2,
-   "usage": 16.9,
+   "usage": 16.8,
    "rank": 13,
    "why_demand": "top of the ladder - the other side is running it, not trading it",
    "how": null,
@@ -219,7 +219,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.2,
-   "rank": 161,
+   "rank": 162,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -248,8 +248,8 @@
    "score": 3,
    "demand": 3,
    "supply": 2,
-   "usage": 4.8,
-   "rank": 41,
+   "usage": 4.9,
+   "rank": 39,
    "why_demand": "common enough that some trainers hold spares",
    "how": null,
    "seeded": false
@@ -269,7 +269,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.3,
-   "rank": 135,
+   "rank": 134,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -279,7 +279,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.1,
-   "rank": 207,
+   "rank": 210,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -309,7 +309,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.1,
-   "rank": 208,
+   "rank": 211,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -319,7 +319,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.1,
-   "rank": 209,
+   "rank": 212,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -349,7 +349,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.3,
-   "rank": 136,
+   "rank": 135,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -369,7 +369,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.1,
-   "rank": 210,
+   "rank": 213,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -409,7 +409,7 @@
    "demand": 3,
    "supply": 2,
    "usage": 3.9,
-   "rank": 51,
+   "rank": 50,
    "why_demand": "common enough that some trainers hold spares",
    "how": null,
    "seeded": false
@@ -429,7 +429,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.1,
-   "rank": 211,
+   "rank": 214,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -449,7 +449,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.2,
-   "rank": 165,
+   "rank": 166,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -469,7 +469,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.2,
-   "rank": 167,
+   "rank": 168,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -479,7 +479,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.2,
-   "rank": 169,
+   "rank": 170,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -509,7 +509,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.1,
-   "rank": 212,
+   "rank": 215,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -529,7 +529,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.1,
-   "rank": 213,
+   "rank": 216,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -549,7 +549,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.1,
-   "rank": 215,
+   "rank": 218,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": "Onix + 50 candy + Metal Coat. The Metal Coat is the only friction.",
    "seeded": true
@@ -579,7 +579,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.2,
-   "rank": 171,
+   "rank": 172,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -589,7 +589,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.2,
-   "rank": 173,
+   "rank": 174,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -599,7 +599,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.3,
-   "rank": 137,
+   "rank": 136,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -689,7 +689,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.2,
-   "rank": 175,
+   "rank": 176,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -709,7 +709,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.2,
-   "rank": 177,
+   "rank": 178,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -768,7 +768,7 @@
    "score": 4,
    "demand": 4,
    "supply": 2,
-   "usage": 12.5,
+   "usage": 12.4,
    "rank": 18,
    "why_demand": "heavily played, so spares are rare",
    "how": null,
@@ -799,7 +799,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.1,
-   "rank": 218,
+   "rank": 220,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -819,7 +819,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.1,
-   "rank": 220,
+   "rank": 222,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -828,8 +828,8 @@
    "score": 5,
    "demand": 5,
    "supply": 2,
-   "usage": 28.9,
-   "rank": 5,
+   "usage": 28.7,
+   "rank": 4,
    "why_demand": "top of the ladder - the other side is running it, not trading it",
    "how": null,
    "seeded": false
@@ -838,8 +838,8 @@
    "score": 3,
    "demand": 3,
    "supply": 2,
-   "usage": 5.0,
-   "rank": 39,
+   "usage": 4.9,
+   "rank": 40,
    "why_demand": "common enough that some trainers hold spares",
    "how": null,
    "seeded": false
@@ -849,7 +849,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.1,
-   "rank": 222,
+   "rank": 224,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -859,7 +859,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.1,
-   "rank": 223,
+   "rank": 225,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -889,7 +889,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.1,
-   "rank": 224,
+   "rank": 226,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -919,7 +919,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.1,
-   "rank": 225,
+   "rank": 227,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -939,7 +939,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.2,
-   "rank": 179,
+   "rank": 181,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -948,7 +948,7 @@
    "score": 5,
    "demand": 5,
    "supply": 2,
-   "usage": 17.5,
+   "usage": 17.7,
    "rank": 10,
    "why_demand": "top of the ladder - the other side is running it, not trading it",
    "how": null,
@@ -959,7 +959,7 @@
    "demand": 3,
    "supply": 2,
    "usage": 4.1,
-   "rank": 45,
+   "rank": 46,
    "why_demand": "common enough that some trainers hold spares",
    "how": null,
    "seeded": false
@@ -968,8 +968,8 @@
    "score": 2,
    "demand": 1,
    "supply": 2,
-   "usage": 0.1,
-   "rank": 227,
+   "usage": 0.2,
+   "rank": 182,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -979,7 +979,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.1,
-   "rank": 228,
+   "rank": 229,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -989,7 +989,7 @@
    "demand": 1,
    "supply": 1,
    "usage": 0.2,
-   "rank": 180,
+   "rank": 183,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": "Snover is a common wild spawn; standard candy evolve.",
    "seeded": true
@@ -1009,7 +1009,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.1,
-   "rank": 229,
+   "rank": 230,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -1029,7 +1029,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.1,
-   "rank": 230,
+   "rank": 231,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -1039,7 +1039,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.2,
-   "rank": 182,
+   "rank": 185,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -1099,7 +1099,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.1,
-   "rank": 231,
+   "rank": 232,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -1119,7 +1119,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.1,
-   "rank": 232,
+   "rank": 233,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -1139,7 +1139,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.2,
-   "rank": 183,
+   "rank": 186,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -1169,7 +1169,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.3,
-   "rank": 138,
+   "rank": 137,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -1249,7 +1249,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.1,
-   "rank": 234,
+   "rank": 235,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -1259,7 +1259,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.1,
-   "rank": 236,
+   "rank": 237,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -1269,7 +1269,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.1,
-   "rank": 238,
+   "rank": 239,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -1289,7 +1289,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.2,
-   "rank": 184,
+   "rank": 187,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -1309,7 +1309,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.1,
-   "rank": 239,
+   "rank": 240,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -1329,7 +1329,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.1,
-   "rank": 240,
+   "rank": 241,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -1349,7 +1349,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.1,
-   "rank": 241,
+   "rank": 242,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -1379,7 +1379,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.2,
-   "rank": 185,
+   "rank": 188,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -1429,7 +1429,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.3,
-   "rank": 141,
+   "rank": 140,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -1448,7 +1448,7 @@
    "score": 4,
    "demand": 4,
    "supply": 2,
-   "usage": 8.2,
+   "usage": 8.4,
    "rank": 27,
    "why_demand": "heavily played, so spares are rare",
    "how": null,
@@ -1459,7 +1459,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.2,
-   "rank": 187,
+   "rank": 190,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -1468,7 +1468,7 @@
    "score": 3,
    "demand": 3,
    "supply": 2,
-   "usage": 3.8,
+   "usage": 3.9,
    "rank": 52,
    "why_demand": "common enough that some trainers hold spares",
    "how": null,
@@ -1529,7 +1529,7 @@
    "demand": 3,
    "supply": 2,
    "usage": 4.0,
-   "rank": 50,
+   "rank": 48,
    "why_demand": "common enough that some trainers hold spares",
    "how": null,
    "seeded": false
@@ -1539,7 +1539,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.1,
-   "rank": 243,
+   "rank": 244,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -1559,7 +1559,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.1,
-   "rank": 244,
+   "rank": 245,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -1579,7 +1579,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.2,
-   "rank": 188,
+   "rank": 191,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -1628,8 +1628,8 @@
    "score": 2,
    "demand": 1,
    "supply": 2,
-   "usage": 0.2,
-   "rank": 189,
+   "usage": 0.3,
+   "rank": 143,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -1649,7 +1649,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.2,
-   "rank": 190,
+   "rank": 193,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -1698,7 +1698,7 @@
    "score": 4,
    "demand": 4,
    "supply": 2,
-   "usage": 11.6,
+   "usage": 11.5,
    "rank": 20,
    "why_demand": "heavily played, so spares are rare",
    "how": null,
@@ -1748,8 +1748,8 @@
    "score": 2,
    "demand": 1,
    "supply": 2,
-   "usage": 0.4,
-   "rank": 129,
+   "usage": 0.3,
+   "rank": 146,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -1829,7 +1829,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.2,
-   "rank": 192,
+   "rank": 195,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -1849,7 +1849,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.2,
-   "rank": 193,
+   "rank": 196,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -1858,7 +1858,7 @@
    "score": 5,
    "demand": 5,
    "supply": 2,
-   "usage": 32.4,
+   "usage": 32.7,
    "rank": 3,
    "why_demand": "top of the ladder - the other side is running it, not trading it",
    "how": null,
@@ -1868,7 +1868,7 @@
    "score": 3,
    "demand": 3,
    "supply": 2,
-   "usage": 3.6,
+   "usage": 3.7,
    "rank": 54,
    "why_demand": "common enough that some trainers hold spares",
    "how": null,
@@ -1889,7 +1889,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.3,
-   "rank": 146,
+   "rank": 147,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -1908,8 +1908,8 @@
    "score": 2,
    "demand": 1,
    "supply": 2,
-   "usage": 0.8,
-   "rank": 95,
+   "usage": 0.7,
+   "rank": 97,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -1939,7 +1939,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.2,
-   "rank": 195,
+   "rank": 198,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -1949,7 +1949,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.3,
-   "rank": 148,
+   "rank": 149,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -1979,7 +1979,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.2,
-   "rank": 196,
+   "rank": 199,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -1998,7 +1998,7 @@
    "score": 4,
    "demand": 4,
    "supply": 2,
-   "usage": 13.9,
+   "usage": 13.7,
    "rank": 15,
    "why_demand": "heavily played, so spares are rare",
    "how": null,
@@ -2009,7 +2009,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.4,
-   "rank": 130,
+   "rank": 129,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -2019,7 +2019,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.3,
-   "rank": 149,
+   "rank": 150,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -2028,7 +2028,7 @@
    "score": 2,
    "demand": 2,
    "supply": 2,
-   "usage": 2.8,
+   "usage": 2.9,
    "rank": 58,
    "why_demand": "lightly played",
    "how": null,
@@ -2038,7 +2038,7 @@
    "score": 5,
    "demand": 5,
    "supply": 2,
-   "usage": 53.7,
+   "usage": 53.6,
    "rank": 1,
    "why_demand": "top of the ladder - the other side is running it, not trading it",
    "how": null,
@@ -2049,7 +2049,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.2,
-   "rank": 197,
+   "rank": 200,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -2059,7 +2059,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.4,
-   "rank": 131,
+   "rank": 130,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -2129,7 +2129,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.2,
-   "rank": 198,
+   "rank": 201,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -2139,7 +2139,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.4,
-   "rank": 132,
+   "rank": 131,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -2239,7 +2239,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.3,
-   "rank": 151,
+   "rank": 152,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -2258,7 +2258,7 @@
    "score": 5,
    "demand": 5,
    "supply": 2,
-   "usage": 17.0,
+   "usage": 16.9,
    "rank": 12,
    "why_demand": "top of the ladder - the other side is running it, not trading it",
    "how": null,
@@ -2278,8 +2278,8 @@
    "score": 2,
    "demand": 2,
    "supply": 2,
-   "usage": 2.0,
-   "rank": 73,
+   "usage": 2.1,
+   "rank": 72,
    "why_demand": "lightly played",
    "how": null,
    "seeded": false
@@ -2299,7 +2299,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.8,
-   "rank": 96,
+   "rank": 95,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -2319,7 +2319,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.2,
-   "rank": 199,
+   "rank": 202,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": "As Basculegion, but the Basculin must be female.",
    "seeded": true
@@ -2328,7 +2328,7 @@
    "score": 5,
    "demand": 5,
    "supply": 3,
-   "usage": 42.2,
+   "usage": 42.1,
    "rank": 2,
    "why_demand": "top of the ladder - the other side is running it, not trading it",
    "how": "Hisuian Sneasel (raid-sourced) + 100 candy, evolved during in-game daytime after 7 km as Buddy.",
@@ -2339,7 +2339,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.2,
-   "rank": 200,
+   "rank": 203,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -2469,7 +2469,7 @@
    "demand": 2,
    "supply": 2,
    "usage": 2.1,
-   "rank": 72,
+   "rank": 73,
    "why_demand": "lightly played",
    "how": null,
    "seeded": false
@@ -2479,7 +2479,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.2,
-   "rank": 201,
+   "rank": 204,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -2519,7 +2519,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.3,
-   "rank": 152,
+   "rank": 153,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -2529,7 +2529,7 @@
    "demand": 1,
    "supply": 2,
    "usage": 0.3,
-   "rank": 153,
+   "rank": 154,
    "why_demand": "almost nobody runs it, so a spare costs them nothing",
    "how": null,
    "seeded": false
@@ -2608,7 +2608,7 @@
    "score": 5,
    "demand": 5,
    "supply": 5,
-   "usage": 25.5,
+   "usage": 25.4,
    "rank": 6,
    "why_demand": "top of the ladder - the other side is running it, not trading it",
    "how": "Evolves from Roaming Gimmighoul at 999 Gimmighoul Coins. A catch yields 3-6 coins, so roughly 200-330 Gimmighoul catches. The Coin Bag shortcut needs a Postcard sent to Scarlet/Violet on a Switch - closed to this player.",

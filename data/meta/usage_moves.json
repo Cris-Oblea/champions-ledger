@@ -1,8 +1,8 @@
 {
  "source": "pokebase.app/pokemon-champions",
  "game": "Pokemon Champions",
- "fetched": "2026-10-07",
- "count": 470,
+ "fetched": "2026-10-08",
+ "count": 469,
  "rows": [
   {
    "rank": 1,
@@ -15,7 +15,7 @@
    "rank": 2,
    "slug": "fake-out",
    "name": "Fake Out",
-   "usage_percent": 5.3,
+   "usage_percent": 5.4,
    "description": ""
   },
   {
@@ -29,7 +29,7 @@
    "rank": 4,
    "slug": "tailwind",
    "name": "Tailwind",
-   "usage_percent": 2.4,
+   "usage_percent": 2.3,
    "description": ""
   },
   {
@@ -1021,386 +1021,386 @@
   },
   {
    "rank": 146,
+   "slug": "toxic",
+   "name": "Toxic",
+   "usage_percent": 0.1,
+   "description": ""
+  },
+  {
+   "rank": 147,
    "slug": "triple-axel",
    "name": "Triple Axel",
    "usage_percent": 0.1,
    "description": ""
   },
   {
-   "rank": 147,
+   "rank": 148,
    "slug": "twin-beam",
    "name": "Twin Beam",
    "usage_percent": 0.1,
    "description": ""
   },
   {
-   "rank": 148,
+   "rank": 149,
    "slug": "volt-switch",
    "name": "Volt Switch",
    "usage_percent": 0.1,
    "description": ""
   },
   {
-   "rank": 149,
+   "rank": 150,
    "slug": "water-spout",
    "name": "Water Spout",
    "usage_percent": 0.1,
    "description": ""
   },
   {
-   "rank": 150,
+   "rank": 151,
    "slug": "yawn",
    "name": "Yawn",
    "usage_percent": 0.1,
    "description": ""
   },
   {
-   "rank": 151,
+   "rank": 152,
    "slug": "accelerock",
    "name": "Accelerock",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 152,
+   "rank": 153,
    "slug": "acid-spray",
    "name": "Acid Spray",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 153,
+   "rank": 154,
    "slug": "acupressure",
    "name": "Acupressure",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 154,
+   "rank": 155,
    "slug": "aerial-ace",
    "name": "Aerial Ace",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 155,
+   "rank": 156,
    "slug": "after-you",
    "name": "After You",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 156,
+   "rank": 157,
    "slug": "agility",
    "name": "Agility",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 157,
+   "rank": 158,
    "slug": "air-cutter",
    "name": "Air Cutter",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 158,
+   "rank": 159,
    "slug": "air-slash",
    "name": "Air Slash",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 159,
+   "rank": 160,
    "slug": "alluring-voice",
    "name": "Alluring Voice",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 160,
+   "rank": 161,
    "slug": "ally-switch",
    "name": "Ally Switch",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 161,
+   "rank": 162,
    "slug": "apple-acid",
    "name": "Apple Acid",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 162,
+   "rank": 163,
    "slug": "aqua-cutter",
    "name": "Aqua Cutter",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 163,
+   "rank": 164,
    "slug": "aqua-step",
    "name": "Aqua Step",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 164,
+   "rank": 165,
    "slug": "aqua-tail",
    "name": "Aqua Tail",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 165,
+   "rank": 166,
    "slug": "assurance",
    "name": "Assurance",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 166,
+   "rank": 167,
    "slug": "attract",
    "name": "Attract",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 167,
+   "rank": 168,
    "slug": "aura-wheel",
    "name": "Aura Wheel",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 168,
+   "rank": 169,
    "slug": "avalanche",
    "name": "Avalanche",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 169,
+   "rank": 170,
    "slug": "baby-doll-eyes",
    "name": "Baby-Doll Eyes",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 170,
+   "rank": 171,
    "slug": "baneful-bunker",
    "name": "Baneful Bunker",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 171,
+   "rank": 172,
    "slug": "barb-barrage",
    "name": "Barb Barrage",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 172,
+   "rank": 173,
    "slug": "baton-pass",
    "name": "Baton Pass",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 173,
+   "rank": 174,
    "slug": "beak-blast",
    "name": "Beak Blast",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 174,
+   "rank": 175,
    "slug": "beat-up",
    "name": "Beat Up",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 175,
+   "rank": 176,
    "slug": "belch",
    "name": "Belch",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 176,
+   "rank": 177,
    "slug": "belly-drum",
    "name": "Belly Drum",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 177,
+   "rank": 178,
    "slug": "bide",
    "name": "Bide",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 178,
+   "rank": 179,
    "slug": "bite",
    "name": "Bite",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 179,
+   "rank": 180,
    "slug": "bitter-malice",
    "name": "Bitter Malice",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 180,
+   "rank": 181,
    "slug": "blast-burn",
    "name": "Blast Burn",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 181,
+   "rank": 182,
    "slug": "blaze-kick",
    "name": "Blaze Kick",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 182,
+   "rank": 183,
    "slug": "block",
    "name": "Block",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 183,
+   "rank": 184,
    "slug": "body-slam",
    "name": "Body Slam",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 184,
+   "rank": 185,
    "slug": "boomburst",
    "name": "Boomburst",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 185,
+   "rank": 186,
    "slug": "bounce",
    "name": "Bounce",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 186,
+   "rank": 187,
    "slug": "breaking-swipe",
    "name": "Breaking Swipe",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 187,
+   "rank": 188,
    "slug": "brick-break",
    "name": "Brick Break",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 188,
+   "rank": 189,
    "slug": "brutal-swing",
    "name": "Brutal Swing",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 189,
+   "rank": 190,
    "slug": "bug-bite",
    "name": "Bug Bite",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 190,
+   "rank": 191,
    "slug": "bulldoze",
    "name": "Bulldoze",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 191,
+   "rank": 192,
    "slug": "bullet-punch",
    "name": "Bullet Punch",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 192,
+   "rank": 193,
    "slug": "bullet-seed",
    "name": "Bullet Seed",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 193,
+   "rank": 194,
    "slug": "burn-up",
    "name": "Burn Up",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 194,
+   "rank": 195,
    "slug": "burning-jealousy",
    "name": "Burning Jealousy",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 195,
+   "rank": 196,
    "slug": "ceaseless-edge",
    "name": "Ceaseless Edge",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 196,
+   "rank": 197,
    "slug": "charge",
    "name": "Charge",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 197,
+   "rank": 198,
    "slug": "charge-beam",
    "name": "Charge Beam",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 198,
+   "rank": 199,
    "slug": "charm",
    "name": "Charm",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 199,
+   "rank": 200,
    "slug": "chilling-water",
    "name": "Chilling Water",
-   "usage_percent": 0.0,
-   "description": ""
-  },
-  {
-   "rank": 200,
-   "slug": "chilly-reception",
-   "name": "Chilly Reception",
    "usage_percent": 0.0,
    "description": ""
   },
@@ -3121,174 +3121,167 @@
   },
   {
    "rank": 446,
-   "slug": "toxic",
-   "name": "Toxic",
-   "usage_percent": 0.0,
-   "description": ""
-  },
-  {
-   "rank": 447,
    "slug": "toxic-spikes",
    "name": "Toxic Spikes",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 448,
+   "rank": 447,
    "slug": "trailblaze",
    "name": "Trailblaze",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 449,
+   "rank": 448,
    "slug": "transform",
    "name": "Transform",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 450,
+   "rank": 449,
    "slug": "tri-attack",
    "name": "Tri Attack",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 451,
+   "rank": 450,
    "slug": "trick-or-treat",
    "name": "Trick-or-Treat",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 452,
+   "rank": 451,
    "slug": "triple-arrows",
    "name": "Triple Arrows",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 453,
+   "rank": 452,
    "slug": "trop-kick",
    "name": "Trop Kick",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 454,
+   "rank": 453,
    "slug": "upper-hand",
    "name": "Upper Hand",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 455,
+   "rank": 454,
    "slug": "uproar",
    "name": "Uproar",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 456,
+   "rank": 455,
    "slug": "vacuum-wave",
    "name": "Vacuum Wave",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 457,
+   "rank": 456,
    "slug": "venoshock",
    "name": "Venoshock",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 458,
+   "rank": 457,
    "slug": "volt-tackle",
    "name": "Volt Tackle",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 459,
+   "rank": 458,
    "slug": "water-pulse",
    "name": "Water Pulse",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 460,
+   "rank": 459,
    "slug": "water-shuriken",
    "name": "Water Shuriken",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 461,
+   "rank": 460,
    "slug": "water-sport",
    "name": "Water Sport",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 462,
+   "rank": 461,
    "slug": "waterfall",
    "name": "Waterfall",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 463,
+   "rank": 462,
    "slug": "whirlpool",
    "name": "Whirlpool",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 464,
+   "rank": 463,
    "slug": "whirlwind",
    "name": "Whirlwind",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 465,
+   "rank": 464,
    "slug": "wild-charge",
    "name": "Wild Charge",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 466,
+   "rank": 465,
    "slug": "wish",
    "name": "Wish",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 467,
+   "rank": 466,
    "slug": "worry-seed",
    "name": "Worry Seed",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 468,
+   "rank": 467,
    "slug": "x-scissor",
    "name": "X-Scissor",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 469,
+   "rank": 468,
    "slug": "zen-headbutt",
    "name": "Zen Headbutt",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 470,
+   "rank": 469,
    "slug": "zing-zap",
    "name": "Zing Zap",
    "usage_percent": 0.0,
