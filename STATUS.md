@@ -80,7 +80,7 @@ python scripts/query.py speed --min 100
 ## What is loaded
 
 <!-- VINTAGE:START -->
-Regulation **M-C**. Ladder usage fetched 2026-10-08, from 334 Pokemon.
+Regulation **M-C**. Ladder usage fetched 2026-10-09, from 334 Pokemon.
 Tournament data is Worlds 2026, played under M-B - that is history, not stale.
 <!-- VINTAGE:END -->
 
@@ -96,7 +96,7 @@ The M-C move is written up in `analysis/regulation_m_c.md`.
 | Abilities | **216** |
 | Items | **199** |
 | Learnsets | **264** |
-| Ladder usage - Pokemon / moves / abilities / items | **334 / 469 / 191 / 158** |
+| Ladder usage - Pokemon / moves / abilities / items | **334 / 469 / 191 / 159** |
 | Speed tiers | **0** |
 | Smogon Pokemon (**58 with a written VGC analysis**) | **358** |
 | Worlds 2026 Masters - players / teamlists | **395 / 394** |
