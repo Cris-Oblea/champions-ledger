@@ -1,8 +1,8 @@
 {
  "source": "pokebase.app/pokemon-champions",
  "game": "Pokemon Champions",
- "fetched": "2026-10-09",
- "count": 191,
+ "fetched": "2026-10-10",
+ "count": 192,
  "rows": [
   {
    "rank": 1,
@@ -50,20 +50,20 @@
    "rank": 7,
    "slug": "lightning-rod",
    "name": "Lightning Rod",
-   "usage_percent": 3.4,
+   "usage_percent": 3.5,
    "description": ""
   },
   {
    "rank": 8,
-   "slug": "drizzle",
-   "name": "Drizzle",
-   "usage_percent": 2.9,
+   "slug": "rough-skin",
+   "name": "Rough Skin",
+   "usage_percent": 3.0,
    "description": ""
   },
   {
    "rank": 9,
-   "slug": "rough-skin",
-   "name": "Rough Skin",
+   "slug": "drizzle",
+   "name": "Drizzle",
    "usage_percent": 2.9,
    "description": ""
   },
@@ -111,22 +111,22 @@
   },
   {
    "rank": 16,
+   "slug": "stamina",
+   "name": "Stamina",
+   "usage_percent": 2.2,
+   "description": ""
+  },
+  {
+   "rank": 17,
    "slug": "flower-veil",
    "name": "Flower Veil",
    "usage_percent": 2.1,
    "description": ""
   },
   {
-   "rank": 17,
+   "rank": 18,
    "slug": "prankster",
    "name": "Prankster",
-   "usage_percent": 2.1,
-   "description": ""
-  },
-  {
-   "rank": 18,
-   "slug": "stamina",
-   "name": "Stamina",
    "usage_percent": 2.1,
    "description": ""
   },
@@ -141,7 +141,7 @@
    "rank": 20,
    "slug": "cursed-body",
    "name": "Cursed Body",
-   "usage_percent": 1.6,
+   "usage_percent": 1.7,
    "description": ""
   },
   {
@@ -181,22 +181,22 @@
   },
   {
    "rank": 26,
+   "slug": "hospitality",
+   "name": "Hospitality",
+   "usage_percent": 1.0,
+   "description": ""
+  },
+  {
+   "rank": 27,
    "slug": "clear-body",
    "name": "Clear Body",
    "usage_percent": 0.9,
    "description": ""
   },
   {
-   "rank": 27,
+   "rank": 28,
    "slug": "drought",
    "name": "Drought",
-   "usage_percent": 0.9,
-   "description": ""
-  },
-  {
-   "rank": 28,
-   "slug": "hospitality",
-   "name": "Hospitality",
    "usage_percent": 0.9,
    "description": ""
   },
@@ -307,51 +307,51 @@
   },
   {
    "rank": 44,
-   "slug": "compound-eyes",
-   "name": "Compound Eyes",
-   "usage_percent": 0.3,
-   "description": ""
-  },
-  {
-   "rank": 45,
    "slug": "infiltrator",
    "name": "Infiltrator",
    "usage_percent": 0.3,
    "description": ""
   },
   {
-   "rank": 46,
+   "rank": 45,
    "slug": "multiscale",
    "name": "Multiscale",
    "usage_percent": 0.3,
    "description": ""
   },
   {
-   "rank": 47,
+   "rank": 46,
    "slug": "rain-dish",
    "name": "Rain Dish",
    "usage_percent": 0.3,
    "description": ""
   },
   {
-   "rank": 48,
+   "rank": 47,
    "slug": "sharpness",
    "name": "Sharpness",
    "usage_percent": 0.3,
    "description": ""
   },
   {
-   "rank": 49,
+   "rank": 48,
    "slug": "solid-rock",
    "name": "Solid Rock",
    "usage_percent": 0.3,
    "description": ""
   },
   {
-   "rank": 50,
+   "rank": 49,
    "slug": "synchronize",
    "name": "Synchronize",
    "usage_percent": 0.3,
+   "description": ""
+  },
+  {
+   "rank": 50,
+   "slug": "compound-eyes",
+   "name": "Compound Eyes",
+   "usage_percent": 0.2,
    "description": ""
   },
   {
@@ -755,587 +755,594 @@
   },
   {
    "rank": 108,
+   "slug": "curious-medicine",
+   "name": "Curious Medicine",
+   "usage_percent": 0.0,
+   "description": ""
+  },
+  {
+   "rank": 109,
    "slug": "dry-skin",
    "name": "Dry Skin",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 109,
+   "rank": 110,
    "slug": "earth-eater",
    "name": "Earth Eater",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 110,
+   "rank": 111,
    "slug": "eelevate",
    "name": "Eelevate",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 111,
+   "rank": 112,
    "slug": "electric-surge",
    "name": "Electric Surge",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 112,
+   "rank": 113,
    "slug": "electromorphosis",
    "name": "Electromorphosis",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 113,
+   "rank": 114,
    "slug": "filter",
    "name": "Filter",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 114,
+   "rank": 115,
    "slug": "firemane",
    "name": "Fire Mane",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 115,
+   "rank": 116,
    "slug": "fluffy",
    "name": "Fluffy",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 116,
+   "rank": 117,
    "slug": "forecast",
    "name": "Forecast",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 117,
+   "rank": 118,
    "slug": "frisk",
    "name": "Frisk",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 118,
+   "rank": 119,
    "slug": "fur-coat",
    "name": "Fur Coat",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 119,
+   "rank": 120,
    "slug": "gluttony",
    "name": "Gluttony",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 120,
+   "rank": 121,
    "slug": "gooey",
    "name": "Gooey",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 121,
+   "rank": 122,
    "slug": "grass-pelt",
    "name": "Grass Pelt",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 122,
+   "rank": 123,
    "slug": "guard-dog",
    "name": "Guard Dog",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 123,
+   "rank": 124,
    "slug": "guts",
    "name": "Guts",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 124,
+   "rank": 125,
    "slug": "harvest",
    "name": "Harvest",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 125,
+   "rank": 126,
    "slug": "healer",
    "name": "Healer",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 126,
+   "rank": 127,
    "slug": "heatproof",
    "name": "Heatproof",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 127,
+   "rank": 128,
    "slug": "heavy-metal",
    "name": "Heavy Metal",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 128,
+   "rank": 129,
    "slug": "huge-power",
    "name": "Huge Power",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 129,
+   "rank": 130,
    "slug": "hunger-switch",
    "name": "Hunger Switch",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 130,
+   "rank": 131,
    "slug": "hustle",
    "name": "Hustle",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 131,
+   "rank": 132,
    "slug": "hydration",
    "name": "Hydration",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 132,
+   "rank": 133,
    "slug": "ice-body",
    "name": "Ice Body",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 133,
+   "rank": 134,
    "slug": "illuminate",
    "name": "Illuminate",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 134,
+   "rank": 135,
    "slug": "immunity",
    "name": "Immunity",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 135,
+   "rank": 136,
    "slug": "imposter",
    "name": "Imposter",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 136,
+   "rank": 137,
    "slug": "insomnia",
    "name": "Insomnia",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 137,
+   "rank": 138,
    "slug": "keen-eye",
    "name": "Keen Eye",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 138,
+   "rank": 139,
    "slug": "klutz",
    "name": "Klutz",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 139,
+   "rank": 140,
    "slug": "libero",
    "name": "Libero",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 140,
+   "rank": 141,
    "slug": "light-metal",
    "name": "Light Metal",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 141,
+   "rank": 142,
    "slug": "liquid-ooze",
    "name": "Liquid Ooze",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 142,
+   "rank": 143,
    "slug": "long-reach",
    "name": "Long Reach",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 143,
+   "rank": 144,
    "slug": "magician",
    "name": "Magician",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 144,
+   "rank": 145,
    "slug": "magma-armor",
    "name": "Magma Armor",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 145,
+   "rank": 146,
    "slug": "marvel-scale",
    "name": "Marvel Scale",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 146,
+   "rank": 147,
    "slug": "mega-launcher",
    "name": "Mega Launcher",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 147,
+   "rank": 148,
    "slug": "mega-sol",
    "name": "Mega Sol",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 148,
+   "rank": 149,
    "slug": "merciless",
    "name": "Merciless",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 149,
+   "rank": 150,
    "slug": "mimicry",
    "name": "Mimicry",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 150,
+   "rank": 151,
    "slug": "motor-drive",
    "name": "Motor Drive",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 151,
+   "rank": 152,
    "slug": "mummy",
    "name": "Mummy",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 152,
+   "rank": 153,
    "slug": "natural-cure",
    "name": "Natural Cure",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 153,
+   "rank": 154,
    "slug": "opportunist",
    "name": "Opportunist",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 154,
+   "rank": 155,
    "slug": "overcoat",
    "name": "Overcoat",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 155,
+   "rank": 156,
    "slug": "own-tempo",
    "name": "Own Tempo",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 156,
+   "rank": 157,
    "slug": "pickup",
    "name": "Pickup",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 157,
+   "rank": 158,
    "slug": "plus",
    "name": "Plus",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 158,
+   "rank": 159,
    "slug": "poison-point",
    "name": "Poison Point",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 159,
+   "rank": 160,
    "slug": "pure-power",
    "name": "Pure Power",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 160,
+   "rank": 161,
    "slug": "purifying-salt",
    "name": "Purifying Salt",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 161,
+   "rank": 162,
    "slug": "quick-draw",
    "name": "Quick Draw",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 162,
+   "rank": 163,
    "slug": "receiver",
    "name": "Receiver",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 163,
+   "rank": 164,
    "slug": "reckless",
    "name": "Reckless",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 164,
+   "rank": 165,
    "slug": "refrigerate",
    "name": "Refrigerate",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 165,
+   "rank": 166,
    "slug": "rivalry",
    "name": "Rivalry",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 166,
+   "rank": 167,
    "slug": "sand-force",
    "name": "Sand Force",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 167,
+   "rank": 168,
    "slug": "sap-sipper",
    "name": "Sap Sipper",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 168,
+   "rank": 169,
    "slug": "screen-cleaner",
    "name": "Screen Cleaner",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 169,
+   "rank": 170,
    "slug": "seed-sower",
    "name": "Seed Sower",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 170,
+   "rank": 171,
    "slug": "shadow-tag",
    "name": "Shadow Tag",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 171,
+   "rank": 172,
    "slug": "sheer-force",
    "name": "Sheer Force",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 172,
+   "rank": 173,
    "slug": "shield-dust",
    "name": "Shield Dust",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 173,
+   "rank": 174,
    "slug": "skill-link",
    "name": "Skill Link",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 174,
+   "rank": 175,
    "slug": "slush-rush",
    "name": "Slush Rush",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 175,
+   "rank": 176,
    "slug": "spicy-spray",
    "name": "Spicy Spray",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 176,
+   "rank": 177,
    "slug": "stalwart",
    "name": "Stalwart",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 177,
+   "rank": 178,
    "slug": "steadfast",
    "name": "Steadfast",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 178,
+   "rank": 179,
    "slug": "steely-spirit",
    "name": "Steely Spirit",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 179,
+   "rank": 180,
    "slug": "strong-jaw",
    "name": "Strong Jaw",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 180,
+   "rank": 181,
    "slug": "supersweet-syrup",
    "name": "Supersweet Syrup",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 181,
+   "rank": 182,
    "slug": "supreme-overlord",
    "name": "Supreme Overlord",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 182,
+   "rank": 183,
    "slug": "surge-surfer",
    "name": "Surge Surfer",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 183,
+   "rank": 184,
    "slug": "swarm",
    "name": "Swarm",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 184,
+   "rank": 185,
    "slug": "sweet-veil",
    "name": "Sweet Veil",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 185,
+   "rank": 186,
    "slug": "symbiosis",
    "name": "Symbiosis",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 186,
+   "rank": 187,
    "slug": "unseen-fist",
    "name": "Unseen Fist",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 187,
+   "rank": 188,
    "slug": "vital-spirit",
    "name": "Vital Spirit",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 188,
+   "rank": 189,
    "slug": "wandering-spirit",
    "name": "Wandering Spirit",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 189,
+   "rank": 190,
    "slug": "water-absorb",
    "name": "Water Absorb",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 190,
+   "rank": 191,
    "slug": "white-smoke",
    "name": "White Smoke",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 191,
+   "rank": 192,
    "slug": "zero-to-hero",
    "name": "Zero to Hero",
    "usage_percent": 0.0,
