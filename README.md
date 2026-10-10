@@ -18,7 +18,7 @@ another entry is mixed in anywhere. Format is **VGC**: doubles, bring 6 / pick 4
 ## What the data describes right now
 
 <!-- VINTAGE:START -->
-Regulation **M-C**. Ladder usage fetched 2026-10-09, from 334 Pokemon.
+Regulation **M-C**. Ladder usage fetched 2026-10-10, from 334 Pokemon.
 Tournament data is Worlds 2026, played under M-B - that is history, not stale.
 <!-- VINTAGE:END -->
 
@@ -260,7 +260,7 @@ stack trace still names the file a person edits. **Edit a part, never
 | `data/db/effects.json` | 390 | What an item or ability multiplies, exactly, read out of the engine |
 | `data/db/typechart.json` | 18 | The type chart, cross-checked on 3402 matchups |
 | `data/meta/usage_pokemon.json` | 334 | Ladder usage per Pokemon |
-| `data/meta/usage_moves.json` | 469 | Ladder usage per move |
+| `data/meta/usage_moves.json` | 470 | Ladder usage per move |
 | `data/meta/speed_tiers.json` | 0 | Base Speed to real Speed at every investment |
 | `data/meta/smogon_analyses.json` | 358 | Smogon's written VGC analyses |
 <!-- COUNTS:END -->
