@@ -1,8 +1,8 @@
 {
  "source": "pokebase.app/pokemon-champions",
  "game": "Pokemon Champions",
- "fetched": "2026-10-10",
- "count": 192,
+ "fetched": "2026-10-11",
+ "count": 193,
  "rows": [
   {
    "rank": 1,
@@ -15,7 +15,7 @@
    "rank": 2,
    "slug": "grassy-surge",
    "name": "Grassy Surge",
-   "usage_percent": 8.9,
+   "usage_percent": 8.8,
    "description": ""
   },
   {
@@ -29,7 +29,7 @@
    "rank": 4,
    "slug": "defiant",
    "name": "Defiant",
-   "usage_percent": 4.4,
+   "usage_percent": 4.3,
    "description": ""
   },
   {
@@ -181,22 +181,22 @@
   },
   {
    "rank": 26,
-   "slug": "hospitality",
-   "name": "Hospitality",
-   "usage_percent": 1.0,
-   "description": ""
-  },
-  {
-   "rank": 27,
    "slug": "clear-body",
    "name": "Clear Body",
    "usage_percent": 0.9,
    "description": ""
   },
   {
-   "rank": 28,
+   "rank": 27,
    "slug": "drought",
    "name": "Drought",
+   "usage_percent": 0.9,
+   "description": ""
+  },
+  {
+   "rank": 28,
+   "slug": "hospitality",
+   "name": "Hospitality",
    "usage_percent": 0.9,
    "description": ""
   },
@@ -216,22 +216,22 @@
   },
   {
    "rank": 31,
+   "slug": "liquid-voice",
+   "name": "Liquid Voice",
+   "usage_percent": 0.7,
+   "description": ""
+  },
+  {
+   "rank": 32,
    "slug": "poison-touch",
    "name": "Poison Touch",
    "usage_percent": 0.7,
    "description": ""
   },
   {
-   "rank": 32,
+   "rank": 33,
    "slug": "levitate",
    "name": "Levitate",
-   "usage_percent": 0.6,
-   "description": ""
-  },
-  {
-   "rank": 33,
-   "slug": "liquid-voice",
-   "name": "Liquid Voice",
    "usage_percent": 0.6,
    "description": ""
   },
@@ -307,99 +307,99 @@
   },
   {
    "rank": 44,
+   "slug": "compound-eyes",
+   "name": "Compound Eyes",
+   "usage_percent": 0.3,
+   "description": ""
+  },
+  {
+   "rank": 45,
    "slug": "infiltrator",
    "name": "Infiltrator",
    "usage_percent": 0.3,
    "description": ""
   },
   {
-   "rank": 45,
+   "rank": 46,
    "slug": "multiscale",
    "name": "Multiscale",
    "usage_percent": 0.3,
    "description": ""
   },
   {
-   "rank": 46,
+   "rank": 47,
    "slug": "rain-dish",
    "name": "Rain Dish",
    "usage_percent": 0.3,
    "description": ""
   },
   {
-   "rank": 47,
+   "rank": 48,
+   "slug": "regenerator",
+   "name": "Regenerator",
+   "usage_percent": 0.3,
+   "description": ""
+  },
+  {
+   "rank": 49,
    "slug": "sharpness",
    "name": "Sharpness",
    "usage_percent": 0.3,
    "description": ""
   },
   {
-   "rank": 48,
+   "rank": 50,
    "slug": "solid-rock",
    "name": "Solid Rock",
    "usage_percent": 0.3,
    "description": ""
   },
   {
-   "rank": 49,
+   "rank": 51,
    "slug": "synchronize",
    "name": "Synchronize",
    "usage_percent": 0.3,
    "description": ""
   },
   {
-   "rank": 50,
-   "slug": "compound-eyes",
-   "name": "Compound Eyes",
-   "usage_percent": 0.2,
-   "description": ""
-  },
-  {
-   "rank": 51,
+   "rank": 52,
    "slug": "damp",
    "name": "Damp",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 52,
+   "rank": 53,
    "slug": "friend-guard",
    "name": "Friend Guard",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 53,
+   "rank": 54,
    "slug": "gale-wings",
    "name": "Gale Wings",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 54,
+   "rank": 55,
    "slug": "hyper-cutter",
    "name": "Hyper Cutter",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 55,
+   "rank": 56,
    "slug": "justified",
    "name": "Justified",
    "usage_percent": 0.2,
    "description": ""
   },
   {
-   "rank": 56,
+   "rank": 57,
    "slug": "overgrow",
    "name": "Overgrow",
-   "usage_percent": 0.2,
-   "description": ""
-  },
-  {
-   "rank": 57,
-   "slug": "regenerator",
-   "name": "Regenerator",
    "usage_percent": 0.2,
    "description": ""
   },
@@ -1308,41 +1308,48 @@
   },
   {
    "rank": 187,
+   "slug": "tangled-feet",
+   "name": "Tangled Feet",
+   "usage_percent": 0.0,
+   "description": ""
+  },
+  {
+   "rank": 188,
    "slug": "unseen-fist",
    "name": "Unseen Fist",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 188,
+   "rank": 189,
    "slug": "vital-spirit",
    "name": "Vital Spirit",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 189,
+   "rank": 190,
    "slug": "wandering-spirit",
    "name": "Wandering Spirit",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 190,
+   "rank": 191,
    "slug": "water-absorb",
    "name": "Water Absorb",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 191,
+   "rank": 192,
    "slug": "white-smoke",
    "name": "White Smoke",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 192,
+   "rank": 193,
    "slug": "zero-to-hero",
    "name": "Zero to Hero",
    "usage_percent": 0.0,
