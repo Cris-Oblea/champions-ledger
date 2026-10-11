@@ -1,8 +1,8 @@
 {
  "source": "pokebase.app/pokemon-champions",
  "game": "Pokemon Champions",
- "fetched": "2026-10-10",
- "count": 470,
+ "fetched": "2026-10-11",
+ "count": 472,
  "rows": [
   {
    "rank": 1,
@@ -69,36 +69,36 @@
   },
   {
    "rank": 10,
-   "slug": "iron-head",
-   "name": "Iron Head",
-   "usage_percent": 1.7,
-   "description": ""
-  },
-  {
-   "rank": 11,
    "slug": "rock-slide",
    "name": "Rock Slide",
    "usage_percent": 1.7,
    "description": ""
   },
   {
-   "rank": 12,
+   "rank": 11,
    "slug": "shadow-ball",
    "name": "Shadow Ball",
    "usage_percent": 1.7,
    "description": ""
   },
   {
-   "rank": 13,
+   "rank": 12,
    "slug": "dire-claw",
    "name": "Dire Claw",
    "usage_percent": 1.6,
    "description": ""
   },
   {
-   "rank": 14,
+   "rank": 13,
    "slug": "high-horsepower",
    "name": "High Horsepower",
+   "usage_percent": 1.6,
+   "description": ""
+  },
+  {
+   "rank": 14,
+   "slug": "iron-head",
+   "name": "Iron Head",
    "usage_percent": 1.6,
    "description": ""
   },
@@ -230,78 +230,78 @@
   },
   {
    "rank": 33,
-   "slug": "low-kick",
-   "name": "Low Kick",
-   "usage_percent": 0.8,
-   "description": ""
-  },
-  {
-   "rank": 34,
    "slug": "moonblast",
    "name": "Moonblast",
    "usage_percent": 0.8,
    "description": ""
   },
   {
-   "rank": 35,
+   "rank": 34,
    "slug": "throat-chop",
    "name": "Throat Chop",
    "usage_percent": 0.8,
    "description": ""
   },
   {
-   "rank": 36,
+   "rank": 35,
    "slug": "zap-cannon",
    "name": "Zap Cannon",
    "usage_percent": 0.8,
    "description": ""
   },
   {
-   "rank": 37,
+   "rank": 36,
    "slug": "aqua-jet",
    "name": "Aqua Jet",
    "usage_percent": 0.7,
    "description": ""
   },
   {
-   "rank": 38,
+   "rank": 37,
    "slug": "calm-mind",
    "name": "Calm Mind",
    "usage_percent": 0.7,
    "description": ""
   },
   {
-   "rank": 39,
+   "rank": 38,
    "slug": "extreme-speed",
    "name": "Extreme Speed",
    "usage_percent": 0.7,
    "description": ""
   },
   {
-   "rank": 40,
+   "rank": 39,
    "slug": "flamethrower",
    "name": "Flamethrower",
    "usage_percent": 0.7,
    "description": ""
   },
   {
-   "rank": 41,
+   "rank": 40,
    "slug": "head-smash",
    "name": "Head Smash",
    "usage_percent": 0.7,
    "description": ""
   },
   {
-   "rank": 42,
+   "rank": 41,
    "slug": "hurricane",
    "name": "Hurricane",
    "usage_percent": 0.7,
    "description": ""
   },
   {
-   "rank": 43,
+   "rank": 42,
    "slug": "last-respects",
    "name": "Last Respects",
+   "usage_percent": 0.7,
+   "description": ""
+  },
+  {
+   "rank": 43,
+   "slug": "low-kick",
+   "name": "Low Kick",
    "usage_percent": 0.7,
    "description": ""
   },
@@ -3044,251 +3044,265 @@
   },
   {
    "rank": 435,
+   "slug": "teeter-dance",
+   "name": "Teeter Dance",
+   "usage_percent": 0.0,
+   "description": ""
+  },
+  {
+   "rank": 436,
    "slug": "temper-flare",
    "name": "Temper Flare",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 436,
+   "rank": 437,
    "slug": "thief",
    "name": "Thief",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 437,
+   "rank": 438,
    "slug": "thrash",
    "name": "Thrash",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 438,
+   "rank": 439,
    "slug": "thunder",
    "name": "Thunder",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 439,
+   "rank": 440,
    "slug": "thunder-fang",
    "name": "Thunder Fang",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 440,
+   "rank": 441,
    "slug": "thunder-punch",
    "name": "Thunder Punch",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 441,
+   "rank": 442,
    "slug": "thunder-wave",
    "name": "Thunder Wave",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 442,
+   "rank": 443,
    "slug": "tickle",
    "name": "Tickle",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 443,
+   "rank": 444,
    "slug": "tidy-up",
    "name": "Tidy Up",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 444,
+   "rank": 445,
    "slug": "topsy-turvy",
    "name": "Topsy-Turvy",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 445,
+   "rank": 446,
    "slug": "torch-song",
    "name": "Torch Song",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 446,
+   "rank": 447,
    "slug": "torment",
    "name": "Torment",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 447,
+   "rank": 448,
    "slug": "toxic-spikes",
    "name": "Toxic Spikes",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 448,
+   "rank": 449,
    "slug": "trailblaze",
    "name": "Trailblaze",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 449,
+   "rank": 450,
    "slug": "transform",
    "name": "Transform",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 450,
+   "rank": 451,
    "slug": "tri-attack",
    "name": "Tri Attack",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 451,
+   "rank": 452,
    "slug": "trick-or-treat",
    "name": "Trick-or-Treat",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 452,
+   "rank": 453,
    "slug": "triple-arrows",
    "name": "Triple Arrows",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 453,
+   "rank": 454,
    "slug": "trop-kick",
    "name": "Trop Kick",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 454,
+   "rank": 455,
    "slug": "upper-hand",
    "name": "Upper Hand",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 455,
+   "rank": 456,
    "slug": "uproar",
    "name": "Uproar",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 456,
+   "rank": 457,
    "slug": "vacuum-wave",
    "name": "Vacuum Wave",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 457,
+   "rank": 458,
    "slug": "venoshock",
    "name": "Venoshock",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 458,
+   "rank": 459,
    "slug": "volt-tackle",
    "name": "Volt Tackle",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 459,
+   "rank": 460,
+   "slug": "water-gun",
+   "name": "Water Gun",
+   "usage_percent": 0.0,
+   "description": ""
+  },
+  {
+   "rank": 461,
    "slug": "water-pulse",
    "name": "Water Pulse",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 460,
+   "rank": 462,
    "slug": "water-shuriken",
    "name": "Water Shuriken",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 461,
+   "rank": 463,
    "slug": "water-sport",
    "name": "Water Sport",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 462,
+   "rank": 464,
    "slug": "waterfall",
    "name": "Waterfall",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 463,
+   "rank": 465,
    "slug": "whirlpool",
    "name": "Whirlpool",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 464,
+   "rank": 466,
    "slug": "whirlwind",
    "name": "Whirlwind",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 465,
+   "rank": 467,
    "slug": "wild-charge",
    "name": "Wild Charge",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 466,
+   "rank": 468,
    "slug": "wish",
    "name": "Wish",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 467,
+   "rank": 469,
    "slug": "worry-seed",
    "name": "Worry Seed",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 468,
+   "rank": 470,
    "slug": "x-scissor",
    "name": "X-Scissor",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 469,
+   "rank": 471,
    "slug": "zen-headbutt",
    "name": "Zen Headbutt",
    "usage_percent": 0.0,
    "description": ""
   },
   {
-   "rank": 470,
+   "rank": 472,
    "slug": "zing-zap",
    "name": "Zing Zap",
    "usage_percent": 0.0,
