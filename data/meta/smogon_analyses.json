@@ -2,7 +2,7 @@
  "source": "smogon.com/dex/champions",
  "game": "Pokemon Champions",
  "note": "VGC formats only (doubles, bring 6 pick 4). Singles dropped.",
- "fetched": "2026-10-05",
+ "fetched": "2026-10-12",
  "count": 358,
  "with_vgc_analysis": 58,
  "pokemon": [
@@ -6978,24 +6978,6 @@
    "vgc_strategies": []
   },
   {
-   "name": "Absol-Mega-Z",
-   "alias": "absol-mega-z",
-   "types": [
-    "Dark",
-    "Ghost"
-   ],
-   "base_stats": {
-    "hp": 65,
-    "atk": 154,
-    "def": 60,
-    "spa": 75,
-    "spd": 60,
-    "spe": 151
-   },
-   "learnset": [],
-   "vgc_strategies": []
-  },
-  {
    "name": "Clefable",
    "alias": "clefable",
    "types": [
@@ -9019,23 +9001,6 @@
    ]
   },
   {
-   "name": "Garchomp-Mega-Z",
-   "alias": "garchomp-mega-z",
-   "types": [
-    "Dragon"
-   ],
-   "base_stats": {
-    "hp": 108,
-    "atk": 130,
-    "def": 85,
-    "spa": 141,
-    "spd": 85,
-    "spe": 151
-   },
-   "learnset": [],
-   "vgc_strategies": []
-  },
-  {
    "name": "Lucario",
    "alias": "lucario",
    "types": [
@@ -9135,24 +9100,6 @@
     "Water Pulse",
     "Zen Headbutt"
    ],
-   "vgc_strategies": []
-  },
-  {
-   "name": "Lucario-Mega-Z",
-   "alias": "lucario-mega-z",
-   "types": [
-    "Fighting",
-    "Steel"
-   ],
-   "base_stats": {
-    "hp": 70,
-    "atk": 100,
-    "def": 70,
-    "spa": 164,
-    "spd": 70,
-    "spe": 151
-   },
-   "learnset": [],
    "vgc_strategies": []
   },
   {
@@ -18144,7 +18091,7 @@
          "Parting Shot"
         ]
        ],
-       "explanation": "Incineroar is able to use its stellar supportive moves and ability, strong defensive typing, and solid stats to be one of the best Pokemon in Regulation M-B, tanking attacks from the likes of Kingambit and Mega Charizard Y while shutting down and even offensively threatening Sinistcha and Mega Delphox.\nThroat Chop: Throat Chop is able to not only deal solid damage but also shut off Hyper Voice from Sylveon, forcing it to either use Hyper Beam, Quick Attack, or Detect. Throat Chop also blocks Parting Shot from opposing Incineroar and Grimmsnarl, preventing them from gaining momentum or breaking out of Shadow Tag from Mega Gengar.\nParting Shot: Thanks to Incineroar's relatively low Speed, it can usually move last to safely bring in frailer allies like Mega Gengar and Venusaur with Parting Shot.\nSitrus Berry: Sitrus Berry increases Incineroar's longevity, letting it almost always avoid a 2HKO from Calm Mind Mega Floette's Moonblast.\nIntimidate: Intimidate allows Incineroar to survive Close Combat from Sneasler while keeping foes like Mega Metagross and Mega Mawile under control.\nOther Options\nHelping Hand: Helping Hand lets Incineroar boost the damage of partners like Mega Blastoise. However, Incineroar would have to drop Throat Chop, which worsens its matchup against Ghost-types, especially Ceruledge, a Pokemon that it normally performs well against, and makes it harder to damage foes like Mega Charizard Y and Mega Delphox.\nPassho Berry: Passho Berry is a good option against the variety of Water-type Pokemon like Basculegion-M, Mega Swampert, and +2 Special Attack Milotic, though it harms Incineroar's longevity significantly in other matchups.\nDarkest Lariat: Darkest Lariat can replace Throat Chop to deal slightly more damage, having higher odds to OHKO uninvested Mega Delphox, and ignore Archaludon's Defense boosts from Stamina, though Incineroar loses the utility of shutting down Hyper Voice from Sylveon as well as Parting Shot from opposing Incineroar.\nProtect: Protect is generally only used alongside Mega Gengar, as it allows Incineroar to help stall out turns of Perish Song. This comes at the cost of dropping either Flare Blitz or Throat Chop. Protect can also be used alongside Toxapex to rack up chip damage from Toxic poison and Infestation.\nSP Spreads\n32 HP / 11 SpD / 23 Spe with Careful: The Speed investment on this spread allows Incineroar to outspeed Focus Sash Kingambit as well as most opposing Incineroar, allowing it to use Fake Out first most of the time. With the bulk investment, it survives +1 Moonblast from Calm Mind Mega Floette and rain-boosted Weather Ball from bulky Pelipper sets, all while having optimized HP for Sitrus Berry recovery.\n32 HP / 23 Def / 11 SpD with Impish: This spread leans more into Incineroar's Defense, letting it survive Close Combat from Jolly Sneasler and +2 Low Kick from Kingambit. The rest of the SPs are dumped into Special Defense to give Incineroar better odds at surviving Hyper Beam from Sylveon.\n30 HP / 17 Def / 19 SpD with Sassy: With the given SP spread, Incineroar is able to survive Light of Ruin from Modest Mega Floette, avoid a 2HKO from Life Orb Garchomp's Earthquake when accounting for Sitrus Berry, and almost always survive Wave Crash from Jolly Adaptability Basculegion-M after it's affected by Intimidate. A Sassy nature is used to make Incineroar a more effective slow pivot, enabling it to safely get in allies like Mega Gengar for Perish Trap strategies.\nTeambuilding\nChecks and Weaknesses: Fighting-types like Sneasler and Mega Staraptor can easily threaten Incineroar with Close Combat. Sneasler commonly holds the White Herb, which reverts the Attack drops from Incineroar's Intimidate and Parting Shot and enables it to OHKO Incineroar with Close Combat, while Mega Staraptor can turn Intimidate's and Parting Shot's Attack drops into boosts thanks to Contrary.\nKingambit and Annihilape can use Defiant to gain an Attack boost from Intimidate or Parting Shot. The former can retaliate with Low Kick, which, assuming Incineroar moves first, has good odds to KO Incineroar when accounting for Flare Blitz's recoil damage, and the latter always OHKOes it with Close Combat. Mega Raichu Y can use Fake Out before Incineroar can use its own Fake Out and then can use Focus Blast to threaten huge damage onto it.\nWater-type Pokemon: Basculegion-M and Mega Swampert are able to deal big damage to Incineroar with Wave Crash or OHKO it when the rain is set up. Basculegion-M can even OHKO Incineroar without the rain when holding Mystic Water or Life Orb, and it's also immune to Fake Out. Not only can Pelipper and Politoed set up the rain to enable the aforementioned foes to OHKO Incineroar, but they can also deal heavy damage to it with Weather Ball.\nMilotic can take Intimidate or Parting Shot and receive a Special Attack boost thanks to Competitive, which lets it easily 2HKO Incineroar with a +2 Scald or Muddy Water, while Rotom-Wash can use Hydro Pump to 2HKO Incineroar. Mega Blastoise is able to easily OHKO Incineroar with Water Spout, especially after Shell Smash is used, while shrugging off any damage that Incineroar can deal.\nToxapex can poison Incineroar with Toxic, heavily lowering its longevity and putting it on a timer, while not being too annoyed by Parting Shot.\nGround-type Pokemon and Moves: Ground-types like Garchomp and Excadrill are able to threaten big damage into Incineroar with Earthquake, Stomping Tantrum, and High Horsepower. Garchomp even punishes Incineroar using Fake Out thanks to Rough Skin.\nMega Venusaur can use Earth Power to deal solid damage to Incineroar while having Thick Fat to reduce the damage of Flare Blitz, and it is commonly run alongside rain or dual screens, both of which further reduce Flare Blitz's damage output.\nRock-type Pokemon: Rock-type Pokemon like Mega Aerodactyl, Mega Tyranitar, and Hisuian Arcanine all solidly threaten Incineroar with Rock Slide and Head Smash, even if they are affected by Intimidate. Mega Tyranitar in particular resists both of Incineroar's STAB attacks and can potentially offset Attack drops from Intimidate with Dragon Dance. Glimmora, as opposed to other Rock-type Pokemon in the format, is not affected by Intimidate and can use Power Gem to threaten Incineroar.\nGood Partners and Synergies: Despite sharing a Fighting-type weakness with Incineroar, Kingambit is an excellent ally able to threaten Basculegion-M with Sucker Punch before it can move. Additionally, it does huge damage to Rock-type Pokemon with Iron Head and handles opposing Kingambit with Low Kick. Incineroar can, in return, weaken the damage output of Pokemon like Garchomp and opposing Incineroar while beating Ceruledge.\nSneasler is able to threaten opposing Kingambit and Rock-types with Close Combat while forming a strong Fake Out core with Incineroar. Garchomp is another great partner against Rock-type Pokemon, and it even does well against Kingambit, Excadrill, Toxapex, and, when provided with proper speed control, opposing Garchomp.\nSpeed Control Setters: Sinistcha is able to 2HKO most Water-type Pokemon with Matcha Gotcha and can redirect Water-, Ground-, and Fighting-type attacks with Rage Powder. Thanks to Incineroar's Fake Out, Sinistcha can easily set up Trick Room. Incineroar also threatens Steel-type Pokemon like Gholdengo and Mega Mawile, both of which may give Sinistcha trouble. Whimsicott is another Grass-type partner that can swap into Water-, Ground-, and Fighting-type attacks while having Moonblast to threaten Garchomp and Encore to punish foes that use Protect to avoid Incineroar's Fake Out.\nFarigiraf is able to threaten Fighting-type Pokemon like Sneasler with Psychic while using Thunderbolt to threaten Water-type Pokemon like Basculegion-M and Pelipper. In return, Incineroar's Fake Out to can help Farigiraf set up Trick Room, while Flare Blitz and Throat Chop threaten Gholdengo and Mega Metagross, Pokemon that threaten Farigiraf with huge damage while taking little from it.\nMega Evolutions: Mega Charizard Y sets up the sun, enabling Incineroar to OHKO Kingambit and survive Wave Crash from even Life Orb Adaptability Basculegion-M. It also carries Solar Beam, which threatens Water-type Pokemon like the aforementioned Basculegion-M. In return, Incineroar provides Intimidate support, letting Mega Charizard Y survive attacks like Rock Slide from Life Orb Garchomp and Accelerock from Lycanroc-D.\nMega Floette is able to threaten Mega Tyranitar, Garchomp, and Fighting-type Pokemon like Annihilape with Moonblast and Dazzling Gleam while blasting through neutral targets like Rotom-W. In return, Fake Out and Intimidate from Incineroar can help Mega Floette attack safely or set up with Calm Mind, Parting Shot can bring in Mega Floette safely, and Flare Blitz can threaten the Steel-type Pokemon that Mega Floette fears.\nThanks to Incineroar's incredible defensive profile, it is an amazing partner for Mega Gengar. Incineroar can help it stall out Perish Song turns by pivoting around and weakening foes with Parting Shot and Intimidate while preventing them from taking out Mega Gengar by using Fake Out. Many of the big threats to Mega Gengar, like Basculegion-M and Garchomp, are weakened by Intimidate. Gengar also appreciates its support against Psychic-type attacks like Psychic from Farigiraf, which Incineroar can easily swap into. In return, Mega Gengar is an amazing answer to the plethora of Fighting-type Pokemon that threaten Incineroar. Incineroar can perform various tricks with Mega Gengar's Shadow Tag; for example, Incineroar can use Parting Shot on the same turn Gengar swaps out to pivot it back in, enabling Gengar to keep the trap going while protecting it from harm.\nSetup Pokemon like Mega Delphox and Mega Blastoise heavily appreciate the support from Incineroar, as Intimidate and Fake Out make it easier for them to set up with Nasty Plot and Shell Smash."
+       "explanation": "Incineroar is able to use its stellar supportive moves and ability, strong defensive typing, and solid stats to be one of the best Pokemon in Regulation M-B, tanking attacks from the likes of Kingambit and Mega Charizard Y while shutting down and even offensively threatening Sinistcha and Mega Delphox.\nThroat Chop: Throat Chop is able to not only deal solid damage but also shut off Hyper Voice from Sylveon, forcing it to either use Hyper Beam, Quick Attack, or Detect. Throat Chop also blocks Parting Shot from opposing Incineroar and Grimmsnarl, preventing them from gaining momentum or breaking out of Shadow Tag from Mega Gengar.\nParting Shot: Thanks to Incineroar's relatively low Speed, it can usually move last to safely bring in frailer allies like Mega Gengar and Venusaur with Parting Shot.\nSitrus Berry: Sitrus Berry increases Incineroar's longevity, letting it almost always avoid a 2HKO from Calm Mind Mega Floette's Moonblast.\nIntimidate: Intimidate allows Incineroar to survive Close Combat from Sneasler while keeping foes like Mega Metagross and Mega Mawile under control.\nOther Options\nHelping Hand: Helping Hand lets Incineroar boost the damage of partners like Mega Blastoise. However, Incineroar would have to drop Throat Chop, which worsens its matchup against Ghost-types, especially Ceruledge, a Pokemon that it normally performs well against, and makes it harder to damage foes like Mega Charizard Y and Mega Delphox.\nPassho Berry: Passho Berry is a good option against the variety of Water-type Pokemon like Basculegion-M, Mega Swampert, and +2 Special Attack Milotic, though it harms Incineroar's longevity significantly in other matchups.\nDarkest Lariat: Darkest Lariat can replace Throat Chop to deal slightly more damage, having higher odds to OHKO uninvested Mega Delphox, and ignore Archaludon's Defense boosts from Stamina, though Incineroar loses the utility of shutting down Hyper Voice from Sylveon as well as Parting Shot from opposing Incineroar.\nProtect: Protect is generally only used alongside Mega Gengar, as it allows Incineroar to help stall out turns of Perish Song. This comes at the cost of dropping either Flare Blitz or Throat Chop. Protect can also be used alongside Toxapex to rack up chip damage from Toxic poison and Infestation.\nSP Spreads\n32 HP / 11 SpD / 23 Spe with Careful: The Speed investment on this spread allows Incineroar to outspeed Focus Sash Kingambit as well as most opposing Incineroar, allowing it to use Fake Out first most of the time. With the bulk investment, it survives +1 Moonblast from Calm Mind Mega Floette and rain-boosted Weather Ball from bulky Pelipper sets, all while having optimized HP for Sitrus Berry recovery.\n32 HP / 23 Def / 11 SpD with Impish: This spread leans more into Incineroar's Defense, letting it survive Close Combat from Jolly Sneasler and +2 Low Kick from Kingambit. The rest of the SPs are dumped into Special Defense to give Incineroar better odds at surviving Hyper Beam from Sylveon.\n30 HP / 17 Def / 19 SpD with Sassy: With the given SP spread, Incineroar is able to survive Light of Ruin from Modest Mega Floette, avoid a 2HKO from Life Orb Garchomp's Earthquake when accounting for Sitrus Berry, and almost always survive Wave Crash from Jolly Adaptability Basculegion-M after it's affected by Intimidate. A Sassy nature is used to make Incineroar a more effective slow pivot, enabling it to safely get in allies like Mega Gengar for Perish Trap strategies.\nTeambuilding\nChecks and Weaknesses: Fighting-types like Sneasler and Mega Staraptor can easily threaten Incineroar with Close Combat. Sneasler commonly holds the White Herb, which reverts the Attack drops from Incineroar's Intimidate and Parting Shot and enables it to OHKO Incineroar with Close Combat, while Mega Staraptor can turn Intimidate's and Parting Shot's Attack drops into boosts thanks to Contrary.\nKingambit and Annihilape can use Defiant to gain an Attack boost from Intimidate or Parting Shot. The former can retaliate with Low Kick, which, assuming Incineroar moves first, has good odds to KO Incineroar when accounting for Flare Blitz's recoil damage, and the latter always OHKOes it with Close Combat. Mega Raichu Y can use Fake Out before Incineroar can use its own Fake Out and then can use Focus Blast to threaten huge damage onto it.\nWater-type Pokemon: Basculegion-M and Mega Swampert are able to deal big damage to Incineroar with Wave Crash or OHKO it when the rain is set up. Basculegion-M can even OHKO Incineroar without the rain when holding Mystic Water or Life Orb, and it's also immune to Fake Out. Not only can Pelipper and Politoed set up the rain to enable the aforementioned foes to OHKO Incineroar, but they can also deal heavy damage to it with Weather Ball.\nMilotic can take Intimidate or Parting Shot and receive a Special Attack boost thanks to Competitive, which lets it easily 2HKO Incineroar with a +2 Scald or Muddy Water, while Rotom-Wash can use Hydro Pump to 2HKO Incineroar. Mega Blastoise is able to easily OHKO Incineroar with Water Spout, especially after Shell Smash is used, while shrugging off any damage that Incineroar can deal.\nToxapex can poison Incineroar with Toxic, heavily lowering its longevity and putting it on a timer, while not being too annoyed by Parting Shot.\nGround-type Pokemon and Moves: Ground-types like Garchomp and Excadrill are able to threaten big damage into Incineroar with Earthquake, Stomping Tantrum, and High Horsepower. Garchomp even punishes Incineroar using Fake Out thanks to Rough Skin.\nMega Venusaur can use Earth Power to deal solid damage to Incineroar while having Thick Fat to reduce the damage of Flare Blitz, and it is commonly run alongside rain or dual screens, both of which further reduce Flare Blitz's damage output.\nRock-type Pokemon: Rock-type Pokemon like Mega Aerodactyl, Mega Tyranitar, and Hisuian Arcanine all solidly threaten Incineroar with Rock Slide and Head Smash, even if they are affected by Intimidate. Mega Tyranitar in particular resists both of Incineroar's STAB attacks and can potentially offset Attack drops from Intimidate with Dragon Dance. Glimmora, as opposed to other Rock-type Pokemon in the format, is not affected by Intimidate and can use Power Gem to threaten Incineroar.\nGood Partners and Synergies: Despite sharing a Fighting-type weakness with Incineroar, Kingambit is an excellent ally able to threaten Basculegion-M with Sucker Punch before it can move. Additionally, it does huge damage to Rock-type Pokemon with Iron Head and handles opposing Kingambit with Low Kick. Incineroar can, in return, weaken the damage output of Pokemon like Garchomp and opposing Incineroar while beating Ceruledge.\nSneasler is able to threaten opposing Kingambit and Rock-types with Close Combat while forming a strong Fake Out core with Incineroar. Garchomp is another great partner against Rock-type Pokemon, and it even does well against Kingambit, Excadrill, Toxapex, and, when provided with proper speed control, opposing Garchomp.\nSpeed Control Setters: Sinistcha is able to 2HKO most Water-type Pokemon with Matcha Gotcha and can redirect Water-, Ground-, and Fighting-type attacks with Rage Powder. Thanks to Incineroar's Fake Out, Sinistcha can easily set up Trick Room. Incineroar also threatens Steel-type Pokemon like Gholdengo and Mega Mawile, both of which may give Sinistcha trouble. Whimsicott is another Grass-type partner that can swap into Water-, Ground-, and Fighting-type attacks while having Moonblast to threaten Garchomp and Encore to punish foes that use Protect to avoid Incineroar's Fake Out.\nFarigiraf is able to threaten Fighting-type Pokemon like Sneasler with Psychic while using Thunderbolt to threaten Water-type Pokemon like Basculegion-M and Pelipper. In return, Incineroar's Fake Out to can help Farigiraf set up Trick Room, while Flare Blitz and Throat Chop threaten Gholdengo and Mega Metagross, Pokemon that threaten Farigiraf with huge damage while taking little from it.\nMega Evolutions: Mega Charizard Y sets up the sun, enabling Incineroar to OHKO Kingambit and survive Wave Crash from even Life Orb Adaptability Basculegion-M. It also carries Solar Beam, which threatens Water-type Pokemon like the aforementioned Basculegion-M. In return, Incineroar provides Intimidate support, letting Mega Charizard Y survive attacks like Rock Slide from Life Orb Garchomp and Accelerock from Lycanroc-D.\nMega Floette is able to threaten Mega Tyranitar, Garchomp, and Fighting-type Pokemon like Annihilape with Moonblast and Dazzling Gleam while blasting through neutral targets like Rotom-Wash. In return, Fake Out and Intimidate from Incineroar can help Mega Floette attack safely or set up with Calm Mind, Parting Shot can bring in Mega Floette safely, and Flare Blitz can threaten the Steel-type Pokemon that Mega Floette fears.\nThanks to Incineroar's incredible defensive profile, it is an amazing partner for Mega Gengar. Incineroar can help it stall out Perish Song turns by pivoting around and weakening foes with Parting Shot and Intimidate while preventing them from taking out Mega Gengar by using Fake Out. Many of the big threats to Mega Gengar, like Basculegion-M and Garchomp, are weakened by Intimidate. Gengar also appreciates its support against Psychic-type attacks like Psychic from Farigiraf, which Incineroar can easily swap into. In return, Mega Gengar is an amazing answer to the plethora of Fighting-type Pokemon that threaten Incineroar. Incineroar can perform various tricks with Mega Gengar's Shadow Tag; for example, Incineroar can use Parting Shot on the same turn Gengar swaps out to pivot it back in, enabling Gengar to keep the trap going while protecting it from harm.\nSetup Pokemon like Mega Delphox and Mega Blastoise heavily appreciate the support from Incineroar, as Intimidate and Fake Out make it easier for them to set up with Nasty Plot and Shell Smash."
       }
      ],
      "credits": [
@@ -24372,7 +24319,7 @@
          "Protect"
         ]
        ],
-       "explanation": "Mega Gengar uses its Shadow Tag ability to stop foes from switching, heavily limiting the opponent's options, and its high Speed and Special Attack allow it to threaten foes like Basculegion-M and Sinistcha. Perish Song allows it to take out foes without damaging them directly, and Shadow Tag stops opponents from removing the Perishing counter by switching.\nPerish Trap Strategy: Mega Gengar can force opponents to adopt an offensive playstyle to claim KOs before the Perishing counter runs out then punish these plays with Disable. The rest of the team can be built around disrupting foes and supporting Mega Gengar as opposed to dealing damage, though sweepers can be put on the team to force the opponent to cover for them and be used against Perish Song's poor matchups. A team can further commit to this strategy with a second Perish Song setter to keep up momentum, given that Mega Gengar will usually switch out on the last turn of Perish Song. This strategy allows you to neglect foes' defenses.\nDisable vs. Sludge Bomb: Disable allows Mega Gengar to block detrimental moves, such as Kowtow Cleave from Kingambit and Parting Shot from Incineroar, which would otherwise let it switch out. When paired with a teammate using Encore such as Maushold or Whimsicott, it can completely shut down a foe. Sludge Bomb is an alternative that hits Fairy-types like Mega Floette and Sylveon, helping teammates like Kommo-o sweep.\nSP Spreads\n32 HP / 29 Def / 5 Spe with Timid: The defensive investment allows Mega Gengar to survive 100-Base Power Last Respects from Basculegion-M at -1 almost always, Psychic and Psyshock from Mega Delphox with Friend Guard active, and Earthquake from Excadrill. The Speed investment allows it to always outrun Garchomp and Mega Floette.\n2 HP / 32 SpA / 32 Spe with Timid: Mega Gengar can be played as a fast offensive Pokemon by forgoing Perish Song. It has good coverage with Shadow Ball and Sludge Bomb, and keeping Disable allows for Disable and Encore combinations, which are still useful even without a Perish Song mode. Shadow Ball is much more likely to OHKO Basculegion-M and Sinistcha with maximized Special Attack, and Sludge Bomb will deal such heavy damage to Mega Floette and Sylveon that they will faint soon if they are poisoned. The added Speed makes it easier to disrupt faster foes like Sneasler with Disable. A team built around this set should be comprised mostly of offensive Pokemon like Sneasler to cover for Mega Gengar's weakness to Dark-type Pokemon, as opposed to heavy support.\nTeambuilding\nChecks and Weaknesses: Ghost-types like Basculegion-M and opposing Mega Gengar are able to switch out despite Shadow Tag and threaten an OHKO on Mega Gengar with boosted Last Respects and Shadow Ball, respectively. Mega Delphox outspeeds it and threatens an OHKO with Psychic. Opposing Dark-types like Kingambit and Incineroar can threaten an OHKO onto Mega Gengar, and Kingambit cannot be weakened by Intimidate. Moves like Parting Shot from Incineroar and Volt Switch from Rotom-W bypass Shadow Tag, thus preventing Perish Song from getting a KO. Garchomp threatens heavy damage that cannot be redirected with Earthquake, and it pairs well with Flying-types like Mega Charizard Y and Aerodactyl, which have spread attacks of their own that can finish Mega Gengar off. Mega Charizard Y in particular can also threaten an OHKO with Weather Ball, making Mega Charizard Y and Garchomp a deadly combination. Taunt from Pokemon like Whimsicott prevents Mega Gengar from getting Perish Song off or stalling turns with Protect.\nGood Partners and Synergies: Incineroar's Intimidate helps Mega Gengar survive moves that would hit it for heavy damage like Earthquake from Garchomp. Fake Out makes it safer to set up Perish Song, and Throat Chop threatens Ghost-types while stopping opposing Incineroar from switching out with Parting Shot. Incineroar can weaken almost any foe with its own Parting Shot, which can be also used after Mega Gengar switches out to bring Mega Gengar back in and preserve the Shadow Tag trap. Maushold has Friend Guard to help with Mega Gengar's mediocre bulk, and it's a fast Encore user to combine with Mega Gengar's Disable, completely shutting down slow foes like Kingambit and Incineroar. Kommo-o's Soundproof makes it immune to Perish Song allowing it to fight alongside Mega Gengar, and it can threaten Dark-types like Kingambit and Incineroar with heavy damage by using Aura Sphere. Mega Gengar can in turn use Disable on the Fairy-types that threaten Kommo-o or threaten them directly with Sludge Bomb. Politoed is useful as a secondary Perish Song setter, and it can rewrite Mega Charizard Y's Drought with Drizzle. Sinistcha's Hospitality and Life Dew are great healing options that help sustain a Perish Song and Kommo-o mode, and it can protect its partners with Rage Powder.\nHow to Overcome Your Weaknesses: Maushold's Follow Me stops Mega Gengar from being Taunted, and it specifically redirects the aforementioned Ghost-type attacks that would OHKO Mega Gengar into an immune target. Fake Out is pivotal for stopping foes like Kingambit for a turn, while Protect and Parting Shot can stall out turns of Perish Song. Protect is important for baiting out foes' attacks like Kowtow Cleave, Volt Switch, and Parting Shot so that they can be Disabled the next turn or locked into a suboptimal move with Encore, so they cannot select a strong attack or pivot move for future turns."
+       "explanation": "Mega Gengar uses its Shadow Tag ability to stop foes from switching, heavily limiting the opponent's options, and its high Speed and Special Attack allow it to threaten foes like Basculegion-M and Sinistcha. Perish Song allows it to take out foes without damaging them directly, and Shadow Tag stops opponents from removing the Perishing counter by switching.\nPerish Trap Strategy: Mega Gengar can force opponents to adopt an offensive playstyle to claim KOs before the Perishing counter runs out then punish these plays with Disable. The rest of the team can be built around disrupting foes and supporting Mega Gengar as opposed to dealing damage, though sweepers can be put on the team to force the opponent to cover for them and be used against Perish Song's poor matchups. A team can further commit to this strategy with a second Perish Song setter to keep up momentum, given that Mega Gengar will usually switch out on the last turn of Perish Song. This strategy allows you to neglect foes' defenses.\nDisable vs. Sludge Bomb: Disable allows Mega Gengar to block detrimental moves, such as Kowtow Cleave from Kingambit and Parting Shot from Incineroar, which would otherwise let it switch out. When paired with a teammate using Encore such as Maushold or Whimsicott, it can completely shut down a foe. Sludge Bomb is an alternative that hits Fairy-types like Mega Floette and Sylveon, helping teammates like Kommo-o sweep.\nSP Spreads\n32 HP / 29 Def / 5 Spe with Timid: The defensive investment allows Mega Gengar to survive 100-Base Power Last Respects from Basculegion-M at -1 almost always, Psychic and Psyshock from Mega Delphox with Friend Guard active, and Earthquake from Excadrill. The Speed investment allows it to always outrun Garchomp and Mega Floette.\n2 HP / 32 SpA / 32 Spe with Timid: Mega Gengar can be played as a fast offensive Pokemon by forgoing Perish Song. It has good coverage with Shadow Ball and Sludge Bomb, and keeping Disable allows for Disable and Encore combinations, which are still useful even without a Perish Song mode. Shadow Ball is much more likely to OHKO Basculegion-M and Sinistcha with maximized Special Attack, and Sludge Bomb will deal such heavy damage to Mega Floette and Sylveon that they will faint soon if they are poisoned. The added Speed makes it easier to disrupt faster foes like Sneasler with Disable. A team built around this set should be comprised mostly of offensive Pokemon like Sneasler to cover for Mega Gengar's weakness to Dark-type Pokemon, as opposed to heavy support.\nTeambuilding\nChecks and Weaknesses: Ghost-types like Basculegion-M and opposing Mega Gengar are able to switch out despite Shadow Tag and threaten an OHKO on Mega Gengar with boosted Last Respects and Shadow Ball, respectively. Mega Delphox outspeeds it and threatens an OHKO with Psychic. Opposing Dark-types like Kingambit and Incineroar can threaten an OHKO onto Mega Gengar, and Kingambit cannot be weakened by Intimidate. Moves like Parting Shot from Incineroar and Volt Switch from Rotom-Wash bypass Shadow Tag, thus preventing Perish Song from getting a KO. Garchomp threatens heavy damage that cannot be redirected with Earthquake, and it pairs well with Flying-types like Mega Charizard Y and Aerodactyl, which have spread attacks of their own that can finish Mega Gengar off. Mega Charizard Y in particular can also threaten an OHKO with Weather Ball, making Mega Charizard Y and Garchomp a deadly combination. Taunt from Pokemon like Whimsicott prevents Mega Gengar from getting Perish Song off or stalling turns with Protect.\nGood Partners and Synergies: Incineroar's Intimidate helps Mega Gengar survive moves that would hit it for heavy damage like Earthquake from Garchomp. Fake Out makes it safer to set up Perish Song, and Throat Chop threatens Ghost-types while stopping opposing Incineroar from switching out with Parting Shot. Incineroar can weaken almost any foe with its own Parting Shot, which can be also used after Mega Gengar switches out to bring Mega Gengar back in and preserve the Shadow Tag trap. Maushold has Friend Guard to help with Mega Gengar's mediocre bulk, and it's a fast Encore user to combine with Mega Gengar's Disable, completely shutting down slow foes like Kingambit and Incineroar. Kommo-o's Soundproof makes it immune to Perish Song allowing it to fight alongside Mega Gengar, and it can threaten Dark-types like Kingambit and Incineroar with heavy damage by using Aura Sphere. Mega Gengar can in turn use Disable on the Fairy-types that threaten Kommo-o or threaten them directly with Sludge Bomb. Politoed is useful as a secondary Perish Song setter, and it can rewrite Mega Charizard Y's Drought with Drizzle. Sinistcha's Hospitality and Life Dew are great healing options that help sustain a Perish Song and Kommo-o mode, and it can protect its partners with Rage Powder.\nHow to Overcome Your Weaknesses: Maushold's Follow Me stops Mega Gengar from being Taunted, and it specifically redirects the aforementioned Ghost-type attacks that would OHKO Mega Gengar into an immune target. Fake Out is pivotal for stopping foes like Kingambit for a turn, while Protect and Parting Shot can stall out turns of Perish Song. Protect is important for baiting out foes' attacks like Kowtow Cleave, Volt Switch, and Parting Shot so that they can be Disabled the next turn or locked into a suboptimal move with Encore, so they cannot select a strong attack or pivot move for future turns."
       }
      ],
      "credits": [
@@ -26805,6 +26752,24 @@
    "vgc_strategies": []
   },
   {
+   "name": "Absol-Mega-Z",
+   "alias": "absol-mega-z",
+   "types": [
+    "Dark",
+    "Ghost"
+   ],
+   "base_stats": {
+    "hp": 65,
+    "atk": 154,
+    "def": 60,
+    "spa": 75,
+    "spd": 60,
+    "spe": 151
+   },
+   "learnset": [],
+   "vgc_strategies": []
+  },
+  {
    "name": "Garchomp-Mega",
    "alias": "garchomp-mega",
    "types": [
@@ -26978,6 +26943,23 @@
     "spa": 155,
     "spd": 148,
     "spe": 102
+   },
+   "learnset": [],
+   "vgc_strategies": []
+  },
+  {
+   "name": "Garchomp-Mega-Z",
+   "alias": "garchomp-mega-z",
+   "types": [
+    "Dragon"
+   ],
+   "base_stats": {
+    "hp": 108,
+    "atk": 130,
+    "def": 85,
+    "spa": 141,
+    "spd": 85,
+    "spe": 151
    },
    "learnset": [],
    "vgc_strategies": []
@@ -27260,6 +27242,24 @@
     "spa": 120,
     "spd": 80,
     "spe": 100
+   },
+   "learnset": [],
+   "vgc_strategies": []
+  },
+  {
+   "name": "Lucario-Mega-Z",
+   "alias": "lucario-mega-z",
+   "types": [
+    "Fighting",
+    "Steel"
+   ],
+   "base_stats": {
+    "hp": 70,
+    "atk": 100,
+    "def": 70,
+    "spa": 164,
+    "spd": 70,
+    "spe": 151
    },
    "learnset": [],
    "vgc_strategies": []
