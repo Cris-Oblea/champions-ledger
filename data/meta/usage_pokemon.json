@@ -1,8 +1,8 @@
 {
  "source": "pokebase.app/pokemon-champions",
  "game": "Pokemon Champions",
- "fetched": "2026-10-11",
- "count": 334,
+ "fetched": "2026-10-13",
+ "count": 333,
  "rows": [
   {
    "name": "Rillaboom",
@@ -10,7 +10,7 @@
    "types": [
     "Grass"
    ],
-   "usage_percent": 53.5,
+   "usage_percent": 52.7,
    "rank": 1
   },
   {
@@ -20,7 +20,7 @@
     "Fighting",
     "Poison"
    ],
-   "usage_percent": 41.9,
+   "usage_percent": 41.3,
    "rank": 2
   },
   {
@@ -30,7 +30,7 @@
     "Fire",
     "Dark"
    ],
-   "usage_percent": 33.3,
+   "usage_percent": 33.6,
    "rank": 3
   },
   {
@@ -40,7 +40,7 @@
     "Dragon",
     "Flying"
    ],
-   "usage_percent": 27.8,
+   "usage_percent": 26.3,
    "rank": 4
   },
   {
@@ -50,7 +50,7 @@
     "Dragon",
     "Flying"
    ],
-   "usage_percent": 27.8,
+   "usage_percent": 26.3,
    "rank": 5
   },
   {
@@ -60,7 +60,7 @@
     "Steel",
     "Ghost"
    ],
-   "usage_percent": 25.3,
+   "usage_percent": 24.8,
    "rank": 6
   },
   {
@@ -70,7 +70,7 @@
     "Dark",
     "Steel"
    ],
-   "usage_percent": 23.9,
+   "usage_percent": 23.8,
    "rank": 7
   },
   {
@@ -79,7 +79,7 @@
    "types": [
     "Electric"
    ],
-   "usage_percent": 21.1,
+   "usage_percent": 21.5,
    "rank": 8
   },
   {
@@ -88,7 +88,7 @@
    "types": [
     "Electric"
    ],
-   "usage_percent": 20.3,
+   "usage_percent": 20.7,
    "rank": 9
   },
   {
@@ -98,7 +98,7 @@
     "Dragon",
     "Ground"
    ],
-   "usage_percent": 18.6,
+   "usage_percent": 20.5,
    "rank": 10
   },
   {
@@ -108,7 +108,7 @@
     "Water",
     "Ghost"
    ],
-   "usage_percent": 17.2,
+   "usage_percent": 17.0,
    "rank": 11
   },
   {
@@ -118,7 +118,7 @@
     "Psychic",
     "Normal"
    ],
-   "usage_percent": 16.6,
+   "usage_percent": 16.3,
    "rank": 12
   },
   {
@@ -128,7 +128,7 @@
     "Fire",
     "Rock"
    ],
-   "usage_percent": 16.5,
+   "usage_percent": 15.8,
    "rank": 13
   },
   {
@@ -142,14 +142,24 @@
    "rank": 14
   },
   {
+   "name": "Archaludon",
+   "slug": "archaludon",
+   "types": [
+    "Steel",
+    "Dragon"
+   ],
+   "usage_percent": 13.7,
+   "rank": 15
+  },
+  {
    "name": "Golisopod",
    "slug": "golisopod",
    "types": [
     "Bug",
     "Water"
    ],
-   "usage_percent": 13.5,
-   "rank": 15
+   "usage_percent": 13.3,
+   "rank": 16
   },
   {
    "name": "Mega Golisopod",
@@ -157,16 +167,6 @@
    "types": [
     "Bug",
     "Steel"
-   ],
-   "usage_percent": 13.4,
-   "rank": 16
-  },
-  {
-   "name": "Archaludon",
-   "slug": "archaludon",
-   "types": [
-    "Steel",
-    "Dragon"
    ],
    "usage_percent": 13.1,
    "rank": 17
@@ -178,17 +178,8 @@
     "Water",
     "Flying"
    ],
-   "usage_percent": 12.3,
+   "usage_percent": 12.7,
    "rank": 18
-  },
-  {
-   "name": "Milotic",
-   "slug": "milotic",
-   "types": [
-    "Water"
-   ],
-   "usage_percent": 12.2,
-   "rank": 19
   },
   {
    "name": "Charizard",
@@ -197,17 +188,17 @@
     "Fire",
     "Flying"
    ],
-   "usage_percent": 11.5,
-   "rank": 20
+   "usage_percent": 12.0,
+   "rank": 19
   },
   {
-   "name": "Sylveon",
-   "slug": "sylveon",
+   "name": "Mega Garchomp Z",
+   "slug": "garchomp-mega-z",
    "types": [
-    "Fairy"
+    "Dragon"
    ],
-   "usage_percent": 11.4,
-   "rank": 21
+   "usage_percent": 12.0,
+   "rank": 20
   },
   {
    "name": "Mega Charizard Y",
@@ -216,17 +207,36 @@
     "Fire",
     "Flying"
    ],
-   "usage_percent": 11.1,
+   "usage_percent": 11.7,
+   "rank": 21
+  },
+  {
+   "name": "Milotic",
+   "slug": "milotic",
+   "types": [
+    "Water"
+   ],
+   "usage_percent": 11.7,
    "rank": 22
   },
   {
-   "name": "Mega Garchomp Z",
-   "slug": "garchomp-mega-z",
+   "name": "Sylveon",
+   "slug": "sylveon",
    "types": [
-    "Dragon"
+    "Fairy"
    ],
-   "usage_percent": 10.6,
+   "usage_percent": 11.3,
    "rank": 23
+  },
+  {
+   "name": "Volcarona",
+   "slug": "volcarona",
+   "types": [
+    "Bug",
+    "Fire"
+   ],
+   "usage_percent": 9.6,
+   "rank": 24
   },
   {
    "name": "Staraptor",
@@ -235,8 +245,8 @@
     "Normal",
     "Flying"
    ],
-   "usage_percent": 9.6,
-   "rank": 24
+   "usage_percent": 9.5,
+   "rank": 25
   },
   {
    "name": "Mega Staraptor",
@@ -246,16 +256,6 @@
     "Flying"
    ],
    "usage_percent": 9.2,
-   "rank": 25
-  },
-  {
-   "name": "Volcarona",
-   "slug": "volcarona",
-   "types": [
-    "Bug",
-    "Fire"
-   ],
-   "usage_percent": 8.8,
    "rank": 26
   },
   {
@@ -265,7 +265,7 @@
     "Rock",
     "Dark"
    ],
-   "usage_percent": 8.3,
+   "usage_percent": 8.2,
    "rank": 27
   },
   {
@@ -275,7 +275,7 @@
     "Psychic",
     "Fairy"
    ],
-   "usage_percent": 7.6,
+   "usage_percent": 7.5,
    "rank": 28
   },
   {
@@ -285,7 +285,7 @@
     "Psychic",
     "Fairy"
    ],
-   "usage_percent": 7.5,
+   "usage_percent": 7.4,
    "rank": 29
   },
   {
@@ -295,7 +295,7 @@
     "Rock",
     "Dark"
    ],
-   "usage_percent": 7.0,
+   "usage_percent": 6.9,
    "rank": 30
   },
   {
@@ -305,7 +305,7 @@
     "Ground",
     "Steel"
    ],
-   "usage_percent": 6.5,
+   "usage_percent": 6.4,
    "rank": 31
   },
   {
@@ -315,8 +315,28 @@
     "Grass",
     "Ghost"
    ],
-   "usage_percent": 5.8,
+   "usage_percent": 6.0,
    "rank": 32
+  },
+  {
+   "name": "Grimmsnarl",
+   "slug": "grimmsnarl",
+   "types": [
+    "Dark",
+    "Fairy"
+   ],
+   "usage_percent": 5.7,
+   "rank": 33
+  },
+  {
+   "name": "Whimsicott",
+   "slug": "whimsicott",
+   "types": [
+    "Grass",
+    "Fairy"
+   ],
+   "usage_percent": 5.6,
+   "rank": 34
   },
   {
    "name": "Froslass",
@@ -325,8 +345,8 @@
     "Ice",
     "Ghost"
    ],
-   "usage_percent": 5.6,
-   "rank": 33
+   "usage_percent": 5.5,
+   "rank": 35
   },
   {
    "name": "Mega Froslass",
@@ -336,27 +356,16 @@
     "Ghost"
    ],
    "usage_percent": 5.5,
-   "rank": 34
-  },
-  {
-   "name": "Whimsicott",
-   "slug": "whimsicott",
-   "types": [
-    "Grass",
-    "Fairy"
-   ],
-   "usage_percent": 5.5,
-   "rank": 35
-  },
-  {
-   "name": "Grimmsnarl",
-   "slug": "grimmsnarl",
-   "types": [
-    "Dark",
-    "Fairy"
-   ],
-   "usage_percent": 5.4,
    "rank": 36
+  },
+  {
+   "name": "Politoed",
+   "slug": "politoed",
+   "types": [
+    "Water"
+   ],
+   "usage_percent": 5.2,
+   "rank": 37
   },
   {
    "name": "Armarouge",
@@ -364,15 +373,6 @@
    "types": [
     "Fire",
     "Psychic"
-   ],
-   "usage_percent": 5.4,
-   "rank": 37
-  },
-  {
-   "name": "Politoed",
-   "slug": "politoed",
-   "types": [
-    "Water"
    ],
    "usage_percent": 5.2,
    "rank": 38
@@ -384,7 +384,7 @@
     "Ghost",
     "Poison"
    ],
-   "usage_percent": 5.0,
+   "usage_percent": 4.9,
    "rank": 39
   },
   {
@@ -408,6 +408,16 @@
    "rank": 41
   },
   {
+   "name": "Venusaur",
+   "slug": "venusaur",
+   "types": [
+    "Grass",
+    "Poison"
+   ],
+   "usage_percent": 4.8,
+   "rank": 42
+  },
+  {
    "name": "Mega Metagross",
    "slug": "metagross-mega",
    "types": [
@@ -415,7 +425,25 @@
     "Psychic"
    ],
    "usage_percent": 4.8,
-   "rank": 42
+   "rank": 43
+  },
+  {
+   "name": "Floette",
+   "slug": "floette",
+   "types": [
+    "Fairy"
+   ],
+   "usage_percent": 4.7,
+   "rank": 44
+  },
+  {
+   "name": "Mega Floette",
+   "slug": "floette-mega",
+   "types": [
+    "Fairy"
+   ],
+   "usage_percent": 4.7,
+   "rank": 45
   },
   {
    "name": "Torkoal",
@@ -424,7 +452,27 @@
     "Fire"
    ],
    "usage_percent": 4.6,
-   "rank": 43
+   "rank": 46
+  },
+  {
+   "name": "Delphox",
+   "slug": "delphox",
+   "types": [
+    "Fire",
+    "Psychic"
+   ],
+   "usage_percent": 4.4,
+   "rank": 47
+  },
+  {
+   "name": "Mega Delphox",
+   "slug": "delphox-mega",
+   "types": [
+    "Fire",
+    "Psychic"
+   ],
+   "usage_percent": 4.4,
+   "rank": 48
   },
   {
    "name": "Swampert",
@@ -434,27 +482,27 @@
     "Ground"
    ],
    "usage_percent": 4.3,
-   "rank": 44
+   "rank": 49
   },
   {
-   "name": "Venusaur",
-   "slug": "venusaur",
+   "name": "Primarina",
+   "slug": "primarina",
    "types": [
-    "Grass",
-    "Poison"
+    "Water",
+    "Fairy"
    ],
    "usage_percent": 4.2,
-   "rank": 45
+   "rank": 50
   },
   {
-   "name": "Delphox",
-   "slug": "delphox",
+   "name": "Dragonite",
+   "slug": "dragonite",
    "types": [
-    "Fire",
-    "Psychic"
+    "Dragon",
+    "Flying"
    ],
    "usage_percent": 4.1,
-   "rank": 46
+   "rank": 51
   },
   {
    "name": "Mega Swampert",
@@ -464,7 +512,7 @@
     "Ground"
    ],
    "usage_percent": 4.0,
-   "rank": 47
+   "rank": 52
   },
   {
    "name": "Lucario",
@@ -473,47 +521,8 @@
     "Fighting",
     "Steel"
    ],
-   "usage_percent": 4.0,
-   "rank": 48
-  },
-  {
-   "name": "Mega Delphox",
-   "slug": "delphox-mega",
-   "types": [
-    "Fire",
-    "Psychic"
-   ],
-   "usage_percent": 4.0,
-   "rank": 49
-  },
-  {
-   "name": "Dragonite",
-   "slug": "dragonite",
-   "types": [
-    "Dragon",
-    "Flying"
-   ],
-   "usage_percent": 3.9,
-   "rank": 50
-  },
-  {
-   "name": "Mega Floette",
-   "slug": "floette-mega",
-   "types": [
-    "Fairy"
-   ],
-   "usage_percent": 3.9,
-   "rank": 51
-  },
-  {
-   "name": "Primarina",
-   "slug": "primarina",
-   "types": [
-    "Water",
-    "Fairy"
-   ],
-   "usage_percent": 3.9,
-   "rank": 52
+   "usage_percent": 3.7,
+   "rank": 53
   },
   {
    "name": "Mega Lucario Z",
@@ -522,16 +531,7 @@
     "Fighting",
     "Steel"
    ],
-   "usage_percent": 3.8,
-   "rank": 53
-  },
-  {
-   "name": "Floette",
-   "slug": "floette",
-   "types": [
-    "Fairy"
-   ],
-   "usage_percent": 3.8,
+   "usage_percent": 3.6,
    "rank": 54
   },
   {
@@ -551,8 +551,18 @@
     "Dragon",
     "Flying"
    ],
-   "usage_percent": 3.3,
+   "usage_percent": 3.4,
    "rank": 56
+  },
+  {
+   "name": "Kommo-o",
+   "slug": "kommo-o",
+   "types": [
+    "Dragon",
+    "Fighting"
+   ],
+   "usage_percent": 3.3,
+   "rank": 57
   },
   {
    "name": "Aerodactyl",
@@ -562,37 +572,7 @@
     "Flying"
    ],
    "usage_percent": 3.1,
-   "rank": 57
-  },
-  {
-   "name": "Kommo-o",
-   "slug": "kommo-o",
-   "types": [
-    "Dragon",
-    "Fighting"
-   ],
-   "usage_percent": 3.0,
    "rank": 58
-  },
-  {
-   "name": "Baxcalibur",
-   "slug": "baxcalibur",
-   "types": [
-    "Dragon",
-    "Ice"
-   ],
-   "usage_percent": 2.7,
-   "rank": 59
-  },
-  {
-   "name": "Hatterene",
-   "slug": "hatterene",
-   "types": [
-    "Psychic",
-    "Fairy"
-   ],
-   "usage_percent": 2.6,
-   "rank": 60
   },
   {
    "name": "Annihilape",
@@ -602,6 +582,26 @@
     "Ghost"
    ],
    "usage_percent": 2.5,
+   "rank": 59
+  },
+  {
+   "name": "Baxcalibur",
+   "slug": "baxcalibur",
+   "types": [
+    "Dragon",
+    "Ice"
+   ],
+   "usage_percent": 2.5,
+   "rank": 60
+  },
+  {
+   "name": "Hatterene",
+   "slug": "hatterene",
+   "types": [
+    "Psychic",
+    "Fairy"
+   ],
+   "usage_percent": 2.4,
    "rank": 61
   },
   {
@@ -625,52 +625,24 @@
    "rank": 63
   },
   {
-   "name": "Pawmot",
-   "slug": "pawmot",
-   "types": [
-    "Electric",
-    "Fighting"
-   ],
-   "usage_percent": 2.3,
-   "rank": 64
-  },
-  {
    "name": "Corviknight",
    "slug": "corviknight",
    "types": [
     "Flying",
     "Steel"
    ],
+   "usage_percent": 2.3,
+   "rank": 64
+  },
+  {
+   "name": "Pawmot",
+   "slug": "pawmot",
+   "types": [
+    "Electric",
+    "Fighting"
+   ],
    "usage_percent": 2.2,
    "rank": 65
-  },
-  {
-   "name": "Mega Baxcalibur",
-   "slug": "baxcalibur-mega",
-   "types": [
-    "Dragon",
-    "Ice"
-   ],
-   "usage_percent": 2.2,
-   "rank": 66
-  },
-  {
-   "name": "Blastoise",
-   "slug": "blastoise",
-   "types": [
-    "Water"
-   ],
-   "usage_percent": 2.1,
-   "rank": 67
-  },
-  {
-   "name": "Mega Blastoise",
-   "slug": "blastoise-mega",
-   "types": [
-    "Water"
-   ],
-   "usage_percent": 2.1,
-   "rank": 68
   },
   {
    "name": "Mega Aerodactyl",
@@ -680,27 +652,7 @@
     "Flying"
    ],
    "usage_percent": 2.1,
-   "rank": 69
-  },
-  {
-   "name": "Camerupt",
-   "slug": "camerupt",
-   "types": [
-    "Fire",
-    "Ground"
-   ],
-   "usage_percent": 2.1,
-   "rank": 70
-  },
-  {
-   "name": "Mega Camerupt",
-   "slug": "camerupt-mega",
-   "types": [
-    "Fire",
-    "Ground"
-   ],
-   "usage_percent": 2.1,
-   "rank": 71
+   "rank": 66
   },
   {
    "name": "Dragapult",
@@ -710,6 +662,54 @@
     "Ghost"
    ],
    "usage_percent": 2.1,
+   "rank": 67
+  },
+  {
+   "name": "Mega Baxcalibur",
+   "slug": "baxcalibur-mega",
+   "types": [
+    "Dragon",
+    "Ice"
+   ],
+   "usage_percent": 2.1,
+   "rank": 68
+  },
+  {
+   "name": "Blastoise",
+   "slug": "blastoise",
+   "types": [
+    "Water"
+   ],
+   "usage_percent": 2.0,
+   "rank": 69
+  },
+  {
+   "name": "Mega Blastoise",
+   "slug": "blastoise-mega",
+   "types": [
+    "Water"
+   ],
+   "usage_percent": 2.0,
+   "rank": 70
+  },
+  {
+   "name": "Camerupt",
+   "slug": "camerupt",
+   "types": [
+    "Fire",
+    "Ground"
+   ],
+   "usage_percent": 2.0,
+   "rank": 71
+  },
+  {
+   "name": "Mega Camerupt",
+   "slug": "camerupt-mega",
+   "types": [
+    "Fire",
+    "Ground"
+   ],
+   "usage_percent": 2.0,
    "rank": 72
   },
   {
@@ -723,6 +723,16 @@
    "rank": 73
   },
   {
+   "name": "Indeedee (Male)",
+   "slug": "indeedee-male",
+   "types": [
+    "Psychic",
+    "Normal"
+   ],
+   "usage_percent": 1.9,
+   "rank": 74
+  },
+  {
    "name": "Blaziken",
    "slug": "blaziken",
    "types": [
@@ -730,33 +740,23 @@
     "Fighting"
    ],
    "usage_percent": 1.6,
-   "rank": 74
+   "rank": 75
+  },
+  {
+   "name": "Vivillon",
+   "slug": "vivillon",
+   "types": [
+    "Bug",
+    "Flying"
+   ],
+   "usage_percent": 1.6,
+   "rank": 76
   },
   {
    "name": "Absol",
    "slug": "absol",
    "types": [
     "Dark"
-   ],
-   "usage_percent": 1.6,
-   "rank": 75
-  },
-  {
-   "name": "Indeedee (Male)",
-   "slug": "indeedee-male",
-   "types": [
-    "Psychic",
-    "Normal"
-   ],
-   "usage_percent": 1.6,
-   "rank": 76
-  },
-  {
-   "name": "Mega Absol Z",
-   "slug": "absol-mega-z",
-   "types": [
-    "Dark",
-    "Ghost"
    ],
    "usage_percent": 1.5,
    "rank": 77
@@ -772,16 +772,6 @@
    "rank": 78
   },
   {
-   "name": "Vivillon",
-   "slug": "vivillon",
-   "types": [
-    "Bug",
-    "Flying"
-   ],
-   "usage_percent": 1.5,
-   "rank": 79
-  },
-  {
    "name": "Mawile",
    "slug": "mawile",
    "types": [
@@ -789,7 +779,7 @@
     "Fairy"
    ],
    "usage_percent": 1.4,
-   "rank": 80
+   "rank": 79
   },
   {
    "name": "Mega Mawile",
@@ -799,17 +789,17 @@
     "Fairy"
    ],
    "usage_percent": 1.4,
-   "rank": 81
+   "rank": 80
   },
   {
-   "name": "Sableye",
-   "slug": "sableye",
+   "name": "Mega Absol Z",
+   "slug": "absol-mega-z",
    "types": [
     "Dark",
     "Ghost"
    ],
-   "usage_percent": 1.3,
-   "rank": 82
+   "usage_percent": 1.4,
+   "rank": 81
   },
   {
    "name": "Hydreigon",
@@ -819,7 +809,27 @@
     "Dragon"
    ],
    "usage_percent": 1.3,
+   "rank": 82
+  },
+  {
+   "name": "Sableye",
+   "slug": "sableye",
+   "types": [
+    "Dark",
+    "Ghost"
+   ],
+   "usage_percent": 1.2,
    "rank": 83
+  },
+  {
+   "name": "Toxapex",
+   "slug": "toxapex",
+   "types": [
+    "Poison",
+    "Water"
+   ],
+   "usage_percent": 1.2,
+   "rank": 84
   },
   {
    "name": "Maushold",
@@ -827,8 +837,8 @@
    "types": [
     "Normal"
    ],
-   "usage_percent": 1.3,
-   "rank": 84
+   "usage_percent": 1.2,
+   "rank": 85
   },
   {
    "name": "Mega Blaziken",
@@ -838,17 +848,17 @@
     "Fighting"
    ],
    "usage_percent": 1.1,
-   "rank": 85
+   "rank": 86
   },
   {
-   "name": "Toxapex",
-   "slug": "toxapex",
+   "name": "Mega Pyroar",
+   "slug": "pyroar-mega",
    "types": [
-    "Poison",
-    "Water"
+    "Fire",
+    "Normal"
    ],
-   "usage_percent": 1.1,
-   "rank": 86
+   "usage_percent": 1.0,
+   "rank": 87
   },
   {
    "name": "Gallade",
@@ -858,7 +868,17 @@
     "Fighting"
    ],
    "usage_percent": 0.9,
-   "rank": 87
+   "rank": 88
+  },
+  {
+   "name": "Pyroar",
+   "slug": "pyroar",
+   "types": [
+    "Fire",
+    "Normal"
+   ],
+   "usage_percent": 0.9,
+   "rank": 89
   },
   {
    "name": "Mega Scovillain",
@@ -868,7 +888,7 @@
     "Fire"
    ],
    "usage_percent": 0.9,
-   "rank": 88
+   "rank": 90
   },
   {
    "name": "Scovillain",
@@ -878,7 +898,16 @@
     "Fire"
    ],
    "usage_percent": 0.9,
-   "rank": 89
+   "rank": 91
+  },
+  {
+   "name": "Mega Raichu X",
+   "slug": "raichu-mega-x",
+   "types": [
+    "Electric"
+   ],
+   "usage_percent": 0.8,
+   "rank": 92
   },
   {
    "name": "Hisuian Typhlosion",
@@ -888,27 +917,7 @@
     "Ghost"
    ],
    "usage_percent": 0.8,
-   "rank": 90
-  },
-  {
-   "name": "Mega Pyroar",
-   "slug": "pyroar-mega",
-   "types": [
-    "Fire",
-    "Normal"
-   ],
-   "usage_percent": 0.8,
-   "rank": 91
-  },
-  {
-   "name": "Pyroar",
-   "slug": "pyroar",
-   "types": [
-    "Fire",
-    "Normal"
-   ],
-   "usage_percent": 0.8,
-   "rank": 92
+   "rank": 93
   },
   {
    "name": "Aegislash",
@@ -918,7 +927,7 @@
     "Ghost"
    ],
    "usage_percent": 0.8,
-   "rank": 93
+   "rank": 94
   },
   {
    "name": "Kleavor",
@@ -928,15 +937,6 @@
     "Rock"
    ],
    "usage_percent": 0.8,
-   "rank": 94
-  },
-  {
-   "name": "Mega Raichu X",
-   "slug": "raichu-mega-x",
-   "types": [
-    "Electric"
-   ],
-   "usage_percent": 0.7,
    "rank": 95
   },
   {
@@ -1015,16 +1015,6 @@
    "rank": 103
   },
   {
-   "name": "Weavile",
-   "slug": "weavile",
-   "types": [
-    "Dark",
-    "Ice"
-   ],
-   "usage_percent": 0.6,
-   "rank": 104
-  },
-  {
    "name": "Heat Rotom",
    "slug": "rotom-heat",
    "types": [
@@ -1032,7 +1022,7 @@
     "Fire"
    ],
    "usage_percent": 0.6,
-   "rank": 105
+   "rank": 104
   },
   {
    "name": "Scrafty",
@@ -1042,13 +1032,23 @@
     "Fighting"
    ],
    "usage_percent": 0.6,
-   "rank": 106
+   "rank": 105
   },
   {
    "name": "Tsareena",
    "slug": "tsareena",
    "types": [
     "Grass"
+   ],
+   "usage_percent": 0.6,
+   "rank": 106
+  },
+  {
+   "name": "Basculegion (Female)",
+   "slug": "basculegion-female",
+   "types": [
+    "Water",
+    "Ghost"
    ],
    "usage_percent": 0.6,
    "rank": 107
@@ -1064,22 +1064,13 @@
    "rank": 108
   },
   {
-   "name": "Alakazam",
-   "slug": "alakazam",
-   "types": [
-    "Psychic"
-   ],
-   "usage_percent": 0.5,
-   "rank": 109
-  },
-  {
    "name": "Kangaskhan",
    "slug": "kangaskhan",
    "types": [
     "Normal"
    ],
    "usage_percent": 0.5,
-   "rank": 110
+   "rank": 109
   },
   {
    "name": "Snorlax",
@@ -1088,7 +1079,7 @@
     "Normal"
    ],
    "usage_percent": 0.5,
-   "rank": 111
+   "rank": 110
   },
   {
    "name": "Altaria",
@@ -1098,7 +1089,7 @@
     "Flying"
    ],
    "usage_percent": 0.5,
-   "rank": 112
+   "rank": 111
   },
   {
    "name": "Empoleon",
@@ -1106,6 +1097,16 @@
    "types": [
     "Water",
     "Steel"
+   ],
+   "usage_percent": 0.5,
+   "rank": 112
+  },
+  {
+   "name": "Weavile",
+   "slug": "weavile",
+   "types": [
+    "Dark",
+    "Ice"
    ],
    "usage_percent": 0.5,
    "rank": 113
@@ -1150,13 +1151,23 @@
    "rank": 117
   },
   {
-   "name": "Mega Alakazam",
-   "slug": "alakazam-mega",
+   "name": "Alakazam",
+   "slug": "alakazam",
    "types": [
     "Psychic"
    ],
    "usage_percent": 0.4,
    "rank": 118
+  },
+  {
+   "name": "Gyarados",
+   "slug": "gyarados",
+   "types": [
+    "Water",
+    "Flying"
+   ],
+   "usage_percent": 0.4,
+   "rank": 119
   },
   {
    "name": "Scizor",
@@ -1166,7 +1177,7 @@
     "Steel"
    ],
    "usage_percent": 0.4,
-   "rank": 119
+   "rank": 120
   },
   {
    "name": "Mega Sceptile",
@@ -1176,7 +1187,7 @@
     "Dragon"
    ],
    "usage_percent": 0.4,
-   "rank": 120
+   "rank": 121
   },
   {
    "name": "Sceptile",
@@ -1185,7 +1196,7 @@
     "Grass"
    ],
    "usage_percent": 0.4,
-   "rank": 121
+   "rank": 122
   },
   {
    "name": "Mega Garchomp",
@@ -1195,7 +1206,7 @@
     "Ground"
    ],
    "usage_percent": 0.4,
-   "rank": 122
+   "rank": 123
   },
   {
    "name": "Vanilluxe",
@@ -1204,7 +1215,7 @@
     "Ice"
    ],
    "usage_percent": 0.4,
-   "rank": 123
+   "rank": 124
   },
   {
    "name": "Chandelure",
@@ -1214,7 +1225,7 @@
     "Fire"
    ],
    "usage_percent": 0.4,
-   "rank": 124
+   "rank": 125
   },
   {
    "name": "Meowstic (Female)",
@@ -1223,7 +1234,7 @@
     "Psychic"
    ],
    "usage_percent": 0.4,
-   "rank": 125
+   "rank": 126
   },
   {
    "name": "Hawlucha",
@@ -1233,7 +1244,17 @@
     "Flying"
    ],
    "usage_percent": 0.4,
-   "rank": 126
+   "rank": 127
+  },
+  {
+   "name": "Klefki",
+   "slug": "klefki",
+   "types": [
+    "Steel",
+    "Fairy"
+   ],
+   "usage_percent": 0.4,
+   "rank": 128
   },
   {
    "name": "Mimikyu",
@@ -1243,7 +1264,7 @@
     "Fairy"
    ],
    "usage_percent": 0.4,
-   "rank": 127
+   "rank": 129
   },
   {
    "name": "Drampa",
@@ -1253,7 +1274,7 @@
     "Dragon"
    ],
    "usage_percent": 0.4,
-   "rank": 128
+   "rank": 130
   },
   {
    "name": "Inteleon",
@@ -1262,7 +1283,7 @@
     "Water"
    ],
    "usage_percent": 0.4,
-   "rank": 129
+   "rank": 131
   },
   {
    "name": "Grapploct",
@@ -1271,7 +1292,7 @@
     "Fighting"
    ],
    "usage_percent": 0.4,
-   "rank": 130
+   "rank": 132
   },
   {
    "name": "Mega Charizard X",
@@ -1281,7 +1302,7 @@
     "Dragon"
    ],
    "usage_percent": 0.3,
-   "rank": 131
+   "rank": 133
   },
   {
    "name": "Ninetales",
@@ -1290,7 +1311,16 @@
     "Fire"
    ],
    "usage_percent": 0.3,
-   "rank": 132
+   "rank": 134
+  },
+  {
+   "name": "Mega Alakazam",
+   "slug": "alakazam-mega",
+   "types": [
+    "Psychic"
+   ],
+   "usage_percent": 0.3,
+   "rank": 135
   },
   {
    "name": "Slowbro",
@@ -1300,7 +1330,7 @@
     "Psychic"
    ],
    "usage_percent": 0.3,
-   "rank": 133
+   "rank": 136
   },
   {
    "name": "Starmie",
@@ -1308,35 +1338,6 @@
    "types": [
     "Water",
     "Psychic"
-   ],
-   "usage_percent": 0.3,
-   "rank": 134
-  },
-  {
-   "name": "Gyarados",
-   "slug": "gyarados",
-   "types": [
-    "Water",
-    "Flying"
-   ],
-   "usage_percent": 0.3,
-   "rank": 135
-  },
-  {
-   "name": "Ditto",
-   "slug": "ditto",
-   "types": [
-    "Normal"
-   ],
-   "usage_percent": 0.3,
-   "rank": 136
-  },
-  {
-   "name": "Houndoom",
-   "slug": "houndoom",
-   "types": [
-    "Dark",
-    "Fire"
    ],
    "usage_percent": 0.3,
    "rank": 137
@@ -1372,26 +1373,6 @@
    "rank": 140
   },
   {
-   "name": "Golurk",
-   "slug": "golurk",
-   "types": [
-    "Ground",
-    "Ghost"
-   ],
-   "usage_percent": 0.3,
-   "rank": 141
-  },
-  {
-   "name": "Mega Golurk",
-   "slug": "golurk-mega",
-   "types": [
-    "Ground",
-    "Ghost"
-   ],
-   "usage_percent": 0.3,
-   "rank": 142
-  },
-  {
    "name": "Greninja",
    "slug": "greninja",
    "types": [
@@ -1399,7 +1380,7 @@
     "Dark"
    ],
    "usage_percent": 0.3,
-   "rank": 143
+   "rank": 141
   },
   {
    "name": "Mega Greninja",
@@ -1409,7 +1390,7 @@
     "Dark"
    ],
    "usage_percent": 0.3,
-   "rank": 144
+   "rank": 142
   },
   {
    "name": "Malamar",
@@ -1419,7 +1400,7 @@
     "Psychic"
    ],
    "usage_percent": 0.3,
-   "rank": 145
+   "rank": 143
   },
   {
    "name": "Mega Hawlucha",
@@ -1429,7 +1410,7 @@
     "Flying"
    ],
    "usage_percent": 0.3,
-   "rank": 146
+   "rank": 144
   },
   {
    "name": "Hisuian Goodra",
@@ -1439,17 +1420,7 @@
     "Dragon"
    ],
    "usage_percent": 0.3,
-   "rank": 147
-  },
-  {
-   "name": "Klefki",
-   "slug": "klefki",
-   "types": [
-    "Steel",
-    "Fairy"
-   ],
-   "usage_percent": 0.3,
-   "rank": 148
+   "rank": 145
   },
   {
    "name": "Crabominable",
@@ -1459,7 +1430,7 @@
     "Ice"
    ],
    "usage_percent": 0.3,
-   "rank": 149
+   "rank": 146
   },
   {
    "name": "Mega Crabominable",
@@ -1469,7 +1440,7 @@
     "Ice"
    ],
    "usage_percent": 0.3,
-   "rank": 150
+   "rank": 147
   },
   {
    "name": "Araquanid",
@@ -1479,7 +1450,7 @@
     "Bug"
    ],
    "usage_percent": 0.3,
-   "rank": 151
+   "rank": 148
   },
   {
    "name": "Mega Drampa",
@@ -1489,7 +1460,7 @@
     "Dragon"
    ],
    "usage_percent": 0.3,
-   "rank": 152
+   "rank": 149
   },
   {
    "name": "Pincurchin",
@@ -1498,17 +1469,7 @@
     "Electric"
    ],
    "usage_percent": 0.3,
-   "rank": 153
-  },
-  {
-   "name": "Basculegion (Female)",
-   "slug": "basculegion-female",
-   "types": [
-    "Water",
-    "Ghost"
-   ],
-   "usage_percent": 0.3,
-   "rank": 154
+   "rank": 150
   },
   {
    "name": "Tinkaton",
@@ -1518,26 +1479,7 @@
     "Steel"
    ],
    "usage_percent": 0.3,
-   "rank": 155
-  },
-  {
-   "name": "Palafin",
-   "slug": "palafin",
-   "types": [
-    "Water"
-   ],
-   "usage_percent": 0.3,
-   "rank": 156
-  },
-  {
-   "name": "Wigglytuff",
-   "slug": "wigglytuff",
-   "types": [
-    "Normal",
-    "Fairy"
-   ],
-   "usage_percent": 0.2,
-   "rank": 157
+   "rank": 151
   },
   {
    "name": "Vileplume",
@@ -1547,7 +1489,7 @@
     "Poison"
    ],
    "usage_percent": 0.2,
-   "rank": 158
+   "rank": 152
   },
   {
    "name": "Alolan Persian",
@@ -1556,7 +1498,7 @@
     "Dark"
    ],
    "usage_percent": 0.2,
-   "rank": 159
+   "rank": 153
   },
   {
    "name": "Arcanine",
@@ -1565,7 +1507,7 @@
     "Fire"
    ],
    "usage_percent": 0.2,
-   "rank": 160
+   "rank": 154
   },
   {
    "name": "Mega Slowbro",
@@ -1575,7 +1517,7 @@
     "Psychic"
    ],
    "usage_percent": 0.2,
-   "rank": 161
+   "rank": 155
   },
   {
    "name": "Mega Kangaskhan",
@@ -1584,7 +1526,7 @@
     "Normal"
    ],
    "usage_percent": 0.2,
-   "rank": 162
+   "rank": 156
   },
   {
    "name": "Mega Starmie",
@@ -1594,7 +1536,7 @@
     "Psychic"
    ],
    "usage_percent": 0.2,
-   "rank": 163
+   "rank": 157
   },
   {
    "name": "Mega Gyarados",
@@ -1604,7 +1546,16 @@
     "Dark"
    ],
    "usage_percent": 0.2,
-   "rank": 164
+   "rank": 158
+  },
+  {
+   "name": "Ditto",
+   "slug": "ditto",
+   "types": [
+    "Normal"
+   ],
+   "usage_percent": 0.2,
+   "rank": 159
   },
   {
    "name": "Feraligatr",
@@ -1613,7 +1564,7 @@
     "Water"
    ],
    "usage_percent": 0.2,
-   "rank": 165
+   "rank": 160
   },
   {
    "name": "Mega Feraligatr",
@@ -1623,7 +1574,7 @@
     "Dragon"
    ],
    "usage_percent": 0.2,
-   "rank": 166
+   "rank": 161
   },
   {
    "name": "Azumarill",
@@ -1633,7 +1584,7 @@
     "Fairy"
    ],
    "usage_percent": 0.2,
-   "rank": 167
+   "rank": 162
   },
   {
    "name": "Mega Scizor",
@@ -1643,17 +1594,7 @@
     "Steel"
    ],
    "usage_percent": 0.2,
-   "rank": 168
-  },
-  {
-   "name": "Heracross",
-   "slug": "heracross",
-   "types": [
-    "Bug",
-    "Fighting"
-   ],
-   "usage_percent": 0.2,
-   "rank": 169
+   "rank": 163
   },
   {
    "name": "Mega Skarmory",
@@ -1663,7 +1604,7 @@
     "Flying"
    ],
    "usage_percent": 0.2,
-   "rank": 170
+   "rank": 164
   },
   {
    "name": "Skarmory",
@@ -1673,7 +1614,17 @@
     "Flying"
    ],
    "usage_percent": 0.2,
-   "rank": 171
+   "rank": 165
+  },
+  {
+   "name": "Houndoom",
+   "slug": "houndoom",
+   "types": [
+    "Dark",
+    "Fire"
+   ],
+   "usage_percent": 0.2,
+   "rank": 166
   },
   {
    "name": "Mega Houndoom",
@@ -1683,7 +1634,7 @@
     "Fire"
    ],
    "usage_percent": 0.2,
-   "rank": 172
+   "rank": 167
   },
   {
    "name": "Aggron",
@@ -1693,7 +1644,7 @@
     "Rock"
    ],
    "usage_percent": 0.2,
-   "rank": 173
+   "rank": 168
   },
   {
    "name": "Mega Aggron",
@@ -1702,7 +1653,7 @@
     "Steel"
    ],
    "usage_percent": 0.2,
-   "rank": 174
+   "rank": 169
   },
   {
    "name": "Manectric",
@@ -1711,16 +1662,7 @@
     "Electric"
    ],
    "usage_percent": 0.2,
-   "rank": 175
-  },
-  {
-   "name": "Mega Manectric",
-   "slug": "manectric-mega",
-   "types": [
-    "Electric"
-   ],
-   "usage_percent": 0.2,
-   "rank": 176
+   "rank": 170
   },
   {
    "name": "Mega Altaria",
@@ -1730,17 +1672,7 @@
     "Fairy"
    ],
    "usage_percent": 0.2,
-   "rank": 177
-  },
-  {
-   "name": "Spiritomb",
-   "slug": "spiritomb",
-   "types": [
-    "Ghost",
-    "Dark"
-   ],
-   "usage_percent": 0.2,
-   "rank": 178
+   "rank": 171
   },
   {
    "name": "Hippowdon",
@@ -1749,7 +1681,7 @@
     "Ground"
    ],
    "usage_percent": 0.2,
-   "rank": 179
+   "rank": 172
   },
   {
    "name": "Abomasnow",
@@ -1759,7 +1691,7 @@
     "Ice"
    ],
    "usage_percent": 0.2,
-   "rank": 180
+   "rank": 173
   },
   {
    "name": "Mega Abomasnow",
@@ -1769,7 +1701,7 @@
     "Ice"
    ],
    "usage_percent": 0.2,
-   "rank": 181
+   "rank": 174
   },
   {
    "name": "Gliscor",
@@ -1779,16 +1711,7 @@
     "Flying"
    ],
    "usage_percent": 0.2,
-   "rank": 182
-  },
-  {
-   "name": "Serperior",
-   "slug": "serperior",
-   "types": [
-    "Grass"
-   ],
-   "usage_percent": 0.2,
-   "rank": 183
+   "rank": 175
   },
   {
    "name": "Audino",
@@ -1797,7 +1720,7 @@
     "Normal"
    ],
    "usage_percent": 0.2,
-   "rank": 184
+   "rank": 176
   },
   {
    "name": "Krookodile",
@@ -1807,7 +1730,7 @@
     "Dark"
    ],
    "usage_percent": 0.2,
-   "rank": 185
+   "rank": 177
   },
   {
    "name": "Eelektross",
@@ -1816,7 +1739,7 @@
     "Electric"
    ],
    "usage_percent": 0.2,
-   "rank": 186
+   "rank": 178
   },
   {
    "name": "Mega Eelektross",
@@ -1825,7 +1748,27 @@
     "Electric"
    ],
    "usage_percent": 0.2,
-   "rank": 187
+   "rank": 179
+  },
+  {
+   "name": "Golurk",
+   "slug": "golurk",
+   "types": [
+    "Ground",
+    "Ghost"
+   ],
+   "usage_percent": 0.2,
+   "rank": 180
+  },
+  {
+   "name": "Mega Golurk",
+   "slug": "golurk-mega",
+   "types": [
+    "Ground",
+    "Ghost"
+   ],
+   "usage_percent": 0.2,
+   "rank": 181
   },
   {
    "name": "Chesnaught",
@@ -1835,7 +1778,7 @@
     "Fighting"
    ],
    "usage_percent": 0.2,
-   "rank": 188
+   "rank": 182
   },
   {
    "name": "Meowstic",
@@ -1844,7 +1787,17 @@
     "Psychic"
    ],
    "usage_percent": 0.2,
-   "rank": 189
+   "rank": 183
+  },
+  {
+   "name": "Mega Malamar",
+   "slug": "malamar-mega",
+   "types": [
+    "Dark",
+    "Psychic"
+   ],
+   "usage_percent": 0.2,
+   "rank": 184
   },
   {
    "name": "Dragalge",
@@ -1854,7 +1807,7 @@
     "Dragon"
    ],
    "usage_percent": 0.2,
-   "rank": 190
+   "rank": 185
   },
   {
    "name": "Mega Dragalge",
@@ -1864,7 +1817,7 @@
     "Dragon"
    ],
    "usage_percent": 0.2,
-   "rank": 191
+   "rank": 186
   },
   {
    "name": "Noivern",
@@ -1874,7 +1827,7 @@
     "Dragon"
    ],
    "usage_percent": 0.2,
-   "rank": 192
+   "rank": 187
   },
   {
    "name": "Hisuian Decidueye",
@@ -1884,7 +1837,25 @@
     "Fighting"
    ],
    "usage_percent": 0.2,
-   "rank": 193
+   "rank": 188
+  },
+  {
+   "name": "Lycanroc (Midday)",
+   "slug": "lycanroc-midday",
+   "types": [
+    "Rock"
+   ],
+   "usage_percent": 0.2,
+   "rank": 189
+  },
+  {
+   "name": "Mudsdale",
+   "slug": "mudsdale",
+   "types": [
+    "Ground"
+   ],
+   "usage_percent": 0.2,
+   "rank": 190
   },
   {
    "name": "Oranguru",
@@ -1894,7 +1865,7 @@
     "Psychic"
    ],
    "usage_percent": 0.2,
-   "rank": 194
+   "rank": 191
   },
   {
    "name": "Cinderace",
@@ -1903,7 +1874,7 @@
     "Fire"
    ],
    "usage_percent": 0.2,
-   "rank": 195
+   "rank": 192
   },
   {
    "name": "Toxtricity (Low Key)",
@@ -1913,7 +1884,16 @@
     "Poison"
    ],
    "usage_percent": 0.2,
-   "rank": 196
+   "rank": 193
+  },
+  {
+   "name": "Alcremie",
+   "slug": "alcremie",
+   "types": [
+    "Fairy"
+   ],
+   "usage_percent": 0.2,
+   "rank": 194
   },
   {
    "name": "Overqwil",
@@ -1923,7 +1903,7 @@
     "Poison"
    ],
    "usage_percent": 0.2,
-   "rank": 197
+   "rank": 195
   },
   {
    "name": "Bellibolt",
@@ -1932,7 +1912,16 @@
     "Electric"
    ],
    "usage_percent": 0.2,
-   "rank": 198
+   "rank": 196
+  },
+  {
+   "name": "Palafin",
+   "slug": "palafin",
+   "types": [
+    "Water"
+   ],
+   "usage_percent": 0.2,
+   "rank": 197
   },
   {
    "name": "Beedrill",
@@ -1942,7 +1931,7 @@
     "Poison"
    ],
    "usage_percent": 0.1,
-   "rank": 199
+   "rank": 198
   },
   {
    "name": "Mega Beedrill",
@@ -1952,7 +1941,7 @@
     "Poison"
    ],
    "usage_percent": 0.1,
-   "rank": 200
+   "rank": 199
   },
   {
    "name": "Mega Pidgeot",
@@ -1962,7 +1951,7 @@
     "Flying"
    ],
    "usage_percent": 0.1,
-   "rank": 201
+   "rank": 200
   },
   {
    "name": "Pidgeot",
@@ -1972,7 +1961,7 @@
     "Flying"
    ],
    "usage_percent": 0.1,
-   "rank": 202
+   "rank": 201
   },
   {
    "name": "Pikachu",
@@ -1981,7 +1970,7 @@
     "Electric"
    ],
    "usage_percent": 0.1,
-   "rank": 203
+   "rank": 202
   },
   {
    "name": "Alolan Raichu",
@@ -1991,7 +1980,7 @@
     "Psychic"
    ],
    "usage_percent": 0.1,
-   "rank": 204
+   "rank": 203
   },
   {
    "name": "Mega Clefable",
@@ -1999,6 +1988,16 @@
    "types": [
     "Fairy",
     "Flying"
+   ],
+   "usage_percent": 0.1,
+   "rank": 204
+  },
+  {
+   "name": "Wigglytuff",
+   "slug": "wigglytuff",
+   "types": [
+    "Normal",
+    "Fairy"
    ],
    "usage_percent": 0.1,
    "rank": 205
@@ -2119,8 +2118,8 @@
    "rank": 217
   },
   {
-   "name": "Mega Heracross",
-   "slug": "heracross-mega",
+   "name": "Heracross",
+   "slug": "heracross",
    "types": [
     "Bug",
     "Fighting"
@@ -2129,13 +2128,42 @@
    "rank": 218
   },
   {
+   "name": "Mega Heracross",
+   "slug": "heracross-mega",
+   "types": [
+    "Bug",
+    "Fighting"
+   ],
+   "usage_percent": 0.1,
+   "rank": 219
+  },
+  {
+   "name": "Mega Sableye",
+   "slug": "sableye-mega",
+   "types": [
+    "Dark",
+    "Ghost"
+   ],
+   "usage_percent": 0.1,
+   "rank": 220
+  },
+  {
+   "name": "Mega Manectric",
+   "slug": "manectric-mega",
+   "types": [
+    "Electric"
+   ],
+   "usage_percent": 0.1,
+   "rank": 221
+  },
+  {
    "name": "Swalot",
    "slug": "swalot",
    "types": [
     "Poison"
    ],
    "usage_percent": 0.1,
-   "rank": 219
+   "rank": 222
   },
   {
    "name": "Chimecho",
@@ -2144,7 +2172,7 @@
     "Psychic"
    ],
    "usage_percent": 0.1,
-   "rank": 220
+   "rank": 223
   },
   {
    "name": "Mega Chimecho",
@@ -2154,7 +2182,7 @@
     "Steel"
    ],
    "usage_percent": 0.1,
-   "rank": 221
+   "rank": 224
   },
   {
    "name": "Glalie",
@@ -2163,7 +2191,7 @@
     "Ice"
    ],
    "usage_percent": 0.1,
-   "rank": 222
+   "rank": 225
   },
   {
    "name": "Mega Glalie",
@@ -2172,7 +2200,7 @@
     "Ice"
    ],
    "usage_percent": 0.1,
-   "rank": 223
+   "rank": 226
   },
   {
    "name": "Torterra",
@@ -2182,7 +2210,7 @@
     "Ground"
    ],
    "usage_percent": 0.1,
-   "rank": 224
+   "rank": 227
   },
   {
    "name": "Infernape",
@@ -2192,7 +2220,7 @@
     "Fighting"
    ],
    "usage_percent": 0.1,
-   "rank": 225
+   "rank": 228
   },
   {
    "name": "Luxray",
@@ -2201,7 +2229,7 @@
     "Electric"
    ],
    "usage_percent": 0.1,
-   "rank": 226
+   "rank": 229
   },
   {
    "name": "Rampardos",
@@ -2210,7 +2238,7 @@
     "Rock"
    ],
    "usage_percent": 0.1,
-   "rank": 227
+   "rank": 230
   },
   {
    "name": "Bastiodon",
@@ -2220,7 +2248,17 @@
     "Steel"
    ],
    "usage_percent": 0.1,
-   "rank": 228
+   "rank": 231
+  },
+  {
+   "name": "Spiritomb",
+   "slug": "spiritomb",
+   "types": [
+    "Ghost",
+    "Dark"
+   ],
+   "usage_percent": 0.1,
+   "rank": 232
   },
   {
    "name": "Mega Lucario",
@@ -2230,7 +2268,7 @@
     "Steel"
    ],
    "usage_percent": 0.1,
-   "rank": 229
+   "rank": 233
   },
   {
    "name": "Toxicroak",
@@ -2240,7 +2278,7 @@
     "Fighting"
    ],
    "usage_percent": 0.1,
-   "rank": 230
+   "rank": 234
   },
   {
    "name": "Rhyperior",
@@ -2250,7 +2288,7 @@
     "Rock"
    ],
    "usage_percent": 0.1,
-   "rank": 231
+   "rank": 235
   },
   {
    "name": "Glaceon",
@@ -2259,27 +2297,16 @@
     "Ice"
    ],
    "usage_percent": 0.1,
-   "rank": 232
+   "rank": 236
   },
   {
-   "name": "Frost Rotom",
-   "slug": "rotom-frost",
+   "name": "Serperior",
+   "slug": "serperior",
    "types": [
-    "Electric",
-    "Ice"
-   ],
-   "usage_percent": 0.1,
-   "rank": 233
-  },
-  {
-   "name": "Mow Rotom",
-   "slug": "rotom-mow",
-   "types": [
-    "Electric",
     "Grass"
    ],
    "usage_percent": 0.1,
-   "rank": 234
+   "rank": 237
   },
   {
    "name": "Mega Excadrill",
@@ -2289,7 +2316,7 @@
     "Steel"
    ],
    "usage_percent": 0.1,
-   "rank": 235
+   "rank": 238
   },
   {
    "name": "Mega Audino",
@@ -2299,7 +2326,7 @@
     "Fairy"
    ],
    "usage_percent": 0.1,
-   "rank": 236
+   "rank": 239
   },
   {
    "name": "Conkeldurr",
@@ -2308,7 +2335,7 @@
     "Fighting"
    ],
    "usage_percent": 0.1,
-   "rank": 237
+   "rank": 240
   },
   {
    "name": "Mega Scolipede",
@@ -2318,7 +2345,7 @@
     "Poison"
    ],
    "usage_percent": 0.1,
-   "rank": 238
+   "rank": 241
   },
   {
    "name": "Scolipede",
@@ -2328,7 +2355,7 @@
     "Poison"
    ],
    "usage_percent": 0.1,
-   "rank": 239
+   "rank": 242
   },
   {
    "name": "Cofagrigus",
@@ -2337,7 +2364,7 @@
     "Ghost"
    ],
    "usage_percent": 0.1,
-   "rank": 240
+   "rank": 243
   },
   {
    "name": "Zoroark",
@@ -2346,7 +2373,7 @@
     "Dark"
    ],
    "usage_percent": 0.1,
-   "rank": 241
+   "rank": 244
   },
   {
    "name": "Reuniclus",
@@ -2355,7 +2382,7 @@
     "Psychic"
    ],
    "usage_percent": 0.1,
-   "rank": 242
+   "rank": 245
   },
   {
    "name": "Mega Chesnaught",
@@ -2365,16 +2392,7 @@
     "Fighting"
    ],
    "usage_percent": 0.1,
-   "rank": 243
-  },
-  {
-   "name": "Florges",
-   "slug": "florges",
-   "types": [
-    "Fairy"
-   ],
-   "usage_percent": 0.1,
-   "rank": 244
+   "rank": 246
   },
   {
    "name": "Pangoro",
@@ -2384,7 +2402,7 @@
     "Dark"
    ],
    "usage_percent": 0.1,
-   "rank": 245
+   "rank": 247
   },
   {
    "name": "Mega Meowstic",
@@ -2393,37 +2411,7 @@
     "Psychic"
    ],
    "usage_percent": 0.1,
-   "rank": 246
-  },
-  {
-   "name": "Mega Malamar",
-   "slug": "malamar-mega",
-   "types": [
-    "Dark",
-    "Psychic"
-   ],
-   "usage_percent": 0.1,
-   "rank": 247
-  },
-  {
-   "name": "Barbaracle",
-   "slug": "barbaracle",
-   "types": [
-    "Rock",
-    "Water"
-   ],
-   "usage_percent": 0.1,
    "rank": 248
-  },
-  {
-   "name": "Mega Barbaracle",
-   "slug": "barbaracle-mega",
-   "types": [
-    "Rock",
-    "Fighting"
-   ],
-   "usage_percent": 0.1,
-   "rank": 249
   },
   {
    "name": "Clawitzer",
@@ -2432,7 +2420,7 @@
     "Water"
    ],
    "usage_percent": 0.1,
-   "rank": 250
+   "rank": 249
   },
   {
    "name": "Heliolisk",
@@ -2442,7 +2430,7 @@
     "Normal"
    ],
    "usage_percent": 0.1,
-   "rank": 251
+   "rank": 250
   },
   {
    "name": "Aurorus",
@@ -2452,7 +2440,7 @@
     "Ice"
    ],
    "usage_percent": 0.1,
-   "rank": 252
+   "rank": 251
   },
   {
    "name": "Goodra",
@@ -2461,7 +2449,7 @@
     "Dragon"
    ],
    "usage_percent": 0.1,
-   "rank": 253
+   "rank": 252
   },
   {
    "name": "Trevenant",
@@ -2471,7 +2459,7 @@
     "Grass"
    ],
    "usage_percent": 0.1,
-   "rank": 254
+   "rank": 253
   },
   {
    "name": "Decidueye",
@@ -2481,25 +2469,7 @@
     "Ghost"
    ],
    "usage_percent": 0.1,
-   "rank": 255
-  },
-  {
-   "name": "Lycanroc (Midday)",
-   "slug": "lycanroc-midday",
-   "types": [
-    "Rock"
-   ],
-   "usage_percent": 0.1,
-   "rank": 256
-  },
-  {
-   "name": "Mudsdale",
-   "slug": "mudsdale",
-   "types": [
-    "Ground"
-   ],
-   "usage_percent": 0.1,
-   "rank": 257
+   "rank": 254
   },
   {
    "name": "Salazzle",
@@ -2509,7 +2479,7 @@
     "Fire"
    ],
    "usage_percent": 0.1,
-   "rank": 258
+   "rank": 255
   },
   {
    "name": "Perrserker",
@@ -2518,7 +2488,7 @@
     "Steel"
    ],
    "usage_percent": 0.1,
-   "rank": 259
+   "rank": 256
   },
   {
    "name": "Mr. Rime",
@@ -2528,7 +2498,7 @@
     "Psychic"
    ],
    "usage_percent": 0.1,
-   "rank": 260
+   "rank": 257
   },
   {
    "name": "Runerigus",
@@ -2538,26 +2508,7 @@
     "Ghost"
    ],
    "usage_percent": 0.1,
-   "rank": 261
-  },
-  {
-   "name": "Alcremie",
-   "slug": "alcremie",
-   "types": [
-    "Fairy"
-   ],
-   "usage_percent": 0.1,
-   "rank": 262
-  },
-  {
-   "name": "Morpeko",
-   "slug": "morpeko",
-   "types": [
-    "Electric",
-    "Dark"
-   ],
-   "usage_percent": 0.1,
-   "rank": 263
+   "rank": 258
   },
   {
    "name": "Wyrdeer",
@@ -2567,7 +2518,7 @@
     "Psychic"
    ],
    "usage_percent": 0.1,
-   "rank": 264
+   "rank": 259
   },
   {
    "name": "Skeledirge",
@@ -2577,7 +2528,7 @@
     "Ghost"
    ],
    "usage_percent": 0.1,
-   "rank": 265
+   "rank": 260
   },
   {
    "name": "Quaquaval",
@@ -2587,7 +2538,7 @@
     "Fighting"
    ],
    "usage_percent": 0.1,
-   "rank": 266
+   "rank": 261
   },
   {
    "name": "Arboliva",
@@ -2597,7 +2548,7 @@
     "Normal"
    ],
    "usage_percent": 0.1,
-   "rank": 267
+   "rank": 262
   },
   {
    "name": "Squawkabilly",
@@ -2607,7 +2558,7 @@
     "Flying"
    ],
    "usage_percent": 0.1,
-   "rank": 268
+   "rank": 263
   },
   {
    "name": "Garganacl",
@@ -2616,7 +2567,7 @@
     "Rock"
    ],
    "usage_percent": 0.1,
-   "rank": 269
+   "rank": 264
   },
   {
    "name": "Orthworm",
@@ -2625,7 +2576,7 @@
     "Steel"
    ],
    "usage_percent": 0.1,
-   "rank": 270
+   "rank": 265
   },
   {
    "name": "Houndstone",
@@ -2634,7 +2585,7 @@
     "Ghost"
    ],
    "usage_percent": 0.1,
-   "rank": 271
+   "rank": 266
   },
   {
    "name": "Arbok",
@@ -2643,7 +2594,7 @@
     "Poison"
    ],
    "usage_percent": 0.0,
-   "rank": 272
+   "rank": 267
   },
   {
    "name": "Persian",
@@ -2652,7 +2603,7 @@
     "Normal"
    ],
    "usage_percent": 0.0,
-   "rank": 273
+   "rank": 268
   },
   {
    "name": "Victreebel",
@@ -2662,7 +2613,7 @@
     "Poison"
    ],
    "usage_percent": 0.0,
-   "rank": 274
+   "rank": 269
   },
   {
    "name": "Galarian Slowbro",
@@ -2672,7 +2623,7 @@
     "Psychic"
    ],
    "usage_percent": 0.0,
-   "rank": 275
+   "rank": 270
   },
   {
    "name": "Farfetch’d",
@@ -2682,7 +2633,7 @@
     "Flying"
    ],
    "usage_percent": 0.0,
-   "rank": 276
+   "rank": 271
   },
   {
    "name": "Mega Pinsir",
@@ -2692,7 +2643,7 @@
     "Flying"
    ],
    "usage_percent": 0.0,
-   "rank": 277
+   "rank": 272
   },
   {
    "name": "Pinsir",
@@ -2701,7 +2652,7 @@
     "Bug"
    ],
    "usage_percent": 0.0,
-   "rank": 278
+   "rank": 273
   },
   {
    "name": "Tauros",
@@ -2710,7 +2661,7 @@
     "Normal"
    ],
    "usage_percent": 0.0,
-   "rank": 279
+   "rank": 274
   },
   {
    "name": "Vaporeon",
@@ -2719,7 +2670,7 @@
     "Water"
    ],
    "usage_percent": 0.0,
-   "rank": 280
+   "rank": 275
   },
   {
    "name": "Ariados",
@@ -2729,7 +2680,7 @@
     "Poison"
    ],
    "usage_percent": 0.0,
-   "rank": 281
+   "rank": 276
   },
   {
    "name": "Espeon",
@@ -2738,7 +2689,7 @@
     "Psychic"
    ],
    "usage_percent": 0.0,
-   "rank": 282
+   "rank": 277
   },
   {
    "name": "Slowking",
@@ -2748,7 +2699,7 @@
     "Psychic"
    ],
    "usage_percent": 0.0,
-   "rank": 283
+   "rank": 278
   },
   {
    "name": "Forretress",
@@ -2758,7 +2709,7 @@
     "Steel"
    ],
    "usage_percent": 0.0,
-   "rank": 284
+   "rank": 279
   },
   {
    "name": "Qwilfish",
@@ -2768,17 +2719,7 @@
     "Poison"
    ],
    "usage_percent": 0.0,
-   "rank": 285
-  },
-  {
-   "name": "Mega Sableye",
-   "slug": "sableye-mega",
-   "types": [
-    "Dark",
-    "Ghost"
-   ],
-   "usage_percent": 0.0,
-   "rank": 286
+   "rank": 280
   },
   {
    "name": "Medicham",
@@ -2788,7 +2729,7 @@
     "Psychic"
    ],
    "usage_percent": 0.0,
-   "rank": 287
+   "rank": 281
   },
   {
    "name": "Mega Medicham",
@@ -2798,7 +2739,7 @@
     "Psychic"
    ],
    "usage_percent": 0.0,
-   "rank": 288
+   "rank": 282
   },
   {
    "name": "Mega Sharpedo",
@@ -2808,7 +2749,7 @@
     "Dark"
    ],
    "usage_percent": 0.0,
-   "rank": 289
+   "rank": 283
   },
   {
    "name": "Sharpedo",
@@ -2818,7 +2759,7 @@
     "Dark"
    ],
    "usage_percent": 0.0,
-   "rank": 290
+   "rank": 284
   },
   {
    "name": "Castform",
@@ -2827,7 +2768,7 @@
     "Normal"
    ],
    "usage_percent": 0.0,
-   "rank": 291
+   "rank": 285
   },
   {
    "name": "Banette",
@@ -2836,7 +2777,7 @@
     "Ghost"
    ],
    "usage_percent": 0.0,
-   "rank": 292
+   "rank": 286
   },
   {
    "name": "Mega Banette",
@@ -2845,7 +2786,7 @@
     "Ghost"
    ],
    "usage_percent": 0.0,
-   "rank": 293
+   "rank": 287
   },
   {
    "name": "Mega Absol",
@@ -2854,7 +2795,7 @@
     "Dark"
    ],
    "usage_percent": 0.0,
-   "rank": 294
+   "rank": 288
   },
   {
    "name": "Roserade",
@@ -2864,7 +2805,7 @@
     "Poison"
    ],
    "usage_percent": 0.0,
-   "rank": 295
+   "rank": 289
   },
   {
    "name": "Leafeon",
@@ -2873,7 +2814,7 @@
     "Grass"
    ],
    "usage_percent": 0.0,
-   "rank": 296
+   "rank": 290
   },
   {
    "name": "Mega Gallade",
@@ -2883,7 +2824,27 @@
     "Fighting"
    ],
    "usage_percent": 0.0,
-   "rank": 297
+   "rank": 291
+  },
+  {
+   "name": "Frost Rotom",
+   "slug": "rotom-frost",
+   "types": [
+    "Electric",
+    "Ice"
+   ],
+   "usage_percent": 0.0,
+   "rank": 292
+  },
+  {
+   "name": "Mow Rotom",
+   "slug": "rotom-mow",
+   "types": [
+    "Electric",
+    "Grass"
+   ],
+   "usage_percent": 0.0,
+   "rank": 293
   },
   {
    "name": "Emboar",
@@ -2893,7 +2854,7 @@
     "Fighting"
    ],
    "usage_percent": 0.0,
-   "rank": 298
+   "rank": 294
   },
   {
    "name": "Mega Emboar",
@@ -2903,7 +2864,7 @@
     "Fighting"
    ],
    "usage_percent": 0.0,
-   "rank": 299
+   "rank": 295
   },
   {
    "name": "Watchog",
@@ -2912,7 +2873,7 @@
     "Normal"
    ],
    "usage_percent": 0.0,
-   "rank": 300
+   "rank": 296
   },
   {
    "name": "Liepard",
@@ -2921,7 +2882,7 @@
     "Dark"
    ],
    "usage_percent": 0.0,
-   "rank": 301
+   "rank": 297
   },
   {
    "name": "Simisage",
@@ -2930,7 +2891,7 @@
     "Grass"
    ],
    "usage_percent": 0.0,
-   "rank": 302
+   "rank": 298
   },
   {
    "name": "Simisear",
@@ -2939,7 +2900,7 @@
     "Fire"
    ],
    "usage_percent": 0.0,
-   "rank": 303
+   "rank": 299
   },
   {
    "name": "Simipour",
@@ -2948,7 +2909,7 @@
     "Water"
    ],
    "usage_percent": 0.0,
-   "rank": 304
+   "rank": 300
   },
   {
    "name": "Musharna",
@@ -2957,7 +2918,7 @@
     "Psychic"
    ],
    "usage_percent": 0.0,
-   "rank": 305
+   "rank": 301
   },
   {
    "name": "Garbodor",
@@ -2966,7 +2927,7 @@
     "Poison"
    ],
    "usage_percent": 0.0,
-   "rank": 306
+   "rank": 302
   },
   {
    "name": "Emolga",
@@ -2976,7 +2937,7 @@
     "Flying"
    ],
    "usage_percent": 0.0,
-   "rank": 307
+   "rank": 303
   },
   {
    "name": "Beartic",
@@ -2985,7 +2946,7 @@
     "Ice"
    ],
    "usage_percent": 0.0,
-   "rank": 308
+   "rank": 304
   },
   {
    "name": "Galarian Stunfisk",
@@ -2995,7 +2956,7 @@
     "Steel"
    ],
    "usage_percent": 0.0,
-   "rank": 309
+   "rank": 305
   },
   {
    "name": "Stunfisk",
@@ -3005,7 +2966,7 @@
     "Electric"
    ],
    "usage_percent": 0.0,
-   "rank": 310
+   "rank": 306
   },
   {
    "name": "Diggersby",
@@ -3015,7 +2976,7 @@
     "Ground"
    ],
    "usage_percent": 0.0,
-   "rank": 311
+   "rank": 307
   },
   {
    "name": "Gogoat",
@@ -3024,7 +2985,7 @@
     "Grass"
    ],
    "usage_percent": 0.0,
-   "rank": 312
+   "rank": 308
   },
   {
    "name": "Furfrou",
@@ -3033,7 +2994,7 @@
     "Normal"
    ],
    "usage_percent": 0.0,
-   "rank": 313
+   "rank": 309
   },
   {
    "name": "Aegislash (Blade)",
@@ -3043,7 +3004,7 @@
     "Ghost"
    ],
    "usage_percent": 0.0,
-   "rank": 314
+   "rank": 310
   },
   {
    "name": "Aromatisse",
@@ -3052,7 +3013,7 @@
     "Fairy"
    ],
    "usage_percent": 0.0,
-   "rank": 315
+   "rank": 311
   },
   {
    "name": "Slurpuff",
@@ -3061,7 +3022,27 @@
     "Fairy"
    ],
    "usage_percent": 0.0,
-   "rank": 316
+   "rank": 312
+  },
+  {
+   "name": "Barbaracle",
+   "slug": "barbaracle",
+   "types": [
+    "Rock",
+    "Water"
+   ],
+   "usage_percent": 0.0,
+   "rank": 313
+  },
+  {
+   "name": "Mega Barbaracle",
+   "slug": "barbaracle-mega",
+   "types": [
+    "Rock",
+    "Fighting"
+   ],
+   "usage_percent": 0.0,
+   "rank": 314
   },
   {
    "name": "Tyrantrum",
@@ -3071,7 +3052,7 @@
     "Dragon"
    ],
    "usage_percent": 0.0,
-   "rank": 317
+   "rank": 315
   },
   {
    "name": "Dedenne",
@@ -3081,7 +3062,7 @@
     "Fairy"
    ],
    "usage_percent": 0.0,
-   "rank": 318
+   "rank": 316
   },
   {
    "name": "Gourgeist",
@@ -3091,7 +3072,7 @@
     "Grass"
    ],
    "usage_percent": 0.0,
-   "rank": 319
+   "rank": 317
   },
   {
    "name": "Avalugg",
@@ -3100,7 +3081,7 @@
     "Ice"
    ],
    "usage_percent": 0.0,
-   "rank": 320
+   "rank": 318
   },
   {
    "name": "Hisuian Avalugg",
@@ -3110,7 +3091,7 @@
     "Rock"
    ],
    "usage_percent": 0.0,
-   "rank": 321
+   "rank": 319
   },
   {
    "name": "Toucannon",
@@ -3120,7 +3101,7 @@
     "Flying"
    ],
    "usage_percent": 0.0,
-   "rank": 322
+   "rank": 320
   },
   {
    "name": "Lycanroc",
@@ -3129,7 +3110,7 @@
     "Rock"
    ],
    "usage_percent": 0.0,
-   "rank": 323
+   "rank": 321
   },
   {
    "name": "Lycanroc (Midnight)",
@@ -3138,7 +3119,7 @@
     "Rock"
    ],
    "usage_percent": 0.0,
-   "rank": 324
+   "rank": 322
   },
   {
    "name": "Passimian",
@@ -3147,7 +3128,7 @@
     "Fighting"
    ],
    "usage_percent": 0.0,
-   "rank": 325
+   "rank": 323
   },
   {
    "name": "Thievul",
@@ -3156,7 +3137,7 @@
     "Dark"
    ],
    "usage_percent": 0.0,
-   "rank": 326
+   "rank": 324
   },
   {
    "name": "Flapple",
@@ -3166,7 +3147,7 @@
     "Dragon"
    ],
    "usage_percent": 0.0,
-   "rank": 327
+   "rank": 325
   },
   {
    "name": "Appletun",
@@ -3176,7 +3157,7 @@
     "Dragon"
    ],
    "usage_percent": 0.0,
-   "rank": 328
+   "rank": 326
   },
   {
    "name": "Sandaconda",
@@ -3185,7 +3166,7 @@
     "Ground"
    ],
    "usage_percent": 0.0,
-   "rank": 329
+   "rank": 327
   },
   {
    "name": "Polteageist",
@@ -3194,7 +3175,7 @@
     "Ghost"
    ],
    "usage_percent": 0.0,
-   "rank": 330
+   "rank": 328
   },
   {
    "name": "Falinks",
@@ -3203,7 +3184,7 @@
     "Fighting"
    ],
    "usage_percent": 0.0,
-   "rank": 331
+   "rank": 329
   },
   {
    "name": "Mega Falinks",
@@ -3212,7 +3193,17 @@
     "Fighting"
    ],
    "usage_percent": 0.0,
-   "rank": 332
+   "rank": 330
+  },
+  {
+   "name": "Morpeko",
+   "slug": "morpeko",
+   "types": [
+    "Electric",
+    "Dark"
+   ],
+   "usage_percent": 0.0,
+   "rank": 331
   },
   {
    "name": "Mabosstiff",
@@ -3221,7 +3212,7 @@
     "Dark"
    ],
    "usage_percent": 0.0,
-   "rank": 333
+   "rank": 332
   },
   {
    "name": "Hydrapple",
@@ -3231,7 +3222,7 @@
     "Dragon"
    ],
    "usage_percent": 0.0,
-   "rank": 334
+   "rank": 333
   }
  ]
 }
