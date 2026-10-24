@@ -199,6 +199,9 @@ def take(a: argparse.Namespace) -> int:
     if prev:
         last = json.loads(Path(prev[-1]).read_text(encoding="utf-8"))
         if last.get("_sha256") == body["_sha256"]:
+            # --check reads the mtime: touch it, or a ledger nobody edits for
+            # three days fails the gate although every backup ran.
+            os.utime(prev[-1])
             print("identical to %s - nothing changed, no new file"
                   % os.path.basename(prev[-1]))
             return 0
