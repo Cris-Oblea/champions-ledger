@@ -5,14 +5,15 @@ the living metagame: what people actually run, at what percentage, at what speed
 
 Outputs to data/meta/:
     usage_pokemon.json    every Pokemon with its ladder/tournament usage %
-    usage_moves.json      top 100 moves by usage %
-    usage_abilities.json  top 100 abilities by usage %
-    usage_items.json      top 100 held items by usage %
+    usage_moves.json      every move with a usage %
+    usage_abilities.json  every ability with a usage %
+    usage_items.json      every held item with a usage %
     speed_tiers.json      base speed -> actual speed at each investment level
 
-Pokebase is a Next.js app; list pages are server-rendered, so the numbers are in
-the HTML. The speed tiers live in the RSC flight payload instead, which we
-reassemble and index by line id.
+Pokebase is a Next.js app. Everything is read from the RSC flight payload,
+which we reassemble and index by line id: since the 2026-10 redesign the list
+pages are one unpaginated grid whose CSS class names are build hashes, while
+the payload carries each row as a plain object (slug, name, usage, ...).
 
 Usage:
     python scripts/fetch_pokebase.py          # fetch + parse everything
@@ -33,29 +34,23 @@ BASE = "https://pokebase.app/pokemon-champions"
 
 PAGES = ["pokemon", "moves", "abilities", "items", "speed-tiers"]
 
-# The list pages render only 100 rows at a time and the usage % exists only in
-# that rendered HTML, so every page of the table has to be walked with ?page=N.
-PAGED = {"pokemon": 4, "moves": 10, "abilities": 4, "items": 2}
-
-
-def fetch(page: str, force: bool = False, num: int | None = None) -> str | None:
-    """Download one pokebase page (or page `num` of it) into the cache, unless
-    a real copy is already there.
+def fetch(page: str, force: bool = False) -> str | None:
+    """Download one pokebase page into the cache, unless a real copy is
+    already there.
     """
-    name = page if num in (None, 1) else "%s_p%d" % (page, num)
-    dest = os.path.join(POKEBASE, name + ".html")
+    dest = os.path.join(POKEBASE, page + ".html")
     if os.path.exists(dest) and os.path.getsize(dest) > 5000 and not force:
         return dest
     os.makedirs(POKEBASE, exist_ok=True)
-    url = BASE + "/" + page + ("" if num in (None, 1) else "?page=%d" % num)
+    url = BASE + "/" + page
     try:
         body = net.get(url, timeout=90)
     except net.ERRORS as e:
-        print("  FAILED %s -> %s" % (name, e))
+        print("  FAILED %s -> %s" % (page, e))
         return None
     with open(dest, "wb") as f:
         f.write(body)
-    print("  %-14s %d KB" % (name, len(body) // 1024), flush=True)
+    print("  %-14s %d KB" % (page, len(body) // 1024), flush=True)
     time.sleep(0.4)
     return dest
 
@@ -64,15 +59,6 @@ def read(page: str) -> str:
     """A cached page's HTML, or "" when it was never fetched."""
     p = os.path.join(POKEBASE, page + ".html")
     return open(p, encoding="utf-8", errors="replace").read() if os.path.exists(p) else ""
-
-
-def read_all_pages(page: str) -> Iterator[str]:
-    """Every cached page of a paginated table, in order."""
-    yield read(page)
-    for n in range(2, PAGED.get(page, 1) + 1):
-        s = read("%s_p%d" % (page, n))
-        if s:
-            yield s
 
 
 # --------------------------------------------------------------------------
@@ -135,30 +121,6 @@ def rsc_lines(payload: str) -> dict[str, Any]:
     return out
 
 
-def resolve(node: Any, lines: dict[str, Any], depth: int = 0) -> Any:
-    """Expand `$<lineid>:path:to:value` back-references used to dedupe the payload."""
-    if depth > 12:
-        return node
-    if isinstance(node, str):
-        if node.startswith("$") and ":" in node:
-            parts = node[1:].split(":")
-            cur: Any = lines.get(parts[0])
-            if cur is None:
-                return node
-            for key in parts[1:]:
-                try:
-                    cur = cur[int(key)] if dex.is_arr(cur) else cur[key]
-                except (KeyError, IndexError, ValueError, TypeError):
-                    return node
-            return resolve(cur, lines, depth + 1)
-        return node
-    if dex.is_arr(node):
-        return [resolve(v, lines, depth + 1) for v in node]
-    if dex.is_obj(node):
-        return {k: resolve(v, lines, depth + 1) for k, v in node.items()}
-    return node
-
-
 def find_key(obj: Any, key: str, hits: list[Any] | None = None) -> list[Any]:
     """Collect every value stored under `key`, at any depth."""
     hits = [] if hits is None else hits
@@ -186,50 +148,42 @@ def carrying(node: Any, keys: Sequence[str]) -> Iterator[dict[str, Any]]:
 
 
 def rows_with(page: str, *keys: str) -> Iterator[dict[str, Any]]:
-    """Every object carrying all of `keys` in a cached list page, every page
-    of it, in order: rows_with("items", "name", "unlock").
+    """Every object carrying all of `keys` in a cached list page, in order:
+    rows_with("items", "name", "unlock").
 
     Read as JSON, field by field. The build scripts used to pattern-match the
     raw HTML for a "name" followed by a "description", which paired 17 moves'
     text with the name of their TYPE (a move's type is an object with its own
     "name") and missed Snow Warning, whose text carries an escape the pattern
     did not expect."""
-    stems = [page] + ["%s_p%d" % (page, n) for n in range(2, PAGED.get(page, 1) + 1)]
-    for stem in stems:
-        yield from carrying(list(rsc_lines(rsc_payload(stem)).values()), keys)
+    yield from carrying(list(rsc_lines(rsc_payload(page)).values()), keys)
+
+
+def usage_rows(page: str, *keys: str) -> Iterator[dict[str, Any]]:
+    """Each row object of a list page once, by slug. `usage` is None where the
+    page shows "—" (nobody runs it). The same slug also appears in thinner
+    objects (the podium, a Mega's link), so name every field the caller reads."""
+    seen: set[str] = set()
+    for r in rows_with(page, "slug", "name", "usage", *keys):
+        if r["slug"] not in seen:
+            seen.add(r["slug"])
+            yield r
 
 
 # --------------------------------------------------------------------------
 # Parsers
 # --------------------------------------------------------------------------
-_LADDER_ROW = re.compile(r'href="/pokemon-champions/pokemon/([a-z0-9\-\.]+)"><img alt="([^"]*)"')
-_PERCENT = re.compile(r">([\d.]+)<!-- -->%<")
-_TYPE = re.compile(r'<span title="([A-Za-z]+)" class="inline-flex')
-
-
 def parse_pokemon_usage() -> list[dict[str, Any]]:
-    """The ladder, from the rendered table: name, slug, types, usage %.
+    """The ladder: name, slug, types, usage %.
 
-    Not the page's payload: its id -> percent map no longer carries the
-    roster that names the ids, so it cannot be joined (the shrink guard in
-    daily.py is what caught that). The table renders 100 rows a page like
-    the moves one, so every page is walked (PAGED). A species with no usage
-    cell is left out, as for moves.
+    Every species on the page is kept, a "—" one at 0.0: the shrink guard in
+    daily.py counts these rows, and audit_forms.py's watchlist is exactly the
+    names pokebase lists with no usage.
     """
-    rows: list[dict[str, Any]] = []
-    seen: set[str] = set()
-    for s in read_all_pages("pokemon"):
-        found = list(_LADDER_ROW.finditer(s))
-        for i, m in enumerate(found):
-            row_html = s[m.end():found[i + 1].start() if i + 1 < len(found) else len(s)]
-            link_end = row_html.find("</a>")
-            cell = _PERCENT.search(row_html, link_end)
-            if m.group(1) in seen or link_end < 0 or not cell:
-                continue
-            seen.add(m.group(1))
-            rows.append({"name": m.group(2), "slug": m.group(1),
-                         "types": _TYPE.findall(row_html[:link_end]),
-                         "usage_percent": float(cell.group(1))})
+    rows: list[dict[str, Any]] = [
+        {"name": r["name"], "slug": r["slug"], "types": list(r["types"]),
+         "usage_percent": float(r["usage"] or 0)}
+        for r in usage_rows("pokemon", "types")]
     rows.sort(key=lambda r: -r["usage_percent"])
     for i, r in enumerate(rows, 1):
         r["rank"] = i
@@ -237,49 +191,45 @@ def parse_pokemon_usage() -> list[dict[str, Any]]:
 
 
 def parse_table_usage(page: str) -> list[dict[str, Any]]:
-    """Moves / abilities / items list pages: name + usage % straight from the HTML.
+    """Moves / abilities / items list pages: name + usage %.
 
-    The usage is the FIRST cell after the name, and only that cell. A move
-    nobody runs has "—" there, and a pattern that searched onward for the
-    next "N%" found its accuracy instead: Return, Absorb and 199 more were
-    recorded at 100% usage. A move with no usage is left out."""
-    rows: list[dict[str, Any]] = []
-    seen: set[str] = set()
-    name = re.compile(r'href="/pokemon-champions/%s/([a-z0-9\-\.]+)">([^<]+)</a>'
-                      % re.escape(page))
-    first_cell = re.compile(r"</td><td[^>]*><span[^>]*>([\d.]+)?")
-    for s in read_all_pages(page):
-        for m in name.finditer(s):
-            slug = m.group(1)
-            if slug in seen:
-                continue
-            seen.add(slug)
-            cell = first_cell.search(s, m.end())
-            if not (cell and cell.group(1)):
-                continue
-            desc = ""
-            d = re.search(r"whitespace-pre-wrap[^>]*>([^<]{10,400})<",
-                          s[m.end():cell.start()])
-            if d:
-                desc = re.sub(r"\s+", " ", d.group(1)).strip()
-            rows.append({"rank": len(rows) + 1, "slug": slug,
-                         "name": m.group(2).strip(),
-                         "usage_percent": float(cell.group(1)),
-                         "description": desc})
-    return rows
+    A row nobody runs has usage None ("—" on the page) and is left out; an
+    explicit 0 is kept. Read from the field, never from the markup: a
+    pattern that searched the old table onward for the next "N%" found a
+    move's accuracy instead, and Return, Absorb and 199 more were recorded
+    at 100% usage."""
+    rows = [r for r in usage_rows(page) if r["usage"] is not None]
+    rows.sort(key=lambda r: -r["usage"])
+    return [{"rank": i, "slug": r["slug"], "name": r["name"].strip(),
+             "usage_percent": float(r["usage"]),
+             "description": re.sub(r"\s+", " ", r.get("description") or "").strip()}
+            for i, r in enumerate(rows, 1)]
+
+
+def tier_speeds(base: int) -> dict[str, int]:
+    """A base Speed's level-50 Speed at each investment, the formula of
+    statAt() in tracker/src/core/data.js: base + SP + 20, times the nature.
+    Integer maths, so a x1.1 never lands a hair under the whole number."""
+    neu0, neu_max = base + 20, base + 20 + 32
+    top = neu_max * 11 // 10
+    return {"max": top, "neuMax": neu_max, "neu0": neu0, "neg0": neu0 * 9 // 10,
+            "maxScarf": top * 3 // 2, "neuMaxScarf": neu_max * 3 // 2}
 
 
 def parse_speed_tiers() -> list[dict[str, Any]]:
-    """The speed-tier table, read from the page's flight payload."""
-    lines = rsc_lines(rsc_payload("speed-tiers"))
-    rows: list[Any] = next((resolve(v, lines) for v in find_key(lines, "tierRows")
-                            if dex.is_arr(v)), None) or []
-    return [{
-        "base_speed": r.get("baseSpeed"),
-        "speeds": r.get("speeds", {}),
-        "pokemon": [{"name": p.get("name"), "slug": p.get("slug")}
-                    for p in r.get("pokemon", [])],
-    } for r in rows]
+    """The speed-tier table: every form grouped by base Speed, fastest first.
+
+    The page sends one object per form (slug, baseSpeed) and computes the
+    tiers in the browser since 2026-10, so the speeds are ours."""
+    tiers: dict[int, list[dict[str, Any]]] = {}
+    seen: set[str] = set()
+    for f in rows_with("speed-tiers", "slug", "name", "baseSpeed"):
+        if f["slug"] not in seen:
+            seen.add(f["slug"])
+            tiers.setdefault(int(f["baseSpeed"]), []).append(
+                {"name": f["name"], "slug": f["slug"]})
+    return [{"base_speed": b, "speeds": tier_speeds(b), "pokemon": tiers[b]}
+            for b in sorted(tiers, reverse=True)]
 
 
 # --------------------------------------------------------------------------
@@ -287,8 +237,7 @@ def main() -> None:
     print("Fetching pokebase.app ...")
     force = "--force" in sys.argv
     for p in PAGES:
-        for n in range(1, PAGED.get(p, 1) + 1):
-            fetch(p, force=force, num=n)
+        fetch(p, force=force)
 
     os.makedirs(META, exist_ok=True)
     stamp = time.strftime("%Y-%m-%d")

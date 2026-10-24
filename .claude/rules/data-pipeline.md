@@ -48,32 +48,39 @@ over a maybe-missing list reads `for x in row.get(k) or ()`.
   tables instead; only Megas come from the Pokedex.
 - **The Attackdex flag table alternates header/value rows.** Start the parse at
   the `<tr>` that opens the "Physical Contact" row or every flag shifts by one.
-- **pokebase's GLOBAL tables render only 100 rows per page** and the usage %
-  exists only in that rendered HTML — walk `?page=N`. **The usage is the first
-  cell after the name and nothing else**: a move nobody runs shows "—" there,
-  and searching on for the next "N%" read its accuracy (294 moves "used" at
-  75-100% until 2026-09-30).
-- **A pokebase PER-POKEMON page paginates the other way, and `?page=N` does not
-  exist there** (found 2026-09-15, player: "TIENE PAGES!"). Those sections are
-  client components: the server sends every row as props and the buttons slice
-  them in the browser, so the rendered HTML holds page 1 for ever and there is
-  no URL for page 2. Everything is in the Next.js flight payload — the
+- **pokebase is read from its Next.js flight payload, never its markup**
+  (redesign of 2026-10-24, which broke every pokebase parser at once). The
   `self.__next_f.push([1,"..."])` chunks, concatenated and unescaped into one
-  JSON string. `fetch_pokebase.py:payload()` does that. Rillaboom: 19
-  moves over four pages, 26 spreads over six, 19 items over four. Reading the
-  markup saw five of each.
-- **That page carries TWO datasets with the same headings and they are NOT the
-  same numbers.** `Tournament Stats` is teamlists for one regulation, stamped
-  with it on the page, and exists for every Pokemon. `Season Stats` is the
-  ladder, per season, split doubles/singles, and **is missing entirely for some
-  Pokemon** — Rillaboom has none. Kingambit is Defiant 98.6% in one and 94% in
-  the other. Anything that finds a heading and keeps the longest run of
-  percentages will mix them, which is exactly what happened: the stored file
-  had Kingambit's moves summing to 370 and Rillaboom's to 94.
-- **And within the tournament block the MOVE column is divided by move SLOTS,
-  not by sets.** It sums to ~100 across the whole movepool, so nothing in it
-  can pass ~25 and Fake Out at 24.6% means nearly every Rillaboom runs it.
-  Items, abilities, natures and spreads are per SET and read directly;
+  JSON string, carry every row as a plain object; `fetch_pokebase.py:payload()`
+  does that. The markup is a grid whose CSS class names are build hashes, and
+  it shows a top five ("Show all 37") of each per-Pokemon section. No page
+  paginates any more and `?page=N` is gone. The markup has bitten before: a
+  pattern that searched the old table on for the next "N%" read a move's
+  accuracy (294 moves "used" at 75-100% until 2026-09-30).
+- **A list page's row is `{slug, name, usage, ...}`, and `usage` is null where
+  the page shows "—"** (nobody runs it). `usage_rows()` dedupes by slug: the
+  same slug also sits in thinner objects (the podium, a Mega's link), so name
+  every field you read or the thin copy wins. The speed-tier page sends only
+  `baseSpeed` per form; the speeds are ours (`tier_speeds()`, the app's
+  `statAt()` formula).
+- **A Pokemon page carries TWO datasets and they are NOT the same numbers.**
+  "Tournament builds" is teamlists for one regulation and exists for every
+  Pokemon: `label`/`share` rows (share = a fraction of builds), told apart by
+  where they link, never by order. Its abilities have no table, only each
+  one's tooltip ("99% of tournament builds in M-C run Defiant."), which also
+  names the regulation. **A Mega has exactly one ability** (player,
+  2026-10-24), stored at 100%; only a base form lists several. "Ranked ladder" is per season and format under
+  `initialEntries`; the `summaries` beside them hold only a rank, which is why
+  the season block came out empty from 2026-10-07. Kingambit is Defiant 99% in
+  one and 95.7% in the other. Anything that keeps the longest run of
+  percentages will mix them: the stored file once had Kingambit's moves
+  summing to 370 and Rillaboom's to 94.
+- **And within the tournament block the MOVE column is a share of move SLOTS,
+  not of sets.** pokebase now gives a share of builds (Fake Out 99%), so the
+  fetch divides it by the column's sum (four moves a set, one for Ditto, whose
+  old file held its ITEMS under moves); the column sums to ~100 across the whole movepool,
+  so nothing in it can pass ~25 and Fake Out at 24.7% means nearly every
+  Rillaboom runs it. Items, abilities, natures and spreads are per SET;
   teammates are per TEAM and sum to ~400, more when a Mega-capable teammate is
   listed twice (base and Mega). Never colour or threshold a move percentage
   against the others. `python scripts/build_splits_data.py --check` asserts all
