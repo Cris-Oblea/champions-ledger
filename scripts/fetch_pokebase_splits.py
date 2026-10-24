@@ -9,15 +9,14 @@ ladder. This answers the question a build actually asks: of the people running
 KINGAMBIT, what do THEY run - which moves, which item, which ability, which
 nature, which SP spread, and beside whom.
 
-THE PAGE HAS TWO OF THESE, AND THEY ARE NOT THE SAME NUMBERS (and each
-paginates client-side, so the rendered HTML shows only page 1):
+THE PAGE HAS TWO OF THESE, AND THEY ARE NOT THE SAME NUMBERS (and the
+rendered HTML shows only the top five of each section):
 
-  TOURNAMENT STATS - tournament teamlists for ONE regulation, stamped with it
-      on the page ("M-C"). Present for every Pokemon that has been brought to
-      an event. Kingambit: Defiant 98.6%.
-  SEASON STATS     - the ladder, per season (M-1 .. M-5), split into doubles
-      and singles. Only present for a Pokemon that was ranked that season -
-      Rillaboom's page has no season block at all. Kingambit: Defiant 94%.
+  TOURNAMENT BUILDS - tournament teamlists for ONE regulation ("M-C"), as
+      label/share rows. Present for every Pokemon that has been brought to an
+      event. Kingambit: Defiant 99%.
+  RANKED LADDER     - per season, split into doubles and singles. Only present
+      for a Pokemon that was ranked that season. Kingambit: Defiant 95.7%.
 
 The old parser walked the rendered HTML looking for a heading called "Moves"
 and kept the longest run of percentages it found, so it took whichever block
@@ -26,17 +25,12 @@ moves summed to 370 (four slots per set, so a share OF SETS) while Rillaboom's
 summed to 94 (a share of move SLOTS). The same column, two meanings, decided
 by which Pokemon you looked up. Both are now captured, separately and whole.
 
-THE PAGES ARE REAL PAGES, AND NONE OF THEM IS A URL. The section paginates
-client-side out of props the server already sent, so `?page=N` does not exist
-and page 1 is all the rendered HTML ever contains. Everything is in the Next.js
-flight payload - `self.__next_f.push([1,"..."])` - which is where this reads
-from now. Rillaboom: 26 spreads (6 pages), 19 items (4), 19 moves (4), 9
-natures (2), 10 teammates (2). The old parser saw five of each.
-
-TEAMMATES CARRY A PERCENTAGE NOW. They used to be stored as a bare ranked list
-because the rendered HTML gives an order and no number; the payload gives
-"Sneasler 53.9%", which is the number that makes the section useful for
-building a team rather than merely suggestive.
+EVERYTHING IS READ FROM THE NEXT.JS FLIGHT PAYLOAD - `self.__next_f.push(...)`
+- because the markup only ever shows the top five ("Show all 37") and its CSS
+class names are build hashes. Rillaboom: 37 moves, 27 items, 14 natures, 50
+spreads, 10 teammates. The abilities are the one exception: they have no
+table, only a tooltip each ("99% of tournament builds in M-C run Defiant."),
+which also names the regulation. Layout as of pokebase's 2026-10-24 redesign.
 
 WHY POKEBASE AND NOT PIKALYTICS. Pikalytics has the same shape of data but
 stopped updating - the rule is one month to update or it stops being a
@@ -73,10 +67,6 @@ BASE = "https://pokebase.app/pokemon-champions/pokemon/"
 SP_KEYS = [("hp", "hp"), ("attack", "atk"), ("defense", "def"),
            ("specialAttack", "spa"), ("specialDefense", "spd"),
            ("speed", "spe")]
-# How a nature's two stats are written everywhere else in this repo. pokebase
-# spells them out in camelCase, which is not what natures.json or the app say.
-STAT_WORD = {"hp": "HP", "attack": "Atk", "defense": "Def",
-             "specialAttack": "SpA", "specialDefense": "SpD", "speed": "Spe"}
 
 
 # --------------------------------------------------------------- the payload
@@ -120,84 +110,80 @@ def _spreads(rows: list[dict[str, Any]] | None, field: str) -> list[dict[str, An
 # ----------------------------------------------------------- tournament side
 
 def _kind(rows: list[Any]) -> str | None:
-    """Which section a table of rows is, read off its own columns.
+    """Which section a table of rows is, read off its own fields.
 
     Order of appearance would be shorter, and is exactly the assumption that
     produced the mixed file this replaces, so each table names itself: a
-    spread carries `values`, a nature carries the stat it raises, a move
-    carries its type, a teammate carries how many teams it appeared on.
+    spread carries `values`, a nature its `detail`, and the rest link where
+    they point (a move, an item, a teammate).
     """
     f = rows[0] if rows else None
     if not dex.is_obj(f):
         return None
-    if "percent" not in f:
-        return None
-    if "values" in f:
+    if "values" in f and "percent" in f:
         return "spreads"
-    if "incStat" in f:
+    if "share" not in f:
+        return None
+    if "detail" in f:
         return "natures"
-    if "moveTypeName" in f:
-        return "moves"
-    if "count" in f:
-        return "teammates"
-    if "iconUrl" in f:
-        return "items"
-    return None
+    m = re.search(r"/pokemon-champions/(moves|items|pokemon)/", f.get("href") or "")
+    return {"moves": "moves", "items": "items", "pokemon": "teammates"}[m.group(1)] if m else None
 
 
-def tournament(lines: dict[str, Any], flow: str, html: str) -> dict[str, Any]:
-    """The regulation's tournament block, every page of it."""
+# "+Atk / −Sp. Atk" -> "+Atk / -SpA", how natures.json and the app write it
+_NATURE_WORDS = [("−", "-"), ("Sp. Atk", "SpA"), ("Sp. Def", "SpD")]
+
+
+def _shares(rows: list[dict[str, Any]] | None, slots: bool = False) -> list[dict[str, Any]]:
+    """A `label`/`share` section as name + percent. `share` is a fraction of
+    builds; `slots` turns it into a share of slots by dividing by the sum,
+    which is the moves a set carries on average (four, but one for Ditto)."""
+    out: list[dict[str, Any]] = []
+    per = (sum(r["share"] for r in rows or ()) or 1) if slots else 1
+    for r in rows or ():
+        row: dict[str, Any] = {"name": r["label"], "percent": round(r["share"] * 100 / per, 1)}
+        if r.get("detail"):
+            d: str = r["detail"]
+            for a, b in _NATURE_WORDS:
+                d = d.replace(a, b)
+            row["effect"] = d
+        out.append(row)
+    return out
+
+
+_ABILITY_TIP = re.compile(r'"title":"([\d.]+)% of tournament builds in ([A-Za-z0-9-]+) run ([^"]+?)\."')
+
+
+def tournament(lines: dict[str, Any], flow: str, mega: bool) -> dict[str, Any]:
+    """The regulation's tournament block, every row of every section."""
     got: dict[str, list[dict[str, Any]]] = {}
     for rows in _lists(lines, "rows"):
         k = _kind(rows)
         if k and k not in got:
             got[k] = rows
-
-    def nature_effect(src: dict[str, Any], row: dict[str, Any]) -> None:
-        """Label a nature row with the stat it raises and lowers."""
-        if src.get("incStat"):
-            row["effect"] = "+%s / -%s" % (
-                STAT_WORD.get(src["incStat"], src["incStat"]),
-                STAT_WORD.get(src.get("decStat") or "", src.get("decStat")))
-
-    out: dict[str, Any] = {
-        "moves": _rows(got.get("moves")),
-        "items": _rows(got.get("items")),
-        "natures": _rows(got.get("natures"), nature_effect),
-        "teammates": _rows(got.get("teammates")),
+    # Abilities have no table: a species has at most three, and their share
+    # is only in each one's tooltip, which also names the regulation. A Mega
+    # has exactly ONE ability (player, 2026-10-24), so it runs it on every
+    # set; the tooltip's small share only counts teamlists that wrote the
+    # Mega's ability instead of the base one.
+    tips = _ABILITY_TIP.findall(flow)
+    share = {name: float(pct) for pct, _, name in tips}
+    if mega:
+        share = dict.fromkeys(list(share)[:1], 100.0)
+    elif not any(share.values()):
+        share = {}   # every tip at 0%: the teamlists match none of them (Lycanroc)
+    abilities = sorted(share.items(), key=lambda x: -x[1])
+    return {
+        # pokebase gives a move's share of BUILDS; dividing by the sum keeps
+        # the column a share of move SLOTS (see build_splits_data)
+        "moves": _shares(got.get("moves"), slots=True),
+        "items": _shares(got.get("items")),
+        "natures": _shares(got.get("natures")),
+        "teammates": _shares(got.get("teammates")),
         "spreads": _spreads(got.get("spreads"), "values"),
-        "abilities": block_abilities(html, "Tournament Stats"),
+        "abilities": [{"name": n, "percent": v} for n, v in abilities],
+        "regulation": tips[0][1].upper() if tips else None,
     }
-    reg = re.search(r"\?regulation=([a-z0-9-]+)#usage", flow)
-    out["regulation"] = reg.group(1).upper() if reg else None
-    return out
-
-
-def block_abilities(html: str, under: str) -> list[dict[str, Any]]:
-    """Abilities, from the rendered HTML.
-
-    They are the one section with no paginator - a species has at most three -
-    so the server renders them straight into the markup instead of handing
-    rows to a client component, and there is nothing in the payload to read.
-    The block is anchored to its parent heading because the two blocks
-    disagree (Kingambit is Defiant 98.6% in the tournament data and 94% on the
-    ladder) and an unanchored search would take whichever came first.
-    """
-    top = html.find(">%s<" % under)
-    if top < 0:
-        top = html.find(under)
-    if top < 0:
-        return []
-    m = re.compile(r"<h3[^>]*>\s*Abilities\s*</h3>").search(html, top)
-    if not m:
-        return []
-    chunk = re.split(r"<h[23][^>]*>", html[m.end():m.end() + 4000])[0]
-    toks = [x.strip() for x in
-            re.sub(r"\|+", "|", re.sub(r"<[^>]+>", "|", chunk)).split("|")]
-    toks = [x for x in toks if x]
-    return [{"name": toks[i], "percent": float(toks[i + 1])}
-            for i in range(len(toks) - 2)
-            if re.fullmatch(r"\d+(?:\.\d+)?", toks[i + 1]) and toks[i + 2] == "%"]
 
 
 # --------------------------------------------------------------- ladder side
@@ -216,7 +202,7 @@ def season(lines: dict[str, Any]) -> dict[str, Any] | None:
             if dex.is_obj(s) and s.get("id"):
                 seasons[s["id"]] = s
     best, best_n = None, -1
-    for o in carrying(list(lines.values()), ("seasonId",)):
+    for o in carrying(list(lines.values()), ("seasonId", "moves")):
         if o.get("format") != "doubles":
             continue
         n: int = dex.obj(seasons.get(o.get("seasonId"))).get("season") or 0
@@ -239,7 +225,7 @@ def season(lines: dict[str, Any]) -> dict[str, Any] | None:
     }
 
 
-def parse(html: str) -> dict[str, dict[str, Any]]:
+def parse(html: str, mega: bool = False) -> dict[str, dict[str, Any]]:
     # the props of every component on the page, which is where the
     # sections that paginate keep their rows
     """Everything one Pokemon page holds: the tournament block for the
@@ -247,7 +233,7 @@ def parse(html: str) -> dict[str, dict[str, Any]]:
     """
     flow = payload(html)
     lines = rsc_lines(flow)
-    got = {"tournament": tournament(lines, flow, html)}
+    got = {"tournament": tournament(lines, flow, mega)}
     ladder = season(lines)
     if ladder:
         got["season"] = ladder
@@ -287,7 +273,7 @@ def _fetch_missing(rows: list[dict[str, Any]], out: dict[str, Any],
         html = fetch(slug)
         if not html:
             continue
-        got = parse(html)
+        got = parse(html, mega="-mega" in slug)
         t = got.get("tournament") or {}
         if any(t.get(k) for k in ("moves", "items", "natures", "spreads")):
             out[name] = got
@@ -322,9 +308,9 @@ def main() -> int:
                      "measure: `tournament` is teamlists for one regulation "
                      "and exists for every Pokemon; `season` is the ladder "
                      "and only exists for a Pokemon ranked that season. Read "
-                     "from the Next.js payload, which carries every page of "
-                     "every section - the rendered HTML only ever holds page "
-                     "1."),
+                     "from the Next.js payload, which carries every row of "
+                     "every section - the rendered HTML only shows the top "
+                     "five."),
             "regulations": regs,
             "fetched": time.strftime("%Y-%m-%d"),
             "count": len(out), "pokemon": out}

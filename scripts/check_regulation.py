@@ -15,9 +15,10 @@ Nothing about that was automatic, which meant "the database is always current"
 was true on every day except the one day it mattered.
 
 THE SIGNAL IS EXPLICIT AND MACHINE-READABLE. pokebase's dex page ships
-`defaultLatestRegulationSetSlug":"m-c"` in its own page data - not scraped
-prose, the value the site itself uses to decide what to show - and
-build_docs.py prints the regulation from the same value.
+`"usage":{"regulationName":"M-C"}` in its own page data - not scraped prose,
+the regulation of the usage the page shows by default (until its 2026-10-24
+redesign the field was `defaultLatestRegulationSetSlug`) - and build_docs.py
+prints the regulation from the same value.
 
 TWO SOURCES, BECAUSE THEY MOVE AT DIFFERENT TIMES. On M-C day Serebii was fully
 updated while pokebase's usage was still empty; the reverse can happen just as
@@ -49,13 +50,13 @@ SEREBII = "https://www.serebii.net/pokemonchampions/rankedbattle.shtml"
 
 
 def live_slug(html: str) -> str | None:
-    """What pokebase says is the latest regulation set, e.g. "m-c".
+    """The regulation of pokebase's default ladder usage, e.g. "m-c".
 
     The quoting varies with how the page data is embedded - sometimes plain,
     sometimes backslash-escaped inside a JSON string - so the pattern allows
     either rather than assuming one.
     """
-    m = re.search(r'defaultLatestRegulationSetSlug\\?"\s*:\s*\\?"([^"\\]{1,24})',
+    m = re.search(r'regulationName\\?"\s*:\s*\\?"([^"\\]{1,24})',
                   html)
     return m.group(1).strip().lower() if m else None
 
@@ -97,7 +98,12 @@ def record(slug: str, note: str = "") -> dict[str, str]:
     """
     os.makedirs(os.path.dirname(RECORD), exist_ok=True)
     body = {"slug": slug, "label": slug.upper(),
-            "source": "pokebase defaultLatestRegulationSetSlug", "note": note}
+            "source": "pokebase usage regulationName", "note": note}
+    # The day it started. No page publishes it any more, and a guessed date
+    # is worse than none, so it is only ever carried over (player, 2026-10-24).
+    old = recorded()
+    if old.get("slug") == slug and old.get("since"):
+        body["since"] = old["since"]
     with open(RECORD, "w", encoding="utf-8", newline="\n") as f:
         json.dump(body, f, ensure_ascii=False, indent=2)
         f.write("\n")
