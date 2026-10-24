@@ -1,6 +1,6 @@
 {
  "source": "smogon.com/dex/champions",
- "fetched": "2026-10-13",
+ "fetched": "2026-10-24",
  "moveflags": [
   {
    "name": "Bite",
@@ -2756,6 +2756,46 @@
   }
  ],
  "items": [
+  {
+   "name": "Black Augurite",
+   "description": "Evolves Scyther into Kleavor when used.",
+   "isNonstandard": "Standard",
+   "genfamily": [
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
+   "name": "Blank Plate",
+   "description": "Changes Arceus to the Normal type when used in Legends: Arceus.",
+   "isNonstandard": "Standard",
+   "genfamily": [
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
+   "name": "Legend Plate",
+   "description": "In Legends: Arceus, Arceus's Judgment changes type to be supereffective.",
+   "isNonstandard": "Standard",
+   "genfamily": [
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
+   "name": "Peat Block",
+   "description": "Evolves Ursaring into Ursaluna when used during a full moon.",
+   "isNonstandard": "Standard",
+   "genfamily": [
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
   {
    "name": "Abomasite",
    "description": "If held by an Abomasnow, this item allows it to Mega Evolve in battle.",

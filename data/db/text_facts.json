@@ -1286,7 +1286,7 @@
    "text": "Cannot be selected the turn after it's used.",
    "source": "smogon",
    "serebii": "This move can't be used twice in a row.",
-   "pokebase": "The user swings its whole body around to attack with its huge hammer. This move can't be used twice in a row.",
+   "pokebase": "",
    "smogon": "Cannot be selected the turn after it's used."
   },
   "Glaive Rush": {
@@ -1335,7 +1335,7 @@
    "text": "For 5 turns, the evasiveness of all active Pokemon is multiplied by 0.6. At the time of use, Bounce, Fly, Magnet Rise, Sky Drop, and Telekinesis end immediately for all active Pokemon. During the effect, Bounce, Fly, Flying Press, High Jump Kick, Jump Kick, Magnet Rise, Sky Drop, Splash, and Telekinesis are prevented from being used by all active Pokemon. Ground-type attacks, Spikes, Toxic Spikes, Sticky Web, and the Arena Trap Ability can affect Flying types or Pokemon with the Levitate Ability. Fails if this move is already in effect.",
    "source": "smogon",
    "serebii": "Gives the entire field the Gravity status for 5 turns.",
-   "pokebase": "Enables Flying types or Pokémon with the Levitate Ability to be hit by Ground-type moves for five turns. Moves that involve flying can't be used.",
+   "pokebase": "",
    "smogon": "For 5 turns, the evasiveness of all active Pokemon is multiplied by 0.6. At the time of use, Bounce, Fly, Magnet Rise, Sky Drop, and Telekinesis end immediately for all active Pokemon. During the effect, Bounce, Fly, Flying Press, High Jump Kick, Jump Kick, Magnet Rise, Sky Drop, Splash, and Telekinesis are prevented from being used by all active Pokemon. Ground-type attacks, Spikes, Toxic Spikes, Sticky Web, and the Arena Trap Ability can affect Flying types or Pokemon with the Levitate Ability. Fails if this move is already in effect."
   },
   "Growth": {
@@ -2245,7 +2245,7 @@
    "text": "No additional effect.",
    "source": "smogon",
    "serebii": "",
-   "pokebase": "The target is physically pounded with a long tail, a foreleg, or the like.",
+   "pokebase": "",
    "smogon": "No additional effect."
   },
   "Power Gem": {
@@ -3022,7 +3022,7 @@
    "text": "Deals typeless damage to a random opposing Pokemon. If this move was successful, the user loses 1/4 of its maximum HP, rounded half up, and the Rock Head Ability does not prevent this. This move is automatically used if none of the user's known moves can be selected.",
    "source": "smogon",
    "serebii": "",
-   "pokebase": "This attack is used in desperation only if the user has no PP. It also damages the user a little.",
+   "pokebase": "",
    "smogon": "Deals typeless damage to a random opposing Pokemon. If this move was successful, the user loses 1/4 of its maximum HP, rounded half up, and the Rock Head Ability does not prevent this. This move is automatically used if none of the user's known moves can be selected."
   },
   "Struggle Bug": {
@@ -3660,7 +3660,7 @@
    "text": "If this Pokemon is a Greninja, its Attack, Special Attack, and Speed are raised by 1 stage if it attacks and knocks out another Pokemon. This effect can only happen once per battle.",
    "source": "smogon",
    "serebii": "",
-   "pokebase": "When the Pokémon knocks out a target, its bond with its Trainer is strengthened, and its Attack, Sp. Atk, and Speed stats are boosted.",
+   "pokebase": "",
    "smogon": "If this Pokemon is a Greninja, its Attack, Special Attack, and Speed are raised by 1 stage if it attacks and knocks out another Pokemon. This effect can only happen once per battle."
   },
   "Berserk": {

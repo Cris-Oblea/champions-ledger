@@ -2,7 +2,7 @@
  "source": "smogon.com/dex/champions",
  "game": "Pokemon Champions",
  "note": "VGC formats only (doubles, bring 6 pick 4). Singles dropped.",
- "fetched": "2026-10-13",
+ "fetched": "2026-10-24",
  "count": 358,
  "with_vgc_analysis": 59,
  "pokemon": [
@@ -5156,6 +5156,58 @@
      "credits": [
       "gephicka",
       "RauSakura"
+     ]
+    },
+    {
+     "format": "VGC26 Regulation M-B",
+     "outdated": null,
+     "overview": "",
+     "comments": "",
+     "movesets": [
+      {
+       "name": "Offensive Support",
+       "pokemon": "Pelipper",
+       "abilities": [
+        "Drizzle"
+       ],
+       "items": [
+        "Sitrus Berry"
+       ],
+       "natures": [
+        "Modest",
+        "Bold"
+       ],
+       "stat_points": [
+        {
+         "hp": 32,
+         "atk": 0,
+         "def": 0,
+         "spa": 10,
+         "spd": 13,
+         "spe": 11
+        }
+       ],
+       "moveslots": [
+        [
+         "Weather Ball"
+        ],
+        [
+         "Hurricane"
+        ],
+        [
+         "Wide Guard",
+         "Protect"
+        ],
+        [
+         "Tailwind"
+        ]
+       ],
+       "explanation": "Pelipper is able to do well into many metagame threats such as Mega Charizard Y, Mega Scovillain, and Sneasler thanks to Drizzle and its STAB combination, allowing it to support its rain-utilizing teammates such as Archaludon, which would otherwise fear foes such as Sneasler.\nWide Guard vs Protect: Wide Guard allows Pelipper to shield its teammates from spread attacks such as Mega Froslass's Blizzard, Mega Floette's Dazzling Gleam, and Choice Scarf Garchomp's Earthquake. Protect sacrifices some of Pelipper's support capabilities to allow it to survive longer, being able to avoid Fake Out and allowing its ally to reposition to deal with threats such as Mega Raichu Y by baiting attacks like Zap Cannon into it.\nTailwind: Tailwind allows Pelipper to support teammates directly. For example, it can allow an allied Archaludon to outspeed Garchomp and Mega Charizard Y and allow Mega Swampert to outspeed foes with their own Tailwind up.\nSitrus Berry: Sitrus Berry allows Pelipper to take attacks more comfortably or heal up after barely surviving an attack such as Mega Floette's Moonblast, bringing it out of range of Fake Out from Incineroar and Sneasler or other priority moves such as Quick Attack from Sylveon.\nDrizzle: Drizzle is crucial to allow Pelipper to check opposing weather setters like Mega Charizard Y while aiding allies such as Archaludon with Electro Shot, Mega Swampert with Swift Swim, and even Mega Charizard Y with Hurricane and Weather Ball. Mega Charizard Y in rain is able to OHKO three of its biggest checks in Mega Tyranitar, Incineroar, and Ceruledge with Weather Ball and combat opposing Mega Charizard Y without running Ancient Power.\nSP Spreads\n32 HP / 10 SpA / 13 SpD / 11 Spe with Modest or Bold: The bulk investment allows Pelipper to survive Moonblast from most Modest Mega Floette most of the time while retaining enough Speed to outspeed uninvested Mega Scovillain and enough offense to have good odds to OHKO bulky Mega Charizard Y with Weather Ball in rain and most Sneasler and Venusaur with Hurricane if Pelipper has a Modest nature. A Bold nature allows Pelipper to stick around longer, allowing it to set the rain multiple times in a battle. Notably, Bold Pelipper always survives 100-Base Power Last Respects from Life Orb Basculegion.\nTeambuilding\nChecks and Weaknesses: Pelipper heavily relies on weather control to achieve much of anything, and teams built with it will often use partners that do so as well. As such, if foes such as Mega Froslass and Mega Tyranitar wrest weather control from it, it can struggle significantly. Pelipper should also be mindful of giving opposing Archaludon access to its rain, as they do not fear its STAB moves and can OHKO Pelipper with Electro Shot.\nOther threats: Mega Raichu Y is a huge threat to Pelipper, as it can use Fake Out into Pelipper safely if Pelipper is not carrying Protect and OHKO it with Zap Cannon. Hisuian Arcanine is also able to outspeed and OHKO Pelipper with Head Smash.\nGood Partners and Synergies: Pelipper's most common and important allies are those that can use the rain it sets up to deal devastating damage. Mega Swampert is able to outspeed Garchomp in the rain, while Pelipper can OHKO most Grass-types that Mega Swampert fears with Hurricane. Similarly, Archaludon is able to snowball quickly in the rain with Electro Shot, being supported by Pelipper's Tailwind and Hurricane that OHKOes Sneasler.\nTwo Weather Setters: When paired with Mega Charizard Y, both it and Pelipper become much more flexible, aiming to use the combination of Drizzle and Drought to always have the most effective Weather Ball typing at hand. Mega Charizard Y in the rain can beat its biggest checks, such as Incineroar, which would otherwise comfortably take Mega Charizard Y's attacks and then weaken it with Parting Shot, and Mega Tyranitar, which would similarly survive Mega Charizard Y's moves and OHKO it with Rock Slide. Pelipper is also able to use Charizard's sun to deal heavy damage to Kingambit and Gholdengo in a pinch.\nBeating Opposing Weather Setters: Mega Golisopod is able to OHKO both Mega Froslass and Mega Tyranitar with Iron Head while not taking much damage from either. Pelipper helps Mega Golisopod with its weakness to Fire-types, notably allowing it to survive Flamethrower from Mega Salamence, Heat Wave from Mega Charizard Y, and Flare Blitz from Incineroar if the rain is up."
+      }
+     ],
+     "credits": [
+      "poketitanterra",
+      "pengu"
      ]
     }
    ]
@@ -20070,7 +20122,7 @@
     {
      "format": "VGC26 Regulation M-C",
      "outdated": null,
-     "overview": "",
+     "overview": "Rillaboom is a versatile offensive Pokemon with moderate support capabilities, being largely defined by its automatic setup of Grassy Terrain. Grassy Terrain's passive recovery helps Rillaboom and its allies avoid getting KOed by some attacks, though opponents can also exploit that with their own Pokemon. More importantly, the Terrain makes Grassy Glide a strong priority move and empowers Wood Hammer; these moves in tandem with Fake Out's disruption allow Rillaboom to handle both fast glass cannons like Mega Raichu Y and bulky foes like Mega Tyranitar. With its Grass typing, Rillaboom has a great matchup against relevant Water- and Ground-types like Basculegion-M and Garchomp, but it's also weak to top threats like Mega Salamence, Incineroar, and Sneasler. It additionally has to be a bit cautious around the Indeedee formes, as they can override its Terrain with Psychic Surge and weaken its offensive capabilities. Furthermore, Rillaboom has four-moveslot syndrome and generally needs to forgo Protect, which makes it entirely reliant on offensive pressure to defend itself.",
      "comments": "",
      "movesets": [
       {
@@ -20098,23 +20150,25 @@
        ],
        "moveslots": [
         [
-         "Wood Hammer"
+         "Fake Out"
         ],
         [
          "Grassy Glide"
         ],
         [
-         "Fake Out"
+         "Wood Hammer"
         ],
         [
          "High Horsepower",
          "U-turn"
         ]
        ],
-       "explanation": ""
+       "explanation": "Rillaboom can deal heavy damage with its STAB attacks and handle faster threats with Grassy Glide while supporting its team with passive recovery from Grassy Terrain and timely disruption with Fake Out.\nHigh Horsepower deals solid damage against Fire- and Steel-types like Sneasler, Kingambit, and Gholdengo. U-turn heavily damages the Indeedee formes, Farigiraf, and opposing Rillaboom, in addition to letting Rillaboom pivot out of bad matchups and reset Grassy Terrain and Fake Out if needed. Protect can be used over Wood Hammer on Perish trap teams with Mega Gengar to help stall out Perish Song.\nMiracle Seed provides Rillaboom a boost to its STAB attacks at no cost. It enables Grassy Glide to OHKO some bulky variants of Basculegion-M and 2HKO maximum HP Sylveon, and it lets Wood Hammer OHKO maximum HP Sylveon. Life Orb grants a stronger, universal power boost in exchange for less longevity, allowing Wood Hammer to always OHKO uninvested Garchomp and High Horsepower to always OHKO maximum HP Mega Gengar. Eject Button is a niche option for Perish trap teams; after Mega Gengar switches to Rillaboom, it lets Rillaboom immediately pivot back to Mega Gengar after getting hit by a predicted attack.\nUsage Tips\nFlying-types like Mega Salamence, Mega Staraptor, and Mega Charizard Y resist or are immune to every attack in Rillaboom's arsenal and hit back hard with their STAB moves. Salamence and Staraptor can also weaken Rillaboom with Intimidate before they Mega Evolve. Corviknight can easily set up in front of it with Bulk Up, KO it with Brave Bird, and proceed to threaten its whole team with Power Trip.\nFire- and Steel-types can handily deal with Rillaboom if it doesn't have High Horsepower. Armarouge and Hisuian Arcanine can OHKO it immediately with their STAB moves, while Incineroar can heavily damage it with Flare Blitz and weaken it with Intimidate and Parting Shot. Torkoal can also OHKO it with Eruption as long as it's properly supported with Trick Room. Kingambit and Mega Metagross can attack it freely, while Gholdengo can use it as setup fodder.\nBug-types like Volcarona and Mega Golisopod resist most of Rillaboom's attacks and threaten it with their STAB moves. Support Volcarona sets can OHKO Rillaboom with Overheat, burn it with Flame Body, and passively chip it with Rocky Helmet, though they can't redirect its attacks with Rage Powder. With its high physical bulk, Mega Golisopod can take High Horsepower with ease, and it's able to potentially restore a lot of health with Leech Life thanks to Rillaboom's high HP stat.\nSneasler can stop Rillaboom from doing anything with Fake Out and proceed to threaten a KO the next turn with Dire Claw. Variants without Fake Out still heavily pressure Rillaboom but must be wary of High Horsepower. Mega Gengar easily traps, outspeeds, and OHKOes Rillaboom with Sludge Bomb. Glimmora is another Poison-type that outspeeds and OHKOes Rillaboom with Sludge Bomb, and it can set up a free layer of Toxic Spikes if Rillaboom hits it.\nMega Garchomp Z and Mega Delphox resist Rillaboom's Grass-type moves and blank High Horsepower thanks to Levitate, and they outspeed and heavily damage it with Flamethrower and Heat Wave, respectively. However, they can only check it if they're at full health because they get 2HKOed by Wood Hammer without any bulk investment, and they're unable to exploit Grassy Terrain's recovery. Mega Froslass threatens heavy damage with Blizzard, and it can set up Aurora Veil to weaken Rillaboom's Wood Hammer. Dragapult outspeeds and burns Rillaboom with Will-O-Wisp, weakening it enough to let Dragapult comfortably 2HKO it with Life Orb-boosted Shadow Ball.\nGrass-types like Whimsicott and Sinistcha don't care much about Rillaboom's attacks, though Sinistcha needs Matcha Gotcha's burn or Shadow Ball to pressure it back. Venusaur outspeeds Rillaboom regardless of weather and threatens heavy damage with Sludge Bomb. In the mirror matchup, U-turn is the only move Rillaboom has to meaningfully damage the opposing Rillaboom without risk.\nThe Indeedee formes can override Grassy Terrain with their Psychic Terrain, turning Grassy Glide into a weak move and shutting off Fake Out, but they risk getting OHKOed or 2HKOed by Wood Hammer regardless of Terrain. Indeedee-F can redirect Rillaboom's attacks away from offensive allies like Armarouge with Follow Me, so they can safely KO Rillaboom. Meanwhile, Indeedee-M outspeeds and 2HKOes Rillaboom with Expanding Force, but it requires Focus Sash to prevent the OHKO from Wood Hammer or even U-turn.\nHisuian Arcanine is an exceptionally good Fire-type to pair with Rillaboom, as its STAB combination lets it handle Flying-, Fire-, Steel-, Bug-, and Grass-types by itself. Incineroar is a bulkier alternative that still offensively handles Steel-, Bug-, and Grass-types while stomaching STAB attacks from Fire-types and Mega Froslass. Incineroar can also use Parting Shot to safely pivot in Rillaboom, which, if it has U-turn, can form a solid pivot core with Incineroar. In addition to helping solidify the matchup against Mega Gengar and the Indeedee formes, this pivot core allows both to constantly use Fake Out and provide plentiful support for setup attackers with Grassy Terrain's recovery and Parting Shot's stat drops. Both Hisuian Arcanine and Incineroar appreciate Rillaboom’s good matchup against Ground- and Water-types like Excadrill and Milotic, as well as Mega Tyranitar.\nMilotic is a solid switch-in to Fire-types, and it prevents opponents from freely sending out Incineroar, Salamence, and Staraptor against Rillaboom due to Competitive. Milotic also can directly threaten Mega Salamence, Mega Staraptor, and Mega Garchomp Z with Ice Beam. Meanwhile, Choice Scarf Basculegion-M handles Fire-types more directly with Wave Crash, and it can deal with Sneasler and opposing Ghost-types with Last Respects. In return, Rillaboom can remove opposing Water-types and Mega Raichu Y for them. Notably, Rillaboom can form a well-rounded Fire / Water / Grass core with the aforementioned Water- and Fire-type allies.\nFighting-types like Sneasler and Mega Staraptor handle Incineroar, Kingambit, and Archaludon with Close Combat. Sneasler appreciates Rillaboom's Grassy Terrain, which weakens Garchomp's Earthquake, and it can activate Unburden while patching up its abysmal Defense if it has Grassy Seed. On the other hand, Mega Staraptor can OHKO support Volcarona at the risk of triggering Flame Body and Rocky Helmet.\nSteel-types handle non-Flamethrower Mega Salamence and help pressure the Indeedee formes to get ahead in the Terrain war while appreciating Rillaboom's support against Ground-types. Gholdengo deals with Glimmora and Sneasler, the latter of which is a common Pokemon on Psychic Terrain teams, while bypassing Indeedee-F's Follow Me with Make It Rain. It can also exploit Rillaboom's Terrain with Grassy Seed to have an easier time setting up. Meanwhile, Kingambit can directly pressure Mega Gengar, Dragapult, and Psychic Terrain beneficiaries like Mega Gardevoir and Hatterene without the need for setup.\nMega Salamence and Mega Garchomp Z can switch into and threaten Fire-types for Rillaboom. With coverage moves like Flamethrower and Earth Power, they can also handle Steel-types, and with Rillaboom's Fake Out support, they can safely KO opposing Mega Salamence and Mega Garchomp Z with their STAB Dragon-type moves.\nMega Raichu Y easily eliminates Flying-types with Zap Cannon. Zap Cannon's paralysis can let Rillaboom finish off would-be faster foes, while Fake Out and Grassy Glide can enable Mega Raichu Y to deal with foes it can't OHKO, such as Mega Salamence. Mega Raichu Y can also OHKO Archaludon with Focus Blast and, before Mega Evolving, prevent it from setting up on Rillaboom with Electro Shot thanks to Lightning Rod. In return, Rillaboom can handle Ground-types like Mega Swampert.\nPerish trap teams especially benefit from Rillaboom's Grassy Terrain, as teammates will regain health for free while they stall out Perish Song with Protect. Mega Gengar appreciates Rillaboom's ability to pivot it in and handle Ground-types and Mega Tyranitar, and it can deal with Gholdengo in return. Politoed appreciates Rillaboom's support similarly to other Water-types, but its ability to set rain and negate Rillaboom's Fire weakness makes it stand out in the matchup against Mega Charizard Y and Torkoal."
       }
      ],
-     "credits": []
+     "credits": [
+      "Carrotman"
+     ]
     }
    ]
   },
@@ -23129,6 +23183,97 @@
      ],
      "credits": [
       "pengu"
+     ]
+    },
+    {
+     "format": "VGC26 Regulation M-C",
+     "outdated": null,
+     "overview": "With two very strong STAB moves and an amazing Speed tier, Sneasler proves itself to be a top-tier threat in Regulation M-C. Fully invested, its Speed rivals that of Mega Froslass and allows it to outspeed key foes like Garchomp and Mega Floette. Close Combat and its Poison-type STAB move of choice turn it into a menacing attacker, capable of dealing large sums of damage to neutral targets while easily handling foes such as Kingambit, Rillaboom, and Sylveon. Its poor defensive typing and stats, however, leave it easily KOed by a stray coverage move such as High Horsepower from the aforementioned Rillaboom. Additionally, many attackers like Garchomp and Mega Salamence can not only take a hit from Sneasler but also OHKO it back.",
+     "comments": "",
+     "movesets": [
+      {
+       "name": "Unburden Sweeper",
+       "pokemon": "Sneasler",
+       "abilities": [],
+       "items": [
+        "Grassy Seed",
+        "Psychic Seed",
+        "White Herb"
+       ],
+       "natures": [
+        "Adamant"
+       ],
+       "stat_points": [
+        {
+         "hp": 2,
+         "atk": 32,
+         "def": 0,
+         "spa": 0,
+         "spd": 0,
+         "spe": 32
+        }
+       ],
+       "moveslots": [
+        [
+         "Close Combat"
+        ],
+        [
+         "Dire Claw"
+        ],
+        [
+         "Fake Out",
+         "Rock Slide",
+         "Throat Chop"
+        ],
+        [
+         "Protect"
+        ]
+       ],
+       "explanation": "Unburden Sneasler aims to outspeed and overwhelm foes with an onslaught of offense, firing off Close Combat and Dire Claw to threaten metagame staples such as Kingambit and Mega Floette.\nFake Out is most commonly used alongside White Herb and Grassy Seed, enabling Sneasler to create opportunities foe for allies like Kingambit to attack or set up safely. Rock Slide is also run on Grassy Seed sets and on Psychic Seed sets as well, to deal heavy damage to Mega Charizard Y. Throat Chop targets Gholdengo and other Ghost-types such as Basculegion-M. This is most commonly used on Psychic Seed sets because Sneasler is run alongside Indeedee-M, which cannot hit Gholdengo hard at all.\nUnburden in conjunction with one of the Seed items or White Herb turns Sneasler into the fastest Pokemon in the format once that item is consumed, allowing Sneasler to outspeed and OHKO foes like Mega Floette even with Tailwind support.\nAs opposed to a 2 HP / 32 Attack / 32 Speed SP spread with an Adamant nature, which maximizes offense and Speed, a spread of 4 HP / 30 Attack / 17 Special Defense / 15 Speed instead gives Sneasler more survivability, allowing it to always survive Hyper Voice from Timid Mega Salamence while still outspeeding Excadrill in the sand if Sneasler's Unburden is active.\nGrassy Seed is used alongside Rillaboom, activating Unburden and allowing Sneasler to survive Wave Crash from Jolly Adaptability Basculegion-M. Psychic Seed does similarly when used alongside Indeedee-M or Indeedee-F, giving Sneasler odds of surviving Heat Wave from Modest Mega Charizard Y in the sun. Grassy Seed and Psychic Seed give Sneasler a far easier time against foes like Mega Raichu Y, letting it immediately outspeed them. White Herb allows Sneasler to shrug off Intimidate or Close Combat debuffs, letting it consistently OHKO Incineroar and outspeed Mega Salamence if its Attack is dropped by Intimidate on base Salamence."
+      },
+      {
+       "name": "Focus Sash",
+       "pokemon": "Sneasler",
+       "abilities": [
+        "Poison Touch"
+       ],
+       "items": [
+        "Focus Sash"
+       ],
+       "natures": [
+        "Jolly"
+       ],
+       "stat_points": [
+        {
+         "hp": 2,
+         "atk": 32,
+         "def": 0,
+         "spa": 0,
+         "spd": 0,
+         "spe": 32
+        }
+       ],
+       "moveslots": [
+        [
+         "Close Combat"
+        ],
+        [
+         "Dire Claw",
+         "Poison Jab"
+        ],
+        [
+         "Fake Out"
+        ],
+        [
+         "Protect",
+         "Quick Guard"
+        ]
+       ],
+       "explanation": "This Sneasler set aims to gear it towards the supportive side, aiding its allies with one of the format's fastest Fake Outs and spreading poison through the combination of Dire Claw or Poison Jab and Poison Touch.\nPoison Jab can be run over Dire Claw to prevent the chance of paralysis or sleep, guaranteeing poison is the status that is inflicted. Quick Guard can be run over Protect to deny priority attacks like Sucker Punch and Aqua Jet from Kingambit and Basculegion-M to assist allies such as Mega Delphox in safely setting up and sweeping. Going without Protect, however, leaves Sneasler vulnerable to Fake Out from faster foes like Mega Raichu Y.\nFocus Sash allows Sneasler to stick around longer, surviving attacks such as Hyper Voice from Mega Salamence without having to invest in bulk.\nUsage Tips\nMega Staraptor and Mega Aerodactyl can OHKO Sneasler with Dual Wingbeat, with the former also having access to Brave Bird. Other Flying-type Pokemon like Mega Salamence, Mega Charizard Y, and Pelipper all threaten Sneasler with Hyper Voice and Hurricane. Mega Salamence's and Mega Staraptor's Intimidate before Mega Evolving hampers the damage of Sneasler that forgo White Herb, while Mega Charizard Y can also dispose of Sneasler easily with its Fire-type STAB move in the sun.\nGholdengo is immune to both of Sneasler's STAB options, rendering Sneasler useless against it unless Sneasler decides to carry Throat Chop, which comes at the cost of more useful coverage or Fake Out. Gholdengo can easily set up in front of Sneasler to situate itself to sweep. Other Ghost-type Pokemon like Mega Froslass and Basculegion-M shrug off the damage the Sneasler deals and threaten it with Shadow Ball, Blizzard, Wave Crash, and Last Respects. Basculegion-M in particular has access to strong priority in the form of Aqua Jet, 2HKOing Sneasler before it can move despite Unburden.\nPsychic-type Pokemon such as Indeedee-M, Indeedee-F, and Mega Delphox all threaten to OHKO Sneasler with Expanding Force and Psychic. Indeedee-F also commonly runs Rocky Helmet, breaking Sneasler's Focus Sash if it decides to attack Indeedee-F or gets its attack redirected by Follow Me. Farigiraf can tank a Close Combat or Throat Chop and retaliate with Psychic. Indeedee-F and Farigiraf commonly carry Trick Room, turning Sneasler's high Speed into a burden.\nMega Raichu Y outspeeds Sneasler if Unburden is not activated, allowing Mega Raichu Y to paralyze it and deal huge damage with Zap Cannon. It also has the faster Fake Out, forcing Sneasler to use Protect. Mega Golisopod is another Mega Pokemon to watch out for, since its high Defense allows it to tank Close Combat, its Steel typing prevents it from being hurt by Dire Claw or Poison Jab, and it can retaliate with Iron Head.\nGarchomp can break Sneasler's Focus Sash with Rough Skin while OHKOing it with Stomping Tantrum or Earthquake. Excadrill in the sand outspeeds and OHKOs Sneasler, or it can hold the Focus Sash to survive an attack and OHKO Sneasler with High Horsepower or Earthquake.\nRillaboom activates Grassy Seed for Sneasler. On top of that, it removes Psychic Terrain that could annoy Sneasler and weakens Earthquake thanks to its own Grassy Terrain. It swaps in on Zap Cannon from Mega Raichu Y and fires back with Wood Hammer or High Horsepower while also threatening Gholdengo with High Horsepower and Basculegion-M with Grassy Glide or Wood Hammer. Sneasler, in return, provides assistance against Kingambit and Mega Charizard Y by using Close Combat and Rock Slide.\nIndeedee-F or Indeedee-M both set up Psychic Terrain to activate Sneasler's Psychic Seed. Indeedee-F provides redirection support to keep Sneasler safe as well as carries Helping Hand to allow Sneasler to always OHKO opposing Rillaboom with Dire Claw and Chople Berry Kingambit with Close Combat. Indeedee-M, on the other hand, forms a strong offensive core with Sneasler, threatening fast Psychic-type damage onto foes such as Mega Staraptor and Mega Gengar.\nKingambit and Gholdengo both help out against the Flying-type attacks that scare Sneasler, with the former beating most Ghost- and Psychic-types, while the latter does well against Pelipper and Mega Staraptor. Sneasler has access to Fake Out to aid both Kingambit and Gholdengo to set up with Swords Dance and Nasty Plot, as well as targeting down opposing Kingambit and other problematic foes like Incineroar with Close Combat.\nMega Salamence beats Mega Staraptor, Garchomp, Pelipper, and Mega Charizard Y for Sneasler. Sneasler scares away the Fairy-types that threaten Mega Salamence, as well as other foes like Kingambit and Archaludon. Mega Raichu Y is another strong Mega Pokemon that goes well with Sneasler, targeting the Flying-type Pokemon that Sneasler dislikes, as well as Basculegion-M and common Psychic-type foes such as Indeedee-F and Mega Delphox. Mega Floette and Mega Delphox typically pair with the Focus Sash set, appreciating Fake Out and Quick Guard support to help them set up and sweep."
+      }
+     ],
+     "credits": [
+      "Carrotman"
      ]
     }
    ]
