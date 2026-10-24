@@ -95,7 +95,9 @@ const bnote = () => {
     const data = pairs("profData");
     /* the regulation is READ from pokebase, never typed - a typed one goes
        stale the day it changes */
-    check("the regulation comes from the data", /^M-[A-Z] . since \d{4}-\d\d-\d\d/.test(data["Regulation"]), true);
+    /* the start date is optional: no source publishes it, so a new
+       regulation shows none until data/db/regulation.json carries one */
+    check("the regulation comes from the data", /^M-[A-Z]( . since \d{4}-\d\d-\d\d)?$/.test(data["Regulation"]), true);
     check("it says when the ladder usage was fetched",
        /fetched \d{4}-\d\d-\d\d/.test(data["Ladder usage"]), true);
     check("and that it is that regulation's ladder",

@@ -82,8 +82,10 @@ def spreads(rows: list[dex.Row] | None) -> list[list[Any]]:
 # starts summing to 400 is a share of SETS again and every chip in the app
 # would silently mean something new.
 COLUMN_SUMS = [
-    # one per set, so they read directly
-    ("items", 90, 110, "one item per set"),
+    # one per set, so they read directly. pokebase leaves out a set whose
+    # item it could not resolve, like the abilities below: Florges, 10 sets
+    # with two blank, sums to 80.
+    ("items", 75, 110, "one item per set, upstream sometimes short"),
     ("natures", 90, 110, "one nature per set"),
     ("spreads", 90, 110, "one spread per set"),
     # up to four moves per set, and pokebase divides by SLOTS, so the whole

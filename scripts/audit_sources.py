@@ -41,8 +41,8 @@ CAT = {"physical": "Physical", "special": "Special", "status": "Status"}
 def pokebase_moves() -> dict[str, dict[str, Any]]:
     """pokebase's numbers per move: category, BP, accuracy and PP."""
     out: dict[str, dict[str, Any]] = {}
-    for r in rows_with("moves", "name", "damageClass", "power", "accuracy", "pp"):
-        out.setdefault(r["name"], {"cat": CAT.get(r["damageClass"]), "bp": r["power"],
+    for r in rows_with("moves", "name", "category", "power", "accuracy", "pp"):
+        out.setdefault(r["name"], {"cat": CAT.get(r["category"]), "bp": r["power"],
                                    "acc": r["accuracy"], "pp": r["pp"]})
     return out
 
