@@ -24,7 +24,7 @@ from typing import Any
 
 import dex
 import effect_chips
-from check_regulation import live_slug
+from check_regulation import live_slug, recorded
 from paths import POKEBASE, ROOT, SMOGON_CALC
 
 OUT = os.path.join(ROOT, "tracker", "data.js")
@@ -621,15 +621,16 @@ def smogon_names(mons: list[dex.Row]) -> dict[str, str]:
 
 
 def current_regulation() -> tuple[str, str | None] | tuple[None, None]:
-    """(regulation, the day it started), or (None, None).
+    """(regulation, the day it started or None), or (None, None).
 
     What this data IS, so the app can state its own vintage instead of
     anyone typing it (a typed regulation goes stale the day it changes).
-    pokebase ships the regulation list and marks the current one; asking it
+    pokebase names the regulation of the usage it shows by default; asking it
     is better than hardcoding, because the next regulation moves this on its
     own. The ladder numbers are that regulation's, since fetch_pokebase.py
-    requests no regulation and therefore gets the default - which is the one
-    pokebase calls `defaultLatestRegulationSetSlug`.
+    requests no regulation and therefore gets the default. The start date is
+    no longer on any pokebase page, so it comes from data/db/regulation.json
+    and only when that names the same regulation.
     """
     try:
         raw = Path(POKEBASE, "pokemon.html").read_text(
@@ -639,10 +640,8 @@ def current_regulation() -> tuple[str, str | None] | tuple[None, None]:
     slug = live_slug(raw)
     if not slug:
         return None, None
-    st = re.search(r'\\?"value\\?":\\?"%s\\?",\\?"label\\?":\\?"[^"\\]+\\?",'
-                   r'\\?"id\\?":\\?"[^"\\]+\\?",\\?"startDate\\?":\\?"(\d{4}-\d\d-\d\d)'
-                   % re.escape(slug), raw)
-    return slug.upper(), (st.group(1) if st else None)
+    rec = recorded()
+    return slug.upper(), (rec.get("since") if rec.get("slug") == slug else None)
 
 
 def build_effects(app_abilities: dict[str, str], app_items: list[list[Any]],

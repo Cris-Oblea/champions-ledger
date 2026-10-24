@@ -1,6 +1,7 @@
 {
   "slug": "m-c",
   "label": "M-C",
-  "source": "pokebase defaultLatestRegulationSetSlug",
-  "note": "Serebii lists m-a, m-b, m-c"
+  "source": "pokebase usage regulationName",
+  "note": "Serebii lists m-a, m-b, m-c",
+  "since": "2026-09-09"
 }
