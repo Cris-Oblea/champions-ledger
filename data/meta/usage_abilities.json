@@ -1,21 +1,21 @@
 {
  "source": "pokebase.app/pokemon-champions",
  "game": "Pokemon Champions",
- "fetched": "2026-10-24",
+ "fetched": "2026-10-25",
  "count": 215,
  "rows": [
   {
    "rank": 1,
    "slug": "intimidate",
    "name": "Intimidate",
-   "usage_percent": 11.41,
+   "usage_percent": 11.4,
    "description": "When the Pokémon enters a battle, it intimidates opposing Pokémon and makes them cower, lowering their Attack stats."
   },
   {
    "rank": 2,
    "slug": "grassy-surge",
    "name": "Grassy Surge",
-   "usage_percent": 8.46,
+   "usage_percent": 8.44,
    "description": "Turns the entire field into Grassy Terrain for 5 turns when the Pokémon enters a battle."
   },
   {
@@ -29,70 +29,70 @@
    "rank": 4,
    "slug": "defiant",
    "name": "Defiant",
-   "usage_percent": 4.36,
+   "usage_percent": 4.37,
    "description": "If the Pokémon has any stat lowered by an opposing Pokémon, its Attack stat will be boosted sharply."
   },
   {
    "rank": 5,
    "slug": "good-as-gold",
    "name": "Good as Gold",
-   "usage_percent": 3.9,
+   "usage_percent": 3.89,
    "description": "A body of pure, solid gold gives the Pokémon full immunity to other Pokémon's status moves."
   },
   {
    "rank": 6,
    "slug": "aerilate",
    "name": "Aerilate",
-   "usage_percent": 3.87,
+   "usage_percent": 3.85,
    "description": "Normal-type moves become Flying-type moves. The power of those moves is boosted a little."
   },
   {
    "rank": 7,
    "slug": "rough-skin",
    "name": "Rough Skin",
-   "usage_percent": 3.83,
+   "usage_percent": 3.85,
    "description": "The Pokémon's rough skin damages attackers that make direct contact with it."
   },
   {
    "rank": 8,
    "slug": "lightning-rod",
    "name": "Lightning Rod",
-   "usage_percent": 3.82,
+   "usage_percent": 3.83,
    "description": "The Pokémon draws in all Electric-type moves. Instead of taking damage from them, its Sp. Atk stat is boosted."
   },
   {
    "rank": 9,
    "slug": "psychic-surge",
    "name": "Psychic Surge",
-   "usage_percent": 3.64,
+   "usage_percent": 3.63,
    "description": "Turns the entire field into Psychic Terrain for 5 turns when the Pokémon enters a battle."
   },
   {
    "rank": 10,
    "slug": "levitate",
    "name": "Levitate",
-   "usage_percent": 3.61,
+   "usage_percent": 3.62,
    "description": "Damage dealing Ground-type moves have no effect on this Pokémon. Cannot be trapped by Arena Trap ability. Takes no damage from Spikes."
   },
   {
    "rank": 11,
    "slug": "no-guard",
    "name": "No Guard",
-   "usage_percent": 3.57,
+   "usage_percent": 3.56,
    "description": "The accuracy of all moves known by this Pokémon and all Pokémon targeting this Pokémon raises to 100%"
   },
   {
    "rank": 12,
    "slug": "tough-claws",
    "name": "Tough Claws",
-   "usage_percent": 3.37,
+   "usage_percent": 3.36,
    "description": "Powers up moves that make direct contact."
   },
   {
    "rank": 13,
    "slug": "drizzle",
    "name": "Drizzle",
-   "usage_percent": 3.18,
+   "usage_percent": 3.19,
    "description": "The Pokémon makes it rain when it enters a battle."
   },
   {
@@ -120,42 +120,42 @@
    "rank": 17,
    "slug": "blaze",
    "name": "Blaze",
-   "usage_percent": 2.94,
+   "usage_percent": 2.95,
    "description": "Powers up Fire-type moves when the Pokémon's HP is low."
   },
   {
    "rank": 18,
    "slug": "stamina",
    "name": "Stamina",
-   "usage_percent": 2.5,
+   "usage_percent": 2.51,
    "description": "Boosts the Defense stat when the Pokémon is hit by an attack."
   },
   {
    "rank": 19,
    "slug": "armor-tail",
    "name": "Armor Tail",
-   "usage_percent": 2.39,
+   "usage_percent": 2.4,
    "description": "The mysterious tail covering the Pokémon's head makes opponents unable to use priority moves against the Pokémon or its allies."
   },
   {
    "rank": 20,
    "slug": "prankster",
    "name": "Prankster",
-   "usage_percent": 2.37,
+   "usage_percent": 2.39,
    "description": "Increases the priority of the Pokémon's status moves by 1 stage. However, the Pokémon's status moves no longer work against Dark-type Pokémon."
   },
   {
    "rank": 21,
    "slug": "rock-head",
    "name": "Rock Head",
-   "usage_percent": 2.35,
+   "usage_percent": 2.34,
    "description": "Protects the Pokémon from recoil damage."
   },
   {
    "rank": 22,
    "slug": "flower-veil",
    "name": "Flower Veil",
-   "usage_percent": 2.11,
+   "usage_percent": 2.12,
    "description": "Ally Grass-type Pokémon are protected from status conditions and the lowering of their stats."
   },
   {
@@ -169,7 +169,7 @@
    "rank": 24,
    "slug": "competitive",
    "name": "Competitive",
-   "usage_percent": 1.92,
+   "usage_percent": 1.91,
    "description": "Boosts the Pokémon's Sp. Atk stat sharply when its stats are lowered by an opposing Pokémon."
   },
   {
@@ -218,14 +218,14 @@
    "rank": 31,
    "slug": "chlorophyll",
    "name": "Chlorophyll",
-   "usage_percent": 1.09,
+   "usage_percent": 1.1,
    "description": "Boosts the Pokémon's Speed stat in harsh sunlight."
   },
   {
    "rank": 32,
    "slug": "inner-focus",
    "name": "Inner Focus",
-   "usage_percent": 1.09,
+   "usage_percent": 1.08,
    "description": "The Pokémon's intense focus prevents it from flinching or being affected by Intimidate."
   },
   {
@@ -246,14 +246,14 @@
    "rank": 35,
    "slug": "swift-swim",
    "name": "Swift Swim",
-   "usage_percent": 0.99,
+   "usage_percent": 1.0,
    "description": "Boosts the Pokémon's Speed stat in rain."
   },
   {
    "rank": 36,
    "slug": "shadow-tag",
    "name": "Shadow Tag",
-   "usage_percent": 0.86,
+   "usage_percent": 0.87,
    "description": "The Pokémon steps on the opposing Pokémon's shadows to prevent them from fleeing or switching out."
   },
   {
@@ -288,35 +288,35 @@
    "rank": 41,
    "slug": "fairy-aura",
    "name": "Fairy Aura",
-   "usage_percent": 0.74,
+   "usage_percent": 0.73,
    "description": "Powers up every Pokémon in play's Fairy-type moves by 33%"
   },
   {
    "rank": 42,
    "slug": "multiscale",
    "name": "Multiscale",
-   "usage_percent": 0.68,
+   "usage_percent": 0.69,
    "description": "Reduces damage afflicted to the Pokémon by 50% if at maximum HP"
   },
   {
    "rank": 43,
    "slug": "unnerve",
    "name": "Unnerve",
-   "usage_percent": 0.62,
+   "usage_percent": 0.61,
    "description": "Unnerves opposing Pokémon and makes them unable to eat Berries."
   },
   {
    "rank": 44,
    "slug": "toxic-debris",
    "name": "Toxic Debris",
-   "usage_percent": 0.58,
+   "usage_percent": 0.59,
    "description": "Scatters poison spikes at the feet of the opposing team when the Pokémon takes damage from physical moves."
   },
   {
    "rank": 45,
    "slug": "soundproof",
    "name": "Soundproof",
-   "usage_percent": 0.56,
+   "usage_percent": 0.57,
    "description": "Soundproofing gives the Pokémon full immunity to all sound-based moves."
   },
   {
@@ -342,17 +342,17 @@
   },
   {
    "rank": 49,
+   "slug": "sheer-force",
+   "name": "Sheer Force",
+   "usage_percent": 0.41,
+   "description": "Removes any additional effects from the Pokémon's moves, but increases the moves' power."
+  },
+  {
+   "rank": 50,
    "slug": "magic-bounce",
    "name": "Magic Bounce",
    "usage_percent": 0.4,
    "description": "Reflects non-attacking moves used on the Pokémon back to the attacking Pokémon"
-  },
-  {
-   "rank": 50,
-   "slug": "sheer-force",
-   "name": "Sheer Force",
-   "usage_percent": 0.4,
-   "description": "Removes any additional effects from the Pokémon's moves, but increases the moves' power."
   },
   {
    "rank": 51,
@@ -377,17 +377,17 @@
   },
   {
    "rank": 54,
-   "slug": "mirror-armor",
-   "name": "Mirror Armor",
+   "slug": "electric-surge",
+   "name": "Electric Surge",
    "usage_percent": 0.36,
-   "description": "Bounces back only the stat-lowering effects that the Pokémon receives."
+   "description": "Turns the ground into Electric Terrain when the Pokémon enters a battle."
   },
   {
    "rank": 55,
-   "slug": "electric-surge",
-   "name": "Electric Surge",
+   "slug": "mirror-armor",
+   "name": "Mirror Armor",
    "usage_percent": 0.35,
-   "description": "Turns the ground into Electric Terrain when the Pokémon enters a battle."
+   "description": "Bounces back only the stat-lowering effects that the Pokémon receives."
   },
   {
    "rank": 56,
@@ -412,24 +412,24 @@
   },
   {
    "rank": 59,
-   "slug": "scrappy",
-   "name": "Scrappy",
-   "usage_percent": 0.3,
-   "description": "The Pokémon can hit Ghost-type Pokémon with Normal- and Fighting-type moves. It is also unaffected by Intimidate."
-  },
-  {
-   "rank": 60,
    "slug": "compound-eyes",
    "name": "Compound Eyes",
    "usage_percent": 0.29,
    "description": "The Pokémon's compound eyes boost its accuracy."
   },
   {
-   "rank": 61,
+   "rank": 60,
    "slug": "huge-power",
    "name": "Huge Power",
    "usage_percent": 0.29,
    "description": "The Pokémon's Attack stat is doubled while it has this ability."
+  },
+  {
+   "rank": 61,
+   "slug": "scrappy",
+   "name": "Scrappy",
+   "usage_percent": 0.29,
+   "description": "The Pokémon can hit Ghost-type Pokémon with Normal- and Fighting-type moves. It is also unaffected by Intimidate."
   },
   {
    "rank": 62,
@@ -517,17 +517,17 @@
   },
   {
    "rank": 74,
+   "slug": "cloud-nine",
+   "name": "Cloud Nine",
+   "usage_percent": 0.15,
+   "description": "Eliminates the effects of weather."
+  },
+  {
+   "rank": 75,
    "slug": "justified",
    "name": "Justified",
    "usage_percent": 0.15,
    "description": "When the Pokémon is hit by a Dark-type attack, its Attack stat is boosted by its sense of justice."
-  },
-  {
-   "rank": 75,
-   "slug": "cloud-nine",
-   "name": "Cloud Nine",
-   "usage_percent": 0.14,
-   "description": "Eliminates the effects of weather."
   },
   {
    "rank": 76,
@@ -587,17 +587,17 @@
   },
   {
    "rank": 84,
-   "slug": "limber",
-   "name": "Limber",
+   "slug": "unaware",
+   "name": "Unaware",
    "usage_percent": 0.11,
-   "description": "The Pokémon's limber body prevents it from being paralyzed."
+   "description": "When attacking, the Pokémon ignores the target's stat changes."
   },
   {
    "rank": 85,
-   "slug": "mega-sol",
-   "name": "Mega Sol",
+   "slug": "limber",
+   "name": "Limber",
    "usage_percent": 0.1,
-   "description": "Even when the sunlight has not turned harsh, the Pokémon can use its moves as if the weather were harsh sunlight."
+   "description": "The Pokémon's limber body prevents it from being paralyzed."
   },
   {
    "rank": 86,
@@ -629,38 +629,38 @@
   },
   {
    "rank": 90,
-   "slug": "unaware",
-   "name": "Unaware",
-   "usage_percent": 0.1,
-   "description": "When attacking, the Pokémon ignores the target's stat changes."
-  },
-  {
-   "rank": 91,
    "slug": "illusion",
    "name": "Illusion",
    "usage_percent": 0.09,
    "description": "The Pokémon fools opponents by entering battle disguised as the last Pokémon in its Trainer's party."
   },
   {
-   "rank": 92,
-   "slug": "punk-rock",
-   "name": "Punk Rock",
+   "rank": 91,
+   "slug": "mega-sol",
+   "name": "Mega Sol",
    "usage_percent": 0.09,
-   "description": "Boosts the power of the Pokémon's sound-based moves by 30% and halves the damage the Pokémon takes from sound-based moves."
+   "description": "Even when the sunlight has not turned harsh, the Pokémon can use its moves as if the weather were harsh sunlight."
   },
   {
-   "rank": 93,
+   "rank": 92,
    "slug": "queenly-majesty",
    "name": "Queenly Majesty",
    "usage_percent": 0.09,
    "description": "Opponents are unable to use priority moves against the Pokémon or its allies."
   },
   {
-   "rank": 94,
+   "rank": 93,
    "slug": "oblivious",
    "name": "Oblivious",
    "usage_percent": 0.08,
    "description": "The Pokémon is oblivious, keeping it from being infatuated, falling for taunts, or being affected by Intimidate."
+  },
+  {
+   "rank": 94,
+   "slug": "punk-rock",
+   "name": "Punk Rock",
+   "usage_percent": 0.08,
+   "description": "Boosts the power of the Pokémon's sound-based moves by 30% and halves the damage the Pokémon takes from sound-based moves."
   },
   {
    "rank": 95,
