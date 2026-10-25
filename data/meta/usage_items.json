@@ -1,7 +1,7 @@
 {
  "source": "pokebase.app/pokemon-champions",
  "game": "Pokemon Champions",
- "fetched": "2026-10-24",
+ "fetched": "2026-10-25",
  "count": 162,
  "rows": [
   {
@@ -50,7 +50,7 @@
    "rank": 7,
    "slug": "salamencite",
    "name": "Salamencite",
-   "usage_percent": 23.1,
+   "usage_percent": 23.0,
    "description": "A held item that allows Salamence to Mega Evolve."
   },
   {
@@ -120,7 +120,7 @@
    "rank": 17,
    "slug": "golisopite",
    "name": "Golisopite",
-   "usage_percent": 12.8,
+   "usage_percent": 12.9,
    "description": "A held item that allows Golisopod to Mega Evolve."
   },
   {
@@ -183,7 +183,7 @@
    "rank": 26,
    "slug": "delphoxite",
    "name": "Delphoxite",
-   "usage_percent": 5.1,
+   "usage_percent": 5.0,
    "description": "One of a variety of mysterious Mega Stones. A Delphox holding this stone will be able to Mega Evolve during battle."
   },
   {
@@ -279,24 +279,24 @@
   },
   {
    "rank": 40,
+   "slug": "raichunite-x",
+   "name": "Raichunite X",
+   "usage_percent": 2.0,
+   "description": "One of a variety of mysterious Mega Stones. A Raichu holding this stone will be able to Mega Evolve during battle."
+  },
+  {
+   "rank": 41,
    "slug": "baxcalibrite",
    "name": "Baxcalibrite",
    "usage_percent": 1.9,
    "description": "A held item that allows Baxcalibur to Mega Evolve."
   },
   {
-   "rank": 41,
+   "rank": 42,
    "slug": "blastoisinite",
    "name": "Blastoisinite",
    "usage_percent": 1.9,
    "description": "One of a variety of mysterious Mega Stones. A Blastoise holding this stone will be able to Mega Evolve during battle."
-  },
-  {
-   "rank": 42,
-   "slug": "raichunite-x",
-   "name": "Raichunite X",
-   "usage_percent": 1.9,
-   "description": "One of a variety of mysterious Mega Stones. A Raichu holding this stone will be able to Mega Evolve during battle."
   },
   {
    "rank": 43,
