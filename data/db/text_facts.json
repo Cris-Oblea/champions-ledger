@@ -3644,10 +3644,11 @@
    "smogon": "This Pokemon and its allies cannot become affected by Attract, Disable, Encore, Heal Block, Taunt, or Torment."
   },
   "Aura Guard": {
-   "text": "Reduces the amount of damage received by moves that make physical contact by 50%",
-   "source": "serebii",
+   "text": "This Pokemon receives 1/2 damage from contact moves.",
+   "source": "smogon",
    "serebii": "Reduces the amount of damage received by moves that make physical contact by 50%",
-   "pokebase": "Halves the damage the Pokémon takes from contact moves."
+   "pokebase": "Halves the damage the Pokémon takes from contact moves.",
+   "smogon": "This Pokemon receives 1/2 damage from contact moves."
   },
   "Battle Armor": {
    "text": "This Pokemon cannot be struck by a critical hit.",

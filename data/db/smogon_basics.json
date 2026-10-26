@@ -1,14 +1,11 @@
 {
  "source": "smogon.com/dex/champions",
- "fetched": "2026-10-24",
+ "fetched": "2026-10-26",
  "moveflags": [
   {
-   "name": "Bite",
-   "description": "Power is multiplied by 1.5 when used by a Pokemon with the Strong Jaw Ability.",
+   "name": "Minimize",
+   "description": "Minimize",
    "genfamily": [
-    "XY",
-    "SM",
-    "SS",
     "SV",
     "Champions"
    ]
@@ -54,20 +51,6 @@
    "genfamily": [
     "RB",
     "GS",
-    "RS",
-    "DP",
-    "BW",
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Contact",
-   "description": "Makes contact.",
-   "genfamily": [
     "RS",
     "DP",
     "BW",
@@ -250,14 +233,6 @@
     "XY",
     "SM",
     "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Minimize",
-   "description": "Minimize",
-   "genfamily": [
     "SV",
     "Champions"
    ]
@@ -475,6 +450,31 @@
    "name": "Wind",
    "description": "Activates the Wind Power and Wind Rider Abilities.",
    "genfamily": [
+    "SV",
+    "Champions"
+   ]
+  },
+  {
+   "name": "Bite",
+   "description": "Power is multiplied by 1.5 when used by a Pokemon with the Strong Jaw Ability.",
+   "genfamily": [
+    "XY",
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
+   "name": "Contact",
+   "description": "Makes contact.",
+   "genfamily": [
+    "RS",
+    "DP",
+    "BW",
+    "XY",
+    "SM",
+    "SS",
     "SV",
     "Champions"
    ]
@@ -984,194 +984,7 @@
  ],
  "types": [
   {
-   "name": "Bug",
-   "atk_effectives": [
-    [
-     "Bug",
-     1
-    ],
-    [
-     "Dark",
-     2
-    ],
-    [
-     "Dragon",
-     1
-    ],
-    [
-     "Electric",
-     1
-    ],
-    [
-     "Fairy",
-     0.5
-    ],
-    [
-     "Fighting",
-     0.5
-    ],
-    [
-     "Fire",
-     0.5
-    ],
-    [
-     "Flying",
-     0.5
-    ],
-    [
-     "Ghost",
-     0.5
-    ],
-    [
-     "Grass",
-     2
-    ],
-    [
-     "Ground",
-     1
-    ],
-    [
-     "Ice",
-     1
-    ],
-    [
-     "Normal",
-     1
-    ],
-    [
-     "Poison",
-     0.5
-    ],
-    [
-     "Psychic",
-     2
-    ],
-    [
-     "Rock",
-     1
-    ],
-    [
-     "Steel",
-     0.5
-    ],
-    [
-     "Stellar",
-     1
-    ],
-    [
-     "Water",
-     1
-    ]
-   ],
-   "genfamily": [
-    "RB",
-    "GS",
-    "RS",
-    "DP",
-    "BW",
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ],
-   "description": ""
-  },
-  {
-   "name": "Dark",
-   "atk_effectives": [
-    [
-     "Bug",
-     1
-    ],
-    [
-     "Dark",
-     0.5
-    ],
-    [
-     "Dragon",
-     1
-    ],
-    [
-     "Electric",
-     1
-    ],
-    [
-     "Fairy",
-     0.5
-    ],
-    [
-     "Fighting",
-     0.5
-    ],
-    [
-     "Fire",
-     1
-    ],
-    [
-     "Flying",
-     1
-    ],
-    [
-     "Ghost",
-     2
-    ],
-    [
-     "Grass",
-     1
-    ],
-    [
-     "Ground",
-     1
-    ],
-    [
-     "Ice",
-     1
-    ],
-    [
-     "Normal",
-     1
-    ],
-    [
-     "Poison",
-     1
-    ],
-    [
-     "Psychic",
-     2
-    ],
-    [
-     "Rock",
-     1
-    ],
-    [
-     "Steel",
-     1
-    ],
-    [
-     "Stellar",
-     1
-    ],
-    [
-     "Water",
-     1
-    ]
-   ],
-   "genfamily": [
-    "GS",
-    "RS",
-    "DP",
-    "BW",
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ],
-   "description": "Pokemon of this type are immune to Status moves used by a Pokemon with the Prankster Ability, unless the Pokemon is an ally. These Pokemon can be hit by Psychic-type attacks if they are under the effect of Miracle Eye."
-  },
-  {
-   "name": "Dragon",
+   "name": "Ice",
    "atk_effectives": [
     [
      "Bug",
@@ -1191,7 +1004,7 @@
     ],
     [
      "Fairy",
-     0
+     1
     ],
     [
      "Fighting",
@@ -1199,11 +1012,11 @@
     ],
     [
      "Fire",
-     1
+     0.5
     ],
     [
      "Flying",
-     1
+     2
     ],
     [
      "Ghost",
@@ -1211,15 +1024,15 @@
     ],
     [
      "Grass",
-     1
+     2
     ],
     [
      "Ground",
-     1
+     2
     ],
     [
      "Ice",
-     1
+     0.5
     ],
     [
      "Normal",
@@ -1240,186 +1053,6 @@
     [
      "Steel",
      0.5
-    ],
-    [
-     "Stellar",
-     1
-    ],
-    [
-     "Water",
-     1
-    ]
-   ],
-   "genfamily": [
-    "RB",
-    "GS",
-    "RS",
-    "DP",
-    "BW",
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ],
-   "description": ""
-  },
-  {
-   "name": "Stellar",
-   "atk_effectives": [
-    [
-     "Bug",
-     1
-    ],
-    [
-     "Dark",
-     1
-    ],
-    [
-     "Dragon",
-     1
-    ],
-    [
-     "Electric",
-     1
-    ],
-    [
-     "Fairy",
-     1
-    ],
-    [
-     "Fighting",
-     1
-    ],
-    [
-     "Fire",
-     1
-    ],
-    [
-     "Flying",
-     1
-    ],
-    [
-     "Ghost",
-     1
-    ],
-    [
-     "Grass",
-     1
-    ],
-    [
-     "Ground",
-     1
-    ],
-    [
-     "Ice",
-     1
-    ],
-    [
-     "Normal",
-     1
-    ],
-    [
-     "Poison",
-     1
-    ],
-    [
-     "Psychic",
-     1
-    ],
-    [
-     "Rock",
-     1
-    ],
-    [
-     "Steel",
-     1
-    ],
-    [
-     "Stellar",
-     1
-    ],
-    [
-     "Water",
-     1
-    ]
-   ],
-   "genfamily": [
-    "SV",
-    "Champions"
-   ],
-   "description": "Stellar-type Tera Blast and Tera Starstorm are super effective against Terastallized targets."
-  },
-  {
-   "name": "Water",
-   "atk_effectives": [
-    [
-     "Bug",
-     1
-    ],
-    [
-     "Dark",
-     1
-    ],
-    [
-     "Dragon",
-     0.5
-    ],
-    [
-     "Electric",
-     1
-    ],
-    [
-     "Fairy",
-     1
-    ],
-    [
-     "Fighting",
-     1
-    ],
-    [
-     "Fire",
-     2
-    ],
-    [
-     "Flying",
-     1
-    ],
-    [
-     "Ghost",
-     1
-    ],
-    [
-     "Grass",
-     0.5
-    ],
-    [
-     "Ground",
-     2
-    ],
-    [
-     "Ice",
-     1
-    ],
-    [
-     "Normal",
-     1
-    ],
-    [
-     "Poison",
-     1
-    ],
-    [
-     "Psychic",
-     1
-    ],
-    [
-     "Rock",
-     2
-    ],
-    [
-     "Steel",
-     1
     ],
     [
      "Stellar",
@@ -1442,7 +1075,7 @@
     "SV",
     "Champions"
    ],
-   "description": "Freeze-Dry is super effective against this type."
+   "description": "Pokemon of this type have their Defense multiplied by 1.5 during Snow, cannot become frozen, and are immune to Sheer Cold."
   },
   {
    "name": "Electric",
@@ -2192,100 +1825,6 @@
    "description": "Pokemon of this type are immune to damage from Sandstorm."
   },
   {
-   "name": "Ice",
-   "atk_effectives": [
-    [
-     "Bug",
-     1
-    ],
-    [
-     "Dark",
-     1
-    ],
-    [
-     "Dragon",
-     2
-    ],
-    [
-     "Electric",
-     1
-    ],
-    [
-     "Fairy",
-     1
-    ],
-    [
-     "Fighting",
-     1
-    ],
-    [
-     "Fire",
-     0.5
-    ],
-    [
-     "Flying",
-     2
-    ],
-    [
-     "Ghost",
-     1
-    ],
-    [
-     "Grass",
-     2
-    ],
-    [
-     "Ground",
-     2
-    ],
-    [
-     "Ice",
-     0.5
-    ],
-    [
-     "Normal",
-     1
-    ],
-    [
-     "Poison",
-     1
-    ],
-    [
-     "Psychic",
-     1
-    ],
-    [
-     "Rock",
-     1
-    ],
-    [
-     "Steel",
-     0.5
-    ],
-    [
-     "Stellar",
-     1
-    ],
-    [
-     "Water",
-     0.5
-    ]
-   ],
-   "genfamily": [
-    "RB",
-    "GS",
-    "RS",
-    "DP",
-    "BW",
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ],
-   "description": "Pokemon of this type have their Defense multiplied by 1.5 during Snow, cannot become frozen, and are immune to Sheer Cold."
-  },
-  {
    "name": "Normal",
    "atk_effectives": [
     [
@@ -2568,6 +2107,560 @@
    "description": ""
   },
   {
+   "name": "Steel",
+   "atk_effectives": [
+    [
+     "Bug",
+     1
+    ],
+    [
+     "Dark",
+     1
+    ],
+    [
+     "Dragon",
+     1
+    ],
+    [
+     "Electric",
+     0.5
+    ],
+    [
+     "Fairy",
+     2
+    ],
+    [
+     "Fighting",
+     1
+    ],
+    [
+     "Fire",
+     0.5
+    ],
+    [
+     "Flying",
+     1
+    ],
+    [
+     "Ghost",
+     1
+    ],
+    [
+     "Grass",
+     1
+    ],
+    [
+     "Ground",
+     1
+    ],
+    [
+     "Ice",
+     2
+    ],
+    [
+     "Normal",
+     1
+    ],
+    [
+     "Poison",
+     1
+    ],
+    [
+     "Psychic",
+     1
+    ],
+    [
+     "Rock",
+     2
+    ],
+    [
+     "Steel",
+     0.5
+    ],
+    [
+     "Stellar",
+     1
+    ],
+    [
+     "Water",
+     0.5
+    ]
+   ],
+   "genfamily": [
+    "GS",
+    "RS",
+    "DP",
+    "BW",
+    "XY",
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ],
+   "description": "Pokemon of this type cannot become poisoned, except by a Pokemon with the Corrosion Ability, and are immune to damage from Sandstorm."
+  },
+  {
+   "name": "Bug",
+   "atk_effectives": [
+    [
+     "Bug",
+     1
+    ],
+    [
+     "Dark",
+     2
+    ],
+    [
+     "Dragon",
+     1
+    ],
+    [
+     "Electric",
+     1
+    ],
+    [
+     "Fairy",
+     0.5
+    ],
+    [
+     "Fighting",
+     0.5
+    ],
+    [
+     "Fire",
+     0.5
+    ],
+    [
+     "Flying",
+     0.5
+    ],
+    [
+     "Ghost",
+     0.5
+    ],
+    [
+     "Grass",
+     2
+    ],
+    [
+     "Ground",
+     1
+    ],
+    [
+     "Ice",
+     1
+    ],
+    [
+     "Normal",
+     1
+    ],
+    [
+     "Poison",
+     0.5
+    ],
+    [
+     "Psychic",
+     2
+    ],
+    [
+     "Rock",
+     1
+    ],
+    [
+     "Steel",
+     0.5
+    ],
+    [
+     "Stellar",
+     1
+    ],
+    [
+     "Water",
+     1
+    ]
+   ],
+   "genfamily": [
+    "RB",
+    "GS",
+    "RS",
+    "DP",
+    "BW",
+    "XY",
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ],
+   "description": ""
+  },
+  {
+   "name": "Dark",
+   "atk_effectives": [
+    [
+     "Bug",
+     1
+    ],
+    [
+     "Dark",
+     0.5
+    ],
+    [
+     "Dragon",
+     1
+    ],
+    [
+     "Electric",
+     1
+    ],
+    [
+     "Fairy",
+     0.5
+    ],
+    [
+     "Fighting",
+     0.5
+    ],
+    [
+     "Fire",
+     1
+    ],
+    [
+     "Flying",
+     1
+    ],
+    [
+     "Ghost",
+     2
+    ],
+    [
+     "Grass",
+     1
+    ],
+    [
+     "Ground",
+     1
+    ],
+    [
+     "Ice",
+     1
+    ],
+    [
+     "Normal",
+     1
+    ],
+    [
+     "Poison",
+     1
+    ],
+    [
+     "Psychic",
+     2
+    ],
+    [
+     "Rock",
+     1
+    ],
+    [
+     "Steel",
+     1
+    ],
+    [
+     "Stellar",
+     1
+    ],
+    [
+     "Water",
+     1
+    ]
+   ],
+   "genfamily": [
+    "GS",
+    "RS",
+    "DP",
+    "BW",
+    "XY",
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ],
+   "description": "Pokemon of this type are immune to Status moves used by a Pokemon with the Prankster Ability, unless the Pokemon is an ally. These Pokemon can be hit by Psychic-type attacks if they are under the effect of Miracle Eye."
+  },
+  {
+   "name": "Dragon",
+   "atk_effectives": [
+    [
+     "Bug",
+     1
+    ],
+    [
+     "Dark",
+     1
+    ],
+    [
+     "Dragon",
+     2
+    ],
+    [
+     "Electric",
+     1
+    ],
+    [
+     "Fairy",
+     0
+    ],
+    [
+     "Fighting",
+     1
+    ],
+    [
+     "Fire",
+     1
+    ],
+    [
+     "Flying",
+     1
+    ],
+    [
+     "Ghost",
+     1
+    ],
+    [
+     "Grass",
+     1
+    ],
+    [
+     "Ground",
+     1
+    ],
+    [
+     "Ice",
+     1
+    ],
+    [
+     "Normal",
+     1
+    ],
+    [
+     "Poison",
+     1
+    ],
+    [
+     "Psychic",
+     1
+    ],
+    [
+     "Rock",
+     1
+    ],
+    [
+     "Steel",
+     0.5
+    ],
+    [
+     "Stellar",
+     1
+    ],
+    [
+     "Water",
+     1
+    ]
+   ],
+   "genfamily": [
+    "RB",
+    "GS",
+    "RS",
+    "DP",
+    "BW",
+    "XY",
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ],
+   "description": ""
+  },
+  {
+   "name": "Stellar",
+   "atk_effectives": [
+    [
+     "Bug",
+     1
+    ],
+    [
+     "Dark",
+     1
+    ],
+    [
+     "Dragon",
+     1
+    ],
+    [
+     "Electric",
+     1
+    ],
+    [
+     "Fairy",
+     1
+    ],
+    [
+     "Fighting",
+     1
+    ],
+    [
+     "Fire",
+     1
+    ],
+    [
+     "Flying",
+     1
+    ],
+    [
+     "Ghost",
+     1
+    ],
+    [
+     "Grass",
+     1
+    ],
+    [
+     "Ground",
+     1
+    ],
+    [
+     "Ice",
+     1
+    ],
+    [
+     "Normal",
+     1
+    ],
+    [
+     "Poison",
+     1
+    ],
+    [
+     "Psychic",
+     1
+    ],
+    [
+     "Rock",
+     1
+    ],
+    [
+     "Steel",
+     1
+    ],
+    [
+     "Stellar",
+     1
+    ],
+    [
+     "Water",
+     1
+    ]
+   ],
+   "genfamily": [
+    "SV",
+    "Champions"
+   ],
+   "description": "Stellar-type Tera Blast and Tera Starstorm are super effective against Terastallized targets."
+  },
+  {
+   "name": "Water",
+   "atk_effectives": [
+    [
+     "Bug",
+     1
+    ],
+    [
+     "Dark",
+     1
+    ],
+    [
+     "Dragon",
+     0.5
+    ],
+    [
+     "Electric",
+     1
+    ],
+    [
+     "Fairy",
+     1
+    ],
+    [
+     "Fighting",
+     1
+    ],
+    [
+     "Fire",
+     2
+    ],
+    [
+     "Flying",
+     1
+    ],
+    [
+     "Ghost",
+     1
+    ],
+    [
+     "Grass",
+     0.5
+    ],
+    [
+     "Ground",
+     2
+    ],
+    [
+     "Ice",
+     1
+    ],
+    [
+     "Normal",
+     1
+    ],
+    [
+     "Poison",
+     1
+    ],
+    [
+     "Psychic",
+     1
+    ],
+    [
+     "Rock",
+     2
+    ],
+    [
+     "Steel",
+     1
+    ],
+    [
+     "Stellar",
+     1
+    ],
+    [
+     "Water",
+     0.5
+    ]
+   ],
+   "genfamily": [
+    "RB",
+    "GS",
+    "RS",
+    "DP",
+    "BW",
+    "XY",
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ],
+   "description": "Freeze-Dry is super effective against this type."
+  },
+  {
    "name": "Rock",
    "atk_effectives": [
     [
@@ -2660,102 +2753,21 @@
     "Champions"
    ],
    "description": "Pokemon of this type are immune to damage from Sandstorm and have their Special Defense multiplied by 1.5 during Sandstorm."
-  },
+  }
+ ],
+ "items": [
   {
-   "name": "Steel",
-   "atk_effectives": [
-    [
-     "Bug",
-     1
-    ],
-    [
-     "Dark",
-     1
-    ],
-    [
-     "Dragon",
-     1
-    ],
-    [
-     "Electric",
-     0.5
-    ],
-    [
-     "Fairy",
-     2
-    ],
-    [
-     "Fighting",
-     1
-    ],
-    [
-     "Fire",
-     0.5
-    ],
-    [
-     "Flying",
-     1
-    ],
-    [
-     "Ghost",
-     1
-    ],
-    [
-     "Grass",
-     1
-    ],
-    [
-     "Ground",
-     1
-    ],
-    [
-     "Ice",
-     2
-    ],
-    [
-     "Normal",
-     1
-    ],
-    [
-     "Poison",
-     1
-    ],
-    [
-     "Psychic",
-     1
-    ],
-    [
-     "Rock",
-     2
-    ],
-    [
-     "Steel",
-     0.5
-    ],
-    [
-     "Stellar",
-     1
-    ],
-    [
-     "Water",
-     0.5
-    ]
-   ],
+   "name": "Houndoominite",
+   "description": "If held by a Houndoom, this item allows it to Mega Evolve in battle.",
+   "isNonstandard": "Standard",
    "genfamily": [
-    "GS",
-    "RS",
-    "DP",
-    "BW",
     "XY",
     "SM",
     "SS",
     "SV",
     "Champions"
-   ],
-   "description": "Pokemon of this type cannot become poisoned, except by a Pokemon with the Corrosion Ability, and are immune to damage from Sandstorm."
-  }
- ],
- "items": [
+   ]
+  },
   {
    "name": "Black Augurite",
    "description": "Evolves Scyther into Kleavor when used.",
@@ -2791,52 +2803,6 @@
    "description": "Evolves Ursaring into Ursaluna when used during a full moon.",
    "isNonstandard": "Standard",
    "genfamily": [
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Abomasite",
-   "description": "If held by an Abomasnow, this item allows it to Mega Evolve in battle.",
-   "isNonstandard": "Standard",
-   "genfamily": [
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Absolite",
-   "description": "If held by an Absol, this item allows it to Mega Evolve into Mega Absol in battle.",
-   "isNonstandard": "Standard",
-   "genfamily": [
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Absolite Z",
-   "description": "If held by an Absol, this item allows it to Mega Evolve into Mega Absol Z in battle.",
-   "isNonstandard": "Standard",
-   "genfamily": [
-    "Champions"
-   ]
-  },
-  {
-   "name": "Zoom Lens",
-   "description": "The accuracy of attacks by the holder is 1.2× if it moves after its target.",
-   "isNonstandard": "Standard",
-   "genfamily": [
-    "DP",
-    "BW",
-    "XY",
-    "SM",
     "SS",
     "SV",
     "Champions"
@@ -3698,18 +3664,6 @@
    ]
   },
   {
-   "name": "Houndoominite",
-   "description": "If held by a Houndoom, this item allows it to Mega Evolve in battle.",
-   "isNonstandard": "Standard",
-   "genfamily": [
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
    "name": "Icy Rock",
    "description": "Holder's use of Snowscape lasts 8 turns instead of 5.",
    "isNonstandard": "Standard",
@@ -4339,21 +4293,6 @@
    ]
   },
   {
-   "name": "Rawst Berry",
-   "description": "Holder is cured if it is burned. Single use.",
-   "isNonstandard": "Standard",
-   "genfamily": [
-    "RS",
-    "DP",
-    "BW",
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
    "name": "Red Card",
    "description": "If holder survives a hit, attacker is forced to switch to a random ally. Single use.",
    "isNonstandard": "Standard",
@@ -4869,74 +4808,87 @@
     "SV",
     "Champions"
    ]
+  },
+  {
+   "name": "Abomasite",
+   "description": "If held by an Abomasnow, this item allows it to Mega Evolve in battle.",
+   "isNonstandard": "Standard",
+   "genfamily": [
+    "XY",
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
+   "name": "Absolite",
+   "description": "If held by an Absol, this item allows it to Mega Evolve into Mega Absol in battle.",
+   "isNonstandard": "Standard",
+   "genfamily": [
+    "XY",
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
+   "name": "Absolite Z",
+   "description": "If held by an Absol, this item allows it to Mega Evolve into Mega Absol Z in battle.",
+   "isNonstandard": "Standard",
+   "genfamily": [
+    "Champions"
+   ]
+  },
+  {
+   "name": "Zoom Lens",
+   "description": "The accuracy of attacks by the holder is 1.2× if it moves after its target.",
+   "isNonstandard": "Standard",
+   "genfamily": [
+    "DP",
+    "BW",
+    "XY",
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
+   "name": "Rawst Berry",
+   "description": "Holder is cured if it is burned. Single use.",
+   "isNonstandard": "Standard",
+   "genfamily": [
+    "RS",
+    "DP",
+    "BW",
+    "XY",
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ]
   }
  ],
  "abilities": [
   {
-   "name": "Liquid Ooze",
-   "description": "This Pokemon damages those draining HP from it for as much as they would heal.",
+   "name": "Aura Guard",
+   "description": "This Pokemon receives 1/2 damage from contact moves.",
+   "isNonstandard": "Standard",
+   "genfamily": [
+    "Champions"
+   ]
+  },
+  {
+   "name": "Shadow Tag",
+   "description": "Prevents foes from choosing to switch unless they also have this Ability.",
    "isNonstandard": "Standard",
    "genfamily": [
     "RS",
     "DP",
     "BW",
     "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Marvel Scale",
-   "description": "If this Pokemon has a non-volatile status condition, its Defense is multiplied by 1.5.",
-   "isNonstandard": "Standard",
-   "genfamily": [
-    "RS",
-    "DP",
-    "BW",
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Minus",
-   "description": "If an active ally has this Ability or the Plus Ability, this Pokemon's Sp. Atk is 1.5×.",
-   "isNonstandard": "Standard",
-   "genfamily": [
-    "RS",
-    "DP",
-    "BW",
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Run Away",
-   "description": "No competitive use.",
-   "isNonstandard": "Standard",
-   "genfamily": [
-    "RS",
-    "DP",
-    "BW",
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Electric Surge",
-   "description": "On switch-in, this Pokemon summons Electric Terrain.",
-   "isNonstandard": "Standard",
-   "genfamily": [
     "SM",
     "SS",
     "SV",
@@ -4967,8 +4919,8 @@
    ]
   },
   {
-   "name": "Protean",
-   "description": "This Pokemon's type changes to the type of the move it is using. Once per switch-in.",
+   "name": "Bulletproof",
+   "description": "This Pokemon is immune to bullet moves.",
    "isNonstandard": "Standard",
    "genfamily": [
     "XY",
@@ -4979,10 +4931,13 @@
    ]
   },
   {
-   "name": "Bulletproof",
-   "description": "This Pokemon is immune to bullet moves.",
+   "name": "Drizzle",
+   "description": "On switch-in, this Pokemon summons Rain.",
    "isNonstandard": "Standard",
    "genfamily": [
+    "RS",
+    "DP",
+    "BW",
     "XY",
     "SM",
     "SS",
@@ -5356,21 +5311,6 @@
    "description": "This Pokemon's Normal-type moves become Dragon type and have 1.2× power.",
    "isNonstandard": "Standard",
    "genfamily": [
-    "Champions"
-   ]
-  },
-  {
-   "name": "Drizzle",
-   "description": "On switch-in, this Pokemon summons Rain.",
-   "isNonstandard": "Standard",
-   "genfamily": [
-    "RS",
-    "DP",
-    "BW",
-    "XY",
-    "SM",
-    "SS",
-    "SV",
     "Champions"
    ]
   },
@@ -6890,21 +6830,6 @@
    ]
   },
   {
-   "name": "Shadow Tag",
-   "description": "Prevents foes from choosing to switch unless they also have this Ability.",
-   "isNonstandard": "Standard",
-   "genfamily": [
-    "RS",
-    "DP",
-    "BW",
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
    "name": "Sharpness",
    "description": "This Pokemon's slicing moves have their power multiplied by 1.5.",
    "isNonstandard": "Standard",
@@ -7641,26 +7566,137 @@
     "SV",
     "Champions"
    ]
+  },
+  {
+   "name": "Liquid Ooze",
+   "description": "This Pokemon damages those draining HP from it for as much as they would heal.",
+   "isNonstandard": "Standard",
+   "genfamily": [
+    "RS",
+    "DP",
+    "BW",
+    "XY",
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
+   "name": "Marvel Scale",
+   "description": "If this Pokemon has a non-volatile status condition, its Defense is multiplied by 1.5.",
+   "isNonstandard": "Standard",
+   "genfamily": [
+    "RS",
+    "DP",
+    "BW",
+    "XY",
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
+   "name": "Minus",
+   "description": "If an active ally has this Ability or the Plus Ability, this Pokemon's Sp. Atk is 1.5×.",
+   "isNonstandard": "Standard",
+   "genfamily": [
+    "RS",
+    "DP",
+    "BW",
+    "XY",
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
+   "name": "Run Away",
+   "description": "No competitive use.",
+   "isNonstandard": "Standard",
+   "genfamily": [
+    "RS",
+    "DP",
+    "BW",
+    "XY",
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
+   "name": "Electric Surge",
+   "description": "On switch-in, this Pokemon summons Electric Terrain.",
+   "isNonstandard": "Standard",
+   "genfamily": [
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
+   "name": "Protean",
+   "description": "This Pokemon's type changes to the type of the move it is using. Once per switch-in.",
+   "isNonstandard": "Standard",
+   "genfamily": [
+    "XY",
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ]
   }
  ],
  "moves": [
   {
-   "name": "Dragon Pulse",
+   "name": "Mach Punch",
    "isNonstandard": "Standard",
-   "category": "Special",
-   "power": 85,
+   "category": "Physical",
+   "power": 40,
    "accuracy": 100,
-   "priority": 0,
-   "pp": 10,
-   "description": "No additional effect.",
-   "type": "Dragon",
-   "target": "Any",
+   "priority": 1,
+   "pp": 30,
+   "description": "Usually goes first.",
+   "type": "Fighting",
+   "target": "Normal",
    "flags": [
-    "Distance",
     "Metronome",
     "Mirror",
     "Protect",
-    "Pulse"
+    "Punch",
+    "Contact"
+   ],
+   "genfamily": [
+    "GS",
+    "RS",
+    "DP",
+    "BW",
+    "XY",
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
+   "name": "Power Gem",
+   "isNonstandard": "Standard",
+   "category": "Special",
+   "power": 80,
+   "accuracy": 100,
+   "priority": 0,
+   "pp": 20,
+   "description": "No additional effect.",
+   "type": "Rock",
+   "target": "Normal",
+   "flags": [
+    "Metronome",
+    "Mirror",
+    "Protect"
    ],
    "genfamily": [
     "DP",
@@ -7684,10 +7720,10 @@
    "type": "Ground",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "SM",
@@ -7697,15 +7733,349 @@
    ]
   },
   {
-   "name": "Acid Armor",
+   "name": "Air Slash",
+   "isNonstandard": "Standard",
+   "category": "Special",
+   "power": 75,
+   "accuracy": 95,
+   "priority": 0,
+   "pp": 15,
+   "description": "30% chance to make the target flinch.",
+   "type": "Flying",
+   "target": "Any",
+   "flags": [
+    "Distance",
+    "Metronome",
+    "Mirror",
+    "Protect",
+    "Slicing"
+   ],
+   "genfamily": [
+    "DP",
+    "BW",
+    "XY",
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
+   "name": "Baby-Doll Eyes",
+   "isNonstandard": "Standard",
+   "category": "Non-Damaging",
+   "power": 0,
+   "accuracy": 100,
+   "priority": 1,
+   "pp": 30,
+   "description": "Lowers the target's Attack by 1.",
+   "type": "Fairy",
+   "target": "Normal",
+   "flags": [
+    "Metronome",
+    "Mirror",
+    "Protect",
+    "Reflectable"
+   ],
+   "genfamily": [
+    "XY",
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
+   "name": "Cotton Guard",
    "isNonstandard": "Standard",
    "category": "Non-Damaging",
    "power": 0,
    "accuracy": 0,
    "priority": 0,
-   "pp": 20,
+   "pp": 10,
+   "description": "Raises the user's Defense by 3.",
+   "type": "Grass",
+   "target": "Self",
+   "flags": [
+    "Metronome",
+    "Snatch"
+   ],
+   "genfamily": [
+    "BW",
+    "XY",
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
+   "name": "Cotton Spore",
+   "isNonstandard": "Standard",
+   "category": "Non-Damaging",
+   "power": 0,
+   "accuracy": 100,
+   "priority": 0,
+   "pp": 40,
+   "description": "Lowers the target's Speed by 2.",
+   "type": "Grass",
+   "target": "AllAdjacentFoes",
+   "flags": [
+    "Metronome",
+    "Mirror",
+    "Powder",
+    "Protect",
+    "Reflectable"
+   ],
+   "genfamily": [
+    "GS",
+    "RS",
+    "DP",
+    "BW",
+    "XY",
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
+   "name": "Hydro Cannon",
+   "isNonstandard": "Standard",
+   "category": "Special",
+   "power": 150,
+   "accuracy": 90,
+   "priority": 0,
+   "pp": 5,
+   "description": "User cannot move next turn.",
+   "type": "Water",
+   "target": "Normal",
+   "flags": [
+    "Metronome",
+    "Mirror",
+    "Protect",
+    "Recharge"
+   ],
+   "genfamily": [
+    "RS",
+    "DP",
+    "BW",
+    "XY",
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
+   "name": "Hydro Pump",
+   "isNonstandard": "Standard",
+   "category": "Special",
+   "power": 110,
+   "accuracy": 80,
+   "priority": 0,
+   "pp": 5,
+   "description": "No additional effect.",
+   "type": "Water",
+   "target": "Normal",
+   "flags": [
+    "Metronome",
+    "Mirror",
+    "Protect"
+   ],
+   "genfamily": [
+    "RB",
+    "GS",
+    "RS",
+    "DP",
+    "BW",
+    "XY",
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
+   "name": "Iron Defense",
+   "isNonstandard": "Standard",
+   "category": "Non-Damaging",
+   "power": 0,
+   "accuracy": 0,
+   "priority": 0,
+   "pp": 15,
    "description": "Raises the user's Defense by 2.",
-   "type": "Poison",
+   "type": "Steel",
+   "target": "Self",
+   "flags": [
+    "Metronome",
+    "Snatch"
+   ],
+   "genfamily": [
+    "RS",
+    "DP",
+    "BW",
+    "XY",
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
+   "name": "Psychic",
+   "isNonstandard": "Standard",
+   "category": "Special",
+   "power": 90,
+   "accuracy": 100,
+   "priority": 0,
+   "pp": 10,
+   "description": "10% chance to lower the target's Sp. Def by 1.",
+   "type": "Psychic",
+   "target": "Normal",
+   "flags": [
+    "Metronome",
+    "Mirror",
+    "Protect"
+   ],
+   "genfamily": [
+    "RB",
+    "GS",
+    "RS",
+    "DP",
+    "BW",
+    "XY",
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
+   "name": "Shadow Ball",
+   "isNonstandard": "Standard",
+   "category": "Special",
+   "power": 80,
+   "accuracy": 100,
+   "priority": 0,
+   "pp": 15,
+   "description": "20% chance to lower the target's Sp. Def by 1.",
+   "type": "Ghost",
+   "target": "Normal",
+   "flags": [
+    "Bullet",
+    "Metronome",
+    "Mirror",
+    "Protect"
+   ],
+   "genfamily": [
+    "GS",
+    "RS",
+    "DP",
+    "BW",
+    "XY",
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
+   "name": "String Shot",
+   "isNonstandard": "Standard",
+   "category": "Non-Damaging",
+   "power": 0,
+   "accuracy": 95,
+   "priority": 0,
+   "pp": 40,
+   "description": "Lowers the foe(s) Speed by 2.",
+   "type": "Bug",
+   "target": "AllAdjacentFoes",
+   "flags": [
+    "Metronome",
+    "Mirror",
+    "Protect",
+    "Reflectable"
+   ],
+   "genfamily": [
+    "RB",
+    "GS",
+    "RS",
+    "DP",
+    "BW",
+    "XY",
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
+   "name": "Soft-Boiled",
+   "isNonstandard": "Standard",
+   "category": "Non-Damaging",
+   "power": 0,
+   "accuracy": 0,
+   "priority": 0,
+   "pp": 5,
+   "description": "Heals the user by 50% of its max HP.",
+   "type": "Normal",
+   "target": "Self",
+   "flags": [
+    "Heal",
+    "Metronome",
+    "Snatch"
+   ],
+   "genfamily": [
+    "RB",
+    "GS",
+    "RS",
+    "DP",
+    "BW",
+    "XY",
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
+   "name": "Aqua Jet",
+   "isNonstandard": "Standard",
+   "category": "Physical",
+   "power": 40,
+   "accuracy": 100,
+   "priority": 1,
+   "pp": 20,
+   "description": "Usually goes first.",
+   "type": "Water",
+   "target": "Normal",
+   "flags": [
+    "Metronome",
+    "Mirror",
+    "Protect",
+    "Contact"
+   ],
+   "genfamily": [
+    "DP",
+    "BW",
+    "XY",
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
+   "name": "Agility",
+   "isNonstandard": "Standard",
+   "category": "Non-Damaging",
+   "power": 0,
+   "accuracy": 0,
+   "priority": 0,
+   "pp": 30,
+   "description": "Raises the user's Speed by 2.",
+   "type": "Psychic",
    "target": "Self",
    "flags": [
     "Metronome",
@@ -7725,75 +8095,44 @@
    ]
   },
   {
-   "name": "Fire Lash",
-   "isNonstandard": "Standard",
-   "category": "Physical",
-   "power": 90,
-   "accuracy": 100,
-   "priority": 0,
-   "pp": 15,
-   "description": "100% chance to lower the target's Defense by 1.",
-   "type": "Fire",
-   "target": "Normal",
-   "flags": [
-    "Contact",
-    "Metronome",
-    "Mirror",
-    "Protect"
-   ],
-   "genfamily": [
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Acupressure",
+   "name": "Shelter",
    "isNonstandard": "Standard",
    "category": "Non-Damaging",
    "power": 0,
    "accuracy": 0,
    "priority": 0,
-   "pp": 30,
-   "description": "Raises a random stat of the user or an ally by 2.",
-   "type": "Normal",
-   "target": "AdjacentAllyOrSelf",
+   "pp": 10,
+   "description": "Raises the user's Defense by 2.",
+   "type": "Steel",
+   "target": "Self",
    "flags": [
-    "Metronome"
+    "Metronome",
+    "Snatch"
    ],
    "genfamily": [
-    "DP",
-    "BW",
-    "XY",
-    "SM",
-    "SS",
     "SV",
     "Champions"
    ]
   },
   {
-   "name": "Fire Punch",
+   "name": "Dragon Pulse",
    "isNonstandard": "Standard",
-   "category": "Physical",
-   "power": 75,
+   "category": "Special",
+   "power": 85,
    "accuracy": 100,
    "priority": 0,
-   "pp": 15,
-   "description": "10% chance to burn the target.",
-   "type": "Fire",
-   "target": "Normal",
+   "pp": 10,
+   "description": "No additional effect.",
+   "type": "Dragon",
+   "target": "Any",
    "flags": [
-    "Contact",
+    "Distance",
     "Metronome",
     "Mirror",
     "Protect",
-    "Punch"
+    "Pulse"
    ],
    "genfamily": [
-    "RB",
-    "GS",
-    "RS",
     "DP",
     "BW",
     "XY",
@@ -7826,30 +8165,6 @@
     "DP",
     "BW",
     "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "First Impression",
-   "isNonstandard": "Standard",
-   "category": "Physical",
-   "power": 100,
-   "accuracy": 100,
-   "priority": 2,
-   "pp": 10,
-   "description": "Nearly always goes first. First turn out only.",
-   "type": "Bug",
-   "target": "Normal",
-   "flags": [
-    "Contact",
-    "Metronome",
-    "Mirror",
-    "Protect"
-   ],
-   "genfamily": [
     "SM",
     "SS",
     "SV",
@@ -7898,10 +8213,10 @@
    "type": "Normal",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "GS",
@@ -7927,10 +8242,10 @@
    "type": "Fire",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "BW",
@@ -7982,11 +8297,11 @@
    "type": "Fire",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Defrost",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "DP",
@@ -8091,10 +8406,10 @@
    "type": "Water",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "SS",
@@ -8136,7 +8451,6 @@
    "target": "Any",
    "flags": [
     "Charge",
-    "Contact",
     "Distance",
     "Fail Instruct",
     "Gravity",
@@ -8144,7 +8458,8 @@
     "Mirror",
     "No Assist",
     "No Sleep Talk",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "RB",
@@ -8171,14 +8486,14 @@
    "type": "Fighting",
    "target": "Any",
    "flags": [
-    "Contact",
+    "Minimize",
     "Distance",
     "Gravity",
     "Metronome",
-    "Minimize",
     "Mirror",
     "Non-sky",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "XY",
@@ -8234,237 +8549,6 @@
     "RB",
     "GS",
     "RS",
-    "DP",
-    "BW",
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Soft-Boiled",
-   "isNonstandard": "Standard",
-   "category": "Non-Damaging",
-   "power": 0,
-   "accuracy": 0,
-   "priority": 0,
-   "pp": 5,
-   "description": "Heals the user by 50% of its max HP.",
-   "type": "Normal",
-   "target": "Self",
-   "flags": [
-    "Heal",
-    "Metronome",
-    "Snatch"
-   ],
-   "genfamily": [
-    "RB",
-    "GS",
-    "RS",
-    "DP",
-    "BW",
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Aerial Ace",
-   "isNonstandard": "Standard",
-   "category": "Physical",
-   "power": 60,
-   "accuracy": 0,
-   "priority": 0,
-   "pp": 20,
-   "description": "This move does not check accuracy.",
-   "type": "Flying",
-   "target": "Any",
-   "flags": [
-    "Contact",
-    "Distance",
-    "Metronome",
-    "Mirror",
-    "Protect",
-    "Slicing"
-   ],
-   "genfamily": [
-    "RS",
-    "DP",
-    "BW",
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "After You",
-   "isNonstandard": "Standard",
-   "category": "Non-Damaging",
-   "power": 0,
-   "accuracy": 0,
-   "priority": 0,
-   "pp": 15,
-   "description": "The target makes its move right after the user.",
-   "type": "Normal",
-   "target": "Normal",
-   "flags": [
-    "Bypasses Substitute"
-   ],
-   "genfamily": [
-    "BW",
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Muddy Water",
-   "isNonstandard": "Standard",
-   "category": "Special",
-   "power": 90,
-   "accuracy": 85,
-   "priority": 0,
-   "pp": 10,
-   "description": "30% chance to lower the foe(s) accuracy by 1.",
-   "type": "Water",
-   "target": "AllAdjacentFoes",
-   "flags": [
-    "Metronome",
-    "Mirror",
-    "Non-sky",
-    "Protect"
-   ],
-   "genfamily": [
-    "RS",
-    "DP",
-    "BW",
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Alluring Voice",
-   "isNonstandard": "Standard",
-   "category": "Special",
-   "power": 80,
-   "accuracy": 100,
-   "priority": 0,
-   "pp": 10,
-   "description": "100% confuse target that had a stat rise this turn.",
-   "type": "Fairy",
-   "target": "Normal",
-   "flags": [
-    "Bypasses Substitute",
-    "Metronome",
-    "Mirror",
-    "Protect",
-    "Sound"
-   ],
-   "genfamily": [
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Ancient Power",
-   "isNonstandard": "Standard",
-   "category": "Special",
-   "power": 60,
-   "accuracy": 100,
-   "priority": 0,
-   "pp": 5,
-   "description": "10% chance to raise all stats by 1 (not acc/eva).",
-   "type": "Rock",
-   "target": "Normal",
-   "flags": [
-    "Metronome",
-    "Mirror",
-    "Protect"
-   ],
-   "genfamily": [
-    "GS",
-    "RS",
-    "DP",
-    "BW",
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Apple Acid",
-   "isNonstandard": "Standard",
-   "category": "Special",
-   "power": 90,
-   "accuracy": 100,
-   "priority": 0,
-   "pp": 10,
-   "description": "100% chance to lower the target's Sp. Def by 1.",
-   "type": "Grass",
-   "target": "Normal",
-   "flags": [
-    "Mirror",
-    "Protect"
-   ],
-   "genfamily": [
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Aqua Cutter",
-   "isNonstandard": "Standard",
-   "category": "Physical",
-   "power": 70,
-   "accuracy": 100,
-   "priority": 0,
-   "pp": 20,
-   "description": "High critical hit ratio.",
-   "type": "Water",
-   "target": "Normal",
-   "flags": [
-    "Metronome",
-    "Mirror",
-    "Protect",
-    "Slicing"
-   ],
-   "genfamily": [
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Aqua Jet",
-   "isNonstandard": "Standard",
-   "category": "Physical",
-   "power": 40,
-   "accuracy": 100,
-   "priority": 1,
-   "pp": 20,
-   "description": "Usually goes first.",
-   "type": "Water",
-   "target": "Normal",
-   "flags": [
-    "Contact",
-    "Metronome",
-    "Mirror",
-    "Protect"
-   ],
-   "genfamily": [
     "DP",
     "BW",
     "XY",
@@ -8566,11 +8650,11 @@
    "type": "Steel",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
     "Protect",
-    "Punch"
+    "Punch",
+    "Contact"
    ],
    "genfamily": [
     "DP",
@@ -8694,11 +8778,11 @@
    "type": "Dark",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
     "Protect",
-    "Slicing"
+    "Slicing",
+    "Contact"
    ],
    "genfamily": [
     "SV",
@@ -8835,12 +8919,12 @@
    "type": "Fighting",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Fail Copycat",
     "Metronome",
     "Mirror",
     "No Assist",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "BW",
@@ -8935,10 +9019,10 @@
    "type": "Fighting",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "DP",
@@ -8967,353 +9051,6 @@
     "Protect"
    ],
    "genfamily": [
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Nasty Plot",
-   "isNonstandard": "Standard",
-   "category": "Non-Damaging",
-   "power": 0,
-   "accuracy": 0,
-   "priority": 0,
-   "pp": 20,
-   "description": "Raises the user's Sp. Atk by 2.",
-   "type": "Dark",
-   "target": "Self",
-   "flags": [
-    "Metronome",
-    "Snatch"
-   ],
-   "genfamily": [
-    "DP",
-    "BW",
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Agility",
-   "isNonstandard": "Standard",
-   "category": "Non-Damaging",
-   "power": 0,
-   "accuracy": 0,
-   "priority": 0,
-   "pp": 30,
-   "description": "Raises the user's Speed by 2.",
-   "type": "Psychic",
-   "target": "Self",
-   "flags": [
-    "Metronome",
-    "Snatch"
-   ],
-   "genfamily": [
-    "RB",
-    "GS",
-    "RS",
-    "DP",
-    "BW",
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Ally Switch",
-   "isNonstandard": "Standard",
-   "category": "Non-Damaging",
-   "power": 0,
-   "accuracy": 0,
-   "priority": 2,
-   "pp": 15,
-   "description": "User and ally swap positions; using again can fail.",
-   "type": "Psychic",
-   "target": "Self",
-   "flags": [
-    "Metronome"
-   ],
-   "genfamily": [
-    "BW",
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Amnesia",
-   "isNonstandard": "Standard",
-   "category": "Non-Damaging",
-   "power": 0,
-   "accuracy": 0,
-   "priority": 0,
-   "pp": 20,
-   "description": "Raises the user's Sp. Def by 2.",
-   "type": "Psychic",
-   "target": "Self",
-   "flags": [
-    "Metronome",
-    "Snatch"
-   ],
-   "genfamily": [
-    "RB",
-    "GS",
-    "RS",
-    "DP",
-    "BW",
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Electrify",
-   "isNonstandard": "Standard",
-   "category": "Non-Damaging",
-   "power": 0,
-   "accuracy": 0,
-   "priority": 0,
-   "pp": 20,
-   "description": "Changes the target's move to Electric this turn.",
-   "type": "Electric",
-   "target": "Normal",
-   "flags": [
-    "Metronome",
-    "Mirror",
-    "Protect"
-   ],
-   "genfamily": [
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Dazzling Gleam",
-   "isNonstandard": "Standard",
-   "category": "Special",
-   "power": 80,
-   "accuracy": 100,
-   "priority": 0,
-   "pp": 10,
-   "description": "No additional effect. Hits adjacent foes.",
-   "type": "Fairy",
-   "target": "AllAdjacentFoes",
-   "flags": [
-    "Metronome",
-    "Mirror",
-    "Protect"
-   ],
-   "genfamily": [
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Night Shade",
-   "isNonstandard": "Standard",
-   "category": "Special",
-   "power": 0,
-   "accuracy": 100,
-   "priority": 0,
-   "pp": 15,
-   "description": "Does damage equal to the user's level.",
-   "type": "Ghost",
-   "target": "Normal",
-   "flags": [
-    "Metronome",
-    "Mirror",
-    "Protect"
-   ],
-   "genfamily": [
-    "RB",
-    "GS",
-    "RS",
-    "DP",
-    "BW",
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Night Slash",
-   "isNonstandard": "Standard",
-   "category": "Physical",
-   "power": 70,
-   "accuracy": 100,
-   "priority": 0,
-   "pp": 20,
-   "description": "High critical hit ratio.",
-   "type": "Dark",
-   "target": "Normal",
-   "flags": [
-    "Contact",
-    "Metronome",
-    "Mirror",
-    "Protect",
-    "Slicing"
-   ],
-   "genfamily": [
-    "DP",
-    "BW",
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Will-O-Wisp",
-   "isNonstandard": "Standard",
-   "category": "Non-Damaging",
-   "power": 0,
-   "accuracy": 85,
-   "priority": 0,
-   "pp": 15,
-   "description": "Burns the target.",
-   "type": "Fire",
-   "target": "Normal",
-   "flags": [
-    "Metronome",
-    "Mirror",
-    "Protect",
-    "Reflectable"
-   ],
-   "genfamily": [
-    "RS",
-    "DP",
-    "BW",
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Recover",
-   "isNonstandard": "Standard",
-   "category": "Non-Damaging",
-   "power": 0,
-   "accuracy": 0,
-   "priority": 0,
-   "pp": 5,
-   "description": "Heals the user by 50% of its max HP.",
-   "type": "Normal",
-   "target": "Self",
-   "flags": [
-    "Heal",
-    "Metronome",
-    "Snatch"
-   ],
-   "genfamily": [
-    "RB",
-    "GS",
-    "RS",
-    "DP",
-    "BW",
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Mud Shot",
-   "isNonstandard": "Standard",
-   "category": "Special",
-   "power": 55,
-   "accuracy": 95,
-   "priority": 0,
-   "pp": 15,
-   "description": "100% chance to lower the target's Speed by 1.",
-   "type": "Ground",
-   "target": "Normal",
-   "flags": [
-    "Metronome",
-    "Mirror",
-    "Protect"
-   ],
-   "genfamily": [
-    "RS",
-    "DP",
-    "BW",
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Night Daze",
-   "isNonstandard": "Standard",
-   "category": "Special",
-   "power": 90,
-   "accuracy": 95,
-   "priority": 0,
-   "pp": 10,
-   "description": "40% chance to lower the target's accuracy by 1.",
-   "type": "Dark",
-   "target": "Normal",
-   "flags": [
-    "Metronome",
-    "Mirror",
-    "Protect"
-   ],
-   "genfamily": [
-    "BW",
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Pin Missile",
-   "isNonstandard": "Standard",
-   "category": "Physical",
-   "power": 25,
-   "accuracy": 95,
-   "priority": 0,
-   "pp": 20,
-   "description": "Hits 2-5 times in one turn.",
-   "type": "Bug",
-   "target": "Normal",
-   "flags": [
-    "Metronome",
-    "Mirror",
-    "Protect"
-   ],
-   "genfamily": [
-    "RB",
-    "GS",
-    "RS",
-    "DP",
-    "BW",
     "XY",
     "SM",
     "SS",
@@ -9367,28 +9104,53 @@
    ]
   },
   {
-   "name": "Air Slash",
+   "name": "Night Shade",
    "isNonstandard": "Standard",
    "category": "Special",
-   "power": 75,
-   "accuracy": 95,
+   "power": 0,
+   "accuracy": 100,
    "priority": 0,
    "pp": 15,
-   "description": "30% chance to make the target flinch.",
-   "type": "Flying",
-   "target": "Any",
+   "description": "Does damage equal to the user's level.",
+   "type": "Ghost",
+   "target": "Normal",
    "flags": [
-    "Distance",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Slicing"
+    "Protect"
    ],
    "genfamily": [
+    "RB",
+    "GS",
+    "RS",
     "DP",
     "BW",
     "XY",
     "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
+   "name": "Eerie Spell",
+   "isNonstandard": "Standard",
+   "category": "Special",
+   "power": 80,
+   "accuracy": 100,
+   "priority": 0,
+   "pp": 5,
+   "description": "Removes 3 PP from the target's last move.",
+   "type": "Psychic",
+   "target": "Normal",
+   "flags": [
+    "Bypasses Substitute",
+    "Metronome",
+    "Mirror",
+    "Protect",
+    "Sound"
+   ],
+   "genfamily": [
     "SS",
     "SV",
     "Champions"
@@ -9422,6 +9184,32 @@
    ]
   },
   {
+   "name": "Ice Shard",
+   "isNonstandard": "Standard",
+   "category": "Physical",
+   "power": 40,
+   "accuracy": 100,
+   "priority": 1,
+   "pp": 30,
+   "description": "Usually goes first.",
+   "type": "Ice",
+   "target": "Normal",
+   "flags": [
+    "Metronome",
+    "Mirror",
+    "Protect"
+   ],
+   "genfamily": [
+    "DP",
+    "BW",
+    "XY",
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
    "name": "Accelerock",
    "isNonstandard": "Standard",
    "category": "Physical",
@@ -9433,10 +9221,10 @@
    "type": "Rock",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "SM",
@@ -9483,11 +9271,11 @@
    "type": "Flying",
    "target": "Any",
    "flags": [
-    "Contact",
     "Distance",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "BW",
@@ -9564,11 +9352,11 @@
    "type": "Water",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Dance",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "SV",
@@ -9587,10 +9375,10 @@
    "type": "Water",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "DP",
@@ -9657,10 +9445,10 @@
    "type": "Dark",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "DP",
@@ -9786,10 +9574,10 @@
    "type": "Ice",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "DP",
@@ -9813,10 +9601,10 @@
    "type": "Fighting",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "SV",
@@ -9824,26 +9612,24 @@
    ]
   },
   {
-   "name": "Baby-Doll Eyes",
+   "name": "Dire Claw",
    "isNonstandard": "Standard",
-   "category": "Non-Damaging",
-   "power": 0,
+   "category": "Physical",
+   "power": 80,
    "accuracy": 100,
-   "priority": 1,
-   "pp": 30,
-   "description": "Lowers the target's Attack by 1.",
-   "type": "Fairy",
+   "priority": 0,
+   "pp": 15,
+   "description": "30% chance to sleep, poison, or paralyze target.",
+   "type": "Poison",
    "target": "Normal",
    "flags": [
     "Metronome",
     "Mirror",
     "Protect",
-    "Reflectable"
+    "Slicing",
+    "Contact"
    ],
    "genfamily": [
-    "XY",
-    "SM",
-    "SS",
     "SV",
     "Champions"
    ]
@@ -10039,10 +9825,10 @@
    "type": "Normal",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "RB",
@@ -10069,11 +9855,11 @@
    "type": "Dark",
    "target": "Normal",
    "flags": [
-    "Bite",
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Bite",
+    "Contact"
    ],
    "genfamily": [
     "RB",
@@ -10100,12 +9886,12 @@
    "type": "Fire",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Heal",
     "Metronome",
     "Mirror",
     "Protect",
-    "Slicing"
+    "Slicing",
+    "Contact"
    ],
    "genfamily": [
     "SV",
@@ -10173,10 +9959,10 @@
    "type": "Fire",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "RS",
@@ -10258,9 +10044,9 @@
    "type": "Fighting",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "SS",
@@ -10280,12 +10066,12 @@
    "type": "Normal",
    "target": "Normal",
    "flags": [
-    "Contact",
-    "Metronome",
     "Minimize",
+    "Metronome",
     "Mirror",
     "Non-sky",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "RB",
@@ -10367,7 +10153,6 @@
    "target": "Any",
    "flags": [
     "Charge",
-    "Contact",
     "Distance",
     "Fail Instruct",
     "Gravity",
@@ -10375,7 +10160,8 @@
     "Mirror",
     "No Assist",
     "No Sleep Talk",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "RS",
@@ -10400,11 +10186,11 @@
    "type": "Flying",
    "target": "Any",
    "flags": [
-    "Contact",
     "Distance",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "DP",
@@ -10428,9 +10214,9 @@
    "type": "Dragon",
    "target": "AllAdjacentFoes",
    "flags": [
-    "Contact",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "SS",
@@ -10450,10 +10236,10 @@
    "type": "Fighting",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "RS",
@@ -10478,10 +10264,10 @@
    "type": "Dark",
    "target": "AllAdjacent",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "SM",
@@ -10502,10 +10288,10 @@
    "type": "Bug",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "DP",
@@ -10529,10 +10315,10 @@
    "type": "Dark",
    "target": "Scripted",
    "flags": [
-    "Contact",
     "Fail Me First",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "SV",
@@ -10672,60 +10458,6 @@
    ]
   },
   {
-   "name": "Cotton Guard",
-   "isNonstandard": "Standard",
-   "category": "Non-Damaging",
-   "power": 0,
-   "accuracy": 0,
-   "priority": 0,
-   "pp": 10,
-   "description": "Raises the user's Defense by 3.",
-   "type": "Grass",
-   "target": "Self",
-   "flags": [
-    "Metronome",
-    "Snatch"
-   ],
-   "genfamily": [
-    "BW",
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Cotton Spore",
-   "isNonstandard": "Standard",
-   "category": "Non-Damaging",
-   "power": 0,
-   "accuracy": 100,
-   "priority": 0,
-   "pp": 40,
-   "description": "Lowers the target's Speed by 2.",
-   "type": "Grass",
-   "target": "AllAdjacentFoes",
-   "flags": [
-    "Metronome",
-    "Mirror",
-    "Powder",
-    "Protect",
-    "Reflectable"
-   ],
-   "genfamily": [
-    "GS",
-    "RS",
-    "DP",
-    "BW",
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
    "name": "Counter",
    "isNonstandard": "Standard",
    "category": "Physical",
@@ -10737,11 +10469,11 @@
    "type": "Fighting",
    "target": "Scripted",
    "flags": [
-    "Contact",
     "Fail Copycat",
     "Fail Me First",
     "No Assist",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "RB",
@@ -10789,12 +10521,12 @@
    "type": "Normal",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Fail Copycat",
     "Fail Me First",
     "Mirror",
     "No Assist",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "RS",
@@ -10819,10 +10551,10 @@
    "type": "Water",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "RB",
@@ -10849,10 +10581,10 @@
    "type": "Fighting",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "GS",
@@ -10878,11 +10610,11 @@
    "type": "Poison",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
     "Protect",
-    "Slicing"
+    "Slicing",
+    "Contact"
    ],
    "genfamily": [
     "DP",
@@ -10906,11 +10638,11 @@
    "type": "Dark",
    "target": "Normal",
    "flags": [
-    "Bite",
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Bite",
+    "Contact"
    ],
    "genfamily": [
     "GS",
@@ -10936,11 +10668,11 @@
    "type": "Normal",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
     "Protect",
-    "Slicing"
+    "Slicing",
+    "Contact"
    ],
    "genfamily": [
     "RS",
@@ -11043,10 +10775,10 @@
    "type": "Dark",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "SM",
@@ -11169,14 +10901,14 @@
    "target": "Normal",
    "flags": [
     "Charge",
-    "Contact",
     "Fail Instruct",
     "Metronome",
     "Mirror",
     "No Assist",
     "No Sleep Talk",
     "Non-sky",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "RB",
@@ -11187,29 +10919,6 @@
     "XY",
     "SM",
     "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Dire Claw",
-   "isNonstandard": "Standard",
-   "category": "Physical",
-   "power": 80,
-   "accuracy": 100,
-   "priority": 0,
-   "pp": 15,
-   "description": "30% chance to sleep, poison, or paralyze target.",
-   "type": "Poison",
-   "target": "Normal",
-   "flags": [
-    "Contact",
-    "Metronome",
-    "Mirror",
-    "Protect",
-    "Slicing"
-   ],
-   "genfamily": [
     "SV",
     "Champions"
    ]
@@ -11284,14 +10993,14 @@
    "target": "Normal",
    "flags": [
     "Charge",
-    "Contact",
     "Fail Instruct",
     "Metronome",
     "Mirror",
     "No Assist",
     "No Sleep Talk",
     "Non-sky",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "RS",
@@ -11316,10 +11025,10 @@
    "type": "Normal",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "RB",
@@ -11346,10 +11055,10 @@
    "type": "Normal",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "DP",
@@ -11373,10 +11082,10 @@
    "type": "Electric",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Mirror",
     "Protect",
-    "Punch"
+    "Punch",
+    "Contact"
    ],
    "genfamily": [
     "SV",
@@ -11470,11 +11179,11 @@
    "type": "Dragon",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
     "Protect",
-    "Slicing"
+    "Slicing",
+    "Contact"
    ],
    "genfamily": [
     "RS",
@@ -11499,11 +11208,11 @@
    "type": "Dragon",
    "target": "Normal",
    "flags": [
-    "Contact",
-    "Metronome",
     "Minimize",
+    "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "DP",
@@ -11527,12 +11236,12 @@
    "type": "Dragon",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Fail Copycat",
     "Metronome",
     "Mirror",
     "No Assist",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "BW",
@@ -11555,12 +11264,12 @@
    "type": "Fighting",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Heal",
     "Metronome",
     "Mirror",
     "Protect",
-    "Punch"
+    "Punch",
+    "Contact"
    ],
    "genfamily": [
     "DP",
@@ -11584,11 +11293,11 @@
    "type": "Fairy",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Heal",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "XY",
@@ -11610,11 +11319,11 @@
    "type": "Flying",
    "target": "Any",
    "flags": [
-    "Contact",
     "Distance",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "RB",
@@ -11641,10 +11350,10 @@
    "type": "Ground",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "BW",
@@ -11688,10 +11397,10 @@
    "type": "Flying",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "SS",
@@ -11711,11 +11420,11 @@
    "type": "Fighting",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
     "Protect",
-    "Punch"
+    "Punch",
+    "Contact"
    ],
    "genfamily": [
     "GS",
@@ -11806,30 +11515,6 @@
    "genfamily": [
     "XY",
     "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Eerie Spell",
-   "isNonstandard": "Standard",
-   "category": "Special",
-   "power": 80,
-   "accuracy": 100,
-   "priority": 0,
-   "pp": 5,
-   "description": "Removes 3 PP from the target's last move.",
-   "type": "Psychic",
-   "target": "Normal",
-   "flags": [
-    "Bypasses Substitute",
-    "Metronome",
-    "Mirror",
-    "Protect",
-    "Sound"
-   ],
-   "genfamily": [
     "SS",
     "SV",
     "Champions"
@@ -11974,11 +11659,11 @@
    "type": "Normal",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
     "No Parental Bond",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "RS",
@@ -12003,14 +11688,14 @@
    "type": "Fighting",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Fail Copycat",
     "Fail Instruct",
     "Fail Me First",
     "No Assist",
     "No Sleep Talk",
     "Protect",
-    "Punch"
+    "Punch",
+    "Contact"
    ],
    "genfamily": [
     "RS",
@@ -12095,6 +11780,34 @@
     "Reflectable"
    ],
    "genfamily": [
+    "BW",
+    "XY",
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
+   "name": "Acid Armor",
+   "isNonstandard": "Standard",
+   "category": "Non-Damaging",
+   "power": 0,
+   "accuracy": 0,
+   "priority": 0,
+   "pp": 20,
+   "description": "Raises the user's Defense by 2.",
+   "type": "Poison",
+   "target": "Self",
+   "flags": [
+    "Metronome",
+    "Snatch"
+   ],
+   "genfamily": [
+    "RB",
+    "GS",
+    "RS",
+    "DP",
     "BW",
     "XY",
     "SM",
@@ -12210,35 +11923,6 @@
    ]
   },
   {
-   "name": "Extreme Speed",
-   "isNonstandard": "Standard",
-   "category": "Physical",
-   "power": 80,
-   "accuracy": 100,
-   "priority": 2,
-   "pp": 5,
-   "description": "Nearly always goes first.",
-   "type": "Normal",
-   "target": "Normal",
-   "flags": [
-    "Contact",
-    "Metronome",
-    "Mirror",
-    "Protect"
-   ],
-   "genfamily": [
-    "GS",
-    "RS",
-    "DP",
-    "BW",
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
    "name": "Facade",
    "isNonstandard": "Standard",
    "category": "Physical",
@@ -12250,10 +11934,10 @@
    "type": "Normal",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "RS",
@@ -12302,10 +11986,10 @@
    "type": "Normal",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "RS",
@@ -12413,10 +12097,10 @@
    "type": "Bug",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "XY",
@@ -12539,11 +12223,11 @@
    "type": "Fire",
    "target": "Normal",
    "flags": [
-    "Bite",
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Bite",
+    "Contact"
    ],
    "genfamily": [
     "DP",
@@ -12618,10 +12302,10 @@
    "type": "Dark",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "BW",
@@ -12765,6 +12449,28 @@
    ]
   },
   {
+   "name": "Ice Spinner",
+   "isNonstandard": "Standard",
+   "category": "Physical",
+   "power": 80,
+   "accuracy": 100,
+   "priority": 0,
+   "pp": 15,
+   "description": "Ends the effects of terrain.",
+   "type": "Ice",
+   "target": "Normal",
+   "flags": [
+    "Metronome",
+    "Mirror",
+    "Protect",
+    "Contact"
+   ],
+   "genfamily": [
+    "SV",
+    "Champions"
+   ]
+  },
+  {
    "name": "Giga Drain",
    "isNonstandard": "Standard",
    "category": "Special",
@@ -12805,11 +12511,11 @@
    "type": "Normal",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
     "Protect",
-    "Recharge"
+    "Recharge",
+    "Contact"
    ],
    "genfamily": [
     "DP",
@@ -12855,42 +12561,12 @@
    "type": "Dragon",
    "target": "Normal",
    "flags": [
-    "Contact",
-    "Metronome",
-    "Mirror",
-    "Protect"
-   ],
-   "genfamily": [
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Glare",
-   "isNonstandard": "Standard",
-   "category": "Non-Damaging",
-   "power": 0,
-   "accuracy": 100,
-   "priority": 0,
-   "pp": 30,
-   "description": "Paralyzes the target.",
-   "type": "Normal",
-   "target": "Normal",
-   "flags": [
     "Metronome",
     "Mirror",
     "Protect",
-    "Reflectable"
+    "Contact"
    ],
    "genfamily": [
-    "RB",
-    "GS",
-    "RS",
-    "DP",
-    "BW",
-    "XY",
-    "SM",
-    "SS",
     "SV",
     "Champions"
    ]
@@ -12907,11 +12583,11 @@
    "type": "Grass",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
     "Non-sky",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "DP",
@@ -12935,10 +12611,10 @@
    "type": "Grass",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "SS",
@@ -13133,10 +12809,10 @@
    "type": "Normal",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "RB",
@@ -13190,10 +12866,10 @@
    "target": "Normal",
    "flags": [
     "Bullet",
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "DP",
@@ -13217,11 +12893,11 @@
    "type": "Fighting",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
     "Protect",
-    "Punch"
+    "Punch",
+    "Contact"
    ],
    "genfamily": [
     "DP",
@@ -13245,10 +12921,10 @@
    "type": "Steel",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "SV",
@@ -13295,10 +12971,10 @@
    "type": "Rock",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "DP",
@@ -13322,11 +12998,11 @@
    "type": "Ground",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
     "Protect",
-    "Punch"
+    "Punch",
+    "Contact"
    ],
    "genfamily": [
     "SV",
@@ -13429,12 +13105,12 @@
    "type": "Fire",
    "target": "Normal",
    "flags": [
-    "Contact",
-    "Metronome",
     "Minimize",
+    "Metronome",
     "Mirror",
     "Non-sky",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "BW",
@@ -13485,12 +13161,12 @@
    "type": "Steel",
    "target": "Normal",
    "flags": [
-    "Contact",
-    "Metronome",
     "Minimize",
+    "Metronome",
     "Mirror",
     "Non-sky",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "BW",
@@ -13538,11 +13214,11 @@
    "type": "Fighting",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Gravity",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "RB",
@@ -13569,10 +13245,10 @@
    "type": "Normal",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "RB",
@@ -13599,11 +13275,11 @@
    "type": "Grass",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Heal",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "BW",
@@ -13661,63 +13337,6 @@
     "Wind"
    ],
    "genfamily": [
-    "BW",
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Hydro Cannon",
-   "isNonstandard": "Standard",
-   "category": "Special",
-   "power": 150,
-   "accuracy": 90,
-   "priority": 0,
-   "pp": 5,
-   "description": "User cannot move next turn.",
-   "type": "Water",
-   "target": "Normal",
-   "flags": [
-    "Metronome",
-    "Mirror",
-    "Protect",
-    "Recharge"
-   ],
-   "genfamily": [
-    "RS",
-    "DP",
-    "BW",
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Hydro Pump",
-   "isNonstandard": "Standard",
-   "category": "Special",
-   "power": 110,
-   "accuracy": 80,
-   "priority": 0,
-   "pp": 5,
-   "description": "No additional effect.",
-   "type": "Water",
-   "target": "Normal",
-   "flags": [
-    "Metronome",
-    "Mirror",
-    "Protect"
-   ],
-   "genfamily": [
-    "RB",
-    "GS",
-    "RS",
-    "DP",
     "BW",
     "XY",
     "SM",
@@ -13856,11 +13475,11 @@
    "type": "Ice",
    "target": "Normal",
    "flags": [
-    "Bite",
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Bite",
+    "Contact"
    ],
    "genfamily": [
     "DP",
@@ -13884,11 +13503,11 @@
    "type": "Ice",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
     "Protect",
-    "Punch"
+    "Punch",
+    "Contact"
    ],
    "genfamily": [
     "SM",
@@ -13909,11 +13528,11 @@
    "type": "Ice",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
     "Protect",
-    "Punch"
+    "Punch",
+    "Contact"
    ],
    "genfamily": [
     "RB",
@@ -13924,54 +13543,6 @@
     "XY",
     "SM",
     "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Ice Shard",
-   "isNonstandard": "Standard",
-   "category": "Physical",
-   "power": 40,
-   "accuracy": 100,
-   "priority": 1,
-   "pp": 30,
-   "description": "Usually goes first.",
-   "type": "Ice",
-   "target": "Normal",
-   "flags": [
-    "Metronome",
-    "Mirror",
-    "Protect"
-   ],
-   "genfamily": [
-    "DP",
-    "BW",
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Ice Spinner",
-   "isNonstandard": "Standard",
-   "category": "Physical",
-   "power": 80,
-   "accuracy": 100,
-   "priority": 0,
-   "pp": 15,
-   "description": "Ends the effects of terrain.",
-   "type": "Ice",
-   "target": "Normal",
-   "flags": [
-    "Contact",
-    "Metronome",
-    "Mirror",
-    "Protect"
-   ],
-   "genfamily": [
     "SV",
     "Champions"
    ]
@@ -14143,11 +13714,11 @@
    "type": "Bug",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Heal",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "RB",
@@ -14196,10 +13767,10 @@
    "type": "Bug",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "XY",
@@ -14260,32 +13831,6 @@
    ]
   },
   {
-   "name": "Iron Defense",
-   "isNonstandard": "Standard",
-   "category": "Non-Damaging",
-   "power": 0,
-   "accuracy": 0,
-   "priority": 0,
-   "pp": 15,
-   "description": "Raises the user's Defense by 2.",
-   "type": "Steel",
-   "target": "Self",
-   "flags": [
-    "Metronome",
-    "Snatch"
-   ],
-   "genfamily": [
-    "RS",
-    "DP",
-    "BW",
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
    "name": "Iron Head",
    "isNonstandard": "Standard",
    "category": "Physical",
@@ -14297,10 +13842,10 @@
    "type": "Steel",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "DP",
@@ -14324,10 +13869,10 @@
    "type": "Steel",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "GS",
@@ -14353,11 +13898,11 @@
    "type": "Dark",
    "target": "Normal",
    "flags": [
-    "Bite",
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Bite",
+    "Contact"
    ],
    "genfamily": [
     "SS",
@@ -14377,10 +13922,10 @@
    "type": "Water",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Mirror",
     "Protect",
-    "Punch"
+    "Punch",
+    "Contact"
    ],
    "genfamily": [
     "SV",
@@ -14423,10 +13968,10 @@
    "type": "Dark",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "RS",
@@ -14451,11 +13996,11 @@
    "type": "Dark",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
     "Protect",
-    "Slicing"
+    "Slicing",
+    "Contact"
    ],
    "genfamily": [
     "SV",
@@ -14474,10 +14019,10 @@
    "type": "Dark",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "SS",
@@ -14497,10 +14042,10 @@
    "type": "Normal",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "DP",
@@ -14571,11 +14116,11 @@
    "type": "Grass",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
     "Protect",
-    "Slicing"
+    "Slicing",
+    "Contact"
    ],
    "genfamily": [
     "RS",
@@ -14758,10 +14303,10 @@
    "type": "Water",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "SM",
@@ -14810,10 +14355,10 @@
    "type": "Fighting",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "RB",
@@ -14840,10 +14385,10 @@
    "type": "Fighting",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "BW",
@@ -14887,42 +14432,12 @@
    "type": "Bug",
    "target": "Normal",
    "flags": [
-    "Contact",
-    "Metronome",
-    "Mirror",
-    "Protect"
-   ],
-   "genfamily": [
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Mach Punch",
-   "isNonstandard": "Standard",
-   "category": "Physical",
-   "power": 40,
-   "accuracy": 100,
-   "priority": 1,
-   "pp": 30,
-   "description": "Usually goes first.",
-   "type": "Fighting",
-   "target": "Normal",
-   "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
     "Protect",
-    "Punch"
+    "Contact"
    ],
    "genfamily": [
-    "GS",
-    "RS",
-    "DP",
-    "BW",
-    "XY",
     "SM",
     "SS",
     "SV",
@@ -15111,10 +14626,10 @@
    "type": "Normal",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "RB",
@@ -15141,10 +14656,10 @@
    "type": "Bug",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "GS",
@@ -15300,11 +14815,11 @@
    "type": "Steel",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
     "Protect",
-    "Punch"
+    "Punch",
+    "Contact"
    ],
    "genfamily": [
     "RS",
@@ -15362,6 +14877,34 @@
    ],
    "genfamily": [
     "RB",
+    "GS",
+    "RS",
+    "DP",
+    "BW",
+    "XY",
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
+   "name": "Pain Split",
+   "isNonstandard": "Standard",
+   "category": "Non-Damaging",
+   "power": 0,
+   "accuracy": 0,
+   "priority": 0,
+   "pp": 20,
+   "description": "Shares HP of user and target equally.",
+   "type": "Normal",
+   "target": "Normal",
+   "flags": [
+    "Metronome",
+    "Mirror",
+    "Protect"
+   ],
+   "genfamily": [
     "GS",
     "RS",
     "DP",
@@ -15538,10 +15081,10 @@
    "type": "Poison",
    "target": "AllAdjacentFoes",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "SV",
@@ -15657,10 +15200,10 @@
    "type": "Electric",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "XY",
@@ -15704,11 +15247,11 @@
    "type": "Dragon",
    "target": "RandomNormal",
    "flags": [
-    "Contact",
     "Fail Instruct",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "GS",
@@ -15773,22 +15316,24 @@
    ]
   },
   {
-   "name": "Pain Split",
+   "name": "Pound",
    "isNonstandard": "Standard",
-   "category": "Non-Damaging",
-   "power": 0,
-   "accuracy": 0,
+   "category": "Physical",
+   "power": 40,
+   "accuracy": 100,
    "priority": 0,
-   "pp": 20,
-   "description": "Shares HP of user and target equally.",
+   "pp": 35,
+   "description": "No additional effect.",
    "type": "Normal",
    "target": "Normal",
    "flags": [
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
+    "RB",
     "GS",
     "RS",
     "DP",
@@ -15864,10 +15409,10 @@
    "type": "Dark",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "DP",
@@ -15945,12 +15490,12 @@
    "type": "Grass",
    "target": "RandomNormal",
    "flags": [
-    "Contact",
     "Dance",
     "Fail Instruct",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "RB",
@@ -15978,12 +15523,12 @@
    "target": "Normal",
    "flags": [
     "Charge",
-    "Contact",
     "Fail Instruct",
     "Metronome",
     "Mirror",
     "No Assist",
-    "No Sleep Talk"
+    "No Sleep Talk",
+    "Contact"
    ],
    "genfamily": [
     "XY",
@@ -16005,10 +15550,10 @@
    "type": "Fairy",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "XY",
@@ -16030,11 +15575,11 @@
    "type": "Flying",
    "target": "Any",
    "flags": [
-    "Contact",
     "Distance",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "DP",
@@ -16058,11 +15603,11 @@
    "type": "Poison",
    "target": "Normal",
    "flags": [
-    "Bite",
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Bite",
+    "Contact"
    ],
    "genfamily": [
     "RS",
@@ -16087,10 +15632,10 @@
    "type": "Poison",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "DP",
@@ -16191,10 +15736,10 @@
    "type": "Normal",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Mirror",
     "Protect",
-    "Slicing"
+    "Slicing",
+    "Contact"
    ],
    "genfamily": [
     "SV",
@@ -16213,67 +15758,11 @@
    "type": "Bug",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Pound",
-   "isNonstandard": "Standard",
-   "category": "Physical",
-   "power": 40,
-   "accuracy": 100,
-   "priority": 0,
-   "pp": 35,
-   "description": "No additional effect.",
-   "type": "Normal",
-   "target": "Normal",
-   "flags": [
-    "Contact",
-    "Metronome",
-    "Mirror",
-    "Protect"
-   ],
-   "genfamily": [
-    "RB",
-    "GS",
-    "RS",
-    "DP",
-    "BW",
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Power Gem",
-   "isNonstandard": "Standard",
-   "category": "Special",
-   "power": 80,
-   "accuracy": 100,
-   "priority": 0,
-   "pp": 20,
-   "description": "No additional effect.",
-   "type": "Rock",
-   "target": "Normal",
-   "flags": [
-    "Metronome",
-    "Mirror",
-    "Protect"
-   ],
-   "genfamily": [
-    "DP",
-    "BW",
-    "XY",
-    "SM",
-    "SS",
     "SV",
     "Champions"
    ]
@@ -16385,10 +15874,10 @@
    "type": "Dark",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "SM",
@@ -16409,10 +15898,10 @@
    "type": "Grass",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "DP",
@@ -16479,35 +15968,6 @@
    ]
   },
   {
-   "name": "Psychic",
-   "isNonstandard": "Standard",
-   "category": "Special",
-   "power": 90,
-   "accuracy": 100,
-   "priority": 0,
-   "pp": 10,
-   "description": "10% chance to lower the target's Sp. Def by 1.",
-   "type": "Psychic",
-   "target": "Normal",
-   "flags": [
-    "Metronome",
-    "Mirror",
-    "Protect"
-   ],
-   "genfamily": [
-    "RB",
-    "GS",
-    "RS",
-    "DP",
-    "BW",
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
    "name": "Psychic Fangs",
    "isNonstandard": "Standard",
    "category": "Physical",
@@ -16519,11 +15979,11 @@
    "type": "Psychic",
    "target": "Normal",
    "flags": [
-    "Bite",
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Bite",
+    "Contact"
    ],
    "genfamily": [
     "SM",
@@ -16642,10 +16102,10 @@
    "type": "Psychic",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "SV",
@@ -16712,10 +16172,39 @@
    "type": "Normal",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
+   ],
+   "genfamily": [
+    "RB",
+    "GS",
+    "RS",
+    "DP",
+    "BW",
+    "XY",
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
+   "name": "Rest",
+   "isNonstandard": "Standard",
+   "category": "Non-Damaging",
+   "power": 0,
+   "accuracy": 0,
+   "priority": 0,
+   "pp": 5,
+   "description": "User sleeps 2 turns and restores HP and status.",
+   "type": "Psychic",
+   "target": "Self",
+   "flags": [
+    "Heal",
+    "Metronome",
+    "Snatch"
    ],
    "genfamily": [
     "RB",
@@ -16790,10 +16279,10 @@
    "type": "Ghost",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Mirror",
     "Protect",
-    "Punch"
+    "Punch",
+    "Contact"
    ],
    "genfamily": [
     "SV",
@@ -16837,9 +16326,9 @@
    "type": "Normal",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "SV",
@@ -16904,10 +16393,10 @@
    "type": "Normal",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "GS",
@@ -16933,11 +16422,11 @@
    "type": "Water",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
     "Protect",
-    "Slicing"
+    "Slicing",
+    "Contact"
    ],
    "genfamily": [
     "BW",
@@ -17028,35 +16517,6 @@
    ]
   },
   {
-   "name": "Rest",
-   "isNonstandard": "Standard",
-   "category": "Non-Damaging",
-   "power": 0,
-   "accuracy": 0,
-   "priority": 0,
-   "pp": 5,
-   "description": "User sleeps 2 turns and restores HP and status.",
-   "type": "Psychic",
-   "target": "Self",
-   "flags": [
-    "Heal",
-    "Metronome",
-    "Snatch"
-   ],
-   "genfamily": [
-    "RB",
-    "GS",
-    "RS",
-    "DP",
-    "BW",
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
    "name": "Reversal",
    "isNonstandard": "Standard",
    "category": "Physical",
@@ -17068,10 +16528,10 @@
    "type": "Fighting",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "GS",
@@ -17388,11 +16848,11 @@
    "type": "Fighting",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
     "Protect",
-    "Slicing"
+    "Slicing",
+    "Contact"
    ],
    "genfamily": [
     "BW",
@@ -17675,11 +17135,11 @@
    "type": "Fighting",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
     "Non-sky",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "RB",
@@ -17725,35 +17185,6 @@
    ]
   },
   {
-   "name": "Shadow Ball",
-   "isNonstandard": "Standard",
-   "category": "Special",
-   "power": 80,
-   "accuracy": 100,
-   "priority": 0,
-   "pp": 15,
-   "description": "20% chance to lower the target's Sp. Def by 1.",
-   "type": "Ghost",
-   "target": "Normal",
-   "flags": [
-    "Bullet",
-    "Metronome",
-    "Mirror",
-    "Protect"
-   ],
-   "genfamily": [
-    "GS",
-    "RS",
-    "DP",
-    "BW",
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
    "name": "Shadow Claw",
    "isNonstandard": "Standard",
    "category": "Physical",
@@ -17765,11 +17196,11 @@
    "type": "Ghost",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
     "Protect",
-    "Slicing"
+    "Slicing",
+    "Contact"
    ],
    "genfamily": [
     "DP",
@@ -17793,11 +17224,11 @@
    "type": "Ghost",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
     "Protect",
-    "Punch"
+    "Punch",
+    "Contact"
    ],
    "genfamily": [
     "RS",
@@ -17822,10 +17253,10 @@
    "type": "Ghost",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "DP",
@@ -17940,26 +17371,6 @@
     "XY",
     "SM",
     "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Shelter",
-   "isNonstandard": "Standard",
-   "category": "Non-Damaging",
-   "power": 0,
-   "accuracy": 0,
-   "priority": 0,
-   "pp": 10,
-   "description": "Raises the user's Defense by 2.",
-   "type": "Steel",
-   "target": "Self",
-   "flags": [
-    "Metronome",
-    "Snatch"
-   ],
-   "genfamily": [
     "SV",
     "Champions"
    ]
@@ -18086,10 +17497,10 @@
    "type": "Bug",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "SS",
@@ -18169,11 +17580,11 @@
    "type": "Normal",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
     "Protect",
-    "Slicing"
+    "Slicing",
+    "Contact"
    ],
    "genfamily": [
     "RB",
@@ -18342,10 +17753,10 @@
    "type": "Steel",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "SM",
@@ -18366,9 +17777,9 @@
    "type": "Steel",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "SS",
@@ -18447,13 +17858,13 @@
    "target": "Normal",
    "flags": [
     "Charge",
-    "Contact",
     "Fail Instruct",
     "Metronome",
     "Mirror",
     "No Sleep Talk",
     "Protect",
-    "Slicing"
+    "Slicing",
+    "Contact"
    ],
    "genfamily": [
     "SM",
@@ -18596,9 +18007,9 @@
    "type": "Fairy",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "SS",
@@ -18775,10 +18186,10 @@
    "type": "Steel",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "SS",
@@ -18798,13 +18209,42 @@
    "type": "Steel",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "GS",
+    "RS",
+    "DP",
+    "BW",
+    "XY",
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
+   "name": "Taunt",
+   "isNonstandard": "Standard",
+   "category": "Non-Damaging",
+   "power": 0,
+   "accuracy": 100,
+   "priority": 0,
+   "pp": 20,
+   "description": "Target can't use status moves its next 3 turns.",
+   "type": "Dark",
+   "target": "Normal",
+   "flags": [
+    "Bypasses Substitute",
+    "Metronome",
+    "Mirror",
+    "Protect",
+    "Reflectable"
+   ],
+   "genfamily": [
     "RS",
     "DP",
     "BW",
@@ -18902,10 +18342,10 @@
    "type": "Ground",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "SM",
@@ -18926,11 +18366,11 @@
    "type": "Rock",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
     "Protect",
-    "Slicing"
+    "Slicing",
+    "Contact"
    ],
    "genfamily": [
     "SV",
@@ -19000,10 +18440,10 @@
    "type": "Fighting",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "BW",
@@ -19040,36 +18480,6 @@
    ]
   },
   {
-   "name": "String Shot",
-   "isNonstandard": "Standard",
-   "category": "Non-Damaging",
-   "power": 0,
-   "accuracy": 95,
-   "priority": 0,
-   "pp": 40,
-   "description": "Lowers the foe(s) Speed by 2.",
-   "type": "Bug",
-   "target": "AllAdjacentFoes",
-   "flags": [
-    "Metronome",
-    "Mirror",
-    "Protect",
-    "Reflectable"
-   ],
-   "genfamily": [
-    "RB",
-    "GS",
-    "RS",
-    "DP",
-    "BW",
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
    "name": "Struggle",
    "isNonstandard": "Standard",
    "category": "Physical",
@@ -19081,7 +18491,6 @@
    "type": "Normal",
    "target": "RandomNormal",
    "flags": [
-    "Contact",
     "Fail Copycat",
     "Fail Encore",
     "Fail Instruct",
@@ -19090,7 +18499,8 @@
     "Fail Sketch",
     "No Assist",
     "No Sleep Talk",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "RB",
@@ -19183,6 +18593,29 @@
    ]
   },
   {
+   "name": "Tearful Look",
+   "isNonstandard": "Standard",
+   "category": "Non-Damaging",
+   "power": 0,
+   "accuracy": 0,
+   "priority": 0,
+   "pp": 20,
+   "description": "Lowers the target's Attack and Sp. Atk by 1.",
+   "type": "Normal",
+   "target": "Normal",
+   "flags": [
+    "Metronome",
+    "Mirror",
+    "Reflectable"
+   ],
+   "genfamily": [
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
    "name": "Substitute",
    "isNonstandard": "Standard",
    "category": "Non-Damaging",
@@ -19223,10 +18656,10 @@
    "type": "Dark",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "DP",
@@ -19250,10 +18683,10 @@
    "type": "Normal",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "RB",
@@ -19280,11 +18713,11 @@
    "type": "Electric",
    "target": "Normal",
    "flags": [
-    "Contact",
-    "Metronome",
     "Minimize",
+    "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "SV",
@@ -19303,10 +18736,10 @@
    "type": "Fighting",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "RS",
@@ -19581,10 +19014,10 @@
    "type": "Normal",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "BW",
@@ -19615,58 +19048,6 @@
     "DP",
     "BW",
     "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Taunt",
-   "isNonstandard": "Standard",
-   "category": "Non-Damaging",
-   "power": 0,
-   "accuracy": 100,
-   "priority": 0,
-   "pp": 20,
-   "description": "Target can't use status moves its next 3 turns.",
-   "type": "Dark",
-   "target": "Normal",
-   "flags": [
-    "Bypasses Substitute",
-    "Metronome",
-    "Mirror",
-    "Protect",
-    "Reflectable"
-   ],
-   "genfamily": [
-    "RS",
-    "DP",
-    "BW",
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Tearful Look",
-   "isNonstandard": "Standard",
-   "category": "Non-Damaging",
-   "power": 0,
-   "accuracy": 0,
-   "priority": 0,
-   "pp": 20,
-   "description": "Lowers the target's Attack and Sp. Atk by 1.",
-   "type": "Normal",
-   "target": "Normal",
-   "flags": [
-    "Metronome",
-    "Mirror",
-    "Reflectable"
-   ],
-   "genfamily": [
     "SM",
     "SS",
     "SV",
@@ -19734,10 +19115,10 @@
    "type": "Fire",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "SV",
@@ -19779,12 +19160,12 @@
    "type": "Dark",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Fail Copycat",
     "Fail Me First",
     "Mirror",
     "No Assist",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "GS",
@@ -19810,11 +19191,11 @@
    "type": "Normal",
    "target": "RandomNormal",
    "flags": [
-    "Contact",
     "Fail Instruct",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "RB",
@@ -19841,10 +19222,10 @@
    "type": "Dark",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "SM",
@@ -19894,11 +19275,11 @@
    "type": "Electric",
    "target": "Normal",
    "flags": [
-    "Bite",
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Bite",
+    "Contact"
    ],
    "genfamily": [
     "DP",
@@ -19922,11 +19303,11 @@
    "type": "Electric",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
     "Protect",
-    "Punch"
+    "Punch",
+    "Contact"
    ],
    "genfamily": [
     "RB",
@@ -20215,9 +19596,9 @@
    "type": "Grass",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "SV",
@@ -20395,12 +19776,36 @@
    "type": "Ice",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
+   "name": "Fire Lash",
+   "isNonstandard": "Standard",
+   "category": "Physical",
+   "power": 90,
+   "accuracy": 100,
+   "priority": 0,
+   "pp": 15,
+   "description": "100% chance to lower the target's Defense by 1.",
+   "type": "Fire",
+   "target": "Normal",
+   "flags": [
+    "Metronome",
+    "Mirror",
+    "Protect",
+    "Contact"
+   ],
+   "genfamily": [
+    "SM",
     "SS",
     "SV",
     "Champions"
@@ -20418,10 +19823,10 @@
    "type": "Grass",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "SM",
@@ -20462,10 +19867,10 @@
    "type": "Bug",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "DP",
@@ -20489,10 +19894,10 @@
    "type": "Fighting",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "SV",
@@ -20521,32 +19926,6 @@
    ],
    "genfamily": [
     "RS",
-    "DP",
-    "BW",
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "Vacuum Wave",
-   "isNonstandard": "Standard",
-   "category": "Special",
-   "power": 40,
-   "accuracy": 100,
-   "priority": 1,
-   "pp": 30,
-   "description": "Usually goes first.",
-   "type": "Fighting",
-   "target": "Normal",
-   "flags": [
-    "Metronome",
-    "Mirror",
-    "Protect"
-   ],
-   "genfamily": [
     "DP",
     "BW",
     "XY",
@@ -20618,10 +19997,10 @@
    "type": "Electric",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "RS",
@@ -20726,10 +20105,10 @@
    "type": "Water",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "RB",
@@ -20756,10 +20135,10 @@
    "type": "Water",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "SV",
@@ -20890,10 +20269,10 @@
    "type": "Electric",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "BW",
@@ -20967,10 +20346,10 @@
    "type": "Grass",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "DP",
@@ -21021,43 +20400,15 @@
    "type": "Normal",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "RB",
     "GS",
     "RS",
-    "DP",
-    "BW",
-    "XY",
-    "SM",
-    "SS",
-    "SV",
-    "Champions"
-   ]
-  },
-  {
-   "name": "X-Scissor",
-   "isNonstandard": "Standard",
-   "category": "Physical",
-   "power": 80,
-   "accuracy": 100,
-   "priority": 0,
-   "pp": 15,
-   "description": "No additional effect.",
-   "type": "Bug",
-   "target": "Normal",
-   "flags": [
-    "Contact",
-    "Metronome",
-    "Mirror",
-    "Protect",
-    "Slicing"
-   ],
-   "genfamily": [
     "DP",
     "BW",
     "XY",
@@ -21136,10 +20487,10 @@
    "type": "Psychic",
    "target": "Normal",
    "flags": [
-    "Contact",
     "Metronome",
     "Mirror",
-    "Protect"
+    "Protect",
+    "Contact"
    ],
    "genfamily": [
     "DP",
@@ -21163,12 +20514,669 @@
    "type": "Electric",
    "target": "Normal",
    "flags": [
-    "Contact",
+    "Metronome",
+    "Mirror",
+    "Protect",
+    "Contact"
+   ],
+   "genfamily": [
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
+   "name": "Acupressure",
+   "isNonstandard": "Standard",
+   "category": "Non-Damaging",
+   "power": 0,
+   "accuracy": 0,
+   "priority": 0,
+   "pp": 30,
+   "description": "Raises a random stat of the user or an ally by 2.",
+   "type": "Normal",
+   "target": "AdjacentAllyOrSelf",
+   "flags": [
+    "Metronome"
+   ],
+   "genfamily": [
+    "DP",
+    "BW",
+    "XY",
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
+   "name": "Fire Punch",
+   "isNonstandard": "Standard",
+   "category": "Physical",
+   "power": 75,
+   "accuracy": 100,
+   "priority": 0,
+   "pp": 15,
+   "description": "10% chance to burn the target.",
+   "type": "Fire",
+   "target": "Normal",
+   "flags": [
+    "Metronome",
+    "Mirror",
+    "Protect",
+    "Punch",
+    "Contact"
+   ],
+   "genfamily": [
+    "RB",
+    "GS",
+    "RS",
+    "DP",
+    "BW",
+    "XY",
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
+   "name": "First Impression",
+   "isNonstandard": "Standard",
+   "category": "Physical",
+   "power": 100,
+   "accuracy": 100,
+   "priority": 2,
+   "pp": 10,
+   "description": "Nearly always goes first. First turn out only.",
+   "type": "Bug",
+   "target": "Normal",
+   "flags": [
+    "Metronome",
+    "Mirror",
+    "Protect",
+    "Contact"
+   ],
+   "genfamily": [
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
+   "name": "Aerial Ace",
+   "isNonstandard": "Standard",
+   "category": "Physical",
+   "power": 60,
+   "accuracy": 0,
+   "priority": 0,
+   "pp": 20,
+   "description": "This move does not check accuracy.",
+   "type": "Flying",
+   "target": "Any",
+   "flags": [
+    "Distance",
+    "Metronome",
+    "Mirror",
+    "Protect",
+    "Slicing",
+    "Contact"
+   ],
+   "genfamily": [
+    "RS",
+    "DP",
+    "BW",
+    "XY",
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
+   "name": "After You",
+   "isNonstandard": "Standard",
+   "category": "Non-Damaging",
+   "power": 0,
+   "accuracy": 0,
+   "priority": 0,
+   "pp": 15,
+   "description": "The target makes its move right after the user.",
+   "type": "Normal",
+   "target": "Normal",
+   "flags": [
+    "Bypasses Substitute"
+   ],
+   "genfamily": [
+    "BW",
+    "XY",
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
+   "name": "Muddy Water",
+   "isNonstandard": "Standard",
+   "category": "Special",
+   "power": 90,
+   "accuracy": 85,
+   "priority": 0,
+   "pp": 10,
+   "description": "30% chance to lower the foe(s) accuracy by 1.",
+   "type": "Water",
+   "target": "AllAdjacentFoes",
+   "flags": [
+    "Metronome",
+    "Mirror",
+    "Non-sky",
+    "Protect"
+   ],
+   "genfamily": [
+    "RS",
+    "DP",
+    "BW",
+    "XY",
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
+   "name": "Alluring Voice",
+   "isNonstandard": "Standard",
+   "category": "Special",
+   "power": 80,
+   "accuracy": 100,
+   "priority": 0,
+   "pp": 10,
+   "description": "100% confuse target that had a stat rise this turn.",
+   "type": "Fairy",
+   "target": "Normal",
+   "flags": [
+    "Bypasses Substitute",
+    "Metronome",
+    "Mirror",
+    "Protect",
+    "Sound"
+   ],
+   "genfamily": [
+    "SV",
+    "Champions"
+   ]
+  },
+  {
+   "name": "Ancient Power",
+   "isNonstandard": "Standard",
+   "category": "Special",
+   "power": 60,
+   "accuracy": 100,
+   "priority": 0,
+   "pp": 5,
+   "description": "10% chance to raise all stats by 1 (not acc/eva).",
+   "type": "Rock",
+   "target": "Normal",
+   "flags": [
     "Metronome",
     "Mirror",
     "Protect"
    ],
    "genfamily": [
+    "GS",
+    "RS",
+    "DP",
+    "BW",
+    "XY",
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
+   "name": "Apple Acid",
+   "isNonstandard": "Standard",
+   "category": "Special",
+   "power": 90,
+   "accuracy": 100,
+   "priority": 0,
+   "pp": 10,
+   "description": "100% chance to lower the target's Sp. Def by 1.",
+   "type": "Grass",
+   "target": "Normal",
+   "flags": [
+    "Mirror",
+    "Protect"
+   ],
+   "genfamily": [
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
+   "name": "Aqua Cutter",
+   "isNonstandard": "Standard",
+   "category": "Physical",
+   "power": 70,
+   "accuracy": 100,
+   "priority": 0,
+   "pp": 20,
+   "description": "High critical hit ratio.",
+   "type": "Water",
+   "target": "Normal",
+   "flags": [
+    "Metronome",
+    "Mirror",
+    "Protect",
+    "Slicing"
+   ],
+   "genfamily": [
+    "SV",
+    "Champions"
+   ]
+  },
+  {
+   "name": "Nasty Plot",
+   "isNonstandard": "Standard",
+   "category": "Non-Damaging",
+   "power": 0,
+   "accuracy": 0,
+   "priority": 0,
+   "pp": 20,
+   "description": "Raises the user's Sp. Atk by 2.",
+   "type": "Dark",
+   "target": "Self",
+   "flags": [
+    "Metronome",
+    "Snatch"
+   ],
+   "genfamily": [
+    "DP",
+    "BW",
+    "XY",
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
+   "name": "Ally Switch",
+   "isNonstandard": "Standard",
+   "category": "Non-Damaging",
+   "power": 0,
+   "accuracy": 0,
+   "priority": 2,
+   "pp": 15,
+   "description": "User and ally swap positions; using again can fail.",
+   "type": "Psychic",
+   "target": "Self",
+   "flags": [
+    "Metronome"
+   ],
+   "genfamily": [
+    "BW",
+    "XY",
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
+   "name": "Amnesia",
+   "isNonstandard": "Standard",
+   "category": "Non-Damaging",
+   "power": 0,
+   "accuracy": 0,
+   "priority": 0,
+   "pp": 20,
+   "description": "Raises the user's Sp. Def by 2.",
+   "type": "Psychic",
+   "target": "Self",
+   "flags": [
+    "Metronome",
+    "Snatch"
+   ],
+   "genfamily": [
+    "RB",
+    "GS",
+    "RS",
+    "DP",
+    "BW",
+    "XY",
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
+   "name": "Electrify",
+   "isNonstandard": "Standard",
+   "category": "Non-Damaging",
+   "power": 0,
+   "accuracy": 0,
+   "priority": 0,
+   "pp": 20,
+   "description": "Changes the target's move to Electric this turn.",
+   "type": "Electric",
+   "target": "Normal",
+   "flags": [
+    "Metronome",
+    "Mirror",
+    "Protect"
+   ],
+   "genfamily": [
+    "XY",
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
+   "name": "Dazzling Gleam",
+   "isNonstandard": "Standard",
+   "category": "Special",
+   "power": 80,
+   "accuracy": 100,
+   "priority": 0,
+   "pp": 10,
+   "description": "No additional effect. Hits adjacent foes.",
+   "type": "Fairy",
+   "target": "AllAdjacentFoes",
+   "flags": [
+    "Metronome",
+    "Mirror",
+    "Protect"
+   ],
+   "genfamily": [
+    "XY",
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
+   "name": "Night Slash",
+   "isNonstandard": "Standard",
+   "category": "Physical",
+   "power": 70,
+   "accuracy": 100,
+   "priority": 0,
+   "pp": 20,
+   "description": "High critical hit ratio.",
+   "type": "Dark",
+   "target": "Normal",
+   "flags": [
+    "Metronome",
+    "Mirror",
+    "Protect",
+    "Slicing",
+    "Contact"
+   ],
+   "genfamily": [
+    "DP",
+    "BW",
+    "XY",
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
+   "name": "Will-O-Wisp",
+   "isNonstandard": "Standard",
+   "category": "Non-Damaging",
+   "power": 0,
+   "accuracy": 85,
+   "priority": 0,
+   "pp": 15,
+   "description": "Burns the target.",
+   "type": "Fire",
+   "target": "Normal",
+   "flags": [
+    "Metronome",
+    "Mirror",
+    "Protect",
+    "Reflectable"
+   ],
+   "genfamily": [
+    "RS",
+    "DP",
+    "BW",
+    "XY",
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
+   "name": "Recover",
+   "isNonstandard": "Standard",
+   "category": "Non-Damaging",
+   "power": 0,
+   "accuracy": 0,
+   "priority": 0,
+   "pp": 5,
+   "description": "Heals the user by 50% of its max HP.",
+   "type": "Normal",
+   "target": "Self",
+   "flags": [
+    "Heal",
+    "Metronome",
+    "Snatch"
+   ],
+   "genfamily": [
+    "RB",
+    "GS",
+    "RS",
+    "DP",
+    "BW",
+    "XY",
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
+   "name": "Mud Shot",
+   "isNonstandard": "Standard",
+   "category": "Special",
+   "power": 55,
+   "accuracy": 95,
+   "priority": 0,
+   "pp": 15,
+   "description": "100% chance to lower the target's Speed by 1.",
+   "type": "Ground",
+   "target": "Normal",
+   "flags": [
+    "Metronome",
+    "Mirror",
+    "Protect"
+   ],
+   "genfamily": [
+    "RS",
+    "DP",
+    "BW",
+    "XY",
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
+   "name": "Night Daze",
+   "isNonstandard": "Standard",
+   "category": "Special",
+   "power": 90,
+   "accuracy": 95,
+   "priority": 0,
+   "pp": 10,
+   "description": "40% chance to lower the target's accuracy by 1.",
+   "type": "Dark",
+   "target": "Normal",
+   "flags": [
+    "Metronome",
+    "Mirror",
+    "Protect"
+   ],
+   "genfamily": [
+    "BW",
+    "XY",
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
+   "name": "Pin Missile",
+   "isNonstandard": "Standard",
+   "category": "Physical",
+   "power": 25,
+   "accuracy": 95,
+   "priority": 0,
+   "pp": 20,
+   "description": "Hits 2-5 times in one turn.",
+   "type": "Bug",
+   "target": "Normal",
+   "flags": [
+    "Metronome",
+    "Mirror",
+    "Protect"
+   ],
+   "genfamily": [
+    "RB",
+    "GS",
+    "RS",
+    "DP",
+    "BW",
+    "XY",
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
+   "name": "Extreme Speed",
+   "isNonstandard": "Standard",
+   "category": "Physical",
+   "power": 80,
+   "accuracy": 100,
+   "priority": 2,
+   "pp": 5,
+   "description": "Nearly always goes first.",
+   "type": "Normal",
+   "target": "Normal",
+   "flags": [
+    "Metronome",
+    "Mirror",
+    "Protect",
+    "Contact"
+   ],
+   "genfamily": [
+    "GS",
+    "RS",
+    "DP",
+    "BW",
+    "XY",
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
+   "name": "Glare",
+   "isNonstandard": "Standard",
+   "category": "Non-Damaging",
+   "power": 0,
+   "accuracy": 100,
+   "priority": 0,
+   "pp": 30,
+   "description": "Paralyzes the target.",
+   "type": "Normal",
+   "target": "Normal",
+   "flags": [
+    "Metronome",
+    "Mirror",
+    "Protect",
+    "Reflectable"
+   ],
+   "genfamily": [
+    "RB",
+    "GS",
+    "RS",
+    "DP",
+    "BW",
+    "XY",
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
+   "name": "Vacuum Wave",
+   "isNonstandard": "Standard",
+   "category": "Special",
+   "power": 40,
+   "accuracy": 100,
+   "priority": 1,
+   "pp": 30,
+   "description": "Usually goes first.",
+   "type": "Fighting",
+   "target": "Normal",
+   "flags": [
+    "Metronome",
+    "Mirror",
+    "Protect"
+   ],
+   "genfamily": [
+    "DP",
+    "BW",
+    "XY",
+    "SM",
+    "SS",
+    "SV",
+    "Champions"
+   ]
+  },
+  {
+   "name": "X-Scissor",
+   "isNonstandard": "Standard",
+   "category": "Physical",
+   "power": 80,
+   "accuracy": 100,
+   "priority": 0,
+   "pp": 15,
+   "description": "No additional effect.",
+   "type": "Bug",
+   "target": "Normal",
+   "flags": [
+    "Metronome",
+    "Mirror",
+    "Protect",
+    "Slicing",
+    "Contact"
+   ],
+   "genfamily": [
+    "DP",
+    "BW",
+    "XY",
     "SM",
     "SS",
     "SV",
