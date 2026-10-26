@@ -184,6 +184,7 @@
    ]
   },
   "Aura Guard": {
+   "described": "This Pokemon receives 1/2 damage from contact moves.",
    "effects": [
     {
      "multiplier": 0.5,
@@ -199,7 +200,15 @@
     }
    ],
    "kind": "ability",
-   "notes": []
+   "notes": [],
+   "text_numbers": [
+    {
+     "as_written": "1/2",
+     "kind": "fraction",
+     "phrase": "This Pokemon receives 1/2 damage from contact moves.",
+     "value": 0.5
+    }
+   ]
   },
   "Aura Wheel": {
    "described": "Morpeko: Electric; Hangry: Dark; 100% +1 Spe.",

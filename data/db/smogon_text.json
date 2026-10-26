@@ -8,6 +8,7 @@
   "Anticipation": "On switch-in, this Pokemon is alerted if any opposing Pokemon has an attacking move with a type that is super effective against this Pokemon, or any OHKO move. This effect considers Hidden Power to be its determined type, and every other move to be its original type.",
   "Armor Tail": "Priority moves used by opposing Pokemon targeting this Pokemon or its allies are prevented from having an effect.",
   "Aroma Veil": "This Pokemon and its allies cannot become affected by Attract, Disable, Encore, Heal Block, Taunt, or Torment.",
+  "Aura Guard": "This Pokemon receives 1/2 damage from contact moves.",
   "Battle Armor": "This Pokemon cannot be struck by a critical hit.",
   "Battle Bond": "If this Pokemon is a Greninja, its Attack, Special Attack, and Speed are raised by 1 stage if it attacks and knocks out another Pokemon. This effect can only happen once per battle.",
   "Berserk": "When this Pokemon has more than 1/2 its maximum HP and takes damage from an attack bringing it to 1/2 or less of its maximum HP, its Special Attack is raised by 1 stage. This effect applies after all hits from a multi-hit move. This effect is prevented if the move had a secondary effect removed by the Sheer Force Ability.",
@@ -216,7 +217,7 @@
   "White Smoke": "Prevents other Pokemon from lowering this Pokemon's stat stages.",
   "Zero to Hero": "If this Pokemon is a Palafin in Zero Form, switching out has it change to Hero Form."
  },
- "fetched": "2026-09-30",
+ "fetched": "2026-10-26",
  "items": {
   "Abomasite": "If held by an Abomasnow, this item allows it to Mega Evolve in battle.",
   "Absolite": "If held by an Absol, this item allows it to Mega Evolve into Mega Absol in battle.",

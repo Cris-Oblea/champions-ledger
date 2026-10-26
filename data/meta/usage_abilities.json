@@ -1,14 +1,14 @@
 {
  "source": "pokebase.app/pokemon-champions",
  "game": "Pokemon Champions",
- "fetched": "2026-10-25",
+ "fetched": "2026-10-26",
  "count": 215,
  "rows": [
   {
    "rank": 1,
    "slug": "intimidate",
    "name": "Intimidate",
-   "usage_percent": 11.4,
+   "usage_percent": 11.39,
    "description": "When the Pokémon enters a battle, it intimidates opposing Pokémon and makes them cower, lowering their Attack stats."
   },
   {
@@ -43,22 +43,22 @@
    "rank": 6,
    "slug": "aerilate",
    "name": "Aerilate",
-   "usage_percent": 3.85,
+   "usage_percent": 3.84,
    "description": "Normal-type moves become Flying-type moves. The power of those moves is boosted a little."
   },
   {
    "rank": 7,
-   "slug": "rough-skin",
-   "name": "Rough Skin",
-   "usage_percent": 3.85,
-   "description": "The Pokémon's rough skin damages attackers that make direct contact with it."
+   "slug": "lightning-rod",
+   "name": "Lightning Rod",
+   "usage_percent": 3.84,
+   "description": "The Pokémon draws in all Electric-type moves. Instead of taking damage from them, its Sp. Atk stat is boosted."
   },
   {
    "rank": 8,
-   "slug": "lightning-rod",
-   "name": "Lightning Rod",
-   "usage_percent": 3.83,
-   "description": "The Pokémon draws in all Electric-type moves. Instead of taking damage from them, its Sp. Atk stat is boosted."
+   "slug": "rough-skin",
+   "name": "Rough Skin",
+   "usage_percent": 3.84,
+   "description": "The Pokémon's rough skin damages attackers that make direct contact with it."
   },
   {
    "rank": 9,
@@ -71,7 +71,7 @@
    "rank": 10,
    "slug": "levitate",
    "name": "Levitate",
-   "usage_percent": 3.62,
+   "usage_percent": 3.61,
    "description": "Damage dealing Ground-type moves have no effect on this Pokémon. Cannot be trapped by Arena Trap ability. Takes no damage from Spikes."
   },
   {
@@ -85,7 +85,7 @@
    "rank": 12,
    "slug": "tough-claws",
    "name": "Tough Claws",
-   "usage_percent": 3.36,
+   "usage_percent": 3.37,
    "description": "Powers up moves that make direct contact."
   },
   {
@@ -127,14 +127,14 @@
    "rank": 18,
    "slug": "stamina",
    "name": "Stamina",
-   "usage_percent": 2.51,
+   "usage_percent": 2.52,
    "description": "Boosts the Defense stat when the Pokémon is hit by an attack."
   },
   {
    "rank": 19,
    "slug": "armor-tail",
    "name": "Armor Tail",
-   "usage_percent": 2.4,
+   "usage_percent": 2.39,
    "description": "The mysterious tail covering the Pokémon's head makes opponents unable to use priority moves against the Pokémon or its allies."
   },
   {
@@ -148,7 +148,7 @@
    "rank": 21,
    "slug": "rock-head",
    "name": "Rock Head",
-   "usage_percent": 2.34,
+   "usage_percent": 2.33,
    "description": "Protects the Pokémon from recoil damage."
   },
   {
@@ -183,7 +183,7 @@
    "rank": 26,
    "slug": "cursed-body",
    "name": "Cursed Body",
-   "usage_percent": 1.64,
+   "usage_percent": 1.63,
    "description": "May disable a move that has dealt damage to the Pokémon."
   },
   {
@@ -204,7 +204,7 @@
    "rank": 29,
    "slug": "snow-warning",
    "name": "Snow Warning",
-   "usage_percent": 1.34,
+   "usage_percent": 1.33,
    "description": "Snowstorm blows when the Pokémon enters battle. As of X & Y, this lasts 5 turns."
   },
   {
@@ -218,14 +218,14 @@
    "rank": 31,
    "slug": "chlorophyll",
    "name": "Chlorophyll",
-   "usage_percent": 1.1,
+   "usage_percent": 1.09,
    "description": "Boosts the Pokémon's Speed stat in harsh sunlight."
   },
   {
    "rank": 32,
    "slug": "inner-focus",
    "name": "Inner Focus",
-   "usage_percent": 1.08,
+   "usage_percent": 1.09,
    "description": "The Pokémon's intense focus prevents it from flinching or being affected by Intimidate."
   },
   {
@@ -274,7 +274,7 @@
    "rank": 39,
    "slug": "liquid-voice",
    "name": "Liquid Voice",
-   "usage_percent": 0.78,
+   "usage_percent": 0.79,
    "description": "Sound-based moves become Water-type moves."
   },
   {
@@ -370,17 +370,17 @@
   },
   {
    "rank": 53,
+   "slug": "electric-surge",
+   "name": "Electric Surge",
+   "usage_percent": 0.37,
+   "description": "Turns the ground into Electric Terrain when the Pokémon enters a battle."
+  },
+  {
+   "rank": 54,
    "slug": "iron-fist",
    "name": "Iron Fist",
    "usage_percent": 0.37,
    "description": "The power of punching moves is increased by 20%. This stacks with"
-  },
-  {
-   "rank": 54,
-   "slug": "electric-surge",
-   "name": "Electric Surge",
-   "usage_percent": 0.36,
-   "description": "Turns the ground into Electric Terrain when the Pokémon enters a battle."
   },
   {
    "rank": 55,
@@ -442,7 +442,7 @@
    "rank": 63,
    "slug": "solar-power",
    "name": "Solar Power",
-   "usage_percent": 0.27,
+   "usage_percent": 0.28,
    "description": "In harsh sunlight, the Pokémon's Sp. Atk stat is boosted, but its HP decreases every turn."
   },
   {
@@ -587,66 +587,66 @@
   },
   {
    "rank": 84,
-   "slug": "unaware",
-   "name": "Unaware",
-   "usage_percent": 0.11,
-   "description": "When attacking, the Pokémon ignores the target's stat changes."
-  },
-  {
-   "rank": 85,
    "slug": "limber",
    "name": "Limber",
    "usage_percent": 0.1,
    "description": "The Pokémon's limber body prevents it from being paralyzed."
   },
   {
-   "rank": 86,
+   "rank": 85,
    "slug": "sand-force",
    "name": "Sand Force",
    "usage_percent": 0.1,
    "description": "Boosts the power of Rock-, Ground-, and Steel-type moves in a sandstorm."
   },
   {
-   "rank": 87,
+   "rank": 86,
    "slug": "shell-armor",
    "name": "Shell Armor",
    "usage_percent": 0.1,
    "description": "A hard shell protects the Pokémon from critical hits."
   },
   {
-   "rank": 88,
+   "rank": 87,
    "slug": "snow-cloak",
    "name": "Snow Cloak",
    "usage_percent": 0.1,
    "description": "Boosts the Pokémon's evasiveness in snow."
   },
   {
-   "rank": 89,
-   "slug": "sturdy",
-   "name": "Sturdy",
+   "rank": 88,
+   "slug": "unaware",
+   "name": "Unaware",
    "usage_percent": 0.1,
-   "description": "The Pokémon cannot be knocked out by a single hit as long as its HP is full. One-hit KO moves will also fail to knock it out."
+   "description": "When attacking, the Pokémon ignores the target's stat changes."
   },
   {
-   "rank": 90,
+   "rank": 89,
    "slug": "illusion",
    "name": "Illusion",
    "usage_percent": 0.09,
    "description": "The Pokémon fools opponents by entering battle disguised as the last Pokémon in its Trainer's party."
   },
   {
-   "rank": 91,
+   "rank": 90,
    "slug": "mega-sol",
    "name": "Mega Sol",
    "usage_percent": 0.09,
    "description": "Even when the sunlight has not turned harsh, the Pokémon can use its moves as if the weather were harsh sunlight."
   },
   {
-   "rank": 92,
+   "rank": 91,
    "slug": "queenly-majesty",
    "name": "Queenly Majesty",
    "usage_percent": 0.09,
    "description": "Opponents are unable to use priority moves against the Pokémon or its allies."
+  },
+  {
+   "rank": 92,
+   "slug": "sturdy",
+   "name": "Sturdy",
+   "usage_percent": 0.09,
+   "description": "The Pokémon cannot be knocked out by a single hit as long as its HP is full. One-hit KO moves will also fail to knock it out."
   },
   {
    "rank": 93,
