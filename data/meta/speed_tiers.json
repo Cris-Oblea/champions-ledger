@@ -1,8 +1,8 @@
 {
  "source": "pokebase.app/pokemon-champions",
  "game": "Pokemon Champions",
- "fetched": "2026-10-24",
- "count": 89,
+ "fetched": "2026-10-27",
+ "count": 88,
  "rows": [
   {
    "base_speed": 151,
@@ -960,6 +960,10 @@
     "neuMaxScarf": 216
    },
    "pokemon": [
+    {
+     "name": "Floette (Eternal)",
+     "slug": "floette-eternal"
+    },
     {
      "name": "Krookodile",
      "slug": "krookodile"
@@ -2002,23 +2006,6 @@
     {
      "name": "Swalot",
      "slug": "swalot"
-    }
-   ]
-  },
-  {
-   "base_speed": 52,
-   "speeds": {
-    "max": 114,
-    "neuMax": 104,
-    "neu0": 72,
-    "neg0": 64,
-    "maxScarf": 171,
-    "neuMaxScarf": 156
-   },
-   "pokemon": [
-    {
-     "name": "Floette",
-     "slug": "floette"
     }
    ]
   },
