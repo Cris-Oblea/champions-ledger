@@ -1,7 +1,7 @@
 {
  "source": "pokebase.app/pokemon-champions",
  "game": "Pokemon Champions",
- "fetched": "2026-10-30",
+ "fetched": "2026-10-31",
  "count": 162,
  "rows": [
   {
@@ -22,7 +22,7 @@
    "rank": 3,
    "slug": "life-orb",
    "name": "Life Orb",
-   "usage_percent": 56.9,
+   "usage_percent": 57.0,
    "description": "Boosts the power of the holder’s moves by 30%, but the holder loses 10% of its max HP after using a damaging move."
   },
   {
@@ -120,7 +120,7 @@
    "rank": 17,
    "slug": "rocky-helmet",
    "name": "Rocky Helmet",
-   "usage_percent": 13.0,
+   "usage_percent": 13.1,
    "description": "When the holder is hit by a contact move, the attacker takes damage equal to 1/6 of its max HP."
   },
   {
