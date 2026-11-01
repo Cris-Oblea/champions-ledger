@@ -1,7 +1,7 @@
 {
  "source": "pokebase.app/pokemon-champions",
  "game": "Pokemon Champions",
- "fetched": "2026-10-31",
+ "fetched": "2026-11-01",
  "count": 162,
  "rows": [
   {
@@ -92,14 +92,14 @@
    "rank": 13,
    "slug": "garchompite-z",
    "name": "Garchompite Z",
-   "usage_percent": 13.8,
+   "usage_percent": 13.7,
    "description": "A held item that allows Garchomp to Mega Evolve into Mega Garchomp Z."
   },
   {
    "rank": 14,
    "slug": "chople-berry",
    "name": "Chople Berry",
-   "usage_percent": 13.4,
+   "usage_percent": 13.5,
    "description": "Halves damage from the first supereffective Fighting-type attack. Consumed after use."
   },
   {
@@ -113,14 +113,14 @@
    "rank": 16,
    "slug": "golisopite",
    "name": "Golisopite",
-   "usage_percent": 13.1,
+   "usage_percent": 13.0,
    "description": "A held item that allows Golisopod to Mega Evolve."
   },
   {
    "rank": 17,
    "slug": "rocky-helmet",
    "name": "Rocky Helmet",
-   "usage_percent": 13.1,
+   "usage_percent": 13.0,
    "description": "When the holder is hit by a contact move, the attacker takes damage equal to 1/6 of its max HP."
   },
   {
@@ -174,17 +174,17 @@
   },
   {
    "rank": 25,
+   "slug": "froslassite",
+   "name": "Froslassite",
+   "usage_percent": 5.3,
+   "description": "One of a variety of mysterious Mega Stones. A Froslass holding this stone will be able to Mega Evolve during battle."
+  },
+  {
+   "rank": 26,
    "slug": "gengarite",
    "name": "Gengarite",
    "usage_percent": 5.3,
    "description": "One of a variety of mysterious Mega Stones. A Gengar holding this stone will be able to Mega Evolve during battle."
-  },
-  {
-   "rank": 26,
-   "slug": "froslassite",
-   "name": "Froslassite",
-   "usage_percent": 5.2,
-   "description": "One of a variety of mysterious Mega Stones. A Froslass holding this stone will be able to Mega Evolve during battle."
   },
   {
    "rank": 27,
@@ -204,7 +204,7 @@
    "rank": 29,
    "slug": "mystic-water",
    "name": "Mystic Water",
-   "usage_percent": 4.4,
+   "usage_percent": 4.5,
    "description": "Boosts the power of the holder’s Water-type moves by 20%."
   },
   {
@@ -344,7 +344,7 @@
    "rank": 49,
    "slug": "blazikenite",
    "name": "Blazikenite",
-   "usage_percent": 1.1,
+   "usage_percent": 1.2,
    "description": "One of a variety of mysterious Mega Stones. A Blaziken holding this stone will be able to Mega Evolve during battle."
   },
   {
