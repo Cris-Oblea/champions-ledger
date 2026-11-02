@@ -98,7 +98,7 @@ The M-C move is written up in `analysis/regulation_m_c.md`.
 | Learnsets | **264** |
 | Ladder usage - Pokemon / moves / abilities / items | **342 / 158 / 215 / 162** |
 | Speed tiers | **88** |
-| Smogon Pokemon (**59 with a written VGC analysis**) | **358** |
+| Smogon Pokemon (**62 with a written VGC analysis**) | **358** |
 | Worlds 2026 Masters - players / teamlists | **395 / 394** |
 | Worlds 2026 Seniors - players / teamlists | **139 / 137** |
 | Worlds 2026 Juniors - players / teamlists | **111 / 111** |

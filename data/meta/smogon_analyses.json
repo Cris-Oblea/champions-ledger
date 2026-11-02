@@ -2,9 +2,9 @@
  "source": "smogon.com/dex/champions",
  "game": "Pokemon Champions",
  "note": "VGC formats only (doubles, bring 6 pick 4). Singles dropped.",
- "fetched": "2026-10-26",
+ "fetched": "2026-11-02",
  "count": 358,
- "with_vgc_analysis": 59,
+ "with_vgc_analysis": 62,
  "pokemon": [
   {
    "name": "Aggron",
@@ -1921,7 +1921,70 @@
     "Wide Guard",
     "Will-O-Wisp"
    ],
-   "vgc_strategies": []
+   "vgc_strategies": [
+    {
+     "format": "VGC26 Regulation M-C",
+     "outdated": null,
+     "overview": "",
+     "comments": "",
+     "movesets": [
+      {
+       "name": "Psychic Terrain Attacker",
+       "pokemon": "Armarouge",
+       "abilities": [
+        "Flash Fire"
+       ],
+       "items": [
+        "Focus Sash",
+        "Life Orb"
+       ],
+       "natures": [
+        "Modest"
+       ],
+       "stat_points": [
+        {
+         "hp": 0,
+         "atk": 0,
+         "def": 2,
+         "spa": 32,
+         "spd": 0,
+         "spe": 32
+        },
+        {
+         "hp": 29,
+         "atk": 0,
+         "def": 20,
+         "spa": 1,
+         "spd": 16,
+         "spe": 0
+        }
+       ],
+       "moveslots": [
+        [
+         "Expanding Force"
+        ],
+        [
+         "Armor Cannon"
+        ],
+        [
+         "Protect",
+         "Trick Room"
+        ],
+        [
+         "Trick Room",
+         "Wide Guard"
+        ]
+       ],
+       "explanation": "Armarouge utilizes the Psychic Terrain set by a partner Indeedee-F to deal massive spread damage to the opposing team. Unlike alternatives like Hatterene, Armarouge is fast enough to where it can function both in Trick Room and Tailwind, and its typing and ability make it better against Mega Charizard Y.\nArmor Cannon complements Expanding Force's coverage, as it bowls over the Steel-types like Gholdengo that resist Expanding Force.\nProtect gives Amarouge a way to play around the Dark-, Ghost-, Water-, and Ground-type attacks that would threaten it. With support from Follow Me Indeedee-F, Armarouge sets Trick Room reliably, creating the conditions for it to spam Expanding Force against faster teams. Wide Guard is an alternative for faster teams that gives them a tool to contain spread moves like Mega Salamence's Hyper Voice, Gholdengo's Make It Rain, and Mega Charizard Y's Heat Wave.\nFocus Sash ensures that Armarouge can survive a hit even if Indeedee-F is KOed. Life Orb boosts Expanding Force's damage significantly, reducing the amount of chip damage needed to OHKO Mega Salamence and Mega Garchomp Z in Psychic Terrain.\nFocus Sash variants of Armarouge don't need a bulky spread and simply go with maximum Special Attack and Speed. Maximum Speed investment makes Armarouge worse in Trick Room, so these variants should use Wide Guard instead. Meanwhile, an SP spread of 29 HP / 20 Def / 1 SpA / 16 SpD gives Armarouge enough bulk to survive Shadow Ball from bulky Mega Gengar and Earthquake from Life Orb Garchomp. This slower spread benefits more from Trick Room, and the reduced investment in Special Attack is made up for with a Life Orb.\nUsage Tips\nCertain Dark-types like Incineroar, Hydreigon, and Mega Tyranitar shrug off Armarouge's STAB moves and threaten it in return with their Dark-type STAB moves.\nGhost-types like Gholdengo and Mega Gengar threaten to outspeed and OHKO Armarouge, as do Ground-types like Garchomp and Excadrill.\nRain teams weaken Armarouge's Armor Cannon, making it more reliant on Expanding Force for damage. This is particularly problematic when facing Wide Guard Pelipper and Archaludon; the former completely shuts it down, while the latter shrugs off its attacks in rain and sets up with Electro Shot. Rain teams also tend to pack other offensive Water-types like Mega Swampert that outspeed and OHKO Armarouge.\nIndeedee-F is a mandatory partner for Armarouge. It sets up Psychic Terrain to enable Expanding Force, sets up Trick Room to let Armarouge blast through faster teams, and uses Follow Me to enable Armarouge to set up Trick Room itself and bypass Ghost-type moves.\nA Fighting-type is very useful to blast through Dark-types that Armarouge can struggle against; the most common are Mega Staraptor and Sneasler. Mega Staraptor is also useful for dealing with Ground-types and gains Attack boosts from Intimidate Incineroar, while Unburden Sneasler is a strong speed control option to beat down threats in rain.\nMilotic is a common partner for its ability to resist Water-type attacks and threaten Incineroar. Its Scald also deals good damage to Ground-types and Tyranitar while threatening a burn.\nArmarouge's Expanding Force-centric strategy is often not the only one on a team; consider alternative gameplans that also benefit from Indeedee-F's redirection and Psychic Terrain and the ability of Mega Staraptor and Milotic to deter Incineroar. For instance, fast Ghost-types like Dragapult and Mega Gengar enjoy Milotic's and Mega Staraptor's favorable matchups against Dark-types, Indeedee-F's good matchup against Ghost-types, and Psychic Terrain's negation of priority moves. In return, Dragapult and Mega Gengar threaten other Ghost-types like Gholdengo for Armarouge; Mega Gengar in particular can trap and remove Rillaboom, which would replace Psychic Terrain. Swords Dance Mega Golisopod appreciates Trick Room, redirection, and the Fighting-type coverage for Steel-types. Mega Golisopod has worse in-battle synergy with Armarouge, but it appreciates Armarouge's ability to deter Fire-type attacks with Flash Fire and access to Wide Guard to protect it from Heat Wave."
+      }
+     ],
+     "credits": [
+      "poketitanterra",
+      "Code",
+      "Carrotman"
+     ]
+    }
+   ]
   },
   {
    "name": "Aromatisse",
@@ -5700,7 +5763,57 @@
     "U-turn",
     "Will-O-Wisp"
    ],
-   "vgc_strategies": []
+   "vgc_strategies": [
+    {
+     "format": "VGC26 Regulation M-C",
+     "outdated": null,
+     "overview": "",
+     "comments": "",
+     "movesets": [
+      {
+       "name": "Fast Attacker",
+       "pokemon": "Dragapult",
+       "abilities": [
+        "Infiltrator"
+       ],
+       "items": [
+        "Life Orb"
+       ],
+       "natures": [
+        "Timid"
+       ],
+       "stat_points": [
+        {
+         "hp": 2,
+         "atk": 0,
+         "def": 0,
+         "spa": 32,
+         "spd": 0,
+         "spe": 32
+        }
+       ],
+       "moveslots": [
+        [
+         "Draco Meteor"
+        ],
+        [
+         "Shadow Ball"
+        ],
+        [
+         "Will-O-Wisp"
+        ],
+        [
+         "Protect"
+        ]
+       ],
+       "explanation": "Dragapult is one of the naturally fastest Pokemon in the format, able to outspeed and OHKO huge threats like Mega Gengar and Mega Salamence while also having strong burst damage to help break through bulkier foes like Mega Golisopod and Archaludon.\nDraco Meteor and Shadow Ball give Dragapult insane burst damage potential and consistent damage output, respectively. Will-O-Wisp is used to burn threatening attackers like Mega Staraptor. Notably, it allows Dragapult to burn Kingambit while avoiding Sucker Punch and then survive a Sucker Punch on the following turn.\nInfiltrator allows Dragapult to ignore Light Screen from the likes of Grimmsnarl, still dealing huge damage to Pokemon commonly behind them such as Mega Charizard Y.\nLife Orb allows Dragapult to reliably OHKO Mega Froslass with Shadow Ball.\nUsage Tips\nDark-types are a huge issue for Dragapult, as they force Dragapult to use Draco Meteor to deal any significant damage to them. Kingambit is the biggest issue, resisting Draco Meteor and OHKOing with Kowtow Cleave and Sucker Punch. Incineroar and Mega Tyranitar can also tank Draco Meteor, with the former even being immune to Will-O-Wisp. Grimmsnarl is immune to Draco Meteor and can use Spirit Break and Parting Shot to weaken Dragapult.\nFairy-types like Mega Floette and Sylveon can remove Dragapult without much worry, easily OHKOing it while being immune to Draco Meteor. This becomes worse when compounded with Tailwind or Trick Room, allowing them to even move before Dragapult to remove it and prevent it from knocking out important partners such as Sneasler and Rillaboom.\nChoice Scarf users like Garchomp and Basculegion-M can outspeed and OHKO Dragapult with Dragon Claw and 100-Base Power Last Respects. Mega Garchomp Z, if using a Timid nature, can also outspeed Dragapult, OHKOing it with Dragon Pulse. Mega Dragonite, thanks to Multiscale, can tank Draco Meteor and either set up Tailwind to OHKO Dragapult the next turn or take it out immediately with Dragon Pulse.\nPsychic Seed Sneasler commonly runs Throat Chop, allowing it to deal huge damage to Dragapult after surviving Draco Meteor thanks to the Special Defense boost. Hisuian Arcanine can always survive Draco Meteor with Focus Sash and has solid odds to OHKO Dragapult with Head Smash after Life Orb recoil.\nMilotic is a strong partner, keeping Incineroar out thanks to Competitive, and it appreciates Dragapult's ability to remove Grass-types like Rillaboom and Sinistcha, which creates opportunities for Milotic to set up with Coil. Coil also makes Milotic a reliable answer to Garchomp, Mega Tyranitar, and sometimes even Kingambit, especially if Hypnosis lands before setting up.\nIndeedee-F provides redirection support, stopping with ease Sucker Punch from Kingambit and the Ghost-type attacks that would otherwise threaten Dragapult. Sucker Punch and other annoying priority moves such as Aqua Jet from Basculegion-M that could pick off a Dragapult at low HP are also canceled out by Psychic Terrain. It can also use Helping Hand to allow Dragapult to secure OHKOs against Mega Raichu Y and Sneasler while having access to Trick Room to revert opposing Trick Room. Armarouge pairs well with Indeedee-F and Dragapult, using Psychic Terrain for powerful Expanding Force and appreciating Dragapult's removal of Mega Salamence.\nMega Staraptor is an amazing Mega Evolution partner for Dragapult, threatening all of the Dark-types that annoy Dragapult while also removing Sneasler, Hisuian Arcanine, and Garchomp with relative ease. It deters Incineroar thanks to Contrary as well. Dragapult, in return, provides safety against Mega Raichu Y, Mega Salamence, and Mega Charizard Y. Mega Gengar also makes for a strong partner, trapping foes like Rillaboom, though it stacks Dark- and Ghost-type weaknesses with Dragapult."
+      }
+     ],
+     "credits": [
+      "poketitanterra"
+     ]
+    }
+   ]
   },
   {
    "name": "Dragonite",
@@ -11513,7 +11626,65 @@
     "Wonder Room",
     "Zen Headbutt"
    ],
-   "vgc_strategies": []
+   "vgc_strategies": [
+    {
+     "format": "VGC26 Regulation M-C",
+     "outdated": null,
+     "overview": "",
+     "comments": "",
+     "movesets": [
+      {
+       "name": "Spread Sweeper",
+       "pokemon": "Indeedee",
+       "abilities": [
+        "Psychic Surge"
+       ],
+       "items": [
+        "Choice Scarf",
+        "Focus Sash"
+       ],
+       "natures": [
+        "Modest",
+        "Timid"
+       ],
+       "stat_points": [
+        {
+         "hp": 0,
+         "atk": 0,
+         "def": 2,
+         "spa": 32,
+         "spd": 0,
+         "spe": 32
+        }
+       ],
+       "moveslots": [
+        [
+         "Expanding Force"
+        ],
+        [
+         "Mystical Fire",
+         "Imprison"
+        ],
+        [
+         "Trick",
+         "Trick Room",
+         "Helping Hand"
+        ],
+        [
+         "Protect",
+         "Imprison"
+        ]
+       ],
+       "explanation": "Indeedee-M provides fast and hard-hitting Psychic-type damage against foes like Mega Staraptor and Sneasler and blocks priority moves such as Sucker Punch from Kingambit with Psychic Surge. Additionally, it can threaten Trick Room as well as support its teammates with Helping Hand.\nExpanding Force is by far Indeedee-M's strongest attacking move. Choosing targets with it can be important, since it becomes a single-target move in Rillaboom's Grassy Terrain. Mystical Fire provides coverage against Steel-types that will try to resist Expanding Force like Gholdengo, Mega Golisopod, and Kingambit. Imprison can be used by Indeedee-M to stop Trick Room and Protect users. It is also quite useful against opposing Psychic Terrain teams by blocking Expanding Force. Trick is meant to be mainly used on Choice Scarf sets, forcing setup sweepers like Kingambit and supportive Pokemon like Sinistcha to be more cautious; Trick also allows Indeedee-M to select its moves freely by removing its own Choice Scarf.\nModest Indeedee-M can 2HKO Sinistcha with Expanding Force in Psychic Terrain. Modest is generally preferred on Choice Scarf sets, since Timid doesn't provide enough significant benefits to compensate for the loss in damage. Timid Choice Scarf would mainly be used to outspeed Mega Aerodactyl and Choice Scarf Garchomp. Timid on Focus Sash sets allows Indeedee-M to outspeed Adamant Garchomp, Mega Floette, and Mega Glimmora, though Modest is still commonly run.\nWith Choice Scarf, Indeedee-M can outspeed foes like Choice Scarf Basculegion-M and Mega Raichu Y. With Focus Sash, Indeedee-M can threaten Expanding Force even against targets like Unburden Sneasler and Mega Charizard Y without the fear of being OHKOed due to its low bulk. Indeedee-M can also hit Mega Golisopod with Mystical Fire twice.\nUsage Tips\nDark-, Steel-, and Psychic- types like Kingambit, Incineroar, Gholdengo, Farigiraf, and Mega Delphox can cause problems for Indeedee-M due to its lackluster damage output against them. Kingambit is a particularly notable threat, since it can avoid being 2HKOed by Mystical Fire and becomes even more dangerous with Defiant. Incineroar is a major threat, since it can pivot easily and resists both Mystical Fire and Expanding Force. Wide Guard Armarouge can completely nullify Indeedee-M's gameplan, while other Psychic-types easily tank Expanding Force.\nFairy-types such as Sylveon and Mega Floette are also troublesome due to their high Special Defense and high damage output, allowing them to beat Indeedee-M without any help.\nRillaboom can be a tricky opponent, since Indeedee-M loses out on spread damage without Psychic Terrain and becomes vulnerable to Fake Out and Grassy Glide, letting Rillaboom beat Choice Scarf sets and break Focus Sash. Rillaboom can easily take advantage of this momentum with U-turn as well, allowing it to come back in later to override Psychic Terrain again when necessary.\nSneasler is an excellent partner for Indeedee-M thanks to Psychic Seed doubling its speed with Unburden, also being able to switch into Rillaboom and remove it with ease thanks to Dire Claw. Sneasler resists both Bug- and Dark-type moves like Volcarona's Struggle Bug and Incineroar's Throat Chop, making it a decent defensive switch-in as well. Its Fighting-type STAB offers great coverage against Dark- and Steel-types like Kingambit and Archaludon that resist Expanding Force. Dire Claw helps deal with Fairy-types, which tend to have lower Defense stats. Throat Chop helps deal with Psychic-types like Mega Delphox. Sneasler also appreciates Indeedee-M's ability to Imprison Trick Room users and beat Mega Staraptor.\nMega Charizard Y can be another good teammate to Indeedee-M, as it can threaten Rillaboom and Steel-types like Gholdengo and Mega Metagross, which Indeedee-M struggles with. In return, Indeedee-M helps deal with Mega Glimmora and can lock out Trick Room teams with Imprison. Mega Salamence is another Flying-type that matches up well against Rillaboom and can threaten even more spread damage with Hyper Voice, potentially allowing Indeedee-M to clean up. It can set up Tailwind and appreciates Indeedee-M for being able to Imprison Trick Room. Indeedee-M can also deter and punish status moves on opposing Pokemon that want to set up their own Tailwind with Trick.\nMilotic can help deal with Incineroar as a defensive switch thanks to Competitive. Psychic Seed Corviknight is a solid teammate that can handle Rillaboom with Brave Bird, Bulk Up on Incineroar and Mega Golisopod, and can sweep with Power Trip once it has enough boosts. With Bulk Up, it can become a major threat to opponents that don't have strong special attackers.\nMega Tyranitar works well with Indeedee-M, as the latter covers for Fighting-types like Sneasler and Pawmot. In return, Mega Tyranitar can use Knock Off to deal with Gholdengo and Psychic-types like Farigiraf, Indeedee-F, and Armarouge. Tyranitar can Rock Slide Volcarona and Incineroar and Low Kick Kingambit. Excadrill completes this trio by covering for Fairy-types like Mega Gardevoir and Steel-types such as Mega Metagross, acting as an additional check to Gholdengo."
+      }
+     ],
+     "credits": [
+      "Carrotman",
+      "poketitanterra",
+      "pengu"
+     ]
+    }
+   ]
   },
   {
    "name": "Indeedee-F",
