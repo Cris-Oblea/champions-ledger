@@ -1,7 +1,7 @@
 {
  "source": "pokebase.app/pokemon-champions",
  "game": "Pokemon Champions",
- "fetched": "2026-11-01",
+ "fetched": "2026-11-03",
  "count": 158,
  "rows": [
   {
@@ -328,66 +328,66 @@
   },
   {
    "rank": 47,
-   "slug": "flash-cannon",
-   "name": "Flash Cannon",
-   "usage_percent": 0.6,
-   "description": "The user gathers all its light energy and releases it at once. This may also lower the target's Sp. Def stat."
-  },
-  {
-   "rank": 48,
    "slug": "rage-powder",
    "name": "Rage Powder",
    "usage_percent": 0.6,
    "description": "The user redirects opponents' moves toward itself. This effect works only on single-target moves. Grass-type Pokémon are unaffected."
   },
   {
-   "rank": 49,
+   "rank": 48,
    "slug": "brave-bird",
    "name": "Brave Bird",
    "usage_percent": 0.5,
    "description": "The user tucks in its wings and charges at a low altitude. This also damages the user quite a lot."
   },
   {
-   "rank": 50,
+   "rank": 49,
    "slug": "darkest-lariat",
    "name": "Darkest Lariat",
    "usage_percent": 0.5,
    "description": "The user swings both arms and hits the target. The target's stat changes don't affect the damage inflicted by this move."
   },
   {
-   "rank": 51,
+   "rank": 50,
    "slug": "detect",
    "name": "Detect",
    "usage_percent": 0.5,
    "description": "This move enables the user to protect itself from all attacks. Its chance of failing rises if it is used in succession."
   },
   {
-   "rank": 52,
+   "rank": 51,
    "slug": "dragon-claw",
    "name": "Dragon Claw",
    "usage_percent": 0.5,
    "description": "The user slashes the target with huge, sharp claws to inflict damage."
   },
   {
-   "rank": 53,
+   "rank": 52,
    "slug": "earthquake",
    "name": "Earthquake",
    "usage_percent": 0.5,
    "description": "Deals double damage to underground targets and half damage during Grassy Terrain."
   },
   {
-   "rank": 54,
+   "rank": 53,
    "slug": "encore",
    "name": "Encore",
    "usage_percent": 0.5,
    "description": "The target must use its last successfully used move for the next 3 turns. Encore fails if the target has no valid last move or if its last move cannot be encored (such as Encore, Mimic, Mirror Move, Sketch, Struggle, or Transform). It also fails if the move has no remaining PP."
   },
   {
-   "rank": 55,
+   "rank": 54,
    "slug": "extreme-speed",
    "name": "Extreme Speed",
    "usage_percent": 0.5,
    "description": "The user charges the target at blinding speed. This move always goes first."
+  },
+  {
+   "rank": 55,
+   "slug": "flash-cannon",
+   "name": "Flash Cannon",
+   "usage_percent": 0.5,
+   "description": "The user gathers all its light energy and releases it at once. This may also lower the target's Sp. Def stat."
   },
   {
    "rank": 56,
