@@ -1,7 +1,7 @@
 {
  "source": "pokebase.app/pokemon-champions",
  "game": "Pokemon Champions",
- "fetched": "2026-11-03",
+ "fetched": "2026-11-04",
  "count": 215,
  "rows": [
   {
@@ -36,7 +36,7 @@
    "rank": 5,
    "slug": "rough-skin",
    "name": "Rough Skin",
-   "usage_percent": 4.01,
+   "usage_percent": 4.0,
    "description": "The Pokémon's rough skin damages attackers that make direct contact with it."
   },
   {
@@ -64,7 +64,7 @@
    "rank": 9,
    "slug": "aerilate",
    "name": "Aerilate",
-   "usage_percent": 3.53,
+   "usage_percent": 3.54,
    "description": "Normal-type moves become Flying-type moves. The power of those moves is boosted a little."
   },
   {
