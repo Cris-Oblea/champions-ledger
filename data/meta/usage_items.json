@@ -1,7 +1,7 @@
 {
  "source": "pokebase.app/pokemon-champions",
  "game": "Pokemon Champions",
- "fetched": "2026-11-03",
+ "fetched": "2026-11-04",
  "count": 162,
  "rows": [
   {
@@ -15,7 +15,7 @@
    "rank": 2,
    "slug": "sitrus-berry",
    "name": "Sitrus Berry",
-   "usage_percent": 58.2,
+   "usage_percent": 58.1,
    "description": "Restores 1/4 of the holder’s max HP when its HP falls to 1/2 or less. Consumed after use."
   },
   {
@@ -85,7 +85,7 @@
    "rank": 12,
    "slug": "white-herb",
    "name": "White Herb",
-   "usage_percent": 14.1,
+   "usage_percent": 14.2,
    "description": "Restores the holder’s lowered stats to normal. Consumed after use."
   },
   {
