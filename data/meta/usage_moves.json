@@ -1,8 +1,8 @@
 {
  "source": "pokebase.app/pokemon-champions",
  "game": "Pokemon Champions",
- "fetched": "2026-11-03",
- "count": 158,
+ "fetched": "2026-11-05",
+ "count": 157,
  "rows": [
   {
    "rank": 1,
@@ -1007,104 +1007,97 @@
   },
   {
    "rank": 144,
-   "slug": "revival-blessing",
-   "name": "Revival Blessing",
-   "usage_percent": 0.1,
-   "description": "The user bestows a loving blessing, reviving a party Pokémon that has fainted and restoring half that Pokémon's max HP."
-  },
-  {
-   "rank": 145,
    "slug": "sacred-sword",
    "name": "Sacred Sword",
    "usage_percent": 0.1,
    "description": "The user attacks by slicing with a sword. The target's stat changes don't affect the damage inflicted by this move."
   },
   {
-   "rank": 146,
+   "rank": 145,
    "slug": "shadow-claw",
    "name": "Shadow Claw",
    "usage_percent": 0.1,
    "description": "The user attacks by slashing the target with a sharp claw made from shadows. This move has a heightened chance of landing a critical hit."
   },
   {
-   "rank": 147,
+   "rank": 146,
    "slug": "shadow-sneak",
    "name": "Shadow Sneak",
    "usage_percent": 0.1,
    "description": "The user extends its shadow and attacks the target from behind. This move always goes first."
   },
   {
-   "rank": 148,
+   "rank": 147,
    "slug": "shell-smash",
    "name": "Shell Smash",
    "usage_percent": 0.1,
    "description": "The user breaks its shell, which lowers its Defense and Sp. Def stats but sharply boosts its Attack, Sp. Atk, and Speed stats."
   },
   {
-   "rank": 149,
+   "rank": 148,
    "slug": "steel-roller",
    "name": "Steel Roller",
    "usage_percent": 0.1,
    "description": "The user attacks while destroying the terrain. This move fails if the ground hasn't turned into a terrain."
   },
   {
-   "rank": 150,
+   "rank": 149,
    "slug": "substitute",
    "name": "Substitute",
    "usage_percent": 0.1,
    "description": "The user loses 1/4 of its max HP to create a substitute. The substitute will be hit by moves instead of the user, and it will vanish when it takes damage equal to 1/4 of the user's max HP. Sound-based moves will hit the user through the substitute."
   },
   {
-   "rank": 151,
+   "rank": 150,
    "slug": "sunny-day",
    "name": "Sunny Day",
    "usage_percent": 0.1,
    "description": "Summons harsh sunlight for 5 turns, boosting Fire-type moves by 50% and reducing Water-type moves by 50%."
   },
   {
-   "rank": 152,
+   "rank": 151,
    "slug": "superpower",
    "name": "Superpower",
    "usage_percent": 0.1,
    "description": "The user attacks the target with great power. This also lowers the user's Attack and Defense stats."
   },
   {
-   "rank": 153,
+   "rank": 152,
    "slug": "terrain-pulse",
    "name": "Terrain Pulse",
    "usage_percent": 0.1,
    "description": "The user utilizes the energy of the terrain to attack. This move’s type and power change depending on the terrain at the time the move is used."
   },
   {
-   "rank": 154,
+   "rank": 153,
    "slug": "toxic",
    "name": "Toxic",
    "usage_percent": 0.1,
    "description": "A move that leaves the target badly poisoned. Its poison damage worsens every turn."
   },
   {
-   "rank": 155,
+   "rank": 154,
    "slug": "triple-axel",
    "name": "Triple Axel",
    "usage_percent": 0.1,
    "description": "A consecutive three-kick attack that becomes more powerful with each successful hit."
   },
   {
-   "rank": 156,
+   "rank": 155,
    "slug": "twin-beam",
    "name": "Twin Beam",
    "usage_percent": 0.1,
    "description": "The user shoots mystical beams from its eyes to inflict damage. The target is hit twice in a row."
   },
   {
-   "rank": 157,
+   "rank": 156,
    "slug": "volt-tackle",
    "name": "Volt Tackle",
    "usage_percent": 0.1,
    "description": "The user electrifies itself and charges the target. This also damages the user quite a lot. This attack may leave the target with paralysis."
   },
   {
-   "rank": 158,
+   "rank": 157,
    "slug": "water-spout",
    "name": "Water Spout",
    "usage_percent": 0.1,
