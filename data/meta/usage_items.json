@@ -1,7 +1,7 @@
 {
  "source": "pokebase.app/pokemon-champions",
  "game": "Pokemon Champions",
- "fetched": "2026-11-04",
+ "fetched": "2026-11-05",
  "count": 162,
  "rows": [
   {
@@ -22,7 +22,7 @@
    "rank": 3,
    "slug": "life-orb",
    "name": "Life Orb",
-   "usage_percent": 57.0,
+   "usage_percent": 57.1,
    "description": "Boosts the power of the holder’s moves by 30%, but the holder loses 10% of its max HP after using a damaging move."
   },
   {
@@ -71,7 +71,7 @@
    "rank": 10,
    "slug": "charizardite-y",
    "name": "Charizardite Y",
-   "usage_percent": 14.4,
+   "usage_percent": 14.5,
    "description": "One of a variety of mysterious Mega Stones. A Charizard holding this stone will be able to Mega Evolve during battle."
   },
   {
@@ -127,7 +127,7 @@
    "rank": 18,
    "slug": "fairy-feather",
    "name": "Fairy Feather",
-   "usage_percent": 11.1,
+   "usage_percent": 11.2,
    "description": "Boosts the power of the holder's Fairy-type moves by 20%."
   },
   {
@@ -148,7 +148,7 @@
    "rank": 21,
    "slug": "light-clay",
    "name": "Light Clay",
-   "usage_percent": 8.4,
+   "usage_percent": 8.3,
    "description": "Extends the duration of Light Screen, Reflect, and Aurora Veil by 3 turns (8 turns total)."
   },
   {
@@ -162,7 +162,7 @@
    "rank": 23,
    "slug": "gardevoirite",
    "name": "Gardevoirite",
-   "usage_percent": 6.5,
+   "usage_percent": 6.4,
    "description": "One of a variety of mysterious Mega Stones. A Gardevoir holding this stone will be able to Mega Evolve during battle."
   },
   {
@@ -279,17 +279,17 @@
   },
   {
    "rank": 40,
+   "slug": "damp-rock",
+   "name": "Damp Rock",
+   "usage_percent": 2.2,
+   "description": "Rain summoned by the holder lasts 3 extra turns (8 turns total)."
+  },
+  {
+   "rank": 41,
    "slug": "aerodactylite",
    "name": "Aerodactylite",
    "usage_percent": 2.1,
    "description": "One of a variety of mysterious Mega Stones. An Aerodactyl holding this stone will be able to Mega Evolve during battle."
-  },
-  {
-   "rank": 41,
-   "slug": "damp-rock",
-   "name": "Damp Rock",
-   "usage_percent": 2.1,
-   "description": "Rain summoned by the holder lasts 3 extra turns (8 turns total)."
   },
   {
    "rank": 42,
@@ -482,31 +482,31 @@
   },
   {
    "rank": 69,
-   "slug": "venusaurite",
-   "name": "Venusaurite",
-   "usage_percent": 0.5,
-   "description": "One of a variety of mysterious Mega Stones. A Venusaur holding this stone will be able to Mega Evolve during battle."
-  },
-  {
-   "rank": 70,
    "slug": "iron-ball",
    "name": "Iron Ball",
    "usage_percent": 0.4,
    "description": "Halves the holder’s Speed. If airborne, it becomes grounded, allowing Ground-type moves and entry hazards to affect it."
   },
   {
-   "rank": 71,
+   "rank": 70,
    "slug": "rindo-berry",
    "name": "Rindo Berry",
    "usage_percent": 0.4,
    "description": "Halves damage from the first supereffective Grass-type attack. Consumed after use."
   },
   {
-   "rank": 72,
+   "rank": 71,
    "slug": "scraftinite",
    "name": "Scraftinite",
    "usage_percent": 0.4,
    "description": "One of a variety of mysterious Mega Stones. A Scrafty holding this stone will be able to Mega Evolve during battle."
+  },
+  {
+   "rank": 72,
+   "slug": "venusaurite",
+   "name": "Venusaurite",
+   "usage_percent": 0.4,
+   "description": "One of a variety of mysterious Mega Stones. A Venusaur holding this stone will be able to Mega Evolve during battle."
   },
   {
    "rank": 73,
@@ -643,157 +643,157 @@
   },
   {
    "rank": 92,
-   "slug": "ampharosite",
-   "name": "Ampharosite",
-   "usage_percent": 0.2,
-   "description": "One of a variety of mysterious Mega Stones. An Ampharos holding this stone will be able to Mega Evolve during battle."
-  },
-  {
-   "rank": 93,
-   "slug": "babiri-berry",
-   "name": "Babiri Berry",
-   "usage_percent": 0.2,
-   "description": "Halves damage from the first supereffective Steel-type attack. Consumed after use."
-  },
-  {
-   "rank": 94,
-   "slug": "beedrillite",
-   "name": "Beedrillite",
-   "usage_percent": 0.2,
-   "description": "One of a variety of mysterious Mega Stones. A Beedrill holding this stone will be able to Mega Evolve during battle."
-  },
-  {
-   "rank": 95,
    "slug": "black-belt",
    "name": "Black Belt",
    "usage_percent": 0.2,
    "description": "Boosts the power of the holder’s Fighting-type moves by 20%."
   },
   {
-   "rank": 96,
+   "rank": 93,
    "slug": "crabominite",
    "name": "Crabominite",
    "usage_percent": 0.2,
    "description": "One of a variety of mysterious Mega Stones. A Crabominable holding this stone will be able to Mega Evolve during battle."
   },
   {
-   "rank": 97,
+   "rank": 94,
    "slug": "dragalgite",
    "name": "Dragalgite",
    "usage_percent": 0.2,
    "description": "One of a variety of mysterious Mega Stones. A Dragalge holding this stone will be able to Mega Evolve during battle."
   },
   {
-   "rank": 98,
+   "rank": 95,
    "slug": "dragon-fang",
    "name": "Dragon Fang",
    "usage_percent": 0.2,
    "description": "Boosts the power of the holder’s Dragon-type moves by 20%."
   },
   {
-   "rank": 99,
+   "rank": 96,
    "slug": "eelektrossite",
    "name": "Eelektrossite",
    "usage_percent": 0.2,
    "description": "One of a variety of mysterious Mega Stones. An Eelektross holding this stone will be able to Mega Evolve during battle."
   },
   {
-   "rank": 100,
+   "rank": 97,
    "slug": "feraligite",
    "name": "Feraligite",
    "usage_percent": 0.2,
    "description": "One of a variety of mysterious Mega Stones. A Feraligatr holding this stone will be able to Mega Evolve during battle."
   },
   {
-   "rank": 101,
+   "rank": 98,
    "slug": "golurkite",
    "name": "Golurkite",
    "usage_percent": 0.2,
    "description": "One of a variety of mysterious Mega Stones. A Golurk holding this stone will be able to Mega Evolve during battle."
   },
   {
-   "rank": 102,
+   "rank": 99,
    "slug": "gyaradosite",
    "name": "Gyaradosite",
    "usage_percent": 0.2,
    "description": "One of a variety of mysterious Mega Stones. A Gyarados holding this stone will be able to Mega Evolve during battle."
   },
   {
-   "rank": 103,
+   "rank": 100,
    "slug": "houndoominite",
    "name": "Houndoominite",
    "usage_percent": 0.2,
    "description": "One of a variety of mysterious Mega Stones. A Houndoom holding this stone will be able to Mega Evolve during battle."
   },
   {
-   "rank": 104,
+   "rank": 101,
    "slug": "magnet",
    "name": "Magnet",
    "usage_percent": 0.2,
    "description": "Boosts the power of the holder’s Electric-type moves by 20%."
   },
   {
-   "rank": 105,
+   "rank": 102,
    "slug": "manectite",
    "name": "Manectite",
    "usage_percent": 0.2,
    "description": "One of a variety of mysterious Mega Stones. A Manectric holding this stone will be able to Mega Evolve during battle."
   },
   {
-   "rank": 106,
+   "rank": 103,
    "slug": "muscle-band",
    "name": "Muscle Band",
    "usage_percent": 0.2,
    "description": "Boosts the power of the holder’s physical moves by 10%."
   },
   {
-   "rank": 107,
+   "rank": 104,
    "slug": "scizorite",
    "name": "Scizorite",
    "usage_percent": 0.2,
    "description": "One of a variety of mysterious Mega Stones. A Scizor holding this stone will be able to Mega Evolve during battle."
   },
   {
-   "rank": 108,
+   "rank": 105,
    "slug": "skarmorite",
    "name": "Skarmorite",
    "usage_percent": 0.2,
    "description": "One of a variety of mysterious Mega Stones. A Skarmory holding this stone will be able to Mega Evolve during battle."
   },
   {
-   "rank": 109,
+   "rank": 106,
    "slug": "starminite",
    "name": "Starminite",
    "usage_percent": 0.2,
    "description": "One of a variety of mysterious Mega Stones. A Starmie holding this stone will be able to Mega Evolve during battle."
   },
   {
-   "rank": 110,
+   "rank": 107,
    "slug": "terrain-extender",
    "name": "Terrain Extender",
    "usage_percent": 0.2,
    "description": "When the holder creates terrain with its moves or Ability, the duration is extended by 3 turns. (Total duration: 8 turns)"
   },
   {
-   "rank": 111,
+   "rank": 108,
    "slug": "wise-glasses",
    "name": "Wise Glasses",
    "usage_percent": 0.2,
    "description": "Boosts the power of the holder’s special moves by 10%."
   },
   {
-   "rank": 112,
+   "rank": 109,
+   "slug": "ampharosite",
+   "name": "Ampharosite",
+   "usage_percent": 0.1,
+   "description": "One of a variety of mysterious Mega Stones. An Ampharos holding this stone will be able to Mega Evolve during battle."
+  },
+  {
+   "rank": 110,
    "slug": "audinite",
    "name": "Audinite",
    "usage_percent": 0.1,
    "description": "One of a variety of mysterious Mega Stones. An Audino holding this stone will be able to Mega Evolve during battle."
   },
   {
-   "rank": 113,
+   "rank": 111,
+   "slug": "babiri-berry",
+   "name": "Babiri Berry",
+   "usage_percent": 0.1,
+   "description": "Halves damage from the first supereffective Steel-type attack. Consumed after use."
+  },
+  {
+   "rank": 112,
    "slug": "barbaracite",
    "name": "Barbaracite",
    "usage_percent": 0.1,
    "description": "One of a variety of mysterious Mega Stones. A Barbaracle holding this stone will be able to Mega Evolve during battle."
+  },
+  {
+   "rank": 113,
+   "slug": "beedrillite",
+   "name": "Beedrillite",
+   "usage_percent": 0.1,
+   "description": "One of a variety of mysterious Mega Stones. A Beedrill holding this stone will be able to Mega Evolve during battle."
   },
   {
    "rank": 114,
