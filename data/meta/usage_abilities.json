@@ -1,21 +1,21 @@
 {
  "source": "pokebase.app/pokemon-champions",
  "game": "Pokemon Champions",
- "fetched": "2026-11-05",
+ "fetched": "2026-11-06",
  "count": 215,
  "rows": [
   {
    "rank": 1,
    "slug": "intimidate",
    "name": "Intimidate",
-   "usage_percent": 11.04,
+   "usage_percent": 11.03,
    "description": "When the Pokémon enters a battle, it intimidates opposing Pokémon and makes them cower, lowering their Attack stats."
   },
   {
    "rank": 2,
    "slug": "grassy-surge",
    "name": "Grassy Surge",
-   "usage_percent": 8.09,
+   "usage_percent": 8.07,
    "description": "Turns the entire field into Grassy Terrain for 5 turns when the Pokémon enters a battle."
   },
   {
@@ -29,14 +29,14 @@
    "rank": 4,
    "slug": "defiant",
    "name": "Defiant",
-   "usage_percent": 4.36,
+   "usage_percent": 4.37,
    "description": "If the Pokémon has any stat lowered by an opposing Pokémon, its Attack stat will be boosted sharply."
   },
   {
    "rank": 5,
    "slug": "rough-skin",
    "name": "Rough Skin",
-   "usage_percent": 4.01,
+   "usage_percent": 4.02,
    "description": "The Pokémon's rough skin damages attackers that make direct contact with it."
   },
   {
@@ -64,14 +64,14 @@
    "rank": 9,
    "slug": "aerilate",
    "name": "Aerilate",
-   "usage_percent": 3.54,
+   "usage_percent": 3.53,
    "description": "Normal-type moves become Flying-type moves. The power of those moves is boosted a little."
   },
   {
    "rank": 10,
    "slug": "no-guard",
    "name": "No Guard",
-   "usage_percent": 3.46,
+   "usage_percent": 3.45,
    "description": "The accuracy of all moves known by this Pokémon and all Pokémon targeting this Pokémon raises to 100%"
   },
   {
@@ -85,7 +85,7 @@
    "rank": 12,
    "slug": "tough-claws",
    "name": "Tough Claws",
-   "usage_percent": 3.34,
+   "usage_percent": 3.33,
    "description": "Powers up moves that make direct contact."
   },
   {
@@ -99,14 +99,14 @@
    "rank": 14,
    "slug": "drought",
    "name": "Drought",
-   "usage_percent": 3.15,
+   "usage_percent": 3.16,
    "description": "Turns the sunlight harsh when the Pokémon enters a battle."
   },
   {
    "rank": 15,
    "slug": "blaze",
    "name": "Blaze",
-   "usage_percent": 3.12,
+   "usage_percent": 3.13,
    "description": "Powers up Fire-type moves when the Pokémon's HP is low."
   },
   {
@@ -120,35 +120,35 @@
    "rank": 17,
    "slug": "pixilate",
    "name": "Pixilate",
-   "usage_percent": 2.99,
+   "usage_percent": 2.98,
    "description": "Normal-type moves become Fairy-type moves. The power of those moves is boosted a little."
   },
   {
    "rank": 18,
    "slug": "flower-veil",
    "name": "Flower Veil",
-   "usage_percent": 2.71,
+   "usage_percent": 2.7,
    "description": "Ally Grass-type Pokémon are protected from status conditions and the lowering of their stats."
   },
   {
    "rank": 19,
    "slug": "stamina",
    "name": "Stamina",
-   "usage_percent": 2.58,
+   "usage_percent": 2.59,
    "description": "Boosts the Defense stat when the Pokémon is hit by an attack."
   },
   {
    "rank": 20,
    "slug": "prankster",
    "name": "Prankster",
-   "usage_percent": 2.55,
+   "usage_percent": 2.57,
    "description": "Increases the priority of the Pokémon's status moves by 1 stage. However, the Pokémon's status moves no longer work against Dark-type Pokémon."
   },
   {
    "rank": 21,
    "slug": "armor-tail",
    "name": "Armor Tail",
-   "usage_percent": 2.35,
+   "usage_percent": 2.36,
    "description": "The mysterious tail covering the Pokémon's head makes opponents unable to use priority moves against the Pokémon or its allies."
   },
   {
@@ -162,7 +162,7 @@
    "rank": 23,
    "slug": "rock-head",
    "name": "Rock Head",
-   "usage_percent": 2.14,
+   "usage_percent": 2.13,
    "description": "Protects the Pokémon from recoil damage."
   },
   {
@@ -176,14 +176,14 @@
    "rank": 25,
    "slug": "competitive",
    "name": "Competitive",
-   "usage_percent": 1.81,
+   "usage_percent": 1.8,
    "description": "Boosts the Pokémon's Sp. Atk stat sharply when its stats are lowered by an opposing Pokémon."
   },
   {
    "rank": 26,
    "slug": "flame-body",
    "name": "Flame Body",
-   "usage_percent": 1.75,
+   "usage_percent": 1.74,
    "description": "Contact with the Pokémon may burn the attacker."
   },
   {
@@ -197,14 +197,14 @@
    "rank": 28,
    "slug": "contrary",
    "name": "Contrary",
-   "usage_percent": 1.52,
+   "usage_percent": 1.53,
    "description": "Reverses any stat changes affecting the Pokémon so that attempts to boost its stats instead lower them—and attempts to lower its stats will boost them."
   },
   {
    "rank": 29,
    "slug": "sand-stream",
    "name": "Sand Stream",
-   "usage_percent": 1.41,
+   "usage_percent": 1.42,
    "description": "The Pokémon summons a sandstorm when it enters a battle."
   },
   {
@@ -253,7 +253,7 @@
    "rank": 36,
    "slug": "sand-rush",
    "name": "Sand Rush",
-   "usage_percent": 1.03,
+   "usage_percent": 1.04,
    "description": "Boosts the Pokémon's Speed stat in a sandstorm."
   },
   {
@@ -267,7 +267,7 @@
    "rank": 38,
    "slug": "trace",
    "name": "Trace",
-   "usage_percent": 0.88,
+   "usage_percent": 0.87,
    "description": "Ability becomes the same as that of the opponent. Switching this Pokémon out of battle restores its original ability. In a Double Battle, a random opponent’s ability will be copied."
   },
   {
@@ -309,7 +309,7 @@
    "rank": 44,
    "slug": "toxic-debris",
    "name": "Toxic Debris",
-   "usage_percent": 0.59,
+   "usage_percent": 0.6,
    "description": "Scatters poison spikes at the feet of the opposing team when the Pokémon takes damage from physical moves."
   },
   {
@@ -358,7 +358,7 @@
    "rank": 51,
    "slug": "speed-boost",
    "name": "Speed Boost",
-   "usage_percent": 0.4,
+   "usage_percent": 0.41,
    "description": "Boosts the Pokémon's Speed stat by 1 stage at the end of every turn. The Speed stat will not be boosted on the turn that the Pokémon switches into battle."
   },
   {
@@ -372,7 +372,7 @@
    "rank": 53,
    "slug": "mirror-armor",
    "name": "Mirror Armor",
-   "usage_percent": 0.39,
+   "usage_percent": 0.38,
    "description": "Bounces back only the stat-lowering effects that the Pokémon receives."
   },
   {
@@ -454,17 +454,17 @@
   },
   {
    "rank": 65,
+   "slug": "gale-wings",
+   "name": "Gale Wings",
+   "usage_percent": 0.24,
+   "description": "Gives priority to the Pokémon's Flying-type moves while its HP is full."
+  },
+  {
+   "rank": 66,
    "slug": "rain-dish",
    "name": "Rain Dish",
    "usage_percent": 0.24,
    "description": "The Pokémon gradually regains HP in rain."
-  },
-  {
-   "rank": 66,
-   "slug": "gale-wings",
-   "name": "Gale Wings",
-   "usage_percent": 0.23,
-   "description": "Gives priority to the Pokémon's Flying-type moves while its HP is full."
   },
   {
    "rank": 67,
@@ -491,7 +491,7 @@
    "rank": 70,
    "slug": "overgrow",
    "name": "Overgrow",
-   "usage_percent": 0.18,
+   "usage_percent": 0.19,
    "description": "Powers up Grass-type moves when the Pokémon's HP is low."
   },
   {
@@ -587,38 +587,38 @@
   },
   {
    "rank": 84,
+   "slug": "snow-cloak",
+   "name": "Snow Cloak",
+   "usage_percent": 0.11,
+   "description": "Boosts the Pokémon's evasiveness in snow."
+  },
+  {
+   "rank": 85,
    "slug": "telepathy",
    "name": "Telepathy",
    "usage_percent": 0.11,
    "description": "The Pokémon anticipates and dodges the attacks of its allies."
   },
   {
-   "rank": 85,
+   "rank": 86,
    "slug": "illusion",
    "name": "Illusion",
    "usage_percent": 0.1,
    "description": "The Pokémon fools opponents by entering battle disguised as the last Pokémon in its Trainer's party."
   },
   {
-   "rank": 86,
+   "rank": 87,
    "slug": "limber",
    "name": "Limber",
    "usage_percent": 0.1,
    "description": "The Pokémon's limber body prevents it from being paralyzed."
   },
   {
-   "rank": 87,
+   "rank": 88,
    "slug": "shell-armor",
    "name": "Shell Armor",
    "usage_percent": 0.1,
    "description": "A hard shell protects the Pokémon from critical hits."
-  },
-  {
-   "rank": 88,
-   "slug": "snow-cloak",
-   "name": "Snow Cloak",
-   "usage_percent": 0.1,
-   "description": "Boosts the Pokémon's evasiveness in snow."
   },
   {
    "rank": 89,

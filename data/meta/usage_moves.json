@@ -1,7 +1,7 @@
 {
  "source": "pokebase.app/pokemon-champions",
  "game": "Pokemon Champions",
- "fetched": "2026-11-05",
+ "fetched": "2026-11-06",
  "count": 157,
  "rows": [
   {
@@ -797,171 +797,171 @@
   },
   {
    "rank": 114,
-   "slug": "bug-buzz",
-   "name": "Bug Buzz",
-   "usage_percent": 0.1,
-   "description": "The user vibrates to generate a damaging sound wave. This may also lower the target's Sp. Def stat."
-  },
-  {
-   "rank": 115,
    "slug": "bulk-up",
    "name": "Bulk Up",
    "usage_percent": 0.1,
    "description": "The user tenses its muscles to bulk up its body, boosting its Attack and Defense stats."
   },
   {
-   "rank": 116,
+   "rank": 115,
    "slug": "charm",
    "name": "Charm",
    "usage_percent": 0.1,
    "description": "The user gazes at the target rather charmingly, making it less wary. This harshly lowers the target's Attack stat."
   },
   {
-   "rank": 117,
+   "rank": 116,
    "slug": "clangorous-soul",
    "name": "Clangorous Soul",
    "usage_percent": 0.1,
    "description": "The user boosts all its stats by using some of its own HP."
   },
   {
-   "rank": 118,
+   "rank": 117,
    "slug": "double-shock",
    "name": "Double Shock",
    "usage_percent": 0.1,
    "description": "The user discharges all the electricity from its body to perform a high-damage attack. After using this move, the user will no longer be Electric type."
   },
   {
-   "rank": 119,
+   "rank": 118,
    "slug": "dragon-dance",
    "name": "Dragon Dance",
    "usage_percent": 0.1,
    "description": "The user vigorously performs a mystic, powerful dance that boosts its Attack and Speed stats."
   },
   {
-   "rank": 120,
+   "rank": 119,
    "slug": "drain-punch",
    "name": "Drain Punch",
    "usage_percent": 0.1,
    "description": "The user attacks with an energy-draining punch. The user's HP is restored by up to half the damage taken by the target."
   },
   {
-   "rank": 121,
+   "rank": 120,
    "slug": "drill-run",
    "name": "Drill Run",
    "usage_percent": 0.1,
    "description": "The user crashes into the target while rotating its body like a drill. This move has a heightened chance of landing a critical hit."
   },
   {
-   "rank": 122,
+   "rank": 121,
    "slug": "energy-ball",
    "name": "Energy Ball",
    "usage_percent": 0.1,
    "description": "The user draws power from nature and fires it at the target. This may also lower the target's Sp. Def stat."
   },
   {
-   "rank": 123,
+   "rank": 122,
    "slug": "fiery-dance",
    "name": "Fiery Dance",
    "usage_percent": 0.1,
    "description": "Cloaked in flames, the user attacks the target by dancing and flapping its wings. This may also boost the user's Sp. Atk stat."
   },
   {
-   "rank": 124,
+   "rank": 123,
    "slug": "first-impression",
    "name": "First Impression",
    "usage_percent": 0.1,
    "description": "Although this move has great power, it works only on the first turn each time the user enters battle."
   },
   {
-   "rank": 125,
+   "rank": 124,
    "slug": "foul-play",
    "name": "Foul Play",
    "usage_percent": 0.1,
    "description": "The user turns the target's strength against it. The higher the target's Attack stat, the greater the damage this move inflicts."
   },
   {
-   "rank": 126,
+   "rank": 125,
    "slug": "freeze-dry",
    "name": "Freeze-Dry",
    "usage_percent": 0.1,
    "description": "The user rapidly cools the target. This may also leave the target frozen. This move is super effective on Water types."
   },
   {
-   "rank": 127,
+   "rank": 126,
    "slug": "glaive-rush",
    "name": "Glaive Rush",
    "usage_percent": 0.1,
    "description": "The user gains the Wide Open status until the next time it takes an action."
   },
   {
-   "rank": 128,
+   "rank": 127,
    "slug": "gunk-shot",
    "name": "Gunk Shot",
    "usage_percent": 0.1,
    "description": "The user shoots filthy garbage at the target to attack. This may also poison the target."
   },
   {
-   "rank": 129,
+   "rank": 128,
    "slug": "hydro-pump",
    "name": "Hydro Pump",
    "usage_percent": 0.1,
    "description": "The target is blasted by a huge volume of water launched under great pressure."
   },
   {
-   "rank": 130,
+   "rank": 129,
    "slug": "ice-shard",
    "name": "Ice Shard",
    "usage_percent": 0.1,
    "description": "The user flash-freezes chunks of ice and hurls them at the target. This move always goes first."
   },
   {
-   "rank": 131,
+   "rank": 130,
    "slug": "icicle-crash",
    "name": "Icicle Crash",
    "usage_percent": 0.1,
    "description": "The user attacks by crashing large icicles onto the target. This may also make the target flinch."
   },
   {
-   "rank": 132,
+   "rank": 131,
    "slug": "infestation",
    "name": "Infestation",
    "usage_percent": 0.1,
    "description": "The target is infested and attacked for four to five turns. The target can't flee during this time."
   },
   {
-   "rank": 133,
+   "rank": 132,
    "slug": "life-dew",
    "name": "Life Dew",
    "usage_percent": 0.1,
    "description": "The user scatters mysterious water around and restores the HP of itself and its ally Pokémon currently in the battle."
   },
   {
-   "rank": 134,
+   "rank": 133,
    "slug": "light-of-ruin",
    "name": "Light of Ruin",
    "usage_percent": 0.1,
    "description": "Drawing power from the Eternal Flower, the user fires a powerful beam of light. This also damages the user quite a lot."
   },
   {
-   "rank": 135,
+   "rank": 134,
    "slug": "night-slash",
    "name": "Night Slash",
    "usage_percent": 0.1,
    "description": "The user slashes the target the instant an opportunity arises. This move has a heightened chance of landing a critical hit."
   },
   {
-   "rank": 136,
+   "rank": 135,
    "slug": "phantom-force",
    "name": "Phantom Force",
    "usage_percent": 0.1,
    "description": "The user vanishes somewhere, then strikes the target on the next turn. This move hits even if the target protects itself."
   },
   {
-   "rank": 137,
+   "rank": 136,
    "slug": "play-rough",
    "name": "Play Rough",
    "usage_percent": 0.1,
    "description": "The user attacks by playing rough with the target. This may also lower the target's Attack stat."
+  },
+  {
+   "rank": 137,
+   "slug": "poltergeist",
+   "name": "Poltergeist",
+   "usage_percent": 0.1,
+   "description": "The user attacks by controlling the target's item. This move fails if the target isn't holding an item."
   },
   {
    "rank": 138,
