@@ -1,14 +1,14 @@
 {
  "source": "pokebase.app/pokemon-champions",
  "game": "Pokemon Champions",
- "fetched": "2026-11-05",
+ "fetched": "2026-11-06",
  "count": 162,
  "rows": [
   {
    "rank": 1,
    "slug": "focus-sash",
    "name": "Focus Sash",
-   "usage_percent": 61.8,
+   "usage_percent": 61.9,
    "description": "If the holder has full HP, it survives an otherwise fatal hit with 1 HP. Consumed after use."
   },
   {
@@ -22,14 +22,14 @@
    "rank": 3,
    "slug": "life-orb",
    "name": "Life Orb",
-   "usage_percent": 57.1,
+   "usage_percent": 57.2,
    "description": "Boosts the power of the holder’s moves by 30%, but the holder loses 10% of its max HP after using a damaging move."
   },
   {
    "rank": 4,
    "slug": "miracle-seed",
    "name": "Miracle Seed",
-   "usage_percent": 35.0,
+   "usage_percent": 34.9,
    "description": "Boosts the power of the holder’s Grass-type moves by 20%."
   },
   {
@@ -43,7 +43,7 @@
    "rank": 6,
    "slug": "choice-scarf",
    "name": "Choice Scarf",
-   "usage_percent": 25.6,
+   "usage_percent": 25.5,
    "description": "Boosts the holder’s Speed by 50%, but it can only use the first move it selects until it switches out."
   },
   {
@@ -57,28 +57,28 @@
    "rank": 8,
    "slug": "grassy-seed",
    "name": "Grassy Seed",
-   "usage_percent": 20.5,
+   "usage_percent": 20.4,
    "description": "Boosts the holder's Defense stat by 1 stage on Grassy Terrain. Disappears for the duration of the battle after a single use."
   },
   {
    "rank": 9,
    "slug": "raichunite",
    "name": "Raichunite Y",
-   "usage_percent": 20.3,
+   "usage_percent": 20.2,
    "description": "One of a variety of mysterious Mega Stones. A Raichu holding this stone will be able to Mega Evolve during battle."
   },
   {
    "rank": 10,
    "slug": "charizardite-y",
    "name": "Charizardite Y",
-   "usage_percent": 14.5,
+   "usage_percent": 14.6,
    "description": "One of a variety of mysterious Mega Stones. A Charizard holding this stone will be able to Mega Evolve during battle."
   },
   {
    "rank": 11,
    "slug": "psychic-seed",
    "name": "Psychic Seed",
-   "usage_percent": 14.4,
+   "usage_percent": 14.3,
    "description": "Boosts the holder's Sp. Def stat by 1 stage on Psychic Terrain. Disappears for the duration of the battle after a single use."
   },
   {
@@ -99,7 +99,7 @@
    "rank": 14,
    "slug": "chople-berry",
    "name": "Chople Berry",
-   "usage_percent": 13.5,
+   "usage_percent": 13.6,
    "description": "Halves damage from the first supereffective Fighting-type attack. Consumed after use."
   },
   {
@@ -111,17 +111,17 @@
   },
   {
    "rank": 16,
-   "slug": "golisopite",
-   "name": "Golisopite",
-   "usage_percent": 13.0,
-   "description": "A held item that allows Golisopod to Mega Evolve."
-  },
-  {
-   "rank": 17,
    "slug": "rocky-helmet",
    "name": "Rocky Helmet",
    "usage_percent": 13.0,
    "description": "When the holder is hit by a contact move, the attacker takes damage equal to 1/6 of its max HP."
+  },
+  {
+   "rank": 17,
+   "slug": "golisopite",
+   "name": "Golisopite",
+   "usage_percent": 12.9,
+   "description": "A held item that allows Golisopod to Mega Evolve."
   },
   {
    "rank": 18,
@@ -141,7 +141,7 @@
    "rank": 20,
    "slug": "staraptite",
    "name": "Staraptite",
-   "usage_percent": 8.8,
+   "usage_percent": 8.9,
    "description": "One of a variety of mysterious Mega Stones. A Staraptor holding this stone will be able to Mega Evolve during battle."
   },
   {
@@ -190,7 +190,7 @@
    "rank": 27,
    "slug": "occa-berry",
    "name": "Occa Berry",
-   "usage_percent": 4.7,
+   "usage_percent": 4.8,
    "description": "Halves damage from the first supereffective Fire-type attack. Consumed after use."
   },
   {
@@ -246,14 +246,14 @@
    "rank": 35,
    "slug": "lucarionite-z",
    "name": "Lucarionite Z",
-   "usage_percent": 3.0,
+   "usage_percent": 2.9,
    "description": "A held item that allows Lucario to Mega Evolve into Mega Lucario Z."
   },
   {
    "rank": 36,
    "slug": "raichunite-x",
    "name": "Raichunite X",
-   "usage_percent": 2.8,
+   "usage_percent": 2.9,
    "description": "One of a variety of mysterious Mega Stones. A Raichu holding this stone will be able to Mega Evolve during battle."
   },
   {
@@ -295,7 +295,7 @@
    "rank": 42,
    "slug": "electric-seed",
    "name": "Electric Seed",
-   "usage_percent": 2.0,
+   "usage_percent": 2.1,
    "description": "Boosts the holder's Defense stat by 1 stage on Electric Terrain. Disappears for the duration of the battle after a single use."
   },
   {
@@ -321,24 +321,24 @@
   },
   {
    "rank": 46,
-   "slug": "mawilite",
-   "name": "Mawilite",
-   "usage_percent": 1.5,
-   "description": "One of a variety of mysterious Mega Stones. A Mawile holding this stone will be able to Mega Evolve during battle."
-  },
-  {
-   "rank": 47,
    "slug": "wide-lens",
    "name": "Wide Lens",
    "usage_percent": 1.5,
    "description": "Boosts the accuracy of the holder’s moves by 10%."
   },
   {
-   "rank": 48,
+   "rank": 47,
    "slug": "absolite-z",
    "name": "Absolite Z",
    "usage_percent": 1.4,
    "description": "A held item that allows Absol to Mega Evolve into Mega Absol Z."
+  },
+  {
+   "rank": 48,
+   "slug": "mawilite",
+   "name": "Mawilite",
+   "usage_percent": 1.4,
+   "description": "One of a variety of mysterious Mega Stones. A Mawile holding this stone will be able to Mega Evolve during battle."
   },
   {
    "rank": 49,
@@ -363,17 +363,17 @@
   },
   {
    "rank": 52,
-   "slug": "coba-berry",
-   "name": "Coba Berry",
-   "usage_percent": 0.9,
-   "description": "Halves damage from the first supereffective Flying-type attack. Consumed after use."
-  },
-  {
-   "rank": 53,
    "slug": "pyroarite",
    "name": "Pyroarite",
    "usage_percent": 0.9,
    "description": "One of a variety of mysterious Mega Stones. A Pyroar holding this stone will be able to Mega Evolve during battle."
+  },
+  {
+   "rank": 53,
+   "slug": "coba-berry",
+   "name": "Coba Berry",
+   "usage_percent": 0.8,
+   "description": "Halves damage from the first supereffective Flying-type attack. Consumed after use."
   },
   {
    "rank": 54,
@@ -482,31 +482,31 @@
   },
   {
    "rank": 69,
+   "slug": "venusaurite",
+   "name": "Venusaurite",
+   "usage_percent": 0.5,
+   "description": "One of a variety of mysterious Mega Stones. A Venusaur holding this stone will be able to Mega Evolve during battle."
+  },
+  {
+   "rank": 70,
    "slug": "iron-ball",
    "name": "Iron Ball",
    "usage_percent": 0.4,
    "description": "Halves the holder’s Speed. If airborne, it becomes grounded, allowing Ground-type moves and entry hazards to affect it."
   },
   {
-   "rank": 70,
+   "rank": 71,
    "slug": "rindo-berry",
    "name": "Rindo Berry",
    "usage_percent": 0.4,
    "description": "Halves damage from the first supereffective Grass-type attack. Consumed after use."
   },
   {
-   "rank": 71,
+   "rank": 72,
    "slug": "scraftinite",
    "name": "Scraftinite",
    "usage_percent": 0.4,
    "description": "One of a variety of mysterious Mega Stones. A Scrafty holding this stone will be able to Mega Evolve during battle."
-  },
-  {
-   "rank": 72,
-   "slug": "venusaurite",
-   "name": "Venusaurite",
-   "usage_percent": 0.4,
-   "description": "One of a variety of mysterious Mega Stones. A Venusaur holding this stone will be able to Mega Evolve during battle."
   },
   {
    "rank": 73,
