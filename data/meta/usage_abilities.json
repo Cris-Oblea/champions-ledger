@@ -1,21 +1,21 @@
 {
  "source": "pokebase.app/pokemon-champions",
  "game": "Pokemon Champions",
- "fetched": "2026-11-06",
+ "fetched": "2026-11-07",
  "count": 215,
  "rows": [
   {
    "rank": 1,
    "slug": "intimidate",
    "name": "Intimidate",
-   "usage_percent": 11.03,
+   "usage_percent": 11.02,
    "description": "When the Pokémon enters a battle, it intimidates opposing Pokémon and makes them cower, lowering their Attack stats."
   },
   {
    "rank": 2,
    "slug": "grassy-surge",
    "name": "Grassy Surge",
-   "usage_percent": 8.07,
+   "usage_percent": 8.06,
    "description": "Turns the entire field into Grassy Terrain for 5 turns when the Pokémon enters a battle."
   },
   {
@@ -29,14 +29,14 @@
    "rank": 4,
    "slug": "defiant",
    "name": "Defiant",
-   "usage_percent": 4.37,
+   "usage_percent": 4.38,
    "description": "If the Pokémon has any stat lowered by an opposing Pokémon, its Attack stat will be boosted sharply."
   },
   {
    "rank": 5,
    "slug": "rough-skin",
    "name": "Rough Skin",
-   "usage_percent": 4.02,
+   "usage_percent": 4.03,
    "description": "The Pokémon's rough skin damages attackers that make direct contact with it."
   },
   {
@@ -50,7 +50,7 @@
    "rank": 7,
    "slug": "levitate",
    "name": "Levitate",
-   "usage_percent": 3.73,
+   "usage_percent": 3.72,
    "description": "Damage dealing Ground-type moves have no effect on this Pokémon. Cannot be trapped by Arena Trap ability. Takes no damage from Spikes."
   },
   {
@@ -64,7 +64,7 @@
    "rank": 9,
    "slug": "aerilate",
    "name": "Aerilate",
-   "usage_percent": 3.53,
+   "usage_percent": 3.52,
    "description": "Normal-type moves become Flying-type moves. The power of those moves is boosted a little."
   },
   {
@@ -78,14 +78,14 @@
    "rank": 11,
    "slug": "psychic-surge",
    "name": "Psychic Surge",
-   "usage_percent": 3.45,
+   "usage_percent": 3.44,
    "description": "Turns the entire field into Psychic Terrain for 5 turns when the Pokémon enters a battle."
   },
   {
    "rank": 12,
    "slug": "tough-claws",
    "name": "Tough Claws",
-   "usage_percent": 3.33,
+   "usage_percent": 3.32,
    "description": "Powers up moves that make direct contact."
   },
   {
@@ -99,14 +99,14 @@
    "rank": 14,
    "slug": "drought",
    "name": "Drought",
-   "usage_percent": 3.16,
+   "usage_percent": 3.17,
    "description": "Turns the sunlight harsh when the Pokémon enters a battle."
   },
   {
    "rank": 15,
    "slug": "blaze",
    "name": "Blaze",
-   "usage_percent": 3.13,
+   "usage_percent": 3.14,
    "description": "Powers up Fire-type moves when the Pokémon's HP is low."
   },
   {
@@ -141,14 +141,14 @@
    "rank": 20,
    "slug": "prankster",
    "name": "Prankster",
-   "usage_percent": 2.57,
+   "usage_percent": 2.58,
    "description": "Increases the priority of the Pokémon's status moves by 1 stage. However, the Pokémon's status moves no longer work against Dark-type Pokémon."
   },
   {
    "rank": 21,
    "slug": "armor-tail",
    "name": "Armor Tail",
-   "usage_percent": 2.36,
+   "usage_percent": 2.35,
    "description": "The mysterious tail covering the Pokémon's head makes opponents unable to use priority moves against the Pokémon or its allies."
   },
   {
@@ -162,14 +162,14 @@
    "rank": 23,
    "slug": "rock-head",
    "name": "Rock Head",
-   "usage_percent": 2.13,
+   "usage_percent": 2.12,
    "description": "Protects the Pokémon from recoil damage."
   },
   {
    "rank": 24,
    "slug": "emergency-exit",
    "name": "Emergency Exit",
-   "usage_percent": 2.1,
+   "usage_percent": 2.09,
    "description": "The Pokémon switches out of battle when its HP drops to 1/2 or less of its max."
   },
   {
@@ -204,7 +204,7 @@
    "rank": 29,
    "slug": "sand-stream",
    "name": "Sand Stream",
-   "usage_percent": 1.42,
+   "usage_percent": 1.43,
    "description": "The Pokémon summons a sandstorm when it enters a battle."
   },
   {
@@ -225,7 +225,7 @@
    "rank": 32,
    "slug": "hospitality",
    "name": "Hospitality",
-   "usage_percent": 1.12,
+   "usage_percent": 1.13,
    "description": "When the Pokémon enters a battle, it showers its ally with hospitality, restoring a small amount of the ally's HP"
   },
   {
@@ -239,21 +239,21 @@
    "rank": 34,
    "slug": "swift-swim",
    "name": "Swift Swim",
-   "usage_percent": 1.09,
+   "usage_percent": 1.1,
    "description": "Boosts the Pokémon's Speed stat in rain."
   },
   {
    "rank": 35,
    "slug": "inner-focus",
    "name": "Inner Focus",
-   "usage_percent": 1.06,
+   "usage_percent": 1.05,
    "description": "The Pokémon's intense focus prevents it from flinching or being affected by Intimidate."
   },
   {
    "rank": 36,
    "slug": "sand-rush",
    "name": "Sand Rush",
-   "usage_percent": 1.04,
+   "usage_percent": 1.05,
    "description": "Boosts the Pokémon's Speed stat in a sandstorm."
   },
   {
@@ -295,7 +295,7 @@
    "rank": 42,
    "slug": "multiscale",
    "name": "Multiscale",
-   "usage_percent": 0.7,
+   "usage_percent": 0.69,
    "description": "Reduces damage afflicted to the Pokémon by 50% if at maximum HP"
   },
   {
@@ -330,7 +330,7 @@
    "rank": 47,
    "slug": "electric-surge",
    "name": "Electric Surge",
-   "usage_percent": 0.51,
+   "usage_percent": 0.52,
    "description": "Turns the ground into Electric Terrain when the Pokémon enters a battle."
   },
   {
@@ -386,7 +386,7 @@
    "rank": 55,
    "slug": "thermal-exchange",
    "name": "Thermal Exchange",
-   "usage_percent": 0.36,
+   "usage_percent": 0.35,
    "description": "When the Pokémon takes damage from a Fire-type move, its Attack stat is boosted by 1 stage. The Pokémon cannot be burned."
   },
   {
@@ -748,73 +748,73 @@
   },
   {
    "rank": 107,
+   "slug": "parental-bond",
+   "name": "Parental Bond",
+   "usage_percent": 0.05,
+   "description": "Parent and child each attacks."
+  },
+  {
+   "rank": 108,
    "slug": "pickpocket",
    "name": "Pickpocket",
    "usage_percent": 0.05,
    "description": "The Pokémon steals the held item from attackers that made direct contact with it."
   },
   {
-   "rank": 108,
+   "rank": 109,
    "slug": "stalwart",
    "name": "Stalwart",
    "usage_percent": 0.05,
    "description": "Ignores the effects of opposing Pokémon's Abilities and moves that draw in moves."
   },
   {
-   "rank": 109,
+   "rank": 110,
    "slug": "eelevate",
    "name": "Eelevate",
    "usage_percent": 0.04,
    "description": "The Pokémon floats off the ground, making it immune to Ground-type moves, as well as the Spikes, Toxic Spikes, and Sticky Web statuses. When the Pokémon knocks out a target with an attack, its highest stat is boosted by 1 stage."
   },
   {
-   "rank": 110,
+   "rank": 111,
    "slug": "filter",
    "name": "Filter",
    "usage_percent": 0.04,
    "description": "Reduces the power of supereffective attacks that hit the Pokémon."
   },
   {
-   "rank": 111,
+   "rank": 112,
    "slug": "frisk",
    "name": "Frisk",
    "usage_percent": 0.04,
    "description": "When it enters a battle, the Pokémon can check an opposing Pokémon's held item."
   },
   {
-   "rank": 112,
+   "rank": 113,
    "slug": "magic-guard",
    "name": "Magic Guard",
    "usage_percent": 0.04,
    "description": "The Pokémon only takes damage from attacks."
   },
   {
-   "rank": 113,
+   "rank": 114,
    "slug": "magician",
    "name": "Magician",
    "usage_percent": 0.04,
    "description": "The Pokémon steals the held item from any target it hits with a move."
   },
   {
-   "rank": 114,
+   "rank": 115,
    "slug": "natural-cure",
    "name": "Natural Cure",
    "usage_percent": 0.04,
    "description": "The Pokémon's status conditions are cured when it switches out."
   },
   {
-   "rank": 115,
+   "rank": 116,
    "slug": "own-tempo",
    "name": "Own Tempo",
    "usage_percent": 0.04,
    "description": "The Pokémon sticks to its own tempo, preventing it from becoming confused or being affected by Intimidate."
-  },
-  {
-   "rank": 116,
-   "slug": "parental-bond",
-   "name": "Parental Bond",
-   "usage_percent": 0.04,
-   "description": "Parent and child each attacks."
   },
   {
    "rank": 117,
@@ -1007,157 +1007,157 @@
   },
   {
    "rank": 144,
+   "slug": "sweet-veil",
+   "name": "Sweet Veil",
+   "usage_percent": 0.02,
+   "description": "Prevents the Pokémon and its allies from falling asleep."
+  },
+  {
+   "rank": 145,
    "slug": "analytic",
    "name": "Analytic",
    "usage_percent": 0.01,
    "description": "Boosts the power of the Pokémon's move if it is the last to act that turn."
   },
   {
-   "rank": 145,
+   "rank": 146,
    "slug": "big-pecks",
    "name": "Big Pecks",
    "usage_percent": 0.01,
    "description": "Prevents the Pokémon from having its Defense stat lowered."
   },
   {
-   "rank": 146,
+   "rank": 147,
    "slug": "cud-chew",
    "name": "Cud Chew",
    "usage_percent": 0.01,
    "description": "When the Pokémon eats a Berry, it will regurgitate that Berry at the end of the next turn and eat it one more time."
   },
   {
-   "rank": 147,
+   "rank": 148,
    "slug": "guts",
    "name": "Guts",
    "usage_percent": 0.01,
    "description": "It's so gutsy that having a status condition boosts the Pokémon's Attack stat."
   },
   {
-   "rank": 148,
+   "rank": 149,
    "slug": "harvest",
    "name": "Harvest",
    "usage_percent": 0.01,
    "description": "May create another Berry after one is used."
   },
   {
-   "rank": 149,
+   "rank": 150,
    "slug": "heatproof",
    "name": "Heatproof",
    "usage_percent": 0.01,
    "description": "The Pokémon's heatproof body halves the damage taken from Fire-type moves."
   },
   {
-   "rank": 150,
+   "rank": 151,
    "slug": "heavy-metal",
    "name": "Heavy Metal",
    "usage_percent": 0.01,
    "description": "Doubles the Pokémon's weight."
   },
   {
-   "rank": 151,
+   "rank": 152,
    "slug": "hunger-switch",
    "name": "Hunger Switch",
    "usage_percent": 0.01,
    "description": "The Pokémon changes its form, alternating between its Full Belly Mode and Hangry Mode after the end of every turn."
   },
   {
-   "rank": 152,
+   "rank": 153,
    "slug": "hustle",
    "name": "Hustle",
    "usage_percent": 0.01,
    "description": "Boosts the Pokémon's Attack stat but lowers its accuracy."
   },
   {
-   "rank": 153,
+   "rank": 154,
    "slug": "ice-body",
    "name": "Ice Body",
    "usage_percent": 0.01,
    "description": "The Pokémon gradually regains HP in snow."
   },
   {
-   "rank": 154,
+   "rank": 155,
    "slug": "immunity",
    "name": "Immunity",
    "usage_percent": 0.01,
    "description": "The Pokémon's immune system prevents it from being poisoned."
   },
   {
-   "rank": 155,
+   "rank": 156,
    "slug": "liquid-ooze",
    "name": "Liquid Ooze",
    "usage_percent": 0.01,
    "description": "When the Pokémon is hit by an HP-absorbing move, the attacker does not restore HP but instead takes damage equal to the amount of HP it would have restored."
   },
   {
-   "rank": 156,
+   "rank": 157,
    "slug": "marvel-scale",
    "name": "Marvel Scale",
    "usage_percent": 0.01,
    "description": "The Pokémon's marvelous scales boost its Defense stat if it has a status condition."
   },
   {
-   "rank": 157,
+   "rank": 158,
    "slug": "merciless",
    "name": "Merciless",
    "usage_percent": 0.01,
    "description": "The Pokémon's attacks become critical hits if the target is poisoned."
   },
   {
-   "rank": 158,
+   "rank": 159,
    "slug": "mummy",
    "name": "Mummy",
    "usage_percent": 0.01,
    "description": "Contact with the Pokémon changes the attacker’s Ability to Mummy."
   },
   {
-   "rank": 159,
+   "rank": 160,
    "slug": "poison-point",
    "name": "Poison Point",
    "usage_percent": 0.01,
    "description": "Contact with the Pokémon may poison the attacker."
   },
   {
-   "rank": 160,
+   "rank": 161,
    "slug": "purifying-salt",
    "name": "Purifying Salt",
    "usage_percent": 0.01,
    "description": "The Pokémon's pure salt protects it from status conditions and halves the damage taken from Ghost-type moves."
   },
   {
-   "rank": 161,
+   "rank": 162,
    "slug": "refrigerate",
    "name": "Refrigerate",
    "usage_percent": 0.01,
    "description": "Normal-type moves become Ice-type moves. The power of those moves is boosted a little."
   },
   {
-   "rank": 162,
+   "rank": 163,
    "slug": "screen-cleaner",
    "name": "Screen Cleaner",
    "usage_percent": 0.01,
    "description": "When the Pokémon enters a battle, the effects of Light Screen, Reflect, and Aurora Veil are nullified for both opposing and ally Pokémon."
   },
   {
-   "rank": 163,
+   "rank": 164,
    "slug": "seed-sower",
    "name": "Seed Sower",
    "usage_percent": 0.01,
    "description": "Turns the entire field into Grassy Terrain for 5 turns when the Pokémon takes damage from moves."
   },
   {
-   "rank": 164,
+   "rank": 165,
    "slug": "steely-spirit",
    "name": "Steely Spirit",
    "usage_percent": 0.01,
    "description": "Boosts the power of the Steel-type moves of the Pokémon and its allies by 50%."
-  },
-  {
-   "rank": 165,
-   "slug": "sweet-veil",
-   "name": "Sweet Veil",
-   "usage_percent": 0.01,
-   "description": "Prevents the Pokémon and its allies from falling asleep."
   },
   {
    "rank": 166,
