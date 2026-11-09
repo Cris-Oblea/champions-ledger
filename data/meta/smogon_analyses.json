@@ -2,7 +2,7 @@
  "source": "smogon.com/dex/champions",
  "game": "Pokemon Champions",
  "note": "VGC formats only (doubles, bring 6 pick 4). Singles dropped.",
- "fetched": "2026-11-02",
+ "fetched": "2026-11-09",
  "count": 358,
  "with_vgc_analysis": 62,
  "pokemon": [
@@ -1762,6 +1762,66 @@
      ],
      "credits": [
       "pengu"
+     ]
+    },
+    {
+     "format": "VGC26 Regulation M-C",
+     "outdated": null,
+     "overview": "Archaludon is the main juggernaut of Regulation M-C, bolstering its monstrous bulk with Stamina and Leftovers and snowballing through teams with Electro Shot in rain. Archaludon's amazing typing lets it resist the STAB moves of Mega Golisopod, Mega Raichu X, Pelipper, and Rillaboom while granting an immunity to Mega Gengar's Sludge Bomb and Sneasler's Dire Claw. Archaludon's excellent STAB moves can threaten Mega Garchomp Z and Mega Gardevoir, while Electro Shot can threaten both Basculegion formes and Primarina.",
+     "comments": "",
+     "movesets": [
+      {
+       "name": "Bulky Rain Sweeper",
+       "pokemon": "Archaludon",
+       "abilities": [
+        "Stamina"
+       ],
+       "items": [
+        "Leftovers"
+       ],
+       "natures": [
+        "Calm",
+        "Bold"
+       ],
+       "stat_points": [
+        {
+         "hp": 32,
+         "atk": 0,
+         "def": 1,
+         "spa": 1,
+         "spd": 25,
+         "spe": 7
+        },
+        {
+         "hp": 32,
+         "atk": 0,
+         "def": 1,
+         "spa": 1,
+         "spd": 32,
+         "spe": 0
+        }
+       ],
+       "moveslots": [
+        [
+         "Electro Shot"
+        ],
+        [
+         "Dragon Pulse"
+        ],
+        [
+         "Flash Cannon",
+         "Snarl"
+        ],
+        [
+         "Protect"
+        ]
+       ],
+       "explanation": "This set allows Archaludon to function as a bulky rain sweeper, setting up offensively with Electro Shot and defensively with Stamina while remaining on the field as long as possible thanks to Leftovers.\nFlash Cannon is used as a secondary STAB move to threaten the Fairy-types. Snarl is a rather supportive move that can patch up Archaludon's lackluster Special Defense, slowing down special sweepers while also chipping down common Ghost- and Psychic-types such as Gholdengo and Indeedee-M.\nStamina increases Archaludon's physical bulk while punishing weaker physical attacks such as Fake Out from Incineroar, Mega Raichu Y, and Sneasler. Archaludon's typing aids in stacking up Stamina boosts by letting it switch into other attacks such as Rillaboom’s and Pelipper's STAB moves and Rock Slide from Garchomp, Mega Tyranitar, and Excadrill. Having more Stamina boosts allows Archaludon to spam Electro Shot freely.\nLeftovers gives Archaludon more longevity and the ability to punish foes for ignoring it.\nThe first SP spread allows Archaludon to survive Sylveon's Hyper Beam with a Calm nature and Adamant Sneasler's Close Combat with a Bold nature while letting it outspeed Mega Garchomp Z in Tailwind. The second specially bulkier spread is typically used when Archaludon has no Tailwind support, allowing it to survive +2 Shadow Ball from some Life Orb Gholdengo with a Calm nature and granting a very high chance to survive Mega Charizard Y's sun-boosted Weather Ball with a Bold nature. A Modest nature can be used on either SP spread to increase Archaludon's damage output.\nUsage Tips\nArchaludon can struggle against Pokemon with ways to boost their damage output, such as Swords Dance Sneasler and Kingambit, Nasty Plot Life Orb Gholdengo, and Calm Mind Mega Floette. Without any Stamina boosts or dual screens up, Close Combat from Mega Staraptor and Sneasler, Hyper Beam from Sylveon, and Focus Blast from Mega Raichu Y all deal heavy damage to Archaludon.\nExcadrill can tank both of Archaludon's STAB moves and Electro Shot. Gholdengo can set up Nasty Plot in the face of Archaludon that choose to forgo Snarl. Mega Metagross resists both of Archaludon's STAB moves while chunking it back with Tough Claws-boosted Body Press. Kingambit also resists them and can switch into Snarl to gain a Defiant boost. These Steel-type Pokemon can be paired with Raichu to wall Archaludon and its favorable leads.\nMega Charizard Y, Mega Froslass, Mega Tyranitar, and Torkoal can overwrite rain with their weather-setting abilities, preventing Archaludon from setting up with Electro Shot.\nPerish Song Mega Gengar, Politoed, and Primarina can ignore Archaludon's immense bulk and Stamina boosts.\nPelipper enables Archaludon's Electro Shot thanks to Drizzle, supports Archaludon with Wide Guard and Tailwind, threatens Sinistcha and Rillaboom with Hurricane, and resists Archaludon's Fighting and Ground weaknesses. Politoed is an alternative bulkier rain setter on Perish Trap compositions with access to Encore and Perish Song, and it can be a more offensively oriented rain setter on rain teams that do not necessarily need Tailwind's speed control.\nGrimmsnarl increases Archaludon's bulk further thanks to Light Screen and Reflect. Parting Shot can pivot in a rain setter safely after Mega Charizard Y Mega Evolves while offering damage control.\nBasculegion-F chips foes, putting them in range of Archaludon's Electro Shot, and can threaten Pokemon such as Gholdengo and Garchomp with Shadow Ball and Ice Beam, respectively; these foes can be difficult for Archaludon to deal with. Basculegion-F can also switch into Fighting-type moves that threaten Archaludon."
+      }
+     ],
+     "credits": [
+      "iPetBigfoot",
+      "Darkmalice"
      ]
     }
    ]
