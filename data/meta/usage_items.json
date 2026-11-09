@@ -1,7 +1,7 @@
 {
  "source": "pokebase.app/pokemon-champions",
  "game": "Pokemon Champions",
- "fetched": "2026-11-08",
+ "fetched": "2026-11-09",
  "count": 162,
  "rows": [
   {
@@ -22,7 +22,7 @@
    "rank": 3,
    "slug": "life-orb",
    "name": "Life Orb",
-   "usage_percent": 57.3,
+   "usage_percent": 57.4,
    "description": "Boosts the power of the holder’s moves by 30%, but the holder loses 10% of its max HP after using a damaging move."
   },
   {
@@ -50,7 +50,7 @@
    "rank": 7,
    "slug": "salamencite",
    "name": "Salamencite",
-   "usage_percent": 20.7,
+   "usage_percent": 20.6,
    "description": "A held item that allows Salamence to Mega Evolve."
   },
   {
@@ -64,7 +64,7 @@
    "rank": 9,
    "slug": "grassy-seed",
    "name": "Grassy Seed",
-   "usage_percent": 19.9,
+   "usage_percent": 19.8,
    "description": "Boosts the holder's Defense stat by 1 stage on Grassy Terrain. Disappears for the duration of the battle after a single use."
   },
   {
@@ -141,14 +141,14 @@
    "rank": 20,
    "slug": "staraptite",
    "name": "Staraptite",
-   "usage_percent": 9.1,
+   "usage_percent": 9.2,
    "description": "One of a variety of mysterious Mega Stones. A Staraptor holding this stone will be able to Mega Evolve during battle."
   },
   {
    "rank": 21,
    "slug": "light-clay",
    "name": "Light Clay",
-   "usage_percent": 8.4,
+   "usage_percent": 8.3,
    "description": "Extends the duration of Light Screen, Reflect, and Aurora Veil by 3 turns (8 turns total)."
   },
   {
@@ -162,7 +162,7 @@
    "rank": 23,
    "slug": "gardevoirite",
    "name": "Gardevoirite",
-   "usage_percent": 6.4,
+   "usage_percent": 6.3,
    "description": "One of a variety of mysterious Mega Stones. A Gardevoir holding this stone will be able to Mega Evolve during battle."
   },
   {
@@ -594,129 +594,129 @@
   },
   {
    "rank": 85,
+   "slug": "metal-coat",
+   "name": "Metal Coat",
+   "usage_percent": 0.3,
+   "description": "Boosts the power of the holder’s Steel-type moves by 20%."
+  },
+  {
+   "rank": 86,
    "slug": "shuca-berry",
    "name": "Shuca Berry",
    "usage_percent": 0.3,
    "description": "Halves damage from the first supereffective Ground-type attack. Consumed after use."
   },
   {
-   "rank": 86,
+   "rank": 87,
    "slug": "slowbronite",
    "name": "Slowbronite",
    "usage_percent": 0.3,
    "description": "One of a variety of mysterious Mega Stones. A Slowbro holding this stone will be able to Mega Evolve during battle."
   },
   {
-   "rank": 87,
+   "rank": 88,
    "slug": "spell-tag",
    "name": "Spell Tag",
    "usage_percent": 0.3,
    "description": "Boosts the power of the holder’s Ghost-type moves by 20%."
   },
   {
-   "rank": 88,
+   "rank": 89,
    "slug": "abomasite",
    "name": "Abomasite",
    "usage_percent": 0.2,
    "description": "One of a variety of mysterious Mega Stones. An Abomasnow holding this stone will be able to Mega Evolve during battle."
   },
   {
-   "rank": 89,
+   "rank": 90,
    "slug": "aggronite",
    "name": "Aggronite",
    "usage_percent": 0.2,
    "description": "One of a variety of mysterious Mega Stones. An Aggron holding this stone will be able to Mega Evolve during battle."
   },
   {
-   "rank": 90,
+   "rank": 91,
    "slug": "ampharosite",
    "name": "Ampharosite",
    "usage_percent": 0.2,
    "description": "One of a variety of mysterious Mega Stones. An Ampharos holding this stone will be able to Mega Evolve during battle."
   },
   {
-   "rank": 91,
+   "rank": 92,
    "slug": "black-belt",
    "name": "Black Belt",
    "usage_percent": 0.2,
    "description": "Boosts the power of the holder’s Fighting-type moves by 20%."
   },
   {
-   "rank": 92,
+   "rank": 93,
    "slug": "chesnaughtite",
    "name": "Chesnaughtite",
    "usage_percent": 0.2,
    "description": "One of a variety of mysterious Mega Stones. A Chesnaught holding this stone will be able to Mega Evolve during battle."
   },
   {
-   "rank": 93,
+   "rank": 94,
    "slug": "crabominite",
    "name": "Crabominite",
    "usage_percent": 0.2,
    "description": "One of a variety of mysterious Mega Stones. A Crabominable holding this stone will be able to Mega Evolve during battle."
   },
   {
-   "rank": 94,
+   "rank": 95,
    "slug": "dragon-fang",
    "name": "Dragon Fang",
    "usage_percent": 0.2,
    "description": "Boosts the power of the holder’s Dragon-type moves by 20%."
   },
   {
-   "rank": 95,
+   "rank": 96,
    "slug": "eelektrossite",
    "name": "Eelektrossite",
    "usage_percent": 0.2,
    "description": "One of a variety of mysterious Mega Stones. An Eelektross holding this stone will be able to Mega Evolve during battle."
   },
   {
-   "rank": 96,
+   "rank": 97,
    "slug": "feraligite",
    "name": "Feraligite",
    "usage_percent": 0.2,
    "description": "One of a variety of mysterious Mega Stones. A Feraligatr holding this stone will be able to Mega Evolve during battle."
   },
   {
-   "rank": 97,
+   "rank": 98,
    "slug": "golurkite",
    "name": "Golurkite",
    "usage_percent": 0.2,
    "description": "One of a variety of mysterious Mega Stones. A Golurk holding this stone will be able to Mega Evolve during battle."
   },
   {
-   "rank": 98,
+   "rank": 99,
    "slug": "gyaradosite",
    "name": "Gyaradosite",
    "usage_percent": 0.2,
    "description": "One of a variety of mysterious Mega Stones. A Gyarados holding this stone will be able to Mega Evolve during battle."
   },
   {
-   "rank": 99,
+   "rank": 100,
    "slug": "houndoominite",
    "name": "Houndoominite",
    "usage_percent": 0.2,
    "description": "One of a variety of mysterious Mega Stones. A Houndoom holding this stone will be able to Mega Evolve during battle."
   },
   {
-   "rank": 100,
+   "rank": 101,
    "slug": "magnet",
    "name": "Magnet",
    "usage_percent": 0.2,
    "description": "Boosts the power of the holder’s Electric-type moves by 20%."
   },
   {
-   "rank": 101,
+   "rank": 102,
    "slug": "manectite",
    "name": "Manectite",
    "usage_percent": 0.2,
    "description": "One of a variety of mysterious Mega Stones. A Manectric holding this stone will be able to Mega Evolve during battle."
-  },
-  {
-   "rank": 102,
-   "slug": "metal-coat",
-   "name": "Metal Coat",
-   "usage_percent": 0.2,
-   "description": "Boosts the power of the holder’s Steel-type moves by 20%."
   },
   {
    "rank": 103,

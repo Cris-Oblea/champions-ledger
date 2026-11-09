@@ -1,6 +1,6 @@
 {
  "source": "smogon.com/dex/champions",
- "fetched": "2026-10-26",
+ "fetched": "2026-11-09",
  "moveflags": [
   {
    "name": "Minimize",
@@ -7664,11 +7664,11 @@
    "type": "Fighting",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
     "Protect",
-    "Punch",
-    "Contact"
+    "Punch"
    ],
    "genfamily": [
     "GS",
@@ -7720,10 +7720,10 @@
    "type": "Ground",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "SM",
@@ -8051,10 +8051,10 @@
    "type": "Water",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "DP",
@@ -8213,10 +8213,10 @@
    "type": "Normal",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "GS",
@@ -8242,10 +8242,10 @@
    "type": "Fire",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "BW",
@@ -8297,11 +8297,11 @@
    "type": "Fire",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Defrost",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "DP",
@@ -8406,10 +8406,10 @@
    "type": "Water",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "SS",
@@ -8451,6 +8451,7 @@
    "target": "Any",
    "flags": [
     "Charge",
+    "Contact",
     "Distance",
     "Fail Instruct",
     "Gravity",
@@ -8458,8 +8459,7 @@
     "Mirror",
     "No Assist",
     "No Sleep Talk",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "RB",
@@ -8486,14 +8486,14 @@
    "type": "Fighting",
    "target": "Any",
    "flags": [
-    "Minimize",
+    "Contact",
     "Distance",
     "Gravity",
     "Metronome",
+    "Minimize",
     "Mirror",
     "Non-sky",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "XY",
@@ -8650,11 +8650,11 @@
    "type": "Steel",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
     "Protect",
-    "Punch",
-    "Contact"
+    "Punch"
    ],
    "genfamily": [
     "DP",
@@ -8778,11 +8778,11 @@
    "type": "Dark",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
     "Protect",
-    "Slicing",
-    "Contact"
+    "Slicing"
    ],
    "genfamily": [
     "SV",
@@ -8919,12 +8919,12 @@
    "type": "Fighting",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Fail Copycat",
     "Metronome",
     "Mirror",
     "No Assist",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "BW",
@@ -9019,10 +9019,10 @@
    "type": "Fighting",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "DP",
@@ -9221,10 +9221,10 @@
    "type": "Rock",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "SM",
@@ -9271,11 +9271,11 @@
    "type": "Flying",
    "target": "Any",
    "flags": [
+    "Contact",
     "Distance",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "BW",
@@ -9352,11 +9352,11 @@
    "type": "Water",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Dance",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "SV",
@@ -9375,10 +9375,10 @@
    "type": "Water",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "DP",
@@ -9445,10 +9445,10 @@
    "type": "Dark",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "DP",
@@ -9574,10 +9574,10 @@
    "type": "Ice",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "DP",
@@ -9601,10 +9601,10 @@
    "type": "Fighting",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "SV",
@@ -9623,11 +9623,11 @@
    "type": "Poison",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
     "Protect",
-    "Slicing",
-    "Contact"
+    "Slicing"
    ],
    "genfamily": [
     "SV",
@@ -9825,10 +9825,10 @@
    "type": "Normal",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "RB",
@@ -9855,11 +9855,11 @@
    "type": "Dark",
    "target": "Normal",
    "flags": [
+    "Bite",
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Bite",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "RB",
@@ -9886,12 +9886,12 @@
    "type": "Fire",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Heal",
     "Metronome",
     "Mirror",
     "Protect",
-    "Slicing",
-    "Contact"
+    "Slicing"
    ],
    "genfamily": [
     "SV",
@@ -9959,10 +9959,10 @@
    "type": "Fire",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "RS",
@@ -10044,9 +10044,9 @@
    "type": "Fighting",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "SS",
@@ -10066,12 +10066,12 @@
    "type": "Normal",
    "target": "Normal",
    "flags": [
-    "Minimize",
+    "Contact",
     "Metronome",
+    "Minimize",
     "Mirror",
     "Non-sky",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "RB",
@@ -10153,6 +10153,7 @@
    "target": "Any",
    "flags": [
     "Charge",
+    "Contact",
     "Distance",
     "Fail Instruct",
     "Gravity",
@@ -10160,8 +10161,7 @@
     "Mirror",
     "No Assist",
     "No Sleep Talk",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "RS",
@@ -10186,11 +10186,11 @@
    "type": "Flying",
    "target": "Any",
    "flags": [
+    "Contact",
     "Distance",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "DP",
@@ -10214,9 +10214,9 @@
    "type": "Dragon",
    "target": "AllAdjacentFoes",
    "flags": [
+    "Contact",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "SS",
@@ -10236,10 +10236,10 @@
    "type": "Fighting",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "RS",
@@ -10264,10 +10264,10 @@
    "type": "Dark",
    "target": "AllAdjacent",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "SM",
@@ -10288,10 +10288,10 @@
    "type": "Bug",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "DP",
@@ -10315,10 +10315,10 @@
    "type": "Dark",
    "target": "Scripted",
    "flags": [
+    "Contact",
     "Fail Me First",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "SV",
@@ -10469,11 +10469,11 @@
    "type": "Fighting",
    "target": "Scripted",
    "flags": [
+    "Contact",
     "Fail Copycat",
     "Fail Me First",
     "No Assist",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "RB",
@@ -10521,12 +10521,12 @@
    "type": "Normal",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Fail Copycat",
     "Fail Me First",
     "Mirror",
     "No Assist",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "RS",
@@ -10551,10 +10551,10 @@
    "type": "Water",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "RB",
@@ -10581,10 +10581,10 @@
    "type": "Fighting",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "GS",
@@ -10610,11 +10610,11 @@
    "type": "Poison",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
     "Protect",
-    "Slicing",
-    "Contact"
+    "Slicing"
    ],
    "genfamily": [
     "DP",
@@ -10638,11 +10638,11 @@
    "type": "Dark",
    "target": "Normal",
    "flags": [
+    "Bite",
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Bite",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "GS",
@@ -10668,11 +10668,11 @@
    "type": "Normal",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
     "Protect",
-    "Slicing",
-    "Contact"
+    "Slicing"
    ],
    "genfamily": [
     "RS",
@@ -10775,10 +10775,10 @@
    "type": "Dark",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "SM",
@@ -10901,14 +10901,14 @@
    "target": "Normal",
    "flags": [
     "Charge",
+    "Contact",
     "Fail Instruct",
     "Metronome",
     "Mirror",
     "No Assist",
     "No Sleep Talk",
     "Non-sky",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "RB",
@@ -10993,14 +10993,14 @@
    "target": "Normal",
    "flags": [
     "Charge",
+    "Contact",
     "Fail Instruct",
     "Metronome",
     "Mirror",
     "No Assist",
     "No Sleep Talk",
     "Non-sky",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "RS",
@@ -11025,10 +11025,10 @@
    "type": "Normal",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "RB",
@@ -11055,10 +11055,10 @@
    "type": "Normal",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "DP",
@@ -11082,10 +11082,10 @@
    "type": "Electric",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Mirror",
     "Protect",
-    "Punch",
-    "Contact"
+    "Punch"
    ],
    "genfamily": [
     "SV",
@@ -11179,11 +11179,11 @@
    "type": "Dragon",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
     "Protect",
-    "Slicing",
-    "Contact"
+    "Slicing"
    ],
    "genfamily": [
     "RS",
@@ -11208,11 +11208,11 @@
    "type": "Dragon",
    "target": "Normal",
    "flags": [
-    "Minimize",
+    "Contact",
     "Metronome",
+    "Minimize",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "DP",
@@ -11236,12 +11236,12 @@
    "type": "Dragon",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Fail Copycat",
     "Metronome",
     "Mirror",
     "No Assist",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "BW",
@@ -11264,12 +11264,12 @@
    "type": "Fighting",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Heal",
     "Metronome",
     "Mirror",
     "Protect",
-    "Punch",
-    "Contact"
+    "Punch"
    ],
    "genfamily": [
     "DP",
@@ -11293,11 +11293,11 @@
    "type": "Fairy",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Heal",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "XY",
@@ -11319,11 +11319,11 @@
    "type": "Flying",
    "target": "Any",
    "flags": [
+    "Contact",
     "Distance",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "RB",
@@ -11350,10 +11350,10 @@
    "type": "Ground",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "BW",
@@ -11397,10 +11397,10 @@
    "type": "Flying",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "SS",
@@ -11420,11 +11420,11 @@
    "type": "Fighting",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
     "Protect",
-    "Punch",
-    "Contact"
+    "Punch"
    ],
    "genfamily": [
     "GS",
@@ -11659,11 +11659,11 @@
    "type": "Normal",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
     "No Parental Bond",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "RS",
@@ -11688,14 +11688,14 @@
    "type": "Fighting",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Fail Copycat",
     "Fail Instruct",
     "Fail Me First",
     "No Assist",
     "No Sleep Talk",
     "Protect",
-    "Punch",
-    "Contact"
+    "Punch"
    ],
    "genfamily": [
     "RS",
@@ -11934,10 +11934,10 @@
    "type": "Normal",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "RS",
@@ -11986,10 +11986,10 @@
    "type": "Normal",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "RS",
@@ -12097,10 +12097,10 @@
    "type": "Bug",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "XY",
@@ -12223,11 +12223,11 @@
    "type": "Fire",
    "target": "Normal",
    "flags": [
+    "Bite",
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Bite",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "DP",
@@ -12302,10 +12302,10 @@
    "type": "Dark",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "BW",
@@ -12460,10 +12460,10 @@
    "type": "Ice",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "SV",
@@ -12511,11 +12511,11 @@
    "type": "Normal",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
     "Protect",
-    "Recharge",
-    "Contact"
+    "Recharge"
    ],
    "genfamily": [
     "DP",
@@ -12561,10 +12561,10 @@
    "type": "Dragon",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "SV",
@@ -12583,11 +12583,11 @@
    "type": "Grass",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
     "Non-sky",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "DP",
@@ -12611,10 +12611,10 @@
    "type": "Grass",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "SS",
@@ -12809,10 +12809,10 @@
    "type": "Normal",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "RB",
@@ -12866,10 +12866,10 @@
    "target": "Normal",
    "flags": [
     "Bullet",
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "DP",
@@ -12893,11 +12893,11 @@
    "type": "Fighting",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
     "Protect",
-    "Punch",
-    "Contact"
+    "Punch"
    ],
    "genfamily": [
     "DP",
@@ -12921,10 +12921,10 @@
    "type": "Steel",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "SV",
@@ -12971,10 +12971,10 @@
    "type": "Rock",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "DP",
@@ -12998,11 +12998,11 @@
    "type": "Ground",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
     "Protect",
-    "Punch",
-    "Contact"
+    "Punch"
    ],
    "genfamily": [
     "SV",
@@ -13105,12 +13105,12 @@
    "type": "Fire",
    "target": "Normal",
    "flags": [
-    "Minimize",
+    "Contact",
     "Metronome",
+    "Minimize",
     "Mirror",
     "Non-sky",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "BW",
@@ -13161,12 +13161,12 @@
    "type": "Steel",
    "target": "Normal",
    "flags": [
-    "Minimize",
+    "Contact",
     "Metronome",
+    "Minimize",
     "Mirror",
     "Non-sky",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "BW",
@@ -13214,11 +13214,11 @@
    "type": "Fighting",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Gravity",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "RB",
@@ -13245,10 +13245,10 @@
    "type": "Normal",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "RB",
@@ -13275,11 +13275,11 @@
    "type": "Grass",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Heal",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "BW",
@@ -13475,11 +13475,11 @@
    "type": "Ice",
    "target": "Normal",
    "flags": [
+    "Bite",
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Bite",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "DP",
@@ -13503,11 +13503,11 @@
    "type": "Ice",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
     "Protect",
-    "Punch",
-    "Contact"
+    "Punch"
    ],
    "genfamily": [
     "SM",
@@ -13528,11 +13528,11 @@
    "type": "Ice",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
     "Protect",
-    "Punch",
-    "Contact"
+    "Punch"
    ],
    "genfamily": [
     "RB",
@@ -13714,11 +13714,11 @@
    "type": "Bug",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Heal",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "RB",
@@ -13767,10 +13767,10 @@
    "type": "Bug",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "XY",
@@ -13842,10 +13842,10 @@
    "type": "Steel",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "DP",
@@ -13869,10 +13869,10 @@
    "type": "Steel",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "GS",
@@ -13898,11 +13898,11 @@
    "type": "Dark",
    "target": "Normal",
    "flags": [
+    "Bite",
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Bite",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "SS",
@@ -13922,10 +13922,10 @@
    "type": "Water",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Mirror",
     "Protect",
-    "Punch",
-    "Contact"
+    "Punch"
    ],
    "genfamily": [
     "SV",
@@ -13968,10 +13968,10 @@
    "type": "Dark",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "RS",
@@ -13996,11 +13996,11 @@
    "type": "Dark",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
     "Protect",
-    "Slicing",
-    "Contact"
+    "Slicing"
    ],
    "genfamily": [
     "SV",
@@ -14019,10 +14019,10 @@
    "type": "Dark",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "SS",
@@ -14042,10 +14042,10 @@
    "type": "Normal",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "DP",
@@ -14116,11 +14116,11 @@
    "type": "Grass",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
     "Protect",
-    "Slicing",
-    "Contact"
+    "Slicing"
    ],
    "genfamily": [
     "RS",
@@ -14303,10 +14303,10 @@
    "type": "Water",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "SM",
@@ -14355,10 +14355,10 @@
    "type": "Fighting",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "RB",
@@ -14385,10 +14385,10 @@
    "type": "Fighting",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "BW",
@@ -14432,10 +14432,10 @@
    "type": "Bug",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "SM",
@@ -14626,10 +14626,10 @@
    "type": "Normal",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "RB",
@@ -14656,10 +14656,10 @@
    "type": "Bug",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "GS",
@@ -14815,11 +14815,11 @@
    "type": "Steel",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
     "Protect",
-    "Punch",
-    "Contact"
+    "Punch"
    ],
    "genfamily": [
     "RS",
@@ -15081,10 +15081,10 @@
    "type": "Poison",
    "target": "AllAdjacentFoes",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "SV",
@@ -15200,10 +15200,10 @@
    "type": "Electric",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "XY",
@@ -15247,11 +15247,11 @@
    "type": "Dragon",
    "target": "RandomNormal",
    "flags": [
+    "Contact",
     "Fail Instruct",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "GS",
@@ -15327,10 +15327,10 @@
    "type": "Normal",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "RB",
@@ -15409,10 +15409,10 @@
    "type": "Dark",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "DP",
@@ -15490,12 +15490,12 @@
    "type": "Grass",
    "target": "RandomNormal",
    "flags": [
+    "Contact",
     "Dance",
     "Fail Instruct",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "RB",
@@ -15523,12 +15523,12 @@
    "target": "Normal",
    "flags": [
     "Charge",
+    "Contact",
     "Fail Instruct",
     "Metronome",
     "Mirror",
     "No Assist",
-    "No Sleep Talk",
-    "Contact"
+    "No Sleep Talk"
    ],
    "genfamily": [
     "XY",
@@ -15550,10 +15550,10 @@
    "type": "Fairy",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "XY",
@@ -15575,11 +15575,11 @@
    "type": "Flying",
    "target": "Any",
    "flags": [
+    "Contact",
     "Distance",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "DP",
@@ -15603,11 +15603,11 @@
    "type": "Poison",
    "target": "Normal",
    "flags": [
+    "Bite",
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Bite",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "RS",
@@ -15632,10 +15632,10 @@
    "type": "Poison",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "DP",
@@ -15736,10 +15736,10 @@
    "type": "Normal",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Mirror",
     "Protect",
-    "Slicing",
-    "Contact"
+    "Slicing"
    ],
    "genfamily": [
     "SV",
@@ -15758,9 +15758,9 @@
    "type": "Bug",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "SV",
@@ -15874,10 +15874,10 @@
    "type": "Dark",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "SM",
@@ -15898,10 +15898,10 @@
    "type": "Grass",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "DP",
@@ -15979,11 +15979,11 @@
    "type": "Psychic",
    "target": "Normal",
    "flags": [
+    "Bite",
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Bite",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "SM",
@@ -16102,10 +16102,10 @@
    "type": "Psychic",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "SV",
@@ -16172,10 +16172,10 @@
    "type": "Normal",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "RB",
@@ -16279,10 +16279,10 @@
    "type": "Ghost",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Mirror",
     "Protect",
-    "Punch",
-    "Contact"
+    "Punch"
    ],
    "genfamily": [
     "SV",
@@ -16326,9 +16326,9 @@
    "type": "Normal",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "SV",
@@ -16393,10 +16393,10 @@
    "type": "Normal",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "GS",
@@ -16422,11 +16422,11 @@
    "type": "Water",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
     "Protect",
-    "Slicing",
-    "Contact"
+    "Slicing"
    ],
    "genfamily": [
     "BW",
@@ -16528,10 +16528,10 @@
    "type": "Fighting",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "GS",
@@ -16848,11 +16848,11 @@
    "type": "Fighting",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
     "Protect",
-    "Slicing",
-    "Contact"
+    "Slicing"
    ],
    "genfamily": [
     "BW",
@@ -17135,11 +17135,11 @@
    "type": "Fighting",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
     "Non-sky",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "RB",
@@ -17196,11 +17196,11 @@
    "type": "Ghost",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
     "Protect",
-    "Slicing",
-    "Contact"
+    "Slicing"
    ],
    "genfamily": [
     "DP",
@@ -17224,11 +17224,11 @@
    "type": "Ghost",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
     "Protect",
-    "Punch",
-    "Contact"
+    "Punch"
    ],
    "genfamily": [
     "RS",
@@ -17253,10 +17253,10 @@
    "type": "Ghost",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "DP",
@@ -17497,10 +17497,10 @@
    "type": "Bug",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "SS",
@@ -17580,11 +17580,11 @@
    "type": "Normal",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
     "Protect",
-    "Slicing",
-    "Contact"
+    "Slicing"
    ],
    "genfamily": [
     "RB",
@@ -17753,10 +17753,10 @@
    "type": "Steel",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "SM",
@@ -17777,9 +17777,9 @@
    "type": "Steel",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "SS",
@@ -17858,13 +17858,13 @@
    "target": "Normal",
    "flags": [
     "Charge",
+    "Contact",
     "Fail Instruct",
     "Metronome",
     "Mirror",
     "No Sleep Talk",
     "Protect",
-    "Slicing",
-    "Contact"
+    "Slicing"
    ],
    "genfamily": [
     "SM",
@@ -18007,9 +18007,9 @@
    "type": "Fairy",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "SS",
@@ -18186,10 +18186,10 @@
    "type": "Steel",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "SS",
@@ -18209,10 +18209,10 @@
    "type": "Steel",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "GS",
@@ -18342,10 +18342,10 @@
    "type": "Ground",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "SM",
@@ -18366,11 +18366,11 @@
    "type": "Rock",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
     "Protect",
-    "Slicing",
-    "Contact"
+    "Slicing"
    ],
    "genfamily": [
     "SV",
@@ -18440,10 +18440,10 @@
    "type": "Fighting",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "BW",
@@ -18491,6 +18491,7 @@
    "type": "Normal",
    "target": "RandomNormal",
    "flags": [
+    "Contact",
     "Fail Copycat",
     "Fail Encore",
     "Fail Instruct",
@@ -18499,8 +18500,7 @@
     "Fail Sketch",
     "No Assist",
     "No Sleep Talk",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "RB",
@@ -18656,10 +18656,10 @@
    "type": "Dark",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "DP",
@@ -18683,10 +18683,10 @@
    "type": "Normal",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "RB",
@@ -18713,11 +18713,11 @@
    "type": "Electric",
    "target": "Normal",
    "flags": [
-    "Minimize",
+    "Contact",
     "Metronome",
+    "Minimize",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "SV",
@@ -18736,10 +18736,10 @@
    "type": "Fighting",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "RS",
@@ -19014,10 +19014,10 @@
    "type": "Normal",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "BW",
@@ -19115,10 +19115,10 @@
    "type": "Fire",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "SV",
@@ -19160,12 +19160,12 @@
    "type": "Dark",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Fail Copycat",
     "Fail Me First",
     "Mirror",
     "No Assist",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "GS",
@@ -19191,11 +19191,11 @@
    "type": "Normal",
    "target": "RandomNormal",
    "flags": [
+    "Contact",
     "Fail Instruct",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "RB",
@@ -19222,10 +19222,10 @@
    "type": "Dark",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "SM",
@@ -19275,11 +19275,11 @@
    "type": "Electric",
    "target": "Normal",
    "flags": [
+    "Bite",
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Bite",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "DP",
@@ -19303,11 +19303,11 @@
    "type": "Electric",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
     "Protect",
-    "Punch",
-    "Contact"
+    "Punch"
    ],
    "genfamily": [
     "RB",
@@ -19596,9 +19596,9 @@
    "type": "Grass",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "SV",
@@ -19776,10 +19776,10 @@
    "type": "Ice",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "SS",
@@ -19799,10 +19799,10 @@
    "type": "Fire",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "SM",
@@ -19823,10 +19823,10 @@
    "type": "Grass",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "SM",
@@ -19867,10 +19867,10 @@
    "type": "Bug",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "DP",
@@ -19894,10 +19894,10 @@
    "type": "Fighting",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "SV",
@@ -19997,10 +19997,10 @@
    "type": "Electric",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "RS",
@@ -20105,10 +20105,10 @@
    "type": "Water",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "RB",
@@ -20135,10 +20135,10 @@
    "type": "Water",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "SV",
@@ -20269,10 +20269,10 @@
    "type": "Electric",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "BW",
@@ -20346,10 +20346,10 @@
    "type": "Grass",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "DP",
@@ -20400,10 +20400,10 @@
    "type": "Normal",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "RB",
@@ -20487,10 +20487,10 @@
    "type": "Psychic",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "DP",
@@ -20514,10 +20514,10 @@
    "type": "Electric",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "SM",
@@ -20562,11 +20562,11 @@
    "type": "Fire",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
     "Protect",
-    "Punch",
-    "Contact"
+    "Punch"
    ],
    "genfamily": [
     "RB",
@@ -20593,10 +20593,10 @@
    "type": "Bug",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "SM",
@@ -20617,12 +20617,12 @@
    "type": "Flying",
    "target": "Any",
    "flags": [
+    "Contact",
     "Distance",
     "Metronome",
     "Mirror",
     "Protect",
-    "Slicing",
-    "Contact"
+    "Slicing"
    ],
    "genfamily": [
     "RS",
@@ -20916,11 +20916,11 @@
    "type": "Dark",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
     "Protect",
-    "Slicing",
-    "Contact"
+    "Slicing"
    ],
    "genfamily": [
     "DP",
@@ -21082,10 +21082,10 @@
    "type": "Normal",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
-    "Protect",
-    "Contact"
+    "Protect"
    ],
    "genfamily": [
     "GS",
@@ -21167,11 +21167,11 @@
    "type": "Bug",
    "target": "Normal",
    "flags": [
+    "Contact",
     "Metronome",
     "Mirror",
     "Protect",
-    "Slicing",
-    "Contact"
+    "Slicing"
    ],
    "genfamily": [
     "DP",
