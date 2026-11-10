@@ -1,7 +1,7 @@
 {
  "source": "pokebase.app/pokemon-champions",
  "game": "Pokemon Champions",
- "fetched": "2026-11-08",
+ "fetched": "2026-11-10",
  "count": 155,
  "rows": [
   {
@@ -62,38 +62,38 @@
   },
   {
    "rank": 9,
-   "slug": "trick-room",
-   "name": "Trick Room",
-   "usage_percent": 1.8,
-   "description": "The user creates a bizarre area in which slower Pokémon get to move first for five turns."
-  },
-  {
-   "rank": 10,
    "slug": "wood-hammer",
    "name": "Wood Hammer",
    "usage_percent": 1.8,
    "description": "The user slams its rugged body into the target to attack. This also damages the user quite a lot."
   },
   {
-   "rank": 11,
-   "slug": "shadow-ball",
-   "name": "Shadow Ball",
+   "rank": 10,
+   "slug": "trick-room",
+   "name": "Trick Room",
    "usage_percent": 1.7,
-   "description": "Has a 20% chance to lower the target’s Sp. Def by 1 stage."
+   "description": "The user creates a bizarre area in which slower Pokémon get to move first for five turns."
   },
   {
-   "rank": 12,
+   "rank": 11,
    "slug": "iron-head",
    "name": "Iron Head",
    "usage_percent": 1.6,
    "description": "The user slams the target with its steel-hard head. Has a 20% chance of making the target flinch."
   },
   {
-   "rank": 13,
+   "rank": 12,
    "slug": "parting-shot",
    "name": "Parting Shot",
    "usage_percent": 1.6,
    "description": "Lowers the target’s Attack and Sp. Atk by 1 stage, then switches the user out."
+  },
+  {
+   "rank": 13,
+   "slug": "shadow-ball",
+   "name": "Shadow Ball",
+   "usage_percent": 1.6,
+   "description": "Has a 20% chance to lower the target’s Sp. Def by 1 stage."
   },
   {
    "rank": 14,

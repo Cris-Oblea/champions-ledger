@@ -1,35 +1,35 @@
 {
  "source": "pokebase.app/pokemon-champions",
  "game": "Pokemon Champions",
- "fetched": "2026-11-08",
+ "fetched": "2026-11-10",
  "count": 215,
  "rows": [
   {
    "rank": 1,
    "slug": "intimidate",
    "name": "Intimidate",
-   "usage_percent": 10.99,
+   "usage_percent": 10.98,
    "description": "When the Pokémon enters a battle, it intimidates opposing Pokémon and makes them cower, lowering their Attack stats."
   },
   {
    "rank": 2,
    "slug": "grassy-surge",
    "name": "Grassy Surge",
-   "usage_percent": 8.0,
+   "usage_percent": 7.99,
    "description": "Turns the entire field into Grassy Terrain for 5 turns when the Pokémon enters a battle."
   },
   {
    "rank": 3,
    "slug": "unburden",
    "name": "Unburden",
-   "usage_percent": 5.77,
+   "usage_percent": 5.76,
    "description": "Boosts the Speed stat if the Pokémon's held item is used or lost."
   },
   {
    "rank": 4,
    "slug": "defiant",
    "name": "Defiant",
-   "usage_percent": 4.41,
+   "usage_percent": 4.43,
    "description": "If the Pokémon has any stat lowered by an opposing Pokémon, its Attack stat will be boosted sharply."
   },
   {
@@ -50,7 +50,7 @@
    "rank": 7,
    "slug": "levitate",
    "name": "Levitate",
-   "usage_percent": 3.72,
+   "usage_percent": 3.71,
    "description": "Damage dealing Ground-type moves have no effect on this Pokémon. Cannot be trapped by Arena Trap ability. Takes no damage from Spikes."
   },
   {
@@ -71,35 +71,35 @@
    "rank": 10,
    "slug": "aerilate",
    "name": "Aerilate",
-   "usage_percent": 3.43,
+   "usage_percent": 3.42,
    "description": "Normal-type moves become Flying-type moves. The power of those moves is boosted a little."
   },
   {
    "rank": 11,
    "slug": "psychic-surge",
    "name": "Psychic Surge",
-   "usage_percent": 3.39,
+   "usage_percent": 3.37,
    "description": "Turns the entire field into Psychic Terrain for 5 turns when the Pokémon enters a battle."
   },
   {
    "rank": 12,
+   "slug": "drought",
+   "name": "Drought",
+   "usage_percent": 3.26,
+   "description": "Turns the sunlight harsh when the Pokémon enters a battle."
+  },
+  {
+   "rank": 13,
    "slug": "tough-claws",
    "name": "Tough Claws",
    "usage_percent": 3.26,
    "description": "Powers up moves that make direct contact."
   },
   {
-   "rank": 13,
-   "slug": "drought",
-   "name": "Drought",
-   "usage_percent": 3.25,
-   "description": "Turns the sunlight harsh when the Pokémon enters a battle."
-  },
-  {
    "rank": 14,
    "slug": "blaze",
    "name": "Blaze",
-   "usage_percent": 3.24,
+   "usage_percent": 3.25,
    "description": "Powers up Fire-type moves when the Pokémon's HP is low."
   },
   {
@@ -113,14 +113,14 @@
    "rank": 16,
    "slug": "adaptability",
    "name": "Adaptability",
-   "usage_percent": 3.15,
+   "usage_percent": 3.16,
    "description": "Increases the Same Type Attack Bonus from *1.5 to *2."
   },
   {
    "rank": 17,
    "slug": "pixilate",
    "name": "Pixilate",
-   "usage_percent": 2.97,
+   "usage_percent": 2.96,
    "description": "Normal-type moves become Fairy-type moves. The power of those moves is boosted a little."
   },
   {
@@ -134,7 +134,7 @@
    "rank": 19,
    "slug": "prankster",
    "name": "Prankster",
-   "usage_percent": 2.66,
+   "usage_percent": 2.67,
    "description": "Increases the priority of the Pokémon's status moves by 1 stage. However, the Pokémon's status moves no longer work against Dark-type Pokémon."
   },
   {
@@ -155,14 +155,14 @@
    "rank": 22,
    "slug": "fairy-aura",
    "name": "Fairy Aura",
-   "usage_percent": 2.2,
+   "usage_percent": 2.21,
    "description": "Powers up every Pokémon in play's Fairy-type moves by 33%"
   },
   {
    "rank": 23,
    "slug": "rock-head",
    "name": "Rock Head",
-   "usage_percent": 2.09,
+   "usage_percent": 2.08,
    "description": "Protects the Pokémon from recoil damage."
   },
   {
@@ -183,7 +183,7 @@
    "rank": 26,
    "slug": "flame-body",
    "name": "Flame Body",
-   "usage_percent": 1.75,
+   "usage_percent": 1.74,
    "description": "Contact with the Pokémon may burn the attacker."
   },
   {
@@ -197,7 +197,7 @@
    "rank": 28,
    "slug": "contrary",
    "name": "Contrary",
-   "usage_percent": 1.57,
+   "usage_percent": 1.58,
    "description": "Reverses any stat changes affecting the Pokémon so that attempts to boost its stats instead lower them—and attempts to lower its stats will boost them."
   },
   {
@@ -225,7 +225,7 @@
    "rank": 32,
    "slug": "hospitality",
    "name": "Hospitality",
-   "usage_percent": 1.15,
+   "usage_percent": 1.16,
    "description": "When the Pokémon enters a battle, it showers its ally with hospitality, restoring a small amount of the ally's HP"
   },
   {
@@ -239,14 +239,14 @@
    "rank": 34,
    "slug": "flash-fire",
    "name": "Flash Fire",
-   "usage_percent": 1.08,
+   "usage_percent": 1.07,
    "description": "If hit by a Fire-type move, the Pokémon absorbs the flames and uses them to power up its own Fire-type moves."
   },
   {
    "rank": 35,
    "slug": "sand-rush",
    "name": "Sand Rush",
-   "usage_percent": 1.05,
+   "usage_percent": 1.06,
    "description": "Boosts the Pokémon's Speed stat in a sandstorm."
   },
   {
@@ -274,7 +274,7 @@
    "rank": 39,
    "slug": "trace",
    "name": "Trace",
-   "usage_percent": 0.86,
+   "usage_percent": 0.85,
    "description": "Ability becomes the same as that of the opponent. Switching this Pokémon out of battle restores its original ability. In a Double Battle, a random opponent’s ability will be copied."
   },
   {
@@ -351,7 +351,7 @@
    "rank": 50,
    "slug": "sheer-force",
    "name": "Sheer Force",
-   "usage_percent": 0.44,
+   "usage_percent": 0.45,
    "description": "Removes any additional effects from the Pokémon's moves, but increases the moves' power."
   },
   {
@@ -379,22 +379,22 @@
    "rank": 54,
    "slug": "solid-rock",
    "name": "Solid Rock",
-   "usage_percent": 0.37,
+   "usage_percent": 0.38,
    "description": "Reduces the power of supereffective attacks that hit the Pokémon."
   },
   {
    "rank": 55,
-   "slug": "thermal-exchange",
-   "name": "Thermal Exchange",
-   "usage_percent": 0.34,
-   "description": "When the Pokémon takes damage from a Fire-type move, its Attack stat is boosted by 1 stage. The Pokémon cannot be burned."
-  },
-  {
-   "rank": 56,
    "slug": "regenerator",
    "name": "Regenerator",
    "usage_percent": 0.33,
    "description": "The Pokémon has a little of its HP restored when withdrawn from battle."
+  },
+  {
+   "rank": 56,
+   "slug": "thermal-exchange",
+   "name": "Thermal Exchange",
+   "usage_percent": 0.33,
+   "description": "When the Pokémon takes damage from a Fire-type move, its Attack stat is boosted by 1 stage. The Pokémon cannot be burned."
   },
   {
    "rank": 57,
@@ -496,24 +496,24 @@
   },
   {
    "rank": 71,
+   "slug": "thick-fat",
+   "name": "Thick Fat",
+   "usage_percent": 0.17,
+   "description": "The Pokémon is protected by a layer of thick fat, which halves the damage taken from Fire- and Ice-type moves."
+  },
+  {
+   "rank": 72,
    "slug": "friend-guard",
    "name": "Friend Guard",
    "usage_percent": 0.16,
    "description": "Reduces damage dealt to allies."
   },
   {
-   "rank": 72,
+   "rank": 73,
    "slug": "spicy-spray",
    "name": "Spicy Spray",
    "usage_percent": 0.16,
    "description": "When the Pokémon takes damage from a move, it burns the attacker."
-  },
-  {
-   "rank": 73,
-   "slug": "thick-fat",
-   "name": "Thick Fat",
-   "usage_percent": 0.16,
-   "description": "The Pokémon is protected by a layer of thick fat, which halves the damage taken from Fire- and Ice-type moves."
   },
   {
    "rank": 74,
@@ -622,31 +622,31 @@
   },
   {
    "rank": 89,
+   "slug": "sturdy",
+   "name": "Sturdy",
+   "usage_percent": 0.1,
+   "description": "The Pokémon cannot be knocked out by a single hit as long as its HP is full. One-hit KO moves will also fail to knock it out."
+  },
+  {
+   "rank": 90,
    "slug": "unaware",
    "name": "Unaware",
    "usage_percent": 0.1,
    "description": "When attacking, the Pokémon ignores the target's stat changes."
   },
   {
-   "rank": 90,
+   "rank": 91,
    "slug": "mega-sol",
    "name": "Mega Sol",
    "usage_percent": 0.09,
    "description": "Even when the sunlight has not turned harsh, the Pokémon can use its moves as if the weather were harsh sunlight."
   },
   {
-   "rank": 91,
+   "rank": 92,
    "slug": "queenly-majesty",
    "name": "Queenly Majesty",
    "usage_percent": 0.09,
    "description": "Opponents are unable to use priority moves against the Pokémon or its allies."
-  },
-  {
-   "rank": 92,
-   "slug": "sturdy",
-   "name": "Sturdy",
-   "usage_percent": 0.09,
-   "description": "The Pokémon cannot be knocked out by a single hit as long as its HP is full. One-hit KO moves will also fail to knock it out."
   },
   {
    "rank": 93,
@@ -741,73 +741,73 @@
   },
   {
    "rank": 106,
+   "slug": "filter",
+   "name": "Filter",
+   "usage_percent": 0.05,
+   "description": "Reduces the power of supereffective attacks that hit the Pokémon."
+  },
+  {
+   "rank": 107,
    "slug": "leaf-guard",
    "name": "Leaf Guard",
    "usage_percent": 0.05,
    "description": "Prevents status conditions in harsh sunlight."
   },
   {
-   "rank": 107,
+   "rank": 108,
+   "slug": "parental-bond",
+   "name": "Parental Bond",
+   "usage_percent": 0.05,
+   "description": "Parent and child each attacks."
+  },
+  {
+   "rank": 109,
    "slug": "stalwart",
    "name": "Stalwart",
    "usage_percent": 0.05,
    "description": "Ignores the effects of opposing Pokémon's Abilities and moves that draw in moves."
   },
   {
-   "rank": 108,
+   "rank": 110,
    "slug": "eelevate",
    "name": "Eelevate",
    "usage_percent": 0.04,
    "description": "The Pokémon floats off the ground, making it immune to Ground-type moves, as well as the Spikes, Toxic Spikes, and Sticky Web statuses. When the Pokémon knocks out a target with an attack, its highest stat is boosted by 1 stage."
   },
   {
-   "rank": 109,
-   "slug": "filter",
-   "name": "Filter",
-   "usage_percent": 0.04,
-   "description": "Reduces the power of supereffective attacks that hit the Pokémon."
-  },
-  {
-   "rank": 110,
+   "rank": 111,
    "slug": "frisk",
    "name": "Frisk",
    "usage_percent": 0.04,
    "description": "When it enters a battle, the Pokémon can check an opposing Pokémon's held item."
   },
   {
-   "rank": 111,
+   "rank": 112,
    "slug": "magic-guard",
    "name": "Magic Guard",
    "usage_percent": 0.04,
    "description": "The Pokémon only takes damage from attacks."
   },
   {
-   "rank": 112,
+   "rank": 113,
    "slug": "magician",
    "name": "Magician",
    "usage_percent": 0.04,
    "description": "The Pokémon steals the held item from any target it hits with a move."
   },
   {
-   "rank": 113,
+   "rank": 114,
    "slug": "natural-cure",
    "name": "Natural Cure",
    "usage_percent": 0.04,
    "description": "The Pokémon's status conditions are cured when it switches out."
   },
   {
-   "rank": 114,
+   "rank": 115,
    "slug": "own-tempo",
    "name": "Own Tempo",
    "usage_percent": 0.04,
    "description": "The Pokémon sticks to its own tempo, preventing it from becoming confused or being affected by Intimidate."
-  },
-  {
-   "rank": 115,
-   "slug": "parental-bond",
-   "name": "Parental Bond",
-   "usage_percent": 0.04,
-   "description": "Parent and child each attacks."
   },
   {
    "rank": 116,
