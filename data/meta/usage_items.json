@@ -1,7 +1,7 @@
 {
  "source": "pokebase.app/pokemon-champions",
  "game": "Pokemon Champions",
- "fetched": "2026-11-09",
+ "fetched": "2026-11-10",
  "count": 162,
  "rows": [
   {
@@ -15,7 +15,7 @@
    "rank": 2,
    "slug": "sitrus-berry",
    "name": "Sitrus Berry",
-   "usage_percent": 58.1,
+   "usage_percent": 58.0,
    "description": "Restores 1/4 of the holder’s max HP when its HP falls to 1/2 or less. Consumed after use."
   },
   {
@@ -71,7 +71,7 @@
    "rank": 10,
    "slug": "charizardite-y",
    "name": "Charizardite Y",
-   "usage_percent": 15.2,
+   "usage_percent": 15.3,
    "description": "One of a variety of mysterious Mega Stones. A Charizard holding this stone will be able to Mega Evolve during battle."
   },
   {
@@ -85,7 +85,7 @@
    "rank": 12,
    "slug": "psychic-seed",
    "name": "Psychic Seed",
-   "usage_percent": 14.0,
+   "usage_percent": 13.9,
    "description": "Boosts the holder's Sp. Def stat by 1 stage on Psychic Terrain. Disappears for the duration of the battle after a single use."
   },
   {
@@ -99,7 +99,7 @@
    "rank": 14,
    "slug": "garchompite-z",
    "name": "Garchompite Z",
-   "usage_percent": 13.7,
+   "usage_percent": 13.6,
    "description": "A held item that allows Garchomp to Mega Evolve into Mega Garchomp Z."
   },
   {
@@ -197,7 +197,7 @@
    "rank": 28,
    "slug": "mystic-water",
    "name": "Mystic Water",
-   "usage_percent": 4.6,
+   "usage_percent": 4.7,
    "description": "Boosts the power of the holder’s Water-type moves by 20%."
   },
   {
@@ -239,7 +239,7 @@
    "rank": 34,
    "slug": "eject-button",
    "name": "Eject Button",
-   "usage_percent": 3.1,
+   "usage_percent": 3.2,
    "description": "Switches the holder out of battle when the holder takes damage from a move. Disappears for the duration of the battle after a single use."
   },
   {
@@ -258,17 +258,17 @@
   },
   {
    "rank": 37,
+   "slug": "passho-berry",
+   "name": "Passho Berry",
+   "usage_percent": 2.5,
+   "description": "Halves damage from the first supereffective Water-type attack. Consumed after use."
+  },
+  {
+   "rank": 38,
    "slug": "cameruptite",
    "name": "Cameruptite",
    "usage_percent": 2.4,
    "description": "One of a variety of mysterious Mega Stones. A Camerupt holding this stone will be able to Mega Evolve during battle."
-  },
-  {
-   "rank": 38,
-   "slug": "passho-berry",
-   "name": "Passho Berry",
-   "usage_percent": 2.4,
-   "description": "Halves damage from the first supereffective Water-type attack. Consumed after use."
   },
   {
    "rank": 39,
