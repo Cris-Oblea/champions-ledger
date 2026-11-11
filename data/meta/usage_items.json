@@ -1,7 +1,7 @@
 {
  "source": "pokebase.app/pokemon-champions",
  "game": "Pokemon Champions",
- "fetched": "2026-11-10",
+ "fetched": "2026-11-11",
  "count": 162,
  "rows": [
   {
@@ -29,7 +29,7 @@
    "rank": 4,
    "slug": "miracle-seed",
    "name": "Miracle Seed",
-   "usage_percent": 34.6,
+   "usage_percent": 34.5,
    "description": "Boosts the power of the holder’s Grass-type moves by 20%."
   },
   {
@@ -148,7 +148,7 @@
    "rank": 21,
    "slug": "light-clay",
    "name": "Light Clay",
-   "usage_percent": 8.3,
+   "usage_percent": 8.4,
    "description": "Extends the duration of Light Screen, Reflect, and Aurora Veil by 3 turns (8 turns total)."
   },
   {
@@ -239,14 +239,14 @@
    "rank": 34,
    "slug": "eject-button",
    "name": "Eject Button",
-   "usage_percent": 3.2,
+   "usage_percent": 3.1,
    "description": "Switches the holder out of battle when the holder takes damage from a move. Disappears for the duration of the battle after a single use."
   },
   {
    "rank": 35,
    "slug": "raichunite-x",
    "name": "Raichunite X",
-   "usage_percent": 3.0,
+   "usage_percent": 3.1,
    "description": "One of a variety of mysterious Mega Stones. A Raichu holding this stone will be able to Mega Evolve during battle."
   },
   {
@@ -258,17 +258,17 @@
   },
   {
    "rank": 37,
-   "slug": "passho-berry",
-   "name": "Passho Berry",
-   "usage_percent": 2.5,
-   "description": "Halves damage from the first supereffective Water-type attack. Consumed after use."
-  },
-  {
-   "rank": 38,
    "slug": "cameruptite",
    "name": "Cameruptite",
    "usage_percent": 2.4,
    "description": "One of a variety of mysterious Mega Stones. A Camerupt holding this stone will be able to Mega Evolve during battle."
+  },
+  {
+   "rank": 38,
+   "slug": "passho-berry",
+   "name": "Passho Berry",
+   "usage_percent": 2.4,
+   "description": "Halves damage from the first supereffective Water-type attack. Consumed after use."
   },
   {
    "rank": 39,
@@ -279,17 +279,17 @@
   },
   {
    "rank": 40,
+   "slug": "electric-seed",
+   "name": "Electric Seed",
+   "usage_percent": 2.3,
+   "description": "Boosts the holder's Defense stat by 1 stage on Electric Terrain. Disappears for the duration of the battle after a single use."
+  },
+  {
+   "rank": 41,
    "slug": "glimmoranite",
    "name": "Glimmoranite",
    "usage_percent": 2.3,
    "description": "One of a variety of mysterious Mega Stones. A Glimmora holding this stone will be able to Mega Evolve during battle."
-  },
-  {
-   "rank": 41,
-   "slug": "electric-seed",
-   "name": "Electric Seed",
-   "usage_percent": 2.2,
-   "description": "Boosts the holder's Defense stat by 1 stage on Electric Terrain. Disappears for the duration of the battle after a single use."
   },
   {
    "rank": 42,
@@ -398,52 +398,52 @@
   },
   {
    "rank": 57,
+   "slug": "meganiumite",
+   "name": "Meganiumite",
+   "usage_percent": 0.6,
+   "description": "One of a variety of mysterious Mega Stones. A Meganium holding this stone will be able to Mega Evolve during battle."
+  },
+  {
+   "rank": 58,
    "slug": "sharp-beak",
    "name": "Sharp Beak",
    "usage_percent": 0.6,
    "description": "Boosts the power of the holder’s Flying-type moves by 20%."
   },
   {
-   "rank": 58,
+   "rank": 59,
    "slug": "twisted-spoon",
    "name": "Twisted Spoon",
    "usage_percent": 0.6,
    "description": "Boosts the power of the holder’s Psychic-type moves by 20%."
   },
   {
-   "rank": 59,
+   "rank": 60,
    "slug": "bright-powder",
    "name": "Bright Powder",
    "usage_percent": 0.5,
    "description": "Lowers the accuracy of moves targeting the holder by 10%."
   },
   {
-   "rank": 60,
+   "rank": 61,
    "slug": "garchompite",
    "name": "Garchompite",
    "usage_percent": 0.5,
    "description": "One of a variety of mysterious Mega Stones. A Garchomp holding this stone will be able to Mega Evolve during battle."
   },
   {
-   "rank": 61,
+   "rank": 62,
    "slug": "haban-berry",
    "name": "Haban Berry",
    "usage_percent": 0.5,
    "description": "Halves damage from the first supereffective Dragon-type attack. Consumed after use."
   },
   {
-   "rank": 62,
+   "rank": 63,
    "slug": "lopunnite",
    "name": "Lopunnite",
    "usage_percent": 0.5,
    "description": "One of a variety of mysterious Mega Stones. A Lopunny holding this stone will be able to Mega Evolve during battle."
-  },
-  {
-   "rank": 63,
-   "slug": "meganiumite",
-   "name": "Meganiumite",
-   "usage_percent": 0.5,
-   "description": "One of a variety of mysterious Mega Stones. A Meganium holding this stone will be able to Mega Evolve during battle."
   },
   {
    "rank": 64,
