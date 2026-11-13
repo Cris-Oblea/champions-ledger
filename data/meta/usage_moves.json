@@ -1,8 +1,8 @@
 {
  "source": "pokebase.app/pokemon-champions",
  "game": "Pokemon Champions",
- "fetched": "2026-11-12",
- "count": 155,
+ "fetched": "2026-11-13",
+ "count": 154,
  "rows": [
   {
    "rank": 1,
@@ -146,45 +146,45 @@
   },
   {
    "rank": 21,
+   "slug": "moonblast",
+   "name": "Moonblast",
+   "usage_percent": 1.1,
+   "description": "Borrowing the power of the moon, the user attacks the target. Has a 10% chance of lowering the target's Sp. Atk stat by 1 stage."
+  },
+  {
+   "rank": 22,
    "slug": "nasty-plot",
    "name": "Nasty Plot",
    "usage_percent": 1.1,
    "description": "The user stimulates its brain by thinking bad thoughts. This sharply boosts the user's Sp. Atk stat."
   },
   {
-   "rank": 22,
+   "rank": 23,
    "slug": "psychic",
    "name": "Psychic",
    "usage_percent": 1.1,
    "description": "The target is hit with a strong telekinetic force to inflict damage. This may also lower the target’s Sp. Def stat."
   },
   {
-   "rank": 23,
+   "rank": 24,
    "slug": "draco-meteor",
    "name": "Draco Meteor",
    "usage_percent": 1.0,
    "description": "Comets are summoned down from the sky onto the target. The recoil from this move harshly lowers the user’s Sp. Atk stat."
   },
   {
-   "rank": 24,
+   "rank": 25,
    "slug": "earth-power",
    "name": "Earth Power",
    "usage_percent": 1.0,
    "description": "The user makes the ground under the target erupt with power. This may also lower the target's Sp. Def stat."
   },
   {
-   "rank": 25,
+   "rank": 26,
    "slug": "kowtow-cleave",
    "name": "Kowtow Cleave",
    "usage_percent": 1.0,
    "description": "The user slashes at the target after kowtowing to make the target let down its guard. This attack never misses."
-  },
-  {
-   "rank": 26,
-   "slug": "moonblast",
-   "name": "Moonblast",
-   "usage_percent": 1.0,
-   "description": "Borrowing the power of the moon, the user attacks the target. Has a 10% chance of lowering the target's Sp. Atk stat by 1 stage."
   },
   {
    "rank": 27,
@@ -853,237 +853,230 @@
   },
   {
    "rank": 122,
-   "slug": "first-impression",
-   "name": "First Impression",
-   "usage_percent": 0.1,
-   "description": "Although this move has great power, it works only on the first turn each time the user enters battle."
-  },
-  {
-   "rank": 123,
    "slug": "foul-play",
    "name": "Foul Play",
    "usage_percent": 0.1,
    "description": "The user turns the target's strength against it. The higher the target's Attack stat, the greater the damage this move inflicts."
   },
   {
-   "rank": 124,
+   "rank": 123,
    "slug": "freeze-dry",
    "name": "Freeze-Dry",
    "usage_percent": 0.1,
    "description": "The user rapidly cools the target. This may also leave the target frozen. This move is super effective on Water types."
   },
   {
-   "rank": 125,
+   "rank": 124,
    "slug": "glaive-rush",
    "name": "Glaive Rush",
    "usage_percent": 0.1,
    "description": "The user gains the Wide Open status until the next time it takes an action."
   },
   {
-   "rank": 126,
+   "rank": 125,
    "slug": "gunk-shot",
    "name": "Gunk Shot",
    "usage_percent": 0.1,
    "description": "The user shoots filthy garbage at the target to attack. This may also poison the target."
   },
   {
-   "rank": 127,
+   "rank": 126,
    "slug": "hydro-pump",
    "name": "Hydro Pump",
    "usage_percent": 0.1,
    "description": "The target is blasted by a huge volume of water launched under great pressure."
   },
   {
-   "rank": 128,
+   "rank": 127,
    "slug": "ice-shard",
    "name": "Ice Shard",
    "usage_percent": 0.1,
    "description": "The user flash-freezes chunks of ice and hurls them at the target. This move always goes first."
   },
   {
-   "rank": 129,
+   "rank": 128,
    "slug": "icicle-crash",
    "name": "Icicle Crash",
    "usage_percent": 0.1,
    "description": "The user attacks by crashing large icicles onto the target. This may also make the target flinch."
   },
   {
-   "rank": 130,
+   "rank": 129,
    "slug": "infestation",
    "name": "Infestation",
    "usage_percent": 0.1,
    "description": "The target is infested and attacked for four to five turns. The target can't flee during this time."
   },
   {
-   "rank": 131,
+   "rank": 130,
    "slug": "life-dew",
    "name": "Life Dew",
    "usage_percent": 0.1,
    "description": "The user scatters mysterious water around and restores the HP of itself and its ally Pokémon currently in the battle."
   },
   {
-   "rank": 132,
+   "rank": 131,
    "slug": "light-of-ruin",
    "name": "Light of Ruin",
    "usage_percent": 0.1,
    "description": "Drawing power from the Eternal Flower, the user fires a powerful beam of light. This also damages the user quite a lot."
   },
   {
-   "rank": 133,
+   "rank": 132,
    "slug": "night-slash",
    "name": "Night Slash",
    "usage_percent": 0.1,
    "description": "The user slashes the target the instant an opportunity arises. This move has a heightened chance of landing a critical hit."
   },
   {
-   "rank": 134,
+   "rank": 133,
    "slug": "phantom-force",
    "name": "Phantom Force",
    "usage_percent": 0.1,
    "description": "The user vanishes somewhere, then strikes the target on the next turn. This move hits even if the target protects itself."
   },
   {
-   "rank": 135,
+   "rank": 134,
    "slug": "play-rough",
    "name": "Play Rough",
    "usage_percent": 0.1,
    "description": "The user attacks by playing rough with the target. This may also lower the target's Attack stat."
   },
   {
-   "rank": 136,
+   "rank": 135,
    "slug": "psycho-cut",
    "name": "Psycho Cut",
    "usage_percent": 0.1,
    "description": "The user tears at the target with blades formed by psychic power. This move has a heightened chance of landing a critical hit."
   },
   {
-   "rank": 137,
+   "rank": 136,
    "slug": "psyshock",
    "name": "Psyshock",
    "usage_percent": 0.1,
    "description": "The user materializes an odd psychic wave to attack the target. This move deals physical damage."
   },
   {
-   "rank": 138,
+   "rank": 137,
    "slug": "quick-guard",
    "name": "Quick Guard",
    "usage_percent": 0.1,
    "description": "The user protects itself and its allies from priority moves."
   },
   {
-   "rank": 139,
+   "rank": 138,
    "slug": "rain-dance",
    "name": "Rain Dance",
    "usage_percent": 0.1,
    "description": "Summons rain for 5 turns, boosting Water-type moves by 50% and reducing Fire-type moves by 50%."
   },
   {
-   "rank": 140,
+   "rank": 139,
    "slug": "recover",
    "name": "Recover",
    "usage_percent": 0.1,
    "description": "The user regenerates its cells, restoring its own HP by up to half its max HP."
   },
   {
-   "rank": 141,
+   "rank": 140,
    "slug": "sacred-sword",
    "name": "Sacred Sword",
    "usage_percent": 0.1,
    "description": "The user attacks by slicing with a sword. The target's stat changes don't affect the damage inflicted by this move."
   },
   {
-   "rank": 142,
+   "rank": 141,
    "slug": "shadow-claw",
    "name": "Shadow Claw",
    "usage_percent": 0.1,
    "description": "The user attacks by slashing the target with a sharp claw made from shadows. This move has a heightened chance of landing a critical hit."
   },
   {
-   "rank": 143,
+   "rank": 142,
    "slug": "shadow-sneak",
    "name": "Shadow Sneak",
    "usage_percent": 0.1,
    "description": "The user extends its shadow and attacks the target from behind. This move always goes first."
   },
   {
-   "rank": 144,
+   "rank": 143,
    "slug": "shell-smash",
    "name": "Shell Smash",
    "usage_percent": 0.1,
    "description": "The user breaks its shell, which lowers its Defense and Sp. Def stats but sharply boosts its Attack, Sp. Atk, and Speed stats."
   },
   {
-   "rank": 145,
+   "rank": 144,
    "slug": "steel-roller",
    "name": "Steel Roller",
    "usage_percent": 0.1,
    "description": "The user attacks while destroying the terrain. This move fails if the ground hasn't turned into a terrain."
   },
   {
-   "rank": 146,
+   "rank": 145,
    "slug": "substitute",
    "name": "Substitute",
    "usage_percent": 0.1,
    "description": "The user loses 1/4 of its max HP to create a substitute. The substitute will be hit by moves instead of the user, and it will vanish when it takes damage equal to 1/4 of the user's max HP. Sound-based moves will hit the user through the substitute."
   },
   {
-   "rank": 147,
+   "rank": 146,
    "slug": "sunny-day",
    "name": "Sunny Day",
    "usage_percent": 0.1,
    "description": "Summons harsh sunlight for 5 turns, boosting Fire-type moves by 50% and reducing Water-type moves by 50%."
   },
   {
-   "rank": 148,
+   "rank": 147,
    "slug": "superpower",
    "name": "Superpower",
    "usage_percent": 0.1,
    "description": "The user attacks the target with great power. This also lowers the user's Attack and Defense stats."
   },
   {
-   "rank": 149,
+   "rank": 148,
    "slug": "taunt",
    "name": "Taunt",
    "usage_percent": 0.1,
    "description": "The target is taunted into a rage that allows it to use only attack moves for three turns."
   },
   {
-   "rank": 150,
+   "rank": 149,
    "slug": "terrain-pulse",
    "name": "Terrain Pulse",
    "usage_percent": 0.1,
    "description": "The user utilizes the energy of the terrain to attack. This move’s type and power change depending on the terrain at the time the move is used."
   },
   {
-   "rank": 151,
+   "rank": 150,
    "slug": "toxic",
    "name": "Toxic",
    "usage_percent": 0.1,
    "description": "A move that leaves the target badly poisoned. Its poison damage worsens every turn."
   },
   {
-   "rank": 152,
+   "rank": 151,
    "slug": "triple-axel",
    "name": "Triple Axel",
    "usage_percent": 0.1,
    "description": "A consecutive three-kick attack that becomes more powerful with each successful hit."
   },
   {
-   "rank": 153,
+   "rank": 152,
    "slug": "twin-beam",
    "name": "Twin Beam",
    "usage_percent": 0.1,
    "description": "The user shoots mystical beams from its eyes to inflict damage. The target is hit twice in a row."
   },
   {
-   "rank": 154,
+   "rank": 153,
    "slug": "volt-tackle",
    "name": "Volt Tackle",
    "usage_percent": 0.1,
    "description": "The user electrifies itself and charges the target. This also damages the user quite a lot. This attack may leave the target with paralysis."
   },
   {
-   "rank": 155,
+   "rank": 154,
    "slug": "water-spout",
    "name": "Water Spout",
    "usage_percent": 0.1,
