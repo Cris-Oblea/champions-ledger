@@ -1,42 +1,42 @@
 {
  "source": "pokebase.app/pokemon-champions",
  "game": "Pokemon Champions",
- "fetched": "2026-11-12",
+ "fetched": "2026-11-13",
  "count": 215,
  "rows": [
   {
    "rank": 1,
    "slug": "intimidate",
    "name": "Intimidate",
-   "usage_percent": 10.97,
+   "usage_percent": 10.96,
    "description": "When the Pokémon enters a battle, it intimidates opposing Pokémon and makes them cower, lowering their Attack stats."
   },
   {
    "rank": 2,
    "slug": "grassy-surge",
    "name": "Grassy Surge",
-   "usage_percent": 7.95,
+   "usage_percent": 7.94,
    "description": "Turns the entire field into Grassy Terrain for 5 turns when the Pokémon enters a battle."
   },
   {
    "rank": 3,
    "slug": "unburden",
    "name": "Unburden",
-   "usage_percent": 5.75,
+   "usage_percent": 5.74,
    "description": "Boosts the Speed stat if the Pokémon's held item is used or lost."
   },
   {
    "rank": 4,
    "slug": "defiant",
    "name": "Defiant",
-   "usage_percent": 4.44,
+   "usage_percent": 4.46,
    "description": "If the Pokémon has any stat lowered by an opposing Pokémon, its Attack stat will be boosted sharply."
   },
   {
    "rank": 5,
    "slug": "rough-skin",
    "name": "Rough Skin",
-   "usage_percent": 4.12,
+   "usage_percent": 4.13,
    "description": "The Pokémon's rough skin damages attackers that make direct contact with it."
   },
   {
@@ -50,14 +50,14 @@
    "rank": 7,
    "slug": "levitate",
    "name": "Levitate",
-   "usage_percent": 3.7,
+   "usage_percent": 3.69,
    "description": "Damage dealing Ground-type moves have no effect on this Pokémon. Cannot be trapped by Arena Trap ability. Takes no damage from Spikes."
   },
   {
    "rank": 8,
    "slug": "good-as-gold",
    "name": "Good as Gold",
-   "usage_percent": 3.63,
+   "usage_percent": 3.62,
    "description": "A body of pure, solid gold gives the Pokémon full immunity to other Pokémon's status moves."
   },
   {
@@ -78,7 +78,7 @@
    "rank": 11,
    "slug": "psychic-surge",
    "name": "Psychic Surge",
-   "usage_percent": 3.36,
+   "usage_percent": 3.35,
    "description": "Turns the entire field into Psychic Terrain for 5 turns when the Pokémon enters a battle."
   },
   {
@@ -92,14 +92,14 @@
    "rank": 13,
    "slug": "blaze",
    "name": "Blaze",
-   "usage_percent": 3.27,
+   "usage_percent": 3.28,
    "description": "Powers up Fire-type moves when the Pokémon's HP is low."
   },
   {
    "rank": 14,
    "slug": "tough-claws",
    "name": "Tough Claws",
-   "usage_percent": 3.24,
+   "usage_percent": 3.23,
    "description": "Powers up moves that make direct contact."
   },
   {
@@ -113,7 +113,7 @@
    "rank": 16,
    "slug": "adaptability",
    "name": "Adaptability",
-   "usage_percent": 3.17,
+   "usage_percent": 3.18,
    "description": "Increases the Same Type Attack Bonus from *1.5 to *2."
   },
   {
@@ -127,7 +127,7 @@
    "rank": 18,
    "slug": "flower-veil",
    "name": "Flower Veil",
-   "usage_percent": 2.7,
+   "usage_percent": 2.69,
    "description": "Ally Grass-type Pokémon are protected from status conditions and the lowering of their stats."
   },
   {
@@ -162,42 +162,42 @@
    "rank": 23,
    "slug": "rock-head",
    "name": "Rock Head",
-   "usage_percent": 2.07,
+   "usage_percent": 2.06,
    "description": "Protects the Pokémon from recoil damage."
   },
   {
    "rank": 24,
    "slug": "emergency-exit",
    "name": "Emergency Exit",
-   "usage_percent": 2.05,
+   "usage_percent": 2.04,
    "description": "The Pokémon switches out of battle when its HP drops to 1/2 or less of its max."
   },
   {
    "rank": 25,
    "slug": "competitive",
    "name": "Competitive",
-   "usage_percent": 1.79,
+   "usage_percent": 1.78,
    "description": "Boosts the Pokémon's Sp. Atk stat sharply when its stats are lowered by an opposing Pokémon."
   },
   {
    "rank": 26,
    "slug": "flame-body",
    "name": "Flame Body",
-   "usage_percent": 1.74,
+   "usage_percent": 1.73,
    "description": "Contact with the Pokémon may burn the attacker."
   },
   {
    "rank": 27,
    "slug": "cursed-body",
    "name": "Cursed Body",
-   "usage_percent": 1.66,
+   "usage_percent": 1.67,
    "description": "May disable a move that has dealt damage to the Pokémon."
   },
   {
    "rank": 28,
    "slug": "contrary",
    "name": "Contrary",
-   "usage_percent": 1.58,
+   "usage_percent": 1.59,
    "description": "Reverses any stat changes affecting the Pokémon so that attempts to boost its stats instead lower them—and attempts to lower its stats will boost them."
   },
   {
@@ -253,7 +253,7 @@
    "rank": 36,
    "slug": "inner-focus",
    "name": "Inner Focus",
-   "usage_percent": 1.03,
+   "usage_percent": 1.02,
    "description": "The Pokémon's intense focus prevents it from flinching or being affected by Intimidate."
   },
   {
@@ -302,7 +302,7 @@
    "rank": 43,
    "slug": "toxic-debris",
    "name": "Toxic Debris",
-   "usage_percent": 0.62,
+   "usage_percent": 0.63,
    "description": "Scatters poison spikes at the feet of the opposing team when the Pokémon takes damage from physical moves."
   },
   {
@@ -316,21 +316,21 @@
    "rank": 45,
    "slug": "soundproof",
    "name": "Soundproof",
-   "usage_percent": 0.56,
+   "usage_percent": 0.57,
    "description": "Soundproofing gives the Pokémon full immunity to all sound-based moves."
   },
   {
    "rank": 46,
    "slug": "electric-surge",
    "name": "Electric Surge",
-   "usage_percent": 0.55,
+   "usage_percent": 0.56,
    "description": "Turns the ground into Electric Terrain when the Pokémon enters a battle."
   },
   {
    "rank": 47,
    "slug": "torrent",
    "name": "Torrent",
-   "usage_percent": 0.55,
+   "usage_percent": 0.56,
    "description": "Powers up Water-type moves when the Pokémon's HP is low."
   },
   {
@@ -351,7 +351,7 @@
    "rank": 50,
    "slug": "sheer-force",
    "name": "Sheer Force",
-   "usage_percent": 0.45,
+   "usage_percent": 0.46,
    "description": "Removes any additional effects from the Pokémon's moves, but increases the moves' power."
   },
   {
@@ -363,24 +363,24 @@
   },
   {
    "rank": 52,
+   "slug": "solid-rock",
+   "name": "Solid Rock",
+   "usage_percent": 0.39,
+   "description": "Reduces the power of supereffective attacks that hit the Pokémon."
+  },
+  {
+   "rank": 53,
    "slug": "magic-bounce",
    "name": "Magic Bounce",
    "usage_percent": 0.38,
    "description": "Reflects non-attacking moves used on the Pokémon back to the attacking Pokémon"
   },
   {
-   "rank": 53,
+   "rank": 54,
    "slug": "mirror-armor",
    "name": "Mirror Armor",
-   "usage_percent": 0.38,
+   "usage_percent": 0.37,
    "description": "Bounces back only the stat-lowering effects that the Pokémon receives."
-  },
-  {
-   "rank": 54,
-   "slug": "solid-rock",
-   "name": "Solid Rock",
-   "usage_percent": 0.38,
-   "description": "Reduces the power of supereffective attacks that hit the Pokémon."
   },
   {
    "rank": 55,
@@ -491,29 +491,29 @@
    "rank": 70,
    "slug": "overgrow",
    "name": "Overgrow",
-   "usage_percent": 0.19,
+   "usage_percent": 0.18,
    "description": "Powers up Grass-type moves when the Pokémon's HP is low."
   },
   {
    "rank": 71,
+   "slug": "spicy-spray",
+   "name": "Spicy Spray",
+   "usage_percent": 0.17,
+   "description": "When the Pokémon takes damage from a move, it burns the attacker."
+  },
+  {
+   "rank": 72,
    "slug": "thick-fat",
    "name": "Thick Fat",
    "usage_percent": 0.17,
    "description": "The Pokémon is protected by a layer of thick fat, which halves the damage taken from Fire- and Ice-type moves."
   },
   {
-   "rank": 72,
+   "rank": 73,
    "slug": "friend-guard",
    "name": "Friend Guard",
    "usage_percent": 0.16,
    "description": "Reduces damage dealt to allies."
-  },
-  {
-   "rank": 73,
-   "slug": "spicy-spray",
-   "name": "Spicy Spray",
-   "usage_percent": 0.16,
-   "description": "When the Pokémon takes damage from a move, it burns the attacker."
   },
   {
    "rank": 74,
@@ -594,31 +594,31 @@
   },
   {
    "rank": 85,
+   "slug": "snow-cloak",
+   "name": "Snow Cloak",
+   "usage_percent": 0.11,
+   "description": "Boosts the Pokémon's evasiveness in snow."
+  },
+  {
+   "rank": 86,
    "slug": "telepathy",
    "name": "Telepathy",
    "usage_percent": 0.11,
    "description": "The Pokémon anticipates and dodges the attacks of its allies."
   },
   {
-   "rank": 86,
+   "rank": 87,
    "slug": "illusion",
    "name": "Illusion",
    "usage_percent": 0.1,
    "description": "The Pokémon fools opponents by entering battle disguised as the last Pokémon in its Trainer's party."
   },
   {
-   "rank": 87,
+   "rank": 88,
    "slug": "limber",
    "name": "Limber",
    "usage_percent": 0.1,
    "description": "The Pokémon's limber body prevents it from being paralyzed."
-  },
-  {
-   "rank": 88,
-   "slug": "snow-cloak",
-   "name": "Snow Cloak",
-   "usage_percent": 0.1,
-   "description": "Boosts the Pokémon's evasiveness in snow."
   },
   {
    "rank": 89,
@@ -881,101 +881,101 @@
   },
   {
    "rank": 126,
+   "slug": "skill-link",
+   "name": "Skill Link",
+   "usage_percent": 0.03,
+   "description": "Maximizes the number of times multistrike moves hit."
+  },
+  {
+   "rank": 127,
    "slug": "steadfast",
    "name": "Steadfast",
    "usage_percent": 0.03,
    "description": "The Pokémon's determination boosts its Speed stat every time it flinches."
   },
   {
-   "rank": 127,
+   "rank": 128,
    "slug": "supreme-overlord",
    "name": "Supreme Overlord",
    "usage_percent": 0.03,
    "description": "When the Pokémon enters a battle, its Attack and Sp. Atk stats are slightly boosted for each of the allies in its party that have already been defeated."
   },
   {
-   "rank": 128,
+   "rank": 129,
    "slug": "symbiosis",
    "name": "Symbiosis",
    "usage_percent": 0.03,
    "description": "The Pokémon passes its held item to an ally that has used up an item."
   },
   {
-   "rank": 129,
+   "rank": 130,
    "slug": "zero-to-hero",
    "name": "Zero to Hero",
    "usage_percent": 0.03,
    "description": "The Pokémon transforms into its Hero Form when it switches out."
   },
   {
-   "rank": 130,
+   "rank": 131,
    "slug": "anger-point",
    "name": "Anger Point",
    "usage_percent": 0.02,
    "description": "The Pokémon is angered when it takes a critical hit, and that maxes its Attack stat."
   },
   {
-   "rank": 131,
+   "rank": 132,
    "slug": "aroma-veil",
    "name": "Aroma Veil",
    "usage_percent": 0.02,
    "description": "Protects the Pokémon and its allies from effects that prevent the use of moves."
   },
   {
-   "rank": 132,
+   "rank": 133,
    "slug": "corrosion",
    "name": "Corrosion",
    "usage_percent": 0.02,
    "description": "The Pokémon can poison the target even if it's a Steel or Poison type."
   },
   {
-   "rank": 133,
+   "rank": 134,
    "slug": "dry-skin",
    "name": "Dry Skin",
    "usage_percent": 0.02,
    "description": "Restores the Pokémon's HP in rain or when it is hit by Water-type moves. Reduces HP in harsh sunlight, and increases the damage received from Fire-type moves."
   },
   {
-   "rank": 134,
+   "rank": 135,
    "slug": "earth-eater",
    "name": "Earth Eater",
    "usage_percent": 0.02,
    "description": "If hit by a Ground-type move, the Pokémon has its HP restored instead of taking damage."
   },
   {
-   "rank": 135,
+   "rank": 136,
    "slug": "electromorphosis",
    "name": "Electromorphosis",
    "usage_percent": 0.02,
    "description": "The Pokémon becomes charged when it takes damage, boosting the power of the next Electric-type move the Pokémon uses."
   },
   {
-   "rank": 136,
+   "rank": 137,
    "slug": "keen-eye",
    "name": "Keen Eye",
    "usage_percent": 0.02,
    "description": "The Pokémon's keen eyes prevent its accuracy from being lowered."
   },
   {
-   "rank": 137,
+   "rank": 138,
    "slug": "piercing-drill",
    "name": "Piercing Drill",
    "usage_percent": 0.02,
    "description": "When the Pokémon uses contact moves, it can hit even targets that are protecting themselves, dealing 1/4 of the damage that the move would otherwise deal. Everything aside from the target's protective effects is still triggered."
   },
   {
-   "rank": 138,
+   "rank": 139,
    "slug": "sap-sipper",
    "name": "Sap Sipper",
    "usage_percent": 0.02,
    "description": "The Pokémon takes no damage when hit by Grass-type moves. Instead, its Attack stat is boosted."
-  },
-  {
-   "rank": 139,
-   "slug": "skill-link",
-   "name": "Skill Link",
-   "usage_percent": 0.02,
-   "description": "Maximizes the number of times multistrike moves hit."
   },
   {
    "rank": 140,

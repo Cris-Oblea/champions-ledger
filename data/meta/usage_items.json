@@ -1,28 +1,28 @@
 {
  "source": "pokebase.app/pokemon-champions",
  "game": "Pokemon Champions",
- "fetched": "2026-11-12",
+ "fetched": "2026-11-13",
  "count": 162,
  "rows": [
   {
    "rank": 1,
    "slug": "focus-sash",
    "name": "Focus Sash",
-   "usage_percent": 62.3,
+   "usage_percent": 62.4,
    "description": "If the holder has full HP, it survives an otherwise fatal hit with 1 HP. Consumed after use."
   },
   {
    "rank": 2,
    "slug": "sitrus-berry",
    "name": "Sitrus Berry",
-   "usage_percent": 58.0,
+   "usage_percent": 57.9,
    "description": "Restores 1/4 of the holder’s max HP when its HP falls to 1/2 or less. Consumed after use."
   },
   {
    "rank": 3,
    "slug": "life-orb",
    "name": "Life Orb",
-   "usage_percent": 57.6,
+   "usage_percent": 57.7,
    "description": "Boosts the power of the holder’s moves by 30%, but the holder loses 10% of its max HP after using a damaging move."
   },
   {
@@ -36,21 +36,21 @@
    "rank": 5,
    "slug": "miracle-seed",
    "name": "Miracle Seed",
-   "usage_percent": 34.4,
+   "usage_percent": 34.3,
    "description": "Boosts the power of the holder’s Grass-type moves by 20%."
   },
   {
    "rank": 6,
    "slug": "choice-scarf",
    "name": "Choice Scarf",
-   "usage_percent": 25.5,
+   "usage_percent": 25.4,
    "description": "Boosts the holder’s Speed by 50%, but it can only use the first move it selects until it switches out."
   },
   {
    "rank": 7,
    "slug": "salamencite",
    "name": "Salamencite",
-   "usage_percent": 20.6,
+   "usage_percent": 20.5,
    "description": "A held item that allows Salamence to Mega Evolve."
   },
   {
@@ -64,7 +64,7 @@
    "rank": 9,
    "slug": "grassy-seed",
    "name": "Grassy Seed",
-   "usage_percent": 19.7,
+   "usage_percent": 19.6,
    "description": "Boosts the holder's Defense stat by 1 stage on Grassy Terrain. Disappears for the duration of the battle after a single use."
   },
   {
@@ -83,23 +83,23 @@
   },
   {
    "rank": 12,
-   "slug": "psychic-seed",
-   "name": "Psychic Seed",
+   "slug": "chople-berry",
+   "name": "Chople Berry",
    "usage_percent": 13.9,
-   "description": "Boosts the holder's Sp. Def stat by 1 stage on Psychic Terrain. Disappears for the duration of the battle after a single use."
+   "description": "Halves damage from the first supereffective Fighting-type attack. Consumed after use."
   },
   {
    "rank": 13,
-   "slug": "chople-berry",
-   "name": "Chople Berry",
+   "slug": "psychic-seed",
+   "name": "Psychic Seed",
    "usage_percent": 13.8,
-   "description": "Halves damage from the first supereffective Fighting-type attack. Consumed after use."
+   "description": "Boosts the holder's Sp. Def stat by 1 stage on Psychic Terrain. Disappears for the duration of the battle after a single use."
   },
   {
    "rank": 14,
    "slug": "garchompite-z",
    "name": "Garchompite Z",
-   "usage_percent": 13.6,
+   "usage_percent": 13.5,
    "description": "A held item that allows Garchomp to Mega Evolve into Mega Garchomp Z."
   },
   {
@@ -134,7 +134,7 @@
    "rank": 19,
    "slug": "colbur-berry",
    "name": "Colbur Berry",
-   "usage_percent": 9.6,
+   "usage_percent": 9.5,
    "description": "Halves damage from the first supereffective Dark-type move. Consumed after use."
   },
   {
@@ -260,22 +260,22 @@
    "rank": 37,
    "slug": "cameruptite",
    "name": "Cameruptite",
-   "usage_percent": 2.4,
+   "usage_percent": 2.5,
    "description": "One of a variety of mysterious Mega Stones. A Camerupt holding this stone will be able to Mega Evolve during battle."
   },
   {
    "rank": 38,
+   "slug": "damp-rock",
+   "name": "Damp Rock",
+   "usage_percent": 2.4,
+   "description": "Rain summoned by the holder lasts 3 extra turns (8 turns total)."
+  },
+  {
+   "rank": 39,
    "slug": "passho-berry",
    "name": "Passho Berry",
    "usage_percent": 2.4,
    "description": "Halves damage from the first supereffective Water-type attack. Consumed after use."
-  },
-  {
-   "rank": 39,
-   "slug": "damp-rock",
-   "name": "Damp Rock",
-   "usage_percent": 2.3,
-   "description": "Rain summoned by the holder lasts 3 extra turns (8 turns total)."
   },
   {
    "rank": 40,
@@ -351,7 +351,7 @@
    "rank": 50,
    "slug": "kasib-berry",
    "name": "Kasib Berry",
-   "usage_percent": 1.1,
+   "usage_percent": 1.2,
    "description": "Halves damage from the first supereffective Ghost-type attack. Consumed after use."
   },
   {
