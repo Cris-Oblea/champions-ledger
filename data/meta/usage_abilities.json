@@ -1,7 +1,7 @@
 {
  "source": "pokebase.app/pokemon-champions",
  "game": "Pokemon Champions",
- "fetched": "2026-11-13",
+ "fetched": "2026-11-14",
  "count": 215,
  "rows": [
   {
@@ -15,7 +15,7 @@
    "rank": 2,
    "slug": "grassy-surge",
    "name": "Grassy Surge",
-   "usage_percent": 7.94,
+   "usage_percent": 7.93,
    "description": "Turns the entire field into Grassy Terrain for 5 turns when the Pokémon enters a battle."
   },
   {
@@ -29,7 +29,7 @@
    "rank": 4,
    "slug": "defiant",
    "name": "Defiant",
-   "usage_percent": 4.46,
+   "usage_percent": 4.47,
    "description": "If the Pokémon has any stat lowered by an opposing Pokémon, its Attack stat will be boosted sharply."
   },
   {
@@ -57,7 +57,7 @@
    "rank": 8,
    "slug": "good-as-gold",
    "name": "Good as Gold",
-   "usage_percent": 3.62,
+   "usage_percent": 3.61,
    "description": "A body of pure, solid gold gives the Pokémon full immunity to other Pokémon's status moves."
   },
   {
@@ -71,21 +71,21 @@
    "rank": 10,
    "slug": "aerilate",
    "name": "Aerilate",
-   "usage_percent": 3.41,
+   "usage_percent": 3.4,
    "description": "Normal-type moves become Flying-type moves. The power of those moves is boosted a little."
   },
   {
    "rank": 11,
    "slug": "psychic-surge",
    "name": "Psychic Surge",
-   "usage_percent": 3.35,
+   "usage_percent": 3.34,
    "description": "Turns the entire field into Psychic Terrain for 5 turns when the Pokémon enters a battle."
   },
   {
    "rank": 12,
    "slug": "drought",
    "name": "Drought",
-   "usage_percent": 3.29,
+   "usage_percent": 3.3,
    "description": "Turns the sunlight harsh when the Pokémon enters a battle."
   },
   {
@@ -99,22 +99,22 @@
    "rank": 14,
    "slug": "tough-claws",
    "name": "Tough Claws",
-   "usage_percent": 3.23,
+   "usage_percent": 3.22,
    "description": "Powers up moves that make direct contact."
   },
   {
    "rank": 15,
-   "slug": "drizzle",
-   "name": "Drizzle",
-   "usage_percent": 3.2,
-   "description": "The Pokémon makes it rain when it enters a battle."
+   "slug": "adaptability",
+   "name": "Adaptability",
+   "usage_percent": 3.19,
+   "description": "Increases the Same Type Attack Bonus from *1.5 to *2."
   },
   {
    "rank": 16,
-   "slug": "adaptability",
-   "name": "Adaptability",
-   "usage_percent": 3.18,
-   "description": "Increases the Same Type Attack Bonus from *1.5 to *2."
+   "slug": "drizzle",
+   "name": "Drizzle",
+   "usage_percent": 3.19,
+   "description": "The Pokémon makes it rain when it enters a battle."
   },
   {
    "rank": 17,
@@ -125,17 +125,17 @@
   },
   {
    "rank": 18,
-   "slug": "flower-veil",
-   "name": "Flower Veil",
-   "usage_percent": 2.69,
-   "description": "Ally Grass-type Pokémon are protected from status conditions and the lowering of their stats."
+   "slug": "prankster",
+   "name": "Prankster",
+   "usage_percent": 2.71,
+   "description": "Increases the priority of the Pokémon's status moves by 1 stage. However, the Pokémon's status moves no longer work against Dark-type Pokémon."
   },
   {
    "rank": 19,
-   "slug": "prankster",
-   "name": "Prankster",
-   "usage_percent": 2.69,
-   "description": "Increases the priority of the Pokémon's status moves by 1 stage. However, the Pokémon's status moves no longer work against Dark-type Pokémon."
+   "slug": "flower-veil",
+   "name": "Flower Veil",
+   "usage_percent": 2.7,
+   "description": "Ally Grass-type Pokémon are protected from status conditions and the lowering of their stats."
   },
   {
    "rank": 20,
@@ -155,7 +155,7 @@
    "rank": 22,
    "slug": "fairy-aura",
    "name": "Fairy Aura",
-   "usage_percent": 2.21,
+   "usage_percent": 2.22,
    "description": "Powers up every Pokémon in play's Fairy-type moves by 33%"
   },
   {
@@ -169,28 +169,28 @@
    "rank": 24,
    "slug": "emergency-exit",
    "name": "Emergency Exit",
-   "usage_percent": 2.04,
+   "usage_percent": 2.03,
    "description": "The Pokémon switches out of battle when its HP drops to 1/2 or less of its max."
   },
   {
    "rank": 25,
    "slug": "competitive",
    "name": "Competitive",
-   "usage_percent": 1.78,
+   "usage_percent": 1.79,
    "description": "Boosts the Pokémon's Sp. Atk stat sharply when its stats are lowered by an opposing Pokémon."
   },
   {
    "rank": 26,
    "slug": "flame-body",
    "name": "Flame Body",
-   "usage_percent": 1.73,
+   "usage_percent": 1.72,
    "description": "Contact with the Pokémon may burn the attacker."
   },
   {
    "rank": 27,
    "slug": "cursed-body",
    "name": "Cursed Body",
-   "usage_percent": 1.67,
+   "usage_percent": 1.66,
    "description": "May disable a move that has dealt damage to the Pokémon."
   },
   {
@@ -225,14 +225,14 @@
    "rank": 32,
    "slug": "hospitality",
    "name": "Hospitality",
-   "usage_percent": 1.16,
+   "usage_percent": 1.17,
    "description": "When the Pokémon enters a battle, it showers its ally with hospitality, restoring a small amount of the ally's HP"
   },
   {
    "rank": 33,
    "slug": "swift-swim",
    "name": "Swift Swim",
-   "usage_percent": 1.13,
+   "usage_percent": 1.12,
    "description": "Boosts the Pokémon's Speed stat in rain."
   },
   {
@@ -274,14 +274,14 @@
    "rank": 39,
    "slug": "trace",
    "name": "Trace",
-   "usage_percent": 0.85,
+   "usage_percent": 0.84,
    "description": "Ability becomes the same as that of the opponent. Switching this Pokémon out of battle restores its original ability. In a Double Battle, a random opponent’s ability will be copied."
   },
   {
    "rank": 40,
    "slug": "poison-touch",
    "name": "Poison Touch",
-   "usage_percent": 0.81,
+   "usage_percent": 0.82,
    "description": "May poison a target when the Pokémon makes contact."
   },
   {
@@ -314,17 +314,17 @@
   },
   {
    "rank": 45,
-   "slug": "soundproof",
-   "name": "Soundproof",
-   "usage_percent": 0.57,
-   "description": "Soundproofing gives the Pokémon full immunity to all sound-based moves."
-  },
-  {
-   "rank": 46,
    "slug": "electric-surge",
    "name": "Electric Surge",
    "usage_percent": 0.56,
    "description": "Turns the ground into Electric Terrain when the Pokémon enters a battle."
+  },
+  {
+   "rank": 46,
+   "slug": "soundproof",
+   "name": "Soundproof",
+   "usage_percent": 0.56,
+   "description": "Soundproofing gives the Pokémon full immunity to all sound-based moves."
   },
   {
    "rank": 47,
@@ -342,17 +342,17 @@
   },
   {
    "rank": 49,
-   "slug": "aura-guard",
-   "name": "Aura Guard",
-   "usage_percent": 0.46,
-   "description": "Halves the damage the Pokémon takes from contact moves."
-  },
-  {
-   "rank": 50,
    "slug": "sheer-force",
    "name": "Sheer Force",
    "usage_percent": 0.46,
    "description": "Removes any additional effects from the Pokémon's moves, but increases the moves' power."
+  },
+  {
+   "rank": 50,
+   "slug": "aura-guard",
+   "name": "Aura Guard",
+   "usage_percent": 0.45,
+   "description": "Halves the damage the Pokémon takes from contact moves."
   },
   {
    "rank": 51,
@@ -559,17 +559,17 @@
   },
   {
    "rank": 80,
+   "slug": "sand-force",
+   "name": "Sand Force",
+   "usage_percent": 0.13,
+   "description": "Boosts the power of Rock-, Ground-, and Steel-type moves in a sandstorm."
+  },
+  {
+   "rank": 81,
    "slug": "bulletproof",
    "name": "Bulletproof",
    "usage_percent": 0.12,
    "description": "Protects the Pokémon from some ball and bomb moves."
-  },
-  {
-   "rank": 81,
-   "slug": "sand-force",
-   "name": "Sand Force",
-   "usage_percent": 0.12,
-   "description": "Boosts the power of Rock-, Ground-, and Steel-type moves in a sandstorm."
   },
   {
    "rank": 82,
@@ -741,45 +741,45 @@
   },
   {
    "rank": 106,
-   "slug": "filter",
-   "name": "Filter",
-   "usage_percent": 0.05,
-   "description": "Reduces the power of supereffective attacks that hit the Pokémon."
-  },
-  {
-   "rank": 107,
    "slug": "leaf-guard",
    "name": "Leaf Guard",
    "usage_percent": 0.05,
    "description": "Prevents status conditions in harsh sunlight."
   },
   {
-   "rank": 108,
+   "rank": 107,
    "slug": "parental-bond",
    "name": "Parental Bond",
    "usage_percent": 0.05,
    "description": "Parent and child each attacks."
   },
   {
-   "rank": 109,
+   "rank": 108,
    "slug": "pickpocket",
    "name": "Pickpocket",
    "usage_percent": 0.05,
    "description": "The Pokémon steals the held item from attackers that made direct contact with it."
   },
   {
-   "rank": 110,
+   "rank": 109,
    "slug": "stalwart",
    "name": "Stalwart",
    "usage_percent": 0.05,
    "description": "Ignores the effects of opposing Pokémon's Abilities and moves that draw in moves."
   },
   {
-   "rank": 111,
+   "rank": 110,
    "slug": "eelevate",
    "name": "Eelevate",
    "usage_percent": 0.04,
    "description": "The Pokémon floats off the ground, making it immune to Ground-type moves, as well as the Spikes, Toxic Spikes, and Sticky Web statuses. When the Pokémon knocks out a target with an attack, its highest stat is boosted by 1 stage."
+  },
+  {
+   "rank": 111,
+   "slug": "filter",
+   "name": "Filter",
+   "usage_percent": 0.04,
+   "description": "Reduces the power of supereffective attacks that hit the Pokémon."
   },
   {
    "rank": 112,
