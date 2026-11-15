@@ -1,7 +1,7 @@
 {
  "source": "pokebase.app/pokemon-champions",
  "game": "Pokemon Champions",
- "fetched": "2026-11-13",
+ "fetched": "2026-11-15",
  "count": 154,
  "rows": [
   {
@@ -601,213 +601,213 @@
   },
   {
    "rank": 86,
-   "slug": "coil",
-   "name": "Coil",
-   "usage_percent": 0.2,
-   "description": "The user coils up and concentrates. This boosts its Attack and Defense stats as well as its accuracy."
-  },
-  {
-   "rank": 87,
    "slug": "dark-pulse",
    "name": "Dark Pulse",
    "usage_percent": 0.2,
    "description": "The user releases a horrible aura imbued with ill intent. This may also make the target flinch."
   },
   {
-   "rank": 88,
+   "rank": 87,
    "slug": "double-edge",
    "name": "Double-Edge",
    "usage_percent": 0.2,
    "description": "A reckless life-risking tackle in which the user rushes the target. This also damages the user quite a lot."
   },
   {
-   "rank": 89,
+   "rank": 88,
    "slug": "draining-kiss",
    "name": "Draining Kiss",
    "usage_percent": 0.2,
    "description": "The user steals the target's HP with a kiss. The user's HP is restored by over half the damage taken by the target."
   },
   {
-   "rank": 90,
+   "rank": 89,
    "slug": "dual-wingbeat",
    "name": "Dual Wingbeat",
    "usage_percent": 0.2,
    "description": "The user slams the target with its wings to inflict damage. The target is hit twice in a row."
   },
   {
-   "rank": 91,
+   "rank": 90,
    "slug": "eruption",
    "name": "Eruption",
    "usage_percent": 0.2,
    "description": "The user attacks opposing Pokémon with explosive fury. The lower the user's HP, the lower the move's power."
   },
   {
-   "rank": 92,
+   "rank": 91,
    "slug": "feint",
    "name": "Feint",
    "usage_percent": 0.2,
    "description": "This attack can hit a target using a move such as Protect or Detect. This also lifts the effects of those moves."
   },
   {
-   "rank": 93,
+   "rank": 92,
    "slug": "giga-drain",
    "name": "Giga Drain",
    "usage_percent": 0.2,
    "description": "A nutrient-draining attack. The user's HP is restored by up to half the damage taken by the target."
   },
   {
-   "rank": 94,
+   "rank": 93,
    "slug": "hypnosis",
    "name": "Hypnosis",
    "usage_percent": 0.2,
    "description": "The user employs hypnotic suggestion to make the target fall asleep."
   },
   {
-   "rank": 95,
+   "rank": 94,
    "slug": "imprison",
    "name": "Imprison",
    "usage_percent": 0.2,
    "description": "If opposing Pokémon know any move also known by the user, they are prevented from using it."
   },
   {
-   "rank": 96,
+   "rank": 95,
    "slug": "leaf-storm",
    "name": "Leaf Storm",
    "usage_percent": 0.2,
    "description": "The user whips up a storm of leaves around the target. The recoil from this move harshly lowers the user's Sp. Atk stat."
   },
   {
-   "rank": 97,
+   "rank": 96,
    "slug": "liquidation",
    "name": "Liquidation",
    "usage_percent": 0.2,
    "description": "The user slams into the target using a full-force blast of water. This may also lower the target's Defense stat."
   },
   {
-   "rank": 98,
+   "rank": 97,
    "slug": "mystical-fire",
    "name": "Mystical Fire",
    "usage_percent": 0.2,
    "description": "The user attacks by breathing a special, hot fire. This also lowers the target's Sp. Atk stat."
   },
   {
-   "rank": 99,
+   "rank": 98,
    "slug": "poison-jab",
    "name": "Poison Jab",
    "usage_percent": 0.2,
    "description": "The target is stabbed with a tentacle, an arm, or the like steeped in poison. This may also poison the target."
   },
   {
-   "rank": 100,
+   "rank": 99,
    "slug": "psychic-fangs",
    "name": "Psychic Fangs",
    "usage_percent": 0.2,
    "description": "The user attacks by biting the target with its psychic capabilities. This move can also break barriers, such as Light Screen and Reflect."
   },
   {
-   "rank": 101,
+   "rank": 100,
    "slug": "quiver-dance",
    "name": "Quiver Dance",
    "usage_percent": 0.2,
    "description": "The user lightly performs a beautiful, mystic dance. This boosts the user's Sp. Atk, Sp. Def, and Speed stats."
   },
   {
-   "rank": 102,
+   "rank": 101,
    "slug": "roost",
    "name": "Roost",
    "usage_percent": 0.2,
    "description": "The user lands and rests its body. This move restores the user's HP by up to half its max HP."
   },
   {
-   "rank": 103,
+   "rank": 102,
    "slug": "spiky-shield",
    "name": "Spiky Shield",
    "usage_percent": 0.2,
    "description": "In addition to protecting the user from attacks, this move also damages any attacker that makes direct contact."
   },
   {
-   "rank": 104,
+   "rank": 103,
    "slug": "struggle-bug",
    "name": "Struggle Bug",
    "usage_percent": 0.2,
    "description": "The user attacks by struggling against opposing Pokémon. This also lowers their Sp. Atk stats."
   },
   {
-   "rank": 105,
+   "rank": 104,
    "slug": "trick",
    "name": "Trick",
    "usage_percent": 0.2,
    "description": "The user catches the target off guard and swaps the target's held item with its own."
   },
   {
-   "rank": 106,
+   "rank": 105,
    "slug": "volt-switch",
    "name": "Volt Switch",
    "usage_percent": 0.2,
    "description": "After making its attack, the user rushes back to switch places with a party Pokémon in waiting."
   },
   {
-   "rank": 107,
+   "rank": 106,
    "slug": "will-o-wisp",
    "name": "Will-O-Wisp",
    "usage_percent": 0.2,
    "description": "The user shoots a sinister flame at the target to inflict a burn."
   },
   {
-   "rank": 108,
+   "rank": 107,
    "slug": "yawn",
    "name": "Yawn",
    "usage_percent": 0.2,
    "description": "The user lets loose a huge yawn that lulls the target into falling asleep on the next turn."
   },
   {
-   "rank": 109,
+   "rank": 108,
    "slug": "acrobatics",
    "name": "Acrobatics",
    "usage_percent": 0.1,
    "description": "The user nimbly strikes the target. This attack does massive damage if the user isn't holding an item."
   },
   {
-   "rank": 110,
+   "rank": 109,
    "slug": "baneful-bunker",
    "name": "Baneful Bunker",
    "usage_percent": 0.1,
    "description": "In addition to protecting the user from attacks, this move also poisons any attacker that makes direct contact."
   },
   {
-   "rank": 111,
+   "rank": 110,
    "slug": "bitter-blade",
    "name": "Bitter Blade",
    "usage_percent": 0.1,
    "description": "The user focuses its bitter feelings toward the world of the living into a slashing attack. The user's HP is restored by up to half the damage taken by the target."
   },
   {
-   "rank": 112,
+   "rank": 111,
    "slug": "body-press",
    "name": "Body Press",
    "usage_percent": 0.1,
    "description": "The user attacks by slamming its body into the target. The higher the user's Defense stat, the greater the damage this move deals."
   },
   {
-   "rank": 113,
+   "rank": 112,
    "slug": "bulk-up",
    "name": "Bulk Up",
    "usage_percent": 0.1,
    "description": "The user tenses its muscles to bulk up its body, boosting its Attack and Defense stats."
   },
   {
-   "rank": 114,
+   "rank": 113,
    "slug": "charm",
    "name": "Charm",
    "usage_percent": 0.1,
    "description": "The user gazes at the target rather charmingly, making it less wary. This harshly lowers the target's Attack stat."
   },
   {
-   "rank": 115,
+   "rank": 114,
    "slug": "clangorous-soul",
    "name": "Clangorous Soul",
    "usage_percent": 0.1,
    "description": "The user boosts all its stats by using some of its own HP."
+  },
+  {
+   "rank": 115,
+   "slug": "coil",
+   "name": "Coil",
+   "usage_percent": 0.1,
+   "description": "The user coils up and concentrates. This boosts its Attack and Defense stats as well as its accuracy."
   },
   {
    "rank": 116,

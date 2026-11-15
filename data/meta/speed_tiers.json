@@ -1,7 +1,7 @@
 {
  "source": "pokebase.app/pokemon-champions",
  "game": "Pokemon Champions",
- "fetched": "2026-10-27",
+ "fetched": "2026-11-15",
  "count": 88,
  "rows": [
   {
@@ -446,10 +446,6 @@
     {
      "name": "Lycanroc",
      "slug": "lycanroc"
-    },
-    {
-     "name": "Lycanroc (Midday)",
-     "slug": "lycanroc-midday"
     },
     {
      "name": "Mega Lucario",
@@ -919,8 +915,8 @@
      "slug": "houndoom"
     },
     {
-     "name": "Indeedee (Male)",
-     "slug": "indeedee-male"
+     "name": "Indeedee",
+     "slug": "indeedee"
     },
     {
      "name": "Leafeon",
@@ -1500,8 +1496,8 @@
      "slug": "scovillain"
     },
     {
-     "name": "Toxtricity (Amped)",
-     "slug": "toxtricity-amped"
+     "name": "Toxtricity",
+     "slug": "toxtricity"
     },
     {
      "name": "Toxtricity (Low Key)",
@@ -1846,14 +1842,6 @@
     {
      "name": "Aegislash",
      "slug": "aegislash"
-    },
-    {
-     "name": "Aegislash (Blade)",
-     "slug": "aegislash-blade"
-    },
-    {
-     "name": "Aegislash (Shield)",
-     "slug": "aegislash-shield"
     },
     {
      "name": "Clefable",
