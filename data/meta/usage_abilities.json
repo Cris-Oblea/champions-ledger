@@ -1,7 +1,7 @@
 {
  "source": "pokebase.app/pokemon-champions",
  "game": "Pokemon Champions",
- "fetched": "2026-11-15",
+ "fetched": "2026-11-16",
  "count": 215,
  "rows": [
   {
@@ -71,28 +71,28 @@
    "rank": 10,
    "slug": "aerilate",
    "name": "Aerilate",
-   "usage_percent": 3.41,
+   "usage_percent": 3.4,
    "description": "Normal-type moves become Flying-type moves. The power of those moves is boosted a little."
   },
   {
    "rank": 11,
-   "slug": "psychic-surge",
-   "name": "Psychic Surge",
-   "usage_percent": 3.35,
-   "description": "Turns the entire field into Psychic Terrain for 5 turns when the Pokémon enters a battle."
-  },
-  {
-   "rank": 12,
    "slug": "drought",
    "name": "Drought",
    "usage_percent": 3.34,
    "description": "Turns the sunlight harsh when the Pokémon enters a battle."
   },
   {
+   "rank": 12,
+   "slug": "psychic-surge",
+   "name": "Psychic Surge",
+   "usage_percent": 3.34,
+   "description": "Turns the entire field into Psychic Terrain for 5 turns when the Pokémon enters a battle."
+  },
+  {
    "rank": 13,
    "slug": "blaze",
    "name": "Blaze",
-   "usage_percent": 3.31,
+   "usage_percent": 3.32,
    "description": "Powers up Fire-type moves when the Pokémon's HP is low."
   },
   {
@@ -141,7 +141,7 @@
    "rank": 20,
    "slug": "armor-tail",
    "name": "Armor Tail",
-   "usage_percent": 2.38,
+   "usage_percent": 2.39,
    "description": "The mysterious tail covering the Pokémon's head makes opponents unable to use priority moves against the Pokémon or its allies."
   },
   {
@@ -155,14 +155,14 @@
    "rank": 22,
    "slug": "flower-veil",
    "name": "Flower Veil",
-   "usage_percent": 2.16,
+   "usage_percent": 2.17,
    "description": "Ally Grass-type Pokémon are protected from status conditions and the lowering of their stats."
   },
   {
    "rank": 23,
    "slug": "rock-head",
    "name": "Rock Head",
-   "usage_percent": 2.06,
+   "usage_percent": 2.05,
    "description": "Protects the Pokémon from recoil damage."
   },
   {
@@ -183,7 +183,7 @@
    "rank": 26,
    "slug": "flame-body",
    "name": "Flame Body",
-   "usage_percent": 1.73,
+   "usage_percent": 1.72,
    "description": "Contact with the Pokémon may burn the attacker."
   },
   {
@@ -204,7 +204,7 @@
    "rank": 29,
    "slug": "sand-stream",
    "name": "Sand Stream",
-   "usage_percent": 1.45,
+   "usage_percent": 1.46,
    "description": "The Pokémon summons a sandstorm when it enters a battle."
   },
   {
@@ -232,7 +232,7 @@
    "rank": 33,
    "slug": "swift-swim",
    "name": "Swift Swim",
-   "usage_percent": 1.13,
+   "usage_percent": 1.14,
    "description": "Boosts the Pokémon's Speed stat in rain."
   },
   {
@@ -260,14 +260,14 @@
    "rank": 37,
    "slug": "liquid-voice",
    "name": "Liquid Voice",
-   "usage_percent": 0.9,
+   "usage_percent": 0.91,
    "description": "Sound-based moves become Water-type moves."
   },
   {
    "rank": 38,
    "slug": "shadow-tag",
    "name": "Shadow Tag",
-   "usage_percent": 0.89,
+   "usage_percent": 0.88,
    "description": "The Pokémon steps on the opposing Pokémon's shadows to prevent them from fleeing or switching out."
   },
   {
@@ -316,7 +316,7 @@
    "rank": 45,
    "slug": "electric-surge",
    "name": "Electric Surge",
-   "usage_percent": 0.56,
+   "usage_percent": 0.57,
    "description": "Turns the ground into Electric Terrain when the Pokémon enters a battle."
   },
   {
@@ -398,17 +398,17 @@
   },
   {
    "rank": 57,
-   "slug": "iron-fist",
-   "name": "Iron Fist",
-   "usage_percent": 0.32,
-   "description": "The power of punching moves is increased by 20%. This stacks with"
-  },
-  {
-   "rank": 58,
    "slug": "mega-launcher",
    "name": "Mega Launcher",
    "usage_percent": 0.32,
    "description": "Powers up pulse moves."
+  },
+  {
+   "rank": 58,
+   "slug": "iron-fist",
+   "name": "Iron Fist",
+   "usage_percent": 0.31,
+   "description": "The power of punching moves is increased by 20%. This stacks with"
   },
   {
    "rank": 59,
@@ -755,66 +755,66 @@
   },
   {
    "rank": 108,
-   "slug": "pickpocket",
-   "name": "Pickpocket",
-   "usage_percent": 0.05,
-   "description": "The Pokémon steals the held item from attackers that made direct contact with it."
-  },
-  {
-   "rank": 109,
    "slug": "stalwart",
    "name": "Stalwart",
    "usage_percent": 0.05,
    "description": "Ignores the effects of opposing Pokémon's Abilities and moves that draw in moves."
   },
   {
-   "rank": 110,
+   "rank": 109,
    "slug": "eelevate",
    "name": "Eelevate",
    "usage_percent": 0.04,
    "description": "The Pokémon floats off the ground, making it immune to Ground-type moves, as well as the Spikes, Toxic Spikes, and Sticky Web statuses. When the Pokémon knocks out a target with an attack, its highest stat is boosted by 1 stage."
   },
   {
-   "rank": 111,
+   "rank": 110,
    "slug": "filter",
    "name": "Filter",
    "usage_percent": 0.04,
    "description": "Reduces the power of supereffective attacks that hit the Pokémon."
   },
   {
-   "rank": 112,
+   "rank": 111,
    "slug": "frisk",
    "name": "Frisk",
    "usage_percent": 0.04,
    "description": "When it enters a battle, the Pokémon can check an opposing Pokémon's held item."
   },
   {
-   "rank": 113,
+   "rank": 112,
    "slug": "magic-guard",
    "name": "Magic Guard",
    "usage_percent": 0.04,
    "description": "The Pokémon only takes damage from attacks."
   },
   {
-   "rank": 114,
+   "rank": 113,
    "slug": "magician",
    "name": "Magician",
    "usage_percent": 0.04,
    "description": "The Pokémon steals the held item from any target it hits with a move."
   },
   {
-   "rank": 115,
+   "rank": 114,
    "slug": "natural-cure",
    "name": "Natural Cure",
    "usage_percent": 0.04,
    "description": "The Pokémon's status conditions are cured when it switches out."
   },
   {
-   "rank": 116,
+   "rank": 115,
    "slug": "own-tempo",
    "name": "Own Tempo",
    "usage_percent": 0.04,
    "description": "The Pokémon sticks to its own tempo, preventing it from becoming confused or being affected by Intimidate."
+  },
+  {
+   "rank": 116,
+   "slug": "pickpocket",
+   "name": "Pickpocket",
+   "usage_percent": 0.04,
+   "description": "The Pokémon steals the held item from attackers that made direct contact with it."
   },
   {
    "rank": 117,

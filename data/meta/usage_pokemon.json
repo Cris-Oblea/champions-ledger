@@ -1,7 +1,7 @@
 {
  "source": "pokebase.app/pokemon-champions",
  "game": "Pokemon Champions",
- "fetched": "2026-11-15",
+ "fetched": "2026-11-16",
  "count": 339,
  "rows": [
   {
@@ -10,7 +10,7 @@
    "types": [
     "Grass"
    ],
-   "usage_percent": 48.0,
+   "usage_percent": 47.9,
    "rank": 1
   },
   {
@@ -108,7 +108,7 @@
     "Water",
     "Ghost"
    ],
-   "usage_percent": 17.2,
+   "usage_percent": 17.3,
    "rank": 11
   },
   {
@@ -142,6 +142,16 @@
    "rank": 14
   },
   {
+   "name": "Farigiraf",
+   "slug": "farigiraf",
+   "types": [
+    "Normal",
+    "Psychic"
+   ],
+   "usage_percent": 14.4,
+   "rank": 15
+  },
+  {
    "name": "Pelipper",
    "slug": "pelipper",
    "types": [
@@ -149,7 +159,7 @@
     "Flying"
    ],
    "usage_percent": 14.3,
-   "rank": 15
+   "rank": 16
   },
   {
    "name": "Indeedee (Female)",
@@ -157,16 +167,6 @@
    "types": [
     "Psychic",
     "Normal"
-   ],
-   "usage_percent": 14.3,
-   "rank": 16
-  },
-  {
-   "name": "Farigiraf",
-   "slug": "farigiraf",
-   "types": [
-    "Normal",
-    "Psychic"
    ],
    "usage_percent": 14.3,
    "rank": 17
@@ -225,7 +225,7 @@
     "Bug",
     "Steel"
    ],
-   "usage_percent": 12.4,
+   "usage_percent": 12.5,
    "rank": 23
   },
   {
@@ -283,7 +283,7 @@
     "Rock",
     "Dark"
    ],
-   "usage_percent": 8.2,
+   "usage_percent": 8.3,
    "rank": 29
   },
   {
@@ -347,16 +347,6 @@
    "rank": 35
   },
   {
-   "name": "Mega Gardevoir",
-   "slug": "gardevoir-mega",
-   "types": [
-    "Psychic",
-    "Fairy"
-   ],
-   "usage_percent": 6.3,
-   "rank": 36
-  },
-  {
    "name": "Excadrill",
    "slug": "excadrill",
    "types": [
@@ -364,6 +354,16 @@
     "Steel"
    ],
    "usage_percent": 6.3,
+   "rank": 36
+  },
+  {
+   "name": "Mega Gardevoir",
+   "slug": "gardevoir-mega",
+   "types": [
+    "Psychic",
+    "Fairy"
+   ],
+   "usage_percent": 6.2,
    "rank": 37
   },
   {
@@ -505,16 +505,6 @@
    "rank": 51
   },
   {
-   "name": "Metagross",
-   "slug": "metagross",
-   "types": [
-    "Steel",
-    "Psychic"
-   ],
-   "usage_percent": 3.9,
-   "rank": 52
-  },
-  {
    "name": "Kommo-o",
    "slug": "kommo-o",
    "types": [
@@ -522,7 +512,7 @@
     "Fighting"
    ],
    "usage_percent": 3.9,
-   "rank": 53
+   "rank": 52
   },
   {
    "name": "Glimmora",
@@ -532,7 +522,7 @@
     "Poison"
    ],
    "usage_percent": 3.9,
-   "rank": 54
+   "rank": 53
   },
   {
    "name": "Mega Swampert",
@@ -542,11 +532,21 @@
     "Ground"
    ],
    "usage_percent": 3.8,
-   "rank": 55
+   "rank": 54
   },
   {
    "name": "Mega Metagross",
    "slug": "metagross-mega",
+   "types": [
+    "Steel",
+    "Psychic"
+   ],
+   "usage_percent": 3.8,
+   "rank": 55
+  },
+  {
+   "name": "Metagross",
+   "slug": "metagross",
    "types": [
     "Steel",
     "Psychic"
@@ -604,18 +604,18 @@
    "rank": 61
   },
   {
-   "name": "Camerupt",
-   "slug": "camerupt",
+   "name": "Mega Camerupt",
+   "slug": "camerupt-mega",
    "types": [
     "Fire",
     "Ground"
    ],
-   "usage_percent": 2.5,
+   "usage_percent": 2.6,
    "rank": 62
   },
   {
-   "name": "Mega Camerupt",
-   "slug": "camerupt-mega",
+   "name": "Camerupt",
+   "slug": "camerupt",
    "types": [
     "Fire",
     "Ground"
@@ -791,6 +791,16 @@
    "rank": 80
   },
   {
+   "name": "Sableye",
+   "slug": "sableye",
+   "types": [
+    "Dark",
+    "Ghost"
+   ],
+   "usage_percent": 1.4,
+   "rank": 81
+  },
+  {
    "name": "Mawile",
    "slug": "mawile",
    "types": [
@@ -798,7 +808,7 @@
     "Fairy"
    ],
    "usage_percent": 1.4,
-   "rank": 81
+   "rank": 82
   },
   {
    "name": "Mega Mawile",
@@ -808,7 +818,7 @@
     "Fairy"
    ],
    "usage_percent": 1.4,
-   "rank": 82
+   "rank": 83
   },
   {
    "name": "Absol",
@@ -817,7 +827,7 @@
     "Dark"
    ],
    "usage_percent": 1.4,
-   "rank": 83
+   "rank": 84
   },
   {
    "name": "Toxapex",
@@ -827,7 +837,7 @@
     "Water"
    ],
    "usage_percent": 1.4,
-   "rank": 84
+   "rank": 85
   },
   {
    "name": "Mega Blaziken",
@@ -835,16 +845,6 @@
    "types": [
     "Fire",
     "Fighting"
-   ],
-   "usage_percent": 1.3,
-   "rank": 85
-  },
-  {
-   "name": "Sableye",
-   "slug": "sableye",
-   "types": [
-    "Dark",
-    "Ghost"
    ],
    "usage_percent": 1.3,
    "rank": 86
