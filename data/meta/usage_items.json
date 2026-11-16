@@ -1,7 +1,7 @@
 {
  "source": "pokebase.app/pokemon-champions",
  "game": "Pokemon Champions",
- "fetched": "2026-11-15",
+ "fetched": "2026-11-16",
  "count": 162,
  "rows": [
   {
@@ -29,14 +29,14 @@
    "rank": 4,
    "slug": "leftovers",
    "name": "Leftovers",
-   "usage_percent": 34.3,
+   "usage_percent": 34.4,
    "description": "Restores 1/16 of the holder's max HP at the end of every turn."
   },
   {
    "rank": 5,
    "slug": "miracle-seed",
    "name": "Miracle Seed",
-   "usage_percent": 34.2,
+   "usage_percent": 34.1,
    "description": "Boosts the power of the holder’s Grass-type moves by 20%."
   },
   {
@@ -64,7 +64,7 @@
    "rank": 9,
    "slug": "grassy-seed",
    "name": "Grassy Seed",
-   "usage_percent": 19.4,
+   "usage_percent": 19.3,
    "description": "Boosts the holder's Defense stat by 1 stage on Grassy Terrain. Disappears for the duration of the battle after a single use."
   },
   {
@@ -78,7 +78,7 @@
    "rank": 11,
    "slug": "white-herb",
    "name": "White Herb",
-   "usage_percent": 14.7,
+   "usage_percent": 14.8,
    "description": "Restores the holder’s lowered stats to normal. Consumed after use."
   },
   {
@@ -120,14 +120,14 @@
    "rank": 17,
    "slug": "golisopite",
    "name": "Golisopite",
-   "usage_percent": 12.4,
+   "usage_percent": 12.5,
    "description": "A held item that allows Golisopod to Mega Evolve."
   },
   {
    "rank": 18,
    "slug": "fairy-feather",
    "name": "Fairy Feather",
-   "usage_percent": 11.1,
+   "usage_percent": 11.2,
    "description": "Boosts the power of the holder's Fairy-type moves by 20%."
   },
   {
@@ -162,7 +162,7 @@
    "rank": 23,
    "slug": "gardevoirite",
    "name": "Gardevoirite",
-   "usage_percent": 6.3,
+   "usage_percent": 6.2,
    "description": "One of a variety of mysterious Mega Stones. A Gardevoir holding this stone will be able to Mega Evolve during battle."
   },
   {
@@ -260,7 +260,7 @@
    "rank": 37,
    "slug": "cameruptite",
    "name": "Cameruptite",
-   "usage_percent": 2.5,
+   "usage_percent": 2.6,
    "description": "One of a variety of mysterious Mega Stones. A Camerupt holding this stone will be able to Mega Evolve during battle."
   },
   {
@@ -272,17 +272,17 @@
   },
   {
    "rank": 39,
+   "slug": "electric-seed",
+   "name": "Electric Seed",
+   "usage_percent": 2.4,
+   "description": "Boosts the holder's Defense stat by 1 stage on Electric Terrain. Disappears for the duration of the battle after a single use."
+  },
+  {
+   "rank": 40,
    "slug": "passho-berry",
    "name": "Passho Berry",
    "usage_percent": 2.4,
    "description": "Halves damage from the first supereffective Water-type attack. Consumed after use."
-  },
-  {
-   "rank": 40,
-   "slug": "electric-seed",
-   "name": "Electric Seed",
-   "usage_percent": 2.3,
-   "description": "Boosts the holder's Defense stat by 1 stage on Electric Terrain. Disappears for the duration of the battle after a single use."
   },
   {
    "rank": 41,
