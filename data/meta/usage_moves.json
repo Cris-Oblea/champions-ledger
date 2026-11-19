@@ -1,7 +1,7 @@
 {
  "source": "pokebase.app/pokemon-champions",
  "game": "Pokemon Champions",
- "fetched": "2026-11-15",
+ "fetched": "2026-11-19",
  "count": 154,
  "rows": [
   {
@@ -461,115 +461,115 @@
   },
   {
    "rank": 66,
+   "slug": "solar-beam",
+   "name": "Solar Beam",
+   "usage_percent": 0.4,
+   "description": "Charges before attacking, unless harsh sunlight is active. During rain, it requires an extra charge turn and its power is halved. Power is also halved during snow and sandstorm."
+  },
+  {
+   "rank": 67,
    "slug": "thunderbolt",
    "name": "Thunderbolt",
    "usage_percent": 0.4,
    "description": "The user attacks the target with a strong electric blast. This may also leave the target with paralysis."
   },
   {
-   "rank": 67,
+   "rank": 68,
    "slug": "ancient-power",
    "name": "Ancient Power",
    "usage_percent": 0.3,
    "description": "The user attacks with a prehistoric power. This may also boost all the user's stats at once."
   },
   {
-   "rank": 68,
+   "rank": 69,
    "slug": "aurora-veil",
    "name": "Aurora Veil",
    "usage_percent": 0.3,
    "description": "This move reduces damage from physical and special moves for five turns. This can be used only when it is snowing."
   },
   {
-   "rank": 69,
+   "rank": 70,
    "slug": "blizzard",
    "name": "Blizzard",
    "usage_percent": 0.3,
    "description": "A howling blizzard is summoned to strike opposing Pokémon. This may also leave the opposing Pokémon frozen."
   },
   {
-   "rank": 70,
+   "rank": 71,
    "slug": "flip-turn",
    "name": "Flip Turn",
    "usage_percent": 0.3,
    "description": "After making its attack, the user rushes back to switch places with a party Pokémon in waiting."
   },
   {
-   "rank": 71,
+   "rank": 72,
    "slug": "ice-punch",
    "name": "Ice Punch",
    "usage_percent": 0.3,
    "description": "The target is attacked with an icy punch. This may also leave the target frozen."
   },
   {
-   "rank": 72,
+   "rank": 73,
    "slug": "icy-wind",
    "name": "Icy Wind",
    "usage_percent": 0.3,
    "description": "The user attacks with a gust of chilled air. This also lowers opposing Pokémon's Speed stats."
   },
   {
-   "rank": 73,
+   "rank": 74,
    "slug": "matcha-gotcha",
    "name": "Matcha Gotcha",
    "usage_percent": 0.3,
    "description": "Restores HP equal to 1/2 of the damage dealt and has a 20% chance to burn targets."
   },
   {
-   "rank": 74,
+   "rank": 75,
    "slug": "overheat",
    "name": "Overheat",
    "usage_percent": 0.3,
    "description": "The user attacks the target with all its might. The recoil from this move harshly lowers the user's Sp. Atk stat."
   },
   {
-   "rank": 75,
+   "rank": 76,
    "slug": "perish-song",
    "name": "Perish Song",
    "usage_percent": 0.3,
    "description": "Any Pokémon that hears this song faints in three turns, unless it switches out of battle."
   },
   {
-   "rank": 76,
+   "rank": 77,
    "slug": "quick-attack",
    "name": "Quick Attack",
    "usage_percent": 0.3,
    "description": "The user lunges at the target to inflict damage, moving at blinding speed. This move always goes first."
   },
   {
-   "rank": 77,
+   "rank": 78,
    "slug": "reflect",
    "name": "Reflect",
    "usage_percent": 0.3,
    "description": "A wondrous wall of light is put up to reduce damage from physical moves for five turns."
   },
   {
-   "rank": 78,
+   "rank": 79,
    "slug": "rock-tomb",
    "name": "Rock Tomb",
    "usage_percent": 0.3,
    "description": "The user hurls boulders at the target to inflict damage. This also lowers the target's Speed stat by cutting off its movement."
   },
   {
-   "rank": 79,
+   "rank": 80,
    "slug": "scald",
    "name": "Scald",
    "usage_percent": 0.3,
    "description": "The user attacks by shooting boiling hot water at the target. This may also leave the target with a burn."
   },
   {
-   "rank": 80,
+   "rank": 81,
    "slug": "sleep-powder",
    "name": "Sleep Powder",
    "usage_percent": 0.3,
    "description": "Puts the target to sleep. Grass-type Pokémon are unaffected."
-  },
-  {
-   "rank": 81,
-   "slug": "solar-beam",
-   "name": "Solar Beam",
-   "usage_percent": 0.3,
-   "description": "Charges before attacking, unless harsh sunlight is active. During rain, it requires an extra charge turn and its power is halved. Power is also halved during snow and sandstorm."
   },
   {
    "rank": 82,

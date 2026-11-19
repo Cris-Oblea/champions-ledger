@@ -1,42 +1,42 @@
 {
  "source": "pokebase.app/pokemon-champions",
  "game": "Pokemon Champions",
- "fetched": "2026-11-18",
+ "fetched": "2026-11-19",
  "count": 215,
  "rows": [
   {
    "rank": 1,
    "slug": "intimidate",
    "name": "Intimidate",
-   "usage_percent": 11.03,
+   "usage_percent": 11.04,
    "description": "When the Pokémon enters a battle, it intimidates opposing Pokémon and makes them cower, lowering their Attack stats."
   },
   {
    "rank": 2,
    "slug": "grassy-surge",
    "name": "Grassy Surge",
-   "usage_percent": 7.94,
+   "usage_percent": 7.93,
    "description": "Turns the entire field into Grassy Terrain for 5 turns when the Pokémon enters a battle."
   },
   {
    "rank": 3,
    "slug": "unburden",
    "name": "Unburden",
-   "usage_percent": 5.78,
+   "usage_percent": 5.77,
    "description": "Boosts the Speed stat if the Pokémon's held item is used or lost."
   },
   {
    "rank": 4,
    "slug": "defiant",
    "name": "Defiant",
-   "usage_percent": 4.56,
+   "usage_percent": 4.58,
    "description": "If the Pokémon has any stat lowered by an opposing Pokémon, its Attack stat will be boosted sharply."
   },
   {
    "rank": 5,
    "slug": "rough-skin",
    "name": "Rough Skin",
-   "usage_percent": 4.18,
+   "usage_percent": 4.19,
    "description": "The Pokémon's rough skin damages attackers that make direct contact with it."
   },
   {
@@ -50,7 +50,7 @@
    "rank": 7,
    "slug": "levitate",
    "name": "Levitate",
-   "usage_percent": 3.66,
+   "usage_percent": 3.65,
    "description": "Damage dealing Ground-type moves have no effect on this Pokémon. Cannot be trapped by Arena Trap ability. Takes no damage from Spikes."
   },
   {
@@ -78,42 +78,42 @@
    "rank": 11,
    "slug": "drought",
    "name": "Drought",
-   "usage_percent": 3.37,
+   "usage_percent": 3.38,
    "description": "Turns the sunlight harsh when the Pokémon enters a battle."
   },
   {
    "rank": 12,
    "slug": "blaze",
    "name": "Blaze",
-   "usage_percent": 3.35,
+   "usage_percent": 3.37,
    "description": "Powers up Fire-type moves when the Pokémon's HP is low."
   },
   {
    "rank": 13,
    "slug": "psychic-surge",
    "name": "Psychic Surge",
-   "usage_percent": 3.31,
+   "usage_percent": 3.3,
    "description": "Turns the entire field into Psychic Terrain for 5 turns when the Pokémon enters a battle."
   },
   {
    "rank": 14,
    "slug": "adaptability",
    "name": "Adaptability",
-   "usage_percent": 3.27,
+   "usage_percent": 3.28,
    "description": "Increases the Same Type Attack Bonus from *1.5 to *2."
   },
   {
    "rank": 15,
    "slug": "tough-claws",
    "name": "Tough Claws",
-   "usage_percent": 3.22,
+   "usage_percent": 3.21,
    "description": "Powers up moves that make direct contact."
   },
   {
    "rank": 16,
    "slug": "drizzle",
    "name": "Drizzle",
-   "usage_percent": 3.18,
+   "usage_percent": 3.17,
    "description": "The Pokémon makes it rain when it enters a battle."
   },
   {
@@ -127,14 +127,14 @@
    "rank": 18,
    "slug": "prankster",
    "name": "Prankster",
-   "usage_percent": 2.75,
+   "usage_percent": 2.76,
    "description": "Increases the priority of the Pokémon's status moves by 1 stage. However, the Pokémon's status moves no longer work against Dark-type Pokémon."
   },
   {
    "rank": 19,
    "slug": "stamina",
    "name": "Stamina",
-   "usage_percent": 2.61,
+   "usage_percent": 2.6,
    "description": "Boosts the Defense stat when the Pokémon is hit by an attack."
   },
   {
@@ -169,7 +169,7 @@
    "rank": 24,
    "slug": "emergency-exit",
    "name": "Emergency Exit",
-   "usage_percent": 2.01,
+   "usage_percent": 2.0,
    "description": "The Pokémon switches out of battle when its HP drops to 1/2 or less of its max."
   },
   {
@@ -190,14 +190,14 @@
    "rank": 27,
    "slug": "cursed-body",
    "name": "Cursed Body",
-   "usage_percent": 1.68,
+   "usage_percent": 1.69,
    "description": "May disable a move that has dealt damage to the Pokémon."
   },
   {
    "rank": 28,
    "slug": "contrary",
    "name": "Contrary",
-   "usage_percent": 1.64,
+   "usage_percent": 1.65,
    "description": "Reverses any stat changes affecting the Pokémon so that attempts to boost its stats instead lower them—and attempts to lower its stats will boost them."
   },
   {
@@ -232,7 +232,7 @@
    "rank": 33,
    "slug": "swift-swim",
    "name": "Swift Swim",
-   "usage_percent": 1.14,
+   "usage_percent": 1.13,
    "description": "Boosts the Pokémon's Speed stat in rain."
   },
   {
@@ -246,7 +246,7 @@
    "rank": 35,
    "slug": "flash-fire",
    "name": "Flash Fire",
-   "usage_percent": 1.06,
+   "usage_percent": 1.05,
    "description": "If hit by a Fire-type move, the Pokémon absorbs the flames and uses them to power up its own Fire-type moves."
   },
   {
@@ -295,7 +295,7 @@
    "rank": 42,
    "slug": "multiscale",
    "name": "Multiscale",
-   "usage_percent": 0.71,
+   "usage_percent": 0.7,
    "description": "Reduces damage afflicted to the Pokémon by 50% if at maximum HP"
   },
   {
@@ -435,7 +435,7 @@
    "rank": 62,
    "slug": "scrappy",
    "name": "Scrappy",
-   "usage_percent": 0.29,
+   "usage_percent": 0.28,
    "description": "The Pokémon can hit Ghost-type Pokémon with Normal- and Fighting-type moves. It is also unaffected by Intimidate."
   },
   {
@@ -496,17 +496,17 @@
   },
   {
    "rank": 71,
+   "slug": "thick-fat",
+   "name": "Thick Fat",
+   "usage_percent": 0.18,
+   "description": "The Pokémon is protected by a layer of thick fat, which halves the damage taken from Fire- and Ice-type moves."
+  },
+  {
+   "rank": 72,
    "slug": "spicy-spray",
    "name": "Spicy Spray",
    "usage_percent": 0.17,
    "description": "When the Pokémon takes damage from a move, it burns the attacker."
-  },
-  {
-   "rank": 72,
-   "slug": "thick-fat",
-   "name": "Thick Fat",
-   "usage_percent": 0.17,
-   "description": "The Pokémon is protected by a layer of thick fat, which halves the damage taken from Fire- and Ice-type moves."
   },
   {
    "rank": 73,
@@ -524,24 +524,24 @@
   },
   {
    "rank": 75,
-   "slug": "firemane",
-   "name": "Fire Mane",
-   "usage_percent": 0.15,
-   "description": "Boosts the power of the Pokémon's Fire-type moves by 50%."
-  },
-  {
-   "rank": 76,
    "slug": "justified",
    "name": "Justified",
    "usage_percent": 0.15,
    "description": "When the Pokémon is hit by a Dark-type attack, its Attack stat is boosted by its sense of justice."
   },
   {
-   "rank": 77,
+   "rank": 76,
    "slug": "moody",
    "name": "Moody",
    "usage_percent": 0.15,
    "description": "Every turn, one of the Pokémon's stats will be boosted sharply but another stat will be lowered."
+  },
+  {
+   "rank": 77,
+   "slug": "firemane",
+   "name": "Fire Mane",
+   "usage_percent": 0.14,
+   "description": "Boosts the power of the Pokémon's Fire-type moves by 50%."
   },
   {
    "rank": 78,
@@ -594,31 +594,31 @@
   },
   {
    "rank": 85,
-   "slug": "snow-cloak",
-   "name": "Snow Cloak",
-   "usage_percent": 0.11,
-   "description": "Boosts the Pokémon's evasiveness in snow."
-  },
-  {
-   "rank": 86,
    "slug": "telepathy",
    "name": "Telepathy",
    "usage_percent": 0.11,
    "description": "The Pokémon anticipates and dodges the attacks of its allies."
   },
   {
-   "rank": 87,
+   "rank": 86,
    "slug": "illusion",
    "name": "Illusion",
    "usage_percent": 0.1,
    "description": "The Pokémon fools opponents by entering battle disguised as the last Pokémon in its Trainer's party."
   },
   {
-   "rank": 88,
+   "rank": 87,
    "slug": "limber",
    "name": "Limber",
    "usage_percent": 0.1,
    "description": "The Pokémon's limber body prevents it from being paralyzed."
+  },
+  {
+   "rank": 88,
+   "slug": "snow-cloak",
+   "name": "Snow Cloak",
+   "usage_percent": 0.1,
+   "description": "Boosts the Pokémon's evasiveness in snow."
   },
   {
    "rank": 89,
