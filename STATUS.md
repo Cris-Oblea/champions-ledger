@@ -80,7 +80,7 @@ python scripts/query.py speed --min 100
 ## What is loaded
 
 <!-- VINTAGE:START -->
-Regulation **M-C**. Ladder usage fetched 2026-11-19, from 339 Pokemon.
+Regulation **M-C**. Ladder usage fetched 2026-11-20, from 339 Pokemon.
 Tournament data is Worlds 2026, played under M-B - that is history, not stale.
 <!-- VINTAGE:END -->
 
