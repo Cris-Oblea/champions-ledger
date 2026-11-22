@@ -1,7 +1,7 @@
 {
  "source": "pokebase.app/pokemon-champions",
  "game": "Pokemon Champions",
- "fetched": "2026-11-21",
+ "fetched": "2026-11-22",
  "count": 162,
  "rows": [
   {
@@ -15,7 +15,7 @@
    "rank": 2,
    "slug": "life-orb",
    "name": "Life Orb",
-   "usage_percent": 58.7,
+   "usage_percent": 58.8,
    "description": "Boosts the power of the holder’s moves by 30%, but the holder loses 10% of its max HP after using a damaging move."
   },
   {
@@ -36,14 +36,14 @@
    "rank": 5,
    "slug": "miracle-seed",
    "name": "Miracle Seed",
-   "usage_percent": 33.5,
+   "usage_percent": 33.4,
    "description": "Boosts the power of the holder’s Grass-type moves by 20%."
   },
   {
    "rank": 6,
    "slug": "choice-scarf",
    "name": "Choice Scarf",
-   "usage_percent": 25.2,
+   "usage_percent": 25.1,
    "description": "Boosts the holder’s Speed by 50%, but it can only use the first move it selects until it switches out."
   },
   {
@@ -57,14 +57,14 @@
    "rank": 8,
    "slug": "salamencite",
    "name": "Salamencite",
-   "usage_percent": 20.2,
+   "usage_percent": 20.1,
    "description": "A held item that allows Salamence to Mega Evolve."
   },
   {
    "rank": 9,
    "slug": "grassy-seed",
    "name": "Grassy Seed",
-   "usage_percent": 18.8,
+   "usage_percent": 18.7,
    "description": "Boosts the holder's Defense stat by 1 stage on Grassy Terrain. Disappears for the duration of the battle after a single use."
   },
   {
@@ -85,7 +85,7 @@
    "rank": 12,
    "slug": "chople-berry",
    "name": "Chople Berry",
-   "usage_percent": 14.3,
+   "usage_percent": 14.4,
    "description": "Halves damage from the first supereffective Fighting-type attack. Consumed after use."
   },
   {
@@ -106,7 +106,7 @@
    "rank": 15,
    "slug": "garchompite-z",
    "name": "Garchompite Z",
-   "usage_percent": 13.0,
+   "usage_percent": 12.9,
    "description": "A held item that allows Garchomp to Mega Evolve into Mega Garchomp Z."
   },
   {
@@ -120,7 +120,7 @@
    "rank": 17,
    "slug": "golisopite",
    "name": "Golisopite",
-   "usage_percent": 12.0,
+   "usage_percent": 11.9,
    "description": "A held item that allows Golisopod to Mega Evolve."
   },
   {
@@ -141,7 +141,7 @@
    "rank": 20,
    "slug": "colbur-berry",
    "name": "Colbur Berry",
-   "usage_percent": 9.2,
+   "usage_percent": 9.3,
    "description": "Halves damage from the first supereffective Dark-type move. Consumed after use."
   },
   {
@@ -302,7 +302,7 @@
    "rank": 43,
    "slug": "blastoisinite",
    "name": "Blastoisinite",
-   "usage_percent": 1.7,
+   "usage_percent": 1.8,
    "description": "One of a variety of mysterious Mega Stones. A Blastoise holding this stone will be able to Mega Evolve during battle."
   },
   {
@@ -358,7 +358,7 @@
    "rank": 51,
    "slug": "scovillainite",
    "name": "Scovillainite",
-   "usage_percent": 1.0,
+   "usage_percent": 1.1,
    "description": "One of a variety of mysterious Mega Stones. A Scovillain holding this stone will be able to Mega Evolve during battle."
   },
   {
@@ -377,31 +377,31 @@
   },
   {
    "rank": 54,
+   "slug": "garchompite",
+   "name": "Garchompite",
+   "usage_percent": 0.7,
+   "description": "One of a variety of mysterious Mega Stones. A Garchomp holding this stone will be able to Mega Evolve during battle."
+  },
+  {
+   "rank": 55,
    "slug": "mental-herb",
    "name": "Mental Herb",
    "usage_percent": 0.7,
    "description": "Cures the holder of Infatuation, Taunt, Torment, Disable, Heal Block, and Encore. Consumed after use."
   },
   {
-   "rank": 55,
+   "rank": 56,
    "slug": "roseli-berry",
    "name": "Roseli Berry",
    "usage_percent": 0.7,
    "description": "Halves damage from the first supereffective Fairy-type move. Consumed after use."
   },
   {
-   "rank": 56,
+   "rank": 57,
    "slug": "charti-berry",
    "name": "Charti Berry",
    "usage_percent": 0.6,
    "description": "Halves damage from the first supereffective Rock-type attack. Consumed after use."
-  },
-  {
-   "rank": 57,
-   "slug": "garchompite",
-   "name": "Garchompite",
-   "usage_percent": 0.6,
-   "description": "One of a variety of mysterious Mega Stones. A Garchomp holding this stone will be able to Mega Evolve during battle."
   },
   {
    "rank": 58,
@@ -839,213 +839,213 @@
   },
   {
    "rank": 120,
-   "slug": "heat-rock",
-   "name": "Heat Rock",
-   "usage_percent": 0.1,
-   "description": "Harsh sunlight summoned by the holder lasts 3 extra turns (8 turns total)."
-  },
-  {
-   "rank": 121,
    "slug": "kings-rock",
    "name": "King’s Rock",
    "usage_percent": 0.1,
    "description": "The holder’s damaging moves have a 10% chance to make the target flinch."
   },
   {
-   "rank": 122,
+   "rank": 121,
    "slug": "leppa-berry",
    "name": "Leppa Berry",
    "usage_percent": 0.1,
    "description": "Restores 10 PP to a move when its PP reaches 0. Consumed after use."
   },
   {
-   "rank": 123,
+   "rank": 122,
    "slug": "light-ball",
    "name": "Light Ball",
    "usage_percent": 0.1,
    "description": "Doubles the holder’s Attack and Sp. Atk. if held by Pikachu."
   },
   {
-   "rank": 124,
+   "rank": 123,
    "slug": "lucarionite",
    "name": "Lucarionite",
    "usage_percent": 0.1,
    "description": "One of a variety of mysterious Mega Stones. A Lucario holding this stone will be able to Mega Evolve during battle."
   },
   {
-   "rank": 125,
+   "rank": 124,
    "slug": "malamarite",
    "name": "Malamarite",
    "usage_percent": 0.1,
    "description": "One of a variety of mysterious Mega Stones. A Malamar holding this stone will be able to Mega Evolve during battle."
   },
   {
-   "rank": 126,
+   "rank": 125,
    "slug": "muscle-band",
    "name": "Muscle Band",
    "usage_percent": 0.1,
    "description": "Boosts the power of the holder’s physical moves by 10%."
   },
   {
-   "rank": 127,
+   "rank": 126,
    "slug": "normal-gem",
    "name": "Normal Gem",
    "usage_percent": 0.1,
    "description": "Boosts the power of the holder's Normal-type moves by 30%. Disappears for the duration of the battle after a single use."
   },
   {
-   "rank": 128,
+   "rank": 127,
    "slug": "pidgeotite",
    "name": "Pidgeotite",
    "usage_percent": 0.1,
    "description": "One of a variety of mysterious Mega Stones. A Pidgeot holding this stone will be able to Mega Evolve during battle."
   },
   {
-   "rank": 129,
+   "rank": 128,
    "slug": "red-card",
    "name": "Red Card",
    "usage_percent": 0.1,
    "description": "When the holder takes damage from a move, the attacker is forced to switch out of battle. Disappears for the duration of the battle after a single use."
   },
   {
-   "rank": 130,
+   "rank": 129,
    "slug": "sablenite",
    "name": "Sablenite",
    "usage_percent": 0.1,
    "description": "One of a variety of mysterious Mega Stones. A Sableye holding this stone will be able to Mega Evolve during battle."
   },
   {
-   "rank": 131,
+   "rank": 130,
    "slug": "scolipite",
    "name": "Scolipite",
    "usage_percent": 0.1,
    "description": "One of a variety of mysterious Mega Stones. A Scolipede holding this stone will be able to Mega Evolve during battle."
   },
   {
-   "rank": 132,
+   "rank": 131,
    "slug": "sharpedonite",
    "name": "Sharpedonite",
    "usage_percent": 0.1,
    "description": "One of a variety of mysterious Mega Stones. A Sharpedo holding this stone will be able to Mega Evolve during battle."
   },
   {
-   "rank": 133,
+   "rank": 132,
    "slug": "shell-bell",
    "name": "Shell Bell",
    "usage_percent": 0.1,
    "description": "Restores HP equal to 1/8 of the damage dealt by the holder’s damaging moves."
   },
   {
-   "rank": 134,
+   "rank": 133,
    "slug": "soft-sand",
    "name": "Soft Sand",
    "usage_percent": 0.1,
    "description": "Boosts the power of the holder’s Ground-type moves by 20%."
   },
   {
-   "rank": 135,
+   "rank": 134,
    "slug": "steelixite",
    "name": "Steelixite",
    "usage_percent": 0.1,
    "description": "One of a variety of mysterious Mega Stones. A Steelix holding this stone will be able to Mega Evolve during battle."
   },
   {
-   "rank": 136,
+   "rank": 135,
    "slug": "wacan-berry",
    "name": "Wacan Berry",
    "usage_percent": 0.1,
    "description": "Halves damage from the first supereffective Electric-type attack. Consumed after use."
   },
   {
-   "rank": 137,
+   "rank": 136,
    "slug": "wise-glasses",
    "name": "Wise Glasses",
    "usage_percent": 0.1,
    "description": "Boosts the power of the holder’s special moves by 10%."
   },
   {
-   "rank": 138,
+   "rank": 137,
    "slug": "yache-berry",
    "name": "Yache Berry",
    "usage_percent": 0.1,
    "description": "Halves damage from the first supereffective Ice-type attack. Consumed after use."
   },
   {
-   "rank": 139,
+   "rank": 138,
    "slug": "zoom-lens",
    "name": "Zoom Lens",
    "usage_percent": 0.1,
    "description": "Boosts the accuracy of the holder’s moves by 20% when it moves after the target."
   },
   {
-   "rank": 140,
+   "rank": 139,
    "slug": "absolite",
    "name": "Absolite",
    "usage_percent": 0.0,
    "description": "One of a variety of mysterious Mega Stones. An Absol holding this stone will be able to Mega Evolve during battle."
   },
   {
-   "rank": 141,
+   "rank": 140,
    "slug": "aspear-berry",
    "name": "Aspear Berry",
    "usage_percent": 0.0,
    "description": "Cures the holder of freeze. Consumed after use."
   },
   {
-   "rank": 142,
+   "rank": 141,
    "slug": "banettite",
    "name": "Banettite",
    "usage_percent": 0.0,
    "description": "One of a variety of mysterious Mega Stones. A Banette holding this stone will be able to Mega Evolve during battle."
   },
   {
-   "rank": 143,
+   "rank": 142,
    "slug": "big-root",
    "name": "Big Root",
    "usage_percent": 0.0,
    "description": "Boosts HP restored by draining moves and other HP-restoring effects by 30%."
   },
   {
-   "rank": 144,
+   "rank": 143,
    "slug": "binding-band",
    "name": "Binding Band",
    "usage_percent": 0.0,
    "description": "Increases the damage dealt to targets that have the Bound status. Targets will take damage equal to 1/6 of their max HP instead of 1/8 of their max HP."
   },
   {
-   "rank": 145,
+   "rank": 144,
    "slug": "chesto-berry",
    "name": "Chesto Berry",
    "usage_percent": 0.0,
    "description": "Cures the holder of sleep. Consumed after use."
   },
   {
-   "rank": 146,
+   "rank": 145,
    "slug": "chilan-berry",
    "name": "Chilan Berry",
    "usage_percent": 0.0,
    "description": "Halves damage from the first Normal-type attack. Consumed after use."
   },
   {
-   "rank": 147,
+   "rank": 146,
    "slug": "emboarite",
    "name": "Emboarite",
    "usage_percent": 0.0,
    "description": "One of a variety of mysterious Mega Stones. An Emboar holding this stone will be able to Mega Evolve during battle."
   },
   {
-   "rank": 148,
+   "rank": 147,
    "slug": "falinksite",
    "name": "Falinksite",
    "usage_percent": 0.0,
    "description": "One of a variety of mysterious Mega Stones. A Falinks holding this stone will be able to Mega Evolve during battle."
   },
   {
-   "rank": 149,
+   "rank": 148,
    "slug": "hard-stone",
    "name": "Hard Stone",
    "usage_percent": 0.0,
    "description": "Boosts the power of the holder’s Rock-type moves by 20%."
+  },
+  {
+   "rank": 149,
+   "slug": "heat-rock",
+   "name": "Heat Rock",
+   "usage_percent": 0.0,
+   "description": "Harsh sunlight summoned by the holder lasts 3 extra turns (8 turns total)."
   },
   {
    "rank": 150,

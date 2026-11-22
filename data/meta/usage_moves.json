@@ -1,7 +1,7 @@
 {
  "source": "pokebase.app/pokemon-champions",
  "game": "Pokemon Champions",
- "fetched": "2026-11-21",
+ "fetched": "2026-11-22",
  "count": 154,
  "rows": [
   {
@@ -216,38 +216,38 @@
   },
   {
    "rank": 31,
-   "slug": "zap-cannon",
-   "name": "Zap Cannon",
-   "usage_percent": 0.9,
-   "description": "The user attacks by firing an electric blast like a cannon. This also leaves the target with paralysis."
-  },
-  {
-   "rank": 32,
    "slug": "calm-mind",
    "name": "Calm Mind",
    "usage_percent": 0.8,
    "description": "The user quietly focuses its mind and calms its spirit to boost its Sp. Atk and Sp. Def stats."
   },
   {
-   "rank": 33,
+   "rank": 32,
    "slug": "dazzling-gleam",
    "name": "Dazzling Gleam",
    "usage_percent": 0.8,
    "description": "The user damages opposing Pokémon by emitting a powerful flash."
   },
   {
-   "rank": 34,
+   "rank": 33,
    "slug": "hurricane",
    "name": "Hurricane",
    "usage_percent": 0.8,
    "description": "Has a 30% chance of confusing the target. In rain, this move never misses. In harsh sunlight, this move's accuracy is 50%. This move can hit a target that has the Sky-High status."
   },
   {
-   "rank": 35,
+   "rank": 34,
    "slug": "wave-crash",
    "name": "Wave Crash",
    "usage_percent": 0.8,
    "description": "The user takes recoil equal to 1/3 of the damage dealt."
+  },
+  {
+   "rank": 35,
+   "slug": "zap-cannon",
+   "name": "Zap Cannon",
+   "usage_percent": 0.8,
+   "description": "The user attacks by firing an electric blast like a cannon. This also leaves the target with paralysis."
   },
   {
    "rank": 36,
