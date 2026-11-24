@@ -15,14 +15,14 @@
    "rank": 2,
    "slug": "life-orb",
    "name": "Life Orb",
-   "usage_percent": 58.9,
+   "usage_percent": 59.0,
    "description": "Boosts the power of the holder's moves by 30%, but the holder loses 1/10 of its max HP after each move that deals damage."
   },
   {
    "rank": 3,
    "slug": "sitrus-berry",
    "name": "Sitrus Berry",
-   "usage_percent": 57.8,
+   "usage_percent": 57.7,
    "description": "Restores 1/4 of the holder's max HP when its HP falls to 1/2 or less. Consumed after use."
   },
   {
@@ -104,17 +104,17 @@
   },
   {
    "rank": 15,
+   "slug": "rocky-helmet",
+   "name": "Rocky Helmet",
+   "usage_percent": 13.0,
+   "description": "When a contact move hits the holder, the attacker loses 1/6 of its max HP."
+  },
+  {
+   "rank": 16,
    "slug": "garchompite-z",
    "name": "Garchompite Z",
    "usage_percent": 12.9,
    "description": "Lets Garchomp Mega Evolve into Mega Garchomp Z during battle."
-  },
-  {
-   "rank": 16,
-   "slug": "rocky-helmet",
-   "name": "Rocky Helmet",
-   "usage_percent": 12.9,
-   "description": "When a contact move hits the holder, the attacker loses 1/6 of its max HP."
   },
   {
    "rank": 17,
@@ -134,7 +134,7 @@
    "rank": 19,
    "slug": "staraptite",
    "name": "Staraptite",
-   "usage_percent": 9.9,
+   "usage_percent": 9.8,
    "description": "Lets Staraptor Mega Evolve into Mega Staraptor during battle."
   },
   {
@@ -197,7 +197,7 @@
    "rank": 28,
    "slug": "mystic-water",
    "name": "Mystic Water",
-   "usage_percent": 4.7,
+   "usage_percent": 4.8,
    "description": "Boosts the power of the holder’s Water-type moves by 20%."
   },
   {
@@ -377,31 +377,31 @@
   },
   {
    "rank": 54,
-   "slug": "garchompite",
-   "name": "Garchompite",
-   "usage_percent": 0.7,
-   "description": "Lets Garchomp Mega Evolve into Mega Garchomp during battle."
-  },
-  {
-   "rank": 55,
    "slug": "mental-herb",
    "name": "Mental Herb",
    "usage_percent": 0.7,
    "description": "Cures the holder of infatuation, Taunt, Torment, Encore, Disable or Psychic Noise's healing block as soon as one takes hold. Consumed after use."
   },
   {
-   "rank": 56,
+   "rank": 55,
    "slug": "roseli-berry",
    "name": "Roseli Berry",
    "usage_percent": 0.7,
    "description": "Halves damage from the first supereffective Fairy-type move. Consumed after use."
   },
   {
-   "rank": 57,
+   "rank": 56,
    "slug": "charti-berry",
    "name": "Charti Berry",
    "usage_percent": 0.6,
    "description": "Halves damage from the first supereffective Rock-type attack. Consumed after use."
+  },
+  {
+   "rank": 57,
+   "slug": "garchompite",
+   "name": "Garchompite",
+   "usage_percent": 0.6,
+   "description": "Lets Garchomp Mega Evolve into Mega Garchomp during battle."
   },
   {
    "rank": 58,
@@ -601,143 +601,143 @@
   },
   {
    "rank": 86,
-   "slug": "shuca-berry",
-   "name": "Shuca Berry",
-   "usage_percent": 0.3,
-   "description": "Halves damage from the first supereffective Ground-type attack. Consumed after use."
-  },
-  {
-   "rank": 87,
    "slug": "slowbronite",
    "name": "Slowbronite",
    "usage_percent": 0.3,
    "description": "Lets Slowbro Mega Evolve into Mega Slowbro during battle."
   },
   {
-   "rank": 88,
+   "rank": 87,
    "slug": "spell-tag",
    "name": "Spell Tag",
    "usage_percent": 0.3,
    "description": "Boosts the power of the holder’s Ghost-type moves by 20%."
   },
   {
-   "rank": 89,
+   "rank": 88,
    "slug": "abomasite",
    "name": "Abomasite",
    "usage_percent": 0.2,
    "description": "Lets Abomasnow Mega Evolve into Mega Abomasnow during battle."
   },
   {
-   "rank": 90,
+   "rank": 89,
    "slug": "aggronite",
    "name": "Aggronite",
    "usage_percent": 0.2,
    "description": "Lets Aggron Mega Evolve into Mega Aggron during battle."
   },
   {
-   "rank": 91,
+   "rank": 90,
    "slug": "ampharosite",
    "name": "Ampharosite",
    "usage_percent": 0.2,
    "description": "Lets Ampharos Mega Evolve into Mega Ampharos during battle."
   },
   {
-   "rank": 92,
+   "rank": 91,
    "slug": "babiri-berry",
    "name": "Babiri Berry",
    "usage_percent": 0.2,
    "description": "Halves damage from the first supereffective Steel-type attack. Consumed after use."
   },
   {
-   "rank": 93,
+   "rank": 92,
    "slug": "black-belt",
    "name": "Black Belt",
    "usage_percent": 0.2,
    "description": "Boosts the power of the holder’s Fighting-type moves by 20%."
   },
   {
-   "rank": 94,
+   "rank": 93,
    "slug": "chesnaughtite",
    "name": "Chesnaughtite",
    "usage_percent": 0.2,
    "description": "Lets Chesnaught Mega Evolve into Mega Chesnaught during battle."
   },
   {
-   "rank": 95,
+   "rank": 94,
    "slug": "crabominite",
    "name": "Crabominite",
    "usage_percent": 0.2,
    "description": "Lets Crabominable Mega Evolve into Mega Crabominable during battle."
   },
   {
-   "rank": 96,
+   "rank": 95,
    "slug": "eelektrossite",
    "name": "Eelektrossite",
    "usage_percent": 0.2,
    "description": "Lets Eelektross Mega Evolve into Mega Eelektross during battle."
   },
   {
-   "rank": 97,
+   "rank": 96,
    "slug": "feraligite",
    "name": "Feraligite",
    "usage_percent": 0.2,
    "description": "Lets Feraligatr Mega Evolve into Mega Feraligatr during battle."
   },
   {
-   "rank": 98,
+   "rank": 97,
    "slug": "golurkite",
    "name": "Golurkite",
    "usage_percent": 0.2,
    "description": "Lets Golurk Mega Evolve into Mega Golurk during battle."
   },
   {
-   "rank": 99,
+   "rank": 98,
    "slug": "gyaradosite",
    "name": "Gyaradosite",
    "usage_percent": 0.2,
    "description": "Lets Gyarados Mega Evolve into Mega Gyarados during battle."
   },
   {
-   "rank": 100,
+   "rank": 99,
    "slug": "heracronite",
    "name": "Heracronite",
    "usage_percent": 0.2,
    "description": "Lets Heracross Mega Evolve into Mega Heracross during battle."
   },
   {
-   "rank": 101,
+   "rank": 100,
    "slug": "houndoominite",
    "name": "Houndoominite",
    "usage_percent": 0.2,
    "description": "Lets Houndoom Mega Evolve into Mega Houndoom during battle."
   },
   {
-   "rank": 102,
+   "rank": 101,
    "slug": "magnet",
    "name": "Magnet",
    "usage_percent": 0.2,
    "description": "Boosts the power of the holder’s Electric-type moves by 20%."
   },
   {
-   "rank": 103,
+   "rank": 102,
    "slug": "manectite",
    "name": "Manectite",
    "usage_percent": 0.2,
    "description": "Lets Manectric Mega Evolve into Mega Manectric during battle."
   },
   {
-   "rank": 104,
+   "rank": 103,
    "slug": "metal-coat",
    "name": "Metal Coat",
    "usage_percent": 0.2,
    "description": "Boosts the power of the holder’s Steel-type moves by 20%."
   },
   {
-   "rank": 105,
+   "rank": 104,
    "slug": "scizorite",
    "name": "Scizorite",
    "usage_percent": 0.2,
    "description": "Lets Scizor Mega Evolve into Mega Scizor during battle."
+  },
+  {
+   "rank": 105,
+   "slug": "shuca-berry",
+   "name": "Shuca Berry",
+   "usage_percent": 0.2,
+   "description": "Halves damage from the first supereffective Ground-type attack. Consumed after use."
   },
   {
    "rank": 106,
